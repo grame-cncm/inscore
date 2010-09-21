@@ -1,0 +1,64 @@
+#!/bin/sh
+# 
+# Interlude project
+# version management tool
+#
+
+if [ $# -ne 1 ]
+then
+	echo "usage: version version_num"
+	echo "       version_num format: n.n"
+	exit 1
+fi
+
+
+ROOT=.
+VERSION=$1
+
+function toNum {
+	echo $1 | sed 's/\.//' | sed 's/^0*//'
+}
+
+echo "moving version number to $VERSION"
+
+CMAKE=$ROOT/cmake/CMakeLists.txt
+echo " updating $CMAKE"
+sed "s/\(ITL[A-Z]*VERS[^0-9]*\)[0-9]*\.[0-9]*/\1$VERSION/" $CMAKE > TMP$$
+mv -f TMP$$ $CMAKE
+cmake -G Xcode $ROOT/cmake
+
+OSC=$ROOT/doc/OSCMsg.tex
+echo " updating $OSC"
+sed "s/\(title..*v\.*\)[0-9]*\.[0-9]*/\1$VERSION/" $OSC  > TMP$$
+mv -f TMP$$ $OSC
+make -C doc
+make -C doc html
+
+MAKE=$ROOT/src/makefile
+echo " updating $MAKE"
+sed "s/\(version..*= *\)[0-9]*\.[0-9]*/\1$VERSION/" $MAKE  > TMP$$
+mv -f TMP$$ $MAKE
+
+ITL=$ROOT/src/interface/interlude.cpp
+echo " updating $ITL  (recompile)"
+N=$(toNum $VERSION)
+sed "s/\(version[^0-9]*\)[1-9][0-9]*/\1$N/" $ITL \
+	| sed "s/\(version[^0-9]*\)[0-9]*\.[0-9]*/\1$VERSION/"  > TMP$$
+mv -f TMP$$ $ITL
+
+DOXY=$ROOT/doc/doxygen/Doxyfile
+echo " updating $DOXY  (regenerate doc)"
+sed "s/^\(PROJECT_NUMBER[ 	]*= *\)[0-9]*\.[0-9]*/\1$VERSION/" $DOXY  > TMP$$
+mv -f TMP$$ $DOXY
+
+TEX=$ROOT/doc/doxygen/header.tex
+echo " updating $TEX  (regenerate doc)"
+sed "s/\([vV]\.\)[0-9]*\.[0-9]*/\1$VERSION/" $TEX > TMP$$
+mv -f TMP$$ $TEX
+
+open $ROOT/cmake/Interlude.xcodeproj
+
+echo "==> change manually rc files in win32 folder"
+open win32/Interlude.rc
+
+exit 0

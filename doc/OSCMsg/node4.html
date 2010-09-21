@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2 (1.70)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>2. ITL messages</TITLE>
+<META NAME="description" CONTENT="2. ITL messages">
+<META NAME="keywords" CONTENT="OSCMsg">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="OSCMsg.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html152"
+  HREF="node5.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html146"
+  HREF="OSCMsg.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html140"
+  HREF="node3.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html148"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html150"
+  HREF="node44.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html153"
+  HREF="node5.html">3. Scene messages</A>
+<B> Up:</B> <A NAME="tex2html147"
+  HREF="OSCMsg.html">Augmented Score Library OSC</A>
+<B> Previous:</B> <A NAME="tex2html141"
+  HREF="node3.html">1.1 Address space</A>
+ &nbsp; <B>  <A NAME="tex2html149"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html151"
+  HREF="node44.html">Index</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00300000000000000000"></A>
+<A NAME="ITL"></A>
+<BR>
+2. ITL messages
+</H1>
+ITL messages are messages global to the client application, which address is <TT>/ITL</TT>. It handles the following messages:
+<BR>
+<IMG
+ WIDTH="298" HEIGHT="278" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="\begin{rail}
+ITLMsg : 'quit'
+\vert ('rootPath' path)
+\vert ('port' int32)
+\...
+...Show' int32)
+\vert ('load' filePath)
+\vert 'version'
+\vert 'hello'
+\end{rail}">
+<BR>
+<A NAME="86"></A>
+<A NAME="87"></A>
+<A NAME="88"></A>
+<A NAME="89"></A>
+<A NAME="90"></A>
+<A NAME="91"></A>
+
+<P>
+
+<UL>
+<LI><TT>quit</TT>: requests the client application to quit.
+
+<P>
+</LI>
+<LI><TT>rootPath</TT>: <I>rootPath</I> of an Interlude application is the default path where the application reads or writes a file when a relative path is used for this file. The default value is the user home directory. Sending the <TT>rootPath</TT> message without parameter resets the application path to its default value.
+
+<P>
+</LI>
+<LI><TT>port</TT>: changes the UDP listening port number. The <TT>int32</TT> parameter should be a positive value in the range <TT>[1024-49150]</TT>. 
+<BR>
+The default <TT>port</TT> value is 7000.
+
+<P>
+</LI>
+<LI><TT>defaultShow</TT>: changes the default <TT>show</TT> status for new objects. 
+<BR>
+The default <TT>defaultShow</TT> value is 1.
+
+<P>
+</LI>
+<LI><TT>load</TT>: loads a file previously saved using the <TT>save</TT> message (see section <A HREF="node6.html#common">4</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). Note that the load operation appends the new objects to the existing scene. Whe necessary, it's the sender responsability to clear the scene before loading a file.
+
+<P>
+</LI>
+<LI><TT>hello</TT>: query the host IP number. The message is intended for ITL applications discovery. Answer to the query has the following format: 
+<BR> <TT>IP</TT> <TT>inPort outPort errPort</TT> where <TT>IP</TT> is sent as a string and port numbers as integer values.
+
+<P>
+</LI>
+<LI><TT>version</TT>: version number request.
+</LI>
+</UL>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html152"
+  HREF="node5.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html146"
+  HREF="OSCMsg.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html140"
+  HREF="node3.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html148"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html150"
+  HREF="node44.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html153"
+  HREF="node5.html">3. Scene messages</A>
+<B> Up:</B> <A NAME="tex2html147"
+  HREF="OSCMsg.html">Augmented Score Library OSC</A>
+<B> Previous:</B> <A NAME="tex2html141"
+  HREF="node3.html">1.1 Address space</A>
+ &nbsp; <B>  <A NAME="tex2html149"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html151"
+  HREF="node44.html">Index</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,53 @@
+{
+[ 
+	\accol<id="a", range="1-2", type="none">
+	\i<"fff", dy=-6>
+	
+	\stemsDown (\pizz<"snap">(a/16 a a# a&) \decresc<dy=2>(a& g f e c2 a1 f) d)
+	\stemsUp(a a a a g a b c2 d1 f a c2) 
+	\stemsDown \stacc(\beam(a/32 a a a) \beam(a/32 g f e) \beam(c2 a1 f d))
+
+	\newLine \staff<2> \clef<"perc"> \staff<1>
+	\stemsUp \beam(a a a a) \beam(g a/16 c2/32) \beam( d1 f a c2)
+
+	\stemsDown (a1/16 a/8 a/16) 
+	\stemsUp(a/16 a/8 a/16) 
+
+	\stemsDown (d1/16 a/8 c2/16) 
+	\stemsUp(d1/16 a/8 c2/16) 
+
+ 	\beam<dy1=8hs>(a1/16 a \pizz<dx=1hs, type="fingernail">(a)  a) 
+	\beam<dy1=8hs>(a a \harmonic<dx=1, dy=2.5>(a) a)
+  
+ 	\stemsUp \beam<dy3=3hs>(d1/16 e/8 \stemsDown a2/16)
+	\stemsDown a2/16 \stemsUp d1/8 e/16 
+	\beam (a1/8 e/16 
+
+	\newLine 
+	d/16 e/8 e& ) 
+	\staff<1>  \beam (\stemsDown d1/8 
+	\staff<2> \stemsUp \slur(a1/16 f f/8) \stemsDown 
+	\staff<1> c1/16 e)  \stemsOff  a##/4 
+	\noteFormat<color="0x808080"> \accent(a#/4 a/8 a/16 a/32 a/64 a/128 a a) 
+	\space<45> \i<"ppp"> \ten (a a a) \space<5>
+],
+[
+ 	\staffFormat<style="1-line"> \clef<"perc">
+	\restFormat<dy=-3hs> _*3/4 
+	\staff<1> 
+	\stemsDown d1/8 
+	\staff<2> \stemsUp a1/16 f f#/8 \stemsDown 
+	\staff<1> c1/16 e
+	\staff<2> \beam(_/16 c2 d&/8) \beam(c d/16 _) a1/8
+	\stemsDown \beam(\stemsDown 
+	\staff<1>d1/8 c/32 
+	\staff<2> \stemsUp a1/32 f/16 
+	\staff<1> \stemsDown d1/8)
+	\staff<2>_*3/4
+	\stemsDown \beam(\stemsDown 
+	\staff<1> d1/8
+	\staff<2> \stemsUp c2/32 a1/32 f/16 
+	\staff<1> \stemsDown d1/8)
+	\staff<2> _*3/2
+]
+}

@@ -1,0 +1,98 @@
+/*
+
+  Interlude Prototype
+  Copyright (C) 2009  Grame
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  research@grame.fr
+
+*/
+
+
+#ifndef __IMessageStream__
+#define __IMessageStream__
+
+#include <string>
+#include <vector>
+#include <ostream>
+#include <sstream>
+
+#include "IMessage.h"
+#include "OSCStream.h"
+#include "maptypes.h"
+#include "smartpointer.h"
+#include "TRect.h"
+
+namespace interlude
+{
+
+/*!
+\addtogroup ITLCtrl
+@{
+*/
+
+//--------------------------------------------------------------------------
+// a set of '<<' operators to set a message parameters
+//--------------------------------------------------------------------------
+class rational;
+IMessage& operator <<(IMessage& msg, const rational& val);
+
+template <typename T>
+IMessage& operator <<(IMessage& msg, const TRelation<T,RelativeTimeSegment>& val)
+{
+	std::ostringstream map;
+	val.print (map);
+	msg << map.str();
+	return msg;
+}
+
+template <typename T> class TSize;
+template <typename T>	IMessage& operator <<(IMessage& msg, TSize<T> val) { msg << val.width() << val.height(); return msg; }
+
+// boolean is store as integer value
+inline IMessage& operator <<(IMessage& msg, bool val)		{ msg.add<int>(val); return msg; }
+// strings: checks if quotes are needed
+IMessage& operator <<(IMessage& msg, const std::string& val);
+// TFloatPoint: linearizes x and y
+IMessage& operator <<(IMessage& msg, const TFloatPoint& val);
+// catch any other supported type
+template <typename T>	IMessage& operator <<(IMessage& msg, T val)		{ msg.add<T>(val); return msg; }
+// catch vectors
+template <typename T>	IMessage& operator <<(IMessage& msg, const std::vector<T>& val)
+						{ 
+							for (unsigned int i =0; i < val.size(); i++) msg << val[i];
+							return msg; 
+						}
+// and pairs
+template <typename T>	IMessage& operator <<(IMessage& msg, const std::pair<T,T>& val)
+						{ 
+							msg << val.first << val.second;
+							return msg; 
+						}
+
+OSCStream& operator << (OSCStream& out, const IMessageList&);
+IMessage& operator << (IMessage& out, const IMessage* m);
+std::ostream& operator << (std::ostream& out, const IMessage* m);
+std::ostream& operator << (std::ostream& out, const IMessageList&);
+
+/*!
+@}
+*/
+
+} // end namespoace
+
+#endif

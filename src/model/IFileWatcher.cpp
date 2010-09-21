@@ -1,0 +1,162 @@
+/*
+
+  Interlude Prototype
+  Copyright (C) 2009  Grame
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  research@grame.fr
+
+*/
+
+#include "IFileWatcher.h"
+#include "IMessage.h"
+#include "Updater.h"
+#include "IAppl.h"
+
+using namespace std;
+
+namespace interlude
+{
+
+const string IFileWatcher::kFileWatcherType("fileWatcher");
+
+//--------------------------------------------------------------------------
+IFileWatcher::IFileWatcher(IObject * parent) : IVNode(kFileWatcherType, parent)
+{ 
+	fMsgHandlerMap["add"]		= TMethodMsgHandler<IFileWatcher>::create(this, &IFileWatcher::addMsg);
+	fMsgHandlerMap["remove"]	= TMethodMsgHandler<IFileWatcher>::create(this, &IFileWatcher::removeMsg);
+	fMsgHandlerMap["clear"]		= TMethodMsgHandler<IFileWatcher>::create(this, &IFileWatcher::clearMsg);
+
+	fGetMsgHandlerMap["date"]		= 0;
+	fGetMsgHandlerMap["duration"]	= 0;
+
+	fGetMsgHandlerMap["x"]		= 0;
+	fGetMsgHandlerMap["y"]		= 0;
+	fGetMsgHandlerMap["z"]		= 0;
+	fGetMsgHandlerMap["angle"]	= 0;
+	fGetMsgHandlerMap["scale"]	= 0;
+	fGetMsgHandlerMap["show"]	= 0;
+	fGetMsgHandlerMap["width"]	= 0;
+	fGetMsgHandlerMap["height"] = 0;
+
+	fGetMsgHandlerMap["color"]	= 0;
+	fGetMsgHandlerMap["red"]	= 0;
+	fGetMsgHandlerMap["green"]	= 0;
+	fGetMsgHandlerMap["blue"]	= 0;
+	fGetMsgHandlerMap["alpha"]	= 0;
+	fGetMsgHandlerMap["hue"]	= 0;
+	fGetMsgHandlerMap["saturation"] = 0;
+	fGetMsgHandlerMap["brightness"]	= 0;
+}
+
+//--------------------------------------------------------------------------
+void IFileWatcher::print (ostream& out) const
+{
+	IObject::print (out);
+}
+
+//--------------------------------------------------------------------------
+bool IFileWatcher::buildMessage(const IMessage& source, IMessage& outMsg)
+{
+	outMsg = source;
+
+	const std::string err = "";
+	const std::string oscAddress	= source.params()[1]->value<std::string>(err);
+	const std::string message		= source.params()[2]->value<std::string>(err);
+	if ( ( oscAddress == err ) || ( message == err ) )
+		return false;
+
+	outMsg.setAddress( oscAddress );	// moves the address from params to address field
+	outMsg.setMessage( message );		// moves the message from params to message field
+	
+	// and removes the file, address and message from the parameters list
+	IMessage::argslist::iterator first = outMsg.params().begin();
+	outMsg.params().erase(first, first + 3);
+	return true;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IFileWatcher::addMsg (const IMessage* msg )	
+{
+	// the 'add' message expects the following parameters: 'filePath' OSCMessage
+	// where OSCMessage format is: 'address' 'msg' <opt parameters>
+	// thus a minimum of 3 parameters is expected
+	if (msg->params().size() >= 3) {
+		const std::string fileName	= msg->params()[0]->value<std::string>("");
+		if ( fileName.size() ) {
+			IMessage watcherMessage;
+			if (IFileWatcher::buildMessage(*msg,watcherMessage)) {
+				add( WatcherAssociation( IAppl::absolutePath(fileName) , watcherMessage ) );
+				return MsgHandler::kProcessed;
+			}
+		}
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IFileWatcher::removeMsg (const IMessage* msg )	
+{
+	if (msg->params().size() == 1) {
+		const std::string oscAddress	= msg->params()[0]->value<std::string>("");
+		if ( oscAddress.size() ) {
+			remove( oscAddress );
+			return MsgHandler::kProcessed;
+		}
+	}	
+	else if (msg->params().size() >= 3) {
+		const std::string fileName	= msg->params()[0]->value<std::string>("");
+		if ( fileName.size() ) {
+			IMessage watcherMessage;
+			if (IFileWatcher::buildMessage(*msg,watcherMessage)) {
+				remove( WatcherAssociation(IAppl::absolutePath(fileName) , watcherMessage) );
+				return MsgHandler::kProcessed;
+			}
+		}
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IFileWatcher::clearMsg (const IMessage* msg)
+{
+	if (msg->params().size() == 0) {
+		clear();
+		return MsgHandler::kProcessed;
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+IMessageList IFileWatcher::getMsgs (const IMessage* msg) const
+{
+	IMessageList outMsgs;
+
+	vector<WatcherAssociation> associations;
+	getList(associations);
+	
+	for ( unsigned int i = 0 ; i < associations.size() ; i++ ) {
+		const IMessage * cmsg = &(associations[i].mMessage);
+		IMessage* msg = new IMessage(getOSCAddress(), "add");
+		*msg << associations[i].mFileName << cmsg;
+		outMsgs += msg;
+	}
+	return outMsgs;
+}
+
+}
+

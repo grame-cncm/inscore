@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2 (1.70)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>12.1 File watcher</TITLE>
+<META NAME="description" CONTENT="12.1 File watcher">
+<META NAME="keywords" CONTENT="OSCMsg">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="OSCMsg.css">
+
+<LINK REL="next" HREF="node29.html">
+<LINK REL="previous" HREF="node27.html">
+<LINK REL="up" HREF="node27.html">
+<LINK REL="next" HREF="node29.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html496"
+  HREF="node29.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html490"
+  HREF="node27.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html484"
+  HREF="node27.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html492"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html494"
+  HREF="node44.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html497"
+  HREF="node29.html">12.2 Debug</A>
+<B> Up:</B> <A NAME="tex2html491"
+  HREF="node27.html">12. Virtual address space</A>
+<B> Previous:</B> <A NAME="tex2html485"
+  HREF="node27.html">12. Virtual address space</A>
+ &nbsp; <B>  <A NAME="tex2html493"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html495"
+  HREF="node44.html">Index</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION001310000000000000000"></A>
+<A NAME="watch"></A>
+<BR>
+12.1 File watcher
+</H1>
+
+<P>
+The <TT>fileWatcher</TT> is a component automatically embedded at scene level. 
+<BR>
+It receives messages at the address <TT>/ITL/scene/fileWatcher</TT>.
+
+<P>
+The <TT>fileWatcher</TT> service monitors files on demand; it is aware of file modifications and file removals (or renamings, which is equivalent). The <TT>fileWatcher</TT> works with associations between a file and an OSC message : when a file change occurs, the file watcher posts the associated OSC message.
+
+<P>
+The <TT>fileWatcher</TT> is controlled with 4 messages:
+
+<UL>
+<LI>the <TT>add</TT> message is used to add a new 'file' - 'OSC message' association ;
+</LI>
+<LI>the <TT>remove</TT> message is used to remove a 'file' - 'OSC message' association.
+</LI>
+<LI>the <TT>clear</TT> message is used to clear all existing associations.
+</LI>
+<LI>the <TT>get</TT> message is used to retrieve the current associations.
+</LI>
+</UL>
+<A NAME="697"></A>
+
+<P>
+<BR>
+<IMG
+ WIDTH="431" HEIGHT="203" ALIGN="BOTTOM" BORDER="0"
+ SRC="img56.gif"
+ ALT="\begin{rail}
+fileWatcher : ('add' filePath OSCMessage)
+\vert 'remove' (filePath OSCMessage \vert OSCAddress )
+\vert 'clear'
+\vert 'get'
+\end{rail}">
+<BR>
+<A NAME="700"></A>
+<A NAME="701"></A>
+<A NAME="702"></A>
+<A NAME="703"></A>
+
+<P>
+where <TT>OSCMessage</TT> is any message complying to the format desscribed in section <A HREF="node2.html#genformat">1</A> p.<A HREF="node2.html#genformat"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>.
+
+<P>
+Example:
+<BR> <TT>/ITL/scene/fileWatcher add fuga.gmn /ITL/scene/myScore set gmnf fuga.gmn</TT>
+<BR>
+<P>
+Note that the <TT>get</TT> query returns a set of messages complying to the <TT>add</TT> message format.
+<BR>
+<P>
+The <TT>remove</TT> message may take only 1 parameter, in which case the only parameter is an OSC address : it stops monitoring any file associated to an OSC message with this OSC address.
+
+<P>
+Note that an OSC message can be associated to several files, and that a file can be associated to several OSC messages.
+When a file has been removed (or renamed), the <TT>fileWatcher</TT> stops monitoring it.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html496"
+  HREF="node29.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html490"
+  HREF="node27.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html484"
+  HREF="node27.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html492"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html494"
+  HREF="node44.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html497"
+  HREF="node29.html">12.2 Debug</A>
+<B> Up:</B> <A NAME="tex2html491"
+  HREF="node27.html">12. Virtual address space</A>
+<B> Previous:</B> <A NAME="tex2html485"
+  HREF="node27.html">12. Virtual address space</A>
+ &nbsp; <B>  <A NAME="tex2html493"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html495"
+  HREF="node44.html">Index</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
+</ADDRESS>
+</BODY>
+</HTML>

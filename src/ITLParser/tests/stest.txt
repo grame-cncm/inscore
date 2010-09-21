@@ -1,0 +1,29 @@
+/ITL/scene/a set txt "a quoted \"str\" test" 
+/ITL angle 0 
+/ITL color 0 0 0 255 
+/ITL rootPath "/Users/fober/src/Interlude/branches/proto2/max/" 
+/ITL scale 1 
+/ITL show 1 
+/ITL/scene/* angle 0.
+
+/ITL/scene/sync toto:system titi:truc
+/ITL/scene/signal/truc 0.5 0.4 0.3 1.00000e-10
+/ITL/scene/sync spot* "myGuidoFile:voice1"
+
+
+(*
+/ITL x 0 
+/ITL/scene/1[ac]o??ent* set txt toto1 
+//ITL/scene/comment set txt "Envoyez la synchro vers \"car*\" (patch 'time') !" 
+/ITL/scene/car1 set img "/Users/fober/src/Interlude/branches/proto2/max/imgs/car_blue.gif"
+/ITL/scene/car2 set img "/Users/fober/src/Interlude/branches/proto2/max/imgs/car_red.gif"
+/ITL/scene/myGuidoFile set gmnf "/Users/fober/src/Interlude/branches/proto2/max/guido/1voice-846_2f.gmn"
+/ITL/scene/* angle 0.
+/ITL/scene angle 0 
+*)
+(*
+/ITL/scene color 255 255 255 255 
+/ITL/scene date 0 1 
+/ITL/scene duration 0 4 
+/ITL/scene fullscreen 0 
+*)

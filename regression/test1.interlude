@@ -1,0 +1,13 @@
+% cleanup
+/ITL/scene/* del
+/ITL/scene/signal/* del
+
+/ITL/scene/myRect set "rect" 1.21172 1.19157 
+/ITL/scene/myRect color 170 239 240 180 
+
+/ITL/scene/rond set "ellipse" 0.5 0.5
+/ITL/scene/rond color 255 239 120 180 
+(*
+/ITL/scene/signal/s set 0. 0.3 0. 1. 1. 0.5
+/ITL/scene/myGraph set "graph" "s"
+*)

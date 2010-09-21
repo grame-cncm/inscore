@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2 (1.70)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>11.1 Specific score mappings</TITLE>
+<META NAME="description" CONTENT="11.1 Specific score mappings">
+<META NAME="keywords" CONTENT="OSCMsg">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="OSCMsg.css">
+
+<LINK REL="next" HREF="node25.html">
+<LINK REL="previous" HREF="node23.html">
+<LINK REL="up" HREF="node23.html">
+<LINK REL="next" HREF="node25.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html440"
+  HREF="node25.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html434"
+  HREF="node23.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html428"
+  HREF="node23.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html436"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html438"
+  HREF="node44.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html441"
+  HREF="node25.html">11.2 Score browsing and</A>
+<B> Up:</B> <A NAME="tex2html435"
+  HREF="node23.html">11. Score specific messages</A>
+<B> Previous:</B> <A NAME="tex2html429"
+  HREF="node23.html">11. Score specific messages</A>
+ &nbsp; <B>  <A NAME="tex2html437"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html439"
+  HREF="node44.html">Index</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION001210000000000000000"></A>
+<A NAME="guidomaps"></A>
+<BR>
+11.1 Specific score mappings
+</H1>
+
+<P>
+Music score mappings are automatically computed  by the system. However, since a score may support a large number of mappings (staff based, system based, voice based, etc.), music scores supports a specific <TT>map</TT> message to request the computation of a specific mapping. This message has the form:
+<BR>
+<IMG
+ WIDTH="325" HEIGHT="163" ALIGN="BOTTOM" BORDER="0"
+ SRC="img53.gif"
+ ALT="\begin{rail}
+scoreMapMsg : 'map' ('page' \vert 'system' \vert ('staff' 'staffNum') \vert 'voice' 'voiceNum' )
+\end{rail}">
+<BR>
+<A NAME="639"></A>
+<A NAME="640"></A>
+<A NAME="641"></A>
+<A NAME="642"></A>
+<A NAME="643"></A>
+
+<P>
+The Guido map name must be concatenated as a string (as a usual map name).
+
+<P>
+
+<UL>
+<LI><TT>page</TT>: a page level mapping ;
+</LI>
+<LI><TT>system</TT>: a system level mapping ;
+</LI>
+<LI><TT>staff</TT>: a staff level mapping ; the staff indicated by the next parameter (between 1 and the score staves count).
+</LI>
+<LI><TT>voice</TT>: a voice level mapping ; the voice indicated by the next parameter (between 1 and the score voices count).
+</LI>
+</UL>
+
+<P>
+The default synchronization mode for a Guido score is <TT>staff1</TT>.
+Note that a voice may be distributed on several staves and thus a staff may contain serveral voices.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html440"
+  HREF="node25.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html434"
+  HREF="node23.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html428"
+  HREF="node23.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html436"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html438"
+  HREF="node44.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html441"
+  HREF="node25.html">11.2 Score browsing and</A>
+<B> Up:</B> <A NAME="tex2html435"
+  HREF="node23.html">11. Score specific messages</A>
+<B> Previous:</B> <A NAME="tex2html429"
+  HREF="node23.html">11. Score specific messages</A>
+ &nbsp; <B>  <A NAME="tex2html437"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html439"
+  HREF="node44.html">Index</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
+</ADDRESS>
+</BODY>
+</HTML>

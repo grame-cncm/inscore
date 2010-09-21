@@ -1,0 +1,167 @@
+/ITL angle 0 
+/ITL color 0 0 0 255 
+/ITL date 0 1 
+/ITL defaultShow 1 
+/ITL duration 0 4 
+/ITL errport 7002 
+/ITL outport 7001 
+/ITL port 7000 
+/ITL rootPath /Users/fober/src/Interlude/branches/proto2/max/ 
+/ITL scale 1 
+/ITL show 1 
+/ITL x 0 
+/ITL y 0 
+/ITL z 0 
+/ITL/debug angle 0 
+/ITL/debug color 0 0 0 255 
+/ITL/debug date 0 1 
+/ITL/debug duration 0 4 
+/ITL/debug osc 0 
+/ITL/debug scale 1 
+/ITL/debug show 1 
+/ITL/debug x 0 
+/ITL/debug y 0 
+/ITL/debug z 0 
+/ITL/scene/comment set txt "Envoyez la synchro vers 'car*' (patch 'time') !" 
+/ITL/scene/car1 set img /Users/fober/src/Interlude/branches/proto2/max/imgs/car_blue.gif 
+/ITL/scene/car2 set img /Users/fober/src/Interlude/branches/proto2/max/imgs/car_red.gif 
+/ITL/scene/myGuidoFile set gmnf /Users/fober/src/Interlude/branches/proto2/max/guido/1voice-846_2f.gmn 
+/ITL/scene angle 0 
+/ITL/scene color 255 255 255 255 
+/ITL/scene date 0 1 
+/ITL/scene duration 0 4 
+/ITL/scene fullscreen 0 
+/ITL/scene height 1 
+/ITL/scene penColor 0 0 0 255 
+/ITL/scene penWidth 0 
+/ITL/scene scale 1 
+/ITL/scene show 1 
+/ITL/scene width 1 
+/ITL/scene x 0 
+/ITL/scene y 0 
+/ITL/scene z 0 
+/ITL/scene/comment angle 0 
+/ITL/scene/comment color 0 0 255 255 
+/ITL/scene/comment date 0 1 
+/ITL/scene/comment duration 0 4 
+/ITL/scene/comment scale 1.5 
+/ITL/scene/comment show 1 
+/ITL/scene/comment x 0 
+/ITL/scene/comment y -0.9 
+/ITL/scene/comment z 0 
+/ITL/scene/comment/debug angle 0 
+/ITL/scene/comment/debug color 0 0 0 255 
+/ITL/scene/comment/debug date 0 1 
+/ITL/scene/comment/debug duration 0 4 
+/ITL/scene/comment/debug map 0 
+/ITL/scene/comment/debug name 0 
+/ITL/scene/comment/debug scale 1 
+/ITL/scene/comment/debug show 1 
+/ITL/scene/comment/debug x 0 
+/ITL/scene/comment/debug y 0 
+/ITL/scene/comment/debug z 0 
+/ITL/scene/fileWatcher angle 0 
+/ITL/scene/fileWatcher color 0 0 0 255 
+/ITL/scene/fileWatcher date 0 1 
+/ITL/scene/fileWatcher duration 0 4 
+/ITL/scene/fileWatcher scale 1 
+/ITL/scene/fileWatcher show 1 
+/ITL/scene/fileWatcher x 0 
+/ITL/scene/fileWatcher y 0 
+/ITL/scene/fileWatcher z 0 
+/ITL/scene/signal angle 0 
+/ITL/scene/signal color 0 0 0 255 
+/ITL/scene/signal date 0 1 
+/ITL/scene/signal debug 0 
+/ITL/scene/signal duration 0 4 
+/ITL/scene/signal scale 1 
+/ITL/scene/signal show 1 
+/ITL/scene/signal x 0 
+/ITL/scene/signal y 0 
+/ITL/scene/signal z 0 
+/ITL/scene/signal/debug angle 0 
+/ITL/scene/signal/debug color 0 0 0 255 
+/ITL/scene/signal/debug date 0 1 
+/ITL/scene/signal/debug duration 0 4 
+/ITL/scene/signal/debug map 0 
+/ITL/scene/signal/debug name 0 
+/ITL/scene/signal/debug scale 1 
+/ITL/scene/signal/debug show 1 
+/ITL/scene/signal/debug x 0 
+/ITL/scene/signal/debug y 0 
+/ITL/scene/signal/debug z 0 
+/ITL/scene/sync angle 0 
+/ITL/scene/sync color 0 0 0 255 
+/ITL/scene/sync date 0 1 
+/ITL/scene/sync duration 0 4 
+/ITL/scene/sync scale 1 
+/ITL/scene/sync show 1 
+/ITL/scene/sync x 0 
+/ITL/scene/sync y 0 
+/ITL/scene/sync z 0 
+/ITL/scene/sync car1 myGuidoFile 
+/ITL/scene/sync car2 myGuidoFile 
+/ITL/scene/car1 angle 0 
+/ITL/scene/car1 color 0 0 0 255 
+/ITL/scene/car1 date -2 4 
+/ITL/scene/car1 duration 1 4 
+/ITL/scene/car1 scale 1.4 
+/ITL/scene/car1 show 1 
+/ITL/scene/car1 x 0 
+/ITL/scene/car1 y 0 
+/ITL/scene/car1 z 2 
+/ITL/scene/car1/debug angle 0 
+/ITL/scene/car1/debug color 0 0 0 255 
+/ITL/scene/car1/debug date 0 1 
+/ITL/scene/car1/debug duration 0 4 
+/ITL/scene/car1/debug map 0 
+/ITL/scene/car1/debug name 0 
+/ITL/scene/car1/debug scale 1 
+/ITL/scene/car1/debug show 1 
+/ITL/scene/car1/debug x 0 
+/ITL/scene/car1/debug y 0 
+/ITL/scene/car1/debug z 0 
+/ITL/scene/car2 angle 4 
+/ITL/scene/car2 color 0 0 0 255 
+/ITL/scene/car2 date 0 4 
+/ITL/scene/car2 duration 1 4 
+/ITL/scene/car2 scale 1.4 
+/ITL/scene/car2 show 1 
+/ITL/scene/car2 x -0.238998 
+/ITL/scene/car2 y -0.669697 
+/ITL/scene/car2 z 2 
+/ITL/scene/car2/debug angle 0 
+/ITL/scene/car2/debug color 0 0 0 255 
+/ITL/scene/car2/debug date 0 1 
+/ITL/scene/car2/debug duration 0 4 
+/ITL/scene/car2/debug map 0 
+/ITL/scene/car2/debug name 0 
+/ITL/scene/car2/debug scale 1 
+/ITL/scene/car2/debug show 1 
+/ITL/scene/car2/debug x 0 
+/ITL/scene/car2/debug y 0 
+/ITL/scene/car2/debug z 0 
+/ITL/scene/myGuidoFile angle 4 
+/ITL/scene/myGuidoFile color 0 0 0 255 
+/ITL/scene/myGuidoFile columns 2 
+/ITL/scene/myGuidoFile date 0 1 
+/ITL/scene/myGuidoFile duration 0 4 
+/ITL/scene/myGuidoFile page 1 
+/ITL/scene/myGuidoFile pageFormat 21 29.7 
+/ITL/scene/myGuidoFile rows 1 
+/ITL/scene/myGuidoFile scale 2.5 
+/ITL/scene/myGuidoFile show 1 
+/ITL/scene/myGuidoFile x 0 
+/ITL/scene/myGuidoFile y 0.1 
+/ITL/scene/myGuidoFile z 0 
+/ITL/scene/myGuidoFile/debug angle 0 
+/ITL/scene/myGuidoFile/debug color 0 0 0 255 
+/ITL/scene/myGuidoFile/debug date 0 1 
+/ITL/scene/myGuidoFile/debug duration 0 4 
+/ITL/scene/myGuidoFile/debug map 0 
+/ITL/scene/myGuidoFile/debug name 0 
+/ITL/scene/myGuidoFile/debug scale 1 
+/ITL/scene/myGuidoFile/debug show 1 
+/ITL/scene/myGuidoFile/debug x 0 
+/ITL/scene/myGuidoFile/debug y 0 
+/ITL/scene/myGuidoFile/debug z 0 

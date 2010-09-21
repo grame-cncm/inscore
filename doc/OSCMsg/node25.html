@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2 (1.70)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>11.2 Score browsing and layout</TITLE>
+<META NAME="description" CONTENT="11.2 Score browsing and layout">
+<META NAME="keywords" CONTENT="OSCMsg">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="OSCMsg.css">
+
+<LINK REL="next" HREF="node26.html">
+<LINK REL="previous" HREF="node24.html">
+<LINK REL="up" HREF="node23.html">
+<LINK REL="next" HREF="node26.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html454"
+  HREF="node26.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html448"
+  HREF="node23.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html442"
+  HREF="node24.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html450"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html452"
+  HREF="node44.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html455"
+  HREF="node26.html">11.3 Score queries</A>
+<B> Up:</B> <A NAME="tex2html449"
+  HREF="node23.html">11. Score specific messages</A>
+<B> Previous:</B> <A NAME="tex2html443"
+  HREF="node24.html">11.1 Specific score mappings</A>
+ &nbsp; <B>  <A NAME="tex2html451"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html453"
+  HREF="node44.html">Index</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION001220000000000000000"></A>
+<A NAME="guidolayout"></A>
+<BR>
+11.2 Score browsing and layout
+</H1>
+
+<P>
+<BR>
+<IMG
+ WIDTH="396" HEIGHT="163" ALIGN="BOTTOM" BORDER="0"
+ SRC="img54.gif"
+ ALT="\begin{rail}
+scoreMsg : 'page' int32
+\vert 'pageFormat' float32 float32
+\vert 'columns' int32
+\vert 'rows' int32
+\end{rail}">
+<BR>
+
+<P>
+
+<UL>
+<LI><TT>page</TT>: sets the first displayed page. Index starts at <TT>1</TT>. Default: <TT>1</TT>.
+
+<P>
+</LI>
+<LI><TT>pageFormat</TT>: sets the score's page format, in cm (Warning: the <TT>pageFormat</TT> is not used when another page format is 'hard-coded' in the score's Guido code). Default: <TT>(21.0 , 29.7)</TT>.
+
+<P>
+</LI>
+<LI><TT>columns</TT>: as multiples pages can be displayed and organized in a <I>grid of pages</I>, <TT>columns</TT> sets the number of columns in the grid. Default: <TT>2</TT>.
+
+<P>
+</LI>
+<LI><TT>rows</TT>: as multiples pages can be displayed and organized in a <I>grid of pages</I>, <TT>rows</TT> sets the number of rows in the grid. Default: <TT>1</TT>.
+</LI>
+</UL>
+
+<P>
+<BR><HR>
+<ADDRESS>
+<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
+</ADDRESS>
+</BODY>
+</HTML>

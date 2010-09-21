@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+
+LIB=GUIDOEngine.framework/Versions/B/GUIDOEngine
+LOCAL=$(pwd)
+CURR=$(otool -L $LIB | grep GUIDOEngine | grep compatibility | cut -d ' ' -f 1 | sed 's/^[ 	]*//')
+NEW=$LOCAL/$LIB
+
+echo changing path:
+echo "   $CURR"
+echo to
+
+install_name_tool -id $NEW $LIB
+install_name_tool -change $CURR $NEW $LIB
+
+NEW=$(otool -L $LIB | grep GUIDOEngine | grep compatibility | cut -d ' ' -f 1 | sed 's/^[ 	]*//')
+echo "   $NEW"
+
+exit 0

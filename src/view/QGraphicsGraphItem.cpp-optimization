@@ -1,0 +1,783 @@
+#define OLD_VERSION
+
+#ifdef OLD_VERSION
+
+/*
+
+  Interlude Prototype
+  Copyright (C) 2009  Grame
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  research@grame.fr
+
+*/
+
+#include "QGraphicsGraphItem.h"
+
+//#define DIRECT_DRAW
+#ifdef DIRECT_DRAW
+	#define GRAPHICS_GRAPH_ITEM_SIZE QRect(0,0,CACHE_WIDTH,CACHE_HEIGHT)
+#else
+	#define GRAPHICS_GRAPH_ITEM_SIZE QRect(0,0,200,100)
+#endif
+
+#include <QPainter>
+#include <QPixmap>
+#include <QtDebug>
+#include <QPair>
+
+//#define CACHE_HEIGHT	(500.0f)
+//#define BAND_WIDTH		(10.0f)
+
+#define MAX(a,b)		( (a)>(b) ? (a) : (b) )
+#define MIN(a,b)		( (a)<(b) ? (a) : (b) )
+
+namespace interlude
+{
+#define CURVE_LINE 0
+#define STEP_LINE 1
+
+//--------------------------------------------------------------------------
+QGraphicsGraphItem::QGraphicsGraphItem(QGraphicsItem * parent) :
+	QGraphicsRectItem(GRAPHICS_GRAPH_ITEM_SIZE , parent),
+	mMin(-1) , mMax(1),
+	fNewData(-1),fBufferSize(0),fCache(0),
+	fLineStyle( CURVE_LINE ), 
+	fThicknessMode( THICKNESS_CENTERED ),
+	fDefaultFrame(std::vector<float>())
+{}
+
+//--------------------------------------------------------------------------
+QGraphicsGraphItem::~QGraphicsGraphItem()
+{
+	if ( fCache )
+		delete fCache;
+}
+
+//--------------------------------------------------------------------------
+float QGraphicsGraphItem::getY( float value , float yMin , float yMax ) const
+{
+	float yRatio = ( value - mMin ) / (mMax - mMin);
+	return yMin + yRatio * (yMax - yMin);
+}
+
+//--------------------------------------------------------------------------
+float QGraphicsGraphItem::getX(int index) const
+{
+	float xRatio = float( index ) / float( fBufferSize-1 );
+	return xRatio * cacheWidth();
+}
+
+//--------------------------------------------------------------------------
+int QGraphicsGraphItem::computeCacheHeight() const
+{
+	return sceneBoundingRect().height();
+//	return rect().height();
+}
+
+//-------------------------------------------------------------------------
+int QGraphicsGraphItem::computeCacheWidth() const
+{
+	return computeBandWidth() * (fBufferSize-1);
+}
+
+//--------------------------------------------------------------------------
+int QGraphicsGraphItem::computeBandWidth() const
+{
+//	int bw = rect().width() / float(fBufferSize-1) + 0.5f );
+	int bw = ( sceneBoundingRect().width() / float(fBufferSize-1) + 0.5f );
+	return qMax(bw,1);
+}
+
+//--------------------------------------------------------------------------
+QPointF QGraphicsGraphItem::getPoint( float value , int index , float yMin , float yMax ) const
+{
+	return QPointF( getX(index) , getY(value , yMin , yMax) );
+}
+
+//--------------------------------------------------------------------------
+QPointF QGraphicsGraphItem::getPoint( float value , int index ) const
+{
+	return getPoint( value , index , computeCacheHeight() , 0 );
+}
+
+//--------------------------------------------------------------------------
+void QGraphicsGraphItem::setPath( QPainterPath& path , int style , const QList<QPointF>& points , int index ) const
+{
+	switch ( style )
+	{
+		case STEP_LINE:
+		{
+			QPointF current = path.currentPosition();
+			path.lineTo( ( points[index].x() + current.x() )/2.0f , current.y() );
+			path.lineTo( ( points[index].x() + current.x() )/2.0f , points[index].y() );
+			path.lineTo( points[index] );
+			break;
+		}
+		case CURVE_LINE:
+		default:
+			path.lineTo( points[index] );
+	}
+}
+
+#define TO_0_1(a) ((a/2.0f)+0.5f)
+//--------------------------------------------------------------------------
+QColor buildColor( float h , float s , float b , float a )
+{
+	if ( h<0 ) h+=2;
+	return QColor::fromHsvF( h/2.0f , TO_0_1(s) , TO_0_1(b) , TO_0_1(a) );
+}
+
+//--------------------------------------------------------------------------
+void QGraphicsGraphItem::setSize( int bufferSize )
+{
+	if ( bufferSize != fBufferSize )
+	{
+		fBufferSize = bufferSize;
+		while ( fFrames.size() > (unsigned int)(fBufferSize) )
+			fFrames.erase( fFrames.begin() );
+
+		update();
+	}
+}
+
+//--------------------------------------------------------------------------
+void QGraphicsGraphItem::paint( QPainter * painter , int startIndex , int endIndex )
+{
+	if ( !fFrames.size() )				// No frames => no drawing
+		return;
+		
+	while ( fFrames.size() > (unsigned int)(fBufferSize) )
+		fFrames.erase( fFrames.begin() );
+
+		
+//	if ( fFrames.size() == 1 )			// If 1 frame only, draw it twice : drawing goes from 1 value to another,
+										// so we need at least 2 values.
+//		fFrames.push_back( fFrames[0] );
+
+	for ( unsigned int parallelIndex = 0 ; parallelIndex < fFrames[0].size() ; parallelIndex++ )
+	{
+		int indexDelta = fFrames.size() - fBufferSize;
+
+		QPair< QList<QPointF> , QList<QPointF> > points;
+
+		int i;
+	//	for ( i = ( startIndex+indexDelta < 0 ) ? -indexDelta : startIndex ; i <= endIndex ; i++ )
+		startIndex = ( startIndex+indexDelta < 0 ) ? -indexDelta : startIndex;
+		
+		// If const pos & thickness
+		if ( fConstSignals[parallelIndex][0] &&	fConstSignals[parallelIndex][1] )
+		{
+			GraphicFrame frame(fFrames[startIndex+indexDelta][parallelIndex]);
+			// Start of the line
+			points.first << getPoint( fBottomLineComputeFunction( frame ) , startIndex );
+			points.second << getPoint( fTopLineComputeFunction( frame ) , startIndex );
+
+			// End of the line
+			points.first << getPoint( fBottomLineComputeFunction( frame ) , endIndex );
+			points.second << getPoint( fTopLineComputeFunction( frame ) , endIndex );
+		}
+		else
+		{
+			for ( i = startIndex ; i <= endIndex ; i++ )
+			{
+				GraphicFrame frame(fFrames[i+indexDelta][parallelIndex]);
+				points.first << getPoint( fBottomLineComputeFunction( frame ) , i );
+				points.second << getPoint( fTopLineComputeFunction( frame ) , i );
+			}
+		}
+
+		// A. Build the curve-path.
+		QPainterPath path, topLine, bottomLine;
+
+		path.moveTo( points.first.first().x() , points.first.first().y() );
+		topLine.moveTo( points.second.first().x() , points.second.first().y() );
+		bottomLine.moveTo( points.first.last().x() , points.first.last().y() );
+
+		// A. 1. Draw the top line
+		for ( i = 0 ; i < points.second.size() ; i++ )
+		{
+			setPath( topLine , fLineStyle , points.second , i );
+			setPath( path , fLineStyle , points.second , i );
+		}
+
+		// A. 2. Draw the bottom line
+		for ( i = points.first.size() - 1 ; i >= 0 ; i-- )
+		{
+			setPath( bottomLine , fLineStyle , points.first , i );
+			setPath( path , fLineStyle , points.first , i );
+		}
+		
+		// A. 3. Compose the full path.
+
+//		path.connectPath( topLine );
+//		path.connectPath( bottomLine );
+		
+		// B.
+
+		if (	fConstSignals[parallelIndex][2] 
+			&&	fConstSignals[parallelIndex][3]
+			&&	fConstSignals[parallelIndex][4]
+			&&	fConstSignals[parallelIndex][5]
+			)
+		{
+			GraphicFrame frame(fFrames[startIndex+indexDelta][parallelIndex]);
+			QColor color = buildColor(frame.getHue(), frame.getSaturation(), frame.getBrightness(), frame.getTransparency());
+			painter->setBrush( QBrush( color ) );
+			painter->setClipPath( path );
+			painter->drawRect( QRect( 0 , 0 , computeCacheWidth() , computeCacheHeight() ) );
+			painter->setClipPath( path , Qt::NoClip );
+
+			if ( pen() != Qt::NoPen )
+			{
+				QPen graphPen( pen() );
+				graphPen.setColor( color );
+				painter->setPen( graphPen );
+				painter->setBrush( QBrush( Qt::NoBrush ) );
+				painter->drawPath( bottomLine );
+
+				if ( !fConstSignals[parallelIndex][1] || frame.getThickness() )
+					painter->drawPath( topLine );
+			}
+		}
+		else
+		{
+			painter->setClipPath( path );
+			
+			float w = computeBandWidth();
+			float currentX = ( startIndex - 0.5 )* w;
+			for ( i = startIndex ; i <= endIndex ; i++ )
+			{
+				GraphicFrame frame(fFrames[i+indexDelta][parallelIndex]);
+				QColor bandColor = buildColor(frame.getHue(), frame.getSaturation(), frame.getBrightness(), frame.getTransparency());
+	//			bandColor = Qt::green;
+				painter->setBrush( QBrush( bandColor ) );
+				painter->drawRect( currentX , 0 , w , computeCacheHeight() );
+				currentX += w;
+			}
+			painter->setClipPath( path , Qt::NoClip );
+		}
+		
+
+//		painter->setBrush( QBrush( Qt::yellow ) );
+//		painter->setPen( QPen(Qt::red) );
+//		painter->drawPath( path );
+	}
+}
+
+//--------------------------------------------------------------------------
+void QGraphicsGraphItem::clear()
+{
+	fFrames.clear();
+}
+
+//--------------------------------------------------------------------------
+void QGraphicsGraphItem::notifyConst( int signal , int dimension , bool isConst )
+{
+	while ( (unsigned int)(signal) >= fConstSignals.size() )
+		fConstSignals.push_back( std::vector<bool>() );
+	while ( (unsigned int)(dimension) >= fConstSignals[signal].size() )
+		fConstSignals[signal].push_back( false );
+	
+	fConstSignals[signal][dimension] = isConst;
+}
+
+//--------------------------------------------------------------------------
+QGraphicsGraphItem& QGraphicsGraphItem::operator << (const GraphicFrames& frame)
+{ 
+	fFrames.push_back(frame);
+
+	update();
+	return *this; 
+}
+
+//--------------------------------------------------------------------------
+void QGraphicsGraphItem::setThicknessMode(const ThicknessMode& thicknessMode)
+{ 
+	fThicknessMode = thicknessMode;
+	
+	switch ( fThicknessMode )
+	{
+		case THICKNESS_CENTERED :
+		{
+			fBottomLineComputeFunction = YMinusHalfT;
+			fTopLineComputeFunction = YPlusHalfT;
+			break;
+		}
+		case THICKNESS_UP :
+		{
+			fBottomLineComputeFunction = Y;
+			fTopLineComputeFunction = YPlusT;
+			break;
+		}
+		case THICKNESS_DOWN :
+		{
+			fBottomLineComputeFunction = Y;
+			fTopLineComputeFunction = YMinusT;
+			break;
+		}
+		default:
+			break;
+	}
+	
+	update(); 
+}
+
+//--------------------------------------------------------------------------
+void QGraphicsGraphItem::paint( QPainter * painter, const QStyleOptionGraphicsItem *, QWidget * )
+{
+	// Update all
+	if ( fCache )
+		delete fCache;
+	fCache = new QPixmap( computeCacheWidth() , computeCacheHeight() );
+	fCache->fill( QColor(255,255,255,0) );
+	QPainter pixmapPainter(fCache);
+	paint( &pixmapPainter , 0 , fBufferSize-1 );
+	
+	painter->setRenderHints( QPainter::Antialiasing | QPainter::SmoothPixmapTransform );
+	painter->drawPixmap( rect() , *fCache , QRect( 0 , 0 , fCache->width() , fCache->height() ) );
+}
+
+void QGraphicsGraphItem::paintConst( QPainter * painter , const GraphicFrames& constFrames , int startIndex , int endIndex ) const {}
+void QGraphicsGraphItem::updateCacheSize() {}
+QVariant QGraphicsGraphItem::itemChange ( GraphicsItemChange change, const QVariant & value ) { return QGraphicsItem::itemChange(change,value); }
+
+
+} // end namespoace
+
+#else
+
+/*
+
+  Interlude Prototype
+  Copyright (C) 2009  Grame
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  research@grame.fr
+
+*/
+
+#include "QGraphicsGraphItem.h"
+
+#define GRAPHICS_GRAPH_ITEM_SIZE QRect(0,0,200,100)
+
+#include <QPainter>
+#include <QPixmap>
+#include <QtDebug>
+#include <QPair>
+
+#define MAX(a,b)		( (a)>(b) ? (a) : (b) )
+#define MIN(a,b)		( (a)<(b) ? (a) : (b) )
+
+namespace interlude
+{
+#define CURVE_LINE 0
+#define STEP_LINE 1
+
+//--------------------------------------------------------------------------
+QGraphicsGraphItem::QGraphicsGraphItem(QGraphicsItem * parent) :
+	QGraphicsRectItem(GRAPHICS_GRAPH_ITEM_SIZE , parent),
+	mMin(-1) , mMax(1),
+	fNewData(0),fBufferSize(0),fCache(0),
+	fLineStyle( CURVE_LINE ), fDefaultFrame(std::vector<float>())
+{
+	updateCacheSize();
+}
+
+//--------------------------------------------------------------------------
+QGraphicsGraphItem::~QGraphicsGraphItem()
+{
+	if ( fCache )
+		delete fCache;
+}
+
+//--------------------------------------------------------------------------
+float QGraphicsGraphItem::getY( float value , float yMin , float yMax ) const
+{
+	float yRatio = ( value - mMin ) / (mMax - mMin);
+	return yMin + yRatio * (yMax - yMin);
+}
+
+//--------------------------------------------------------------------------
+float QGraphicsGraphItem::getX(int index) const
+{
+	float xRatio = float( index ) / float( fBufferSize-1 );
+	return xRatio * cacheWidth();
+}
+
+//--------------------------------------------------------------------------
+int QGraphicsGraphItem::computeCacheHeight() const
+{
+	return sceneBoundingRect().height();
+}
+
+//-------------------------------------------------------------------------
+int QGraphicsGraphItem::computeCacheWidth() const
+{
+	return bandWidth() * (fBufferSize-1);
+}
+
+//--------------------------------------------------------------------------
+void QGraphicsGraphItem::updateCacheSize()
+{
+	int width = computeCacheWidth();
+	int height = computeCacheHeight();
+	int bWidth = computeBandWidth();
+
+	if (		( width  != fCacheWidth )
+			||	( height != fCacheHeight )
+			||	( bWidth != fBandWidth )
+			)
+	{
+		fCacheWidth = width;
+		fCacheHeight = height;
+		fBandWidth = bWidth;
+
+		QPixmap * newCache = new QPixmap( cacheWidth() , cacheHeight() );
+		newCache->fill( QColor(255,255,255,0) );
+
+		if ( fCache )
+		{
+			QPainter p( newCache );
+			p.drawPixmap( QRectF(0,0,cacheWidth(),cacheHeight()) , *fCache , QRectF(0,0,fCache->width(),fCache->height()) );
+			p.end();
+	
+			delete fCache;
+		}
+
+		fCache = newCache;
+	}
+}
+
+//--------------------------------------------------------------------------
+int QGraphicsGraphItem::computeBandWidth() const
+{
+	int bw = ( sceneBoundingRect().width() / float(fBufferSize-1) + 0.5f );
+	return qMax(bw,1);
+}
+
+//--------------------------------------------------------------------------
+QPointF QGraphicsGraphItem::getPoint( float value , int index , float yMin , float yMax ) const
+{
+	return QPointF( getX(index) , getY(value , yMin , yMax) );
+}
+
+//--------------------------------------------------------------------------
+QPointF QGraphicsGraphItem::getPoint( float value , int index ) const
+{
+	return getPoint( value , index , cacheHeight() , 0 );
+}
+
+//--------------------------------------------------------------------------
+void QGraphicsGraphItem::setPath( QPainterPath& path , int style , const QList<QPointF>& points , int index ) const
+{
+	switch ( style )
+	{
+		case STEP_LINE:
+		{
+			QPointF current = path.currentPosition();
+			path.lineTo( ( points[index].x() + current.x() )/2.0f , current.y() );
+			path.lineTo( ( points[index].x() + current.x() )/2.0f , points[index].y() );
+			path.lineTo( points[index] );
+			break;
+		}
+		case CURVE_LINE:
+		default:
+			path.lineTo( points[index] );
+	}
+}
+
+#define TO_0_1(a) ((a/2.0f)+0.5f)
+//--------------------------------------------------------------------------
+QColor buildColor( float h , float s , float b , float a )
+{
+	if ( h<0 ) h+=2;
+	return QColor::fromHsvF( h/2.0f , TO_0_1(s) , TO_0_1(b) , TO_0_1(a) );
+}
+
+//--------------------------------------------------------------------------
+void QGraphicsGraphItem::setSize( int bufferSize )
+{
+	if ( bufferSize < 0 )
+		return;
+
+	if ( bufferSize != fBufferSize )
+	{
+		fBufferSize = bufferSize;
+		while ( fFrames.size() > (unsigned int)(fBufferSize) )
+			fFrames.erase( fFrames.begin() );
+
+		update();
+		clearCache();
+	}
+}
+
+
+//--------------------------------------------------------------------------
+QVariant QGraphicsGraphItem::itemChange ( GraphicsItemChange change, const QVariant & value )
+{
+	if ( change == QGraphicsItem::ItemTransformChange )
+	{
+		clearCache();
+		updateCacheSize();
+	}
+	return QGraphicsItem::itemChange(change , value);
+}
+
+//--------------------------------------------------------------------------
+void QGraphicsGraphItem::clearCache()
+{
+	fNewData = fBufferSize;
+}
+
+//--------------------------------------------------------------------------
+void QGraphicsGraphItem::paintConst( QPainter * painter , const GraphicFrames& constFrames , int startIndex , int endIndex ) const
+{
+	if ( startIndex >= endIndex )
+		return;
+
+	painter->save();
+	painter->setPen( Qt::NoPen );
+	for ( unsigned int parallelIndex = 0 ; parallelIndex < constFrames.size() ; parallelIndex++ )
+	{
+		GraphicFrame constFrame = constFrames[parallelIndex];
+	
+		QRectF graphRect;
+		graphRect.setTopLeft( getPoint( constFrame.getPos() + constFrame.getThickness() , startIndex ) );
+		graphRect.setBottomRight( getPoint( constFrame.getPos() , endIndex ) );
+		QColor color = buildColor(constFrame.getHue(), constFrame.getSaturation(), constFrame.getBrightness(), constFrame.getTransparency());
+		painter->setBrush( QBrush( color ) );
+		
+		painter->drawRect( graphRect );
+	}
+	painter->restore();
+}
+
+//--------------------------------------------------------------------------
+void QGraphicsGraphItem::paint( QPainter * painter , int startIndex , int endIndex )
+{
+	if ( !fFrames.size() )
+		return;
+ 
+	if (startIndex<0) startIndex = 0;
+ 
+	painter->save();
+ 
+	for ( unsigned int parallelIndex = 0 ; parallelIndex < fFrames[0].size() ; parallelIndex++ )
+	{
+		QPair< QList<QPointF> , QList<QPointF> > points;
+
+		int i;
+		
+		// If const pos & thickness
+		if ( fConstSignals[parallelIndex][0] &&	fConstSignals[parallelIndex][1] )
+		{
+			GraphicFrame frame(fFrames[startIndex][parallelIndex]);
+			// Start of the line
+			points.first << getPoint( frame.getPos() , startIndex );
+			points.second << getPoint( frame.getPos() + frame.getThickness() , startIndex );
+
+			// End of the line
+			points.first << getPoint( frame.getPos() , endIndex );
+			points.second << getPoint( frame.getPos() + frame.getThickness() , endIndex );
+		}
+		else
+		{
+			for ( i = startIndex ; i <= endIndex ; i++ )
+			{
+				GraphicFrame frame(fFrames[i][parallelIndex]);
+				points.first << getPoint( frame.getPos() , i );
+				points.second << getPoint( frame.getPos() + frame.getThickness() , i );
+			}
+		}
+
+		// A. Build the curve-path.
+		QPainterPath path;
+
+		path.moveTo( points.first.first().x() , points.first.first().y() );
+
+		// A. 1. Draw the top line
+		for ( i = 0 ; i < points.second.size() ; i++ )
+		{
+			setPath( path , fLineStyle , points.second , i );
+		}
+
+		// A. 2. Draw the bottom line
+		for ( i = points.first.size() - 1 ; i >= 0 ; i-- )
+		{
+			setPath( path , fLineStyle , points.first , i );
+		}
+		
+		// B.
+		painter->setClipPath( path );
+		painter->setPen( Qt::NoPen );
+		
+
+		if (	fConstSignals[parallelIndex][2] 
+			&&	fConstSignals[parallelIndex][3]
+			&&	fConstSignals[parallelIndex][4]
+			&&	fConstSignals[parallelIndex][5]
+			)
+		{
+			GraphicFrame frame(fFrames[startIndex][parallelIndex]);
+			QColor color = buildColor(frame.getHue(), frame.getSaturation(), frame.getBrightness(), frame.getTransparency());
+			painter->setBrush( QBrush( color ) );
+			painter->drawRect( QRect( 0 , 0 , cacheWidth() , cacheHeight() ) );
+		}
+		else
+		{
+			float w = bandWidth();
+			float currentX = ( startIndex - 0.5 )* w;
+			for ( i = startIndex ; i <= endIndex ; i++ )
+			{
+				GraphicFrame frame(fFrames[i][parallelIndex]);
+				QColor bandColor = buildColor(frame.getHue(), frame.getSaturation(), frame.getBrightness(), frame.getTransparency());
+				painter->setBrush( QBrush( bandColor ) );
+				painter->drawRect( currentX , 0 , w , cacheHeight() );
+				currentX += w;
+			}
+		}
+		painter->setClipPath( path , Qt::NoClip );
+
+	}
+	
+	painter->restore();
+}
+
+//--------------------------------------------------------------------------
+void QGraphicsGraphItem::clear()
+{
+	fFrames.clear();
+}
+
+//--------------------------------------------------------------------------
+void QGraphicsGraphItem::notifyConst( int signal , int dimension , bool isConst )
+{
+	while ( (unsigned int)(signal) >= fConstSignals.size() )
+		fConstSignals.push_back( std::vector<bool>() );
+	while ( (unsigned int)(dimension) >= fConstSignals[signal].size() )
+		fConstSignals[signal].push_back( false );
+	
+	fConstSignals[signal][dimension] = isConst;
+}
+
+//--------------------------------------------------------------------------
+QGraphicsGraphItem& QGraphicsGraphItem::operator << (const GraphicFrames& frame)
+{ 
+	fFrames.push_back(frame);
+
+	fNewData++;
+		
+	update();
+	
+	return *this; 
+}
+
+//--------------------------------------------------------------------------
+void QGraphicsGraphItem::paint( QPainter * painter, const QStyleOptionGraphicsItem *, QWidget * )
+{
+	if ( !fBufferSize )
+		return;
+
+	fNewData = MIN( fNewData , fBufferSize );
+
+	// Control the number of frames.
+	bool alreadyFilled = false;
+	while ( fFrames.size() > (unsigned int)(fBufferSize) )
+	{
+		fFrames.erase( fFrames.begin() );
+		alreadyFilled = true;
+	}
+
+	QRectF cacheRect( 0 , 0 , cacheWidth() , cacheHeight() );
+	
+	// A. "Filling" phase: the buffer is not full yet.
+//	if ( ( fFrames.size() < fBufferSize ) && fNewData )
+	if ( !alreadyFilled )
+	{
+		// 1. Complete fCache with new data : from fFrames.size() - fNewData - 1 to fFrames.size() - 1			
+		QPixmap renderPixmap( cacheWidth() , cacheHeight() );
+		renderPixmap.fill( QColor(255,255,255,0) );
+
+//		qDebug() << "QGraphicsGraphItem::paint on a" << cacheWidth() << "x" << cacheHeight() 
+//				<< ": fFrames.size=" << fFrames.size() << "/ fBufferSize=" << fBufferSize <<";" 
+//				<< " : fNewData = " << fNewData;
+
+		QPainter pixmapPainter(fCache);
+		paint( &pixmapPainter , fFrames.size() - fNewData - 1 , fFrames.size() - 1 );
+		pixmapPainter.end();
+
+		// 2. Draw the current fCache to renderPixmap
+		QPainter cachedImagePainter( &renderPixmap );
+		cachedImagePainter.drawPixmap( cacheRect , *fCache , cacheRect );
+
+		// 3. Draw const signal from fFrames.size() to fBufferSize - 1 on the renderPixmap		
+		paintConst( &cachedImagePainter , fDefaultFrame , fFrames.size() , fBufferSize-1 );
+		cachedImagePainter.end();
+		
+		// 4. Draw the render pixmap on screen.
+		painter->setRenderHints( QPainter::Antialiasing | QPainter::SmoothPixmapTransform );
+		painter->drawPixmap( rect() , renderPixmap , cacheRect );
+	}
+	// B. Normal phase: the buffer is full, acts like a FIFO. (or a 'graphic ring-buffer')
+	else
+	{
+//		qDebug() << "QGraphicsGraphItem::paint: filled";
+
+		if ( fNewData )
+		{
+			QPixmap * newFrameCache = new QPixmap( cacheWidth() , cacheHeight() );
+			newFrameCache->fill( QColor(255,255,255,0) );
+			
+			// 1. Draw a translated version of fCache on newFrameCache
+			QPainter newCachePainter( newFrameCache );
+			newCachePainter.setRenderHints( QPainter::Antialiasing | QPainter::SmoothPixmapTransform );
+			newCachePainter.drawPixmap( cacheRect.translated( - fNewData * bandWidth() , 0 ) , *fCache , cacheRect );
+			
+			// 2. Draw the new data on the newFrameCache : from fFrames.size() - fNewData - 1 to fFrames.size() - 1
+			paint( &newCachePainter , fFrames.size() - fNewData - 1 , fFrames.size() - 1 );
+			newCachePainter.end();
+			
+			// 3. The newFrameCache now becomes the current cache.
+			delete fCache;
+			fCache = newFrameCache;
+		}
+		
+		// 4. Draw it on screen.
+		painter->setRenderHints( QPainter::Antialiasing | QPainter::SmoothPixmapTransform );
+		painter->drawPixmap( rect() , *fCache , cacheRect );
+	}
+	
+	fNewData = 0;
+}
+
+} // end namespoace
+#endif

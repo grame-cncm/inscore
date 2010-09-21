@@ -1,0 +1,117 @@
+====================================================
+Interlude (ANR-08-CORD-010)
+----------------------------------------------------
+GRAME - Centre national de creation musicale
+http://www.grame.fr
+research@grame.fr
+====================================================
+Copyright GRAME (c) 2009,2010
+
+----------------------------------------------------
+Version 0.6x
+- multiple application instances supported with dynamic udp port number allocation
+- command line option with --port portnumber option to set the receive udp port number at startup
+
+----------------------------------------------------
+Version 0.60 - July 7 2010
+- new xorigin and yorigin messages
+- new interaction messages set
+- alpha channel handled by images and video
+- bug correction in line creation corrected (false incorrect parameter returned)
+- bug correction in line 'get' message handling
+- memory leak correction (messages not deleted)
+
+known issues: 
+- incorrect graphic rendering when sync 'a to b' is changed to 'b to a' in the same update loop
+
+----------------------------------------------------
+Version 0.55 - May 27 2010
+- ITL parser corrected to support regexp in msg string (needed by messages addressed to sync)
+- format of mapping files and strings changed
+- sync messages extension to include map name
+- signal node: 'garbage' message removed, use regular 'del' message
+- new 'reset' message for the application (/ITL) and the scene (/ITL/scene)
+- new 'version' message for the application (/ITL)
+
+known issues: 
+- incorrect nested synchronization when master is horizontaly stretched,
+
+----------------------------------------------------
+Version 0.54 
+- new 'reset' message for signals
+- bug parsing messages without params corrected
+- slave segmentation used for synchronization
+- new H synchronization mode (preserves slave segmentation)
+- crash bug correction: incorrect messages list for missing ITL files
+
+----------------------------------------------------
+Version 0.53 - Feb. 16 2010
+- rational values catch null denominator (to prevents divide by zero exceptions)
+
+----------------------------------------------------
+Version 0.52 - Jan. 21 2010
+- ITL file format supports regular expressions in OSC addresses.
+- IP of a message sender is now used for the reply or for error reporting.
+- new reset message for signals
+- get msg ok with mappings
+- get 'width' and 'height' messages general support
+- bug correction: moving the window while sending msgs to /ITL/scene/debug works ok.
+- added 'penStyle' message to IShape objects.
+- bug correction: get pageCount for IGuidoScore ok
+- bug correction: crash when reseting the IGuidoCode ok
+- new color messages: red, green, blue, alpha, dcolor, dred, dgreen, dblue
+- color values for objects are bounded in [0,255]
+- new type: line
+- new type: video
+
+----------------------------------------------------
+Version 0.51 - Dec. 18 2009
+- bug in signal projection corrected (index 0 rejected)
+- bug in default value delivery corrected
+- new pageCount message for guido scores
+- debug nodes modified state propagated to parent node
+
+----------------------------------------------------
+Version 0.50 - Dec. 15 2009
+- bug with objects's bounding rect corrected
+- fileWatcher messages redesigned
+- click modes renamed and new 'center' mode for the click message
+- query mode send back with the reply both for click and select messages
+- durClock message: similar to clock message, but with duration
+- ddate and dduration messages: similar to dx,dy,etc... but with date & duration
+- text and Guido objects support Utf8 encoding only
+- MusicXML format supported
+- 'get' msg syntax change for the scene
+- new 'hello' msg supported by the appplication (/ITL address)
+- mappings can be identified by names
+- rect, ellipse, curve and polygon object support graphic to relative-time mapping
+- new synchronization modes for Guido scores: voice1, voice2, ... , staff1, staff2, ... , system, page
+- Guido mapping manages repeat bars.
+- signals and graphic signals support
+
+----------------------------------------------------
+Version 0.42 - Oct. 23 2009
+- bug with 'get' message for shape based objects corrected
+- useless dependency to phonon library removed
+
+----------------------------------------------------
+Version 0.41 - Oct. 23 2009
+- bug with 'set' file based objects corrected (incorrect behavior when the path name doesn't change)
+
+----------------------------------------------------
+Version 0.40 - Oct. 21 2009
+- object synchronization with stretching
+- Guido mapping
+- new fileWatcher service
+- OSC warning and error feedback messages
+
+----------------------------------------------------
+Version 0.35 - Jul. 15 2009
+- new 'get' 'click' and 'select' messages
+- mapping supported for bitmaps
+- new 'curve' component for bezier curves support
+
+----------------------------------------------------
+Version 0.31 - Jul. 11 2009
+- mapping supported for textual elements
+- time management support

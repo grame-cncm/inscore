@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2 (1.70)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>4.1.3 Components origin</TITLE>
+<META NAME="description" CONTENT="4.1.3 Components origin">
+<META NAME="keywords" CONTENT="OSCMsg">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="OSCMsg.css">
+
+<LINK REL="previous" HREF="node9.html">
+<LINK REL="up" HREF="node7.html">
+<LINK REL="next" HREF="node11.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html245"
+  HREF="node11.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html239"
+  HREF="node7.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html235"
+  HREF="node9.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html241"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html243"
+  HREF="node44.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html246"
+  HREF="node11.html">4.2 Color messages</A>
+<B> Up:</B> <A NAME="tex2html240"
+  HREF="node7.html">4.1 Positioning</A>
+<B> Previous:</B> <A NAME="tex2html236"
+  HREF="node9.html">4.1.2 Relative positioning</A>
+ &nbsp; <B>  <A NAME="tex2html242"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html244"
+  HREF="node44.html">Index</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00513000000000000000"></A>
+<A NAME="origin"></A>
+<BR>
+4.1.3 Components origin
+</H2>
+
+<P>
+The origin of a component is the point <IMG
+ WIDTH="50" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.gif"
+ ALT="$(x_o, y_o)$"> such that the <IMG
+ WIDTH="37" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.gif"
+ ALT="$(x, y)$"> coordinates and the <IMG
+ WIDTH="50" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.gif"
+ ALT="$(x_o, y_o)$"> point coincide graphically. For example, when the origin is the top left corner, the component top left corner is drawn  at the <IMG
+ WIDTH="37" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.gif"
+ ALT="$(x, y)$"> coordinates.
+
+<P>
+<BR>
+<IMG
+ WIDTH="291" HEIGHT="163" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="\begin{rail}
+originMsg :
+('xorigin' float32)
+\vert ('yorigin' float32)
+\vert ('dxorigin' float32)
+\vert ('dyorigin' float32)
+\end{rail}">
+<BR>
+<A NAME="227"></A>
+<A NAME="228"></A>
+<A NAME="229"></A>
+<A NAME="230"></A>
+
+<P>
+
+<UL>
+<LI><TT>xorigin</TT>,<TT>yorigin</TT> are relative to the component coordinates space i.e. <IMG
+ WIDTH="47" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.gif"
+ ALT="$[-1,1]$">, where -1 is the top or left border and 1 is the bottom or right border. The default origin is <IMG
+ WIDTH="35" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.gif"
+ ALT="$[0,0]$"> i.e. the component is centered on its <IMG
+ WIDTH="37" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.gif"
+ ALT="$(x, y)$"> coordinates.
+</LI>
+<LI><TT>dxorigin</TT>,<TT>dyorigin</TT> represents displacement of the current <TT>xorigin</TT> or <TT>yorigin</TT>.
+</LI>
+</UL>
+
+<P>
+<BR><HR>
+<ADDRESS>
+<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
+</ADDRESS>
+</BODY>
+</HTML>

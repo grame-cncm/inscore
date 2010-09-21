@@ -1,0 +1,127 @@
+/*
+
+  Interlude Prototype
+  Copyright (C) 2009  Grame
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  research@grame.fr
+
+*/
+
+
+#ifndef __IColor__
+#define __IColor__
+
+#include <iostream>
+#include <vector>
+
+#include "OSCStream.h"
+#include "IMessageStream.h"
+#include "IMessageHandlers.h"
+
+namespace interlude
+{
+
+class IMessage;
+//--------------------------------------------------------------------------
+/*!
+	\brief a color description (RGBA model)
+*/
+class IColor
+{	
+	int fR, fG, fB;
+	int fH, fS, fV;
+	int fA;
+	bool fModified;				///< the modification state
+
+	public:		
+				 IColor() : fR(0), fG(0), fB(0), fA(255), fModified(true) { updateHSV(); }
+				 IColor(int r, int g, int b, int a = 255) : fR(r), fG(g), fB(b), fA(a), fModified(true) { updateHSV(); }
+				 IColor( const IColor& c) : fR(c.fR), fG(c.fG), fB(c.fB), fA(c.fA), fModified(true) { updateHSV(); }
+		virtual ~IColor() {}
+
+		void cleanup()							{ fModified = false; }
+
+		/// \brief sets the object color \param c a color
+		virtual bool	setColor(const IColor& c)	{ 
+			if (*this == c) return false; 
+			*this = c;
+			fModified = true;
+			return true; 
+		}
+
+		/// \brief returns the object color
+//		virtual const IColor&	getColor() const	{ return fColor; }
+		
+		bool operator == (const IColor& c) const	{ return (fR==c.fR) && (fG==c.fG) && (fB==c.fB) && (fA==c.fA); }
+		bool operator != (const IColor& c) const	{ return !(*this == c); }
+		IColor operator +(const IColor& c) const	{ IColor result(*this); result.dR(c.fR); result.dG(c.fG); result.dB(c.fB); result.dA(c.fA); return result; }
+		IColor& operator +=(const IColor& c)		{ *this = *this + c; return *this; }
+
+		MsgHandler::msgStatus set (const IMessage* msg);
+		MsgHandler::msgStatus setHSV (const IMessage* msg);
+		template <typename T> void print (T& out)	const { out << fR << fG << fB << fA; }
+		
+		int getR() const { return fR; }
+		int getG() const { return fG; }
+		int getB() const { return fB; }
+		
+		int getH() const { return fH; }
+		int getS() const { return fS; }
+		int getV() const { return fV; }
+
+		int getA() const { return fA; }
+
+		void setH(int h) { setParam(fH,h%360,0,360,true); }
+		void setS(int s) { setParam(fS,s,0,100,true); }
+		void setV(int v) { setParam(fV,v,0,100,true); }
+		
+		void setR(int r) { setParam(fR,r,0,255,false); }
+		void setG(int g) { setParam(fG,g,0,255,false); }
+		void setB(int b) { setParam(fB,b,0,255,false); }
+		
+		void setA(int a) { setParam(fA,a,0,255,false); }
+
+		void dA(int a)	{ setA( getA()+a ); }
+		void dR(int r)	{ setR( getR()+r ); }
+		void dG(int g)	{ setG( getG()+g ); }
+		void dB(int b)	{ setB( getB()+b ); }
+		void dH(int h)	{ setH( getH()+h ); }
+		void dS(int s)	{ setS( getS()+s ); }
+		void dV(int v)	{ setV( getV()+v ); }
+
+		void setParam( int& param , int value , int min , int max , bool isHSV );
+		
+		void updateHSV();
+		void updateRGB();
+
+		void print (std::ostream& out) const;
+	
+		// R,G,B in [0,255], H in [0,360] and SV in [0,255]
+		static void rgb2hsv(int ir , int ig , int ib , int* H, int* S, int* V);
+		static void hsv2rgb( int  *r, int *g,int *b, int h, int s, int v );
+		static void hsv2rgb( float h , float s, float v , float& r, float& g, float& b );
+
+};
+
+inline OSCStream& operator << (OSCStream& out, const IColor& color)	{ color.print(out); return out; }
+inline IMessage& operator << (IMessage& out, const IColor& color)	{ color.print(out); return out; }
+
+
+} // end namespoace
+
+#endif

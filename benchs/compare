@@ -1,0 +1,13 @@
+#!/bin/sh
+#
+
+data=$1
+shift
+file=$1.txt
+shift
+
+for a in $*
+do
+	result=$(cut -d' ' -f$data v-0.$a/$file | ./moyenne.py)
+	echo $file	v-0.$a	$data:	$result
+done

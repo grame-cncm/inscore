@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2 (1.70)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>10. Synchronization</TITLE>
+<META NAME="description" CONTENT="10. Synchronization">
+<META NAME="keywords" CONTENT="OSCMsg">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="OSCMsg.css">
+
+<LINK REL="next" HREF="node23.html">
+<LINK REL="previous" HREF="node20.html">
+<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="next" HREF="node22.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html396"
+  HREF="node22.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html390"
+  HREF="OSCMsg.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html384"
+  HREF="node20.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html392"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html394"
+  HREF="node44.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html397"
+  HREF="node22.html">10.1 Synchronization modes</A>
+<B> Up:</B> <A NAME="tex2html391"
+  HREF="OSCMsg.html">Augmented Score Library OSC</A>
+<B> Previous:</B> <A NAME="tex2html385"
+  HREF="node20.html">9. The 'map' message</A>
+ &nbsp; <B>  <A NAME="tex2html393"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html395"
+  HREF="node44.html">Index</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION001100000000000000000"></A>
+<A NAME="syncmsg"></A>
+<BR>
+10. Synchronization
+</H1>
+
+<P>
+Synchronization between components is achieved at <TT>scene</TT> level: a <TT>sync</TT> node is automatically embedded in the scene, its address is <TT>/ITL/scene/sync</TT> and it supports messages to add or remove a master / slave relation between components or to query the synchronizations state.
+<BR>
+<IMG
+ WIDTH="609" HEIGHT="238" ALIGN="BOTTOM" BORDER="0"
+ SRC="img48.gif"
+ ALT="\begin{rail}
+sync : syncIdentifier
+( [1] syncIdentifier (\vert syncmode +)
+\vert [2])
+\vert [3] 'get' ( \vert identifier)
+\end{rail}">
+<BR>
+<A NAME="564"></A>
+<A NAME="565"></A>
+
+<P>
+
+<UL>
+<LI><B>[1]</B> this is the <TT>slave</TT> <TT>master</TT> form followed by an optional synchronization mode. It adds a slave / master relation between components identified by identifier1 and identifier2. 
+<BR></LI>
+<LI><B>[2]</B> this is the <TT>slave</TT> form that removes the slave synchronization for the component identified by identifier1.
+</LI>
+<LI><B>[3]</B> the <TT>get</TT> message is intended to query the synchronization state. The optional parameter is the identifier of a component,
+</LI>
+</UL>
+Synchronization between components has no effect if any of the required mapping is missing (see table <A HREF="node20.html#maptable">9.1</A>).
+
+<P>
+<BR>
+<IMG
+ WIDTH="351" HEIGHT="89" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.gif"
+ ALT="\begin{rail}
+syncIdentifier : [1] identifier
+\vert [2] identifier ':' mapName
+\end{rail}">
+<BR>
+<A NAME="578"></A>
+
+<P>
+Synchronization identifiers indicates 1) the name of a <TT>scene</TT> component or 2) the name of a <TT>scene</TT> component associated to a mapping name.
+
+<P>
+Note that the <TT>sync</TT> node doesn't responds to common component messages, but accept the <TT>get</TT> message. 
+The <TT>get</TT> message without parameter is equivalent to a <TT>get</TT> message addressed to each object declared in the <TT>sync</TT> node.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html398"
+  HREF="node22.html">10.1 Synchronization modes</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html396"
+  HREF="node22.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html390"
+  HREF="OSCMsg.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html384"
+  HREF="node20.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html392"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html394"
+  HREF="node44.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html397"
+  HREF="node22.html">10.1 Synchronization modes</A>
+<B> Up:</B> <A NAME="tex2html391"
+  HREF="OSCMsg.html">Augmented Score Library OSC</A>
+<B> Previous:</B> <A NAME="tex2html385"
+  HREF="node20.html">9. The 'map' message</A>
+ &nbsp; <B>  <A NAME="tex2html393"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html395"
+  HREF="node44.html">Index</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
+</ADDRESS>
+</BODY>
+</HTML>

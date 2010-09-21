@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2 (1.70)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>3. Scene messages</TITLE>
+<META NAME="description" CONTENT="3. Scene messages">
+<META NAME="keywords" CONTENT="OSCMsg">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="OSCMsg.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html166"
+  HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html160"
+  HREF="OSCMsg.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html154"
+  HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html162"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html164"
+  HREF="node44.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html167"
+  HREF="node6.html">4. Common components messages</A>
+<B> Up:</B> <A NAME="tex2html161"
+  HREF="OSCMsg.html">Augmented Score Library OSC</A>
+<B> Previous:</B> <A NAME="tex2html155"
+  HREF="node4.html">2. ITL messages</A>
+ &nbsp; <B>  <A NAME="tex2html163"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html165"
+  HREF="node44.html">Index</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00400000000000000000"></A>
+<A NAME="scene"></A>
+<BR>
+3. Scene messages
+</H1>
+A scene may be viewed as a window on the score elements. Its address is <TT>/ITL/scene</TT>. It handles the following messages:
+<BR>
+<IMG
+ WIDTH="290" HEIGHT="125" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.gif"
+ ALT="\begin{rail}
+sceneMsg : 'reset'
+\vert ('fullscreen' int32)
+\vert commonMsg
+\end{rail}">
+<BR>
+<A NAME="118"></A>
+<A NAME="119"></A>
+
+<P>
+
+<UL>
+<LI><TT>reset</TT>: clears the scene (i.e. delete all components) and resets the scene to its default state (position, size and color).
+</LI>
+<LI><TT>fullscreen</TT>: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is <TT>0</TT>.
+</LI>
+<LI><TT>commonMsg</TT>: see section <A HREF="node6.html#common">4</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>.
+</LI>
+</UL>
+
+<P>
+<BR><HR>
+<ADDRESS>
+<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
+</ADDRESS>
+</BODY>
+</HTML>

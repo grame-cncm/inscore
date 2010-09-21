@@ -1,0 +1,144 @@
+#N canvas 64 182 779 479 10;
+#X obj -2 170 print;
+#X obj -172 201 cnv 15 250 180 empty empty OSC_Comm 20 12 0 12 -204800
+-66577 0;
+#X obj -168 322 dumpOSC 7001;
+#X obj -168 353 print ITLOut;
+#X obj -71 321 dumpOSC 7002;
+#X obj -71 352 print ITL;
+#X obj -5 289 sendOSC;
+#X msg -165 256 connect localhost 7000;
+#X obj -165 226 loadbang;
+#X obj -5 255 prepend send;
+#X obj 96 201 cnv 15 230 180 empty empty Init 20 12 0 12 -204800 -66577
+0;
+#X obj 180 266 getdir;
+#X obj 90 170 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 129 241 t b b b b;
+#X obj 180 295 prepend /ITL rootPath;
+#X text 75 150 Reload;
+#X obj 167 210 loadbang;
+#X msg 134 321 /ITL load sync.interlude;
+#X obj -5 228 r sync;
+#X obj 134 352 s sync;
+#X obj 50 -47 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -262144 -1
+-1 0;
+#X obj 50 11 route 0 1 2;
+#X obj 42 37 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 69 37 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 97 37 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 26 61 4;
+#X msg 66 61 2;
+#X msg 103 61 1;
+#X msg 26 91 /ITL/scene/car* duration 1 \$1;
+#X obj 25 115 s sync;
+#X text 40 -73 Cars duration;
+#X obj -167 -25 metro 41.66;
+#X msg -185 3 /ITL/scene/car* clock;
+#X obj -185 38 s sync;
+#X obj -167 -54 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1
+0 1;
+#X text -173 -76 Play;
+#X obj -43 -51 vsl 15 128 10 100 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X text -48 -75 Rate;
+#X text 70 -49 quarter note;
+#X text 71 -33 half note;
+#X text 71 -18 whole note;
+#X obj 449 -37 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -262144
+-1 -1 2;
+#X text 446 -62 VPos;
+#X text 468 -40 top;
+#X text 469 -23 over;
+#X text 469 -6 bottom;
+#X text 318 -65 Stretch;
+#X obj 325 114 s sync;
+#X obj 325 82 prepend /ITL/scene/sync car* myGuidoFile;
+#N canvas 273 60 573 327 vstretch 0;
+#X msg 296 144 syncOver;
+#X msg 320 168 syncBottom;
+#X obj 269 90 route 0 1 2;
+#X obj 268 48 inlet;
+#X obj 73 48 inlet;
+#X obj 74 90 route 0 1 2 3;
+#X msg 115 135 hv;
+#X msg 150 136 H;
+#X msg 192 135 Hv;
+#X msg 73 136 h;
+#X obj 151 288 outlet;
+#X obj 202 190 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 152 228 pack s s;
+#X obj 268 199 symbol;
+#X msg 268 122 syncTop;
+#X obj 151 261 route list;
+#X connect 0 0 13 0;
+#X connect 1 0 13 0;
+#X connect 2 0 14 0;
+#X connect 2 1 0 0;
+#X connect 2 2 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 5 0;
+#X connect 5 0 9 0;
+#X connect 5 1 6 0;
+#X connect 5 2 7 0;
+#X connect 5 3 8 0;
+#X connect 6 0 12 0;
+#X connect 7 0 12 0;
+#X connect 8 0 12 0;
+#X connect 9 0 12 0;
+#X connect 11 0 12 0;
+#X connect 12 0 15 0;
+#X connect 13 0 12 1;
+#X connect 13 0 11 0;
+#X connect 14 0 13 0;
+#X connect 15 0 10 0;
+#X restore 325 47 pd vstretch;
+#X obj 326 -42 vradio 15 1 0 4 empty empty empty 0 -8 0 10 -262144
+-1 -1 2;
+#X text 345 -45 h;
+#X text 346 -28 hv;
+#X text 346 -11 H;
+#X text 346 3 Hv;
+#X msg 187 28 /ITL/scene/sync car*;
+#X obj 187 -35 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 173 -63 No Sync;
+#X connect 2 0 3 0;
+#X connect 4 0 5 0;
+#X connect 7 0 6 0;
+#X connect 8 0 7 0;
+#X connect 9 0 6 0;
+#X connect 11 0 14 0;
+#X connect 12 0 13 0;
+#X connect 13 2 17 0;
+#X connect 13 3 11 0;
+#X connect 14 0 19 0;
+#X connect 16 0 13 0;
+#X connect 17 0 19 0;
+#X connect 18 0 9 0;
+#X connect 20 0 21 0;
+#X connect 21 0 22 0;
+#X connect 21 1 23 0;
+#X connect 21 2 24 0;
+#X connect 22 0 25 0;
+#X connect 23 0 26 0;
+#X connect 24 0 27 0;
+#X connect 25 0 28 0;
+#X connect 26 0 28 0;
+#X connect 27 0 28 0;
+#X connect 28 0 29 0;
+#X connect 31 0 32 0;
+#X connect 32 0 33 0;
+#X connect 34 0 31 0;
+#X connect 36 0 31 1;
+#X connect 41 0 49 1;
+#X connect 48 0 47 0;
+#X connect 49 0 48 0;
+#X connect 50 0 49 0;
+#X connect 55 0 47 0;
+#X connect 56 0 55 0;
