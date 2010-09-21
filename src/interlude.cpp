@@ -75,7 +75,7 @@ int main( int argc, char **argv )
 	char **argv = __argv;
 #endif
 
-	int ret;
+	int ret = 1;
 	int udpPort = intopt ("--port", kUPDPort, argc, argv);
 	QApplication appl(argc, argv);
 
