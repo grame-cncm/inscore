@@ -1,0 +1,4 @@
+﻿Ceci un un petit texte pour faire
+des essais de mapping.
+Les fichiers de mappings associés sont
+textmap1.map et textmap2.txt

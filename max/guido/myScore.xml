@@ -1,0 +1,68 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 0.8 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
+
+<score-partwise>
+    <identification>
+        <encoding>
+            <software>IMUTUS Score Editor module</software>
+        </encoding>
+    </identification>
+    <part-list>
+        <score-part id="P1">
+            <part-name/>
+            <score-instrument id="P1-I1">
+                <instrument-name>Recorder</instrument-name>
+            </score-instrument>
+            <midi-instrument id="P1-I1">
+                <midi-channel>1</midi-channel>
+                <midi-program>73</midi-program>
+            </midi-instrument>
+        </score-part>
+    </part-list>
+    <part id="P1">
+        <measure number="1">
+            <attributes>
+                <divisions>96</divisions>
+                <clef>
+                    <sign>G</sign>
+                    <line>2</line>
+                </clef>
+            </attributes>
+            <note>
+                <pitch>
+                    <step>E</step>
+                    <octave>4</octave>
+                </pitch>
+                <duration>96</duration>
+                <type>quarter</type>
+            </note>
+            <note>
+                <pitch>
+                    <step>A</step>
+                    <octave>4</octave>
+                </pitch>
+                <duration>96</duration>
+                <type>quarter</type>
+            </note>
+            <note>
+                <pitch>
+                    <step>F</step>
+                    <octave>4</octave>
+                </pitch>
+                <duration>96</duration>
+                <type>quarter</type>
+            </note>
+            <note>
+                <pitch>
+                    <step>G</step>
+                    <octave>4</octave>
+                </pitch>
+                <duration>96</duration>
+                <type>quarter</type>
+            </note>
+            <barline location="right">
+                <bar-style>light-heavy</bar-style>
+            </barline>
+        </measure>
+    </part>
+</score-partwise>

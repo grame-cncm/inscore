@@ -1,0 +1,16 @@
+/ITL/scene/* del
+/ITL/scene/signal/* del
+
+/ITL/scene/myGuidoFile set gmnf "moz581.gmn"
+/ITL/scene/myGuidoFile scale 2.1
+/ITL/scene/myGuidoFile map system
+
+/ITL/scene/video set video "blading.mov"
+/ITL/scene/video z -1.
+/ITL/scene/video mapf "video.map"
+/ITL/scene/video videoMapf "videotime4.map"
+
+/ITL/scene/spot set ellipse 0.08 0.08
+/ITL/scene/spot color 255 0 0 130
+/ITL/scene/sync video myGuidoFile:system hv
+/ITL/scene/sync spot myGuidoFile

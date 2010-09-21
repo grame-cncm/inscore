@@ -1,0 +1,10 @@
+/ITL/scene/myGraph date 2 1
+/ITL/scene/myGraph duration 1 2
+/ITL/scene/myGraph width 0.3
+/ITL/scene/myGraph height 0.5
+/ITL/scene/myGraph z 0.0
+/ITL/scene/myRect del
+/ITL/scene/myGuidoFile set gmnf "1voice-846_2f.gmn"
+/ITL/scene/myGuidoFile scale 2.452
+/ITL/scene/myGuidoFile z 0.1
+/ITL/scene/sync myGraph myGuidoFile h

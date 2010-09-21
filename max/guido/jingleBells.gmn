@@ -1,0 +1,12 @@
+[ \title<"Jingle Bells"> 
+%\pageFormat<h=25cm, w=20.9cm> 
+\meter<"C"> \slur<"down">(sol1/8 | \beam(sol mi2 re do) sol1/4. ) \slur<"down">( sol/8 \beam(sol mi2 re do) la1/4. ) \slur<"down">( la/8 \beam(la fa2 mi re) si1/2 \beam( la2/8 sol fa re) mi/4.)
+%reprise
+ \slur<"down">( sol1/8 \beam(sol mi2 re do) sol1/4. ) \slur<"down">(  sol/8 \beam(sol mi2 re do) la1/4. ) \slur<"down">( la/8 \beam(la fa2 mi re) \beam(sol sol sol sol) \beam(la sol fa re) do/4 ) sol
+%refrain
+\newLine
+\text<"Refrain", dy=18hs>(
+mi/8) mi mi/4 mi/8 mi mi/4 mi/8 sol do re mi/2 fa/8 fa fa/8. sol/16 fa/8 mi mi/8. mi/16 mi/8 re re mi re/4 sol
+%reprise
+ mi/8 mi mi/4 mi/8 mi mi/4 mi/8 sol do re mi/2 fa/8 fa fa/8. sol/16 fa/8 mi mi mi sol sol fa re do/2 \endBar
+ ]

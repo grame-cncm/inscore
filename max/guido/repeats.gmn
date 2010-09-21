@@ -1,0 +1,5 @@
+{
+[ 
+	\title<"Bob"> \key<-2> \meter<"2/4"> e f \repeatBegin g d f a#/2 g/8 f \repeatEnd e d e/2
+]
+}

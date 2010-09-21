@@ -1,0 +1,17 @@
+/ITL/scene/* del
+
+/ITL/scene/myGuidoFile set gmnf "rsrc/moz581.gmn"
+/ITL/scene/myGuidoFile scale 2.
+/ITL/scene/myGuidoFile map staff1
+/ITL/scene/myGuidoFile map staff2
+/ITL/scene/myGuidoFile map staff3
+/ITL/scene/myGuidoFile map staff4
+/ITL/scene/myGuidoFile map staff5
+/ITL/scene/myGuidoFile map system
+/ITL/scene/myGuidoFile map systemSlice
+
+/ITL/scene/car set img "rsrc/car_blue.gif"
+/ITL/scene/car scale 1.4
+/ITL/scene/car z 0.1
+/ITL/scene/car duration 2 4
+
