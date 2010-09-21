@@ -1,5 +1,5 @@
 
-DOC 	= specification.pdf OSCMsg.pdf
+DOC 	= OSCMsg.pdf
 HTMLOPT = -show_section_numbers \
 		  --image_type gif \
 		  -address '<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]'
@@ -29,7 +29,6 @@ clean:
 	make htmlclean
 
 OSCMsg.pdf : OSCMsg.rao OSCMsg.ind
-specification.pdf : specification.bib specification.bbl
 
 
 %.bbl: %.bib

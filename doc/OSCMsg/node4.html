@@ -65,7 +65,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 ITL messages are messages global to the client application, which address is <TT>/ITL</TT>. It handles the following messages:
 <BR>
 <IMG
- WIDTH="298" HEIGHT="278" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="298" HEIGHT="354" ALIGN="BOTTOM" BORDER="0"
  SRC="img5.gif"
  ALT="\begin{rail}
 ITLMsg : 'quit'
@@ -84,6 +84,8 @@ ITLMsg : 'quit'
 <A NAME="89"></A>
 <A NAME="90"></A>
 <A NAME="91"></A>
+<A NAME="92"></A>
+<A NAME="93"></A>
 
 <P>
 
@@ -96,9 +98,9 @@ ITLMsg : 'quit'
 
 <P>
 </LI>
-<LI><TT>port</TT>: changes the UDP listening port number. The <TT>int32</TT> parameter should be a positive value in the range <TT>[1024-49150]</TT>. 
+<LI><TT>port</TT>, <TT>outport</TT>, <TT>errport</TT>: changes the UDP port numbers. <TT>port</TT> defines the listening port number, <TT>outport</TT> and <TT>errport</TT> define the ports used to send messages and error messages. The <TT>int32</TT> parameter should be a positive value in the range <TT>[1024-49150]</TT>. 
 <BR>
-The default <TT>port</TT> value is 7000.
+The default <TT>port</TT>, <TT>outport</TT> and <TT>errport</TT> values are 7000, 7001 and 7002.
 
 <P>
 </LI>
