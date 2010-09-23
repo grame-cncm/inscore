@@ -39,8 +39,8 @@ static IMessage* Message2IMessage (Interlude::MessagePtr p)
 }
 
 //--------------------------------------------------------------------------
-int Interlude::version	()				{ return 60; }
-const char* Interlude::versionStr ()	{ return "0.60"; }
+int Interlude::version	()				{ return 61; }
+const char* Interlude::versionStr ()	{ return "0.61"; }
 
 //--------------------------------------------------------------------------
 void Interlude::postMessage	(const char* address, MessagePtr msg)

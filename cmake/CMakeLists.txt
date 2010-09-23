@@ -7,15 +7,15 @@ set (CMAKE_CONFIGURATION_TYPES Debug Release)
 
 #######################################
 # versions management
-set (ITLFWKVERS 0.60)
-set (ITLFWKSTRVERS "v.0.60")
-set (ITLFWKSSTRVERS "0.60")
-set (ITLTEXTVERS 0.60)
-set (ITLTEXTSTRVERS "v.0.60")
-set (ITLTEXTSSTRVERS "0.60")
-set (ITLAPPVERS 0.60)
-set (ITLAPPSTRVERS "v.0.60")
-set (ITLAPPSSTRVERS "0.60")
+set (ITLFWKVERS 0.61)
+set (ITLFWKSTRVERS "v.0.61")
+set (ITLFWKSSTRVERS "0.61")
+set (ITLTEXTVERS 0.61)
+set (ITLTEXTSTRVERS "v.0.61")
+set (ITLTEXTSSTRVERS "0.61")
+set (ITLAPPVERS 0.61)
+set (ITLAPPSTRVERS "v.0.61")
+set (ITLAPPSSTRVERS "0.61")
 
 #######################################
 if(WIN32)
