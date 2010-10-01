@@ -33,7 +33,7 @@ if(APPLE)
 	else (${CMAKE_SYSTEM_VERSION} VERSION_LESS 9.0.0)
 		set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.5.sdk)
 	endif (${CMAKE_SYSTEM_VERSION} VERSION_LESS 9.0.0)
-	
+
 	set (CMAKE_OSX_ARCHITECTURES "i386")
 	set (CMAKE_C++_FLAGS -mmacosx-version-min=10.4)
 endif(APPLE)
@@ -85,12 +85,9 @@ if(APPLE OR WIN32)
 # message("QT_QTGUI_INCLUDE_DIR ${QT_QTGUI_INCLUDE_DIR}")
 
 else(APPLE OR WIN32)
-  set(QTDIR "/usr/local/Trolltech/Qt-4.6.2")
-  set(QTLIBS "-L${QTDIR}/lib -lQtCore -lQtGui -lphonon" )
-  set (QT_INCLUDE_DIR "${QTDIR}/include")
-  set (QT_QTCORE_INCLUDE_DIR "${QT_INCLUDE_DIR}/QtCore")
-  set (QT_QTGUI_INCLUDE_DIR "${QT_INCLUDE_DIR}/QtGui")
-  set (QT_PHONON_INCLUDE_DIR "${QT_INCLUDE_DIR}/phonon")
+  set(DESIRED_QT_VERSION 4.6)
+  FIND_PACKAGE(Qt4 REQUIRED)
+  set (QTLIBS "-lQtCore -lQtGui -lphonon" )
 endif(APPLE OR WIN32)
 
 if(APPLE)
@@ -173,13 +170,13 @@ set_target_properties (InterludeSceneViewer PROPERTIES VERSION ${ITLAPPVERS}
 							MACOSX_BUNDLE_SHORT_VERSION_STRING ${ITLAPPSTRVERS}
 							MACOSX_BUNDLE_BUNDLE_VERSION ${ITLAPPSSTRVERS})
 if(WIN32)
-set_target_properties (InterludeSceneViewer PROPERTIES 
+set_target_properties (InterludeSceneViewer PROPERTIES
 	LINK_FLAGS_RELEASE /subsystem:windows
 	LINK_FLAGS_DEBUG /subsystem:console)
 endif(WIN32)
 
 if(WIN32)
-set_target_properties (InterludeSceneViewer PROPERTIES 
+set_target_properties (InterludeSceneViewer PROPERTIES
 	LINK_FLAGS_RELEASE /subsystem:windows
 	LINK_FLAGS_DEBUG /subsystem:console)
 endif(WIN32)
@@ -206,9 +203,9 @@ if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
 endif(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
 
 install ( TARGETS Interlude
-	RUNTIME DESTINATION bin 
-    	LIBRARY DESTINATION ${LIBDEST} 
-    	ARCHIVE DESTINATION ${LIBDEST} 
+	RUNTIME DESTINATION bin
+    	LIBRARY DESTINATION ${LIBDEST}
+    	ARCHIVE DESTINATION ${LIBDEST}
     	${FRMWK}
     	PUBLIC_HEADER DESTINATION include/interlude
 )

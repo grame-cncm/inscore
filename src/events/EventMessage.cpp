@@ -22,6 +22,8 @@
 
 */
 
+#include <stdlib.h>
+
 #include "EventMessage.h"
 #include "IMessage.h"
 #include "IMessageStack.h"
