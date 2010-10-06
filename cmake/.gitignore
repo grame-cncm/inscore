@@ -7,8 +7,7 @@ CMakeFiles
 CMakeScripts
 Debug
 Release
-Interlude.ncb
-Interlude.sln
+INScore.*
 *.vcproj
 debug/
 release/

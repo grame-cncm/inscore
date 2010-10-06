@@ -24,7 +24,7 @@
 
 #if defined(WIN32) && defined(MSVC)
 
-# ifdef Interlude_EXPORTS
+# ifdef INScore_EXPORTS
 #  define export		 _declspec (dllexport)
 # else
 #  define export		 _declspec (dllimport)
@@ -34,7 +34,7 @@
 
 #else
 
-# ifdef Interlude_EXPORTS
+# ifdef INScore_EXPORTS
 #  define export		 __attribute__ ((visibility("default")))
 # else
 #  define export		
