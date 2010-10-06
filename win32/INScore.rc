@@ -69,13 +69,13 @@ BEGIN
     BEGIN
         BLOCK "040c04b0"
         BEGIN
-            VALUE "FileDescription", "Interlude Library"
-            VALUE "FileVersion", "0, 6, 0, 0"
-            VALUE "InternalName", "Interlude"
+            VALUE "FileDescription", "INScore Library"
+            VALUE "FileVersion", "0, 6, 1, 0"
+            VALUE "InternalName", "INScore"
             VALUE "LegalCopyright", "Copyright (C) 2009-2010 - Grame"
-            VALUE "OriginalFilename", "Interlude.dll"
-            VALUE "ProductName", "Interlude"
-            VALUE "ProductVersion", "0, 6, 0, 0"
+            VALUE "OriginalFilename", "INScore.dll"
+            VALUE "ProductName", "INScore"
+            VALUE "ProductVersion", "0, 6, 1, 0"
         END
     END
     BLOCK "VarFileInfo"

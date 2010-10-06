@@ -1,21 +1,22 @@
 cmake_minimum_required(VERSION 2.6)
-project(Interlude)
+project(INScore)
 
 #######################################
 # cmake build types configuration
 set (CMAKE_CONFIGURATION_TYPES Debug Release)
 
+set (TARGET	INScore)
 #######################################
 # versions management
-set (ITLFWKVERS 0.61)
-set (ITLFWKSTRVERS "v.0.61")
-set (ITLFWKSSTRVERS "0.61")
-set (ITLTEXTVERS 0.61)
-set (ITLTEXTSTRVERS "v.0.61")
-set (ITLTEXTSSTRVERS "0.61")
-set (ITLAPPVERS 0.61)
-set (ITLAPPSTRVERS "v.0.61")
-set (ITLAPPSSTRVERS "0.61")
+set (INSFWKVERS 0.61)
+set (INSFWKSTRVERS "v.0.61")
+set (INSFWKSSTRVERS "0.61")
+set (INSTEXTVERS 0.61)
+set (INSTEXTSTRVERS "v.0.61")
+set (INSTEXTSSTRVERS "0.61")
+set (INSAPPVERS 0.61)
+set (INSAPPSTRVERS "v.0.61")
+set (INSAPPSSTRVERS "0.61")
 
 #######################################
 if(WIN32)
@@ -40,37 +41,37 @@ endif(APPLE)
 
 #######################################
 # set directories, src and headers.
-set (ITL ${CMAKE_CURRENT_SOURCE_DIR}/../src)
-set (ITLFOLDERS  controller events lib model view mapping interface graph signal ITLParser)
-set (RSRC  "${ITL}/../rsrc")
-set (LOCALLIB  "${ITL}/../lib")
+set (ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../src)
+set (INSFOLDERS  controller events lib model view mapping interface graph signal ITLParser)
+set (RSRC  "${ROOT}/../rsrc")
+set (LOCALLIB  "${ROOT}/../lib")
 set (OSC_PATH  "${LOCALLIB}/oscpack")
 set (GUIDO_PATH  "${LOCALLIB}/GuidoEngine")
 set (GUIDOQT_PATH  "${LOCALLIB}/GuidoQt")
 
 if(MSVC)
-	set (ITLFOLDERS  ${ITLFOLDERS} ../win32/dirent)
+	set (INSFOLDERS  ${INSFOLDERS} ../win32/dirent)
 endif(MSVC)
 
-foreach(folder ${ITLFOLDERS})
-	set(SRC ${SRC} "${ITL}/${folder}/*.cpp")			# add source files
+foreach(folder ${INSFOLDERS})
+	set(SRC ${SRC} "${ROOT}/${folder}/*.cpp")			# add source files
 endforeach(folder)
-set(SRC ${SRC} "${ITL}/atomic/*.cpp")
+set(SRC ${SRC} "${ROOT}/atomic/*.cpp")
 if(MSVC)
 	enable_language(RC)
-	set(SRC ${SRC} ../win32/Interlude.rc)
+	set(SRC ${SRC} ../win32/${TARGET}.rc)
 endif(MSVC)
 file (GLOB CORESRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${SRC})
 
-foreach(folder ${ITLFOLDERS})
-	set(HEADERS ${HEADERS} "${ITL}/${folder}/*.h")		# add header files
+foreach(folder ${INSFOLDERS})
+	set(HEADERS ${HEADERS} "${ROOT}/${folder}/*.h")		# add header files
 endforeach(folder)
 file (GLOB COREH RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${HEADERS})
 
-foreach(folder ${ITLFOLDERS})
-	set(INCL ${INCL} "${ITL}/${folder}")				# add include folders
+foreach(folder ${INSFOLDERS})
+	set(INCL ${INCL} "${ROOT}/${folder}")				# add include folders
 endforeach(folder)
-set(INCL ${INCL} "${ITL}/atomic")
+set(INCL ${INCL} "${ROOT}/atomic")
 
 
 #######################################
@@ -104,7 +105,7 @@ if(WIN32)
 endif(WIN32)
 
 set (QTHEADERS "${QT_INCLUDE_DIR}" "${QT_QTCORE_INCLUDE_DIR}" "${QT_QTGUI_INCLUDE_DIR}" "${QT_PHONON_INCLUDE_DIR}")
-file (GLOB PUBLICHEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "${ITL}/interface/*.h")
+file (GLOB PUBLICHEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "${ROOT}/interface/*.h")
 
 #######################################
 # set libraries
@@ -117,78 +118,78 @@ if(WIN32)
 		set(OSCPACK  ${OSC_PATH}/oscpack.lib)
 		set(GUIDOQT  ${LOCALLIB}/GuidoQt/win32/GuidoQt.lib)
 		set(GUIDO    ${LOCALLIB}/GuidoEngine/win32/GUIDOEngine.lib)
-		set(ITLLIBS  winmm.lib ws2_32.lib)
+		set(INSLIBS  winmm.lib ws2_32.lib)
 	endif(MINGW)
 endif(WIN32)
 
 if(APPLE)
-	set(OSCPACK  ${OSC_PATH}/liboscpack.a)
-	set(GUIDOQT  ${ITL}/../lib/GuidoQt/macosx/libGuidoQt.a)
-	set(GUIDO    ${ITL}/../lib/GuidoEngine/macosx/GUIDOEngine.framework)
+	set(OSCPACK  ${OSC_PATH}/cmake/Release/liboscpack.a)
+	set(GUIDOQT  ${ROOT}/../lib/GuidoQt/macosx/libGuidoQt.a)
+	set(GUIDO    ${ROOT}/../lib/GuidoEngine/macosx/GUIDOEngine.framework)
 elseif(UNIX)
 	set(OSCPACK  -L${OSC_PATH}/cmake -loscpack)
-	set(GUIDOQT  -L${ITL}/../lib/GuidoQt/linux -lGuidoQt)
+	set(GUIDOQT  -L${ROOT}/../lib/GuidoQt/linux -lGuidoQt)
 	set(GUIDO    -lGUIDOEngine)
 endif(APPLE)
 
-set(ITLLIBS  ${ITLLIBS} ${OSCPACK} ${GUIDOQT} ${GUIDO} ${QTLIBS} ${CORE_FOUNDATION} )
+set(INSLIBS  ${INSLIBS} ${OSCPACK} ${GUIDOQT} ${GUIDO} ${QTLIBS} ${CORE_FOUNDATION} )
 
 #######################################
 # moc settings
-FIND_PACKAGE(Qt4)
+#FIND_PACKAGE(Qt4)
 #message ("Qt4 output: ${QT_CONFIG}")
-set (MOC_HEADERS ${ITL}/view/VSceneView.h ${ITL}/model/QFileWatcher.h)
-QT_WRAP_CPP (Interlude MOC_FILES ${MOC_HEADERS})
+set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h)
+QT_WRAP_CPP (${TARGET} MOC_FILES ${MOC_HEADERS})
 
 #######################################
 # set targets
 include_directories(${INCL} ${OSC_PATH} ${GUIDO_PATH}/include ${GUIDOQT_PATH}/include ${QTHEADERS} )
 
-add_library( Interlude SHARED ${CORESRC} ${COREH} ${MOC_FILES})
+add_library( ${TARGET} SHARED ${CORESRC} ${COREH} ${MOC_FILES})
 set_source_files_properties (${COREH} PROPERTIES HEADER_FILE_ONLY TRUE)
-set_target_properties (Interlude PROPERTIES VERSION ${ITLFWKVERS}
-						MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${ITLFWKSTRVERS}
-						MACOSX_FRAMEWORK_BUNDLE_VERSION ${ITLFWKSSTRVERS}
+set_target_properties (${TARGET} PROPERTIES VERSION ${INSFWKVERS}
+						MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${INSFWKSTRVERS}
+						MACOSX_FRAMEWORK_BUNDLE_VERSION ${INSFWKSSTRVERS}
 						PUBLIC_HEADER "${PUBLICHEADERS}")
-target_link_libraries( Interlude ${ITLLIBS} )
+target_link_libraries( ${TARGET} ${INSLIBS} )
 if(MINGW)
-	target_link_libraries( Interlude winmm ws2_32 )
+	target_link_libraries( ${TARGET} winmm ws2_32 )
 endif(MINGW)
 
 
-add_executable( InterludeTextViewer  MACOSX_BUNDLE ${ITL}/interlude.cpp )
-target_link_libraries( InterludeTextViewer ${QTLIBS} ${GUIDO})
-set_target_properties (InterludeTextViewer PROPERTIES COMPILE_FLAGS -DTEXTVIEW)
-set_target_properties (InterludeTextViewer PROPERTIES VERSION ${ITLTEXTVERS}
-							MACOSX_BUNDLE_SHORT_VERSION_STRING ${ITLTEXTSTRVERS}
-							MACOSX_BUNDLE_BUNDLE_VERSION ${ITLTEXTSSTRVERS})
+add_executable( ${TARGET}TextViewer  MACOSX_BUNDLE ${ROOT}/INScore.cpp )
+target_link_libraries( ${TARGET}TextViewer ${QTLIBS} ${GUIDO})
+set_target_properties (${TARGET}TextViewer PROPERTIES COMPILE_FLAGS -DTEXTVIEW)
+set_target_properties (${TARGET}TextViewer PROPERTIES VERSION ${INSTEXTVERS}
+							MACOSX_BUNDLE_SHORT_VERSION_STRING ${INSTEXTSTRVERS}
+							MACOSX_BUNDLE_BUNDLE_VERSION ${INSTEXTSSTRVERS})
 
-add_executable( InterludeSceneViewer  MACOSX_BUNDLE ${ITL}/interlude.cpp ../win32/Viewer/InterludeSceneViewer.rc)
-target_link_libraries( InterludeSceneViewer ${QTLIBS} ${GUIDO})
-set_target_properties (InterludeSceneViewer PROPERTIES VERSION ${ITLAPPVERS}
-							MACOSX_BUNDLE_ICON_FILE ${RSRC}/ITLViewer.icns
-							MACOSX_BUNDLE_SHORT_VERSION_STRING ${ITLAPPSTRVERS}
-							MACOSX_BUNDLE_BUNDLE_VERSION ${ITLAPPSSTRVERS})
+add_executable( ${TARGET}Viewer  MACOSX_BUNDLE ${ROOT}/INScore.cpp ../win32/Viewer/${TARGET}Viewer.rc)
+target_link_libraries( ${TARGET}Viewer ${QTLIBS} ${GUIDO})
+set_target_properties (${TARGET}Viewer PROPERTIES VERSION ${INSAPPVERS}
+							MACOSX_BUNDLE_ICON_FILE ${RSRC}/${TARGET}Viewer.icns
+							MACOSX_BUNDLE_SHORT_VERSION_STRING ${INSAPPSTRVERS}
+							MACOSX_BUNDLE_BUNDLE_VERSION ${INSAPPSSTRVERS})
 if(WIN32)
-set_target_properties (InterludeSceneViewer PROPERTIES
+set_target_properties (${TARGET}Viewer PROPERTIES
 	LINK_FLAGS_RELEASE /subsystem:windows
 	LINK_FLAGS_DEBUG /subsystem:console)
 endif(WIN32)
 
 if(WIN32)
-set_target_properties (InterludeSceneViewer PROPERTIES
+set_target_properties (${TARGET}Viewer PROPERTIES
 	LINK_FLAGS_RELEASE /subsystem:windows
 	LINK_FLAGS_DEBUG /subsystem:console)
 endif(WIN32)
 
 if(APPLE)
-	set_target_properties (Interlude PROPERTIES FRAMEWORK TRUE FRAMEWORK_VERSION ${ITLFWKVERS})
+	set_target_properties (${TARGET} PROPERTIES FRAMEWORK TRUE FRAMEWORK_VERSION ${INSFWKVERS})
 endif(APPLE)
 
-target_link_libraries( InterludeTextViewer Interlude)
-add_dependencies(InterludeTextViewer Interlude)
-target_link_libraries( InterludeSceneViewer Interlude)
-add_dependencies(InterludeSceneViewer Interlude)
+target_link_libraries( ${TARGET}TextViewer ${TARGET})
+add_dependencies(${TARGET}TextViewer ${TARGET})
+target_link_libraries( ${TARGET}Viewer ${TARGET})
+add_dependencies(${TARGET}Viewer ${TARGET})
 
 #######################################
 # install setup
@@ -202,12 +203,12 @@ if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
   message (STATUS "64 bits system detected : setting install dir to ${LIBDEST}")
 endif(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
 
-install ( TARGETS Interlude
+install ( TARGETS ${TARGET}
 	RUNTIME DESTINATION bin
     	LIBRARY DESTINATION ${LIBDEST}
     	ARCHIVE DESTINATION ${LIBDEST}
     	${FRMWK}
-    	PUBLIC_HEADER DESTINATION include/interlude
+    	PUBLIC_HEADER DESTINATION include/${TARGET}
 )
 
 

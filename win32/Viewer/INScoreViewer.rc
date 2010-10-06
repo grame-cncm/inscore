@@ -69,13 +69,13 @@ BEGIN
     BEGIN
         BLOCK "040c04b0"
         BEGIN
-            VALUE "FileDescription", "Interlude Score Viewer"
-            VALUE "FileVersion", "0, 6, 0, 0"
-            VALUE "InternalName", "Interlude"
+            VALUE "FileDescription", "INScore Viewer"
+            VALUE "FileVersion", "0, 6, 1, 0"
+            VALUE "InternalName", "INScoreViewer"
             VALUE "LegalCopyright", "Copyright (C) 2009-2010 - Grame"
-            VALUE "OriginalFilename", "InterludeScoreViewer.exe"
-            VALUE "ProductName", "InterludeScore Viewer"
-            VALUE "ProductVersion", "0, 6, 0, 0"
+            VALUE "OriginalFilename", "INScoreViewer.exe"
+            VALUE "ProductName", "INScoreViewer"
+            VALUE "ProductVersion", "0, 6, 1, 0"
         END
     END
     BLOCK "VarFileInfo"
