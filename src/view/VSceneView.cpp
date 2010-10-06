@@ -120,7 +120,7 @@ VSceneView::VSceneView(QGraphicsScene * scene)
 	fGraphicsView = new ZoomingGraphicsView(scene);
 	fGraphicsView->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
 	fGraphicsView->scene()->setSceneRect( SCENE_RECT );
-	fGraphicsView->setWindowTitle( "Interlude Score Viewer" );
+	fGraphicsView->setWindowTitle( "INScore" );
 
 //	fGraphicsView->setViewport(new QGLWidget);
 //	fGraphicsView->setRenderHints(QPainter::HighQualityAntialiasing);
