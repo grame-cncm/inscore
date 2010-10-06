@@ -1,6 +1,6 @@
 /*
 
-  Interlude Project
+  INScore Project
   Copyright (C) 2010  Grame
 
   This library is free software; you can redistribute it and/or

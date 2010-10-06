@@ -1,7 +1,7 @@
 /*
 
   Interlude Prototype
-  Copyright (C) 2009  Grame
+  Copyright (C) 2009,2010  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -82,12 +82,12 @@ int main( int argc, char **argv )
 	IGlue glue (udpPort, kUPDPort+1, kUPDPort+2);
 	if (glue.start (kTimeInterval)) {
 #ifdef TEXTVIEW
-		ofstream outfile  ("ITLTextView.txt");
+		ofstream outfile  ("INScoreTextView.txt");
 		glue.setViewUpdater (VTextUpdater::create(outfile));
 		ret = appl.exec();
 #else
 
-		appl.setApplicationName("InterludeSceneViewer");	
+		appl.setApplicationName("INScoreViewer");	
 		QDir dir(QApplication::applicationDirPath());
 #ifndef WIN32
 		dir.cdUp();
