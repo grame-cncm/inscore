@@ -93,9 +93,9 @@ void IColor::updateHSV()
 //--------------------------------------------------------------------------------
 void IColor::rgb2hsv(int ir , int ig , int ib , int* iH, int* iS, int* iV)
 {
-	float r = ir/255.0;
-	float g = ig/255.0;
-	float b = ib/255.0;
+	float r = ir/255.0f;
+	float g = ig/255.0f;
+	float b = ib/255.0f;
 	
 	float H,S,V;
 
@@ -149,9 +149,9 @@ void IColor::hsv2rgb( int  *r, int *g,int *b, int h, int s, int v )
 	fr = fg = fb = 0;
 
 	hsv2rgb( h/360.0f , s/100.0f , v/100.0f , fr , fg , fb );
-	*r = fr * 255;
-	*g = fg * 255;
-	*b = fb * 255;
+	*r = int(fr * 255);
+	*g = int(fg * 255);
+	*b = int(fb * 255);
 }
 
 void IColor::hsv2rgb( float h , float s, float v , float& r, float& g, float& b )

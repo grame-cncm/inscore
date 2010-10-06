@@ -69,7 +69,7 @@ rational& rational::operator =(const rational& dur) {
 rational& rational::operator =(double f) {
 	long lf = long(f > 0 ? f : -f);
 	long mult = MAXCONV / (lf ? lf : 1);
-    fNumerator   = f * mult;
+    fNumerator   = rationalSize(f * mult);
     fDenominator = mult;
 	rationalize();
 	return *this; 
