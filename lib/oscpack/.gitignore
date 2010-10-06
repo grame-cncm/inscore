@@ -1,0 +1,9 @@
+cmake/CMakeCache.txt
+cmake/CMakeFiles/
+cmake/CMakeScripts/
+cmake/Debug/
+cmake/Release/
+cmake/build/
+cmake/cmake_install.cmake
+cmake/oscpack.build/
+cmake/oscpack.xcodeproj/
