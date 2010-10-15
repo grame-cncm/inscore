@@ -126,7 +126,7 @@ void ISceneSync::ptask ()
 //--------------------------------------------------------------------------
 bool ISceneSync::name2mapName (const string& str, string& name, string& map) const
 {
-	unsigned int sepPos = str.find_first_of(MAP_NAME_SEPARATOR);
+	size_t sepPos = str.find_first_of(MAP_NAME_SEPARATOR);
 	if ( sepPos != string::npos ) {
 		name = str.substr(0, sepPos);
 		map = str.substr( sepPos+1, name.length() + 1);		
