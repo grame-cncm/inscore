@@ -365,11 +365,11 @@ void IMappingUpdater::hstretchUpdate (IObject* o, const Master* master)
 	SGraphic2GraphicMapping g2gr = TMapping<GraphicSegment,GraphicSegment>::create();
 
 	if (!slavemap) {
-		ITLErr << o->getOSCAddress() << ": time to graphic mapping is missing." << ITLEndl;
+		ITLErr << o->getOSCAddress() << ": time to graphic mapping is missing (slave map)." << ITLEndl;
 		return;
 	}
 	else if (!mastermap) {
-		ITLErr << master->getMaster()->getOSCAddress() << ": time to graphic mapping is missing." << ITLEndl;
+		ITLErr << master->getMaster()->getOSCAddress() << ": time to graphic mapping is missing (master map)." << ITLEndl;
 		return;
 	}
 	else if (!g2gr) {
