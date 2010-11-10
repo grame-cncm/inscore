@@ -1,0 +1,45 @@
+/ITL/scene/* del
+
+/ITL/scene/rect set rect 0.3 0.7
+/ITL/scene/rect color 255 225 0 120
+/ITL/scene/rect yorigin -1.
+/ITL/scene/rect watch "mouseDown" "localhost:7100/button" 1
+/ITL/scene/rect watch "mouseUp" "localhost:7100/button" 0
+
+/ITL/scene/rond set ellipse 0.5 0.5
+/ITL/scene/rond color 25 144 0 120
+/ITL/scene/rond yorigin 1.
+/ITL/scene/rond watch "mouseDown" 		"localhost:7100/zone" 1
+/ITL/scene/rond watch "mouseUp" 		"localhost:7100/zone" 0
+/ITL/scene/rond watch "mouseEnter" 		"/ITL/scene/rond" "color" 255 144 0 120
+/ITL/scene/rond watch "mouseLeave" 		"/ITL/scene/rond" "color" 25 144 0 120
+
+/ITL/scene/myCurve set curve 0.24 0. -0.02 0.08 0.77 0.1 0.5 0.15
+/ITL/scene/myCurve scale 2.0
+/ITL/scene/myCurve color 89 0 153 150
+/ITL/scene/myCurve watch "mouseEnter" 		"/ITL/scene/myCurve" "scale" 3.0
+/ITL/scene/myCurve watch "mouseLeave" 		"/ITL/scene/myCurve" "scale" 2.0
+
+/ITL/scene/myPolygon set polygon 0.75 0.32 1. 0.2 0.9 0.7
+/ITL/scene/myPolygon color 33 73 255 170
+/ITL/scene/myPolygon watch "mouseDown" 		"/ITL/scene/myPolygon" "angle" 90.0
+/ITL/scene/myPolygon watch "mouseUp" 		"/ITL/scene/myPolygon" "angle" 0.0
+
+/ITL/scene/myScore set gmn "[ \meter<\"4/4\"> b1 c2 d2 e2 d2 c2 d2 c2 b1 c2 b1 a1 b1 c2 ]"
+/ITL/scene/myScore y -0.56
+/ITL/scene/myScore scale 2.16
+/ITL/scene/myScore watch "mouseDown" 		"/ITL/scene/myScore" "angle" 180.
+/ITL/scene/myScore watch "mouseUp" 			"/ITL/scene/myScore" "angle" 0.
+/ITL/scene/myScore watch "mouseEnter" 		"/ITL/scene/myScore" "red" 255
+/ITL/scene/myScore watch "mouseLeave" 		"/ITL/scene/myScore" "red" 0
+
+/ITL/scene/text set txt "Hello world !"
+/ITL/scene/text y 0.76
+/ITL/scene/text scale 3.545747
+/ITL/scene/text watch "mouseEnter" 			"/ITL/scene/text" "red" 255
+/ITL/scene/text watch "mouseLeave" 			"/ITL/scene/text" "red" 0
+/ITL/scene/text watch "mouseDown" 			"/ITL/scene/video" "show" 0
+/ITL/scene/text watch "mouseUp" 			"/ITL/scene/video" "show" 1
+/ITL/scene/text watch+ "mouseDown" 			"/ITL/scene/myScore" "show" 0
+/ITL/scene/text watch+ "mouseUp" 			"/ITL/scene/myScore" "show" 1
+

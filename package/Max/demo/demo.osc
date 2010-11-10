@@ -3,9 +3,9 @@
 1 demo /ITL/scene color 255 255 255 255;
 1 demo /ITL/scene width 1.33;
 1 demo /ITL/scene/title set file rsrc/title.html;
-1 demo /ITL/scene/title x -0.12;
+1 demo /ITL/scene/title x 0.;
 1 demo /ITL/scene/title y -0.66;
-1 demo /ITL/scene/title scale 3.3;
+1 demo /ITL/scene/title scale 2.8;
 1 demo /ITL/scene/title show 1;
 1500 demo /ITL/scene/* dy -0.01;
 20 demo /ITL/scene/* dy -0.01;
@@ -113,7 +113,7 @@
 500 demo /ITL/scene/guido show 1;
 10 demo /ITL/scene/title del;
 1000 demo /ITL/scene/what set txt Interaction;
-1 demo /ITL/scene/what x 0.95;
+1 demo /ITL/scene/what x 0.90;
 1 demo /ITL/scene/what y 0.1;
 10 demo /ITL/scene/title del;
 1 demo /ITL/scene/shape* dangle 0.99;
