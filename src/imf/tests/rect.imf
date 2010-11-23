@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE IMF SYSTEM "http://download.grame.fr/Ressources/imf.dtd">
+<IMF version="0.5">
+  <general>
+    <description>
+    	Exemple de fichier de mapping divisant un rectangle
+    	en trois sections verticales.
+    </description>
+  </general>
+  <mapping2D ispace="relative">
+    <segment2D><interval start="0" end="0.33"/> <interval start="0" end="1"/></segment2D>
+    <time_interval start="0" end="1/4"/>
+    <segment2D><interval start="0.33" end="0.66"/> <interval start="0" end="1"/></segment2D>
+    <time_interval start="1/4" end="2/4"/>
+    <segment2D><interval start="0.66" end="1"/> <interval start="0" end="1"/></segment2D>
+    <time_interval start="2/4" end="1"/>
+  </mapping2D>
+</IMF>

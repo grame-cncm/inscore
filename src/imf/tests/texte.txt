@@ -1,0 +1,4 @@
+Ceci est un petit texte pour faire 
+des essais de mapping. 
+Le fichier de mapping associé est 
+’texte.imf’.

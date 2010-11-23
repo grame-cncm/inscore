@@ -1,0 +1,104 @@
+<!--
+ File name:          imf.dtd
+ Version:            0.5
+ Creation date:      16/12/2009
+ Last update:        11/01/2010
+
+ Description
+    The Interlude Mapping File [IMF] format is an XML-based language aimed at 
+    a comprehensive description of relations between time and arbitrary resources.
+-->
+
+<!--==========================================================================-->
+<!--
+    Root Element
+    Includes an optional general description of the mapping file
+    and the mapping itself. 
+    Mappings are currently supporting relations between time space and one dimension 
+    or two dimensions spaces.
+    Attributes are:
+    - version: the IMF format version used
+    - creator: the optional name of the file creator 
+-->
+<!ELEMENT IMF (general?, (mapping1D | mapping2D))>
+<!ATTLIST IMF
+    version CDATA #REQUIRED
+    creator CDATA #IMPLIED>
+
+<!--==========================================================================-->
+<!-- Common attributes parameter entities -->
+<!--
+    The ispace attribute indicates how the resource intervals should be interpreted:
+    - relative intervals should be float intervals included in [0,1] 
+      where 1 corresponds to the resource size.
+    - absolute intervals contains values in the resource dimension space 
+      (e.g. lines and columns for a text resource)
+-->
+<!ENTITY % mapping_type 
+    "ispace (relative | absolute) #REQUIRED">
+
+<!--==========================================================================-->
+<!--
+    General decription of the mapping file.
+    Includes an optional description string and an optional related file name. 
+-->
+<!ELEMENT general (description?, related_file?)>
+
+<!ELEMENT description (#PCDATA)>
+
+<!--
+    related_file element is intended to indicate a file resource, 
+    which the mapping is intended to be applied to.
+    The name attribute could be an absolute or relative path name as well as an url 
+    to a remote file.
+-->
+<!ELEMENT related_file EMPTY>
+<!ATTLIST related_file
+    name CDATA #REQUIRED
+    description CDATA #IMPLIED>
+
+<!--==========================================================================-->
+<!--
+    mapping1D is a set of relations between a one dimension space and a time space.
+-->
+<!ELEMENT mapping1D ((interval, time_interval)+)>
+<!ATTLIST mapping1D
+    %mapping_type;>
+
+<!--
+    An interval has two attributes: a start and end values.
+    The interval is left-closed and right-open: [start, end[.
+    Values should express positions according to the ispace setting. 
+-->
+<!ELEMENT interval EMPTY>
+<!ATTLIST interval
+    start CDATA #REQUIRED
+    end CDATA #REQUIRED>
+
+<!--
+    A time_interval contains time position expressed in relative time 
+    (metronomic time), which may be viewed as a virtual time.
+    Values must be rational values where 1 represents a whole note duration.
+    The rational format should be 'n/d', when 'd' is omitted, it is assumed to be 1.
+-->
+<!ELEMENT time_interval EMPTY>
+<!ATTLIST time_interval
+    start CDATA #REQUIRED
+    end CDATA #REQUIRED>
+
+<!--==========================================================================-->
+<!--
+    mapping2D is a set of relations between a two dimensions space and a time space.
+    It makes use of two dimensions segments.
+    The order attribute indicates the intervals order.
+-->
+<!ELEMENT mapping2D ((segment2D, time_interval)+)>
+<!ATTLIST mapping2D
+    order (xy | yx) "xy"
+    %mapping_type;>
+
+<!--
+    segment2D is a set of two intervals which order is defined by the
+    mapping2D element.
+-->
+<!ELEMENT segment2D (interval, interval)>

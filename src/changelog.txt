@@ -8,8 +8,11 @@ research@grame.fr
 Copyright GRAME (c) 2009,2010
 
 ----------------------------------------------------
-Version 0.6x
+Version 0.62
 - utf8 support on windows
+
+----------------------------------------------------
+Version 0.61
 - multiple application instances supported with dynamic udp port number allocation
 - command line option with --port portnumber option to set the receive udp port number at startup
 
