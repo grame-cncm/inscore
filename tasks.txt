@@ -11,7 +11,7 @@ todo
 - voir .icns dans packaging : copie dans Resources + modif info.plist
 - restructurer le positionnement des 'get' handlers
 - voir pb d'ordre dans la sauvegarde des fichiers interlude entre type graph et type signal
-- voir pb d'encodage de texte sous windows (accents ne passent as en utf8 ni utf8+BOM)
+[ok] voir pb d'encodage de texte sous windows (accents ne passent as en utf8 ni utf8+BOM)
 - voir bug pour les formes sync slave:mapname master dans un fichier interlude (pas d'affichage)
 - voir GraphicItemView::updateTo générique pour optimisation
 - voir messages color et hsb + type des paramètres de couleur
