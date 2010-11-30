@@ -33,7 +33,7 @@
 
 class QFileSystemWatcher;
 
-namespace INScore
+namespace inscore
 {
 
 /*!

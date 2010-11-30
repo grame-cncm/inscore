@@ -31,7 +31,7 @@
 #include "TMapMsgHandler.h"
 #include "IShape.h"
 
-namespace INScore
+namespace inscore
 {
 
 /*!

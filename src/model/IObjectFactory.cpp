@@ -30,7 +30,7 @@
 #include "VSceneView.h"
 
 
-namespace INScore
+namespace inscore
 {
 
 

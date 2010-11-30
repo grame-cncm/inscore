@@ -38,7 +38,7 @@
 
 using namespace std;
 
-namespace INScore
+namespace inscore
 {
 
 //--------------------------------------------------------------------------

@@ -26,7 +26,7 @@
 #include "VLineView.h"
 #include "ILine.h"
 
-namespace INScore
+namespace inscore
 {
 
 //----------------------------------------------------------------------

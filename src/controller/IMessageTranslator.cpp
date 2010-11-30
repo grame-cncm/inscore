@@ -30,7 +30,7 @@
 
 using namespace std;
 
-namespace INScore
+namespace inscore
 {
 
 map<string, string>	IMessageTranslator::fFileTypeTranslationTable;

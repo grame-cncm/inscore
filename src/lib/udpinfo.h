@@ -24,7 +24,7 @@
 
 #include <iostream>
 
-namespace INScore
+namespace inscore
 {
 
 /*!

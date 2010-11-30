@@ -32,7 +32,7 @@
 #include "udpinfo.h"
 #include "benchtools.h"
 
-namespace INScore
+namespace inscore
 {
 
 /*!

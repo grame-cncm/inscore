@@ -27,7 +27,7 @@
 #include <stdio.h>
 #include "IMessage.h"
 
-namespace INScore 
+namespace inscore 
 {
 
 //class mapreader;

@@ -32,7 +32,7 @@
 
 using namespace std;
 
-namespace INScore
+namespace inscore
 {
 
 const string ISceneSync::fTypeString = "syncnode";

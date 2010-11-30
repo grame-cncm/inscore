@@ -30,7 +30,7 @@
 #include <QGraphicsProxyWidget>
 #include <phonon/phonon>
 
-namespace INScore {
+namespace inscore {
 
 class QGraphicsVideoItem : public QGraphicsProxyWidget
 {

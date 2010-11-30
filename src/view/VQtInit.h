@@ -27,7 +27,7 @@
 
 #include "export.h"
 
-namespace INScore
+namespace inscore
 {
 
 /*!

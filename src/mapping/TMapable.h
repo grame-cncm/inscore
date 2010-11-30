@@ -32,7 +32,7 @@
 #include "maptypes.h"
 #include "TMapping.h"
 
-namespace INScore {
+namespace inscore {
 
 /*!
 \addtogroup ITLMapping

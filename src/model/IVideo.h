@@ -34,7 +34,7 @@
 #define VIDEO_MAP_TEMPO			"tempo"
 #define VIDEO_MAP_START_SECOND	"startSecond"
 
-namespace INScore
+namespace inscore
 {
 
 /*!

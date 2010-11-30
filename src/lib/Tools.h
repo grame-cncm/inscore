@@ -24,7 +24,7 @@
 
 #include <string>
 
-namespace INScore
+namespace inscore
 {
 
 struct Tools

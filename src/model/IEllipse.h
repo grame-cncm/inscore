@@ -29,7 +29,7 @@
 
 #include "IRectShape.h"
 
-namespace INScore
+namespace inscore
 {
 
 /*!

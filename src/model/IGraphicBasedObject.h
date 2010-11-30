@@ -32,7 +32,7 @@
 #include "TLocalMapping.h"
 #include "TMapMsgHandler.h"
 
-namespace INScore
+namespace inscore
 {
 
 /*!

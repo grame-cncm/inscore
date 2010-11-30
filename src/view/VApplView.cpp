@@ -28,7 +28,7 @@
 #include "IAppl.h"
 #include <QApplication>
 
-namespace INScore
+namespace inscore
 {
 
 //----------------------------------------------------

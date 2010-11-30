@@ -25,7 +25,7 @@
 #include <iostream>
 #include "OSCStream.h"
 
-namespace INScore
+namespace inscore
 {
 
 //--------------------------------------------------------------------------

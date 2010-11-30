@@ -28,7 +28,7 @@
 
 #include "IRect.h"
 
-namespace INScore
+namespace inscore
 {
 
 //----------------------------------------------------------------------

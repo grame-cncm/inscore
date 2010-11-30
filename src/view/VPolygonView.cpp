@@ -26,7 +26,7 @@
 #include "VPolygonView.h"
 #include "IPolygon.h"
 
-namespace INScore
+namespace inscore
 {
 
 //----------------------------------------------------------------------

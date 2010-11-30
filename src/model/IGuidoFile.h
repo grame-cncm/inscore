@@ -31,7 +31,7 @@
 #include "IGuidoCode.h"
 #include "TFile.h"
 
-namespace INScore
+namespace inscore
 {
 
 /*!

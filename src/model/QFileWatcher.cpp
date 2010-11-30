@@ -34,7 +34,7 @@
 
 #include <QtDebug>
 
-namespace INScore
+namespace inscore
 {
 
 //----------------------------------------------------------------------

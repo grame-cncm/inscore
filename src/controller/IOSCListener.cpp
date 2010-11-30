@@ -35,7 +35,7 @@
 using namespace std;
 using namespace osc;
 
-namespace INScore
+namespace inscore
 {
 
 //--------------------------------------------------------------------------

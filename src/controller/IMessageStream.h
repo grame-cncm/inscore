@@ -38,7 +38,7 @@
 #include "smartpointer.h"
 #include "TRect.h"
 
-namespace INScore
+namespace inscore
 {
 
 /*!

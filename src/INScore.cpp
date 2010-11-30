@@ -41,7 +41,7 @@
 # include "VQtInit.h"
 #endif
 
-using namespace INScore;
+using namespace inscore;
 using namespace std;
 
 #define kUPDPort		7000

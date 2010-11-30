@@ -27,7 +27,7 @@
 #ifndef __PeriodicTask__
 #define __PeriodicTask__
 
-namespace INScore
+namespace inscore
 {
 
 //--------------------------------------------------------------------------

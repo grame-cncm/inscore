@@ -29,7 +29,7 @@
 
 #include "Updater.h"
 
-namespace INScore
+namespace inscore
 {
 
 /*!

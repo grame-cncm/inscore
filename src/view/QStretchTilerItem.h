@@ -30,7 +30,7 @@
 #include <QGraphicsRectItem>
 #include <QPair>
 
-namespace INScore
+namespace inscore
 {
 
 class QStretchTilerItem: public QGraphicsRectItem

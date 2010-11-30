@@ -28,7 +28,7 @@
 
 using namespace std;
 
-namespace INScore {
+namespace inscore {
 
 //______________________________________________________________________________
 TMapable::MapSet* TMapable::find (const std::string& name)

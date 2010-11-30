@@ -30,7 +30,7 @@
 #include "VGraphicsItemView.h"
 class QGraphicsScene;
 
-namespace INScore
+namespace inscore
 {
 
 /*!

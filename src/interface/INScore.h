@@ -27,7 +27,7 @@
 
 #include "export.h"
 
-namespace INScore 
+namespace inscore 
 {
 
 /*!
@@ -88,7 +88,7 @@ class export INScore
 	
 	
 	static int version();					///< gives the library version number
-	static const char* versionStr();			///< gives the library version number as a string
+	static const char* versionStr();		///< gives the library version number as a string
 };
 
 /*! @} */

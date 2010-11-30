@@ -31,7 +31,7 @@
 
 #include "IText.h"
 
-namespace INScore
+namespace inscore
 {
 
 /*!

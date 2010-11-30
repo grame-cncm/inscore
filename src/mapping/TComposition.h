@@ -28,7 +28,7 @@
 
 #include "TMapping.h"
 
-namespace INScore
+namespace inscore
 {
 
 /*!

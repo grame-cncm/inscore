@@ -46,7 +46,7 @@
 
 
 
-namespace INScore
+namespace inscore
 {
 
 class IMessage;

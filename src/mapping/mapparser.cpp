@@ -33,7 +33,7 @@
 #include "mapparser.h"
 #include "mapreader.h"
 #include "ITLError.h"
-INScore::mapreader * gReader;
+inscore::mapreader * gReader;
 
 #define yyleng				itlmapleng
 #define yyin				itlmapin
@@ -52,7 +52,7 @@ extern int yydebug;
 
 using namespace std;
 
-namespace INScore 
+namespace inscore 
 {
 
 //--------------------------------------------------------------------------

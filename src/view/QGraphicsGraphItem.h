@@ -30,7 +30,7 @@
 #include <QGraphicsRectItem>
 #include "GraphicSignal.h"
 
-namespace INScore
+namespace inscore
 {
 
 /*!
@@ -216,7 +216,7 @@ class QGraphicsGraphItem : public QGraphicsRectItem
 		int fCacheWidth, fCacheHeight, fStripeWidth;		// the drawing area properties
 
 		// a set of indirections set according to drawing options
-		typedef float (*FrameValueComputeFunction)( const INScore::GraphicFrame& frame );
+		typedef float (*FrameValueComputeFunction)( const inscore::GraphicFrame& frame );
 		Drawer * fCurrentDrawer;							// computes the graph envelope according to the graph style
 		FrameValueComputeFunction fBottomLineComputeFunction, fTopLineComputeFunction;
 };

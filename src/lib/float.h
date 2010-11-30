@@ -22,7 +22,7 @@
  */
 
 
-namespace INScore
+namespace inscore
 {
 
 class TFloat {

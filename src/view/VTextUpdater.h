@@ -34,7 +34,7 @@
 #include "IModelTypes.h"
 #include "Updater.h"
 
-namespace INScore
+namespace inscore
 {
 
 /*!

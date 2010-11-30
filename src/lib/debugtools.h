@@ -26,7 +26,7 @@
 #include <set>
 #include <vector>
 
-namespace INScore
+namespace inscore
 {
 
 template <typename T>	std::ostream& operator << (std::ostream& out, const std::set<T>& s)

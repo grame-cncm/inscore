@@ -34,7 +34,7 @@
 #include "IMessageStream.h"
 #include "IMessageHandlers.h"
 
-namespace INScore
+namespace inscore
 {
 
 class IMessage;

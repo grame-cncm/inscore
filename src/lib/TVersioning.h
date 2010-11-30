@@ -22,7 +22,7 @@
 #ifndef __TVersioning__
 #define __TVersioning__
 
-namespace INScore
+namespace inscore
 {
 
 //--------------------------------------------------------------------------

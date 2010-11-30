@@ -30,7 +30,7 @@
 #include "TRelation.h"
 
 
-namespace INScore
+namespace inscore
 {
 
 /*!

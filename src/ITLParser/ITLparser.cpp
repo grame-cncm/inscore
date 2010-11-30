@@ -50,15 +50,15 @@ extern int yydebug;
 
 using namespace std;
 
-INScore::IMessageList* gMessageList = 0;
+inscore::IMessageList* gMessageList = 0;
 
-namespace INScore 
+namespace inscore 
 {
 
 //--------------------------------------------------------------------------
 void ITLparser::start () 
 {
-	gMessageList =  new INScore::IMessageList;
+	gMessageList =  new inscore::IMessageList;
 	setlocale(LC_NUMERIC, "C");
 }
 void ITLparser::stop () 

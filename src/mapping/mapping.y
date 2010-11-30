@@ -12,14 +12,14 @@ class YYSTYPE {
 	public:
 	long int	num;
 	float		real;
-	INScore::rational				rat;
-	INScore::LongInterval			longInterv;
-	INScore::FloatInterval			floatInterv;
-	INScore::IntPointSegment		ipseg;
-	INScore::GraphicSegment			grseg;
-	INScore::RelativeTimeSegment	rseg;
-	INScore::FrameSegment			intseg;
-	INScore::FloatSegment			flseg;
+	inscore::rational				rat;
+	inscore::LongInterval			longInterv;
+	inscore::FloatInterval			floatInterv;
+	inscore::IntPointSegment		ipseg;
+	inscore::GraphicSegment			grseg;
+	inscore::RelativeTimeSegment	rseg;
+	inscore::FrameSegment			intseg;
+	inscore::FloatSegment			flseg;
 };
 
 #define YYSTYPE_IS_DECLARED
@@ -31,7 +31,7 @@ class YYSTYPE {
 int itlmaperror(const char*s);
 int	itlmapwrap()		{ return(1); }
 
-extern INScore::mapreader* gReader;
+extern inscore::mapreader* gReader;
 
 //#define parseDebug
 #ifdef parseDebug
@@ -41,7 +41,7 @@ extern INScore::mapreader* gReader;
 #endif
 
 using namespace std;
-namespace INScore
+namespace inscore
 {
 
 %}

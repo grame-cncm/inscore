@@ -35,7 +35,7 @@
 
 using namespace std;
 
-namespace INScore
+namespace inscore
 {
 
 const std::string IGraphicSignal::kRoundCurveType = ROUND_CURVE_TYPE;

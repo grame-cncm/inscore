@@ -32,7 +32,7 @@
 
 #include <QGraphicsPolygonItem>
 
-namespace INScore
+namespace inscore
 {
 
 /*!

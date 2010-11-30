@@ -29,7 +29,7 @@
 #include <string>
 #include "export.h"
 
-namespace INScore 
+namespace inscore 
 {
 
 /*!

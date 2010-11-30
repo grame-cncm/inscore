@@ -7,17 +7,17 @@
 #include "IMessageStream.h"
 #include "ITLError.h"
 
-extern INScore::IMessageList* gMessageList;
+extern inscore::IMessageList* gMessageList;
 
 typedef union {         
 	public:
 	int		num;
 	float	real;
 	std::string* str;
-	INScore::Sbaseparam *			p;
-	INScore::IMessage::argslist*	plist;
-	INScore::IMessage*			msg;
-	INScore::IMessageList*		msgList;
+	inscore::Sbaseparam *			p;
+	inscore::IMessage::argslist*	plist;
+	inscore::IMessage*			msg;
+	inscore::IMessageList*		msgList;
 } YYSTYPE;
 
 #define YYSTYPE_IS_DECLARED
@@ -30,7 +30,7 @@ int ITLerror(const char*s);
 int	ITLwrap()		{ return(1); }
 
 using namespace std;
-namespace INScore
+namespace inscore
 {
 
 %}
@@ -72,8 +72,8 @@ ITLfile		: message			{ gMessageList->push_back($1); }
 			;
 
 //_______________________________________________
-message		: oscaddress params				{	$$ = $2 ? new INScore::IMessage(*$1, "", *$2) : new INScore::IMessage(*$1); delete $1; delete $2; }
-			| oscaddress msgstring params	{	$$ = $3 ? new INScore::IMessage(*$1, *$2, *$3) : new INScore::IMessage(*$1, *$2); 
+message		: oscaddress params				{	$$ = $2 ? new inscore::IMessage(*$1, "", *$2) : new inscore::IMessage(*$1); delete $1; delete $2; }
+			| oscaddress msgstring params	{	$$ = $3 ? new inscore::IMessage(*$1, *$2, *$3) : new inscore::IMessage(*$1, *$2); 
 												delete $1; delete $2; delete $3;
 											}
 			;
@@ -96,22 +96,22 @@ msgstring	: MSG				{ $$ = new string(ITLtext); }
 			;
 
 params		:					{ $$ = 0; }
-			| param				{ $$ = new INScore::IMessage::argslist; $$->push_back(*$1); delete $1; }
+			| param				{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
 			| params param		{ $1->push_back(*$2); $$ = $1; delete $2; }
 			;
 
-param		: INT				{ $$ = new Sbaseparam(new INScore::IMsgParam<int>(atoi(ITLtext))); }
-			| FLOAT				{ $$ = new Sbaseparam(new INScore::IMsgParam<float>(atof(ITLtext))); }
-			| STRING			{ $$ = new Sbaseparam(new INScore::IMsgParam<std::string>(ITLtext)); }
-			| IDENTIFIER		{ $$ = new Sbaseparam(new INScore::IMsgParam<std::string>(ITLtext)); }
-			| MAPIDENTIFIER		{ $$ = new Sbaseparam(new INScore::IMsgParam<std::string>(ITLtext)); }
+param		: INT				{ $$ = new Sbaseparam(new inscore::IMsgParam<int>(atoi(ITLtext))); }
+			| FLOAT				{ $$ = new Sbaseparam(new inscore::IMsgParam<float>(atof(ITLtext))); }
+			| STRING			{ $$ = new Sbaseparam(new inscore::IMsgParam<std::string>(ITLtext)); }
+			| IDENTIFIER		{ $$ = new Sbaseparam(new inscore::IMsgParam<std::string>(ITLtext)); }
+			| MAPIDENTIFIER		{ $$ = new Sbaseparam(new inscore::IMsgParam<std::string>(ITLtext)); }
 			;
 
 %%
 
 } // end namespace
 
-using namespace INScore;
+using namespace inscore;
 int ITLerror(const char*s) {
 //	int err = gReader->error(s, ITLlineno);
 	YY_FLUSH_BUFFER;

@@ -36,7 +36,7 @@
 #include "QGraphicsGraphItem.h"
 #endif
 
-namespace INScore
+namespace inscore
 {
 
 class EventsAble;

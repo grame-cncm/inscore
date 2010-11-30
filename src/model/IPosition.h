@@ -35,7 +35,7 @@
 #include "IMessageHandlers.h"
 #include "TRect.h"
 
-namespace INScore
+namespace inscore
 {
 
 class IMessage;

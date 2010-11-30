@@ -34,7 +34,7 @@
 #include "TInterval.h"
 
 
-namespace INScore
+namespace inscore
 {
 
 /*!

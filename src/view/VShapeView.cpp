@@ -32,7 +32,7 @@
 #include <QPen>
 #include <QGraphicsScene>
 
-namespace INScore
+namespace inscore
 {
 
 #define DOT_LENGTH		0.5f

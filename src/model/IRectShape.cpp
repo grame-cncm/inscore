@@ -31,7 +31,7 @@
 
 using namespace std;
 
-namespace INScore
+namespace inscore
 {
 
 const string IRectShape::kRectShapeType("rshape");

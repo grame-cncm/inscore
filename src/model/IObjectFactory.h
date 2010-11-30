@@ -30,7 +30,7 @@
 #include <string>
 #include "IModelTypes.h"
 
-namespace INScore
+namespace inscore
 {
 
 /*!

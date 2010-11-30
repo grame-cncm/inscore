@@ -26,7 +26,7 @@
 #include "IMessageHandlers.h"
 #include "IObject.h"
 
-namespace INScore
+namespace inscore
 {
 
 MsgHandler::msgStatus TSetMethodMsgHandler<Master, void (Master::*)(float)>::operator ()(const IMessage* msg)

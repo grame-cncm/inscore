@@ -21,7 +21,7 @@
 
 #include "ITLError.h"
 
-namespace INScore
+namespace inscore
 {
 
 ITLError ITLErr;			// static ITL error output stream

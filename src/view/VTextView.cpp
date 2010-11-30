@@ -38,7 +38,7 @@
 
 //#include "QTextTilerItem.h"
 
-namespace INScore
+namespace inscore
 {
 
 //----------------------------------------------------------------------

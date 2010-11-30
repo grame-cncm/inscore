@@ -34,7 +34,7 @@
 
 #include "float.h"
 
-namespace INScore
+namespace inscore
 {
 
 /*!

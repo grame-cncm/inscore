@@ -33,7 +33,7 @@
 #include "smartpointer.h"
 #include "IMessageStack.h"
 
-namespace INScore
+namespace inscore
 {
 
 class IObject;

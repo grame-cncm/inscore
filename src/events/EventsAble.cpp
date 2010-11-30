@@ -30,7 +30,7 @@
 
 using namespace std;
 
-namespace INScore
+namespace inscore
 {
 static vector<SEventMessage> _static_nomsgs;
 

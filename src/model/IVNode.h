@@ -29,7 +29,7 @@
 #include <vector>
 #include "IObject.h"
 
-namespace INScore
+namespace inscore
 {
 
 class IMessage;

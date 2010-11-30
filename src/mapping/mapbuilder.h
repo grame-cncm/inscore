@@ -31,7 +31,7 @@
 #include "mapreader.h"
 #include "TRect.h"
 
-namespace INScore 
+namespace inscore 
 {
 
 //______________________________________________________________________________

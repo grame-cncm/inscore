@@ -27,7 +27,7 @@
 
 #include "TVirtualRelation.h"
 
-namespace INScore
+namespace inscore
 {
 
 //----------------------------------------------------------------------

@@ -48,7 +48,7 @@
 #define OSC_X_MSG			"x"
 #define OSC_Y_MSG			"y"
 
-namespace INScore
+namespace inscore
 {
 
 class ZoomingGraphicsView : public QGraphicsView

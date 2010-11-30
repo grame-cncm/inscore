@@ -27,7 +27,7 @@ using namespace std;
 #include "RingBuffer.h"
 
 using namespace std;
-namespace INScore
+namespace inscore
 {
 
 //________________________________________________________________________

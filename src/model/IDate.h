@@ -33,7 +33,7 @@
 #include "TimeEventAble.h"
 #include "rational.h"
 
-namespace INScore
+namespace inscore
 {
 
 class EventsAble;

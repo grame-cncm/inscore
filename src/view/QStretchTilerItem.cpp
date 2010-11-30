@@ -36,7 +36,7 @@ using namespace std;
 #define USEPRECISION
 #define PRECISION 1000.0f
 
-namespace INScore
+namespace inscore
 {
 
 //-------------------------------------------------------------------------------------------------------------------

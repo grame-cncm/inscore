@@ -32,7 +32,7 @@
 #include "QGraphicsVideoItem.h"
 #include "MouseEventAble.h"
 
-namespace INScore
+namespace inscore
 {
 
 /*!

@@ -28,7 +28,7 @@
 
 #include "IEllipse.h"
 
-namespace INScore
+namespace inscore
 {
 
 //----------------------------------------------------------------------

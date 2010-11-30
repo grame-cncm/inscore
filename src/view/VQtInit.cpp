@@ -27,7 +27,7 @@
 #include "GuidoFontLoader.h"
 #include "QGuidoPainter.h"
 
-namespace INScore
+namespace inscore
 {
 
 void VQtInit::startQt ()

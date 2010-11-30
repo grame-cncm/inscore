@@ -32,7 +32,7 @@
 #include "VMappedShapeView.h"
 #include "MouseEventAble.h"
 
-namespace INScore
+namespace inscore
 {
 
 class EventsAble;

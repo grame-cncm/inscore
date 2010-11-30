@@ -28,7 +28,7 @@
 #include "INScore.h"
 #include <iostream>
 
-namespace INScore
+namespace inscore
 {
 
 //--------------------------------------------------------------------------

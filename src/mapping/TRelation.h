@@ -30,7 +30,7 @@
 #include <map>
 #include <set>
 
-namespace INScore
+namespace inscore
 {
 
 /*!

@@ -32,7 +32,7 @@
 
 using namespace std;
 
-namespace INScore
+namespace inscore
 {
 
 extern SIMessageStack gMsgStask;

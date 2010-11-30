@@ -30,7 +30,7 @@
 #include <string>
 #include "smartpointer.h"
  
-namespace INScore
+namespace inscore
 {
 
 class IMessage;

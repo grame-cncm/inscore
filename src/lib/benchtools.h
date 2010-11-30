@@ -26,7 +26,7 @@
 #include <vector>
 #include <map>
 
-namespace INScore
+namespace inscore
 {
 
 #ifdef __x86_64__

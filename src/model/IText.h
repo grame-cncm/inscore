@@ -36,7 +36,7 @@
 #include "mapbuilder.h"
 #include "TLocalMapping.h"
 
-namespace INScore
+namespace inscore
 {
 
 /*!

@@ -40,7 +40,7 @@
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
 
-namespace INScore
+namespace inscore
 {
 
 /*!

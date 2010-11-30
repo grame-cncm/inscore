@@ -33,7 +33,7 @@
 #include "RingBuffer.h"
 #include "smartpointer.h"
 
-namespace INScore
+namespace inscore
 {
 	
 /*!

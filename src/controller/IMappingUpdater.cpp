@@ -43,7 +43,7 @@
 
 using namespace std;
 
-namespace INScore
+namespace inscore
 {
 
 #define kUnknownLocation 99999.f

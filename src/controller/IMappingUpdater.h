@@ -41,7 +41,7 @@
 #include "TMappingComposer.h"
 #include "TVirtualRelation.h"
 
-namespace INScore
+namespace inscore
 {
 
 /*!

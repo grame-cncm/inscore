@@ -29,7 +29,7 @@
 #include "TRelation.h"
 #include "MapTools.h"
 
-namespace INScore
+namespace inscore
 {
 
 /*!

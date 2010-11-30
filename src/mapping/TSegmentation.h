@@ -37,7 +37,7 @@
 #include "smartpointer.h"
 
 
-namespace INScore
+namespace inscore
 {
 
 /*!

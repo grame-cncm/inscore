@@ -30,7 +30,7 @@
 #include "IShape.h"
 #include "IShapeMap.h"
 
-namespace INScore
+namespace inscore
 {
 
 /*!

@@ -28,7 +28,7 @@
 #include "TSegment.h"
 #include "maptypes.h"
 
-namespace INScore 
+namespace inscore 
 {
 
 //______________________________________________________________________________

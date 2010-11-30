@@ -24,7 +24,7 @@
 
 using namespace std;
 
-namespace INScore
+namespace inscore
 {
 
 OSCStream* _oscout = 0;				// OSC standard output stream
