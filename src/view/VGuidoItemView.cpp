@@ -49,7 +49,7 @@ const QString kPageMap	 ("page");
 const QString kMeasureMap("measure");
 
 
-namespace interlude
+namespace INScore
 {
 
 float VGuidoItemView::fCm2GuidoUnit = 0;

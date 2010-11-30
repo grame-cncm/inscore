@@ -42,7 +42,7 @@
 #define COMPARATOR_SUP			">"
 #define COMPARATOR_INF			"<"
 
-namespace interlude
+namespace INScore
 {
 
 /*!

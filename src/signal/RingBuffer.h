@@ -26,7 +26,7 @@
 #include <algorithm>
 #include <vector>
 
-namespace interlude
+namespace INScore
 {
 	
 /*!

@@ -31,7 +31,7 @@
 
 #include "IVNode.h"
 
-namespace interlude
+namespace INScore
 {
 
 class IFileWatcher;

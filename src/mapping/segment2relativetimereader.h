@@ -28,7 +28,7 @@
 #include "TMapping.h"
 #include "smartpointer.h"
 
-namespace interlude 
+namespace INScore 
 {
 
 //______________________________________________________________________________

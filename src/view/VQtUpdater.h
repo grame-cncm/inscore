@@ -32,7 +32,7 @@
 #include "Updater.h"
 #include "ISync.h"
 
-namespace interlude
+namespace INScore
 {
 
 class IRectShape;

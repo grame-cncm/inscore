@@ -30,7 +30,7 @@
 
 #include "maptypes.h"
 
-namespace interlude
+namespace INScore
 {
 //-------------------------------------------------------------------------
 void VIntPointObjectView::updateLocalMapping (IGraphicBasedObject* object)

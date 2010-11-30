@@ -26,7 +26,7 @@
 
 #include <stdio.h>
 
-namespace interlude 
+namespace INScore 
 {
 
 class mapreader;

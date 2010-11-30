@@ -29,7 +29,7 @@
 
 class QGraphicsScene;
 
-namespace interlude
+namespace INScore
 {
 
 class VApplView;

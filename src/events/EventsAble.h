@@ -34,7 +34,7 @@
 #include "EventMessage.h"
 #include "maptypes.h"
 
-namespace interlude
+namespace INScore
 {
 
 //----------------------------------------------------------------------

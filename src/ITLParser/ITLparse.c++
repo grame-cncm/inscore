@@ -114,17 +114,17 @@
 #include "IMessageStream.h"
 #include "ITLError.h"
 
-extern interlude::IMessageList* gMessageList;
+extern INScore::IMessageList* gMessageList;
 
 typedef union {         
 	public:
 	int		num;
 	float	real;
 	std::string* str;
-	interlude::Sbaseparam *			p;
-	interlude::IMessage::argslist*	plist;
-	interlude::IMessage*			msg;
-	interlude::IMessageList*		msgList;
+	INScore::Sbaseparam *			p;
+	INScore::IMessage::argslist*	plist;
+	INScore::IMessage*			msg;
+	INScore::IMessageList*		msgList;
 } YYSTYPE;
 
 #define YYSTYPE_IS_DECLARED
@@ -137,7 +137,7 @@ int ITLerror(const char*s);
 int	ITLwrap()		{ return(1); }
 
 using namespace std;
-namespace interlude
+namespace INScore
 {
 
 
@@ -1389,12 +1389,12 @@ yyreduce:
 
   case 4:
 #line 75 "ITL.y"
-    {	(yyval.msg) = (yyvsp[(2) - (2)].plist) ? new interlude::IMessage(*(yyvsp[(1) - (2)].str), "", *(yyvsp[(2) - (2)].plist)) : new interlude::IMessage(*(yyvsp[(1) - (2)].str)); delete (yyvsp[(1) - (2)].str); delete (yyvsp[(2) - (2)].plist); ;}
+    {	(yyval.msg) = (yyvsp[(2) - (2)].plist) ? new INScore::IMessage(*(yyvsp[(1) - (2)].str), "", *(yyvsp[(2) - (2)].plist)) : new INScore::IMessage(*(yyvsp[(1) - (2)].str)); delete (yyvsp[(1) - (2)].str); delete (yyvsp[(2) - (2)].plist); ;}
     break;
 
   case 5:
 #line 76 "ITL.y"
-    {	(yyval.msg) = (yyvsp[(3) - (3)].plist) ? new interlude::IMessage(*(yyvsp[(1) - (3)].str), *(yyvsp[(2) - (3)].str), *(yyvsp[(3) - (3)].plist)) : new interlude::IMessage(*(yyvsp[(1) - (3)].str), *(yyvsp[(2) - (3)].str)); 
+    {	(yyval.msg) = (yyvsp[(3) - (3)].plist) ? new INScore::IMessage(*(yyvsp[(1) - (3)].str), *(yyvsp[(2) - (3)].str), *(yyvsp[(3) - (3)].plist)) : new INScore::IMessage(*(yyvsp[(1) - (3)].str), *(yyvsp[(2) - (3)].str)); 
 												delete (yyvsp[(1) - (3)].str); delete (yyvsp[(2) - (3)].str); delete (yyvsp[(3) - (3)].plist);
 											;}
     break;
@@ -1451,7 +1451,7 @@ yyreduce:
 
   case 16:
 #line 99 "ITL.y"
-    { (yyval.plist) = new interlude::IMessage::argslist; (yyval.plist)->push_back(*(yyvsp[(1) - (1)].p)); delete (yyvsp[(1) - (1)].p); ;}
+    { (yyval.plist) = new INScore::IMessage::argslist; (yyval.plist)->push_back(*(yyvsp[(1) - (1)].p)); delete (yyvsp[(1) - (1)].p); ;}
     break;
 
   case 17:
@@ -1461,27 +1461,27 @@ yyreduce:
 
   case 18:
 #line 103 "ITL.y"
-    { (yyval.p) = new Sbaseparam(new interlude::IMsgParam<int>(atoi(ITLtext))); ;}
+    { (yyval.p) = new Sbaseparam(new INScore::IMsgParam<int>(atoi(ITLtext))); ;}
     break;
 
   case 19:
 #line 104 "ITL.y"
-    { (yyval.p) = new Sbaseparam(new interlude::IMsgParam<float>(atof(ITLtext))); ;}
+    { (yyval.p) = new Sbaseparam(new INScore::IMsgParam<float>(atof(ITLtext))); ;}
     break;
 
   case 20:
 #line 105 "ITL.y"
-    { (yyval.p) = new Sbaseparam(new interlude::IMsgParam<std::string>(ITLtext)); ;}
+    { (yyval.p) = new Sbaseparam(new INScore::IMsgParam<std::string>(ITLtext)); ;}
     break;
 
   case 21:
 #line 106 "ITL.y"
-    { (yyval.p) = new Sbaseparam(new interlude::IMsgParam<std::string>(ITLtext)); ;}
+    { (yyval.p) = new Sbaseparam(new INScore::IMsgParam<std::string>(ITLtext)); ;}
     break;
 
   case 22:
 #line 107 "ITL.y"
-    { (yyval.p) = new Sbaseparam(new interlude::IMsgParam<std::string>(ITLtext)); ;}
+    { (yyval.p) = new Sbaseparam(new INScore::IMsgParam<std::string>(ITLtext)); ;}
     break;
 
 
@@ -1705,7 +1705,7 @@ yyreturn:
 
 } // end namespace
 
-using namespace interlude;
+using namespace INScore;
 int ITLerror(const char*s) {
 //	int err = gReader->error(s, ITLlineno);
 	YY_FLUSH_BUFFER;

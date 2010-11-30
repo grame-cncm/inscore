@@ -27,7 +27,7 @@
 #include "IMessageStack.h"
 #include "IMessage.h"
 
-namespace interlude
+namespace INScore
 {
 
 //--------------------------------------------------------------------------

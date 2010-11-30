@@ -49,7 +49,7 @@
 #define THICKNESS_UP		"up"
 #define THICKNESS_DOWN		"down"
 
-namespace interlude
+namespace INScore
 {
 
 /*!

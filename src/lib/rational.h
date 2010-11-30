@@ -30,7 +30,7 @@
 class OSCStream;
 class IMessage;
 
-namespace interlude
+namespace INScore
 {
 
 typedef long long rationalSize;

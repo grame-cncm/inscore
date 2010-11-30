@@ -29,7 +29,7 @@
 
 #include "VShapeView.h"
 
-namespace interlude
+namespace INScore
 {
 
 /*!

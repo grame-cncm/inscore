@@ -32,7 +32,7 @@
 #define PDF_FORMAT				QString(".pdf")
 #define DEFAULT_EXPORT_FORMAT	PDF_FORMAT
 
-namespace interlude
+namespace INScore
 {
 
 //------------------------------------------------------------------------------------------------------------------------

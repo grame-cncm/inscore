@@ -24,7 +24,7 @@
 
 #include <string>
 
-namespace interlude
+namespace INScore
 {
 
 struct Tools

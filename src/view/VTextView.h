@@ -37,7 +37,7 @@
 #include <QGraphicsRectItem>
 #include <QMap>
 
-namespace interlude
+namespace INScore
 {
 
 class EventsAble;

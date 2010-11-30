@@ -33,7 +33,7 @@
 
 #include "mapreader.h"
 
-namespace interlude 
+namespace INScore 
 {
 
 //______________________________________________________________________________

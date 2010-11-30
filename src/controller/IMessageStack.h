@@ -30,7 +30,7 @@
 #include "lffifo.h"
 #include "smartpointer.h"
 
-namespace interlude
+namespace INScore
 {
 
 /*!

@@ -37,7 +37,7 @@
 #include "IScene.h"
 #include "IColor.h"
 #include "VExport.h"
-#include "interlude.h"
+#include "INScore.h"
 #include "ISignalProfiler.h"
 
 #define SCENE_RECT QRect(-400,-400,800,800)
@@ -48,7 +48,7 @@
 #define OSC_X_MSG			"x"
 #define OSC_Y_MSG			"y"
 
-namespace interlude
+namespace INScore
 {
 
 class ZoomingGraphicsView : public QGraphicsView
@@ -225,9 +225,9 @@ WindowEventFilter::WindowEventFilter( QGraphicsView* parent) : QObject(parent)
 //--------------------------------------------------------------------------
 void WindowEventFilter::sendMessage( const char * addr , const char * cmd , float f )
 {
-	Interlude::MessagePtr msg = Interlude::newMessage( cmd );
-	Interlude::add(msg, f);
-	Interlude::postMessage( addr , msg );
+	INScore::MessagePtr msg = INScore::newMessage( cmd );
+	INScore::add(msg, f);
+	INScore::postMessage( addr , msg );
 }
 
 //--------------------------------------------------------------------------

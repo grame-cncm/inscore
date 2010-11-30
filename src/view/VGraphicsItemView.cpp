@@ -38,7 +38,7 @@
 
 #define NB_OF_COLORS 12
 
-namespace interlude
+namespace INScore
 {
 
 // Array of colors of mapping debug items.

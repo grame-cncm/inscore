@@ -37,7 +37,7 @@ class QGraphicsCurveItem: public QGraphicsPathItem
 		QRectF boundingRect () const { return path().boundingRect(); }
 };
 
-namespace interlude
+namespace INScore
 {
 
 //----------------------------------------------------------------------

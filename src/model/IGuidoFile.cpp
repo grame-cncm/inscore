@@ -28,7 +28,7 @@
 
 using namespace std;
 
-namespace interlude
+namespace INScore
 {
 //--------------------------------------------------------------------------
 const string IGuidoFile::kGuidoFileType("gmnf");

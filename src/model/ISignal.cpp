@@ -35,7 +35,7 @@
 
 using namespace std;
 
-namespace interlude
+namespace INScore
 {
 //--------------------------------------------------------------------------
 const string ISignal::kSignalType("sig");

@@ -31,7 +31,7 @@
 #include <vector>
 #include "TSegment.h"
 
-namespace interlude
+namespace INScore
 {
 
 //--------------------------------------------------------------------------

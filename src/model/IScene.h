@@ -32,7 +32,7 @@
 
 class QGraphicsScene;
 
-namespace interlude
+namespace INScore
 {
 
 /*!

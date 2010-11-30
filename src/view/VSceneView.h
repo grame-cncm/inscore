@@ -31,7 +31,7 @@
 #include <QObject>
 #include <QTimer>
 
-namespace interlude
+namespace INScore
 {
 
 /*!

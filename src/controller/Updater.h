@@ -31,7 +31,7 @@
 #include "IModelTypes.h"
 #include "smartpointer.h"
 
-namespace interlude
+namespace INScore
 {
 
 /*!

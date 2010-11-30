@@ -33,7 +33,7 @@
 #include "EventsAble.h"
 #include "EventMessage.h"
  
-namespace interlude
+namespace INScore
 {
 
 //----------------------------------------------------------------------

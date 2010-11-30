@@ -29,7 +29,7 @@
 
 #include <QString>
 
-namespace interlude
+namespace INScore
 {
 
 class IAppl;

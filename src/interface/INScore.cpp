@@ -1,6 +1,6 @@
 /*
 
-  Interlude Library
+  INScore Library
   Copyright (C) 2009,2010  Grame
 
   This library is free software; you can redistribute it and/or
@@ -21,41 +21,29 @@
 
 */
 
-#include "interlude.h"
+#include "INScore.h"
 #include "IMessage.h"
 #include "IMessageStack.h"
 
 using namespace std;
-namespace interlude 
+namespace INScore 
 {
 
 
 SIMessageStack gMsgStask;
 
 //--------------------------------------------------------------------------
-static IMessage* Message2IMessage (Interlude::MessagePtr p)
+static IMessage* Message2IMessage (INScore::MessagePtr p)
 {
 	return (IMessage*)p;
 }
 
 //--------------------------------------------------------------------------
-int Interlude::version	()				{ 
-#ifdef __x86_64__
-	return 62; 
-#else
-	return 61; 
-#endif
-}
-const char* Interlude::versionStr ()	{ 
-#ifdef __x86_64__
-	return "0.62";
-#else
-	return "0.61"; 
-#endif
-}
+int INScore::version	()				{ return 62; }
+const char* INScore::versionStr ()		{ return "0.62"; }
 
 //--------------------------------------------------------------------------
-void Interlude::postMessage	(const char* address, MessagePtr msg)
+void INScore::postMessage	(const char* address, MessagePtr msg)
 {
 	IMessage* m = Message2IMessage (msg);
 	if (m) {
@@ -65,7 +53,7 @@ void Interlude::postMessage	(const char* address, MessagePtr msg)
 }
 
 //--------------------------------------------------------------------------
-Interlude::MessagePtr Interlude::newMessage (const char* msg)
+INScore::MessagePtr INScore::newMessage (const char* msg)
 {
 	IMessage* m = new IMessage;
 	m->setMessage(msg);
@@ -73,35 +61,35 @@ Interlude::MessagePtr Interlude::newMessage (const char* msg)
 }
 
 //--------------------------------------------------------------------------
-Interlude::MessagePtr Interlude::newMessage ()
+INScore::MessagePtr INScore::newMessage ()
 {
 	IMessage* m = new IMessage;
 	return MessagePtr(m);
 }
 
 //--------------------------------------------------------------------------
-void Interlude::delMessage(MessagePtr msg)
+void INScore::delMessage(MessagePtr msg)
 {
 	IMessage* m = Message2IMessage (msg);
 	if (m) delete m;
 }
 
 //--------------------------------------------------------------------------
-void Interlude::add (MessagePtr p, const char* s)
+void INScore::add (MessagePtr p, const char* s)
 {
 	IMessage* m = Message2IMessage (p);
 	if (m) m->add<string>(s);
 }
 
 //--------------------------------------------------------------------------
-void Interlude::add (MessagePtr p, float f)
+void INScore::add (MessagePtr p, float f)
 {
 	IMessage* m = Message2IMessage (p);
 	if (m) m->add<float>(f);
 }
 
 //--------------------------------------------------------------------------
-void Interlude::add (MessagePtr p, int n)
+void INScore::add (MessagePtr p, int n)
 {
 	IMessage* m = Message2IMessage (p);
 	if (m) m->add<int>(n);

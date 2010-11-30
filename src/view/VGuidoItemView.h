@@ -35,7 +35,7 @@
 
 class QGuidoGraphicsItem;
 
-namespace interlude
+namespace INScore
 {
 
 class GuidoMapCollector;

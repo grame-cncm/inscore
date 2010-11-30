@@ -31,7 +31,7 @@
 
 #include <QAbstractGraphicsShapeItem>
 
-namespace interlude
+namespace INScore
 {
 
 /*!

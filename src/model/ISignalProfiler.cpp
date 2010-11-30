@@ -25,10 +25,10 @@
 
 #include "ISignalProfiler.h"
 
-#include "interlude.h"
+#include "INScore.h"
 #include <iostream>
 
-namespace interlude
+namespace INScore
 {
 
 //--------------------------------------------------------------------------
@@ -37,9 +37,9 @@ void ISignalProfiler::send()
 //	std::cout	<< "ISignalProfiler::send(): time = " << float(fElapsed) / float(fTimeUnit)
 //				<< std::endl;
 
-	Interlude::MessagePtr m =  Interlude::newMessage();
-	Interlude::add( m , float(fElapsed) / float(fTimeUnit) );
-	Interlude::postMessage( std::string( "/ITL/scene/signal/debug-" + fObjectName + "-" + fSignalName).c_str() , m );
+	INScore::MessagePtr m =  INScore::newMessage();
+	INScore::add( m , float(fElapsed) / float(fTimeUnit) );
+	INScore::postMessage( std::string( "/ITL/scene/signal/debug-" + fObjectName + "-" + fSignalName).c_str() , m );
 }
 
 }

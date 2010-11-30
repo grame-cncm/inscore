@@ -26,7 +26,7 @@
 #include "QFileWatcher.h"
 
 #include "ITLError.h"
-#include "interlude.h"
+#include "INScore.h"
 
 #include <QFileSystemWatcher>
 #include <QFile>
@@ -34,7 +34,7 @@
 
 #include <QtDebug>
 
-namespace interlude
+namespace INScore
 {
 
 //----------------------------------------------------------------------
@@ -126,7 +126,7 @@ void QFileWatcher::fileChangedSlot(const QString& fileName)
 		for ( int i = 0 ; i < messages.size() ; i++ )
 		{
 			IMessage * msg = new IMessage( messages[i] );
-			Interlude::postMessage( msg->address().c_str() , msg );
+			INScore::postMessage( msg->address().c_str() , msg );
 		}
 		mWatcher->removePath( fileName );
 		mWatcher->addPath( fileName );

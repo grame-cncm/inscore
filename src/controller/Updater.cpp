@@ -31,7 +31,7 @@
 #include <iostream>
 using namespace std;
 
-namespace interlude
+namespace INScore
 {
 
 //--------------------------------------------------------------------------

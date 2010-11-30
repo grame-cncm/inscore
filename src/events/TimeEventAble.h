@@ -33,7 +33,7 @@
 #include "rational.h"
 #include "maptypes.h"
 
-namespace interlude
+namespace INScore
 {
 
 class EventsAble;

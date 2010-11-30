@@ -38,7 +38,7 @@
 #define DASH_DOT_DOT_STYLE	"dashDotDot"
 
 
-namespace interlude
+namespace INScore
 {
 
 /*!

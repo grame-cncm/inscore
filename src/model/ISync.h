@@ -31,7 +31,7 @@
 #include "OSCStream.h"
 #include "smartpointer.h"
 
-namespace interlude
+namespace INScore
 {
 
 /*!

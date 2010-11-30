@@ -39,7 +39,7 @@
 #include "OSCAddress.h"
 #include "Updater.h"
 #include "ip/NetworkingUtils.h"
-#include "interlude.h"
+#include "INScore.h"
 #include "ITLError.h"
 
 #include <QDir>
@@ -50,7 +50,7 @@
 
 using namespace std;
 
-namespace interlude
+namespace INScore
 {
 
 //--------------------------------------------------------------------------
@@ -120,7 +120,7 @@ IAppl::IAppl(int udpport, int outport, int errport)
 	: IObject("ITL", 0), fRunning(true), fUDP(udpport,outport,errport), fView(0)
 {
 	fTypeString = kApplType;
-	fVersion = Interlude::versionStr();
+	fVersion = INScore::versionStr();
 
 	fMsgHandlerMap["hello"]	= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::helloMsg);
 	fMsgHandlerMap["load"]	= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadMsg);

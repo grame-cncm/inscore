@@ -36,7 +36,7 @@
 #include "VLineView.h"
 #include "VVideoView.h"
 
-namespace interlude
+namespace INScore
 {
 
 void VQtLocalMappingUpdater::updateTo(IGraphicSignal* o)	{ o->getView()->updateLocalMapping( o );  }

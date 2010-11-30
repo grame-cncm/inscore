@@ -53,7 +53,7 @@
 
 using namespace std;
 
-namespace interlude
+namespace INScore
 {
 
 bool isDirectory( std::string path )

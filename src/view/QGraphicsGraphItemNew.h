@@ -30,7 +30,7 @@
 #include <QGraphicsRectItem>
 #include "GraphicSignal.h"
 
-namespace interlude
+namespace INScore
 {
 
 class ParallelSignal;

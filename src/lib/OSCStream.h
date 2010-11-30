@@ -28,7 +28,7 @@
 #include "osc/OscOutboundPacketStream.h"
 #include "ip/UdpSocket.h"
 
-namespace interlude
+namespace INScore
 {
 
 //--------------------------------------------------------------------------

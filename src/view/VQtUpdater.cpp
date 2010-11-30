@@ -41,7 +41,7 @@
 #include "VTextView.h"
 #include "VVideoView.h"
 
-namespace interlude
+namespace INScore
 {
 
 //--------------------------------------------------------------------------

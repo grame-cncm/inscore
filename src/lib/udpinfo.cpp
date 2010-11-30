@@ -23,7 +23,7 @@
 
 using namespace std;
 
-namespace interlude
+namespace INScore
 {
 
 ostream& operator << (ostream& out, const udpinfo& infos) {

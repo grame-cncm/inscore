@@ -32,7 +32,7 @@
 #include "maptypes.h"
 #include "smartpointer.h"
 
-namespace interlude {
+namespace INScore {
 
 /*!
 \addtogroup ITLMapping

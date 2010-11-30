@@ -30,7 +30,7 @@
 
 #include "VApplView.h"
 
-namespace interlude
+namespace INScore
 {
 
 //----------------------------------------------------------------------

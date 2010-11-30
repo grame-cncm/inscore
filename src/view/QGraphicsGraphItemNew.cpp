@@ -43,7 +43,7 @@
 
 using namespace std;
 
-namespace interlude
+namespace INScore
 {
 
 #define minVal	-1.f

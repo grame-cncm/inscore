@@ -29,7 +29,7 @@
 
 using namespace std;
 
-namespace interlude
+namespace INScore
 {
 
 // ------------------------------------------------------------------------------

@@ -36,7 +36,7 @@
 #include "TSegmentation.h"
 #include "TMapping.h"
 
-namespace interlude
+namespace INScore
 {
 
 /*!

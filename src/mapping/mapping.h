@@ -29,7 +29,7 @@
 #include "TRelation.h"
 #include "smartpointer.h"
 
-namespace interlude {
+namespace INScore {
 
 /*!
 *	\brief A Mapping is an encapsulation of a relation and a version number. Each instance

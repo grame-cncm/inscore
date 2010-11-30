@@ -29,7 +29,7 @@
 
 using namespace std;
 
-namespace interlude
+namespace INScore
 {
 
 const string IEllipse::kEllipseType("ellipse");

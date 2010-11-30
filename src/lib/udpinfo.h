@@ -24,7 +24,7 @@
 
 #include <iostream>
 
-namespace interlude
+namespace INScore
 {
 
 /*!

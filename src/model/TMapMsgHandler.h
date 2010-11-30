@@ -33,7 +33,7 @@
 #include "segment2relativetimereader.h"
 #include "IAppl.h"
 
-namespace interlude
+namespace INScore
 {
 
 class IObject;

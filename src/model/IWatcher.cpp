@@ -25,11 +25,11 @@
 
 #include "IWatcher.h"
 #include "OSCAddress.h"
-#include "interlude.h"
+#include "INScore.h"
 
 using namespace std;
 
-namespace interlude
+namespace INScore
 {
 
 //--------------------------------------------------------------------------
@@ -92,7 +92,7 @@ int IWatcher::execute (const IMessage* msg)
 		if ( allConditions && ( fWatchedProperties[i].fAlwaysEmit || !fWatchedProperties[i].fConditionsState ) )
 		{
 			IMessage * builtMsg = buildEmitedMsg( fWatchedProperties[i].fTemplateMsg , this );
-			Interlude::postMessage( builtMsg->address().c_str() , builtMsg );
+			INScore::postMessage( builtMsg->address().c_str() , builtMsg );
 		}
 		fWatchedProperties[i].fConditionsState = allConditions;
 	}
@@ -115,7 +115,7 @@ MsgHandler::msgStatus IWatcher::addMsg (const IMessage* msg )
 	//		- condition is of the form: paramName operator referenceValue
 	//			- paramName is a string
 	//			- operator is one of the strings '==', '!=', '>', '<', '<=', '>='
-	//			- referenceValue is an Interlude base type (string, float, int, rational)
+	//			- referenceValue is an INScore base type (string, float, int, rational)
 	//	- osc-message is a standard OSC message with: address msg [optional-parameters]
 	
 	// Parse the message arguments to build a WatchStruct

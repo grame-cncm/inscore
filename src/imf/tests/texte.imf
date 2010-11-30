@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE IMF SYSTEM "http://download.grame.fr/Ressources/imf.dtd">
+<!DOCTYPE IMF SYSTEM "http://download.grame.fr/Ressources/INScore.dtd">
 <IMF version="0.5">
   <general>
     <description>

@@ -34,7 +34,7 @@
 #include "IObject.h"
 #include "IMessage.h"
 
-namespace interlude
+namespace INScore
 {
 
 /*!

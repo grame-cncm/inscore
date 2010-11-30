@@ -40,7 +40,7 @@
 struct NodeGR;
 typedef const struct NodeGR *  CGRHandler;
 
-namespace interlude
+namespace INScore
 {
 
 /*!

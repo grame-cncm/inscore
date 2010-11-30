@@ -29,7 +29,7 @@
 #include "IVNode.h"
 #include "IObjectVNodes.h"
 
-namespace interlude
+namespace INScore
 {
 
 class IMessage;

@@ -1,6 +1,6 @@
 /*
 
-  MusicXML Library
+  INSCore Library (originates from MusicXML Library)
   Copyright (C) 2006  Grame
 
   This library is free software; you can redistribute it and/or

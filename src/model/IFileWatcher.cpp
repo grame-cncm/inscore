@@ -30,7 +30,7 @@
 
 using namespace std;
 
-namespace interlude
+namespace INScore
 {
 
 const string IFileWatcher::kFileWatcherType("fileWatcher");

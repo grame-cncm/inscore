@@ -1,6 +1,6 @@
 /*
 
-  Interlude Library
+  INScore Library
   Copyright (C) 2009,2010  Grame
 
   This library is free software; you can redistribute it and/or
@@ -22,12 +22,12 @@
 
 */
 
-#ifndef __interlude__
-#define __interlude__
+#ifndef __INScore__
+#define __INScore__
 
 #include "export.h"
 
-namespace interlude 
+namespace INScore 
 {
 
 /*!
@@ -37,7 +37,7 @@ namespace interlude
 
 /*! \brief the main library API
 */
-class export Interlude 
+class export INScore 
 {
 	public:
 	typedef void *	MessagePtr;		///< an opaque pointer to a message

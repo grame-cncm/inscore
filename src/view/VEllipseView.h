@@ -32,7 +32,7 @@
 
 #include <QGraphicsRectItem>
 
-namespace interlude
+namespace INScore
 {
 
 class EventsAble;

@@ -30,7 +30,7 @@
 #include "IVNode.h"
 #include "ISync.h"
 
-namespace interlude
+namespace INScore
 {
 
 class IMessage;

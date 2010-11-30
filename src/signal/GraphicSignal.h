@@ -30,7 +30,7 @@
 #include <vector>
 #include "TSignal.h"
 
-namespace interlude
+namespace INScore
 {
 	
 /*!

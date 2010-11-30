@@ -33,7 +33,7 @@
 #include "TLocalMapping.h"
 #include "TRelation.h"
 
-namespace interlude
+namespace INScore
 {
 
 /*!

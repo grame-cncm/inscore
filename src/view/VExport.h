@@ -33,7 +33,7 @@
 #include <QGraphicsItem>
 #include <QGraphicsView>
 
-namespace interlude
+namespace INScore
 {
 
 /*!

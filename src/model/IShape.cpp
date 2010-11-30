@@ -31,7 +31,7 @@
 
 using namespace std;
 
-namespace interlude
+namespace INScore
 {
 
 const std::string IShape::kSolidStyle = SOLID_STYLE;

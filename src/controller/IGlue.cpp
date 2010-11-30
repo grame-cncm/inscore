@@ -32,7 +32,7 @@
 #include "EventsAble.h"
 #include "IAppl.h"
 #include "IGlue.h"
-#include "interlude.h"
+#include "INScore.h"
 #include "IScene.h"
 #include "ISync.h"
 #include "IMessage.h"
@@ -44,7 +44,7 @@
 
 using namespace std;
 
-namespace interlude
+namespace INScore
 {
 
 extern SIMessageStack gMsgStask;
@@ -133,7 +133,7 @@ void IGlue::initialize ()
 	oscinit (fModel, fUDP);
 	if (!fMsgStack || !fController || !fModel || !fOscThread)
 		throw("Memory allocation failed!");
-	oscerr << OSCStart("Interlude") << "v" << Interlude::versionStr() << " listening on port " <<  fUDP.fInPort << OSCEnd();
+	oscerr << OSCStart("INScore") << "v" << INScore::versionStr() << " listening on port " <<  fUDP.fInPort << OSCEnd();
 	
 	// creates a mapping updater - note that it may send error messages and thus should not be
 	// set before the osc streams are ready

@@ -31,7 +31,7 @@
 #include "TReverseComposition.h"
 #include "TRelation.h"
 
-namespace interlude
+namespace INScore
 {
 
 /*!

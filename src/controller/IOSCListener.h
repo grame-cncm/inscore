@@ -33,7 +33,7 @@
 #include "ip/UdpSocket.h"
 #include "osc/OscPacketListener.h"
 
-namespace interlude
+namespace INScore
 {
 
 class IMessageStack;

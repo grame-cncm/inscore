@@ -22,7 +22,7 @@
 #include "Tools.h"
 
 
-namespace interlude
+namespace INScore
 {
 
 //--------------------------------------------------------------------------

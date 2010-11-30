@@ -31,7 +31,7 @@
 #include "IObject.h"
 #include "TSignal.h"
 
-namespace interlude
+namespace INScore
 {
 
 /*!

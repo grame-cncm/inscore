@@ -27,7 +27,7 @@
 #ifndef __browsable__
 #define __browsable__
 
-namespace interlude
+namespace INScore
 {
 
 class updater;

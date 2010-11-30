@@ -25,7 +25,7 @@
 #include <iostream>
 #include "OSCStream.h"
 
-namespace interlude
+namespace INScore
 {
 
 //--------------------------------------------------------------------------

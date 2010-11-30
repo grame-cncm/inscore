@@ -31,7 +31,7 @@
 #include "IHtml.h"
 #include "TFile.h"
 
-namespace interlude
+namespace INScore
 {
 
 /*!
