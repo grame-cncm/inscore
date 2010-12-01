@@ -31,6 +31,9 @@
 #include <QObject>
 #include <QTimer>
 
+class QGraphicsScene;
+class QImage;
+
 namespace inscore
 {
 
@@ -43,6 +46,7 @@ class Master;
 class WindowEventFilter;
 class ZoomingGraphicsView;
 
+class GraphicUpdateListener;
 //--------------------------------------------------------------------------
 /**
 *	\brief a graphic view of a IScene.
@@ -51,13 +55,21 @@ class VSceneView
 {
 	ZoomingGraphicsView * fGraphicsView;
 	QGraphicsRectItem * fBackground;
+	QGraphicsScene *	fScene;
+	QImage *			fImage;
+	GraphicUpdateListener*	fListener;
 	WindowEventFilter * fEventFilter;
 
+	void				updateOnScreen( IScene * scene );
+	void				updateOffScreen( IScene * scene );
+
 	public :
-				 VSceneView(QGraphicsScene * scene);
+				 VSceneView(QGraphicsScene * scene, bool offscreen=false);
 		virtual ~VSceneView();
 
+		bool				copy(unsigned int* dest, int w, int h, bool smooth=false );
 		void				updateView( IScene * scene );
+		void				setListener( GraphicUpdateListener* listener )		{ fListener = listener; }
 		QGraphicsScene *	scene() const;
 };
 

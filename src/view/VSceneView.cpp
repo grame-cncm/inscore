@@ -27,12 +27,13 @@
 
 #include "VSceneView.h"
 
-#include <QPixmap>
+#include <QImage>
 #include <QPainter>
 #include <QGraphicsRectItem>
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QResizeEvent>
+#include <QDebug>
 
 #include "IScene.h"
 #include "IColor.h"
@@ -115,38 +116,42 @@ class ZoomingGraphicsView : public QGraphicsView
 #define PRECISION 100.0f
 
 //------------------------------------------------------------------------------------------------------------------------
-VSceneView::VSceneView(QGraphicsScene * scene)
+VSceneView::VSceneView(QGraphicsScene * scene, bool offscreen)
 {
-	fGraphicsView = new ZoomingGraphicsView(scene);
-	fGraphicsView->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
-	fGraphicsView->scene()->setSceneRect( SCENE_RECT );
-	fGraphicsView->setWindowTitle( "INScore" );
+	fImage = 0;
+	fGraphicsView = 0;
+	fEventFilter = 0;
+	fListener = 0;
+	fScene = scene;
+	if (offscreen) {
+		fImage = new QImage;
+	}
+	else {
+		fGraphicsView = new ZoomingGraphicsView(scene);
+		fGraphicsView->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+		fGraphicsView->scene()->setSceneRect( SCENE_RECT );
+		fGraphicsView->setWindowTitle( "INScore" );
 
-//	fGraphicsView->setViewport(new QGLWidget);
-//	fGraphicsView->setRenderHints(QPainter::HighQualityAntialiasing);
+	//	fGraphicsView->setViewport(new QGLWidget);
+	//	fGraphicsView->setRenderHints(QPainter::HighQualityAntialiasing);
 
-	fEventFilter = new WindowEventFilter( fGraphicsView );
-//	fGraphicsView->installEventFilter( fEventFilter );
+		fEventFilter = new WindowEventFilter( fGraphicsView );
+	}
 }
 
 //------------------------------------------------------------------------------------------------------------------------
-VSceneView::~VSceneView()						{ delete fGraphicsView; }
+VSceneView::~VSceneView()
+{ 
+	delete fImage; 
+	delete fGraphicsView; 
+}
 
 //------------------------------------------------------------------------------------------------------------------------
-QGraphicsScene * VSceneView::scene() const		{ return fGraphicsView->scene(); }
-
+QGraphicsScene * VSceneView::scene() const		{ return fScene; }
 
 //------------------------------------------------------------------------------------------------------------------------
-void VSceneView::updateView( IScene * scene )
+void VSceneView::updateOnScreen( IScene * scene )
 {
-/*
-	qDebug() << "VSceneView::updateTo ; "
-			<< " modified:" << bool(scene->getState() & IObject::kModified)
-			<< " submodified:" << bool(scene->getState() & IObject::kSubModified)
-			<< " new:" << bool(scene->getState() & IObject::kNewObject)
-			<< " mastermodified:" << bool(scene->getState() & IObject::kMasterModified);
-*/	
-
 	// Color
 	int r,g,b,a;
 	fGraphicsView->backgroundBrush().color().getRgb(&r,&g,&b,&a);
@@ -154,6 +159,7 @@ void VSceneView::updateView( IScene * scene )
 	IColor sc = *scene;
 	if (cc != sc) {
 		fGraphicsView->setBackgroundBrush( QBrush(QColor(sc.getR(), sc.getG(), sc.getB() , sc.getA())));
+		fScene->setBackgroundBrush (QColor(sc.getR(), sc.getG(), sc.getB() , sc.getA()));
 	}
 
 	// Transparency
@@ -204,14 +210,64 @@ void VSceneView::updateView( IScene * scene )
 	// Visibility
 	scene->getVisible() ? fGraphicsView->show() : fGraphicsView->hide();
 
-	// Export
-	if ( scene->getExportFlag().length() )
-		VExport::exportScene( fGraphicsView , scene->getExportFlag().c_str() );
-
 	//Debug
 //	fGraphicsView->setDebugDraw( scene->signalDebug() );
 //	fGraphicsView->setDebugClick( scene->clickDebug() );
 //	fGraphicsView->setObjectName( scene->name() );
+}
+
+
+//------------------------------------------------------------------------------------------------------------------------
+void VSceneView::updateOffScreen( IScene * scene )
+{
+	// Size
+	QRect r = QApplication::desktop()->screenGeometry();
+	float lowestDimension = qMin( r.width(), r.height() );
+	int w = scene->getWidth() * lowestDimension / 2;
+	int h = scene->getHeight() * lowestDimension / 2;
+
+	if ((w != fImage->width()) || (h != fImage->height())) {
+		delete fImage;
+		fImage = new QImage(w, h, QImage::Format_ARGB32_Premultiplied);
+	}
+	QPainter painter(fImage);
+	painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+
+	IColor sc = *scene;
+	fScene->setBackgroundBrush (QColor(sc.getR(), sc.getG(), sc.getB() , sc.getA()));
+	fScene->render(&painter);
+	painter.end();
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+bool VSceneView::copy(unsigned int* dest, int w, int h, bool smooth )
+{
+	if (!fImage) return false;
+
+	QImage image = fImage->scaled (w, h, Qt::KeepAspectRatio, smooth ? Qt::SmoothTransformation : Qt::FastTransformation);
+	int iw = image.width();
+	int ih = image.height();
+	for (int y = 0; y < ih; y++) {
+		for (int x = 0; x < iw; x++) {
+			QRgb pix = image.pixel(x, y);
+			*dest++ = pix;
+//if (pix && (pix!=0xffffffff)) fprintf(stdout, "%x\n", pix);
+		}
+	}
+	return true;
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+void VSceneView::updateView( IScene * scene )
+{
+	if (fGraphicsView) updateOnScreen (scene);
+	else updateOffScreen (scene);
+
+	if (fListener) fListener->update();
+
+	// Export
+	if ( scene->getExportFlag().length() )
+		VExport::exportScene( fScene , scene->getExportFlag().c_str() );
 }
 
 //--------------------------------------------------------------------------
