@@ -31,11 +31,13 @@ using namespace inscore;
 //--------------------------------------------------------------------------
 class JavaListener : public GraphicUpdateListener
 {
+	bool		fGlobalRef;
 	JNIEnv*		fEnv;
 	jobject		fObject;
 	jmethodID	fMethod;
 
 	public :
+				 JavaListener() { fGlobalRef = false; }
 		virtual ~JavaListener() {}
 		void init (JNIEnv* env, jobject	obj, jmethodID method);
 		void update();
@@ -43,25 +45,32 @@ class JavaListener : public GraphicUpdateListener
 
 void JavaListener::init (JNIEnv* env, jobject obj, jmethodID method)
 {
-	std::cout << "JavaListener::init : " << env << " " << obj << " " << method << std::endl;
+	if (fGlobalRef)
+		env->DeleteGlobalRef (fObject);
 	fEnv = env;
-	fObject = obj;
+//	fObject = obj;
+	fObject = env->NewGlobalRef(obj);
+	fGlobalRef = true;
 	fMethod = method;
+	std::cout << "JavaListener::init : " << env << " " << obj << " -> " << fObject << " " << method << std::endl;
 }
 
 void JavaListener::update ()	{ 
-	std::cout << "JavaListener::update called\n";
-	std::cout << "CallVoidMethod : " << fEnv << " " << fObject << " (" <<  fMethod << ")" << std::endl;
+	std::cout << "JavaListener::update called " << fEnv << " obj: " << fObject << std::endl;
 
-	jclass cl = fEnv->GetObjectClass(fObject);
-	jmethodID javaCallback = fEnv->GetMethodID (cl, "update", "()V");
-	if (javaCallback == NULL) {
-		fprintf(stderr, "ViewListener::update got NULL jmethodID\n");
-		return;
-	}
+//	jclass cl = fEnv->GetObjectClass(fObject);
+//	std::cout << "GetObjectClass : " << cl << std::endl;
+//
+//	jmethodID javaCallback = fEnv->GetMethodID (cl, "update", "()V");
+//	if (javaCallback == NULL) {
+//		fprintf(stderr, "ViewListener::update got NULL jmethodID\n");
+//		return;
+//	}
+//
+//	std::cout << "CallVoidMethod : " << fEnv << " " << fObject << " (" <<  fMethod << " | " <<  javaCallback << ")" << std::endl;
+//	fEnv->CallVoidMethod (fObject, javaCallback); 
 
-	fEnv->CallVoidMethod (fObject, javaCallback); 
-//	fEnv->CallVoidMethod (fObject, fMethod); 
+	fEnv->CallVoidMethod (fObject, fMethod); 
 }
 
 JavaListener gListener;
@@ -112,8 +121,7 @@ JNIEXPORT void JNICALL Java_INScore_INScore_SetViewListener
 	gListener.init (env, listener, javaCallback);
 	INScore::setListener (gGlue, &gListener);
 
-	env->CallVoidMethod (listener, javaCallback); 
-std::cout << "Java_INScore_INScore_SetViewListener OK" << std::endl;
+	env->CallVoidMethod (listener, javaCallback);
 }
 
 /*
