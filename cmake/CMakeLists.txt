@@ -157,13 +157,6 @@ if(MINGW)
 endif(MINGW)
 
 
-add_executable( ${TARGET}TextViewer  MACOSX_BUNDLE ${ROOT}/INScore.cpp )
-target_link_libraries( ${TARGET}TextViewer ${QTLIBS} ${GUIDO})
-set_target_properties (${TARGET}TextViewer PROPERTIES COMPILE_FLAGS -DTEXTVIEW)
-set_target_properties (${TARGET}TextViewer PROPERTIES VERSION ${INSTEXTVERS}
-							MACOSX_BUNDLE_SHORT_VERSION_STRING ${INSTEXTSTRVERS}
-							MACOSX_BUNDLE_BUNDLE_VERSION ${INSTEXTSSTRVERS})
-
 add_executable( ${TARGET}Viewer  MACOSX_BUNDLE ${ROOT}/INScore.cpp ../win32/Viewer/${TARGET}Viewer.rc)
 target_link_libraries( ${TARGET}Viewer ${QTLIBS} ${GUIDO})
 set_target_properties (${TARGET}Viewer PROPERTIES VERSION ${INSAPPVERS}
@@ -186,8 +179,6 @@ if(APPLE)
 	set_target_properties (${TARGET} PROPERTIES FRAMEWORK TRUE FRAMEWORK_VERSION ${INSFWKVERS})
 endif(APPLE)
 
-target_link_libraries( ${TARGET}TextViewer ${TARGET})
-add_dependencies(${TARGET}TextViewer ${TARGET})
 target_link_libraries( ${TARGET}Viewer ${TARGET})
 add_dependencies(${TARGET}Viewer ${TARGET})
 

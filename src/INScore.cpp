@@ -31,15 +31,9 @@
 #include <string>
 
 #include "IGlue.h"
-
-#ifdef TEXTVIEW
-# include "VTextUpdater.h"
-
-#else
-# include "VQtLocalMappingUpdater.h"
-# include "VQtUpdater.h"
-# include "VQtInit.h"
-#endif
+#include "VQtLocalMappingUpdater.h"
+#include "VQtUpdater.h"
+#include "VQtInit.h"
 
 using namespace inscore;
 using namespace std;
@@ -59,7 +53,7 @@ static int intopt (const string& opt, int defaultValue, int n, char **argv)
 	return defaultValue;
 }
 
-#if defined(WIN32) && !defined(_DEBUG) && !defined(TEXTVIEW)
+#if defined(WIN32) && !defined(_DEBUG)
 # define USEWINMAIN 
 #endif
 //_______________________________________________________________________
@@ -80,26 +74,19 @@ int main( int argc, char **argv )
 	QApplication appl(argc, argv);
 
 	IGlue glue (udpPort, kUPDPort+1, kUPDPort+2);
+	VQtInit::startQt();
 	if (glue.start (kTimeInterval)) {
-#ifdef TEXTVIEW
-		ofstream outfile  ("INScoreTextView.txt");
-		glue.setViewUpdater (VTextUpdater::create(outfile));
-		ret = appl.exec();
-#else
-
 		appl.setApplicationName("INScoreViewer");	
 		QDir dir(QApplication::applicationDirPath());
 #ifndef WIN32
 		dir.cdUp();
 #endif
 		dir.cd("PlugIns");
-		appl.addLibraryPath( dir.absolutePath());
-		VQtInit::startQt();
-		glue.setLocalMapUpdater		(VQtLocalMappingUpdater::create() );
-		glue.setViewUpdater			(VQtUpdater::create() );
+		appl.addLibraryPath		( dir.absolutePath());
+		glue.setLocalMapUpdater	(VQtLocalMappingUpdater::create() );
+		glue.setViewUpdater		(VQtUpdater::create() );
 		ret = appl.exec();
-		VQtInit::stopQt();
-#endif
 	}
+	VQtInit::stopQt();
 	return ret;
 }
