@@ -28,6 +28,7 @@
 #include <QStyleOptionGraphicsItem>
 #include <QPrinter>
 #include <QFileInfo>
+#include <QDebug>
 
 #define PDF_FORMAT				QString(".pdf")
 #define DEFAULT_EXPORT_FORMAT	PDF_FORMAT
@@ -95,7 +96,7 @@ void VExport::exportItem(QGraphicsItem * item , QString fileName , float xScaleF
 }
 
 //------------------------------------------------------------------------------------------------------------------------
-void VExport::exportScene( QGraphicsView * view , QString fileName )
+void VExport::exportScene( QGraphicsScene * scene , QString fileName )
 {
 	if ( QFileInfo(fileName).suffix().isEmpty() )
 		fileName += DEFAULT_EXPORT_FORMAT;
@@ -107,31 +108,23 @@ void VExport::exportScene( QGraphicsView * view , QString fileName )
 		printer.setOutputFileName( QString(fileName) );
 		printer.setOutputFormat( QPrinter::PdfFormat );
 
-		QSizeF pageSize(view->size().width() , view->size().height() );
+		QSizeF pageSize(scene->width() , scene->height() );
 		printer.setPaperSize( pageSize , QPrinter::DevicePixel );
 
 		QPainter painter(&printer);
-/*
-		//Draw the background
-		painter.setPen( Qt::NoPen );
-		painter.setBrush( QBrush(view->backgroundBrush().color()) );
-		painter.drawRect( view->scene()->sceneRect() );
-		//Draw the contents of the scene
-		view->scene()->render(&painter, QRect() , view->scene()->sceneRect() );
-*/
-		view->render( &painter );
+		scene->render( &painter );
 		painter.end();
 	}
 	else
 	{
-		QPixmap pixmap(view->size());
-//		pixmap.fill( view->backgroundBrush().color() );
+		QPixmap pixmap(scene->width() , scene->height());
+		pixmap.fill( scene->backgroundBrush().color() );
 		QPainter painter(&pixmap);
-//		view->scene()->render(&painter, QRect() , view->scene()->sceneRect() );
-		view->render( &painter );
+		painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+		scene->render( &painter );
 		painter.end();
-		pixmap.save( fileName );
+		pixmap.save( fileName );			
 	}
-
 }
+
 } // end namespoace

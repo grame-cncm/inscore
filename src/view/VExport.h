@@ -62,13 +62,13 @@ class VExport
 										float xScaleFactor , float yScaleFactor);
 
 		/*!
-		*	\brief Exports the QGraphicsView to the specified fileName ; the format is infered from
+		*	\brief Exports the QGraphicsScene to the specified fileName ; the format is infered from
 		*	the fileName's extension.
 		*
 		*	Supported extensions (formats) are:
 		*	pdf, bmp, gif, jpeg, png, pgm, ppm, tiff, xbm, xpm.
 		*/
-		static void		exportScene( QGraphicsView * view , QString fileName );
+		static void		exportScene( QGraphicsScene * scene , QString fileName );
 
 		/*!	\brief Paints the QGraphicsItem on the QPainterDevice.
 		*
