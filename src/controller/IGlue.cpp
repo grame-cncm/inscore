@@ -39,6 +39,7 @@
 #include "OSCStream.h"
 #include "IMappingUpdater.h"
 #include "ViewFactory.h"
+#include "VSceneView.h"
 
 #include "benchtools.h"
 
@@ -108,7 +109,13 @@ void IGlue::oscinit (OSCStream& osc, const std::string& address, int port)
 }
 
 //--------------------------------------------------------------------------
-void IGlue::initialize ()
+void IGlue::setGraphicListener(GraphicUpdateListener* listener) const
+{
+	if (fSceneView) fSceneView->setListener (listener);
+}
+
+//--------------------------------------------------------------------------
+void IGlue::initialize (bool offscreen)
 {
 	Master::initMap();
 	EventsAble::init();
@@ -124,7 +131,9 @@ void IGlue::initialize ()
 
 	SIScene	scene = IScene::create(fModel);
 	scene->createVirtualNodes();
-	scene->setView (ViewFactory::create(scene));
+//	scene->setView (ViewFactory::create(scene));
+	fSceneView = new VSceneView ( new QGraphicsScene, offscreen );
+	scene->setView (fSceneView);
 	fModel->add (scene);
 
 	fTimeTask = scene;
@@ -145,10 +154,10 @@ void IGlue::initialize ()
 }
 
 //--------------------------------------------------------------------------
-bool IGlue::start (int timeInterval)
+bool IGlue::start (int timeInterval, bool offscreen)
 {
 	try {
-		initialize();
+		initialize(offscreen);
 		fTimerID = startTimer(timeInterval);
 	}
 	catch (std::runtime_error e) {

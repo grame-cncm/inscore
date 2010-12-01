@@ -37,9 +37,11 @@
 #include "Updater.h"
 #include "smartpointer.h"
 
+
 namespace inscore
 {
 
+class VSceneView;
 class IMessage;
 class IObject;
 class IMessageStack;
@@ -64,6 +66,7 @@ class OscThread : public QThread
 
 class OSCStream;
 class IAppl;
+class GraphicUpdateListener;
 typedef class SMARTP<IAppl>	SIAppl;
 //--------------------------------------------------------------------------
 /*!	\brief a glue between osc, a basic model and a controller
@@ -72,7 +75,7 @@ typedef class SMARTP<IAppl>	SIAppl;
 */
 class export IGlue : public MsgListener, public QObject 
 {
-
+	VSceneView*		fSceneView;
 	OscThread *		fOscThread;
 	SUpdater 		fViewUpdater;
 	SUpdater 		fLocalMapUpdater;
@@ -89,7 +92,7 @@ class export IGlue : public MsgListener, public QObject
 				 IGlue(int udpport, int outport, int errport);
 		virtual ~IGlue();
 			
-				bool start(int timerInterval);
+				bool start(int timerInterval, bool offscreen=false);
 				void setViewUpdater(SUpdater updater);
 				void setLocalMapUpdater(SUpdater updater);
 				void setSlaveMapUpdater(SUpdater updater);
@@ -98,10 +101,13 @@ class export IGlue : public MsgListener, public QObject
 				void setOSCOut (const std::string& a);
 				void setOSCErr (const std::string& a);
 
+				void setGraphicListener(GraphicUpdateListener* listener) const;
+				VSceneView* getSceneView() const		{ return fSceneView; }
+
 		static void trace (const IMessage* msg, int status);
 
 	protected:
-		virtual void initialize ();
+		virtual void initialize (bool offscreen);
 		virtual	void clean ();
 		virtual void timerEvent ( QTimerEvent * event );
 		void modelUpdate();
