@@ -25,6 +25,17 @@
 #include "IMessage.h"
 #include "IMessageStack.h"
 
+
+#include <QApplication>
+#include <QDir>
+#include <iostream>
+
+#include "IGlue.h"
+#include "VQtLocalMappingUpdater.h"
+#include "VQtUpdater.h"
+#include "VQtInit.h"
+#include "VSceneView.h"
+
 using namespace std;
 namespace inscore 
 {
@@ -32,10 +43,48 @@ namespace inscore
 
 SIMessageStack gMsgStask;
 
+#define kUPDPort 7000
+
 //--------------------------------------------------------------------------
 static IMessage* Message2IMessage (INScore::MessagePtr p)
 {
 	return (IMessage*)p;
+}
+
+//--------------------------------------------------------------------------
+// Qt environment initiaization + INScore glue setup
+// intended for theJava environment
+//--------------------------------------------------------------------------
+IGlue* INScore::init(int timeInterval, int udpport)
+{
+	int argc=0; char** argv=0;
+	QApplication* appl = new QApplication(argc, argv);
+
+	IGlue* glue = new IGlue (udpport, kUPDPort+1, kUPDPort+2);
+	if (appl && glue && glue->start (timeInterval, true)) {
+		VQtInit::startQt();
+		appl->setApplicationName("INScoreViewer");	
+		glue->setLocalMapUpdater(VQtLocalMappingUpdater::create() );
+		glue->setViewUpdater	(VQtUpdater::create() );
+		return glue;
+	}
+	std::cerr << "INScore initialization failed" << std::endl;
+	delete glue;
+	delete appl;
+	return 0;
+}
+
+//--------------------------------------------------------------------------
+bool INScore::getScene (const IGlue* glue, unsigned int* bitmap, int w, int h)
+{
+	if (!glue || !bitmap) return false;
+	return glue->getSceneView()->copy(bitmap, w, h, false );
+}
+
+//--------------------------------------------------------------------------
+void INScore::setListener (const IGlue* glue, GraphicUpdateListener* listener)
+{
+	if (glue) glue->setGraphicListener (listener);
 }
 
 //--------------------------------------------------------------------------

@@ -27,6 +27,7 @@
 
 #include "export.h"
 
+
 namespace inscore 
 {
 
@@ -35,12 +36,45 @@ namespace inscore
 @{
 */
 
+//--------------------------------------------------------------------------
+class GraphicUpdateListener
+{
+	public :
+		virtual void update() = 0;
+};
+
+class IGlue;
 /*! \brief the main library API
 */
 class export INScore 
 {
 	public:
 	typedef void *	MessagePtr;		///< an opaque pointer to a message
+
+	/*! \brief Qt environment initiaization + INScore glue setup
+
+		\param address the OSC destination address of the message
+		\param params the message parameters
+		\warning once a message has been posted, it is owned by the library and must not be deleted
+		by the client application
+	*/
+	static IGlue* init (int timeInterval=10, int udpport=7000);
+
+	/*! \brief sets a listener for the graphic update
+
+		\param glue the system glue as returned by init()
+		\param listener a listener that will be called after the scene graphic update
+	*/
+	static void setListener (const IGlue* glue, GraphicUpdateListener* listener);
+
+	/*! \brief copy the scene data into a bitmap
+
+		\param glue the system glue as returned by init()
+		\param bitmap the destination bitmap
+		\param w the bitmap width
+		\param h the bitmap height
+	*/
+	static bool getScene (const IGlue* glue, unsigned int* bitmap, int w, int h);
 
 	/*! \brief post a message
 
