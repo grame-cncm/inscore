@@ -9,5 +9,8 @@ Debug
 Release
 INScore.*
 *.vcproj*
-debug/
-release/
+Debug/
+Release/
+build/
+CMakeFiles/
+moc_*
