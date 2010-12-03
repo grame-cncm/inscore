@@ -46,7 +46,6 @@ class Master;
 class WindowEventFilter;
 class ZoomingGraphicsView;
 
-class GraphicUpdateListener;
 //--------------------------------------------------------------------------
 /**
 *	\brief a graphic view of a IScene.
@@ -57,7 +56,6 @@ class VSceneView
 	QGraphicsRectItem * fBackground;
 	QGraphicsScene *	fScene;
 	QImage *			fImage;
-	GraphicUpdateListener*	fListener;
 	WindowEventFilter * fEventFilter;
 
 	void				updateOnScreen( IScene * scene );
@@ -69,7 +67,6 @@ class VSceneView
 
 		bool				copy(unsigned int* dest, int w, int h, bool smooth=false );
 		void				updateView( IScene * scene );
-		void				setListener( GraphicUpdateListener* listener )		{ fListener = listener; }
 		QGraphicsScene *	scene() const;
 };
 
