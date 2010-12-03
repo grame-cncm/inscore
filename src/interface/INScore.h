@@ -65,7 +65,7 @@ class export INScore
 		\param glue the system glue as returned by init()
 		\param listener a listener that will be called after the scene graphic update
 	*/
-	static void setListener (const IGlue* glue, GraphicUpdateListener* listener);
+	static void setListener (IGlue* glue, GraphicUpdateListener* listener);
 
 	/*! \brief copy the scene data into a bitmap
 
