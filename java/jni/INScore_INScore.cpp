@@ -32,49 +32,50 @@ using namespace inscore;
 class JavaListener : public GraphicUpdateListener
 {
 	bool		fGlobalRef;
-	JNIEnv*		fEnv;
+	JavaVM *	fVM;
 	jobject		fObject;
-	jmethodID	fMethod;
+	jmethodID	fMethodID;
 
 	public :
-				 JavaListener() { fGlobalRef = false; }
-		virtual ~JavaListener() {}
-		void init (JNIEnv* env, jobject	obj, jmethodID method);
+				 JavaListener() { fObject = 0; }
+		virtual ~JavaListener();
+		bool init (JNIEnv* env, jobject	obj, jmethodID method);
 		void update();
 };
 
-void JavaListener::init (JNIEnv* env, jobject obj, jmethodID method)
+JavaListener::~JavaListener() {
+	if (fObject) {
+		JNIEnv*	env;
+		if (fVM->AttachCurrentThread((void**)&env, 0))
+			env->DeleteGlobalRef (fObject);
+	}
+}
+
+bool JavaListener::init (JNIEnv* env, jobject obj, jmethodID method)
 {
-	if (fGlobalRef)
-		env->DeleteGlobalRef (fObject);
-	fEnv = env;
-//	fObject = obj;
+	jint result = env->GetJavaVM (&fVM);
+	if (result) {
+		std::cerr << ">>> INScore JNI GetJavaVM failed" << std::endl;
+		return false;
+	}
+	if (fObject) env->DeleteGlobalRef (fObject);
 	fObject = env->NewGlobalRef(obj);
 	fGlobalRef = true;
-	fMethod = method;
-	std::cout << "JavaListener::init : " << env << " " << obj << " -> " << fObject << " " << method << std::endl;
+	fMethodID = method;
+	return true;
 }
 
 void JavaListener::update ()	{ 
-	std::cout << "JavaListener::update called " << fEnv << " obj: " << fObject << std::endl;
-
-//	jclass cl = fEnv->GetObjectClass(fObject);
-//	std::cout << "GetObjectClass : " << cl << std::endl;
-//
-//	jmethodID javaCallback = fEnv->GetMethodID (cl, "update", "()V");
-//	if (javaCallback == NULL) {
-//		fprintf(stderr, "ViewListener::update got NULL jmethodID\n");
-//		return;
-//	}
-//
-//	std::cout << "CallVoidMethod : " << fEnv << " " << fObject << " (" <<  fMethod << " | " <<  javaCallback << ")" << std::endl;
-//	fEnv->CallVoidMethod (fObject, javaCallback); 
-
-	fEnv->CallVoidMethod (fObject, fMethod); 
+	JNIEnv*	env;
+	if (fVM->AttachCurrentThread((void**)&env, 0))
+		std::cerr << ">>> INScore JNI AttachCurrentThread failed" << std::endl;		
+	else
+		env->CallVoidMethod (fObject, fMethodID);
 }
 
 JavaListener gListener;
 
+//--------------------------------------------------------------------------
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -118,10 +119,8 @@ JNIEXPORT void JNICALL Java_INScore_INScore_SetViewListener
 		}
 		return;
 	}
-	gListener.init (env, listener, javaCallback);
-	INScore::setListener (gGlue, &gListener);
-
-	env->CallVoidMethod (listener, javaCallback);
+	if (gListener.init (env, listener, javaCallback))
+		INScore::setListener (gGlue, &gListener);
 }
 
 /*
