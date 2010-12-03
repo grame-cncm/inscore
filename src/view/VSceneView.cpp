@@ -121,7 +121,6 @@ VSceneView::VSceneView(QGraphicsScene * scene, bool offscreen)
 	fImage = 0;
 	fGraphicsView = 0;
 	fEventFilter = 0;
-	fListener = 0;
 	fScene = scene;
 	if (offscreen) {
 		fImage = new QImage;
@@ -284,8 +283,6 @@ void VSceneView::updateView( IScene * scene )
 {
 	if (fGraphicsView) updateOnScreen (scene);
 	else updateOffScreen (scene);
-
-	if (fListener) fListener->update();
 
 	// Export
 	if ( scene->getExportFlag().length() )

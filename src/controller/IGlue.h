@@ -84,6 +84,7 @@ class export IGlue : public MsgListener, public QObject
 	SIAppl			fModel;
 	SIMessageStack	fMsgStack;
 	SPeriodicTask	fTimeTask;
+	GraphicUpdateListener * fViewListener;
 
 	int	fTimerID;
 	udpinfo fUDP;
@@ -101,8 +102,8 @@ class export IGlue : public MsgListener, public QObject
 				void setOSCOut (const std::string& a);
 				void setOSCErr (const std::string& a);
 
-				void setGraphicListener(GraphicUpdateListener* listener) const;
-				VSceneView* getSceneView() const		{ return fSceneView; }
+				void setGraphicListener(GraphicUpdateListener* listener)	{ fViewListener = listener; }
+				VSceneView* getSceneView() const							{ return fSceneView; }
 
 		static void trace (const IMessage* msg, int status);
 

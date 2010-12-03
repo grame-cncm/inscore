@@ -43,9 +43,10 @@ public class INScoreViewer {
 }
 
 class INScoreListener implements INScoreViewListener {  
-   
-    public void update() {
-		System.out.println("JAVA >>> INScoreListener update\n");
+	Component fView;
+    public INScoreListener (Component view)			{ fView = view; }
+	public void update() {
+		fView.repaint();
     }
 }
 
@@ -54,24 +55,24 @@ class scorePanel extends Canvas implements Printable {
         try {
 			System.loadLibrary("jniINScore");
 		} catch (UnsatisfiedLinkError e) {
-			System.err.println("Native code library failed to load.\n" + e);
+			System.err.println("Native code library failed to load." + e);
 		}
 	}
 
-	INScore m_score;
-	INScoreListener m_listener;
+	INScore fscore;
+	INScoreListener flistener;
 	
 	public scorePanel()	{ 
-		m_score = new INScore(); 
-		m_listener = new INScoreListener();
-//		m_score.SetViewListener (m_listener);
+		fscore = new INScore(); 
+		flistener = new INScoreListener(this);
+		fscore.SetViewListener (flistener);
 	}
 
 	public Dimension getPreferredSize()		{ return new Dimension(500,500); }
 
 
 	public void paint(Graphics g) {
-		m_score.Draw (g, getSize().width, getSize().height);
+		fscore.Draw (g, getSize().width, getSize().height);
 	}
 	
 	public int print(Graphics g, PageFormat pf, int page) throws PrinterException {
@@ -82,7 +83,7 @@ class scorePanel extends Canvas implements Printable {
 		g2d.translate(pf.getImageableX(), pf.getImageableY());
 		int w = (int)pf.getImageableWidth();
 		int h = (int)pf.getImageableHeight();
-
+		fscore.Draw (g, w, h);
 		return PAGE_EXISTS;
 	}
 }
@@ -90,46 +91,46 @@ class scorePanel extends Canvas implements Printable {
 
 ///// inscoreviewerGUI
 class inscoreviewerGUI extends JFrame {
-    String	 m_Title = "INScore Viewer Java";
-	Menu     m_fileMenu = new Menu("File");		// declare and create new menu
-    MenuItem m_printItem = new MenuItem("Print");	// create new menu item
-    MenuItem m_quitItem = new MenuItem("Quit");	// another menu item
-	scorePanel m_score = new scorePanel();
+    String	 fTitle = "INScore Viewer Java";
+	Menu     ffileMenu = new Menu("File");		// declare and create new menu
+    MenuItem fprintItem = new MenuItem("Print");	// create new menu item
+    MenuItem fquitItem = new MenuItem("Quit");	// another menu item
+	scorePanel fscore = new scorePanel();
 
     
     public inscoreviewerGUI() {
         //... Add listeners to menu items
-        m_printItem.addActionListener(new PrintAction(m_score));
-        m_quitItem.addActionListener(new QuitAction());
+        fprintItem.addActionListener(new PrintAction(fscore));
+        fquitItem.addActionListener(new QuitAction());
         
         //... Menubar, menus, menu items.  Use indentation to show structure.
         MenuBar menubar = new MenuBar();  // declare and create new menu bar
-		menubar.add(m_fileMenu);			// add the menu to the menubar
-		m_fileMenu.add(m_printItem);		// add the menu item to the menu
-		m_fileMenu.addSeparator();			// add separator line to menu
-		m_fileMenu.add(m_quitItem);
+		menubar.add(ffileMenu);			// add the menu to the menubar
+		ffileMenu.add(fprintItem);		// add the menu item to the menu
+		ffileMenu.addSeparator();			// add separator line to menu
+		ffileMenu.add(fquitItem);
         
         //... Content pane: create, layout, add components
         JPanel content = new JPanel();
         content.setBackground(Color.white);
         content.setLayout(new BorderLayout());
-        content.add(m_score, BorderLayout.CENTER);
+        content.add(fscore, BorderLayout.CENTER);
 
         //... Set JFrame's menubar, content pane, and title.
         this.setContentPane(content);       // Set windows content pane..
         this.setMenuBar(menubar);          // Set windows menubar.
-        this.setTitle(m_Title);
+        this.setTitle(fTitle);
         this.pack();
     }
     
 
 	//// PrintAction
 	class PrintAction implements ActionListener {
-         scorePanel m_score;
-         public PrintAction(scorePanel score)	{ m_score = score; }
+         scorePanel fscore;
+         public PrintAction(scorePanel score)	{ fscore = score; }
 		 public void actionPerformed(ActionEvent e) {
 			 PrinterJob job = PrinterJob.getPrinterJob();
-			 job.setPrintable(m_score);
+			 job.setPrintable(fscore);
 			 boolean ok = job.printDialog();
 			 if (ok) {
 				 try {

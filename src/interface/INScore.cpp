@@ -82,7 +82,7 @@ bool INScore::getScene (const IGlue* glue, unsigned int* bitmap, int w, int h)
 }
 
 //--------------------------------------------------------------------------
-void INScore::setListener (const IGlue* glue, GraphicUpdateListener* listener)
+void INScore::setListener (IGlue* glue, GraphicUpdateListener* listener)
 {
 	if (glue) glue->setGraphicListener (listener);
 }

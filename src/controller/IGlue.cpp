@@ -51,7 +51,7 @@ namespace inscore
 extern SIMessageStack gMsgStask;
 
 //--------------------------------------------------------------------------
-IGlue::IGlue(int udpport, int outport, int errport) : fOscThread(0), fTimerID(0), fUDP(udpport, outport, errport) {}
+IGlue::IGlue(int udpport, int outport, int errport) : fOscThread(0), fViewListener(0), fTimerID(0), fUDP(udpport, outport, errport) {}
 IGlue::~IGlue()	{ clean(); }
 
 //--------------------------------------------------------------------------
@@ -109,10 +109,10 @@ void IGlue::oscinit (OSCStream& osc, const std::string& address, int port)
 }
 
 //--------------------------------------------------------------------------
-void IGlue::setGraphicListener(GraphicUpdateListener* listener) const
-{
-	if (fSceneView) fSceneView->setListener (listener);
-}
+//void IGlue::setGraphicListener(GraphicUpdateListener* listener) const
+//{
+//	if (fSceneView) fSceneView->setListener (listener);
+//}
 
 //--------------------------------------------------------------------------
 void IGlue::initialize (bool offscreen)
@@ -232,25 +232,9 @@ void IGlue::modelUpdate()
 }
 
 //--------------------------------------------------------------------------
-void IGlue::localMapUpdate()
-{
-	if (fLocalMapUpdater)
-		fLocalMapUpdater->update (fModel);
-}
-
-//--------------------------------------------------------------------------
-void IGlue::slaveMapUpdate()
-{
-	if (fSlaveMapUpdater)
-		fSlaveMapUpdater->update (fModel);
-}
-
-//--------------------------------------------------------------------------
-void IGlue::viewUpdate()
-{
-	if (fViewUpdater)
-		fViewUpdater->update (fModel);
-}
+void IGlue::localMapUpdate()	{ if (fLocalMapUpdater) fLocalMapUpdater->update (fModel); }
+void IGlue::slaveMapUpdate()	{ if (fSlaveMapUpdater) fSlaveMapUpdater->update (fModel); }
+void IGlue::viewUpdate()		{ if (fViewUpdater) fViewUpdater->update (fModel); }
 
 
 //--------------------------------------------------------------------------
@@ -276,9 +260,12 @@ void IGlue::timerEvent ( QTimerEvent *)
 			if (fModel->getUDPInPort() != fUDP.fInPort)					// check for udp port number changes
 				oscinit (fModel->getUDPInPort());
 		}
+
 		if (fModel->getState() & IObject::kSubModified) {
 			fController->setListener (fModel->oscDebug() ? this : 0);	// check for debug flag changes
+			if (fViewListener) fViewListener->update();
 		}
+		
 		fModel->cleanup();
 	}
 #ifdef RUNBENCH
