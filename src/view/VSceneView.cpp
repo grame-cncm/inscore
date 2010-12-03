@@ -226,6 +226,8 @@ void VSceneView::updateOffScreen( IScene * scene )
 	int w = scene->getWidth() * lowestDimension / 2;
 	int h = scene->getHeight() * lowestDimension / 2;
 
+	fScene->setSceneRect (0,0,w,h);
+
 	if ((w != fImage->width()) || (h != fImage->height())) {
 		delete fImage;
 		fImage = new QImage(w, h, QImage::Format_ARGB32_Premultiplied);
@@ -242,20 +244,40 @@ void VSceneView::updateOffScreen( IScene * scene )
 //------------------------------------------------------------------------------------------------------------------------
 bool VSceneView::copy(unsigned int* dest, int w, int h, bool smooth )
 {
-	if (!fImage) return false;
+	fScene->setSceneRect (0,0,w,h);
 
-	QImage image = fImage->scaled (w, h, Qt::KeepAspectRatio, smooth ? Qt::SmoothTransformation : Qt::FastTransformation);
-	int iw = image.width();
-	int ih = image.height();
-	for (int y = 0; y < ih; y++) {
-		for (int x = 0; x < iw; x++) {
+	QImage image (w, h, QImage::Format_ARGB32_Premultiplied);
+	QPainter painter(&image);
+	painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+	fScene->render(&painter);
+	painter.end();
+
+	for (int y = 0; y < h; y++) {
+		for (int x = 0; x < w; x++) {
 			QRgb pix = image.pixel(x, y);
 			*dest++ = pix;
-//if (pix && (pix!=0xffffffff)) fprintf(stdout, "%x\n", pix);
 		}
 	}
 	return true;
 }
+
+//------------------------------------------------------------------------------------------------------------------------
+//bool VSceneView::copy(unsigned int* dest, int w, int h, bool smooth )
+//{
+//	if (!fImage) return false;
+//
+//	QImage image = fImage->scaled (w, h, Qt::KeepAspectRatio, smooth ? Qt::SmoothTransformation : Qt::FastTransformation);
+//	int iw = image.width();
+//	int ih = image.height();
+//	for (int y = 0; y < ih; y++) {
+//		for (int x = 0; x < iw; x++) {
+//			QRgb pix = image.pixel(x, y);
+//			*dest++ = pix;
+////if (pix && (pix!=0xffffffff)) fprintf(stdout, "%x\n", pix);
+//		}
+//	}
+//	return true;
+//}
 
 //------------------------------------------------------------------------------------------------------------------------
 void VSceneView::updateView( IScene * scene )
