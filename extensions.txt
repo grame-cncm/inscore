@@ -1,0 +1,10 @@
+Possible future directions and extensions
+-----------------------------------------
+
+- 3D support (and switch to OpenGL): the idea is to explore the problematics that will appear when extending the 2D model to a 3D model. One issue relates to the time synchronization semantic in a 3D graphic space.
+
+- temporal events relations: these relations refer to a time view as 'events' i.e. to time relations viewed as 'before', 'after' or 'in the same time'. The system should support both a generic notion of events, the description of time viewed as these events and the mixing of different time views (musical time and events time).
+
+- scaling issues: the score components may come under very different scales, especially when the design comes under micro to macro composition. The relation between the graphic space taken on the score and the corresponding temporal space can't always be proportional (which is already the case of the traditional western music notation). The idea is to design a general model to represent and synchronize elements that take space but no time, or that take time but no space.
+
+- dynamic processes repreentation: the question is how to represent dynamic processes that compute the music (sound, relations, score...)? or how to integrate temporal graphic processes in the score space? how to transform them into first order music objects?
