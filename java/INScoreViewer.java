@@ -45,7 +45,7 @@ public class INScoreViewer {
 class INScoreListener implements INScoreViewListener {  
 	Component fView;
     public INScoreListener (Component view)			{ fView = view; }
-	public void update() {
+	public synchronized void update() {
 		fView.repaint();
     }
 }
