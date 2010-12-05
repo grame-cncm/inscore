@@ -46,8 +46,10 @@ class JavaListener : public GraphicUpdateListener
 JavaListener::~JavaListener() {
 	if (fObject) {
 		JNIEnv*	env;
-		if (fVM->AttachCurrentThread((void**)&env, 0))
+		if (fVM->AttachCurrentThread((void**)&env, 0)) {
 			env->DeleteGlobalRef (fObject);
+			fVM->DetachCurrentThread();
+		}
 	}
 }
 
