@@ -14,7 +14,7 @@
 #define DEFAULT_ADDRESS "127.0.0.1"
 #define DEFAULT_PORT 7000
 
-#define OUTPUT_BUFFER_SIZE 1024
+#define OUTPUT_BUFFER_SIZE 2048
 
 #define DEBUG
 
@@ -27,8 +27,9 @@ void OSCMessage::send( const std::string& str , int port ) const
     osc::OutboundPacketStream p( buffer, OUTPUT_BUFFER_SIZE );
 
 #if 1
-	p << osc::BeginBundleImmediate
-		<< osc::BeginMessage( mAddress.c_str() ) << mCommand.c_str();
+//	p << osc::BeginBundleImmediate
+//		<< osc::BeginMessage( mAddress.c_str() ) << mCommand.c_str();
+	p << osc::BeginMessage( mAddress.c_str() ) << mCommand.c_str();
 
 	for ( int i = 0 ; i < mValues.size() ; i++ )
 	{
@@ -40,7 +41,8 @@ void OSCMessage::send( const std::string& str , int port ) const
 		else
 			p << mValues[i].toString().toAscii().data();
 	}
-	p << osc::EndMessage << osc::EndBundle;
+	p << osc::EndMessage;
+//	p << osc::EndMessage << osc::EndBundle;
 #else
 	std::cout << "Sending: " << mAddress << " " << mCommand;
 

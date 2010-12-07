@@ -1,3 +1,6 @@
+#ifndef __MainWindow__
+#define __MainWindow__
+
 #include <QMainWindow>
 
 #include <QList>
@@ -57,3 +60,5 @@ class MainWindow: public QMainWindow
 		~MainWindow();
 
 };
+
+#endif
