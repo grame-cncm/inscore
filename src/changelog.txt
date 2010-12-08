@@ -9,7 +9,8 @@ Copyright GRAME (c) 2009,2010
 
 ----------------------------------------------------
 Version 0.62
-- utf8 support on windows
+- utf8 support on windows corrected
+- transparency support for stretched synchronized objects corrected
 
 ----------------------------------------------------
 Version 0.61
