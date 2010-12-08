@@ -202,6 +202,10 @@ void VGraphicsItemView::updateView(IObject* o)
 		fTilerItem->clearSegments();
 		fTilerItem->setRect( item()->parentItem()->boundingRect() );
 		
+		float alpha = o->getA() / 255.f;
+		fTilerItem->setOpacity (alpha);
+
+		
 		Graphic2GraphicRelation::const_iterator iter;
 		for ( iter = slave2Master->direct().begin() ; iter != slave2Master->direct().end() ; iter++ )	// For each slave segment.
 		{
