@@ -26,8 +26,11 @@
 #include <stdexcept>
 #include <iostream>
 
+#include <QApplication>
+#include <QDesktopWidget>
 #include <QMessageBox>
 #include <QDir>
+#include <QMutexLocker>
 
 #include "EventsAble.h"
 #include "IAppl.h"
@@ -51,7 +54,8 @@ namespace inscore
 extern SIMessageStack gMsgStask;
 
 //--------------------------------------------------------------------------
-IGlue::IGlue(int udpport, int outport, int errport) : fOscThread(0), fViewListener(0), fTimerID(0), fUDP(udpport, outport, errport) {}
+IGlue::IGlue(int udpport, int outport, int errport) 
+	: fOscThread(0), fViewListener(0), fTimerID(0), fUDP(udpport, outport, errport), fJava(false) {}
 IGlue::~IGlue()	{ clean(); }
 
 //--------------------------------------------------------------------------
@@ -115,8 +119,28 @@ void IGlue::oscinit (OSCStream& osc, const std::string& address, int port)
 //}
 
 //--------------------------------------------------------------------------
+bool IGlue::getSceneView(unsigned int* dest, int w, int h, bool smooth )
+{ 
+	QMutexLocker locker (&fTimeViewMutex);
+//	viewUpdate();
+//	fModel->cleanup();
+//	timeTask();
+
+	QRect r = QApplication::desktop()->screenGeometry();
+	float lowestDimension = qMin( r.width(), r.height() );
+	fScene->setWidth((2*w) / lowestDimension);
+	fScene->setHeight((2*h) / lowestDimension);
+//cout << "set scene rect " << w << " " << h << endl;
+	getSceneView()->setSceneRect (w,h);
+
+	return getSceneView()->copy(dest, w, h, smooth );
+}
+
+//--------------------------------------------------------------------------
 void IGlue::initialize (bool offscreen)
 {
+	fJava = offscreen;
+
 	Master::initMap();
 	EventsAble::init();
 
@@ -135,6 +159,7 @@ void IGlue::initialize (bool offscreen)
 	fSceneView = new VSceneView ( new QGraphicsScene, offscreen );
 	scene->setView (fSceneView);
 	fModel->add (scene);
+	fScene = scene;
 
 	fTimeTask = scene;
 	if (!OSCStream::start())
@@ -238,7 +263,8 @@ void IGlue::viewUpdate()		{ if (fViewUpdater) fViewUpdater->update (fModel); }
 
 
 //--------------------------------------------------------------------------
-void IGlue::timerEvent ( QTimerEvent *)
+//void IGlue::timerEvent ( QTimerEvent *)
+void IGlue::timeTask ()
 {
 #ifdef RUNBENCH
 	static __uint64 time = 0;
@@ -249,10 +275,13 @@ void IGlue::timerEvent ( QTimerEvent *)
 #endif
 
 	if (fMsgStack->size()) {
+		QMutexLocker locker (&fTimeViewMutex);
+
 		timebench ("model", modelUpdate());
 		if (fTimeTask) fTimeTask->ptask();
 		timebench ("lmap", localMapUpdate());
 		timebench ("smap", slaveMapUpdate());
+//		if (!fJava)
 		timebench ("view", viewUpdate());
 
 		if (fModel->getState() & IObject::kModified) {
@@ -266,6 +295,56 @@ void IGlue::timerEvent ( QTimerEvent *)
 			if (fViewListener) fViewListener->update();
 		}
 		
+//		if (!fJava)
+		fModel->cleanup();
+	}
+#ifdef RUNBENCH
+	else {
+		bench::put ("model", 0);
+		bench::put ("lmap", 0);
+		bench::put ("smap", 0);
+		bench::put ("view", 0);
+	}
+	bench::put ("total", getTime() - time);
+#endif
+}
+
+//--------------------------------------------------------------------------
+void IGlue::timerEvent ( QTimerEvent *)
+{
+	timeTask();
+	return;
+
+	if (fJava) {
+		if (fMsgStack->size() && fViewListener) fViewListener->update();
+	}
+	else {
+		timeTask();
+	}
+return;
+
+	if (fMsgStack->size()) {
+//		QMutexLocker locker (&fTimeViewMutex);
+
+		timebench ("model", modelUpdate());
+		if (fTimeTask) fTimeTask->ptask();
+		timebench ("lmap", localMapUpdate());
+		timebench ("smap", slaveMapUpdate());
+//		if (!fJava)
+		timebench ("view", viewUpdate());
+
+		if (fModel->getState() & IObject::kModified) {
+			checkUDPChange();
+			if (fModel->getUDPInPort() != fUDP.fInPort)					// check for udp port number changes
+				oscinit (fModel->getUDPInPort());
+		}
+
+		if (fModel->getState() & IObject::kSubModified) {
+			fController->setListener (fModel->oscDebug() ? this : 0);	// check for debug flag changes
+			if (fViewListener) fViewListener->update();
+		}
+		
+//		if (!fJava)
 		fModel->cleanup();
 	}
 #ifdef RUNBENCH

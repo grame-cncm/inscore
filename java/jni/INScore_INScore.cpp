@@ -68,11 +68,15 @@ bool JavaListener::init (JNIEnv* env, jobject obj, jmethodID method)
 }
 
 void JavaListener::update ()	{ 
-	JNIEnv*	env;
-	if (fVM->AttachCurrentThread((void**)&env, 0))
+	static JNIEnv*	env = 0;
+	if (!env && fVM->AttachCurrentThread((void**)&env, 0))
 		std::cerr << ">>> INScore JNI AttachCurrentThread failed" << std::endl;		
-	else
+	else {
+		env->MonitorEnter (fObject);
 		env->CallVoidMethod (fObject, fMethodID);
+		env->MonitorExit (fObject);
+//		fVM->DetachCurrentThread();
+	}
 }
 
 JavaListener gListener;
@@ -136,8 +140,8 @@ JNIEXPORT void JNICALL Java_INScore_INScore_GetBitmap
 	jint *dstBitmap = env->GetIntArrayElements(bitmapArray, 0);
 	if (dstBitmap == 0) return;
 
-	jint* data = dstBitmap;
-	for (int i=0, n=w*h; i<n; i++) *data++ = 0;
+//	jint* data = dstBitmap;
+//	for (int i=0, n=w*h; i<n; i++) *data++ = 0;
 	INScore::getScene (gGlue, (unsigned int *)dstBitmap, w, h);
 	env->ReleaseIntArrayElements(bitmapArray, dstBitmap, 0);
 }

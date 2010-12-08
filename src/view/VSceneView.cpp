@@ -226,30 +226,34 @@ void VSceneView::updateOffScreen( IScene * scene )
 	int h = scene->getHeight() * lowestDimension / 2;
 
 	fScene->setSceneRect (0,0,w,h);
-
-	if ((w != fImage->width()) || (h != fImage->height())) {
-		delete fImage;
-		fImage = new QImage(w, h, QImage::Format_ARGB32_Premultiplied);
-	}
-	QPainter painter(fImage);
-	painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
-
 	IColor sc = *scene;
 	fScene->setBackgroundBrush (QColor(sc.getR(), sc.getG(), sc.getB() , sc.getA()));
-	fScene->render(&painter);
-	painter.end();
+
+//	if ((w != fImage->width()) || (h != fImage->height())) {
+//		delete fImage;
+//		fImage = new QImage(w, h, QImage::Format_ARGB32_Premultiplied);
+//	}
+//	QPainter painter(fImage);
+//	painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+//
+//	fScene->render(&painter);
+//	painter.end();
 }
 
 //------------------------------------------------------------------------------------------------------------------------
 bool VSceneView::copy(unsigned int* dest, int w, int h, bool smooth )
 {
-	fScene->setSceneRect (0,0,w,h);
+//	fScene->setSceneRect (0,0,w,h);
 
 	QImage image (w, h, QImage::Format_ARGB32_Premultiplied);
+//	image.fill (0);
 	QPainter painter(&image);
 	painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+//	fScene->render(&painter, image.rect(), fScene->sceneRect());
+	painter.fillRect (0,0,w,h, QColor(0,0,0,0));
 	fScene->render(&painter);
 	painter.end();
+//qDebug() << "VSceneView::copy " << fScene->sceneRect() << " -> " << image.rect();
 
 	for (int y = 0; y < h; y++) {
 		for (int x = 0; x < w; x++) {

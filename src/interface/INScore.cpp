@@ -28,6 +28,9 @@
 
 #include <QApplication>
 #include <QDir>
+#include <QThread>
+#include <QDebug>
+
 #include <iostream>
 
 #include "IGlue.h"
@@ -39,6 +42,20 @@
 using namespace std;
 namespace inscore 
 {
+
+//_______________________________________________________________________
+/*!
+	\brief a specific thread for Java JNI
+*/
+class JavaThread : public QThread
+{
+	public:
+		QApplication*	fAppl;
+	
+				 JavaThread(QApplication* appl) : fAppl(appl){}
+		virtual ~JavaThread() {}
+		void run()			 { fAppl->exec(); }
+};
 
 
 SIMessageStack gMsgStask;
@@ -55,17 +72,32 @@ static IMessage* Message2IMessage (INScore::MessagePtr p)
 // Qt environment initiaization + INScore glue setup
 // intended for theJava environment
 //--------------------------------------------------------------------------
+class OSApplication : public QApplication
+{
+	public :
+			 OSApplication (int & argc, char ** argv) : QApplication(argc, argv) {}
+	virtual ~OSApplication () {}
+	bool	notify ( QObject * receiver, QEvent * event ) {
+		if (event->type() == QEvent::Timer)
+			return QApplication::notify (receiver, event);
+		qDebug() << "QApplication notify called: " << event->type(); 
+		return true;
+	}
+};
+
 IGlue* INScore::init(int timeInterval, int udpport)
 {
 	int argc=0; char** argv=0;
 	QApplication* appl = new QApplication(argc, argv);
 
 	IGlue* glue = new IGlue (udpport, kUPDPort+1, kUPDPort+2);
+	VQtInit::startQt();
 	if (appl && glue && glue->start (timeInterval, true)) {
-		VQtInit::startQt();
 		appl->setApplicationName("INScoreViewer");	
 		glue->setLocalMapUpdater(VQtLocalMappingUpdater::create() );
 		glue->setViewUpdater	(VQtUpdater::create() );
+//		JavaThread * thread = new JavaThread (appl);
+//		thread->start();
 		return glue;
 	}
 	std::cerr << "INScore initialization failed" << std::endl;
@@ -75,10 +107,11 @@ IGlue* INScore::init(int timeInterval, int udpport)
 }
 
 //--------------------------------------------------------------------------
-bool INScore::getScene (const IGlue* glue, unsigned int* bitmap, int w, int h)
+bool INScore::getScene (IGlue* glue, unsigned int* bitmap, int w, int h)
 {
 	if (!glue || !bitmap) return false;
-	return glue->getSceneView()->copy(bitmap, w, h, false );
+//	return glue->getSceneView()->copy(bitmap, w, h, false );
+	return glue->getSceneView(bitmap, w, h, false );
 }
 
 //--------------------------------------------------------------------------

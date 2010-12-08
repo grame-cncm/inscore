@@ -29,6 +29,7 @@
 
 #include <QThread>
 #include <QObject>
+#include <QMutex>
 
 #include "IOSCListener.h"
 #include "IController.h"
@@ -85,9 +86,13 @@ class export IGlue : public MsgListener, public QObject
 	SIMessageStack	fMsgStack;
 	SPeriodicTask	fTimeTask;
 	GraphicUpdateListener * fViewListener;
+	QMutex			fTimeViewMutex;
 
-	int	fTimerID;
+	int		fTimerID;
 	udpinfo fUDP;
+
+	SIScene	fScene;
+	bool	fJava;
 	
 	public :
 				 IGlue(int udpport, int outport, int errport);
@@ -103,6 +108,7 @@ class export IGlue : public MsgListener, public QObject
 				void setOSCErr (const std::string& a);
 
 				void setGraphicListener(GraphicUpdateListener* listener)	{ fViewListener = listener; }
+				bool getSceneView(unsigned int* dest, int w, int h, bool smooth=false );
 				VSceneView* getSceneView() const							{ return fSceneView; }
 
 		static void trace (const IMessage* msg, int status);
@@ -111,6 +117,7 @@ class export IGlue : public MsgListener, public QObject
 		virtual void initialize (bool offscreen);
 		virtual	void clean ();
 		virtual void timerEvent ( QTimerEvent * event );
+		void timeTask();
 		void modelUpdate();
 		void localMapUpdate();
 		void slaveMapUpdate();

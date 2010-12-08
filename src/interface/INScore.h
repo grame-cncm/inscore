@@ -74,7 +74,7 @@ class export INScore
 		\param w the bitmap width
 		\param h the bitmap height
 	*/
-	static bool getScene (const IGlue* glue, unsigned int* bitmap, int w, int h);
+	static bool getScene (IGlue* glue, unsigned int* bitmap, int w, int h);
 
 	/*! \brief post a message
 
