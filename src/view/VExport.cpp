@@ -53,6 +53,7 @@ void VExport::paintOnDevice( QPaintDevice * device , QGraphicsItem * item , floa
 };
 
 //------------------------------------------------------------------------------------------------------------------------
+#ifdef PIXMAPBASED
 QPixmap VExport::itemToImage( QGraphicsItem * item , float xScaleFactor , float yScaleFactor , const QColor fillColor )
 {
 	QRectF picRect = item->boundingRect();
@@ -62,6 +63,17 @@ QPixmap VExport::itemToImage( QGraphicsItem * item , float xScaleFactor , float 
 	paintOnDevice( &pic , item , xScaleFactor , yScaleFactor );
 	return pic;
 };
+#else
+QImage VExport::itemToImage( QGraphicsItem * item , float xScaleFactor , float yScaleFactor , const QColor fillColor )
+{
+	QRectF picRect = item->boundingRect();
+	QImage pic( (int)(picRect.width() * xScaleFactor) , (int)(picRect.height() * yScaleFactor), QImage::Format_ARGB32_Premultiplied );
+
+	pic.fill( fillColor.rgba() );
+	paintOnDevice( &pic , item , xScaleFactor , yScaleFactor );
+	return pic;
+};
+#endif
 
 //------------------------------------------------------------------------------------------------------------------------
 void VExport::exportToImage( QGraphicsItem * item , const QString& fileName , float xScaleFactor , float yScaleFactor )
@@ -117,8 +129,13 @@ void VExport::exportScene( QGraphicsScene * scene , QString fileName )
 	}
 	else
 	{
+#if PIXMAPBASED
 		QPixmap pixmap(scene->width() , scene->height());
 		pixmap.fill( scene->backgroundBrush().color() );
+#else
+		QImage pixmap(scene->width() , scene->height(), QImage::Format_ARGB32_Premultiplied);
+		pixmap.fill( scene->backgroundBrush().color().rgba() );
+#endif
 		QPainter painter(&pixmap);
 		painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
 		scene->render( &painter );

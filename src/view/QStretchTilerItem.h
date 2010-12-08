@@ -28,6 +28,7 @@
 #define __QStretchTilerItem__
 
 #include <QGraphicsRectItem>
+#include <QImage>
 #include <QPair>
 
 namespace inscore
@@ -37,7 +38,11 @@ class QStretchTilerItem: public QGraphicsRectItem
 {
 	QGraphicsItem * fStretchTiledItem;
 
+#ifdef PIXMAPBASED
 	QPixmap fCache;
+#else
+	QImage fCache;
+#endif
 	float fCacheFactor;
 	typedef QPair<QRectF,QRectF> QRectFPair;
 	QList<QRectFPair> fMapping;

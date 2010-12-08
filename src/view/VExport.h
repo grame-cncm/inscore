@@ -81,10 +81,15 @@ class VExport
 		*
 		*	The pixmap can be streched vertically and horizontally with xScaleFactor and yScaleFactor.
 		*/
+#ifdef PIXMAPBASED
 		static QPixmap	itemToImage( QGraphicsItem * item , 
 										float xScaleFactor , float yScaleFactor , 
 										const QColor fillColor = QColor(255,255,255,0) );
-		
+#else
+		static QImage	itemToImage( QGraphicsItem * item , 
+										float xScaleFactor , float yScaleFactor , 
+										const QColor fillColor = QColor(255,255,255,0) );
+#endif		
 		/*!
 		*	\brief Exports the specified QGraphicsItem to an image ; the format is infered from
 		*	the fileName's extension.

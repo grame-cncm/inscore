@@ -32,6 +32,7 @@
 
 #include <QImageReader>
 #include <QFile>
+#include <QDebug>
 
 using namespace std;
 
@@ -43,7 +44,9 @@ VImageView::VImageView(QGraphicsScene * scene, const EventsAble* h)
  :	VIntPointObjectView( scene , new IQGraphicsPixmapItem(h) )
 {
 	fPixmapItem = (IQGraphicsPixmapItem*)(fItem);
+#if PIXMAPBASED
 	fPixmapItem->setTransformationMode( Qt::SmoothTransformation );
+#endif
 }
 
 //----------------------------------------------------------------------
@@ -59,7 +62,7 @@ void VImageView::updateLocalMapping (IImage* img)
 			ITLErr << "invalid image file :" << img->getFile() << ITLEndl;
 		}
 		else
-			setPixmap( imageFile );
+			setImage( imageFile );
 	}
 	else
 	{
@@ -81,16 +84,12 @@ GraphicSegment VImageView::getGraphicSegment( const IntPointSegment& intPointSeg
 	
 	TLongPoint errPoint;
 	mapOk=true;
-	if (		( intPointA.y() >= fPixmapItem->pixmap().height() )
-			||	( intPointA.x() >= fPixmapItem->pixmap().width() ) 
-		)
+	if ( (intPointA.y() >= fPixmapItem->pixmap().height()) || (intPointA.x() >= fPixmapItem->pixmap().width()) )
 	{
 		errPoint = intPointA;			
 		mapOk = false;
 	}
-	if (		( intPointB.y() >= fPixmapItem->pixmap().height() )
-			||	( intPointB.x() > fPixmapItem->pixmap().width() ) 
-		)
+	if ( (intPointB.y() >= fPixmapItem->pixmap().height()) || (intPointB.x() > fPixmapItem->pixmap().width()) )
 	{
 		errPoint = intPointB;
 		mapOk = false;
@@ -118,9 +117,15 @@ void VImageView::updateView ( IImage * img)
 }
 
 //----------------------------------------------------------------------
-void VImageView::setPixmap(const QString& fileName)
+void VImageView::setImage(const QString& fileName)
 {
+#if PIXMAPBASED
 	fPixmapItem->setPixmap( QPixmap( fileName ) );
+#else
+	fPixmapItem->pixmap().load( fileName );
+	if (!fPixmapItem->pixmap().hasAlphaChannel())
+		qDebug() << "VImageView::setImage no alpha channel for " << fileName;
+#endif
 	itemChanged();
 }
 

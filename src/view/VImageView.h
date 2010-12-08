@@ -30,7 +30,13 @@
 #include "VIntPointObjectView.h"
 #include "MouseEventAble.h"
 
-#include <QGraphicsPixmapItem>
+#if PIXMAPBASED
+# include <QGraphicsPixmapItem>
+#else
+# include <QGraphicsItem>
+# include <QImage>
+# include <QPainter>
+#endif
 
 namespace inscore
 {
@@ -43,12 +49,32 @@ class EventsAble;
 */
 
 //--------------------------------------------------------------------------
+#ifndef PIXMAPBASED
+class VGraphicsImageItem : public QGraphicsItem
+{
+	QImage fImage;
+	public:
+			     VGraphicsImageItem() {}
+		virtual ~VGraphicsImageItem() {}
+		
+		QImage& pixmap()  { return fImage; }
+		QRectF	boundingRect() const	{ return QRectF(0,0,fImage.width(), fImage.height()); }
+		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0)
+			{ painter->drawImage(QPoint(0,0), fImage); }
+};
+#endif
+
+//--------------------------------------------------------------------------
 /**
 *	\brief a graphic view of a IImage.
 */
 class VImageView:  public VIntPointObjectView
 {
+#if PIXMAPBASED
 	typedef MouseEventAble<QGraphicsPixmapItem> IQGraphicsPixmapItem;
+#else
+	typedef MouseEventAble<VGraphicsImageItem> IQGraphicsPixmapItem;
+#endif
 	
 	IQGraphicsPixmapItem* fPixmapItem;
 
@@ -61,7 +87,7 @@ class VImageView:  public VIntPointObjectView
 
 	protected:
 		GraphicSegment getGraphicSegment( const IntPointSegment& intPointSegment , const IGraphicBasedObject * object , bool& mapOk ) const;
-		void setPixmap(const QString& fileName);
+		void setImage(const QString& fileName);
 };
 
 /*!@} */

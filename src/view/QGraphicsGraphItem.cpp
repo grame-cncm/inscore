@@ -28,7 +28,8 @@
 #define GRAPHICS_GRAPH_ITEM_SIZE QRect(0,0,200,100)
 
 #include <QPainter>
-#include <QPixmap>
+//#include <QPixmap>
+#include <QImage>
 #include <QtDebug>
 #include <QPair>
 #include <math.h>
@@ -414,13 +415,19 @@ void QGraphicsGraphItem::paint( QPainter * painter, const QStyleOptionGraphicsIt
 //	fCache = new QPixmap( cacheWidth() , cacheHeight() );
 //	fCache->fill( QColor(255,255,255,0) );
 
-	QPixmap cache( cacheWidth() , cacheHeight() );
-	cache.fill( QColor(255,255,255,0) );
+//	QPixmap cache( cacheWidth() , cacheHeight() );
+//	cache.fill( QColor(255,255,255,0) );
+//	QPainter pixmapPainter(&cache);
+//	paint( &pixmapPainter , 0 , fBufferSize-1 );
+//	painter->setRenderHints( QPainter::Antialiasing | QPainter::SmoothPixmapTransform );
+//	painter->drawPixmap( rect() , cache , QRect( 0 , 0 , cache.width() , cache.height() ) );
+
+	QImage cache( cacheWidth() , cacheHeight(), QImage::Format_ARGB32_Premultiplied );
+	cache.fill( 0 );
 	QPainter pixmapPainter(&cache);
 	paint( &pixmapPainter , 0 , fBufferSize-1 );
-	
 	painter->setRenderHints( QPainter::Antialiasing | QPainter::SmoothPixmapTransform );
-	painter->drawPixmap( rect() , cache , QRect( 0 , 0 , cache.width() , cache.height() ) );
+	painter->drawImage( rect() , cache , QRect( 0 , 0 , cache.width() , cache.height() ) );
 }
 
 } // end namespoace

@@ -30,7 +30,6 @@
 #define GRAPHICS_GRAPH_ITEM_SIZE QRect(0,0,200,100)
 
 #include <QPainter>
-#include <QPixmap>
 #include <QtDebug>
 #include <QPair>
 #include <math.h>
