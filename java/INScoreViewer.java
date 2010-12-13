@@ -29,6 +29,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.print.*;
 import java.io.*;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import INScore.*;
@@ -44,10 +45,20 @@ public class INScoreViewer {
 
 class INScoreListener implements INScoreViewListener {  
 	Component fView;
-    public INScoreListener (Component view)			{ fView = view; }
+	public boolean fPending;
+    public INScoreListener (Component view)			{ fView = view; fPending = false; }
 	public synchronized void update() {
-		fView.repaint();
+		if (!fPending) {
+			fPending = true;
+			fView.repaint();
+		}
     }
+}
+
+class scoreTimeTask extends TimerTask {
+	INScore fScore;
+	public scoreTimeTask(INScore score)		{ fScore = score; }
+	public void run()						{ fScore.TimeTask(); }	
 }
 
 class scorePanel extends Canvas implements Printable {
@@ -61,11 +72,17 @@ class scorePanel extends Canvas implements Printable {
 
 	INScore fscore;
 	INScoreListener flistener;
+	java.util.Timer	fTimer;
+	scoreTimeTask fTimerTask;
 	
 	public scorePanel()	{ 
 		fscore = new INScore(); 
 		flistener = new INScoreListener(this);
+		fTimer = new java.util.Timer();
+		fscore.Start(20,7000);
 		fscore.SetViewListener (flistener);
+//		fTimerTask = new scoreTimeTask(fscore);
+//		fTimer.scheduleAtFixedRate (fTimerTask, 10, 10);
 	}
 
 	public Dimension getPreferredSize()		{ return new Dimension(500,500); }
@@ -73,6 +90,7 @@ class scorePanel extends Canvas implements Printable {
 
 	public void paint(Graphics g) {
 		fscore.Draw (g, getSize().width, getSize().height);
+		flistener.fPending = false;
 	}
 	
 	public int print(Graphics g, PageFormat pf, int page) throws PrinterException {
