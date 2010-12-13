@@ -23,7 +23,7 @@ echo "moving version number to $VERSION"
 
 CMAKE=$ROOT/cmake/CMakeLists.txt
 echo " updating $CMAKE"
-sed "s/\(ITL[A-Z]*VERS[^0-9]*\)[0-9]*\.[0-9]*/\1$VERSION/" $CMAKE > TMP$$
+sed "s/\(INS[A-Z]*VERS[^0-9]*\)[0-9]*\.[0-9]*/\1$VERSION/" $CMAKE > TMP$$
 mv -f TMP$$ $CMAKE
 cmake -G Xcode $ROOT/cmake
 
@@ -34,19 +34,19 @@ mv -f TMP$$ $OSC
 make -C doc
 make -C doc html
 
-MAKE=$ROOT/src/makefile
-echo " updating $MAKE"
-sed "s/\(version..*= *\)[0-9]*\.[0-9]*/\1$VERSION/" $MAKE  > TMP$$
-mv -f TMP$$ $MAKE
-
-ITL=$ROOT/src/interface/interlude.cpp
+ITL=$ROOT/src/interface/INScore.cpp
 echo " updating $ITL  (recompile)"
 N=$(toNum $VERSION)
 sed "s/\(version[^0-9]*\)[1-9][0-9]*/\1$N/" $ITL \
 	| sed "s/\(version[^0-9]*\)[0-9]*\.[0-9]*/\1$VERSION/"  > TMP$$
 mv -f TMP$$ $ITL
 
-DOXY=$ROOT/doc/doxygen/Doxyfile
+DOXY=$ROOT/doc/doxygen/Doxyall
+echo " updating $DOXY  (regenerate doc)"
+sed "s/^\(PROJECT_NUMBER[ 	]*= *\)[0-9]*\.[0-9]*/\1$VERSION/" $DOXY  > TMP$$
+mv -f TMP$$ $DOXY
+
+DOXY=$ROOT/doc/doxygen/Doxylib
 echo " updating $DOXY  (regenerate doc)"
 sed "s/^\(PROJECT_NUMBER[ 	]*= *\)[0-9]*\.[0-9]*/\1$VERSION/" $DOXY  > TMP$$
 mv -f TMP$$ $DOXY
@@ -56,9 +56,9 @@ echo " updating $TEX  (regenerate doc)"
 sed "s/\([vV]\.\)[0-9]*\.[0-9]*/\1$VERSION/" $TEX > TMP$$
 mv -f TMP$$ $TEX
 
-open $ROOT/cmake/Interlude.xcodeproj
+open $ROOT/cmake/INScore.xcodeproj
 
 echo "==> change manually rc files in win32 folder"
-open win32/Interlude.rc
+open -t win32/INScore.rc
 
 exit 0
