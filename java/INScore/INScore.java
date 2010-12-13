@@ -63,7 +63,7 @@ public class INScore
 	
 	/** INScore constructor.
 	*/
-    public INScore ()	{ fINSHandler = 0; }
+    public INScore ()	{ fINSHandler = 0; fINSListener = 0; }
 
 	
 	/** Start INScore services.
@@ -75,7 +75,7 @@ public class INScore
 		@param udpout the output udp port number
 		@param udperr the error udp port number
 	*/
-    public native void Start (int timeInterval, int udpin, int udpout, int udperr);
+    public native synchronized void Start (int timeInterval, int udpin, int udpout, int udperr);
 
 	
 	/** Start INScore services.
@@ -93,7 +93,7 @@ public class INScore
 
 	/** Stops the INScore services.
 	*/
-    public native void Stop ();
+    public native synchronized void Stop ();
 
 	/** Draws the score into a bitmap.
 	
