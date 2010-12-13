@@ -26,6 +26,11 @@
 #include "INScore.h"
 #include "javaIDs.h"
 
+#define DEBUG 1
+#if DEBUG
+#include "debug.h"
+#endif
+
 using namespace std;
 
 static QApplication * gApplication;
@@ -40,7 +45,11 @@ static jfieldID gINSHandlerID, gINSListenerID;
 using namespace inscore;
 
 //--------------------------------------------------------------------------
+#if DEBUG
+class JavaListener : public DebugListener
+#else
 class JavaListener : public GraphicUpdateListener
+#endif
 {
 	JavaVM *	fVM;
 	jobject		fObject;
@@ -81,11 +90,11 @@ void JavaListener::update ()	{
 	if (fVM->AttachCurrentThread((void**)&env, 0))
 		std::cerr << ">>> INScore JNI AttachCurrentThread failed" << std::endl;		
 	else {
-		env->MonitorEnter (fObject);
+//		env->MonitorEnter (fObject);
 //cout << "[";
 		env->CallVoidMethod (fObject, fMethodID);
 //cout << "]\n";
-		env->MonitorExit (fObject);
+//		env->MonitorExit (fObject);
 //		fVM->DetachCurrentThread();
 	}
 }
@@ -125,10 +134,14 @@ JNIEXPORT jstring JNICALL Java_INScore_INScore_GetJNIVersion
 JNIEXPORT void JNICALL Java_INScore_INScore_Start
   (JNIEnv * env, jobject obj, jint timeInterval, jint udpin, jint udpout, jint udperr)
 {
+#if DEBUG
+	QGraphicsScene * glue = start( (QApplication*)1 );
+#else
 	IGlue* glue = (IGlue*)env->GetLongField (obj, gINSHandlerID);
 	if (glue) INScore::stop(glue);
 	
 	glue = INScore::start (timeInterval, udpin, udpout, udperr, true);
+#endif
 	env->SetLongField (obj, gINSHandlerID, (long)glue);
 }
 
@@ -155,14 +168,22 @@ JNIEXPORT void JNICALL Java_INScore_INScore_Stop
 JNIEXPORT void JNICALL Java_INScore_INScore_GetBitmap
   (JNIEnv * env, jobject obj, jintArray bitmapArray, jint w, jint h)
 {
+#if DEBUG
+	QGraphicsScene * glue = (QGraphicsScene *)env->GetLongField (obj, gINSHandlerID);
+#else
 	IGlue* glue = (IGlue*)env->GetLongField (obj, gINSHandlerID);
+#endif
 	if (!glue) return;
 
 	jint *dstBitmap = env->GetIntArrayElements(bitmapArray, 0);
 	if (!dstBitmap) return;
 
 //cout << "<<";
+#if DEBUG
+	if (glue) getBitmap (glue, (unsigned int *)dstBitmap, w, h);
+#else
 	INScore::getGraphicScore (glue, (unsigned int *)dstBitmap, w, h);
+#endif
 //cout << ">>\n";
 
 	env->ReleaseIntArrayElements(bitmapArray, dstBitmap, 0);
@@ -207,7 +228,11 @@ JNIEXPORT void JNICALL Java_INScore_INScore_SetViewListener
 		else {
 			newListener = new JavaListener;
 			if (newListener->init (env, listener, javaCallback))
+#if DEBUG
+				setListener (newListener);
+#else
 				INScore::setListener (glue, newListener);
+#endif
 		}
 	}
 	env->SetLongField (obj, gINSListenerID, (long)newListener);
