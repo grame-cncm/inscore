@@ -24,16 +24,11 @@
 
 #include <QApplication>
 #include <QDir>
-#include <QtDebug>
 
 #include <iostream>
-#include <fstream>
 #include <string>
 
-#include "IGlue.h"
-#include "VQtLocalMappingUpdater.h"
-#include "VQtUpdater.h"
-#include "VQtInit.h"
+#include "INScore.h"
 
 using namespace inscore;
 using namespace std;
@@ -72,21 +67,16 @@ int main( int argc, char **argv )
 	int ret = 1;
 	int udpPort = intopt ("--port", kUPDPort, argc, argv);
 	QApplication appl(argc, argv);
-
-	IGlue glue (udpPort, kUPDPort+1, kUPDPort+2);
-	VQtInit::startQt();
-	if (glue.start (kTimeInterval)) {
-		appl.setApplicationName("INScoreViewer");	
-		QDir dir(QApplication::applicationDirPath());
+	appl.setApplicationName("INScoreViewer");	
+	QDir dir(QApplication::applicationDirPath());
 #ifndef WIN32
-		dir.cdUp();
+	dir.cdUp();
 #endif
-		dir.cd("PlugIns");
-		appl.addLibraryPath		( dir.absolutePath());
-		glue.setLocalMapUpdater	(VQtLocalMappingUpdater::create() );
-		glue.setViewUpdater		(VQtUpdater::create() );
-		ret = appl.exec();
-	}
-	VQtInit::stopQt();
+	dir.cd("PlugIns");
+	appl.addLibraryPath		( dir.absolutePath());
+
+	IGlue * glue = INScore::start (kTimeInterval, udpPort, kUPDPort+1, kUPDPort+2);
+	ret = appl.exec();
+	INScore::stop (glue);
 	return ret;
 }
