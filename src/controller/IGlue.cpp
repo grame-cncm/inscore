@@ -55,7 +55,7 @@ extern SIMessageStack gMsgStask;
 
 //--------------------------------------------------------------------------
 IGlue::IGlue(int udpport, int outport, int errport) 
-	: fOscThread(0), fViewListener(0), fTimerID(0), fUDP(udpport, outport, errport), fJava(false) {}
+	: fOscThread(0), fViewListener(0), fTimerID(0), fUDP(udpport, outport, errport) {}
 IGlue::~IGlue()	{ clean(); }
 
 //--------------------------------------------------------------------------
@@ -65,7 +65,7 @@ void IGlue::clean()
         fOscThread->terminate();
         fOscThread->wait(50);
 	}
-	killTimer (fTimerID);
+	if (fTimerID) killTimer (fTimerID);
 	delete fOscThread;
 	OSCStream::stop();
 }
@@ -122,15 +122,11 @@ void IGlue::oscinit (OSCStream& osc, const std::string& address, int port)
 bool IGlue::getSceneView(unsigned int* dest, int w, int h, bool smooth )
 { 
 	QMutexLocker locker (&fTimeViewMutex);
-//	viewUpdate();
-//	fModel->cleanup();
-//	timeTask();
 
 	QRect r = QApplication::desktop()->screenGeometry();
 	float lowestDimension = qMin( r.width(), r.height() );
 	fScene->setWidth((2*w) / lowestDimension);
 	fScene->setHeight((2*h) / lowestDimension);
-//cout << "set scene rect " << w << " " << h << endl;
 	getSceneView()->setSceneRect (w,h);
 
 	return getSceneView()->copy(dest, w, h, smooth );
@@ -139,8 +135,6 @@ bool IGlue::getSceneView(unsigned int* dest, int w, int h, bool smooth )
 //--------------------------------------------------------------------------
 void IGlue::initialize (bool offscreen)
 {
-	fJava = offscreen;
-
 	Master::initMap();
 	EventsAble::init();
 
@@ -183,7 +177,7 @@ bool IGlue::start (int timeInterval, bool offscreen)
 {
 	try {
 		initialize(offscreen);
-		fTimerID = startTimer(timeInterval);
+		if (timeInterval) fTimerID = startTimer(timeInterval);
 	}
 	catch (std::runtime_error e) {
 		clean();
@@ -261,19 +255,9 @@ void IGlue::localMapUpdate()	{ if (fLocalMapUpdater) fLocalMapUpdater->update (f
 void IGlue::slaveMapUpdate()	{ if (fSlaveMapUpdater) fSlaveMapUpdater->update (fModel); }
 void IGlue::viewUpdate()		{ if (fViewUpdater) fViewUpdater->update (fModel); }
 
-
 //--------------------------------------------------------------------------
-//void IGlue::timerEvent ( QTimerEvent *)
-void IGlue::timeTask ()
+void IGlue::timerEvent ( QTimerEvent *)
 {
-#ifdef RUNBENCH
-	static __uint64 time = 0;
-	__uint64 t = getTime();
-	if (time) bench::put ("time", t - time);
-	else  bench::put ("time", 0);
-	time = t;
-#endif
-
 	if (fMsgStack->size()) {
 		QMutexLocker locker (&fTimeViewMutex);
 
@@ -281,7 +265,6 @@ void IGlue::timeTask ()
 		if (fTimeTask) fTimeTask->ptask();
 		timebench ("lmap", localMapUpdate());
 		timebench ("smap", slaveMapUpdate());
-//		if (!fJava)
 		timebench ("view", viewUpdate());
 
 		if (fModel->getState() & IObject::kModified) {
@@ -293,58 +276,9 @@ void IGlue::timeTask ()
 		if (fModel->getState() & IObject::kSubModified) {
 			fController->setListener (fModel->oscDebug() ? this : 0);	// check for debug flag changes
 			if (fViewListener) fViewListener->update();
+//cout << "timer event update " << fViewListener << endl;
 		}
 		
-//		if (!fJava)
-		fModel->cleanup();
-	}
-#ifdef RUNBENCH
-	else {
-		bench::put ("model", 0);
-		bench::put ("lmap", 0);
-		bench::put ("smap", 0);
-		bench::put ("view", 0);
-	}
-	bench::put ("total", getTime() - time);
-#endif
-}
-
-//--------------------------------------------------------------------------
-void IGlue::timerEvent ( QTimerEvent *)
-{
-	timeTask();
-	return;
-
-	if (fJava) {
-		if (fMsgStack->size() && fViewListener) fViewListener->update();
-	}
-	else {
-		timeTask();
-	}
-return;
-
-	if (fMsgStack->size()) {
-//		QMutexLocker locker (&fTimeViewMutex);
-
-		timebench ("model", modelUpdate());
-		if (fTimeTask) fTimeTask->ptask();
-		timebench ("lmap", localMapUpdate());
-		timebench ("smap", slaveMapUpdate());
-//		if (!fJava)
-		timebench ("view", viewUpdate());
-
-		if (fModel->getState() & IObject::kModified) {
-			checkUDPChange();
-			if (fModel->getUDPInPort() != fUDP.fInPort)					// check for udp port number changes
-				oscinit (fModel->getUDPInPort());
-		}
-
-		if (fModel->getState() & IObject::kSubModified) {
-			fController->setListener (fModel->oscDebug() ? this : 0);	// check for debug flag changes
-			if (fViewListener) fViewListener->update();
-		}
-		
-//		if (!fJava)
 		fModel->cleanup();
 	}
 #ifdef RUNBENCH

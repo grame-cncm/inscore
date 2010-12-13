@@ -92,7 +92,6 @@ class export IGlue : public MsgListener, public QObject
 	udpinfo fUDP;
 
 	SIScene	fScene;
-	bool	fJava;
 	
 	public :
 				 IGlue(int udpport, int outport, int errport);
@@ -111,13 +110,13 @@ class export IGlue : public MsgListener, public QObject
 				bool getSceneView(unsigned int* dest, int w, int h, bool smooth=false );
 				VSceneView* getSceneView() const							{ return fSceneView; }
 
+		virtual void timerEvent ( QTimerEvent * event );
+
 		static void trace (const IMessage* msg, int status);
 
 	protected:
 		virtual void initialize (bool offscreen);
 		virtual	void clean ();
-		virtual void timerEvent ( QTimerEvent * event );
-		void timeTask();
 		void modelUpdate();
 		void localMapUpdate();
 		void slaveMapUpdate();
