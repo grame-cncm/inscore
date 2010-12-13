@@ -50,7 +50,9 @@ class INScoreListener implements INScoreViewListener {
 	public synchronized void update() {
 		if (!fPending) {
 			fPending = true;
+		System.out.println("u(");
 			fView.repaint();
+		System.out.println(")u");
 		}
     }
 }
@@ -89,7 +91,9 @@ class scorePanel extends Canvas implements Printable {
 
 
 	public void paint(Graphics g) {
+		System.out.println("q<");
 		fscore.Draw (g, getSize().width, getSize().height);
+		System.out.println(">p");
 		flistener.fPending = false;
 	}
 	
