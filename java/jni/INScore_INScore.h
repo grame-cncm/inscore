@@ -25,11 +25,19 @@ JNIEXPORT jstring JNICALL Java_INScore_INScore_GetJNIVersion
 
 /*
  * Class:     INScore_INScore
- * Method:    SetViewListener
- * Signature: (LINScore/ViewListener;)V
+ * Method:    Start
+ * Signature: (IIII)V
  */
-JNIEXPORT void JNICALL Java_INScore_INScore_SetViewListener
-  (JNIEnv *, jclass, jobject);
+JNIEXPORT void JNICALL Java_INScore_INScore_Start
+  (JNIEnv *, jobject, jint, jint, jint, jint);
+
+/*
+ * Class:     INScore_INScore
+ * Method:    Stop
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_INScore_INScore_Stop
+  (JNIEnv *, jobject);
 
 /*
  * Class:     INScore_INScore
@@ -38,6 +46,22 @@ JNIEXPORT void JNICALL Java_INScore_INScore_SetViewListener
  */
 JNIEXPORT void JNICALL Java_INScore_INScore_GetBitmap
   (JNIEnv *, jobject, jintArray, jint, jint);
+
+/*
+ * Class:     INScore_INScore
+ * Method:    TimeTask
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_INScore_INScore_TimeTask
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     INScore_INScore
+ * Method:    SetViewListener
+ * Signature: (LINScore/INScoreViewListener;)V
+ */
+JNIEXPORT void JNICALL Java_INScore_INScore_SetViewListener
+  (JNIEnv *, jobject, jobject);
 
 /*
  * Class:     INScore_INScore

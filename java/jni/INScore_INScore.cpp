@@ -20,18 +20,28 @@
 */
 
 #include <iostream>
+#include <QApplication>
 
 #include "INScore_INScore.h"
 #include "INScore.h"
+#include "javaIDs.h"
 
-inscore::IGlue* gGlue = 0;
+using namespace std;
+
+static QApplication * gApplication;
+
+// --------------------------------------------------------------------------------------------
+// fields IDs declarations
+// --------------------------------------------------------------------------------------------
+// the score handlers ID
+static jfieldID gINSHandlerID, gINSListenerID;
+
 
 using namespace inscore;
 
 //--------------------------------------------------------------------------
 class JavaListener : public GraphicUpdateListener
 {
-	bool		fGlobalRef;
 	JavaVM *	fVM;
 	jobject		fObject;
 	jmethodID	fMethodID;
@@ -62,36 +72,36 @@ bool JavaListener::init (JNIEnv* env, jobject obj, jmethodID method)
 	}
 	if (fObject) env->DeleteGlobalRef (fObject);
 	fObject = env->NewGlobalRef(obj);
-	fGlobalRef = true;
 	fMethodID = method;
 	return true;
 }
 
 void JavaListener::update ()	{ 
-	static JNIEnv*	env = 0;
-	if (!env && fVM->AttachCurrentThread((void**)&env, 0))
+	JNIEnv*	env;
+	if (fVM->AttachCurrentThread((void**)&env, 0))
 		std::cerr << ">>> INScore JNI AttachCurrentThread failed" << std::endl;		
 	else {
 		env->MonitorEnter (fObject);
+//cout << "[";
 		env->CallVoidMethod (fObject, fMethodID);
+//cout << "]\n";
 		env->MonitorExit (fObject);
 //		fVM->DetachCurrentThread();
 	}
 }
 
-JavaListener gListener;
-
 //--------------------------------------------------------------------------
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 /*
  * Class:     INScore_INScore
  * Method:    GetVersion
  * Signature: ()Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_INScore_INScore_GetVersion
-  (JNIEnv *env, jclass)
+  (JNIEnv * env, jclass)
 {
 	return env->NewStringUTF(INScore::versionStr());
 }
@@ -109,24 +119,32 @@ JNIEXPORT jstring JNICALL Java_INScore_INScore_GetJNIVersion
 
 /*
  * Class:     INScore_INScore
- * Method:    SetViewListener
- * Signature: (LINScore/ViewListener;)V
+ * Method:    Start
+ * Signature: (IIII)V
  */
-JNIEXPORT void JNICALL Java_INScore_INScore_SetViewListener
-  (JNIEnv * env, jclass, jobject listener)
+JNIEXPORT void JNICALL Java_INScore_INScore_Start
+  (JNIEnv * env, jobject obj, jint timeInterval, jint udpin, jint udpout, jint udperr)
 {
-	static bool errNotified = false;
-	jclass cl = env->GetObjectClass(listener);
-	jmethodID javaCallback = env->GetMethodID (cl, "update", "()V");
-	if (javaCallback == NULL) {
-		if (!errNotified) {
-			fprintf(stderr, "ViewListener::update got NULL jmethodID\n");
-			errNotified = true;
-		}
-		return;
-	}
-	if (gListener.init (env, listener, javaCallback))
-		INScore::setListener (gGlue, &gListener);
+	IGlue* glue = (IGlue*)env->GetLongField (obj, gINSHandlerID);
+	if (glue) INScore::stop(glue);
+	
+	glue = INScore::start (timeInterval, udpin, udpout, udperr, true);
+	env->SetLongField (obj, gINSHandlerID, (long)glue);
+}
+
+/*
+ * Class:     INScore_INScore
+ * Method:    Stop
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_INScore_INScore_Stop
+  (JNIEnv * env, jobject obj)
+{
+	IGlue* glue = (IGlue*)env->GetLongField (obj, gINSHandlerID);
+	if (!glue) return;
+
+	INScore::stop (glue);
+	env->SetLongField (obj, gINSHandlerID, 0);
 }
 
 /*
@@ -135,15 +153,64 @@ JNIEXPORT void JNICALL Java_INScore_INScore_SetViewListener
  * Signature: ([III)I
  */
 JNIEXPORT void JNICALL Java_INScore_INScore_GetBitmap
-  (JNIEnv * env, jobject, jintArray bitmapArray, jint w, jint h)
+  (JNIEnv * env, jobject obj, jintArray bitmapArray, jint w, jint h)
 {
-	jint *dstBitmap = env->GetIntArrayElements(bitmapArray, 0);
-	if (dstBitmap == 0) return;
+	IGlue* glue = (IGlue*)env->GetLongField (obj, gINSHandlerID);
+	if (!glue) return;
 
-//	jint* data = dstBitmap;
-//	for (int i=0, n=w*h; i<n; i++) *data++ = 0;
-	INScore::getScene (gGlue, (unsigned int *)dstBitmap, w, h);
+	jint *dstBitmap = env->GetIntArrayElements(bitmapArray, 0);
+	if (!dstBitmap) return;
+
+//cout << "<<";
+	INScore::getGraphicScore (glue, (unsigned int *)dstBitmap, w, h);
+//cout << ">>\n";
+
 	env->ReleaseIntArrayElements(bitmapArray, dstBitmap, 0);
+}
+
+/*
+ * Class:     INScore_INScore
+ * Method:    timeTask
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_INScore_INScore_TimeTask
+  (JNIEnv * env, jobject obj)
+{
+	IGlue* glue = (IGlue*)env->GetLongField (obj, gINSHandlerID);
+	if (!glue) return;
+//cout << "(";
+	INScore::timeTask(glue);
+//cout << ")\n";
+}
+
+/*
+ * Class:     INScore_INScore
+ * Method:    SetViewListener
+ * Signature: (LINScore/ViewListener;)V
+ */
+JNIEXPORT void JNICALL Java_INScore_INScore_SetViewListener
+  (JNIEnv * env, jobject obj, jobject listener)
+{
+	IGlue* glue = (IGlue*)env->GetLongField (obj, gINSHandlerID);
+	if (!glue) return;
+
+	JavaListener* currentlistener = (JavaListener*)env->GetLongField (obj, gINSListenerID);
+	if (currentlistener) delete currentlistener;
+	
+	JavaListener* newListener = 0;
+	if (listener) {
+		jclass cl = env->GetObjectClass(listener);
+		jmethodID javaCallback = env->GetMethodID (cl, "update", "()V"); 
+		if (javaCallback == NULL) {
+			fprintf(stderr, "ViewListener::update got NULL jmethodID\n");
+		}
+		else {
+			newListener = new JavaListener;
+			if (newListener->init (env, listener, javaCallback))
+				INScore::setListener (glue, newListener);
+		}
+	}
+	env->SetLongField (obj, gINSListenerID, (long)newListener);
 }
 
 /*
@@ -152,9 +219,12 @@ JNIEXPORT void JNICALL Java_INScore_INScore_GetBitmap
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_INScore_INScore_Init
-  (JNIEnv *, jclass)
+  (JNIEnv * env, jclass cls)
 {
-	gGlue = INScore::init(10, 7000);
+	if (!getID (env, cls, gINSHandlerID, "fINSHandler", "J")) return;
+	if (!getID (env, cls, gINSListenerID, "fINSListener", "J")) return;
+	int argc = 0; char** argv = 0;
+	gApplication = new QApplication(argc, argv);
 }
 
 #ifdef __cplusplus
