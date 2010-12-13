@@ -33,7 +33,7 @@ package INScore;
 */
 public interface INScoreViewListener
 {
-	/** callback called after the INScore scene graphic update
+	/** called when the INScore scene changes
 	*/
 	void update();
 }

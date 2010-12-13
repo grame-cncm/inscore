@@ -32,15 +32,13 @@ import java.awt.*;
 import java.awt.image.*;
 
 /**
-	The main score API.
-	<br>
-	A guido score has an internal abstract representation (AR) 
-	that is converted into a graphic representation (GR).
-	The guidoscore reflects this architecture and provices the method
-	to convert an AR representation to GR representation.
+	The main INScore API.
 */
 public class INScore
 {
+	final long fINSHandler;
+	final long fINSListener;
+
     static {
         try {
 			Init ();
@@ -62,12 +60,40 @@ public class INScore
 	*/
 	public static native final String GetJNIVersion();
 
-	/**	Sets a listener that will be notified of the view updates
-
- 		@param listener an object that impements ViewListener
+	
+	/** INScore constructor.
 	*/
-	public static native final void SetViewListener(INScoreViewListener listener);
+    public INScore ()	{ fINSHandler = 0; }
 
+	
+	/** Start INScore services.
+		
+		@param timeInterval the time task interval (in mls). A null value 
+		       means no time task, in this case the time task should be 
+			   at the java client rate. 
+		@param udpin the INScore listening udp port number
+		@param udpout the output udp port number
+		@param udperr the error udp port number
+	*/
+    public native void Start (int timeInterval, int udpin, int udpout, int udperr);
+
+	
+	/** Start INScore services.
+		
+		This method is equivalent to Start(timeInterval, udpin, udpin+1, udpin+2)
+		
+		@param timeInterval the time task interval (in mls). A null value 
+		       means no time task, in this case the time task should be 
+			   at the java client rate. 
+		@param udpin the INScore listening udp port number
+	*/
+    public void Start (int timeInterval, int udpin) {
+		Start (timeInterval, udpin, udpin+1, udpin+2);
+	}
+
+	/** Stops the INScore services.
+	*/
+    public native void Stop ();
 
 	/** Draws the score into a bitmap.
 	
@@ -77,6 +103,25 @@ public class INScore
 		@param h the bitmap height
 	*/
    public native synchronized void GetBitmap (int[] dst, int w, int h);
+
+	/** Manual call of the TimeTask.
+	
+		A Java client may choose to manually call the INScore time task. 
+		This task do the following: 
+		 - applies the incoming OSC messages to the internal model, 
+		 - propagates the modifications to the score view. In case of view change,
+		   the INScoreViewListener::update is called
+	
+		@see #Start
+		@see INScoreViewListener
+	*/
+   public native synchronized void TimeTask ();
+
+	/**	Sets a listener that will be notified of the view updates
+
+ 		@param listener an object that impements INScoreViewListener
+	*/
+	public native final void SetViewListener(INScoreViewListener listener);
 
 	/** Draws the score.
 	
