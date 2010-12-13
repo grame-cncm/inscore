@@ -53,12 +53,27 @@ class export INScore
 
 	/*! \brief Qt environment initiaization + INScore glue setup
 
+		\param timeInterval the time task tme interval (in mls). 0 means no time task
+		\param udpport the udp port number to listen for incoming OSC messages
+		\param outport the udp port number for outgoing OSC messages
+		\param errport the udp port number for error messages
+		\param offscreen a boolean value to select between onscreen and offscreen graphic rendering.
+		       When offscreen is selected, the graphic rendering is in charge of the client application,
+			   which should set a listener to be notified of the graphic score changes, 
+			   which should also use the getGraphicScore method to get the score bitmap.
+		\see GraphicUpdateListener
+			   
+	*/
+	static IGlue* start (int timeInterval=10, int udpport=7000, int outport=7001, int errport=7002, bool offscreen=false);
+
+	/*! \brief Qt environment initiaization + INScore glue setup
+
 		\param address the OSC destination address of the message
 		\param params the message parameters
 		\warning once a message has been posted, it is owned by the library and must not be deleted
 		by the client application
 	*/
-	static IGlue* init (int timeInterval=10, int udpport=7000);
+	static void stop (IGlue* glue);
 
 	/*! \brief sets a listener for the graphic update
 
@@ -67,14 +82,20 @@ class export INScore
 	*/
 	static void setListener (IGlue* glue, GraphicUpdateListener* listener);
 
-	/*! \brief copy the scene data into a bitmap
+	/*! \brief copy the graphic score data into a bitmap
 
 		\param glue the system glue as returned by init()
 		\param bitmap the destination bitmap
 		\param w the bitmap width
 		\param h the bitmap height
 	*/
-	static bool getScene (IGlue* glue, unsigned int* bitmap, int w, int h);
+	static bool getGraphicScore (IGlue* glue, unsigned int* bitmap, int w, int h);
+
+	/*! \brief copy the scene data into a bitmap
+
+		\param glue the system glue as returned by init()
+	*/
+	static void timeTask (IGlue* glue);
 
 	/*! \brief post a message
 

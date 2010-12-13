@@ -70,47 +70,31 @@ static IMessage* Message2IMessage (INScore::MessagePtr p)
 
 //--------------------------------------------------------------------------
 // Qt environment initiaization + INScore glue setup
-// intended for theJava environment
 //--------------------------------------------------------------------------
-class OSApplication : public QApplication
+IGlue* INScore::start(int timeInterval, int udpport, int outport, int errport, bool offscreen)
 {
-	public :
-			 OSApplication (int & argc, char ** argv) : QApplication(argc, argv) {}
-	virtual ~OSApplication () {}
-	bool	notify ( QObject * receiver, QEvent * event ) {
-		if (event->type() == QEvent::Timer)
-			return QApplication::notify (receiver, event);
-		qDebug() << "QApplication notify called: " << event->type(); 
-		return true;
-	}
-};
-
-IGlue* INScore::init(int timeInterval, int udpport)
-{
-	int argc=0; char** argv=0;
-	QApplication* appl = new QApplication(argc, argv);
-
-	IGlue* glue = new IGlue (udpport, kUPDPort+1, kUPDPort+2);
+	IGlue* glue = new IGlue (udpport, outport, errport);
 	VQtInit::startQt();
-	if (appl && glue && glue->start (timeInterval, true)) {
-		appl->setApplicationName("INScoreViewer");	
+	if (glue && glue->start (timeInterval, offscreen)) {
 		glue->setLocalMapUpdater(VQtLocalMappingUpdater::create() );
 		glue->setViewUpdater	(VQtUpdater::create() );
-//		JavaThread * thread = new JavaThread (appl);
-//		thread->start();
 		return glue;
 	}
 	std::cerr << "INScore initialization failed" << std::endl;
 	delete glue;
-	delete appl;
 	return 0;
 }
 
 //--------------------------------------------------------------------------
-bool INScore::getScene (IGlue* glue, unsigned int* bitmap, int w, int h)
+void INScore::stop(IGlue* glue)
+{
+	delete glue;
+}
+
+//--------------------------------------------------------------------------
+bool INScore::getGraphicScore (IGlue* glue, unsigned int* bitmap, int w, int h)
 {
 	if (!glue || !bitmap) return false;
-//	return glue->getSceneView()->copy(bitmap, w, h, false );
 	return glue->getSceneView(bitmap, w, h, false );
 }
 
@@ -121,9 +105,19 @@ void INScore::setListener (IGlue* glue, GraphicUpdateListener* listener)
 }
 
 //--------------------------------------------------------------------------
+void INScore::timeTask (IGlue* glue)
+{
+	if (glue) glue->timerEvent (0);
+}
+
+//--------------------------------------------------------------------------
+// versions 
+//--------------------------------------------------------------------------
 int INScore::version	()				{ return 62; }
 const char* INScore::versionStr ()		{ return "0.62"; }
 
+//--------------------------------------------------------------------------
+// messages system 
 //--------------------------------------------------------------------------
 void INScore::postMessage	(const char* address, MessagePtr msg)
 {
