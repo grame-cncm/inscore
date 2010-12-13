@@ -1,16 +1,28 @@
 
 # fetch the version number directly in the cmake conf file
-VERSION = $(shell grep 'set .ITLFWKVERS' ../../cmake/CMakeLists.txt | sed -e 's/[^0-9.]//g')
-SP = IASL-$(VERSION)
+VERSION = $(shell grep 'set .INSFWKVERS' ../../cmake/CMakeLists.txt | sed -e 's/[^0-9.]//g')
+ALL = ALL-$(VERSION)
+LIB = IASL-$(VERSION)
 	
-doc:
-	doxygen
-	cd latex && make
-	mv latex/refman.pdf $(SP).pdf
-	-[ -d  $(SP) ] && rm -rf $(SP)
-	mkdir $(DEST)$(SP)
-	cp $(SP).pdf $(DEST)$(SP)
-	cp -R html $(DEST)$(SP)
+doc: lib all
+
+lib:
+	doxygen Doxylib
+	-[ -d  $(LIB) ] && rm -rf $(LIB)
+	mkdir $(LIB)
+	cp -R libhtml $(LIB)/html
+
+all:
+	doxygen Doxyall
+	-[ -d  $(ALL) ] && rm -rf $(ALL)
+	mkdir $(ALL)
+	cp -R allhtml $(ALL)/html
+
+pdf:
+	make -C liblatex
+	mv liblatex/refman.pdf $(LIB)/$(LIB).pdf
+	make -C alllatex
+	mv alllatex/refman.pdf $(ALL)/$(ALL).pdf
 
 clean:
-	rm -rf html latex $(SP).pdf $(SP).tgz $(SP)
+	rm -rf libhtml liblatex allhtml alllatex *.pdf
