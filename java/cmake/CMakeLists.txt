@@ -107,7 +107,7 @@ set (LINK  ${INScore})
 
 add_library(${target} SHARED ${LIBCONTENT})
 set_target_properties (${target} PROPERTIES VERSION ${VERSION})
-target_link_libraries (${target} ${LINK})
+target_link_libraries (${target} ${LINK} ${QTLIBS})
 
 
 #######################################
