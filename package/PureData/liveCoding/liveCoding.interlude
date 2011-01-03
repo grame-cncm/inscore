@@ -1,6 +1,8 @@
 /ITL/scene/* del
 /ITL/scene/myText set txt "Type your messages in liveCoding.interlude"
 /ITL/scene/myText scale 2.0
-/ITL/scene/rect set rect 1.45 0.3
-/ITL/scene/rect color 180 120 40 100
+/ITL/scene/rect set rect 1.6 0.5
+/ITL/scene/rect color 250 10 40 100
 
+/ITL/scene/rond set ellipse 1. 1.
+/ITL/scene/rond color 20 10 140 100

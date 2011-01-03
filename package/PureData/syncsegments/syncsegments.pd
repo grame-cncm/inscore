@@ -1,45 +1,65 @@
-#N canvas 64 182 777 497 10;
-#X obj -2 170 print;
-#X obj -172 201 cnv 15 250 180 empty empty OSC_Comm 20 12 0 12 -204800
+#N canvas 13 35 367 193 10;
+#X obj 70 74 bng 15 250 50 0 \$0-reload empty Reload -40 7 0 10 -262144
+-1 -1;
+#X obj -168 -70 vradio 15 1 0 4 \$0-map empty empty 0 -8 0 10 -228856
+-258113 -1 0;
+#X obj 35 -70 vradio 15 1 0 3 \$0-vpos \$1-vpos empty 0 -8 0 10 -228856
+-258113 -1 2;
+#X text 54 -73 top;
+#X text 55 -56 over;
+#X text 55 -39 bottom;
+#X text -52 -91 Stretch;
+#X obj -44 -68 vradio 15 1 0 4 \$0-stretch \$1-stretch empty 0 -8 0
+10 -228856 -258113 -1 1;
+#X text -25 -71 h;
+#X text -24 -54 hv;
+#X text -24 -37 H;
+#X text -24 -23 Hv;
+#X obj -94 -71 bng 15 250 50 0 $nosync empty empty 17 7 0 10 -262144
+-1 -1;
+#X text -108 -91 No Sync;
+#X text -148 -71 map1;
+#X text -147 -55 map2;
+#X text -147 -40 map3;
+#X text -146 -25 mapd;
+#X text -176 -91 TGV maps;
+#N canvas 41 276 593 534 inside 1;
+#X obj -146 257 cnv 15 250 180 empty empty OSC_Comm 20 12 0 12 -204800
 -66577 0;
-#X obj -168 322 dumpOSC 7001;
-#X obj -168 353 print ITLOut;
-#X obj -71 321 dumpOSC 7002;
-#X obj -71 352 print ITL;
-#X obj -5 289 sendOSC;
-#X msg -165 256 connect localhost 7000;
-#X obj -165 226 loadbang;
-#X obj -5 255 prepend send;
-#X obj 96 201 cnv 15 230 180 empty empty Init 20 12 0 12 -204800 -66577
+#X obj -142 378 dumpOSC 7001;
+#X obj -142 409 print ITLOut;
+#X obj -45 377 dumpOSC 7002;
+#X obj -45 408 print ITL;
+#X obj 21 345 sendOSC;
+#X msg -139 312 connect localhost 7000;
+#X obj -139 282 loadbang;
+#X obj 21 311 prepend send;
+#X obj 122 257 cnv 15 230 180 empty empty Init 20 12 0 12 -204800 -66577
 0;
-#X obj 180 266 getdir;
-#X obj 90 170 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 129 241 t b b b b;
-#X obj 180 295 prepend /ITL rootPath;
-#X text 75 150 Reload;
-#X obj 167 210 loadbang;
-#X obj -5 228 r sync;
-#X obj 134 352 s sync;
-#X obj 50 -48 vradio 15 1 0 4 empty empty empty 0 -8 0 10 -262144 -1
--1 0;
-#X obj -1 127 s sync;
-#X obj -167 -25 metro 41.66;
-#X obj -185 38 s sync;
-#X obj -167 -54 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1
-0 1;
-#X text -173 -76 Play;
-#X obj -43 -51 vsl 15 128 10 100 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 1100 1;
-#X text -48 -75 Rate;
-#X obj 449 -37 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -262144
--1 -1 2;
-#X text 446 -62 VPos;
-#X text 468 -40 top;
-#X text 469 -23 over;
-#X text 469 -6 bottom;
-#X text 318 -65 Stretch;
-#X obj 325 114 s sync;
+#X obj 189 323 getdir;
+#X obj 138 298 t b b b b;
+#X obj 189 352 prepend /ITL rootPath;
+#X obj 265 267 loadbang;
+#X obj 21 284 r sync;
+#X obj 143 409 s sync;
+#X msg 143 378 /ITL load syncsegments.interlude;
+#X obj 178 265 r \$0-reload;
+#X obj -164 -3 cnv 15 170 160 empty empty Playing 20 12 0 12 -261682
+-66577 0;
+#X obj -146 61 metro 41.66;
+#X obj -146 124 s sync;
+#X obj -145 26 r \$0-play;
+#X obj -73 28 r \$0-rate;
+#X obj 15 -3 cnv 15 390 185 empty empty parameters 20 12 0 12 -261682
+-66577 0;
+#X obj 27 157 s sync;
+#X obj 30 46 route 0 1 2 3;
+#X obj 26 131 prepend /ITL/scene/tgv mapf;
+#X msg 26 75 tgv.map;
+#X msg 50 99 tgv2.map;
+#X msg 81 76 tgv3.map;
+#X msg 113 99 tgvd.map;
+#X obj 209 157 s sync;
 #N canvas 273 60 573 327 vstretch 0;
 #X msg 296 144 syncOver;
 #X msg 320 168 syncBottom;
@@ -79,68 +99,68 @@
 #X connect 13 0 11 0;
 #X connect 14 0 13 0;
 #X connect 15 0 10 0;
-#X restore 325 47 pd vstretch;
-#X obj 326 -42 vradio 15 1 0 4 empty empty empty 0 -8 0 10 -262144
--1 -1 1;
-#X text 345 -45 h;
-#X text 346 -28 hv;
-#X text 346 -11 H;
-#X text 346 3 Hv;
-#X obj 187 -35 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X text 173 -63 No Sync;
-#X msg 134 321 /ITL load syncsegments.interlude;
-#X msg -185 3 /ITL/scene/tgv clock;
-#X obj 325 82 prepend /ITL/scene/sync tgv myGuidoFile;
-#X msg 187 28 /ITL/scene/sync tgv;
-#X msg 478 -74 2;
-#X msg 298 -76 1;
-#X obj 386 -94 loadbang;
-#X text 70 -49 map1;
-#X text 71 -33 map2;
-#X text 71 -18 map3;
-#X text 72 -3 mapd;
-#X obj 50 16 route 0 1 2 3;
-#X obj -2 101 prepend /ITL/scene/tgv mapf;
-#X msg -2 45 tgv.map;
-#X text 38 -73 TGV maps;
-#X msg 22 69 tgv2.map;
-#X msg 77 44 tgv3.map;
-#X msg 85 69 tgvd.map;
-#X connect 2 0 3 0;
-#X connect 4 0 5 0;
+#X restore 162 41 pd vstretch;
+#X obj 162 67 prepend /ITL/scene/sync tgv myGuidoFile;
+#X msg 240 125 /ITL/scene/sync tgv;
+#X obj 29 21 r \$0-map;
+#X obj 240 101 r $nosync;
+#X msg 115 444 2;
+#X msg 77 443 1;
+#X obj 77 492 s \$1-stretch;
+#X obj 115 471 s \$1-vpos;
+#X obj 142 14 r \$0-stretch;
+#X obj 237 13 r \$0-vpos;
+#X msg -146 89 /ITL/scene/tgv clock;
+#X msg -135 200 /ITL/scene fullscreen \$1;
+#X obj -136 171 r $fs;
+#X obj -135 227 s sync;
+#X connect 1 0 2 0;
+#X connect 3 0 4 0;
+#X connect 6 0 5 0;
 #X connect 7 0 6 0;
-#X connect 8 0 7 0;
-#X connect 9 0 6 0;
-#X connect 11 0 14 0;
-#X connect 12 0 13 0;
-#X connect 13 2 42 0;
-#X connect 13 3 11 0;
-#X connect 14 0 18 0;
-#X connect 16 0 13 0;
-#X connect 17 0 9 0;
-#X connect 19 0 53 0;
-#X connect 21 0 43 0;
-#X connect 23 0 21 0;
-#X connect 25 0 21 1;
-#X connect 27 0 34 1;
-#X connect 34 0 44 0;
-#X connect 35 0 34 0;
-#X connect 40 0 45 0;
-#X connect 42 0 18 0;
-#X connect 43 0 22 0;
-#X connect 44 0 33 0;
-#X connect 45 0 33 0;
-#X connect 46 0 27 0;
-#X connect 47 0 35 0;
-#X connect 48 0 47 0;
-#X connect 48 0 46 0;
-#X connect 53 0 55 0;
-#X connect 53 1 57 0;
-#X connect 53 2 58 0;
-#X connect 53 3 59 0;
-#X connect 54 0 20 0;
-#X connect 55 0 54 0;
-#X connect 57 0 54 0;
-#X connect 58 0 54 0;
-#X connect 59 0 54 0;
+#X connect 8 0 5 0;
+#X connect 10 0 12 0;
+#X connect 11 1 38 0;
+#X connect 11 1 37 0;
+#X connect 11 2 16 0;
+#X connect 11 3 10 0;
+#X connect 12 0 15 0;
+#X connect 13 0 11 0;
+#X connect 14 0 8 0;
+#X connect 16 0 15 0;
+#X connect 17 0 11 0;
+#X connect 19 0 43 0;
+#X connect 21 0 19 0;
+#X connect 22 0 19 1;
+#X connect 25 0 27 0;
+#X connect 25 1 28 0;
+#X connect 25 2 29 0;
+#X connect 25 3 30 0;
+#X connect 26 0 24 0;
+#X connect 27 0 26 0;
+#X connect 28 0 26 0;
+#X connect 29 0 26 0;
+#X connect 30 0 26 0;
+#X connect 32 0 33 0;
+#X connect 33 0 31 0;
+#X connect 34 0 31 0;
+#X connect 35 0 25 0;
+#X connect 36 0 34 0;
+#X connect 37 0 40 0;
+#X connect 38 0 39 0;
+#X connect 41 0 32 0;
+#X connect 42 0 32 1;
+#X connect 43 0 20 0;
+#X connect 44 0 46 0;
+#X connect 45 0 44 0;
+#X restore -257 69 pd inside;
+#X obj -250 -74 tgl 15 0 \$0-play empty Play -4 -10 0 10 -262144 -1
+-1 0 1;
+#X obj -218 -72 vsl 15 128 10 100 0 0 \$0-rate empty Rate -4 -12 0
+10 -262144 -1 -1 1500 1;
+#X text 13 -91 Vertical Pos;
+#X text -175 1 This patch shows components synchronization:;
+#X text -176 16 the train is segmented using various mapping;
+#X text -176 29 files and synchronized to the score;
+#X obj -75 74 tgl 15 0 $fs empty Full_screen -24 -7 0 10 -262144 -1
+-1 0 1;
