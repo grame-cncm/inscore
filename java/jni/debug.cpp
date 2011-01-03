@@ -21,11 +21,9 @@ class myTimeTask : public QObject
 {
 	int fID;
 	QGraphicsScene* fScene;
-	qreal	fAngle;
-	int		fSize;
 
 	public:
-				 myTimeTask(QGraphicsScene* scene, int size) : fID(0), fScene(scene), fAngle(0), fSize(size) {}
+				 myTimeTask(QGraphicsScene* scene, int size) : fID(0), fScene(scene) {}
 		virtual ~myTimeTask()			{ if (fID) killTimer(fID); }
 			void start(int interval)	{ fID = startTimer(interval); }
 
@@ -33,24 +31,10 @@ class myTimeTask : public QObject
 		virtual void timerEvent ( QTimerEvent *  ) {
 			QMutexLocker lock(&gMutex);
 			QList<QGraphicsItem *> items = fScene->items ();
-			fAngle += 1;
 			QList<QGraphicsItem *>::iterator i = items.begin();
-			float x = 2.0, y = 2.0; int n=0;
 			while (i != items.end()) {
-
-				QGraphicsItem * item = *i;
-				item->setPos(x, y);
-				item->resetTransform();
-				item->rotate (fAngle);
-				QRectF brect = item->boundingRect();
-				item->translate( -brect.center().x(), -brect.center().y());
-				i++; n++;
-							
-				if (!(n % fSize)) {
-					x = 2.0;
-					y += brect.height() + 6;
-				}
-				else x += brect.width() + 6;	
+				(*i)->rotate (1.);
+				i++; 
 			}
 //std::cout << "(";
 			if (gListener) gListener->update();
@@ -65,10 +49,21 @@ static void init(QGraphicsScene* scene, int w, int h, int size)
 	float wf = (float)w / (size - gap) - gap;
 	float hf = (float)h / (size - gap) - gap;
 	int n = size * size;
-	for ( int i = 0 ; i < n ; i++ ) {
+	float x = 2.0, y = 2.0;
+	for ( int i = 0 ; i < n ; ) {
 		QGraphicsRectItem * rect = new QGraphicsRectItem (QRect(0, 0, wf, hf));
+		QRectF brect = rect->boundingRect();
+		rect->setPos(x, y);
+		rect->translate( -brect.center().x(), -brect.center().y());
+		rect->setTransformOriginPoint (brect.center().x(), brect.center().y());
+		i++;
+		if (!(i % size)) {
+			x = 2.0;
+			y += brect.height() + 6;
+		}
+		else x += brect.width() + 6;	
 		scene->addItem (rect);
-	}	
+	}
 }
 
 //------------------------------------------------------------------------

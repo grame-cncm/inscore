@@ -45,15 +45,9 @@ public class INScoreViewer {
 
 class INScoreListener implements INScoreViewListener {  
 	Component fView;
-	public boolean fPending;
-    public INScoreListener (Component view)			{ fView = view; fPending = false; }
+    public INScoreListener (Component view)			{ fView = view; }
 	public synchronized void update() {
-		if (!fPending) {
-			fPending = true;
-		System.out.println("u(");
-			fView.repaint();
-		System.out.println(")u");
-		}
+		fView.repaint();
     }
 }
 
@@ -78,23 +72,38 @@ class scorePanel extends Canvas implements Printable {
 	scoreTimeTask fTimerTask;
 	
 	public scorePanel()	{ 
+		fPending = fDrawing = false;
 		fscore = new INScore(); 
 		flistener = new INScoreListener(this);
-		fTimer = new java.util.Timer();
 		fscore.Start(20,7000);
 		fscore.SetViewListener (flistener);
+//		fTimer = new java.util.Timer();
 //		fTimerTask = new scoreTimeTask(fscore);
 //		fTimer.scheduleAtFixedRate (fTimerTask, 10, 10);
 	}
 
 	public Dimension getPreferredSize()		{ return new Dimension(500,500); }
 
+	boolean fPending;
+	boolean fDrawing;
+
+	public void repaint() {
+		if (!fPending) {
+			fPending = true;
+			super.repaint();
+		}
+	}
 
 	public void paint(Graphics g) {
-		System.out.println("q<");
+		if (fDrawing) {
+			System.out.println("drawing reentrance");
+			return;
+		}
+		fDrawing = true;
+//		System.out.println("q<");
 		fscore.Draw (g, getSize().width, getSize().height);
-		System.out.println(">p");
-		flistener.fPending = false;
+//		System.out.println(">p");
+		fDrawing = fPending = false;
 	}
 	
 	public int print(Graphics g, PageFormat pf, int page) throws PrinterException {
