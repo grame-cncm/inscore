@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>8. Component specific messages</TITLE>
-<META NAME="description" CONTENT="8. Component specific messages">
+<TITLE>5. Time management messages</TITLE>
+<META NAME="description" CONTENT="5. Time management messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -20,102 +20,121 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
 <LINK REL="next" HREF="node20.html">
-<LINK REL="previous" HREF="node17.html">
+<LINK REL="previous" HREF="node6.html">
 <LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node20.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html368"
+<A NAME="tex2html384"
   HREF="node20.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html362"
+<A NAME="tex2html378"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html356"
+<A NAME="tex2html372"
   HREF="node18.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html364"
+<A NAME="tex2html380"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html366"
-  HREF="node44.html">
+<A NAME="tex2html382"
+  HREF="node49.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html369"
-  HREF="node20.html">9. The 'map' message</A>
-<B> Up:</B> <A NAME="tex2html363"
+<B> Next:</B> <A NAME="tex2html385"
+  HREF="node20.html">6. The 'set' message</A>
+<B> Up:</B> <A NAME="tex2html379"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html357"
-  HREF="node18.html">7.1 Special 'get' forms</A>
- &nbsp; <B>  <A NAME="tex2html365"
+<B> Previous:</B> <A NAME="tex2html373"
+  HREF="node18.html">4.4 The 'click' and</A>
+ &nbsp; <B>  <A NAME="tex2html381"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html367"
-  HREF="node44.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html383"
+  HREF="node49.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION00900000000000000000"></A>
-<A NAME="specificMsg"></A>
+<H1><A NAME="SECTION00600000000000000000"></A>
+<A NAME="time"></A>
 <BR>
-8. Component specific messages
+5. Time management messages
 </H1>
-Some of the messages are specific to the component <TT>type</TT>. These messages can be sent to addresses of the form <TT>/ITL/scene/<I>identifier</I></TT>. They are ignored by objects that don't support the message. 
-
-<P>
+Time messages control the time dimension if the score components. They could be sent to any address with the form <TT>/ITL/scene/<I>identifier</I></TT> where <TT><I>identifier</I></TT> is the unique identifier string of a scene component.
 <BR>
 <IMG
- WIDTH="314" HEIGHT="203" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="354" HEIGHT="240" ALIGN="BOTTOM" BORDER="0"
  SRC="img33.gif"
  ALT="\begin{rail}
-specificMsg : [1] 'penColor' color
-\vert [1] 'penWidth' float32
+timeMsg : 'clock'
+\vert 'durClock'
+\vert ('date' int32 int32)
 ...
-...tyle' penstyle
-\vert [2] 'width' float32
-\vert [2] 'height' float32
+...t32)
+\vert ('ddate' int32 int32)
+\vert ('dduration' int32 int32)
 \end{rail}">
 <BR>
-<A NAME="486"></A>
-<A NAME="487"></A>
-<A NAME="488"></A>
-<A NAME="489"></A>
-<A NAME="490"></A>
+<A NAME="390"></A>
+<A NAME="391"></A>
+<A NAME="392"></A>
+<A NAME="393"></A>
+<A NAME="394"></A>
+<A NAME="395"></A>
 
 <P>
 
 <UL>
-<LI><B>[1]</B> messages supported by the components types <TT>rect | ellipse | polygon | curve | line | graph</TT>.
+<LI><TT>clock</TT>: a clock message similar to MIDI clock message: advances the object date by 1/24 of quarter note.
 </LI>
-<LI><B>[2]</B> messages supported by the components types <TT>rect | ellipse | graph.</TT> </LI>
+<LI><TT>durClock</TT>: a clock message applied to duration: increases the object duration by 1/24 of quarter note.
+</LI>
+<LI><TT>date</TT>: sets the time position of an object. Time is expressed as a rational value <TT>d/n</TT> where <TT>n</TT> represents the whole note division and <TT>d</TT> the divisions count. The parameters order is <TT>numerator</TT> followed by <TT>denominator</TT>.
+<BR>
+Default value is <TT>0/1</TT>.
+</LI>
+<LI><TT>duration</TT>: changes the object duration. Duration is expressed as a rational value. 
+<BR>
+Default value is <TT>0/1</TT>.
+</LI>
+<LI><TT>ddate</TT>: relative time positioning message: adds the specified value to the object date.
+</LI>
+<LI><TT>ddate</TT>: relative duration message: adds the specified value to the object duration.
+</LI>
 </UL>
 
 <P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html384"
+  HREF="node20.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html378"
+  HREF="OSCMsg.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html372"
+  HREF="node18.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html380"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html382"
+  HREF="node49.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<IMG
- WIDTH="220" HEIGHT="203" ALIGN="BOTTOM" BORDER="0"
- SRC="img34.gif"
- ALT="\begin{rail}
-penstyle : 'solid' \vert 'dash' \vert 'dot' \vert 'dashDot' \vert 'dashDotDot'
-\end{rail}">
-<BR>
-<A NAME="499"></A>
-<A NAME="500"></A>
-<A NAME="501"></A>
-<A NAME="502"></A>
-<A NAME="503"></A>
-
-<P>
-The color scheme is described in section <A HREF="node6.html#common">4</A>. 
-<BR>
-The pen width default value is 0 (excepted for <TT>line</TT> objects, where 1.0 is the default value). It is expressed in arbitrary units (1 is a reasonable value).
-<BR>
-The pen style default value is <TT>solid</TT>.
-<BR>
-<P>
-<BR><HR>
+<B> Next:</B> <A NAME="tex2html385"
+  HREF="node20.html">6. The 'set' message</A>
+<B> Up:</B> <A NAME="tex2html379"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html373"
+  HREF="node18.html">4.4 The 'click' and</A>
+ &nbsp; <B>  <A NAME="tex2html381"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html383"
+  HREF="node49.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

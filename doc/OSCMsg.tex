@@ -35,7 +35,6 @@
 \newcommand{\fullref}[1]	{\ref{#1} p.\pageref{#1}}
 
 \providecommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
-\newcommand{\ASL}		{ASL}
 \newcommand{\OSC}[1]		{\texttt{#1}}
 \newcommand{\values}[1]	{\texttt{#1}}
 \newcommand{\example}		{\hspace*{1cm}}
@@ -388,6 +387,63 @@ relColorMsg :
 \item \OSC{dcolor} and \OSC{dhsb} are similar and each color parameter represents a displacement of the corresponding target value.
 \end{itemize}
 
+
+%-------------------------------
+%:'effect' messages
+\sublevel{The 'effect' messages}
+\label{effectmsg}
+
+The \OSC{effect} message sets a graphic effect on the target object. These messages are experimental and could be changed or removed in a future version.
+
+\begin{rail}
+effectMsg : 'effect' ( 'none'
+		| ('blur'
+		| 'colorize'
+		| 'shadow') (| params)) 		
+\end{rail}
+\index{Effect messages!effect!blur}
+\index{Effect messages!effect!colorize}
+\index{Effect messages!effect!shadow}
+
+\begin{itemize}
+\item \OSC{none}: removes any effect set on the target object.
+\item \OSC{blur, colorize, shadow}: sets the corresponding effect. An effect always replaces any previous effect. The effect name is followed by optional specific effects parameters.
+\end{itemize}
+
+Note that an effect affects the target object but also all the target slaves.
+
+\subsublevel{The blur effect}
+
+\begin{rail}
+blurParams : radius (| blurHint)
+\end{rail}
+
+Blur parameters are the blur radius and a rendering hint. The radius is an int32 value. By default, it is 5 pixels. The radius is given in device coordinates, meaning it is unaffected by scale. 
+
+\begin{rail}
+blurHint : 'performance' | 'quality' | 'animation'
+\end{rail}
+Use the \OSC{performance} hint to say that you want a faster blur, the \OSC{quality} hint to say that you prefer a higher quality blur, or the \OSC{animation} when you want to animate the blur radius. The default hint value is \OSC{performance}.
+
+\subsublevel{The colorize effect}
+
+\begin{rail}
+colorizeParams : strength (| color)
+\end{rail}
+
+Colorize parameters are a strength and a tint color. The strength is a float value. By default, it is 1.0. A strength 0.0 equals to no effect, while 1.0 means full colorization. \\
+The color is given as a RGB triplet (see \fullref{colormsg}) by default, the color value is light blue (0, 0, 192).
+
+
+\subsublevel{The shadow effect}
+
+\begin{rail}
+shadowParams : xoffset yoffset (| color (| blur))
+\end{rail}
+
+\OSC{xoffset} and \OSC{yoffset} are the shadow offset and should be given as int32 values. The default value is 8 pixels. The offset is given in device coordinates, which means it is unaffected by scale. \\
+The color is given as a RGBA color (see \fullref{colormsg}) by default, the color value is a semi-transparent dark gray (63, 63, 63, 180) \\
+The blur radius should be given as an int32 value. By default, the blur radius is 1 pixel.
 
 %-------------------------------
 %:The 'click' and 'select' messages
@@ -1029,7 +1085,7 @@ debug : 		('name'  int32)
 \label{graphsig}
 
 The graphic representation of a signal is approached with \emph{graphic signals}. As illustrated in figure \ref{graphimg}, a graphic representation of a signal could be viewed as a stream of a limited set of parameters : the y coordinate, the graph thickness h and the graph color c. 
-A \emph{graphic signal} is a composite signal including a set of 3 parallel signals that control these parameters. Thus the \ASL\ provides messages to create signals and to combine them into \emph{graphic signals}. 
+A \emph{graphic signal} is a composite signal including a set of 3 parallel signals that control these parameters. Thus the INScore library provides messages to create signals and to combine them into \emph{graphic signals}. 
 
 \begin{figure}[h]
 	\centering \includegraphics[width=90mm]{imgs/graph}
@@ -1309,6 +1365,17 @@ Example:
 \toplevel{ Changes list}
 
 %===============================
+%: Differences to version 0.60
+\sublevel{Differences to version 0.60}
+\begin{itemize}
+\item new 'effect' message  (section \fullref{effectmsg}).
+\item utf8 support on windows corrected
+\item transparency support for stretched synchronized objects corrected
+\item multiple application instances supported with dynamic udp port number allocation.
+\item command line option with --port portnumber option to set the receive udp port number at startup.
+\end{itemize}
+
+%===============================
 %: Differences to version 0.55
 \sublevel{Differences to version 0.55}
 \begin{itemize}
@@ -1365,6 +1432,7 @@ Known issues:
 
 \end{itemize}
 
+%===============================
 %: Differences to version 0.42
 \sublevel{Differences to version 0.42}
 

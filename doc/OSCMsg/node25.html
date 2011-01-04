@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>11.2 Score browsing and layout</TITLE>
-<META NAME="description" CONTENT="11.2 Score browsing and layout">
+<TITLE>10. Synchronization</TITLE>
+<META NAME="description" CONTENT="10. Synchronization">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,84 +19,136 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node26.html">
+<LINK REL="next" HREF="node27.html">
 <LINK REL="previous" HREF="node24.html">
-<LINK REL="up" HREF="node23.html">
+<LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node26.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html454"
+<A NAME="tex2html467"
   HREF="node26.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html448"
-  HREF="node23.html">
+<A NAME="tex2html461"
+  HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html442"
+<A NAME="tex2html455"
   HREF="node24.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html450"
+<A NAME="tex2html463"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html452"
-  HREF="node44.html">
+<A NAME="tex2html465"
+  HREF="node49.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html455"
-  HREF="node26.html">11.3 Score queries</A>
-<B> Up:</B> <A NAME="tex2html449"
-  HREF="node23.html">11. Score specific messages</A>
-<B> Previous:</B> <A NAME="tex2html443"
-  HREF="node24.html">11.1 Specific score mappings</A>
- &nbsp; <B>  <A NAME="tex2html451"
+<B> Next:</B> <A NAME="tex2html468"
+  HREF="node26.html">10.1 Synchronization modes</A>
+<B> Up:</B> <A NAME="tex2html462"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html456"
+  HREF="node24.html">9. The 'map' message</A>
+ &nbsp; <B>  <A NAME="tex2html464"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html453"
-  HREF="node44.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html466"
+  HREF="node49.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001220000000000000000"></A>
-<A NAME="guidolayout"></A>
+<H1><A NAME="SECTION001100000000000000000"></A>
+<A NAME="syncmsg"></A>
 <BR>
-11.2 Score browsing and layout
+10. Synchronization
 </H1>
 
 <P>
+Synchronization between components is achieved at <TT>scene</TT> level: a <TT>sync</TT> node is automatically embedded in the scene, its address is <TT>/ITL/scene/sync</TT> and it supports messages to add or remove a master / slave relation between components or to query the synchronizations state.
 <BR>
 <IMG
- WIDTH="396" HEIGHT="163" ALIGN="BOTTOM" BORDER="0"
- SRC="img54.gif"
+ WIDTH="609" HEIGHT="238" ALIGN="BOTTOM" BORDER="0"
+ SRC="img53.gif"
  ALT="\begin{rail}
-scoreMsg : 'page' int32
-\vert 'pageFormat' float32 float32
-\vert 'columns' int32
-\vert 'rows' int32
+sync : syncIdentifier
+( [1] syncIdentifier (\vert syncmode +)
+\vert [2])
+\vert [3] 'get' ( \vert identifier)
 \end{rail}">
 <BR>
+<A NAME="602"></A>
+<A NAME="603"></A>
 
 <P>
 
 <UL>
-<LI><TT>page</TT>: sets the first displayed page. Index starts at <TT>1</TT>. Default: <TT>1</TT>.
-
-<P>
+<LI><B>[1]</B> this is the <TT>slave</TT> <TT>master</TT> form followed by an optional synchronization mode. It adds a slave / master relation between components identified by identifier1 and identifier2. 
+<BR></LI>
+<LI><B>[2]</B> this is the <TT>slave</TT> form that removes the slave synchronization for the component identified by identifier1.
 </LI>
-<LI><TT>pageFormat</TT>: sets the score's page format, in cm (Warning: the <TT>pageFormat</TT> is not used when another page format is 'hard-coded' in the score's Guido code). Default: <TT>(21.0 , 29.7)</TT>.
-
-<P>
-</LI>
-<LI><TT>columns</TT>: as multiples pages can be displayed and organized in a <I>grid of pages</I>, <TT>columns</TT> sets the number of columns in the grid. Default: <TT>2</TT>.
-
-<P>
-</LI>
-<LI><TT>rows</TT>: as multiples pages can be displayed and organized in a <I>grid of pages</I>, <TT>rows</TT> sets the number of rows in the grid. Default: <TT>1</TT>.
+<LI><B>[3]</B> the <TT>get</TT> message is intended to query the synchronization state. The optional parameter is the identifier of a component,
 </LI>
 </UL>
+Synchronization between components has no effect if any of the required mapping is missing (see table <A HREF="node24.html#maptable">9.1</A>).
+
+<P>
+<BR>
+<IMG
+ WIDTH="351" HEIGHT="89" ALIGN="BOTTOM" BORDER="0"
+ SRC="img54.gif"
+ ALT="\begin{rail}
+syncIdentifier : [1] identifier
+\vert [2] identifier ':' mapName
+\end{rail}">
+<BR>
+<A NAME="616"></A>
+
+<P>
+Synchronization identifiers indicates 1) the name of a <TT>scene</TT> component or 2) the name of a <TT>scene</TT> component associated to a mapping name.
+
+<P>
+Note that the <TT>sync</TT> node doesn't responds to common component messages, but accept the <TT>get</TT> message. 
+The <TT>get</TT> message without parameter is equivalent to a <TT>get</TT> message addressed to each object declared in the <TT>sync</TT> node.
 
 <P>
 <BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html469"
+  HREF="node26.html">10.1 Synchronization modes</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html467"
+  HREF="node26.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html461"
+  HREF="OSCMsg.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html455"
+  HREF="node24.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html463"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html465"
+  HREF="node49.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html468"
+  HREF="node26.html">10.1 Synchronization modes</A>
+<B> Up:</B> <A NAME="tex2html462"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html456"
+  HREF="node24.html">9. The 'map' message</A>
+ &nbsp; <B>  <A NAME="tex2html464"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html466"
+  HREF="node49.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

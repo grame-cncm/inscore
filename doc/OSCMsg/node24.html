@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>11.1 Specific score mappings</TITLE>
-<META NAME="description" CONTENT="11.1 Specific score mappings">
+<TITLE>9. The 'map' message</TITLE>
+<META NAME="description" CONTENT="9. The 'map' message">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,113 +21,244 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node25.html">
 <LINK REL="previous" HREF="node23.html">
-<LINK REL="up" HREF="node23.html">
+<LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node25.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html440"
+<A NAME="tex2html453"
   HREF="node25.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html434"
-  HREF="node23.html">
+<A NAME="tex2html447"
+  HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html428"
+<A NAME="tex2html441"
   HREF="node23.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html436"
+<A NAME="tex2html449"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html438"
-  HREF="node44.html">
+<A NAME="tex2html451"
+  HREF="node49.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html441"
-  HREF="node25.html">11.2 Score browsing and</A>
-<B> Up:</B> <A NAME="tex2html435"
-  HREF="node23.html">11. Score specific messages</A>
-<B> Previous:</B> <A NAME="tex2html429"
-  HREF="node23.html">11. Score specific messages</A>
- &nbsp; <B>  <A NAME="tex2html437"
+<B> Next:</B> <A NAME="tex2html454"
+  HREF="node25.html">10. Synchronization</A>
+<B> Up:</B> <A NAME="tex2html448"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html442"
+  HREF="node23.html">8. Component specific messages</A>
+ &nbsp; <B>  <A NAME="tex2html450"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html439"
-  HREF="node44.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html452"
+  HREF="node49.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001210000000000000000"></A>
-<A NAME="guidomaps"></A>
+<H1><A NAME="SECTION001000000000000000000"></A>
+<A NAME="mapMsg"></A>
 <BR>
-11.1 Specific score mappings
+9. The 'map' message
 </H1>
+The <TT>map</TT> messages can be sent to any address with the form <TT>/ITL/scene/<I>identifier</I></TT>. It is intended to describe the target object relation to time and sets a relation between an object segmentation and a time segmentation. 
+The global form of the message is:
 
 <P>
-Music score mappings are automatically computed  by the system. However, since a score may support a large number of mappings (staff based, system based, voice based, etc.), music scores supports a specific <TT>map</TT> message to request the computation of a specific mapping. This message has the form:
 <BR>
 <IMG
- WIDTH="325" HEIGHT="163" ALIGN="BOTTOM" BORDER="0"
- SRC="img53.gif"
+ WIDTH="676" HEIGHT="278" ALIGN="BOTTOM" BORDER="0"
+ SRC="img40.gif"
  ALT="\begin{rail}
-scoreMapMsg : 'map' ('page' \vert 'system' \vert ('staff' 'staffNum') \vert 'voice' 'voiceNum' )
+mapMsg : 'map' ( \vert mapName ) (
+([1] float2DSegment relativeTim...
+...) +
+\vert ([3] int1DSegment relativeTimeSegment ) +
+\vert ( del )
+)
 \end{rail}">
 <BR>
-<A NAME="648"></A>
-<A NAME="649"></A>
-<A NAME="650"></A>
-<A NAME="651"></A>
-<A NAME="652"></A>
+<A NAME="542"></A>
 
 <P>
-The Guido map name must be concatenated as a string (as a usual map name).
+Segments are expressed as a list of intervals. For a 1 dimension resource, a segment is a made of a single interval. For a 2 dimensions resource, a segment is a made of 2 intervals: an interval on the <IMG
+ WIDTH="11" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img41.gif"
+ ALT="$x$">-axis and one on the <IMG
+ WIDTH="11" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img42.gif"
+ ALT="$y$">-axis for graphic based resource, or an interval on columns and one on lines for text based resources. Intervals are right-opened.
 
 <P>
+The different kind of relations corresponds to:
 
 <UL>
-<LI><TT>page</TT>: a page level mapping ;
+<LI><B>[1]</B> a relation between a 2 dimensions segmentation expressed in float values and a relative time segmentation. These segmentations are used by <TT>rect, ellipse, polygon, curve, line</TT> components.
 </LI>
-<LI><TT>system</TT>: a system level mapping ;
+<LI><B>[2]</B> a relation between a 2 dimensions segmentation expressed in integer values and a relative time segmentation. These segmentations are used by <TT>txt, txtf, img</TT> components. 
 </LI>
-<LI><TT>staff</TT>: a staff level mapping ; the staff indicated by the next parameter (between 1 and the score staves count).
-</LI>
-<LI><TT>voice</TT>: a voice level mapping ; the voice indicated by the next parameter (between 1 and the score voices count).
+<LI><B>[3]</B> a relation between a 1 dimension segmentation expressed in integer values and a relative time segmentation. These segmentations are used by the <TT>graph</TT> component and express a relation between a signal space and time.
 </LI>
 </UL>
+Table <A HREF="#maptable">9.1</A> summarizes the specific segmentations used by each component type. 
 
 <P>
-The default synchronization mode for a Guido score is <TT>staff1</TT>.
-Note that a voice may be distributed on several staves and thus a staff may contain serveral voices.
+The specified <TT>map</TT> can be named with an optional <TT>mapName</TT> string; this name can be further reused, during object synchronization, to specify the mapping to use. When <TT>mapName</TT> is not specified, the mapping has a default <I>empty name</I>.
+
+<P>
+The <TT>del</TT> command deletes the mapping specified with <TT>mapName</TT>, or the <I>'empty name'</I> mapping if no map name is specified.
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<DIV ALIGN="CENTER">
+<A NAME="560"></A>
+<TABLE CELLPADDING=3 BORDER="1">
+<CAPTION><STRONG>Table 9.1:</STRONG>
+Mapping resources for each component</CAPTION>
+<TR><TD ALIGN="RIGHT">component type</TD>
+<TD ALIGN="LEFT">segmentation type</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>txt, txtf</TT></TD>
+<TD ALIGN="LEFT">int2DSegments</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>img</TT></TD>
+<TD ALIGN="LEFT">int2DSegments</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>rect, ellipse, polygon, curve</TT></TD>
+<TD ALIGN="LEFT">float2DSegments</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>graph</TT></TD>
+<TD ALIGN="LEFT">int1DSegments</TD>
+</TR>
+</TABLE>
+</DIV>
+<A NAME="maptable"></A>
+</DIV>
+<BR>
+
+<P>
+Note for <TT>html, htmlf</TT> + guido score mappings
+
+<P>
+<BR>
+<IMG
+ WIDTH="295" HEIGHT="51" ALIGN="BOTTOM" BORDER="0"
+ SRC="img43.gif"
+ ALT="\begin{rail}
+relativeTimeSegment : '(' relativeTimeInterval ')'
+\end{rail}">
+<BR>
+<BR>
+<IMG
+ WIDTH="352" HEIGHT="51" ALIGN="BOTTOM" BORDER="0"
+ SRC="img44.gif"
+ ALT="\begin{rail}
+float2DSegment : '(' floatInterval floatInterval ')'
+\end{rail}">
+<BR>
+<BR>
+<IMG
+ WIDTH="327" HEIGHT="51" ALIGN="BOTTOM" BORDER="0"
+ SRC="img45.gif"
+ ALT="\begin{rail}
+int2DSegment : '(' intInterval intInterval ')'
+\end{rail}">
+<BR>
+<BR>
+<IMG
+ WIDTH="232" HEIGHT="51" ALIGN="BOTTOM" BORDER="0"
+ SRC="img46.gif"
+ ALT="\begin{rail}
+int1DSegment : '(' intInterval ')'
+\end{rail}">
+<BR>
+
+<P>
+<BR>
+<IMG
+ WIDTH="332" HEIGHT="48" ALIGN="BOTTOM" BORDER="0"
+ SRC="img47.gif"
+ ALT="\begin{rail}
+relativeTimeInterval : '[' rational ',' rational '['
+\end{rail}">
+<BR>
+<BR>
+<IMG
+ WIDTH="357" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="img48.gif"
+ ALT="\begin{rail}
+floatInterval : '[' float32 ',' float32 '['
+\end{rail}">
+<BR>
+<BR>
+<IMG
+ WIDTH="321" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.gif"
+ ALT="\begin{rail}
+intInterval : '[' int32 ',' int32 '['
+\end{rail}">
+<BR>
+
+<P>
+Relative time is expressed as <TT>rational</TT> values where <IMG
+ WIDTH="12" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.gif"
+ ALT="$1$"> represents a whole note.
+
+<P>
+<BR>
+<IMG
+ WIDTH="241" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
+ SRC="img51.gif"
+ ALT="\begin{rail}
+rational : int32 '/' int32
+\end{rail}">
+<BR>
+
+<P>
+The <TT>mapf</TT> messages is similar to the <TT>map</TT> message but gives the path name of a file containing the mapping data, along with the optional map name.
+<BR>
+<IMG
+ WIDTH="373" HEIGHT="89" ALIGN="BOTTOM" BORDER="0"
+ SRC="img52.gif"
+ ALT="\begin{rail}
+mapfMsg : 'mapf' ( \vert mapName ) mapFilePath
+\end{rail}">
+<BR>
+<A NAME="594"></A>
 
 <P>
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html440"
+<A NAME="tex2html453"
   HREF="node25.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html434"
-  HREF="node23.html">
+<A NAME="tex2html447"
+  HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html428"
+<A NAME="tex2html441"
   HREF="node23.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html436"
+<A NAME="tex2html449"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html438"
-  HREF="node44.html">
+<A NAME="tex2html451"
+  HREF="node49.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html441"
-  HREF="node25.html">11.2 Score browsing and</A>
-<B> Up:</B> <A NAME="tex2html435"
-  HREF="node23.html">11. Score specific messages</A>
-<B> Previous:</B> <A NAME="tex2html429"
-  HREF="node23.html">11. Score specific messages</A>
- &nbsp; <B>  <A NAME="tex2html437"
+<B> Next:</B> <A NAME="tex2html454"
+  HREF="node25.html">10. Synchronization</A>
+<B> Up:</B> <A NAME="tex2html448"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html442"
+  HREF="node23.html">8. Component specific messages</A>
+ &nbsp; <B>  <A NAME="tex2html450"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html439"
-  HREF="node44.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html452"
+  HREF="node49.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]

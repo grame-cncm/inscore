@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.2 Differences to version 0.53</TITLE>
-<META NAME="description" CONTENT="15.2 Differences to version 0.53">
+<TITLE>13.2.2 Parallel graphic signals.</TITLE>
+<META NAME="description" CONTENT="13.2.2 Parallel graphic signals.">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,7 +19,6 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node42.html">
 <LINK REL="previous" HREF="node40.html">
 <LINK REL="up" HREF="node39.html">
 <LINK REL="next" HREF="node42.html">
@@ -27,64 +26,63 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html686"
+<A NAME="tex2html697"
   HREF="node42.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html680"
+<A NAME="tex2html691"
   HREF="node39.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html674"
+<A NAME="tex2html687"
   HREF="node40.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html682"
+<A NAME="tex2html693"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html684"
-  HREF="node44.html">
+<A NAME="tex2html695"
+  HREF="node49.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html687"
-  HREF="node42.html">15.3 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html681"
-  HREF="node39.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html675"
-  HREF="node40.html">15.1 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html683"
+<B> Next:</B> <A NAME="tex2html698"
+  HREF="node42.html">14. Interaction messages</A>
+<B> Up:</B> <A NAME="tex2html692"
+  HREF="node39.html">13.2 Graphic signals.</A>
+<B> Previous:</B> <A NAME="tex2html688"
+  HREF="node40.html">13.2.1 Graphic signal default</A>
+ &nbsp; <B>  <A NAME="tex2html694"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html685"
-  HREF="node44.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html696"
+  HREF="node49.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001620000000000000000">
-15.2 Differences to version 0.53</A>
-</H1>
+<H2><A NAME="SECTION001422000000000000000"></A>
+<A NAME="pgsignal"></A>
+<BR>
+13.2.2 Parallel graphic signals.
+</H2>
+When the dimension <I>d</I> of a signal connected to a graphic signal is greater than 6, then the input signal is interpreted like parallel graphic signals. More generally, the dimension <I>n</I> of a graphic signal is:
+<BR><P></P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ \begin{displaymath}
+n  \  |\ n \in \mathbb{N}\ \land\ 6.(n-1) < d \leqslant 6.n
+\end{displaymath}
+ -->
 
-<UL>
-<LI>ITL parser corrected to support regexp in message string (used by messages addressed to sync node)
-</LI>
-<LI>format of mapping files and strings changed (section <A HREF="node20.html#mapMsg">9</A> p.<A HREF="node20.html#mapMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>format of sync messages extended to include map name (section <A HREF="node21.html#syncmsg">10</A> p.<A HREF="node21.html#syncmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>signal node: 'garbage' message removed
-</LI>
-<LI>new 'reset' message for the scene (/ITL/scene) (section <A HREF="node5.html#scene">3</A> p.<A HREF="node5.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>new 'version' message for the application (/ITL) (section <A HREF="node4.html#ITL">2</A> p.<A HREF="node4.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>new 'reset' message for signals (section <A HREF="node32.html#ssignal">13.1.1</A> p.<A HREF="node32.html#ssignal"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>bug parsing messages without params corrected
-</LI>
-<LI>slave segmentation used for synchronization
-</LI>
-<LI>new H synchronization mode (preserves slave segmentation)
-</LI>
-<LI>crash bug corrected for load message and missing ITL files
-</LI>
-</UL>
+<IMG
+ WIDTH="206" HEIGHT="28" BORDER="0"
+ SRC="img68.gif"
+ ALT="\begin{displaymath}
+n  \vert n \in \mathbb{N} \land 6.(n-1) &lt; d \leqslant 6.n
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+where <I>d</I> is the dimension of the input signal.
+
+<P>
+Note than when <I>d</I> is not a mutiple of 6, then the last graphic signal makes use of the default values mentionned above.
 
 <P>
 <BR><HR>

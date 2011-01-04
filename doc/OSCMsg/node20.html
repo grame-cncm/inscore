@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>9. The 'map' message</TITLE>
-<META NAME="description" CONTENT="9. The 'map' message">
+<TITLE>6. The 'set' message</TITLE>
+<META NAME="description" CONTENT="6. The 'set' message">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,238 +27,208 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html382"
+<A NAME="tex2html398"
   HREF="node21.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html376"
+<A NAME="tex2html392"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html370"
+<A NAME="tex2html386"
   HREF="node19.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html378"
+<A NAME="tex2html394"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html380"
-  HREF="node44.html">
+<A NAME="tex2html396"
+  HREF="node49.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html383"
-  HREF="node21.html">10. Synchronization</A>
-<B> Up:</B> <A NAME="tex2html377"
+<B> Next:</B> <A NAME="tex2html399"
+  HREF="node21.html">7. The 'get' messages</A>
+<B> Up:</B> <A NAME="tex2html393"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html371"
-  HREF="node19.html">8. Component specific messages</A>
- &nbsp; <B>  <A NAME="tex2html379"
+<B> Previous:</B> <A NAME="tex2html387"
+  HREF="node19.html">5. Time management messages</A>
+ &nbsp; <B>  <A NAME="tex2html395"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html381"
-  HREF="node44.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html397"
+  HREF="node49.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001000000000000000000"></A>
-<A NAME="mapMsg"></A>
+<H1><A NAME="SECTION00700000000000000000"></A>
+<A NAME="setsect"></A>
 <BR>
-9. The 'map' message
+6. The 'set' message
 </H1>
-The <TT>map</TT> messages can be sent to any address with the form <TT>/ITL/scene/<I>identifier</I></TT>. It is intended to describe the target object relation to time and sets a relation between an object segmentation and a time segmentation. 
-The global form of the message is:
+The <TT>set</TT> messages can be sent to any address with the form <TT>/ITL/scene/<I>identifier</I></TT>. The global form of the message is:
 
 <P>
 <BR>
 <IMG
- WIDTH="676" HEIGHT="278" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="222" HEIGHT="49" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="\begin{rail}
+setMsg : 'set' type data
+\end{rail}">
+<BR>
+
+<P>
+It sets a <TT>scene</TT> component data. When there is no destination for the OSC address, the component is first created before being given the message. When the target destination type doesn't correspond to the message <TT>type</TT>, the object is replaced by an adequate object.
+
+<P>
+Format of the <TT>set</TT> message is:
+<BR>
+<IMG
+ WIDTH="639" HEIGHT="469" ALIGN="BOTTOM" BORDER="0"
  SRC="img35.gif"
  ALT="\begin{rail}
-mapMsg : 'map' ( \vert mapName ) (
-([1] float2DSegment relativeTim...
-...) +
-\vert ([3] int1DSegment relativeTimeSegment ) +
-\vert ( del )
+setMsg : 'set' (
+('txt' string) \vert
+('html' string) \vert
+('gm...
+...' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) \vert
+('line' x y) \vert
+setFile
 )
 \end{rail}">
 <BR>
-<A NAME="513"></A>
+<A NAME="422"></A>
+<A NAME="423"></A>
+<A NAME="424"></A>
+<A NAME="425"></A>
+<A NAME="426"></A>
+<A NAME="427"></A>
+<A NAME="428"></A>
+<A NAME="429"></A>
+<A NAME="430"></A>
+<A NAME="431"></A>
 
 <P>
-Segments are expressed as a list of intervals. For a 1 dimension resource, a segment is a made of a single interval. For a 2 dimensions resource, a segment is a made of 2 intervals: an interval on the <IMG
- WIDTH="11" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img36.gif"
- ALT="$x$">-axis and one on the <IMG
- WIDTH="11" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img37.gif"
- ALT="$y$">-axis for graphic based resource, or an interval on columns and one on lines for text based resources. Intervals are right-opened.
-
-<P>
-The different kind of relations corresponds to:
+Supported types are the following:
 
 <UL>
-<LI><B>[1]</B> a relation between a 2 dimensions segmentation expressed in float values and a relative time segmentation. These segmentations are used by <TT>rect, ellipse, polygon, curve, line</TT> components.
+<LI><TT>txt</TT>: a textual component.
 </LI>
-<LI><B>[2]</B> a relation between a 2 dimensions segmentation expressed in integer values and a relative time segmentation. These segmentations are used by <TT>txt, txtf, img</TT> components. 
+<LI><TT>html</TT>: an html component defined by an HTML string.
 </LI>
-<LI><B>[3]</B> a relation between a 1 dimension segmentation expressed in integer values and a relative time segmentation. These segmentations are used by the <TT>graph</TT> component and express a relation between a signal space and time.
+<LI><TT>gmn</TT>: a Guido score defined by a GMN string.
+</LI>
+<LI><TT>graph</TT>: graphic of a signal. See section <A HREF="node34.html#graphsig">13</A> p.<A HREF="node34.html#graphsig"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> for details about the <TT>graph</TT> objects data.
+</LI>
+<LI><TT>rect</TT>: a rectangle specified by a width and height. Width and height are expressed in <TT>scene</TT> coordinates space, thus a width or a height of 2 corresponds to the width or a height of the <TT>scene</TT>.
+</LI>
+<LI><TT>ellipse</TT>: an ellipse specified by a width and height.
+</LI>
+<LI><TT>polygon</TT>: a polygon specified by a sequence of points, each point being defined by its (x,y) coordinates. Those coordinates are expressed in the <TT>scene</TT> coordinate space, but only taking in acount the relative position of the points ( <I>i.e</I> a polygon A = { (0,0) ; (1,1) ; (0,1) } is equivalent to a polygon B = { (1,1) ; (2,2) ; (1,2) } ).
+</LI>
+<LI><TT>curve</TT>: a sequence of 4-points bezier cubic curve. If the end-point of a curve doesn't match the start-point of the following one, the curves are linked by a straight line. The first curve follows the last curve. The inner space defined by the sequence of curves is filled, using the object color. The points coordinates are handled as in a <TT>polygon</TT>.
+</LI>
+<LI><TT>line</TT>: a simple line specified by its dimension (x,y) expressed in <TT>scene</TT> coordinate space.
+</LI>
+<LI><TT>txtf</TT>: a textual component defined by a file.
+</LI>
+<LI><TT>htmlf</TT>: an html component defined by an HTML file.
+</LI>
+<LI><TT>gmnf</TT>: a Guido score defined by a GMN file.
+</LI>
+<LI><TT>img</TT>: an image file based component. The image format is infered from the file extension.
+</LI>
+<LI><TT>video</TT>: a video file based component. The video format is infered from the file extension. Note that navigation through the video is made using its <TT>date</TT>.
+</LI>
+<LI><TT>file</TT>: a generic type to handle file based objects. Actually, the <TT>file</TT> type is translated into a one of the <TT>txtf</TT>, <TT>gmnf</TT>, <TT>img</TT> or <TT>video</TT> types, according to the file extension (see table <A HREF="#fileTranslate">6.1</A>).
 </LI>
 </UL>
-Table <A HREF="#maptable">9.1</A> summarizes the specific segmentations used by each component type. 
+Note that the default position of any component is <TT>[0,0]</TT>. Objects are drawn centered on their position.
 
 <P>
-The specified <TT>map</TT> can be named with an optional <TT>mapName</TT> string; this name can be further reused, during object synchronization, to specify the mapping to use. When <TT>mapName</TT> is not specified, the mapping has a default <I>empty name</I>.
+<BR>
+<IMG
+ WIDTH="289" HEIGHT="238" ALIGN="BOTTOM" BORDER="0"
+ SRC="img36.gif"
+ ALT="\begin{rail}
+setFile :
+('txtf' textFilePath) \vert
+('htmlf' htmlFilePath) \ve...
+...
+('img' imgPath) \vert
+('video' videoPath) \vert
+('file' filePath)
+\end{rail}">
+<BR>
+<A NAME="467"></A>
+<A NAME="468"></A>
+<A NAME="469"></A>
+<A NAME="470"></A>
+<A NAME="471"></A>
+<A NAME="472"></A>
 
 <P>
-The <TT>del</TT> command deletes the mapping specified with <TT>mapName</TT>, or the <I>'empty name'</I> mapping if no map name is specified.
+<B>See also: </B>the application <TT>rootPath</TT> message (section <A HREF="node4.html#ITL">2</A>) for file based objects.
 
 <P>
 <BR><P></P>
 <DIV ALIGN="CENTER">
 
 <DIV ALIGN="CENTER">
-<A NAME="531"></A>
+<A NAME="1099"></A>
 <TABLE CELLPADDING=3 BORDER="1">
-<CAPTION><STRONG>Table 9.1:</STRONG>
-Mapping resources for each component</CAPTION>
-<TR><TD ALIGN="RIGHT">component type</TD>
-<TD ALIGN="LEFT">segmentation type</TD>
+<CAPTION><STRONG>Table 6.1:</STRONG>
+File extensions supported by the <TT>file</TT> translation scheme.</CAPTION>
+<TR><TD ALIGN="RIGHT">file extension</TD>
+<TD ALIGN="CENTER">translated type</TD>
 </TR>
-<TR><TD ALIGN="RIGHT"><TT>txt, txtf</TT></TD>
-<TD ALIGN="LEFT">int2DSegments</TD>
+<TR><TD ALIGN="RIGHT"><TT>.txt .text</TT></TD>
+<TD ALIGN="CENTER"><TT>txtf</TT></TD>
 </TR>
-<TR><TD ALIGN="RIGHT"><TT>img</TT></TD>
-<TD ALIGN="LEFT">int2DSegments</TD>
+<TR><TD ALIGN="RIGHT"><TT>.htm .html</TT></TD>
+<TD ALIGN="CENTER"><TT>htmlf</TT></TD>
 </TR>
-<TR><TD ALIGN="RIGHT"><TT>rect, ellipse, polygon, curve</TT></TD>
-<TD ALIGN="LEFT">float2DSegments</TD>
+<TR><TD ALIGN="RIGHT"><TT>.gmn .xml</TT></TD>
+<TD ALIGN="CENTER"><TT>gmnf</TT></TD>
 </TR>
-<TR><TD ALIGN="RIGHT"><TT>graph</TT></TD>
-<TD ALIGN="LEFT">int1DSegments</TD>
+<TR><TD ALIGN="RIGHT"><TT>.jpg .jpeg .png .gif .bmp .tiff</TT></TD>
+<TD ALIGN="CENTER"><TT>img</TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>.avi .wmv .mpg .mpeg .mp4</TT></TD>
+<TD ALIGN="CENTER"><TT>video</TT></TD>
 </TR>
 </TABLE>
 </DIV>
-<A NAME="maptable"></A>
+<A NAME="fileTranslate"></A>
 </DIV>
 <BR>
-
-<P>
-Note for <TT>html, htmlf</TT> + guido score mappings
-
-<P>
-<BR>
-<IMG
- WIDTH="295" HEIGHT="51" ALIGN="BOTTOM" BORDER="0"
- SRC="img38.gif"
- ALT="\begin{rail}
-relativeTimeSegment : '(' relativeTimeInterval ')'
-\end{rail}">
-<BR>
-<BR>
-<IMG
- WIDTH="352" HEIGHT="51" ALIGN="BOTTOM" BORDER="0"
- SRC="img39.gif"
- ALT="\begin{rail}
-float2DSegment : '(' floatInterval floatInterval ')'
-\end{rail}">
-<BR>
-<BR>
-<IMG
- WIDTH="327" HEIGHT="51" ALIGN="BOTTOM" BORDER="0"
- SRC="img40.gif"
- ALT="\begin{rail}
-int2DSegment : '(' intInterval intInterval ')'
-\end{rail}">
-<BR>
-<BR>
-<IMG
- WIDTH="232" HEIGHT="51" ALIGN="BOTTOM" BORDER="0"
- SRC="img41.gif"
- ALT="\begin{rail}
-int1DSegment : '(' intInterval ')'
-\end{rail}">
-<BR>
-
-<P>
-<BR>
-<IMG
- WIDTH="332" HEIGHT="48" ALIGN="BOTTOM" BORDER="0"
- SRC="img42.gif"
- ALT="\begin{rail}
-relativeTimeInterval : '[' rational ',' rational '['
-\end{rail}">
-<BR>
-<BR>
-<IMG
- WIDTH="357" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
- SRC="img43.gif"
- ALT="\begin{rail}
-floatInterval : '[' float32 ',' float32 '['
-\end{rail}">
-<BR>
-<BR>
-<IMG
- WIDTH="321" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
- SRC="img44.gif"
- ALT="\begin{rail}
-intInterval : '[' int32 ',' int32 '['
-\end{rail}">
-<BR>
-
-<P>
-Relative time is expressed as <TT>rational</TT> values where <IMG
- WIDTH="12" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
- SRC="img45.gif"
- ALT="$1$"> represents a whole note.
-
-<P>
-<BR>
-<IMG
- WIDTH="241" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
- SRC="img46.gif"
- ALT="\begin{rail}
-rational : int32 '/' int32
-\end{rail}">
-<BR>
-
-<P>
-The <TT>mapf</TT> messages is similar to the <TT>map</TT> message but gives the path name of a file containing the mapping data, along with the optional map name.
-<BR>
-<IMG
- WIDTH="373" HEIGHT="89" ALIGN="BOTTOM" BORDER="0"
- SRC="img47.gif"
- ALT="\begin{rail}
-mapfMsg : 'mapf' ( \vert mapName ) mapFilePath
-\end{rail}">
-<BR>
-<A NAME="565"></A>
 
 <P>
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html382"
+<A NAME="tex2html398"
   HREF="node21.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html376"
+<A NAME="tex2html392"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html370"
+<A NAME="tex2html386"
   HREF="node19.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html378"
+<A NAME="tex2html394"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html380"
-  HREF="node44.html">
+<A NAME="tex2html396"
+  HREF="node49.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html383"
-  HREF="node21.html">10. Synchronization</A>
-<B> Up:</B> <A NAME="tex2html377"
+<B> Next:</B> <A NAME="tex2html399"
+  HREF="node21.html">7. The 'get' messages</A>
+<B> Up:</B> <A NAME="tex2html393"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html371"
-  HREF="node19.html">8. Component specific messages</A>
- &nbsp; <B>  <A NAME="tex2html379"
+<B> Previous:</B> <A NAME="tex2html387"
+  HREF="node19.html">5. Time management messages</A>
+ &nbsp; <B>  <A NAME="tex2html395"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html381"
-  HREF="node44.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html397"
+  HREF="node49.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>13.1.1 Simple signals.</TITLE>
-<META NAME="description" CONTENT="13.1.1 Simple signals.">
+<TITLE>12.1 File watcher</TITLE>
+<META NAME="description" CONTENT="12.1 File watcher">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,115 +27,128 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html560"
+<A NAME="tex2html567"
   HREF="node33.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html554"
+<A NAME="tex2html561"
   HREF="node31.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html548"
+<A NAME="tex2html555"
   HREF="node31.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html556"
+<A NAME="tex2html563"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html558"
-  HREF="node44.html">
+<A NAME="tex2html565"
+  HREF="node49.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html561"
-  HREF="node33.html">13.1.2 Composing signals in</A>
-<B> Up:</B> <A NAME="tex2html555"
-  HREF="node31.html">13.1 The signal virtual</A>
-<B> Previous:</B> <A NAME="tex2html549"
-  HREF="node31.html">13.1 The signal virtual</A>
- &nbsp; <B>  <A NAME="tex2html557"
+<B> Next:</B> <A NAME="tex2html568"
+  HREF="node33.html">12.2 Debug</A>
+<B> Up:</B> <A NAME="tex2html562"
+  HREF="node31.html">12. Virtual address space</A>
+<B> Previous:</B> <A NAME="tex2html556"
+  HREF="node31.html">12. Virtual address space</A>
+ &nbsp; <B>  <A NAME="tex2html564"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html559"
-  HREF="node44.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html566"
+  HREF="node49.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION001411000000000000000"></A>
-<A NAME="ssignal"></A>
+<H1><A NAME="SECTION001310000000000000000"></A>
+<A NAME="watch"></A>
 <BR>
-13.1.1 Simple signals.
-</H2>
-The signal messages can be sent to any address with the form <TT>/ITL/scene/signal/<I>identifier</I></TT>, where <TT><I>identifier</I></TT> is a unique signal identifier.
-The set of messages supported by a signal is the following:
-<BR>
-<IMG
- WIDTH="321" HEIGHT="356" ALIGN="BOTTOM" BORDER="0"
- SRC="img58.gif"
- ALT="\begin{rail}
-simpleSignal : [1] ( float32 + )
-\vert [2] ('size' int32)
-\vert ...
-...' ( \vert 'size' \vert 'default')
-\vert [5] 'reset'
-\vert [6] 'del'
-\end{rail}">
-<BR>
-<A NAME="763"></A>
-<A NAME="764"></A>
-<A NAME="765"></A>
-<A NAME="766"></A>
-<A NAME="767"></A>
-<A NAME="768"></A>
+12.1 File watcher
+</H1>
 
 <P>
+The <TT>fileWatcher</TT> is a component automatically embedded at scene level. 
+<BR>
+It receives messages at the address <TT>/ITL/scene/fileWatcher</TT>.
+
+<P>
+The <TT>fileWatcher</TT> service monitors files on demand; it is aware of file modifications and file removals (or renamings, which is equivalent). The <TT>fileWatcher</TT> works with associations between a file and an OSC message : when a file change occurs, the file watcher posts the associated OSC message.
+
+<P>
+The <TT>fileWatcher</TT> is controlled with 4 messages:
 
 <UL>
-<LI><B>[1]</B> push an arbitrary data count into the signal buffer. The data range should be <TT>[-1,1]</TT>. Note that the signal buffer behaves like a ring buffer, thus data are wrapped when the data count if greater than the signal size. 
+<LI>the <TT>add</TT> message is used to add a new 'file' - 'OSC message' association ;
 </LI>
-<LI><B>[2]</B> the <TT>size</TT> message sets the signal buffer size. When not specified, the buffer size value is the size of the first data message. 
+<LI>the <TT>remove</TT> message is used to remove a 'file' - 'OSC message' association.
 </LI>
-<LI><B>[3]</B> the <TT>default</TT> message sets the <I>default signal value</I>. A signal <I>default value</I> is the value returned when a query asks for data past the available values.
+<LI>the <TT>clear</TT> message is used to clear all existing associations.
 </LI>
-<LI><B>[4]</B> the <TT>get</TT> gives the signal values. The <TT>size</TT> and  <TT>default</TT> parameters are used to query the signal size and default values.
-</LI>
-<LI><B>[5]</B> the <TT>reset</TT> message clears the signal data. 
-</LI>
-<LI><B>[6]</B> the <TT>del</TT> message deletes the signal from the <TT>signal</TT> space. Note that it is safe to delete a signal even when used by a graphic signal. 
+<LI>the <TT>get</TT> message is used to retrieve the current associations.
 </LI>
 </UL>
+<A NAME="735"></A>
+
+<P>
+<BR>
+<IMG
+ WIDTH="431" HEIGHT="203" ALIGN="BOTTOM" BORDER="0"
+ SRC="img61.gif"
+ ALT="\begin{rail}
+fileWatcher : ('add' filePath OSCMessage)
+\vert 'remove' (filePath OSCMessage \vert OSCAddress )
+\vert 'clear'
+\vert 'get'
+\end{rail}">
+<BR>
+<A NAME="738"></A>
+<A NAME="739"></A>
+<A NAME="740"></A>
+<A NAME="741"></A>
+
+<P>
+where <TT>OSCMessage</TT> is any message complying to the format desscribed in section <A HREF="node2.html#genformat">1</A> p.<A HREF="node2.html#genformat"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>.
 
 <P>
 Example:
-<BR> <TT>/ITL/scene/signal/null 0.0</TT>
+<BR> <TT>/ITL/scene/fileWatcher add fuga.gmn /ITL/scene/myScore set gmnf fuga.gmn</TT>
 <BR>
-creates a constant signal named <TT>null</TT>, which value is <TT>0</TT>.
+<P>
+Note that the <TT>get</TT> query returns a set of messages complying to the <TT>add</TT> message format.
+<BR>
+<P>
+The <TT>remove</TT> message may take only 1 parameter, in which case the only parameter is an OSC address : it stops monitoring any file associated to an OSC message with this OSC address.
+
+<P>
+Note that an OSC message can be associated to several files, and that a file can be associated to several OSC messages.
+When a file has been removed (or renamed), the <TT>fileWatcher</TT> stops monitoring it.
 
 <P>
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html560"
+<A NAME="tex2html567"
   HREF="node33.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html554"
+<A NAME="tex2html561"
   HREF="node31.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html548"
+<A NAME="tex2html555"
   HREF="node31.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html556"
+<A NAME="tex2html563"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html558"
-  HREF="node44.html">
+<A NAME="tex2html565"
+  HREF="node49.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html561"
-  HREF="node33.html">13.1.2 Composing signals in</A>
-<B> Up:</B> <A NAME="tex2html555"
-  HREF="node31.html">13.1 The signal virtual</A>
-<B> Previous:</B> <A NAME="tex2html549"
-  HREF="node31.html">13.1 The signal virtual</A>
- &nbsp; <B>  <A NAME="tex2html557"
+<B> Next:</B> <A NAME="tex2html568"
+  HREF="node33.html">12.2 Debug</A>
+<B> Up:</B> <A NAME="tex2html562"
+  HREF="node31.html">12. Virtual address space</A>
+<B> Previous:</B> <A NAME="tex2html556"
+  HREF="node31.html">12. Virtual address space</A>
+ &nbsp; <B>  <A NAME="tex2html564"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html559"
-  HREF="node44.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html566"
+  HREF="node49.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]

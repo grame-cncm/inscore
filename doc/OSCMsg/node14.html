@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>4.3 The 'click' and 'select' messages</TITLE>
-<META NAME="description" CONTENT="4.3 The 'click' and 'select' messages">
+<TITLE>4.3 The 'effect' messages</TITLE>
+<META NAME="description" CONTENT="4.3 The 'effect' messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,6 +19,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node18.html">
 <LINK REL="previous" HREF="node11.html">
 <LINK REL="up" HREF="node6.html">
 <LINK REL="next" HREF="node15.html">
@@ -26,169 +27,88 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html299"
+<A NAME="tex2html315"
   HREF="node15.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html293"
+<A NAME="tex2html309"
   HREF="node6.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html289"
+<A NAME="tex2html303"
   HREF="node13.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html295"
+<A NAME="tex2html311"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html297"
-  HREF="node44.html">
+<A NAME="tex2html313"
+  HREF="node49.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html300"
-  HREF="node15.html">5. Time management messages</A>
-<B> Up:</B> <A NAME="tex2html294"
+<B> Next:</B> <A NAME="tex2html316"
+  HREF="node15.html">4.3.1 The blur effect</A>
+<B> Up:</B> <A NAME="tex2html310"
   HREF="node6.html">4. Common components messages</A>
-<B> Previous:</B> <A NAME="tex2html290"
+<B> Previous:</B> <A NAME="tex2html304"
   HREF="node13.html">4.2.2 Relative color messages</A>
- &nbsp; <B>  <A NAME="tex2html296"
+ &nbsp; <B>  <A NAME="tex2html312"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html298"
-  HREF="node44.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html314"
+  HREF="node49.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION00530000000000000000"></A>
-<A NAME="csmsg"></A>
+<A NAME="effectmsg"></A>
 <BR>
-4.3 The 'click' and 'select' messages
+4.3 The 'effect' messages
 </H1>
 
 <P>
-The <TT>click</TT> and <TT>select</TT> messages can be sent to any address with the form <TT>/ITL/scene/<I>identifier</I></TT> where <TT><I>identifier</I></TT> is the unique identifier string of a scene component. They are intended to provide information about components relative positions: it returns a list of components identifiers that are 'under' the <I>clicked</I> component: z order of the components is used for the 'under' relationship. 
+The <TT>effect</TT> message sets a graphic effect on the target object. These messages are experimental and could be changed or removed in a future version.
 
 <P>
 <BR>
 <IMG
- WIDTH="275" HEIGHT="86" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="456" HEIGHT="165" ALIGN="BOTTOM" BORDER="0"
  SRC="img22.gif"
  ALT="\begin{rail}
-click : 'click' ( \vert clickMode)
+effectMsg : 'effect' ( 'none'
+\vert ('blur'
+\vert 'colorize'
+\vert 'shadow') (\vert params))
 \end{rail}">
 <BR>
-<A NAME="316"></A>
-
-<P>
-<BR>
-<IMG
- WIDTH="227" HEIGHT="200" ALIGN="BOTTOM" BORDER="0"
- SRC="img23.gif"
- ALT="\begin{rail}
-clickMode : 'topleft' \vert 'bottomright' \vert 'topright' \vert 'bottomleft' \vert 'center'
-\end{rail}">
-<BR>
-<A NAME="319"></A>
-<A NAME="320"></A>
-<A NAME="321"></A>
-<A NAME="322"></A>
-<A NAME="323"></A>
+<A NAME="310"></A>
+<A NAME="311"></A>
+<A NAME="312"></A>
 
 <P>
 
 <UL>
-<LI><TT>topleft</TT>, <TT>bottomright</TT>, <TT>topright</TT>, <TT>bottomleft</TT>, <TT>center</TT>: collects the components that are respectively under the top-left, bottom-right, top-right, bottom-left or center point of the target component. The clicked point is computed from the component bounding box.
+<LI><TT>none</TT>: removes any effect set on the target object.
 </LI>
-<LI>Sent without parameter, the <TT>click</TT> message is equivalent to <TT>click topleft</TT>.
+<LI><TT>blur, colorize, shadow</TT>: sets the corresponding effect. An effect always replaces any previous effect. The effect name is followed by optional specific effects parameters.
 </LI>
 </UL>
 
 <P>
-Reply of the <TT>click</TT> message has the following form:
-<BR>
-<IMG
- WIDTH="454" HEIGHT="114" ALIGN="BOTTOM" BORDER="0"
- SRC="img24.gif"
- ALT="\begin{rail}
-clickReply : OSCAddress clickMode ( \vert (identifier +))
-\end{rail}">
-<BR>
+Note that an effect affects the target object but also all the target slaves.
 
 <P>
-where 'identifier' is a component name. Note that 'identifiers' are sorted by decreasing z order.
-
-<P>
-<BR>
-<IMG
- WIDTH="288" HEIGHT="86" ALIGN="BOTTOM" BORDER="0"
- SRC="img25.gif"
- ALT="\begin{rail}
-select : 'select' ( \vert selectMode)
-\end{rail}">
-<BR>
-<A NAME="338"></A>
-
-<P>
-<BR>
-<IMG
- WIDTH="211" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
- SRC="img26.gif"
- ALT="\begin{rail}
-selectMode : 'intersect' \vert 'include'
-\end{rail}">
-<BR>
-<A NAME="341"></A>
-<A NAME="342"></A>
-
-<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><TT>intersect</TT>: looks for the components that are under the <I>clicked</I> component and that intersect with its bounding box.
-</LI>
-<LI><TT>include</TT>: looks for the components that are under the <I>clicked</I> component and that are included in its bounding box.
-</LI>
-<LI>Sent without parameter, the <TT>select</TT> message is equivalent to <TT>select intersect</TT>.
-</LI>
+<LI><A NAME="tex2html317"
+  HREF="node15.html">4.3.1 The blur effect</A>
+<LI><A NAME="tex2html318"
+  HREF="node16.html">4.3.2 The colorize effect</A>
+<LI><A NAME="tex2html319"
+  HREF="node17.html">4.3.3 The shadow effect</A>
 </UL>
-
-<P>
-Reply of the <TT>select</TT> message is similar to <TT>click</TT> reply:
-<BR>
-<IMG
- WIDTH="460" HEIGHT="114" ALIGN="BOTTOM" BORDER="0"
- SRC="img27.gif"
- ALT="\begin{rail}
-selectReply : OSCAddress selectMode ( \vert (identifier +))
-\end{rail}">
-<BR>
-
-<P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html299"
-  HREF="node15.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html293"
-  HREF="node6.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html289"
-  HREF="node13.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html295"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html297"
-  HREF="node44.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html300"
-  HREF="node15.html">5. Time management messages</A>
-<B> Up:</B> <A NAME="tex2html294"
-  HREF="node6.html">4. Common components messages</A>
-<B> Previous:</B> <A NAME="tex2html290"
-  HREF="node13.html">4.2.2 Relative color messages</A>
- &nbsp; <B>  <A NAME="tex2html296"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html298"
-  HREF="node44.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<!--End of Table of Child-Links-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

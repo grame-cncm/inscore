@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>12.1 File watcher</TITLE>
-<META NAME="description" CONTENT="12.1 File watcher">
+<TITLE>11.1 Specific score mappings</TITLE>
+<META NAME="description" CONTENT="11.1 Specific score mappings">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,128 +27,107 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html496"
+<A NAME="tex2html511"
   HREF="node29.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html490"
+<A NAME="tex2html505"
   HREF="node27.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html484"
+<A NAME="tex2html499"
   HREF="node27.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html492"
+<A NAME="tex2html507"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html494"
-  HREF="node44.html">
+<A NAME="tex2html509"
+  HREF="node49.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html497"
-  HREF="node29.html">12.2 Debug</A>
-<B> Up:</B> <A NAME="tex2html491"
-  HREF="node27.html">12. Virtual address space</A>
-<B> Previous:</B> <A NAME="tex2html485"
-  HREF="node27.html">12. Virtual address space</A>
- &nbsp; <B>  <A NAME="tex2html493"
+<B> Next:</B> <A NAME="tex2html512"
+  HREF="node29.html">11.2 Score browsing and</A>
+<B> Up:</B> <A NAME="tex2html506"
+  HREF="node27.html">11. Score specific messages</A>
+<B> Previous:</B> <A NAME="tex2html500"
+  HREF="node27.html">11. Score specific messages</A>
+ &nbsp; <B>  <A NAME="tex2html508"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html495"
-  HREF="node44.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html510"
+  HREF="node49.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001310000000000000000"></A>
-<A NAME="watch"></A>
+<H1><A NAME="SECTION001210000000000000000"></A>
+<A NAME="guidomaps"></A>
 <BR>
-12.1 File watcher
+11.1 Specific score mappings
 </H1>
 
 <P>
-The <TT>fileWatcher</TT> is a component automatically embedded at scene level. 
-<BR>
-It receives messages at the address <TT>/ITL/scene/fileWatcher</TT>.
-
-<P>
-The <TT>fileWatcher</TT> service monitors files on demand; it is aware of file modifications and file removals (or renamings, which is equivalent). The <TT>fileWatcher</TT> works with associations between a file and an OSC message : when a file change occurs, the file watcher posts the associated OSC message.
-
-<P>
-The <TT>fileWatcher</TT> is controlled with 4 messages:
-
-<UL>
-<LI>the <TT>add</TT> message is used to add a new 'file' - 'OSC message' association ;
-</LI>
-<LI>the <TT>remove</TT> message is used to remove a 'file' - 'OSC message' association.
-</LI>
-<LI>the <TT>clear</TT> message is used to clear all existing associations.
-</LI>
-<LI>the <TT>get</TT> message is used to retrieve the current associations.
-</LI>
-</UL>
-<A NAME="706"></A>
-
-<P>
+Music score mappings are automatically computed  by the system. However, since a score may support a large number of mappings (staff based, system based, voice based, etc.), music scores supports a specific <TT>map</TT> message to request the computation of a specific mapping. This message has the form:
 <BR>
 <IMG
- WIDTH="431" HEIGHT="203" ALIGN="BOTTOM" BORDER="0"
- SRC="img56.gif"
+ WIDTH="325" HEIGHT="163" ALIGN="BOTTOM" BORDER="0"
+ SRC="img58.gif"
  ALT="\begin{rail}
-fileWatcher : ('add' filePath OSCMessage)
-\vert 'remove' (filePath OSCMessage \vert OSCAddress )
-\vert 'clear'
-\vert 'get'
+scoreMapMsg : 'map' ('page' \vert 'system' \vert ('staff' 'staffNum') \vert 'voice' 'voiceNum' )
 \end{rail}">
 <BR>
-<A NAME="709"></A>
-<A NAME="710"></A>
-<A NAME="711"></A>
-<A NAME="712"></A>
+<A NAME="677"></A>
+<A NAME="678"></A>
+<A NAME="679"></A>
+<A NAME="680"></A>
+<A NAME="681"></A>
 
 <P>
-where <TT>OSCMessage</TT> is any message complying to the format desscribed in section <A HREF="node2.html#genformat">1</A> p.<A HREF="node2.html#genformat"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>.
+The Guido map name must be concatenated as a string (as a usual map name).
 
 <P>
-Example:
-<BR> <TT>/ITL/scene/fileWatcher add fuga.gmn /ITL/scene/myScore set gmnf fuga.gmn</TT>
-<BR>
-<P>
-Note that the <TT>get</TT> query returns a set of messages complying to the <TT>add</TT> message format.
-<BR>
-<P>
-The <TT>remove</TT> message may take only 1 parameter, in which case the only parameter is an OSC address : it stops monitoring any file associated to an OSC message with this OSC address.
+
+<UL>
+<LI><TT>page</TT>: a page level mapping ;
+</LI>
+<LI><TT>system</TT>: a system level mapping ;
+</LI>
+<LI><TT>staff</TT>: a staff level mapping ; the staff indicated by the next parameter (between 1 and the score staves count).
+</LI>
+<LI><TT>voice</TT>: a voice level mapping ; the voice indicated by the next parameter (between 1 and the score voices count).
+</LI>
+</UL>
 
 <P>
-Note that an OSC message can be associated to several files, and that a file can be associated to several OSC messages.
-When a file has been removed (or renamed), the <TT>fileWatcher</TT> stops monitoring it.
+The default synchronization mode for a Guido score is <TT>staff1</TT>.
+Note that a voice may be distributed on several staves and thus a staff may contain serveral voices.
 
 <P>
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html496"
+<A NAME="tex2html511"
   HREF="node29.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html490"
+<A NAME="tex2html505"
   HREF="node27.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html484"
+<A NAME="tex2html499"
   HREF="node27.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html492"
+<A NAME="tex2html507"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html494"
-  HREF="node44.html">
+<A NAME="tex2html509"
+  HREF="node49.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html497"
-  HREF="node29.html">12.2 Debug</A>
-<B> Up:</B> <A NAME="tex2html491"
-  HREF="node27.html">12. Virtual address space</A>
-<B> Previous:</B> <A NAME="tex2html485"
-  HREF="node27.html">12. Virtual address space</A>
- &nbsp; <B>  <A NAME="tex2html493"
+<B> Next:</B> <A NAME="tex2html512"
+  HREF="node29.html">11.2 Score browsing and</A>
+<B> Up:</B> <A NAME="tex2html506"
+  HREF="node27.html">11. Score specific messages</A>
+<B> Previous:</B> <A NAME="tex2html500"
+  HREF="node27.html">11. Score specific messages</A>
+ &nbsp; <B>  <A NAME="tex2html508"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html495"
-  HREF="node44.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html510"
+  HREF="node49.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]

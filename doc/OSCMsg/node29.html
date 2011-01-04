@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>12.2 Debug</TITLE>
-<META NAME="description" CONTENT="12.2 Debug">
+<TITLE>11.2 Score browsing and layout</TITLE>
+<META NAME="description" CONTENT="11.2 Score browsing and layout">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,6 +19,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node30.html">
 <LINK REL="previous" HREF="node28.html">
 <LINK REL="up" HREF="node27.html">
 <LINK REL="next" HREF="node30.html">
@@ -26,63 +27,71 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html508"
+<A NAME="tex2html525"
   HREF="node30.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html502"
+<A NAME="tex2html519"
   HREF="node27.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html498"
+<A NAME="tex2html513"
   HREF="node28.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html504"
+<A NAME="tex2html521"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html506"
-  HREF="node44.html">
+<A NAME="tex2html523"
+  HREF="node49.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html509"
-  HREF="node30.html">13. Signals and graphic</A>
-<B> Up:</B> <A NAME="tex2html503"
-  HREF="node27.html">12. Virtual address space</A>
-<B> Previous:</B> <A NAME="tex2html499"
-  HREF="node28.html">12.1 File watcher</A>
- &nbsp; <B>  <A NAME="tex2html505"
+<B> Next:</B> <A NAME="tex2html526"
+  HREF="node30.html">11.3 Score queries</A>
+<B> Up:</B> <A NAME="tex2html520"
+  HREF="node27.html">11. Score specific messages</A>
+<B> Previous:</B> <A NAME="tex2html514"
+  HREF="node28.html">11.1 Specific score mappings</A>
+ &nbsp; <B>  <A NAME="tex2html522"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html507"
-  HREF="node44.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html524"
+  HREF="node49.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001320000000000000000">
-12.2 Debug</A>
+<H1><A NAME="SECTION001220000000000000000"></A>
+<A NAME="guidolayout"></A>
+<BR>
+11.2 Score browsing and layout
 </H1>
-
-<P>
-Each object has a <TT>debug</TT> sub-node for debugging purposes. This <TT>debug</TT> virtual node has 3 flags, that can be actived or desactived with <TT>0</TT> or <TT>1</TT>:
 
 <P>
 <BR>
 <IMG
- WIDTH="258" HEIGHT="127" ALIGN="BOTTOM" BORDER="0"
- SRC="img57.gif"
+ WIDTH="396" HEIGHT="163" ALIGN="BOTTOM" BORDER="0"
+ SRC="img59.gif"
  ALT="\begin{rail}
-debug : ('name' int32)
-\vert ('map' int32)
-\vert ('signal' int32)
+scoreMsg : 'page' int32
+\vert 'pageFormat' float32 float32
+\vert 'columns' int32
+\vert 'rows' int32
 \end{rail}">
 <BR>
 
 <P>
 
 <UL>
-<LI>When the <TT>name</TT> flag is on, each scene component displays its bounding rectangle and name.
+<LI><TT>page</TT>: sets the first displayed page. Index starts at <TT>1</TT>. Default: <TT>1</TT>.
+
+<P>
 </LI>
-<LI>When the <TT>map</TT> flag is on, each scene component displays its mappings.
+<LI><TT>pageFormat</TT>: sets the score's page format, in cm (Warning: the <TT>pageFormat</TT> is not used when another page format is 'hard-coded' in the score's Guido code). Default: <TT>(21.0 , 29.7)</TT>.
+
+<P>
 </LI>
-<LI>When the <TT>signal</TT> flag is on, each object (even the scene or the application) will, according to its type, emit 'performance related' signals (or no signal). This 'performance signal' is specific to the type of object. The name of 'performance signal' is of the form <TT>debug-</TT><I>objectName</I><TT>-</TT><I>SomeName</I>. Currently, only the <TT>application</TT>, the <TT>scene</TT> and <TT>graph</TT> objects emit 'performance signals'.
+<LI><TT>columns</TT>: as multiples pages can be displayed and organized in a <I>grid of pages</I>, <TT>columns</TT> sets the number of columns in the grid. Default: <TT>2</TT>.
+
+<P>
+</LI>
+<LI><TT>rows</TT>: as multiples pages can be displayed and organized in a <I>grid of pages</I>, <TT>rows</TT> sets the number of rows in the grid. Default: <TT>1</TT>.
 </LI>
 </UL>
 

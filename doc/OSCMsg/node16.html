@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>6. The 'set' message</TITLE>
-<META NAME="description" CONTENT="6. The 'set' message">
+<TITLE>4.3.2 The colorize effect</TITLE>
+<META NAME="description" CONTENT="4.3.2 The colorize effect">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,215 +21,63 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node17.html">
 <LINK REL="previous" HREF="node15.html">
-<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="up" HREF="node14.html">
 <LINK REL="next" HREF="node17.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html327"
+<A NAME="tex2html346"
   HREF="node17.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html321"
-  HREF="OSCMsg.html">
+<A NAME="tex2html340"
+  HREF="node14.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html315"
+<A NAME="tex2html334"
   HREF="node15.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html323"
+<A NAME="tex2html342"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html325"
-  HREF="node44.html">
+<A NAME="tex2html344"
+  HREF="node49.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html328"
-  HREF="node17.html">7. The 'get' messages</A>
-<B> Up:</B> <A NAME="tex2html322"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html316"
-  HREF="node15.html">5. Time management messages</A>
- &nbsp; <B>  <A NAME="tex2html324"
+<B> Next:</B> <A NAME="tex2html347"
+  HREF="node17.html">4.3.3 The shadow effect</A>
+<B> Up:</B> <A NAME="tex2html341"
+  HREF="node14.html">4.3 The 'effect' messages</A>
+<B> Previous:</B> <A NAME="tex2html335"
+  HREF="node15.html">4.3.1 The blur effect</A>
+ &nbsp; <B>  <A NAME="tex2html343"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html326"
-  HREF="node44.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html345"
+  HREF="node49.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION00700000000000000000"></A>
-<A NAME="setsect"></A>
-<BR>
-6. The 'set' message
-</H1>
-The <TT>set</TT> messages can be sent to any address with the form <TT>/ITL/scene/<I>identifier</I></TT>. The global form of the message is:
+<H2><A NAME="SECTION00532000000000000000">
+4.3.2 The colorize effect</A>
+</H2>
 
 <P>
 <BR>
 <IMG
- WIDTH="222" HEIGHT="49" ALIGN="BOTTOM" BORDER="0"
- SRC="img29.gif"
+ WIDTH="250" HEIGHT="87" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.gif"
  ALT="\begin{rail}
-setMsg : 'set' type data
+colorizeParams : strength (\vert color)
 \end{rail}">
 <BR>
 
 <P>
-It sets a <TT>scene</TT> component data. When there is no destination for the OSC address, the component is first created before being given the message. When the target destination type doesn't correspond to the message <TT>type</TT>, the object is replaced by an adequate object.
+Colorize parameters are a strength and a tint color. The strength is a float value. By default, it is 1.0. A strength 0.0 equals to no effect, while 1.0 means full colorization. 
+<BR>
+The color is given as a RGB triplet (see <A HREF="node11.html#colormsg">4.2</A> p.<A HREF="node11.html#colormsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>) by default, the color value is light blue (0, 0, 192).
 
 <P>
-Format of the <TT>set</TT> message is:
-<BR>
-<IMG
- WIDTH="639" HEIGHT="469" ALIGN="BOTTOM" BORDER="0"
- SRC="img30.gif"
- ALT="\begin{rail}
-setMsg : 'set' (
-('txt' string) \vert
-('html' string) \vert
-('gm...
-...' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) \vert
-('line' x y) \vert
-setFile
-)
-\end{rail}">
-<BR>
-<A NAME="393"></A>
-<A NAME="394"></A>
-<A NAME="395"></A>
-<A NAME="396"></A>
-<A NAME="397"></A>
-<A NAME="398"></A>
-<A NAME="399"></A>
-<A NAME="400"></A>
-<A NAME="401"></A>
-<A NAME="402"></A>
-
-<P>
-Supported types are the following:
-
-<UL>
-<LI><TT>txt</TT>: a textual component.
-</LI>
-<LI><TT>html</TT>: an html component defined by an HTML string.
-</LI>
-<LI><TT>gmn</TT>: a Guido score defined by a GMN string.
-</LI>
-<LI><TT>graph</TT>: graphic of a signal. See section <A HREF="node30.html#graphsig">13</A> p.<A HREF="node30.html#graphsig"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> for details about the <TT>graph</TT> objects data.
-</LI>
-<LI><TT>rect</TT>: a rectangle specified by a width and height. Width and height are expressed in <TT>scene</TT> coordinates space, thus a width or a height of 2 corresponds to the width or a height of the <TT>scene</TT>.
-</LI>
-<LI><TT>ellipse</TT>: an ellipse specified by a width and height.
-</LI>
-<LI><TT>polygon</TT>: a polygon specified by a sequence of points, each point being defined by its (x,y) coordinates. Those coordinates are expressed in the <TT>scene</TT> coordinate space, but only taking in acount the relative position of the points ( <I>i.e</I> a polygon A = { (0,0) ; (1,1) ; (0,1) } is equivalent to a polygon B = { (1,1) ; (2,2) ; (1,2) } ).
-</LI>
-<LI><TT>curve</TT>: a sequence of 4-points bezier cubic curve. If the end-point of a curve doesn't match the start-point of the following one, the curves are linked by a straight line. The first curve follows the last curve. The inner space defined by the sequence of curves is filled, using the object color. The points coordinates are handled as in a <TT>polygon</TT>.
-</LI>
-<LI><TT>line</TT>: a simple line specified by its dimension (x,y) expressed in <TT>scene</TT> coordinate space.
-</LI>
-<LI><TT>txtf</TT>: a textual component defined by a file.
-</LI>
-<LI><TT>htmlf</TT>: an html component defined by an HTML file.
-</LI>
-<LI><TT>gmnf</TT>: a Guido score defined by a GMN file.
-</LI>
-<LI><TT>img</TT>: an image file based component. The image format is infered from the file extension.
-</LI>
-<LI><TT>video</TT>: a video file based component. The video format is infered from the file extension. Note that navigation through the video is made using its <TT>date</TT>.
-</LI>
-<LI><TT>file</TT>: a generic type to handle file based objects. Actually, the <TT>file</TT> type is translated into a one of the <TT>txtf</TT>, <TT>gmnf</TT>, <TT>img</TT> or <TT>video</TT> types, according to the file extension (see table <A HREF="#fileTranslate">6.1</A>).
-</LI>
-</UL>
-Note that the default position of any component is <TT>[0,0]</TT>. Objects are drawn centered on their position.
-
-<P>
-<BR>
-<IMG
- WIDTH="289" HEIGHT="238" ALIGN="BOTTOM" BORDER="0"
- SRC="img31.gif"
- ALT="\begin{rail}
-setFile :
-('txtf' textFilePath) \vert
-('htmlf' htmlFilePath) \ve...
-...
-('img' imgPath) \vert
-('video' videoPath) \vert
-('file' filePath)
-\end{rail}">
-<BR>
-<A NAME="438"></A>
-<A NAME="439"></A>
-<A NAME="440"></A>
-<A NAME="441"></A>
-<A NAME="442"></A>
-<A NAME="443"></A>
-
-<P>
-<B>See also: </B>the application <TT>rootPath</TT> message (section <A HREF="node4.html#ITL">2</A>) for file based objects.
-
-<P>
-<BR><P></P>
-<DIV ALIGN="CENTER">
-
-<DIV ALIGN="CENTER">
-<A NAME="1066"></A>
-<TABLE CELLPADDING=3 BORDER="1">
-<CAPTION><STRONG>Table 6.1:</STRONG>
-File extensions supported by the <TT>file</TT> translation scheme.</CAPTION>
-<TR><TD ALIGN="RIGHT">file extension</TD>
-<TD ALIGN="CENTER">translated type</TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><TT>.txt .text</TT></TD>
-<TD ALIGN="CENTER"><TT>txtf</TT></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><TT>.htm .html</TT></TD>
-<TD ALIGN="CENTER"><TT>htmlf</TT></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><TT>.gmn .xml</TT></TD>
-<TD ALIGN="CENTER"><TT>gmnf</TT></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><TT>.jpg .jpeg .png .gif .bmp .tiff</TT></TD>
-<TD ALIGN="CENTER"><TT>img</TT></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><TT>.avi .wmv .mpg .mpeg .mp4</TT></TD>
-<TD ALIGN="CENTER"><TT>video</TT></TD>
-</TR>
-</TABLE>
-</DIV>
-<A NAME="fileTranslate"></A>
-</DIV>
-<BR>
-
-<P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html327"
-  HREF="node17.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html321"
-  HREF="OSCMsg.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html315"
-  HREF="node15.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html323"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html325"
-  HREF="node44.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html328"
-  HREF="node17.html">7. The 'get' messages</A>
-<B> Up:</B> <A NAME="tex2html322"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html316"
-  HREF="node15.html">5. Time management messages</A>
- &nbsp; <B>  <A NAME="tex2html324"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html326"
-  HREF="node44.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

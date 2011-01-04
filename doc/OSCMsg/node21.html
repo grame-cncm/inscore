@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>10. Synchronization</TITLE>
-<META NAME="description" CONTENT="10. Synchronization">
+<TITLE>7. The 'get' messages</TITLE>
+<META NAME="description" CONTENT="7. The 'get' messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,88 +27,57 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html396"
+<A NAME="tex2html412"
   HREF="node22.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html390"
+<A NAME="tex2html406"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html384"
+<A NAME="tex2html400"
   HREF="node20.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html392"
+<A NAME="tex2html408"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html394"
-  HREF="node44.html">
+<A NAME="tex2html410"
+  HREF="node49.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html397"
-  HREF="node22.html">10.1 Synchronization modes</A>
-<B> Up:</B> <A NAME="tex2html391"
+<B> Next:</B> <A NAME="tex2html413"
+  HREF="node22.html">7.1 Special 'get' forms</A>
+<B> Up:</B> <A NAME="tex2html407"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html385"
-  HREF="node20.html">9. The 'map' message</A>
- &nbsp; <B>  <A NAME="tex2html393"
+<B> Previous:</B> <A NAME="tex2html401"
+  HREF="node20.html">6. The 'set' message</A>
+ &nbsp; <B>  <A NAME="tex2html409"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html395"
-  HREF="node44.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html411"
+  HREF="node49.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001100000000000000000"></A>
-<A NAME="syncmsg"></A>
+<H1><A NAME="SECTION00800000000000000000"></A>
+<A NAME="getsect"></A>
 <BR>
-10. Synchronization
+7. The 'get' messages
 </H1>
 
 <P>
-Synchronization between components is achieved at <TT>scene</TT> level: a <TT>sync</TT> node is automatically embedded in the scene, its address is <TT>/ITL/scene/sync</TT> and it supports messages to add or remove a master / slave relation between components or to query the synchronizations state.
+The <TT>get</TT> messages can be sent to any valid OSC address. It is intended to query the system state. It is the counterpart of all the messages modifying this state.  The result of the query is sent to the OSC output port with the exact syntax of the counterpart message. 
+The global form of the message is:
 <BR>
 <IMG
- WIDTH="609" HEIGHT="238" ALIGN="BOTTOM" BORDER="0"
- SRC="img48.gif"
+ WIDTH="301" HEIGHT="112" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.gif"
  ALT="\begin{rail}
-sync : syncIdentifier
-( [1] syncIdentifier (\vert syncmode +)
-\vert [2])
-\vert [3] 'get' ( \vert identifier)
+getMsg : 'get' ( \vert getParam +)
 \end{rail}">
 <BR>
-<A NAME="573"></A>
-<A NAME="574"></A>
+<A NAME="499"></A>
 
 <P>
-
-<UL>
-<LI><B>[1]</B> this is the <TT>slave</TT> <TT>master</TT> form followed by an optional synchronization mode. It adds a slave / master relation between components identified by identifier1 and identifier2. 
-<BR></LI>
-<LI><B>[2]</B> this is the <TT>slave</TT> form that removes the slave synchronization for the component identified by identifier1.
-</LI>
-<LI><B>[3]</B> the <TT>get</TT> message is intended to query the synchronization state. The optional parameter is the identifier of a component,
-</LI>
-</UL>
-Synchronization between components has no effect if any of the required mapping is missing (see table <A HREF="node20.html#maptable">9.1</A>).
-
-<P>
-<BR>
-<IMG
- WIDTH="351" HEIGHT="89" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.gif"
- ALT="\begin{rail}
-syncIdentifier : [1] identifier
-\vert [2] identifier ':' mapName
-\end{rail}">
-<BR>
-<A NAME="587"></A>
-
-<P>
-Synchronization identifiers indicates 1) the name of a <TT>scene</TT> component or 2) the name of a <TT>scene</TT> component associated to a mapping name.
-
-<P>
-Note that the <TT>sync</TT> node doesn't responds to common component messages, but accept the <TT>get</TT> message. 
-The <TT>get</TT> message without parameter is equivalent to a <TT>get</TT> message addressed to each object declared in the <TT>sync</TT> node.
+The <TT>get</TT> message without parameter is the counterpart of the <TT>set</TT> message. 
 
 <P>
 <BR><HR>
@@ -116,39 +85,11 @@ The <TT>get</TT> message without parameter is equivalent to a <TT>get</TT> messa
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><A NAME="tex2html398"
-  HREF="node22.html">10.1 Synchronization modes</A>
+<LI><A NAME="tex2html414"
+  HREF="node22.html">7.1 Special 'get' forms</A>
 </UL>
 <!--End of Table of Child-Links-->
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html396"
-  HREF="node22.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html390"
-  HREF="OSCMsg.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html384"
-  HREF="node20.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html392"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html394"
-  HREF="node44.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html397"
-  HREF="node22.html">10.1 Synchronization modes</A>
-<B> Up:</B> <A NAME="tex2html391"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html385"
-  HREF="node20.html">9. The 'map' message</A>
- &nbsp; <B>  <A NAME="tex2html393"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html395"
-  HREF="node44.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

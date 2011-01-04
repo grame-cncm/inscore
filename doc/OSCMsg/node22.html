@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>10.1 Synchronization modes</TITLE>
-<META NAME="description" CONTENT="10.1 Synchronization modes">
+<TITLE>7.1 Special 'get' forms</TITLE>
+<META NAME="description" CONTENT="7.1 Special 'get' forms">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -26,156 +26,48 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html409"
+<A NAME="tex2html425"
   HREF="node23.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html403"
+<A NAME="tex2html419"
   HREF="node21.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html399"
+<A NAME="tex2html415"
   HREF="node21.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html405"
+<A NAME="tex2html421"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html407"
-  HREF="node44.html">
+<A NAME="tex2html423"
+  HREF="node49.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html410"
-  HREF="node23.html">11. Score specific messages</A>
-<B> Up:</B> <A NAME="tex2html404"
-  HREF="node21.html">10. Synchronization</A>
-<B> Previous:</B> <A NAME="tex2html400"
-  HREF="node21.html">10. Synchronization</A>
- &nbsp; <B>  <A NAME="tex2html406"
+<B> Next:</B> <A NAME="tex2html426"
+  HREF="node23.html">8. Component specific messages</A>
+<B> Up:</B> <A NAME="tex2html420"
+  HREF="node21.html">7. The 'get' messages</A>
+<B> Previous:</B> <A NAME="tex2html416"
+  HREF="node21.html">7. The 'get' messages</A>
+ &nbsp; <B>  <A NAME="tex2html422"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html408"
-  HREF="node44.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html424"
+  HREF="node49.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001110000000000000000">
-10.1 Synchronization modes</A>
+<H1><A NAME="SECTION00810000000000000000">
+7.1 Special 'get' forms</A>
 </H1>
 
 <P>
-<BR>
-<IMG
- WIDTH="235" HEIGHT="127" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.gif"
- ALT="\begin{rail}
-syncmode : syncAlignment \vert syncStretch \vert mapName
-\end{rail}">
-<BR>
-<A NAME="598"></A>
+The <TT>get</TT> message without parameter addressed to a container (the application <TT>/ITL</TT>, a scene <TT>/ITL/scene</TT>, the signal node <TT>/ITL/scene/signal</TT>) is actually relayed to each of the container component.  
 
 <P>
-<BR>
-<IMG
- WIDTH="219" HEIGHT="127" ALIGN="BOTTOM" BORDER="0"
- SRC="img51.gif"
- ALT="\begin{rail}
-syncAlignment : 'syncOver' \vert 'syncTop' \vert 'syncBottom'
-\end{rail}">
-<BR>
-<A NAME="601"></A>
-<A NAME="602"></A>
-<A NAME="603"></A>
-<A NAME="604"></A>
+The <TT>get width</TT> and <TT>get height</TT> messages adressed to components that have no explicit width and height (text, images, etc.) return 0 as long as the target component has not been drew.
 
 <P>
-<BR>
-<IMG
- WIDTH="154" HEIGHT="127" ALIGN="BOTTOM" BORDER="0"
- SRC="img52.gif"
- ALT="\begin{rail}
-syncStretch : 'h' \vert 'v' \vert 'hv'
-\end{rail}">
-<BR>
-<A NAME="607"></A>
-<A NAME="608"></A>
-<A NAME="609"></A>
-<A NAME="610"></A>
-
-<P>
-Synchronizing a component <TT>A</TT> to a component <TT>B</TT> has the following effect:
-
-<UL>
-<LI><TT>A</TT> position (x,y) is modified to match the <TT>B</TT> time position corresponding to <TT>A</TT> date.
-</LI>
-<LI>depending on the optional <TT>syncStretch</TT>, <TT>A</TT> width and/or height are modified to match the  corresponding <TT>B</TT> dimensions (see below).
-</LI>
-<LI>if <TT>A</TT> date has no graphic correspondance in <TT>B</TT> mapping (the date is not mapped, or out of <TT>B</TT> mapping bounds ), <TT>A</TT> won't be visible.
-</LI>
-</UL>
-
-<P>
-The synchronization alignment modes have the following effects on the slave <TT>y</TT> position:
-
-<UL>
-<LI><TT>syncOver</TT>: the center of the slave is aligned to the master center.
-</LI>
-<LI><TT>syncTop</TT>: the bottom of the slave is aligned to the top of the master.
-</LI>
-<LI><TT>syncBottom</TT>: the top of the slave is aligned to the bottom of the master.
-</LI>
-</UL>
-<A NAME="631"></A>
-<A NAME="632"></A>
-<A NAME="633"></A>
-
-<P>
-The default synchronization mode is <TT>syncOver</TT>.
-
-<P>
-The synchronization stretch modes have the following effects on the slave dimensions:
-
-<UL>
-<LI><TT>h</TT>: the slave is horizontally stretched to align its begin and end dates to the corresponding master locations.
-</LI>
-<LI><TT>v</TT>: the slave is vertically stretched to the master vertical dimension.
-</LI>
-<LI><TT>hv</TT>: combines the above parameters.
-</LI>
-</UL>
-By default, no stretching is applied.
-
-<P>
-The optional 'mapName' string argument specifies which mapping of the master object should be used (see <TT>map</TT> message). If the master doesn't have a mapping with the specified 'mapName', the slave object won't be visible.
-Not specifying the map name is equivalent to an <I>empty name</I> mapping.
-
-<P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html409"
-  HREF="node23.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html403"
-  HREF="node21.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html399"
-  HREF="node21.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html405"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html407"
-  HREF="node44.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html410"
-  HREF="node23.html">11. Score specific messages</A>
-<B> Up:</B> <A NAME="tex2html404"
-  HREF="node21.html">10. Synchronization</A>
-<B> Previous:</B> <A NAME="tex2html400"
-  HREF="node21.html">10. Synchronization</A>
- &nbsp; <B>  <A NAME="tex2html406"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html408"
-  HREF="node44.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

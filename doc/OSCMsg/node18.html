@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>7.1 Special 'get' forms</TITLE>
-<META NAME="description" CONTENT="7.1 Special 'get' forms">
+<TITLE>4.4 The 'click' and 'select' messages</TITLE>
+<META NAME="description" CONTENT="4.4 The 'click' and 'select' messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,55 +19,176 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="previous" HREF="node17.html">
-<LINK REL="up" HREF="node17.html">
+<LINK REL="previous" HREF="node14.html">
+<LINK REL="up" HREF="node6.html">
 <LINK REL="next" HREF="node19.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html354"
+<A NAME="tex2html370"
   HREF="node19.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html348"
-  HREF="node17.html">
+<A NAME="tex2html364"
+  HREF="node6.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html344"
+<A NAME="tex2html360"
   HREF="node17.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html350"
+<A NAME="tex2html366"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html352"
-  HREF="node44.html">
+<A NAME="tex2html368"
+  HREF="node49.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html355"
-  HREF="node19.html">8. Component specific messages</A>
-<B> Up:</B> <A NAME="tex2html349"
-  HREF="node17.html">7. The 'get' messages</A>
-<B> Previous:</B> <A NAME="tex2html345"
-  HREF="node17.html">7. The 'get' messages</A>
- &nbsp; <B>  <A NAME="tex2html351"
+<B> Next:</B> <A NAME="tex2html371"
+  HREF="node19.html">5. Time management messages</A>
+<B> Up:</B> <A NAME="tex2html365"
+  HREF="node6.html">4. Common components messages</A>
+<B> Previous:</B> <A NAME="tex2html361"
+  HREF="node17.html">4.3.3 The shadow effect</A>
+ &nbsp; <B>  <A NAME="tex2html367"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html353"
-  HREF="node44.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html369"
+  HREF="node49.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION00810000000000000000">
-7.1 Special 'get' forms</A>
+<H1><A NAME="SECTION00540000000000000000"></A>
+<A NAME="csmsg"></A>
+<BR>
+4.4 The 'click' and 'select' messages
 </H1>
 
 <P>
-The <TT>get</TT> message without parameter addressed to a container (the application <TT>/ITL</TT>, a scene <TT>/ITL/scene</TT>, the signal node <TT>/ITL/scene/signal</TT>) is actually relayed to each of the container component.  
+The <TT>click</TT> and <TT>select</TT> messages can be sent to any address with the form <TT>/ITL/scene/<I>identifier</I></TT> where <TT><I>identifier</I></TT> is the unique identifier string of a scene component. They are intended to provide information about components relative positions: it returns a list of components identifiers that are 'under' the <I>clicked</I> component: z order of the components is used for the 'under' relationship. 
 
 <P>
-The <TT>get width</TT> and <TT>get height</TT> messages adressed to components that have no explicit width and height (text, images, etc.) return 0 as long as the target component has not been drew.
+<BR>
+<IMG
+ WIDTH="275" HEIGHT="86" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.gif"
+ ALT="\begin{rail}
+click : 'click' ( \vert clickMode)
+\end{rail}">
+<BR>
+<A NAME="345"></A>
 
 <P>
-<BR><HR>
+<BR>
+<IMG
+ WIDTH="227" HEIGHT="200" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.gif"
+ ALT="\begin{rail}
+clickMode : 'topleft' \vert 'bottomright' \vert 'topright' \vert 'bottomleft' \vert 'center'
+\end{rail}">
+<BR>
+<A NAME="348"></A>
+<A NAME="349"></A>
+<A NAME="350"></A>
+<A NAME="351"></A>
+<A NAME="352"></A>
+
+<P>
+
+<UL>
+<LI><TT>topleft</TT>, <TT>bottomright</TT>, <TT>topright</TT>, <TT>bottomleft</TT>, <TT>center</TT>: collects the components that are respectively under the top-left, bottom-right, top-right, bottom-left or center point of the target component. The clicked point is computed from the component bounding box.
+</LI>
+<LI>Sent without parameter, the <TT>click</TT> message is equivalent to <TT>click topleft</TT>.
+</LI>
+</UL>
+
+<P>
+Reply of the <TT>click</TT> message has the following form:
+<BR>
+<IMG
+ WIDTH="454" HEIGHT="114" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.gif"
+ ALT="\begin{rail}
+clickReply : OSCAddress clickMode ( \vert (identifier +))
+\end{rail}">
+<BR>
+
+<P>
+where 'identifier' is a component name. Note that 'identifiers' are sorted by decreasing z order.
+
+<P>
+<BR>
+<IMG
+ WIDTH="288" HEIGHT="86" ALIGN="BOTTOM" BORDER="0"
+ SRC="img30.gif"
+ ALT="\begin{rail}
+select : 'select' ( \vert selectMode)
+\end{rail}">
+<BR>
+<A NAME="367"></A>
+
+<P>
+<BR>
+<IMG
+ WIDTH="211" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.gif"
+ ALT="\begin{rail}
+selectMode : 'intersect' \vert 'include'
+\end{rail}">
+<BR>
+<A NAME="370"></A>
+<A NAME="371"></A>
+
+<P>
+
+<UL>
+<LI><TT>intersect</TT>: looks for the components that are under the <I>clicked</I> component and that intersect with its bounding box.
+</LI>
+<LI><TT>include</TT>: looks for the components that are under the <I>clicked</I> component and that are included in its bounding box.
+</LI>
+<LI>Sent without parameter, the <TT>select</TT> message is equivalent to <TT>select intersect</TT>.
+</LI>
+</UL>
+
+<P>
+Reply of the <TT>select</TT> message is similar to <TT>click</TT> reply:
+<BR>
+<IMG
+ WIDTH="460" HEIGHT="114" ALIGN="BOTTOM" BORDER="0"
+ SRC="img32.gif"
+ ALT="\begin{rail}
+selectReply : OSCAddress selectMode ( \vert (identifier +))
+\end{rail}">
+<BR>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html370"
+  HREF="node19.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html364"
+  HREF="node6.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html360"
+  HREF="node17.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html366"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html368"
+  HREF="node49.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html371"
+  HREF="node19.html">5. Time management messages</A>
+<B> Up:</B> <A NAME="tex2html365"
+  HREF="node6.html">4. Common components messages</A>
+<B> Previous:</B> <A NAME="tex2html361"
+  HREF="node17.html">4.3.3 The shadow effect</A>
+ &nbsp; <B>  <A NAME="tex2html367"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html369"
+  HREF="node49.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>
