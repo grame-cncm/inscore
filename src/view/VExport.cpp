@@ -67,7 +67,7 @@ QPixmap VExport::itemToImage( QGraphicsItem * item , float xScaleFactor , float 
 QImage VExport::itemToImage( QGraphicsItem * item , float xScaleFactor , float yScaleFactor , const QColor fillColor )
 {
 	QRectF picRect = item->boundingRect();
-	QImage pic( (int)(picRect.width() * xScaleFactor) , (int)(picRect.height() * yScaleFactor), QImage::Format_ARGB32_Premultiplied );
+	QImage pic( (int)(picRect.width() * xScaleFactor) , (int)(picRect.height() * yScaleFactor), QImage::Format_ARGB32 );
 
 	pic.fill( fillColor.rgba() );
 	paintOnDevice( &pic , item , xScaleFactor , yScaleFactor );
@@ -129,7 +129,7 @@ void VExport::exportScene( QGraphicsScene * scene , QString fileName )
 	}
 	else
 	{
-#if PIXMAPBASED
+#ifdef PIXMAPBASED
 		QPixmap pixmap(scene->width() , scene->height());
 		pixmap.fill( scene->backgroundBrush().color() );
 #else

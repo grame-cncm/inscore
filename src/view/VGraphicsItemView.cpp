@@ -204,7 +204,6 @@ void VGraphicsItemView::updateView(IObject* o)
 		
 		float alpha = o->getA() / 255.f;
 		fTilerItem->setOpacity (alpha);
-
 		
 		Graphic2GraphicRelation::const_iterator iter;
 		for ( iter = slave2Master->direct().begin() ; iter != slave2Master->direct().end() ; iter++ )	// For each slave segment.
@@ -318,7 +317,7 @@ static void switchItem( QGraphicsItem* object, QGraphicsItem* newContainer )
 	QGraphicsScene * scene = object->scene();		// Get the scene.
 	QGraphicsItem * parent = object->parentItem();	// Get the item's parent.
 	scene->removeItem( object );					// Remove the object from the scene.
-	if ( parent )						// Add the newContainer to the item's former parent...
+	if ( parent ) 						// Add the newContainer to the item's former parent...
 		newContainer->setParentItem(parent);
 	else								// ... or to the scene, if there was no parent.	
 		scene->addItem( newContainer );
@@ -340,8 +339,12 @@ void VGraphicsItemView::setStretch( bool isStretchOn )
 		if ( !fTilerItem )				// Build fTilerItem if it didn't exist.
 			fTilerItem = buildTiler();
 		switchItem (fItem, fTilerItem);
+		fTilerItem->setGraphicsEffect (fItem->graphicsEffect());
 	}
-	else switchItem (fTilerItem, fItem);
+	else {
+		switchItem (fTilerItem, fItem);
+		fItem->setGraphicsEffect (fTilerItem->graphicsEffect());
+	}
 	fIsStretchOn = isStretchOn;
 }
 

@@ -31,6 +31,8 @@
 #include <QImage>
 #include <QPair>
 
+//#define PIXMAPBASED
+
 namespace inscore
 {
 

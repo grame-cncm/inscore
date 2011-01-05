@@ -38,10 +38,13 @@
 #include "IProxy.h"
 #include "IScene.h"
 #include "IVNode.h"
+#include "GraphicEffect.h"
 #include "OSCAddress.h"
 #include "Updater.h"
 #include "ISync.h"
 #include "Tools.h"
+
+#include "VGraphicsItemView.h"
 
 #include <stdio.h>
 #include <sys/types.h>
@@ -85,12 +88,15 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fMsgHandlerMap["set"]		= TMethodMsgHandler<IObject>::create(this, &IObject::set);
 	fMsgHandlerMap["get"]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const >::create(this, &IObject::get);
 	fMsgHandlerMap["del"]		= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::del);
+	fMsgHandlerMap["effect"]	= TMethodMsgHandler<IObject>::create(this, &IObject::effectMsg);
 	fMsgHandlerMap["export"]	= TMethodMsgHandler<IObject>::create(this, &IObject::exportMsg);
 	fMsgHandlerMap["click"]		= TMethodMsgHandler<IObject,MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::clickMsg);
 	fMsgHandlerMap["select"]	= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::selectMsg);
 	fMsgHandlerMap["save"]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::saveMsg);
 	fMsgHandlerMap["watch"]		= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsg);
 	fMsgHandlerMap["watch+"]	= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsgAdd);
+
+	fGetMsgHandlerMap["effect"]	= TGetParamMethodHandler<IObject, GraphicEffect (IObject::*)() const>::create(this, &IObject::getEffect);
 	
 	colorAble();
 	positionAble();
@@ -630,6 +636,24 @@ MsgHandler::msgStatus IObject::set(const IMessage* msg)
 		}
 	}
 	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::effectMsg(const IMessage* msg)
+{ 
+	GraphicEffect effect;
+	MsgHandler::msgStatus status = effect.set (msg);
+	if (status == MsgHandler::kProcessed) {
+		VGraphicsItemView* view = graphicView();
+		if (view) view->setEffect (effect);
+	}
+	return status;
+}
+
+//--------------------------------------------------------------------------
+GraphicEffect IObject::getEffect ()	const
+{ 
+	return graphicView() ? graphicView()->getEffect() : GraphicEffect(); 
 }
 
 //--------------------------------------------------------------------------

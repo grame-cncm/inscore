@@ -36,6 +36,7 @@
 #include "TComposition.h"
 #include "TMappingComposer.h"
 #include "QStretchTilerItem.h"
+#include "GraphicEffect.h"
 
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
@@ -68,6 +69,8 @@ class VGraphicsItemView
 		float getIObjectWidth() const { return scene2RelativeWidth( fItem->boundingRect().width() ); }		// Gives the object's width in interlude scene coordinates.
 		float getIObjectHeight() const { return scene2RelativeHeight( fItem->boundingRect().height() ); }	// Gives the object's height in interlude scene coordinates.
 
+		virtual void setEffect (GraphicEffect& effect)		{ item()->setGraphicsEffect (effect.get()); }
+		virtual GraphicEffect getEffect () const			{ return GraphicEffect ( item()->graphicsEffect()); }
 		
 		static void buildDefaultMapping (IObject* object);
 		

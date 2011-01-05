@@ -33,6 +33,8 @@
 #include <QGraphicsItem>
 #include <QGraphicsView>
 
+//#define PIXMAPBASED
+
 namespace inscore
 {
 

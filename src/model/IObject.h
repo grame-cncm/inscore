@@ -34,6 +34,7 @@
 
 #include "browsable.h"
 #include "EventsAble.h"
+#include "GraphicEffect.h"
 #include "IDate.h"
 #include "IMessageHandlers.h"
 #include "IPosition.h"
@@ -63,10 +64,6 @@ class IScene;
 typedef class SMARTP<IScene>	SIScene;
 class IObjectDebug;
 typedef class SMARTP<IObjectDebug>	SIObjectDebug;
-
-
-//typedef msgHandler<IObject*>	IObjectMsgHandler;
-//typedef SMARTP<GetParamMsgHandlerBase> SGetParamMsgHandlerBase;
 
 //--------------------------------------------------------------------------
 /*!
@@ -377,6 +374,10 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 	//--------------------------------------------------------------------------
 	// the message handlers
 	//--------------------------------------------------------------------------
+		/// \brief the \c 'effect' message handler
+		virtual MsgHandler::msgStatus effectMsg(const IMessage* msg);
+		virtual GraphicEffect getEffect () const;
+
 		/// \brief the \c 'export' message handler
 		virtual MsgHandler::msgStatus exportMsg(const IMessage* msg);
 

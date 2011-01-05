@@ -32,9 +32,10 @@
 #include <ostream>
 #include <sstream>
 
+#include "GraphicEffect.h"
 #include "IMessage.h"
-#include "OSCStream.h"
 #include "maptypes.h"
+#include "OSCStream.h"
 #include "smartpointer.h"
 #include "TRect.h"
 
@@ -89,6 +90,8 @@ OSCStream& operator << (OSCStream& out, const IMessageList&);
 IMessage& operator << (IMessage& out, const IMessage* m);
 std::ostream& operator << (std::ostream& out, const IMessage* m);
 std::ostream& operator << (std::ostream& out, const IMessageList&);
+
+IMessage& operator <<(IMessage& msg, const GraphicEffect& effect);
 
 /*!
 @}
