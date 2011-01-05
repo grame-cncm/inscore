@@ -1,10 +1,10 @@
-version := 0.60
+version := 0.62
 
-package:= Interlude-$(version)
-viewer := InterludeSceneViewer
+package:= INScore-$(version)
+viewer := INScoreViewer
 docsrc := ../doc
 docdst := ./doc
-icns   := ../rsrc/ITLViewer.icns
+icns   := ../rsrc/INScoreViewer.icns
 
 striplist = $(shell find $(package)/$(viewer).app -name "*_debug*")
 
@@ -27,35 +27,36 @@ include makeBundle
 
 macosx:
 	[ -d $(package) ] || mkdir -p $(package)
-	make -f makeInterludeBundle interludeBundle
-	mv $(viewer).app $(package)/InterludeScoreViewer.app
-	cp $(icns) $(package)/InterludeScoreViewer.app/Contents/Resources
+	make -f makeINScoreBundle
+	[ -d $(package)/$(viewer).app ] && rm -rf $(package)/$(viewer).app
+	mv $(viewer).app $(package)/$(viewer).app
+	cp $(icns) $(package)/$(viewer).app/Contents/Resources
 	make strip
-	svn export Max $(package)/Max
-	rm -rf $(package)/Max/Turenas
-	svn export PureData $(package)/PureData
-	rm -rf $(package)/PureData/Turenas
-	svn export python $(package)/python
-	svn export lisp $(package)/lisp
+	cp -rf Max $(package)/
+	cp -rf PureData $(package)
+	cp -rf python $(package)
+	cp -rf lisp $(package)
 	rm -f $(package)/lisp/ignore.txt
-	cp  readme.txt $(package)
-	cp  -r doc $(package)
-	cd $(package)/Max/siggraph && tar xzf sigmund~.mxo.tgz && rm -f sigmund~.mxo.tgz
+	cp readme.txt $(package)
+	cp -r doc $(package)
 	chmod -x  $(shell find . -name "*.interlude")
-	open $(package)/InterludeScoreViewer.app/Contents/Info.plist
+	open $(package)/$(viewer).app/Contents/Info.plist
+	@echo === remove the access path to INScoreViewer.icns ====
 		
 doc: 
-	[ -d $(docdst) ] || mkdir -p $(docdst)
+	[ -d $(docdst)/html ] || mkdir -p $(docdst)/html
 	make -C $(docsrc)
 	cp -f $(docsrc)/OSCMsg.pdf $(docdst)
-	[ -d $(docdst)/html ] && rm -rf $(docdst)/html
-	svn export $(docsrc)/OSCMsg $(docdst)/html
-	cp -f $(docsrc)/presentation/interlude-fr.pdf $(docdst)/Interlude-fr.pdf
-	cp -f $(docsrc)/presentation/interlude-en.pdf $(docdst)/Interlude-en.pdf
+	make -C $(docsrc) htmlclean
+	rm -f $(docdst)/html/*
+	cp  $(docsrc)/OSCMsg/* $(docdst)/html
+	cp -f $(docsrc)/presentation/INScore-fr.pdf $(docdst)
+	cp -f $(docsrc)/presentation/INScore-en.pdf $(docdst)
+	cp -f ../src/changelog.txt $(package)
 
 win32:
 	[ -d $(package) ] || mkdir -p $(package)
-	cp -f $(bin)/InterludeSceneViewer.exe $(package)/InterludeScoreViewer.exe
+	cp -f $(bin)/$(viewer).exe $(package)/$(viewer).exe
 	cp -f $(bin)/*.dll $(package)
 	cp -f $(bin)/guido2.ttf $(package)
 	cp  -f DLLs/*.dll $(package)
