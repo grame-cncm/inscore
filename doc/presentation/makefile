@@ -1,5 +1,5 @@
 
-DOC = interlude-fr.pdf interlude-en.pdf
+DOC = INScore-fr.pdf INScore-en.pdf
 
 all: $(DOC)
 
@@ -9,9 +9,9 @@ clean:
 force:
 	touch *.tex && make
 
-interlude-fr.pdf : interlude.tex
+INScore-fr.pdf : INScore.tex
 
-interlude-en.pdf : interlude.tex
+INScore-en.pdf : INScore.tex
 
 
 %.pdf: %.tex
