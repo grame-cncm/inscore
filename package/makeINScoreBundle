@@ -22,7 +22,7 @@ bundle:
 #	make mkdirTry DIR=$(APP).app/Contents/Plugins/imageformats
 
 	# Copy and link the application to its frameworks
-	make installFramework APP=$(APP) FWORK=GUIDOEngine    FWORK_PATH=$(HOME)/Library/Frameworks FWORK_VERSION=$(GUIDO_VERSION)
+	make installFramework APP=$(APP) FWORK=GUIDOEngine    FWORK_PATH=../lib/GuidoEngine/macosx FWORK_VERSION=$(GUIDO_VERSION)
 	make installFramework APP=$(APP) FWORK=INScore      FWORK_PATH=$(CMAKE)/Release           FWORK_VERSION=$(INSCORE_BUNDLE_VERSION)
 
 	# Link the frameworks between them
