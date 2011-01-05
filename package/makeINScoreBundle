@@ -1,16 +1,16 @@
 CMAKE    = ../cmake
 GFONT    = ../src/guido2.ttf
 APP_PATH = $(CMAKE)/Release
-APP      = InterludeSceneViewer
+APP      = INScoreViewer
 QT_PLUGIN_PATH = /Developer/Applications/Qt/plugins/
 QT_FRAMEWORK_PATH = /Library/Frameworks
-INTERLUDE_BUNDLE_VERSION = $(shell grep 'ITLFWKVERS' $(CMAKE)/CMakeLists.txt  | sed 's/[^0-9.]//g')
+INSCORE_BUNDLE_VERSION = $(shell grep 'INSFWKVERS' $(CMAKE)/CMakeLists.txt  | sed 's/[^0-9.]//g')
 QT_VERSION = 4
 GUIDO_VERSION = B
-MAC_DEPLOY_TOOL = macdeployqt-4.6
+MAC_DEPLOY_TOOL = macdeployqt
 
-interludeBundle:
-	echo making bundle for version $(INTERLUDE_BUNDLE_VERSION)
+bundle:
+	echo making bundle for version $(INSCORE_BUNDLE_VERSION)
 	# Copy the application here
 	rm -Rf $(APP).app
 	cp -Rf $(APP_PATH)/$(APP).app .
@@ -23,10 +23,10 @@ interludeBundle:
 
 	# Copy and link the application to its frameworks
 	make installFramework APP=$(APP) FWORK=GUIDOEngine    FWORK_PATH=$(HOME)/Library/Frameworks FWORK_VERSION=$(GUIDO_VERSION)
-	make installFramework APP=$(APP) FWORK=Interlude      FWORK_PATH=$(CMAKE)/Release           FWORK_VERSION=$(INTERLUDE_BUNDLE_VERSION)
+	make installFramework APP=$(APP) FWORK=INScore      FWORK_PATH=$(CMAKE)/Release           FWORK_VERSION=$(INSCORE_BUNDLE_VERSION)
 
 	# Link the frameworks between them
-	make linkFramework2Framework APP=$(APP) FWORK_1=Interlude FWORK_1_VERSION=$(INTERLUDE_BUNDLE_VERSION) FWORK_2=GUIDOEngine    FWORK_2_VERSION=$(GUIDO_VERSION)
+	make linkFramework2Framework APP=$(APP) FWORK_1=INScore FWORK_1_VERSION=$(INSCORE_BUNDLE_VERSION) FWORK_2=GUIDOEngine    FWORK_2_VERSION=$(GUIDO_VERSION)
 
 	# Other resources
 	cp $(GFONT) $(APP).app/Contents/Resources/guido2.ttf

@@ -1,4 +1,4 @@
-    Interlude Score Viewer
+    INScore Viewer
     Copyright (C) 2009-2010 GRAME
     Centre National de Creation Musicale
 --------------------------------------------------------------------------------------------
