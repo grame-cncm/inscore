@@ -44,7 +44,7 @@ VImageView::VImageView(QGraphicsScene * scene, const EventsAble* h)
  :	VIntPointObjectView( scene , new IQGraphicsPixmapItem(h) )
 {
 	fPixmapItem = (IQGraphicsPixmapItem*)(fItem);
-#if PIXMAPBASED
+#ifdef PIXMAPBASED
 	fPixmapItem->setTransformationMode( Qt::SmoothTransformation );
 #endif
 }
@@ -119,7 +119,7 @@ void VImageView::updateView ( IImage * img)
 //----------------------------------------------------------------------
 void VImageView::setImage(const QString& fileName)
 {
-#if PIXMAPBASED
+#ifdef PIXMAPBASED
 	fPixmapItem->setPixmap( QPixmap( fileName ) );
 #else
 	fPixmapItem->pixmap().load( fileName );

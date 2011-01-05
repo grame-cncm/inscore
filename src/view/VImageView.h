@@ -30,7 +30,7 @@
 #include "VIntPointObjectView.h"
 #include "MouseEventAble.h"
 
-#if PIXMAPBASED
+#ifdef PIXMAPBASED
 # include <QGraphicsPixmapItem>
 #else
 # include <QGraphicsItem>
@@ -70,7 +70,7 @@ class VGraphicsImageItem : public QGraphicsItem
 */
 class VImageView:  public VIntPointObjectView
 {
-#if PIXMAPBASED
+#ifdef PIXMAPBASED
 	typedef MouseEventAble<QGraphicsPixmapItem> IQGraphicsPixmapItem;
 #else
 	typedef MouseEventAble<VGraphicsImageItem> IQGraphicsPixmapItem;
