@@ -1,0 +1,11 @@
+% cleanup
+/ITL/scene/* del
+
+/ITL/scene/p1 set "ellipse" 0.1 0.1
+/ITL/scene/p2 set "ellipse" 0.1 0.1
+/ITL/scene/p3 set "ellipse" 0.1 0.1
+
+/ITL/scene/p1 y -0.5
+/ITL/scene/p3 y 0.5
+
+/ITL/scene/p* color 0 0 255 255 
