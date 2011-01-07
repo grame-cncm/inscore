@@ -28,7 +28,7 @@ include makeBundle
 macosx:
 	[ -d $(package) ] || mkdir -p $(package)
 	make -f makeINScoreBundle
-	[ -d $(package)/$(viewer).app ] && rm -rf $(package)/$(viewer).app
+	-[ -d $(package)/$(viewer).app ] && rm -rf $(package)/$(viewer).app
 	mv $(viewer).app $(package)/$(viewer).app
 	cp $(icns) $(package)/$(viewer).app/Contents/Resources
 	make strip
