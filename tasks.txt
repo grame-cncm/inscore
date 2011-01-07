@@ -1,7 +1,7 @@
 todo
 ----
 
-- idée d'intégrer des objets faust
+- idée d'intégrer des objets faust (svg)
 - export vidéo
 
 - faire du mapping incrémental
