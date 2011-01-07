@@ -25,6 +25,7 @@
 #include <QApplication>
 #include <QDir>
 
+#include <stdlib.h>
 #include <iostream>
 #include <string>
 
@@ -49,7 +50,7 @@ static int intopt (const string& opt, int defaultValue, int n, char **argv)
 }
 
 #if defined(WIN32) && !defined(_DEBUG)
-# define USEWINMAIN 
+# define USEWINMAIN
 #endif
 //_______________________________________________________________________
 #ifdef USEWINMAIN
@@ -67,7 +68,7 @@ int main( int argc, char **argv )
 	int ret = 1;
 	int udpPort = intopt ("--port", kUPDPort, argc, argv);
 	QApplication appl(argc, argv);
-	appl.setApplicationName("INScoreViewer");	
+	appl.setApplicationName("INScoreViewer");
 	QDir dir(QApplication::applicationDirPath());
 #ifndef WIN32
 	dir.cdUp();
