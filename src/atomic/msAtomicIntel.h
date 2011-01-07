@@ -46,7 +46,7 @@ static inline char CAS (volatile void * addr, volatile void * value, void * newv
 	return ret;
 }
 
-#if (defined(__APPLE__) && !defined(__x86_64__))
+#if (defined(__BREG__) || (defined(__APPLE__)) && !defined(__x86_64__))
 
 /*
 On MacIntel, version 4.0.1 of the gcc compiler gives the following error:
