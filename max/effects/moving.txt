@@ -1,0 +1,3 @@
+Perceived motion is highly dependent on its context.
+Johansson (1975) has demonstrated a number of grouping phenomena that show that the brain 
+has a strong tendency to group moving objects in a hierarchichal fashion.
