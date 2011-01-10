@@ -33,7 +33,7 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-TFile::TFile( const std::string& pathname ) : fFilePath (pathname)
+TFile::TFile( const std::string& pathname ) : fFilePath (pathname), fPathChanged (true)
 {
 }
 

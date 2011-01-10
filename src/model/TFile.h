@@ -49,6 +49,7 @@ namespace inscore
 class TFile
 {
 	std::string	fFilePath;
+	bool		fPathChanged;
 	
 	public:		
 
@@ -56,7 +57,7 @@ class TFile
 		const std::string&	getFile() const						{ return fFilePath; }
 
 		/// \brief set the path name \param path the new file path
-		virtual void		setFile(const std::string& path)	{ fFilePath = path; }
+		virtual void		setFile(const std::string& path)	{ fFilePath = path; fPathChanged = true; }
 
 		/*!
 			\brief reads the associated file 
@@ -65,6 +66,9 @@ class TFile
 		*/
 		virtual bool		read(std::string& buff) const;
 		virtual bool		read(std::ostream& out) const;
+
+		virtual bool		changed() const				{ return fPathChanged; }
+		virtual void		changed(bool state)			{ fPathChanged = state; }
 
 		virtual void		print(std::ostream& out) const;
 
