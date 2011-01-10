@@ -113,8 +113,8 @@ void INScore::timeTask (IGlue* glue)
 //--------------------------------------------------------------------------
 // versions 
 //--------------------------------------------------------------------------
-int INScore::version	()				{ return 62; }
-const char* INScore::versionStr ()		{ return "0.62"; }
+int INScore::version	()				{ return 63; }
+const char* INScore::versionStr ()		{ return "0.63"; }
 
 //--------------------------------------------------------------------------
 // messages system 

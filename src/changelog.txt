@@ -5,7 +5,15 @@ GRAME - Centre national de creation musicale
 http://www.grame.fr
 research@grame.fr
 ====================================================
-Copyright GRAME (c) 2009,2010
+Copyright GRAME (c) 2009,2010,2011
+
+----------------------------------------------------
+Version 0.63
+- new svg file based component
+- set line message change: the x y form is deprecated, it is replaced by
+  the following forms:
+  'xy' x y equivalent to the former form
+  'wa' width angle 
 
 ----------------------------------------------------
 Version 0.62
