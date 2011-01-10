@@ -1,14 +1,15 @@
 todo
 ----
 
-- idée d'intégrer des objets faust (svg)
+[ok] idée d'intégrer des objets faust (svg)
+[ok] spécifier les lignes en width angle
+- mappings : support de coordonnées relatives pour les images
+- faire du mapping incrémental
 - export vidéo
 
-- faire du mapping incrémental
 - voir updateObjectSize résiduel dans IMappingUpdater::VStretch  (inséré pour gestion des boucles de synchronization et actuellement commenté) + réimplémenter les méthodes getWidth et getHeight pour les objets concernés
-- mappings : support de coordonnées relatives pour les images
 - objets esclaves dragables dans le temps de leur maître
-- voir .icns dans packaging : copie dans Resources + modif info.plist
+[ok] - voir .icns dans packaging : copie dans Resources + modif info.plist
 - restructurer le positionnement des 'get' handlers
 - voir pb d'ordre dans la sauvegarde des fichiers interlude entre type graph et type signal
 [ok] voir pb d'encodage de texte sous windows (accents ne passent as en utf8 ni utf8+BOM)
@@ -29,26 +30,30 @@ todo
 [ok] le patch interlude:sync ne prend pas en compte la nouvelle syntaxe slave:slaveMap master:masterMap.
 [ok] gérer les syncBottom/syncTop dans IMappingUpdater ?
 - dans TMapMsgHandler.h, on veut gérer le cas où l'utilisateur passe directement une graphic <-> time map
-	-> pour l'instant, on peut pas parce qu'il faudrait retourner le mapping dans l'autre sens, mais avec la future 	representation 'bi-directionnelle' des mappings, ça se fera facilement.
-	! attention ! les IGuidoCode n'utilisent pas le TMapMsgHandler et ont leur propre manière de gérer les msg 'map' donc il faudra penser à régler leur cas
-[ok] les messages 'set' dont les parametres sont identiques aux paramtres par défaut de création de l'objet (ie 0.0 0.0 pour un rectangle) sont ignorés, et donc l'objet n'est pas créé.
-- documenter le nouveau système de coordonnées (??)
+	-> pour l'instant, on peut pas parce qu'il faudrait retourner le mapping dans l'autre sens, 
+	mais avec la future representation 'bi-directionnelle' des mappings, ça se fera facilement.
+	! attention ! les IGuidoCode n'utilisent pas le TMapMsgHandler et ont leur propre manière de 
+	gérer les msg 'map' donc il faudra penser à régler leur cas
+[ok] bug: les messages 'set' dont les parametres sont identiques aux paramtres par défaut de 
+	 création de l'objet (ie 0.0 0.0 pour un rectangle) sont ignorés, et donc l'objet n'est pas créé.
 
+- revoir gestion des typeString
+- revoir le design des nodes debug
+- verif shift/reduce dans ITL parser
+- ajouter des objet bpf
 - changer le numéro de port OSC
 - calcul des mappings sur score.xml (?)
+
 [ok] écriture des flotants: forme -3.81878e-24
 [ok] vérif forme "/ITL/scene/sync get" (pas de réponse)
 
-
-- gérer une seule dimension au niveau objet (?)
-- gestion des interactions (clicks, clavier, temps...)
+[ok] - gestion des interactions (clicks, clavier, temps...)
 [ok] revoir les titres des sections dans doc osc messages
 [ok] gérer les adresses ip des messages créés par 'load'
 [ok] voir parser: regexp dans message de synchronisation /ITL/scene/sync car*
 [ok]  + verifier le parsing des formes 'slave:mapname'
 [ok] revoir la doc pour les couleurs
 
-- optimiser le calcul des mappings graphiques par la view
 [ok] calcul de la synchronisation graphique dans le modèle
 [ok] implémenter les nodes virtuelles comme des objets standards
 [ok] gestion des regexp dans scene/sync regexp
@@ -60,15 +65,11 @@ todo
 
 [ok] gérer le retour (true) des messages 'get'
 [ok] gérer l'adresse source des messages
-- revoir gestion des typeString
-- revoir le design des nodes debug
 [ok] revoir les messages d'erreur (mode verbose)
 [ok] nouvelle impl. des mapping - voir pb du mapping avec sync dans le même cycle
-- gérer plusieurs modèles de couleur (rgb et hsb)
-- verif shift/reduce dans ITL parser
+[ok] - gérer plusieurs modèles de couleur (rgb et hsb)
 [ok] gérer width and height pour tous les objets
 [ok] parser les regexps dans le format ITL
-- objet bpf dans Interlude
 [ok] introduire une méthode constant() pour les signaux
 
 
@@ -80,12 +81,10 @@ suite réunion 17/18 déc 09
 - voir bug rolled unrolled pour voice2
 - voir resize des signaux et conservation des données
 
-
 - export des ornaments dans musicxml
 - verifier export des déplacements (intens)
 - patch max ajout dynamique marches harmoniques
 - interaction avec les partitions: système de filtre et mode select
-
 
 approches théoriques:
 [ok] spec. time mapping
@@ -112,6 +111,5 @@ divers:
 	 note: à faire pour les fonctions d'interrogation
 - impl. blob external
 [ok] experimentations avec signal et wiimote
-- créer calendrier des échéances
 - textures
 [ok] publications appl et sdk + GuidoCalculus
