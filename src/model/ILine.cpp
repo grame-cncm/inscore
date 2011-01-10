@@ -23,6 +23,8 @@
 
 */
 
+#include <math.h>
+
 #include "ILine.h"
 #include "IMessage.h"
 #include "Updater.h"
@@ -62,17 +64,29 @@ MsgHandler::msgStatus ILine::set (const IMessage* msg)
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
 	if (msg->params().size() == 3) {
-		const float err = -5555;
-		float ax = msg->params()[1]->value<float>(err);
-		float ay = msg->params()[2]->value<float>(err);
+		float x, y;
+		if ((!msg->param(1, x)) || (!msg->param(2, y)))
+			return MsgHandler::kBadParameters;
+		setPoint( TFloatPoint(x,y) );
+		status = MsgHandler::kProcessed;
+		newData(true);
+		oscerr << OSCWarn() << "set line without mode is deprecated" << OSCEnd();
+	}
+	else if (msg->params().size() == 4) {
+		string mode; float a, b;
+		if (!msg->param(1, mode) || (!msg->param(2, a)) || (!msg->param(3, b)))
+			return MsgHandler::kBadParameters;
 
-		if ( (ax != err) && (ay != err) )
-		{
-			setPoint( TFloatPoint(ax,ay) );
-			status = MsgHandler::kProcessed;
-			newData(true);
+		if (mode == "xy") {
+			setPoint( TFloatPoint(a,b) );
 		}
-		else status = MsgHandler::kProcessedNoChange;
+		else if (mode == "wa") {
+			float x = a * cos(M_PI * b / 180);
+			float y = a * sin(M_PI * b / 180);
+			setPoint( TFloatPoint(x,y) );
+		}
+		status = MsgHandler::kProcessed;
+		newData(true);
 	}
 	else status = MsgHandler::kBadParameters;
 	return status;
