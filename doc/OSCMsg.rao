@@ -519,10 +519,10 @@
 \rail@nont{data}[]
 \rail@end
 }
-\rail@i {30}{ setMsg : 'set' ( ('txt' string) | ('html' string) | ('gmn' gmnString) | ('graph' signals ) | ('rect' width height) | ('ellipse' width height) | ('polygon' ( (x y) +)) | ('curve' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) | ('line' x y) | setFile ) }
+\rail@i {30}{ setMsg : 'set' ( ('txt' string) | ('html' string) | ('gmn' gmnString) | ('graph' signals ) | ('rect' width height) | ('ellipse' width height) | ('polygon' ( (x y) +)) | ('curve' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) | ('line' ('xy' x y | 'wa' width angle)) | setFile ) }
 \rail@o {30}{
 \rail@index{setMsg}
-\rail@begin{12}{setMsg}
+\rail@begin{13}{setMsg}
 \rail@term{set}[]
 \rail@bar
 \rail@term{txt}[]
@@ -566,17 +566,24 @@
 \rail@endplus
 \rail@nextbar{10}
 \rail@term{line}[]
+\rail@bar
+\rail@term{xy}[]
 \rail@nont{x}[]
 \rail@nont{y}[]
 \rail@nextbar{11}
+\rail@term{wa}[]
+\rail@nont{width}[]
+\rail@nont{angle}[]
+\rail@endbar
+\rail@nextbar{12}
 \rail@nont{setFile}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {31}{ setFile : ('txtf' textFilePath) | ('htmlf' htmlFilePath) | ('gmnf' gmnFilePath) | ('img' imgPath) | ('video' videoPath) | ('file' filePath) }
+\rail@i {31}{ setFile : ('txtf' textFilePath) | ('htmlf' htmlFilePath) | ('gmnf' gmnFilePath) | ('img' imgPath) | ('video' videoPath) | ('svgf' svgFilePath) | ('file' filePath) }
 \rail@o {31}{
 \rail@index{setFile}
-\rail@begin{6}{setFile}
+\rail@begin{7}{setFile}
 \rail@bar
 \rail@term{txtf}[]
 \rail@nont{textFilePath}[]
@@ -593,6 +600,9 @@
 \rail@term{video}[]
 \rail@nont{videoPath}[]
 \rail@nextbar{5}
+\rail@term{svgf}[]
+\rail@nont{svgFilePath}[]
+\rail@nextbar{6}
 \rail@term{file}[]
 \rail@nont{filePath}[]
 \rail@endbar

@@ -59,7 +59,7 @@
 
 \begin{document}
 
-\title{INScore \\ OSC Messages Reference \\v.0.62}
+\title{INScore \\ OSC Messages Reference \\v.0.63}
 
 \author{Grame, Centre national de cr\'eation musicale\\
 {\small <research@grame.fr>} \\
@@ -557,7 +557,7 @@ setMsg : 'set' (
 	('ellipse' width height) |
 	('polygon' ( (x y) +)) |
 	('curve' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) |
-	('line' x y) |
+	('line' ('xy' x y | 'wa' width angle)) |
 	setFile
 )
 \end{rail}
@@ -583,17 +583,18 @@ Supported types are the following:
 \item \OSC{ellipse}: an ellipse specified by a width and height.
 \item \OSC{polygon}: a polygon specified by a sequence of points, each point being defined by its (x,y) coordinates. Those coordinates are expressed in the \OSC{scene} coordinate space, but only taking in acount the relative position of the points ( \emph{i.e} a polygon A = \{ (0,0) ; (1,1) ; (0,1) \} is equivalent to a polygon B = \{ (1,1) ; (2,2) ; (1,2) \} ).
 \item \OSC{curve}: a sequence of 4-points bezier cubic curve. If the end-point of a curve doesn't match the start-point of the following one, the curves are linked by a straight line. The first curve follows the last curve. The inner space defined by the sequence of curves is filled, using the object color. The points coordinates are handled as in a \OSC{polygon}.
-\item \OSC{line}: a simple line specified by its dimension (x,y) expressed in \OSC{scene} coordinate space.
+\item \OSC{line}: a simple line specified by a point (x,y) expressed in \OSC{scene} coordinate space or by a width and angle. The point form is used to compute a line from (0,0) to (x,y), which is next drawn centered on the scene.
 \item \OSC{txtf}: a textual component defined by a file.
 \item \OSC{htmlf}: an html component defined by an HTML file.
 \item \OSC{gmnf}: a Guido score defined by a GMN file.
+\item \OSC{svgf}: vectorial graphics defined by a SVG file.
 \item \OSC{img}: an image file based component. The image format is infered from the file extension.
 \item \OSC{video}: a video file based component. The video format is infered from the file extension. Note that navigation through the video is made using its \OSC{date}.
 \item \OSC{file}: a generic type to handle file based objects. Actually, the \OSC{file} type is translated into a one of the \OSC{txtf}, \OSC{gmnf}, \OSC{img} or \OSC{video} types, according to the file extension (see table \ref{fileTranslate}).
 \end{itemize}
 Note that the default position of any component is \values{[0,0]}. Objects are drawn centered on their position.
 
-
+\label{setfile}
 \begin{rail}
 setFile : 
 	('txtf' textFilePath) |
@@ -601,6 +602,7 @@ setFile :
 	('gmnf' gmnFilePath) |
 	('img' imgPath) |
 	('video' videoPath) |
+	('svgf' svgFilePath) |
 	('file' filePath)
 \end{rail}
 \index{Set type!txtf}
@@ -608,6 +610,7 @@ setFile :
 \index{Set type!gmnf}
 \index{Set type!img}
 \index{Set type!video}
+\index{Set type!svg}
 \index{Set type!file}
 
 \seealso the application \OSC{rootPath} message (section \ref{ITL}) for file based objects.
@@ -621,7 +624,8 @@ file extension & translated type \\
 \hline
 \OSC{.txt .text}		& \OSC{txtf} \\
 \OSC{.htm .html}		& \OSC{htmlf} \\
-\OSC{.gmn .xml}			& \OSC{gmnf} \\
+\OSC{.gmn .xml}		& \OSC{gmnf} \\
+\OSC{.svg} 			& \OSC{svgf} \\
 \OSC{.jpg .jpeg .png .gif .bmp .tiff} & \OSC{img} \\
 \OSC{.avi .wmv .mpg .mpeg .mp4} & \OSC{video} \\
 \hline
@@ -1368,6 +1372,12 @@ Example:
 %: Differences to version 0.60
 \sublevel{Differences to version 0.60}
 \begin{itemize}
+\item SVG files support (see section \fullref{setfile}).
+\item set line message change: the \OSC{x y} form is deprecated, it is replaced by
+  the following forms: \\
+  \OSC{'xy' x y} (equivalent to the former form) 
+  and \OSC{'wa' width angle}   
+  (see section \fullref{setsect}).
 \item new 'effect' message  (section \fullref{effectmsg}).
 \item utf8 support on windows corrected
 \item transparency support for stretched synchronized objects corrected
