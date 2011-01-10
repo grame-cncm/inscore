@@ -38,6 +38,7 @@
 #include "VPolygonView.h"
 #include "VRectView.h"
 #include "VSceneView.h"
+#include "VSVGView.h"
 #include "VTextView.h"
 #include "VVideoView.h"
 
@@ -54,6 +55,7 @@ void VQtUpdater::updateTo(IEllipse * e)				{ update<IEllipse>(e); }
 void VQtUpdater::updateTo(IPolygon * p)				{ update<IPolygon>(p); }
 void VQtUpdater::updateTo(IGuidoCode * guido)		{ update<IGuidoCode>(guido); }
 void VQtUpdater::updateTo(IText* text)				{ update<IText>(text); }
+void VQtUpdater::updateTo(ISVGFile* svg)			{ update<ISVGFile>(svg); }
 void VQtUpdater::updateTo(IGraphicSignal* g)		{ update<IGraphicSignal>(g); }
 void VQtUpdater::updateTo(ICurve* curve)			{ update<ICurve>(curve); }
 void VQtUpdater::updateTo(ILine* line)				{ update<ILine>(line); }

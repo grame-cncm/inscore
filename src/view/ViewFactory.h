@@ -44,6 +44,7 @@ class VImageView;
 class VLineView;
 class VPolygonView;
 class VRectView;
+class VSVGView;
 class VTextView;
 class VVideoView;
 
@@ -70,6 +71,7 @@ class ViewFactory
 	static VLineView*		create (const ILine* object, QGraphicsScene* scene);
 	static VPolygonView*	create (const IPolygon* object, QGraphicsScene* scene);
 	static VRectView*		create (const IRect* object, QGraphicsScene* scene);
+	static VSVGView*		create (const ISVGFile* object, QGraphicsScene* scene);
 	static VTextView*		create (const IText* object, QGraphicsScene* scene);
 	static VTextView*		create (const ITextFile* object, QGraphicsScene* scene);
 	static VVideoView*		create (const IVideo* object, QGraphicsScene* scene);

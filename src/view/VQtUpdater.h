@@ -66,6 +66,7 @@ class export VQtUpdater : public ViewUpdater
 		virtual void updateTo (IPolygon * polygon );
 		virtual void updateTo (IRect * rect );
 		virtual void updateTo (IText* text );
+		virtual void updateTo (ISVGFile* svg );
 		virtual void updateTo (IVideo* video );
 
 	protected :

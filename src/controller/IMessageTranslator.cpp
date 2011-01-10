@@ -42,6 +42,7 @@ IMessageTranslator::IMessageTranslator()
 	if (!fFileTypeTranslationTable.size()) {
 		fFileTypeTranslationTable["txt"]	= "txtf";
 		fFileTypeTranslationTable["text"]	= "txtf";
+		fFileTypeTranslationTable["svg"]	= "svgf";
 		fFileTypeTranslationTable["html"]	= "htmlf";
 		fFileTypeTranslationTable["htm"]	= "htmlf";
 		fFileTypeTranslationTable["gmn"]	= "gmnf";

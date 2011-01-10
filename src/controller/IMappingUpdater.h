@@ -36,6 +36,7 @@
 #include "IVideo.h"
 #include "IPolygon.h"
 #include "IScene.h"
+#include "ISVGFile.h"
 #include "ISync.h"
 #include "TReverseComposition.h"
 #include "TMappingComposer.h"
@@ -81,6 +82,7 @@ class IMappingUpdater : public SlaveMapUpdater
 
 		inline  void updateTo (IText* o)			{ updateIObject ( (IObject*)o); }
 		inline  void updateTo (ITextFile* o)		{ updateIObject ( (IObject*)o); }
+		inline  void updateTo (ISVGFile* o)		{ updateIObject ( (IObject*)o); }
 		inline	void updateTo (IGuidoCode* o)		{ updateIObject ( (IObject*)o); }
 		inline  void updateTo (IGuidoFile* o)		{ updateIObject ( (IObject*)o); }
 		inline	void updateTo (IGraphicSignal* o)	{ updateIObject ( (IObject*)o); }

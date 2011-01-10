@@ -24,48 +24,57 @@
 */
 
 
-#ifndef __VQtLocalMappingUpdater__
-#define __VQtLocalMappingUpdater__
+#ifndef __VSVGView__
+#define __VSVGView__
 
-#include "Updater.h"
+#include <QGraphicsItem>
+#include <QSvgRenderer>
+
+#include "VMappedShapeView.h"
+#include "MouseEventAble.h"
 
 namespace inscore
 {
 
+class ISVGFile;
+
+class EventsAble;
 /*!
-\addtogroup ITLCtrl
+\addtogroup ITLView
 @{
 */
 
 //--------------------------------------------------------------------------
 /**
-*	\brief a graphic view of the model state. 
-*
-*	Uses Qt's QGraphicsScene/QGraphicsView framework.
+*	\brief an SVG file.
 */
-class export VQtLocalMappingUpdater : public LocalMapUpdater
+class VSVGItem: public 	QAbstractGraphicsShapeItem 
 {
+	QSvgRenderer fRenderer;
+	
 	public :
-		static SMARTP<VQtLocalMappingUpdater> create()		{ return new VQtLocalMappingUpdater(); }
-
-		void updateTo (IGraphicSignal* graph);
-		void updateTo (IGuidoCode* guidoCode);
-		void updateTo (IImage* img);
-		void updateTo (IText* text);
-		void updateTo (ISVGFile* svg);
-		void updateTo (IHtml* text);
-		void updateTo (IRect* o);
-		void updateTo (IEllipse* o);
-		void updateTo (IVideo* o);
-		void updateTo (IPolygon* o);
-		void updateTo (ICurve* o);
-		void updateTo (ILine* o);
-				
-	protected :
-				 VQtLocalMappingUpdater() {}
-		virtual ~VQtLocalMappingUpdater() {}
+				 VSVGItem() {}
+		virtual ~VSVGItem() {}
+		
+		bool	setFile( const char* file);
+		QRectF	boundingRect() const	{ return fRenderer.viewBoxF(); }
+		QSize	size() const			{ return fRenderer.defaultSize(); }
+		void	paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 };
-typedef class SMARTP<VQtLocalMappingUpdater>	SVQtLocalMappingUpdater;
+
+//--------------------------------------------------------------------------
+/**
+*	\brief the graphic view of a SVG file.
+*/
+class VSVGView: public VMappedShapeView
+{
+	MouseEventAble<VSVGItem>*  item() const	{ return (MouseEventAble<VSVGItem>*)fItem; }
+	
+	public :
+				 VSVGView(QGraphicsScene * scene, const ISVGFile* svg);
+		virtual ~VSVGView() {}
+		virtual void updateView( ISVGFile * rect );
+};
 
 /*!@} */
 

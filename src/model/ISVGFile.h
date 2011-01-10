@@ -24,50 +24,52 @@
 */
 
 
-#ifndef __VQtLocalMappingUpdater__
-#define __VQtLocalMappingUpdater__
+#ifndef __ISVGFile__
+#define __ISVGFile__
 
-#include "Updater.h"
+#include <string>
+#include "TFile.h"
+#include "IRectShape.h"
 
 namespace inscore
 {
 
 /*!
-\addtogroup ITLCtrl
+\addtogroup ITLModel
 @{
 */
 
+class VSVGView;
+class Updater;
+class ISVGFile;
+typedef class SMARTP<ISVGFile>	SISVGFile;
 //--------------------------------------------------------------------------
-/**
-*	\brief a graphic view of the model state. 
-*
-*	Uses Qt's QGraphicsScene/QGraphicsView framework.
+/*!
+	\brief a SVG element based on a file
 */
-class export VQtLocalMappingUpdater : public LocalMapUpdater
+class ISVGFile :  public IRectShape, public TFile
 {
-	public :
-		static SMARTP<VQtLocalMappingUpdater> create()		{ return new VQtLocalMappingUpdater(); }
+	VSVGView * fView;
 
-		void updateTo (IGraphicSignal* graph);
-		void updateTo (IGuidoCode* guidoCode);
-		void updateTo (IImage* img);
-		void updateTo (IText* text);
-		void updateTo (ISVGFile* svg);
-		void updateTo (IHtml* text);
-		void updateTo (IRect* o);
-		void updateTo (IEllipse* o);
-		void updateTo (IVideo* o);
-		void updateTo (IPolygon* o);
-		void updateTo (ICurve* o);
-		void updateTo (ILine* o);
-				
-	protected :
-				 VQtLocalMappingUpdater() {}
-		virtual ~VQtLocalMappingUpdater() {}
+	public:		
+		static const std::string kSVGFileType;
+		static SISVGFile create(const std::string& name, IObject * parent)	{ return new ISVGFile(name, parent); }
+
+		virtual void		print(std::ostream& out) const;
+		virtual void		accept (Updater*);
+		VSVGView *			getView () const			{ return fView; }
+		void				setView (VSVGView * view) 	{ fView = view; }
+		VGraphicsItemView*	graphicView() const		{ return (VGraphicsItemView*)fView; }
+
+	protected:
+				 ISVGFile( const std::string& name, IObject * parent );
+		virtual ~ISVGFile() {}
+
+		/// \brief the \c 'set' message handler
+		virtual MsgHandler::msgStatus set (const IMessage* msg);
 };
-typedef class SMARTP<VQtLocalMappingUpdater>	SVQtLocalMappingUpdater;
 
-/*!@} */
+/*! @} */
 
 } // end namespoace
 

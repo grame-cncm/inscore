@@ -106,6 +106,9 @@ typedef class SMARTP<IText>			SIText;
 class ITextFile;
 typedef class SMARTP<ITextFile>		SITextFile;
 
+class ISVGFile;
+typedef class SMARTP<ISVGFile>		SISVGFile;
+
 class IVideo;
 typedef class SMARTP<IVideo>		SIVideo;
 

@@ -107,6 +107,9 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 		
 	else if ( type == IWatcher::kWatcherType )
 		obj = _create<IWatcher> (name, parent);
+
+	else if ( type == ISVGFile::kSVGFileType )
+		obj = _create<ISVGFile> (name, parent);
 		
 	if (obj) {
 		obj->createVirtualNodes();

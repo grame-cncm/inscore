@@ -28,6 +28,7 @@
 #include "VGraphView.h"
 #include "VGuidoItemView.h"
 #include "VImageView.h"
+#include "VSVGView.h"
 #include "VTextView.h"
 #include "VRectView.h"
 #include "VEllipseView.h"
@@ -43,6 +44,7 @@ void VQtLocalMappingUpdater::updateTo(IGraphicSignal* o)	{ o->getView()->updateL
 void VQtLocalMappingUpdater::updateTo(IGuidoCode * o)		{ o->getView()->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(IImage * o)			{ o->getView()->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(IText* o)				{ o->getView()->updateLocalMapping( o ); }
+void VQtLocalMappingUpdater::updateTo(ISVGFile* o)			{ o->getView()->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(IHtml* o)				{ o->getView()->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(IRect* o)				{ o->getView()->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(IEllipse* o)			{ o->getView()->updateLocalMapping( o ); }
