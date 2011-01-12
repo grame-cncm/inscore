@@ -1318,17 +1318,22 @@ Note than when \textit{d} is not a mutiple of 6, then the last graphic signal ma
 Interaction messages are user defined messages associated to events and triggered when these events occur. The general form of the message is:
 
 \begin{rail}
-interactMsg : ('watch' | 'watch+')  what  ( | oscMsg)
+interactMsg : (('watch' | 'watch+')  what  ( | oscMsg)) 
+%			| 'watch-' (| what (| index))
 \end{rail}
 
 \begin{itemize}
 \item \OSC{watch}: clears the messages associated to the event and when specified, associates the new message to the watched event. 
 \item \OSC{watch+}: adds a message to the watched event message list. 
+%\item \OSC{watch-}: removes messages from the watched events message list. \\
+%	When no argument is provided, removes all the messages. \\
+%	When an event is provided removes all the associated messages. \\
+%	When an avant and an index are provided, removes the corresponding indexed message from the message list associated to the event.
 \end{itemize}
 
 Events currently \emph{watchable} are:
 \begin{rail}
-what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'doubleClick' | 'timeEnter' timezone | 'timeLeave' timezone
+what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'doubleClick' | 'timeEnter' timezone | 'timeLeave' timezone
 \end{rail}
 %what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'doubleClick' | 'file' | 'timeEnter' timezone | 'timeLeave' timezone
 

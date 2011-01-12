@@ -1076,7 +1076,7 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {60}{ interactMsg : ('watch' | 'watch+') what ( | oscMsg) }
+\rail@i {60}{ interactMsg : (('watch' | 'watch+') what ( | oscMsg)) }
 \rail@o {60}{
 \rail@index{interactMsg}
 \rail@begin{2}{interactMsg}
@@ -1092,10 +1092,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {61}{ what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'doubleClick' | 'timeEnter' timezone | 'timeLeave' timezone }
+\rail@i {61}{ what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'doubleClick' | 'timeEnter' timezone | 'timeLeave' timezone }
 \rail@o {61}{
 \rail@index{what}
-\rail@begin{7}{what}
+\rail@begin{8}{what}
 \rail@bar
 \rail@term{mouseDown}[]
 \rail@nextbar{1}
@@ -1105,11 +1105,13 @@
 \rail@nextbar{3}
 \rail@term{mouseLeave}[]
 \rail@nextbar{4}
-\rail@term{doubleClick}[]
+\rail@term{mouseMove}[]
 \rail@nextbar{5}
+\rail@term{doubleClick}[]
+\rail@nextbar{6}
 \rail@term{timeEnter}[]
 \rail@nont{timezone}[]
-\rail@nextbar{6}
+\rail@nextbar{7}
 \rail@term{timeLeave}[]
 \rail@nont{timezone}[]
 \rail@endbar
