@@ -229,23 +229,6 @@ class MapTools
 			}
 		}
 
-//		template <typename T> SMARTP<TSegmentation<T> > static intersect (const SMARTP<TSegmentation<T> >& seg1, const SMARTP<TSegmentation<T> >& seg2)
-//			{
-//				typedef typename TSegmentation<T>::const_iterator const_iterator;
-//				const SMARTP<TSegmentation<T> > segi = TSegmentation<T>::create (seg1->getResource() & seg2->getResource());
-//				if (segi->getResource().size()) {
-//					for (const_iterator i = seg1->getSegmentation().begin(); i != seg1->getSegmentation().end(); i++) {
-//						for (const_iterator j = seg2->getSegmentation().begin(); j != seg2->getSegmentation().end(); j++) {
-//							T inter = *i & *j;
-//							if (inter.size() || (inter == *i) || (inter == *j))
-//								segi->add(inter);
-//						}
-//					}
-//				}
-//				return segi;
-//			}
-
-
 		template <typename T> RelativeTimeSegment static find (const rational& date, const TRelation<RelativeTimeSegment,T>& rel)
 			{
 				typedef typename TRelation<RelativeTimeSegment,T>::const_iterator const_iterator;
@@ -253,43 +236,6 @@ class MapTools
 					if ( i->first.interval().include(date) ) return i->first;
 				return RelativeTimeSegment (rational(0), rational(0));
 			}
-
-		
-//		template <typename I, typename T> static intersect (I::const_iterator s1beg, I::const_iterator s1end, 
-//															I::const_iterator s2beg, I::const_iterator s2end, std::set<T>& outlist)
-
-//		template <typename T, typename I> static void intersect (I s1beg, I s1end, I s2beg, I s2end, std::set<T>& outlist)
-//			{
-//				for (I i = s1beg; i != s1end; i++) {
-//					for (I j = s2beg; j != s2end; j++) {
-//						T inter = *i & *j;
-//						if (inter.size() || (inter == *i) || (inter == *j))
-//							outlist.insert(inter);
-//					}
-//				}
-//			}
-//		template <typename T, typename I> static void intermaps (I s1beg, I s1end, I s2beg, I s2end, std::set<T>& outlist)
-//			{
-//				for (I i = s1beg; i != s1end; i++) {
-//					for (I j = s2beg; j != s2end; j++) {
-//						T inter = i->first & j->first;
-//						if (inter.size() || (inter == i->first) || (inter == j->first))
-//							outlist.insert(inter);
-//					}
-//				}
-//			}
-//
-//		template <typename T> static SMARTP<TMapping<TSegment<rational,1>, T> > translate (const SMARTP<TMapping<TSegment<rational,1>, T> >& map, const rational& date)
-//			{
-//				SMARTP<TMapping<TSegment<rational,1>, T> > smap =  TMapping<TSegment<rational,1>, T>::create();
-//				typedef typename TRelation<TSegment<rational,1>, T>::const_iterator const_iterator;
-//				
-//				for (const_iterator i = map->direct().begin(); i != map->direct().end(); i++) {
-//						TSegment<rational,1> shifted (i->first.interval() + date);
-//						smap->add ( shifted, i->second);
-//				}
-//				return smap;
-//			}
 };
 
 
