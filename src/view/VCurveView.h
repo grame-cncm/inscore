@@ -51,7 +51,7 @@ class VCurveView: public VMappedShapeView
 	MouseEventAble<QGraphicsPathItem>* item() const { return (MouseEventAble<QGraphicsPathItem>*)fItem; }
 
 	public :
-				 VCurveView(QGraphicsScene * scene, const EventsAble* h);
+				 VCurveView(QGraphicsScene * scene, const ICurve* h);
 		virtual ~VCurveView() {}
 		
 		virtual void updateView( ICurve * Curve  );

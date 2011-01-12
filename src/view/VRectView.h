@@ -35,7 +35,6 @@
 namespace inscore
 {
 
-class EventsAble;
 /*!
 \addtogroup ITLView
 @{
@@ -50,7 +49,7 @@ class VRectView: public VMappedShapeView
 	MouseEventAble<QGraphicsRectItem>*  item() const			{ return (MouseEventAble<QGraphicsRectItem>*)fItem; }
 
 	public :
-				 VRectView(QGraphicsScene * scene, const EventsAble* h);
+				 VRectView(QGraphicsScene * scene, const IRect* h);
 		virtual ~VRectView() {}
 
 		virtual void updateView( IRect * rect );

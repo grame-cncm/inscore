@@ -263,7 +263,7 @@ class RolledEnrolledCollector: public TimeMapCollector
 };
 
 //----------------------------------------------------------------------
-VGuidoItemView::VGuidoItemView(QGraphicsScene * scene, const EventsAble* h)
+VGuidoItemView::VGuidoItemView(QGraphicsScene * scene, const IGuidoCode* h)
 					: VGraphicsItemView( scene , new IQGuidoGraphicsItem(h) )
 {
 	fGuidoItem = (IQGuidoGraphicsItem*)(fItem);

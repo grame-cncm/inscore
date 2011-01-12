@@ -51,7 +51,7 @@ class VEllipseView: public VMappedShapeView
 	MouseEventAble<QGraphicsEllipseItem>* item() const	{ return (MouseEventAble<QGraphicsEllipseItem>*)fItem; }
 
 	public :
-				 VEllipseView(QGraphicsScene * scene, const EventsAble* h);
+				 VEllipseView(QGraphicsScene * scene, const IEllipse* h);
 		virtual ~VEllipseView() {}
 		
 		virtual void updateView( IEllipse * ellipse );

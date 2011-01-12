@@ -79,7 +79,7 @@ class VImageView:  public VIntPointObjectView
 	IQGraphicsPixmapItem* fPixmapItem;
 
 	public :
-		VImageView(QGraphicsScene * scene, const EventsAble*);
+		VImageView(QGraphicsScene * scene, const IImage*);
 		virtual ~VImageView() {}
 		
 		virtual void updateLocalMapping (IImage* img);

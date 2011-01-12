@@ -30,7 +30,7 @@ namespace inscore
 {
 
 //----------------------------------------------------------------------
-VPolygonView::VPolygonView(QGraphicsScene * scene, const EventsAble* h) 
+VPolygonView::VPolygonView(QGraphicsScene * scene, const IPolygon* h) 
 	: VMappedShapeView( scene , new IQGraphicsPolygonItem(h) ) {}
 
 bool equals( const QPolygonF& p1 , const QPolygonF& p2 )

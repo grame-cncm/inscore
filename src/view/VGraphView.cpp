@@ -44,7 +44,7 @@ namespace inscore
 
 //----------------------------------------------------------------------
 #if newVersion
-VGraphView::VGraphView(QGraphicsScene * scene, const EventsAble* h) 
+VGraphView::VGraphView(QGraphicsScene * scene, const IGraphicSignal* h) 
 	: VShapeView( scene , new MouseEventAble<QGraphicsGraphItemNew>(h) ) {}
 
 void VGraphView::updateView( IGraphicSignal * graph )
@@ -55,7 +55,7 @@ void VGraphView::updateView( IGraphicSignal * graph )
 	itemChanged();
 }
 #else
-VGraphView::VGraphView(QGraphicsScene * scene, const EventsAble* h) 
+VGraphView::VGraphView(QGraphicsScene * scene, const IGraphicSignal* h) 
 	: VShapeView( scene , new MouseEventAble<QGraphicsGraphItem>(h) ) {}
 
 void VGraphView::updateView( IGraphicSignal * graph )

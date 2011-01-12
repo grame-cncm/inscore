@@ -59,7 +59,7 @@ class VGraphView: public VShapeView
 #endif
 
 	public :
-				 VGraphView(QGraphicsScene * scene, const EventsAble*);
+				 VGraphView(QGraphicsScene * scene, const IGraphicSignal*);
 		virtual ~VGraphView() {}
 		
 		virtual void updateView( IGraphicSignal * graph );

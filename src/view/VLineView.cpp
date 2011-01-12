@@ -30,7 +30,7 @@ namespace inscore
 {
 
 //----------------------------------------------------------------------
-VLineView::VLineView(QGraphicsScene * scene, const EventsAble* h) 
+VLineView::VLineView(QGraphicsScene * scene, const ILine* h) 
 	: VMappedShapeView( scene , new IQGraphicsPathItem(h)) {}
 
 //----------------------------------------------------------------------

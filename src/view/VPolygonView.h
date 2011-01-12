@@ -50,7 +50,7 @@ class VPolygonView: public VMappedShapeView
 	IQGraphicsPolygonItem* item() const	{ return (IQGraphicsPolygonItem*)fItem; }
 
 	public :
-				 VPolygonView(QGraphicsScene * scene, const EventsAble* h);
+				 VPolygonView(QGraphicsScene * scene, const IPolygon* h);
 		virtual ~VPolygonView() {}
 		
 		virtual void updateView( IPolygon * Polygon );

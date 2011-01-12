@@ -42,7 +42,7 @@ namespace inscore
 {
 
 //----------------------------------------------------------------------
-VTextView::VTextView(QGraphicsScene * scene, const EventsAble* h)
+VTextView::VTextView(QGraphicsScene * scene, const IText* h)
  :	VIntPointObjectView( scene , new IQGraphicsTextItem(h) )
 {
 	fTextItem = (IQGraphicsTextItem*)(fItem);

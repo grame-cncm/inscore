@@ -41,7 +41,7 @@ namespace inscore
 {
 
 //----------------------------------------------------------------------
-VCurveView::VCurveView(QGraphicsScene * scene, const EventsAble* h) 
+VCurveView::VCurveView(QGraphicsScene * scene, const ICurve* h) 
 	: VMappedShapeView( scene , new MouseEventAble<QGraphicsPathItem>(h)) {}
 
 //----------------------------------------------------------------------

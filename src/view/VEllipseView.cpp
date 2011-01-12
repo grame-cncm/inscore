@@ -32,7 +32,7 @@ namespace inscore
 {
 
 //----------------------------------------------------------------------
-VEllipseView::VEllipseView(QGraphicsScene * scene, const EventsAble* h) 
+VEllipseView::VEllipseView(QGraphicsScene * scene, const IEllipse* h) 
 	: VMappedShapeView( scene , new MouseEventAble<QGraphicsEllipseItem>(h) ) {}
 
 //----------------------------------------------------------------------

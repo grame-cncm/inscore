@@ -32,7 +32,7 @@ namespace inscore
 {
 
 //----------------------------------------------------------------------
-VRectView::VRectView(QGraphicsScene * scene, const EventsAble* h) 
+VRectView::VRectView(QGraphicsScene * scene, const IRect* h) 
 	: VMappedShapeView( scene , new MouseEventAble<QGraphicsRectItem>(h) ) {}
 
 //----------------------------------------------------------------------

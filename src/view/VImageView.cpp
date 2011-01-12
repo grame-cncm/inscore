@@ -40,7 +40,7 @@ namespace inscore
 {
 
 //----------------------------------------------------------------------
-VImageView::VImageView(QGraphicsScene * scene, const EventsAble* h)
+VImageView::VImageView(QGraphicsScene * scene, const IImage* h)
  :	VIntPointObjectView( scene , new IQGraphicsPixmapItem(h) )
 {
 	fPixmapItem = (IQGraphicsPixmapItem*)(fItem);
