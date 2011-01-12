@@ -6,21 +6,21 @@
 /ITL/scene/title scale 2.7
 /ITL/scene/title y -0.90
 
-/ITL/scene/line1 set "line" -1. 0.
-/ITL/scene/line2 set "line" -1. 0.
+/ITL/scene/line1 set "line" "xy" -1. 0.
+/ITL/scene/line2 set "line" "xy" -1. 0.
 
 /ITL/scene/line1 y -0.2
 /ITL/scene/line2 y 0.2
 
-/ITL/scene/al1 set "line" 0. -0.15
-/ITL/scene/al2 set "line" 0. 0.15
-/ITL/scene/ar1 set "line" 0. -0.15
-/ITL/scene/ar2 set "line" 0. 0.15
+/ITL/scene/al1 set "line" "wa" 0.2 45.
+/ITL/scene/al2 set "line" "wa" 0.2 -45.
+/ITL/scene/ar1 set "line" "wa" 0.2 -45.
+/ITL/scene/ar2 set "line" "wa" 0.2 45.
 
-/ITL/scene/br1 set "line" 0. -0.15
-/ITL/scene/br2 set "line" 0. 0.15
-/ITL/scene/bl1 set "line" 0. -0.15
-/ITL/scene/bl2 set "line" 0. 0.15
+/ITL/scene/br1 set "line" "wa" 0.2 45.
+/ITL/scene/br2 set "line" "wa" 0.2 -45.
+/ITL/scene/bl1 set "line" "wa" 0.2 -45.
+/ITL/scene/bl2 set "line" "wa" 0.2 45.
 
 /ITL/scene/al* xorigin 1.0
 /ITL/scene/ar* xorigin -1.0

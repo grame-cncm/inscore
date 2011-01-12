@@ -9,6 +9,7 @@ todo
 - paramétrages des événements (x, y, date...)
 - tutorial pour les mappings
 - implémentation du format xml
+- supprimer le champ message des messages
 
 - voir updateObjectSize résiduel dans IMappingUpdater::VStretch  (inséré pour gestion des boucles de synchronization et actuellement commenté) + réimplémenter les méthodes getWidth et getHeight pour les objets concernés
 - objets esclaves dragables dans le temps de leur maître

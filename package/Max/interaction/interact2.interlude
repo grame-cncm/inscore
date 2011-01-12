@@ -1,0 +1,47 @@
+/ITL/scene/* del
+
+/ITL/scene/rect1 set rect 0.1 1.0
+/ITL/scene/rect2 set rect 0.1 1.0
+/ITL/scene/rect3 set rect 0.1 1.0
+/ITL/scene/rect* penWidth 1.
+/ITL/scene/rect* penColor 0 0 0
+/ITL/scene/rect* z 1.
+/ITL/scene/rect* color 255 255 255 0
+
+/ITL/scene/rect1 yorigin 1.
+/ITL/scene/rect3 yorigin -1.
+
+/ITL/scene/level1 set rect 0.1 0.35
+/ITL/scene/level2 set rect 0.05 0.35
+/ITL/scene/level2 scale 2.
+/ITL/scene/level3 set rect 0.1 0.35
+/ITL/scene/level1 color 255 200 200 255
+/ITL/scene/level2 color 200 255 200 255
+/ITL/scene/level3 color 200 200 255 255
+
+/ITL/scene/level1 yorigin 1.
+/ITL/scene/level3 yorigin -1.
+
+/ITL/scene/*1 x -0.5
+/ITL/scene/*3 x 0.5
+
+/ITL/scene/*1 y 0.5
+/ITL/scene/*3 y -0.5
+
+/ITL/scene/rect1 watch "mouseDown" 	"/ITL/scene/level1" "height" "$y"
+/ITL/scene/rect1 watch "mouseMove" 	"/ITL/scene/level1" "height" "$y"
+/ITL/scene/rect1 watch "mouseUp" 	"/ITL/scene/level1" "height" "$y"
+
+/ITL/scene/rect2 watch "mouseDown" 	"/ITL/scene/level2" "height" "$y"
+/ITL/scene/rect2 watch "mouseMove" 	"/ITL/scene/level2" "height" "$y"
+/ITL/scene/rect2 watch "mouseUp" 	"/ITL/scene/level2" "height" "$y"
+
+/ITL/scene/rect3 watch "mouseDown" "/ITL/scene/level3" "height" "$y"
+/ITL/scene/rect3 watch "mouseMove" "/ITL/scene/level3" "height" "$y"
+/ITL/scene/rect3 watch "mouseUp" "/ITL/scene/level3" "height" "$y"
+
+/ITL/scene/rect1 watch+ "mouseDown" "localhost:7100/slider" "$y"
+/ITL/scene/rect1 watch+ "mouseMove" "localhost:7100/slider" "$y"
+/ITL/scene/rect1 watch+ "mouseUp" "localhost:7100/slider" "$y"
+
+
