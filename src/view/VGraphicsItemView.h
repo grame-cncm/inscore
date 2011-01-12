@@ -71,24 +71,6 @@ class VGraphicsItemView
 
 		virtual void setEffect (GraphicEffect& effect)		{ item()->setGraphicsEffect (effect.get()); }
 		virtual GraphicEffect getEffect () const			{ return GraphicEffect ( item()->graphicsEffect()); }
-		
-		static void buildDefaultMapping (IObject* object);
-		
-	protected:
-		VGraphicsItemView( QGraphicsScene * scene , QGraphicsItem * item );
-		
-		template <typename L>
-		static void setMapping( IObject* object , const std::string& mapName , SMARTP<TMapping<GraphicSegment, L> > g2l_mapping , SMARTP<TMapping<L, RelativeTimeSegment> > l2t_mapping)
-		{
-			// create the graphic to time composition
-			// composition reduction to a simple mapping
-			typedef TComposition <RelativeTimeSegment, L, GraphicSegment>		T2GComposition;
-			SRelativeTime2GraphicMapping t2gr = T2GComposition::create( l2t_mapping->reverse(), g2l_mapping->reverse() );
-			object->setMapping( mapName , t2gr );
-		}
-		
-		/// \brief Returns the reference rectangle for the QGraphicsItem coordinate: the master QRect or the scene QRect (if there's no master).
-		QRectF referenceRect() const;
 
 		/// \brief Maps the IObject [-1,1] y coordinate to the referenceRect().
 		float relative2SceneY(float y) const;
@@ -108,6 +90,24 @@ class VGraphicsItemView
 		float scene2RelativeX(float x) const;
 		/// \brief Maps the referenceRect() y value to the corresponding [-1,1] value.
 		float scene2RelativeY(float y) const;
+		
+		static void buildDefaultMapping (IObject* object);
+		
+	protected:
+		VGraphicsItemView( QGraphicsScene * scene , QGraphicsItem * item );
+		
+		template <typename L>
+		static void setMapping( IObject* object , const std::string& mapName , SMARTP<TMapping<GraphicSegment, L> > g2l_mapping , SMARTP<TMapping<L, RelativeTimeSegment> > l2t_mapping)
+		{
+			// create the graphic to time composition
+			// composition reduction to a simple mapping
+			typedef TComposition <RelativeTimeSegment, L, GraphicSegment>		T2GComposition;
+			SRelativeTime2GraphicMapping t2gr = T2GComposition::create( l2t_mapping->reverse(), g2l_mapping->reverse() );
+			object->setMapping( mapName , t2gr );
+		}
+		
+		/// \brief Returns the reference rectangle for the QGraphicsItem coordinate: the master QRect or the scene QRect (if there's no master).
+		QRectF referenceRect() const;
 
 		/// \brief Maps a point in QGraphicsItem coordinate to a point in IObject internal coordinate. ( [-1,1], (0,0) is the center of the object, (-1,-1) is )
 		///	the topLeft, (1,1) is the bottomright.
