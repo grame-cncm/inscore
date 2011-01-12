@@ -40,8 +40,6 @@
 namespace inscore
 {
 
-class EventsAble;
-
 /*!
 \addtogroup ITLView
 @{
@@ -62,7 +60,7 @@ class VTextView: public VIntPointObjectView
 
 	public :
 
-				 VTextView(QGraphicsScene * scene, const EventsAble*);
+				 VTextView(QGraphicsScene * scene, const IText*);
 		virtual ~VTextView() {}
 		
 		virtual void updateView( IText * text );

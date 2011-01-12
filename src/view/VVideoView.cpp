@@ -34,7 +34,7 @@ namespace inscore
 {
 
 //----------------------------------------------------------------------
-VVideoView::VVideoView(QGraphicsScene * scene, const EventsAble* h)
+VVideoView::VVideoView(QGraphicsScene * scene, const IVideo* h)
  : VGraphicsItemView( scene , new IQGraphicsVideoItem(h) )
 {
 	fVideoItem = (IQGraphicsVideoItem*)(fItem);

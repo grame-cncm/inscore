@@ -51,7 +51,7 @@ class VVideoView: public VGraphicsItemView
 	void initFile( IVideo * video, const QString&  videoFile );
 
 	public :
-				 VVideoView(QGraphicsScene * scene, const EventsAble* h);
+				 VVideoView(QGraphicsScene * scene, const IVideo* h);
 		virtual ~VVideoView() {}
 
 				void initialize( IVideo * video );
