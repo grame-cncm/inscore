@@ -96,7 +96,7 @@ EventsAble::eventype EventsAble::string2type (const string& str)
 }
 
 //----------------------------------------------------------------------
-const vector<SEventMessage>& EventsAble::getMsgs (eventype t) const
+const vector<SEventMessage>& EventsAble::getMouseMsgs (eventype t) const
 {
 	_TMsgMap::const_iterator i = fMsgMap.find(t);
 	if (i != fMsgMap.end())
@@ -135,6 +135,7 @@ const vector<SEventMessage>& EventsAble::getFileMsgs (const std::string& file) c
 void EventsAble::init ()
 {
 	if (!fTypeStr.size()) {
+		fTypeStr["mouseMove"]	= kMouseMove;
 		fTypeStr["mouseDown"]	= kMouseDown;
 		fTypeStr["mouseUp"]		= kMouseUp;
 		fTypeStr["mouseEnter"]	= kMouseEnter;

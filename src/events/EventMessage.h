@@ -28,6 +28,7 @@
 #define __EventMessage__
 
 #include <string>
+#include "rational.h"
 #include "smartpointer.h"
  
 namespace inscore
@@ -49,6 +50,8 @@ class EventMessage : public smartable
 	void localSend		(const IMessage* msg) const;
 
 	void decodeMessage	(const IMessage* msg, int startindex);
+	void checkvariable	(IMessage& msg, const std::string& param, float x, float y, float relx, float rely, 
+						 const rational& date, bool setmsg=false) const;
 			
 	protected:
 				 EventMessage(const IMessage* msg, int startindex);
@@ -59,6 +62,7 @@ class EventMessage : public smartable
 		
 		static SEventMessage	create (const IMessage* msg, int startindex)	{ return new EventMessage(msg, startindex); }
 		void	send() const;
+		void	send(float x, float y, float relx, float rely, const rational& date) const;
 };
 
 } // end namespoace

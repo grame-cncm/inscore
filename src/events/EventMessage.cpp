@@ -28,6 +28,7 @@
 #include "EventMessage.h"
 #include "IMessage.h"
 #include "IMessageStack.h"
+#include "IMessageStream.h"
 #include "OSCStream.h"
 
 using namespace std;
@@ -36,6 +37,13 @@ namespace inscore
 {
 
 extern SIMessageStack gMsgStask;
+
+const char* kXVar		= "$x";
+const char* kYVar		= "$y";
+const char* kAbsXVar	= "$absx";
+const char* kAbsYVar	= "$absy";
+const char* kDateVar	= "$date";
+
 
 //----------------------------------------------------------------------
 EventMessage::EventMessage (const IMessage* msg, int startindex) : fMessage(0), fPort(kDefaultUPDPort)
@@ -113,6 +121,51 @@ void EventMessage::send () const
 	if (fMessage) {
 		if (fDest.empty())	localSend (fMessage);
 		else				sockSend (fMessage, fDest, fPort);
+	}
+}
+
+//----------------------------------------------------------------------
+void EventMessage::checkvariable (IMessage& msg, const string& param, 
+			float x, float y, float relx, float rely, const rational& date, bool setmsg) const
+{
+	if (param[0] == '$') {
+		if (param == kXVar)			msg << relx;
+		else if (param == kYVar)	msg << rely;
+		else if (param == kAbsXVar)	msg << x;
+		else if (param == kAbsYVar)	msg << y;
+		else if (param == kDateVar)	msg << date;
+		else if (setmsg) msg.setMessage (param);
+		else msg << param;
+	}
+	else if (setmsg) msg.setMessage (param);
+	else msg << param;
+}
+
+//----------------------------------------------------------------------
+void EventMessage::send(float x, float y, float relx, float rely, const rational& date) const
+{
+	if (fMessage) {
+		int n = fMessage->size();
+		IMessage msg (fMessage->address());
+		checkvariable (msg, fMessage->message(), x, y, relx, rely, date, true);
+		for (int i=0; i<n; i++) {
+			string str;
+			if (fMessage->param(i, str)) {
+				checkvariable (msg, str, x, y, relx, rely, date);				
+//				if (str[0] == '$') {
+//					if (str == kXVar)		msg.add (relx);
+//					else if (str == kYVar)	msg.add (rely);
+//					else if (str == kAbsXVar)	msg.add (x);
+//					else if (str == kAbsYVar)	msg.add (y);
+//					else if (str == kDateVar)	msg << date;
+//					else msg.add(fMessage->params()[i]);
+//				}
+//				else msg.add(fMessage->params()[i]);
+			}
+			else msg.add(fMessage->params()[i]);
+		}
+		if (fDest.empty())	localSend (&msg);
+		else				sockSend (&msg, fDest, fPort);
 	}
 }
 

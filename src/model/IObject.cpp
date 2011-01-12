@@ -693,6 +693,7 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 	if (msg->params().size() && msg->param (0, what)) {
 		EventsAble::eventype t = EventsAble::string2type (what);
 		switch (t) {
+			case EventsAble::kMouseMove:
 			case EventsAble::kMouseDown:
 			case EventsAble::kMouseUp:
 			case EventsAble::kMouseDoubleClick:

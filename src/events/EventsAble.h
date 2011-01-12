@@ -42,7 +42,7 @@ class EventsAble
 {
 	public:
 		enum eventype { kUnknownEvent=0, 
-			kMouseDown, kMouseUp, kMouseDoubleClick, kMouseEnter, kMouseLeave,
+			kMouseDown, kMouseUp, kMouseDoubleClick, kMouseEnter, kMouseLeave, kMouseMove,
 			kFile, kTimeEnter, kTimeLeave };
 			
 				 EventsAble();
@@ -58,7 +58,7 @@ class EventsAble
 		void					setFileMsg (const std::string& file, SEventMessage msg);
 		void					addFileMsg (const std::string& file, SEventMessage msg);
 
-		const std::vector<SEventMessage>&	getMsgs (eventype t) const;
+		const std::vector<SEventMessage>&	getMouseMsgs (eventype t) const;
 		const std::vector<SEventMessage>&	getTimeMsgs (eventype t, const RationalInterval& time) const;
 		const std::vector<SEventMessage>&	getFileMsgs (const std::string& file) const;
 
