@@ -112,7 +112,7 @@
 /ITL/scene/reload y 0.98
 /ITL/scene/reload scale 1.2
 /ITL/scene/reload effect "shadow" 0 0 255 255 255 255 1
-/ITL/scene/reload watch "mouseDown"  	"/ITL" "load" "interact2.interlude"
+/ITL/scene/reload watch "mouseDown"  	"/ITL" "load" "interact.inscore"
 /ITL/scene/reload watch "mouseEnter" 	"/ITL/scene/reload" "red" 255
 /ITL/scene/reload watch "mouseLeave" 	"/ITL/scene/reload" "red" 0
 
