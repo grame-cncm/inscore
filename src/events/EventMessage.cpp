@@ -152,15 +152,6 @@ void EventMessage::send(float x, float y, float relx, float rely, const rational
 			string str;
 			if (fMessage->param(i, str)) {
 				checkvariable (msg, str, x, y, relx, rely, date);				
-//				if (str[0] == '$') {
-//					if (str == kXVar)		msg.add (relx);
-//					else if (str == kYVar)	msg.add (rely);
-//					else if (str == kAbsXVar)	msg.add (x);
-//					else if (str == kAbsYVar)	msg.add (y);
-//					else if (str == kDateVar)	msg << date;
-//					else msg.add(fMessage->params()[i]);
-//				}
-//				else msg.add(fMessage->params()[i]);
 			}
 			else msg.add(fMessage->params()[i]);
 		}
