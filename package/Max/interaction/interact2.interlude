@@ -64,15 +64,15 @@
 /ITL/scene/rect2 watch "mouseMove" 	"/ITL/scene/level2" "height" "$y"
 /ITL/scene/rect2 watch "mouseUp" 	"/ITL/scene/level2" "height" "$y"
 
-/ITL/scene/rect3 watch "mouseDown" "/ITL/scene/level3" "height" "$y"
-/ITL/scene/rect3 watch+ "mouseDown" "/ITL/scene/back" "height" "$y"
-/ITL/scene/rect3 watch "mouseMove" "/ITL/scene/level3" "height" "$y"
-/ITL/scene/rect3 watch+ "mouseMove" "/ITL/scene/back" "height" "$y"
-/ITL/scene/rect3 watch "mouseUp" "/ITL/scene/level3" "height" "$y"
+/ITL/scene/rect3 watch  "mouseDown" "/ITL/scene/level3" "height" "$y"
+/ITL/scene/rect3 watch+ "mouseDown" "/ITL/scene/back"   "height" "$y"
+/ITL/scene/rect3 watch  "mouseMove" "/ITL/scene/level3" "height" "$y"
+/ITL/scene/rect3 watch+ "mouseMove" "/ITL/scene/back"   "height" "$y"
+/ITL/scene/rect3 watch  "mouseUp"   "/ITL/scene/level3" "height" "$y"
 
 /ITL/scene/rect1 watch+ "mouseDown" "localhost:7100/vol" "$y"
 /ITL/scene/rect1 watch+ "mouseMove" "localhost:7100/vol" "$y"
-/ITL/scene/rect1 watch+ "mouseUp" "localhost:7100/vol" "$y"
+/ITL/scene/rect1 watch+ "mouseUp"   "localhost:7100/vol" "$y"
 
 /ITL/scene/startbutton set img "rsrc/start.png"
 /ITL/scene/startbutton z 1.
