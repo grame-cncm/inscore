@@ -92,18 +92,22 @@ void _MouseEventAble::handleEvent (const IObject * obj, QPointF pos,  EventsAble
 	float w = view->relative2SceneWidth (obj->getWidth());
 	float h = view->relative2SceneHeight(obj->getHeight());
 
-	if (x < 0) x = 0;
-	else if (x > w) x = w;
-	if (y < 0) y = 0;
-	else if (y > h) y = h;
+	float clippedx = (x < 0) ? 0 : (x > w) ? w : x;
+	float clippedy = (y < 0) ? 0 : (y > h) ? h : y;
+
+//	if (x < 0) x = 0;
+//	else if (x > w) x = w;
+//	if (y < 0) y = 0;
+//	else if (y > h) y = h;
 //qDebug() << "handle event pos" << x << y ;
 
-	float relx = view->scene2RelativeX(x) / obj->getWidth();
-	float rely = view->scene2RelativeY(y) / obj->getHeight();
-	originshift (obj, relx, rely);
+	float relx = view->scene2RelativeX(clippedx) / obj->getWidth();
+	float rely = view->scene2RelativeY(clippedy) / obj->getHeight();
 //qDebug() << "handle event rel" << relx << rely ;
 
 	rational date = point2date (obj, relx, rely, "", 0);
+	originshift (obj, relx, rely);
+
 //qDebug() << "handle event date" << date.getNumerator() << date.getDenominator() ;
 	
 	const std::vector<SEventMessage>& msgs = obj->getMouseMsgs (type);
