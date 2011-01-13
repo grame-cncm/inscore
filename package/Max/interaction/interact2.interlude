@@ -1,5 +1,23 @@
 /ITL/scene/* del
 
+/ITL/scene/back set rect 1. 0.175
+/ITL/scene/back scale 2.0
+/ITL/scene/back color 0 0 0 255
+/ITL/scene/back yorigin -1.
+/ITL/scene/back y -1.
+
+/ITL/scene/score set gmn "[ c d e f g a b c2]"
+/ITL/scene/score scale 5.
+/ITL/scene/score y -0.82
+/ITL/scene/score z 0.5
+/ITL/scene/score color 255 255 255
+/ITL/scene/score watch "mouseDown" 	"localhost:7100/date" "$date"
+
+/ITL/scene/cursor set "ellipse" 0.1 0.1
+/ITL/scene/cursor color 255 0 0
+/ITL/scene/cursor z 0.4
+/ITL/scene/sync cursor score
+
 /ITL/scene/rect1 set rect 0.1 1.0
 /ITL/scene/rect2 set rect 0.1 1.0
 /ITL/scene/rect3 set rect 0.1 1.0
@@ -7,17 +25,25 @@
 /ITL/scene/rect* penColor 0 0 0
 /ITL/scene/rect* z 1.
 /ITL/scene/rect* color 255 255 255 0
+/ITL/scene/rect* effect "shadow" 0 0 255 255 255 255 1
 
 /ITL/scene/rect1 yorigin 1.
 /ITL/scene/rect3 yorigin -1.
+
+/ITL/scene/label1 set "txt" "Volume"
+/ITL/scene/label2 set "txt" "Foo"
+/ITL/scene/label3 set "txt" "Curtain"
+/ITL/scene/label* z 1.
+/ITL/scene/label* color 127 120 0
 
 /ITL/scene/level1 set rect 0.1 0.35
 /ITL/scene/level2 set rect 0.05 0.35
 /ITL/scene/level2 scale 2.
 /ITL/scene/level3 set rect 0.1 0.35
-/ITL/scene/level1 color 255 200 200 255
-/ITL/scene/level2 color 200 255 200 255
-/ITL/scene/level3 color 200 200 255 255
+/ITL/scene/level1 color 0 136 48 255
+/ITL/scene/level2 color 246 0 0 255
+/ITL/scene/level3 color 0 11 204 255
+/ITL/scene/level* z 0.5
 
 /ITL/scene/level1 yorigin 1.
 /ITL/scene/level3 yorigin -1.
@@ -27,6 +53,8 @@
 
 /ITL/scene/*1 y 0.5
 /ITL/scene/*3 y -0.5
+/ITL/scene/label* y 0.54
+
 
 /ITL/scene/rect1 watch "mouseDown" 	"/ITL/scene/level1" "height" "$y"
 /ITL/scene/rect1 watch "mouseMove" 	"/ITL/scene/level1" "height" "$y"
@@ -37,11 +65,54 @@
 /ITL/scene/rect2 watch "mouseUp" 	"/ITL/scene/level2" "height" "$y"
 
 /ITL/scene/rect3 watch "mouseDown" "/ITL/scene/level3" "height" "$y"
+/ITL/scene/rect3 watch+ "mouseDown" "/ITL/scene/back" "height" "$y"
 /ITL/scene/rect3 watch "mouseMove" "/ITL/scene/level3" "height" "$y"
+/ITL/scene/rect3 watch+ "mouseMove" "/ITL/scene/back" "height" "$y"
 /ITL/scene/rect3 watch "mouseUp" "/ITL/scene/level3" "height" "$y"
 
-/ITL/scene/rect1 watch+ "mouseDown" "localhost:7100/slider" "$y"
-/ITL/scene/rect1 watch+ "mouseMove" "localhost:7100/slider" "$y"
-/ITL/scene/rect1 watch+ "mouseUp" "localhost:7100/slider" "$y"
+/ITL/scene/rect1 watch+ "mouseDown" "localhost:7100/vol" "$y"
+/ITL/scene/rect1 watch+ "mouseMove" "localhost:7100/vol" "$y"
+/ITL/scene/rect1 watch+ "mouseUp" "localhost:7100/vol" "$y"
 
+/ITL/scene/startbutton set img "rsrc/start.png"
+/ITL/scene/startbutton z 1.
+/ITL/scene/stopbutton set img "rsrc/stop.png"
+/ITL/scene/stopbutton z 0.5
+/ITL/scene/*button effect shadow 8 8 0 8 33 74 10
+/ITL/scene/*button y 0.7
+/ITL/scene/*button scale 0.7
+/ITL/scene/startbutton watch 	"mouseDown"  "/ITL/scene/stopbutton" "z" 1.1
+/ITL/scene/startbutton watch+ 	"mouseDown"  "localhost:7100/play" 1
+/ITL/scene/stopbutton watch 	"mouseDown"  "/ITL/scene/stopbutton" "z" 0.5
+/ITL/scene/stopbutton watch+ 	"mouseDown"  "localhost:7100/play" 0
+
+/ITL/scene/boulet set ellipse 0.1 0.1
+/ITL/scene/boulet alpha 0
+/ITL/scene/boule set img "rsrc/boule.png"
+/ITL/scene/boule scale 0.3
+/ITL/scene/boule alpha 100
+/ITL/scene/boule z 1.
+/ITL/scene/boulet z 1.
+/ITL/scene/boule* xorigin 1.
+/ITL/scene/boule* yorigin 1.
+/ITL/scene/boule* x 1.
+/ITL/scene/boule* y 1.
+/ITL/scene/boule* watch "mouseEnter" 	"/ITL/scene/boule" "alpha" 255
+/ITL/scene/boule* watch "mouseLeave" 	"/ITL/scene/boule" "alpha" 100
+/ITL/scene/boule watch "mouseDown"  	"/ITL/scene" "fullscreen" 1
+/ITL/scene/boule watch+ "mouseDown"  	"/ITL/scene/boulet" "z" 1.1
+/ITL/scene/boulet watch "mouseDown"  	"/ITL/scene" "fullscreen" 0
+/ITL/scene/boulet watch+ "mouseDown"  	"/ITL/scene/boulet" "z" 0.5
+
+
+/ITL/scene/reload set "txt" "Reload"
+/ITL/scene/reload xorigin -1.
+/ITL/scene/reload yorigin 1.
+/ITL/scene/reload x -0.99
+/ITL/scene/reload y 0.98
+/ITL/scene/reload scale 1.2
+/ITL/scene/reload effect "shadow" 0 0 255 255 255 255 1
+/ITL/scene/reload watch "mouseDown"  	"/ITL" "load" "interact2.interlude"
+/ITL/scene/reload watch "mouseEnter" 	"/ITL/scene/reload" "red" 255
+/ITL/scene/reload watch "mouseLeave" 	"/ITL/scene/reload" "red" 0
 
