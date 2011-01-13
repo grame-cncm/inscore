@@ -1,7 +1,10 @@
 todo
 ----
 
+- vérifier l'adressage de la font guido
+
 [ok] idée d'intégrer des objets faust (svg)
+- support type 'svg' en + de 'svgf'
 [ok] spécifier les lignes en width angle
 - mappings : support de coordonnées relatives pour les images
 - faire du mapping incrémental
@@ -11,7 +14,8 @@ todo
 - implémentation du format xml
 - supprimer le champ message des messages
 
-- voir updateObjectSize résiduel dans IMappingUpdater::VStretch  (inséré pour gestion des boucles de synchronization et actuellement commenté) + réimplémenter les méthodes getWidth et getHeight pour les objets concernés
+- voir updateObjectSize résiduel dans IMappingUpdater::VStretch  (inséré pour gestion des boucles 
+  de synchronization et actuellement commenté) + réimplémenter les méthodes getWidth et getHeight pour les objets concernés
 - objets esclaves dragables dans le temps de leur maître
 [ok] - voir .icns dans packaging : copie dans Resources + modif info.plist
 - restructurer le positionnement des 'get' handlers
