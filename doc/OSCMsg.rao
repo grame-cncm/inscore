@@ -1127,18 +1127,22 @@
 \rail@token{int32}[]
 \rail@end
 }
-\rail@i {63}{ oscMsg : (| fullAddress) OSCAddress ( parameters + ) }
+\rail@i {63}{ oscMsg : (| fullAddress) OSCAddress ( (parameters | variable) + ) }
 \rail@o {63}{
 \rail@index{oscMsg}
-\rail@begin{2}{oscMsg}
+\rail@begin{3}{oscMsg}
 \rail@bar
 \rail@nextbar{1}
 \rail@nont{fullAddress}[]
 \rail@endbar
 \rail@nont{OSCAddress}[]
 \rail@plus
+\rail@bar
 \rail@nont{parameters}[]
-\rail@nextplus{1}
+\rail@nextbar{1}
+\rail@nont{variable}[]
+\rail@endbar
+\rail@nextplus{2}
 \rail@endplus
 \rail@end
 }
@@ -1153,5 +1157,34 @@
 \rail@endbar
 \rail@term{:}[]
 \rail@nont{port}[]
+\rail@end
+}
+\rail@i {65}{ variable : 'x' | 'y' | 'absx' | 'absy' | date }
+\rail@o {65}{
+\rail@index{variable}
+\rail@begin{5}{variable}
+\rail@bar
+\rail@term{x}[]
+\rail@nextbar{1}
+\rail@term{y}[]
+\rail@nextbar{2}
+\rail@term{absx}[]
+\rail@nextbar{3}
+\rail@term{absy}[]
+\rail@nextbar{4}
+\rail@nont{date}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {66}{ date : 'date' (| ':' mapname) }
+\rail@o {66}{
+\rail@index{date}
+\rail@begin{2}{date}
+\rail@term{date}[]
+\rail@bar
+\rail@nextbar{1}
+\rail@term{:}[]
+\rail@nont{mapname}[]
+\rail@endbar
 \rail@end
 }

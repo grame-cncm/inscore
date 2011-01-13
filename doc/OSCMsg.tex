@@ -1312,43 +1312,39 @@ Note than when \textit{d} is not a mutiple of 6, then the last graphic signal ma
 
 %===============================
 %: Interaction messages
-\toplevel{ Interaction messages}
+\toplevel{ Events and Interaction}
 \label{interaction}
 
-Interaction messages are user defined messages associated to events and triggered when these events occur. The general form of the message is:
+Interaction messages are user defined messages associated to events and triggered when these events occur. These messages accept variables as message arguments.
+
+\sublevel{ Interaction messages}
+\label{interactmsg}
+
+The general form of the message is:
 
 \begin{rail}
 interactMsg : (('watch' | 'watch+')  what  ( | oscMsg)) 
-%			| 'watch-' (| what (| index))
 \end{rail}
 
 \begin{itemize}
 \item \OSC{watch}: clears the messages associated to the event and when specified, associates the new message to the watched event. 
 \item \OSC{watch+}: adds a message to the watched event message list. 
-%\item \OSC{watch-}: removes messages from the watched events message list. \\
-%	When no argument is provided, removes all the messages. \\
-%	When an event is provided removes all the associated messages. \\
-%	When an avant and an index are provided, removes the corresponding indexed message from the message list associated to the event.
 \end{itemize}
 
 Events currently \emph{watchable} are:
 \begin{rail}
 what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'doubleClick' | 'timeEnter' timezone | 'timeLeave' timezone
 \end{rail}
-%what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'doubleClick' | 'file' | 'timeEnter' timezone | 'timeLeave' timezone
 
 \begin{rail}
 timezone : int32 int32 int32 int32
 \end{rail}
-%timezone : date date
-%date : int32 int32
-
 A time zone is defined by 2 dates expressed as rational values (i.e. with 4 integers).
 
 
-The associated OSC message is any valid OSC message (not restricted to the Interlude message set), with an extended address scheme, supporting IP addresses or host names and udp port number to be specified as OSC addresses prefix. 
+The associated OSC message is any valid OSC message (not restricted to the Interlude message set), with an extended address scheme, supporting IP addresses or host names and udp port number to be specified as OSC addresses prefix. The message parameters are any valid OSC type or variables (see section \ref{interactvar}).
 \begin{rail} 
-oscMsg : (| fullAddress)  OSCAddress ( parameters + )
+oscMsg : (| fullAddress)  OSCAddress ( (parameters | variable) + )
 \end{rail}
 
 \begin{rail} 
@@ -1363,9 +1359,29 @@ Example:
 1) Request the object \OSC{myObject} to watch \OSC{mouseDown} events and send a message to itself. \\
 2) Request the object \OSC{myObject} to watch \OSC{mouseDown} events and send a "start" message to host.domain.org on udp port 12100 to OSC address /an/address
 
+
+\sublevel{Messages variables}
+\label{interactvar}
+
+Variables denote values computed when an event is triggered. These values are send in place of the variable. A variable name starts with a '\$' sign. Currently, the following variables are supported by mouse events:
+\begin{rail} 
+variable : 'x' | 'y' | 'absx' | 'absy' | date 
+\end{rail}
+
+\begin{itemize}
+\item \OSC{\$x} \OSC{\$y}: denotes the mouse pointer position at the time of the event. The values are in the range $[0,1[$ where 1 is the object size in the x or y dimension. The value is computed according to the object origin: it represents the mouse pointer distance from the object x or y origin (see \fullref{origin}).
+\item \OSC{\$absx} \OSC{\$absx}: denotes the mouse pointer absolute position at the time of the event. The values represent a pixel position relative to the top-left point of the target object. Note that this position is unaffected by scale. 
+Note also that the values are not clipped to the object dimensions and could exceed its width or height or become negative in case of mouse move events.
+\item \OSC{\$date}: denotes the object date corresponding to mouse pointer position at the time of the event. The detailed date variable is given below: it may be followed by a colon and the name of the mapping to used compute the date . The \OSC{\$date} variable is replaced by its rational value (i.e. two integers values). 
+\end{itemize}
+
+\begin{rail} 
+date : 'date' (| ':'  mapname)
+\end{rail}
+
+
 \vspace{5mm}
 \texttt{\textbf{Warning:}} the interaction message set is provided for experiment. It is likely to change in a future version. Ideas, comments, suggestions are welcome for the design of a stable API.
-
 
 
 
