@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.1 Differences to version 0.60</TITLE>
-<META NAME="description" CONTENT="15.1 Differences to version 0.60">
+<TITLE>14.2 Message variables</TITLE>
+<META NAME="description" CONTENT="14.2 Message variables">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,71 +19,123 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node45.html">
 <LINK REL="previous" HREF="node43.html">
-<LINK REL="up" HREF="node43.html">
+<LINK REL="up" HREF="node42.html">
 <LINK REL="next" HREF="node45.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html744"
+<A NAME="tex2html743"
   HREF="node45.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html738"
-  HREF="node43.html">
+<A NAME="tex2html737"
+  HREF="node42.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html732"
+<A NAME="tex2html733"
   HREF="node43.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html740"
+<A NAME="tex2html739"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html742"
-  HREF="node49.html">
+<A NAME="tex2html741"
+  HREF="node51.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html745"
-  HREF="node45.html">15.2 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html739"
-  HREF="node43.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html733"
-  HREF="node43.html">15. Changes list</A>
- &nbsp; <B>  <A NAME="tex2html741"
+<B> Next:</B> <A NAME="tex2html744"
+  HREF="node45.html">15. Changes list</A>
+<B> Up:</B> <A NAME="tex2html738"
+  HREF="node42.html">14. Events and Interaction</A>
+<B> Previous:</B> <A NAME="tex2html734"
+  HREF="node43.html">14.1 Interaction messages</A>
+ &nbsp; <B>  <A NAME="tex2html740"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html743"
-  HREF="node49.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html742"
+  HREF="node51.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001610000000000000000">
-15.1 Differences to version 0.60</A>
+<H1><A NAME="SECTION001520000000000000000"></A>
+<A NAME="interactvar"></A>
+<BR>
+14.2 Message variables
 </H1>
 
+<P>
+Variables denote values computed when an event is triggered. These values are send in place of the variable. A variable name starts with a '$' sign. Currently, the following variables are supported by mouse events:
+<BR>
+<IMG
+ WIDTH="170" HEIGHT="200" ALIGN="BOTTOM" BORDER="0"
+ SRC="img74.gif"
+ ALT="\begin{rail}
+variable : 'x' \vert 'y' \vert 'absx' \vert 'absy' \vert date
+\end{rail}">
+<BR>
+
+<P>
+
 <UL>
-<LI>SVG files support (see section <A HREF="node20.html#setfile">6</A> p.<A HREF="node20.html#setfile"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI><TT>$x</TT> <TT>$y</TT>: denotes the mouse pointer position at the time of the event. The values are in the range <IMG
+ WIDTH="35" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img75.gif"
+ ALT="$[0,1[$"> where 1 is the object size in the x or y dimension. The value is computed according to the object origin: it represents the mouse pointer distance from the object x or y origin (see <A HREF="node10.html#origin">4.1.3</A> p.<A HREF="node10.html#origin"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>set line message change: the <TT>x y</TT> form is deprecated, it is replaced by
-  the following forms: 
-<BR>  <TT>'xy' x y</TT> (equivalent to the former form) 
-  and <TT>'wa' width angle</TT>   
-  (see section <A HREF="node20.html#setsect">6</A> p.<A HREF="node20.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI><TT>$absx</TT> <TT>$absx</TT>: denotes the mouse pointer absolute position at the time of the event. The values represent a pixel position relative to the top-left point of the target object. Note that this position is unaffected by scale. 
+Note also that the values are not clipped to the object dimensions and could exceed its width or height or become negative in case of mouse move events.
 </LI>
-<LI>new 'effect' message  (section <A HREF="node14.html#effectmsg">4.3</A> p.<A HREF="node14.html#effectmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>utf8 support on windows corrected
-</LI>
-<LI>transparency support for stretched synchronized objects corrected
-</LI>
-<LI>multiple application instances supported with dynamic udp port number allocation.
-</LI>
-<LI>command line option with -port portnumber option to set the receive udp port number at startup.
+<LI><TT>$date</TT>: denotes the object date corresponding to the mouse pointer position at the time of the event. The detailed date variable is given below: it is optionnaly followed by a colon and the name of the mapping to be used to compute the date . The <TT>$date</TT> variable is replaced by its rational value (i.e. two integers values). 
 </LI>
 </UL>
 
 <P>
-<BR><HR>
+<BR>
+<IMG
+ WIDTH="300" HEIGHT="86" ALIGN="BOTTOM" BORDER="0"
+ SRC="img76.gif"
+ ALT="\begin{rail}
+date : 'date' (\vert ':' mapname)
+\end{rail}">
+<BR>
+
+<P>
+Note that a variable can be used several times in a message, but several <TT>$date</TT> variables must always refer to the same mapping.
+
+<P>
+<BR>
+<BR>
+<TT><B>Warning:</B></TT> the interaction message set is provided for experiment. It is likely to change in a future version. Ideas, comments, suggestions are welcome for the design of a stable API.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html743"
+  HREF="node45.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html737"
+  HREF="node42.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html733"
+  HREF="node43.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html739"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html741"
+  HREF="node51.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html744"
+  HREF="node45.html">15. Changes list</A>
+<B> Up:</B> <A NAME="tex2html738"
+  HREF="node42.html">14. Events and Interaction</A>
+<B> Previous:</B> <A NAME="tex2html734"
+  HREF="node43.html">14.1 Interaction messages</A>
+ &nbsp; <B>  <A NAME="tex2html740"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html742"
+  HREF="node51.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

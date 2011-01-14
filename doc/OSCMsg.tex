@@ -551,6 +551,7 @@ Format of the \OSC{set} message is:
 setMsg : 'set' (
 	('txt' string) |
 	('html' string) |
+	('svg' svgString) |
 	('gmn' gmnString) |
 	('graph' signals ) |
 	('rect' width height) |
@@ -564,6 +565,7 @@ setMsg : 'set' (
 \index{Common messages!set}
 \index{Set type!txt}
 \index{Set type!html}
+\index{Set type!svg}
 \index{Set type!gmn}
 \index{Set type!graph}
 \index{Set type!rect}
@@ -578,6 +580,7 @@ Supported types are the following:
 \item \OSC{txt}: a textual component.
 \item \OSC{html}: an html component defined by an HTML string.
 \item \OSC{gmn}: a Guido score defined by a GMN string.
+\item \OSC{svg}: SVG graphics defined by a SVG string.
 \item \OSC{graph}: graphic of a signal. See section \fullref{graphsig} for details about the \OSC{graph} objects data.
 \item \OSC{rect}: a rectangle specified by a width and height. Width and height are expressed in \OSC{scene} coordinates space, thus a width or a height of 2 corresponds to the width or a height of the \OSC{scene}.
 \item \OSC{ellipse}: an ellipse specified by a width and height.
@@ -600,9 +603,9 @@ setFile :
 	('txtf' textFilePath) |
 	('htmlf' htmlFilePath) |
 	('gmnf' gmnFilePath) |
+	('svgf' svgFilePath) |
 	('img' imgPath) |
 	('video' videoPath) |
-	('svgf' svgFilePath) |
 	('file' filePath)
 \end{rail}
 \index{Set type!txtf}
@@ -1360,7 +1363,7 @@ Example:
 2) Request the object \OSC{myObject} to watch \OSC{mouseDown} events and send a "start" message to host.domain.org on udp port 12100 to OSC address /an/address
 
 
-\sublevel{Messages variables}
+\sublevel{Message variables}
 \label{interactvar}
 
 Variables denote values computed when an event is triggered. These values are send in place of the variable. A variable name starts with a '\$' sign. Currently, the following variables are supported by mouse events:
@@ -1394,7 +1397,9 @@ Note that a variable can be used several times in a message, but several \OSC{\$
 %: Differences to version 0.60
 \sublevel{Differences to version 0.60}
 \begin{itemize}
-\item SVG files support (see section \fullref{setfile}).
+\item new 'mousemove' event (see section \fullref{interactmsg}).
+\item interaction messages accept variables (\$x, \$y, \$date...) \fullref{interactvar}).
+\item SVG code and files support (see section \fullref{setfile}).
 \item set line message change: the \OSC{x y} form is deprecated, it is replaced by
   the following forms: \\
   \OSC{'xy' x y} (equivalent to the former form) 
