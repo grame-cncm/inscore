@@ -1372,13 +1372,14 @@ variable : 'x' | 'y' | 'absx' | 'absy' | date
 \item \OSC{\$x} \OSC{\$y}: denotes the mouse pointer position at the time of the event. The values are in the range $[0,1[$ where 1 is the object size in the x or y dimension. The value is computed according to the object origin: it represents the mouse pointer distance from the object x or y origin (see \fullref{origin}).
 \item \OSC{\$absx} \OSC{\$absx}: denotes the mouse pointer absolute position at the time of the event. The values represent a pixel position relative to the top-left point of the target object. Note that this position is unaffected by scale. 
 Note also that the values are not clipped to the object dimensions and could exceed its width or height or become negative in case of mouse move events.
-\item \OSC{\$date}: denotes the object date corresponding to mouse pointer position at the time of the event. The detailed date variable is given below: it may be followed by a colon and the name of the mapping to used compute the date . The \OSC{\$date} variable is replaced by its rational value (i.e. two integers values). 
+\item \OSC{\$date}: denotes the object date corresponding to the mouse pointer position at the time of the event. The detailed date variable is given below: it is optionnaly followed by a colon and the name of the mapping to be used to compute the date . The \OSC{\$date} variable is replaced by its rational value (i.e. two integers values). 
 \end{itemize}
 
 \begin{rail} 
 date : 'date' (| ':'  mapname)
 \end{rail}
 
+Note that a variable can be used several times in a message, but several \OSC{\$date} variables must always refer to the same mapping.
 
 \vspace{5mm}
 \texttt{\textbf{Warning:}} the interaction message set is provided for experiment. It is likely to change in a future version. Ideas, comments, suggestions are welcome for the design of a stable API.
