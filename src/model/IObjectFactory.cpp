@@ -110,6 +110,9 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 
 	else if ( type == ISVGFile::kSVGFileType )
 		obj = _create<ISVGFile> (name, parent);
+
+	else if ( type == ISVG::kSVGType )
+		obj = _create<ISVG> (name, parent);
 		
 	if (obj) {
 		obj->createVirtualNodes();

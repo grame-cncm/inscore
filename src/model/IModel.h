@@ -47,6 +47,7 @@
 #include "IScene.h"
 #include "ISignal.h"
 #include "ISync.h"
+#include "ISVG.h"
 #include "ISVGFile.h"
 #include "IText.h"
 #include "ITextFile.h"

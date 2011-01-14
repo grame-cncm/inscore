@@ -58,6 +58,7 @@ VImageView*		ViewFactory::create (const IImage* object, QGraphicsScene* scene)		
 VLineView*		ViewFactory::create (const ILine* object, QGraphicsScene* scene)			{ return new VLineView (scene, object); }
 VPolygonView*	ViewFactory::create (const IPolygon* object, QGraphicsScene* scene)			{ return new VPolygonView (scene, object); }
 VRectView*		ViewFactory::create (const IRect* object, QGraphicsScene* scene)			{ return new VRectView (scene, object); }
+VSVGView*		ViewFactory::create (const ISVG* object, QGraphicsScene* scene)				{ return new VSVGView (scene, object); }
 VSVGView*		ViewFactory::create (const ISVGFile* object, QGraphicsScene* scene)			{ return new VSVGView (scene, object); }
 VTextView*		ViewFactory::create (const IText* object, QGraphicsScene* scene)			{ return new VTextView (scene, object); }
 VTextView*		ViewFactory::create (const ITextFile* object, QGraphicsScene* scene)		{ return new VTextView (scene, object); }

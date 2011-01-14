@@ -64,6 +64,7 @@ class export Updater : public smartable
 		virtual void updateTo (IScene*) {}
 		virtual void updateTo (IText*) {}
 		virtual void updateTo (IHtml*) {}
+		virtual void updateTo (ISVG*) {}
 		virtual void updateTo (ISVGFile*) {}
 		virtual void updateTo (IGuidoCode*) {}
 		virtual void updateTo (IImage*) {}

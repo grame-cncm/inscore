@@ -25,6 +25,7 @@
 
 #include <QDebug>
 #include <QPainter>
+#include <QByteArray>
 
 #include "OSCStream.h"
 #include "TComposition.h"
@@ -46,6 +47,16 @@ bool VSVGItem::setFile( const char* file)
 	return true;
 }
 
+//----------------------------------------------------------------------
+bool VSVGItem::setText( const char* text)
+{
+	if (!fRenderer.load(QByteArray(text))) {
+		ITLErr << "cannot load svg data" << text << ITLEndl;
+		return false;
+	}
+	return true;
+}
+
 void VSVGItem::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget )
 {
 	if (fRenderer.isValid()) {
@@ -59,6 +70,10 @@ VSVGView::VSVGView(QGraphicsScene * scene, const ISVGFile* svg)
 	: VMappedShapeView( scene , new MouseEventAble<VSVGItem>(svg) )
 {
 }
+VSVGView::VSVGView(QGraphicsScene * scene, const ISVG* svg) 
+	: VMappedShapeView( scene , new MouseEventAble<VSVGItem>(svg) )
+{
+}
 
 //----------------------------------------------------------------------
 void VSVGView::updateView( ISVGFile * svg  )
@@ -66,6 +81,17 @@ void VSVGView::updateView( ISVGFile * svg  )
 	if (svg->changed()) {
 		item()->setFile (svg->getFile().c_str());
 		svg->changed(false);
+	}
+	float alpha = svg->getA() / 255.f;
+	item()->setOpacity (alpha);
+	VShapeView::updateView( svg );	
+}
+
+//----------------------------------------------------------------------
+void VSVGView::updateView( ISVG * svg  )
+{
+	if (svg->newData()) {
+		item()->setText (svg->getText().c_str());
 	}
 	float alpha = svg->getA() / 255.f;
 	item()->setOpacity (alpha);

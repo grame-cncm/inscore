@@ -36,6 +36,7 @@
 namespace inscore
 {
 
+class ISVG;
 class ISVGFile;
 
 class EventsAble;
@@ -57,6 +58,7 @@ class VSVGItem: public 	QAbstractGraphicsShapeItem
 		virtual ~VSVGItem() {}
 		
 		bool	setFile( const char* file);
+		bool	setText( const char* text);
 		QRectF	boundingRect() const	{ return fRenderer.viewBoxF(); }
 		QSize	size() const			{ return fRenderer.defaultSize(); }
 		void	paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
@@ -71,9 +73,11 @@ class VSVGView: public VMappedShapeView
 	MouseEventAble<VSVGItem>*  item() const	{ return (MouseEventAble<VSVGItem>*)fItem; }
 	
 	public :
+				 VSVGView(QGraphicsScene * scene, const ISVG* svg);
 				 VSVGView(QGraphicsScene * scene, const ISVGFile* svg);
 		virtual ~VSVGView() {}
 		virtual void updateView( ISVGFile * rect );
+		virtual void updateView( ISVG * rect );
 };
 
 /*!@} */
