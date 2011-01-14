@@ -4,12 +4,12 @@ todo
 - vérifier l'adressage de la font guido
 
 [ok] idée d'intégrer des objets faust (svg)
-- support type 'svg' en + de 'svgf'
+[ok] support type 'svg' en + de 'svgf'
 [ok] spécifier les lignes en width angle
 - mappings : support de coordonnées relatives pour les images
 - faire du mapping incrémental
 - export vidéo
-- paramétrages des événements (x, y, date...)
+[ok] paramétrages des événements (x, y, date...)
 - tutorial pour les mappings
 - implémentation du format xml
 - supprimer le champ message des messages
