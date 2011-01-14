@@ -1,4 +1,4 @@
-#N canvas 45 48 358 133 10;
+#N canvas 45 48 406 127 10;
 #X obj 84 31 bng 15 250 50 0 \$0-reload empty empty 17 7 0 10 -262144
 -1 -1;
 #X text 102 30 Reload;
@@ -29,7 +29,6 @@
 #X obj 98 209 t b b b b;
 #X obj 149 263 prepend /ITL rootPath;
 #X obj 103 320 s scene;
-#X msg 103 289 /ITL load scene.interlude;
 #X obj 204 176 loadbang;
 #X obj 129 175 r \$0-reload;
 #X obj -182 103 s scene;
@@ -41,6 +40,7 @@
 #X obj 20 114 s scene;
 #X obj 93 18 r \$0-zoomin;
 #X obj -3 18 r \$0-zoomout;
+#X msg 103 289 /ITL load scene.inscore;
 #X connect 1 0 2 0;
 #X connect 3 0 4 0;
 #X connect 6 0 5 0;
@@ -48,19 +48,19 @@
 #X connect 8 0 9 0;
 #X connect 9 0 5 0;
 #X connect 11 0 13 0;
-#X connect 12 2 15 0;
+#X connect 12 2 26 0;
 #X connect 12 3 11 0;
 #X connect 13 0 14 0;
-#X connect 15 0 14 0;
+#X connect 15 0 12 0;
 #X connect 16 0 12 0;
-#X connect 17 0 12 0;
+#X connect 18 0 17 0;
 #X connect 19 0 18 0;
-#X connect 20 0 19 0;
-#X connect 21 0 23 0;
+#X connect 20 0 22 0;
+#X connect 21 0 22 0;
 #X connect 22 0 23 0;
-#X connect 23 0 24 0;
-#X connect 25 0 22 0;
-#X connect 26 0 21 0;
+#X connect 24 0 21 0;
+#X connect 25 0 20 0;
+#X connect 26 0 14 0;
 #X restore 83 54 pd inside;
 #X text -183 84 This patch loads the 'scene.interlude' file and provides
 basic interaction.;

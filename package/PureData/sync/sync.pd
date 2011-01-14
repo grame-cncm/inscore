@@ -1,28 +1,28 @@
-#N canvas 9 32 350 188 10;
-#X obj 147 103 bng 15 250 50 0 \$0-reload empty Reload -40 7 0 10 -262144
+#N canvas 148 39 384 193 10;
+#X obj 147 103 bng 15 250 50 0 \$0-reload empty Reload -50 7 0 10 -262144
 -1 -1;
 #X obj -74 -40 vradio 15 1 0 3 \$0-dur empty empty 0 -8 0 10 -228856
--258113 -1 1;
+-258113 -1 0;
 #X text -77 -61 Cars duration;
 #X obj -152 -42 tgl 15 0 \$0-play empty Play -4 -10 0 10 -262144 -1
 -1 0 1;
 #X obj -119 -40 vsl 15 128 10 100 0 0 \$0-rate empty Rate -4 -12 0
-10 -262144 -1 -1 1600 1;
+10 -262144 -1 -1 0 1;
 #X text -53 -26 half note;
 #X text -53 -11 whole note;
 #X obj 106 -41 vradio 15 1 0 3 \$0-vpos empty empty 0 -8 0 10 -228856
--258113 -1 1;
+-258113 -1 0;
 #X text 125 -44 top;
 #X text 126 -27 over;
 #X text 126 -10 bottom;
 #X text 42 -63 Stretch;
 #X obj 50 -41 vradio 15 1 0 4 \$0-stretch empty empty 0 -8 0 10 -228856
--258113 -1 1;
+-258113 -1 0;
 #X text 69 -44 h;
 #X text 70 -27 hv;
 #X text 70 -10 H;
 #X text 70 4 Hv;
-#N canvas 553 28 583 447 inside 0;
+#N canvas 553 28 622 449 inside 0;
 #X obj -157 238 cnv 15 250 180 empty empty OSC_Comm 20 12 0 12 -204800
 -66577 0;
 #X obj -153 359 dumpOSC 7001;
@@ -39,7 +39,6 @@
 #X obj 144 278 t b b b b;
 #X obj 195 332 prepend /ITL rootPath;
 #X obj 274 247 loadbang;
-#X msg 149 358 /ITL load sync.interlude;
 #X obj 10 265 r sync;
 #X obj 149 389 s sync;
 #X obj 180 246 r \$0-reload;
@@ -112,40 +111,41 @@
 #X msg -155 186 /ITL/scene fullscreen \$1;
 #X obj -156 157 r $fs;
 #X obj -155 213 s sync;
+#X msg 149 358 /ITL load sync.inscore;
 #X connect 1 0 2 0;
 #X connect 3 0 4 0;
 #X connect 6 0 5 0;
 #X connect 7 0 6 0;
 #X connect 8 0 5 0;
 #X connect 10 0 12 0;
-#X connect 11 2 14 0;
+#X connect 11 2 42 0;
 #X connect 11 3 10 0;
-#X connect 12 0 16 0;
+#X connect 12 0 15 0;
 #X connect 13 0 11 0;
-#X connect 14 0 16 0;
-#X connect 15 0 8 0;
-#X connect 17 0 11 0;
+#X connect 14 0 8 0;
+#X connect 16 0 11 0;
+#X connect 18 0 19 0;
 #X connect 19 0 20 0;
-#X connect 20 0 21 0;
-#X connect 22 0 19 0;
-#X connect 23 0 19 1;
-#X connect 25 0 26 0;
-#X connect 25 1 27 0;
-#X connect 25 2 28 0;
+#X connect 21 0 18 0;
+#X connect 22 0 18 1;
+#X connect 24 0 25 0;
+#X connect 24 1 26 0;
+#X connect 24 2 27 0;
+#X connect 25 0 28 0;
 #X connect 26 0 29 0;
 #X connect 27 0 30 0;
 #X connect 28 0 31 0;
-#X connect 29 0 32 0;
-#X connect 30 0 32 0;
+#X connect 29 0 31 0;
+#X connect 30 0 31 0;
 #X connect 31 0 32 0;
-#X connect 32 0 33 0;
+#X connect 34 0 33 0;
 #X connect 35 0 34 0;
-#X connect 36 0 35 0;
-#X connect 37 0 25 0;
-#X connect 38 0 36 0;
-#X connect 39 0 36 1;
-#X connect 40 0 42 0;
-#X connect 41 0 40 0;
+#X connect 36 0 24 0;
+#X connect 37 0 35 0;
+#X connect 38 0 35 1;
+#X connect 39 0 41 0;
+#X connect 40 0 39 0;
+#X connect 42 0 15 0;
 #X restore -161 101 pd inside;
 #X text 103 -63 Vertical Pos;
 #X text -93 43 This patch shows components synchronization:;
