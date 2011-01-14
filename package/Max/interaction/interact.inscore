@@ -1,5 +1,8 @@
 /ITL/scene/* del
 
+/ITL/scene width 1.0
+/ITL/scene height 1.0
+
 /ITL/scene/back set rect 1. 0.175
 /ITL/scene/back scale 2.0
 /ITL/scene/back color 0 0 0 255
