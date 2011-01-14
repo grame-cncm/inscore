@@ -103,16 +103,23 @@ void _MouseEventAble::handleEvent (const IObject * obj, QPointF pos,  EventsAble
 
 	float relx = view->scene2RelativeX(clippedx) / obj->getWidth();
 	float rely = view->scene2RelativeY(clippedy) / obj->getHeight();
+	float orelx = relx;
+	float orely = rely;
 //qDebug() << "handle event rel" << relx << rely ;
 
-	rational date = point2date (obj, relx, rely, "", 0);
-	originshift (obj, relx, rely);
+//	rational date = point2date (obj, relx, rely, "", 0);
+	originshift (obj, orelx, orely);
 
 //qDebug() << "handle event date" << date.getNumerator() << date.getDenominator() ;
 	
 	const std::vector<SEventMessage>& msgs = obj->getMouseMsgs (type);
-	for (unsigned int i=0; i<msgs.size(); i++)
-		msgs[i]->send(x, y, relx, rely, date);
+	for (unsigned int i=0; i<msgs.size(); i++) {
+		std::string mapname;
+		rational date (-1,1);
+		if (msgs[i]->hasDateVar (mapname))
+			date = point2date (obj, relx, rely, mapname, 0);
+		msgs[i]->send(x, y, orelx, orely, date);
+	}
 }
 
 } // end namespoace

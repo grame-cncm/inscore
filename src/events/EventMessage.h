@@ -63,6 +63,8 @@ class EventMessage : public smartable
 		static SEventMessage	create (const IMessage* msg, int startindex)	{ return new EventMessage(msg, startindex); }
 		void	send() const;
 		void	send(float x, float y, float relx, float rely, const rational& date) const;
+		bool	hasDateVar (std::string& mapname) const;
+		bool	isDateVar (const std::string& var, std::string& mapname) const;
 };
 
 } // end namespoace

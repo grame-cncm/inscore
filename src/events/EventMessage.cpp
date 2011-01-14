@@ -83,14 +83,18 @@ void EventMessage::decodeMessage (const IMessage* msg, int startindex)
 	if ((msg->size() - startindex) < 2) return;
 	string address;
 //	if (msg->param (startindex, address) && msg->param (startindex+1, msgStr)) {
-	if (msg->param (startindex, address)) {
+	if (msg->param (startindex++, address)) {
 		string oscAddress;
 		if (decodeAddress (address, oscAddress, fDest, fPort)) {
+			fMessage = new IMessage (oscAddress);
 			string msgStr;
-			int offset = 1;
-			if ( msg->param (startindex+1, msgStr) ) offset = 2;
-			fMessage = new IMessage (oscAddress, msgStr);
-			for (int i = startindex+2; i < msg->size(); i++) {
+			if ( msg->param (startindex, msgStr) ) {
+				fMessage->setMessage (msgStr);
+				startindex++;
+			}
+			
+//			fMessage = new IMessage (oscAddress, msgStr);
+			for (int i = startindex; i < msg->size(); i++) {
 				fMessage->params().push_back( msg->params()[i]);
 			}
 		}
@@ -125,15 +129,43 @@ void EventMessage::send () const
 }
 
 //----------------------------------------------------------------------
+bool EventMessage::isDateVar (const string& var, string& mapname) const
+{
+	string base (kDateVar);
+	if (var == base) return true;
+	if (var.compare (0, base.size(), base) == 0) {
+		if (var[base.size()] == ':') {
+			mapname = var.substr(base.size()+1);
+			return true;
+		}
+	}
+	return false;
+}
+
+//----------------------------------------------------------------------
+bool EventMessage::hasDateVar (std::string& mapname) const
+{
+	if (isDateVar (fMessage->message(), mapname)) return true;
+	int n = fMessage->size();
+	for (int i=0; i<n; i++) {
+		string str;
+		if (fMessage->param(i, str))
+			if (isDateVar (str, mapname))  return true;
+	}
+	return false;	
+}
+
+//----------------------------------------------------------------------
 void EventMessage::checkvariable (IMessage& msg, const string& param, 
 			float x, float y, float relx, float rely, const rational& date, bool setmsg) const
 {
+	string mapname;
 	if (param[0] == '$') {
 		if (param == kXVar)			msg << relx;
 		else if (param == kYVar)	msg << rely;
 		else if (param == kAbsXVar)	msg << x;
 		else if (param == kAbsYVar)	msg << y;
-		else if (param == kDateVar)	msg << date;
+		else if (isDateVar (param, mapname))	msg << date;
 		else if (setmsg) msg.setMessage (param);
 		else msg << param;
 	}
