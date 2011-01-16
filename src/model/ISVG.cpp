@@ -63,7 +63,6 @@ MsgHandler::msgStatus ISVG::set(const IMessage* msg )
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 	
-	int n = msg->params().size();
 	status = msg->param (1, fSvg) ? MsgHandler::kProcessed : MsgHandler::kBadParameters;
 	if (status & MsgHandler::kProcessed)
 		newData(true);
