@@ -35,6 +35,7 @@ macosx:
 	make strip
 	make rsrc
 	chmod -x  $(shell find . -name "*.inscore")
+	cp -f ../src/guido2.ttf $(package)
 	open $(package)/$(viewer).app/Contents/Info.plist
 	@echo === remove the access path to INScoreViewer.icns ====
 		
@@ -57,6 +58,15 @@ rsrc:
 	rm -f $(package)/lisp/ignore.txt
 	cp readme.txt $(package)
 	cp -r doc $(package)
+
+src:
+	[ -d $(package)-src/cmake ] || mkdir -p $(package)-src/cmake
+	cp -rf ../src $(package)-src/
+	cp -rf ../cmake/CMakeLists.txt $(package)-src/cmake
+	cp -rf ../lib $(package)-src/
+	cp readme.txt $(package)-src
+	cp ../readme.txt $(package)-src/install
+	cp -r doc $(package)-src
 
 
 win32:
