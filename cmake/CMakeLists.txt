@@ -20,7 +20,6 @@ set (INSAPPSSTRVERS "0.63")
 
 #######################################
 if(WIN32)
-	add_definitions(-DWINVER=0x0400 -DWIN32)
 if(MSVC)
 	add_definitions(-DMSVC -D_USE_MATH_DEFINES)
 endif(MSVC)
@@ -185,6 +184,7 @@ add_dependencies(${TARGET}Viewer ${TARGET})
 # install setup
 if(APPLE)
 set(FRMWK  FRAMEWORK DESTINATION "/Library/Frameworks" CONFIGURATIONS Release)
+set(APPBUNDLE BUNDLE DESTINATION "/Applications/INScore-${INSAPPVERS}"  CONFIGURATIONS Release)
 endif(APPLE)
 
 install ( TARGETS ${TARGET}
@@ -193,6 +193,7 @@ install ( TARGETS ${TARGET}
 )
 install ( TARGETS ${TARGET}Viewer
 	RUNTIME DESTINATION /usr/bin
+    ${APPBUNDLE}
 )
 install ( FILES debian/inscore.desktop
     	  DESTINATION /usr/share/applications
@@ -240,6 +241,4 @@ set (CPACK_DEBIAN_PACKAGE_DEPENDS "guidoengine-devel (>= 1.4.0), libc6 (>= 2.12.
 
 set (CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "debian/scripts/preinst;debian/scripts/postinst;debian/scripts/postrm")
 include(CPack)
-
-
 
