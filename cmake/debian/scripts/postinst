@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+
+VERSION=0.63
+
+INSCORE=/usr/share/inscore
+cd $INSCORE 
+tar xzf INScore-$VERSION.tgz
+
+exit 0
+

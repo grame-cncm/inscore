@@ -136,8 +136,6 @@ set(INSLIBS  ${INSLIBS} ${OSCPACK} ${GUIDOQT} ${GUIDO} ${QTLIBS} ${CORE_FOUNDATI
 
 #######################################
 # moc settings
-#FIND_PACKAGE(Qt4)
-#message ("Qt4 output: ${QT_CONFIG}")
 set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h)
 QT_WRAP_CPP (${TARGET} MOC_FILES ${MOC_HEADERS})
 
@@ -150,7 +148,8 @@ set_source_files_properties (${COREH} PROPERTIES HEADER_FILE_ONLY TRUE)
 set_target_properties (${TARGET} PROPERTIES VERSION ${INSFWKVERS}
 						MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${INSFWKSTRVERS}
 						MACOSX_FRAMEWORK_BUNDLE_VERSION ${INSFWKSSTRVERS}
-						PUBLIC_HEADER "${PUBLICHEADERS}")
+#						PUBLIC_HEADER "${PUBLICHEADERS}"
+)
 target_link_libraries( ${TARGET} ${INSLIBS} )
 if(MINGW)
 	target_link_libraries( ${TARGET} winmm ws2_32 )
@@ -188,18 +187,56 @@ if(APPLE)
 set(FRMWK  FRAMEWORK DESTINATION "/Library/Frameworks" CONFIGURATIONS Release)
 endif(APPLE)
 
-set (LIBDEST /usr/lib)
-if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
-  set (LIBDEST /usr/lib64)
-  message (STATUS "64 bits system detected : setting install dir to ${LIBDEST}")
-endif(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
-
 install ( TARGETS ${TARGET}
-	RUNTIME DESTINATION bin
-    	LIBRARY DESTINATION ${LIBDEST}
-    	ARCHIVE DESTINATION ${LIBDEST}
+	RUNTIME DESTINATION /usr/bin
+    	LIBRARY DESTINATION /usr/lib
     	${FRMWK}
-    	PUBLIC_HEADER DESTINATION include/${TARGET}
 )
+install ( FILES debian/inscore.desktop
+    	  DESTINATION /usr/share/applications
+)
+install ( FILES icons/48x48/inscore.png
+    	  DESTINATION /usr/share/icons/hicolor/48x48/apps
+)
+install ( FILES icons/128x128/inscore.png
+    	  DESTINATION /usr/share/icons/hicolor/128x128/apps
+)
+install ( FILES ../package/INScore-${INSAPPVERS}
+    	  DESTINATION /usr/share/inscore
+)
+
+
+#######################################
+# packaging
+if(UNIX AND NOT APPLE)
+  set (SYSNAME "ubuntu-maverick")
+endif(UNIX AND NOT APPLE)
+
+if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
+  set (CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64" )
+  set(CPACK_PACKAGE_FILE_NAME "INScore-${INSAPPVERS}-${SYSNAME}-x86_64" )
+else (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
+  set (CPACK_DEBIAN_PACKAGE_ARCHITECTURE "i386" )
+  set(CPACK_PACKAGE_FILE_NAME "INScore-${INSAPPVERS}-${SYSNAME}-i386" )
+endif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
+
+set(CPACK_PACKAGE_NAME "INScore")
+set(CPACK_PACKAGE_CONTACT "D. Fober <fober@grame.fr>")
+set(CPACK_PACKAGE_VENDOR "Grame")
+set(CPACK_PACKAGE_VERSION_MAJOR 0)
+set(CPACK_PACKAGE_VERSION_MINOR 6)
+set(CPACK_PACKAGE_VERSION_PATCH 3)
+set(CPACK_SET_DESTDIR "ON")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "INScore.") 
+set(CPACK_PACKAGE_DESCRIPTION_FILE "../package/readme.txt")
+set(CPACK_RESOURCE_FILE_LICENSE "../package/rsrc/license.txt")
+
+set (CPACK_DEBIAN_PACKAGE_NAME "INScore - Interactive, Augmented Music Scores." )
+set (CPACK_DEBIAN_PACKAGE_HOMEPAGE "http://inscore.sourceforge.net")
+set (CPACK_DEBIAN_PACKAGE_DEPENDS "guidoengine-devel (>= 1.4.0), libc6 (>= 2.12.1), libgcc1 (>= 4.5.1), libphonon4 (>= 4.4.2), libqt4-svg (>= 4.7.0), libqtcore4 (>= 4.7.0), libqtgui4 (>= 4.7.0), libstdc++6 (>= 4.5.1)" )
+
+set (CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "debian/scripts/preinst;debian/scripts/postinst;debian/scripts/postrm")
+include(CPack)
+
 
 
