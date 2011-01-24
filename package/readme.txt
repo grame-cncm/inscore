@@ -5,13 +5,13 @@ GRAME - Centre national de creation musicale
 http://www.grame.fr
 research@grame.fr
 ======================================================
-Copyright GRAME (c) 2009-2010
+Copyright GRAME (c) 2009-2011
 
 
 ======================================================
  General information
 ======================================================
-The Interlude Viewer provides augmented music score capabilities.
+The INScore Viewer provides augmented music score capabilities.
 An augmented score is a graphic space that provides representation, 
 composition and manipulation of heterogeneous music objects, 
 both in the graphic and time domains. 
@@ -20,7 +20,7 @@ text, vectorial graphics and signals representations.
 It focuses on the graphic synchronization of its components, 
 according to their time relations and on signals representation.
 
-The Interlude Viewer has no user interface, it is intended to be 
+The INScore Viewer has no user interface, it is intended to be 
 controled via OSC messages i.e. by any external application that 
 supports the OSC protocol (typically MaxMSP or Pure Data).
 
@@ -39,7 +39,7 @@ This distribution includes :
 ======================================================
  Warning
 ======================================================
-The Interlude Viewer is currently under development and will
+The INScore Viewer is currently under development and will
 evolve with future versions. The main of the OSC API should be 
 considered as stable, however there is no warranty concerning
 changes that could break the compatibility with previous 
@@ -48,14 +48,19 @@ versions.
 ======================================================
  Links
 ======================================================
+The INScore project is an open source project. It has been
+developped in the framework of the Interlude project (ANR-08-CORD-010)
+For more information, see at:
+ - http://inscore.sourceforge.net
+
+INScore depedns on the Guido Engine library and optionnaly, on
+the libMusicXML library.
 The Guido Engine library and applications, and the libMusicXML 
 library are open source projects. available at SourceForge.
 For more information and to get the latest version, see at:
  - http://www.sourceforge.net/pojects/guidolib
  - http://www.sourceforge.net/pojects/libmusicxml
 
-The Interlude framework is also an open source project, but not 
-yet on a public repository, due to the current development stage.
-
 ======================================================
-For more information, feel free to contact me at <fober@grame.fr>
+For more information, contact me at <fober@grame.fr>
+

@@ -35,7 +35,7 @@
   (timetask #'time-msg 5 1 5)
   (timetask #'scale-msg 2.5 0.022 2)
   (itl-root-path)
-  (itlsend '("/ITL" "load" "sync.interlude"))
+  (itlsend '("/ITL" "load" "sync.inscore"))
   (timetask #'clock-task T 0.025 20)
   (itlstop))
 

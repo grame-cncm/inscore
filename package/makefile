@@ -13,7 +13,7 @@ striplist = $(shell find $(package)/$(viewer).app -name "*_debug*")
 bin    := ../cmake/release
 #########################
 
-.PHONY: doc
+.PHONY: doc rsrc
 
 usage:
 	@echo This makefile builds the Interlude prototype package.
@@ -22,6 +22,7 @@ usage:
 	@echo "  make doc      # makes doc"
 	@echo "  make macosx   # on Mac OS X"
 	@echo "  make win32    # on Windows"
+	@echo "  make linux    # on Linux (only build the rsrc)"
 
 include makeBundle
 
@@ -32,14 +33,8 @@ macosx:
 	mv $(viewer).app $(package)/$(viewer).app
 	cp $(icns) $(package)/$(viewer).app/Contents/Resources
 	make strip
-	cp -rf Max $(package)/
-	cp -rf PureData $(package)
-	cp -rf python $(package)
-	cp -rf lisp $(package)
-	rm -f $(package)/lisp/ignore.txt
-	cp readme.txt $(package)
-	cp -r doc $(package)
-	chmod -x  $(shell find . -name "*.interlude")
+	make rsrc
+	chmod -x  $(shell find . -name "*.inscore")
 	open $(package)/$(viewer).app/Contents/Info.plist
 	@echo === remove the access path to INScoreViewer.icns ====
 		
@@ -54,6 +49,16 @@ doc:
 	cp -f $(docsrc)/presentation/INScore-en.pdf $(docdst)
 	cp -f ../src/changelog.txt $(package)
 
+rsrc:
+	cp -rf Max $(package)/
+	cp -rf PureData $(package)
+	cp -rf python $(package)
+	cp -rf lisp $(package)
+	rm -f $(package)/lisp/ignore.txt
+	cp readme.txt $(package)
+	cp -r doc $(package)
+
+
 win32:
 	[ -d $(package) ] || mkdir -p $(package)
 	cp -f $(bin)/$(viewer).exe $(package)/$(viewer).exe
@@ -63,6 +68,12 @@ win32:
 	cp  readme.txt $(package)
 	cp  -r doc $(package)
 	cp  -r $(bin)/PlugIns $(package)
+
+linux:
+	[ -d $(package) ] || mkdir -p $(package)
+	make rsrc
+	chmod -x  $(shell find . -name "*.inscore")
+	cd $(package) && tar czf ../$(package).tgz *
 
 strip:
 	rm -rf $(striplist)

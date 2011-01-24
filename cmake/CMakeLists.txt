@@ -188,20 +188,22 @@ set(FRMWK  FRAMEWORK DESTINATION "/Library/Frameworks" CONFIGURATIONS Release)
 endif(APPLE)
 
 install ( TARGETS ${TARGET}
-	RUNTIME DESTINATION /usr/bin
     	LIBRARY DESTINATION /usr/lib
     	${FRMWK}
+)
+install ( TARGETS ${TARGET}Viewer
+	RUNTIME DESTINATION /usr/bin
 )
 install ( FILES debian/inscore.desktop
     	  DESTINATION /usr/share/applications
 )
-install ( FILES icons/48x48/inscore.png
+install ( FILES debian/icons/48x48/inscore.png
     	  DESTINATION /usr/share/icons/hicolor/48x48/apps
 )
-install ( FILES icons/128x128/inscore.png
+install ( FILES debian/icons/128x128/inscore.png
     	  DESTINATION /usr/share/icons/hicolor/128x128/apps
 )
-install ( FILES ../package/INScore-${INSAPPVERS}
+install ( FILES ../package/INScore-${INSAPPVERS}.tgz
     	  DESTINATION /usr/share/inscore
 )
 
@@ -227,11 +229,12 @@ set(CPACK_PACKAGE_VERSION_MAJOR 0)
 set(CPACK_PACKAGE_VERSION_MINOR 6)
 set(CPACK_PACKAGE_VERSION_PATCH 3)
 set(CPACK_SET_DESTDIR "ON")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "INScore.") 
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "INScore - Interactive, Augmented Music Scores.") 
 set(CPACK_PACKAGE_DESCRIPTION_FILE "../package/readme.txt")
 set(CPACK_RESOURCE_FILE_LICENSE "../package/rsrc/license.txt")
 
-set (CPACK_DEBIAN_PACKAGE_NAME "INScore - Interactive, Augmented Music Scores." )
+set (CPACK_DEBIAN_PACKAGE_NAME "INScore" )
+set (CPACK_DEBIAN_PACKAGE_SECTION "sound" )
 set (CPACK_DEBIAN_PACKAGE_HOMEPAGE "http://inscore.sourceforge.net")
 set (CPACK_DEBIAN_PACKAGE_DEPENDS "guidoengine-devel (>= 1.4.0), libc6 (>= 2.12.1), libgcc1 (>= 4.5.1), libphonon4 (>= 4.4.2), libqt4-svg (>= 4.7.0), libqtcore4 (>= 4.7.0), libqtgui4 (>= 4.7.0), libstdc++6 (>= 4.5.1)" )
 

@@ -27,7 +27,7 @@ err.start( itlprint )
 
 messages = [
 	["/ITL/scene/*", "del", [] ],
-	[ titleAddress, "set", ["txt", "Interlude Score Viewer"] ],
+	[ titleAddress, "set", ["txt", "INScore Viewer"] ],
 	[ titleAddress, "scale", [2.5] ],
 	[ titleAddress, "y", [-0.5] ]
 ]
@@ -61,7 +61,7 @@ ITL.timetask (timeMsg, 5, 1, 5.0)
 ITL.timetask (scaleMsg, 2., 0.02, 3)
 
 client.send ( ITL.ITLMessage (itlAddress, "rootPath", [ os.getcwd() ]) )
-client.send ( ITL.ITLMessage (itlAddress, "load", [ "sync.interlude" ]) )
+client.send ( ITL.ITLMessage (itlAddress, "load", [ "sync.inscore" ]) )
 ITL.timetask (clockMsg, 0, 0.02, 20.0)
 
 err.stop()
