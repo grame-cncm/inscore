@@ -187,6 +187,9 @@ set(FRMWK  FRAMEWORK DESTINATION "/Library/Frameworks" CONFIGURATIONS Release)
 set(APPBUNDLE BUNDLE DESTINATION "/Applications/INScore-${INSAPPVERS}"  CONFIGURATIONS Release)
 endif(APPLE)
 
+if (WIN32)
+
+else (WIN32)
 install ( TARGETS ${TARGET}
     	LIBRARY DESTINATION /usr/lib
     	${FRMWK}
@@ -207,7 +210,7 @@ install ( FILES debian/icons/128x128/inscore.png
 install ( FILES ../package/INScore-${INSAPPVERS}.tgz
     	  DESTINATION /usr/share/inscore
 )
-
+endif (WIN32)
 
 #######################################
 # packaging

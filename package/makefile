@@ -63,10 +63,9 @@ win32:
 	[ -d $(package) ] || mkdir -p $(package)
 	cp -f $(bin)/$(viewer).exe $(package)/$(viewer).exe
 	cp -f $(bin)/*.dll $(package)
-	cp -f $(bin)/guido2.ttf $(package)
+	cp -f ../src/guido2.ttf $(package)
 	cp  -f DLLs/*.dll $(package)
-	cp  readme.txt $(package)
-	cp  -r doc $(package)
+	make rsrc
 	cp  -r $(bin)/PlugIns $(package)
 
 linux:
