@@ -23,13 +23,21 @@
 */
 
 #include <QApplication>
+#include <QMenuBar>
+#include <QMessageBox>
+#include <QMenu>
 #include <QDir>
+#include <QString>
+#include <QEvent>
+#include <QFileDialog>
+#include <QFileOpenEvent>
 
 #include <stdlib.h>
 #include <iostream>
 #include <string>
 
 #include "INScore.h"
+#include "INScoreAppl.h"
 
 using namespace inscore;
 using namespace std;
@@ -49,6 +57,86 @@ static int intopt (const string& opt, int defaultValue, int n, char **argv)
 	return defaultValue;
 }
 
+//_______________________________________________________________________
+void INScoreAppl::setupMenu ()
+{
+	QMenuBar * menu = new QMenuBar();
+	QMenu* fileMenu = menu->addMenu(tr("&File"));
+	QMenu* helpMenu = menu->addMenu(tr("&Help"));
+
+
+	QAction * opentAct = new QAction(tr("&Open"), this);
+	opentAct->setShortcut (QKeySequence::Open);
+    fileMenu->addAction(opentAct);
+    connect(opentAct, SIGNAL(triggered()), this, SLOT(open()));
+
+	QAction * aboutAct = new QAction(tr("&About"), this);
+    helpMenu->addAction(aboutAct);
+    connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
+
+	QAction * aboutQtAct = new QAction(tr("&AboutQt"), this);
+    helpMenu->addAction(aboutQtAct);
+    connect(aboutQtAct, SIGNAL(triggered()), this, SLOT(aboutQt()));
+}
+
+
+//_______________________________________________________________________
+void INScoreAppl::about()
+{
+	QString title = "INScore Viewer";
+	QString about = "An Interactive Augmented Score Viewer\nINScore library version ";
+	about += INScore::versionStr();
+	QMessageBox::about (0, title, about);
+}
+
+//_______________________________________________________________________
+void INScoreAppl::aboutQt()
+{
+	QMessageBox::aboutQt (0, "INScore Viewer");
+}
+
+#if WIN32
+#define sep '\\'
+#else
+#define sep '/'
+#endif
+//_______________________________________________________________________
+void INScoreAppl::open(const string& file)
+{
+	size_t pos = file.find_last_of (sep);
+	if (pos != string::npos) {
+		string path = file.substr(0, pos);
+		INScore::MessagePtr msg = INScore::newMessage ("rootPath");
+		INScore::add (msg, path.c_str());
+		INScore::postMessage ("/ITL", msg);
+		
+	}
+	INScore::postMessage ("/ITL/scene", INScore::newMessage ("reset"));
+	INScore::MessagePtr msg = INScore::newMessage ("load");
+	INScore::add (msg, file.c_str());
+	INScore::postMessage ("/ITL", msg);
+}
+
+//_______________________________________________________________________
+void INScoreAppl::open()
+{
+	QString fileName = QFileDialog::getOpenFileName(0, tr("Open INScore file"), "");
+	if (fileName.size())
+		open (fileName.toStdString());
+}
+
+//_______________________________________________________________________
+bool INScoreAppl::event(QEvent *ev)
+{
+    if (ev->type() == QEvent::FileOpen) {
+		QString fileName = static_cast<QFileOpenEvent *>(ev)->file();
+		open (fileName.toStdString());
+		return true;
+    }
+	return QApplication::event(ev);
+}
+
+
 #if defined(WIN32) && !defined(_DEBUG)
 # define USEWINMAIN
 #endif
@@ -67,7 +155,7 @@ int main( int argc, char **argv )
 
 	int ret = 1;
 	int udpPort = intopt ("--port", kUPDPort, argc, argv);
-	QApplication appl(argc, argv);
+	INScoreAppl appl(argc, argv);
 	appl.setApplicationName("INScoreViewer");
 	QDir dir(QApplication::applicationDirPath());
 #ifndef WIN32
@@ -77,6 +165,7 @@ int main( int argc, char **argv )
 	appl.addLibraryPath		( dir.absolutePath());
 
 	IGlue * glue = INScore::start (kTimeInterval, udpPort, kUPDPort+1, kUPDPort+2);
+	appl.setupMenu();
 	ret = appl.exec();
 	INScore::stop (glue);
 	return ret;
