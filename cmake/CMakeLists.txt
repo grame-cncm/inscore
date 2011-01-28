@@ -6,17 +6,18 @@ project(INScore)
 set (CMAKE_CONFIGURATION_TYPES Debug Release)
 
 set (TARGET	INScore)
+set (APPLTARGET	INScoreViewer)
 #######################################
 # versions management
-set (INSFWKVERS 0.63)
-set (INSFWKSTRVERS "v.0.63")
-set (INSFWKSSTRVERS "0.63")
-set (INSTEXTVERS 0.63)
-set (INSTEXTSTRVERS "v.0.63")
-set (INSTEXTSSTRVERS "0.63")
-set (INSAPPVERS 0.63)
-set (INSAPPSTRVERS "v.0.63")
-set (INSAPPSSTRVERS "0.63")
+set (INSFWKVERS 0.64)
+set (INSFWKSTRVERS "v.0.64")
+set (INSFWKSSTRVERS "0.64")
+set (INSTEXTVERS 0.64)
+set (INSTEXTSTRVERS "v.0.64")
+set (INSTEXTSSTRVERS "0.64")
+set (INSAPPVERS 0.64)
+set (INSAPPSTRVERS "v.0.64")
+set (INSAPPSSTRVERS "0.64")
 
 #######################################
 if(WIN32)
@@ -137,6 +138,7 @@ set(INSLIBS  ${INSLIBS} ${OSCPACK} ${GUIDOQT} ${GUIDO} ${QTLIBS} ${CORE_FOUNDATI
 # moc settings
 set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h)
 QT_WRAP_CPP (${TARGET} MOC_FILES ${MOC_HEADERS})
+QT_WRAP_CPP (${APPLTARGET} APPL_MOC_FILES ${ROOT}/INScoreAppl.h)
 
 #######################################
 # set targets
@@ -155,20 +157,21 @@ if(MINGW)
 endif(MINGW)
 
 
-add_executable( ${TARGET}Viewer  MACOSX_BUNDLE ${ROOT}/INScore.cpp ../win32/Viewer/${TARGET}Viewer.rc)
-target_link_libraries( ${TARGET}Viewer ${QTLIBS} ${GUIDO})
-set_target_properties (${TARGET}Viewer PROPERTIES VERSION ${INSAPPVERS}
-							MACOSX_BUNDLE_ICON_FILE ${RSRC}/${TARGET}Viewer.icns
+add_executable( ${APPLTARGET}  MACOSX_BUNDLE ${ROOT}/INScoreAppl.cpp ${APPL_MOC_FILES} ../win32/Viewer/${APPLTARGET}.rc)
+target_link_libraries( ${APPLTARGET} ${QTLIBS} ${GUIDO})
+set_target_properties (${APPLTARGET} PROPERTIES VERSION ${INSAPPVERS}
+							MACOSX_BUNDLE_ICON_FILE ${RSRC}/${APPLTARGET}.icns
+							MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist"
 							MACOSX_BUNDLE_SHORT_VERSION_STRING ${INSAPPSTRVERS}
 							MACOSX_BUNDLE_BUNDLE_VERSION ${INSAPPSSTRVERS})
 if(WIN32)
-set_target_properties (${TARGET}Viewer PROPERTIES
+set_target_properties (${APPLTARGET} PROPERTIES
 	LINK_FLAGS_RELEASE /subsystem:windows
 	LINK_FLAGS_DEBUG /subsystem:console)
 endif(WIN32)
 
 if(WIN32)
-set_target_properties (${TARGET}Viewer PROPERTIES
+set_target_properties (${APPLTARGET} PROPERTIES
 	LINK_FLAGS_RELEASE /subsystem:windows
 	LINK_FLAGS_DEBUG /subsystem:console)
 endif(WIN32)
@@ -177,8 +180,8 @@ if(APPLE)
 	set_target_properties (${TARGET} PROPERTIES FRAMEWORK TRUE FRAMEWORK_VERSION ${INSFWKVERS})
 endif(APPLE)
 
-target_link_libraries( ${TARGET}Viewer ${TARGET})
-add_dependencies(${TARGET}Viewer ${TARGET})
+target_link_libraries( ${APPLTARGET} ${TARGET})
+add_dependencies(${APPLTARGET} ${TARGET})
 
 #######################################
 # install setup
@@ -194,7 +197,7 @@ install ( TARGETS ${TARGET}
     	LIBRARY DESTINATION /usr/lib
     	${FRMWK}
 )
-install ( TARGETS ${TARGET}Viewer
+install ( TARGETS ${APPLTARGET}
 	RUNTIME DESTINATION /usr/bin
     ${APPBUNDLE}
 )
@@ -207,7 +210,7 @@ install ( FILES debian/icons/48x48/inscore.png
 install ( FILES debian/icons/128x128/inscore.png
     	  DESTINATION /usr/share/icons/hicolor/128x128/apps
 )
-install ( FILES ../package/INScore-${INSAPPVERS}.tgz
+install ( FILES ../package/INScore-${INSAPPVERS}0.64tgz
     	  DESTINATION /usr/share/inscore
 )
 endif (WIN32)
