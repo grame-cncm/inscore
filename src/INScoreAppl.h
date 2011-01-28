@@ -27,8 +27,23 @@
 
 #include <string>
 #include <QApplication>
+#include <QGraphicsScene>
 
 class QEvent;
+//_______________________________________________________________________
+class INScoreScene : public QGraphicsScene
+{
+
+	public:
+				 INScoreScene ();
+		virtual ~INScoreScene() {}
+
+	protected:
+		void	dropEvent ( QGraphicsSceneDragDropEvent * event );
+		void	dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
+		void	dragMoveEvent ( QGraphicsSceneDragDropEvent * event );
+};
+
 //_______________________________________________________________________
 class INScoreAppl : public QApplication
 {
@@ -41,13 +56,12 @@ class INScoreAppl : public QApplication
 		void	setupMenu();
 		bool	event(QEvent *ev);
 
+		static void open(const std::string& file);
+
 	public slots:
 		void about();
 		void aboutQt();
 		void open();
-
-	private:
-		void open(const std::string& file);
 };
 
 

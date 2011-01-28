@@ -39,6 +39,8 @@
 #include "smartpointer.h"
 
 
+class QGraphicsScene;
+
 namespace inscore
 {
 
@@ -98,6 +100,7 @@ class export IGlue : public MsgListener, public QObject
 		virtual ~IGlue();
 			
 				bool start(int timerInterval, bool offscreen=false);
+				bool start(int timerInterval, QGraphicsScene* scene);
 				void setViewUpdater(SUpdater updater);
 				void setLocalMapUpdater(SUpdater updater);
 				void setSlaveMapUpdater(SUpdater updater);
@@ -116,6 +119,7 @@ class export IGlue : public MsgListener, public QObject
 
 	protected:
 		virtual void initialize (bool offscreen);
+		virtual void initialize (QGraphicsScene* scene);
 		virtual	void clean ();
 		void modelUpdate();
 		void localMapUpdate();

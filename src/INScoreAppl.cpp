@@ -31,6 +31,8 @@
 #include <QEvent>
 #include <QFileDialog>
 #include <QFileOpenEvent>
+#include <QGraphicsSceneDragDropEvent>
+#include <QUrl>
 
 #include <stdlib.h>
 #include <iostream>
@@ -55,6 +57,35 @@ static int intopt (const string& opt, int defaultValue, int n, char **argv)
 		}
 	}
 	return defaultValue;
+}
+
+//_______________________________________________________________________
+INScoreScene::INScoreScene () : QGraphicsScene () 
+{ 
+//	setAcceptDrops(true); 
+}
+
+//_______________________________________________________________________
+void INScoreScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
+{
+	if (event->mimeData()->hasUrls()) {
+		QString fileName = event->mimeData()->urls().first().toLocalFile();
+		INScoreAppl::open ( fileName.toStdString() );
+		event->accept();
+	}
+}
+
+//_______________________________________________________________________
+void INScoreScene::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
+{
+	if (event->mimeData()->hasUrls())
+         event->acceptProposedAction();
+}
+//_______________________________________________________________________
+void INScoreScene::dragMoveEvent ( QGraphicsSceneDragDropEvent * event )
+{
+	if (event->mimeData()->hasUrls())
+         event->acceptProposedAction();
 }
 
 //_______________________________________________________________________
@@ -164,7 +195,8 @@ int main( int argc, char **argv )
 	dir.cd("PlugIns");
 	appl.addLibraryPath		( dir.absolutePath());
 
-	IGlue * glue = INScore::start (kTimeInterval, udpPort, kUPDPort+1, kUPDPort+2);
+	INScoreScene* scene = new INScoreScene;
+	IGlue * glue = INScore::start (scene, kTimeInterval, udpPort, kUPDPort+1, kUPDPort+2);
 	appl.setupMenu();
 	ret = appl.exec();
 	INScore::stop (glue);

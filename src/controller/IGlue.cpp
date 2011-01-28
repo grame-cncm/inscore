@@ -173,10 +173,74 @@ void IGlue::initialize (bool offscreen)
 }
 
 //--------------------------------------------------------------------------
+void IGlue::initialize (QGraphicsScene* graphscene)
+{
+	Master::initMap();
+	EventsAble::init();
+
+	fMsgStack = IMessageStack::create();
+	gMsgStask = fMsgStack;
+	fController = IController::create();
+//	fController->setListener (this);
+
+	fModel = IAppl::create(fUDP.fInPort, fUDP.fOutPort, fUDP.fErrPort);
+	fModel->createVirtualNodes();
+	fModel->setView (ViewFactory::create(fModel));
+
+	SIScene	scene = IScene::create(fModel);
+	scene->createVirtualNodes();
+//	scene->setView (ViewFactory::create(scene));
+	fSceneView = new VSceneView ( graphscene, false );
+	scene->setView (fSceneView);
+	fModel->add (scene);
+	fScene = scene;
+
+	fTimeTask = scene;
+	if (!OSCStream::start())
+		throw("Cannot initialize output udp streams");
+	oscinit (fModel, fUDP);
+	if (!fMsgStack || !fController || !fModel || !fOscThread)
+		throw("Memory allocation failed!");
+	oscerr << OSCStart("INScore") << "v" << INScore::versionStr() << " listening on port " <<  fUDP.fInPort << OSCEnd();
+	
+	// creates a mapping updater - note that it may send error messages and thus should not be
+	// set before the osc streams are ready
+	setSlaveMapUpdater(new IMappingUpdater);
+
+#ifdef RUNBENCH
+	fModel->resetBench();
+#endif
+}
+
+//--------------------------------------------------------------------------
 bool IGlue::start (int timeInterval, bool offscreen)
 {
 	try {
 		initialize(offscreen);
+		if (timeInterval) fTimerID = startTimer(timeInterval);
+	}
+	catch (std::runtime_error e) {
+		clean();
+		cerr << "Unexpected error: " << e.what() << endl;
+		QMessageBox alert (QMessageBox::Critical, "Fatal error", e.what(), QMessageBox::Ok, 0);
+		alert.exec();
+		return false;
+	}
+	catch (const char* e) {
+		clean();
+		cerr << "Unexpected error: " << e << endl;
+		QMessageBox alert (QMessageBox::Critical, "Fatal error", e, QMessageBox::Ok, 0);
+		alert.exec();
+		return false;
+	}
+	return true;
+}
+
+//--------------------------------------------------------------------------
+bool IGlue::start (int timeInterval, QGraphicsScene* scene)
+{
+	try {
+		initialize(scene);
 		if (timeInterval) fTimerID = startTimer(timeInterval);
 	}
 	catch (std::runtime_error e) {

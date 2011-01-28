@@ -27,6 +27,7 @@
 
 #include "export.h"
 
+class QGraphicsScene;
 
 namespace inscore 
 {
@@ -65,6 +66,8 @@ class export INScore
 			   
 	*/
 	static IGlue* start (int timeInterval=10, int udpport=7000, int outport=7001, int errport=7002, bool offscreen=false);
+
+	static IGlue* start (QGraphicsScene* scene, int timeInterval=10, int udpport=7000, int outport=7001, int errport=7002);
 
 	/*! \brief Qt environment initiaization + INScore glue setup
 

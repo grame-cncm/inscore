@@ -71,6 +71,20 @@ static IMessage* Message2IMessage (INScore::MessagePtr p)
 //--------------------------------------------------------------------------
 // Qt environment initiaization + INScore glue setup
 //--------------------------------------------------------------------------
+IGlue* INScore::start(QGraphicsScene* scene, int timeInterval, int udpport, int outport, int errport)
+{
+	IGlue* glue = new IGlue (udpport, outport, errport);
+	VQtInit::startQt();
+	if (glue && glue->start (timeInterval, scene)) {
+		glue->setLocalMapUpdater(VQtLocalMappingUpdater::create() );
+		glue->setViewUpdater	(VQtUpdater::create() );
+		return glue;
+	}
+	std::cerr << "INScore initialization failed" << std::endl;
+	delete glue;
+	return 0;
+}
+
 IGlue* INScore::start(int timeInterval, int udpport, int outport, int errport, bool offscreen)
 {
 	IGlue* glue = new IGlue (udpport, outport, errport);
