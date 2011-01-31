@@ -30,6 +30,7 @@
 #include "IMessageStack.h"
 #include "IMessageStream.h"
 #include "OSCStream.h"
+#include "deelx.h"
 
 using namespace std;
 
@@ -40,19 +41,32 @@ extern SIMessageStack gMsgStask;
 
 const char* kXVar		= "$x";
 const char* kYVar		= "$y";
+const char* kSceneXVar	= "$sx";
+const char* kSceneYVar	= "$sy";
 const char* kAbsXVar	= "$absx";
 const char* kAbsYVar	= "$absy";
 const char* kDateVar	= "$date";
+const char* kSelfVar	= "$self";
 
 
 //----------------------------------------------------------------------
-EventMessage::EventMessage (const IMessage* msg, int startindex) : fMessage(0), fPort(kDefaultUPDPort)
+EventMessage::EventMessage (const string& objname, const IMessage* msg, int startindex) : fMessage(0), fPort(kDefaultUPDPort)
 {
-	decodeMessage (msg, startindex);
+	decodeMessage (objname, msg, startindex);
 }
 
 //----------------------------------------------------------------------
 EventMessage::~EventMessage () { delete fMessage; }
+
+//----------------------------------------------------------------------
+string EventMessage::checkVariableAddress (const string& address, const string& objname) const
+{
+	CRegexpT<char> regexp("\\$self", EXTENDED);
+	char* tmp = regexp.Replace (address.c_str(), objname.c_str());
+	string outAddress = tmp;
+	regexp.ReleaseString (tmp);
+	return outAddress;
+}
 
 //----------------------------------------------------------------------
 bool EventMessage::decodeAddress (const std::string& address, std::string& oscAddress, std::string& host, int& port) const
@@ -78,22 +92,19 @@ bool EventMessage::decodeAddress (const std::string& address, std::string& oscAd
 }
 
 //----------------------------------------------------------------------
-void EventMessage::decodeMessage (const IMessage* msg, int startindex)
+void EventMessage::decodeMessage (const string& objname, const IMessage* msg, int startindex)
 {
 	if ((msg->size() - startindex) < 2) return;
 	string address;
-//	if (msg->param (startindex, address) && msg->param (startindex+1, msgStr)) {
 	if (msg->param (startindex++, address)) {
 		string oscAddress;
 		if (decodeAddress (address, oscAddress, fDest, fPort)) {
-			fMessage = new IMessage (oscAddress);
+			fMessage = new IMessage (checkVariableAddress(oscAddress, objname));
 			string msgStr;
 			if ( msg->param (startindex, msgStr) ) {
 				fMessage->setMessage (msgStr);
 				startindex++;
 			}
-			
-//			fMessage = new IMessage (oscAddress, msgStr);
 			for (int i = startindex; i < msg->size(); i++) {
 				fMessage->params().push_back( msg->params()[i]);
 			}
@@ -156,15 +167,25 @@ bool EventMessage::hasDateVar (std::string& mapname) const
 }
 
 //----------------------------------------------------------------------
-void EventMessage::checkvariable (IMessage& msg, const string& param, 
-			float x, float y, float relx, float rely, const rational& date, bool setmsg) const
+float EventMessage::checkrange (const string& param, float val) const
+{
+	float low, high;
+	int n = sscanf (param.c_str(), "[%f,%f]", &low, &high);
+	if (n == 2) return val * (high - low) - low;
+	return val;
+}
+
+//----------------------------------------------------------------------
+void EventMessage::checkvariable (IMessage& msg, const string& param, const MouseLocation& ml, const rational& date, bool setmsg) const
 {
 	string mapname;
 	if (param[0] == '$') {
-		if (param == kXVar)			msg << relx;
-		else if (param == kYVar)	msg << rely;
-		else if (param == kAbsXVar)	msg << x;
-		else if (param == kAbsYVar)	msg << y;
+		if (param[1] == 'x')			msg << checkrange(param.substr(2), ml.fx);
+		else if (param[1] == 'y')		msg << checkrange(param.substr(2), ml.fy);
+		else if (param == kAbsXVar)		msg << ml.fabsx;
+		else if (param == kAbsYVar)		msg << ml.fabsy;
+		else if (param == kSceneXVar) 	msg << ml.fsx;
+		else if (param == kSceneYVar)	msg << ml.fsy;
 		else if (isDateVar (param, mapname))	msg << date;
 		else if (setmsg) msg.setMessage (param);
 		else msg << param;
@@ -174,16 +195,16 @@ void EventMessage::checkvariable (IMessage& msg, const string& param,
 }
 
 //----------------------------------------------------------------------
-void EventMessage::send(float x, float y, float relx, float rely, const rational& date) const
+void EventMessage::send(const MouseLocation& ml, const rational& date) const
 {
 	if (fMessage) {
 		int n = fMessage->size();
 		IMessage msg (fMessage->address());
-		checkvariable (msg, fMessage->message(), x, y, relx, rely, date, true);
+		checkvariable (msg, fMessage->message(), ml, date, true);
 		for (int i=0; i<n; i++) {
 			string str;
 			if (fMessage->param(i, str)) {
-				checkvariable (msg, str, x, y, relx, rely, date);				
+				checkvariable (msg, str, ml, date);				
 			}
 			else msg.add(fMessage->params()[i]);
 		}

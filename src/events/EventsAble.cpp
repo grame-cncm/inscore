@@ -132,6 +132,21 @@ const vector<SEventMessage>& EventsAble::getFileMsgs (const std::string& file) c
 }
 
 //----------------------------------------------------------------------
+IMessageList EventsAble::getWatch (const char* address) const
+{
+	IMessageList list;
+	for (_TMsgMap::const_iterator i = fMsgMap.begin(); i != fMsgMap.end(); i++) {
+	}
+	for (_TimeMsgMap::const_iterator i = fTimeEnterMsgMap.begin(); i != fTimeEnterMsgMap.end(); i++) {
+	}
+	for (_TimeMsgMap::const_iterator i = fTimeLeaveMsgMap.begin(); i != fTimeLeaveMsgMap.end(); i++) {
+	}
+	for (_FileMsgMap::const_iterator i = fFileMessageMap.begin(); i != fFileMessageMap.end(); i++) {
+	}
+	return list;
+}
+
+//----------------------------------------------------------------------
 void EventsAble::init ()
 {
 	if (!fTypeStr.size()) {

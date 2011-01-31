@@ -32,6 +32,7 @@
 #include <vector>
 
 #include "EventMessage.h"
+#include "IMessage.h"
 #include "maptypes.h"
 
 namespace inscore
@@ -57,6 +58,8 @@ class EventsAble
 
 		void					setFileMsg (const std::string& file, SEventMessage msg);
 		void					addFileMsg (const std::string& file, SEventMessage msg);
+
+		IMessageList			getWatch (const char* address) const;
 
 		const std::vector<SEventMessage>&	getMouseMsgs (eventype t) const;
 		const std::vector<SEventMessage>&	getTimeMsgs (eventype t, const RationalInterval& time) const;

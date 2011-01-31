@@ -84,31 +84,27 @@ static void originshift (const IObject * obj, float& relx, float& rely)
 //----------------------------------------------------------------------
 void _MouseEventAble::handleEvent (const IObject * obj, QPointF pos,  EventsAble::eventype type)
 {
-//qDebug() << "handle event" << pos;
-
 	VGraphicsItemView*	view = obj->graphicView();
 	float x = pos.x();
 	float y = pos.y();
 	float w = view->relative2SceneWidth (obj->getWidth());
 	float h = view->relative2SceneHeight(obj->getHeight());
 
+	float xpos = obj->getXPos();
+	float ypos = obj->getYPos();
+
 	float clippedx = (x < 0) ? 0 : (x > w) ? w : x;
 	float clippedy = (y < 0) ? 0 : (y > h) ? h : y;
 
-//	if (x < 0) x = 0;
-//	else if (x > w) x = w;
-//	if (y < 0) y = 0;
-//	else if (y > h) y = h;
-//qDebug() << "handle event pos" << x << y ;
-
 	float relx = view->scene2RelativeX(clippedx) / obj->getWidth();
 	float rely = view->scene2RelativeY(clippedy) / obj->getHeight();
-	float orelx = relx;
-	float orely = rely;
-//qDebug() << "handle event rel" << relx << rely ;
 
-//	rational date = point2date (obj, relx, rely, "", 0);
-	originshift (obj, orelx, orely);
+	float sx = xpos + (obj->getWidth() * (relx *2 - 1));
+	float sy = ypos + (obj->getHeight() * (rely *2 - 1));
+
+	MouseLocation mouse (relx, rely, x, y, sx, sy);
+
+	originshift (obj, mouse.fx, mouse.fy);
 
 //qDebug() << "handle event date" << date.getNumerator() << date.getDenominator() ;
 	
@@ -118,7 +114,7 @@ void _MouseEventAble::handleEvent (const IObject * obj, QPointF pos,  EventsAble
 		rational date (-1,1);
 		if (msgs[i]->hasDateVar (mapname))
 			date = point2date (obj, relx, rely, mapname, 0);
-		msgs[i]->send(x, y, orelx, orely, date);
+		msgs[i]->send(mouse, date);
 	}
 }
 
