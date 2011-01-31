@@ -1162,25 +1162,42 @@
 \rail@nont{port}[]
 \rail@end
 }
-\rail@i {65}{ variable : 'x' | 'y' | 'absx' | 'absy' | date }
+\rail@i {65}{ variable : xy | 'absx' | 'absy' | 'sx' | 'sy' | date }
 \rail@o {65}{
 \rail@index{variable}
-\rail@begin{5}{variable}
+\rail@begin{6}{variable}
 \rail@bar
-\rail@term{x}[]
+\rail@nont{xy}[]
 \rail@nextbar{1}
-\rail@term{y}[]
-\rail@nextbar{2}
 \rail@term{absx}[]
-\rail@nextbar{3}
+\rail@nextbar{2}
 \rail@term{absy}[]
+\rail@nextbar{3}
+\rail@term{sx}[]
 \rail@nextbar{4}
+\rail@term{sy}[]
+\rail@nextbar{5}
 \rail@nont{date}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {66}{ date : 'date' (| ':' mapname) }
+\rail@i {66}{ xy : ('x' | 'y') ( | '[low,high]') }
 \rail@o {66}{
+\rail@index{xy}
+\rail@begin{2}{xy}
+\rail@bar
+\rail@term{x}[]
+\rail@nextbar{1}
+\rail@term{y}[]
+\rail@endbar
+\rail@bar
+\rail@nextbar{1}
+\rail@term{[low,high]}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {67}{ date : 'date' (| ':' mapname) }
+\rail@o {67}{
 \rail@index{date}
 \rail@begin{2}{date}
 \rail@term{date}[]
