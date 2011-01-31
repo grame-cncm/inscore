@@ -9,7 +9,12 @@ Copyright GRAME (c) 2009,2010,2011
 
 ----------------------------------------------------
 Version 0.64
-- INScore viewer has a file menu to open inscore files
+- file menu in INScore viewer
+- drag and drop support in INScore viewer
+- interaction variables extension:
+  $sx, $sy variables added to support scene coordinate space
+  automatic range mapping for $x, $y variables
+  new $self variable in the address field
 
 ----------------------------------------------------
 Version 0.63
