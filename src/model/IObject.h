@@ -377,6 +377,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		/// \brief the \c 'effect' message handler
 		virtual MsgHandler::msgStatus effectMsg(const IMessage* msg);
 		virtual GraphicEffect getEffect () const;
+		virtual IMessageList  getWatch () const;
 
 		/// \brief the \c 'export' message handler
 		virtual MsgHandler::msgStatus exportMsg(const IMessage* msg);

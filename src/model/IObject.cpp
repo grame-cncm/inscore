@@ -97,6 +97,7 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fMsgHandlerMap["watch+"]	= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsgAdd);
 
 	fGetMsgHandlerMap["effect"]	= TGetParamMethodHandler<IObject, GraphicEffect (IObject::*)() const>::create(this, &IObject::getEffect);
+	fGetMsgHandlerMap["watch"]	= TGetParamMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
 	
 	colorAble();
 	positionAble();
@@ -657,6 +658,12 @@ GraphicEffect IObject::getEffect ()	const
 }
 
 //--------------------------------------------------------------------------
+IMessageList IObject::getWatch() const
+{
+	return EventsAble::getWatch (getOSCAddress().c_str());
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
 { 
 	if (msg->params().size() == 1) {
@@ -700,8 +707,8 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 			case EventsAble::kMouseEnter:
 			case EventsAble::kMouseLeave:
 				if (msg->params().size() > 1)
-					if (add) eventsHandler()->addMsg (t, EventMessage::create (msg, 1));
-					else eventsHandler()->setMsg (t, EventMessage::create (msg, 1));
+					if (add) eventsHandler()->addMsg (t, EventMessage::create (name(), msg, 1));
+					else eventsHandler()->setMsg (t, EventMessage::create (name(), msg, 1));
 				else if (!add) eventsHandler()->setMsg (t, 0);
 				break;
 			case EventsAble::kFile:
@@ -714,8 +721,8 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 						return MsgHandler::kBadParameters;
 					RationalInterval time(start,end);
 					if (msg->params().size() > 5) {
-						if (!add) eventsHandler()->setTimeMsg (t, time, EventMessage::create (msg, 5));
-						else eventsHandler()->addTimeMsg (t, time, EventMessage::create (msg, 5));
+						if (!add) eventsHandler()->setTimeMsg (t, time, EventMessage::create (name(), msg, 5));
+						else eventsHandler()->addTimeMsg (t, time, EventMessage::create (name(), msg, 5));
 						watchTime(time);
 					}
 					else if (!add) {
