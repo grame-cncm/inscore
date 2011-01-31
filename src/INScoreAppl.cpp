@@ -140,9 +140,7 @@ void INScoreAppl::open(const string& file)
 		INScore::MessagePtr msg = INScore::newMessage ("rootPath");
 		INScore::add (msg, path.c_str());
 		INScore::postMessage ("/ITL", msg);
-		
 	}
-	INScore::postMessage ("/ITL/scene", INScore::newMessage ("reset"));
 	INScore::MessagePtr msg = INScore::newMessage ("load");
 	INScore::add (msg, file.c_str());
 	INScore::postMessage ("/ITL", msg);
