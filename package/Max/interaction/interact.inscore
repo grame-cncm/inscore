@@ -73,9 +73,9 @@
 /ITL/scene/rect3 watch+ "mouseMove" "/ITL/scene/back"   "height" "$y"
 /ITL/scene/rect3 watch  "mouseUp"   "/ITL/scene/level3" "height" "$y"
 
-/ITL/scene/rect1 watch+ "mouseDown" "localhost:7100/vol" "$y"
-/ITL/scene/rect1 watch+ "mouseMove" "localhost:7100/vol" "$y"
-/ITL/scene/rect1 watch+ "mouseUp"   "localhost:7100/vol" "$y"
+/ITL/scene/rect1 watch+ "mouseDown" "localhost:7100/vol" "$y[0,158]"
+/ITL/scene/rect1 watch+ "mouseMove" "localhost:7100/vol" "$y[0,158]"
+/ITL/scene/rect1 watch+ "mouseUp"   "localhost:7100/vol" "$y[0,158]"
 
 /ITL/scene/startbutton set img "rsrc/start.png"
 /ITL/scene/startbutton z 1.
@@ -107,7 +107,6 @@
 /ITL/scene/boulet watch "mouseDown"  	"/ITL/scene" "fullscreen" 0
 /ITL/scene/boulet watch+ "mouseDown"  	"/ITL/scene/boulet" "z" 0.5
 
-
 /ITL/scene/reload set "txt" "Reload"
 /ITL/scene/reload xorigin -1.
 /ITL/scene/reload yorigin 1.
@@ -118,4 +117,16 @@
 /ITL/scene/reload watch "mouseDown"  	"/ITL" "load" "interact.inscore"
 /ITL/scene/reload watch "mouseEnter" 	"/ITL/scene/reload" "red" 255
 /ITL/scene/reload watch "mouseLeave" 	"/ITL/scene/reload" "red" 0
+
+/ITL/scene/move set "txt" "Move me !"
+/ITL/scene/move y -0.58
+/ITL/scene/move z 1.1
+/ITL/scene/move scale 3.
+/ITL/scene/move color 110 110 110
+/ITL/scene/move watch "mouseDown"  		"/ITL/scene/move" "x" "$sx"
+/ITL/scene/move watch+ "mouseDown"  	"/ITL/scene/move" "y" "$sy"
+/ITL/scene/move watch "mouseMove"  		"/ITL/scene/move" "x" "$sx"
+/ITL/scene/move watch+ "mouseMove"  	"/ITL/scene/move" "y" "$sy"
+/ITL/scene/move watch "mouseEnter" 		"/ITL/scene/move" "dred" 100
+/ITL/scene/move watch "mouseLeave" 		"/ITL/scene/move" "dred" -100
 
