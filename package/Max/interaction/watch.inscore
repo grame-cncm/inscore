@@ -37,12 +37,14 @@
 /ITL/scene/reload watch "mouseEnter" 	"/ITL/scene/reload" "red" 255
 /ITL/scene/reload watch "mouseLeave" 	"/ITL/scene/reload" "red" 0
 
-/ITL/scene/move watch "mouseDown"  		"/ITL/scene/move" "x" "$sx"
+/ITL/scene/move watch  "mouseDown"  	"/ITL/scene/move" "x" "$sx"
 /ITL/scene/move watch+ "mouseDown"  	"/ITL/scene/move" "y" "$sy"
-/ITL/scene/move watch "mouseMove"  		"/ITL/scene/move" "x" "$sx"
+/ITL/scene/move watch  "mouseUp"  		"/ITL/scene/move" "x" "$sx"
+/ITL/scene/move watch+ "mouseUp"  		"/ITL/scene/move" "y" "$sy"
+/ITL/scene/move watch  "mouseMove"  	"/ITL/scene/move" "x" "$sx"
 /ITL/scene/move watch+ "mouseMove"  	"/ITL/scene/move" "y" "$sy"
-/ITL/scene/move watch "mouseEnter" 		"/ITL/scene/move" "dred" 100
-/ITL/scene/move watch "mouseLeave" 		"/ITL/scene/move" "dred" -100
+/ITL/scene/move watch  "mouseEnter" 	"/ITL/scene/move" "dred" 100
+/ITL/scene/move watch  "mouseLeave" 	"/ITL/scene/move" "dred" -100
 
 /ITL/scene/comment set "txt" "Drop the 'edit.inscore' file on the scene to edit."
 /ITL/scene/comment y 0.9
