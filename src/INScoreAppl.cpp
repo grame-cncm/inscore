@@ -33,6 +33,7 @@
 #include <QFileOpenEvent>
 #include <QGraphicsSceneDragDropEvent>
 #include <QUrl>
+#include <QDebug>
 
 #include <stdlib.h>
 #include <iostream>
@@ -70,7 +71,8 @@ void INScoreScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 {
 	if (event->mimeData()->hasUrls()) {
 		QString fileName = event->mimeData()->urls().first().toLocalFile();
-		INScoreAppl::open ( fileName.toStdString() );
+		string strfile = fileName.toLocal8Bit().data();
+		INScoreAppl::open ( strfile );
 		event->accept();
 	}
 }
@@ -127,7 +129,7 @@ void INScoreAppl::aboutQt()
 }
 
 #if WIN32
-#define sep '\\'
+#define sep '/'
 #else
 #define sep '/'
 #endif
