@@ -99,11 +99,10 @@ void _MouseEventAble::handleEvent (const IObject * obj, QPointF pos,  EventsAble
 	float relx = view->scene2RelativeX(clippedx) / obj->getWidth();
 	float rely = view->scene2RelativeY(clippedy) / obj->getHeight();
 
-	float sx = xpos + (obj->getWidth() * (relx *2 - 1));
-	float sy = ypos + (obj->getHeight() * (rely *2 - 1));
+	float sx = xpos + (obj->getWidth()  * obj->getScale()/2 * (relx * 2 - 1));
+	float sy = ypos + (obj->getHeight() * obj->getScale()/2 * (rely * 2 - 1));
 
 	MouseLocation mouse (relx, rely, x, y, sx, sy);
-
 	originshift (obj, mouse.fx, mouse.fy);
 
 //qDebug() << "handle event date" << date.getNumerator() << date.getDenominator() ;
