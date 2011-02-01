@@ -65,8 +65,8 @@ class EventsAble
 		const std::vector<SEventMessage>&	getTimeMsgs (eventype t, const RationalInterval& time) const;
 		const std::vector<SEventMessage>&	getFileMsgs (const std::string& file) const;
 
-	static eventype	string2type (const std::string& str);
-	static void	init ();
+		static void	init ();
+		static eventype	string2type (const std::string& str);
 
 	private:
 	typedef std::map<eventype, std::vector<SEventMessage> >			_TMsgMap;
@@ -76,7 +76,16 @@ class EventsAble
 	_TimeMsgMap	fTimeEnterMsgMap;
 	_TimeMsgMap	fTimeLeaveMsgMap;
 	_FileMsgMap fFileMessageMap;
+	
+	void		getMsgs (const char * address, const std::string& type, const std::vector<SEventMessage>&, IMessageList&) const;
+	void		getMsgs (const char * address, const std::string& type, const RationalInterval&, const std::vector<SEventMessage>&, IMessageList&) const;
+	void		getMsgs (const char * address, const std::string& type, const std::string&, const std::vector<SEventMessage>&, IMessageList&) const;
+	IMessage*	getMsg (const char * address, const std::string& type, const char* msg, const SEventMessage&) const;
+	IMessage*	getMsg (const char * address, const std::string& type, const char* msg, const RationalInterval&, const SEventMessage&) const;
+	IMessage*	getMsg (const char * address, const std::string& type, const char* msg, const std::string&, const SEventMessage&) const;
+	IMessage*	putMsg (IMessage * msg, const SEventMessage&) const;
 
+	static const char* type2string (eventype type);
 	static std::map<std::string, eventype>	fTypeStr;
 };
 
