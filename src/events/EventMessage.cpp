@@ -24,6 +24,7 @@
 */
 
 #include <stdlib.h>
+#include <sstream>
 
 #include "EventMessage.h"
 #include "IMessage.h"
@@ -66,6 +67,17 @@ string EventMessage::checkVariableAddress (const string& address, const string& 
 	string outAddress = tmp;
 	regexp.ReleaseString (tmp);
 	return outAddress;
+}
+
+//----------------------------------------------------------------------
+string EventMessage::address () const
+{
+	if (fDest.empty())	return fMessage->address();
+	else {
+		stringstream address;
+		address << fDest << ':' << fPort << fMessage->address();
+		return address.str();
+	}
 }
 
 //----------------------------------------------------------------------
