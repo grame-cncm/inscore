@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.3 Differences to version 0.53</TITLE>
-<META NAME="description" CONTENT="15.3 Differences to version 0.53">
+<TITLE>15.2 Differences to version 0.55</TITLE>
+<META NAME="description" CONTENT="15.2 Differences to version 0.55">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,68 +21,68 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node49.html">
 <LINK REL="previous" HREF="node47.html">
-<LINK REL="up" HREF="node45.html">
+<LINK REL="up" HREF="node46.html">
 <LINK REL="next" HREF="node49.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html804"
+<A NAME="tex2html807"
   HREF="node49.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html798"
-  HREF="node45.html">
+<A NAME="tex2html801"
+  HREF="node46.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html792"
+<A NAME="tex2html795"
   HREF="node47.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html800"
+<A NAME="tex2html803"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html802"
-  HREF="node51.html">
+<A NAME="tex2html805"
+  HREF="node52.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html805"
-  HREF="node49.html">15.4 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html799"
-  HREF="node45.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html793"
-  HREF="node47.html">15.2 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html801"
+<B> Next:</B> <A NAME="tex2html808"
+  HREF="node49.html">15.3 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html802"
+  HREF="node46.html">15. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html796"
+  HREF="node47.html">15.1 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html804"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html803"
-  HREF="node51.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html806"
+  HREF="node52.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001630000000000000000">
-15.3 Differences to version 0.53</A>
+<H1><A NAME="SECTION001620000000000000000">
+15.2 Differences to version 0.55</A>
 </H1>
 
 <UL>
-<LI>ITL parser corrected to support regexp in message string (used by messages addressed to sync node)
+<LI>new 'xorigin' and 'yorigin' messages (section <A HREF="node10.html#origin">4.1.3</A> p.<A HREF="node10.html#origin"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>format of mapping files and strings changed (section <A HREF="node24.html#mapMsg">9</A> p.<A HREF="node24.html#mapMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>new interaction messages set (section <A HREF="node42.html#interaction">14</A> p.<A HREF="node42.html#interaction"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>format of sync messages extended to include map name (section <A HREF="node25.html#syncmsg">10</A> p.<A HREF="node25.html#syncmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>alpha channel handled by images and video
 </LI>
-<LI>signal node: 'garbage' message removed
+<LI>bug correction in line creation corrected (false incorrect parameter returned)
 </LI>
-<LI>new 'reset' message for the scene (/ITL/scene) (section <A HREF="node5.html#scene">3</A> p.<A HREF="node5.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>bug correction in line 'get' message handling
 </LI>
-<LI>new 'version' message for the application (/ITL) (section <A HREF="node4.html#ITL">2</A> p.<A HREF="node4.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>memory leak correction (messages not deleted)
 </LI>
-<LI>new 'reset' message for signals (section <A HREF="node36.html#ssignal">13.1.1</A> p.<A HREF="node36.html#ssignal"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</UL>
+
+<P>
+Known issues: 
+
+<UL>
+<LI>incorrect graphic rendering when 'sync a b' is changed to 'sync b a' in the same update loop
 </LI>
-<LI>bug parsing messages without params corrected
-</LI>
-<LI>slave segmentation used for synchronization
-</LI>
-<LI>new H synchronization mode (preserves slave segmentation)
-</LI>
-<LI>crash bug corrected for load message and missing ITL files
+<LI>incorrect nested synchronization when master is horizontaly stretched,
 </LI>
 </UL>
 

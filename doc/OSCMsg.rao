@@ -94,16 +94,20 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {6}{ sceneMsg : 'reset' | ('fullscreen' int32) | commonMsg }
+\rail@i {6}{ sceneMsg : 'new' | 'del' | 'reset' | ('fullscreen' int32) | commonMsg }
 \rail@o {6}{
 \rail@index{sceneMsg}
-\rail@begin{3}{sceneMsg}
+\rail@begin{5}{sceneMsg}
 \rail@bar
-\rail@term{reset}[]
+\rail@term{new}[]
 \rail@nextbar{1}
+\rail@term{del}[]
+\rail@nextbar{2}
+\rail@term{reset}[]
+\rail@nextbar{3}
 \rail@term{fullscreen}[]
 \rail@token{int32}[]
-\rail@nextbar{2}
+\rail@nextbar{4}
 \rail@nont{commonMsg}[]
 \rail@endbar
 \rail@end

@@ -59,7 +59,7 @@
 
 \begin{document}
 
-\title{INScore \\ OSC Messages Reference \\v.0.64}
+\title{INScore \\ OSC Messages Reference \\v.0.70}
 
 \author{Grame, Centre national de cr\'eation musicale\\
 {\small <research@grame.fr>} \\
@@ -155,16 +155,23 @@ The default \OSC{defaultShow} value is 1.
 %: Scene messages
 \toplevel{Scene messages}
 \label{scene}
-A scene may be viewed as a window on the score elements. Its address is \OSC{/ITL/scene}. It handles the following messages:
+A scene may be viewed as a window on the score elements. Its address is \OSC{/ITL/\textit{sceneIdentifier}} where \OSC{\textit{sceneIdentifier}} is the scene name. It handles the following messages:
 \begin{rail}
-sceneMsg : 'reset'
+sceneMsg :  'new'
+			| 'del'
+			| 'reset'
 			| ('fullscreen' int32)
 			| commonMsg
 \end{rail}
-\index{Scene messages!fullscreen}
 \index{Scene messages}
+\index{Scene messages! create}
+\index{Scene messages! close}
+\index{Scene messages! reset}
+\index{Scene messages!fullscreen}
 
 \begin{itemize}
+\item \OSC{new}: creates a new scene and opens it in a new window.
+\item \OSC{del}: deletes a scene and closes the corresponding window.
 \item \OSC{reset}: clears the scene (i.e. delete all components) and resets the scene to its default state (position, size and color).
 \item \OSC{fullscreen}: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is \values{0}.
 \item \OSC{commonMsg}: see section \fullref{common}.
