@@ -27,8 +27,6 @@
 
 #include "export.h"
 
-class QGraphicsScene;
-
 namespace inscore 
 {
 
@@ -54,6 +52,18 @@ class export INScore
 
 	/*! \brief Qt environment initiaization + INScore glue setup
 
+		\param scene a QGraphicScene, should be set null for offscreen rendering
+		\param timeInterval the time task tme interval (in mls). 0 means no time task
+		\param udpport the udp port number to listen for incoming OSC messages
+		\param outport the udp port number for outgoing OSC messages
+		\param errport the udp port number for error messages
+		\see GraphicUpdateListener
+			   
+	*/
+//	static IGlue* start (QGraphicsScene* scene, int timeInterval=10, int udpport=7000, int outport=7001, int errport=7002);
+
+	/*! \brief Qt environment initiaization + INScore glue setup
+
 		\param timeInterval the time task tme interval (in mls). 0 means no time task
 		\param udpport the udp port number to listen for incoming OSC messages
 		\param outport the udp port number for outgoing OSC messages
@@ -66,8 +76,6 @@ class export INScore
 			   
 	*/
 	static IGlue* start (int timeInterval=10, int udpport=7000, int outport=7001, int errport=7002, bool offscreen=false);
-
-	static IGlue* start (QGraphicsScene* scene, int timeInterval=10, int udpport=7000, int outport=7001, int errport=7002);
 
 	/*! \brief Qt environment initiaization + INScore glue setup
 
