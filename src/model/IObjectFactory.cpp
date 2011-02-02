@@ -24,15 +24,18 @@
 */
 
 #include <iostream>
+#include <string>
+
 #include "IObjectFactory.h"
 #include "IModel.h"
 #include "ViewFactory.h"
+#include "INScoreScene.h"
 #include "VSceneView.h"
 
+using namespace std;
 
 namespace inscore
 {
-
 
 //--------------------------------------------------------------------------
 template<typename T> SIObject _create(const std::string& name , IObject* parent) 
@@ -52,6 +55,20 @@ template<> SIObject _create<IWatcher>(const std::string& name , IObject* parent)
 template<> SIObject _create<ISignal>(const std::string& name , IObject* parent) 
 {
 	return ISignal::create(name, parent);
+}
+
+template<> SIObject _create<IScene>(const std::string& name , IObject* parent) 
+{
+	SMARTP<IScene> obj = IScene::create(name, parent);
+	if (obj) {
+		string oscaddress = parent->getOSCAddress();
+		oscaddress += "/";
+		oscaddress += name;
+		QGraphicsScene * gscene = 0;
+		if (!parent->offscreen()) gscene = new INScoreScene;
+		obj->setView (new VSceneView (oscaddress, gscene));	
+	}
+	return obj->getView() ? obj : 0;
 }
 
 
@@ -113,6 +130,9 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 
 	else if ( type == ISVG::kSVGType )
 		obj = _create<ISVG> (name, parent);
+
+	else if ( type == IScene::kSceneType )
+		obj = _create<IScene> (name, parent);
 		
 	if (obj) {
 		obj->createVirtualNodes();

@@ -45,14 +45,16 @@ namespace inscore
 const string IScene::kSceneType("scene");
 
 //--------------------------------------------------------------------------
-IScene::~IScene() {}
-IScene::IScene(IObject * parent) : IRectShape("scene", parent), fFullScreen(false), fView(0)
+IScene::~IScene() { delete fView; }
+IScene::IScene(const std::string& name, IObject * parent) : IRectShape(name, parent), fFullScreen(false), fView(0)
 {
 	fTypeString = kSceneType;
 	setColor( IColor(255,255,255,255) );
 	setWidth(1.0f);
 	setHeight(1.0f);
 	
+	fMsgHandlerMap["new"]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::newScene);
+	fMsgHandlerMap["del"]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::del);
 	fMsgHandlerMap["reset"]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::reset);
 	fMsgHandlerMap["fullscreen"]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFullScreen);
 
@@ -62,6 +64,10 @@ IScene::IScene(IObject * parent) : IRectShape("scene", parent), fFullScreen(fals
 
 //--------------------------------------------------------------------------
 QGraphicsScene * IScene::getScene () const			{ return getView()->scene(); }
+
+//--------------------------------------------------------------------------
+void IScene::newScene ()	{}
+void IScene::del ()			{ IObject::del(); }
 
 //--------------------------------------------------------------------------
 void IScene::reset ()

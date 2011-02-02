@@ -65,7 +65,7 @@ VTextView*		ViewFactory::create (const ITextFile* object, QGraphicsScene* scene)
 VVideoView*		ViewFactory::create (const IVideo* object, QGraphicsScene* scene)			{ return new VVideoView (scene, object); }
 
 //--------------------------------------------------------------------------
-VSceneView* ViewFactory::create(const IScene* obj)		{ return new VSceneView ( new QGraphicsScene ); }
+VSceneView* ViewFactory::create(const IScene* obj)		{ return new VSceneView (obj->getOSCAddress(), new QGraphicsScene ); }
 VApplView*	ViewFactory::create(const IAppl* obj)		{ return new VApplView (); }
 
 }

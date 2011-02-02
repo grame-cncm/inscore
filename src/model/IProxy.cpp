@@ -25,9 +25,11 @@
 
 #include <iostream>
 
-#include "IProxy.h"
+#include "IAppl.h"
+#include "IScene.h"
 #include "IMessage.h"
 #include "IObjectFactory.h"
+#include "IProxy.h"
 #include "ISignalNode.h"
 #include "ISignal.h"
 #include "Tools.h"
@@ -47,8 +49,6 @@ int IProxy::signal (const IMessage* msg, const std::string& objName, SIObject pa
 		int status = obj->execute(msg);
 		if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) parent->add(obj);
 		return MsgHandler::kProcessed;
-//		done = obj->execute(msg);
-//		if (done) parent->add(obj);
 	}
 	return MsgHandler::kCreateFailure;
 }
@@ -59,11 +59,20 @@ int IProxy::execute (const IMessage* msg, const std::string& objName, SIObject p
 	if (parent && (parent->name() == ISignalNode::kName))
 		return signal (msg, objName, parent);
 
-	if (msg->message() != "set") return MsgHandler::kBadAddress;
-	if (msg->params().size() == 0) return MsgHandler::kBadParameters;
 	if (Tools::regexp(objName)) return MsgHandler::kBadAddress;
-	
-	string objType = msg->params()[0]->value<string>("");
+
+	string objType;
+	if (parent && (parent->getTypeString() == IAppl::kApplType)) {
+		if (msg->message() != "new") return MsgHandler::kBadAddress;
+		if (msg->params().size()) return MsgHandler::kBadParameters;
+		objType = IScene::kSceneType;
+	}
+	else {
+		if (msg->message() != "set") return MsgHandler::kBadAddress;
+		if (msg->params().size() == 0) return MsgHandler::kBadParameters;
+		objType = msg->params()[0]->value<string>("");
+	}
+
 	SIObject obj = IObjectFactory::create(objName, objType, parent);
 	if (obj) {
 		int status = obj->execute(msg);

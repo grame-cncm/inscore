@@ -113,23 +113,17 @@ void IGlue::oscinit (OSCStream& osc, const std::string& address, int port)
 }
 
 //--------------------------------------------------------------------------
-//void IGlue::setGraphicListener(GraphicUpdateListener* listener) const
-//{
-//	if (fSceneView) fSceneView->setListener (listener);
-//}
-
-//--------------------------------------------------------------------------
 bool IGlue::getSceneView(unsigned int* dest, int w, int h, bool smooth )
 { 
 	QMutexLocker locker (&fTimeViewMutex);
 
-	QRect r = QApplication::desktop()->screenGeometry();
-	float lowestDimension = qMin( r.width(), r.height() );
-	fScene->setWidth((2*w) / lowestDimension);
-	fScene->setHeight((2*h) / lowestDimension);
-	getSceneView()->setSceneRect (w,h);
+//	QRect r = QApplication::desktop()->screenGeometry();
+//	float lowestDimension = qMin( r.width(), r.height() );
+//	fScene->setWidth((2*w) / lowestDimension);
+//	fScene->setHeight((2*h) / lowestDimension);
 
-	return getSceneView()->copy(dest, w, h, smooth );
+	return false;
+//	return getSceneView()->copy(dest, w, h, smooth );
 }
 
 //--------------------------------------------------------------------------
@@ -143,59 +137,28 @@ void IGlue::initialize (bool offscreen)
 	fController = IController::create();
 //	fController->setListener (this);
 
-	fModel = IAppl::create(fUDP.fInPort, fUDP.fOutPort, fUDP.fErrPort);
+	fModel = IAppl::create(fUDP.fInPort, fUDP.fOutPort, fUDP.fErrPort, offscreen);
 	fModel->createVirtualNodes();
 	fModel->setView (ViewFactory::create(fModel));
 
-	SIScene	scene = IScene::create(fModel);
-	scene->createVirtualNodes();
-//	scene->setView (ViewFactory::create(scene));
-	fSceneView = new VSceneView ( new QGraphicsScene, offscreen );
-	scene->setView (fSceneView);
-	fModel->add (scene);
-	fScene = scene;
-
-	fTimeTask = scene;
-	if (!OSCStream::start())
-		throw("Cannot initialize output udp streams");
-	oscinit (fModel, fUDP);
-	if (!fMsgStack || !fController || !fModel || !fOscThread)
-		throw("Memory allocation failed!");
-	oscerr << OSCStart("INScore") << "v" << INScore::versionStr() << " listening on port " <<  fUDP.fInPort << OSCEnd();
+	INScore::MessagePtr msg = INScore::newMessage ("new");
+	string address (fModel->getOSCAddress());
+	address += "/scene";
+	INScore::postMessage (address.c_str(), msg);
 	
-	// creates a mapping updater - note that it may send error messages and thus should not be
-	// set before the osc streams are ready
-	setSlaveMapUpdater(new IMappingUpdater);
 
-#ifdef RUNBENCH
-	fModel->resetBench();
-#endif
-}
+//	SIScene	scene = IScene::create("scene", fModel);
+//	fModel->add (scene);
+//	scene->createVirtualNodes();
+//	scene->setView (new VSceneView (scene->getOSCAddress(), graphscene ));
+//	fScene = scene;
 
-//--------------------------------------------------------------------------
-void IGlue::initialize (QGraphicsScene* graphscene)
-{
-	Master::initMap();
-	EventsAble::init();
+//	SIScene	scene1 = IScene::create("scene1", fModel);
+//	fModel->add (scene1);
+//	scene1->createVirtualNodes();
+//	scene1->setView (new VSceneView (scene1->getOSCAddress(), new QGraphicsScene ));
 
-	fMsgStack = IMessageStack::create();
-	gMsgStask = fMsgStack;
-	fController = IController::create();
-//	fController->setListener (this);
-
-	fModel = IAppl::create(fUDP.fInPort, fUDP.fOutPort, fUDP.fErrPort);
-	fModel->createVirtualNodes();
-	fModel->setView (ViewFactory::create(fModel));
-
-	SIScene	scene = IScene::create(fModel);
-	scene->createVirtualNodes();
-//	scene->setView (ViewFactory::create(scene));
-	fSceneView = new VSceneView ( graphscene, false );
-	scene->setView (fSceneView);
-	fModel->add (scene);
-	fScene = scene;
-
-	fTimeTask = scene;
+	fTimeTask = fModel;
 	if (!OSCStream::start())
 		throw("Cannot initialize output udp streams");
 	oscinit (fModel, fUDP);
@@ -217,30 +180,6 @@ bool IGlue::start (int timeInterval, bool offscreen)
 {
 	try {
 		initialize(offscreen);
-		if (timeInterval) fTimerID = startTimer(timeInterval);
-	}
-	catch (std::runtime_error e) {
-		clean();
-		cerr << "Unexpected error: " << e.what() << endl;
-		QMessageBox alert (QMessageBox::Critical, "Fatal error", e.what(), QMessageBox::Ok, 0);
-		alert.exec();
-		return false;
-	}
-	catch (const char* e) {
-		clean();
-		cerr << "Unexpected error: " << e << endl;
-		QMessageBox alert (QMessageBox::Critical, "Fatal error", e, QMessageBox::Ok, 0);
-		alert.exec();
-		return false;
-	}
-	return true;
-}
-
-//--------------------------------------------------------------------------
-bool IGlue::start (int timeInterval, QGraphicsScene* scene)
-{
-	try {
-		initialize(scene);
 		if (timeInterval) fTimerID = startTimer(timeInterval);
 	}
 	catch (std::runtime_error e) {

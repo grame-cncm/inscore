@@ -31,6 +31,8 @@
 #include <QObject>
 #include <QTimer>
 
+#include <string>
+
 class QGraphicsScene;
 class QImage;
 
@@ -62,7 +64,7 @@ class VSceneView
 	void				updateOffScreen( IScene * scene );
 
 	public :
-				 VSceneView(QGraphicsScene * scene, bool offscreen=false);
+				 VSceneView(const std::string& address, QGraphicsScene * scene);
 		virtual ~VSceneView();
 
 		bool				copy(unsigned int* dest, int w, int h, bool smooth=false );
@@ -73,9 +75,9 @@ class VSceneView
 
 
 /**
-*	\brief The WindowEventFilter will detect any move or resize event
+*	The WindowEventFilter will detect any move or resize event
 *	on its parent QGraphicsView and will send an OSC message
-*	to update the model /ITL/scene.
+*	to update the model.
 *	
 *	The OSC message won't be sent at each move or resize event, but
 *	only 100ms after the end of a resize or move sequence.
@@ -84,10 +86,11 @@ class WindowEventFilter : public QObject
 {
 	Q_OBJECT
 
+	std::string fOSCAddress;	
 	QTimer * fTimer;
 
 	public:
-		WindowEventFilter( QGraphicsView* parent=0 );
+		WindowEventFilter(const std::string& address, QGraphicsView* parent=0 );
 		bool running() const { return fTimer->isActive(); }	/// < Returns the status of timer: the timer is only running
 															/// during a move/resize sequence.
 		
