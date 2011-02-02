@@ -60,58 +60,6 @@ static int intopt (const string& opt, int defaultValue, int n, char **argv)
 	return defaultValue;
 }
 
-//_______________________________________________________________________
-INScoreScene::INScoreScene () : QGraphicsScene () 
-{ 
-//	setAcceptDrops(true); 
-}
-
-//_______________________________________________________________________
-void INScoreScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
-{
-	if (event->mimeData()->hasUrls()) {
-		QString fileName = event->mimeData()->urls().first().toLocalFile();
-		string strfile = fileName.toLocal8Bit().data();
-		INScoreAppl::open ( strfile );
-		event->accept();
-	}
-}
-
-//_______________________________________________________________________
-void INScoreScene::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
-{
-	if (event->mimeData()->hasUrls())
-         event->acceptProposedAction();
-}
-//_______________________________________________________________________
-void INScoreScene::dragMoveEvent ( QGraphicsSceneDragDropEvent * event )
-{
-	if (event->mimeData()->hasUrls())
-         event->acceptProposedAction();
-}
-
-//_______________________________________________________________________
-void INScoreAppl::setupMenu ()
-{
-	QMenuBar * menu = new QMenuBar();
-	QMenu* fileMenu = menu->addMenu(tr("&File"));
-	QMenu* helpMenu = menu->addMenu(tr("&Help"));
-
-
-	QAction * opentAct = new QAction(tr("&Open"), this);
-	opentAct->setShortcut (QKeySequence::Open);
-    fileMenu->addAction(opentAct);
-    connect(opentAct, SIGNAL(triggered()), this, SLOT(open()));
-
-	QAction * aboutAct = new QAction(tr("&About"), this);
-    helpMenu->addAction(aboutAct);
-    connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
-
-	QAction * aboutQtAct = new QAction(tr("&AboutQt"), this);
-    helpMenu->addAction(aboutQtAct);
-    connect(aboutQtAct, SIGNAL(triggered()), this, SLOT(aboutQt()));
-}
-
 
 //_______________________________________________________________________
 void INScoreAppl::about()
@@ -133,6 +81,7 @@ void INScoreAppl::aboutQt()
 #else
 #define sep '/'
 #endif
+
 //_______________________________________________________________________
 void INScoreAppl::open(const string& file)
 {
@@ -195,9 +144,7 @@ int main( int argc, char **argv )
 	dir.cd("PlugIns");
 	appl.addLibraryPath		( dir.absolutePath());
 
-	INScoreScene* scene = new INScoreScene;
-	IGlue * glue = INScore::start (scene, kTimeInterval, udpPort, kUPDPort+1, kUPDPort+2);
-	appl.setupMenu();
+	IGlue * glue = INScore::start (kTimeInterval, udpPort, kUPDPort+1, kUPDPort+2);
 	ret = appl.exec();
 	INScore::stop (glue);
 	return ret;

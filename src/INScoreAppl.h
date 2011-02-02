@@ -27,22 +27,6 @@
 
 #include <string>
 #include <QApplication>
-#include <QGraphicsScene>
-
-class QEvent;
-//_______________________________________________________________________
-class INScoreScene : public QGraphicsScene
-{
-
-	public:
-				 INScoreScene ();
-		virtual ~INScoreScene() {}
-
-	protected:
-		void	dropEvent ( QGraphicsSceneDragDropEvent * event );
-		void	dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
-		void	dragMoveEvent ( QGraphicsSceneDragDropEvent * event );
-};
 
 //_______________________________________________________________________
 class INScoreAppl : public QApplication
