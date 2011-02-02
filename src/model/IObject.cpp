@@ -26,7 +26,6 @@
 #include <algorithm>
 #include <iostream>
 #include <fstream>
-#include <QRegExp>
 
 #include "EventsAble.h"
 #include "EventMessage.h"
@@ -40,6 +39,7 @@
 #include "IVNode.h"
 #include "GraphicEffect.h"
 #include "OSCAddress.h"
+#include "OSCRegexp.h"
 #include "Updater.h"
 #include "ISync.h"
 #include "Tools.h"
@@ -273,8 +273,8 @@ void IObject::cleanup ()
 //--------------------------------------------------------------------------
 bool IObject::match(const std::string& regexp) const
 {
-	QRegExp r (regexp.c_str(), Qt::CaseSensitive, QRegExp::Wildcard);
-	return r.exactMatch(name().c_str());
+	OSCRegexp r (regexp.c_str());
+	return r.match(name().c_str());
 }
 
 //--------------------------------------------------------------------------
@@ -357,48 +357,6 @@ bool IObject::clickDebug() const		{ return fDebug->getClickDebug(); }
 //--------------------------------------------------------------------------
 // messages processing
 //--------------------------------------------------------------------------
-#if useiterator
-int IObject::processMsg (const string& address, const string& addressTail, const IMessage* msg)
-{
-//	bool result = false;
-	int result = MsgHandler::kBadAddress;
-	if (match(address)) {				// first make sure that the object is part of the address
-		string beg  = OSCAddress::addressFirst(addressTail);	// next takes the next destination object
-		string tail = OSCAddress::addressTail(addressTail);		// and possible remaining address part
-		
-		if (tail.size()) {			// we're not processing the end of the address, process the address one step down
-			for (subnodes::iterator i = elements().begin(); i != elements().end(); i++)
-				result |= (*i)->processMsg(beg, tail, msg);
-		}
-		else {										// addressTail indicates a terminal node
-			IMessageTranslator translator;
-			IMessage* translated = translator.translate(msg);
-			subnodes targets;		
-			if (find (beg, targets)) {				// looks for subnodes matching addressTail
-				for (IObject::subnodes::iterator i = targets.begin(); i != targets.end(); i++) {
-				
-					bool previouslyModified = (*i)->IDate::modified() || (*i)->IPosition::modified();
-					result |= (*i)->execute(translated ? translated : msg);			// asks the subnode to execute the message
-					if (result & MsgHandler::kProcessed) {
-						(*i)->setState(IObject::kModified);		// sets the modified state of the subnode
-						
-						if ( !previouslyModified && !(*i)->IDate::modified() && !(*i)->IPosition::modified() )
-						// The object IDate & IPosition were clean before, and are still clean,
-						// but yet there has been a modification on the object
-							(*i)->fModified = true;
-					}
-				}
-			}
-			// can't find the target node: try to create it
-			else result = IProxy::execute (translated ? translated : msg, beg, this);
-			delete translated;
-		}
-	}
-	if (result & MsgHandler::kProcessed) 
-		setState(IObject::kSubModified);
-	return result;
-}
-#else
 int IObject::processMsg (const string& address, const string& addressTail, const IMessage* msg)
 {
 //	bool result = false;
@@ -421,15 +379,9 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 				unsigned int n = targets.size();
 				for (unsigned int i = 0; i< n; i++) {
 					IObject * target = targets[i];
-//					bool previouslyModified = target->IDate::modified() || target->IPosition::modified();
-					result |= target->execute(translated ? translated : msg);			// asks the subnode to execute the message
+					result |= target->execute(translated ? translated : msg);	// asks the subnode to execute the message
 					if (result & MsgHandler::kProcessed) {
 						target->setState(IObject::kModified);		// sets the modified state of the subnode
-//						
-//						if ( !previouslyModified && !target->IDate::modified() && !target->IPosition::modified() )
-//						// The object IDate & IPosition were clean before, and are still clean,
-//						// but yet there has been a modification on the object
-//							target->fModified = true;
 					}
 				}
 			}
@@ -442,7 +394,6 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 		setState(IObject::kSubModified);
 	return result;
 }
-#endif
 
 //--------------------------------------------------------------------------
 // the 'get' to retrieve an object parameters
@@ -588,8 +539,8 @@ struct msgMatchPredicat {
 			 msgMatchPredicat(const string& s) : msg(s.c_str()) {}
 	bool operator() (const pair<string, SMsgHandler>& elt) const { 
 		if (elt.first == "*") return false;
-		QRegExp regexp (elt.first.c_str());	
-		return regexp.exactMatch(msg);
+		OSCRegexp regexp (elt.first.c_str());	
+		return regexp.match(msg);
 	}
 };
 
