@@ -62,23 +62,32 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BR>
 3. Scene messages
 </H1>
-A scene may be viewed as a window on the score elements. Its address is <TT>/ITL/scene</TT>. It handles the following messages:
+A scene may be viewed as a window on the score elements. Its address is <TT>/ITL/<I>sceneIdentifier</I></TT> where <TT><I>sceneIdentifier</I></TT> is the scene name. It handles the following messages:
 <BR>
 <IMG
- WIDTH="111" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="290" HEIGHT="202" ALIGN="BOTTOM" BORDER="0"
  SRC="img6.gif"
  ALT="\begin{rail}
-sceneMsg : 'reset'
+sceneMsg : 'new'
+\vert 'del'
+\vert 'reset'
 \vert ('fullscreen' int32)
 \vert commonMsg
 \end{rail}">
 <BR>
-<A NAME="125"></A>
 <A NAME="126"></A>
+<A NAME="127"></A>
+<A NAME="128"></A>
+<A NAME="129"></A>
+<A NAME="130"></A>
 
 <P>
 
 <UL>
+<LI><TT>new</TT>: creates a new scene and opens it in a new window.
+</LI>
+<LI><TT>del</TT>: deletes a scene and closes the corresponding window.
+</LI>
 <LI><TT>reset</TT>: clears the scene (i.e. delete all components) and resets the scene to its default state (position, size and color).
 </LI>
 <LI><TT>fullscreen</TT>: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is <TT>0</TT>.
