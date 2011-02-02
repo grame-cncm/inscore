@@ -46,6 +46,8 @@
 extern int yydebug;
 #endif
 
+static void yyunput(int, char*) __attribute__((unused));
+
 #include "ITLparse.c++"
 
 using namespace std;

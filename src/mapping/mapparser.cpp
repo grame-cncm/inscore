@@ -48,6 +48,9 @@ inscore::mapreader * gReader;
 extern int yydebug;
 #endif
 
+
+static void yyunput(int, char*) __attribute__((unused));
+
 #include "mapparse.c++"
 
 using namespace std;
