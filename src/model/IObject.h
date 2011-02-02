@@ -283,6 +283,9 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		/// \brief gives the scene of the object
 		virtual SIScene			getScene();
 
+		/// \brief return true when the applicaton is initialized in offscreen mode 
+		virtual bool			offscreen()		{ return fParent ? fParent->offscreen() : false; }
+
 		/// \brief recursively get all objects state
 		virtual IMessageList getAll () const;
 		
