@@ -16,6 +16,8 @@
 #ifndef __DEELX_REGEXP__H__
 #define __DEELX_REGEXP__H__
 
+#pragma GCC diagnostic ignored "-Wuninitialized"
+
 #include <memory.h>
 #include <ctype.h>
 #include <limits.h>
