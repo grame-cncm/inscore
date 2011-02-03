@@ -33,10 +33,12 @@ class INScoreScene : public QGraphicsScene
 {
 
 	public:
-				 INScoreScene ();
+				 INScoreScene (const std::string& address);
 		virtual ~INScoreScene();
 
 	protected:
+		std::string	fOscAddress;
+		
 		void	open ( const char* file );
 		void	dropEvent ( QGraphicsSceneDragDropEvent * event );
 		void	dragEnterEvent ( QGraphicsSceneDragDropEvent * event );

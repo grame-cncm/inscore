@@ -39,7 +39,7 @@ using namespace std;
 using namespace inscore;
 
 //_______________________________________________________________________
-INScoreScene::INScoreScene () : QGraphicsScene ()	{}
+INScoreScene::INScoreScene (const std::string& address) : QGraphicsScene (), fOscAddress(address) {}
 INScoreScene::~INScoreScene ()						{}
 
 //_______________________________________________________________________
@@ -47,17 +47,17 @@ void INScoreScene::open (const char* fullpath)
 {
 	string file (fullpath);
 	size_t pos = file.find_last_of ("/");
-	string dest("/");
-	dest += IAppl::kName;
+	string appl("/");
+	appl += IAppl::kName;
 	if (pos != string::npos) {
 		string path = file.substr(0, pos);
 		INScore::MessagePtr msg = INScore::newMessage ("rootPath");
 		INScore::add (msg, path.c_str());
-		INScore::postMessage (dest.c_str(), msg);
+		INScore::postMessage (appl.c_str(), msg);
 	}
 	INScore::MessagePtr msg = INScore::newMessage ("load");
 	INScore::add (msg, file.c_str());
-	INScore::postMessage (dest.c_str(), msg);
+	INScore::postMessage (fOscAddress.c_str(), msg);
 }
 
 //_______________________________________________________________________
