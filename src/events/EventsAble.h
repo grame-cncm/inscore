@@ -49,17 +49,18 @@ class EventsAble
 				 EventsAble();
 		virtual ~EventsAble();
 		
-		void					setMsg (eventype t, SEventMessage msg);
-		void					addMsg (eventype t, SEventMessage msg);
+		void			setMsg (eventype t, SEventMessage msg);
+		void			addMsg (eventype t, SEventMessage msg);
 
-		void					setTimeMsg (eventype t, const RationalInterval& time, SEventMessage msg);
-		void					addTimeMsg (eventype t, const RationalInterval& time, SEventMessage msg);
-		void					clearTimeMsg (eventype t);
+		void			setTimeMsg (eventype t, const RationalInterval& time, SEventMessage msg);
+		void			addTimeMsg (eventype t, const RationalInterval& time, SEventMessage msg);
+		void			clearTimeMsg (eventype t);
 
-		void					setFileMsg (const std::string& file, SEventMessage msg);
-		void					addFileMsg (const std::string& file, SEventMessage msg);
+		void			setFileMsg (const std::string& file, SEventMessage msg);
+		void			addFileMsg (const std::string& file, SEventMessage msg);
 
-		IMessageList			getWatch (const char* address) const;
+		IMessageList	getWatch (const char* address) const;
+		void			reset();
 
 		const std::vector<SEventMessage>&	getMouseMsgs (eventype t) const;
 		const std::vector<SEventMessage>&	getTimeMsgs (eventype t, const RationalInterval& time) const;

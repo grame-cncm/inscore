@@ -58,6 +58,15 @@ void EventsAble::setMsg (eventype t, SEventMessage msg)
 }
 
 //----------------------------------------------------------------------
+void EventsAble::reset ()
+{ 
+	fMsgMap.clear();
+	fTimeEnterMsgMap.clear();
+	fTimeLeaveMsgMap.clear();
+	fFileMessageMap.clear();
+}
+
+//----------------------------------------------------------------------
 void EventsAble::addMsg (eventype t, SEventMessage msg)
 { 
 	if (msg) fMsgMap[t].push_back (msg); 
