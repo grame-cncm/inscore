@@ -55,19 +55,20 @@ class EventMessage : public smartable
 	void sockSend		(const IMessage* msg, const std::string& dst, int port) const;
 	void localSend		(const IMessage* msg) const;
 
-	void decodeMessage	(const std::string& objname, const IMessage* msg, int startindex);
-	std::string checkVariableAddress (const std::string& address, const std::string& objname) const;
+	void decodeMessage	(const std::string& objname, const std::string& scene, const IMessage* msg, int startindex);
+	std::string checkVariableAddress (const std::string& address, const std::string& objname, const std::string& scene) const;
 	void checkvariable	(IMessage& msg, const std::string& param, const MouseLocation& mouse, const rational& date, bool setmsg=false) const;
 	float checkrange	(const std::string& param, float val) const;
 			
 	protected:
-				 EventMessage(const std::string& objname, const IMessage* msg, int startindex);
+				 EventMessage(const std::string& objname, const std::string& scene, const IMessage* msg, int startindex);
 		virtual ~EventMessage();
 
 	public:
 		enum { kDefaultUPDPort = 7001 };
 		
-		static SEventMessage create (const std::string& objname, const IMessage* msg, int startindex)	{ return new EventMessage(objname, msg, startindex); }
+		static SEventMessage create (const std::string& objname, const std::string& scene, const IMessage* msg, int startindex)	
+					{ return new EventMessage(objname, scene, msg, startindex); }
 		void	send() const;
 		void	send(const MouseLocation& loc, const rational& date) const;
 		bool	hasDateVar (std::string& mapname) const;

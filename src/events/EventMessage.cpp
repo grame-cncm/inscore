@@ -51,21 +51,26 @@ const char* kSelfVar	= "$self";
 
 
 //----------------------------------------------------------------------
-EventMessage::EventMessage (const string& objname, const IMessage* msg, int startindex) : fMessage(0), fPort(kDefaultUPDPort)
+EventMessage::EventMessage (const string& objname, const std::string& scene, const IMessage* msg, int startindex) : fMessage(0), fPort(kDefaultUPDPort)
 {
-	decodeMessage (objname, msg, startindex);
+	decodeMessage (objname, scene, msg, startindex);
 }
 
 //----------------------------------------------------------------------
 EventMessage::~EventMessage () { delete fMessage; }
 
 //----------------------------------------------------------------------
-string EventMessage::checkVariableAddress (const string& address, const string& objname) const
+string EventMessage::checkVariableAddress (const string& address, const string& objname, const string& scene) const
 {
-	CRegexpT<char> regexp("\\$self", EXTENDED);
-	char* tmp = regexp.Replace (address.c_str(), objname.c_str());
-	string outAddress = tmp;
-	regexp.ReleaseString (tmp);
+	CRegexpT<char> regexp1("\\$self", EXTENDED);
+	char* tmp1 = regexp1.Replace (address.c_str(), objname.c_str());
+
+	CRegexpT<char> regexp2("\\$scene", EXTENDED);
+	char* tmp2 = regexp2.Replace (tmp1, scene.c_str());
+
+	string outAddress = tmp2;
+	regexp1.ReleaseString (tmp1);
+	regexp2.ReleaseString (tmp2);
 	return outAddress;
 }
 
@@ -104,14 +109,14 @@ bool EventMessage::decodeAddress (const std::string& address, std::string& oscAd
 }
 
 //----------------------------------------------------------------------
-void EventMessage::decodeMessage (const string& objname, const IMessage* msg, int startindex)
+void EventMessage::decodeMessage (const string& objname, const std::string& scene, const IMessage* msg, int startindex)
 {
 	if ((msg->size() - startindex) < 2) return;
 	string address;
 	if (msg->param (startindex++, address)) {
 		string oscAddress;
 		if (decodeAddress (address, oscAddress, fDest, fPort)) {
-			fMessage = new IMessage (checkVariableAddress(oscAddress, objname));
+			fMessage = new IMessage (checkVariableAddress(oscAddress, objname, scene));
 			string msgStr;
 			if ( msg->param (startindex, msgStr) ) {
 				fMessage->setMessage (msgStr);
