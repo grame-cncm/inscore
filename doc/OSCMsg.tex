@@ -159,7 +159,9 @@ A scene may be viewed as a window on the score elements. Its address is \OSC{/IT
 \begin{rail}
 sceneMsg :  'new'
 			| 'del'
+			| ('load' filePath)
 			| 'reset'
+			| 'foreground'
 			| ('fullscreen' int32)
 			| commonMsg
 \end{rail}
@@ -167,12 +169,15 @@ sceneMsg :  'new'
 \index{Scene messages! create}
 \index{Scene messages! close}
 \index{Scene messages! reset}
+\index{Scene messages! load}
 \index{Scene messages!fullscreen}
 
 \begin{itemize}
 \item \OSC{new}: creates a new scene and opens it in a new window.
 \item \OSC{del}: deletes a scene and closes the corresponding window.
+\item \OSC{load}: loads an INScore file to the scene. Note that the OSC addresses are translated to the scene OSC address.
 \item \OSC{reset}: clears the scene (i.e. delete all components) and resets the scene to its default state (position, size and color).
+\item \OSC{front}: put the scene to foreground.
 \item \OSC{fullscreen}: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is \values{0}.
 \item \OSC{commonMsg}: see section \fullref{common}.
 \end{itemize}
@@ -1403,9 +1408,14 @@ Note that a variable can be used several times in a message, but several \OSC{\$
 \texttt{\textbf{Warning:}} the interaction message set is provided for experiment. It is likely to change in a future version. Ideas, comments, suggestions are welcome for the design of a stable API.
 
 
-\sublevel{The 'self' variable}
-\label{selfvar}
-The OSC address parameter of a watch message supports a \OSC{\$self} variable. This variable is replaced by the object name at the time of the message setting.
+\sublevel{OSC address variables}
+\label{oscvar}
+The OSC address parameter of a watch message supports the following variables:
+\begin{itemize}
+\item \OSC{\$self}: replaced by the object name at the time of the message setting.
+\item \OSC{\$scene}: replaced by the scene name at the time of the message setting.
+\end{itemize}
+Note: the system doesn't check for the consistency of the variables placement.
 
 %===============================
 %: Changes list

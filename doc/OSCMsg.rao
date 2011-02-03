@@ -94,20 +94,25 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {6}{ sceneMsg : 'new' | 'del' | 'reset' | ('fullscreen' int32) | commonMsg }
+\rail@i {6}{ sceneMsg : 'new' | 'del' | ('load' filePath) | 'reset' | 'foreground' | ('fullscreen' int32) | commonMsg }
 \rail@o {6}{
 \rail@index{sceneMsg}
-\rail@begin{5}{sceneMsg}
+\rail@begin{7}{sceneMsg}
 \rail@bar
 \rail@term{new}[]
 \rail@nextbar{1}
 \rail@term{del}[]
 \rail@nextbar{2}
-\rail@term{reset}[]
+\rail@term{load}[]
+\rail@nont{filePath}[]
 \rail@nextbar{3}
+\rail@term{reset}[]
+\rail@nextbar{4}
+\rail@term{foreground}[]
+\rail@nextbar{5}
 \rail@term{fullscreen}[]
 \rail@token{int32}[]
-\rail@nextbar{4}
+\rail@nextbar{6}
 \rail@nont{commonMsg}[]
 \rail@endbar
 \rail@end
