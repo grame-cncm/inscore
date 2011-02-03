@@ -115,8 +115,11 @@ class IScene : public IRectShape, public PeriodicTask
 				 IScene(const std::string& name, IObject * parent);
 		virtual ~IScene();
 
-		void newScene ();
-		void del ();
+		MsgHandler::msgStatus loadMsg(const IMessage* msg);
+		void		foreground ();
+		void		newScene ();
+		void		del ();
+		std::string address2scene (const char* addr) const;
 };
 
 /*!

@@ -24,15 +24,20 @@
 */
 
 #include <iostream>
+#include "deelx.h"
 
-#include "IScene.h"
+#include "IAppl.h"
+#include "IGlue.h"
+#include "IGraphicSignal.h"
 #include "IMessage.h"
-#include "Updater.h"
 #include "IObjectFactory.h"
 #include "ISignalNode.h"
+#include "IScene.h"
 #include "ISceneSync.h"
-#include "IGraphicSignal.h"
+#include "ITLparser.h"
+#include "OSCAddress.h"
 #include "QFileWatcher.h"
+#include "Updater.h"
 
 #include "VSceneView.h"
 
@@ -56,7 +61,9 @@ IScene::IScene(const std::string& name, IObject * parent) : IRectShape(name, par
 	fMsgHandlerMap["new"]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::newScene);
 	fMsgHandlerMap["del"]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::del);
 	fMsgHandlerMap["reset"]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::reset);
+	fMsgHandlerMap["foreground"]	= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::foreground);
 	fMsgHandlerMap["fullscreen"]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFullScreen);
+	fMsgHandlerMap["load"]			= TMethodMsgHandler<IScene>::create(this, &IScene::loadMsg);
 
 	fGetMsgHandlerMap["fullscreen"] = TGetParamMsgHandler<bool>::create(fFullScreen);
 	fGetMsgHandlerMap[""]			= 0;	// force standard propagation of the get message
@@ -68,6 +75,7 @@ QGraphicsScene * IScene::getScene () const			{ return getView()->scene(); }
 //--------------------------------------------------------------------------
 void IScene::newScene ()	{}
 void IScene::del ()			{ IObject::del(); }
+void IScene::foreground()	{ getView()->foreground(); }
 
 //--------------------------------------------------------------------------
 void IScene::reset ()
@@ -134,6 +142,40 @@ void IScene::sort ()
 { 
 	// topological sort of the scene elements
 	if (fSync) fSync->sort(elements()); 
+}
+
+//--------------------------------------------------------------------------
+string IScene::address2scene (const char* addr) const
+{
+	CRegexpT<char> regexp("/ITL/[^\\/]*", EXTENDED);
+	char * replaced = regexp.Replace (addr, getOSCAddress().c_str());
+	string sceneAddress (replaced);
+	regexp.ReleaseString (replaced);
+	return sceneAddress;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
+{
+	extern SIMessageStack gMsgStask;
+	if (msg->size() == 1) {
+		string srcfile = msg->params()[0]->value<string>("");
+		if (srcfile.size()) {
+			ITLparser p;
+			IMessageList* msgs = p.readfile(IAppl::absolutePath(srcfile).c_str());
+			if (msgs) {
+				for (IMessageList::const_iterator i = msgs->begin(); i != msgs->end(); i++) {
+					IMessage * msg = *i;
+					string address = address2scene (msg->address().c_str());
+					msg->setAddress (address);
+					gMsgStask->push(msg);
+				}
+				delete msgs;
+				return MsgHandler::kProcessed;
+			}
+		}
+	}
+	return MsgHandler::kBadParameters;
 }
 
 //--------------------------------------------------------------------------
