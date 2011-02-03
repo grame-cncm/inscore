@@ -142,12 +142,6 @@ IAppl::IAppl(int udpport, int outport, int errport, bool offscreen)
 	fMsgHandlerMap["errport"]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPErrPort);
 	fMsgHandlerMap["defaultShow"]	= TSetMethodMsgHandler<IAppl,bool>::create(this, &IAppl::setDefaultShow);
 
-//	fMsgHandlerMap["rootPath"]	= TSetMsgHandler<string>::create(fRootPath);
-//	fMsgHandlerMap["port"]		= TSetMsgHandler<int>::create(fUDP.fInPort);
-//	fMsgHandlerMap["outport"]	= TSetMsgHandler<int>::create(fUDP.fOutPort);
-//	fMsgHandlerMap["errport"]	= TSetMsgHandler<int>::create(fUDP.fErrPort);
-//	fMsgHandlerMap["defaultShow"]= TSetMsgHandler<bool>::create(IObjectFactory::fDefaultShow);
-
 	fGetMsgHandlerMap["date"]		= 0;
 	fGetMsgHandlerMap["duration"]	= 0;
 
@@ -279,6 +273,7 @@ void IAppl::helloMsg() const
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
 {
+	extern SIMessageStack gMsgStask;
 	if (msg->size() == 1) {
 		string srcfile = msg->params()[0]->value<string>("");
 		if (srcfile.size()) {
@@ -286,12 +281,8 @@ MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
 			IMessageList* msgs = p.readfile(absolutePath(srcfile).c_str());
 			if (msgs) {
 				for (IMessageList::const_iterator i = msgs->begin(); i != msgs->end(); i++) {
-					string beg  = OSCAddress::addressFirst((*i)->address());
-					string tail = OSCAddress::addressTail((*i)->address());
-					bool ret = processMsg(beg, tail, *i);
-					if (oscDebug()) IGlue::trace(*i, ret);
+					gMsgStask->push(*i);
 				}
-				msgs->clear();
 				delete msgs;
 				return MsgHandler::kProcessed;
 			}
