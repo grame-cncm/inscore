@@ -113,6 +113,7 @@ VSceneView::~VSceneView()
 
 //------------------------------------------------------------------------------------------------------------------------
 QGraphicsScene * VSceneView::scene() const		{ return fScene; }
+void VSceneView::foreground()	{ fGraphicsView->activateWindow(); }
 
 //------------------------------------------------------------------------------------------------------------------------
 void VSceneView::updateOnScreen( IScene * scene )

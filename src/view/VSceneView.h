@@ -70,6 +70,7 @@ class VSceneView
 		bool				copy(unsigned int* dest, int w, int h, bool smooth=false );
 		void				setSceneRect(int w, int h)	{ fScene->setSceneRect(0, 0, w, h); }
 		void				updateView( IScene * scene );
+		void				foreground();
 		QGraphicsScene *	scene() const;
 };
 
