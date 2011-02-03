@@ -13,6 +13,7 @@ Version 0.70
 - 'load' message supported at scene level.
 - get 'watch' implemented
 - interaction variables extension: new $scene variable in the address field
+- support 'watch' message without argument to clear all the watched events
 
 ----------------------------------------------------
 Version 0.64

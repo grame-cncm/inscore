@@ -1088,19 +1088,22 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {60}{ interactMsg : (('watch' | 'watch+') what ( | oscMsg)) }
+\rail@i {60}{ interactMsg : (('watch' | 'watch+') (| what ( | oscMsg))) }
 \rail@o {60}{
 \rail@index{interactMsg}
-\rail@begin{2}{interactMsg}
+\rail@begin{3}{interactMsg}
 \rail@bar
 \rail@term{watch}[]
 \rail@nextbar{1}
 \rail@term{watch+}[]
 \rail@endbar
-\rail@nont{what}[]
 \rail@bar
 \rail@nextbar{1}
+\rail@nont{what}[]
+\rail@bar
+\rail@nextbar{2}
 \rail@nont{oscMsg}[]
+\rail@endbar
 \rail@endbar
 \rail@end
 }
