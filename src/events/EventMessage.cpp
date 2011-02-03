@@ -86,7 +86,7 @@ string EventMessage::address () const
 }
 
 //----------------------------------------------------------------------
-bool EventMessage::decodeAddress (const std::string& address, std::string& oscAddress, std::string& host, int& port) const
+void EventMessage::decodeAddress (const std::string& address, std::string& oscAddress, std::string& host, int& port) const
 {
 	size_t startOsc = address.find_first_of('/');
 	if (startOsc != string::npos) {
@@ -102,10 +102,7 @@ bool EventMessage::decodeAddress (const std::string& address, std::string& oscAd
 			else host = address.substr (0, startOsc);
 		}
 		else host.clear();
-//cout << "EventMessage::decodeAddress " << address << " => " << host << ":" << port << oscAddress << endl;
-		return true;
 	}
-	return false;
 }
 
 //----------------------------------------------------------------------
@@ -115,16 +112,15 @@ void EventMessage::decodeMessage (const string& objname, const std::string& scen
 	string address;
 	if (msg->param (startindex++, address)) {
 		string oscAddress;
-		if (decodeAddress (address, oscAddress, fDest, fPort)) {
-			fMessage = new IMessage (checkVariableAddress(oscAddress, objname, scene));
-			string msgStr;
-			if ( msg->param (startindex, msgStr) ) {
-				fMessage->setMessage (msgStr);
-				startindex++;
-			}
-			for (int i = startindex; i < msg->size(); i++) {
-				fMessage->params().push_back( msg->params()[i]);
-			}
+		decodeAddress (address, oscAddress, fDest, fPort);
+		fMessage = new IMessage (checkVariableAddress(oscAddress, objname, scene));
+		string msgStr;
+		if ( msg->param (startindex, msgStr) ) {
+			fMessage->setMessage (msgStr);
+			startindex++;
+		}
+		for (int i = startindex; i < msg->size(); i++) {
+			fMessage->params().push_back( msg->params()[i]);
 		}
 	}
 }
@@ -173,6 +169,7 @@ bool EventMessage::isDateVar (const string& var, string& mapname) const
 //----------------------------------------------------------------------
 bool EventMessage::hasDateVar (std::string& mapname) const
 {
+	if (!fMessage) return false;
 	if (isDateVar (fMessage->message(), mapname)) return true;
 	int n = fMessage->size();
 	for (int i=0; i<n; i++) {

@@ -51,7 +51,7 @@ class EventMessage : public smartable
 	std::string	fDest;
 	int			fPort;
 	
-	bool decodeAddress	(const std::string& address, std::string& oscAddress, std::string& host, int& port) const;
+	void decodeAddress	(const std::string& address, std::string& oscAddress, std::string& host, int& port) const;
 	void sockSend		(const IMessage* msg, const std::string& dst, int port) const;
 	void localSend		(const IMessage* msg) const;
 
