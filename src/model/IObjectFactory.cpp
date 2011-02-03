@@ -65,7 +65,7 @@ template<> SIObject _create<IScene>(const std::string& name , IObject* parent)
 		oscaddress += "/";
 		oscaddress += name;
 		QGraphicsScene * gscene = 0;
-		if (!parent->offscreen()) gscene = new INScoreScene;
+		if (!parent->offscreen()) gscene = new INScoreScene(oscaddress);
 		obj->setView (new VSceneView (oscaddress, gscene));	
 	}
 	return obj->getView() ? obj : 0;
