@@ -1,0 +1,94 @@
+/ITL/scene/showmap 	set "txt" "Show map"
+/ITL/scene/map   	set "ellipse" 0.06 0.06
+/ITL/scene/mapon 	set "ellipse" 0.06 0.06
+/ITL/scene/map   	color 200 200 200
+/ITL/scene/mapon 	color 0 255 0
+/ITL/scene/*map* 	x -0.88
+/ITL/scene/showmap 	y 0.84
+/ITL/scene/map* 	y 0.9
+/ITL/scene/map   	z 0.1
+/ITL/scene/map   watch  "mouseDown" "/ITL/$scene/score/debug" "map" 1
+/ITL/scene/map   watch+ "mouseDown" "/ITL/scene/mapon" "z" 0.2
+/ITL/scene/mapon watch  "mouseDown" "/ITL/$scene/score/debug" "map" 0
+/ITL/scene/mapon watch+ "mouseDown" "/ITL/scene/mapon" "z" 0.
+
+/ITL/scene/testmap 	set "txt" "Test map"
+/ITL/scene/testoff  set "ellipse" 0.06 0.06
+/ITL/scene/teston 	set "ellipse" 0.06 0.06
+/ITL/scene/testoff 	color 200 200 200
+/ITL/scene/teston 	color 0 255 0
+/ITL/scene/test* 	x -0.88
+/ITL/scene/test* 	y 0.78
+/ITL/scene/testmap 	y 0.72
+/ITL/scene/testoff  z 0.1
+
+/ITL/scene/testoff  watch  "mouseDown" "/ITL/scene/cursor" "show" 1
+/ITL/scene/testoff  watch+ "mouseDown" "/ITL/scene/cursor" "date" 0 1
+/ITL/scene/testoff  watch+ "mouseDown" "/ITL/scene/teston" "z" 0.2
+/ITL/scene/teston 	watch  "mouseDown" "/ITL/scene/cursor" "show" 0
+/ITL/scene/teston 	watch+ "mouseDown" "/ITL/scene/teston" "z" 0.
+
+/ITL/scene/testoff 	watch+ "mouseDown" "localhost:7100/test" 1
+/ITL/scene/teston 	watch+ "mouseDown" "localhost:7100/test" 0
+
+/ITL/scene/zoom 	set "txt" "Zoom"
+/ITL/scene/zoombin 	set "txt" "+"
+/ITL/scene/zoombout set "txt" "-"
+/ITL/scene/zoombin 	x 0.12
+/ITL/scene/zoombout x -0.12
+/ITL/scene/zoom* 	y -0.95
+/ITL/scene/zoom* 	scale 1.6
+/ITL/scene/zoomb* watch "mouseEnter" "/ITL/$scene/$self" "scale" 2.2
+/ITL/scene/zoomb* watch "mouseLeave" "/ITL/$scene/$self" "scale" 1.6
+/ITL/scene/zoombin  watch+ "mouseDown" "/ITL/scene/score" "dscale" 1.05
+/ITL/scene/zoombout watch+ "mouseDown" "/ITL/scene/score" "dscale" 0.95
+
+/ITL/scene/cursor   set "rect" 0.01 0.2
+/ITL/scene/cursor   color 255 0 0
+/ITL/scene/cursor   duration 1 32
+/ITL/scene/cursor   show 0
+/ITL/scene/sync cursor  score v
+
+
+
+/ITL/scene/reloadbutton x -0.6
+/ITL/scene/reloadbutton set "txt" 	"Reset"
+/ITL/scene/reloadbutton x -0.6
+/ITL/scene/acceptbutton set "txt" 	"Accept"
+/ITL/scene/acceptbutton x -0.3
+/ITL/scene/rejectbutton set "txt"	"Reject"
+/ITL/scene/rejectbutton x 0.
+/ITL/scene/startbutton set "txt"	"Play"
+/ITL/scene/startbutton x 0.25
+/ITL/scene/stopbutton set "txt"		"Stop"
+/ITL/scene/stopbutton x 0.5
+/ITL/scene/savebutton set "txt"		"Save"
+/ITL/scene/savebutton x 0.75
+/ITL/scene/*button y 0.9
+/ITL/scene/*button scale 1.6
+
+/ITL/scene/*button watch "mouseEnter" "/ITL/$scene/$self" "red" 255
+/ITL/scene/*button watch "mouseLeave" "/ITL/$scene/$self" "red" 0
+/ITL/scene/*button watch "mouseDown"  "/ITL/$scene/b[12]" "del"
+
+/ITL/scene/acceptbutton watch+ "mouseDown" "localhost:7100/accept" 1
+
+/ITL/scene/rejectbutton watch+ "mouseDown" "localhost:7100/reject" 1
+
+/ITL/scene/startbutton  watch+ "mouseDown" "localhost:7100/start" 1
+/ITL/scene/startbutton  watch+ "mouseDown" "/ITL/scene/score" "z" 2.
+/ITL/scene/startbutton  watch+ "mouseDown" "/ITL/scene/score" "alpha" 150
+/ITL/scene/startbutton  watch+ "mouseDown" "/ITL/scene" "load" "time.inscore"
+
+/ITL/scene/reloadbutton watch+ "mouseDown" 	"/ITL/$scene" "load" "mapedit.inscore"
+/ITL/scene/reloadbutton watch+ "mouseDown" 	"localhost:7100/reset" 1
+
+/ITL/scene/stopbutton   watch  "mouseDown" 	"localhost:7100/stop" 0
+/ITL/scene/stopbutton   watch+ "mouseDown" "/ITL/scene/score" "z" 0.
+/ITL/scene/stopbutton   watch+ "mouseDown" "/ITL/scene/score" "alpha" 255
+/ITL/scene/stopbutton   watch+ "mouseDown" "/ITL/scene" "load" "watch.inscore"
+/ITL/scene/stopbutton   watch+ "mouseDown" "/ITL/$scene/b[12]" "del"
+
+/ITL/scene/savebutton   watch  "mouseDown" 	"localhost:7100/save" 1
+
+/ITL/scene load "watch.inscore"
