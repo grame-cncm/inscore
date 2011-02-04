@@ -15,6 +15,7 @@ function reset ()
     gIndex = 0;
     gPoints = new Array();
     gRects = new Array();
+    gSavedRects = new Array();
 }
 
 // builds a point
@@ -130,6 +131,7 @@ function generate(timediv)
 //    post ("generate:", gPoints.length, "points and", gRects.length, "rects\n");
     var i; var map = "";
     rect (0,0,0,0);
+//    post ("save rects:", gRects.length, "\n");
     copy(gRects, gSavedRects);
     for (i=0; i < gPoints.length; i++) {
         var p = gPoints[i].point;
@@ -143,6 +145,7 @@ function generate(timediv)
             map += relation2string(relation, timediv) + "\n";
         }
     }
+//    post ("restore rects:", gRects.length, "\n");
     copy(gSavedRects, gRects);
     outlet (0, map);
 }
