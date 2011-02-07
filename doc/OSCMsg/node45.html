@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>14.3 The 'self' variable</TITLE>
-<META NAME="description" CONTENT="14.3 The 'self' variable">
+<TITLE>14.3 OSC address variables</TITLE>
+<META NAME="description" CONTENT="14.3 OSC address variables">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -57,11 +57,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION001530000000000000000"></A>
-<A NAME="selfvar"></A>
+<A NAME="oscvar"></A>
 <BR>
-14.3 The 'self' variable
+14.3 OSC address variables
 </H1>
-The OSC address parameter of a watch message supports a <TT>$self</TT> variable. This variable is replaced by the object name at the time of the message setting.
+The OSC address parameter of a watch message supports the following variables:
+
+<UL>
+<LI><TT>$self</TT>: replaced by the object name at the time of the message setting.
+</LI>
+<LI><TT>$scene</TT>: replaced by the scene name at the time of the message setting.
+</LI>
+</UL>
+Note: the system doesn't check for the consistency of the variables placement.
 
 <P>
 <BR><HR>

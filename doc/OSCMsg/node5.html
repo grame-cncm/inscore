@@ -65,12 +65,14 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 A scene may be viewed as a window on the score elements. Its address is <TT>/ITL/<I>sceneIdentifier</I></TT> where <TT><I>sceneIdentifier</I></TT> is the scene name. It handles the following messages:
 <BR>
 <IMG
- WIDTH="290" HEIGHT="202" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="290" HEIGHT="278" ALIGN="BOTTOM" BORDER="0"
  SRC="img6.gif"
  ALT="\begin{rail}
 sceneMsg : 'new'
 \vert 'del'
+\vert ('load' filePath)
 \vert 'reset'
+\vert 'foreground'
 \vert ('fullscreen' int32)
 \vert commonMsg
 \end{rail}">
@@ -80,6 +82,7 @@ sceneMsg : 'new'
 <A NAME="128"></A>
 <A NAME="129"></A>
 <A NAME="130"></A>
+<A NAME="131"></A>
 
 <P>
 
@@ -88,7 +91,11 @@ sceneMsg : 'new'
 </LI>
 <LI><TT>del</TT>: deletes a scene and closes the corresponding window.
 </LI>
+<LI><TT>load</TT>: loads an INScore file to the scene. Note that the OSC addresses are translated to the scene OSC address.
+</LI>
 <LI><TT>reset</TT>: clears the scene (i.e. delete all components) and resets the scene to its default state (position, size and color).
+</LI>
+<LI><TT>foreground</TT>: put the scene to foreground.
 </LI>
 <LI><TT>fullscreen</TT>: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is <TT>0</TT>.
 </LI>
