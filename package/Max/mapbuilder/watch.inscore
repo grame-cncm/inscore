@@ -1,3 +1,4 @@
+/ITL/scene/b2 show 1
 /ITL/scene/score watch  "mouseDown"  	"/ITL/$scene/b1" "set" "ellipse" 0.02 0.02
 /ITL/scene/score watch+ "mouseDown"  	"/ITL/$scene/b1" "color" 240 0 0 
 /ITL/scene/score watch+ "mouseDown"  	"/ITL/$scene/b[12]" "x" "$sx"

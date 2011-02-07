@@ -9,6 +9,9 @@ var gSavedRects = new Array();    // user defined rects
 var gCurrent = {};            // the current rect
 var gIndex=0;                 // the current index in rects or in points
 
+reset ();
+//post("MapBuilder JS Start\n");
+
 // reset the whole system
 function reset ()
 {
@@ -67,7 +70,15 @@ function accept ()
     gIndex++;
     rectStore (0,0,0,0);
 }
-function reject ()    { rectStore (0,0,0,0); }
+
+function reject ()
+{ 
+	rectStore (0,0,0,0); 
+	if (gIndex > 0) {
+		gIndex--;
+		gRects[gIndex] = gCurrent;
+	}
+}
 
 // stores a point and a time interval
 function store (x, y, start, end)

@@ -46,24 +46,22 @@
 /ITL/scene/cursor   set "rect" 0.01 0.2
 /ITL/scene/cursor   color 255 0 0
 /ITL/scene/cursor   duration 1 32
+/ITL/scene/cursor   z 5.
 /ITL/scene/cursor   show 0
 /ITL/scene/sync cursor  score v
 
 
 
-/ITL/scene/reloadbutton x -0.6
 /ITL/scene/reloadbutton set "txt" 	"Reset"
 /ITL/scene/reloadbutton x -0.6
-/ITL/scene/acceptbutton set "txt" 	"Accept"
-/ITL/scene/acceptbutton x -0.3
-/ITL/scene/rejectbutton set "txt"	"Reject"
-/ITL/scene/rejectbutton x 0.
+/ITL/scene/rejectbutton set "txt"	"Undo"
+/ITL/scene/rejectbutton x -0.3
 /ITL/scene/startbutton set "txt"	"Play"
-/ITL/scene/startbutton x 0.25
+/ITL/scene/startbutton x 0.
 /ITL/scene/stopbutton set "txt"		"Stop"
-/ITL/scene/stopbutton x 0.5
+/ITL/scene/stopbutton x 0.3
 /ITL/scene/savebutton set "txt"		"Save"
-/ITL/scene/savebutton x 0.75
+/ITL/scene/savebutton x 0.6
 /ITL/scene/*button y 0.9
 /ITL/scene/*button scale 1.6
 
@@ -71,11 +69,9 @@
 /ITL/scene/*button watch "mouseLeave" "/ITL/$scene/$self" "red" 0
 /ITL/scene/*button watch "mouseDown"  "/ITL/$scene/b[12]" "del"
 
-/ITL/scene/acceptbutton watch+ "mouseDown" "localhost:7100/accept" 1
-
 /ITL/scene/rejectbutton watch+ "mouseDown" "localhost:7100/reject" 1
 
-/ITL/scene/startbutton  watch+ "mouseDown" "localhost:7100/start" 1
+/ITL/scene/startbutton  watch "mouseDown" "localhost:7100/start" 1
 /ITL/scene/startbutton  watch+ "mouseDown" "/ITL/scene/score" "z" 2.
 /ITL/scene/startbutton  watch+ "mouseDown" "/ITL/scene/score" "alpha" 150
 /ITL/scene/startbutton  watch+ "mouseDown" "/ITL/scene" "load" "time.inscore"
