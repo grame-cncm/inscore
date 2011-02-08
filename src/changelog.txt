@@ -9,6 +9,7 @@ Copyright GRAME (c) 2009,2010,2011
 
 ----------------------------------------------------
 Version 0.70
+- identifiers extended to '_' and '-' characters
 - support for multiple scenes (scene 'new', 'del' and 'foreground' messages)
 - 'load' message supported at scene level.
 - get 'watch' implemented
