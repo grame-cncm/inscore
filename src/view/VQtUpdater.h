@@ -81,8 +81,8 @@ class export VQtUpdater : public ViewUpdater
 			}
 			else {
 //				obj->getView()->setParentView (obj);
-				obj->getView()->updateObjectSize (obj);
 				obj->getView()->updateView (obj);				
+				obj->getView()->updateObjectSize (obj);
 			}
 		}
 };
