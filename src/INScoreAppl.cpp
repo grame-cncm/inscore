@@ -77,7 +77,7 @@ void INScoreAppl::aboutQt()
 }
 
 #if WIN32
-#define sep '/'
+#define sep '\\'
 #else
 #define sep '/'
 #endif
@@ -130,6 +130,7 @@ int main( int argc, char **argv )
 	INScoreAppl appl(argc, argv);
 	appl.setApplicationName("INScoreViewer");
 	QDir dir(QApplication::applicationDirPath());
+
 #ifndef WIN32
 	dir.cdUp();
 #endif
@@ -137,6 +138,14 @@ int main( int argc, char **argv )
 	appl.addLibraryPath		( dir.absolutePath());
 
 	IGlue * glue = INScore::start (kTimeInterval, udpPort, kUPDPort+1, kUPDPort+2);
+
+#ifdef WIN32
+	for (int i = 1; i < appl.arguments().size(); i++) {
+		const QString& arg = appl.arguments().at(i);
+		appl.open (arg.toUtf8().constData());
+	}
+#endif
+
 	ret = appl.exec();
 	INScore::stop (glue);
 	return ret;
