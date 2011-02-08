@@ -26,6 +26,7 @@
 #define __INScoreScene__
 
 #include <QGraphicsScene>
+#include <string>
 
 class QEvent;
 //_______________________________________________________________________
@@ -39,7 +40,13 @@ class INScoreScene : public QGraphicsScene
 	protected:
 		std::string	fOscAddress;
 		
+		const char*	extension ( const char* file ) const;
+		std::string	makename ( const char* file ) const;
+		std::string	tr ( const std::string& name ) const;
+
 		void	open ( const char* file );
+		void	openscene ( const char* file );
+		void	openfile ( const char* file );
 		void	dropEvent ( QGraphicsSceneDragDropEvent * event );
 		void	dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
 		void	dragMoveEvent ( QGraphicsSceneDragDropEvent * event );

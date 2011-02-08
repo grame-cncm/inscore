@@ -30,6 +30,7 @@
 
 #include <iostream>
 #include <string>
+#include <ctype.h>
 
 #include "IAppl.h"
 #include "INScore.h"
@@ -43,7 +44,69 @@ INScoreScene::INScoreScene (const std::string& address) : QGraphicsScene (), fOs
 INScoreScene::~INScoreScene ()						{}
 
 //_______________________________________________________________________
+static string tolower (string& str)
+{
+	for (unsigned int i=0; i<str.size(); i++)
+		str[i] = tolower(str[i]);
+	return str;
+}
+
+//_______________________________________________________________________
+const char* INScoreScene::extension (const char* fullpath) const
+{
+	string file (fullpath);
+	size_t pos = file.find_last_of (".");
+	if (pos != string::npos)
+		return &fullpath[pos+1];
+	return 0;
+}
+
+//_______________________________________________________________________
+string INScoreScene::makename (const char* fullpath) const
+{
+	string file (fullpath);
+	size_t startpos = file.find_last_of ("/");
+	size_t endpos = file.find_last_of (".");
+	if (startpos == string::npos) startpos = 0;
+	else startpos += 1;
+
+	size_t length = (endpos == string::npos) ? string::npos : 
+		(endpos > startpos) ? endpos - startpos : string::npos;
+	return tr (file.substr(startpos, length));
+}
+					
+//_______________________________________________________________________
+string INScoreScene::tr(const string& name) const
+{
+	string outstr (name);
+	for (unsigned int i = 0; i < outstr.size(); i++) {
+		switch (outstr[i]) {
+			case ' ': case '	':
+				outstr[i] = '_';
+				break;
+			case '#': case '*': case ',': case '/': case '?':
+			case '[': case ']': case '{': case '}':
+				outstr[i] = '_';
+				break;
+		}
+	}
+	return outstr;
+}
+
+//_______________________________________________________________________
 void INScoreScene::open (const char* fullpath)
+{
+	const char* ptr = extension(fullpath);
+	string ext;
+	if (ptr) ext = ptr;
+	if (tolower(ext) == "inscore")
+		openscene (fullpath);
+	else
+		openfile (fullpath);
+}
+
+//_______________________________________________________________________
+void INScoreScene::openscene (const char* fullpath)
 {
 	string file (fullpath);
 	size_t pos = file.find_last_of ("/");
@@ -58,6 +121,19 @@ void INScoreScene::open (const char* fullpath)
 	INScore::MessagePtr msg = INScore::newMessage ("load");
 	INScore::add (msg, file.c_str());
 	INScore::postMessage (fOscAddress.c_str(), msg);
+}
+
+//_______________________________________________________________________
+void INScoreScene::openfile (const char* fullpath)
+{
+	string file (fullpath);
+	string address = fOscAddress;
+	address += "/";
+	address += makename (fullpath);
+	INScore::MessagePtr msg = INScore::newMessage ("set");
+	INScore::add (msg, "file");
+	INScore::add (msg, file.c_str());
+	INScore::postMessage (address.c_str(), msg);
 }
 
 //_______________________________________________________________________
