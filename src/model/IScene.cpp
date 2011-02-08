@@ -67,6 +67,7 @@ IScene::IScene(const std::string& name, IObject * parent) : IRectShape(name, par
 
 	fGetMsgHandlerMap["fullscreen"] = TGetParamMsgHandler<bool>::create(fFullScreen);
 	fGetMsgHandlerMap[""]			= 0;	// force standard propagation of the get message
+	fGetMsgHandlerMap["effect"]		= 0;	// no effects at scene level
 }
 
 //--------------------------------------------------------------------------
