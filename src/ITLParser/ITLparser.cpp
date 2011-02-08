@@ -46,7 +46,9 @@
 extern int yydebug;
 #endif
 
+#ifndef WIN32
 static void yyunput(int, char*) __attribute__((unused));
+#endif
 
 #include "ITLparse.c++"
 
