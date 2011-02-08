@@ -2,4 +2,4 @@
 /ITL/scene/* watch "mouseMove"
 /ITL/scene/* watch "mouseUp" 
 
-/ITL/scene/_comment del
+/ITL/scene/_* del

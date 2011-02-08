@@ -1,9 +1,9 @@
-/ITL/scene/* watch "mouseDown"  	"/ITL/$scene/$self" "x" "$sx"
-/ITL/scene/* watch+ "mouseDown"  	"/ITL/$scene/$self" "y" "$sy"
-/ITL/scene/* watch "mouseMove"  	"/ITL/$scene/$self" "x" "$sx"
-/ITL/scene/* watch+ "mouseMove"  	"/ITL/$scene/$self" "y" "$sy"
-/ITL/scene/* watch "mouseUp"  		"/ITL/$scene/$self" "x" "$sx"
-/ITL/scene/* watch+ "mouseUp" 	 	"/ITL/$scene/$self" "y" "$sy"
+/ITL/scene/[^_]* watch "mouseDown"  	"/ITL/$scene/$self" "x" "$sx"
+/ITL/scene/[^_]* watch+ "mouseDown"  	"/ITL/$scene/$self" "y" "$sy"
+/ITL/scene/[^_]* watch "mouseMove"  	"/ITL/$scene/$self" "x" "$sx"
+/ITL/scene/[^_]* watch+ "mouseMove"  	"/ITL/$scene/$self" "y" "$sy"
+/ITL/scene/[^_]* watch "mouseUp"  		"/ITL/$scene/$self" "x" "$sx"
+/ITL/scene/[^_]* watch+ "mouseUp" 	 	"/ITL/$scene/$self" "y" "$sy"
 
 /ITL/scene/_comment set "txt" "You can now edit the scene and move the objects using the mouse"
-/ITL/scene/comment y 0.9
+/ITL/scene/_comment y 0.9
