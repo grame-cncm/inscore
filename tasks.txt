@@ -1,7 +1,9 @@
 todo
 ----
 
-- vérifier l'adressage de la font guido
+- revoir le traitement des messages get (cf watch) + associer un strem de sortie explicite
+
+[ok] vérifier l'adressage de la font guido -> pb en 10.5 apparement lié au système
 
 [ok] idée d'intégrer des objets faust (svg)
 [ok] support type 'svg' en + de 'svgf'
