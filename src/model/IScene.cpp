@@ -155,10 +155,10 @@ string IScene::address2scene (const char* addr) const
 	return sceneAddress;
 }
 
+extern SIMessageStack gMsgStack;
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 {
-	extern SIMessageStack gMsgStask;
 	if (msg->size() == 1) {
 		string srcfile = msg->params()[0]->value<string>("");
 		if (srcfile.size()) {
@@ -169,7 +169,7 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 					IMessage * msg = *i;
 					string address = address2scene (msg->address().c_str());
 					msg->setAddress (address);
-					gMsgStask->push(msg);
+					gMsgStack->push(msg);
 				}
 				delete msgs;
 				return MsgHandler::kProcessed;

@@ -98,14 +98,6 @@ void INScoreAppl::open(const string& file)
 }
 
 //_______________________________________________________________________
-void INScoreAppl::open()
-{
-	QString fileName = QFileDialog::getOpenFileName(0, tr("Open INScore file"), "");
-	if (fileName.size())
-		open (fileName.toStdString());
-}
-
-//_______________________________________________________________________
 bool INScoreAppl::event(QEvent *ev)
 {
     if (ev->type() == QEvent::FileOpen) {

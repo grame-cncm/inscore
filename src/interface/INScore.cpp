@@ -58,7 +58,7 @@ class JavaThread : public QThread
 };
 
 
-SIMessageStack gMsgStask;
+SIMessageStack gMsgStack;
 
 #define kUPDPort 7000
 
@@ -124,7 +124,7 @@ void INScore::postMessage	(const char* address, MessagePtr msg)
 	IMessage* m = Message2IMessage (msg);
 	if (m) {
 		m->setAddress(address);
-		if (gMsgStask) gMsgStask->push(m);
+		if (gMsgStack) gMsgStack->push(m);
 	}
 }
 

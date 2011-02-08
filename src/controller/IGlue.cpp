@@ -51,7 +51,7 @@ using namespace std;
 namespace inscore
 {
 
-extern SIMessageStack gMsgStask;
+extern SIMessageStack gMsgStack;
 
 //--------------------------------------------------------------------------
 IGlue::IGlue(int udpport, int outport, int errport) 
@@ -133,7 +133,7 @@ void IGlue::initialize (bool offscreen)
 	EventsAble::init();
 
 	fMsgStack = IMessageStack::create();
-	gMsgStask = fMsgStack;
+	gMsgStack = fMsgStack;
 	fController = IController::create();
 //	fController->setListener (this);
 

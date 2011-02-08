@@ -45,7 +45,6 @@ class INScoreAppl : public QApplication
 	public slots:
 		void about();
 		void aboutQt();
-		void open();
 };
 
 

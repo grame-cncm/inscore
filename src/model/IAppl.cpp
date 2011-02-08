@@ -270,10 +270,10 @@ void IAppl::helloMsg() const
 	delete msg;
 }
 
+extern SIMessageStack gMsgStack;
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
 {
-	extern SIMessageStack gMsgStask;
 	if (msg->size() == 1) {
 		string srcfile = msg->params()[0]->value<string>("");
 		if (srcfile.size()) {
@@ -281,7 +281,7 @@ MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
 			IMessageList* msgs = p.readfile(absolutePath(srcfile).c_str());
 			if (msgs) {
 				for (IMessageList::const_iterator i = msgs->begin(); i != msgs->end(); i++) {
-					gMsgStask->push(*i);
+					gMsgStack->push(*i);
 				}
 				delete msgs;
 				return MsgHandler::kProcessed;

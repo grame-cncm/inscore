@@ -38,7 +38,7 @@ using namespace std;
 namespace inscore
 {
 
-extern SIMessageStack gMsgStask;
+extern SIMessageStack gMsgStack;
 
 const char* kXVar		= "$x";
 const char* kYVar		= "$y";
@@ -140,7 +140,7 @@ void EventMessage::sockSend (const IMessage* msg, const string& dst, int port) c
 void EventMessage::localSend (const IMessage* msg) const
 {
 	IMessage* copy = new IMessage (*msg);
-	if (copy) gMsgStask->push(copy);
+	if (copy) gMsgStack->push(copy);
 }
 
 //----------------------------------------------------------------------
