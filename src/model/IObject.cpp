@@ -95,12 +95,13 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fMsgHandlerMap["save"]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::saveMsg);
 	fMsgHandlerMap["watch"]		= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsg);
 	fMsgHandlerMap["watch+"]	= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsgAdd);
-
-	fGetMsgHandlerMap["effect"]	= TGetParamMethodHandler<IObject, GraphicEffect (IObject::*)() const>::create(this, &IObject::getEffect);
 	
 	colorAble();
 	positionAble();
 	timeAble();
+
+	fGetMsgHandlerMap["effect"]	= TGetParamMethodHandler<IObject, GraphicEffect (IObject::*)() const>::create(this, &IObject::getEffect);
+	fGetMsgHandlerMap["watch"]	= TGetParamMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
 }
 
 //--------------------------------------------------------------------------
@@ -403,8 +404,12 @@ IMessageList IObject::getParams() const
 	map<string, SGetParamMsgHandler>::const_iterator i = fGetMsgHandlerMap.begin();
 	while (i != fGetMsgHandlerMap.end()) {
 		const string& what = i->first;
-		const SGetParamMsgHandler& handler = what.size() ? i->second : 0;
-		if (handler) outMsgs += getParam(i->first, i->second);
+		if (what == "watch")
+			outMsgs = getWatch();
+		else {
+			const SGetParamMsgHandler& handler = what.size() ? i->second : 0;
+			if (handler) outMsgs += getParam(i->first, i->second);
+		}
 		i++;
 	}
 	return outMsgs;
@@ -506,12 +511,14 @@ IMessageList IObject::getMsgs(const IMessage* msg) const
 		if (what.size()) {
 			handler = getMessageHandler(what);
 			if (handler) {
-				IMessage * msg = getParam(what, handler);
-				if (msg) outMsgs += msg;
-				else break;
+				if (what == "watch")
+					outMsgs = getWatch();
+				else {
+					IMessage * msg = getParam(what, handler);
+					if (msg) outMsgs += msg;
+					else break;
+				}
 			}
-			else if (what == "watch")
-				outMsgs = getWatch();
 			else if (what == "*")
 				outMsgs = getAll();
 		}
