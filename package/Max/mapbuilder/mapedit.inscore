@@ -37,6 +37,7 @@
 /ITL/scene/zoombin 	x 0.12
 /ITL/scene/zoombout x -0.12
 /ITL/scene/zoom* 	y -0.95
+/ITL/scene/zoom* 	z 2.0
 /ITL/scene/zoom* 	scale 1.6
 /ITL/scene/zoomb* watch "mouseEnter" "/ITL/$scene/$self" "scale" 2.2
 /ITL/scene/zoomb* watch "mouseLeave" "/ITL/$scene/$self" "scale" 1.6
@@ -63,6 +64,7 @@
 /ITL/scene/savebutton set "txt"		"Save"
 /ITL/scene/savebutton x 0.6
 /ITL/scene/*button y 0.9
+/ITL/scene/*button z 2.5
 /ITL/scene/*button scale 1.6
 
 /ITL/scene/*button watch "mouseEnter" "/ITL/$scene/$self" "red" 255
