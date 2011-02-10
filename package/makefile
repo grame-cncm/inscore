@@ -1,4 +1,4 @@
-version := 0.63
+version := 0.70
 
 package:= INScore-$(version)
 viewer := INScoreViewer
@@ -36,8 +36,6 @@ macosx:
 	make rsrc
 	chmod -x  $(shell find . -name "*.inscore")
 	cp -f ../src/guido2.ttf $(package)
-	open $(package)/$(viewer).app/Contents/Info.plist
-	@echo === remove the access path to INScoreViewer.icns ====
 		
 doc: 
 	[ -d $(docdst)/html ] || mkdir -p $(docdst)/html
@@ -55,7 +53,7 @@ rsrc:
 	cp -rf PureData $(package)
 	cp -rf python $(package)
 	cp -rf lisp $(package)
-	rm -f $(package)/lisp/ignore.txt
+	cp -rf StandAlone $(package)/
 	cp readme.txt $(package)
 	cp -r doc $(package)
 
