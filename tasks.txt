@@ -1,7 +1,7 @@
 todo
 ----
 
-- revoir le traitement des messages get (cf watch) + associer un strem de sortie explicite
+- revoir le traitement des messages get (cf watch)
 
 [ok] vérifier l'adressage de la font guido -> pb en 10.5 apparement lié au système
 
