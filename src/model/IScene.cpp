@@ -71,7 +71,7 @@ IScene::IScene(const std::string& name, IObject * parent) : IRectShape(name, par
 }
 
 //--------------------------------------------------------------------------
-QGraphicsScene * IScene::getScene () const			{ return getView()->scene(); }
+QGraphicsScene * IScene::getGraphicScene () const			{ return getView()->scene(); }
 
 //--------------------------------------------------------------------------
 void IScene::newScene ()	{}

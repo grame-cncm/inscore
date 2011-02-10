@@ -106,7 +106,7 @@ class IScene : public IRectShape, public PeriodicTask
 		/// \brief a periodic task to propagate modification state from masters to slaves
 		virtual void ptask ();
 		
-		QGraphicsScene * getScene () const;
+		QGraphicsScene * getGraphicScene () const;
 		VSceneView *	getView () const				{ return fView; }
 		void			setView (VSceneView * view) 	{ fView = view; }
 		VGraphicsItemView*	graphicView() const			{ return (VGraphicsItemView*)fView; }
