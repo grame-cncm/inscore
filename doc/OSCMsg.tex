@@ -1375,7 +1375,9 @@ Example:
 2) Request the object \OSC{myObject} to watch \OSC{mouseDown} events and send a "start" message to host.domain.org on udp port 12100 to OSC address /an/address
 
 
-\sublevel{Message variables}
+%===============================
+%: Message variables
+\sublevel{Variables}
 \label{interactvar}
 
 Variables denote values computed when an event is triggered. These values are send in place of the variable. A variable name starts with a '\$' sign. Currently, the following variables are supported by mouse events:
@@ -1394,20 +1396,47 @@ xy : ('x' | 'y') ( | '[low,high]')
 Note also that the values are not clipped to the object dimensions and could exceed its width or height or become negative in case of mouse move events.
 
 \item \OSC{\$sx} \OSC{\$sy}: denotes the mouse pointer position in the scene coordinates space. \OSC{\$sx} and \OSC{\$sy} are computed like
-
-\item \OSC{\$date}: denotes the object date corresponding to the mouse pointer position at the time of the event. The detailed date variable is given below: it is optionnaly followed by a colon and the name of the mapping to be used to compute the date . The \OSC{\$date} variable is replaced by its rational value (i.e. two integers values). 
 \end{itemize}
 
 \begin{rail} 
 date : 'date' (| ':'  mapname)
 \end{rail}
 
+\begin{itemize}
+\item \OSC{\$date}: denotes the object date corresponding to the mouse pointer position at the time of the event. The detailed date variable is given below: it is optionnaly followed by a colon and the name of the mapping to be used to compute the date . The \OSC{\$date} variable is replaced by its rational value (i.e. two integers values). 
+\end{itemize}
+
 Note that a variable can be used several times in a message, but several \OSC{\$date} variables must always refer to the same mapping.
 
 \vspace{5mm}
 \texttt{\textbf{Warning:}} the interaction message set is provided for experiment. It is likely to change in a future version. Ideas, comments, suggestions are welcome for the design of a stable API.
 
+%===============================
+%: Message based variables
+\sublevel{Message based variables}
+\label{msgvar}
 
+A message based variable is a variable containing an OSC message which will be evaluated at the time of the event. They are supported by all kind of events. Like  the variables above, a message based variable starts with a '\$' sign followed by a valid 'get' message enclosed in parenthesis:
+\begin{rail} 
+msgVar : '(' oscaddress 'get' (| params) ')'
+\end{rail}
+
+The evaluation of a 'get' message produces a message or a list of messages. The message based variable will be replaced by the parameters of the messages resulting from the evaluation of the 'get' message.
+Note that all the 'get' messages attached to an event are evaluated at the same time.
+
+Example:
+{\small \begin{verbatim}
+/ITL/scene/obj1 watch  mouseDown "/ITL/scene/obj1" "show" $("/ITL/scene/obj2" get "show")
+/ITL/scene/obj1 watch+ mouseDown "/ITL/scene/obj2" "show" $("/ITL/scene/obj1" get "show")
+/ITL/scene/obj2 watch  mouseDown "/ITL/scene/obj1" "show" $("/ITL/scene/obj2" get "show")
+/ITL/scene/obj2 watch+ mouseDown "/ITL/scene/obj2" "show" $("/ITL/scene/obj1" get "show")
+\end{verbatim}
+}
+When clicked, the objects \OSC{obj1} and \OSC{obj1} swap their visibility state.
+
+
+
+%===============================
 \sublevel{OSC address variables}
 \label{oscvar}
 The OSC address parameter of a watch message supports the following variables:

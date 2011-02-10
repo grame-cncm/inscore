@@ -1220,3 +1220,17 @@
 \rail@endbar
 \rail@end
 }
+\rail@i {68}{ msgVar : '(' oscaddress 'get' (| params) ')' }
+\rail@o {68}{
+\rail@index{msgVar}
+\rail@begin{2}{msgVar}
+\rail@term{(}[]
+\rail@nont{oscaddress}[]
+\rail@term{get}[]
+\rail@bar
+\rail@nextbar{1}
+\rail@nont{params}[]
+\rail@endbar
+\rail@term{)}[]
+\rail@end
+}
