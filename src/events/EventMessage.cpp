@@ -51,7 +51,8 @@ const char* kSelfVar	= "$self";
 
 
 //----------------------------------------------------------------------
-EventMessage::EventMessage (const string& objname, const std::string& scene, const IMessage* msg, int startindex) : fMessage(0), fPort(kDefaultUPDPort)
+EventMessage::EventMessage (const string& objname, const std::string& scene, const IMessage* msg, int startindex) 
+	: fMessage(0), fVarMessage(0), fPort(kDefaultUPDPort)
 {
 	decodeMessage (objname, scene, msg, startindex);
 }
@@ -106,6 +107,42 @@ void EventMessage::decodeAddress (const std::string& address, std::string& oscAd
 }
 
 //----------------------------------------------------------------------
+void EventMessage::splitMsg (const char * msg, vector<string> list)
+{
+	string word;
+	while (*msg) {
+		if ((*msg ==' ') || (*msg=='	')) {
+			if (word.size()) {
+				list.push_back (word);
+				word.clear();
+			}
+		}
+		else word += *msg;
+		msg++;
+	}
+	if (word.size()) list.push_back (word);
+}
+
+//----------------------------------------------------------------------
+bool EventMessage::checkVariableMsg (IMessage& msg, int index)
+{
+	string var;
+	if (msg.param (index, var)) {
+		if ((var.substr (0,2) == "$(") && (var[var.size()-1] == ')')) {
+			vector<string> parts;
+			splitMsg (var.substr(2, var.size()-1).c_str(), parts);
+			int n = parts.size();
+			if ((n > 1) && (parts[1] == "get")) {
+				fVarMessage = new IMessage (parts[0], parts[1]);
+				for (int i=2; i<n; i++)
+					fVarMessage->add (parts[i]);
+			}
+		}
+	}
+	return false;
+}
+
+//----------------------------------------------------------------------
 void EventMessage::decodeMessage (const string& objname, const std::string& scene, const IMessage* msg, int startindex)
 {
 	if ((msg->size() - startindex) < 2) return;
@@ -132,7 +169,6 @@ void EventMessage::sockSend (const IMessage* msg, const string& dst, int port) c
 {
 	gStream.setAddress (dst);
 	gStream.setPort(port);
-//cout << "EventMessage::sockSend => " << dst << ":" << port << endl;
 	msg->print(gStream);
 }
 

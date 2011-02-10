@@ -27,6 +27,7 @@
 #ifndef __EventMessage__
 #define __EventMessage__
 
+#include <vector>
 #include <string>
 #include "rational.h"
 #include "smartpointer.h"
@@ -48,6 +49,7 @@ typedef struct MouseLocation {
 class EventMessage : public smartable
 {
 	IMessage *	fMessage;
+	IMessage *	fVarMessage;
 	std::string	fDest;
 	int			fPort;
 	
@@ -55,10 +57,14 @@ class EventMessage : public smartable
 	void sockSend		(const IMessage* msg, const std::string& dst, int port) const;
 	void localSend		(const IMessage* msg) const;
 
-	void decodeMessage	(const std::string& objname, const std::string& scene, const IMessage* msg, int startindex);
+	void	decodeMessage	(const std::string& objname, const std::string& scene, const IMessage* msg, int startindex);
 	std::string checkVariableAddress (const std::string& address, const std::string& objname, const std::string& scene) const;
-	void checkvariable	(IMessage& msg, const std::string& param, const MouseLocation& mouse, const rational& date, bool setmsg=false) const;
-	float checkrange	(const std::string& param, float val) const;
+
+	bool	checkVariableMsg (IMessage& msg, int index);
+	void	splitMsg (const char * msg, std::vector<std::string> list);
+
+	void	checkvariable	(IMessage& msg, const std::string& param, const MouseLocation& mouse, const rational& date, bool setmsg=false) const;
+	float	checkrange	(const std::string& param, float val) const;
 			
 	protected:
 				 EventMessage(const std::string& objname, const std::string& scene, const IMessage* msg, int startindex);
