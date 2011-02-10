@@ -246,7 +246,10 @@ string IObject::getOSCAddress() const
 void IObject::accept (Updater* u)		{ u->updateTo(this); }
 
 //--------------------------------------------------------------------------
-SIScene	IObject::getScene()				{ return fParent ? fParent->getScene() : 0; }
+SIScene	IObject::getScene()			{ return fParent ? fParent->getScene() : 0; }
+
+//--------------------------------------------------------------------------
+SIObject IObject::getRoot()			{ return fParent ? fParent->getRoot() : SIObject(this); }
 
 //--------------------------------------------------------------------------
 void IObject::cleanup ()
@@ -512,7 +515,7 @@ IMessageList IObject::getMsgs(const IMessage* msg) const
 			handler = getMessageHandler(what);
 			if (handler) {
 				if (what == "watch")
-					outMsgs = getWatch();
+					outMsgs += getWatch();
 				else {
 					IMessage * msg = getParam(what, handler);
 					if (msg) outMsgs += msg;
