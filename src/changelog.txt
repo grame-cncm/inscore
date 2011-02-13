@@ -8,6 +8,11 @@ research@grame.fr
 Copyright GRAME (c) 2009,2010,2011
 
 ----------------------------------------------------
+Version 0.72
+- bug with loading inscore files - introduced with version 0.70
+  possible messages inversion depending on the context
+
+----------------------------------------------------
 Version 0.71
 - bug with gmn score correction: missing update for page, columns and rows changes
 
