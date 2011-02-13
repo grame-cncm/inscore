@@ -115,7 +115,7 @@ template <typename T> class IMsgParam : public baseparam
 	a message string that may be viewed as a method name
 	and a list of message parameters.
 */
-class IMessage : public Message
+class IMessage : public Message, public smartable
 {
 //static unsigned long allocated;
 //static unsigned long freed;
@@ -279,6 +279,8 @@ class IMessage : public Message
 	*/
 	bool	param(int i, rational& val) const;
 };
+
+typedef SMARTP<IMessage>	SIMessage;
 
 //--------------------------------------------------------------------------
 /*!
