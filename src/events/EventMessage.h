@@ -27,15 +27,21 @@
 #ifndef __EventMessage__
 #define __EventMessage__
 
-#include <vector>
+#include <map>
 #include <string>
+#include <vector>
+
+#include "IMessage.h"
 #include "rational.h"
 #include "smartpointer.h"
  
 namespace inscore
 {
 
-class IMessage;
+//class IMessage;
+//typedef SMARTP<IMessage>		SIMessage;
+class IObject;
+typedef SMARTP<IObject>			SIObject;
 class EventMessage;
 typedef SMARTP<EventMessage>	SEventMessage;
 
@@ -48,8 +54,9 @@ typedef struct MouseLocation {
 //----------------------------------------------------------------------
 class EventMessage : public smartable
 {
-	IMessage *	fMessage;
-	IMessage *	fVarMessage;
+	IMessage *			fMessage;
+	std::map<int, SIMessage>	fVarMsgs;		// messages used as variables stored with their index
+	std::map<int, IMessageList>	fVarMsgsEval;	// variable messages evaluated stored with their index
 	std::string	fDest;
 	int			fPort;
 	
@@ -60,11 +67,12 @@ class EventMessage : public smartable
 	void	decodeMessage	(const std::string& objname, const std::string& scene, const IMessage* msg, int startindex);
 	std::string checkVariableAddress (const std::string& address, const std::string& objname, const std::string& scene) const;
 
-	bool	checkVariableMsg (IMessage& msg, int index);
-	void	splitMsg (const char * msg, std::vector<std::string> list);
+	void	checkVariableMsg (const std::string& param, int index);
+	void	splitMsg (const char * msg, std::vector<std::string>& list);
 
 	void	checkvariable	(IMessage& msg, const std::string& param, const MouseLocation& mouse, const rational& date, bool setmsg=false) const;
-	float	checkrange	(const std::string& param, float val) const;
+	float	checkrange		(const std::string& param, float val) const;
+	bool	checkvariablemsg(IMessage& msg, int index, bool setmsg=false);
 			
 	protected:
 				 EventMessage(const std::string& objname, const std::string& scene, const IMessage* msg, int startindex);
@@ -76,7 +84,10 @@ class EventMessage : public smartable
 		static SEventMessage create (const std::string& objname, const std::string& scene, const IMessage* msg, int startindex)	
 					{ return new EventMessage(objname, scene, msg, startindex); }
 		void	send() const;
-		void	send(const MouseLocation& loc, const rational& date) const;
+		void	send(const MouseLocation& loc, const rational& date);
+
+		// variable messages evaluation
+		void	eval (const IObject * object);	
 		bool	hasDateVar (std::string& mapname) const;
 		bool	isDateVar (const std::string& var, std::string& mapname) const;
 		const IMessage * message() const		{ return fMessage; }
