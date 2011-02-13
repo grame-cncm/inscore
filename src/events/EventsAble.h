@@ -68,6 +68,7 @@ class EventsAble
 
 		static void	init ();
 		static eventype	string2type (const std::string& str);
+		static const char* type2string (eventype type);
 
 	private:
 	typedef std::map<eventype, std::vector<SEventMessage> >			_TMsgMap;
@@ -86,7 +87,6 @@ class EventsAble
 	IMessage*	getMsg (const char * address, const std::string& type, const char* msg, const std::string&, const SEventMessage&) const;
 	IMessage*	putMsg (IMessage * msg, const SEventMessage&) const;
 
-	static const char* type2string (eventype type);
 	static std::map<std::string, eventype>	fTypeStr;
 };
 
