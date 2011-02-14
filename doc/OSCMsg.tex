@@ -90,8 +90,10 @@ OSCMessage : OSCAddress message (parameters |)
 OSCAddress : '/' (identifier | regexp) +
 \end{rail}
 
+\railalias{startid}{[-\_a-zA-Z]}
+\railalias{nextid}{[-\_a-zA-Z0-9]]}
 \begin{rail}
-identifier : '[a-zA-Z]' ('[-a-zA-Z0-9]' +)
+identifier : startid (nextid +)
 \end{rail}
 
 The OSC types \emph{int32}, \emph{float32} and \emph{OSC-string} are used as terminal symbols and are denoted by \oscint, \oscfloat\ and \oscstring. 
@@ -1338,11 +1340,13 @@ Interaction messages are user defined messages associated to events and triggere
 The general form of the message is:
 
 \begin{rail}
-interactMsg : (('watch' | 'watch+')  (| what  ( | oscMsg))) 
+interactMsg : (('watch' | 'watch+')  ([1] | what  ( | oscMsg))) 
 \end{rail}
+\index{Interaction!watch}
+\index{Interaction!watch+}
 
 \begin{itemize}
-\item \OSC{watch}: clears the messages associated to the event and when specified, associates the new message to the watched event. 
+\item \OSC{watch}: clears the messages associated to the event and when specified, associates the new message to the watched event. \OSC{watch} without arguments ([1]) clears all the messages associated to all events.
 \item \OSC{watch+}: adds a message to the watched event message list. 
 \end{itemize}
 
@@ -1350,11 +1354,20 @@ Events currently \emph{watchable} are:
 \begin{rail}
 what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'doubleClick' | 'timeEnter' timezone | 'timeLeave' timezone
 \end{rail}
+\index{Interaction!mouseDown}
+\index{Interaction!mouseUp}
+\index{Interaction!mouseEnter}
+\index{Interaction!mouseLeave}
+\index{Interaction!mouseMove}
+\index{Interaction!doubleClick}
+\index{Interaction!timeEnter}
+\index{Interaction!timeLeave}
 
 \begin{rail}
 timezone : int32 int32 int32 int32
 \end{rail}
 A time zone is defined by 2 dates expressed as rational values (i.e. with 4 integers).
+\index{Interaction! timezone}
 
 
 The associated OSC message is any valid OSC message (not restricted to the Interlude message set), with an extended address scheme, supporting IP addresses or host names and udp port number to be specified as OSC addresses prefix. The message parameters are any valid OSC type or variables (see section \ref{interactvar}).
@@ -1382,8 +1395,15 @@ Example:
 
 Variables denote values computed when an event is triggered. These values are send in place of the variable. A variable name starts with a '\$' sign. Currently, the following variables are supported by mouse events:
 \begin{rail} 
-variable : xy | 'absx' | 'absy' | 'sx' | 'sy' | date 
+variable : (xy | 'absx' | 'absy' | 'sx' | 'sy' | date) 
 \end{rail}
+\index{Interaction!variable!x}
+\index{Interaction!variable!y}
+\index{Interaction!variable!absx}
+\index{Interaction!variable!absy}
+\index{Interaction!variable!sx}
+\index{Interaction!variable!sy}
+\index{Interaction!variable!date}
 
 \begin{rail} 
 xy : ('x' | 'y') ( | '[low,high]') 
@@ -1451,11 +1471,29 @@ Note: the system doesn't check for the consistency of the variables placement.
 \toplevel{ Changes list}
 
 %===============================
+%: Differences to version 0.63
+\sublevel{Differences to version 0.63}
+\begin{itemize}
+\item drag and drop files support in INScore viewer
+\item interaction variables extension: \OSC{\$sx}, \OSC{\$sy} variables added to support scene coordinate space (see section \fullref{interactvar}).
+\item automatic range mapping for \OSC{\$x}, \OSC{\$y} variables.
+\item new \OSC{\$self} and \OSC{\$scene} variables in the address field (see section \fullref{oscvar}).
+\item OSC identifiers characters set extended with '\_' and '-' (see section \fullref{genformat}).
+\item support for multiple scenes: \OSC{new}, \OSC{del} and \OSC{foreground} messages (see section \fullref{scene}).
+\item \OSC{load} message supported at scene level (see section \fullref{scene}).
+\item \OSC{get watch} implemented.
+\item \OSC{watch} message without argument to clear all the watched events (see section \fullref{interactvar}).
+\item order of rendering and width, height update corrected (may lead to incorrect rendering)
+\item bug with gmn score corrected: missing update for page, columns and rows changes.
+\item package delivered with the Guido Engine version 1.41 that corrects minimum staves distance and incorrect mapping when optimum page fill is off.
+\end{itemize}
+
+%===============================
 %: Differences to version 0.60
 \sublevel{Differences to version 0.60}
 \begin{itemize}
 \item new 'mousemove' event (see section \fullref{interactmsg}).
-\item interaction messages accept variables (\$x, \$y, \$date...) \fullref{interactvar}).
+\item interaction messages accept variables (\$x, \$y, \$date...) (see section \fullref{interactvar}).
 \item SVG code and files support (see section \fullref{setfile}).
 \item set line message change: the \OSC{x y} form is deprecated, it is replaced by
   the following forms: \\

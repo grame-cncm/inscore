@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>14.2 Message variables</TITLE>
-<META NAME="description" CONTENT="14.2 Message variables">
+<TITLE>14.2 Variables</TITLE>
+<META NAME="description" CONTENT="14.2 Variables">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,32 +27,32 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html748"
+<A NAME="tex2html753"
   HREF="node45.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html742"
+<A NAME="tex2html747"
   HREF="node42.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html736"
+<A NAME="tex2html741"
   HREF="node43.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html744"
+<A NAME="tex2html749"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html746"
-  HREF="node52.html">
+<A NAME="tex2html751"
+  HREF="node54.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html749"
-  HREF="node45.html">14.3 OSC address variables</A>
-<B> Up:</B> <A NAME="tex2html743"
+<B> Next:</B> <A NAME="tex2html754"
+  HREF="node45.html">14.3 Message based variables</A>
+<B> Up:</B> <A NAME="tex2html748"
   HREF="node42.html">14. Events and Interaction</A>
-<B> Previous:</B> <A NAME="tex2html737"
+<B> Previous:</B> <A NAME="tex2html742"
   HREF="node43.html">14.1 Interaction messages</A>
- &nbsp; <B>  <A NAME="tex2html745"
+ &nbsp; <B>  <A NAME="tex2html750"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html747"
-  HREF="node52.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html752"
+  HREF="node54.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
@@ -60,7 +60,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <H1><A NAME="SECTION001520000000000000000"></A>
 <A NAME="interactvar"></A>
 <BR>
-14.2 Message variables
+14.2 Variables
 </H1>
 
 <P>
@@ -70,9 +70,16 @@ Variables denote values computed when an event is triggered. These values are se
  WIDTH="170" HEIGHT="238" ALIGN="BOTTOM" BORDER="0"
  SRC="img74.gif"
  ALT="\begin{rail}
-variable : xy \vert 'absx' \vert 'absy' \vert 'sx' \vert 'sy' \vert date
+variable : (xy \vert 'absx' \vert 'absy' \vert 'sx' \vert 'sy' \vert date)
 \end{rail}">
 <BR>
+<A NAME="1035"></A>
+<A NAME="1036"></A>
+<A NAME="1037"></A>
+<A NAME="1038"></A>
+<A NAME="1039"></A>
+<A NAME="1040"></A>
+<A NAME="1041"></A>
 
 <P>
 <BR>
@@ -106,10 +113,6 @@ Note also that the values are not clipped to the object dimensions and could exc
 <P>
 </LI>
 <LI><TT>$sx</TT> <TT>$sy</TT>: denotes the mouse pointer position in the scene coordinates space. <TT>$sx</TT> and <TT>$sy</TT> are computed like
-
-<P>
-</LI>
-<LI><TT>$date</TT>: denotes the object date corresponding to the mouse pointer position at the time of the event. The detailed date variable is given below: it is optionnaly followed by a colon and the name of the mapping to be used to compute the date . The <TT>$date</TT> variable is replaced by its rational value (i.e. two integers values). 
 </LI>
 </UL>
 
@@ -124,6 +127,13 @@ date : 'date' (\vert ':' mapname)
 <BR>
 
 <P>
+
+<UL>
+<LI><TT>$date</TT>: denotes the object date corresponding to the mouse pointer position at the time of the event. The detailed date variable is given below: it is optionnaly followed by a colon and the name of the mapping to be used to compute the date . The <TT>$date</TT> variable is replaced by its rational value (i.e. two integers values). 
+</LI>
+</UL>
+
+<P>
 Note that a variable can be used several times in a message, but several <TT>$date</TT> variables must always refer to the same mapping.
 
 <P>
@@ -134,32 +144,32 @@ Note that a variable can be used several times in a message, but several <TT>$da
 <P>
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html748"
+<A NAME="tex2html753"
   HREF="node45.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html742"
+<A NAME="tex2html747"
   HREF="node42.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html736"
+<A NAME="tex2html741"
   HREF="node43.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html744"
+<A NAME="tex2html749"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html746"
-  HREF="node52.html">
+<A NAME="tex2html751"
+  HREF="node54.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html749"
-  HREF="node45.html">14.3 OSC address variables</A>
-<B> Up:</B> <A NAME="tex2html743"
+<B> Next:</B> <A NAME="tex2html754"
+  HREF="node45.html">14.3 Message based variables</A>
+<B> Up:</B> <A NAME="tex2html748"
   HREF="node42.html">14. Events and Interaction</A>
-<B> Previous:</B> <A NAME="tex2html737"
+<B> Previous:</B> <A NAME="tex2html742"
   HREF="node43.html">14.1 Interaction messages</A>
- &nbsp; <B>  <A NAME="tex2html745"
+ &nbsp; <B>  <A NAME="tex2html750"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html747"
-  HREF="node52.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html752"
+  HREF="node54.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]

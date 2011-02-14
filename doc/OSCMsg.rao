@@ -29,13 +29,13 @@
 \rail@endplus
 \rail@end
 }
-\rail@i {3}{ identifier : '[a-zA-Z]' ('[-a-zA-Z0-9]' +) }
+\rail@i {3}{ identifier : startid (nextid +) }
 \rail@o {3}{
 \rail@index{identifier}
 \rail@begin{2}{identifier}
-\rail@term{[a-zA-Z]}[]
+\rail@nont{startid}[]
 \rail@plus
-\rail@term{[-a-zA-Z0-9]}[]
+\rail@nont{nextid}[]
 \rail@nextplus{1}
 \rail@endplus
 \rail@end
@@ -1088,7 +1088,7 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {60}{ interactMsg : (('watch' | 'watch+') (| what ( | oscMsg))) }
+\rail@i {60}{ interactMsg : (('watch' | 'watch+') ([1] | what ( | oscMsg))) }
 \rail@o {60}{
 \rail@index{interactMsg}
 \rail@begin{3}{interactMsg}
@@ -1098,6 +1098,7 @@
 \rail@term{watch+}[]
 \rail@endbar
 \rail@bar
+\rail@annote[1]
 \rail@nextbar{1}
 \rail@nont{what}[]
 \rail@bar
@@ -1174,7 +1175,7 @@
 \rail@nont{port}[]
 \rail@end
 }
-\rail@i {65}{ variable : xy | 'absx' | 'absy' | 'sx' | 'sy' | date }
+\rail@i {65}{ variable : (xy | 'absx' | 'absy' | 'sx' | 'sy' | date) }
 \rail@o {65}{
 \rail@index{variable}
 \rail@begin{6}{variable}

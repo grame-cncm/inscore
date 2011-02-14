@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.3 Differences to version 0.53</TITLE>
-<META NAME="description" CONTENT="15.3 Differences to version 0.53">
+<TITLE>15.2 Differences to version 0.60</TITLE>
+<META NAME="description" CONTENT="15.2 Differences to version 0.60">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,68 +21,68 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node50.html">
 <LINK REL="previous" HREF="node48.html">
-<LINK REL="up" HREF="node46.html">
+<LINK REL="up" HREF="node47.html">
 <LINK REL="next" HREF="node50.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html821"
+<A NAME="tex2html827"
   HREF="node50.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html815"
-  HREF="node46.html">
+<A NAME="tex2html821"
+  HREF="node47.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html809"
+<A NAME="tex2html815"
   HREF="node48.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html817"
+<A NAME="tex2html823"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html819"
-  HREF="node52.html">
+<A NAME="tex2html825"
+  HREF="node54.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html822"
-  HREF="node50.html">15.4 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html816"
-  HREF="node46.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html810"
-  HREF="node48.html">15.2 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html818"
+<B> Next:</B> <A NAME="tex2html828"
+  HREF="node50.html">15.3 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html822"
+  HREF="node47.html">15. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html816"
+  HREF="node48.html">15.1 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html824"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html820"
-  HREF="node52.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html826"
+  HREF="node54.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001630000000000000000">
-15.3 Differences to version 0.53</A>
+<H1><A NAME="SECTION001620000000000000000">
+15.2 Differences to version 0.60</A>
 </H1>
 
 <UL>
-<LI>ITL parser corrected to support regexp in message string (used by messages addressed to sync node)
+<LI>new 'mousemove' event (see section <A HREF="node43.html#interactmsg">14.1</A> p.<A HREF="node43.html#interactmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>format of mapping files and strings changed (section <A HREF="node24.html#mapMsg">9</A> p.<A HREF="node24.html#mapMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>interaction messages accept variables ($x, $y, $date...) (see section <A HREF="node44.html#interactvar">14.2</A> p.<A HREF="node44.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>format of sync messages extended to include map name (section <A HREF="node25.html#syncmsg">10</A> p.<A HREF="node25.html#syncmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>SVG code and files support (see section <A HREF="node20.html#setfile">6</A> p.<A HREF="node20.html#setfile"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>signal node: 'garbage' message removed
+<LI>set line message change: the <TT>x y</TT> form is deprecated, it is replaced by
+  the following forms: 
+<BR>  <TT>'xy' x y</TT> (equivalent to the former form) 
+  and <TT>'wa' width angle</TT>   
+  (see section <A HREF="node20.html#setsect">6</A> p.<A HREF="node20.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>new 'reset' message for the scene (/ITL/scene) (section <A HREF="node5.html#scene">3</A> p.<A HREF="node5.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>new 'effect' message  (section <A HREF="node14.html#effectmsg">4.3</A> p.<A HREF="node14.html#effectmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>new 'version' message for the application (/ITL) (section <A HREF="node4.html#ITL">2</A> p.<A HREF="node4.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>utf8 support on windows corrected
 </LI>
-<LI>new 'reset' message for signals (section <A HREF="node36.html#ssignal">13.1.1</A> p.<A HREF="node36.html#ssignal"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>transparency support for stretched synchronized objects corrected
 </LI>
-<LI>bug parsing messages without params corrected
+<LI>multiple application instances supported with dynamic udp port number allocation.
 </LI>
-<LI>slave segmentation used for synchronization
-</LI>
-<LI>new H synchronization mode (preserves slave segmentation)
-</LI>
-<LI>crash bug corrected for load message and missing ITL files
+<LI>command line option with -port portnumber option to set the receive udp port number at startup.
 </LI>
 </UL>
 
