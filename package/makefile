@@ -1,4 +1,4 @@
-version := 0.71
+version := 0.72
 
 package:= INScore-$(version)
 viewer := INScoreViewer
