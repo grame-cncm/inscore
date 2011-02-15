@@ -223,7 +223,9 @@ float EventMessage::checkrange (const string& param, float val) const
 {
 	float low, high;
 	int n = sscanf (param.c_str(), "[%f,%f]", &low, &high);
-	if (n == 2) return val * (high - low) - low;
+	if (n == 2) {
+		return val * (high - low) + low;
+	}
 	return val;
 }
 
@@ -259,7 +261,7 @@ bool EventMessage::checkvariablemsg(IMessage& msg, int index, bool setmsg)
 				string str;
 				if (vm->param (n, str))
 					msg.setMessage (str);
-				else msg << str;
+				else msg.add (vm->params()[n]);
 				setmsg = false;
 			}
 			else msg.add (vm->params()[n]);
