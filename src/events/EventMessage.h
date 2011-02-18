@@ -71,8 +71,10 @@ class EventMessage : public smartable
 	void	splitMsg (const char * msg, std::vector<std::string>& list);
 
 	void	checkvariable	(IMessage& msg, const std::string& param, const MouseLocation& mouse, const rational& date, bool setmsg=false) const;
-	float	checkrange		(const std::string& param, float val) const;
 	bool	checkvariablemsg(IMessage& msg, int index, bool setmsg=false);
+	float	checkfloatrange		(const std::string& param, float val) const;
+	int		checkintrange		(const std::string& param, float val) const;
+	bool	checkfloat (const char* param) const;
 			
 	protected:
 				 EventMessage(const std::string& objname, const std::string& scene, const IMessage* msg, int startindex);

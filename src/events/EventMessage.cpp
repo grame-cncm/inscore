@@ -219,7 +219,17 @@ bool EventMessage::hasDateVar (std::string& mapname) const
 }
 
 //----------------------------------------------------------------------
-float EventMessage::checkrange (const string& param, float val) const
+bool EventMessage::checkfloat (const char* param) const
+{
+	while (*param) {
+		if (*param == '.') return true;
+		param++;
+	}
+	return false;
+}
+
+//----------------------------------------------------------------------
+float EventMessage::checkfloatrange (const string& param, float val) const
 {
 	float low, high;
 	int n = sscanf (param.c_str(), "[%f,%f]", &low, &high);
@@ -230,12 +240,19 @@ float EventMessage::checkrange (const string& param, float val) const
 }
 
 //----------------------------------------------------------------------
+int EventMessage::checkintrange (const string& param, float val) const
+{
+	return int(checkfloatrange(param, val));
+}
+
+//----------------------------------------------------------------------
 void EventMessage::checkvariable (IMessage& msg, const string& param, const MouseLocation& ml, const rational& date, bool setmsg) const
 {
 	string mapname;
 	if (param[0] == '$') {
-		if (param[1] == 'x')			msg << checkrange(param.substr(2), ml.fx);
-		else if (param[1] == 'y')		msg << checkrange(param.substr(2), ml.fy);
+		if (param[1] == 'x')			if (checkfloat(param.c_str())) msg << checkfloatrange(param.substr(2), ml.fx); else msg << checkintrange(param.substr(2), ml.fx);
+		else if (param[1] == 'y')		if (checkfloat(param.c_str())) msg << checkfloatrange(param.substr(2), ml.fy); else msg << checkintrange(param.substr(2), ml.fy);
+
 		else if (param == kAbsXVar)		msg << ml.fabsx;
 		else if (param == kAbsYVar)		msg << ml.fabsy;
 		else if (param == kSceneXVar) 	msg << ml.fsx;
