@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.2 Differences to version 0.60</TITLE>
-<META NAME="description" CONTENT="15.2 Differences to version 0.60">
+<TITLE>14.4 OSC address variables</TITLE>
+<META NAME="description" CONTENT="14.4 OSC address variables">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,72 +19,57 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node50.html">
 <LINK REL="previous" HREF="node48.html">
-<LINK REL="up" HREF="node47.html">
+<LINK REL="up" HREF="node45.html">
 <LINK REL="next" HREF="node50.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html827"
+<A NAME="tex2html828"
   HREF="node50.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html821"
-  HREF="node47.html">
+<A NAME="tex2html822"
+  HREF="node45.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html815"
+<A NAME="tex2html818"
   HREF="node48.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html823"
+<A NAME="tex2html824"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html825"
-  HREF="node54.html">
+<A NAME="tex2html826"
+  HREF="node57.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html828"
-  HREF="node50.html">15.3 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html822"
-  HREF="node47.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html816"
-  HREF="node48.html">15.1 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html824"
+<B> Next:</B> <A NAME="tex2html829"
+  HREF="node50.html">15. Changes list</A>
+<B> Up:</B> <A NAME="tex2html823"
+  HREF="node45.html">14. Events and Interaction</A>
+<B> Previous:</B> <A NAME="tex2html819"
+  HREF="node48.html">14.3 Message based variables</A>
+ &nbsp; <B>  <A NAME="tex2html825"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html826"
-  HREF="node54.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html827"
+  HREF="node57.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001620000000000000000">
-15.2 Differences to version 0.60</A>
+<H1><A NAME="SECTION001540000000000000000"></A>
+<A NAME="oscvar"></A>
+<BR>
+14.4 OSC address variables
 </H1>
+The OSC address parameter of a watch message supports the following variables:
 
 <UL>
-<LI>new 'mousemove' event (see section <A HREF="node43.html#interactmsg">14.1</A> p.<A HREF="node43.html#interactmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI><TT>$self</TT>: replaced by the object name at the time of the message setting.
 </LI>
-<LI>interaction messages accept variables ($x, $y, $date...) (see section <A HREF="node44.html#interactvar">14.2</A> p.<A HREF="node44.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>SVG code and files support (see section <A HREF="node20.html#setfile">6</A> p.<A HREF="node20.html#setfile"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>set line message change: the <TT>x y</TT> form is deprecated, it is replaced by
-  the following forms: 
-<BR>  <TT>'xy' x y</TT> (equivalent to the former form) 
-  and <TT>'wa' width angle</TT>   
-  (see section <A HREF="node20.html#setsect">6</A> p.<A HREF="node20.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>new 'effect' message  (section <A HREF="node14.html#effectmsg">4.3</A> p.<A HREF="node14.html#effectmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>utf8 support on windows corrected
-</LI>
-<LI>transparency support for stretched synchronized objects corrected
-</LI>
-<LI>multiple application instances supported with dynamic udp port number allocation.
-</LI>
-<LI>command line option with -port portnumber option to set the receive udp port number at startup.
+<LI><TT>$scene</TT>: replaced by the scene name at the time of the message setting.
 </LI>
 </UL>
+Note: the system doesn't check for the consistency of the variables placement.
 
 <P>
 <BR><HR>

@@ -19,7 +19,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node24.html">
+<LINK REL="next" HREF="node27.html">
 <LINK REL="previous" HREF="node21.html">
 <LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node24.html">
@@ -27,32 +27,32 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html449"
+<A NAME="tex2html455"
   HREF="node24.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html443"
+<A NAME="tex2html449"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html437"
+<A NAME="tex2html443"
   HREF="node22.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html445"
+<A NAME="tex2html451"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html447"
-  HREF="node54.html">
+<A NAME="tex2html453"
+  HREF="node57.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html450"
-  HREF="node24.html">9. The 'map' message</A>
-<B> Up:</B> <A NAME="tex2html444"
+<B> Next:</B> <A NAME="tex2html456"
+  HREF="node24.html">8.1 Pen control</A>
+<B> Up:</B> <A NAME="tex2html450"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html438"
+<B> Previous:</B> <A NAME="tex2html444"
   HREF="node22.html">7.1 Special 'get' forms</A>
- &nbsp; <B>  <A NAME="tex2html446"
+ &nbsp; <B>  <A NAME="tex2html452"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html448"
-  HREF="node54.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html454"
+  HREF="node57.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
@@ -65,56 +65,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 Some of the messages are specific to the component <TT>type</TT>. These messages can be sent to addresses of the form <TT>/ITL/scene/<I>identifier</I></TT>. They are ignored by objects that don't support the message. 
 
 <P>
-<BR>
-<IMG
- WIDTH="313" HEIGHT="203" ALIGN="BOTTOM" BORDER="0"
- SRC="img38.gif"
- ALT="\begin{rail}
-specificMsg : [1] 'penColor' color
-\vert [1] 'penWidth' float32
-...
-...tyle' penstyle
-\vert [2] 'width' float32
-\vert [2] 'height' float32
-\end{rail}">
-<BR>
-<A NAME="535"></A>
-<A NAME="536"></A>
-<A NAME="537"></A>
-<A NAME="538"></A>
-<A NAME="539"></A>
-
-<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><B>[1]</B> messages supported by the components types <TT>rect | ellipse | polygon | curve | line | graph</TT>.
-</LI>
-<LI><B>[2]</B> messages supported by the components types <TT>rect | ellipse | graph.</TT> </LI>
+<LI><A NAME="tex2html457"
+  HREF="node24.html">8.1 Pen control</A>
+<LI><A NAME="tex2html458"
+  HREF="node25.html">8.2 Width and height control</A>
+<LI><A NAME="tex2html459"
+  HREF="node26.html">8.3 Score pages management</A>
 </UL>
-
-<P>
-<BR>
-<IMG
- WIDTH="219" HEIGHT="203" ALIGN="BOTTOM" BORDER="0"
- SRC="img39.gif"
- ALT="\begin{rail}
-penstyle : 'solid' \vert 'dash' \vert 'dot' \vert 'dashDot' \vert 'dashDotDot'
-\end{rail}">
-<BR>
-<A NAME="548"></A>
-<A NAME="549"></A>
-<A NAME="550"></A>
-<A NAME="551"></A>
-<A NAME="552"></A>
-
-<P>
-The color scheme is described in section <A HREF="node6.html#common">4</A>. 
-<BR>
-The pen width default value is 0 (excepted for <TT>line</TT> objects, where 1.0 is the default value). It is expressed in arbitrary units (1 is a reasonable value).
-<BR>
-The pen style default value is <TT>solid</TT>.
-<BR>
-<P>
+<!--End of Table of Child-Links-->
 <BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]

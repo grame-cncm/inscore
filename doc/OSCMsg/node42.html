@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>14. Events and Interaction</TITLE>
-<META NAME="description" CONTENT="14. Events and Interaction">
+<TITLE>13.2 Graphic signals.</TITLE>
+<META NAME="description" CONTENT="13.2 Graphic signals.">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,52 +19,129 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node47.html">
-<LINK REL="previous" HREF="node34.html">
-<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="previous" HREF="node38.html">
+<LINK REL="up" HREF="node37.html">
 <LINK REL="next" HREF="node43.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html721"
+<A NAME="tex2html728"
   HREF="node43.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html715"
-  HREF="OSCMsg.html">
+<A NAME="tex2html722"
+  HREF="node37.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html709"
+<A NAME="tex2html718"
   HREF="node41.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html717"
+<A NAME="tex2html724"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html719"
-  HREF="node54.html">
+<A NAME="tex2html726"
+  HREF="node57.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html722"
-  HREF="node43.html">14.1 Interaction messages</A>
-<B> Up:</B> <A NAME="tex2html716"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html710"
-  HREF="node41.html">13.2.2 Parallel graphic signals.</A>
- &nbsp; <B>  <A NAME="tex2html718"
+<B> Next:</B> <A NAME="tex2html729"
+  HREF="node43.html">13.2.1 Graphic signal default</A>
+<B> Up:</B> <A NAME="tex2html723"
+  HREF="node37.html">13. Signals and graphic</A>
+<B> Previous:</B> <A NAME="tex2html719"
+  HREF="node41.html">13.1.3 Signals projection.</A>
+ &nbsp; <B>  <A NAME="tex2html725"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html720"
-  HREF="node54.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html727"
+  HREF="node57.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001500000000000000000"></A>
-<A NAME="interaction"></A>
+<H1><A NAME="SECTION001420000000000000000"></A>
+<A NAME="gsignal"></A>
 <BR>
-14. Events and Interaction
+13.2 Graphic signals.
 </H1>
 
 <P>
-Interaction messages are user defined messages associated to events and triggered when these events occur. These messages accept variables as message arguments.
+A graphic signal is created in the standard scene address space. A simple graphic signal is defined by a parallel signal controling the <TT>y</TT> value, the graphic thickness and the color at each time position. The color is encoded as HSBA colors (Hue, Saturation, Brightness, Transparency). The mapping of a signal value  (<TT>[-1,1]</TT>) to the HSBA color space is given by the table <A HREF="#hsbamap">13.1</A>. 
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="hsbfiug"></A><A NAME="931"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 13.2:</STRONG>
+The HSB color space</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER"><IMG
+  WIDTH="256" HEIGHT="251" ALIGN="BOTTOM" BORDER="0"
+ SRC="./hsb.jpg"
+ ALT="Image hsb">
+ </DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<DIV ALIGN="CENTER">
+<A NAME="935"></A>
+<TABLE CELLPADDING=3 BORDER="1">
+<CAPTION><STRONG>Table 13.1:</STRONG>
+HSBA color values.</CAPTION>
+<TR><TD ALIGN="RIGHT">parameter</TD>
+<TD ALIGN="CENTER">mapping</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>hue</TT></TD>
+<TD ALIGN="CENTER"><TT>[-1,1]</TT></TD>
+<TD ALIGN="LEFT">corresponds to <TT>[-180,180]</TT> angular degree where <TT>0</TT> is red.</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>saturation</TT></TD>
+<TD ALIGN="CENTER"><TT>[-1,1]</TT></TD>
+<TD ALIGN="LEFT">corresponds <TT>0%</TT> to <TT>100%</TT> saturation.</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>brigthness</TT></TD>
+<TD ALIGN="CENTER"><TT>[-1,1]</TT></TD>
+<TD ALIGN="LEFT">corresponds <TT>0%</TT> (black) to <TT>100%</TT> (white) brithgness.</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>transparency</TT></TD>
+<TD ALIGN="CENTER"><TT>[-1,1]</TT></TD>
+<TD ALIGN="LEFT">corresponds <TT>0%</TT> to <TT>100%</TT> tranparency.</TD>
+</TR>
+</TABLE>
+</DIV>
+<A NAME="hsbamap"></A>
+</DIV>
+<BR>
+
+<P>
+A graphic signal responds to common component messages (section <A HREF="node6.html#common">4</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). In addition, it supports the following messages:
+<BR>
+<IMG
+ WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.gif"
+ ALT="\begin{rail}
+graphicSignal : 'set' 'graph' signalIdentifier
+\vert 'get'
+\vert 'get' 'dimension'
+\end{rail}">
+<BR>
+<A NAME="962"></A>
+<A NAME="963"></A>
+<A NAME="964"></A>
+
+<P>
+
+<UL>
+<LI>the <TT>set</TT> message is followed by the <TT>graph</TT> type and a <TT><I>signalIdentifier</I></TT>, where <TT>signalIdentifier</TT> must correspond to an existing signal from the <TT>signal</TT> address space. In case <TT>signalIdentifier</TT> doesn't exist, then a new signal is created at the <TT>signalIdentifier</TT> address with default values. 
+</LI>
+<LI>the <TT>get</TT> message is the counterpart of the <TT>set</TT> message (see section <A HREF="node21.html#getsect">7</A> p.<A HREF="node21.html#getsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). 
+</LI>
+<LI>the <TT>get dimension</TT> message gives the number of graphic signals in parallel (see section <A HREF="node44.html#pgsignal">13.2.2</A> p.<A HREF="node44.html#pgsignal"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). 
+ 
+</LI>
+</UL>
 
 <P>
 <BR><HR>
@@ -72,17 +149,41 @@ Interaction messages are user defined messages associated to events and triggere
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><A NAME="tex2html723"
-  HREF="node43.html">14.1 Interaction messages</A>
-<LI><A NAME="tex2html724"
-  HREF="node44.html">14.2 Variables</A>
-<LI><A NAME="tex2html725"
-  HREF="node45.html">14.3 Message based variables</A>
-<LI><A NAME="tex2html726"
-  HREF="node46.html">14.4 OSC address variables</A>
+<LI><A NAME="tex2html730"
+  HREF="node43.html">13.2.1 Graphic signal default values.</A>
+<LI><A NAME="tex2html731"
+  HREF="node44.html">13.2.2 Parallel graphic signals.</A>
 </UL>
 <!--End of Table of Child-Links-->
-<BR><HR>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html728"
+  HREF="node43.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html722"
+  HREF="node37.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html718"
+  HREF="node41.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html724"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html726"
+  HREF="node57.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html729"
+  HREF="node43.html">13.2.1 Graphic signal default</A>
+<B> Up:</B> <A NAME="tex2html723"
+  HREF="node37.html">13. Signals and graphic</A>
+<B> Previous:</B> <A NAME="tex2html719"
+  HREF="node41.html">13.1.3 Signals projection.</A>
+ &nbsp; <B>  <A NAME="tex2html725"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html727"
+  HREF="node57.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

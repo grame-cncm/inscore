@@ -59,7 +59,7 @@
 
 \begin{document}
 
-\title{INScore \\ OSC Messages Reference \\v.0.73}
+\title{INScore \\ OSC Messages Reference \\v.0.74}
 
 \author{Grame, Centre national de cr\'eation musicale\\
 {\small <research@grame.fr>} \\
@@ -560,6 +560,27 @@ setMsg : 'set' type data
 
 It sets a \OSC{scene} component data. When there is no destination for the OSC address, the component is first created before being given the message. When the target destination type doesn't correspond to the message \OSC{type}, the object is replaced by an adequate object.
 
+Supported types are the following:
+\begin{itemize}
+\item \OSC{txt}: a textual component.
+\item \OSC{html}: an html component defined by an HTML string.
+\item \OSC{gmn}: a Guido score defined by a GMN string.
+\item \OSC{svg}: SVG graphics defined by a SVG string.
+\item \OSC{graph}: graphic of a signal. See section \fullref{graphsig} for details about the \OSC{graph} objects data.
+\item \OSC{rect}: a rectangle specified by a width and height. Width and height are expressed in \OSC{scene} coordinates space, thus a width or a height of 2 corresponds to the width or a height of the \OSC{scene}.
+\item \OSC{ellipse}: an ellipse specified by a width and height.
+\item \OSC{polygon}: a polygon specified by a sequence of points, each point being defined by its (x,y) coordinates. Those coordinates are expressed in the \OSC{scene} coordinate space, but only taking in acount the relative position of the points ( \emph{i.e} a polygon A = \{ (0,0) ; (1,1) ; (0,1) \} is equivalent to a polygon B = \{ (1,1) ; (2,2) ; (1,2) \} ).
+\item \OSC{curve}: a sequence of 4-points bezier cubic curve. If the end-point of a curve doesn't match the start-point of the following one, the curves are linked by a straight line. The first curve follows the last curve. The inner space defined by the sequence of curves is filled, using the object color. The points coordinates are handled as in a \OSC{polygon}.
+\item \OSC{line}: a simple line specified by a point (x,y) expressed in \OSC{scene} coordinate space or by a width and angle. The point form is used to compute a line from (0,0) to (x,y), which is next drawn centered on the scene.
+\item \OSC{txtf}: a textual component defined by a file.
+\item \OSC{htmlf}: an html component defined by an HTML file.
+\item \OSC{gmnf}: a Guido score defined by a GMN file.
+\item \OSC{svgf}: vectorial graphics defined by a SVG file.
+\item \OSC{img}: an image file based component. The image format is infered from the file extension.
+\item \OSC{video}: a video file based component. The video format is infered from the file extension. Note that navigation through the video is made using its \OSC{date}.
+\item \OSC{file}: a generic type to handle file based objects. Actually, the \OSC{file} type is translated into a one of the \OSC{txtf}, \OSC{gmnf}, \OSC{img} or \OSC{video} types, according to the file extension (see table \ref{fileTranslate}).
+\end{itemize}
+
 Format of the \OSC{set} message is:
 \begin{rail}
 setMsg : 'set' (
@@ -588,27 +609,6 @@ setMsg : 'set' (
 \index{Set type!curve}
 \index{Set type!line}
 
-
-Supported types are the following:
-\begin{itemize}
-\item \OSC{txt}: a textual component.
-\item \OSC{html}: an html component defined by an HTML string.
-\item \OSC{gmn}: a Guido score defined by a GMN string.
-\item \OSC{svg}: SVG graphics defined by a SVG string.
-\item \OSC{graph}: graphic of a signal. See section \fullref{graphsig} for details about the \OSC{graph} objects data.
-\item \OSC{rect}: a rectangle specified by a width and height. Width and height are expressed in \OSC{scene} coordinates space, thus a width or a height of 2 corresponds to the width or a height of the \OSC{scene}.
-\item \OSC{ellipse}: an ellipse specified by a width and height.
-\item \OSC{polygon}: a polygon specified by a sequence of points, each point being defined by its (x,y) coordinates. Those coordinates are expressed in the \OSC{scene} coordinate space, but only taking in acount the relative position of the points ( \emph{i.e} a polygon A = \{ (0,0) ; (1,1) ; (0,1) \} is equivalent to a polygon B = \{ (1,1) ; (2,2) ; (1,2) \} ).
-\item \OSC{curve}: a sequence of 4-points bezier cubic curve. If the end-point of a curve doesn't match the start-point of the following one, the curves are linked by a straight line. The first curve follows the last curve. The inner space defined by the sequence of curves is filled, using the object color. The points coordinates are handled as in a \OSC{polygon}.
-\item \OSC{line}: a simple line specified by a point (x,y) expressed in \OSC{scene} coordinate space or by a width and angle. The point form is used to compute a line from (0,0) to (x,y), which is next drawn centered on the scene.
-\item \OSC{txtf}: a textual component defined by a file.
-\item \OSC{htmlf}: an html component defined by an HTML file.
-\item \OSC{gmnf}: a Guido score defined by a GMN file.
-\item \OSC{svgf}: vectorial graphics defined by a SVG file.
-\item \OSC{img}: an image file based component. The image format is infered from the file extension.
-\item \OSC{video}: a video file based component. The video format is infered from the file extension. Note that navigation through the video is made using its \OSC{date}.
-\item \OSC{file}: a generic type to handle file based objects. Actually, the \OSC{file} type is translated into a one of the \OSC{txtf}, \OSC{gmnf}, \OSC{img} or \OSC{video} types, according to the file extension (see table \ref{fileTranslate}).
-\end{itemize}
 Note that the default position of any component is \values{[0,0]}. Objects are drawn centered on their position.
 
 \label{setfile}
@@ -683,44 +683,18 @@ The \OSC{get width} and \OSC{get height} messages adressed to components that ha
 \label{specificMsg}
 Some of the messages are specific to the component \OSC{type}. These messages can be sent to addresses of the form \OSC{/ITL/scene/\textit{identifier}}. They are ignored by objects that don't support the message. 
 
+%-------------------------------
+\sublevel{Pen control}
 
+Messages accepted by the components types \OSC{rect | ellipse | polygon | curve | line | graph}.
 \begin{rail}
-specificMsg : 	  [1] 'penColor' color 
-				| [1] 'penWidth' float32
-				| [1] 'penStyle' penstyle
-				| [2] 'width' float32
-				| [2] 'height' float32
-%				| [3] 'videoMap' ( 
-%								( floatSegment relativeTimeSegment ) + 
-%							| 	( ( 'tempo' float32 | ) ( 'startSecond' float32 | )  )
-%							)
-%				| [3] 'videoMapf' string
-%				| [4] 'get pageCount'
-%				| [4] 'page' int32
-%				| [4] 'pageFormat' float32 float32
-%				| [4] 'columns' int32
-%				| [4] 'rows' int32
-%				| [5] 'curveType' curveType
-%				| [5] 'thickness' thickness
-%				| [5] 'drawLine' drawLine
-%				| [5] 'ignoreSignalColor' int32
-%				| [5] 'penIgnoreSignalColor' int32
+penMsg : 	  'penColor' color 
+			| 'penWidth' float32
+			| 'penStyle' penstyle
 \end{rail}
 \index{Specific messages! penColor}
 \index{Specific messages! penWidth}
 \index{Specific messages! penStyle}
-%\index{Specific messages! videoMap}
-%\index{Specific messages! videoMapf}
-\index{Specific messages! width}
-\index{Specific messages! height}
-
-\begin{itemize}
-\item \textbf{[1]} messages supported by the components types \OSC{rect | ellipse | polygon | curve | line | graph}.
-\item \textbf{[2]} messages supported by the components types \OSC{rect | ellipse | graph.} % | video}.
-%\item \textbf{[5]} messages supported by the component type \OSC{graph}.
-%\item \textbf{[3]} messages supported by \OSC{video} components.
-%\item \textbf{[4]} messages supported by the components types \OSC{gmn | gmnf}. The \OSC{pageCount} attributes is read-only.
-\end{itemize}
 
 \begin{rail}
 penstyle : 'solid' | 'dash' | 'dot' | 'dashDot' | 'dashDotDot'
@@ -730,6 +704,78 @@ penstyle : 'solid' | 'dash' | 'dot' | 'dashDot' | 'dashDotDot'
 \index{Specific messages! penStyle! dot}
 \index{Specific messages! penStyle! dashDot}
 \index{Specific messages! penStyle! dashDotDot}
+
+The pen width default value is 0 (excepted for \OSC{line} objects, where 1.0 is the default value). It is expressed in arbitrary units (1 is a reasonable value).
+The pen style default value is \OSC{solid}.\\
+The color scheme is described in section \ref{colormsg}.
+
+
+%-------------------------------
+\sublevel{Width and height control}
+
+Messages accepted by the components types \OSC{rect | ellipse | graph.}
+
+\begin{rail}
+whMsg : 	  'width' float32
+			| 'height' float32
+\end{rail}
+\index{Specific messages! width}
+\index{Specific messages! height}
+
+
+
+%-------------------------------
+\sublevel{Score pages management}
+
+Messages accepted by the components types \OSC{gmn | gmnf}. 
+\begin{rail}
+scoreMsg :      'page' int32
+			| 'dpage' int32
+			| 'pageFormat' float32 float32
+			| 'columns' int32
+			| 'rows' int32
+			| 'get' 'pageCount'
+\end{rail}
+\index{Specific messages! score! page}
+\index{Specific messages! score! dpage}
+\index{Specific messages! score! pageFormat}
+\index{Specific messages! score! columns}
+\index{Specific messages! score! rows}
+\index{Specific messages! score! pageCount}
+
+
+\begin{itemize}
+\item \OSC{page}: set the score current page
+\item \OSC{dpage}: set the score current page
+\item \OSC{pageFormat}: set the page format. The parameters are the page width and height. Note that the message has no effect when the score already includes a $\backslash$pageformat tag.
+\item \OSC{columns}: for multi pages display: set the number of columns.
+\item \OSC{rows}: for multi pages display: set the number of rows.
+\item \OSC{pageCount}:  a read only attribute, gives the score pages count.
+\end{itemize}
+
+
+%-------------------------------
+%\sublevel{Video maps}
+%
+%Messages accepted by \OSC{video} components.
+%\begin{rail}
+%specificMsg : 	 'videoMap' ( 
+%								( floatSegment relativeTimeSegment ) + 
+%							| 	( ( 'tempo' float32 | ) ( 'startSecond' float32 | )  )
+%							)
+%				| 'videoMapf' string
+%\end{rail}
+
+
+
+%\begin{rail}
+%specificMsg : 	  [5] 'curveType' curveType
+%				| [5] 'thickness' thickness
+%				| [5] 'drawLine' drawLine
+%				| [5] 'ignoreSignalColor' int32
+%				| [5] 'penIgnoreSignalColor' int32
+%\end{rail}
+
 
 %\begin{rail}
 %curveType : 'round' | 'step'
@@ -753,11 +799,6 @@ penstyle : 'solid' | 'dash' | 'dot' | 'dashDot' | 'dashDotDot'
 %\index{Specific messages! drawLine! top}
 %\index{Specific messages! drawLine! bottom}
 %\index{Specific messages! drawLine! both}
-
-
-The color scheme is described in section \ref{common}. \\
-The pen width default value is 0 (excepted for \OSC{line} objects, where 1.0 is the default value). It is expressed in arbitrary units (1 is a reasonable value).\\
-The pen style default value is \OSC{solid}.\\
 
 %Graph specific messages:
 %\begin{itemize}

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>13. Signals and graphic signals</TITLE>
-<META NAME="description" CONTENT="13. Signals and graphic signals">
+<TITLE>12. Virtual address space</TITLE>
+<META NAME="description" CONTENT="12. Virtual address space">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,68 +19,50 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node42.html">
-<LINK REL="previous" HREF="node31.html">
+<LINK REL="next" HREF="node37.html">
+<LINK REL="previous" HREF="node30.html">
 <LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node35.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html603"
+<A NAME="tex2html610"
   HREF="node35.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html597"
+<A NAME="tex2html604"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html591"
+<A NAME="tex2html598"
   HREF="node33.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html599"
+<A NAME="tex2html606"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html601"
-  HREF="node54.html">
+<A NAME="tex2html608"
+  HREF="node57.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html604"
-  HREF="node35.html">13.1 The signal virtual</A>
-<B> Up:</B> <A NAME="tex2html598"
+<B> Next:</B> <A NAME="tex2html611"
+  HREF="node35.html">12.1 File watcher</A>
+<B> Up:</B> <A NAME="tex2html605"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html592"
-  HREF="node33.html">12.2 Debug</A>
- &nbsp; <B>  <A NAME="tex2html600"
+<B> Previous:</B> <A NAME="tex2html599"
+  HREF="node33.html">11.3 Score queries</A>
+ &nbsp; <B>  <A NAME="tex2html607"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html602"
-  HREF="node54.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html609"
+  HREF="node57.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001400000000000000000"></A>
-<A NAME="graphsig"></A>
-<BR>
-13. Signals and graphic signals
+<H1><A NAME="SECTION001300000000000000000">
+12. Virtual address space</A>
 </H1>
 
 <P>
-The graphic representation of a signal is approached with <I>graphic signals</I>. As illustrated in figure <A HREF="#graphimg">13.1</A>, a graphic representation of a signal could be viewed as a stream of a limited set of parameters : the y coordinate, the graph thickness h and the graph color c. 
-A <I>graphic signal</I> is a composite signal including a set of 3 parallel signals that control these parameters. Thus the INScore library provides messages to create signals and to combine them into <I>graphic signals</I>. 
-
-<P>
-
-<DIV ALIGN="CENTER"><A NAME="graphimg"></A><A NAME="796"></A>
-<TABLE>
-<CAPTION ALIGN="BOTTOM"><STRONG>Figure 13.1:</STRONG>
-A simple graphic signal, defined at time t by a coordinate y, a thickness h and a color c</CAPTION>
-<TR><TD>
-<DIV ALIGN="CENTER"><IMG
-  WIDTH="355" HEIGHT="144" ALIGN="BOTTOM" BORDER="0"
- SRC="./graph.gif"
- ALT="Image graph">
- </DIV></TD></TR>
-</TABLE>
-</DIV>
+Virtual address space extends the OSC address scheme to objects automatically embedded into other objects. 
 
 <P>
 <BR><HR>
@@ -88,25 +70,11 @@ A simple graphic signal, defined at time t by a coordinate y, a thickness h and 
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><A NAME="tex2html605"
-  HREF="node35.html">13.1 The <I>signal</I> virtual address space.</A>
-<UL>
-<LI><A NAME="tex2html606"
-  HREF="node36.html">13.1.1 Simple signals.</A>
-<LI><A NAME="tex2html607"
-  HREF="node37.html">13.1.2 Composing signals in parallel.</A>
-<LI><A NAME="tex2html608"
-  HREF="node38.html">13.1.3 Signals projection.</A>
+<LI><A NAME="tex2html612"
+  HREF="node35.html">12.1 File watcher</A>
+<LI><A NAME="tex2html613"
+  HREF="node36.html">12.2 Debug</A>
 </UL>
-<BR>
-<LI><A NAME="tex2html609"
-  HREF="node39.html">13.2 Graphic signals.</A>
-<UL>
-<LI><A NAME="tex2html610"
-  HREF="node40.html">13.2.1 Graphic signal default values.</A>
-<LI><A NAME="tex2html611"
-  HREF="node41.html">13.2.2 Parallel graphic signals.</A>
-</UL></UL>
 <!--End of Table of Child-Links-->
 <BR><HR>
 <ADDRESS>

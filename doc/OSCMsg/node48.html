@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.1 Differences to version 0.63</TITLE>
-<META NAME="description" CONTENT="15.1 Differences to version 0.63">
+<TITLE>14.3 Message based variables</TITLE>
+<META NAME="description" CONTENT="14.3 Message based variables">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,103 +21,75 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node49.html">
 <LINK REL="previous" HREF="node47.html">
-<LINK REL="up" HREF="node47.html">
+<LINK REL="up" HREF="node45.html">
 <LINK REL="next" HREF="node49.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html813"
+<A NAME="tex2html816"
   HREF="node49.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html807"
-  HREF="node47.html">
+<A NAME="tex2html810"
+  HREF="node45.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html801"
+<A NAME="tex2html804"
   HREF="node47.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html809"
+<A NAME="tex2html812"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html811"
-  HREF="node54.html">
+<A NAME="tex2html814"
+  HREF="node57.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html814"
-  HREF="node49.html">15.2 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html808"
-  HREF="node47.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html802"
-  HREF="node47.html">15. Changes list</A>
- &nbsp; <B>  <A NAME="tex2html810"
+<B> Next:</B> <A NAME="tex2html817"
+  HREF="node49.html">14.4 OSC address variables</A>
+<B> Up:</B> <A NAME="tex2html811"
+  HREF="node45.html">14. Events and Interaction</A>
+<B> Previous:</B> <A NAME="tex2html805"
+  HREF="node47.html">14.2 Variables</A>
+ &nbsp; <B>  <A NAME="tex2html813"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html812"
-  HREF="node54.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html815"
+  HREF="node57.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001610000000000000000">
-15.1 Differences to version 0.63</A>
+<H1><A NAME="SECTION001530000000000000000"></A>
+<A NAME="msgvar"></A>
+<BR>
+14.3 Message based variables
 </H1>
 
-<UL>
-<LI>drag and drop files support in INScore viewer
-</LI>
-<LI>interaction variables extension: <TT>$sx</TT>, <TT>$sy</TT> variables added to support scene coordinate space (see section <A HREF="node44.html#interactvar">14.2</A> p.<A HREF="node44.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>automatic range mapping for <TT>$x</TT>, <TT>$y</TT> variables.
-</LI>
-<LI>new <TT>$self</TT> and <TT>$scene</TT> variables in the address field (see section <A HREF="node46.html#oscvar">14.4</A> p.<A HREF="node46.html#oscvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>OSC identifiers characters set extended with '_' and '-' (see section <A HREF="node2.html#genformat">1</A> p.<A HREF="node2.html#genformat"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>support for multiple scenes: <TT>new</TT>, <TT>del</TT> and <TT>foreground</TT> messages (see section <A HREF="node5.html#scene">3</A> p.<A HREF="node5.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI><TT>load</TT> message supported at scene level (see section <A HREF="node5.html#scene">3</A> p.<A HREF="node5.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI><TT>get watch</TT> implemented.
-</LI>
-<LI><TT>watch</TT> message without argument to clear all the watched events (see section <A HREF="node44.html#interactvar">14.2</A> p.<A HREF="node44.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>order of rendering and width, height update corrected (may lead to incorrect rendering)
-</LI>
-<LI>bug with gmn score corrected: missing update for page, columns and rows changes.
-</LI>
-<LI>package delivered with the Guido Engine version 1.41 that corrects minimum staves distance and incorrect mapping when optimum page fill is off.
-</LI>
-</UL>
+<P>
+A message based variable is a variable containing an OSC message which will be evaluated at the time of the event. They are supported by all kind of events. Like  the variables above, a message based variable starts with a '$' sign followed by a valid 'get' message enclosed in parenthesis:
+<BR>
+<IMG
+ WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ SRC="img82.gif"
+ ALT="\begin{rail}
+msgVar : '(' oscaddress 'get' (\vert params) ')'
+\end{rail}">
+<BR>
 
 <P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html813"
-  HREF="node49.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html807"
-  HREF="node47.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html801"
-  HREF="node47.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html809"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html811"
-  HREF="node54.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html814"
-  HREF="node49.html">15.2 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html808"
-  HREF="node47.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html802"
-  HREF="node47.html">15. Changes list</A>
- &nbsp; <B>  <A NAME="tex2html810"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html812"
-  HREF="node54.html">Index</A></B> 
-<!--End of Navigation Panel-->
+The evaluation of a 'get' message produces a message or a list of messages. The message based variable will be replaced by the parameters of the messages resulting from the evaluation of the 'get' message.
+Note that all the 'get' messages attached to an event are evaluated at the same time.
+
+<P>
+Example:
+<PRE>
+/ITL/scene/obj1 watch  mouseDown "/ITL/scene/obj1" "show" $("/ITL/scene/obj2" get "show")
+/ITL/scene/obj1 watch+ mouseDown "/ITL/scene/obj2" "show" $("/ITL/scene/obj1" get "show")
+/ITL/scene/obj2 watch  mouseDown "/ITL/scene/obj1" "show" $("/ITL/scene/obj2" get "show")
+/ITL/scene/obj2 watch+ mouseDown "/ITL/scene/obj2" "show" $("/ITL/scene/obj1" get "show")
+</PRE>
+When clicked, the objects <TT>obj1</TT> and <TT>obj1</TT> swap their visibility state.
+
+<P>
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>
