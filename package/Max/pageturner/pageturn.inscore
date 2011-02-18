@@ -1,0 +1,87 @@
+
+/ITL/scene/zoom 	set "txt" "Zoom"
+/ITL/scene/zoom 	y -0.97
+/ITL/scene/zoom 	scale 1.2
+/ITL/scene/zoomrect set "rect" 0.6 0.03
+/ITL/scene/zoomrect y -0.92
+/ITL/scene/zoomrect color 255 255 255 255
+/ITL/scene/zoomrect penWidth 1.0
+/ITL/scene/zoomrect xorigin -1.0
+/ITL/scene/zoomrect x -0.3
+/ITL/scene/zoom* 	z 2.0
+
+/ITL/scene/zoompos set "ellipse" 1. 1.
+/ITL/scene/zoompos color 240 0 0
+/ITL/scene/sync zoompos zoomrect v
+
+/ITL/scene/zoomrect  watch  "mouseDown" "/ITL/scene/score" "scale" "$x[0.3,5]"
+/ITL/scene/zoomrect  watch+ "mouseDown" "/ITL/scene/zoompos" "date" "$date"
+/ITL/scene/zoomrect  watch  "mouseMove" "/ITL/scene/score" "scale" "$x[0.3,5]"
+/ITL/scene/zoomrect  watch+ "mouseMove" "/ITL/scene/zoompos" "date" "$date"
+/ITL/scene/zoomrect  watch  "mouseUp"   "/ITL/scene/score" "scale" "$x[0.3,5]"
+/ITL/scene/zoomrect  watch+ "mouseUp"   "/ITL/scene/zoompos" "date" "$date"
+
+(*
+/ITL/scene/page 	set "txt" "Page"
+/ITL/scene/page 	y 0.90
+/ITL/scene/page 	x -0.65
+/ITL/scene/page 	scale 1.2
+*)
+/ITL/scene/pagerect set "rect" 1.2 0.03
+/ITL/scene/pagerect x -0.6
+/ITL/scene/pagerect y 0.88
+/ITL/scene/pagerect color 255 255 255 255
+/ITL/scene/pagerect penWidth 1.0
+/ITL/scene/pagerect xorigin -1.0
+/ITL/scene/page* 	z 2.0
+
+/ITL/scene/pagepos set "ellipse" 1. 1.
+/ITL/scene/pagepos color 240 0 0
+/ITL/scene/sync pagepos pagerect v
+
+/ITL/scene/pagerect  watch  "mouseDown" "localhost:7100/ITL/scene/score" "page" "$x[1,20]"
+/ITL/scene/pagerect  watch+ "mouseDown" "/ITL/scene/pagepos" "date" "$date"
+/ITL/scene/pagerect  watch  "mouseMove" "/ITL/scene/score" "page" "$x[1,20]"
+/ITL/scene/pagerect  watch+ "mouseMove" "/ITL/scene/pagepos" "date" "$date"
+/ITL/scene/pagerect  watch  "mouseUp"   "/ITL/scene/score" "page" "$x[1,20]"
+/ITL/scene/pagerect  watch+ "mouseUp"   "/ITL/scene/pagepos" "date" "$date"
+
+
+/ITL/scene/cursor   set "rect" 0.01 0.2
+/ITL/scene/cursor   color 255 0 0
+/ITL/scene/cursor   duration 1 32
+/ITL/scene/cursor   z 5.
+/ITL/scene/cursor   show 0
+/ITL/scene/sync cursor  score v
+
+
+
+/ITL/scene/reloadbutton set "txt" 	"Reset"
+/ITL/scene/reloadbutton x -0.3
+/ITL/scene/rejectbutton set "txt"	"Undo"
+/ITL/scene/rejectbutton x -0.1
+/ITL/scene/startbutton set "txt"	"Play"
+/ITL/scene/startbutton x 0.1
+/ITL/scene/savebutton set "txt"		"Save"
+/ITL/scene/savebutton x 0.3
+/ITL/scene/*button y 0.94
+/ITL/scene/*button z 2.5
+/ITL/scene/*button scale 1.6
+
+/ITL/scene/*button watch "mouseEnter" "/ITL/$scene/$self" "red" 255
+/ITL/scene/*button watch "mouseLeave" "/ITL/$scene/$self" "red" 0
+/ITL/scene/*button watch "mouseDown"  "/ITL/$scene/b[12]" "del"
+
+/ITL/scene/rejectbutton watch+ "mouseDown" "localhost:7100/reject" 1
+
+/ITL/scene/startbutton  watch "mouseDown" "localhost:7100/start" 1
+/ITL/scene/startbutton  watch+ "mouseDown" "/ITL/scene/score" "z" 2.
+/ITL/scene/startbutton  watch+ "mouseDown" "/ITL/scene/score" "alpha" 150
+/ITL/scene/startbutton  watch+ "mouseDown" "/ITL/scene" "load" "time.inscore"
+
+/ITL/scene/reloadbutton watch+ "mouseDown" 	"/ITL/$scene" "load" "mapedit.inscore"
+/ITL/scene/reloadbutton watch+ "mouseDown" 	"localhost:7100/reset" 1
+
+/ITL/scene/savebutton   watch  "mouseDown" 	"localhost:7100/save" 1
+
+/ITL/scene load "watch.inscore"
