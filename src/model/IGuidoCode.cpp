@@ -47,6 +47,7 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 	fTypeString = kGuidoCodeType;
 
 	fMsgHandlerMap["page"]			= TSetMethodMsgHandler<IGuidoCode,int>::create(this, &IGuidoCode::setPage);
+	fMsgHandlerMap["dpage"]			= TSetMethodMsgHandler<IGuidoCode,int>::create(this, &IGuidoCode::setdPage);
 	fMsgHandlerMap["pageFormat"]	= TSetMethodMsgHandler<IGuidoCode,TFloatSize>::create(this, &IGuidoCode::setPageFormat);
 	fMsgHandlerMap["columns"]		= TSetMethodMsgHandler<IGuidoCode,int>::create(this, &IGuidoCode::setNbOfPageColumns);
 	fMsgHandlerMap["rows"]			= TSetMethodMsgHandler<IGuidoCode,int>::create(this, &IGuidoCode::setNbOfPageRows);
@@ -66,6 +67,18 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 void IGuidoCode::accept (Updater* u)
 {
 	u->updateTo (SIGuidoCode(this));
+}
+
+//--------------------------------------------------------------------------
+void IGuidoCode::setdPage( int dpage )
+{ 
+	int page = fPage + dpage;
+	if (page < 1) page = 1;
+	else if (page > fPageCount) page = fPageCount;
+	if (fPage != page) {
+		fPage = page;
+		localMapModified(true); 
+	}
 }
 
 //--------------------------------------------------------------------------
