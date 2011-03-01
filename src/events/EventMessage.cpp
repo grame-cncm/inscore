@@ -219,8 +219,19 @@ bool EventMessage::hasDateVar (std::string& mapname) const
 }
 
 //----------------------------------------------------------------------
+static bool checkrange (const char* param)
+{
+	while (*param) {
+		if (*param == '[') return true;
+		param++;
+	}
+	return false;
+}
+
+//----------------------------------------------------------------------
 bool EventMessage::checkfloat (const char* param) const
 {
+	if (!checkrange(param)) return true;
 	while (*param) {
 		if (*param == '.') return true;
 		param++;
