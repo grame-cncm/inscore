@@ -12,6 +12,7 @@ Version 0.74
 - new 'dpage' message accepted by 'gmn' objects 
 - x and y variables: automatic range type detection (int | float)
 - polymorphism for the set 'txt' message params
+- set 'txt' message: accepts stream like parameters
 
 ----------------------------------------------------
 Version 0.73
