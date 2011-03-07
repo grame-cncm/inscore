@@ -34,15 +34,16 @@
 
 /ITL/scene/pagepos set "ellipse" 1. 1.
 /ITL/scene/pagepos color 240 0 0
-/ITL/scene/page* 	z 2.0
 /ITL/scene/sync pagepos pagerect v
 /ITL/scene/sync pagenum pagepos syncTop
+/ITL/scene/page* 	z 2.0
 
 /ITL/scene/pagerect  watch  "mouseDown" "/ITL/scene/pagepos" "date" "$date"
 /ITL/scene/pagerect  watch+ "mouseDown" "localhost:7100/page" "$x[1,20]"
 
 /ITL/scene/pagerect  watch  "mouseMove" "/ITL/scene/score" "page" "$x[1,20]"
 /ITL/scene/pagerect  watch+ "mouseMove" "/ITL/scene/pagepos" "date" "$date"
+/ITL/scene/pagerect  watch+ "mouseMove" "/ITL/scene/pagenum" "set" "page" "$x[1,20]"
 /ITL/scene/pagerect  watch+ "mouseMove" "localhost:7100/page" "$x[1,20]"
 
 /ITL/scene/pagerect  watch  "mouseUp"   "/ITL/scene/score" "page" "$x[1,20]"
@@ -88,3 +89,4 @@
 /ITL/scene/score  watch+ "mouseDown" "/ITL/scene/score"    "dpage" 1
 /ITL/scene/score  watch+ "mouseDown" "/ITL/scene/pagerect" "duration" "$(/ITL/scene/score get duration)"
 /ITL/scene/score  watch+ "mouseDown" "/ITL/scene/pagepos"  "date" "$date:system"
+/ITL/scene/score  watch  "mouseUp"   "/ITL/scene/pagenum"  "set" "page" "$(/ITL/scene/score get page)"
