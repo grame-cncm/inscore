@@ -262,7 +262,7 @@ void IGlue::viewUpdate()		{ if (fViewUpdater) fViewUpdater->update (fModel); }
 void IGlue::timerEvent ( QTimerEvent *)
 {
 	if (fMsgStack->size()) {
-		QMutexLocker locker (&fTimeViewMutex);
+//		QMutexLocker locker (&fTimeViewMutex);
 
 		timebench ("model", modelUpdate());
 		if (fTimeTask) fTimeTask->ptask();
@@ -279,7 +279,6 @@ void IGlue::timerEvent ( QTimerEvent *)
 		if (fModel->getState() & IObject::kSubModified) {
 			fController->setListener (fModel->oscDebug() ? this : 0);	// check for debug flag changes
 			if (fViewListener) fViewListener->update();
-//cout << "timer event update " << fViewListener << endl;
 		}
 		
 		fModel->cleanup();

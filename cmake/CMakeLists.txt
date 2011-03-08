@@ -9,15 +9,15 @@ set (TARGET	INScore)
 set (APPLTARGET	INScoreViewer)
 #######################################
 # versions management
-set (INSFWKVERS 0.70)
-set (INSFWKSTRVERS "v.0.70")
-set (INSFWKSSTRVERS "0.70")
-set (INSTEXTVERS 0.70)
-set (INSTEXTSTRVERS "v.0.70")
-set (INSTEXTSSTRVERS "0.70")
-set (INSAPPVERS 0.70)
-set (INSAPPSTRVERS "v.0.70")
-set (INSAPPSSTRVERS "0.70")
+set (INSFWKVERS 0.74)
+set (INSFWKSTRVERS "v.0.74")
+set (INSFWKSSTRVERS "0.74")
+set (INSTEXTVERS 0.74)
+set (INSTEXTSTRVERS "v.0.74")
+set (INSTEXTSSTRVERS "0.74")
+set (INSAPPVERS 0.74)
+set (INSAPPSTRVERS "v.0.74")
+set (INSAPPSSTRVERS "0.74")
 
 #######################################
 if(WIN32)
@@ -210,7 +210,7 @@ install ( FILES debian/icons/48x48/inscore.png
 install ( FILES debian/icons/128x128/inscore.png
     	  DESTINATION /usr/share/icons/hicolor/128x128/apps
 )
-install ( FILES ../package/INScore-${INSAPPVERS}0.70tgz
+install ( FILES ../package/INScore-${INSAPPVERS}0.74tgz
     	  DESTINATION /usr/share/inscore
 )
 endif (WIN32)

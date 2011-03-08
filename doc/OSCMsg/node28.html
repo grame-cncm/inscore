@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>11.1 Specific score mappings</TITLE>
-<META NAME="description" CONTENT="11.1 Specific score mappings">
+<TITLE>10. Synchronization</TITLE>
+<META NAME="description" CONTENT="10. Synchronization">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,115 +19,135 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node29.html">
+<LINK REL="next" HREF="node30.html">
 <LINK REL="previous" HREF="node27.html">
-<LINK REL="up" HREF="node27.html">
+<LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node29.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html517"
+<A NAME="tex2html526"
   HREF="node29.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html511"
-  HREF="node27.html">
+<A NAME="tex2html520"
+  HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html505"
+<A NAME="tex2html514"
   HREF="node27.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html513"
+<A NAME="tex2html522"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html515"
-  HREF="node52.html">
+<A NAME="tex2html524"
+  HREF="node57.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html518"
-  HREF="node29.html">11.2 Score browsing and</A>
-<B> Up:</B> <A NAME="tex2html512"
-  HREF="node27.html">11. Score specific messages</A>
-<B> Previous:</B> <A NAME="tex2html506"
-  HREF="node27.html">11. Score specific messages</A>
- &nbsp; <B>  <A NAME="tex2html514"
+<B> Next:</B> <A NAME="tex2html527"
+  HREF="node29.html">10.1 Synchronization modes</A>
+<B> Up:</B> <A NAME="tex2html521"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html515"
+  HREF="node27.html">9. The 'map' message</A>
+ &nbsp; <B>  <A NAME="tex2html523"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html516"
-  HREF="node52.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html525"
+  HREF="node57.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001210000000000000000"></A>
-<A NAME="guidomaps"></A>
+<H1><A NAME="SECTION001100000000000000000"></A>
+<A NAME="syncmsg"></A>
 <BR>
-11.1 Specific score mappings
+10. Synchronization
 </H1>
 
 <P>
-Music score mappings are automatically computed  by the system. However, since a score may support a large number of mappings (staff based, system based, voice based, etc.), music scores supports a specific <TT>map</TT> message to request the computation of a specific mapping. This message has the form:
+Synchronization between components is achieved at <TT>scene</TT> level: a <TT>sync</TT> node is automatically embedded in the scene, its address is <TT>/ITL/scene/sync</TT> and it supports messages to add or remove a master / slave relation between components or to query the synchronizations state.
 <BR>
 <IMG
- WIDTH="325" HEIGHT="163" ALIGN="BOTTOM" BORDER="0"
- SRC="img58.gif"
+ WIDTH="609" HEIGHT="238" ALIGN="BOTTOM" BORDER="0"
+ SRC="img57.gif"
  ALT="\begin{rail}
-scoreMapMsg : 'map' ('page' \vert 'system' \vert ('staff' 'staffNum') \vert 'voice' 'voiceNum' )
+sync : syncIdentifier
+( [1] syncIdentifier (\vert syncmode +)
+\vert [2])
+\vert [3] 'get' ( \vert identifier)
 \end{rail}">
 <BR>
-<A NAME="693"></A>
-<A NAME="694"></A>
-<A NAME="695"></A>
-<A NAME="696"></A>
-<A NAME="697"></A>
-
-<P>
-The Guido map name must be concatenated as a string (as a usual map name).
+<A NAME="643"></A>
+<A NAME="644"></A>
 
 <P>
 
 <UL>
-<LI><TT>page</TT>: a page level mapping ;
+<LI><B>[1]</B> this is the <TT>slave</TT> <TT>master</TT> form followed by an optional synchronization mode. It adds a slave / master relation between components identified by identifier1 and identifier2. 
+<BR></LI>
+<LI><B>[2]</B> this is the <TT>slave</TT> form that removes the slave synchronization for the component identified by identifier1.
 </LI>
-<LI><TT>system</TT>: a system level mapping ;
-</LI>
-<LI><TT>staff</TT>: a staff level mapping ; the staff indicated by the next parameter (between 1 and the score staves count).
-</LI>
-<LI><TT>voice</TT>: a voice level mapping ; the voice indicated by the next parameter (between 1 and the score voices count).
+<LI><B>[3]</B> the <TT>get</TT> message is intended to query the synchronization state. The optional parameter is the identifier of a component,
 </LI>
 </UL>
+Synchronization between components has no effect if any of the required mapping is missing (see table <A HREF="node27.html#maptable">9.1</A>).
 
 <P>
-The default synchronization mode for a Guido score is <TT>staff1</TT>.
-Note that a voice may be distributed on several staves and thus a staff may contain serveral voices.
+<BR>
+<IMG
+ WIDTH="351" HEIGHT="89" ALIGN="BOTTOM" BORDER="0"
+ SRC="img58.gif"
+ ALT="\begin{rail}
+syncIdentifier : [1] identifier
+\vert [2] identifier ':' mapName
+\end{rail}">
+<BR>
+<A NAME="657"></A>
 
 <P>
+Synchronization identifiers indicates 1) the name of a <TT>scene</TT> component or 2) the name of a <TT>scene</TT> component associated to a mapping name.
+
+<P>
+Note that the <TT>sync</TT> node doesn't responds to common component messages, but accept the <TT>get</TT> message. 
+The <TT>get</TT> message without parameter is equivalent to a <TT>get</TT> message addressed to each object declared in the <TT>sync</TT> node.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html528"
+  HREF="node29.html">10.1 Synchronization modes</A>
+</UL>
+<!--End of Table of Child-Links-->
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html517"
+<A NAME="tex2html526"
   HREF="node29.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html511"
-  HREF="node27.html">
+<A NAME="tex2html520"
+  HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html505"
+<A NAME="tex2html514"
   HREF="node27.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html513"
+<A NAME="tex2html522"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html515"
-  HREF="node52.html">
+<A NAME="tex2html524"
+  HREF="node57.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html518"
-  HREF="node29.html">11.2 Score browsing and</A>
-<B> Up:</B> <A NAME="tex2html512"
-  HREF="node27.html">11. Score specific messages</A>
-<B> Previous:</B> <A NAME="tex2html506"
-  HREF="node27.html">11. Score specific messages</A>
- &nbsp; <B>  <A NAME="tex2html514"
+<B> Next:</B> <A NAME="tex2html527"
+  HREF="node29.html">10.1 Synchronization modes</A>
+<B> Up:</B> <A NAME="tex2html521"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html515"
+  HREF="node27.html">9. The 'map' message</A>
+ &nbsp; <B>  <A NAME="tex2html523"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html516"
-  HREF="node52.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html525"
+  HREF="node57.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]

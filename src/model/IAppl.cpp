@@ -270,7 +270,6 @@ void IAppl::helloMsg() const
 	delete msg;
 }
 
-extern SIMessageStack gMsgStack;
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
 {
@@ -281,8 +280,12 @@ MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
 			IMessageList* msgs = p.readfile(absolutePath(srcfile).c_str());
 			if (msgs) {
 				for (IMessageList::const_iterator i = msgs->begin(); i != msgs->end(); i++) {
-					gMsgStack->push(*i);
+					string beg  = OSCAddress::addressFirst((*i)->address());
+					string tail = OSCAddress::addressTail((*i)->address());
+					bool ret = processMsg(beg, tail, *i);
+					if (oscDebug()) IGlue::trace(*i, ret);
 				}
+				msgs->clear();
 				delete msgs;
 				return MsgHandler::kProcessed;
 			}

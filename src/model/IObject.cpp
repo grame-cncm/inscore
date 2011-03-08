@@ -246,7 +246,11 @@ string IObject::getOSCAddress() const
 void IObject::accept (Updater* u)		{ u->updateTo(this); }
 
 //--------------------------------------------------------------------------
-SIScene	IObject::getScene()				{ return fParent ? fParent->getScene() : 0; }
+SIScene	IObject::getScene()			{ return fParent ? fParent->getScene() : 0; }
+
+//--------------------------------------------------------------------------
+const IObject * IObject::getRoot()	const	{ return fParent ? fParent->getRoot() : this; }
+IObject * IObject::getRoot()				{ return fParent ? fParent->getRoot() : this; }
 
 //--------------------------------------------------------------------------
 void IObject::cleanup ()
@@ -353,6 +357,21 @@ bool IObject::mapDebug() const			{ return fDebug->getMapDebug(); }
 bool IObject::nameDebug() const			{ return fDebug->getNameDebug(); }
 bool IObject::signalDebug() const		{ return fDebug->getSignalDebug(); }
 bool IObject::clickDebug() const		{ return fDebug->getClickDebug(); }
+
+//--------------------------------------------------------------------------
+void IObject::getObjects(const string& address, vector<const IObject*>& outv) const
+{
+	string beg  = OSCAddress::addressFirst(address);
+	string tail = OSCAddress::addressTail(address);
+	if (match(beg)) {				// first make sure that the object is part of the address
+		if (tail.size()) {
+			unsigned int n = elements().size();
+			for (unsigned int i = 0; i < n; i++)
+				elements()[i]->getObjects(tail, outv);
+		}
+		else outv.push_back(this);
+	}
+}
 
 
 //--------------------------------------------------------------------------
@@ -512,7 +531,7 @@ IMessageList IObject::getMsgs(const IMessage* msg) const
 			handler = getMessageHandler(what);
 			if (handler) {
 				if (what == "watch")
-					outMsgs = getWatch();
+					outMsgs += getWatch();
 				else {
 					IMessage * msg = getParam(what, handler);
 					if (msg) outMsgs += msg;

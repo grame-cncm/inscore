@@ -23,7 +23,8 @@
 
 */
 
-//#include "graphic2relativetimereader.h"
+#include <sstream>
+
 #include "IAppl.h"
 #include "IText.h"
 #include "IMessage.h"
@@ -68,13 +69,21 @@ MsgHandler::msgStatus IText::set( const IMessage* msg )
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
-	if (msg->params().size() == 2) {
-		string text;
-		if (msg->param(1, text)) {
-			setText( text );
-			newData(true);
-			status = MsgHandler::kProcessed;
+	int n = msg->params().size();
+	if (n >= 2) {
+		stringstream stream;
+		const char * sep = "";
+		for (int i = 1; i < n ; i++) {
+			string text; int itext; float ftext;
+			stream << sep;
+			if (msg->param(i, itext))			stream << itext;
+			else if (msg->param(i, ftext))		stream << ftext;
+			else if (msg->param(i, text))		stream << text;
+			sep = " ";
 		}
+		setText( stream.str() );
+		newData(true);
+		status = MsgHandler::kProcessed;
 	}
 	else status = MsgHandler::kBadParameters;
 	return status;

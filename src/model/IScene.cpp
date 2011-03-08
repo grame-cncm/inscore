@@ -71,7 +71,7 @@ IScene::IScene(const std::string& name, IObject * parent) : IRectShape(name, par
 }
 
 //--------------------------------------------------------------------------
-QGraphicsScene * IScene::getScene () const			{ return getView()->scene(); }
+QGraphicsScene * IScene::getGraphicScene () const			{ return getView()->scene(); }
 
 //--------------------------------------------------------------------------
 void IScene::newScene ()	{}
@@ -168,9 +168,17 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 				for (IMessageList::const_iterator i = msgs->begin(); i != msgs->end(); i++) {
 					IMessage * msg = *i;
 					string address = address2scene (msg->address().c_str());
-					msg->setAddress (address);
-					gMsgStack->push(msg);
+					string beg  = OSCAddress::addressFirst(address);
+					string tail = OSCAddress::addressTail(address);
+					bool ret = getRoot()->processMsg(beg, tail, *i);
+//					if (oscDebug()) IGlue::trace(*i, ret);
+
+//					IMessage * msg = *i;
+//					string address = address2scene (msg->address().c_str());
+//					msg->setAddress (address);
+//					gMsgStack->push(msg);
 				}
+				msgs->clear();
 				delete msgs;
 				return MsgHandler::kProcessed;
 			}

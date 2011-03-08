@@ -23,5 +23,8 @@ as multiple scene windows. You can drag & drop any file to a scene window:
 The 'manyscene.inscore' file illustrates multiple scenes support. The file 
 should be dropped on the application (and not on a scene).
 
+The 'switch.inscore' file illustrates message based variables: it shows how
+objects can exchange their states using message based variables.
+
 
 Note that the system supports only 8 bits encodings for file names. 

@@ -283,8 +283,15 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		/// \brief gives the scene of the object
 		virtual SIScene			getScene();
 
+		/// \brief gives the tree root object
+		virtual const IObject*	getRoot() const;
+		virtual IObject*		getRoot();
+
+		/// \brief selects objects matching address
+		virtual void			getObjects(const std::string& address, std::vector<const IObject*>& outv) const;
+
 		/// \brief return true when the applicaton is initialized in offscreen mode 
-		virtual bool			offscreen()		{ return fParent ? fParent->offscreen() : false; }
+		virtual bool			offscreen()	const	{ return fParent ? fParent->offscreen() : false; }
 
 		/// \brief recursively get all objects state
 		virtual IMessageList getAll () const;
@@ -339,13 +346,6 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 			\return the corresponding handler if any
 		*/
 		virtual SMsgHandler			messageHandler(const std::string& param, bool match=false) const;
-
-		/*!
-			\brief gives a handler for a state modification message
-			\param param the destination parameter
-			\return the corresponding handler if any
-		*/
-//		virtual SMsgHandler			setMessageHandler(const std::string& param) const;
 
 		/*!
 			\brief sets an object display range

@@ -5,5 +5,6 @@
 /ITL/scene/* watch "mouseUp"  		"/ITL/scene/$self" "x" "$sx"
 /ITL/scene/* watch+ "mouseUp" 	 	"/ITL/scene/$self" "y" "$sy"
 
-/ITL/scene/comment set "txt" "You can now edit the scene and move the objects using the mouse"
+/ITL/scene/comment set "txt" "You can now edit the scene and move the objects using the mouse.
+Drop the 'watch.inscore' file to get the previous behavior back."
 /ITL/scene/comment y 0.9

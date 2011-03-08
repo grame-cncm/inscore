@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>14.2 Message variables</TITLE>
-<META NAME="description" CONTENT="14.2 Message variables">
+<TITLE>13.2.2 Parallel graphic signals.</TITLE>
+<META NAME="description" CONTENT="13.2.2 Parallel graphic signals.">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,7 +19,6 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node45.html">
 <LINK REL="previous" HREF="node43.html">
 <LINK REL="up" HREF="node42.html">
 <LINK REL="next" HREF="node45.html">
@@ -27,140 +26,66 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html748"
+<A NAME="tex2html756"
   HREF="node45.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html742"
+<A NAME="tex2html750"
   HREF="node42.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html736"
+<A NAME="tex2html746"
   HREF="node43.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html744"
+<A NAME="tex2html752"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html746"
-  HREF="node52.html">
+<A NAME="tex2html754"
+  HREF="node57.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html749"
-  HREF="node45.html">14.3 OSC address variables</A>
-<B> Up:</B> <A NAME="tex2html743"
-  HREF="node42.html">14. Events and Interaction</A>
-<B> Previous:</B> <A NAME="tex2html737"
-  HREF="node43.html">14.1 Interaction messages</A>
- &nbsp; <B>  <A NAME="tex2html745"
+<B> Next:</B> <A NAME="tex2html757"
+  HREF="node45.html">14. Events and Interaction</A>
+<B> Up:</B> <A NAME="tex2html751"
+  HREF="node42.html">13.2 Graphic signals.</A>
+<B> Previous:</B> <A NAME="tex2html747"
+  HREF="node43.html">13.2.1 Graphic signal default</A>
+ &nbsp; <B>  <A NAME="tex2html753"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html747"
-  HREF="node52.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html755"
+  HREF="node57.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001520000000000000000"></A>
-<A NAME="interactvar"></A>
+<H2><A NAME="SECTION001422000000000000000"></A>
+<A NAME="pgsignal"></A>
 <BR>
-14.2 Message variables
-</H1>
+13.2.2 Parallel graphic signals.
+</H2>
+When the dimension <I>d</I> of a signal connected to a graphic signal is greater than 6, then the input signal is interpreted like parallel graphic signals. More generally, the dimension <I>n</I> of a graphic signal is:
+<BR><P></P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ \begin{displaymath}
+n  \  |\ n \in \mathbb{N}\ \land\ 6.(n-1) < d \leqslant 6.n
+\end{displaymath}
+ -->
 
-<P>
-Variables denote values computed when an event is triggered. These values are send in place of the variable. A variable name starts with a '$' sign. Currently, the following variables are supported by mouse events:
-<BR>
 <IMG
- WIDTH="170" HEIGHT="238" ALIGN="BOTTOM" BORDER="0"
- SRC="img74.gif"
- ALT="\begin{rail}
-variable : xy \vert 'absx' \vert 'absy' \vert 'sx' \vert 'sy' \vert date
-\end{rail}">
-<BR>
+ WIDTH="206" HEIGHT="28" BORDER="0"
+ SRC="img72.gif"
+ ALT="\begin{displaymath}
+n \ \vert\ n \in \mathbb{N}\ \land\ 6.(n-1) &lt; d \leqslant 6.n
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+where <I>d</I> is the dimension of the input signal.
 
 <P>
-<BR>
-<IMG
- WIDTH="310" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
- SRC="img75.gif"
- ALT="\begin{rail}
-xy : ('x' \vert 'y') ( \vert '[low,high]')
-\end{rail}">
-<BR>
+Note than when <I>d</I> is not a mutiple of 6, then the last graphic signal makes use of the default values mentionned above.
 
 <P>
-
-<UL>
-<LI><TT>$x</TT> <TT>$y</TT>: denotes the mouse pointer position at the time of the event. The values are in the range <IMG
- WIDTH="35" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img76.gif"
- ALT="$[0,1]$"> where 1 is the object size in the x or y dimension. The value is computed according to the object origin: it represents the mouse pointer distance from the object x or y origin (see <A HREF="node10.html#origin">4.1.3</A> p.<A HREF="node10.html#origin"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). <TT>$x</TT> and <TT>$y</TT> variables support an optional range in the form <TT>[low, high]</TT> that transforms the <IMG
- WIDTH="35" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img76.gif"
- ALT="$[0,1]$"> values range into the <IMG
- WIDTH="70" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img77.gif"
- ALT="$[low, high]$"> range.
-
-<P>
-</LI>
-<LI><TT>$absx</TT> <TT>$absy</TT>: denotes the mouse pointer absolute position at the time of the event. The values represent a pixel position relative to the top-left point of the target object. Note that this position is unaffected by scale. 
-Note also that the values are not clipped to the object dimensions and could exceed its width or height or become negative in case of mouse move events.
-
-<P>
-</LI>
-<LI><TT>$sx</TT> <TT>$sy</TT>: denotes the mouse pointer position in the scene coordinates space. <TT>$sx</TT> and <TT>$sy</TT> are computed like
-
-<P>
-</LI>
-<LI><TT>$date</TT>: denotes the object date corresponding to the mouse pointer position at the time of the event. The detailed date variable is given below: it is optionnaly followed by a colon and the name of the mapping to be used to compute the date . The <TT>$date</TT> variable is replaced by its rational value (i.e. two integers values). 
-</LI>
-</UL>
-
-<P>
-<BR>
-<IMG
- WIDTH="300" HEIGHT="86" ALIGN="BOTTOM" BORDER="0"
- SRC="img78.gif"
- ALT="\begin{rail}
-date : 'date' (\vert ':' mapname)
-\end{rail}">
-<BR>
-
-<P>
-Note that a variable can be used several times in a message, but several <TT>$date</TT> variables must always refer to the same mapping.
-
-<P>
-<BR>
-<BR>
-<TT><B>Warning:</B></TT> the interaction message set is provided for experiment. It is likely to change in a future version. Ideas, comments, suggestions are welcome for the design of a stable API.
-
-<P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html748"
-  HREF="node45.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html742"
-  HREF="node42.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html736"
-  HREF="node43.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html744"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html746"
-  HREF="node52.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html749"
-  HREF="node45.html">14.3 OSC address variables</A>
-<B> Up:</B> <A NAME="tex2html743"
-  HREF="node42.html">14. Events and Interaction</A>
-<B> Previous:</B> <A NAME="tex2html737"
-  HREF="node43.html">14.1 Interaction messages</A>
- &nbsp; <B>  <A NAME="tex2html745"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html747"
-  HREF="node52.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>
