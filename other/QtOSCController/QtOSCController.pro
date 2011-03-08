@@ -1,4 +1,4 @@
-SOURCES += *.cpp
+SOURCES += main.cpp MainWindow.cpp
 HEADERS += *.h
 FORMS += *.ui
 

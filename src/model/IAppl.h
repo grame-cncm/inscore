@@ -28,6 +28,7 @@
 #define __IAppl__
 
 #include "IMessageHandlers.h"
+#include "PeriodicTask.h"
 #include "IObject.h"
 #include "udpinfo.h"
 #include "benchtools.h"
@@ -51,20 +52,23 @@ typedef class SMARTP<IApplDebug> SIApplDebug;
 /*!
 	\brief the application object of the model
 */
-class IAppl : public IObject
+class IAppl : public IObject, public PeriodicTask
 {
 	static std::string fRootPath;
 		
 		std::string fVersion;
 		SIApplDebug	fApplDebug;	
 		bool		fRunning;
+		bool		fOffscreen;
 		udpinfo		fUDP;
 		VApplView*  fView;
 
 	public:
 		static bool fDefaultShow;
 		static const std::string kApplType;
-		static SIAppl			create(int udpport, int outport, int errport)		{ return new IAppl(udpport, outport, errport); }
+		static const std::string kName;
+		static SIAppl			create(int udpport, int outport, int errport, bool offscreen=false)		
+			{ return new IAppl(udpport, outport, errport, offscreen); }
 		static std::string		getRootPath()			{ return fRootPath; }	//< returns the application root path
 		static std::string		absolutePath( const std::string& path );		//< returns the absolute path corresponding to 'path',
 																				// considering its relativity and the application root path.
@@ -106,10 +110,13 @@ class IAppl : public IObject
 		void			setUDPOutPort(int p)		{ fUDP.fOutPort = p; }
 		void			setUDPErrPort(int p)		{ fUDP.fErrPort = p; }
 
-		void	resetBench();
+		void			resetBench();
+		bool			offscreen()					{ return fOffscreen; }
+		void			ptask ();
+
 
 	protected:
-				 IAppl(int udpport, int outport, int errport);
+				 IAppl(int udpport, int outport, int errport, bool offscreen);
 		virtual ~IAppl();
 
 		void		setRootPath(const std::string& s);

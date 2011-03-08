@@ -115,11 +115,12 @@ class IGuidoCode : public IObject
 				 IGuidoCode( const std::string& name, IObject * parent );
 		virtual ~IGuidoCode() {}
 
-		void setGMN( const std::string& gmn )				{ fGMN = gmn; }
-		void setPage( int page )							{ fPage = page; }
-		void setPageFormat( const TFloatSize& pageFormat )	{ fPageFormat = pageFormat; }
-		void setNbOfPageColumns(int columns)				{ fNbOfPageColumns = columns; }
-		void setNbOfPageRows(int rows)						{ fNbOfPageRows = rows; }
+		void setGMN( const std::string& gmn )				{ fGMN = gmn; localMapModified(true); }
+		void setPage( int page )							{ fPage = page; localMapModified(true); }
+		void setdPage( int dpage );
+		void setPageFormat( const TFloatSize& pageFormat )	{ fPageFormat = pageFormat; localMapModified(true); }
+		void setNbOfPageColumns(int columns)				{ fNbOfPageColumns = columns; localMapModified(true); }
+		void setNbOfPageRows(int rows)						{ fNbOfPageRows = rows; localMapModified(true); }
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);		

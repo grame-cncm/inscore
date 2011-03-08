@@ -1,4 +1,4 @@
-version := 0.63
+version := 0.74
 
 package:= INScore-$(version)
 viewer := INScoreViewer
@@ -35,12 +35,14 @@ macosx:
 	make strip
 	make rsrc
 	chmod -x  $(shell find . -name "*.inscore")
-	open $(package)/$(viewer).app/Contents/Info.plist
-	@echo === remove the access path to INScoreViewer.icns ====
+	cp -f ../src/guido2.ttf $(package)
 		
 doc: 
-	[ -d $(docdst)/html ] || mkdir -p $(docdst)/html
 	make -C $(docsrc)
+	make copydoc
+		
+copydoc: 
+	[ -d $(docdst)/html ] || mkdir -p $(docdst)/html
 	cp -f $(docsrc)/OSCMsg.pdf $(docdst)
 	make -C $(docsrc) htmlclean
 	rm -f $(docdst)/html/*
@@ -54,19 +56,27 @@ rsrc:
 	cp -rf PureData $(package)
 	cp -rf python $(package)
 	cp -rf lisp $(package)
-	rm -f $(package)/lisp/ignore.txt
+	cp -rf StandAlone $(package)/
 	cp readme.txt $(package)
 	cp -r doc $(package)
+
+src:
+	[ -d $(package)-src/cmake ] || mkdir -p $(package)-src/cmake
+	cp -rf ../src $(package)-src/
+	cp -rf ../cmake/CMakeLists.txt $(package)-src/cmake
+	cp -rf ../lib $(package)-src/
+	cp readme.txt $(package)-src
+	cp ../readme.txt $(package)-src/install
+	cp -r doc $(package)-src
 
 
 win32:
 	[ -d $(package) ] || mkdir -p $(package)
 	cp -f $(bin)/$(viewer).exe $(package)/$(viewer).exe
 	cp -f $(bin)/*.dll $(package)
-	cp -f $(bin)/guido2.ttf $(package)
+	cp -f ../src/guido2.ttf $(package)
 	cp  -f DLLs/*.dll $(package)
-	cp  readme.txt $(package)
-	cp  -r doc $(package)
+	make rsrc
 	cp  -r $(bin)/PlugIns $(package)
 
 linux:

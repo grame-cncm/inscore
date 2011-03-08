@@ -58,7 +58,7 @@ class JavaThread : public QThread
 };
 
 
-SIMessageStack gMsgStask;
+SIMessageStack gMsgStack;
 
 #define kUPDPort 7000
 
@@ -113,8 +113,8 @@ void INScore::timeTask (IGlue* glue)
 //--------------------------------------------------------------------------
 // versions 
 //--------------------------------------------------------------------------
-int INScore::version	()				{ return 63; }
-const char* INScore::versionStr ()		{ return "0.63"; }
+int INScore::version	()				{ return 74; }
+const char* INScore::versionStr ()		{ return "0.74"; }
 
 //--------------------------------------------------------------------------
 // messages system 
@@ -124,7 +124,7 @@ void INScore::postMessage	(const char* address, MessagePtr msg)
 	IMessage* m = Message2IMessage (msg);
 	if (m) {
 		m->setAddress(address);
-		if (gMsgStask) gMsgStask->push(m);
+		if (gMsgStack) gMsgStack->push(m);
 	}
 }
 

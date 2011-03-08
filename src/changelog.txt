@@ -8,6 +8,46 @@ research@grame.fr
 Copyright GRAME (c) 2009,2010,2011
 
 ----------------------------------------------------
+Version 0.74
+- new 'dpage' message accepted by 'gmn' objects 
+- x and y variables: automatic range type detection (int | float)
+- polymorphism for the set 'txt' message params
+- set 'txt' message: accepts stream like parameters
+
+----------------------------------------------------
+Version 0.73
+- bug in message based variables output corrected
+- bug in variables scaling corrected
+
+----------------------------------------------------
+Version 0.72
+- bug with loading inscore files - introduced with version 0.70
+  possible messages inversion depending on the context
+
+----------------------------------------------------
+Version 0.71
+- bug with gmn score correction: missing update for page, columns and rows changes
+
+----------------------------------------------------
+Version 0.70
+- identifiers extended to '_' and '-' characters
+- support for multiple scenes (scene 'new', 'del' and 'foreground' messages)
+- 'load' message supported at scene level.
+- get 'watch' implemented
+- interaction variables extension: new $scene variable in the address field
+- support 'watch' message without argument to clear all the watched events
+- drag and drop supports any file in INScore viewer
+- order of rendering and width,height update corrected
+
+----------------------------------------------------
+Version 0.64
+- drag and drop inscore files support in INScore viewer
+- interaction variables extension:
+  $sx, $sy variables added to support scene coordinate space
+  automatic range mapping for $x, $y variables
+  new $self variable in the address field
+
+----------------------------------------------------
 Version 0.63
 - new 'mousemove' event
 - interaction messages accept variables ($x, $y, $date...)

@@ -54,99 +54,66 @@ namespace inscore
 
 class ZoomingGraphicsView : public QGraphicsView
 {
-	bool fDebugDraw, fDebugClick;
-	std::string fObjectName;
+	std::string fSceneAddress;
+	VSceneView * fSceneView;
 
 	public :
-		ZoomingGraphicsView(QGraphicsScene * s) : QGraphicsView(s), fDebugDraw(false), fDebugClick(false)
-		{
-//			setAlignment(Qt::AlignLeft | Qt::AlignTop);
-
-/*
-			setAttribute(Qt::WA_TranslucentBackground );
-			setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
-
-			QPalette p = viewport()->palette();
-			p.setColor(QPalette::Base, Qt::transparent);
-
-			viewport()->setPalette(p);
-*/
-		}
+		ZoomingGraphicsView(QGraphicsScene * s) : QGraphicsView(s) {}
 		virtual ~ZoomingGraphicsView() {}
 
-		void setDebugDraw(bool debugDraw)			{ fDebugDraw = debugDraw; }
-		void setDebugClick(bool debugClick)			{ fDebugClick = debugClick; }
-		void setObjectName(const std::string& name)	{ fObjectName = name; }
+		void setSceneAddress(const std::string& name)	{ fSceneAddress = name; }
 
 	protected:
-
-		void resizeEvent ( QResizeEvent * event )
-		{
+		virtual void closeEvent(QCloseEvent *);
+		void resizeEvent ( QResizeEvent * event ) {
 			// scene adaptation to avoid scroll bars
 			fitInView( SCENE_RECT , Qt::KeepAspectRatio );
 		}
-
-//		void paintEvent ( QPaintEvent * event )
-//		{
-//			if ( fDebugDraw )
-//			{
-//				ISignalProfiler drawProfiler( fObjectName , "Draw");
-//				drawProfiler.start();
-//				QGraphicsView::paintEvent( event );
-//				drawProfiler.stop();
-//				drawProfiler.send();
-//			}
-//			else
-//				QGraphicsView::paintEvent( event );
-//		}
-
-//		virtual void mousePressEvent ( QMouseEvent * event )
-//		{
-//			if ( fDebugClick )
-//			{
-//				QPointF p = mapToScene( event->pos() );
-//				float x = 2.0f * ( p.x() - (sceneRect().x()) ) / sceneRect().width() - 1;
-//				float y = 2.0f * ( p.y() - sceneRect().y() ) / sceneRect().height() - 1;
-//				oscout << OSCStart("Debug") << ": clicked on /ITL/scene at pos x=" << x << " ; y=" << y << OSCEnd();
-//			}
-//			else event->ignore();
-//		}
 };
+
+//------------------------------------------------------------------------------------------------------------------------
+void ZoomingGraphicsView::closeEvent (QCloseEvent * event) 
+{
+	INScore::MessagePtr msg = INScore::newMessage ("del");
+	INScore::postMessage (fSceneAddress.c_str(), msg);
+	event->accept();
+}
+
 
 #define PRECISION 100.0f
 
 //------------------------------------------------------------------------------------------------------------------------
-VSceneView::VSceneView(QGraphicsScene * scene, bool offscreen)
+VSceneView::VSceneView(const std::string& address, QGraphicsScene * scene)
 {
 	fImage = 0;
 	fGraphicsView = 0;
 	fEventFilter = 0;
-	fScene = scene;
-	if (offscreen) {
-		fImage = new QImage;
-	}
-	else {
+	if (scene) {
+		fScene = scene;
 		fGraphicsView = new ZoomingGraphicsView(scene);
 		fGraphicsView->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
 		fGraphicsView->scene()->setSceneRect( SCENE_RECT );
-		fGraphicsView->setWindowTitle( "INScore" );
-
-	//	fGraphicsView->setViewport(new QGLWidget);
-	//	fGraphicsView->setRenderHints(QPainter::HighQualityAntialiasing);
-
-		fEventFilter = new WindowEventFilter( fGraphicsView );
+		fGraphicsView->setWindowTitle( address.c_str() );
+		fGraphicsView->setSceneAddress( address.c_str() );
+		fEventFilter = new WindowEventFilter( address, fGraphicsView );
+	}
+	else {		// no scene is for offscreen rendering
+		fScene = new QGraphicsScene;
+		fImage = new QImage;
 	}
 }
 
 //------------------------------------------------------------------------------------------------------------------------
 VSceneView::~VSceneView()
 { 
-	delete fImage; 
+	delete fImage;
+	delete fScene;
 	delete fGraphicsView; 
 }
 
 //------------------------------------------------------------------------------------------------------------------------
 QGraphicsScene * VSceneView::scene() const		{ return fScene; }
+void VSceneView::foreground()	{ fGraphicsView->activateWindow(); }
 
 //------------------------------------------------------------------------------------------------------------------------
 void VSceneView::updateOnScreen( IScene * scene )
@@ -208,11 +175,6 @@ void VSceneView::updateOnScreen( IScene * scene )
 
 	// Visibility
 	scene->getVisible() ? fGraphicsView->show() : fGraphicsView->hide();
-
-	//Debug
-//	fGraphicsView->setDebugDraw( scene->signalDebug() );
-//	fGraphicsView->setDebugClick( scene->clickDebug() );
-//	fGraphicsView->setObjectName( scene->name() );
 }
 
 
@@ -228,32 +190,17 @@ void VSceneView::updateOffScreen( IScene * scene )
 	fScene->setSceneRect (0,0,w,h);
 	IColor sc = *scene;
 	fScene->setBackgroundBrush (QColor(sc.getR(), sc.getG(), sc.getB() , sc.getA()));
-
-//	if ((w != fImage->width()) || (h != fImage->height())) {
-//		delete fImage;
-//		fImage = new QImage(w, h, QImage::Format_ARGB32_Premultiplied);
-//	}
-//	QPainter painter(fImage);
-//	painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
-//
-//	fScene->render(&painter);
-//	painter.end();
 }
 
 //------------------------------------------------------------------------------------------------------------------------
 bool VSceneView::copy(unsigned int* dest, int w, int h, bool smooth )
 {
-//	fScene->setSceneRect (0,0,w,h);
-
 	QImage image (w, h, QImage::Format_ARGB32_Premultiplied);
-//	image.fill (0);
 	QPainter painter(&image);
 	painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
-//	fScene->render(&painter, image.rect(), fScene->sceneRect());
 	painter.fillRect (0,0,w,h, QColor(0,0,0,0));
 	fScene->render(&painter);
 	painter.end();
-//qDebug() << "VSceneView::copy " << fScene->sceneRect() << " -> " << image.rect();
 
 	for (int y = 0; y < h; y++) {
 		for (int x = 0; x < w; x++) {
@@ -265,26 +212,10 @@ bool VSceneView::copy(unsigned int* dest, int w, int h, bool smooth )
 }
 
 //------------------------------------------------------------------------------------------------------------------------
-//bool VSceneView::copy(unsigned int* dest, int w, int h, bool smooth )
-//{
-//	if (!fImage) return false;
-//
-//	QImage image = fImage->scaled (w, h, Qt::KeepAspectRatio, smooth ? Qt::SmoothTransformation : Qt::FastTransformation);
-//	int iw = image.width();
-//	int ih = image.height();
-//	for (int y = 0; y < ih; y++) {
-//		for (int x = 0; x < iw; x++) {
-//			QRgb pix = image.pixel(x, y);
-//			*dest++ = pix;
-////if (pix && (pix!=0xffffffff)) fprintf(stdout, "%x\n", pix);
-//		}
-//	}
-//	return true;
-//}
-
-//------------------------------------------------------------------------------------------------------------------------
 void VSceneView::updateView( IScene * scene )
 {
+	if (scene->getDeleted()) return;
+
 	if (fGraphicsView) updateOnScreen (scene);
 	else updateOffScreen (scene);
 
@@ -294,7 +225,8 @@ void VSceneView::updateView( IScene * scene )
 }
 
 //--------------------------------------------------------------------------
-WindowEventFilter::WindowEventFilter( QGraphicsView* parent) : QObject(parent)
+WindowEventFilter::WindowEventFilter(const std::string& address, QGraphicsView* parent) 
+	: QObject(parent), fOSCAddress(address)
 {
 	fTimer = new QTimer(this);
 	fTimer->setSingleShot(true);
@@ -338,13 +270,13 @@ void WindowEventFilter::updateModel()
 
 	float x = (view->pos().x() + view->width()/2.0f - screenCenter.x()) / (lowestDimension/2.0f);
 	float y = (view->pos().y() + view->height()/2.0f - screenCenter.y()) / (lowestDimension/2.0f);
-	sendMessage( OSC_SCENE_ADDRESS , OSC_X_MSG , x );
-	sendMessage( OSC_SCENE_ADDRESS , OSC_Y_MSG , y );
+	sendMessage( fOSCAddress.c_str() , OSC_X_MSG , x );
+	sendMessage( fOSCAddress.c_str() , OSC_Y_MSG , y );
 
 	float width = view->width() / (lowestDimension/2.0f);
 	float height = view->height() / (lowestDimension/2.0f);
-	sendMessage( OSC_SCENE_ADDRESS , OSC_WIDTH_MSG , width );
-	sendMessage( OSC_SCENE_ADDRESS , OSC_HEIGHT_MSG , height );
+	sendMessage( fOSCAddress.c_str() , OSC_WIDTH_MSG , width );
+	sendMessage( fOSCAddress.c_str() , OSC_HEIGHT_MSG , height );
 }
 
 } // end namespoace

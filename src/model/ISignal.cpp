@@ -49,6 +49,8 @@ ISignal::ISignal( const std::string& name, IObject * parent ) : IObject (name, p
 	fMsgHandlerMap["size"]	 = TMethodMsgHandler<ISignal>::create(this, &ISignal::sizeMsg);
 	fMsgHandlerMap["reset"]	 = TMethodMsgHandler<ISignal>::create(this, &ISignal::resetMsg);
 	fMsgHandlerMap[""]		 = TMethodMsgHandler<ISignal>::create(this, &ISignal::dataMsg);
+	fMsgHandlerMap["watch"]	 = 0;
+	fMsgHandlerMap["watch+"] = 0;
 
 	SMsgHandler projhandler = TMethodMsgHandler<ISignal>::create(this, &ISignal::projectionDataMsg);
 	fMsgHandlerMap["\\[[0-9]+\\]"]			= projhandler;

@@ -26,7 +26,6 @@
 #include <algorithm>
 #include <iostream>
 #include <fstream>
-#include <QRegExp>
 
 #include "EventsAble.h"
 #include "EventMessage.h"
@@ -40,6 +39,7 @@
 #include "IVNode.h"
 #include "GraphicEffect.h"
 #include "OSCAddress.h"
+#include "OSCRegexp.h"
 #include "Updater.h"
 #include "ISync.h"
 #include "Tools.h"
@@ -95,12 +95,13 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fMsgHandlerMap["save"]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::saveMsg);
 	fMsgHandlerMap["watch"]		= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsg);
 	fMsgHandlerMap["watch+"]	= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsgAdd);
-
-	fGetMsgHandlerMap["effect"]	= TGetParamMethodHandler<IObject, GraphicEffect (IObject::*)() const>::create(this, &IObject::getEffect);
 	
 	colorAble();
 	positionAble();
 	timeAble();
+
+	fGetMsgHandlerMap["effect"]	= TGetParamMethodHandler<IObject, GraphicEffect (IObject::*)() const>::create(this, &IObject::getEffect);
+	fGetMsgHandlerMap["watch"]	= TGetParamMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
 }
 
 //--------------------------------------------------------------------------
@@ -245,7 +246,11 @@ string IObject::getOSCAddress() const
 void IObject::accept (Updater* u)		{ u->updateTo(this); }
 
 //--------------------------------------------------------------------------
-SIScene	IObject::getScene()				{ return fParent ? fParent->getScene() : 0; }
+SIScene	IObject::getScene()			{ return fParent ? fParent->getScene() : 0; }
+
+//--------------------------------------------------------------------------
+const IObject * IObject::getRoot()	const	{ return fParent ? fParent->getRoot() : this; }
+IObject * IObject::getRoot()				{ return fParent ? fParent->getRoot() : this; }
 
 //--------------------------------------------------------------------------
 void IObject::cleanup ()
@@ -273,8 +278,8 @@ void IObject::cleanup ()
 //--------------------------------------------------------------------------
 bool IObject::match(const std::string& regexp) const
 {
-	QRegExp r (regexp.c_str(), Qt::CaseSensitive, QRegExp::Wildcard);
-	return r.exactMatch(name().c_str());
+	OSCRegexp r (regexp.c_str());
+	return r.match(name().c_str());
 }
 
 //--------------------------------------------------------------------------
@@ -353,52 +358,25 @@ bool IObject::nameDebug() const			{ return fDebug->getNameDebug(); }
 bool IObject::signalDebug() const		{ return fDebug->getSignalDebug(); }
 bool IObject::clickDebug() const		{ return fDebug->getClickDebug(); }
 
+//--------------------------------------------------------------------------
+void IObject::getObjects(const string& address, vector<const IObject*>& outv) const
+{
+	string beg  = OSCAddress::addressFirst(address);
+	string tail = OSCAddress::addressTail(address);
+	if (match(beg)) {				// first make sure that the object is part of the address
+		if (tail.size()) {
+			unsigned int n = elements().size();
+			for (unsigned int i = 0; i < n; i++)
+				elements()[i]->getObjects(tail, outv);
+		}
+		else outv.push_back(this);
+	}
+}
+
 
 //--------------------------------------------------------------------------
 // messages processing
 //--------------------------------------------------------------------------
-#if useiterator
-int IObject::processMsg (const string& address, const string& addressTail, const IMessage* msg)
-{
-//	bool result = false;
-	int result = MsgHandler::kBadAddress;
-	if (match(address)) {				// first make sure that the object is part of the address
-		string beg  = OSCAddress::addressFirst(addressTail);	// next takes the next destination object
-		string tail = OSCAddress::addressTail(addressTail);		// and possible remaining address part
-		
-		if (tail.size()) {			// we're not processing the end of the address, process the address one step down
-			for (subnodes::iterator i = elements().begin(); i != elements().end(); i++)
-				result |= (*i)->processMsg(beg, tail, msg);
-		}
-		else {										// addressTail indicates a terminal node
-			IMessageTranslator translator;
-			IMessage* translated = translator.translate(msg);
-			subnodes targets;		
-			if (find (beg, targets)) {				// looks for subnodes matching addressTail
-				for (IObject::subnodes::iterator i = targets.begin(); i != targets.end(); i++) {
-				
-					bool previouslyModified = (*i)->IDate::modified() || (*i)->IPosition::modified();
-					result |= (*i)->execute(translated ? translated : msg);			// asks the subnode to execute the message
-					if (result & MsgHandler::kProcessed) {
-						(*i)->setState(IObject::kModified);		// sets the modified state of the subnode
-						
-						if ( !previouslyModified && !(*i)->IDate::modified() && !(*i)->IPosition::modified() )
-						// The object IDate & IPosition were clean before, and are still clean,
-						// but yet there has been a modification on the object
-							(*i)->fModified = true;
-					}
-				}
-			}
-			// can't find the target node: try to create it
-			else result = IProxy::execute (translated ? translated : msg, beg, this);
-			delete translated;
-		}
-	}
-	if (result & MsgHandler::kProcessed) 
-		setState(IObject::kSubModified);
-	return result;
-}
-#else
 int IObject::processMsg (const string& address, const string& addressTail, const IMessage* msg)
 {
 //	bool result = false;
@@ -421,15 +399,9 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 				unsigned int n = targets.size();
 				for (unsigned int i = 0; i< n; i++) {
 					IObject * target = targets[i];
-//					bool previouslyModified = target->IDate::modified() || target->IPosition::modified();
-					result |= target->execute(translated ? translated : msg);			// asks the subnode to execute the message
+					result |= target->execute(translated ? translated : msg);	// asks the subnode to execute the message
 					if (result & MsgHandler::kProcessed) {
 						target->setState(IObject::kModified);		// sets the modified state of the subnode
-//						
-//						if ( !previouslyModified && !target->IDate::modified() && !target->IPosition::modified() )
-//						// The object IDate & IPosition were clean before, and are still clean,
-//						// but yet there has been a modification on the object
-//							target->fModified = true;
 					}
 				}
 			}
@@ -442,7 +414,6 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 		setState(IObject::kSubModified);
 	return result;
 }
-#endif
 
 //--------------------------------------------------------------------------
 // the 'get' to retrieve an object parameters
@@ -452,8 +423,12 @@ IMessageList IObject::getParams() const
 	map<string, SGetParamMsgHandler>::const_iterator i = fGetMsgHandlerMap.begin();
 	while (i != fGetMsgHandlerMap.end()) {
 		const string& what = i->first;
-		const SGetParamMsgHandler& handler = what.size() ? i->second : 0;
-		if (handler) outMsgs += getParam(i->first, i->second);
+		if (what == "watch")
+			outMsgs = getWatch();
+		else {
+			const SGetParamMsgHandler& handler = what.size() ? i->second : 0;
+			if (handler) outMsgs += getParam(i->first, i->second);
+		}
 		i++;
 	}
 	return outMsgs;
@@ -555,9 +530,13 @@ IMessageList IObject::getMsgs(const IMessage* msg) const
 		if (what.size()) {
 			handler = getMessageHandler(what);
 			if (handler) {
-				IMessage * msg = getParam(what, handler);
-				if (msg) outMsgs += msg;
-				else break;
+				if (what == "watch")
+					outMsgs += getWatch();
+				else {
+					IMessage * msg = getParam(what, handler);
+					if (msg) outMsgs += msg;
+					else break;
+				}
 			}
 			else if (what == "*")
 				outMsgs = getAll();
@@ -586,8 +565,8 @@ struct msgMatchPredicat {
 			 msgMatchPredicat(const string& s) : msg(s.c_str()) {}
 	bool operator() (const pair<string, SMsgHandler>& elt) const { 
 		if (elt.first == "*") return false;
-		QRegExp regexp (elt.first.c_str());	
-		return regexp.exactMatch(msg);
+		OSCRegexp regexp (elt.first.c_str());	
+		return regexp.match(msg);
 	}
 };
 
@@ -657,6 +636,12 @@ GraphicEffect IObject::getEffect ()	const
 }
 
 //--------------------------------------------------------------------------
+IMessageList IObject::getWatch() const
+{
+	return EventsAble::getWatch (getOSCAddress().c_str());
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
 { 
 	if (msg->params().size() == 1) {
@@ -689,51 +674,57 @@ MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 { 
-	string what;
-	if (msg->params().size() && msg->param (0, what)) {
-		EventsAble::eventype t = EventsAble::string2type (what);
-		switch (t) {
-			case EventsAble::kMouseMove:
-			case EventsAble::kMouseDown:
-			case EventsAble::kMouseUp:
-			case EventsAble::kMouseDoubleClick:
-			case EventsAble::kMouseEnter:
-			case EventsAble::kMouseLeave:
-				if (msg->params().size() > 1)
-					if (add) eventsHandler()->addMsg (t, EventMessage::create (msg, 1));
-					else eventsHandler()->setMsg (t, EventMessage::create (msg, 1));
-				else if (!add) eventsHandler()->setMsg (t, 0);
-				break;
-			case EventsAble::kFile:
-				break;
-			case EventsAble::kTimeEnter:
-			case EventsAble::kTimeLeave:
-				if (msg->params().size() >= 5) {
-					rational start, end;
-					if (!msg->param(1,start) || !msg->param(3, end))
-						return MsgHandler::kBadParameters;
-					RationalInterval time(start,end);
-					if (msg->params().size() > 5) {
-						if (!add) eventsHandler()->setTimeMsg (t, time, EventMessage::create (msg, 5));
-						else eventsHandler()->addTimeMsg (t, time, EventMessage::create (msg, 5));
-						watchTime(time);
+	if (msg->params().size()) {
+		string what;
+		if (msg->param (0, what)) {
+			EventsAble::eventype t = EventsAble::string2type (what);
+			switch (t) {
+				case EventsAble::kMouseMove:
+				case EventsAble::kMouseDown:
+				case EventsAble::kMouseUp:
+				case EventsAble::kMouseDoubleClick:
+				case EventsAble::kMouseEnter:
+				case EventsAble::kMouseLeave:
+					if (msg->params().size() > 1)
+						if (add) eventsHandler()->addMsg (t, EventMessage::create (name(), getScene()->name(), msg, 1));
+						else eventsHandler()->setMsg (t, EventMessage::create (name(), getScene()->name(),msg, 1));
+					else if (!add) eventsHandler()->setMsg (t, 0);
+					break;
+				case EventsAble::kFile:
+					break;
+				case EventsAble::kTimeEnter:
+				case EventsAble::kTimeLeave:
+					if (msg->params().size() >= 5) {
+						rational start, end;
+						if (!msg->param(1,start) || !msg->param(3, end))
+							return MsgHandler::kBadParameters;
+						RationalInterval time(start,end);
+						if (msg->params().size() > 5) {
+							if (!add) eventsHandler()->setTimeMsg (t, time, EventMessage::create (name(), getScene()->name(), msg, 5));
+							else eventsHandler()->addTimeMsg (t, time, EventMessage::create (name(), getScene()->name(), msg, 5));
+							watchTime(time);
+						}
+						else if (!add) {
+							delTime (time);
+							eventsHandler()->setTimeMsg (t, time, 0);
+						}
 					}
-					else if (!add) {
-						delTime (time);
-						eventsHandler()->setTimeMsg (t, time, 0);
+					else if (msg->params().size() == 1) {
+						if (!add) {
+							clearTime();
+							eventsHandler()->clearTimeMsg(t);
+						}
 					}
-				}
-				else if (msg->params().size() == 1) {
-					if (!add) {
-						clearTime();
-						eventsHandler()->clearTimeMsg(t);
-					}
-				}
-				else return MsgHandler::kBadParameters;
-				break;
-			default:
-				return MsgHandler::kBadParameters;
+					else return MsgHandler::kBadParameters;
+					break;
+				default:
+					return MsgHandler::kBadParameters;
+			}
+			return MsgHandler::kProcessed;
 		}
+	}
+	else {
+		EventsAble::reset();
 		return MsgHandler::kProcessed;
 	}
 	return MsgHandler::kBadParameters;

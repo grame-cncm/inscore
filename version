@@ -58,7 +58,7 @@ mv -f TMP$$ $TEX
 
 open $ROOT/cmake/INScore.xcodeproj
 
-echo "==> change manually rc files in win32 folder"
-open -t win32/INScore.rc win32/Viewer/INScoreViewer.rc
+echo "==> change manually inf.plist and rc files in win32 folder"
+open -t cmake/info.plist win32/INScore.rc win32/Viewer/INScoreViewer.rc
 
 exit 0

@@ -59,7 +59,7 @@
 
 \begin{document}
 
-\title{INScore \\ OSC Messages Reference \\v.0.63}
+\title{INScore \\ OSC Messages Reference \\v.0.74}
 
 \author{Grame, Centre national de cr\'eation musicale\\
 {\small <research@grame.fr>} \\
@@ -90,8 +90,10 @@ OSCMessage : OSCAddress message (parameters |)
 OSCAddress : '/' (identifier | regexp) +
 \end{rail}
 
+\railalias{startid}{[-\_a-zA-Z]}
+\railalias{nextid}{[-\_a-zA-Z0-9]]}
 \begin{rail}
-identifier : '[a-zA-Z]' ('[-a-zA-Z0-9]' +)
+identifier : startid (nextid +)
 \end{rail}
 
 The OSC types \emph{int32}, \emph{float32} and \emph{OSC-string} are used as terminal symbols and are denoted by \oscint, \oscfloat\ and \oscstring. 
@@ -155,17 +157,29 @@ The default \OSC{defaultShow} value is 1.
 %: Scene messages
 \toplevel{Scene messages}
 \label{scene}
-A scene may be viewed as a window on the score elements. Its address is \OSC{/ITL/scene}. It handles the following messages:
+A scene may be viewed as a window on the score elements. Its address is \OSC{/ITL/\textit{sceneIdentifier}} where \OSC{\textit{sceneIdentifier}} is the scene name. It handles the following messages:
 \begin{rail}
-sceneMsg : 'reset'
+sceneMsg :  'new'
+			| 'del'
+			| ('load' filePath)
+			| 'reset'
+			| 'foreground'
 			| ('fullscreen' int32)
 			| commonMsg
 \end{rail}
-\index{Scene messages!fullscreen}
 \index{Scene messages}
+\index{Scene messages! create}
+\index{Scene messages! close}
+\index{Scene messages! reset}
+\index{Scene messages! load}
+\index{Scene messages!fullscreen}
 
 \begin{itemize}
+\item \OSC{new}: creates a new scene and opens it in a new window.
+\item \OSC{del}: deletes a scene and closes the corresponding window.
+\item \OSC{load}: loads an INScore file to the scene. Note that the OSC addresses are translated to the scene OSC address.
 \item \OSC{reset}: clears the scene (i.e. delete all components) and resets the scene to its default state (position, size and color).
+\item \OSC{foreground}: put the scene to foreground.
 \item \OSC{fullscreen}: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is \values{0}.
 \item \OSC{commonMsg}: see section \fullref{common}.
 \end{itemize}
@@ -546,10 +560,31 @@ setMsg : 'set' type data
 
 It sets a \OSC{scene} component data. When there is no destination for the OSC address, the component is first created before being given the message. When the target destination type doesn't correspond to the message \OSC{type}, the object is replaced by an adequate object.
 
+Supported types are the following:
+\begin{itemize}
+\item \OSC{txt}: a textual component.
+\item \OSC{html}: an html component defined by an HTML string.
+\item \OSC{gmn}: a Guido score defined by a GMN string.
+\item \OSC{svg}: SVG graphics defined by a SVG string.
+\item \OSC{graph}: graphic of a signal. See section \fullref{graphsig} for details about the \OSC{graph} objects data.
+\item \OSC{rect}: a rectangle specified by a width and height. Width and height are expressed in \OSC{scene} coordinates space, thus a width or a height of 2 corresponds to the width or a height of the \OSC{scene}.
+\item \OSC{ellipse}: an ellipse specified by a width and height.
+\item \OSC{polygon}: a polygon specified by a sequence of points, each point being defined by its (x,y) coordinates. Those coordinates are expressed in the \OSC{scene} coordinate space, but only taking in acount the relative position of the points ( \emph{i.e} a polygon A = \{ (0,0) ; (1,1) ; (0,1) \} is equivalent to a polygon B = \{ (1,1) ; (2,2) ; (1,2) \} ).
+\item \OSC{curve}: a sequence of 4-points bezier cubic curve. If the end-point of a curve doesn't match the start-point of the following one, the curves are linked by a straight line. The first curve follows the last curve. The inner space defined by the sequence of curves is filled, using the object color. The points coordinates are handled as in a \OSC{polygon}.
+\item \OSC{line}: a simple line specified by a point (x,y) expressed in \OSC{scene} coordinate space or by a width and angle. The point form is used to compute a line from (0,0) to (x,y), which is next drawn centered on the scene.
+\item \OSC{txtf}: a textual component defined by a file.
+\item \OSC{htmlf}: an html component defined by an HTML file.
+\item \OSC{gmnf}: a Guido score defined by a GMN file.
+\item \OSC{svgf}: vectorial graphics defined by a SVG file.
+\item \OSC{img}: an image file based component. The image format is infered from the file extension.
+\item \OSC{video}: a video file based component. The video format is infered from the file extension. Note that navigation through the video is made using its \OSC{date}.
+\item \OSC{file}: a generic type to handle file based objects. Actually, the \OSC{file} type is translated into a one of the \OSC{txtf}, \OSC{gmnf}, \OSC{img} or \OSC{video} types, according to the file extension (see table \ref{fileTranslate}).
+\end{itemize}
+
 Format of the \OSC{set} message is:
 \begin{rail}
 setMsg : 'set' (
-	('txt' string) |
+	('txt' txtStream) |
 	('html' string) |
 	('svg' svgString) |
 	('gmn' gmnString) |
@@ -574,28 +609,11 @@ setMsg : 'set' (
 \index{Set type!curve}
 \index{Set type!line}
 
-
-Supported types are the following:
-\begin{itemize}
-\item \OSC{txt}: a textual component.
-\item \OSC{html}: an html component defined by an HTML string.
-\item \OSC{gmn}: a Guido score defined by a GMN string.
-\item \OSC{svg}: SVG graphics defined by a SVG string.
-\item \OSC{graph}: graphic of a signal. See section \fullref{graphsig} for details about the \OSC{graph} objects data.
-\item \OSC{rect}: a rectangle specified by a width and height. Width and height are expressed in \OSC{scene} coordinates space, thus a width or a height of 2 corresponds to the width or a height of the \OSC{scene}.
-\item \OSC{ellipse}: an ellipse specified by a width and height.
-\item \OSC{polygon}: a polygon specified by a sequence of points, each point being defined by its (x,y) coordinates. Those coordinates are expressed in the \OSC{scene} coordinate space, but only taking in acount the relative position of the points ( \emph{i.e} a polygon A = \{ (0,0) ; (1,1) ; (0,1) \} is equivalent to a polygon B = \{ (1,1) ; (2,2) ; (1,2) \} ).
-\item \OSC{curve}: a sequence of 4-points bezier cubic curve. If the end-point of a curve doesn't match the start-point of the following one, the curves are linked by a straight line. The first curve follows the last curve. The inner space defined by the sequence of curves is filled, using the object color. The points coordinates are handled as in a \OSC{polygon}.
-\item \OSC{line}: a simple line specified by a point (x,y) expressed in \OSC{scene} coordinate space or by a width and angle. The point form is used to compute a line from (0,0) to (x,y), which is next drawn centered on the scene.
-\item \OSC{txtf}: a textual component defined by a file.
-\item \OSC{htmlf}: an html component defined by an HTML file.
-\item \OSC{gmnf}: a Guido score defined by a GMN file.
-\item \OSC{svgf}: vectorial graphics defined by a SVG file.
-\item \OSC{img}: an image file based component. The image format is infered from the file extension.
-\item \OSC{video}: a video file based component. The video format is infered from the file extension. Note that navigation through the video is made using its \OSC{date}.
-\item \OSC{file}: a generic type to handle file based objects. Actually, the \OSC{file} type is translated into a one of the \OSC{txtf}, \OSC{gmnf}, \OSC{img} or \OSC{video} types, according to the file extension (see table \ref{fileTranslate}).
-\end{itemize}
 Note that the default position of any component is \values{[0,0]}. Objects are drawn centered on their position.
+
+\begin{rail}
+txtStream :  (string | int32 | float32) +
+\end{rail}
 
 \label{setfile}
 \begin{rail}
@@ -669,44 +687,18 @@ The \OSC{get width} and \OSC{get height} messages adressed to components that ha
 \label{specificMsg}
 Some of the messages are specific to the component \OSC{type}. These messages can be sent to addresses of the form \OSC{/ITL/scene/\textit{identifier}}. They are ignored by objects that don't support the message. 
 
+%-------------------------------
+\sublevel{Pen control}
 
+Messages accepted by the components types \OSC{rect | ellipse | polygon | curve | line | graph}.
 \begin{rail}
-specificMsg : 	  [1] 'penColor' color 
-				| [1] 'penWidth' float32
-				| [1] 'penStyle' penstyle
-				| [2] 'width' float32
-				| [2] 'height' float32
-%				| [3] 'videoMap' ( 
-%								( floatSegment relativeTimeSegment ) + 
-%							| 	( ( 'tempo' float32 | ) ( 'startSecond' float32 | )  )
-%							)
-%				| [3] 'videoMapf' string
-%				| [4] 'get pageCount'
-%				| [4] 'page' int32
-%				| [4] 'pageFormat' float32 float32
-%				| [4] 'columns' int32
-%				| [4] 'rows' int32
-%				| [5] 'curveType' curveType
-%				| [5] 'thickness' thickness
-%				| [5] 'drawLine' drawLine
-%				| [5] 'ignoreSignalColor' int32
-%				| [5] 'penIgnoreSignalColor' int32
+penMsg : 	  'penColor' color 
+			| 'penWidth' float32
+			| 'penStyle' penstyle
 \end{rail}
 \index{Specific messages! penColor}
 \index{Specific messages! penWidth}
 \index{Specific messages! penStyle}
-%\index{Specific messages! videoMap}
-%\index{Specific messages! videoMapf}
-\index{Specific messages! width}
-\index{Specific messages! height}
-
-\begin{itemize}
-\item \textbf{[1]} messages supported by the components types \OSC{rect | ellipse | polygon | curve | line | graph}.
-\item \textbf{[2]} messages supported by the components types \OSC{rect | ellipse | graph.} % | video}.
-%\item \textbf{[5]} messages supported by the component type \OSC{graph}.
-%\item \textbf{[3]} messages supported by \OSC{video} components.
-%\item \textbf{[4]} messages supported by the components types \OSC{gmn | gmnf}. The \OSC{pageCount} attributes is read-only.
-\end{itemize}
 
 \begin{rail}
 penstyle : 'solid' | 'dash' | 'dot' | 'dashDot' | 'dashDotDot'
@@ -716,6 +708,79 @@ penstyle : 'solid' | 'dash' | 'dot' | 'dashDot' | 'dashDotDot'
 \index{Specific messages! penStyle! dot}
 \index{Specific messages! penStyle! dashDot}
 \index{Specific messages! penStyle! dashDotDot}
+
+The pen width default value is 0 (excepted for \OSC{line} objects, where 1.0 is the default value). It is expressed in arbitrary units (1 is a reasonable value).
+The pen style default value is \OSC{solid}.\\
+The color scheme is described in section \ref{colormsg}.
+
+
+%-------------------------------
+\sublevel{Width and height control}
+
+Messages accepted by the components types \OSC{rect | ellipse | graph.}
+
+\begin{rail}
+whMsg : 	  'width' float32
+			| 'height' float32
+\end{rail}
+\index{Specific messages! width}
+\index{Specific messages! height}
+
+
+
+%-------------------------------
+\sublevel{Score pages management}
+\label{gmnpage}
+
+Messages accepted by the components types \OSC{gmn | gmnf}. 
+\begin{rail}
+scoreMsg :      'page' int32
+			| 'dpage' int32
+			| 'pageFormat' float32 float32
+			| 'columns' int32
+			| 'rows' int32
+			| 'get' 'pageCount'
+\end{rail}
+\index{Specific messages! score! page}
+\index{Specific messages! score! dpage}
+\index{Specific messages! score! pageFormat}
+\index{Specific messages! score! columns}
+\index{Specific messages! score! rows}
+\index{Specific messages! score! pageCount}
+
+
+\begin{itemize}
+\item \OSC{page}: set the score current page
+\item \OSC{dpage}: set the score current page
+\item \OSC{pageFormat}: set the page format. The parameters are the page width and height. Note that the message has no effect when the score already includes a $\backslash$pageformat tag.
+\item \OSC{columns}: for multi pages display: set the number of columns.
+\item \OSC{rows}: for multi pages display: set the number of rows.
+\item \OSC{pageCount}:  a read only attribute, gives the score pages count.
+\end{itemize}
+
+
+%-------------------------------
+%\sublevel{Video maps}
+%
+%Messages accepted by \OSC{video} components.
+%\begin{rail}
+%specificMsg : 	 'videoMap' ( 
+%								( floatSegment relativeTimeSegment ) + 
+%							| 	( ( 'tempo' float32 | ) ( 'startSecond' float32 | )  )
+%							)
+%				| 'videoMapf' string
+%\end{rail}
+
+
+
+%\begin{rail}
+%specificMsg : 	  [5] 'curveType' curveType
+%				| [5] 'thickness' thickness
+%				| [5] 'drawLine' drawLine
+%				| [5] 'ignoreSignalColor' int32
+%				| [5] 'penIgnoreSignalColor' int32
+%\end{rail}
+
 
 %\begin{rail}
 %curveType : 'round' | 'step'
@@ -739,11 +804,6 @@ penstyle : 'solid' | 'dash' | 'dot' | 'dashDot' | 'dashDotDot'
 %\index{Specific messages! drawLine! top}
 %\index{Specific messages! drawLine! bottom}
 %\index{Specific messages! drawLine! both}
-
-
-The color scheme is described in section \ref{common}. \\
-The pen width default value is 0 (excepted for \OSC{line} objects, where 1.0 is the default value). It is expressed in arbitrary units (1 is a reasonable value).\\
-The pen style default value is \OSC{solid}.\\
 
 %Graph specific messages:
 %\begin{itemize}
@@ -1315,22 +1375,24 @@ Note than when \textit{d} is not a mutiple of 6, then the last graphic signal ma
 
 %===============================
 %: Interaction messages
-\toplevel{ Events and Interaction}
+\toplevel{Events and Interaction}
 \label{interaction}
 
 Interaction messages are user defined messages associated to events and triggered when these events occur. These messages accept variables as message arguments.
 
-\sublevel{ Interaction messages}
+\sublevel{Interaction messages}
 \label{interactmsg}
 
 The general form of the message is:
 
 \begin{rail}
-interactMsg : (('watch' | 'watch+')  what  ( | oscMsg)) 
+interactMsg : (('watch' | 'watch+')  ([1] | what  ( | oscMsg))) 
 \end{rail}
+\index{Interaction!watch}
+\index{Interaction!watch+}
 
 \begin{itemize}
-\item \OSC{watch}: clears the messages associated to the event and when specified, associates the new message to the watched event. 
+\item \OSC{watch}: clears the messages associated to the event and when specified, associates the new message to the watched event. \OSC{watch} without arguments ([1]) clears all the messages associated to all events.
 \item \OSC{watch+}: adds a message to the watched event message list. 
 \end{itemize}
 
@@ -1338,11 +1400,20 @@ Events currently \emph{watchable} are:
 \begin{rail}
 what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'doubleClick' | 'timeEnter' timezone | 'timeLeave' timezone
 \end{rail}
+\index{Interaction!mouseDown}
+\index{Interaction!mouseUp}
+\index{Interaction!mouseEnter}
+\index{Interaction!mouseLeave}
+\index{Interaction!mouseMove}
+\index{Interaction!doubleClick}
+\index{Interaction!timeEnter}
+\index{Interaction!timeLeave}
 
 \begin{rail}
 timezone : int32 int32 int32 int32
 \end{rail}
 A time zone is defined by 2 dates expressed as rational values (i.e. with 4 integers).
+\index{Interaction! timezone}
 
 
 The associated OSC message is any valid OSC message (not restricted to the Interlude message set), with an extended address scheme, supporting IP addresses or host names and udp port number to be specified as OSC addresses prefix. The message parameters are any valid OSC type or variables (see section \ref{interactvar}).
@@ -1363,42 +1434,115 @@ Example:
 2) Request the object \OSC{myObject} to watch \OSC{mouseDown} events and send a "start" message to host.domain.org on udp port 12100 to OSC address /an/address
 
 
-\sublevel{Message variables}
+%===============================
+%: Message variables
+\sublevel{Variables}
 \label{interactvar}
 
 Variables denote values computed when an event is triggered. These values are send in place of the variable. A variable name starts with a '\$' sign. Currently, the following variables are supported by mouse events:
 \begin{rail} 
-variable : 'x' | 'y' | 'absx' | 'absy' | date 
+variable : (xy | 'absx' | 'absy' | 'sx' | 'sy' | date) 
+\end{rail}
+\index{Interaction!variable!x}
+\index{Interaction!variable!y}
+\index{Interaction!variable!absx}
+\index{Interaction!variable!absy}
+\index{Interaction!variable!sx}
+\index{Interaction!variable!sy}
+\index{Interaction!variable!date}
+
+\begin{rail} 
+xy : ('x' | 'y') ( | '[low,high]') 
 \end{rail}
 
 \begin{itemize}
-\item \OSC{\$x} \OSC{\$y}: denotes the mouse pointer position at the time of the event. The values are in the range $[0,1[$ where 1 is the object size in the x or y dimension. The value is computed according to the object origin: it represents the mouse pointer distance from the object x or y origin (see \fullref{origin}).
-\item \OSC{\$absx} \OSC{\$absx}: denotes the mouse pointer absolute position at the time of the event. The values represent a pixel position relative to the top-left point of the target object. Note that this position is unaffected by scale. 
+\item \OSC{\$x} \OSC{\$y}: denotes the mouse pointer position at the time of the event. The values are in the range $[0,1]$ where 1 is the object size in the x or y dimension. The value is computed according to the object origin: it represents the mouse pointer distance from the object x or y origin (see \fullref{origin}). \OSC{\$x} and \OSC{\$y} variables support an optional range in the form \OSC{[low, high]} that transforms the $[0,1]$  values range into the $[low, high]$ range.
+
+\item \OSC{\$absx} \OSC{\$absy}: denotes the mouse pointer absolute position at the time of the event. The values represent a pixel position relative to the top-left point of the target object. Note that this position is unaffected by scale. 
 Note also that the values are not clipped to the object dimensions and could exceed its width or height or become negative in case of mouse move events.
-\item \OSC{\$date}: denotes the object date corresponding to the mouse pointer position at the time of the event. The detailed date variable is given below: it is optionnaly followed by a colon and the name of the mapping to be used to compute the date . The \OSC{\$date} variable is replaced by its rational value (i.e. two integers values). 
+
+\item \OSC{\$sx} \OSC{\$sy}: denotes the mouse pointer position in the scene coordinates space. \OSC{\$sx} and \OSC{\$sy} are computed like
 \end{itemize}
 
 \begin{rail} 
 date : 'date' (| ':'  mapname)
 \end{rail}
 
+\begin{itemize}
+\item \OSC{\$date}: denotes the object date corresponding to the mouse pointer position at the time of the event. The detailed date variable is given below: it is optionnaly followed by a colon and the name of the mapping to be used to compute the date . The \OSC{\$date} variable is replaced by its rational value (i.e. two integers values). 
+\end{itemize}
+
 Note that a variable can be used several times in a message, but several \OSC{\$date} variables must always refer to the same mapping.
 
 \vspace{5mm}
 \texttt{\textbf{Warning:}} the interaction message set is provided for experiment. It is likely to change in a future version. Ideas, comments, suggestions are welcome for the design of a stable API.
 
+%===============================
+%: Message based variables
+\sublevel{Message based variables}
+\label{msgvar}
 
+A message based variable is a variable containing an OSC message which will be evaluated at the time of the event. They are supported by all kind of events. Like  the variables above, a message based variable starts with a '\$' sign followed by a valid 'get' message enclosed in parenthesis:
+\begin{rail} 
+msgVar : '(' oscaddress 'get' (| params) ')'
+\end{rail}
+
+The evaluation of a 'get' message produces a message or a list of messages. The message based variable will be replaced by the parameters of the messages resulting from the evaluation of the 'get' message.
+Note that all the 'get' messages attached to an event are evaluated at the same time.
+
+Example:
+{\small \begin{verbatim}
+/ITL/scene/obj1 watch  mouseDown "/ITL/scene/obj1" "show" $("/ITL/scene/obj2" get "show")
+/ITL/scene/obj1 watch+ mouseDown "/ITL/scene/obj2" "show" $("/ITL/scene/obj1" get "show")
+/ITL/scene/obj2 watch  mouseDown "/ITL/scene/obj1" "show" $("/ITL/scene/obj2" get "show")
+/ITL/scene/obj2 watch+ mouseDown "/ITL/scene/obj2" "show" $("/ITL/scene/obj1" get "show")
+\end{verbatim}
+}
+When clicked, the objects \OSC{obj1} and \OSC{obj1} swap their visibility state.
+
+
+
+%===============================
+\sublevel{OSC address variables}
+\label{oscvar}
+The OSC address parameter of a watch message supports the following variables:
+\begin{itemize}
+\item \OSC{\$self}: replaced by the object name at the time of the message setting.
+\item \OSC{\$scene}: replaced by the scene name at the time of the message setting.
+\end{itemize}
+Note: the system doesn't check for the consistency of the variables placement.
 
 %===============================
 %: Changes list
 \toplevel{ Changes list}
 
 %===============================
+%: Differences to version 0.63
+\sublevel{Differences to version 0.63}
+\begin{itemize}
+\item new \OSC{dpage} message accepted by \OSC{gmn} objects (see section \fullref{gmnpage}).
+\item x and y variables: automatic range type detection (int | float)
+\item set \OSC{txt} message: accepts polymorphic stream like parameters (see section \fullref{setsect}).
+\item drag and drop files support in INScore viewer
+\item interaction variables extension: \OSC{\$sx}, \OSC{\$sy} variables added to support scene coordinate space (see section \fullref{interactvar}).
+\item automatic range mapping for \OSC{\$x}, \OSC{\$y} variables.
+\item new \OSC{\$self} and \OSC{\$scene} variables in the address field (see section \fullref{oscvar}).
+\item OSC identifiers characters set extended with '\_' and '-' (see section \fullref{genformat}).
+\item support for multiple scenes: \OSC{new}, \OSC{del} and \OSC{foreground} messages (see section \fullref{scene}).
+\item \OSC{load} message supported at scene level (see section \fullref{scene}).
+\item \OSC{get watch} implemented.
+\item \OSC{watch} message without argument to clear all the watched events (see section \fullref{interactvar}).
+\item order of rendering and width, height update corrected (may lead to incorrect rendering)
+\item bug with gmn score corrected: missing update for page, columns and rows changes.
+\item package delivered with the Guido Engine version 1.41 that corrects minimum staves distance and incorrect mapping when optimum page fill is off.
+\end{itemize}
+
+%===============================
 %: Differences to version 0.60
 \sublevel{Differences to version 0.60}
 \begin{itemize}
 \item new 'mousemove' event (see section \fullref{interactmsg}).
-\item interaction messages accept variables (\$x, \$y, \$date...) \fullref{interactvar}).
+\item interaction messages accept variables (\$x, \$y, \$date...) (see section \fullref{interactvar}).
 \item SVG code and files support (see section \fullref{setfile}).
 \item set line message change: the \OSC{x y} form is deprecated, it is replaced by
   the following forms: \\

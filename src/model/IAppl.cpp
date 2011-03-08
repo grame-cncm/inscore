@@ -35,6 +35,7 @@
 #include "IGlue.h"
 #include "IMessage.h"
 #include "IObjectFactory.h"
+#include "IScene.h"
 #include "ITLparser.h"
 #include "OSCAddress.h"
 #include "Updater.h"
@@ -114,10 +115,12 @@ void IAppl::resetBench()
 
 #endif
 
-bool IAppl::fDefaultShow(true);
 //--------------------------------------------------------------------------
-IAppl::IAppl(int udpport, int outport, int errport) 
-	: IObject("ITL", 0), fRunning(true), fUDP(udpport,outport,errport), fView(0)
+bool IAppl::fDefaultShow(true);
+const string IAppl::kName = "ITL";
+//--------------------------------------------------------------------------
+IAppl::IAppl(int udpport, int outport, int errport, bool offscreen) 
+	: IObject(kName, 0), fRunning(true), fOffscreen(offscreen), fUDP(udpport,outport,errport), fView(0)
 {
 	fTypeString = kApplType;
 	fVersion = INScore::versionStr();
@@ -138,12 +141,6 @@ IAppl::IAppl(int udpport, int outport, int errport)
 	fMsgHandlerMap["outport"]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPOutPort);
 	fMsgHandlerMap["errport"]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPErrPort);
 	fMsgHandlerMap["defaultShow"]	= TSetMethodMsgHandler<IAppl,bool>::create(this, &IAppl::setDefaultShow);
-
-//	fMsgHandlerMap["rootPath"]	= TSetMsgHandler<string>::create(fRootPath);
-//	fMsgHandlerMap["port"]		= TSetMsgHandler<int>::create(fUDP.fInPort);
-//	fMsgHandlerMap["outport"]	= TSetMsgHandler<int>::create(fUDP.fOutPort);
-//	fMsgHandlerMap["errport"]	= TSetMsgHandler<int>::create(fUDP.fErrPort);
-//	fMsgHandlerMap["defaultShow"]= TSetMsgHandler<bool>::create(IObjectFactory::fDefaultShow);
 
 	fGetMsgHandlerMap["date"]		= 0;
 	fGetMsgHandlerMap["duration"]	= 0;
@@ -209,12 +206,20 @@ void IAppl::createVirtualNodes()
 }
 
 //--------------------------------------------------------------------------
+void IAppl::ptask ()
+{
+	for (unsigned int i = 0; i < elements().size(); i++) {
+		IScene* scene = dynamic_cast<IScene*>((IObject*)elements()[i]);
+		if (scene) scene->ptask();
+	}
+}
+
+//--------------------------------------------------------------------------
 void IAppl::accept (Updater* u)
 {
 	u->updateTo(SIAppl(this));
 }
 
-#define useiterator 0
 //--------------------------------------------------------------------------
 // the 'get' at root level
 // applications parameters are flushed first since
@@ -222,18 +227,11 @@ void IAppl::accept (Updater* u)
 IMessageList IAppl::getAll() const
 {
 	IMessageList outMsgs = getParams();
-#if useiterator
-	for (subnodes::const_iterator i = elements().begin(); i != elements().end(); i++) {
-		if (!(*i)->getDeleted())
-			outMsgs += (*i)->getAll();
-	}
-#else
 	for (unsigned int i = 0; i < elements().size(); i++) {
 		nodePtr elt = elements()[i];
 		if (!elt->getDeleted())
 			outMsgs += elt->getAll();
 	}
-#endif
 	return outMsgs;
 }
 

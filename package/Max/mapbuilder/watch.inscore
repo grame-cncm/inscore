@@ -1,0 +1,25 @@
+/ITL/scene/b2 show 1
+/ITL/scene/score watch  "mouseDown"  	"/ITL/$scene/b1" "set" "ellipse" 0.02 0.02
+/ITL/scene/score watch+ "mouseDown"  	"/ITL/$scene/b1" "color" 240 0 0 
+/ITL/scene/score watch+ "mouseDown"  	"/ITL/$scene/b[12]" "x" "$sx"
+/ITL/scene/score watch+ "mouseDown"  	"/ITL/$scene/b[12]" "y" "$sy"
+/ITL/scene/score watch+ "mouseDown"  	"/ITL/$scene/b1" "z" 10
+
+/ITL/scene/score watch  "mouseUp"  		"/ITL/$scene/b2" "set" "ellipse" 0.02 0.02
+/ITL/scene/score watch+ "mouseUp"  		"/ITL/$scene/b2" "color" 240 0 0 
+/ITL/scene/score watch+ "mouseUp"  		"/ITL/$scene/b2" "x" "$sx"
+/ITL/scene/score watch+ "mouseUp"  		"/ITL/$scene/b2" "y" "$sy"
+/ITL/scene/score watch+ "mouseUp"  		"/ITL/$scene/b2" "z" 10
+
+/ITL/scene/score watch+ "mouseDown"  	"localhost:7100/startx"  "$absx"
+/ITL/scene/score watch+ "mouseDown"  	"localhost:7100/starty"  "$absy"
+/ITL/scene/score watch+ "mouseDown"  	"localhost:7100/startsx" "$sx"
+/ITL/scene/score watch+ "mouseDown"  	"localhost:7100/startsy" "$sy"
+
+/ITL/scene/score watch+ "mouseMove"  	"localhost:7100/sx" 	"$sx"
+/ITL/scene/score watch+ "mouseMove"  	"localhost:7100/sy" 	"$sy"
+
+/ITL/scene/score watch+ "mouseUp"  		"localhost:7100/endx"   "$absx"
+/ITL/scene/score watch+ "mouseUp"  		"localhost:7100/endy"   "$absy"
+/ITL/scene/score watch+ "mouseUp"  		"localhost:7100/sx" 	"$sx"
+/ITL/scene/score watch+ "mouseUp"  		"localhost:7100/sy" 	"$sy"

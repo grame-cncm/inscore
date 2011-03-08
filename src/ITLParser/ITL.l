@@ -33,8 +33,9 @@ static  char* unescape (char * str) {
 
 DIGIT	[0-9]
 LETTER  [a-zA-Z]
-IDCHAR  [a-zA-Z0-9]
-RECHAR  [a-zA-Z0-9?+*]
+STARTID [_a-zA-Z]
+IDCHAR  [-_a-zA-Z0-9]
+RECHAR  [-_a-zA-Z0-9?+*]
 PCHAR	[^ \t\x0a\x0d*?]
 SPACE	[ \t\x0a\x0d]
 EOL		[\x0a\x0d]
@@ -60,7 +61,7 @@ EOL		[\x0a\x0d]
 <COMMENT>"*)"		if (--nested==0) BEGIN INITIAL;
 {SPACE}*"(*"		nested=1; BEGIN COMMENT;
 
-{LETTER}{IDCHAR}*	return IDENTIFIER;		/* identifiers */
+{STARTID}{IDCHAR}*	return IDENTIFIER;		/* identifiers */
 {LETTER}{IDCHAR}*":"{LETTER}{IDCHAR}*	return MAPIDENTIFIER;		/* identifiers with map name */
 {LETTER}*			return MSG;				/* messages */
 "/"					return PATHSEP;			/* OSC address and path separator */

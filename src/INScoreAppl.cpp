@@ -23,13 +23,24 @@
 */
 
 #include <QApplication>
+#include <QMenuBar>
+#include <QMessageBox>
+#include <QMenu>
 #include <QDir>
+#include <QString>
+#include <QEvent>
+#include <QFileDialog>
+#include <QFileOpenEvent>
+#include <QGraphicsSceneDragDropEvent>
+#include <QUrl>
+#include <QDebug>
 
 #include <stdlib.h>
 #include <iostream>
 #include <string>
 
 #include "INScore.h"
+#include "INScoreAppl.h"
 
 using namespace inscore;
 using namespace std;
@@ -49,6 +60,55 @@ static int intopt (const string& opt, int defaultValue, int n, char **argv)
 	return defaultValue;
 }
 
+
+//_______________________________________________________________________
+void INScoreAppl::about()
+{
+	QString title = "INScore Viewer";
+	QString about = "An Interactive Augmented Score Viewer\nINScore library version ";
+	about += INScore::versionStr();
+	QMessageBox::about (0, title, about);
+}
+
+//_______________________________________________________________________
+void INScoreAppl::aboutQt()
+{
+	QMessageBox::aboutQt (0, "INScore Viewer");
+}
+
+#if WIN32
+#define sep '/'
+#else
+#define sep '/'
+#endif
+
+//_______________________________________________________________________
+void INScoreAppl::open(const string& file)
+{
+	size_t pos = file.find_last_of (sep);
+	if (pos != string::npos) {
+		string path = file.substr(0, pos);
+		INScore::MessagePtr msg = INScore::newMessage ("rootPath");
+		INScore::add (msg, path.c_str());
+		INScore::postMessage ("/ITL", msg);
+	}
+	INScore::MessagePtr msg = INScore::newMessage ("load");
+	INScore::add (msg, file.c_str());
+	INScore::postMessage ("/ITL", msg);
+}
+
+//_______________________________________________________________________
+bool INScoreAppl::event(QEvent *ev)
+{
+    if (ev->type() == QEvent::FileOpen) {
+		QString fileName = static_cast<QFileOpenEvent *>(ev)->file();
+		open (fileName.toStdString());
+		return true;
+    }
+	return QApplication::event(ev);
+}
+
+
 #if defined(WIN32) && !defined(_DEBUG)
 # define USEWINMAIN
 #endif
@@ -67,7 +127,7 @@ int main( int argc, char **argv )
 
 	int ret = 1;
 	int udpPort = intopt ("--port", kUPDPort, argc, argv);
-	QApplication appl(argc, argv);
+	INScoreAppl appl(argc, argv);
 	appl.setApplicationName("INScoreViewer");
 	QDir dir(QApplication::applicationDirPath());
 #ifndef WIN32

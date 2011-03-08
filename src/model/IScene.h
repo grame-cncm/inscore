@@ -65,7 +65,7 @@ class IScene : public IRectShape, public PeriodicTask
 	
 	public:		
 		static const std::string kSceneType;
-		static SMARTP<IScene> create(IObject * parent)	{ return new IScene(parent); }
+		static SMARTP<IScene> create(const std::string& name, IObject * parent)	{ return new IScene(name, parent); }
 
 		bool			getFullScreen() const		{ return fFullScreen; }
 		void			setFullScreen(bool state)	{ fFullScreen = state; }
@@ -105,18 +105,21 @@ class IScene : public IRectShape, public PeriodicTask
 
 		/// \brief a periodic task to propagate modification state from masters to slaves
 		virtual void ptask ();
-
-		/// \brief \c del() method: a scene can't be deleted
-		virtual void del () {}
 		
-		QGraphicsScene * getScene () const;
+		QGraphicsScene * getGraphicScene () const;
 		VSceneView *	getView () const				{ return fView; }
 		void			setView (VSceneView * view) 	{ fView = view; }
 		VGraphicsItemView*	graphicView() const			{ return (VGraphicsItemView*)fView; }
 
 	protected:
-				 IScene(IObject * parent);
+				 IScene(const std::string& name, IObject * parent);
 		virtual ~IScene();
+
+		MsgHandler::msgStatus loadMsg(const IMessage* msg);
+		void		foreground ();
+		void		newScene ();
+		void		del ();
+		std::string address2scene (const char* addr) const;
 };
 
 /*!

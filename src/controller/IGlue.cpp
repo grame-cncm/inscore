@@ -51,7 +51,7 @@ using namespace std;
 namespace inscore
 {
 
-extern SIMessageStack gMsgStask;
+extern SIMessageStack gMsgStack;
 
 //--------------------------------------------------------------------------
 IGlue::IGlue(int udpport, int outport, int errport) 
@@ -113,23 +113,17 @@ void IGlue::oscinit (OSCStream& osc, const std::string& address, int port)
 }
 
 //--------------------------------------------------------------------------
-//void IGlue::setGraphicListener(GraphicUpdateListener* listener) const
-//{
-//	if (fSceneView) fSceneView->setListener (listener);
-//}
-
-//--------------------------------------------------------------------------
 bool IGlue::getSceneView(unsigned int* dest, int w, int h, bool smooth )
 { 
 	QMutexLocker locker (&fTimeViewMutex);
 
-	QRect r = QApplication::desktop()->screenGeometry();
-	float lowestDimension = qMin( r.width(), r.height() );
-	fScene->setWidth((2*w) / lowestDimension);
-	fScene->setHeight((2*h) / lowestDimension);
-	getSceneView()->setSceneRect (w,h);
+//	QRect r = QApplication::desktop()->screenGeometry();
+//	float lowestDimension = qMin( r.width(), r.height() );
+//	fScene->setWidth((2*w) / lowestDimension);
+//	fScene->setHeight((2*h) / lowestDimension);
 
-	return getSceneView()->copy(dest, w, h, smooth );
+	return false;
+//	return getSceneView()->copy(dest, w, h, smooth );
 }
 
 //--------------------------------------------------------------------------
@@ -139,23 +133,32 @@ void IGlue::initialize (bool offscreen)
 	EventsAble::init();
 
 	fMsgStack = IMessageStack::create();
-	gMsgStask = fMsgStack;
+	gMsgStack = fMsgStack;
 	fController = IController::create();
 //	fController->setListener (this);
 
-	fModel = IAppl::create(fUDP.fInPort, fUDP.fOutPort, fUDP.fErrPort);
+	fModel = IAppl::create(fUDP.fInPort, fUDP.fOutPort, fUDP.fErrPort, offscreen);
 	fModel->createVirtualNodes();
 	fModel->setView (ViewFactory::create(fModel));
 
-	SIScene	scene = IScene::create(fModel);
-	scene->createVirtualNodes();
-//	scene->setView (ViewFactory::create(scene));
-	fSceneView = new VSceneView ( new QGraphicsScene, offscreen );
-	scene->setView (fSceneView);
-	fModel->add (scene);
-	fScene = scene;
+	INScore::MessagePtr msg = INScore::newMessage ("new");
+	string address (fModel->getOSCAddress());
+	address += "/scene";
+	INScore::postMessage (address.c_str(), msg);
+	
 
-	fTimeTask = scene;
+//	SIScene	scene = IScene::create("scene", fModel);
+//	fModel->add (scene);
+//	scene->createVirtualNodes();
+//	scene->setView (new VSceneView (scene->getOSCAddress(), graphscene ));
+//	fScene = scene;
+
+//	SIScene	scene1 = IScene::create("scene1", fModel);
+//	fModel->add (scene1);
+//	scene1->createVirtualNodes();
+//	scene1->setView (new VSceneView (scene1->getOSCAddress(), new QGraphicsScene ));
+
+	fTimeTask = fModel;
 	if (!OSCStream::start())
 		throw("Cannot initialize output udp streams");
 	oscinit (fModel, fUDP);
@@ -259,7 +262,7 @@ void IGlue::viewUpdate()		{ if (fViewUpdater) fViewUpdater->update (fModel); }
 void IGlue::timerEvent ( QTimerEvent *)
 {
 	if (fMsgStack->size()) {
-		QMutexLocker locker (&fTimeViewMutex);
+//		QMutexLocker locker (&fTimeViewMutex);
 
 		timebench ("model", modelUpdate());
 		if (fTimeTask) fTimeTask->ptask();
@@ -276,7 +279,6 @@ void IGlue::timerEvent ( QTimerEvent *)
 		if (fModel->getState() & IObject::kSubModified) {
 			fController->setListener (fModel->oscDebug() ? this : 0);	// check for debug flag changes
 			if (fViewListener) fViewListener->update();
-//cout << "timer event update " << fViewListener << endl;
 		}
 		
 		fModel->cleanup();

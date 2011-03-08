@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>14.1 Interaction messages</TITLE>
-<META NAME="description" CONTENT="14.1 Interaction messages">
+<TITLE>13.2.1 Graphic signal default values.</TITLE>
+<META NAME="description" CONTENT="13.2.1 Graphic signal default values.">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,148 +27,86 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html731"
+<A NAME="tex2html744"
   HREF="node44.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html725"
+<A NAME="tex2html738"
   HREF="node42.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html719"
+<A NAME="tex2html732"
   HREF="node42.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html727"
+<A NAME="tex2html740"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html729"
-  HREF="node51.html">
+<A NAME="tex2html742"
+  HREF="node57.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html732"
-  HREF="node44.html">14.2 Message variables</A>
-<B> Up:</B> <A NAME="tex2html726"
-  HREF="node42.html">14. Events and Interaction</A>
-<B> Previous:</B> <A NAME="tex2html720"
-  HREF="node42.html">14. Events and Interaction</A>
- &nbsp; <B>  <A NAME="tex2html728"
+<B> Next:</B> <A NAME="tex2html745"
+  HREF="node44.html">13.2.2 Parallel graphic signals.</A>
+<B> Up:</B> <A NAME="tex2html739"
+  HREF="node42.html">13.2 Graphic signals.</A>
+<B> Previous:</B> <A NAME="tex2html733"
+  HREF="node42.html">13.2 Graphic signals.</A>
+ &nbsp; <B>  <A NAME="tex2html741"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html730"
-  HREF="node51.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html743"
+  HREF="node57.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001510000000000000000"></A>
-<A NAME="interactmsg"></A>
-<BR>
-14.1  Interaction messages
-</H1>
+<H2><A NAME="SECTION001421000000000000000">
+13.2.1 Graphic signal default values.</A>
+</H2>
+As mentionned above, a graphic signal expects to be connected to parallel signals having at least an <TT>y</TT> component, a graphic thickness component and HSBA components. Thus, from graphic signal viewpoint, the expected dimension of a signal should be equal or greater than 6. In case the <TT>signalIdentifier</TT> dimension is less than 6, the graphic signal will use the default values defined in table <A HREF="#gsigdefault">13.2</A>.
 
 <P>
-The general form of the message is:
+<BR><P></P>
+<DIV ALIGN="CENTER">
 
-<P>
-<BR>
-<IMG
- WIDTH="375" HEIGHT="87" ALIGN="BOTTOM" BORDER="0"
- SRC="img69.gif"
- ALT="\begin{rail}
-interactMsg : (('watch' \vert 'watch+') what ( \vert oscMsg))
-\end{rail}">
-<BR>
-
-<P>
-
-<UL>
-<LI><TT>watch</TT>: clears the messages associated to the event and when specified, associates the new message to the watched event. 
-</LI>
-<LI><TT>watch+</TT>: adds a message to the watched event message list. 
-</LI>
-</UL>
-
-<P>
-Events currently <I>watchable</I> are:
-<BR>
-<IMG
- WIDTH="298" HEIGHT="315" ALIGN="BOTTOM" BORDER="0"
- SRC="img70.gif"
- ALT="\begin{rail}
-what : 'mouseDown' \vert 'mouseUp' \vert 'mouseEnter' \vert 'mouseL...
-...t 'doubleClick' \vert 'timeEnter' timezone \vert 'timeLeave' timezone
-\end{rail}">
-<BR>
-
-<P>
-<BR>
-<IMG
- WIDTH="344" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
- SRC="img71.gif"
- ALT="\begin{rail}
-timezone : int32 int32 int32 int32
-\end{rail}">
-<BR>
-A time zone is defined by 2 dates expressed as rational values (i.e. with 4 integers).
-
-<P>
-The associated OSC message is any valid OSC message (not restricted to the Interlude message set), with an extended address scheme, supporting IP addresses or host names and udp port number to be specified as OSC addresses prefix. The message parameters are any valid OSC type or variables (see section <A HREF="node44.html#interactvar">14.2</A>).
-<BR>
-<IMG
- WIDTH="524" HEIGHT="112" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.gif"
- ALT="\begin{rail}
-oscMsg : (\vert fullAddress) OSCAddress ( (parameters \vert variable) + )
-\end{rail}">
+<DIV ALIGN="CENTER">
+<A NAME="987"></A>
+<TABLE CELLPADDING=3 BORDER="1">
+<CAPTION><STRONG>Table 13.2:</STRONG>
+Graphic signal default values.</CAPTION>
+<TR><TD ALIGN="RIGHT">parameter</TD>
+<TD ALIGN="CENTER">default value</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>y</TT></TD>
+<TD ALIGN="CENTER"><TT>0</TT></TD>
+<TD ALIGN="LEFT">the center line of the graphic</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>thickness</TT></TD>
+<TD ALIGN="CENTER"><TT>0</TT></TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>hue</TT></TD>
+<TD ALIGN="CENTER"><TT>0</TT></TD>
+<TD ALIGN="LEFT">meaningless due to brigthness value</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>saturation</TT></TD>
+<TD ALIGN="CENTER"><TT>0</TT></TD>
+<TD ALIGN="LEFT">meaningless due to brigthness value</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>brigthness</TT></TD>
+<TD ALIGN="CENTER"><TT>-1</TT></TD>
+<TD ALIGN="LEFT">black</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>transparency</TT></TD>
+<TD ALIGN="CENTER"><TT>1</TT></TD>
+<TD ALIGN="LEFT">opaque</TD>
+</TR>
+</TABLE>
+</DIV>
+<A NAME="gsigdefault"></A>
+</DIV>
 <BR>
 
 <P>
-<BR>
-<IMG
- WIDTH="298" HEIGHT="89" ALIGN="BOTTOM" BORDER="0"
- SRC="img73.gif"
- ALT="\begin{rail}
-fullAddress : (IPAddress \vert hostname) ':' port
-\end{rail}">
-<BR>
-
-<P>
-Example:
-<PRE>
-  1) /ITL/scene/myObject watch mouseDown "/ITL/scene/myObject" "show" 0 
-  2) /ITL/scene/myObject watch mouseDown "host.domain.org:12100/an/address" "start"
-</PRE>
-1) Request the object <TT>myObject</TT> to watch <TT>mouseDown</TT> events and send a message to itself. 
-<BR>
-2) Request the object <TT>myObject</TT> to watch <TT>mouseDown</TT> events and send a "start" message to host.domain.org on udp port 12100 to OSC address /an/address
-
-<P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html731"
-  HREF="node44.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html725"
-  HREF="node42.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html719"
-  HREF="node42.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html727"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html729"
-  HREF="node51.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html732"
-  HREF="node44.html">14.2 Message variables</A>
-<B> Up:</B> <A NAME="tex2html726"
-  HREF="node42.html">14. Events and Interaction</A>
-<B> Previous:</B> <A NAME="tex2html720"
-  HREF="node42.html">14. Events and Interaction</A>
- &nbsp; <B>  <A NAME="tex2html728"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html730"
-  HREF="node51.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

@@ -38,20 +38,16 @@ IObjectDebug::IObjectDebug(IObject * parent) : IVNode("debug", parent), fMap(fal
 {
 	fMsgHandlerMap["map"]		= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setMapDebug);
 	fMsgHandlerMap["name"]		= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setNameDebug);
-	fMsgHandlerMap["signal"]	= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setSignalDebug);
-//	fMsgHandlerMap["map"]	= TSetMsgHandler<bool>::create(fMap);
-//	fMsgHandlerMap["name"]	= TSetMsgHandler<bool>::create(fName);
-//	fMsgHandlerMap["signal"]	= TSetMsgHandler<bool>::create(fSignal);
-//	fMsgHandlerMap["feedbackClick"]	= TSetMsgHandler<bool>::create(fClick);
+//	fMsgHandlerMap["signal"]	= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setSignalDebug);
 	
 	fGetMsgHandlerMap["map"]	= TGetParamMsgHandler<bool>::create(fMap);
 	fGetMsgHandlerMap["name"]	= TGetParamMsgHandler<bool>::create(fName);
-	fGetMsgHandlerMap["signal"]	= TGetParamMsgHandler<bool>::create(fSignal);
-	fGetMsgHandlerMap["feedbackClick"]	= TGetParamMsgHandler<bool>::create(fClick);
 	
 	fGetMsgHandlerMap["x"]		= 0;
 	fGetMsgHandlerMap["y"]		= 0;
 	fGetMsgHandlerMap["z"]		= 0;
+	fGetMsgHandlerMap["xorigin"]= 0;
+	fGetMsgHandlerMap["yorigin"]= 0;
 	fGetMsgHandlerMap["angle"]	= 0;
 	fGetMsgHandlerMap["scale"]	= 0;
 	fGetMsgHandlerMap["show"]	= 0;
@@ -69,6 +65,7 @@ IObjectDebug::IObjectDebug(IObject * parent) : IVNode("debug", parent), fMap(fal
 	fGetMsgHandlerMap["hue"]	= 0;
 	fGetMsgHandlerMap["saturation"] = 0;
 	fGetMsgHandlerMap["brightness"]	= 0;
+	fGetMsgHandlerMap["effect"]	= 0;
 }
 
 //--------------------------------------------------------------------------
