@@ -210,7 +210,7 @@ install ( FILES debian/icons/48x48/inscore.png
 install ( FILES debian/icons/128x128/inscore.png
     	  DESTINATION /usr/share/icons/hicolor/128x128/apps
 )
-install ( FILES ../package/INScore-${INSAPPVERS}0.74tgz
+install ( FILES ../package/INScore-${INSAPPVERS}.tgz
     	  DESTINATION /usr/share/inscore
 )
 endif (WIN32)
@@ -233,8 +233,8 @@ set(CPACK_PACKAGE_NAME "INScore")
 set(CPACK_PACKAGE_CONTACT "D. Fober <fober@grame.fr>")
 set(CPACK_PACKAGE_VENDOR "Grame")
 set(CPACK_PACKAGE_VERSION_MAJOR 0)
-set(CPACK_PACKAGE_VERSION_MINOR 6)
-set(CPACK_PACKAGE_VERSION_PATCH 3)
+set(CPACK_PACKAGE_VERSION_MINOR 7)
+set(CPACK_PACKAGE_VERSION_PATCH 4)
 set(CPACK_SET_DESTDIR "ON")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "INScore - Interactive, Augmented Music Scores.") 
 set(CPACK_PACKAGE_DESCRIPTION_FILE "../package/readme.txt")
