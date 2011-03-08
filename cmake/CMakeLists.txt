@@ -210,7 +210,7 @@ install ( FILES debian/icons/48x48/inscore.png
 install ( FILES debian/icons/128x128/inscore.png
     	  DESTINATION /usr/share/icons/hicolor/128x128/apps
 )
-install ( FILES ../package/INScore-${INSAPPVERS}0.73tgz
+install ( FILES ../package/INScore-${INSAPPVERS}.tgz
     	  DESTINATION /usr/share/inscore
 )
 endif (WIN32)
