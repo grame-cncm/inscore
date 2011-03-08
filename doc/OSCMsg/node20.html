@@ -67,7 +67,7 @@ The <TT>set</TT> messages can be sent to any address with the form <TT>/ITL/scen
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="222" HEIGHT="49" ALIGN="BOTTOM" BORDER="0"
  SRC="img34.gif"
  ALT="\begin{rail}
 setMsg : 'set' type data
@@ -121,13 +121,13 @@ Supported types are the following:
 Format of the <TT>set</TT> message is:
 <BR>
 <IMG
- WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="638" HEIGHT="546" ALIGN="BOTTOM" BORDER="0"
  SRC="img35.gif"
  ALT="\begin{rail}
 setMsg : 'set' (
-('txt' string) \vert
+('txt' txtStream) \vert
 ('html' string) \vert
-('sv...
+(...
 ...)) \vert
 ('line' ('xy' x y \vert 'wa' width angle)) \vert
 setFile
@@ -150,11 +150,21 @@ setFile
 Note that the default position of any component is <TT>[0,0]</TT>. Objects are drawn centered on their position.
 
 <P>
+<BR>
+<IMG
+ WIDTH="248" HEIGHT="148" ALIGN="BOTTOM" BORDER="0"
+ SRC="img36.gif"
+ ALT="\begin{rail}
+txtStream : (string \vert int32 \vert float32) +
+\end{rail}">
+<BR>
+
+<P>
 <A NAME="setfile"></A>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.gif"
+ WIDTH="288" HEIGHT="277" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.gif"
  ALT="\begin{rail}
 setFile :
 ('txtf' textFilePath) \vert
@@ -165,13 +175,13 @@ setFile :
 ('file' filePath)
 \end{rail}">
 <BR>
-<A NAME="484"></A>
-<A NAME="485"></A>
 <A NAME="486"></A>
 <A NAME="487"></A>
 <A NAME="488"></A>
 <A NAME="489"></A>
 <A NAME="490"></A>
+<A NAME="491"></A>
+<A NAME="492"></A>
 
 <P>
 <B>See also: </B>the application <TT>rootPath</TT> message (section <A HREF="node4.html#ITL">2</A>) for file based objects.
@@ -181,7 +191,7 @@ setFile :
 <DIV ALIGN="CENTER">
 
 <DIV ALIGN="CENTER">
-<A NAME="1230"></A>
+<A NAME="1238"></A>
 <TABLE CELLPADDING=3 BORDER="1">
 <CAPTION><STRONG>Table 6.1:</STRONG>
 File extensions supported by the <TT>file</TT> translation scheme.</CAPTION>
