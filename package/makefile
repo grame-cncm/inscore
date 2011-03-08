@@ -38,8 +38,11 @@ macosx:
 	cp -f ../src/guido2.ttf $(package)
 		
 doc: 
-	[ -d $(docdst)/html ] || mkdir -p $(docdst)/html
 	make -C $(docsrc)
+	make copydoc
+		
+copydoc: 
+	[ -d $(docdst)/html ] || mkdir -p $(docdst)/html
 	cp -f $(docsrc)/OSCMsg.pdf $(docdst)
 	make -C $(docsrc) htmlclean
 	rm -f $(docdst)/html/*
