@@ -1,4 +1,4 @@
-#N canvas 48 45 413 218 10;
+#N canvas 54 35 413 218 10;
 #X obj -153 188 bng 15 250 50 0 \$0-reload empty empty 17 7 0 10 -262144
 -1 -1;
 #X text -134 187 Reload;
@@ -23,7 +23,7 @@ file analysis.;
 #X text -57 61 Signal shape selection;
 #X text -17 103 Envelope;
 #X text -16 120 Pitched envelope;
-#N canvas 291 287 1026 546 inside 1;
+#N canvas 291 287 1026 546 inside 0;
 #X obj -217 115 cnv 15 240 180 empty empty OSC_Comm 20 12 0 12 -204800
 -66577 0;
 #X obj -177 232 dumpOSC 7001;

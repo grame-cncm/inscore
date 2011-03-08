@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>13.1.1 Simple signals.</TITLE>
-<META NAME="description" CONTENT="13.1.1 Simple signals.">
+<TITLE>12.2 Debug</TITLE>
+<META NAME="description" CONTENT="12.2 Debug">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,124 +19,75 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node37.html">
 <LINK REL="previous" HREF="node35.html">
-<LINK REL="up" HREF="node35.html">
+<LINK REL="up" HREF="node34.html">
 <LINK REL="next" HREF="node37.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html641"
+<A NAME="tex2html638"
   HREF="node37.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html635"
-  HREF="node35.html">
+<A NAME="tex2html632"
+  HREF="node34.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html629"
+<A NAME="tex2html628"
   HREF="node35.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html637"
+<A NAME="tex2html634"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html639"
-  HREF="node54.html">
+<A NAME="tex2html636"
+  HREF="node57.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html642"
-  HREF="node37.html">13.1.2 Composing signals in</A>
-<B> Up:</B> <A NAME="tex2html636"
-  HREF="node35.html">13.1 The signal virtual</A>
-<B> Previous:</B> <A NAME="tex2html630"
-  HREF="node35.html">13.1 The signal virtual</A>
- &nbsp; <B>  <A NAME="tex2html638"
+<B> Next:</B> <A NAME="tex2html639"
+  HREF="node37.html">13. Signals and graphic</A>
+<B> Up:</B> <A NAME="tex2html633"
+  HREF="node34.html">12. Virtual address space</A>
+<B> Previous:</B> <A NAME="tex2html629"
+  HREF="node35.html">12.1 File watcher</A>
+ &nbsp; <B>  <A NAME="tex2html635"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html640"
-  HREF="node54.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html637"
+  HREF="node57.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION001411000000000000000"></A>
-<A NAME="ssignal"></A>
-<BR>
-13.1.1 Simple signals.
-</H2>
-The signal messages can be sent to any address with the form <TT>/ITL/scene/signal/<I>identifier</I></TT>, where <TT><I>identifier</I></TT> is a unique signal identifier.
-The set of messages supported by a signal is the following:
+<H1><A NAME="SECTION001320000000000000000">
+12.2 Debug</A>
+</H1>
+
+<P>
+Each object has a <TT>debug</TT> sub-node for debugging purposes. This <TT>debug</TT> virtual node has 3 flags, that can be actived or desactived with <TT>0</TT> or <TT>1</TT>:
+
+<P>
 <BR>
 <IMG
- WIDTH="320" HEIGHT="356" ALIGN="BOTTOM" BORDER="0"
- SRC="img63.gif"
+ WIDTH="257" HEIGHT="127" ALIGN="BOTTOM" BORDER="0"
+ SRC="img66.gif"
  ALT="\begin{rail}
-simpleSignal : [1] ( float32 + )
-\vert [2] ('size' int32)
-\vert ...
-...' ( \vert 'size' \vert 'default')
-\vert [5] 'reset'
-\vert [6] 'del'
+debug : ('name' int32)
+\vert ('map' int32)
+\vert ('signal' int32)
 \end{rail}">
 <BR>
-<A NAME="812"></A>
-<A NAME="813"></A>
-<A NAME="814"></A>
-<A NAME="815"></A>
-<A NAME="816"></A>
-<A NAME="817"></A>
 
 <P>
 
 <UL>
-<LI><B>[1]</B> push an arbitrary data count into the signal buffer. The data range should be <TT>[-1,1]</TT>. Note that the signal buffer behaves like a ring buffer, thus data are wrapped when the data count if greater than the signal size. 
+<LI>When the <TT>name</TT> flag is on, each scene component displays its bounding rectangle and name.
 </LI>
-<LI><B>[2]</B> the <TT>size</TT> message sets the signal buffer size. When not specified, the buffer size value is the size of the first data message. 
+<LI>When the <TT>map</TT> flag is on, each scene component displays its mappings.
 </LI>
-<LI><B>[3]</B> the <TT>default</TT> message sets the <I>default signal value</I>. A signal <I>default value</I> is the value returned when a query asks for data past the available values.
-</LI>
-<LI><B>[4]</B> the <TT>get</TT> gives the signal values. The <TT>size</TT> and  <TT>default</TT> parameters are used to query the signal size and default values.
-</LI>
-<LI><B>[5]</B> the <TT>reset</TT> message clears the signal data. 
-</LI>
-<LI><B>[6]</B> the <TT>del</TT> message deletes the signal from the <TT>signal</TT> space. Note that it is safe to delete a signal even when used by a graphic signal. 
+<LI>When the <TT>signal</TT> flag is on, each object (even the scene or the application) will, according to its type, emit 'performance related' signals (or no signal). This 'performance signal' is specific to the type of object. The name of 'performance signal' is of the form <TT>debug-</TT><I>objectName</I><TT>-</TT><I>SomeName</I>. Currently, only the <TT>application</TT>, the <TT>scene</TT> and <TT>graph</TT> objects emit 'performance signals'.
 </LI>
 </UL>
 
 <P>
-Example:
-<BR> <TT>/ITL/scene/signal/null 0.0</TT>
-<BR>
-creates a constant signal named <TT>null</TT>, which value is <TT>0</TT>.
-
-<P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html641"
-  HREF="node37.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html635"
-  HREF="node35.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html629"
-  HREF="node35.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html637"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html639"
-  HREF="node54.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html642"
-  HREF="node37.html">13.1.2 Composing signals in</A>
-<B> Up:</B> <A NAME="tex2html636"
-  HREF="node35.html">13.1 The signal virtual</A>
-<B> Previous:</B> <A NAME="tex2html630"
-  HREF="node35.html">13.1 The signal virtual</A>
- &nbsp; <B>  <A NAME="tex2html638"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html640"
-  HREF="node54.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

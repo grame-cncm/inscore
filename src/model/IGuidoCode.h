@@ -117,6 +117,7 @@ class IGuidoCode : public IObject
 
 		void setGMN( const std::string& gmn )				{ fGMN = gmn; localMapModified(true); }
 		void setPage( int page )							{ fPage = page; localMapModified(true); }
+		void setdPage( int dpage );
 		void setPageFormat( const TFloatSize& pageFormat )	{ fPageFormat = pageFormat; localMapModified(true); }
 		void setNbOfPageColumns(int columns)				{ fNbOfPageColumns = columns; localMapModified(true); }
 		void setNbOfPageRows(int rows)						{ fNbOfPageRows = rows; localMapModified(true); }

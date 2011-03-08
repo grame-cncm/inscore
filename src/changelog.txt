@@ -8,6 +8,13 @@ research@grame.fr
 Copyright GRAME (c) 2009,2010,2011
 
 ----------------------------------------------------
+Version 0.74
+- new 'dpage' message accepted by 'gmn' objects 
+- x and y variables: automatic range type detection (int | float)
+- polymorphism for the set 'txt' message params
+- set 'txt' message: accepts stream like parameters
+
+----------------------------------------------------
 Version 0.73
 - bug in message based variables output corrected
 - bug in variables scaling corrected

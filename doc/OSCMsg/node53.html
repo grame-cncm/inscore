@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.6 Differences to version 0.42</TITLE>
-<META NAME="description" CONTENT="15.6 Differences to version 0.42">
+<TITLE>15.3 Differences to version 0.55</TITLE>
+<META NAME="description" CONTENT="15.3 Differences to version 0.55">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,115 +19,75 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node54.html">
 <LINK REL="previous" HREF="node52.html">
-<LINK REL="up" HREF="node47.html">
+<LINK REL="up" HREF="node50.html">
 <LINK REL="next" HREF="node54.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html881"
+<A NAME="tex2html890"
   HREF="node54.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html875"
-  HREF="node47.html">
+<A NAME="tex2html884"
+  HREF="node50.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html871"
+<A NAME="tex2html878"
   HREF="node52.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html877"
+<A NAME="tex2html886"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html879"
-  HREF="node54.html">
+<A NAME="tex2html888"
+  HREF="node57.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html882"
-  HREF="node54.html">Index</A>
-<B> Up:</B> <A NAME="tex2html876"
-  HREF="node47.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html872"
-  HREF="node52.html">15.5 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html878"
+<B> Next:</B> <A NAME="tex2html891"
+  HREF="node54.html">15.4 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html885"
+  HREF="node50.html">15. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html879"
+  HREF="node52.html">15.2 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html887"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html880"
-  HREF="node54.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html889"
+  HREF="node57.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001660000000000000000">
-15.6 Differences to version 0.42</A>
+<H1><A NAME="SECTION001630000000000000000">
+15.3 Differences to version 0.55</A>
 </H1>
 
-<P>
-
 <UL>
-<LI><TT>identifier</TT> specification change (section <A HREF="node2.html#genformat">1</A> p.<A HREF="node2.html#genformat"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>new 'xorigin' and 'yorigin' messages (section <A HREF="node10.html#origin">4.1.3</A> p.<A HREF="node10.html#origin"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>new application <TT>hello</TT> and  <TT>defaultShow</TT> messages (section <A HREF="node4.html#ITL">2</A> p.<A HREF="node4.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>new interaction messages set (section <A HREF="node45.html#interaction">14</A> p.<A HREF="node45.html#interaction"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>new <TT>load</TT> and <TT>save</TT> messages  (sections <A HREF="node4.html#ITL">2</A> p.<A HREF="node4.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> and  <A HREF="node6.html#common">4</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>alpha channel handled by images and video
 </LI>
-<LI><TT>click</TT> and <TT>select</TT> messages (section <A HREF="node18.html#csmsg">4.4</A> p.<A HREF="node18.html#csmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>):
-
-<UL>
-<LI><TT>rightbottom</TT> and <TT>leftbottom</TT> modes renamed to <TT>bottomright</TT> and <TT>bottomleft</TT>
+<LI>bug correction in line creation corrected (false incorrect parameter returned)
 </LI>
-<LI>new <TT>center</TT> mode for the <TT>click</TT> message
+<LI>bug correction in line 'get' message handling
 </LI>
-<LI>query mode sent back with the reply both for <TT>click</TT> and  <TT>select</TT> messages
-</LI>
-</UL>
-</LI>
-<LI>new <TT>file</TT>, <TT>html</TT> and  <TT>htmlf</TT> types for the <TT>set</TT> message (section <A HREF="node20.html#setsect">6</A> p.<A HREF="node20.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI><TT>get</TT> syntax change for the <TT>scene</TT> (section <A HREF="#sceneget"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> p.<A HREF="#sceneget"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI><TT>fileWatcher</TT> messages completely redesigned (section <A HREF="node32.html#watch">12.1</A> p.<A HREF="node32.html#watch"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>mappings can be identified by names (section <A HREF="node24.html#mapMsg">9</A> p.<A HREF="node24.html#mapMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>rect, ellipse, curve, line and polygon object support graphic to relative-time mapping
-</LI>
-<LI>new synchronization modes for Guido scores: voice1, voice2, ... , staff1, staff2, ... , system, page (section <A HREF="node28.html#guidomaps">11.1</A> p.<A HREF="node28.html#guidomaps"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>Guido mapping manages repeat bars.
-</LI>
-<LI>Graphic signals messages design (section <A HREF="node39.html#gsignal">13.2</A> p.<A HREF="node39.html#gsignal"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>memory leak correction (messages not deleted)
 </LI>
 </UL>
 
 <P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html881"
-  HREF="node54.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html875"
-  HREF="node47.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html871"
-  HREF="node52.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html877"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html879"
-  HREF="node54.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html882"
-  HREF="node54.html">Index</A>
-<B> Up:</B> <A NAME="tex2html876"
-  HREF="node47.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html872"
-  HREF="node52.html">15.5 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html878"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html880"
-  HREF="node54.html">Index</A></B> 
-<!--End of Navigation Panel-->
+Known issues: 
+
+<UL>
+<LI>incorrect graphic rendering when 'sync a b' is changed to 'sync b a' in the same update loop
+</LI>
+<LI>incorrect nested synchronization when master is horizontaly stretched,
+</LI>
+</UL>
+
+<P>
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>
