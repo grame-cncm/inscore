@@ -46,6 +46,7 @@ static inline char CAS (volatile void * addr, volatile void * value, void * newv
 	return ret;
 }
 
+#define __BREG__
 #if (defined(__BREG__) || (defined(__APPLE__)) && !defined(__x86_64__))
 
 /*

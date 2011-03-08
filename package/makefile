@@ -38,15 +38,17 @@ macosx:
 	cp -f ../src/guido2.ttf $(package)
 		
 doc: 
-	[ -d $(docdst)/html ] || mkdir -p $(docdst)/html
 	make -C $(docsrc)
+	make copydoc
+		
+copydoc: 
+	[ -d $(docdst)/html ] || mkdir -p $(docdst)/html
 	cp -f $(docsrc)/OSCMsg.pdf $(docdst)
 	make -C $(docsrc) htmlclean
 	rm -f $(docdst)/html/*
 	cp  $(docsrc)/OSCMsg/* $(docdst)/html
 	cp -f $(docsrc)/presentation/INScore-fr.pdf $(docdst)
 	cp -f $(docsrc)/presentation/INScore-en.pdf $(docdst)
-	cp -f ../src/changelog.txt $(package)
 
 rsrc:
 	cp -rf Max $(package)/
@@ -56,6 +58,7 @@ rsrc:
 	cp -rf StandAlone $(package)/
 	cp readme.txt $(package)
 	cp -r doc $(package)
+	cp -f ../src/changelog.txt $(package)
 
 src:
 	[ -d $(package)-src/cmake ] || mkdir -p $(package)-src/cmake
