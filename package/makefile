@@ -10,7 +10,8 @@ striplist = $(shell find $(package)/$(viewer).app -name "*_debug*")
 
 #########################
 # this is for win32 only
-bin    := ../cmake/release
+bin    := ../cmake/release	chmod -x  $(shell find . -name "*.inscore")
+
 #########################
 
 .PHONY: doc rsrc
@@ -82,8 +83,9 @@ win32:
 linux:
 	[ -d $(package) ] || mkdir -p $(package)
 	make rsrc
-	chmod -x  $(shell find . -name "*.inscore")
-	cd $(package) && tar czf ../$(package).tgz *
+	@echo change mode
+	@chmod 644 $(shell find $(package) -type f)
+	make version=$(version) -f makedeb
 
 strip:
 	rm -rf $(striplist)
