@@ -8,13 +8,13 @@ lib		:= libINScore.so
 files = $(shell cd debian && find usr -type f)
 
 deb:
-	rm -f debian/usr/bin/*
+	[ -d debian/usr/bin ] && rm -f debian/usr/bin/* || mkdir debian/usr/bin
 	cp ../cmake/$(viewer)-$(version) debian/usr/bin
 	cd debian/usr/bin && ln -s $(viewer)-$(version) $(viewer)
-	rm -f debian/usr/lib/*
+	[ -d debian/usr/lib ] && rm -f debian/usr/lib/* || mkdir debian/usr/lib
 	cp ../cmake/$(lib).$(version) debian/usr/lib
 	cd debian/usr/lib && ln -s $(lib).$(version) $(lib)
-	rm -rf debian/usr/share/inscore/*
+	[ -d debian/usr/share/inscore ] && rm -rf debian/usr/share/inscore/* || mkdir debian/usr/share/inscore
 	cp -r INScore-$(version)/* debian/usr/share/inscore
 	@echo compute md5sums
 	@cd debian && md5sum $(files) > DEBIAN/md5sums
