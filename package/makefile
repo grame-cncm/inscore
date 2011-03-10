@@ -20,6 +20,7 @@ usage:
 	@echo It should be run on every supported platform.
 	@echo usage:
 	@echo "  make doc      # makes doc"
+	@echo "  make src      # makes src package"
 	@echo "  make macosx   # on Mac OS X"
 	@echo "  make win32    # on Windows"
 	@echo "  make linux    # on Linux (only build the rsrc)"
@@ -68,6 +69,7 @@ src:
 	cp readme.txt $(package)-src
 	cp ../readme.txt $(package)-src/install
 	cp -r doc $(package)-src
+	tar czf $(package)-src.tgz $(package)-src
 
 
 win32:

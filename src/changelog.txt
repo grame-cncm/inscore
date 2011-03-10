@@ -1,14 +1,18 @@
 ====================================================
-Interlude (ANR-08-CORD-010)
+               INScore - Change log
 ----------------------------------------------------
 GRAME - Centre national de creation musicale
 http://www.grame.fr
 research@grame.fr
 ====================================================
 Copyright GRAME (c) 2009,2010,2011
+----------------------------------------------------
+INScore originates from the Interlude project.
+It has been supported by the ANR (ANR-08-CORD-010)
+====================================================
 
 ----------------------------------------------------
-Version 0.74
+Version 0.74 - March 10 2011
 - new 'dpage' message accepted by 'gmn' objects 
 - x and y variables: automatic range type detection (int | float)
 - polymorphism for the set 'txt' message params
@@ -48,7 +52,7 @@ Version 0.64
   new $self variable in the address field
 
 ----------------------------------------------------
-Version 0.63
+Version 0.63 - January 25 2011
 - new 'mousemove' event
 - interaction messages accept variables ($x, $y, $date...)
 - new 'svg' and 'svgf' types for svg components
