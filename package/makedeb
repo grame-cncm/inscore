@@ -1,9 +1,12 @@
 
 arch	:= $(shell arch)
+debarch := $(shell dpkg --print-architecture)
 dist	:= ubuntu-maverick
 package := INScore-$(version)-$(dist)-$(arch).deb
 viewer	:= INScoreViewer
 lib		:= libINScore.so
+control := debian/DEBIAN/control
+tmp		:= __tmp__
 
 files = $(shell cd debian && find usr -type f)
 
@@ -18,6 +21,9 @@ deb:
 	cp -r INScore-$(version)/* debian/usr/share/inscore
 	@echo compute md5sums
 	@cd debian && md5sum $(files) > DEBIAN/md5sums
+	@echo set architecture to $(debarch)
+	sed -e 's/^Architecture..*/Architecture: $(debarch)/' $(control) > $(tmp)
+	mv $(tmp) $(control)
 	fakeroot dpkg-deb --build debian
 	mv debian.deb $(package)
 
