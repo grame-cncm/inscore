@@ -1,9 +1,0 @@
-#!/bin/sh
-#
-
-INSCORE=/usr/share/inscore
-
-[ -d $INSCORE ] || mkdir -p $INSCORE
-
-exit 0
-

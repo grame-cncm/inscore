@@ -1,4 +1,4 @@
-version := 0.74
+version := 0.75
 
 package:= INScore-$(version)
 viewer := INScoreViewer
@@ -10,7 +10,8 @@ striplist = $(shell find $(package)/$(viewer).app -name "*_debug*")
 
 #########################
 # this is for win32 only
-bin    := ../cmake/release
+bin    := ../cmake/release	chmod -x  $(shell find . -name "*.inscore")
+
 #########################
 
 .PHONY: doc rsrc
@@ -20,6 +21,7 @@ usage:
 	@echo It should be run on every supported platform.
 	@echo usage:
 	@echo "  make doc      # makes doc"
+	@echo "  make src      # makes src package"
 	@echo "  make macosx   # on Mac OS X"
 	@echo "  make win32    # on Windows"
 	@echo "  make linux    # on Linux (only build the rsrc)"
@@ -68,6 +70,7 @@ src:
 	cp readme.txt $(package)-src
 	cp ../readme.txt $(package)-src/install
 	cp -r doc $(package)-src
+	tar czf $(package)-src.tgz $(package)-src
 
 
 win32:
@@ -82,8 +85,9 @@ win32:
 linux:
 	[ -d $(package) ] || mkdir -p $(package)
 	make rsrc
-	chmod -x  $(shell find . -name "*.inscore")
-	cd $(package) && tar czf ../$(package).tgz *
+	@echo change mode
+	@chmod 644 $(shell find $(package) -type f)
+	make version=$(version) -f makedeb
 
 strip:
 	rm -rf $(striplist)

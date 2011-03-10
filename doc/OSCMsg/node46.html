@@ -69,7 +69,7 @@ The general form of the message is:
 <P>
 <BR>
 <IMG
- WIDTH="426" HEIGHT="125" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
  SRC="img73.gif"
  ALT="\begin{rail}
 interactMsg : (('watch' \vert 'watch+') ([1] \vert what ( \vert oscMsg)))
@@ -91,7 +91,7 @@ interactMsg : (('watch' \vert 'watch+') ([1] \vert what ( \vert oscMsg)))
 Events currently <I>watchable</I> are:
 <BR>
 <IMG
- WIDTH="297" HEIGHT="315" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
  SRC="img74.gif"
  ALT="\begin{rail}
 what : 'mouseDown' \vert 'mouseUp' \vert 'mouseEnter' \vert 'mouseL...
@@ -110,7 +110,7 @@ what : 'mouseDown' \vert 'mouseUp' \vert 'mouseEnter' \vert 'mouseL...
 <P>
 <BR>
 <IMG
- WIDTH="344" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
  SRC="img75.gif"
  ALT="\begin{rail}
 timezone : int32 int32 int32 int32
@@ -123,7 +123,7 @@ A time zone is defined by 2 dates expressed as rational values (i.e. with 4 inte
 The associated OSC message is any valid OSC message (not restricted to the Interlude message set), with an extended address scheme, supporting IP addresses or host names and udp port number to be specified as OSC addresses prefix. The message parameters are any valid OSC type or variables (see section <A HREF="node47.html#interactvar">14.2</A>).
 <BR>
 <IMG
- WIDTH="524" HEIGHT="112" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
  SRC="img76.gif"
  ALT="\begin{rail}
 oscMsg : (\vert fullAddress) OSCAddress ( (parameters \vert variable) + )
@@ -133,7 +133,7 @@ oscMsg : (\vert fullAddress) OSCAddress ( (parameters \vert variable) + )
 <P>
 <BR>
 <IMG
- WIDTH="298" HEIGHT="89" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
  SRC="img77.gif"
  ALT="\begin{rail}
 fullAddress : (IPAddress \vert hostname) ':' port

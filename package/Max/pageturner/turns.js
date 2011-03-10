@@ -34,22 +34,23 @@ function time2string(t) {
 
 function watchmsg(watcher, target, start, end, page)
 {
-	return watcher + " watch+ timeEnter " + time2string(start) + " " 
-			+ time2string(end) + " " + target + " page " + page;
+	return watcher + " watch+ \"timeEnter\" " + time2string(start) + " " 
+			+ time2string(end) + " \"" + target + "\" \"page\" " + page;
 }
 
 function generate()
 {
 	watcher= "/ITL/scene/_pageturner";
 	target = "/ITL/scene/score";
-	watch = watcher + " set \"txt\" \"page turner\"\n";
-	watch += watcher + " show 0\n";
+	watch = watcher + " set \"txt\" \"page turner\"";
+	watch += "\n" + watcher + " watch";
+	watch += "\n" + watcher + " show 0";
     var prev = time (0, 1);
     for (i=1; i < gTimePoints.length; i++) {
     	if (gTimePoints[i]) {
 	    	var t = gTimePoints[i];
     		if (t.num > 0 ) {
-    			watch += watchmsg(watcher,target, prev, t, i) + "\n";
+    			watch += "\n" + watchmsg(watcher,target, prev, t, i);
     			prev = t;
     		}
     	}

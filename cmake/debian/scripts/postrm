@@ -1,8 +1,0 @@
-#!/bin/sh
-#
-
-INSCORE=/usr/share/inscore
-rm -rf $INSCORE/*
-
-exit 0
-

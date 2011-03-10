@@ -1,0 +1,35 @@
+
+arch	:= $(shell arch)
+debarch := $(shell dpkg --print-architecture)
+dist	:= ubuntu-maverick
+package := INScore-$(version)-$(dist)-$(arch).deb
+viewer	:= INScoreViewer
+lib		:= libINScore.so
+control := debian/DEBIAN/control
+tmp		:= __tmp__
+
+files = $(shell cd debian && find usr -type f)
+
+deb:
+	[ -d debian/usr/bin ] && rm -f debian/usr/bin/* || mkdir debian/usr/bin
+	cp ../cmake/$(viewer)-$(version) debian/usr/bin
+	cd debian/usr/bin && ln -s $(viewer)-$(version) $(viewer)
+	[ -d debian/usr/lib ] && rm -f debian/usr/lib/* || mkdir debian/usr/lib
+	cp ../cmake/$(lib).$(version) debian/usr/lib
+	cd debian/usr/lib && ln -s $(lib).$(version) $(lib)
+	[ -d debian/usr/share/inscore ] && rm -rf debian/usr/share/inscore/* || mkdir debian/usr/share/inscore
+	cp -r INScore-$(version)/* debian/usr/share/inscore
+	@echo compute md5sums
+	@cd debian && md5sum $(files) > DEBIAN/md5sums
+	@echo set architecture to $(debarch)
+	sed -e 's/^Architecture..*/Architecture: $(debarch)/' $(control) > $(tmp)
+	mv $(tmp) $(control)
+	fakeroot dpkg-deb --build debian
+	mv debian.deb $(package)
+
+clean:
+	rm -f debian/usr/bin/*
+	rm -f debian/usr/lib/*
+	rm -f debian/DEBIAN/md5sums
+	rm -rf debian/usr/share/inscore/*
+
