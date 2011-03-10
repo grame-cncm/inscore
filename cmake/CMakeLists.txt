@@ -9,15 +9,15 @@ set (TARGET	INScore)
 set (APPLTARGET	INScoreViewer)
 #######################################
 # versions management
-set (INSFWKVERS 0.74)
-set (INSFWKSTRVERS "v.0.74")
-set (INSFWKSSTRVERS "0.74")
-set (INSTEXTVERS 0.74)
-set (INSTEXTSTRVERS "v.0.74")
-set (INSTEXTSSTRVERS "0.74")
-set (INSAPPVERS 0.74)
-set (INSAPPSTRVERS "v.0.74")
-set (INSAPPSSTRVERS "0.74")
+set (INSFWKVERS 0.75)
+set (INSFWKSTRVERS "v.0.75")
+set (INSFWKSSTRVERS "0.75")
+set (INSTEXTVERS 0.75)
+set (INSTEXTSTRVERS "v.0.75")
+set (INSTEXTSSTRVERS "0.75")
+set (INSAPPVERS 0.75)
+set (INSAPPSTRVERS "v.0.75")
+set (INSAPPSSTRVERS "0.75")
 
 #######################################
 if(WIN32)
@@ -201,50 +201,5 @@ install ( TARGETS ${APPLTARGET}
 	RUNTIME DESTINATION /usr/bin
     ${APPBUNDLE}
 )
-install ( FILES debian/inscore.desktop
-    	  DESTINATION /usr/share/applications
-)
-install ( FILES debian/icons/48x48/inscore.png
-    	  DESTINATION /usr/share/icons/hicolor/48x48/apps
-)
-install ( FILES debian/icons/128x128/inscore.png
-    	  DESTINATION /usr/share/icons/hicolor/128x128/apps
-)
-install ( FILES ../package/INScore-${INSAPPVERS}.tgz
-    	  DESTINATION /usr/share/inscore
-)
 endif (WIN32)
-
-#######################################
-# packaging
-if(UNIX AND NOT APPLE)
-  set (SYSNAME "ubuntu-maverick")
-endif(UNIX AND NOT APPLE)
-
-if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
-  set (CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64" )
-  set(CPACK_PACKAGE_FILE_NAME "INScore-${INSAPPVERS}-${SYSNAME}-x86_64" )
-else (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
-  set (CPACK_DEBIAN_PACKAGE_ARCHITECTURE "i386" )
-  set(CPACK_PACKAGE_FILE_NAME "INScore-${INSAPPVERS}-${SYSNAME}-i386" )
-endif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
-
-set(CPACK_PACKAGE_NAME "INScore")
-set(CPACK_PACKAGE_CONTACT "D. Fober <fober@grame.fr>")
-set(CPACK_PACKAGE_VENDOR "Grame")
-set(CPACK_PACKAGE_VERSION_MAJOR 0)
-set(CPACK_PACKAGE_VERSION_MINOR 7)
-set(CPACK_PACKAGE_VERSION_PATCH 4)
-set(CPACK_SET_DESTDIR "ON")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "INScore - Interactive, Augmented Music Scores.") 
-set(CPACK_PACKAGE_DESCRIPTION_FILE "../package/readme.txt")
-set(CPACK_RESOURCE_FILE_LICENSE "../package/rsrc/license.txt")
-
-set (CPACK_DEBIAN_PACKAGE_NAME "INScore" )
-set (CPACK_DEBIAN_PACKAGE_SECTION "sound" )
-set (CPACK_DEBIAN_PACKAGE_HOMEPAGE "http://inscore.sourceforge.net")
-set (CPACK_DEBIAN_PACKAGE_DEPENDS "guidoengine-devel (>= 1.4.0), libc6 (>= 2.12.1), libgcc1 (>= 4.5.1), libphonon4 (>= 4.4.2), libqt4-svg (>= 4.7.0), libqtcore4 (>= 4.7.0), libqtgui4 (>= 4.7.0), libstdc++6 (>= 4.5.1)" )
-
-set (CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "debian/scripts/preinst;debian/scripts/postinst;debian/scripts/postrm")
-include(CPack)
 

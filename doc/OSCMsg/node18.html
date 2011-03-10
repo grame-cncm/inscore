@@ -68,7 +68,7 @@ The <TT>click</TT> and <TT>select</TT> messages can be sent to any address with 
 <P>
 <BR>
 <IMG
- WIDTH="274" HEIGHT="86" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
  SRC="img27.gif"
  ALT="\begin{rail}
 click : 'click' ( \vert clickMode)
@@ -79,7 +79,7 @@ click : 'click' ( \vert clickMode)
 <P>
 <BR>
 <IMG
- WIDTH="226" HEIGHT="200" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
  SRC="img28.gif"
  ALT="\begin{rail}
 clickMode : 'topleft' \vert 'bottomright' \vert 'topright' \vert 'bottomleft' \vert 'center'
@@ -104,7 +104,7 @@ clickMode : 'topleft' \vert 'bottomright' \vert 'topright' \vert 'bottomleft' \v
 Reply of the <TT>click</TT> message has the following form:
 <BR>
 <IMG
- WIDTH="454" HEIGHT="114" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
  SRC="img29.gif"
  ALT="\begin{rail}
 clickReply : OSCAddress clickMode ( \vert (identifier +))
@@ -117,7 +117,7 @@ where 'identifier' is a component name. Note that 'identifiers' are sorted by de
 <P>
 <BR>
 <IMG
- WIDTH="288" HEIGHT="86" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
  SRC="img30.gif"
  ALT="\begin{rail}
 select : 'select' ( \vert selectMode)
@@ -128,7 +128,7 @@ select : 'select' ( \vert selectMode)
 <P>
 <BR>
 <IMG
- WIDTH="210" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
  SRC="img31.gif"
  ALT="\begin{rail}
 selectMode : 'intersect' \vert 'include'
@@ -152,7 +152,7 @@ selectMode : 'intersect' \vert 'include'
 Reply of the <TT>select</TT> message is similar to <TT>click</TT> reply:
 <BR>
 <IMG
- WIDTH="459" HEIGHT="114" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
  SRC="img32.gif"
  ALT="\begin{rail}
 selectReply : OSCAddress selectMode ( \vert (identifier +))
