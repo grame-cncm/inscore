@@ -1,7 +1,7 @@
 version := 0.75
 
 package:= INScore-$(version)
-rsrc   := rsrc-$(version)
+rsrc   := INScore-rsrc-$(version)
 viewer := INScoreViewer
 docsrc := ../doc
 docdst := ./doc
@@ -64,6 +64,10 @@ rsrc:
 	tar czf $(rsrc)/python.tgz python
 	tar czf $(rsrc)/lisp.tgz lisp
 	tar czf $(rsrc)/StandAlone.tgz StandAlone
+	tar czf $(rsrc).tgz $(rsrc)
+	mv $(rsrc).tgz $(rsrc)/all.tgz
+	tar czf $(rsrc)/Max.tgz $(rsrc)/Max
+	tar czf $(rsrc)/PureData.tgz $(rsrc)/PureData
 	cp rsrc/cclicense.pdf $(rsrc)/license.pdf
 	cp rsrc/cclicense.html $(rsrc)/license.html
 
