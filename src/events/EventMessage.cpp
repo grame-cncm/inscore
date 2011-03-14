@@ -219,7 +219,7 @@ bool EventMessage::hasDateVar (std::string& mapname) const
 }
 
 //----------------------------------------------------------------------
-static bool checkrange (const char* param)
+bool EventMessage::checkrange (const char* param) const
 {
 	while (*param) {
 		if (*param == '[') return true;
