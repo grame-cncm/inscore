@@ -1,6 +1,7 @@
 GuidoQtApplsMacOSX*
 libmusicxml2.framework
 INScore-*
+rsrc-*
 *.mpkg
 doc
 DLLs
