@@ -70,6 +70,7 @@ rsrc:
 	tar czf $(rsrc)/PureData.tgz $(rsrc)/PureData
 	cp rsrc/cclicense.pdf $(rsrc)/license.pdf
 	cp rsrc/cclicense.html $(rsrc)/license.html
+	cp rsrc/whatsnew.txt $(rsrc)
 
 cleanrsrc:
 	@echo set files permission to $(fperm)
