@@ -1,0 +1,18 @@
+------------------------------------------------------------------
+INScore Resources
+------------------------------------------------------------------
+GRAME - Centre national de creation musicale
+http://www.grame.fr
+research@grame.fr
+==================================================================
+Copyright GRAME (c) 2009-2011
+INScore resources are released under the Creative Common license. 
+------------------------------------------------------------------
+
+-------------------------------
+** March 14 2011
+-------------------------------
+First separate pubication of the resources. The inscore scripts were 
+previously included in the INScore package up to version 0.74.
+The current resources update the Max/pageturner folder that was not 
+finalized with the last INScore-0.74 distribution.
