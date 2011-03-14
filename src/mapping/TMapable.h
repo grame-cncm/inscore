@@ -86,6 +86,7 @@ class TMapable
 		void setMapping				(const std::string& name, SRelativeTime2GraphicMapping m);
 		void setMapping				(const std::string& name, SRelativeTime2GraphicMapping, SRelativeTimeSegmentation, SGraphicSegmentation);
 		void setTimeSegmentation	(const std::string& name, SRelativeTimeSegmentation s);
+		void addTimeSegmentation	(const std::string& name, SRelativeTimeSegmentation s);
 		void setGraphicSegmentation (const std::string& name, SGraphicSegmentation s);
 
 		void setSlave2MasterMapping (const SGraphic2GraphicMapping& map)		{ fSlave2Master = map; }
