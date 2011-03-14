@@ -12,6 +12,11 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 0.75
+- new map+ message for incremental mapping
+- click and select messages are deprecated
+
+----------------------------------------------------
 Version 0.74 - March 10 2011
 - new 'dpage' message accepted by 'gmn' objects 
 - x and y variables: automatic range type detection (int | float)
