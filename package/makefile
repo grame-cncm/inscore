@@ -1,16 +1,22 @@
 version := 0.75
 
 package:= INScore-$(version)
+rsrc   := rsrc-$(version)
 viewer := INScoreViewer
 docsrc := ../doc
 docdst := ./doc
 icns   := ../rsrc/INScoreViewer.icns
 
-striplist = $(shell find $(package)/$(viewer).app -name "*_debug*")
+rsrcf   := Max PureData python lisp
+rfolders:= $(foreach dir, $(rsrcf), $(shell find $(dir) -type d))
+rfiles  := $(foreach dir, $(rsrcf), $(shell find $(dir) -type f))
+hfiles  := $(foreach dir, $(rsrcf), $(shell find $(dir) -name .DS_Store))
+fperm   := 644  	# files permission
+dperm   := 755		# folders permission
 
 #########################
 # this is for win32 only
-bin    := ../cmake/release	chmod -x  $(shell find . -name "*.inscore")
+bin    := ../cmake/release
 
 #########################
 
@@ -20,11 +26,12 @@ usage:
 	@echo This makefile builds the Interlude prototype package.
 	@echo It should be run on every supported platform.
 	@echo usage:
-	@echo "  make doc      # makes doc"
-	@echo "  make src      # makes src package"
 	@echo "  make macosx   # on Mac OS X"
 	@echo "  make win32    # on Windows"
 	@echo "  make linux    # on Linux (only build the rsrc)"
+	@echo "  make src      # makes src package"
+	@echo "  make rsrc     # makes rsrc for SF FRS"
+	@echo "  make doc      # makes doc"
 
 include makeBundle
 
@@ -34,8 +41,6 @@ macosx:
 	-[ -d $(package)/$(viewer).app ] && rm -rf $(package)/$(viewer).app
 	mv $(viewer).app $(package)/$(viewer).app
 	cp $(icns) $(package)/$(viewer).app/Contents/Resources
-	make strip
-	make rsrc
 	chmod -x  $(shell find . -name "*.inscore")
 	cp -f ../src/guido2.ttf $(package)
 		
@@ -53,14 +58,23 @@ copydoc:
 	cp -f $(docsrc)/presentation/INScore-en.pdf $(docdst)
 
 rsrc:
-	cp -rf Max $(package)/
-	cp -rf PureData $(package)
-	cp -rf python $(package)
-	cp -rf lisp $(package)
-	cp -rf StandAlone $(package)/
-	cp readme.txt $(package)
-	cp -r doc $(package)
-	cp -f ../src/changelog.txt $(package)
+	make cleanrsrc
+	./maketar Max $(rsrc)
+	./maketar PureData $(rsrc)
+	tar czf $(rsrc)/python.tgz python
+	tar czf $(rsrc)/lisp.tgz lisp
+	tar czf $(rsrc)/StandAlone.tgz StandAlone
+	cp rsrc/cclicense.pdf $(rsrc)/license.pdf
+	cp rsrc/cclicense.html $(rsrc)/license.html
+
+cleanrsrc:
+	@echo set files permission to $(fperm)
+	@chmod $(fperm) $(rfiles)
+	@echo set folders permission to $(dperm)
+	@chmod $(dperm) $(rfolders)
+	@echo remove .DS_Store
+	@rm -f $(hfiles)
+	rm -rf $(rsrc)/Max/* $(rsrc)/Max/PureData
 
 src:
 	[ -d $(package)-src/cmake ] || mkdir -p $(package)-src/cmake
@@ -72,23 +86,17 @@ src:
 	cp -r doc $(package)-src
 	tar czf $(package)-src.tgz $(package)-src
 
-
 win32:
 	[ -d $(package) ] || mkdir -p $(package)
 	cp -f $(bin)/$(viewer).exe $(package)/$(viewer).exe
 	cp -f $(bin)/*.dll $(package)
 	cp -f ../src/guido2.ttf $(package)
 	cp  -f DLLs/*.dll $(package)
-	make rsrc
 	cp  -r $(bin)/PlugIns $(package)
 
 linux:
 	[ -d $(package) ] || mkdir -p $(package)
-	make rsrc
 	@echo change mode
 	@chmod 644 $(shell find $(package) -type f)
 	make version=$(version) -f makedeb
-
-strip:
-	rm -rf $(striplist)
 
