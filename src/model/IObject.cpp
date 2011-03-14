@@ -737,6 +737,7 @@ MsgHandler::msgStatus IObject::clickMsg (const IMessage* msg) const
 	if (outmsg) {
 		outmsg->print(oscout);
 		delete outmsg;
+		oscerr << OSCWarn() << "the 'click' message is deprecated." << OSCEnd();
 		return MsgHandler::kProcessedNoChange;
 	}
 	return MsgHandler::kBadParameters;
@@ -749,6 +750,7 @@ MsgHandler::msgStatus IObject::selectMsg (const IMessage* msg) const
 	if (outmsg) {
 		outmsg->print(oscout);
 		delete outmsg;
+		oscerr << OSCWarn() << "the 'select' message is deprecated." << OSCEnd();
 		return MsgHandler::kProcessedNoChange;
 	}
 	return MsgHandler::kBadParameters;
