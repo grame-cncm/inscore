@@ -52,15 +52,17 @@ void VVideoView::initFile( IVideo * video, const QString&  videoFile )
 //----------------------------------------------------------------------
 void VVideoView::initialize( IVideo * video  )
 {
-	if ( QFile::exists(  video->getFile().c_str()  ) ) 
-		initFile (video, VApplView::toQString( video->getFile().c_str() ));
+	QString file = VApplView::toQString( video->getFile().c_str() );
+	if ( QFile::exists(  file  ) ) 
+		initFile (video, file);
 }
 
 //----------------------------------------------------------------------
 void VVideoView::updateView( IVideo * video  )
 {
 	// 1. Update video file.
-	if ( QFile::exists(  video->getFile().c_str()  ) )
+	QString file = VApplView::toQString( video->getFile().c_str() );
+	if ( QFile::exists(  file  ) )
 	{
 //		QString videoFile = VApplView::toQString( video->getFile().c_str() );
 

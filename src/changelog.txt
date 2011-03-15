@@ -15,6 +15,7 @@ It has been supported by the ANR (ANR-08-CORD-010)
 Version 0.75
 - new map+ message for incremental mapping
 - click and select messages are deprecated
+- bug in utf8 path name handling corrected (for 'img' and 'video' types)
 
 ----------------------------------------------------
 Version 0.74 - March 10 2011

@@ -53,16 +53,17 @@ VImageView::VImageView(QGraphicsScene * scene, const IImage* h)
 void VImageView::updateLocalMapping (IImage* img)
 {
 	// 1. Update pixmap
-	if ( QFile::exists(  img->getFile().c_str()  ) )
+	QString file = VApplView::toQString( img->getFile().c_str() );
+	if ( QFile::exists(  file  ) )
 	{
-		QString imageFile = VApplView::toQString( img->getFile().c_str() );
-		if ( !QImageReader( imageFile ).canRead() )
+//		QString imageFile = VApplView::toQString( img->getFile().c_str() );
+		if ( !QImageReader( file ).canRead() )
 		{
 			// Invalid/Unsupported file format
 			ITLErr << "invalid image file :" << img->getFile() << ITLEndl;
 		}
 		else
-			setImage( imageFile );
+			setImage( file );
 	}
 	else
 	{
