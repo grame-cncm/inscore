@@ -3,18 +3,16 @@ todo
 
 - revoir le traitement des messages get (cf watch)
 - revoir la gestion de iappl::oscdebug -> static ?
-- IObject messages click et select -> deprecated
+[ok] IObject messages click et select -> deprecated
 - setDispRange -> unused & remove
 - implémenter un message watch-
 
-
 [ok] vérifier l'adressage de la font guido -> pb en 10.5 apparement lié au système
-
 [ok] idée d'intégrer des objets faust (svg)
 [ok] support type 'svg' en + de 'svgf'
 [ok] spécifier les lignes en width angle
+[ok] faire du mapping incrémental
 - mappings : support de coordonnées relatives pour les images
-- faire du mapping incrémental
 - export vidéo
 [ok] paramétrages des événements (x, y, date...)
 - tutorial pour les mappings
