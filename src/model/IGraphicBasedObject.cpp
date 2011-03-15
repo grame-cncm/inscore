@@ -44,6 +44,7 @@ IGraphicBasedObject::IGraphicBasedObject( const std::string& name, IObject * par
 	fLocalMappings = TLocalMapping<IntPointSegment>::create();
 
 	fMsgHandlerMap["map"]		= TMethodMsgHandler<IGraphicBasedObject>::create(this, &IGraphicBasedObject::mapMsg);
+	fMsgHandlerMap["map+"]		= TMethodMsgHandler<IGraphicBasedObject>::create(this, &IGraphicBasedObject::mapAddMsg);
 	fMsgHandlerMap["mapf"]		= TMethodMsgHandler<IGraphicBasedObject>::create(this, &IGraphicBasedObject::mapFileMsg);
 }
 
@@ -51,6 +52,14 @@ IGraphicBasedObject::IGraphicBasedObject( const std::string& name, IObject * par
 MsgHandler::msgStatus IGraphicBasedObject::mapFileMsg (const IMessage* msg )
 { 
 	MsgHandler::msgStatus status = TMapMsgHandler<IntPointSegment>::mapFileMsg( msg , localMappings() , this ); 
+	if (status & MsgHandler::kProcessed) localMapModified(true);
+	return status;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IGraphicBasedObject::mapAddMsg (const IMessage* msg )
+{ 
+	MsgHandler::msgStatus status = TMapMsgHandler<IntPointSegment>::addMapMsg( msg , localMappings() , this ); 
 	if (status & MsgHandler::kProcessed) localMapModified(true);
 	return status;
 }

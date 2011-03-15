@@ -95,6 +95,18 @@ void TMapable::setMapping (const std::string& name, SRelativeTime2GraphicMapping
 }
 
 //______________________________________________________________________________
+void TMapable::addTimeSegmentation	(const std::string& name, SRelativeTimeSegmentation s)
+{
+	MapSet* found = find (name);
+	if (!found) {
+		MapSet set;
+		set.fTimeSegm = s;
+		fMappings[name] = set; 
+	}
+	else found->fTimeSegm->add (s->getSegmentation());
+}
+
+//______________________________________________________________________________
 void TMapable::setTimeSegmentation	(const std::string& name, SRelativeTimeSegmentation s)
 {
 	MapSet* found = find (name);

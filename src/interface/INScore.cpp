@@ -92,23 +92,23 @@ void INScore::stop(IGlue* glue)
 }
 
 //--------------------------------------------------------------------------
-bool INScore::getGraphicScore (IGlue* glue, unsigned int* bitmap, int w, int h)
-{
-	if (!glue || !bitmap) return false;
-	return glue->getSceneView(bitmap, w, h, false );
-}
+//bool INScore::getGraphicScore (IGlue* glue, unsigned int* bitmap, int w, int h)
+//{
+//	if (!glue || !bitmap) return false;
+//	return glue->getSceneView(bitmap, w, h, false );
+//}
 
 //--------------------------------------------------------------------------
-void INScore::setListener (IGlue* glue, GraphicUpdateListener* listener)
-{
-	if (glue) glue->setGraphicListener (listener);
-}
+//void INScore::setListener (IGlue* glue, GraphicUpdateListener* listener)
+//{
+//	if (glue) glue->setGraphicListener (listener);
+//}
 
 //--------------------------------------------------------------------------
-void INScore::timeTask (IGlue* glue)
-{
-	if (glue) glue->timerEvent (0);
-}
+//void INScore::timeTask (IGlue* glue)
+//{
+//	if (glue) glue->timerEvent (0);
+//}
 
 //--------------------------------------------------------------------------
 // versions 

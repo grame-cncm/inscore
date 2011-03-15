@@ -28,6 +28,7 @@
 
 #include <map>
 #include <string>
+#include <iostream>
 
 #include "maptypes.h"
 #include "smartpointer.h"
@@ -99,6 +100,17 @@ template <typename T> class TLocalMapping : public smartable
 				if (s) {
 					s->fGraphic2Local = g2l;
 					s->fLocal2Time = l2t;
+				} 
+				else fMappings[name] = MapSet(g2l, l2t);
+			}
+
+		void addMapping	(const std::string& name, const SGraphic2LocalMapping& g2l, const SLocal2TimeMapping& l2t)
+			{ 
+				MapSet* s = find(name); 
+				if (s) {
+					// it looks like s->fGraphic2Local is not used
+					if (g2l) s->fGraphic2Local->add(*g2l);
+					if (l2t) s->fLocal2Time->add(*l2t);
 				} 
 				else fMappings[name] = MapSet(g2l, l2t);
 			}

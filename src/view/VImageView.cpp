@@ -123,8 +123,8 @@ void VImageView::setImage(const QString& fileName)
 	fPixmapItem->setPixmap( QPixmap( fileName ) );
 #else
 	fPixmapItem->pixmap().load( fileName );
-	if (!fPixmapItem->pixmap().hasAlphaChannel())
-		qDebug() << "VImageView::setImage no alpha channel for " << fileName;
+//	if (!fPixmapItem->pixmap().hasAlphaChannel())
+//		qDebug() << "VImageView::setImage no alpha channel for " << fileName;
 #endif
 	itemChanged();
 }

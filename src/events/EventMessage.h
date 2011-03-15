@@ -74,6 +74,7 @@ class EventMessage : public smartable
 	bool	checkvariablemsg(IMessage& msg, int index, bool setmsg=false);
 	float	checkfloatrange		(const std::string& param, float val) const;
 	int		checkintrange		(const std::string& param, float val) const;
+	bool	checkrange (const char* param) const;
 	bool	checkfloat (const char* param) const;
 			
 	protected:

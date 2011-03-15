@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>12.1 File watcher</TITLE>
-<META NAME="description" CONTENT="12.1 File watcher">
+<TITLE>11.2 Score browsing and layout</TITLE>
+<META NAME="description" CONTENT="11.2 Score browsing and layout">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,135 +21,82 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node36.html">
 <LINK REL="previous" HREF="node34.html">
-<LINK REL="up" HREF="node34.html">
+<LINK REL="up" HREF="node33.html">
 <LINK REL="next" HREF="node36.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html626"
+<A NAME="tex2html635"
   HREF="node36.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html620"
-  HREF="node34.html">
+<A NAME="tex2html629"
+  HREF="node33.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html614"
+<A NAME="tex2html623"
   HREF="node34.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html622"
+<A NAME="tex2html631"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html624"
-  HREF="node57.html">
+<A NAME="tex2html633"
+  HREF="node61.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html627"
-  HREF="node36.html">12.2 Debug</A>
-<B> Up:</B> <A NAME="tex2html621"
-  HREF="node34.html">12. Virtual address space</A>
-<B> Previous:</B> <A NAME="tex2html615"
-  HREF="node34.html">12. Virtual address space</A>
- &nbsp; <B>  <A NAME="tex2html623"
+<B> Next:</B> <A NAME="tex2html636"
+  HREF="node36.html">11.3 Score queries</A>
+<B> Up:</B> <A NAME="tex2html630"
+  HREF="node33.html">11. Score specific messages</A>
+<B> Previous:</B> <A NAME="tex2html624"
+  HREF="node34.html">11.1 Specific score mappings</A>
+ &nbsp; <B>  <A NAME="tex2html632"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html625"
-  HREF="node57.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html634"
+  HREF="node61.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001310000000000000000"></A>
-<A NAME="watch"></A>
+<H1><A NAME="SECTION001220000000000000000"></A>
+<A NAME="guidolayout"></A>
 <BR>
-12.1 File watcher
+11.2 Score browsing and layout
 </H1>
-
-<P>
-The <TT>fileWatcher</TT> is a component automatically embedded at scene level. 
-<BR>
-It receives messages at the address <TT>/ITL/scene/fileWatcher</TT>.
-
-<P>
-The <TT>fileWatcher</TT> service monitors files on demand; it is aware of file modifications and file removals (or renamings, which is equivalent). The <TT>fileWatcher</TT> works with associations between a file and an OSC message : when a file change occurs, the file watcher posts the associated OSC message.
-
-<P>
-The <TT>fileWatcher</TT> is controlled with 4 messages:
-
-<UL>
-<LI>the <TT>add</TT> message is used to add a new 'file' - 'OSC message' association ;
-</LI>
-<LI>the <TT>remove</TT> message is used to remove a 'file' - 'OSC message' association.
-</LI>
-<LI>the <TT>clear</TT> message is used to clear all existing associations.
-</LI>
-<LI>the <TT>get</TT> message is used to retrieve the current associations.
-</LI>
-</UL>
-<A NAME="776"></A>
 
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="396" HEIGHT="163" ALIGN="BOTTOM" BORDER="0"
  SRC="img65.gif"
  ALT="\begin{rail}
-fileWatcher : ('add' filePath OSCMessage)
-\vert 'remove' (filePath OSCMessage \vert OSCAddress )
-\vert 'clear'
-\vert 'get'
+scoreMsg : 'page' int32
+\vert 'pageFormat' float32 float32
+\vert 'columns' int32
+\vert 'rows' int32
 \end{rail}">
 <BR>
-<A NAME="779"></A>
-<A NAME="780"></A>
-<A NAME="781"></A>
-<A NAME="782"></A>
 
 <P>
-where <TT>OSCMessage</TT> is any message complying to the format desscribed in section <A HREF="node2.html#genformat">1</A> p.<A HREF="node2.html#genformat"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>.
+
+<UL>
+<LI><TT>page</TT>: sets the first displayed page. Index starts at <TT>1</TT>. Default: <TT>1</TT>.
 
 <P>
-Example:
-<BR> <TT>/ITL/scene/fileWatcher add fuga.gmn /ITL/scene/myScore set gmnf fuga.gmn</TT>
-<BR>
-<P>
-Note that the <TT>get</TT> query returns a set of messages complying to the <TT>add</TT> message format.
-<BR>
-<P>
-The <TT>remove</TT> message may take only 1 parameter, in which case the only parameter is an OSC address : it stops monitoring any file associated to an OSC message with this OSC address.
+</LI>
+<LI><TT>pageFormat</TT>: sets the score's page format, in cm (Warning: the <TT>pageFormat</TT> is not used when another page format is 'hard-coded' in the score's Guido code). Default: <TT>(21.0 , 29.7)</TT>.
 
 <P>
-Note that an OSC message can be associated to several files, and that a file can be associated to several OSC messages.
-When a file has been removed (or renamed), the <TT>fileWatcher</TT> stops monitoring it.
+</LI>
+<LI><TT>columns</TT>: as multiples pages can be displayed and organized in a <I>grid of pages</I>, <TT>columns</TT> sets the number of columns in the grid. Default: <TT>2</TT>.
 
 <P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html626"
-  HREF="node36.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html620"
-  HREF="node34.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html614"
-  HREF="node34.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html622"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html624"
-  HREF="node57.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html627"
-  HREF="node36.html">12.2 Debug</A>
-<B> Up:</B> <A NAME="tex2html621"
-  HREF="node34.html">12. Virtual address space</A>
-<B> Previous:</B> <A NAME="tex2html615"
-  HREF="node34.html">12. Virtual address space</A>
- &nbsp; <B>  <A NAME="tex2html623"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html625"
-  HREF="node57.html">Index</A></B> 
-<!--End of Navigation Panel-->
+</LI>
+<LI><TT>rows</TT>: as multiples pages can be displayed and organized in a <I>grid of pages</I>, <TT>rows</TT> sets the number of rows in the grid. Default: <TT>1</TT>.
+</LI>
+</UL>
+
+<P>
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

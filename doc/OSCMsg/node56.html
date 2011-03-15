@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.6 Differences to version 0.42</TITLE>
-<META NAME="description" CONTENT="15.6 Differences to version 0.42">
+<TITLE>15.3 Differences to version 0.60</TITLE>
+<META NAME="description" CONTENT="15.3 Differences to version 0.60">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,115 +19,75 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node57.html">
 <LINK REL="previous" HREF="node55.html">
-<LINK REL="up" HREF="node50.html">
+<LINK REL="up" HREF="node53.html">
 <LINK REL="next" HREF="node57.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html930"
+<A NAME="tex2html942"
   HREF="node57.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html924"
-  HREF="node50.html">
+<A NAME="tex2html936"
+  HREF="node53.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html920"
+<A NAME="tex2html930"
   HREF="node55.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html926"
+<A NAME="tex2html938"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html928"
-  HREF="node57.html">
+<A NAME="tex2html940"
+  HREF="node61.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html931"
-  HREF="node57.html">Index</A>
-<B> Up:</B> <A NAME="tex2html925"
-  HREF="node50.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html921"
-  HREF="node55.html">15.5 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html927"
+<B> Next:</B> <A NAME="tex2html943"
+  HREF="node57.html">15.4 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html937"
+  HREF="node53.html">15. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html931"
+  HREF="node55.html">15.2 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html939"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html929"
-  HREF="node57.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html941"
+  HREF="node61.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001660000000000000000">
-15.6 Differences to version 0.42</A>
+<H1><A NAME="SECTION001630000000000000000">
+15.3 Differences to version 0.60</A>
 </H1>
 
-<P>
-
 <UL>
-<LI><TT>identifier</TT> specification change (section <A HREF="node2.html#genformat">1</A> p.<A HREF="node2.html#genformat"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>new 'mousemove' event (see section <A HREF="node49.html#interactmsg">14.1</A> p.<A HREF="node49.html#interactmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>new application <TT>hello</TT> and  <TT>defaultShow</TT> messages (section <A HREF="node4.html#ITL">2</A> p.<A HREF="node4.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>interaction messages accept variables ($x, $y, $date...) (see section <A HREF="node50.html#interactvar">14.2</A> p.<A HREF="node50.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>new <TT>load</TT> and <TT>save</TT> messages  (sections <A HREF="node4.html#ITL">2</A> p.<A HREF="node4.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> and  <A HREF="node6.html#common">4</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>SVG code and files support (see section <A HREF="node20.html#setfile">6</A> p.<A HREF="node20.html#setfile"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI><TT>click</TT> and <TT>select</TT> messages (section <A HREF="node18.html#csmsg">4.4</A> p.<A HREF="node18.html#csmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>):
-
-<UL>
-<LI><TT>rightbottom</TT> and <TT>leftbottom</TT> modes renamed to <TT>bottomright</TT> and <TT>bottomleft</TT>
+<LI>set line message change: the <TT>x y</TT> form is deprecated, it is replaced by
+  the following forms: 
+<BR>  <TT>'xy' x y</TT> (equivalent to the former form) 
+  and <TT>'wa' width angle</TT>   
+  (see section <A HREF="node20.html#setsect">6</A> p.<A HREF="node20.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>new <TT>center</TT> mode for the <TT>click</TT> message
+<LI>new 'effect' message  (section <A HREF="node14.html#effectmsg">4.3</A> p.<A HREF="node14.html#effectmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>query mode sent back with the reply both for <TT>click</TT> and  <TT>select</TT> messages
+<LI>utf8 support on windows corrected
 </LI>
-</UL>
+<LI>transparency support for stretched synchronized objects corrected
 </LI>
-<LI>new <TT>file</TT>, <TT>html</TT> and  <TT>htmlf</TT> types for the <TT>set</TT> message (section <A HREF="node20.html#setsect">6</A> p.<A HREF="node20.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>multiple application instances supported with dynamic udp port number allocation.
 </LI>
-<LI><TT>get</TT> syntax change for the <TT>scene</TT> (section <A HREF="#sceneget"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> p.<A HREF="#sceneget"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI><TT>fileWatcher</TT> messages completely redesigned (section <A HREF="node35.html#watch">12.1</A> p.<A HREF="node35.html#watch"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>mappings can be identified by names (section <A HREF="node27.html#mapMsg">9</A> p.<A HREF="node27.html#mapMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>rect, ellipse, curve, line and polygon object support graphic to relative-time mapping
-</LI>
-<LI>new synchronization modes for Guido scores: voice1, voice2, ... , staff1, staff2, ... , system, page (section <A HREF="node31.html#guidomaps">11.1</A> p.<A HREF="node31.html#guidomaps"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>Guido mapping manages repeat bars.
-</LI>
-<LI>Graphic signals messages design (section <A HREF="node42.html#gsignal">13.2</A> p.<A HREF="node42.html#gsignal"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>command line option with -port portnumber option to set the receive udp port number at startup.
 </LI>
 </UL>
 
 <P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html930"
-  HREF="node57.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html924"
-  HREF="node50.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html920"
-  HREF="node55.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html926"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html928"
-  HREF="node57.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html931"
-  HREF="node57.html">Index</A>
-<B> Up:</B> <A NAME="tex2html925"
-  HREF="node50.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html921"
-  HREF="node55.html">15.5 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html927"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html929"
-  HREF="node57.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

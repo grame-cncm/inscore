@@ -26,32 +26,32 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html386"
+<A NAME="tex2html394"
   HREF="node19.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html380"
+<A NAME="tex2html388"
   HREF="node6.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html376"
+<A NAME="tex2html384"
   HREF="node17.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html382"
+<A NAME="tex2html390"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html384"
-  HREF="node57.html">
+<A NAME="tex2html392"
+  HREF="node61.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html387"
+<B> Next:</B> <A NAME="tex2html395"
   HREF="node19.html">5. Time management messages</A>
-<B> Up:</B> <A NAME="tex2html381"
+<B> Up:</B> <A NAME="tex2html389"
   HREF="node6.html">4. Common components messages</A>
-<B> Previous:</B> <A NAME="tex2html377"
+<B> Previous:</B> <A NAME="tex2html385"
   HREF="node17.html">4.3.3 The shadow effect</A>
- &nbsp; <B>  <A NAME="tex2html383"
+ &nbsp; <B>  <A NAME="tex2html391"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html385"
-  HREF="node57.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html393"
+  HREF="node61.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
@@ -63,33 +63,36 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 </H1>
 
 <P>
+<B>Warning</B>: the <TT>click</TT> and <TT>select</TT> messages are deprecated and will be removed in a future version.
+
+<P>
 The <TT>click</TT> and <TT>select</TT> messages can be sent to any address with the form <TT>/ITL/scene/<I>identifier</I></TT> where <TT><I>identifier</I></TT> is the unique identifier string of a scene component. They are intended to provide information about components relative positions: it returns a list of components identifiers that are 'under' the <I>clicked</I> component: z order of the components is used for the 'under' relationship. 
 
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="274" HEIGHT="86" ALIGN="BOTTOM" BORDER="0"
  SRC="img27.gif"
  ALT="\begin{rail}
 click : 'click' ( \vert clickMode)
 \end{rail}">
 <BR>
-<A NAME="358"></A>
+<A NAME="361"></A>
 
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="226" HEIGHT="200" ALIGN="BOTTOM" BORDER="0"
  SRC="img28.gif"
  ALT="\begin{rail}
 clickMode : 'topleft' \vert 'bottomright' \vert 'topright' \vert 'bottomleft' \vert 'center'
 \end{rail}">
 <BR>
-<A NAME="361"></A>
-<A NAME="362"></A>
-<A NAME="363"></A>
 <A NAME="364"></A>
 <A NAME="365"></A>
+<A NAME="366"></A>
+<A NAME="367"></A>
+<A NAME="368"></A>
 
 <P>
 
@@ -104,7 +107,7 @@ clickMode : 'topleft' \vert 'bottomright' \vert 'topright' \vert 'bottomleft' \v
 Reply of the <TT>click</TT> message has the following form:
 <BR>
 <IMG
- WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="454" HEIGHT="114" ALIGN="BOTTOM" BORDER="0"
  SRC="img29.gif"
  ALT="\begin{rail}
 clickReply : OSCAddress clickMode ( \vert (identifier +))
@@ -117,25 +120,25 @@ where 'identifier' is a component name. Note that 'identifiers' are sorted by de
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="288" HEIGHT="86" ALIGN="BOTTOM" BORDER="0"
  SRC="img30.gif"
  ALT="\begin{rail}
 select : 'select' ( \vert selectMode)
 \end{rail}">
 <BR>
-<A NAME="380"></A>
+<A NAME="383"></A>
 
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="210" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
  SRC="img31.gif"
  ALT="\begin{rail}
 selectMode : 'intersect' \vert 'include'
 \end{rail}">
 <BR>
-<A NAME="383"></A>
-<A NAME="384"></A>
+<A NAME="386"></A>
+<A NAME="387"></A>
 
 <P>
 
@@ -152,7 +155,7 @@ selectMode : 'intersect' \vert 'include'
 Reply of the <TT>select</TT> message is similar to <TT>click</TT> reply:
 <BR>
 <IMG
- WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="459" HEIGHT="114" ALIGN="BOTTOM" BORDER="0"
  SRC="img32.gif"
  ALT="\begin{rail}
 selectReply : OSCAddress selectMode ( \vert (identifier +))
@@ -162,32 +165,32 @@ selectReply : OSCAddress selectMode ( \vert (identifier +))
 <P>
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html386"
+<A NAME="tex2html394"
   HREF="node19.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html380"
+<A NAME="tex2html388"
   HREF="node6.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html376"
+<A NAME="tex2html384"
   HREF="node17.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html382"
+<A NAME="tex2html390"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html384"
-  HREF="node57.html">
+<A NAME="tex2html392"
+  HREF="node61.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html387"
+<B> Next:</B> <A NAME="tex2html395"
   HREF="node19.html">5. Time management messages</A>
-<B> Up:</B> <A NAME="tex2html381"
+<B> Up:</B> <A NAME="tex2html389"
   HREF="node6.html">4. Common components messages</A>
-<B> Previous:</B> <A NAME="tex2html377"
+<B> Previous:</B> <A NAME="tex2html385"
   HREF="node17.html">4.3.3 The shadow effect</A>
- &nbsp; <B>  <A NAME="tex2html383"
+ &nbsp; <B>  <A NAME="tex2html391"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html385"
-  HREF="node57.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html393"
+  HREF="node61.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]

@@ -5,6 +5,7 @@ todo
 - revoir la gestion de iappl::oscdebug -> static ?
 - IObject messages click et select -> deprecated
 - setDispRange -> unused & remove
+- implémenter un message watch-
 
 
 [ok] vérifier l'adressage de la font guido -> pb en 10.5 apparement lié au système

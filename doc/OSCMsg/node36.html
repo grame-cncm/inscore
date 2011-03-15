@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>12.2 Debug</TITLE>
-<META NAME="description" CONTENT="12.2 Debug">
+<TITLE>11.3 Score queries</TITLE>
+<META NAME="description" CONTENT="11.3 Score queries">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -20,71 +20,72 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
 <LINK REL="previous" HREF="node35.html">
-<LINK REL="up" HREF="node34.html">
+<LINK REL="up" HREF="node33.html">
 <LINK REL="next" HREF="node37.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html638"
+<A NAME="tex2html647"
   HREF="node37.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html632"
-  HREF="node34.html">
+<A NAME="tex2html641"
+  HREF="node33.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html628"
+<A NAME="tex2html637"
   HREF="node35.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html634"
+<A NAME="tex2html643"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html636"
-  HREF="node57.html">
+<A NAME="tex2html645"
+  HREF="node61.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html639"
-  HREF="node37.html">13. Signals and graphic</A>
-<B> Up:</B> <A NAME="tex2html633"
-  HREF="node34.html">12. Virtual address space</A>
-<B> Previous:</B> <A NAME="tex2html629"
-  HREF="node35.html">12.1 File watcher</A>
- &nbsp; <B>  <A NAME="tex2html635"
+<B> Next:</B> <A NAME="tex2html648"
+  HREF="node37.html">12. Virtual address space</A>
+<B> Up:</B> <A NAME="tex2html642"
+  HREF="node33.html">11. Score specific messages</A>
+<B> Previous:</B> <A NAME="tex2html638"
+  HREF="node35.html">11.2 Score browsing and</A>
+ &nbsp; <B>  <A NAME="tex2html644"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html637"
-  HREF="node57.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html646"
+  HREF="node61.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001320000000000000000">
-12.2 Debug</A>
+<H1><A NAME="SECTION001230000000000000000"></A>
+<A NAME="guidoqueries"></A>
+<BR>
+11.3 Score queries
 </H1>
-
-<P>
-Each object has a <TT>debug</TT> sub-node for debugging purposes. This <TT>debug</TT> virtual node has 3 flags, that can be actived or desactived with <TT>0</TT> or <TT>1</TT>:
 
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="327" HEIGHT="87" ALIGN="BOTTOM" BORDER="0"
  SRC="img66.gif"
  ALT="\begin{rail}
-debug : ('name' int32)
-\vert ('map' int32)
-\vert ('signal' int32)
+scoreQuery : 'get' (
+'pageCount'
+\vert 'pageDate' int32
+)
 \end{rail}">
 <BR>
 
 <P>
 
 <UL>
-<LI>When the <TT>name</TT> flag is on, each scene component displays its bounding rectangle and name.
+<LI><TT>pageCount</TT>: gives the score page count.
 </LI>
-<LI>When the <TT>map</TT> flag is on, each scene component displays its mappings.
-</LI>
-<LI>When the <TT>signal</TT> flag is on, each object (even the scene or the application) will, according to its type, emit 'performance related' signals (or no signal). This 'performance signal' is specific to the type of object. The name of 'performance signal' is of the form <TT>debug-</TT><I>objectName</I><TT>-</TT><I>SomeName</I>. Currently, only the <TT>application</TT>, the <TT>scene</TT> and <TT>graph</TT> objects emit 'performance signals'.
+<LI><TT>pageDate</TT>: gives the time location of a page, which number is given as argument. The system reply has the form <TT>pageDate pageNum date</TT> where <TT>pageNum</TT> is the request page number given as argument and <TT>date</TT> is the page time location expressed as a ra	tional number.
 </LI>
 </UL>
+
+<P>
+Note that a score object duration is automatically set to the score duration. It can be retrieved using a <TT>get duration</TT> message.
 
 <P>
 <BR><HR>

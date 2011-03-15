@@ -75,6 +75,16 @@ template<typename T1, typename T2> class TMapping : public smartable
 			for (const_iterator i = s2.begin(); i != s2.end(); i++)
 				add (s1, *i);
 		}
+
+		/*! \brief add a set of relations		
+			\param map the relations set to add
+		*/
+		virtual void add (const TMapping<T1,T2>& map)  { 
+			const TRelation<T1,T2>& r = map.direct();
+			typedef typename TRelation<T1,T2>::const_iterator	const_iterator;
+			for (const_iterator i = r.begin(); i != r.end(); i++)
+				add (i->first, i->second);
+		}
 		
 		/// \brief gives the direct relation (from T1 to T2)
 		const TRelation<T1,T2>& direct() const		{ return fDirect; }

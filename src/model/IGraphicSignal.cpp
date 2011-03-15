@@ -70,6 +70,7 @@ IGraphicSignal::IGraphicSignal( const std::string& name, IObject* parent ) : ISh
 //	fMsgHandlerMap["height"]	= TSetMsgHandler<float>::create(fHeight);	// 'height' param is writable for IGraphicSignal
 
 	fMsgHandlerMap["map"]		= TMethodMsgHandler<IGraphicSignal>::create(this, &IGraphicSignal::mapMsg);
+	fMsgHandlerMap["map+"]		= TMethodMsgHandler<IGraphicSignal>::create(this, &IGraphicSignal::mapAddMsg);
 	fMsgHandlerMap["mapf"]		= TMethodMsgHandler<IGraphicSignal>::create(this, &IGraphicSignal::mapFileMsg);
 
 //	fSetMsgHandlerMap["curveType"]	= TSetFieldHandler<std::string>::create( fCurveType );
@@ -100,6 +101,14 @@ MsgHandler::msgStatus IGraphicSignal::mapFileMsg (const IMessage* msg )
 MsgHandler::msgStatus IGraphicSignal::mapMsg (const IMessage* msg )	
 { 
 	MsgHandler::msgStatus status = TMapMsgHandler<FrameSegment>::mapMsg( msg , localMappings() , this ); 
+	if (status & MsgHandler::kProcessed) localMapModified(true);
+	return status;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IGraphicSignal::mapAddMsg (const IMessage* msg )	
+{ 
+	MsgHandler::msgStatus status = TMapMsgHandler<FrameSegment>::addMapMsg( msg , localMappings() , this ); 
 	if (status & MsgHandler::kProcessed) localMapModified(true);
 	return status;
 }

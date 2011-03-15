@@ -50,19 +50,7 @@ class export INScore
 	public:
 	typedef void *	MessagePtr;		///< an opaque pointer to a message
 
-	/*! \brief Qt environment initiaization + INScore glue setup
-
-		\param scene a QGraphicScene, should be set null for offscreen rendering
-		\param timeInterval the time task tme interval (in mls). 0 means no time task
-		\param udpport the udp port number to listen for incoming OSC messages
-		\param outport the udp port number for outgoing OSC messages
-		\param errport the udp port number for error messages
-		\see GraphicUpdateListener
-			   
-	*/
-//	static IGlue* start (QGraphicsScene* scene, int timeInterval=10, int udpport=7000, int outport=7001, int errport=7002);
-
-	/*! \brief Qt environment initiaization + INScore glue setup
+	/*! \brief Qt environment initialization + INScore glue setup
 
 		\param timeInterval the time task tme interval (in mls). 0 means no time task
 		\param udpport the udp port number to listen for incoming OSC messages
@@ -77,41 +65,38 @@ class export INScore
 	*/
 	static IGlue* start (int timeInterval=10, int udpport=7000, int outport=7001, int errport=7002, bool offscreen=false);
 
-	/*! \brief Qt environment initiaization + INScore glue setup
+	/*! \brief stops the INScore services
 
-		\param address the OSC destination address of the message
-		\param params the message parameters
-		\warning once a message has been posted, it is owned by the library and must not be deleted
-		by the client application
+		\param glue the value returned by the last start call
 	*/
 	static void stop (IGlue* glue);
 
-	/*! \brief sets a listener for the graphic update
-
-		\param glue the system glue as returned by init()
-		\param listener a listener that will be called after the scene graphic update
-	*/
-	static void setListener (IGlue* glue, GraphicUpdateListener* listener);
-
-	/*! \brief copy the graphic score data into a bitmap
-
-		\param glue the system glue as returned by init()
-		\param bitmap the destination bitmap
-		\param w the bitmap width
-		\param h the bitmap height
-	*/
-	static bool getGraphicScore (IGlue* glue, unsigned int* bitmap, int w, int h);
-
-	/*! \brief copy the scene data into a bitmap
-
-		\param glue the system glue as returned by init()
-	*/
-	static void timeTask (IGlue* glue);
+//	/* \brief sets a listener for the graphic update
+//
+//		\param glue the system glue as returned by init()
+//		\param listener a listener that will be called after the scene graphic update
+//	*/
+//	static void setListener (IGlue* glue, GraphicUpdateListener* listener);
+//
+//	/* \brief copy the graphic score data into a bitmap
+//
+//		\param glue the system glue as returned by init()
+//		\param bitmap the destination bitmap
+//		\param w the bitmap width
+//		\param h the bitmap height
+//	*/
+//	static bool getGraphicScore (IGlue* glue, unsigned int* bitmap, int w, int h);
+//
+//	/* \brief copy the scene data into a bitmap
+//
+//		\param glue the system glue as returned by init()
+//	*/
+//	static void timeTask (IGlue* glue);
 
 	/*! \brief post a message
 
 		\param address the OSC destination address of the message
-		\param params the message parameters
+		\param msg the message to send
 		\warning once a message has been posted, it is owned by the library and must not be deleted
 		by the client application
 	*/

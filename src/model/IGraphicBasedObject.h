@@ -67,6 +67,8 @@ class IGraphicBasedObject : public IObject
 		MsgHandler::msgStatus mapFileMsg (const IMessage* msg );
 		/// \brief the \c 'map' message handler
 		MsgHandler::msgStatus mapMsg (const IMessage* msg );
+		/// \brief the \c 'map+' message handler
+		MsgHandler::msgStatus mapAddMsg (const IMessage* msg );
 		
 		/// \brief Overrides IObject to handle 'get map' msg.
 		IMessageList getMsgs(const IMessage* msg) const	{ return TMapMsgHandler<IntPointSegment>::getMsgs( msg , localMappings() , this ); }

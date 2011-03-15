@@ -25,18 +25,6 @@ controled via OSC messages i.e. by any external application that
 supports the OSC protocol (typically MaxMSP or Pure Data).
 
 ======================================================
-Content
-======================================================
-This distribution includes :
-	- a stand alone augmented scores viewer.	
-	- Max : a folder containing Max patches provided as example of 
-	  use of the Interlude OSC API.
-	- PureData : a folder containing PureData patches provided as example of 
-	  use of the Interlude OSC API.
-	- lisp : a lisp interface with some examples of use.
-	- python : a python interface with some examples of use.
-
-======================================================
  Warning
 ======================================================
 The INScore Viewer is currently under development and will

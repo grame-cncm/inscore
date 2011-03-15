@@ -35,6 +35,7 @@ IShapeMap::IShapeMap( const std::string& name, IObject* parent ) : IShape(name,p
 	fLocalMappings = TLocalMapping<GraphicSegment>::create();
 
 	fMsgHandlerMap["map"]		= TMethodMsgHandler<IShapeMap>::create(this, &IShapeMap::mapMsg);
+	fMsgHandlerMap["map+"]		= TMethodMsgHandler<IShapeMap>::create(this, &IShapeMap::mapAddMsg);
 	fMsgHandlerMap["mapf"]		= TMethodMsgHandler<IShapeMap>::create(this, &IShapeMap::mapFileMsg);
 }
 
@@ -50,6 +51,14 @@ MsgHandler::msgStatus IShapeMap::mapFileMsg (const IMessage* msg )
 MsgHandler::msgStatus IShapeMap::mapMsg (const IMessage* msg )	
 { 
 	MsgHandler::msgStatus status = TMapMsgHandler<GraphicSegment>::mapMsg( msg , localMappings() , this); 
+	if (status & MsgHandler::kProcessed) localMapModified(true);
+	return status;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IShapeMap::mapAddMsg (const IMessage* msg )
+{ 
+	MsgHandler::msgStatus status = TMapMsgHandler<GraphicSegment>::addMapMsg( msg , localMappings() , this ); 
 	if (status & MsgHandler::kProcessed) localMapModified(true);
 	return status;
 }
