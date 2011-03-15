@@ -37,12 +37,17 @@ include makeBundle
 
 macosx:
 	[ -d $(package) ] || mkdir -p $(package)
+	make common
 	make -f makeINScoreBundle
 	-[ -d $(package)/$(viewer).app ] && rm -rf $(package)/$(viewer).app
 	mv $(viewer).app $(package)/$(viewer).app
 	cp $(icns) $(package)/$(viewer).app/Contents/Resources
 	chmod -x  $(shell find . -name "*.inscore")
 	cp -f ../src/guido2.ttf $(package)
+		
+common: 
+	cp -r doc $(package)
+	cp readme.txt $(package)
 		
 doc: 
 	make -C $(docsrc)
@@ -93,6 +98,7 @@ src:
 
 win32:
 	[ -d $(package) ] || mkdir -p $(package)
+	make common
 	cp -f $(bin)/$(viewer).exe $(package)/$(viewer).exe
 	cp -f $(bin)/*.dll $(package)
 	cp -f ../src/guido2.ttf $(package)
