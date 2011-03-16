@@ -16,6 +16,7 @@ Version 0.75
 - new map+ message for incremental mapping
 - click and select messages are deprecated
 - bug in utf8 path name handling corrected (for 'img' and 'video' types)
+- guido staff graphic map correction: staff change was not correctly detected
 
 ----------------------------------------------------
 Version 0.74 - March 10 2011

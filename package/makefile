@@ -48,6 +48,7 @@ macosx:
 common: 
 	cp -r doc $(package)
 	cp readme.txt $(package)
+	cp ../src/changelog.txt $(package)
 		
 doc: 
 	make -C $(docsrc)
