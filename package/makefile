@@ -35,15 +35,20 @@ usage:
 
 include makeBundle
 
+dmg:
+	hdiutil create $(package).dmg -srcfolder $(package) -ov
+
 macosx:
 	[ -d $(package) ] || mkdir -p $(package)
 	make common
 	make -f makeINScoreBundle
-	-[ -d $(package)/$(viewer).app ] && rm -rf $(package)/$(viewer).app
-	mv $(viewer).app $(package)/$(viewer).app
-	cp $(icns) $(package)/$(viewer).app/Contents/Resources
+	cp $(icns) $(viewer).app/Contents/Resources
+	-[ -d $(package)/"$(viewer) $(version).app" ] && rm -rf $(package)/"$(viewer) $(version).app"
+	mv $(viewer).app $(package)/"$(viewer) $(version).app"
 	chmod -x  $(shell find . -name "*.inscore")
 	cp -f ../src/guido2.ttf $(package)
+	cd $(package) && ln -s /Applications .
+	make dmg
 		
 common: 
 	cp -r doc $(package)
