@@ -178,7 +178,6 @@ void GuidoStaffCollector::process (Time2GraphicMap* outmap)
 	
 	while (eventsIter != evtsMap.end()) {
 		if (staffIter == staffMap.end()) {
-//			ITLErr << "unexpected staff segmentation end while collecting staff map" << ITLEndl;
 			cerr << "unexpected staff segmentation end while collecting staff map" << endl;
 			break;
 		}
@@ -190,30 +189,30 @@ void GuidoStaffCollector::process (Time2GraphicMap* outmap)
 			staffIter++;
 		}
 		if (staffIter == staffMap.end()) {
-//			ITLErr << "unexpected staff segmentation end while while looking for evTime" << ITLEndl;
 			cerr << "unexpected staff segmentation end while while looking for evTime " << evTime << endl;
 			break;
 		}
 
-//		float startx = current->second.xinterval().first();
+		Time2GraphicMap::const_iterator currstaff = staffIter;
+		Time2GraphicMap::const_iterator nextstaff = currstaff;
+		nextstaff++;
+
+		float startx = current->second.xinterval().first();
 		float endx = 0;
-		if (next == evtsMap.end())							// last event ?
-			endx = staffIter->second.xinterval().second();	// end zone is end staff
+		if (next == evtsMap.end())								// last event ?
+			endx = currstaff->second.xinterval().second();		// end zone is end staff
 
 		else {
-			RelativeTimeSegment nextTime = next->first;
-			if (staffIter->first.include(nextTime))		// not the last last staff event ?
+			RelativeTimeSegment nextTime = next->first;			// is the event on the same staff ?
+			if (staffIter->first.include(nextTime) || 
+				(nextstaff == staffMap.end()) ||
+				( currstaff->second.yinterval().first() == nextstaff->second.yinterval().first())) {
 				endx = next->second.xinterval().first();		// end zone is next event start
-
-			else												// next event is on another staff
-				endx = staffIter->second.xinterval().second();
+			}
+			else 
+				endx = currstaff->second.xinterval().second(); // end zone is end staff
 		}
-
-//		float endx = (next == evtsMap.end()) ? staffIter->second.xinterval().second() 
-//						: (next->second.xinterval().first() > startx) ? next->second.xinterval().first()
-//						: staffIter->second.xinterval().second();
-		(*outmap)[current->first] = GraphicSegment(FloatInterval( current->second.xinterval().first(), endx ), 
-													staffIter->second.yinterval());
+		(*outmap)[current->first] = GraphicSegment(FloatInterval( startx, endx ), currstaff->second.yinterval());
 	}
 }
 
