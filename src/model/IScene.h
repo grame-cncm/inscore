@@ -111,9 +111,16 @@ class IScene : public IRectShape, public PeriodicTask
 		void			setView (VSceneView * view) 	{ fView = view; }
 		VGraphicsItemView*	graphicView() const			{ return (VGraphicsItemView*)fView; }
 
+		/// \brief adds a subnode to the object \param node the subnode
+		virtual void	add (const nodePtr& node);
+
 	protected:
 				 IScene(const std::string& name, IObject * parent);
 		virtual ~IScene();
+
+		/// \brief the \c 'watch' message handler
+		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
+		virtual IMessageList  getWatch () const		{ return IObject::getWatch(); }
 
 		MsgHandler::msgStatus loadMsg(const IMessage* msg);
 		void		foreground ();

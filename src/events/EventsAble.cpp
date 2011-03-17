@@ -41,6 +41,8 @@ const char* kFileStr		= "file";
 const char* kTimeEnterStr	= "timeEnter";
 const char* kTimeLeaveStr	= "timeLeave";
 
+const char* kNewElementStr	= "newElement";
+
 namespace inscore
 {
 static vector<SEventMessage> _static_nomsgs;
@@ -117,6 +119,12 @@ EventsAble::eventype EventsAble::string2type (const string& str)
 
 //----------------------------------------------------------------------
 const vector<SEventMessage>& EventsAble::getMouseMsgs (eventype t) const
+{
+	return getMessages(t);
+}
+
+//----------------------------------------------------------------------
+const vector<SEventMessage>& EventsAble::getMessages (eventype t) const
 {
 	_TMsgMap::const_iterator i = fMsgMap.find(t);
 	if (i != fMsgMap.end())
@@ -256,6 +264,7 @@ const char* EventsAble::type2string (eventype type)
 		case kFile:			return kFileStr;
 		case kTimeEnter:	return kTimeEnterStr;
 		case kTimeLeave: 	return kTimeLeaveStr;
+		case kNewElement: 	return kNewElementStr;
 		default: return "";
 	}
 }
@@ -273,6 +282,7 @@ void EventsAble::init ()
 		fTypeStr[kFileStr]		= kFile;
 		fTypeStr[kTimeEnterStr]	= kTimeEnter;
 		fTypeStr[kTimeLeaveStr]	= kTimeLeave;
+		fTypeStr[kNewElementStr]= kNewElement;
 	}
 }
 

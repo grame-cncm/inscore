@@ -44,7 +44,7 @@ class EventsAble
 	public:
 		enum eventype { kUnknownEvent=0, 
 			kMouseDown, kMouseUp, kMouseDoubleClick, kMouseEnter, kMouseLeave, kMouseMove,
-			kFile, kTimeEnter, kTimeLeave };
+			kFile, kTimeEnter, kTimeLeave, kNewElement };
 			
 				 EventsAble();
 		virtual ~EventsAble();
@@ -62,6 +62,7 @@ class EventsAble
 		IMessageList	getWatch (const char* address) const;
 		void			reset();
 
+		const std::vector<SEventMessage>&	getMessages (eventype t) const;
 		const std::vector<SEventMessage>&	getMouseMsgs (eventype t) const;
 		const std::vector<SEventMessage>&	getTimeMsgs (eventype t, const RationalInterval& time) const;
 		const std::vector<SEventMessage>&	getFileMsgs (const std::string& file) const;
