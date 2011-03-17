@@ -47,7 +47,7 @@ macosx:
 	mv $(viewer).app $(package)/"$(viewer) $(version).app"
 	chmod -x  $(shell find . -name "*.inscore")
 	cp -f ../src/guido2.ttf $(package)
-	cd $(package) && ln -s /Applications .
+	cd $(package) && ln -sf /Applications .
 	make dmg
 		
 common: 
