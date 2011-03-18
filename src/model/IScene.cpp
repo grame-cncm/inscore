@@ -26,6 +26,7 @@
 #include <iostream>
 #include "deelx.h"
 
+#include "EventMessage.h"
 #include "IAppl.h"
 #include "IGlue.h"
 #include "IGraphicSignal.h"
@@ -191,6 +192,11 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 //--------------------------------------------------------------------------
 void IScene::add (const nodePtr& node)
 { 
+	vector<SEventMessage> msgs = getMessages (EventsAble::kNewElement);
+	for (unsigned int i=0; i < msgs.size(); i++) {
+		EventContext env (node);
+		msgs[i]->send(env);
+	}
 	IObject::add (node);
 }
 
