@@ -113,8 +113,10 @@ void _MouseEventAble::handleEvent (const IObject * obj, QPointF pos,  EventsAble
 		rational date (-1,1);
 		if (msgs[i]->hasDateVar (mapname))
 			date = point2date (obj, relx, rely, mapname, 0);
-		msgs[i]->eval (obj);
-		msgs[i]->send(mouse, date);
+//		msgs[i]->eval (obj);
+//		msgs[i]->send(mouse, date);
+		EventContext env(mouse, date, obj);
+		msgs[i]->send(env);
 	}
 }
 

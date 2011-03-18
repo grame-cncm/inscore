@@ -49,6 +49,8 @@ const char* kAbsXVar	= "$absx";
 const char* kAbsYVar	= "$absy";
 const char* kDateVar	= "$date";
 const char* kSelfVar	= "$self";
+const char* kNameVar	= "$name";
+const char* kAddressVar	= "$address";
 
 
 //----------------------------------------------------------------------
@@ -257,82 +259,90 @@ int EventMessage::checkintrange (const string& param, float val) const
 }
 
 //----------------------------------------------------------------------
-void EventMessage::checkvariable (IMessage& msg, const string& param, const MouseLocation& ml, const rational& date, bool setmsg) const
+// evaluates a message variable, 
+// the object argument is only used to retrieve the scene root node
+// and to get the target objects from the message OSC address 
+//----------------------------------------------------------------------
+void EventMessage::eval (const IMessage* msg, const IObject * object, IMessage& outmsg) const
+{
+	IMessageList list;
+	vector<const IObject*> targets;
+	object->getRoot()->getObjects(msg->address(), targets);
+	for (unsigned int i=0; i < targets.size(); i++) {
+		list += targets[i]->getMsgs (msg);
+	}
+
+	for (IMessageList::const_iterator i = list.begin(); i != list.end(); i++) {
+		IMessage * m = *i;
+		for (int n=0; n < m->size(); n++) {
+			outmsg.add (m->params()[n]);
+		}
+	}
+}
+
+//----------------------------------------------------------------------
+// evaluates a single variable, 
+// the variable value is taken from the context
+// in case of  variable message, the message is processed and the value
+// is taken from the output message parameters
+//----------------------------------------------------------------------
+void EventMessage::eval (const string& var, EventContext& env, IMessage& outmsg) const
 {
 	string mapname;
-	if (param[0] == '$') {
-		if (param[1] == 'x')			if (checkfloat(param.c_str())) msg << checkfloatrange(param.substr(2), ml.fx); else msg << checkintrange(param.substr(2), ml.fx);
-		else if (param[1] == 'y')		if (checkfloat(param.c_str())) msg << checkfloatrange(param.substr(2), ml.fy); else msg << checkintrange(param.substr(2), ml.fy);
-
-		else if (param == kAbsXVar)		msg << ml.fabsx;
-		else if (param == kAbsYVar)		msg << ml.fabsy;
-		else if (param == kSceneXVar) 	msg << ml.fsx;
-		else if (param == kSceneYVar)	msg << ml.fsy;
-		else if (isDateVar (param, mapname))	msg << date;
-		else if (setmsg) msg.setMessage (param);
-		else msg << param;
+	if (var[1] == 'x')	{
+		if (checkfloat(var.c_str())) outmsg << checkfloatrange(var.substr(2), env.mouse.fx); 
+		else outmsg << checkintrange(var.substr(2), env.mouse.fx);
 	}
-	else if (setmsg) msg.setMessage (param);
-	else msg << param;
+	else if (var[1] == 'y')	{
+		if (checkfloat(var.c_str())) outmsg << checkfloatrange(var.substr(2), env.mouse.fy); 
+		else outmsg << checkintrange(var.substr(2), env.mouse.fy);
+	}
+	else if (var == kAbsXVar)		outmsg << env.mouse.fabsx;
+	else if (var == kAbsYVar)		outmsg << env.mouse.fabsy;
+	else if (var == kSceneXVar) 	outmsg << env.mouse.fsx;
+	else if (var == kSceneYVar)		outmsg << env.mouse.fsy;
+	else if (var == kNameVar)		outmsg << env.object->name();
+	else if (var == kAddressVar)	outmsg << env.object->getOSCAddress();
+	else if (isDateVar (var, mapname))	outmsg << env.date;
+	else if (env.varmsg)	eval(env.varmsg, env.object, outmsg);
+	else outmsg << var;
 }
 
 //----------------------------------------------------------------------
-bool EventMessage::checkvariablemsg(IMessage& msg, int index, bool setmsg)
+// message parameters evaluation 
+// actually, a variable (i.e. a param starting with a '$') is replaced by 
+// its value (which may be a list of values in case of variable messages)
+//----------------------------------------------------------------------
+void EventMessage::eval (const IMessage *msg, EventContext& env, IMessage& outmsg) const
 {
-	IMessageList list = fVarMsgsEval[index];
-	if (list.empty()) return false;
+	string strvalue = msg->message();
+	map<int, SIMessage>::const_iterator mi;
+	if (strvalue[0] == '$') {
+		mi = fVarMsgs.find(-1);
+		if (mi == fVarMsgs.end())  env.varmsg = 0;
+		else env.varmsg = mi->second;
+		eval (strvalue, env, outmsg);
+	}
+	else outmsg.setMessage (strvalue);
 	
-	for (IMessageList::const_iterator i = list.begin(); i != list.end(); i++) {
-		IMessage * vm = *i;
-		for (int n=0; n < vm->size(); n++) {
-			if (setmsg) {
-				string str;
-				if (vm->param (n, str))
-					msg.setMessage (str);
-				else msg.add (vm->params()[n]);
-				setmsg = false;
-			}
-			else msg.add (vm->params()[n]);
+	int n = fMessage->size();
+	for (int i=0; i<n; i++) {
+		if (fMessage->param(i, strvalue) && (strvalue[0] == '$')) {
+			mi = fVarMsgs.find(i);
+			if (mi == fVarMsgs.end())  env.varmsg = 0;
+			else env.varmsg = mi->second;
+			eval (strvalue, env, outmsg);
 		}
-	}
-	return true;
-}
-
-//----------------------------------------------------------------------
-void EventMessage::eval (const IObject * object)
-{
-	for (map<int, IMessageList>::iterator i = fVarMsgsEval.begin(); i != fVarMsgsEval.end(); i++)
-		i->second.clear();
-	fVarMsgsEval.clear();
-	map<int, SIMessage>::const_iterator i = fVarMsgs.begin();
-	while (i != fVarMsgs.end()) {
-		IMessageList list;
-		vector<const IObject*> targets;
-		object->getRoot()->getObjects(i->second->address(), targets);
-		for (unsigned int j=0; j < targets.size(); j++) {
-			list += targets[j]->getMsgs (i->second);
-		}
-		fVarMsgsEval[i->first] = list;
-		i++;
+		else outmsg.add(msg->params()[i]);
 	}
 }
 
 //----------------------------------------------------------------------
-void EventMessage::send(const MouseLocation& ml, const rational& date)
+void EventMessage::send(EventContext& env)
 {
 	if (fMessage) {
-		int n = fMessage->size();
 		IMessage msg (fMessage->address());
-		if (!checkvariablemsg(msg, -1, true))
-			checkvariable (msg, fMessage->message(), ml, date, true);
-		for (int i=0; i<n; i++) {
-			string str;
-			if (fMessage->param(i, str)) {
-				if (!checkvariablemsg(msg, i, false))
-					checkvariable (msg, str, ml, date);				
-			}
-			else msg.add(fMessage->params()[i]);
-		}
+		eval (fMessage, env, msg);							// evaluate the parameters of the message
 		if (fDest.empty())	localSend (&msg);
 		else				sockSend (&msg, fDest, fPort);
 	}
