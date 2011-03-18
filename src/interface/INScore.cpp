@@ -113,8 +113,8 @@ void INScore::stop(IGlue* glue)
 //--------------------------------------------------------------------------
 // versions 
 //--------------------------------------------------------------------------
-int INScore::version	()				{ return 75; }
-const char* INScore::versionStr ()		{ return "0.75"; }
+int INScore::version	()				{ return 76; }
+const char* INScore::versionStr ()		{ return "0.76"; }
 
 //--------------------------------------------------------------------------
 // messages system 
