@@ -12,6 +12,11 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 0.76
+- new event named 'newElement' supported at scene level
+- new 'name' and 'address' variables
+
+----------------------------------------------------
 Version 0.75
 - new map+ message for incremental mapping
 - click and select messages are deprecated
