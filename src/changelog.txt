@@ -15,6 +15,11 @@ It has been supported by the ANR (ANR-08-CORD-010)
 Version 0.76
 - new event named 'newElement' supported at scene level
 - new 'name' and 'address' variables
+- new system map computation making use of the new slices map provided by the
+  guidolib version 1.42
+- INScore API: the newMessage methods set now the message src IP to localhost
+  With the previous version and the lack of src IP, replies to queries or error 
+  messages were sent to undefined addresses (and mostly lost).
 
 ----------------------------------------------------
 Version 0.75
