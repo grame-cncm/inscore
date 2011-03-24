@@ -67,10 +67,10 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 Variables denote values computed when an event is triggered. These values are send in place of the variable. A variable name starts with a '$' sign. Currently, the following variables are supported by mouse events:
 <BR>
 <IMG
- WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="194" HEIGHT="315" ALIGN="BOTTOM" BORDER="0"
  SRC="img81.gif"
  ALT="\begin{rail}
-variable : (xy \vert 'absx' \vert 'absy' \vert 'sx' \vert 'sy' \vert date)
+variable : (xy \vert 'absx' \vert 'absy' \vert 'sx' \vert 'sy' \vert date \vert 'name' \vert 'address')
 \end{rail}">
 <BR>
 <A NAME="1079"></A>
@@ -80,11 +80,13 @@ variable : (xy \vert 'absx' \vert 'absy' \vert 'sx' \vert 'sy' \vert date)
 <A NAME="1083"></A>
 <A NAME="1084"></A>
 <A NAME="1085"></A>
+<A NAME="1086"></A>
+<A NAME="1087"></A>
 
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="310" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
  SRC="img82.gif"
  ALT="\begin{rail}
 xy : ('x' \vert 'y') ( \vert '[low,high]')
@@ -119,7 +121,7 @@ Note also that the values are not clipped to the object dimensions and could exc
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="300" HEIGHT="86" ALIGN="BOTTOM" BORDER="0"
  SRC="img85.gif"
  ALT="\begin{rail}
 date : 'date' (\vert ':' mapname)
@@ -130,6 +132,10 @@ date : 'date' (\vert ':' mapname)
 
 <UL>
 <LI><TT>$date</TT>: denotes the object date corresponding to the mouse pointer position at the time of the event. The detailed date variable is given below: it is optionnaly followed by a colon and the name of the mapping to be used to compute the date . The <TT>$date</TT> variable is replaced by its rational value (i.e. two integers values). 
+
+<P>
+</LI>
+<LI><TT>$name</TT>, <TT>$address</TT>: replaced by the target object name or OSC address. Note that in case of <TT>newElement</TT> event, the target object is the new element. 
 </LI>
 </UL>
 
