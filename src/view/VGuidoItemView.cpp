@@ -54,7 +54,6 @@ namespace inscore
 
 float VGuidoItemView::fCm2GuidoUnit = 0;
 
-
 //----------------------------------------------------------------------
 /*!
 	\brief a class to collect guido graphic maps
@@ -80,7 +79,6 @@ class GuidoMapCollector: public MapCollector
 		///< the method called by guido for each graphic segment
 		virtual void Graph2TimeMap( const FloatRect& box, const TimeSegment& dates,  const GuidoElementInfos& infos );
 		virtual void process (Time2GraphicMap* outmap);
-
 				
 		static RelativeTimeSegment	relativeTimeSegment(const TimeSegment& dates)
 			{ return RelativeTimeSegment( rational(dates.first.num , dates.first.denom) , rational(dates.second.num , dates.second.denom) ); }
@@ -124,6 +122,20 @@ class GuidoStaffCollector: public GuidoMapCollector
 				 GuidoStaffCollector (const QGuidoGraphicsItem* item, int num) 
 					: GuidoMapCollector(item, kGuidoStaff) { if (num) setFilter(num); }
 		virtual ~GuidoStaffCollector()	{}
+
+		virtual void process (Time2GraphicMap* outmap);
+};
+
+//----------------------------------------------------------------------
+/*!
+	\brief a guido map collector adjusting system to to slices start
+*/
+class GuidoSystemCollector: public GuidoMapCollector
+{
+	public :
+				 GuidoSystemCollector(const QGuidoGraphicsItem* item) 
+					: GuidoMapCollector(item, kGuidoSystem) { }
+		virtual ~GuidoSystemCollector() {}
 
 		virtual void process (Time2GraphicMap* outmap);
 };
@@ -213,6 +225,57 @@ void GuidoStaffCollector::process (Time2GraphicMap* outmap)
 				endx = currstaff->second.xinterval().second(); // end zone is end staff
 		}
 		(*outmap)[current->first] = GraphicSegment(FloatInterval( startx, endx ), currstaff->second.yinterval());
+	}
+}
+
+//----------------------------------------------------------------------
+void GuidoSystemCollector::process (Time2GraphicMap* outmap)
+{
+	int M,m,s;
+	GuidoGetVersionNums (&M, &m, &s);
+	if (GuidoCheckVersionNums (1, 4, 2) != guidoNoErr)
+		ITLErr << "correct system map requires GUIDOEngine version 1.4.2 or greater - current version is "
+				<< M << "." << m << "." << s << ITLEndl;
+
+	GuidoMapCollector systemCollector(fItem, kGuidoSystem);
+	GuidoMapCollector slicesCollector(fItem, kGuidoSystemSlice);
+
+	Time2GraphicMap systemMap, slicesMap;
+	systemCollector.process (&systemMap);
+	slicesCollector.process(&slicesMap);
+
+	Time2GraphicMap::const_iterator slicesIter = slicesMap.begin();
+	Time2GraphicMap::const_iterator systemIter = systemMap.begin();
+	
+	while (systemIter != systemMap.end()) {
+		if (slicesIter == slicesMap.end()) {
+			cerr << "unexpected slices segmentation end while collecting system map" << endl;
+			break;
+		}
+
+		GraphicSegment gs = systemIter->second;
+		FloatInterval slicexi = slicesIter->second.xinterval();
+		GraphicSegment adjusted (FloatInterval(slicexi.first(), gs.xinterval().second()), gs.yinterval());
+		(*outmap)[systemIter->first] = adjusted;
+
+#if 1
+		// skip the remaining slices until the next line
+		float prevx = slicexi.first();
+		float sysy = systemIter->second.yinterval().first();
+		while (slicesIter != slicesMap.end()) {
+			float x = slicesIter->second.xinterval().first();
+			float y = slicesIter->second.yinterval().first();
+			if ((x < prevx) || (y < sysy)) break;			
+			prevx = x;
+			slicesIter++;
+		}
+#else
+		// although more elegant, this solution doesn't work due to approximations in guido maps
+		while ((slicesIter != slicesMap.end()) && gs.include (slicesIter->second)) {
+			slicesIter++;
+		}
+#endif
+		systemIter++;
 	}
 }
 
@@ -461,7 +524,7 @@ GuidoMapCollector* VGuidoItemView::getMapBuilder(const string& mapName) const
 	else if ( name.startsWith (kStaffMap) )
 		mb = new GuidoStaffCollector ( fGuidoItem, getMapNum (name, kStaffMap.size()) );
 	else if ( name == kSystemMap )
-		mb = new GuidoMapCollector(fGuidoItem, kGuidoSystem);
+		mb = new GuidoSystemCollector(fGuidoItem);
 	else if ( name == kPageMap )
 		mb = new GuidoMapCollector(fGuidoItem, kGuidoPage);
 	else if ( name == kSliceMap )
