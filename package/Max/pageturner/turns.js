@@ -29,40 +29,44 @@ function time2string(t) {
 }
 
 // builds a time pair
-function timepair (num, denum, abs)
+function maketime (num, denum, abs)
 {
     var t = {};
     t.num = num;
     t.denum = denum;
     t.music = 4*num/denum;		// music time expressed in quarter notes count
     t.abs = abs/100;			// absolute time expressed in seconds
-    gTimePairs[gTPIndex++] = t;
+    return t;
+}
+
+function timepair (num, denum, abs)
+{
+    var t = maketime (num, denum, abs);
+    if (t.music < 0)
+    	post ("warning: click is outside map\n");
+    else 
+    	gTimePairs[gTPIndex++] = t;
 }
 
 // builds a time pair
 function tempomap ()
 {
-    prevabs = prevmus = prevelapsed = 0;
-    num = denum = 0;
+    previous = maketime(0,1,0);
+    prevelapsed = 0;
     var tmap ="\n";
     for (i=0; i < gTimePairs.length; i++) {
 	    var t = gTimePairs[i];
-	    if (t.music >= 0) {
-	    	elapsed = t.abs - prevabs;
-			if (elapsed < 0)
-				post ("warning: elapsed is ", elapsed, " with tabs=", t.abs, " prevabs=", prevabs,"\n");
-
-	    	// the current tempo
-	    	tempo = 60 * (t.music - prevmus) / elapsed;
-	    	tmap += (prevelapsed*1000) + " _tempo " + tempo + ";\n";
-	    	tmap += 0 + " _turnedit /ITL/scene/_* date " + num + " " + denum + ";\n";
-			prevelapsed = elapsed;	
-			prevabs = t.abs;
-			prevmus = t.music;
-			num = t.num;
-			denum = t.denum;
-    	}
-    	else post ("warning: music date is", t.music,"\n");
+	    elapsed = t.abs - previous.abs;
+		if (elapsed < 0) {
+			post ("error at index", i, ": elapsed is", elapsed, "at time=", t.abs, "while previous time=", previous.abs,"\n");
+			break;
+		}
+	    // the current tempo
+	    tempo = 60 * (t.music - previous.music) / elapsed;
+	    tmap += Math.round(prevelapsed*1000) + " _tempo " + tempo + ";\n";
+	    tmap += 0 + " _turnedit /ITL/scene/_* date " + previous.num + " " + previous.denum + ";\n";
+		prevelapsed = elapsed;	
+		previous = t;
     }
     outlet (1, tmap);
 }
