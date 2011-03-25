@@ -20,6 +20,8 @@ Version 0.76
 - INScore API: the newMessage methods set now the message src IP to localhost
   With the previous version and the lack of src IP, replies to queries or error 
   messages were sent to undefined addresses (and mostly lost).
+- bug corrected with ellipse and rect : integer graphic size computation changed 
+  to float (prevents objects disappearance with small width or height)
 
 ----------------------------------------------------
 Version 0.75

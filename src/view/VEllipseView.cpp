@@ -38,7 +38,7 @@ VEllipseView::VEllipseView(QGraphicsScene * scene, const IEllipse* h)
 //----------------------------------------------------------------------
 void VEllipseView::updateView( IEllipse * ellipse )
 {
-	QRect r( 0,0,  relative2SceneHeight(ellipse->getWidth()),relative2SceneHeight(ellipse->getHeight()) );
+	QRectF r( 0,0,  relative2SceneHeight(ellipse->getWidth()),relative2SceneHeight(ellipse->getHeight()) );
 	if ( r != item()->rect() ) {
 		item()->setRect( r );
 		itemChanged();
