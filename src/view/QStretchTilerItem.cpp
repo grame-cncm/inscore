@@ -62,7 +62,9 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
 		QRectF sourceRect( fCacheFactor * fMapping[i].first.x() , fCacheFactor * fMapping[i].first.y() ,
 							fCacheFactor * fMapping[i].first.width() , fCacheFactor * fMapping[i].first.height());
 		QRectF destRect( PRECISION * fMapping[i].second.x() , PRECISION * fMapping[i].second.y() , 
-						 PRECISION * fMapping[i].second.width() + PRECISION, PRECISION * fMapping[i].second.height() );
+						 PRECISION * fMapping[i].second.width(), PRECISION * fMapping[i].second.height() );
+//						 PRECISION * fMapping[i].second.width() + PRECISION, PRECISION * fMapping[i].second.height() );
+
 #ifdef PIXMAPBASED
 		painter->drawPixmap( destRect , fCache , sourceRect );
 #else
@@ -77,8 +79,7 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
 	{
 		QRectF sourceRect( fCacheFactor * fMapping[i].first.x() , fCacheFactor * fMapping[i].first.y() ,
 							fCacheFactor * fMapping[i].first.width() , fCacheFactor * fMapping[i].first.height());
-		QRectF destRect( fMapping[i].second.x() , fMapping[i].second.y() , 
-						 fMapping[i].second.width() + 1.5, fMapping[i].second.height() );
+		QRectF destRect( fMapping[i].second.x(), fMapping[i].second.y(), fMapping[i].second.width() + 1.5, fMapping[i].second.height() );
 
 #ifdef PIXMAPBASED
 		painter->drawPixmap( destRect , fCache , sourceRect );
