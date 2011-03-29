@@ -22,6 +22,8 @@ Version 0.76
   messages were sent to undefined addresses (and mostly lost).
 - bug corrected with ellipse and rect : integer graphic size computation changed 
   to float (prevents objects disappearance with small width or height)
+- bug in scene export: left and right borders could be cut, depending  on the scene size
+  corrected by rendering the QGraphicsView container instead the QGraphicsScene
 
 ----------------------------------------------------
 Version 0.75
