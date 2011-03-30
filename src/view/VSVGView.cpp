@@ -30,6 +30,7 @@
 #include "OSCStream.h"
 #include "TComposition.h"
 #include "VSVGView.h"
+#include "VApplView.h"
 #include "ITLError.h"
 
 #include "ISVGFile.h"
@@ -38,10 +39,11 @@ namespace inscore
 {
 
 //----------------------------------------------------------------------
-bool VSVGItem::setFile( const char* file)
+bool VSVGItem::setFile( const char* filename)
 {
+	QString file = QString::fromUtf8( filename );
 	if (!fRenderer.load(QString(file))) {
-		ITLErr << "cannot load SVG file" << file << ITLEndl;
+		ITLErr << "cannot load SVG file" << filename << ITLEndl;
 		return false;
 	}
 	return true;

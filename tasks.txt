@@ -3,18 +3,16 @@ todo
 
 - revoir le traitement des messages get (cf watch)
 - revoir la gestion de iappl::oscdebug -> static ?
-- IObject messages click et select -> deprecated
+[ok] IObject messages click et select -> deprecated
 - setDispRange -> unused & remove
 - implémenter un message watch-
 
-
 [ok] vérifier l'adressage de la font guido -> pb en 10.5 apparement lié au système
-
 [ok] idée d'intégrer des objets faust (svg)
 [ok] support type 'svg' en + de 'svgf'
 [ok] spécifier les lignes en width angle
+[ok] faire du mapping incrémental
 - mappings : support de coordonnées relatives pour les images
-- faire du mapping incrémental
 - export vidéo
 [ok] paramétrages des événements (x, y, date...)
 - tutorial pour les mappings
@@ -32,7 +30,6 @@ todo
 - voir GraphicItemView::updateTo générique pour optimisation
 - voir messages color et hsb + type des paramètres de couleur
 - voir affichage des mappings en mode sync
-- revoir les messages handlers
 [ok] parser les floats en ...e+nn
 - voir sync et scene (i.e. retrouver la scene dans les objets master)
 - optimiser le rendu de la vue pour l'appel de la méthode update : ne pas recalculer
@@ -44,7 +41,7 @@ todo
 [ok] le 'get' de /ITL/scene/sync n'est plus à jour avec la nouvelle syntaxe slave:slaveMap master:masterMap.
 [ok] le patch interlude:sync ne prend pas en compte la nouvelle syntaxe slave:slaveMap master:masterMap.
 [ok] gérer les syncBottom/syncTop dans IMappingUpdater ?
-- dans TMapMsgHandler.h, on veut gérer le cas où l'utilisateur passe directement une graphic <-> time map
+[ok] dans TMapMsgHandler.h, on veut gérer le cas où l'utilisateur passe directement une graphic <-> time map
 	-> pour l'instant, on peut pas parce qu'il faudrait retourner le mapping dans l'autre sens, 
 	mais avec la future representation 'bi-directionnelle' des mappings, ça se fera facilement.
 	! attention ! les IGuidoCode n'utilisent pas le TMapMsgHandler et ont leur propre manière de 

@@ -108,7 +108,7 @@ void VExport::exportItem(QGraphicsItem * item , QString fileName , float xScaleF
 }
 
 //------------------------------------------------------------------------------------------------------------------------
-void VExport::exportScene( QGraphicsScene * scene , QString fileName )
+void VExport::exportScene( QGraphicsView * scene , QString fileName )
 {
 	if ( QFileInfo(fileName).suffix().isEmpty() )
 		fileName += DEFAULT_EXPORT_FORMAT;

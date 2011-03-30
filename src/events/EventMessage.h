@@ -38,25 +38,38 @@
 namespace inscore
 {
 
-//class IMessage;
-//typedef SMARTP<IMessage>		SIMessage;
 class IObject;
 typedef SMARTP<IObject>			SIObject;
 class EventMessage;
 typedef SMARTP<EventMessage>	SEventMessage;
 
 typedef struct MouseLocation {
+	enum { noloc = -999999 };
+	float fx, fy, fabsx, fabsy, fsx, fsy;
+
 	MouseLocation (float x, float y, float ax, float ay, float sx, float sy)
 		: fx(x), fy(y), fabsx(ax), fabsy(ay), fsx(sx), fsy(sy) {}
-	float fx, fy, fabsx, fabsy, fsx, fsy;
+	MouseLocation ()
+		: fx(noloc), fy(noloc), fabsx(noloc), fabsy(noloc), fsx(noloc), fsy(noloc) {}
 } MouseLocation;
+
+typedef struct EventContext {
+	MouseLocation	mouse;
+	rational		date;
+	const IObject*	object;
+	const IMessage* varmsg;
+
+	EventContext (const MouseLocation& ml, const rational& d, const IObject* o)
+		: mouse(ml), date(d), object(o), varmsg(0) {}
+	EventContext (const IObject* o)
+		: object(o), varmsg(0) {}
+} EventContext;
 
 //----------------------------------------------------------------------
 class EventMessage : public smartable
 {
 	IMessage *			fMessage;
 	std::map<int, SIMessage>	fVarMsgs;		// messages used as variables stored with their index
-	std::map<int, IMessageList>	fVarMsgsEval;	// variable messages evaluated stored with their index
 	std::string	fDest;
 	int			fPort;
 	
@@ -70,12 +83,17 @@ class EventMessage : public smartable
 	void	checkVariableMsg (const std::string& param, int index);
 	void	splitMsg (const char * msg, std::vector<std::string>& list);
 
-	void	checkvariable	(IMessage& msg, const std::string& param, const MouseLocation& mouse, const rational& date, bool setmsg=false) const;
-	bool	checkvariablemsg(IMessage& msg, int index, bool setmsg=false);
 	float	checkfloatrange		(const std::string& param, float val) const;
 	int		checkintrange		(const std::string& param, float val) const;
 	bool	checkrange (const char* param) const;
 	bool	checkfloat (const char* param) const;
+	
+	// evaluate the parameters of a message in a given context
+	void	eval (const IMessage *msg, EventContext& env, IMessage& outmsg) const;
+	// evaluate a message variable in a given context
+	void	eval (const std::string& var, EventContext& env, IMessage& outmsg) const;
+	// evaluate a variable message in a given context
+	void	eval (const IMessage* msg, const IObject * object, IMessage& outmsg) const;
 			
 	protected:
 				 EventMessage(const std::string& objname, const std::string& scene, const IMessage* msg, int startindex);
@@ -86,11 +104,9 @@ class EventMessage : public smartable
 		
 		static SEventMessage create (const std::string& objname, const std::string& scene, const IMessage* msg, int startindex)	
 					{ return new EventMessage(objname, scene, msg, startindex); }
-		void	send() const;
-		void	send(const MouseLocation& loc, const rational& date);
+		void	send () const;
+		void	send (EventContext& env);
 
-		// variable messages evaluation
-		void	eval (const IObject * object);	
 		bool	hasDateVar (std::string& mapname) const;
 		bool	isDateVar (const std::string& var, std::string& mapname) const;
 		const IMessage * message() const		{ return fMessage; }

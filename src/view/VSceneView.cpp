@@ -221,7 +221,7 @@ void VSceneView::updateView( IScene * scene )
 
 	// Export
 	if ( scene->getExportFlag().length() )
-		VExport::exportScene( fScene , scene->getExportFlag().c_str() );
+		VExport::exportScene( fGraphicsView , scene->getExportFlag().c_str() );
 }
 
 //--------------------------------------------------------------------------

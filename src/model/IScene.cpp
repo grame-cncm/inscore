@@ -26,6 +26,7 @@
 #include <iostream>
 #include "deelx.h"
 
+#include "EventMessage.h"
 #include "IAppl.h"
 #include "IGlue.h"
 #include "IGraphicSignal.h"
@@ -68,6 +69,7 @@ IScene::IScene(const std::string& name, IObject * parent) : IRectShape(name, par
 	fGetMsgHandlerMap["fullscreen"] = TGetParamMsgHandler<bool>::create(fFullScreen);
 	fGetMsgHandlerMap[""]			= 0;	// force standard propagation of the get message
 	fGetMsgHandlerMap["effect"]		= 0;	// no effects at scene level
+	fGetMsgHandlerMap["watch"]		= TGetParamMethodHandler<IScene, IMessageList (IScene::*)() const>::create(this, &IScene::getWatch);
 }
 
 //--------------------------------------------------------------------------
@@ -185,6 +187,41 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 		}
 	}
 	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+void IScene::add (const nodePtr& node)
+{ 
+	vector<SEventMessage> msgs = getMessages (EventsAble::kNewElement);
+	for (unsigned int i=0; i < msgs.size(); i++) {
+		EventContext env (node);
+		msgs[i]->send(env);
+	}
+	IObject::add (node);
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IScene::_watchMsg(const IMessage* msg, bool add)
+{ 
+	if (msg->params().size()) {
+		string what;
+		if (msg->param (0, what)) {
+			EventsAble::eventype t = EventsAble::string2type (what);
+			switch (t) {
+				case EventsAble::kNewElement:
+					if (msg->params().size() > 1)
+						if (add) eventsHandler()->addMsg (t, EventMessage::create (name(), getScene()->name(), msg, 1));
+						else eventsHandler()->setMsg (t, EventMessage::create (name(), getScene()->name(),msg, 1));
+					else if (!add) eventsHandler()->setMsg (t, 0);
+					return MsgHandler::kProcessed;
+					break;
+
+				default:
+					break;
+			}
+		}
+	}
+	return IObject::_watchMsg(msg, add);
 }
 
 //--------------------------------------------------------------------------

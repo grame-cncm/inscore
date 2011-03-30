@@ -1,9 +1,14 @@
 /*
-    javascript code to manage intervals, rects, points
-    and to generate mappings
+    javascript code to generate page turn messages
+    and tempo map qlist
 */
 
-var gTimePoints = new Array();    // time points array
+inlets = 1;
+outlets = 2;
+
+var gTimePoints = new Array();    	// time points array
+var gTimePairs = new Array();    	// time pairs array (music time + abs time)
+var gTPIndex = 0;
 
 reset ();
 
@@ -11,6 +16,59 @@ reset ();
 function reset ()
 {
     gTimePoints = new Array();
+}
+
+function temporeset ()
+{
+    gTimePairs = new Array();
+    gTPIndex = 0;
+}
+
+function time2string(t) {
+    return t.num + " " + t.denum;
+}
+
+// builds a time pair
+function maketime (num, denum, abs)
+{
+    var t = {};
+    t.num = num;
+    t.denum = denum;
+    t.music = 4*num/denum;		// music time expressed in quarter notes count
+    t.abs = abs/100;			// absolute time expressed in seconds
+    return t;
+}
+
+function timepair (num, denum, abs)
+{
+    var t = maketime (num, denum, abs);
+    if (t.music < 0)
+    	post ("warning: click is outside map\n");
+    else 
+    	gTimePairs[gTPIndex++] = t;
+}
+
+// builds a time pair
+function tempomap ()
+{
+    previous = maketime(0,1,0);
+    prevelapsed = 0;
+    var tmap ="\n";
+    for (i=0; i < gTimePairs.length; i++) {
+	    var t = gTimePairs[i];
+	    elapsed = t.abs - previous.abs;
+		if (elapsed < 0) {
+			post ("error at index", i, ": elapsed is", elapsed, "at time=", t.abs, "while previous time=", previous.abs,"\n");
+			break;
+		}
+	    // the current tempo
+	    tempo = 60 * (t.music - previous.music) / elapsed;
+	    tmap += Math.round(prevelapsed*1000) + " _tempo " + tempo + ";\n";
+	    tmap += 0 + " _turnedit /ITL/scene/_* date " + previous.num + " " + previous.denum + ";\n";
+		prevelapsed = elapsed;	
+		previous = t;
+    }
+    outlet (1, tmap);
 }
 
 // builds a point
@@ -26,10 +84,6 @@ function time (num, denum)
 function store (n, d, page)
 {
     gTimePoints[page] = time (n , d);
-}
-
-function time2string(t) {
-    return t.num + " " + t.denum;
 }
 
 function watchmsg(watcher, target, start, end, page)

@@ -59,7 +59,7 @@
 
 \begin{document}
 
-\title{INScore \\ OSC Messages Reference \\v.0.75}
+\title{INScore \\ OSC Messages Reference \\v.0.76}
 
 \author{Grame, Centre national de cr\'eation musicale\\
 {\small <research@grame.fr>} \\
@@ -1397,14 +1397,11 @@ where \textit{d} is the dimension of the input signal.
 Note than when \textit{d} is not a mutiple of 6, then the last graphic signal makes use of the default values mentionned above.
 
 %===============================
-%:Interaction messages
+%:Events and Interaction
 \toplevel{Events and Interaction}
 \label{interaction}
 
 Interaction messages are user defined messages associated to events and triggered when these events occur. These messages accept variables as message arguments.
-
-\sublevel{Interaction messages}
-\label{interactmsg}
 
 The general form of the message is:
 
@@ -1419,26 +1416,6 @@ interactMsg : (('watch' | 'watch+')  ([1] | what  ( | oscMsg)))
 \item \OSC{watch+}: adds a message to the watched event message list. 
 \end{itemize}
 
-Events currently \emph{watchable} are:
-\begin{rail}
-what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'doubleClick' | 'timeEnter' timezone | 'timeLeave' timezone
-\end{rail}
-\index{Interaction!mouseDown}
-\index{Interaction!mouseUp}
-\index{Interaction!mouseEnter}
-\index{Interaction!mouseLeave}
-\index{Interaction!mouseMove}
-\index{Interaction!doubleClick}
-\index{Interaction!timeEnter}
-\index{Interaction!timeLeave}
-
-\begin{rail}
-timezone : int32 int32 int32 int32
-\end{rail}
-A time zone is defined by 2 dates expressed as rational values (i.e. with 4 integers).
-\index{Interaction! timezone}
-
-
 The associated OSC message is any valid OSC message (not restricted to the Interlude message set), with an extended address scheme, supporting IP addresses or host names and udp port number to be specified as OSC addresses prefix. The message parameters are any valid OSC type or variables (see section \ref{interactvar}).
 \begin{rail} 
 oscMsg : (| fullAddress)  OSCAddress ( (parameters | variable) + )
@@ -1448,6 +1425,24 @@ oscMsg : (| fullAddress)  OSCAddress ( (parameters | variable) + )
 fullAddress : (IPAddress | hostname) ':' port
 \end{rail}
 
+
+%===============================
+%:   Interaction messages
+\sublevel{Interaction messages}
+\label{interactmsg}
+
+Events currently \emph{watchable} are:
+\begin{rail}
+what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'doubleClick' 
+\end{rail}
+\index{Interaction!mouseDown}
+\index{Interaction!mouseUp}
+\index{Interaction!mouseEnter}
+\index{Interaction!mouseLeave}
+\index{Interaction!mouseMove}
+\index{Interaction!doubleClick}
+
+
 Example:
 \begin{verbatim}
   1) /ITL/scene/myObject watch mouseDown "/ITL/scene/myObject" "show" 0 
@@ -1455,6 +1450,27 @@ Example:
 \end{verbatim}
 1) Request the object \OSC{myObject} to watch \OSC{mouseDown} events and send a message to itself. \\
 2) Request the object \OSC{myObject} to watch \OSC{mouseDown} events and send a "start" message to host.domain.org on udp port 12100 to OSC address /an/address
+
+%===============================
+%:   Notification messages
+\sublevel{Notification messages}
+\label{notifymsg}
+
+Events currently \emph{watchable} are:
+\begin{rail}
+what : 'timeEnter' timezone | 'timeLeave' timezone | 'newElement'
+\end{rail}
+\index{Interaction!timeEnter}
+\index{Interaction!timeLeave}
+\index{Interaction!newElement}
+
+\begin{rail}
+timezone : int32 int32 int32 int32
+\end{rail}
+A time zone is defined by 2 dates expressed as rational values (i.e. with 4 integers).
+\index{Interaction! timezone}
+
+The \OSC{newElement} event is supported at scene level only and triggered when a new element is added to the scene.
 
 
 %===============================
@@ -1464,7 +1480,7 @@ Example:
 
 Variables denote values computed when an event is triggered. These values are send in place of the variable. A variable name starts with a '\$' sign. Currently, the following variables are supported by mouse events:
 \begin{rail} 
-variable : (xy | 'absx' | 'absy' | 'sx' | 'sy' | date) 
+variable : (xy | 'absx' | 'absy' | 'sx' | 'sy' | date | 'name' | 'address') 
 \end{rail}
 \index{Interaction!variable!x}
 \index{Interaction!variable!y}
@@ -1473,6 +1489,8 @@ variable : (xy | 'absx' | 'absy' | 'sx' | 'sy' | date)
 \index{Interaction!variable!sx}
 \index{Interaction!variable!sy}
 \index{Interaction!variable!date}
+\index{Interaction!variable!name}
+\index{Interaction!variable!address}
 
 \begin{rail} 
 xy : ('x' | 'y') ( | '[low,high]') 
@@ -1493,6 +1511,8 @@ date : 'date' (| ':'  mapname)
 
 \begin{itemize}
 \item \OSC{\$date}: denotes the object date corresponding to the mouse pointer position at the time of the event. The detailed date variable is given below: it is optionnaly followed by a colon and the name of the mapping to be used to compute the date . The \OSC{\$date} variable is replaced by its rational value (i.e. two integers values). 
+
+\item \OSC{\$name}, \OSC{\$address}: replaced by the target object name or OSC address. Note that in case of \OSC{newElement} event, the target object is the new element. 
 \end{itemize}
 
 Note that a variable can be used several times in a message, but several \OSC{\$date} variables must always refer to the same mapping.

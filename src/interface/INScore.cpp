@@ -113,8 +113,9 @@ void INScore::stop(IGlue* glue)
 //--------------------------------------------------------------------------
 // versions 
 //--------------------------------------------------------------------------
-int INScore::version	()				{ return 75; }
-const char* INScore::versionStr ()		{ return "0.75"; }
+int INScore::version	()				{ return 76; }
+const char* INScore::versionStr ()		{ return "0.76"; }
+const unsigned long localhost = (127 << 24) + 1;
 
 //--------------------------------------------------------------------------
 // messages system 
@@ -132,6 +133,7 @@ void INScore::postMessage	(const char* address, MessagePtr msg)
 INScore::MessagePtr INScore::newMessage (const char* msg)
 {
 	IMessage* m = new IMessage;
+	m->setSrcIP (localhost);
 	m->setMessage(msg);
 	return MessagePtr(m);
 }
@@ -140,6 +142,7 @@ INScore::MessagePtr INScore::newMessage (const char* msg)
 INScore::MessagePtr INScore::newMessage ()
 {
 	IMessage* m = new IMessage;
+	m->setSrcIP (localhost);
 	return MessagePtr(m);
 }
 

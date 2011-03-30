@@ -1,4 +1,4 @@
-version := 0.75
+version := 0.76
 
 package:= INScore-$(version)
 rsrc   := INScore-rsrc-$(version)
@@ -35,14 +35,25 @@ usage:
 
 include makeBundle
 
+dmg:
+	hdiutil create $(package).dmg -srcfolder $(package) -ov
+
 macosx:
 	[ -d $(package) ] || mkdir -p $(package)
+	make common
 	make -f makeINScoreBundle
-	-[ -d $(package)/$(viewer).app ] && rm -rf $(package)/$(viewer).app
-	mv $(viewer).app $(package)/$(viewer).app
-	cp $(icns) $(package)/$(viewer).app/Contents/Resources
+	cp $(icns) $(viewer).app/Contents/Resources
+	-[ -d $(package)/"$(viewer) $(version).app" ] && rm -rf $(package)/"$(viewer) $(version).app"
+	mv $(viewer).app $(package)/"$(viewer) $(version).app"
 	chmod -x  $(shell find . -name "*.inscore")
 	cp -f ../src/guido2.ttf $(package)
+	cd $(package) && ln -sf /Applications .
+	make dmg
+		
+common: 
+	cp -r doc $(package)
+	cp readme.txt $(package)
+	cp ../src/changelog.txt $(package)
 		
 doc: 
 	make -C $(docsrc)
@@ -93,6 +104,7 @@ src:
 
 win32:
 	[ -d $(package) ] || mkdir -p $(package)
+	make common
 	cp -f $(bin)/$(viewer).exe $(package)/$(viewer).exe
 	cp -f $(bin)/*.dll $(package)
 	cp -f ../src/guido2.ttf $(package)

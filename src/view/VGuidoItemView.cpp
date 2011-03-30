@@ -54,7 +54,6 @@ namespace inscore
 
 float VGuidoItemView::fCm2GuidoUnit = 0;
 
-
 //----------------------------------------------------------------------
 /*!
 	\brief a class to collect guido graphic maps
@@ -80,7 +79,6 @@ class GuidoMapCollector: public MapCollector
 		///< the method called by guido for each graphic segment
 		virtual void Graph2TimeMap( const FloatRect& box, const TimeSegment& dates,  const GuidoElementInfos& infos );
 		virtual void process (Time2GraphicMap* outmap);
-
 				
 		static RelativeTimeSegment	relativeTimeSegment(const TimeSegment& dates)
 			{ return RelativeTimeSegment( rational(dates.first.num , dates.first.denom) , rational(dates.second.num , dates.second.denom) ); }
@@ -124,6 +122,20 @@ class GuidoStaffCollector: public GuidoMapCollector
 				 GuidoStaffCollector (const QGuidoGraphicsItem* item, int num) 
 					: GuidoMapCollector(item, kGuidoStaff) { if (num) setFilter(num); }
 		virtual ~GuidoStaffCollector()	{}
+
+		virtual void process (Time2GraphicMap* outmap);
+};
+
+//----------------------------------------------------------------------
+/*!
+	\brief a guido map collector adjusting system to to slices start
+*/
+class GuidoSystemCollector: public GuidoMapCollector
+{
+	public :
+				 GuidoSystemCollector(const QGuidoGraphicsItem* item) 
+					: GuidoMapCollector(item, kGuidoSystem) { }
+		virtual ~GuidoSystemCollector() {}
 
 		virtual void process (Time2GraphicMap* outmap);
 };
@@ -178,7 +190,6 @@ void GuidoStaffCollector::process (Time2GraphicMap* outmap)
 	
 	while (eventsIter != evtsMap.end()) {
 		if (staffIter == staffMap.end()) {
-//			ITLErr << "unexpected staff segmentation end while collecting staff map" << ITLEndl;
 			cerr << "unexpected staff segmentation end while collecting staff map" << endl;
 			break;
 		}
@@ -190,30 +201,81 @@ void GuidoStaffCollector::process (Time2GraphicMap* outmap)
 			staffIter++;
 		}
 		if (staffIter == staffMap.end()) {
-//			ITLErr << "unexpected staff segmentation end while while looking for evTime" << ITLEndl;
 			cerr << "unexpected staff segmentation end while while looking for evTime " << evTime << endl;
 			break;
 		}
 
-//		float startx = current->second.xinterval().first();
+		Time2GraphicMap::const_iterator currstaff = staffIter;
+		Time2GraphicMap::const_iterator nextstaff = currstaff;
+		nextstaff++;
+
+		float startx = current->second.xinterval().first();
 		float endx = 0;
-		if (next == evtsMap.end())							// last event ?
-			endx = staffIter->second.xinterval().second();	// end zone is end staff
+		if (next == evtsMap.end())								// last event ?
+			endx = currstaff->second.xinterval().second();		// end zone is end staff
 
 		else {
-			RelativeTimeSegment nextTime = next->first;
-			if (staffIter->first.include(nextTime))		// not the last last staff event ?
+			RelativeTimeSegment nextTime = next->first;			// is the event on the same staff ?
+			if (staffIter->first.include(nextTime) || 
+				(nextstaff == staffMap.end()) ||
+				( currstaff->second.yinterval().first() == nextstaff->second.yinterval().first())) {
 				endx = next->second.xinterval().first();		// end zone is next event start
+			}
+			else 
+				endx = currstaff->second.xinterval().second(); // end zone is end staff
+		}
+		(*outmap)[current->first] = GraphicSegment(FloatInterval( startx, endx ), currstaff->second.yinterval());
+	}
+}
 
-			else												// next event is on another staff
-				endx = staffIter->second.xinterval().second();
+//----------------------------------------------------------------------
+void GuidoSystemCollector::process (Time2GraphicMap* outmap)
+{
+	int M,m,s;
+	GuidoGetVersionNums (&M, &m, &s);
+	if (GuidoCheckVersionNums (1, 4, 2) != guidoNoErr)
+		ITLErr << "correct system map requires GUIDOEngine version 1.4.2 or greater - current version is "
+				<< M << "." << m << "." << s << ITLEndl;
+
+	GuidoMapCollector systemCollector(fItem, kGuidoSystem);
+	GuidoMapCollector slicesCollector(fItem, kGuidoSystemSlice);
+
+	Time2GraphicMap systemMap, slicesMap;
+	systemCollector.process (&systemMap);
+	slicesCollector.process(&slicesMap);
+
+	Time2GraphicMap::const_iterator slicesIter = slicesMap.begin();
+	Time2GraphicMap::const_iterator systemIter = systemMap.begin();
+	
+	while (systemIter != systemMap.end()) {
+		if (slicesIter == slicesMap.end()) {
+			cerr << "unexpected slices segmentation end while collecting system map" << endl;
+			break;
 		}
 
-//		float endx = (next == evtsMap.end()) ? staffIter->second.xinterval().second() 
-//						: (next->second.xinterval().first() > startx) ? next->second.xinterval().first()
-//						: staffIter->second.xinterval().second();
-		(*outmap)[current->first] = GraphicSegment(FloatInterval( current->second.xinterval().first(), endx ), 
-													staffIter->second.yinterval());
+		GraphicSegment gs = systemIter->second;
+		FloatInterval slicexi = slicesIter->second.xinterval();
+		GraphicSegment adjusted (FloatInterval(slicexi.first(), gs.xinterval().second()), gs.yinterval());
+		(*outmap)[systemIter->first] = adjusted;
+
+#if 1
+		// skip the remaining slices until the next line
+		float prevx = slicexi.first();
+		float sysy = systemIter->second.yinterval().first();
+		while (slicesIter != slicesMap.end()) {
+			float x = slicesIter->second.xinterval().first();
+			float y = slicesIter->second.yinterval().first();
+			if ((x < prevx) || (y < sysy)) break;			
+			prevx = x;
+			slicesIter++;
+		}
+#else
+		// although more elegant, this solution doesn't work due to approximations in guido maps
+		while ((slicesIter != slicesMap.end()) && gs.include (slicesIter->second)) {
+			slicesIter++;
+		}
+#endif
+		systemIter++;
 	}
 }
 
@@ -462,7 +524,7 @@ GuidoMapCollector* VGuidoItemView::getMapBuilder(const string& mapName) const
 	else if ( name.startsWith (kStaffMap) )
 		mb = new GuidoStaffCollector ( fGuidoItem, getMapNum (name, kStaffMap.size()) );
 	else if ( name == kSystemMap )
-		mb = new GuidoMapCollector(fGuidoItem, kGuidoSystem);
+		mb = new GuidoSystemCollector(fGuidoItem);
 	else if ( name == kPageMap )
 		mb = new GuidoMapCollector(fGuidoItem, kGuidoPage);
 	else if ( name == kSliceMap )

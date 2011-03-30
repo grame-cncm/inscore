@@ -48,7 +48,7 @@
 /ITL/scene/pagerect  watch+ "mouseUp"   "/ITL/scene/pagepos" "date" "$date"
 
 
-/ITL/scene/_cursor   set "rect" 0.005 0.2
+/ITL/scene/_cursor   set "rect" 0.002 0.2
 /ITL/scene/_cursor   color 255 0 0 150
 /ITL/scene/_cursor   duration 1 32
 /ITL/scene/_cursor   z 5.

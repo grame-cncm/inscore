@@ -70,7 +70,7 @@ class VExport
 		*	Supported extensions (formats) are:
 		*	pdf, bmp, gif, jpeg, png, pgm, ppm, tiff, xbm, xpm.
 		*/
-		static void		exportScene( QGraphicsScene * scene , QString fileName );
+		static void		exportScene( QGraphicsView * sceneview , QString fileName );
 
 		/*!	\brief Paints the QGraphicsItem on the QPainterDevice.
 		*
