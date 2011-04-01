@@ -1,3 +1,0 @@
-/ITL/scene/score  watch "mouseDown" "/ITL/scene/_*"  "date" "$date:system"
-/ITL/scene/score  watch+ "mouseDown" "/ITL/scene/pagepos"  "date" "$date:system"
-/ITL/scene/score  watch  "mouseUp"   "/ITL/scene/pagenum"  "set" "page" "$(/ITL/scene/score get page)"

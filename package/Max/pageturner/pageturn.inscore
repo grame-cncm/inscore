@@ -1,85 +1,54 @@
-
-/ITL/scene/zoom 	set "txt" "Zoom"
-/ITL/scene/zoom 	y -0.97
-/ITL/scene/zoom 	scale 1.2
-/ITL/scene/zoomrect set "rect" 0.6 0.03
-/ITL/scene/zoomrect y -0.92
-/ITL/scene/zoomrect color 255 255 255 255
-/ITL/scene/zoomrect penWidth 1.0
-/ITL/scene/zoomrect xorigin -1.0
-/ITL/scene/zoomrect x -0.3
-/ITL/scene/zoom* 	z 2.0
-
-/ITL/scene/zoompos set "ellipse" 1. 1.
-/ITL/scene/zoompos color 240 0 0
-/ITL/scene/sync zoompos zoomrect v
-
-/ITL/scene/zoomrect  watch  "mouseDown" "/ITL/scene/score" "scale" "$x[0.3,5]"
-/ITL/scene/zoomrect  watch+ "mouseDown" "/ITL/scene/zoompos" "date" "$date"
-/ITL/scene/zoomrect  watch  "mouseMove" "/ITL/scene/score" "scale" "$x[0.3,5]"
-/ITL/scene/zoomrect  watch+ "mouseMove" "/ITL/scene/zoompos" "date" "$date"
-/ITL/scene/zoomrect  watch  "mouseUp"   "/ITL/scene/score" "scale" "$x[0.3,5]"
-/ITL/scene/zoomrect  watch+ "mouseUp"   "/ITL/scene/zoompos" "date" "$date"
-
-/ITL/scene/pagerect set "rect" 1.2 0.03
-/ITL/scene/pagerect x -0.6
-/ITL/scene/pagerect y 0.88
-/ITL/scene/pagerect color 255 255 255 255
-/ITL/scene/pagerect penWidth 1.0
-/ITL/scene/pagerect xorigin -1.0
-
-/ITL/scene/pagenum set "txt" "1"
-/ITL/scene/pagenum xorigin -1.
-/ITL/scene/pagenum scale 0.7
-
-/ITL/scene/pagepos set "ellipse" 1. 1.
-/ITL/scene/pagepos color 240 0 0
-/ITL/scene/sync pagepos pagerect v
-/ITL/scene/sync pagenum pagepos syncTop
-/ITL/scene/page* 	z 2.0
-
-/ITL/scene/pagerect  watch  "mouseDown" "/ITL/scene/pagepos" "date" "$date"
-
-/ITL/scene/pagerect  watch  "mouseMove" "/ITL/scene/score" "page" "$x[1,20]"
-/ITL/scene/pagerect  watch+ "mouseMove" "/ITL/scene/pagepos" "date" "$date"
-/ITL/scene/pagerect  watch+ "mouseMove" "/ITL/scene/pagenum" "set" "txt" "$x[1,20]"
-
-/ITL/scene/pagerect  watch  "mouseUp"   "/ITL/scene/score" "page" "$x[1,20]"
-/ITL/scene/pagerect  watch+ "mouseUp"   "/ITL/scene/pagepos" "date" "$date"
-
-
-/ITL/scene/_cursor   set "rect" 0.002 0.2
-/ITL/scene/_cursor   color 255 0 0 150
-/ITL/scene/_cursor   duration 1 32
-/ITL/scene/_cursor   z 5.
 /ITL/scene/_cursor   show 0
+/ITL/scene/pagenum   show 1
 
+%-------------------------------------------------------
+% current mode display
+%-------------------------------------------------------
+/ITL/scene/mode set "txt" 	"Page turn collection"
 
-/ITL/scene/resetbutton set "txt" 	"Reset"
-/ITL/scene/resetbutton x -0.2
-/ITL/scene/startbutton set "txt"	"Test"
-/ITL/scene/startbutton x 0.
-/ITL/scene/openbutton set "txt"		"Open"
-/ITL/scene/openbutton x 0.2
-/ITL/scene/*button y 0.94
-/ITL/scene/*button z 2.5
-/ITL/scene/*button scale 1.6
+%-------------------------------------------------------
+% buttons setup
+%-------------------------------------------------------
+/ITL/scene/leftbutton   set "txt" 	"Clear"
+/ITL/scene/centerbutton set "txt"	"Test"
+/ITL/scene/rightbutton  set "txt"	"Open"
+/ITL/scene/*button   color 0 0 0
 
+%-------------------------------------------------------
+% buttons actions for pageturn mode
+%-------------------------------------------------------
 /ITL/scene/*button watch "mouseEnter" "/ITL/$scene/$self" "red" 255
 /ITL/scene/*button watch "mouseLeave" "/ITL/$scene/$self" "red" 0
 /ITL/scene/*button watch "mouseDown"  "/ITL/$scene/b[12]" "del"
 
-/ITL/scene/startbutton  watch  "mouseDown" "localhost:7100/start" 1
-/ITL/scene/startbutton  watch+ "mouseDown" "/ITL/scene/_cursor" "show" "$(/ITL/scene/pagenum get show)"
-/ITL/scene/startbutton  watch+ "mouseDown" "/ITL/scene/pagenum" "show" "$(/ITL/scene/_cursor get show)"
+%/ITL/scene/centerbutton  watch+ "mouseDown" "/ITL/scene/_cursor" "show" "$(/ITL/scene/pagenum get show)"
+%/ITL/scene/centerbutton  watch+ "mouseDown" "/ITL/scene/pagenum" "show" "$(/ITL/scene/_cursor get show)"
 
-/ITL/scene/resetbutton watch  "mouseDown" 	"/ITL/scene/score" "page" 1
-/ITL/scene/resetbutton watch+ "mouseDown" 	"/ITL/scene/pagepos" "date" 0 1
-/ITL/scene/resetbutton watch+ "mouseDown" 	"/ITL/scene/pagenum" "set" "txt" 1
-/ITL/scene/resetbutton watch+ "mouseDown" 	"localhost:7100/reset" 1
+/ITL/scene/leftbutton watch  "mouseDown" 	"/ITL/scene/score" "page" 1
+/ITL/scene/leftbutton watch+ "mouseDown" 	"/ITL/scene/pagepos" "date" 0 1
+/ITL/scene/leftbutton watch+ "mouseDown" 	"/ITL/scene/pagenum" "set" "txt" 1
 
-/ITL/scene/openbutton   watch  "mouseDown" 	"localhost:7100/open" 1
+/ITL/scene/leftbutton watch+ "mouseDown" 	"/ITL/scene/pagenum" "set" "txt" 1
 
-/ITL/scene/score map system
-/ITL/scene/sync _cursor  score:system v
-/ITL/scene load "setturn.inscore"
+%-------------------------------------------------------
+% switch modes
+%-------------------------------------------------------
+/ITL/scene/a* color 180 180 180
+/ITL/scene/anext show 1
+/ITL/scene/aprevious show 0
+
+%-------------------------------------------------------
+% messages addressed to the outside world
+%-------------------------------------------------------
+/ITL/scene/score        watch  "mouseDown" "localhost:7100/date" "$date:system" "$(/ITL/scene/score get page)"
+/ITL/scene/centerbutton watch+ "mouseDown" "localhost:7100/test" 1
+/ITL/scene/leftbutton   watch+ "mouseDown" "localhost:7100/reset" 1
+/ITL/scene/rightbutton  watch+ "mouseDown" "localhost:7100/open" 1
+
+%-------------------------------------------------------
+% pages turn and feedback
+%-------------------------------------------------------
+/ITL/scene/score  watch+ "mouseDown" "/ITL/scene/score"    "dpage" 1
+/ITL/scene/score  watch+ "mouseDown" "/ITL/scene/pagerect" "duration" "$(/ITL/scene/score get duration)"
+/ITL/scene/score  watch+ "mouseDown" "/ITL/scene/pagepos"  "date" "$date:system"
+/ITL/scene/score  watch  "mouseUp"   "/ITL/scene/pagenum"  "set" "page" "$(/ITL/scene/score get page)"
