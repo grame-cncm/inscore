@@ -13,6 +13,7 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 0.76
+- new 'require' message supported by the /ITL node (see documentation)
 - new event named 'newElement' supported at scene level
 - new 'name' and 'address' variables
 - new system map computation making use of the new slices map provided by the
