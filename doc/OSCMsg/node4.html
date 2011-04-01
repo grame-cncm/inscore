@@ -65,16 +65,16 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 ITL messages are messages global to the client application, which address is <TT>/ITL</TT>. It handles the following messages:
 <BR>
 <IMG
- WIDTH="298" HEIGHT="354" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="344" HEIGHT="392" ALIGN="BOTTOM" BORDER="0"
  SRC="img5.gif"
  ALT="\begin{rail}
 ITLMsg : 'quit'
 \vert ('rootPath' path)
 \vert ('port' int32)
 \...
-...Show' int32)
-\vert ('load' filePath)
+...Path)
 \vert 'version'
+\vert ('require' int32 oscMsg)
 \vert 'hello'
 \end{rail}">
 <BR>
@@ -86,6 +86,7 @@ ITLMsg : 'quit'
 <A NAME="93"></A>
 <A NAME="94"></A>
 <A NAME="95"></A>
+<A NAME="96"></A>
 
 <P>
 
@@ -120,6 +121,12 @@ The default <TT>defaultShow</TT> value is 1.
 <P>
 </LI>
 <LI><TT>version</TT>: version number request.
+
+<P>
+</LI>
+<LI><TT>require</TT>: check for a version number equal or greater to the number given as argument. The version number should be encoded as an integer value (for example: 76 for version 0.76, 112 for version 1.12). An OSC message is associated to the require message with the same syntax and semantic described in section <A HREF="node48.html#interaction">14</A> p.<A HREF="node48.html#interaction"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>. This message is triggered when the check fails.
+
+<P>
 </LI>
 </UL>
 
