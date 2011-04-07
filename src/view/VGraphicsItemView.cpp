@@ -357,30 +357,30 @@ QRectF VGraphicsItemView::referenceRect() const
 }
 
 //------------------------------------------------------------------------------------------------------------
-float VGraphicsItemView::relative2SceneX(float x) const
+qreal VGraphicsItemView::relative2SceneX(float x) const
 {
 	const QRectF& refRect = referenceRect();
 	// + 1 parce que l'espace Qt va de 0->... et interlude de -1 à ...
-	return ( x + 1 ) * ( refRect.width() / 2.0f ) + refRect.x();
+	return (( x + 1 ) * refRect.width()) / 2.0f + refRect.x();
 }
 
 //------------------------------------------------------------------------------------------------------------
-float VGraphicsItemView::relative2SceneY(float y) const
+qreal VGraphicsItemView::relative2SceneY(float y) const
 {
 	const QRectF& refRect = referenceRect();
-	return ( y + 1 ) * ( refRect.height() / 2.0f ) + refRect.y();
+	return (( y + 1 ) *  refRect.height()) / 2.0f  + refRect.y();
 }
 
 //--------------------------------------------------------------------------
-float VGraphicsItemView::relative2SceneWidth(float width) const
+qreal VGraphicsItemView::relative2SceneWidth(float width) const
 {
-	return referenceRect().width() * width/2.0f;
+	return (referenceRect().width() * width)/2.0f;
 }
 
 //--------------------------------------------------------------------------
-float VGraphicsItemView::relative2SceneHeight(float height) const
+qreal VGraphicsItemView::relative2SceneHeight(float height) const
 {
-	return referenceRect().height() * height/2.0f;
+	return (referenceRect().height() * height)/2.0f;
 }
 
 //--------------------------------------------------------------------------
@@ -392,26 +392,26 @@ QRectF VGraphicsItemView::relative2SceneRect( const TFloatRect& rect  ) const
 }
 
 //--------------------------------------------------------------------------
-float VGraphicsItemView::scene2RelativeWidth(float width) const
+qreal VGraphicsItemView::scene2RelativeWidth(float width) const
 {
 	return 2.0f * width / referenceRect().width();
 }
 
 //--------------------------------------------------------------------------
-float VGraphicsItemView::scene2RelativeHeight(float height) const
+qreal VGraphicsItemView::scene2RelativeHeight(float height) const
 {
 	return 2.0f * height / referenceRect().height();
 }
 
 //------------------------------------------------------------------------------------------------------------
-float VGraphicsItemView::scene2RelativeX(float x) const
+qreal VGraphicsItemView::scene2RelativeX(float x) const
 {
 	const QRectF& refRect = referenceRect();
 	return ( x - refRect.x() ) / ( refRect.width() / 2.0f ) - 1 ;
 }
 
 //------------------------------------------------------------------------------------------------------------
-float VGraphicsItemView::scene2RelativeY(float y) const
+qreal VGraphicsItemView::scene2RelativeY(float y) const
 {
 	const QRectF& refRect = referenceRect();
 	return ( y - refRect.y() ) / ( refRect.height() / 2.0f ) - 1 ;

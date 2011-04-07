@@ -73,23 +73,23 @@ class VGraphicsItemView
 		virtual GraphicEffect getEffect () const			{ return GraphicEffect ( item()->graphicsEffect()); }
 
 		/// \brief Maps the IObject [-1,1] y coordinate to the referenceRect().
-		float relative2SceneY(float y) const;
+		qreal relative2SceneY(float y) const;
 		/// \brief Maps the IObject [-1,1] x coordinate to the referenceRect().
-		float relative2SceneX(float x) const;
+		qreal relative2SceneX(float x) const;
 		/// \brief Maps the IObject [0,2] width value to the corresponding referenceRect() value.
-		float relative2SceneWidth(float width) const;
+		qreal relative2SceneWidth(float width) const;
 		/// \brief Maps the IObject [0,2] height value to the corresponding referenceRect() value.
-		float relative2SceneHeight(float height) const;
+		qreal relative2SceneHeight(float height) const;
 		/// \brief Maps a rect expressed in [-1,1] scene coordinate to a QRectF expressed in referenceRect() coordinates.
 		QRectF relative2SceneRect( const TFloatRect& rect) const;
 		/// \brief Maps the referenceRect() width value to the corresponding [0,2] value.
-		float scene2RelativeWidth(float width) const;
+		qreal scene2RelativeWidth(float width) const;
 		/// \brief Maps the referenceRect() height value to the corresponding [0,2] value.
-		float scene2RelativeHeight(float height) const;
+		qreal scene2RelativeHeight(float height) const;
 		/// \brief Maps the referenceRect() x value to the corresponding [-1,1] value.
-		float scene2RelativeX(float x) const;
+		qreal scene2RelativeX(float x) const;
 		/// \brief Maps the referenceRect() y value to the corresponding [-1,1] value.
-		float scene2RelativeY(float y) const;
+		qreal scene2RelativeY(float y) const;
 		
 		static void buildDefaultMapping (IObject* object);
 		
