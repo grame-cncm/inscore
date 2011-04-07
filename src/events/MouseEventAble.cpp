@@ -46,6 +46,7 @@ static GraphicSegment find (const std::pair<float,float>& p, const Graphic2Relat
 rational _MouseEventAble::point2date (const IObject * obj, float x, float y, const std::string& mapname, int n)
 {
 	const SRelativeTime2GraphicMapping&	mapping = obj->getMapping (mapname);
+	if (!mapping) return rational (-1);
 	const Graphic2RelativeTimeRelation& g2rt = mapping->reverse();
 	std::pair<float,float> location (x*2 - 1, y*2 - 1);
 	GraphicSegment seg = find (location, g2rt);
