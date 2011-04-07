@@ -42,7 +42,8 @@ void VExport::paintOnDevice( QPaintDevice * device , QGraphicsItem * item , floa
 	QRectF rect(0,0,device->width() , device->height() );
 	QPainter painter;
 	painter.begin( device );
-	painter.setRenderHint( QPainter::Antialiasing );
+//	painter.setRenderHint( QPainter::Antialiasing );
+	painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
 
 	QStyleOptionGraphicsItem option;
 	option.exposedRect = item->boundingRect();
@@ -53,17 +54,6 @@ void VExport::paintOnDevice( QPaintDevice * device , QGraphicsItem * item , floa
 };
 
 //------------------------------------------------------------------------------------------------------------------------
-#ifdef PIXMAPBASED
-QPixmap VExport::itemToImage( QGraphicsItem * item , float xScaleFactor , float yScaleFactor , const QColor fillColor )
-{
-	QRectF picRect = item->boundingRect();
-	QPixmap pic( (int)(picRect.width() * xScaleFactor) , (int)(picRect.height() * yScaleFactor) );
-
-	pic.fill( fillColor );
-	paintOnDevice( &pic , item , xScaleFactor , yScaleFactor );
-	return pic;
-};
-#else
 QImage VExport::itemToImage( QGraphicsItem * item , float xScaleFactor , float yScaleFactor , const QColor fillColor )
 {
 	QRectF picRect = item->boundingRect();
@@ -73,7 +63,6 @@ QImage VExport::itemToImage( QGraphicsItem * item , float xScaleFactor , float y
 	paintOnDevice( &pic , item , xScaleFactor , yScaleFactor );
 	return pic;
 };
-#endif
 
 //------------------------------------------------------------------------------------------------------------------------
 void VExport::exportToImage( QGraphicsItem * item , const QString& fileName , float xScaleFactor , float yScaleFactor )
@@ -108,39 +97,34 @@ void VExport::exportItem(QGraphicsItem * item , QString fileName , float xScaleF
 }
 
 //------------------------------------------------------------------------------------------------------------------------
-void VExport::exportScene( QGraphicsView * scene , QString fileName )
+void VExport::paintOnDevice( QPaintDevice * device , QGraphicsView * view)
 {
-	if ( QFileInfo(fileName).suffix().isEmpty() )
-		fileName += DEFAULT_EXPORT_FORMAT;
+	QPainter painter(device);
+	painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+	view->render( &painter );
+	painter.end();
+}
 
+//------------------------------------------------------------------------------------------------------------------------
+void VExport::exportScene( QGraphicsView * view , QString fileName )
+{
+	if ( QFileInfo(fileName).suffix().isEmpty() ) fileName += DEFAULT_EXPORT_FORMAT;
+
+	QSize size (view->width() , view->height());
 	if ( fileName.toUpper().endsWith( PDF_FORMAT.toUpper() ) )
 	{
-		QPrinter printer;
-		printer.setFullPage(true);
+		QPrinter printer (QPrinter::HighResolution);
 		printer.setOutputFileName( QString(fileName) );
 		printer.setOutputFormat( QPrinter::PdfFormat );
-
-		QSizeF pageSize(scene->width() , scene->height() );
-		printer.setPaperSize( pageSize , QPrinter::DevicePixel );
-
-		QPainter painter(&printer);
-		scene->render( &painter );
-		painter.end();
+		printer.setPaperSize( size , QPrinter::Point );
+		paintOnDevice (&printer, view);
 	}
 	else
 	{
-#ifdef PIXMAPBASED
-		QPixmap pixmap(scene->width() , scene->height());
-		pixmap.fill( scene->backgroundBrush().color() );
-#else
-		QImage pixmap(scene->width() , scene->height(), QImage::Format_ARGB32_Premultiplied);
-		pixmap.fill( scene->backgroundBrush().color().rgba() );
-#endif
-		QPainter painter(&pixmap);
-		painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
-		scene->render( &painter );
-		painter.end();
-		pixmap.save( fileName );			
+		QImage image(size, QImage::Format_ARGB32_Premultiplied);
+		image.fill( view->backgroundBrush().color().rgba() );
+		paintOnDevice (&image, view);
+		image.save( fileName );			
 	}
 }
 
