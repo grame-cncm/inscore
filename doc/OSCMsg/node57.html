@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.3 Differences to version 0.60</TITLE>
-<META NAME="description" CONTENT="15.3 Differences to version 0.60">
+<TITLE>15.3 Differences to version 0.63</TITLE>
+<META NAME="description" CONTENT="15.3 Differences to version 0.63">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,67 +27,103 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html959"
+<A NAME="tex2html962"
   HREF="node58.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html953"
+<A NAME="tex2html956"
   HREF="node54.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html947"
+<A NAME="tex2html950"
   HREF="node56.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html955"
+<A NAME="tex2html958"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html957"
-  HREF="node62.html">
+<A NAME="tex2html960"
+  HREF="node63.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html960"
+<B> Next:</B> <A NAME="tex2html963"
   HREF="node58.html">15.4 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html954"
+<B> Up:</B> <A NAME="tex2html957"
   HREF="node54.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html948"
+<B> Previous:</B> <A NAME="tex2html951"
   HREF="node56.html">15.2 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html956"
+ &nbsp; <B>  <A NAME="tex2html959"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html958"
-  HREF="node62.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html961"
+  HREF="node63.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION001630000000000000000">
-15.3 Differences to version 0.60</A>
+15.3 Differences to version 0.63</A>
 </H1>
 
 <UL>
-<LI>new 'mousemove' event (see section <A HREF="node49.html#interactmsg">14.1</A> p.<A HREF="node49.html#interactmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>new <TT>dpage</TT> message accepted by <TT>gmn</TT> objects (see section <A HREF="node26.html#gmnpage">8.3</A> p.<A HREF="node26.html#gmnpage"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>interaction messages accept variables ($x, $y, $date...) (see section <A HREF="node51.html#interactvar">14.3</A> p.<A HREF="node51.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>x and y variables: automatic range type detection (int | float)
 </LI>
-<LI>SVG code and files support (see section <A HREF="node20.html#setfile">6</A> p.<A HREF="node20.html#setfile"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>set <TT>txt</TT> message: accepts polymorphic stream like parameters (see section <A HREF="node20.html#setsect">6</A> p.<A HREF="node20.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>set line message change: the <TT>x y</TT> form is deprecated, it is replaced by
-  the following forms: 
-<BR>  <TT>'xy' x y</TT> (equivalent to the former form) 
-  and <TT>'wa' width angle</TT>   
-  (see section <A HREF="node20.html#setsect">6</A> p.<A HREF="node20.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>drag and drop files support in INScore viewer
 </LI>
-<LI>new 'effect' message  (section <A HREF="node14.html#effectmsg">4.3</A> p.<A HREF="node14.html#effectmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>interaction variables extension: <TT>$sx</TT>, <TT>$sy</TT> variables added to support scene coordinate space (see section <A HREF="node51.html#interactvar">14.3</A> p.<A HREF="node51.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>utf8 support on windows corrected
+<LI>automatic range mapping for <TT>$x</TT>, <TT>$y</TT> variables.
 </LI>
-<LI>transparency support for stretched synchronized objects corrected
+<LI>new <TT>$self</TT> and <TT>$scene</TT> variables in the address field (see section <A HREF="node53.html#oscvar">14.5</A> p.<A HREF="node53.html#oscvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>multiple application instances supported with dynamic udp port number allocation.
+<LI>OSC identifiers characters set extended with '_' and '-' (see section <A HREF="node2.html#genformat">1</A> p.<A HREF="node2.html#genformat"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>command line option with -port portnumber option to set the receive udp port number at startup.
+<LI>support for multiple scenes: <TT>new</TT>, <TT>del</TT> and <TT>foreground</TT> messages (see section <A HREF="node5.html#scene">3</A> p.<A HREF="node5.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI><TT>load</TT> message supported at scene level (see section <A HREF="node5.html#scene">3</A> p.<A HREF="node5.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI><TT>get watch</TT> implemented.
+</LI>
+<LI><TT>watch</TT> message without argument to clear all the watched events (see section <A HREF="node51.html#interactvar">14.3</A> p.<A HREF="node51.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI>order of rendering and width, height update corrected (may lead to incorrect rendering)
+</LI>
+<LI>bug with gmn score corrected: missing update for page, columns and rows changes.
+</LI>
+<LI>package delivered with the Guido Engine version 1.41 that corrects minimum staves distance and incorrect mapping when optimum page fill is off.
 </LI>
 </UL>
 
 <P>
-<BR><HR>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html962"
+  HREF="node58.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html956"
+  HREF="node54.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html950"
+  HREF="node56.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html958"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html960"
+  HREF="node63.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html963"
+  HREF="node58.html">15.4 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html957"
+  HREF="node54.html">15. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html951"
+  HREF="node56.html">15.2 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html959"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html961"
+  HREF="node63.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

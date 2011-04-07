@@ -59,7 +59,7 @@
 
 \begin{document}
 
-\title{INScore \\ OSC Messages Reference \\v.0.76}
+\title{INScore \\ OSC Messages Reference \\v.0.77}
 
 \author{Grame, Centre national de cr\'eation musicale\\
 {\small <research@grame.fr>} \\
@@ -1564,6 +1564,24 @@ Note: the system doesn't check for the consistency of the variables placement.
 %===============================
 %:Changes list
 \toplevel{ Changes list}
+
+%===============================
+%:   Differences to version 0.75
+\sublevel{Differences to version 0.75}
+\begin{itemize}
+\item new \OSC{require} message supported by the \OSC{/ITL} node (see section \fullref{ITL}).
+\item new event named \OSC{newElement} supported at scene level (see section \fullref{notifymsg}).
+\item new \OSC{name} and \OSC{address} variables (see section \fullref{interactvar}).
+\item new system map computation making use of the new slices map provided by the guidolib version 1.42
+\item INScore API: the \OSC{newMessage} method sets now the message src IP to localhost
+  With the previous version and the lack of src IP, replies to queries or error 
+  messages could be sent to undefined addresses (and mostly lost).
+\item bug corrected with ellipse and rect : integer graphic size computation changed 
+  to float (prevents objects disappearance with small width or height)
+\item bug in scene export: left and right borders could be cut, depending  on the scene size
+  corrected by rendering the QGraphicsView container instead the QGraphicsScene
+\item crash bug with \$date:name corrected: crashed when there is no mapping named \OSC{name}.
+\end{itemize}
 
 %===============================
 %:   Differences to version 0.74
