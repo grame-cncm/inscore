@@ -13,17 +13,19 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 0.76
+- new 'require' message supported by the /ITL node (see documentation)
 - new event named 'newElement' supported at scene level
 - new 'name' and 'address' variables
 - new system map computation making use of the new slices map provided by the
   guidolib version 1.42
 - INScore API: the newMessage methods set now the message src IP to localhost
   With the previous version and the lack of src IP, replies to queries or error 
-  messages were sent to undefined addresses (and mostly lost).
+  messages could be sent to undefined addresses (and mostly lost).
 - bug corrected with ellipse and rect : integer graphic size computation changed 
   to float (prevents objects disappearance with small width or height)
 - bug in scene export: left and right borders could be cut, depending  on the scene size
   corrected by rendering the QGraphicsView container instead the QGraphicsScene
+- crash bug with $date:name corrected: crashed when there is no mapping named 'name'.
 
 ----------------------------------------------------
 Version 0.75

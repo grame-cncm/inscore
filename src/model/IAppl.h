@@ -129,6 +129,9 @@ class IAppl : public IObject, public PeriodicTask
 		IMessage*	hello() const;
 		void		helloMsg() const;
 
+		/// \brief application \c 'require' message handler. Provided to check for version number.
+		virtual MsgHandler::msgStatus requireMsg(const IMessage* msg);
+
 		/// \brief application \c 'load' message handler.
 		virtual MsgHandler::msgStatus loadMsg (const IMessage* msg);
 

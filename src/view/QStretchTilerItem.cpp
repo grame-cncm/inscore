@@ -34,22 +34,55 @@ using namespace std;
 #include <QtDebug>
 
 #define USEPRECISION
-#define PRECISION 1000.0f
+//#define PRECISION 1000.0f
+//#define PRECISION 0.0001f
+//#define PRECISION 1.f
 
 namespace inscore
 {
+
+//-------------------------------------------------------------------------------------------------------------------
+#if 1
+void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsItem * , QWidget * )
+{
+	if ( fNeedCacheUpdate )
+	{
+//		qDebug() << "QStretchTilerItem::paint: " << fCacheFactor;
+		fCache = VExport::itemToImage( fStretchTiledItem , 1.f , 1.f );
+		fNeedCacheUpdate = false;
+	}	
+
+	painter->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+
+	for ( int i = 0 ;  i < fMapping.size(); i++ )
+	{
+		QRectF sourceRect( fMapping[i].first.x(), fMapping[i].first.y(), fMapping[i].first.width(), fMapping[i].first.height());
+		QRectF destRect( fMapping[i].second.x(), fMapping[i].second.y(), fMapping[i].second.width(), fMapping[i].second.height());
+
+//qDebug() << "QStretchTilerItem::paint: " << sourceRect << " \t-> " << destRect;
+//		painter->drawImage( destRect , fCache , sourceRect );
+		painter->drawImage( fMapping[i].second , fCache , fMapping[i].first );
+
+//		float yd = fMapping[i].second.y() + i;
+//		painter->drawLine( fMapping[i].second.left(), yd, fMapping[i].second.right(), yd );
+		
+	}
+}
+
+#else
 
 //-------------------------------------------------------------------------------------------------------------------
 void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsItem * , QWidget * )
 {
 	if ( fNeedCacheUpdate )
 	{
-//		qDebug() << "QStretchTilerItem::paint: " << fCacheFactor;
+		qDebug() << "QStretchTilerItem::paint: " << fCacheFactor;
 		fCache = VExport::itemToImage( fStretchTiledItem , fCacheFactor , fCacheFactor );
 		fNeedCacheUpdate = false;
 	}
 	
-	painter->setRenderHint( QPainter::SmoothPixmapTransform , true );
+//	painter->setRenderHint( QPainter::SmoothPixmapTransform , true );
+	painter->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
 
 	// Qt pending bug workaround with QPainter::drawPixmap : truncates QRectF to QRect (float to int !).	
 #ifdef USEPRECISION
@@ -89,6 +122,7 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
 	}
 #endif			
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------------------------
 void QStretchTilerItem::addSegment( const QRectF& sourceRect , const QRectF& destRect )
@@ -103,7 +137,7 @@ void QStretchTilerItem::addSegment( const QRectF& sourceRect , const QRectF& des
 	
 	fMapping << QRectFPair(sourceRect,destRect);
 
-#define INCREASING_CACHE_FACTOR
+//#define INCREASING_CACHE_FACTOR
 #ifdef INCREASING_CACHE_FACTOR
 	// Compute the cache factor so that the cache pixmap is large enough to have a nice rendering.
 	

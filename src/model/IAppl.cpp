@@ -42,6 +42,7 @@
 #include "ip/NetworkingUtils.h"
 #include "INScore.h"
 #include "ITLError.h"
+#include "EventMessage.h"
 
 #include <QDir>
 
@@ -125,9 +126,10 @@ IAppl::IAppl(int udpport, int outport, int errport, bool offscreen)
 	fTypeString = kApplType;
 	fVersion = INScore::versionStr();
 
-	fMsgHandlerMap["hello"]	= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::helloMsg);
-	fMsgHandlerMap["load"]	= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadMsg);
-	fMsgHandlerMap["quit"]	= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::quit);
+	fMsgHandlerMap["hello"]		= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::helloMsg);
+	fMsgHandlerMap["load"]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadMsg);
+	fMsgHandlerMap["require"]	= TMethodMsgHandler<IAppl>::create(this, &IAppl::requireMsg);
+	fMsgHandlerMap["quit"]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::quit);
 
 	fGetMsgHandlerMap["version"]	= TGetParamMsgHandler<string>::create(fVersion);
 	fGetMsgHandlerMap["rootPath"]	= TGetParamMsgHandler<string>::create(fRootPath);
@@ -268,6 +270,29 @@ void IAppl::helloMsg() const
 	IMessage * msg = hello();
 	msg->print(oscout);
 	delete msg;
+}
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IAppl::requireMsg(const IMessage* msg)
+{
+	if (msg->size() >= 3) {
+		int version = INScore::version();
+		int required;
+		if (msg->param(0, required)) {
+			if (version >= required) {
+				return MsgHandler::kProcessed;
+			}
+			else {
+				ITLErr << "Version " << required << " is required: current version is " << version  << ITLEndl;
+				SEventMessage reqmsg = EventMessage::create (name(), "", msg, 1);
+				if (reqmsg) {
+					EventContext context (this);
+					reqmsg->send(context);
+					return MsgHandler::kProcessed;
+				}				
+			}
+		}
+	}
+	return MsgHandler::kBadParameters;
 }
 
 //--------------------------------------------------------------------------

@@ -63,10 +63,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {5}{ ITLMsg : 'quit' | ('rootPath' path) | ('port' int32) | ('outport' int32) | ('errport' int32) | ('defaultShow' int32) | ('load' filePath) | 'version' | 'hello' }
+\rail@i {5}{ ITLMsg : 'quit' | ('rootPath' path) | ('port' int32) | ('outport' int32) | ('errport' int32) | ('defaultShow' int32) | ('load' filePath) | 'version' | ('require' int32 oscMsg) | 'hello' }
 \rail@o {5}{
 \rail@index{ITLMsg}
-\rail@begin{9}{ITLMsg}
+\rail@begin{10}{ITLMsg}
 \rail@bar
 \rail@term{quit}[]
 \rail@nextbar{1}
@@ -90,6 +90,10 @@
 \rail@nextbar{7}
 \rail@term{version}[]
 \rail@nextbar{8}
+\rail@term{require}[]
+\rail@token{int32}[]
+\rail@nont{oscMsg}[]
+\rail@nextbar{9}
 \rail@term{hello}[]
 \rail@endbar
 \rail@end

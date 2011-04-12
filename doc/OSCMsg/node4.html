@@ -27,32 +27,32 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html188"
+<A NAME="tex2html190"
   HREF="node5.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html182"
+<A NAME="tex2html184"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html176"
+<A NAME="tex2html178"
   HREF="node3.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html184"
+<A NAME="tex2html186"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html186"
-  HREF="node62.html">
+<A NAME="tex2html188"
+  HREF="node63.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html189"
+<B> Next:</B> <A NAME="tex2html191"
   HREF="node5.html">3. Scene messages</A>
-<B> Up:</B> <A NAME="tex2html183"
+<B> Up:</B> <A NAME="tex2html185"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html177"
+<B> Previous:</B> <A NAME="tex2html179"
   HREF="node3.html">1.1 Address space</A>
- &nbsp; <B>  <A NAME="tex2html185"
-  HREF="node1.html">Contents</A></B> 
  &nbsp; <B>  <A NAME="tex2html187"
-  HREF="node62.html">Index</A></B> 
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html189"
+  HREF="node63.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
@@ -65,16 +65,16 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 ITL messages are messages global to the client application, which address is <TT>/ITL</TT>. It handles the following messages:
 <BR>
 <IMG
- WIDTH="298" HEIGHT="354" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
  SRC="img5.gif"
  ALT="\begin{rail}
 ITLMsg : 'quit'
 \vert ('rootPath' path)
 \vert ('port' int32)
 \...
-...Show' int32)
-\vert ('load' filePath)
+...Path)
 \vert 'version'
+\vert ('require' int32 oscMsg)
 \vert 'hello'
 \end{rail}">
 <BR>
@@ -86,6 +86,7 @@ ITLMsg : 'quit'
 <A NAME="93"></A>
 <A NAME="94"></A>
 <A NAME="95"></A>
+<A NAME="96"></A>
 
 <P>
 
@@ -120,38 +121,44 @@ The default <TT>defaultShow</TT> value is 1.
 <P>
 </LI>
 <LI><TT>version</TT>: version number request.
+
+<P>
+</LI>
+<LI><TT>require</TT>: check for a version number equal or greater to the number given as argument. The version number should be encoded as an integer value (for example: 76 for version 0.76, 112 for version 1.12). An OSC message is associated to the require message with the same syntax and semantic described in section <A HREF="node48.html#interaction">14</A> p.<A HREF="node48.html#interaction"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>. This message is triggered when the check fails.
+
+<P>
 </LI>
 </UL>
 
 <P>
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html188"
+<A NAME="tex2html190"
   HREF="node5.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html182"
+<A NAME="tex2html184"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html176"
+<A NAME="tex2html178"
   HREF="node3.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html184"
+<A NAME="tex2html186"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html186"
-  HREF="node62.html">
+<A NAME="tex2html188"
+  HREF="node63.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html189"
+<B> Next:</B> <A NAME="tex2html191"
   HREF="node5.html">3. Scene messages</A>
-<B> Up:</B> <A NAME="tex2html183"
+<B> Up:</B> <A NAME="tex2html185"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html177"
+<B> Previous:</B> <A NAME="tex2html179"
   HREF="node3.html">1.1 Address space</A>
- &nbsp; <B>  <A NAME="tex2html185"
-  HREF="node1.html">Contents</A></B> 
  &nbsp; <B>  <A NAME="tex2html187"
-  HREF="node62.html">Index</A></B> 
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html189"
+  HREF="node63.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]

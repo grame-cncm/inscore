@@ -10,8 +10,6 @@ var gTimePoints = new Array();    	// time points array
 var gTimePairs = new Array();    	// time pairs array (music time + abs time)
 var gTPIndex = 0;
 
-reset ();
-
 // reset the whole system
 function reset ()
 {
@@ -48,12 +46,11 @@ function timepair (num, denum, abs)
     	gTimePairs[gTPIndex++] = t;
 }
 
-// builds a time pair
+// ---------------------------------------------
 function tempomap ()
 {
     previous = maketime(0,1,0);
     prevelapsed = 0;
-    var tmap ="\n";
     for (i=0; i < gTimePairs.length; i++) {
 	    var t = gTimePairs[i];
 	    elapsed = t.abs - previous.abs;
@@ -63,15 +60,14 @@ function tempomap ()
 		}
 	    // the current tempo
 	    tempo = 60 * (t.music - previous.music) / elapsed;
-	    tmap += Math.round(prevelapsed*1000) + " _tempo " + tempo + ";\n";
-	    tmap += 0 + " _turnedit /ITL/scene/_* date " + previous.num + " " + previous.denum + ";\n";
+	    outlet (1, Math.round(prevelapsed*1000) + " _tempo " + tempo);
+	    outlet (1, 0 + " _turnedit /ITL/scene/_* date " + previous.num + " " + previous.denum);
 		prevelapsed = elapsed;	
 		previous = t;
     }
-    outlet (1, tmap);
 }
 
-// builds a point
+// ---------------------------------------------
 function time (num, denum)
 {
     var t = {};
@@ -92,6 +88,7 @@ function watchmsg(watcher, target, start, end, page)
 			+ time2string(end) + " \"" + target + "\" \"page\" " + page;
 }
 
+// ---------------------------------------------
 function generate()
 {
 	watcher= "/ITL/scene/_pageturner";
