@@ -91,7 +91,7 @@ class export IGlue : public MsgListener, public QObject
 	int		fTimerID;
 	udpinfo fUDP;
 
-	SIScene	fScene;
+//	SIScene	fScene;
 	
 	public :
 				 IGlue(int udpport, int outport, int errport);
