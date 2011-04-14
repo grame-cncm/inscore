@@ -153,11 +153,6 @@ void IGlue::initialize (bool offscreen)
 //	scene->setView (new VSceneView (scene->getOSCAddress(), graphscene ));
 //	fScene = scene;
 
-//	SIScene	scene1 = IScene::create("scene1", fModel);
-//	fModel->add (scene1);
-//	scene1->createVirtualNodes();
-//	scene1->setView (new VSceneView (scene1->getOSCAddress(), new QGraphicsScene ));
-
 	fTimeTask = fModel;
 	if (!OSCStream::start())
 		throw("Cannot initialize output udp streams");
