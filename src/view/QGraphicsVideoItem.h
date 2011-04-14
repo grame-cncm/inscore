@@ -56,8 +56,8 @@ class QGraphicsVideoItem : public QGraphicsProxyWidget
 			fVideoWidget->setScaleMode(Phonon::VideoWidget::FitInView);
 			fVideoWidget->setAspectRatio( Phonon::VideoWidget::AspectRatioWidget );
 			
-			fPath = Phonon::createPath(fMedia, fVideoWidget);
 			setWidget(fVideoWidget);
+			fPath = Phonon::createPath(fMedia, fVideoWidget);
 		}
 
 	protected:
