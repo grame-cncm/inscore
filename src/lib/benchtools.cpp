@@ -16,7 +16,7 @@
 
   Grame Research Laboratory, 9, rue du Garet 69001 Lyon - France
   research@grame.fr
-  
+
 */
 
 #include "benchtools.h"
@@ -42,14 +42,14 @@ static bool					gRunning = false;
 //_________________________________________________________________________________
 // Returns the number of clock cycles elapsed since the last reset of the processor
 //_________________________________________________________________________________
-#ifndef WIN32
+#if !defined(WIN32) || defined(__MINGW32__)
 __uint64  rdtsc(void)
 {
 	union {
 		__uint32 i32[2];
 		__uint64 i64;
 	} count;
-	
+
 	__asm__ __volatile__("rdtsc" : "=a" (count.i32[0]), "=d" (count.i32[1]));
 
      return count.i64;
@@ -68,7 +68,7 @@ __uint64 __cdecl rdtsc(void)
 
 #define kTimeOffset  60*60*24*365*40
 //_________________________________________________________________________________
-// time returned as usec 
+// time returned as usec
 // (absolute time not exactly known but could be computed from time offset)
 //_________________________________________________________________________________
 #ifdef WIN32
@@ -77,7 +77,7 @@ __uint64  getTime (void)	{ return GetTickCount() * 1000; }
 __uint64  getTime(void)
 {
 	struct timeval time;
-	if (gettimeofday(&time, 0) == 0) 
+	if (gettimeofday(&time, 0) == 0)
 		return ((time.tv_sec - kTimeOffset) * 1000000) + time.tv_usec;
 	return 0;
 }

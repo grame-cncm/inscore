@@ -38,11 +38,21 @@ namespace inscore
 
 #else
 
+#ifndef __uint32
 #define __uint32	unsigned int
-#define __uint64	unsigned long long int
+#endif
 
+#ifndef __uint64
+#define __uint64	unsigned long long int
+#endif
+
+#ifndef __int32
 #define __int32		int
+#endif
+
+#ifndef __int64
 #define __int64		long long int
+#endif
 #endif
 
 #ifndef WIN32
