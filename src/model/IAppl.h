@@ -128,6 +128,8 @@ class IAppl : public IObject, public PeriodicTask
 
 		IMessage*	hello() const;
 		void		helloMsg() const;
+		std::string	guidoversion() const;
+		std::string	musicxmlversion() const;
 
 		/// \brief application \c 'require' message handler. Provided to check for version number.
 		virtual MsgHandler::msgStatus requireMsg(const IMessage* msg);

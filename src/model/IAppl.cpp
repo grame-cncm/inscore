@@ -30,6 +30,9 @@
 #include <stdlib.h>
 #include <sstream>
 
+#include "GUIDOEngine.h"
+#include "QGuidoImporter.h"
+
 #include "IAppl.h"
 #include "IApplVNodes.h"
 #include "IGlue.h"
@@ -137,6 +140,9 @@ IAppl::IAppl(int udpport, int outport, int errport, bool offscreen)
 	fGetMsgHandlerMap["outport"]	= TGetParamMsgHandler<int>::create(fUDP.fOutPort);
 	fGetMsgHandlerMap["errport"]	= TGetParamMsgHandler<int>::create(fUDP.fErrPort);
 	fGetMsgHandlerMap["defaultShow"]= TGetParamMsgHandler<bool>::create(fDefaultShow);
+
+	fGetMsgHandlerMap["guido-version"]		= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::guidoversion);
+	fGetMsgHandlerMap["musicxml-version"]	= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::musicxmlversion);
 
 	fMsgHandlerMap["rootPath"]		= TSetMethodMsgHandler<IAppl, string>::create(this, &IAppl::setRootPath);
 	fMsgHandlerMap["port"]			= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPInPort);
@@ -271,6 +277,30 @@ void IAppl::helloMsg() const
 	msg->print(oscout);
 	delete msg;
 }
+
+//--------------------------------------------------------------------------
+string IAppl::guidoversion() const
+{
+	int major, minor, sub;
+	GuidoGetVersionNums(&major, &minor, &sub);
+	stringstream s;
+	s << major << '.' << minor << '.' << sub;
+	return s.str();
+}
+
+//--------------------------------------------------------------------------
+string IAppl::musicxmlversion() const
+{
+	if (QGuidoImporter::musicxmlSupported())
+	{	
+		string versions = QGuidoImporter::musicxmlVersion();
+		versions += " using the guido converter version ";
+		versions += QGuidoImporter::musicxml2guidoVersion();
+		return versions;
+	}
+	return "not available";
+}
+
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IAppl::requireMsg(const IMessage* msg)
 {

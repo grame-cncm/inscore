@@ -12,6 +12,10 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 0.77
+- get guido-version and musicxml-version messages supported by the application (/ITL address)
+
+----------------------------------------------------
 Version 0.76
 - new 'require' message supported by the /ITL node (see documentation)
 - new event named 'newElement' supported at scene level
