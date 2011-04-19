@@ -45,9 +45,16 @@ class QGuidoImporter
 {
 	public:
 		typedef int (* musicxml2guido)(const char *file, bool generateBars, std::ostream& out);
+		typedef const char* (* musicxmlversion)();
 
 		/// \return true when the conversion methods are available
 		static bool musicxmlSupported();
+
+		/// \return the musicxml lib version as a string
+		static const char* musicxmlVersion();
+
+		/// \return the musicxml to guido converter version as a string
+		static const char* musicxml2guidoVersion();
 
 		/*! \brief converts a musicxml file to guido
 		
@@ -68,6 +75,8 @@ class QGuidoImporter
 		static bool musicxmlString2Guido (const char *str, bool generateBars, std::ostream& out);
 
 	private:
+		static musicxmlversion mMusicXMLVersion;
+		static musicxmlversion mMusicXML2GuidoVersion;
 		static musicxml2guido mMusicXMLFileConverter;
 		static musicxml2guido mMusicXMLStringConverter;
 		static bool mMusicXMLSupported;
