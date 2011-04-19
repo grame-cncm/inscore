@@ -122,7 +122,6 @@ ITLMsg : 'quit'
 		| ('errport' int32)
 		| ('defaultShow' int32)
 		| ('load' filePath)
-		| 'version'
 		| ('require' int32 oscMsg)
 		| 'hello'
 \end{rail}
@@ -133,8 +132,8 @@ ITLMsg : 'quit'
 \index{ITL messages!defaultShow}
 \index{ITL messages!load}
 \index{ITL messages!hello}
-\index{ITL messages!version}
 \index{ITL messages!require}
+
 
 \begin{itemize}
 \item \OSC{quit}: requests the client application to quit.
@@ -152,11 +151,27 @@ The default \OSC{defaultShow} value is 1.
 \item \OSC{hello}: query the host IP number. The message is intended for ITL applications discovery. Answer to the query has the following format: \\
 \example \OSC{IP} \OSC{inPort outPort errPort} where \OSC{IP} is sent as a string and port numbers as integer values.
 
-\item \OSC{version}: version number request.
-
 \item \OSC{require}: check for a version number equal or greater to the number given as argument. The version number should be encoded as an integer value (for example: 76 for version 0.76, 112 for version 1.12). An OSC message is associated to the require message with the same syntax and semantic described in section \fullref{interaction}. This message is triggered when the check fails.
 
 \end{itemize}
+
+The application supports the \OSC{get} messages for its parameters (see section \fullref{getsect}). In addition, it provides the following messages to query version numbers.
+
+\begin{rail}
+ITLRequest : 'get'  ('version' | 'guido-version' | 'musicxml-version')
+\end{rail}
+\index{ITL messages!version}
+\index{ITL messages!guido-version}
+\index{ITL messages!musicxml-version}
+
+\begin{itemize}
+\item \OSC{version}: version number request.
+\item \OSC{guido-version}: Guido engine version number request.
+\item \OSC{musicxml-version}: MusicXML and Guido converter version numbers request. Returns "not available" when the library is not found.
+
+\end{itemize}
+
+
 
 %===============================
 %:Scene messages
