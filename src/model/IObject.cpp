@@ -424,10 +424,10 @@ IMessageList IObject::getParams() const
 	while (i != fGetMsgHandlerMap.end()) {
 		const string& what = i->first;
 		if (what == "watch")
-			outMsgs = getWatch();
+			outMsgs += getWatch();
 		else {
 			const SGetParamMsgHandler& handler = what.size() ? i->second : 0;
-			if (handler) outMsgs += getParam(i->first, i->second);
+			if (handler)  outMsgs += getParam(i->first, i->second);
 		}
 		i++;
 	}
