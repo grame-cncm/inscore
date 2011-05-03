@@ -38,6 +38,8 @@ using namespace std;
 //#define PRECISION 0.0001f
 //#define PRECISION 1.f
 
+#define kGapAdjust	1.f
+
 namespace inscore
 {
 
@@ -57,11 +59,12 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
 	for ( int i = 0 ;  i < fMapping.size(); i++ )
 	{
 		QRectF sourceRect( fMapping[i].first.x(), fMapping[i].first.y(), fMapping[i].first.width(), fMapping[i].first.height());
-		QRectF destRect( fMapping[i].second.x(), fMapping[i].second.y(), fMapping[i].second.width(), fMapping[i].second.height());
+		QRectF destRect( fMapping[i].second.x(), fMapping[i].second.y(), fMapping[i].second.width() + kGapAdjust, fMapping[i].second.height());
 
 //qDebug() << "QStretchTilerItem::paint: " << sourceRect << " \t-> " << destRect;
 //		painter->drawImage( destRect , fCache , sourceRect );
-		painter->drawImage( fMapping[i].second , fCache , fMapping[i].first );
+//		painter->drawImage( fMapping[i].second , fCache , fMapping[i].first );
+		painter->drawImage( destRect , fCache , fMapping[i].first );
 
 //		float yd = fMapping[i].second.y() + i;
 //		painter->drawLine( fMapping[i].second.left(), yd, fMapping[i].second.right(), yd );
