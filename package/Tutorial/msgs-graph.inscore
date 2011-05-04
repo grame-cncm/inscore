@@ -1,0 +1,19 @@
+
+/ITL/scene/* del
+/ITL/tutorial watch 				% clear the new element event
+
+/ITL/scene/title set "html" "<h1>The message details</h1>"
+/ITL/scene/title y -0.7
+/ITL/scene/title scale 1.8
+
+/ITL/scene/msgsd2 set htmlf "rsrc/msgsd2.html"
+/ITL/scene/msgsd2 scale 2.0
+/ITL/scene/msgsd2 y -0.0
+/ITL/scene/msgsd2 xorigin -1.
+/ITL/scene/msgsd2 x -0.75
+
+
+/ITL/scene load "next.inscore"
+/ITL/scene/next watch "mouseDown" "/ITL" "load" "msgs-time.inscore"
+
+/ITL/scene load "summary.inscore"
