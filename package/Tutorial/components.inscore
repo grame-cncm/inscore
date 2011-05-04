@@ -1,4 +1,10 @@
 
+/ITL/tutorial new
+/ITL/scene/* del
+/ITL/tutorial/* del
+
+/ITL/scene x -0.51
+/ITL/tutorial x 0.51
 /ITL/scene/* del
 /ITL/tutorial/* del
 
@@ -37,6 +43,6 @@
 
 
 /ITL/scene load "next.inscore"
-/ITL/scene/next watch "mouseDown" "/ITL" "load" "toto.inscore"
+/ITL/scene/next watch "mouseDown" "/ITL" "load" "synchronization.inscore"
 /ITL/scene load "summary.inscore"
 

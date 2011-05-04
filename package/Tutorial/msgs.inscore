@@ -7,6 +7,7 @@
 /ITL/scene/* del
 
 /ITL/tutorial watch "newElement" "/ITL/scene" "load" "msgsdone.inscore"
+/ITL/tutorial watch+ "newElement" "/ITL/tutorial" "watch"
 
 
 /ITL/scene/title set "html" "<h1>Your first score</h1>"
