@@ -378,8 +378,6 @@ class VGDevice
 //		virtual	void			ExportToFile( const char * inFilePath ) = 0;
 
 
-	protected:
-
 		/// Returns the platform-specific device context object.
 		virtual void *			GetNativeContext() const = 0;
 
