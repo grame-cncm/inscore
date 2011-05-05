@@ -116,6 +116,9 @@ void INScoreScene::openscene (const char* fullpath)
 		string path = file.substr(0, pos);
 		INScore::MessagePtr msg = INScore::newMessage ("rootPath");
 		INScore::add (msg, path.c_str());
+		INScore::postMessage (fOscAddress.c_str(), msg);
+		msg = INScore::newMessage ("rootPath");
+		INScore::add (msg, path.c_str());
 		INScore::postMessage (appl.c_str(), msg);
 	}
 	INScore::MessagePtr msg = INScore::newMessage ("load");
