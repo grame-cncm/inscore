@@ -37,12 +37,13 @@
 /ITL/scene/m* watch+ "mouseLeave" 	"/ITL/$scene/$self" "red" 0
 
 /ITL/scene/m1 watch  "mouseDown" 	"/ITL/tutorial/myobject" "set" "rect" 0.2 0.2
-/ITL/scene/m2 watch  "mouseDown" 	"/ITL/tutorial/myobject" "set" "img" "rsrc/INScore.png"
+/ITL/scene/m2 watch  "mouseDown" 	"/ITL/tutorial" "rootPath" "$(/ITL/scene get rootPath)"
+/ITL/scene/m2 watch+ "mouseDown" 	"/ITL/tutorial/myobject" "set" "img" "rsrc/INScore.png"
 /ITL/scene/m3 watch  "mouseDown" 	"/ITL/tutorial/myobject" "set" "txt" "Hello world!"
 /ITL/scene/m4 watch  "mouseDown" 	"/ITL/tutorial/myobject" "set" "ellipse" 0.3 0.3
 
 
 /ITL/scene load "next.inscore"
-/ITL/scene/next watch "mouseDown" "/ITL" "load" "synchronization.inscore"
+/ITL/scene/next watch "mouseDown" "/ITL/scene" "load" "synchronization.inscore"
 /ITL/scene load "summary.inscore"
 

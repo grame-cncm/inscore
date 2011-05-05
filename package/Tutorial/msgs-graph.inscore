@@ -14,6 +14,6 @@
 
 
 /ITL/scene load "next.inscore"
-/ITL/scene/next watch "mouseDown" "/ITL" "load" "msgs-time.inscore"
+/ITL/scene/next watch "mouseDown" "/ITL/scene" "load" "msgs-time.inscore"
 
 /ITL/scene load "summary.inscore"

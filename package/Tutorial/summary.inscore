@@ -7,5 +7,5 @@
 /ITL/scene/summary watch "mouseEnter" 	"/ITL/$scene/$self" "alpha" 255
 /ITL/scene/summary watch "mouseLeave" 	"/ITL/$scene/$self" "alpha" 160
 
-/ITL/scene/summary watch "mouseDown" "/ITL" "load" "menu.inscore"
+/ITL/scene/summary watch "mouseDown" 	"/ITL/scene" "load" "menu.inscore"
 

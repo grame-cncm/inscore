@@ -21,8 +21,8 @@
 /ITL/scene/icon alpha 50
 
 
-/ITL/scene/menu1 watch "mouseDown" 		"/ITL" "load" "msgs.inscore"
-/ITL/scene/menu2 watch "mouseDown" 		"/ITL" "load" "components.inscore"
-/ITL/scene/menu3 watch "mouseDown" 		"/ITL" "load" "synchronization.inscore"
+/ITL/scene/menu1 watch "mouseDown" 		"/ITL/scene" "load" "msgs.inscore"
+/ITL/scene/menu2 watch "mouseDown" 		"/ITL/scene" "load" "components.inscore"
+/ITL/scene/menu3 watch "mouseDown" 		"/ITL/scene" "load" "synchronization.inscore"
 /ITL/scene/menu* watch "mouseEnter" 	"/ITL/$scene/$self" "red" 255
 /ITL/scene/menu* watch "mouseLeave" 	"/ITL/$scene/$self" "red" 0

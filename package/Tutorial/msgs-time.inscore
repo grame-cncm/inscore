@@ -12,5 +12,5 @@
 /ITL/scene/msgsd3 x -0.75
 
 /ITL/scene load "next.inscore"
-/ITL/scene/next watch "mouseDown" "/ITL" "load" "components.inscore"
+/ITL/scene/next watch "mouseDown" "/ITL/scene" "load" "components.inscore"
 /ITL/scene load "summary.inscore"
