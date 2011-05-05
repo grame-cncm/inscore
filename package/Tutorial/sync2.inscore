@@ -12,27 +12,29 @@
 /ITL/scene/title y -0.7
 /ITL/scene/title scale 2.0
 
-/ITL/scene/sync1 set htmlf "rsrc/sync1.html"
-/ITL/scene/sync1 scale 2.0
-/ITL/scene/sync1 y -0.28
-/ITL/scene/sync1 xorigin -1.
-/ITL/scene/sync1 x -0.75
+/ITL/scene/sync2 set htmlf "rsrc/sync2.html"
+/ITL/scene/sync2 scale 2.0
+/ITL/scene/sync2 y -0.2
+/ITL/scene/sync2 xorigin -1.
+/ITL/scene/sync2 x -0.75
 
 /ITL/tutorial/score set gmnf "rsrc/fuga.gmn"
 /ITL/tutorial/score scale 2.5
 /ITL/tutorial/cursor set ellipse 0.1 0.1
 /ITL/tutorial/cursor color 255 0 0 120
+/ITL/tutorial/cursor date 7 1
+/ITL/tutorial/cursor duration 2 4
 
 /ITL/scene/m1 set txt "/ITL/tutorial/sync cursor score"
-/ITL/scene/m2 set txt "/ITL/tutorial/sync cursor"
-/ITL/scene/m3 set txt "/ITL/tutorial/cursor date  12 4"
-/ITL/scene/m4 set txt "/ITL/tutorial/cursor date  14 4"
-/ITL/scene/m5 set txt "/ITL/tutorial/cursor clock"
+/ITL/scene/m2 set txt "/ITL/tutorial/sync cursor score h"
+/ITL/scene/m3 set txt "/ITL/tutorial/cursor duration 1 4"
+/ITL/scene/m4 set txt "/ITL/tutorial/cursor duration 2 4"
+/ITL/scene/m5 set txt "/ITL/tutorial/cursor ddate 1 8"
 /ITL/scene/m1 y 0.1
-/ITL/scene/m2 y 0.5
-/ITL/scene/m3 y 0.2
-/ITL/scene/m4 y 0.3
-/ITL/scene/m5 y 0.4
+/ITL/scene/m2 y 0.2
+/ITL/scene/m3 y 0.3
+/ITL/scene/m4 y 0.4
+/ITL/scene/m5 y 0.5
 /ITL/scene/m* xorigin -1.
 /ITL/scene/m* x -0.73
 /ITL/scene/m* scale 1.9
@@ -44,12 +46,10 @@
 /ITL/scene/m* watch+ "mouseLeave" 	"/ITL/$scene/$self" "red" 0
 
 /ITL/scene/m1 watch  "mouseDown" 	"/ITL/tutorial/sync" "cursor" "score"
-/ITL/scene/m2 watch  "mouseDown" 	"/ITL/tutorial/sync" "cursor"
-/ITL/scene/m2 watch+ "mouseDown" 	"/ITL/tutorial/cursor" x 0.
-/ITL/scene/m2 watch+ "mouseDown" 	"/ITL/tutorial/cursor" y 0.
-/ITL/scene/m3 watch  "mouseDown" 	"/ITL/tutorial/cursor" "date" 12 4
-/ITL/scene/m4 watch  "mouseDown" 	"/ITL/tutorial/cursor" "date" 14 4
-/ITL/scene/m5 watch  "mouseDown" 	"/ITL/tutorial/cursor" "clock"
+/ITL/scene/m2 watch  "mouseDown" 	"/ITL/tutorial/sync" "cursor" "score" "h"
+/ITL/scene/m3 watch  "mouseDown" 	"/ITL/tutorial/cursor" "duration" 1 4
+/ITL/scene/m4 watch  "mouseDown" 	"/ITL/tutorial/cursor" "duration" 2 4
+/ITL/scene/m5 watch  "mouseDown" 	"/ITL/tutorial/cursor" "ddate" 1 8
 
 
 /ITL/scene load "next.inscore"
