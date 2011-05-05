@@ -65,24 +65,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 A scene may be viewed as a window on the score elements. Its address is <TT>/ITL/<I>sceneIdentifier</I></TT> where <TT><I>sceneIdentifier</I></TT> is the scene name. It handles the following messages:
 <BR>
 <IMG
- WIDTH="290" HEIGHT="278" ALIGN="BOTTOM" BORDER="0"
- SRC="img6.gif"
+ WIDTH="290" HEIGHT="316" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
  ALT="\begin{rail}
 sceneMsg : 'new'
 \vert 'del'
-\vert ('load' filePath)
-\vert 'reset'
+\vert ('rootPath' path)
+\vert ('lo...
+...set'
 \vert 'foreground'
 \vert ('fullscreen' int32)
 \vert commonMsg
 \end{rail}">
 <BR>
-<A NAME="133"></A>
-<A NAME="134"></A>
-<A NAME="135"></A>
-<A NAME="136"></A>
-<A NAME="137"></A>
-<A NAME="138"></A>
+<A NAME="143"></A>
+<A NAME="144"></A>
+<A NAME="145"></A>
+<A NAME="146"></A>
+<A NAME="147"></A>
+<A NAME="148"></A>
+<A NAME="149"></A>
+<A NAME="150"></A>
 
 <P>
 
@@ -90,6 +93,8 @@ sceneMsg : 'new'
 <LI><TT>new</TT>: creates a new scene and opens it in a new window.
 </LI>
 <LI><TT>del</TT>: deletes a scene and closes the corresponding window.
+</LI>
+<LI><TT>rootPath</TT>: <I>rootPath</I> of a scene is the default path where the scene reads or writes a file when a relative path is used for this file. When no value has been specified, the application  <I>rootPath</I> is used.
 </LI>
 <LI><TT>load</TT>: loads an INScore file to the scene. Note that the OSC addresses are translated to the scene OSC address.
 </LI>
@@ -104,7 +109,35 @@ sceneMsg : 'new'
 </UL>
 
 <P>
-<BR><HR>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html204"
+  HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html198"
+  HREF="OSCMsg.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html192"
+  HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html200"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html202"
+  HREF="node63.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html205"
+  HREF="node6.html">4. Common components messages</A>
+<B> Up:</B> <A NAME="tex2html199"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html193"
+  HREF="node4.html">2. ITL messages</A>
+ &nbsp; <B>  <A NAME="tex2html201"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html203"
+  HREF="node63.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

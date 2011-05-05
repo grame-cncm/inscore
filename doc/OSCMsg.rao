@@ -110,25 +110,28 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {7}{ sceneMsg : 'new' | 'del' | ('load' filePath) | 'reset' | 'foreground' | ('fullscreen' int32) | commonMsg }
+\rail@i {7}{ sceneMsg : 'new' | 'del' | ('rootPath' path) | ('load' filePath) | 'reset' | 'foreground' | ('fullscreen' int32) | commonMsg }
 \rail@o {7}{
 \rail@index{sceneMsg}
-\rail@begin{7}{sceneMsg}
+\rail@begin{8}{sceneMsg}
 \rail@bar
 \rail@term{new}[]
 \rail@nextbar{1}
 \rail@term{del}[]
 \rail@nextbar{2}
+\rail@term{rootPath}[]
+\rail@nont{path}[]
+\rail@nextbar{3}
 \rail@term{load}[]
 \rail@nont{filePath}[]
-\rail@nextbar{3}
-\rail@term{reset}[]
 \rail@nextbar{4}
-\rail@term{foreground}[]
+\rail@term{reset}[]
 \rail@nextbar{5}
+\rail@term{foreground}[]
+\rail@nextbar{6}
 \rail@term{fullscreen}[]
 \rail@token{int32}[]
-\rail@nextbar{6}
+\rail@nextbar{7}
 \rail@nont{commonMsg}[]
 \rail@endbar
 \rail@end

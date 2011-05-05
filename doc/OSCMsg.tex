@@ -181,6 +181,7 @@ A scene may be viewed as a window on the score elements. Its address is \OSC{/IT
 \begin{rail}
 sceneMsg :  'new'
 			| 'del'
+			| ('rootPath' path) 
 			| ('load' filePath)
 			| 'reset'
 			| 'foreground'
@@ -188,15 +189,18 @@ sceneMsg :  'new'
 			| commonMsg
 \end{rail}
 \index{Scene messages}
-\index{Scene messages! create}
-\index{Scene messages! close}
-\index{Scene messages! reset}
-\index{Scene messages! load}
+\index{Scene messages!new}
+\index{Scene messages!del}
+\index{Scene messages!rootPath}
+\index{Scene messages!load}
+\index{Scene messages!reset}
+\index{Scene messages!foreground}
 \index{Scene messages!fullscreen}
 
 \begin{itemize}
 \item \OSC{new}: creates a new scene and opens it in a new window.
 \item \OSC{del}: deletes a scene and closes the corresponding window.
+\item \OSC{rootPath}: \emph{rootPath} of a scene is the default path where the scene reads or writes a file when a relative path is used for this file. When no value has been specified, the application  \emph{rootPath} is used.
 \item \OSC{load}: loads an INScore file to the scene. Note that the OSC addresses are translated to the scene OSC address.
 \item \OSC{reset}: clears the scene (i.e. delete all components) and resets the scene to its default state (position, size and color).
 \item \OSC{foreground}: put the scene to foreground.

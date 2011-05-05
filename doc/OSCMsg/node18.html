@@ -72,27 +72,27 @@ The <TT>click</TT> and <TT>select</TT> messages can be sent to any address with 
 <BR>
 <IMG
  WIDTH="274" HEIGHT="86" ALIGN="BOTTOM" BORDER="0"
- SRC="img27.gif"
+ SRC="img28.gif"
  ALT="\begin{rail}
 click : 'click' ( \vert clickMode)
 \end{rail}">
 <BR>
-<A NAME="364"></A>
+<A NAME="379"></A>
 
 <P>
 <BR>
 <IMG
  WIDTH="226" HEIGHT="200" ALIGN="BOTTOM" BORDER="0"
- SRC="img28.gif"
+ SRC="img29.gif"
  ALT="\begin{rail}
 clickMode : 'topleft' \vert 'bottomright' \vert 'topright' \vert 'bottomleft' \vert 'center'
 \end{rail}">
 <BR>
-<A NAME="367"></A>
-<A NAME="368"></A>
-<A NAME="369"></A>
-<A NAME="370"></A>
-<A NAME="371"></A>
+<A NAME="382"></A>
+<A NAME="383"></A>
+<A NAME="384"></A>
+<A NAME="385"></A>
+<A NAME="386"></A>
 
 <P>
 
@@ -108,7 +108,7 @@ Reply of the <TT>click</TT> message has the following form:
 <BR>
 <IMG
  WIDTH="454" HEIGHT="114" ALIGN="BOTTOM" BORDER="0"
- SRC="img29.gif"
+ SRC="img30.gif"
  ALT="\begin{rail}
 clickReply : OSCAddress clickMode ( \vert (identifier +))
 \end{rail}">
@@ -121,24 +121,24 @@ where 'identifier' is a component name. Note that 'identifiers' are sorted by de
 <BR>
 <IMG
  WIDTH="288" HEIGHT="86" ALIGN="BOTTOM" BORDER="0"
- SRC="img30.gif"
+ SRC="img31.gif"
  ALT="\begin{rail}
 select : 'select' ( \vert selectMode)
 \end{rail}">
 <BR>
-<A NAME="386"></A>
+<A NAME="401"></A>
 
 <P>
 <BR>
 <IMG
  WIDTH="210" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
- SRC="img31.gif"
+ SRC="img32.gif"
  ALT="\begin{rail}
 selectMode : 'intersect' \vert 'include'
 \end{rail}">
 <BR>
-<A NAME="389"></A>
-<A NAME="390"></A>
+<A NAME="404"></A>
+<A NAME="405"></A>
 
 <P>
 
@@ -156,7 +156,7 @@ Reply of the <TT>select</TT> message is similar to <TT>click</TT> reply:
 <BR>
 <IMG
  WIDTH="459" HEIGHT="114" ALIGN="BOTTOM" BORDER="0"
- SRC="img32.gif"
+ SRC="img33.gif"
  ALT="\begin{rail}
 selectReply : OSCAddress selectMode ( \vert (identifier +))
 \end{rail}">

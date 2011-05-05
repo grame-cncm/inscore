@@ -65,15 +65,14 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 ITL messages are messages global to the client application, which address is <TT>/ITL</TT>. It handles the following messages:
 <BR>
 <IMG
- WIDTH="344" HEIGHT="392" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="344" HEIGHT="354" ALIGN="BOTTOM" BORDER="0"
  SRC="img5.gif"
  ALT="\begin{rail}
 ITLMsg : 'quit'
 \vert ('rootPath' path)
 \vert ('port' int32)
 \...
-...Path)
-\vert 'version'
+...vert ('load' filePath)
 \vert ('require' int32 oscMsg)
 \vert 'hello'
 \end{rail}">
@@ -86,7 +85,6 @@ ITLMsg : 'quit'
 <A NAME="93"></A>
 <A NAME="94"></A>
 <A NAME="95"></A>
-<A NAME="96"></A>
 
 <P>
 
@@ -120,11 +118,36 @@ The default <TT>defaultShow</TT> value is 1.
 
 <P>
 </LI>
-<LI><TT>version</TT>: version number request.
+<LI><TT>require</TT>: check for a version number equal or greater to the number given as argument. The version number should be encoded as an integer value (for example: 76 for version 0.76, 112 for version 1.12). An OSC message is associated to the require message with the same syntax and semantic described in section <A HREF="node48.html#interaction">14</A> p.<A HREF="node48.html#interaction"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>. This message is triggered when the check fails.
 
 <P>
 </LI>
-<LI><TT>require</TT>: check for a version number equal or greater to the number given as argument. The version number should be encoded as an integer value (for example: 76 for version 0.76, 112 for version 1.12). An OSC message is associated to the require message with the same syntax and semantic described in section <A HREF="node48.html#interaction">14</A> p.<A HREF="node48.html#interaction"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>. This message is triggered when the check fails.
+</UL>
+
+<P>
+The application supports the <TT>get</TT> messages for its parameters (see section <A HREF="node21.html#getsect">7</A> p.<A HREF="node21.html#getsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). In addition, it provides the following messages to query version numbers.
+
+<P>
+<BR>
+<IMG
+ WIDTH="320" HEIGHT="125" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.gif"
+ ALT="\begin{rail}
+ITLRequest : 'get' ('version' \vert 'guido-version' \vert 'musicxml-version')
+\end{rail}">
+<BR>
+<A NAME="129"></A>
+<A NAME="130"></A>
+<A NAME="131"></A>
+
+<P>
+
+<UL>
+<LI><TT>version</TT>: version number request.
+</LI>
+<LI><TT>guido-version</TT>: Guido engine version number request.
+</LI>
+<LI><TT>musicxml-version</TT>: MusicXML and Guido converter version numbers request. Returns "not available" when the library is not found.
 
 <P>
 </LI>

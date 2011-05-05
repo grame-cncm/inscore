@@ -71,18 +71,18 @@ The global form of the message is:
 <BR>
 <IMG
  WIDTH="384" HEIGHT="87" ALIGN="BOTTOM" BORDER="0"
- SRC="img44.gif"
+ SRC="img45.gif"
  ALT="\begin{rail}
 mapMsg : 'map' ( \vert mapName ) (relation \vert ( del ))
 \end{rail}">
 <BR>
-<A NAME="591"></A>
+<A NAME="606"></A>
 
 <P>
 <BR>
 <IMG
  WIDTH="478" HEIGHT="225" ALIGN="BOTTOM" BORDER="0"
- SRC="img45.gif"
+ SRC="img46.gif"
  ALT="\begin{rail}
 relation :
 ([1] float2DSegment relativeTimeSegment ) +
@@ -95,10 +95,10 @@ relation :
 <P>
 Segments are expressed as a list of intervals. For a 1 dimension resource, a segment is a made of a single interval. For a 2 dimensions resource, a segment is a made of 2 intervals: an interval on the <IMG
  WIDTH="11" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img46.gif"
+ SRC="img47.gif"
  ALT="$x$">-axis and one on the <IMG
  WIDTH="11" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img47.gif"
+ SRC="img48.gif"
  ALT="$y$">-axis for graphic based resource, or an interval on columns and one on lines for text based resources. Intervals are right-opened.
 
 <P>
@@ -125,7 +125,7 @@ The <TT>del</TT> command deletes the mapping specified with <TT>mapName</TT>, or
 <DIV ALIGN="CENTER">
 
 <DIV ALIGN="CENTER">
-<A NAME="611"></A>
+<A NAME="626"></A>
 <TABLE CELLPADDING=3 BORDER="1">
 <CAPTION><STRONG>Table 9.1:</STRONG>
 Mapping resources for each component</CAPTION>
@@ -157,7 +157,7 @@ Note for <TT>html, htmlf</TT> + guido score mappings
 <BR>
 <IMG
  WIDTH="295" HEIGHT="51" ALIGN="BOTTOM" BORDER="0"
- SRC="img48.gif"
+ SRC="img49.gif"
  ALT="\begin{rail}
 relativeTimeSegment : '(' relativeTimeInterval ')'
 \end{rail}">
@@ -165,7 +165,7 @@ relativeTimeSegment : '(' relativeTimeInterval ')'
 <BR>
 <IMG
  WIDTH="351" HEIGHT="51" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.gif"
+ SRC="img50.gif"
  ALT="\begin{rail}
 float2DSegment : '(' floatInterval floatInterval ')'
 \end{rail}">
@@ -173,7 +173,7 @@ float2DSegment : '(' floatInterval floatInterval ')'
 <BR>
 <IMG
  WIDTH="326" HEIGHT="51" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.gif"
+ SRC="img51.gif"
  ALT="\begin{rail}
 int2DSegment : '(' intInterval intInterval ')'
 \end{rail}">
@@ -181,7 +181,7 @@ int2DSegment : '(' intInterval intInterval ')'
 <BR>
 <IMG
  WIDTH="232" HEIGHT="51" ALIGN="BOTTOM" BORDER="0"
- SRC="img51.gif"
+ SRC="img52.gif"
  ALT="\begin{rail}
 int1DSegment : '(' intInterval ')'
 \end{rail}">
@@ -191,7 +191,7 @@ int1DSegment : '(' intInterval ')'
 <BR>
 <IMG
  WIDTH="331" HEIGHT="48" ALIGN="BOTTOM" BORDER="0"
- SRC="img52.gif"
+ SRC="img53.gif"
  ALT="\begin{rail}
 relativeTimeInterval : '[' rational ',' rational '['
 \end{rail}">
@@ -199,7 +199,7 @@ relativeTimeInterval : '[' rational ',' rational '['
 <BR>
 <IMG
  WIDTH="357" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
- SRC="img53.gif"
+ SRC="img54.gif"
  ALT="\begin{rail}
 floatInterval : '[' float32 ',' float32 '['
 \end{rail}">
@@ -207,7 +207,7 @@ floatInterval : '[' float32 ',' float32 '['
 <BR>
 <IMG
  WIDTH="320" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
- SRC="img54.gif"
+ SRC="img55.gif"
  ALT="\begin{rail}
 intInterval : '[' int32 ',' int32 '['
 \end{rail}">
@@ -216,14 +216,14 @@ intInterval : '[' int32 ',' int32 '['
 <P>
 Relative time is expressed as <TT>rational</TT> values where <IMG
  WIDTH="12" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
- SRC="img55.gif"
+ SRC="img56.gif"
  ALT="$1$"> represents a whole note.
 
 <P>
 <BR>
 <IMG
  WIDTH="241" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
- SRC="img56.gif"
+ SRC="img57.gif"
  ALT="\begin{rail}
 rational : int32 '/' int32
 \end{rail}">
