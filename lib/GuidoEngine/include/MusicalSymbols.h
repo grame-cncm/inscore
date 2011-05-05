@@ -155,6 +155,20 @@ ConstMusicalSymbolID kCodaSymbol			= 230;
 
 // version 1.39
 ConstMusicalSymbolID kP1Symbol				= 160;
+// version 1.43
+ConstMusicalSymbolID kCauDFlatSymbol		= 121;	// cautionary double flat
+ConstMusicalSymbolID kQSharpSymbol			= 178;	// a quarter sharp
+ConstMusicalSymbolID k3QSharpSymbol			= 204;	// 3/4 sharp
+ConstMusicalSymbolID kQFlatSymbol			= 205;	// a quarter flat
+ConstMusicalSymbolID k3QFlatSymbol			= 206;	// 3/4 flat
+ConstMusicalSymbolID kUpArrowSymbol			= 207;
+ConstMusicalSymbolID kDownArrowSymbol		= 208;
+ConstMusicalSymbolID kCauQSharpSymbol		= 209;	// cautionary quarter sharp
+ConstMusicalSymbolID kCau3QSharpSymbol		= 210;	// cautionary 3/4 sharp
+ConstMusicalSymbolID kCauQFlatSymbol		= 211;	// cautionary quarter flat
+ConstMusicalSymbolID kCau3QFlatSymbol		= 212;	// cautionary 3/4 flat
+ConstMusicalSymbolID kCauDSharpSymbol		= 213;	// cautionary double sharp
+
 
 /* 
 	original encoding - previous to version 1.38

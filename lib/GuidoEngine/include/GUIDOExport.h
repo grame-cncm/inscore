@@ -22,7 +22,7 @@
 
  */
 
-#if defined(WIN32) && !defined(GCC) && !defined(__MINGW_GCC)
+#if defined(WIN32) && !defined(GCC)
 
 # ifdef GUIDOExport
 #  define class_export		class _declspec (dllexport)

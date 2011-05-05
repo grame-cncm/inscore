@@ -63,7 +63,7 @@ class MapCollector
 
 			\param box a graphic rectangle expressed with no scaling and no coordinates offset.
 			\param dates a time segment containing the corresponding start and end dates
-			\param type the corresponding enclosed element type.
+			\param infos information about the corresponding element.
 		*/
 		virtual void Graph2TimeMap( const FloatRect& box, const TimeSegment& dates, const GuidoElementInfos& infos ) = 0;
 };
