@@ -65,11 +65,13 @@ IScene::IScene(const std::string& name, IObject * parent) : IRectShape(name, par
 	fMsgHandlerMap["foreground"]	= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::foreground);
 	fMsgHandlerMap["fullscreen"]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFullScreen);
 	fMsgHandlerMap["load"]			= TMethodMsgHandler<IScene>::create(this, &IScene::loadMsg);
+	fMsgHandlerMap["rootPath"]		= TSetMethodMsgHandler<IScene, string>::create(this, &IScene::setRootPath);
 
 	fGetMsgHandlerMap["fullscreen"] = TGetParamMsgHandler<bool>::create(fFullScreen);
 	fGetMsgHandlerMap[""]			= 0;	// force standard propagation of the get message
 	fGetMsgHandlerMap["effect"]		= 0;	// no effects at scene level
 	fGetMsgHandlerMap["watch"]		= TGetParamMethodHandler<IScene, IMessageList (IScene::*)() const>::create(this, &IScene::getWatch);
+	fGetMsgHandlerMap["rootPath"]	= TGetParamMsgHandler<string>::create(fRootPath);
 }
 
 //--------------------------------------------------------------------------
@@ -79,6 +81,7 @@ QGraphicsScene * IScene::getGraphicScene () const			{ return getView()->scene();
 void IScene::newScene ()	{}
 void IScene::del ()			{ IObject::del(); }
 void IScene::foreground()	{ getView()->foreground(); }
+void IScene::setRootPath(const std::string& s) { fRootPath = IAppl::checkRootPath(s);}
 
 //--------------------------------------------------------------------------
 void IScene::reset ()
@@ -127,6 +130,18 @@ void IScene::createVirtualNodes()
 SISignalNode IScene::signalsNode () const			{ return fSignals; }
 
 //--------------------------------------------------------------------------
+string IScene::getRootPath() const
+{
+	return fRootPath.size() ? fRootPath : IAppl::getRootPath();
+}
+
+//--------------------------------------------------------------------------
+string IScene::absolutePath(const std::string& path) const
+{
+	return IAppl::makeAbsolutePath (getRootPath(), path);
+}
+
+//--------------------------------------------------------------------------
 void IScene::accept (Updater* u)
 {
 	u->updateTo (SIScene(this));
@@ -150,7 +165,8 @@ void IScene::sort ()
 //--------------------------------------------------------------------------
 string IScene::address2scene (const char* addr) const
 {
-	CRegexpT<char> regexp("/ITL/[^\\/]*", EXTENDED);
+//	CRegexpT<char> regexp("/ITL/[^\\/]*", EXTENDED);
+	CRegexpT<char> regexp("/ITL/scene", EXTENDED);
 	char * replaced = regexp.Replace (addr, getOSCAddress().c_str());
 	string sceneAddress (replaced);
 	regexp.ReleaseString (replaced);
@@ -165,7 +181,7 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 		string srcfile = msg->params()[0]->value<string>("");
 		if (srcfile.size()) {
 			ITLparser p;
-			IMessageList* msgs = p.readfile(IAppl::absolutePath(srcfile).c_str());
+			IMessageList* msgs = p.readfile(absolutePath(srcfile).c_str());
 			if (msgs) {
 				for (IMessageList::const_iterator i = msgs->begin(); i != msgs->end(); i++) {
 					IMessage * msg = *i;

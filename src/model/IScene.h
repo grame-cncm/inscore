@@ -62,6 +62,7 @@ class IScene : public IRectShape, public PeriodicTask
 	SIFileWatcher	fFileWatcher;
 	SISignalNode	fSignals;
 	VSceneView *	fView;
+	std::string		fRootPath;
 	
 	public:		
 		static const std::string kSceneType;
@@ -97,6 +98,7 @@ class IScene : public IRectShape, public PeriodicTask
 	
 		/// \brief gives the scene (actually self)
 		virtual SIScene			getScene()					{ return this; }
+		virtual const IScene*	getScene() const			{ return this; }
 			
 		/*! \brief cleanup the relations set
 			\see ISync::cleanup
@@ -106,13 +108,15 @@ class IScene : public IRectShape, public PeriodicTask
 		/// \brief a periodic task to propagate modification state from masters to slaves
 		virtual void ptask ();
 		
-		QGraphicsScene * getGraphicScene () const;
-		VSceneView *	getView () const				{ return fView; }
-		void			setView (VSceneView * view) 	{ fView = view; }
-		VGraphicsItemView*	graphicView() const			{ return (VGraphicsItemView*)fView; }
-
 		/// \brief adds a subnode to the object \param node the subnode
 		virtual void	add (const nodePtr& node);
+
+		std::string			getRootPath() const;
+		std::string			absolutePath( const std::string& path ) const;
+		QGraphicsScene *	getGraphicScene () const;
+		VSceneView *		getView () const				{ return fView; }
+		void				setView (VSceneView * view) 	{ fView = view; }
+		VGraphicsItemView*	graphicView() const				{ return (VGraphicsItemView*)fView; }
 
 	protected:
 				 IScene(const std::string& name, IObject * parent);
@@ -122,6 +126,7 @@ class IScene : public IRectShape, public PeriodicTask
 		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
 		virtual IMessageList  getWatch () const		{ return IObject::getWatch(); }
 
+		void		setRootPath(const std::string& s);
 		MsgHandler::msgStatus loadMsg(const IMessage* msg);
 		void		foreground ();
 		void		newScene ();
