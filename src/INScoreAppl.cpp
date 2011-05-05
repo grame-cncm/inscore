@@ -31,7 +31,6 @@
 #include <QEvent>
 #include <QFileDialog>
 #include <QFileOpenEvent>
-#include <QGraphicsSceneDragDropEvent>
 #include <QUrl>
 #include <QDebug>
 
