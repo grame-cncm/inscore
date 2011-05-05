@@ -184,7 +184,7 @@ IAppl::~IAppl() {}
 bool IAppl::oscDebug() const								{ return fApplDebug->getOSCDebug(); }
 
 //--------------------------------------------------------------------------
-void IAppl::setRootPath(const std::string& s)
+string IAppl::checkRootPath(const std::string& s)
 {
 	if ( !QDir( QString::fromUtf8(s.c_str()) ).exists() )
 		ITLErr << "rootPath is an invalid location: " << s << ITLEndl;
@@ -192,7 +192,13 @@ void IAppl::setRootPath(const std::string& s)
 	char end = root[root.length()-1];
 	if (end == '\\')   root[root.length()-1] = '/';
 	else if (end != '/') root += '/';
-	IAppl::fRootPath = root;
+	return root;
+}
+
+//--------------------------------------------------------------------------
+void IAppl::setRootPath(const std::string& s)
+{
+	IAppl::fRootPath = checkRootPath(s);
 }
 
 //--------------------------------------------------------------------------
@@ -350,16 +356,22 @@ MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
-std::string IAppl::absolutePath( const std::string& path )
+std::string IAppl::makeAbsolutePath( const std::string& path, const std::string& file )
 {
-	const string& rootPath = getRootPath();
-	char ending = rootPath[rootPath.length()-1];
+	char ending = path[path.length()-1];
 #ifdef WIN32
 		const char* sep = (ending == '/') || (ending == '\\') ? "" : "/";
-		return ( path[1] != ':') ? ( rootPath + sep + path ) : path ;
+		return ( file[1] != ':') ? ( path + sep + file ) : file ;
 #else
 		const char* sep = (ending == '/') ? "" : "/";
-		return ( path[0] != '/' ) ? ( rootPath + sep + path ) : path ;
+		return ( file[0] != '/' ) ? ( path + sep + file ) : file ;
 #endif
 }
+
+//--------------------------------------------------------------------------
+std::string IAppl::absolutePath( const std::string& path )
+{
+	return makeAbsolutePath (getRootPath(), path);
+}
+
 }

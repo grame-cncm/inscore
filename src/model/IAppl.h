@@ -71,7 +71,7 @@ class IAppl : public IObject, public PeriodicTask
 			{ return new IAppl(udpport, outport, errport, offscreen); }
 		static std::string		getRootPath()			{ return fRootPath; }	//< returns the application root path
 		static std::string		absolutePath( const std::string& path );		//< returns the absolute path corresponding to 'path',
-																				// considering its relativity and the application root path.
+		static std::string		makeAbsolutePath( const std::string& path, const std::string& file );
 
 		bool	running() const		{ return fRunning; }
 		bool	oscDebug() const;
@@ -114,6 +114,7 @@ class IAppl : public IObject, public PeriodicTask
 		bool			offscreen()					{ return fOffscreen; }
 		void			ptask ();
 
+		static std::string checkRootPath (const std::string& path);
 
 	protected:
 				 IAppl(int udpport, int outport, int errport, bool offscreen);
