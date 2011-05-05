@@ -25,6 +25,7 @@
 
 #include "IHtmlFile.h"
 #include "IMessage.h"
+#include "IScene.h"
 #include "TComposition.h"
 #include "Updater.h"
 
@@ -38,7 +39,7 @@ const string IHtmlFile::kHtmlFileType("htmlf");
 
 //--------------------------------------------------------------------------
 IHtmlFile::IHtmlFile( const std::string& name, IObject * parent )
-	: IHtml(name, parent) 
+	: IHtml(name, parent), TFile (parent->getScene())
 { 
 	fTypeString = kHtmlFileType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler<string>::create(getFile());

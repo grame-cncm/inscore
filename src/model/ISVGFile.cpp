@@ -26,6 +26,7 @@
 #include "ISVGFile.h"
 #include "IMessage.h"
 #include "TComposition.h"
+#include "IScene.h"
 #include "Updater.h"
 
 using namespace std;
@@ -38,7 +39,7 @@ const string ISVGFile::kSVGFileType("svgf");
 
 //--------------------------------------------------------------------------
 ISVGFile::ISVGFile( const std::string& name, IObject * parent )
-	: IRectShape(name, parent) 
+	: IRectShape(name, parent), TFile (parent->getScene()) 
 { 
 	fTypeString = kSVGFileType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler<string>::create(getFile());

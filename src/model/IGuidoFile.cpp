@@ -24,6 +24,7 @@
 */
 
 #include "IGuidoFile.h"
+#include "IScene.h"
 #include "Updater.h"
 
 using namespace std;
@@ -35,7 +36,7 @@ const string IGuidoFile::kGuidoFileType("gmnf");
 
 //--------------------------------------------------------------------------
 IGuidoFile::IGuidoFile( const std::string& name, IObject * parent )
-	: IGuidoCode (name, parent) 
+	: IGuidoCode (name, parent), TFile (parent->getScene())
 { 
 	fTypeString = kGuidoFileType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler<string>::create(getFile());

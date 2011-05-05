@@ -42,6 +42,8 @@ namespace inscore
 @{
 */
 
+class IScene;
+typedef class SMARTP<IScene>	SIScene;
 //--------------------------------------------------------------------------
 /*!
 	\brief a base class for file based elements of the model
@@ -50,6 +52,7 @@ class TFile
 {
 	std::string	fFilePath;
 	bool		fPathChanged;
+	IScene*		fScene;
 	
 	public:		
 
@@ -73,7 +76,7 @@ class TFile
 		virtual void		print(std::ostream& out) const;
 
 	protected:
-				 TFile( const std::string& pathname = "" );
+				 TFile(IScene* scene, const std::string& pathname = "" );
 		virtual ~TFile() {}
 
 		/// \brief the \c 'set' message handler

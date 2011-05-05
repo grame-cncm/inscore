@@ -246,7 +246,8 @@ string IObject::getOSCAddress() const
 void IObject::accept (Updater* u)		{ u->updateTo(this); }
 
 //--------------------------------------------------------------------------
-SIScene	IObject::getScene()			{ return fParent ? fParent->getScene() : 0; }
+SIScene	IObject::getScene()					{ return fParent ? fParent->getScene() : 0; }
+const IScene*	IObject::getScene() const	{ return fParent ? fParent->getScene() : 0; }
 
 //--------------------------------------------------------------------------
 const IObject * IObject::getRoot()	const	{ return fParent ? fParent->getRoot() : this; }
@@ -648,7 +649,7 @@ MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
 		const std::string err = "";
 		std::string fileName = msg->params()[0]->value<std::string>(err);
 		if ( (fileName != err) && (fileName.length()) ) {
-			std::string absolutePath = IAppl::absolutePath(fileName);
+			std::string absolutePath = getScene()->absolutePath(fileName);
 			if ( isDirectory(absolutePath) )	//Argument is a directory: export to "directory/objectName".
 			{
 #ifdef WIN32
@@ -665,7 +666,7 @@ MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
 		}
 	}
 	else if (msg->params().size() == 0) {	//No argument : export to "objectName".
-		setExportFlag( IAppl::absolutePath(name() ) );
+		setExportFlag( getScene()->absolutePath(name() ) );
 		return MsgHandler::kProcessed;
 	}
 	return MsgHandler::kBadParameters;
@@ -776,7 +777,7 @@ MsgHandler::msgStatus IObject::saveMsg (const IMessage* msg) const
 					mode |= ios_base::app;
 				else return MsgHandler::kBadParameters;
 			}
-			ofstream out (IAppl::absolutePath(destfile).c_str(), mode);
+			ofstream out (getScene()->absolutePath(destfile).c_str(), mode);
 			save (out);
 			return MsgHandler::kProcessedNoChange;
 		}

@@ -282,6 +282,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 
 		/// \brief gives the scene of the object
 		virtual SIScene			getScene();
+		virtual const IScene*	getScene() const;
 
 		/// \brief gives the tree root object
 		virtual const IObject*	getRoot() const;

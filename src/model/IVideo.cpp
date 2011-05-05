@@ -28,7 +28,7 @@
 #include "IMessage.h"
 #include "segment2relativetimereader.h"
 #include "TVirtualRelation.h"
-#include "IAppl.h"
+#include "IScene.h"
 #include "VVideoView.h"
 
 using namespace std;
@@ -40,7 +40,8 @@ namespace inscore
 const string IVideo::kVideoType("video");
 
 //--------------------------------------------------------------------------
-IVideo::IVideo( const std::string& name, IObject * parent ) : IRectShape (name, parent), fView(0)
+IVideo::IVideo( const std::string& name, IObject * parent ) 
+	: IRectShape (name, parent), TFile (parent->getScene()), fView(0)
 {	
 	fTypeString = kVideoType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler<string>::create(getFile());
@@ -141,7 +142,7 @@ MsgHandler::msgStatus IVideo::videoMapFileMsg (const IMessage* msg )
 	if (msg->params().size() == 1) {
 		string file = msg->params()[0]->value<std::string>("");
 		
-		file = IAppl::absolutePath(file);
+		file = getScene()->absolutePath(file);
 		if (file.size()) {
 			segment2relativetimereader<FloatSegment> r;
 			if (r.readfile(file)) {

@@ -24,6 +24,7 @@
 */
 
 #include "IAppl.h"
+#include "IScene.h"
 #include "ITLError.h"
 #include "TFile.h"
 
@@ -33,7 +34,8 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-TFile::TFile( const std::string& pathname ) : fFilePath (pathname), fPathChanged (true)
+TFile::TFile(IScene* scene, const std::string& pathname ) 
+	: fFilePath (pathname), fPathChanged (true), fScene(scene)
 {
 }
 
@@ -107,7 +109,7 @@ MsgHandler::msgStatus TFile::set (const IMessage* msg )
 { 
 	if (msg->params().size() == 2) {
 		std::string file = msg->params()[1]->value<std::string>("");
-		std::string completePath = IAppl::absolutePath(file);
+		std::string completePath = fScene ? fScene->absolutePath(file) : IAppl::absolutePath(file);
 		if ( file.size())
 		{
 			setFile( completePath );

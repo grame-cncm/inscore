@@ -27,6 +27,7 @@
 #include "IMessage.h"
 #include "ITLError.h"
 #include "TComposition.h"
+#include "IScene.h"
 #include "Updater.h"
 
 using namespace std;
@@ -37,7 +38,8 @@ namespace inscore
 const string IImage::kImageType("img");
 
 //--------------------------------------------------------------------------
-IImage::IImage( const std::string& name, IObject * parent ) : IGraphicBasedObject (name, parent), fView(0)
+IImage::IImage( const std::string& name, IObject * parent ) 
+	: IGraphicBasedObject (name, parent), TFile (parent->getScene()), fView(0)
 {	
 	fTypeString = kImageType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler<string>::create(getFile());

@@ -26,6 +26,7 @@
 #include "ITextFile.h"
 #include "IMessage.h"
 #include "TComposition.h"
+#include "IScene.h"
 #include "Updater.h"
 
 using namespace std;
@@ -38,7 +39,7 @@ const string ITextFile::kTextFileType("txtf");
 
 //--------------------------------------------------------------------------
 ITextFile::ITextFile( const std::string& name, IObject * parent )
-	: IText(name, parent) 
+	: IText(name, parent), TFile (parent->getScene()) 
 { 
 	fTypeString = kTextFileType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler<string>::create(getFile());
