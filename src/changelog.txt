@@ -20,6 +20,7 @@ Version 0.77
 - scene name translation strategy change: only the explicit 'scene' name is 
   translated by the scene load message handler into the current scene name, 
   other names are left unchanged.
+- bitmap copy adjustment in sync stretched mode is now only made for images
 
 ----------------------------------------------------
 Version 0.76
