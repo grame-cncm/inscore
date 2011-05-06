@@ -52,6 +52,8 @@
 /ITL/scene/m5 watch  "mouseDown" 	"/ITL/tutorial/cursor" "ddate" 1 8
 
 
+/ITL/scene load "previous.inscore"
+/ITL/scene/previous watch "mouseDown" "/ITL/scene" "load" "synchronization.inscore"
 /ITL/scene load "next.inscore"
 /ITL/scene/next watch "mouseDown" "/ITL/scene" "load" "sync3.inscore"
 /ITL/scene load "summary.inscore"

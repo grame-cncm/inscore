@@ -52,6 +52,8 @@
 /ITL/scene/m5 watch   "mouseDown" 	"/ITL/tutorial/sync" "car"
 /ITL/scene/m6 watch   "mouseDown" 	"/ITL/tutorial/sync" "car" "score" "hv"
 
+/ITL/scene load "previous.inscore"
+/ITL/scene/previous watch "mouseDown" "/ITL/scene" "load" "sync4.inscore"
 /ITL/scene load "next.inscore"
 /ITL/scene/next watch "mouseDown" "/ITL/scene" "load" "signals.inscore"
 /ITL/scene load "summary.inscore"

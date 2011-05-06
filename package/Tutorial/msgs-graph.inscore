@@ -13,6 +13,8 @@
 /ITL/scene/msgsd2 x -0.75
 
 
+/ITL/scene load "previous.inscore"
+/ITL/scene/previous watch "mouseDown" "/ITL/scene" "load" "msgs-detail.inscore"
 /ITL/scene load "next.inscore"
 /ITL/scene/next watch "mouseDown" "/ITL/scene" "load" "msgs-time.inscore"
 
