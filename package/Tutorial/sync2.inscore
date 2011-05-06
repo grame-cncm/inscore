@@ -53,6 +53,6 @@
 
 
 /ITL/scene load "next.inscore"
-/ITL/scene/next watch "mouseDown" "/ITL/scene" "load" "sync2.inscore"
+/ITL/scene/next watch "mouseDown" "/ITL/scene" "load" "sync3.inscore"
 /ITL/scene load "summary.inscore"
 
