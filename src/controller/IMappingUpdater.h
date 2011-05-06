@@ -39,9 +39,6 @@
 #include "ISVG.h"
 #include "ISVGFile.h"
 #include "ISync.h"
-#include "TReverseComposition.h"
-#include "TMappingComposer.h"
-#include "TVirtualRelation.h"
 
 namespace inscore
 {

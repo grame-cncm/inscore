@@ -27,7 +27,7 @@
 #include "Updater.h"
 #include "IMessage.h"
 #include "segment2relativetimereader.h"
-#include "TVirtualRelation.h"
+#include "MapTools.h"
 #include "IScene.h"
 #include "VVideoView.h"
 

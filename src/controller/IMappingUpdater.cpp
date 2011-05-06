@@ -36,10 +36,8 @@
 #include "TSegment.h"
 #include "TSegmentation.h"
 #include "IMappingUpdater.h"
-#include "TMappingComposer.h"
 #include "MapTools.h"
 #include "maptypes.h"
-//#include "VGraphicsItemView.h"
 
 using namespace std;
 

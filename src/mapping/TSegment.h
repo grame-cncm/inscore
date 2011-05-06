@@ -95,28 +95,6 @@ template<typename T> class TSegment<T, 1>
 		inline bool operator== (const TSegment<T,1>& s) const		{ return interval() == s.interval(); }
 		inline bool operator!= (const TSegment<T,1>& s) const		{ return interval() != s.interval(); }
 		
-//		inline Relation relation (const TSegment<T,1>& s) const		{ return interval().relation( s.interval() ); }		
-//		inline TSegment<T,1> related (const Relation& r) const		{ return TSegment<T,1> (interval().related (r)); }
-
-//		inline std::vector<float> relativepos (const TSegment<T,1>& s) const {
-//			std::vector<float> outpos;
-//			outpos.push_back( s.interval().relativepos(start()));
-//			outpos.push_back( s.interval().relativepos(end()));
-//			return outpos;
-//		}
-//		
-//        /// segments interpolation: computes an interpolation of \c target according to the segment relative
-//		/// positions in the segment \c s
-//		inline TSegment<T,1> interpolate (const std::vector<float>& rpos, float startbound=0., float endbound=1.) const {
-//			if (rpos.size() >= 2 )
-//				return TSegment<T,1> (interval().resize( std::max(rpos[0], startbound), std::min(rpos[1], endbound)));
-//			return TSegment<T,1> ();
-//		}
-
-		/// segments union
-//		inline TSegment<T,1> operator | (const TSegment<T,1>& s) const	{ 
-//			return TSegment<T,1>( fInterval | s.interval() );
-//		}
 		inline TSegment<T,1> unite (const TSegment<T,1>& s, T epsilon = T(0)) const	{ 
 			return TSegment<T,1>( fInterval.unite(s.interval(), epsilon) );
 		}

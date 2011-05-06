@@ -26,6 +26,8 @@
 #include <QDebug>
 #include "MouseEventAble.h"
 #include "VGraphicsItemView.h"
+#include "MapTools.h"
+
 #include "rational.h"
  
 namespace inscore

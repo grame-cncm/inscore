@@ -32,9 +32,7 @@
 #include "IModel.h"
 #include "IText.h"
 #include "ISync.h"
-#include "TVirtualRelation.h"
 #include "TComposition.h"
-#include "TMappingComposer.h"
 #include "QStretchTilerItem.h"
 #include "GraphicEffect.h"
 

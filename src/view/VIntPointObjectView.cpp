@@ -26,7 +26,6 @@
 #include "VIntPointObjectView.h"
 
 #include "IGraphicBasedObject.h"
-#include "TVirtualRelation.h"
 
 #include "maptypes.h"
 
