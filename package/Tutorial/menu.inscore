@@ -6,7 +6,7 @@
 /ITL/scene/menu1 set "html" "The message system"
 /ITL/scene/menu2 set "html" "The score components"
 /ITL/scene/menu3 set "html" "Synchronization"
-/ITL/scene/menu4 set "html" "Designing signals"
+/ITL/scene/menu4 set "html" "Signals"
 /ITL/scene/menu5 set "html" "Interaction"
 
 /ITL/scene/menu1 y -0.4
@@ -24,5 +24,6 @@
 /ITL/scene/menu1 watch "mouseDown" 		"/ITL/scene" "load" "msgs.inscore"
 /ITL/scene/menu2 watch "mouseDown" 		"/ITL/scene" "load" "components.inscore"
 /ITL/scene/menu3 watch "mouseDown" 		"/ITL/scene" "load" "synchronization.inscore"
+/ITL/scene/menu4 watch "mouseDown" 		"/ITL/scene" "load" "signals.inscore"
 /ITL/scene/menu* watch "mouseEnter" 	"/ITL/$scene/$self" "red" 255
 /ITL/scene/menu* watch "mouseLeave" 	"/ITL/$scene/$self" "red" 0

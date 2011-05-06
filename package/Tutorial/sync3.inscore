@@ -14,7 +14,7 @@
 
 /ITL/scene/sync3 set htmlf "rsrc/sync3.html"
 /ITL/scene/sync3 scale 2.0
-/ITL/scene/sync3 y -0.25
+/ITL/scene/sync3 y -0.3
 /ITL/scene/sync3 xorigin -1.
 /ITL/scene/sync3 x -0.75
 
@@ -22,25 +22,39 @@
 /ITL/tutorial/score scale 8.
 /ITL/tutorial/score y -0.3
 
-/ITL/tutorial/rect set rect 1. 0.4
-/ITL/tutorial/rect scale 1.
-/ITL/tutorial/rect y 0.3
-/ITL/tutorial/rect color 150 150 150
-/ITL/tutorial/rect/debug map 1
+/ITL/tutorial/car set img "rsrc/car.gif"
+/ITL/tutorial/car scale 5.
+/ITL/tutorial/car y 0.3
+
+/ITL/tutorial/cursor set ellipse 0.08 0.08
+/ITL/tutorial/cursor scale 2.
+/ITL/tutorial/cursor color 255 0 0 
+/ITL/tutorial/cursor date 1 4
 
 /ITL/scene/m1 set txt "/ITL/tutorial/score/debug map 1"
 /ITL/scene/m2 set txt "/ITL/tutorial/score/debug map 0"
-/ITL/scene/m3 set txt "/ITL/tutorial/rect map ([-0.8,0.8[ [-0.5,0.5[ ) ([0/1, 1/1[ )"
-/ITL/scene/m4 set txt "/ITL/tutorial/rect map ([-0.8,0.[ [-0.8,0.8[ ) ([0/1, 1/1[ )
-                                 ([-0.,0.8[ [-0.8,0.8[ ) ([1/1, 2/1[ )"
-/ITL/scene/m1 y 0.05
-/ITL/scene/m2 y 0.15
-/ITL/scene/m3 y 0.3
-/ITL/scene/m4 y 0.4
+/ITL/scene/m3 set txt "/ITL/tutorial/car map ([0,51[ [0,16[ ) ([0/1, 3/4[ )"
+/ITL/scene/m4 set txt "/ITL/tutorial/car map ([0,35[ [0,16[ ) ([0/1, 3/4[ )
+                                 ([35,51[ [0,16[ ) ([3/4, 2/1[ )"
+
+/ITL/scene/m5 set txt "/ITL/tutorial/sync cursor car"
+/ITL/scene/m6 set txt "/ITL/tutorial/sync cursor score"
+/ITL/scene/m7 set txt "/ITL/tutorial/cursor date 1 4"
+/ITL/scene/m8 set txt "/ITL/tutorial/cursor date 5 8"
+
+
+/ITL/scene/m1 y -0.02
+/ITL/scene/m2 y 0.05
+/ITL/scene/m3 y 0.14
+/ITL/scene/m4 y 0.21
+/ITL/scene/m5 y 0.36
+/ITL/scene/m6 y 0.43
+/ITL/scene/m7 y 0.50
+/ITL/scene/m8 y 0.57
 /ITL/scene/m* xorigin -1.
 /ITL/scene/m* yorigin -1.
 /ITL/scene/m* x -0.76
-/ITL/scene/m* scale 1.9
+/ITL/scene/m* scale 1.7
 /ITL/scene/m* alpha 160
 
 /ITL/scene/m* watch  "mouseEnter" 	"/ITL/$scene/$self" "alpha" 255
@@ -50,11 +64,20 @@
 
 /ITL/scene/m1 watch  "mouseDown" 	"/ITL/tutorial/score/debug" "map" 1
 /ITL/scene/m2 watch  "mouseDown" 	"/ITL/tutorial/score/debug" "map" 0
-/ITL/scene/m3 watch  "mouseDown" 	"/ITL/tutorial/rect" "map" "([-0.8,0.8[ [-0.5,0.5[ ) ([0/1, 1/1[ )"
-/ITL/scene/m4 watch  "mouseDown" 	"/ITL/tutorial/rect" "map" "([-0.8,0.[ [-0.8,0.8[ ) ([0/1, 1/1[ ) ([-0.,0.8[ [-0.8,0.8[ ) ([1/1, 2/1[ )"
+/ITL/scene/m3 watch  "mouseDown" 	"/ITL/tutorial/car" "map" "([0,51[ [0,16[ ) ([0/1, 3/4[ )"
+/ITL/scene/m3 watch+ "mouseDown" 	"/ITL/tutorial/car/debug" "map" 1
+/ITL/scene/m4 watch  "mouseDown" 	"/ITL/tutorial/car" "map" "([0,35[ [0,16[) ([0/1, 3/4[ ) ([35,51[ [0,16[ ) ([3/4, 2/1[ )"
+/ITL/scene/m4 watch+ "mouseDown" 	"/ITL/tutorial/car/debug" "map" 1
+
+/ITL/scene/m5 watch   "mouseDown" 	"/ITL/tutorial/sync" "cursor" "car"
+/ITL/scene/m5 watch+  "mouseDown" 	"/ITL/tutorial/cursor" "scale" 8.
+/ITL/scene/m6 watch   "mouseDown" 	"/ITL/tutorial/sync" "cursor" "score"
+/ITL/scene/m6 watch+  "mouseDown" 	"/ITL/tutorial/cursor" "scale" 2.
+/ITL/scene/m7 watch   "mouseDown" 	"/ITL/tutorial/cursor" "date" 1 4
+/ITL/scene/m8 watch   "mouseDown" 	"/ITL/tutorial/cursor" "date" 5 8
 
 
 /ITL/scene load "next.inscore"
-/ITL/scene/next watch "mouseDown" "/ITL/scene" "load" "sync3.inscore"
+/ITL/scene/next watch "mouseDown" "/ITL/scene" "load" "sync4.inscore"
 /ITL/scene load "summary.inscore"
 
