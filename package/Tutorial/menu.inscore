@@ -25,5 +25,6 @@
 /ITL/scene/menu2 watch "mouseDown" 		"/ITL" "load" "components.inscore"
 /ITL/scene/menu3 watch "mouseDown" 		"/ITL" "load" "synchronization.inscore"
 /ITL/scene/menu4 watch "mouseDown" 		"/ITL" "load" "signals.inscore"
+/ITL/scene/menu5 watch "mouseDown" 		"/ITL" "load" "interaction.inscore"
 /ITL/scene/menu* watch "mouseEnter" 	"/ITL/scene/$self" "red" 255
 /ITL/scene/menu* watch "mouseLeave" 	"/ITL/scene/$self" "red" 0

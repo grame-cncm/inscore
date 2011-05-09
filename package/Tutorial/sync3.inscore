@@ -2,6 +2,7 @@
 /ITL/tutorial new
 /ITL/scene/* del
 /ITL/tutorial/* del
+/ITL/tutorial watch
 
 /ITL/scene x -0.51
 /ITL/tutorial x 0.51
