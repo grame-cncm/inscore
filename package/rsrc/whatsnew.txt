@@ -10,6 +10,12 @@ INScore resources are released under the Creative Common license.
 ------------------------------------------------------------------
 
 -------------------------------
+** May 17 2011
+-------------------------------
+INScore resources include now a standalone tutorial (no need to run 
+Max/MSP or PureData).
+
+-------------------------------
 ** March 14 2011
 -------------------------------
 First separate pubication of the resources. The inscore scripts were 
