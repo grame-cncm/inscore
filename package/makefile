@@ -75,6 +75,7 @@ rsrc:
 	tar czf $(rsrc)/python.tgz python
 	tar czf $(rsrc)/lisp.tgz lisp
 	tar czf $(rsrc)/StandAlone.tgz StandAlone
+	tar czf $(rsrc)/Tutorial.tgz Tutorial
 	tar czf $(rsrc).tgz $(rsrc)
 	mv $(rsrc).tgz $(rsrc)/all.tgz
 	tar czf $(rsrc)/Max.tgz $(rsrc)/Max
