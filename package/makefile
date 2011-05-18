@@ -109,8 +109,7 @@ win32:
 	cp -f $(bin)/$(viewer).exe $(package)/$(viewer).exe
 	cp -f $(bin)/*.dll $(package)
 	cp -f ../src/guido2.ttf $(package)
-	cp  -f DLLs/*.dll $(package)
-	cp  -r $(bin)/PlugIns $(package)
+	cp  -rf DLLs/* $(package)
 
 linux:
 	[ -d $(package) ] || mkdir -p $(package)
