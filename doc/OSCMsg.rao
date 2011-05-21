@@ -1306,7 +1306,7 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {74}{ date : 'date' (| ':' mapname) }
+\rail@i {74}{ date : 'date' (| ':' mapname) (| '[n/d]') }
 \rail@o {74}{
 \rail@index{date}
 \rail@begin{2}{date}
@@ -1315,6 +1315,10 @@
 \rail@nextbar{1}
 \rail@term{:}[]
 \rail@nont{mapname}[]
+\rail@endbar
+\rail@bar
+\rail@nextbar{1}
+\rail@term{[n/d]}[]
 \rail@endbar
 \rail@end
 }
