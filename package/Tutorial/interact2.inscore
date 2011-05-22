@@ -57,6 +57,11 @@
 /ITL/scene/m* scale 1.6
 /ITL/scene/m* alpha 160
 
+/ITL/scene/m* watch  "mouseEnter" 	"/ITL/$scene/$self" "alpha" 255
+/ITL/scene/m* watch+ "mouseEnter" 	"/ITL/$scene/$self" "blue" 200
+/ITL/scene/m* watch  "mouseLeave" 	"/ITL/$scene/$self" "alpha" 160
+/ITL/scene/m* watch+ "mouseLeave" 	"/ITL/$scene/$self" "blue" 0
+
 /ITL/scene load "previous.inscore"
 /ITL/scene/previous watch "mouseDown" "/ITL/scene" "load" "interaction.inscore"
 /ITL/scene load "next.inscore"
