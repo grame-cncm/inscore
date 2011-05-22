@@ -113,11 +113,15 @@ void _MouseEventAble::handleEvent (const IObject * obj, QPointF pos,  EventsAble
 	const std::vector<SEventMessage>& msgs = obj->getMouseMsgs (type);
 	for (unsigned int i=0; i<msgs.size(); i++) {
 		std::string mapname;
+		int num=0, denum=0;
 		rational date (-1,1);
-		if (msgs[i]->hasDateVar (mapname))
+		if (msgs[i]->hasDateVar (mapname, num, denum)) {
 			date = point2date (obj, relx, rely, mapname, 0);
-//		msgs[i]->eval (obj);
-//		msgs[i]->send(mouse, date);
+			if (num) {
+				float fd = float(date);
+				date.set (int(fd * denum / num) * num, denum);
+			}
+		}
 		EventContext env(mouse, date, obj);
 		msgs[i]->send(env);
 	}

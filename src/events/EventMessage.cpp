@@ -193,29 +193,70 @@ void EventMessage::send () const
 }
 
 //----------------------------------------------------------------------
-bool EventMessage::isDateVar (const string& var, string& mapname) const
+bool EventMessage::parseQuant (const string& var, int& n, int& d)
 {
-	string base (kDateVar);
-	if (var == base) return true;
-	if (var.compare (0, base.size(), base) == 0) {
-		if (var[base.size()] == ':') {
-			mapname = var.substr(base.size()+1);
-			return true;
-		}
+	size_t n1 = var.find('[');
+	if (n1 == string::npos) return false;
+	size_t n2 = var.find('/');
+	if (n2 == string::npos) return false;
+	size_t n3 = var.find(']');
+	if (n3 == string::npos) return false;
+
+	int a = atoi(var.substr(n1+1, n2).c_str());
+	int b = atoi(var.substr(n2+1, n3).c_str());
+	if ( (a > 0) && (b > 0)) {
+		n = a;
+		d = b;
+		return true;
 	}
 	return false;
 }
 
 //----------------------------------------------------------------------
-bool EventMessage::hasDateVar (std::string& mapname) const
+bool EventMessage::parseMap (const string& var, string& map)
+{
+	size_t n = var.find(':');
+	size_t l = var.size();
+	if (n == string::npos) return false;
+	while (++n <= l) {
+		char c = var[n];
+		if (c == '[') break;
+		else map += c;
+	}
+	return true;
+}
+
+//----------------------------------------------------------------------
+bool EventMessage::isDateVar (const string& var, string& mapname, int& num, int& denum) const
+{
+	size_t n = strlen(kDateVar);
+	if (var.substr(0, n) != kDateVar)
+		return false;
+	parseMap (var, mapname);
+	parseQuant (var, num, denum);
+	return true;
+//
+//	string base (kDateVar);
+//	if (var == base) return true;
+//	if (var.compare (0, base.size(), base) == 0) {
+//		if (var[base.size()] == ':') {
+//			mapname = var.substr(base.size()+1);
+//			return true;
+//		}
+//	}
+//	return false;
+}
+
+//----------------------------------------------------------------------
+bool EventMessage::hasDateVar (std::string& mapname, int& num, int& denum) const
 {
 	if (!fMessage) return false;
-	if (isDateVar (fMessage->message(), mapname)) return true;
+	if (isDateVar (fMessage->message(), mapname, num, denum)) return true;
 	int n = fMessage->size();
 	for (int i=0; i<n; i++) {
 		string str;
 		if (fMessage->param(i, str))
-			if (isDateVar (str, mapname))  return true;
+			if (isDateVar (str, mapname, num, denum))  return true;
 	}
 	return false;	
 }
@@ -289,6 +330,7 @@ void EventMessage::eval (const IMessage* msg, const IObject * object, IMessage& 
 void EventMessage::eval (const string& var, EventContext& env, IMessage& outmsg) const
 {
 	string mapname;
+	int num=0, denum=0;
 	if (var[1] == 'x')	{
 		if (checkfloat(var.c_str())) outmsg << checkfloatrange(var.substr(2), env.mouse.fx); 
 		else outmsg << checkintrange(var.substr(2), env.mouse.fx);
@@ -303,7 +345,14 @@ void EventMessage::eval (const string& var, EventContext& env, IMessage& outmsg)
 	else if (var == kSceneYVar)		outmsg << env.mouse.fsy;
 	else if (var == kNameVar)		outmsg << env.object->name();
 	else if (var == kAddressVar)	outmsg << env.object->getOSCAddress();
-	else if (isDateVar (var, mapname))	outmsg << env.date;
+	else if (isDateVar (var, mapname, num, denum)) {
+		if (num) {
+			float fd = float(env.date);
+			rational qdate (int(fd * denum / num) * num, denum);
+			outmsg << qdate;
+		}
+		else outmsg << env.date;
+	}
 	else if (env.varmsg)	eval(env.varmsg, env.object, outmsg);
 	else outmsg << var;
 }

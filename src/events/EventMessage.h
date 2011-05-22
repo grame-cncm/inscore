@@ -107,11 +107,14 @@ class EventMessage : public smartable
 		void	send () const;
 		void	send (EventContext& env);
 
-		bool	hasDateVar (std::string& mapname) const;
-		bool	isDateVar (const std::string& var, std::string& mapname) const;
+		bool	hasDateVar (std::string& mapname, int& num, int& denum) const;
+		bool	isDateVar (const std::string& var, std::string& mapname, int& num, int& denum) const;
 		const IMessage * message() const		{ return fMessage; }
 		
 		std::string address() const;
+
+	static bool parseMap (const std::string& var, std::string& map);
+	static bool parseQuant (const std::string& var, int& n, int& d);
 };
 
 } // end namespoace
