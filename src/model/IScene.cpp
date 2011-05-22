@@ -94,6 +94,7 @@ void IScene::reset ()
 	signalsNode()->delsubnodes();
 	delsubnodes();
 	fFileWatcher->clear();
+	fRootPath.clear();
 }
 
 #define useiterator 0
