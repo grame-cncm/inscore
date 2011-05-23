@@ -121,17 +121,17 @@ Note also that the values are not clipped to the object dimensions and could exc
 <P>
 <BR>
 <IMG
- WIDTH="300" HEIGHT="86" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="420" HEIGHT="86" ALIGN="BOTTOM" BORDER="0"
  SRC="img86.gif"
  ALT="\begin{rail}
-date : 'date' (\vert ':' mapname)
+date : 'date' (\vert ':' mapname) (\vert '[n/d]')
 \end{rail}">
 <BR>
 
 <P>
 
 <UL>
-<LI><TT>$date</TT>: denotes the object date corresponding to the mouse pointer position at the time of the event. The detailed date variable is given below: it is optionnaly followed by a colon and the name of the mapping to be used to compute the date . The <TT>$date</TT> variable is replaced by its rational value (i.e. two integers values). 
+<LI><TT>$date</TT>: denotes the object date corresponding to the mouse pointer position at the time of the event. The detailed date variable is given below: it is optionnaly followed by a colon and the name of the mapping to be used to compute the date. The <TT>$date</TT> variable is replaced by its rational value (i.e. two integers values). The optional rational enclosed in brackets may be used to indicate a quantification: the date value is rounded to an integer count of the specified rational value. 
 
 <P>
 </LI>
