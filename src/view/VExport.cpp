@@ -105,10 +105,33 @@ void VExport::paintOnDevice( QPaintDevice * device , QGraphicsView * view)
 	painter.end();
 }
 
+//--------------------------------------------------------------------------
+static bool exists (const QString& filename) 
+{
+	QFileInfo file (filename);
+	return file.exists();
+}
+
+//--------------------------------------------------------------------------
+static QString nextFreeName (const QString& filename, const QString& extension) 
+{
+	QString name = filename + extension;
+	if (!exists (name)) return name;
+	int n = 1;
+	while (n < 1000) {
+		QString num;
+		num.setNum(n++);
+		name = filename + '_' + num + extension;
+		if (!exists (name)) break;
+	}
+	return name;
+}
+
 //------------------------------------------------------------------------------------------------------------------------
 void VExport::exportScene( QGraphicsView * view , QString fileName )
 {
-	if ( QFileInfo(fileName).suffix().isEmpty() ) fileName += DEFAULT_EXPORT_FORMAT;
+//	if ( QFileInfo(fileName).suffix().isEmpty() ) fileName += DEFAULT_EXPORT_FORMAT;
+	if ( QFileInfo(fileName).suffix().isEmpty() ) fileName = nextFreeName(fileName, DEFAULT_EXPORT_FORMAT);
 
 	QSize size (view->width() , view->height());
 	if ( fileName.toUpper().endsWith( PDF_FORMAT.toUpper() ) )
