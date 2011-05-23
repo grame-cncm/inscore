@@ -1,6 +1,8 @@
 
 
-/ITL/scene reset
+/ITL/scene/* del
+/ITL/scene/signal/* del
+
 /ITL/scene/title set "html" "<h1>Welcome to INScore</h1>"
 /ITL/scene/title y -0.7
 /ITL/scene/title scale 2.6
