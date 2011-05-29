@@ -49,7 +49,6 @@ class EventsAble;
 */
 
 //--------------------------------------------------------------------------
-#ifndef PIXMAPBASED
 class VGraphicsImageItem : public QGraphicsItem
 {
 	QImage fImage;
@@ -57,12 +56,11 @@ class VGraphicsImageItem : public QGraphicsItem
 			     VGraphicsImageItem() {}
 		virtual ~VGraphicsImageItem() {}
 		
-		QImage& pixmap()  { return fImage; }
+		QImage& image()					{ return fImage; }
 		QRectF	boundingRect() const	{ return QRectF(0,0,fImage.width(), fImage.height()); }
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0)
-			{ painter->drawImage(QPoint(0,0), fImage); }
+										{ painter->drawImage(QPoint(0,0), fImage); }
 };
-#endif
 
 //--------------------------------------------------------------------------
 /**
@@ -70,13 +68,8 @@ class VGraphicsImageItem : public QGraphicsItem
 */
 class VImageView:  public VIntPointObjectView
 {
-#ifdef PIXMAPBASED
-	typedef MouseEventAble<QGraphicsPixmapItem> IQGraphicsPixmapItem;
-#else
-	typedef MouseEventAble<VGraphicsImageItem> IQGraphicsPixmapItem;
-#endif
-	
-	IQGraphicsPixmapItem* fPixmapItem;
+	typedef MouseEventAble<VGraphicsImageItem> IQGraphicsImageItem;	
+	IQGraphicsImageItem* fImageItem;
 
 	public :
 		VImageView(QGraphicsScene * scene, const IImage*);
