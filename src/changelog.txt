@@ -17,6 +17,7 @@ Version 0.78
 - quantification introduced to $date variable
 - automatic numbering of exports when destination file is not completely specified 
   (no name, no extension)
+- accepts float values for bool parameters 
 
 ----------------------------------------------------
 Version 0.77

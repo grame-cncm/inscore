@@ -116,8 +116,9 @@ template <typename O, typename T> class TSetMethodMsgHandler : public MsgHandler
 		static SMsgHandler create(O* obj, MsgHandlerMethod method)	{ return new TSetMethodMsgHandler<O,T> (obj, method); }
 		virtual msgStatus operator ()(const IMessage* msg)			{ 
 			if ( msg->size() != 1 ) return kBadParameters;
-			T val;
-			if ( !msg->param(0, val) ) return kBadParameters;
+			T val; float fval;
+			if ( msg->param(0, fval) ) val = T(fval);
+			else if ( !msg->param(0, val) ) return kBadParameters;
 			(fObject->*fMethod)( val );
 			return kProcessed;
 		}
