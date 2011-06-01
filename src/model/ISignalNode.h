@@ -58,7 +58,8 @@ class ISignalNode : public IVNode
 		virtual void	accept (Updater*);
 		
 		/// \brief find a name signal in the signals node
-		virtual SISignal find (std::string node) const;
+//		virtual SISignal find (std::string node) const;
+		virtual bool find (std::string node, subnodes& outlist) const;
 
 		/*! \brief gives the signal node debug state
 		*/

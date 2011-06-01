@@ -206,9 +206,10 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		/*!
 			\brief find a named node within the subnodes (without recursion)
 			\param name the name of the node to look for
-			\return the node if any
+			\param outlist on output, the found objects list 
+			\return true if at least one nooe matches
 		*/
-		virtual SIObject exactfind(const std::string& name) const;
+		virtual bool exactfind(const std::string& name,  subnodes& outlist) const;
 
 		/*!
 			\brief find children objects by regular expression

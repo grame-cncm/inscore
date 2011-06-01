@@ -63,11 +63,17 @@ void ISignalNode::print (ostream& out) const
 }
 
 //--------------------------------------------------------------------------
-SISignal ISignalNode::find (std::string node) const
+bool ISignalNode::find (std::string node, subnodes& outlist) const
 {
-	SIObject o = exactfind(node);
-	return dynamic_cast<ISignal*>((IObject*)o);
+	return exactfind(node, outlist);
 }
+
+//--------------------------------------------------------------------------
+//SISignal ISignalNode::find (std::string node) const
+//{
+//	SIObject o = exactfind(node);
+//	return dynamic_cast<ISignal*>((IObject*)o);
+//}
 
 //--------------------------------------------------------------------------
 bool ISignalNode::debug(int state)

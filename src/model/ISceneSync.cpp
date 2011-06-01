@@ -166,15 +166,27 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)
 				if (sval != Master::kStretchUnknown) stretch = sval;
 			}
 		}
-		SIObject mo	= fParent->exactfind(master);
-		if (mo) {
-			for (subnodes::iterator i = so.begin(); i != so.end(); i++) {
-				SMaster m = Master::create(mo, align, stretch, /*syncOptions ,*/ masterMapName , slaveMapName );
-				sync(*i, m);
-				(*i)->setState (kMasterModified);
+		subnodes mos;
+		if (fParent->exactfind(master, mos)) {
+			for (unsigned int j = 0; j < mos.size(); j++) {
+				SIObject mo = mos[j];
+				for (subnodes::iterator i = so.begin(); i != so.end(); i++) {
+					SMaster m = Master::create(mo, align, stretch, /*syncOptions ,*/ masterMapName , slaveMapName );
+					sync(*i, m);
+					(*i)->setState (kMasterModified);
+				}
 			}
 			result = MsgHandler::kProcessed;
 		}
+
+//		if (mo) {
+//			for (subnodes::iterator i = so.begin(); i != so.end(); i++) {
+//				SMaster m = Master::create(mo, align, stretch, /*syncOptions ,*/ masterMapName , slaveMapName );
+//				sync(*i, m);
+//				(*i)->setState (kMasterModified);
+//			}
+//			result = MsgHandler::kProcessed;
+//		}
 	}
 	else for (subnodes::iterator i = so.begin(); i != so.end(); i++) {
 		delsync(*i);

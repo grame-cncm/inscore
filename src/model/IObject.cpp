@@ -288,12 +288,7 @@ bool IObject::match(const std::string& regexp) const
 bool IObject::find(const std::string& expr, subnodes& outlist) const
 {
 	if (!Tools::regexp(expr)) {
-		SIObject elt = exactfind(expr);
-		if (elt) {
-			outlist.push_back(elt);
-			return true;
-		}
-		return false;
+		return exactfind(expr, outlist);
 	}
 	else {
 		unsigned int size = outlist.size();
@@ -318,24 +313,18 @@ bool IObject::find(const std::string& expr, subnodes& outlist) const
 }
 
 //--------------------------------------------------------------------------
-SIObject IObject::exactfind(const std::string& name) const
+bool IObject::exactfind(const std::string& name, subnodes& outlist) const
 {
-#if useiterator
-	subnodes::const_iterator i = elements().begin();
-	while (i!=elements().end()) {
-		if ((!(*i)->getDeleted()) && ((*i)->name() == name))
-			return *i;
-		i++;
-	}
-#else
 	unsigned int n = elements().size();
+	bool ret = false;
 	for (unsigned int i = 0; i < n; i++) {
 		IObject * elt = elements()[i];
-		if ((!elt->getDeleted()) && (elt->name() == name))
-			return elt;
+		if ((!elt->getDeleted()) && (elt->name() == name)) {
+			outlist.push_back(elt);
+			ret = true;
+		}
 	}
-#endif
-	return 0;
+	return ret;
 }
 
 //--------------------------------------------------------------------------

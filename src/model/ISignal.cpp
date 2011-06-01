@@ -181,10 +181,14 @@ MsgHandler::msgStatus ISignal::set (const IMessage* msg)
 			string name = msg->params()[i]->value<string>("");
 			if (name.size()) {
 				SISignalNode sigs = getSignalNode();
-				SISignal s = sigs ? sigs->find(name) : 0;
-				if (s) {
-					signals.push_back(s);
+				subnodes siglist;
+				if (sigs && sigs->find(name, siglist)) {
+					signals.push_back(dynamic_cast<ISignal*>((IObject*)siglist[0]));
 				}
+//				SISignal s = sigs ? sigs->find(name) : 0;
+//				if (s) {
+//					signals.push_back(s);
+//				}
 				else {
 					ITLErr << "parallel signal " << this->name() << ": unknown signal " << name << ITLEndl;
 					return MsgHandler::kBadParameters;
