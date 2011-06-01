@@ -18,6 +18,7 @@ Version 0.78
 - automatic numbering of exports when destination file is not completely specified 
   (no name, no extension)
 - accepts float values for bool parameters 
+- new 'rename' message to change objects name (and thus OSC address)
 
 ----------------------------------------------------
 Version 0.77

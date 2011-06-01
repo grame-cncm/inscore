@@ -132,6 +132,8 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		const	subnodes& elements() const			{ return fSubNodes; }
 		/// \brief returns the object name
 		const	std::string& name() const			{ return fName; }
+		/// \brief sets the object name
+		virtual void setName(const std::string& name)	{ fName = name; }
 		/// \brief returns the \e deleted state object
 		virtual bool	getDeleted() const			{ return fDelete; }
 
@@ -385,6 +387,9 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 
 		/// \brief the \c 'export' message handler
 		virtual MsgHandler::msgStatus exportMsg(const IMessage* msg);
+
+		/// \brief the \c 'rename' message handler
+		virtual MsgHandler::msgStatus renameMsg(const IMessage* msg);
 
 		/// \brief the \c 'watch' message handler
 		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);

@@ -220,6 +220,7 @@ commonMsg :  ('show' int32)
 			| 'del'
 			| 'export' ((fullPathFileName) | path |)
 			| 'save' filePath ( | '+')
+			| 'rename' name
 			| PositionMsg
 			| ColorMsg
 			| TimeMsg
@@ -238,6 +239,7 @@ The first form exports to the parameter file, which specifies a full path name. 
 The second form exports to \OSC{path/\textit{identifier}.pdf}. When path is a relative path, it exports to \OSC{rootPath/path/\textit{identifier}.pdf}. A scene \textit{identifier} is '\OSC{scene}'.\\
 The third form exports to \OSC{rootPath/\textit{identifier}.pdf}.
 \item \OSC{save}: recursively saves objects states to a file.  The \OSC{filePath} can be relative or absolute. When relative, an absolute path is build using the current \OSC{rootPath}. The optional \OSC{+} parameter indicates an append mode for the write operation. The message must be sent to the \OSC{/ITL} address to save the whole application state.
+\item \OSC{rename}: rename the destination object. Changes its OSC address.
 \item 'PositionMsg' are absolute and relative position messages.
 \item 'ColorMsg' are absolute and relative color control messages.
 \item 'TimeMsg' are time management messages. They are described in chaper \fullref{time}.

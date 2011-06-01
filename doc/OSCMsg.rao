@@ -136,10 +136,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {8}{ commonMsg : ('show' int32) | 'del' | 'export' ((fullPathFileName) | path |) | 'save' filePath ( | '+') | PositionMsg | ColorMsg | TimeMsg | clickSelectMsg }
+\rail@i {8}{ commonMsg : ('show' int32) | 'del' | 'export' ((fullPathFileName) | path |) | 'save' filePath ( | '+') | 'rename' name | PositionMsg | ColorMsg | TimeMsg | clickSelectMsg }
 \rail@o {8}{
 \rail@index{commonMsg}
-\rail@begin{11}{commonMsg}
+\rail@begin{12}{commonMsg}
 \rail@bar
 \rail@term{show}[]
 \rail@token{int32}[]
@@ -161,12 +161,15 @@
 \rail@term{+}[]
 \rail@endbar
 \rail@nextbar{7}
-\rail@nont{PositionMsg}[]
+\rail@term{rename}[]
+\rail@nont{name}[]
 \rail@nextbar{8}
-\rail@nont{ColorMsg}[]
+\rail@nont{PositionMsg}[]
 \rail@nextbar{9}
-\rail@nont{TimeMsg}[]
+\rail@nont{ColorMsg}[]
 \rail@nextbar{10}
+\rail@nont{TimeMsg}[]
+\rail@nextbar{11}
 \rail@nont{clickSelectMsg}[]
 \rail@endbar
 \rail@end
