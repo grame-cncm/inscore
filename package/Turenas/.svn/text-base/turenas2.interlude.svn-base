@@ -1,0 +1,162 @@
+# cleanup the scene.
+/ITL/scene/* del
+/ITL/scene/signal/* del
+
+# Add the Turenas graphic analysis as an image
+/ITL/scene/turenas set img "schemaSonagram4B.png"
+
+# Sets the 'graphic to time' mapping for the Turanas graphic analysis
+/ITL/scene/turenas mapf "turenas.map"
+
+# Add and set the position of the title text
+/ITL/scene/title set txt "Turenas - John Chowning"
+/ITL/scene/title x -0.36
+/ITL/scene/title y -0.86
+/ITL/scene/title scale 3.0
+
+# Add a rectangle to make the cursor
+/ITL/scene/cursor set rect 0.004 0.217176
+/ITL/scene/cursor date 0 64
+/ITL/scene/cursor color 204 0 48 132
+
+# Add 'credits' text
+/ITL/scene/copyright set txt "Analyse & transcription graphique: Laurent Pottier"
+/ITL/scene/copyright y 0.95
+
+# Add the resources as images and sync to a transparent rect
+/ITL/scene/image1 set img "rsrc/1.tiff"
+/ITL/scene/section1 set rect 0.005 0.1
+/ITL/scene/section1 x -0.58
+/ITL/scene/section1 map "( [-1.,1.[ [-1.,1.[ ) ( [0/1,9/4[ )"
+/ITL/scene/sync image1 section1
+
+/ITL/scene/image2 set img "rsrc/2.tiff"
+/ITL/scene/section2 set rect 0.005 0.1
+/ITL/scene/section2 x -0.4
+/ITL/scene/section2 map "( [-1.,1.[ [-1.,1.[ ) ( [53/8,35/4[ )"
+/ITL/scene/sync image2 section2
+
+/ITL/scene/image3 set img "rsrc/3.tiff"
+/ITL/scene/section3 set rect 0.005 0.1
+/ITL/scene/section3 x -0.2
+/ITL/scene/section3 map "( [-1.,1.[ [-1.,1.[ ) ( [35/4,68/4[ )"
+/ITL/scene/sync image3 section3
+
+/ITL/scene/image4 set img "rsrc/4.tiff"
+/ITL/scene/section4 set rect 0.005 0.1
+/ITL/scene/section4 x -0.05
+/ITL/scene/section4 map "( [-1.,1.[ [-1.,1.[ ) ( [90/4,98/4[ )"
+/ITL/scene/sync image4 section4
+
+/ITL/scene/image5 set img "rsrc/5.tiff"
+/ITL/scene/section5 set rect 0.005 0.1
+/ITL/scene/section5 x 0.
+/ITL/scene/section5 map "( [-1.,1.[ [-1.,1.[ ) ( [99/4,109/4[ )"
+/ITL/scene/sync image5 section5
+
+/ITL/scene/image6 set img "rsrc/6.tiff"
+/ITL/scene/section6 set rect 0.005 0.1
+/ITL/scene/section6 x 0.3
+/ITL/scene/section6 map "( [-1.,1.[ [-1.,1.[ ) ( [142/4,152/4[ )"
+/ITL/scene/sync image6 section6
+
+/ITL/scene/section[123456] y 0.03
+
+/ITL/scene/image8 set img "rsrc/8.tiff"
+/ITL/scene/section7 set rect 0.005 0.1
+/ITL/scene/section7 x -0.47
+/ITL/scene/section7 map "( [-1.,1.[ [-1.,1.[ ) ( [225/4,240/4[ )"
+/ITL/scene/sync image8 section7
+
+/ITL/scene/image8b set img "rsrc/8.tiff"
+/ITL/scene/section8 set rect 0.005 0.1
+/ITL/scene/section8 x -0.30
+/ITL/scene/section8 map "( [-1.,1.[ [-1.,1.[ ) ( [265/4,280/4[ )"
+/ITL/scene/sync image8b section8
+
+/ITL/scene/image9 set img "rsrc/9.tiff"
+/ITL/scene/section9 set rect 0.005 0.1
+/ITL/scene/section9 x -0.20
+/ITL/scene/section9 map "( [-1.,1.[ [-1.,1.[ ) ( [300/4,330/4[ )"
+/ITL/scene/sync image9 section9
+
+/ITL/scene/image7 set img "rsrc/7.tiff"
+/ITL/scene/sectionA set rect 0.005 0.1
+/ITL/scene/sectionA x 0.40
+/ITL/scene/sectionA map "( [-1.,1.[ [-1.,1.[ ) ( [454/4,470/4[ )"
+/ITL/scene/sync image7 sectionA
+
+/ITL/scene/image7b set img "rsrc/7.tiff"
+/ITL/scene/sectionB set rect 0.005 0.1
+/ITL/scene/sectionB x 0.40
+/ITL/scene/sectionB map "( [-1.,1.[ [-1.,1.[ ) ( [480/4,496/4[ )"
+/ITL/scene/sync image7b sectionB
+
+/ITL/scene/section[789AB]* y 0.49
+
+/ITL/scene/imageA set img "rsrc/10.tiff"
+/ITL/scene/sectionC set rect 0.005 0.1
+/ITL/scene/sectionC x 0.30
+/ITL/scene/sectionC map "( [-1.,1.[ [-1.,1.[ ) ( [581/4,593/4[ )"
+/ITL/scene/sync imageA sectionC
+
+/ITL/scene/sectionC y 0.03
+
+/ITL/scene/section* color 0 0 0 0
+/ITL/scene/section* width 0.0001
+/ITL/scene/image* date -1 96
+/ITL/scene/image* duration 1 4
+/ITL/scene/image* show 0
+
+
+# Add graphic shape to indicate annotated zones
+/ITL/scene/shape1 set ellipse 0.02 0.04
+/ITL/scene/shape2 set ellipse 0.02 0.02
+/ITL/scene/shape3 set ellipse 0.06 0.015
+/ITL/scene/shape4 set ellipse 0.02 0.02
+/ITL/scene/shape5 set ellipse 0.02 0.02
+/ITL/scene/shape6 set ellipse 0.02 0.04
+/ITL/scene/shape7 set ellipse 0.02 0.02
+/ITL/scene/shape8 set ellipse 0.02 0.02
+/ITL/scene/shape9 set ellipse 0.05 0.015
+/ITL/scene/shape10 set ellipse 0.02 0.02
+/ITL/scene/shape11 set ellipse 0.02 0.02
+/ITL/scene/shape12 set ellipse 0.05 0.015
+/ITL/scene/shape* scale 5.0
+
+# Setup shape positions
+/ITL/scene/shape1 x -0.893
+/ITL/scene/shape1 y -0.506
+/ITL/scene/shape2 x -0.665
+/ITL/scene/shape2 y -0.494
+/ITL/scene/shape3 x -0.496
+/ITL/scene/shape3 y -0.348
+/ITL/scene/shape4 x -0.169
+/ITL/scene/shape4 y -0.439
+/ITL/scene/shape5 x -0.078
+/ITL/scene/shape5 y -0.360
+/ITL/scene/shape6 x 0.276
+/ITL/scene/shape6 y -0.435
+/ITL/scene/shape7 x -0.882
+/ITL/scene/shape7 y 0.1
+/ITL/scene/shape8 x -0.626
+/ITL/scene/shape8 y 0.108
+/ITL/scene/shape9 x -0.346
+/ITL/scene/shape9 y 0.171
+/ITL/scene/shape10 x 0.586
+/ITL/scene/shape10 y 0.123
+/ITL/scene/shape11 x 0.752
+/ITL/scene/shape11 y 0.151
+/ITL/scene/shape12 x 0.173
+/ITL/scene/shape12 y 0.679
+/ITL/scene/shape* penColor 80 80 255 200
+/ITL/scene/shape* penWidth 0.4
+/ITL/scene/shape* penStyle dot
+/ITL/scene/shape* color 0 0 0 0
+
+# Organize z ordering
+/ITL/scene/turenas z -0.9
+/ITL/scene/shape* z -0.85
+
+# Synchronize the cursor.
+/ITL/scene/sync cursor turenas v

@@ -1,0 +1,16 @@
+/ITL/scene/* del
+/ITL/scene/signal/* del
+/ITL/scene/turenas set img "schemaSonagram4B.png"
+/ITL/scene/turenas mapf "turenas.map"
+/ITL/scene/title set txt "Turenas - John Chowning"
+/ITL/scene/title x -0.36
+/ITL/scene/title y -0.86
+/ITL/scene/title scale 3.0
+/ITL/scene/cursor set rect 0.004 0.217176
+/ITL/scene/cursor date 0 64
+/ITL/scene/cursor duration 1 64
+/ITL/scene/cursor z 0.5
+/ITL/scene/cursor color 204 0 48 132
+/ITL/scene/sync cursor turenas v
+/ITL/scene/copyright set txt "Analyse & transcription graphique: Laurent Pottier"
+/ITL/scene/copyright y 0.9
