@@ -191,6 +191,23 @@ void VGraphicsItemView::updateObjectSize(IObject* o)
 }
 
 //------------------------------------------------------------------------------------------------------------
+void VGraphicsItemView::updateTransform(IObject* o)
+{
+	fItem->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
+	QTransform matrix;
+	TFloatSize shear = o->getShear();
+	if (shear)
+		matrix.shear(shear.width(), shear.height());
+	if (o->getRotateX())
+		matrix.rotate(o->getRotateX(), Qt::XAxis);
+	if (o->getRotateY())
+		matrix.rotate(o->getRotateY(), Qt::YAxis);
+	if (o->getRotateZ())
+		matrix.rotate(o->getRotateZ(), Qt::ZAxis);
+	fItem->setTransform (matrix);	
+}
+
+//------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateView(IObject* o)
 {	
 	setStretch( o->UseGraphic2GraphicMapping() );
@@ -231,7 +248,8 @@ void VGraphicsItemView::updateView(IObject* o)
 		//	Sets the item position in the QGraphicsScene, using 'relative coordinate -> QGraphicsScene coordinate' 
 		//	mapping functions.
 		fItem->setPos( relative2SceneX( o->getXPos() ) , relative2SceneY(  o->getYPos() ) );
-		fItem->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
+//		fItem->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
+		updateTransform (o);
 		fItem->scale(  o->getScale() ,  o->getScale() );
 		fItem->rotate(  o->getAngle() );
 	

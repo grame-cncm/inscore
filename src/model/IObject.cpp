@@ -153,6 +153,10 @@ void IObject::positionAble()
 	fGetMsgHandlerMap["show"]	= TGetParamMsgHandler<bool>::create(fVisible);
 	fGetMsgHandlerMap["width"]	= TGetParamMsgHandler<float>::create(fWidth);
 	fGetMsgHandlerMap["height"] = TGetParamMsgHandler<float>::create(fHeight);
+	fGetMsgHandlerMap["shear"]	= TGetParamMsgHandler<TFloatSize>::create(fShear);
+	fGetMsgHandlerMap["rotatex"]= TGetParamMsgHandler<float>::create(fXAngle);
+	fGetMsgHandlerMap["rotatey"]= TGetParamMsgHandler<float>::create(fYAngle);
+	fGetMsgHandlerMap["rotatez"]= TGetParamMsgHandler<float>::create(fZAngle);
 
 	fMsgHandlerMap["x"]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setXPos);
 	fMsgHandlerMap["y"]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setYPos);
@@ -161,6 +165,10 @@ void IObject::positionAble()
 	fMsgHandlerMap["z"]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setZOrder);
 	fMsgHandlerMap["angle"]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setAngle);
 	fMsgHandlerMap["scale"]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setScale);
+	fMsgHandlerMap["shear"]		= TSetMethodMsgHandler<IObject,TFloatSize>::create(this, &IObject::setShear);
+	fMsgHandlerMap["rotatex"]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setRotateX);
+	fMsgHandlerMap["rotatey"]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setRotateY);
+	fMsgHandlerMap["rotatez"]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setRotateZ);
 	fMsgHandlerMap["show"]		= TSetMethodMsgHandler<IObject,bool>::create(this, &IObject::setVisible);
 
 	fMsgHandlerMap["dx"]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addXPos);

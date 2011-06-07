@@ -13,12 +13,13 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 0.78
-- reset message addressed to a scene clears the scene rootPath
-- quantification introduced to $date variable
+- new transformations messages (shear and rotate)
+- new 'rename' message to change objects name (and thus OSC address)
+- accepts float values for bool parameters 
 - automatic numbering of exports when destination file is not completely specified 
   (no name, no extension)
-- accepts float values for bool parameters 
-- new 'rename' message to change objects name (and thus OSC address)
+- quantification introduced to $date variable
+- reset message addressed to a scene clears the scene rootPath
 
 ----------------------------------------------------
 Version 0.77

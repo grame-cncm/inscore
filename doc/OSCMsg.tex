@@ -344,6 +344,20 @@ originMsg :
 \end{itemize}
 
 
+%-------------------------------
+%:   Components transformations
+\subsublevel{Components transformations}
+\label{transform}
+
+A component tranformation specifies 2D transformations of its coordinate system. It includes shear and object rotation.
+
+\begin{rail}
+transformMsg :
+			(('rotatex' | 'rotatey' | 'rotatez') float32)
+		| 	('shear' float32 float32)
+\end{rail}
+\index{Transform messages!rotate}
+\index{Transform messages!shear}
 
 %-------------------------------
 %:Color messages

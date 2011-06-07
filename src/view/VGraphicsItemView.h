@@ -60,6 +60,7 @@ class VGraphicsItemView
 		virtual void drawNameAndBBox (IObject* o);
 
 		virtual void updateView(IObject * object);			// updates the object view
+		virtual void updateTransform(IObject * object);		// updates the object transform matrix
 		virtual void setParentView (IObject * object);		// updates the object parent view
 		virtual void updateObjectSize( IObject * object );	// updates the object size
 		virtual void setParentItem( VGraphicsItemView* master )	{ item()->setParentItem( master ? master->item() : 0); }

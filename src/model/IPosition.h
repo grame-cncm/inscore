@@ -66,6 +66,12 @@ class Position
 		float	fScale;					///< the object scaling factor
 		bool	fModified;				///< the modification state
 
+		float	fXAngle;				///< the object x rotation
+		float	fYAngle;				///< the object y rotation
+		float	fZAngle;				///< the object z rotation
+
+		TFloatSize fShear;				///< the shear attributes
+
 	public:
 				 Position();
 		virtual ~Position() {}
@@ -91,12 +97,19 @@ class Position
 		virtual float	getYOrigin () const			{ return fYOrigin; }
 		/// \brief returns the object z order
 		virtual float	getZOrder() const			{ return fZOrder; }
-		/// \brief returns the object z order
+		/// \brief returns the object angle
 		virtual float	getAngle() const			{ return fAngle; }
 		/// \brief returns the scaling factor of the object
 		virtual float	getScale () const			{ return fScale; }
 		/// \brief returns the object position as a TFloatPoint
 		virtual TFloatPoint	getPos() const			{ return TFloatPoint( fXPos , fYPos ); }
+
+		/// \brief returns the object x rotation
+		virtual float	getRotateX() const			{ return fXAngle; }
+		/// \brief returns the object y rotation
+		virtual float	getRotateY() const			{ return fYAngle; }
+		/// \brief returns the object z rotation
+		virtual float	getRotateZ() const			{ return fZAngle; }
 
 		/// \brief Returns the width
 		virtual float	getWidth() const			{ return fWidth; }
@@ -104,6 +117,8 @@ class Position
 		virtual float	getHeight() const			{ return fHeight; }
 		/// \brief Returns the dimension
 		virtual TFloatSize getDimension() const		{ return TFloatSize( fWidth , fHeight ); }
+		/// \brief Returns the shear attributes
+		virtual TFloatSize getShear() const			{ return fShear; }
 
 		/// \brief returns the object visibility
 		virtual bool	getVisible () const			{ return fVisible; }
@@ -180,6 +195,16 @@ class Position
 		*/
 		virtual void	setAngle(float angle)		{ fAngle = angle; fModified = true; }
 		virtual void	addAngle(float angle)		{ setAngle(fAngle + angle); }
+
+		
+		/// \brief sets the object shear
+		virtual void	setShear(const TFloatSize& s)		{ fShear = s; }		
+		/// \brief sets the object x rotation
+		virtual void	setRotateX(float a)					{ fXAngle = a; }
+		/// \brief sets the object y rotation
+		virtual void	setRotateY(float a)					{ fYAngle = a; }
+		/// \brief sets the object z rotation
+		virtual void	setRotateZ(float a)					{ fZAngle = a; }
 
 		/*! \brief Computes the bounding rect in Scene coordinates. 
 		
