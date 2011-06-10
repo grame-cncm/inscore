@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>About this document ...</TITLE>
-<META NAME="description" CONTENT="About this document ...">
+<TITLE>15.10 Differences to version 0.42</TITLE>
+<META NAME="description" CONTENT="15.10 Differences to version 0.42">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -20,61 +20,114 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
 <LINK REL="previous" HREF="node64.html">
-<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="up" HREF="node55.html">
+<LINK REL="next" HREF="node66.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next_g.gif"> 
-<A NAME="tex2html1065"
-  HREF="OSCMsg.html">
+<A NAME="tex2html1082"
+  HREF="node66.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html1076"
+  HREF="node55.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1061"
+<A NAME="tex2html1072"
   HREF="node64.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1067"
+<A NAME="tex2html1078"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1069"
-  HREF="node64.html">
+<A NAME="tex2html1080"
+  HREF="node66.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Up:</B> <A NAME="tex2html1066"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html1062"
-  HREF="node64.html">Index</A>
- &nbsp; <B>  <A NAME="tex2html1068"
+<B> Next:</B> <A NAME="tex2html1083"
+  HREF="node66.html">Index</A>
+<B> Up:</B> <A NAME="tex2html1077"
+  HREF="node55.html">15. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1073"
+  HREF="node64.html">15.9 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1079"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1070"
-  HREF="node64.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1081"
+  HREF="node66.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001800000000000000000">
-About this document ...</A>
+<H1><A NAME="SECTION0016100000000000000000">
+15.10 Differences to version 0.42</A>
 </H1>
- <STRONG>INScore 
-<BR>
-OSC Messages Reference 
-<BR>
-v.0.78</STRONG><P>
-This document was generated using the
-<A HREF="http://www.latex2html.org/"><STRONG>LaTeX</STRONG>2<tt>HTML</tt></A> translator Version 2002-2 (1.70)
+
 <P>
-Copyright &#169; 1993, 1994, 1995, 1996,
-<A HREF="http://cbl.leeds.ac.uk/nikos/personal.html">Nikos Drakos</A>, 
-Computer Based Learning Unit, University of Leeds.
+
+<UL>
+<LI><TT>identifier</TT> specification change (section <A HREF="node2.html#genformat">1</A> p.<A HREF="node2.html#genformat"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI>new application <TT>hello</TT> and  <TT>defaultShow</TT> messages (section <A HREF="node4.html#ITL">2</A> p.<A HREF="node4.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI>new <TT>load</TT> and <TT>save</TT> messages  (sections <A HREF="node4.html#ITL">2</A> p.<A HREF="node4.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> and  <A HREF="node6.html#common">4</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI><TT>click</TT> and <TT>select</TT> messages (section <A HREF="node19.html#csmsg">4.4</A> p.<A HREF="node19.html#csmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>):
+
+<UL>
+<LI><TT>rightbottom</TT> and <TT>leftbottom</TT> modes renamed to <TT>bottomright</TT> and <TT>bottomleft</TT>
+</LI>
+<LI>new <TT>center</TT> mode for the <TT>click</TT> message
+</LI>
+<LI>query mode sent back with the reply both for <TT>click</TT> and  <TT>select</TT> messages
+</LI>
+</UL>
+</LI>
+<LI>new <TT>file</TT>, <TT>html</TT> and  <TT>htmlf</TT> types for the <TT>set</TT> message (section <A HREF="node21.html#setsect">6</A> p.<A HREF="node21.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI><TT>get</TT> syntax change for the <TT>scene</TT> (section <A HREF="#sceneget"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> p.<A HREF="#sceneget"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI><TT>fileWatcher</TT> messages completely redesigned (section <A HREF="node39.html#watch">12.1</A> p.<A HREF="node39.html#watch"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI>mappings can be identified by names (section <A HREF="node29.html#mapMsg">9.1</A> p.<A HREF="node29.html#mapMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI>rect, ellipse, curve, line and polygon object support graphic to relative-time mapping
+</LI>
+<LI>new synchronization modes for Guido scores: voice1, voice2, ... , staff1, staff2, ... , system, page (section <A HREF="node35.html#guidomaps">11.1</A> p.<A HREF="node35.html#guidomaps"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI>Guido mapping manages repeat bars.
+</LI>
+<LI>Graphic signals messages design (section <A HREF="node46.html#gsignal">13.2</A> p.<A HREF="node46.html#gsignal"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+</UL>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1082"
+  HREF="node66.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html1076"
+  HREF="node55.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html1072"
+  HREF="node64.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html1078"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html1080"
+  HREF="node66.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-Copyright &#169; 1997, 1998, 1999,
-<A HREF="http://www.maths.mq.edu.au/~ross/">Ross Moore</A>, 
-Mathematics Department, Macquarie University, Sydney.
-<P>
-The command line arguments were: <BR>
- <STRONG>latex2html</STRONG> <TT>-show_section_numbers -image_type gif -address '<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]' OSCMsg.tex</TT>
-<P>
-The translation was initiated by Dominique Fober on 2011-05-23
-<BR><HR>
+<B> Next:</B> <A NAME="tex2html1083"
+  HREF="node66.html">Index</A>
+<B> Up:</B> <A NAME="tex2html1077"
+  HREF="node55.html">15. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1073"
+  HREF="node64.html">15.9 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1079"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1081"
+  HREF="node66.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

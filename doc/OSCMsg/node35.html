@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>11.2 Score browsing and layout</TITLE>
-<META NAME="description" CONTENT="11.2 Score browsing and layout">
+<TITLE>11.1 Specific score mappings</TITLE>
+<META NAME="description" CONTENT="11.1 Specific score mappings">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,82 +21,117 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node36.html">
 <LINK REL="previous" HREF="node34.html">
-<LINK REL="up" HREF="node33.html">
+<LINK REL="up" HREF="node34.html">
 <LINK REL="next" HREF="node36.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html641"
+<A NAME="tex2html647"
   HREF="node36.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html635"
-  HREF="node33.html">
+<A NAME="tex2html641"
+  HREF="node34.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html629"
+<A NAME="tex2html635"
   HREF="node34.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html637"
+<A NAME="tex2html643"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html639"
-  HREF="node64.html">
+<A NAME="tex2html645"
+  HREF="node66.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html642"
-  HREF="node36.html">11.3 Score queries</A>
-<B> Up:</B> <A NAME="tex2html636"
-  HREF="node33.html">11. Score specific messages</A>
-<B> Previous:</B> <A NAME="tex2html630"
-  HREF="node34.html">11.1 Specific score mappings</A>
- &nbsp; <B>  <A NAME="tex2html638"
+<B> Next:</B> <A NAME="tex2html648"
+  HREF="node36.html">11.2 Score browsing and</A>
+<B> Up:</B> <A NAME="tex2html642"
+  HREF="node34.html">11. Score specific messages</A>
+<B> Previous:</B> <A NAME="tex2html636"
+  HREF="node34.html">11. Score specific messages</A>
+ &nbsp; <B>  <A NAME="tex2html644"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html640"
-  HREF="node64.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html646"
+  HREF="node66.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001220000000000000000"></A>
-<A NAME="guidolayout"></A>
+<H1><A NAME="SECTION001210000000000000000"></A>
+<A NAME="guidomaps"></A>
 <BR>
-11.2 Score browsing and layout
+11.1 Specific score mappings
 </H1>
 
 <P>
+Music score mappings are automatically computed  by the system. However, since a score may support a large number of mappings (staff based, system based, voice based, etc.), music scores supports a specific <TT>map</TT> message to request the computation of a specific mapping. This message has the form:
 <BR>
 <IMG
- WIDTH="396" HEIGHT="163" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="325" HEIGHT="202" ALIGN="BOTTOM" BORDER="0"
  SRC="img66.gif"
  ALT="\begin{rail}
-scoreMsg : 'page' int32
-\vert 'pageFormat' float32 float32
-\vert 'columns' int32
-\vert 'rows' int32
+scoreMapMsg : 'map' ('page' \vert 'system' \vert 'systemflat' \vert ('staff' 'staffNum') \vert 'voice' 'voiceNum' )
 \end{rail}">
 <BR>
+<A NAME="766"></A>
+<A NAME="767"></A>
+<A NAME="768"></A>
+<A NAME="769"></A>
+<A NAME="770"></A>
+<A NAME="771"></A>
+
+<P>
+The Guido map name must be concatenated as a string (as a usual map name).
 
 <P>
 
 <UL>
-<LI><TT>page</TT>: sets the first displayed page. Index starts at <TT>1</TT>. Default: <TT>1</TT>.
-
-<P>
+<LI><TT>page</TT>: a page level mapping
 </LI>
-<LI><TT>pageFormat</TT>: sets the score's page format, in cm (Warning: the <TT>pageFormat</TT> is not used when another page format is 'hard-coded' in the score's Guido code). Default: <TT>(21.0 , 29.7)</TT>.
-
-<P>
+<LI><TT>system</TT>: a system level mapping
 </LI>
-<LI><TT>columns</TT>: as multiples pages can be displayed and organized in a <I>grid of pages</I>, <TT>columns</TT> sets the number of columns in the grid. Default: <TT>2</TT>.
-
-<P>
+<LI><TT>systemflat</TT>: a system level mapping without system subdivision (one graphic segment per system)
 </LI>
-<LI><TT>rows</TT>: as multiples pages can be displayed and organized in a <I>grid of pages</I>, <TT>rows</TT> sets the number of rows in the grid. Default: <TT>1</TT>.
+<LI><TT>staff</TT>: a staff level mapping: the staff indicated by the next parameter (between 1 and the score staves count).
+</LI>
+<LI><TT>voice</TT>: a voice level mapping: the voice indicated by the next parameter (between 1 and the score voices count).
 </LI>
 </UL>
 
 <P>
-<BR><HR>
+The default synchronization mode for a Guido score is <TT>staff1</TT>.
+Note that a voice may be distributed on several staves and thus a staff may contain serveral voices.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html647"
+  HREF="node36.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html641"
+  HREF="node34.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html635"
+  HREF="node34.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html643"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html645"
+  HREF="node66.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html648"
+  HREF="node36.html">11.2 Score browsing and</A>
+<B> Up:</B> <A NAME="tex2html642"
+  HREF="node34.html">11. Score specific messages</A>
+<B> Previous:</B> <A NAME="tex2html636"
+  HREF="node34.html">11. Score specific messages</A>
+ &nbsp; <B>  <A NAME="tex2html644"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html646"
+  HREF="node66.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

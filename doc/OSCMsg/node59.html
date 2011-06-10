@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.5 Differences to version 0.60</TITLE>
-<META NAME="description" CONTENT="15.5 Differences to version 0.60">
+<TITLE>15.4 Differences to version 0.74</TITLE>
+<META NAME="description" CONTENT="15.4 Differences to version 0.74">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,68 +21,50 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node60.html">
 <LINK REL="previous" HREF="node58.html">
-<LINK REL="up" HREF="node54.html">
+<LINK REL="up" HREF="node55.html">
 <LINK REL="next" HREF="node60.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html993"
+<A NAME="tex2html1000"
   HREF="node60.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html987"
-  HREF="node54.html">
+<A NAME="tex2html994"
+  HREF="node55.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html981"
+<A NAME="tex2html988"
   HREF="node58.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html989"
+<A NAME="tex2html996"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html991"
-  HREF="node64.html">
+<A NAME="tex2html998"
+  HREF="node66.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html994"
-  HREF="node60.html">15.6 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html988"
-  HREF="node54.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html982"
-  HREF="node58.html">15.4 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html990"
+<B> Next:</B> <A NAME="tex2html1001"
+  HREF="node60.html">15.5 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html995"
+  HREF="node55.html">15. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html989"
+  HREF="node58.html">15.3 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html997"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html992"
-  HREF="node64.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html999"
+  HREF="node66.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001650000000000000000">
-15.5 Differences to version 0.60</A>
+<H1><A NAME="SECTION001640000000000000000">
+15.4 Differences to version 0.74</A>
 </H1>
 
 <UL>
-<LI>new 'mousemove' event (see section <A HREF="node49.html#interactmsg">14.1</A> p.<A HREF="node49.html#interactmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>new <TT>map+</TT> message  (see section <A HREF="node30.html#mapAddMsg">9.2</A> p.<A HREF="node30.html#mapAddMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>interaction messages accept variables ($x, $y, $date...) (see section <A HREF="node51.html#interactvar">14.3</A> p.<A HREF="node51.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>SVG code and files support (see section <A HREF="node20.html#setfile">6</A> p.<A HREF="node20.html#setfile"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>set line message change: the <TT>x y</TT> form is deprecated, it is replaced by
-  the following forms: 
-<BR>  <TT>'xy' x y</TT> (equivalent to the former form) 
-  and <TT>'wa' width angle</TT>   
-  (see section <A HREF="node20.html#setsect">6</A> p.<A HREF="node20.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>new 'effect' message  (section <A HREF="node14.html#effectmsg">4.3</A> p.<A HREF="node14.html#effectmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>utf8 support on windows corrected
-</LI>
-<LI>transparency support for stretched synchronized objects corrected
-</LI>
-<LI>multiple application instances supported with dynamic udp port number allocation.
-</LI>
-<LI>command line option with -port portnumber option to set the receive udp port number at startup.
+<LI>the <TT>click</TT> and <TT>select</TT> messages are deprecated (but still supported). They will be removed in a future version (see section <A HREF="node19.html#csmsg">4.4</A> p.<A HREF="node19.html#csmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
 </UL>
 

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>5. Time management messages</TITLE>
-<META NAME="description" CONTENT="5. Time management messages">
+<TITLE>4.4 The 'click' and 'select' messages</TITLE>
+<META NAME="description" CONTENT="4.4 The 'click' and 'select' messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,121 +19,178 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node20.html">
-<LINK REL="previous" HREF="node6.html">
-<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="previous" HREF="node15.html">
+<LINK REL="up" HREF="node6.html">
 <LINK REL="next" HREF="node20.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html414"
+<A NAME="tex2html420"
   HREF="node20.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html408"
-  HREF="OSCMsg.html">
+<A NAME="tex2html414"
+  HREF="node6.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html402"
+<A NAME="tex2html410"
   HREF="node18.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html410"
+<A NAME="tex2html416"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html412"
-  HREF="node64.html">
+<A NAME="tex2html418"
+  HREF="node66.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html415"
-  HREF="node20.html">6. The 'set' message</A>
-<B> Up:</B> <A NAME="tex2html409"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html403"
-  HREF="node18.html">4.4 The 'click' and</A>
- &nbsp; <B>  <A NAME="tex2html411"
+<B> Next:</B> <A NAME="tex2html421"
+  HREF="node20.html">5. Time management messages</A>
+<B> Up:</B> <A NAME="tex2html415"
+  HREF="node6.html">4. Common components messages</A>
+<B> Previous:</B> <A NAME="tex2html411"
+  HREF="node18.html">4.3.3 The shadow effect</A>
+ &nbsp; <B>  <A NAME="tex2html417"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html413"
-  HREF="node64.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html419"
+  HREF="node66.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION00600000000000000000"></A>
-<A NAME="time"></A>
+<H1><A NAME="SECTION00540000000000000000"></A>
+<A NAME="csmsg"></A>
 <BR>
-5. Time management messages
+4.4 The 'click' and 'select' messages
 </H1>
-Time messages control the time dimension if the score components. They could be sent to any address with the form <TT>/ITL/scene/<I>identifier</I></TT> where <TT><I>identifier</I></TT> is the unique identifier string of a scene component.
+
+<P>
+<B>Warning</B>: the <TT>click</TT> and <TT>select</TT> messages are deprecated and will be removed in a future version.
+
+<P>
+The <TT>click</TT> and <TT>select</TT> messages can be sent to any address with the form <TT>/ITL/scene/<I>identifier</I></TT> where <TT><I>identifier</I></TT> is the unique identifier string of a scene component. They are intended to provide information about components relative positions: it returns a list of components identifiers that are 'under' the <I>clicked</I> component: z order of the components is used for the 'under' relationship. 
+
+<P>
 <BR>
 <IMG
- WIDTH="354" HEIGHT="240" ALIGN="BOTTOM" BORDER="0"
- SRC="img34.gif"
+ WIDTH="274" HEIGHT="86" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.gif"
  ALT="\begin{rail}
-timeMsg : 'clock'
-\vert 'durClock'
-\vert ('date' int32 int32)
-...
-...t32)
-\vert ('ddate' int32 int32)
-\vert ('dduration' int32 int32)
+click : 'click' ( \vert clickMode)
 \end{rail}">
 <BR>
-<A NAME="424"></A>
-<A NAME="425"></A>
-<A NAME="426"></A>
-<A NAME="427"></A>
-<A NAME="428"></A>
-<A NAME="429"></A>
+<A NAME="393"></A>
+
+<P>
+<BR>
+<IMG
+ WIDTH="226" HEIGHT="200" ALIGN="BOTTOM" BORDER="0"
+ SRC="img30.gif"
+ ALT="\begin{rail}
+clickMode : 'topleft' \vert 'bottomright' \vert 'topright' \vert 'bottomleft' \vert 'center'
+\end{rail}">
+<BR>
+<A NAME="396"></A>
+<A NAME="397"></A>
+<A NAME="398"></A>
+<A NAME="399"></A>
+<A NAME="400"></A>
 
 <P>
 
 <UL>
-<LI><TT>clock</TT>: a clock message similar to MIDI clock message: advances the object date by 1/24 of quarter note.
+<LI><TT>topleft</TT>, <TT>bottomright</TT>, <TT>topright</TT>, <TT>bottomleft</TT>, <TT>center</TT>: collects the components that are respectively under the top-left, bottom-right, top-right, bottom-left or center point of the target component. The clicked point is computed from the component bounding box.
 </LI>
-<LI><TT>durClock</TT>: a clock message applied to duration: increases the object duration by 1/24 of quarter note.
-</LI>
-<LI><TT>date</TT>: sets the time position of an object. Time is expressed as a rational value <TT>d/n</TT> where <TT>n</TT> represents the whole note division and <TT>d</TT> the divisions count. The parameters order is <TT>numerator</TT> followed by <TT>denominator</TT>.
-<BR>
-Default value is <TT>0/1</TT>.
-</LI>
-<LI><TT>duration</TT>: changes the object duration. Duration is expressed as a rational value. 
-<BR>
-Default value is <TT>0/1</TT>.
-</LI>
-<LI><TT>ddate</TT>: relative time positioning message: adds the specified value to the object date.
-</LI>
-<LI><TT>ddate</TT>: relative duration message: adds the specified value to the object duration.
+<LI>Sent without parameter, the <TT>click</TT> message is equivalent to <TT>click topleft</TT>.
 </LI>
 </UL>
 
 <P>
+Reply of the <TT>click</TT> message has the following form:
+<BR>
+<IMG
+ WIDTH="454" HEIGHT="114" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.gif"
+ ALT="\begin{rail}
+clickReply : OSCAddress clickMode ( \vert (identifier +))
+\end{rail}">
+<BR>
+
+<P>
+where 'identifier' is a component name. Note that 'identifiers' are sorted by decreasing z order.
+
+<P>
+<BR>
+<IMG
+ WIDTH="288" HEIGHT="86" ALIGN="BOTTOM" BORDER="0"
+ SRC="img32.gif"
+ ALT="\begin{rail}
+select : 'select' ( \vert selectMode)
+\end{rail}">
+<BR>
+<A NAME="415"></A>
+
+<P>
+<BR>
+<IMG
+ WIDTH="210" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
+ SRC="img33.gif"
+ ALT="\begin{rail}
+selectMode : 'intersect' \vert 'include'
+\end{rail}">
+<BR>
+<A NAME="418"></A>
+<A NAME="419"></A>
+
+<P>
+
+<UL>
+<LI><TT>intersect</TT>: looks for the components that are under the <I>clicked</I> component and that intersect with its bounding box.
+</LI>
+<LI><TT>include</TT>: looks for the components that are under the <I>clicked</I> component and that are included in its bounding box.
+</LI>
+<LI>Sent without parameter, the <TT>select</TT> message is equivalent to <TT>select intersect</TT>.
+</LI>
+</UL>
+
+<P>
+Reply of the <TT>select</TT> message is similar to <TT>click</TT> reply:
+<BR>
+<IMG
+ WIDTH="459" HEIGHT="114" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="\begin{rail}
+selectReply : OSCAddress selectMode ( \vert (identifier +))
+\end{rail}">
+<BR>
+
+<P>
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html414"
+<A NAME="tex2html420"
   HREF="node20.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html408"
-  HREF="OSCMsg.html">
+<A NAME="tex2html414"
+  HREF="node6.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html402"
+<A NAME="tex2html410"
   HREF="node18.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html410"
+<A NAME="tex2html416"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html412"
-  HREF="node64.html">
+<A NAME="tex2html418"
+  HREF="node66.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html415"
-  HREF="node20.html">6. The 'set' message</A>
-<B> Up:</B> <A NAME="tex2html409"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html403"
-  HREF="node18.html">4.4 The 'click' and</A>
- &nbsp; <B>  <A NAME="tex2html411"
+<B> Next:</B> <A NAME="tex2html421"
+  HREF="node20.html">5. Time management messages</A>
+<B> Up:</B> <A NAME="tex2html415"
+  HREF="node6.html">4. Common components messages</A>
+<B> Previous:</B> <A NAME="tex2html411"
+  HREF="node18.html">4.3.3 The shadow effect</A>
+ &nbsp; <B>  <A NAME="tex2html417"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html413"
-  HREF="node64.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html419"
+  HREF="node66.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]

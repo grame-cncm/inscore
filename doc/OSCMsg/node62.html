@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.8 Differences to version 0.50</TITLE>
-<META NAME="description" CONTENT="15.8 Differences to version 0.50">
+<TITLE>15.7 Differences to version 0.55</TITLE>
+<META NAME="description" CONTENT="15.7 Differences to version 0.55">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,109 +21,73 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node63.html">
 <LINK REL="previous" HREF="node61.html">
-<LINK REL="up" HREF="node54.html">
+<LINK REL="up" HREF="node55.html">
 <LINK REL="next" HREF="node63.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1035"
+<A NAME="tex2html1042"
   HREF="node63.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1029"
-  HREF="node54.html">
+<A NAME="tex2html1036"
+  HREF="node55.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1023"
+<A NAME="tex2html1030"
   HREF="node61.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1031"
+<A NAME="tex2html1038"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1033"
-  HREF="node64.html">
+<A NAME="tex2html1040"
+  HREF="node66.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1036"
-  HREF="node63.html">15.9 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1030"
-  HREF="node54.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1024"
-  HREF="node61.html">15.7 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1032"
+<B> Next:</B> <A NAME="tex2html1043"
+  HREF="node63.html">15.8 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1037"
+  HREF="node55.html">15. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1031"
+  HREF="node61.html">15.6 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1039"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1034"
-  HREF="node64.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1041"
+  HREF="node66.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001680000000000000000">
-15.8 Differences to version 0.50</A>
+<H1><A NAME="SECTION001670000000000000000">
+15.7 Differences to version 0.55</A>
 </H1>
 
 <UL>
-<LI>Graphic signal thickness is now symmetrically drawn around y position.
+<LI>new 'xorigin' and 'yorigin' messages (section <A HREF="node10.html#origin">4.1.3</A> p.<A HREF="node10.html#origin"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>ITL file format supports regular expressions in OSC addresses.
+<LI>new interaction messages set (section <A HREF="node49.html#interaction">14</A> p.<A HREF="node49.html#interaction"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>IP of a message sender is now used for the reply or for error reporting.
+<LI>alpha channel handled by images and video
 </LI>
-<LI>new <TT>line</TT> object (section <A HREF="node20.html#setsect">6</A> p.<A HREF="node20.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>bug correction in line creation corrected (false incorrect parameter returned)
 </LI>
-<LI>new <TT>penStyle</TT> message for vectorial graphics (section <A HREF="node23.html#specificMsg">8</A> p.<A HREF="node23.html#specificMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>bug correction in line 'get' message handling
 </LI>
-<LI>new color messages <TT>red, green, blue, alpha, dcolor, dred, dgreen, dblue</TT> (section <A HREF="node6.html#common">4</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> and  <A HREF="node9.html#relpos">4.1.2</A> p.<A HREF="node9.html#relpos"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>color values for objects are bounded to [0,255]
-</LI>
-<LI><TT>get map</TT> message behaves according to new map message (section <A HREF="node21.html#getsect">7</A> p.<A HREF="node21.html#getsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI><TT>get width</TT> and  <TT>get height</TT> is now supported by all objects (section <A HREF="node21.html#getsect">7</A> p.<A HREF="node21.html#getsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>bug in signal projection corrected (index 0 rejected)
-</LI>
-<LI>bug in signals default value delivery corrected
-</LI>
-<LI>new <TT>pageCount</TT> message for guido scores
-</LI>
-<LI>debug nodes modified state propagated to parent node (corrects the debug informations graphic update issue)
-</LI>
-<LI>rational values catch null denominator (to prevents divide by zero exceptions).
-
-<P>
+<LI>memory leak correction (messages not deleted)
 </LI>
 </UL>
 
 <P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html1035"
-  HREF="node63.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1029"
-  HREF="node54.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1023"
-  HREF="node61.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1031"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1033"
-  HREF="node64.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html1036"
-  HREF="node63.html">15.9 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1030"
-  HREF="node54.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1024"
-  HREF="node61.html">15.7 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1032"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1034"
-  HREF="node64.html">Index</A></B> 
-<!--End of Navigation Panel-->
+Known issues: 
+
+<UL>
+<LI>incorrect graphic rendering when 'sync a b' is changed to 'sync b a' in the same update loop
+</LI>
+<LI>incorrect nested synchronization when master is horizontaly stretched,
+</LI>
+</UL>
+
+<P>
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>14.1 Interaction messages</TITLE>
-<META NAME="description" CONTENT="14.1 Interaction messages">
+<TITLE>14. Events and Interaction</TITLE>
+<META NAME="description" CONTENT="14. Events and Interaction">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,78 +19,116 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node50.html">
-<LINK REL="previous" HREF="node48.html">
-<LINK REL="up" HREF="node48.html">
+<LINK REL="next" HREF="node55.html">
+<LINK REL="previous" HREF="node41.html">
+<LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node50.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html846"
+<A NAME="tex2html847"
   HREF="node50.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html840"
-  HREF="node48.html">
+<A NAME="tex2html841"
+  HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html834"
+<A NAME="tex2html835"
   HREF="node48.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html842"
+<A NAME="tex2html843"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html844"
-  HREF="node64.html">
+<A NAME="tex2html845"
+  HREF="node66.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html847"
-  HREF="node50.html">14.2 Notification messages</A>
-<B> Up:</B> <A NAME="tex2html841"
-  HREF="node48.html">14. Events and Interaction</A>
-<B> Previous:</B> <A NAME="tex2html835"
-  HREF="node48.html">14. Events and Interaction</A>
- &nbsp; <B>  <A NAME="tex2html843"
+<B> Next:</B> <A NAME="tex2html848"
+  HREF="node50.html">14.1 Interaction messages</A>
+<B> Up:</B> <A NAME="tex2html842"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html836"
+  HREF="node48.html">13.2.2 Parallel graphic signals.</A>
+ &nbsp; <B>  <A NAME="tex2html844"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html845"
-  HREF="node64.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html846"
+  HREF="node66.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001510000000000000000"></A>
-<A NAME="interactmsg"></A>
+<H1><A NAME="SECTION001500000000000000000"></A>
+<A NAME="interaction"></A>
 <BR>
-14.1 Interaction messages
+14. Events and Interaction
 </H1>
 
 <P>
-Events currently <I>watchable</I> are:
+Interaction messages are user defined messages associated to events and triggered when these events occur. These messages accept variables as message arguments.
+
+<P>
+The general form of the message is:
+
+<P>
 <BR>
 <IMG
- WIDTH="226" HEIGHT="238" ALIGN="BOTTOM" BORDER="0"
- SRC="img79.gif"
+ WIDTH="426" HEIGHT="125" ALIGN="BOTTOM" BORDER="0"
+ SRC="img77.gif"
  ALT="\begin{rail}
-what : 'mouseDown' \vert 'mouseUp' \vert 'mouseEnter' \vert 'mouseLeave' \vert 'mouseMove' \vert 'doubleClick'
+interactMsg : (('watch' \vert 'watch+') ([1] \vert what ( \vert oscMsg)))
 \end{rail}">
 <BR>
+<A NAME="1068"></A>
 <A NAME="1069"></A>
-<A NAME="1070"></A>
-<A NAME="1071"></A>
-<A NAME="1072"></A>
-<A NAME="1073"></A>
-<A NAME="1074"></A>
 
 <P>
-Example:
-<PRE>
-  1) /ITL/scene/myObject watch mouseDown "/ITL/scene/myObject" "show" 0 
-  2) /ITL/scene/myObject watch mouseDown "host.domain.org:12100/an/address" "start"
-</PRE>
-1) Request the object <TT>myObject</TT> to watch <TT>mouseDown</TT> events and send a message to itself. 
+
+<UL>
+<LI><TT>watch</TT>: clears the messages associated to the event and when specified, associates the new message to the watched event. <TT>watch</TT> without arguments ([1]) clears all the messages associated to all events.
+</LI>
+<LI><TT>watch+</TT>: adds a message to the watched event message list. 
+</LI>
+</UL>
+
+<P>
+The associated OSC message is any valid OSC message (not restricted to the Interlude message set), with an extended address scheme, supporting IP addresses or host names and udp port number to be specified as OSC addresses prefix. The message parameters are any valid OSC type or variables (see section <A HREF="node52.html#interactvar">14.3</A>).
 <BR>
-2) Request the object <TT>myObject</TT> to watch <TT>mouseDown</TT> events and send a "start" message to host.domain.org on udp port 12100 to OSC address /an/address
+<IMG
+ WIDTH="524" HEIGHT="112" ALIGN="BOTTOM" BORDER="0"
+ SRC="img78.gif"
+ ALT="\begin{rail}
+oscMsg : (\vert fullAddress) OSCAddress ( (parameters \vert variable) + )
+\end{rail}">
+<BR>
 
 <P>
+<BR>
+<IMG
+ WIDTH="298" HEIGHT="89" ALIGN="BOTTOM" BORDER="0"
+ SRC="img79.gif"
+ ALT="\begin{rail}
+fullAddress : (IPAddress \vert hostname) ':' port
+\end{rail}">
+<BR>
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html849"
+  HREF="node50.html">14.1 Interaction messages</A>
+<LI><A NAME="tex2html850"
+  HREF="node51.html">14.2 Notification messages</A>
+<LI><A NAME="tex2html851"
+  HREF="node52.html">14.3 Variables</A>
+<LI><A NAME="tex2html852"
+  HREF="node53.html">14.4 Message based variables</A>
+<LI><A NAME="tex2html853"
+  HREF="node54.html">14.5 OSC address variables</A>
+</UL>
+<!--End of Table of Child-Links-->
 <BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]

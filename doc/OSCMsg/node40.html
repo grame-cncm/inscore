@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>13. Signals and graphic signals</TITLE>
-<META NAME="description" CONTENT="13. Signals and graphic signals">
+<TITLE>12.2 Debug</TITLE>
+<META NAME="description" CONTENT="12.2 Debug">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,95 +19,74 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node48.html">
-<LINK REL="previous" HREF="node37.html">
-<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="previous" HREF="node39.html">
+<LINK REL="up" HREF="node38.html">
 <LINK REL="next" HREF="node41.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html709"
+<A NAME="tex2html715"
   HREF="node41.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html703"
-  HREF="OSCMsg.html">
+<A NAME="tex2html709"
+  HREF="node38.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html697"
+<A NAME="tex2html705"
   HREF="node39.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html705"
+<A NAME="tex2html711"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html707"
-  HREF="node64.html">
+<A NAME="tex2html713"
+  HREF="node66.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html710"
-  HREF="node41.html">13.1 The signal virtual</A>
-<B> Up:</B> <A NAME="tex2html704"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html698"
-  HREF="node39.html">12.2 Debug</A>
- &nbsp; <B>  <A NAME="tex2html706"
+<B> Next:</B> <A NAME="tex2html716"
+  HREF="node41.html">13. Signals and graphic</A>
+<B> Up:</B> <A NAME="tex2html710"
+  HREF="node38.html">12. Virtual address space</A>
+<B> Previous:</B> <A NAME="tex2html706"
+  HREF="node39.html">12.1 File watcher</A>
+ &nbsp; <B>  <A NAME="tex2html712"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html708"
-  HREF="node64.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html714"
+  HREF="node66.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001400000000000000000"></A>
-<A NAME="graphsig"></A>
-<BR>
-13. Signals and graphic signals
+<H1><A NAME="SECTION001320000000000000000">
+12.2 Debug</A>
 </H1>
 
 <P>
-The graphic representation of a signal is approached with <I>graphic signals</I>. As illustrated in figure <A HREF="#graphimg">13.1</A>, a graphic representation of a signal could be viewed as a stream of a limited set of parameters : the y coordinate, the graph thickness h and the graph color c. 
-A <I>graphic signal</I> is a composite signal including a set of 3 parallel signals that control these parameters. Thus the INScore library provides messages to create signals and to combine them into <I>graphic signals</I>. 
+Each object has a <TT>debug</TT> sub-node for debugging purposes. This <TT>debug</TT> virtual node has 3 flags, that can be actived or desactived with <TT>0</TT> or <TT>1</TT>:
 
 <P>
-
-<DIV ALIGN="CENTER"><A NAME="graphimg"></A><A NAME="851"></A>
-<TABLE>
-<CAPTION ALIGN="BOTTOM"><STRONG>Figure 13.1:</STRONG>
-A simple graphic signal, defined at time t by a coordinate y, a thickness h and a color c</CAPTION>
-<TR><TD>
-<DIV ALIGN="CENTER"><IMG
-  WIDTH="355" HEIGHT="144" ALIGN="BOTTOM" BORDER="0"
- SRC="./graph.gif"
- ALT="Image graph">
- </DIV></TD></TR>
-</TABLE>
-</DIV>
-
-<P>
-<BR><HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
-
-<UL>
-<LI><A NAME="tex2html711"
-  HREF="node41.html">13.1 The <I>signal</I> virtual address space.</A>
-<UL>
-<LI><A NAME="tex2html712"
-  HREF="node42.html">13.1.1 Simple signals.</A>
-<LI><A NAME="tex2html713"
-  HREF="node43.html">13.1.2 Composing signals in parallel.</A>
-<LI><A NAME="tex2html714"
-  HREF="node44.html">13.1.3 Signals projection.</A>
-</UL>
 <BR>
-<LI><A NAME="tex2html715"
-  HREF="node45.html">13.2 Graphic signals.</A>
+<IMG
+ WIDTH="257" HEIGHT="127" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.gif"
+ ALT="\begin{rail}
+debug : ('name' int32)
+\vert ('map' int32)
+\vert ('signal' int32)
+\end{rail}">
+<BR>
+
+<P>
+
 <UL>
-<LI><A NAME="tex2html716"
-  HREF="node46.html">13.2.1 Graphic signal default values.</A>
-<LI><A NAME="tex2html717"
-  HREF="node47.html">13.2.2 Parallel graphic signals.</A>
-</UL></UL>
-<!--End of Table of Child-Links-->
+<LI>When the <TT>name</TT> flag is on, each scene component displays its bounding rectangle and name.
+</LI>
+<LI>When the <TT>map</TT> flag is on, each scene component displays its mappings.
+</LI>
+<LI>When the <TT>signal</TT> flag is on, each object (even the scene or the application) will, according to its type, emit 'performance related' signals (or no signal). This 'performance signal' is specific to the type of object. The name of 'performance signal' is of the form <TT>debug-</TT><I>objectName</I><TT>-</TT><I>SomeName</I>. Currently, only the <TT>application</TT>, the <TT>scene</TT> and <TT>graph</TT> objects emit 'performance signals'.
+</LI>
+</UL>
+
+<P>
 <BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]

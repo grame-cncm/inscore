@@ -250,7 +250,7 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {13}{ transformMsg : (('rotatex' | 'rotatey' | 'rotatez') float32) | ('shear' float32 float32) }
+\rail@i {13}{ transformMsg : (('rotatex' | 'rotatey' | 'rotatez') float32) | ('shear' x y) }
 \rail@o {13}{
 \rail@index{transformMsg}
 \rail@begin{4}{transformMsg}
@@ -265,8 +265,8 @@
 \rail@token{float32}[]
 \rail@nextbar{3}
 \rail@term{shear}[]
-\rail@token{float32}[]
-\rail@token{float32}[]
+\rail@nont{x}[]
+\rail@nont{y}[]
 \rail@endbar
 \rail@end
 }
@@ -995,19 +995,21 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {57}{ scoreMapMsg : 'map' ('page' | 'system' | ('staff' 'staffNum') | 'voice' 'voiceNum' ) }
+\rail@i {57}{ scoreMapMsg : 'map' ('page' | 'system' | 'systemflat' | ('staff' 'staffNum') | 'voice' 'voiceNum' ) }
 \rail@o {57}{
 \rail@index{scoreMapMsg}
-\rail@begin{4}{scoreMapMsg}
+\rail@begin{5}{scoreMapMsg}
 \rail@term{map}[]
 \rail@bar
 \rail@term{page}[]
 \rail@nextbar{1}
 \rail@term{system}[]
 \rail@nextbar{2}
+\rail@term{systemflat}[]
+\rail@nextbar{3}
 \rail@term{staff}[]
 \rail@term{staffNum}[]
-\rail@nextbar{3}
+\rail@nextbar{4}
 \rail@term{voice}[]
 \rail@term{voiceNum}[]
 \rail@endbar
