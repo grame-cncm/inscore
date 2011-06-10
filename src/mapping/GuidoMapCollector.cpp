@@ -132,21 +132,126 @@ void GuidoStaffCollector::process (Time2GraphicMap* outmap)
 	}
 }
 
-//----------------------------------------------------------------------
-// computes the system map using staves subdivisions
+
+
 //----------------------------------------------------------------------
 void GuidoSystemCollector::process (Time2GraphicMap* outmap)
 {
-//	Time2GraphicMap sysmap;
-	processNoDiv (outmap);
-	return; 
+	Time2GraphicMap map, submap, merged;
+	processNoDiv (&map);
+	if (!fFlatMode) {
+		int i = 1;
+		while (true) {
+			Time2GraphicMap staffmap;
+			GuidoStaffCollector staffcollector (fItem, i++);
+			staffcollector.process(&staffmap);
+			if (!staffmap.size()) break;
+			
+			merge (map, staffmap, submap);
+			map = submap;
+		}
+	}
+	*outmap = map;
+}
+
+//----------------------------------------------------------------------
+rational GuidoSystemCollector::add (const RelativeTimeSegment& ts, const FloatInterval& xi, const FloatInterval& yi, Time2GraphicMap& outmap)
+{
+	outmap[ts] = GraphicSegment(xi, yi);
+	return ts.end();
+}
+
+//----------------------------------------------------------------------
+// merge 2 maps using the smallest segmentation
+// the principle of the merge is the following:
+// the 2 maps are brwosed and 3 different cases are considered for each segments pair:
+// let t1 and t2 be segments from map1 and map2
+// 1) both segments t1 and t2 start at the same date:
+//        t1 : |-------|
+//        t2 : |---|......|
+//    in this case we check the graphical position due to whole measure rests layout pb
+//    when the position is (roughly) the same, inserts intersect t1 & t2 
+//		   get next t2 and continue
+//	  when the position is different, insert t1 and skip t2 until t2 > t1
+
+// 2) the segment t1 starts t2 and t2 starts in t1:
+//        t1 : |-------|
+//        t2 :   |---|......|
+//    in this case, inserts intersect t1 & t2
+//		   get next t2 and continue
+
+// 3) the segment t2 starts after t1:
+//        t1 : |-------|
+//        t2 :           |---|
+//    in this case, depending on the last date, inserts t1 
+//			get next t1 and continue
+//----------------------------------------------------------------------
+void GuidoSystemCollector::merge (const Time2GraphicMap& map1, const Time2GraphicMap& map2, Time2GraphicMap& outmap)
+{
+	outmap.clear();
+	Time2GraphicMap::const_iterator i1 = map1.begin();
+	Time2GraphicMap::const_iterator i2 = map2.begin();
 	
-	int i = 0;
-	while (true) {
-		Time2GraphicMap staffmap;
-		GuidoStaffCollector staffcollector (fItem, i++);
-		staffcollector.process(&staffmap);
-		if (!staffmap.size()) break;
+	rational rightdate;
+	while (i1 != map1.end()) {				// browse each map1 relation
+		RelativeTimeSegment t1 = i1->first;
+		GraphicSegment s1 = i1->second;
+
+		if (i2 != map2.end()) {	
+			RelativeTimeSegment t2 = i2->first;
+			GraphicSegment s2 = i2->second;
+			
+			if (t1.start() == t2.start()) {					// case 1: both segments at the same date
+				float proximity = s2.xinterval().first() - s1.xinterval().first();
+				if (proximity < 0) proximity = -proximity;
+				if (proximity < 8.) {						// check for graphic position
+					// it (roughly) matches : inserts t1 and t2 intersection
+					rightdate = add(t1 & t2, (s1 & s2).xinterval(), s1.yinterval(), outmap);
+					i2++;									// and go to next t2
+				}
+				else {										// different positions: skip the rightmost segment
+					if (s2.xinterval().first() > s1.xinterval().first()) {
+						rightdate = add(t1, s1.xinterval(), s1.yinterval(), outmap);
+						while (++i2 != map2.end()) {
+							if (i2->first.start() >= t1.end()) break;
+						}
+						i1++;
+					}
+					else {
+						rightdate = add(t2, s2.xinterval(), s1.yinterval(), outmap);
+						i2++;
+					}
+				}
+			}
+			else if (t2.start() > t1.start()) {
+				if (t2.start() < t1.end()) {				// case 2: t2 starts in t1
+					RelativeTimeSegment inter = t1 & t2;
+					GraphicSegment gr = s1 & s2;
+					if (inter.start() > rightdate) {		// check for missing t1 start segment
+						RelativeTimeSegment beg = RelativeTimeSegment(t1.start(), inter.start());
+						outmap[beg] = GraphicSegment(FloatInterval(s1.xinterval().first(), gr.xinterval().first()), s1.yinterval());
+					}
+					// inserts t1 and t2 intersection
+					rightdate = add(inter, gr.xinterval(), s1.yinterval(), outmap);
+					i2++;									// and go to next t2
+				}
+				else {										// case 3: segment t2 starts after t1
+					if (t1.start() == rightdate) 			// check for monotonicity
+						rightdate = add(t1, s1.xinterval(), s1.yinterval(), outmap);
+					i1++;									// and go to next t1
+				}
+			}			
+			else if (t2.start() < t1.start()) {								// we should never go there
+				ITLErr << "unexpected guido system map case"  << ITLEndl;	// but in case we do :-(
+				if (t2.end() > t1.start()) i2++;							// try to continue 
+				else i2++;
+			}			
+		}
+		else {												// end of map2 (or map2 empty)
+			if (t1.start() == rightdate) 					// check for monotonicity
+				rightdate = add(t1, s1.xinterval(), s1.yinterval(), outmap);
+			i1++;
+		}
 	}
 }
 

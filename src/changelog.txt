@@ -13,9 +13,10 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 0.78
+- guido system map extended (flat map or subdivided)
 - new transformations messages (shear and rotate)
 - new 'rename' message to change objects name (and thus OSC address)
-- accepts float values for bool parameters 
+- relaxed bool parameter policy: objects accept float values for bool parameters
 - automatic numbering of exports when destination file is not completely specified 
   (no name, no extension)
 - quantification introduced to $date variable

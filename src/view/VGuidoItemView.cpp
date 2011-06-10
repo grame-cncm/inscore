@@ -44,6 +44,7 @@ using namespace std;
 const QString kVoiceMap	 ("voice");
 const QString kStaffMap	 ("staff");
 const QString kSystemMap ("system");
+const QString kSystemFlatMap ("systemflat");
 const QString kSliceMap	 ("systemSlice");
 const QString kPageMap	 ("page");
 const QString kMeasureMap("measure");
@@ -300,6 +301,8 @@ GuidoMapCollector* VGuidoItemView::getMapBuilder(const string& mapName) const
 		mb = new GuidoStaffCollector ( fGuidoItem, getMapNum (name, kStaffMap.size()) );
 	else if ( name == kSystemMap )
 		mb = new GuidoSystemCollector(fGuidoItem);
+	else if ( name == kSystemFlatMap )
+		mb = new GuidoSystemCollector(fGuidoItem, true);
 	else if ( name == kPageMap )
 		mb = new GuidoMapCollector(fGuidoItem, kGuidoPage);
 	else if ( name == kSliceMap )

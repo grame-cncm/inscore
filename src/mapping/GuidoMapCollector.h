@@ -118,8 +118,13 @@ class GuidoStaffCollector: public GuidoMapCollector
 */
 class GuidoSystemCollector: public GuidoMapCollector
 {
+	bool fFlatMode;
+	rational add (const RelativeTimeSegment& ts, const FloatInterval& xi, const FloatInterval& yi, Time2GraphicMap& outmap);
+	void merge (const Time2GraphicMap& map1, const Time2GraphicMap& map2, Time2GraphicMap& outmap);
+	
 	public :
-				 GuidoSystemCollector(const QGuidoGraphicsItem* item) : GuidoMapCollector(item, kGuidoSystem) { }
+				 GuidoSystemCollector(const QGuidoGraphicsItem* item, bool flat=false) 
+					: GuidoMapCollector(item, kGuidoSystem), fFlatMode(flat) { }
 		virtual ~GuidoSystemCollector() {}
 
 		virtual void processNoDiv (Time2GraphicMap* outmap);
