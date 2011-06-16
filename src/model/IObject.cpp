@@ -431,10 +431,25 @@ IMessageList IObject::getParams() const
 			outMsgs += getWatch();
 		else {
 			const SGetParamMsgHandler& handler = what.size() ? i->second : 0;
-			if (handler)  outMsgs += getParam(i->first, i->second);
+			if (handler)  {
+				outMsgs += getParam(i->first, i->second);
+			}
 		}
 		i++;
 	}
+/*
+//cout << name() << " map " << endl;
+	if (name() == "page1") {
+		string map = "map";
+		IMessage msg("", "get");
+		msg.add(map);
+		IMessageList mapmsg = getMsgs (&msg);
+		if (mapmsg.size()) {
+			outMsgs += mapmsg;
+//			mapmsg.clear();
+		}
+	}
+*/
 	return outMsgs;
 }
 
@@ -444,18 +459,11 @@ IMessageList IObject::getAllParams() const
 {
 	IMessageList outMsgs = 	getParams();
 	// and distribute the message to subnodes
-#if useiterator
-	for (subnodes::const_iterator i = elements().begin(); i != elements().end(); i++) {
-		if (!(*i)->getDeleted())
-			outMsgs += (*i)->getAllParams();
-	}
-#else
 	for (unsigned int i = 0; i < elements().size(); i++) {
 		nodePtr elt = elements()[i];
 		if (!elt->getDeleted())
 			outMsgs += elt->getAllParams();
 	}
-#endif
 	return outMsgs;
 }
 
@@ -491,15 +499,6 @@ IMessageList IObject::getSetMsg() const
 	// else distributes the message to subnodes
 	else {
 		address += "/";
-#if useiterator
-		for (subnodes::const_iterator i = elements().begin(); i != elements().end(); i++) {
-			nodePtr elt = *i;
-			if (!elt->getDeleted()) {
-				IMessage msg(address + elt->name(), "get");
-				outMsgs += elt->getMsgs(&msg);
-			}
-		}
-#else
 		for (unsigned int i = 0; i < elements().size(); i++) {
 			nodePtr elt = elements()[i];
 			if (!elt->getDeleted()) {
@@ -507,7 +506,6 @@ IMessageList IObject::getSetMsg() const
 				outMsgs += elt->getMsgs(&msg);
 			}
 		}
-#endif
 	}
 	return outMsgs;
 }
@@ -793,7 +791,8 @@ MsgHandler::msgStatus IObject::saveMsg (const IMessage* msg) const
 					mode |= ios_base::app;
 				else return MsgHandler::kBadParameters;
 			}
-			ofstream out (getScene()->absolutePath(destfile).c_str(), mode);
+			string path = getScene() ? getScene()->absolutePath(destfile) : IAppl::absolutePath(destfile);
+			ofstream out (path.c_str(), mode);
 			save (out);
 			return MsgHandler::kProcessedNoChange;
 		}
