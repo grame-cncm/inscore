@@ -13,9 +13,13 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 0.79
+- crash bug corrected for the 'save' message addressed to '/ITL'
 - message policy change: relaxed numeric parameters policy 
   (float are accepted for int and int for float)
 - bug in 'get watch' for time events corrected (incorrect reply)
+known issues:
+- map not saved by the 'save' message 
+
 
 ----------------------------------------------------
 Version 0.78
