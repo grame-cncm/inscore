@@ -50,19 +50,19 @@
 /ITL/scene/sync _pagepos _pagerect v
 /ITL/scene/sync _pagenum _pagepos syncTop
 
-/ITL/scene/_pagerect  watch "mouseDown" "/ITL/scene/_cursor" "date" "$date[1/1]"
-/ITL/scene/_pagerect  watch "mouseMove" "/ITL/scene/_cursor" "date" "$date[1/1]"
-/ITL/scene/_pagerect  watch "mouseUp" 	"/ITL/scene/_cursor" "date" "$date[1/1]"
+/ITL/scene/_pagerect  watch "mouseDown" "/ITL/scene/_pageturn" "date" "$date[1/1]"
+/ITL/scene/_pagerect  watch "mouseMove" "/ITL/scene/_pageturn" "date" "$date[1/1]"
+/ITL/scene/_pagerect  watch "mouseUp" 	"/ITL/scene/_pageturn" "date" "$date[1/1]"
 
 %-------------------------------------------------------
 % a hidden cursor to turn pages
 %-------------------------------------------------------
-/ITL/scene/_cursor	set rect 0.1 0.1
-/ITL/scene/_cursor	show 0
+/ITL/scene/_pageturn	set rect 0.1 0.1
+/ITL/scene/_pageturn	show 0
 
 % the cursor is first constrained to the date 0
-/ITL/scene/_cursor	watch 	"timeEnter" -1 1 0 1 	"/ITL/scene/_cursor" "date" 0 1
-/ITL/scene/_cursor	watch 	"timeEnter" 0 1 1 1 	"/ITL/scene/_cursor" "date" 0 1
+/ITL/scene/_pageturn	watch 	"timeEnter" -1 1 0 1 	"/ITL/scene/_pageturn" "date" 0 1
+/ITL/scene/_pageturn	watch 	"timeEnter" 0 1 1 1 	"/ITL/scene/_pageturn" "date" 0 1
 
 
 %-------------------------------------------------------
@@ -78,8 +78,8 @@
 /ITL/scene/_a* 		 watch "mouseEnter" "/ITL/$scene/$self" "color" 255 0 0
 /ITL/scene/_a* 		 watch "mouseLeave" "/ITL/$scene/$self" "color" 180 180 180
 
-/ITL/scene/_anext 	 	watch+ "mouseDown" 	"/ITL/scene/_cursor" "ddate" 1 1
-/ITL/scene/_aprevious 	watch+ "mouseDown" 	"/ITL/scene/_cursor" "ddate" -1 1
+/ITL/scene/_anext 	 	watch+ "mouseDown" 	"/ITL/scene/_pageturn" "ddate" 1 1
+/ITL/scene/_aprevious 	watch+ "mouseDown" 	"/ITL/scene/_pageturn" "ddate" -1 1
 
 %-------------------------------------------------------
 % put all the user interface in front

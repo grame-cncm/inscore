@@ -8,7 +8,7 @@ outlets = 2;
 
 var kPageBaseName 		= "page";
 var kPageBaseAddress 	= "/ITL/scene/" + kPageBaseName;
-var kCursorAddress 		= "/ITL/scene/_cursor";
+var kCursorAddress 		= "/ITL/scene/_pageturn";
 var kPageRectAddress 	= "/ITL/scene/_pagerect";
 var kPagePosAddress 	= "/ITL/scene/_pagepos";
 var kPageNumAddress 	= "/ITL/scene/_pagenum";
@@ -16,6 +16,7 @@ var kAllPages 			= kPageBaseAddress  + '[0-9]*';
 
 var gPageCount 		= 0;   	// the current pages count
 var gScoreDuration 	= 0;	// actually the pages count
+var gMapFiles 		= 0;	// no mapping files
 
 //-----------------------------------------------
 function reset ()			
@@ -51,6 +52,32 @@ function cursorwatch (n)
 }
 
 //-----------------------------------------------
+function endTime(map)
+{ 
+	var re = /..*\, ([0-9]+\/[0-9]+)[ [)]+/;
+	var mapend = map.replace(re, "$1");
+	var restart = /\/[0-9]+/;
+	var start = mapend.replace(restart, "");
+	var reend = /[0-9]+\//;
+	var end = mapend.replace(reend, "");
+//    post ("map end time", mapend, start, end, "\n");
+}
+
+//-----------------------------------------------
+function mapFiles(status)
+{ 
+	gMapFiles = status;
+}
+
+//-----------------------------------------------
+function mapPage(file, address)
+{ 
+	var re = /\.[^ .]*/;
+	var mapfile = file.replace(re, ".map");
+    outlet (0, address, "mapf", mapfile);
+}
+
+//-----------------------------------------------
 function addPage(file)
 { 
 	gPageCount++;
@@ -64,4 +91,7 @@ function addPage(file)
     	outlet (0, kCursorAddress, "date", gPageCount-2, 1);
     }
     outlet (1, gPageCount);
+    if (gMapFiles) {
+    	mapPage (file, address);
+    }
 }
