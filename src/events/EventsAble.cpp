@@ -196,10 +196,10 @@ IMessage* EventsAble::getMsg (const char * address, const string& type, const ch
 {
 	IMessage * msg = new IMessage (address, mth);
 	msg->add (type);
-	msg->add (time.first().getNumerator());
-	msg->add (time.first().getDenominator());
-	msg->add (time.second().getNumerator());
-	msg->add (time.second().getDenominator());
+	msg->add (int(time.first().getNumerator()));
+	msg->add (int(time.first().getDenominator()));
+	msg->add (int(time.second().getNumerator()));
+	msg->add (int(time.second().getDenominator()));
 	return putMsg (msg, ev);
 }
 
@@ -240,7 +240,7 @@ IMessageList EventsAble::getWatch (const char* address) const
 		getMsgs (address, type2string (i->first), i->second, list);
 	}
 	for (_TimeMsgMap::const_iterator i = fTimeEnterMsgMap.begin(); i != fTimeEnterMsgMap.end(); i++) {
-		getMsgs (address, kMouseEnterStr, i->first, i->second, list);
+		getMsgs (address, kTimeEnterStr, i->first, i->second, list);
 	}
 	for (_TimeMsgMap::const_iterator i = fTimeLeaveMsgMap.begin(); i != fTimeLeaveMsgMap.end(); i++) {
 		getMsgs (address, kTimeLeaveStr, i->first, i->second, list);
