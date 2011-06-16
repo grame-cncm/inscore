@@ -3,6 +3,9 @@
     and to generate mappings
 */
 
+inlets = 1;
+outlets = 2;
+
 var kPageBaseName 		= "page";
 var kPageBaseAddress 	= "/ITL/scene/" + kPageBaseName;
 var kCursorAddress 		= "/ITL/scene/_cursor";
@@ -26,6 +29,7 @@ function reset ()
     outlet (0, kPageRectAddress, "duration", 0, 1);
     outlet (0, kPagePosAddress, "date", 0, 1);
     outlet (0, kPageNumAddress, "set", "txt", 0);
+    outlet (1, gPageCount);
 }
 
 //-----------------------------------------------
@@ -59,4 +63,5 @@ function addPage(file)
 		cursorwatch (gPageCount-1);
     	outlet (0, kCursorAddress, "date", gPageCount-2, 1);
     }
+    outlet (1, gPageCount);
 }
