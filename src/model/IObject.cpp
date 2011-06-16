@@ -97,12 +97,17 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fMsgHandlerMap["watch"]		= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsg);
 	fMsgHandlerMap["watch+"]	= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsgAdd);
 	
+	fGetMsgHandlerMap["effect"]	= TGetParamMethodHandler<IObject, GraphicEffect (IObject::*)() const>::create(this, &IObject::getEffect);
+	fGetMsgHandlerMap["watch"]	= TGetParamMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
+}
+
+
+//--------------------------------------------------------------------------
+void IObject::setHandlers()
+{
 	colorAble();
 	positionAble();
 	timeAble();
-
-	fGetMsgHandlerMap["effect"]	= TGetParamMethodHandler<IObject, GraphicEffect (IObject::*)() const>::create(this, &IObject::getEffect);
-	fGetMsgHandlerMap["watch"]	= TGetParamMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
 }
 
 //--------------------------------------------------------------------------

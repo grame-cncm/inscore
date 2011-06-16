@@ -135,6 +135,7 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 		obj = _create<IScene> (name, parent);
 		
 	if (obj) {
+		obj->setHandlers();
 		obj->createVirtualNodes();
 		obj->setVisible(IAppl::fDefaultShow);
 	}

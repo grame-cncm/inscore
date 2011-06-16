@@ -309,7 +309,9 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 
 		/// \brief object \c 'get' message handler.
 		virtual IMessageList getMsgs (const IMessage* msg) const;
-
+		
+		/// \brief sets the message handlers.
+		virtual void setHandlers ();
 		virtual void setdyMsgHandler (); //				{ fMsgHandlerMap["dy"]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYPos); }
 		virtual void setdyMsgHandler (Master* m); //	{ fMsgHandlerMap["dy"]	= TSetMethodMsgHandler<Master,float>::create(this, m, m->setDy); }
 //		virtual void setdyMsgHandler ()				{ fMsgHandlerMap["dy"]	= TSetMsgHandler<float, TDSetOperator>::create(fYPos); }

@@ -38,34 +38,9 @@ IObjectDebug::IObjectDebug(IObject * parent) : IVNode("debug", parent), fMap(fal
 {
 	fMsgHandlerMap["map"]		= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setMapDebug);
 	fMsgHandlerMap["name"]		= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setNameDebug);
-//	fMsgHandlerMap["signal"]	= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setSignalDebug);
 	
 	fGetMsgHandlerMap["map"]	= TGetParamMsgHandler<bool>::create(fMap);
-	fGetMsgHandlerMap["name"]	= TGetParamMsgHandler<bool>::create(fName);
-	
-	fGetMsgHandlerMap["x"]		= 0;
-	fGetMsgHandlerMap["y"]		= 0;
-	fGetMsgHandlerMap["z"]		= 0;
-	fGetMsgHandlerMap["xorigin"]= 0;
-	fGetMsgHandlerMap["yorigin"]= 0;
-	fGetMsgHandlerMap["angle"]	= 0;
-	fGetMsgHandlerMap["scale"]	= 0;
-	fGetMsgHandlerMap["show"]	= 0;
-	fGetMsgHandlerMap["width"]	= 0;
-	fGetMsgHandlerMap["height"] = 0;
-
-	fGetMsgHandlerMap["date"]	= 0;
-	fGetMsgHandlerMap["duration"]= 0;
-
-	fGetMsgHandlerMap["color"]	= 0;
-	fGetMsgHandlerMap["red"]	= 0;
-	fGetMsgHandlerMap["green"]	= 0;
-	fGetMsgHandlerMap["blue"]	= 0;
-	fGetMsgHandlerMap["alpha"]	= 0;
-	fGetMsgHandlerMap["hue"]	= 0;
-	fGetMsgHandlerMap["saturation"] = 0;
-	fGetMsgHandlerMap["brightness"]	= 0;
-	fGetMsgHandlerMap["effect"]	= 0;
+	fGetMsgHandlerMap["name"]	= TGetParamMsgHandler<bool>::create(fName);	
 }
 
 //--------------------------------------------------------------------------
@@ -98,8 +73,6 @@ IMessageList IObjectDebug::get () const
 	msg = new IMessage(getOSCAddress(), "signal");
 	*msg << getSignalDebug();
 	outMsgs += msg;
-//	msg = new IMessage(getOSCAddress(), "click");
-//	*msg << getClickDebug();
 	outMsgs += msg;
 	return outMsgs;
 }

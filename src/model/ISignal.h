@@ -64,6 +64,11 @@ class ISignal : public IObject, public ParallelSignal
 				 ISignal( const std::string& name, IObject * parent);
 		virtual ~ISignal() {}
 
+		// overrides get handlers for color, position and time
+		virtual void colorAble ()		{}
+		virtual void positionAble ()	{}
+		virtual void timeAble ()		{}
+
 		/*! \brief decode a projection string
 			\param proj the projection string
 			\param index on output the projection start index (default 0)

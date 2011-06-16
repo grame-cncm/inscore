@@ -71,6 +71,11 @@ class IObjectDebug : public IVNode
 				 IObjectDebug(IObject * parent);
 		virtual ~IObjectDebug() {}
 
+		// overrides get handlers for color, position and time
+		virtual void colorAble ()		{}
+		virtual void positionAble ()	{}
+		virtual void timeAble ()		{}
+
 		/// \brief object \c 'get' without parameter form: gives the corresponding 'set' message list
 		virtual IMessageList get () const;
 
