@@ -181,7 +181,7 @@ template<typename T> class TSegment<T, 2>
 		/// segment conversion to string
         virtual operator std::string () const {
 			std::ostringstream res;
-			res << "( " << std::string(xinterval()) << ", " << std::string(yinterval()) << " )";
+			res << "( " << std::string(xinterval()) << " " << std::string(yinterval()) << " )";
 			return res.str();			
 		}
 };
