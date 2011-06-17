@@ -98,7 +98,10 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fMsgHandlerMap["watch+"]	= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsgAdd);
 	
 	fGetMsgHandlerMap["effect"]	= TGetParamMethodHandler<IObject, GraphicEffect (IObject::*)() const>::create(this, &IObject::getEffect);
-	fGetMsgHandlerMap["watch"]	= TGetParamMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
+//	fGetMsgHandlerMap["watch"]	= TGetParamMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
+
+	fGetMultiMsgHandlerMap["watch"]	= TGetParamMultiMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
+	fGetMultiMsgHandlerMap["map"]	= TGetParamMultiMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getMaps);
 }
 
 
@@ -424,18 +427,30 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 IMessageList IObject::getParams() const
 {
 	IMessageList outMsgs;
+	
 	map<string, SGetParamMsgHandler>::const_iterator i = fGetMsgHandlerMap.begin();
 	while (i != fGetMsgHandlerMap.end()) {
 		const string& what = i->first;
-		if (what == "watch")
-			outMsgs += getWatch();
-		else {
+//		if (what == "watch")
+//			outMsgs += getWatch();
+//		else {
 			const SGetParamMsgHandler& handler = what.size() ? i->second : 0;
 			if (handler)  {
 				outMsgs += getParam(i->first, i->second);
 			}
-		}
+//		}
 		i++;
+	}
+
+	map<string, SGetParamMultiMsgHandler>::const_iterator j = fGetMultiMsgHandlerMap.begin();
+	while (j != fGetMultiMsgHandlerMap.end()) {
+		const string& what = j->first;
+		const SGetParamMultiMsgHandler& handler = what.size() ? j->second : 0;
+		if (handler)  {
+			IMessageList mlist;
+			outMsgs += handler->print(mlist);
+		}
+		j++;
 	}
 /*
 //cout << name() << " map " << endl;
@@ -521,24 +536,28 @@ IMessage* IObject::getParam(const string& what, const SGetParamMsgHandler& h) co
 //--------------------------------------------------------------------------
 IMessageList IObject::getMsgs(const IMessage* msg) const
 { 
-	SGetParamMsgHandler handler;
 	IMessageList outMsgs;
-	string what;
+
 	if (msg->params().size() == 0) {
 		outMsgs = getSetMsg();
 	}
 	else for (unsigned int i=0; i<msg->params().size(); i++) {
-		what = msg->params()[i]->value<string>("-");
-		if (what.size()) {
-			handler = getMessageHandler(what);
+		string what;
+		if (msg->param(i, what)) {
+			SGetParamMsgHandler handler = getMessageHandler(what);
+			SGetParamMultiMsgHandler multihandler = getMultiMessageHandler(what);
 			if (handler) {
-				if (what == "watch")
-					outMsgs += getWatch();
-				else {
-					IMessage * msg = getParam(what, handler);
-					if (msg) outMsgs += msg;
+//				if (what == "watch")
+//					outMsgs += getWatch();
+//				else {
+					IMessage * outmsg = getParam(what, handler);
+					if (outmsg) outMsgs += outmsg;
 					else break;
-				}
+//				}
+			}
+			else if (multihandler) {
+				IMessageList mlist;
+				outMsgs += multihandler->print(mlist);
 			}
 			else if (what == "*")
 				outMsgs = getAll();
@@ -547,6 +566,10 @@ IMessageList IObject::getMsgs(const IMessage* msg) const
 	}
 	return outMsgs;
 }
+
+//--------------------------------------------------------------------------
+IMessageList IObject::getMaps() const	{ return __getMaps(); }
+IMessageList IObject::__getMaps() const	{ return IMessageList(); }
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::get(const IMessage* msg) const
@@ -588,11 +611,19 @@ SMsgHandler IObject::messageHandler(const string& msg, bool match) const
 	}
 	return handler;
 }
+
 //--------------------------------------------------------------------------
 SGetParamMsgHandler IObject::getMessageHandler(const std::string& param) const
 {
 	map<string, SGetParamMsgHandler>::const_iterator h = fGetMsgHandlerMap.find(param);
 	return h == fGetMsgHandlerMap.end() ? 0 : h->second;
+}
+
+//--------------------------------------------------------------------------
+SGetParamMultiMsgHandler IObject::getMultiMessageHandler(const std::string& param) const
+{
+	map<string, SGetParamMultiMsgHandler>::const_iterator h = fGetMultiMsgHandlerMap.find(param);
+	return h == fGetMultiMsgHandlerMap.end() ? 0 : h->second;
 }
 
 //--------------------------------------------------------------------------
