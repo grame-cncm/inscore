@@ -8,9 +8,17 @@ var gRects 		= new Array();    // user defined rects
 var gSavedRects = new Array();    // user defined rects
 var gCurrent = {};            // the current rect
 var gIndex=0;                 // the current index in rects or in points
+var gFixed=0;
+var gSegmentLengthNum=1;
+var gSegmentLengthDeNum=1;
 
 reset ();
 //post("MapBuilder JS Start\n");
+
+// reset the whole system
+function fixed (state)   	{ gFixed = state; }
+function slnum (n)   		{ gSegmentLengthNum = n; }
+function sldenum (n)   		{ gSegmentLengthDeNum = n; }
 
 // reset the whole system
 function reset ()
@@ -137,6 +145,11 @@ function relation2string(relation, timediv) {
     return segment2string(relation.segment) + " " + time2string(relation.time, timediv);
 }
 
+function fixedtime(i)
+{
+	return interval(gSegmentLengthNum*i, gSegmentLengthNum*(i+1));
+}
+
 function generate(timediv)
 {
 //    post ("generate:", gPoints.length, "points and", gRects.length, "rects\n");
@@ -152,8 +165,14 @@ function generate(timediv)
         else {
             var relation = {};
             relation.segment = segment;
-            relation.time = gPoints[i].time;
-            map += relation2string(relation, timediv) + "\n";
+            if (gFixed) {
+            	relation.time = fixedtime(i);
+	            map += relation2string(relation, gSegmentLengthDeNum) + "\n";
+            }
+            else {
+            	relation.time = gPoints[i].time;
+	            map += relation2string(relation, timediv) + "\n";
+            }
         }
     }
 //    post ("restore rects:", gRects.length, "\n");
