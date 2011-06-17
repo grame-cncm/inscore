@@ -12,6 +12,11 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 0.80
+- corrects the map not saved by the 'save' message issue
+- corrects 'get map' output: 2D segments were not correctly converted to string
+
+----------------------------------------------------
 Version 0.79
 - crash bug corrected for the 'save' message addressed to '/ITL'
 - message policy change: relaxed numeric parameters policy 
