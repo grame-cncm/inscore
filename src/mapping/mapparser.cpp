@@ -64,6 +64,7 @@ void mapparser::start ()
 {
 	gReader = fReader;
 	setlocale(LC_NUMERIC, "C");
+	yylineno = 1;
 }
 void mapparser::stop () 
 {
