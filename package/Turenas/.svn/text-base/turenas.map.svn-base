@@ -1,8 +1,0 @@
-/* 
-   graphic to time mapping for schemaSonagram4B.png
-   for each line, the first segment applies to the graphic space
-   and the second segment to the time space expressed as rational
-*/
-( [27,780[ [15,193[ )   ( [0/4,225/4[ ) 
-( [27,782[ [216,394[ )  ( [225/4,520/4[ )
-( [27,511[ [417,594[ )  ( [520/4,594/4[ )
