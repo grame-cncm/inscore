@@ -390,8 +390,8 @@ static void yy_fatal_error (yyconst char msg[]  );
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
 
-#define YY_NUM_RULES 24
-#define YY_END_OF_BUFFER 25
+#define YY_NUM_RULES 25
+#define YY_END_OF_BUFFER 26
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -401,12 +401,12 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[53] =
     {   0,
-        0,    0,   11,   11,   13,   13,   25,   23,   22,   22,
-        8,   10,   18,   19,   23,   21,   23,   23,   17,    1,
-       20,   11,   12,   11,   13,   13,   13,   13,   22,    8,
-       10,    0,    0,    0,    0,    0,    2,   16,    9,    3,
-        1,   11,   12,   11,   13,   15,   14,    4,    5,    6,
-        7,    0
+        0,    0,   12,   12,   14,   14,   26,   24,   23,   23,
+        9,   11,   19,   20,   24,   22,   24,   24,   18,    1,
+       21,   12,   13,   12,   14,   14,   14,   14,   23,    9,
+       11,    0,    0,    0,    0,    2,    3,   17,   10,    4,
+        1,   12,   13,   12,   14,   16,   15,    5,    6,    7,
+        8,    0
     } ;
 
 static yyconst flex_int32_t yy_ec[256] =
@@ -498,10 +498,10 @@ static yyconst flex_int16_t yy_chk[97] =
     } ;
 
 /* Table of booleans, true if rule could match eol. */
-static yyconst flex_int32_t yy_rule_can_match_eol[25] =
+static yyconst flex_int32_t yy_rule_can_match_eol[26] =
     {   0,
-0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 
-    0, 0, 1, 0, 0,     };
+0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 
+    0, 0, 0, 1, 0, 0,     };
 
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
@@ -810,7 +810,7 @@ return NUMBER;
 case 2:
 YY_RULE_SETUP
 #line 22 "mapping.l"
-return FLOAT;
+return NUMBER;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
@@ -838,10 +838,9 @@ YY_RULE_SETUP
 return FLOAT;
 	YY_BREAK
 case 8:
-/* rule 8 can match eol */
 YY_RULE_SETUP
-#line 29 "mapping.l"
-BEGIN CMNTLN;
+#line 28 "mapping.l"
+return FLOAT;
 	YY_BREAK
 case 9:
 /* rule 9 can match eol */
@@ -856,80 +855,86 @@ YY_RULE_SETUP
 BEGIN CMNTLN;
 	YY_BREAK
 case 11:
+/* rule 11 can match eol */
 YY_RULE_SETUP
 #line 32 "mapping.l"
-
+BEGIN CMNTLN;
 	YY_BREAK
 case 12:
-/* rule 12 can match eol */
 YY_RULE_SETUP
 #line 33 "mapping.l"
-BEGIN INITIAL;
+
 	YY_BREAK
 case 13:
 /* rule 13 can match eol */
 YY_RULE_SETUP
-#line 35 "mapping.l"
-
+#line 34 "mapping.l"
+BEGIN INITIAL;
 	YY_BREAK
 case 14:
+/* rule 14 can match eol */
 YY_RULE_SETUP
 #line 36 "mapping.l"
-nested++; 
+
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 37 "mapping.l"
-if (--nested==0) BEGIN INITIAL;
+nested++; 
 	YY_BREAK
 case 16:
-/* rule 16 can match eol */
 YY_RULE_SETUP
 #line 38 "mapping.l"
-nested=1; BEGIN COMMENT;
+if (--nested==0) BEGIN INITIAL;
 	YY_BREAK
 case 17:
+/* rule 17 can match eol */
 YY_RULE_SETUP
-#line 40 "mapping.l"
-return RATIONALBAR;
+#line 39 "mapping.l"
+nested=1; BEGIN COMMENT;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 41 "mapping.l"
-return SEGSTART;
+return RATIONALBAR;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 42 "mapping.l"
-return SEGEND;
+return SEGSTART;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 43 "mapping.l"
-return INTERVAL;
+return SEGEND;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 44 "mapping.l"
-return SEP;
+return INTERVAL;
 	YY_BREAK
 case 22:
-/* rule 22 can match eol */
 YY_RULE_SETUP
-#line 47 "mapping.l"
-/* eat up space */
+#line 45 "mapping.l"
+return SEP;
 	YY_BREAK
 case 23:
+/* rule 23 can match eol */
 YY_RULE_SETUP
 #line 48 "mapping.l"
-return ERROR;	/* any extra text generates errors */
+/* eat up space */
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 50 "mapping.l"
+#line 49 "mapping.l"
+return ERROR;	/* any extra text generates errors */
+	YY_BREAK
+case 25:
+YY_RULE_SETUP
+#line 51 "mapping.l"
 ECHO;
 	YY_BREAK
-#line 933 "maplex.c++"
+#line 938 "maplex.c++"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(CMNTLN):
 case YY_STATE_EOF(COMMENT):
@@ -1937,4 +1942,4 @@ void itlmapfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 50 "mapping.l"
+#line 51 "mapping.l"
