@@ -33,7 +33,7 @@ namespace inscore
 {
 
 //----------------------------------------------------------------------
-void TimeEventAble::handleTimChange (rational from, rational to) const
+void TimeEventAble::handleTimeChange (rational from, rational to) const
 {
 	for (std::set<RationalInterval>::const_iterator i=fWatchList.begin(); i != fWatchList.end(); i++) {
 		if (i->include(from) && !i->include(to)) {			// leaving the time interval

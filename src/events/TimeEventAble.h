@@ -44,7 +44,7 @@ class TimeEventAble
 				 TimeEventAble(const EventsAble* h) : fEventsHandler(h)	{}
 		virtual ~TimeEventAble() {}
 
-		void handleTimChange (rational from, rational to) const;
+		void handleTimeChange (rational from, rational to) const;
 
 		void watchTime	(const RationalInterval&);
 		void delTime	(const RationalInterval&);
