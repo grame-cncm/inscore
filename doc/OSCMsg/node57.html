@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.2 Differences to version 0.76</TITLE>
-<META NAME="description" CONTENT="15.2 Differences to version 0.76">
+<TITLE>15.2 Differences to version 0.78</TITLE>
+<META NAME="description" CONTENT="15.2 Differences to version 0.78">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,52 +27,52 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html972"
+<A NAME="tex2html978"
   HREF="node58.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html966"
+<A NAME="tex2html972"
   HREF="node55.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html960"
+<A NAME="tex2html966"
   HREF="node56.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html968"
+<A NAME="tex2html974"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html970"
-  HREF="node66.html">
+<A NAME="tex2html976"
+  HREF="node68.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html973"
+<B> Next:</B> <A NAME="tex2html979"
   HREF="node58.html">15.3 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html967"
+<B> Up:</B> <A NAME="tex2html973"
   HREF="node55.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html961"
+<B> Previous:</B> <A NAME="tex2html967"
   HREF="node56.html">15.1 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html969"
+ &nbsp; <B>  <A NAME="tex2html975"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html971"
-  HREF="node66.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html977"
+  HREF="node68.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION001620000000000000000">
-15.2 Differences to version 0.76</A>
+15.2 Differences to version 0.78</A>
 </H1>
 
 <UL>
-<LI>get <TT>guido-version</TT> and <TT>musicxml-version</TT> messages supported by the application (see section <A HREF="node4.html#ITL">2</A> p.<A HREF="node4.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>crash bug corrected for the 'save' message addressed to '/ITL'
 </LI>
-<LI><TT>save</TT> message bug correction - introduced with version 0.70: only partial state of objects was saved
+<LI>message policy change: relaxed numeric parameters policy (float are accepted for int and int for float)
 </LI>
-<LI><TT>rootPath</TT> message introduced at scene level (see section <A HREF="node5.html#scene">3</A> p.<A HREF="node5.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>bug in <TT>get watch</TT> for time events corrected (incorrect reply)
 </LI>
-<LI>scene name translation strategy change: only the explicit 'scene' name is 
-  translated by the scene load message handler into the current scene name, 
-  other names are left unchanged.
-</LI>
-<LI>bitmap copy adjustment in sync stretched mode is now only made for images
+</UL>
+Known issues:
+
+<UL>
+<LI>map not saved by the <TT>save</TT> message 
 </LI>
 </UL>
 

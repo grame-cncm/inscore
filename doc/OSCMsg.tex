@@ -1611,6 +1611,27 @@ Note: the system doesn't check for the consistency of the variables placement.
 \toplevel{ Changes list}
 
 %===============================
+%:   Differences to version 0.79
+\sublevel{Differences to version 0.79}
+\begin{itemize}
+\item corrects the map not saved by the \OSC{save} message issue
+\item corrects \OSC{get map} output: 2D segments were not correctly converted to string
+\end{itemize}
+
+%===============================
+%:   Differences to version 0.78
+\sublevel{Differences to version 0.78}
+\begin{itemize}
+\item crash bug corrected for the 'save' message addressed to '/ITL'
+\item message policy change: relaxed numeric parameters policy (float are accepted for int and int for float)
+\item bug in \OSC{get watch} for time events corrected (incorrect reply)
+\end{itemize}
+Known issues:
+\begin{itemize}
+\item map not saved by the \OSC{save} message 
+\end{itemize}
+
+%===============================
 %:   Differences to version 0.77
 \sublevel{Differences to version 0.77}
 \begin{itemize}

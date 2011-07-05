@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.1 Differences to version 0.77</TITLE>
-<META NAME="description" CONTENT="15.1 Differences to version 0.77">
+<TITLE>15.1 Differences to version 0.79</TITLE>
+<META NAME="description" CONTENT="15.1 Differences to version 0.79">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,55 +27,44 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html958"
+<A NAME="tex2html964"
   HREF="node57.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html952"
+<A NAME="tex2html958"
   HREF="node55.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html946"
+<A NAME="tex2html952"
   HREF="node55.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html954"
+<A NAME="tex2html960"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html956"
-  HREF="node66.html">
+<A NAME="tex2html962"
+  HREF="node68.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html959"
+<B> Next:</B> <A NAME="tex2html965"
   HREF="node57.html">15.2 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html953"
+<B> Up:</B> <A NAME="tex2html959"
   HREF="node55.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html947"
+<B> Previous:</B> <A NAME="tex2html953"
   HREF="node55.html">15. Changes list</A>
- &nbsp; <B>  <A NAME="tex2html955"
+ &nbsp; <B>  <A NAME="tex2html961"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html957"
-  HREF="node66.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html963"
+  HREF="node68.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION001610000000000000000">
-15.1 Differences to version 0.77</A>
+15.1 Differences to version 0.79</A>
 </H1>
 
 <UL>
-<LI>guido system map extended: supports flat map or subdivided map (see section <A HREF="node35.html#guidomaps">11.1</A> p.<A HREF="node35.html#guidomaps"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>corrects the map not saved by the <TT>save</TT> message issue
 </LI>
-<LI>new <TT>shear</TT> and <TT>rotate</TT> transformations messages (see section <A HREF="node11.html#transform">4.1.4</A> p.<A HREF="node11.html#transform"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>new <TT>rename</TT> message to change an object name (and thus its OSC address) (see section <A HREF="node6.html#common">4</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>relaxed bool parameter policy: objects accept float values for bool parameters 
-</LI>
-<LI>automatic numbering of exports when destination file is not completely specified 
-  i.e. no name, no extension. (see section <A HREF="node6.html#common">4</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>quantification introduced to $date variable (see section <A HREF="node52.html#interactvar">14.3</A> p.<A HREF="node52.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI><TT>reset</TT> message addressed to a scene clears the scene rootPath
+<LI>corrects <TT>get map</TT> output: 2D segments were not correctly converted to string
 </LI>
 </UL>
 
