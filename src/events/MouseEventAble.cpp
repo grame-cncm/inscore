@@ -47,17 +47,18 @@ static GraphicSegment find (const std::pair<float,float>& p, const Graphic2Relat
 //----------------------------------------------------------------------
 rational _MouseEventAble::point2date (const IObject * obj, float x, float y, const std::string& mapname, int n)
 {
+	rational nodate(0,0);
 	const SRelativeTime2GraphicMapping&	mapping = obj->getMapping (mapname);
-	if (!mapping) return rational (-1);
+	if (!mapping) return nodate;
 	const Graphic2RelativeTimeRelation& g2rt = mapping->reverse();
 	std::pair<float,float> location (x*2 - 1, y*2 - 1);
 	GraphicSegment seg = find (location, g2rt);
-	if (seg.empty()) return rational (-1);
+	if (seg.empty()) return nodate;
 	
 	rational rpos = MapTools::relativepos (location.first, seg.xinterval());
 
 	std::set<RelativeTimeSegment> rels = g2rt.get (seg);
-	if (!rels.size()) return rational (-1);
+	if (!rels.size()) return nodate;
 	
 	std::set<RelativeTimeSegment>::const_iterator i = rels.begin();
 	
@@ -69,7 +70,7 @@ rational _MouseEventAble::point2date (const IObject * obj, float x, float y, con
 		}
 		i++;
 	}
-	if (ts.empty()) return rational (-1);
+	if (ts.empty()) return nodate;
 	return ts.start() + ts.size() * rpos;
 }
 
@@ -99,8 +100,11 @@ void _MouseEventAble::handleEvent (const IObject * obj, QPointF pos,  EventsAble
 	float clippedx = (x < 0) ? 0 : (x > w) ? w : x;
 	float clippedy = (y < 0) ? 0 : (y > h) ? h : y;
 
-	float relx = view->scene2RelativeX(clippedx) / obj->getWidth();
-	float rely = view->scene2RelativeY(clippedy) / obj->getHeight();
+//	float relx = view->scene2RelativeX(clippedx) / obj->getWidth();
+//	float rely = view->scene2RelativeY(clippedy) / obj->getHeight();
+
+	float relx = clippedx / w;
+	float rely = clippedy / h;
 
 	float sx = xpos + (obj->getWidth()  * obj->getScale()/2 * (relx * 2 - 1));
 	float sy = ypos + (obj->getHeight() * obj->getScale()/2 * (rely * 2 - 1));
@@ -108,16 +112,17 @@ void _MouseEventAble::handleEvent (const IObject * obj, QPointF pos,  EventsAble
 	MouseLocation mouse (relx, rely, x, y, sx, sy);
 	originshift (obj, mouse.fx, mouse.fy);
 
-//qDebug() << "handle event date" << date.getNumerator() << date.getDenominator() ;
+//if (type == EventsAble::kMouseDown)
+//qDebug() << "handle event pos " << " w/h " << w << h << "xy" << relx << rely << pos ;
 	
 	const std::vector<SEventMessage>& msgs = obj->getMouseMsgs (type);
 	for (unsigned int i=0; i<msgs.size(); i++) {
 		std::string mapname;
 		int num=0, denum=0;
-		rational date (-1,1);
+		rational date (0,0);
 		if (msgs[i]->hasDateVar (mapname, num, denum)) {
 			date = point2date (obj, relx, rely, mapname, 0);
-			if (num) {
+			if (num && date.getDenominator()) {
 				float fd = float(date);
 				date.set (int(fd * denum / num) * num, denum);
 			}
