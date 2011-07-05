@@ -77,7 +77,8 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, const Master* m
 	Master::VAlignType align = m->getAlignment();
 
 	// get the master graphic and time mapping
-	const SRelativeTime2GraphicMapping& map = master->getMapping( mapName );
+	rational mdate = master->getDate();
+	const SRelativeTime2GraphicMapping& map = timeshift(master->getMapping( mapName ), mdate);
 	if ( !map ) {
 		ITLErr << slave->getOSCAddress() << ": mapping is missing." << ITLEndl;
 		return masterSeg;
