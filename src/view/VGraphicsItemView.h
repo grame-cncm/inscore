@@ -29,6 +29,8 @@
 
 #include <iostream>
 
+#include "VObjectView.h"
+
 #include "IModel.h"
 #include "IText.h"
 #include "ISync.h"
@@ -51,22 +53,15 @@ namespace inscore
 /**
 *	\brief a graphic view of a IObject that uses a QGraphicsItem to render.
 */
-class VGraphicsItemView
+class VGraphicsItemView : public VObjectView
 {
 	public :
 		virtual ~VGraphicsItemView();
-		
-		virtual void drawMapping (IObject* o);
-		virtual void drawNameAndBBox (IObject* o);
 
 		virtual void updateView(IObject * object);			// updates the object view
-		virtual void updateTransform(IObject * object);		// updates the object transform matrix
-		virtual void setParentView (IObject * object);		// updates the object parent view
 		virtual void updateObjectSize( IObject * object );	// updates the object size
+		virtual void setParentView (IObject * object);		// updates the object parent view
 		virtual void setParentItem( VGraphicsItemView* master )	{ item()->setParentItem( master ? master->item() : 0); }
-		
-		float getIObjectWidth() const { return scene2RelativeWidth( fItem->boundingRect().width() ); }		// Gives the object's width in interlude scene coordinates.
-		float getIObjectHeight() const { return scene2RelativeHeight( fItem->boundingRect().height() ); }	// Gives the object's height in interlude scene coordinates.
 
 		virtual void setEffect (GraphicEffect& effect)		{ item()->setGraphicsEffect (effect.get()); }
 		virtual GraphicEffect getEffect () const			{ return GraphicEffect ( item()->graphicsEffect()); }
@@ -81,6 +76,7 @@ class VGraphicsItemView
 		qreal relative2SceneHeight(float height) const;
 		/// \brief Maps a rect expressed in [-1,1] scene coordinate to a QRectF expressed in referenceRect() coordinates.
 		QRectF relative2SceneRect( const TFloatRect& rect) const;
+
 		/// \brief Maps the referenceRect() width value to the corresponding [0,2] value.
 		qreal scene2RelativeWidth(float width) const;
 		/// \brief Maps the referenceRect() height value to the corresponding [0,2] value.
@@ -94,6 +90,13 @@ class VGraphicsItemView
 		
 	protected:
 		VGraphicsItemView( QGraphicsScene * scene , QGraphicsItem * item );
+		
+		virtual void drawMapping (IObject* o);
+		virtual void drawNameAndBBox (IObject* o);
+		virtual void updateTransform(IObject * object);		// updates the object transform matrix
+		
+		float getIObjectWidth() const { return scene2RelativeWidth( fItem->boundingRect().width() ); }		// Gives the object's width in interlude scene coordinates.
+		float getIObjectHeight() const { return scene2RelativeHeight( fItem->boundingRect().height() ); }	// Gives the object's height in interlude scene coordinates.
 		
 		template <typename L>
 		static void setMapping( IObject* object , const std::string& mapName , SMARTP<TMapping<GraphicSegment, L> > g2l_mapping , SMARTP<TMapping<L, RelativeTimeSegment> > l2t_mapping)
