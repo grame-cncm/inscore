@@ -12,11 +12,17 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
-Version 0.80
-- corrects the map not saved by the 'save' message issue
-- corrects 'get map' output: 2D segments were not correctly converted to string
+Version 0.81
+- behavior change with synchronization without stretch: now the system looks also in the
+  slave map for a segment corresponding to the master date.
 - $date variable change: the value is now (0,0) when no date is available
+  the $date is time shifted according to the object date
 - date message change: the date 0 0 is ignored
+
+----------------------------------------------------
+Version 0.80
+- corrects the map not saved by the 'save' message issue (version 0.79)
+- corrects 'get map' output: 2D segments were not correctly converted to string
 
 ----------------------------------------------------
 Version 0.79

@@ -55,6 +55,9 @@ class IShapeMap;
 */
 class IMappingUpdater : public SlaveMapUpdater
 {
+	bool	date2point (const rational& date, const SRelativeTime2GraphicMapping& map, GraphicSegment& outSeg, float& x) const;
+	float	getYPos (IObject* o, const GraphicSegment& masterSeg, Master::VAlignType align) const;
+
 	protected:
 				void			hstretchUpdate (IObject* o, const Master* m);				
 				void			VStretch		(IObject* o, const GraphicSegment& gseg);

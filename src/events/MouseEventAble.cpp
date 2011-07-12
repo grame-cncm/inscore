@@ -71,7 +71,7 @@ rational _MouseEventAble::point2date (const IObject * obj, float x, float y, con
 		i++;
 	}
 	if (ts.empty()) return nodate;
-	return ts.start() + ts.size() * rpos;
+	return obj->getDate() + ts.start() + ts.size() * rpos;
 }
 
 //----------------------------------------------------------------------

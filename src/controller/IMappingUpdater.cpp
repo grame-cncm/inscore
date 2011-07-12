@@ -39,6 +39,8 @@
 #include "MapTools.h"
 #include "maptypes.h"
 
+#include "VGraphicsItemView.h"
+
 using namespace std;
 
 namespace inscore
@@ -65,8 +67,47 @@ void IMappingUpdater::VStretch (IObject* o, const GraphicSegment& gseg)
 }
 
 //---------------------------------------------------------------------------------------
-// update when no horizontal stretch is required
-// actually sets only the object position
+float IMappingUpdater::getYPos (IObject* o, const GraphicSegment& masterSeg, Master::VAlignType align) const
+{
+	float y = 0;
+	float displacement = o->getHeight() * o->getScale() / 2;
+	switch (align) {						//  computes the slave y coordinate according to the alignment mode
+		case Master::kSyncTop:
+			y = masterSeg.yinterval().first() - displacement;
+			break;
+		case Master::kSyncBottom:
+			y = masterSeg.yinterval().second() + displacement;
+			break;
+		case Master::kSyncOver:
+		default:
+			y = masterSeg.yinterval().center();
+			break;
+	}
+	return y;
+}
+
+//---------------------------------------------------------------------------------------
+bool IMappingUpdater::date2point (const rational& date, const SRelativeTime2GraphicMapping& map, GraphicSegment& outSeg, float& x) const
+{
+	RelativeTimeSegment t = MapTools::find (date, map->direct());		// get the time segment containing the date
+	set<GraphicSegment> v = map->direct().get(t);						// get the corresponding graphic segments
+
+	if (v.size())  {
+		outSeg = *(v.begin());
+		x = outSeg.xinterval().first();						// get the graphic segment first x coordinate
+		float ratio = MapTools::relativepos(date, t.interval());		// get the relative position of date within the time segment
+		x += outSeg.xinterval().size() * ratio;
+		return true;
+	}
+	return false;
+}
+
+//---------------------------------------------------------------------------------------
+// Update when no horizontal stretch is required
+// The strategy consists in aligning the date location of the slave with the corresponding
+// location of the master;
+// when the slave date is outside the master map, then the master date is taken and the 
+// system looks for the corresponding location in the slave map.
 //---------------------------------------------------------------------------------------
 GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, const Master* m)	
 { 
@@ -78,40 +119,37 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, const Master* m
 
 	// get the master graphic and time mapping
 	rational mdate = master->getDate();
+	rational date = slave->getDate();
 	const SRelativeTime2GraphicMapping& map = timeshift(master->getMapping( mapName ), mdate);
+	const SRelativeTime2GraphicMapping& slavemap = timeshift(slave->getMapping( "" ), date);
 	if ( !map ) {
 		ITLErr << slave->getOSCAddress() << ": mapping is missing." << ITLEndl;
 		return masterSeg;
 	}
 
-	slave->UseGraphic2GraphicMapping (false);							// don't use the object graphic segmentation and mapping
-	rational date = slave->getDate();
-	RelativeTimeSegment t = MapTools::find (date, map->direct());		// get the time segment containing the date
-	set<GraphicSegment> v = map->direct().get(t);						// get the corresponding graphic segments
-	if (v.size())  {
-		masterSeg = *(v.begin());
-		float x = masterSeg.xinterval().first();						// get the graphic segment first x coordinate
-		float ratio = MapTools::relativepos(date, t.interval());		// get the relative position of date within the time segment
-		slave->setXPos( x + (masterSeg.xinterval().size() * ratio ) );	//  set the slave x coordinate using linear interpolation
-		float y = 0, displacement = slave->getHeight() * slave->getScale() / 2;
-		switch (align) {						//  computes the slave y coordinate according to the alignment mode
-			case Master::kSyncTop:
-				y = masterSeg.yinterval().first() - displacement;
-				break;
-			case Master::kSyncBottom:
-				y = masterSeg.yinterval().second() + displacement;
-				break;
-			case Master::kSyncOver:
-			default:
-				y = masterSeg.yinterval().center();
-				break;
+	slave->UseGraphic2GraphicMapping (false);						// don't use the object graphic segmentation and mapping
+	float x, xs; bool found = false;
+	GraphicSegment slaveSeg;
+
+	if (date2point (date, map, masterSeg, x)) {						// do the slave date exists in the master map ?
+		if (date2point (date, slavemap, slaveSeg, xs))				// yes but retrieve the corresponding location in the slave map too
+			x -= slave->getWidth() * (1+xs) / 2;					// converts the corresponding amount in displacement n the master space
+		found = true;
+	}
+	else if (date2point (mdate, slavemap, slaveSeg, xs)) {			// look for the master date in the slave map
+		if (date2point (mdate, map, masterSeg, x)) {				// this is mainly to retrieve the master segment
+			x -= slave->getWidth() * (1+xs) / 2;
+			found = true;
 		}
-		slave->setYPos( y + m->getDy());		// set the slave y coordinate 
 	}
-	else {
-		slave->setXPos( kUnknownLocation );		// puts the object away when no mapping available or missing resources
-		slave->setYPos( kUnknownLocation );		// 
+	if (found) {
+		slave->setXPos( x);										//  set the slave x coordinate
+		float y = getYPos (slave, masterSeg, align);
+		slave->setYPos( y + m->getDy());						// set the slave y coordinate 
+		return masterSeg;
 	}
+	slave->setXPos( kUnknownLocation );			// puts the object away when no mapping available or missing resources
+	slave->setYPos( kUnknownLocation );	
 	return masterSeg;
 }
 
