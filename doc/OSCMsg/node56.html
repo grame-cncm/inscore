@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.1 Differences to version 0.79</TITLE>
-<META NAME="description" CONTENT="15.1 Differences to version 0.79">
+<TITLE>15.1 Differences to version 0.80</TITLE>
+<META NAME="description" CONTENT="15.1 Differences to version 0.80">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,44 +27,47 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html964"
+<A NAME="tex2html967"
   HREF="node57.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html958"
+<A NAME="tex2html961"
   HREF="node55.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html952"
+<A NAME="tex2html955"
   HREF="node55.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html960"
+<A NAME="tex2html963"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html962"
-  HREF="node68.html">
+<A NAME="tex2html965"
+  HREF="node69.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html965"
+<B> Next:</B> <A NAME="tex2html968"
   HREF="node57.html">15.2 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html959"
+<B> Up:</B> <A NAME="tex2html962"
   HREF="node55.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html953"
+<B> Previous:</B> <A NAME="tex2html956"
   HREF="node55.html">15. Changes list</A>
- &nbsp; <B>  <A NAME="tex2html961"
+ &nbsp; <B>  <A NAME="tex2html964"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html963"
-  HREF="node68.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html966"
+  HREF="node69.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION001610000000000000000">
-15.1 Differences to version 0.79</A>
+15.1 Differences to version 0.80</A>
 </H1>
 
 <UL>
-<LI>corrects the map not saved by the <TT>save</TT> message issue
+<LI>behavior change with synchronization without stretch: now the system looks also in the
+  slave map for a segment corresponding to the master date.
 </LI>
-<LI>corrects <TT>get map</TT> output: 2D segments were not correctly converted to string
+<LI><TT>$date</TT> variable change: the value is now (0,0) when no date is available and <TT>$date</TT> is time shifted according to the object date.
+</LI>
+<LI><TT>date</TT> message change: the date 0 0 is ignored
 </LI>
 </UL>
 

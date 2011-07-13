@@ -1611,6 +1611,17 @@ Note: the system doesn't check for the consistency of the variables placement.
 \toplevel{ Changes list}
 
 %===============================
+%:   Differences to version 0.80
+\sublevel{Differences to version 0.80}
+\begin{itemize}
+\item behavior change with synchronization without stretch: now the system looks also in the
+  slave map for a segment corresponding to the master date.
+\item \OSC{\$date} variable change: the value is now (0,0) when no date is available and \OSC{\$date} is time shifted according to the object date.
+\item \OSC{date} message change: the date 0 0 is ignored
+\end{itemize}
+
+
+%===============================
 %:   Differences to version 0.79
 \sublevel{Differences to version 0.79}
 \begin{itemize}
