@@ -10,6 +10,12 @@ INScore resources are released under the Creative Common license.
 ------------------------------------------------------------------
 
 -------------------------------
+** July 13 2011
+-------------------------------
+- new transform Max patch for 3D rotation and shearing
+- improved mapbuilder Max patch with extensions for offsets and fixed segments
+
+-------------------------------
 ** May 17 2011
 -------------------------------
 INScore resources include now a standalone tutorial (no need to run 
