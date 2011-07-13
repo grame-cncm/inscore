@@ -108,6 +108,7 @@ win32:
 	make common
 	cp -f $(bin)/$(viewer).exe $(package)/$(viewer).exe
 	cp -f $(bin)/*.dll $(package)
+	cp -f $(bin)/*.dll.manifest $(package)
 	cp -f ../src/guido2.ttf $(package)
 	cp  -rf DLLs/* $(package)
 
