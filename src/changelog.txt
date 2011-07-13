@@ -12,6 +12,9 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 0.82
+
+----------------------------------------------------
 Version 0.81
 - behavior change with synchronization without stretch: now the system looks also in the
   slave map for a segment corresponding to the master date.
