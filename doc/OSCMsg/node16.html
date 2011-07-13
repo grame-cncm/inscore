@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>4.3.2 The colorize effect</TITLE>
-<META NAME="description" CONTENT="4.3.2 The colorize effect">
+<TITLE>4.3.1 The blur effect</TITLE>
+<META NAME="description" CONTENT="4.3.1 The blur effect">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,60 +21,69 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node17.html">
 <LINK REL="previous" HREF="node15.html">
-<LINK REL="up" HREF="node14.html">
+<LINK REL="up" HREF="node15.html">
 <LINK REL="next" HREF="node17.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html376"
+<A NAME="tex2html388"
   HREF="node17.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html370"
-  HREF="node14.html">
+<A NAME="tex2html382"
+  HREF="node15.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html364"
+<A NAME="tex2html376"
   HREF="node15.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html372"
+<A NAME="tex2html384"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html374"
-  HREF="node64.html">
+<A NAME="tex2html386"
+  HREF="node69.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html377"
-  HREF="node17.html">4.3.3 The shadow effect</A>
-<B> Up:</B> <A NAME="tex2html371"
-  HREF="node14.html">4.3 The 'effect' messages</A>
-<B> Previous:</B> <A NAME="tex2html365"
-  HREF="node15.html">4.3.1 The blur effect</A>
- &nbsp; <B>  <A NAME="tex2html373"
+<B> Next:</B> <A NAME="tex2html389"
+  HREF="node17.html">4.3.2 The colorize effect</A>
+<B> Up:</B> <A NAME="tex2html383"
+  HREF="node15.html">4.3 The 'effect' messages</A>
+<B> Previous:</B> <A NAME="tex2html377"
+  HREF="node15.html">4.3 The 'effect' messages</A>
+ &nbsp; <B>  <A NAME="tex2html385"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html375"
-  HREF="node64.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html387"
+  HREF="node69.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION00532000000000000000">
-4.3.2 The colorize effect</A>
+<H2><A NAME="SECTION00531000000000000000">
+4.3.1 The blur effect</A>
 </H2>
 
 <P>
 <BR>
 <IMG
- WIDTH="250" HEIGHT="87" ALIGN="BOTTOM" BORDER="0"
- SRC="img26.gif"
+ WIDTH="259" HEIGHT="86" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.gif"
  ALT="\begin{rail}
-colorizeParams : strength (\vert color)
+blurParams : radius (\vert blurHint)
 \end{rail}">
 <BR>
 
 <P>
-Colorize parameters are a strength and a tint color. The strength is a float value. By default, it is 1.0. A strength 0.0 equals to no effect, while 1.0 means full colorization. 
+Blur parameters are the blur radius and a rendering hint. The radius is an int32 value. By default, it is 5 pixels. The radius is given in device coordinates, meaning it is unaffected by scale. 
+
+<P>
 <BR>
-The color is given as a RGB triplet (see <A HREF="node11.html#colormsg">4.2</A> p.<A HREF="node11.html#colormsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>) by default, the color value is light blue (0, 0, 192).
+<IMG
+ WIDTH="226" HEIGHT="124" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.gif"
+ ALT="\begin{rail}
+blurHint : 'performance' \vert 'quality' \vert 'animation'
+\end{rail}">
+<BR>
+Use the <TT>performance</TT> hint to say that you want a faster blur, the <TT>quality</TT> hint to say that you prefer a higher quality blur, or the <TT>animation</TT> when you want to animate the blur radius. The default hint value is <TT>performance</TT>.
 
 <P>
 <BR><HR>

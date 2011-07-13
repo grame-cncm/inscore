@@ -52,6 +52,9 @@ class IGraphicBasedObject : public IObject
 		typedef SMARTP<TLocalMapping<IntPointSegment> >	SLocalMapping;
 		SLocalMapping	fLocalMappings;
 
+		/// \brief get an object maps
+		virtual IMessageList __getMaps () const	{ return TMapMsgHandler<IntPointSegment>::getMapMsgs( localMappings() , this ); }
+
 	public:
 
 		const	SLocalMapping& localMappings() const	{ return fLocalMappings; }
@@ -69,9 +72,6 @@ class IGraphicBasedObject : public IObject
 		MsgHandler::msgStatus mapMsg (const IMessage* msg );
 		/// \brief the \c 'map+' message handler
 		MsgHandler::msgStatus mapAddMsg (const IMessage* msg );
-		
-		/// \brief Overrides IObject to handle 'get map' msg.
-		IMessageList getMsgs(const IMessage* msg) const	{ return TMapMsgHandler<IntPointSegment>::getMsgs( msg , localMappings() , this ); }
 };
 
 /*! @} */

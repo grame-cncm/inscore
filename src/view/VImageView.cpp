@@ -41,29 +41,24 @@ namespace inscore
 
 //----------------------------------------------------------------------
 VImageView::VImageView(QGraphicsScene * scene, const IImage* h)
- :	VIntPointObjectView( scene , new IQGraphicsPixmapItem(h) )
+ :	VIntPointObjectView( scene , new IQGraphicsImageItem(h) )
 {
-	fPixmapItem = (IQGraphicsPixmapItem*)(fItem);
-#ifdef PIXMAPBASED
-	fPixmapItem->setTransformationMode( Qt::SmoothTransformation );
-#endif
+	fImageItem = (IQGraphicsImageItem*)(fItem);
 }
 
 //----------------------------------------------------------------------
 void VImageView::updateLocalMapping (IImage* img)
 {
-	// 1. Update pixmap
+	// 1. Update image
 	QString file = VApplView::toQString( img->getFile().c_str() );
 	if ( QFile::exists(  file  ) )
 	{
-//		QString imageFile = VApplView::toQString( img->getFile().c_str() );
 		if ( !QImageReader( file ).canRead() )
 		{
 			// Invalid/Unsupported file format
 			ITLErr << "invalid image file :" << img->getFile() << ITLEndl;
 		}
-		else
-			setImage( file );
+		else setImage( file );
 	}
 	else
 	{
@@ -77,20 +72,17 @@ void VImageView::updateLocalMapping (IImage* img)
 //----------------------------------------------------------------------
 GraphicSegment VImageView::getGraphicSegment( const IntPointSegment& intPointSegment , const IGraphicBasedObject * object , bool& mapOk ) const
 {
-//	TLongPoint intPointA = iter.getFirst();
-//	TLongPoint intPointB = iter.getSecond();
-
 	TLongPoint intPointA (intPointSegment.xinterval().first(), intPointSegment.yinterval().first());
 	TLongPoint intPointB (intPointSegment.xinterval().second(), intPointSegment.yinterval().second());
 	
 	TLongPoint errPoint;
 	mapOk=true;
-	if ( (intPointA.y() >= fPixmapItem->pixmap().height()) || (intPointA.x() >= fPixmapItem->pixmap().width()) )
+	if ( (intPointA.y() >= fImageItem->image().height()) || (intPointA.x() >= fImageItem->image().width()) )
 	{
 		errPoint = intPointA;			
 		mapOk = false;
 	}
-	if ( (intPointB.y() >= fPixmapItem->pixmap().height()) || (intPointB.x() > fPixmapItem->pixmap().width()) )
+	if ( (intPointB.y() >= fImageItem->image().height()) || (intPointB.x() > fImageItem->image().width()) )
 	{
 		errPoint = intPointB;
 		mapOk = false;
@@ -102,8 +94,8 @@ GraphicSegment VImageView::getGraphicSegment( const IntPointSegment& intPointSeg
 		ITLErr << msg1 << object->getOSCAddress() << msg2 << "[" << errPoint.x() << ";" << errPoint.y() << "]" << ITLEndl;
 		return GraphicSegment();
 	}
-	TFloatPoint startPoint = qGraphicsItem2IObject( longPointToQPoint(intPointA) , fPixmapItem->boundingRect() );
-	TFloatPoint endPoint = qGraphicsItem2IObject( longPointToQPoint(intPointB) , fPixmapItem->boundingRect() );
+	TFloatPoint startPoint = qGraphicsItem2IObject( longPointToQPoint(intPointA) , fImageItem->boundingRect() );
+	TFloatPoint endPoint = qGraphicsItem2IObject( longPointToQPoint(intPointB) , fImageItem->boundingRect() );
 	
 	return GraphicSegment( startPoint.x(), startPoint.y(), endPoint.x(), endPoint.y() );
 
@@ -113,20 +105,14 @@ GraphicSegment VImageView::getGraphicSegment( const IntPointSegment& intPointSeg
 void VImageView::updateView ( IImage * img)
 {
 	float alpha = img->getA() / 255.f;
-	fPixmapItem->setOpacity (alpha);
+	fImageItem->setOpacity (alpha);
 	VIntPointObjectView::updateView (img);
 }
 
 //----------------------------------------------------------------------
 void VImageView::setImage(const QString& fileName)
 {
-#ifdef PIXMAPBASED
-	fPixmapItem->setPixmap( QPixmap( fileName ) );
-#else
-	fPixmapItem->pixmap().load( fileName );
-//	if (!fPixmapItem->pixmap().hasAlphaChannel())
-//		qDebug() << "VImageView::setImage no alpha channel for " << fileName;
-#endif
+	fImageItem->image().load( fileName );
 	itemChanged();
 }
 

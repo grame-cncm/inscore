@@ -109,6 +109,11 @@ class IFileWatcher: public IVNode
 		virtual MsgHandler::msgStatus clearMsg (const IMessage* msg);
 		
 
+		// overrides get handlers for color, position and time
+		virtual void colorAble ()		{}
+		virtual void positionAble ()	{}
+		virtual void timeAble ()		{}
+
 		static bool buildMessage(const IMessage& source,IMessage& target);
 };
 

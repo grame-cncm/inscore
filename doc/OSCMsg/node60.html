@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.6 Differences to version 0.55</TITLE>
-<META NAME="description" CONTENT="15.6 Differences to version 0.55">
+<TITLE>15.5 Differences to version 0.76</TITLE>
+<META NAME="description" CONTENT="15.5 Differences to version 0.76">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,68 +21,58 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node61.html">
 <LINK REL="previous" HREF="node59.html">
-<LINK REL="up" HREF="node54.html">
+<LINK REL="up" HREF="node55.html">
 <LINK REL="next" HREF="node61.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1007"
+<A NAME="tex2html1023"
   HREF="node61.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1001"
-  HREF="node54.html">
+<A NAME="tex2html1017"
+  HREF="node55.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html995"
+<A NAME="tex2html1011"
   HREF="node59.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1003"
+<A NAME="tex2html1019"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1005"
-  HREF="node64.html">
+<A NAME="tex2html1021"
+  HREF="node69.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1008"
-  HREF="node61.html">15.7 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1002"
-  HREF="node54.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html996"
-  HREF="node59.html">15.5 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1004"
+<B> Next:</B> <A NAME="tex2html1024"
+  HREF="node61.html">15.6 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1018"
+  HREF="node55.html">15. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1012"
+  HREF="node59.html">15.4 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1020"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1006"
-  HREF="node64.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1022"
+  HREF="node69.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001660000000000000000">
-15.6 Differences to version 0.55</A>
+<H1><A NAME="SECTION001650000000000000000">
+15.5 Differences to version 0.76</A>
 </H1>
 
 <UL>
-<LI>new 'xorigin' and 'yorigin' messages (section <A HREF="node10.html#origin">4.1.3</A> p.<A HREF="node10.html#origin"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>get <TT>guido-version</TT> and <TT>musicxml-version</TT> messages supported by the application (see section <A HREF="node4.html#ITL">2</A> p.<A HREF="node4.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>new interaction messages set (section <A HREF="node48.html#interaction">14</A> p.<A HREF="node48.html#interaction"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI><TT>save</TT> message bug correction - introduced with version 0.70: only partial state of objects was saved
 </LI>
-<LI>alpha channel handled by images and video
+<LI><TT>rootPath</TT> message introduced at scene level (see section <A HREF="node5.html#scene">3</A> p.<A HREF="node5.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>bug correction in line creation corrected (false incorrect parameter returned)
+<LI>scene name translation strategy change: only the explicit 'scene' name is 
+  translated by the scene load message handler into the current scene name, 
+  other names are left unchanged.
 </LI>
-<LI>bug correction in line 'get' message handling
-</LI>
-<LI>memory leak correction (messages not deleted)
-</LI>
-</UL>
-
-<P>
-Known issues: 
-
-<UL>
-<LI>incorrect graphic rendering when 'sync a b' is changed to 'sync b a' in the same update loop
-</LI>
-<LI>incorrect nested synchronization when master is horizontaly stretched,
+<LI>bitmap copy adjustment in sync stretched mode is now only made for images
 </LI>
 </UL>
 

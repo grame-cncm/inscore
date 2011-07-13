@@ -75,7 +75,7 @@ class IDate : public TimeEventAble
 		virtual void	print (std::ostream& out) const;
 
 		/// \brief sets the object date \param date a date expressed as a rational
-		virtual void	setDate (const rational& date)		{ handleTimChange(fDate, date); fDate = date;  fDateChanged = true; }
+		virtual void	setDate (const rational& date);
 		/// \brief sets the object duration \param dur a duration expressed as a rational
 		virtual void	setDuration (const rational& dur)	{  fDuration = dur;  fDurationChanged = true;  }
 		/// \brief moves the date

@@ -12,11 +12,38 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 0.81
+- behavior change with synchronization without stretch: now the system looks also in the
+  slave map for a segment corresponding to the master date.
+- $date variable change: the value is now (0,0) when no date is available
+  the $date is time shifted according to the object date
+- date message change: the date 0 0 is ignored
+
+----------------------------------------------------
+Version 0.80
+- corrects the map not saved by the 'save' message issue (version 0.79)
+- corrects 'get map' output: 2D segments were not correctly converted to string
+
+----------------------------------------------------
+Version 0.79
+- crash bug corrected for the 'save' message addressed to '/ITL'
+- message policy change: relaxed numeric parameters policy 
+  (float are accepted for int and int for float)
+- bug in 'get watch' for time events corrected (incorrect reply)
+known issues:
+- map not saved by the 'save' message 
+
+
+----------------------------------------------------
 Version 0.78
-- reset message addressed to a scene clears the scene rootPath
-- quantification introduced to $date variable
+- guido system map extended (flat map or subdivided)
+- new transformations messages (shear and rotate)
+- new 'rename' message to change objects name (and thus OSC address)
+- relaxed bool parameter policy: objects accept float values for bool parameters
 - automatic numbering of exports when destination file is not completely specified 
   (no name, no extension)
+- quantification introduced to $date variable
+- reset message addressed to a scene clears the scene rootPath
 
 ----------------------------------------------------
 Version 0.77

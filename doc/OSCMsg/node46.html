@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>13.2.1 Graphic signal default values.</TITLE>
-<META NAME="description" CONTENT="13.2.1 Graphic signal default values.">
+<TITLE>13.2 Graphic signals.</TITLE>
+<META NAME="description" CONTENT="13.2 Graphic signals.">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,94 +19,171 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node47.html">
-<LINK REL="previous" HREF="node45.html">
-<LINK REL="up" HREF="node45.html">
+<LINK REL="previous" HREF="node42.html">
+<LINK REL="up" HREF="node41.html">
 <LINK REL="next" HREF="node47.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html801"
+<A NAME="tex2html811"
   HREF="node47.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html795"
-  HREF="node45.html">
+<A NAME="tex2html805"
+  HREF="node41.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html789"
+<A NAME="tex2html801"
   HREF="node45.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html797"
+<A NAME="tex2html807"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html799"
-  HREF="node64.html">
+<A NAME="tex2html809"
+  HREF="node69.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html802"
-  HREF="node47.html">13.2.2 Parallel graphic signals.</A>
-<B> Up:</B> <A NAME="tex2html796"
-  HREF="node45.html">13.2 Graphic signals.</A>
-<B> Previous:</B> <A NAME="tex2html790"
-  HREF="node45.html">13.2 Graphic signals.</A>
- &nbsp; <B>  <A NAME="tex2html798"
+<B> Next:</B> <A NAME="tex2html812"
+  HREF="node47.html">13.2.1 Graphic signal default</A>
+<B> Up:</B> <A NAME="tex2html806"
+  HREF="node41.html">13. Signals and graphic</A>
+<B> Previous:</B> <A NAME="tex2html802"
+  HREF="node45.html">13.1.3 Signals projection.</A>
+ &nbsp; <B>  <A NAME="tex2html808"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html800"
-  HREF="node64.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html810"
+  HREF="node69.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION001421000000000000000">
-13.2.1 Graphic signal default values.</A>
-</H2>
-As mentionned above, a graphic signal expects to be connected to parallel signals having at least an <TT>y</TT> component, a graphic thickness component and HSBA components. Thus, from graphic signal viewpoint, the expected dimension of a signal should be equal or greater than 6. In case the <TT>signalIdentifier</TT> dimension is less than 6, the graphic signal will use the default values defined in table <A HREF="#gsigdefault">13.2</A>.
+<H1><A NAME="SECTION001420000000000000000"></A>
+<A NAME="gsignal"></A>
+<BR>
+13.2 Graphic signals.
+</H1>
+
+<P>
+A graphic signal is created in the standard scene address space. A simple graphic signal is defined by a parallel signal controling the <TT>y</TT> value, the graphic thickness and the color at each time position. The color is encoded as HSBA colors (Hue, Saturation, Brightness, Transparency). The mapping of a signal value  (<TT>[-1,1]</TT>) to the HSBA color space is given by the table <A HREF="#hsbamap">13.1</A>. 
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="hsbfiug"></A><A NAME="984"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 13.2:</STRONG>
+The HSB color space</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER"><IMG
+  WIDTH="256" HEIGHT="251" ALIGN="BOTTOM" BORDER="0"
+ SRC="./hsb.jpg"
+ ALT="Image hsb">
+ </DIV></TD></TR>
+</TABLE>
+</DIV>
 
 <P>
 <BR><P></P>
 <DIV ALIGN="CENTER">
 
 <DIV ALIGN="CENTER">
-<A NAME="1021"></A>
+<A NAME="988"></A>
 <TABLE CELLPADDING=3 BORDER="1">
-<CAPTION><STRONG>Table 13.2:</STRONG>
-Graphic signal default values.</CAPTION>
+<CAPTION><STRONG>Table 13.1:</STRONG>
+HSBA color values.</CAPTION>
 <TR><TD ALIGN="RIGHT">parameter</TD>
-<TD ALIGN="CENTER">default value</TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><TT>y</TT></TD>
-<TD ALIGN="CENTER"><TT>0</TT></TD>
-<TD ALIGN="LEFT">the center line of the graphic</TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><TT>thickness</TT></TD>
-<TD ALIGN="CENTER"><TT>0</TT></TD>
+<TD ALIGN="CENTER">mapping</TD>
 <TD ALIGN="LEFT">&nbsp;</TD>
 </TR>
 <TR><TD ALIGN="RIGHT"><TT>hue</TT></TD>
-<TD ALIGN="CENTER"><TT>0</TT></TD>
-<TD ALIGN="LEFT">meaningless due to brigthness value</TD>
+<TD ALIGN="CENTER"><TT>[-1,1]</TT></TD>
+<TD ALIGN="LEFT">corresponds to <TT>[-180,180]</TT> angular degree where <TT>0</TT> is red.</TD>
 </TR>
 <TR><TD ALIGN="RIGHT"><TT>saturation</TT></TD>
-<TD ALIGN="CENTER"><TT>0</TT></TD>
-<TD ALIGN="LEFT">meaningless due to brigthness value</TD>
+<TD ALIGN="CENTER"><TT>[-1,1]</TT></TD>
+<TD ALIGN="LEFT">corresponds <TT>0%</TT> to <TT>100%</TT> saturation.</TD>
 </TR>
 <TR><TD ALIGN="RIGHT"><TT>brigthness</TT></TD>
-<TD ALIGN="CENTER"><TT>-1</TT></TD>
-<TD ALIGN="LEFT">black</TD>
+<TD ALIGN="CENTER"><TT>[-1,1]</TT></TD>
+<TD ALIGN="LEFT">corresponds <TT>0%</TT> (black) to <TT>100%</TT> (white) brithgness.</TD>
 </TR>
 <TR><TD ALIGN="RIGHT"><TT>transparency</TT></TD>
-<TD ALIGN="CENTER"><TT>1</TT></TD>
-<TD ALIGN="LEFT">opaque</TD>
+<TD ALIGN="CENTER"><TT>[-1,1]</TT></TD>
+<TD ALIGN="LEFT">corresponds <TT>0%</TT> to <TT>100%</TT> tranparency.</TD>
 </TR>
 </TABLE>
 </DIV>
-<A NAME="gsigdefault"></A>
+<A NAME="hsbamap"></A>
 </DIV>
 <BR>
 
 <P>
+A graphic signal responds to common component messages (section <A HREF="node6.html#common">4</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). In addition, it supports the following messages:
+<BR>
+<IMG
+ WIDTH="356" HEIGHT="127" ALIGN="BOTTOM" BORDER="0"
+ SRC="img75.gif"
+ ALT="\begin{rail}
+graphicSignal : 'set' 'graph' signalIdentifier
+\vert 'get'
+\vert 'get' 'dimension'
+\end{rail}">
+<BR>
+<A NAME="1015"></A>
+<A NAME="1016"></A>
+<A NAME="1017"></A>
+
+<P>
+
+<UL>
+<LI>the <TT>set</TT> message is followed by the <TT>graph</TT> type and a <TT><I>signalIdentifier</I></TT>, where <TT>signalIdentifier</TT> must correspond to an existing signal from the <TT>signal</TT> address space. In case <TT>signalIdentifier</TT> doesn't exist, then a new signal is created at the <TT>signalIdentifier</TT> address with default values. 
+</LI>
+<LI>the <TT>get</TT> message is the counterpart of the <TT>set</TT> message (see section <A HREF="node22.html#getsect">7</A> p.<A HREF="node22.html#getsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). 
+</LI>
+<LI>the <TT>get dimension</TT> message gives the number of graphic signals in parallel (see section <A HREF="node48.html#pgsignal">13.2.2</A> p.<A HREF="node48.html#pgsignal"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). 
+ 
+</LI>
+</UL>
+
+<P>
 <BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html813"
+  HREF="node47.html">13.2.1 Graphic signal default values.</A>
+<LI><A NAME="tex2html814"
+  HREF="node48.html">13.2.2 Parallel graphic signals.</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html811"
+  HREF="node47.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html805"
+  HREF="node41.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html801"
+  HREF="node45.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html807"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html809"
+  HREF="node69.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html812"
+  HREF="node47.html">13.2.1 Graphic signal default</A>
+<B> Up:</B> <A NAME="tex2html806"
+  HREF="node41.html">13. Signals and graphic</A>
+<B> Previous:</B> <A NAME="tex2html802"
+  HREF="node45.html">13.1.3 Signals projection.</A>
+ &nbsp; <B>  <A NAME="tex2html808"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html810"
+  HREF="node69.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

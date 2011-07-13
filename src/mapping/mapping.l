@@ -19,6 +19,7 @@ EOL		[\x0a\x0d]
 
 %%
 {DIGIT}+			return NUMBER;
+-{DIGIT}+			return NUMBER;
 {DIGIT}*"."{DIGIT}+		return FLOAT;
 {DIGIT}+"."			return FLOAT;
 "+"{DIGIT}*"."{DIGIT}+		return FLOAT;

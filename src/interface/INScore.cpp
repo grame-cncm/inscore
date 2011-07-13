@@ -113,8 +113,8 @@ void INScore::stop(IGlue* glue)
 //--------------------------------------------------------------------------
 // versions 
 //--------------------------------------------------------------------------
-int INScore::version	()				{ return 78; }
-const char* INScore::versionStr ()		{ return "0.78"; }
+int INScore::version	()				{ return 81; }
+const char* INScore::versionStr ()		{ return "0.81"; }
 const unsigned long localhost = (127 << 24) + 1;
 
 //--------------------------------------------------------------------------

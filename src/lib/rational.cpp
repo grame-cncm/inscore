@@ -50,7 +50,7 @@ rational::rational(const string &str) : fNumerator(0), fDenominator(1)
 rational::rational(int num) : fNumerator(num), fDenominator(1)	{}
 rational::rational(int num, int denum) : fNumerator(num), fDenominator(denum)	{}
 rational::rational(long num, long denum) : fNumerator(num), fDenominator(denum)	{}
-rational::rational(long long num, long long denom) : fNumerator(num), fDenominator(denom ? denom : 1)	{}
+rational::rational(long long num, long long denom) : fNumerator(num), fDenominator(denom)	{}
 rational::rational(const rational& d) : fNumerator(d.fNumerator), fDenominator(d.fDenominator) {}
 rational::rational(const rational& num, const rational& denom) 
 	: fNumerator(num.fNumerator * denom.fDenominator), fDenominator(denom.fNumerator * num.fDenominator) { rationalize(); }

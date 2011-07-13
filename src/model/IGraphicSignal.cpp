@@ -172,11 +172,17 @@ MsgHandler::msgStatus IGraphicSignal::set (const IMessage* msg )
 		SISignalNode signals = scene->signalsNode();
 		if (!signals) return MsgHandler::kCreateFailure;
 
-		SISignal s =  signals->find(signame);
-		if (s) {
-			set(s);
+		subnodes sigs;
+		if (signals->find(signame, sigs)) {
+			set(dynamic_cast<ISignal*>((IObject*)sigs[0]));
 			return MsgHandler::kProcessed;
 		}
+
+//		SISignal s =  signals->find(signame);
+//		if (s) {
+//			set(s);
+//			return MsgHandler::kProcessed;
+//		}
 		ITLErr << "Graphic signal" << name() << ": unknown signal" << signame << ITLEndl;
 	}
 	return MsgHandler::kBadParameters;

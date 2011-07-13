@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>4.2.2 Relative color messages</TITLE>
-<META NAME="description" CONTENT="4.2.2 Relative color messages">
+<TITLE>4.2.1 Absolute color messages</TITLE>
+<META NAME="description" CONTENT="4.2.1 Absolute color messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,80 +19,100 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node14.html">
 <LINK REL="previous" HREF="node12.html">
-<LINK REL="up" HREF="node11.html">
+<LINK REL="up" HREF="node12.html">
 <LINK REL="next" HREF="node14.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html331"
+<A NAME="tex2html345"
   HREF="node14.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html325"
-  HREF="node11.html">
+<A NAME="tex2html339"
+  HREF="node12.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html321"
+<A NAME="tex2html333"
   HREF="node12.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html327"
+<A NAME="tex2html341"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html329"
-  HREF="node64.html">
+<A NAME="tex2html343"
+  HREF="node69.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html332"
-  HREF="node14.html">4.3 The 'effect' messages</A>
-<B> Up:</B> <A NAME="tex2html326"
-  HREF="node11.html">4.2 Color messages</A>
-<B> Previous:</B> <A NAME="tex2html322"
-  HREF="node12.html">4.2.1 Absolute color messages</A>
- &nbsp; <B>  <A NAME="tex2html328"
+<B> Next:</B> <A NAME="tex2html346"
+  HREF="node14.html">4.2.2 Relative color messages</A>
+<B> Up:</B> <A NAME="tex2html340"
+  HREF="node12.html">4.2 Color messages</A>
+<B> Previous:</B> <A NAME="tex2html334"
+  HREF="node12.html">4.2 Color messages</A>
+ &nbsp; <B>  <A NAME="tex2html342"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html330"
-  HREF="node64.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html344"
+  HREF="node69.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION00522000000000000000"></A>
-<A NAME="relcolormsg"></A>
-<BR>
-4.2.2 Relative color messages
+<H2><A NAME="SECTION00521000000000000000">
+4.2.1 Absolute color messages</A>
 </H2>
 
 <P>
 <BR>
 <IMG
- WIDTH="298" HEIGHT="356" ALIGN="BOTTOM" BORDER="0"
- SRC="img22.gif"
+ WIDTH="290" HEIGHT="356" ALIGN="BOTTOM" BORDER="0"
+ SRC="img20.gif"
  ALT="\begin{rail}
-relColorMsg :
-('dcolor' color)
-\vert ('dhsb' hsb)
-\vert ('dre...
-...ation' int32)
-\vert ('dbrightness' int32)
-\vert ('dalpha' int32)
+absColorMsg : color
+\vert hsb
+\vert 'red' int32
+\vert 'green' in...
+...\vert 'hue' int32
+\vert 'saturation' int32
+\vert 'brightness' int32
 \end{rail}">
 <BR>
-<A NAME="319"></A>
-<A NAME="320"></A>
-<A NAME="321"></A>
-<A NAME="322"></A>
-<A NAME="323"></A>
-<A NAME="324"></A>
-<A NAME="325"></A>
-<A NAME="326"></A>
-<A NAME="327"></A>
+<A NAME="298"></A>
+<A NAME="299"></A>
+<A NAME="300"></A>
+<A NAME="301"></A>
+<A NAME="302"></A>
+<A NAME="303"></A>
+<A NAME="304"></A>
+<A NAME="305"></A>
+
+<P>
+<BR>
+<IMG
+ WIDTH="337" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.gif"
+ ALT="\begin{rail}
+color : 'color' ('r' 'g' 'b' \vert 'r' 'g' 'b' 'a')
+\end{rail}">
+<BR>
+<A NAME="308"></A>
+<BR>
+<IMG
+ WIDTH="321" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.gif"
+ ALT="\begin{rail}
+hsb : 'hsb' ('h' 's' 'b' \vert 'h' 's' 'b' 'a')
+\end{rail}">
+<BR>
+<A NAME="311"></A>
 
 <P>
 
 <UL>
-<LI><TT>dred</TT>,<TT>dgreen</TT>, etc. messages are similar to <TT>red</TT>,<TT>green</TT>, etc. messages but the parameters values represent a displacement of the current target value.
+<LI><TT>color</TT>: sets an object color. The color scheme is RGBA. When A is not specified, the color is assumed to be opaque. The data range for each color component is <TT>[0,255]</TT>. Default color value is <TT>[0,0,0,255]</TT>.
 </LI>
-<LI><TT>dcolor</TT> and <TT>dhsb</TT> are similar and each color parameter represents a displacement of the corresponding target value.
+<LI><TT>hsb</TT>: similar to <TT>color</TT> but using an HSBA scheme. When A is not specified, the color is assumed to be opaque. The data range for S, B is <TT>[0,100]</TT>, for H <TT>[0,360]</TT>, and <TT>[0,255]</TT> for A.
+</LI>
+<LI><TT>red</TT>,<TT>green</TT>,<TT>blue</TT>, <TT>hue</TT>,<TT>saturation</TT>,<TT>brightness</TT>,<TT>alpha</TT> messages address only the specified part of the color.
 </LI>
 </UL>
 

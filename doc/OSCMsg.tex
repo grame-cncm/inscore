@@ -59,7 +59,7 @@
 
 \begin{document}
 
-\title{INScore \\ OSC Messages Reference \\v.0.78}
+\title{INScore \\ OSC Messages Reference \\v.0.81}
 
 \author{Grame, Centre national de cr\'eation musicale\\
 {\small <research@grame.fr>} \\
@@ -220,6 +220,7 @@ commonMsg :  ('show' int32)
 			| 'del'
 			| 'export' ((fullPathFileName) | path |)
 			| 'save' filePath ( | '+')
+			| 'rename' name
 			| PositionMsg
 			| ColorMsg
 			| TimeMsg
@@ -233,11 +234,15 @@ commonMsg :  ('show' int32)
 \begin{itemize}
 \item \OSC{show}: shows or hides the destination object. The parameter is interpreted as a boolean value. Default value is \values{1}. 
 \item \OSC{del}: deletes the destination object. 
+
 \item \OSC{export}: exports an object to an image file. \\
 The first form exports to the parameter file, which specifies a full path name. The file extension is used to infer the export format. Supported extensions and formats are: \emph{pdf, bmp, gif, jpeg, png, pgm, ppm, tiff, xbm, xpm}. \\
 The second form exports to \OSC{path/\textit{identifier}.pdf}. When path is a relative path, it exports to \OSC{rootPath/path/\textit{identifier}.pdf}. A scene \textit{identifier} is '\OSC{scene}'.\\
-The third form exports to \OSC{rootPath/\textit{identifier}.pdf}.
+The third form exports to \OSC{rootPath/\textit{identifier}.pdf}.\\
+When the destination file is not completely specified (third form or missing extension), there is an automatic numbering of output names when the destination file already exists.
+
 \item \OSC{save}: recursively saves objects states to a file.  The \OSC{filePath} can be relative or absolute. When relative, an absolute path is build using the current \OSC{rootPath}. The optional \OSC{+} parameter indicates an append mode for the write operation. The message must be sent to the \OSC{/ITL} address to save the whole application state.
+\item \OSC{rename}: rename the destination object. Changes its OSC address. \textbf{Warning}: OSC pattern matching allows to give the same name to a whole collection of objects; in this case, there is no way to individually address an object when its name is shared with other objects.
 \item 'PositionMsg' are absolute and relative position messages.
 \item 'ColorMsg' are absolute and relative color control messages.
 \item 'TimeMsg' are time management messages. They are described in chaper \fullref{time}.
@@ -342,6 +347,25 @@ originMsg :
 \end{itemize}
 
 
+%-------------------------------
+%:   Components transformations
+\subsublevel{Components transformations}
+\label{transform}
+
+A component tranformation specifies 2D transformations of its coordinate system. It includes shear and object rotation.
+
+\begin{rail}
+transformMsg :
+			(('rotatex' | 'rotatey' | 'rotatez') float32)
+		| 	('shear' x y)
+\end{rail}
+\index{Transform messages!rotate}
+\index{Transform messages!shear}
+
+\begin{itemize}
+\item \OSC{rotatex rotatey rotatez}: rotates the component around the corresponding axis. Parameter value expresses the rotation in degrees.
+\item \OSC{shear} transforms the component in x and y dimensions. \OSC{x} and \OSC{y} are float values expressing the transformation value in the corresponding dimension.
+\end{itemize}
 
 %-------------------------------
 %:Color messages
@@ -1065,21 +1089,23 @@ Not specifying the map name is equivalent to an \emph{empty name} mapping.
 
 Music score mappings are automatically computed  by the system. However, since a score may support a large number of mappings (staff based, system based, voice based, etc.), music scores supports a specific \OSC{map} message to request the computation of a specific mapping. This message has the form:
 \begin{rail}
-scoreMapMsg : 'map' ('page' | 'system' | ('staff' 'staffNum') | 'voice' 'voiceNum' )
+scoreMapMsg : 'map' ('page' | 'system' | 'systemflat' | ('staff' 'staffNum') | 'voice' 'voiceNum' )
 \end{rail}
 \index{Synchronization!Guido map}
 \index{Synchronization!Guido map!page}
 \index{Synchronization!Guido map!system}
+\index{Synchronization!Guido map!systemflat}
 \index{Synchronization!Guido map!staff}
 \index{Synchronization!Guido map!voice}
 
 The Guido map name must be concatenated as a string (as a usual map name).
 
 \begin{itemize}
-\item \OSC{page}: a page level mapping ;
-\item \OSC{system}: a system level mapping ;
-\item \OSC{staff}: a staff level mapping ; the staff indicated by the next parameter (between 1 and the score staves count).
-\item \OSC{voice}: a voice level mapping ; the voice indicated by the next parameter (between 1 and the score voices count).
+\item \OSC{page}: a page level mapping
+\item \OSC{system}: a system level mapping
+\item \OSC{systemflat}: a system level mapping without system subdivision (one graphic segment per system)
+\item \OSC{staff}: a staff level mapping: the staff indicated by the next parameter (between 1 and the score staves count).
+\item \OSC{voice}: a voice level mapping: the voice indicated by the next parameter (between 1 and the score voices count).
 \end{itemize}
 
 
@@ -1583,6 +1609,52 @@ Note: the system doesn't check for the consistency of the variables placement.
 %===============================
 %:Changes list
 \toplevel{ Changes list}
+
+%===============================
+%:   Differences to version 0.80
+\sublevel{Differences to version 0.80}
+\begin{itemize}
+\item behavior change with synchronization without stretch: now the system looks also in the
+  slave map for a segment corresponding to the master date.
+\item \OSC{\$date} variable change: the value is now (0,0) when no date is available and \OSC{\$date} is time shifted according to the object date.
+\item \OSC{date} message change: the date 0 0 is ignored
+\end{itemize}
+
+
+%===============================
+%:   Differences to version 0.79
+\sublevel{Differences to version 0.79}
+\begin{itemize}
+\item corrects the map not saved by the \OSC{save} message issue
+\item corrects \OSC{get map} output: 2D segments were not correctly converted to string
+\end{itemize}
+
+%===============================
+%:   Differences to version 0.78
+\sublevel{Differences to version 0.78}
+\begin{itemize}
+\item crash bug corrected for the 'save' message addressed to '/ITL'
+\item message policy change: relaxed numeric parameters policy (float are accepted for int and int for float)
+\item bug in \OSC{get watch} for time events corrected (incorrect reply)
+\end{itemize}
+Known issues:
+\begin{itemize}
+\item map not saved by the \OSC{save} message 
+\end{itemize}
+
+%===============================
+%:   Differences to version 0.77
+\sublevel{Differences to version 0.77}
+\begin{itemize}
+\item guido system map extended: supports flat map or subdivided map (see section \fullref{guidomaps}).
+\item new \OSC{shear} and \OSC{rotate} transformations messages (see section \fullref{transform}).
+\item new \OSC{rename} message to change an object name (and thus its OSC address) (see section \fullref{common}).
+\item relaxed bool parameter policy: objects accept float values for bool parameters 
+\item automatic numbering of exports when destination file is not completely specified 
+  i.e. no name, no extension. (see section \fullref{common}).
+\item quantification introduced to \$date variable (see section \fullref{interactvar}).
+\item \OSC{reset} message addressed to a scene clears the scene rootPath
+\end{itemize}
 
 %===============================
 %:   Differences to version 0.76

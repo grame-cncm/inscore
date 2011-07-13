@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>4.3 The 'effect' messages</TITLE>
-<META NAME="description" CONTENT="4.3 The 'effect' messages">
+<TITLE>4.2.2 Relative color messages</TITLE>
+<META NAME="description" CONTENT="4.2.2 Relative color messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,95 +19,84 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node18.html">
-<LINK REL="previous" HREF="node11.html">
-<LINK REL="up" HREF="node6.html">
+<LINK REL="previous" HREF="node13.html">
+<LINK REL="up" HREF="node12.html">
 <LINK REL="next" HREF="node15.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html345"
+<A NAME="tex2html357"
   HREF="node15.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html339"
-  HREF="node6.html">
+<A NAME="tex2html351"
+  HREF="node12.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html333"
+<A NAME="tex2html347"
   HREF="node13.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html341"
+<A NAME="tex2html353"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html343"
-  HREF="node64.html">
+<A NAME="tex2html355"
+  HREF="node69.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html346"
-  HREF="node15.html">4.3.1 The blur effect</A>
-<B> Up:</B> <A NAME="tex2html340"
-  HREF="node6.html">4. Common components messages</A>
-<B> Previous:</B> <A NAME="tex2html334"
-  HREF="node13.html">4.2.2 Relative color messages</A>
- &nbsp; <B>  <A NAME="tex2html342"
+<B> Next:</B> <A NAME="tex2html358"
+  HREF="node15.html">4.3 The 'effect' messages</A>
+<B> Up:</B> <A NAME="tex2html352"
+  HREF="node12.html">4.2 Color messages</A>
+<B> Previous:</B> <A NAME="tex2html348"
+  HREF="node13.html">4.2.1 Absolute color messages</A>
+ &nbsp; <B>  <A NAME="tex2html354"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html344"
-  HREF="node64.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html356"
+  HREF="node69.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION00530000000000000000"></A>
-<A NAME="effectmsg"></A>
+<H2><A NAME="SECTION00522000000000000000"></A>
+<A NAME="relcolormsg"></A>
 <BR>
-4.3 The 'effect' messages
-</H1>
-
-<P>
-The <TT>effect</TT> message sets a graphic effect on the target object. These messages are experimental and could be changed or removed in a future version.
+4.2.2 Relative color messages
+</H2>
 
 <P>
 <BR>
 <IMG
- WIDTH="456" HEIGHT="165" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="298" HEIGHT="356" ALIGN="BOTTOM" BORDER="0"
  SRC="img23.gif"
  ALT="\begin{rail}
-effectMsg : 'effect' ( 'none'
-\vert ('blur'
-\vert 'colorize'
-\vert 'shadow') (\vert params))
+relColorMsg :
+('dcolor' color)
+\vert ('dhsb' hsb)
+\vert ('dre...
+...ation' int32)
+\vert ('dbrightness' int32)
+\vert ('dalpha' int32)
 \end{rail}">
 <BR>
+<A NAME="333"></A>
+<A NAME="334"></A>
+<A NAME="335"></A>
+<A NAME="336"></A>
+<A NAME="337"></A>
+<A NAME="338"></A>
+<A NAME="339"></A>
+<A NAME="340"></A>
 <A NAME="341"></A>
-<A NAME="342"></A>
-<A NAME="343"></A>
 
 <P>
 
 <UL>
-<LI><TT>none</TT>: removes any effect set on the target object.
+<LI><TT>dred</TT>,<TT>dgreen</TT>, etc. messages are similar to <TT>red</TT>,<TT>green</TT>, etc. messages but the parameters values represent a displacement of the current target value.
 </LI>
-<LI><TT>blur, colorize, shadow</TT>: sets the corresponding effect. An effect always replaces any previous effect. The effect name is followed by optional specific effects parameters.
+<LI><TT>dcolor</TT> and <TT>dhsb</TT> are similar and each color parameter represents a displacement of the corresponding target value.
 </LI>
 </UL>
 
 <P>
-Note that an effect affects the target object but also all the target slaves.
-
-<P>
-<BR><HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
-
-<UL>
-<LI><A NAME="tex2html347"
-  HREF="node15.html">4.3.1 The blur effect</A>
-<LI><A NAME="tex2html348"
-  HREF="node16.html">4.3.2 The colorize effect</A>
-<LI><A NAME="tex2html349"
-  HREF="node17.html">4.3.3 The shadow effect</A>
-</UL>
-<!--End of Table of Child-Links-->
 <BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]

@@ -49,6 +49,9 @@ class IShapeMap: public IShape
 		typedef SMARTP<TLocalMapping<GraphicSegment> >	SLocalMapping;
 		SLocalMapping	fLocalMappings;
 
+		/// \brief get an object maps
+		virtual IMessageList __getMaps () const	{ return TMapMsgHandler<GraphicSegment>::getMapMsgs( localMappings() , this ); }
+
 	public:
 				 IShapeMap( const std::string& name, IObject* parent );
 		virtual ~IShapeMap() {}
@@ -62,10 +65,6 @@ class IShapeMap: public IShape
 		MsgHandler::msgStatus mapMsg (const IMessage* msg );
 		/// \brief the \c 'map+' message handler
 		MsgHandler::msgStatus mapAddMsg (const IMessage* msg );
-		
-		/// \brief Overrides IObject to handle 'get map' msg.
-		IMessageList getMsgs(const IMessage* msg) const	{ return TMapMsgHandler<GraphicSegment>::getMsgs( msg , localMappings() , this ); }
-
 };
 
 /*! @} */

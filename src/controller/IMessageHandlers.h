@@ -116,8 +116,10 @@ template <typename O, typename T> class TSetMethodMsgHandler : public MsgHandler
 		static SMsgHandler create(O* obj, MsgHandlerMethod method)	{ return new TSetMethodMsgHandler<O,T> (obj, method); }
 		virtual msgStatus operator ()(const IMessage* msg)			{ 
 			if ( msg->size() != 1 ) return kBadParameters;
-			T val;
-			if ( !msg->param(0, val) ) return kBadParameters;
+			T val; float fval; int ival;
+			if ( msg->param(0, fval) ) val = T(fval);
+			if ( msg->param(0, ival) ) val = T(ival);
+			else if ( !msg->param(0, val) ) return kBadParameters;
 			(fObject->*fMethod)( val );
 			return kProcessed;
 		}
@@ -311,6 +313,17 @@ class GetParamMsgHandler : public smartable {
 typedef SMARTP<GetParamMsgHandler> SGetParamMsgHandler;
 
 //--------------------------------------------------------------------------
+///!	\brief The base class for handling messages returning a message list.
+//--------------------------------------------------------------------------
+class GetParamMultiMsgHandler : public smartable {
+	public: 
+		virtual ~GetParamMultiMsgHandler() {}
+		/// \brief output a value of an object to a message
+		virtual IMessageList&  print(IMessageList&) const = 0;
+};
+typedef SMARTP<GetParamMultiMsgHandler> SGetParamMultiMsgHandler;
+
+//--------------------------------------------------------------------------
 ///! \brief a get object parameter message handler 
 //--------------------------------------------------------------------------
 template <typename T> class TGetParamMsgHandler : public GetParamMsgHandler {
@@ -331,6 +344,18 @@ template <typename C, typename T> class TGetParamMethodHandler : public GetParam
 	public: 
 		static SGetParamMsgHandler create(C* obj, T method) { return new TGetParamMethodHandler<C,T> (obj, method); }
 		virtual IMessage&  print(IMessage& out) const	{ out << (fObject->*fMethod)(); return out; }
+};
+
+//--------------------------------------------------------------------------
+///! \brief a get object multiple messages parameter method handler 
+//--------------------------------------------------------------------------
+template <typename C, typename T> class TGetParamMultiMethodHandler : public GetParamMultiMsgHandler {
+		C* fObject;
+		T fMethod;
+		TGetParamMultiMethodHandler(C* obj, T method) : fObject(obj), fMethod(method) {}
+	public: 
+		static SGetParamMultiMsgHandler create(C* obj, T method) { return new TGetParamMultiMethodHandler<C,T> (obj, method); }
+		virtual IMessageList&  print(IMessageList& out) const	{ out += (fObject->*fMethod)(); return out; }
 };
 
 /*! @} */

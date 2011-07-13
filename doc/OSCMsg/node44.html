@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>13.1.3 Signals projection.</TITLE>
-<META NAME="description" CONTENT="13.1.3 Signals projection.">
+<TITLE>13.1.2 Composing signals in parallel.</TITLE>
+<META NAME="description" CONTENT="13.1.2 Composing signals in parallel.">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,117 +19,138 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node45.html">
 <LINK REL="previous" HREF="node43.html">
-<LINK REL="up" HREF="node41.html">
+<LINK REL="up" HREF="node42.html">
 <LINK REL="next" HREF="node45.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html773"
+<A NAME="tex2html787"
   HREF="node45.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html767"
-  HREF="node41.html">
+<A NAME="tex2html781"
+  HREF="node42.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html763"
+<A NAME="tex2html775"
   HREF="node43.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html769"
+<A NAME="tex2html783"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html771"
-  HREF="node64.html">
+<A NAME="tex2html785"
+  HREF="node69.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html774"
-  HREF="node45.html">13.2 Graphic signals.</A>
-<B> Up:</B> <A NAME="tex2html768"
-  HREF="node41.html">13.1 The signal virtual</A>
-<B> Previous:</B> <A NAME="tex2html764"
-  HREF="node43.html">13.1.2 Composing signals in</A>
- &nbsp; <B>  <A NAME="tex2html770"
+<B> Next:</B> <A NAME="tex2html788"
+  HREF="node45.html">13.1.3 Signals projection.</A>
+<B> Up:</B> <A NAME="tex2html782"
+  HREF="node42.html">13.1 The signal virtual</A>
+<B> Previous:</B> <A NAME="tex2html776"
+  HREF="node43.html">13.1.1 Simple signals.</A>
+ &nbsp; <B>  <A NAME="tex2html784"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html772"
-  HREF="node64.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html786"
+  HREF="node69.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION001413000000000000000"></A>
-<A NAME="sigproj"></A>
-<BR>
-13.1.3 Signals projection.
+<H2><A NAME="SECTION001412000000000000000">
+13.1.2 Composing signals in parallel.</A>
 </H2>
-Individual components of a parallel signal may be addressed using a <I>projection string</I> which is defined as:
+Composing signals in parallel produces a signal which value at a time <TT>t</TT> is a vector of the composed signals values. Thus an additional property is defined on <I>parallel signals</I> : the signal <I>dimension</I> which is size of the signals values vector. Note that the dimension property holds also for simple signals.
+The format of the messages for parallel signals is the following:
 <BR>
 <IMG
- WIDTH="423" HEIGHT="126" ALIGN="BOTTOM" BORDER="0"
- SRC="img73.gif"
+ WIDTH="454" HEIGHT="203" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.gif"
  ALT="\begin{rail}
-projectionString : '[' int32 (\vert '\~{}' (\vert int32)) ']'
+parallelSignal :
+[1] 'set' ( signal + )
+\vert [2] (\vert projectionString) ( float32 + )
+\vert [3] ('get' 'dimension')
 \end{rail}">
 <BR>
-<A NAME="931"></A>
+<A NAME="917"></A>
+<A NAME="918"></A>
+where 
+<BR>
+<IMG
+ WIDTH="219" HEIGHT="88" ALIGN="BOTTOM" BORDER="0"
+ SRC="img73.gif"
+ ALT="\begin{rail}
+signal :
+[4] identifier
+\vert [5] float32
+\end{rail}">
+<BR>
+<A NAME="921"></A>
 
 <P>
-The projection string is made of a <I>index value</I>, followed by an optional <I>parallel marker</I> (<TT>&#732;</TT>), followed by an optional <I>step value</I>, all enclosed in brackets.
-The <I>index value</I> <TT>n</TT> is the index of a target signal. When the <I>parallel marker</I> option is not present, the values are directed to the target signal and the message is equivalent to:
- <TT>/ITL/scene/signal/target values...</TT> 
-<BR>
-where <TT><I>target</I></TT> is the name of the target signal addressed by <TT>n</TT>. 
-<BR>
-Note that:
 
 <UL>
-<LI>the message is ignored when <TT>n</TT> is greater than the number of signals in parallel. Default <TT>n</TT> value is <TT>0</TT>. 
+<LI><B>[1]</B> defines a new signal composed of the signals list and which address is the message OSC address. A signal list element is defined as:
+
+<P>
+
+<UL>
+<LI><B>[4]</B> an <TT>identifier</TT> i.e. a signal name refering to an existing signal in the <TT>signal</TT> virtual address space. 
 </LI>
-<LI>setting directly the values of a simple signal or as the projection of a parallel signal are equivalent.
+<LI><B>[5]</B> or as a float value. This form is equivalent to an anonymous constant signal holding the given value. 
 </LI>
 </UL>
 
 <P>
-The <I>parallel marker</I> (<TT>&#732;</TT>) and the <I>step value</I> <TT>w</TT> options affect the target signals. Let's consider <TT>s[n]</TT> as the signal at index <TT>n</TT>. The values are distributed in sequence and in loop to the signals <TT>s[n], s[n+w]...s[m]</TT> where <TT>m</TT> is the greatest value of the index <TT>n+(w.i)</TT> that is less than the signal dimension. The default  <I>step value</I> is <TT>1</TT>.
+</LI>
+<LI><B>[2]</B> sets the values of the signals addressed by a projection string. See section <A HREF="node45.html#sigproj">13.1.3</A> p.<A HREF="node45.html#sigproj"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>. 
+</LI>
+<LI><B>[3]</B> in addition to the<TT>get</TT> format above, a parallel signal supports the <TT>get dimension</TT> message, which gives the number of simple signals in parallel. It is actually the sum of each signal dimension. The dimension of a simple signal is 1. 
+</LI>
+</UL>
 
 <P>
-Example: 
-<BR>
-the message: 
-<BR>  <TT>/ITL/scene/signal/target [2&#732;] 0.1 0.2</TT> 
-<BR>
-is equivalent to the following messages: 
-<BR>  <TT>/ITL/scene/signal/target [2] 0.1</TT>
-<BR>  <TT>/ITL/scene/signal/target [3] 0.2</TT>
+Note that for a parallel signal:
+
+<UL>
+<LI>the <TT>get</TT> message gives the list of the signals in parallel with the exact form of the composing message in [1]. 
+</LI>
+<LI>the <TT>get size</TT> message gives the maximum of the components size. 
+</LI>
+<LI>the <TT>get default</TT> message gives the default value of the first signal. 
+</LI>
+</UL>
 
 <P>
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html773"
+<A NAME="tex2html787"
   HREF="node45.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html767"
-  HREF="node41.html">
+<A NAME="tex2html781"
+  HREF="node42.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html763"
+<A NAME="tex2html775"
   HREF="node43.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html769"
+<A NAME="tex2html783"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html771"
-  HREF="node64.html">
+<A NAME="tex2html785"
+  HREF="node69.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html774"
-  HREF="node45.html">13.2 Graphic signals.</A>
-<B> Up:</B> <A NAME="tex2html768"
-  HREF="node41.html">13.1 The signal virtual</A>
-<B> Previous:</B> <A NAME="tex2html764"
-  HREF="node43.html">13.1.2 Composing signals in</A>
- &nbsp; <B>  <A NAME="tex2html770"
+<B> Next:</B> <A NAME="tex2html788"
+  HREF="node45.html">13.1.3 Signals projection.</A>
+<B> Up:</B> <A NAME="tex2html782"
+  HREF="node42.html">13.1 The signal virtual</A>
+<B> Previous:</B> <A NAME="tex2html776"
+  HREF="node43.html">13.1.1 Simple signals.</A>
+ &nbsp; <B>  <A NAME="tex2html784"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html772"
-  HREF="node64.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html786"
+  HREF="node69.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]

@@ -90,18 +90,27 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fMsgHandlerMap["del"]		= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::del);
 	fMsgHandlerMap["effect"]	= TMethodMsgHandler<IObject>::create(this, &IObject::effectMsg);
 	fMsgHandlerMap["export"]	= TMethodMsgHandler<IObject>::create(this, &IObject::exportMsg);
+	fMsgHandlerMap["rename"]	= TMethodMsgHandler<IObject>::create(this, &IObject::renameMsg);
 	fMsgHandlerMap["click"]		= TMethodMsgHandler<IObject,MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::clickMsg);
 	fMsgHandlerMap["select"]	= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::selectMsg);
 	fMsgHandlerMap["save"]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::saveMsg);
 	fMsgHandlerMap["watch"]		= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsg);
 	fMsgHandlerMap["watch+"]	= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsgAdd);
 	
+	fGetMsgHandlerMap["effect"]	= TGetParamMethodHandler<IObject, GraphicEffect (IObject::*)() const>::create(this, &IObject::getEffect);
+//	fGetMsgHandlerMap["watch"]	= TGetParamMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
+
+	fGetMultiMsgHandlerMap["watch"]	= TGetParamMultiMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
+	fGetMultiMsgHandlerMap["map"]	= TGetParamMultiMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getMaps);
+}
+
+
+//--------------------------------------------------------------------------
+void IObject::setHandlers()
+{
 	colorAble();
 	positionAble();
 	timeAble();
-
-	fGetMsgHandlerMap["effect"]	= TGetParamMethodHandler<IObject, GraphicEffect (IObject::*)() const>::create(this, &IObject::getEffect);
-	fGetMsgHandlerMap["watch"]	= TGetParamMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
 }
 
 //--------------------------------------------------------------------------
@@ -152,6 +161,10 @@ void IObject::positionAble()
 	fGetMsgHandlerMap["show"]	= TGetParamMsgHandler<bool>::create(fVisible);
 	fGetMsgHandlerMap["width"]	= TGetParamMsgHandler<float>::create(fWidth);
 	fGetMsgHandlerMap["height"] = TGetParamMsgHandler<float>::create(fHeight);
+	fGetMsgHandlerMap["shear"]	= TGetParamMsgHandler<TFloatSize>::create(fShear);
+	fGetMsgHandlerMap["rotatex"]= TGetParamMsgHandler<float>::create(fXAngle);
+	fGetMsgHandlerMap["rotatey"]= TGetParamMsgHandler<float>::create(fYAngle);
+	fGetMsgHandlerMap["rotatez"]= TGetParamMsgHandler<float>::create(fZAngle);
 
 	fMsgHandlerMap["x"]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setXPos);
 	fMsgHandlerMap["y"]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setYPos);
@@ -160,6 +173,10 @@ void IObject::positionAble()
 	fMsgHandlerMap["z"]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setZOrder);
 	fMsgHandlerMap["angle"]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setAngle);
 	fMsgHandlerMap["scale"]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setScale);
+	fMsgHandlerMap["shear"]		= TSetMethodMsgHandler<IObject,TFloatSize>::create(this, &IObject::setShear);
+	fMsgHandlerMap["rotatex"]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setRotateX);
+	fMsgHandlerMap["rotatey"]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setRotateY);
+	fMsgHandlerMap["rotatez"]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setRotateZ);
 	fMsgHandlerMap["show"]		= TSetMethodMsgHandler<IObject,bool>::create(this, &IObject::setVisible);
 
 	fMsgHandlerMap["dx"]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addXPos);
@@ -287,12 +304,7 @@ bool IObject::match(const std::string& regexp) const
 bool IObject::find(const std::string& expr, subnodes& outlist) const
 {
 	if (!Tools::regexp(expr)) {
-		SIObject elt = exactfind(expr);
-		if (elt) {
-			outlist.push_back(elt);
-			return true;
-		}
-		return false;
+		return exactfind(expr, outlist);
 	}
 	else {
 		unsigned int size = outlist.size();
@@ -317,24 +329,18 @@ bool IObject::find(const std::string& expr, subnodes& outlist) const
 }
 
 //--------------------------------------------------------------------------
-SIObject IObject::exactfind(const std::string& name) const
+bool IObject::exactfind(const std::string& name, subnodes& outlist) const
 {
-#if useiterator
-	subnodes::const_iterator i = elements().begin();
-	while (i!=elements().end()) {
-		if ((!(*i)->getDeleted()) && ((*i)->name() == name))
-			return *i;
-		i++;
-	}
-#else
 	unsigned int n = elements().size();
+	bool ret = false;
 	for (unsigned int i = 0; i < n; i++) {
 		IObject * elt = elements()[i];
-		if ((!elt->getDeleted()) && (elt->name() == name))
-			return elt;
+		if ((!elt->getDeleted()) && (elt->name() == name)) {
+			outlist.push_back(elt);
+			ret = true;
+		}
 	}
-#endif
-	return 0;
+	return ret;
 }
 
 //--------------------------------------------------------------------------
@@ -421,17 +427,44 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 IMessageList IObject::getParams() const
 {
 	IMessageList outMsgs;
+	
 	map<string, SGetParamMsgHandler>::const_iterator i = fGetMsgHandlerMap.begin();
 	while (i != fGetMsgHandlerMap.end()) {
 		const string& what = i->first;
-		if (what == "watch")
-			outMsgs += getWatch();
-		else {
+//		if (what == "watch")
+//			outMsgs += getWatch();
+//		else {
 			const SGetParamMsgHandler& handler = what.size() ? i->second : 0;
-			if (handler)  outMsgs += getParam(i->first, i->second);
-		}
+			if (handler)  {
+				outMsgs += getParam(i->first, i->second);
+			}
+//		}
 		i++;
 	}
+
+	map<string, SGetParamMultiMsgHandler>::const_iterator j = fGetMultiMsgHandlerMap.begin();
+	while (j != fGetMultiMsgHandlerMap.end()) {
+		const string& what = j->first;
+		const SGetParamMultiMsgHandler& handler = what.size() ? j->second : 0;
+		if (handler)  {
+			IMessageList mlist;
+			outMsgs += handler->print(mlist);
+		}
+		j++;
+	}
+/*
+//cout << name() << " map " << endl;
+	if (name() == "page1") {
+		string map = "map";
+		IMessage msg("", "get");
+		msg.add(map);
+		IMessageList mapmsg = getMsgs (&msg);
+		if (mapmsg.size()) {
+			outMsgs += mapmsg;
+//			mapmsg.clear();
+		}
+	}
+*/
 	return outMsgs;
 }
 
@@ -441,18 +474,11 @@ IMessageList IObject::getAllParams() const
 {
 	IMessageList outMsgs = 	getParams();
 	// and distribute the message to subnodes
-#if useiterator
-	for (subnodes::const_iterator i = elements().begin(); i != elements().end(); i++) {
-		if (!(*i)->getDeleted())
-			outMsgs += (*i)->getAllParams();
-	}
-#else
 	for (unsigned int i = 0; i < elements().size(); i++) {
 		nodePtr elt = elements()[i];
 		if (!elt->getDeleted())
 			outMsgs += elt->getAllParams();
 	}
-#endif
 	return outMsgs;
 }
 
@@ -488,15 +514,6 @@ IMessageList IObject::getSetMsg() const
 	// else distributes the message to subnodes
 	else {
 		address += "/";
-#if useiterator
-		for (subnodes::const_iterator i = elements().begin(); i != elements().end(); i++) {
-			nodePtr elt = *i;
-			if (!elt->getDeleted()) {
-				IMessage msg(address + elt->name(), "get");
-				outMsgs += elt->getMsgs(&msg);
-			}
-		}
-#else
 		for (unsigned int i = 0; i < elements().size(); i++) {
 			nodePtr elt = elements()[i];
 			if (!elt->getDeleted()) {
@@ -504,7 +521,6 @@ IMessageList IObject::getSetMsg() const
 				outMsgs += elt->getMsgs(&msg);
 			}
 		}
-#endif
 	}
 	return outMsgs;
 }
@@ -520,24 +536,28 @@ IMessage* IObject::getParam(const string& what, const SGetParamMsgHandler& h) co
 //--------------------------------------------------------------------------
 IMessageList IObject::getMsgs(const IMessage* msg) const
 { 
-	SGetParamMsgHandler handler;
 	IMessageList outMsgs;
-	string what;
+
 	if (msg->params().size() == 0) {
 		outMsgs = getSetMsg();
 	}
 	else for (unsigned int i=0; i<msg->params().size(); i++) {
-		what = msg->params()[i]->value<string>("-");
-		if (what.size()) {
-			handler = getMessageHandler(what);
+		string what;
+		if (msg->param(i, what)) {
+			SGetParamMsgHandler handler = getMessageHandler(what);
+			SGetParamMultiMsgHandler multihandler = getMultiMessageHandler(what);
 			if (handler) {
-				if (what == "watch")
-					outMsgs += getWatch();
-				else {
-					IMessage * msg = getParam(what, handler);
-					if (msg) outMsgs += msg;
+//				if (what == "watch")
+//					outMsgs += getWatch();
+//				else {
+					IMessage * outmsg = getParam(what, handler);
+					if (outmsg) outMsgs += outmsg;
 					else break;
-				}
+//				}
+			}
+			else if (multihandler) {
+				IMessageList mlist;
+				outMsgs += multihandler->print(mlist);
 			}
 			else if (what == "*")
 				outMsgs = getAll();
@@ -546,6 +566,10 @@ IMessageList IObject::getMsgs(const IMessage* msg) const
 	}
 	return outMsgs;
 }
+
+//--------------------------------------------------------------------------
+IMessageList IObject::getMaps() const	{ return __getMaps(); }
+IMessageList IObject::__getMaps() const	{ return IMessageList(); }
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::get(const IMessage* msg) const
@@ -587,11 +611,19 @@ SMsgHandler IObject::messageHandler(const string& msg, bool match) const
 	}
 	return handler;
 }
+
 //--------------------------------------------------------------------------
 SGetParamMsgHandler IObject::getMessageHandler(const std::string& param) const
 {
 	map<string, SGetParamMsgHandler>::const_iterator h = fGetMsgHandlerMap.find(param);
 	return h == fGetMsgHandlerMap.end() ? 0 : h->second;
+}
+
+//--------------------------------------------------------------------------
+SGetParamMultiMsgHandler IObject::getMultiMessageHandler(const std::string& param) const
+{
+	map<string, SGetParamMultiMsgHandler>::const_iterator h = fGetMultiMsgHandlerMap.find(param);
+	return h == fGetMultiMsgHandlerMap.end() ? 0 : h->second;
 }
 
 //--------------------------------------------------------------------------
@@ -640,6 +672,19 @@ GraphicEffect IObject::getEffect ()	const
 IMessageList IObject::getWatch() const
 {
 	return EventsAble::getWatch (getOSCAddress().c_str());
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::renameMsg(const IMessage* msg)
+{ 
+	if (msg->params().size() == 1) {
+		string newname;
+		if (msg->param(0, newname)) {
+			setName (newname);
+			return MsgHandler::kProcessed;
+		}
+	}
+	return MsgHandler::kBadParameters;
 }
 
 //--------------------------------------------------------------------------
@@ -777,7 +822,8 @@ MsgHandler::msgStatus IObject::saveMsg (const IMessage* msg) const
 					mode |= ios_base::app;
 				else return MsgHandler::kBadParameters;
 			}
-			ofstream out (getScene()->absolutePath(destfile).c_str(), mode);
+			string path = getScene() ? getScene()->absolutePath(destfile) : IAppl::absolutePath(destfile);
+			ofstream out (path.c_str(), mode);
 			save (out);
 			return MsgHandler::kProcessedNoChange;
 		}

@@ -129,8 +129,9 @@ class IGraphicSignal : public IShape
 		MsgHandler::msgStatus mapMsg (const IMessage* msg );
 		/// \brief the \c 'map+' message handler
 		MsgHandler::msgStatus mapAddMsg (const IMessage* msg );
-		/// \brief Overrides IObject to handle 'get map' msg.
-		IMessageList getMsgs(const IMessage* msg) const	{ return TMapMsgHandler<FrameSegment>::getMsgs( msg , localMappings() , this ); }
+
+		/// \brief get an object maps
+		virtual IMessageList __getMaps () const	{ return TMapMsgHandler<FrameSegment>::getMapMsgs( localMappings() , this ); }
 
 		///! \brief get the curve type
 //		virtual void setCurveType(const std::string& curveType) { fCurveType = curveType; }

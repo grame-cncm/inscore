@@ -112,6 +112,9 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 
 		/// \brief state query handlers map
 		std::map<std::string, SGetParamMsgHandler>	fGetMsgHandlerMap;
+
+		/// \brief state query handlers map (handlers returning a message list).
+		std::map<std::string, SGetParamMultiMsgHandler>	fGetMultiMsgHandlerMap;
 	
 	public:	
 		/// \brief the possible objects modification states
@@ -132,6 +135,8 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		const	subnodes& elements() const			{ return fSubNodes; }
 		/// \brief returns the object name
 		const	std::string& name() const			{ return fName; }
+		/// \brief sets the object name
+		virtual void setName(const std::string& name)	{ fName = name; }
 		/// \brief returns the \e deleted state object
 		virtual bool	getDeleted() const			{ return fDelete; }
 
@@ -204,9 +209,10 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		/*!
 			\brief find a named node within the subnodes (without recursion)
 			\param name the name of the node to look for
-			\return the node if any
+			\param outlist on output, the found objects list 
+			\return true if at least one nooe matches
 		*/
-		virtual SIObject exactfind(const std::string& name) const;
+		virtual bool exactfind(const std::string& name,  subnodes& outlist) const;
 
 		/*!
 			\brief find children objects by regular expression
@@ -304,9 +310,18 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		*/
 		virtual SGetParamMsgHandler getMessageHandler(const std::string& param) const;
 
+		/*!
+			\brief gives a multiple messages handler for a \c get message
+			\param param the \c get message parameter
+			\return the corresponding handler if any
+		*/
+		virtual SGetParamMultiMsgHandler getMultiMessageHandler(const std::string& param) const;
+
 		/// \brief object \c 'get' message handler.
 		virtual IMessageList getMsgs (const IMessage* msg) const;
-
+		
+		/// \brief sets the message handlers.
+		virtual void setHandlers ();
 		virtual void setdyMsgHandler (); //				{ fMsgHandlerMap["dy"]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYPos); }
 		virtual void setdyMsgHandler (Master* m); //	{ fMsgHandlerMap["dy"]	= TSetMethodMsgHandler<Master,float>::create(this, m, m->setDy); }
 //		virtual void setdyMsgHandler ()				{ fMsgHandlerMap["dy"]	= TSetMsgHandler<float, TDSetOperator>::create(fYPos); }
@@ -321,6 +336,13 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		virtual void colorAble ();				///< \brief set the color message handlers 
 		virtual void positionAble ();			///< \brief set the position message handlers
 		virtual void timeAble ();				///< \brief set the time message handlers
+
+
+		/// \brief get an object maps
+		virtual IMessageList getMaps () const;
+
+		/// \brief get an object maps
+		virtual IMessageList __getMaps () const;
 
 		/// \brief object \c 'get' without parameter form: gives the corresponding 'set' message list
 		virtual IMessageList getSetMsg () const;
@@ -385,6 +407,9 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 
 		/// \brief the \c 'export' message handler
 		virtual MsgHandler::msgStatus exportMsg(const IMessage* msg);
+
+		/// \brief the \c 'rename' message handler
+		virtual MsgHandler::msgStatus renameMsg(const IMessage* msg);
 
 		/// \brief the \c 'watch' message handler
 		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
