@@ -113,5 +113,6 @@ win32:
 
 linux:
 	[ -d $(package) ] || mkdir -p $(package)
+	make common
 	make version=$(version) -f makedeb
 
