@@ -1,7 +1,7 @@
 
 arch	:= $(shell arch)
 debarch := $(shell dpkg --print-architecture)
-dist	:= ubuntu-maverick
+dist	:= ubuntu-natty
 package := INScore-$(version)-$(dist)-$(arch).deb
 viewer	:= INScoreViewer
 lib		:= libINScore.so

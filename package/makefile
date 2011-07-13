@@ -113,7 +113,5 @@ win32:
 
 linux:
 	[ -d $(package) ] || mkdir -p $(package)
-	@echo change mode
-	@chmod 644 $(shell find $(package) -type f)
 	make version=$(version) -f makedeb
 

@@ -1,5 +1,5 @@
 Package: inscore
-Version: 0.7.4
+Version: 0.7.8
 Section: sound
 Priority: optional
 Architecture: amd64
