@@ -32,6 +32,7 @@
 #include "ICurve.h"
 #include "IEllipse.h"
 #include "IFileWatcher.h"
+#include "IFaustProcessor.h"
 #include "IGraphicSignal.h"
 #include "IGuidoCode.h"
 #include "IGuidoFile.h"
