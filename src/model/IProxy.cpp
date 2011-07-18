@@ -32,6 +32,7 @@
 #include "IProxy.h"
 #include "ISignalNode.h"
 #include "ISignal.h"
+#include "IFaustProcessor.h"
 #include "Tools.h"
 
 using namespace std;
@@ -44,7 +45,12 @@ int IProxy::signal (const IMessage* msg, const std::string& objName, SIObject pa
 {
 	if (msg->message() == "get") return MsgHandler::kBadParameters;
 
-	SIObject obj = IObjectFactory::create(objName, ISignal::kSignalType, parent);
+	string objType = msg->params()[0]->value<string>("");
+	SIObject obj;
+	if (objType == IFaustProcessor::kFaustProcessorType)
+		obj = IObjectFactory::create(objName, objType, parent);
+	else
+		obj = IObjectFactory::create(objName, ISignal::kSignalType, parent);
 	if (obj) {
 		int status = obj->execute(msg);
 		if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) parent->add(obj);

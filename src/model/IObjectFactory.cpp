@@ -57,6 +57,11 @@ template<> SIObject _create<ISignal>(const std::string& name , IObject* parent)
 	return ISignal::create(name, parent);
 }
 
+template<> SIObject _create<IFaustProcessor>(const std::string& name , IObject* parent) 
+{
+	return IFaustProcessor::create(name, parent);
+}
+
 template<> SIObject _create<IScene>(const std::string& name , IObject* parent) 
 {
 	SMARTP<IScene> obj = IScene::create(name, parent);
@@ -112,6 +117,9 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 
 	else if ( type == ISignal::kSignalType )
 		obj = _create<ISignal> (name, parent);
+
+	else if ( type == IFaustProcessor::kFaustProcessorType )
+		obj = _create<IFaustProcessor> (name, parent);
 
 	else if ( type == IText::kTextType )
 		obj = _create<IText> (name, parent);
