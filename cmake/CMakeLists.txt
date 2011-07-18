@@ -42,7 +42,7 @@ endif(APPLE)
 #######################################
 # set directories, src and headers.
 set (ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../src)
-set (INSFOLDERS  controller events lib model view mapping interface graph signal ITLParser)
+set (INSFOLDERS  controller events lib model view mapping interface graph signal signal/faust ITLParser)
 set (RSRC  "${ROOT}/../rsrc")
 set (LOCALLIB  "${ROOT}/../lib")
 set (OSC_PATH  "${LOCALLIB}/oscpack")
