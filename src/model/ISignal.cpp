@@ -168,9 +168,9 @@ MsgHandler::msgStatus ISignal::set (const IMessage* msg)
 	int msgsize = msg->size();
 	vector<SParallelSignal> signals;
 	for (int i = 0; i < msgsize; i++) {
-		float err = 99999.9f;
-		float value = msg->params()[i]->value<float>(err);
-		if (value != err) {					// ------------ constant anonymous signal form
+
+		float value;
+		if (msg->param(i, value)) {			// ------------ constant anonymous signal form
 			STSignal c = ConstTSignal::create(value);
 			SParallelSignal p = ParallelSignal::create();
 			if (p && c) *p << c;
@@ -178,17 +178,13 @@ MsgHandler::msgStatus ISignal::set (const IMessage* msg)
 			signals.push_back(p);
 		}
 		else {								// ------------ a named signal
-			string name = msg->params()[i]->value<string>("");
-			if (name.size()) {
+			string name;
+			if ( msg->param(i, name)) {
 				SISignalNode sigs = getSignalNode();
 				subnodes siglist;
 				if (sigs && sigs->find(name, siglist)) {
 					signals.push_back(dynamic_cast<ISignal*>((IObject*)siglist[0]));
 				}
-//				SISignal s = sigs ? sigs->find(name) : 0;
-//				if (s) {
-//					signals.push_back(s);
-//				}
 				else {
 					ITLErr << "parallel signal " << this->name() << ": unknown signal " << name << ITLEndl;
 					return MsgHandler::kBadParameters;
@@ -200,10 +196,6 @@ MsgHandler::msgStatus ISignal::set (const IMessage* msg)
 	clear();		// clear the previous signals list
 	for (unsigned int n=0; n < signals.size(); n++)
 		*this << signals[n];
-
-//	IMessageList tmp = getSetMsg();
-//	cout << tmp;
-//	tmp.clear();
 	return MsgHandler::kProcessed;
 }
 
@@ -255,7 +247,7 @@ MsgHandler::msgStatus ISignal::defaultMsg (const IMessage* msg)
 MsgHandler::msgStatus ISignal::dataMsg (const IMessage* msg)
 {
 	if (!msg->params().size()) return MsgHandler::kBadParameters;
-	return put(msg, 0, 0) ? MsgHandler::kProcessed : MsgHandler::kBadParameters;
+	return put(msg, 0, 1) ? MsgHandler::kProcessed : MsgHandler::kBadParameters;
 }
 
 //--------------------------------------------------------------------------
