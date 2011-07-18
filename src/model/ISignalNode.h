@@ -49,8 +49,6 @@ typedef class SMARTP<ISignalNode>	SISignalNode;
 */
 class ISignalNode : public IVNode
 {	
-	ISync	fSync;
-	
 	public:	
 		static SMARTP<ISignalNode> create(IObject * parent)	{ return new ISignalNode(parent); }
 
@@ -59,7 +57,7 @@ class ISignalNode : public IVNode
 		
 		/// \brief find a name signal in the signals node
 //		virtual SISignal find (std::string node) const;
-		virtual bool find (std::string node, subnodes& outlist) const;
+		virtual bool find (std::string node, subnodes& outlist);
 
 		/*! \brief gives the signal node debug state
 		*/

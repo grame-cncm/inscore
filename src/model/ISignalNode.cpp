@@ -39,7 +39,7 @@ namespace inscore
 //--------------------------------------------------------------------------
 // signals node
 //--------------------------------------------------------------------------
-const string ISignalNode::kName = "signal";
+const string ISignalNode::kName			= "signal";
 
 //--------------------------------------------------------------------------
 ISignalNode::ISignalNode(IObject * parent) : IVNode(kName, parent), fDebug(false)
@@ -63,9 +63,28 @@ void ISignalNode::print (ostream& out) const
 }
 
 //--------------------------------------------------------------------------
-bool ISignalNode::find (std::string node, subnodes& outlist) const
+bool ISignalNode::find (std::string node, subnodes& outlist)
 {
-	return exactfind(node, outlist);
+	size_t n = node.find ('/');
+	if (n == string::npos)
+		return exactfind(node, outlist);
+
+	bool ret = false;
+	string name = node.substr(0, n);
+	int index = atoi (node.substr (n+1, node.size()).c_str());
+	subnodes sigs;
+	if (exactfind(name, sigs)) {
+		for (unsigned int n=0; n<sigs.size(); n++) {
+			ISignal* sig = dynamic_cast<ISignal*>((IObject*)sigs[n]);
+			if (sig  && (index < sig->dimension())) {
+				SISignal s = ISignal::create(node, this);
+				*s << sig->signal(index);
+				outlist.push_back(s);
+				ret = true;
+			}
+		}
+	}
+	return ret;
 }
 
 //--------------------------------------------------------------------------
