@@ -1197,8 +1197,54 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {67}{ interactMsg : (('watch' | 'watch+') ([1] | what ( | oscMsg))) }
+\rail@i {67}{ faustprocessor : 'set' 'faust' "path" }
 \rail@o {67}{
+\rail@index{faustprocessor}
+\rail@begin{1}{faustprocessor}
+\rail@term{set}[]
+\rail@term{faust}[]
+\rail@term{path}[]
+\rail@end
+}
+\rail@i {68}{ faustmessage : signalMsgs | [1] 'msg' float32 | [2] 'get' ('in' | 'out') }
+\rail@o {68}{
+\rail@index{faustmessage}
+\rail@begin{4}{faustmessage}
+\rail@bar
+\rail@nont{signalMsgs}[]
+\rail@nextbar{1}
+\rail@annote[1]
+\rail@term{msg}[]
+\rail@token{float32}[]
+\rail@nextbar{2}
+\rail@annote[2]
+\rail@term{get}[]
+\rail@bar
+\rail@term{in}[]
+\rail@nextbar{3}
+\rail@term{out}[]
+\rail@endbar
+\rail@endbar
+\rail@end
+}
+\rail@i {69}{ signal : identifier ( | "/" n) | float32 }
+\rail@o {69}{
+\rail@index{signal}
+\rail@begin{3}{signal}
+\rail@bar
+\rail@nont{identifier}[]
+\rail@bar
+\rail@nextbar{1}
+\rail@term{/}[]
+\rail@nont{n}[]
+\rail@endbar
+\rail@nextbar{2}
+\rail@token{float32}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {70}{ interactMsg : (('watch' | 'watch+') ([1] | what ( | oscMsg))) }
+\rail@o {70}{
 \rail@index{interactMsg}
 \rail@begin{3}{interactMsg}
 \rail@bar
@@ -1217,8 +1263,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {68}{ oscMsg : (| fullAddress) OSCAddress ( (parameters | variable) + ) }
-\rail@o {68}{
+\rail@i {71}{ oscMsg : (| fullAddress) OSCAddress ( (parameters | variable) + ) }
+\rail@o {71}{
 \rail@index{oscMsg}
 \rail@begin{3}{oscMsg}
 \rail@bar
@@ -1236,8 +1282,8 @@
 \rail@endplus
 \rail@end
 }
-\rail@i {69}{ fullAddress : (IPAddress | hostname) ':' port }
-\rail@o {69}{
+\rail@i {72}{ fullAddress : (IPAddress | hostname) ':' port }
+\rail@o {72}{
 \rail@index{fullAddress}
 \rail@begin{2}{fullAddress}
 \rail@bar
@@ -1249,8 +1295,8 @@
 \rail@nont{port}[]
 \rail@end
 }
-\rail@i {70}{ what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'doubleClick' }
-\rail@o {70}{
+\rail@i {73}{ what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'doubleClick' }
+\rail@o {73}{
 \rail@index{what}
 \rail@begin{6}{what}
 \rail@bar
@@ -1268,8 +1314,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {71}{ what : 'timeEnter' timezone | 'timeLeave' timezone | 'newElement' }
-\rail@o {71}{
+\rail@i {74}{ what : 'timeEnter' timezone | 'timeLeave' timezone | 'newElement' }
+\rail@o {74}{
 \rail@index{what}
 \rail@begin{3}{what}
 \rail@bar
@@ -1283,8 +1329,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {72}{ timezone : int32 int32 int32 int32 }
-\rail@o {72}{
+\rail@i {75}{ timezone : int32 int32 int32 int32 }
+\rail@o {75}{
 \rail@index{timezone}
 \rail@begin{1}{timezone}
 \rail@token{int32}[]
@@ -1293,8 +1339,8 @@
 \rail@token{int32}[]
 \rail@end
 }
-\rail@i {73}{ variable : (xy | 'absx' | 'absy' | 'sx' | 'sy' | date | 'name' | 'address') }
-\rail@o {73}{
+\rail@i {76}{ variable : (xy | 'absx' | 'absy' | 'sx' | 'sy' | date | 'name' | 'address') }
+\rail@o {76}{
 \rail@index{variable}
 \rail@begin{8}{variable}
 \rail@bar
@@ -1316,8 +1362,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {74}{ xy : ('x' | 'y') ( | '[low,high]') }
-\rail@o {74}{
+\rail@i {77}{ xy : ('x' | 'y') ( | '[low,high]') }
+\rail@o {77}{
 \rail@index{xy}
 \rail@begin{2}{xy}
 \rail@bar
@@ -1331,8 +1377,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {75}{ date : 'date' (| ':' mapname) (| '[n/d]') }
-\rail@o {75}{
+\rail@i {78}{ date : 'date' (| ':' mapname) (| '[n/d]') }
+\rail@o {78}{
 \rail@index{date}
 \rail@begin{2}{date}
 \rail@term{date}[]
@@ -1347,8 +1393,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {76}{ msgVar : '(' oscaddress 'get' (| params) ')' }
-\rail@o {76}{
+\rail@i {79}{ msgVar : '(' oscaddress 'get' (| params) ')' }
+\rail@o {79}{
 \rail@index{msgVar}
 \rail@begin{2}{msgVar}
 \rail@term{(}[]

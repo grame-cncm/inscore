@@ -1293,7 +1293,7 @@ creates a constant signal named \OSC{null}, which value is \values{0}.
 
 %-------------------------------
 %:   Composing signals in parallel.
-\subsublevel{Composing signals in parallel.}
+\subsublevel{Composing signals in parallel.}\label{parcomp}
 Composing signals in parallel produces a signal which value at a time \values{t} is a vector of the composed signals values. Thus an additional property is defined on \emph{parallel signals} : the signal \emph{dimension} which is size of the signals values vector. Note that the dimension property holds also for simple signals.
 The format of the messages for parallel signals is the following:
 \begin{rail}
@@ -1321,7 +1321,7 @@ signal :
 \end{itemize}
 
 \item \textbf{[2]} sets the values of the signals addressed by a projection string. See section \fullref{sigproj}. 
-\item \textbf{[3]} in addition to the\OSC{get} format above, a parallel signal supports the \OSC{get dimension} message, which gives the number of simple signals in parallel. It is actually the sum of each signal dimension. The dimension of a simple signal is 1. 
+\item \textbf{[3]} in addition to the \OSC{get} format defined for signals, a parallel signal supports the \OSC{get dimension} message, which gives the number of simple signals in parallel. It is actually the sum of each signal dimension. The dimension of a simple signal is 1. 
 \end{itemize}
 
 Note that for a parallel signal:
@@ -1445,6 +1445,61 @@ n  \  |\ n \in \mathbb{N}\ \land\ 6.(n-1) < d \leqslant 6.n
 where \textit{d} is the dimension of the input signal.
 
 Note than when \textit{d} is not a mutiple of 6, then the last graphic signal makes use of the default values mentionned above.
+
+
+%===============================
+%:FAUST plugins
+\toplevel{FAUST plugins}
+\label{faust}
+
+FAUST [Functional Audio Stream]\footnote{\url{http://faust.grame.fr}} is a functional programming language specifically designed for real-time signal processing and synthesis. A FAUST/INScore architecture allows to embed FAUST processors in INScore, for the purpose of signals computation. A FAUST/INScore plugin is viewed as a parallel signal and thus it is created in the \OSC{signal} address space. Thus and similarly to signals, a FAUST plugin is associated to OSC addresses in the form \OSC{/ITL/\emph{scene}/signal/\emph{name}} where \OSC{\emph{name}} is a user defined name.
+
+\begin{rail}
+faustprocessor : 'set' 'faust' "path"
+\end{rail}
+\index{faustprocessor!set}
+A FAUST processor is created with a \OSC{set} message followed by the \OSC{faust} type, followed by the plugin path name. Thus the \OSC{faust} name is a reserved signal name.
+
+
+%===============================
+%:  Specific meassages
+\sublevel{Specific meassages}
+\label{faustmsg}
+A FAUST processor is characterized by the numbers of input and output channels and by a set of parameters. Each parameter carries a name defined by the FAUST program. The set of messages supported by a FAUST processor is the set of signals messages extended with the parameters names and with specific query messages. 
+
+\begin{rail}
+faustmessage : signalMsgs
+			 | [1] 'msg' float32
+			 | [2] 'get' ('in' | 'out')
+\end{rail}
+\index{faustprocessor!in}
+\index{faustprocessor!out}
+\index{faustprocessor!min}
+\index{faustprocessor!max}
+
+\begin{itemize}
+\item [1] \OSC{\emph{msg}} is any of the FAUST processor parameters, as defined by the FAUST program.
+\item [2] the \OSC{get} message is extended to query the FAUST processor: \OSC{in} and \OSC{out} give the number of input and output channels.
+% \OSC{msgs} gives the list of the processor specific messages under the form of separate messages including the message name followed by its default, minimum and maximum values.
+\end{itemize}
+
+
+%===============================
+%:  Feeding and composing FAUST processors
+\sublevel{Feeding and composing FAUST processors}
+\label{composefaust}
+
+A FAUST processor accepts float values as input, which are taken as interleaved data.
+
+From composition viewpoint, a FAUST processor is a parallel signal which dimension is the number of output channels. 
+Thus, a FAUST processor can be used like any parallel signal. However, the signal identifier defined in \ref{parcomp} is extended to support adressing single components of parallel signal as follows:
+\begin{rail}
+signal :  
+		  identifier ( | "/" n)
+		| float32
+\end{rail}
+where $n$ selects the signal \#n of a parallel signal. Note that indexes start at 0.
+
 
 %===============================
 %:Events and Interaction
