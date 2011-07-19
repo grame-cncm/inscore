@@ -385,13 +385,13 @@ Color messages are absolute or relative color control messages.
 \begin{rail}
 absColorMsg :    color
 			| hsb
-			| 'red' int32
-			| 'green' int32
-			| 'blue' int32
-			| 'alpha' int32
-			| 'hue' int32
-			| 'saturation' int32
-			| 'brightness' int32
+			| 'red' colorvalue
+			| 'green' colorvalue
+			| 'blue' colorvalue
+			| 'alpha' colorvalue
+			| 'hue' colorvalue
+			| 'saturation' colorvalue
+			| 'brightness' colorvalue
 \end{rail}
 \index{Common messages!color}
 \index{Common messages!color!red}
@@ -401,6 +401,12 @@ absColorMsg :    color
 \index{Common messages!color!hue}
 \index{Common messages!color!saturation}
 \index{Common messages!color!brightness}
+where
+\begin{rail}
+colorvalue :    int32 | float32
+\end{rail}
+
+The value of a colors may be specified as integer or float values. When expressed as float, the value range is \values{[-1,1]}. The correspondence between the float and integer ranges is expressed below.
 
 \begin{rail}
 color :		'color' ('r' 'g' 'b' | 'r' 'g' 'b' 'a') 
@@ -412,9 +418,11 @@ hsb :		'hsb' ('h' 's' 'b' | 'h' 's' 'b' 'a')
 \index{Common messages!hsb}
 
 \begin{itemize}
-\item \OSC{color}: sets an object color. The color scheme is RGBA. When A is not specified, the color is assumed to be opaque. The data range for each color component is \values{[0,255]}. Default color value is \values{[0,0,0,255]}.
-\item \OSC{hsb}: similar to \OSC{color} but using an HSBA scheme. When A is not specified, the color is assumed to be opaque. The data range for S, B is \values{[0,100]}, for H \values{[0,360]}, and \values{[0,255]} for A.
-\item \OSC{red},\OSC{green},\OSC{blue}, \OSC{hue},\OSC{saturation},\OSC{brightness},\OSC{alpha} messages address only the specified part of the color.
+\item \OSC{color}: sets an object color. The color scheme is RGBA. When A is not specified, the color is assumed to be opaque. The integer data range for each color component is \values{[0,255]}. The float data range \values{[-1,1]} is linearly mapped to \values{[0,255]}. Default color value is \values{[0,0,0,255]}.
+\item \OSC{hsb}: similar to \OSC{color} but using an HSBA scheme. When A is not specified, the color is assumed to be opaque. The data range for S, B is \values{[0,100]}, \values{[0,360]} for H, and \values{[0,255]} for A. \\
+The float data range \values{[-1,1]} is mapped to \values{[0,100]} for S and B. \\
+For H, \values{0} refers always to the red color and thus \values{[0,1]} is mapped to \values{[0,180]} and \values{[-1,0]} is mapped to \values{[360,180]}.
+\item \OSC{red},\OSC{green},\OSC{blue}, \OSC{hue},\OSC{saturation},\OSC{brightness},\OSC{alpha} messages address only the specified part of the color using the ranges and schemes described above.
 \end{itemize}
 
 %-------------------------------
@@ -426,13 +434,13 @@ hsb :		'hsb' ('h' 's' 'b' | 'h' 's' 'b' 'a')
 relColorMsg :  
 		 	('dcolor' color) 
 		| 	('dhsb' hsb) 
-		| 	('dred' int32) 
-		| 	('dgreen' int32) 
-		| 	('dblue' int32) 
-		| 	('dhue' int32) 
-		| 	('dsaturation' int32) 
-		| 	('dbrightness' int32) 
-		| 	('dalpha' int32) 
+		| 	('dred' colorvalue) 
+		| 	('dgreen' colorvalue) 
+		| 	('dblue' colorvalue) 
+		| 	('dhue' colorvalue) 
+		| 	('dsaturation' colorvalue) 
+		| 	('dbrightness' colorvalue) 
+		| 	('dalpha' colorvalue) 
 \end{rail}
 \index{Position messages!color!dcolor}
 \index{Position messages!color!dhsb}
