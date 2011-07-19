@@ -121,14 +121,12 @@ void IFaustProcessor::print (IMessage& out) const
 void IFaustProcessor::call_compute (int nframes, int index, int step)
 {
 	fCompute(nframes, fInBuffers, fOutBuffers);
-	vector<float> values;
-	int chan = 0, frame = -1;
 
-	for (int i= 0; i < fNumOutputs; i++) {
-		int c = chan % fNumOutputs;
-		if (!c) frame++;
-		values.push_back(fOutBuffers[c][frame]);
-		chan++;
+	vector<float> values;
+	for (int i= 0; i < nframes; i++) {
+		for (int j=0; j< fNumOutputs; j++) {
+			values.push_back(fOutBuffers[j][i]);
+		}
 	}
 	SParallelSignal s = getProjection(index, step);
 	if (!s) return;
@@ -147,32 +145,68 @@ bool IFaustProcessor::put (const IMessage* msg, int index, int step)
 		return true;
 	}
 
-	int chan = 0, frame = 0;
 	for (int i=0; i < size; i++) {
-		int c = chan % fNumIntputs;
+		int c = i % fNumIntputs;
+		int frame = i / fNumIntputs;
 		if (!msg->param(i, fInBuffers[c][frame])) return false;
-		if (!c) frame++;
-		chan++;
 	}
-	while (chan % fNumIntputs) {
-		fInBuffers[chan % fNumIntputs] = 0;
-		chan++;
-	}
-	call_compute (frame, index, step);
+	call_compute (size/fNumIntputs, index, step);
 	return true;
+}
+
+//--------------------------------------------------------------------------
+/*
+There are potential conflicts between the Faust UI objects naming scheme and 
+the OSC address space. An OSC symbolic names is an ASCII string consisting of
+printable characters other than the following:
+	space 
+#	number sign
+*	asterisk
+,	comma
+/	forward
+?	question mark
+[	open bracket
+]	close bracket
+{	open curly brace
+}	close curly brace
+
+a simple solution to address the problem consists in replacing 
+space or tabulation with '_' (underscore)
+all the other osc excluded characters with '-' (hyphen)
+*/
+const char* IFaustProcessor::translate (const char* name) const
+{
+	static char buffer[1024];
+	char * ptr = buffer; int n=1;
+	while (*name && (n++ < 1024)) {
+		switch (*name) {
+			case ' ': case '	':
+				*ptr++ = '_';
+				break;
+			case '#': case '*': case ',': case '/': case '?':
+			case '[': case ']': case '{': case '}':
+				*ptr++ = '_';
+				break;
+			default: 
+				*ptr++ = *name;
+		}
+		name++;
+	}
+	*ptr = 0;
+	return buffer;
 }
 
 //--------------------------------------------------------------------------
 void IFaustProcessor::addMsgHandler (const char* name, float* zone)
 {
-	fMsgHandlerMap[name]	= SetFaustParamMsgHandler::create(zone);
-	fGetMsgHandlerMap[name]	= GetFaustParamMsgHandler::create(zone);
+	fMsgHandlerMap[translate(name)]	= SetFaustParamMsgHandler::create(zone);
+	fGetMsgHandlerMap[translate(name)]	= GetFaustParamMsgHandler::create(zone);
 }
 
 void IFaustProcessor::addMsgHandler (const char* name, float* zone, float min, float max)
 {
-	fMsgHandlerMap[name]	= SetCheckedFaustParamMsgHandler::create(zone, min, max);
-	fGetMsgHandlerMap[name]	= GetFaustParamMsgHandler::create(zone);
+	fMsgHandlerMap[translate(name)]	= SetCheckedFaustParamMsgHandler::create(zone, min, max);
+	fGetMsgHandlerMap[translate(name)]	= GetFaustParamMsgHandler::create(zone);
 }
 
 //--------------------------------------------------------------------------

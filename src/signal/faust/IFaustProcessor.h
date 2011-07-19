@@ -57,8 +57,9 @@ class IFaustProcessor : public ISignal, public TPlugin
 	int		fNumIntputs, fNumOutputs;
 	float ** fInBuffers, **fOutBuffers;
 	
-		void	init();
-		void	call_compute (int nframes, int index, int step);
+		void		init();
+		void		call_compute (int nframes, int index, int step);
+		const char*	translate (const char* name) const;
 
 	public:		
 		static const std::string kFaustProcessorType;
