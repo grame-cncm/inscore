@@ -13,6 +13,10 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 0.82
+- new Faust plugins for signals processing
+- colors management change: all the color models (RGBA and HSBA) accept now
+  float values that are interpreted in the common [-1,1] range. For the
+  hue value, 0 always corresponds to 'red' whatever the scale used.
 
 ----------------------------------------------------
 Version 0.81
