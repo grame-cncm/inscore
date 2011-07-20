@@ -1,0 +1,327 @@
+(*
+  gmn code converted from '/Users/fober/Desktop/Contrapunctus1b.xml'
+  using libmusicxml v.2.0.0
+  and the embedded xml2guido converter v.2.0.0
+*)
+{ [ \staff<1> \instr<"Soprano", dx=-14hs, dy=-5hs> \systemFormat<"", dx=14hs> 
+\barFormat<style="system">
+   (* meas. 1 *)  \key<-1> \meter<"C", autoBarlines="off"> \clef<"g2"> _/1 \bar 
+   (* meas. 2 *)  _ \bar 
+   (* meas. 3 *)  _ \bar 
+   (* meas. 4 *)  _ \bar 
+   (* meas. 5 *)  \stemsUp a/2 \stemsDown d2 \bar 
+   (* meas. 6 *)  c \stemsUp a1 \bar 
+   (* meas. 7 *)  g# a/4 \stemsDown b \bar 
+   (* meas. 8 *)  \tieBegin c2/2 \beam( c/8 \tieEnd d c b&1) \bar 
+   (* meas. 9 *)  \stemsUp \beam( a d) \stemsDown d2/2 c#/4 \bar 
+   (* meas. 10 *)  \beam( d/8 a1) \tieBegin c2/4 \beam( c/8 \tieEnd a1) \tieBegin b&/4 \bar 
+   (* meas. 11 *)  \stemsUp \beam( b&/8 \tieEnd e) \tieBegin a/2. \bar 
+   (* meas. 12 *)  a/8 \tieEnd \stemsDown c2/4 b1/8 \tieBegin c2/2 \bar 
+   (* meas. 13 *)  \stemsUp \beam( c/8 \tieEnd d1) \stemsDown \tieBegin c2/4 \beam( c/8 \tieEnd a1) \tieBegin b/4 \bar 
+   (* meas. 14 *)  b \tieEnd \stemsUp \beam( a/8 g#) a/2 \bar 
+   (* meas. 15 *)  \stemsDown b c2/4 d \bar 
+   (* meas. 16 *)  \stemsUp \beam( g1/8 b&) \tieBegin a/4 \beam( a/8 \tieEnd b& a \tieBegin g) \bar 
+   (* meas. 17 *)  \beam( g \tieEnd e f d) \stemsDown \tieBegin b&/2 \bar 
+   (* meas. 18 *)  \stemsUp \beam( b&/8 \tieEnd g) a/4 \stemsDown \tieBegin d2/2 \bar 
+   (* meas. 19 *)  \beam( d/8 \tieEnd b1) c2/4 \tieBegin f/2 \bar 
+   (* meas. 20 *)  \beam( f/8 \tieEnd d) e/4 \stemsUp a1 \stemsDown \tieBegin d2 \bar 
+   (* meas. 21 *)  \beam( d/8 \tieEnd b1) c2/4 \stemsUp f1 \stemsDown b& \bar 
+   (* meas. 22 *)  \stemsUp a/2 d/4 \tieBegin g \bar 
+   (* meas. 23 *)  \beam( g/8 \tieEnd e f d2) \tieBegin e1/2 \bar 
+   (* meas. 24 *)  \beam( e/8 \tieEnd d) a/2 g/4 \bar 
+   (* meas. 25 *)  a/2 _ \bar 
+   (* meas. 26 *)  _/1 \bar 
+   (* meas. 27 *)  _ \bar 
+   (* meas. 28 *)  _ \bar 
+   (* meas. 29 *)  a/2 \stemsDown e2 \bar 
+   (* meas. 30 *)  c \stemsUp a1 \bar 
+   (* meas. 31 *)  g# a/4 \stemsDown b \bar 
+   (* meas. 32 *)  \tieBegin c2/2 \beam( c/8 \tieEnd d c b&1) \bar 
+   (* meas. 33 *)  \stemsUp a/4 _ _ \tieBegin a \bar 
+   (* meas. 34 *)  \beam( a/8 \tieEnd c2 b&1 a) \beam( b& a g f#) \bar 
+   (* meas. 35 *)  g/4. \stemsDown b&/8 \stemsUp e/4. f#/8 \bar 
+   (* meas. 36 *)  g/4. e/8 c#/4. a/8 \bar 
+   (* meas. 37 *)  d/4. f/8 e/4. \stemsDown c2/8 \bar 
+   (* meas. 38 *)  \stemsUp f1/4. a/8 g/4. \stemsDown e2/8 \bar 
+   (* meas. 39 *)  \stemsUp a1/4. \stemsDown c2/8 b1/4. g2/8 \bar 
+   (* meas. 40 *)  c#/2 d/4 \tieBegin e \bar 
+   (* meas. 41 *)  \beam( e/8 \tieEnd c#) \tieBegin d/4 d/4. \tieEnd e/8 \bar 
+   (* meas. 42 *)  \beam( f e) \tieBegin g/4 \beam( g/8 \tieEnd f e d) \bar 
+   (* meas. 43 *)  \beam( c# a1) \tieBegin d2/4 \beam( d/8 \tieEnd b1) \tieBegin c2/4 \bar 
+   (* meas. 44 *)  c \tieEnd b&1 \stemsUp a _ \bar 
+   (* meas. 45 *)  _/1 \bar 
+   (* meas. 46 *)  _ \bar 
+   (* meas. 47 *)  _ \bar 
+   (* meas. 48 *)  _ \bar 
+   (* meas. 49 *)  \stemsDown e2/2 a \bar 
+   (* meas. 50 *)  f d \bar 
+   (* meas. 51 *)  c# d/4 e \bar 
+   (* meas. 52 *)  \tieBegin f/2 \beam( f/8 \tieEnd g f e) \bar 
+   (* meas. 53 *)  d/4. e/8 c#/4 \beam( d/8 f) \bar 
+   (* meas. 54 *)  \tieBegin b&1/2 \stemsUp \beam( b&/8 \tieEnd b& a g) \bar 
+   (* meas. 55 *)  f/2 \stemsDown b& \bar 
+   (* meas. 56 *)  \stemsUp a/2. \stemsDown \tieBegin e2/4 \bar 
+   (* meas. 57 *)  \beam( e/8 \tieEnd c# d e) \beam( f d) \tieBegin g/4 \bar 
+   (* meas. 58 *)  \beam( g/8 \tieEnd e a g) \beam( f e d c#) \bar 
+   (* meas. 59 *)  \beam( d c b&1 a) \stemsUp \tieBegin g/2 \bar 
+   (* meas. 60 *)  \beam( g/8 \tieEnd e f d) \tieBegin a/2 \bar 
+   (* meas. 61 *)  \beam( a/8 \tieEnd f# g b&) \stemsDown \tieBegin c2/2 \bar 
+   (* meas. 62 *)  \beam( c/8 \tieEnd a1 b& d2) e&/4 d \bar 
+   (* meas. 63 *)  c# \tieBegin a \beam( a/8 \tieEnd d) \tieBegin g/4 \bar 
+   (* meas. 64 *)  \beam( g/8 \tieEnd c#) \tieBegin f/4 \beam( f/8 \tieEnd d) \tieBegin e/4 \bar 
+   (* meas. 65 *)  \beam( e/8 \tieEnd c#) \tieBegin d/4 \beam( d/8 \tieEnd b1) \tieBegin c2/4 \bar 
+   (* meas. 66 *)  c \tieEnd b&1 \stemsUp a/4. a/8 \bar 
+   (* meas. 67 *)  \stemsDown \beam( d2 f e g) \beam( f e) \tieBegin d/4 \bar 
+   (* meas. 68 *)  d/8 \tieEnd f/4 e/8 \beam( f d) \tieBegin e/4 \bar 
+   (* meas. 69 *)  \beam( e/8 \tieEnd d c b1) c2/4. a/8 \bar 
+   (* meas. 70 *)  \beam( g f# g b&) c#/4 _ \bar 
+   (* meas. 71 *)  _/2 d/4 _ \bar 
+   (* meas. 72 *)  _/2 \tieBegin d \bar 
+   (* meas. 73 *)  \tieBegin d \tieEnd \beam( d/8 \tieEnd b1) c#2/4 \bar 
+   (* meas. 74 *)  d/4. c/8 b&1/4. \stemsUp a/8 \bar 
+   (* meas. 75 *)  d/2 _/8 \beam( g a \tieBegin c2) \bar 
+   (* meas. 76 *)  \stemsDown \beam( c \tieEnd b&1 c2 \tieBegin e&) \beam( e& \tieEnd d f# \tieBegin a) \bar 
+   (* meas. 77 *)  \beam( a \tieEnd g/16 a) \beam( b&/8 c#) \tieBegin d/2 \bar 
+   (* meas. 78 *)  \stemsAuto d/1 \tieEnd \bar 
+   (* meas. 79 *)  _ ]
+, [ \staff<2> \instr<"Alto", dx=-8hs, dy=-5hs> \systemFormat<"", dx=8hs> 
+   (* meas. 1 *)  \key<-1> \meter<"C", autoBarlines="off"> \clef<"g2"> \stemsUp d/2 a \bar 
+   (* meas. 2 *)  f d \bar 
+   (* meas. 3 *)  c# d/4 e \bar 
+   (* meas. 4 *)  \tieBegin f/2 \beam( f/8 \tieEnd g f e) \bar 
+   (* meas. 5 *)  d/4 e f g \bar 
+   (* meas. 6 *)  a \beam( a0/8 b) \beam( c1 a0) \tieBegin f1/4 \bar 
+   (* meas. 7 *)  \beam( f/8 \tieEnd b0) \tieBegin e1/4 \beam( e/8 \tieEnd f e d) \bar 
+   (* meas. 8 *)  e/4 f# \tieBegin g/2 \bar 
+   (* meas. 9 *)  g/4 \tieEnd f e/2 \bar 
+   (* meas. 10 *)  d/4. e/8 f/4. d/8 \bar 
+   (* meas. 11 *)  g/4. g/8 \beam( f e d c#) \bar 
+   (* meas. 12 *)  d/4 g/2 c/4 \bar 
+   (* meas. 13 *)  f/4. e/8 f/4. g#0/8 \bar 
+   (* meas. 14 *)  e1/2. \beam( d/8 c) \bar 
+   (* meas. 15 *)  \beam( d f e d) c/4 _ \bar 
+   (* meas. 16 *)  _/1 \bar 
+   (* meas. 17 *)  _ \bar 
+   (* meas. 18 *)  _ \bar 
+   (* meas. 19 *)  _ \bar 
+   (* meas. 20 *)  _ \bar 
+   (* meas. 21 *)  _ \bar 
+   (* meas. 22 *)  _ \bar 
+   (* meas. 23 *)  d/2 a \bar 
+   (* meas. 24 *)  f d \bar 
+   (* meas. 25 *)  c# d/4 e \bar 
+   (* meas. 26 *)  \tieBegin f/2 \beam( f/8 \tieEnd g f e) \bar 
+   (* meas. 27 *)  d/4 \tieBegin g \beam( g/8 \tieEnd e) f/4 \bar 
+   (* meas. 28 *)  e \tieBegin a \beam( a/8 \tieEnd f#) g/4 \bar 
+   (* meas. 29 *)  f#/4. \stemsDown d2/8 \stemsUp g#1/2 \bar 
+   (* meas. 30 *)  a/4 _/8 a0 c1/4 a0 \bar 
+   (* meas. 31 *)  d1 f e d \bar 
+   (* meas. 32 *)  c a/2 d/4 \bar 
+   (* meas. 33 *)  e \tieBegin a \beam( a/8 \tieEnd g f e) \bar 
+   (* meas. 34 *)  \stemsAuto \tieBegin d/1 \bar 
+   (* meas. 35 *)  \stemsUp \beam( d/8 \tieEnd d) \tieBegin g/4 \beam( g/8 \tieEnd g) \tieBegin c/4 \bar 
+   (* meas. 36 *)  \beam( c/8 \tieEnd a0) b&/4 \tieBegin a/2 \bar 
+   (* meas. 37 *)  \beam( a/8 \tieEnd f) g/4 \tieBegin c1/2 \bar 
+   (* meas. 38 *)  \beam( c/8 \tieEnd a0) b/4 \tieBegin e1/2 \bar 
+   (* meas. 39 *)  \beam( e/8 \tieEnd c#) d/4 \tieBegin g/2 \bar 
+   (* meas. 40 *)  \beam( g/8 \tieEnd a) \stemsDown b&/4 \stemsUp \tieBegin a/2 \bar 
+   (* meas. 41 *)  \tieBegin a \tieEnd \beam( a/8 \tieEnd f) g/4 \bar 
+   (* meas. 42 *)  a/4. \stemsDown b&/8 \stemsUp a/4 \tieBegin g \bar 
+   (* meas. 43 *)  g \tieEnd \beam( f/8 d) a/4. g/8 \bar 
+   (* meas. 44 *)  \beam( f# d) \tieBegin g/4 \beam( g/8 \tieEnd e) \tieBegin f/4 \bar 
+   (* meas. 45 *)  \beam( f/8 \tieEnd d) \tieBegin g/4 \beam( g/8 \tieEnd e) \tieBegin a/4 \bar 
+   (* meas. 46 *)  \beam( a/8 \tieEnd f) \stemsDown \tieBegin b&/4 \stemsUp \beam( b&/8 \tieEnd g) \tieBegin a/4 \bar 
+   (* meas. 47 *)  \beam( a/8 \tieEnd f) g/2 \beam( f/8 d) \bar 
+   (* meas. 48 *)  a/2 \stemsDown \tieBegin d2 \bar 
+   (* meas. 49 *)  \beam( d/8 \tieEnd c# b1 c#2) \beam( d a1) \tieBegin e2/4 \bar 
+   (* meas. 50 *)  \beam( e/8 \tieEnd a1) d2/4 _/8 \stemsUp f1 \stemsDown \tieBegin b&/4 \bar 
+   (* meas. 51 *)  \stemsUp \beam( b&/8 \tieEnd e) \tieBegin a/4 \beam( a/8 \tieEnd g f e) \bar 
+   (* meas. 52 *)  \beam( d a d2 b1) \beam( g e) \stemsDown \tieBegin c2/4 \bar 
+   (* meas. 53 *)  c \tieEnd b&1 \stemsUp a/2 \bar 
+   (* meas. 54 *)  g/4. f/8 \tieBegin e/2 \bar 
+   (* meas. 55 *)  e/4 \tieEnd \beam( d/8 c#) d/4 \tieBegin g \bar 
+   (* meas. 56 *)  g/4. \tieEnd f/8 e/4. e/8 \bar 
+   (* meas. 57 *)  a/2. \beam( g/8 b&) \bar 
+   (* meas. 58 *)  \tieBegin a/2 \beam( a/8 \tieEnd g f e) \bar 
+   (* meas. 59 *)  d/2. e/4 \bar 
+   (* meas. 60 *)  a0 _ _ e&1 \bar 
+   (* meas. 61 *)  d/2. f#/4 \bar 
+   (* meas. 62 *)  \beam( g/8 f#) g/4 _ \stemsDown \tieBegin b& \bar 
+   (* meas. 63 *)  \beam( b&/8 \tieEnd a f2 d) b1/4 \beam( e2/8 c#) \bar 
+   (* meas. 64 *)  \stemsUp a1/4 \stemsDown \beam( d2/8 a1) b&/4. \stemsUp g/8 \bar 
+   (* meas. 65 *)  a/4. f/8 e/4. g/8 \bar 
+   (* meas. 66 *)  \beam( f# d) \tieBegin g/4 \beam( g/8 \tieEnd e) \tieBegin f/4 \bar 
+   (* meas. 67 *)  \beam( f/8 \tieEnd d2) \stemsDown \tieBegin c/4 c/4. \tieEnd c/8 \bar 
+   (* meas. 68 *)  \stemsUp \beam( b&1 a) g#/4 a/4. g/8 \bar 
+   (* meas. 69 *)  a/4 \tieBegin g g/4. \tieEnd \stemsDown c2/8 \bar 
+   (* meas. 70 *)  \stemsUp a1/4 g/2 _/4 \bar 
+   (* meas. 71 *)  _/2 a/4 _ \bar 
+   (* meas. 72 *)  _/2 \stemsDown b \bar 
+   (* meas. 73 *)  \stemsUp \tieBegin a/2. \beam( a/8 \tieEnd g) \bar 
+   (* meas. 74 *)  \beam( f# g) \tieBegin a/4 \beam( a/8 \tieEnd g) \stemsDown \tieBegin c2/4 \bar 
+   (* meas. 75 *)  \stemsUp \beam( c/8 \tieEnd f#1 g b&) e&/2 \bar 
+   (* meas. 76 *)  d/4 a0 b& c1 \bar 
+   (* meas. 77 *)  d \tieBegin g0 \beam( g/8 \tieEnd b&1 a \tieBegin g) \bar 
+   (* meas. 78 *)  \beam( g \tieEnd f# e g) f#/2 \bar 
+   (* meas. 79 *)  _/1 ]
+, [ \staff<3> \instr<"Tenor", dx=-10hs, dy=-5hs> \systemFormat<"", dx=10hs> 
+   (* meas. 1 *)  \key<-1> \meter<"C", autoBarlines="off"> \clef<"c3"> _/1 \bar 
+   (* meas. 2 *)  _ \bar 
+   (* meas. 3 *)  _ \bar 
+   (* meas. 4 *)  _ \bar 
+   (* meas. 5 *)  _ \bar 
+   (* meas. 6 *)  _ \bar 
+   (* meas. 7 *)  _ \bar 
+   (* meas. 8 *)  _ \bar 
+   (* meas. 9 *)  _ \bar 
+   (* meas. 10 *)  _ \bar 
+   (* meas. 11 *)  _ \bar 
+   (* meas. 12 *)  _ \bar 
+   (* meas. 13 *)  \stemsUp a0/2 \stemsDown d1 \bar 
+   (* meas. 14 *)  c \stemsUp a0 \bar 
+   (* meas. 15 *)  g# a/4 b \bar 
+   (* meas. 16 *)  \stemsDown \tieBegin c1/2 \beam( c/8 \tieEnd d c b&0) \bar 
+   (* meas. 17 *)  \stemsUp \tieBegin a/2 \beam( a/8 \tieEnd f) g/4 \bar 
+   (* meas. 18 *)  \stemsDown \tieBegin c1/2 \stemsUp \beam( c/8 \tieEnd a0) b/4 \bar 
+   (* meas. 19 *)  \stemsDown \tieBegin e1/2 \beam( e/8 \tieEnd c#) d/4 \bar 
+   (* meas. 20 *)  \tieBegin g/2 \beam( g/8 \tieEnd e) f/4 \bar 
+   (* meas. 21 *)  e/4. a/8 d/4. e/8 \bar 
+   (* meas. 22 *)  c#/4 \stemsUp \beam( d/8 a0) b/4. \stemsDown c#1/8 \bar 
+   (* meas. 23 *)  d/4 \stemsUp \tieBegin a0/2. \bar 
+   (* meas. 24 *)  a/2 \tieEnd b& \bar 
+   (* meas. 25 *)  _/8 e \tieBegin a/4 \beam( a/8 \tieEnd b& a g) \bar 
+   (* meas. 26 *)  a/4 b \stemsDown \tieBegin c1/2 \bar 
+   (* meas. 27 *)  \stemsUp \beam( c/8 \tieEnd a0) b&/4 a \stemsDown \tieBegin d1 \bar 
+   (* meas. 28 *)  \beam( d/8 \tieEnd b0) d1/4 \stemsUp b0 \stemsDown \tieBegin e1 \bar 
+   (* meas. 29 *)  \beam( e/8 \tieEnd a0) \tieBegin d1/4 \beam( d/8 \tieEnd d c b0) \bar 
+   (* meas. 30 *)  \beam( c1 d) \tieBegin e/4 \beam( e/8 \tieEnd e d c) \bar 
+   (* meas. 31 *)  \stemsUp b0/2 \stemsDown c1/4 \stemsUp g#0 \bar 
+   (* meas. 32 *)  \beam( a/8 g f# e) f/4 \tieBegin g \bar 
+   (* meas. 33 *)  \beam( g/8 \tieEnd g f e) \beam( f e d c) \bar 
+   (* meas. 34 *)  d/4 _ _/2 \bar 
+   (* meas. 35 *)  _/1 \bar 
+   (* meas. 36 *)  _ \bar 
+   (* meas. 37 *)  _ \bar 
+   (* meas. 38 *)  _ \bar 
+   (* meas. 39 *)  _ \bar 
+   (* meas. 40 *)  e/2 a \bar 
+   (* meas. 41 *)  f d \bar 
+   (* meas. 42 *)  c# d/4 e \bar 
+   (* meas. 43 *)  \tieBegin f/2 \beam( f/8 \tieEnd g f e) \bar 
+   (* meas. 44 *)  d/2. \beam( a/8 f) \bar 
+   (* meas. 45 *)  b&/4. g/8 \stemsDown c1/4. \stemsUp a0/8 \bar 
+   (* meas. 46 *)  \stemsDown d1/4 \stemsUp g0 \stemsDown c1 \stemsUp f0 \bar 
+   (* meas. 47 *)  b& e a/2 \bar 
+   (* meas. 48 *)  e/4 \tieBegin a \beam( a/8 \tieEnd g# f# g) \bar 
+   (* meas. 49 *)  a/4. g/8 \beam( f e d c#) \bar 
+   (* meas. 50 *)  d/4 \beam( f/8 d) b&/4 \beam( g/8 e) \bar 
+   (* meas. 51 *)  a/4. \stemsDown f1/8 \stemsUp b0/4 \stemsDown c#1 \bar 
+   (* meas. 52 *)  d \stemsUp \beam( b0/8 g) \stemsDown c1/4 \stemsUp \beam( a0/8 f) \bar 
+   (* meas. 53 *)  \stemsDown \beam( b& d1) \tieBegin g/4 \beam( g/8 \tieEnd e) \tieBegin f/4 \bar 
+   (* meas. 54 *)  \beam( f/8 \tieEnd f e d) c#/2 \bar 
+   (* meas. 55 *)  \stemsUp \beam( d/8 c b&0 a) \beam( g a b& c1) \bar 
+   (* meas. 56 *)  \beam( d a0) \stemsDown \tieBegin d1/4 \beam( d/8 \tieEnd b0) \tieBegin c#1/4 \bar 
+   (* meas. 57 *)  \beam( c#/8 \tieEnd e a0 c#1) d/4 \stemsUp \beam( b&0/8 g) \bar 
+   (* meas. 58 *)  e/2 f/4 g \bar 
+   (* meas. 59 *)  a/2 b/4 \stemsDown c#1 \bar 
+   (* meas. 60 *)  d _ _ \stemsUp f#0 \bar 
+   (* meas. 61 *)  \beam( g/8 a) b&/4 _ \stemsDown c1 \bar 
+   (* meas. 62 *)  d/2 _/8 \stemsUp g0/4 \tieBegin f/8 \bar 
+   (* meas. 63 *)  { e/4, f \tieEnd } _ _/2 \bar 
+   (* meas. 64 *)  _/4 \beam( f/8 d) g/4. c#/8 \bar 
+   (* meas. 65 *)  f/4. d/8 a/2 \bar 
+   (* meas. 66 *)  d/4 \stemsDown d1/2 \stemsUp \beam( a0/8 f) \bar 
+   (* meas. 67 *)  \tieBegin b&/2 \beam( b&/8 \tieEnd g#) a/4 \bar 
+   (* meas. 68 *)  \stemsDown \tieBegin d1/2 \beam( d/8 \tieEnd b0) c1/4 \bar 
+   (* meas. 69 *)  \tieBegin f/2 \beam( f/8 \tieEnd d) e&/4 \bar 
+   (* meas. 70 *)  d/2 e/4 _ \bar 
+   (* meas. 71 *)  _/2 f/4 _ \bar 
+   (* meas. 72 *)  _/2 \tieBegin f \bar 
+   (* meas. 73 *)  f/4 \tieEnd \beam( e/8 d) e/4 _ \bar 
+   (* meas. 74 *)  \stemsUp a0/2 \stemsDown d1 \bar 
+   (* meas. 75 *)  \stemsUp b&0 \tieBegin g \bar 
+   (* meas. 76 *)  { f#, g \tieEnd } g/4 a \bar 
+   (* meas. 77 *)  \tieBegin b&/2 \beam( b&/8 \tieEnd d1 c b&0) \bar 
+   (* meas. 78 *)  \stemsAuto a/1 \bar 
+   (* meas. 79 *)  _ ]
+, [ \staff<4> \instr<"Basse", dx=-10hs, dy=-5hs> \systemFormat<"", dx=10hs> 
+   (* meas. 1 *)  \key<-1> \meter<"C", autoBarlines="off"> \clef<"f4"> _/1 \bar 
+   (* meas. 2 *)  _ \bar 
+   (* meas. 3 *)  _ \bar 
+   (* meas. 4 *)  _ \bar 
+   (* meas. 5 *)  _ \bar 
+   (* meas. 6 *)  _ \bar 
+   (* meas. 7 *)  _ \bar 
+   (* meas. 8 *)  _ \bar 
+   (* meas. 9 *)  \stemsDown d0/2 a \bar 
+   (* meas. 10 *)  f d \bar 
+   (* meas. 11 *)  \stemsUp c# \stemsDown d/4 e \bar 
+   (* meas. 12 *)  \tieBegin f/2 \beam( f/8 \tieEnd g f e) \bar 
+   (* meas. 13 *)  d/2 _ \bar 
+   (* meas. 14 *)  _/4 \stemsUp \beam( a-1/8 b) \beam( c0 a-1) \stemsDown \tieBegin f0/4 \bar 
+   (* meas. 15 *)  \beam( f/8 \tieEnd b-1) \tieBegin e0/4 \beam( e/8 \tieEnd f e d) \bar 
+   (* meas. 16 *)  \beam( e g f# a) g/2 \bar 
+   (* meas. 17 *)  d/2. \beam( e/8 d) \bar 
+   (* meas. 18 *)  e/4 \beam( f/8 e) f#/4 \beam( g/8 f#) \bar 
+   (* meas. 19 *)  g#/4 \beam( a/8 g#) a/4 \beam( b&/8 a) \bar 
+   (* meas. 20 *)  b/4 \beam( c1/8 b0) c#1/4 \beam( d/8 g#0) \bar 
+   (* meas. 21 *)  \tieBegin a/2 \beam( a/8 \tieEnd f) \tieBegin g/4 \bar 
+   (* meas. 22 *)  \beam( g/8 \tieEnd e) \tieBegin f/4 \beam( f/8 \tieEnd d) e/4 \bar 
+   (* meas. 23 *)  \tieBegin d/2 \stemsUp \beam( d/8 \tieEnd b-1) c#0/4 \bar 
+   (* meas. 24 *)  \stemsDown d/4. \stemsUp c/8 b&-1/2 \bar 
+   (* meas. 25 *)  a/4. g/8 \beam( f g f e) \bar 
+   (* meas. 26 *)  \beam( d f e d) a/4. f/8 \bar 
+   (* meas. 27 *)  b&/4. g/8 \stemsDown d0/4. f/8 \bar 
+   (* meas. 28 *)  a/4. \stemsUp a-1/8 e/4 _ \bar 
+   (* meas. 29 *)  _/2 \stemsDown e0 \bar 
+   (* meas. 30 *)  a \tieBegin f \bar 
+   (* meas. 31 *)  \beam( f/8 \tieEnd f e d) \stemsUp \beam( c d c b-1) \bar 
+   (* meas. 32 *)  a/2 \stemsDown d0 \bar 
+   (* meas. 33 *)  \stemsUp c# a-1 \bar 
+   (* meas. 34 *)  f# g/4 a \bar 
+   (* meas. 35 *)  \tieBegin b&/2 \beam( b&/8 \tieEnd c0 b&-1 a) \bar 
+   (* meas. 36 *)  \tieBegin g/2 \beam( g/8 \tieEnd e) f/4 \bar 
+   (* meas. 37 *)  \tieBegin b&/2 \beam( b&/8 \tieEnd g) a/4 \bar 
+   (* meas. 38 *)  \stemsDown \tieBegin d0/2 \stemsUp \beam( d/8 \tieEnd b-1) c0/4 \bar 
+   (* meas. 39 *)  \stemsDown \tieBegin f/2 \beam( f/8 \tieEnd d) e/4 \bar 
+   (* meas. 40 *)  \stemsUp a-1/4. \stemsDown g0/8 \beam( f e d c#) \bar 
+   (* meas. 41 *)  d/4. \stemsUp f-1/8 b&/2 \bar 
+   (* meas. 42 *)  \stemsAuto \tieBegin a/1 \bar 
+   (* meas. 43 *)  \stemsUp a/4. \tieEnd b&/8 \beam( a g) a/4 \bar 
+   (* meas. 44 *)  b&/4. g/8 \stemsDown \tieBegin d0/2 \bar 
+   (* meas. 45 *)  d/4 \tieEnd e/2 \tieBegin f/4 \bar 
+   (* meas. 46 *)  f/4. \tieEnd d/8 e/4. \stemsUp c#/8 \bar 
+   (* meas. 47 *)  \stemsDown d/4. \stemsUp b-1/8 \beam( c#0 a-1) \stemsDown \tieBegin d0/4 \bar 
+   (* meas. 48 *)  \stemsUp \beam( d/8 \tieEnd c b-1 a) b/2 \bar 
+   (* meas. 49 *)  a/4 _ _/2 \bar 
+   (* meas. 50 *)  _/1 \bar 
+   (* meas. 51 *)  _ \bar 
+   (* meas. 52 *)  _ \bar 
+   (* meas. 53 *)  _ \bar 
+   (* meas. 54 *)  _ \bar 
+   (* meas. 55 *)  _ \bar 
+   (* meas. 56 *)  \stemsDown d0/2 a \bar 
+   (* meas. 57 *)  f d \bar 
+   (* meas. 58 *)  \stemsUp c# \stemsDown d/4 e \bar 
+   (* meas. 59 *)  \tieBegin f/2 \beam( f/8 \tieEnd g f e) \bar 
+   (* meas. 60 *)  \tieBegin d/2 \beam( d/8 \tieEnd e& d c) \bar 
+   (* meas. 61 *)  \stemsUp \tieBegin b&-1/2 \beam( b&/8 \tieEnd c0 b&-1 a) \bar 
+   (* meas. 62 *)  g/2. g/4 \bar 
+   (* meas. 63 *)  \stemsAuto \tieBegin a/1 \bar 
+   (* meas. 64 *)  \tieBegin a \tieEnd \bar 
+   (* meas. 65 *)  \stemsUp a/2. \tieEnd a/4 \bar 
+   (* meas. 66 *)  b&/4. g/8 \stemsDown \tieBegin d0/2 \bar 
+   (* meas. 67 *)  \stemsUp \beam( d/8 \tieEnd b&-1) c0/4 \stemsDown \tieBegin f/2 \bar 
+   (* meas. 68 *)  \beam( f/8 \tieEnd d) e/4 \tieBegin a/2 \bar 
+   (* meas. 69 *)  \beam( a/8 \tieEnd f) g/4 \tieBegin c1/2 \bar 
+   (* meas. 70 *)  \beam( c/8 \tieEnd a0) b&/2 _/4 \bar 
+   (* meas. 71 *)  _/2 a/4 _ \bar 
+   (* meas. 72 *)  _/2 g# \bar 
+   (* meas. 73 *)  a/2. \stemsUp a-1/4 \bar 
+   (* meas. 74 *)  \stemsAuto \tieBegin d0/1 \bar 
+   (* meas. 75 *)  \tieBegin d \tieEnd \bar 
+   (* meas. 76 *)  \tieBegin d \tieEnd \bar 
+   (* meas. 77 *)  \tieBegin d \tieEnd \bar 
+   (* meas. 78 *)  d \tieEnd \bar 
+   (* meas. 79 *)  _ ]
+ }
