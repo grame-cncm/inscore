@@ -47,6 +47,9 @@ using namespace std;
 #define kUPDPort		7000
 #define kTimeInterval	10			// time task interval in milliseconds
 
+static const char* kPortOption = "--port";
+
+
 //_______________________________________________________________________
 static int intopt (const string& opt, int defaultValue, int n, char **argv)
 {
@@ -125,7 +128,7 @@ int main( int argc, char **argv )
 #endif
 
 	int ret = 1;
-	int udpPort = intopt ("--port", kUPDPort, argc, argv);
+	int udpPort = intopt (kPortOption, kUPDPort, argc, argv);
 	INScoreAppl appl(argc, argv);
 	appl.setApplicationName("INScoreViewer");
 	QDir dir(QApplication::applicationDirPath());
@@ -142,6 +145,14 @@ int main( int argc, char **argv )
 	for (int i = 1; i < appl.arguments().size(); i++) {
 		const QString& arg = appl.arguments().at(i);
 		appl.open (arg.toUtf8().constData());
+	}
+#else
+	for (int i = 1; i < argc; i++) {
+		const string arg = argv[i];
+		if (arg[0] == '-') {
+			if (arg == kPortOption) i++;
+		}	
+		else appl.open (arg);
 	}
 #endif
 
