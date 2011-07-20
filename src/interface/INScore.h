@@ -138,7 +138,7 @@ class export INScore
 	static void add (MessagePtr msg, int n);
 	
 	
-	static int version();					///< gives the library version number
+	static float version();					///< gives the library version number
 	static const char* versionStr();		///< gives the library version number as a string
 };
 
