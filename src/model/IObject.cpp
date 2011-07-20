@@ -705,12 +705,13 @@ MsgHandler::msgStatus IObject::renameMsg(const IMessage* msg)
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
-{ 
+{
 	if (msg->params().size() == 1) {
 		const std::string err = "";
 		std::string fileName = msg->params()[0]->value<std::string>(err);
 		if ( (fileName != err) && (fileName.length()) ) {
-			std::string absolutePath = getScene()->absolutePath(fileName);
+			SIScene scene = getScene();
+			std::string absolutePath = scene ? scene->absolutePath(fileName) : IAppl::absolutePath(fileName);
 			if ( isDirectory(absolutePath) )	//Argument is a directory: export to "directory/objectName".
 			{
 #ifdef WIN32
