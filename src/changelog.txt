@@ -17,6 +17,9 @@ Version 0.82
 - colors management change: all the color models (RGBA and HSBA) accept now
   float values that are interpreted in the common [-1,1] range. For the
   hue value, 0 always corresponds to 'red' whatever the scale used.
+- stretch adjustment for video objects (corrects gaps in sync h mode)
+- support for opening inscore files on the command line
+- system mapping correction
 
 ----------------------------------------------------
 Version 0.81
