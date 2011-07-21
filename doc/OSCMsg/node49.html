@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>14. Events and Interaction</TITLE>
-<META NAME="description" CONTENT="14. Events and Interaction">
+<TITLE>14. FAUST plugins</TITLE>
+<META NAME="description" CONTENT="14. FAUST plugins">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,7 +19,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node55.html">
+<LINK REL="next" HREF="node52.html">
 <LINK REL="previous" HREF="node41.html">
 <LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node50.html">
@@ -27,89 +27,57 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html853"
+<A NAME="tex2html861"
   HREF="node50.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html847"
+<A NAME="tex2html855"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html841"
+<A NAME="tex2html849"
   HREF="node48.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html849"
+<A NAME="tex2html857"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html851"
-  HREF="node69.html">
+<A NAME="tex2html859"
+  HREF="node72.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html854"
-  HREF="node50.html">14.1 Interaction messages</A>
-<B> Up:</B> <A NAME="tex2html848"
+<B> Next:</B> <A NAME="tex2html862"
+  HREF="node50.html">14.1 Specific meassages</A>
+<B> Up:</B> <A NAME="tex2html856"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html842"
+<B> Previous:</B> <A NAME="tex2html850"
   HREF="node48.html">13.2.2 Parallel graphic signals.</A>
- &nbsp; <B>  <A NAME="tex2html850"
+ &nbsp; <B>  <A NAME="tex2html858"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html852"
-  HREF="node69.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html860"
+  HREF="node72.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION001500000000000000000"></A>
-<A NAME="interaction"></A>
+<A NAME="faust"></A>
 <BR>
-14. Events and Interaction
+14. FAUST plugins
 </H1>
 
 <P>
-Interaction messages are user defined messages associated to events and triggered when these events occur. These messages accept variables as message arguments.
-
-<P>
-The general form of the message is:
+FAUST [Functional Audio Stream]<A NAME="tex2html7"
+  HREF="footnode.html#foot1416"><SUP>14.1</SUP></A> is a functional programming language specifically designed for real-time signal processing and synthesis. A FAUST/INScore architecture allows to embed FAUST processors in INScore, for the purpose of signals computation. A FAUST/INScore plugin is viewed as a parallel signal and thus it is created in the <TT>signal</TT> address space. Thus and similarly to signals, a FAUST plugin is associated to OSC addresses in the form <TT>/ITL/<I>scene</I>/signal/<I>name</I></TT> where <TT><I>name</I></TT> is a user defined name.
 
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
- SRC="img77.gif"
- ALT="\begin{rail}
-interactMsg : (('watch' \vert 'watch+') ([1] \vert what ( \vert oscMsg)))
-\end{rail}">
-<BR>
-<A NAME="1068"></A>
-<A NAME="1069"></A>
-
-<P>
-
-<UL>
-<LI><TT>watch</TT>: clears the messages associated to the event and when specified, associates the new message to the watched event. <TT>watch</TT> without arguments ([1]) clears all the messages associated to all events.
-</LI>
-<LI><TT>watch+</TT>: adds a message to the watched event message list. 
-</LI>
-</UL>
-
-<P>
-The associated OSC message is any valid OSC message (not restricted to the Interlude message set), with an extended address scheme, supporting IP addresses or host names and udp port number to be specified as OSC addresses prefix. The message parameters are any valid OSC type or variables (see section <A HREF="node52.html#interactvar">14.3</A>).
-<BR>
-<IMG
- WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="243" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
  SRC="img78.gif"
  ALT="\begin{rail}
-oscMsg : (\vert fullAddress) OSCAddress ( (parameters \vert variable) + )
+faustprocessor : 'set' 'faust' ''path''
 \end{rail}">
 <BR>
-
-<P>
-<BR>
-<IMG
- WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
- SRC="img79.gif"
- ALT="\begin{rail}
-fullAddress : (IPAddress \vert hostname) ':' port
-\end{rail}">
-<BR>
+<A NAME="1086"></A>
+A FAUST processor is created with a <TT>set</TT> message followed by the <TT>faust</TT> type, followed by the plugin path name. Thus the <TT>faust</TT> name is a reserved signal name.
 
 <P>
 <BR><HR>
@@ -117,16 +85,10 @@ fullAddress : (IPAddress \vert hostname) ':' port
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><A NAME="tex2html855"
-  HREF="node50.html">14.1 Interaction messages</A>
-<LI><A NAME="tex2html856"
-  HREF="node51.html">14.2 Notification messages</A>
-<LI><A NAME="tex2html857"
-  HREF="node52.html">14.3 Variables</A>
-<LI><A NAME="tex2html858"
-  HREF="node53.html">14.4 Message based variables</A>
-<LI><A NAME="tex2html859"
-  HREF="node54.html">14.5 OSC address variables</A>
+<LI><A NAME="tex2html863"
+  HREF="node50.html">14.1 Specific meassages</A>
+<LI><A NAME="tex2html864"
+  HREF="node51.html">14.2 Feeding and composing FAUST processors</A>
 </UL>
 <!--End of Table of Child-Links-->
 <BR><HR>

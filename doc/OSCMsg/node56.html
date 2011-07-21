@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.1 Differences to version 0.80</TITLE>
-<META NAME="description" CONTENT="15.1 Differences to version 0.80">
+<TITLE>15.4 Message based variables</TITLE>
+<META NAME="description" CONTENT="15.4 Message based variables">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,55 +21,72 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node57.html">
 <LINK REL="previous" HREF="node55.html">
-<LINK REL="up" HREF="node55.html">
+<LINK REL="up" HREF="node52.html">
 <LINK REL="next" HREF="node57.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html967"
+<A NAME="tex2html964"
   HREF="node57.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html961"
-  HREF="node55.html">
+<A NAME="tex2html958"
+  HREF="node52.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html955"
+<A NAME="tex2html952"
   HREF="node55.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html963"
+<A NAME="tex2html960"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html965"
-  HREF="node69.html">
+<A NAME="tex2html962"
+  HREF="node72.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html968"
-  HREF="node57.html">15.2 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html962"
-  HREF="node55.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html956"
-  HREF="node55.html">15. Changes list</A>
- &nbsp; <B>  <A NAME="tex2html964"
+<B> Next:</B> <A NAME="tex2html965"
+  HREF="node57.html">15.5 OSC address variables</A>
+<B> Up:</B> <A NAME="tex2html959"
+  HREF="node52.html">15. Events and Interaction</A>
+<B> Previous:</B> <A NAME="tex2html953"
+  HREF="node55.html">15.3 Variables</A>
+ &nbsp; <B>  <A NAME="tex2html961"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html966"
-  HREF="node69.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html963"
+  HREF="node72.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001610000000000000000">
-15.1 Differences to version 0.80</A>
+<H1><A NAME="SECTION001640000000000000000"></A>
+<A NAME="msgvar"></A>
+<BR>
+15.4 Message based variables
 </H1>
 
-<UL>
-<LI>behavior change with synchronization without stretch: now the system looks also in the
-  slave map for a segment corresponding to the master date.
-</LI>
-<LI><TT>$date</TT> variable change: the value is now (0,0) when no date is available and <TT>$date</TT> is time shifted according to the object date.
-</LI>
-<LI><TT>date</TT> message change: the date 0 0 is ignored
-</LI>
-</UL>
+<P>
+A message based variable is a variable containing an OSC message which will be evaluated at the time of the event. They are supported by all kind of events. Like  the variables above, a message based variable starts with a '$' sign followed by a valid 'get' message enclosed in parenthesis:
+<BR>
+<IMG
+ WIDTH="414" HEIGHT="87" ALIGN="BOTTOM" BORDER="0"
+ SRC="img93.gif"
+ ALT="\begin{rail}
+msgVar : '(' oscaddress 'get' (\vert params) ')'
+\end{rail}">
+<BR>
+
+<P>
+The evaluation of a 'get' message produces a message or a list of messages. The message based variable will be replaced by the parameters of the messages resulting from the evaluation of the 'get' message.
+Note that all the 'get' messages attached to an event are evaluated at the same time.
+
+<P>
+Example:
+<PRE>
+/ITL/scene/obj1 watch  mouseDown "/ITL/scene/obj1" "show" $("/ITL/scene/obj2" get "show")
+/ITL/scene/obj1 watch+ mouseDown "/ITL/scene/obj2" "show" $("/ITL/scene/obj1" get "show")
+/ITL/scene/obj2 watch  mouseDown "/ITL/scene/obj1" "show" $("/ITL/scene/obj2" get "show")
+/ITL/scene/obj2 watch+ mouseDown "/ITL/scene/obj2" "show" $("/ITL/scene/obj1" get "show")
+</PRE>
+When clicked, the objects <TT>obj1</TT> and <TT>obj1</TT> swap their visibility state.
 
 <P>
 <BR><HR>

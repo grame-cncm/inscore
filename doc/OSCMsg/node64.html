@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.9 Differences to version 0.60</TITLE>
-<META NAME="description" CONTENT="15.9 Differences to version 0.60">
+<TITLE>16.6 Differences to version 0.75</TITLE>
+<META NAME="description" CONTENT="16.6 Differences to version 0.75">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,73 +21,99 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node65.html">
 <LINK REL="previous" HREF="node63.html">
-<LINK REL="up" HREF="node55.html">
+<LINK REL="up" HREF="node58.html">
 <LINK REL="next" HREF="node65.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1079"
+<A NAME="tex2html1087"
   HREF="node65.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1073"
-  HREF="node55.html">
+<A NAME="tex2html1081"
+  HREF="node58.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1067"
+<A NAME="tex2html1075"
   HREF="node63.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1075"
+<A NAME="tex2html1083"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1077"
-  HREF="node69.html">
+<A NAME="tex2html1085"
+  HREF="node72.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1080"
-  HREF="node65.html">15.10 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1074"
-  HREF="node55.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1068"
-  HREF="node63.html">15.8 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1076"
+<B> Next:</B> <A NAME="tex2html1088"
+  HREF="node65.html">16.7 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1082"
+  HREF="node58.html">16. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1076"
+  HREF="node63.html">16.5 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1084"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1078"
-  HREF="node69.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1086"
+  HREF="node72.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001690000000000000000">
-15.9 Differences to version 0.60</A>
+<H1><A NAME="SECTION001760000000000000000">
+16.6 Differences to version 0.75</A>
 </H1>
 
 <UL>
-<LI>new 'mousemove' event (see section <A HREF="node50.html#interactmsg">14.1</A> p.<A HREF="node50.html#interactmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>new <TT>require</TT> message supported by the <TT>/ITL</TT> node (see section <A HREF="node4.html#ITL">2</A> p.<A HREF="node4.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>interaction messages accept variables ($x, $y, $date...) (see section <A HREF="node52.html#interactvar">14.3</A> p.<A HREF="node52.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>new event named <TT>newElement</TT> supported at scene level (see section <A HREF="node54.html#notifymsg">15.2</A> p.<A HREF="node54.html#notifymsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>SVG code and files support (see section <A HREF="node21.html#setfile">6</A> p.<A HREF="node21.html#setfile"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>new <TT>name</TT> and <TT>address</TT> variables (see section <A HREF="node55.html#interactvar">15.3</A> p.<A HREF="node55.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>set line message change: the <TT>x y</TT> form is deprecated, it is replaced by
-  the following forms: 
-<BR>  <TT>'xy' x y</TT> (equivalent to the former form) 
-  and <TT>'wa' width angle</TT>   
-  (see section <A HREF="node21.html#setsect">6</A> p.<A HREF="node21.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>new system map computation making use of the new slices map provided by the guidolib version 1.42
 </LI>
-<LI>new 'effect' message  (section <A HREF="node15.html#effectmsg">4.3</A> p.<A HREF="node15.html#effectmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>INScore API: the <TT>newMessage</TT> method sets now the message src IP to localhost
+  With the previous version and the lack of src IP, replies to queries or error 
+  messages could be sent to undefined addresses (and mostly lost).
 </LI>
-<LI>utf8 support on windows corrected
+<LI>bug corrected with ellipse and rect : integer graphic size computation changed 
+  to float (prevents objects disappearance with small width or height)
 </LI>
-<LI>transparency support for stretched synchronized objects corrected
+<LI>bug in scene export: left and right borders could be cut, depending  on the scene size
+  corrected by rendering the QGraphicsView container instead the QGraphicsScene
 </LI>
-<LI>multiple application instances supported with dynamic udp port number allocation.
-</LI>
-<LI>command line option with -port portnumber option to set the receive udp port number at startup.
+<LI>crash bug with $date:name corrected: crashed when there is no mapping named <TT>name</TT>.
 </LI>
 </UL>
 
 <P>
-<BR><HR>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1087"
+  HREF="node65.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html1081"
+  HREF="node58.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html1075"
+  HREF="node63.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html1083"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html1085"
+  HREF="node72.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html1088"
+  HREF="node65.html">16.7 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1082"
+  HREF="node58.html">16. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1076"
+  HREF="node63.html">16.5 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1084"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1086"
+  HREF="node72.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.7 Differences to version 0.74</TITLE>
-<META NAME="description" CONTENT="15.7 Differences to version 0.74">
+<TITLE>16.4 Differences to version 0.77</TITLE>
+<META NAME="description" CONTENT="16.4 Differences to version 0.77">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,50 +21,61 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node63.html">
 <LINK REL="previous" HREF="node61.html">
-<LINK REL="up" HREF="node55.html">
+<LINK REL="up" HREF="node58.html">
 <LINK REL="next" HREF="node63.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1051"
+<A NAME="tex2html1059"
   HREF="node63.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1045"
-  HREF="node55.html">
+<A NAME="tex2html1053"
+  HREF="node58.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1039"
+<A NAME="tex2html1047"
   HREF="node61.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1047"
+<A NAME="tex2html1055"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1049"
-  HREF="node69.html">
+<A NAME="tex2html1057"
+  HREF="node72.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1052"
-  HREF="node63.html">15.8 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1046"
-  HREF="node55.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1040"
-  HREF="node61.html">15.6 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1048"
+<B> Next:</B> <A NAME="tex2html1060"
+  HREF="node63.html">16.5 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1054"
+  HREF="node58.html">16. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1048"
+  HREF="node61.html">16.3 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1056"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1050"
-  HREF="node69.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1058"
+  HREF="node72.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001670000000000000000">
-15.7 Differences to version 0.74</A>
+<H1><A NAME="SECTION001740000000000000000">
+16.4 Differences to version 0.77</A>
 </H1>
 
 <UL>
-<LI>new <TT>map+</TT> message  (see section <A HREF="node30.html#mapAddMsg">9.2</A> p.<A HREF="node30.html#mapAddMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>guido system map extended: supports flat map or subdivided map (see section <A HREF="node35.html#guidomaps">11.1</A> p.<A HREF="node35.html#guidomaps"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>the <TT>click</TT> and <TT>select</TT> messages are deprecated (but still supported). They will be removed in a future version (see section <A HREF="node19.html#csmsg">4.4</A> p.<A HREF="node19.html#csmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>new <TT>shear</TT> and <TT>rotate</TT> transformations messages (see section <A HREF="node11.html#transform">4.1.4</A> p.<A HREF="node11.html#transform"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI>new <TT>rename</TT> message to change an object name (and thus its OSC address) (see section <A HREF="node6.html#common">4</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI>relaxed bool parameter policy: objects accept float values for bool parameters 
+</LI>
+<LI>automatic numbering of exports when destination file is not completely specified 
+  i.e. no name, no extension. (see section <A HREF="node6.html#common">4</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI>quantification introduced to $date variable (see section <A HREF="node55.html#interactvar">15.3</A> p.<A HREF="node55.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI><TT>reset</TT> message addressed to a scene clears the scene rootPath
 </LI>
 </UL>
 

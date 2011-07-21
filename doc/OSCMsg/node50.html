@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>14.1 Interaction messages</TITLE>
-<META NAME="description" CONTENT="14.1 Interaction messages">
+<TITLE>14.1 Specific meassages</TITLE>
+<META NAME="description" CONTENT="14.1 Specific meassages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,68 +27,68 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html872"
+<A NAME="tex2html877"
   HREF="node51.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html866"
+<A NAME="tex2html871"
   HREF="node49.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html860"
+<A NAME="tex2html865"
   HREF="node49.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html868"
+<A NAME="tex2html873"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html870"
-  HREF="node69.html">
+<A NAME="tex2html875"
+  HREF="node72.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html873"
-  HREF="node51.html">14.2 Notification messages</A>
-<B> Up:</B> <A NAME="tex2html867"
-  HREF="node49.html">14. Events and Interaction</A>
-<B> Previous:</B> <A NAME="tex2html861"
-  HREF="node49.html">14. Events and Interaction</A>
- &nbsp; <B>  <A NAME="tex2html869"
+<B> Next:</B> <A NAME="tex2html878"
+  HREF="node51.html">14.2 Feeding and composing</A>
+<B> Up:</B> <A NAME="tex2html872"
+  HREF="node49.html">14. FAUST plugins</A>
+<B> Previous:</B> <A NAME="tex2html866"
+  HREF="node49.html">14. FAUST plugins</A>
+ &nbsp; <B>  <A NAME="tex2html874"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html871"
-  HREF="node69.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html876"
+  HREF="node72.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION001510000000000000000"></A>
-<A NAME="interactmsg"></A>
+<A NAME="faustmsg"></A>
 <BR>
-14.1 Interaction messages
+14.1 Specific meassages
 </H1>
+A FAUST processor is characterized by the numbers of input and output channels and by a set of parameters. Each parameter carries a name defined by the FAUST program. The set of messages supported by a FAUST processor is the set of signals messages extended with the parameters names and with specific query messages. 
 
 <P>
-Events currently <I>watchable</I> are:
 <BR>
 <IMG
- WIDTH="110" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
- SRC="img80.gif"
+ WIDTH="290" HEIGHT="165" ALIGN="BOTTOM" BORDER="0"
+ SRC="img79.gif"
  ALT="\begin{rail}
-what : 'mouseDown' \vert 'mouseUp' \vert 'mouseEnter' \vert 'mouseLeave' \vert 'mouseMove' \vert 'doubleClick'
+faustmessage : signalMsgs
+\vert [1] 'msg' float32
+\vert [2] 'get' ('in' \vert 'out')
 \end{rail}">
 <BR>
-<A NAME="1085"></A>
-<A NAME="1086"></A>
-<A NAME="1087"></A>
-<A NAME="1088"></A>
-<A NAME="1089"></A>
-<A NAME="1090"></A>
+<A NAME="1094"></A>
+<A NAME="1095"></A>
+<A NAME="1096"></A>
+<A NAME="1097"></A>
 
 <P>
-Example:
-<PRE>
-  1) /ITL/scene/myObject watch mouseDown "/ITL/scene/myObject" "show" 0 
-  2) /ITL/scene/myObject watch mouseDown "host.domain.org:12100/an/address" "start"
-</PRE>
-1) Request the object <TT>myObject</TT> to watch <TT>mouseDown</TT> events and send a message to itself. 
-<BR>
-2) Request the object <TT>myObject</TT> to watch <TT>mouseDown</TT> events and send a "start" message to host.domain.org on udp port 12100 to OSC address /an/address
+<DL COMPACT>
+<DT>1</DT>
+<DD><TT><I>msg</I></TT> is any of the FAUST processor parameters, as defined by the FAUST program.
+</DD>
+<DT>2</DT>
+<DD>the <TT>get</TT> message is extended to query the FAUST processor: <TT>in</TT> and <TT>out</TT> give the number of input and output channels.
+</DD>
+</DL>
 
 <P>
 <BR><HR>

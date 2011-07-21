@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.5 Differences to version 0.76</TITLE>
-<META NAME="description" CONTENT="15.5 Differences to version 0.76">
+<TITLE>16.2 Differences to version 0.79</TITLE>
+<META NAME="description" CONTENT="16.2 Differences to version 0.79">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,58 +21,50 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node61.html">
 <LINK REL="previous" HREF="node59.html">
-<LINK REL="up" HREF="node55.html">
+<LINK REL="up" HREF="node58.html">
 <LINK REL="next" HREF="node61.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1023"
+<A NAME="tex2html1031"
   HREF="node61.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1017"
-  HREF="node55.html">
+<A NAME="tex2html1025"
+  HREF="node58.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1011"
+<A NAME="tex2html1019"
   HREF="node59.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1019"
+<A NAME="tex2html1027"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1021"
-  HREF="node69.html">
+<A NAME="tex2html1029"
+  HREF="node72.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1024"
-  HREF="node61.html">15.6 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1018"
-  HREF="node55.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1012"
-  HREF="node59.html">15.4 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1020"
+<B> Next:</B> <A NAME="tex2html1032"
+  HREF="node61.html">16.3 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1026"
+  HREF="node58.html">16. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1020"
+  HREF="node59.html">16.1 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1028"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1022"
-  HREF="node69.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1030"
+  HREF="node72.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001650000000000000000">
-15.5 Differences to version 0.76</A>
+<H1><A NAME="SECTION001720000000000000000">
+16.2 Differences to version 0.79</A>
 </H1>
 
 <UL>
-<LI>get <TT>guido-version</TT> and <TT>musicxml-version</TT> messages supported by the application (see section <A HREF="node4.html#ITL">2</A> p.<A HREF="node4.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>corrects the map not saved by the <TT>save</TT> message issue
 </LI>
-<LI><TT>save</TT> message bug correction - introduced with version 0.70: only partial state of objects was saved
-</LI>
-<LI><TT>rootPath</TT> message introduced at scene level (see section <A HREF="node5.html#scene">3</A> p.<A HREF="node5.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>scene name translation strategy change: only the explicit 'scene' name is 
-  translated by the scene load message handler into the current scene name, 
-  other names are left unchanged.
-</LI>
-<LI>bitmap copy adjustment in sync stretched mode is now only made for images
+<LI>corrects <TT>get map</TT> output: 2D segments were not correctly converted to string
 </LI>
 </UL>
 

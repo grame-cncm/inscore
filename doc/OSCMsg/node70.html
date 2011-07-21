@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>About this document ...</TITLE>
-<META NAME="description" CONTENT="About this document ...">
+<TITLE>16.12 Differences to version 0.50</TITLE>
+<META NAME="description" CONTENT="16.12 Differences to version 0.50">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,62 +19,111 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node71.html">
 <LINK REL="previous" HREF="node69.html">
-<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="up" HREF="node58.html">
+<LINK REL="next" HREF="node71.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next_g.gif"> 
-<A NAME="tex2html1151"
-  HREF="OSCMsg.html">
+<A NAME="tex2html1171"
+  HREF="node71.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html1165"
+  HREF="node58.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1147"
+<A NAME="tex2html1159"
   HREF="node69.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1153"
+<A NAME="tex2html1167"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1155"
-  HREF="node69.html">
+<A NAME="tex2html1169"
+  HREF="node72.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Up:</B> <A NAME="tex2html1152"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html1148"
-  HREF="node69.html">Index</A>
- &nbsp; <B>  <A NAME="tex2html1154"
+<B> Next:</B> <A NAME="tex2html1172"
+  HREF="node71.html">16.13 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1166"
+  HREF="node58.html">16. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1160"
+  HREF="node69.html">16.11 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1168"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1156"
-  HREF="node69.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1170"
+  HREF="node72.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001800000000000000000">
-About this document ...</A>
+<H1><A NAME="SECTION0017120000000000000000">
+16.12 Differences to version 0.50</A>
 </H1>
- <STRONG>INScore 
-<BR>
-OSC Messages Reference 
-<BR>
-v.0.82</STRONG><P>
-This document was generated using the
-<A HREF="http://www.latex2html.org/"><STRONG>LaTeX</STRONG>2<tt>HTML</tt></A> translator Version 2002-2 (1.70)
+
+<UL>
+<LI>Graphic signal thickness is now symmetrically drawn around y position.
+</LI>
+<LI>ITL file format supports regular expressions in OSC addresses.
+</LI>
+<LI>IP of a message sender is now used for the reply or for error reporting.
+</LI>
+<LI>new <TT>line</TT> object (section <A HREF="node21.html#setsect">6</A> p.<A HREF="node21.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI>new <TT>penStyle</TT> message for vectorial graphics (section <A HREF="node24.html#specificMsg">8</A> p.<A HREF="node24.html#specificMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI>new color messages <TT>red, green, blue, alpha, dcolor, dred, dgreen, dblue</TT> (section <A HREF="node6.html#common">4</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> and  <A HREF="node9.html#relpos">4.1.2</A> p.<A HREF="node9.html#relpos"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI>color values for objects are bounded to [0,255]
+</LI>
+<LI><TT>get map</TT> message behaves according to new map message (section <A HREF="node22.html#getsect">7</A> p.<A HREF="node22.html#getsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI><TT>get width</TT> and  <TT>get height</TT> is now supported by all objects (section <A HREF="node22.html#getsect">7</A> p.<A HREF="node22.html#getsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI>bug in signal projection corrected (index 0 rejected)
+</LI>
+<LI>bug in signals default value delivery corrected
+</LI>
+<LI>new <TT>pageCount</TT> message for guido scores
+</LI>
+<LI>debug nodes modified state propagated to parent node (corrects the debug informations graphic update issue)
+</LI>
+<LI>rational values catch null denominator (to prevents divide by zero exceptions).
+
 <P>
-Copyright &#169; 1993, 1994, 1995, 1996,
-<A HREF="http://cbl.leeds.ac.uk/nikos/personal.html">Nikos Drakos</A>, 
-Computer Based Learning Unit, University of Leeds.
+</LI>
+</UL>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1171"
+  HREF="node71.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html1165"
+  HREF="node58.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html1159"
+  HREF="node69.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html1167"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html1169"
+  HREF="node72.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-Copyright &#169; 1997, 1998, 1999,
-<A HREF="http://www.maths.mq.edu.au/~ross/">Ross Moore</A>, 
-Mathematics Department, Macquarie University, Sydney.
-<P>
-The command line arguments were: <BR>
- <STRONG>latex2html</STRONG> <TT>-show_section_numbers -image_type gif -address '<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]' OSCMsg.tex</TT>
-<P>
-The translation was initiated by Dominique Fober on 2011-07-13
-<BR><HR>
+<B> Next:</B> <A NAME="tex2html1172"
+  HREF="node71.html">16.13 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1166"
+  HREF="node58.html">16. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1160"
+  HREF="node69.html">16.11 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1168"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1170"
+  HREF="node72.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>
