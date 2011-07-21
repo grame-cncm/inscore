@@ -125,14 +125,6 @@ void IObject::colorAble()
 	fMsgHandlerMap["saturation"]= IColor::SetColorMsgHandler::create(this, &IObject::setS, &IObject::setS);
 	fMsgHandlerMap["brightness"]= IColor::SetColorMsgHandler::create(this, &IObject::setV, &IObject::setV);
 
-//	fMsgHandlerMap["red"]		= TSetMethodMsgHandler<IObject, int>::create(this,&IObject::setR);
-//	fMsgHandlerMap["green"]		= TSetMethodMsgHandler<IObject, int>::create(this,&IObject::setG);
-//	fMsgHandlerMap["blue"]		= TSetMethodMsgHandler<IObject, int>::create(this,&IObject::setB);
-//	fMsgHandlerMap["alpha"]		= TSetMethodMsgHandler<IObject, int>::create(this,&IObject::setA);
-//	fMsgHandlerMap["hue"]		= TSetMethodMsgHandler<IObject, int>::create(this,&IObject::setH);
-//	fMsgHandlerMap["saturation"]= TSetMethodMsgHandler<IObject, int>::create(this,&IObject::setS);
-//	fMsgHandlerMap["brightness"]= TSetMethodMsgHandler<IObject, int>::create(this,&IObject::setV);
-
 	fMsgHandlerMap["dcolor"]	= TMethodMsgHandler<IObject>::create(this, &IObject::dcolorMsg);
 	fMsgHandlerMap["dhsb"]		= TMethodMsgHandler<IObject>::create(this, &IObject::dhsvMsg);
 
@@ -143,14 +135,6 @@ void IObject::colorAble()
 	fMsgHandlerMap["dhue"]			= IColor::SetColorMsgHandler::create(this, &IObject::dH, &IObject::dH);
 	fMsgHandlerMap["dsaturation"]	= IColor::SetColorMsgHandler::create(this, &IObject::dS, &IObject::dS);
 	fMsgHandlerMap["dbrightness"]	= IColor::SetColorMsgHandler::create(this, &IObject::dV, &IObject::dV);
-
-//	fMsgHandlerMap["dred"]			= TSetMethodMsgHandler<IObject,int>::create(this, &IObject::dR);
-//	fMsgHandlerMap["dgreen"]		= TSetMethodMsgHandler<IObject,int>::create(this, &IObject::dG);
-//	fMsgHandlerMap["dblue"]			= TSetMethodMsgHandler<IObject,int>::create(this, &IObject::dB);
-//	fMsgHandlerMap["dalpha"]		= TSetMethodMsgHandler<IObject,int>::create(this, &IObject::dA);
-//	fMsgHandlerMap["dhue"]			= TSetMethodMsgHandler<IObject,int>::create(this, &IObject::dH);
-//	fMsgHandlerMap["dsaturation"]	= TSetMethodMsgHandler<IObject,int>::create(this, &IObject::dS);
-//	fMsgHandlerMap["dbrightness"]	= TSetMethodMsgHandler<IObject,int>::create(this, &IObject::dV);
 
 	fGetMsgHandlerMap["color"]		= TGetParamMsgHandler<IColor>::create(*(IColor*)this);
 	fGetMsgHandlerMap["red"]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getR);
