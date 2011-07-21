@@ -150,27 +150,6 @@ IAppl::IAppl(int udpport, int outport, int errport, bool offscreen)
 	fMsgHandlerMap["errport"]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPErrPort);
 	fMsgHandlerMap["defaultShow"]	= TSetMethodMsgHandler<IAppl,bool>::create(this, &IAppl::setDefaultShow);
 
-	fGetMsgHandlerMap["date"]		= 0;
-	fGetMsgHandlerMap["duration"]	= 0;
-
-	fGetMsgHandlerMap["x"]		= 0;
-	fGetMsgHandlerMap["y"]		= 0;
-	fGetMsgHandlerMap["z"]		= 0;
-	fGetMsgHandlerMap["angle"]	= 0;
-	fGetMsgHandlerMap["scale"]	= 0;
-	fGetMsgHandlerMap["show"]	= 0;
-	fGetMsgHandlerMap["width"]	= 0;
-	fGetMsgHandlerMap["height"] = 0;
-
-	fGetMsgHandlerMap["color"]	= 0;
-	fGetMsgHandlerMap["red"]	= 0;
-	fGetMsgHandlerMap["green"]	= 0;
-	fGetMsgHandlerMap["blue"]	= 0;
-	fGetMsgHandlerMap["alpha"]	= 0;
-	fGetMsgHandlerMap["hue"]	= 0;
-	fGetMsgHandlerMap["saturation"] = 0;
-	fGetMsgHandlerMap["brightness"]	= 0;
-
 #ifdef RUNBENCH
 	fMsgHandlerMap["startBench"]	= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::startBench);
 	fMsgHandlerMap["stopBench"]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::stopBench);
