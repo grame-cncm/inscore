@@ -79,6 +79,8 @@ class IScene : public IRectShape, public PeriodicTask
 		/// \brief makes a topological sort of the scene elements according to their synchronizations set
 		virtual void	sort ();
 
+		/// \brief sets the message handlers.
+		virtual void setHandlers ();
 		/*!
 			\brief reset the scene to its default state
 		*/
