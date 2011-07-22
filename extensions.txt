@@ -7,4 +7,4 @@ Possible future directions and extensions
 
 - scaling issues: the score components may come under very different scales, especially when the design comes under micro to macro composition. The relation between the graphic space taken on the score and the corresponding temporal space can't always be proportional (which is already the case of the traditional western music notation). The idea is to design a general model to represent and synchronize elements that take space but no time, or that take time but no space.
 
-- dynamic processes repreentation: the question is how to represent dynamic processes that compute the music (sound, relations, score...)? or how to integrate temporal graphic processes in the score space? how to transform them into first order music objects?
+- dynamic processes representation: the question is how to represent dynamic processes that compute the music (sound, relations, score...)? or how to integrate temporal graphic processes in the score space? how to transform them into first order music objects?
