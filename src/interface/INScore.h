@@ -140,6 +140,9 @@ class export INScore
 	
 	static float version();					///< gives the library version number
 	static const char* versionStr();		///< gives the library version number as a string
+
+	static const char* guidoversion();		///< gives the guido library version number as a string
+	static const char* musicxmlversion();	///< gives the musicxml library version number as a string
 };
 
 /*! @} */

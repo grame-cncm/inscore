@@ -30,9 +30,6 @@
 #include <stdlib.h>
 #include <sstream>
 
-#include "GUIDOEngine.h"
-#include "QGuidoImporter.h"
-
 #include "IAppl.h"
 #include "IApplVNodes.h"
 #include "IGlue.h"
@@ -46,6 +43,8 @@
 #include "INScore.h"
 #include "ITLError.h"
 #include "EventMessage.h"
+
+#include "INScore.h"
 
 #include <QDir>
 
@@ -266,24 +265,13 @@ void IAppl::helloMsg() const
 //--------------------------------------------------------------------------
 string IAppl::guidoversion() const
 {
-	int major, minor, sub;
-	GuidoGetVersionNums(&major, &minor, &sub);
-	stringstream s;
-	s << major << '.' << minor << '.' << sub;
-	return s.str();
+	return INScore::guidoversion();
 }
 
 //--------------------------------------------------------------------------
 string IAppl::musicxmlversion() const
 {
-	if (QGuidoImporter::musicxmlSupported())
-	{	
-		string versions = QGuidoImporter::musicxmlVersion();
-		versions += " using the guido converter version ";
-		versions += QGuidoImporter::musicxml2guidoVersion();
-		return versions;
-	}
-	return "not available";
+	return INScore::musicxmlversion();
 }
 
 //--------------------------------------------------------------------------

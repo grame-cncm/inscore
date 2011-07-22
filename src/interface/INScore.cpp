@@ -33,11 +33,14 @@
 
 #include <iostream>
 
+#include "GUIDOEngine.h"
+
 #include "IGlue.h"
 #include "VQtLocalMappingUpdater.h"
 #include "VQtUpdater.h"
 #include "VQtInit.h"
 #include "VSceneView.h"
+#include "QGuidoImporter.h"
 
 using namespace std;
 namespace inscore 
@@ -115,6 +118,33 @@ void INScore::stop(IGlue* glue)
 //--------------------------------------------------------------------------
 float INScore::version	()				{ return 0.82; }
 const char* INScore::versionStr ()		{ return "0.82"; }
+
+//--------------------------------------------------------------------------
+const char* INScore::guidoversion()
+{
+	int major, minor, sub;
+	GuidoGetVersionNums(&major, &minor, &sub);
+	stringstream s;
+	s << major << '.' << minor << '.' << sub;
+	
+	static string version = s.str();
+	return version.c_str();
+}
+
+//--------------------------------------------------------------------------
+const char* INScore::musicxmlversion()
+{
+	if (QGuidoImporter::musicxmlSupported())
+	{	
+		static string version = QGuidoImporter::musicxmlVersion();
+		version += " using the guido converter version ";
+		version += QGuidoImporter::musicxml2guidoVersion();
+		return version.c_str();
+	}
+	return "not available";
+}
+
+
 const unsigned long localhost = (127 << 24) + 1;
 
 //--------------------------------------------------------------------------
