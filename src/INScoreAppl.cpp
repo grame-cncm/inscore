@@ -29,6 +29,7 @@
 #include <QEvent>
 #include <QFileDialog>
 #include <QFileOpenEvent>
+#include <QLabel>
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
@@ -70,19 +71,46 @@ static int intopt (const string& opt, int defaultValue, int n, char **argv)
 
 
 //_______________________________________________________________________
-void INScoreAppl::about()
+class INScoreAbout : public QSplashScreen
 {
-	QString title = "INScore Viewer";
-	QString about = "An Interactive Augmented Score Viewer\nINScore library version ";
-	about += INScore::versionStr();
-	QMessageBox::about (0, title, about);
+	public:
+				 INScoreAbout (const QPixmap & pixmap);
+		virtual ~INScoreAbout() {}
+};
+
+INScoreAbout::INScoreAbout (const QPixmap & pixmap) : QSplashScreen (pixmap)
+{
+    setMask (pixmap.mask());
+
+	QFont font;
+    font.setPointSize(9);
+
+	QString version("INScore v.");
+	version += INScore::versionStr();
+	QLabel* text = new QLabel(version, this);
+	text->setFont(font);
+	text->move(25, height()-45);
+
+	QString qt("Using Qt v.");
+	qt += qVersion();
+	text = new QLabel(qt, this);
+	text->setFont(font);
+	text->move(20, height()-34);
+
+	QString guido("Using Guido Engine v.");
+	guido += INScore::guidoversion();
+	text = new QLabel(guido, this);
+	text->setFont(font);
+	text->move(15, height()-22);
 }
 
+INScoreAbout* gAbout = 0;
 //_______________________________________________________________________
-void INScoreAppl::aboutQt()
+void INScoreAppl::about()
 {
-	QMessageBox::aboutQt (0, "INScore Viewer");
+	if (gAbout) gAbout->show();
 }
+
 
 #if WIN32
 #define sep '\\'
@@ -116,6 +144,19 @@ bool INScoreAppl::event(QEvent *ev)
 	return QApplication::event(ev);
 }
 
+//_______________________________________________________________________
+void INScoreAppl::setupMenu()
+{
+	QMenuBar *menuBar = new QMenuBar(0);
+
+    QAction* aboutAct = new QAction(tr("&About"), this);
+    aboutAct->setStatusTip(tr("Show the application's About box"));
+    connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
+	
+    QMenu* menu = menuBar->addMenu(tr("&Help"));
+    menu->addAction(aboutAct);
+}
+
 
 #if defined(WIN32) && !defined(_DEBUG)
 # define USEWINMAIN
@@ -141,10 +182,10 @@ int main( int argc, char **argv )
 
 	Q_INIT_RESOURCE( inscore );
     QPixmap pixmap(":/INScoreViewer.png");
-    QSplashScreen splash(pixmap);
-    splash.setMask (pixmap.mask());
-	splash.show();
-
+    gAbout = new INScoreAbout(pixmap);
+	gAbout->show();
+	
+	appl.setupMenu();
 #ifndef WIN32
 	dir.cdUp();
 #endif
@@ -168,8 +209,9 @@ int main( int argc, char **argv )
 	}
 #endif
 	sleep (2);
-    splash.finish(0);
+    gAbout->hide();
 	ret = appl.exec();
 	INScore::stop (glue);
+	delete gAbout;
 	return ret;
 }
