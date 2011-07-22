@@ -140,6 +140,10 @@ set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h)
 QT_WRAP_CPP (${TARGET} MOC_FILES ${MOC_HEADERS})
 QT_WRAP_CPP (${APPLTARGET} APPL_MOC_FILES ${ROOT}/INScoreAppl.h)
 
+SET(QtApp_RCCS  ${ROOT}/../rsrc/inscore.qrc)
+#SET(INScoreQRC  inscore.qrc)
+QT4_ADD_RESOURCES(INScoreQRC ${QtApp_RCCS})
+
 #######################################
 # set targets
 include_directories(${INCL} ${OSC_PATH} ${GUIDO_PATH}/include ${GUIDOQT_PATH}/include ${QTHEADERS} )
@@ -157,7 +161,7 @@ if(MINGW)
 endif(MINGW)
 
 
-add_executable( ${APPLTARGET}  MACOSX_BUNDLE ${ROOT}/INScoreAppl.cpp ${APPL_MOC_FILES} ../win32/Viewer/${APPLTARGET}.rc)
+add_executable( ${APPLTARGET}  MACOSX_BUNDLE ${ROOT}/INScoreAppl.cpp ${APPL_MOC_FILES}  ../win32/Viewer/${APPLTARGET}.rc ${INScoreQRC})
 target_link_libraries( ${APPLTARGET} ${QTLIBS} ${GUIDO})
 set_target_properties (${APPLTARGET} PROPERTIES VERSION ${INSAPPVERS}
 							MACOSX_BUNDLE_ICON_FILE ${RSRC}/${APPLTARGET}.icns
