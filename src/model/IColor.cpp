@@ -34,13 +34,52 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------------
+bool IColor::getRGBA( const IMessage* msg, int& r, int& g, int& b, int& a)
+{
+	int n = msg->size();
+	if ((n < 3) || (n > 4)) return false;
+	float fr, fg, fb, fa = 1.;
+	a = 255;
+	if (msg->param(0, fr) && msg->param(1, fg) && msg->param(2, fb)) {
+		if ((n == 4) && !msg->param(3, fa)) return MsgHandler::kBadParameters;
+		r = floatRGB2int(fr);
+		g = floatRGB2int(fg);
+		b = floatRGB2int(fb);
+		a = floatRGB2int(fa);
+	}
+	else {
+		if (!msg->param(0, r) || !msg->param(1, g) || !msg->param(2, b)) return false;
+		if ((n == 4) && !msg->param(3, a)) return false;
+	}
+	return true;
+}
+
+//--------------------------------------------------------------------------------
+bool IColor::getHSBA( const IMessage* msg, int& h, int& s, int& b, int& a)
+{
+	int n = msg->size();
+	if ((n < 3) || (n > 4)) return false;
+	float fh, fs, fb, fa = 1.;
+	a = 255;
+	if (msg->param(0, fh) && msg->param(1, fs) && msg->param(2, fb)) {
+		if ((n == 4) && !msg->param(3, fa)) return MsgHandler::kBadParameters;
+		h = floatH2int(fh);
+		s = floatSV2int(fs);
+		b = floatSV2int(fb);
+		a = floatRGB2int(fa);
+	}
+	else {
+		if (!msg->param(0, h) || !msg->param(1, s) || !msg->param(2, b)) return false;
+		if ((n == 4) && !msg->param(3, a)) return false;
+	}
+	return true;
+}
+
+//--------------------------------------------------------------------------------
 MsgHandler::msgStatus IColor::set (const IMessage* msg)
 { 
-	int n = msg->size();
-	if ((n < 3) || (n > 4)) return MsgHandler::kBadParameters;
 	int r, g, b, a = 255;
-	if (!msg->param(0, r) || !msg->param(1, g) || !msg->param(2, b)) return MsgHandler::kBadParameters;
-	if ((n == 4) && !msg->param(3, a)) return MsgHandler::kBadParameters;
+	if (!getRGBA (msg, r, g, b, a)) return MsgHandler::kBadParameters;
 	fR = std::max(0,std::min(r,255));
 	fG = std::max(0,std::min(g,255));
 	fB = std::max(0,std::min(b,255));
@@ -53,17 +92,49 @@ MsgHandler::msgStatus IColor::set (const IMessage* msg)
 //--------------------------------------------------------------------------------
 MsgHandler::msgStatus IColor::setHSV (const IMessage* msg) 
 { 
-	int n = msg->size();
-	if ((n < 3) || (n > 4)) return MsgHandler::kBadParameters;
-	int r, g, b, a = 255;
-	if (!msg->param(0, r) || !msg->param(1, g) || !msg->param(2, b)) return MsgHandler::kBadParameters;
-	if ((n == 4) && !msg->param(3, a)) return MsgHandler::kBadParameters;
-	fH = r % 360;
-	fS = std::max(0,std::min(g,100));
+	int h, s, b, a = 255;
+	if (!getHSBA (msg, h, s, b, a)) return MsgHandler::kBadParameters;
+	fH = h % 360;
+	fS = std::max(0,std::min(s,100));
 	fV = std::max(0,std::min(b,100));
 	fA = std::max(0,std::min(a,255));
 	fModified = true;
 	updateRGB();
+	return MsgHandler::kProcessed;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IColor::dcolorMsg(const IMessage* msg)
+{
+	int r, g, b, a = 255;
+	if (!getRGBA (msg, r, g, b, a)) return MsgHandler::kBadParameters;
+	dR(r);
+	dG(g);
+	dB(b);
+	dA(a);
+	return MsgHandler::kProcessed;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IColor::dhsvMsg(const IMessage* msg)
+{
+	int h, s, v, a = 255;
+	if (!getHSBA (msg, h, s, v, a)) return MsgHandler::kBadParameters;
+	dH(h);
+	dS(s);
+	dV(v);
+	dA(a);
+	return MsgHandler::kProcessed;
+}
+
+//--------------------------------------------------------------------------------
+MsgHandler::msgStatus IColor::SetColorMsgHandler::operator ()(const IMessage* msg)
+{
+	if (msg->size() != 1) return MsgHandler::kBadParameters;
+	int val; float fval;
+	if (msg->param(0, val))			(fColor->*fSetInt) (val);
+	else if (msg->param(0, fval))	(fColor->*fSetFloat)(fval);
+	else return MsgHandler::kBadParameters;
 	return MsgHandler::kProcessed;
 }
 

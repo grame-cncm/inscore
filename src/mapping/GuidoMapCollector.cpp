@@ -174,7 +174,7 @@ rational GuidoSystemCollector::add (const RelativeTimeSegment& ts, const FloatIn
 //		   get next t2 and continue
 //	  when the position is different, insert t1 and skip t2 until t2 > t1
 
-// 2) the segment t1 starts t2 and t2 starts in t1:
+// 2) the segment t1 starts before t2 and t2 starts in t1:
 //        t1 : |-------|
 //        t2 :   |---|......|
 //    in this case, inserts intersect t1 & t2
@@ -201,10 +201,14 @@ void GuidoSystemCollector::merge (const Time2GraphicMap& map1, const Time2Graphi
 			RelativeTimeSegment t2 = i2->first;
 			GraphicSegment s2 = i2->second;
 			
+//bool trace = (t1.start() >= rational(19,4)) && (t1.start() <= rational(20,4));
+//if (trace) {
+//	cout << "at date: " << t1.start() << " - " << t2.start() << ": ";
+//}
 			if (t1.start() == t2.start()) {					// case 1: both segments at the same date
 				float proximity = s2.xinterval().first() - s1.xinterval().first();
 				if (proximity < 0) proximity = -proximity;
-				if (proximity < 8.) {						// check for graphic position
+				if (proximity < 3.5) {						// check for graphic position
 					// it (roughly) matches : inserts t1 and t2 intersection
 					rightdate = add(t1 & t2, (s1 & s2).xinterval(), s1.yinterval(), outmap);
 					i2++;									// and go to next t2
@@ -226,13 +230,16 @@ void GuidoSystemCollector::merge (const Time2GraphicMap& map1, const Time2Graphi
 			else if (t2.start() > t1.start()) {
 				if (t2.start() < t1.end()) {				// case 2: t2 starts in t1
 					RelativeTimeSegment inter = t1 & t2;
-					GraphicSegment gr = s1 & s2;
+					FloatInterval xinter = s2.xinterval() & s1.xinterval();
+					if (xinter.empty()) xinter = s2.xinterval();
+					else xinter = FloatInterval(s2.xinterval().first(), xinter.second());
+
 					if (inter.start() > rightdate) {		// check for missing t1 start segment
 						RelativeTimeSegment beg = RelativeTimeSegment(t1.start(), inter.start());
-						outmap[beg] = GraphicSegment(FloatInterval(s1.xinterval().first(), gr.xinterval().first()), s1.yinterval());
+						outmap[beg] = GraphicSegment(FloatInterval(s1.xinterval().first(), xinter.first()), s1.yinterval());
 					}
 					// inserts t1 and t2 intersection
-					rightdate = add(inter, gr.xinterval(), s1.yinterval(), outmap);
+					rightdate = add(inter, xinter, s1.yinterval(), outmap);
 					i2++;									// and go to next t2
 				}
 				else {										// case 3: segment t2 starts after t1

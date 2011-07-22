@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.7 Differences to version 0.63</TITLE>
-<META NAME="description" CONTENT="15.7 Differences to version 0.63">
+<TITLE>16.4 Differences to version 0.77</TITLE>
+<META NAME="description" CONTENT="16.4 Differences to version 0.77">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,109 +21,66 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node63.html">
 <LINK REL="previous" HREF="node61.html">
-<LINK REL="up" HREF="node55.html">
+<LINK REL="up" HREF="node58.html">
 <LINK REL="next" HREF="node63.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1048"
+<A NAME="tex2html1059"
   HREF="node63.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1042"
-  HREF="node55.html">
+<A NAME="tex2html1053"
+  HREF="node58.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1036"
+<A NAME="tex2html1047"
   HREF="node61.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1044"
+<A NAME="tex2html1055"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1046"
-  HREF="node68.html">
+<A NAME="tex2html1057"
+  HREF="node72.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1049"
-  HREF="node63.html">15.8 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1043"
-  HREF="node55.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1037"
-  HREF="node61.html">15.6 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1045"
+<B> Next:</B> <A NAME="tex2html1060"
+  HREF="node63.html">16.5 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1054"
+  HREF="node58.html">16. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1048"
+  HREF="node61.html">16.3 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1056"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1047"
-  HREF="node68.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1058"
+  HREF="node72.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001670000000000000000">
-15.7 Differences to version 0.63</A>
+<H1><A NAME="SECTION001740000000000000000">
+16.4 Differences to version 0.77</A>
 </H1>
 
 <UL>
-<LI>new <TT>dpage</TT> message accepted by <TT>gmn</TT> objects (see section <A HREF="node27.html#gmnpage">8.3</A> p.<A HREF="node27.html#gmnpage"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>guido system map extended: supports flat map or subdivided map (see section <A HREF="node35.html#guidomaps">11.1</A> p.<A HREF="node35.html#guidomaps"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>x and y variables: automatic range type detection (int | float)
+<LI>new <TT>shear</TT> and <TT>rotate</TT> transformations messages (see section <A HREF="node11.html#transform">4.1.4</A> p.<A HREF="node11.html#transform"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>set <TT>txt</TT> message: accepts polymorphic stream like parameters (see section <A HREF="node21.html#setsect">6</A> p.<A HREF="node21.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>new <TT>rename</TT> message to change an object name (and thus its OSC address) (see section <A HREF="node6.html#common">4</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>drag and drop files support in INScore viewer
+<LI>relaxed bool parameter policy: objects accept float values for bool parameters 
 </LI>
-<LI>interaction variables extension: <TT>$sx</TT>, <TT>$sy</TT> variables added to support scene coordinate space (see section <A HREF="node52.html#interactvar">14.3</A> p.<A HREF="node52.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>automatic numbering of exports when destination file is not completely specified 
+  i.e. no name, no extension. (see section <A HREF="node6.html#common">4</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>automatic range mapping for <TT>$x</TT>, <TT>$y</TT> variables.
+<LI>quantification introduced to $date variable (see section <A HREF="node55.html#interactvar">15.3</A> p.<A HREF="node55.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>new <TT>$self</TT> and <TT>$scene</TT> variables in the address field (see section <A HREF="node54.html#oscvar">14.5</A> p.<A HREF="node54.html#oscvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>OSC identifiers characters set extended with '_' and '-' (see section <A HREF="node2.html#genformat">1</A> p.<A HREF="node2.html#genformat"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>support for multiple scenes: <TT>new</TT>, <TT>del</TT> and <TT>foreground</TT> messages (see section <A HREF="node5.html#scene">3</A> p.<A HREF="node5.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI><TT>load</TT> message supported at scene level (see section <A HREF="node5.html#scene">3</A> p.<A HREF="node5.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI><TT>get watch</TT> implemented.
-</LI>
-<LI><TT>watch</TT> message without argument to clear all the watched events (see section <A HREF="node52.html#interactvar">14.3</A> p.<A HREF="node52.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>order of rendering and width, height update corrected (may lead to incorrect rendering)
-</LI>
-<LI>bug with gmn score corrected: missing update for page, columns and rows changes.
-</LI>
-<LI>package delivered with the Guido Engine version 1.41 that corrects minimum staves distance and incorrect mapping when optimum page fill is off.
+<LI><TT>reset</TT> message addressed to a scene clears the scene rootPath
 </LI>
 </UL>
 
 <P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html1048"
-  HREF="node63.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1042"
-  HREF="node55.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1036"
-  HREF="node61.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1044"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1046"
-  HREF="node68.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html1049"
-  HREF="node63.html">15.8 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1043"
-  HREF="node55.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1037"
-  HREF="node61.html">15.6 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1045"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1047"
-  HREF="node68.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

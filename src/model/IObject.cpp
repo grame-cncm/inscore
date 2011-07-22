@@ -88,7 +88,6 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fMsgHandlerMap["set"]		= TMethodMsgHandler<IObject>::create(this, &IObject::set);
 	fMsgHandlerMap["get"]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const >::create(this, &IObject::get);
 	fMsgHandlerMap["del"]		= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::del);
-	fMsgHandlerMap["effect"]	= TMethodMsgHandler<IObject>::create(this, &IObject::effectMsg);
 	fMsgHandlerMap["export"]	= TMethodMsgHandler<IObject>::create(this, &IObject::exportMsg);
 	fMsgHandlerMap["rename"]	= TMethodMsgHandler<IObject>::create(this, &IObject::renameMsg);
 	fMsgHandlerMap["click"]		= TMethodMsgHandler<IObject,MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::clickMsg);
@@ -97,7 +96,6 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fMsgHandlerMap["watch"]		= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsg);
 	fMsgHandlerMap["watch+"]	= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsgAdd);
 	
-	fGetMsgHandlerMap["effect"]	= TGetParamMethodHandler<IObject, GraphicEffect (IObject::*)() const>::create(this, &IObject::getEffect);
 //	fGetMsgHandlerMap["watch"]	= TGetParamMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
 
 	fGetMultiMsgHandlerMap["watch"]	= TGetParamMultiMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
@@ -119,24 +117,24 @@ void IObject::colorAble()
 	fMsgHandlerMap["color"]		= TMethodMsgHandler<IColor>::create(this, &IColor::set);
 	fMsgHandlerMap["hsb"]		= TMethodMsgHandler<IColor>::create(this, &IColor::setHSV);
 
-	fMsgHandlerMap["red"]		= TSetMethodMsgHandler<IObject, int>::create(this,&IObject::setR);
-	fMsgHandlerMap["green"]		= TSetMethodMsgHandler<IObject, int>::create(this,&IObject::setG);
-	fMsgHandlerMap["blue"]		= TSetMethodMsgHandler<IObject, int>::create(this,&IObject::setB);
-	fMsgHandlerMap["alpha"]		= TSetMethodMsgHandler<IObject, int>::create(this,&IObject::setA);
-	fMsgHandlerMap["hue"]		= TSetMethodMsgHandler<IObject, int>::create(this,&IObject::setH);
-	fMsgHandlerMap["saturation"]= TSetMethodMsgHandler<IObject, int>::create(this,&IObject::setS);
-	fMsgHandlerMap["brightness"]= TSetMethodMsgHandler<IObject, int>::create(this,&IObject::setV);
+	fMsgHandlerMap["red"]		= IColor::SetColorMsgHandler::create(this, &IObject::setR, &IObject::setR);
+	fMsgHandlerMap["green"]		= IColor::SetColorMsgHandler::create(this, &IObject::setG, &IObject::setG);
+	fMsgHandlerMap["blue"]		= IColor::SetColorMsgHandler::create(this, &IObject::setB, &IObject::setB);
+	fMsgHandlerMap["alpha"]		= IColor::SetColorMsgHandler::create(this, &IObject::setA, &IObject::setA);
+	fMsgHandlerMap["hue"]		= IColor::SetColorMsgHandler::create(this, &IObject::setH, &IObject::setH);
+	fMsgHandlerMap["saturation"]= IColor::SetColorMsgHandler::create(this, &IObject::setS, &IObject::setS);
+	fMsgHandlerMap["brightness"]= IColor::SetColorMsgHandler::create(this, &IObject::setV, &IObject::setV);
 
 	fMsgHandlerMap["dcolor"]	= TMethodMsgHandler<IObject>::create(this, &IObject::dcolorMsg);
 	fMsgHandlerMap["dhsb"]		= TMethodMsgHandler<IObject>::create(this, &IObject::dhsvMsg);
 
-	fMsgHandlerMap["dred"]			= TSetMethodMsgHandler<IObject,int>::create(this, &IObject::dR);
-	fMsgHandlerMap["dgreen"]		= TSetMethodMsgHandler<IObject,int>::create(this, &IObject::dG);
-	fMsgHandlerMap["dblue"]			= TSetMethodMsgHandler<IObject,int>::create(this, &IObject::dB);
-	fMsgHandlerMap["dalpha"]		= TSetMethodMsgHandler<IObject,int>::create(this, &IObject::dA);
-	fMsgHandlerMap["dhue"]			= TSetMethodMsgHandler<IObject,int>::create(this, &IObject::dH);
-	fMsgHandlerMap["dsaturation"]	= TSetMethodMsgHandler<IObject,int>::create(this, &IObject::dS);
-	fMsgHandlerMap["dbrightness"]	= TSetMethodMsgHandler<IObject,int>::create(this, &IObject::dV);
+	fMsgHandlerMap["dred"]			= IColor::SetColorMsgHandler::create(this, &IObject::dR, &IObject::dR);
+	fMsgHandlerMap["dgreen"]		= IColor::SetColorMsgHandler::create(this, &IObject::dG, &IObject::dG);
+	fMsgHandlerMap["dblue"]			= IColor::SetColorMsgHandler::create(this, &IObject::dB, &IObject::dB);
+	fMsgHandlerMap["dalpha"]		= IColor::SetColorMsgHandler::create(this, &IObject::dA, &IObject::dA);
+	fMsgHandlerMap["dhue"]			= IColor::SetColorMsgHandler::create(this, &IObject::dH, &IObject::dH);
+	fMsgHandlerMap["dsaturation"]	= IColor::SetColorMsgHandler::create(this, &IObject::dS, &IObject::dS);
+	fMsgHandlerMap["dbrightness"]	= IColor::SetColorMsgHandler::create(this, &IObject::dV, &IObject::dV);
 
 	fGetMsgHandlerMap["color"]		= TGetParamMsgHandler<IColor>::create(*(IColor*)this);
 	fGetMsgHandlerMap["red"]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getR);
@@ -165,6 +163,7 @@ void IObject::positionAble()
 	fGetMsgHandlerMap["rotatex"]= TGetParamMsgHandler<float>::create(fXAngle);
 	fGetMsgHandlerMap["rotatey"]= TGetParamMsgHandler<float>::create(fYAngle);
 	fGetMsgHandlerMap["rotatez"]= TGetParamMsgHandler<float>::create(fZAngle);
+	fGetMsgHandlerMap["effect"]	= TGetParamMethodHandler<IObject, GraphicEffect (IObject::*)() const>::create(this, &IObject::getEffect);
 
 	fMsgHandlerMap["x"]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setXPos);
 	fMsgHandlerMap["y"]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setYPos);
@@ -178,6 +177,7 @@ void IObject::positionAble()
 	fMsgHandlerMap["rotatey"]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setRotateY);
 	fMsgHandlerMap["rotatez"]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setRotateZ);
 	fMsgHandlerMap["show"]		= TSetMethodMsgHandler<IObject,bool>::create(this, &IObject::setVisible);
+	fMsgHandlerMap["effect"]	= TMethodMsgHandler<IObject>::create(this, &IObject::effectMsg);
 
 	fMsgHandlerMap["dx"]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addXPos);
 	fMsgHandlerMap["dy"]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYPos);
@@ -689,12 +689,13 @@ MsgHandler::msgStatus IObject::renameMsg(const IMessage* msg)
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
-{ 
+{
 	if (msg->params().size() == 1) {
 		const std::string err = "";
 		std::string fileName = msg->params()[0]->value<std::string>(err);
 		if ( (fileName != err) && (fileName.length()) ) {
-			std::string absolutePath = getScene()->absolutePath(fileName);
+			SIScene scene = getScene();
+			std::string absolutePath = scene ? scene->absolutePath(fileName) : IAppl::absolutePath(fileName);
 			if ( isDirectory(absolutePath) )	//Argument is a directory: export to "directory/objectName".
 			{
 #ifdef WIN32
@@ -867,49 +868,49 @@ IMessage * IObject::click (const IMessage* msg) const
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus IObject::dcolorMsg(const IMessage* msg)
-{
-	if ( ( msg->params().size() == 3 ) || ( msg->params().size() == 4 ) )
-	{
-		int r,g,b,a;
-		r = msg->params()[0]->value<int>(0);
-		g = msg->params()[1]->value<int>(0);
-		b = msg->params()[2]->value<int>(0);
-		a = ( msg->params().size() == 4 ) ? msg->params()[3]->value<int>(0) : 0;
-
-//		IColor c( getColor() );
-		IColor c( *this );
-		c.dR( r );
-		c.dG( g );
-		c.dB( b );
-		c.dA( a );
-		setColor( c );
-		return MsgHandler::kProcessed;
-	}
-	return MsgHandler::kBadParameters;
-}
-
-//--------------------------------------------------------------------------
-MsgHandler::msgStatus IObject::dhsvMsg(const IMessage* msg)
-{
-	if ( ( msg->params().size() == 3 ) || ( msg->params().size() == 4 ) )
-	{
-		int h,s,v,a;
-		h = msg->params()[0]->value<int>(0);
-		s = msg->params()[1]->value<int>(0);
-		v = msg->params()[2]->value<int>(0);
-		a = ( msg->params().size() == 4 ) ? msg->params()[3]->value<int>(0) : 0;
-
-		IColor c( *this );
-		c.dH(h);
-		c.dS(s);		
-		c.dV(v);
-		c.dA(a);
-		setColor( c );
-		return MsgHandler::kProcessed;
-	}
-	return MsgHandler::kBadParameters;
-}
+//MsgHandler::msgStatus IObject::dcolorMsg(const IMessage* msg)
+//{
+//	if ( ( msg->params().size() == 3 ) || ( msg->params().size() == 4 ) )
+//	{
+//		int r,g,b,a;
+//		r = msg->params()[0]->value<int>(0);
+//		g = msg->params()[1]->value<int>(0);
+//		b = msg->params()[2]->value<int>(0);
+//		a = ( msg->params().size() == 4 ) ? msg->params()[3]->value<int>(0) : 0;
+//
+////		IColor c( getColor() );
+//		IColor c( *this );
+//		c.dR( r );
+//		c.dG( g );
+//		c.dB( b );
+//		c.dA( a );
+//		setColor( c );
+//		return MsgHandler::kProcessed;
+//	}
+//	return MsgHandler::kBadParameters;
+//}
+//
+////--------------------------------------------------------------------------
+//MsgHandler::msgStatus IObject::dhsvMsg(const IMessage* msg)
+//{
+//	if ( ( msg->params().size() == 3 ) || ( msg->params().size() == 4 ) )
+//	{
+//		int h,s,v,a;
+//		h = msg->params()[0]->value<int>(0);
+//		s = msg->params()[1]->value<int>(0);
+//		v = msg->params()[2]->value<int>(0);
+//		a = ( msg->params().size() == 4 ) ? msg->params()[3]->value<int>(0) : 0;
+//
+//		IColor c( *this );
+//		c.dH(h);
+//		c.dS(s);		
+//		c.dV(v);
+//		c.dA(a);
+//		setColor( c );
+//		return MsgHandler::kProcessed;
+//	}
+//	return MsgHandler::kBadParameters;
+//}
 
 //--------------------------------------------------------------------------
 // OSCStream support

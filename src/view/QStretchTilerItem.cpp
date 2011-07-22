@@ -34,6 +34,7 @@ using namespace std;
 #include <QtDebug>
 
 #include "VImageView.h"
+#include "QGraphicsVideoItem.h"
 
 #define USEPRECISION
 //#define PRECISION 1000.0f
@@ -60,7 +61,8 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
 	painter->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
 
 	VGraphicsImageItem * img = dynamic_cast<VGraphicsImageItem*>(fStretchTiledItem);
-	float adjust = img ? kGapAdjust : 0;
+	QGraphicsVideoItem * video = dynamic_cast<QGraphicsVideoItem*>(fStretchTiledItem);
+	float adjust = (img || video) ? kGapAdjust : 0;
 	for ( int i = 0 ;  i < fMapping.size(); i++ )
 	{
 		QRectF sourceRect( fMapping[i].first.x(), fMapping[i].first.y(), fMapping[i].first.width(), fMapping[i].first.height());

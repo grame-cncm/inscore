@@ -9,15 +9,15 @@ set (TARGET	INScore)
 set (APPLTARGET	INScoreViewer)
 #######################################
 # versions management
-set (INSFWKVERS 0.81)
-set (INSFWKSTRVERS "v.0.81")
-set (INSFWKSSTRVERS "0.81")
-set (INSTEXTVERS 0.81)
-set (INSTEXTSTRVERS "v.0.81")
-set (INSTEXTSSTRVERS "0.81")
-set (INSAPPVERS 0.81)
-set (INSAPPSTRVERS "v.0.81")
-set (INSAPPSSTRVERS "0.81")
+set (INSFWKVERS 0.82)
+set (INSFWKSTRVERS "v.0.82")
+set (INSFWKSSTRVERS "0.82")
+set (INSTEXTVERS 0.82)
+set (INSTEXTSTRVERS "v.0.82")
+set (INSTEXTSSTRVERS "0.82")
+set (INSAPPVERS 0.82)
+set (INSAPPSTRVERS "v.0.82")
+set (INSAPPSSTRVERS "0.82")
 
 #######################################
 if(WIN32)
@@ -42,7 +42,7 @@ endif(APPLE)
 #######################################
 # set directories, src and headers.
 set (ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../src)
-set (INSFOLDERS  controller events lib model view mapping interface graph signal ITLParser)
+set (INSFOLDERS  controller events lib model view mapping interface graph signal signal/faust ITLParser)
 set (RSRC  "${ROOT}/../rsrc")
 set (LOCALLIB  "${ROOT}/../lib")
 set (OSC_PATH  "${LOCALLIB}/oscpack")
@@ -140,6 +140,10 @@ set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h)
 QT_WRAP_CPP (${TARGET} MOC_FILES ${MOC_HEADERS})
 QT_WRAP_CPP (${APPLTARGET} APPL_MOC_FILES ${ROOT}/INScoreAppl.h)
 
+SET(QtApp_RCCS  ${ROOT}/../rsrc/inscore.qrc)
+#SET(INScoreQRC  inscore.qrc)
+QT4_ADD_RESOURCES(INScoreQRC ${QtApp_RCCS})
+
 #######################################
 # set targets
 include_directories(${INCL} ${OSC_PATH} ${GUIDO_PATH}/include ${GUIDOQT_PATH}/include ${QTHEADERS} )
@@ -157,7 +161,7 @@ if(MINGW)
 endif(MINGW)
 
 
-add_executable( ${APPLTARGET}  MACOSX_BUNDLE ${ROOT}/INScoreAppl.cpp ${APPL_MOC_FILES} ../win32/Viewer/${APPLTARGET}.rc)
+add_executable( ${APPLTARGET}  MACOSX_BUNDLE ${ROOT}/INScoreAppl.cpp ${APPL_MOC_FILES}  ../win32/Viewer/${APPLTARGET}.rc ${INScoreQRC})
 target_link_libraries( ${APPLTARGET} ${QTLIBS} ${GUIDO})
 set_target_properties (${APPLTARGET} PROPERTIES VERSION ${INSAPPVERS}
 							MACOSX_BUNDLE_ICON_FILE ${RSRC}/${APPLTARGET}.icns

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>14.5 OSC address variables</TITLE>
-<META NAME="description" CONTENT="14.5 OSC address variables">
+<TITLE>15.2 Notification messages</TITLE>
+<META NAME="description" CONTENT="15.2 Notification messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,57 +19,78 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node55.html">
 <LINK REL="previous" HREF="node53.html">
-<LINK REL="up" HREF="node49.html">
+<LINK REL="up" HREF="node52.html">
 <LINK REL="next" HREF="node55.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html924"
+<A NAME="tex2html936"
   HREF="node55.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html918"
-  HREF="node49.html">
+<A NAME="tex2html930"
+  HREF="node52.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html914"
+<A NAME="tex2html924"
   HREF="node53.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html920"
+<A NAME="tex2html932"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html922"
-  HREF="node68.html">
+<A NAME="tex2html934"
+  HREF="node72.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html925"
-  HREF="node55.html">15. Changes list</A>
-<B> Up:</B> <A NAME="tex2html919"
-  HREF="node49.html">14. Events and Interaction</A>
-<B> Previous:</B> <A NAME="tex2html915"
-  HREF="node53.html">14.4 Message based variables</A>
- &nbsp; <B>  <A NAME="tex2html921"
+<B> Next:</B> <A NAME="tex2html937"
+  HREF="node55.html">15.3 Variables</A>
+<B> Up:</B> <A NAME="tex2html931"
+  HREF="node52.html">15. Events and Interaction</A>
+<B> Previous:</B> <A NAME="tex2html925"
+  HREF="node53.html">15.1 Interaction messages</A>
+ &nbsp; <B>  <A NAME="tex2html933"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html923"
-  HREF="node68.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html935"
+  HREF="node72.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001550000000000000000"></A>
-<A NAME="oscvar"></A>
+<H1><A NAME="SECTION001620000000000000000"></A>
+<A NAME="notifymsg"></A>
 <BR>
-14.5 OSC address variables
+15.2 Notification messages
 </H1>
-The OSC address parameter of a watch message supports the following variables:
 
-<UL>
-<LI><TT>$self</TT>: replaced by the object name at the time of the message setting.
-</LI>
-<LI><TT>$scene</TT>: replaced by the scene name at the time of the message setting.
-</LI>
-</UL>
-Note: the system doesn't check for the consistency of the variables placement.
+<P>
+Events currently <I>watchable</I> are:
+<BR>
+<IMG
+ WIDTH="297" HEIGHT="124" ALIGN="BOTTOM" BORDER="0"
+ SRC="img86.gif"
+ ALT="\begin{rail}
+what : 'timeEnter' timezone \vert 'timeLeave' timezone \vert 'newElement'
+\end{rail}">
+<BR>
+<A NAME="1147"></A>
+<A NAME="1148"></A>
+<A NAME="1149"></A>
+
+<P>
+<BR>
+<IMG
+ WIDTH="344" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
+ SRC="img87.gif"
+ ALT="\begin{rail}
+timezone : int32 int32 int32 int32
+\end{rail}">
+<BR>
+A time zone is defined by 2 dates expressed as rational values (i.e. with 4 integers).
+<A NAME="1152"></A>
+
+<P>
+The <TT>newElement</TT> event is supported at scene level only and triggered when a new element is added to the scene.
 
 <P>
 <BR><HR>

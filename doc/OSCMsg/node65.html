@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.10 Differences to version 0.53</TITLE>
-<META NAME="description" CONTENT="15.10 Differences to version 0.53">
+<TITLE>16.7 Differences to version 0.74</TITLE>
+<META NAME="description" CONTENT="16.7 Differences to version 0.74">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,68 +21,50 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node66.html">
 <LINK REL="previous" HREF="node64.html">
-<LINK REL="up" HREF="node55.html">
+<LINK REL="up" HREF="node58.html">
 <LINK REL="next" HREF="node66.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1090"
+<A NAME="tex2html1101"
   HREF="node66.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1084"
-  HREF="node55.html">
+<A NAME="tex2html1095"
+  HREF="node58.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1078"
+<A NAME="tex2html1089"
   HREF="node64.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1086"
+<A NAME="tex2html1097"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1088"
-  HREF="node68.html">
+<A NAME="tex2html1099"
+  HREF="node72.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1091"
-  HREF="node66.html">15.11 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1085"
-  HREF="node55.html">15. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1079"
-  HREF="node64.html">15.9 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1087"
+<B> Next:</B> <A NAME="tex2html1102"
+  HREF="node66.html">16.8 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1096"
+  HREF="node58.html">16. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1090"
+  HREF="node64.html">16.6 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1098"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1089"
-  HREF="node68.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1100"
+  HREF="node72.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION0016100000000000000000">
-15.10 Differences to version 0.53</A>
+<H1><A NAME="SECTION001770000000000000000">
+16.7 Differences to version 0.74</A>
 </H1>
 
 <UL>
-<LI>ITL parser corrected to support regexp in message string (used by messages addressed to sync node)
+<LI>new <TT>map+</TT> message  (see section <A HREF="node30.html#mapAddMsg">9.2</A> p.<A HREF="node30.html#mapAddMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>format of mapping files and strings changed (section <A HREF="node29.html#mapMsg">9.1</A> p.<A HREF="node29.html#mapMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>format of sync messages extended to include map name (section <A HREF="node32.html#syncmsg">10</A> p.<A HREF="node32.html#syncmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>signal node: 'garbage' message removed
-</LI>
-<LI>new 'reset' message for the scene (/ITL/scene) (section <A HREF="node5.html#scene">3</A> p.<A HREF="node5.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>new 'version' message for the application (/ITL) (section <A HREF="node4.html#ITL">2</A> p.<A HREF="node4.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>new 'reset' message for signals (section <A HREF="node43.html#ssignal">13.1.1</A> p.<A HREF="node43.html#ssignal"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>bug parsing messages without params corrected
-</LI>
-<LI>slave segmentation used for synchronization
-</LI>
-<LI>new H synchronization mode (preserves slave segmentation)
-</LI>
-<LI>crash bug corrected for load message and missing ITL files
+<LI>the <TT>click</TT> and <TT>select</TT> messages are deprecated (but still supported). They will be removed in a future version (see section <A HREF="node19.html#csmsg">4.4</A> p.<A HREF="node19.html#csmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
 </UL>
 

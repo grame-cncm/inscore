@@ -1,0 +1,48 @@
+
+/ITL/scene/color1 set rect 1. 0.04
+/ITL/scene/color2 set rect 1. 0.04
+/ITL/scene/color3 set rect 1. 0.04
+/ITL/scene/color* penWidth 1.
+/ITL/scene/color* penColor 0 0 0
+/ITL/scene/color* z 1.
+/ITL/scene/color* color 255 255 255 0
+
+/ITL/scene/color1 watch  "mouseDown"  "/ITL/scene/signal/pitchcolor" "$x[-1.,1.]"
+/ITL/scene/color1 watch  "mouseMove"  "/ITL/scene/signal/pitchcolor" "$x[-1.,1.]"
+/ITL/scene/color1 watch+ "mouseDown"  "/ITL/scene/colorlevel1" "width" "$x"
+/ITL/scene/color1 watch+ "mouseMove"  "/ITL/scene/colorlevel1" "width" "$x"
+/ITL/scene/color1 watch+ "mouseDown"  "/ITL/scene/colorlevel1" "hue" "$x[-1.,1.]"
+/ITL/scene/color1 watch+ "mouseMove"  "/ITL/scene/colorlevel1" "hue" "$x[-1.,1.]"
+
+/ITL/scene/color2 watch  "mouseDown"  "/ITL/scene/signal/rollcolor" "$x[-1.,1.]"
+/ITL/scene/color2 watch  "mouseMove"  "/ITL/scene/signal/rollcolor" "$x[-1.,1.]"
+/ITL/scene/color2 watch+ "mouseDown"  "/ITL/scene/colorlevel2" "width" "$x"
+/ITL/scene/color2 watch+ "mouseMove"  "/ITL/scene/colorlevel2" "width" "$x"
+/ITL/scene/color2 watch+ "mouseDown"  "/ITL/scene/colorlevel2" "hue" "$x[-1.,1.]"
+/ITL/scene/color2 watch+ "mouseMove"  "/ITL/scene/colorlevel2" "hue" "$x[-1.,1.]"
+
+/ITL/scene/color3 watch  "mouseDown"  "/ITL/scene/signal/yawcolor" "$x[-1.,1.]"
+/ITL/scene/color3 watch  "mouseMove"  "/ITL/scene/signal/yawcolor" "$x[-1.,1.]"
+/ITL/scene/color3 watch+ "mouseDown"  "/ITL/scene/colorlevel3" "width" "$x"
+/ITL/scene/color3 watch+ "mouseMove"  "/ITL/scene/colorlevel3" "width" "$x"
+/ITL/scene/color3 watch+ "mouseDown"  "/ITL/scene/colorlevel3" "hue" "$x[-1.,1.]"
+/ITL/scene/color3 watch+ "mouseMove"  "/ITL/scene/colorlevel3" "hue" "$x[-1.,1.]"
+
+
+/ITL/scene/colorlevel1 set rect 1. 0.04
+/ITL/scene/colorlevel1 hue 0
+/ITL/scene/colorlevel1 width 0.5
+/ITL/scene/colorlevel2 set rect 1. 0.04
+/ITL/scene/colorlevel2 hue 108
+/ITL/scene/colorlevel2 width 0.6
+/ITL/scene/colorlevel3 set rect 1. 0.04
+/ITL/scene/colorlevel3 hue 54
+/ITL/scene/colorlevel3 width 0.3
+/ITL/scene/colorlevel* saturation 100
+/ITL/scene/colorlevel* brightness 100
+
+/ITL/scene/color* xorigin -1.
+/ITL/scene/color* x -0.5
+/ITL/scene/color*1 y 0.6
+/ITL/scene/color*2 y 0.65
+/ITL/scene/color*3 y 0.7

@@ -436,10 +436,10 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		virtual MsgHandler::msgStatus saveMsg (const IMessage* msg) const;
 
 		/// \brief object \c 'dcolor' message handler.		
-		virtual MsgHandler::msgStatus dcolorMsg(const IMessage* msg);
+//		virtual MsgHandler::msgStatus dcolorMsg(const IMessage* msg);
 
 		/// \brief object \c 'dcolor' message handler.				
-		virtual MsgHandler::msgStatus dhsvMsg(const IMessage* msg);
+//		virtual MsgHandler::msgStatus dhsvMsg(const IMessage* msg);
 };
 
 IMessage&		operator << (IMessage&, const SGetParamMsgHandler&);

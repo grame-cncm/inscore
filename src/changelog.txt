@@ -12,6 +12,16 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 0.82
+- new Faust plugins for signals processing
+- colors management change: all the color models (RGBA and HSBA) accept now
+  float values that are interpreted in the common [-1,1] range. For the
+  hue value, 0 always corresponds to 'red' whatever the scale used.
+- stretch adjustment for video objects (corrects gaps in sync h mode)
+- support for opening inscore files on the command line
+- system mapping correction
+
+----------------------------------------------------
 Version 0.81
 - behavior change with synchronization without stretch: now the system looks also in the
   slave map for a segment corresponding to the master date.

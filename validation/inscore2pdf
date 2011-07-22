@@ -1,0 +1,31 @@
+#!/bin/sh
+
+if [ $# -ne 2 ]
+then
+	echo usage $0 file dest
+	exit 1
+fi
+
+function wait () {
+	what=$1
+	count=0
+	while [ $count -lt 100000 ]
+	do
+		[ -f $what ] && break
+		count=$(($count + 1))
+	done
+}
+
+file=$1
+dest=$2
+path=$(pwd)
+
+echo inscore2pdf $file $dest
+
+./SendOSC 7000 /ITL rootPath $path/$(dirname $file)
+./SendOSC 7000 /ITL load $(basename $file) 
+./SendOSC 7000 /ITL/scene export $path/scene.pdf 
+
+wait scene.pdf
+mv scene.pdf $dest
+

@@ -54,7 +54,8 @@ VGraphicsItemView::VGraphicsItemView( QGraphicsScene * scene , QGraphicsItem * i
 	fItem = item;
 	scene->addItem( item );
 
-	fBrushColorStartIndex = qrand();						// Randomize the color of the mapping debug items.
+//	fBrushColorStartIndex = qrand();						// Randomize the color of the mapping debug items.
+	fBrushColorStartIndex = 0;						// Randomize the color of the mapping debug items.
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -94,8 +95,8 @@ void VGraphicsItemView::drawMapping(IObject* o)
 	{
 		QColor mapColor1 = brushColors[(count++ + fBrushColorStartIndex)%NB_OF_COLORS];
 		QColor mapColor2 = brushColors[(count + fBrushColorStartIndex)%NB_OF_COLORS];
-		mapColor1.setAlpha (100);
-		mapColor2.setAlpha (100);
+		mapColor1.setAlpha (90);
+		mapColor2.setAlpha (90);
 		
 		float z = 0;
 		int colorindex = 0;

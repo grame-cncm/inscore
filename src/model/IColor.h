@@ -49,6 +49,14 @@ class IColor
 	int fA;
 	bool fModified;				///< the modification state
 
+	void setParam( int& param , int value , int min , int max , bool isHSV );
+	bool getRGBA( const IMessage* msg, int& r, int& g, int& b, int& a);
+	bool getHSBA( const IMessage* msg, int& h, int& s, int& b, int& a);
+
+	inline int floatRGB2int (float a)	{ return (a+1)*255/2; }
+	inline int floatH2int (float h)		{ h*=180; return h >=0 ? h : 360+h; }
+	inline int floatSV2int (float v)	{ return (v+1)*50; }
+
 	public:		
 				 IColor() : fR(0), fG(0), fB(0), fA(255), fModified(true) { updateHSV(); }
 				 IColor(int r, int g, int b, int a = 255) : fR(r), fG(g), fB(b), fA(a), fModified(true) { updateHSV(); }
@@ -75,6 +83,9 @@ class IColor
 
 		MsgHandler::msgStatus set (const IMessage* msg);
 		MsgHandler::msgStatus setHSV (const IMessage* msg);
+		MsgHandler::msgStatus dcolorMsg (const IMessage* msg);
+		MsgHandler::msgStatus dhsvMsg (const IMessage* msg);
+
 		template <typename T> void print (T& out)	const { out << fR << fG << fB << fA; }
 		
 		int getR() const { return fR; }
@@ -87,25 +98,40 @@ class IColor
 
 		int getA() const { return fA; }
 
-		void setH(int h) { setParam(fH,h%360,0,360,true); }
-		void setS(int s) { setParam(fS,s,0,100,true); }
-		void setV(int v) { setParam(fV,v,0,100,true); }
+		void setH(int h) { setParam(fH, h%360, 0,360, true); }
+		void setS(int s) { setParam(fS, s, 0, 100, true); }
+		void setV(int v) { setParam(fV, v, 0, 100, true); }
 		
-		void setR(int r) { setParam(fR,r,0,255,false); }
-		void setG(int g) { setParam(fG,g,0,255,false); }
-		void setB(int b) { setParam(fB,b,0,255,false); }
+		void setH(float h) { setParam(fH, floatH2int(h)%360, 0, 360, true); }
+		void setS(float s) { setParam(fS, floatSV2int(s), 0, 100, true); }
+		void setV(float v) { setParam(fV, floatSV2int(v), 0, 100, true); }
 		
-		void setA(int a) { setParam(fA,a,0,255,false); }
+		void setR(int r) { setParam(fR, r, 0, 255, false); }
+		void setG(int g) { setParam(fG, g, 0, 255, false); }
+		void setB(int b) { setParam(fB, b, 0, 255, false); }
 
-		void dA(int a)	{ setA( getA()+a ); }
-		void dR(int r)	{ setR( getR()+r ); }
-		void dG(int g)	{ setG( getG()+g ); }
-		void dB(int b)	{ setB( getB()+b ); }
-		void dH(int h)	{ setH( getH()+h ); }
-		void dS(int s)	{ setS( getS()+s ); }
-		void dV(int v)	{ setV( getV()+v ); }
+		void setR(float r) { setParam(fR, floatRGB2int(r), 0, 255, false); }
+		void setG(float g) { setParam(fG, floatRGB2int(g), 0, 255, false); }
+		void setB(float b) { setParam(fB, floatRGB2int(b), 0, 255, false); }
+		
+		void setA(int a)	{ setParam(fA, a, 0, 255, false); }
+		void setA(float a)	{ setParam(fA, floatRGB2int(a), 0, 255, false); }
 
-		void setParam( int& param , int value , int min , int max , bool isHSV );
+		void dA(int a)		{ setA( getA()+a ); }
+		void dR(int r)		{ setR( getR()+r ); }
+		void dG(int g)		{ setG( getG()+g ); }
+		void dB(int b)		{ setB( getB()+b ); }
+		void dH(int h)		{ setH( getH()+h ); }
+		void dS(int s)		{ setS( getS()+s ); }
+		void dV(int v)		{ setV( getV()+v ); }
+
+		void dA(float a)	{ setA( getA() + floatRGB2int(a) ); }
+		void dR(float r)	{ setR( getR() + floatRGB2int(r) ); }
+		void dG(float g)	{ setG( getG() + floatRGB2int(g) ); }
+		void dB(float b)	{ setB( getB() + floatRGB2int(b) ); }
+		void dH(float h)	{ setH( getH() + floatH2int(h) ); }
+		void dS(float s)	{ setS( getS() + floatSV2int(s) ); }
+		void dV(float v)	{ setV( getV() + floatSV2int(v) ); }
 		
 		void updateHSV();
 		void updateRGB();
@@ -117,6 +143,21 @@ class IColor
 		static void hsv2rgb( int  *r, int *g,int *b, int h, int s, int v );
 		static void hsv2rgb( float h , float s, float v , float& r, float& g, float& b );
 
+		class SetColorMsgHandler;
+		typedef SMARTP<SetColorMsgHandler> SSetColorMsgHandler;
+		class SetColorMsgHandler : public MsgHandler {
+			public:
+				typedef void (IColor::*setint)(int);
+				typedef void (IColor::*setfloat)(float);
+				virtual MsgHandler::msgStatus operator ()(const IMessage* msg);
+				static SSetColorMsgHandler create(IColor* color, setint si, setfloat sf) { return new SetColorMsgHandler(color, si, sf); }
+			protected:
+				IColor*		fColor;
+				setint		fSetInt;
+				setfloat	fSetFloat;
+				SetColorMsgHandler(IColor* color, setint si, setfloat sf) : fColor(color), fSetInt(si), fSetFloat(sf) {}
+		};
+		
 };
 
 inline OSCStream& operator << (OSCStream& out, const IColor& color)	{ color.print(out); return out; }

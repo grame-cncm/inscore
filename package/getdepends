@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+
+FILE=$1
+DEPLIBS=$(objdump -p  $FILE | grep NEEDED | sed -e 's/.*NEEDED//')
+for a in $DEPLIBS
+do
+  PKG=$(dpkg -S $a | cut -d: -f1  | sort -u)
+  for b in $PKG
+  do
+    VERS=$(dpkg -p $b | grep ^Version | sed -e 's/Version://')
+#   echo $PKG VERS: $VERS
+    echo "$b (>= $VERS)"
+  done
+done
+
+

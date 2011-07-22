@@ -68,14 +68,22 @@ IScene::IScene(const std::string& name, IObject * parent) : IRectShape(name, par
 	fMsgHandlerMap["rootPath"]		= TSetMethodMsgHandler<IScene, string>::create(this, &IScene::setRootPath);
 
 	fGetMsgHandlerMap["fullscreen"] = TGetParamMsgHandler<bool>::create(fFullScreen);
-	fGetMsgHandlerMap[""]			= 0;	// force standard propagation of the get message
-	fGetMsgHandlerMap["effect"]		= 0;	// no effects at scene level
 	fGetMsgHandlerMap["watch"]		= TGetParamMethodHandler<IScene, IMessageList (IScene::*)() const>::create(this, &IScene::getWatch);
 	fGetMsgHandlerMap["rootPath"]	= TGetParamMsgHandler<string>::create(fRootPath);
 }
 
 //--------------------------------------------------------------------------
 QGraphicsScene * IScene::getGraphicScene () const			{ return getView()->scene(); }
+
+//--------------------------------------------------------------------------
+void IScene::setHandlers ()
+{
+	colorAble();
+	positionAble();
+	fGetMsgHandlerMap[""]			= 0;	// force standard propagation of the get message
+	fMsgHandlerMap["effect"]		= 0;	// no effects at scene level
+	fGetMsgHandlerMap["effect"]		= 0;	// no effects at scene level
+}
 
 //--------------------------------------------------------------------------
 void IScene::newScene ()	{}

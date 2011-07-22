@@ -1,4 +1,4 @@
-version := 0.81
+version := 0.82
 
 package:= INScore-$(version)
 rsrc   := INScore-rsrc-$(version)
@@ -114,16 +114,6 @@ win32:
 
 linux:
 	[ -d $(package) ] || mkdir -p $(package)
-	cp -rf Max $(package)/
-	cp -rf PureData $(package)
-	cp -rf python $(package)
-	cp -rf lisp $(package)
-	cp -rf StandAlone $(package)/
-	cp -rf Tutorial $(package)/
-	cp readme.txt $(package)
-	cp -r doc $(package)
-	cp -f ../src/changelog.txt $(package)
-	@echo change mode
-	@chmod 644 $(shell find $(package) -type f)
+	make common
 	make version=$(version) -f makedeb
 
