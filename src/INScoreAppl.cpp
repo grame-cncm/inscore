@@ -23,16 +23,19 @@
 */
 
 #include <QApplication>
-#include <QMenuBar>
-#include <QMessageBox>
-#include <QMenu>
+#include <QBitmap>
+#include <QDebug>
 #include <QDir>
-#include <QString>
 #include <QEvent>
 #include <QFileDialog>
 #include <QFileOpenEvent>
+#include <QMenu>
+#include <QMenuBar>
+#include <QMessageBox>
+#include <QSplashScreen>
+#include <QString>
 #include <QUrl>
-#include <QDebug>
+
 
 #include <stdlib.h>
 #include <iostream>
@@ -133,6 +136,12 @@ int main( int argc, char **argv )
 	appl.setApplicationName("INScoreViewer");
 	QDir dir(QApplication::applicationDirPath());
 
+	Q_INIT_RESOURCE( inscore );
+    QPixmap pixmap(":/INScoreViewer.png");
+    QSplashScreen splash(pixmap);
+    splash.setMask (pixmap.mask());
+	splash.show();
+
 #ifndef WIN32
 	dir.cdUp();
 #endif
@@ -155,7 +164,8 @@ int main( int argc, char **argv )
 		else appl.open (arg);
 	}
 #endif
-
+	sleep (2);
+    splash.finish(0);
 	ret = appl.exec();
 	INScore::stop (glue);
 	return ret;
