@@ -36,6 +36,9 @@
 #include <QString>
 #include <QUrl>
 
+#ifdef WIN32
+#define sleep(n)	Sleep(n*1000)
+#endif
 
 #include <stdlib.h>
 #include <iostream>

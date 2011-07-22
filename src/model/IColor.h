@@ -53,9 +53,9 @@ class IColor
 	bool getRGBA( const IMessage* msg, int& r, int& g, int& b, int& a);
 	bool getHSBA( const IMessage* msg, int& h, int& s, int& b, int& a);
 
-	inline int floatRGB2int (float a)	{ return (a+1)*255/2; }
-	inline int floatH2int (float h)		{ h*=180; return h >=0 ? h : 360+h; }
-	inline int floatSV2int (float v)	{ return (v+1)*50; }
+	inline int floatRGB2int (float a)	{ return int((a+1)*255/2); }
+	inline int floatH2int (float h)		{ h*=180; return int(h >=0 ? h : 360+h); }
+	inline int floatSV2int (float v)	{ return int((v+1)*50); }
 
 	public:		
 				 IColor() : fR(0), fG(0), fB(0), fA(255), fModified(true) { updateHSV(); }
