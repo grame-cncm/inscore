@@ -1,0 +1,24 @@
+/ITL/scene  reset
+
+/ITL/scene width 1.
+/ITL/scene height 1.4
+/ITL/scene/myGuidoFile set gmnf "rsrc/1voice-846_2f.gmn"
+/ITL/scene/myGuidoFile scale 3.6
+%/ITL/scene/myGuidoFile z 2.0
+
+/ITL/scene/tgv set img "rsrc/tgv.gif"
+/ITL/scene/tgv scale 0.6
+/ITL/scene/tgv z 1.0
+
+/ITL/scene/tgv mapf "rsrc/tgv.map"
+/ITL/scene/tgv date -16 4
+
+/ITL/scene/sync tgv myGuidoFile hv syncBottom
+/ITL/scene/tgv date 7 1
+
+/ITL/scene/tgv watch  "mouseDown"  	"/ITL/scene/tgv" "x" "$sx"
+/ITL/scene/tgv watch+ "mouseDown"  	"/ITL/scene/tgv" "y" "$sy"
+/ITL/scene/tgv watch  "mouseUp"  	"/ITL/scene/tgv" "x" "$sx"
+/ITL/scene/tgv watch+ "mouseUp"  	"/ITL/scene/tgv" "y" "$sy"
+/ITL/scene/tgv watch  "mouseMove"  	"/ITL/scene/tgv" "x" "$sx"
+/ITL/scene/tgv watch+ "mouseMove"  	"/ITL/scene/tgv" "y" "$sy"
