@@ -68,7 +68,7 @@ ostream& operator << (ostream& out, const IMessageList& msg)
 {
 	for (unsigned int i=0; i < msg.size(); i++) {
 		msg[i]->print(out);
-		out << endl;
+		out << ';' << endl;
 	}
 	return out;
 }
