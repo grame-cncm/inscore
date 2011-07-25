@@ -1,12 +1,23 @@
-a="toto";
-b12 = 0.3;
-loop( i, 3
-%	/ITL hello;
-	loop (j, 5 
-		/ITL truc;
+a	=	"toto";
+b12 =	0.3;
+
+/ITL/truc set 'txt' $a;
+/ITL/truc x $b12;
+
+
+loop( i, 2
+	loop (j, 2 
+		/ITL/scene/rect_%i_%j set 'rect' 0.1 0.1;
+		/ITL/scene/rect_%i_%j y '0.%i' $b12;
 	);
+	/ITL/scene/toto_%i x '-0.%i';
 );
-/ITL/scene/a set txt "a quoted \"str\" test" ;
+
+/ITL/scene/a set 'txt' "a double quoted \"str\" test" ;
+/ITL/scene/b set 'txt' "a double quoted 'str' test" ;
+/ITL/scene/c set 'txt' 'a quoted "str" test' ;
+/ITL/scene/d set 'txt' 'a quoted \'str\' test' ;
+
 /ITL angle 0 ;
 /ITL color 0 0 0 255 ;
 /ITL rootPath "/Users/fober/src/Interlude/branches/proto2/max/" ;
@@ -16,9 +27,10 @@ loop( i, 3
 
 x=23;
 
-/ITL/scene/sync toto:system titi:truc;
+/ITL/scene/sync 'toto:system' 'titi:truc';
 /ITL/scene/signal/truc 0.5 0.4 0.3 1.00000e-10;
-/ITL/scene/sync spot* "myGuidoFile:voice1";
+/ITL/scene/sync 'spot*' "myGuidoFile:voice1";
+/ITL/scene/test watch 'event' '/ITL hello' '$x';
 
 
 (*
