@@ -47,7 +47,7 @@ class TLoopEval;
 class TLoopElement : public smartable { 
 	public: 
 		virtual ~TLoopElement() {} 
-		virtual void accept (TLoopEval* visitor) = 0;
+		virtual bool accept (TLoopEval* visitor) = 0;
 };
 typedef SMARTP<TLoopElement> STLoopElement;
 
@@ -57,7 +57,7 @@ class LoopedMessage : public TLoopElement
 	public:
 				 LoopedMessage (IMessage* msg) : fMessage(msg) {}
 		virtual ~LoopedMessage();
-		virtual void accept (TLoopEval* visitor);
+		virtual bool accept (TLoopEval* visitor);
 };
 
 class LoopedLoop : public TLoopElement 
@@ -66,7 +66,7 @@ class LoopedLoop : public TLoopElement
 	public:
 				 LoopedLoop (STLoop loop) : fLoop(loop) {}
 		virtual ~LoopedLoop() {}
-		virtual void accept (TLoopEval* visitor);
+		virtual bool accept (TLoopEval* visitor);
 };
 
 
@@ -79,18 +79,26 @@ class TLoop : public smartable
 	private:
 		std::string		fIdent;
 		unsigned int	fCount;
+		int				fLineno;
 		std::vector<STLoopElement>	fLooped;
 		
     protected:
-				 TLoop(const std::string& id, unsigned int count) : fIdent(id), fCount(count) {}
+				 TLoop(const std::string& id, unsigned int count, int lineno) : fIdent(id), fCount(count), fLineno(lineno) {}
 		virtual ~TLoop() {}
 
 	public:
-        static STLoop create(const std::string& id, unsigned int count)	{ return new TLoop(id, count); }
+        static STLoop create(const std::string& id, unsigned int count, int lineno)	{ return new TLoop(id, count, lineno); }
         void add(IMessage* msg)										{ fLooped.push_back (new LoopedMessage(msg)); }
         void add(STLoop loop)										{ fLooped.push_back (new LoopedLoop(loop)); }
-		void eval(TEnv* env, IMessageList* outlist);
+		bool eval(TEnv* env, IMessageList* outlist);
+		int		lineno() const										{ return fLineno; }
+
+		void	print(std::ostream& os)	const { 
+			os << fIdent << ", " << fCount << ": " << fLooped.size() << " elements" ;
+		}
 };
+
+inline std::ostream& operator << (std::ostream& os, const TLoop* loop) { loop->print(os); return os; }
 
 } // namespace
 

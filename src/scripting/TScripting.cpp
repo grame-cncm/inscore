@@ -51,9 +51,9 @@ TScripting::TScripting()
 TScripting::~TScripting()	{ delete fMessages; }
 
 //--------------------------------------------------------------------------------------------
-void TScripting::variable	(const std::string& ident, int val)					{ fEnv->bind( ident, val); }
-void TScripting::variable	(const std::string& ident, float val)				{ fEnv->bind( ident, val); }
-void TScripting::variable	(const std::string& ident, const std::string& val)	{ fEnv->bind( ident, val); }
+void TScripting::variable	(const char* ident, int val)				{ fEnv->bind( ident, val); }
+void TScripting::variable	(const char* ident, float val)				{ fEnv->bind( ident, val); }
+void TScripting::variable	(const char* ident, const char* val)	{ fEnv->bind( ident, val); }
 
 //--------------------------------------------------------------------------------------------
 void TScripting::add (IMessage* msg)	
@@ -66,9 +66,9 @@ void TScripting::add (IMessage* msg)
 }
 
 //--------------------------------------------------------------------------------------------
-void TScripting::startLoop	(const std::string ident, unsigned int count)
+void TScripting::startLoop	(const char* ident, unsigned int count, int lineno)
 {
-	STLoop loop = TLoop::create (ident, count);
+	STLoop loop = TLoop::create (ident, count, lineno);
 	if (fLoops.size()) {
 		STLoop current = fLoops.top();
 		current->add (loop);
@@ -77,17 +77,23 @@ void TScripting::startLoop	(const std::string ident, unsigned int count)
 }
 
 //--------------------------------------------------------------------------------------------
-bool TScripting::endLoop ()
+Sbaseparam*	TScripting::resolve (const char* var)
+{
+	Sbaseparam value = fEnv->value (var);
+	return value ? new Sbaseparam(value) : 0;
+}
+
+//--------------------------------------------------------------------------------------------
+int TScripting::endLoop ()
 {
 	if (fLoops.size()) {
 		STLoop loop = fLoops.top();
 		fLoops.pop ();
-		if (fLoops.empty()) {
-cout << "evaluate loop " << endl;
-			loop->eval(fEnv, fMessages);
+		if (fLoops.empty()) {		// evaluates the loop with a new environment
+			return loop->eval(TEnv::create(), fMessages) ? 0 : loop->lineno();
 		}
 	}
-	return false;
+	return 0;
 }
 
 } // namespace

@@ -23,34 +23,38 @@
 
 */
 
-#include "TLoop.h"
+#include <iostream>
 
+#include "TLoop.h"
 #include "TEnv.h"
 #include "TLoopEval.h"
+
+using namespace std;
 
 namespace inscore 
 {
 
 //--------------------------------------------------------------------------------------------
-void LoopedMessage::accept (TLoopEval* visitor)	{ visitor->eval(fMessage); }
 LoopedMessage::~LoopedMessage()					{ delete fMessage; }
-
-void LoopedLoop::accept (TLoopEval* visitor)		{ visitor->eval(fLoop); }
+bool LoopedMessage::accept (TLoopEval* visitor)	{ return visitor->eval(fMessage); }
+bool LoopedLoop::accept (TLoopEval* visitor)	{ return visitor->eval(fLoop); }
 
 //--------------------------------------------------------------------------------------------
-void TLoop::eval(TEnv* env, IMessageList* outlist) 
+// evaluate a message in a given environment
+bool TLoop::eval(TEnv* env, IMessageList* outlist) 
 {
-	unsigned int n = fLooped.size();
-	
+	bool result = true;
+	unsigned int n = fLooped.size();	
 	for (unsigned int i=0; i<fCount; i++) {	
 		STEnv newEnv = TEnv::create(env);
-		newEnv->bind (fIdent, int(i));
+		newEnv->bind (fIdent.c_str(), int(i));
 		TLoopEval eval (newEnv, outlist);
 
 		for (unsigned int j=0; j<n; j++) {
-			fLooped[i]->accept(&eval);
+			result &= fLooped[j]->accept(&eval);
 		}
 	}
+	return result;
 }
 
 } // namespace

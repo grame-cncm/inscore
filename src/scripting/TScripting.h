@@ -35,8 +35,12 @@ namespace inscore
 
 class IMessageList;
 class IMessage;
+class baseparam;
+typedef SMARTP<baseparam> Sbaseparam;
+
 class TLoop;
 typedef SMARTP<TLoop> STLoop;
+
 class TEnv;
 typedef SMARTP<TEnv> STEnv;
 
@@ -52,11 +56,13 @@ class TScripting
 		virtual ~TScripting();
 
 		void	add			(IMessage* msg);
-		void	variable	(const std::string& ident, int val);
-		void	variable	(const std::string& ident, float val);
-		void	variable	(const std::string& ident, const std::string& val);
-		void	startLoop	(const std::string ident, unsigned int count);
-		bool	endLoop		();
+		void	variable	(const char* ident, int val);
+		void	variable	(const char* ident, float val);
+		void	variable	(const char* ident, const char* val);
+		void	startLoop	(const char* ident, unsigned int count, int lineno);
+		int		endLoop		();
+		
+		Sbaseparam*	resolve (const char* var);
 		
 		IMessageList* messages() const { return fMessages; }
 };

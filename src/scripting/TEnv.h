@@ -55,13 +55,13 @@ class TEnv : public smartable
         static STEnv create()			{ return new TEnv(); }
         static STEnv create(TEnv* env)	{ return new TEnv(env); }
 
-		STEnv	bind (const std::string& e, int v)			{ fVariables[e] = new IMsgParam<int>(v); return this; }
-		STEnv	bind (const std::string& e, float v)		{ fVariables[e] = new IMsgParam<float>(v); return this; }
-		STEnv	bind (const std::string& e, std::string v)	{ fVariables[e] = new IMsgParam<std::string>(v); return this; }
-		void		clear()								{ fVariables.clear(); }
-		int			size() const						{ return fVariables.size(); }
+		STEnv	bind (const char* e, int v)			{ fVariables[e] = new IMsgParam<int>(v); return this; }
+		STEnv	bind (const char* e, float v)		{ fVariables[e] = new IMsgParam<float>(v); return this; }
+		STEnv	bind (const char* e, const char* v)	{ fVariables[e] = new IMsgParam<std::string>(v); return this; }
+		void		clear()							{ fVariables.clear(); }
+		int			size() const					{ return fVariables.size(); }
 		
-		Sbaseparam value(std::string& e) { 
+		Sbaseparam value(const std::string& e) const { 
 			std::map<std::string, Sbaseparam>::const_iterator i = fVariables.find(e);
 			if (i != fVariables.end()) return i->second;
 			return 0;
@@ -71,13 +71,13 @@ class TEnv : public smartable
 			os << "env size:" << size() << " : ";
 			std::map<std::string, Sbaseparam>::const_iterator i = fVariables.begin();
 			while (i != fVariables.end()) {
-				os << i->first << "(" << i->first << "):" << (void*)(i->second) << " ";
+				os << i->first << ":" << i->second << " , ";
 				i++;
 			}
 		}
 };
 
-inline std::ostream& operator << (std::ostream& os, const STEnv& env) { env->print(os); return os; }
+inline std::ostream& operator << (std::ostream& os, const TEnv* env) { env->print(os); return os; }
 
 } // namespace
 

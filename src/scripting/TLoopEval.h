@@ -41,12 +41,17 @@ class TLoopEval
 	IMessageList*	fOutMsgs;
 	TEnv*			fEnv;
 	
+	enum type { kTypeString, kTypeInt, kTypeFloat };
+	
+	std::string	expand (const char* str, const TEnv* env) const;
+	type		getType (const char* str) const;
+	
 	public:	
 				 TLoopEval(TEnv* env, IMessageList* outmsgs) : fOutMsgs(outmsgs), fEnv(env) {}
 		virtual ~TLoopEval() {}
 
-		virtual void eval (TLoop* loop);
-		virtual void eval (IMessage* msg);
+		virtual bool eval (TLoop* loop);
+		virtual bool eval (IMessage* msg);
 };
 
 } // namespace
