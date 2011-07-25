@@ -47,7 +47,6 @@ string	TLoopEval::expand (const char* str, const TEnv* env) const
 		if (*str == kVarChar) {		// start of a loop variable identifier
 			str++;					// go to next char
 			string ident;			// prepare a string to receive the identifier
-			int i;					// and an int to get the iteration number
 			Sbaseparam val;			// 
 			while (*str) {
 				ident += *str;				// adds the next char to the identifier
@@ -104,7 +103,7 @@ bool TLoopEval::eval (IMessage* msg)
 		return false;
 	}
 	IMessage * expanded = new IMessage(address, msg->message());
-	int n = msg->size();
+	unsigned int n = msg->size();
 	for (unsigned int i=0; i< n; i++) {
 		string param;
 		if (msg->param(i, param)) {

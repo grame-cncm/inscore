@@ -35,11 +35,11 @@ make -C doc
 make -C doc html
 
 ITL=$ROOT/src/interface/INScore.cpp
-echo " updating $ITL  (recompile)"
-N=$(toNum $VERSION)
-sed "s/\(version[^0-9]*\)[1-9][0-9]*/\1$N/" $ITL \
-	| sed "s/\(version[^0-9]*\)[0-9]*\.[0-9]*/\1$VERSION/"  > TMP$$
-mv -f TMP$$ $ITL
+# echo " updating $ITL  (recompile)"
+# N=$(toNum $VERSION)
+# sed "s/\(version[^0-9]*\)\.[1-9][0-9]*/\1$N/" $ITL \
+# 	| sed "s/\(version[^0-9]*\)[0-9]*\.[0-9]*/\1$VERSION/"  > TMP$$
+# mv -f TMP$$ $ITL
 
 DOXY=$ROOT/doc/doxygen/Doxyall
 echo " updating $DOXY  (regenerate doc)"
@@ -64,6 +64,6 @@ mv -f TMP$$ $PKG
 open $ROOT/cmake/INScore.xcodeproj
 
 echo "==> change manually inf.plist and rc files in win32 folder"
-open -t cmake/info.plist win32/INScore.rc win32/Viewer/INScoreViewer.rc
+open -t cmake/info.plist win32/INScore.rc win32/Viewer/INScoreViewer.rc $ITL
 
 exit 0

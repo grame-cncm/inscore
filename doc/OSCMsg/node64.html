@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>16.6 Differences to version 0.75</TITLE>
-<META NAME="description" CONTENT="16.6 Differences to version 0.75">
+<TITLE>17.3 Differences to version 0.78</TITLE>
+<META NAME="description" CONTENT="17.3 Differences to version 0.78">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,99 +21,63 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node65.html">
 <LINK REL="previous" HREF="node63.html">
-<LINK REL="up" HREF="node58.html">
+<LINK REL="up" HREF="node61.html">
 <LINK REL="next" HREF="node65.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1087"
+<A NAME="tex2html1093"
   HREF="node65.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1081"
-  HREF="node58.html">
+<A NAME="tex2html1087"
+  HREF="node61.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1075"
+<A NAME="tex2html1081"
   HREF="node63.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1083"
+<A NAME="tex2html1089"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1085"
-  HREF="node72.html">
+<A NAME="tex2html1091"
+  HREF="node75.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1088"
-  HREF="node65.html">16.7 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1082"
-  HREF="node58.html">16. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1076"
-  HREF="node63.html">16.5 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1084"
+<B> Next:</B> <A NAME="tex2html1094"
+  HREF="node65.html">17.4 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1088"
+  HREF="node61.html">17. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1082"
+  HREF="node63.html">17.2 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1090"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1086"
-  HREF="node72.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1092"
+  HREF="node75.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001760000000000000000">
-16.6 Differences to version 0.75</A>
+<H1><A NAME="SECTION001830000000000000000">
+17.3 Differences to version 0.78</A>
 </H1>
 
 <UL>
-<LI>new <TT>require</TT> message supported by the <TT>/ITL</TT> node (see section <A HREF="node4.html#ITL">2</A> p.<A HREF="node4.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>crash bug corrected for the 'save' message addressed to '/ITL'
 </LI>
-<LI>new event named <TT>newElement</TT> supported at scene level (see section <A HREF="node54.html#notifymsg">15.2</A> p.<A HREF="node54.html#notifymsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>message policy change: relaxed numeric parameters policy (float are accepted for int and int for float)
 </LI>
-<LI>new <TT>name</TT> and <TT>address</TT> variables (see section <A HREF="node55.html#interactvar">15.3</A> p.<A HREF="node55.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>bug in <TT>get watch</TT> for time events corrected (incorrect reply)
 </LI>
-<LI>new system map computation making use of the new slices map provided by the guidolib version 1.42
-</LI>
-<LI>INScore API: the <TT>newMessage</TT> method sets now the message src IP to localhost
-  With the previous version and the lack of src IP, replies to queries or error 
-  messages could be sent to undefined addresses (and mostly lost).
-</LI>
-<LI>bug corrected with ellipse and rect : integer graphic size computation changed 
-  to float (prevents objects disappearance with small width or height)
-</LI>
-<LI>bug in scene export: left and right borders could be cut, depending  on the scene size
-  corrected by rendering the QGraphicsView container instead the QGraphicsScene
-</LI>
-<LI>crash bug with $date:name corrected: crashed when there is no mapping named <TT>name</TT>.
+</UL>
+Known issues:
+
+<UL>
+<LI>map not saved by the <TT>save</TT> message 
 </LI>
 </UL>
 
 <P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html1087"
-  HREF="node65.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1081"
-  HREF="node58.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1075"
-  HREF="node63.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1083"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1085"
-  HREF="node72.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html1088"
-  HREF="node65.html">16.7 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1082"
-  HREF="node58.html">16. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1076"
-  HREF="node63.html">16.5 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1084"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1086"
-  HREF="node72.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

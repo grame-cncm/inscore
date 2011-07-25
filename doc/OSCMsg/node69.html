@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>16.11 Differences to version 0.53</TITLE>
-<META NAME="description" CONTENT="16.11 Differences to version 0.53">
+<TITLE>17.8 Differences to version 0.63</TITLE>
+<META NAME="description" CONTENT="17.8 Differences to version 0.63">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,73 +21,109 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node70.html">
 <LINK REL="previous" HREF="node68.html">
-<LINK REL="up" HREF="node58.html">
+<LINK REL="up" HREF="node61.html">
 <LINK REL="next" HREF="node70.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1157"
+<A NAME="tex2html1163"
   HREF="node70.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1151"
-  HREF="node58.html">
+<A NAME="tex2html1157"
+  HREF="node61.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1145"
+<A NAME="tex2html1151"
   HREF="node68.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1153"
+<A NAME="tex2html1159"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1155"
-  HREF="node72.html">
+<A NAME="tex2html1161"
+  HREF="node75.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1158"
-  HREF="node70.html">16.12 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1152"
-  HREF="node58.html">16. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1146"
-  HREF="node68.html">16.10 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1154"
+<B> Next:</B> <A NAME="tex2html1164"
+  HREF="node70.html">17.9 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1158"
+  HREF="node61.html">17. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1152"
+  HREF="node68.html">17.7 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1160"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1156"
-  HREF="node72.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1162"
+  HREF="node75.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION0017110000000000000000">
-16.11 Differences to version 0.53</A>
+<H1><A NAME="SECTION001880000000000000000">
+17.8 Differences to version 0.63</A>
 </H1>
 
 <UL>
-<LI>ITL parser corrected to support regexp in message string (used by messages addressed to sync node)
+<LI>new <TT>dpage</TT> message accepted by <TT>gmn</TT> objects (see section <A HREF="node27.html#gmnpage">8.3</A> p.<A HREF="node27.html#gmnpage"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>format of mapping files and strings changed (section <A HREF="node29.html#mapMsg">9.1</A> p.<A HREF="node29.html#mapMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>x and y variables: automatic range type detection (int | float)
 </LI>
-<LI>format of sync messages extended to include map name (section <A HREF="node32.html#syncmsg">10</A> p.<A HREF="node32.html#syncmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>set <TT>txt</TT> message: accepts polymorphic stream like parameters (see section <A HREF="node21.html#setsect">6</A> p.<A HREF="node21.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>signal node: 'garbage' message removed
+<LI>drag and drop files support in INScore viewer
 </LI>
-<LI>new 'reset' message for the scene (/ITL/scene) (section <A HREF="node5.html#scene">3</A> p.<A HREF="node5.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>interaction variables extension: <TT>$sx</TT>, <TT>$sy</TT> variables added to support scene coordinate space (see section <A HREF="node55.html#interactvar">15.3</A> p.<A HREF="node55.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>new 'version' message for the application (/ITL) (section <A HREF="node4.html#ITL">2</A> p.<A HREF="node4.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>automatic range mapping for <TT>$x</TT>, <TT>$y</TT> variables.
 </LI>
-<LI>new 'reset' message for signals (section <A HREF="node43.html#ssignal">13.1.1</A> p.<A HREF="node43.html#ssignal"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>new <TT>$self</TT> and <TT>$scene</TT> variables in the address field (see section <A HREF="node57.html#oscvar">15.5</A> p.<A HREF="node57.html#oscvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>bug parsing messages without params corrected
+<LI>OSC identifiers characters set extended with '_' and '-' (see section <A HREF="node2.html#genformat">1</A> p.<A HREF="node2.html#genformat"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>slave segmentation used for synchronization
+<LI>support for multiple scenes: <TT>new</TT>, <TT>del</TT> and <TT>foreground</TT> messages (see section <A HREF="node5.html#scene">3</A> p.<A HREF="node5.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>new H synchronization mode (preserves slave segmentation)
+<LI><TT>load</TT> message supported at scene level (see section <A HREF="node5.html#scene">3</A> p.<A HREF="node5.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>crash bug corrected for load message and missing ITL files
+<LI><TT>get watch</TT> implemented.
+</LI>
+<LI><TT>watch</TT> message without argument to clear all the watched events (see section <A HREF="node55.html#interactvar">15.3</A> p.<A HREF="node55.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI>order of rendering and width, height update corrected (may lead to incorrect rendering)
+</LI>
+<LI>bug with gmn score corrected: missing update for page, columns and rows changes.
+</LI>
+<LI>package delivered with the Guido Engine version 1.41 that corrects minimum staves distance and incorrect mapping when optimum page fill is off.
 </LI>
 </UL>
 
 <P>
-<BR><HR>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1163"
+  HREF="node70.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html1157"
+  HREF="node61.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html1151"
+  HREF="node68.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html1159"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html1161"
+  HREF="node75.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html1164"
+  HREF="node70.html">17.9 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1158"
+  HREF="node61.html">17. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1152"
+  HREF="node68.html">17.7 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1160"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1162"
+  HREF="node75.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>16.1 Differences to version 0.80</TITLE>
-<META NAME="description" CONTENT="16.1 Differences to version 0.80">
+<TITLE>16.1 Loops</TITLE>
+<META NAME="description" CONTENT="16.1 Loops">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,49 +27,61 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1017"
+<A NAME="tex2html1012"
   HREF="node60.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1011"
+<A NAME="tex2html1006"
   HREF="node58.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1005"
+<A NAME="tex2html1000"
   HREF="node58.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1013"
+<A NAME="tex2html1008"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1015"
-  HREF="node72.html">
+<A NAME="tex2html1010"
+  HREF="node75.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1018"
-  HREF="node60.html">16.2 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1012"
-  HREF="node58.html">16. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1006"
-  HREF="node58.html">16. Changes list</A>
- &nbsp; <B>  <A NAME="tex2html1014"
+<B> Next:</B> <A NAME="tex2html1013"
+  HREF="node60.html">16.2 Variables</A>
+<B> Up:</B> <A NAME="tex2html1007"
+  HREF="node58.html">16. Scripting</A>
+<B> Previous:</B> <A NAME="tex2html1001"
+  HREF="node58.html">16. Scripting</A>
+ &nbsp; <B>  <A NAME="tex2html1009"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1016"
-  HREF="node72.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1011"
+  HREF="node75.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION001710000000000000000">
-16.1 Differences to version 0.80</A>
+16.1 Loops</A>
 </H1>
 
-<UL>
-<LI>behavior change with synchronization without stretch: now the system looks also in the
-  slave map for a segment corresponding to the master date.
-</LI>
-<LI><TT>$date</TT> variable change: the value is now (0,0) when no date is available and <TT>$date</TT> is time shifted according to the object date.
-</LI>
-<LI><TT>date</TT> message change: the date 0 0 is ignored
-</LI>
-</UL>
+<P>
+The <TT>loop</TT> operation is defined as follows:
+<BR>
+<IMG
+ WIDTH="627" HEIGHT="127" ALIGN="BOTTOM" BORDER="0"
+ SRC="img94.gif"
+ ALT="\begin{rail}
+loop : 'loop' '(' (ident ',' int32 ',' (OSCMessage+)')' \vert loop)
+\end{rail}">
+<BR>
+<A NAME="1216"></A>
+It iterates the enclosed messages, which may refer to the current iteration using <TT>ident</TT>. A reference to the current iteration has the following form:
+<BR>
+<IMG
+ WIDTH="237" HEIGHT="51" ALIGN="BOTTOM" BORDER="0"
+ SRC="img95.gif"
+ ALT="\begin{rail}
+identref : '\%' '(' ident ')'
+\end{rail}">
+<BR>
+Depending on the current context, it is expanded as string, int32 or float32 parameter.
 
 <P>
 <BR><HR>

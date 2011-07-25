@@ -9,15 +9,15 @@ set (TARGET	INScore)
 set (APPLTARGET	INScoreViewer)
 #######################################
 # versions management
-set (INSFWKVERS 0.82)
-set (INSFWKSTRVERS "v.0.82")
-set (INSFWKSSTRVERS "0.82")
-set (INSTEXTVERS 0.82)
-set (INSTEXTSTRVERS "v.0.82")
-set (INSTEXTSSTRVERS "0.82")
-set (INSAPPVERS 0.82)
-set (INSAPPSTRVERS "v.0.82")
-set (INSAPPSSTRVERS "0.82")
+set (INSFWKVERS 0.90)
+set (INSFWKSTRVERS "v.0.90")
+set (INSFWKSSTRVERS "0.90")
+set (INSTEXTVERS 0.90)
+set (INSTEXTSTRVERS "v.0.90")
+set (INSTEXTSSTRVERS "0.90")
+set (INSAPPVERS 0.90)
+set (INSAPPSTRVERS "v.0.90")
+set (INSAPPSSTRVERS "0.90")
 
 #######################################
 if(WIN32)
@@ -42,7 +42,7 @@ endif(APPLE)
 #######################################
 # set directories, src and headers.
 set (ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../src)
-set (INSFOLDERS  controller events lib model view mapping interface graph signal signal/faust ITLParser)
+set (INSFOLDERS  controller events lib model view mapping interface graph signal signal/faust ITLParser scripting)
 set (RSRC  "${ROOT}/../rsrc")
 set (LOCALLIB  "${ROOT}/../lib")
 set (OSC_PATH  "${LOCALLIB}/oscpack")
