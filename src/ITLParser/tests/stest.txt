@@ -1,14 +1,24 @@
-/ITL/scene/a set txt "a quoted \"str\" test" 
-/ITL angle 0 
-/ITL color 0 0 0 255 
-/ITL rootPath "/Users/fober/src/Interlude/branches/proto2/max/" 
-/ITL scale 1 
-/ITL show 1 
-/ITL/scene/* angle 0.
+a="toto";
+b12 = 0.3;
+loop( i, 3
+%	/ITL hello;
+	loop (j, 5 
+		/ITL truc;
+	);
+);
+/ITL/scene/a set txt "a quoted \"str\" test" ;
+/ITL angle 0 ;
+/ITL color 0 0 0 255 ;
+/ITL rootPath "/Users/fober/src/Interlude/branches/proto2/max/" ;
+/ITL scale 1 ;
+/ITL show 1 ;
+/ITL/scene/* angle 0.;
 
-/ITL/scene/sync toto:system titi:truc
-/ITL/scene/signal/truc 0.5 0.4 0.3 1.00000e-10
-/ITL/scene/sync spot* "myGuidoFile:voice1"
+x=23;
+
+/ITL/scene/sync toto:system titi:truc;
+/ITL/scene/signal/truc 0.5 0.4 0.3 1.00000e-10;
+/ITL/scene/sync spot* "myGuidoFile:voice1";
 
 
 (*

@@ -1,6 +1,8 @@
 /*
-  Interlude Library
-  Copyright (C) 2009  Grame
+
+  INScore Project
+
+  Copyright (C) 2011  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -21,25 +23,32 @@
 
 */
 
-#include <iostream>
-//#include <string>
-#include "ITLparser.h"
-#include "IMessageStream.h"
 
-using namespace std;
-using namespace inscore;
+#ifndef __TLoopEval__
+#define __TLoopEval__
 
-int main (int argc, char * argv[])
+namespace inscore 
 {
-	if (argc > 1) {
-		ITLparser p;
-		IMessageList* outMsgs;
-		outMsgs = p.readfile (argv[1]);
-		if (outMsgs)
-			cout << *outMsgs;
-		else
-			cout << "error reading " << argv[1] << endl;
-	}
- 	return 0;
-}
 
+class IMessageList;
+class IMessage;
+class TLoop;
+class TEnv;
+
+//--------------------------------------------------------------------------------------------
+class TLoopEval 
+{
+	IMessageList*	fOutMsgs;
+	TEnv*			fEnv;
+	
+	public:	
+				 TLoopEval(TEnv* env, IMessageList* outmsgs) : fOutMsgs(outmsgs), fEnv(env) {}
+		virtual ~TLoopEval() {}
+
+		virtual void eval (TLoop* loop);
+		virtual void eval (IMessage* msg);
+};
+
+} // namespace
+
+#endif

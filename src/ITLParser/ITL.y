@@ -43,6 +43,7 @@ namespace inscore
 %token INT
 %token FLOAT
 %token IDENTIFIER
+%token EQUAL
 %token MAPIDENTIFIER
 %token REGEXP
 %token PATHSEP
@@ -50,44 +51,82 @@ namespace inscore
 %token STRING
 %token MSG
 %token ERROR
-%token ENDMSG
+%token ENDEXPR
+
+%token LPAR
+%token RPAR
+%token SEP
+%token LOOP
 
 /*------------------------------   types  ------------------------------*/
-%type <num> 	INT
+%type <num> 	INT //count
 %type <real>	FLOAT
 %type <str>		STRING MSG PATHSEP IDENTIFIER MAPIDENTIFIER REGEXP 
-%type <str>		identifier oscaddress oscbase msgstring
+%type <str>		identifier oscaddress oscpath msgstring // varname
 %type <msg>		message
 %type <p>		param
 %type <plist>	params
-%type <msgList>	ITLfile
+//%type <msgList>	ITLfile
 
 %%
 
 //_______________________________________________
 // relaxed simple ITL format specification
 //_______________________________________________
-ITLfile		: message			{ gMessageList->push_back($1); }
-			| ITLfile message	{ gMessageList->push_back($2); }
+ITLfile		: expr
+			| ITLfile expr
 			;
 
 //_______________________________________________
-message		: oscaddress params				{	$$ = $2 ? new inscore::IMessage(*$1, "", *$2) : new inscore::IMessage(*$1); delete $1; delete $2; }
-			| oscaddress msgstring params	{	$$ = $3 ? new inscore::IMessage(*$1, *$2, *$3) : new inscore::IMessage(*$1, *$2); 
-												delete $1; delete $2; delete $3;
-											}
+expr		: message  			{ gMessageList->push_back($1); }
+//			| variable ENDEXPR
+//			| loop
 			;
 
-oscaddress	: oscbase				{ $$ = $1; }
-			| oscaddress oscbase	{ *$1 += *$2; $$ = $1; delete $2; }
+//_______________________________________________
+//variable	: varname EQUAL INT		{ cout << "int    variable " << $1->c_str()  << " -> " << atoi(ITLtext) << endl; }
+//			| varname EQUAL FLOAT	{ cout << "float  variable " << $1->c_str()  << " -> " << atof(ITLtext) << endl; }
+//			| varname EQUAL STRING	{ cout << "string variable " << $1->c_str()  << " -> " << ITLtext << endl; }
+//			;
+//			
+//loop		: loopstart looped RPAR ENDEXPR			{ cout << "loop end" << endl; }
+//			;
+//			
+//loopstart	: LOOP LPAR varname SEP count			{ cout << "loop " << $3->c_str() << " " << $5 << endl; }
+//			;
+//
+//looped		: messagelist
+//			| loop
+//			| looped messagelist
+//			;
+//
+//count		: INT							{ $$ = atoi(ITLtext); }
+//			;
+//
+//messagelist :
+//			| message						{ gMessageList->push_back($1); }
+//			| messagelist message
+//			;
+
+//_______________________________________________
+message		: oscaddress params	ENDEXPR				{	$$ = new inscore::IMessage(*$1, "", *$2); delete $1; delete $2; }
+			| oscaddress msgstring ENDEXPR			{	$$ = new inscore::IMessage(*$1, *$2);  delete $1; delete $2; }
+			| oscaddress msgstring params ENDEXPR	{	$$ = new inscore::IMessage(*$1, *$2, *$3) delete $1; delete $2; delete $3; }
 			;
 
-oscbase		: PATHSEP identifier	{ $$ = new string("/" + *$2); delete $2; }
+oscaddress	: oscpath				{ $$ = $1; }
+			| oscaddress oscpath	{ *$1 += *$2; $$ = $1; delete $2; }
+			;
+
+oscpath		: PATHSEP identifier	{ $$ = new string("/" + *$2); delete $2; }
 			;
 
 identifier	: IDENTIFIER		{ $$ = new string(ITLtext); }
 			| REGEXP			{ $$ = new string(ITLtext); }
 			;
+
+//varname		: IDENTIFIER		{ $$ = new string(ITLtext); }
+//			;
 
 msgstring	: MSG				{ $$ = new string(ITLtext); }
 			| IDENTIFIER		{ $$ = new string(ITLtext); }
@@ -95,16 +134,15 @@ msgstring	: MSG				{ $$ = new string(ITLtext); }
 			| MAPIDENTIFIER		{ $$ = new string(ITLtext); }
 			;
 
-params		:					{ $$ = 0; }
-			| param				{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
+params		: param				{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
 			| params param		{ $1->push_back(*$2); $$ = $1; delete $2; }
 			;
 
 param		: INT				{ $$ = new Sbaseparam(new inscore::IMsgParam<int>(atoi(ITLtext))); }
 			| FLOAT				{ $$ = new Sbaseparam(new inscore::IMsgParam<float>(atof(ITLtext))); }
 			| STRING			{ $$ = new Sbaseparam(new inscore::IMsgParam<std::string>(ITLtext)); }
-			| IDENTIFIER		{ $$ = new Sbaseparam(new inscore::IMsgParam<std::string>(ITLtext)); }
-			| MAPIDENTIFIER		{ $$ = new Sbaseparam(new inscore::IMsgParam<std::string>(ITLtext)); }
+//			| IDENTIFIER		{ $$ = new Sbaseparam(new inscore::IMsgParam<std::string>(ITLtext)); }
+//			| MAPIDENTIFIER		{ $$ = new Sbaseparam(new inscore::IMsgParam<std::string>(ITLtext)); }
 			;
 
 %%

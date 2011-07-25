@@ -285,6 +285,8 @@ typedef SMARTP<IMessage>	SIMessage;
 //--------------------------------------------------------------------------
 /*!
 	\brief a messages list utility
+	
+	Note that IMessageList doesn't delete it's messages unless the \c clear method is called.
 */
 class IMessageList : public std::vector<IMessage *>
 {
@@ -292,7 +294,7 @@ class IMessageList : public std::vector<IMessage *>
 				 IMessageList() {}
 		virtual ~IMessageList() {}
 
-		void  clear();
+		void  clear();			///< delete the enclosed messages
 		void  operator += (const IMessageList&);	
 		void  operator += (IMessage* msg)					{ push_back(msg); }
 };

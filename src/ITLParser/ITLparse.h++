@@ -42,28 +42,38 @@
      INT = 258,
      FLOAT = 259,
      IDENTIFIER = 260,
-     MAPIDENTIFIER = 261,
-     REGEXP = 262,
-     PATHSEP = 263,
-     WINSEP = 264,
-     STRING = 265,
-     MSG = 266,
-     ERROR = 267,
-     ENDMSG = 268
+     EQUAL = 261,
+     MAPIDENTIFIER = 262,
+     REGEXP = 263,
+     PATHSEP = 264,
+     WINSEP = 265,
+     STRING = 266,
+     MSG = 267,
+     ERROR = 268,
+     ENDEXPR = 269,
+     LPAR = 270,
+     RPAR = 271,
+     SEP = 272,
+     LOOP = 273
    };
 #endif
 /* Tokens.  */
 #define INT 258
 #define FLOAT 259
 #define IDENTIFIER 260
-#define MAPIDENTIFIER 261
-#define REGEXP 262
-#define PATHSEP 263
-#define WINSEP 264
-#define STRING 265
-#define MSG 266
-#define ERROR 267
-#define ENDMSG 268
+#define EQUAL 261
+#define MAPIDENTIFIER 262
+#define REGEXP 263
+#define PATHSEP 264
+#define WINSEP 265
+#define STRING 266
+#define MSG 267
+#define ERROR 268
+#define ENDEXPR 269
+#define LPAR 270
+#define RPAR 271
+#define SEP 272
+#define LOOP 273
 
 
 

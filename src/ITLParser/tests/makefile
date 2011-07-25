@@ -1,7 +1,7 @@
 
-CXXFLAGS := -I.. -I../../controller -I../../lib -I../../interface -I../../mapping -I../../model -I../../../lib/oscpack -arch i386 -DPARSERTEST
+CXXFLAGS := -I.. -I../../controller -I../../lib -I../../interface -I../../mapping -I../../model -I../../view -I../../../lib/oscpack -arch i386 -DPARSERTEST
 OBJ := ../ITLparser.o  ../../lib/OSCStream.o ../../lib/ITLError.o  ../../lib/rational.o ../../controller/IMessage.o testparser.o
-OSCPACK=../../../lib/oscpack/liboscpack.a
+OSCPACK=../../../lib/oscpack/cmake/Release/liboscpack.a
 
 testparser: $(OBJ) 
 	g++ $(CXXFLAGS)  $(OBJ) $(OSCPACK) -o testparser

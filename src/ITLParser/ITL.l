@@ -29,7 +29,8 @@ static  char* unescape (char * str) {
 
 %x CMNTLN
 %x COMMENT
-%x STR
+%x DQSTR
+%x QSTR
 
 DIGIT	[0-9]
 LETTER  [a-zA-Z]
@@ -49,6 +50,14 @@ EOL		[\x0a\x0d]
 [+-]*"."{DIGIT}+ 						return FLOAT;
 [+-]*"."{DIGIT}+e[-+]?{DIGIT}+ 			return FLOAT;
 
+"="					return EQUAL;
+"("					return LPAR;
+")"					return RPAR;
+","					return SEP;
+"loop"				return LOOP;
+"/"					return PATHSEP;			/* OSC address and path separator */
+"\\"				return WINSEP;			/* win path separator */
+";"					return ENDEXPR;			/* end of expression */
 
 {SPACE}*"#"			BEGIN CMNTLN;
 {SPACE}*"//"		BEGIN CMNTLN;
@@ -61,20 +70,18 @@ EOL		[\x0a\x0d]
 <COMMENT>"*)"		if (--nested==0) BEGIN INITIAL;
 {SPACE}*"(*"		nested=1; BEGIN COMMENT;
 
-{STARTID}{IDCHAR}*	return IDENTIFIER;		/* identifiers */
+{STARTID}{IDCHAR}*		return IDENTIFIER;		/* identifiers */
 {LETTER}{IDCHAR}*":"{LETTER}{IDCHAR}*	return MAPIDENTIFIER;		/* identifiers with map name */
 {LETTER}*			return MSG;				/* messages */
-"/"					return PATHSEP;			/* OSC address and path separator */
-"\\"				return WINSEP;			/* win path separator */
-";"					return ENDMSG;			/* end of osc message */
 
-"\""						BEGIN STR;
-<STR>([^\"]|"\\\"")*		unescape(yytext); return STRING;
-<STR>\"						BEGIN INITIAL;
+"\""						BEGIN DQSTR;
+"'"							BEGIN QSTR;
+<DQSTR>([^\"]|"\\\"")*		unescape(yytext); return STRING;
+<QSTR>([^']|"\\'")*			unescape(yytext); return STRING;
+<DQSTR>\"					BEGIN INITIAL;
+<QSTR>'						BEGIN INITIAL;
 
 {RECHAR}{RECHAR}*			return REGEXP;		/* regular expression */
 {RECHAR}*"["..*"]"{RECHAR}*	return REGEXP;		/* regular expression */
-
-	/*{EOL}+				return NL;*/
 
 {SPACE}+			;   /* eat up space */
