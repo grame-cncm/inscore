@@ -1670,6 +1670,38 @@ The OSC address parameter of a watch message supports the following variables:
 Note: the system doesn't check for the consistency of the variables placement.
 
 %===============================
+%:Scripting
+\toplevel{Scripting}
+
+Since INScore saves its states as text files containing lists of OSC messages, it becomes natural to design INSCore scenes using these messages as a textual scripting language. For a better support of scripting, a \emph{loop} operation is introduced to generate messages in sequence and \emph{variables} are introduced to provide a better parameters control.
+
+%===============================
+%:   loops
+\sublevel{Loops}
+
+The \OSC{loop} operation is defined as follows:
+\begin{rail} 
+loop : 'loop' '(' (ident ',' int32 ',' (OSCMessage+)')' | loop)
+\end{rail}
+\index{Scripting!loop}
+It iterates the enclosed messages, which may refer to the current iteration using \OSC{ident}. A reference to the current iteration has the following form:
+\begin{rail}
+identref : '\%' '(' ident ')'
+\end{rail}
+Depending on the current context, it is expanded as string, int32 or float32 parameter.
+
+
+%===============================
+%:   variables
+\sublevel{Variables}
+\begin{rail} 
+variable : 'ident' '=' ( int32 | float32 | string )
+\end{rail}
+\index{Scripting! variable}
+
+
+
+%===============================
 %:Changes list
 \toplevel{ Changes list}
 

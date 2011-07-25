@@ -1418,3 +1418,49 @@
 \rail@term{)}[]
 \rail@end
 }
+\rail@i {81}{ loop : 'loop' '(' (ident ',' int32 ',' (OSCMessage+)')' | loop) }
+\rail@o {81}{
+\rail@index{loop}
+\rail@begin{3}{loop}
+\rail@term{loop}[]
+\rail@term{(}[]
+\rail@bar
+\rail@nont{ident}[]
+\rail@term{,}[]
+\rail@token{int32}[]
+\rail@term{,}[]
+\rail@plus
+\rail@nont{OSCMessage}[]
+\rail@nextplus{1}
+\rail@endplus
+\rail@term{)}[]
+\rail@nextbar{2}
+\rail@nont{loop}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {82}{ identref : '\%' '(' ident ')' }
+\rail@o {82}{
+\rail@index{identref}
+\rail@begin{1}{identref}
+\rail@term{\%}[]
+\rail@term{(}[]
+\rail@nont{ident}[]
+\rail@term{)}[]
+\rail@end
+}
+\rail@i {83}{ variable : 'ident' '=' ( int32 | float32 | string ) }
+\rail@o {83}{
+\rail@index{variable}
+\rail@begin{3}{variable}
+\rail@term{ident}[]
+\rail@term{=}[]
+\rail@bar
+\rail@token{int32}[]
+\rail@nextbar{1}
+\rail@token{float32}[]
+\rail@nextbar{2}
+\rail@token{string}[]
+\rail@endbar
+\rail@end
+}
