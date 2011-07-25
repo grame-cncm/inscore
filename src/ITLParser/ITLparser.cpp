@@ -54,7 +54,7 @@ static void yyunput(int, char*) __attribute__((unused));
 
 using namespace std;
 
-inscore::IMessageList* gMessageList = 0;
+inscore::TScripting* gScripter = 0;
 
 namespace inscore 
 {
@@ -62,18 +62,21 @@ namespace inscore
 //--------------------------------------------------------------------------
 void ITLparser::start () 
 {
-	gMessageList =  new inscore::IMessageList;
+//	gMessageList =  new inscore::IMessageList;
+	gScripter =  new inscore::TScripting;
 	setlocale(LC_NUMERIC, "C");
 }
+
 void ITLparser::stop () 
 {
 	setlocale(LC_NUMERIC, 0);
 }
-void ITLparser::clean(IMessageList* list) 
+
+void ITLparser::clean(TScripting* s) 
 {
-	if (list) {
-		list->clear();
-		delete list;
+	if (s) {
+		if (s->messages()) s->messages()->clear();
+		delete s;
 	}
 }
 
@@ -137,9 +140,9 @@ IMessageList* ITLparser::readstring (const char * buffer)
 	BEGIN(INITIAL);
 	stop();
 
-	if (ret == 0) return gMessageList;
- 	clean(gMessageList);
-	gMessageList = 0;
+	if (ret == 0) return gScripter->messages();
+ 	clean(gScripter);
+	gScripter = 0;
 	return 0;
 }
 
@@ -147,10 +150,9 @@ IMessageList* ITLparser::readstring (const char * buffer)
 IMessageList* ITLparser::readfile (FILE* fd) 
 {
 	start();
-	if (parse (fd) == 0) return gMessageList;
-
- 	clean(gMessageList);
-	gMessageList = 0;
+	if (parse (fd) == 0) return gScripter->messages();
+ 	clean(gScripter);
+	gScripter = 0;
 	return 0;
 }
 
@@ -158,10 +160,9 @@ IMessageList* ITLparser::readfile (FILE* fd)
 IMessageList* ITLparser::readfile (const char * file)  
 {
 	start();
-	if (parse (file) == 0) return gMessageList;
-
- 	clean(gMessageList);
-	gMessageList = 0;
+	if (parse (file) == 0) return gScripter->messages();
+ 	clean(gScripter);
+	gScripter = 0;
 	return 0;
 }
 

@@ -30,15 +30,15 @@
 namespace inscore 
 {
 
-//class mapreader;
+class TScripting;
 /* \brief a class for reading mapping files or strings
 */
 class ITLparser {
 	int parse (FILE *fd);
 	int parse (const char *filename);
 	void start();
-	void stop();		
-	void clean(IMessageList*);
+	void stop();
+	void clean(TScripting*);
 	
 	public:
 				 ITLparser() {}
