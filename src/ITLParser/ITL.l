@@ -5,21 +5,26 @@
 #define YY_NO_UNISTD_H
 static int nested;
 
+// ----------------------------------------------------------------------------------------
+// strip escape char '\' from escaped characters
 static  char* unescape (char * str) {
 	int n = strlen(str);
-	for (int i=0, j=0; i <= n; i++) {		
-		if (str[i] == '\\') {
-			if (str[i+1] == '\\') {
-				str[j++] = str[i++];
+	// browse the string:  'r' is an index to the current read location
+	//                     'w' is an index to the current write location
+	for (int r=0, w=0; r <= n; r++) {		
+		if (str[r] == '\\') {			// escape char '\' is found
+			if (str[r+1] == '\\') {		// when next char is also an escape char '\'
+				str[w++] = str[r++];	// the put the '\' at write location
 			}
-			else if (str[i+1] != '"') {
-				str[j++] = str[i];
-			}
+//			else if (str[r+1] != '"') { // when the next char 
+//				str[w++] = str[r];
+//			}
 		}
-		else str[j++] = str[i];
+		else str[w++] = str[r];			// no escape: put the current char at write location 
 	}
 	return str;
 }
+// ----------------------------------------------------------------------------------------
 
 %}
 
@@ -36,13 +41,17 @@ DIGIT	[0-9]
 LETTER  [a-zA-Z]
 STARTID [_a-zA-Z]
 IDCHAR  [-_a-zA-Z0-9]
+IDLOOP  [-_a-zA-Z0-9%]
 RECHAR  [-_a-zA-Z0-9?+*]
+RELOOP  [-_a-zA-Z0-9?+*%]
 PCHAR	[^ \t\x0a\x0d*?]
 SPACE	[ \t\x0a\x0d]
 EOL		[\x0a\x0d]
 
 %%
-[+-]*{DIGIT}+				return INT;
+{DIGIT}+				return UINT;
+'+'{DIGIT}+				return INT;
+'-'{DIGIT}+				return INT;
 
 [+-]*{DIGIT}+"."{DIGIT}* 				return FLOAT;
 [+-]*{DIGIT}+"."{DIGIT}*e[-+]?{DIGIT}+ 	return FLOAT;
@@ -58,10 +67,11 @@ EOL		[\x0a\x0d]
 "/"					return PATHSEP;			/* OSC address and path separator */
 "\\"				return WINSEP;			/* win path separator */
 ";"					return ENDEXPR;			/* end of expression */
+"$"					return VARSTART;
 
 {SPACE}*"#"			BEGIN CMNTLN;
-{SPACE}*"//"		BEGIN CMNTLN;
-{SPACE}*"%"			BEGIN CMNTLN;
+{SPACE}*"!"			BEGIN CMNTLN;
+{SPACE}*"-"			BEGIN CMNTLN;
 <CMNTLN>.*	
 <CMNTLN>{EOL}+		BEGIN INITIAL;
 
@@ -70,9 +80,10 @@ EOL		[\x0a\x0d]
 <COMMENT>"*)"		if (--nested==0) BEGIN INITIAL;
 {SPACE}*"(*"		nested=1; BEGIN COMMENT;
 
-{STARTID}{IDCHAR}*		return IDENTIFIER;		/* identifiers */
-{LETTER}{IDCHAR}*":"{LETTER}{IDCHAR}*	return MAPIDENTIFIER;		/* identifiers with map name */
-{LETTER}*			return MSG;				/* messages */
+{STARTID}{IDCHAR}*						return IDENTIFIER;		/* identifiers */
+{STARTID}{IDLOOP}*						return LOOPIDENTIFIER;	/* identifiers */
+{LETTER}{IDCHAR}*":"{LETTER}{IDCHAR}*	return MAPIDENTIFIER;	/* identifiers with map name */
+{LETTER}*								return MSG;				/* messages */
 
 "\""						BEGIN DQSTR;
 "'"							BEGIN QSTR;
@@ -81,7 +92,9 @@ EOL		[\x0a\x0d]
 <DQSTR>\"					BEGIN INITIAL;
 <QSTR>'						BEGIN INITIAL;
 
-{RECHAR}{RECHAR}*			return REGEXP;		/* regular expression */
-{RECHAR}*"["..*"]"{RECHAR}*	return REGEXP;		/* regular expression */
+{RECHAR}{RECHAR}*			return REGEXP;			/* regular expression */
+{RECHAR}*"["..*"]"{RECHAR}*	return REGEXP;			/* regular expression */
+{RELOOP}{RELOOP}*			return LOOPREGEXP;		/* regular expression */
+{RELOOP}*"["..*"]"{RELOOP}*	return LOOPREGEXP;		/* regular expression */
 
 {SPACE}+			;   /* eat up space */

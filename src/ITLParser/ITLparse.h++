@@ -40,40 +40,48 @@
       know about them.  */
    enum yytokentype {
      INT = 258,
-     FLOAT = 259,
-     IDENTIFIER = 260,
-     EQUAL = 261,
-     MAPIDENTIFIER = 262,
-     REGEXP = 263,
-     PATHSEP = 264,
-     WINSEP = 265,
-     STRING = 266,
-     MSG = 267,
-     ERROR = 268,
-     ENDEXPR = 269,
-     LPAR = 270,
-     RPAR = 271,
-     SEP = 272,
-     LOOP = 273
+     UINT = 259,
+     FLOAT = 260,
+     IDENTIFIER = 261,
+     EQUAL = 262,
+     MAPIDENTIFIER = 263,
+     REGEXP = 264,
+     PATHSEP = 265,
+     WINSEP = 266,
+     STRING = 267,
+     MSG = 268,
+     ERROR = 269,
+     ENDEXPR = 270,
+     LPAR = 271,
+     RPAR = 272,
+     SEP = 273,
+     LOOP = 274,
+     LOOPIDENTIFIER = 275,
+     LOOPREGEXP = 276,
+     VARSTART = 277
    };
 #endif
 /* Tokens.  */
 #define INT 258
-#define FLOAT 259
-#define IDENTIFIER 260
-#define EQUAL 261
-#define MAPIDENTIFIER 262
-#define REGEXP 263
-#define PATHSEP 264
-#define WINSEP 265
-#define STRING 266
-#define MSG 267
-#define ERROR 268
-#define ENDEXPR 269
-#define LPAR 270
-#define RPAR 271
-#define SEP 272
-#define LOOP 273
+#define UINT 259
+#define FLOAT 260
+#define IDENTIFIER 261
+#define EQUAL 262
+#define MAPIDENTIFIER 263
+#define REGEXP 264
+#define PATHSEP 265
+#define WINSEP 266
+#define STRING 267
+#define MSG 268
+#define ERROR 269
+#define ENDEXPR 270
+#define LPAR 271
+#define RPAR 272
+#define SEP 273
+#define LOOP 274
+#define LOOPIDENTIFIER 275
+#define LOOPREGEXP 276
+#define VARSTART 277
 
 
 
