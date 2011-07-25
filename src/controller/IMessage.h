@@ -91,6 +91,14 @@ class baseparam : public smartable
 		virtual SMARTP<baseparam> copy() const = 0;
 };
 
+inline std::ostream& operator << (std::ostream& os, const baseparam* p) { 
+	if (p->isType<int>())				os << p->value(0);
+	else if (p->isType<float>())		os << p->value(0.);
+	else if (p->isType<std::string>())	os << p->value("");
+	else os << "unknown parameter type";
+	return os; 
+}
+
 //--------------------------------------------------------------------------
 /*!
 	\brief template for a message parameter
