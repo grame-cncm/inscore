@@ -160,7 +160,6 @@ class IColor
 		
 };
 
-inline OSCStream& operator << (OSCStream& out, const IColor& color)	{ color.print(out); return out; }
 inline IMessage& operator << (IMessage& out, const IColor& color)	{ color.print(out); return out; }
 
 
