@@ -1,24 +1,20 @@
-/ITL/scene/_cursor   show 1
-/ITL/scene/_*   	 date 0 1
-/ITL/scene/pagepos   date 0 1
-
-%-------------------------------------------------------
-% buttons feedback
-%-------------------------------------------------------
-/ITL/scene/centerbutton dblue 255
-
-%-------------------------------------------------------
-% inhibit left and right buttons in tmap play mode
-%-------------------------------------------------------
-/ITL/scene/leftbutton watch
-/ITL/scene/rightbutton watch
-
-%-------------------------------------------------------
-% buttons actions for tmap collect mode
-%-------------------------------------------------------
-/ITL/scene/centerbutton    watch  	"mouseDown" "localhost:7101/play" 0
-
-%-------------------------------------------------------
-% the score sends the click time positions
-%-------------------------------------------------------
-/ITL/scene/score  watch  
+/ITL/scene/_cursor show 1 ;
+/ITL/scene/_* date 0 1 ;
+/ITL/scene/pagepos date 0 1 ;
+!-------------------------------------------------------
+! buttons feedback
+!-------------------------------------------------------
+/ITL/scene/centerbutton dblue 255 ;
+!-------------------------------------------------------
+! inhibit left and right buttons in tmap play mode
+!-------------------------------------------------------
+/ITL/scene/leftbutton watch ;
+/ITL/scene/rightbutton watch ;
+!-------------------------------------------------------
+! buttons actions for tmap collect mode
+!-------------------------------------------------------
+/ITL/scene/centerbutton watch "mouseDown" "localhost:7101/play" 0 ;
+!-------------------------------------------------------
+! the score sends the click time positions
+!-------------------------------------------------------
+/ITL/scene/score watch ;

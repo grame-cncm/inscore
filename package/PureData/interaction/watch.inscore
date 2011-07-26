@@ -1,50 +1,41 @@
-/ITL/scene/* watch "mouseDown"
-/ITL/scene/* watch "mouseMove"
-/ITL/scene/* watch "mouseUp"
-
-/ITL/scene/score watch "mouseDown" 	"localhost:7100/date" "$date"
-/ITL/scene/rect1 watch "mouseDown" 	"/ITL/scene/level1" "height" "$y"
-/ITL/scene/rect1 watch "mouseMove" 	"/ITL/scene/level1" "height" "$y"
-/ITL/scene/rect1 watch "mouseUp" 	"/ITL/scene/level1" "height" "$y"
-
-/ITL/scene/rect2 watch "mouseDown" 	"/ITL/scene/level2" "height" "$y"
-/ITL/scene/rect2 watch "mouseMove" 	"/ITL/scene/level2" "height" "$y"
-/ITL/scene/rect2 watch "mouseUp" 	"/ITL/scene/level2" "height" "$y"
-
-/ITL/scene/rect3 watch  "mouseDown" "/ITL/scene/level3" "height" "$y"
-/ITL/scene/rect3 watch+ "mouseDown" "/ITL/scene/back"   "height" "$y"
-/ITL/scene/rect3 watch  "mouseMove" "/ITL/scene/level3" "height" "$y"
-/ITL/scene/rect3 watch+ "mouseMove" "/ITL/scene/back"   "height" "$y"
-/ITL/scene/rect3 watch  "mouseUp"   "/ITL/scene/level3" "height" "$y"
-
-/ITL/scene/rect1 watch+ "mouseDown" "localhost:7100/vol" "$y[0,158]"
-/ITL/scene/rect1 watch+ "mouseMove" "localhost:7100/vol" "$y[0,158]"
-/ITL/scene/rect1 watch+ "mouseUp"   "localhost:7100/vol" "$y[0,158]"
-
-/ITL/scene/startbutton watch 	"mouseDown"  "/ITL/scene/stopbutton" "z" 1.1
-/ITL/scene/startbutton watch+ 	"mouseDown"  "localhost:7100/play" 1
-/ITL/scene/stopbutton watch 	"mouseDown"  "/ITL/scene/stopbutton" "z" 0.5
-/ITL/scene/stopbutton watch+ 	"mouseDown"  "localhost:7100/play" 0
-
-/ITL/scene/boule* watch "mouseEnter" 	"/ITL/scene/boule" "alpha" 255
-/ITL/scene/boule* watch "mouseLeave" 	"/ITL/scene/boule" "alpha" 100
-/ITL/scene/boule watch "mouseDown"  	"/ITL/scene" "fullscreen" 1
-/ITL/scene/boule watch+ "mouseDown"  	"/ITL/scene/boulet" "z" 1.1
-/ITL/scene/boulet watch "mouseDown"  	"/ITL/scene" "fullscreen" 0
-/ITL/scene/boulet watch+ "mouseDown"  	"/ITL/scene/boulet" "z" 0.5
-
-/ITL/scene/reload watch "mouseDown"  	"/ITL" "load" "interact.inscore"
-/ITL/scene/reload watch "mouseEnter" 	"/ITL/scene/reload" "red" 255
-/ITL/scene/reload watch "mouseLeave" 	"/ITL/scene/reload" "red" 0
-
-/ITL/scene/move watch  "mouseDown"  	"/ITL/scene/move" "x" "$sx"
-/ITL/scene/move watch+ "mouseDown"  	"/ITL/scene/move" "y" "$sy"
-/ITL/scene/move watch  "mouseUp"  		"/ITL/scene/move" "x" "$sx"
-/ITL/scene/move watch+ "mouseUp"  		"/ITL/scene/move" "y" "$sy"
-/ITL/scene/move watch  "mouseMove"  	"/ITL/scene/move" "x" "$sx"
-/ITL/scene/move watch+ "mouseMove"  	"/ITL/scene/move" "y" "$sy"
-/ITL/scene/move watch  "mouseEnter" 	"/ITL/scene/move" "dred" 100
-/ITL/scene/move watch  "mouseLeave" 	"/ITL/scene/move" "dred" -100
-
-/ITL/scene/comment set "txt" "Drop the 'edit.inscore' file on the scene to edit."
-/ITL/scene/comment y 0.9
+/ITL/scene/* watch "mouseDown" ;
+/ITL/scene/* watch "mouseMove" ;
+/ITL/scene/* watch "mouseUp" ;
+/ITL/scene/score watch "mouseDown" "localhost:7100/date" "$date" ;
+/ITL/scene/rect1 watch "mouseDown" "/ITL/scene/level1" "height" "$y" ;
+/ITL/scene/rect1 watch "mouseMove" "/ITL/scene/level1" "height" "$y" ;
+/ITL/scene/rect1 watch "mouseUp" "/ITL/scene/level1" "height" "$y" ;
+/ITL/scene/rect2 watch "mouseDown" "/ITL/scene/level2" "height" "$y" ;
+/ITL/scene/rect2 watch "mouseMove" "/ITL/scene/level2" "height" "$y" ;
+/ITL/scene/rect2 watch "mouseUp" "/ITL/scene/level2" "height" "$y" ;
+/ITL/scene/rect3 watch "mouseDown" "/ITL/scene/level3" "height" "$y" ;
+/ITL/scene/rect3 watch+ "mouseDown" "/ITL/scene/back" "height" "$y" ;
+/ITL/scene/rect3 watch "mouseMove" "/ITL/scene/level3" "height" "$y" ;
+/ITL/scene/rect3 watch+ "mouseMove" "/ITL/scene/back" "height" "$y" ;
+/ITL/scene/rect3 watch "mouseUp" "/ITL/scene/level3" "height" "$y" ;
+/ITL/scene/rect1 watch+ "mouseDown" "localhost:7100/vol" "$y[0,158]" ;
+/ITL/scene/rect1 watch+ "mouseMove" "localhost:7100/vol" "$y[0,158]" ;
+/ITL/scene/rect1 watch+ "mouseUp" "localhost:7100/vol" "$y[0,158]" ;
+/ITL/scene/startbutton watch "mouseDown" "/ITL/scene/stopbutton" "z" 1.10000 ;
+/ITL/scene/startbutton watch+ "mouseDown" "localhost:7100/play" 1 ;
+/ITL/scene/stopbutton watch "mouseDown" "/ITL/scene/stopbutton" "z" 0.500000 ;
+/ITL/scene/stopbutton watch+ "mouseDown" "localhost:7100/play" 0 ;
+/ITL/scene/boule* watch "mouseEnter" "/ITL/scene/boule" "alpha" 255 ;
+/ITL/scene/boule* watch "mouseLeave" "/ITL/scene/boule" "alpha" 100 ;
+/ITL/scene/boule watch "mouseDown" "/ITL/scene" "fullscreen" 1 ;
+/ITL/scene/boule watch+ "mouseDown" "/ITL/scene/boulet" "z" 1.10000 ;
+/ITL/scene/boulet watch "mouseDown" "/ITL/scene" "fullscreen" 0 ;
+/ITL/scene/boulet watch+ "mouseDown" "/ITL/scene/boulet" "z" 0.500000 ;
+/ITL/scene/reload watch "mouseDown" "/ITL" "load" "interact.inscore" ;
+/ITL/scene/reload watch "mouseEnter" "/ITL/scene/reload" "red" 255 ;
+/ITL/scene/reload watch "mouseLeave" "/ITL/scene/reload" "red" 0 ;
+/ITL/scene/move watch "mouseDown" "/ITL/scene/move" "x" "$sx" ;
+/ITL/scene/move watch+ "mouseDown" "/ITL/scene/move" "y" "$sy" ;
+/ITL/scene/move watch "mouseUp" "/ITL/scene/move" "x" "$sx" ;
+/ITL/scene/move watch+ "mouseUp" "/ITL/scene/move" "y" "$sy" ;
+/ITL/scene/move watch "mouseMove" "/ITL/scene/move" "x" "$sx" ;
+/ITL/scene/move watch+ "mouseMove" "/ITL/scene/move" "y" "$sy" ;
+/ITL/scene/move watch "mouseEnter" "/ITL/scene/move" "dred" 100 ;
+/ITL/scene/move watch "mouseLeave" "/ITL/scene/move" "dred" -100 ;
+/ITL/scene/comment set "txt" "Drop the 'edit.inscore' file on the scene to edit." ;
+/ITL/scene/comment y 0.900000 ;

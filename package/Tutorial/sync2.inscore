@@ -1,61 +1,50 @@
-
-/ITL/tutorial new
-/ITL/scene/* del
-/ITL/tutorial/* del
-/ITL/tutorial watch
-
-/ITL/scene x -0.51
-/ITL/tutorial x 0.51
-/ITL/scene/* del
-/ITL/tutorial/* del
-
-/ITL/scene/title set "html" "<h1>Synchronization</h1>"
-/ITL/scene/title y -0.7
-/ITL/scene/title scale 2.0
-
-/ITL/scene/sync2 set htmlf "rsrc/sync2.html"
-/ITL/scene/sync2 scale 2.0
-/ITL/scene/sync2 y -0.2
-/ITL/scene/sync2 xorigin -1.
-/ITL/scene/sync2 x -0.75
-
-/ITL/tutorial/score set gmnf "rsrc/fuga.gmn"
-/ITL/tutorial/score scale 2.5
-/ITL/tutorial/cursor set ellipse 0.1 0.1
-/ITL/tutorial/cursor color 255 0 0 120
-/ITL/tutorial/cursor date 7 1
-/ITL/tutorial/cursor duration 2 4
-
-/ITL/scene/m1 set txt "/ITL/tutorial/sync cursor score"
-/ITL/scene/m2 set txt "/ITL/tutorial/sync cursor score h"
-/ITL/scene/m3 set txt "/ITL/tutorial/cursor duration 1 4"
-/ITL/scene/m4 set txt "/ITL/tutorial/cursor duration 2 4"
-/ITL/scene/m5 set txt "/ITL/tutorial/cursor ddate 1 8"
-/ITL/scene/m1 y 0.1
-/ITL/scene/m2 y 0.2
-/ITL/scene/m3 y 0.3
-/ITL/scene/m4 y 0.4
-/ITL/scene/m5 y 0.5
-/ITL/scene/m* xorigin -1.
-/ITL/scene/m* x -0.73
-/ITL/scene/m* scale 1.9
-/ITL/scene/m* alpha 160
-
-/ITL/scene/m* watch  "mouseEnter" 	"/ITL/$scene/$self" "alpha" 255
-/ITL/scene/m* watch+ "mouseEnter" 	"/ITL/$scene/$self" "red" 200
-/ITL/scene/m* watch  "mouseLeave" 	"/ITL/$scene/$self" "alpha" 160
-/ITL/scene/m* watch+ "mouseLeave" 	"/ITL/$scene/$self" "red" 0
-
-/ITL/scene/m1 watch  "mouseDown" 	"/ITL/tutorial/sync" "cursor" "score"
-/ITL/scene/m2 watch  "mouseDown" 	"/ITL/tutorial/sync" "cursor" "score" "h"
-/ITL/scene/m3 watch  "mouseDown" 	"/ITL/tutorial/cursor" "duration" 1 4
-/ITL/scene/m4 watch  "mouseDown" 	"/ITL/tutorial/cursor" "duration" 2 4
-/ITL/scene/m5 watch  "mouseDown" 	"/ITL/tutorial/cursor" "ddate" 1 8
-
-
-/ITL/scene load "previous.inscore"
-/ITL/scene/previous watch "mouseDown" "/ITL/scene" "load" "synchronization.inscore"
-/ITL/scene load "next.inscore"
-/ITL/scene/next watch "mouseDown" "/ITL/scene" "load" "sync3.inscore"
-/ITL/scene load "summary.inscore"
-
+/ITL/tutorial new ;
+/ITL/scene/* del ;
+/ITL/tutorial/* del ;
+/ITL/tutorial watch ;
+/ITL/scene x -0.510000 ;
+/ITL/tutorial x 0.510000 ;
+/ITL/scene/* del ;
+/ITL/tutorial/* del ;
+/ITL/scene/title set "html" "<h1>Synchronization</h1>" ;
+/ITL/scene/title y -0.700000 ;
+/ITL/scene/title scale 2.00000 ;
+/ITL/scene/sync2 set "htmlf" "rsrc/sync2.html" ;
+/ITL/scene/sync2 scale 2.00000 ;
+/ITL/scene/sync2 y -0.200000 ;
+/ITL/scene/sync2 xorigin -1.00000 ;
+/ITL/scene/sync2 x -0.750000 ;
+/ITL/tutorial/score set "gmnf" "rsrc/fuga.gmn" ;
+/ITL/tutorial/score scale 2.50000 ;
+/ITL/tutorial/cursor set "ellipse" 0.100000 0.100000 ;
+/ITL/tutorial/cursor color 255 0 0 120 ;
+/ITL/tutorial/cursor date 7 1 ;
+/ITL/tutorial/cursor duration 2 4 ;
+/ITL/scene/m1 set "txt" "/ITL/tutorial/sync cursor score" ;
+/ITL/scene/m2 set "txt" "/ITL/tutorial/sync cursor score h" ;
+/ITL/scene/m3 set "txt" "/ITL/tutorial/cursor duration 1 4" ;
+/ITL/scene/m4 set "txt" "/ITL/tutorial/cursor duration 2 4" ;
+/ITL/scene/m5 set "txt" "/ITL/tutorial/cursor ddate 1 8" ;
+/ITL/scene/m1 y 0.100000 ;
+/ITL/scene/m2 y 0.200000 ;
+/ITL/scene/m3 y 0.300000 ;
+/ITL/scene/m4 y 0.400000 ;
+/ITL/scene/m5 y 0.500000 ;
+/ITL/scene/m* xorigin -1.00000 ;
+/ITL/scene/m* x -0.730000 ;
+/ITL/scene/m* scale 1.90000 ;
+/ITL/scene/m* alpha 160 ;
+/ITL/scene/m* watch "mouseEnter" "/ITL/$scene/$self" "alpha" 255 ;
+/ITL/scene/m* watch+ "mouseEnter" "/ITL/$scene/$self" "red" 200 ;
+/ITL/scene/m* watch "mouseLeave" "/ITL/$scene/$self" "alpha" 160 ;
+/ITL/scene/m* watch+ "mouseLeave" "/ITL/$scene/$self" "red" 0 ;
+/ITL/scene/m1 watch "mouseDown" "/ITL/tutorial/sync" "cursor" "score" ;
+/ITL/scene/m2 watch "mouseDown" "/ITL/tutorial/sync" "cursor" "score" "h" ;
+/ITL/scene/m3 watch "mouseDown" "/ITL/tutorial/cursor" "duration" 1 4 ;
+/ITL/scene/m4 watch "mouseDown" "/ITL/tutorial/cursor" "duration" 2 4 ;
+/ITL/scene/m5 watch "mouseDown" "/ITL/tutorial/cursor" "ddate" 1 8 ;
+/ITL/scene load "previous.inscore" ;
+/ITL/scene/previous watch "mouseDown" "/ITL/scene" "load" "synchronization.inscore" ;
+/ITL/scene load "next.inscore" ;
+/ITL/scene/next watch "mouseDown" "/ITL/scene" "load" "sync3.inscore" ;
+/ITL/scene load "summary.inscore" ;

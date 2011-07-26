@@ -1,112 +1,98 @@
-%-------------------------------------------------------
-% required version
-%-------------------------------------------------------
-/ITL require 76  "/ITL/scene/warning" "set" "txt" "WARNING: this scene requires version 0.76"
-/ITL require 76  "/ITL/scene/warning" "scale" 2.
-/ITL require 76  "/ITL/scene/warning" "color" 200 200 200 200
-
-%-------------------------------------------------------
-% zoom slider
-%-------------------------------------------------------
-/ITL/scene/zoom 	set "txt" "Zoom"
-/ITL/scene/zoom 	y -0.97
-/ITL/scene/zoom 	scale 1.2
-/ITL/scene/zoomrect set "rect" 0.6 0.03
-/ITL/scene/zoomrect y -0.92
-/ITL/scene/zoomrect color 255 255 255 255
-/ITL/scene/zoomrect penWidth 1.0
-/ITL/scene/zoomrect xorigin -1.0
-/ITL/scene/zoomrect x -0.3
-/ITL/scene/zoom* 	z 2.0
-
-/ITL/scene/zoompos set "ellipse" 1. 1.
-/ITL/scene/zoompos color 240 0 0
-/ITL/scene/sync zoompos zoomrect v
-
-/ITL/scene/zoomrect  watch  "mouseDown" "/ITL/scene/score"   "scale" "$x[0.3,5]"
-/ITL/scene/zoomrect  watch+ "mouseDown" "/ITL/scene/zoompos" "date"  "$date"
-/ITL/scene/zoomrect  watch  "mouseMove" "/ITL/scene/score"   "scale" "$x[0.3,5]"
-/ITL/scene/zoomrect  watch+ "mouseMove" "/ITL/scene/zoompos" "date"  "$date"
-/ITL/scene/zoomrect  watch  "mouseUp"   "/ITL/scene/score"   "scale" "$x[0.3,5]"
-/ITL/scene/zoomrect  watch+ "mouseUp"   "/ITL/scene/zoompos" "date"  "$date"
-
-%-------------------------------------------------------
-% pages slider
-%-------------------------------------------------------
-/ITL/scene/pagerect set "rect" 1.2 0.03
-/ITL/scene/pagerect x -0.6
-/ITL/scene/pagerect y 0.88
-/ITL/scene/pagerect color 255 255 255 255
-/ITL/scene/pagerect penWidth 1.0
-/ITL/scene/pagerect xorigin -1.0
-
-/ITL/scene/pagenum set "txt" "1"
-/ITL/scene/pagenum xorigin -1.
-/ITL/scene/pagenum scale 0.5
-
-/ITL/scene/pagepos set "ellipse" 1. 1.
-/ITL/scene/pagepos color 240 0 0
-/ITL/scene/sync pagepos pagerect v
-/ITL/scene/sync pagenum pagepos syncTop
-/ITL/scene/page* 	z 2.0
-
-/ITL/scene/pagerect  watch  "mouseDown" "/ITL/scene/pagepos" "date" "$date"
-/ITL/scene/pagerect  watch  "mouseMove" "/ITL/scene/score"   "page" "$x[1,20]"
-/ITL/scene/pagerect  watch+ "mouseMove" "/ITL/scene/pagepos" "date" "$date"
-/ITL/scene/pagerect  watch+ "mouseMove" "/ITL/scene/pagenum" "set"  "txt" "$x[1,20]"
-/ITL/scene/pagerect  watch  "mouseUp"   "/ITL/scene/score"   "page" "$x[1,20]"
-/ITL/scene/pagerect  watch+ "mouseUp"   "/ITL/scene/pagepos" "date" "$date"
-
-%-------------------------------------------------------
-% score cursor
-%-------------------------------------------------------
-/ITL/scene/_cursor   set "rect" 0.002 0.2
-/ITL/scene/_cursor   color 255 0 0 150
-/ITL/scene/_cursor   duration 1 32
-/ITL/scene/_cursor   z 5.
-/ITL/scene/_cursor   show 0
-
-%-------------------------------------------------------
-% buttons setup
-%-------------------------------------------------------
-/ITL/scene/leftbutton   set "txt" 	" "
-/ITL/scene/centerbutton set "txt"	" "
-/ITL/scene/rightbutton  set "txt"	" "
-/ITL/scene/leftbutton   x -0.19
-/ITL/scene/centerbutton x 0.
-/ITL/scene/rightbutton  x 0.19
-/ITL/scene/*button y 0.94
-/ITL/scene/*button z 2.5
-/ITL/scene/*button scale 1.4
-
-%-------------------------------------------------------
-% current mode display and mode switchs
-%-------------------------------------------------------
-/ITL/scene/mode set "txt" 	" "
-/ITL/scene/mode color 80 80 80
-/ITL/scene/mode y 0.81
-/ITL/scene/mode scale 1.6
-/ITL/scene/next set "txt" 	" "
-
-/ITL/scene/anext      set polygon 0. 0.  0.04 0.02 0. 0.04
-/ITL/scene/aprevious  set polygon 0. 0. -0.04 0.02 0. 0.04
-/ITL/scene/a* color 180 180 180
-/ITL/scene/a* y 0.81
-/ITL/scene/anext x 0.4
-/ITL/scene/aprevious x -0.4
-
-/ITL/scene/a* 		 watch "mouseEnter" "/ITL/$scene/$self" "color" 255 0 0
-/ITL/scene/a* 		 watch "mouseLeave" "/ITL/$scene/$self" "color" 180 180 180
-/ITL/scene/anext 	 watch "mouseDown"  "/ITL/$scene" "load" "tempomap.inscore"
-/ITL/scene/aprevious watch "mouseDown"  "/ITL/$scene" "load" "pageturn.inscore"
-
-%-------------------------------------------------------
-% at this step, the score should be loaded
-%-------------------------------------------------------
-/ITL/scene/score map system
-/ITL/scene/sync _cursor  score:system v
-
-%-------------------------------------------------------
-% default mode is page turn
-%-------------------------------------------------------
-/ITL/scene load "pageturn.inscore"
+!-------------------------------------------------------
+! required version
+!-------------------------------------------------------
+/ITL require 76 "/ITL/scene/warning" "set" "txt" "WARNING: this scene requires version 0.76" ;
+/ITL require 76 "/ITL/scene/warning" "scale" 2.00000 ;
+/ITL require 76 "/ITL/scene/warning" "color" 200 200 200 200 ;
+!-------------------------------------------------------
+! zoom slider
+!-------------------------------------------------------
+/ITL/scene/zoom set "txt" "Zoom" ;
+/ITL/scene/zoom y -0.970000 ;
+/ITL/scene/zoom scale 1.20000 ;
+/ITL/scene/zoomrect set "rect" 0.600000 0.0300000 ;
+/ITL/scene/zoomrect y -0.920000 ;
+/ITL/scene/zoomrect color 255 255 255 255 ;
+/ITL/scene/zoomrect penWidth 1.00000 ;
+/ITL/scene/zoomrect xorigin -1.00000 ;
+/ITL/scene/zoomrect x -0.300000 ;
+/ITL/scene/zoom* z 2.00000 ;
+/ITL/scene/zoompos set "ellipse" 1.00000 1.00000 ;
+/ITL/scene/zoompos color 240 0 0 ;
+/ITL/scene/sync zoompos "zoomrect" "v" ;
+/ITL/scene/zoomrect watch "mouseDown" "/ITL/scene/score" "scale" "$x[0.3,5]" ;
+/ITL/scene/zoomrect watch+ "mouseDown" "/ITL/scene/zoompos" "date" "$date" ;
+/ITL/scene/zoomrect watch "mouseMove" "/ITL/scene/score" "scale" "$x[0.3,5]" ;
+/ITL/scene/zoomrect watch+ "mouseMove" "/ITL/scene/zoompos" "date" "$date" ;
+/ITL/scene/zoomrect watch "mouseUp" "/ITL/scene/score" "scale" "$x[0.3,5]" ;
+/ITL/scene/zoomrect watch+ "mouseUp" "/ITL/scene/zoompos" "date" "$date" ;
+!-------------------------------------------------------
+! pages slider
+!-------------------------------------------------------
+/ITL/scene/pagerect set "rect" 1.20000 0.0300000 ;
+/ITL/scene/pagerect x -0.600000 ;
+/ITL/scene/pagerect y 0.880000 ;
+/ITL/scene/pagerect color 255 255 255 255 ;
+/ITL/scene/pagerect penWidth 1.00000 ;
+/ITL/scene/pagerect xorigin -1.00000 ;
+/ITL/scene/pagenum set "txt" "1" ;
+/ITL/scene/pagenum xorigin -1.00000 ;
+/ITL/scene/pagenum scale 0.500000 ;
+/ITL/scene/pagepos set "ellipse" 1.00000 1.00000 ;
+/ITL/scene/pagepos color 240 0 0 ;
+/ITL/scene/sync pagepos "pagerect" "v" ;
+/ITL/scene/sync pagenum "pagepos" "syncTop" ;
+/ITL/scene/page* z 2.00000 ;
+/ITL/scene/pagerect watch "mouseDown" "/ITL/scene/pagepos" "date" "$date" ;
+/ITL/scene/pagerect watch "mouseMove" "/ITL/scene/score" "page" "$x[1,20]" ;
+/ITL/scene/pagerect watch+ "mouseMove" "/ITL/scene/pagepos" "date" "$date" ;
+/ITL/scene/pagerect watch+ "mouseMove" "/ITL/scene/pagenum" "set" "txt" "$x[1,20]" ;
+/ITL/scene/pagerect watch "mouseUp" "/ITL/scene/score" "page" "$x[1,20]" ;
+/ITL/scene/pagerect watch+ "mouseUp" "/ITL/scene/pagepos" "date" "$date" ;
+!-------------------------------------------------------
+! score cursor
+!-------------------------------------------------------
+/ITL/scene/_cursor set "rect" 0.00200000 0.200000 ;
+/ITL/scene/_cursor color 255 0 0 150 ;
+/ITL/scene/_cursor duration 1 32 ;
+/ITL/scene/_cursor z 5.00000 ;
+/ITL/scene/_cursor show 0 ;
+!-------------------------------------------------------
+! buttons setup
+!-------------------------------------------------------
+/ITL/scene/leftbutton set "txt" " " ;
+/ITL/scene/centerbutton set "txt" " " ;
+/ITL/scene/rightbutton set "txt" " " ;
+/ITL/scene/leftbutton x -0.190000 ;
+/ITL/scene/centerbutton x 0.00000 ;
+/ITL/scene/rightbutton x 0.190000 ;
+/ITL/scene/*button y 0.940000 ;
+/ITL/scene/*button z 2.50000 ;
+/ITL/scene/*button scale 1.40000 ;
+!-------------------------------------------------------
+! current mode display and mode switchs
+!-------------------------------------------------------
+/ITL/scene/mode set "txt" " " ;
+/ITL/scene/mode color 80 80 80 ;
+/ITL/scene/mode y 0.810000 ;
+/ITL/scene/mode scale 1.60000 ;
+/ITL/scene/next set "txt" " " ;
+/ITL/scene/anext set "polygon" 0.00000 0.00000 0.0400000 0.0200000 0.00000 0.0400000 ;
+/ITL/scene/aprevious set "polygon" 0.00000 0.00000 -0.0400000 0.0200000 0.00000 0.0400000 ;
+/ITL/scene/a* color 180 180 180 ;
+/ITL/scene/a* y 0.810000 ;
+/ITL/scene/anext x 0.400000 ;
+/ITL/scene/aprevious x -0.400000 ;
+/ITL/scene/a* watch "mouseEnter" "/ITL/$scene/$self" "color" 255 0 0 ;
+/ITL/scene/a* watch "mouseLeave" "/ITL/$scene/$self" "color" 180 180 180 ;
+/ITL/scene/anext watch "mouseDown" "/ITL/$scene" "load" "tempomap.inscore" ;
+/ITL/scene/aprevious watch "mouseDown" "/ITL/$scene" "load" "pageturn.inscore" ;
+!-------------------------------------------------------
+! at this step, the score should be loaded
+!-------------------------------------------------------
+/ITL/scene/score map "system" ;
+/ITL/scene/sync _cursor "score:system" "v" ;
+!-------------------------------------------------------
+! default mode is page turn
+!-------------------------------------------------------
+/ITL/scene load "pageturn.inscore" ;

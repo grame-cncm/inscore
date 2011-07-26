@@ -1,41 +1,49 @@
 # cleanup the scene.
-/ITL/scene/* del
-/ITL/scene/signal/* del
+/ITL/scene/* del ;
+/ITL/scene/signal/* del ;
+
 
 # Add the Turenas graphic analysis as an image
-/ITL/scene/turenas set img "schemaSonagram4B.png"
+/ITL/scene/turenas set "img" "schemaSonagram4B.png" ;
+
 
 # Sets the 'graphic to time' mapping for the Turanas graphic analysis
-/ITL/scene/turenas mapf "turenas.map"
+/ITL/scene/turenas mapf "turenas.map" ;
+
 
 # Add and set the position of the title text
-/ITL/scene/title set txt "Turenas - John Chowning"
-/ITL/scene/title x -0.36
-/ITL/scene/title y -0.86
-/ITL/scene/title scale 3.0
+/ITL/scene/title set "txt" "Turenas - John Chowning" ;
+/ITL/scene/title x -0.360000 ;
+/ITL/scene/title y -0.860000 ;
+/ITL/scene/title scale 3.00000 ;
+
 
 # Add a rectangle to make the cursor
-/ITL/scene/cursor set rect 0.004 0.217176
-/ITL/scene/cursor date 0 64
-/ITL/scene/cursor color 204 0 48 132
+/ITL/scene/cursor set "rect" 0.00400000 0.217176 ;
+/ITL/scene/cursor date 0 64 ;
+/ITL/scene/cursor color 204 0 48 132 ;
+
 
 # Add 'credits' text
-/ITL/scene/copyright set txt "Analyse & transcription graphique: Laurent Pottier"
-/ITL/scene/copyright y 0.95
+/ITL/scene/copyright set "txt" "Analyse & transcription graphique: Laurent Pottier" ;
+/ITL/scene/copyright y 0.950000 ;
+
 
 # Organize z ordering
-/ITL/scene/turenas z -0.9
+/ITL/scene/turenas z -0.900000 ;
+
 
 # Synchronize the cursor.
-/ITL/scene/sync cursor turenas v
+/ITL/scene/sync cursor "turenas" "v" ;
+
 
 # Load additionnal material
-/ITL load "sections.inscore"
+/ITL load "sections.inscore" ;
+
 
 # Load interactions
-/ITL load "watch.inscore"
+/ITL load "watch.inscore" ;
+
 
 # Load play controler
-/ITL load "control.inscore"
-
-
+/ITL load "control.inscore" ;

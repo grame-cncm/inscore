@@ -1,52 +1,42 @@
-
-/ITL/tutorial new
-/ITL/scene/* del
-/ITL/tutorial/* del
-/ITL/tutorial watch
-
-/ITL/scene x -0.51
-/ITL/tutorial x 0.51
-/ITL/scene/* del
-/ITL/tutorial/* del
-
-/ITL/scene/title set "html" "<h1>Score components</h1>"
-/ITL/scene/title y -0.7
-/ITL/scene/title scale 2.0
-
-/ITL/scene/components1 set htmlf "rsrc/components1.html"
-/ITL/scene/components1 scale 2.0
-/ITL/scene/components1 y -0.25
-/ITL/scene/components1 xorigin -1.
-/ITL/scene/components1 x -0.75
-
-/ITL/scene/m1 set txt "/ITL/tutorial/myobject  set  rect  0.2 0.2"
-/ITL/scene/m2 set txt "/ITL/tutorial/myobject  set  img  \"rsrc/INScore.png\""
-/ITL/scene/m3 set txt "/ITL/tutorial/myobject  set  txt  \"Hello world!\""
-/ITL/scene/m4 set txt "/ITL/tutorial/myobject  set  ellipse 0.3 0.3"
-/ITL/scene/m1 y 0.1
-/ITL/scene/m2 y 0.2
-/ITL/scene/m3 y 0.3
-/ITL/scene/m4 y 0.4
-/ITL/scene/m* xorigin -1.
-/ITL/scene/m* x -0.73
-/ITL/scene/m* scale 1.9
-/ITL/scene/m* alpha 160
-
-/ITL/scene/m* watch  "mouseEnter" 	"/ITL/$scene/$self" "alpha" 255
-/ITL/scene/m* watch+ "mouseEnter" 	"/ITL/$scene/$self" "red" 200
-/ITL/scene/m* watch  "mouseLeave" 	"/ITL/$scene/$self" "alpha" 160
-/ITL/scene/m* watch+ "mouseLeave" 	"/ITL/$scene/$self" "red" 0
-
-/ITL/scene/m1 watch  "mouseDown" 	"/ITL/tutorial/myobject" "set" "rect" 0.2 0.2
-/ITL/scene/m2 watch  "mouseDown" 	"/ITL/tutorial" "rootPath" "$(/ITL/scene get rootPath)"
-/ITL/scene/m2 watch+ "mouseDown" 	"/ITL/tutorial/myobject" "set" "img" "rsrc/INScore.png"
-/ITL/scene/m3 watch  "mouseDown" 	"/ITL/tutorial/myobject" "set" "txt" "Hello world!"
-/ITL/scene/m4 watch  "mouseDown" 	"/ITL/tutorial/myobject" "set" "ellipse" 0.3 0.3
-
-
-/ITL/scene load "previous.inscore"
-/ITL/scene/previous watch "mouseDown" "/ITL/scene" "load" "msgs-time.inscore"
-/ITL/scene load "next.inscore"
-/ITL/scene/next watch "mouseDown" "/ITL/scene" "load" "synchronization.inscore"
-/ITL/scene load "summary.inscore"
-
+/ITL/tutorial new ;
+/ITL/scene/* del ;
+/ITL/tutorial/* del ;
+/ITL/tutorial watch ;
+/ITL/scene x -0.510000 ;
+/ITL/tutorial x 0.510000 ;
+/ITL/scene/* del ;
+/ITL/tutorial/* del ;
+/ITL/scene/title set "html" "<h1>Score components</h1>" ;
+/ITL/scene/title y -0.700000 ;
+/ITL/scene/title scale 2.00000 ;
+/ITL/scene/components1 set "htmlf" "rsrc/components1.html" ;
+/ITL/scene/components1 scale 2.00000 ;
+/ITL/scene/components1 y -0.250000 ;
+/ITL/scene/components1 xorigin -1.00000 ;
+/ITL/scene/components1 x -0.750000 ;
+/ITL/scene/m1 set "txt" "/ITL/tutorial/myobject  set  rect  0.2 0.2" ;
+/ITL/scene/m2 set "txt" "/ITL/tutorial/myobject  set  img  \"rsrc/INScore.png\"" ;
+/ITL/scene/m3 set "txt" "/ITL/tutorial/myobject  set  txt  \"Hello world!\"" ;
+/ITL/scene/m4 set "txt" "/ITL/tutorial/myobject  set  ellipse 0.3 0.3" ;
+/ITL/scene/m1 y 0.100000 ;
+/ITL/scene/m2 y 0.200000 ;
+/ITL/scene/m3 y 0.300000 ;
+/ITL/scene/m4 y 0.400000 ;
+/ITL/scene/m* xorigin -1.00000 ;
+/ITL/scene/m* x -0.730000 ;
+/ITL/scene/m* scale 1.90000 ;
+/ITL/scene/m* alpha 160 ;
+/ITL/scene/m* watch "mouseEnter" "/ITL/$scene/$self" "alpha" 255 ;
+/ITL/scene/m* watch+ "mouseEnter" "/ITL/$scene/$self" "red" 200 ;
+/ITL/scene/m* watch "mouseLeave" "/ITL/$scene/$self" "alpha" 160 ;
+/ITL/scene/m* watch+ "mouseLeave" "/ITL/$scene/$self" "red" 0 ;
+/ITL/scene/m1 watch "mouseDown" "/ITL/tutorial/myobject" "set" "rect" 0.200000 0.200000 ;
+/ITL/scene/m2 watch "mouseDown" "/ITL/tutorial" "rootPath" "$(/ITL/scene get rootPath)" ;
+/ITL/scene/m2 watch+ "mouseDown" "/ITL/tutorial/myobject" "set" "img" "rsrc/INScore.png" ;
+/ITL/scene/m3 watch "mouseDown" "/ITL/tutorial/myobject" "set" "txt" "Hello world!" ;
+/ITL/scene/m4 watch "mouseDown" "/ITL/tutorial/myobject" "set" "ellipse" 0.300000 0.300000 ;
+/ITL/scene load "previous.inscore" ;
+/ITL/scene/previous watch "mouseDown" "/ITL/scene" "load" "msgs-time.inscore" ;
+/ITL/scene load "next.inscore" ;
+/ITL/scene/next watch "mouseDown" "/ITL/scene" "load" "synchronization.inscore" ;
+/ITL/scene load "summary.inscore" ;

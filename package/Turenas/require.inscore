@@ -1,7 +1,7 @@
-%-------------------------------------------------------
-% required version
-%-------------------------------------------------------
-/ITL require 74  "/ITL/scene/warning" "set" "txt" "Warning: this score requires version 0.74"
-/ITL require 74  "/ITL/scene/warning" "scale" 2.
-/ITL require 74  "/ITL/scene/warning" "color" 200 0 0
-/ITL require 74  "/ITL/scene/warning" "y" 0.8
+!-------------------------------------------------------
+! required version
+!-------------------------------------------------------
+/ITL require 74 "/ITL/scene/warning" "set" "txt" "Warning: this score requires version 0.74" ;
+/ITL require 74 "/ITL/scene/warning" "scale" 2.00000 ;
+/ITL require 74 "/ITL/scene/warning" "color" 200 0 0 ;
+/ITL require 74 "/ITL/scene/warning" "y" 0.800000 ;
