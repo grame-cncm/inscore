@@ -35,9 +35,7 @@
 #include "GraphicEffect.h"
 #include "IMessage.h"
 #include "maptypes.h"
-#include "OSCStream.h"
 #include "smartpointer.h"
-#include "TRect.h"
 
 namespace inscore
 {
@@ -67,12 +65,16 @@ template <typename T>	IMessage& operator <<(IMessage& msg, TSize<T> val) { msg <
 
 // boolean is store as integer value
 inline IMessage& operator <<(IMessage& msg, bool val)		{ msg.add<int>(val); return msg; }
+
 // strings: checks if quotes are needed
 IMessage& operator <<(IMessage& msg, const std::string& val);
+
 // TFloatPoint: linearizes x and y
 IMessage& operator <<(IMessage& msg, const TFloatPoint& val);
+
 // catch any other supported type
 template <typename T>	IMessage& operator <<(IMessage& msg, T val)		{ msg.add<T>(val); return msg; }
+
 // catch vectors
 template <typename T>	IMessage& operator <<(IMessage& msg, const std::vector<T>& val)
 						{ 
@@ -86,7 +88,6 @@ template <typename T>	IMessage& operator <<(IMessage& msg, const std::pair<T,T>&
 							return msg; 
 						}
 
-OSCStream& operator << (OSCStream& out, const IMessageList&);
 IMessage& operator << (IMessage& out, const IMessage* m);
 std::ostream& operator << (std::ostream& out, const IMessage* m);
 std::ostream& operator << (std::ostream& out, const IMessageList&);
