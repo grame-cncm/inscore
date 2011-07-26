@@ -40,6 +40,7 @@
 #include "GraphicEffect.h"
 #include "OSCAddress.h"
 #include "OSCRegexp.h"
+#include "OSCStream.h"
 #include "Updater.h"
 #include "ISync.h"
 #include "Tools.h"
@@ -576,7 +577,7 @@ MsgHandler::msgStatus IObject::get(const IMessage* msg) const
 { 
 	IMessageList msgs = getMsgs (msg);
 	if (msgs.size()) {
-		oscout << msgs;
+		oscout << std::vector<IMessage *>(msgs);
 		msgs.clear();
 	}
 	return MsgHandler::kProcessedNoChange;
