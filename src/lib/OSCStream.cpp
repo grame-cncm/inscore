@@ -22,6 +22,7 @@
 #include <iostream>
 #include "OSCStream.h"
 #include "IMessage.h"
+#include "IColor.h"
 
 using namespace std;
 
@@ -89,7 +90,19 @@ OSCStream& operator <<(OSCStream& s, const string& val)
 	return s; 
 }
 
+//--------------------------------------------------------------------------
+OSCStream& operator <<(OSCStream& s, const IMessageList* list)	
+{ 
+	for (unsigned int i =0; i < list->size(); i++) {
+		IMessage* msg = (*list)[i];
+		s << msg;
+	}
+	return s; 
+}
+
+OSCStream& operator <<(OSCStream& s, const IColor& color)	{ color.print(s); return s; }
 OSCStream& operator <<(OSCStream& s, const IMessage* msg)	{ msg->print(s); return s; }
+OSCStream& operator <<(OSCStream& s, const char* val)		{ string str(val); s << str; return s; }
 
 //--------------------------------------------------------------------------
 OSCStream& operator <<(OSCStream& s, const OSCErr& val)		{ return s.start(val.fAddress); }

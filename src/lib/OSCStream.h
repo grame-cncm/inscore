@@ -51,6 +51,8 @@ typedef struct OSCEnd {} OSCEnd;
 #define kLocalhost	0x7f000001
 
 class IMessage;
+class IMessageList;
+class IColor;
 
 //--------------------------------------------------------------------------
 /*!
@@ -97,10 +99,16 @@ class OSCStream
 						OSCStream& operator <<(OSCStream& s, const OSCStart& val);
 						OSCStream& operator <<(OSCStream& s, const OSCErr& val);
 						OSCStream& operator <<(OSCStream& s, const OSCWarn& val);
+						OSCStream& operator <<(OSCStream& s, const char* val);
 						OSCStream& operator <<(OSCStream& s, const std::string& val);
-						OSCStream& operator <<(OSCStream& s, const IMessage* msg);
+				inline	OSCStream& operator <<(OSCStream& s, int val)		{ s.stream() << val; return s; }
+				inline	OSCStream& operator <<(OSCStream& s, long val)		{ s.stream() << (int)val; return s; }
+				inline	OSCStream& operator <<(OSCStream& s, float val)		{ s.stream() << val; return s; }
 
-template <typename T>	OSCStream& operator <<(OSCStream& s, T val)					{ s.stream() << val; return s; }
+						OSCStream& operator <<(OSCStream& s, const IMessage* msg);
+						OSCStream& operator <<(OSCStream& s, const IMessageList* msg);
+						OSCStream& operator <<(OSCStream& s, const IColor& color);
+
 template <typename T>	OSCStream& operator <<(OSCStream& s, const std::vector<T>& val)
 						{ 
 							for (unsigned int i =0; i < val.size(); i++) s << val[i];
