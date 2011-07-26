@@ -52,7 +52,7 @@ EOL		[\x0a\x0d]
 
 {SPACE}*"#"			BEGIN CMNTLN; return COMMENTTEXT;
 {SPACE}*"//"		BEGIN CMNTLN; return COMMENTTEXT;
-{SPACE}*"%"			BEGIN CMNTLN; return COMMENTTEXT;
+"%"					BEGIN CMNTLN; yytext[0] = '!'; return COMMENTTEXT;
 <CMNTLN>.*						  return COMMENTTEXT;
 <CMNTLN>{EOL}+		BEGIN INITIAL;  return ENDCOMMENT;
 
