@@ -1,12 +1,10 @@
-% cleanup
-/ITL/scene/* del
-
-/ITL/scene/title set "txt" "Spatial proximity"
-/ITL/scene/title scale 2.7
-/ITL/scene/title y -0.80
-
-/ITL/scene/comment1 set "txt" "The dots are perceived as organized in lines"
-/ITL/scene/comment2 set "txt" "The dots are perceived as organized in columns"
-/ITL/scene/comment* y 0.80
-/ITL/scene/comment* scale 1.1
-/ITL/scene/comment2 show 0
+! cleanup
+/ITL/scene/* del ;
+/ITL/scene/title set "txt" "Spatial proximity" ;
+/ITL/scene/title scale 2.70000 ;
+/ITL/scene/title y -0.800000 ;
+/ITL/scene/comment1 set "txt" "The dots are perceived as organized in lines" ;
+/ITL/scene/comment2 set "txt" "The dots are perceived as organized in columns" ;
+/ITL/scene/comment* y 0.800000 ;
+/ITL/scene/comment* scale 1.10000 ;
+/ITL/scene/comment2 show 0 ;
