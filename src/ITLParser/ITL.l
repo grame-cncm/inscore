@@ -24,6 +24,7 @@ static  char* unescape (char * str) {
 	}
 	return str;
 }
+
 // ----------------------------------------------------------------------------------------
 
 %}
@@ -39,25 +40,28 @@ static  char* unescape (char * str) {
 
 DIGIT	[0-9]
 LETTER  [a-zA-Z]
+MSGLETTER  [a-zA-Z+]
 STARTID [_a-zA-Z]
 IDCHAR  [-_a-zA-Z0-9]
 IDLOOP  [-_a-zA-Z0-9%]
+
 RECHAR  [-_a-zA-Z0-9?+*]
 RELOOP  [-_a-zA-Z0-9?+*%]
+RESTART [_a-zA-Z?+*]
+RELOOPSTART [_a-zA-Z?+*%]
+
 PCHAR	[^ \t\x0a\x0d*?]
 SPACE	[ \t\x0a\x0d]
 EOL		[\x0a\x0d]
 
 %%
 {DIGIT}+				return UINT;
-'+'{DIGIT}+				return INT;
-'-'{DIGIT}+				return INT;
+"+"{DIGIT}+				return UINT;
+"-"{DIGIT}+				return INT;
 
-[+-]*{DIGIT}+"."{DIGIT}* 				return FLOAT;
-[+-]*{DIGIT}+"."{DIGIT}*e[-+]?{DIGIT}+ 	return FLOAT;
+[+-]*{DIGIT}*"."{DIGIT}* 				return FLOAT;
+[+-]*{DIGIT}*"."{DIGIT}*e[-+]?{DIGIT}+ 	return FLOAT;
 [+-]*{DIGIT}+e[-+]?{DIGIT}+ 			return FLOAT;
-[+-]*"."{DIGIT}+ 						return FLOAT;
-[+-]*"."{DIGIT}+e[-+]?{DIGIT}+ 			return FLOAT;
 
 "="					return EQUAL;
 "("					return LPAR;
@@ -65,13 +69,11 @@ EOL		[\x0a\x0d]
 ","					return SEP;
 "loop"				return LOOP;
 "/"					return PATHSEP;			/* OSC address and path separator */
-"\\"				return WINSEP;			/* win path separator */
 ";"					return ENDEXPR;			/* end of expression */
 "$"					return VARSTART;
 
 {SPACE}*"#"			BEGIN CMNTLN;
 {SPACE}*"!"			BEGIN CMNTLN;
-{SPACE}*"-"			BEGIN CMNTLN;
 <CMNTLN>.*	
 <CMNTLN>{EOL}+		BEGIN INITIAL;
 
@@ -83,7 +85,7 @@ EOL		[\x0a\x0d]
 {STARTID}{IDCHAR}*						return IDENTIFIER;		/* identifiers */
 {STARTID}{IDLOOP}*						return LOOPIDENTIFIER;	/* identifiers */
 {LETTER}{IDCHAR}*":"{LETTER}{IDCHAR}*	return MAPIDENTIFIER;	/* identifiers with map name */
-{LETTER}*								return MSG;				/* messages */
+{MSGLETTER}*							return MSG;				/* messages */
 
 "\""						BEGIN DQSTR;
 "'"							BEGIN QSTR;
@@ -92,9 +94,11 @@ EOL		[\x0a\x0d]
 <DQSTR>\"					BEGIN INITIAL;
 <QSTR>'						BEGIN INITIAL;
 
-{RECHAR}{RECHAR}*			return REGEXP;			/* regular expression */
-{RECHAR}*"["..*"]"{RECHAR}*	return REGEXP;			/* regular expression */
-{RELOOP}{RELOOP}*			return LOOPREGEXP;		/* regular expression */
-{RELOOP}*"["..*"]"{RELOOP}*	return LOOPREGEXP;		/* regular expression */
+{RESTART}{RECHAR}*					return REGEXP;			/* regular expression */
+{RESTART}*"["..*"]"{RECHAR}*		return REGEXP;			/* regular expression */
+{RELOOPSTART}{RELOOP}*				return LOOPREGEXP;		/* regular expression */
+{RELOOPSTART}*"["..*"]"{RELOOP}*	return LOOPREGEXP;		/* regular expression */
 
 {SPACE}+			;   /* eat up space */
+
+"-"					return HYPHEN;		// uncatched '-' is an error

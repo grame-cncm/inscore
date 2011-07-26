@@ -47,18 +47,17 @@
      MAPIDENTIFIER = 263,
      REGEXP = 264,
      PATHSEP = 265,
-     WINSEP = 266,
-     STRING = 267,
-     MSG = 268,
-     ERROR = 269,
-     ENDEXPR = 270,
-     LPAR = 271,
-     RPAR = 272,
-     SEP = 273,
-     LOOP = 274,
-     LOOPIDENTIFIER = 275,
-     LOOPREGEXP = 276,
-     VARSTART = 277
+     STRING = 266,
+     MSG = 267,
+     HYPHEN = 268,
+     ENDEXPR = 269,
+     LPAR = 270,
+     RPAR = 271,
+     SEP = 272,
+     LOOP = 273,
+     LOOPIDENTIFIER = 274,
+     LOOPREGEXP = 275,
+     VARSTART = 276
    };
 #endif
 /* Tokens.  */
@@ -70,18 +69,17 @@
 #define MAPIDENTIFIER 263
 #define REGEXP 264
 #define PATHSEP 265
-#define WINSEP 266
-#define STRING 267
-#define MSG 268
-#define ERROR 269
-#define ENDEXPR 270
-#define LPAR 271
-#define RPAR 272
-#define SEP 273
-#define LOOP 274
-#define LOOPIDENTIFIER 275
-#define LOOPREGEXP 276
-#define VARSTART 277
+#define STRING 266
+#define MSG 267
+#define HYPHEN 268
+#define ENDEXPR 269
+#define LPAR 270
+#define RPAR 271
+#define SEP 272
+#define LOOP 273
+#define LOOPIDENTIFIER 274
+#define LOOPREGEXP 275
+#define VARSTART 276
 
 
 

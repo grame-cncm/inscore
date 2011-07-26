@@ -31,7 +31,9 @@
 #include <locale.h>
 
 #include "ITLparser.h"
+#ifndef NO_OSCSTREAM
 #include "ITLError.h"
+#endif
 
 #define yyleng				ITLleng
 #define yyin				ITLin
@@ -84,7 +86,11 @@ void ITLparser::clean(TScripting* s)
 int ITLparser::parse (FILE *fd) 
 {
 	if (!fd) {
+#ifndef NO_OSCSTREAM
 		ITLErr << "ITL parser: invalid file descriptor" << ITLEndl;
+#else
+		cerr << "ITL parser: invalid file descriptor" << endl;
+#endif
 		return(-1);
 	}
 
@@ -110,7 +116,11 @@ int ITLparser::parse (const char *filename)
 		string msg = "ITL parser: cannot open file \""; 
 		msg += filename;
 		msg += "\"";
+#ifndef NO_OSCSTREAM
 		ITLErr << msg << ITLEndl;
+#else
+		cerr << msg << endl;
+#endif
 		return(-1);
 	}
 

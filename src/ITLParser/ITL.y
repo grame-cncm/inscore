@@ -55,10 +55,9 @@ namespace inscore
 %token MAPIDENTIFIER
 %token REGEXP
 %token PATHSEP
-%token WINSEP
 %token STRING
 %token MSG
-%token ERROR
+%token HYPHEN
 %token ENDEXPR
 
 %token LPAR
@@ -78,7 +77,6 @@ namespace inscore
 %type <msg>		message loopmessage
 %type <p>		param
 %type <plist>	params
-//%type <msgList>	ITLfile
 
 %%
 
@@ -93,6 +91,7 @@ ITLfile		: expr
 expr		: message  			{ gScripter->add($1); }
 			| variable ENDEXPR
 			| loop
+			| HYPHEN			{ ITLerror("unexpected '-' char"); YYABORT; }
 			;
 
 //_______________________________________________
