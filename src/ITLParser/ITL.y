@@ -6,7 +6,9 @@
 
 #include "IMessageStream.h"
 #include "TScripting.h"
+#ifndef NO_OSCSTREAM
 #include "ITLError.h"
+#endif
 
 extern inscore::TScripting* gScripter;
 
@@ -180,7 +182,7 @@ count		: UINT						{ $$ = atoi(ITLtext); }
 using namespace inscore;
 int ITLerror(const char*s) {
 	YY_FLUSH_BUFFER;
-#if 1
+#ifdef NO_OSCSTREAM
 	cerr << "error line " << ITLlineno << ": " << s << endl;
 #else
 	ITLErr << "error line " << ITLlineno << ": " << s << ITLEndl;
@@ -191,14 +193,22 @@ int ITLerror(const char*s) {
 
 int VARerror(const char*s, const char* var) {
 	YY_FLUSH_BUFFER;
+#ifdef NO_OSCSTREAM
 	cerr << "error line " << ITLlineno << ": " << s << var << endl;
+#else
+	ITLErr << "error line " << ITLlineno << ": " << s << var << ITLEndl;
+#endif
 	ITLlineno = 1;
 	return 0; //err;
 }
 
 int LOOPerror(int line) {
 	YY_FLUSH_BUFFER;
+#ifdef NO_OSCSTREAM
 	cerr << "error line " << ITLlineno << ": unknown variable in loop started line " << line << endl;
+#else
+	ITLErr << "error line " << ITLlineno << ": unknown variable in loop started line " << line << ITLEndl;
+#endif
 	ITLlineno = 1;
 	return 0; //err;
 }

@@ -131,7 +131,9 @@
 
 #include "IMessageStream.h"
 #include "TScripting.h"
+#ifndef NO_OSCSTREAM
 #include "ITLError.h"
+#endif
 
 extern inscore::TScripting* gScripter;
 
@@ -196,7 +198,7 @@ typedef int YYSTYPE;
 
 
 /* Line 216 of yacc.c.  */
-#line 200 "ITLparse.c++"
+#line 202 "ITLparse.c++"
 
 #ifdef short
 # undef short
@@ -495,11 +497,11 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    86,    86,    87,    91,    92,    93,    97,    98,    99,
-     102,   103,   106,   109,   110,   113,   114,   117,   118,   121,
-     122,   123,   124,   129,   130,   131,   134,   137,   138,   142,
-     145,   148,   149,   152,   153,   156,   157,   158,   161,   162,
-     165,   169,   170,   171,   173
+       0,    88,    88,    89,    93,    94,    95,    99,   100,   101,
+     104,   105,   108,   111,   112,   115,   116,   119,   120,   123,
+     124,   125,   126,   131,   132,   133,   136,   139,   140,   144,
+     147,   150,   151,   154,   155,   158,   159,   160,   163,   164,
+     167,   171,   172,   173,   175
 };
 #endif
 
@@ -1456,188 +1458,188 @@ yyreduce:
   switch (yyn)
     {
         case 4:
-#line 91 "ITL.y"
+#line 93 "ITL.y"
     { gScripter->add((yyvsp[(1) - (1)].msg)); ;}
     break;
 
   case 7:
-#line 97 "ITL.y"
+#line 99 "ITL.y"
     {	(yyval.msg) = new inscore::IMessage(*(yyvsp[(1) - (3)].str), "", *(yyvsp[(2) - (3)].plist)); delete (yyvsp[(1) - (3)].str); delete (yyvsp[(2) - (3)].plist); ;}
     break;
 
   case 8:
-#line 98 "ITL.y"
+#line 100 "ITL.y"
     {	(yyval.msg) = new inscore::IMessage(*(yyvsp[(1) - (3)].str), *(yyvsp[(2) - (3)].str));  delete (yyvsp[(1) - (3)].str); delete (yyvsp[(2) - (3)].str); ;}
     break;
 
   case 9:
-#line 99 "ITL.y"
+#line 101 "ITL.y"
     {	(yyval.msg) = new inscore::IMessage(*(yyvsp[(1) - (4)].str), *(yyvsp[(2) - (4)].str), *(yyvsp[(3) - (4)].plist)); delete (yyvsp[(1) - (4)].str); delete (yyvsp[(2) - (4)].str); delete (yyvsp[(3) - (4)].plist); ;}
     break;
 
   case 10:
-#line 102 "ITL.y"
+#line 104 "ITL.y"
     { (yyval.str) = (yyvsp[(1) - (1)].str); ;}
     break;
 
   case 11:
-#line 103 "ITL.y"
+#line 105 "ITL.y"
     { *(yyvsp[(1) - (2)].str) += *(yyvsp[(2) - (2)].str); (yyval.str) = (yyvsp[(1) - (2)].str); delete (yyvsp[(2) - (2)].str); ;}
     break;
 
   case 12:
-#line 106 "ITL.y"
+#line 108 "ITL.y"
     { (yyval.str) = new string("/" + *(yyvsp[(2) - (2)].str)); delete (yyvsp[(2) - (2)].str); ;}
     break;
 
   case 13:
-#line 109 "ITL.y"
+#line 111 "ITL.y"
     { (yyval.str) = new string(ITLtext); ;}
     break;
 
   case 14:
-#line 110 "ITL.y"
+#line 112 "ITL.y"
     { (yyval.str) = new string(ITLtext); ;}
     break;
 
   case 15:
-#line 113 "ITL.y"
+#line 115 "ITL.y"
     { (yyval.str) = new string(ITLtext); ;}
     break;
 
   case 16:
-#line 114 "ITL.y"
+#line 116 "ITL.y"
     { (yyval.str) = new string(ITLtext); ;}
     break;
 
   case 17:
-#line 117 "ITL.y"
+#line 119 "ITL.y"
     { (yyval.plist) = new inscore::IMessage::argslist; (yyval.plist)->push_back(*(yyvsp[(1) - (1)].p)); delete (yyvsp[(1) - (1)].p); ;}
     break;
 
   case 18:
-#line 118 "ITL.y"
+#line 120 "ITL.y"
     { (yyvsp[(1) - (2)].plist)->push_back(*(yyvsp[(2) - (2)].p)); (yyval.plist) = (yyvsp[(1) - (2)].plist); delete (yyvsp[(2) - (2)].p); ;}
     break;
 
   case 19:
-#line 121 "ITL.y"
+#line 123 "ITL.y"
     { (yyval.p) = new Sbaseparam(new inscore::IMsgParam<int>((yyvsp[(1) - (1)].num))); ;}
     break;
 
   case 20:
-#line 122 "ITL.y"
+#line 124 "ITL.y"
     { (yyval.p) = new Sbaseparam(new inscore::IMsgParam<float>(atof(ITLtext))); ;}
     break;
 
   case 21:
-#line 123 "ITL.y"
+#line 125 "ITL.y"
     { (yyval.p) = new Sbaseparam(new inscore::IMsgParam<std::string>(ITLtext)); ;}
     break;
 
   case 22:
-#line 124 "ITL.y"
+#line 126 "ITL.y"
     { (yyval.p) = gScripter->resolve((yyvsp[(2) - (2)].str)->c_str()); if (!(yyval.p)) { VARERROR("unknown variable ", (yyvsp[(2) - (2)].str)->c_str()) }; delete (yyvsp[(2) - (2)].str); ;}
     break;
 
   case 23:
-#line 129 "ITL.y"
+#line 131 "ITL.y"
     { gScripter->variable((yyvsp[(1) - (3)].str)->c_str(), (yyvsp[(3) - (3)].num));						delete (yyvsp[(1) - (3)].str); ;}
     break;
 
   case 24:
-#line 130 "ITL.y"
+#line 132 "ITL.y"
     { gScripter->variable((yyvsp[(1) - (3)].str)->c_str(), (float)atof(ITLtext));	delete (yyvsp[(1) - (3)].str); ;}
     break;
 
   case 25:
-#line 131 "ITL.y"
+#line 133 "ITL.y"
     { gScripter->variable((yyvsp[(1) - (3)].str)->c_str(), ITLtext);				delete (yyvsp[(1) - (3)].str); ;}
     break;
 
   case 26:
-#line 134 "ITL.y"
+#line 136 "ITL.y"
     { (yyval.str) = new string(ITLtext); ;}
     break;
 
   case 27:
-#line 137 "ITL.y"
+#line 139 "ITL.y"
     { (yyval.num) = atoi(ITLtext); ;}
     break;
 
   case 28:
-#line 138 "ITL.y"
+#line 140 "ITL.y"
     { (yyval.num) = atoi(ITLtext); ;}
     break;
 
   case 29:
-#line 142 "ITL.y"
+#line 144 "ITL.y"
     { int n = gScripter->endLoop(); if (n) { LOOPERROR(n); } ;}
     break;
 
   case 30:
-#line 145 "ITL.y"
+#line 147 "ITL.y"
     { gScripter->startLoop((yyvsp[(3) - (5)].str)->c_str(), (yyvsp[(5) - (5)].num), ITLlineno); delete (yyvsp[(3) - (5)].str); ;}
     break;
 
   case 33:
-#line 152 "ITL.y"
+#line 154 "ITL.y"
     { gScripter->add((yyvsp[(1) - (1)].msg)); ;}
     break;
 
   case 35:
-#line 156 "ITL.y"
+#line 158 "ITL.y"
     {	(yyval.msg) = new inscore::IMessage(*(yyvsp[(1) - (3)].str), "", *(yyvsp[(2) - (3)].plist)); delete (yyvsp[(1) - (3)].str); delete (yyvsp[(2) - (3)].plist); ;}
     break;
 
   case 36:
-#line 157 "ITL.y"
+#line 159 "ITL.y"
     {	(yyval.msg) = new inscore::IMessage(*(yyvsp[(1) - (3)].str), *(yyvsp[(2) - (3)].str));  delete (yyvsp[(1) - (3)].str); delete (yyvsp[(2) - (3)].str); ;}
     break;
 
   case 37:
-#line 158 "ITL.y"
+#line 160 "ITL.y"
     {	(yyval.msg) = new inscore::IMessage(*(yyvsp[(1) - (4)].str), *(yyvsp[(2) - (4)].str), *(yyvsp[(3) - (4)].plist)); delete (yyvsp[(1) - (4)].str); delete (yyvsp[(2) - (4)].str); delete (yyvsp[(3) - (4)].plist); ;}
     break;
 
   case 38:
-#line 161 "ITL.y"
+#line 163 "ITL.y"
     { (yyval.str) = (yyvsp[(1) - (1)].str); ;}
     break;
 
   case 39:
-#line 162 "ITL.y"
+#line 164 "ITL.y"
     { *(yyvsp[(1) - (2)].str) += *(yyvsp[(2) - (2)].str); (yyval.str) = (yyvsp[(1) - (2)].str); delete (yyvsp[(2) - (2)].str); ;}
     break;
 
   case 40:
-#line 165 "ITL.y"
+#line 167 "ITL.y"
     { (yyval.str) = new string("/" + *(yyvsp[(2) - (2)].str)); delete (yyvsp[(2) - (2)].str); ;}
     break;
 
   case 41:
-#line 169 "ITL.y"
+#line 171 "ITL.y"
     { (yyval.str) = (yyvsp[(1) - (1)].str); ;}
     break;
 
   case 42:
-#line 170 "ITL.y"
+#line 172 "ITL.y"
     { (yyval.str) = new string(ITLtext); ;}
     break;
 
   case 43:
-#line 171 "ITL.y"
+#line 173 "ITL.y"
     { (yyval.str) = new string(ITLtext); ;}
     break;
 
   case 44:
-#line 173 "ITL.y"
+#line 175 "ITL.y"
     { (yyval.num) = atoi(ITLtext); ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1641 "ITLparse.c++"
+#line 1643 "ITLparse.c++"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1851,7 +1853,7 @@ yyreturn:
 }
 
 
-#line 176 "ITL.y"
+#line 178 "ITL.y"
 
 
 } // end namespace
@@ -1859,7 +1861,7 @@ yyreturn:
 using namespace inscore;
 int ITLerror(const char*s) {
 	YY_FLUSH_BUFFER;
-#if 1
+#ifdef NO_OSCSTREAM
 	cerr << "error line " << ITLlineno << ": " << s << endl;
 #else
 	ITLErr << "error line " << ITLlineno << ": " << s << ITLEndl;
@@ -1870,14 +1872,22 @@ int ITLerror(const char*s) {
 
 int VARerror(const char*s, const char* var) {
 	YY_FLUSH_BUFFER;
+#ifdef NO_OSCSTREAM
 	cerr << "error line " << ITLlineno << ": " << s << var << endl;
+#else
+	ITLErr << "error line " << ITLlineno << ": " << s << var << ITLEndl;
+#endif
 	ITLlineno = 1;
 	return 0; //err;
 }
 
 int LOOPerror(int line) {
 	YY_FLUSH_BUFFER;
+#ifdef NO_OSCSTREAM
 	cerr << "error line " << ITLlineno << ": unknown variable in loop started line " << line << endl;
+#else
+	ITLErr << "error line " << ITLlineno << ": unknown variable in loop started line " << line << ITLEndl;
+#endif
 	ITLlineno = 1;
 	return 0; //err;
 }
