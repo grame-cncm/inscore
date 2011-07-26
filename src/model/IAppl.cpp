@@ -278,8 +278,8 @@ string IAppl::musicxmlversion() const
 MsgHandler::msgStatus IAppl::requireMsg(const IMessage* msg)
 {
 	if (msg->size() >= 3) {
-		int version = INScore::version();
-		int required;
+		float version = INScore::version();
+		float required;
 		if (msg->param(0, required)) {
 			if (version >= required) {
 				return MsgHandler::kProcessed;
