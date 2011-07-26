@@ -22,8 +22,8 @@
 */
 
 #include <iostream>
-//#include <string>
 #include "ITLparser.h"
+#include "IMessage.h"
 #include "IMessageStream.h"
 
 using namespace std;
