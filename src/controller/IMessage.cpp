@@ -28,11 +28,11 @@
 
 #include "IMessage.h"
 #include "IMessageStream.h"
-#include "ITLError.h"
 #include "rational.h"
-#include "TMapping.h"
-#include "TSegment.h"
-#include "TSegmentation.h"
+
+#ifndef NO_OSCSTREAM_SUPPORT
+#include "ITLError.h"
+#endif
 
 using namespace std;
 
@@ -53,14 +53,6 @@ void IMessageList::operator += (const IMessageList& msgs)
 {
 	for (unsigned int i=0; i < msgs.size(); i++)
 		push_back (msgs[i]);
-}
-
-//--------------------------------------------------------------------------
-OSCStream& operator << (OSCStream& out, const IMessageList& msg)
-{
-	for (unsigned int i=0; i < msg.size(); i++)
-		msg[i]->print(out);
-	return out;
 }
 
 //--------------------------------------------------------------------------
@@ -131,6 +123,7 @@ void IMessage::print(std::ostream& out) const
 }
 
 //--------------------------------------------------------------------------
+#ifndef NO_OSCSTREAM_SUPPORT
 void IMessage::print(OSCStream& out) const
 {
 	out << OSCStart(address().c_str());
@@ -150,6 +143,7 @@ void IMessage::printArgs(OSCStream& out) const
 		else ITLErr << "IMessage::print(OSCStream& out): unknown message parameter type" << ITLEndl;
 	}
 }
+#endif
 
 //--------------------------------------------------------------------------
 bool IMessage::operator == (const IMessage& other) const

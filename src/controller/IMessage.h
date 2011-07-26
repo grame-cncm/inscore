@@ -34,6 +34,7 @@
 #include "rational.h"
 #include "smartpointer.h"
 
+
 namespace inscore
 {
 
@@ -216,6 +217,8 @@ class IMessage : public Message, public smartable
 		\param out the output stream
 	*/
 	void				print(std::ostream& out) const;
+
+#ifndef NO_OSCSTREAM_SUPPORT
 	/*!
 		\brief send the message to OSC
 		\param out the OSC output stream
@@ -226,6 +229,7 @@ class IMessage : public Message, public smartable
 		\param out the OSC output stream
 	*/
 	void				printArgs(OSCStream& out) const;
+#endif
 
 	/// \brief gives the message address
 	const std::string&	address() const		{ return fAddress; }
