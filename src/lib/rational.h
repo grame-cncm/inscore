@@ -116,7 +116,9 @@ class export rational
         template <typename T> void print(T& out) const { out << getNumerator() << getDenominator(); }
 };
 
+#ifndef NO_OSCSTREAM
 OSCStream&		operator << (OSCStream& out, const rational& r);
+#endif
 IMessage&		operator << (IMessage& out, const rational& r);
 std::ostream&	operator << (std::ostream& out, const rational& r);
 
