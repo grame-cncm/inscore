@@ -15,7 +15,7 @@ endif(MSVC)
 else(WIN32)
 	add_definitions(-Wall)
 endif(WIN32)
-add_definitions(-DNO_OSCSTREAM_SUPPORT)
+add_definitions(-DNO_OSCSTREAM)
 
 if(APPLE)
 	if (${CMAKE_SYSTEM_VERSION} VERSION_LESS 9.0.0)
