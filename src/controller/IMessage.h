@@ -218,7 +218,7 @@ class IMessage : public Message, public smartable
 	*/
 	void				print(std::ostream& out) const;
 
-#ifndef NO_OSCSTREAM_SUPPORT
+#ifndef NO_OSCSTREAM
 	/*!
 		\brief send the message to OSC
 		\param out the OSC output stream

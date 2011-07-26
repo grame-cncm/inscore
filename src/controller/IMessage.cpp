@@ -30,7 +30,7 @@
 #include "IMessageStream.h"
 #include "rational.h"
 
-#ifndef NO_OSCSTREAM_SUPPORT
+#ifndef NO_OSCSTREAM
 #include "ITLError.h"
 #endif
 
@@ -123,7 +123,7 @@ void IMessage::print(std::ostream& out) const
 }
 
 //--------------------------------------------------------------------------
-#ifndef NO_OSCSTREAM_SUPPORT
+#ifndef NO_OSCSTREAM
 void IMessage::print(OSCStream& out) const
 {
 	out << OSCStart(address().c_str());
