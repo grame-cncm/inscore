@@ -577,7 +577,7 @@ MsgHandler::msgStatus IObject::get(const IMessage* msg) const
 { 
 	IMessageList msgs = getMsgs (msg);
 	if (msgs.size()) {
-		oscout << std::vector<IMessage *>(msgs);
+		oscout << &msgs;
 		msgs.clear();
 	}
 	return MsgHandler::kProcessedNoChange;
