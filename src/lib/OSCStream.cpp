@@ -21,6 +21,7 @@
 
 #include <iostream>
 #include "OSCStream.h"
+#include "IMessage.h"
 
 using namespace std;
 
@@ -87,6 +88,8 @@ OSCStream& operator <<(OSCStream& s, const string& val)
 	s.stream() << val.c_str();
 	return s; 
 }
+
+OSCStream& operator <<(OSCStream& s, const IMessage* msg)	{ msg->print(s); return s; }
 
 //--------------------------------------------------------------------------
 OSCStream& operator <<(OSCStream& s, const OSCErr& val)		{ return s.start(val.fAddress); }
