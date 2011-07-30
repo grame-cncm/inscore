@@ -23,9 +23,7 @@
 
 */
 
-#include "TComposition.h"
 #include "VRectView.h"
-
 #include "IRect.h"
 
 namespace inscore
