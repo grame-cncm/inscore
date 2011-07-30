@@ -1,18 +1,14 @@
-/ITL/scene reset
-
-/ITL/scene/comment set txt "system mapping test score
-(click to turn page, dbl click -> first page"
-/ITL/scene/comment xorigin -1.
-/ITL/scene/comment yorigin -1.
-/ITL/scene/comment x -0.95
-/ITL/scene/comment y -0.95
-
-/ITL/scene/score set gmnf "system.gmn"
-/ITL/scene/score map "system"
-/ITL/scene/score/debug map 1
-/ITL/scene/score columns 8
-
-/ITL/scene width 2.3
-
-/ITL/scene/score watch "mouseDown" 		"/ITL/scene/score" "dpage" 1
-/ITL/scene/score watch "doubleClick" 	"/ITL/scene/score" "page" 1
+/ITL/scene reset ;
+/ITL/scene/comment set "txt" "system mapping test score
+(click to turn page, dbl click -> first page" ;
+/ITL/scene/comment xorigin -1.00000 ;
+/ITL/scene/comment yorigin -1.00000 ;
+/ITL/scene/comment x -0.950000 ;
+/ITL/scene/comment y -0.950000 ;
+/ITL/scene/score set "gmnf" "system.gmn" ;
+/ITL/scene/score map "system" ;
+/ITL/scene/score/debug map 1 ;
+/ITL/scene/score columns 8 ;
+/ITL/scene width 2.30000 ;
+/ITL/scene/score watch "mouseDown" "/ITL/scene/score" "dpage" 1 ;
+/ITL/scene/score watch "doubleClick" "/ITL/scene/score" "page" 1 ;

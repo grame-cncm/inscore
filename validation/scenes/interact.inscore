@@ -1,94 +1,78 @@
-/ITL/scene reset
-
-/ITL/scene width 1.0
-/ITL/scene height 1.0
-
-/ITL/scene/back set rect 1. 0.175
-/ITL/scene/back scale 2.0
-/ITL/scene/back color 0 0 0 255
-/ITL/scene/back yorigin -1.
-/ITL/scene/back y -1.
-
-/ITL/scene/score set gmn "[ c d e f g a b c2]"
-/ITL/scene/score scale 5.
-/ITL/scene/score y -0.82
-/ITL/scene/score z 0.5
-/ITL/scene/score color 255 255 255
-
-/ITL/scene/cursor set "ellipse" 0.1 0.1
-/ITL/scene/cursor color 255 0 0
-/ITL/scene/cursor z 0.4
-/ITL/scene/sync cursor score
-
-/ITL/scene/rect1 set rect 0.1 1.0
-/ITL/scene/rect2 set rect 0.1 1.0
-/ITL/scene/rect3 set rect 0.1 1.0
-/ITL/scene/rect* penWidth 1.
-/ITL/scene/rect* penColor 0 0 0
-/ITL/scene/rect* z 1.
-/ITL/scene/rect* color 255 255 255 0
-/ITL/scene/rect* effect "shadow" 0 0 255 255 255 255 1
-
-/ITL/scene/rect1 yorigin 1.
-/ITL/scene/rect3 yorigin -1.
-
-/ITL/scene/label1 set "txt" "Volume"
-/ITL/scene/label2 set "txt" "Foo"
-/ITL/scene/label3 set "txt" "Curtain"
-/ITL/scene/label* z 1.
-/ITL/scene/label* color 127 120 0
-
-/ITL/scene/level1 set rect 0.1 0.35
-/ITL/scene/level2 set rect 0.05 0.35
-/ITL/scene/level2 scale 2.
-/ITL/scene/level3 set rect 0.1 0.35
-/ITL/scene/level1 color 0 136 48 255
-/ITL/scene/level2 color 246 0 0 255
-/ITL/scene/level3 color 0 11 204 255
-/ITL/scene/level* z 0.5
-
-/ITL/scene/level1 yorigin 1.
-/ITL/scene/level3 yorigin -1.
-
-/ITL/scene/*1 x -0.5
-/ITL/scene/*3 x 0.5
-
-/ITL/scene/*1 y 0.5
-/ITL/scene/*3 y -0.5
-/ITL/scene/label* y 0.54
-
-/ITL/scene/startbutton set img "rsrc/start.png"
-/ITL/scene/startbutton z 1.
-/ITL/scene/stopbutton set img "rsrc/stop.png"
-/ITL/scene/stopbutton z 0.5
-/ITL/scene/*button effect shadow 8 8 0 8 33 74 10
-/ITL/scene/*button y 0.7
-/ITL/scene/*button scale 0.7
-
-/ITL/scene/boulet set ellipse 0.1 0.1
-/ITL/scene/boulet alpha 0
-/ITL/scene/boule set img "rsrc/boule.png"
-/ITL/scene/boule scale 0.3
-/ITL/scene/boule alpha 100
-/ITL/scene/boule z 1.
-/ITL/scene/boulet z 1.
-/ITL/scene/boule* xorigin 1.
-/ITL/scene/boule* yorigin 1.
-/ITL/scene/boule* x 1.
-/ITL/scene/boule* y 1.
-
-/ITL/scene/reload set "txt" "Reload"
-/ITL/scene/reload xorigin -1.
-/ITL/scene/reload yorigin 1.
-/ITL/scene/reload x -0.99
-/ITL/scene/reload y 0.98
-/ITL/scene/reload scale 1.2
-/ITL/scene/reload effect "shadow" 0 0 255 255 255 255 1
-
-/ITL/scene/move set "txt" "Move me !"
-/ITL/scene/move y -0.58
-/ITL/scene/move z 1.1
-/ITL/scene/move scale 3.
-/ITL/scene/move color 110 110 110
-
-/ITL load "watch.inscore"
+/ITL/scene reset ;
+/ITL/scene width 1.00000 ;
+/ITL/scene height 1.00000 ;
+/ITL/scene/back set "rect" 1.00000 0.175000 ;
+/ITL/scene/back scale 2.00000 ;
+/ITL/scene/back color 0 0 0 255 ;
+/ITL/scene/back yorigin -1.00000 ;
+/ITL/scene/back y -1.00000 ;
+/ITL/scene/score set "gmn" "[ c d e f g a b c2]" ;
+/ITL/scene/score scale 5.00000 ;
+/ITL/scene/score y -0.820000 ;
+/ITL/scene/score z 0.500000 ;
+/ITL/scene/score color 255 255 255 ;
+/ITL/scene/cursor set "ellipse" 0.100000 0.100000 ;
+/ITL/scene/cursor color 255 0 0 ;
+/ITL/scene/cursor z 0.400000 ;
+/ITL/scene/sync cursor "score" ;
+/ITL/scene/rect1 set "rect" 0.100000 1.00000 ;
+/ITL/scene/rect2 set "rect" 0.100000 1.00000 ;
+/ITL/scene/rect3 set "rect" 0.100000 1.00000 ;
+/ITL/scene/rect* penWidth 1.00000 ;
+/ITL/scene/rect* penColor 0 0 0 ;
+/ITL/scene/rect* z 1.00000 ;
+/ITL/scene/rect* color 255 255 255 0 ;
+/ITL/scene/rect* effect "shadow" 0 0 255 255 255 255 1 ;
+/ITL/scene/rect1 yorigin 1.00000 ;
+/ITL/scene/rect3 yorigin -1.00000 ;
+/ITL/scene/label1 set "txt" "Volume" ;
+/ITL/scene/label2 set "txt" "Foo" ;
+/ITL/scene/label3 set "txt" "Curtain" ;
+/ITL/scene/label* z 1.00000 ;
+/ITL/scene/label* color 127 120 0 ;
+/ITL/scene/level1 set "rect" 0.100000 0.350000 ;
+/ITL/scene/level2 set "rect" 0.0500000 0.350000 ;
+/ITL/scene/level2 scale 2.00000 ;
+/ITL/scene/level3 set "rect" 0.100000 0.350000 ;
+/ITL/scene/level1 color 0 136 48 255 ;
+/ITL/scene/level2 color 246 0 0 255 ;
+/ITL/scene/level3 color 0 11 204 255 ;
+/ITL/scene/level* z 0.500000 ;
+/ITL/scene/level1 yorigin 1.00000 ;
+/ITL/scene/level3 yorigin -1.00000 ;
+/ITL/scene/*1 x -0.500000 ;
+/ITL/scene/*3 x 0.500000 ;
+/ITL/scene/*1 y 0.500000 ;
+/ITL/scene/*3 y -0.500000 ;
+/ITL/scene/label* y 0.540000 ;
+/ITL/scene/startbutton set "img" "rsrc/start.png" ;
+/ITL/scene/startbutton z 1.00000 ;
+/ITL/scene/stopbutton set "img" "rsrc/stop.png" ;
+/ITL/scene/stopbutton z 0.500000 ;
+/ITL/scene/*button effect "shadow" 8 8 0 8 33 74 10 ;
+/ITL/scene/*button y 0.700000 ;
+/ITL/scene/*button scale 0.700000 ;
+/ITL/scene/boulet set "ellipse" 0.100000 0.100000 ;
+/ITL/scene/boulet alpha 0 ;
+/ITL/scene/boule set "img" "rsrc/boule.png" ;
+/ITL/scene/boule scale 0.300000 ;
+/ITL/scene/boule alpha 100 ;
+/ITL/scene/boule z 1.00000 ;
+/ITL/scene/boulet z 1.00000 ;
+/ITL/scene/boule* xorigin 1.00000 ;
+/ITL/scene/boule* yorigin 1.00000 ;
+/ITL/scene/boule* x 1.00000 ;
+/ITL/scene/boule* y 1.00000 ;
+/ITL/scene/reload set "txt" "Reload" ;
+/ITL/scene/reload xorigin -1.00000 ;
+/ITL/scene/reload yorigin 1.00000 ;
+/ITL/scene/reload x -0.990000 ;
+/ITL/scene/reload y 0.980000 ;
+/ITL/scene/reload scale 1.20000 ;
+/ITL/scene/reload effect "shadow" 0 0 255 255 255 255 1 ;
+/ITL/scene/move set "txt" "Move me !" ;
+/ITL/scene/move y -0.580000 ;
+/ITL/scene/move z 1.10000 ;
+/ITL/scene/move scale 3.00000 ;
+/ITL/scene/move color 110 110 110 ;
+/ITL load "watch.inscore" ;
