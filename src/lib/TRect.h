@@ -105,9 +105,10 @@ class TSize : public TPoint<T>
 		TSize<T> operator * ( T f )	{ return TSize<T>( width() * f , height() * f ); }
 };
 
-template <typename T> OSCStream& operator << (OSCStream& out, const TSize<T>& size)
-										{ out << size.width() << size.height(); return out; }
+//template <typename T> OSCStream& operator << (OSCStream& out, const TSize<T>& size)
+//										{ out << size.width() << size.height(); return out; }
 
+typedef TSize<int>		TIntSize;
 typedef TSize<long>		TLongSize;
 typedef TSize<float>	TFloatSize;
 

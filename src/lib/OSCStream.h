@@ -28,6 +28,8 @@
 #include "osc/OscOutboundPacketStream.h"
 #include "ip/UdpSocket.h"
 
+#include "TRect.h"
+
 namespace inscore
 {
 
@@ -104,6 +106,8 @@ class OSCStream
 				inline	OSCStream& operator <<(OSCStream& s, int val)		{ s.stream() << val; return s; }
 				inline	OSCStream& operator <<(OSCStream& s, long val)		{ s.stream() << (int)val; return s; }
 				inline	OSCStream& operator <<(OSCStream& s, float val)		{ s.stream() << val; return s; }
+
+template <typename T> 	OSCStream& operator <<(OSCStream& s, const TSize<T>& size)	{ s << size.width() << size.height(); return s; }
 
 						OSCStream& operator <<(OSCStream& s, const IMessage* msg);
 						OSCStream& operator <<(OSCStream& s, const IMessageList* msg);
