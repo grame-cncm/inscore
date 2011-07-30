@@ -32,11 +32,10 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-IApplDebug::IApplDebug(IObject * parent) : IObjectDebug(parent), fOSCDebug(false)
+IApplDebug::IApplDebug(IObject * parent) : IObjectDebug(parent), fOSCDebug(true)
 {
 	fGetMsgHandlerMap["osc"]	= TGetParamMsgHandler<bool>::create(fOSCDebug);
 	fMsgHandlerMap["osc"]		= TSetMethodMsgHandler<IApplDebug,bool>::create(this, &IApplDebug::setOSCDebug);
-//	fMsgHandlerMap["osc"]		= TSetMsgHandler<bool>::create(fOSCDebug);
 }
 
 //--------------------------------------------------------------------------
