@@ -140,10 +140,10 @@ number		: UINT					{ $$ = atoi(ITLtext); }
 			;
 			
 //_______________________________________________
-loop		: loopstart loopbody RPAR ENDEXPR		{ int n = gScripter->endLoop(); if (n) { LOOPERROR(n); } }
+loop		: loopstart SEP loopbody RPAR ENDEXPR	{ int n = gScripter->endLoop(); if (n) { LOOPERROR(n); } }
 			;
 			
-loopstart	: LOOP LPAR varname SEP count			{ gScripter->startLoop($3->c_str(), $5, ITLlineno); delete $3; }
+loopstart	: LOOP LPAR varname SEP count 			{ gScripter->startLoop($3->c_str(), $5, ITLlineno); delete $3; }
 			;
 
 loopbody	: looped			
