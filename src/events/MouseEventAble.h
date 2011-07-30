@@ -55,15 +55,6 @@ template <typename T> class MouseEventAble : public T
 		const IObject * fEventsHandler;
 		
 		void handleEvent (QPointF pos,  EventsAble::eventype type) const	{ _MouseEventAble::handleEvent(fEventsHandler, pos, type); }
-//		{
-//		qDebug() << "handle event pos" << pos ;
-//			VGraphicsItemView*	view = graphicView();
-//			QPoint rel (view->scene2RelativeX(pos.x()), view->scene2RelativeY(pos.y()));
-//		qDebug() << "handle event rel" << pos ;
-//			const std::vector<SEventMessage>& msgs = fEventsHandler->getMouseMsgs (type);
-//			for (unsigned int i=0; i<msgs.size(); i++)
-//				msgs[i]->send();
-//		}
 
 		void mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event )		{ handleEvent (event->pos(), EventsAble::kMouseDoubleClick); }
 		void mouseMoveEvent		( QGraphicsSceneMouseEvent * event )		{ handleEvent (event->pos(), EventsAble::kMouseMove); }
