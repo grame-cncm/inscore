@@ -74,8 +74,11 @@ static IMessage* buildSyncMsg (const string& address, SIObject o, const SMaster 
 	if (master) {
 		const string& smap = master->getSlaveMapName();
 		if (smap.size()) target += ":" + smap;
-		IMessage * msg = new IMessage(address, target);
-		if (msg) *msg << *master;
+		IMessage * msg = new IMessage(address);
+		if (msg) {
+			*msg << target;
+			*msg << *master;
+		}
 		return msg;
 	}
 	return new IMessage(address, target);
@@ -142,22 +145,25 @@ bool ISceneSync::name2mapName (const string& str, string& name, string& map) con
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)	
 {
+	int n = msg->params().size();
+	if (!n)  return MsgHandler::kBadParameters;
+
 	string slave, slaveMapName;
-	name2mapName (msg->message(), slave, slaveMapName);
+	name2mapName (msg->params()[0]->value<string>(""), slave, slaveMapName);
+//	name2mapName (msg->message(), slave, slaveMapName);
 
 	subnodes so;
 	if (!fParent->find(slave, so)) return MsgHandler::kBadParameters;		// no target objects to be slave
 	
 	MsgHandler::msgStatus result = MsgHandler::kBadParameters;
-	int n = msg->params().size();
-	if (n >= 1) {
+	if (n > 1) {
 		string master, masterMapName;
-		name2mapName (msg->params()[0]->value<string>(""), master, masterMapName);
+		name2mapName (msg->params()[1]->value<string>(""), master, masterMapName);
 
 		Master::VAlignType align = Master::kDefaultSync;
 		Master::StretchType stretch = Master::kDefaultStretch;
 		
-		for (int i=1; i<n; i++) {
+		for (int i=2; i<n; i++) {
 			string mode = msg->params()[i]->value<string>("");
 			Master::VAlignType val = Master::string2syncmode(mode);
 			if (val != Master::kUnknown) align = val;
