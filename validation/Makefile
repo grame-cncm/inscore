@@ -35,6 +35,7 @@ files: $(out)
 $(version)/%.$(format): %.inscore
 	@[ -d $(@D) ] || mkdir -p $(@D)
 	./inscore2pdf $< $@
+	@sleep 1
 
 %.out: %.pdf
 	@diff $< $(patsubst $(version)/%, $(VERSION)/%, $<) || echo "open $<  $(patsubst $(version)/%, $(VERSION)/%, $<) to check changes"
