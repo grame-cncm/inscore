@@ -55,6 +55,9 @@ typedef class SMARTP<IGraphicSignal> SIGraphicSignal;
 class IGraphicBasedObject;
 typedef class SMARTP<IGraphicBasedObject> SIGraphicBasedObject;
 
+class IGrid;
+typedef class SMARTP<IGrid> SIGrid;
+
 class IGuidoCode;
 typedef class SMARTP<IGuidoCode>	SIGuidoCode;
 

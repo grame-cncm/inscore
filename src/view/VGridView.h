@@ -24,50 +24,38 @@
 */
 
 
-#ifndef __VQtLocalMappingUpdater__
-#define __VQtLocalMappingUpdater__
+#ifndef __VGridView__
+#define __VGridView__
 
-#include "Updater.h"
+#include <QGraphicsRectItem>
+
+#include "VMappedShapeView.h"
+#include "MouseEventAble.h"
 
 namespace inscore
 {
 
 /*!
-\addtogroup ITLCtrl
+\addtogroup ITLView
 @{
 */
 
 //--------------------------------------------------------------------------
 /**
-*	\brief a graphic view of the model state. 
-*
-*	Uses Qt's QGraphicsScene/QGraphicsView framework.
+*	\brief a graphic view of a IGrid.
 */
-class export VQtLocalMappingUpdater : public LocalMapUpdater
+class VGridView: public VMappedShapeView
 {
-	public :
-		static SMARTP<VQtLocalMappingUpdater> create()		{ return new VQtLocalMappingUpdater(); }
+	MouseEventAble<QGraphicsRectItem>*  item() const		{ return (MouseEventAble<QGraphicsRectItem>*)fItem; }
 
-		void updateTo (IGraphicSignal* graph);
-		void updateTo (IGuidoCode* guidoCode);
-		void updateTo (IImage* img);
-		void updateTo (IText* text);
-		void updateTo (ISVG* svg);
-		void updateTo (ISVGFile* svg);
-		void updateTo (IHtml* text);
-		void updateTo (IRect* o);
-		void updateTo (IGrid* o);
-		void updateTo (IEllipse* o);
-		void updateTo (IVideo* o);
-		void updateTo (IPolygon* o);
-		void updateTo (ICurve* o);
-		void updateTo (ILine* o);
-				
-	protected :
-				 VQtLocalMappingUpdater() {}
-		virtual ~VQtLocalMappingUpdater() {}
+	public :
+				 VGridView(QGraphicsScene * scene, const IGrid* h);
+		virtual ~VGridView() {}
+
+		virtual void	updateView( IGrid * rect );
+		virtual void	updateObjectSize( IObject * object ) {}
+		virtual void	updateLocalMapping (IGrid* object);
 };
-typedef class SMARTP<VQtLocalMappingUpdater>	SVQtLocalMappingUpdater;
 
 /*!@} */
 

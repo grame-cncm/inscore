@@ -39,6 +39,7 @@ class VCurveView;
 class VEllipseView;
 class VGraphicsItemView;
 class VGraphView;
+class VGridView;
 class VGuidoItemView;
 class VImageView;
 class VLineView;
@@ -70,6 +71,7 @@ class ViewFactory
 	static VImageView*		create (const IImage* object, QGraphicsScene* scene);
 	static VLineView*		create (const ILine* object, QGraphicsScene* scene);
 	static VPolygonView*	create (const IPolygon* object, QGraphicsScene* scene);
+	static VGridView*		create (const IGrid* object, QGraphicsScene* scene);
 	static VRectView*		create (const IRect* object, QGraphicsScene* scene);
 	static VSVGView*		create (const ISVG* object, QGraphicsScene* scene);
 	static VSVGView*		create (const ISVGFile* object, QGraphicsScene* scene);

@@ -115,6 +115,9 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 	else if ( type == IRect::kRectType )
 		obj = _create<IRect> (name, parent);
 
+	else if ( type == IGrid::kGridType )
+		obj = _create<IGrid> (name, parent);
+
 	else if ( type == ISignal::kSignalType )
 		obj = _create<ISignal> (name, parent);
 

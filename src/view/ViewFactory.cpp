@@ -38,6 +38,7 @@
 #include "VLineView.h"
 #include "VPolygonView.h"
 #include "VRectView.h"
+#include "VGridView.h"
 #include "VSceneView.h"
 #include "VSVGView.h"
 #include "VTextView.h"
@@ -57,6 +58,7 @@ VTextView*		ViewFactory::create (const IHtmlFile* object, QGraphicsScene* scene)
 VImageView*		ViewFactory::create (const IImage* object, QGraphicsScene* scene)			{ return new VImageView (scene, object); }
 VLineView*		ViewFactory::create (const ILine* object, QGraphicsScene* scene)			{ return new VLineView (scene, object); }
 VPolygonView*	ViewFactory::create (const IPolygon* object, QGraphicsScene* scene)			{ return new VPolygonView (scene, object); }
+VGridView*		ViewFactory::create (const IGrid* object, QGraphicsScene* scene)			{ return new VGridView (scene, object); }
 VRectView*		ViewFactory::create (const IRect* object, QGraphicsScene* scene)			{ return new VRectView (scene, object); }
 VSVGView*		ViewFactory::create (const ISVG* object, QGraphicsScene* scene)				{ return new VSVGView (scene, object); }
 VSVGView*		ViewFactory::create (const ISVGFile* object, QGraphicsScene* scene)			{ return new VSVGView (scene, object); }

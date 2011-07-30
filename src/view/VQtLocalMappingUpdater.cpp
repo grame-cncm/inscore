@@ -26,6 +26,7 @@
 #include "VQtLocalMappingUpdater.h"
 
 #include "VGraphView.h"
+#include "VGridView.h"
 #include "VGuidoItemView.h"
 #include "VImageView.h"
 #include "VSVGView.h"
@@ -48,6 +49,7 @@ void VQtLocalMappingUpdater::updateTo(ISVG* o)				{ o->getView()->updateLocalMap
 void VQtLocalMappingUpdater::updateTo(ISVGFile* o)			{ o->getView()->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(IHtml* o)				{ o->getView()->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(IRect* o)				{ o->getView()->updateLocalMapping( o ); }
+void VQtLocalMappingUpdater::updateTo(IGrid* o)				{ o->getView()->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(IEllipse* o)			{ o->getView()->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(ILine* o)				{ o->getView()->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(IPolygon* o)			{ o->getView()->updateLocalMapping( o ); }

@@ -72,6 +72,7 @@ class export Updater : public smartable
 		virtual void updateTo (IShape *) {}
 		virtual void updateTo (IShapeMap *) {}
 		virtual void updateTo (IRect *) {}
+		virtual void updateTo (IGrid *) {}
 		virtual void updateTo (IEllipse *) {}
 		virtual void updateTo (IPolygon *) {}
 		virtual void updateTo (ICurve*) {}

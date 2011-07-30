@@ -34,6 +34,7 @@
 #include "IFileWatcher.h"
 #include "IFaustProcessor.h"
 #include "IGraphicSignal.h"
+#include "IGrid.h"
 #include "IGuidoCode.h"
 #include "IGuidoFile.h"
 #include "IHtml.h"

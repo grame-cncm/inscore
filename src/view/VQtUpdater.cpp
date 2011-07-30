@@ -37,6 +37,7 @@
 #include "VLineView.h"
 #include "VPolygonView.h"
 #include "VRectView.h"
+#include "VGridView.h"
 #include "VSceneView.h"
 #include "VSVGView.h"
 #include "VTextView.h"
@@ -51,6 +52,7 @@ void VQtUpdater::updateTo(IScene * scene)		{ scene->getView()->updateView(scene)
 
 void VQtUpdater::updateTo(IImage * img)				{ update<IImage>(img); }
 void VQtUpdater::updateTo(IRect * rect)				{ update<IRect>(rect); }
+void VQtUpdater::updateTo(IGrid * grid)				{ update<IGrid>(grid); }
 void VQtUpdater::updateTo(IEllipse * e)				{ update<IEllipse>(e); }
 void VQtUpdater::updateTo(IPolygon * p)				{ update<IPolygon>(p); }
 void VQtUpdater::updateTo(IGuidoCode * guido)		{ update<IGuidoCode>(guido); }
