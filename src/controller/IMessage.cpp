@@ -179,6 +179,14 @@ IMessage& operator <<(IMessage& msg, const TFloatPoint& val)
 }
 
 //--------------------------------------------------------------------------
+IMessage& operator <<(IMessage& msg, const TIntSize& val)
+{
+	msg.add<int>(val.width()); 
+	msg.add<int>(val.height()); 
+	return msg; 
+}
+
+//--------------------------------------------------------------------------
 IMessage& operator <<(IMessage& msg, const std::string& val)
 { 
 	const char *ptr = val.c_str();

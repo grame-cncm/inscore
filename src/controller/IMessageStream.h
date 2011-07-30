@@ -72,6 +72,9 @@ IMessage& operator <<(IMessage& msg, const std::string& val);
 // TFloatPoint: linearizes x and y
 IMessage& operator <<(IMessage& msg, const TFloatPoint& val);
 
+// TFloatPoint: linearizes x and y
+IMessage& operator <<(IMessage& msg, const TIntSize& val);
+
 // catch any other supported type
 template <typename T>	IMessage& operator <<(IMessage& msg, T val)		{ msg.add<T>(val); return msg; }
 
