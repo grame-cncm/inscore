@@ -12,6 +12,19 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 0.90
+- at application level: osc debug is now 'on' by default
+- new scripting features (variables, loops)
+- ITL file format change:
+  semicolon added at the end of each message
+  '//' comment not supported any more
+  %' comment char replaced by '!'
+  new variables and loop scripting features
+  single quote support for strings
+  messages adressed to sync node must use the string format
+- new 'grid' object for automatic segmentation and mapping
+
+----------------------------------------------------
 Version 0.82
 - new Faust plugins for signals processing
 - colors management change: all the color models (RGBA and HSBA) accept now
