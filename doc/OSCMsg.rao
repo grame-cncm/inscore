@@ -40,27 +40,12 @@
 \rail@endplus
 \rail@end
 }
-\rail@i {4}{ addressSpace : ('/ITL' ITLMsg) | ('/ITL/scene' sceneMsg) | '/ITL/scene/' identifier ( componentMsg | timeMsg | specificMsg) }
+\rail@i {4}{ OSCMessage : OSCAddress parameters }
 \rail@o {4}{
-\rail@index{addressSpace}
-\rail@begin{5}{addressSpace}
-\rail@bar
-\rail@term{/ITL}[]
-\rail@nont{ITLMsg}[]
-\rail@nextbar{1}
-\rail@term{/ITL/scene}[]
-\rail@nont{sceneMsg}[]
-\rail@nextbar{2}
-\rail@term{/ITL/scene/}[]
-\rail@nont{identifier}[]
-\rail@bar
-\rail@nont{componentMsg}[]
-\rail@nextbar{3}
-\rail@nont{timeMsg}[]
-\rail@nextbar{4}
-\rail@nont{specificMsg}[]
-\rail@endbar
-\rail@endbar
+\rail@index{OSCMessage}
+\rail@begin{1}{OSCMessage}
+\rail@nont{OSCAddress}[]
+\rail@nont{parameters}[]
 \rail@end
 }
 \rail@i {5}{ ITLMsg : 'quit' | ('rootPath' path) | ('port' int32) | ('outport' int32) | ('errport' int32) | ('defaultShow' int32) | ('load' filePath) | ('require' int32 oscMsg) | 'hello' }
@@ -1418,7 +1403,7 @@
 \rail@term{)}[]
 \rail@end
 }
-\rail@i {81}{ loop : 'loop' '(' (ident ',' int32 ',' (OSCMessage+)')' | loop) }
+\rail@i {81}{ loop : 'loop' '(' (ident ',' int32 ',' (OSCMessage+)')' | loop) ';' }
 \rail@o {81}{
 \rail@index{loop}
 \rail@begin{3}{loop}
@@ -1437,22 +1422,21 @@
 \rail@nextbar{2}
 \rail@nont{loop}[]
 \rail@endbar
+\rail@term{;}[]
 \rail@end
 }
-\rail@i {82}{ identref : '\%' '(' ident ')' }
+\rail@i {82}{ identref : '\%' ident }
 \rail@o {82}{
 \rail@index{identref}
 \rail@begin{1}{identref}
 \rail@term{\%}[]
-\rail@term{(}[]
 \rail@nont{ident}[]
-\rail@term{)}[]
 \rail@end
 }
-\rail@i {83}{ variable : 'ident' '=' ( int32 | float32 | string ) }
+\rail@i {83}{ variabledecl : 'ident' '=' ( int32 | float32 | string ) ';' }
 \rail@o {83}{
-\rail@index{variable}
-\rail@begin{3}{variable}
+\rail@index{variabledecl}
+\rail@begin{3}{variabledecl}
 \rail@term{ident}[]
 \rail@term{=}[]
 \rail@bar
@@ -1462,5 +1446,6 @@
 \rail@nextbar{2}
 \rail@token{string}[]
 \rail@endbar
+\rail@term{;}[]
 \rail@end
 }

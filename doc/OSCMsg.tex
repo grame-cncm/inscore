@@ -46,12 +46,24 @@
 \newcommand{\oscstring}{\osctype{string}}
 \newcommand{\rational}{\osctype{rational}}
 
-\setlength\parskip{1pt}
+\setlength\parskip{2pt}
 \setlength\railnamesep{-1mm}
 \railterm{int32, float32, string}
 \railalias{int32}{\oscint}
 \railalias{float32}{\oscfloat}
 \railalias{string}{\oscstring}
+
+
+\definecolor{mygrey}{gray}{0.93}
+\newcommand{\sample}	[1]			{\begin{center}\colorbox{mygrey}{
+								\begin{minipage}[t]{0.9\columnwidth} 
+								{\small \texttt{#1}}
+								\end{minipage}}\end{center}}
+\newcommand{\samplev}[1]			{\begin{center}\colorbox{mygrey}{
+								\begin{minipage}[t]{\columnwidth} 
+								{\small \texttt{#1}}
+								\end{minipage}}\end{center}}
+
 
 \makeatother
 \makeindex
@@ -96,24 +108,53 @@ OSCAddress : '/' (identifier | regexp) +
 identifier : startid (nextid +)
 \end{rail}
 
-The OSC types \emph{int32}, \emph{float32} and \emph{OSC-string} are used as terminal symbols and are denoted by \oscint, \oscfloat\ and \oscstring. 
+Some specific nodes accept (like \emph{signals} - see section \ref{ssignal}) OSC messages without message string:
+\begin{rail}
+OSCMessage : OSCAddress parameters
+\end{rail}
+
+%===============================
+\sublevel{Parameters}
+
+Message parameters types are between the OSC types \emph{int32}, \emph{float32} and \emph{OSC-string}. In the remainder of this document, they are used as terminal symbols, denoted by \oscint, \oscfloat\ and \oscstring. 
+
+When used in a script file (see section \ref{scripting}), \oscstring\ should be single or double quoted.
+If an ambiguous double or single quote is part of the string, it must be escaped using a '$\backslash$'.
+
+Parameters types policy is relaxed: the system makes its best to convert a parameter to the expected type, which depend on the message string. When an incorrect type and when no conversion is applied, an incorrect parameter message is issued.
 
 %===============================
 \sublevel{Address space}
-Here is a description of the OSC address space, including static and dynamic nodes and the corresponding messages.
-\begin{rail}
-addressSpace : ('/ITL' ITLMsg) 
-			| ('/ITL/scene' sceneMsg) 
-			| '/ITL/scene/' identifier ( componentMsg | timeMsg | specificMsg)
-\end{rail}
+The OSC address space is made of static and dynamic nodes, hierarchically organized as follows (figure \ref{fig:addrspace}):
 
-%\OSC{ITLMsg} are described in section \ref{ITL}, \OSC{sceneMsg} in section \ref{scene}
+\begin{figure}[h]
+	\centering \includegraphics[width=120mm]{imgs/address_space}
+ \caption{The OSC address space. Nodes in italic/blue are dynamic nodes.}
+ \label{fig:addrspace}
+\end{figure}
+
+OSC messages are accepted at any level of the hierarchy:
+\begin{itemize}
+\item the application level responds to messages for application management (udp ports management, loading files, query messages)
+\item at \emph{scene} level, each node is associated to a window and respond to specific scene/window management messages.
+\item the \emph{component} level contains the scene objects and two static nodes:
+
+\begin{itemize}
+\item a \emph{signal} node that may be viewed as a folder containing signals
+\item a \emph{sync} node, in charge of the synchronization messages
+\end{itemize}
+
+\item the \emph{signals} level contains signals i.e. objects that accept data streams an d that may be graphically rendered as a scene component.
+
+\end{itemize}
+
+
 
 %===============================
 %:ITL messages
-\toplevel{ITL messages}
+\toplevel{Application messages}
 \label{ITL}
-ITL messages are messages global to the client application, which address is \OSC{/ITL}. It handles the following messages:
+Application messages are accepted by the static OSC address \OSC{/ITL}. It covers the following messages:
 \begin{rail}
 ITLMsg : 'quit' 
 		| ('rootPath' path) 
@@ -1201,8 +1242,10 @@ fileWatcher : ('add' filePath OSCMessage)
 
 where \OSC{OSCMessage} is any message complying to the format desscribed in section \fullref{genformat}.
 
-Example:\\
-\example \OSC{/ITL/scene/fileWatcher add fuga.gmn /ITL/scene/myScore set gmnf fuga.gmn}\\
+Example:
+\sample{
+/ITL/scene/fileWatcher add 'fuga.gmn' '/ITL/scene/score' 'set' 'gmnf' 'fuga.gmn';
+}
 
 Note that the \OSC{get} query returns a set of messages complying to the \OSC{add} message format.\\
 
@@ -1295,8 +1338,8 @@ simpleSignal : [1] ( float32 + )
 \item \textbf{[6]} the \OSC{del} message deletes the signal from the \OSC{signal} space. Note that it is safe to delete a signal even when used by a graphic signal. 
 \end{itemize}
 
-Example:\\
-\example \OSC{/ITL/scene/signal/null 0.0}\\
+Example:
+\sample{/ITL/scene/signal/null 0.0;}
 creates a constant signal named \OSC{null}, which value is \values{0}.
 
 %-------------------------------
@@ -1362,11 +1405,13 @@ Note that:
 The \emph{parallel marker} (\OSC{\~{}}) and the \emph{step value} \values{w} options affect the target signals. Let's consider \values{s[n]} as the signal at index \values{n}. The values are distributed in sequence and in loop to the signals \values{s[n], s[n+w]...s[m]} where \values{m} is the greatest value of the index \values{n+(w.i)} that is less than the signal dimension. The default  \emph{step value} is \values{1}.
 
 Example: \\
-\example the message: \\
-\example \example \texttt{/ITL/scene/signal/target [2\~{}] 0.1 0.2} \\
-\example is equivalent to the following messages: \\
-\example \example \texttt{/ITL/scene/signal/target [2] 0.1}\\
-\example \example \texttt{/ITL/scene/signal/target [3] 0.2}
+\example the message: 
+\sample{/ITL/scene/signal/target [2\~{}] 0.1 0.2}
+\example is equivalent to the following messages:
+\ \sample{
+/ITL/scene/signal/target [2] 0.1\\
+/ITL/scene/signal/target [3] 0.2
+}
 
 
 %-------------------------------
@@ -1557,12 +1602,14 @@ what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'do
 
 
 Example:
-\begin{verbatim}
-  1) /ITL/scene/myObject watch mouseDown "/ITL/scene/myObject" "show" 0 
-  2) /ITL/scene/myObject watch mouseDown "host.domain.org:12100/an/address" "start" 
-\end{verbatim}
-1) Request the object \OSC{myObject} to watch \OSC{mouseDown} events and send a message to itself. \\
-2) Request the object \OSC{myObject} to watch \OSC{mouseDown} events and send a "start" message to host.domain.org on udp port 12100 to OSC address /an/address
+\sample{
+/ITL/scene/myObject watch mouseDown "/ITL/scene/myObject" "show" 0;
+}
+Request the object \OSC{myObject} to watch \OSC{mouseDown} events and send a message to itself.
+\sample{
+/ITL/scene/myObject watch mouseDown "host.domain.org:12100/an/address" "start";
+}
+Request the object \OSC{myObject} to watch \OSC{mouseDown} events and send a "start" message to host.domain.org on udp port 12100 to OSC address /an/address
 
 %===============================
 %:   Notification messages
@@ -1647,14 +1694,13 @@ The evaluation of a 'get' message produces a message or a list of messages. The 
 Note that all the 'get' messages attached to an event are evaluated at the same time.
 
 Example:
-{\small \begin{verbatim}
-/ITL/scene/obj1 watch  mouseDown "/ITL/scene/obj1" "show" $("/ITL/scene/obj2" get "show")
-/ITL/scene/obj1 watch+ mouseDown "/ITL/scene/obj2" "show" $("/ITL/scene/obj1" get "show")
-/ITL/scene/obj2 watch  mouseDown "/ITL/scene/obj1" "show" $("/ITL/scene/obj2" get "show")
-/ITL/scene/obj2 watch+ mouseDown "/ITL/scene/obj2" "show" $("/ITL/scene/obj1" get "show")
-\end{verbatim}
+\sample{ 
+/ITL/s/o1 watch  'mouseDown' '/ITL/s/o1' 'show' \$('/ITL/s/o2' get 'show'); \\
+/ITL/s/o1 watch+ 'mouseDown' '/ITL/s/o2' 'show' \$('/ITL/s/o1' get 'show'); \\
+/ITL/s/o2 watch  'mouseDown' '/ITL/s/o1' 'show' \$('/ITL/s/o2' get 'show'); \\
+/ITL/s/o2 watch+ 'mouseDown' '/ITL/s/o2' 'show' \$('/ITL/s/o1' get 'show')
 }
-When clicked, the objects \OSC{obj1} and \OSC{obj1} swap their visibility state.
+When clicked, the objects \OSC{o1} and \OSC{o2} swap their visibility state.
 
 
 
@@ -1671,35 +1717,62 @@ Note: the system doesn't check for the consistency of the variables placement.
 
 %===============================
 %:Scripting
-\toplevel{Scripting}
+\toplevel{Scripting}\label{scripting}
 
 Since INScore saves its states as text files containing lists of OSC messages, it becomes natural to design INSCore scenes using these messages as a textual scripting language. For a better support of scripting, a \emph{loop} operation is introduced to generate messages in sequence and \emph{variables} are introduced to provide a better parameters control.
 
 %===============================
 %:   loops
-\sublevel{Loops}
+\sublevel{Loops}\label{loops}
 
 The \OSC{loop} operation is defined as follows:
 \begin{rail} 
-loop : 'loop' '(' (ident ',' int32 ',' (OSCMessage+)')' | loop)
+loop : 'loop' '(' (ident ',' int32 ',' (OSCMessage+)')' | loop) ';'
 \end{rail}
 \index{Scripting!loop}
 It iterates the enclosed messages, which may refer to the current iteration using \OSC{ident}. A reference to the current iteration has the following form:
 \begin{rail}
-identref : '\%' '(' ident ')'
+identref : '\%'  ident 
 \end{rail}
-Depending on the current context, it is expanded as string, int32 or float32 parameter.
+Depending on the current context, it is expanded as a string, int32 or float32 parameter: 
+\begin{itemize}
+\item an iteration reference found in an OSC address is expanded as a string,
+\item an iteration reference found in a parameter is expanded as:
+\begin{itemize}
+\item an \oscint\ when the parameter contains only numbers, 
+\item a \oscfloat\ when it contains numbers and a dot,
+\item otherwise as a \oscstring.
+\end{itemize}
+\end{itemize}
+An iteration reference is not allowed in the message string and should trigger a syntax error.
 
+Example:
+\samplev{
+loop(i, 3,\\
+   /ITL/scene/rect\%i set 'rect' 0.1 0.1; \\
+   /ITL/scene/rect\%i x '0.\%i'; \\
+ );
+}
 
 %===============================
 %:   variables
-\sublevel{Variables}
+\sublevel{Variables}\label{scriptvar}
+
+A variable may hold any value supported by the parameter types. \oscstring\ must be enclosed in simple or double quotes. It is declared as follows:
 \begin{rail} 
-variable : 'ident' '=' ( int32 | float32 | string )
+variabledecl : 'ident' '=' ( int32 | float32 | string ) ';'
 \end{rail}
 \index{Scripting! variable}
+A variable may be used in place of any message parameter. A reference to a variable must have the form \OSC{\$ident} where \OSC{ident} is a previously declared variable. 
 
+Note that interaction messages may also use variables with similar reference forms (\$ident). There is however no ambiguity concerning these references: interaction variables are always passed as strings and should be quoted, scripts variables as used without quotes.
 
+Example:
+\sample{
+x=0.5;\\
+/ITL/scene/a x \$x;\\
+/ITL/scene/b x \$x;
+}
 
 %===============================
 %:Changes list
