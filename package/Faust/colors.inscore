@@ -1,14 +1,19 @@
-loop (i,3
+loop (i,3,
 	/ITL/scene/color%i set "rect" 1.00000 0.0400000 ;
 	/ITL/scene/colorlevel%i set "rect" 1.00000 0.0400000 ;
 
-	/ITL/scene/color%i watch  "mouseDown" "/ITL/scene/signal/pitchcolor" "$x[-1.,1.]" ;
-	/ITL/scene/color%i watch  "mouseMove" "/ITL/scene/signal/pitchcolor" "$x[-1.,1.]" ;
 	/ITL/scene/color%i watch+ "mouseDown" "/ITL/scene/colorlevel%i" "width" "$x" ;
 	/ITL/scene/color%i watch+ "mouseMove" "/ITL/scene/colorlevel%i" "width" "$x" ;
 	/ITL/scene/color%i watch+ "mouseDown" "/ITL/scene/colorlevel%i" "hue" "$x[-1.,1.]" ;
 	/ITL/scene/color%i watch+ "mouseMove" "/ITL/scene/colorlevel%i" "hue" "$x[-1.,1.]" ;
 );
+
+/ITL/scene/color0 watch  "mouseDown" "/ITL/scene/signal/pitchcolor" "$x[-1.,1.]" ;
+/ITL/scene/color0 watch  "mouseMove" "/ITL/scene/signal/pitchcolor" "$x[-1.,1.]" ;
+/ITL/scene/color1 watch  "mouseDown" "/ITL/scene/signal/rollcolor" "$x[-1.,1.]" ;
+/ITL/scene/color1 watch  "mouseMove" "/ITL/scene/signal/rollcolor" "$x[-1.,1.]" ;
+/ITL/scene/color2 watch  "mouseDown" "/ITL/scene/signal/yawcolor" "$x[-1.,1.]" ;
+/ITL/scene/color2 watch  "mouseMove" "/ITL/scene/signal/yawcolor" "$x[-1.,1.]" ;
 
 /ITL/scene/color? penWidth 1.00000 ;
 /ITL/scene/color? penColor 0 0 0 ;
