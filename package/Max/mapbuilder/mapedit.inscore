@@ -47,7 +47,7 @@
 /ITL/scene/_zoomrect x -0.300000 ;
 /ITL/scene/_zoompos set "ellipse" 1.00000 1.00000 ;
 /ITL/scene/_zoompos color 240 0 0 ;
-/ITL/scene/sync _zoompos "_zoomrect" "v" ;
+/ITL/scene/sync '_zoompos' "_zoomrect" "v" ;
 /ITL/scene/_zoomrect watch "mouseDown" "/ITL/scene/score" "scale" "$x[0.05,5]" ;
 /ITL/scene/_zoomrect watch+ "mouseDown" "/ITL/scene/_zoompos" "date" "$date" ;
 /ITL/scene/_zoomrect watch "mouseMove" "/ITL/scene/score" "scale" "$x[0.05,5]" ;
@@ -60,7 +60,7 @@
 /ITL/scene/cursor duration 1 32 ;
 /ITL/scene/cursor z 5.00000 ;
 /ITL/scene/cursor show 0 ;
-/ITL/scene/sync cursor "score" "v" ;
+/ITL/scene/sync 'cursor' "score" "v" ;
 /ITL/scene/reloadbutton set "txt" "Reset" ;
 /ITL/scene/reloadbutton x -0.600000 ;
 /ITL/scene/rejectbutton set "txt" "Undo" ;
