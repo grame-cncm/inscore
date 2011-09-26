@@ -48,6 +48,11 @@ typedef class SMARTP<ISceneSync>	SISceneSync;
 class ISceneSync : public IVNode
 {	
 	ISync	fSync;
+
+	MsgHandler::msgStatus syncMsg (const std::string& slave);
+	MsgHandler::msgStatus syncMsg ( const std::string& slave, const std::string& slaveMap, 
+									const std::string& master, const std::string& masterMap,
+									Master::StretchType stretch, Master::VAlignType valign);
 	
 	public:	
 		static const std::string fTypeString;
@@ -101,6 +106,7 @@ class ISceneSync : public IVNode
 		virtual IMessageList getMsgs (const IMessage* msg) const;
 		/// \brief sync message handler
 		virtual MsgHandler::msgStatus syncMsg (const IMessage*);
+		virtual MsgHandler::msgStatus oldsyncMsg (const IMessage*);
 };
 
 /*!

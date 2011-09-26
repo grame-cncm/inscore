@@ -12,6 +12,10 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 0.91
+- bug in sync management corrected (introduced with the new sync parsing scheme)
+
+----------------------------------------------------
 Version 0.90
 - at application level: osc debug is now 'on' by default
 - new scripting features (variables, loops)
