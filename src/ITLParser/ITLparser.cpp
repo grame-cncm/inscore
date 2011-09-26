@@ -67,6 +67,7 @@ void ITLparser::start ()
 //	gMessageList =  new inscore::IMessageList;
 	gScripter =  new inscore::TScripting;
 	setlocale(LC_NUMERIC, "C");
+	ITLlineno = 1;
 }
 
 void ITLparser::stop () 
