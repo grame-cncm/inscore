@@ -16071,7 +16071,7 @@
 					"patching_rect" : [ 1137.0, 1108.0, 182.0, 22.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 28.0, 544.0, 297.0, 22.0 ],
-					"text" : "/ITL/scene get"
+					"text" : "/ITL/scene/w* duration 40 4"
 				}
 
 			}
@@ -22672,9 +22672,9 @@
 					"numoutlets" : 0,
 					"patcher" : 					{
 						"fileversion" : 1,
-						"rect" : [ 462.0, 53.0, 347.0, 211.0 ],
+						"rect" : [ 467.0, 44.0, 347.0, 211.0 ],
 						"bglocked" : 0,
-						"defrect" : [ 462.0, 53.0, 347.0, 211.0 ],
+						"defrect" : [ 467.0, 44.0, 347.0, 211.0 ],
 						"openrect" : [ 459.0, 192.0, 347.0, 211.0 ],
 						"openinpresentation" : 1,
 						"default_fontsize" : 12.0,
@@ -22689,6 +22689,7 @@
 						"enablehscroll" : 1,
 						"enablevscroll" : 1,
 						"devicewidth" : 0.0,
+						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"fontname" : "Arial",
@@ -22928,6 +22929,7 @@
 , 							{
 								"box" : 								{
 									"id" : "obj-48",
+									"int" : 1,
 									"maxclass" : "gswitch2",
 									"numinlets" : 2,
 									"numoutlets" : 2,
@@ -23207,7 +23209,7 @@
 									"patching_rect" : [ 455.0, 164.0, 98.0, 21.0 ],
 									"presentation" : 1,
 									"presentation_rect" : [ 237.0, 67.0, 101.0, 19.0 ],
-									"text" : "cursor*"
+									"text" : "w*"
 								}
 
 							}

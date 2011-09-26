@@ -1,0 +1,9 @@
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Debug/
+Release/
+build/
+cmake_install.cmake
+inscore2inscore90.build/
+inscore2inscore90.xcodeproj/

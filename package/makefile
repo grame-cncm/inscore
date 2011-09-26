@@ -1,4 +1,4 @@
-version := 0.90
+version := 0.91
 
 package:= INScore-$(version)
 rsrc   := INScore-rsrc-$(version)
