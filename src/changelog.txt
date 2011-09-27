@@ -12,6 +12,11 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 0.92
+- date and duration messages support one arg form using 1 as implicit denominator value 
+  the one arg form accepts float values.
+
+----------------------------------------------------
 Version 0.91
 - bug in sync management corrected (introduced with the new sync parsing scheme)
 
