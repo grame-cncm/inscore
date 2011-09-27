@@ -10,7 +10,7 @@
 /ITL/scene/tgv z 1.00000 ;
 /ITL/scene/tgv mapf "tgv.map" ;
 /ITL/scene/tgv date -16 4 ;
-/ITL/scene/sync tgv "myGuidoFile" "hv" ;
+/ITL/scene/sync 'tgv' 'myGuidoFile' 'hv' ;
 /ITL/scene/tgv watch "mouseDown" "/ITL/scene/tgv" "x" "$sx" ;
 /ITL/scene/tgv watch+ "mouseDown" "/ITL/scene/tgv" "y" "$sy" ;
 /ITL/scene/tgv watch "mouseUp" "/ITL/scene/tgv" "x" "$sx" ;
