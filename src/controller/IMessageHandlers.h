@@ -137,10 +137,18 @@ template <typename O> class TSetMethodMsgHandler<O, rational> : public MsgHandle
 		
 		static SMsgHandler create(O* obj, MsgHandlerMethod method)	{ return new TSetMethodMsgHandler<O,rational> (obj, method); }
 		virtual msgStatus operator ()(const IMessage* msg)			{ 
-			if ( msg->size() != 2 ) return kBadParameters;
-			int n, d;
-			if ( !msg->param(0, n) || !msg->param(1, d)) return kBadParameters;
-			(fObject->*fMethod)( rational(n,d) );
+			if ( msg->size() == 1 ) {
+				int n; float nf;
+				if (msg->param(0, n)) (fObject->*fMethod)( rational(n,1) );
+				else if (msg->param(0, nf)) (fObject->*fMethod)( rational(int(nf*10000),10000) );
+				else return kBadParameters;
+			}
+			else if ( msg->size() == 2 ) {
+				int n, d;
+				if ( !msg->param(0, n) || !msg->param(1, d)) return kBadParameters;
+				(fObject->*fMethod)( rational(n,d) );
+			}
+			else return kBadParameters;
 			return kProcessed;
 		}
 
