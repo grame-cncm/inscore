@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.5 Differences to version 0.76</TITLE>
-<META NAME="description" CONTENT="17.5 Differences to version 0.76">
+<TITLE>17.4 Differences to version 0.77</TITLE>
+<META NAME="description" CONTENT="17.4 Differences to version 0.77">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,58 +21,61 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node67.html">
 <LINK REL="previous" HREF="node65.html">
-<LINK REL="up" HREF="node61.html">
+<LINK REL="up" HREF="node62.html">
 <LINK REL="next" HREF="node67.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1121"
+<A NAME="tex2html1125"
   HREF="node67.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1115"
-  HREF="node61.html">
+<A NAME="tex2html1119"
+  HREF="node62.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1109"
+<A NAME="tex2html1113"
   HREF="node65.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1117"
+<A NAME="tex2html1121"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1119"
-  HREF="node75.html">
+<A NAME="tex2html1123"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1122"
-  HREF="node67.html">17.6 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1116"
-  HREF="node61.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1110"
-  HREF="node65.html">17.4 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1118"
+<B> Next:</B> <A NAME="tex2html1126"
+  HREF="node67.html">17.5 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1120"
+  HREF="node62.html">17. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1114"
+  HREF="node65.html">17.3 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1122"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1120"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1124"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001850000000000000000">
-17.5 Differences to version 0.76</A>
+<H1><A NAME="SECTION001840000000000000000">
+17.4 Differences to version 0.77</A>
 </H1>
 
 <UL>
-<LI>get <TT>guido-version</TT> and <TT>musicxml-version</TT> messages supported by the application (see section <A HREF="node4.html#ITL">2</A> p.<A HREF="node4.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>guido system map extended: supports flat map or subdivided map (see section <A HREF="node36.html#guidomaps">11.1</A> p.<A HREF="node36.html#guidomaps"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI><TT>save</TT> message bug correction - introduced with version 0.70: only partial state of objects was saved
+<LI>new <TT>shear</TT> and <TT>rotate</TT> transformations messages (see section <A HREF="node12.html#transform">4.1.4</A> p.<A HREF="node12.html#transform"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI><TT>rootPath</TT> message introduced at scene level (see section <A HREF="node5.html#scene">3</A> p.<A HREF="node5.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>new <TT>rename</TT> message to change an object name (and thus its OSC address) (see section <A HREF="node7.html#common">4</A> p.<A HREF="node7.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>scene name translation strategy change: only the explicit 'scene' name is 
-  translated by the scene load message handler into the current scene name, 
-  other names are left unchanged.
+<LI>relaxed bool parameter policy: objects accept float values for bool parameters 
 </LI>
-<LI>bitmap copy adjustment in sync stretched mode is now only made for images
+<LI>automatic numbering of exports when destination file is not completely specified 
+  i.e. no name, no extension. (see section <A HREF="node7.html#common">4</A> p.<A HREF="node7.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI>quantification introduced to $date variable (see section <A HREF="node56.html#interactvar">15.3</A> p.<A HREF="node56.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI><TT>reset</TT> message addressed to a scene clears the scene rootPath
 </LI>
 </UL>
 

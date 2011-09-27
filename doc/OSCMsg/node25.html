@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>8.1 Pen control</TITLE>
-<META NAME="description" CONTENT="8.1 Pen control">
+<TITLE>8. Component specific messages</TITLE>
+<META NAME="description" CONTENT="8. Component specific messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,86 +19,65 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node26.html">
-<LINK REL="previous" HREF="node24.html">
-<LINK REL="up" HREF="node24.html">
+<LINK REL="next" HREF="node29.html">
+<LINK REL="previous" HREF="node23.html">
+<LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node26.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html526"
+<A NAME="tex2html527"
   HREF="node26.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html520"
-  HREF="node24.html">
+<A NAME="tex2html521"
+  HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html514"
+<A NAME="tex2html515"
   HREF="node24.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html522"
+<A NAME="tex2html523"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html524"
-  HREF="node75.html">
+<A NAME="tex2html525"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html527"
-  HREF="node26.html">8.2 Width and height</A>
-<B> Up:</B> <A NAME="tex2html521"
-  HREF="node24.html">8. Component specific messages</A>
-<B> Previous:</B> <A NAME="tex2html515"
-  HREF="node24.html">8. Component specific messages</A>
- &nbsp; <B>  <A NAME="tex2html523"
+<B> Next:</B> <A NAME="tex2html528"
+  HREF="node26.html">8.1 Pen control</A>
+<B> Up:</B> <A NAME="tex2html522"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html516"
+  HREF="node24.html">7.1 Special 'get' forms</A>
+ &nbsp; <B>  <A NAME="tex2html524"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html525"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html526"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION00910000000000000000">
-8.1 Pen control</A>
+<H1><A NAME="SECTION00900000000000000000"></A>
+<A NAME="specificMsg"></A>
+<BR>
+8. Component specific messages
 </H1>
+Some of the messages are specific to the component <TT>type</TT>. These messages can be sent to addresses of the form <TT>/ITL/scene/<I>identifier</I></TT>. They are ignored by objects that don't support the message. 
 
 <P>
-Messages accepted by the components types <TT>rect | ellipse | polygon | curve | line | graph</TT>.
-<BR>
-<IMG
- WIDTH="292" HEIGHT="125" ALIGN="BOTTOM" BORDER="0"
- SRC="img42.gif"
- ALT="\begin{rail}
-penMsg : 'penColor' color
-\vert 'penWidth' float32
-\vert 'penStyle' penstyle
-\end{rail}">
-<BR>
-<A NAME="586"></A>
-<A NAME="587"></A>
-<A NAME="588"></A>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
-<P>
-<BR>
-<IMG
- WIDTH="219" HEIGHT="203" ALIGN="BOTTOM" BORDER="0"
- SRC="img43.gif"
- ALT="\begin{rail}
-penstyle : 'solid' \vert 'dash' \vert 'dot' \vert 'dashDot' \vert 'dashDotDot'
-\end{rail}">
-<BR>
-<A NAME="591"></A>
-<A NAME="592"></A>
-<A NAME="593"></A>
-<A NAME="594"></A>
-<A NAME="595"></A>
-
-<P>
-The pen width default value is 0 (excepted for <TT>line</TT> objects, where 1.0 is the default value). It is expressed in arbitrary units (1 is a reasonable value).
-The pen style default value is <TT>solid</TT>.
-<BR>
-The color scheme is described in section <A HREF="node12.html#colormsg">4.2</A>.
-
-<P>
+<UL>
+<LI><A NAME="tex2html529"
+  HREF="node26.html">8.1 Pen control</A>
+<LI><A NAME="tex2html530"
+  HREF="node27.html">8.2 Width and height control</A>
+<LI><A NAME="tex2html531"
+  HREF="node28.html">8.3 Score pages management</A>
+</UL>
+<!--End of Table of Child-Links-->
 <BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>12. Virtual address space</TITLE>
-<META NAME="description" CONTENT="12. Virtual address space">
+<TITLE>11.3 Score queries</TITLE>
+<META NAME="description" CONTENT="11.3 Score queries">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,63 +19,75 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node41.html">
-<LINK REL="previous" HREF="node34.html">
-<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="previous" HREF="node37.html">
+<LINK REL="up" HREF="node35.html">
 <LINK REL="next" HREF="node39.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html707"
+<A NAME="tex2html711"
   HREF="node39.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html701"
-  HREF="OSCMsg.html">
+<A NAME="tex2html705"
+  HREF="node35.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html695"
+<A NAME="tex2html701"
   HREF="node37.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html703"
+<A NAME="tex2html707"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html705"
-  HREF="node75.html">
+<A NAME="tex2html709"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html708"
-  HREF="node39.html">12.1 File watcher</A>
-<B> Up:</B> <A NAME="tex2html702"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html696"
-  HREF="node37.html">11.3 Score queries</A>
- &nbsp; <B>  <A NAME="tex2html704"
+<B> Next:</B> <A NAME="tex2html712"
+  HREF="node39.html">12. Virtual address space</A>
+<B> Up:</B> <A NAME="tex2html706"
+  HREF="node35.html">11. Score specific messages</A>
+<B> Previous:</B> <A NAME="tex2html702"
+  HREF="node37.html">11.2 Score browsing and</A>
+ &nbsp; <B>  <A NAME="tex2html708"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html706"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html710"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001300000000000000000">
-12. Virtual address space</A>
+<H1><A NAME="SECTION001230000000000000000"></A>
+<A NAME="guidoqueries"></A>
+<BR>
+11.3 Score queries
 </H1>
 
 <P>
-Virtual address space extends the OSC address scheme to objects automatically embedded into other objects. 
+<BR>
+<IMG
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.gif"
+ ALT="\begin{rail}
+scoreQuery : 'get' (
+'pageCount'
+\vert 'pageDate' int32
+)
+\end{rail}">
+<BR>
 
 <P>
-<BR><HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><A NAME="tex2html709"
-  HREF="node39.html">12.1 File watcher</A>
-<LI><A NAME="tex2html710"
-  HREF="node40.html">12.2 Debug</A>
+<LI><TT>pageCount</TT>: gives the score page count.
+</LI>
+<LI><TT>pageDate</TT>: gives the time location of a page, which number is given as argument. The system reply has the form <TT>pageDate pageNum date</TT> where <TT>pageNum</TT> is the request page number given as argument and <TT>date</TT> is the page time location expressed as a ra	tional number.
+</LI>
 </UL>
-<!--End of Table of Child-Links-->
+
+<P>
+Note that a score object duration is automatically set to the score duration. It can be retrieved using a <TT>get duration</TT> message.
+
+<P>
 <BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]

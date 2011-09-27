@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.2 Notification messages</TITLE>
-<META NAME="description" CONTENT="15.2 Notification messages">
+<TITLE>15.1 Interaction messages</TITLE>
+<META NAME="description" CONTENT="15.1 Interaction messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,76 +21,91 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node55.html">
 <LINK REL="previous" HREF="node53.html">
-<LINK REL="up" HREF="node52.html">
+<LINK REL="up" HREF="node53.html">
 <LINK REL="next" HREF="node55.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html942"
+<A NAME="tex2html946"
   HREF="node55.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html936"
-  HREF="node52.html">
+<A NAME="tex2html940"
+  HREF="node53.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html930"
+<A NAME="tex2html934"
   HREF="node53.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html938"
+<A NAME="tex2html942"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html940"
-  HREF="node75.html">
+<A NAME="tex2html944"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html943"
-  HREF="node55.html">15.3 Variables</A>
-<B> Up:</B> <A NAME="tex2html937"
-  HREF="node52.html">15. Events and Interaction</A>
-<B> Previous:</B> <A NAME="tex2html931"
-  HREF="node53.html">15.1 Interaction messages</A>
- &nbsp; <B>  <A NAME="tex2html939"
+<B> Next:</B> <A NAME="tex2html947"
+  HREF="node55.html">15.2 Notification messages</A>
+<B> Up:</B> <A NAME="tex2html941"
+  HREF="node53.html">15. Events and Interaction</A>
+<B> Previous:</B> <A NAME="tex2html935"
+  HREF="node53.html">15. Events and Interaction</A>
+ &nbsp; <B>  <A NAME="tex2html943"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html941"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html945"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001620000000000000000"></A>
-<A NAME="notifymsg"></A>
+<H1><A NAME="SECTION001610000000000000000"></A>
+<A NAME="interactmsg"></A>
 <BR>
-15.2 Notification messages
+15.1 Interaction messages
 </H1>
 
 <P>
 Events currently <I>watchable</I> are:
 <BR>
 <IMG
- WIDTH="297" HEIGHT="124" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img86.gif"
  ALT="\begin{rail}
-what : 'timeEnter' timezone \vert 'timeLeave' timezone \vert 'newElement'
+what : 'mouseDown' \vert 'mouseUp' \vert 'mouseEnter' \vert 'mouseLeave' \vert 'mouseMove' \vert 'doubleClick'
 \end{rail}">
 <BR>
-<A NAME="1147"></A>
-<A NAME="1148"></A>
-<A NAME="1149"></A>
+<A NAME="1167"></A>
+<A NAME="1168"></A>
+<A NAME="1169"></A>
+<A NAME="1170"></A>
+<A NAME="1171"></A>
+<A NAME="1172"></A>
 
 <P>
-<BR>
-<IMG
- WIDTH="344" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
- SRC="img87.gif"
- ALT="\begin{rail}
-timezone : int32 int32 int32 int32
-\end{rail}">
-<BR>
-A time zone is defined by 2 dates expressed as rational values (i.e. with 4 integers).
-<A NAME="1152"></A>
-
-<P>
-The <TT>newElement</TT> event is supported at scene level only and triggered when a new element is added to the scene.
+Example:
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>
+/ITL/scene/myObject watch mouseDown "/ITL/scene/myObject" "show" 0;
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+Request the object <TT>myObject</TT> to watch <TT>mouseDown</TT> events and send a message to itself.
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>
+/ITL/scene/myObject watch mouseDown "host.domain.org:12100/an/address" "start";
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+Request the object <TT>myObject</TT> to watch <TT>mouseDown</TT> events and send a "start" message to host.domain.org on udp port 12100 to OSC address /an/address
 
 <P>
 <BR><HR>

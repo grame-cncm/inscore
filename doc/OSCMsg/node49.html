@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>14. FAUST plugins</TITLE>
-<META NAME="description" CONTENT="14. FAUST plugins">
+<TITLE>13.2.2 Parallel graphic signals.</TITLE>
+<META NAME="description" CONTENT="13.2.2 Parallel graphic signals.">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,78 +19,72 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node52.html">
-<LINK REL="previous" HREF="node41.html">
-<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="previous" HREF="node48.html">
+<LINK REL="up" HREF="node47.html">
 <LINK REL="next" HREF="node50.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html867"
+<A NAME="tex2html871"
   HREF="node50.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html861"
-  HREF="OSCMsg.html">
+<A NAME="tex2html865"
+  HREF="node47.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html855"
+<A NAME="tex2html861"
   HREF="node48.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html863"
+<A NAME="tex2html867"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html865"
-  HREF="node75.html">
+<A NAME="tex2html869"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html868"
-  HREF="node50.html">14.1 Specific meassages</A>
-<B> Up:</B> <A NAME="tex2html862"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html856"
-  HREF="node48.html">13.2.2 Parallel graphic signals.</A>
- &nbsp; <B>  <A NAME="tex2html864"
+<B> Next:</B> <A NAME="tex2html872"
+  HREF="node50.html">14. FAUST plugins</A>
+<B> Up:</B> <A NAME="tex2html866"
+  HREF="node47.html">13.2 Graphic signals.</A>
+<B> Previous:</B> <A NAME="tex2html862"
+  HREF="node48.html">13.2.1 Graphic signal default</A>
+ &nbsp; <B>  <A NAME="tex2html868"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html866"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html870"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001500000000000000000"></A>
-<A NAME="faust"></A>
+<H2><A NAME="SECTION001422000000000000000"></A>
+<A NAME="pgsignal"></A>
 <BR>
-14. FAUST plugins
-</H1>
+13.2.2 Parallel graphic signals.
+</H2>
+When the dimension <I>d</I> of a signal connected to a graphic signal is greater than 6, then the input signal is interpreted like parallel graphic signals. More generally, the dimension <I>n</I> of a graphic signal is:
+<BR><P></P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ \begin{displaymath}
+n  \  |\ n \in \mathbb{N}\ \land\ 6.(n-1) < d \leqslant 6.n
+\end{displaymath}
+ -->
 
-<P>
-FAUST [Functional Audio Stream]<A NAME="tex2html7"
-  HREF="footnode.html#foot1431"><SUP>14.1</SUP></A> is a functional programming language specifically designed for real-time signal processing and synthesis. A FAUST/INScore architecture allows to embed FAUST processors in INScore, for the purpose of signals computation. A FAUST/INScore plugin is viewed as a parallel signal and thus it is created in the <TT>signal</TT> address space. Thus and similarly to signals, a FAUST plugin is associated to OSC addresses in the form <TT>/ITL/<I>scene</I>/signal/<I>name</I></TT> where <TT><I>name</I></TT> is a user defined name.
-
-<P>
-<BR>
 <IMG
- WIDTH="243" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="206" HEIGHT="28" BORDER="0"
  SRC="img78.gif"
- ALT="\begin{rail}
-faustprocessor : 'set' 'faust' ''path''
-\end{rail}">
-<BR>
-<A NAME="1086"></A>
-A FAUST processor is created with a <TT>set</TT> message followed by the <TT>faust</TT> type, followed by the plugin path name. Thus the <TT>faust</TT> name is a reserved signal name.
+ ALT="\begin{displaymath}
+n \ \vert\ n \in \mathbb{N}\ \land\ 6.(n-1) &lt; d \leqslant 6.n
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+where <I>d</I> is the dimension of the input signal.
 
 <P>
-<BR><HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+Note than when <I>d</I> is not a mutiple of 6, then the last graphic signal makes use of the default values mentionned above.
 
-<UL>
-<LI><A NAME="tex2html869"
-  HREF="node50.html">14.1 Specific meassages</A>
-<LI><A NAME="tex2html870"
-  HREF="node51.html">14.2 Feeding and composing FAUST processors</A>
-</UL>
-<!--End of Table of Child-Links-->
+<P>
 <BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.3 Variables</TITLE>
-<META NAME="description" CONTENT="15.3 Variables">
+<TITLE>15.2 Notification messages</TITLE>
+<META NAME="description" CONTENT="15.2 Notification messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,162 +21,79 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node56.html">
 <LINK REL="previous" HREF="node54.html">
-<LINK REL="up" HREF="node52.html">
+<LINK REL="up" HREF="node53.html">
 <LINK REL="next" HREF="node56.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html956"
+<A NAME="tex2html960"
   HREF="node56.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html950"
-  HREF="node52.html">
+<A NAME="tex2html954"
+  HREF="node53.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html944"
+<A NAME="tex2html948"
   HREF="node54.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html952"
+<A NAME="tex2html956"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html954"
-  HREF="node75.html">
+<A NAME="tex2html958"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html957"
-  HREF="node56.html">15.4 Message based variables</A>
-<B> Up:</B> <A NAME="tex2html951"
-  HREF="node52.html">15. Events and Interaction</A>
-<B> Previous:</B> <A NAME="tex2html945"
-  HREF="node54.html">15.2 Notification messages</A>
- &nbsp; <B>  <A NAME="tex2html953"
+<B> Next:</B> <A NAME="tex2html961"
+  HREF="node56.html">15.3 Variables</A>
+<B> Up:</B> <A NAME="tex2html955"
+  HREF="node53.html">15. Events and Interaction</A>
+<B> Previous:</B> <A NAME="tex2html949"
+  HREF="node54.html">15.1 Interaction messages</A>
+ &nbsp; <B>  <A NAME="tex2html957"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html955"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html959"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001630000000000000000"></A>
-<A NAME="interactvar"></A>
+<H1><A NAME="SECTION001620000000000000000"></A>
+<A NAME="notifymsg"></A>
 <BR>
-15.3 Variables
+15.2 Notification messages
 </H1>
 
 <P>
-Variables denote values computed when an event is triggered. These values are send in place of the variable. A variable name starts with a '$' sign. Currently, the following variables are supported by mouse events:
+Events currently <I>watchable</I> are:
 <BR>
 <IMG
- WIDTH="194" HEIGHT="315" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="img87.gif"
+ ALT="\begin{rail}
+what : 'timeEnter' timezone \vert 'timeLeave' timezone \vert 'newElement'
+\end{rail}">
+<BR>
+<A NAME="1184"></A>
+<A NAME="1185"></A>
+<A NAME="1186"></A>
+
+<P>
+<BR>
+<IMG
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img88.gif"
  ALT="\begin{rail}
-variable : (xy \vert 'absx' \vert 'absy' \vert 'sx' \vert 'sy' \vert date \vert 'name' \vert 'address')
+timezone : int32 int32 int32 int32
 \end{rail}">
 <BR>
-<A NAME="1158"></A>
-<A NAME="1159"></A>
-<A NAME="1160"></A>
-<A NAME="1161"></A>
-<A NAME="1162"></A>
-<A NAME="1163"></A>
-<A NAME="1164"></A>
-<A NAME="1165"></A>
-<A NAME="1166"></A>
+A time zone is defined by 2 dates expressed as rational values (i.e. with 4 integers).
+<A NAME="1189"></A>
 
 <P>
-<BR>
-<IMG
- WIDTH="310" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
- SRC="img89.gif"
- ALT="\begin{rail}
-xy : ('x' \vert 'y') ( \vert '[low,high]')
-\end{rail}">
-<BR>
+The <TT>newElement</TT> event is supported at scene level only and triggered when a new element is added to the scene.
 
 <P>
-
-<UL>
-<LI><TT>$x</TT> <TT>$y</TT>: denotes the mouse pointer position at the time of the event. The values are in the range <IMG
- WIDTH="35" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img90.gif"
- ALT="$[0,1]$"> where 1 is the object size in the x or y dimension. The value is computed according to the object origin: it represents the mouse pointer distance from the object x or y origin (see <A HREF="node10.html#origin">4.1.3</A> p.<A HREF="node10.html#origin"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). <TT>$x</TT> and <TT>$y</TT> variables support an optional range in the form <TT>[low, high]</TT> that transforms the <IMG
- WIDTH="35" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img90.gif"
- ALT="$[0,1]$"> values range into the <IMG
- WIDTH="70" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img91.gif"
- ALT="$[low, high]$"> range.
-
-<P>
-</LI>
-<LI><TT>$absx</TT> <TT>$absy</TT>: denotes the mouse pointer absolute position at the time of the event. The values represent a pixel position relative to the top-left point of the target object. Note that this position is unaffected by scale. 
-Note also that the values are not clipped to the object dimensions and could exceed its width or height or become negative in case of mouse move events.
-
-<P>
-</LI>
-<LI><TT>$sx</TT> <TT>$sy</TT>: denotes the mouse pointer position in the scene coordinates space. <TT>$sx</TT> and <TT>$sy</TT> are computed like
-</LI>
-</UL>
-
-<P>
-<BR>
-<IMG
- WIDTH="420" HEIGHT="86" ALIGN="BOTTOM" BORDER="0"
- SRC="img92.gif"
- ALT="\begin{rail}
-date : 'date' (\vert ':' mapname) (\vert '[n/d]')
-\end{rail}">
-<BR>
-
-<P>
-
-<UL>
-<LI><TT>$date</TT>: denotes the object date corresponding to the mouse pointer position at the time of the event. The detailed date variable is given below: it is optionnaly followed by a colon and the name of the mapping to be used to compute the date. The <TT>$date</TT> variable is replaced by its rational value (i.e. two integers values). The optional rational enclosed in brackets may be used to indicate a quantification: the date value is rounded to an integer count of the specified rational value. 
-
-<P>
-</LI>
-<LI><TT>$name</TT>, <TT>$address</TT>: replaced by the target object name or OSC address. Note that in case of <TT>newElement</TT> event, the target object is the new element. 
-</LI>
-</UL>
-
-<P>
-Note that a variable can be used several times in a message, but several <TT>$date</TT> variables must always refer to the same mapping.
-
-<P>
-<BR>
-<BR>
-<TT><B>Warning:</B></TT> the interaction message set is provided for experiment. It is likely to change in a future version. Ideas, comments, suggestions are welcome for the design of a stable API.
-
-<P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html956"
-  HREF="node56.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html950"
-  HREF="node52.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html944"
-  HREF="node54.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html952"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html954"
-  HREF="node75.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html957"
-  HREF="node56.html">15.4 Message based variables</A>
-<B> Up:</B> <A NAME="tex2html951"
-  HREF="node52.html">15. Events and Interaction</A>
-<B> Previous:</B> <A NAME="tex2html945"
-  HREF="node54.html">15.2 Notification messages</A>
- &nbsp; <B>  <A NAME="tex2html953"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html955"
-  HREF="node75.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

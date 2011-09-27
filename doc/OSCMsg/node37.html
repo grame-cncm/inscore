@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>11.3 Score queries</TITLE>
-<META NAME="description" CONTENT="11.3 Score queries">
+<TITLE>11.2 Score browsing and layout</TITLE>
+<META NAME="description" CONTENT="11.2 Score browsing and layout">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,73 +19,81 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node38.html">
 <LINK REL="previous" HREF="node36.html">
-<LINK REL="up" HREF="node34.html">
+<LINK REL="up" HREF="node35.html">
 <LINK REL="next" HREF="node38.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html693"
+<A NAME="tex2html699"
   HREF="node38.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html687"
-  HREF="node34.html">
+<A NAME="tex2html693"
+  HREF="node35.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html683"
+<A NAME="tex2html687"
   HREF="node36.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html689"
+<A NAME="tex2html695"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html691"
-  HREF="node75.html">
+<A NAME="tex2html697"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html694"
-  HREF="node38.html">12. Virtual address space</A>
-<B> Up:</B> <A NAME="tex2html688"
-  HREF="node34.html">11. Score specific messages</A>
-<B> Previous:</B> <A NAME="tex2html684"
-  HREF="node36.html">11.2 Score browsing and</A>
- &nbsp; <B>  <A NAME="tex2html690"
+<B> Next:</B> <A NAME="tex2html700"
+  HREF="node38.html">11.3 Score queries</A>
+<B> Up:</B> <A NAME="tex2html694"
+  HREF="node35.html">11. Score specific messages</A>
+<B> Previous:</B> <A NAME="tex2html688"
+  HREF="node36.html">11.1 Specific score mappings</A>
+ &nbsp; <B>  <A NAME="tex2html696"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html692"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html698"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001230000000000000000"></A>
-<A NAME="guidoqueries"></A>
+<H1><A NAME="SECTION001220000000000000000"></A>
+<A NAME="guidolayout"></A>
 <BR>
-11.3 Score queries
+11.2 Score browsing and layout
 </H1>
 
 <P>
 <BR>
 <IMG
- WIDTH="327" HEIGHT="87" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img69.gif"
  ALT="\begin{rail}
-scoreQuery : 'get' (
-'pageCount'
-\vert 'pageDate' int32
-)
+scoreMsg : 'page' int32
+\vert 'pageFormat' float32 float32
+\vert 'columns' int32
+\vert 'rows' int32
 \end{rail}">
 <BR>
 
 <P>
 
 <UL>
-<LI><TT>pageCount</TT>: gives the score page count.
-</LI>
-<LI><TT>pageDate</TT>: gives the time location of a page, which number is given as argument. The system reply has the form <TT>pageDate pageNum date</TT> where <TT>pageNum</TT> is the request page number given as argument and <TT>date</TT> is the page time location expressed as a ra	tional number.
-</LI>
-</UL>
+<LI><TT>page</TT>: sets the first displayed page. Index starts at <TT>1</TT>. Default: <TT>1</TT>.
 
 <P>
-Note that a score object duration is automatically set to the score duration. It can be retrieved using a <TT>get duration</TT> message.
+</LI>
+<LI><TT>pageFormat</TT>: sets the score's page format, in cm (Warning: the <TT>pageFormat</TT> is not used when another page format is 'hard-coded' in the score's Guido code). Default: <TT>(21.0 , 29.7)</TT>.
+
+<P>
+</LI>
+<LI><TT>columns</TT>: as multiples pages can be displayed and organized in a <I>grid of pages</I>, <TT>columns</TT> sets the number of columns in the grid. Default: <TT>2</TT>.
+
+<P>
+</LI>
+<LI><TT>rows</TT>: as multiples pages can be displayed and organized in a <I>grid of pages</I>, <TT>rows</TT> sets the number of rows in the grid. Default: <TT>1</TT>.
+</LI>
+</UL>
 
 <P>
 <BR><HR>

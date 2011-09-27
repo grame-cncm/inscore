@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>16. Scripting</TITLE>
-<META NAME="description" CONTENT="16. Scripting">
+<TITLE>15.5 OSC address variables</TITLE>
+<META NAME="description" CONTENT="15.5 OSC address variables">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,63 +19,59 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node61.html">
-<LINK REL="previous" HREF="node52.html">
-<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="previous" HREF="node57.html">
+<LINK REL="up" HREF="node53.html">
 <LINK REL="next" HREF="node59.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html996"
+<A NAME="tex2html1000"
   HREF="node59.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html990"
-  HREF="OSCMsg.html">
+<A NAME="tex2html994"
+  HREF="node53.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html984"
+<A NAME="tex2html990"
   HREF="node57.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html992"
+<A NAME="tex2html996"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html994"
-  HREF="node75.html">
+<A NAME="tex2html998"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html997"
-  HREF="node59.html">16.1 Loops</A>
-<B> Up:</B> <A NAME="tex2html991"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html985"
-  HREF="node57.html">15.5 OSC address variables</A>
- &nbsp; <B>  <A NAME="tex2html993"
+<B> Next:</B> <A NAME="tex2html1001"
+  HREF="node59.html">16. Scripting</A>
+<B> Up:</B> <A NAME="tex2html995"
+  HREF="node53.html">15. Events and Interaction</A>
+<B> Previous:</B> <A NAME="tex2html991"
+  HREF="node57.html">15.4 Message based variables</A>
+ &nbsp; <B>  <A NAME="tex2html997"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html995"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html999"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001700000000000000000">
-16. Scripting</A>
+<H1><A NAME="SECTION001650000000000000000"></A>
+<A NAME="oscvar"></A>
+<BR>
+15.5 OSC address variables
 </H1>
-
-<P>
-Since INScore saves its states as text files containing lists of OSC messages, it becomes natural to design INSCore scenes using these messages as a textual scripting language. For a better support of scripting, a <I>loop</I> operation is introduced to generate messages in sequence and <I>variables</I> are introduced to provide a better parameters control.
-
-<P>
-<BR><HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+The OSC address parameter of a watch message supports the following variables:
 
 <UL>
-<LI><A NAME="tex2html998"
-  HREF="node59.html">16.1 Loops</A>
-<LI><A NAME="tex2html999"
-  HREF="node60.html">16.2 Variables</A>
+<LI><TT>$self</TT>: replaced by the object name at the time of the message setting.
+</LI>
+<LI><TT>$scene</TT>: replaced by the scene name at the time of the message setting.
+</LI>
 </UL>
-<!--End of Table of Child-Links-->
+Note: the system doesn't check for the consistency of the variables placement.
+
+<P>
 <BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]

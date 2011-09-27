@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>4.1.3 Components origin</TITLE>
-<META NAME="description" CONTENT="4.1.3 Components origin">
+<TITLE>4.1.2 Relative positioning</TITLE>
+<META NAME="description" CONTENT="4.1.2 Relative positioning">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,96 +21,77 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node11.html">
 <LINK REL="previous" HREF="node9.html">
-<LINK REL="up" HREF="node7.html">
+<LINK REL="up" HREF="node8.html">
 <LINK REL="next" HREF="node11.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html317"
+<A NAME="tex2html321"
   HREF="node11.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html311"
-  HREF="node7.html">
+<A NAME="tex2html315"
+  HREF="node8.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html305"
+<A NAME="tex2html309"
   HREF="node9.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html313"
+<A NAME="tex2html317"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html315"
-  HREF="node75.html">
+<A NAME="tex2html319"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html318"
-  HREF="node11.html">4.1.4 Components transformations</A>
-<B> Up:</B> <A NAME="tex2html312"
-  HREF="node7.html">4.1 Positioning</A>
-<B> Previous:</B> <A NAME="tex2html306"
-  HREF="node9.html">4.1.2 Relative positioning</A>
- &nbsp; <B>  <A NAME="tex2html314"
+<B> Next:</B> <A NAME="tex2html322"
+  HREF="node11.html">4.1.3 Components origin</A>
+<B> Up:</B> <A NAME="tex2html316"
+  HREF="node8.html">4.1 Positioning</A>
+<B> Previous:</B> <A NAME="tex2html310"
+  HREF="node9.html">4.1.1 Absolute positioning</A>
+ &nbsp; <B>  <A NAME="tex2html318"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html316"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html320"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION00513000000000000000"></A>
-<A NAME="origin"></A>
+<H2><A NAME="SECTION00512000000000000000"></A>
+<A NAME="relpos"></A>
 <BR>
-4.1.3 Components origin
+4.1.2 Relative positioning
 </H2>
-
-<P>
-The origin of a component is the point <IMG
- WIDTH="50" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img13.gif"
- ALT="$(x_o, y_o)$"> such that the <IMG
- WIDTH="37" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img14.gif"
- ALT="$(x, y)$"> coordinates and the <IMG
- WIDTH="50" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img13.gif"
- ALT="$(x_o, y_o)$"> point coincide graphically. For example, when the origin is the top left corner, the component top left corner is drawn  at the <IMG
- WIDTH="37" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img14.gif"
- ALT="$(x, y)$"> coordinates.
 
 <P>
 <BR>
 <IMG
- WIDTH="291" HEIGHT="163" ALIGN="BOTTOM" BORDER="0"
- SRC="img15.gif"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
  ALT="\begin{rail}
-originMsg :
-('xorigin' float32)
-\vert ('yorigin' float32)
-\vert ('dxorigin' float32)
-\vert ('dyorigin' float32)
+relPosMsg :
+('dx' float32)
+\vert ('dy' float32)
+\vert ('dz' float32)
+\vert ('dangle' float32)
+\vert ('dscale' float32)
 \end{rail}">
 <BR>
-<A NAME="267"></A>
-<A NAME="268"></A>
-<A NAME="269"></A>
-<A NAME="270"></A>
+<A NAME="285"></A>
+<A NAME="286"></A>
+<A NAME="287"></A>
+<A NAME="288"></A>
+<A NAME="289"></A>
+<A NAME="290"></A>
+<A NAME="291"></A>
+<A NAME="292"></A>
 
 <P>
 
 <UL>
-<LI><TT>xorigin</TT>,<TT>yorigin</TT> are relative to the component coordinates space i.e. <IMG
- WIDTH="47" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img16.gif"
- ALT="$[-1,1]$">, where -1 is the top or left border and 1 is the bottom or right border. The default origin is <IMG
- WIDTH="35" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img17.gif"
- ALT="$[0,0]$"> i.e. the component is centered on its <IMG
- WIDTH="37" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img14.gif"
- ALT="$(x, y)$"> coordinates.
+<LI><TT>dx</TT>,<TT>dy</TT>, etc. messages are similar to <TT>x</TT>,<TT>y</TT>, etc. messages but the parameters represents values represent a displacement of the current target value.
 </LI>
-<LI><TT>dxorigin</TT>,<TT>dyorigin</TT> represents displacement of the current <TT>xorigin</TT> or <TT>yorigin</TT>.
+<LI><TT>dscale</TT> is similar to <TT>scale</TT> but the parameters represents a scale multiplying factor.
 </LI>
 </UL>
 

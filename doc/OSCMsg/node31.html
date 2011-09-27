@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>9.3 Mapping files</TITLE>
-<META NAME="description" CONTENT="9.3 Mapping files">
+<TITLE>9.2 The 'map+' message</TITLE>
+<META NAME="description" CONTENT="9.2 The 'map+' message">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,58 +19,61 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node32.html">
 <LINK REL="previous" HREF="node30.html">
-<LINK REL="up" HREF="node28.html">
+<LINK REL="up" HREF="node29.html">
 <LINK REL="next" HREF="node32.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html609"
+<A NAME="tex2html615"
   HREF="node32.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html603"
-  HREF="node28.html">
+<A NAME="tex2html609"
+  HREF="node29.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html599"
+<A NAME="tex2html603"
   HREF="node30.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html605"
+<A NAME="tex2html611"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html607"
-  HREF="node75.html">
+<A NAME="tex2html613"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html610"
-  HREF="node32.html">10. Synchronization</A>
-<B> Up:</B> <A NAME="tex2html604"
-  HREF="node28.html">9. Time to space</A>
-<B> Previous:</B> <A NAME="tex2html600"
-  HREF="node30.html">9.2 The 'map+' message</A>
- &nbsp; <B>  <A NAME="tex2html606"
+<B> Next:</B> <A NAME="tex2html616"
+  HREF="node32.html">9.3 Mapping files</A>
+<B> Up:</B> <A NAME="tex2html610"
+  HREF="node29.html">9. Time to space</A>
+<B> Previous:</B> <A NAME="tex2html604"
+  HREF="node30.html">9.1 The 'map' message</A>
+ &nbsp; <B>  <A NAME="tex2html612"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html608"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html614"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001030000000000000000"></A>
-<A NAME="mapFileMsg"></A>
+<H1><A NAME="SECTION001020000000000000000"></A>
+<A NAME="mapAddMsg"></A>
 <BR>
-9.3 Mapping files
+9.2 The 'map+' message
 </H1>
-The <TT>mapf</TT> messages is similar to the <TT>map</TT> message but gives the path name of a file containing the mapping data, along with the optional map name.
+The <TT>map+</TT> messages is similar to the <TT>map</TT> message but doesn't replace the existing mapping data: the specified relations are added to the existing one.
+
+<P>
 <BR>
 <IMG
- WIDTH="373" HEIGHT="89" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img61.gif"
  ALT="\begin{rail}
-mapfMsg : 'mapf' ( \vert mapName ) mapFilePath
+mapAddMsg : 'map+' ( \vert mapName ) relation
 \end{rail}">
 <BR>
-<A NAME="695"></A>
+<A NAME="726"></A>
 
 <P>
 <BR><HR>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>4.1.4 Components transformations</TITLE>
-<META NAME="description" CONTENT="4.1.4 Components transformations">
+<TITLE>4.1.3 Components origin</TITLE>
+<META NAME="description" CONTENT="4.1.3 Components origin">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,72 +19,98 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node12.html">
 <LINK REL="previous" HREF="node10.html">
-<LINK REL="up" HREF="node7.html">
+<LINK REL="up" HREF="node8.html">
 <LINK REL="next" HREF="node12.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html329"
+<A NAME="tex2html335"
   HREF="node12.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html323"
-  HREF="node7.html">
+<A NAME="tex2html329"
+  HREF="node8.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html319"
+<A NAME="tex2html323"
   HREF="node10.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html325"
+<A NAME="tex2html331"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html327"
-  HREF="node75.html">
+<A NAME="tex2html333"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html330"
-  HREF="node12.html">4.2 Color messages</A>
-<B> Up:</B> <A NAME="tex2html324"
-  HREF="node7.html">4.1 Positioning</A>
-<B> Previous:</B> <A NAME="tex2html320"
-  HREF="node10.html">4.1.3 Components origin</A>
- &nbsp; <B>  <A NAME="tex2html326"
+<B> Next:</B> <A NAME="tex2html336"
+  HREF="node12.html">4.1.4 Components transformations</A>
+<B> Up:</B> <A NAME="tex2html330"
+  HREF="node8.html">4.1 Positioning</A>
+<B> Previous:</B> <A NAME="tex2html324"
+  HREF="node10.html">4.1.2 Relative positioning</A>
+ &nbsp; <B>  <A NAME="tex2html332"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html328"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html334"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION00514000000000000000"></A>
-<A NAME="transform"></A>
+<H2><A NAME="SECTION00513000000000000000"></A>
+<A NAME="origin"></A>
 <BR>
-4.1.4 Components transformations
+4.1.3 Components origin
 </H2>
 
 <P>
-A component tranformation specifies 2D transformations of its coordinate system. It includes shear and object rotation.
+The origin of a component is the point <IMG
+ WIDTH="50" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.gif"
+ ALT="$(x_o, y_o)$"> such that the <IMG
+ WIDTH="37" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.gif"
+ ALT="$(x, y)$"> coordinates and the <IMG
+ WIDTH="50" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.gif"
+ ALT="$(x_o, y_o)$"> point coincide graphically. For example, when the origin is the top left corner, the component top left corner is drawn  at the <IMG
+ WIDTH="37" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.gif"
+ ALT="$(x, y)$"> coordinates.
 
 <P>
 <BR>
 <IMG
- WIDTH="334" HEIGHT="165" ALIGN="BOTTOM" BORDER="0"
- SRC="img18.gif"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.gif"
  ALT="\begin{rail}
-transformMsg :
-(('rotatex' \vert 'rotatey' \vert 'rotatez') float32)
-\vert ('shear' x y)
+originMsg :
+('xorigin' float32)
+\vert ('yorigin' float32)
+\vert ('dxorigin' float32)
+\vert ('dyorigin' float32)
 \end{rail}">
 <BR>
-<A NAME="283"></A>
-<A NAME="284"></A>
+<A NAME="305"></A>
+<A NAME="306"></A>
+<A NAME="307"></A>
+<A NAME="308"></A>
 
 <P>
 
 <UL>
-<LI><TT>rotatex rotatey rotatez</TT>: rotates the component around the corresponding axis. Parameter value expresses the rotation in degrees.
+<LI><TT>xorigin</TT>,<TT>yorigin</TT> are relative to the component coordinates space i.e. <IMG
+ WIDTH="47" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.gif"
+ ALT="$[-1,1]$">, where -1 is the top or left border and 1 is the bottom or right border. The default origin is <IMG
+ WIDTH="35" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.gif"
+ ALT="$[0,0]$"> i.e. the component is centered on its <IMG
+ WIDTH="37" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.gif"
+ ALT="$(x, y)$"> coordinates.
 </LI>
-<LI><TT>shear</TT> transforms the component in x and y dimensions. <TT>x</TT> and <TT>y</TT> are float values expressing the transformation value in the corresponding dimension.
+<LI><TT>dxorigin</TT>,<TT>dyorigin</TT> represents displacement of the current <TT>xorigin</TT> or <TT>yorigin</TT>.
 </LI>
 </UL>
 

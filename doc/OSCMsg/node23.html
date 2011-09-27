@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>7.1 Special 'get' forms</TITLE>
-<META NAME="description" CONTENT="7.1 Special 'get' forms">
+<TITLE>7. The 'get' messages</TITLE>
+<META NAME="description" CONTENT="7. The 'get' messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,54 +19,76 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node25.html">
 <LINK REL="previous" HREF="node22.html">
-<LINK REL="up" HREF="node22.html">
+<LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node24.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html495"
+<A NAME="tex2html500"
   HREF="node24.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html489"
-  HREF="node22.html">
+<A NAME="tex2html494"
+  HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html485"
+<A NAME="tex2html488"
   HREF="node22.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html491"
+<A NAME="tex2html496"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html493"
-  HREF="node75.html">
+<A NAME="tex2html498"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html496"
-  HREF="node24.html">8. Component specific messages</A>
-<B> Up:</B> <A NAME="tex2html490"
-  HREF="node22.html">7. The 'get' messages</A>
-<B> Previous:</B> <A NAME="tex2html486"
-  HREF="node22.html">7. The 'get' messages</A>
- &nbsp; <B>  <A NAME="tex2html492"
+<B> Next:</B> <A NAME="tex2html501"
+  HREF="node24.html">7.1 Special 'get' forms</A>
+<B> Up:</B> <A NAME="tex2html495"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html489"
+  HREF="node22.html">6. The 'set' message</A>
+ &nbsp; <B>  <A NAME="tex2html497"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html494"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html499"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION00810000000000000000">
-7.1 Special 'get' forms</A>
+<H1><A NAME="SECTION00800000000000000000"></A>
+<A NAME="getsect"></A>
+<BR>
+7. The 'get' messages
 </H1>
 
 <P>
-The <TT>get</TT> message without parameter addressed to a container (the application <TT>/ITL</TT>, a scene <TT>/ITL/scene</TT>, the signal node <TT>/ITL/scene/signal</TT>) is actually relayed to each of the container component.  
+The <TT>get</TT> messages can be sent to any valid OSC address. It is intended to query the system state. It is the counterpart of all the messages modifying this state.  The result of the query is sent to the OSC output port with the exact syntax of the counterpart message. 
+The global form of the message is:
+<BR>
+<IMG
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="img43.gif"
+ ALT="\begin{rail}
+getMsg : 'get' ( \vert getParam +)
+\end{rail}">
+<BR>
+<A NAME="606"></A>
 
 <P>
-The <TT>get width</TT> and <TT>get height</TT> messages adressed to components that have no explicit width and height (text, images, etc.) return 0 as long as the target component has not been drew.
+The <TT>get</TT> message without parameter is the counterpart of the <TT>set</TT> message. 
 
 <P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html502"
+  HREF="node24.html">7.1 Special 'get' forms</A>
+</UL>
+<!--End of Table of Child-Links-->
 <BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]

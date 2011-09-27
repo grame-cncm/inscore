@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>8.3 Score pages management</TITLE>
-<META NAME="description" CONTENT="8.3 Score pages management">
+<TITLE>8.2 Width and height control</TITLE>
+<META NAME="description" CONTENT="8.2 Width and height control">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,91 +19,63 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node28.html">
 <LINK REL="previous" HREF="node26.html">
-<LINK REL="up" HREF="node24.html">
+<LINK REL="up" HREF="node25.html">
 <LINK REL="next" HREF="node28.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html552"
+<A NAME="tex2html558"
   HREF="node28.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html546"
-  HREF="node24.html">
+<A NAME="tex2html552"
+  HREF="node25.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html542"
+<A NAME="tex2html546"
   HREF="node26.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html548"
+<A NAME="tex2html554"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html550"
-  HREF="node75.html">
+<A NAME="tex2html556"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html553"
-  HREF="node28.html">9. Time to space</A>
-<B> Up:</B> <A NAME="tex2html547"
-  HREF="node24.html">8. Component specific messages</A>
-<B> Previous:</B> <A NAME="tex2html543"
-  HREF="node26.html">8.2 Width and height</A>
- &nbsp; <B>  <A NAME="tex2html549"
+<B> Next:</B> <A NAME="tex2html559"
+  HREF="node28.html">8.3 Score pages management</A>
+<B> Up:</B> <A NAME="tex2html553"
+  HREF="node25.html">8. Component specific messages</A>
+<B> Previous:</B> <A NAME="tex2html547"
+  HREF="node26.html">8.1 Pen control</A>
+ &nbsp; <B>  <A NAME="tex2html555"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html551"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html557"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION00930000000000000000"></A>
-<A NAME="gmnpage"></A>
-<BR>
-8.3 Score pages management
+<H1><A NAME="SECTION00920000000000000000">
+8.2 Width and height control</A>
 </H1>
 
 <P>
-Messages accepted by the components types <TT>gmn | gmnf</TT>. 
-<BR>
-<IMG
- WIDTH="396" HEIGHT="240" ALIGN="BOTTOM" BORDER="0"
- SRC="img45.gif"
- ALT="\begin{rail}
-scoreMsg : 'page' int32
-\vert 'dpage' int32
-\vert 'pageFormat' fl...
-...2
-\vert 'columns' int32
-\vert 'rows' int32
-\vert 'get' 'pageCount'
-\end{rail}">
-<BR>
-<A NAME="610"></A>
-<A NAME="611"></A>
-<A NAME="612"></A>
-<A NAME="613"></A>
-<A NAME="614"></A>
-<A NAME="615"></A>
+Messages accepted by the components types <TT>rect | ellipse | graph.</TT>
 
 <P>
-
-<UL>
-<LI><TT>page</TT>: set the score current page
-</LI>
-<LI><TT>dpage</TT>: set the score current page
-</LI>
-<LI><TT>pageFormat</TT>: set the page format. The parameters are the page width and height. Note that the message has no effect when the score already includes a <IMG
- WIDTH="12" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+<BR>
+<IMG
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img46.gif"
- ALT="$\backslash$">pageformat tag.
-</LI>
-<LI><TT>columns</TT>: for multi pages display: set the number of columns.
-</LI>
-<LI><TT>rows</TT>: for multi pages display: set the number of rows.
-</LI>
-<LI><TT>pageCount</TT>:  a read only attribute, gives the score pages count.
-</LI>
-</UL>
+ ALT="\begin{rail}
+whMsg : 'width' float32
+\vert 'height' float32
+\end{rail}">
+<BR>
+<A NAME="641"></A>
+<A NAME="642"></A>
 
 <P>
 <BR><HR>

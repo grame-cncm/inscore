@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>4. Common components messages</TITLE>
-<META NAME="description" CONTENT="4. Common components messages">
+<TITLE>3. Scene messages</TITLE>
+<META NAME="description" CONTENT="3. Scene messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,7 +19,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node20.html">
+<LINK REL="next" HREF="node7.html">
 <LINK REL="previous" HREF="node5.html">
 <LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node7.html">
@@ -27,168 +27,116 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html244"
+<A NAME="tex2html248"
   HREF="node7.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html238"
+<A NAME="tex2html242"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html232"
+<A NAME="tex2html236"
   HREF="node5.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html240"
+<A NAME="tex2html244"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html242"
-  HREF="node75.html">
+<A NAME="tex2html246"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html245"
-  HREF="node7.html">4.1 Positioning</A>
-<B> Up:</B> <A NAME="tex2html239"
+<B> Next:</B> <A NAME="tex2html249"
+  HREF="node7.html">4. Common components messages</A>
+<B> Up:</B> <A NAME="tex2html243"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html233"
-  HREF="node5.html">3. Scene messages</A>
- &nbsp; <B>  <A NAME="tex2html241"
+<B> Previous:</B> <A NAME="tex2html237"
+  HREF="node5.html">2. Application messages</A>
+ &nbsp; <B>  <A NAME="tex2html245"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html243"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html247"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION00500000000000000000"></A>
-<A NAME="common"></A>
+<H1><A NAME="SECTION00400000000000000000"></A>
+<A NAME="scene"></A>
 <BR>
-4. Common components messages
+3. Scene messages
 </H1>
-Common messages are mainly intended to control the graphic appearance of the components and  of the scene.
-They could be sent to any address with the form <TT>/ITL/scene</TT> or <TT>/ITL/scene/<I>identifier</I></TT> where <TT><I>identifier</I></TT> is the unique identifier string of a scene component.
+A scene may be viewed as a window on the score elements. Its address is <TT>/ITL/<I>sceneIdentifier</I></TT> where <TT><I>sceneIdentifier</I></TT> is the scene name. It handles the following messages:
 <BR>
 <IMG
- WIDTH="379" HEIGHT="469" ALIGN="BOTTOM" BORDER="0"
- SRC="img8.gif"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
  ALT="\begin{rail}
-commonMsg : ('show' int32)
+sceneMsg : 'new'
 \vert 'del'
-\vert 'export' ((fullPathF...
-...vert PositionMsg
-\vert ColorMsg
-\vert TimeMsg
-\vert clickSelectMsg
+\vert ('rootPath' path)
+\vert ('lo...
+...set'
+\vert 'foreground'
+\vert ('fullscreen' int32)
+\vert commonMsg
 \end{rail}">
 <BR>
-<A NAME="172"></A>
-<A NAME="173"></A>
-<A NAME="174"></A>
-<A NAME="175"></A>
+<A NAME="181"></A>
+<A NAME="182"></A>
+<A NAME="183"></A>
+<A NAME="184"></A>
+<A NAME="185"></A>
+<A NAME="186"></A>
+<A NAME="187"></A>
+<A NAME="188"></A>
 
 <P>
 
 <UL>
-<LI><TT>show</TT>: shows or hides the destination object. The parameter is interpreted as a boolean value. Default value is <TT>1</TT>. 
+<LI><TT>new</TT>: creates a new scene and opens it in a new window.
 </LI>
-<LI><TT>del</TT>: deletes the destination object. 
-
-<P>
+<LI><TT>del</TT>: deletes a scene and closes the corresponding window.
 </LI>
-<LI><TT>export</TT>: exports an object to an image file. 
-<BR>
-The first form exports to the parameter file, which specifies a full path name. The file extension is used to infer the export format. Supported extensions and formats are: <I>pdf, bmp, gif, jpeg, png, pgm, ppm, tiff, xbm, xpm</I>. 
-<BR>
-The second form exports to <TT>path/<I>identifier</I>.pdf</TT>. When path is a relative path, it exports to <TT>rootPath/path/<I>identifier</I>.pdf</TT>. A scene <I>identifier</I> is '<TT>scene</TT>'.
-<BR>
-The third form exports to <TT>rootPath/<I>identifier</I>.pdf</TT>.
-<BR>
-When the destination file is not completely specified (third form or missing extension), there is an automatic numbering of output names when the destination file already exists.
-
-<P>
+<LI><TT>rootPath</TT>: <I>rootPath</I> of a scene is the default path where the scene reads or writes a file when a relative path is used for this file. When no value has been specified, the application  <I>rootPath</I> is used.
 </LI>
-<LI><TT>save</TT>: recursively saves objects states to a file.  The <TT>filePath</TT> can be relative or absolute. When relative, an absolute path is build using the current <TT>rootPath</TT>. The optional <TT>+</TT> parameter indicates an append mode for the write operation. The message must be sent to the <TT>/ITL</TT> address to save the whole application state.
+<LI><TT>load</TT>: loads an INScore file to the scene. Note that the OSC addresses are translated to the scene OSC address.
 </LI>
-<LI><TT>rename</TT>: rename the destination object. Changes its OSC address. <B>Warning</B>: OSC pattern matching allows to give the same name to a whole collection of objects; in this case, there is no way to individually address an object when its name is shared with other objects.
+<LI><TT>reset</TT>: clears the scene (i.e. delete all components) and resets the scene to its default state (position, size and color).
 </LI>
-<LI>'PositionMsg' are absolute and relative position messages.
+<LI><TT>foreground</TT>: put the scene to foreground.
 </LI>
-<LI>'ColorMsg' are absolute and relative color control messages.
+<LI><TT>fullscreen</TT>: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is <TT>0</TT>.
 </LI>
-<LI>'TimeMsg' are time management messages. They are described in chaper <A HREF="node20.html#time">5</A> p.<A HREF="node20.html#time"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>.
-</LI>
-<LI>'clickSelectMsg' are provided to query objects relative positions.
+<LI><TT>commonMsg</TT>: see section <A HREF="node7.html#common">4</A> p.<A HREF="node7.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>.
 </LI>
 </UL>
 
 <P>
-<BR><HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
-
-<UL>
-<LI><A NAME="tex2html246"
-  HREF="node7.html">4.1 Positioning</A>
-<UL>
-<LI><A NAME="tex2html247"
-  HREF="node8.html">4.1.1 Absolute positioning</A>
-<LI><A NAME="tex2html248"
-  HREF="node9.html">4.1.2 Relative positioning</A>
-<LI><A NAME="tex2html249"
-  HREF="node10.html">4.1.3 Components origin</A>
-<LI><A NAME="tex2html250"
-  HREF="node11.html">4.1.4 Components transformations</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html251"
-  HREF="node12.html">4.2 Color messages</A>
-<UL>
-<LI><A NAME="tex2html252"
-  HREF="node13.html">4.2.1 Absolute color messages</A>
-<LI><A NAME="tex2html253"
-  HREF="node14.html">4.2.2 Relative color messages</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html254"
-  HREF="node15.html">4.3 The 'effect' messages</A>
-<UL>
-<LI><A NAME="tex2html255"
-  HREF="node16.html">4.3.1 The blur effect</A>
-<LI><A NAME="tex2html256"
-  HREF="node17.html">4.3.2 The colorize effect</A>
-<LI><A NAME="tex2html257"
-  HREF="node18.html">4.3.3 The shadow effect</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html258"
-  HREF="node19.html">4.4 The 'click' and 'select' messages</A>
-</UL>
-<!--End of Table of Child-Links-->
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html244"
+<A NAME="tex2html248"
   HREF="node7.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html238"
+<A NAME="tex2html242"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html232"
+<A NAME="tex2html236"
   HREF="node5.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html240"
+<A NAME="tex2html244"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html242"
-  HREF="node75.html">
+<A NAME="tex2html246"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html245"
-  HREF="node7.html">4.1 Positioning</A>
-<B> Up:</B> <A NAME="tex2html239"
+<B> Next:</B> <A NAME="tex2html249"
+  HREF="node7.html">4. Common components messages</A>
+<B> Up:</B> <A NAME="tex2html243"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html233"
-  HREF="node5.html">3. Scene messages</A>
- &nbsp; <B>  <A NAME="tex2html241"
+<B> Previous:</B> <A NAME="tex2html237"
+  HREF="node5.html">2. Application messages</A>
+ &nbsp; <B>  <A NAME="tex2html245"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html243"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html247"
+  HREF="node76.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]

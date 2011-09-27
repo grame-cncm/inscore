@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>14.2 Feeding and composing FAUST processors</TITLE>
-<META NAME="description" CONTENT="14.2 Feeding and composing FAUST processors">
+<TITLE>14.1 Specific meassages</TITLE>
+<META NAME="description" CONTENT="14.1 Specific meassages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,69 +19,76 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node52.html">
 <LINK REL="previous" HREF="node50.html">
-<LINK REL="up" HREF="node49.html">
+<LINK REL="up" HREF="node50.html">
 <LINK REL="next" HREF="node52.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html895"
+<A NAME="tex2html901"
   HREF="node52.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html889"
-  HREF="node49.html">
+<A NAME="tex2html895"
+  HREF="node50.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html885"
+<A NAME="tex2html889"
   HREF="node50.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html891"
+<A NAME="tex2html897"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html893"
-  HREF="node75.html">
+<A NAME="tex2html899"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html896"
-  HREF="node52.html">15. Events and Interaction</A>
-<B> Up:</B> <A NAME="tex2html890"
-  HREF="node49.html">14. FAUST plugins</A>
-<B> Previous:</B> <A NAME="tex2html886"
-  HREF="node50.html">14.1 Specific meassages</A>
- &nbsp; <B>  <A NAME="tex2html892"
+<B> Next:</B> <A NAME="tex2html902"
+  HREF="node52.html">14.2 Feeding and composing</A>
+<B> Up:</B> <A NAME="tex2html896"
+  HREF="node50.html">14. FAUST plugins</A>
+<B> Previous:</B> <A NAME="tex2html890"
+  HREF="node50.html">14. FAUST plugins</A>
+ &nbsp; <B>  <A NAME="tex2html898"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html894"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html900"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001520000000000000000"></A>
-<A NAME="composefaust"></A>
+<H1><A NAME="SECTION001510000000000000000"></A>
+<A NAME="faustmsg"></A>
 <BR>
-14.2 Feeding and composing FAUST processors
+14.1 Specific meassages
 </H1>
+A FAUST processor is characterized by the numbers of input and output channels and by a set of parameters. Each parameter carries a name defined by the FAUST program. The set of messages supported by a FAUST processor is the set of signals messages extended with the parameters names and with specific query messages. 
 
 <P>
-A FAUST processor accepts float values as input, which are taken as interleaved data.
-
-<P>
-From composition viewpoint, a FAUST processor is a parallel signal which dimension is the number of output channels. 
-Thus, a FAUST processor can be used like any parallel signal. However, the signal identifier defined in <A HREF="node44.html#parcomp">13.1.2</A> is extended to support adressing single components of parallel signal as follows:
 <BR>
 <IMG
- WIDTH="325" HEIGHT="127" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img80.gif"
  ALT="\begin{rail}
-signal :
-identifier ( \vert ''/'' n)
-\vert float32
+faustmessage : signalMsgs
+\vert [1] 'msg' float32
+\vert [2] 'get' ('in' \vert 'out')
 \end{rail}">
 <BR>
-where <IMG
- WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img81.gif"
- ALT="$n$"> selects the signal #n of a parallel signal. Note that indexes start at 0.
+<A NAME="1131"></A>
+<A NAME="1132"></A>
+<A NAME="1133"></A>
+<A NAME="1134"></A>
+
+<P>
+<DL COMPACT>
+<DT>1</DT>
+<DD><TT><I>msg</I></TT> is any of the FAUST processor parameters, as defined by the FAUST program.
+</DD>
+<DT>2</DT>
+<DD>the <TT>get</TT> message is extended to query the FAUST processor: <TT>in</TT> and <TT>out</TT> give the number of input and output channels.
+</DD>
+</DL>
 
 <P>
 <BR><HR>

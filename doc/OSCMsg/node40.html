@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>12.2 Debug</TITLE>
-<META NAME="description" CONTENT="12.2 Debug">
+<TITLE>12.1 File watcher</TITLE>
+<META NAME="description" CONTENT="12.1 File watcher">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,75 +19,147 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node41.html">
 <LINK REL="previous" HREF="node39.html">
-<LINK REL="up" HREF="node38.html">
+<LINK REL="up" HREF="node39.html">
 <LINK REL="next" HREF="node41.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html735"
+<A NAME="tex2html741"
   HREF="node41.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html729"
-  HREF="node38.html">
+<A NAME="tex2html735"
+  HREF="node39.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html725"
+<A NAME="tex2html729"
   HREF="node39.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html731"
+<A NAME="tex2html737"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html733"
-  HREF="node75.html">
+<A NAME="tex2html739"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html736"
-  HREF="node41.html">13. Signals and graphic</A>
-<B> Up:</B> <A NAME="tex2html730"
-  HREF="node38.html">12. Virtual address space</A>
-<B> Previous:</B> <A NAME="tex2html726"
-  HREF="node39.html">12.1 File watcher</A>
- &nbsp; <B>  <A NAME="tex2html732"
+<B> Next:</B> <A NAME="tex2html742"
+  HREF="node41.html">12.2 Debug</A>
+<B> Up:</B> <A NAME="tex2html736"
+  HREF="node39.html">12. Virtual address space</A>
+<B> Previous:</B> <A NAME="tex2html730"
+  HREF="node39.html">12. Virtual address space</A>
+ &nbsp; <B>  <A NAME="tex2html738"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html734"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html740"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001320000000000000000">
-12.2 Debug</A>
+<H1><A NAME="SECTION001310000000000000000"></A>
+<A NAME="watch"></A>
+<BR>
+12.1 File watcher
 </H1>
 
 <P>
-Each object has a <TT>debug</TT> sub-node for debugging purposes. This <TT>debug</TT> virtual node has 3 flags, that can be actived or desactived with <TT>0</TT> or <TT>1</TT>:
+The <TT>fileWatcher</TT> is a component automatically embedded at scene level. 
+<BR>
+It receives messages at the address <TT>/ITL/scene/fileWatcher</TT>.
+
+<P>
+The <TT>fileWatcher</TT> service monitors files on demand; it is aware of file modifications and file removals (or renamings, which is equivalent). The <TT>fileWatcher</TT> works with associations between a file and an OSC message : when a file change occurs, the file watcher posts the associated OSC message.
+
+<P>
+The <TT>fileWatcher</TT> is controlled with 4 messages:
+
+<UL>
+<LI>the <TT>add</TT> message is used to add a new 'file' - 'OSC message' association ;
+</LI>
+<LI>the <TT>remove</TT> message is used to remove a 'file' - 'OSC message' association.
+</LI>
+<LI>the <TT>clear</TT> message is used to clear all existing associations.
+</LI>
+<LI>the <TT>get</TT> message is used to retrieve the current associations.
+</LI>
+</UL>
+<A NAME="876"></A>
 
 <P>
 <BR>
 <IMG
- WIDTH="257" HEIGHT="127" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img71.gif"
  ALT="\begin{rail}
-debug : ('name' int32)
-\vert ('map' int32)
-\vert ('signal' int32)
+fileWatcher : ('add' filePath OSCMessage)
+\vert 'remove' (filePath OSCMessage \vert OSCAddress )
+\vert 'clear'
+\vert 'get'
 \end{rail}">
 <BR>
+<A NAME="879"></A>
+<A NAME="880"></A>
+<A NAME="881"></A>
+<A NAME="882"></A>
 
 <P>
-
-<UL>
-<LI>When the <TT>name</TT> flag is on, each scene component displays its bounding rectangle and name.
-</LI>
-<LI>When the <TT>map</TT> flag is on, each scene component displays its mappings.
-</LI>
-<LI>When the <TT>signal</TT> flag is on, each object (even the scene or the application) will, according to its type, emit 'performance related' signals (or no signal). This 'performance signal' is specific to the type of object. The name of 'performance signal' is of the form <TT>debug-</TT><I>objectName</I><TT>-</TT><I>SomeName</I>. Currently, only the <TT>application</TT>, the <TT>scene</TT> and <TT>graph</TT> objects emit 'performance signals'.
-</LI>
-</UL>
+where <TT>OSCMessage</TT> is any message complying to the format desscribed in section <A HREF="node2.html#genformat">1</A> p.<A HREF="node2.html#genformat"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>.
 
 <P>
-<BR><HR>
+Example:
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>
+/ITL/scene/fileWatcher add 'fuga.gmn' '/ITL/scene/score' 'set' 'gmnf' 'fuga.gmn';
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
+Note that the <TT>get</TT> query returns a set of messages complying to the <TT>add</TT> message format.
+<BR>
+<P>
+The <TT>remove</TT> message may take only 1 parameter, in which case the only parameter is an OSC address : it stops monitoring any file associated to an OSC message with this OSC address.
+
+<P>
+Note that an OSC message can be associated to several files, and that a file can be associated to several OSC messages.
+When a file has been removed (or renamed), the <TT>fileWatcher</TT> stops monitoring it.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html741"
+  HREF="node41.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html735"
+  HREF="node39.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html729"
+  HREF="node39.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html737"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html739"
+  HREF="node76.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html742"
+  HREF="node41.html">12.2 Debug</A>
+<B> Up:</B> <A NAME="tex2html736"
+  HREF="node39.html">12. Virtual address space</A>
+<B> Previous:</B> <A NAME="tex2html730"
+  HREF="node39.html">12. Virtual address space</A>
+ &nbsp; <B>  <A NAME="tex2html738"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html740"
+  HREF="node76.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

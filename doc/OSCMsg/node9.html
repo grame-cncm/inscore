@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>4.1.2 Relative positioning</TITLE>
-<META NAME="description" CONTENT="4.1.2 Relative positioning">
+<TITLE>4.1.1 Absolute positioning</TITLE>
+<META NAME="description" CONTENT="4.1.1 Absolute positioning">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,82 +21,130 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node10.html">
 <LINK REL="previous" HREF="node8.html">
-<LINK REL="up" HREF="node7.html">
+<LINK REL="up" HREF="node8.html">
 <LINK REL="next" HREF="node10.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html303"
+<A NAME="tex2html307"
   HREF="node10.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html297"
-  HREF="node7.html">
+<A NAME="tex2html301"
+  HREF="node8.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html291"
+<A NAME="tex2html295"
   HREF="node8.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html299"
+<A NAME="tex2html303"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html301"
-  HREF="node75.html">
+<A NAME="tex2html305"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html304"
-  HREF="node10.html">4.1.3 Components origin</A>
-<B> Up:</B> <A NAME="tex2html298"
-  HREF="node7.html">4.1 Positioning</A>
-<B> Previous:</B> <A NAME="tex2html292"
-  HREF="node8.html">4.1.1 Absolute positioning</A>
- &nbsp; <B>  <A NAME="tex2html300"
+<B> Next:</B> <A NAME="tex2html308"
+  HREF="node10.html">4.1.2 Relative positioning</A>
+<B> Up:</B> <A NAME="tex2html302"
+  HREF="node8.html">4.1 Positioning</A>
+<B> Previous:</B> <A NAME="tex2html296"
+  HREF="node8.html">4.1 Positioning</A>
+ &nbsp; <B>  <A NAME="tex2html304"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html302"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html306"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION00512000000000000000"></A>
-<A NAME="relpos"></A>
-<BR>
-4.1.2 Relative positioning
+<H2><A NAME="SECTION00511000000000000000">
+4.1.1 Absolute positioning</A>
 </H2>
 
 <P>
 <BR>
 <IMG
- WIDTH="275" HEIGHT="203" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img12.gif"
  ALT="\begin{rail}
-relPosMsg :
-('dx' float32)
-\vert ('dy' float32)
-\vert ('dz' float32)
-\vert ('dangle' float32)
-\vert ('dscale' float32)
+absPosMsg :
+('x' float32)
+\vert ('y' float32)
+\vert ('z' float32)
+\vert ('angle' float32)
+\vert ('scale' float32)
 \end{rail}">
 <BR>
+<A NAME="240"></A>
+<A NAME="241"></A>
+<A NAME="242"></A>
+<A NAME="243"></A>
+<A NAME="244"></A>
+<A NAME="245"></A>
+<A NAME="246"></A>
 <A NAME="247"></A>
 <A NAME="248"></A>
 <A NAME="249"></A>
-<A NAME="250"></A>
-<A NAME="251"></A>
-<A NAME="252"></A>
-<A NAME="253"></A>
-<A NAME="254"></A>
 
 <P>
 
 <UL>
-<LI><TT>dx</TT>,<TT>dy</TT>, etc. messages are similar to <TT>x</TT>,<TT>y</TT>, etc. messages but the parameters represents values represent a displacement of the current target value.
+<LI><TT>x y</TT>: moves the <TT>x</TT> or <TT>y</TT> coordinate of a component. By default, components are centered on their <TT>x</TT>, <TT>y</TT> coordinates. The coordinates space range is <TT>[-1,1]</TT>. 
+<BR>
+For a <TT>scene</TT> component, -1 is the leftmost or topmost position, 1 is the rightmost or bottommost position. <TT>[0,0]</TT> represents the center of the <TT>scene</TT>. 
+<BR>
+For the <TT>scene</TT> itself, it moves the window in the screen space and the coordinate space is orthonormal, based on the screen lowest dimension (<I>i.e.</I> with a 4:3 screen, <TT>y=-1</TT> and <TT>y=1</TT> are respectively the exact top and bottom of the screen, but neither <TT>x=-1</TT> nor <TT>x=1</TT>are the exact left and right of the screen). 
+<BR>
+Default coordinates are <TT>[0,0]</TT>.
 </LI>
-<LI><TT>dscale</TT> is similar to <TT>scale</TT> but the parameters represents a scale multiplying factor.
+<LI><TT>z</TT>: sets the <TT>z</TT> order of a component. The range is <IMG
+ WIDTH="38" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.gif"
+ ALT="$[0,\infty[$">. <TT>z</TT> order is actually relative to the <TT>scene</TT> components: objects of high <TT>z</TT> order will be drawn on top of components with a lower <TT>z</TT> order. Components sharing the same <TT>z</TT> order will be drawn in an undefined order, although the order will stay the same for as long as they live. 
+<BR>
+Default <TT>z</TT> order is 0.
+</LI>
+<LI><TT>angle</TT>: sets the <TT>angle</TT> value of a component, which is used to rotate it around its center. The angle is measured in clockwise degrees from the <TT>x</TT> axis.
+<BR>
+Default angle value is 0.
+</LI>
+<LI><TT>scale</TT>: reduce/enlarge a component. The range is <IMG
+ WIDTH="38" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.gif"
+ ALT="$[0,\infty[$">. Default scale is <TT>1</TT>.
 </LI>
 </UL>
 
 <P>
-<BR><HR>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html307"
+  HREF="node10.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html301"
+  HREF="node8.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html295"
+  HREF="node8.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html303"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html305"
+  HREF="node76.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html308"
+  HREF="node10.html">4.1.2 Relative positioning</A>
+<B> Up:</B> <A NAME="tex2html302"
+  HREF="node8.html">4.1 Positioning</A>
+<B> Previous:</B> <A NAME="tex2html296"
+  HREF="node8.html">4.1 Positioning</A>
+ &nbsp; <B>  <A NAME="tex2html304"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html306"
+  HREF="node76.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

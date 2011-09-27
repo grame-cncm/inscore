@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.5 OSC address variables</TITLE>
-<META NAME="description" CONTENT="15.5 OSC address variables">
+<TITLE>15.4 Message based variables</TITLE>
+<META NAME="description" CONTENT="15.4 Message based variables">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,60 +19,113 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node58.html">
 <LINK REL="previous" HREF="node56.html">
-<LINK REL="up" HREF="node52.html">
+<LINK REL="up" HREF="node53.html">
 <LINK REL="next" HREF="node58.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html982"
+<A NAME="tex2html988"
   HREF="node58.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html976"
-  HREF="node52.html">
+<A NAME="tex2html982"
+  HREF="node53.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html972"
+<A NAME="tex2html976"
   HREF="node56.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html978"
+<A NAME="tex2html984"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html980"
-  HREF="node75.html">
+<A NAME="tex2html986"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html983"
-  HREF="node58.html">16. Scripting</A>
-<B> Up:</B> <A NAME="tex2html977"
-  HREF="node52.html">15. Events and Interaction</A>
-<B> Previous:</B> <A NAME="tex2html973"
-  HREF="node56.html">15.4 Message based variables</A>
- &nbsp; <B>  <A NAME="tex2html979"
+<B> Next:</B> <A NAME="tex2html989"
+  HREF="node58.html">15.5 OSC address variables</A>
+<B> Up:</B> <A NAME="tex2html983"
+  HREF="node53.html">15. Events and Interaction</A>
+<B> Previous:</B> <A NAME="tex2html977"
+  HREF="node56.html">15.3 Variables</A>
+ &nbsp; <B>  <A NAME="tex2html985"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html981"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html987"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001650000000000000000"></A>
-<A NAME="oscvar"></A>
+<H1><A NAME="SECTION001640000000000000000"></A>
+<A NAME="msgvar"></A>
 <BR>
-15.5 OSC address variables
+15.4 Message based variables
 </H1>
-The OSC address parameter of a watch message supports the following variables:
-
-<UL>
-<LI><TT>$self</TT>: replaced by the object name at the time of the message setting.
-</LI>
-<LI><TT>$scene</TT>: replaced by the scene name at the time of the message setting.
-</LI>
-</UL>
-Note: the system doesn't check for the consistency of the variables placement.
 
 <P>
-<BR><HR>
+A message based variable is a variable containing an OSC message which will be evaluated at the time of the event. They are supported by all kind of events. Like  the variables above, a message based variable starts with a '$' sign followed by a valid 'get' message enclosed in parenthesis:
+<BR>
+<IMG
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="img94.gif"
+ ALT="\begin{rail}
+msgVar : '(' oscaddress 'get' (\vert params) ')'
+\end{rail}">
+<BR>
+
+<P>
+The evaluation of a 'get' message produces a message or a list of messages. The message based variable will be replaced by the parameters of the messages resulting from the evaluation of the 'get' message.
+Note that all the 'get' messages attached to an event are evaluated at the same time.
+
+<P>
+Example:
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT> 
+/ITL/s/o1 watch  'mouseDown' '/ITL/s/o1' 'show' $('/ITL/s/o2' get 'show'); 
+<BR>/ITL/s/o1 watch+ 'mouseDown' '/ITL/s/o2' 'show' $('/ITL/s/o1' get 'show'); 
+<BR>/ITL/s/o2 watch  'mouseDown' '/ITL/s/o1' 'show' $('/ITL/s/o2' get 'show'); 
+<BR>/ITL/s/o2 watch+ 'mouseDown' '/ITL/s/o2' 'show' $('/ITL/s/o1' get 'show')
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+When clicked, the objects <TT>o1</TT> and <TT>o2</TT> swap their visibility state.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html988"
+  HREF="node58.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html982"
+  HREF="node53.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html976"
+  HREF="node56.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html984"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html986"
+  HREF="node76.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html989"
+  HREF="node58.html">15.5 OSC address variables</A>
+<B> Up:</B> <A NAME="tex2html983"
+  HREF="node53.html">15. Events and Interaction</A>
+<B> Previous:</B> <A NAME="tex2html977"
+  HREF="node56.html">15.3 Variables</A>
+ &nbsp; <B>  <A NAME="tex2html985"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html987"
+  HREF="node76.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

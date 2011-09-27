@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>2. ITL messages</TITLE>
-<META NAME="description" CONTENT="2. ITL messages">
+<TITLE>1.2 Address space</TITLE>
+<META NAME="description" CONTENT="1.2 Address space">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,170 +19,89 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node5.html">
-<LINK REL="previous" HREF="node2.html">
-<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node2.html">
 <LINK REL="next" HREF="node5.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html216"
+<A NAME="tex2html220"
   HREF="node5.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html210"
-  HREF="OSCMsg.html">
+<A NAME="tex2html214"
+  HREF="node2.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html204"
+<A NAME="tex2html210"
   HREF="node3.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html212"
+<A NAME="tex2html216"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html214"
-  HREF="node75.html">
+<A NAME="tex2html218"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html217"
-  HREF="node5.html">3. Scene messages</A>
-<B> Up:</B> <A NAME="tex2html211"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html205"
-  HREF="node3.html">1.1 Address space</A>
- &nbsp; <B>  <A NAME="tex2html213"
+<B> Next:</B> <A NAME="tex2html221"
+  HREF="node5.html">2. Application messages</A>
+<B> Up:</B> <A NAME="tex2html215"
+  HREF="node2.html">1. General format</A>
+<B> Previous:</B> <A NAME="tex2html211"
+  HREF="node3.html">1.1 Parameters</A>
+ &nbsp; <B>  <A NAME="tex2html217"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html215"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html219"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION00300000000000000000"></A>
-<A NAME="ITL"></A>
-<BR>
-2. ITL messages
+<H1><A NAME="SECTION00220000000000000000">
+1.2 Address space</A>
 </H1>
-ITL messages are messages global to the client application, which address is <TT>/ITL</TT>. It handles the following messages:
-<BR>
-<IMG
- WIDTH="344" HEIGHT="354" ALIGN="BOTTOM" BORDER="0"
- SRC="img5.gif"
- ALT="\begin{rail}
-ITLMsg : 'quit'
-\vert ('rootPath' path)
-\vert ('port' int32)
-\...
-...vert ('load' filePath)
-\vert ('require' int32 oscMsg)
-\vert 'hello'
-\end{rail}">
-<BR>
-<A NAME="88"></A>
-<A NAME="89"></A>
-<A NAME="90"></A>
-<A NAME="91"></A>
-<A NAME="92"></A>
-<A NAME="93"></A>
-<A NAME="94"></A>
-<A NAME="95"></A>
+The OSC address space is made of static and dynamic nodes, hierarchically organized as follows (figure <A HREF="#fig:addrspace">1.1</A>):
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="fig:addrspace"></A><A NAME="109"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 1.1:</STRONG>
+The OSC address space. Nodes in italic/blue are dynamic nodes.</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">
+ </DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+OSC messages are accepted at any level of the hierarchy:
+
+<UL>
+<LI>the application level responds to messages for application management (udp ports management, loading files, query messages)
+</LI>
+<LI>at <I>scene</I> level, each node is associated to a window and respond to specific scene/window management messages.
+</LI>
+<LI>the <I>component</I> level contains the scene objects and two static nodes:
 
 <P>
 
 <UL>
-<LI><TT>quit</TT>: requests the client application to quit.
+<LI>a <I>signal</I> node that may be viewed as a folder containing signals
+</LI>
+<LI>a <I>sync</I> node, in charge of the synchronization messages
+</LI>
+</UL>
 
 <P>
 </LI>
-<LI><TT>rootPath</TT>: <I>rootPath</I> of an Interlude application is the default path where the application reads or writes a file when a relative path is used for this file. The default value is the user home directory. Sending the <TT>rootPath</TT> message without parameter resets the application path to its default value.
-
-<P>
-</LI>
-<LI><TT>port</TT>, <TT>outport</TT>, <TT>errport</TT>: changes the UDP port numbers. <TT>port</TT> defines the listening port number, <TT>outport</TT> and <TT>errport</TT> define the ports used to send messages and error messages. The <TT>int32</TT> parameter should be a positive value in the range <TT>[1024-49150]</TT>. 
-<BR>
-The default <TT>port</TT>, <TT>outport</TT> and <TT>errport</TT> values are 7000, 7001 and 7002.
-
-<P>
-</LI>
-<LI><TT>defaultShow</TT>: changes the default <TT>show</TT> status for new objects. 
-<BR>
-The default <TT>defaultShow</TT> value is 1.
-
-<P>
-</LI>
-<LI><TT>load</TT>: loads a file previously saved using the <TT>save</TT> message (see section <A HREF="node6.html#common">4</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). Note that the load operation appends the new objects to the existing scene. Whe necessary, it's the sender responsability to clear the scene before loading a file.
-
-<P>
-</LI>
-<LI><TT>hello</TT>: query the host IP number. The message is intended for ITL applications discovery. Answer to the query has the following format: 
-<BR> <TT>IP</TT> <TT>inPort outPort errPort</TT> where <TT>IP</TT> is sent as a string and port numbers as integer values.
-
-<P>
-</LI>
-<LI><TT>require</TT>: check for a version number equal or greater to the number given as argument. The version number should be encoded as an integer value (for example: 76 for version 0.76, 112 for version 1.12). An OSC message is associated to the require message with the same syntax and semantic described in section <A HREF="node52.html#interaction">15</A> p.<A HREF="node52.html#interaction"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>. This message is triggered when the check fails.
+<LI>the <I>signals</I> level contains signals i.e. objects that accept data streams an d that may be graphically rendered as a scene component.
 
 <P>
 </LI>
 </UL>
 
 <P>
-The application supports the <TT>get</TT> messages for its parameters (see section <A HREF="node22.html#getsect">7</A> p.<A HREF="node22.html#getsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). In addition, it provides the following messages to query version numbers.
-
-<P>
-<BR>
-<IMG
- WIDTH="320" HEIGHT="125" ALIGN="BOTTOM" BORDER="0"
- SRC="img6.gif"
- ALT="\begin{rail}
-ITLRequest : 'get' ('version' \vert 'guido-version' \vert 'musicxml-version')
-\end{rail}">
-<BR>
-<A NAME="129"></A>
-<A NAME="130"></A>
-<A NAME="131"></A>
-
-<P>
-
-<UL>
-<LI><TT>version</TT>: version number request.
-</LI>
-<LI><TT>guido-version</TT>: Guido engine version number request.
-</LI>
-<LI><TT>musicxml-version</TT>: MusicXML and Guido converter version numbers request. Returns "not available" when the library is not found.
-
-<P>
-</LI>
-</UL>
-
-<P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html216"
-  HREF="node5.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html210"
-  HREF="OSCMsg.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html204"
-  HREF="node3.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html212"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html214"
-  HREF="node75.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html217"
-  HREF="node5.html">3. Scene messages</A>
-<B> Up:</B> <A NAME="tex2html211"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html205"
-  HREF="node3.html">1.1 Address space</A>
- &nbsp; <B>  <A NAME="tex2html213"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html215"
-  HREF="node75.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

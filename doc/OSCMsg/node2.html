@@ -19,7 +19,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node4.html">
+<LINK REL="next" HREF="node5.html">
 <LINK REL="previous" HREF="node1.html">
 <LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node3.html">
@@ -27,32 +27,32 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html189"
+<A NAME="tex2html192"
   HREF="node3.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html183"
+<A NAME="tex2html186"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html177"
+<A NAME="tex2html180"
   HREF="node1.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html185"
+<A NAME="tex2html188"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html187"
-  HREF="node75.html">
+<A NAME="tex2html190"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html190"
-  HREF="node3.html">1.1 Address space</A>
-<B> Up:</B> <A NAME="tex2html184"
+<B> Next:</B> <A NAME="tex2html193"
+  HREF="node3.html">1.1 Parameters</A>
+<B> Up:</B> <A NAME="tex2html187"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html178"
+<B> Previous:</B> <A NAME="tex2html181"
   HREF="node1.html">Contents</A>
- &nbsp; <B>  <A NAME="tex2html186"
+ &nbsp; <B>  <A NAME="tex2html189"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html188"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html191"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
@@ -66,7 +66,7 @@ An OSC message is made of an OSC address, followed by a message string, followed
 The OSC address could be string or a regular expression matching several objects.
 <BR>
 <IMG
- WIDTH="401" HEIGHT="75" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img1.gif"
  ALT="\begin{rail}
 OSCMessage : OSCAddress message (parameters \vert)
@@ -76,7 +76,7 @@ OSCMessage : OSCAddress message (parameters \vert)
 <P>
 <BR>
 <IMG
- WIDTH="285" HEIGHT="111" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img2.gif"
  ALT="\begin{rail}
 OSCAddress : '/' (identifier \vert regexp) +
@@ -88,7 +88,7 @@ startid[-_a-zA-Z]
 nextid[-_a-zA-Z0-9]]
 <BR>
 <IMG
- WIDTH="245" HEIGHT="76" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img3.gif"
  ALT="\begin{rail}
 identifier : startid (nextid +)
@@ -96,7 +96,15 @@ identifier : startid (nextid +)
 <BR>
 
 <P>
-The OSC types <I>int32</I>, <I>float32</I> and <I>OSC-string</I> are used as terminal symbols and are denoted by <B><TT><FONT SIZE="-1">int32</FONT></TT></B>, <B><TT><FONT SIZE="-1">float32</FONT></TT></B> and <B><TT><FONT SIZE="-1">string</FONT></TT></B>. 
+Some specific nodes accept (like <I>signals</I> - see section <A HREF="node44.html#ssignal">13.1.1</A>) OSC messages without message string:
+<BR>
+<IMG
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.gif"
+ ALT="\begin{rail}
+OSCMessage : OSCAddress parameters
+\end{rail}">
+<BR>
 
 <P>
 <BR><HR>
@@ -104,8 +112,10 @@ The OSC types <I>int32</I>, <I>float32</I> and <I>OSC-string</I> are used as ter
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><A NAME="tex2html191"
-  HREF="node3.html">1.1 Address space</A>
+<LI><A NAME="tex2html194"
+  HREF="node3.html">1.1 Parameters</A>
+<LI><A NAME="tex2html195"
+  HREF="node4.html">1.2 Address space</A>
 </UL>
 <!--End of Table of Child-Links-->
 <BR><HR>

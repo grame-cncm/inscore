@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>16.2 Variables</TITLE>
-<META NAME="description" CONTENT="16.2 Variables">
+<TITLE>16.1 Loops</TITLE>
+<META NAME="description" CONTENT="16.1 Loops">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,55 +19,104 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node61.html">
 <LINK REL="previous" HREF="node59.html">
-<LINK REL="up" HREF="node58.html">
+<LINK REL="up" HREF="node59.html">
 <LINK REL="next" HREF="node61.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1024"
+<A NAME="tex2html1030"
   HREF="node61.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1018"
-  HREF="node58.html">
+<A NAME="tex2html1024"
+  HREF="node59.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1014"
+<A NAME="tex2html1018"
   HREF="node59.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1020"
+<A NAME="tex2html1026"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1022"
-  HREF="node75.html">
+<A NAME="tex2html1028"
+  HREF="node76.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1025"
-  HREF="node61.html">17. Changes list</A>
-<B> Up:</B> <A NAME="tex2html1019"
-  HREF="node58.html">16. Scripting</A>
-<B> Previous:</B> <A NAME="tex2html1015"
-  HREF="node59.html">16.1 Loops</A>
- &nbsp; <B>  <A NAME="tex2html1021"
+<B> Next:</B> <A NAME="tex2html1031"
+  HREF="node61.html">16.2 Variables</A>
+<B> Up:</B> <A NAME="tex2html1025"
+  HREF="node59.html">16. Scripting</A>
+<B> Previous:</B> <A NAME="tex2html1019"
+  HREF="node59.html">16. Scripting</A>
+ &nbsp; <B>  <A NAME="tex2html1027"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1023"
-  HREF="node75.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1029"
+  HREF="node76.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001720000000000000000">
-16.2 Variables</A>
+<H1><A NAME="SECTION001710000000000000000"></A><A NAME="loops"></A>
+<BR>
+16.1 Loops
 </H1>
+
+<P>
+The <TT>loop</TT> operation is defined as follows:
 <BR>
 <IMG
- WIDTH="306" HEIGHT="124" ALIGN="BOTTOM" BORDER="0"
- SRC="img96.gif"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="img95.gif"
  ALT="\begin{rail}
-variable : 'ident' '=' ( int32 \vert float32 \vert string )
+loop : 'loop' '(' (ident ',' int32 ',' (OSCMessage+)')' \vert loop) ';'
 \end{rail}">
 <BR>
-<A NAME="1223"></A>
+<A NAME="1254"></A>
+It iterates the enclosed messages, which may refer to the current iteration using <TT>ident</TT>. A reference to the current iteration has the following form:
+<BR>
+<IMG
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="img96.gif"
+ ALT="\begin{rail}
+identref : '\%' ident
+\end{rail}">
+<BR>
+Depending on the current context, it is expanded as a string, int32 or float32 parameter: 
+
+<UL>
+<LI>an iteration reference found in an OSC address is expanded as a string,
+</LI>
+<LI>an iteration reference found in a parameter is expanded as:
+
+<UL>
+<LI>an <B><TT><FONT SIZE="-1">int32</FONT></TT></B> when the parameter contains only numbers, 
+</LI>
+<LI>a <B><TT><FONT SIZE="-1">float32</FONT></TT></B> when it contains numbers and a dot,
+</LI>
+<LI>otherwise as a <B><TT><FONT SIZE="-1">string</FONT></TT></B>.
+</LI>
+</UL>
+</LI>
+</UL>
+An iteration reference is not allowed in the message string and should trigger a syntax error.
+
+<P>
+Example:
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>
+loop(i, 3,
+<BR>   /ITL/scene/rect%i set 'rect' 0.1 0.1; 
+<BR>   /ITL/scene/rect%i x '0.%i'; 
+<BR> );
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
 
 <P>
 <BR><HR>
