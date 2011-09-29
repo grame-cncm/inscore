@@ -67,27 +67,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 Variables denote values computed when an event is triggered. These values are send in place of the variable. A variable name starts with a '$' sign. Currently, the following variables are supported by mouse events:
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img89.gif"
+ WIDTH="194" HEIGHT="314" ALIGN="BOTTOM" BORDER="0"
+ SRC="img90.gif"
  ALT="\begin{rail}
 variable : (xy \vert 'absx' \vert 'absy' \vert 'sx' \vert 'sy' \vert date \vert 'name' \vert 'address')
 \end{rail}">
 <BR>
-<A NAME="1195"></A>
-<A NAME="1196"></A>
-<A NAME="1197"></A>
-<A NAME="1198"></A>
-<A NAME="1199"></A>
-<A NAME="1200"></A>
 <A NAME="1201"></A>
 <A NAME="1202"></A>
 <A NAME="1203"></A>
+<A NAME="1204"></A>
+<A NAME="1205"></A>
+<A NAME="1206"></A>
+<A NAME="1207"></A>
+<A NAME="1208"></A>
+<A NAME="1209"></A>
 
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img90.gif"
+ WIDTH="310" HEIGHT="84" ALIGN="BOTTOM" BORDER="0"
+ SRC="img91.gif"
  ALT="\begin{rail}
 xy : ('x' \vert 'y') ( \vert '[low,high]')
 \end{rail}">
@@ -98,13 +98,13 @@ xy : ('x' \vert 'y') ( \vert '[low,high]')
 <UL>
 <LI><TT>$x</TT> <TT>$y</TT>: denotes the mouse pointer position at the time of the event. The values are in the range <IMG
  WIDTH="35" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img91.gif"
+ SRC="img92.gif"
  ALT="$[0,1]$"> where 1 is the object size in the x or y dimension. The value is computed according to the object origin: it represents the mouse pointer distance from the object x or y origin (see <A HREF="node11.html#origin">4.1.3</A> p.<A HREF="node11.html#origin"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). <TT>$x</TT> and <TT>$y</TT> variables support an optional range in the form <TT>[low, high]</TT> that transforms the <IMG
  WIDTH="35" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img91.gif"
+ SRC="img92.gif"
  ALT="$[0,1]$"> values range into the <IMG
  WIDTH="70" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img92.gif"
+ SRC="img93.gif"
  ALT="$[low, high]$"> range.
 
 <P>
@@ -121,8 +121,8 @@ Note also that the values are not clipped to the object dimensions and could exc
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img93.gif"
+ WIDTH="420" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
+ SRC="img94.gif"
  ALT="\begin{rail}
 date : 'date' (\vert ':' mapname) (\vert '[n/d]')
 \end{rail}">

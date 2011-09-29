@@ -65,16 +65,15 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 Time messages control the time dimension if the score components. They could be sent to any address with the form <TT>/ITL/scene/<I>identifier</I></TT> where <TT><I>identifier</I></TT> is the unique identifier string of a scene component.
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="267" HEIGHT="241" ALIGN="BOTTOM" BORDER="0"
  SRC="img38.gif"
  ALT="\begin{rail}
 timeMsg : 'clock'
 \vert 'durClock'
-\vert ('date' int32 int32)
-...
-...t32)
-\vert ('ddate' int32 int32)
-\vert ('dduration' int32 int32)
+\vert ('date' time)
+\vert ('duration' time)
+\vert ('ddate' time)
+\vert ('dduration' time)
 \end{rail}">
 <BR>
 <A NAME="488"></A>
@@ -85,23 +84,40 @@ timeMsg : 'clock'
 <A NAME="493"></A>
 
 <P>
+<BR>
+<IMG
+ WIDTH="252" HEIGHT="123" ALIGN="BOTTOM" BORDER="0"
+ SRC="img39.gif"
+ ALT="\begin{rail}
+time : (( int32 int32) \vert int32 \vert float32 )
+\end{rail}">
+<BR>
+
+<P>
 
 <UL>
-<LI><TT>clock</TT>: a clock message similar to MIDI clock message: advances the object date by 1/24 of quarter note.
+<LI>Time is specified as a rational value <TT>d/n</TT> where <TT>n</TT> represents the whole note division and <TT>d</TT> the divisions count. The parameters order is <TT>numerator</TT> followed by <TT>denominator</TT>. 
+</LI>
+<LI>Time may also be specified with a single integer, then 1 is used as implicit denominator value
+</LI>
+<LI>or using a single float value converted to int32 using the following approximation: when <TT>f</TT> is the floating point value, the corresponding rational value is <TT>f x 10000 / 10000</TT>.
+</LI>
+</UL>
+
+<P>
+
+<UL>
+<LI><TT>clock</TT>: similar to MIDI clock message: advances the object date by 1/24 of quarter note.
 </LI>
 <LI><TT>durClock</TT>: a clock message applied to duration: increases the object duration by 1/24 of quarter note.
 </LI>
-<LI><TT>date</TT>: sets the time position of an object. Time is expressed as a rational value <TT>d/n</TT> where <TT>n</TT> represents the whole note division and <TT>d</TT> the divisions count. The parameters order is <TT>numerator</TT> followed by <TT>denominator</TT>.
-<BR>
-Default value is <TT>0/1</TT>.
+<LI><TT>date</TT>: sets the time position of an object. Default value is <TT>0/1</TT>.
 </LI>
-<LI><TT>duration</TT>: changes the object duration. Duration is expressed as a rational value. 
-<BR>
-Default value is <TT>0/1</TT>.
+<LI><TT>duration</TT>: changes the object duration. Default value is <TT>1/1</TT>.
 </LI>
 <LI><TT>ddate</TT>: relative time positioning message: adds the specified value to the object date.
 </LI>
-<LI><TT>ddate</TT>: relative duration message: adds the specified value to the object duration.
+<LI><TT>dduration</TT>: relative duration message: adds the specified value to the object duration.
 </LI>
 </UL>
 

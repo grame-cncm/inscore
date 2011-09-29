@@ -623,10 +623,10 @@ Time messages control the time dimension if the score components. They could be 
 \begin{rail}
 timeMsg : 'clock'
 		| 'durClock' 
-		| ('date' int32 int32) 
-		| ('duration' int32 int32) 
-		| ('ddate' int32 int32) 
-		| ('dduration' int32 int32) 
+		| ('date' time)
+		| ('duration' time) 
+		| ('ddate' time) 
+		| ('dduration' time) 
 \end{rail}
 \index{Time messages!absolute!date}
 \index{Time messages!absolute!duration}
@@ -635,15 +635,23 @@ timeMsg : 'clock'
 \index{Time messages!relative!clock}
 \index{Time messages!relative!durClock}
 
+\begin{rail}
+time : (( int32 int32) | int32 | float32 )
+\end{rail}
+
 \begin{itemize}
-\item \OSC{clock}: a clock message similar to MIDI clock message: advances the object date by 1/24 of quarter note.
+\item Time is specified as a rational value \values{d/n} where \values{n} represents the whole note division and \values{d} the divisions count. The parameters order is \values{numerator} followed by \values{denominator}. 
+\item Time may also be specified with a single integer, then 1 is used as implicit denominator value
+\item or using a single float value converted to int32 using the following approximation: when \values{f} is the floating point value, the corresponding rational value is \values{f x 10000 / 10000}.
+\end{itemize}
+
+\begin{itemize}
+\item \OSC{clock}: similar to MIDI clock message: advances the object date by 1/24 of quarter note.
 \item \OSC{durClock}: a clock message applied to duration: increases the object duration by 1/24 of quarter note.
-\item \OSC{date}: sets the time position of an object. Time is expressed as a rational value \values{d/n} where \values{n} represents the whole note division and \values{d} the divisions count. The parameters order is \values{numerator} followed by \values{denominator}.\\
-Default value is \values{0/1}.
-\item \OSC{duration}: changes the object duration. Duration is expressed as a rational value. \\
-Default value is \values{0/1}.
+\item \OSC{date}: sets the time position of an object. Default value is \values{0/1}.
+\item \OSC{duration}: changes the object duration. Default value is \values{1/1}.
 \item \OSC{ddate}: relative time positioning message: adds the specified value to the object date.
-\item \OSC{ddate}: relative duration message: adds the specified value to the object duration.
+\item \OSC{dduration}: relative duration message: adds the specified value to the object duration.
 \end{itemize}
 
 
