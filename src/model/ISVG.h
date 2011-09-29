@@ -28,7 +28,7 @@
 #define __ISVG__
 
 #include <string>
-#include "IRectShape.h"
+#include "IGraphicBasedObject.h"
 
 namespace inscore
 {
@@ -46,7 +46,7 @@ typedef class SMARTP<ISVG>	SISVG;
 /*!
 	\brief a SVG element
 */
-class ISVG :  public IRectShape
+class ISVG :  public IGraphicBasedObject
 {
 	VSVGView *	fView;
 	std::string	fSvg;

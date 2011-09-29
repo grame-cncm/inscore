@@ -38,7 +38,7 @@ const string ISVG::kSVGType("svg");
 
 //--------------------------------------------------------------------------
 ISVG::ISVG( const std::string& name, IObject * parent )
-	: IRectShape(name, parent)
+	: IGraphicBasedObject(name, parent)
 { 
 	fTypeString = kSVGType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler<string>::create(fSvg);

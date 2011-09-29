@@ -31,6 +31,7 @@
 #include <QSvgRenderer>
 
 #include "VMappedShapeView.h"
+#include "VIntPointObjectView.h"
 #include "MouseEventAble.h"
 
 namespace inscore
@@ -68,7 +69,7 @@ class VSVGItem: public 	QAbstractGraphicsShapeItem
 /**
 *	\brief the graphic view of a SVG file.
 */
-class VSVGView: public VMappedShapeView
+class VSVGView: public VIntPointObjectView
 {
 	MouseEventAble<VSVGItem>*  item() const	{ return (MouseEventAble<VSVGItem>*)fItem; }
 	
@@ -78,6 +79,9 @@ class VSVGView: public VMappedShapeView
 		virtual ~VSVGView() {}
 		virtual void updateView( ISVGFile * rect );
 		virtual void updateView( ISVG * rect );
+		virtual void updateLocalMapping (ISVG* img);
+		virtual void updateLocalMapping (ISVGFile* img);
+		virtual GraphicSegment getGraphicSegment( const IntPointSegment& intPointSegment , const IGraphicBasedObject * object , bool& mapOk ) const;
 };
 
 /*!@} */

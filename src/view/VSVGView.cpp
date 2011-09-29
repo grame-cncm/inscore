@@ -34,6 +34,7 @@
 #include "ITLError.h"
 
 #include "ISVGFile.h"
+#include "VIntPointObjectView.h"
 
 namespace inscore
 {
@@ -69,11 +70,11 @@ void VSVGItem::paint ( QPainter * painter, const QStyleOptionGraphicsItem * opti
 
 //----------------------------------------------------------------------
 VSVGView::VSVGView(QGraphicsScene * scene, const ISVGFile* svg) 
-	: VMappedShapeView( scene , new MouseEventAble<VSVGItem>(svg) )
+	: VIntPointObjectView( scene , new MouseEventAble<VSVGItem>(svg) )
 {
 }
 VSVGView::VSVGView(QGraphicsScene * scene, const ISVG* svg) 
-	: VMappedShapeView( scene , new MouseEventAble<VSVGItem>(svg) )
+	: VIntPointObjectView( scene , new MouseEventAble<VSVGItem>(svg) )
 {
 }
 
@@ -81,12 +82,13 @@ VSVGView::VSVGView(QGraphicsScene * scene, const ISVG* svg)
 void VSVGView::updateView( ISVGFile * svg  )
 {
 	if (svg->changed()) {
+qDebug() << "VVSVGView::updateView( ISVGFile";
 		item()->setFile (svg->getFile().c_str());
 		svg->changed(false);
 	}
 	float alpha = svg->getA() / 255.f;
 	item()->setOpacity (alpha);
-	VShapeView::updateView( svg );	
+	VIntPointObjectView::updateView( svg );	
 }
 
 //----------------------------------------------------------------------
@@ -97,7 +99,50 @@ void VSVGView::updateView( ISVG * svg  )
 	}
 	float alpha = svg->getA() / 255.f;
 	item()->setOpacity (alpha);
-	VShapeView::updateView( svg );	
+	VIntPointObjectView::updateView( svg );	
+}
+
+//----------------------------------------------------------------------
+void VSVGView::updateLocalMapping (ISVG* svg)
+{
+	if (item()->size().width() <= 0)
+		item()->setText (svg->getText().c_str());
+	VIntPointObjectView::updateLocalMapping( svg );
+}
+
+//----------------------------------------------------------------------
+void VSVGView::updateLocalMapping (ISVGFile* svg)
+{
+	if (item()->size().width() <= 0)
+		item()->setFile (svg->getFile().c_str());
+	VIntPointObjectView::updateLocalMapping( svg );
+}
+
+//----------------------------------------------------------------------
+GraphicSegment VSVGView::getGraphicSegment( const IntPointSegment& segm , const IGraphicBasedObject * object , bool& mapOk ) const
+{
+	QRectF rect = item()->boundingRect();
+	TLongPoint intPointA (segm.xinterval().first(), segm.yinterval().first());
+	TLongPoint intPointB (segm.xinterval().second(), segm.yinterval().second());
+	
+	QPointF a (segm.xinterval().first(), segm.yinterval().first());
+	QPointF b (segm.xinterval().second(), segm.yinterval().second());
+	
+	QPointF ep;
+	mapOk=false;
+	if ( !rect.contains(a) ) 	ep = a;			
+	if ( !rect.contains(b) )	ep = b;
+	else mapOk = true;
+	if ( !mapOk ) {
+		const char* msg1 = "svg mapping of object";
+		const char* msg2 = "refers to 'out of bounds' position:";
+		ITLErr << msg1 << object->getOSCAddress() << msg2 << "[" << int(ep.x()) << ";" << int(ep.y()) << "]" << ITLEndl;
+		return GraphicSegment();
+	}
+	TFloatPoint startPoint = qGraphicsItem2IObject( longPointToQPoint(intPointA) , rect );
+	TFloatPoint endPoint = qGraphicsItem2IObject( longPointToQPoint(intPointB) , rect );
+	
+	return GraphicSegment( startPoint.x(), startPoint.y(), endPoint.x(), endPoint.y() );
 }
 
 } // end namespoace

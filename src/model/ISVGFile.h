@@ -29,7 +29,7 @@
 
 #include <string>
 #include "TFile.h"
-#include "IRectShape.h"
+#include "IGraphicBasedObject.h"
 
 namespace inscore
 {
@@ -47,7 +47,7 @@ typedef class SMARTP<ISVGFile>	SISVGFile;
 /*!
 	\brief a SVG element based on a file
 */
-class ISVGFile :  public IRectShape, public TFile
+class ISVGFile :  public IGraphicBasedObject, public TFile
 {
 	VSVGView * fView;
 

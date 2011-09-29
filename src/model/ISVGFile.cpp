@@ -39,7 +39,7 @@ const string ISVGFile::kSVGFileType("svgf");
 
 //--------------------------------------------------------------------------
 ISVGFile::ISVGFile( const std::string& name, IObject * parent )
-	: IRectShape(name, parent), TFile (parent->getScene()) 
+	: IGraphicBasedObject(name, parent), TFile (parent->getScene()) 
 { 
 	fTypeString = kSVGFileType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler<string>::create(getFile());
