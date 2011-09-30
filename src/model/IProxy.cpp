@@ -44,6 +44,7 @@ namespace inscore
 int IProxy::signal (const IMessage* msg, const std::string& objName, SIObject parent)
 {
 	if (msg->message() == "get") return MsgHandler::kBadParameters;
+	if (!msg->size())			return MsgHandler::kBadParameters;
 
 	string objType = msg->params()[0]->value<string>("");
 	SIObject obj;
