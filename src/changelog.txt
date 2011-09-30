@@ -12,11 +12,15 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
-Version 0.93
+Version 0.95
 - lua embedded and supported in inscore scripts
 
 ----------------------------------------------------
+Version 0.93
+
+----------------------------------------------------
 Version 0.92
+- bug corrected: crash with messages addressed to a signal without argument
 - date and duration messages support one arg form using 1 as implicit denominator value 
   the one arg form accepts float values.
 
