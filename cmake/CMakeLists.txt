@@ -9,15 +9,15 @@ set (TARGET	INScore)
 set (APPLTARGET	INScoreViewer)
 #######################################
 # versions management
-set (INSFWKVERS 0.92)
-set (INSFWKSTRVERS "v.0.92")
-set (INSFWKSSTRVERS "0.92")
-set (INSTEXTVERS 0.92)
-set (INSTEXTSTRVERS "v.0.92")
-set (INSTEXTSSTRVERS "0.92")
-set (INSAPPVERS 0.92)
-set (INSAPPSTRVERS "v.0.92")
-set (INSAPPSSTRVERS "0.92")
+set (INSFWKVERS 0.93)
+set (INSFWKSTRVERS "v.0.93")
+set (INSFWKSSTRVERS "0.93")
+set (INSTEXTVERS 0.93)
+set (INSTEXTSTRVERS "v.0.93")
+set (INSTEXTSSTRVERS "0.93")
+set (INSAPPVERS 0.93)
+set (INSAPPSTRVERS "v.0.93")
+set (INSAPPSSTRVERS "0.93")
 
 #######################################
 if(WIN32)
@@ -71,7 +71,7 @@ file (GLOB COREH RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${HEADERS})
 foreach(folder ${INSFOLDERS})
 	set(INCL ${INCL} "${ROOT}/${folder}")				# add include folders
 endforeach(folder)
-set(INCL ${INCL} "${ROOT}/atomic")
+set(INCL ${INCL} "${ROOT}/atomic" "/usr/local/include")
 
 
 #######################################
@@ -126,13 +126,15 @@ if(APPLE)
 	set(OSCPACK  ${OSC_PATH}/cmake/Release/liboscpack.a)
 	set(GUIDOQT  ${ROOT}/../lib/GuidoQt/macosx/libGuidoQt.a)
 	set(GUIDO    ${ROOT}/../lib/GuidoEngine/macosx/GUIDOEngine.framework)
+	set(LUA      -llua)
 elseif(UNIX)
 	set(OSCPACK  -L${OSC_PATH}/cmake -loscpack)
 	set(GUIDOQT  -L${ROOT}/../lib/GuidoQt/linux -lGuidoQt)
 	set(GUIDO    -lGUIDOEngine)
+	set(LUA      -llua)
 endif(APPLE)
 
-set(INSLIBS  ${INSLIBS} ${OSCPACK} ${GUIDOQT} ${GUIDO} ${QTLIBS} ${CORE_FOUNDATION} )
+set(INSLIBS  ${INSLIBS} ${OSCPACK} ${GUIDOQT} ${GUIDO} ${LUA} ${QTLIBS} ${CORE_FOUNDATION} )
 
 #######################################
 # moc settings

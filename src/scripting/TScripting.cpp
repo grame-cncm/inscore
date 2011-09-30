@@ -24,12 +24,14 @@
 */
 
 #include <iostream>
+#include <lua.hpp>
 
 #include "TScripting.h"
 
 #include "IMessage.h"
 #include "TEnv.h"
 #include "TLoop.h"
+#include "ITLError.h"
 
 using namespace std;
 
@@ -74,6 +76,29 @@ void TScripting::startLoop	(const char* ident, unsigned int count, int lineno)
 		current->add (loop);
 	}
 	fLoops.push(loop);
+}
+
+//--------------------------------------------------------------------------------------------
+void TScripting::luaBindEnv (lua_State* L, const STEnv& env)
+{
+	for (TEnv::TEnvList::const_iterator i = env.begin(); i != env.end(); i++) {
+		if (i->second.isType<int>) lua_pushnumber (L, i->second.value(0));
+		else if (i->second.isType<float>) lua_pushnumber (L, i->second.value(0.));
+		else if (i->second.isType<string>) lua_pushstring (L, i->second.value(""));
+		else {
+			ITLErr << i->first << " unknown variable type " << ITLEndl;
+			break;
+		}
+		lua_setfield(L, LUA_GLOBALSINDEX, i->first.c_str());
+	}
+}
+
+//--------------------------------------------------------------------------------------------
+void TScripting::luaEval (const char* script)
+{
+	lua_State * L = lua_open();
+	luaBindEnv (L, fEnv);
+	lua_close (L);
 }
 
 //--------------------------------------------------------------------------------------------

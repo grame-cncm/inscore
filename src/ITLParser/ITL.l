@@ -37,6 +37,7 @@ static  char* unescape (char * str) {
 %x COMMENT
 %x DQSTR
 %x QSTR
+%x SCRIPT
 
 DIGIT	[0-9]
 LETTER  [a-zA-Z]
@@ -93,6 +94,11 @@ EOL		[\x0a\x0d]
 <QSTR>([^']|"\\'")*			unescape(yytext); return STRING;
 <DQSTR>\"					BEGIN INITIAL;
 <QSTR>'						BEGIN INITIAL;
+
+"<?"{SPACE}*"lua"			BEGIN SCRIPT;
+<SCRIPT>([^>]|"\\\>")*		return LUA;
+<SCRIPT>">"					BEGIN INITIAL;
+
 
 {RESTART}{RECHAR}*					return REGEXP;			/* regular expression */
 {RESTART}*"["..*"]"{RECHAR}*		return REGEXP;			/* regular expression */

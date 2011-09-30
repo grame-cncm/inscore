@@ -44,12 +44,15 @@ typedef SMARTP<TLoop> STLoop;
 class TEnv;
 typedef SMARTP<TEnv> STEnv;
 
+class lua_State;
 //--------------------------------------------------------------------------------------------
 class TScripting 
 {
 	IMessageList*		fMessages;
 	STEnv				fEnv;
 	std::stack<STLoop>	fLoops;
+
+	void luaBindEnv (lua_State* L, const STEnv& env);
 
 	public:	
 				 TScripting();
@@ -61,6 +64,8 @@ class TScripting
 		void	variable	(const char* ident, const char* val);
 		void	startLoop	(const char* ident, unsigned int count, int lineno);
 		int		endLoop		();
+
+		void	luaEval		(const char* script);
 		
 		Sbaseparam*	resolve (const char* var);
 		

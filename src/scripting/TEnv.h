@@ -44,8 +44,10 @@ typedef SMARTP<TEnv> 	STEnv;
 */
 class TEnv : public smartable
 {
+	public:
+		typedef std::map<std::string, Sbaseparam>	TEnvList;
     protected:
-		std::map<std::string, Sbaseparam>	fVariables;
+				 TEnvList	fVariables;
 
 				 TEnv() {}
 				 TEnv(TEnv* env) { fVariables = env->fVariables; }
@@ -54,6 +56,9 @@ class TEnv : public smartable
 	public:
         static STEnv create()			{ return new TEnv(); }
         static STEnv create(TEnv* env)	{ return new TEnv(env); }
+
+		TEnvList::const_iterator begin() const		{ return fVariables.begin(); }
+		TEnvList::const_iterator end() const		{ return fVariables.end(); }
 
 		STEnv	bind (const char* e, int v)			{ fVariables[e] = new IMsgParam<int>(v); return this; }
 		STEnv	bind (const char* e, float v)		{ fVariables[e] = new IMsgParam<float>(v); return this; }
