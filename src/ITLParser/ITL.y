@@ -98,7 +98,7 @@ expr		: message  			{ gScripter->add($1); }
 			;
 
 //_______________________________________________
-lua			: LUA				{ cout << "got lua script: " << ITLtext << endl; }
+lua			: LUA				{ if (!gScripter->luaEval(ITLtext)) YYABORT;  }
 //_______________________________________________
 message		: oscaddress params	ENDEXPR				{	$$ = new inscore::IMessage(*$1, "", *$2); delete $1; delete $2; }
 			| oscaddress msgstring ENDEXPR			{	$$ = new inscore::IMessage(*$1, *$2);  delete $1; delete $2; }

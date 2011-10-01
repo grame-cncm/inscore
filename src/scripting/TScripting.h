@@ -30,6 +30,8 @@
 #include <stack>
 #include "smartpointer.h"
 
+class lua_State;
+
 namespace inscore 
 {
 
@@ -44,7 +46,6 @@ typedef SMARTP<TLoop> STLoop;
 class TEnv;
 typedef SMARTP<TEnv> STEnv;
 
-class lua_State;
 //--------------------------------------------------------------------------------------------
 class TScripting 
 {
@@ -53,19 +54,21 @@ class TScripting
 	std::stack<STLoop>	fLoops;
 
 	void luaBindEnv (lua_State* L, const STEnv& env);
+	std::string luaGetTable (lua_State* L, int i) const;
 
 	public:	
 				 TScripting();
 		virtual ~TScripting();
 
 		void	add			(IMessage* msg);
+		void	add			(IMessageList* msg);
 		void	variable	(const char* ident, int val);
 		void	variable	(const char* ident, float val);
 		void	variable	(const char* ident, const char* val);
 		void	startLoop	(const char* ident, unsigned int count, int lineno);
 		int		endLoop		();
 
-		void	luaEval		(const char* script);
+		bool	luaEval		(const char* script);
 		
 		Sbaseparam*	resolve (const char* var);
 		

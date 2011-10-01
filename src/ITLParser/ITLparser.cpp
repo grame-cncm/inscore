@@ -99,10 +99,11 @@ int ITLparser::parse (FILE *fd)
 #ifdef yyDebug
 	yydebug = 1;
 #endif
+	BEGIN(INITIAL);
 	int res = ITLparse();
 
 	yyrestart(yyin);
-	BEGIN(INITIAL);
+//	BEGIN(INITIAL);
 	stop();
 	return res;
 }
@@ -141,6 +142,7 @@ IMessageList* ITLparser::readstring (const char * buffer)
     /* Copy string into new buffer and Switch buffers */
     b = yy_scan_string (buffer);
 
+	BEGIN(INITIAL);
     /*Parse the string*/
     int ret = ITLparse();
 
@@ -148,7 +150,7 @@ IMessageList* ITLparser::readstring (const char * buffer)
     yy_delete_buffer(b);
 	yyrestart(yyin);
 
-	BEGIN(INITIAL);
+//	BEGIN(INITIAL);
 	stop();
 
 	if (ret == 0) return gScripter->messages();

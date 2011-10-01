@@ -1473,7 +1473,7 @@ yyreduce:
 
   case 9:
 #line 101 "ITL.y"
-    { cout << "got lua script: " << ITLtext << endl; ;}
+    { if (!gScripter->luaEval(ITLtext)) YYABORT;  ;}
     break;
 
   case 10:

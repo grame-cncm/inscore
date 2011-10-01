@@ -31,9 +31,11 @@
 #include "IMessage.h"
 #include "TEnv.h"
 #include "TLoop.h"
+#include "ITLParser.h"
 #include "ITLError.h"
 
 using namespace std;
+extern inscore::TScripting* gScripter;
 
 namespace inscore 
 {
@@ -55,7 +57,7 @@ TScripting::~TScripting()	{ delete fMessages; }
 //--------------------------------------------------------------------------------------------
 void TScripting::variable	(const char* ident, int val)				{ fEnv->bind( ident, val); }
 void TScripting::variable	(const char* ident, float val)				{ fEnv->bind( ident, val); }
-void TScripting::variable	(const char* ident, const char* val)	{ fEnv->bind( ident, val); }
+void TScripting::variable	(const char* ident, const char* val)		{ fEnv->bind( ident, val); }
 
 //--------------------------------------------------------------------------------------------
 void TScripting::add (IMessage* msg)	
@@ -65,6 +67,12 @@ void TScripting::add (IMessage* msg)
 		loop->add (msg);
 	}
 	else *fMessages += msg; 
+}
+
+//--------------------------------------------------------------------------------------------
+void TScripting::add (IMessageList* msgs)	
+{ 
+	*fMessages += *msgs; 
 }
 
 //--------------------------------------------------------------------------------------------
@@ -81,10 +89,10 @@ void TScripting::startLoop	(const char* ident, unsigned int count, int lineno)
 //--------------------------------------------------------------------------------------------
 void TScripting::luaBindEnv (lua_State* L, const STEnv& env)
 {
-	for (TEnv::TEnvList::const_iterator i = env.begin(); i != env.end(); i++) {
-		if (i->second.isType<int>) lua_pushnumber (L, i->second.value(0));
-		else if (i->second.isType<float>) lua_pushnumber (L, i->second.value(0.));
-		else if (i->second.isType<string>) lua_pushstring (L, i->second.value(""));
+	for (TEnv::TEnvList::const_iterator i = env->begin(); i != env->end(); i++) {
+		if (i->second->isType<int>()) lua_pushnumber (L, i->second->value(0));
+		else if (i->second->isType<float>()) lua_pushnumber (L, i->second->value(0.));
+		else if (i->second->isType<string>()) lua_pushstring (L, i->second->value(string("")).c_str());
 		else {
 			ITLErr << i->first << " unknown variable type " << ITLEndl;
 			break;
@@ -94,11 +102,51 @@ void TScripting::luaBindEnv (lua_State* L, const STEnv& env)
 }
 
 //--------------------------------------------------------------------------------------------
-void TScripting::luaEval (const char* script)
+bool TScripting::luaEval (const char* script)
 {
 	lua_State * L = lua_open();
 	luaBindEnv (L, fEnv);
+	int ret = luaL_loadstring (L, script);
+	switch (ret) {
+		case LUA_ERRSYNTAX:
+			ITLErr << "lua: syntax error: " << lua_tostring(L, 1) << ITLEndl;
+			break;
+		case LUA_ERRMEM:
+			ITLErr << "lua: memory allocation error" << ITLEndl;
+			break;
+		default:
+			lua_call(L, 0, LUA_MULTRET);
+			int n = lua_gettop (L);
+			string luaout;
+			for (int i=1; i<=n; i++) {
+				if (lua_istable (L, i)) luaout += luaGetTable(L, i);
+				else if (lua_isstring (L, i)) luaout += lua_tostring(L, i);
+			}
+
+			ITLparser parser;
+			IMessageList* msgs = parser.readstring(luaout.c_str());
+			gScripter = this;
+			if (msgs) {
+				add (msgs);
+				delete msgs;
+			}
+	}
 	lua_close (L);
+	return ret == 0;
+}
+
+//--------------------------------------------------------------------------------------------
+string TScripting::luaGetTable (lua_State* L, int i) const
+{
+	string out;
+	lua_pushnil(L);  /* first key */
+	while (lua_next(L, i) != 0) {
+		/* uses 'key' (at index -2) and 'value' (at index -1) */
+		if (lua_type(L, -1) == LUA_TSTRING) out += lua_tostring(L, -1);
+		out += "\n";
+		lua_pop(L, 1);
+	}
+	return out;
 }
 
 //--------------------------------------------------------------------------------------------
