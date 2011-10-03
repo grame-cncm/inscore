@@ -37,14 +37,14 @@ static  char* unescape (char * str) {
 %x COMMENT
 %x DQSTR
 %x QSTR
-%x SCRIPT
+%x LUASCRIPT
+%x JSCRIPT
 
 DIGIT	[0-9]
 LETTER  [a-zA-Z]
 MSGLETTER  [a-zA-Z+]
 STARTID [_a-zA-Z]
 IDCHAR  [-_a-zA-Z0-9]
-IDLOOP  [-_a-zA-Z0-9%]
 
 RECHAR  [-_a-zA-Z0-9?+*]
 RELOOP  [-_a-zA-Z0-9?+*%]
@@ -68,7 +68,6 @@ EOL		[\x0a\x0d]
 "("					return LPAR;
 ")"					return RPAR;
 ","					return SEP;
-"loop"				return LOOP;
 "/"					return PATHSEP;			/* OSC address and path separator */
 ";"					return ENDEXPR;			/* end of expression */
 "$"					return VARSTART;
@@ -84,7 +83,6 @@ EOL		[\x0a\x0d]
 {SPACE}*"(*"		nested=1; BEGIN COMMENT;
 
 {STARTID}{IDCHAR}*						return IDENTIFIER;		/* identifiers */
-{STARTID}{IDLOOP}*						return LOOPIDENTIFIER;	/* identifiers */
 {LETTER}{IDCHAR}*":"{LETTER}{IDCHAR}*	return MAPIDENTIFIER;	/* identifiers with map name */
 {MSGLETTER}*							return MSG;				/* messages */
 
@@ -95,9 +93,13 @@ EOL		[\x0a\x0d]
 <DQSTR>\"					BEGIN INITIAL;
 <QSTR>'						BEGIN INITIAL;
 
-"<?"{SPACE}*"lua"			BEGIN SCRIPT;
-<SCRIPT>([^>]|"\\\>")*		return LUA;
-<SCRIPT>">"					BEGIN INITIAL;
+"<?"{SPACE}*"lua"			BEGIN LUASCRIPT;
+<LUASCRIPT>([^>]|"\\\>")*	return LUA;
+<LUASCRIPT>">"				BEGIN INITIAL;
+
+"<?"{SPACE}*"javascript"	BEGIN JSCRIPT;
+<JSCRIPT>([^>]|"\\\>")*		return JAVASCRIPT;
+<JSCRIPT>">"				BEGIN INITIAL;
 
 
 {RESTART}{RECHAR}*					return REGEXP;			/* regular expression */

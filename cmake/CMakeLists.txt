@@ -126,15 +126,15 @@ if(APPLE)
 	set(OSCPACK  ${OSC_PATH}/cmake/Release/liboscpack.a)
 	set(GUIDOQT  ${ROOT}/../lib/GuidoQt/macosx/libGuidoQt.a)
 	set(GUIDO    ${ROOT}/../lib/GuidoEngine/macosx/GUIDOEngine.framework)
-	set(LUA      -llua)
+	set(SCRIPTS  -llua -ljavascript)
 elseif(UNIX)
 	set(OSCPACK  -L${OSC_PATH}/cmake -loscpack)
 	set(GUIDOQT  -L${ROOT}/../lib/GuidoQt/linux -lGuidoQt)
 	set(GUIDO    -lGUIDOEngine)
-	set(LUA      -llua)
+	set(SCRIPTS  -llua -ljavascript)
 endif(APPLE)
 
-set(INSLIBS  ${INSLIBS} ${OSCPACK} ${GUIDOQT} ${GUIDO} ${LUA} ${QTLIBS} ${CORE_FOUNDATION} )
+set(INSLIBS  ${INSLIBS} ${OSCPACK} ${GUIDOQT} ${GUIDO} ${SCRIPTS} ${QTLIBS} ${CORE_FOUNDATION} )
 
 #######################################
 # moc settings

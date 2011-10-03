@@ -28,9 +28,12 @@
 #define __TScripting__
 
 #include <stack>
+#include <lua.hpp>
+#include <js/jsapi.h>
+
 #include "smartpointer.h"
 
-class lua_State;
+typedef void* yyscan_t;
 
 namespace inscore 
 {
@@ -54,9 +57,13 @@ class TScripting
 	std::stack<STLoop>	fLoops;
 
 	void luaBindEnv (lua_State* L, const STEnv& env);
+	void jsBindEnv  (JSContext *cx, const STEnv& env);
 	std::string luaGetTable (lua_State* L, int i) const;
+	std::string jsGetResult (JSContext *cx, const jsval& val) const;
 
 	public:	
+		yyscan_t fScanner;
+
 				 TScripting();
 		virtual ~TScripting();
 
@@ -69,6 +76,7 @@ class TScripting
 		int		endLoop		();
 
 		bool	luaEval		(const char* script);
+		bool	jsEval		(const char* script);
 		
 		Sbaseparam*	resolve (const char* var);
 		

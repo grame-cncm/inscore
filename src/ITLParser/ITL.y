@@ -69,14 +69,14 @@ namespace inscore
 %token VARSTART
 
 %token LUA
+%token JAVASCRIPT
 
 /*------------------------------   types  ------------------------------*/
-%type <num> 	INT count number
+%type <num> 	INT number
 %type <real>	FLOAT
-%type <str>		STRING MSG PATHSEP IDENTIFIER MAPIDENTIFIER REGEXP LUA
+%type <str>		STRING MSG PATHSEP IDENTIFIER MAPIDENTIFIER REGEXP LUA JAVASCRIPT
 %type <str>		identifier oscaddress oscpath msgstring varname
-%type <str>		loopidentifier loopaddress looppath
-%type <msg>		message loopmessage
+%type <msg>		message
 %type <p>		param
 %type <plist>	params
 
@@ -92,13 +92,15 @@ ITLfile		: expr
 //_______________________________________________
 expr		: message  			{ gScripter->add($1); }
 			| variable ENDEXPR
-			| loop
-			| lua
+			| script
 			| HYPHEN			{ ITLerror("unexpected '-' char"); YYABORT; }
 			;
 
 //_______________________________________________
-lua			: LUA				{ if (!gScripter->luaEval(ITLtext)) YYABORT;  }
+script		: LUA				{ if (!gScripter->luaEval(ITLtext)) YYABORT;  }
+			| JAVASCRIPT		{ if (!gScripter->jsEval(ITLtext)) YYABORT;  }
+			;
+
 //_______________________________________________
 message		: oscaddress params	ENDEXPR				{	$$ = new inscore::IMessage(*$1, "", *$2); delete $1; delete $2; }
 			| oscaddress msgstring ENDEXPR			{	$$ = new inscore::IMessage(*$1, *$2);  delete $1; delete $2; }
@@ -143,41 +145,6 @@ varname		: IDENTIFIER			{ $$ = new string(ITLtext); }
 number		: UINT					{ $$ = atoi(ITLtext); }
 			| INT					{ $$ = atoi(ITLtext); }
 			;
-			
-//_______________________________________________
-loop		: loopstart SEP loopbody RPAR ENDEXPR	{ int n = gScripter->endLoop(); if (n) { LOOPERROR(n); } }
-			;
-			
-loopstart	: LOOP LPAR varname SEP count 			{ gScripter->startLoop($3->c_str(), $5, ITLlineno); delete $3; }
-			;
-
-loopbody	: looped			
-			| loopbody looped
-			;
-
-looped		: loopmessage				{ gScripter->add($1); }
-			| loop
-			;
-
-loopmessage	: loopaddress params	ENDEXPR			{	$$ = new inscore::IMessage(*$1, "", *$2); delete $1; delete $2; }
-			| loopaddress msgstring ENDEXPR			{	$$ = new inscore::IMessage(*$1, *$2);  delete $1; delete $2; }
-			| loopaddress msgstring params ENDEXPR	{	$$ = new inscore::IMessage(*$1, *$2, *$3); delete $1; delete $2; delete $3; }
-			;
-
-loopaddress	: looppath				{ $$ = $1; }
-			| loopaddress looppath	{ *$1 += *$2; $$ = $1; delete $2; }
-			;
-
-looppath	: PATHSEP loopidentifier	{ $$ = new string("/" + *$2); delete $2; }
-			;
-
-loopidentifier : 
-			  identifier				{ $$ = $1; }
-			| LOOPIDENTIFIER			{ $$ = new string(ITLtext); }
-			| LOOPREGEXP				{ $$ = new string(ITLtext); }
-
-count		: UINT						{ $$ = atoi(ITLtext); }
-			;
 
 %%
 
@@ -201,17 +168,6 @@ int VARerror(const char*s, const char* var) {
 	cerr << "error line " << ITLlineno << ": " << s << var << endl;
 #else
 	ITLErr << "error line " << ITLlineno << ": " << s << var << ITLEndl;
-#endif
-	ITLlineno = 1;
-	return 0; //err;
-}
-
-int LOOPerror(int line) {
-	YY_FLUSH_BUFFER;
-#ifdef NO_OSCSTREAM
-	cerr << "error line " << ITLlineno << ": unknown variable in loop started line " << line << endl;
-#else
-	ITLErr << "error line " << ITLlineno << ": unknown variable in loop started line " << line << ITLEndl;
 #endif
 	ITLlineno = 1;
 	return 0; //err;
