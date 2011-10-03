@@ -101,10 +101,44 @@ void TScripting::luaBindEnv (lua_State* L, const STEnv& env)
 	}
 }
 
+
+//--------------------------------------------------------------------------------------------
+static int luaPrint(lua_State *L)
+{
+	int n = lua_gettop(L);
+	cout << "lua: ";
+	oscout << OSCStart("lua:");
+	for (int i=1; i<=n; i++)
+	{
+		if (lua_isstring(L,i)) {
+			cout << lua_tostring(L,i) << " ";
+			oscout << lua_tostring(L,i);
+		}
+		else if (lua_isnil(L,i)) {
+			cout << "nil ";
+			oscout << "nil";
+		}
+		else if (lua_isboolean(L,i)) {
+			cout << (lua_toboolean(L,i) ? "true " : "false ");
+			oscout << (lua_toboolean(L,i) ? "true" : "false");
+		}
+		else {
+			char buff[64];
+			sprintf (buff, "%x", lua_topointer(L,i));
+			cout << luaL_typename(L,i) << ":" << buff;
+			oscout << luaL_typename(L,i) << ":" << buff;
+		}
+	}
+	oscout << OSCEnd();
+	return 0;
+}
+
+
 //--------------------------------------------------------------------------------------------
 bool TScripting::luaEval (const char* script)
 {
 	lua_State * L = lua_open();
+	lua_register(L, "print", luaPrint);
 	luaBindEnv (L, fEnv);
 	int ret = luaL_loadstring (L, script);
 	switch (ret) {
