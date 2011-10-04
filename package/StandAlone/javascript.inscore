@@ -1,0 +1,43 @@
+a="Welcome to JavaScript";
+b12 = -0.3;
+r = "r_";
+
+/ITL/scene/* del;
+
+/ITL/scene/title set 'txt' $a;
+/ITL/scene/title y $b12;
+/ITL/scene/title scale 3.;
+
+
+<? javascript
+	var n=15;
+	var j=1;
+	var out = new Array;
+    for (i=1; i <= n; i++) {
+		x = (i-(n/2)-0.5) * (1.8 / n);
+		hue = i * 10;
+		out[j++]="/ITL/scene/"+r+i+" set 'rect' 0.1 0.1;"; 
+		out[j++]="/ITL/scene/"+r+i+" x "+x+" ;" ;
+		out[j++]="/ITL/scene/"+r+i+" hsb "+hue+" 100 100;";
+	}
+	out;
+>
+
+/ITL/scene color 240 240 240;
+
+
+<? javascript
+	var n=15;
+	var j=1;
+	var out = new Array;
+    for (i=1; i <= n; i++) {
+		x = (i-(n/2)-0.5) * (1.8 / n);
+		hue = i * 20;
+		out[j++]="/ITL/scene/rect"+i+" set 'rect' 0.1 0.1;"; 
+		out[j++]="/ITL/scene/rect"+i+" x "+x+" ;" ;
+		out[j++]="/ITL/scene/rect"+i+" hsb "+hue+" 100 100;";
+	}
+	out;
+>
+
+/ITL/scene/rect* y 0.15 ;

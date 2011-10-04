@@ -1,0 +1,35 @@
+(*
+ this is a sample script that uses  lua
+*)
+
+a = "Welcome to LUA";
+r = "rect";
+b12 = -0.3;
+
+/ITL/scene/* del;
+
+/ITL/scene/title set 'txt' $a;
+/ITL/scene/title y $b12;
+/ITL/scene/title scale 3.;
+
+<? lua
+out={}
+n=12
+j=1;
+for i=1,n
+do
+	x = (i-(n/2)-0.5) * (1.8 / n)
+	hue = i * 20
+	out[j]="/ITL/scene/"..r..i.." set 'rect' 0.1 0.1;" 
+	j = j+1
+	out[j]="/ITL/scene/"..r..i.." x "..x.." ;" 
+	j = j+1
+	out[j]="/ITL/scene/"..r..i.." hsb "..hue.." 100 100;"
+	j = j+1
+
+end
+-- print(	out[1] )
+return out
+>
+
+/ITL/scene color 240 240 255;
