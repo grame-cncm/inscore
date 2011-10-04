@@ -1,6 +1,6 @@
 /*
   Interlude Library
-  Copyright (C) 2009,2010  Grame
+  Copyright (C) 2009,2011  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -24,29 +24,35 @@
 #ifndef __ITLparser__
 #define __ITLparser__
 
-#include <stdio.h>
-#include "IMessage.h"
+#include <iostream>
+#include <string>
+#include <locale.h>
+
+#include "TScripting.h"
 
 namespace inscore 
 {
 
-class TScripting;
-/* \brief a class for reading mapping files or strings
+/* \brief a class for reading ITL streams
 */
-class ITLparser {
-	int parse (FILE *fd);
-	int parse (const char *filename);
-	void start();
-	void stop();
-	void clean(TScripting*);
-	
-	public:
-				 ITLparser() {}
-		virtual ~ITLparser() {};
+class ITLparser {	
 		
-		IMessageList* readstring (const char * buffer);
-		IMessageList* readfile (FILE* fd);
-		IMessageList* readfile (const char * file);
+	void initScanner();
+	void destroyScanner();
+
+	public:
+		TScripting		fReader;
+		void*			fScanner;	// the flex scanner
+		std::istream*	fStream;    // input stream
+		std::string		fText;		// the current text
+		int				fInt;		// the current int
+		float			fFloat;		// the current float
+		int				fLine;		// line offset
+
+				 ITLparser(std::istream* stream, int line=0);
+		virtual ~ITLparser();
+		
+		IMessageList* parse();
 };
 
 } // end namespace

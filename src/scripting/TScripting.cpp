@@ -24,9 +24,7 @@
 */
 
 #include <iostream>
-//#include <lua.hpp>
-//#include <js/jsapi.h>
-
+#include <sstream>
 
 #include "TScripting.h"
 
@@ -74,7 +72,7 @@ void TScripting::add (IMessage* msg)
 //--------------------------------------------------------------------------------------------
 void TScripting::add (IMessageList* msgs)	
 { 
-	*fMessages += *msgs; 
+	*fMessages += *msgs;
 }
 
 //--------------------------------------------------------------------------------------------
@@ -161,13 +159,10 @@ bool TScripting::luaEval (const char* script)
 				else if (lua_isstring (L, i)) luaout += lua_tostring(L, i);
 			}
 
-			ITLparser parser;
-			IMessageList* msgs = parser.readstring(luaout.c_str());
-			gScripter = this;
-			if (msgs) {
-				add (msgs);
-				delete msgs;
-			}
+			istringstream stream(luaout);
+			ITLparser p (&stream);
+			IMessageList* msgs = p.parse();
+			if (msgs) add (msgs);
 	}
 	lua_close (L);
 	return ret == 0;
@@ -251,7 +246,6 @@ string TScripting::jsGetResult (JSContext *cx, const jsval& val) const
 //--------------------------------------------------------------------------------------------
 bool TScripting::jsEval (const char* script)
 {
-cout << "jsEval: " << script;
    /* JS variables. */
     JSRuntime *rt;
     JSContext *cx;
@@ -296,13 +290,10 @@ cout << "jsEval: " << script;
 
 	string out = jsGetResult (cx, result);
 	if (out.size()) {
-		ITLparser parser;
-		IMessageList* msgs = parser.readstring(out.c_str());
-		gScripter = this;
-		if (msgs) {
-			add (msgs);
-			delete msgs;
-		}
+		istringstream stream(out);
+		ITLparser p (&stream);
+		IMessageList* msgs = p.parse();
+		if (msgs) add (msgs);
 	}
 
     /* Cleanup. */

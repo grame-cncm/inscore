@@ -1,19 +1,26 @@
+
 %{
 
 #include <iostream>
+#include <sstream>
 #include <string>
-#include <assert.h>
+#include "ITLparser.h"
+#include "IMessage.h"
+#include "ITLparse.hpp"
 
-#include "IMessageStream.h"
-#include "TScripting.h"
-#ifndef NO_OSCSTREAM
-#include "ITLError.h"
-#endif
+%}
 
-extern inscore::TScripting* gScripter;
 
-typedef union {
-	public:
+%pure-parser
+%locations
+%defines
+%error-verbose
+%parse-param { inscore::ITLparser* context }
+%lex-param { void* scanner  }
+
+/*------------------------------ tokens ------------------------------*/
+%union
+{
 	int		num;
 	float	real;
 	std::string* str;
@@ -21,32 +28,8 @@ typedef union {
 	inscore::IMessage::argslist*	plist;
 	inscore::IMessage*			msg;
 	inscore::IMessageList*		msgList;
-} YYSTYPE;
+}
 
-#define YYSTYPE_IS_DECLARED
-#define YYERROR_VERBOSE
-#define VARERROR(str, var)	{ VARerror(str, var); YYABORT; }
-#define LOOPERROR(n)		{ LOOPerror(n); YYABORT; }
-
-#include "ITLparse.h++"
-#include "ITLlex.c++"
-
-int ITLerror (const char*s);
-int VARerror (const char*s, const char* var);
-int LOOPerror(int line);
-int	ITLwrap()		{ return(1); }
-
-using namespace std;
-namespace inscore
-{
-
-%}
-
-//%pure_parser
-
-%start ITLfile
-
-/*------------------------------ tokens ------------------------------*/
 %token INT
 %token UINT
 %token FLOAT
@@ -57,7 +40,7 @@ namespace inscore
 %token PATHSEP
 %token STRING
 %token MSG
-%token HYPHEN
+%token ERR
 %token ENDEXPR
 
 %token LPAR
@@ -80,25 +63,55 @@ namespace inscore
 %type <p>		param
 %type <plist>	params
 
+
+%{
+
+#include <iostream>
+#include <sstream>
+#include <string>
+
+#include "ITLparser.h"
+#include "ITLparse.hpp"
+
+#ifndef NO_OSCSTREAM
+#include "ITLError.h"
+#endif
+
+#define VARERROR(str, var)	{ VARerror(&yyloc, context, str, var); YYABORT; }
+
+typedef void * yyscan_t;
+
+int VARerror(YYLTYPE* locp, inscore::ITLparser* context, const char*s, const char* var);
+int yyerror (YYLTYPE* locp, inscore::ITLparser* context, const char*s);
+int yylex(YYSTYPE* lvalp, YYLTYPE* llocp, void* scanner);
+
+#define scanner context->fScanner
+
+using namespace std;
+
+//namespace inscore
+//{
+
+%}
+
 %%
 
 //_______________________________________________
 // relaxed simple ITL format specification
 //_______________________________________________
-ITLfile		: expr
-			| ITLfile expr
+start		: expr
+			| start expr
 			;
 
 //_______________________________________________
-expr		: message  			{ gScripter->add($1); }
+expr		: message  			{ context->fReader.add($1); }
 			| variable ENDEXPR
 			| script
-			| HYPHEN			{ ITLerror("unexpected '-' char"); YYABORT; }
 			;
 
 //_______________________________________________
-script		: LUA				{ if (!gScripter->luaEval(ITLtext)) YYABORT;  }
-			| JAVASCRIPT		{ if (!gScripter->jsEval(ITLtext)) YYABORT;  }
+script		: LUA				{ if (!context->fReader.luaEval(context->fText.c_str())) YYABORT;  }
+			| JAVASCRIPT		{ if (!context->fReader.jsEval(context->fText.c_str())) YYABORT;  }
 			;
 
 //_______________________________________________
@@ -114,61 +127,67 @@ oscaddress	: oscpath				{ $$ = $1; }
 oscpath		: PATHSEP identifier	{ $$ = new string("/" + *$2); delete $2; }
 			;
 
-identifier	: IDENTIFIER		{ $$ = new string(ITLtext); }
-			| REGEXP			{ $$ = new string(ITLtext); }
+identifier	: IDENTIFIER		{ $$ = new string(context->fText); }
+			| REGEXP			{ $$ = new string(context->fText); }
 			;
 
-msgstring	: MSG				{ $$ = new string(ITLtext); }
-			| IDENTIFIER		{ $$ = new string(ITLtext); }
+msgstring	: MSG				{ $$ = new string(context->fText); }
+			| IDENTIFIER		{ $$ = new string(context->fText); }
 			;
 
 params		: param				{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
 			| params param		{ $1->push_back(*$2); $$ = $1; delete $2; }
 			;
 
-param		: number			{ $$ = new Sbaseparam(new inscore::IMsgParam<int>($1)); }
-			| FLOAT				{ $$ = new Sbaseparam(new inscore::IMsgParam<float>(atof(ITLtext))); }
-			| STRING			{ $$ = new Sbaseparam(new inscore::IMsgParam<std::string>(ITLtext)); }
-			| VARSTART varname	{ $$ = gScripter->resolve($2->c_str()); if (!$$) { VARERROR("unknown variable ", $2->c_str()) }; delete $2; }
+param		: number			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1)); }
+			| FLOAT				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); }
+			| STRING			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
+			| VARSTART varname	{ $$ = context->fReader.resolve($2->c_str()); if (!$$) { VARERROR("unknown variable ", $2->c_str()) }; delete $2; }
 			;
 
 
 //_______________________________________________
-variable	: varname EQUAL number	{ gScripter->variable($1->c_str(), $3);						delete $1; }
-			| varname EQUAL FLOAT	{ gScripter->variable($1->c_str(), (float)atof(ITLtext));	delete $1; }
-			| varname EQUAL STRING	{ gScripter->variable($1->c_str(), ITLtext);				delete $1; }
+variable	: varname EQUAL number	{ context->fReader.variable($1->c_str(), $3);					delete $1; }
+			| varname EQUAL FLOAT	{ context->fReader.variable($1->c_str(),  context->fFloat);		delete $1; }
+			| varname EQUAL STRING	{ context->fReader.variable($1->c_str(), context->fText.c_str()); delete $1; }
 			;
 
-varname		: IDENTIFIER			{ $$ = new string(ITLtext); }
+varname		: IDENTIFIER			{ $$ = new string(context->fText); }
 			;
 
-number		: UINT					{ $$ = atoi(ITLtext); }
-			| INT					{ $$ = atoi(ITLtext); }
+number		: UINT					{ $$ = context->fInt; }
+			| INT					{ $$ = context->fInt; }
 			;
 
 %%
 
-} // end namespace
+//} // end namespace
 
-using namespace inscore;
-int ITLerror(const char*s) {
-	YY_FLUSH_BUFFER;
-#ifdef NO_OSCSTREAM
-	cerr << "error line " << ITLlineno << ": " << s << endl;
-#else
-	ITLErr << "error line " << ITLlineno << ": " << s << ITLEndl;
-#endif
-	ITLlineno = 1;
-	return 0; //err;
+namespace inscore 
+{
+
+IMessageList* ITLparser::parse() 
+{
+	yyparse (this);
+	return fReader.messages();
+}
 }
 
-int VARerror(const char*s, const char* var) {
-	YY_FLUSH_BUFFER;
+using namespace inscore;
+int yyerror(YYLTYPE* loc, ITLparser* context, const char*s) {
 #ifdef NO_OSCSTREAM
-	cerr << "error line " << ITLlineno << ": " << s << var << endl;
+	cerr << "error line: " << loc->last_line + context->fLine << " col: " << loc->first_column << ": " << s << endl;
 #else
-	ITLErr << "error line " << ITLlineno << ": " << s << var << ITLEndl;
+	ITLErr << "error line: " << loc->last_line + context->fLine << " col: " << loc->first_column << ": " << s << ITLEndl;
 #endif
-	ITLlineno = 1;
-	return 0; //err;
+	return 0;
+}
+
+int VARerror(YYLTYPE* loc, ITLparser* context, const char*s, const char* var) {
+#ifdef NO_OSCSTREAM
+	cerr << "error line " << loc->last_line + context->fLine << ": " << s << var << endl;
+#else
+	ITLErr << "error line " << loc->last_line + context->fLine << ": " << s << var << ITLEndl;
+#endif
+	return 0;
 }

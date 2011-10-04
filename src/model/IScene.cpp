@@ -24,6 +24,7 @@
 */
 
 #include <iostream>
+#include <fstream>
 #include "deelx.h"
 
 #include "EventMessage.h"
@@ -190,8 +191,9 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 	if (msg->size() == 1) {
 		string srcfile = msg->params()[0]->value<string>("");
 		if (srcfile.size()) {
-			ITLparser p;
-			IMessageList* msgs = p.readfile(absolutePath(srcfile).c_str());
+			fstream file (absolutePath(srcfile).c_str(), fstream::in);
+			ITLparser p (&file);
+			IMessageList* msgs = p.parse();
 			if (msgs) {
 				for (IMessageList::const_iterator i = msgs->begin(); i != msgs->end(); i++) {
 					IMessage * msg = *i;
@@ -204,7 +206,6 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 					}
 				}
 				msgs->clear();
-				delete msgs;
 				return MsgHandler::kProcessed;
 			}
 			else ITLErr << "while parsing file" << srcfile << ITLEndl;
