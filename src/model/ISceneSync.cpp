@@ -189,7 +189,7 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)
 	else if (n) {
 		name2mapName (msg->params()[0]->value<string>(""), slave, slaveMapName);
 		if (n > 1) nextindex = 1;
-		else if (!n) return syncMsg (slave);
+		else return syncMsg (slave);
 	}
 	else return MsgHandler::kBadParameters;
 	
