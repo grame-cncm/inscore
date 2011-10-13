@@ -13,7 +13,9 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 0.95
-- lua embedded and supported in inscore scripts
+- new 'mouse' 'show/hide' message supported at application level
+- graphic signal supports alpha messages at object level
+- javascript and lua embedded and supported in inscore scripts
 - bug correction in sync delete (introduced with version 0.90)
 
 ----------------------------------------------------
