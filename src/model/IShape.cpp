@@ -48,11 +48,14 @@ IShape::IShape( const std::string& name, IObject* parent ) : IObject(name, paren
 	fPenStyle = kSolidStyle;
 
 	fMsgHandlerMap["penColor"]	= TMethodMsgHandler<IColor>::create(&fPenColor, &IColor::set);
+	fMsgHandlerMap["penAlpha"]	= IColor::SetColorMsgHandler::create(&fPenColor, &IColor::setA, &IColor::setA);
+	fMsgHandlerMap["pendAlpha"]	= IColor::SetColorMsgHandler::create(&fPenColor, &IColor::dA, &IColor::dA);
 	fMsgHandlerMap["penWidth"]	= TSetMethodMsgHandler<IShape, float>::create(this, &IShape::setPenWidth);
 	fMsgHandlerMap["penStyle"]  = TSetMethodMsgHandler<IShape, string>::create(this, &IShape::setPenStyle);
 
 	fGetMsgHandlerMap["penWidth"]	= TGetParamMsgHandler<float>::create(fPenWidth);
 	fGetMsgHandlerMap["penColor"]	= TGetParamMsgHandler<IColor>::create(fPenColor);
+	fGetMsgHandlerMap["penAlpha"]	= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(&fPenColor, &IColor::getA);
 	fGetMsgHandlerMap["penStyle"]	= TGetParamMsgHandler<std::string>::create(fPenStyle);	
 }
 
