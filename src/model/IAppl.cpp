@@ -48,6 +48,7 @@
 #include "INScore.h"
 
 #include <QDir>
+#include <QApplication>
 
 #ifdef WIN32
 #include <Winsock2.h>
@@ -123,16 +124,18 @@ void IAppl::resetBench()
 bool IAppl::fDefaultShow(true);
 const string IAppl::kName = "ITL";
 //--------------------------------------------------------------------------
-IAppl::IAppl(int udpport, int outport, int errport, bool offscreen) 
-	: IObject(kName, 0), fRunning(true), fOffscreen(offscreen), fUDP(udpport,outport,errport), fView(0)
+IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool offscreen) 
+	: IObject(kName, 0), fRunning(true), fOffscreen(offscreen), fUDP(udpport,outport,errport), fView(0), fAppl(appl)
 {
 	fTypeString = kApplType;
 	fVersion = INScore::versionStr();
 
 	fMsgHandlerMap["hello"]		= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::helloMsg);
+	fMsgHandlerMap["activate"]	= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::activate);
 	fMsgHandlerMap["load"]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadMsg);
 	fMsgHandlerMap["require"]	= TMethodMsgHandler<IAppl>::create(this, &IAppl::requireMsg);
 	fMsgHandlerMap["quit"]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::quit);
+	fMsgHandlerMap["mouse"]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::cursor);
 
 	fGetMsgHandlerMap["version"]	= TGetParamMsgHandler<string>::create(fVersion);
 	fGetMsgHandlerMap["rootPath"]	= TGetParamMsgHandler<string>::create(fRootPath);
@@ -264,6 +267,13 @@ void IAppl::helloMsg() const
 }
 
 //--------------------------------------------------------------------------
+void IAppl::activate() const
+{
+	ITLErr << "activate "  << ITLEndl;
+	fAppl->postEvent (fAppl, new QEvent(QEvent::ApplicationActivate));
+}
+
+//--------------------------------------------------------------------------
 string IAppl::guidoversion() const
 {
 	return INScore::guidoversion();
@@ -294,6 +304,23 @@ MsgHandler::msgStatus IAppl::requireMsg(const IMessage* msg)
 					return MsgHandler::kProcessed;
 				}				
 			}
+		}
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IAppl::cursor(const IMessage* msg)
+{
+	if (!fAppl) return MsgHandler::kProcessed;
+	if (msg->size() == 1) {
+		string status;
+		if (msg->param(0, status)) {
+			if (status == "hide") 
+				fAppl->setOverrideCursor( QCursor( Qt::BlankCursor ) );
+			else
+				fAppl->setOverrideCursor( QCursor( Qt::ArrowCursor ) );
+			return MsgHandler::kProcessed;
 		}
 	}
 	return MsgHandler::kBadParameters;

@@ -33,6 +33,7 @@
 #include "udpinfo.h"
 #include "benchtools.h"
 
+class QApplication;
 namespace inscore
 {
 
@@ -62,13 +63,14 @@ class IAppl : public IObject, public PeriodicTask
 		bool		fOffscreen;
 		udpinfo		fUDP;
 		VApplView*  fView;
+		QApplication* fAppl;
 
 	public:
 		static bool fDefaultShow;
 		static const std::string kApplType;
 		static const std::string kName;
-		static SIAppl			create(int udpport, int outport, int errport, bool offscreen=false)		
-			{ return new IAppl(udpport, outport, errport, offscreen); }
+		static SIAppl			create(int udpport, int outport, int errport,  QApplication* appl, bool offscreen=false)		
+			{ return new IAppl(udpport, outport, errport, appl, offscreen); }
 		static std::string		getRootPath()			{ return fRootPath; }	//< returns the application root path
 		static std::string		absolutePath( const std::string& path );		//< returns the absolute path corresponding to 'path',
 		static std::string		makeAbsolutePath( const std::string& path, const std::string& file );
@@ -117,7 +119,7 @@ class IAppl : public IObject, public PeriodicTask
 		static std::string checkRootPath (const std::string& path);
 
 	protected:
-				 IAppl(int udpport, int outport, int errport, bool offscreen);
+				 IAppl(int udpport, int outport, int errport,  QApplication* appl, bool offscreen);
 		virtual ~IAppl();
 
 		void		setRootPath(const std::string& s);
@@ -129,6 +131,7 @@ class IAppl : public IObject, public PeriodicTask
 
 		IMessage*	hello() const;
 		void		helloMsg() const;
+		void		activate() const;
 		std::string	guidoversion() const;
 		std::string	musicxmlversion() const;
 
@@ -137,6 +140,9 @@ class IAppl : public IObject, public PeriodicTask
 
 		/// \brief application \c 'load' message handler.
 		virtual MsgHandler::msgStatus loadMsg (const IMessage* msg);
+
+		/// \brief application \c 'load' message handler.
+		virtual MsgHandler::msgStatus cursor (const IMessage* msg);
 
 #ifdef RUNBENCH
 		void	startBench()			{ bench::start(); }
