@@ -61,6 +61,8 @@ VGraphView::VGraphView(QGraphicsScene * scene, const IGraphicSignal* h)
 void VGraphView::updateView( IGraphicSignal * graph )
 {
 	item()->setRect( QRect( 0,0,  relative2SceneWidth(graph->getWidth()),relative2SceneHeight(graph->getHeight()) ) );
+	float alpha = graph->getA() / 255.f;
+	item()->setOpacity (alpha);
 
 	int size = graph->getSignal()->ParallelSignal::size();
 
