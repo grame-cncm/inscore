@@ -27,6 +27,7 @@
 
 #include "export.h"
 
+class QApplication;
 namespace inscore 
 {
 
@@ -63,7 +64,7 @@ class export INScore
 		\see GraphicUpdateListener
 			   
 	*/
-	static IGlue* start (int timeInterval=10, int udpport=7000, int outport=7001, int errport=7002, bool offscreen=false);
+	static IGlue* start (int timeInterval, int udpport, int outport, int errport, QApplication* appl, bool offscreen=false);
 
 	/*! \brief stops the INScore services
 

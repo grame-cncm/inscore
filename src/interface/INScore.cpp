@@ -74,11 +74,11 @@ static IMessage* Message2IMessage (INScore::MessagePtr p)
 //--------------------------------------------------------------------------
 // Qt environment initiaization + INScore glue setup
 //--------------------------------------------------------------------------
-IGlue* INScore::start(int timeInterval, int udpport, int outport, int errport, bool offscreen)
+IGlue* INScore::start(int timeInterval, int udpport, int outport, int errport, QApplication* appl, bool offscreen)
 {
 	IGlue* glue = new IGlue (udpport, outport, errport);
 	VQtInit::startQt();
-	if (glue && glue->start (timeInterval, offscreen)) {
+	if (glue && glue->start (timeInterval, offscreen, appl)) {
 		glue->setLocalMapUpdater(VQtLocalMappingUpdater::create() );
 		glue->setViewUpdater	(VQtUpdater::create() );
 		return glue;
