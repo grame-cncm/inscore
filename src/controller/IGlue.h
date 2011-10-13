@@ -30,6 +30,7 @@
 #include <QThread>
 #include <QObject>
 #include <QMutex>
+#include <QApplication>
 
 #include "IOSCListener.h"
 #include "IController.h"
@@ -97,7 +98,7 @@ class export IGlue : public MsgListener, public QObject
 				 IGlue(int udpport, int outport, int errport);
 		virtual ~IGlue();
 
-				bool start(int timerInterval, bool offscreen);
+				bool start(int timerInterval, bool offscreen, QApplication* appl);
 				void setViewUpdater(SUpdater updater);
 				void setLocalMapUpdater(SUpdater updater);
 				void setSlaveMapUpdater(SUpdater updater);
@@ -114,7 +115,7 @@ class export IGlue : public MsgListener, public QObject
 		static void trace (const IMessage* msg, int status);
 
 	protected:
-		virtual void initialize (bool offscreen);
+		virtual void initialize (bool offscreen,  QApplication* appl);
 		virtual	void clean ();
 		
 //		VSceneView* getSceneView() const							{ return fSceneView; }

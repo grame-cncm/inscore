@@ -192,7 +192,7 @@ int main( int argc, char **argv )
 	dir.cd("PlugIns");
 	appl.addLibraryPath		( dir.absolutePath());
 
-	IGlue * glue = INScore::start (kTimeInterval, udpPort, kUPDPort+1, kUPDPort+2);
+	IGlue * glue = INScore::start (kTimeInterval, udpPort, kUPDPort+1, kUPDPort+2, &appl);
 
 #ifdef WIN32
 	for (int i = 1; i < appl.arguments().size(); i++) {

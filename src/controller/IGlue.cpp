@@ -127,7 +127,7 @@ bool IGlue::getSceneView(unsigned int* dest, int w, int h, bool smooth )
 }
 
 //--------------------------------------------------------------------------
-void IGlue::initialize (bool offscreen)
+void IGlue::initialize (bool offscreen, QApplication* appl)
 {
 	Master::initMap();
 	EventsAble::init();
@@ -137,7 +137,7 @@ void IGlue::initialize (bool offscreen)
 	fController = IController::create();
 //	fController->setListener (this);
 
-	fModel = IAppl::create(fUDP.fInPort, fUDP.fOutPort, fUDP.fErrPort, offscreen);
+	fModel = IAppl::create(fUDP.fInPort, fUDP.fOutPort, fUDP.fErrPort, appl, offscreen);
 	fModel->createVirtualNodes();
 	fModel->setView (ViewFactory::create(fModel));
 
@@ -171,10 +171,10 @@ void IGlue::initialize (bool offscreen)
 }
 
 //--------------------------------------------------------------------------
-bool IGlue::start (int timeInterval, bool offscreen)
+bool IGlue::start (int timeInterval, bool offscreen, QApplication* appl)
 {
 	try {
-		initialize(offscreen);
+		initialize(offscreen, appl);
 		if (timeInterval) fTimerID = startTimer(timeInterval);
 	}
 	catch (std::runtime_error e) {
