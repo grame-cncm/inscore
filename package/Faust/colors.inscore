@@ -1,12 +1,27 @@
-loop (i,3,
-	/ITL/scene/color%i set "rect" 1.00000 0.0400000 ;
-	/ITL/scene/colorlevel%i set "rect" 1.00000 0.0400000 ;
 
-	/ITL/scene/color%i watch "mouseDown" "/ITL/scene/colorlevel%i" "width" "$x" ;
-	/ITL/scene/color%i watch "mouseMove" "/ITL/scene/colorlevel%i" "width" "$x" ;
-	/ITL/scene/color%i watch+ "mouseDown" "/ITL/scene/colorlevel%i" "hue" "$x[-1.,1.]" ;
-	/ITL/scene/color%i watch+ "mouseMove" "/ITL/scene/colorlevel%i" "hue" "$x[-1.,1.]" ;
-);
+<?lua
+out={}
+j=1
+color = "/ITL/scene/color"
+level = "/ITL/scene/colorlevel"
+for i=0,2
+do
+	out[j] = color..i.." set 'rect' 1.0 0.04;"
+	j = j+1
+	out[j] = level..i.." set 'rect' 1.0 0.04;"
+	j = j+1
+	out[j] = color..i.." watch  'mouseDown' '"..level..i.."' 'width' '$x';"
+	j = j+1
+	out[j] = color..i.." watch+ 'mouseDown' '"..level..i.."' 'hue' '$x[-1.,1.]';"
+	j = j+1
+	out[j] = color..i.." watch  'mouseMove' '"..level..i.."' 'width' '$x';"
+	j = j+1
+	out[j] = color..i.." watch+ 'mouseMove' '"..level..i.."' 'hue' '$x[-1.,1.]';"
+	j = j+1
+end
+-- print(	out[5] )
+return out
+>
 
 /ITL/scene/color0 watch+  "mouseDown" "/ITL/scene/signal/pitchcolor" "$x[-1.,1.]" ;
 /ITL/scene/color0 watch+  "mouseMove" "/ITL/scene/signal/pitchcolor" "$x[-1.,1.]" ;
@@ -21,11 +36,11 @@ loop (i,3,
 /ITL/scene/color? color 255 255 255 0 ;
 
 /ITL/scene/colorlevel0 hue 0 ;
-/ITL/scene/colorlevel0 width 0.500000 ;
-/ITL/scene/colorlevel1 hue 108 ;
-/ITL/scene/colorlevel1 width 0.600000 ;
-/ITL/scene/colorlevel2 hue 54 ;
-/ITL/scene/colorlevel2 width 0.300000 ;
+/ITL/scene/colorlevel0 width 0.5 ;
+/ITL/scene/colorlevel1 hue 0.6 ;
+/ITL/scene/colorlevel1 width 0.8 ;
+/ITL/scene/colorlevel2 hue 0.3 ;
+/ITL/scene/colorlevel2 width 0.65 ;
 /ITL/scene/colorlevel* saturation 100 ;
 /ITL/scene/colorlevel* brightness 100 ;
 /ITL/scene/color* xorigin -1.00000 ;
