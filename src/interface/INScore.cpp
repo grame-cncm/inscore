@@ -116,8 +116,8 @@ void INScore::stop(IGlue* glue)
 //--------------------------------------------------------------------------
 // versions 
 //--------------------------------------------------------------------------
-float INScore::version	()				{ return 0.95; }
-const char* INScore::versionStr ()		{ return "0.95"; }
+float INScore::version	()				{ return 0.96; }
+const char* INScore::versionStr ()		{ return "0.96"; }
 
 //--------------------------------------------------------------------------
 const char* INScore::guidoversion()
