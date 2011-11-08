@@ -9,15 +9,15 @@ set (TARGET	INScore)
 set (APPLTARGET	INScoreViewer)
 #######################################
 # versions management
-set (INSFWKVERS 0.95)
-set (INSFWKSTRVERS "v.0.95")
-set (INSFWKSSTRVERS "0.95")
-set (INSTEXTVERS 0.95)
-set (INSTEXTSTRVERS "v.0.95")
-set (INSTEXTSSTRVERS "0.95")
-set (INSAPPVERS 0.95)
-set (INSAPPSTRVERS "v.0.95")
-set (INSAPPSSTRVERS "0.95")
+set (INSFWKVERS 0.96)
+set (INSFWKSTRVERS "v.0.96")
+set (INSFWKSSTRVERS "0.96")
+set (INSTEXTVERS 0.96)
+set (INSTEXTSTRVERS "v.0.96")
+set (INSTEXTSSTRVERS "0.96")
+set (INSAPPVERS 0.96)
+set (INSAPPSTRVERS "v.0.96")
+set (INSAPPSSTRVERS "0.96")
 
 #######################################
 if(WIN32)
@@ -35,7 +35,9 @@ if(APPLE)
 		set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.5.sdk)
 	endif (${CMAKE_SYSTEM_VERSION} VERSION_LESS 9.0.0)
 
+if (NOT (JAVASCRIPT STREQUAL "yes"))
 	set (CMAKE_OSX_ARCHITECTURES "i386 x86_64")
+endif (NOT (JAVASCRIPT STREQUAL "yes"))
 	set (CMAKE_C++_FLAGS -mmacosx-version-min=10.4)
 endif(APPLE)
 
@@ -49,6 +51,39 @@ set (OSC_PATH  "${LOCALLIB}/oscpack")
 set (GUIDO_PATH  "${LOCALLIB}/GuidoEngine")
 set (GUIDOQT_PATH  "${LOCALLIB}/GuidoQt")
 
+
+set (SCRIPT "")
+#######################################
+# lua support
+if (LUA STREQUAL "yes")
+	message (STATUS "lua will be supported - Use -DLUA=no to change.")
+	add_definitions(-DLUA)
+	if (WIN32)
+		set(SCRIPTS ${SCRIPTS} "$(LOCALLIB)/lua/win32/lua.lib")
+	else(WIN32)
+		set(SCRIPTS ${SCRIPTS} -llua)
+	endif (WIN32)
+else (LUA STREQUAL "yes")
+	message (STATUS "lua will not be supported - Use -DLUA=yes to change")
+endif (LUA STREQUAL "yes")
+
+#######################################
+# javascript support
+if (JAVASCRIPT STREQUAL "yes")
+	message (STATUS "javascript will be supported - Use -DJAVASCRIPT=no to change.")
+	add_definitions(-DJAVASCRIPT)
+	if (WIN32)
+		set(SCRIPTS ${SCRIPTS} "$(LOCALLIB)/javascript/win32/javascript.lib")
+	else(WIN32)
+		set(SCRIPTS ${SCRIPTS} -ljavascript)
+	endif (WIN32)
+else (JAVASCRIPT STREQUAL "yes")
+	message (STATUS "javascript will not be supported - Use -DJAVASCRIPT=yes to change")
+endif (JAVASCRIPT STREQUAL "yes")
+
+
+#######################################
+#
 if(MSVC)
 	set (INSFOLDERS  ${INSFOLDERS} ../win32/dirent)
 endif(MSVC)
@@ -126,12 +161,10 @@ if(APPLE)
 	set(OSCPACK  ${OSC_PATH}/cmake/Release/liboscpack.a)
 	set(GUIDOQT  ${ROOT}/../lib/GuidoQt/macosx/libGuidoQt.a)
 	set(GUIDO    ${ROOT}/../lib/GuidoEngine/macosx/GUIDOEngine.framework)
-	set(SCRIPTS  -llua -ljavascript)
 elseif(UNIX)
 	set(OSCPACK  -L${OSC_PATH}/cmake -loscpack)
 	set(GUIDOQT  -L${ROOT}/../lib/GuidoQt/linux -lGuidoQt)
 	set(GUIDO    -lGUIDOEngine)
-	set(SCRIPTS  -llua -ljavascript)
 endif(APPLE)
 
 set(INSLIBS  ${INSLIBS} ${OSCPACK} ${GUIDOQT} ${GUIDO} ${SCRIPTS} ${QTLIBS} ${CORE_FOUNDATION} )
@@ -155,7 +188,7 @@ set_source_files_properties (${COREH} PROPERTIES HEADER_FILE_ONLY TRUE)
 set_target_properties (${TARGET} PROPERTIES VERSION ${INSFWKVERS}
 						MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${INSFWKSTRVERS}
 						MACOSX_FRAMEWORK_BUNDLE_VERSION ${INSFWKSSTRVERS}
-#						PUBLIC_HEADER "${PUBLICHEADERS}"
+						PUBLIC_HEADER "${PUBLICHEADERS}"
 )
 target_link_libraries( ${TARGET} ${INSLIBS} )
 if(MINGW)
@@ -170,12 +203,6 @@ set_target_properties (${APPLTARGET} PROPERTIES VERSION ${INSAPPVERS}
 							MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist"
 							MACOSX_BUNDLE_SHORT_VERSION_STRING ${INSAPPSTRVERS}
 							MACOSX_BUNDLE_BUNDLE_VERSION ${INSAPPSSTRVERS})
-if(WIN32)
-set_target_properties (${APPLTARGET} PROPERTIES
-	LINK_FLAGS_RELEASE /subsystem:windows
-	LINK_FLAGS_DEBUG /subsystem:console)
-endif(WIN32)
-
 if(WIN32)
 set_target_properties (${APPLTARGET} PROPERTIES
 	LINK_FLAGS_RELEASE /subsystem:windows
