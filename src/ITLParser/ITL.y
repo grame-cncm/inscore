@@ -51,13 +51,13 @@
 %token LOOPREGEXP
 %token VARSTART
 
-%token LUA
-%token JAVASCRIPT
+%token LUASCRIPT
+%token JSCRIPT
 
 /*------------------------------   types  ------------------------------*/
 %type <num> 	INT number
 %type <real>	FLOAT
-%type <str>		STRING MSG PATHSEP IDENTIFIER MAPIDENTIFIER REGEXP LUA JAVASCRIPT
+%type <str>		STRING MSG PATHSEP IDENTIFIER MAPIDENTIFIER REGEXP LUASCRIPT JSCRIPT
 %type <str>		identifier oscaddress oscpath msgstring varname
 %type <msg>		message
 %type <p>		param
@@ -110,8 +110,8 @@ expr		: message  			{ context->fReader.add($1); }
 			;
 
 //_______________________________________________
-script		: LUA				{ if (!context->fReader.luaEval(context->fText.c_str())) YYABORT;  }
-			| JAVASCRIPT		{ if (!context->fReader.jsEval(context->fText.c_str())) YYABORT;  }
+script		: LUASCRIPT			{ if (!context->fReader.luaEval(context->fText.c_str())) YYABORT;  }
+			| JSCRIPT			{ if (!context->fReader.jsEval(context->fText.c_str())) YYABORT;  }
 			;
 
 //_______________________________________________

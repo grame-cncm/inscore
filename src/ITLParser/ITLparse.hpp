@@ -58,8 +58,8 @@
      LOOPIDENTIFIER = 274,
      LOOPREGEXP = 275,
      VARSTART = 276,
-     LUA = 277,
-     JAVASCRIPT = 278
+     LUASCRIPT = 277,
+     JSCRIPT = 278
    };
 #endif
 /* Tokens.  */
@@ -82,8 +82,8 @@
 #define LOOPIDENTIFIER 274
 #define LOOPREGEXP 275
 #define VARSTART 276
-#define LUA 277
-#define JAVASCRIPT 278
+#define LUASCRIPT 277
+#define JSCRIPT 278
 
 
 

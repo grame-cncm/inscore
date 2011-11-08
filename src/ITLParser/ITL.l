@@ -59,8 +59,8 @@ static  char* unescape (char * str) {
 %x COMMENT
 %x DQSTR
 %x QSTR
-%x LUASCRIPT
-%x JSCRIPT
+%x LUASECTION
+%x JSECTION
 
 DIGIT	[0-9]
 LETTER  [a-zA-Z]
@@ -112,13 +112,13 @@ EOL		[\x0a\x0d]
 <DQSTR>\"					BEGIN INITIAL;
 <QSTR>'						BEGIN INITIAL;
 
-"<?"{SPACE}*"lua"			BEGIN LUASCRIPT;
-<LUASCRIPT>([^>]|"\\\>")*	yyextra->fText = unescape(yytext); return LUA;
-<LUASCRIPT>">"				BEGIN INITIAL;
+"<?"{SPACE}*"lua"			BEGIN LUASECTION;
+<LUASECTION>([^>]|"\\\>")*	yyextra->fText = unescape(yytext); return LUASCRIPT;
+<LUASECTION>">"				BEGIN INITIAL;
 
-"<?"{SPACE}*"javascript"	BEGIN JSCRIPT;
-<JSCRIPT>([^>]|"\\\>")*		yyextra->fText = unescape(yytext); return JAVASCRIPT;
-<JSCRIPT>">"				BEGIN INITIAL;
+"<?"{SPACE}*"javascript"	BEGIN JSECTION;
+<JSECTION>([^>]|"\\\>")*	yyextra->fText = unescape(yytext); return JSCRIPT;
+<JSECTION>">"				BEGIN INITIAL;
 
 
 {RESTART}{RECHAR}*				yyextra->fText = yytext; return REGEXP;			/* regular expression */

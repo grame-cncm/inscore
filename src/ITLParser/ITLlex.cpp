@@ -188,7 +188,7 @@ typedef size_t yy_size_t;
      */
     #define  YY_LESS_LINENO(n) \
             do { \
-                int yyl;\
+                yy_size_t yyl;\
                 for ( yyl = n; yyl < yyleng; ++yyl )\
                     if ( yytext[yyl] == '\n' )\
                         --yylineno;\
@@ -670,8 +670,8 @@ static  char* unescape (char * str) {
 #define COMMENT 2
 #define DQSTR 3
 #define QSTR 4
-#define LUASCRIPT 5
-#define JSCRIPT 6
+#define LUASECTION 5
+#define JSECTION 6
 
 #ifndef YY_NO_UNISTD_H
 /* Special case for "unistd.h", since it is non-ANSI. We include it way
@@ -990,7 +990,7 @@ yy_find_action:
 
 		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
 			{
-			int yyl;
+			yy_size_t yyl;
 			for ( yyl = yyg->yy_more_len; yyl < yyleng; ++yyl )
 				if ( yytext[yyl] == '\n' )
 					   
@@ -1168,13 +1168,13 @@ BEGIN INITIAL;
 case 31:
 YY_RULE_SETUP
 #line 115 "ITL.l"
-BEGIN LUASCRIPT;
+BEGIN LUASECTION;
 	YY_BREAK
 case 32:
 /* rule 32 can match eol */
 YY_RULE_SETUP
 #line 116 "ITL.l"
-yyextra->fText = unescape(yytext); return LUA;
+yyextra->fText = unescape(yytext); return LUASCRIPT;
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
@@ -1184,13 +1184,13 @@ BEGIN INITIAL;
 case 34:
 YY_RULE_SETUP
 #line 119 "ITL.l"
-BEGIN JSCRIPT;
+BEGIN JSECTION;
 	YY_BREAK
 case 35:
 /* rule 35 can match eol */
 YY_RULE_SETUP
 #line 120 "ITL.l"
-yyextra->fText = unescape(yytext); return JAVASCRIPT;
+yyextra->fText = unescape(yytext); return JSCRIPT;
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
@@ -1234,8 +1234,8 @@ case YY_STATE_EOF(CMNTLN):
 case YY_STATE_EOF(COMMENT):
 case YY_STATE_EOF(DQSTR):
 case YY_STATE_EOF(QSTR):
-case YY_STATE_EOF(LUASCRIPT):
-case YY_STATE_EOF(JSCRIPT):
+case YY_STATE_EOF(LUASECTION):
+case YY_STATE_EOF(JSECTION):
 	yyterminate();
 
 	case YY_END_OF_BUFFER:
