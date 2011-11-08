@@ -53,13 +53,15 @@ set (GUIDOQT_PATH  "${LOCALLIB}/GuidoQt")
 
 
 set (SCRIPT "")
+set (SCRIPTINCL "")
 #######################################
 # lua support
 if (LUA STREQUAL "yes")
 	message (STATUS "lua will be supported - Use -DLUA=no to change.")
 	add_definitions(-DLUA)
 	if (WIN32)
-		set(SCRIPTS ${SCRIPTS} "$(LOCALLIB)/lua/win32/lua.lib")
+		set(SCRIPTS ${SCRIPTS} ${LOCALLIB}/lua/win32/lua.lib)
+		set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/lua/win32/)
 	else(WIN32)
 		set(SCRIPTS ${SCRIPTS} -llua)
 	endif (WIN32)
@@ -106,7 +108,7 @@ file (GLOB COREH RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${HEADERS})
 foreach(folder ${INSFOLDERS})
 	set(INCL ${INCL} "${ROOT}/${folder}")				# add include folders
 endforeach(folder)
-set(INCL ${INCL} "${ROOT}/atomic" "/usr/local/include")
+set(INCL ${INCL} "${ROOT}/atomic" "/usr/local/include" ${SCRIPTINCL})
 
 
 #######################################
