@@ -6,14 +6,22 @@ The INScore project depends on external libraries:
  - the Qt framework version 4.6 or later (see http://qt.nokia.com/)
  - the GuidoEngine version 1.40 or greater (see http://guidolib.sourceforge.net)
  - the GuidoQt static library, actually part of the GuidoEngine library
- - oscpack
- - optionaly: the MusicXML library  (see http://libmusicxml.sourceforge.net)
-   when you want to support the MusicXMl format.   
-The GuidoEngine, the GuidoQt and oscpack are required to compile INScore.
+ - the oscpack library
+ - optionaly: 
+     - the MusicXML library  (see http://libmusicxml.sourceforge.net)
+       when you want to support the MusicXMl format.
+     - the programming language lua (see http://www.lua.org/)
+     - the programming language javascript (see https://developer.mozilla.org/En/SpiderMonkey)
+The GuidoEngine, the GuidoQt and oscpack libraries are required to compile INScore.
+
+The present document describes how to compile the INScore projects. 
+It starts describing how to resolve the required external dependencies.
+The next section explains how to compile the INScore project.
+The last section describes how to resolve the optional external dependencies.
 
 
 ======================================================================
-1) Resolving the external dependencies
+1) Resolving the required external dependencies
 ----------------------------------------------------------------------
 
 >>>>>> Mac OS
@@ -72,6 +80,75 @@ The oscpack library is based on cmake but includes also makefiles from the origi
 Cmake output files are where the INScore project expects to find them.
 
 
+
+======================================================================
+2) Compiling INScore
+----------------------------------------------------------------------
+The INScore project relies on CMake, a cross-platform, open-source build system 
+( see http://www.cmake.org/).
+The cmake folder contains the project description and is used to generate native projects. 
+You should resolve the external dependencies prior running cmake.
+
+To compile:
+	change to cmake directory
+	type:  cmake -G "your target generator" [options]
+	run your project/makefile and compile
+
+[options] allows to embed lua or/and javascript support:
+	for lua: -DLUA=yes 
+	for javascript: -DJAVASCRIPT=yes
+Note that MusicXML support makes use of dynamic link: it is available when a library with the corresponding entry point is found.
+
+
+Note for Linux platforms:
+--------------------------
+	The procedure to compile can be close to the usual 'configure' 'make' 'make install'
+	steps. Actually, you can simply do the following:
+	> cd /your_path_to_the_project/cmake
+	> cmake -G "Unix Makefiles"
+	> make
+	> sudo make install
+
+Note for Windows platforms:
+--------------------------
+	The CMake project description is "Visual Studio" oriented. 
+	Using MingW may require some adaptation.
+
+
+
+======================================================================
+3) Resolving the optional external dependencies
+----------------------------------------------------------------------
+
+lua support
+----------------------------
+You should get the lua source code from the lua web site: http://www.lua.org
+The distribution includes a Makefile, thus you can simply type:
+  > cd /your_path_to_the_lua_distribution/
+  > make
+  > sudo make install
+
+Notes: 
+- for windows, a binary version of the library is included in the INScore distribution
+  along with the corresponding headers. Thus lua ready to be supported without additional step.
+- a cmake configuration is provided in lib/lua with instructions to use. It should be used to
+  generate universal binaries on Mac OS.
+
+javascript support
+----------------------------
+You should get the javascript engine from the mozilla web site: 
+	https://developer.mozilla.org/En/SpiderMonkey
+The distribution is based on the standard tools:
+  > cd /your_path_to_the_javascript_distribution/
+  > ./configure
+  > make
+  > sudo make install
+
+Notes: 
+- on Mac OS, when the javascript support is ON, INScore is build for the native architecture only, 
+  due to the lack of universal binary for the javascript engine.
+
+
 MusicXML support
 ----------------------------
 You should get the MusicXML library version 2.0 or later from SourceForge from svn:
@@ -87,33 +164,6 @@ To compile the MusicXML library do the following:
   > sudo make install
 
 
-======================================================================
-2) Compiling INScore
-----------------------------------------------------------------------
-The INScore project relies on CMake, a cross-platform, open-source build 
-system ( see http://www.cmake.org/).
-The cmake folder contains the project description and is used to generate 
-native projects. 
-You should resolve the external dependencies prior running cmake.
-
-To compile:
-	change to cmake directory
-	type:  cmake -G "your target generator"
-	run your project/makefile and compile
-	
-Note for Linux platforms:
---------------------------
-	The procedure to compile can be close to the usual 'configure' 'make' 'make install'
-	steps. Actually, you can simply do the following:
-	> cd /your_path_to_the_project/cmake
-	> cmake -G "Unix Makefiles"
-	> make
-	> sudo make install
-
-Note for Windows platforms:
---------------------------
-	The CMake project description is "Visual Studio" oriented. 
-	Using MingW may require some adaptation.
 
 ======================================================================
 In case of trouble, contact me: <fober@grame.fr>
