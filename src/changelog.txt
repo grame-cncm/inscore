@@ -19,9 +19,6 @@ Version 0.95
 - bug correction in sync delete (introduced with version 0.90)
 
 ----------------------------------------------------
-Version 0.93
-
-----------------------------------------------------
 Version 0.92
 - bug corrected: crash with messages addressed to a signal without argument
 - date and duration messages support one arg form using 1 as implicit denominator value 
