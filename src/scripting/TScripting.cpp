@@ -89,6 +89,7 @@ void TScripting::startLoop	(const char* ident, unsigned int count, int lineno)
 //--------------------------------------------------------------------------------------------
 // lua support
 //--------------------------------------------------------------------------------------------
+#ifdef LUA
 void TScripting::luaBindEnv (lua_State* L, const STEnv& env)
 {
 	for (TEnv::TEnvList::const_iterator i = env->begin(); i != env->end(); i++) {
@@ -181,10 +182,19 @@ string TScripting::luaGetTable (lua_State* L, int i) const
 	}
 	return out;
 }
+#else
+//--------------------------------------------------------------------------------------------
+bool TScripting::luaEval (const char* script)
+{
+	ITLErr << "lua not available!" << ITLEndl;
+	return true;
+}
+#endif
 
 //--------------------------------------------------------------------------------------------
 // javascript support
 //--------------------------------------------------------------------------------------------
+#ifdef JAVASCRIPT
 static JSClass global_class = {
     "global", JSCLASS_GLOBAL_FLAGS,
     JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
@@ -302,6 +312,14 @@ bool TScripting::jsEval (const char* script)
     JS_ShutDown();
 	return true;
 }
+#else
+//--------------------------------------------------------------------------------------------
+bool TScripting::jsEval (const char* script)
+{
+	ITLErr << "javascript not available!" << ITLEndl;
+	return true;
+}
+#endif
 
 //--------------------------------------------------------------------------------------------
 Sbaseparam*	TScripting::resolve (const char* var)
@@ -311,16 +329,16 @@ Sbaseparam*	TScripting::resolve (const char* var)
 }
 
 //--------------------------------------------------------------------------------------------
-int TScripting::endLoop ()
-{
-	if (fLoops.size()) {
-		STLoop loop = fLoops.top();
-		fLoops.pop ();
-		if (fLoops.empty()) {		// evaluates the loop with a new environment
-			return loop->eval(TEnv::create(), fMessages) ? 0 : loop->lineno();
-		}
-	}
-	return 0;
-}
+//int TScripting::endLoop ()
+//{
+//	if (fLoops.size()) {
+//		STLoop loop = fLoops.top();
+//		fLoops.pop ();
+//		if (fLoops.empty()) {		// evaluates the loop with a new environment
+//			return loop->eval(TEnv::create(), fMessages) ? 0 : loop->lineno();
+//		}
+//	}
+//	return 0;
+//}
 
 } // namespace

@@ -28,8 +28,12 @@
 #define __TScripting__
 
 #include <stack>
+#ifdef LUA
 #include <lua.hpp>
+#endif
+#ifdef JAVASCRIPT
 #include <js/jsapi.h>
+#endif
 
 #include "smartpointer.h"
 
@@ -56,10 +60,14 @@ class TScripting
 	STEnv				fEnv;
 	std::stack<STLoop>	fLoops;
 
+#ifdef LUA
 	void luaBindEnv (lua_State* L, const STEnv& env);
-	void jsBindEnv  (JSContext *cx, const STEnv& env);
 	std::string luaGetTable (lua_State* L, int i) const;
+#endif
+#ifdef JAVASCRIPT
+	void jsBindEnv  (JSContext *cx, const STEnv& env);
 	std::string jsGetResult (JSContext *cx, const jsval& val) const;
+#endif
 
 	public:	
 		yyscan_t fScanner;
@@ -73,13 +81,12 @@ class TScripting
 		void	variable	(const char* ident, float val);
 		void	variable	(const char* ident, const char* val);
 		void	startLoop	(const char* ident, unsigned int count, int lineno);
-		int		endLoop		();
+//		int		endLoop		();
 
 		bool	luaEval		(const char* script);
 		bool	jsEval		(const char* script);
-		
-		Sbaseparam*	resolve (const char* var);
-		
+
+		Sbaseparam*	resolve (const char* var);	
 		IMessageList* messages() const { return fMessages; }
 };
 
