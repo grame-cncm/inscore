@@ -25,7 +25,26 @@
 #ifndef __INScore__
 #define __INScore__
 
-#include "export.h"
+
+#if defined(WIN32) && defined(MSVC)
+
+# ifdef INScore_EXPORTS
+#  define export		 _declspec (dllexport)
+# else
+#  define export		 _declspec (dllimport)
+# endif
+
+# pragma warning ( disable : 4275 4251 )
+
+#else
+
+# ifdef INScore_EXPORTS
+#  define export		 __attribute__ ((visibility("default")))
+# else
+#  define export		
+# endif
+
+#endif
 
 class QApplication;
 namespace inscore 
