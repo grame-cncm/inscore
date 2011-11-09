@@ -31,13 +31,13 @@
 #include "IMessage.h"
 #include "TEnv.h"
 #include "TLoop.h"
-#include "ITLParser.h"
+#include "ITLparser.h"
 #include "ITLError.h"
 
 using namespace std;
 extern inscore::TScripting* gScripter;
 
-namespace inscore 
+namespace inscore
 {
 
 class IMessageList;
@@ -46,7 +46,7 @@ class TLoop;
 class TEnv;
 
 //--------------------------------------------------------------------------------------------
-TScripting::TScripting() 
+TScripting::TScripting()
 {
 	fMessages = new IMessageList;
 	fEnv = TEnv::create();
@@ -60,18 +60,18 @@ void TScripting::variable	(const char* ident, float val)				{ fEnv->bind( ident,
 void TScripting::variable	(const char* ident, const char* val)		{ fEnv->bind( ident, val); }
 
 //--------------------------------------------------------------------------------------------
-void TScripting::add (IMessage* msg)	
-{ 
+void TScripting::add (IMessage* msg)
+{
 	if (fLoops.size()) {
 		STLoop loop = fLoops.top();
 		loop->add (msg);
 	}
-	else *fMessages += msg; 
+	else *fMessages += msg;
 }
 
 //--------------------------------------------------------------------------------------------
-void TScripting::add (IMessageList* msgs)	
-{ 
+void TScripting::add (IMessageList* msgs)
+{
 	*fMessages += *msgs;
 }
 
@@ -249,7 +249,7 @@ string TScripting::jsGetResult (JSContext *cx, const jsval& val) const
 				}
 			}
 		}
-	}	
+	}
 	return out;
 }
 
