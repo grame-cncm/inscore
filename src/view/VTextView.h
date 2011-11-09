@@ -28,8 +28,6 @@
 #define __VTextView__
 
 #include "VIntPointObjectView.h"
-#include "IText.h"
-#include "ITextFile.h"
 #include "MouseEventAble.h"
 
 #include <QGraphicsTextItem>
@@ -40,6 +38,8 @@
 namespace inscore
 {
 
+class IText;
+class IHtmlFile;
 /*!
 \addtogroup ITLView
 @{
@@ -55,12 +55,14 @@ class VTextView: public VIntPointObjectView
 
 	IQGraphicsTextItem* fTextItem;
 	QList< QList<QRectF> > fCharRects;
-	QList< QGraphicsItem* > fCharItems;
-	QMap<std::string,int> fMappingVersion;
+	const IHtmlFile*	fHtmlFile;
+//	QList< QGraphicsItem* > fCharItems;
+//	QMap<std::string,int> fMappingVersion;
 
 	public :
 
 				 VTextView(QGraphicsScene * scene, const IText*);
+				 VTextView(QGraphicsScene * scene, const IHtmlFile*);
 		virtual ~VTextView() {}
 		
 		virtual void updateView( IText * text );

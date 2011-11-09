@@ -28,6 +28,8 @@
 #include "VTextView.h"
 #include "VApplView.h"
 #include "ITLError.h"
+#include "IText.h"
+#include "IHtmlFile.h"
 
 #include <QTextDocument>
 #include <QTextBlock>
@@ -47,6 +49,16 @@ VTextView::VTextView(QGraphicsScene * scene, const IText* h)
 {
 	fTextItem = (IQGraphicsTextItem*)(fItem);
 	fTextItem->document()->setDocumentMargin(0);
+	fHtmlFile = 0;
+}
+
+//----------------------------------------------------------------------
+VTextView::VTextView(QGraphicsScene * scene, const IHtmlFile* h)
+ :	VIntPointObjectView( scene , new IQGraphicsTextItem(h) )
+{
+	fTextItem = (IQGraphicsTextItem*)(fItem);
+	fTextItem->document()->setDocumentMargin(0);
+	fHtmlFile = h;
 }
 
 //----------------------------------------------------------------------
@@ -72,6 +84,19 @@ void VTextView::updateLocalMapping (IText* text)
 //-------------------------------------------------------------------------
 void VTextView::updateLocalMapping (IHtml* text)
 {
+	const char* path = 0;
+	if (fHtmlFile) {
+		path = fHtmlFile->getFile().c_str();
+	}
+	else {
+		const IScene* scene = text->getScene();
+		if (scene)
+			path = scene->getRootPath().c_str();
+	}
+	QTextDocument *doc = fTextItem->document();
+	if (doc && path)
+		doc->setMetaInformation(QTextDocument::DocumentUrl, path);
+
 	HtmlTextInterface interface(fTextItem);
 	updateLocalMapping(text,interface);
 }
