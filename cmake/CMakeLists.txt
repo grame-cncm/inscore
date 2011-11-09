@@ -229,8 +229,9 @@ if (WIN32)
 
 else (WIN32)
 install ( TARGETS ${TARGET}
-    	LIBRARY DESTINATION /usr/lib
-    	${FRMWK}
+    	LIBRARY DESTINATION /usr/local/lib
+     	PUBLIC_HEADER DESTINATION /usr/local/include
+   		${FRMWK}
 )
 install ( TARGETS ${APPLTARGET}
 	RUNTIME DESTINATION /usr/bin

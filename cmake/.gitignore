@@ -15,3 +15,10 @@ Release/
 build/
 CMakeFiles/
 moc_*
+INScoreViewer*
+libINScore.*
+_*
+Makefile
+*~
+old
+
