@@ -11,6 +11,7 @@ if(WIN32)
 	add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
 else(WIN32)
 	add_definitions(-Wall -fPIC)
+	set(LIBS -lm)
 endif(WIN32)
 
 if(APPLE)
@@ -31,15 +32,16 @@ FILE(GLOB LUA_SRC "${SRC}/l[^u]*.c" "${SRC}/print.c" "${SRC}/lundump.c")
 
 #######################################
 ADD_LIBRARY( lua STATIC ${LUA_SRC} )
-set_target_properties (lua PROPERTIES ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${SRC})
+target_link_libraries( lua ${LIBS})
+set_target_properties (lua PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${SRC})
 
 #######################################
 add_executable( mlua  ${SRC}/lua.c )
 target_link_libraries( mlua lua)
 add_dependencies(mlua lua)
-set_target_properties (mlua PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${SRC}  OUTPUT_NAME lua )
+set_target_properties (mlua PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${SRC}  OUTPUT_NAME lua )
 
 add_executable( luac  ${SRC}/luac.c )
 target_link_libraries( luac lua)
 add_dependencies(luac lua)
-set_target_properties (luac PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${SRC})
+set_target_properties (luac PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${SRC})
