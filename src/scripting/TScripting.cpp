@@ -30,7 +30,7 @@
 
 #include "IMessage.h"
 #include "TEnv.h"
-#include "TLoop.h"
+//#include "TLoop.h"
 #include "ITLparser.h"
 #include "ITLError.h"
 
@@ -42,7 +42,6 @@ namespace inscore
 
 class IMessageList;
 class IMessage;
-class TLoop;
 class TEnv;
 
 //--------------------------------------------------------------------------------------------
@@ -62,11 +61,7 @@ void TScripting::variable	(const char* ident, const char* val)		{ fEnv->bind( id
 //--------------------------------------------------------------------------------------------
 void TScripting::add (IMessage* msg)
 {
-	if (fLoops.size()) {
-		STLoop loop = fLoops.top();
-		loop->add (msg);
-	}
-	else *fMessages += msg;
+	*fMessages += msg;
 }
 
 //--------------------------------------------------------------------------------------------
@@ -76,120 +71,23 @@ void TScripting::add (IMessageList* msgs)
 }
 
 //--------------------------------------------------------------------------------------------
-void TScripting::startLoop	(const char* ident, unsigned int count, int lineno)
-{
-	STLoop loop = TLoop::create (ident, count, lineno);
-	if (fLoops.size()) {
-		STLoop current = fLoops.top();
-		current->add (loop);
-	}
-	fLoops.push(loop);
-}
-
-//--------------------------------------------------------------------------------------------
 // lua support
-//--------------------------------------------------------------------------------------------
-#ifdef LUA
-void TScripting::luaBindEnv (lua_State* L, const STEnv& env)
-{
-	for (TEnv::TEnvList::const_iterator i = env->begin(); i != env->end(); i++) {
-		if (i->second->isType<int>()) lua_pushnumber (L, i->second->value(0));
-		else if (i->second->isType<float>()) lua_pushnumber (L, i->second->value(0.));
-		else if (i->second->isType<string>()) lua_pushstring (L, i->second->value(string("")).c_str());
-		else {
-			ITLErr << i->first << " unknown variable type " << ITLEndl;
-			break;
-		}
-		lua_setfield(L, LUA_GLOBALSINDEX, i->first.c_str());
-	}
-}
-
-
-//--------------------------------------------------------------------------------------------
-static int luaPrint(lua_State *L)
-{
-	int n = lua_gettop(L);
-	cout << "lua: ";
-	oscout << OSCStart("lua:");
-	for (int i=1; i<=n; i++)
-	{
-		if (lua_isstring(L,i)) {
-			cout << lua_tostring(L,i) << " ";
-			oscout << lua_tostring(L,i);
-		}
-		else if (lua_isnil(L,i)) {
-			cout << "nil ";
-			oscout << "nil";
-		}
-		else if (lua_isboolean(L,i)) {
-			cout << (lua_toboolean(L,i) ? "true " : "false ");
-			oscout << (lua_toboolean(L,i) ? "true" : "false");
-		}
-		else {
-			char buff[64];
-			sprintf (buff, "%p", lua_topointer(L,i));
-			cout << luaL_typename(L,i) << ":" << buff;
-			oscout << luaL_typename(L,i) << ":" << buff;
-		}
-	}
-	oscout << OSCEnd();
-	return 0;
-}
-
-
 //--------------------------------------------------------------------------------------------
 bool TScripting::luaEval (const char* script)
 {
-	lua_State * L = lua_open();
-	lua_register(L, "print", luaPrint);
-	luaBindEnv (L, fEnv);
-	int ret = luaL_loadstring (L, script);
-	switch (ret) {
-		case LUA_ERRSYNTAX:
-			ITLErr << "lua: syntax error: " << lua_tostring(L, 1) << ITLEndl;
-			break;
-		case LUA_ERRMEM:
-			ITLErr << "lua: memory allocation error" << ITLEndl;
-			break;
-		default:
-			lua_call(L, 0, LUA_MULTRET);
-			int n = lua_gettop (L);
-			string luaout;
-			for (int i=1; i<=n; i++) {
-				if (lua_istable (L, i)) luaout += luaGetTable(L, i);
-				else if (lua_isstring (L, i)) luaout += lua_tostring(L, i);
-			}
-
+	fLua.bindEnv (fEnv);
+	string luaout;
+	if (fLua.eval(script, luaout)) {
+		if (luaout.size()) {
 			istringstream stream(luaout);
 			ITLparser p (&stream);
 			IMessageList* msgs = p.parse();
 			if (msgs) add (msgs);
+		}
+		return true;
 	}
-	lua_close (L);
-	return ret == 0;
+	return false;
 }
-
-//--------------------------------------------------------------------------------------------
-string TScripting::luaGetTable (lua_State* L, int i) const
-{
-	string out;
-	lua_pushnil(L);  /* first key */
-	while (lua_next(L, i) != 0) {
-		/* uses 'key' (at index -2) and 'value' (at index -1) */
-		if (lua_type(L, -1) == LUA_TSTRING) out += lua_tostring(L, -1);
-		out += "\n";
-		lua_pop(L, 1);
-	}
-	return out;
-}
-#else
-//--------------------------------------------------------------------------------------------
-bool TScripting::luaEval (const char* script)
-{
-	ITLErr << "lua not available!" << ITLEndl;
-	return true;
-}
-#endif
 
 //--------------------------------------------------------------------------------------------
 // javascript support
@@ -327,18 +225,5 @@ Sbaseparam*	TScripting::resolve (const char* var)
 	Sbaseparam value = fEnv->value (var);
 	return value ? new Sbaseparam(value) : 0;
 }
-
-//--------------------------------------------------------------------------------------------
-//int TScripting::endLoop ()
-//{
-//	if (fLoops.size()) {
-//		STLoop loop = fLoops.top();
-//		fLoops.pop ();
-//		if (fLoops.empty()) {		// evaluates the loop with a new environment
-//			return loop->eval(TEnv::create(), fMessages) ? 0 : loop->lineno();
-//		}
-//	}
-//	return 0;
-//}
 
 } // namespace

@@ -24,65 +24,36 @@
 */
 
 
-#ifndef __TScripting__
-#define __TScripting__
+#ifndef __TLua__
+#define __TLua__
 
-#include <stack>
-#include <TLua.h>
-
-#ifdef JAVASCRIPT
-#include <js/jsapi.h>
+#include <string>
+#ifdef LUA
+#include <lua.hpp>
 #endif
-
 #include "smartpointer.h"
-
-typedef void* yyscan_t;
 
 namespace inscore 
 {
-
-class IMessageList;
-class IMessage;
-class baseparam;
-typedef SMARTP<baseparam> Sbaseparam;
-
-class TLoop;
-typedef SMARTP<TLoop> STLoop;
 
 class TEnv;
 typedef SMARTP<TEnv> STEnv;
 
 //--------------------------------------------------------------------------------------------
-class TScripting 
+class TLua 
 {
-	TLua				fLua;
-	IMessageList*		fMessages;
-	STEnv				fEnv;
-
-#ifdef JAVASCRIPT
-	void jsBindEnv  (JSContext *cx, const STEnv& env);
-	std::string jsGetResult (JSContext *cx, const jsval& val) const;
+#ifdef LUA
+	lua_State * fLua;
+	std::string getTable (lua_State* L, int i) const;
+	bool check( int code ) const;
 #endif
 
 	public:	
-		yyscan_t fScanner;
+				 TLua();
+		virtual ~TLua();
 
-				 TScripting();
-		virtual ~TScripting();
-
-		void	add			(IMessage* msg);
-		void	add			(IMessageList* msg);
-		void	variable	(const char* ident, int val);
-		void	variable	(const char* ident, float val);
-		void	variable	(const char* ident, const char* val);
-//		void	startLoop	(const char* ident, unsigned int count, int lineno);
-//		int		endLoop		();
-
-		bool	luaEval		(const char* script);
-		bool	jsEval		(const char* script);
-
-		Sbaseparam*	resolve (const char* var);	
-		IMessageList* messages() const { return fMessages; }
+		bool	eval		(const char* script, std::string& outStr);
+		void	bindEnv		(const STEnv& env);
 };
 
 } // namespace
