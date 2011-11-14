@@ -2,9 +2,39 @@
  this is a sample script that uses  lua
 *)
 
+<?lua
+function list (a,n,start,ftail,dst)
+	j = 1;
+	for i=a,a+n-1 
+	do
+		dst[i] = start..j..ftail(j, n)
+		j = j+1
+	end
+end
+
+function rect(i,n) return " set 'rect' 0.1 0.1;" end
+
+function pos(i,n) 
+	local x = (i-(n/2)-0.5) * (1.8 / n)
+	return " x "..x..";" 
+end
+
+function hue(i,n) 
+	local hue = i * 20
+	return " hsb "..hue.." 100 100;" 
+end
+
+function printTable (t, n)
+	for i=1,n do
+		print(	out[i] )
+	end
+end
+>
+
 a = "Welcome to LUA";
 r = "rect";
 b12 = -0.3;
+
 
 /ITL/scene/* del;
 
@@ -12,23 +42,13 @@ b12 = -0.3;
 /ITL/scene/title y $b12;
 /ITL/scene/title scale 3.;
 
-<? lua
+<?lua
 out={}
 n=12
-j=1;
-for i=1,n
-do
-	x = (i-(n/2)-0.5) * (1.8 / n)
-	hue = i * 20
-	out[j]="/ITL/scene/"..r..i.." set 'rect' 0.1 0.1;" 
-	j = j+1
-	out[j]="/ITL/scene/"..r..i.." x "..x.." ;" 
-	j = j+1
-	out[j]="/ITL/scene/"..r..i.." hsb "..hue.." 100 100;"
-	j = j+1
-
-end
--- print(	out[1] )
+list ( 1, n, "/ITL/scene/"..r, rect, out)
+list (13, n, "/ITL/scene/"..r, pos, out)
+list (25, n, "/ITL/scene/"..r, hue, out)
+--printTable (out, 37)
 return out
 >
 
