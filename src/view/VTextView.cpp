@@ -84,7 +84,7 @@ void VTextView::updateLocalMapping (IText* text)
 //-------------------------------------------------------------------------
 void VTextView::updateLocalMapping (IHtml* text)
 {
-	const char* path = 0;
+	QString path;
 	if (fHtmlFile) {
 		path = fHtmlFile->getFile().c_str();
 	}
@@ -94,9 +94,9 @@ void VTextView::updateLocalMapping (IHtml* text)
 			path = scene->getRootPath().c_str();
 	}
 	QTextDocument *doc = fTextItem->document();
-	if (doc && path)
+	if (doc && path.size()) {
 		doc->setMetaInformation(QTextDocument::DocumentUrl, path);
-
+	}
 	HtmlTextInterface interface(fTextItem);
 	updateLocalMapping(text,interface);
 }

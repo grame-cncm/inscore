@@ -38,6 +38,7 @@
 #include <QUrl>
 
 #ifdef WIN32
+#include <windows.h>
 #define sleep(n)	Sleep(n*1000)
 #endif
 
