@@ -36,6 +36,7 @@ using namespace std;
 namespace inscore
 {
 
+#ifdef LUA
 //--------------------------------------------------------------------------------------------
 static int luaPrint(lua_State *L)
 {
@@ -83,7 +84,6 @@ TLua::~TLua()
 //--------------------------------------------------------------------------------------------
 // lua support
 //--------------------------------------------------------------------------------------------
-#ifdef LUA
 void TLua::bindEnv (const STEnv& env)
 {
 	for (TEnv::TEnvList::const_iterator i = env->begin(); i != env->end(); i++) {
@@ -121,7 +121,7 @@ bool TLua::check( int code ) const
 }
 
 //--------------------------------------------------------------------------------------------
-bool TLua::eval (const char* script, std::string& outStr)
+bool TLua::eval (const char* script, string& outStr)
 {
 	if (check (luaL_loadstring (fLua, script))) {
 		if (check (lua_pcall(fLua, 0, LUA_MULTRET, 0))) {
@@ -158,10 +158,10 @@ TLua::TLua()	{}
 TLua::~TLua()	{}
 void TLua::bindEnv (const STEnv& env) {}
 
-string TLua::luaEval (const char* script)
+bool TLua::eval (const char* script, string& outStr)
 {
 	ITLErr << "lua not available!" << ITLEndl;
-	return "";
+	return false;
 }
 
 #endif

@@ -152,6 +152,7 @@ bool TMozillaJs::eval (int line, const char* script, std::string& outStr)
 //--------------------------------------------------------------------------------------------
 TMozillaJs::TMozillaJs() {}
 TMozillaJs::~TMozillaJs() {}
+void TMozillaJs::bindEnv  (const STEnv& env) {}
 
 bool TMozillaJs::eval (int line, const char* script, std::string& outStr)
 {
