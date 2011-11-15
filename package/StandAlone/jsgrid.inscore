@@ -1,7 +1,7 @@
 
 size = 20;		! the grid size
 huespan=45;		! hue span in degrees
-hue=0;		! initial hue
+hue=0;			! initial hue
 
 /ITL/scene/* del;
 
@@ -25,6 +25,6 @@ hue=0;		! initial hue
 		}
 	}
 	out;
->
+?>
 
 /ITL/scene color 240 240 240;

@@ -29,7 +29,7 @@ function printTable (t, n)
 		print(	out[i] )
 	end
 end
->
+?>
 
 a = "Welcome to LUA";
 r = "rect";
@@ -50,6 +50,6 @@ list (13, n, "/ITL/scene/"..r, pos, out)
 list (25, n, "/ITL/scene/"..r, hue, out)
 --printTable (out, 37)
 return out
->
+?>
 
 /ITL/scene color 240 240 255;
