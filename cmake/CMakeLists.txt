@@ -35,9 +35,9 @@ if(APPLE)
 		set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.5.sdk)
 	endif (${CMAKE_SYSTEM_VERSION} VERSION_LESS 9.0.0)
 
-if (NOT (JAVASCRIPT STREQUAL "yes"))
+#if (NOT (JAVASCRIPT STREQUAL "yes"))
 	set (CMAKE_OSX_ARCHITECTURES "i386 x86_64")
-endif (NOT (JAVASCRIPT STREQUAL "yes"))
+#endif (NOT (JAVASCRIPT STREQUAL "yes"))
 	set (CMAKE_C++_FLAGS -mmacosx-version-min=10.4)
 endif(APPLE)
 
@@ -64,6 +64,7 @@ if (LUA STREQUAL "yes")
 		set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/lua/win32/)
 	else(WIN32)
 		set(SCRIPTS ${SCRIPTS} -llua)
+		set(SCRIPTINCL ${SCRIPTINCL} /usr/local/include)
 	endif (WIN32)
 else (LUA STREQUAL "yes")
 	message (STATUS "lua will not be supported - Use -DLUA=yes to change")
@@ -75,14 +76,18 @@ if (JAVASCRIPT STREQUAL "yes")
 	message (STATUS "javascript will be supported - Use -DJAVASCRIPT=no to change.")
 	add_definitions(-DJAVASCRIPT)
 	if (WIN32)
-		set(SCRIPTS ${SCRIPTS} "$(LOCALLIB)/javascript/win32/javascript.lib")
+		set(SCRIPTS ${SCRIPTS} "${LOCALLIB}/javascript/win32/javascript.lib")
 	else(WIN32)
-		set(SCRIPTS ${SCRIPTS} -ljavascript)
+		if(APPLE)
+			set(SCRIPTS ${SCRIPTS} -L${LOCALLIB}/javascript/MacOS -lmozjs185-1.0)
+			set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/javascript/MacOS)
+		else(APPLE)
+			set(SCRIPTS ${SCRIPTS} -lmozjs185-1.0)
+		endif(APPLE)
 	endif (WIN32)
 else (JAVASCRIPT STREQUAL "yes")
 	message (STATUS "javascript will not be supported - Use -DJAVASCRIPT=yes to change")
 endif (JAVASCRIPT STREQUAL "yes")
-
 
 #######################################
 #
@@ -108,7 +113,7 @@ file (GLOB COREH RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${HEADERS})
 foreach(folder ${INSFOLDERS})
 	set(INCL ${INCL} "${ROOT}/${folder}")				# add include folders
 endforeach(folder)
-set(INCL ${INCL} "${ROOT}/atomic" "/usr/local/include" ${SCRIPTINCL})
+set(INCL ${INCL} "${ROOT}/atomic" ${SCRIPTINCL})
 
 
 #######################################
