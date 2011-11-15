@@ -24,53 +24,39 @@
 */
 
 
-#ifndef __TScripting__
-#define __TScripting__
+#ifndef __TMozillaJs__
+#define __TMozillaJs__
 
-#include <stack>
-#include <TLua.h>
-#include <TMozillaJs.h>
+#include <string>
+#ifdef JAVASCRIPT
+#include <js/jsapi.h>
+#endif
 
 #include "smartpointer.h"
 
-typedef void* yyscan_t;
-
 namespace inscore 
 {
-
-class IMessageList;
-class IMessage;
-class baseparam;
-typedef SMARTP<baseparam> Sbaseparam;
-
 class TEnv;
 typedef SMARTP<TEnv> STEnv;
 
 //--------------------------------------------------------------------------------------------
-class TScripting 
+class TMozillaJs 
 {
-	TLua				fLua;
-	TMozillaJs			fJavascript;
-	IMessageList*		fMessages;
-	STEnv				fEnv;
+#ifdef JAVASCRIPT
+    JSRuntime * fRuntime;
+    JSContext *	fContext;
+	JSObject  *	fGlobal;
+
+	void jsBindEnv (JSContext *cx, const STEnv& env);
+	void getResult (const jsval& val, std::string& outStr) const;
+#endif
 
 	public:	
-		yyscan_t fScanner;
+				 TMozillaJs();
+		virtual ~TMozillaJs();
 
-				 TScripting();
-		virtual ~TScripting();
-
-		void	add			(IMessage* msg);
-		void	add			(IMessageList* msg);
-		void	variable	(const char* ident, int val);
-		void	variable	(const char* ident, float val);
-		void	variable	(const char* ident, const char* val);
-
-		bool	luaEval		(const char* script);
-		bool	jsEval		(const char* script);
-
-		Sbaseparam*	resolve (const char* var);	
-		IMessageList* messages() const { return fMessages; }
+		void	bindEnv		(const STEnv& env);
+		bool	eval		(const char* script, std::string& outStr);
 };
 
 } // namespace
