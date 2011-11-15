@@ -138,8 +138,9 @@ void TMozillaJs::getResult (const jsval& val, std::string& out) const
 }
 
 //--------------------------------------------------------------------------------------------
-bool TMozillaJs::eval (const char* script, std::string& outStr)
+bool TMozillaJs::eval (int line, const char* script, std::string& outStr)
 {
+	fLineOffset = line;
 	JSObject *object = JS_CompileScript(fContext, JS_GetGlobalObject(fContext), script, strlen(script), 0, 1);
 	jsval result;
 	if (!object || !JS_ExecuteScript(fContext, JS_GetGlobalObject(fContext), object, &result))
@@ -152,7 +153,7 @@ bool TMozillaJs::eval (const char* script, std::string& outStr)
 TMozillaJs::TMozillaJs() {}
 TMozillaJs::~TMozillaJs() {}
 
-bool TMozillaJs::eval (const char* script)
+bool TMozillaJs::eval (int line, const char* script, std::string& outStr)
 {
 	ITLErr << "javascript not available!" << ITLEndl;
 	return true;

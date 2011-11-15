@@ -113,12 +113,12 @@ EOL		[\x0a\x0d]
 <QSTR>'						BEGIN INITIAL;
 
 "<?"{SPACE}*"lua"			BEGIN LUASECTION;
-<LUASECTION>([^>]|"\\\>")*	yyextra->fText = unescape(yytext); return LUASCRIPT;
-<LUASECTION>">"				BEGIN INITIAL;
+<LUASECTION>"?>"			BEGIN INITIAL;
+<LUASECTION>({EOL}|"?"[^>]|[^?])*	yyextra->fText = unescape(yytext); return LUASCRIPT;
 
 "<?"{SPACE}*"javascript"	BEGIN JSECTION;
-<JSECTION>([^>]|"\\\>")*	yyextra->fText = unescape(yytext); return JSCRIPT;
-<JSECTION>">"				BEGIN INITIAL;
+<JSECTION>"?>"				BEGIN INITIAL;
+<JSECTION>({EOL}|"?"[^>]|[^?])*		yyextra->fText = unescape(yytext); return JSCRIPT;
 
 
 {RESTART}{RECHAR}*				yyextra->fText = yytext; return REGEXP;			/* regular expression */

@@ -46,6 +46,7 @@ class TMozillaJs
     JSRuntime * fRuntime;
     JSContext *	fContext;
 	JSObject  *	fGlobal;
+	int			fLineOffset;
 
 	void jsBindEnv (JSContext *cx, const STEnv& env);
 	void getResult (const jsval& val, std::string& outStr) const;
@@ -56,7 +57,7 @@ class TMozillaJs
 		virtual ~TMozillaJs();
 
 		void	bindEnv		(const STEnv& env);
-		bool	eval		(const char* script, std::string& outStr);
+		bool	eval		(int line, const char* script, std::string& outStr);
 };
 
 } // namespace

@@ -67,7 +67,7 @@ class TScripting
 		void	variable	(const char* ident, const char* val);
 
 		bool	luaEval		(const char* script);
-		bool	jsEval		(const char* script);
+		bool	jsEval		(const char* script, int lineno);
 
 		Sbaseparam*	resolve (const char* var);	
 		IMessageList* messages() const { return fMessages; }

@@ -91,11 +91,11 @@ bool TScripting::luaEval (const char* script)
 //--------------------------------------------------------------------------------------------
 // javascript support
 //--------------------------------------------------------------------------------------------
-bool TScripting::jsEval (const char* script)
+bool TScripting::jsEval (const char* script, int lineno)
 {
 	fJavascript.bindEnv (fEnv);
 	string jsout;
-	if (fJavascript.eval(script, jsout)) {
+	if (fJavascript.eval(lineno, script, jsout)) {
 		if (jsout.size()) {
 			istringstream stream(jsout);
 			ITLparser p (&stream);

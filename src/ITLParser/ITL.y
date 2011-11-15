@@ -84,6 +84,7 @@ typedef void * yyscan_t;
 int VARerror(YYLTYPE* locp, inscore::ITLparser* context, const char*s, const char* var);
 int yyerror (YYLTYPE* locp, inscore::ITLparser* context, const char*s);
 int yylex(YYSTYPE* lvalp, YYLTYPE* llocp, void* scanner);
+int lineno(inscore::ITLparser* context);
 
 #define scanner context->fScanner
 
@@ -111,7 +112,7 @@ expr		: message  			{ context->fReader.add($1); }
 
 //_______________________________________________
 script		: LUASCRIPT			{ if (!context->fReader.luaEval(context->fText.c_str())) YYABORT;  }
-			| JSCRIPT			{ if (!context->fReader.jsEval(context->fText.c_str())) YYABORT;  }
+			| JSCRIPT			{ if (!context->fReader.jsEval(context->fText.c_str(), lineno(context))) YYABORT;  }
 			;
 
 //_______________________________________________
@@ -174,6 +175,13 @@ IMessageList* ITLparser::parse()
 }
 
 using namespace inscore;
+
+int lineno (ITLparser* context)	
+{ 
+	YYLTYPE* loc = (YYLTYPE*)context->fScanner;
+	return loc->last_line + context->fLine; 
+}
+
 int yyerror(YYLTYPE* loc, ITLparser* context, const char*s) {
 #ifdef NO_OSCSTREAM
 	cerr << "error line: " << loc->last_line + context->fLine << " col: " << loc->first_column << ": " << s << endl;
