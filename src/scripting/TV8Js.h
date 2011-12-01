@@ -24,55 +24,40 @@
 */
 
 
-#ifndef __TScripting__
-#define __TScripting__
+#ifndef __TV8Js__
+#define __TV8Js__
 
-#include <stack>
-#include <TLua.h>
-#include <TMozillaJs.h>
-#include <TV8Js.h>
+#include <string>
+#ifdef V8ENGINE
+#include <v8.h>
+#endif
 
 #include "smartpointer.h"
 
-typedef void* yyscan_t;
-
 namespace inscore 
 {
-
-class IMessageList;
-class IMessage;
-class baseparam;
-typedef SMARTP<baseparam> Sbaseparam;
-
 class TEnv;
 typedef SMARTP<TEnv> STEnv;
 
 //--------------------------------------------------------------------------------------------
-class TScripting 
+class TV8Js 
 {
-	TLua				fLua;
-	TMozillaJs			fJavascript;
-	TV8Js				fV8Javascript;
-	IMessageList*		fMessages;
-	STEnv				fEnv;
+#ifdef V8ENGINE
+	static int	fRefCount;
+    v8::Persistent<v8::Context>	fContext;
+	int			fLineOffset;
+
+	v8::Persistent<v8::Context> CreateV8Context();
+	void ReportException(v8::TryCatch* try_catch) const;
+	void getResult (const v8::Handle<v8::Value>& result, std::string& outStr) const;
+#endif
 
 	public:	
-		yyscan_t fScanner;
+				 TV8Js();
+		virtual ~TV8Js();
 
-				 TScripting();
-		virtual ~TScripting();
-
-		void	add			(IMessage* msg);
-		void	add			(IMessageList* msg);
-		void	variable	(const char* ident, int val);
-		void	variable	(const char* ident, float val);
-		void	variable	(const char* ident, const char* val);
-
-		bool	luaEval		(const char* script);
-		bool	jsEval		(const char* script, int lineno);
-
-		Sbaseparam*	resolve (const char* var);	
-		IMessageList* messages() const { return fMessages; }
+		void	bindEnv		(const STEnv& env);
+		bool	eval		(int line, const char* script, std::string& outStr);
 };
 
 } // namespace

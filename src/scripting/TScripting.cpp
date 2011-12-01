@@ -93,6 +93,19 @@ bool TScripting::luaEval (const char* script)
 //--------------------------------------------------------------------------------------------
 bool TScripting::jsEval (const char* script, int lineno)
 {
+#ifdef V8ENGINE
+	fV8Javascript.bindEnv (fEnv);
+	string jsout;
+	if (fV8Javascript.eval(lineno, script, jsout)) {
+		if (jsout.size()) {
+			istringstream stream(jsout);
+			ITLparser p (&stream);
+			IMessageList* msgs = p.parse();
+			if (msgs) add (msgs);
+		}
+		return true;
+	}
+#else
 	fJavascript.bindEnv (fEnv);
 	string jsout;
 	if (fJavascript.eval(lineno, script, jsout)) {
@@ -104,6 +117,7 @@ bool TScripting::jsEval (const char* script, int lineno)
 		}
 		return true;
 	}
+#endif
 	return false;
 }
 
