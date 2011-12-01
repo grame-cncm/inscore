@@ -7,14 +7,14 @@
 	<key>ApplicationVersion</key>
 	<array>
 		<string>com.omnigroup.OmniGraffle</string>
-		<string>138.17.0.133677</string>
+		<string>138.33.0.157554</string>
 	</array>
 	<key>AutoAdjust</key>
 	<false/>
 	<key>BackgroundGraphic</key>
 	<dict>
 		<key>Bounds</key>
-		<string>{{0, 0}, {559, 783}}</string>
+		<string>{{0, 0}, {559.28, 782.89}}</string>
 		<key>Class</key>
 		<string>SolidGraphic</string>
 		<key>ID</key>
@@ -46,7 +46,7 @@
 	<key>DisplayScale</key>
 	<string>1.000 cm = 1.000 cm</string>
 	<key>GraphDocumentVersion</key>
-	<integer>6</integer>
+	<integer>8</integer>
 	<key>GraphicsList</key>
 	<array>
 		<dict>
@@ -571,6 +571,8 @@
 			<integer>20</integer>
 			<key>OrthogonalBarAutomatic</key>
 			<true/>
+			<key>OrthogonalBarPoint</key>
+			<string>{0, 0}</string>
 			<key>OrthogonalBarPosition</key>
 			<real>-1</real>
 			<key>Points</key>
@@ -617,6 +619,8 @@
 			<integer>19</integer>
 			<key>OrthogonalBarAutomatic</key>
 			<true/>
+			<key>OrthogonalBarPoint</key>
+			<string>{0, 0}</string>
 			<key>OrthogonalBarPosition</key>
 			<real>-1</real>
 			<key>Points</key>
@@ -663,6 +667,8 @@
 			<integer>18</integer>
 			<key>OrthogonalBarAutomatic</key>
 			<true/>
+			<key>OrthogonalBarPoint</key>
+			<string>{0, 0}</string>
 			<key>OrthogonalBarPosition</key>
 			<real>-1</real>
 			<key>Points</key>
@@ -709,6 +715,8 @@
 			<integer>17</integer>
 			<key>OrthogonalBarAutomatic</key>
 			<true/>
+			<key>OrthogonalBarPoint</key>
+			<string>{0, 0}</string>
 			<key>OrthogonalBarPosition</key>
 			<real>-1</real>
 			<key>Points</key>
@@ -755,6 +763,8 @@
 			<integer>16</integer>
 			<key>OrthogonalBarAutomatic</key>
 			<true/>
+			<key>OrthogonalBarPoint</key>
+			<string>{0, 0}</string>
 			<key>OrthogonalBarPosition</key>
 			<real>-1</real>
 			<key>Points</key>
@@ -916,6 +926,8 @@
 						<key>r</key>
 						<string>0.336538</string>
 					</dict>
+					<key>Draws</key>
+					<string>NO</string>
 					<key>Fuzziness</key>
 					<real>17.448123931884766</real>
 					<key>ShadowVector</key>
@@ -1004,7 +1016,7 @@
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2011-07-21 19:07:49 +0200</string>
+	<string>2011-12-01 19:39:29 +0100</string>
 	<key>Modifier</key>
 	<string>Dominique Fober</string>
 	<key>NotesVisible</key>
@@ -1029,8 +1041,8 @@
 		</array>
 		<key>NSPaperSize</key>
 		<array>
-			<string>size</string>
-			<string>{595, 842}</string>
+			<string>coded</string>
+			<string>BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU1ZhbHVlAISECE5TT2JqZWN0AIWEASqEhAx7X05TU2l6ZT1mZn2Wg+zRFESD9nhSRIY=</string>
 		</array>
 		<key>NSRightMargin</key>
 		<array>
@@ -1070,7 +1082,7 @@
 		<key>ExpandedCanvases</key>
 		<array/>
 		<key>Frame</key>
-		<string>{{28, 132}, {1351, 1026}}</string>
+		<string>{{89, 48}, {1351, 980}}</string>
 		<key>ListView</key>
 		<true/>
 		<key>OutlineWidth</key>
@@ -1084,7 +1096,7 @@
 		<key>SidebarWidth</key>
 		<integer>120</integer>
 		<key>VisibleRegion</key>
-		<string>{{-299, 0}, {1202, 872}}</string>
+		<string>{{-299, 0}, {1202, 826}}</string>
 		<key>Zoom</key>
 		<real>1</real>
 		<key>ZoomValues</key>
