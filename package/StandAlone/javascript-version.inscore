@@ -1,0 +1,7 @@
+
+/ITL/scene/* del;
+<?javascript
+	"/ITL/scene/_v8version set 'txt' 'Javascript version " + version() + "';";
+?>
+
+/ITL/scene/_v8version scale 2.;
