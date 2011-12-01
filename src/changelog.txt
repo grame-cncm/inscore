@@ -12,6 +12,11 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 0.96
+ - switch to v8 javascript engine
+ - lua not embedded by default
+
+----------------------------------------------------
 Version 0.95
 - new 'mouse' 'show/hide' message supported at application level
 - graphic signal supports alpha messages at object level
