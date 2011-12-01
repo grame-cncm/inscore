@@ -24,15 +24,10 @@
 */
 
 
-#ifndef __VObjectView__
-#define __VObjectView__
+#ifndef __VDummyObjectView__
+#define __VDummyObjectView__
 
-#include <iostream>
-
-#include "IObject.h"
-#include "GraphicEffect.h"
-
-//#include <QRect>
+#include "VObjectView.h"
 
 namespace inscore
 {
@@ -44,40 +39,39 @@ namespace inscore
 
 //--------------------------------------------------------------------------
 /**
-*	\brief a graphic view of a IObject that uses a QGraphicsItem to render.
+*	\brief a dummy graphic view of a IObject.
 */
-class VObjectView
+class VDummyObjectView : public VObjectView
 {
 	public :
-		virtual ~VObjectView()	{}
+		virtual ~VDummyObjectView()	{}
 
-		virtual void updateView(IObject * object)			= 0;
-		virtual void updateObjectSize( IObject * object )	= 0;
-		virtual void setParentView (IObject * object)		= 0;
-//		virtual void setParentItem( VObjectView* master )	= 0;
+		virtual void updateView(IObject * object)			{}
+		virtual void updateObjectSize( IObject * object )	{}
+		virtual void setParentView (IObject * object)		{}
 
-		virtual void setEffect (GraphicEffect& effect)		= 0;
-		virtual GraphicEffect getEffect () const			= 0;
+		virtual void setEffect (GraphicEffect& effect)		{}
+		virtual GraphicEffect getEffect () const			{ return GraphicEffect(); }
 
 		/// \brief Maps the IObject [-1,1] y coordinate to the referenceRect().
-		virtual double relative2SceneY(float y) const						= 0;
+		virtual double relative2SceneY(float y) const						{ return y; }
 		/// \brief Maps the IObject [-1,1] x coordinate to the referenceRect().
-		virtual double relative2SceneX(float x) const						= 0;
+		virtual double relative2SceneX(float x) const						{ return x; }
 		/// \brief Maps the IObject [0,2] width value to the corresponding referenceRect() value.
-		virtual double relative2SceneWidth(float width) const				= 0;
+		virtual double relative2SceneWidth(float width) const				{ return width; }
 		/// \brief Maps the IObject [0,2] height value to the corresponding referenceRect() value.
-		virtual double relative2SceneHeight(float height) const				= 0;
+		virtual double relative2SceneHeight(float height) const				{ return height; }
 		/// \brief Maps a rect expressed in [-1,1] scene coordinate to a QRectF expressed in referenceRect() coordinates.
 //		virtual QRectF relative2SceneRect( const TFloatRect& rect) const	= 0;
 
 		/// \brief Maps the referenceRect() width value to the corresponding [0,2] value.
-		virtual double scene2RelativeWidth(float width) const				= 0;
+		virtual double scene2RelativeWidth(float width) const				{ return width; }
 		/// \brief Maps the referenceRect() height value to the corresponding [0,2] value.
-		virtual double scene2RelativeHeight(float height) const				= 0;
+		virtual double scene2RelativeHeight(float height) const				{ return height; }
 		/// \brief Maps the referenceRect() x value to the corresponding [-1,1] value.
-		virtual double scene2RelativeX(float x) const						= 0;
+		virtual double scene2RelativeX(float x) const						{ return x; }
 		/// \brief Maps the referenceRect() y value to the corresponding [-1,1] value.
-		virtual double scene2RelativeY(float y) const						= 0;
+		virtual double scene2RelativeY(float y) const						{ return y; }
 };
 
 /*!@} */
