@@ -23,11 +23,11 @@ libv8.a : libv8-32.a libv8-64.a
 	libtool -o libv8.a libv8-32.a libv8-64.a
 
 libv8-32.a :
-	cd $(V8) && scons
+	cd $(V8) && scons -j 4
 	cp $(V8)/libv8.a libv8-32.a  
 
 libv8-64.a :
-	cd $(V8) && scons arch=x64
+	cd $(V8) && scons -j 4 arch=x64
 	cp $(V8)/libv8.a libv8-64.a  
 
 clean:
