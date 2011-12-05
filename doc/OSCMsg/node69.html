@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.7 Differences to version 0.74</TITLE>
-<META NAME="description" CONTENT="17.7 Differences to version 0.74">
+<TITLE>17.7 Differences to version 0.80</TITLE>
+<META NAME="description" CONTENT="17.7 Differences to version 0.80">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,44 +27,47 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1167"
+<A NAME="tex2html1187"
   HREF="node70.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1161"
+<A NAME="tex2html1181"
   HREF="node62.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1155"
+<A NAME="tex2html1175"
   HREF="node68.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1163"
+<A NAME="tex2html1183"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1165"
-  HREF="node76.html">
+<A NAME="tex2html1185"
+  HREF="node82.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1168"
+<B> Next:</B> <A NAME="tex2html1188"
   HREF="node70.html">17.8 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1162"
+<B> Up:</B> <A NAME="tex2html1182"
   HREF="node62.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1156"
+<B> Previous:</B> <A NAME="tex2html1176"
   HREF="node68.html">17.6 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1164"
+ &nbsp; <B>  <A NAME="tex2html1184"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1166"
-  HREF="node76.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1186"
+  HREF="node82.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION001870000000000000000">
-17.7 Differences to version 0.74</A>
+17.7 Differences to version 0.80</A>
 </H1>
 
 <UL>
-<LI>new <TT>map+</TT> message  (see section <A HREF="node31.html#mapAddMsg">9.2</A> p.<A HREF="node31.html#mapAddMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>behavior change with synchronization without stretch: now the system looks also in the
+  slave map for a segment corresponding to the master date.
 </LI>
-<LI>the <TT>click</TT> and <TT>select</TT> messages are deprecated (but still supported). They will be removed in a future version (see section <A HREF="node20.html#csmsg">4.4</A> p.<A HREF="node20.html#csmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI><TT>$date</TT> variable change: the value is now (0,0) when no date is available and <TT>$date</TT> is time shifted according to the object date.
+</LI>
+<LI><TT>date</TT> message change: the date 0 0 is ignored
 </LI>
 </UL>
 

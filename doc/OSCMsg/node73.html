@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.11 Differences to version 0.53</TITLE>
-<META NAME="description" CONTENT="17.11 Differences to version 0.53">
+<TITLE>17.11 Differences to version 0.76</TITLE>
+<META NAME="description" CONTENT="17.11 Differences to version 0.76">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,62 +27,52 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1223"
+<A NAME="tex2html1243"
   HREF="node74.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1217"
+<A NAME="tex2html1237"
   HREF="node62.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1211"
+<A NAME="tex2html1231"
   HREF="node72.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1219"
+<A NAME="tex2html1239"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1221"
-  HREF="node76.html">
+<A NAME="tex2html1241"
+  HREF="node82.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1224"
+<B> Next:</B> <A NAME="tex2html1244"
   HREF="node74.html">17.12 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1218"
+<B> Up:</B> <A NAME="tex2html1238"
   HREF="node62.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1212"
+<B> Previous:</B> <A NAME="tex2html1232"
   HREF="node72.html">17.10 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1220"
+ &nbsp; <B>  <A NAME="tex2html1240"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1222"
-  HREF="node76.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1242"
+  HREF="node82.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION0018110000000000000000">
-17.11 Differences to version 0.53</A>
+17.11 Differences to version 0.76</A>
 </H1>
 
 <UL>
-<LI>ITL parser corrected to support regexp in message string (used by messages addressed to sync node)
+<LI>get <TT>guido-version</TT> and <TT>musicxml-version</TT> messages supported by the application (see section <A HREF="node5.html#ITL">2</A> p.<A HREF="node5.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>format of mapping files and strings changed (section <A HREF="node30.html#mapMsg">9.1</A> p.<A HREF="node30.html#mapMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI><TT>save</TT> message bug correction - introduced with version 0.70: only partial state of objects was saved
 </LI>
-<LI>format of sync messages extended to include map name (section <A HREF="node33.html#syncmsg">10</A> p.<A HREF="node33.html#syncmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI><TT>rootPath</TT> message introduced at scene level (see section <A HREF="node6.html#scene">3</A> p.<A HREF="node6.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>signal node: 'garbage' message removed
+<LI>scene name translation strategy change: only the explicit 'scene' name is 
+  translated by the scene load message handler into the current scene name, 
+  other names are left unchanged.
 </LI>
-<LI>new 'reset' message for the scene (/ITL/scene) (section <A HREF="node6.html#scene">3</A> p.<A HREF="node6.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>new 'version' message for the application (/ITL) (section <A HREF="node5.html#ITL">2</A> p.<A HREF="node5.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>new 'reset' message for signals (section <A HREF="node44.html#ssignal">13.1.1</A> p.<A HREF="node44.html#ssignal"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>bug parsing messages without params corrected
-</LI>
-<LI>slave segmentation used for synchronization
-</LI>
-<LI>new H synchronization mode (preserves slave segmentation)
-</LI>
-<LI>crash bug corrected for load message and missing ITL files
+<LI>bitmap copy adjustment in sync stretched mode is now only made for images
 </LI>
 </UL>
 

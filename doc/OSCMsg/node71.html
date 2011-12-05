@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.9 Differences to version 0.60</TITLE>
-<META NAME="description" CONTENT="17.9 Differences to version 0.60">
+<TITLE>17.9 Differences to version 0.78</TITLE>
+<META NAME="description" CONTENT="17.9 Differences to version 0.78">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,62 +27,52 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1195"
+<A NAME="tex2html1215"
   HREF="node72.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1189"
+<A NAME="tex2html1209"
   HREF="node62.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1183"
+<A NAME="tex2html1203"
   HREF="node70.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1191"
+<A NAME="tex2html1211"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1193"
-  HREF="node76.html">
+<A NAME="tex2html1213"
+  HREF="node82.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1196"
+<B> Next:</B> <A NAME="tex2html1216"
   HREF="node72.html">17.10 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1190"
+<B> Up:</B> <A NAME="tex2html1210"
   HREF="node62.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1184"
+<B> Previous:</B> <A NAME="tex2html1204"
   HREF="node70.html">17.8 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1192"
+ &nbsp; <B>  <A NAME="tex2html1212"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1194"
-  HREF="node76.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1214"
+  HREF="node82.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION001890000000000000000">
-17.9 Differences to version 0.60</A>
+17.9 Differences to version 0.78</A>
 </H1>
 
 <UL>
-<LI>new 'mousemove' event (see section <A HREF="node54.html#interactmsg">15.1</A> p.<A HREF="node54.html#interactmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>crash bug corrected for the 'save' message addressed to '/ITL'
 </LI>
-<LI>interaction messages accept variables ($x, $y, $date...) (see section <A HREF="node56.html#interactvar">15.3</A> p.<A HREF="node56.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>message policy change: relaxed numeric parameters policy (float are accepted for int and int for float)
 </LI>
-<LI>SVG code and files support (see section <A HREF="node22.html#setfile">6</A> p.<A HREF="node22.html#setfile"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>bug in <TT>get watch</TT> for time events corrected (incorrect reply)
 </LI>
-<LI>set line message change: the <TT>x y</TT> form is deprecated, it is replaced by
-  the following forms: 
-<BR>  <TT>'xy' x y</TT> (equivalent to the former form) 
-  and <TT>'wa' width angle</TT>   
-  (see section <A HREF="node22.html#setsect">6</A> p.<A HREF="node22.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>new 'effect' message  (section <A HREF="node16.html#effectmsg">4.3</A> p.<A HREF="node16.html#effectmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>utf8 support on windows corrected
-</LI>
-<LI>transparency support for stretched synchronized objects corrected
-</LI>
-<LI>multiple application instances supported with dynamic udp port number allocation.
-</LI>
-<LI>command line option with -port portnumber option to set the receive udp port number at startup.
+</UL>
+Known issues:
+
+<UL>
+<LI>map not saved by the <TT>save</TT> message 
 </LI>
 </UL>
 

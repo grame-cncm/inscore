@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.6 Differences to version 0.75</TITLE>
-<META NAME="description" CONTENT="17.6 Differences to version 0.75">
+<TITLE>17.6 Differences to version 0.81</TITLE>
+<META NAME="description" CONTENT="17.6 Differences to version 0.81">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,93 +27,59 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1153"
+<A NAME="tex2html1173"
   HREF="node69.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1147"
+<A NAME="tex2html1167"
   HREF="node62.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1141"
+<A NAME="tex2html1161"
   HREF="node67.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1149"
+<A NAME="tex2html1169"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1151"
-  HREF="node76.html">
+<A NAME="tex2html1171"
+  HREF="node82.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1154"
+<B> Next:</B> <A NAME="tex2html1174"
   HREF="node69.html">17.7 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1148"
+<B> Up:</B> <A NAME="tex2html1168"
   HREF="node62.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1142"
+<B> Previous:</B> <A NAME="tex2html1162"
   HREF="node67.html">17.5 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1150"
+ &nbsp; <B>  <A NAME="tex2html1170"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1152"
-  HREF="node76.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1172"
+  HREF="node82.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION001860000000000000000">
-17.6 Differences to version 0.75</A>
+17.6 Differences to version 0.81</A>
 </H1>
 
 <UL>
-<LI>new <TT>require</TT> message supported by the <TT>/ITL</TT> node (see section <A HREF="node5.html#ITL">2</A> p.<A HREF="node5.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>new Faust plugins for signals processing
 </LI>
-<LI>new event named <TT>newElement</TT> supported at scene level (see section <A HREF="node55.html#notifymsg">15.2</A> p.<A HREF="node55.html#notifymsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>colors management change: all the color models (RGBA and HSBA) accept now
+  float values that are interpreted in the common [-1,1] range. For the
+  hue value, 0 always corresponds to 'red' whatever the scale used.
 </LI>
-<LI>new <TT>name</TT> and <TT>address</TT> variables (see section <A HREF="node56.html#interactvar">15.3</A> p.<A HREF="node56.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>stretch adjustment for video objects (corrects gaps in sync h mode)
 </LI>
-<LI>new system map computation making use of the new slices map provided by the guidolib version 1.42
+<LI>support for opening inscore files on the command line
 </LI>
-<LI>INScore API: the <TT>newMessage</TT> method sets now the message src IP to localhost
-  With the previous version and the lack of src IP, replies to queries or error 
-  messages could be sent to undefined addresses (and mostly lost).
+<LI>system mapping correction
 </LI>
-<LI>bug corrected with ellipse and rect : integer graphic size computation changed 
-  to float (prevents objects disappearance with small width or height)
-</LI>
-<LI>bug in scene export: left and right borders could be cut, depending  on the scene size
-  corrected by rendering the QGraphicsView container instead the QGraphicsScene
-</LI>
-<LI>crash bug with $date:name corrected: crashed when there is no mapping named <TT>name</TT>.
+<LI>splash screen and about menu implemented by the viewer
 </LI>
 </UL>
 
 <P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html1153"
-  HREF="node69.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1147"
-  HREF="node62.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1141"
-  HREF="node67.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1149"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1151"
-  HREF="node76.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html1154"
-  HREF="node69.html">17.7 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1148"
-  HREF="node62.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1142"
-  HREF="node67.html">17.5 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1150"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1152"
-  HREF="node76.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>16.1 Loops</TITLE>
-<META NAME="description" CONTENT="16.1 Loops">
+<TITLE>16.1 Variables</TITLE>
+<META NAME="description" CONTENT="16.1 Variables">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,79 +27,56 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1030"
+<A NAME="tex2html1044"
   HREF="node61.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1024"
+<A NAME="tex2html1038"
   HREF="node59.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1018"
+<A NAME="tex2html1032"
   HREF="node59.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1026"
+<A NAME="tex2html1040"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1028"
-  HREF="node76.html">
+<A NAME="tex2html1042"
+  HREF="node82.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1031"
-  HREF="node61.html">16.2 Variables</A>
-<B> Up:</B> <A NAME="tex2html1025"
+<B> Next:</B> <A NAME="tex2html1045"
+  HREF="node61.html">16.2 Languages</A>
+<B> Up:</B> <A NAME="tex2html1039"
   HREF="node59.html">16. Scripting</A>
-<B> Previous:</B> <A NAME="tex2html1019"
+<B> Previous:</B> <A NAME="tex2html1033"
   HREF="node59.html">16. Scripting</A>
- &nbsp; <B>  <A NAME="tex2html1027"
+ &nbsp; <B>  <A NAME="tex2html1041"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1029"
-  HREF="node76.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1043"
+  HREF="node82.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001710000000000000000"></A><A NAME="loops"></A>
+<H1><A NAME="SECTION001710000000000000000"></A><A NAME="scriptvar"></A>
 <BR>
-16.1 Loops
+16.1 Variables
 </H1>
 
 <P>
-The <TT>loop</TT> operation is defined as follows:
+A variable may hold any value supported by the parameter types. <B><TT><FONT SIZE="-1">string</FONT></TT></B> must be enclosed in simple or double quotes. It is declared as follows:
 <BR>
 <IMG
- WIDTH="667" HEIGHT="127" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="346" HEIGHT="123" ALIGN="BOTTOM" BORDER="0"
  SRC="img96.gif"
  ALT="\begin{rail}
-loop : 'loop' '(' (ident ',' int32 ',' (OSCMessage+)')' \vert loop) ';'
+variabledecl : 'ident' '=' ( int32 \vert float32 \vert string ) ';'
 \end{rail}">
 <BR>
 <A NAME="1260"></A>
-It iterates the enclosed messages, which may refer to the current iteration using <TT>ident</TT>. A reference to the current iteration has the following form:
-<BR>
-<IMG
- WIDTH="158" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
- SRC="img97.gif"
- ALT="\begin{rail}
-identref : '\%' ident
-\end{rail}">
-<BR>
-Depending on the current context, it is expanded as a string, int32 or float32 parameter: 
+A variable may be used in place of any message parameter. A reference to a variable must have the form <TT>$ident</TT> where <TT>ident</TT> is a previously declared variable. 
 
-<UL>
-<LI>an iteration reference found in an OSC address is expanded as a string,
-</LI>
-<LI>an iteration reference found in a parameter is expanded as:
-
-<UL>
-<LI>an <B><TT><FONT SIZE="-1">int32</FONT></TT></B> when the parameter contains only numbers, 
-</LI>
-<LI>a <B><TT><FONT SIZE="-1">float32</FONT></TT></B> when it contains numbers and a dot,
-</LI>
-<LI>otherwise as a <B><TT><FONT SIZE="-1">string</FONT></TT></B>.
-</LI>
-</UL>
-</LI>
-</UL>
-An iteration reference is not allowed in the message string and should trigger a syntax error.
+<P>
+Note that interaction messages may also use variables with similar reference forms ($ident). There is however no ambiguity concerning these references: interaction variables are always passed as strings and should be quoted, scripts variables as used without quotes.
 
 <P>
 Example:
@@ -108,10 +85,9 @@ Example:
 								</DIV><TABLE  WIDTH="0%">
 <TR><TD> 
 								<FONT SIZE="-1"><TT>
-loop(i, 3,
-<BR>   /ITL/scene/rect%i set 'rect' 0.1 0.1; 
-<BR>   /ITL/scene/rect%i x '0.%i'; 
-<BR> );
+x=0.5;
+<BR>/ITL/scene/a x $x;
+<BR>/ITL/scene/b x $x;
 </TT></FONT>
 								</TD></TR>
 </TABLE>
