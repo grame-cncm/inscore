@@ -1,8 +1,0 @@
-/ITL/scene/* del
-/ITL/scene/signal/* del
-
-/ITL/scene/video set video "countdown.mov"
-/ITL/scene/video z -1.
-/ITL/scene/video mapf "video.map"
-/ITL/scene/video videoMapf "videotime1.map"
-
