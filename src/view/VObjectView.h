@@ -54,7 +54,7 @@ class VObjectView
 		virtual void updateView(IObject * object)			= 0;
 		virtual void updateObjectSize( IObject * object )	= 0;
 		virtual void setParentView (IObject * object)		= 0;
-//		virtual void setParentItem( VObjectView* master )	= 0;
+		virtual void setParentItem( VObjectView* master )	= 0;
 
 		virtual void setEffect (GraphicEffect& effect)		= 0;
 		virtual GraphicEffect getEffect () const			= 0;
@@ -67,8 +67,6 @@ class VObjectView
 		virtual double relative2SceneWidth(float width) const				= 0;
 		/// \brief Maps the IObject [0,2] height value to the corresponding referenceRect() value.
 		virtual double relative2SceneHeight(float height) const				= 0;
-		/// \brief Maps a rect expressed in [-1,1] scene coordinate to a QRectF expressed in referenceRect() coordinates.
-//		virtual QRectF relative2SceneRect( const TFloatRect& rect) const	= 0;
 
 		/// \brief Maps the referenceRect() width value to the corresponding [0,2] value.
 		virtual double scene2RelativeWidth(float width) const				= 0;
@@ -78,6 +76,12 @@ class VObjectView
 		virtual double scene2RelativeX(float x) const						= 0;
 		/// \brief Maps the referenceRect() y value to the corresponding [-1,1] value.
 		virtual double scene2RelativeY(float y) const						= 0;
+
+		/// \brief updates the local mapping (do nothing at IObject level) 
+		virtual void	updateLocalMapping (IObject* obj)	{}
+		/// \brief initialize an object view (do nothing at IObject level)
+		virtual void	initialize (IObject* obj)			{}
+
 };
 
 /*!@} */
