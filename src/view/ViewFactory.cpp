@@ -26,8 +26,7 @@
 
 #include "IModel.h"
 #include "ViewFactory.h"
-
-#include "VGraphicsItemView.h"
+#include "VObjectView.h"
 
 #include "VApplView.h"
 #include "VCurveView.h"
@@ -48,27 +47,27 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-VCurveView*		ViewFactory::create (const ICurve* object, QGraphicsScene* scene)			{ return new VCurveView (scene, object); }
-VEllipseView*	ViewFactory::create (const IEllipse* object, QGraphicsScene* scene)			{ return new VEllipseView (scene, object); }
-VGraphView*		ViewFactory::create (const IGraphicSignal* object, QGraphicsScene* scene)	{ return new VGraphView (scene, object); }
-VGuidoItemView* ViewFactory::create (const IGuidoCode* object, QGraphicsScene* scene)		{ return new VGuidoItemView (scene, object); }
-VGuidoItemView* ViewFactory::create (const IGuidoFile* object, QGraphicsScene* scene)		{ return new VGuidoItemView (scene, object); }
-VTextView*		ViewFactory::create (const IHtml* object, QGraphicsScene* scene)			{ return new VTextView (scene, object); }
-VTextView*		ViewFactory::create (const IHtmlFile* object, QGraphicsScene* scene)		{ return new VTextView (scene, object); }
-VImageView*		ViewFactory::create (const IImage* object, QGraphicsScene* scene)			{ return new VImageView (scene, object); }
-VLineView*		ViewFactory::create (const ILine* object, QGraphicsScene* scene)			{ return new VLineView (scene, object); }
-VPolygonView*	ViewFactory::create (const IPolygon* object, QGraphicsScene* scene)			{ return new VPolygonView (scene, object); }
-VGridView*		ViewFactory::create (const IGrid* object, QGraphicsScene* scene)			{ return new VGridView (scene, object); }
-VRectView*		ViewFactory::create (const IRect* object, QGraphicsScene* scene)			{ return new VRectView (scene, object); }
-VSVGView*		ViewFactory::create (const ISVG* object, QGraphicsScene* scene)				{ return new VSVGView (scene, object); }
-VSVGView*		ViewFactory::create (const ISVGFile* object, QGraphicsScene* scene)			{ return new VSVGView (scene, object); }
-VTextView*		ViewFactory::create (const IText* object, QGraphicsScene* scene)			{ return new VTextView (scene, object); }
-VTextView*		ViewFactory::create (const ITextFile* object, QGraphicsScene* scene)		{ return new VTextView (scene, object); }
-VVideoView*		ViewFactory::create (const IVideo* object, QGraphicsScene* scene)			{ return new VVideoView (scene, object); }
+VObjectView*	ViewFactory::create (const ICurve* object,		QGraphicsScene* scene)		{ return new VCurveView (scene, object); }
+VObjectView*	ViewFactory::create (const IEllipse* object,	QGraphicsScene* scene)		{ return new VEllipseView (scene, object); }
+VObjectView*	ViewFactory::create (const IGraphicSignal* object, QGraphicsScene* scene)	{ return new VGraphView (scene, object); }
+VObjectView*	ViewFactory::create (const IGuidoCode* object,	QGraphicsScene* scene)		{ return new VGuidoItemView (scene, object); }
+VObjectView*	ViewFactory::create (const IGuidoFile* object,	QGraphicsScene* scene)		{ return new VGuidoItemView (scene, object); }
+VObjectView*	ViewFactory::create (const IHtml* object,		QGraphicsScene* scene)		{ return new VTextView (scene, object); }
+VObjectView*	ViewFactory::create (const IHtmlFile* object,	QGraphicsScene* scene)		{ return new VTextView (scene, object); }
+VObjectView*	ViewFactory::create (const IImage* object,		QGraphicsScene* scene)		{ return new VImageView (scene, object); }
+VObjectView*	ViewFactory::create (const ILine* object,		QGraphicsScene* scene)		{ return new VLineView (scene, object); }
+VObjectView*	ViewFactory::create (const IPolygon* object,	QGraphicsScene* scene)		{ return new VPolygonView (scene, object); }
+VObjectView*	ViewFactory::create (const IGrid* object,		QGraphicsScene* scene)		{ return new VGridView (scene, object); }
+VObjectView*	ViewFactory::create (const IRect* object,		QGraphicsScene* scene)		{ return new VRectView (scene, object); }
+VObjectView*	ViewFactory::create (const ISVG* object,		QGraphicsScene* scene)		{ return new VSVGView (scene, object); }
+VObjectView*	ViewFactory::create (const ISVGFile* object,	QGraphicsScene* scene)		{ return new VSVGView (scene, object); }
+VObjectView*	ViewFactory::create (const IText* object,		QGraphicsScene* scene)		{ return new VTextView (scene, object); }
+VObjectView*	ViewFactory::create (const ITextFile* object,	QGraphicsScene* scene)		{ return new VTextView (scene, object); }
+VObjectView*	ViewFactory::create (const IVideo* object,		QGraphicsScene* scene)		{ return new VVideoView (scene, object); }
 
 //--------------------------------------------------------------------------
-VSceneView* ViewFactory::create(const IScene* obj)		{ return new VSceneView (obj->getOSCAddress(), new QGraphicsScene ); }
-VApplView*	ViewFactory::create(const IAppl* obj)		{ return new VApplView (); }
+VObjectView* ViewFactory::create(const IScene* obj)		{ return new VSceneView (obj->getOSCAddress(), new QGraphicsScene ); }
+VObjectView* ViewFactory::create(const IAppl* obj)		{ return new VApplView (); }
 
 }
 

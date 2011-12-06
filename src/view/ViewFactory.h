@@ -32,24 +32,6 @@ class QGraphicsScene;
 namespace inscore
 {
 
-class VApplView;
-class VSceneView;
-
-class VCurveView;
-class VEllipseView;
-class VGraphicsItemView;
-class VGraphView;
-class VGridView;
-class VGuidoItemView;
-class VImageView;
-class VLineView;
-class VPolygonView;
-class VRectView;
-class VSVGView;
-class VTextView;
-class VVideoView;
-
-
 /*!
 \addtogroup ITLView
 @{
@@ -58,26 +40,26 @@ class ViewFactory
 {
 	public:
 
-	static VApplView*			create (const IAppl* object);
-	static VSceneView*			create (const IScene* object);
+	static VObjectView*		create (const IAppl* object);
+	static VObjectView*		create (const IScene* object);
 
-	static VCurveView*		create (const ICurve* object, QGraphicsScene* scene);
-	static VEllipseView*	create (const IEllipse* object, QGraphicsScene* scene);
-	static VGraphView*		create (const IGraphicSignal* object, QGraphicsScene* scene);
-	static VGuidoItemView*	create (const IGuidoCode* object, QGraphicsScene* scene);
-	static VGuidoItemView*	create (const IGuidoFile* object, QGraphicsScene* scene);
-	static VTextView*		create (const IHtml* object, QGraphicsScene* scene);
-	static VTextView*		create (const IHtmlFile* object, QGraphicsScene* scene);
-	static VImageView*		create (const IImage* object, QGraphicsScene* scene);
-	static VLineView*		create (const ILine* object, QGraphicsScene* scene);
-	static VPolygonView*	create (const IPolygon* object, QGraphicsScene* scene);
-	static VGridView*		create (const IGrid* object, QGraphicsScene* scene);
-	static VRectView*		create (const IRect* object, QGraphicsScene* scene);
-	static VSVGView*		create (const ISVG* object, QGraphicsScene* scene);
-	static VSVGView*		create (const ISVGFile* object, QGraphicsScene* scene);
-	static VTextView*		create (const IText* object, QGraphicsScene* scene);
-	static VTextView*		create (const ITextFile* object, QGraphicsScene* scene);
-	static VVideoView*		create (const IVideo* object, QGraphicsScene* scene);
+	static VObjectView*		create (const ICurve* object,		QGraphicsScene* scene);
+	static VObjectView*		create (const IEllipse* object,		QGraphicsScene* scene);
+	static VObjectView*		create (const IGraphicSignal* object, QGraphicsScene* scene);
+	static VObjectView*		create (const IGuidoCode* object,	QGraphicsScene* scene);
+	static VObjectView*		create (const IGuidoFile* object,	QGraphicsScene* scene);
+	static VObjectView*		create (const IHtml* object,		QGraphicsScene* scene);
+	static VObjectView*		create (const IHtmlFile* object,	QGraphicsScene* scene);
+	static VObjectView*		create (const IImage* object,		QGraphicsScene* scene);
+	static VObjectView*		create (const ILine* object,		QGraphicsScene* scene);
+	static VObjectView*		create (const IPolygon* object,		QGraphicsScene* scene);
+	static VObjectView*		create (const IGrid* object,		QGraphicsScene* scene);
+	static VObjectView*		create (const IRect* object,		QGraphicsScene* scene);
+	static VObjectView*		create (const ISVG* object,			QGraphicsScene* scene);
+	static VObjectView*		create (const ISVGFile* object,		QGraphicsScene* scene);
+	static VObjectView*		create (const IText* object,		QGraphicsScene* scene);
+	static VObjectView*		create (const ITextFile* object,	QGraphicsScene* scene);
+	static VObjectView*		create (const IVideo* object,		QGraphicsScene* scene);
 };
 
 /*!@} */
