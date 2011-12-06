@@ -37,7 +37,6 @@ namespace inscore
 @{
 */
 
-class VLineView;
 class Updater;
 class ILine;
 typedef class SMARTP<ILine>	SILine;
@@ -48,7 +47,6 @@ typedef class SMARTP<ILine>	SILine;
 */
 class ILine : public IShapeMap
 {
-	VLineView*	fView;
 	TFloatPoint fPoint;
 
 	public:
@@ -60,16 +58,11 @@ class ILine : public IShapeMap
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*);
 
-		VLineView *		getView () const			{ return fView; }
-		void			setView (VLineView * view) 	{ fView = view; }
-		VGraphicsItemView*	graphicView() const		{ return (VGraphicsItemView*)fView; }
-
 	protected:
 				 ILine( const std::string& name, IObject* parent );
 		virtual ~ILine() {}
 
 		void	setPoint(const TFloatPoint& p)		{ fPoint = p; }
-
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 };

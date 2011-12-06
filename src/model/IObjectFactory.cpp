@@ -42,7 +42,7 @@ template<typename T> SIObject _create(const std::string& name , IObject* parent)
 {
 	SMARTP<T> obj = T::create(name, parent);
 	if (obj) {
-		obj->setView ( ViewFactory::create(obj, parent->getScene()->getView()->scene()));
+		obj->setView ( ViewFactory::create(obj, parent->getScene()->getGraphicScene()));
 	}
 	return obj->getView() ? obj : 0;
 }

@@ -54,7 +54,7 @@ const string IScene::kSceneType("scene");
 
 //--------------------------------------------------------------------------
 IScene::~IScene() { delete fView; }
-IScene::IScene(const std::string& name, IObject * parent) : IRectShape(name, parent), fFullScreen(false), fView(0)
+IScene::IScene(const std::string& name, IObject * parent) : IRectShape(name, parent), fFullScreen(false)
 {
 	fTypeString = kSceneType;
 	setColor( IColor(255,255,255,255) );
@@ -64,7 +64,7 @@ IScene::IScene(const std::string& name, IObject * parent) : IRectShape(name, par
 	fMsgHandlerMap["new"]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::newScene);
 	fMsgHandlerMap["del"]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::del);
 	fMsgHandlerMap["reset"]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::reset);
-	fMsgHandlerMap["foreground"]	= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::foreground);
+//	fMsgHandlerMap["foreground"]	= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::foreground);
 	fMsgHandlerMap["fullscreen"]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFullScreen);
 	fMsgHandlerMap["load"]			= TMethodMsgHandler<IScene>::create(this, &IScene::loadMsg);
 	fMsgHandlerMap["rootPath"]		= TSetMethodMsgHandler<IScene, string>::create(this, &IScene::setRootPath);
@@ -75,7 +75,7 @@ IScene::IScene(const std::string& name, IObject * parent) : IRectShape(name, par
 }
 
 //--------------------------------------------------------------------------
-QGraphicsScene * IScene::getGraphicScene () const			{ return getView()->scene(); }
+QGraphicsScene * IScene::getGraphicScene () const			{ return fView ? static_cast<VSceneView*>(fView)->scene() : 0; }
 
 //--------------------------------------------------------------------------
 void IScene::setHandlers ()
@@ -90,7 +90,7 @@ void IScene::setHandlers ()
 //--------------------------------------------------------------------------
 void IScene::newScene ()	{}
 void IScene::del ()			{ IObject::del(); }
-void IScene::foreground()	{ getView()->foreground(); }
+//void IScene::foreground()	{ getView()->foreground(); }
 void IScene::setRootPath(const std::string& s) { fRootPath = IAppl::checkRootPath(s);}
 
 //--------------------------------------------------------------------------

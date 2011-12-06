@@ -39,7 +39,7 @@ const string IGuidoCode::kGuidoCodeType("gmn");
 
 //--------------------------------------------------------------------------
 IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
-	IObject (name, parent) , fGRHandler(0), fView(0), fPage(1), fPageFormat( 21.0f, 29.7f ), fPageCount(0),
+	IObject (name, parent) , fGRHandler(0), fPage(1), fPageFormat( 21.0f, 29.7f ), fPageCount(0),
 	fNbOfPageColumns(2), fNbOfPageRows(1)
 {
 	fLocalMappings = TLocalMapping<RelativeTimeSegment>::create();

@@ -37,7 +37,6 @@ namespace inscore
 @{
 */
 
-class VCurveView;
 class Updater;
 class ICurve;
 typedef class SMARTP<ICurve>	SICurve;
@@ -70,17 +69,10 @@ class ICurve : public IShapeMap
 		static SICurve create(const std::string& name, IObject* parent)	{ return new ICurve(name, parent); }
 
 		const CurveData&	getPoints() const			{ return fPoints; }
-
-		virtual void	print(std::ostream& out) const;
-		virtual void	accept (Updater*);
-
-		VCurveView *	getView () const				{ return fView; }
-		void			setView (VCurveView * view) 	{ fView = view; }
-		VGraphicsItemView*	graphicView() const			{ return (VGraphicsItemView*)fView; }
+		virtual void		print(std::ostream& out) const;
+		virtual void		accept (Updater*);
 
 	protected:
-		VCurveView * fView;
-		
 				 ICurve( const std::string& name, IObject* parent );
 		virtual ~ICurve() {}
 

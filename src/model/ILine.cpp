@@ -36,7 +36,7 @@ namespace inscore
 
 const string ILine::kLineType("line");
 //--------------------------------------------------------------------------
-ILine::ILine( const std::string& name, IObject* parent ) : IShapeMap(name, parent), fView(0)
+ILine::ILine( const std::string& name, IObject* parent ) : IShapeMap(name, parent)
 { 
 	fTypeString = kLineType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler< TFloatPoint >::create( getPoint() );

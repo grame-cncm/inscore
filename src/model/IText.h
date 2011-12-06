@@ -44,7 +44,6 @@ namespace inscore
 @{
 */
 
-class VTextView;
 class Updater;
 class IText;
 typedef class SMARTP<IText>	SIText;
@@ -56,7 +55,6 @@ class IText : public IGraphicBasedObject
 {
 	protected:
 		std::string	fText;
-		VTextView * fView;
 
 	public:		
 		static const std::string kTextType;
@@ -70,10 +68,6 @@ class IText : public IGraphicBasedObject
 		virtual void		print(std::ostream& out) const;
 		virtual void		accept (Updater*);
 		
-		VTextView *		getView () const				{ return fView; }
-		void			setView (VTextView * view)		{ fView = view; }
-		VGraphicsItemView*	graphicView() const			{ return (VGraphicsItemView*)fView; }
-
 	protected:
 				 IText( const std::string& name, IObject * parent );
 		virtual ~IText() {}

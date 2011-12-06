@@ -42,7 +42,6 @@ namespace inscore
 @{
 */
 
-class VApplView;
 class IAppl;
 typedef class SMARTP<IAppl>	SIAppl;
 
@@ -62,7 +61,6 @@ class IAppl : public IObject, public PeriodicTask
 		bool		fRunning;
 		bool		fOffscreen;
 		udpinfo		fUDP;
-		VApplView*  fView;
 		QApplication* fAppl;
 
 	public:
@@ -105,16 +103,13 @@ class IAppl : public IObject, public PeriodicTask
 		*/
 		virtual int processMsg (const std::string& address, const std::string& addressTail, const IMessage* msg);
 		
-		VApplView *		getView () const			{ return fView; }
-		void			setView (VApplView * view) 	{ fView = view; }
+		void		setUDPInPort(int p)			{ fUDP.fInPort = p; }
+		void		setUDPOutPort(int p)		{ fUDP.fOutPort = p; }
+		void		setUDPErrPort(int p)		{ fUDP.fErrPort = p; }
 
-		void			setUDPInPort(int p)			{ fUDP.fInPort = p; }
-		void			setUDPOutPort(int p)		{ fUDP.fOutPort = p; }
-		void			setUDPErrPort(int p)		{ fUDP.fErrPort = p; }
-
-		void			resetBench();
-		bool			offscreen()					{ return fOffscreen; }
-		void			ptask ();
+		void		resetBench();
+		bool		offscreen()					{ return fOffscreen; }
+		void		ptask ();
 
 		static std::string checkRootPath (const std::string& path);
 

@@ -125,7 +125,7 @@ bool IAppl::fDefaultShow(true);
 const string IAppl::kName = "ITL";
 //--------------------------------------------------------------------------
 IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool offscreen) 
-	: IObject(kName, 0), fRunning(true), fOffscreen(offscreen), fUDP(udpport,outport,errport), fView(0), fAppl(appl)
+	: IObject(kName, 0), fRunning(true), fOffscreen(offscreen), fUDP(udpport,outport,errport), fAppl(appl)
 {
 	fTypeString = kApplType;
 	fVersion = INScore::versionStr();

@@ -41,7 +41,6 @@ namespace inscore
 @{
 */
 
-class VImageView;
 class Updater;
 class IImage;
 typedef class SMARTP<IImage>	SIImage;
@@ -58,14 +57,8 @@ class IImage : public IGraphicBasedObject,  public TFile
 
 		/// \brief set the path name \param path the new file path
 		void			setFile(const std::string& path);
-		
-		VImageView *	getView () const				{ return fView; }
-		void			setView (VImageView * view) 	{ fView = view; }
-		VGraphicsItemView*	graphicView() const			{ return (VGraphicsItemView*)fView; }
 
 	protected:
-		VImageView * fView;
-
 				 IImage( const std::string& name, IObject * parent);
 		virtual ~IImage() {}
 

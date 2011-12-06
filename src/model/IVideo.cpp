@@ -29,7 +29,7 @@
 #include "segment2relativetimereader.h"
 #include "MapTools.h"
 #include "IScene.h"
-#include "VVideoView.h"
+#include "VObjectView.h"
 
 using namespace std;
 
@@ -41,7 +41,7 @@ const string IVideo::kVideoType("video");
 
 //--------------------------------------------------------------------------
 IVideo::IVideo( const std::string& name, IObject * parent ) 
-	: IRectShape (name, parent), TFile (parent->getScene()), fView(0)
+	: IRectShape (name, parent), TFile (parent->getScene())
 {	
 	fTypeString = kVideoType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler<string>::create(getFile());

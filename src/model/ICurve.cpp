@@ -43,7 +43,7 @@ IMessage& operator <<(IMessage& s, const ICurve::CurveData& val)
 
 const string ICurve::kCurveType("curve");
 //--------------------------------------------------------------------------
-ICurve::ICurve( const std::string& name, IObject* parent ) : IShapeMap(name, parent), fView(0)
+ICurve::ICurve( const std::string& name, IObject* parent ) : IShapeMap(name, parent)
 { 
 	fTypeString = kCurveType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler<CurveData>::create(getPoints());

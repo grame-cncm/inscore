@@ -40,8 +40,7 @@ namespace inscore
 //--------------------------------------------------------------------------
 const string IText::kTextType("txt");
 //--------------------------------------------------------------------------
-IText::IText( const std::string& name, IObject * parent )
-	: IGraphicBasedObject(name, parent), fView(0)
+IText::IText( const std::string& name, IObject * parent ) : IGraphicBasedObject(name, parent)
 { 
 	fTypeString = kTextType;
 	setColor( IColor(0,0,0,255) );

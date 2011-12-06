@@ -26,7 +26,6 @@
 #include "IGrid.h"
 #include "IMessage.h"
 #include "Updater.h"
-#include "VRectView.h"
 
 using namespace std;
 
@@ -39,8 +38,7 @@ static const char* kLeftRightStr = "leftright";
 static const char* kTopBottomStr = "topbottom";
 
 //--------------------------------------------------------------------------
-IGrid::IGrid( const std::string& name, IObject* parent ) : IRectShape(name, parent),
-	fView(0), fDimensions(0, 0)
+IGrid::IGrid( const std::string& name, IObject* parent ) : IRectShape(name, parent), fDimensions(0, 0)
 { 
 	fTypeString = kGridType;
 //	fColumns = fRows = 0;

@@ -37,7 +37,6 @@ namespace inscore
 @{
 */
 
-class VEllipseView;
 class Updater;
 class IEllipse;
 typedef class SMARTP<IEllipse>	SIEllipse;
@@ -47,18 +46,12 @@ typedef class SMARTP<IEllipse>	SIEllipse;
 */
 class IEllipse : public IRectShape
 {
-	VEllipseView * fView;
-
 	public:
 		static const std::string kEllipseType;
 		static SIEllipse create(const std::string& name, IObject* parent)	{ return new IEllipse(name, parent); }
 
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*);
-
-		VEllipseView *	getView () const				{ return fView; }
-		void			setView (VEllipseView * view) 	{ fView = view; }
-		VGraphicsItemView*	graphicView() const			{ return (VGraphicsItemView*)fView; }
 
 	protected:
 				 IEllipse( const std::string& name, IObject* parent );

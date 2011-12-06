@@ -40,7 +40,6 @@ namespace inscore
 @{
 */
 
-class VSceneView;
 class Master;
 typedef class SMARTP<Master>			SMaster;
 class IScene;
@@ -61,7 +60,6 @@ class IScene : public IRectShape, public PeriodicTask
 	SISceneSync		fSync;
 	SIFileWatcher	fFileWatcher;
 	SISignalNode	fSignals;
-	VSceneView *	fView;
 	std::string		fRootPath;
 	
 	public:		
@@ -116,9 +114,6 @@ class IScene : public IRectShape, public PeriodicTask
 		std::string			getRootPath() const;
 		std::string			absolutePath( const std::string& path ) const;
 		QGraphicsScene *	getGraphicScene () const;
-		VSceneView *		getView () const				{ return fView; }
-		void				setView (VSceneView * view) 	{ fView = view; }
-		VGraphicsItemView*	graphicView() const				{ return (VGraphicsItemView*)fView; }
 
 	protected:
 				 IScene(const std::string& name, IObject * parent);
@@ -130,7 +125,7 @@ class IScene : public IRectShape, public PeriodicTask
 
 		void		setRootPath(const std::string& s);
 		MsgHandler::msgStatus loadMsg(const IMessage* msg);
-		void		foreground ();
+//		void		foreground ();
 		void		newScene ();
 		void		del ();
 		std::string address2scene (const char* addr) const;

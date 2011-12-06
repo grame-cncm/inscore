@@ -26,7 +26,6 @@
 #include "IRect.h"
 #include "IMessage.h"
 #include "Updater.h"
-#include "VRectView.h"
 
 using namespace std;
 
@@ -36,7 +35,7 @@ namespace inscore
 const string IRect::kRectType("rect");
 
 //--------------------------------------------------------------------------
-IRect::IRect( const std::string& name, IObject* parent ) : IRectShape(name, parent), fView(0)
+IRect::IRect( const std::string& name, IObject* parent ) : IRectShape(name, parent)
 { 
 	fTypeString = kRectType;
 }

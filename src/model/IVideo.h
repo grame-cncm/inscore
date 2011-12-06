@@ -42,7 +42,6 @@ namespace inscore
 @{
 */
 
-class VVideoView;
 class Updater;
 class IVideo;
 typedef class SMARTP<IVideo>	SIVideo;
@@ -62,14 +61,8 @@ class IVideo : public IRectShape,  public TFile
 		
 		/// \brief Returns the current video time in seconds, according to the object's date and videoMap.
 		float currentTime() const;
-		
-		VVideoView *	getView () const				{ return fView; }
-		void			setView (VVideoView * view) 	{ fView = view; }
-		VGraphicsItemView*	graphicView() const			{ return (VGraphicsItemView*)fView; }
 
 	protected:
-		VVideoView * fView;
-		
 				 IVideo( const std::string& name, IObject * parent);
 		virtual ~IVideo() {}
 

@@ -37,7 +37,6 @@ namespace inscore
 @{
 */
 
-class VRectView;
 class Updater;
 class IRect;
 typedef class SMARTP<IRect>	SIRect;
@@ -47,17 +46,11 @@ typedef class SMARTP<IRect>	SIRect;
 */
 class IRect : public IRectShape
 {
-	VRectView * fView;
-
 	public:
 		static const std::string kRectType;
 		static SIRect create(const std::string& name, IObject* parent)	{ return new IRect(name, parent); }
 
 		virtual void	accept (Updater*);
-
-		VRectView *		getView () const			{ return fView; }
-		void			setView (VRectView * view) 	{ fView = view; }
-		VGraphicsItemView*	graphicView() const		{ return (VGraphicsItemView*)fView; }
 
 	protected:
 				 IRect( const std::string& name, IObject* parent );

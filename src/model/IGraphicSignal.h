@@ -57,7 +57,6 @@ namespace inscore
 @{
 */
 
-class VGraphView;
 class Updater;
 class IGraphicSignal;
 typedef class SMARTP<IGraphicSignal>	SIGraphicSignal;
@@ -78,7 +77,6 @@ class IGraphicSignal : public IShape
 	std::string		fThicknessMode;	/// < The thickness orientation: top, bottom, or centered around the 'y' value.
 	bool			fIgnoreSignalColor;		/// < If ON, the graph will be filled using inherited IPosition::fColor attribute.
 	bool			fPenIgnoreSignalColor;	/// < If ON, the graph's bounds will be outlined using inherited IPosition::fColor attribute.
-	VGraphView *	fView;
 
 	public:	
 		static const std::string kGraphicType;
@@ -108,10 +106,6 @@ class IGraphicSignal : public IShape
 		virtual const std::string& getDrawLine() const { return fDrawLine; }
 		virtual bool getIgnoreSignalColor() const { return fIgnoreSignalColor; }
 		virtual bool getPenIgnoreSignalColor() const { return fPenIgnoreSignalColor; }
-		
-		VGraphView *	getView () const				{ return fView; }
-		void			setView (VGraphView * view) 	{ fView = view; }
-		VGraphicsItemView*	graphicView() const			{ return (VGraphicsItemView*)fView; }
 		
 	protected:
 				 IGraphicSignal( const std::string& name, IObject* parent );

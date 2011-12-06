@@ -39,7 +39,7 @@ const string IImage::kImageType("img");
 
 //--------------------------------------------------------------------------
 IImage::IImage( const std::string& name, IObject * parent ) 
-	: IGraphicBasedObject (name, parent), TFile (parent->getScene()), fView(0)
+	: IGraphicBasedObject (name, parent), TFile (parent->getScene())
 {	
 	fTypeString = kImageType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler<string>::create(getFile());

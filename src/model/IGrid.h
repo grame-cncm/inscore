@@ -40,7 +40,6 @@ namespace inscore
 @{
 */
 
-class VGridView;
 class Updater;
 typedef class SMARTP<IGrid>	SIGrid;
 //--------------------------------------------------------------------------
@@ -49,7 +48,6 @@ typedef class SMARTP<IGrid>	SIGrid;
 */
 class IGrid : public IRectShape
 {
-	VGridView * fView;
 	TIntSize	fDimensions;
 //	int		fColumns, fRows;
 	float	fXBorder, fYBorder;
@@ -62,9 +60,6 @@ class IGrid : public IRectShape
 		static SIGrid create(const std::string& name, IObject* parent)	{ return new IGrid(name, parent); }
 
 		virtual void	accept (Updater*);
-		VGridView *		getView () const			{ return fView; }
-		void			setView (VGridView * view) 	{ fView = view; }
-		VGraphicsItemView*	graphicView() const		{ return (VGraphicsItemView*)fView; }
 
 		int		getColumns() const		{ return fDimensions.width(); }
 		int		getRows() const			{ return fDimensions.height(); }

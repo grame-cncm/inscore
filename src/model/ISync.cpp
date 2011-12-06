@@ -86,7 +86,7 @@ void ISync::sync(const SIObject& slave, SMaster master)
 		(*this)[slave] = master;
 		slave->modify();
 		slave->setState(IObject::kModified);
-		slave->graphicView()->setParentItem(master->getMaster()->graphicView());
+		slave->getView()->setParentItem(master->getMaster()->getView());
 		slave->setdyMsgHandler(master);
 		fModified = true;
 	}
@@ -101,7 +101,7 @@ void ISync::remove(SIObject slave)
 		slave->modify();
 		slave->setState(IObject::kModified);
 		fModified = true;
-		VGraphicsItemView * view = slave->graphicView();
+		VObjectView * view = slave->getView();
 		if (view) view->setParentItem(0);
 	}
 }

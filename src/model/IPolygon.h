@@ -37,7 +37,6 @@ namespace inscore
 @{
 */
 
-class VPolygonView;
 class Updater;
 class IPolygon;
 typedef class SMARTP<IPolygon>	SIPolygon;
@@ -48,13 +47,8 @@ typedef class SMARTP<IPolygon>	SIPolygon;
 class IPolygon : public IShapeMap
 {
 	public:
-	typedef std::vector< std::pair<float,float> > PolygonData;
+		typedef std::vector< std::pair<float,float> > PolygonData;
 
-	private:
-		VPolygonView*	fView;
-		PolygonData fPoints;
-
-	public:
 		static const std::string kPolygonType;
 		static SIPolygon create(const std::string& name, IObject* parent)	{ return new IPolygon(name, parent); }
 
@@ -62,10 +56,6 @@ class IPolygon : public IShapeMap
 
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*);
-
-		VPolygonView *	getView () const				{ return fView; }
-		void			setView (VPolygonView * view) 	{ fView = view; }
-		VGraphicsItemView*	graphicView() const			{ return (VGraphicsItemView*)fView; }
 
 	protected:
 				 IPolygon( const std::string& name, IObject* parent );
@@ -75,6 +65,9 @@ class IPolygon : public IShapeMap
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
+
+	private:
+		PolygonData fPoints;
 };
 
 OSCStream& operator <<(OSCStream& s, const IPolygon::PolygonData& val);

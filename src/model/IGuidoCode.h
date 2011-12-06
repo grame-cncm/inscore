@@ -48,7 +48,6 @@ namespace inscore
 @{
 */
 
-class VGuidoItemView;
 class Updater;
 class IGuidoCode;
 typedef class SMARTP<IGuidoCode>	SIGuidoCode;
@@ -62,7 +61,6 @@ class IGuidoCode : public IObject
 		typedef SMARTP<TLocalMapping<RelativeTimeSegment> >	SLocalMapping;
 		SLocalMapping	fLocalMappings;
 		CGRHandler		fGRHandler;
-		VGuidoItemView * fView;
 
 	public:
 	int fPage;					/// < Guido Page Index. When several pages are displayed: index of the first displayed page. Default 1.
@@ -104,12 +102,7 @@ class IGuidoCode : public IObject
 
 		/// \brief decreases the number of requests for a mapping named 'mapName'.
 		virtual void stopRequestMapping(const std::string& mapName);
-
 		virtual const std::vector<std::string>& requestedMappings() const	{ return fRequestedMappings;  }
-		
-		VGuidoItemView *	getView () const				{ return fView; }
-		void				setView (VGuidoItemView * view) { fView = view; }
-		VGraphicsItemView*	graphicView() const				{ return (VGraphicsItemView*)fView; }
 
 	protected:
 				 IGuidoCode( const std::string& name, IObject * parent );

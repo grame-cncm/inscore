@@ -38,7 +38,6 @@ namespace inscore
 @{
 */
 
-class VSVGView;
 class Updater;
 class ISVG;
 typedef class SMARTP<ISVG>	SISVG;
@@ -48,7 +47,6 @@ typedef class SMARTP<ISVG>	SISVG;
 */
 class ISVG :  public IGraphicBasedObject
 {
-	VSVGView *	fView;
 	std::string	fSvg;
 
 	public:		
@@ -56,12 +54,8 @@ class ISVG :  public IGraphicBasedObject
 		static SISVG create(const std::string& name, IObject * parent)	{ return new ISVG(name, parent); }
 
 		virtual void		print(std::ostream& out) const;
-		virtual void		accept (Updater*);
-		
+		virtual void		accept (Updater*);		
 		const std::string&	getText() const				{ return fSvg; }
-		VSVGView *			getView () const			{ return fView; }
-		void				setView (VSVGView * view) 	{ fView = view; }
-		VGraphicsItemView*	graphicView() const		{ return (VGraphicsItemView*)fView; }
 
 	protected:
 				 ISVG( const std::string& name, IObject * parent );

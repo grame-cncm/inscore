@@ -54,7 +54,7 @@ const string IGraphicSignal::kGraphicType("graph");
 
 IGraphicSignal::IGraphicSignal( const std::string& name, IObject* parent ) : IShape(name, parent),
 	fCurveType(kRoundCurveType), fDrawLine(kDrawLineBoth), fThicknessMode(kThicknessCentered),
-	fIgnoreSignalColor(false),fPenIgnoreSignalColor(false), fView(0)
+	fIgnoreSignalColor(false),fPenIgnoreSignalColor(false)
 {
 	fLocalMappings = TLocalMapping<FrameSegment>::create();
 	fTypeString = kGraphicType;

@@ -35,7 +35,7 @@ namespace inscore
 const string IEllipse::kEllipseType("ellipse");
 
 //--------------------------------------------------------------------------
-IEllipse::IEllipse( const std::string& name, IObject* parent ) : IRectShape(name, parent), fView(0)
+IEllipse::IEllipse( const std::string& name, IObject* parent ) : IRectShape(name, parent)
 {
 	fTypeString = kEllipseType;
 }

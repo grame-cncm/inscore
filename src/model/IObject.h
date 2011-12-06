@@ -51,7 +51,7 @@ namespace inscore
 {
 
 class IMessage;
-class VGraphicsItemView;
+class VObjectView;
 
 /*!
 \addtogroup ITLModel Data Model
@@ -141,15 +141,18 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		virtual bool	getDeleted() const			{ return fDelete; }
 
 		/// \brief returns the object display start location
-		virtual float	getDispStart() const		{ return fDispStart; }
-		/// \brief returns the object display end location
-		virtual float	getDispEnd() const			{ return fDispEnd; }
+		virtual float	getDispStart() const			{ return fDispStart; }
+		/// \brief returns the object display end lo	cation
+		virtual float	getDispEnd() const				{ return fDispEnd; }
 
 		/// \brief returns the object export-flag
-		virtual std::string		getExportFlag() const { return fExportFlag; }
+		virtual std::string		getExportFlag() const	{ return fExportFlag; }
 
-		/// \brief base access to graphic view
-		virtual VGraphicsItemView*	graphicView() const { return 0; }
+		/// \brief access to the graphic view
+		virtual VObjectView*	getView() const				{ return fView; }
+
+		/// \brief set the object graphic view
+		virtual void			setView(VObjectView* view)	{ fView = view; }
 
 		/// \brief events management handler
 		virtual EventsAble*	eventsHandler()					{ return this; }
@@ -326,6 +329,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		virtual void setdyMsgHandler (Master* m); 
 
 	protected:	
+		VObjectView* fView;		///< the object view
 		IObject*	fParent;	///< the parent node
 
 				 IObject(const std::string& name, IObject* parent);

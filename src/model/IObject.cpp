@@ -45,7 +45,7 @@
 #include "ISync.h"
 #include "Tools.h"
 
-#include "VGraphicsItemView.h"
+#include "VObjectView.h"
 
 #include <stdio.h>
 #include <sys/types.h>
@@ -82,7 +82,7 @@ OSCStream& operator <<(OSCStream& s, const TFloatPoint& val)
 //--------------------------------------------------------------------------
 IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 					fName(name), fDispStart(0), fDispEnd(1),
-					fDelete (false), fState(kNewObject), fNewData(true), fParent(parent)
+					fDelete (false), fState(kNewObject), fNewData(true), fView(0), fParent(parent)
 {
 	fTypeString = "obj";
 
@@ -657,7 +657,7 @@ MsgHandler::msgStatus IObject::effectMsg(const IMessage* msg)
 	GraphicEffect effect;
 	MsgHandler::msgStatus status = effect.set (msg);
 	if (status == MsgHandler::kProcessed) {
-		VGraphicsItemView* view = graphicView();
+		VObjectView* view = getView();
 		if (view) view->setEffect (effect);
 	}
 	return status;
@@ -666,7 +666,7 @@ MsgHandler::msgStatus IObject::effectMsg(const IMessage* msg)
 //--------------------------------------------------------------------------
 GraphicEffect IObject::getEffect ()	const
 { 
-	return graphicView() ? graphicView()->getEffect() : GraphicEffect(); 
+	return getView() ? getView()->getEffect() : GraphicEffect(); 
 }
 
 //--------------------------------------------------------------------------
