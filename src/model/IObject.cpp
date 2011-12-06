@@ -245,6 +245,9 @@ IObject::~IObject()
 	for (int i=0; i < size(); i++)
 		elements()[i]->fParent = 0;
 #endif
+#ifdef NOVIEW
+	delete fView;
+#endif
 }
 
 //--------------------------------------------------------------------------

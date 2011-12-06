@@ -53,7 +53,12 @@ namespace inscore
 const string IScene::kSceneType("scene");
 
 //--------------------------------------------------------------------------
-IScene::~IScene() { delete fView; }
+IScene::~IScene() 
+{ 
+#ifndef NOVIEW
+	delete fView; 
+#endif
+}
 IScene::IScene(const std::string& name, IObject * parent) : IRectShape(name, parent), fFullScreen(false)
 {
 	fTypeString = kSceneType;
