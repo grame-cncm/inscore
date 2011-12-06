@@ -47,22 +47,22 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-void VQtUpdater::updateTo(IAppl * appl)			{ appl->getView()->updateView(appl); }
-void VQtUpdater::updateTo(IScene * scene)		{ scene->getView()->updateView(scene); }
+void VQtUpdater::updateTo(IAppl * appl)			{ ((VApplView*)appl->getView())->updateView(appl); }
+void VQtUpdater::updateTo(IScene * scene)		{ ((VSceneView*)scene->getView())->updateView(scene); }
 
-void VQtUpdater::updateTo(IImage * img)				{ update<IImage>(img); }
-void VQtUpdater::updateTo(IRect * rect)				{ update<IRect>(rect); }
-void VQtUpdater::updateTo(IGrid * grid)				{ update<IGrid>(grid); }
-void VQtUpdater::updateTo(IEllipse * e)				{ update<IEllipse>(e); }
-void VQtUpdater::updateTo(IPolygon * p)				{ update<IPolygon>(p); }
-void VQtUpdater::updateTo(IGuidoCode * guido)		{ update<IGuidoCode>(guido); }
-void VQtUpdater::updateTo(IText* text)				{ update<IText>(text); }
-void VQtUpdater::updateTo(ISVG* svg)				{ update<ISVG>(svg); }
-void VQtUpdater::updateTo(ISVGFile* svg)			{ update<ISVGFile>(svg); }
-void VQtUpdater::updateTo(IGraphicSignal* g)		{ update<IGraphicSignal>(g); }
-void VQtUpdater::updateTo(ICurve* curve)			{ update<ICurve>(curve); }
-void VQtUpdater::updateTo(ILine* line)				{ update<ILine>(line); }
-void VQtUpdater::updateTo (IHtml* html)				{ update<IHtml>(html); }
-void VQtUpdater::updateTo (IVideo* video )			{ update<IVideo>(video); }
+void VQtUpdater::updateTo(IImage * img)				{ update<IImage,	VImageView>		(img); }
+void VQtUpdater::updateTo(IRect * rect)				{ update<IRect,		VRectView>		(rect); }
+void VQtUpdater::updateTo(IGrid * grid)				{ update<IGrid,		VGridView>		(grid); }
+void VQtUpdater::updateTo(IEllipse * e)				{ update<IEllipse,	VEllipseView>	(e); }
+void VQtUpdater::updateTo(IPolygon * p)				{ update<IPolygon,	VPolygonView>	(p); }
+void VQtUpdater::updateTo(IGuidoCode * guido)		{ update<IGuidoCode,VGuidoItemView>	(guido); }
+void VQtUpdater::updateTo(IText* text)				{ update<IText,		VTextView>		(text); }
+void VQtUpdater::updateTo(ISVG* svg)				{ update<ISVG,		VSVGView>		(svg); }
+void VQtUpdater::updateTo(ISVGFile* svg)			{ update<ISVGFile,	VSVGView>		(svg); }
+void VQtUpdater::updateTo(IGraphicSignal* g)		{ update<IGraphicSignal, VGraphView>(g); }
+void VQtUpdater::updateTo(ICurve* curve)			{ update<ICurve,	VCurveView>		(curve); }
+void VQtUpdater::updateTo(ILine* line)				{ update<ILine,		VLineView>		(line); }
+void VQtUpdater::updateTo (IHtml* html)				{ update<IHtml,		VTextView>		(html); }
+void VQtUpdater::updateTo (IVideo* video )			{ update<IVideo,	VVideoView>		(video); }
 
 } // end namespoace

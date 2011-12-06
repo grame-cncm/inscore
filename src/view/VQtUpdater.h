@@ -75,15 +75,16 @@ class export VQtUpdater : public ViewUpdater
 				 VQtUpdater() {}
 		virtual ~VQtUpdater() {}
 
-		template <typename T> void update (T* obj) {
+		template <typename T, typename V> void update (T* obj) {
 			if (obj->getDeleted()) {
 				delete obj->getView();
 				obj->setView (0);
 			}
 			else {
 //				obj->getView()->setParentView (obj);
-				obj->getView()->updateView (obj);				
-				obj->getView()->updateObjectSize (obj);
+				V* view = static_cast<V*>(obj->getView());
+				view->updateView (obj);				
+				view->updateObjectSize (obj);
 			}
 		}
 };
