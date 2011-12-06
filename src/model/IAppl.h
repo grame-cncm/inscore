@@ -54,11 +54,11 @@ typedef class SMARTP<IApplDebug> SIApplDebug;
 */
 class IAppl : public IObject, public PeriodicTask
 {
-	static std::string fRootPath;
+	static std::string	fRootPath;
+	static bool			fRunning;
 		
 		std::string fVersion;
 		SIApplDebug	fApplDebug;	
-		bool		fRunning;
 		bool		fOffscreen;
 		udpinfo		fUDP;
 		QApplication* fAppl;
@@ -73,7 +73,8 @@ class IAppl : public IObject, public PeriodicTask
 		static std::string		absolutePath( const std::string& path );		//< returns the absolute path corresponding to 'path',
 		static std::string		makeAbsolutePath( const std::string& path, const std::string& file );
 
-		bool	running() const		{ return fRunning; }
+		static bool	running() 		{ return fRunning; }
+
 		bool	oscDebug() const;
 		void	quit()				{ fRunning = false; }
 		int		getUDPInPort() const		{ return fUDP.fInPort; }
@@ -126,7 +127,7 @@ class IAppl : public IObject, public PeriodicTask
 
 		IMessage*	hello() const;
 		void		helloMsg() const;
-		void		activate() const;
+//		void		activate() const;
 		std::string	guidoversion() const;
 		std::string	musicxmlversion() const;
 

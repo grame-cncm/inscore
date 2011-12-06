@@ -28,9 +28,13 @@
 
 #include "IObjectFactory.h"
 #include "IModel.h"
-#include "ViewFactory.h"
 #include "INScoreScene.h"
+#ifdef NOVIEW
+#include "VoidViewFactory.h"
+#else
+#include "ViewFactory.h"
 #include "VSceneView.h"
+#endif
 
 using namespace std;
 
@@ -42,7 +46,11 @@ template<typename T> SIObject _create(const std::string& name , IObject* parent)
 {
 	SMARTP<T> obj = T::create(name, parent);
 	if (obj) {
+#ifdef NOVIEW
+		obj->setView ( VoidViewFactory::create(obj));
+#else
 		obj->setView ( ViewFactory::create(obj, parent->getScene()->getGraphicScene()));
+#endif
 	}
 	return obj->getView() ? obj : 0;
 }
@@ -62,6 +70,7 @@ template<> SIObject _create<IFaustProcessor>(const std::string& name , IObject* 
 	return IFaustProcessor::create(name, parent);
 }
 
+#ifndef NOVIEW
 template<> SIObject _create<IScene>(const std::string& name , IObject* parent) 
 {
 	SMARTP<IScene> obj = IScene::create(name, parent);
@@ -75,7 +84,7 @@ template<> SIObject _create<IScene>(const std::string& name , IObject* parent)
 	}
 	return obj->getView() ? obj : 0;
 }
-
+#endif
 
 //--------------------------------------------------------------------------
 SIObject IObjectFactory::create(const std::string& name , const std::string& type, IObject* parent)

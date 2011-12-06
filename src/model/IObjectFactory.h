@@ -45,10 +45,6 @@ namespace inscore
 class IObjectFactory
 {
 	public:
-		// Create an object with :
-		//	- name
-		//	- type : must be one of the #define above
-		//	- iterator : points on the first mandatory parameter to build the object
 	/*! \brief creates an IObject
 		\param name the object name
 		\param type the object type

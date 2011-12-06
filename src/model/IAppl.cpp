@@ -122,16 +122,18 @@ void IAppl::resetBench()
 
 //--------------------------------------------------------------------------
 bool IAppl::fDefaultShow(true);
+bool IAppl::fRunning(true);
 const string IAppl::kName = "ITL";
+
 //--------------------------------------------------------------------------
 IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool offscreen) 
-	: IObject(kName, 0), fRunning(true), fOffscreen(offscreen), fUDP(udpport,outport,errport), fAppl(appl)
+	: IObject(kName, 0), fOffscreen(offscreen), fUDP(udpport,outport,errport), fAppl(appl)
 {
 	fTypeString = kApplType;
 	fVersion = INScore::versionStr();
 
 	fMsgHandlerMap["hello"]		= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::helloMsg);
-	fMsgHandlerMap["activate"]	= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::activate);
+//	fMsgHandlerMap["activate"]	= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::activate);
 	fMsgHandlerMap["load"]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadMsg);
 	fMsgHandlerMap["require"]	= TMethodMsgHandler<IAppl>::create(this, &IAppl::requireMsg);
 	fMsgHandlerMap["quit"]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::quit);
@@ -267,11 +269,11 @@ void IAppl::helloMsg() const
 }
 
 //--------------------------------------------------------------------------
-void IAppl::activate() const
-{
-	ITLErr << "activate "  << ITLEndl;
-	fAppl->postEvent (fAppl, new QEvent(QEvent::ApplicationActivate));
-}
+//void IAppl::activate() const
+//{
+//	ITLErr << "activate "  << ITLEndl;
+//	fAppl->postEvent (fAppl, new QEvent(QEvent::ApplicationActivate));
+//}
 
 //--------------------------------------------------------------------------
 string IAppl::guidoversion() const

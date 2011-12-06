@@ -135,7 +135,6 @@ void IGlue::initialize (bool offscreen, QApplication* appl)
 	fMsgStack = IMessageStack::create();
 	gMsgStack = fMsgStack;
 	fController = IController::create();
-//	fController->setListener (this);
 
 	fModel = IAppl::create(fUDP.fInPort, fUDP.fOutPort, fUDP.fErrPort, appl, offscreen);
 	fModel->createVirtualNodes();
@@ -145,13 +144,6 @@ void IGlue::initialize (bool offscreen, QApplication* appl)
 	string address (fModel->getOSCAddress());
 	address += "/scene";
 	INScore::postMessage (address.c_str(), msg);
-	
-
-//	SIScene	scene = IScene::create("scene", fModel);
-//	fModel->add (scene);
-//	scene->createVirtualNodes();
-//	scene->setView (new VSceneView (scene->getOSCAddress(), graphscene ));
-//	fScene = scene;
 
 	fTimeTask = fModel;
 	if (!OSCStream::start())
@@ -160,6 +152,7 @@ void IGlue::initialize (bool offscreen, QApplication* appl)
 	if (!fMsgStack || !fController || !fModel || !fOscThread)
 		throw("Memory allocation failed!");
 	oscerr << OSCStart("INScore") << "v" << INScore::versionStr() << " listening on port " <<  fUDP.fInPort << OSCEnd();
+	cout << "INScore v " << INScore::versionStr() << " listening on port " <<  fUDP.fInPort << endl;
 	
 	// creates a mapping updater - note that it may send error messages and thus should not be
 	// set before the osc streams are ready
@@ -175,7 +168,9 @@ bool IGlue::start (int timeInterval, bool offscreen, QApplication* appl)
 {
 	try {
 		initialize(offscreen, appl);
+#ifndef NOVIEW
 		if (timeInterval) fTimerID = startTimer(timeInterval);
+#endif
 	}
 	catch (std::runtime_error e) {
 		clean();

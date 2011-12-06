@@ -36,8 +36,12 @@
 #include "GUIDOEngine.h"
 
 #include "IGlue.h"
+#ifdef NOVIEW
+#include "VoidUpdater.h"
+#else
 #include "VQtLocalMappingUpdater.h"
 #include "VQtUpdater.h"
+#endif
 #include "VQtInit.h"
 #include "VSceneView.h"
 #include "QGuidoImporter.h"
@@ -77,10 +81,15 @@ static IMessage* Message2IMessage (INScore::MessagePtr p)
 IGlue* INScore::start(int timeInterval, int udpport, int outport, int errport, QApplication* appl, bool offscreen)
 {
 	IGlue* glue = new IGlue (udpport, outport, errport);
-	VQtInit::startQt();
 	if (glue && glue->start (timeInterval, offscreen, appl)) {
+#ifdef NOVIEW
+		glue->setLocalMapUpdater(VoidLocalMapUpdater::create() );
+		glue->setViewUpdater	(VoidViewUpdater::create() );
+#else
+		VQtInit::startQt();
 		glue->setLocalMapUpdater(VQtLocalMappingUpdater::create() );
 		glue->setViewUpdater	(VQtUpdater::create() );
+#endif
 		return glue;
 	}
 	std::cerr << "INScore initialization failed" << std::endl;

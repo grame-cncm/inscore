@@ -43,7 +43,6 @@
 namespace inscore
 {
 
-class VSceneView;
 class IMessage;
 class IObject;
 class IMessageStack;
@@ -77,7 +76,6 @@ typedef class SMARTP<IAppl>	SIAppl;
 */
 class export IGlue : public MsgListener, public QObject 
 {
-//	VSceneView*		fSceneView;
 	OscThread *		fOscThread;
 	SUpdater 		fViewUpdater;
 	SUpdater 		fLocalMapUpdater;
@@ -91,8 +89,6 @@ class export IGlue : public MsgListener, public QObject
 
 	int		fTimerID;
 	udpinfo fUDP;
-
-//	SIScene	fScene;
 	
 	public :
 				 IGlue(int udpport, int outport, int errport);
@@ -118,7 +114,6 @@ class export IGlue : public MsgListener, public QObject
 		virtual void initialize (bool offscreen,  QApplication* appl);
 		virtual	void clean ();
 		
-//		VSceneView* getSceneView() const							{ return fSceneView; }
 		void modelUpdate();
 		void localMapUpdate();
 		void slaveMapUpdate();

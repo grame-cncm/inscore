@@ -51,6 +51,16 @@ set (OSC_PATH  "${LOCALLIB}/oscpack")
 set (GUIDO_PATH  "${LOCALLIB}/GuidoEngine")
 set (GUIDOQT_PATH  "${LOCALLIB}/GuidoQt")
 
+#######################################
+# validation support
+if (NOVIEW STREQUAL "yes")
+	message (STATUS "Compiled with no view - Use -DNOVIEW=no to change.")
+	add_definitions(-DNOVIEW)
+	set (INSFOLDERS  ${INSFOLDERS} VoidView)
+else()
+	message (STATUS "Using standard Qt view - Use -DNOVIEW=yes to change")
+endif()
+
 
 set (SCRIPT "")
 set (SCRIPTINCL "")
@@ -203,7 +213,14 @@ if(MINGW)
 endif(MINGW)
 
 
-add_executable( ${APPLTARGET}  MACOSX_BUNDLE ${ROOT}/INScoreAppl.cpp ${APPL_MOC_FILES}  ../win32/Viewer/${APPLTARGET}.rc ${INScoreQRC})
+
+if (NOVIEW STREQUAL "yes")
+	set (APPLTARGET  INScoreNOView)
+	add_executable( ${APPLTARGET}  ${ROOT}/INScoreNoView.cpp )
+else()
+	add_executable( ${APPLTARGET}  MACOSX_BUNDLE ${ROOT}/INScoreAppl.cpp ${APPL_MOC_FILES}  ../win32/Viewer/${APPLTARGET}.rc ${INScoreQRC})
+endif()
+
 target_link_libraries( ${APPLTARGET} ${QTLIBS} ${GUIDO})
 set_target_properties (${APPLTARGET} PROPERTIES VERSION ${INSAPPVERS}
 							MACOSX_BUNDLE_ICON_FILE ${RSRC}/${APPLTARGET}.icns
