@@ -28,6 +28,7 @@
 #define __VApplView__
 
 #include <QString>
+#include "VDummyObjectView.h"
 
 namespace inscore
 {
@@ -47,7 +48,7 @@ class Master;
 *	There's no graphic instance of the application, so it is not actually a 'view'. 
 *	The VApplView updates the state of the QApplication according to the state of a IAppl.
 */
-class VApplView
+class VApplView : public VDummyObjectView
 {
 	public :
 				 VApplView() {}

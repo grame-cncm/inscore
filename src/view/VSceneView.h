@@ -32,6 +32,7 @@
 #include <QTimer>
 
 #include <string>
+#include "VDummyObjectView.h"
 
 class QGraphicsScene;
 class QImage;
@@ -52,7 +53,7 @@ class ZoomingGraphicsView;
 /**
 *	\brief a graphic view of a IScene.
 */
-class VSceneView
+class VSceneView : public VDummyObjectView
 {
 	ZoomingGraphicsView * fGraphicsView;
 	QGraphicsRectItem * fBackground;
@@ -70,7 +71,7 @@ class VSceneView
 		bool				copy(unsigned int* dest, int w, int h, bool smooth=false );
 		void				setSceneRect(int w, int h)	{ fScene->setSceneRect(0, 0, w, h); }
 		void				updateView( IScene * scene );
-		void				foreground();
+//		void				foreground();
 		QGraphicsScene *	scene() const;
 };
 
