@@ -47,14 +47,26 @@ IOSCListener::~IOSCListener()	{ stop(); }
 void IOSCListener::run()
 { 
 	fRunning = true;
-	while (fRunning) {
+//	while (fRunning) {
 		try {
 			fSocket.Run(); 
 		}
 		catch (osc::Exception e) {
 			cerr << "osc error: " << e.what() << endl;
 		}
-	}
+//	}
+	cout << "IOSCListener::run exit" << endl;
+	fRunning = false;
+}
+
+//--------------------------------------------------------------------------
+void IOSCListener::stop()	
+{ 
+	fSocket.AsynchronousBreak();
+	fSocket.Break();
+	cout << "waiting for socket termination..." << endl;
+	while (fRunning)
+		;
 }
 
 //--------------------------------------------------------------------------

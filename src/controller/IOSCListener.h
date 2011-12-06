@@ -65,7 +65,7 @@ class IOSCListener : public osc::OscPacketListener, public smartable
 		*/
 		virtual void ProcessMessage( const osc::ReceivedMessage& m, const IpEndpointName& remoteEndpoint );
 		virtual void run();
-		virtual void stop()	{ fRunning=false; fSocket.AsynchronousBreak(); }
+		virtual void stop(); //	{ fRunning=false; fSocket.AsynchronousBreak(); }
 
 	protected:
 				 IOSCListener(SIMessageStack& stack, int port = 7000);
