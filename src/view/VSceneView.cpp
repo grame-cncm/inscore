@@ -43,7 +43,7 @@
 
 #define SCENE_RECT QRect(-400,-400,800,800)
 
-#define OSC_SCENE_ADDRESS	"/ITL/scene"
+//#define OSC_SCENE_ADDRESS	"/ITL/scene"
 #define OSC_HEIGHT_MSG		"height"
 #define OSC_WIDTH_MSG		"width"
 #define OSC_X_MSG			"x"
@@ -113,7 +113,7 @@ VSceneView::~VSceneView()
 
 //------------------------------------------------------------------------------------------------------------------------
 QGraphicsScene * VSceneView::scene() const		{ return fScene; }
-void VSceneView::foreground()	{ fGraphicsView->activateWindow(); }
+//void VSceneView::foreground()	{ fGraphicsView->activateWindow(); }
 
 //------------------------------------------------------------------------------------------------------------------------
 void VSceneView::updateOnScreen( IScene * scene )
