@@ -53,9 +53,8 @@ VGraphicsItemView::VGraphicsItemView( QGraphicsScene * scene , QGraphicsItem * i
 {
 	fItem = item;
 	scene->addItem( item );
-
 //	fBrushColorStartIndex = qrand();						// Randomize the color of the mapping debug items.
-	fBrushColorStartIndex = 0;						// Randomize the color of the mapping debug items.
+	fBrushColorStartIndex = 0;
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -174,12 +173,12 @@ void VGraphicsItemView::drawNameAndBBox(IObject* o)
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::setParentView (IObject * object) 
 {
-	VGraphicsItemView * parent = 0;
+	VObjectView * parent = 0;
 	if (object) {
 		const SIScene scene = object->getScene();
 		const Master* master = scene ? scene->getMaster(object) : 0;
 		if (master && !master->getMaster()->getDeleted())
-			parent = master->getMaster()->graphicView();
+			parent = master->getMaster()->getView();
 	}
 	setParentItem( parent );
 }

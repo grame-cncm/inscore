@@ -61,6 +61,7 @@ class VGraphicsItemView : public VObjectView
 		virtual void updateView(IObject * object);			// updates the object view
 		virtual void updateObjectSize( IObject * object );	// updates the object size
 		virtual void setParentView (IObject * object);		// updates the object parent view
+		virtual void setParentItem( VObjectView* master )		{ setParentItem((VGraphicsItemView*)master); }
 		virtual void setParentItem( VGraphicsItemView* master )	{ item()->setParentItem( master ? master->item() : 0); }
 
 		virtual void setEffect (GraphicEffect& effect)		{ item()->setGraphicsEffect (effect.get()); }
