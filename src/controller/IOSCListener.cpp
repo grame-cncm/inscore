@@ -55,7 +55,6 @@ void IOSCListener::run()
 			cerr << "osc error: " << e.what() << endl;
 		}
 //	}
-	cout << "IOSCListener::run exit" << endl;
 	fRunning = false;
 }
 
@@ -63,10 +62,6 @@ void IOSCListener::run()
 void IOSCListener::stop()	
 { 
 	fSocket.AsynchronousBreak();
-	fSocket.Break();
-	cout << "waiting for socket termination..." << endl;
-	while (fRunning)
-		;
 }
 
 //--------------------------------------------------------------------------
