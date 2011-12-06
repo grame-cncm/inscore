@@ -37,6 +37,7 @@
 #include <QFile>
 #include <QAbstractTextDocumentLayout>
 #include <QTextLayout>
+#include <QGraphicsScene>
 
 //#include "QTextTilerItem.h"
 
