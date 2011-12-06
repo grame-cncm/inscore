@@ -90,19 +90,19 @@ INScoreAbout::INScoreAbout (const QPixmap & pixmap) : QSplashScreen (pixmap)
 	version += INScore::versionStr();
 	QLabel* text = new QLabel(version, this);
 	text->setFont(font);
-	text->move(25, h - 45);
+	text->move(25, h - 42);
 
 	QString qt("Using Qt v.");
 	qt += qVersion();
 	text = new QLabel(qt, this);
 	text->setFont(font);
-	text->move(20, h - 34);
+	text->move(20, h - 30);
 
 	QString guido("Using Guido Engine v.");
 	guido += INScore::guidoversion();
 	text = new QLabel(guido, this);
 	text->setFont(font);
-	text->move(15, h - 22);
+	text->move(15, h - 18);
 }
 
 INScoreAbout* gAbout = 0;
