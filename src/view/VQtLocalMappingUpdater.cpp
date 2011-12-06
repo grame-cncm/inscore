@@ -41,19 +41,19 @@
 namespace inscore
 {
 
-void VQtLocalMappingUpdater::updateTo(IGraphicSignal* o)	{ o->getView()->updateLocalMapping( o );  }
-void VQtLocalMappingUpdater::updateTo(IGuidoCode * o)		{ o->getView()->updateLocalMapping( o ); }
-void VQtLocalMappingUpdater::updateTo(IImage * o)			{ o->getView()->updateLocalMapping( o ); }
-void VQtLocalMappingUpdater::updateTo(IText* o)				{ o->getView()->updateLocalMapping( o ); }
-void VQtLocalMappingUpdater::updateTo(ISVG* o)				{ o->getView()->updateLocalMapping( o ); }
-void VQtLocalMappingUpdater::updateTo(ISVGFile* o)			{ o->getView()->updateLocalMapping( o ); }
-void VQtLocalMappingUpdater::updateTo(IHtml* o)				{ o->getView()->updateLocalMapping( o ); }
-void VQtLocalMappingUpdater::updateTo(IRect* o)				{ o->getView()->updateLocalMapping( o ); }
-void VQtLocalMappingUpdater::updateTo(IGrid* o)				{ o->getView()->updateLocalMapping( o ); }
-void VQtLocalMappingUpdater::updateTo(IEllipse* o)			{ o->getView()->updateLocalMapping( o ); }
-void VQtLocalMappingUpdater::updateTo(ILine* o)				{ o->getView()->updateLocalMapping( o ); }
-void VQtLocalMappingUpdater::updateTo(IPolygon* o)			{ o->getView()->updateLocalMapping( o ); }
-void VQtLocalMappingUpdater::updateTo(ICurve* o)			{ o->getView()->updateLocalMapping( o ); }
-void VQtLocalMappingUpdater::updateTo(IVideo* o)			{ o->getView()->updateLocalMapping( o ); }
+void VQtLocalMappingUpdater::updateTo(IGraphicSignal* o)	{  view<VGraphView>(o)->updateLocalMapping( o );  }
+void VQtLocalMappingUpdater::updateTo(IGuidoCode * o)		{  view<VGuidoItemView>(o)->updateLocalMapping( o ); }
+void VQtLocalMappingUpdater::updateTo(IImage * o)			{  view<VImageView>(o)->updateLocalMapping( o ); }
+void VQtLocalMappingUpdater::updateTo(IText* o)				{  view<VTextView>(o)->updateLocalMapping( o ); }
+void VQtLocalMappingUpdater::updateTo(ISVG* o)				{  view<VSVGView>(o)->updateLocalMapping( o ); }
+void VQtLocalMappingUpdater::updateTo(ISVGFile* o)			{  view<VSVGView>(o)->updateLocalMapping( o ); }
+void VQtLocalMappingUpdater::updateTo(IHtml* o)				{  view<VTextView>(o)->updateLocalMapping( o ); }
+void VQtLocalMappingUpdater::updateTo(IRect* o)				{  view<VRectView>(o)->updateLocalMapping( o ); }
+void VQtLocalMappingUpdater::updateTo(IGrid* o)				{  view<VGridView>(o)->updateLocalMapping( o ); }
+void VQtLocalMappingUpdater::updateTo(IEllipse* o)			{  view<VEllipseView>(o)->updateLocalMapping( o ); }
+void VQtLocalMappingUpdater::updateTo(ILine* o)				{  view<VLineView>(o)->updateLocalMapping( o ); }
+void VQtLocalMappingUpdater::updateTo(IPolygon* o)			{  view<VPolygonView>(o)->updateLocalMapping( o ); }
+void VQtLocalMappingUpdater::updateTo(ICurve* o)			{  view<VCurveView>(o)->updateLocalMapping( o ); }
+void VQtLocalMappingUpdater::updateTo(IVideo* o)			{  view<VVideoView>(o)->updateLocalMapping( o ); }
 
 } // end namespoace

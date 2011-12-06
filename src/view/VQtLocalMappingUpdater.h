@@ -28,6 +28,7 @@
 #define __VQtLocalMappingUpdater__
 
 #include "Updater.h"
+#include "IObject.h"
 
 namespace inscore
 {
@@ -66,6 +67,9 @@ class export VQtLocalMappingUpdater : public LocalMapUpdater
 	protected :
 				 VQtLocalMappingUpdater() {}
 		virtual ~VQtLocalMappingUpdater() {}
+		
+		template <typename T> T* view(IObject* obj) { return static_cast<T*>(obj->getView()); }
+		
 };
 typedef class SMARTP<VQtLocalMappingUpdater>	SVQtLocalMappingUpdater;
 
