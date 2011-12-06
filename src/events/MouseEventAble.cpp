@@ -88,7 +88,7 @@ static void originshift (const IObject * obj, float& relx, float& rely)
 //----------------------------------------------------------------------
 void _MouseEventAble::handleEvent (const IObject * obj, QPointF pos,  EventsAble::eventype type)
 {
-	VGraphicsItemView*	view = obj->graphicView();
+	VObjectView*	view = obj->getView();
 	float x = pos.x();
 	float y = pos.y();
 	float w = view->relative2SceneWidth (obj->getWidth());
