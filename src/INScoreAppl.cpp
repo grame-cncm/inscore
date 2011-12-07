@@ -148,15 +148,18 @@ bool INScoreAppl::event(QEvent *ev)
 //_______________________________________________________________________
 void INScoreAppl::setupMenu()
 {
-	QMenuBar *menuBar = new QMenuBar(0);
+	QMenuBar *fMenuBar = new QMenuBar(0);
 
     QAction* aboutAct = new QAction(tr("&About"), this);
     aboutAct->setStatusTip(tr("Show the application's About box"));
     connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
 	
-    QMenu* menu = menuBar->addMenu(tr("&Help"));
+    QMenu* menu = fMenuBar->addMenu(tr("&Help"));
     menu->addAction(aboutAct);
 }
+
+//_______________________________________________________________________
+INScoreAppl::~INScoreAppl() { delete fMenuBar; }
 
 
 #if defined(WIN32) && !defined(_DEBUG)

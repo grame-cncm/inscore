@@ -28,14 +28,17 @@
 #include <string>
 #include <QApplication>
 
+class QMenuBar;
 //_______________________________________________________________________
 class INScoreAppl : public QApplication
 {
 	Q_OBJECT
 
+	QMenuBar *fMenuBar;
+
 	public :
-				 INScoreAppl (int & argc, char ** argv ) : QApplication (argc, argv) {}
-		virtual ~INScoreAppl() {}
+				 INScoreAppl (int & argc, char ** argv ) : QApplication (argc, argv), fMenuBar(0) {}
+		virtual ~INScoreAppl();
 
 		void	setupMenu();
 		bool	event(QEvent *ev);
