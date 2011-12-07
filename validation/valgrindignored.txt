@@ -1,4 +1,120 @@
 ###############################################################
+# UI related leaks
+{
+   fontleak1
+   Memcheck:Leak
+   fun:calloc
+   fun:ATSAlloc
+   fun:AssureContainerMappingList
+   fun:_ZL30SynchronizeDatabaseInformationP19DBSynchMessageReply
+   fun:_ZL22NewHookUpWithATSServerjh
+   fun:FOLazyInitialize
+   fun:ATSFontFamilyFindFromName
+}
+
+{
+   fontleak2
+   Memcheck:Leak
+   fun:calloc
+   fun:_ZL14AllocRawMemoryjh
+   fun:_Z14ScalerNewBlockP13memoryContextiiPvhh
+   fun:_Z21CreateScalerFontBlockP13fsg_SplineKeyP13memoryContext
+   fun:_Z21AssureScalerFontBlockP13fsg_SplineKeyP13memoryContextRP18fontBlockCacheNode
+   fun:_Z18AssureStrikeBlocksP13fsg_SplineKeyP13memoryContextP11cacheStrikePK18TStrikeDescription
+   fun:TTGetStrikeSpecs
+}
+
+{
+   fontleak3
+   Memcheck:Leak
+   fun:malloc
+   fun:_Znwm
+   fun:_ZN13QFontDatabase4loadEPK12QFontPrivatei
+   fun:_ZNK12QFontPrivate15engineForScriptEi
+}
+
+{
+   QApplication1
+   Memcheck:Leak
+   fun:calloc
+   fun:CGSRegisterNotifyProc
+   fun:_CGSDisplayInitialize
+   fun:cg_setup
+   fun:pthread_once
+   fun:CGSGetDisplayList
+   fun:initDisplays
+   fun:CGDisplayRegisterReconfigurationCallback
+   fun:_Z7qt_initP19QApplicationPrivatei
+}
+
+{
+   QApplication2
+   Memcheck:Leak
+   fun:calloc
+   fun:CGSRegisterNotifyProc
+   fun:initDisplays
+   fun:CGDisplayRegisterReconfigurationCallback
+   fun:_Z7qt_initP19QApplicationPrivatei
+}
+
+{
+   ColorSync1
+   Memcheck:Leak
+   fun:calloc
+   fun:_ZN9CMMMemMgr3NewEm
+   fun:_ZN7CMMBase11NewInternalEmR9CMMMemMgrPKc
+   fun:_ZL27createSRGBGammaTableAndInfov
+   fun:pthread_once
+}
+
+{
+   ColorSync2
+   Memcheck:Leak
+   fun:calloc
+   fun:_ZN9CMMMemMgr3NewEm
+   fun:_ZN7CMMBase11NewInternalEmR9CMMMemMgrPKc
+   fun:_ZL36createOnePointEightGammaTableAndInfov
+   fun:pthread_once
+}
+
+{
+   dictleak
+   Memcheck:Leak
+   fun:malloc_zone_malloc
+   fun:__CFDictionaryCreateGeneric
+   fun:CFDictionaryCreateMutable
+}
+
+{
+   runtime1
+   Memcheck:Leak
+   fun:malloc_zone_malloc
+   fun:_CFRuntimeCreateInstance
+   fun:CFBasicHashCreate
+   fun:CFDictionaryCreateMutable
+}
+
+{
+   runtime2
+   Memcheck:Leak
+   fun:malloc_zone_malloc
+   fun:__CFBasicHashRehash
+   fun:__CFBasicHashAddValue
+   fun:CFBasicHashSetValue
+   fun:CFDictionarySetValue
+}
+
+{
+   throw1
+   Memcheck:Leak
+   fun:malloc
+   fun:__cxa_get_globals
+   fun:__cxa_allocate_exception
+   fun:_Z24CMMThrowExceptionOnError6CMMErr
+}
+
+
+###############################################################
 {
    ostream
    Memcheck:Leak
