@@ -2,6 +2,7 @@
 size = 20;		! the grid size
 huespan=45;		! hue span in degrees
 hue=0;			! initial hue
+version = 0.96; ! version required for javascript
 
 /ITL/scene/* del;
 
@@ -28,3 +29,8 @@ hue=0;			! initial hue
 ?>
 
 /ITL/scene color 240 240 240;
+
+/ITL require $version "/ITL/scene/warning" "set" "txt" "WARNING: javascript requires version 0.96 or greater";
+/ITL require $version "/ITL/scene/warning" "color" 180 180 180;
+/ITL require $version "/ITL/scene/warning" "y" 0.9;
+/ITL require $version "/ITL/scene/warning" "scale" 1.5;

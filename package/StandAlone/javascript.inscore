@@ -1,6 +1,8 @@
-a="Welcome to JavaScript";
-b12 = -0.3;
-r = "r_";
+
+a		= "Welcome to JavaScript";
+b12 	= -0.3;
+r 		= "r_";
+version = 0.96;
 
 <?javascript
 	function list (address, n, fhue)
@@ -22,6 +24,11 @@ r = "r_";
 ?>
 
 /ITL/scene/* del;
+
+/ITL require $version "/ITL/scene/warning" "set" "txt" "WARNING: javascript requires version 0.96 or greater";
+/ITL require $version "/ITL/scene/warning" "color" 180 180 180;
+/ITL require $version "/ITL/scene/warning" "y" 0.9;
+/ITL require $version "/ITL/scene/warning" "scale" 1.5;
 
 /ITL/scene/title set 'txt' $a;
 /ITL/scene/title y $b12;
