@@ -11,7 +11,7 @@ The INScore project depends on external libraries:
      - the MusicXML library  (see http://libmusicxml.sourceforge.net)
        when you want to support the MusicXMl format.
      - the programming language lua (see http://www.lua.org/)
-     - the programming language javascript (see https://developer.mozilla.org/En/SpiderMonkey)
+     - the programming language javascript (see "http://code.google.com/p/v8/)
 The GuidoEngine, the GuidoQt and oscpack libraries are required to compile INScore.
 
 The present document describes how to compile the INScore projects. 
@@ -130,23 +130,15 @@ The distribution includes a Makefile, thus you can simply type:
 
 Notes: 
 - for windows, a binary version of the library is included in the INScore distribution
-  along with the corresponding headers. Thus lua ready to be supported without additional step.
+  along with the corresponding headers. Thus lua is ready to be supported without additional step.
 - a cmake configuration is provided in lib/lua with instructions to use. It should be used to
   generate universal binaries on Mac OS.
 
 javascript support
 ----------------------------
-You should get the javascript engine from the mozilla web site: 
-	https://developer.mozilla.org/En/SpiderMonkey
-The distribution is based on the standard tools:
-  > cd /your_path_to_the_javascript_distribution/
-  > ./configure
-  > make
-  > sudo make install
-
-Notes: 
-- on Mac OS, when the javascript support is ON, INScore is build for the native architecture only, 
-  due to the lack of universal binary for the javascript engine.
+You should get the javascript engine from the v8 web site: 
+	http://code.google.com/p/v8/
+The distribution is based on scons. Read the v8 documentation for compiling.
 
 
 MusicXML support
