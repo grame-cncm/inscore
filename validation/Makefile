@@ -9,9 +9,11 @@
 
 version	= $(shell ./INScoreVersion | cut -d' ' -f 3)
 pwd	  = $(shell pwd)
+TOOL = ./INScoreNOView
+
 files = $(shell find . -name "*.inscore")
 pdfout  	:= $(patsubst ./%.inscore, $(version)/%.pdf, $(files))
-leakout 	:= $(patsubst ./%.inscore, $(version)/%.leak.txt, $(files))
+leakout 	:= $(patsubst ./%.inscore, $(version)/$(TOOL)/%.leak.txt, $(files))
 leaksfiles  := $(patsubst ./%.inscore, $(version)/%.leaks.out, $(files))
 
 nodlost	= "definitely lost: 0"
@@ -19,43 +21,38 @@ noilost	= "indirectly lost: 0"
 noplost	= "possibly lost: 0"
 
 
-test:
-	@echo $(leaksfiles)
+help:
+	@echo "Makefile for testing the INScore engine output. Available targets are:"
+	@echo "'images' : makes pdf files for inscore files recursively enclosed in this folder"
+	@echo "           the pdf files output folder name is the current INScore version number."
+	@echo "'validate VERSION=another_version': compares the current version with another one"
+	@echo "'checkleaks [TOOL=a_check_tool]': check memory leaks using a given tool (default INScoreNOView)"
 
 images: forcepdfdate INScoreVersion
 	@echo "Make sure that INScoreViewer is running!"
 	make files
 
-help:
-	@echo "Makefile for testing the INScore engine output. Available targets are:"
-	@echo "'images' (default): makes pdf files for inscore files recursively enclosed in this folder"
-	@echo "                    the pdf files output folder name is the current INScore version number."
-	@echo "'validate VERSION=another_version': compares the current version with another one"
-
 validate: $(pdfout)
 	@echo Validating version $(VERSION) with $(version)
 
-checkleaks: INScoreNOView $(leakout)
+checkleaks: $(leakout)
 	make showleaks
 
 showleaks: $(leaksfiles)
 
-INScoreNOView: ../cmake/Release/INScoreNOView
-	cp ../cmake/Release/INScoreNOView .
-
 files: $(pdfout)
 	./forcepdfdate 20100101120000 $(pdfout)
 
-$(version)/%.leak.txt: %.inscore
+$(version)/$(TOOL)/%.leak.txt: %.inscore
 	@[ -d $(@D) ] || mkdir -p $(@D)
-	valgrind --leak-check=full --suppressions=valgrindignored.txt --log-file=$@ ./INScoreNOView $(pwd)/$<
+	valgrind --leak-check=full --suppressions=valgrindignored.txt --log-file=$@ $(TOOL) $(pwd)/$<
 	
 $(version)/%.pdf: %.inscore
 	@[ -d $(@D) ] || mkdir -p $(@D)
 	./inscore2pdf $< $@
 	@sleep 1
 
-$(version)/%.leaks.out: $(version)/%.leak.txt	
+$(version)/%.leaks.out: $(version)/$(TOOL)/%.leak.txt	
 	@grep $(nodlost) $< > /dev/null || echo "$< : definitely lost bytes"
 	@grep $(noilost) $< > /dev/null || echo "$< : indirectly lost bytes"
 	@grep $(noplost) $< > /dev/null || echo "$< : possibly lost bytes"
