@@ -237,17 +237,9 @@ void IObject::delsubnodes()
 IObject::~IObject() 
 {
 	// removes all the child objects refs to me
-#if useiterator
-	for (subnodes::iterator i = elements().begin(); i != elements().end(); i++) {
-		(*i)->fParent = 0;
-	}
-#else
 	for (int i=0; i < size(); i++)
 		elements()[i]->fParent = 0;
-#endif
-#ifdef NOVIEW
 	delete fView;
-#endif
 }
 
 //--------------------------------------------------------------------------
@@ -432,21 +424,17 @@ IMessageList IObject::getParams() const
 {
 	IMessageList outMsgs;
 	
-	map<string, SGetParamMsgHandler>::const_iterator i = fGetMsgHandlerMap.begin();
+	map<std::string, SGetParamMsgHandler>::const_iterator i = fGetMsgHandlerMap.begin();
 	while (i != fGetMsgHandlerMap.end()) {
 		const string& what = i->first;
-//		if (what == "watch")
-//			outMsgs += getWatch();
-//		else {
-			const SGetParamMsgHandler& handler = what.size() ? i->second : 0;
-			if (handler)  {
-				outMsgs += getParam(i->first, i->second);
-			}
-//		}
+		const SGetParamMsgHandler& handler = what.size() ? i->second : 0;
+		if (handler)  {
+			outMsgs += getParam(i->first, i->second);
+		}
 		i++;
 	}
 
-	map<string, SGetParamMultiMsgHandler>::const_iterator j = fGetMultiMsgHandlerMap.begin();
+	map<std::string, SGetParamMultiMsgHandler>::const_iterator j = fGetMultiMsgHandlerMap.begin();
 	while (j != fGetMultiMsgHandlerMap.end()) {
 		const string& what = j->first;
 		const SGetParamMultiMsgHandler& handler = what.size() ? j->second : 0;
@@ -456,19 +444,6 @@ IMessageList IObject::getParams() const
 		}
 		j++;
 	}
-/*
-//cout << name() << " map " << endl;
-	if (name() == "page1") {
-		string map = "map";
-		IMessage msg("", "get");
-		msg.add(map);
-		IMessageList mapmsg = getMsgs (&msg);
-		if (mapmsg.size()) {
-			outMsgs += mapmsg;
-//			mapmsg.clear();
-		}
-	}
-*/
 	return outMsgs;
 }
 
