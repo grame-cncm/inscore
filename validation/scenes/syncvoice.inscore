@@ -13,6 +13,6 @@
 /ITL/scene/spot3 set "ellipse" 0.0500000 0.0500000 ;
 /ITL/scene/spot3 color 0 0 150 160 ;
 /ITL/scene/spot* date 20 16 ;
-/ITL/scene/sync 'spot1'‡ "score:voice1" ;
+/ITL/scene/sync 'spot1' "score:voice1" ;
 /ITL/scene/sync 'spot2' "score:voice2" ;
 /ITL/scene/sync 'spot3' "score:voice3" ;

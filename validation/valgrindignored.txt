@@ -1,0 +1,38 @@
+###############################################################
+{
+   ostream
+   Memcheck:Leak
+   fun:malloc
+   fun:__cxa_get_globals
+   fun:_ZSt18uncaught_exceptionv
+   fun:_ZNSo6sentryD2Ev
+   fun:_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l
+   fun:_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+   fun:_Z8ITLerrorP7YYLTYPEPN7inscore9ITLparserEPKc
+}
+
+###############################################################
+# oscpack socket exit results in a leak
+{
+	oscpack
+   Memcheck:Leak
+   fun:malloc
+   fun:_Znwm
+   fun:_Znam
+   fun:_ZN24SocketReceiveMultiplexer14Implementation3RunEv
+   fun:_ZN7inscore12IOSCListener3runEv
+   fun:_ZN14QThreadPrivate5startEPv
+   fun:_pthread_start
+   fun:thread_start
+}
+
+###############################################################
+# v8 issues
+{
+   v8leak1
+   Memcheck:Leak
+   fun:malloc
+   fun:_Znwm
+   fun:_Znam
+   fun:_ZN2v88internal8DebuggerC2EPNS0_7IsolateE
+}
