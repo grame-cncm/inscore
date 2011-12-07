@@ -303,9 +303,9 @@ MsgHandler::msgStatus IAppl::requireMsg(const IMessage* msg)
 				if (reqmsg) {
 					EventContext context (this);
 					reqmsg->send(context);
-					return MsgHandler::kProcessed;
 				}				
 			}
+			return MsgHandler::kProcessed;
 		}
 	}
 	return MsgHandler::kBadParameters;
@@ -335,18 +335,22 @@ MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
 		string srcfile = msg->params()[0]->value<string>("");
 		if (srcfile.size()) {
 			fstream file (absolutePath(srcfile).c_str(), fstream::in);
-			ITLparser p (&file);
-			IMessageList* msgs = p.parse();
-			if (msgs) {
-				for (IMessageList::const_iterator i = msgs->begin(); i != msgs->end(); i++) {
-					string beg  = OSCAddress::addressFirst((*i)->address());
-					string tail = OSCAddress::addressTail((*i)->address());
-					bool ret = processMsg(beg, tail, *i);
-					if (oscDebug()) IGlue::trace(*i, ret);
+			if (file.is_open()) {
+				ITLparser p (&file);
+				IMessageList* msgs = p.parse();
+				if (msgs) {
+					for (IMessageList::const_iterator i = msgs->begin(); i != msgs->end(); i++) {
+						string beg  = OSCAddress::addressFirst((*i)->address());
+						string tail = OSCAddress::addressTail((*i)->address());
+						bool ret = processMsg(beg, tail, *i);
+						if (oscDebug()) IGlue::trace(*i, ret);
+					}
+					msgs->clear();
 				}
-				msgs->clear();
-				return MsgHandler::kProcessed;
+				else ITLErr << "while parsing file" << srcfile << ITLEndl;
 			}
+			else ITLErr << "can't open file \"" << srcfile << "\"" << ITLEndl;
+			return MsgHandler::kProcessed;
 		}
 	}
 	return MsgHandler::kBadParameters;

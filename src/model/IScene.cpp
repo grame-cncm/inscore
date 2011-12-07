@@ -55,10 +55,9 @@ const string IScene::kSceneType("scene");
 //--------------------------------------------------------------------------
 IScene::~IScene() 
 { 
-#ifndef NOVIEW
-	delete fView; 
-#endif
+	elements().clear();		// this is required to avoid orphan QGraphicsItem (and crash after that)
 }
+
 IScene::IScene(const std::string& name, IObject * parent) : IRectShape(name, parent), fFullScreen(false)
 {
 	fTypeString = kSceneType;
@@ -197,23 +196,26 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 		string srcfile = msg->params()[0]->value<string>("");
 		if (srcfile.size()) {
 			fstream file (absolutePath(srcfile).c_str(), fstream::in);
-			ITLparser p (&file);
-			IMessageList* msgs = p.parse();
-			if (msgs) {
-				for (IMessageList::const_iterator i = msgs->begin(); i != msgs->end(); i++) {
-					IMessage * msg = *i;
-					string address = address2scene (msg->address().c_str());
-					string beg  = OSCAddress::addressFirst(address);
-					string tail = OSCAddress::addressTail(address);
-					bool ret = getRoot()->processMsg(beg, tail, *i);
-					if (!ret) {
-						IGlue::trace(*i, ret);
+			if (file.is_open()) {
+				ITLparser p (&file);
+				IMessageList* msgs = p.parse();
+				if (msgs) {
+					for (IMessageList::const_iterator i = msgs->begin(); i != msgs->end(); i++) {
+						IMessage * msg = *i;
+						string address = address2scene (msg->address().c_str());
+						string beg  = OSCAddress::addressFirst(address);
+						string tail = OSCAddress::addressTail(address);
+						bool ret = getRoot()->processMsg(beg, tail, *i);
+						if (!ret) {
+							IGlue::trace(*i, ret);
+						}
 					}
+					msgs->clear();
 				}
-				msgs->clear();
-				return MsgHandler::kProcessed;
+				else ITLErr << "while parsing file" << srcfile << ITLEndl;
 			}
-			else ITLErr << "while parsing file" << srcfile << ITLEndl;
+			else ITLErr << "can't open file \"" << srcfile << "\"" << ITLEndl;
+			return MsgHandler::kProcessed;
 		}
 	}
 	return MsgHandler::kBadParameters;
