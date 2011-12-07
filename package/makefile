@@ -1,4 +1,16 @@
 version := 0.96
+system	:= $(shell uname -s)
+
+i2i90 := ../tools/inscore2inscore90
+ifeq ($(system), Darwin)
+  tools := $(i2i90)/cmake/Release/inscore2inscore90
+else
+ifeq ($(system), MINGW32_NT-6.1)
+  tools := $(i2i90)/cmake/Release/inscore2inscore90.exe
+else
+  tools := $(i2i90)/cmake/inscore2inscore90
+endif
+endif
 
 package:= INScore-$(version)
 rsrc   := INScore-rsrc-$(version)
@@ -54,6 +66,9 @@ common:
 	cp -r doc $(package)
 	cp readme.txt $(package)
 	cp ../src/changelog.txt $(package)
+	[ -d $(package)/inscore2inscore90 ] || mkdir $(package)/inscore2inscore90
+	cp $(tools) $(package)/inscore2inscore90
+	cp $(i2i90)/readme.txt $(package)/inscore2inscore90
 		
 doc: 
 	make -C $(docsrc)
