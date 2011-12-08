@@ -161,6 +161,7 @@ ITLMsg : 'quit'
 		| ('port' int32)
 		| ('outport' int32)
 		| ('errport' int32)
+		| ('mouse' ('show' | 'hide'))
 		| ('defaultShow' int32)
 		| ('load' filePath)
 		| ('require' int32 oscMsg)
@@ -170,6 +171,7 @@ ITLMsg : 'quit'
 \index{ITL messages!port}
 \index{ITL messages!outport}
 \index{ITL messages!errport}
+\index{ITL messages!mouse}
 \index{ITL messages!defaultShow}
 \index{ITL messages!load}
 \index{ITL messages!hello}
@@ -183,6 +185,8 @@ ITLMsg : 'quit'
 
 \item \OSC{port}, \OSC{outport}, \OSC{errport}: changes the UDP port numbers. \OSC{port} defines the listening port number, \OSC{outport} and \OSC{errport} define the ports used to send messages and error messages. The \OSC{int32} parameter should be a positive value in the range \values{[1024-49150]}. \\
 The default \OSC{port}, \OSC{outport} and \OSC{errport} values are 7000, 7001 and 7002.
+
+\item \OSC{mouse}: hide or show the mouse pointer.
 
 \item \OSC{defaultShow}: changes the default \OSC{show} status for new objects. \\
 The default \OSC{defaultShow} value is 1.
@@ -1727,40 +1731,7 @@ Note: the system doesn't check for the consistency of the variables placement.
 %:Scripting
 \toplevel{Scripting}\label{scripting}
 
-Since INScore saves its states as text files containing lists of OSC messages, it becomes natural to design INSCore scenes using these messages as a textual scripting language. For a better support of scripting, a \emph{loop} operation is introduced to generate messages in sequence and \emph{variables} are introduced to provide a better parameters control.
-
-%===============================
-%:   loops
-\sublevel{Loops}\label{loops}
-
-The \OSC{loop} operation is defined as follows:
-\begin{rail} 
-loop : 'loop' '(' (ident ',' int32 ',' (OSCMessage+)')' | loop) ';'
-\end{rail}
-\index{Scripting!loop}
-It iterates the enclosed messages, which may refer to the current iteration using \OSC{ident}. A reference to the current iteration has the following form:
-\begin{rail}
-identref : '\%'  ident 
-\end{rail}
-Depending on the current context, it is expanded as a string, int32 or float32 parameter: 
-\begin{itemize}
-\item an iteration reference found in an OSC address is expanded as a string,
-\item an iteration reference found in a parameter is expanded as:
-\begin{itemize}
-\item an \oscint\ when the parameter contains only numbers, 
-\item a \oscfloat\ when it contains numbers and a dot,
-\item otherwise as a \oscstring.
-\end{itemize}
-\end{itemize}
-An iteration reference is not allowed in the message string and should trigger a syntax error.
-
-Example:
-\samplev{
-loop(i, 3,\\
-   /ITL/scene/rect\%i set 'rect' 0.1 0.1; \\
-   /ITL/scene/rect\%i x '0.\%i'; \\
- );
-}
+Since INScore saves its states as text files containing lists of OSC messages, it becomes natural to design INSCore scenes using these messages as a textual scripting language. For a better support of scripting, \emph{variables} have been introduced to provide a better parameters control and programming languages have been embedded to generate messages algorithmically.
 
 %===============================
 %:   variables
@@ -1783,8 +1754,96 @@ x=0.5;\\
 }
 
 %===============================
+%:   languages
+\sublevel{Languages}\label{scriptlang}
+
+INScore supports Javascript and Lua as scripting languages. Javascript is embedded by default (using the v8 engine - see \url{http://code.google.com/p/v8/}. You need to recompile INScore to embed the Lua engine (\url{http://www.lua.org/}). 
+
+The principle of scripting using a programming language is the following: you can embed \emph{javascript} of \emph{lua} code in an INScore file in a way similar to scripts embedded into html files. This code is expected to produce INScore messages on output.
+\begin{rail} 
+lang : '<?' ('javascript' | 'lua') script '?>'
+\end{rail}
+\index{Scripting! language}
+
+The output of the script section is parsed like INScore messages. \\
+Note that INScore variables are exported to the current language environment.
+
+Example:
+\sample{
+<?javascript \\
+\hspace*{3mm} "/ITL/scene/version set 'txt' 'Javascript v."  + version() + "';"; \\
+\hspace*{1mm} ?>
+}
+
+
+%===============================
 %:Changes list
 \toplevel{ Changes list}
+
+
+%===============================
+%:   Differences to version 0.95
+\sublevel{Differences to version 0.95}
+\begin{itemize}
+\item switch to v8 javascript engine
+\item lua not embedded by default
+\end{itemize}
+
+%===============================
+%:   Differences to version 0.92
+\sublevel{Differences to version 0.92}
+\begin{itemize}
+\item new 'mouse' 'show/hide' message supported at application level (see section \fullref{ITL})
+\item graphic signal supports alpha messages at object level
+\item javascript and lua embedded and supported in inscore scripts  (see section \fullref{scriptlang}).
+\item bug correction in sync delete (introduced with version 0.90)
+\end{itemize}
+
+%===============================
+%:   Differences to version 0.91
+\sublevel{Differences to version 0.91}
+\begin{itemize}
+\item bug corrected: crash with messages addressed to a signal without argument
+\item date and duration messages support one arg form using 1 as implicit denominator value 
+  the one arg form accepts float values  (see section \fullref{time}).
+\end{itemize}
+
+%===============================
+%:   Differences to version 0.90
+\sublevel{Differences to version 0.90}
+\begin{itemize}
+\item bug in sync management corrected (introduced with the new sync parsing scheme)
+\end{itemize}
+
+%===============================
+%:   Differences to version 0.82
+\sublevel{Differences to version 0.82}
+\begin{itemize}
+\item at application level: osc debug is now 'on' by default
+\item new scripting features (variables)  (see section \fullref{scriptvar}).
+\item ITL file format change: \\
+  - semicolon added at the end of each message \\
+  - '//' comment not supported any more \\
+  - '\%' comment char replaced by '!' \\
+  - new variables scripting features \\
+  - single quote support for strings \\
+  - messages addressed to sync node must use the string format
+\item new 'grid' object for automatic segmentation and mapping
+\end{itemize}
+
+%===============================
+%:   Differences to version 0.81
+\sublevel{Differences to version 0.81}
+\begin{itemize}
+\item new Faust plugins for signals processing
+\item colors management change: all the color models (RGBA and HSBA) accept now
+  float values that are interpreted in the common [-1,1] range. For the
+  hue value, 0 always corresponds to 'red' whatever the scale used.
+\item stretch adjustment for video objects (corrects gaps in sync h mode)
+\item support for opening inscore files on the command line
+\item system mapping correction
+\item splash screen and about menu implemented by the viewer
+\end{itemize}
 
 %===============================
 %:   Differences to version 0.80

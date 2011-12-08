@@ -83,26 +83,26 @@ INScoreAbout::INScoreAbout (const QPixmap & pixmap) : QSplashScreen (pixmap)
 {
     setMask (pixmap.mask());
 
-	QFont font;
-    font.setPointSize(9);
+	QFont font ("Helvetica", 9);
+	int h = height();
 
 	QString version("INScore v.");
 	version += INScore::versionStr();
 	QLabel* text = new QLabel(version, this);
 	text->setFont(font);
-	text->move(25, height()-45);
+	text->move(25, h - 45);
 
 	QString qt("Using Qt v.");
 	qt += qVersion();
 	text = new QLabel(qt, this);
 	text->setFont(font);
-	text->move(20, height()-34);
+	text->move(20, h - 34);
 
 	QString guido("Using Guido Engine v.");
 	guido += INScore::guidoversion();
 	text = new QLabel(guido, this);
 	text->setFont(font);
-	text->move(15, height()-22);
+	text->move(15, h - 22);
 }
 
 INScoreAbout* gAbout = 0;

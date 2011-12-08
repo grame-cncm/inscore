@@ -48,10 +48,10 @@
 \rail@nont{parameters}[]
 \rail@end
 }
-\rail@i {5}{ ITLMsg : 'quit' | ('rootPath' path) | ('port' int32) | ('outport' int32) | ('errport' int32) | ('defaultShow' int32) | ('load' filePath) | ('require' int32 oscMsg) | 'hello' }
+\rail@i {5}{ ITLMsg : 'quit' | ('rootPath' path) | ('port' int32) | ('outport' int32) | ('errport' int32) | ('mouse' ('show' | 'hide')) | ('defaultShow' int32) | ('load' filePath) | ('require' int32 oscMsg) | 'hello' }
 \rail@o {5}{
 \rail@index{ITLMsg}
-\rail@begin{9}{ITLMsg}
+\rail@begin{11}{ITLMsg}
 \rail@bar
 \rail@term{quit}[]
 \rail@nextbar{1}
@@ -67,16 +67,23 @@
 \rail@term{errport}[]
 \rail@token{int32}[]
 \rail@nextbar{5}
+\rail@term{mouse}[]
+\rail@bar
+\rail@term{show}[]
+\rail@nextbar{6}
+\rail@term{hide}[]
+\rail@endbar
+\rail@nextbar{7}
 \rail@term{defaultShow}[]
 \rail@token{int32}[]
-\rail@nextbar{6}
+\rail@nextbar{8}
 \rail@term{load}[]
 \rail@nont{filePath}[]
-\rail@nextbar{7}
+\rail@nextbar{9}
 \rail@term{require}[]
 \rail@token{int32}[]
 \rail@nont{oscMsg}[]
-\rail@nextbar{8}
+\rail@nextbar{10}
 \rail@term{hello}[]
 \rail@endbar
 \rail@end
@@ -1413,38 +1420,8 @@
 \rail@term{)}[]
 \rail@end
 }
-\rail@i {82}{ loop : 'loop' '(' (ident ',' int32 ',' (OSCMessage+)')' | loop) ';' }
+\rail@i {82}{ variabledecl : 'ident' '=' ( int32 | float32 | string ) ';' }
 \rail@o {82}{
-\rail@index{loop}
-\rail@begin{3}{loop}
-\rail@term{loop}[]
-\rail@term{(}[]
-\rail@bar
-\rail@nont{ident}[]
-\rail@term{,}[]
-\rail@token{int32}[]
-\rail@term{,}[]
-\rail@plus
-\rail@nont{OSCMessage}[]
-\rail@nextplus{1}
-\rail@endplus
-\rail@term{)}[]
-\rail@nextbar{2}
-\rail@nont{loop}[]
-\rail@endbar
-\rail@term{;}[]
-\rail@end
-}
-\rail@i {83}{ identref : '\%' ident }
-\rail@o {83}{
-\rail@index{identref}
-\rail@begin{1}{identref}
-\rail@term{\%}[]
-\rail@nont{ident}[]
-\rail@end
-}
-\rail@i {84}{ variabledecl : 'ident' '=' ( int32 | float32 | string ) ';' }
-\rail@o {84}{
 \rail@index{variabledecl}
 \rail@begin{3}{variabledecl}
 \rail@term{ident}[]
@@ -1457,5 +1434,19 @@
 \rail@token{string}[]
 \rail@endbar
 \rail@term{;}[]
+\rail@end
+}
+\rail@i {83}{ lang : '<?' ('javascript' | 'lua') script '?>' }
+\rail@o {83}{
+\rail@index{lang}
+\rail@begin{2}{lang}
+\rail@term{<?}[]
+\rail@bar
+\rail@term{javascript}[]
+\rail@nextbar{1}
+\rail@term{lua}[]
+\rail@endbar
+\rail@nont{script}[]
+\rail@term{?>}[]
 \rail@end
 }

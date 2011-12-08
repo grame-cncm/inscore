@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.3 Differences to version 0.78</TITLE>
-<META NAME="description" CONTENT="17.3 Differences to version 0.78">
+<TITLE>17.3 Differences to version 0.91</TITLE>
+<META NAME="description" CONTENT="17.3 Differences to version 0.91">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,52 +27,45 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1111"
+<A NAME="tex2html1131"
   HREF="node66.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1105"
+<A NAME="tex2html1125"
   HREF="node62.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1099"
+<A NAME="tex2html1119"
   HREF="node64.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1107"
+<A NAME="tex2html1127"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1109"
-  HREF="node76.html">
+<A NAME="tex2html1129"
+  HREF="node82.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1112"
+<B> Next:</B> <A NAME="tex2html1132"
   HREF="node66.html">17.4 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1106"
+<B> Up:</B> <A NAME="tex2html1126"
   HREF="node62.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1100"
+<B> Previous:</B> <A NAME="tex2html1120"
   HREF="node64.html">17.2 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1108"
+ &nbsp; <B>  <A NAME="tex2html1128"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1110"
-  HREF="node76.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1130"
+  HREF="node82.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION001830000000000000000">
-17.3 Differences to version 0.78</A>
+17.3 Differences to version 0.91</A>
 </H1>
 
 <UL>
-<LI>crash bug corrected for the 'save' message addressed to '/ITL'
+<LI>bug corrected: crash with messages addressed to a signal without argument
 </LI>
-<LI>message policy change: relaxed numeric parameters policy (float are accepted for int and int for float)
-</LI>
-<LI>bug in <TT>get watch</TT> for time events corrected (incorrect reply)
-</LI>
-</UL>
-Known issues:
-
-<UL>
-<LI>map not saved by the <TT>save</TT> message 
+<LI>date and duration messages support one arg form using 1 as implicit denominator value 
+  the one arg form accepts float values  (see section <A HREF="node21.html#time">5</A> p.<A HREF="node21.html#time"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
 </UL>
 
