@@ -1,9 +1,9 @@
 Package: inscore
-Version: 0.8.1
+Version: 0.9.6
 Section: sound
 Priority: optional
-Architecture: amd64
-Depends: guidoengine-devel (>= 1.4.4), libc6 (>= 2.12.1), libgcc1 (>= 4.5.1), libphonon4 (>= 4.4.2), libqt4-svg (>= 4.7.0), libqtcore4 (>= 4.7.0), libqtgui4 (>= 4.7.0), libstdc++6 (>= 4.5.1)
+Architecture: i386
+Depends: guidoengine-devel (>= 1.4.6), libc6 (>= 2.12.1), libgcc1 (>= 4.5.1), libphonon4 (>= 4.4.2), libqt4-svg (>= 4.7.0), libqtcore4 (>= 4.7.0), libqtgui4 (>= 4.7.0), libstdc++6 (>= 4.5.1)
 Installed-Size: 47423
 Maintainer: D. Fober <fober@grame.fr>
 Description: INScore - Interactive, Augmented Music Scores.
