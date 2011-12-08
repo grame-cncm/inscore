@@ -10,7 +10,7 @@ set (APPLTARGET	inscore2inscore90)
 #######################################
 if(WIN32)
 if(MSVC)
-	add_definitions(-DMSVC -D_USE_MATH_DEFINES)
+	add_definitions(-D_USE_MATH_DEFINES)
 endif(MSVC)
 else(WIN32)
 	add_definitions(-Wall)
