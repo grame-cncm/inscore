@@ -33,7 +33,7 @@ namespace inscore
 bool relativetimereader::initialize () 
 {
 	fRelTimeSegments.clear();
-	fRelTimeSegmentation = 0;
+//	fRelTimeSegmentation = 0;
 	return true;
 }
 

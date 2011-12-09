@@ -60,7 +60,7 @@ template <typename T> class segment2relativetimereader : public relativetimeread
 		{
 			relativetimereader::initialize();
 			fBaseSegments.clear();
-			fBaseSegmentation = 0;
+			//fBaseSegmentation = 0;
 			fMapping = TMapping<T,RelativeTimeSegment>::create();
 			return fMapping != 0;
 		}
