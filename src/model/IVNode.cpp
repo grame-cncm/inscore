@@ -37,7 +37,7 @@ namespace inscore
 const string IVNode::fTypeString = "vnode";
 IVNode::IVNode(const std::string& name, IObject * parent) : IObject(name, parent)
 {
-	fMsgHandlerMap["set"] = 0; // reject the set message
+	fMsgHandlerMap["set"] = (void*)0; // reject the set message
 }
 
 }

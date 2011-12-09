@@ -65,10 +65,11 @@ MsgHandler::msgStatus IHtmlFile::set (const IMessage* msg )
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
 	status = TFile::set( msg );
-	if (status & MsgHandler::kProcessed)
+	if (status & MsgHandler::kProcessed) {
 		if (!read(fText))
 			status = MsgHandler::kCreateFailure;
 		else newData(true);
+	}
 	return status;
 }
 

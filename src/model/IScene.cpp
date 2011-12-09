@@ -86,9 +86,9 @@ void IScene::setHandlers ()
 {
 	colorAble();
 	positionAble();
-	fGetMsgHandlerMap[""]			= 0;	// force standard propagation of the get message
-	fMsgHandlerMap["effect"]		= 0;	// no effects at scene level
-	fGetMsgHandlerMap["effect"]		= 0;	// no effects at scene level
+	fGetMsgHandlerMap[""]			= (void*)0;	// force standard propagation of the get message
+	fMsgHandlerMap["effect"]		= (void*)0;	// no effects at scene level
+	fGetMsgHandlerMap["effect"]		= (void*)0;	// no effects at scene level
 }
 
 //--------------------------------------------------------------------------
