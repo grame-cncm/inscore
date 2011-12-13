@@ -34,10 +34,13 @@ if(APPLE)
 	else (${CMAKE_SYSTEM_VERSION} VERSION_LESS 9.0.0)
 		set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.5.sdk)
 	endif (${CMAKE_SYSTEM_VERSION} VERSION_LESS 9.0.0)
-
-#if (NOT (JAVASCRIPT STREQUAL "yes"))
-	set (CMAKE_OSX_ARCHITECTURES "i386 x86_64")
-#endif (NOT (JAVASCRIPT STREQUAL "yes"))
+ #######################################
+ if (DIST STREQUAL "yes")
+	message (STATUS "All architectures will be compiled - Use -DDIST=no to change.")
+	set (CMAKE_OSX_ARCHITECTURES "x86_64 i386")
+ else ()
+	message (STATUS "Only the current architecture will be compiled - Use -DDIST=yes to change.")
+ endif ()
 	set (CMAKE_C++_FLAGS -mmacosx-version-min=10.4)
 endif(APPLE)
 
