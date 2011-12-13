@@ -10,6 +10,12 @@ INScore resources are released under the Creative Common license.
 ------------------------------------------------------------------
 
 -------------------------------
+** Nov. 7 2011
+-------------------------------
+- new Faust plugins support and example
+- new javascript samples included in the StandAlone archive
+
+-------------------------------
 ** July 13 2011
 -------------------------------
 - new transform Max patch for 3D rotation and shearing
