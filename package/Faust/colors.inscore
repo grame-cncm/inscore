@@ -1,27 +1,19 @@
 
-<?lua
-out={}
-j=1
-color = "/ITL/scene/color"
-level = "/ITL/scene/colorlevel"
-for i=0,2
-do
-	out[j] = color..i.." set 'rect' 1.0 0.04;"
-	j = j+1
-	out[j] = level..i.." set 'rect' 1.0 0.04;"
-	j = j+1
-	out[j] = color..i.." watch  'mouseDown' '"..level..i.."' 'width' '$x';"
-	j = j+1
-	out[j] = color..i.." watch+ 'mouseDown' '"..level..i.."' 'hue' '$x[-1.,1.]';"
-	j = j+1
-	out[j] = color..i.." watch  'mouseMove' '"..level..i.."' 'width' '$x';"
-	j = j+1
-	out[j] = color..i.." watch+ 'mouseMove' '"..level..i.."' 'hue' '$x[-1.,1.]';"
-	j = j+1
-end
--- print(	out[5] )
-return out
->
+<?javascript
+	var out = new Array;
+	var j=1;
+	var color = "/ITL/scene/color";
+	var level = "/ITL/scene/colorlevel";
+	for (i=0; i<=2; i++) {
+		out[j++] = color+i+" set 'rect' 1.0 0.04;";
+		out[j++] = level+i+" set 'rect' 1.0 0.04;";
+		out[j++] = color+i+" watch  'mouseDown' '"+level+i+"' 'width' '$x';";
+		out[j++] = color+i+" watch+ 'mouseDown' '"+level+i+"' 'hue' '$x[-1.,1.]';";
+		out[j++] = color+i+" watch  'mouseMove' '"+level+i+"' 'width' '$x';";
+		out[j++] = color+i+" watch+ 'mouseMove' '"+level+i+"' 'hue' '$x[-1.,1.]';";
+	}
+	out;
+?>
 
 /ITL/scene/color0 watch+  "mouseDown" "/ITL/scene/signal/pitchcolor" "$x[-1.,1.]" ;
 /ITL/scene/color0 watch+  "mouseMove" "/ITL/scene/signal/pitchcolor" "$x[-1.,1.]" ;
