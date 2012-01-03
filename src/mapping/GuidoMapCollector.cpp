@@ -201,10 +201,6 @@ void GuidoSystemCollector::merge (const Time2GraphicMap& map1, const Time2Graphi
 			RelativeTimeSegment t2 = i2->first;
 			GraphicSegment s2 = i2->second;
 			
-//bool trace = (t1.start() >= rational(19,4)) && (t1.start() <= rational(20,4));
-//if (trace) {
-//	cout << "at date: " << t1.start() << " - " << t2.start() << ": ";
-//}
 			if (t1.start() == t2.start()) {					// case 1: both segments at the same date
 				float proximity = s2.xinterval().first() - s1.xinterval().first();
 				if (proximity < 0) proximity = -proximity;
