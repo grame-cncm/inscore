@@ -22,6 +22,7 @@
 
  */
 
+#include <ostream>
 #include "GUIDOExport.h"
 
 class GuidoFeedback;
@@ -165,7 +166,7 @@ enum { kAutoDistrib = 1, kAlwaysDistrib = 2, kNeverDistrib = 3 };
 /**
     Settings for the graphic score layout.
 */
-typedef struct
+typedef struct GuidoLayoutSettings
 {
     /*! Control distance between systems, distance is in internal units
 		(default value: 75)
@@ -203,7 +204,7 @@ typedef struct
 		(default value: 1)
 	*/
 	int optimalPageFill;
-
+	
 } GuidoLayoutSettings;
 
 /**
@@ -247,6 +248,15 @@ representations.
 		valid VGDevice, because Guido keeps it internally (to calculate fonts, etc.)
     */
     GUIDOAPI(GuidoErrCode)	GuidoInit(GuidoInitDesc * desc);
+
+	/*!
+        Guido Engine shutdown
+		
+        Actually release the font allocated by the engine. 
+		Anyway, the fonts are release when the client application exit but
+		the function provides control over the time of the release.
+    */
+    GUIDOAPI(void)	GuidoShutdown();
 
 	/*!
         Parses a Guido Music Notation (.gmn) file and builds the corresponding
@@ -339,6 +349,13 @@ as by date. Page numbers start at 1.
 */
 	/** \brief Gives the number of score pages of the graphic representation.
 
+		\param inHandleAR a Guido opaque handle to a AR structure.
+		\return the number of voices or a guido error code.
+	*/
+	GUIDOAPI(int) 	GuidoCountVoices( CARHandler inHandleAR );
+	
+	/** \brief Gives the number of score pages of the graphic representation.
+
 		\param inHandleGR a Guido opaque handle to a GR structure.
 		\return a number of pages or a guido error code.
 	*/
@@ -407,6 +424,15 @@ units.
 		\return a Guido error code
 	*/
     GUIDOAPI(GuidoErrCode) 	GuidoOnDraw( GuidoOnDrawDesc * desc );
+
+	/** \brief Exports one page of score to SVG.
+
+		\param page the page number.
+		\param out the output stream.
+		\param fontfile path of the guido svg font file.
+		\return a Guido error code
+	*/
+    GUIDOAPI(GuidoErrCode) 	GuidoSVGExport( const GRHandler handle, int page, std::ostream& out, const char* fontfile );
 
 	/** \brief Control bounding boxes drawing.
 
@@ -502,6 +528,11 @@ The number of version functions is due to historical reasons.
 		\return a Guido error code.
 	*/
 	GUIDOAPI(void) GuidoGetVersionNums(int * major, int * minor, int * sub);
+
+	/**	\brief Gives the library version number as a string
+		\return the version numebr as a string.
+	*/
+	GUIDOAPI(const char*) GuidoGetVersionStr();
 
 
 	/**	\brief Checks a required library version number.

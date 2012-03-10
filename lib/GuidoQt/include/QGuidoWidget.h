@@ -202,6 +202,11 @@ class QGuidoWidget : public QWidget
 		*	\brief Gives access to the ARHandler (abstract representation) of the Score in read-only.
 		*/		
         CARHandler   getARHandler() const { return mGuidoPainter->getARHandler(); }
+		
+		/**
+		*	\brief Directly set the AR handler .
+		*/
+		void		setARHandler(ARHandler ar);
 
 		/// \brief sets the color used to draw the score
 		void setScoreColor(const QColor& color)	{ mGuidoPainter->setScoreColor(color); clearCache(); }

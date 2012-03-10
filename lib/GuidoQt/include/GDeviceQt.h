@@ -30,7 +30,7 @@
 class GSystemQt;
 class QPainter;
 class GFontQt;
-
+class TCachedFontDestructor;
 /**
 *	\brief Qt implementation of the VGDevice interface, more precisely : a wrapper between
 *	the VGDevice and the QPainter objects.
@@ -191,6 +191,8 @@ class GDeviceQt: public VGDevice
 		virtual	void			PopPenColor();
 		virtual	void			PushPenWidth( float width);
 		virtual	void			PopPenWidth();
+	
+	friend class TCachedFontDestructor;
 };
 
 #endif /*GDEVICEQT_H*/

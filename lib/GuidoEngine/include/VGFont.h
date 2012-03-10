@@ -43,7 +43,6 @@
 class VGFont
 {
 	public:
-
 		/// Font properties
 		enum {
 			kFontNone		= 0,
@@ -70,6 +69,7 @@ class VGFont
 										   float * outWidth,
 										   float * outHeight,
 										   VGDevice * context ) const = 0;
+
 		/// Computes the width and height of the input character using the
 		/// current font capabilities in the input VGDevice
 		virtual	void			GetExtent( unsigned char c,
@@ -78,9 +78,7 @@ class VGFont
 										   VGDevice * context ) const = 0;
 
 	protected:
-
-				void *			GetContext( VGDevice * context) const
-									{ return context->GetNativeContext(); }
+		void * GetContext( VGDevice * context) const	{ return context->GetNativeContext(); }
 };
 
 /*! @} */

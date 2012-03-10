@@ -202,11 +202,17 @@ class QGuidoPainter
 		*	\brief Gives access to the GRHandler (graphic representation) of the Score in read-only.
 		*/
 		CGRHandler	getGRHandler() const { return mDesc.handle; }
+		GRHandler	getGRHandler()		{ return mDesc.handle; }
 		
 		/**
 		*	\brief Gives access to the ARHandler (abstract representation) of the Score in read-only.
 		*/
 		CARHandler	getARHandler() const { return mARHandler; }
+		
+		/**
+		*	\brief Directly set the AR handler .
+		*/
+		void		setARHandler(ARHandler ar);
 
 	protected:
 	
@@ -216,14 +222,13 @@ class QGuidoPainter
 		typedef GuidoErrCode (*GuidoParseFunction)( const char * , ARHandler* );
 
 		bool setGMNData( const QString& dataSource , GuidoParseFunction parseFunction );
+		bool hasValidGR() const			{ return mDesc.handle != 0; }
 		
 		GuidoOnDrawDesc mDesc;
 		ARHandler mARHandler;
 		QString mFileName;
 		QString mGMNCode;
-		bool mScoreOk;
 		GuidoErrCode mLastErr;
-		bool mHasValidGR;
 
 		bool mResizePageToMusic;
 		GuidoLayoutSettings mLayoutSettings;		

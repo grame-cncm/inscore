@@ -49,8 +49,6 @@ class GSystemQt: public VGSystem
 		virtual const VGFont*	CreateVGFont( const char * faceName, int size, int properties ) const;
 
 	protected:
-		void					setupCharEncodingTable();
-		unsigned int			mSymbolToChar [ kMaxMusicalSymbolID ];
 		QPainter*				mQPainter;
 
 };

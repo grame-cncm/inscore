@@ -25,6 +25,8 @@
 #include <QString>
 #include <QChar>
 
+#include <string>
+
 /**
 *	\brief Qt implementation of the VGFont interface.
 *
@@ -32,41 +34,30 @@
 */
 class GFontQt : public VGFont
 {
-
 public:
-
-	GFontQt(QFont * nativeFont, const char* faceName, int size, int properties,
-												const unsigned int * charSet);
+			 GFontQt(QFont * nativeFont, const char* faceName, int size, int properties);
 	virtual ~GFontQt();
   
 	// - VGFont services ---------------------------------------------
-	virtual const char* GetName() const {	return mName; }
-
-	virtual int GetSize() const  { return mSize; }
-
-	virtual int GetProperties() const { return mFontProp; }
+	virtual const char* GetName() const			{ return mName.c_str(); }
+	virtual int			GetSize() const			{ return mSize; }
+	virtual int			GetProperties() const	{ return mFontProp; }
 
 	// - Symbol services ---------------------------------------------
-	virtual void GetExtent(const char * s, int inCharCount, float * outWidth,
-								float * outHeight, VGDevice * context = 0) const;
-	  
-	virtual void GetExtent(unsigned char c, float * outWidth, float * outHeight,
-													VGDevice * context = 0) const;
+	virtual void GetExtent(const char * s, int inCharCount, float * outWidth, float * outHeight, VGDevice * context = 0) const;
+	virtual void GetExtent(unsigned char c, float * outWidth, float * outHeight, VGDevice * context = 0) const;
 	  
 	/// Returns the  font associated with the current object.
 	QFont * GetNativeFont() const { return mNativeFont; }
 
 	/// Returns the symbol corresponding to the input index.
-	QChar Symbol(unsigned int sym) const;
+	QChar Symbol(unsigned int sym) const	{ return sym; }
 
 protected:
-
 	QFont * mNativeFont;
-	char mName[100];
-	int mSize;
-	int mFontProp;
-	const unsigned int * mCharSet;
-
+	std::string	mName;
+	int		mSize;
+	int		mFontProp;
 };
 
 #endif /*GFONTQT_H_*/

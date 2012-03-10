@@ -154,7 +154,7 @@ ConstMusicalSymbolID kInvertedTurnSymbol	= 229;
 ConstMusicalSymbolID kCodaSymbol			= 230;
 
 // version 1.39
-ConstMusicalSymbolID kP1Symbol				= 160;
+ConstMusicalSymbolID kP1Symbol				= 231;
 // version 1.43
 ConstMusicalSymbolID kCauDFlatSymbol		= 121;	// cautionary double flat
 ConstMusicalSymbolID kQSharpSymbol			= 178;	// a quarter sharp
