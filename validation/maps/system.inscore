@@ -7,8 +7,13 @@
 /ITL/scene/comment y -0.950000 ;
 /ITL/scene/score set "gmnf" "system.gmn" ;
 /ITL/scene/score map "system" ;
+/ITL/scene/score map "voice1" ;
+/ITL/scene/score map "voice2" ;
+/ITL/scene/score map "voice3" ;
+/ITL/scene/score map "voice4" ;
 /ITL/scene/score/debug map 1 ;
-/ITL/scene/score columns 8 ;
+/ITL/scene/score columns 4 ;
+/ITL/scene/score scale 2.2 ;
 /ITL/scene width 2.30000 ;
 /ITL/scene/score watch "mouseDown" "/ITL/scene/score" "dpage" 1 ;
 /ITL/scene/score watch "doubleClick" "/ITL/scene/score" "page" 1 ;

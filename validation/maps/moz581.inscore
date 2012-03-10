@@ -8,5 +8,6 @@
 /ITL/scene/score map "staff2" ;
 /ITL/scene/score map "staff3" ;
 /ITL/scene/score map "staff4" ;
+/ITL/scene/score map "staff5" ;
 /ITL/scene/score map "system" ;
 /ITL/scene/score/debug map 1 ;

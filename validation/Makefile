@@ -16,6 +16,10 @@ pdfout  	:= $(patsubst ./%.inscore, $(version)/%.pdf, $(files))
 leakout 	:= $(patsubst ./%.inscore, $(version)/$(TOOL)/%.leak.txt, $(files))
 leaksfiles  := $(patsubst ./%.inscore, $(version)/%.leaks.out, $(files))
 
+allpdf 		= $(shell [ -d $(version) ] && find $(version) -name "*.pdf")
+validpdf 	= $(patsubst %.pdf, %.outpdf, $(allpdf))
+
+
 nodlost	= "definitely lost: 0"
 noilost	= "indirectly lost: 0"
 noplost	= "possibly lost: 0"
@@ -32,7 +36,7 @@ images: forcepdfdate INScoreVersion
 	@echo "Make sure that INScoreViewer is running!"
 	make files
 
-validate: $(pdfout)
+validate: $(validpdf)
 	@echo Validating version $(VERSION) with $(version)
 
 checkleaks: $(leakout)
@@ -61,3 +65,9 @@ $(version)/%.leaks.out: $(version)/$(TOOL)/%.leak.txt
 %.out: %.pdf
 	@diff $< $(patsubst $(version)/%, $(VERSION)/%, $<) || echo "open $<  $(patsubst $(version)/%, $(VERSION)/%, $<) to check changes"
 	
+%.outpdf: %.pdf
+	$(eval tmp := $(patsubst $(version)/%, $(VERSION)/%, $<))	
+	@[ -f  $(tmp) ] || echo $< : new file
+	$(eval ignored := $(shell grep $< $(version)/ignore.$(VERSION).txt 2>/dev/null || echo _none_))
+	@[ -f  $(ignored) ] || (diff $< $(tmp) 2>/dev/null >/dev/null || [ -f  $(tmp) ] && echo "open $< $(patsubst $(version)/%, $(VERSION)/%, $<) # to check changes"; true)
+
