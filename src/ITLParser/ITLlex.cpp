@@ -188,7 +188,7 @@ typedef size_t yy_size_t;
      */
     #define  YY_LESS_LINENO(n) \
             do { \
-                yy_size_t yyl;\
+                int yyl;\
                 for ( yyl = n; yyl < yyleng; ++yyl )\
                     if ( yytext[yyl] == '\n' )\
                         --yylineno;\
@@ -649,9 +649,12 @@ static  char* unescape (char * str) {
 	//                     'w' is an index to the current write location
 	for (int r=0, w=0; r <= n; r++) {		
 		if (str[r] == '\\') {			// escape char '\' is found
-			if (str[r+1] == '\\') {		// when next char is also an escape char '\'
-				str[w++] = str[r++];	// the put the '\' at write location
-			}
+			char next = str[r+1];
+//			if (next == '\\')			// when next char is also an escape char '\'
+//				str[w++] = str[r++];	// then put the '\' at write location
+//			else 
+			if ((next != '\'') && (next != '"')) 	// escape only ' and "
+				str[w++] = str[r];		// output the escape char 
 		}
 		else str[w++] = str[r];			// no escape: put the current char at write location 
 	}
@@ -666,7 +669,7 @@ static  char* unescape (char * str) {
 
 
 
-#line 670 "ITLlex.cpp"
+#line 673 "ITLlex.cpp"
 
 #define INITIAL 0
 #define CMNTLN 1
@@ -911,9 +914,9 @@ YY_DECL
 	register int yy_act;
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
-#line 77 "ITL.l"
+#line 80 "ITL.l"
 
-#line 917 "ITLlex.cpp"
+#line 920 "ITLlex.cpp"
 
     yylval = yylval_param;
 
@@ -993,7 +996,7 @@ yy_find_action:
 
 		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
 			{
-			yy_size_t yyl;
+			int yyl;
 			for ( yyl = yyg->yy_more_len; yyl < yyleng; ++yyl )
 				if ( yytext[yyl] == '\n' )
 					   
@@ -1016,222 +1019,222 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 78 "ITL.l"
+#line 81 "ITL.l"
 yyextra->fInt = atoi(yytext); return UINT;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 79 "ITL.l"
+#line 82 "ITL.l"
 yyextra->fInt = atoi(yytext); return UINT;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 80 "ITL.l"
+#line 83 "ITL.l"
 yyextra->fInt = atoi(yytext); return INT;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 82 "ITL.l"
+#line 85 "ITL.l"
 yyextra->fFloat = atof(yytext); return FLOAT;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 83 "ITL.l"
+#line 86 "ITL.l"
 yyextra->fFloat = atof(yytext); return FLOAT;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 84 "ITL.l"
+#line 87 "ITL.l"
 yyextra->fFloat = atof(yytext); return FLOAT;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 86 "ITL.l"
+#line 89 "ITL.l"
 return EQUAL;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 87 "ITL.l"
+#line 90 "ITL.l"
 return LPAR;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 88 "ITL.l"
+#line 91 "ITL.l"
 return RPAR;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 89 "ITL.l"
+#line 92 "ITL.l"
 return SEP;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 90 "ITL.l"
+#line 93 "ITL.l"
 return PATHSEP;			/* OSC address and path separator */
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 91 "ITL.l"
+#line 94 "ITL.l"
 return ENDEXPR;			/* end of expression */
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 92 "ITL.l"
+#line 95 "ITL.l"
 return VARSTART;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 94 "ITL.l"
+#line 97 "ITL.l"
 BEGIN CMNTLN;
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 95 "ITL.l"
+#line 98 "ITL.l"
 BEGIN CMNTLN;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 96 "ITL.l"
+#line 99 "ITL.l"
 
 	YY_BREAK
 case 17:
 /* rule 17 can match eol */
 YY_RULE_SETUP
-#line 97 "ITL.l"
+#line 100 "ITL.l"
 BEGIN INITIAL;
 	YY_BREAK
 case 18:
 /* rule 18 can match eol */
 YY_RULE_SETUP
-#line 99 "ITL.l"
+#line 102 "ITL.l"
 
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 100 "ITL.l"
+#line 103 "ITL.l"
 nested++; 
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 101 "ITL.l"
+#line 104 "ITL.l"
 if (--nested==0) BEGIN INITIAL;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 102 "ITL.l"
+#line 105 "ITL.l"
 nested=1; BEGIN COMMENT;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 104 "ITL.l"
+#line 107 "ITL.l"
 yyextra->fText = yytext; return IDENTIFIER;		/* identifiers */
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 105 "ITL.l"
+#line 108 "ITL.l"
 yyextra->fText = yytext; return MAPIDENTIFIER;	/* identifiers with map name */
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 106 "ITL.l"
+#line 109 "ITL.l"
 yyextra->fText = yytext; return MSG;			/* messages */
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 108 "ITL.l"
+#line 111 "ITL.l"
 BEGIN DQSTR;
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 109 "ITL.l"
+#line 112 "ITL.l"
 BEGIN QSTR;
 	YY_BREAK
 case 27:
 /* rule 27 can match eol */
 YY_RULE_SETUP
-#line 110 "ITL.l"
+#line 113 "ITL.l"
 yyextra->fText = unescape(yytext); return STRING;
 	YY_BREAK
 case 28:
 /* rule 28 can match eol */
 YY_RULE_SETUP
-#line 111 "ITL.l"
+#line 114 "ITL.l"
 yyextra->fText = unescape(yytext); return STRING;
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 112 "ITL.l"
+#line 115 "ITL.l"
 BEGIN INITIAL;
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 113 "ITL.l"
+#line 116 "ITL.l"
 BEGIN INITIAL;
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 115 "ITL.l"
+#line 118 "ITL.l"
 BEGIN LUASECTION;
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 116 "ITL.l"
+#line 119 "ITL.l"
 BEGIN INITIAL;
 	YY_BREAK
 case 33:
 /* rule 33 can match eol */
 YY_RULE_SETUP
-#line 117 "ITL.l"
+#line 120 "ITL.l"
 yyextra->fText = unescape(yytext); return LUASCRIPT;
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 119 "ITL.l"
+#line 122 "ITL.l"
 BEGIN JSECTION;
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 120 "ITL.l"
+#line 123 "ITL.l"
 BEGIN INITIAL;
 	YY_BREAK
 case 36:
 /* rule 36 can match eol */
 YY_RULE_SETUP
-#line 121 "ITL.l"
+#line 124 "ITL.l"
 yyextra->fText = unescape(yytext); return JSCRIPT;
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 124 "ITL.l"
+#line 127 "ITL.l"
 yyextra->fText = yytext; return REGEXP;			/* regular expression */
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 125 "ITL.l"
+#line 128 "ITL.l"
 yyextra->fText = yytext; return REGEXP;			/* regular expression */
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 127 "ITL.l"
+#line 130 "ITL.l"
 ;   /* eat up space */
 	YY_BREAK
 case 40:
 /* rule 40 can match eol */
 YY_RULE_SETUP
-#line 129 "ITL.l"
+#line 132 "ITL.l"
 yylloc->first_column=0; /* ignore */
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 131 "ITL.l"
+#line 134 "ITL.l"
 yyextra->fText = yytext; return ERR;
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 133 "ITL.l"
+#line 136 "ITL.l"
 ECHO;
 	YY_BREAK
-#line 1235 "ITLlex.cpp"
+#line 1238 "ITLlex.cpp"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(CMNTLN):
 case YY_STATE_EOF(COMMENT):
@@ -2381,7 +2384,7 @@ void ITLfree (void * ptr , yyscan_t yyscanner)
 
 #define YYTABLES_NAME "yytables"
 
-#line 133 "ITL.l"
+#line 136 "ITL.l"
 
 
 
