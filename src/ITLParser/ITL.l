@@ -42,9 +42,12 @@ static  char* unescape (char * str) {
 	//                     'w' is an index to the current write location
 	for (int r=0, w=0; r <= n; r++) {		
 		if (str[r] == '\\') {			// escape char '\' is found
-			if (str[r+1] == '\\') {		// when next char is also an escape char '\'
-				str[w++] = str[r++];	// the put the '\' at write location
-			}
+			char next = str[r+1];
+//			if (next == '\\')			// when next char is also an escape char '\'
+//				str[w++] = str[r++];	// then put the '\' at write location
+//			else 
+			if ((next != '\'') && (next != '"')) 	// escape only ' and "
+				str[w++] = str[r];		// output the escape char 
 		}
 		else str[w++] = str[r];			// no escape: put the current char at write location 
 	}
