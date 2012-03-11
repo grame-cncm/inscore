@@ -25,16 +25,9 @@
 
 #include <iostream>
 
-
-#include "MapTools.h"
-#include "TVirtualRelation.h"
+#include "maptypes.h"
 #include "ITLError.h"
-#include "VGuidoItemView.h"
-#include "VApplView.h"
-
-#include "IGuidoCode.h"
 #include "QGuidoGraphicsItem.h"
-#include "QGuidoImporter.h"
 
 #include "GuidoMapCollector.h"
 
@@ -43,6 +36,9 @@ using namespace std;
 
 namespace inscore
 {
+
+//----------------------------------------------------------------------
+static inline rational guidodate2rational (const GuidoDate& d)		{ return rational (d.num, d.denom); }
 
 //----------------------------------------------------------------------
 void GuidoMapCollector::Graph2TimeMap( const FloatRect& box, const TimeSegment& dates, const GuidoElementInfos& infos )
@@ -82,53 +78,26 @@ void GuidoMapCollector::process (Time2GraphicMap* outmap)
 //----------------------------------------------------------------------
 void GuidoStaffCollector::process (Time2GraphicMap* outmap)
 {
-	GuidoMapCollector staffCollector(fItem, kGuidoStaff, fFilter);
-	GuidoMapCollector eventsCollector(fItem, kGuidoEvent, fFilter);
+	if (!fItem || !outmap) return;
 
-	Time2GraphicMap staffMap, evtsMap;
-	staffCollector.process (&staffMap);
-	eventsCollector.process(&evtsMap);
-
-	Time2GraphicMap::const_iterator eventsIter = evtsMap.begin();
-	Time2GraphicMap::const_iterator staffIter = staffMap.begin();
-	
-	while (eventsIter != evtsMap.end()) {
-		if (staffIter == staffMap.end()) {
-			cerr << "unexpected staff segmentation end while collecting staff map" << endl;
-			break;
-		}
-
-		Time2GraphicMap::const_iterator current = eventsIter;
-		Time2GraphicMap::const_iterator next = ++eventsIter;
-		RelativeTimeSegment evTime = current->first;
-		while ( !staffIter->first.include(evTime) && (staffIter != staffMap.end())) {
-			staffIter++;
-		}
-		if (staffIter == staffMap.end()) {
-			cerr << "unexpected staff segmentation end while while looking for evTime " << evTime << endl;
-			break;
-		}
-
-		Time2GraphicMap::const_iterator currstaff = staffIter;
-		Time2GraphicMap::const_iterator nextstaff = currstaff;
-		nextstaff++;
-
-		float startx = current->second.xinterval().first();
-		float endx = 0;
-		if (next == evtsMap.end())								// last event ?
-			endx = currstaff->second.xinterval().second();		// end zone is end staff
-
-		else {
-			RelativeTimeSegment nextTime = next->first;			// is the event on the same staff ?
-			if (staffIter->first.include(nextTime) || 
-				(nextstaff == staffMap.end()) ||
-				( currstaff->second.yinterval().first() == nextstaff->second.yinterval().first())) {
-				endx = next->second.xinterval().first();		// end zone is next event start
+	for ( int page = fItem->firstVisiblePage() ; page <= fItem->lastVisiblePage() ; page++ ) {
+		fCurrentPageOrigin = fItem->pageManager()->pagePos(page);
+		float w = fItem->pageManager()->pageSize(page).width();
+		float h = fItem->pageManager()->pageSize(page).height();
+		::Time2GraphicMap map;
+		GuidoErrCode err = GuidoGetStaffMap( fItem->getGRHandler(), page, w, h, fStaffNum, map );
+		if (err == guidoNoErr) {
+			for (::Time2GraphicMap::const_iterator i=map.begin(); i!=map.end(); i++) {
+				RelativeTimeSegment ts (guidodate2rational(i->first.first), guidodate2rational(i->first.second));
+				GraphicSegment gs ( fCurrentPageOrigin.x()+i->second.left, fCurrentPageOrigin.y()+i->second.top, 
+									fCurrentPageOrigin.x()+i->second.right, fCurrentPageOrigin.y()+i->second.bottom);
+				(*outmap)[ts] = gs;
 			}
-			else 
-				endx = currstaff->second.xinterval().second(); // end zone is end staff
 		}
-		(*outmap)[current->first] = GraphicSegment(FloatInterval( startx, endx ), currstaff->second.yinterval());
+		else {
+			ITLErr << "error getting staff " << fStaffNum << " map on page " << page << ": " << GuidoGetErrorString(err) << ITLEndl;
+			break;
+		}
 	}
 }
 
@@ -137,123 +106,26 @@ void GuidoStaffCollector::process (Time2GraphicMap* outmap)
 //----------------------------------------------------------------------
 void GuidoSystemCollector::process (Time2GraphicMap* outmap)
 {
-	Time2GraphicMap map, submap, merged;
-	processNoDiv (&map);
-	if (!fFlatMode) {
-		int i = 1;
-		while (true) {
-			Time2GraphicMap staffmap;
-			GuidoStaffCollector staffcollector (fItem, i++);
-			staffcollector.process(&staffmap);
-			if (!staffmap.size()) break;
-			
-			merge (map, staffmap, submap);
-			map = submap;
-		}
-	}
-	*outmap = map;
-}
+	if (!fItem || !outmap) return;
 
-//----------------------------------------------------------------------
-rational GuidoSystemCollector::add (const RelativeTimeSegment& ts, const FloatInterval& xi, const FloatInterval& yi, Time2GraphicMap& outmap)
-{
-	outmap[ts] = GraphicSegment(xi, yi);
-	return ts.end();
-}
-
-//----------------------------------------------------------------------
-// merge 2 maps using the smallest segmentation
-// the principle of the merge is the following:
-// the 2 maps are brwosed and 3 different cases are considered for each segments pair:
-// let t1 and t2 be segments from map1 and map2
-// 1) both segments t1 and t2 start at the same date:
-//        t1 : |-------|
-//        t2 : |---|......|
-//    in this case we check the graphical position due to whole measure rests layout pb
-//    when the position is (roughly) the same, inserts intersect t1 & t2 
-//		   get next t2 and continue
-//	  when the position is different, insert t1 and skip t2 until t2 > t1
-
-// 2) the segment t1 starts before t2 and t2 starts in t1:
-//        t1 : |-------|
-//        t2 :   |---|......|
-//    in this case, inserts intersect t1 & t2
-//		   get next t2 and continue
-
-// 3) the segment t2 starts after t1:
-//        t1 : |-------|
-//        t2 :           |---|
-//    in this case, depending on the last date, inserts t1 
-//			get next t1 and continue
-//----------------------------------------------------------------------
-void GuidoSystemCollector::merge (const Time2GraphicMap& map1, const Time2GraphicMap& map2, Time2GraphicMap& outmap)
-{
-	outmap.clear();
-	Time2GraphicMap::const_iterator i1 = map1.begin();
-	Time2GraphicMap::const_iterator i2 = map2.begin();
-	
-	rational rightdate;
-	while (i1 != map1.end()) {				// browse each map1 relation
-		RelativeTimeSegment t1 = i1->first;
-		GraphicSegment s1 = i1->second;
-
-		if (i2 != map2.end()) {	
-			RelativeTimeSegment t2 = i2->first;
-			GraphicSegment s2 = i2->second;
-			
-			if (t1.start() == t2.start()) {					// case 1: both segments at the same date
-				float proximity = s2.xinterval().first() - s1.xinterval().first();
-				if (proximity < 0) proximity = -proximity;
-				if (proximity < 3.5) {						// check for graphic position
-					// it (roughly) matches : inserts t1 and t2 intersection
-					rightdate = add(t1 & t2, (s1 & s2).xinterval(), s1.yinterval(), outmap);
-					i2++;									// and go to next t2
-				}
-				else {										// different positions: skip the rightmost segment
-					if (s2.xinterval().first() > s1.xinterval().first()) {
-						rightdate = add(t1, s1.xinterval(), s1.yinterval(), outmap);
-						while (++i2 != map2.end()) {
-							if (i2->first.start() >= t1.end()) break;
-						}
-						i1++;
-					}
-					else {
-						rightdate = add(t2, s2.xinterval(), s1.yinterval(), outmap);
-						i2++;
-					}
-				}
+	if (fFlatMode) processNoDiv (outmap);
+	else for ( int page = fItem->firstVisiblePage() ; page <= fItem->lastVisiblePage() ; page++ ) {
+		fCurrentPageOrigin = fItem->pageManager()->pagePos(page);
+		float w = fItem->pageManager()->pageSize(page).width();
+		float h = fItem->pageManager()->pageSize(page).height();
+		::Time2GraphicMap map;
+		GuidoErrCode err = GuidoGetSystemMap( fItem->getGRHandler(), page, w, h, map );
+		if (err == guidoNoErr) {
+			for (::Time2GraphicMap::const_iterator i=map.begin(); i!=map.end(); i++) {
+				RelativeTimeSegment ts (guidodate2rational(i->first.first), guidodate2rational(i->first.second));
+				GraphicSegment gs ( fCurrentPageOrigin.x()+i->second.left, fCurrentPageOrigin.y()+i->second.top, 
+									fCurrentPageOrigin.x()+i->second.right, fCurrentPageOrigin.y()+i->second.bottom);
+				(*outmap)[ts] = gs;
 			}
-			else if (t2.start() > t1.start()) {
-				if (t2.start() < t1.end()) {				// case 2: t2 starts in t1
-					RelativeTimeSegment inter = t1 & t2;
-					FloatInterval xinter = s2.xinterval() & s1.xinterval();
-					if (xinter.empty()) xinter = s2.xinterval();
-					else xinter = FloatInterval(s2.xinterval().first(), xinter.second());
-
-					if (inter.start() > rightdate) {		// check for missing t1 start segment
-						RelativeTimeSegment beg = RelativeTimeSegment(t1.start(), inter.start());
-						outmap[beg] = GraphicSegment(FloatInterval(s1.xinterval().first(), xinter.first()), s1.yinterval());
-					}
-					// inserts t1 and t2 intersection
-					rightdate = add(inter, xinter, s1.yinterval(), outmap);
-					i2++;									// and go to next t2
-				}
-				else {										// case 3: segment t2 starts after t1
-					if (t1.start() == rightdate) 			// check for monotonicity
-						rightdate = add(t1, s1.xinterval(), s1.yinterval(), outmap);
-					i1++;									// and go to next t1
-				}
-			}			
-			else if (t2.start() < t1.start()) {								// we should never go there
-				ITLErr << "unexpected guido system map case"  << ITLEndl;	// but in case we do :-(
-				if (t2.end() > t1.start()) i2++;							// try to continue 
-				else i2++;
-			}			
 		}
-		else {												// end of map2 (or map2 empty)
-			if (t1.start() == rightdate) 					// check for monotonicity
-				rightdate = add(t1, s1.xinterval(), s1.yinterval(), outmap);
-			i1++;
+		else {
+			ITLErr << "error getting system map on page " << page << ": " << GuidoGetErrorString(err) << ITLEndl;
+			break;
 		}
 	}
 }

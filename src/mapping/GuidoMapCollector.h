@@ -32,6 +32,8 @@
 
 #include "GUIDOScoreMap.h"
 
+class QGuidoGraphicsItem;
+
 namespace inscore
 {
 
@@ -39,7 +41,6 @@ namespace inscore
 \addtogroup ITLMapping Ressources mapping
 @{
 */
-
 //----------------------------------------------------------------------
 /*!
 	\brief a class to collect guido graphic maps
@@ -98,15 +99,11 @@ class GuidoVoiceCollector: public GuidoMapCollector
 class GuidoStaffCollector: public GuidoMapCollector
 {
 	private:
-		struct AcceptStaffPredicat : public Filter {
-			int	fNum;
-			virtual bool operator() (const GuidoElementInfos& infos) const { return infos.staffNum == fNum; }
-		} fStaffFilter;
-		void	setFilter(int num)			{ fStaffFilter.fNum = num; fFilter = &fStaffFilter; }
+		int	fStaffNum;
 
 	public :
 				 GuidoStaffCollector (const QGuidoGraphicsItem* item, int num) 
-					: GuidoMapCollector(item, kGuidoStaff) { if (num) setFilter(num); }
+					: GuidoMapCollector(item, kGuidoStaff), fStaffNum(num) {}
 		virtual ~GuidoStaffCollector()	{}
 
 		virtual void process (Time2GraphicMap* outmap);
@@ -119,8 +116,6 @@ class GuidoStaffCollector: public GuidoMapCollector
 class GuidoSystemCollector: public GuidoMapCollector
 {
 	bool fFlatMode;
-	rational add (const RelativeTimeSegment& ts, const FloatInterval& xi, const FloatInterval& yi, Time2GraphicMap& outmap);
-	void merge (const Time2GraphicMap& map1, const Time2GraphicMap& map2, Time2GraphicMap& outmap);
 	
 	public :
 				 GuidoSystemCollector(const QGuidoGraphicsItem* item, bool flat=false) 

@@ -13,7 +13,8 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 0.97
- - 
+ - bug in parser corrected: \ escape only ' and " chars, otherwise it is litteral
+ - guido score map makes use of the new guidolib extended mapping API for staff and system
 
 ----------------------------------------------------
 Version 0.96
