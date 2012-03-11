@@ -25,16 +25,18 @@ noilost	= "indirectly lost: 0"
 noplost	= "possibly lost: 0"
 
 
+images: forcepdfdate INScoreVersion
+	@echo "=========================================="
+	@echo " Make sure that INScoreViewer is running!"
+	@echo "=========================================="
+	make files
+
 help:
 	@echo "Makefile for testing the INScore engine output. Available targets are:"
 	@echo "'images' : makes pdf files for inscore files recursively enclosed in this folder"
 	@echo "           the pdf files output folder name is the current INScore version number."
 	@echo "'validate VERSION=another_version': compares the current version with another one"
 	@echo "'checkleaks [TOOL=a_check_tool]': check memory leaks using a given tool (default INScoreNOView)"
-
-images: forcepdfdate INScoreVersion
-	@echo "Make sure that INScoreViewer is running!"
-	make files
 
 validate: $(validpdf)
 	@echo Validating version $(VERSION) with $(version)
@@ -69,5 +71,5 @@ $(version)/%.leaks.out: $(version)/$(TOOL)/%.leak.txt
 	$(eval tmp := $(patsubst $(version)/%, $(VERSION)/%, $<))	
 	@[ -f  $(tmp) ] || echo $< : new file
 	$(eval ignored := $(shell grep $< $(version)/ignore.$(VERSION).txt 2>/dev/null || echo _none_))
-	@[ -f  $(ignored) ] || (diff $< $(tmp) 2>/dev/null >/dev/null || [ -f  $(tmp) ] && echo "open $< $(patsubst $(version)/%, $(VERSION)/%, $<) # to check changes"; true)
+	@[ -f  $(ignored) ] || (diff $< $(tmp) 2>/dev/null >/dev/null || ([ -f  $(tmp) ] && echo "open $< $(patsubst $(version)/%, $(VERSION)/%, $<) # to check changes"; true))
 
