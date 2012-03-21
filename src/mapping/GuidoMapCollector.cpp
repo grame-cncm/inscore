@@ -58,7 +58,18 @@ void GuidoMapCollector::Graph2TimeMap( const FloatRect& box, const TimeSegment& 
 		if ( gseg.intersect( i->second ) )
 			return;
 	}
-	(*fOutMap)[tseg] = gseg;
+//	(*fOutMap)[tseg] = gseg;
+	fOutMap->push_back(make_pair(tseg, gseg));
+}
+
+void GuidoMapCollector::CopyMap( const ::Time2GraphicMap& map )
+{
+	for (::Time2GraphicMap::const_iterator i=map.begin(); i!=map.end(); i++) {
+		RelativeTimeSegment ts (guidodate2rational(i->first.first), guidodate2rational(i->first.second));
+		GraphicSegment gs ( fCurrentPageOrigin.x()+i->second.left, fCurrentPageOrigin.y()+i->second.top, 
+							fCurrentPageOrigin.x()+i->second.right, fCurrentPageOrigin.y()+i->second.bottom);
+		fOutMap->push_back(make_pair(ts, gs));
+	}
 }
 
 //----------------------------------------------------------------------
@@ -72,6 +83,45 @@ void GuidoMapCollector::process (Time2GraphicMap* outmap)
 		float w = fItem->pageManager()->pageSize(page).width();
 		float h = fItem->pageManager()->pageSize(page).height();
 		GuidoGetMap( fItem->getGRHandler(), page, w, h, fSelector, *this );
+	}
+}
+
+//----------------------------------------------------------------------
+void GuidoVoiceCollector::Graph2TimeMap( const FloatRect& box, const TimeSegment& dates, const GuidoElementInfos& infos )
+{
+	if (infos.voiceNum != fVoiceNum)	return;	
+	RelativeTimeSegment tseg = relativeTimeSegment(dates);
+	if ( tseg.empty() )	return;						// empty time segments are filtered
+	GraphicSegment gseg = graphicSegment(box, fCurrentPageOrigin);
+	if ( gseg.empty() )	return;						// empty graphic segments are filtered
+
+	for (Time2GraphicMap::const_iterator i = fOutMap->begin(); i != fOutMap->end(); i++) {
+		if ( gseg.intersect( i->second ) )
+			return;
+	}
+//	(*fOutMap)[tseg] = gseg;
+	fOutMap->push_back(make_pair(tseg, gseg));
+}
+
+//----------------------------------------------------------------------
+void GuidoVoiceCollector::process (Time2GraphicMap* outmap)
+{
+	fOutMap = outmap;
+	if (!fItem || !fOutMap) return;
+
+	for ( int page = fItem->firstVisiblePage() ; page <= fItem->lastVisiblePage() ; page++ ) {
+		fCurrentPageOrigin = fItem->pageManager()->pagePos(page);
+		float w = fItem->pageManager()->pageSize(page).width();
+		float h = fItem->pageManager()->pageSize(page).height();
+		::Time2GraphicMap map;
+		GuidoErrCode err = GuidoGetVoiceMap( fItem->getGRHandler(), page, w, h, fVoiceNum, map );
+		if (err == guidoNoErr) {
+			CopyMap (map);
+		}
+		else {
+			ITLErr << "error getting voice " << fVoiceNum << " map on page " << page << ": " << GuidoGetErrorString(err) << ITLEndl;
+			break;
+		}
 	}
 }
 
@@ -91,7 +141,8 @@ void GuidoStaffCollector::process (Time2GraphicMap* outmap)
 				RelativeTimeSegment ts (guidodate2rational(i->first.first), guidodate2rational(i->first.second));
 				GraphicSegment gs ( fCurrentPageOrigin.x()+i->second.left, fCurrentPageOrigin.y()+i->second.top, 
 									fCurrentPageOrigin.x()+i->second.right, fCurrentPageOrigin.y()+i->second.bottom);
-				(*outmap)[ts] = gs;
+//				(*outmap)[ts] = gs;
+				outmap->push_back(make_pair(ts, gs));
 			}
 		}
 		else {
@@ -120,7 +171,8 @@ void GuidoSystemCollector::process (Time2GraphicMap* outmap)
 				RelativeTimeSegment ts (guidodate2rational(i->first.first), guidodate2rational(i->first.second));
 				GraphicSegment gs ( fCurrentPageOrigin.x()+i->second.left, fCurrentPageOrigin.y()+i->second.top, 
 									fCurrentPageOrigin.x()+i->second.right, fCurrentPageOrigin.y()+i->second.bottom);
-				(*outmap)[ts] = gs;
+//				(*outmap)[ts] = gs;
+				outmap->push_back(make_pair(ts, gs));
 			}
 		}
 		else {
@@ -160,7 +212,8 @@ void GuidoSystemCollector::processNoDiv (Time2GraphicMap* outmap)
 		GraphicSegment gs = systemIter->second;
 		FloatInterval slicexi = slicesIter->second.xinterval();
 		GraphicSegment adjusted (FloatInterval(slicexi.first(), gs.xinterval().second()), gs.yinterval());
-		(*outmap)[systemIter->first] = adjusted;
+//		(*outmap)[systemIter->first] = adjusted;
+		outmap->push_back(make_pair(systemIter->first, adjusted));
 
 		// skip the remaining slices until the next line
 		float prevx = slicexi.first();

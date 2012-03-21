@@ -27,7 +27,7 @@
 #ifndef __GuidoMapCollector__
 #define __GuidoMapCollector__
 
-#include <map>
+#include <vector>
 #include <string>
 
 #include "GUIDOScoreMap.h"
@@ -48,7 +48,8 @@ namespace inscore
 class GuidoMapCollector: public MapCollector
 {
 	public :
-		typedef std::map<RelativeTimeSegment, GraphicSegment> Time2GraphicMap;
+//		typedef std::map<RelativeTimeSegment, GraphicSegment> Time2GraphicMap;
+		typedef std::vector<std::pair<RelativeTimeSegment, GraphicSegment> > Time2GraphicMap;
 		struct Filter { virtual ~Filter() {} virtual bool operator() (const GuidoElementInfos& infos) const { return true; } } ;
 
 	protected:
@@ -57,6 +58,8 @@ class GuidoMapCollector: public MapCollector
 		const Filter*			fFilter;
 		Time2GraphicMap*		fOutMap;		
 		QPointF					fCurrentPageOrigin;
+		
+		void	CopyMap (const ::Time2GraphicMap& map);
 
 	public :
 				 GuidoMapCollector(const QGuidoGraphicsItem* item, GuidoeElementSelector selector, const Filter* filter=0) 
@@ -80,6 +83,7 @@ class GuidoMapCollector: public MapCollector
 class GuidoVoiceCollector: public GuidoMapCollector
 {
 	private:
+		int fVoiceNum;
 		struct AcceptVoicePredicat : public Filter { int fNum;
 			virtual bool operator() (const GuidoElementInfos& infos) const { return infos.voiceNum == fNum; }
 		} fVoiceFilter;
@@ -87,8 +91,11 @@ class GuidoVoiceCollector: public GuidoMapCollector
 
 	public :
 				 GuidoVoiceCollector(const QGuidoGraphicsItem* item, int num) 
-					: GuidoMapCollector(item, kGuidoEvent) { if (num) setFilter(num); }
+					: GuidoMapCollector(item, kGuidoEvent), fVoiceNum(num) { if (num) setFilter(num); }
 		virtual ~GuidoVoiceCollector() {}
+		virtual void Graph2TimeMap( const FloatRect& box, const TimeSegment& dates,  const GuidoElementInfos& infos );
+
+		virtual void process (Time2GraphicMap* outmap);
 };
 
 
