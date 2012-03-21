@@ -93,7 +93,6 @@ class GuidoVoiceCollector: public GuidoMapCollector
 				 GuidoVoiceCollector(const QGuidoGraphicsItem* item, int num) 
 					: GuidoMapCollector(item, kGuidoEvent), fVoiceNum(num) { if (num) setFilter(num); }
 		virtual ~GuidoVoiceCollector() {}
-		virtual void Graph2TimeMap( const FloatRect& box, const TimeSegment& dates,  const GuidoElementInfos& infos );
 
 		virtual void process (Time2GraphicMap* outmap);
 };

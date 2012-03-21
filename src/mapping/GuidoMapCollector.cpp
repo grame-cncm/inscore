@@ -87,23 +87,6 @@ void GuidoMapCollector::process (Time2GraphicMap* outmap)
 }
 
 //----------------------------------------------------------------------
-void GuidoVoiceCollector::Graph2TimeMap( const FloatRect& box, const TimeSegment& dates, const GuidoElementInfos& infos )
-{
-	if (infos.voiceNum != fVoiceNum)	return;	
-	RelativeTimeSegment tseg = relativeTimeSegment(dates);
-	if ( tseg.empty() )	return;						// empty time segments are filtered
-	GraphicSegment gseg = graphicSegment(box, fCurrentPageOrigin);
-	if ( gseg.empty() )	return;						// empty graphic segments are filtered
-
-	for (Time2GraphicMap::const_iterator i = fOutMap->begin(); i != fOutMap->end(); i++) {
-		if ( gseg.intersect( i->second ) )
-			return;
-	}
-//	(*fOutMap)[tseg] = gseg;
-	fOutMap->push_back(make_pair(tseg, gseg));
-}
-
-//----------------------------------------------------------------------
 void GuidoVoiceCollector::process (Time2GraphicMap* outmap)
 {
 	fOutMap = outmap;
