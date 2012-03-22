@@ -45,7 +45,8 @@ static GraphicSegment find (const std::pair<float,float>& p, const Graphic2Relat
 }
 
 //----------------------------------------------------------------------
-rational _MouseEventAble::point2date (const IObject * obj, float x, float y, const std::string& mapname, int n)
+// converts a point to a date in the context of an object and a given map
+rational _MouseEventAble::point2date (const IObject * obj, float x, float y, const std::string& mapname, int n, bool relative)
 {
 	rational nodate(0,0);
 	const SRelativeTime2GraphicMapping&	mapping = obj->getMapping (mapname);
@@ -71,7 +72,9 @@ rational _MouseEventAble::point2date (const IObject * obj, float x, float y, con
 		i++;
 	}
 	if (ts.empty()) return nodate;
-	return obj->getDate() + ts.start() + ts.size() * rpos;
+	rational offset(0,1);
+	if (!relative) offset = obj->getDate();
+	return offset + ts.start() + ts.size() * rpos;
 }
 
 //----------------------------------------------------------------------
@@ -100,9 +103,6 @@ void _MouseEventAble::handleEvent (const IObject * obj, QPointF pos,  EventsAble
 	float clippedx = (x < 0) ? 0 : (x > w) ? w : x;
 	float clippedy = (y < 0) ? 0 : (y > h) ? h : y;
 
-//	float relx = view->scene2RelativeX(clippedx) / obj->getWidth();
-//	float rely = view->scene2RelativeY(clippedy) / obj->getHeight();
-
 	float relx = clippedx / w;
 	float rely = clippedy / h;
 
@@ -120,8 +120,9 @@ void _MouseEventAble::handleEvent (const IObject * obj, QPointF pos,  EventsAble
 		std::string mapname;
 		int num=0, denum=0;
 		rational date (0,0);
-		if (msgs[i]->hasDateVar (mapname, num, denum)) {
-			date = point2date (obj, relx, rely, mapname, 0);
+		bool relative;
+		if (msgs[i]->hasDateVar (mapname, num, denum, relative)) {
+			date = point2date (obj, relx, rely, mapname, 0, relative);
 			if (num && date.getDenominator()) {
 				float fd = float(date);
 				date.set (int(fd * denum / num) * num, denum);

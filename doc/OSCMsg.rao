@@ -1390,11 +1390,16 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {80}{ date : 'date' (| ':' mapname) (| '[n/d]') }
+\rail@i {80}{ date : ('date' | 'rdate') (| ':' mapname) (| '[n/d]') \par
+}
 \rail@o {80}{
 \rail@index{date}
 \rail@begin{2}{date}
+\rail@bar
 \rail@term{date}[]
+\rail@nextbar{1}
+\rail@term{rdate}[]
+\rail@endbar
 \rail@bar
 \rail@nextbar{1}
 \rail@term{:}[]

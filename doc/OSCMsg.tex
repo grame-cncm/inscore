@@ -1682,12 +1682,13 @@ Note also that the values are not clipped to the object dimensions and could exc
 \end{itemize}
 
 \begin{rail} 
-date : 'date' (| ':'  mapname) (| '[n/d]')
+date : ('date' | 'rdate') (| ':'  mapname) (| '[n/d]')
+
 \end{rail}
 
 \begin{itemize}
-\item \OSC{\$date}: denotes the object date corresponding to the mouse pointer position at the time of the event. The detailed date variable is given below: it is optionnaly followed by a colon and the name of the mapping to be used to compute the date. The \OSC{\$date} variable is replaced by its rational value (i.e. two integers values). The optional rational enclosed in brackets may be used to indicate a quantification: the date value is rounded to an integer count of the specified rational value. 
-
+\item \OSC{\$date}: denotes the object date corresponding to the mouse pointer position at the time of the event. It is optionnaly followed by a colon and the name of the mapping to be used to compute the date. The \OSC{\$date} variable is replaced by its rational value (i.e. two integers values). The optional rational enclosed in brackets may be used to indicate a quantification: the date value is rounded to an integer count of the specified rational value. 
+\item \OSC{\$rdate}: is similar to \OSC{\$date} but ignores the target current date: the date is relative to the object mapping only.
 \item \OSC{\$name}, \OSC{\$address}: replaced by the target object name or OSC address. Note that in case of \OSC{newElement} event, the target object is the new element. 
 \end{itemize}
 

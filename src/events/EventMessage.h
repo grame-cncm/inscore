@@ -107,8 +107,8 @@ class EventMessage : public smartable
 		void	send () const;
 		void	send (EventContext& env);
 
-		bool	hasDateVar (std::string& mapname, int& num, int& denum) const;
-		bool	isDateVar (const std::string& var, std::string& mapname, int& num, int& denum) const;
+		bool	hasDateVar (std::string& mapname, int& num, int& denum, bool& relative) const;
+		bool	isDateVar (const std::string& var, std::string& mapname, int& num, int& denum, bool& relative) const;
 		const IMessage * message() const		{ return fMessage; }
 		
 		std::string address() const;

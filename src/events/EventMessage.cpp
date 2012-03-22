@@ -48,6 +48,7 @@ const char* kSceneYVar	= "$sy";
 const char* kAbsXVar	= "$absx";
 const char* kAbsYVar	= "$absy";
 const char* kDateVar	= "$date";
+const char* kRelativeDateVar = "$rdate";
 const char* kSelfVar	= "$self";
 const char* kNameVar	= "$name";
 const char* kAddressVar	= "$address";
@@ -227,36 +228,31 @@ bool EventMessage::parseMap (const string& var, string& map)
 }
 
 //----------------------------------------------------------------------
-bool EventMessage::isDateVar (const string& var, string& mapname, int& num, int& denum) const
+bool EventMessage::isDateVar (const string& var, string& mapname, int& num, int& denum, bool& relative) const
 {
-	size_t n = strlen(kDateVar);
-	if (var.substr(0, n) != kDateVar)
+	size_t datelength = strlen(kDateVar);
+	size_t rdatelength = strlen(kRelativeDateVar);
+	if (var.substr(0, rdatelength) == kRelativeDateVar)
+		relative = true;
+	else if (var.substr(0, datelength) != kDateVar)
 		return false;
+	else 
+		relative = false;
 	parseMap (var, mapname);
 	parseQuant (var, num, denum);
 	return true;
-//
-//	string base (kDateVar);
-//	if (var == base) return true;
-//	if (var.compare (0, base.size(), base) == 0) {
-//		if (var[base.size()] == ':') {
-//			mapname = var.substr(base.size()+1);
-//			return true;
-//		}
-//	}
-//	return false;
 }
 
 //----------------------------------------------------------------------
-bool EventMessage::hasDateVar (std::string& mapname, int& num, int& denum) const
+bool EventMessage::hasDateVar (std::string& mapname, int& num, int& denum, bool& relative) const
 {
 	if (!fMessage) return false;
-	if (isDateVar (fMessage->message(), mapname, num, denum)) return true;
+	if (isDateVar (fMessage->message(), mapname, num, denum, relative)) return true;
 	int n = fMessage->size();
 	for (int i=0; i<n; i++) {
 		string str;
 		if (fMessage->param(i, str))
-			if (isDateVar (str, mapname, num, denum))  return true;
+			if (isDateVar (str, mapname, num, denum, relative))  return true;
 	}
 	return false;	
 }
@@ -331,6 +327,7 @@ void EventMessage::eval (const string& var, EventContext& env, IMessage& outmsg)
 {
 	string mapname;
 	int num=0, denum=0;
+	bool relative = false;
 	if (var[1] == 'x')	{
 		if (checkfloat(var.c_str())) outmsg << checkfloatrange(var.substr(2), env.mouse.fx); 
 		else outmsg << checkintrange(var.substr(2), env.mouse.fx);
@@ -345,7 +342,7 @@ void EventMessage::eval (const string& var, EventContext& env, IMessage& outmsg)
 	else if (var == kSceneYVar)		outmsg << env.mouse.fsy;
 	else if (var == kNameVar)		outmsg << env.object->name();
 	else if (var == kAddressVar)	outmsg << env.object->getOSCAddress();
-	else if (isDateVar (var, mapname, num, denum)) {
+	else if (isDateVar (var, mapname, num, denum, relative)) {
 		if (num) {
 			float fd = float(env.date);
 			rational qdate (int(fd * denum / num) * num, denum);
