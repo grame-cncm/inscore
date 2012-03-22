@@ -1,0 +1,8 @@
+/* 
+   graphic to time mapping for schema4Voix.png
+   for each line, the first segment applies to the graphic space
+   and the second segment to the time space expressed as rational
+*/
+( [0, 901[ [15, 191[ )  ( [0/4, 318/4[ )
+( [2, 772[ [223, 380[ ) ( [318/4, 594/4[ )
+ 

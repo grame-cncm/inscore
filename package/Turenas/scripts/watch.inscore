@@ -1,0 +1,9 @@
+!-------------------------------------------------------
+! control user interactions with the score
+!-------------------------------------------------------
+/ITL/scene/turenas watch  'mouseDown' "/ITL/scene/cursor" "date" "$date" ;
+/ITL/scene/turenas watch+ 'mouseDown' "/ITL/scene/section*" "date" "$date" ;
+/ITL/scene/turenas watch+ 'mouseDown' "localhost:7100/date" "$date" ;
+/ITL/scene/turenas watch  'mouseMove' "/ITL/scene/cursor" "date" "$date" ;
+/ITL/scene/turenas watch+ 'mouseMove' "/ITL/scene/section*" "date" "$date" ;
+/ITL/scene/turenas watch+ 'mouseMove' "localhost:7100/date" "$date" ;
