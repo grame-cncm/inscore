@@ -83,7 +83,11 @@ INScoreAbout::INScoreAbout (const QPixmap & pixmap) : QSplashScreen (pixmap)
 {
     setMask (pixmap.mask());
 
+#ifdef linux
+	QFont font ("FreeSans", 9);
+#else
 	QFont font ("Helvetica", 9);
+#endif
 	int h = height();
 
 	QString version("INScore v.");
