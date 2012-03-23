@@ -6,7 +6,7 @@ QT_PLUGIN_PATH = /Developer/Applications/Qt/plugins/
 QT_FRAMEWORK_PATH = /Library/Frameworks
 INSCORE_BUNDLE_VERSION = $(shell grep 'INSFWKVERS' $(CMAKE)/CMakeLists.txt  | sed 's/[^0-9.]//g')
 QT_VERSION = 4
-GUIDO_VERSION = B
+GUIDO_VERSION = C
 MAC_DEPLOY_TOOL = macdeployqt
 
 bundle:
