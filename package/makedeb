@@ -3,8 +3,9 @@ arch	:= $(shell arch)
 debarch := $(shell dpkg --print-architecture)
 dist	:= ubuntu-11.10
 package := INScore-$(version)-$(dist)-$(arch).deb
-viewer	:= INScoreViewer
+viewer	:= inscoreviewer
 lib		:= libINScore.so
+sovers  := 1
 control := debian/DEBIAN/control
 tmp		:= __tmp__
 
@@ -19,7 +20,7 @@ deb:
 	cd debian/usr/bin && ln -s $(viewer)-$(version) $(viewer)
 	[ -d debian/usr/lib ] && rm -f debian/usr/lib/* || mkdir debian/usr/lib
 	cp ../cmake/$(lib).$(version) debian/usr/lib
-	cd debian/usr/lib && ln -s $(lib).$(version) $(lib)
+	cd debian/usr/lib && ln -s $(lib).$(version) $(lib).$(sovers) && ln -s $(lib).$(sovers) $(lib)
 	[ -d debian/usr/share/inscore ] && rm -rf debian/usr/share/inscore/* || mkdir debian/usr/share/inscore
 	cp -r INScore-$(version)/* debian/usr/share/inscore
 	@echo compute md5sums

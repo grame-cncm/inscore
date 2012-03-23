@@ -7,6 +7,7 @@ set (CMAKE_CONFIGURATION_TYPES Debug Release)
 
 set (TARGET	INScore)
 set (APPLTARGET	INScoreViewer)
+
 #######################################
 # versions management
 set (INSFWKVERS 0.97)
@@ -233,6 +234,8 @@ if(WIN32)
 set_target_properties (${APPLTARGET} PROPERTIES
 	LINK_FLAGS_RELEASE /subsystem:windows
 	LINK_FLAGS_DEBUG /subsystem:console)
+elseif(UNIX AND NOT APPLE)
+	set_target_properties (${APPLTARGET} PROPERTIES OUTPUT_NAME inscoreviewer)
 endif(WIN32)
 
 if(APPLE)
