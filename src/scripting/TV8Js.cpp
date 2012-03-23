@@ -36,13 +36,13 @@ using namespace std;
 namespace inscore
 {
 
+#ifdef V8ENGINE
+
 class V8Disposer {
 	public:
 		virtual ~V8Disposer() {	v8::V8::Dispose(); }
 };
 static V8Disposer gV8Disposer;
-
-#ifdef V8ENGINE
 
 //--------------------------------------------------------------------------------------------
 /* tools for v8 */
