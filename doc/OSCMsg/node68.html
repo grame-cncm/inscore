@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.6 Differences to version 0.81</TITLE>
-<META NAME="description" CONTENT="17.6 Differences to version 0.81">
+<TITLE>17.6 Differences to version 0.82</TITLE>
+<META NAME="description" CONTENT="17.6 Differences to version 0.82">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,54 +27,54 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1173"
+<A NAME="tex2html1176"
   HREF="node69.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1167"
+<A NAME="tex2html1170"
   HREF="node62.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1161"
+<A NAME="tex2html1164"
   HREF="node67.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1169"
+<A NAME="tex2html1172"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1171"
-  HREF="node82.html">
+<A NAME="tex2html1174"
+  HREF="node83.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1174"
+<B> Next:</B> <A NAME="tex2html1177"
   HREF="node69.html">17.7 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1168"
+<B> Up:</B> <A NAME="tex2html1171"
   HREF="node62.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1162"
+<B> Previous:</B> <A NAME="tex2html1165"
   HREF="node67.html">17.5 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1170"
+ &nbsp; <B>  <A NAME="tex2html1173"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1172"
-  HREF="node82.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1175"
+  HREF="node83.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION001860000000000000000">
-17.6 Differences to version 0.81</A>
+17.6 Differences to version 0.82</A>
 </H1>
 
 <UL>
-<LI>new Faust plugins for signals processing
+<LI>at application level: osc debug is now 'on' by default
 </LI>
-<LI>colors management change: all the color models (RGBA and HSBA) accept now
-  float values that are interpreted in the common [-1,1] range. For the
-  hue value, 0 always corresponds to 'red' whatever the scale used.
+<LI>new scripting features (variables)  (see section <A HREF="node60.html#scriptvar">16.1</A> p.<A HREF="node60.html#scriptvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
-<LI>stretch adjustment for video objects (corrects gaps in sync h mode)
+<LI>ITL file format change: 
+<BR>  - semicolon added at the end of each message 
+<BR>  - '//' comment not supported any more 
+<BR>  - '%' comment char replaced by '!' 
+<BR>  - new variables scripting features 
+<BR>  - single quote support for strings 
+<BR>  - messages addressed to sync node must use the string format
 </LI>
-<LI>support for opening inscore files on the command line
-</LI>
-<LI>system mapping correction
-</LI>
-<LI>splash screen and about menu implemented by the viewer
+<LI>new 'grid' object for automatic segmentation and mapping
 </LI>
 </UL>
 
