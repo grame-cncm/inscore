@@ -153,6 +153,18 @@ OSC messages are accepted at any level of the hierarchy:
 \end{itemize}
 
 
+In addition, an alias mechanism allows an arbitrary OSC address to be used in place of a real address. An \OSC{alias} message is provided to describe aliases: 
+\begin{rail}
+alias : OSCAddress 'alias' (([1] OSCAlias (message | ) ) | [2])
+\end{rail}
+\index{Common messages!alias}
+\begin{itemize}
+\item \textbf{[1]} sets \OSC{OSCAlias} as an alias of \OSC{OSCAddress}. The alias may be optionally followed by a message string which is then taken as an implied message i.e. the alias is translated to \OSC{OSCAddress message}.
+\item \textbf{[2]} removes \OSC{OSCAddress} aliases.
+\end{itemize}
+
+Note that regular expressions are not supported by the alias mechanism and could lead to unpredictable results.
+
 
 %===============================
 %:ITL messages
@@ -935,7 +947,7 @@ scoreMsg :      'page' int32
 %The \OSC{videoMapf} message is similar to the \OSC{videoMap} message but expects the path name of a file containing the mapping data.
 
 %===============================
-%:Time mapping
+%:Time to space mapping
 \toplevel{Time to space mapping}
 \label{mapping}
 

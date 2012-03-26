@@ -68,7 +68,10 @@ The OSC address space is made of static and dynamic nodes, hierarchically organi
 <CAPTION ALIGN="BOTTOM"><STRONG>Figure 1.1:</STRONG>
 The OSC address space. Nodes in italic/blue are dynamic nodes.</CAPTION>
 <TR><TD>
-<DIV ALIGN="CENTER">
+<DIV ALIGN="CENTER"><IMG
+  WIDTH="473" HEIGHT="243" ALIGN="BOTTOM" BORDER="0"
+ SRC="./address_space.gif"
+ ALT="Image address_space">
  </DIV></TD></TR>
 </TABLE>
 </DIV>
@@ -101,7 +104,57 @@ OSC messages are accepted at any level of the hierarchy:
 </UL>
 
 <P>
-<BR><HR>
+In addition, an alias mechanism allows an arbitrary OSC address to be used in place of a real address. An <TT>alias</TT> message is provided to describe aliases: 
+<BR>
+<IMG
+ WIDTH="539" HEIGHT="110" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.gif"
+ ALT="\begin{rail}
+alias : OSCAddress 'alias' (([1] OSCAlias (message \vert ) ) \vert [2])
+\end{rail}">
+<BR>
+<A NAME="126"></A>
+
+<UL>
+<LI><B>[1]</B> sets <TT>OSCAlias</TT> as an alias of <TT>OSCAddress</TT>. The alias may be optionally followed by a message string which is then taken as an implied message i.e. the alias is translated to <TT>OSCAddress message</TT>.
+</LI>
+<LI><B>[2]</B> removes <TT>OSCAddress</TT> aliases.
+</LI>
+</UL>
+
+<P>
+Note that regular expressions are not supported by the alias mechanism and could lead to unpredictable results.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html236"
+  HREF="node5.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html230"
+  HREF="node2.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html226"
+  HREF="node3.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html232"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html234"
+  HREF="node83.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html237"
+  HREF="node5.html">2. Application messages</A>
+<B> Up:</B> <A NAME="tex2html231"
+  HREF="node2.html">1. General format</A>
+<B> Previous:</B> <A NAME="tex2html227"
+  HREF="node3.html">1.1 Parameters</A>
+ &nbsp; <B>  <A NAME="tex2html233"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html235"
+  HREF="node83.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
 </ADDRESS>
