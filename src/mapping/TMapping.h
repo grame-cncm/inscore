@@ -58,6 +58,14 @@ template<typename T1, typename T2> class TMapping : public smartable
 		/// creates a new mapping
 		static SMARTP<TMapping<T1,T2> >create()		{ return new TMapping<T1,T2>(); }
 	
+
+		/// creates a new mapping
+		SMARTP<TMapping<T2,T1> >		revert()	{ 
+			SMARTP<TMapping<T2,T1> > map = TMapping<T2,T1>::create();
+			map->add (reverse());
+			return map;
+		 }
+		
 		/*! \brief add a relation between two objects
 		
 			\param s1 the first objects of the relation
@@ -77,19 +85,23 @@ template<typename T1, typename T2> class TMapping : public smartable
 		}
 
 		/*! \brief add a set of relations		
-			\param map the relations set to add
+			\param r the relations set to add
 		*/
-		virtual void add (const TMapping<T1,T2>& map)  { 
-			const TRelation<T1,T2>& r = map.direct();
+		virtual void add (const TRelation<T1,T2>& r)  { 
 			typedef typename TRelation<T1,T2>::const_iterator	const_iterator;
 			for (const_iterator i = r.begin(); i != r.end(); i++)
 				add (i->first, i->second);
 		}
+
+		/*! \brief add a set of relations		
+			\param map the relations set to add
+		*/
+		virtual void add (const TMapping<T1,T2>& map)	{ add ( map.direct() ); }
 		
 		/// \brief gives the direct relation (from T1 to T2)
-		const TRelation<T1,T2>& direct() const		{ return fDirect; }
+		const TRelation<T1,T2>& direct() const			{ return fDirect; }
 		/// \brief gives the reverse relation (from T2 to T1)
-		const TRelation<T2,T1>& reverse() const		{ return fReverse; }
+		const TRelation<T2,T1>& reverse() const			{ return fReverse; }
 
 		//--------------------------------------------------------------------------------------------
 		virtual void print(std::ostream& out) const { 
