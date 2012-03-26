@@ -151,8 +151,9 @@ void IGlue::initialize (bool offscreen, QApplication* appl)
 	oscinit (fModel, fUDP);
 	if (!fMsgStack || !fController || !fModel || !fOscThread)
 		throw("Memory allocation failed!");
-	oscerr << OSCStart("INScore") << "v" << INScore::versionStr() << " listening on port " <<  fUDP.fInPort << OSCEnd();
-	cout << "INScore v " << INScore::versionStr() << " listening on port " <<  fUDP.fInPort << endl;
+	string listen(" listening OSC on port ");
+	oscerr << OSCStart("INScore") << "v" << INScore::versionStr() << listen <<  fUDP.fInPort << OSCEnd();
+	cout << "INScore v " << INScore::versionStr() << listen <<  fUDP.fInPort << endl;
 	
 	// creates a mapping updater - note that it may send error messages and thus should not be
 	// set before the osc streams are ready
