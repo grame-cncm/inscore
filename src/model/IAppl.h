@@ -54,6 +54,9 @@ typedef class SMARTP<IApplDebug> SIApplDebug;
 */
 class IAppl : public IObject, public PeriodicTask
 {
+	typedef std::map<std::string, std::pair<std::string, std::string> >		TAliasesMap;
+	static TAliasesMap fAliases;
+
 	static std::string	fRootPath;
 	static bool			fRunning;
 		
@@ -73,10 +76,14 @@ class IAppl : public IObject, public PeriodicTask
 		static std::string		absolutePath( const std::string& path );		//< returns the absolute path corresponding to 'path',
 		static std::string		makeAbsolutePath( const std::string& path, const std::string& file );
 
+		static void				addAlias( const std::string& alias, const std::string& address, const std::string& msg);
+		static void				delAliases( const std::string& address);
+		static void				getAliases( const std::string& address, std::vector<std::pair<std::string, std::string> >& aliases);
+
 		static bool	running() 		{ return fRunning; }
 
 		bool	oscDebug() const;
-		void	quit()				{ fRunning = false; }
+		void	quit()						{ fRunning = false; }
 		int		getUDPInPort() const		{ return fUDP.fInPort; }
 		int		getUDPOutPort() const		{ return fUDP.fOutPort; }
 		int		getUDPErrPort() const		{ return fUDP.fErrPort; }

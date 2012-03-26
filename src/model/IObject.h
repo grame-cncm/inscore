@@ -406,6 +406,10 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		virtual MsgHandler::msgStatus effectMsg(const IMessage* msg);
 		virtual GraphicEffect getEffect () const;
 		virtual IMessageList  getWatch () const;
+		virtual IMessageList  getAliases () const;
+
+		/// \brief the \c 'watch' message handler
+		virtual MsgHandler::msgStatus aliasMsg(const IMessage* msg);
 
 		/// \brief the \c 'export' message handler
 		virtual MsgHandler::msgStatus exportMsg(const IMessage* msg);
