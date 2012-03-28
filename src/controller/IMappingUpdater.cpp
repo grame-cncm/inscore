@@ -139,11 +139,12 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, const Master* m
 	else if (date2point (mdate, slavemap, slaveSeg, xs)) {			// look for the master date in the slave map
 		if (date2point (mdate, map, masterSeg, x)) {				// this is mainly to retrieve the master segment
 			x -= slave->getWidth() * (1+xs) / 2;
+			x *= slave->getScale();								// update x according to the slave scale
 			found = true;
 		}
 	}
 	if (found) {
-		slave->setXPos( x);										//  set the slave x coordinate
+		slave->setXPos( x );									//  set the slave x coordinate
 		float y = getYPos (slave, masterSeg, align);
 		slave->setYPos( y + m->getDy());						// set the slave y coordinate 
 		return masterSeg;
