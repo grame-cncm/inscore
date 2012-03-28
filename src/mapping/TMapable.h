@@ -48,11 +48,11 @@ class TMapable
 	public:
 	
 		typedef struct {
-			SRelativeTimeSegmentation		fTimeSegm;
-			SGraphicSegmentation			fGraphicSegm;
-			SRelativeTime2GraphicMapping	fTime2Graphic;
+			SRelativeTimeSegmentation		fTimeSegm;			// the time segmentation
+			SGraphicSegmentation			fGraphicSegm;		// the graphic segmentation
+			SRelativeTime2GraphicMapping	fTime2Graphic;		// and the relation between time and graphic
 		} MapSet;
-		typedef std::map<std::string,MapSet> namedMapping;
+		typedef std::map<std::string,MapSet> namedMapping;	
 		typedef std::map<std::string,MapSet>::const_iterator	const_iterator;
 		typedef std::map<std::string,MapSet>::iterator			iterator;
 
@@ -61,7 +61,7 @@ class TMapable
 	const MapSet* find (const std::string& name) const;
 		  MapSet* find (const std::string& name);
 
-	namedMapping	fMappings;
+	namedMapping	fMappings;					// intended to support different named mappings
 	MapSet			fNullSet;
 	bool			fUseMapping;
 	bool			fLocalMapModified;

@@ -30,17 +30,37 @@ using namespace std;
 
 namespace inscore {
 
+#define MANUALFIND	1
 //______________________________________________________________________________
 TMapable::MapSet* TMapable::find (const std::string& name)
 {
+#if MANUALFIND
+	for (iterator i=fMappings.begin(); i!=fMappings.end(); i++) {
+		if (!strcmp(i->first.c_str(), name.c_str())) {
+			return &(i->second);
+		}
+	}
+	return 0;
+#else
 	iterator found = fMappings.find(name);
 	return (found == fMappings.end()) ? 0 : &(found->second);
+#endif
 }
 
 const TMapable::MapSet* TMapable::find (const std::string& name) const
 {
+#if MANUALFIND
+	for (const_iterator i=fMappings.begin(); i!=fMappings.end(); i++) {
+		if (!strcmp(i->first.c_str(), name.c_str())) {
+//		if (i->first == name) {
+			return &(i->second);
+		}
+	}
+	return 0;
+#else
 	const_iterator found = fMappings.find(name);
 	return (found == fMappings.end()) ? 0 : &(found->second);
+#endif
 }
 
 //______________________________________________________________________________
@@ -89,6 +109,7 @@ void TMapable::setMapping (const std::string& name, SRelativeTime2GraphicMapping
 //______________________________________________________________________________
 void TMapable::setMapping (const std::string& name, SRelativeTime2GraphicMapping m, SRelativeTimeSegmentation st, SGraphicSegmentation sg)
 {
+//cout << "TMapable::setMapping \"" << name << "\" -> " << (void*)m << endl;
 	setMapping (name, m);
 	setTimeSegmentation (name, st);
 	setGraphicSegmentation (name, sg);

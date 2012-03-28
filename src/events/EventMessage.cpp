@@ -343,7 +343,7 @@ void EventMessage::eval (const string& var, EventContext& env, IMessage& outmsg)
 	else if (var == kNameVar)		outmsg << env.object->name();
 	else if (var == kAddressVar)	outmsg << env.object->getOSCAddress();
 	else if (isDateVar (var, mapname, num, denum, relative)) {
-		if (num) {
+		if (num && env.date.getDenominator()) {
 			float fd = float(env.date);
 			rational qdate (int(fd * denum / num) * num, denum);
 			outmsg << qdate;

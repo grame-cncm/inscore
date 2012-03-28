@@ -86,6 +86,7 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 {
 	fTypeString = "obj";
 
+	fMsgHandlerMap["alias"]		= TMethodMsgHandler<IObject>::create(this, &IObject::aliasMsg);
 	fMsgHandlerMap["set"]		= TMethodMsgHandler<IObject>::create(this, &IObject::set);
 	fMsgHandlerMap["get"]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const >::create(this, &IObject::get);
 	fMsgHandlerMap["del"]		= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::del);
@@ -101,6 +102,7 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 
 	fGetMultiMsgHandlerMap["watch"]	= TGetParamMultiMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
 	fGetMultiMsgHandlerMap["map"]	= TGetParamMultiMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getMaps);
+	fGetMultiMsgHandlerMap["alias"]	= TGetParamMultiMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getAliases);
 }
 
 
@@ -526,13 +528,9 @@ IMessageList IObject::getMsgs(const IMessage* msg) const
 			SGetParamMsgHandler handler = getMessageHandler(what);
 			SGetParamMultiMsgHandler multihandler = getMultiMessageHandler(what);
 			if (handler) {
-//				if (what == "watch")
-//					outMsgs += getWatch();
-//				else {
-					IMessage * outmsg = getParam(what, handler);
-					if (outmsg) outMsgs += outmsg;
-					else break;
-//				}
+				IMessage * outmsg = getParam(what, handler);
+				if (outmsg) outMsgs += outmsg;
+				else break;
 			}
 			else if (multihandler) {
 				IMessageList mlist;
@@ -651,6 +649,42 @@ GraphicEffect IObject::getEffect ()	const
 IMessageList IObject::getWatch() const
 {
 	return EventsAble::getWatch (getOSCAddress().c_str());
+}
+
+//--------------------------------------------------------------------------
+IMessageList IObject::getAliases() const
+{
+	IMessageList list;
+	vector<pair<string, string> > aliases;
+	IAppl::getAliases (getOSCAddress(), aliases);
+	unsigned int n = aliases.size();
+	for (unsigned i = 0; i < n; i++) {
+		IMessage* msg = new IMessage (getOSCAddress(), "alias");
+		msg->add (aliases[i].first);
+		if (aliases[i].second.size()) msg->add (aliases[i].second);
+		list += msg;
+	}
+	if (list.empty())
+		list += new IMessage (getOSCAddress(), "alias");
+	return list;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::aliasMsg(const IMessage* msg)
+{ 
+	unsigned int n = msg->params().size();
+	if (n == 0)
+		IAppl::delAliases (getOSCAddress());
+	
+	else if ( n <= 2 ) {
+		string alias, msgstr;
+		if (( n == 2 ) && !msg->param(1, msgstr)) return MsgHandler::kBadParameters;
+		if (msg->param(0, alias)) {
+			IAppl::addAlias (alias, getOSCAddress(), msgstr);
+			return MsgHandler::kProcessed;
+		}
+	}
+	return MsgHandler::kBadParameters;
 }
 
 //--------------------------------------------------------------------------

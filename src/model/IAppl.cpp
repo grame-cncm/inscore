@@ -124,6 +124,7 @@ void IAppl::resetBench()
 bool IAppl::fDefaultShow(true);
 bool IAppl::fRunning(true);
 const string IAppl::kName = "ITL";
+map<string, pair<string, string> > IAppl::fAliases;
 
 //--------------------------------------------------------------------------
 IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool offscreen) 
@@ -236,12 +237,24 @@ IMessageList IAppl::getAll() const
 //--------------------------------------------------------------------------
 // messages processing
 //--------------------------------------------------------------------------
-int IAppl::processMsg (const std::string& address, const std::string& addressTail, const IMessage* msg)
+int IAppl::processMsg (const std::string& address, const std::string& addressTail, const IMessage* imsg)
 {
-	if (addressTail.size()) 		// application is not the final destination of the message
-		return IObject::processMsg(address,addressTail, msg);
+	string head = address;
+	string tail = addressTail;
+	IMessage* msg = new IMessage (*imsg);
+	TAliasesMap::const_iterator i = fAliases.find(imsg->address());
+	if (i != fAliases.end()) {
+		msg->setAddress (i->second.first);
+		if (i->second.second.size()) 
+			msg->setMessage(i->second.second);
+		head = OSCAddress::addressFirst(i->second.first);
+		tail = OSCAddress::addressTail(i->second.first);
+	}
 
-	if (match(address)) {			// the message is for the application itself
+	if (tail.size()) 		// application is not the final destination of the message
+		return IObject::processMsg(head, tail, msg);
+	
+	if (match(head)) {			// the message is for the application itself
 		int status = execute(msg);
 		if (status & MsgHandler::kProcessed)
 			setState(IObject::kModified);
@@ -373,6 +386,38 @@ std::string IAppl::makeAbsolutePath( const std::string& path, const std::string&
 std::string IAppl::absolutePath( const std::string& path )
 {
 	return makeAbsolutePath (getRootPath(), path);
+}
+
+//--------------------------------------------------------------------------
+void IAppl::addAlias( const string& alias, const std::string& address, const std::string& msg )
+{
+	fAliases[alias] = make_pair(address, msg);
+}
+
+//--------------------------------------------------------------------------
+void IAppl::delAliases( const string& address)
+{
+	TAliasesMap::iterator i = fAliases.begin();
+	while ( i != fAliases.end() ) {
+		if (i->second.first == address) {
+			TAliasesMap::iterator j = i;
+			i++;
+			fAliases.erase (j);
+		}
+		else i++;
+	}
+}
+
+//--------------------------------------------------------------------------
+void IAppl::getAliases( const string& address, vector<pair<string, string> >& aliases)
+{
+	TAliasesMap::iterator i = fAliases.begin();
+	while ( i != fAliases.end() ) {
+		if (i->second.first == address) {
+			aliases.push_back(make_pair(i->first, i->second.second));
+		}
+		i++;
+	}
 }
 
 }

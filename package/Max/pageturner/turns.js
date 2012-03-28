@@ -39,11 +39,27 @@ function maketime (num, denum, abs)
 
 function timepair (num, denum, abs)
 {
-    var t = maketime (num, denum, abs);
-    if (t.music < 0)
+    if (denum <= 0)
     	post ("warning: click is outside map\n");
-    else 
+    else {
+	    var t = maketime (num, denum, abs);
     	gTimePairs[gTPIndex++] = t;
+    }
+}
+
+// ---------------------------------------------
+function roundtime (num, denum)
+{
+	var t = {};
+	t.num = Math.round((num / denum) * 32)
+	t.denum = 32;
+	if (t.num != 0) {
+		while (( t.num % 2 == 0) && (t.denum > 1)) {
+			t.num /= 2;
+			t.denum /= 2;
+		}
+	}
+	return t;
 }
 
 // ---------------------------------------------
@@ -61,7 +77,9 @@ function tempomap ()
 	    // the current tempo
 	    tempo = 60 * (t.music - previous.music) / elapsed;
 	    outlet (1, Math.round(prevelapsed*1000) + " _tempo " + tempo);
-	    outlet (1, 0 + " _turnedit /ITL/scene/_* date " + previous.num + " " + previous.denum);
+	    var rt = roundtime (previous.num, previous.denum);
+	    outlet (1, 0 + " _turnedit /ITL/scene/_* date " + rt.num + " " + rt.denum);
+//	    outlet (1, 0 + " _turnedit /ITL/scene/_* date " + previous.num + " " + previous.denum);
 		prevelapsed = elapsed;	
 		previous = t;
     }
