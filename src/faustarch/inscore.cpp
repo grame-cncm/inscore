@@ -51,9 +51,9 @@
 #endif
 
 #include <iostream>
-#include "audio/dsp.h"
-#include "gui/UI.h"
-#include "misc.h"
+#include "faust/audio/dsp.h"
+#include "faust/gui/UI.h"
+#include "faust/misc.h"
 
 
 /**************************BEGIN USER SECTION **************************/
