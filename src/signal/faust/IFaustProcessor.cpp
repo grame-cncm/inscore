@@ -251,6 +251,7 @@ MsgHandler::msgStatus IFaustProcessor::set (const IMessage* msg)
 			return MsgHandler::kBadParameters;
 		}
 		init();
+		cout << "INScore: FAUST plugin " << library << " loaded" << endl;
 		return MsgHandler::kProcessed;
 	}
 	ITLErr << cantload <<  errorString() << ITLEndl;
