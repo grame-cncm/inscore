@@ -7,6 +7,16 @@
 /ITL load "scripts/require.inscore" ;
 !-------------------------------------------------------
 
+# set a master rectangle
+(*
+/ITL/scene/master set "rect" 1.50000 0.500000 ;
+/ITL/scene/master z -2.00000 ;
+/ITL/scene/master color 200 200 200 0 ;
+/ITL/scene/master duration 594 4 ;
+/ITL/scene/master dduration 1 512 ;
+/ITL/scene/master xorigin 1.00000 ;
+*)
+
 # Add the Turenas graphic analysis as an image
 /ITL/scene/turenas set "img" "rsrc/schemaSonagram.png" ;
 
@@ -22,7 +32,9 @@
 # Add a rectangle to make the cursor
 /ITL/scene/cursor set "rect" 0.00400000 0.217176 ;
 /ITL/scene/cursor date 0 64 ;
+/ITL/scene/cursor duration 1 64 ;
 /ITL/scene/cursor color 204 0 48 132 ;
+/ITL/scene/cursor z 1.00000 ;
 
 # Add 'credits' text
 /ITL/scene/copyright set "txt" "Analyse & transcription graphique: Laurent Pottier" ;

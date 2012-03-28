@@ -1,7 +1,13 @@
+/ITL/scene/turenas del;
 /ITL/scene/turenas set "img" "rsrc/schema4Voix.png" ;
 /ITL/scene/turenas mapf "rsrc/schema4Voix.map" ;
+/ITL/scene/turenas scale 0.87;
+
 /ITL/scene/cursor color 0 0 240 132 ;
 /ITL/scene/cursor width 0.00200000 ;
 
 # Load the comments position
 /ITL load "scripts/sectionsPos.inscore" ;
+
+# reload the watched events
+/ITL load "scripts/layoutScore.inscore" ;
