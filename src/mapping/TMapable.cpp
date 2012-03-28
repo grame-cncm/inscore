@@ -22,6 +22,8 @@
 
 */
 
+#include <string.h>
+
 #include "TMapable.h"
 #include "TSegment.h"
 #include "TSegmentation.h"
