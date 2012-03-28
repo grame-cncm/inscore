@@ -1,0 +1,111 @@
+#N canvas 338 28 224 158 10;
+#X obj -109 -57 cnv 15 220 30 empty empty empty 20 12 0 14 -261682
+-66577 0;
+#X text -96 -51 INScore Player;
+#X obj -87 -2 tgl 15 0 \$0-play \$0-play-in empty 20 7 0 10 -228856
+-1 -1 0 1;
+#N canvas 214 208 782 574 inside 0;
+#X obj 278 293 cnv 15 250 180 empty empty Clocks 20 12 0 12 -228856
+-66577 0;
+#X obj 287 351 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 287 380 metro 42.3;
+#X obj 287 318 r \$0-play;
+#X msg 287 411 /ITL/scene/cursor clock;
+#X obj 287 443 s itl;
+#X obj 28 293 cnv 15 240 180 empty empty OSC_Comm 20 12 0 12 -204800
+-66577 0;
+#X obj 68 410 dumpOSC 7001;
+#X obj 68 441 print ITLOut;
+#X obj 165 409 dumpOSC 7002;
+#X obj 165 440 print ITL;
+#X obj 184 382 sendOSC;
+#X msg 35 348 connect localhost 7000;
+#X obj 35 318 loadbang;
+#X obj 184 348 prepend send;
+#X obj 184 321 r itl;
+#X obj 102 215 readsf~ 2;
+#X obj 133 82 openpanel;
+#X obj 133 57 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 103 249 dac~;
+#X msg 133 141 /Users/fober/Domdocs/IST/ANR2008/svn/Interludes/papers/LAC2012/demo/curseurs/07.wav
+;
+#X obj 133 110 prepend set;
+#X obj 133 183 prepend open;
+#X obj 76 114 route 1;
+#X obj 39 73 r \$0-play;
+#X obj 133 30 r \$0-open;
+#X obj 559 340 r \$0-fullscreen;
+#X msg 560 370 /ITL/scene fullscreen \$1;
+#X obj 559 398 s itl;
+#X msg 172 215 /ITL/scene/cursor date 0 1;
+#X obj 172 246 s itl;
+#X obj 603 270 qlist;
+#X obj 602 214 openpanel;
+#X obj 602 189 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 602 162 r \$0-openmap;
+#X obj 602 242 prepend read;
+#X msg 685 244 clear;
+#X obj 686 162 r \$0-clearmap;
+#X obj 529 164 r \$0-play;
+#X msg 530 236 rewind;
+#X obj 529 186 route 0;
+#X obj 567 216 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 344 352 r _tempo;
+#X obj 26 113 dsp;
+#X connect 1 0 2 0;
+#X connect 2 0 4 0;
+#X connect 3 0 1 0;
+#X connect 4 0 5 0;
+#X connect 7 0 8 0;
+#X connect 9 0 10 0;
+#X connect 12 0 11 0;
+#X connect 13 0 12 0;
+#X connect 14 0 11 0;
+#X connect 15 0 14 0;
+#X connect 16 0 19 0;
+#X connect 16 1 19 1;
+#X connect 17 0 21 0;
+#X connect 18 0 17 0;
+#X connect 20 0 22 0;
+#X connect 21 0 20 0;
+#X connect 22 0 16 0;
+#X connect 23 0 20 0;
+#X connect 23 0 29 0;
+#X connect 24 0 23 0;
+#X connect 24 0 16 0;
+#X connect 24 0 43 0;
+#X connect 25 0 18 0;
+#X connect 26 0 27 0;
+#X connect 27 0 28 0;
+#X connect 29 0 30 0;
+#X connect 32 0 35 0;
+#X connect 33 0 32 0;
+#X connect 34 0 33 0;
+#X connect 35 0 31 0;
+#X connect 36 0 31 0;
+#X connect 37 0 36 0;
+#X connect 38 0 40 0;
+#X connect 39 0 31 0;
+#X connect 40 0 39 0;
+#X connect 40 1 41 0;
+#X connect 41 0 31 0;
+#X connect 42 0 2 1;
+#X restore -105 69 pd inside;
+#X text -110 -22 Start/Stop;
+#X text -39 -22 Open sound file;
+#X obj -10 -3 bng 15 250 50 0 \$0-open empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj -29 70 tgl 15 0 \$0-fullscreen empty empty 20 7 0 10 -228856
+-1 -1 0 1;
+#X text -10 69 Full screen;
+#X text 33 4 Tempo map;
+#X obj 35 23 bng 15 250 50 0 \$0-openmap empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 35 40 bng 15 250 50 0 \$0-clearmap empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 56 21 Open;
+#X text 57 39 Clear;
