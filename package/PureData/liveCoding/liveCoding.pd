@@ -7,7 +7,7 @@ and sets a fileWatcher message to reload the file when modified (and
 saved).;
 #X text -229 56 You can now close the patch and edit the "liveCoding.interlude"
 file.;
-#N canvas 295 727 556 237 inside 0;
+#N canvas 200 271 563 242 inside 0;
 #X obj -210 16 cnv 15 250 180 empty empty OSC_Comm 20 12 0 12 -204800
 -66577 0;
 #X obj -206 137 dumpOSC 7001;

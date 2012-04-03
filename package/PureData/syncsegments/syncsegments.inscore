@@ -2,11 +2,8 @@
 /ITL/scene width 1.00000 ;
 /ITL/scene height 1.30000 ;
 /ITL/scene/myGuidoFile set "gmnf" "rsrc/1voice-846_2f.gmn" ;
-!/ITL/scene/myGuidoFile y 0.1
 /ITL/scene/myGuidoFile scale 3.00000 ;
-!/ITL/scene/myGuidoFile y 1.0
 /ITL/scene/myGuidoFile z 2.00000 ;
-!/ITL/scene/myGuidoFile map staff1
 
 /ITL/scene/tgv set "img" "rsrc/tgv.gif" ;
 /ITL/scene/tgv scale 0.600000 ;
