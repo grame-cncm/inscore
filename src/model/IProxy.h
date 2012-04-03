@@ -69,7 +69,7 @@ class IProxy
 		\param parent the new object parent
 		\return the message processing status
 		*/
-		static int execute (const IMessage* msg, const std::string& objName, SIObject parent);
+		static int execute (const IMessage* msg, const std::string& objName, SIObject parent, IObject** newobj=0);
 };
 
 /*!
