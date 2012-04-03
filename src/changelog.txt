@@ -13,11 +13,12 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 0.97
+ - objects position, date and watched events preserved through type change
  - bug in quantified dates corrected (null denominator set to the quantified value)
  - new 'alias' message providing arbitrary OSC addresses support
  - bug in parser corrected: \ escape only ' and " chars, otherwise it is literal
  - guido score map makes use of the new guidolib extended mapping API for staff and system
- - chords map correction (corrected by guido engine) 
+ - chords map correction (corrected by guido engine v. 1.49 - required) 
 
 ----------------------------------------------------
 Version 0.96

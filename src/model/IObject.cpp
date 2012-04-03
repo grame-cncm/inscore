@@ -618,8 +618,12 @@ MsgHandler::msgStatus IObject::set(const IMessage* msg)
 	if (type != getTypeString()) {
 		// types don't match
 		// try to re-create the object with the new type
-		int status = IProxy::execute (msg, name(), fParent);
+		IObject* newobj;
+		int status = IProxy::execute (msg, name(), fParent, &newobj);
 		if (status & MsgHandler::kProcessed) {
+			*((IPosition*)newobj) = *((IPosition*)this);
+			*((IDate*)newobj) = *((IDate*)this);
+			*((EventsAble*)newobj) = *((EventsAble*)this);
 			del();								// and delete the object
 			return MsgHandler::kProcessed;		// message has been handled at IObject level
 		}
