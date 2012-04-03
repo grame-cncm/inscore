@@ -32,6 +32,8 @@
 #include <QDir>
 #include <QMutexLocker>
 
+#include "GUIDOEngine.h"
+
 #include "EventsAble.h"
 #include "IAppl.h"
 #include "IGlue.h"
@@ -154,6 +156,12 @@ void IGlue::initialize (bool offscreen, QApplication* appl)
 	string listen(" listening OSC on port ");
 	oscerr << OSCStart("INScore") << "v" << INScore::versionStr() << listen <<  fUDP.fInPort << OSCEnd();
 	cout << "INScore v " << INScore::versionStr() << listen <<  fUDP.fInPort << endl;
+
+	// check Guido version
+	if (GuidoCheckVersionNums(1, 4, 9) != guidoNoErr) {
+		oscerr << OSCStart("Warning:") << "GUIDOEngine version >= 1.49 is required." << OSCEnd();
+		cerr << "Warning: GUIDOEngine version >= 1.49 is required." << endl;
+	}
 	
 	// creates a mapping updater - note that it may send error messages and thus should not be
 	// set before the osc streams are ready
