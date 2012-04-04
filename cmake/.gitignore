@@ -21,4 +21,7 @@ _*
 Makefile
 *~
 old
-
+INScoreNOView*
+inscoreviewer*
+install_manifest.txt
+runcmake
