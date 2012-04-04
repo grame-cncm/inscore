@@ -256,7 +256,7 @@ if (WIN32)
 
 else (WIN32)
 install ( TARGETS ${TARGET}
-    	LIBRARY DESTINATION /usr/local/lib
+    	LIBRARY DESTINATION /usr/lib
      	PUBLIC_HEADER DESTINATION /usr/local/include
    		${FRMWK}
 )
