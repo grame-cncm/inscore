@@ -621,8 +621,22 @@ MsgHandler::msgStatus IObject::set(const IMessage* msg)
 		IObject* newobj;
 		int status = IProxy::execute (msg, name(), fParent, &newobj);
 		if (status & MsgHandler::kProcessed) {
-			*((IPosition*)newobj) = *((IPosition*)this);
-			*((IDate*)newobj) = *((IDate*)this);
+			newobj->setXPos (getXPos());
+			newobj->setYPos (getYPos());
+			newobj->setXOrigin (getXOrigin());
+			newobj->setYOrigin (getYOrigin());
+			newobj->setScale (getScale());
+			newobj->setVisible (getVisible());
+			newobj->setZOrder (getZOrder());
+			newobj->setAngle (getAngle());
+			newobj->setShear (getShear());
+			newobj->setRotateX (getRotateX());
+			newobj->setRotateY (getRotateY());
+			newobj->setRotateZ (getRotateZ());
+			
+			newobj->setDate (getDate());
+			newobj->setDuration (getDuration());
+
 			*((EventsAble*)newobj) = *((EventsAble*)this);
 			del();								// and delete the object
 			return MsgHandler::kProcessed;		// message has been handled at IObject level
