@@ -65,11 +65,12 @@ MsgHandler::msgStatus ITextFile::set(const IMessage* msg )
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 	
-	status = TFile::set (msg);
-	if (status & MsgHandler::kProcessed)
+	status = TFile::set (msg) ;
+	if (status & MsgHandler::kProcessed) {
 		if (!read(fText))
 			status = MsgHandler::kCreateFailure;
 		else newData(true);
+	}
 	return status;
 }
 

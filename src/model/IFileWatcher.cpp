@@ -40,8 +40,8 @@ IFileWatcher::IFileWatcher(IObject * parent) : IVNode(kFileWatcherType, parent)
 { 
 	fMsgHandlerMap["add"]		= TMethodMsgHandler<IFileWatcher>::create(this, &IFileWatcher::addMsg);
 	fMsgHandlerMap["remove"]	= TMethodMsgHandler<IFileWatcher>::create(this, &IFileWatcher::removeMsg);
-	fMsgHandlerMap["watch"]		= 0;
-	fMsgHandlerMap["watch+"]	= 0;
+	fMsgHandlerMap["watch"]		= 0L;
+	fMsgHandlerMap["watch+"]	= 0L;
 }
 
 //--------------------------------------------------------------------------
