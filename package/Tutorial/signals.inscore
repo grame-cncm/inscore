@@ -16,6 +16,20 @@
 /ITL/scene/signals xorigin -1.00000 ;
 /ITL/scene/signals yorigin -1.00000 ;
 /ITL/scene/signals x -0.750000 ;
+
+/ITL/scene/c1 set 'txt' "A special address space is used to describe the signals:";
+/ITL/scene/c2 set 'txt' "and to compose them in parallel:";
+/ITL/scene/c3 set 'txt' "Eventually connect to a graphic signal:";
+/ITL/scene/c4 set 'txt' "and send data:";
+/ITL/scene/c? x -0.75 ;
+/ITL/scene/c? xorigin -1. ;
+/ITL/scene/c? scale 1.7 ;
+/ITL/scene/c1 y -0.06 ;
+/ITL/scene/c2 y 0.19 ;
+/ITL/scene/c3 y 0.43 ;
+/ITL/scene/c4 y 0.58 ;
+
+/ITL/scene/m1 set "txt" "/ITL/tutorial/signal/s1 size 100" ;
 /ITL/scene/m1 set "txt" "/ITL/tutorial/signal/s1 size 100" ;
 /ITL/scene/m2 set "txt" "/ITL/tutorial/signal/s2 size 100" ;
 /ITL/tutorial/signal/s1 size 100 ;

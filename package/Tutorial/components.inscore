@@ -30,11 +30,11 @@
 /ITL/scene/m* watch+ "mouseEnter" "/ITL/$scene/$self" "red" 200 ;
 /ITL/scene/m* watch "mouseLeave" "/ITL/$scene/$self" "alpha" 160 ;
 /ITL/scene/m* watch+ "mouseLeave" "/ITL/$scene/$self" "red" 0 ;
-/ITL/scene/m1 watch "mouseDown" "/ITL/tutorial/myobject" "set" "rect" 0.200000 0.200000 ;
+/ITL/scene/m1 watch "mouseDown" "/ITL/tutorial/myobject" "set" "rect" 0.2 0.2 ;
 /ITL/scene/m2 watch "mouseDown" "/ITL/tutorial" "rootPath" "$(/ITL/scene get rootPath)" ;
 /ITL/scene/m2 watch+ "mouseDown" "/ITL/tutorial/myobject" "set" "img" "rsrc/INScore.png" ;
 /ITL/scene/m3 watch "mouseDown" "/ITL/tutorial/myobject" "set" "txt" "Hello world!" ;
-/ITL/scene/m4 watch "mouseDown" "/ITL/tutorial/myobject" "set" "ellipse" 0.300000 0.300000 ;
+/ITL/scene/m4 watch "mouseDown" "/ITL/tutorial/myobject" "set" "ellipse" 0.3 0.3 ;
 /ITL/scene load "previous.inscore" ;
 /ITL/scene/previous watch "mouseDown" "/ITL/scene" "load" "msgs-time.inscore" ;
 /ITL/scene load "next.inscore" ;
