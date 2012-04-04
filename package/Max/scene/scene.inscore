@@ -1,6 +1,6 @@
 /ITL/scene/* del ;
 /ITL/scene/myGuidoFile set "gmnf" "rsrc/scene.gmn" ;
-/ITL/scene/myGuidoFile scale 1.80000 ;
+/ITL/scene/myGuidoFile scale 1.40000 ;
 /ITL/scene/myGuidoFile x -0.300000 ;
 /ITL/scene/myGuidoFile y -0.300000 ;
 /ITL/scene/myGuidoFile z 0.500000 ;
@@ -15,15 +15,15 @@
 /ITL/scene/myCurve scale 1.00000 ;
 /ITL/scene/myCurve color 0 123 161 ;
 /ITL/scene/myPolygon set "polygon" 0.130000 0.0500000 0.500000 0.0700000 0.0400000 0.500000 ;
-/ITL/scene/myPolygon x 0.00000 ;
-/ITL/scene/myPolygon y -0.300000 ;
+/ITL/scene/myPolygon x -0.1 ;
+/ITL/scene/myPolygon y -0.3 ;
 /ITL/scene/myPolygon z 0.100000 ;
-/ITL/scene/myPolygon scale 1.00000 ;
+/ITL/scene/myPolygon scale 0.8 ;
 /ITL/scene/myPolygon color 0 229 40 53 ;
 /ITL/scene/myPolygon angle 216.000 ;
 /ITL/scene/myGSig set "img" "rsrc/signal.jpg" ;
 /ITL/scene/myGSig x -0.180000 ;
-/ITL/scene/myGSig y 0.310000 ;
+/ITL/scene/myGSig y 0.46 ;
 /ITL/scene/myGSig scale 0.450000 ;
 
 !ITL/scene/myGSig angle 4.
@@ -35,4 +35,4 @@
 /ITL/scene/comment color 15 0 25 148 ;
 /ITL/scene/* dscale 1.80000 ;
 /ITL/scene/* dx 0.300000 ;
-/ITL/scene/* dy 0.400000 ;
+/ITL/scene/* dy 0.300000 ;
