@@ -1543,8 +1543,8 @@ A FAUST processor is created with a \OSC{set} message followed by the \OSC{faust
 
 
 %===============================
-%:  Specific meassages
-\sublevel{Specific meassages}
+%:  Specific messages
+\sublevel{Specific messages}
 \label{faustmsg}
 A FAUST processor is characterized by the numbers of input and output channels and by a set of parameters. Each parameter carries a name defined by the FAUST program. The set of messages supported by a FAUST processor is the set of signals messages extended with the parameters names and with specific query messages. 
 
@@ -1690,7 +1690,7 @@ xy : ('x' | 'y') ( | '[low,high]')
 \item \OSC{\$absx} \OSC{\$absy}: denotes the mouse pointer absolute position at the time of the event. The values represent a pixel position relative to the top-left point of the target object. Note that this position is unaffected by scale. 
 Note also that the values are not clipped to the object dimensions and could exceed its width or height or become negative in case of mouse move events.
 
-\item \OSC{\$sx} \OSC{\$sy}: denotes the mouse pointer position in the scene coordinates space. \OSC{\$sx} and \OSC{\$sy} are computed like
+\item \OSC{\$sx} \OSC{\$sy}: denotes the mouse pointer position in the scene coordinates space. 
 \end{itemize}
 
 \begin{rail} 
