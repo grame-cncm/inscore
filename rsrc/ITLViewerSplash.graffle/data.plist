@@ -14,7 +14,7 @@
 	<key>BackgroundGraphic</key>
 	<dict>
 		<key>Bounds</key>
-		<string>{{0, 0}, {559.28, 782.89}}</string>
+		<string>{{0, 0}, {559, 783}}</string>
 		<key>Class</key>
 		<string>SolidGraphic</string>
 		<key>ID</key>
@@ -51,20 +51,13 @@
 	<array>
 		<dict>
 			<key>Bounds</key>
-			<string>{{464, 614.725}, {113.386, 48.0102}}</string>
+			<string>{{462, 589.645}, {119.055, 81.4587}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
-			<key>FontInfo</key>
-			<dict>
-				<key>Font</key>
-				<string>Helvetica</string>
-				<key>Size</key>
-				<real>12</real>
-			</dict>
 			<key>ID</key>
-			<integer>29</integer>
+			<integer>31</integer>
 			<key>ImageID</key>
-			<integer>3</integer>
+			<integer>5</integer>
 			<key>Shape</key>
 			<string>Rectangle</string>
 			<key>Style</key>
@@ -968,7 +961,7 @@
 	<key>HPages</key>
 	<integer>1</integer>
 	<key>ImageCounter</key>
-	<integer>4</integer>
+	<integer>6</integer>
 	<key>ImageLinkBack</key>
 	<array>
 		<dict/>
@@ -976,7 +969,7 @@
 	</array>
 	<key>ImageList</key>
 	<array>
-		<string>image3.png</string>
+		<string>image5.pdf</string>
 		<string>image2.pdf</string>
 	</array>
 	<key>KeepToScale</key>
@@ -1016,7 +1009,7 @@
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2011-12-01 19:39:29 +0100</string>
+	<string>2012-04-04 09:35:09 +0200</string>
 	<key>Modifier</key>
 	<string>Dominique Fober</string>
 	<key>NotesVisible</key>
@@ -1042,7 +1035,7 @@
 		<key>NSPaperSize</key>
 		<array>
 			<string>coded</string>
-			<string>BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU1ZhbHVlAISECE5TT2JqZWN0AIWEASqEhAx7X05TU2l6ZT1mZn2Wg+zRFESD9nhSRIY=</string>
+			<string>BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU1ZhbHVlAISECE5TT2JqZWN0AIWEASqEhAx7X05TU2l6ZT1mZn2WgVMCgUoDhg==</string>
 		</array>
 		<key>NSRightMargin</key>
 		<array>
