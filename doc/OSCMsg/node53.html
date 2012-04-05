@@ -72,7 +72,7 @@ The general form of the message is:
 <P>
 <BR>
 <IMG
- WIDTH="425" HEIGHT="126" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img84.gif"
  ALT="\begin{rail}
 interactMsg : (('watch' \vert 'watch+') ([1] \vert what ( \vert oscMsg)))
@@ -94,7 +94,7 @@ interactMsg : (('watch' \vert 'watch+') ([1] \vert what ( \vert oscMsg)))
 The associated OSC message is any valid OSC message (not restricted to the Interlude message set), with an extended address scheme, supporting IP addresses or host names and udp port number to be specified as OSC addresses prefix. The message parameters are any valid OSC type or variables (see section <A HREF="node56.html#interactvar">15.3</A>).
 <BR>
 <IMG
- WIDTH="523" HEIGHT="113" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img85.gif"
  ALT="\begin{rail}
 oscMsg : (\vert fullAddress) OSCAddress ( (parameters \vert variable) + )
@@ -104,7 +104,7 @@ oscMsg : (\vert fullAddress) OSCAddress ( (parameters \vert variable) + )
 <P>
 <BR>
 <IMG
- WIDTH="298" HEIGHT="88" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img86.gif"
  ALT="\begin{rail}
 fullAddress : (IPAddress \vert hostname) ':' port
