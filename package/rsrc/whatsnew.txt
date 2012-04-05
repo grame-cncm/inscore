@@ -10,6 +10,14 @@ INScore resources are released under the Creative Common license.
 ------------------------------------------------------------------
 
 -------------------------------
+** April. 4 2012
+-------------------------------
+- pd and max patches updated to set both application and scene rootPath
+  (avoid conflicts with inscore files drag and drop)
+- new PureData/player.pd patch
+- tutorial layout revised
+
+-------------------------------
 ** Nov. 7 2011
 -------------------------------
 - new Faust plugins support and example
