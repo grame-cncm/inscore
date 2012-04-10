@@ -1,15 +1,15 @@
-#N canvas 54 35 413 218 10;
+#N canvas 320 28 413 218 10;
 #X obj -153 188 bng 15 250 50 0 \$0-reload empty empty 17 7 0 10 -262144
 -1 -1;
 #X text -134 187 Reload;
 #X text -253 41 Start/Stop;
 #X obj -231 59 tgl 15 0 \$0-play \$0-play-in empty 20 7 0 10 -228856
--1 -1 0 1;
+-1 -1 1 1;
 #X obj -47 89 vradio 15 1 0 3 \$0-shape empty empty 0 -8 0 10 -228856
--258113 -1 0;
+-258113 -1 2;
 #X text -16 86 Pitch;
 #X obj -155 63 vsl 15 100 1 100 0 0 \$0-ampl \$0-ampl-in Amplitude
--20 -12 0 10 -262144 -45076 -1 4900 1;
+-20 -12 0 10 -262144 -45076 -1 1900 1;
 #X obj 5 188 bng 15 250 50 0 \$0-score empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj -257 9 cnv 15 400 30 empty empty empty 20 12 0 14 -261682 -66577
@@ -23,7 +23,7 @@ file analysis.;
 #X text -57 61 Signal shape selection;
 #X text -17 103 Envelope;
 #X text -16 120 Pitched envelope;
-#N canvas 291 287 1026 546 inside 0;
+#N canvas 251 478 1059 636 inside 0;
 #X obj -217 115 cnv 15 240 180 empty empty OSC_Comm 20 12 0 12 -204800
 -66577 0;
 #X obj -177 232 dumpOSC 7001;
@@ -66,7 +66,7 @@ file analysis.;
 #X obj 542 83 r \$0-play;
 #X obj 273 55 cnv 15 250 180 empty empty Score_management 20 12 0 12
 -228856 -66577 0;
-#X obj 282 114 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 282 114 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 282 206 s sigplay;
 #X msg 282 174 /ITL/scene/my* clock;
@@ -124,6 +124,18 @@ file analysis.;
 #X obj -157 -136 dsp;
 #X msg 69 240 /ITL/scene load siggraph.inscore;
 #X obj 122 223 prepend /ITL/scene rootPath;
+#X obj 349 375 qlist;
+#X obj 275 269 r \$0-play;
+#X msg 276 337 rewind;
+#X obj 275 291 route 0;
+#X obj 313 321 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 349 325 read 07.metro;
+#X obj 349 288 loadbang;
+#X obj 305 112 r _metro;
+#X obj 486 326 s \$0-ampl-in;
+#X obj 482 259 loadbang;
+#X msg 484 293 20;
 #X connect 1 0 2 0;
 #X connect 3 0 4 0;
 #X connect 6 0 5 0;
@@ -184,6 +196,16 @@ file analysis.;
 #X connect 61 0 36 0;
 #X connect 63 0 15 0;
 #X connect 64 0 15 0;
+#X connect 66 0 68 0;
+#X connect 67 0 65 0;
+#X connect 68 0 67 0;
+#X connect 68 1 69 0;
+#X connect 69 0 65 0;
+#X connect 70 0 65 0;
+#X connect 71 0 70 0;
+#X connect 72 0 38 1;
+#X connect 74 0 75 0;
+#X connect 75 0 73 0;
 #X restore -235 187 pd inside;
 #X text -52 153 Final scene with score;
 #X text -50 165 and synchronization;

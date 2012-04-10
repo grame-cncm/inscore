@@ -1,3 +1,5 @@
+/ITL/debug osc 0 ;
+
 /ITL/scene/* del ;
 /ITL/scene/signal/* del ;
 /ITL/scene/myRect set "rect" 1.21172 1.19157 ;
