@@ -1,6 +1,7 @@
 # 
 # makefile to build a 32/64 v8 library
 #
+# [2012-04-10] adapted to v8/gyp
 #
 
 V8 = $(HOME)/src/v8
@@ -15,20 +16,17 @@ help:
 
 lib : libv8.a
 
-v32 : libv8-32.a
+v32 : $(V8)/out/ia32.release/libv8_base.a
+v64 : $(V8)/out/x64.release/libv8_base.a
 
-v64 : libv8-64.a
+libv8.a :  $(V8)/out/ia32.release/libv8_base.a $(V8)/out/x64.release/libv8_base.a
+	libtool -o libv8.a $(V8)/out/ia32.release/libv8_base.a $(V8)/out/ia32.release/libv8_snapshot.a $(V8)/out/x64.release/libv8_base.a $(V8)/out/x64.release/libv8_snapshot.a
 
-libv8.a : libv8-32.a libv8-64.a
-	libtool -o libv8.a libv8-32.a libv8-64.a
+$(V8)/out/ia32.release/libv8_base.a :
+	cd $(V8) && make ia32.release
 
-libv8-32.a :
-	cd $(V8) && scons -j 4
-	cp $(V8)/libv8.a libv8-32.a  
-
-libv8-64.a :
-	cd $(V8) && scons -j 4 arch=x64
-	cp $(V8)/libv8.a libv8-64.a  
+$(V8)/out/x64.release/libv8_base.a :
+	cd $(V8) && make x64.release
 
 clean:
 	rm -f libv8*
