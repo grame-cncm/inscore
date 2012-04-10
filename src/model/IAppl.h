@@ -116,7 +116,7 @@ class IAppl : public IObject, public PeriodicTask
 		void		setUDPErrPort(int p)		{ fUDP.fErrPort = p; }
 
 		void		resetBench();
-		bool		offscreen()					{ return fOffscreen; }
+		bool		offscreen()	const			{ return fOffscreen; }
 		void		ptask ();
 
 		static std::string checkRootPath (const std::string& path);

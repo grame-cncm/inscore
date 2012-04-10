@@ -10,10 +10,10 @@ set (APPLTARGET	INScoreViewer)
 
 #######################################
 # versions management
-set (INSFWKVERS 0.98)
-set (INSFWKSTRVERS "v.0.98")
-set (INSAPPVERS 0.98)
-set (INSAPPSTRVERS "v.0.98")
+set (INSFWKVERS 0.97)
+set (INSFWKSTRVERS "v.0.97")
+set (INSAPPVERS 0.97)
+set (INSAPPSTRVERS "v.0.97")
 set (SOVERS 1)
 
 #######################################
@@ -29,7 +29,7 @@ if(APPLE)
 	if (${CMAKE_SYSTEM_VERSION} VERSION_LESS 9.0.0)
 		set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.4u.sdk)
 	else (${CMAKE_SYSTEM_VERSION} VERSION_LESS 9.0.0)
-		set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.5.sdk)
+		set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.6.sdk)
 	endif (${CMAKE_SYSTEM_VERSION} VERSION_LESS 9.0.0)
  #######################################
  if (DIST STREQUAL "yes")

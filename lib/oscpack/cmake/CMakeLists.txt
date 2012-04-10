@@ -2,6 +2,10 @@
 project(oscpack)
 cmake_minimum_required(VERSION 2.6)
 
+#######################################
+# cmake build types configuration
+set (CMAKE_CONFIGURATION_TYPES Debug Release)
+
 if(WIN32)
 	add_definitions(-DWINVER=0x0500)
 	add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
@@ -28,8 +32,8 @@ endif (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL powerpc OR
 	${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL ppc)
 
 if(APPLE)
-	set (CMAKE_OSX_ARCHITECTURES "x86_64 i386 ppc")
-	set(CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.5.sdk)
+	set (CMAKE_OSX_ARCHITECTURES "x86_64 i386")
+	set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX10.6.sdk")
 	set(CMAKE_C++_FLAGS -mmacosx-version-min=10.4)
 endif(APPLE)
 

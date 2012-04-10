@@ -47,7 +47,7 @@ template<typename T1, typename T2, typename T3> class TComposition : public TMap
 
 				TComposition(const TRelation<T1,T2>& r1,  const TRelation<T2,T3>& r2) {
 					for (const_iterator i = r1.begin(); i != r1.end(); i++) {
-						add ( i->first, r2.get(i->second));
+						this->add ( i->first, r2.get(i->second));
 					}
 				}
 		virtual ~TComposition() {}
