@@ -1,4 +1,4 @@
-#N canvas 75 32 334 122 10;
+#N canvas 425 488 334 122 10;
 #X obj 145 94 bng 15 250 50 0 \$0-reload empty empty 17 7 0 10 -262144
 -1 -1;
 #X text 130 74 Reload;
@@ -7,7 +7,7 @@
 -1 -1 0 1;
 #X obj -124 8 cnv 15 320 30 empty empty empty 20 12 0 14 -261682 -66577
 0;
-#N canvas 115 554 746 556 inside 1;
+#N canvas 115 554 746 556 inside 0;
 #X obj -194 321 cnv 15 250 180 empty empty OSC_Comm 20 12 0 12 -204800
 -66577 0;
 #X obj -190 442 dumpOSC 7001;
@@ -25,7 +25,7 @@
 #X obj 91 362 t b b b b;
 #X obj 129 331 loadbang;
 #X msg 199 373 \; pd dsp 1;
-#X obj 78 475 s turenas;
+#X obj 78 476 s turenas;
 #X obj 131 298 r \$0-reload;
 #X obj -125 182 dac~;
 #X obj -125 66 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
@@ -41,7 +41,7 @@
 #X msg 130 214 /ITL/scene/[cs]* clock;
 #X msg 13 191 /ITL/scene/[cs]* date 0 1;
 #X obj -124 37 r \$0-play;
-#X msg 78 444 /ITL load turenas.inscore;
+#X msg 77 451 /ITL load turenas.inscore;
 #X obj 292 54 dumpOSC 7100;
 #X obj 291 87 route /date /play;
 #X obj 291 145 unpack 1 2;
@@ -66,14 +66,15 @@
 #X obj -74 183 s \$0-playin;
 #X msg -76 123 open Turenas_stereo.wav;
 #X msg 324 389 open Turenas_stereo.wav \$1;
-#X obj 183 514 print;
-#X obj 126 416 prepend /ITL rootPath;
+#X obj 142 414 prepend /ITL rootPath;
+#X obj 153 434 prepend /ITL/scene rootPath;
 #X connect 1 0 2 0;
 #X connect 3 0 4 0;
 #X connect 6 0 5 0;
 #X connect 7 0 6 0;
 #X connect 8 0 5 0;
 #X connect 9 0 8 0;
+#X connect 11 0 53 0;
 #X connect 11 0 54 0;
 #X connect 12 2 29 0;
 #X connect 12 3 11 0;
@@ -120,8 +121,8 @@
 #X connect 47 0 46 0;
 #X connect 51 0 19 0;
 #X connect 52 0 48 0;
+#X connect 53 0 15 0;
 #X connect 54 0 15 0;
-#X connect 54 0 53 0;
 #X restore -102 95 pd inside;
 #X text -119 8 Turenas - John Chowning;
 #X text -118 20 Analyse et transcription graphique: Laurent Pottier
