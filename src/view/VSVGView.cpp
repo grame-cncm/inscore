@@ -82,7 +82,6 @@ VSVGView::VSVGView(QGraphicsScene * scene, const ISVG* svg)
 void VSVGView::updateView( ISVGFile * svg  )
 {
 	if (svg->changed()) {
-qDebug() << "VVSVGView::updateView( ISVGFile";
 		item()->setFile (svg->getFile().c_str());
 		svg->changed(false);
 	}
