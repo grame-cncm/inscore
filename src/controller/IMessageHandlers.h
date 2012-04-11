@@ -187,8 +187,14 @@ template <typename O> class TSetMethodMsgHandler<O, TFloatSize> : public MsgHand
 		virtual msgStatus operator ()(const IMessage* msg)			{ 
 			if ( msg->size() != 2 ) return kBadParameters;
 			float n, d;
-			if ( !msg->param(0, n) || !msg->param(1, d)) return kBadParameters;
-			(fObject->*fMethod)( TFloatSize(n,d) );
+			int ni, di;
+			if ( msg->param(0, n) && msg->param(1, d)) {
+                (fObject->*fMethod)( TFloatSize(n,d) );
+            }
+			else if ( msg->param(0, ni) && msg->param(1, di)) {
+                (fObject->*fMethod)( TFloatSize(ni,di) );
+            }
+			else return kBadParameters;
 			return kProcessed;
 		}
 
