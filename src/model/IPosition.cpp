@@ -45,7 +45,7 @@ Position::Position():
 	fXAngle(0), fYAngle(0), fZAngle(0), fShear (0,0)
 {}
 
-void Position::set(const Position& p)
+void Position::setPos(const Position& p)
 {
 	setXPos( p.getXPos() );
 	setYPos( p.getYPos() );
@@ -162,7 +162,7 @@ typedef struct zorderSort {
 //--------------------------------------------------------------------------
 // click and select messages
 //--------------------------------------------------------------------------
-bool IPosition::click(const IMessage* msg, IObject* parent, vector<SIObject>& outlist)	const
+bool IPosition::clickPos(const IMessage* msg, IObject* parent, vector<SIObject>& outlist)	const
 { 
 	if (!parent || (msg->params().size() > 1)) return false;
 	
@@ -187,7 +187,7 @@ bool IPosition::click(const IMessage* msg, IObject* parent, vector<SIObject>& ou
 
 
 //--------------------------------------------------------------------------
-bool IPosition::select(const IMessage* msg, IObject* parent, vector<SIObject>& outlist) const
+bool IPosition::selectPos(const IMessage* msg, IObject* parent, vector<SIObject>& outlist) const
 { 
 	if (!parent || (msg->params().size() > 1)) return false;
 	

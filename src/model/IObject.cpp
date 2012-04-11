@@ -873,7 +873,7 @@ IMessage * IObject::select (const IMessage* msg) const
 	if (msg->params().size() == 1)
 		mode = msg->params()[0]->value<string>("");
 
-	if (IPosition::select (msg, fParent, list)) {
+	if (IPosition::selectPos (msg, fParent, list)) {
 		outmsg = new IMessage(getOSCAddress(), mode);
 		for (unsigned i=0; i<list.size(); i++)
 			*outmsg << list[i]->name();
@@ -890,7 +890,7 @@ IMessage * IObject::click (const IMessage* msg) const
 	if (msg->params().size() == 1)
 		mode = msg->params()[0]->value<string>("");
 
-	if (IPosition::click(msg, SIObject(fParent), list)) {
+	if (IPosition::clickPos (msg, SIObject(fParent), list)) {
 		outmsg = new IMessage(getOSCAddress(), mode);
 		for (unsigned i=0; i<list.size(); i++)
 			*outmsg << list[i]->name();

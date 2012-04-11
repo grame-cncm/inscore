@@ -78,7 +78,7 @@ class Position
 	
 		enum {	kDefaultX=0, kDefaultY=0 };
 
-		virtual void set(const Position& p);
+		virtual void setPos(const Position& p);
 
 		/// \brief returns the object modification state
 		virtual bool	modified () const			{ return fModified; }
@@ -231,7 +231,7 @@ class IPosition: public Position
 			\param outlist on output, a components list
 			\return true when the message has been correctly processed
 		*/
-		virtual bool	click (const IMessage* msg, IObject * parent, std::vector<SIObject>& outlist) const;
+		virtual bool	clickPos (const IMessage* msg, IObject * parent, std::vector<SIObject>& outlist) const;
 
 		/*!
 			\brief selects a list of components that intersect or are included in the object bounding rect.
@@ -240,7 +240,7 @@ class IPosition: public Position
 			\param outlist on output, a components list
 			\return true when the message has been correctly processed
 		*/
-		virtual bool	select (const IMessage* msg, IObject * parent, std::vector<SIObject>& outlist) const;
+		virtual bool	selectPos (const IMessage* msg, IObject * parent, std::vector<SIObject>& outlist) const;
 };
 
 
