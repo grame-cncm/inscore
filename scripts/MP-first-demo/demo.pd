@@ -1,0 +1,107 @@
+#N canvas 30 36 256 102 10;
+#X obj -140 7 cnv 15 245 85 empty empty empty 20 12 0 14 -262144 -66577
+0;
+#X obj -125 49 bng 15 250 50 0 \$0-reload empty Reload 20 8 0 10 -262144
+-1 -1;
+#X obj -126 16 tgl 18 0 \$0-play \$0-play-i Play 23 10 0 12 -262144
+-1 -1 0 1;
+#N canvas 116 51 555 650 inside 0;
+#X obj 16 14 cnv 15 250 180 empty empty OSC_Communication 20 12 0 12
+-204786 -66577 0;
+#X obj 30 149 print ITLOut;
+#X obj 180 149 print ITL;
+#X obj 180 99 sendOSC;
+#X msg 30 65 connect localhost 7000;
+#X obj 30 45 loadbang;
+#X obj 180 65 prepend send;
+#X obj 284 14 cnv 15 230 220 empty empty Initialisation 20 12 0 12
+-204786 -66577 0;
+#X obj 358 104 getdir;
+#X obj 307 84 t b b b b;
+#X obj 307 44 loadbang;
+#X obj 130 149 print;
+#X obj 317 64 r \$0-reload;
+#X msg 341 180 read demo.osc;
+#X msg 324 204 tempo 0.8;
+#X obj 180 129 dumpOSC 7002;
+#X obj 30 129 dumpOSC 7001;
+#X msg 346 277 /ITL/scene fullscreen \$1;
+#X obj 346 257 r \$0-full-scr;
+#X obj 180 45 r demo;
+#X obj 346 297 s demo;
+#X obj 15 382 cnv 15 280 260 empty empty Time 20 12 0 12 -204786 -66577
+0;
+#X obj 129 481 route play tempo dest;
+#X obj 129 421 zl slice 2;
+#X obj 186 448 zl slice 2;
+#X obj 129 541 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 129 561 metro 25;
+#X obj 170 541 / 1;
+#X obj 170 501 t b f;
+#X text 26 447 The 'time' bus;
+#X text 25 459 is used by the;
+#X text 25 472 demo.osc qlist;
+#X obj 129 394 r demotime;
+#X floatatom 244 525 5 0 0 0 - - -;
+#X msg 129 581 /ITL/scene/slave* clock;
+#X obj 129 601 s demo;
+#X obj 170 521 2500;
+#X obj 17 209 cnv 15 200 160 empty empty Play 20 12 0 12 -204786 -66577
+0;
+#X obj 108 294 qlist;
+#X msg 83 264 rewind;
+#X obj 72 237 route 0 1;
+#X obj 72 217 r \$0-play;
+#X msg 135 314 set 0;
+#X obj 135 334 s \$0-play-i;
+#X obj 358 161 s demo;
+#X obj 409 143 prepend /ITL rootPath;
+#X obj 358 124 prepend /ITL/scene rootPath;
+#X connect 4 0 3 0;
+#X connect 5 0 4 0;
+#X connect 6 0 3 0;
+#X connect 8 0 45 0;
+#X connect 8 0 46 0;
+#X connect 9 1 14 0;
+#X connect 9 2 13 0;
+#X connect 9 3 8 0;
+#X connect 10 0 9 0;
+#X connect 12 0 9 0;
+#X connect 13 0 38 0;
+#X connect 14 0 38 0;
+#X connect 15 0 2 0;
+#X connect 16 0 1 0;
+#X connect 17 0 20 0;
+#X connect 18 0 17 0;
+#X connect 19 0 6 0;
+#X connect 22 0 25 0;
+#X connect 22 1 28 0;
+#X connect 22 1 33 0;
+#X connect 23 0 22 0;
+#X connect 23 1 24 0;
+#X connect 24 0 22 0;
+#X connect 24 1 22 0;
+#X connect 25 0 26 0;
+#X connect 26 0 34 0;
+#X connect 27 0 26 1;
+#X connect 28 0 36 0;
+#X connect 28 1 27 1;
+#X connect 32 0 23 0;
+#X connect 34 0 35 0;
+#X connect 36 0 27 0;
+#X connect 38 1 42 0;
+#X connect 39 0 38 0;
+#X connect 40 0 39 0;
+#X connect 40 0 25 0;
+#X connect 40 1 38 0;
+#X connect 41 0 40 0;
+#X connect 42 0 43 0;
+#X connect 45 0 44 0;
+#X connect 46 0 44 0;
+#X restore 8 67 pd inside;
+#X text -39 28 cue list that plays;
+#X obj -125 69 tgl 15 0 \$0-full-scr \$0-full-scr-i Full_screen 20
+8 0 10 -262144 -1 -1 0 1;
+#X text -39 15 This patch is a simple;
+#X text -39 41 the "demo.osc" file.;

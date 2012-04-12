@@ -1,0 +1,2 @@
+/ITL load 'liveCoding.inscore';
+/ITL/scene/fileWatcher add "liveCoding.inscore" '/ITL' 'load' 'liveCoding.inscore';

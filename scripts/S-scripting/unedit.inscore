@@ -1,0 +1,4 @@
+/ITL/scene/* watch "mouseDown" ;
+/ITL/scene/* watch "mouseMove" ;
+/ITL/scene/* watch "mouseUp" ;
+/ITL/scene/_* del ;

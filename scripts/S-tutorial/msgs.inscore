@@ -1,0 +1,18 @@
+/ITL/scene/* del ;
+/ITL/scene/signal/* del ;
+/ITL/tutorial new ;
+/ITL/tutorial/* del ;
+/ITL/scene x -0.510000 ;
+/ITL/tutorial x 0.510000 ;
+/ITL/scene/* del ;
+/ITL/tutorial watch "newElement" "/ITL/scene" "load" "msgsdone.inscore" ;
+/ITL/tutorial watch+ "newElement" "/ITL/tutorial" "watch" ;
+/ITL/scene/title set "html" "<h1>Your first score</h1>" ;
+/ITL/scene/title y -0.700000 ;
+/ITL/scene/title scale 2.00000 ;
+/ITL/scene/msgs1 set "htmlf" "rsrc/msgs1.html" ;
+/ITL/scene/msgs1 scale 2.00000 ;
+/ITL/scene/msgs1 y -0.200000 ;
+/ITL/scene/msgs1 xorigin -1.00000 ;
+/ITL/scene/msgs1 x -0.750000 ;
+/ITL/scene load "summary.inscore" ;

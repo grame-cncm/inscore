@@ -1,0 +1,96 @@
+#N canvas 544 25 203 292 10;
+#N canvas 231 463 551 358 inside 0;
+#X obj 17 13 cnv 15 240 180 empty empty OSC_Comm 20 12 0 12 -204800
+-66577 0;
+#X obj 57 130 dumpOSC 7001;
+#X obj 57 161 print ITLOut;
+#X obj 154 129 dumpOSC 7002;
+#X obj 154 160 print ITL;
+#X obj 173 102 sendOSC;
+#X msg 24 68 connect localhost 7000;
+#X obj 24 38 loadbang;
+#X obj 173 68 prepend send;
+#X obj 173 41 r transform;
+#X obj 300 16 r \$0_treset;
+#X msg 300 50 shear 0 0;
+#X msg 386 50 rotatex 0;
+#X msg 385 73 rotatey 0;
+#X msg 385 99 rotatez 0;
+#X obj 351 124 s _dest;
+#X obj 345 154 inlet;
+#X obj 345 180 sprintf /ITL/scene/%s;
+#X obj 345 205 prepend set;
+#X obj 288 203 r _dest;
+#X obj 345 255 s transform;
+#X obj 345 230 prepend /ITL/scene/*;
+#X obj 33 208 r \$0_sx;
+#X obj 85 208 r \$0_sy;
+#X obj 33 230 / 50;
+#X obj 85 230 / 50;
+#X obj 58 254 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 44 302 shear \$1 \$2;
+#X obj 45 327 s _dest;
+#X obj 150 251 r \$0_rx;
+#X obj 202 251 r \$0_ry;
+#X obj 254 252 r \$0_rz;
+#X msg 135 281 rotatex \$1;
+#X msg 211 282 rotatey \$1;
+#X msg 289 282 rotatez \$1;
+#X obj 211 315 s _dest;
+#X obj 44 278 pack 0 0;
+#X connect 1 0 2 0;
+#X connect 3 0 4 0;
+#X connect 6 0 5 0;
+#X connect 7 0 6 0;
+#X connect 8 0 5 0;
+#X connect 9 0 8 0;
+#X connect 10 0 12 0;
+#X connect 10 0 13 0;
+#X connect 10 0 14 0;
+#X connect 10 0 11 0;
+#X connect 11 0 15 0;
+#X connect 12 0 15 0;
+#X connect 13 0 15 0;
+#X connect 14 0 15 0;
+#X connect 16 0 17 0;
+#X connect 17 0 18 0;
+#X connect 18 0 21 0;
+#X connect 19 0 21 0;
+#X connect 21 0 20 0;
+#X connect 22 0 24 0;
+#X connect 23 0 25 0;
+#X connect 24 0 36 0;
+#X connect 25 0 26 0;
+#X connect 25 0 36 1;
+#X connect 26 0 36 0;
+#X connect 27 0 28 0;
+#X connect 29 0 32 0;
+#X connect 30 0 33 0;
+#X connect 31 0 34 0;
+#X connect 32 0 35 0;
+#X connect 33 0 35 0;
+#X connect 34 0 35 0;
+#X connect 36 0 27 0;
+#X restore 37 207 pd inside;
+#X obj -72 17 vsl 15 128 0 127 0 0 \$0_rx empty x 4 -9 0 10 -262144
+-1 -1 6100 1;
+#X obj -99 -47 cnv 15 200 30 empty empty empty 20 12 0 14 -261682 -66577
+0;
+#X text -86 -41 INScore Transform;
+#X text -58 -13 Rotate;
+#X obj -20 17 vsl 15 128 0 127 0 0 \$0_rz empty z 4 -9 0 10 -262144
+-1 -1 5200 1;
+#X obj -47 17 vsl 15 128 0 127 0 0 \$0_ry empty y 4 -9 0 10 -262144
+-1 -1 7200 1;
+#X obj 26 17 vsl 15 128 0 127 0 0 \$0_sx empty x 4 -9 0 10 -262144
+-1 -1 4500 1;
+#X obj 51 17 vsl 15 128 0 127 0 0 \$0_sy empty y 4 -9 0 10 -262144
+-1 -1 0 1;
+#X text 32 -13 Shear;
+#X text -74 179 OSC dest address:;
+#X text -75 156 Remove transform:;
+#X obj 37 157 bng 15 250 50 0 \$0_treset empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 37 178 *;
+#X connect 13 0 0 0;

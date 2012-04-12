@@ -1,0 +1,35 @@
+{
+[ 
+%\pageFormat<21cm,29cm,5mm,10mm,5mm,5mm>
+\clef<"g">
+\meter<"4/4"> %\tempo<"[1/4]=60","1/4=60">
+g1*3/8 a/8 e/4 g
+| a/2 a*3/16 b/16 g/8 a
+| d2/4. e/8 d/4  d/8 b1 
+| a/2 b/4 a e2. f#/8 d/4 e
+| g/2 g/4 e/8 g 
+| d/4. e/8 g/4 f# 
+| e. f#/8 e/4 d
+| d/8 b1/4. b/4 a2 
+| g. a/8 g/4 b1
+| d2. e/8 g/4 e 
+| d. g/8 e/4 a1
+| b. c2/8 b1/4 e 
+| g. a/8 g/4 f# 
+| e. g/8 d*3/16 e/16 g/8 f# 
+| e/2 e/4 d
+| e2/2 e/8 g b1 d2 
+| e/2 d/4 g
+| e/2 e/4 e/8 a1 
+| b/2 b/4 a2 
+| g. a/8 b/16 d3*5/16 b2/8 
+| a/4. b/8 g a e g 
+| a/4. b/8 g/4 d3/8 b2 
+| a/4. b/8 g/4 b1
+| d2. e/8 g/4 e
+| d. e/8 g/4 e
+| d g e/8 g e d
+| d/16 b1*3/16 c2/4 b1*3/16 c2/16 
+| b1/8 a g*3/4
+]
+} 

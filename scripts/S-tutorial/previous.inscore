@@ -1,0 +1,8 @@
+/ITL/scene/previous set "img" "rsrc/next.png" ;
+/ITL/scene/previous scale 0.400000 ;
+/ITL/scene/previous x 0.740000 ;
+/ITL/scene/previous y 0.900000 ;
+/ITL/scene/previous alpha 160 ;
+/ITL/scene/previous angle 180.000 ;
+/ITL/scene/previous watch "mouseEnter" "/ITL/$scene/$self" "alpha" 255 ;
+/ITL/scene/previous watch "mouseLeave" "/ITL/$scene/$self" "alpha" 160 ;
