@@ -18,8 +18,8 @@
 /ITL/scene/navbar duration 227 4;
 
 # Add rectangles as cursors
-/ITL/scene/cursor set "rect" 0.002 0.217176 ;
-/ITL/scene/cursornav set "rect" 0.001 0.217176 ;
+/ITL/scene/cursor set "rect" 0.001 0.2 ;
+/ITL/scene/cursornav set "rect" 0.00075 0.2 ;
 /ITL/scene/cursor* date 1000 1 ;
 /ITL/scene/cursor* duration 1 64 ;
 /ITL/scene/cursor* color 255 0 48 200 ;
@@ -28,7 +28,7 @@
 pages=20;
 <?javascript
 	var n=0;
-	var t = [ 0, 86, 174, 270, 366, 471, 559, 661, 736, 823, 912, 1020, 1124, 1220, 1304, 1398, 1494, 1582, 1676, 1740 ];
+	var t = [ 0, 86, 174, 270, 366, 471, 559, 661, 736, 823, 912, 1020, 1124, 1220, 1304, 1398, 1494, 1582, 1676, 1740, 1816 ];
 	var out = new Array;
     for (i=1; i <= pages; i++) {
     	var ipage = "/ITL/scene/page"+i;
@@ -44,9 +44,9 @@ pages=20;
 /ITL/scene/page* scale 0.6;
 /ITL/scene/page* show 0;
 /ITL/scene/page* watch  'mouseDown' "/ITL/scene/cursor*" "date" "$date";
-/ITL/scene/page* watch+ 'mouseDown' "localhost:7100/date" "$date";
+/ITL/scene/page* watch+ 'mouseDown' "localhost:7001/date" "$date";
 /ITL/scene/page* watch  'mouseMove' "/ITL/scene/cursor*" "date" "$date";
-/ITL/scene/page* watch+ 'mouseMove' "localhost:7100/date" "$date";
+/ITL/scene/page* watch+ 'mouseMove' "localhost:7001/date" "$date";
 
 /ITL/scene/navbar watch  'mouseDown' "/ITL/scene/cursor*" "date" "$date";
 /ITL/scene/navbar watch+ 'mouseDown' "localhost:7100/date" "$date";
