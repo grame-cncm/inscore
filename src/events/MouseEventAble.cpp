@@ -74,7 +74,13 @@ rational _MouseEventAble::point2date (const IObject * obj, float x, float y, con
 	if (ts.empty()) return nodate;
 	rational offset(0,1);
 	if (!relative) offset = obj->getDate();
-	return offset + ts.start() + ts.size() * rpos;
+	rational outDate = ts.size() * rpos;
+	outDate += ts.start() + offset;
+	outDate.rationalize();
+	while (outDate.getNumerator() > 0xfffffff)  // check for int overflow
+		// this is necessary because the value is sent over OSC and thus cast to osc-int
+		outDate.set(outDate.getNumerator()/2, outDate.getDenominator()/2);
+	return outDate;
 }
 
 //----------------------------------------------------------------------

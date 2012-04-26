@@ -12,6 +12,10 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 0.98
+ - $date variable overflow catched
+
+----------------------------------------------------
 Version 0.97
  - objects position, date and watched events preserved through type change
  - bug in quantified dates corrected (null denominator set to the quantified value)
