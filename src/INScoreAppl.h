@@ -35,15 +35,18 @@ class INScoreAppl : public QApplication
 	Q_OBJECT
 
 	QMenuBar *fMenuBar;
+	bool	 fStarted;
+	std::string fPendingOpen;
 
 	public :
-				 INScoreAppl (int & argc, char ** argv ) : QApplication (argc, argv), fMenuBar(0) {}
+	INScoreAppl (int & argc, char ** argv ) : QApplication (argc, argv), fMenuBar(0), fStarted(false) {}
 		virtual ~INScoreAppl();
 
 		void	setupMenu();
 		bool	event(QEvent *ev);
+		void	started()		{ fStarted = true; if (fPendingOpen.size()) open (fPendingOpen); }
 
-		static void open(const std::string& file);
+	static void open(const std::string& file);
 
 	public slots:
 		void about();
