@@ -29,10 +29,13 @@
 #include <QGraphicsSceneDragDropEvent>
 
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <ctype.h>
 
 #include "IAppl.h"
+#include "ITLParser.h"
+#include "IMessage.h"
 #include "INScore.h"
 #include "INScoreScene.h"
 
@@ -147,17 +150,29 @@ void INScoreScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 		open ( fileName.toLocal8Bit().data() );
 		event->accept();
 	}
+
+	if (event->mimeData()->hasText()) {
+		stringstream sstr (event->mimeData()->text().toStdString());
+		ITLparser p (&sstr);
+		IMessageList* msgs = p.parse();
+		if (msgs) {
+			for (IMessageList::const_iterator i = msgs->begin(); i != msgs->end(); i++) {
+				INScore::postMessage ((*i)->address().c_str(), *i);
+			}
+		}
+		event->accept();
+	}
 }
 
 //_______________________________________________________________________
 void INScoreScene::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
 {
-	if (event->mimeData()->hasUrls())
+	if (event->mimeData()->hasUrls() || event->mimeData()->hasText())
          event->acceptProposedAction();
 }
 //_______________________________________________________________________
 void INScoreScene::dragMoveEvent ( QGraphicsSceneDragDropEvent * event )
 {
-	if (event->mimeData()->hasUrls())
+	if (event->mimeData()->hasUrls() || event->mimeData()->hasText())
          event->acceptProposedAction();
 }
