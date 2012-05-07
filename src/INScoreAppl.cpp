@@ -143,7 +143,10 @@ bool INScoreAppl::event(QEvent *ev)
 {
     if (ev->type() == QEvent::FileOpen) {
 		QString fileName = static_cast<QFileOpenEvent *>(ev)->file();
-		open (fileName.toStdString());
+		if (fStarted)
+			open (fileName.toStdString());
+		else 
+			fPendingOpen = fileName.toStdString();
 		return true;
     }
 	return QApplication::event(ev);
@@ -201,6 +204,7 @@ int main( int argc, char **argv )
 	appl.addLibraryPath		( dir.absolutePath());
 
 	IGlue * glue = INScore::start (kTimeInterval, udpPort, kUPDPort+1, kUPDPort+2, &appl);
+	appl.started();
 
 #ifdef WIN32
 	for (int i = 1; i < appl.arguments().size(); i++) {
