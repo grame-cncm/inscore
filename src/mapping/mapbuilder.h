@@ -27,7 +27,7 @@
 #include <set>
 
 #include "IModelTypes.h"
-#include "mapping.h"
+//#include "mapping.h"
 #include "mapreader.h"
 #include "TRect.h"
 
@@ -53,7 +53,8 @@ template <class S, class D> class mapbuilder
 	typedef typename dstSegmentationVector::const_iterator  const_segiterator;
 
 	std::set<S>				fSrcSegments;		///< the set of graphic segments
-	SMARTP<mapping<S,D> >	fMapping;			///< the D to S mapping
+//	SMARTP<mapping<S,D> >	fMapping;			///< the D to S mapping
+	SMARTP<TRelation<S,D> >	fMapping;			///< the D to S mapping
 	
 	typename std::vector<D>::const_iterator	fIterator;
 	typename std::vector<D>::const_iterator	fEndIterator;
@@ -79,7 +80,8 @@ template <class S, class D> class mapbuilder
 			\return the first segment
 		*/
 		 D start(const_segiterator begin, const_segiterator end) {
-			fMapping = mapping<S,D>::create();
+			fMapping = TRelation<S,D>::create();
+//			fMapping = mapping<S,D>::create();
 			fIterator = begin;
 			fEndIterator = end;
 			return next();
@@ -132,7 +134,8 @@ template <class S, class D> class mapbuilder
 		/*! \brief gives the src to dst mapping		
 			\return the computer mapping
 		*/
-		const SMARTP<mapping<S,D> >& getMapping() const		 { return fMapping; }
+//		const SMARTP<mapping<S,D> >& getMapping() const		 { return fMapping; }
+		const SMARTP<TRelation<S,D> >& getMapping() const		 { return fMapping; }
 };
 
 typedef mapbuilder<GraphicSegment, IntPointSegment>				graphic2IntPointMapBuilder;
