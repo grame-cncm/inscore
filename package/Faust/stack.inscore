@@ -2,7 +2,6 @@
 /ITL/scene/signal/* del ;
 /ITL/scene/signal/stack set "faust" "stack" ;
 /ITL/scene/signal/stack size 200 ;
-/ITL/scene/signal/stack alias "/accxyz" ;
 /ITL/scene/signal/pitchcolor  0.00000 ;
 /ITL/scene/signal/rollcolor  0.600000 ;
 /ITL/scene/signal/yawcolor  0.300000 ;
@@ -12,3 +11,11 @@
 /ITL/scene/signal/sig set "yaw" "roll" "pitch" ;
 /ITL/scene/graph set "graph" "sig" ;
 /ITL/scene/graph width 1.00000 ;
+
+! aliases designed to support touch osc
+/ITL/scene/signal/stack 		alias "/accxyz" ;
+/ITL/scene/signal/pitchcolor 	alias "/1/fader1" ;
+/ITL/scene/signal/rollcolor 	alias "/1/fader2" ;
+/ITL/scene/signal/yawcolor 		alias "/1/fader3" ;
+/ITL/scene/signal/stack 		alias "/1/fader5" "volume" ;
+
