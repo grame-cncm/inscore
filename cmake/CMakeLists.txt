@@ -83,7 +83,7 @@ if (LUA STREQUAL "yes")
 			ERROR_VARIABLE TMP
 		)
 		string(STRIP ${TMP} LUACFG)
-		set(SCRIPTINCL ${SCRIPTINCL} ${LUACFG})
+		add_definitions(${LUACFG})
 		EXECUTE_PROCESS ( COMMAND "pkg-config" "--libs" "lua5.1"
 			OUTPUT_VARIABLE TMP
 			ERROR_VARIABLE TMP
