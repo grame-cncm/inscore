@@ -74,9 +74,22 @@ if (LUA STREQUAL "yes")
 	if (WIN32)
 		set(SCRIPTS ${SCRIPTS} ${LOCALLIB}/lua/win32/lua.lib)
 		set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/lua/win32/)
-	else()
+	elif(APPLE)
 		set(SCRIPTS ${SCRIPTS} -llua)
 		set(SCRIPTINCL ${SCRIPTINCL} /usr/local/include)
+	else ()
+		EXECUTE_PROCESS ( COMMAND "pkg-config" "--cflags" "lua5.1"
+			OUTPUT_VARIABLE TMP
+			ERROR_VARIABLE TMP
+		)
+		string(STRIP ${TMP} LUACFG)
+		set(SCRIPTINCL ${SCRIPTINCL} ${LUACFG})
+		EXECUTE_PROCESS ( COMMAND "pkg-config" "--libs" "lua5.1"
+			OUTPUT_VARIABLE TMP
+			ERROR_VARIABLE TMP
+		)
+		string(STRIP ${TMP} LUACFG)
+		set(SCRIPTS ${SCRIPTS} ${LUACFG})
 	endif()
 else()
 	message (STATUS "lua will not be supported - Use -DLUA=yes to change")
