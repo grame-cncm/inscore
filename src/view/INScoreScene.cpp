@@ -34,7 +34,7 @@
 #include <ctype.h>
 
 #include "IAppl.h"
-#include "ITLParser.h"
+#include "ITLparser.h"
 #include "IMessage.h"
 #include "INScore.h"
 #include "INScoreScene.h"
