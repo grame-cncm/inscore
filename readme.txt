@@ -129,6 +129,7 @@ The distribution includes a Makefile, thus you can simply type:
   > sudo make install
 
 Notes: 
+- on linux/Ubuntu, you can get a binary destribution: install liblua5.1-0-dev from synaptic.
 - for windows, a binary version of the library is included in the INScore distribution
   along with the corresponding headers. Thus lua is ready to be supported without additional step.
 - a cmake configuration is provided in lib/lua with instructions to use. It should be used to
@@ -139,6 +140,7 @@ javascript support
 You should get the javascript engine from the v8 web site: 
 	http://code.google.com/p/v8/
 The distribution is based on scons. Read the v8 documentation for compiling.
+On linux/Ubuntu, you can get a binary destribution: install libv8-dev from synaptic.
 
 
 MusicXML support
