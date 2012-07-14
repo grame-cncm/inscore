@@ -25,13 +25,21 @@ controled via OSC messages i.e. by any external application that
 supports the OSC protocol (typically MaxMSP or Pure Data).
 
 ======================================================
- Warning
+ Note about the Guido Font
 ======================================================
-The INScore Viewer is currently under development and will
-evolve with future versions. The main of the OSC API should be 
-considered as stable, however there is no warranty concerning
-changes that could break the compatibility with previous 
-versions.
+INScore is distributed as a standalone application and should
+work as is. However, depending on your platform and on your
+operating system version, it may fail to load the music font 
+correctly. The symptom is strange glyphs when you display
+symbolic music notation.
+To solve the problem, you have to install the font manually:
+ - the music font file is 'guido2.ttf', 
+   it is located along the application
+ - to install double click the guido2.ttf file.
+   On most of the systems, a font manager will open that contains
+   an install button.
+Note also that to update an existing font file, it is safer to
+uninstall the previous version before installing the new one.
 
 ======================================================
  Links

@@ -156,6 +156,23 @@ To compile the MusicXML library do the following:
   > sudo make install
 
 
+======================================================
+ Note about the Guido Font
+======================================================
+INScore is distributed as a standalone application and should
+work as is. However, depending on your platform and on your
+operating system version, it may fail to load the music font 
+correctly. The symptom is strange glyphs when you display
+symbolic music notation.
+To solve the problem, you have to install the font manually:
+ - the music font file is 'guido2.ttf', 
+   it is located along the application
+ - to install double click the guido2.ttf file.
+   On most of the systems, a font manager will open that contains
+   an install button.
+Note also that to update an existing font file, it is safer to
+uninstall the previous version before installing the new one.
+
 
 ======================================================================
 In case of trouble, contact me: <fober@grame.fr>
