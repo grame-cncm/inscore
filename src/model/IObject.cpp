@@ -752,60 +752,62 @@ MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 { 
-	if (msg->params().size()) {
-		string what;
-		if (msg->param (0, what)) {
-			EventsAble::eventype t = EventsAble::string2type (what);
-			switch (t) {
-				case EventsAble::kMouseMove:
-				case EventsAble::kMouseDown:
-				case EventsAble::kMouseUp:
-				case EventsAble::kMouseDoubleClick:
-				case EventsAble::kMouseEnter:
-				case EventsAble::kMouseLeave:
-					if (msg->params().size() > 1)
-						if (add) eventsHandler()->addMsg (t, EventMessage::create (name(), getScene()->name(), msg, 1));
-						else eventsHandler()->setMsg (t, EventMessage::create (name(), getScene()->name(),msg, 1));
-					else if (!add) eventsHandler()->setMsg (t, 0);
-					break;
-				case EventsAble::kFile:
-					break;
-				case EventsAble::kTimeEnter:
-				case EventsAble::kTimeLeave:
-					if (msg->params().size() >= 5) {
-						rational start, end;
-						if (!msg->param(1,start) || !msg->param(3, end))
-							return MsgHandler::kBadParameters;
-						RationalInterval time(start,end);
-						if (msg->params().size() > 5) {
-							if (!add) eventsHandler()->setTimeMsg (t, time, EventMessage::create (name(), getScene()->name(), msg, 5));
-							else eventsHandler()->addTimeMsg (t, time, EventMessage::create (name(), getScene()->name(), msg, 5));
-							watchTime(time);
-						}
-						else if (!add) {
-							delTime (time);
-							eventsHandler()->setTimeMsg (t, time, 0);
-						}
-					}
-					else if (msg->params().size() == 1) {
-						if (!add) {
-							clearTime();
-							eventsHandler()->clearTimeMsg(t);
-						}
-					}
-					else return MsgHandler::kBadParameters;
-					break;
-				default:
+	if (!msg->params().size()) {		// no param to watch message
+		EventsAble::reset();			// clear every watched events
+		return MsgHandler::kProcessed;	// and exit
+	}
+
+	string what;
+	if (!msg->param (0, what))				// can't decode event to watch when not a string
+		return MsgHandler::kBadParameters;	// exit with bad parameter
+		
+	EventsAble::eventype t = EventsAble::string2type (what);
+	switch (t) {
+		case EventsAble::kMouseMove:
+		case EventsAble::kMouseDown:
+		case EventsAble::kMouseUp:
+		case EventsAble::kMouseDoubleClick:
+		case EventsAble::kMouseEnter:
+		case EventsAble::kMouseLeave:
+			if (msg->params().size() > 1)
+				if (add) eventsHandler()->addMsg (t, EventMessage::create (name(), getScene()->name(), msg, 1));
+				else eventsHandler()->setMsg (t, EventMessage::create (name(), getScene()->name(),msg, 1));
+			else if (!add) eventsHandler()->setMsg (t, 0);
+			break;
+
+		case EventsAble::kFile:		// not yet implemented : should replace the filewatcher
+			break;
+
+		case EventsAble::kTimeEnter:
+		case EventsAble::kTimeLeave:
+			if (msg->params().size() >= 5) {
+				rational start, end;
+				if (!msg->param(1,start) || !msg->param(3, end))
 					return MsgHandler::kBadParameters;
+				RationalInterval time(start,end);
+				if (msg->params().size() > 5) {
+					if (!add) eventsHandler()->setTimeMsg (t, time, EventMessage::create (name(), getScene()->name(), msg, 5));
+					else eventsHandler()->addTimeMsg (t, time, EventMessage::create (name(), getScene()->name(), msg, 5));
+					watchTime(time);
+				}
+				else if (!add) {
+					delTime (time);
+					eventsHandler()->setTimeMsg (t, time, 0);
+				}
 			}
-			return MsgHandler::kProcessed;
-		}
+			else if (msg->params().size() == 1) {
+				if (!add) {
+					clearTime();
+					eventsHandler()->clearTimeMsg(t);
+				}
+			}
+			else return MsgHandler::kBadParameters;
+			break;
+
+		default:			// unknown event to watch
+			return MsgHandler::kBadParameters;
 	}
-	else {
-		EventsAble::reset();
-		return MsgHandler::kProcessed;
-	}
-	return MsgHandler::kBadParameters;
+	return MsgHandler::kProcessed;
 }
 
 //--------------------------------------------------------------------------
