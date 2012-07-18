@@ -1,0 +1,90 @@
+#N canvas 155 32 212 229 10;
+#X obj 74 177 bng 15 250 50 0 \$0-reload empty Reload -50 7 0 10 -262144
+-1 -1;
+#X obj -28 29 tgl 15 0 \$0-play $i_play empty 17 7 0 10 -262144 -1
+-1 0 1;
+#X obj -27 64 vsl 15 100 3 80 0 0 \$0-rate $i_rate Rate -4 -9 0 10
+-262144 -1 -1 2271 1;
+#N canvas 304 375 562 482 inside 0;
+#X obj -170 250 cnv 15 250 180 empty empty OSC_Comm 20 12 0 12 -204800
+-66577 0;
+#X obj -166 371 dumpOSC 7001;
+#X obj -166 402 print ITLOut;
+#X obj -69 370 dumpOSC 7002;
+#X obj -69 401 print ITL;
+#X obj -3 338 sendOSC;
+#X msg -163 305 connect localhost 7000;
+#X obj -163 275 loadbang;
+#X obj -3 304 prepend send;
+#X obj 98 250 cnv 15 230 180 empty empty Init 20 12 0 12 -204800 -66577
+0;
+#X obj 182 315 getdir;
+#X obj 131 290 t b b b b;
+#X obj 241 258 loadbang;
+#X obj 160 258 r \$0-reload;
+#X obj 182 337 prepend /ITL rootPath;
+#X obj 188 357 prepend /ITL/scene rootPath;
+#X obj -3 277 r shadow;
+#X obj 111 402 s shadow;
+#X msg 110 378 /ITL load shadow.inscore;
+#X obj 34 37 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+;
+#X obj 34 73 metro 50;
+#X obj 246 -1 loadbang;
+#X obj 230 71 s $i_rate;
+#X obj 304 68 s $i_dist;
+#X obj 78 39 r \$0-rate;
+#X obj 34 10 r \$0-play;
+#X obj 34 106 counter;
+#X msg 180 26 updown;
+#X obj 34 141 pack 0 0;
+#X msg 34 165 /ITL/scene/rect effect shadow \$1 \$2 10 10 10 120 17
+;
+#X msg 151 114 6;
+#X obj -57 82 route 0;
+#X obj 92 74 1;
+#X obj 34 198 s shadow;
+#X obj -57 123 s $i_play;
+#X msg 245 28 30;
+#X obj 125 83 r \$0_dist;
+#X connect 1 0 2 0;
+#X connect 3 0 4 0;
+#X connect 6 0 5 0;
+#X connect 7 0 6 0;
+#X connect 8 0 5 0;
+#X connect 10 0 14 0;
+#X connect 10 0 15 0;
+#X connect 11 2 18 0;
+#X connect 11 3 10 0;
+#X connect 12 0 11 0;
+#X connect 13 0 11 0;
+#X connect 14 0 17 0;
+#X connect 15 0 17 0;
+#X connect 16 0 8 0;
+#X connect 18 0 17 0;
+#X connect 19 0 20 0;
+#X connect 19 0 32 0;
+#X connect 20 0 26 0;
+#X connect 21 0 35 0;
+#X connect 21 0 27 0;
+#X connect 24 0 20 1;
+#X connect 25 0 19 0;
+#X connect 26 0 28 0;
+#X connect 26 0 28 1;
+#X connect 26 1 31 0;
+#X connect 27 0 26 0;
+#X connect 28 0 29 0;
+#X connect 29 0 33 0;
+#X connect 30 0 26 4;
+#X connect 31 0 19 0;
+#X connect 31 0 34 0;
+#X connect 32 0 26 3;
+#X connect 35 0 22 0;
+#X connect 35 0 23 0;
+#X connect 35 0 20 1;
+#X connect 35 0 26 4;
+#X connect 36 0 26 4;
+#X restore -51 175 pd inside;
+#X text -39 12 Start;
+#X obj 14 63 vsl 15 100 3 100 0 0 \$0_dist $i_dist Distance -14 -9
+0 10 -262144 -1 -1 3056 1;
