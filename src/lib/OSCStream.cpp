@@ -29,8 +29,8 @@ using namespace std;
 namespace inscore
 {
 
-OSCStream* _oscout = 0;				// OSC standard output stream
-OSCStream* _oscerr = 0;				// OSC standard input stream
+OSCStream* _oscout = 0;				// OSC output stream
+OSCErrorStream* _oscerr = 0;		// OSC error stream
 
 static UdpSocket* _socket = 0;		// a shared transmit socket
 
@@ -40,7 +40,7 @@ bool OSCStream::start ()
 {
 	_socket = new UdpSocket;
 	_oscout = new OSCStream(_socket);
-	_oscerr = new OSCStream(_socket);
+	_oscerr = new OSCErrorStream(_socket);
 	return (_socket && _oscout && _oscerr);
 }
 
@@ -109,6 +109,36 @@ OSCStream& operator <<(OSCStream& s, const OSCErr& val)		{ return s.start(val.fA
 OSCStream& operator <<(OSCStream& s, const OSCWarn& val)	{ return s.start(val.fAddress); }
 OSCStream& operator <<(OSCStream& s, const OSCStart& val)	{ return s.start(val.fAddress); }
 OSCStream& operator <<(OSCStream& s, const OSCEnd val)		{ return s.end(); }
+
+
+
+//--------------------------------------------------------------------------
+OSCErrorStream& operator <<(OSCErrorStream& s, const string& val)	
+{ 
+	s.stream() << val.c_str();
+	return s; 
+}
+
+//--------------------------------------------------------------------------
+OSCErrorStream& operator <<(OSCErrorStream& s, const IMessageList* list)	
+{ 
+	for (unsigned int i =0; i < list->size(); i++) {
+		IMessage* msg = (*list)[i];
+		s << msg;
+	}
+	return s; 
+}
+
+OSCErrorStream& operator <<(OSCErrorStream& s, const IColor& color)	{ color.print(s); return s; }
+OSCErrorStream& operator <<(OSCErrorStream& s, const IMessage* msg)	{ msg->print(s); return s; }
+OSCErrorStream& operator <<(OSCErrorStream& s, const char* val)		{ string str(val); s << str; return s; }
+
+//--------------------------------------------------------------------------
+OSCErrorStream& operator <<(OSCErrorStream& s, const OSCErr& val)	{ return s.start(val.fAddress); }
+OSCErrorStream& operator <<(OSCErrorStream& s, const OSCWarn& val)	{ return s.start(val.fAddress); }
+OSCErrorStream& operator <<(OSCErrorStream& s, const OSCStart& val)	{ return s.start(val.fAddress); }
+OSCErrorStream& operator <<(OSCErrorStream& s, const OSCEnd val)	{ return s.end(); }
+
 
 } // end namespace
 

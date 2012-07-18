@@ -24,6 +24,7 @@
 
 #include <string>
 #include <vector>
+#include <sstream>
 
 #include "osc/OscOutboundPacketStream.h"
 #include "ip/UdpSocket.h"
@@ -89,8 +90,8 @@ class OSCStream
 		UdpSocket*			socket()					{ return fSocket; }
 		int					state()	const				{ return fState; }
 		
-		OSCStream&			start(const char * address);
-		OSCStream&			end();
+		virtual OSCStream&			start(const char * address);
+		virtual OSCStream&			end();
 
 		void setPort (int port)							{ fPort = port; }
 		void setAddress (unsigned long address)			{ fAddress = address; }
@@ -119,9 +120,49 @@ template <typename T>	OSCStream& operator <<(OSCStream& s, const std::vector<T>&
 							return s; 
 						}
 
+//--------------------------------------------------------------------------
+/*!
+\brief	OSC error stream
+*/
+class OSCErrorStream : public OSCStream
+{
+	std::stringstream fSStream;
+	public:
+				 OSCErrorStream(UdpSocket* socket) : OSCStream(socket) {} 
+		virtual ~OSCErrorStream() {}
+		
+		std::stringstream& stream()								{ return fSStream; }
+		virtual OSCErrorStream&		start(const char * address) { fSStream.str(""); OSCStream::start(address); return *this; }
+		virtual OSCErrorStream&		end()						{ OSCStream::stream() << fSStream.str().c_str(); OSCStream::end(); return *this; }
+};
 
-extern OSCStream* _oscout;		// OSC standard output stream
-extern OSCStream* _oscerr;		// OSC standard input stream
+
+						OSCErrorStream& operator <<(OSCErrorStream& s, OSCEnd val);
+						OSCErrorStream& operator <<(OSCErrorStream& s, const OSCStart& val);
+						OSCErrorStream& operator <<(OSCErrorStream& s, const OSCErr& val);
+						OSCErrorStream& operator <<(OSCErrorStream& s, const OSCWarn& val);
+						OSCErrorStream& operator <<(OSCErrorStream& s, const char* val);
+						OSCErrorStream& operator <<(OSCErrorStream& s, const std::string& val);
+				inline	OSCErrorStream& operator <<(OSCErrorStream& s, int val)		{ s.stream() << val; return s; }
+				inline	OSCErrorStream& operator <<(OSCErrorStream& s, long val)		{ s.stream() << (int)val; return s; }
+				inline	OSCErrorStream& operator <<(OSCErrorStream& s, float val)		{ s.stream() << val; return s; }
+
+template <typename T> 	OSCErrorStream& operator <<(OSCErrorStream& s, const TSize<T>& size)	{ s << size.width() << size.height(); return s; }
+
+						OSCErrorStream& operator <<(OSCErrorStream& s, const IMessage* msg);
+						OSCErrorStream& operator <<(OSCErrorStream& s, const IMessageList* msg);
+						OSCErrorStream& operator <<(OSCErrorStream& s, const IColor& color);
+
+template <typename T>	OSCErrorStream& operator <<(OSCErrorStream& s, const std::vector<T>& val)
+						{ 
+							for (unsigned int i =0; i < val.size(); i++) s << val[i];
+							return s; 
+						}
+
+
+
+extern OSCStream*		_oscout;		// OSC standard output stream
+extern OSCErrorStream*	_oscerr;		// OSC standard input stream
 
 #define oscout (*_oscout)
 #define oscerr (*_oscerr)

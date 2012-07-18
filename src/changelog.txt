@@ -14,8 +14,10 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ----------------------------------------------------
 Version 0.98
  - $date variable overflow catched
- - files dropped on application icon correctly opened when the application was not running
+ - files dropped on application icon correctly opened when the application is not running
  - supports drag and drop of textual osc message strings
+ - osc error stream normalized: the message address is 'error:' or 'warning:'
+   followed by a single message string.
 
 ----------------------------------------------------
 Version 0.97
