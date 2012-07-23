@@ -29,6 +29,7 @@
 
 #include "IRectShape.h"
 #include "PeriodicTask.h"
+#include "TScripting.h"
 
 class QGraphicsScene;
 
@@ -61,6 +62,9 @@ class IScene : public IRectShape, public PeriodicTask
 	SIFileWatcher	fFileWatcher;
 	SISignalNode	fSignals;
 	std::string		fRootPath;
+
+	TJSEngine		fJavascript;
+	TLua			fLua;
 	
 	public:		
 		static const std::string kSceneType;
@@ -114,6 +118,14 @@ class IScene : public IRectShape, public PeriodicTask
 		std::string			getRootPath() const;
 		std::string			absolutePath( const std::string& path ) const;
 		QGraphicsScene *	getGraphicScene () const;
+
+#ifdef V8ENGINE
+		TV8Js*			getJSEngine()		{ return &fJavascript; }
+#else
+		TMozillaJs*		getJSEngine()		{ return &fJavascript; }
+#endif
+		TLua*			getLUAEngine()		{ return &fLua; }
+
 
 	protected:
 				 IScene(const std::string& name, IObject * parent);

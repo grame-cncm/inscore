@@ -18,6 +18,14 @@ Version 0.98
  - supports drag and drop of textual osc message strings
  - osc error stream normalized: the message address is 'error:' or 'warning:'
    followed by a single message string.
+ - javascript and lua support: 
+   a single persistent context is created at application level and for each scene.
+   It allows scripts to reuse previously defined functions and thus design more structured scripts.
+   Note: the effect of 'load' message is actually to push the messages on the system stack for
+         further evaluation. Thus when including a file containing javascript (or lua), the new 
+         language context won't be available to the next messages in the script. The workaround 
+         for structured script consists in designing a top level script that only contains 'load'
+         messages.
 
 ----------------------------------------------------
 Version 0.97

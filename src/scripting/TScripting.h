@@ -47,19 +47,25 @@ typedef SMARTP<baseparam> Sbaseparam;
 class TEnv;
 typedef SMARTP<TEnv> STEnv;
 
+#ifdef V8ENGINE
+typedef TV8Js		TJSEngine;
+#else
+typedef TMozillaJs	TJSEngine;
+#endif
+
+
 //--------------------------------------------------------------------------------------------
 class TScripting 
 {
-	TLua				fLua;
-	TMozillaJs			fJavascript;
-	TV8Js				fV8Javascript;
+	TJSEngine*			fJavascript;
+	TLua*				fLua;
 	IMessageList*		fMessages;
 	STEnv				fEnv;
 
 	public:	
 		yyscan_t fScanner;
 
-				 TScripting();
+				 TScripting(TJSEngine* js, TLua* lua = 0);
 		virtual ~TScripting();
 
 		void	add			(IMessage* msg);

@@ -52,6 +52,7 @@ class TLua
 				 TLua();
 		virtual ~TLua();
 
+		void	Initialize	();
 		bool	eval		(const char* script, std::string& outStr);
 		void	bindEnv		(const STEnv& env);
 };

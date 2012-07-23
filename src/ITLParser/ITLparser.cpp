@@ -32,8 +32,8 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-ITLparser::ITLparser(std::istream* stream, int line) 
-	: fStream(stream), fLine(line)
+ITLparser::ITLparser(std::istream* stream, int line, TJSEngine* js, TLua* lua)
+	: fReader(js, lua), fStream(stream), fLine(line)
 {
 	setlocale(LC_NUMERIC, "C");
 	initScanner();

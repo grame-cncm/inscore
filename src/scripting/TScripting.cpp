@@ -36,6 +36,7 @@
 using namespace std;
 extern inscore::TScripting* gScripter;
 
+
 namespace inscore
 {
 
@@ -44,7 +45,8 @@ class IMessage;
 class TEnv;
 
 //--------------------------------------------------------------------------------------------
-TScripting::TScripting()
+TScripting::TScripting(TJSEngine* js, TLua* lua)
+	: 	fJavascript(js), fLua(lua)
 {
 	fMessages = new IMessageList;
 	fEnv = TEnv::create();
@@ -74,17 +76,20 @@ void TScripting::add (IMessageList* msgs)
 //--------------------------------------------------------------------------------------------
 bool TScripting::luaEval (const char* script)
 {
-	fLua.bindEnv (fEnv);
-	string luaout;
-	if (fLua.eval(script, luaout)) {
-		if (luaout.size()) {
-			istringstream stream(luaout);
-			ITLparser p (&stream);
-			IMessageList* msgs = p.parse();
-			if (msgs) add (msgs);
+	if (fLua) {
+		fLua->bindEnv (fEnv);
+		string luaout;
+		if (fLua->eval(script, luaout)) {
+			if (luaout.size()) {
+				istringstream stream(luaout);
+				ITLparser p (&stream, 0, fJavascript, fLua);
+				IMessageList* msgs = p.parse();
+				if (msgs) add (msgs);
+			}
+			return true;
 		}
-		return true;
 	}
+	else ITLErr << "lua is not available!" << ITLEndl;
 	return false;
 }
 
@@ -93,31 +98,20 @@ bool TScripting::luaEval (const char* script)
 //--------------------------------------------------------------------------------------------
 bool TScripting::jsEval (const char* script, int lineno)
 {
-#ifdef V8ENGINE
-	fV8Javascript.bindEnv (fEnv);
-	string jsout;
-	if (fV8Javascript.eval(lineno, script, jsout)) {
-		if (jsout.size()) {
-			istringstream stream(jsout);
-			ITLparser p (&stream);
-			IMessageList* msgs = p.parse();
-			if (msgs) add (msgs);
+	if (fJavascript) {
+		fJavascript->bindEnv (fEnv);
+		string jsout;
+		if (fJavascript->eval(lineno, script, jsout)) {
+			if (jsout.size()) {
+				istringstream stream(jsout);
+				ITLparser p (&stream, 0, fJavascript, fLua);
+				IMessageList* msgs = p.parse();
+				if (msgs) add (msgs);
+			}
+			return true;
 		}
-		return true;
 	}
-#else
-	fJavascript.bindEnv (fEnv);
-	string jsout;
-	if (fJavascript.eval(lineno, script, jsout)) {
-		if (jsout.size()) {
-			istringstream stream(jsout);
-			ITLparser p (&stream);
-			IMessageList* msgs = p.parse();
-			if (msgs) add (msgs);
-		}
-		return true;
-	}
-#endif
+	else ITLErr << "javascript is not available!" << ITLEndl;
 	return false;
 }
 

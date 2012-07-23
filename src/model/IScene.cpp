@@ -109,6 +109,8 @@ void IScene::reset ()
 	delsubnodes();
 	fFileWatcher->clear();
 	fRootPath.clear();
+	fJavascript.Initialize();
+	fLua.Initialize();
 }
 
 #define useiterator 0
@@ -197,7 +199,7 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 		if (srcfile.size()) {
 			fstream file (absolutePath(srcfile).c_str(), fstream::in);
 			if (file.is_open()) {
-				ITLparser p (&file);
+				ITLparser p (&file, 0, &fJavascript, &fLua);
 				IMessageList* msgs = p.parse();
 				if (msgs) {
 					for (IMessageList::const_iterator i = msgs->begin(); i != msgs->end(); i++) {

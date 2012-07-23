@@ -49,7 +49,7 @@ class ITLparser {
 		float			fFloat;		// the current float
 		int				fLine;		// line offset
 
-				 ITLparser(std::istream* stream, int line=0);
+				 ITLparser(std::istream* stream, int line, TJSEngine* js, TLua* lua);
 		virtual ~ITLparser();
 		
 		IMessageList* parse();

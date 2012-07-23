@@ -43,9 +43,9 @@ typedef SMARTP<TEnv> STEnv;
 class TV8Js 
 {
 #ifdef V8ENGINE
-	static int	fRefCount;
+//	static int	fRefCount;
     v8::Persistent<v8::Context>	fContext;
-	int			fLineOffset;
+	int				fLineOffset;
 
 	v8::Persistent<v8::Context> CreateV8Context();
 	void ReportException(v8::TryCatch* try_catch) const;
@@ -56,6 +56,7 @@ class TV8Js
 				 TV8Js();
 		virtual ~TV8Js();
 
+		void	Initialize	();
 		void	bindEnv		(const STEnv& env);
 		bool	eval		(int line, const char* script, std::string& outStr);
 };

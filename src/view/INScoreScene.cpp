@@ -38,13 +38,14 @@
 #include "IMessage.h"
 #include "INScore.h"
 #include "INScoreScene.h"
+#include "IScene.h"
 
 using namespace std;
 using namespace inscore;
 
 //_______________________________________________________________________
-INScoreScene::INScoreScene (const std::string& address) : QGraphicsScene (), fOscAddress(address) {}
-INScoreScene::~INScoreScene ()						{}
+INScoreScene::INScoreScene (const std::string& address, inscore::SMARTP<inscore::IScene> scene) 
+	: QGraphicsScene (), fScene(scene), fOscAddress(address) {}
 
 //_______________________________________________________________________
 static string tolower (string& str)
@@ -153,7 +154,7 @@ void INScoreScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 
 	if (event->mimeData()->hasText()) {
 		stringstream sstr (event->mimeData()->text().toStdString());
-		ITLparser p (&sstr);
+		ITLparser p (&sstr, 0, fScene->getJSEngine(), fScene->getLUAEngine());
 		IMessageList* msgs = p.parse();
 		if (msgs) {
 			for (IMessageList::const_iterator i = msgs->begin(); i != msgs->end(); i++) {

@@ -151,11 +151,21 @@ string TLua::getTable (lua_State* L, int i) const
 	return out;
 }
 
+//--------------------------------------------------------------------------------------------
+void TLua::Initialize () 
+{
+	lua_close (fLua);
+	fLua = lua_open();
+	lua_register(fLua, "print", luaPrint);
+}
+
 #else
 
 //--------------------------------------------------------------------------------------------
 TLua::TLua()	{}
 TLua::~TLua()	{}
+
+void TLua::Initialize () {}
 void TLua::bindEnv (const STEnv& env) {}
 
 bool TLua::eval (const char* script, string& outStr)

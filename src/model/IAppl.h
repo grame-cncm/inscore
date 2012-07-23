@@ -30,6 +30,7 @@
 #include "IMessageHandlers.h"
 #include "PeriodicTask.h"
 #include "IObject.h"
+#include "TScripting.h"
 #include "udpinfo.h"
 #include "benchtools.h"
 
@@ -65,6 +66,9 @@ class IAppl : public IObject, public PeriodicTask
 		bool		fOffscreen;
 		udpinfo		fUDP;
 		QApplication* fAppl;
+
+		TJSEngine		fJavascript;
+		TLua			fLua;
 
 	public:
 		static bool fDefaultShow;

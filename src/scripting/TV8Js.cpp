@@ -101,7 +101,7 @@ static v8::Handle<v8::Value> Version(const v8::Arguments& args) {
   return v8::String::New(v8::V8::GetVersion());
 }
 
-int	TV8Js::fRefCount = 0;
+//int	TV8Js::fRefCount = 0;
 
 //--------------------------------------------------------------------------------------------
 /* The javascript error reporter callback. */
@@ -140,19 +140,19 @@ v8::Persistent<v8::Context> TV8Js::CreateV8Context()
 //--------------------------------------------------------------------------------------------
 TV8Js::TV8Js()
 {
-	if (!fRefCount) {
+//	if (!fRefCount) {
 		fContext = CreateV8Context();
 		if (!fContext.IsEmpty()) {
 			fContext->Enter();
-			fRefCount++;
+//			fRefCount++;
 		}
 		else  ITLErr << "Error creating javascript context" << ITLEndl;
-	}
+//	}
 }
 
 TV8Js::~TV8Js()
 { 
-	if (!fContext.IsEmpty() && !--fRefCount) {
+	if (!fContext.IsEmpty()) { // && !--fRefCount) {
 		fContext->Exit();
 		fContext.Dispose();
 	}
@@ -223,11 +223,25 @@ bool TV8Js::eval(int line, const char* jscode, std::string& outStr)
 	}
 }
 
+//--------------------------------------------------------------------------------------------
+// Reset teh current javascript engine (actually allocate a new one
+void TV8Js::Initialize  () 
+{ 
+	fContext->Exit();
+	fContext.Dispose();
+	fContext = CreateV8Context();
+	if (!fContext.IsEmpty())
+		fContext->Enter();
+//	fContext->Exit();		// exit the current context
+//	fContext->Enter();		// and reenter a new one
+}
+
 #else
 //--------------------------------------------------------------------------------------------
 TV8Js::TV8Js() {}
 TV8Js::~TV8Js() {}
 void TV8Js::bindEnv  (const STEnv& env) {}
+void TV8Js::Initialize  () {}
 
 bool TV8Js::eval (int line, const char* script, std::string& outStr)
 {
