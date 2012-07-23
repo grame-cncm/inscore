@@ -1,20 +1,20 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 
-<!--Converted with LaTeX2HTML 2002-2 (1.70)
+<!--Converted with LaTeX2HTML 2008 (1.71)
 original version by:  Nikos Drakos, CBLU, University of Leeds
 * revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
 * with significant contributions from:
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.11 Differences to version 0.77</TITLE>
-<META NAME="description" CONTENT="17.11 Differences to version 0.77">
+<TITLE>17.11 Differences to version 0.78</TITLE>
+<META NAME="description" CONTENT="17.11 Differences to version 0.78">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
-<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
@@ -27,62 +27,59 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1246"
+<A NAME="tex2html1249"
   HREF="node74.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1240"
+<A NAME="tex2html1243"
   HREF="node62.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1234"
+<A NAME="tex2html1237"
   HREF="node72.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1242"
+<A NAME="tex2html1245"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1244"
-  HREF="node83.html">
+<A NAME="tex2html1247"
+  HREF="node84.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1247"
+<B> Next:</B> <A NAME="tex2html1250"
   HREF="node74.html">17.12 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1241"
+<B> Up:</B> <A NAME="tex2html1244"
   HREF="node62.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1235"
+<B> Previous:</B> <A NAME="tex2html1238"
   HREF="node72.html">17.10 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1243"
+ &nbsp; <B>  <A NAME="tex2html1246"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1245"
-  HREF="node83.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1248"
+  HREF="node84.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION0018110000000000000000">
-17.11 Differences to version 0.77</A>
+17.11 Differences to version 0.78</A>
 </H1>
 
 <UL>
-<LI>guido system map extended: supports flat map or subdivided map (see section <A HREF="node36.html#guidomaps">11.1</A> p.<A HREF="node36.html#guidomaps"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>crash bug corrected for the 'save' message addressed to '/ITL'
 </LI>
-<LI>new <TT>shear</TT> and <TT>rotate</TT> transformations messages (see section <A HREF="node12.html#transform">4.1.4</A> p.<A HREF="node12.html#transform"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>message policy change: relaxed numeric parameters policy (float are accepted for int and int for float)
 </LI>
-<LI>new <TT>rename</TT> message to change an object name (and thus its OSC address) (see section <A HREF="node7.html#common">4</A> p.<A HREF="node7.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>bug in <TT>get watch</TT> for time events corrected (incorrect reply)
 </LI>
-<LI>relaxed bool parameter policy: objects accept float values for bool parameters 
-</LI>
-<LI>automatic numbering of exports when destination file is not completely specified 
-  i.e. no name, no extension. (see section <A HREF="node7.html#common">4</A> p.<A HREF="node7.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>quantification introduced to $date variable (see section <A HREF="node56.html#interactvar">15.3</A> p.<A HREF="node56.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI><TT>reset</TT> message addressed to a scene clears the scene rootPath
+</UL>
+Known issues:
+
+<UL>
+<LI>map not saved by the <TT>save</TT> message 
 </LI>
 </UL>
 
 <P>
 <BR><HR>
 <ADDRESS>
-<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
+<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>
 </BODY>
 </HTML>

@@ -73,10 +73,10 @@
 
 \title{INScore \\ OSC Messages Reference \\v.0.98}
 
-\author{Grame, Centre national de cr\'eation musicale\\
-{\small <research@grame.fr>} \\
-\vspace{2mm}
-ANR-08-CORD-010
+\author{D. Fober\\ GRAME\\ Centre national de cr\'eation musicale\\
+{\small <fober@grame.fr>} \\
+%\vspace{2mm}
+%ANR-08-CORD-010
 }
 
 \maketitle
@@ -1774,6 +1774,9 @@ x=0.5;\\
 %:   languages
 \sublevel{Languages}\label{scriptlang}
 
+\index{Scripting!javascript}
+\index{Scripting!lua}
+
 INScore supports Javascript and Lua as scripting languages. Javascript is embedded by default (using the v8 engine - see \url{http://code.google.com/p/v8/}. You need to recompile INScore to embed the Lua engine (\url{http://www.lua.org/}). 
 
 The principle of scripting using a programming language is the following: you can embed \emph{javascript} of \emph{lua} code in an INScore file in a way similar to scripts embedded into html files. This code is expected to produce INScore messages on output.
@@ -1793,10 +1796,39 @@ Example:
 }
 
 
+A single persistent context is created at application level and for each scene.
+It allows scripts to reuse previously defined functions and thus design more structured scripts.
+
+Note: the effect of 'load' message is actually to push the messages on the system stack for
+further evaluation. Thus when including a file containing javascript (or lua), the new 
+language context won't be available to the next messages in the script. The workaround 
+for structured script consists in designing a top level script that only contains 'load' messages.
+
+Example:
+\sample{
+\hspace*{-3mm} /ITL load "javascript-code.inscore";\\
+/ITL load "call-javascript.inscore";
+}
+
+
+
 %===============================
 %:Changes list
 \toplevel{ Changes list}
 
+
+%===============================
+%:   Differences to version 0.97
+\sublevel{Differences to version 0.97}
+\begin{itemize}
+\item \$date variable overflow catched
+\item files dropped on application icon correctly opened when the application is not running
+\item supports drag and drop of textual osc message strings
+\item osc error stream normalized: the message address is 'error:' or 'warning:'
+   followed by a single message string.
+\item javascript and lua support: a single persistent context is created at application level and for each scene. 
+(see section \fullref{scriptlang})
+\end{itemize}
 
 %===============================
 %:   Differences to version 0.96

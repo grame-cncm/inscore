@@ -2,7 +2,8 @@
 DOC 	= OSCMsg.pdf
 HTMLOPT = -show_section_numbers \
 		  --image_type gif \
-		  -address '<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]'
+		  -local_icons \
+		  -address '<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>'
 TMP := tmpl2h.tex
 
 all: $(DOC)

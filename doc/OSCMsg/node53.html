@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 
-<!--Converted with LaTeX2HTML 2002-2 (1.70)
+<!--Converted with LaTeX2HTML 2008 (1.71)
 original version by:  Nikos Drakos, CBLU, University of Leeds
 * revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
 * with significant contributions from:
@@ -14,7 +14,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <META NAME="distribution" CONTENT="global">
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
-<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
@@ -27,32 +27,32 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html943"
+<A NAME="tex2html945"
   HREF="node54.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html937"
+<A NAME="tex2html939"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html931"
+<A NAME="tex2html933"
   HREF="node52.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html939"
+<A NAME="tex2html941"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html941"
-  HREF="node83.html">
+<A NAME="tex2html943"
+  HREF="node84.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html944"
+<B> Next:</B> <A NAME="tex2html946"
   HREF="node54.html">15.1 Interaction messages</A>
-<B> Up:</B> <A NAME="tex2html938"
+<B> Up:</B> <A NAME="tex2html940"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html932"
+<B> Previous:</B> <A NAME="tex2html934"
   HREF="node52.html">14.2 Feeding and composing</A>
- &nbsp; <B>  <A NAME="tex2html940"
-  HREF="node1.html">Contents</A></B> 
  &nbsp; <B>  <A NAME="tex2html942"
-  HREF="node83.html">Index</A></B> 
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html944"
+  HREF="node84.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
@@ -72,14 +72,14 @@ The general form of the message is:
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="425" HEIGHT="127" ALIGN="BOTTOM" BORDER="0"
  SRC="img84.gif"
  ALT="\begin{rail}
 interactMsg : (('watch' \vert 'watch+') ([1] \vert what ( \vert oscMsg)))
 \end{rail}">
 <BR>
+<A NAME="1171"></A>
 <A NAME="1172"></A>
-<A NAME="1173"></A>
 
 <P>
 
@@ -94,7 +94,7 @@ interactMsg : (('watch' \vert 'watch+') ([1] \vert what ( \vert oscMsg)))
 The associated OSC message is any valid OSC message (not restricted to the Interlude message set), with an extended address scheme, supporting IP addresses or host names and udp port number to be specified as OSC addresses prefix. The message parameters are any valid OSC type or variables (see section <A HREF="node56.html#interactvar">15.3</A>).
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="523" HEIGHT="114" ALIGN="BOTTOM" BORDER="0"
  SRC="img85.gif"
  ALT="\begin{rail}
 oscMsg : (\vert fullAddress) OSCAddress ( (parameters \vert variable) + )
@@ -104,7 +104,7 @@ oscMsg : (\vert fullAddress) OSCAddress ( (parameters \vert variable) + )
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="298" HEIGHT="88" ALIGN="BOTTOM" BORDER="0"
  SRC="img86.gif"
  ALT="\begin{rail}
 fullAddress : (IPAddress \vert hostname) ':' port
@@ -117,21 +117,21 @@ fullAddress : (IPAddress \vert hostname) ':' port
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><A NAME="tex2html945"
-  HREF="node54.html">15.1 Interaction messages</A>
-<LI><A NAME="tex2html946"
-  HREF="node55.html">15.2 Notification messages</A>
 <LI><A NAME="tex2html947"
-  HREF="node56.html">15.3 Variables</A>
+  HREF="node54.html">15.1 Interaction messages</A>
 <LI><A NAME="tex2html948"
-  HREF="node57.html">15.4 Message based variables</A>
+  HREF="node55.html">15.2 Notification messages</A>
 <LI><A NAME="tex2html949"
+  HREF="node56.html">15.3 Variables</A>
+<LI><A NAME="tex2html950"
+  HREF="node57.html">15.4 Message based variables</A>
+<LI><A NAME="tex2html951"
   HREF="node58.html">15.5 OSC address variables</A>
 </UL>
 <!--End of Table of Child-Links-->
 <BR><HR>
 <ADDRESS>
-<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
+<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>
 </BODY>
 </HTML>

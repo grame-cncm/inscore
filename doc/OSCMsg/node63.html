@@ -1,20 +1,20 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 
-<!--Converted with LaTeX2HTML 2002-2 (1.70)
+<!--Converted with LaTeX2HTML 2008 (1.71)
 original version by:  Nikos Drakos, CBLU, University of Leeds
 * revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
 * with significant contributions from:
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.1 Differences to version 0.96</TITLE>
-<META NAME="description" CONTENT="17.1 Differences to version 0.96">
+<TITLE>17.1 Differences to version 0.97</TITLE>
+<META NAME="description" CONTENT="17.1 Differences to version 0.97">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
-<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
@@ -27,62 +27,59 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1106"
+<A NAME="tex2html1109"
   HREF="node64.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1100"
+<A NAME="tex2html1103"
   HREF="node62.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1094"
+<A NAME="tex2html1097"
   HREF="node62.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1102"
+<A NAME="tex2html1105"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1104"
-  HREF="node83.html">
+<A NAME="tex2html1107"
+  HREF="node84.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1107"
+<B> Next:</B> <A NAME="tex2html1110"
   HREF="node64.html">17.2 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1101"
+<B> Up:</B> <A NAME="tex2html1104"
   HREF="node62.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1095"
+<B> Previous:</B> <A NAME="tex2html1098"
   HREF="node62.html">17. Changes list</A>
- &nbsp; <B>  <A NAME="tex2html1103"
+ &nbsp; <B>  <A NAME="tex2html1106"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1105"
-  HREF="node83.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1108"
+  HREF="node84.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION001810000000000000000">
-17.1 Differences to version 0.96</A>
+17.1 Differences to version 0.97</A>
 </H1>
 
 <UL>
-<LI>objects position, date and watched events preserved through type change
+<LI>$date variable overflow catched
 </LI>
-<LI>bug in quantified dates corrected (null denominator set to the quantified value)
+<LI>files dropped on application icon correctly opened when the application is not running
 </LI>
-<LI>new 'alias' message providing arbitrary OSC addresses support
+<LI>supports drag and drop of textual osc message strings
 </LI>
-<LI>bug in parser corrected: <IMG
- WIDTH="12" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img5.gif"
- ALT="$\backslash$"> escape only ' and " chars, otherwise it is literal
+<LI>osc error stream normalized: the message address is 'error:' or 'warning:'
+   followed by a single message string.
 </LI>
-<LI>guido score map makes use of the new guidolib extended mapping API for staff and system
-</LI>
-<LI>chords map correction (corrected by guido engine) 
+<LI>javascript and lua support: a single persistent context is created at application level and for each scene. 
+(see section <A HREF="node61.html#scriptlang">16.2</A> p.<A HREF="node61.html#scriptlang"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>)
 </LI>
 </UL>
 
 <P>
 <BR><HR>
 <ADDRESS>
-<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://interlude.ircam.fr/">Interlude project</a> [ANR-08-CORD-010]
+<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>
 </BODY>
 </HTML>

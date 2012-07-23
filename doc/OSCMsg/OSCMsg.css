@@ -38,6 +38,6 @@ TD.eqno			{ }	/* equation-number cells */
 A		    { color: #4C1301; text-decoration: none}
 A:hover     { color: #C6482C;}
 
-IMG     	{ color: #ffffff; border-top-width: 15px;}
+IMG     	{ color: #ffffff; border: 0px;}
 
 /* document-specific styles come next */
