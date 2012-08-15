@@ -694,6 +694,7 @@ Supported types are the following:
 \item \OSC{gmn}: a Guido score defined by a GMN string.
 \item \OSC{svg}: SVG graphics defined by a SVG string.
 \item \OSC{graph}: graphic of a signal. See section \fullref{graphsig} for details about the \OSC{graph} objects data.
+\item \OSC{fastgraph}: fast rendering graphic signal.
 \item \OSC{rect}: a rectangle specified by a width and height. Width and height are expressed in \OSC{scene} coordinates space, thus a width or a height of 2 corresponds to the width or a height of the \OSC{scene}.
 \item \OSC{ellipse}: an ellipse specified by a width and height.
 \item \OSC{polygon}: a polygon specified by a sequence of points, each point being defined by its (x,y) coordinates. Those coordinates are expressed in the \OSC{scene} coordinate space, but only taking in acount the relative position of the points ( \emph{i.e} a polygon A = \{ (0,0) ; (1,1) ; (0,1) \} is equivalent to a polygon B = \{ (1,1) ; (2,2) ; (1,2) \} ).
@@ -716,6 +717,7 @@ setMsg : 'set' (
 	('svg' svgString) |
 	('gmn' gmnString) |
 	('graph' signals ) |
+	('fastgraph' signals ) |
 	('rect' width height) |
 	('ellipse' width height) |
 	('polygon' ( (x y) +)) |
@@ -1821,6 +1823,7 @@ Example:
 %:   Differences to version 0.97
 \sublevel{Differences to version 0.97}
 \begin{itemize}
+\item new \OSC{fastgraph} object for graphic signals fast rendering (see section \fullref{setsect})
 \item \$date variable overflow catched
 \item files dropped on application icon correctly opened when the application is not running
 \item supports drag and drop of textual osc message strings

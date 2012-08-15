@@ -66,7 +66,7 @@ An OSC message is made of an OSC address, followed by a message string, followed
 The OSC address could be string or a regular expression matching several objects.
 <BR>
 <IMG
- WIDTH="402" HEIGHT="75" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="129" HEIGHT="52" ALIGN="BOTTOM" BORDER="0"
  SRC="img1.gif"
  ALT="\begin{rail}
 OSCMessage : OSCAddress message (parameters \vert)
@@ -76,7 +76,7 @@ OSCMessage : OSCAddress message (parameters \vert)
 <P>
 <BR>
 <IMG
- WIDTH="286" HEIGHT="110" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="153" HEIGHT="90" ALIGN="BOTTOM" BORDER="0"
  SRC="img2.gif"
  ALT="\begin{rail}
 OSCAddress : '/' (identifier \vert regexp) +
@@ -88,7 +88,7 @@ startid[-_a-zA-Z]
 nextid[-_a-zA-Z0-9]]
 <BR>
 <IMG
- WIDTH="245" HEIGHT="75" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="103" HEIGHT="52" ALIGN="BOTTOM" BORDER="0"
  SRC="img3.gif"
  ALT="\begin{rail}
 identifier : startid (nextid +)
@@ -99,7 +99,7 @@ identifier : startid (nextid +)
 Some specific nodes accept (like <I>signals</I> - see section <A HREF="node44.html#ssignal">13.1.1</A>) OSC messages without message string:
 <BR>
 <IMG
- WIDTH="268" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="53" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img4.gif"
  ALT="\begin{rail}
 OSCMessage : OSCAddress parameters

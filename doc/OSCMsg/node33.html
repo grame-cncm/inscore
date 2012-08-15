@@ -67,7 +67,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 Synchronization between components is achieved at <TT>scene</TT> level: a <TT>sync</TT> node is automatically embedded in the scene, its address is <TT>/ITL/scene/sync</TT> and it supports messages to add or remove a master / slave relation between components or to query the synchronizations state.
 <BR>
 <IMG
- WIDTH="609" HEIGHT="237" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="281" HEIGHT="218" ALIGN="BOTTOM" BORDER="0"
  SRC="img64.gif"
  ALT="\begin{rail}
 sync : syncIdentifier
@@ -76,8 +76,8 @@ sync : syncIdentifier
 \vert [3] 'get' ( \vert identifier)
 \end{rail}">
 <BR>
-<A NAME="762"></A>
 <A NAME="763"></A>
+<A NAME="764"></A>
 
 <P>
 
@@ -94,14 +94,14 @@ Synchronization between components has no effect if any of the required mapping 
 <P>
 <BR>
 <IMG
- WIDTH="351" HEIGHT="88" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="128" HEIGHT="65" ALIGN="BOTTOM" BORDER="0"
  SRC="img65.gif"
  ALT="\begin{rail}
 syncIdentifier : [1] identifier
 \vert [2] identifier ':' mapName
 \end{rail}">
 <BR>
-<A NAME="776"></A>
+<A NAME="777"></A>
 
 <P>
 Synchronization identifiers indicates 1) the name of a <TT>scene</TT> component or 2) the name of a <TT>scene</TT> component associated to a mapping name.

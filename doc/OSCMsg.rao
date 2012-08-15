@@ -601,10 +601,10 @@
 \rail@nont{data}[]
 \rail@end
 }
-\rail@i {35}{ setMsg : 'set' ( ('txt' txtStream) | ('html' string) | ('svg' svgString) | ('gmn' gmnString) | ('graph' signals ) | ('rect' width height) | ('ellipse' width height) | ('polygon' ( (x y) +)) | ('curve' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) | ('line' ('xy' x y | 'wa' width angle)) | setFile ) }
+\rail@i {35}{ setMsg : 'set' ( ('txt' txtStream) | ('html' string) | ('svg' svgString) | ('gmn' gmnString) | ('graph' signals ) | ('fastgraph' signals ) | ('rect' width height) | ('ellipse' width height) | ('polygon' ( (x y) +)) | ('curve' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) | ('line' ('xy' x y | 'wa' width angle)) | setFile ) }
 \rail@o {35}{
 \rail@index{setMsg}
-\rail@begin{14}{setMsg}
+\rail@begin{15}{setMsg}
 \rail@term{set}[]
 \rail@bar
 \rail@term{txt}[]
@@ -622,21 +622,24 @@
 \rail@term{graph}[]
 \rail@nont{signals}[]
 \rail@nextbar{5}
+\rail@term{fastgraph}[]
+\rail@nont{signals}[]
+\rail@nextbar{6}
 \rail@term{rect}[]
 \rail@nont{width}[]
 \rail@nont{height}[]
-\rail@nextbar{6}
+\rail@nextbar{7}
 \rail@term{ellipse}[]
 \rail@nont{width}[]
 \rail@nont{height}[]
-\rail@nextbar{7}
+\rail@nextbar{8}
 \rail@term{polygon}[]
 \rail@plus
 \rail@nont{x}[]
 \rail@nont{y}[]
-\rail@nextplus{8}
+\rail@nextplus{9}
 \rail@endplus
-\rail@nextbar{9}
+\rail@nextbar{10}
 \rail@term{curve}[]
 \rail@plus
 \rail@nont{x1}[]
@@ -647,20 +650,20 @@
 \rail@nont{y3}[]
 \rail@nont{x4}[]
 \rail@nont{y4}[]
-\rail@nextplus{10}
+\rail@nextplus{11}
 \rail@endplus
-\rail@nextbar{11}
+\rail@nextbar{12}
 \rail@term{line}[]
 \rail@bar
 \rail@term{xy}[]
 \rail@nont{x}[]
 \rail@nont{y}[]
-\rail@nextbar{12}
+\rail@nextbar{13}
 \rail@term{wa}[]
 \rail@nont{width}[]
 \rail@nont{angle}[]
 \rail@endbar
-\rail@nextbar{13}
+\rail@nextbar{14}
 \rail@nont{setFile}[]
 \rail@endbar
 \rail@end

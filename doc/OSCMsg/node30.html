@@ -70,18 +70,18 @@ The global form of the message is:
 <P>
 <BR>
 <IMG
- WIDTH="384" HEIGHT="89" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="179" HEIGHT="65" ALIGN="BOTTOM" BORDER="0"
  SRC="img49.gif"
  ALT="\begin{rail}
 mapMsg : 'map' ( \vert mapName ) (relation \vert ( del ))
 \end{rail}">
 <BR>
-<A NAME="691"></A>
+<A NAME="692"></A>
 
 <P>
 <BR>
 <IMG
- WIDTH="478" HEIGHT="225" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="154" HEIGHT="205" ALIGN="BOTTOM" BORDER="0"
  SRC="img50.gif"
  ALT="\begin{rail}
 relation :
@@ -93,13 +93,7 @@ relation :
 <BR>
 
 <P>
-Segments are expressed as a list of intervals. For a 1 dimension resource, a segment is a made of a single interval. For a 2 dimensions resource, a segment is a made of 2 intervals: an interval on the <IMG
- WIDTH="13" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img51.gif"
- ALT="$x$">-axis and one on the <IMG
- WIDTH="13" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img52.gif"
- ALT="$y$">-axis for graphic based resource, or an interval on columns and one on lines for text based resources. Intervals are right-opened.
+Segments are expressed as a list of intervals. For a 1 dimension resource, a segment is a made of a single interval. For a 2 dimensions resource, a segment is a made of 2 intervals: an interval on the -axis and one on the -axis for graphic based resource, or an interval on columns and one on lines for text based resources. Intervals are right-opened.
 
 <P>
 The different kind of relations corresponds to:
@@ -125,7 +119,7 @@ The <TT>del</TT> command deletes the mapping specified with <TT>mapName</TT>, or
 <DIV ALIGN="CENTER">
 
 <DIV ALIGN="CENTER">
-<A NAME="711"></A>
+<A NAME="712"></A>
 <TABLE CELLPADDING=3 BORDER="1">
 <CAPTION><STRONG>Table 9.1:</STRONG>
 Mapping resources for each component</CAPTION>
@@ -156,7 +150,7 @@ Note for <TT>html, htmlf</TT> + guido score mappings
 <P>
 <BR>
 <IMG
- WIDTH="295" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="77" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img53.gif"
  ALT="\begin{rail}
 relativeTimeSegment : '(' relativeTimeInterval ')'
@@ -164,7 +158,7 @@ relativeTimeSegment : '(' relativeTimeInterval ')'
 <BR>
 <BR>
 <IMG
- WIDTH="351" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="103" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img54.gif"
  ALT="\begin{rail}
 float2DSegment : '(' floatInterval floatInterval ')'
@@ -172,7 +166,7 @@ float2DSegment : '(' floatInterval floatInterval ')'
 <BR>
 <BR>
 <IMG
- WIDTH="326" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="103" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img55.gif"
  ALT="\begin{rail}
 int2DSegment : '(' intInterval intInterval ')'
@@ -180,7 +174,7 @@ int2DSegment : '(' intInterval intInterval ')'
 <BR>
 <BR>
 <IMG
- WIDTH="232" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="77" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img56.gif"
  ALT="\begin{rail}
 int1DSegment : '(' intInterval ')'
@@ -190,7 +184,7 @@ int1DSegment : '(' intInterval ')'
 <P>
 <BR>
 <IMG
- WIDTH="332" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="128" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img57.gif"
  ALT="\begin{rail}
 relativeTimeInterval : '[' rational ',' rational '['
@@ -198,7 +192,7 @@ relativeTimeInterval : '[' rational ',' rational '['
 <BR>
 <BR>
 <IMG
- WIDTH="357" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="128" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img58.gif"
  ALT="\begin{rail}
 floatInterval : '[' float32 ',' float32 '['
@@ -206,7 +200,7 @@ floatInterval : '[' float32 ',' float32 '['
 <BR>
 <BR>
 <IMG
- WIDTH="320" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="128" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img59.gif"
  ALT="\begin{rail}
 intInterval : '[' int32 ',' int32 '['
@@ -214,15 +208,12 @@ intInterval : '[' int32 ',' int32 '['
 <BR>
 
 <P>
-Relative time is expressed as <TT>rational</TT> values where <IMG
- WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img60.gif"
- ALT="$1$"> represents a whole note.
+Relative time is expressed as <TT>rational</TT> values where  represents a whole note.
 
 <P>
 <BR>
 <IMG
- WIDTH="241" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="77" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img61.gif"
  ALT="\begin{rail}
 rational : int32 '/' int32

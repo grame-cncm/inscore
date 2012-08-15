@@ -67,7 +67,7 @@ The <TT>set</TT> messages can be sent to any address with the form <TT>/ITL/scen
 <P>
 <BR>
 <IMG
- WIDTH="222" HEIGHT="51" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="78" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img40.gif"
  ALT="\begin{rail}
 setMsg : 'set' type data
@@ -90,6 +90,8 @@ Supported types are the following:
 <LI><TT>svg</TT>: SVG graphics defined by a SVG string.
 </LI>
 <LI><TT>graph</TT>: graphic of a signal. See section <A HREF="node42.html#graphsig">13</A> p.<A HREF="node42.html#graphsig"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> for details about the <TT>graph</TT> objects data.
+</LI>
+<LI><TT>fastgraph</TT>: fast rendering graphic signal.
 </LI>
 <LI><TT>rect</TT>: a rectangle specified by a width and height. Width and height are expressed in <TT>scene</TT> coordinates space, thus a width or a height of 2 corresponds to the width or a height of the <TT>scene</TT>.
 </LI>
@@ -121,7 +123,7 @@ Supported types are the following:
 Format of the <TT>set</TT> message is:
 <BR>
 <IMG
- WIDTH="638" HEIGHT="547" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="373" HEIGHT="562" ALIGN="BOTTOM" BORDER="0"
  SRC="img41.gif"
  ALT="\begin{rail}
 setMsg : 'set' (
@@ -134,7 +136,6 @@ setFile
 )
 \end{rail}">
 <BR>
-<A NAME="575"></A>
 <A NAME="576"></A>
 <A NAME="577"></A>
 <A NAME="578"></A>
@@ -145,6 +146,7 @@ setFile
 <A NAME="583"></A>
 <A NAME="584"></A>
 <A NAME="585"></A>
+<A NAME="586"></A>
 
 <P>
 Note that the default position of any component is <TT>[0,0]</TT>. Objects are drawn centered on their position.
@@ -152,7 +154,7 @@ Note that the default position of any component is <TT>[0,0]</TT>. Objects are d
 <P>
 <BR>
 <IMG
- WIDTH="249" HEIGHT="149" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="128" HEIGHT="129" ALIGN="BOTTOM" BORDER="0"
  SRC="img42.gif"
  ALT="\begin{rail}
 txtStream : (string \vert int32 \vert float32) +
@@ -163,7 +165,7 @@ txtStream : (string \vert int32 \vert float32) +
 <A NAME="setfile"></A>
 <BR>
 <IMG
- WIDTH="289" HEIGHT="276" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="118" HEIGHT="256" ALIGN="BOTTOM" BORDER="0"
  SRC="img43.gif"
  ALT="\begin{rail}
 setFile :
@@ -175,13 +177,13 @@ setFile :
 ('file' filePath)
 \end{rail}">
 <BR>
-<A NAME="592"></A>
 <A NAME="593"></A>
 <A NAME="594"></A>
 <A NAME="595"></A>
 <A NAME="596"></A>
 <A NAME="597"></A>
 <A NAME="598"></A>
+<A NAME="599"></A>
 
 <P>
 <B>See also: </B>the application <TT>rootPath</TT> message (section <A HREF="node5.html#ITL">2</A>) for file based objects.
@@ -191,7 +193,7 @@ setFile :
 <DIV ALIGN="CENTER">
 
 <DIV ALIGN="CENTER">
-<A NAME="1518"></A>
+<A NAME="1521"></A>
 <TABLE CELLPADDING=3 BORDER="1">
 <CAPTION><STRONG>Table 6.1:</STRONG>
 File extensions supported by the <TT>file</TT> translation scheme.</CAPTION>
