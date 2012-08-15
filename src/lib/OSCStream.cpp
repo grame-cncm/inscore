@@ -115,7 +115,7 @@ OSCStream& operator <<(OSCStream& s, const OSCEnd val)		{ return s.end(); }
 //--------------------------------------------------------------------------
 OSCErrorStream& operator <<(OSCErrorStream& s, const string& val)	
 { 
-	s.stream() << val.c_str();
+	s.stream() << " " << val.c_str();
 	return s; 
 }
 
@@ -131,7 +131,7 @@ OSCErrorStream& operator <<(OSCErrorStream& s, const IMessageList* list)
 
 OSCErrorStream& operator <<(OSCErrorStream& s, const IColor& color)	{ color.print(s); return s; }
 OSCErrorStream& operator <<(OSCErrorStream& s, const IMessage* msg)	{ msg->print(s); return s; }
-OSCErrorStream& operator <<(OSCErrorStream& s, const char* val)		{ string str(val); s << str; return s; }
+OSCErrorStream& operator <<(OSCErrorStream& s, const char* val)		{ s.stream() << " " << val; return s; }
 
 //--------------------------------------------------------------------------
 OSCErrorStream& operator <<(OSCErrorStream& s, const OSCErr& val)	{ return s.start(val.fAddress); }

@@ -143,9 +143,9 @@ class OSCErrorStream : public OSCStream
 						OSCErrorStream& operator <<(OSCErrorStream& s, const OSCWarn& val);
 						OSCErrorStream& operator <<(OSCErrorStream& s, const char* val);
 						OSCErrorStream& operator <<(OSCErrorStream& s, const std::string& val);
-				inline	OSCErrorStream& operator <<(OSCErrorStream& s, int val)		{ s.stream() << val; return s; }
-				inline	OSCErrorStream& operator <<(OSCErrorStream& s, long val)		{ s.stream() << (int)val; return s; }
-				inline	OSCErrorStream& operator <<(OSCErrorStream& s, float val)		{ s.stream() << val; return s; }
+				inline	OSCErrorStream& operator <<(OSCErrorStream& s, int val)			{ s.stream() << " " << val; return s; }
+				inline	OSCErrorStream& operator <<(OSCErrorStream& s, long val)		{ s.stream() << " " << (int)val; return s; }
+				inline	OSCErrorStream& operator <<(OSCErrorStream& s, float val)		{ s.stream() << " " << val; return s; }
 
 template <typename T> 	OSCErrorStream& operator <<(OSCErrorStream& s, const TSize<T>& size)	{ s << size.width() << size.height(); return s; }
 
