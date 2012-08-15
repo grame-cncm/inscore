@@ -31,6 +31,8 @@
 #include <vector>
 #include <iostream>
 #include "message.h"
+#include "ITLError.h"
+#include "OSCStream.h"
 #include "rational.h"
 #include "smartpointer.h"
 
@@ -43,7 +45,6 @@ namespace inscore
 @{
 */
 
-class OSCStream;
 template <typename T> class IMsgParam;
 class baseparam;
 typedef SMARTP<baseparam>	Sbaseparam;
@@ -223,12 +224,26 @@ class IMessage : public Message, public smartable
 		\brief send the message to OSC
 		\param out the OSC output stream
 	*/
-	void				print(OSCStream& out) const;
+	template <typename T> void	print(T& out) const {
+														out << OSCStart(address().c_str());
+														if (message().size()) out << message();
+														printArgs(out);
+														out << OSCEnd();
+													}
+	
 	/*!
 		\brief print message arguments
 		\param out the OSC output stream
 	*/
-	void				printArgs(OSCStream& out) const;
+	template <typename T> void printArgs(T& out) const {
+														for (int i=0; i < size(); i++) {
+															std::string str; float fv; int iv;
+															if (param(i, fv))			out << fv;
+															else if (param(i, iv))		out << iv;
+															else if (param(i, str))		out << str;
+															else ITLErr << "IMessage::print(OSCStream& out): unknown message parameter type" << ITLEndl;
+														}
+													}
 #endif
 
 	/// \brief gives the message address

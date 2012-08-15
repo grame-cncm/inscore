@@ -68,9 +68,6 @@ ostream& operator << (ostream& out, const IMessageList& msg)
 //--------------------------------------------------------------------------
 // IMessage implementation
 //--------------------------------------------------------------------------
-//unsigned long IMessage::allocated = 0;
-//unsigned long IMessage::freed = 0;
-
 IMessage::IMessage(const IMessage& msg)
 {
 	setAddress (msg.address());
@@ -121,29 +118,6 @@ void IMessage::print(std::ostream& out) const
 	}
 	out.flags ( f );
 }
-
-//--------------------------------------------------------------------------
-#ifndef NO_OSCSTREAM
-void IMessage::print(OSCStream& out) const
-{
-	out << OSCStart(address().c_str());
-	if (message().size()) out << message();
-	printArgs(out);
-	out << OSCEnd();
-}
-
-//--------------------------------------------------------------------------
-void IMessage::printArgs(OSCStream& out) const
-{
-	for (int i=0; i < size(); i++) {
-		string str; float fv; int iv;
-		if (param(i, fv))			out << fv;
-		else if (param(i, iv))		out << iv;
-		else if (param(i, str))		out << str;
-		else ITLErr << "IMessage::print(OSCStream& out): unknown message parameter type" << ITLEndl;
-	}
-}
-#endif
 
 //--------------------------------------------------------------------------
 bool IMessage::operator == (const IMessage& other) const
