@@ -25,7 +25,7 @@
 
 #include <iostream>
 
-#define newVersion 0
+#define newVersion 1
 
 #include "VGraphView.h"
 #include "TVirtualRelation.h"
@@ -40,23 +40,25 @@ using namespace std;
 namespace inscore
 {
 
-//----------------------------------------------------------------------
 
 //----------------------------------------------------------------------
-#if newVersion
-VGraphView::VGraphView(QGraphicsScene * scene, const IGraphicSignal* h) 
-	: VShapeView( scene , new MouseEventAble<QGraphicsGraphItemNew>(h) ) {}
+VSGraphView::VSGraphView(QGraphicsScene * scene, const IGraphicSignal* h) 
+	: VGraphView( scene , h, new MouseEventAble<QGraphicsGraphItemNew>(h) ) {}
 
-void VGraphView::updateView( IGraphicSignal * graph )
+void VSGraphView::updateView( IGraphicSignal * graph )
 {
 	item()->setSignal( graph->getSignal() );
 	item()->setRect( QRect( 0,0,  relative2SceneWidth(graph->getWidth()),relative2SceneHeight(graph->getHeight()) ) );
 	VShapeView::updateView( graph );
 	itemChanged();
 }
-#else
+
+//----------------------------------------------------------------------
 VGraphView::VGraphView(QGraphicsScene * scene, const IGraphicSignal* h) 
 	: VShapeView( scene , new MouseEventAble<QGraphicsGraphItem>(h) ) {}
+
+VGraphView::VGraphView(QGraphicsScene * scene, const IGraphicSignal* h, QAbstractGraphicsShapeItem * item) 
+	: VShapeView( scene , item ) {}
 
 void VGraphView::updateView( IGraphicSignal * graph )
 {
@@ -90,7 +92,6 @@ void VGraphView::updateView( IGraphicSignal * graph )
 	VShapeView::updateView( graph );
 	itemChanged();
 }
-#endif
 
 //----------------------------------------------------------------------
 void VGraphView::updateLocalMapping (IGraphicSignal* object)

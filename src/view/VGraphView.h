@@ -30,11 +30,8 @@
 #include "VShapeView.h"
 #include "MouseEventAble.h"
 
-#if newVersion
 #include "QGraphicsGraphItemNew.h"
-#else
 #include "QGraphicsGraphItem.h"
-#endif
 
 namespace inscore
 {
@@ -52,14 +49,11 @@ class EventsAble;
 */
 class VGraphView: public VShapeView
 {
-#if newVersion
-	MouseEventAble<QGraphicsGraphItemNew>* item() const	{ return (MouseEventAble<QGraphicsGraphItemNew>*)fItem; }
-#else
 	MouseEventAble<QGraphicsGraphItem>* item() const	{ return (MouseEventAble<QGraphicsGraphItem>*)fItem; }
-#endif
 
 	public :
 				 VGraphView(QGraphicsScene * scene, const IGraphicSignal*);
+				 VGraphView(QGraphicsScene * scene, const IGraphicSignal*, QAbstractGraphicsShapeItem *);
 		virtual ~VGraphView() {}
 		
 		virtual void updateView( IGraphicSignal * graph );
@@ -68,6 +62,19 @@ class VGraphView: public VShapeView
 		
 	protected:
 		GraphicSegment getGraphicSegment( const FrameSegment& frameSegment , const IGraphicSignal * object , bool& mapOk ) const;
+};
+
+//--------------------------------------------------------------------------
+/**
+*	\brief fast rendering graphic view of a IGraphic.
+*/
+class VSGraphView: public VGraphView
+{
+	MouseEventAble<QGraphicsGraphItemNew>* item() const	{ return (MouseEventAble<QGraphicsGraphItemNew>*)fItem; }
+	public :
+				 VSGraphView(QGraphicsScene * scene, const IGraphicSignal*);
+		virtual ~VSGraphView() {}
+		virtual void updateView( IGraphicSignal * graph );
 };
 
 /*!@} */

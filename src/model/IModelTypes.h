@@ -52,6 +52,9 @@ typedef class SMARTP<IFileWatcher>	SIFileWatcher;
 class IGraphicSignal;
 typedef class SMARTP<IGraphicSignal> SIGraphicSignal;
 
+class ISGraphicSignal;
+typedef class SMARTP<ISGraphicSignal> SISGraphicSignal;
+
 class IGraphicBasedObject;
 typedef class SMARTP<IGraphicBasedObject> SIGraphicBasedObject;
 

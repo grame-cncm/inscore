@@ -51,6 +51,7 @@ const std::string IGraphicSignal::kThicknessDown = THICKNESS_DOWN;
 
 //--------------------------------------------------------------------------
 const string IGraphicSignal::kGraphicType("graph");
+const string ISGraphicSignal::kSGraphicType("fastgraph");
 
 IGraphicSignal::IGraphicSignal( const std::string& name, IObject* parent ) : IShape(name, parent),
 	fCurveType(kRoundCurveType), fDrawLine(kDrawLineBoth), fThicknessMode(kThicknessCentered),
@@ -60,7 +61,13 @@ IGraphicSignal::IGraphicSignal( const std::string& name, IObject* parent ) : ISh
 	fTypeString = kGraphicType;
 	setWidth(1.0f);
 	setHeight(1.0f);
+//	setHandlers();
+}
 
+//--------------------------------------------------------------------------
+void IGraphicSignal::setHandlers ()
+{
+	IShape::setHandlers();
 	fGetMsgHandlerMap[""]			= TGetParamMsgHandler<SISignal>::create(fSignal);
 	fGetMsgHandlerMap["dimension"]	= getDimParamMsgHandler::create(this);
 	

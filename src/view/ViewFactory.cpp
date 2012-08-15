@@ -49,7 +49,8 @@ namespace inscore
 //--------------------------------------------------------------------------
 VObjectView*	ViewFactory::create (const ICurve* object,		QGraphicsScene* scene)		{ return new VCurveView (scene, object); }
 VObjectView*	ViewFactory::create (const IEllipse* object,	QGraphicsScene* scene)		{ return new VEllipseView (scene, object); }
-VObjectView*	ViewFactory::create (const IGraphicSignal* object, QGraphicsScene* scene)	{ return new VGraphView (scene, object); }
+VObjectView*	ViewFactory::create (const IGraphicSignal* object,  QGraphicsScene* scene)	{ return new VGraphView (scene, object); }
+VObjectView*	ViewFactory::create (const ISGraphicSignal* object, QGraphicsScene* scene)	{ return new VSGraphView (scene, object); }
 VObjectView*	ViewFactory::create (const IGuidoCode* object,	QGraphicsScene* scene)		{ return new VGuidoItemView (scene, object); }
 VObjectView*	ViewFactory::create (const IGuidoFile* object,	QGraphicsScene* scene)		{ return new VGuidoItemView (scene, object); }
 VObjectView*	ViewFactory::create (const IHtml* object,		QGraphicsScene* scene)		{ return new VTextView (scene, object); }

@@ -60,6 +60,8 @@ namespace inscore
 class Updater;
 class IGraphicSignal;
 typedef class SMARTP<IGraphicSignal>	SIGraphicSignal;
+class ISGraphicSignal;
+typedef class SMARTP<ISGraphicSignal>	SISGraphicSignal;
 
 //--------------------------------------------------------------------------
 /*!
@@ -106,6 +108,9 @@ class IGraphicSignal : public IShape
 		virtual const std::string& getDrawLine() const { return fDrawLine; }
 		virtual bool getIgnoreSignalColor() const { return fIgnoreSignalColor; }
 		virtual bool getPenIgnoreSignalColor() const { return fPenIgnoreSignalColor; }
+
+		/// \brief sets the message handlers.
+		virtual void setHandlers ();
 		
 	protected:
 				 IGraphicSignal( const std::string& name, IObject* parent );
@@ -138,6 +143,25 @@ class IGraphicSignal : public IShape
 				virtual IMessage&  print(IMessage& out) const;
 		};
 };
+
+
+//--------------------------------------------------------------------------
+/*!
+	\brief a data graphic representation that makes use of fast rendering objects
+*/
+class ISGraphicSignal : public IGraphicSignal
+{
+
+	public:	
+		static const std::string kSGraphicType;
+		static SISGraphicSignal create(const std::string& name, IObject* parent)	{ return new ISGraphicSignal(name, parent); }
+		
+	protected:
+				 ISGraphicSignal( const std::string& name, IObject* parent ) : IGraphicSignal (name, parent) { fTypeString = kSGraphicType; }
+		virtual ~ISGraphicSignal() {}
+};
+
+
 
 OSCStream& operator <<(OSCStream& s, const SISignal& val);
 IMessage& operator <<(IMessage& s, const SISignal& val);
