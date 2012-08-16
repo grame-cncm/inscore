@@ -1,9 +1,9 @@
 {
 	"patcher" : 	{
 		"fileversion" : 1,
-		"rect" : [ 25.0, 69.0, 393.0, 231.0 ],
+		"rect" : [ 25.0, 69.0, 878.0, 548.0 ],
 		"bglocked" : 0,
-		"defrect" : [ 25.0, 69.0, 393.0, 231.0 ],
+		"defrect" : [ 25.0, 69.0, 878.0, 548.0 ],
 		"openrect" : [ 25.0, 69.0, 342.0, 199.0 ],
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -739,8 +739,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 270.0, 319.0, 127.0, 18.0 ],
-					"text" : "/ITL load sync.inscore"
+					"patching_rect" : [ 270.0, 319.0, 163.0, 18.0 ],
+					"text" : "/ITL/scene load sync.inscore"
 				}
 
 			}
