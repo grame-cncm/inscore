@@ -304,14 +304,8 @@ void VGraphicsItemView::buildDefaultMapping (IObject* object)
 		GraphicSegment		wholeGraphicSegment( -1 , -1 , 1 , 1 );
 		
 		SRelativeTime2GraphicMapping t2g_mapping = TMapping<RelativeTimeSegment,GraphicSegment>::create();
-		SGraphicSegmentation		gSegmentation = GraphicSegmentation::create(		wholeGraphicSegment );
-		SRelativeTimeSegmentation	tSegmentation = RelativeTimeSegmentation::create(	wholeTimeSegment );
-					
 		t2g_mapping->add ( wholeTimeSegment , wholeGraphicSegment );
-		gSegmentation->add( wholeGraphicSegment );
-		tSegmentation->add( wholeTimeSegment );
-
-		object->setMapping( "" , t2g_mapping, tSegmentation, gSegmentation);
+		object->setMapping( "" , t2g_mapping);
 		object->fAutoMap = true;
 	}
 }
