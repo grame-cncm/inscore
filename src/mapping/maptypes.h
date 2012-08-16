@@ -59,22 +59,12 @@ typedef TSegmentation<GraphicSegment>		GraphicSegmentation;
 typedef TSegmentation<IntPointSegment>		IntPointSegmentation;
 typedef TSegmentation<FloatSegment>			FloatSegmentation;
 
-typedef SMARTP<FloatSegmentation>			SFloatSegmentation;
-typedef SMARTP<FrameSegmentation>			SFrameSegmentation;
 typedef SMARTP<RelativeTimeSegmentation>	SRelativeTimeSegmentation;
 typedef SMARTP<GraphicSegmentation>			SGraphicSegmentation;
-typedef SMARTP<IntPointSegmentation>		SIntPointSegmentation;
 
 typedef TRelation<GraphicSegment,GraphicSegment>			Graphic2GraphicRelation;
 typedef TRelation<RelativeTimeSegment,GraphicSegment>		RelativeTime2GraphicRelation;
 typedef TRelation<GraphicSegment,RelativeTimeSegment>		Graphic2RelativeTimeRelation;
-typedef TRelation<GraphicSegment,IntPointSegment>			Graphic2IntPointRelation;
-typedef TRelation<IntPointSegment,RelativeTimeSegment>		IntPoint2RelativeTimeRelation;
-typedef TRelation<GraphicSegment,FrameSegment>				Graphic2FrameRelation;
-typedef TRelation<FrameSegment,RelativeTimeSegment>			Frame2RelativeTimeRelation;
-typedef TRelation<FloatSegment,RelativeTimeSegment>			Float2RelativeTimeRelation;
-typedef TRelation<RelativeTimeSegment,FloatSegment>			RelativeTime2FloatRelation;
-typedef TRelation<RelativeTimeSegment,RelativeTimeSegment>	RelativeTime2RelativeTimeRelation;
 
 typedef TMapping<GraphicSegment,GraphicSegment>				Graphic2GraphicMapping;
 typedef TMapping<RelativeTimeSegment,GraphicSegment>		RelativeTime2GraphicMapping;
