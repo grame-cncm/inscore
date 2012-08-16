@@ -99,7 +99,7 @@ void VGraphicsItemView::drawMapping(IObject* o)
 		
 		float z = 0;
 		int colorindex = 0;
-		const RelativeTime2GraphicRelation& rt2g = i->second.fTime2Graphic->direct();
+		const RelativeTime2GraphicRelation& rt2g = i->second->direct();
 		// For each time segment in the mapping, draw its corresponding GraphicSegment.
 		for (RelativeTime2GraphicRelation::const_iterator j = rt2g.begin(); j != rt2g.end() ; j++ )
 		{
