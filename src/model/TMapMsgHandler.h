@@ -74,7 +74,7 @@ template<typename S> class TMapMsgHandler
 			if (parseMsg (msg, mapName, map)) {
 				segment2relativetimereader<S> r;
 				if (r.read(map)) {
-					localMapping->addMapping( mapName , 0 , r.getMapping() );	// add the new localMapping without erasing the previous one.
+					localMapping->addMapping( mapName , r.getMapping() );	// add the new localMapping without erasing the previous one.
 					if (mapName.empty()) object->fAutoMap = false;
 					return MsgHandler::kProcessed;
 				}
@@ -96,7 +96,7 @@ template<typename S> class TMapMsgHandler
 				{
 					segment2relativetimereader<S> r;
 					if (r.read(map)) {
-						localMapping->setMapping( mapName , 0 , r.getMapping() );	// Set the new localMapping, also erasing the previous local<->graphic mapping.
+						localMapping->setMapping( mapName , r.getMapping() );	// Set the new localMapping, also erasing the previous local<->graphic mapping.
 																					// (which is no longer up-to-date)							
 						if (mapName.empty()) object->fAutoMap = false;
 						return MsgHandler::kProcessed;
@@ -114,7 +114,7 @@ template<typename S> class TMapMsgHandler
 				file = IAppl::absolutePath(file);
 				segment2relativetimereader<S> r;
 				if (r.readfile(file)) {
-					localMapping->setMapping( mapName , 0 , r.getMapping() );	// Set the new localMapping, also erasing the previous local<->graphic mapping.
+					localMapping->setMapping( mapName , r.getMapping() );	// Set the new localMapping, also erasing the previous local<->graphic mapping.
 																				// (which is no longer up-to-date)
 					if (mapName.empty()) object->fAutoMap = false;
 					return MsgHandler::kProcessed;
@@ -132,7 +132,8 @@ template<typename S> class TMapMsgHandler
 				IMessage* msg = new IMessage(object->getOSCAddress(), "map");
 				if ( iter->first.size() )
 					*msg << iter->first;
-				*msg << iter->second.fLocal2Time->direct();
+//				*msg << iter->second.fLocal2Time->direct();
+				*msg << iter->second->direct();
 				outMsgs += msg;
 			}
 			return outMsgs;

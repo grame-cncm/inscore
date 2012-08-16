@@ -42,7 +42,7 @@ void VIntPointObjectView::updateLocalMapping (IGraphicBasedObject* object)
 		SGraphic2IntPointMapping g2l_mapping = TMapping<GraphicSegment,IntPointSegment>::create();	// Build a Graphic -> local mapping.
 		SGraphicSegmentation graphicSegmentation = GraphicSegmentation::create( GraphicSegment( -1 , -1 , 1 , 1 ) );
 
-		const SIntPoint2RelativeTimeMapping & l2t_mapping = i->second.fLocal2Time;	// Get the 'local -> time' mapping.
+		const SIntPoint2RelativeTimeMapping & l2t_mapping = i->second;	// Get the 'local -> time' mapping.
 		TRelation<IntPointSegment,RelativeTimeSegment>::const_iterator iter = l2t_mapping->direct().begin();	
 		while (iter != l2t_mapping->direct().end()) {	// Parse each 'local' element of the 'local -> time' mapping.
 			bool ok;
@@ -53,10 +53,9 @@ void VIntPointObjectView::updateLocalMapping (IGraphicBasedObject* object)
 				g2l_mapping->add ( gs , iter->first);	// Put the 'graphic -> local' relation into the mapping.
 				graphicSegmentation->add( gs );
 			}
-
 			iter++;
 		}
-		object->localMappings()->setMapping( i->first , g2l_mapping , l2t_mapping );
+		object->localMappings()->setMapping( i->first, l2t_mapping );
 		VGraphicsItemView::setMapping<IntPointSegment>( object , i->first , g2l_mapping , l2t_mapping );		
 	}
 	VGraphicsItemView::buildDefaultMapping( object );

@@ -255,7 +255,7 @@ void VGuidoItemView::graphMapUpdate (IGuidoCode* guidoCode, SRelativeTime2Relati
 			g2l_mapping = intersect(g2l_mapping, inter);// rebuilds the time to graphic mapping with the intersection
 			ttmap = intersect(ttmap, inter);			// rebuilds the time to mapping with the intersection
 
-			guidoCode->localMappings()->setMapping( mapNames[i] , g2l_mapping , ttmap );	// Add the both mappings to the IGuidoCode.
+			guidoCode->localMappings()->setMapping( mapNames[i], ttmap );	// Add the both mappings to the IGuidoCode.
 			// Add the composed mapping to the IGuidoCode.
 			VGraphicsItemView::setMapping<RelativeTimeSegment>( guidoCode , guidoCode->requestedMappings()[i] , g2l_mapping , ttmap );	
 			delete collector;

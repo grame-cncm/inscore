@@ -38,7 +38,7 @@ void VMappedShapeView::updateGraphic2GraphicMapping (IShapeMap* object)
 	
 	for ( ; i != object->localMappings()->namedMappings().end() ; i++ )
 	{
-		const SGraphic2RelativeTimeMapping & l2t_mapping = i->second.fLocal2Time;
+		const SGraphic2RelativeTimeMapping & l2t_mapping = i->second;
 		Graphic2RelativeTimeRelation::const_iterator iter = l2t_mapping->direct().begin();
 		
 		SGraphic2GraphicMapping g2l_mapping = TMapping<GraphicSegment,GraphicSegment>::create();	// Create the local -> graphic mapping.
@@ -50,7 +50,7 @@ void VMappedShapeView::updateGraphic2GraphicMapping (IShapeMap* object)
 			graphicSegmentation->add( iter->first );				// Also fill the graphic segmentation.
 			iter++;
 		}
-		object->localMappings()->setMapping( i->first , g2l_mapping , l2t_mapping );	// Finally, affect the mapping to object.
+		object->localMappings()->setMapping( i->first, l2t_mapping );	// Finally, affect the mapping to object.
 		VGraphicsItemView::setMapping<GraphicSegment>( object , i->first , g2l_mapping , l2t_mapping );
 	}
 	
