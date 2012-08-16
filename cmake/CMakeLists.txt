@@ -10,10 +10,10 @@ set (APPLTARGET	INScoreViewer)
 
 #######################################
 # versions management
-set (INSFWKVERS 0.98)
-set (INSFWKSTRVERS "v.0.98")
-set (INSAPPVERS 0.98)
-set (INSAPPSTRVERS "v.0.98")
+set (INSFWKVERS 0.99)
+set (INSFWKSTRVERS "v.0.99")
+set (INSAPPVERS 0.99)
+set (INSAPPSTRVERS "v.0.99")
 set (SOVERS 1)
 
 #######################################
@@ -46,7 +46,9 @@ endif(APPLE)
 #######################################
 # set directories, src and headers.
 set (ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../src)
-set (INSFOLDERS  controller events lib model view mapping interface graph signal signal/faust ITLParser scripting)
+set (MAP ${ROOT}/libmapping)
+set (MAPSRC ${MAP}/misc ${MAP}/parser)
+set (INSFOLDERS  controller events lib model view mapping interface graph signal signal/faust ITLParser scripting ${MAPSRC})
 set (RSRC  "${ROOT}/../rsrc")
 set (LOCALLIB  "${ROOT}/../lib")
 set (OSC_PATH  "${LOCALLIB}/oscpack")
@@ -134,12 +136,13 @@ file (GLOB CORESRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${SRC})
 foreach(folder ${INSFOLDERS})
 	set(HEADERS ${HEADERS} "${ROOT}/${folder}/*.h")		# add header files
 endforeach(folder)
+set(HEADERS ${HEADERS} "${MAP}/package/libmapping/*.h")			# add libmapping header files
 file (GLOB COREH RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${HEADERS})
 
 foreach(folder ${INSFOLDERS})
 	set(INCL ${INCL} "${ROOT}/${folder}")				# add include folders
 endforeach(folder)
-set(INCL ${INCL} "${ROOT}/atomic" ${SCRIPTINCL})
+set(INCL ${INCL} "${ROOT}/atomic" ${SCRIPTINCL} ${MAP}/package/)
 
 
 #######################################
