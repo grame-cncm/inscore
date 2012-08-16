@@ -32,44 +32,17 @@ using namespace std;
 
 namespace inscore {
 
-#define MANUALFIND	1
 //______________________________________________________________________________
-TMapable::MapSet* TMapable::find (const std::string& name)
+SRelativeTime2GraphicMapping TMapable::find (const std::string& name)
 {
-#if MANUALFIND
-	for (iterator i=fMappings.begin(); i!=fMappings.end(); i++) {
-		if (!strcmp(i->first.c_str(), name.c_str())) {
-			return &(i->second);
-		}
-	}
-	return 0;
-#else
 	iterator found = fMappings.find(name);
-	return (found == fMappings.end()) ? 0 : &(found->second);
-#endif
+	return (found == fMappings.end()) ? 0 : found->second;
 }
 
-const TMapable::MapSet* TMapable::find (const std::string& name) const
+const SRelativeTime2GraphicMapping TMapable::find (const std::string& name) const
 {
-#if MANUALFIND
-	for (const_iterator i=fMappings.begin(); i!=fMappings.end(); i++) {
-		if (!strcmp(i->first.c_str(), name.c_str())) {
-//		if (i->first == name) {
-			return &(i->second);
-		}
-	}
-	return 0;
-#else
 	const_iterator found = fMappings.find(name);
-	return (found == fMappings.end()) ? 0 : &(found->second);
-#endif
-}
-
-//______________________________________________________________________________
-const SRelativeTime2GraphicMapping& TMapable::getMapping(const std::string& name) const
-{
-	const MapSet* m = find (name);
-	return m ? m->fTime2Graphic : fNullSet.fTime2Graphic;
+	return (found == fMappings.end()) ? 0 : found->second;
 }
 
 //______________________________________________________________________________
@@ -77,80 +50,6 @@ bool TMapable::removeMapping(const std::string& name)
 { 
 	if (name.empty()) fAutoMap = false;
 	return fMappings.erase(name)==1; 
-}
-
-//______________________________________________________________________________
-const SGraphicSegmentation&	TMapable::getGraphicSegmentation(const std::string& name) const
-{
-	const MapSet* m = find (name);
-	return m ? m->fGraphicSegm : fNullSet.fGraphicSegm;
-}
-
-//______________________________________________________________________________
-const SRelativeTimeSegmentation& TMapable::getTimeSegmentation(const std::string& name) const
-{
-	const MapSet* m = find (name);
-	return m ? m->fTimeSegm : fNullSet.fTimeSegm;
-}
-
-//______________________________________________________________________________
-void TMapable::setMapping (const std::string& name, SRelativeTime2GraphicMapping m)
-{
-	MapSet* found = find (name);
-	if (!found) {
-		MapSet s;
-		s.fTime2Graphic = m;
-		fMappings[name] = s; 
-	}
-	else
-	{
-		found->fTime2Graphic = m;
-	}
-}
-
-//______________________________________________________________________________
-void TMapable::setMapping (const std::string& name, SRelativeTime2GraphicMapping m, SRelativeTimeSegmentation st, SGraphicSegmentation sg)
-{
-//cout << "TMapable::setMapping \"" << name << "\" -> " << (void*)m << endl;
-	setMapping (name, m);
-	setTimeSegmentation (name, st);
-	setGraphicSegmentation (name, sg);
-}
-
-//______________________________________________________________________________
-void TMapable::addTimeSegmentation	(const std::string& name, SRelativeTimeSegmentation s)
-{
-	MapSet* found = find (name);
-	if (!found) {
-		MapSet set;
-		set.fTimeSegm = s;
-		fMappings[name] = set; 
-	}
-	else found->fTimeSegm->add (s->getSegmentation());
-}
-
-//______________________________________________________________________________
-void TMapable::setTimeSegmentation	(const std::string& name, SRelativeTimeSegmentation s)
-{
-	MapSet* found = find (name);
-	if (!found) {
-		MapSet set;
-		set.fTimeSegm = s;
-		fMappings[name] = set; 
-	}
-	else found->fTimeSegm = s;
-}
-
-//______________________________________________________________________________
-void TMapable::setGraphicSegmentation (const std::string& name, SGraphicSegmentation s)
-{
-	MapSet* found = find (name);
-	if (!found) {
-		MapSet set;
-		set.fGraphicSegm = s;
-		fMappings[name] = set; 
-	}
-	else found->fGraphicSegm = s;
 }
 
 }
