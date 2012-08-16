@@ -19,8 +19,8 @@
   
 */
 
-#ifndef __rational__
-#define __rational__
+#ifndef __lmrational__
+#define __lmrational__
 
 #include <string>
 #include <ostream>

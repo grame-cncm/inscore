@@ -1,7 +1,7 @@
 
 #include <iostream>
 
-#include "rational.h"
+#include "lmrational.h"
 
 #include "TInterval.h"
 #include "TSegment.h"

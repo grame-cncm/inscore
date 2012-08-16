@@ -1,5 +1,5 @@
-#ifndef __tools__
-#define __tools__
+#ifndef __lmtools__
+#define __lmtools__
 
 /*
 	INScore Project - libMapping
@@ -23,7 +23,7 @@
 
 #include <math.h>
 #include <iostream>
-#include "rational.h"
+#include "lmrational.h"
 
 namespace libmapping
 {

@@ -32,7 +32,7 @@
 #include <string>
 #include <utility>
 
-#include "tools.h"
+#include "lmtools.h"
 
 namespace libmapping
 {
