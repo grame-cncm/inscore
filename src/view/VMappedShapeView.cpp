@@ -51,8 +51,6 @@ void VMappedShapeView::updateGraphic2GraphicMapping (IShapeMap* object)
 			iter++;
 		}
 		object->localMappings()->setMapping( i->first , g2l_mapping , l2t_mapping );	// Finally, affect the mapping to object.
-		object->setGraphicSegmentation( i->first , graphicSegmentation );				// Also affect the graphic segmentation.
-		
 		VGraphicsItemView::setMapping<GraphicSegment>( object , i->first , g2l_mapping , l2t_mapping );
 	}
 	

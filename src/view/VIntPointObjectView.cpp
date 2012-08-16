@@ -57,8 +57,6 @@ void VIntPointObjectView::updateLocalMapping (IGraphicBasedObject* object)
 			iter++;
 		}
 		object->localMappings()->setMapping( i->first , g2l_mapping , l2t_mapping );
-		object->setGraphicSegmentation( i->first , graphicSegmentation );
-
 		VGraphicsItemView::setMapping<IntPointSegment>( object , i->first , g2l_mapping , l2t_mapping );		
 	}
 	VGraphicsItemView::buildDefaultMapping( object );

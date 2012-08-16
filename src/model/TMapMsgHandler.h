@@ -75,7 +75,6 @@ template<typename S> class TMapMsgHandler
 				segment2relativetimereader<S> r;
 				if (r.read(map)) {
 					localMapping->addMapping( mapName , 0 , r.getMapping() );	// add the new localMapping without erasing the previous one.
-					object->addTimeSegmentation( mapName , r.getRelativeTimeSegmentation() );
 					if (mapName.empty()) object->fAutoMap = false;
 					return MsgHandler::kProcessed;
 				}
@@ -99,7 +98,6 @@ template<typename S> class TMapMsgHandler
 					if (r.read(map)) {
 						localMapping->setMapping( mapName , 0 , r.getMapping() );	// Set the new localMapping, also erasing the previous local<->graphic mapping.
 																					// (which is no longer up-to-date)							
-						object->setTimeSegmentation( mapName , r.getRelativeTimeSegmentation() );
 						if (mapName.empty()) object->fAutoMap = false;
 						return MsgHandler::kProcessed;
 					}
@@ -118,7 +116,6 @@ template<typename S> class TMapMsgHandler
 				if (r.readfile(file)) {
 					localMapping->setMapping( mapName , 0 , r.getMapping() );	// Set the new localMapping, also erasing the previous local<->graphic mapping.
 																				// (which is no longer up-to-date)
-					object->setTimeSegmentation( mapName , r.getRelativeTimeSegmentation() );
 					if (mapName.empty()) object->fAutoMap = false;
 					return MsgHandler::kProcessed;
 				}
