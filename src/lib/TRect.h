@@ -48,8 +48,6 @@ template<typename T> class TPoint
 				 TPoint(T x)						: fX(x), fY(x) {}
 				 TPoint(T x, T y)					: fX(x), fY(y) {}
 				 TPoint(const TPoint& p)			: fX(p.fX), fY(p.fY) {}
-				 TPoint(const TInterval<T>& p)		: fX(p.first()), fY(p.second()) {}
-//	template <typename C> TPoint(const TPoint<C>& p) : fX(T(p.fX)), fY(T(p.fY)) {}
 		virtual ~TPoint() {}
 
 		/// TPoint conversion to string
@@ -91,7 +89,6 @@ class TSize : public TPoint<T>
 		TSize() {}
 		TSize(T width, T height)	: TPoint<T>(width, height) {}
 		TSize(const TPoint<T>& p)	: TPoint<T>(p) {}
-		TSize(const TInterval<T>& i): TPoint<T>(i.start(), i.end()) {}
 
 		inline const T& x()			{ return TPoint<T>::fX; }
 		inline const T& y()			{ return TPoint<T>::fY; }
@@ -105,8 +102,6 @@ class TSize : public TPoint<T>
 		TSize<T> operator * ( T f )	{ return TSize<T>( width() * f , height() * f ); }
 };
 
-//template <typename T> OSCStream& operator << (OSCStream& out, const TSize<T>& size)
-//										{ out << size.width() << size.height(); return out; }
 
 typedef TSize<int>		TIntSize;
 typedef TSize<long>		TLongSize;
@@ -116,43 +111,52 @@ typedef TSize<float>	TFloatSize;
 /*!
 	\brief a TRect implemented as a TSegment2D
 */
-template<typename T> class TRect : public TSegment<T,2>
+template<typename T> class TRect
 {
-	typedef TSegment<T,2> S;
+	TPoint<T>	fTopLeft;
+	TPoint<T>	fBottomRight;
+
 	public :
 				 TRect() {}
-				 TRect(const TPoint<T>& a)						: S(a.x(), a.y(), a.x(), a.y()) {}
-				 TRect(const TPoint<T>& a, const TPoint<T>& b)	: S(a.x(), a.y(), b.x(), b.y()) {}
- 				 TRect(const TSegment<T,2>& r)					: S( r.xinterval(), r.yinterval() ) {}
+				 TRect(const TPoint<T>& a)						: fTopLeft(a), fBottomRight(a) {}
+				 TRect(const TPoint<T>& a, const TPoint<T>& b)	: fTopLeft(a), fBottomRight(b) {}
 		virtual ~TRect() {}
 
-		TPoint<T>	pos() const		{ return TPoint<T>(S::xinterval().first(), S::yinterval().first()); }
-		TPoint<T>	brpos() const	{ return TPoint<T>(S::xinterval().second(), S::yinterval().second()); }
-		TPoint<T>	blpos() const	{ return TPoint<T>(S::xinterval().first(), S::yinterval().second()); }
-		TPoint<T>	trpos() const	{ return TPoint<T>(S::xinterval().second(), S::yinterval().first()); }
+		TPoint<T>	pos() const		{ return fTopLeft; }
+		TPoint<T>	brpos() const	{ return fBottomRight; }
+		TPoint<T>	blpos() const	{ return TPoint<T>(fTopLeft.x(), fBottomRight.y()); }
+		TPoint<T>	trpos() const	{ return TPoint<T>(fBottomRight.x(), fTopLeft.y()); }
 		
-		inline T	width() const	{ return S::xinterval().size(); }
-		inline T	height() const	{ return S::yinterval().size(); }
+		inline T	width() const	{ return fBottomRight.x() - fTopLeft.x() ; }
+		inline T	height() const	{ return fBottomRight.y() - fTopLeft.y() ; }
 		TSize<T>	size() const	{ return TSize<T>(width(), height());}
 
-		T			x()	const		{ return S::xinterval().first(); }
-		T			y()	const		{ return S::yinterval().first(); }
-		T			right() const	{ return S::xinterval().second(); }
-		T			bottom() const	{ return S::yinterval().second(); }
+		T			x()	const		{ return fTopLeft.x(); }
+		T			y()	const		{ return fTopLeft.y(); }
+		T			right() const	{ return fBottomRight.x(); }
+		T			bottom() const	{ return fBottomRight.y(); }
 		
 		void setPos(const TPoint<T>& p)	{
-			S::fXInterval = TInterval<T>(p.x(), p.x() + width());
-			S::fYInterval = TInterval<T>(p.y(), p.y() + height());
+			TPoint<T> shift = fTopLeft - p;
+			fTopLeft = p;
+			fBottomRight += shift;
 		}
 
-		void setWidth(T width)			{ S::fXInterval = TInterval<T> (x(), x() + width); }
-		void setHeight(T height)		{ S::fYInterval = TInterval<T> (y(), y() + height); }
+		void setWidth(T width)			{ fBottomRight = TPoint<T>(fTopLeft.x() + width, fBottomRight.y()); }
+		void setHeight(T height)		{fBottomRight = TPoint<T>(fBottomRight.x(), fTopLeft.y() + height); }
 		void setSize(const TSize<T>& s)	{ setWidth(s.width()); setHeight(s.height()); }
 		void setX(T x)					{ setPos( TPoint<T>( x , this->y() ) ); }
 		void setY(T y)					{ setPos( TPoint<T>( this->x() , y ) ); }
 
-		TPoint<T>	center()	const					{ return (pos() + brpos())/T(2); }
+		/// inclusion of a location
+		bool include(const TPoint<T>& location) const	{ return (location.x() >= fTopLeft.x()) && (location.x() <= fBottomRight.x()) 
+															&& (location.y() >= fTopLeft.y()) && (location.y() <= fBottomRight.y()); }
+		/// inclusion of a rect
+		bool include(const TRect<T>& r) const			{ return include(r.pos()) && include(r.brpos()); }
+		/// intersection with a rect
+		bool intersect(const TRect<T>& r) const			{ return include(r.pos()) || include(r.brpos()) || include(r.blpos()) || include(r.trpos()); }
 
+		TPoint<T>	center()	const					{ return (pos() + brpos())/T(2); }
 		void		moveBy( const TPoint<T>& delta )	{ setPos( pos() + delta ); }
 };
 

@@ -132,7 +132,8 @@ template <typename T> struct clickPredicat : public clickPredicatBase {
 			 clickPredicat(const TPoint<T>& p, float z) : clickPredicatBase(z), fPoint(p) {}
 	virtual ~clickPredicat() {}
 	bool operator() (const SIObject& o) const { 
-		return clickPredicatBase::operator()(o) && o->getBoundingRect().include(pair<T,T>(fPoint.x(), fPoint.y())); 
+		return clickPredicatBase::operator()(o) && o->getBoundingRect().include(fPoint); 
+//		return clickPredicatBase::operator()(o) && o->getBoundingRect().include(pair<T,T>(fPoint.x(), fPoint.y())); 
 	}
 };
 
@@ -141,7 +142,7 @@ template <typename T> struct selectPredicat : public clickPredicatBase {
 			 selectPredicat(const TRect<T>& r, float z) : clickPredicatBase(z), fRect(r) {}
 	virtual ~selectPredicat() {}
 	bool operator() (const SIObject& o) const { 
-		return clickPredicatBase::operator()(o) && !(fRect & o->getBoundingRect()).empty(); 
+		return clickPredicatBase::operator()(o) && fRect.intersect(o->getBoundingRect()); 
 	}
 };
 

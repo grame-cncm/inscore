@@ -27,6 +27,8 @@
 
 #include "TComposition.h"
 #include "VGraphicsItemView.h"
+#include "maptypes.h"
+#include "TSegment.h"
 
 #include <QtDebug>
 #include <QGraphicsScene>
@@ -456,11 +458,25 @@ QRectF VGraphicsItemView::iObject2QGraphicsItem(const TFloatRect& rect) const
 }
 
 //------------------------------------------------------------------------------------------------------------
+QRectF VGraphicsItemView::iObject2QGraphicsItem(const GraphicSegment& s) const
+{
+	return QRectF( s.xinterval().first() , s.yinterval().first() ,s.xinterval().second() , s.yinterval().second() );
+}
+
+//------------------------------------------------------------------------------------------------------------
 QPointF VGraphicsItemView::iObject2QGraphicsItem(const TFloatPoint& point, const QRectF& qrect) const
 {
 	float x = ( point.x() + 1 ) * ( qrect.width() / 2.0f ) + qrect.x();
 	float y = ( point.y() + 1 ) * ( qrect.height() / 2.0f ) + qrect.y();
 	return QPointF( x,y );
+}
+
+//------------------------------------------------------------------------------------------------------------
+QRectF VGraphicsItemView::iObject2QGraphicsItem(const GraphicSegment& s, const QRectF& qrect) const
+{
+	QPointF a = iObject2QGraphicsItem(TFloatPoint(s.xinterval().first(), s.yinterval().first()), qrect);
+	QPointF b = iObject2QGraphicsItem(TFloatPoint(s.xinterval().second(), s.yinterval().second()), qrect);
+	return QRectF( a.x() , a.y() , b.x() - a.x() , b.y() - a.y() );
 }
 
 //------------------------------------------------------------------------------------------------------------

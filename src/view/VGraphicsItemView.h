@@ -37,6 +37,7 @@
 #include "TComposition.h"
 #include "QStretchTilerItem.h"
 #include "GraphicEffect.h"
+#include "maptypes.h"
 
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
@@ -121,8 +122,12 @@ class VGraphicsItemView : public VObjectView
 		QPointF iObject2QGraphicsItem(const TFloatPoint& point) const;
 		/// \brief Maps a rect in IObject internal coordinate to a rect in QGraphicsItem coordinate.
 		QRectF iObject2QGraphicsItem(const TFloatRect& rect) const;
+		/// \brief Maps a segment in IObject internal coordinate to a point in the specified QRectF.
+		QRectF iObject2QGraphicsItem(const GraphicSegment& s) const;
 		/// \brief Maps a point in IObject internal coordinate to a point in the specified QRectF.
 		QPointF iObject2QGraphicsItem(const TFloatPoint& point, const QRectF& qrect) const;
+		/// \brief Maps a segment in IObject internal coordinate to a point in the specified QRectF.
+		QRectF iObject2QGraphicsItem(const GraphicSegment& rect, const QRectF& qrect) const;
 		/// \brief Maps a rect in IObject internal coordinate to a rect in the specified QRectF.
 		QRectF iObject2QGraphicsItem(const TFloatRect& rect, const QRectF& qrect) const;
 
