@@ -92,8 +92,7 @@ template<typename S> class TMapMsgHandler
 					object->removeMapping( mapName );
 					return MsgHandler::kProcessed;
 				}
-				else
-				{
+				else {
 					segment2relativetimereader<S> r;
 					if (r.read(map)) {
 						localMapping->setMapping( mapName , r.getMapping() );	// Set the new localMapping, also erasing the previous local<->graphic mapping.
@@ -132,7 +131,6 @@ template<typename S> class TMapMsgHandler
 				IMessage* msg = new IMessage(object->getOSCAddress(), "map");
 				if ( iter->first.size() )
 					*msg << iter->first;
-//				*msg << iter->second.fLocal2Time->direct();
 				*msg << iter->second->direct();
 				outMsgs += msg;
 			}
