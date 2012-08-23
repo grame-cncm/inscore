@@ -60,6 +60,7 @@ class VSceneView : public VDummyObjectView
 	QGraphicsScene *	fScene;
 	QImage *			fImage;
 	WindowEventFilter * fEventFilter;
+	Qt::WindowFlags		fDefaultFlags;
 
 	void				updateOnScreen( IScene * scene );
 	void				updateOffScreen( IScene * scene );

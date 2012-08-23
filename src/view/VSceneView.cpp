@@ -30,6 +30,7 @@
 #include <QImage>
 #include <QPainter>
 #include <QGraphicsRectItem>
+#include <QGraphicsWidget>
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QResizeEvent>
@@ -95,6 +96,7 @@ VSceneView::VSceneView(const std::string& address, QGraphicsScene * scene)
 		fGraphicsView->scene()->setSceneRect( SCENE_RECT );
 		fGraphicsView->setWindowTitle( address.c_str() );
 		fGraphicsView->setSceneAddress( address.c_str() );
+		fDefaultFlags = fGraphicsView->windowFlags();
 		fEventFilter = new WindowEventFilter( address, fGraphicsView );
 	}
 	else {		// no scene is for offscreen rendering
@@ -175,6 +177,17 @@ void VSceneView::updateOnScreen( IScene * scene )
 
 	// Visibility
 	scene->getVisible() ? fGraphicsView->show() : fGraphicsView->hide();
+	Qt::WindowFlags flags = fGraphicsView->windowFlags();
+	if (scene->getFrameless()) {
+		if (flags != Qt::FramelessWindowHint) {
+			fGraphicsView->setWindowFlags (Qt::FramelessWindowHint);
+			fGraphicsView->showNormal ();
+		}
+	}
+	else if (flags != fDefaultFlags) {
+		fGraphicsView->setWindowFlags (fDefaultFlags);
+		fGraphicsView->showNormal ();
+	}
 }
 
 
