@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>4.1.1 Absolute positioning</TITLE>
+<META NAME="description" CONTENT="4.1.1 Absolute positioning">
+<META NAME="keywords" CONTENT="OSCMsg">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="OSCMsg.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node8.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html327"
+  HREF="node10.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html321"
+  HREF="node8.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html315"
+  HREF="node8.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html323"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html325"
+  HREF="node85.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html328"
+  HREF="node10.html">4.1.2 Relative positioning</A>
+<B> Up:</B> <A NAME="tex2html322"
+  HREF="node8.html">4.1 Positioning</A>
+<B> Previous:</B> <A NAME="tex2html316"
+  HREF="node8.html">4.1 Positioning</A>
+ &nbsp; <B>  <A NAME="tex2html324"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html326"
+  HREF="node85.html">Index</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00511000000000000000">
+4.1.1 Absolute positioning</A>
+</H2>
+
+<P>
+<BR>
+<IMG
+ WIDTH="267" HEIGHT="203" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="\begin{rail}
+absPosMsg :
+('x' float32)
+\vert ('y' float32)
+\vert ('z' float32)
+\vert ('angle' float32)
+\vert ('scale' float32)
+\end{rail}">
+<BR>
+<A NAME="261"></A>
+<A NAME="262"></A>
+<A NAME="263"></A>
+<A NAME="264"></A>
+<A NAME="265"></A>
+<A NAME="266"></A>
+<A NAME="267"></A>
+<A NAME="268"></A>
+<A NAME="269"></A>
+<A NAME="270"></A>
+
+<P>
+
+<UL>
+<LI><TT>x y</TT>: moves the <TT>x</TT> or <TT>y</TT> coordinate of a component. By default, components are centered on their <TT>x</TT>, <TT>y</TT> coordinates. The coordinates space range is <TT>[-1,1]</TT>. 
+<BR>
+For a <TT>scene</TT> component, -1 is the leftmost or topmost position, 1 is the rightmost or bottommost position. <TT>[0,0]</TT> represents the center of the <TT>scene</TT>. 
+<BR>
+For the <TT>scene</TT> itself, it moves the window in the screen space and the coordinate space is orthonormal, based on the screen lowest dimension (<I>i.e.</I> with a 4:3 screen, <TT>y=-1</TT> and <TT>y=1</TT> are respectively the exact top and bottom of the screen, but neither <TT>x=-1</TT> nor <TT>x=1</TT>are the exact left and right of the screen). 
+<BR>
+Default coordinates are <TT>[0,0]</TT>.
+</LI>
+<LI><TT>z</TT>: sets the <TT>z</TT> order of a component. The range is <IMG
+ WIDTH="40" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.gif"
+ ALT="$[0,\infty[$">. <TT>z</TT> order is actually relative to the <TT>scene</TT> components: objects of high <TT>z</TT> order will be drawn on top of components with a lower <TT>z</TT> order. Components sharing the same <TT>z</TT> order will be drawn in an undefined order, although the order will stay the same for as long as they live. 
+<BR>
+Default <TT>z</TT> order is 0.
+</LI>
+<LI><TT>angle</TT>: sets the <TT>angle</TT> value of a component, which is used to rotate it around its center. The angle is measured in clockwise degrees from the <TT>x</TT> axis.
+<BR>
+Default angle value is 0.
+</LI>
+<LI><TT>scale</TT>: reduce/enlarge a component. The range is <IMG
+ WIDTH="40" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.gif"
+ ALT="$[0,\infty[$">. Default scale is <TT>1</TT>.
+</LI>
+</UL>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html327"
+  HREF="node10.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html321"
+  HREF="node8.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html315"
+  HREF="node8.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html323"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html325"
+  HREF="node85.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html328"
+  HREF="node10.html">4.1.2 Relative positioning</A>
+<B> Up:</B> <A NAME="tex2html322"
+  HREF="node8.html">4.1 Positioning</A>
+<B> Previous:</B> <A NAME="tex2html316"
+  HREF="node8.html">4.1 Positioning</A>
+ &nbsp; <B>  <A NAME="tex2html324"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html326"
+  HREF="node85.html">Index</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
+</ADDRESS>
+</BODY>
+</HTML>

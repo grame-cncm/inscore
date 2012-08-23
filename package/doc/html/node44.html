@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>13.1.1 Simple signals.</TITLE>
+<META NAME="description" CONTENT="13.1.1 Simple signals.">
+<META NAME="keywords" CONTENT="OSCMsg">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="OSCMsg.css">
+
+<LINK REL="next" HREF="node45.html">
+<LINK REL="previous" HREF="node43.html">
+<LINK REL="up" HREF="node43.html">
+<LINK REL="next" HREF="node45.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html825"
+  HREF="node45.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html819"
+  HREF="node43.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html813"
+  HREF="node43.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html821"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html823"
+  HREF="node85.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html826"
+  HREF="node45.html">13.1.2 Composing signals in</A>
+<B> Up:</B> <A NAME="tex2html820"
+  HREF="node43.html">13.1 The signal virtual</A>
+<B> Previous:</B> <A NAME="tex2html814"
+  HREF="node43.html">13.1 The signal virtual</A>
+ &nbsp; <B>  <A NAME="tex2html822"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html824"
+  HREF="node85.html">Index</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION001411000000000000000"></A>
+<A NAME="ssignal"></A>
+<BR>
+13.1.1 Simple signals.
+</H2>
+The signal messages can be sent to any address with the form <TT>/ITL/scene/signal/<I>identifier</I></TT>, where <TT><I>identifier</I></TT> is a unique signal identifier.
+The set of messages supported by a signal is the following:
+<BR>
+<IMG
+ WIDTH="320" HEIGHT="355" ALIGN="BOTTOM" BORDER="0"
+ SRC="img74.gif"
+ ALT="\begin{rail}
+simpleSignal : [1] ( float32 + )
+\vert [2] ('size' int32)
+\vert ...
+...' ( \vert 'size' \vert 'default')
+\vert [5] 'reset'
+\vert [6] 'del'
+\end{rail}">
+<BR>
+<A NAME="961"></A>
+<A NAME="962"></A>
+<A NAME="963"></A>
+<A NAME="964"></A>
+<A NAME="965"></A>
+<A NAME="966"></A>
+
+<P>
+
+<UL>
+<LI><B>[1]</B> push an arbitrary data count into the signal buffer. The data range should be <TT>[-1,1]</TT>. Note that the signal buffer behaves like a ring buffer, thus data are wrapped when the data count if greater than the signal size. 
+</LI>
+<LI><B>[2]</B> the <TT>size</TT> message sets the signal buffer size. When not specified, the buffer size value is the size of the first data message. 
+</LI>
+<LI><B>[3]</B> the <TT>default</TT> message sets the <I>default signal value</I>. A signal <I>default value</I> is the value returned when a query asks for data past the available values.
+</LI>
+<LI><B>[4]</B> the <TT>get</TT> gives the signal values. The <TT>size</TT> and  <TT>default</TT> parameters are used to query the signal size and default values.
+</LI>
+<LI><B>[5]</B> the <TT>reset</TT> message clears the signal data. 
+</LI>
+<LI><B>[6]</B> the <TT>del</TT> message deletes the signal from the <TT>signal</TT> space. Note that it is safe to delete a signal even when used by a graphic signal. 
+</LI>
+</UL>
+
+<P>
+Example:
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/signal/null 0.0;</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+creates a constant signal named <TT>null</TT>, which value is <TT>0</TT>.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html825"
+  HREF="node45.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html819"
+  HREF="node43.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html813"
+  HREF="node43.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html821"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html823"
+  HREF="node85.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html826"
+  HREF="node45.html">13.1.2 Composing signals in</A>
+<B> Up:</B> <A NAME="tex2html820"
+  HREF="node43.html">13.1 The signal virtual</A>
+<B> Previous:</B> <A NAME="tex2html814"
+  HREF="node43.html">13.1 The signal virtual</A>
+ &nbsp; <B>  <A NAME="tex2html822"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html824"
+  HREF="node85.html">Index</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
+</ADDRESS>
+</BODY>
+</HTML>

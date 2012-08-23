@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>12.2 Debug</TITLE>
+<META NAME="description" CONTENT="12.2 Debug">
+<META NAME="keywords" CONTENT="OSCMsg">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="OSCMsg.css">
+
+<LINK REL="previous" HREF="node40.html">
+<LINK REL="up" HREF="node39.html">
+<LINK REL="next" HREF="node42.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html773"
+  HREF="node42.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html767"
+  HREF="node39.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html763"
+  HREF="node40.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html769"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html771"
+  HREF="node85.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html774"
+  HREF="node42.html">13. Signals and graphic</A>
+<B> Up:</B> <A NAME="tex2html768"
+  HREF="node39.html">12. Virtual address space</A>
+<B> Previous:</B> <A NAME="tex2html764"
+  HREF="node40.html">12.1 File watcher</A>
+ &nbsp; <B>  <A NAME="tex2html770"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html772"
+  HREF="node85.html">Index</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION001320000000000000000">
+12.2 Debug</A>
+</H1>
+
+<P>
+Each object has a <TT>debug</TT> sub-node for debugging purposes. This <TT>debug</TT> virtual node has 3 flags, that can be actived or desactived with <TT>0</TT> or <TT>1</TT>:
+
+<P>
+<BR>
+<IMG
+ WIDTH="258" HEIGHT="126" ALIGN="BOTTOM" BORDER="0"
+ SRC="img73.gif"
+ ALT="\begin{rail}
+debug : ('name' int32)
+\vert ('map' int32)
+\vert ('signal' int32)
+\end{rail}">
+<BR>
+
+<P>
+
+<UL>
+<LI>When the <TT>name</TT> flag is on, each scene component displays its bounding rectangle and name.
+</LI>
+<LI>When the <TT>map</TT> flag is on, each scene component displays its mappings.
+</LI>
+<LI>When the <TT>signal</TT> flag is on, each object (even the scene or the application) will, according to its type, emit 'performance related' signals (or no signal). This 'performance signal' is specific to the type of object. The name of 'performance signal' is of the form <TT>debug-</TT><I>objectName</I><TT>-</TT><I>SomeName</I>. Currently, only the <TT>application</TT>, the <TT>scene</TT> and <TT>graph</TT> objects emit 'performance signals'.
+</LI>
+</UL>
+
+<P>
+<BR><HR>
+<ADDRESS>
+<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
+</ADDRESS>
+</BODY>
+</HTML>

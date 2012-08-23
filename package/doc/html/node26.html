@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>8.1 Pen control</TITLE>
+<META NAME="description" CONTENT="8.1 Pen control">
+<META NAME="keywords" CONTENT="OSCMsg">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="OSCMsg.css">
+
+<LINK REL="next" HREF="node27.html">
+<LINK REL="previous" HREF="node25.html">
+<LINK REL="up" HREF="node25.html">
+<LINK REL="next" HREF="node27.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html564"
+  HREF="node27.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html558"
+  HREF="node25.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html552"
+  HREF="node25.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html560"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html562"
+  HREF="node85.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html565"
+  HREF="node27.html">8.2 Width and height</A>
+<B> Up:</B> <A NAME="tex2html559"
+  HREF="node25.html">8. Component specific messages</A>
+<B> Previous:</B> <A NAME="tex2html553"
+  HREF="node25.html">8. Component specific messages</A>
+ &nbsp; <B>  <A NAME="tex2html561"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html563"
+  HREF="node85.html">Index</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00910000000000000000">
+8.1 Pen control</A>
+</H1>
+
+<P>
+Messages accepted by the components types <TT>rect | ellipse | polygon | curve | line | graph</TT>.
+<BR>
+<IMG
+ WIDTH="293" HEIGHT="127" ALIGN="BOTTOM" BORDER="0"
+ SRC="img45.gif"
+ ALT="\begin{rail}
+penMsg : 'penColor' color
+\vert 'penWidth' float32
+\vert 'penStyle' penstyle
+\end{rail}">
+<BR>
+<A NAME="652"></A>
+<A NAME="653"></A>
+<A NAME="654"></A>
+
+<P>
+<BR>
+<IMG
+ WIDTH="221" HEIGHT="203" ALIGN="BOTTOM" BORDER="0"
+ SRC="img46.gif"
+ ALT="\begin{rail}
+penstyle : 'solid' \vert 'dash' \vert 'dot' \vert 'dashDot' \vert 'dashDotDot'
+\end{rail}">
+<BR>
+<A NAME="657"></A>
+<A NAME="658"></A>
+<A NAME="659"></A>
+<A NAME="660"></A>
+<A NAME="661"></A>
+
+<P>
+The pen width default value is 0 (excepted for <TT>line</TT> objects, where 1.0 is the default value). It is expressed in arbitrary units (1 is a reasonable value).
+The pen style default value is <TT>solid</TT>.
+<BR>
+The color scheme is described in section <A HREF="node13.html#colormsg">4.2</A>.
+
+<P>
+<BR><HR>
+<ADDRESS>
+<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
+</ADDRESS>
+</BODY>
+</HTML>

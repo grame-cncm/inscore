@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>1. General format</TITLE>
+<META NAME="description" CONTENT="1. General format">
+<META NAME="keywords" CONTENT="OSCMsg">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="OSCMsg.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node1.html">
+<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="next" HREF="node3.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html212"
+  HREF="node3.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html206"
+  HREF="OSCMsg.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html200"
+  HREF="node1.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html208"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html210"
+  HREF="node85.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html213"
+  HREF="node3.html">1.1 Parameters</A>
+<B> Up:</B> <A NAME="tex2html207"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html201"
+  HREF="node1.html">Contents</A>
+ &nbsp; <B>  <A NAME="tex2html209"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html211"
+  HREF="node85.html">Index</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00200000000000000000"></A>
+<A NAME="genformat"></A>
+<BR>
+1. General format
+</H1>
+An OSC message is made of an OSC address, followed by a message string, followed by zero to n parameters. The message string could be viewed as the method name of the object identified by the OSC address.
+The OSC address could be string or a regular expression matching several objects.
+<BR>
+<IMG
+ WIDTH="402" HEIGHT="75" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.gif"
+ ALT="\begin{rail}
+OSCMessage : OSCAddress message (parameters \vert)
+\end{rail}">
+<BR>
+
+<P>
+<BR>
+<IMG
+ WIDTH="286" HEIGHT="110" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="\begin{rail}
+OSCAddress : '/' (identifier \vert regexp) +
+\end{rail}">
+<BR>
+
+<P>
+startid[-_a-zA-Z]
+nextid[-_a-zA-Z0-9]]
+<BR>
+<IMG
+ WIDTH="245" HEIGHT="75" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="\begin{rail}
+identifier : startid (nextid +)
+\end{rail}">
+<BR>
+
+<P>
+Some specific nodes accept (like <I>signals</I> - see section <A HREF="node44.html#ssignal">13.1.1</A>) OSC messages without message string:
+<BR>
+<IMG
+ WIDTH="268" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.gif"
+ ALT="\begin{rail}
+OSCMessage : OSCAddress parameters
+\end{rail}">
+<BR>
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html214"
+  HREF="node3.html">1.1 Parameters</A>
+<LI><A NAME="tex2html215"
+  HREF="node4.html">1.2 Address space</A>
+</UL>
+<!--End of Table of Child-Links-->
+<BR><HR>
+<ADDRESS>
+<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
+</ADDRESS>
+</BODY>
+</HTML>

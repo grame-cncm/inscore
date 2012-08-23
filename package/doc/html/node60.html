@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>16.1 Variables</TITLE>
+<META NAME="description" CONTENT="16.1 Variables">
+<META NAME="keywords" CONTENT="OSCMsg">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="OSCMsg.css">
+
+<LINK REL="next" HREF="node61.html">
+<LINK REL="previous" HREF="node59.html">
+<LINK REL="up" HREF="node59.html">
+<LINK REL="next" HREF="node61.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html1050"
+  HREF="node61.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html1044"
+  HREF="node59.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html1038"
+  HREF="node59.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html1046"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html1048"
+  HREF="node85.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html1051"
+  HREF="node61.html">16.2 Languages</A>
+<B> Up:</B> <A NAME="tex2html1045"
+  HREF="node59.html">16. Scripting</A>
+<B> Previous:</B> <A NAME="tex2html1039"
+  HREF="node59.html">16. Scripting</A>
+ &nbsp; <B>  <A NAME="tex2html1047"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1049"
+  HREF="node85.html">Index</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION001710000000000000000"></A><A NAME="scriptvar"></A>
+<BR>
+16.1 Variables
+</H1>
+
+<P>
+A variable may hold any value supported by the parameter types. <B><TT><FONT SIZE="-1">string</FONT></TT></B> must be enclosed in simple or double quotes. It is declared as follows:
+<BR>
+<IMG
+ WIDTH="346" HEIGHT="123" ALIGN="BOTTOM" BORDER="0"
+ SRC="img96.gif"
+ ALT="\begin{rail}
+variabledecl : 'ident' '=' ( int32 \vert float32 \vert string ) ';'
+\end{rail}">
+<BR>
+<A NAME="1280"></A>
+A variable may be used in place of any message parameter. A reference to a variable must have the form <TT>$ident</TT> where <TT>ident</TT> is a previously declared variable. 
+
+<P>
+Note that interaction messages may also use variables with similar reference forms ($ident). There is however no ambiguity concerning these references: interaction variables are always passed as strings and should be quoted, scripts variables as used without quotes.
+
+<P>
+Example:
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>
+x=0.5;
+<BR>/ITL/scene/a x $x;
+<BR>/ITL/scene/b x $x;
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
+<BR><HR>
+<ADDRESS>
+<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
+</ADDRESS>
+</BODY>
+</HTML>

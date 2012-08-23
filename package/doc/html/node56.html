@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>15.3 Variables</TITLE>
+<META NAME="description" CONTENT="15.3 Variables">
+<META NAME="keywords" CONTENT="OSCMsg">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="OSCMsg.css">
+
+<LINK REL="next" HREF="node57.html">
+<LINK REL="previous" HREF="node55.html">
+<LINK REL="up" HREF="node53.html">
+<LINK REL="next" HREF="node57.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html994"
+  HREF="node57.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html988"
+  HREF="node53.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html982"
+  HREF="node55.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html990"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html992"
+  HREF="node85.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html995"
+  HREF="node57.html">15.4 Message based variables</A>
+<B> Up:</B> <A NAME="tex2html989"
+  HREF="node53.html">15. Events and Interaction</A>
+<B> Previous:</B> <A NAME="tex2html983"
+  HREF="node55.html">15.2 Notification messages</A>
+ &nbsp; <B>  <A NAME="tex2html991"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html993"
+  HREF="node85.html">Index</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION001630000000000000000"></A>
+<A NAME="interactvar"></A>
+<BR>
+15.3 Variables
+</H1>
+
+<P>
+Variables denote values computed when an event is triggered. These values are send in place of the variable. A variable name starts with a '$' sign. Currently, the following variables are supported by mouse events:
+<BR>
+<IMG
+ WIDTH="194" HEIGHT="314" ALIGN="BOTTOM" BORDER="0"
+ SRC="img90.gif"
+ ALT="\begin{rail}
+variable : (xy \vert 'absx' \vert 'absy' \vert 'sx' \vert 'sy' \vert date \vert 'name' \vert 'address')
+\end{rail}">
+<BR>
+<A NAME="1223"></A>
+<A NAME="1224"></A>
+<A NAME="1225"></A>
+<A NAME="1226"></A>
+<A NAME="1227"></A>
+<A NAME="1228"></A>
+<A NAME="1229"></A>
+<A NAME="1230"></A>
+<A NAME="1231"></A>
+
+<P>
+<BR>
+<IMG
+ WIDTH="310" HEIGHT="84" ALIGN="BOTTOM" BORDER="0"
+ SRC="img91.gif"
+ ALT="\begin{rail}
+xy : ('x' \vert 'y') ( \vert '[low,high]')
+\end{rail}">
+<BR>
+
+<P>
+
+<UL>
+<LI><TT>$x</TT> <TT>$y</TT>: denotes the mouse pointer position at the time of the event. The values are in the range <IMG
+ WIDTH="37" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img92.gif"
+ ALT="$[0,1]$"> where 1 is the object size in the x or y dimension. The value is computed according to the object origin: it represents the mouse pointer distance from the object x or y origin (see <A HREF="node11.html#origin">4.1.3</A> p.<A HREF="node11.html#origin"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). <TT>$x</TT> and <TT>$y</TT> variables support an optional range in the form <TT>[low, high]</TT> that transforms the <IMG
+ WIDTH="37" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img92.gif"
+ ALT="$[0,1]$"> values range into the <IMG
+ WIDTH="72" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img93.gif"
+ ALT="$[low, high]$"> range.
+
+<P>
+</LI>
+<LI><TT>$absx</TT> <TT>$absy</TT>: denotes the mouse pointer absolute position at the time of the event. The values represent a pixel position relative to the top-left point of the target object. Note that this position is unaffected by scale. 
+Note also that the values are not clipped to the object dimensions and could exceed its width or height or become negative in case of mouse move events.
+
+<P>
+</LI>
+<LI><TT>$sx</TT> <TT>$sy</TT>: denotes the mouse pointer position in the scene coordinates space. 
+</LI>
+</UL>
+
+<P>
+<BR>
+<IMG
+ WIDTH="479" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
+ SRC="img94.gif"
+ ALT="\begin{rail}
+date : ('date' \vert 'rdate') (\vert ':' mapname) (\vert '[n/d]')
+\par
+\end{rail}">
+<BR>
+
+<P>
+
+<UL>
+<LI><TT>$date</TT>: denotes the object date corresponding to the mouse pointer position at the time of the event. It is optionnaly followed by a colon and the name of the mapping to be used to compute the date. The <TT>$date</TT> variable is replaced by its rational value (i.e. two integers values). The optional rational enclosed in brackets may be used to indicate a quantification: the date value is rounded to an integer count of the specified rational value. 
+</LI>
+<LI><TT>$rdate</TT>: is similar to <TT>$date</TT> but ignores the target current date: the date is relative to the object mapping only.
+</LI>
+<LI><TT>$name</TT>, <TT>$address</TT>: replaced by the target object name or OSC address. Note that in case of <TT>newElement</TT> event, the target object is the new element. 
+</LI>
+</UL>
+
+<P>
+Note that a variable can be used several times in a message, but several <TT>$date</TT> variables must always refer to the same mapping.
+
+<P>
+<BR>
+<BR>
+<TT><B>Warning:</B></TT> the interaction message set is provided for experiment. It is likely to change in a future version. Ideas, comments, suggestions are welcome for the design of a stable API.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html994"
+  HREF="node57.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html988"
+  HREF="node53.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html982"
+  HREF="node55.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html990"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html992"
+  HREF="node85.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html995"
+  HREF="node57.html">15.4 Message based variables</A>
+<B> Up:</B> <A NAME="tex2html989"
+  HREF="node53.html">15. Events and Interaction</A>
+<B> Previous:</B> <A NAME="tex2html983"
+  HREF="node55.html">15.2 Notification messages</A>
+ &nbsp; <B>  <A NAME="tex2html991"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html993"
+  HREF="node85.html">Index</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
+</ADDRESS>
+</BODY>
+</HTML>

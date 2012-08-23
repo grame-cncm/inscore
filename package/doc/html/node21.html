@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>5. Time management messages</TITLE>
+<META NAME="description" CONTENT="5. Time management messages">
+<META NAME="keywords" CONTENT="OSCMsg">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="OSCMsg.css">
+
+<LINK REL="next" HREF="node22.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="next" HREF="node22.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html492"
+  HREF="node22.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html486"
+  HREF="OSCMsg.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html480"
+  HREF="node20.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html488"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html490"
+  HREF="node85.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html493"
+  HREF="node22.html">6. The 'set' message</A>
+<B> Up:</B> <A NAME="tex2html487"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html481"
+  HREF="node20.html">4.4 The 'click' and</A>
+ &nbsp; <B>  <A NAME="tex2html489"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html491"
+  HREF="node85.html">Index</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00600000000000000000"></A>
+<A NAME="time"></A>
+<BR>
+5. Time management messages
+</H1>
+Time messages control the time dimension if the score components. They could be sent to any address with the form <TT>/ITL/scene/<I>identifier</I></TT> where <TT><I>identifier</I></TT> is the unique identifier string of a scene component.
+<BR>
+<IMG
+ WIDTH="267" HEIGHT="242" ALIGN="BOTTOM" BORDER="0"
+ SRC="img38.gif"
+ ALT="\begin{rail}
+timeMsg : 'clock'
+\vert 'durClock'
+\vert ('date' time)
+\vert ('duration' time)
+\vert ('ddate' time)
+\vert ('dduration' time)
+\end{rail}">
+<BR>
+<A NAME="509"></A>
+<A NAME="510"></A>
+<A NAME="511"></A>
+<A NAME="512"></A>
+<A NAME="513"></A>
+<A NAME="514"></A>
+
+<P>
+<BR>
+<IMG
+ WIDTH="252" HEIGHT="124" ALIGN="BOTTOM" BORDER="0"
+ SRC="img39.gif"
+ ALT="\begin{rail}
+time : (( int32 int32) \vert int32 \vert float32 )
+\end{rail}">
+<BR>
+
+<P>
+
+<UL>
+<LI>Time is specified as a rational value <TT>d/n</TT> where <TT>n</TT> represents the whole note division and <TT>d</TT> the divisions count. The parameters order is <TT>numerator</TT> followed by <TT>denominator</TT>. 
+</LI>
+<LI>Time may also be specified with a single integer, then 1 is used as implicit denominator value
+</LI>
+<LI>or using a single float value converted to int32 using the following approximation: when <TT>f</TT> is the floating point value, the corresponding rational value is <TT>f x 10000 / 10000</TT>.
+</LI>
+</UL>
+
+<P>
+
+<UL>
+<LI><TT>clock</TT>: similar to MIDI clock message: advances the object date by 1/24 of quarter note.
+</LI>
+<LI><TT>durClock</TT>: a clock message applied to duration: increases the object duration by 1/24 of quarter note.
+</LI>
+<LI><TT>date</TT>: sets the time position of an object. Default value is <TT>0/1</TT>.
+</LI>
+<LI><TT>duration</TT>: changes the object duration. Default value is <TT>1/1</TT>.
+</LI>
+<LI><TT>ddate</TT>: relative time positioning message: adds the specified value to the object date.
+</LI>
+<LI><TT>dduration</TT>: relative duration message: adds the specified value to the object duration.
+</LI>
+</UL>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html492"
+  HREF="node22.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html486"
+  HREF="OSCMsg.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html480"
+  HREF="node20.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html488"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html490"
+  HREF="node85.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html493"
+  HREF="node22.html">6. The 'set' message</A>
+<B> Up:</B> <A NAME="tex2html487"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html481"
+  HREF="node20.html">4.4 The 'click' and</A>
+ &nbsp; <B>  <A NAME="tex2html489"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html491"
+  HREF="node85.html">Index</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
+</ADDRESS>
+</BODY>
+</HTML>
