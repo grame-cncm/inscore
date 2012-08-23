@@ -28,7 +28,7 @@
 #define __IGlue__
 
 #include <QThread>
-#include <QObject>
+#include <QTimer>
 #include <QMutex>
 #include <QApplication>
 
@@ -74,7 +74,7 @@ typedef class SMARTP<IAppl>	SIAppl;
 
 	IGlue inherits from QObject for timer capabilities.
 */
-class export IGlue : public MsgListener, public QObject 
+class export IGlue : public MsgListener, public QTimer 
 {
 	OscThread *		fOscThread;
 	SUpdater 		fViewUpdater;
@@ -86,6 +86,7 @@ class export IGlue : public MsgListener, public QObject
 	SPeriodicTask	fTimeTask;
 	GraphicUpdateListener * fViewListener;
 	QMutex			fTimeViewMutex;
+	int				fCurrentRate;
 
 	int		fTimerID;
 	udpinfo fUDP;
