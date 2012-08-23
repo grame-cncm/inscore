@@ -27,32 +27,32 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html266"
+<A NAME="tex2html268"
   HREF="node7.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html260"
+<A NAME="tex2html262"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html254"
+<A NAME="tex2html256"
   HREF="node5.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html262"
+<A NAME="tex2html264"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html264"
-  HREF="node84.html">
+<A NAME="tex2html266"
+  HREF="node85.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html267"
+<B> Next:</B> <A NAME="tex2html269"
   HREF="node7.html">4. Common components messages</A>
-<B> Up:</B> <A NAME="tex2html261"
+<B> Up:</B> <A NAME="tex2html263"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html255"
+<B> Previous:</B> <A NAME="tex2html257"
   HREF="node5.html">2. Application messages</A>
- &nbsp; <B>  <A NAME="tex2html263"
-  HREF="node1.html">Contents</A></B> 
  &nbsp; <B>  <A NAME="tex2html265"
-  HREF="node84.html">Index</A></B> 
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html267"
+  HREF="node85.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
@@ -65,27 +65,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 A scene may be viewed as a window on the score elements. Its address is <TT>/ITL/<I>sceneIdentifier</I></TT> where <TT><I>sceneIdentifier</I></TT> is the scene name. It handles the following messages:
 <BR>
 <IMG
- WIDTH="159" HEIGHT="294" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="290" HEIGHT="356" ALIGN="BOTTOM" BORDER="0"
  SRC="img9.gif"
  ALT="\begin{rail}
 sceneMsg : 'new'
 \vert 'del'
 \vert ('rootPath' path)
 \vert ('lo...
-...set'
-\vert 'foreground'
-\vert ('fullscreen' int32)
+...vert ('fullscreen' int32)
+\vert ('frameless' int32)
 \vert commonMsg
 \end{rail}">
 <BR>
-<A NAME="196"></A>
-<A NAME="197"></A>
-<A NAME="198"></A>
 <A NAME="199"></A>
 <A NAME="200"></A>
 <A NAME="201"></A>
 <A NAME="202"></A>
 <A NAME="203"></A>
+<A NAME="204"></A>
+<A NAME="205"></A>
+<A NAME="206"></A>
+<A NAME="207"></A>
 
 <P>
 
@@ -104,6 +104,8 @@ sceneMsg : 'new'
 </LI>
 <LI><TT>fullscreen</TT>: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is <TT>0</TT>.
 </LI>
+<LI><TT>frameless</TT>: requests the scene to switch to frameless or normal window.  The parameter is interpreted as a boolean value. Default value is <TT>0</TT>.
+</LI>
 <LI><TT>commonMsg</TT>: see section <A HREF="node7.html#common">4</A> p.<A HREF="node7.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>.
 </LI>
 </UL>
@@ -111,32 +113,32 @@ sceneMsg : 'new'
 <P>
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html266"
+<A NAME="tex2html268"
   HREF="node7.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html260"
+<A NAME="tex2html262"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html254"
+<A NAME="tex2html256"
   HREF="node5.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html262"
+<A NAME="tex2html264"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html264"
-  HREF="node84.html">
+<A NAME="tex2html266"
+  HREF="node85.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html267"
+<B> Next:</B> <A NAME="tex2html269"
   HREF="node7.html">4. Common components messages</A>
-<B> Up:</B> <A NAME="tex2html261"
+<B> Up:</B> <A NAME="tex2html263"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html255"
+<B> Previous:</B> <A NAME="tex2html257"
   HREF="node5.html">2. Application messages</A>
- &nbsp; <B>  <A NAME="tex2html263"
-  HREF="node1.html">Contents</A></B> 
  &nbsp; <B>  <A NAME="tex2html265"
-  HREF="node84.html">Index</A></B> 
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html267"
+  HREF="node85.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>

@@ -27,32 +27,32 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html945"
+<A NAME="tex2html947"
   HREF="node54.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html939"
+<A NAME="tex2html941"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html933"
+<A NAME="tex2html935"
   HREF="node52.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html941"
+<A NAME="tex2html943"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html943"
-  HREF="node84.html">
+<A NAME="tex2html945"
+  HREF="node85.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html946"
+<B> Next:</B> <A NAME="tex2html948"
   HREF="node54.html">15.1 Interaction messages</A>
-<B> Up:</B> <A NAME="tex2html940"
+<B> Up:</B> <A NAME="tex2html942"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html934"
+<B> Previous:</B> <A NAME="tex2html936"
   HREF="node52.html">14.2 Feeding and composing</A>
- &nbsp; <B>  <A NAME="tex2html942"
-  HREF="node1.html">Contents</A></B> 
  &nbsp; <B>  <A NAME="tex2html944"
-  HREF="node84.html">Index</A></B> 
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html946"
+  HREF="node85.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
@@ -72,14 +72,14 @@ The general form of the message is:
 <P>
 <BR>
 <IMG
- WIDTH="254" HEIGHT="104" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="425" HEIGHT="127" ALIGN="BOTTOM" BORDER="0"
  SRC="img84.gif"
  ALT="\begin{rail}
 interactMsg : (('watch' \vert 'watch+') ([1] \vert what ( \vert oscMsg)))
 \end{rail}">
 <BR>
-<A NAME="1172"></A>
-<A NAME="1173"></A>
+<A NAME="1178"></A>
+<A NAME="1179"></A>
 
 <P>
 
@@ -94,7 +94,7 @@ interactMsg : (('watch' \vert 'watch+') ([1] \vert what ( \vert oscMsg)))
 The associated OSC message is any valid OSC message (not restricted to the Interlude message set), with an extended address scheme, supporting IP addresses or host names and udp port number to be specified as OSC addresses prefix. The message parameters are any valid OSC type or variables (see section <A HREF="node56.html#interactvar">15.3</A>).
 <BR>
 <IMG
- WIDTH="230" HEIGHT="90" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="523" HEIGHT="114" ALIGN="BOTTOM" BORDER="0"
  SRC="img85.gif"
  ALT="\begin{rail}
 oscMsg : (\vert fullAddress) OSCAddress ( (parameters \vert variable) + )
@@ -104,7 +104,7 @@ oscMsg : (\vert fullAddress) OSCAddress ( (parameters \vert variable) + )
 <P>
 <BR>
 <IMG
- WIDTH="129" HEIGHT="65" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="298" HEIGHT="88" ALIGN="BOTTOM" BORDER="0"
  SRC="img86.gif"
  ALT="\begin{rail}
 fullAddress : (IPAddress \vert hostname) ':' port
@@ -117,15 +117,15 @@ fullAddress : (IPAddress \vert hostname) ':' port
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><A NAME="tex2html947"
-  HREF="node54.html">15.1 Interaction messages</A>
-<LI><A NAME="tex2html948"
-  HREF="node55.html">15.2 Notification messages</A>
 <LI><A NAME="tex2html949"
-  HREF="node56.html">15.3 Variables</A>
+  HREF="node54.html">15.1 Interaction messages</A>
 <LI><A NAME="tex2html950"
-  HREF="node57.html">15.4 Message based variables</A>
+  HREF="node55.html">15.2 Notification messages</A>
 <LI><A NAME="tex2html951"
+  HREF="node56.html">15.3 Variables</A>
+<LI><A NAME="tex2html952"
+  HREF="node57.html">15.4 Message based variables</A>
+<LI><A NAME="tex2html953"
   HREF="node58.html">15.5 OSC address variables</A>
 </UL>
 <!--End of Table of Child-Links-->

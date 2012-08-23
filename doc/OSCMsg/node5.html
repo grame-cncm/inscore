@@ -27,32 +27,32 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html252"
+<A NAME="tex2html254"
   HREF="node6.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html246"
+<A NAME="tex2html248"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html240"
+<A NAME="tex2html242"
   HREF="node4.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html248"
+<A NAME="tex2html250"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html250"
-  HREF="node84.html">
+<A NAME="tex2html252"
+  HREF="node85.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html253"
+<B> Next:</B> <A NAME="tex2html255"
   HREF="node6.html">3. Scene messages</A>
-<B> Up:</B> <A NAME="tex2html247"
+<B> Up:</B> <A NAME="tex2html249"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html241"
+<B> Previous:</B> <A NAME="tex2html243"
   HREF="node4.html">1.2 Address space</A>
- &nbsp; <B>  <A NAME="tex2html249"
-  HREF="node1.html">Contents</A></B> 
  &nbsp; <B>  <A NAME="tex2html251"
-  HREF="node84.html">Index</A></B> 
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html253"
+  HREF="node85.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
@@ -65,15 +65,16 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 Application messages are accepted by the static OSC address <TT>/ITL</TT>. It covers the following messages:
 <BR>
 <IMG
- WIDTH="176" HEIGHT="409" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="345" HEIGHT="470" ALIGN="BOTTOM" BORDER="0"
  SRC="img7.gif"
  ALT="\begin{rail}
 ITLMsg : 'quit'
 \vert ('rootPath' path)
 \vert ('port' int32)
 \...
-...vert ('load' filePath)
+...
 \vert ('require' int32 oscMsg)
+\vert ('rate' int32)
 \vert 'hello'
 \end{rail}">
 <BR>
@@ -86,6 +87,7 @@ ITLMsg : 'quit'
 <A NAME="145"></A>
 <A NAME="146"></A>
 <A NAME="147"></A>
+<A NAME="148"></A>
 
 <P>
 
@@ -114,6 +116,12 @@ The default <TT>defaultShow</TT> value is 1.
 
 <P>
 </LI>
+<LI><TT>rate</TT>: changes the time task rate. Note that null values are ignored.
+<BR>
+The default <TT>rate</TT> value is 10.
+
+<P>
+</LI>
 <LI><TT>load</TT>: loads a file previously saved using the <TT>save</TT> message (see section <A HREF="node7.html#common">4</A> p.<A HREF="node7.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). Note that the load operation appends the new objects to the existing scene. Whe necessary, it's the sender responsability to clear the scene before loading a file.
 
 <P>
@@ -135,15 +143,15 @@ The application supports the <TT>get</TT> messages for its parameters (see secti
 <P>
 <BR>
 <IMG
- WIDTH="207" HEIGHT="103" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="321" HEIGHT="127" ALIGN="BOTTOM" BORDER="0"
  SRC="img8.gif"
  ALT="\begin{rail}
 ITLRequest : 'get' ('version' \vert 'guido-version' \vert 'musicxml-version')
 \end{rail}">
 <BR>
-<A NAME="182"></A>
-<A NAME="183"></A>
-<A NAME="184"></A>
+<A NAME="185"></A>
+<A NAME="186"></A>
+<A NAME="187"></A>
 
 <P>
 
@@ -161,32 +169,32 @@ ITLRequest : 'get' ('version' \vert 'guido-version' \vert 'musicxml-version')
 <P>
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html252"
+<A NAME="tex2html254"
   HREF="node6.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html246"
+<A NAME="tex2html248"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html240"
+<A NAME="tex2html242"
   HREF="node4.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html248"
+<A NAME="tex2html250"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html250"
-  HREF="node84.html">
+<A NAME="tex2html252"
+  HREF="node85.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html253"
+<B> Next:</B> <A NAME="tex2html255"
   HREF="node6.html">3. Scene messages</A>
-<B> Up:</B> <A NAME="tex2html247"
+<B> Up:</B> <A NAME="tex2html249"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html241"
+<B> Previous:</B> <A NAME="tex2html243"
   HREF="node4.html">1.2 Address space</A>
- &nbsp; <B>  <A NAME="tex2html249"
-  HREF="node1.html">Contents</A></B> 
  &nbsp; <B>  <A NAME="tex2html251"
-  HREF="node84.html">Index</A></B> 
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html253"
+  HREF="node85.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>

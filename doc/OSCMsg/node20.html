@@ -26,32 +26,32 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html476"
+<A NAME="tex2html478"
   HREF="node21.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html470"
+<A NAME="tex2html472"
   HREF="node7.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html466"
+<A NAME="tex2html468"
   HREF="node19.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html472"
+<A NAME="tex2html474"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html474"
-  HREF="node84.html">
+<A NAME="tex2html476"
+  HREF="node85.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html477"
+<B> Next:</B> <A NAME="tex2html479"
   HREF="node21.html">5. Time management messages</A>
-<B> Up:</B> <A NAME="tex2html471"
+<B> Up:</B> <A NAME="tex2html473"
   HREF="node7.html">4. Common components messages</A>
-<B> Previous:</B> <A NAME="tex2html467"
+<B> Previous:</B> <A NAME="tex2html469"
   HREF="node19.html">4.3.3 The shadow effect</A>
- &nbsp; <B>  <A NAME="tex2html473"
-  HREF="node1.html">Contents</A></B> 
  &nbsp; <B>  <A NAME="tex2html475"
-  HREF="node84.html">Index</A></B> 
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html477"
+  HREF="node85.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
@@ -71,28 +71,28 @@ The <TT>click</TT> and <TT>select</TT> messages can be sent to any address with 
 <P>
 <BR>
 <IMG
- WIDTH="118" HEIGHT="65" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="275" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
  SRC="img32.gif"
  ALT="\begin{rail}
 click : 'click' ( \vert clickMode)
 \end{rail}">
 <BR>
-<A NAME="458"></A>
+<A NAME="464"></A>
 
 <P>
 <BR>
 <IMG
- WIDTH="141" HEIGHT="180" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="227" HEIGHT="200" ALIGN="BOTTOM" BORDER="0"
  SRC="img33.gif"
  ALT="\begin{rail}
 clickMode : 'topleft' \vert 'bottomright' \vert 'topright' \vert 'bottomleft' \vert 'center'
 \end{rail}">
 <BR>
-<A NAME="461"></A>
-<A NAME="462"></A>
-<A NAME="463"></A>
-<A NAME="464"></A>
-<A NAME="465"></A>
+<A NAME="467"></A>
+<A NAME="468"></A>
+<A NAME="469"></A>
+<A NAME="470"></A>
+<A NAME="471"></A>
 
 <P>
 
@@ -107,7 +107,7 @@ clickMode : 'topleft' \vert 'bottomright' \vert 'topright' \vert 'bottomleft' \v
 Reply of the <TT>click</TT> message has the following form:
 <BR>
 <IMG
- WIDTH="180" HEIGHT="90" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="454" HEIGHT="114" ALIGN="BOTTOM" BORDER="0"
  SRC="img34.gif"
  ALT="\begin{rail}
 clickReply : OSCAddress clickMode ( \vert (identifier +))
@@ -120,25 +120,25 @@ where 'identifier' is a component name. Note that 'identifiers' are sorted by de
 <P>
 <BR>
 <IMG
- WIDTH="126" HEIGHT="65" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="288" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
  SRC="img35.gif"
  ALT="\begin{rail}
 select : 'select' ( \vert selectMode)
 \end{rail}">
 <BR>
-<A NAME="480"></A>
+<A NAME="486"></A>
 
 <P>
 <BR>
 <IMG
- WIDTH="125" HEIGHT="65" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="211" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
  SRC="img36.gif"
  ALT="\begin{rail}
 selectMode : 'intersect' \vert 'include'
 \end{rail}">
 <BR>
-<A NAME="483"></A>
-<A NAME="484"></A>
+<A NAME="489"></A>
+<A NAME="490"></A>
 
 <P>
 
@@ -155,7 +155,7 @@ selectMode : 'intersect' \vert 'include'
 Reply of the <TT>select</TT> message is similar to <TT>click</TT> reply:
 <BR>
 <IMG
- WIDTH="180" HEIGHT="90" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="460" HEIGHT="114" ALIGN="BOTTOM" BORDER="0"
  SRC="img37.gif"
  ALT="\begin{rail}
 selectReply : OSCAddress selectMode ( \vert (identifier +))
@@ -165,32 +165,32 @@ selectReply : OSCAddress selectMode ( \vert (identifier +))
 <P>
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html476"
+<A NAME="tex2html478"
   HREF="node21.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html470"
+<A NAME="tex2html472"
   HREF="node7.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html466"
+<A NAME="tex2html468"
   HREF="node19.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html472"
+<A NAME="tex2html474"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html474"
-  HREF="node84.html">
+<A NAME="tex2html476"
+  HREF="node85.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html477"
+<B> Next:</B> <A NAME="tex2html479"
   HREF="node21.html">5. Time management messages</A>
-<B> Up:</B> <A NAME="tex2html471"
+<B> Up:</B> <A NAME="tex2html473"
   HREF="node7.html">4. Common components messages</A>
-<B> Previous:</B> <A NAME="tex2html467"
+<B> Previous:</B> <A NAME="tex2html469"
   HREF="node19.html">4.3.3 The shadow effect</A>
- &nbsp; <B>  <A NAME="tex2html473"
-  HREF="node1.html">Contents</A></B> 
  &nbsp; <B>  <A NAME="tex2html475"
-  HREF="node84.html">Index</A></B> 
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html477"
+  HREF="node85.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>

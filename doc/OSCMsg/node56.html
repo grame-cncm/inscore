@@ -27,32 +27,32 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html992"
+<A NAME="tex2html994"
   HREF="node57.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html986"
+<A NAME="tex2html988"
   HREF="node53.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html980"
+<A NAME="tex2html982"
   HREF="node55.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html988"
+<A NAME="tex2html990"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html990"
-  HREF="node84.html">
+<A NAME="tex2html992"
+  HREF="node85.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html993"
+<B> Next:</B> <A NAME="tex2html995"
   HREF="node57.html">15.4 Message based variables</A>
-<B> Up:</B> <A NAME="tex2html987"
+<B> Up:</B> <A NAME="tex2html989"
   HREF="node53.html">15. Events and Interaction</A>
-<B> Previous:</B> <A NAME="tex2html981"
+<B> Previous:</B> <A NAME="tex2html983"
   HREF="node55.html">15.2 Notification messages</A>
- &nbsp; <B>  <A NAME="tex2html989"
-  HREF="node1.html">Contents</A></B> 
  &nbsp; <B>  <A NAME="tex2html991"
-  HREF="node84.html">Index</A></B> 
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html993"
+  HREF="node85.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
@@ -67,26 +67,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 Variables denote values computed when an event is triggered. These values are send in place of the variable. A variable name starts with a '$' sign. Currently, the following variables are supported by mouse events:
 <BR>
 <IMG
- WIDTH="109" HEIGHT="294" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="194" HEIGHT="314" ALIGN="BOTTOM" BORDER="0"
  SRC="img90.gif"
  ALT="\begin{rail}
 variable : (xy \vert 'absx' \vert 'absy' \vert 'sx' \vert 'sy' \vert date \vert 'name' \vert 'address')
 \end{rail}">
 <BR>
-<A NAME="1217"></A>
-<A NAME="1218"></A>
-<A NAME="1219"></A>
-<A NAME="1220"></A>
-<A NAME="1221"></A>
-<A NAME="1222"></A>
 <A NAME="1223"></A>
 <A NAME="1224"></A>
 <A NAME="1225"></A>
+<A NAME="1226"></A>
+<A NAME="1227"></A>
+<A NAME="1228"></A>
+<A NAME="1229"></A>
+<A NAME="1230"></A>
+<A NAME="1231"></A>
 
 <P>
 <BR>
 <IMG
- WIDTH="210" HEIGHT="65" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="310" HEIGHT="84" ALIGN="BOTTOM" BORDER="0"
  SRC="img91.gif"
  ALT="\begin{rail}
 xy : ('x' \vert 'y') ( \vert '[low,high]')
@@ -96,7 +96,16 @@ xy : ('x' \vert 'y') ( \vert '[low,high]')
 <P>
 
 <UL>
-<LI><TT>$x</TT> <TT>$y</TT>: denotes the mouse pointer position at the time of the event. The values are in the range  where 1 is the object size in the x or y dimension. The value is computed according to the object origin: it represents the mouse pointer distance from the object x or y origin (see <A HREF="node11.html#origin">4.1.3</A> p.<A HREF="node11.html#origin"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). <TT>$x</TT> and <TT>$y</TT> variables support an optional range in the form <TT>[low, high]</TT> that transforms the  values range into the  range.
+<LI><TT>$x</TT> <TT>$y</TT>: denotes the mouse pointer position at the time of the event. The values are in the range <IMG
+ WIDTH="37" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img92.gif"
+ ALT="$[0,1]$"> where 1 is the object size in the x or y dimension. The value is computed according to the object origin: it represents the mouse pointer distance from the object x or y origin (see <A HREF="node11.html#origin">4.1.3</A> p.<A HREF="node11.html#origin"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). <TT>$x</TT> and <TT>$y</TT> variables support an optional range in the form <TT>[low, high]</TT> that transforms the <IMG
+ WIDTH="37" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img92.gif"
+ ALT="$[0,1]$"> values range into the <IMG
+ WIDTH="72" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img93.gif"
+ ALT="$[low, high]$"> range.
 
 <P>
 </LI>
@@ -112,7 +121,7 @@ Note also that the values are not clipped to the object dimensions and could exc
 <P>
 <BR>
 <IMG
- WIDTH="286" HEIGHT="65" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="479" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
  SRC="img94.gif"
  ALT="\begin{rail}
 date : ('date' \vert 'rdate') (\vert ':' mapname) (\vert '[n/d]')
@@ -142,32 +151,32 @@ Note that a variable can be used several times in a message, but several <TT>$da
 <P>
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html992"
+<A NAME="tex2html994"
   HREF="node57.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html986"
+<A NAME="tex2html988"
   HREF="node53.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html980"
+<A NAME="tex2html982"
   HREF="node55.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html988"
+<A NAME="tex2html990"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html990"
-  HREF="node84.html">
+<A NAME="tex2html992"
+  HREF="node85.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html993"
+<B> Next:</B> <A NAME="tex2html995"
   HREF="node57.html">15.4 Message based variables</A>
-<B> Up:</B> <A NAME="tex2html987"
+<B> Up:</B> <A NAME="tex2html989"
   HREF="node53.html">15. Events and Interaction</A>
-<B> Previous:</B> <A NAME="tex2html981"
+<B> Previous:</B> <A NAME="tex2html983"
   HREF="node55.html">15.2 Notification messages</A>
- &nbsp; <B>  <A NAME="tex2html989"
-  HREF="node1.html">Contents</A></B> 
  &nbsp; <B>  <A NAME="tex2html991"
-  HREF="node84.html">Index</A></B> 
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html993"
+  HREF="node85.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>

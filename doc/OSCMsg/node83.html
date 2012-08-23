@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.21 Differences to version 0.42</TITLE>
-<META NAME="description" CONTENT="17.21 Differences to version 0.42">
+<TITLE>17.21 Differences to version 0.50</TITLE>
+<META NAME="description" CONTENT="17.21 Differences to version 0.50">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,6 +19,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node84.html">
 <LINK REL="previous" HREF="node82.html">
 <LINK REL="up" HREF="node62.html">
 <LINK REL="next" HREF="node84.html">
@@ -26,107 +27,102 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1387"
+<A NAME="tex2html1392"
   HREF="node84.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1381"
+<A NAME="tex2html1386"
   HREF="node62.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1377"
+<A NAME="tex2html1380"
   HREF="node82.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1383"
+<A NAME="tex2html1388"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1385"
-  HREF="node84.html">
+<A NAME="tex2html1390"
+  HREF="node85.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1388"
-  HREF="node84.html">Index</A>
-<B> Up:</B> <A NAME="tex2html1382"
+<B> Next:</B> <A NAME="tex2html1393"
+  HREF="node84.html">17.22 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1387"
   HREF="node62.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1378"
+<B> Previous:</B> <A NAME="tex2html1381"
   HREF="node82.html">17.20 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1384"
+ &nbsp; <B>  <A NAME="tex2html1389"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1386"
-  HREF="node84.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1391"
+  HREF="node85.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION0018210000000000000000">
-17.21 Differences to version 0.42</A>
+17.21 Differences to version 0.50</A>
 </H1>
 
+<UL>
+<LI>Graphic signal thickness is now symmetrically drawn around y position.
+</LI>
+<LI>ITL file format supports regular expressions in OSC addresses.
+</LI>
+<LI>IP of a message sender is now used for the reply or for error reporting.
+</LI>
+<LI>new <TT>line</TT> object (section <A HREF="node22.html#setsect">6</A> p.<A HREF="node22.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI>new <TT>penStyle</TT> message for vectorial graphics (section <A HREF="node25.html#specificMsg">8</A> p.<A HREF="node25.html#specificMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI>new color messages <TT>red, green, blue, alpha, dcolor, dred, dgreen, dblue</TT> (section <A HREF="node7.html#common">4</A> p.<A HREF="node7.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> and  <A HREF="node10.html#relpos">4.1.2</A> p.<A HREF="node10.html#relpos"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI>color values for objects are bounded to [0,255]
+</LI>
+<LI><TT>get map</TT> message behaves according to new map message (section <A HREF="node23.html#getsect">7</A> p.<A HREF="node23.html#getsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI><TT>get width</TT> and  <TT>get height</TT> is now supported by all objects (section <A HREF="node23.html#getsect">7</A> p.<A HREF="node23.html#getsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI>bug in signal projection corrected (index 0 rejected)
+</LI>
+<LI>bug in signals default value delivery corrected
+</LI>
+<LI>new <TT>pageCount</TT> message for guido scores
+</LI>
+<LI>debug nodes modified state propagated to parent node (corrects the debug informations graphic update issue)
+</LI>
+<LI>rational values catch null denominator (to prevents divide by zero exceptions).
+
 <P>
-
-<UL>
-<LI><TT>identifier</TT> specification change (section <A HREF="node2.html#genformat">1</A> p.<A HREF="node2.html#genformat"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>new application <TT>hello</TT> and  <TT>defaultShow</TT> messages (section <A HREF="node5.html#ITL">2</A> p.<A HREF="node5.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>new <TT>load</TT> and <TT>save</TT> messages  (sections <A HREF="node5.html#ITL">2</A> p.<A HREF="node5.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> and  <A HREF="node7.html#common">4</A> p.<A HREF="node7.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI><TT>click</TT> and <TT>select</TT> messages (section <A HREF="node20.html#csmsg">4.4</A> p.<A HREF="node20.html#csmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>):
-
-<UL>
-<LI><TT>rightbottom</TT> and <TT>leftbottom</TT> modes renamed to <TT>bottomright</TT> and <TT>bottomleft</TT>
-</LI>
-<LI>new <TT>center</TT> mode for the <TT>click</TT> message
-</LI>
-<LI>query mode sent back with the reply both for <TT>click</TT> and  <TT>select</TT> messages
-</LI>
-</UL>
-</LI>
-<LI>new <TT>file</TT>, <TT>html</TT> and  <TT>htmlf</TT> types for the <TT>set</TT> message (section <A HREF="node22.html#setsect">6</A> p.<A HREF="node22.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI><TT>get</TT> syntax change for the <TT>scene</TT> (section <A HREF="#sceneget"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> p.<A HREF="#sceneget"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI><TT>fileWatcher</TT> messages completely redesigned (section <A HREF="node40.html#watch">12.1</A> p.<A HREF="node40.html#watch"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>mappings can be identified by names (section <A HREF="node30.html#mapMsg">9.1</A> p.<A HREF="node30.html#mapMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>rect, ellipse, curve, line and polygon object support graphic to relative-time mapping
-</LI>
-<LI>new synchronization modes for Guido scores: voice1, voice2, ... , staff1, staff2, ... , system, page (section <A HREF="node36.html#guidomaps">11.1</A> p.<A HREF="node36.html#guidomaps"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>Guido mapping manages repeat bars.
-</LI>
-<LI>Graphic signals messages design (section <A HREF="node47.html#gsignal">13.2</A> p.<A HREF="node47.html#gsignal"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 </LI>
 </UL>
 
 <P>
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html1387"
+<A NAME="tex2html1392"
   HREF="node84.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1381"
+<A NAME="tex2html1386"
   HREF="node62.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1377"
+<A NAME="tex2html1380"
   HREF="node82.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1383"
+<A NAME="tex2html1388"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1385"
-  HREF="node84.html">
+<A NAME="tex2html1390"
+  HREF="node85.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1388"
-  HREF="node84.html">Index</A>
-<B> Up:</B> <A NAME="tex2html1382"
+<B> Next:</B> <A NAME="tex2html1393"
+  HREF="node84.html">17.22 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1387"
   HREF="node62.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1378"
+<B> Previous:</B> <A NAME="tex2html1381"
   HREF="node82.html">17.20 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1384"
+ &nbsp; <B>  <A NAME="tex2html1389"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1386"
-  HREF="node84.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1391"
+  HREF="node85.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
