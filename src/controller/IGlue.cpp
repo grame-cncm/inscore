@@ -67,7 +67,7 @@ void IGlue::clean()
         fOscThread->terminate();
         fOscThread->wait(50);
 	}
-	if (fTimerID) killTimer (fTimerID);
+	QTimer::stop ();
 	delete fOscThread;
 	OSCStream::stop();
 }
@@ -178,7 +178,10 @@ bool IGlue::start (int timeInterval, bool offscreen, QApplication* appl)
 	try {
 		initialize(offscreen, appl);
 #ifndef NOVIEW
-		if (timeInterval) fTimerID = startTimer(timeInterval);
+		fCurrentRate = fModel->getRate();
+		if (fCurrentRate) {
+			QTimer::start(fCurrentRate);
+		}
 #endif
 	}
 	catch (std::runtime_error e) {
@@ -291,6 +294,10 @@ void IGlue::timerEvent ( QTimerEvent *)
 	}
 	bench::put ("total", getTime() - time);
 #endif
+	if (fModel->getRate() != fCurrentRate) {
+		fCurrentRate = fModel->getRate();
+		if (fCurrentRate) QTimer::setInterval(fCurrentRate);
+	}
 }
 
 //--------------------------------------------------------------------------

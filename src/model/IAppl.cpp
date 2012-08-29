@@ -128,7 +128,7 @@ map<string, pair<string, string> > IAppl::fAliases;
 
 //--------------------------------------------------------------------------
 IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool offscreen) 
-	: IObject(kName, 0), fOffscreen(offscreen), fUDP(udpport,outport,errport), fAppl(appl)
+	: IObject(kName, 0), fOffscreen(offscreen), fUDP(udpport,outport,errport), fRate(10), fAppl(appl)
 {
 	fTypeString = kApplType;
 	fVersion = INScore::versionStr();
@@ -146,6 +146,7 @@ IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool of
 	fGetMsgHandlerMap["outport"]	= TGetParamMsgHandler<int>::create(fUDP.fOutPort);
 	fGetMsgHandlerMap["errport"]	= TGetParamMsgHandler<int>::create(fUDP.fErrPort);
 	fGetMsgHandlerMap["defaultShow"]= TGetParamMsgHandler<bool>::create(fDefaultShow);
+	fGetMsgHandlerMap["rate"]		= TGetParamMsgHandler<bool>::create(fRate);
 
 	fGetMsgHandlerMap["guido-version"]		= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::guidoversion);
 	fGetMsgHandlerMap["musicxml-version"]	= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::musicxmlversion);
@@ -155,6 +156,7 @@ IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool of
 	fMsgHandlerMap["outport"]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPOutPort);
 	fMsgHandlerMap["errport"]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPErrPort);
 	fMsgHandlerMap["defaultShow"]	= TSetMethodMsgHandler<IAppl,bool>::create(this, &IAppl::setDefaultShow);
+	fMsgHandlerMap["rate"]			= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setRate);
 
 #ifdef RUNBENCH
 	fMsgHandlerMap["startBench"]	= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::startBench);

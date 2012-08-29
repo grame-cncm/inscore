@@ -66,10 +66,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {6}{ ITLMsg : 'quit' | ('rootPath' path) | ('port' int32) | ('outport' int32) | ('errport' int32) | ('mouse' ('show' | 'hide')) | ('defaultShow' int32) | ('load' filePath) | ('require' int32 oscMsg) | 'hello' }
+\rail@i {6}{ ITLMsg : 'quit' | ('rootPath' path) | ('port' int32) | ('outport' int32) | ('errport' int32) | ('mouse' ('show' | 'hide')) | ('defaultShow' int32) | ('load' filePath) | ('require' int32 oscMsg) | ('rate' int32) | 'hello' }
 \rail@o {6}{
 \rail@index{ITLMsg}
-\rail@begin{11}{ITLMsg}
+\rail@begin{12}{ITLMsg}
 \rail@bar
 \rail@term{quit}[]
 \rail@nextbar{1}
@@ -102,6 +102,9 @@
 \rail@token{int32}[]
 \rail@nont{oscMsg}[]
 \rail@nextbar{10}
+\rail@term{rate}[]
+\rail@token{int32}[]
+\rail@nextbar{11}
 \rail@term{hello}[]
 \rail@endbar
 \rail@end
@@ -120,10 +123,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {8}{ sceneMsg : 'new' | 'del' | ('rootPath' path) | ('load' filePath) | 'reset' | 'foreground' | ('fullscreen' int32) | commonMsg }
+\rail@i {8}{ sceneMsg : 'new' | 'del' | ('rootPath' path) | ('load' filePath) | 'reset' | 'foreground' | ('fullscreen' int32) | ('frameless' int32) | commonMsg }
 \rail@o {8}{
 \rail@index{sceneMsg}
-\rail@begin{8}{sceneMsg}
+\rail@begin{9}{sceneMsg}
 \rail@bar
 \rail@term{new}[]
 \rail@nextbar{1}
@@ -142,6 +145,9 @@
 \rail@term{fullscreen}[]
 \rail@token{int32}[]
 \rail@nextbar{7}
+\rail@term{frameless}[]
+\rail@token{int32}[]
+\rail@nextbar{8}
 \rail@nont{commonMsg}[]
 \rail@endbar
 \rail@end

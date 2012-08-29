@@ -61,11 +61,12 @@ class IAppl : public IObject, public PeriodicTask
 	static std::string	fRootPath;
 	static bool			fRunning;
 		
-		std::string fVersion;
-		SIApplDebug	fApplDebug;	
+		std::string fVersion;					// the application version number
+		SIApplDebug	fApplDebug;					// debug flags
 		bool		fOffscreen;
-		udpinfo		fUDP;
-		QApplication* fAppl;
+		udpinfo		fUDP;						// udp port settings
+		int			fRate;						// the time task rate
+		QApplication*	fAppl;					// the Qt application
 
 		TJSEngine		fJavascript;
 		TLua			fLua;
@@ -94,6 +95,8 @@ class IAppl : public IObject, public PeriodicTask
 		const std::string&	getUDPOutAddress() const		{ return fUDP.fOutDstAddress; }
 		const std::string&	getUDPErrAddress() const		{ return fUDP.fErrDstAddress; }
 		
+		int		getRate() const				{ return fRate; }
+
 		virtual void		accept (Updater*);
 		virtual void		print(std::ostream& out) const;
 
@@ -118,6 +121,7 @@ class IAppl : public IObject, public PeriodicTask
 		void		setUDPInPort(int p)			{ fUDP.fInPort = p; }
 		void		setUDPOutPort(int p)		{ fUDP.fOutPort = p; }
 		void		setUDPErrPort(int p)		{ fUDP.fErrPort = p; }
+		void		setRate(int rate)			{ fRate = rate; }
 
 		void		resetBench();
 		bool		offscreen()	const			{ return fOffscreen; }

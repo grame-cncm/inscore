@@ -71,7 +71,7 @@
 
 \begin{document}
 
-\title{INScore \\ OSC Messages Reference \\v.0.98}
+\title{INScore \\ OSC Messages Reference \\v.0.99}
 
 \author{D. Fober\\ GRAME\\ Centre national de cr\'eation musicale\\
 {\small <fober@grame.fr>} \\
@@ -181,6 +181,7 @@ ITLMsg : 'quit'
 		| ('defaultShow' int32)
 		| ('load' filePath)
 		| ('require' int32 oscMsg)
+		| ('rate' int32)
 		| 'hello'
 \end{rail}
 \index{ITL messages!rootPath}
@@ -192,6 +193,7 @@ ITLMsg : 'quit'
 \index{ITL messages!load}
 \index{ITL messages!hello}
 \index{ITL messages!require}
+\index{ITL messages!rate}
 
 
 \begin{itemize}
@@ -206,6 +208,9 @@ The default \OSC{port}, \OSC{outport} and \OSC{errport} values are 7000, 7001 an
 
 \item \OSC{defaultShow}: changes the default \OSC{show} status for new objects. \\
 The default \OSC{defaultShow} value is 1.
+
+\item \OSC{rate}: changes the time task rate. Note that null values are ignored.\\
+The default \OSC{rate} value is 10.
 
 \item \OSC{load}: loads a file previously saved using the \OSC{save} message (see section \fullref{common}). Note that the load operation appends the new objects to the existing scene. Whe necessary, it's the sender responsability to clear the scene before loading a file.
 
@@ -247,6 +252,7 @@ sceneMsg :  'new'
 			| 'reset'
 			| 'foreground'
 			| ('fullscreen' int32)
+			| ('frameless' int32)
 			| commonMsg
 \end{rail}
 \index{Scene messages}
@@ -257,6 +263,7 @@ sceneMsg :  'new'
 \index{Scene messages!reset}
 \index{Scene messages!foreground}
 \index{Scene messages!fullscreen}
+\index{Scene messages!frameless}
 
 \begin{itemize}
 \item \OSC{new}: creates a new scene and opens it in a new window.
@@ -266,6 +273,7 @@ sceneMsg :  'new'
 \item \OSC{reset}: clears the scene (i.e. delete all components) and resets the scene to its default state (position, size and color).
 \item \OSC{foreground}: put the scene to foreground.
 \item \OSC{fullscreen}: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is \values{0}.
+\item \OSC{frameless}: requests the scene to switch to frameless or normal window.  The parameter is interpreted as a boolean value. Default value is \values{0}.
 \item \OSC{commonMsg}: see section \fullref{common}.
 \end{itemize}
 
@@ -1818,6 +1826,14 @@ Example:
 %:Changes list
 \toplevel{ Changes list}
 
+
+%===============================
+%:   Differences to version 0.98
+\sublevel{Differences to version 0.98}
+\begin{itemize}
+\item new \OSC{rate} message at application level to control the time task rate (see section \fullref{ITL})
+\item new \OSC{frameless} message at scene level to switch to frameless or normal window (see section \fullref{scene})
+\end{itemize}
 
 %===============================
 %:   Differences to version 0.97

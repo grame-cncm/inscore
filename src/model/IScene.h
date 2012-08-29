@@ -58,6 +58,7 @@ typedef class SMARTP<ISignalNode>		SISignalNode;
 class IScene : public IRectShape, public PeriodicTask
 {	
 	bool			fFullScreen;
+	bool			fFrameless;
 	SISceneSync		fSync;
 	SIFileWatcher	fFileWatcher;
 	SISignalNode	fSignals;
@@ -72,6 +73,8 @@ class IScene : public IRectShape, public PeriodicTask
 
 		bool			getFullScreen() const		{ return fFullScreen; }
 		void			setFullScreen(bool state)	{ fFullScreen = state; }
+		bool			getFrameless() const		{ return fFrameless; }
+		void			setFrameless(bool state)	{ fFrameless = state; }
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*);
 
