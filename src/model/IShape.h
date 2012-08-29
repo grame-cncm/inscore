@@ -29,7 +29,7 @@
 
 #include "IObject.h"
 #include "maptypes.h"
-#include "mapbuilder.h"
+//#include "mapbuilder.h"
 
 #define SOLID_STYLE			"solid"
 #define DASH_STYLE			"dash"

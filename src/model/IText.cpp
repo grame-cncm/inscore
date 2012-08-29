@@ -28,7 +28,7 @@
 #include "IAppl.h"
 #include "IText.h"
 #include "IMessage.h"
-#include "segment2relativetimereader.h"
+//#include "segment2relativetimereader.h"
 #include "TComposition.h"
 #include "Updater.h"
 

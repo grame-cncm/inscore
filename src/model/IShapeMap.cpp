@@ -24,7 +24,7 @@
 */
 
 #include "IShapeMap.h"
-#include "segment2relativetimereader.h"
+//#include "segment2relativetimereader.h"
 
 namespace inscore
 {

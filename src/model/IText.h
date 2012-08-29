@@ -33,7 +33,7 @@
 #include "IObject.h"
 #include "IGraphicBasedObject.h"
 #include "maptypes.h"
-#include "mapbuilder.h"
+//#include "mapbuilder.h"
 #include "TLocalMapping.h"
 
 namespace inscore
