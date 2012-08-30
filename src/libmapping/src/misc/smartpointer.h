@@ -22,8 +22,8 @@
 
 */
 
-#ifndef __lmsmartpointer__
-#define __lmsmartpointer__
+#ifndef __smartpointer__
+#define __smartpointer__
 
 #include <cassert>
 

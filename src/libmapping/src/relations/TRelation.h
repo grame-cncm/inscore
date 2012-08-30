@@ -32,7 +32,7 @@
 #include <vector>
 
 #include "TSegment.h"
-#include "lmsmartpointer.h"
+#include "smartpointer.h"
 
 namespace libmapping
 {

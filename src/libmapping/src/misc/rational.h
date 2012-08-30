@@ -19,14 +19,14 @@
   
 */
 
-#ifndef __lmrational__
-#define __lmrational__
+#ifndef __rational__
+#define __rational__
 
 #include <string>
 #include <ostream>
 #include <vector>
 
-namespace libmapping
+namespace libmapping 
 {
 
 /*!

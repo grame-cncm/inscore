@@ -188,7 +188,7 @@ typedef size_t yy_size_t;
      */
     #define  YY_LESS_LINENO(n) \
             do { \
-                int yyl;\
+                yy_size_t yyl;\
                 for ( yyl = n; yyl < yyleng; ++yyl )\
                     if ( yytext[yyl] == '\n' )\
                         --yylineno;\
@@ -488,7 +488,7 @@ static yyconst flex_int32_t yy_rule_can_match_eol[27] =
 
 #include "TInterval.h"
 #include "TSegment.h"
-#include "lmrational.h"
+#include "rational.h"
 #include "mapparser.h"
 #include "mapping.tab.hpp"
 
@@ -832,7 +832,7 @@ yy_find_action:
 
 		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
 			{
-			int yyl;
+			yy_size_t yyl;
 			for ( yyl = yyg->yy_more_len; yyl < yyleng; ++yyl )
 				if ( yytext[yyl] == '\n' )
 					   

@@ -1,7 +1,7 @@
 
 #include <iostream>
 
-#include "lmrational.h"
+#include "rational.h"
 
 #include "TInterval.h"
 #include "TSegment.h"
@@ -133,7 +133,7 @@ template<typename T> void testVariety2(int n)
 //--------------------------------------------------------------------------------
 template<typename T> void testSegmentation1D(int n)
 {
-	cout << "\ntestSeglmentation1D" << " (" << n << ")" << endl;
+	cout << "\ntestSegmentation1D" << " (" << n << ")" << endl;
 	cout << "---------------------------" << endl;
 	SMARTP<TSegmentation<int, 1> > s = TSegmentation<T, 1>::create (TSegment<T,1>(0, 0));
 	s->add( TSegment<T,1>(0, 10) );

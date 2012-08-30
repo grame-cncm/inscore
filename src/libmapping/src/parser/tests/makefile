@@ -1,6 +1,6 @@
 
 CXXFLAGS := -I../../misc -I../../segments -I../../relations -I..
-OBJ := testparser.o ../../misc/lmrational.o mapping.tab.o lex.libmap.o
+OBJ := testparser.o ../../misc/rational.o mapping.tab.o lex.libmap.o
 
 testparser: $(OBJ)
 	g++ $(CXXFLAGS) $(OBJ) -lm -o testparser 
@@ -10,7 +10,7 @@ clean:
 	make -C .. clean
 
 testparser.o: ../../segments/TInterval.h ../../segments/TSegment.h ../../segments/TSegmentation.h ../../segments/TVariety.h
-testparser.o: ../../segments/TRefinement.h ../../misc/lmtools.h ../../relations/TComposition.h ../../relations/TMapping.h
+testparser.o: ../../segments/TRefinement.h ../../misc/tools.h ../../relations/TComposition.h ../../relations/TMapping.h
 testparser.o: ../../relations/TRefinedComposition.h ../../relations/TRelation.h ../../relations/TRefinedRelation.h 
 testparser.o: ../mapping.tab.cpp ../mapping.tab.hpp ../lex.libmap.cpp 
 
@@ -32,4 +32,4 @@ lex.libmap.o: ../lex.libmap.cpp
 ../yyparse.hxx : ../mapping.y
 	make -C ..
 
-../misc/lmrational.o : ../misc/lmrational.h
+../misc/rational.o : ../misc/rational.h

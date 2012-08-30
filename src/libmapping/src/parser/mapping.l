@@ -12,7 +12,7 @@
 
 #include "TInterval.h"
 #include "TSegment.h"
-#include "lmrational.h"
+#include "rational.h"
 #include "mapparser.h"
 #include "mapping.tab.hpp"
 

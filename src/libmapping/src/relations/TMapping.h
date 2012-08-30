@@ -26,7 +26,7 @@
 #define __TMapping__
 
 #include "TRelation.h"
-#include "lmsmartpointer.h"
+#include "smartpointer.h"
 
 namespace libmapping
 {

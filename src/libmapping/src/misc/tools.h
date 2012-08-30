@@ -1,6 +1,3 @@
-#ifndef __lmtools__
-#define __lmtools__
-
 /*
 	INScore Project - libMapping
 	Copyright (C) 2010-2012  Grame
@@ -21,11 +18,14 @@
 
  */
 
+#ifndef __tools__
+#define __tools__
+
 #include <math.h>
 #include <iostream>
-#include "lmrational.h"
+#include "rational.h"
 
-namespace libmapping
+namespace libmapping 
 {
 
 /*!

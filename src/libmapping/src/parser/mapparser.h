@@ -28,7 +28,7 @@
 #include <string>
 #include <locale.h>
 
-#include "lmsmartpointer.h"
+#include "smartpointer.h"
 
 namespace libmapping 
 {

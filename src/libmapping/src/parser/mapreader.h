@@ -26,6 +26,7 @@
 
 #include <iostream>
 #include "TSegment.h"
+#include "rational.h"
 
 namespace libmapping 
 {
