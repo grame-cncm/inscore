@@ -41,7 +41,8 @@ namespace inscore
 */
 
 class Updater;
-typedef class SMARTP<IGrid>	SIGrid;
+class IGrid;
+typedef class libmapping::SMARTP<IGrid>	SIGrid;
 //--------------------------------------------------------------------------
 /*!
 	\brief a rectangle shape.

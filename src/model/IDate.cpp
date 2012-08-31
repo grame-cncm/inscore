@@ -29,6 +29,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace libmapping;
 
 namespace inscore
 {
