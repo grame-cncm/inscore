@@ -42,10 +42,10 @@ namespace inscore
 class IMessageList;
 class IMessage;
 class baseparam;
-typedef SMARTP<baseparam> Sbaseparam;
+typedef libmapping::SMARTP<baseparam> Sbaseparam;
 
 class TEnv;
-typedef SMARTP<TEnv> STEnv;
+typedef libmapping::SMARTP<TEnv> STEnv;
 
 #ifdef V8ENGINE
 typedef TV8Js		TJSEngine;
