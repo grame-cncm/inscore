@@ -44,8 +44,8 @@ class EventsAble;
 class IDate : public TimeEventAble
 {
 	protected:
-		rational fDate;					///< the object date
-		rational fDuration;				///< the object duration
+		libmapping::rational fDate;					///< the object date
+		libmapping::rational fDuration;				///< the object duration
 	protected:
 		bool	fDateChanged;
 		bool	fDurationChanged;
@@ -56,9 +56,9 @@ class IDate : public TimeEventAble
 	
 	public:	
 		/// \brief returns the object date
-		virtual rational getDate () const			{ return fDate; }
+		virtual libmapping::rational getDate () const			{ return fDate; }
 		/// \brief returns the object duration
-		virtual rational getDuration () const		{ return fDuration; }
+		virtual libmapping::rational getDuration () const		{ return fDuration; }
 
 		/// \brief returns the object modification state
 		virtual bool	modified () const			{ return fDateChanged || fDurationChanged; }
@@ -68,20 +68,20 @@ class IDate : public TimeEventAble
 		/// \brief cleanup stuff
 		virtual void	cleanup ();
 		/// \brief clock handling
-		virtual void	clock()			{ addDate ( rational(1, 96) ); }
+		virtual void	clock()			{ addDate ( libmapping::rational(1, 96) ); }
 		/// \brief clock applied to duration
-		virtual void	durclock()		{ addDuration ( rational(1, 96) ); }
+		virtual void	durclock()		{ addDuration ( libmapping::rational(1, 96) ); }
 
 		virtual void	print (std::ostream& out) const;
 
 		/// \brief sets the object date \param date a date expressed as a rational
-		virtual void	setDate (const rational& date);
+		virtual void	setDate (const libmapping::rational& date);
 		/// \brief sets the object duration \param dur a duration expressed as a rational
-		virtual void	setDuration (const rational& dur)	{  fDuration = dur;  fDurationChanged = true;  }
+		virtual void	setDuration (const libmapping::rational& dur)	{  fDuration = dur;  fDurationChanged = true;  }
 		/// \brief moves the date
-		virtual void	addDate (const rational& date)		{ setDate(fDate + date); }
+		virtual void	addDate (const libmapping::rational& date)		{ setDate(fDate + date); }
 		/// \brief moves the duration
-		virtual void	addDuration (const rational& dur)	{ fDuration += dur; fDurationChanged = true; }
+		virtual void	addDuration (const libmapping::rational& dur)	{ fDuration += dur; fDurationChanged = true; }
 };
 
 

@@ -44,10 +44,10 @@ namespace inscore
 */
 
 class IAppl;
-typedef class SMARTP<IAppl>	SIAppl;
+typedef class libmapping::SMARTP<IAppl>	SIAppl;
 
 class IApplDebug;
-typedef class SMARTP<IApplDebug> SIApplDebug;
+typedef class libmapping::SMARTP<IApplDebug> SIApplDebug;
 
 //--------------------------------------------------------------------------
 /*!

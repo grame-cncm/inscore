@@ -40,7 +40,7 @@ class IMessage;
 */
 
 class IApplDebug;
-typedef class SMARTP<IApplDebug>		SIApplDebug;
+typedef class libmapping::SMARTP<IApplDebug>		SIApplDebug;
 
 //--------------------------------------------------------------------------
 /*!

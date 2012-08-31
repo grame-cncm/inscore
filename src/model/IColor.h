@@ -144,7 +144,7 @@ class IColor
 		static void hsv2rgb( float h , float s, float v , float& r, float& g, float& b );
 
 		class SetColorMsgHandler;
-		typedef SMARTP<SetColorMsgHandler> SSetColorMsgHandler;
+		typedef libmapping::SMARTP<SetColorMsgHandler> SSetColorMsgHandler;
 		class SetColorMsgHandler : public MsgHandler {
 			public:
 				typedef void (IColor::*setint)(int);

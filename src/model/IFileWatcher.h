@@ -35,7 +35,7 @@ namespace inscore
 {
 
 class IFileWatcher;
-typedef class SMARTP<IFileWatcher>	SIFileWatcher;
+typedef class libmapping::SMARTP<IFileWatcher>	SIFileWatcher;
 
 /*!
 \addtogroup ITLView
