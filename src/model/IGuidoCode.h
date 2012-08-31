@@ -50,7 +50,7 @@ namespace inscore
 
 class Updater;
 class IGuidoCode;
-typedef class SMARTP<IGuidoCode>	SIGuidoCode;
+typedef class libmapping::SMARTP<IGuidoCode>	SIGuidoCode;
 //--------------------------------------------------------------------------
 /*!
 	\brief a textual guido music notation object.
@@ -58,7 +58,7 @@ typedef class SMARTP<IGuidoCode>	SIGuidoCode;
 class IGuidoCode : public IObject
 {
 	protected:
-		typedef SMARTP<TLocalMapping<RelativeTimeSegment> >	SLocalMapping;
+		typedef libmapping::SMARTP<TLocalMapping<libmapping::rational,1> >	SLocalMapping;
 		SLocalMapping	fLocalMappings;
 		CGRHandler		fGRHandler;
 
@@ -93,7 +93,7 @@ class IGuidoCode : public IObject
 		int			getNbOfPageColumns() const	{ return fNbOfPageColumns; }
 		int			getNbOfPageRows() const		{ return fNbOfPageRows; }
 		int			getPageCount() const		{ return fPageCount; }
-		rational	getPageDate(int pagenum) const;
+		libmapping::rational	getPageDate(int pagenum) const;
 		void		setPagesCount(int pageCount)			{ fPageCount = pageCount; }
 		void		setGRHandler(CGRHandler gr)				{ fGRHandler = gr; }
 
