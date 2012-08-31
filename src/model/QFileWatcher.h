@@ -66,7 +66,7 @@ class QFileWatcher: public QObject, public IFileWatcher
 		virtual ~QFileWatcher();
 	
 		/*! \brief IFileWatcher implementation */
-		virtual void add(const WatcherAssociation& association);
+		virtual void addAssociation(const WatcherAssociation& association);
 		/*! \brief IFileWatcher implementation */
 		virtual void remove(const WatcherAssociation& association);
 		/*! \brief IFileWatcher implementation */
