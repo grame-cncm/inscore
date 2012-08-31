@@ -71,7 +71,7 @@ class GuidoMapCollector: public MapCollector
 		virtual void process (Time2GraphicMap* outmap);
 				
 		static RelativeTimeSegment	relativeTimeSegment(const TimeSegment& dates)
-			{ return RelativeTimeSegment( rational(dates.first.num , dates.first.denom) , rational(dates.second.num , dates.second.denom) ); }
+			{ return RelativeTimeSegment( libmapping::rational(dates.first.num , dates.first.denom) , libmapping::rational(dates.second.num , dates.second.denom) ); }
 		static GraphicSegment		graphicSegment(const FloatRect& box, QPointF offset = QPointF(0,0))
 			{ return GraphicSegment( box.left + offset.x(), box.top + offset.y(), box.right + offset.x(), box.bottom + offset.y()); }
 };
