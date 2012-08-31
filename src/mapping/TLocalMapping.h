@@ -46,10 +46,10 @@ namespace inscore {
 	an object local mapping includes a mapping between the local space segmentation
 	the time and the graphic segmentations
 */
-template <typename T> class TLocalMapping : public smartable
+template <typename T, unsigned int D> class TLocalMapping : public libmapping::smartable
 {
 	public:
-		typedef SMARTP<TMapping<T, RelativeTimeSegment> >	SLocal2TimeMapping;
+		typedef libmapping::SMARTP<libmapping::TMapping<T, D, libmapping::rational, 1> >	SLocal2TimeMapping;
 
 		typedef std::map<std::string,SLocal2TimeMapping> namedMapping;
 		typedef typename std::map<std::string,SLocal2TimeMapping>::const_iterator	const_iterator;
@@ -73,7 +73,7 @@ template <typename T> class TLocalMapping : public smartable
 		virtual ~TLocalMapping() {}
 	
 	public:
-		static SMARTP<TLocalMapping<T> > create()	{ return new TLocalMapping; }
+		static libmapping::SMARTP<TLocalMapping<T,D> > create()	{ return new TLocalMapping; }
 
 		const namedMapping& namedMappings() const	{ return fMappings; }			
 		bool remove(const std::string& name)		{ return fMappings.erase(name)==1; }	// Returns true if the specified 'name' has been found and removed.
