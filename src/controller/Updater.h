@@ -47,7 +47,7 @@ class Master;
 	Updater implements the \e visitor design pattern. It is intended to
 	resolve the type of the objects of the model.
 */
-class export Updater : public smartable
+class export Updater : public libmapping::smartable
 {
 	protected:
 				 Updater() {}
@@ -79,7 +79,7 @@ class export Updater : public smartable
 		virtual void updateTo (ILine*) {}
 		virtual void updateTo (IVideo*) {}
 };
-typedef class SMARTP<Updater>	SUpdater;
+typedef class libmapping::SMARTP<Updater>	SUpdater;
 
 class export ViewUpdater : public Updater {
 	public:	virtual bool needupdate (IObject*);
