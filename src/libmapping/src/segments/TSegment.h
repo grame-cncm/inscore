@@ -97,6 +97,16 @@ template<typename T> class TSegment<T, 1>
 		/// union of segments
 		inline TSegment<T,1> operator | (const TSegment<T,1>& s) const	{ return TSegment<T,1>( fInterval | s.interval()); }
 
+		/*!
+			\brief segments merge
+			
+			merge is restricted to convex sets and gives a segment as output. 
+			\param s the segment to merge
+			\param epsilon tolerance for the gap between segments
+		*/
+		inline TSegment<T,1> merge (const TSegment<T,1>& s, T epsilon = T(0)) const
+								{ return TSegment<T,1>( fInterval.merge(s.interval(), epsilon)); }
+
 		/// segment conversion to string
         virtual operator std::string () const {
 			std::ostringstream res;
