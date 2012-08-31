@@ -100,12 +100,12 @@ class VGraphicsItemView : public VObjectView
 		float getIObjectWidth() const { return scene2RelativeWidth( fItem->boundingRect().width() ); }		// Gives the object's width in interlude scene coordinates.
 		float getIObjectHeight() const { return scene2RelativeHeight( fItem->boundingRect().height() ); }	// Gives the object's height in interlude scene coordinates.
 		
-		template <typename L>
-		static void setMapping( IObject* object , const std::string& mapName , SMARTP<TMapping<GraphicSegment, L> > g2l_mapping , SMARTP<TMapping<L, RelativeTimeSegment> > l2t_mapping)
+		template <typename T, unsigned int D>
+		static void setMapping( IObject* object , const std::string& mapName , libmapping::SMARTP<libmapping::TMapping<float,2,T,D> > g2l_mapping , libmapping::SMARTP<libmapping::TMapping<T,D, libmapping::rational,1> > l2t_mapping)
 		{
 			// create the graphic to time composition
 			// composition reduction to a simple mapping
-			typedef TComposition <RelativeTimeSegment, L, GraphicSegment>		T2GComposition;
+			typedef libmapping::TComposition <libmapping::rational,1,T,D, float,2> T2GComposition;
 			SRelativeTime2GraphicMapping t2gr = T2GComposition::create( l2t_mapping->reverse(), g2l_mapping->reverse() );
 			object->setMapping( mapName , t2gr );
 		}
@@ -164,7 +164,7 @@ class VGraphicsItemView : public VObjectView
 		QRectF fLastValidRect;
 		bool fIsStretchOn;
 };
-typedef class SMARTP<VGraphicsItemView>	SVGraphicsItemView;
+typedef class libmapping::SMARTP<VGraphicsItemView>	SVGraphicsItemView;
 
 /*!@} */
 
