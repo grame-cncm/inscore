@@ -42,7 +42,7 @@ namespace inscore
 
 class Updater;
 class IFaustProcessor;
-typedef class SMARTP<IFaustProcessor>	SIFaustProcessor;
+typedef class libmapping::SMARTP<IFaustProcessor>	SIFaustProcessor;
 //--------------------------------------------------------------------------
 /*!
 	\brief a Faust processor (that is also a parallel signal)
@@ -90,7 +90,7 @@ class IFaustProcessor : public ISignal, public TPlugin
 		// messages handling
 		// ------------------------	
 		class SetFaustParamMsgHandler;
-		typedef SMARTP<SetFaustParamMsgHandler> SSetFaustParamMsgHandler;
+		typedef libmapping::SMARTP<SetFaustParamMsgHandler> SSetFaustParamMsgHandler;
 		class SetFaustParamMsgHandler : public MsgHandler {
 			protected:
 				float* fValue;
@@ -103,7 +103,7 @@ class IFaustProcessor : public ISignal, public TPlugin
 		
 		// ------------------------	
 		class SetCheckedFaustParamMsgHandler;
-		typedef SMARTP<SetCheckedFaustParamMsgHandler> SSetCheckedFaustParamMsgHandler;
+		typedef libmapping::SMARTP<SetCheckedFaustParamMsgHandler> SSetCheckedFaustParamMsgHandler;
 		class SetCheckedFaustParamMsgHandler : public SetFaustParamMsgHandler {
 			protected:
 				float fMin, fMax;
@@ -115,7 +115,7 @@ class IFaustProcessor : public ISignal, public TPlugin
 
 		// ------------------------	
 		class GetFaustParamMsgHandler;
-		typedef SMARTP<GetFaustParamMsgHandler> SGetFaustParamMsgHandler;
+		typedef libmapping::SMARTP<GetFaustParamMsgHandler> SGetFaustParamMsgHandler;
 		class GetFaustParamMsgHandler : public GetParamMsgHandler {
 			protected:
 				float* fValue;
