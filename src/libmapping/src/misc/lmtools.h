@@ -18,8 +18,8 @@
 
  */
 
-#ifndef __tools__
-#define __tools__
+#ifndef __lmtools__
+#define __lmtools__
 
 #include <math.h>
 #include <iostream>
