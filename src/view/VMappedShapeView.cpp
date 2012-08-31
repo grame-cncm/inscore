@@ -25,7 +25,7 @@
 
 #include "VMappedShapeView.h"
 
-#include "TVirtualRelation.h"
+using namespace libmapping;
 
 namespace inscore
 {
@@ -34,14 +34,14 @@ namespace inscore
 void VMappedShapeView::updateGraphic2GraphicMapping (IShapeMap* object)
 {
 	// Update mapping
-	TLocalMapping<GraphicSegment>::const_iterator i = object->localMappings()->namedMappings().begin();
+	TLocalMapping<float,2>::const_iterator i = object->localMappings()->namedMappings().begin();
 	
 	for ( ; i != object->localMappings()->namedMappings().end() ; i++ )
 	{
 		const SGraphic2RelativeTimeMapping & l2t_mapping = i->second;
 		Graphic2RelativeTimeRelation::const_iterator iter = l2t_mapping->direct().begin();
 		
-		SGraphic2GraphicMapping g2l_mapping = TMapping<GraphicSegment,GraphicSegment>::create();	// Create the local -> graphic mapping.
+		SGraphic2GraphicMapping g2l_mapping = TMapping<float,2, float,2>::create();	// Create the local -> graphic mapping.
 																									// (which is here a 'graphic -> graphic' identity mapping)
 		SGraphicSegmentation graphicSegmentation = GraphicSegmentation::create( GraphicSegment(-1,-1,1,1) );	// Create the graphic segmentation.
 		
@@ -51,7 +51,7 @@ void VMappedShapeView::updateGraphic2GraphicMapping (IShapeMap* object)
 			iter++;
 		}
 		object->localMappings()->setMapping( i->first, l2t_mapping );	// Finally, affect the mapping to object.
-		VGraphicsItemView::setMapping<GraphicSegment>( object , i->first , g2l_mapping , l2t_mapping );
+		VGraphicsItemView::setMapping<float,2>( object , i->first , g2l_mapping , l2t_mapping );
 	}
 	
 	VGraphicsItemView::buildDefaultMapping(object);
