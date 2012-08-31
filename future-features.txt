@@ -1,3 +1,6 @@
 
 - support for multiple masters in synchronization
 - extension of the time related events to duration
+- absolute coordinates in pixels for the scene
+- save/restaure : save empile le comportement existant d'un objet, 
+  ce qui permet ensuite de le modifier temporairement et ensuite de faire un restaure (YO)
