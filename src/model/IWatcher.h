@@ -51,7 +51,7 @@ namespace inscore
 */
 
 class IWatcher;
-typedef class SMARTP<IWatcher>	SIWatcher;
+typedef class libmapping::SMARTP<IWatcher>	SIWatcher;
 
 //--------------------------------------------------------------------------
 /*!
@@ -70,7 +70,7 @@ class IWatcher : public IObject
 				virtual bool check( SIObject o ) const = 0;
 				virtual IMessage&  print(IMessage& m) const = 0;
 		};
-		typedef SMARTP<ParamChecker> SParamChecker;
+		typedef libmapping::SMARTP<ParamChecker> SParamChecker;
 
 		struct WatchStruct {
 			WatchStruct() : fConditionsState(false), fAlwaysEmit(false) {}
@@ -142,7 +142,7 @@ class IWatcher : public IObject
 			protected:
 				InfComparisonOperator(): ComparisonOperator<T>() {}
 			public:
-				static SMARTP<InfComparisonOperator < T > > create() { return new InfComparisonOperator<T>(); }
+				static libmapping::SMARTP<InfComparisonOperator < T > > create() { return new InfComparisonOperator<T>(); }
 				virtual ~InfComparisonOperator() {}
 				bool compare(const T& a,const T& b) const { return a < b; }
 				virtual IMessage&  print(IMessage& out) const	{ out << std::string(COMPARATOR_INF); return out; }
@@ -153,7 +153,7 @@ class IWatcher : public IObject
 			protected:
 				SupComparisonOperator(): ComparisonOperator<T>() {}
 			public:
-				static SMARTP<SupComparisonOperator < T > > create() { return new SupComparisonOperator<T>(); }
+				static libmapping::SMARTP<SupComparisonOperator < T > > create() { return new SupComparisonOperator<T>(); }
 				virtual ~SupComparisonOperator() {}
 				bool compare(const T& a,const T& b) const { return a > b; }
 				virtual IMessage&  print(IMessage& out) const	{ out << std::string(COMPARATOR_SUP); return out; }
@@ -164,7 +164,7 @@ class IWatcher : public IObject
 			protected:
 				InfEqComparisonOperator(): ComparisonOperator<T>() {}
 			public:
-				static SMARTP<InfEqComparisonOperator < T > > create() { return new InfEqComparisonOperator<T>(); }
+				static libmapping::SMARTP<InfEqComparisonOperator < T > > create() { return new InfEqComparisonOperator<T>(); }
 				virtual ~InfEqComparisonOperator() {}
 				bool compare(const T& a,const T& b) const { return a <= b; }
 				virtual IMessage&  print(IMessage& out) const	{ out << std::string(COMPARATOR_INF_EQ); return out; }
@@ -175,7 +175,7 @@ class IWatcher : public IObject
 			protected:
 				SupEqComparisonOperator(): ComparisonOperator<T>() {}
 			public:
-				static SMARTP<SupEqComparisonOperator < T > > create() { return new SupEqComparisonOperator<T>(); }
+				static libmapping::SMARTP<SupEqComparisonOperator < T > > create() { return new SupEqComparisonOperator<T>(); }
 				virtual ~SupEqComparisonOperator() {}
 				bool compare(const T& a,const T& b) const { return a >= b; }
 				virtual IMessage&  print(IMessage& out) const	{ out << std::string(COMPARATOR_SUP_EQ); return out; }
@@ -186,7 +186,7 @@ class IWatcher : public IObject
 			protected:
 				EqComparisonOperator(): ComparisonOperator<T>() {}
 			public:
-				static SMARTP<EqComparisonOperator < T > > create() { return new EqComparisonOperator<T>(); }
+				static libmapping::SMARTP<EqComparisonOperator < T > > create() { return new EqComparisonOperator<T>(); }
 				virtual ~EqComparisonOperator() {}
 				bool compare(const T& a,const T& b) const { return a == b; }
 				virtual IMessage&  print(IMessage& out) const	{ out << std::string(COMPARATOR_EQ); return out; }
@@ -197,7 +197,7 @@ class IWatcher : public IObject
 			protected:
 				DiffComparisonOperator(): ComparisonOperator<T>() {}
 			public:
-				static SMARTP<DiffComparisonOperator < T > > create() { return new DiffComparisonOperator<T>(); }
+				static libmapping::SMARTP<DiffComparisonOperator < T > > create() { return new DiffComparisonOperator<T>(); }
 				virtual ~DiffComparisonOperator() {}
 				bool compare(const T& a,const T& b) const { return a != b; }
 				virtual IMessage&  print(IMessage& out) const	{ out << std::string(COMPARATOR_DIFF); return out; }
@@ -207,13 +207,13 @@ class IWatcher : public IObject
 		class Comparator: public smartable
 		{
 			protected:
-				SMARTP<ComparisonOperator <T> > fOp;
+				libmapping::SMARTP<ComparisonOperator <T> > fOp;
 				T fReference;
 				
-				Comparator( SMARTP<ComparisonOperator <T> > op, const T& reference ) : fOp(op), fReference(reference) {}
+				Comparator( libmapping::SMARTP<ComparisonOperator <T> > op, const T& reference ) : fOp(op), fReference(reference) {}
 
 			public:
-				static SMARTP< Comparator <T> > create( SMARTP<ComparisonOperator <T> > op, const T& reference ) { return new Comparator<T> (op, reference); }
+				static libmapping::SMARTP< Comparator <T> > create( libmapping::SMARTP<ComparisonOperator <T> > op, const T& reference ) { return new Comparator<T> (op, reference); }
 				
 				bool result( const T& a ) const		{ return fOp->compare( a , fReference ); }
 				
@@ -238,14 +238,14 @@ class IWatcher : public IObject
 		{
 			protected:
 				std::string fParamName;
-				SMARTP< Comparator <T> > fComparator;
+				libmapping::SMARTP< Comparator <T> > fComparator;
 			
-				ParamCheckerTemplate( const std::string& paramName , SMARTP< Comparator <T> > comparator )
+				ParamCheckerTemplate( const std::string& paramName , libmapping::SMARTP< Comparator <T> > comparator )
 					: fParamName(paramName), fComparator(comparator) {}
 			public:
 				virtual ~ParamCheckerTemplate() {}
 			
-				static SParamChecker create( const std::string& paramName , SMARTP< Comparator <T> > comparator ) 
+				static SParamChecker create( const std::string& paramName , libmapping::SMARTP< Comparator <T> > comparator ) 
 				{ return new ParamCheckerTemplate<T>(paramName , comparator ); }
 
 				// TODO: specialiser ça pour les ParamCheckerTemplate<rational>
@@ -268,7 +268,7 @@ class IWatcher : public IObject
 
 		template<typename T> static SParamChecker buildParamCheckerTemplate( const std::string& paramName , const std::string& operatorString , const T& reference )
 		{
-			SMARTP<ComparisonOperator <T> > op = 0;
+			libmapping::SMARTP<ComparisonOperator <T> > op = 0;
 			if ( operatorString == COMPARATOR_INF )
 				op =  InfComparisonOperator<T>::create();
 			else if ( operatorString == COMPARATOR_SUP )

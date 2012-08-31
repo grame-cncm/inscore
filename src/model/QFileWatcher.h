@@ -42,7 +42,7 @@ namespace inscore
 */
 
 class QFileWatcher;
-typedef class SMARTP<QFileWatcher>	SQFileWatcher;
+typedef class libmapping::SMARTP<QFileWatcher>	SQFileWatcher;
 
 //--------------------------------------------------------------------------
 /**

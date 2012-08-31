@@ -44,7 +44,7 @@ namespace inscore
 
 class Updater;
 class IVideo;
-typedef class SMARTP<IVideo>	SIVideo;
+typedef class libmapping::SMARTP<IVideo>	SIVideo;
 //--------------------------------------------------------------------------
 /*!
 	\brief a video object.
@@ -79,7 +79,7 @@ class IVideo : public IRectShape,  public TFile
 		{ 
 			public:
 				virtual ~Date2SecondConverter() {}
-				virtual float convert(const rational& r) const = 0;
+				virtual float convert(const libmapping::rational& r) const = 0;
 				virtual IMessage&  print(IMessage& m) const = 0;
 		};
 		class Date2SecondMappingConverter: public Date2SecondConverter
@@ -89,9 +89,9 @@ class IVideo : public IRectShape,  public TFile
 			protected:
 				Date2SecondMappingConverter( SFloat2RelativeTimeMapping mapping );
 			public:
-				static SMARTP<Date2SecondConverter> create( SFloat2RelativeTimeMapping mapping ) { return new Date2SecondMappingConverter(mapping); }
+				static libmapping::SMARTP<Date2SecondConverter> create( SFloat2RelativeTimeMapping mapping ) { return new Date2SecondMappingConverter(mapping); }
 				virtual ~Date2SecondMappingConverter() {}
-				float convert(const rational& r) const;
+				float convert(const libmapping::rational& r) const;
 				virtual IMessage&  print(IMessage& m) const	{ m << fMapping; return m; }
 		};
 		class Date2SecondTempoConverter: public Date2SecondConverter
@@ -101,15 +101,15 @@ class IVideo : public IRectShape,  public TFile
 			protected:
 				Date2SecondTempoConverter(float tempo , float startSecond) : fTempo(tempo) , fStartSecond(startSecond) {}
 			public:
-				static SMARTP<Date2SecondConverter> create(float tempo , float startSecond) { return new Date2SecondTempoConverter(tempo,startSecond); }
+				static libmapping::SMARTP<Date2SecondConverter> create(float tempo , float startSecond) { return new Date2SecondTempoConverter(tempo,startSecond); }
 				virtual ~Date2SecondTempoConverter()	{}
-				float convert(const rational& r) const	{ return fStartSecond + 240.0f * (float(r) / fTempo); }
+				float convert(const libmapping::rational& r) const	{ return fStartSecond + 240.0f * (float(r) / fTempo); }
 				float tempo()							{ return fTempo; }
 				float startSecond()						{ return fStartSecond; }
 				virtual IMessage&  print(IMessage& m) const	{ m << std::string(VIDEO_MAP_TEMPO) << fTempo << std::string(VIDEO_MAP_START_SECOND) << fStartSecond; return m; }
 		};
 					
-		SMARTP<Date2SecondConverter> fConverter;
+		libmapping::SMARTP<Date2SecondConverter> fConverter;
 		float fTempo, fStartSecond;
 		
 		//--------------------------------------------------------------------------
@@ -120,7 +120,7 @@ class IVideo : public IRectShape,  public TFile
 			protected:
 				GetVideoMapMsgHandler(IVideo* video) : fVideo(video) {}
 			public: 
-				static SMARTP<GetVideoMapMsgHandler> create(IVideo* video) { return new GetVideoMapMsgHandler(video); }
+				static libmapping::SMARTP<GetVideoMapMsgHandler> create(IVideo* video) { return new GetVideoMapMsgHandler(video); }
 				virtual ~GetVideoMapMsgHandler() {}
 				virtual IMessage&  print(IMessage& m) const
 				{
