@@ -28,7 +28,9 @@
 #include "TimeEventAble.h"
 #include "EventsAble.h"
 #include "TInterval.h"
- 
+
+using namespace libmapping;
+
 namespace inscore
 {
 
