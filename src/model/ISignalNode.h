@@ -49,7 +49,9 @@ typedef class libmapping::SMARTP<ISignalNode>	SISignalNode;
 */
 class ISignalNode : public IVNode
 {	
-	public:	
+	public:
+		using IVNode::find;
+	
 		static libmapping::SMARTP<ISignalNode> create(IObject * parent)	{ return new ISignalNode(parent); }
 
 		virtual void	print(std::ostream& out) const;

@@ -60,6 +60,7 @@ class ISignal : public IObject, public ParallelSignal
 		virtual void	cleanup ();
 
 	protected:
+		using IObject::print;
 
 				 ISignal( const std::string& name, IObject * parent);
 		virtual ~ISignal() {}
