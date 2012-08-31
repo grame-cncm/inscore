@@ -49,6 +49,8 @@ class VGridView: public VMappedShapeView
 	MouseEventAble<QGraphicsRectItem>*  item() const		{ return (MouseEventAble<QGraphicsRectItem>*)fItem; }
 
 	public :
+		using VMappedShapeView::updateView;
+
 				 VGridView(QGraphicsScene * scene, const IGrid* h);
 		virtual ~VGridView() {}
 

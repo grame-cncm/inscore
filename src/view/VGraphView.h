@@ -52,6 +52,8 @@ class VGraphView: public VShapeView
 	MouseEventAble<QGraphicsGraphItem>* item() const	{ return (MouseEventAble<QGraphicsGraphItem>*)fItem; }
 
 	public :
+		using VShapeView::updateView;
+
 				 VGraphView(QGraphicsScene * scene, const IGraphicSignal*);
 				 VGraphView(QGraphicsScene * scene, const IGraphicSignal*, QAbstractGraphicsShapeItem *);
 		virtual ~VGraphView() {}
