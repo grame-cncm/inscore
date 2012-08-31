@@ -75,7 +75,7 @@ void VGraphView::updateView( IGraphicSignal * graph )
 
 	item()->clear();						// clear the engine data
 	for ( int i = 0 ; i < size ; i++ )
-		(*item()) << ( graph->get(i) );		// fill the engine data
+		(*item()) << ( graph->getGraphicFrames(i) );		// fill the engine data
 	int d;
 	for ( d = 0 ; d < graph->getSignal()->dimension() ; d++ )	// for each graphic signal
 	{
