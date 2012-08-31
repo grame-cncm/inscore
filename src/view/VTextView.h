@@ -103,7 +103,7 @@ class VTextView: public VIntPointObjectView
 				virtual void			set(const QString& s)	{ fItem->setPlainText( s ); }
 		};
 };
-typedef class SMARTP<VTextView>	SVTextView;
+typedef class libmapping::SMARTP<VTextView>	SVTextView;
 
 /*!@} */
 
