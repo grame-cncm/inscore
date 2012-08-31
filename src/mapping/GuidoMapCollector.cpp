@@ -32,7 +32,7 @@
 #include "GuidoMapCollector.h"
 
 using namespace std;
-
+using namespace libmapping;
 
 namespace inscore
 {
