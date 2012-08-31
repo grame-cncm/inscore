@@ -41,9 +41,9 @@ namespace inscore
 
 class Updater;
 class ISignal;
-typedef class SMARTP<ISignal>	SISignal;
+typedef class libmapping::SMARTP<ISignal>	SISignal;
 class ISignalNode;
-typedef class SMARTP<ISignalNode>	SISignalNode;
+typedef class libmapping::SMARTP<ISignalNode>	SISignalNode;
 //--------------------------------------------------------------------------
 /*!
 	\brief a signal
@@ -110,7 +110,7 @@ class ISignal : public IObject, public ParallelSignal
 		virtual MsgHandler::msgStatus projectionDataMsg (const IMessage* msg);
 		
 		class GetDefaultParamMsgHandler;
-		typedef SMARTP<GetDefaultParamMsgHandler> SGetDefaultParamMsgHandler;
+		typedef libmapping::SMARTP<GetDefaultParamMsgHandler> SGetDefaultParamMsgHandler;
 		class GetDefaultParamMsgHandler : public GetParamMsgHandler {
 				ISignal* fSignal;
 				GetDefaultParamMsgHandler(ISignal* signal) : GetParamMsgHandler() , fSignal(signal) {}
