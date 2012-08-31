@@ -26,66 +26,60 @@
 #ifndef __maptypes__
 #define __maptypes__
 
-#include "rational.h"
-#include "smartpointer.h"
+#include "TInterval.h"
+#include "TSegment.h"
+#include "TSegmentation.h"
+#include "TRelation.h"
+#include "TMapping.h"
 
 namespace inscore
 {
-
 /* 
 	typedefs for the commonly used relations and segmentations
 */
-template<typename T, unsigned int D> class TSegment;
-template<typename T> class TInterval;
 
-typedef TInterval<long>		LongInterval;
-typedef TInterval<rational>	RationalInterval;
-typedef TInterval<float>	FloatInterval;
+typedef libmapping::TInterval<long>							LongInterval;
+typedef libmapping::TInterval<libmapping::rational>			RationalInterval;
+typedef libmapping::TInterval<float>						FloatInterval;
 
-typedef TSegment<long,1>		FrameSegment;
-typedef TSegment<rational,1>	RelativeTimeSegment;
-typedef TSegment<float,2>		GraphicSegment;
-typedef TSegment<float,1>		FloatSegment;
-typedef TSegment<long,2>		IntPointSegment;
+typedef libmapping::TSegment<long,1>						FrameSegment;
+typedef libmapping::TSegment<libmapping::rational,1>		RelativeTimeSegment;
+typedef libmapping::TSegment<float,2>						GraphicSegment;
+typedef libmapping::TSegment<float,1>						FloatSegment;
+typedef libmapping::TSegment<long,2>						IntPointSegment;
 
-template<typename T1, typename T2> class TRelation;
-template<typename T1, typename T2> class TMapping;
-template<typename T1, typename T2, typename T3> class TComposition;
+typedef libmapping::TSegmentation<long,1>					FrameSegmentation;
+typedef libmapping::TSegmentation<libmapping::rational,1>	RelativeTimeSegmentation;
+typedef libmapping::TSegmentation<float,2>					GraphicSegmentation;
+typedef libmapping::TSegmentation<long,2>					IntPointSegmentation;
+typedef libmapping::TSegmentation<float,1>					FloatSegmentation;
 
-template<typename T> class TSegmentation;
-typedef TSegmentation<FrameSegment>			FrameSegmentation;
-typedef TSegmentation<RelativeTimeSegment>	RelativeTimeSegmentation;
-typedef TSegmentation<GraphicSegment>		GraphicSegmentation;
-typedef TSegmentation<IntPointSegment>		IntPointSegmentation;
-typedef TSegmentation<FloatSegment>			FloatSegmentation;
+typedef libmapping::SMARTP<RelativeTimeSegmentation>		SRelativeTimeSegmentation;
+typedef libmapping::SMARTP<GraphicSegmentation>				SGraphicSegmentation;
 
-typedef SMARTP<RelativeTimeSegmentation>	SRelativeTimeSegmentation;
-typedef SMARTP<GraphicSegmentation>			SGraphicSegmentation;
+typedef libmapping::TRelation<float,2,float,2>						Graphic2GraphicRelation;
+typedef libmapping::TRelation<libmapping::rational,1,float,2>		RelativeTime2GraphicRelation;
+typedef libmapping::TRelation<float,2,libmapping::rational,1>		Graphic2RelativeTimeRelation;
 
-typedef TRelation<GraphicSegment,GraphicSegment>			Graphic2GraphicRelation;
-typedef TRelation<RelativeTimeSegment,GraphicSegment>		RelativeTime2GraphicRelation;
-typedef TRelation<GraphicSegment,RelativeTimeSegment>		Graphic2RelativeTimeRelation;
+typedef libmapping::TMapping<float,2,float,2>						Graphic2GraphicMapping;
+typedef libmapping::TMapping<libmapping::rational,1,float,2>		RelativeTime2GraphicMapping;
+typedef libmapping::TMapping<float,2,libmapping::rational,1>		Graphic2RelativeTimeMapping;
+typedef libmapping::TMapping<float,2,long,2>						Graphic2IntPointMapping;
+typedef libmapping::TMapping<long,2,libmapping::rational,1>			IntPoint2RelativeTimeMapping;
+typedef libmapping::TMapping<float,2,long,1>						Graphic2FrameMapping;
+typedef libmapping::TMapping<long,1,libmapping::rational,1>			Frame2RelativeTimeMapping;
+typedef libmapping::TMapping<float,1,libmapping::rational,1>		Float2RelativeTimeMapping;
+typedef libmapping::TMapping<libmapping::rational,1,libmapping::rational,1>	RelativeTime2RelativeTimeMapping;
 
-typedef TMapping<GraphicSegment,GraphicSegment>				Graphic2GraphicMapping;
-typedef TMapping<RelativeTimeSegment,GraphicSegment>		RelativeTime2GraphicMapping;
-typedef TMapping<GraphicSegment,RelativeTimeSegment>		Graphic2RelativeTimeMapping;
-typedef TMapping<GraphicSegment,IntPointSegment>			Graphic2IntPointMapping;
-typedef TMapping<IntPointSegment,RelativeTimeSegment>		IntPoint2RelativeTimeMapping;
-typedef TMapping<GraphicSegment,FrameSegment>				Graphic2FrameMapping;
-typedef TMapping<FrameSegment,RelativeTimeSegment>			Frame2RelativeTimeMapping;
-typedef TMapping<FloatSegment,RelativeTimeSegment>			Float2RelativeTimeMapping;
-typedef TMapping<RelativeTimeSegment,RelativeTimeSegment>	RelativeTime2RelativeTimeMapping;
-
-typedef SMARTP<Graphic2GraphicMapping>					SGraphic2GraphicMapping;
-typedef SMARTP<RelativeTime2GraphicMapping>				SRelativeTime2GraphicMapping;
-typedef SMARTP<Graphic2RelativeTimeMapping>				SGraphic2RelativeTimeMapping;
-typedef SMARTP<RelativeTime2RelativeTimeMapping>		SRelativeTime2RelativeTimeMapping;
-typedef SMARTP<Graphic2IntPointMapping>					SGraphic2IntPointMapping;
-typedef SMARTP<IntPoint2RelativeTimeMapping>			SIntPoint2RelativeTimeMapping;
-typedef SMARTP<Float2RelativeTimeMapping>				SFloat2RelativeTimeMapping;
-typedef SMARTP<Graphic2FrameMapping>					SGraphic2FrameMapping;
-typedef SMARTP<Frame2RelativeTimeMapping>				SFrame2RelativeTimeMapping;
-
+typedef libmapping::SMARTP<Graphic2GraphicMapping>					SGraphic2GraphicMapping;
+typedef libmapping::SMARTP<RelativeTime2GraphicMapping>				SRelativeTime2GraphicMapping;
+typedef libmapping::SMARTP<Graphic2RelativeTimeMapping>				SGraphic2RelativeTimeMapping;
+typedef libmapping::SMARTP<RelativeTime2RelativeTimeMapping>		SRelativeTime2RelativeTimeMapping;
+typedef libmapping::SMARTP<Graphic2IntPointMapping>					SGraphic2IntPointMapping;
+typedef libmapping::SMARTP<IntPoint2RelativeTimeMapping>			SIntPoint2RelativeTimeMapping;
+typedef libmapping::SMARTP<Float2RelativeTimeMapping>				SFloat2RelativeTimeMapping;
+typedef libmapping::SMARTP<Graphic2FrameMapping>					SGraphic2FrameMapping;
+typedef libmapping::SMARTP<Frame2RelativeTimeMapping>				SFrame2RelativeTimeMapping;
 
 }
 
