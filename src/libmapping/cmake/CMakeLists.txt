@@ -22,13 +22,17 @@ else(WIN32)
 	add_definitions(-Wall)
 endif(WIN32)
 
+message ("CMAKE_SYSTEM_VERSION ${CMAKE_SYSTEM_VERSION}")
+
 if(APPLE)
 	if (${CMAKE_SYSTEM_VERSION} VERSION_LESS 9.0.0)
 		set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.4u.sdk)
 	elseif (${CMAKE_SYSTEM_VERSION} VERSION_LESS 10.8.0)
 		set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.5.sdk)
-	else ()
+	elseif (${CMAKE_SYSTEM_VERSION} VERSION_LESS 11.4.0)
 		set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.6.sdk)
+	else ()
+		set (CMAKE_OSX_SYSROOT "macosx10.7")
 	endif ()
  #######################################
  if (DIST STREQUAL "yes")
@@ -37,7 +41,7 @@ if(APPLE)
  else ()
 	message (STATUS "Only the current architecture will be compiled - Use -DDIST=yes to change.")
  endif ()
-	set (CMAKE_C++_FLAGS -mmacosx-version-min=10.4)
+	set (CMAKE_C++_FLAGS -mmacosx-version-min=10.5)
 endif(APPLE)
 
 #######################################
