@@ -38,20 +38,20 @@ void VMappedShapeView::updateGraphic2GraphicMapping (IShapeMap* object)
 	
 	for ( ; i != object->localMappings()->namedMappings().end() ; i++ )
 	{
-		const SGraphic2RelativeTimeMapping & l2t_mapping = i->second;
-		Graphic2RelativeTimeRelation::const_iterator iter = l2t_mapping->direct().begin();
+		const SGraphic2RelativeTimeMapping & local2time_mapping = i->second;
+		Graphic2RelativeTimeRelation::const_iterator iter = local2time_mapping->direct().begin();
 		
 		SGraphic2GraphicMapping g2l_mapping = TMapping<float,2, float,2>::create();	// Create the local -> graphic mapping.
 																									// (which is here a 'graphic -> graphic' identity mapping)
-		SGraphicSegmentation graphicSegmentation = GraphicSegmentation::create( GraphicSegment(-1,-1,1,1) );	// Create the graphic segmentation.
+//		SGraphicSegmentation graphicSegmentation = GraphicSegmentation::create( GraphicSegment(-1,-1,1,1) );	// Create the graphic segmentation.
 		
-		while (iter != l2t_mapping->direct().end()) {
+		while (iter != local2time_mapping->direct().end()) {
 			g2l_mapping->add ( iter->first , iter->first);			// Identity mapping.
-			graphicSegmentation->add( iter->first );				// Also fill the graphic segmentation.
+//			graphicSegmentation->add( iter->first );				// Also fill the graphic segmentation.
 			iter++;
 		}
-		object->localMappings()->setMapping( i->first, l2t_mapping );	// Finally, affect the mapping to object.
-		VGraphicsItemView::setMapping<float,2>( object , i->first , g2l_mapping , l2t_mapping );
+		object->localMappings()->setMapping( i->first, local2time_mapping );	// Finally, affect the mapping to object.
+		VGraphicsItemView::setMapping<float,2>( object , i->first , g2l_mapping , local2time_mapping );
 	}
 	
 	VGraphicsItemView::buildDefaultMapping(object);
