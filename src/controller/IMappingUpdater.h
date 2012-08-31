@@ -55,7 +55,7 @@ class IShapeMap;
 */
 class IMappingUpdater : public SlaveMapUpdater
 {
-	bool	date2point (const rational& date, const SRelativeTime2GraphicMapping& map, GraphicSegment& outSeg, float& x) const;
+	bool	date2point (const libmapping::rational& date, const SRelativeTime2GraphicMapping& map, GraphicSegment& outSeg, float& x) const;
 	float	getYPos (IObject* o, const GraphicSegment& masterSeg, Master::VAlignType align) const;
 
 	protected:
@@ -69,7 +69,7 @@ class IMappingUpdater : public SlaveMapUpdater
 		/// check adjacent segments and make sure the end and begin of successives egments match at an epsilon approximate
 		SGraphic2GraphicMapping			relink (const Graphic2GraphicRelation& rel, float epsilon) const;
 		/// time shift a time to graphic mapping
-		SRelativeTime2GraphicMapping	timeshift (const SRelativeTime2GraphicMapping& map, const rational& date) const;
+		SRelativeTime2GraphicMapping	timeshift (const SRelativeTime2GraphicMapping& map, const libmapping::rational& date) const;
 		/// adjust the segments vertical dimension and position
 		SGraphic2GraphicMapping			verticalAdjust (const SGraphic2GraphicMapping& map, IObject* o, const Master* master) const;
 		/// compute the intersection of two time segmentations
@@ -99,7 +99,7 @@ class IMappingUpdater : public SlaveMapUpdater
 		inline	void updateTo (IHtml* o)			{ updateIObject ( (IObject*)o); }
 		inline	void updateTo (IHtmlFile* o)		{ updateIObject ( (IObject*)o); }
 };
-typedef class SMARTP<IMappingUpdater>	SIMappingUpdater;
+typedef class libmapping::SMARTP<IMappingUpdater>	SIMappingUpdater;
 
 
 /*!@} */
