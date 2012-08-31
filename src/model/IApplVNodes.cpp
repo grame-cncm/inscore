@@ -49,7 +49,7 @@ void IApplDebug::accept (Updater* u)
 //--------------------------------------------------------------------------
 IMessageList IApplDebug::get () const
 {
-	IMessageList outMsgs = IObjectDebug::get();
+	IMessageList outMsgs = IObjectDebug::getSetMsg();
 	IMessage * msg = new IMessage (getOSCAddress(), "osc");
 	*msg << fOSCDebug;
 	outMsgs += msg;

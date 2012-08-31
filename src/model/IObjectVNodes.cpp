@@ -61,7 +61,7 @@ void IObjectDebug::accept (Updater* u)
 //--------------------------------------------------------------------------
 // message handlers
 //--------------------------------------------------------------------------
-IMessageList IObjectDebug::get () const
+IMessageList IObjectDebug::getSetMsg () const
 {
 	IMessageList outMsgs;
 	IMessage * msg = new IMessage(getOSCAddress(), "map");
