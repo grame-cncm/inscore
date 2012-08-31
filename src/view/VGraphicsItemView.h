@@ -101,12 +101,12 @@ class VGraphicsItemView : public VObjectView
 		float getIObjectHeight() const { return scene2RelativeHeight( fItem->boundingRect().height() ); }	// Gives the object's height in interlude scene coordinates.
 		
 		template <typename T, unsigned int D>
-		static void setMapping( IObject* object , const std::string& mapName , libmapping::SMARTP<libmapping::TMapping<float,2,T,D> > g2l_mapping , libmapping::SMARTP<libmapping::TMapping<T,D, libmapping::rational,1> > l2t_mapping)
+		static void setMapping( IObject* object , const std::string& mapName , libmapping::SMARTP<libmapping::TMapping<float,2,T,D> > g2l_mapping , libmapping::SMARTP<libmapping::TMapping<T,D, libmapping::rational,1> > local2time_mapping)
 		{
 			// create the graphic to time composition
 			// composition reduction to a simple mapping
 			typedef libmapping::TComposition <libmapping::rational,1,T,D, float,2> T2GComposition;
-			SRelativeTime2GraphicMapping t2gr = T2GComposition::create( l2t_mapping->reverse(), g2l_mapping->reverse() );
+			SRelativeTime2GraphicMapping t2gr = T2GComposition::create( local2time_mapping->reverse(), g2l_mapping->reverse() );
 			object->setMapping( mapName , t2gr );
 		}
 		
