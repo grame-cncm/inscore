@@ -50,6 +50,8 @@ class VLineView: public VMappedShapeView
 	IQGraphicsPathItem* item() const	{ return (IQGraphicsPathItem*)fItem; }
 
 	public :
+		using VMappedShapeView::updateView;
+
 				 VLineView(QGraphicsScene * scene, const ILine* h);
 		virtual ~VLineView() {}
 		

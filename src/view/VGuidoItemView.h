@@ -57,6 +57,7 @@ class VGuidoItemView: public VGraphicsItemView
 	IQGuidoGraphicsItem* fGuidoItem;
 
 	public :
+		using VGraphicsItemView::updateView;
 
 		VGuidoItemView(QGraphicsScene * scene, const IGuidoCode*);
 		virtual ~VGuidoItemView() {}
