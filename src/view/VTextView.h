@@ -60,6 +60,8 @@ class VTextView: public VIntPointObjectView
 //	QMap<std::string,int> fMappingVersion;
 
 	public :
+		using VIntPointObjectView::updateView;
+		using VIntPointObjectView::updateLocalMapping;
 
 				 VTextView(QGraphicsScene * scene, const IText*);
 				 VTextView(QGraphicsScene * scene, const IHtmlFile*);

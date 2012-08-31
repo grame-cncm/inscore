@@ -49,6 +49,8 @@ class VRectView: public VMappedShapeView
 	MouseEventAble<QGraphicsRectItem>*  item() const			{ return (MouseEventAble<QGraphicsRectItem>*)fItem; }
 
 	public :
+		using VMappedShapeView::updateView;
+
 				 VRectView(QGraphicsScene * scene, const IRect* h);
 		virtual ~VRectView() {}
 

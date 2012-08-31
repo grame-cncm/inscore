@@ -52,6 +52,8 @@ class export VTextUpdater : public ViewUpdater
 	std::ostream&	fOutStream;
 	
 	public :
+		using ViewUpdater::updateTo;
+
 		static libmapping::SMARTP<VTextUpdater> create(std::ostream& out)	{ return new VTextUpdater(out); }
 
 		virtual void updateTo (IObject* model, const Master* master);

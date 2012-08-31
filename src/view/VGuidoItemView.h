@@ -58,6 +58,7 @@ class VGuidoItemView: public VGraphicsItemView
 
 	public :
 		using VGraphicsItemView::updateView;
+		using VGraphicsItemView::updateLocalMapping;
 
 		VGuidoItemView(QGraphicsScene * scene, const IGuidoCode*);
 		virtual ~VGuidoItemView() {}
