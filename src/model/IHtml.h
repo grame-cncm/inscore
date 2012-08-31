@@ -41,7 +41,7 @@ namespace inscore
 
 class Updater;
 class IHtml;
-typedef class SMARTP<IHtml>	SIHtml;
+typedef class libmapping::SMARTP<IHtml>	SIHtml;
 //--------------------------------------------------------------------------
 /*!
 	\brief a text element of the model

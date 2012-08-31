@@ -41,7 +41,7 @@ namespace inscore
 
 class Updater;
 class IGuidoFile;
-typedef class SMARTP<IGuidoFile>	SIGuidoFile;
+typedef class libmapping::SMARTP<IGuidoFile>	SIGuidoFile;
 //--------------------------------------------------------------------------
 /*!
 	\brief a file based guido object
