@@ -84,7 +84,7 @@ class ISignal : public IObject, public ParallelSignal
 		virtual void	print (IMessage& out) const;
 
 		/// \brief put the message values into a projection of the signal
-		virtual bool	put (const IMessage* msg, int index, int step);
+		virtual bool	putAt (const IMessage* msg, int index, int step);
 
 		/// \brief set signals to the message signals
 		virtual MsgHandler::msgStatus	set (const IMessage* msg);

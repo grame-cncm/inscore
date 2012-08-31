@@ -135,7 +135,7 @@ void IFaustProcessor::call_compute (int nframes, int index, int step)
 }
 
 //--------------------------------------------------------------------------
-bool IFaustProcessor::put (const IMessage* msg, int index, int step)
+bool IFaustProcessor::putAt (const IMessage* msg, int index, int step)
 {
 	if (!dimension()) return true;		// nothing to do: there is no space for output signals
 
