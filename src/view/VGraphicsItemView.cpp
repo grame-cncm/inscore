@@ -40,6 +40,8 @@
 
 #define NB_OF_COLORS 12
 
+using namespace libmapping;
+
 namespace inscore
 {
 
@@ -305,7 +307,7 @@ void VGraphicsItemView::buildDefaultMapping (IObject* object)
 		RelativeTimeSegment wholeTimeSegment( rational(0,1) , object->getDuration() );
 		GraphicSegment		wholeGraphicSegment( -1 , -1 , 1 , 1 );
 		
-		SRelativeTime2GraphicMapping t2g_mapping = TMapping<RelativeTimeSegment,GraphicSegment>::create();
+		SRelativeTime2GraphicMapping t2g_mapping = TMapping<rational,1,float,2>::create();
 		t2g_mapping->add ( wholeTimeSegment , wholeGraphicSegment );
 		object->setMapping( "" , t2g_mapping);
 		object->fAutoMap = true;

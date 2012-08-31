@@ -36,10 +36,10 @@ class IScene;
 //_______________________________________________________________________
 class INScoreScene : public QGraphicsScene
 {
-	inscore::SMARTP<inscore::IScene> fScene;		// the corresponding scene
+	libmapping::SMARTP<inscore::IScene> fScene;		// the corresponding scene
 	
 	public:
-				 INScoreScene (const std::string& address, inscore::SMARTP<inscore::IScene> scene);
+				 INScoreScene (const std::string& address, libmapping::SMARTP<inscore::IScene> scene);
 		virtual ~INScoreScene() {}
 
 	protected:
