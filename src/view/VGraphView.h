@@ -53,6 +53,7 @@ class VGraphView: public VShapeView
 
 	public :
 		using VShapeView::updateView;
+		using VShapeView::updateLocalMapping;
 
 				 VGraphView(QGraphicsScene * scene, const IGraphicSignal*);
 				 VGraphView(QGraphicsScene * scene, const IGraphicSignal*, QAbstractGraphicsShapeItem *);

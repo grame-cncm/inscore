@@ -50,6 +50,7 @@ class VGridView: public VMappedShapeView
 
 	public :
 		using VMappedShapeView::updateView;
+		using VMappedShapeView::updateLocalMapping;
 
 				 VGridView(QGraphicsScene * scene, const IGrid* h);
 		virtual ~VGridView() {}
