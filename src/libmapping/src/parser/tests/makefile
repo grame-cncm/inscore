@@ -10,7 +10,7 @@ clean:
 	make -C .. clean
 
 testparser.o: ../../segments/TInterval.h ../../segments/TSegment.h ../../segments/TSegmentation.h ../../segments/TVariety.h
-testparser.o: ../../segments/TRefinement.h ../../misc/tools.h ../../relations/TComposition.h ../../relations/TMapping.h
+testparser.o: ../../segments/TRefinement.h ../../misc/lmtools.h ../../relations/TComposition.h ../../relations/TMapping.h
 testparser.o: ../../relations/TRefinedComposition.h ../../relations/TRelation.h ../../relations/TRefinedRelation.h 
 testparser.o: ../mapping.tab.cpp ../mapping.tab.hpp ../lex.libmap.cpp 
 

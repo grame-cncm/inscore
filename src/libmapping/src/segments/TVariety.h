@@ -27,7 +27,7 @@
 #define __TVariety__
 
 #include "TInterval.h"
-#include "tools.h"
+#include "lmtools.h"
 
 namespace libmapping
 {
