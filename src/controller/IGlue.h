@@ -46,8 +46,8 @@ namespace inscore
 class IMessage;
 class IObject;
 class IMessageStack;
-typedef class SMARTP<IObject>		SIObject;
-typedef class SMARTP<IMessageStack>	SIMessageStack;
+typedef class libmapping::SMARTP<IObject>		SIObject;
+typedef class libmapping::SMARTP<IMessageStack>	SIMessageStack;
 
 //_______________________________________________________________________
 /*!
@@ -68,7 +68,7 @@ class OscThread : public QThread
 class OSCStream;
 class IAppl;
 class GraphicUpdateListener;
-typedef class SMARTP<IAppl>	SIAppl;
+typedef class libmapping::SMARTP<IAppl>	SIAppl;
 //--------------------------------------------------------------------------
 /*!	\brief a glue between osc, a basic model and a controller
 
