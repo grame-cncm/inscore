@@ -39,7 +39,7 @@ namespace inscore
 
 class Updater;
 class IPolygon;
-typedef class SMARTP<IPolygon>	SIPolygon;
+typedef class libmapping::SMARTP<IPolygon>	SIPolygon;
 //--------------------------------------------------------------------------
 /*!
 *	\brief a polygon. Contains any number of points.

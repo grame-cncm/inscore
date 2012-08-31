@@ -59,11 +59,11 @@ class VObjectView;
 */
 
 class IObject;
-typedef class SMARTP<IObject>	SIObject;
+typedef class libmapping::SMARTP<IObject>	SIObject;
 class IScene;
-typedef class SMARTP<IScene>	SIScene;
+typedef class libmapping::SMARTP<IScene>	SIScene;
 class IObjectDebug;
-typedef class SMARTP<IObjectDebug>	SIObjectDebug;
+typedef class libmapping::SMARTP<IObjectDebug>	SIObjectDebug;
 
 //--------------------------------------------------------------------------
 /*!
@@ -79,7 +79,7 @@ typedef class SMARTP<IObjectDebug>	SIObjectDebug;
 	of the \c cleanup method.
 */
 class IObject : public IPosition, public IDate, public IColor, public EventsAble,
-				public browsable, public TMapable, virtual public smartable
+				public browsable, public TMapable, virtual public libmapping::smartable
 {
 	public:
 		friend class IProxy;

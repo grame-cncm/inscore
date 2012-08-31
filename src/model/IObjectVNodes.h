@@ -39,7 +39,7 @@ class IMessage;
 */
 
 class IObjectDebug;
-typedef class SMARTP<IObjectDebug>			SIObjectDebug;
+typedef class libmapping::SMARTP<IObjectDebug>			SIObjectDebug;
 //--------------------------------------------------------------------------
 /*!
 	\brief an object debug virtual node

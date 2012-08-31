@@ -48,7 +48,7 @@ namespace inscore
 
 class Updater;
 class IShape;
-typedef class SMARTP<IShape>	SIShape;
+typedef class libmapping::SMARTP<IShape>	SIShape;
 //--------------------------------------------------------------------------
 /*!
 	\brief a basic geometric shape.
