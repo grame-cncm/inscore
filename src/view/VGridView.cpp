@@ -30,6 +30,7 @@
 #include "IGrid.h"
 
 using namespace std;
+using namespace libmapping;
 
 namespace inscore
 {
@@ -75,7 +76,7 @@ void VGridView::updateLocalMapping (IGrid* grid)
 		rational d = grid->getDuration() / (cols * rows);
 		rational t (0, 1);
 
-		SRelativeTime2GraphicMapping t2g_mapping = TMapping<RelativeTimeSegment,GraphicSegment>::create();
+		SRelativeTime2GraphicMapping t2g_mapping = TMapping<rational,1, float,2>::create();
 
 		if (grid->getOrder() == IGrid::kLeftRight) {
 			for (int i=0; i< rows; i++) {

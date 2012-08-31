@@ -28,7 +28,6 @@
 #define newVersion 1
 
 #include "VGraphView.h"
-#include "TVirtualRelation.h"
 #include "maptypes.h"
 #include "ITLError.h"
 
@@ -36,6 +35,7 @@
 #include "ISignalProfiler.h"
 
 using namespace std;
+using namespace libmapping;
 
 namespace inscore
 {
@@ -97,15 +97,15 @@ void VGraphView::updateView( IGraphicSignal * graph )
 void VGraphView::updateLocalMapping (IGraphicSignal* object)
 {
 	// Update mapping
-	TLocalMapping<FrameSegment>::const_iterator i = object->localMappings()->namedMappings().begin();
+	TLocalMapping<long,1>::const_iterator i = object->localMappings()->namedMappings().begin();
 	
 	for ( ; i != object->localMappings()->namedMappings().end() ; i++ )	// For each local->time named mapping
 	{
-		SGraphic2FrameMapping g2l_mapping = TMapping<GraphicSegment,FrameSegment>::create();	// Build a Graphic -> local mapping.
+		SGraphic2FrameMapping g2l_mapping = TMapping<float,2,long,1>::create();	// Build a Graphic -> local mapping.
 		SGraphicSegmentation graphicSegmentation = GraphicSegmentation::create( GraphicSegment( -1 , -1 , 1 , 1 ) );
 			
 		const SFrame2RelativeTimeMapping & l2t_mapping = i->second;	// Get the 'local -> time' mapping.
-		TRelation<FrameSegment,RelativeTimeSegment>::const_iterator iter = l2t_mapping->direct().begin();	
+		TRelation<long,1,rational,1>::const_iterator iter = l2t_mapping->direct().begin();	
 		while (iter != l2t_mapping->direct().end()) {	// Parse each 'local' element of the 'local -> time' mapping.
 			bool ok;
 			GraphicSegment gs = getGraphicSegment( iter->first , object , ok );	// Asks the view object to find the GraphicSegment corresponding to the
@@ -120,7 +120,7 @@ void VGraphView::updateLocalMapping (IGraphicSignal* object)
 		}
 //		object->localMappings()->setMapping( i->first , g2l_mapping , l2t_mapping );
 		object->localMappings()->setMapping( i->first, l2t_mapping );
-		VGraphicsItemView::setMapping<FrameSegment>( object , i->first , g2l_mapping , l2t_mapping );
+		VGraphicsItemView::setMapping<long,1>( object , i->first , g2l_mapping , l2t_mapping );
 	}
 	VGraphicsItemView::buildDefaultMapping( object );
 }
