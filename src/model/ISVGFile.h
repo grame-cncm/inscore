@@ -41,7 +41,7 @@ namespace inscore
 
 class Updater;
 class ISVGFile;
-typedef class SMARTP<ISVGFile>	SISVGFile;
+typedef class libmapping::SMARTP<ISVGFile>	SISVGFile;
 //--------------------------------------------------------------------------
 /*!
 	\brief a SVG element based on a file

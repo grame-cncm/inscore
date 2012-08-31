@@ -46,7 +46,7 @@ namespace inscore
 
 class Updater;
 class IText;
-typedef class SMARTP<IText>	SIText;
+typedef class libmapping::SMARTP<IText>	SIText;
 //--------------------------------------------------------------------------
 /*!
 	\brief a text element of the model

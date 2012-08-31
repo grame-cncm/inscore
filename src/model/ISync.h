@@ -40,13 +40,13 @@ namespace inscore
 */
 
 class Master;
-typedef SMARTP<Master> SMaster;
+typedef libmapping::SMARTP<Master> SMaster;
 
 //--------------------------------------------------------------------------
 /*!
 	\brief a master object associated to its node synchronization modes
 */
-class Master : public smartable
+class Master : public libmapping::smartable
 {
 	public:
 		typedef std::vector< std::string > SyncOptions;
