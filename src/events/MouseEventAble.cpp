@@ -29,7 +29,9 @@
 #include "MapTools.h"
 
 #include "rational.h"
- 
+
+using namespace libmapping;
+
 namespace inscore
 {
 
@@ -38,9 +40,9 @@ namespace inscore
 //----------------------------------------------------------------------
 static GraphicSegment find (const std::pair<float,float>& p, const Graphic2RelativeTimeRelation& rel)
 {
-	typedef TRelation<GraphicSegment,RelativeTimeSegment>::const_iterator const_iterator;
+	typedef TRelation<float,2, rational,1>::const_iterator const_iterator;
 	for (const_iterator i = rel.begin(); i != rel.end(); i++)
-		if ( i->first.include(p) ) return i->first;
+		if ( i->first.include(p.first, p.second) ) return i->first;
 	return GraphicSegment();
 }
 
