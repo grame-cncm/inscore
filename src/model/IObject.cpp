@@ -56,6 +56,7 @@
 #define useiterator 0
 
 using namespace std;
+using namespace libmapping;
 
 namespace inscore
 {
