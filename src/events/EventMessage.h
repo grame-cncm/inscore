@@ -39,9 +39,9 @@ namespace inscore
 {
 
 class IObject;
-typedef SMARTP<IObject>			SIObject;
+typedef libmapping::SMARTP<IObject>			SIObject;
 class EventMessage;
-typedef SMARTP<EventMessage>	SEventMessage;
+typedef libmapping::SMARTP<EventMessage>	SEventMessage;
 
 typedef struct MouseLocation {
 	enum { noloc = -999999 };
@@ -54,19 +54,19 @@ typedef struct MouseLocation {
 } MouseLocation;
 
 typedef struct EventContext {
-	MouseLocation	mouse;
-	rational		date;
-	const IObject*	object;
-	const IMessage* varmsg;
+	MouseLocation			mouse;
+	libmapping::rational	date;
+	const IObject*			object;
+	const IMessage*			varmsg;
 
-	EventContext (const MouseLocation& ml, const rational& d, const IObject* o)
+	EventContext (const MouseLocation& ml, const libmapping::rational& d, const IObject* o)
 		: mouse(ml), date(d), object(o), varmsg(0) {}
 	EventContext (const IObject* o)
 		: object(o), varmsg(0) {}
 } EventContext;
 
 //----------------------------------------------------------------------
-class EventMessage : public smartable
+class EventMessage : public libmapping::smartable
 {
 	IMessage *			fMessage;
 	std::map<int, SIMessage>	fVarMsgs;		// messages used as variables stored with their index
