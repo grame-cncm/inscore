@@ -32,7 +32,7 @@ namespace inscore
 //--------------------------------------------------------------------------
 IShapeMap::IShapeMap( const std::string& name, IObject* parent ) : IShape(name,parent)
 {
-	fLocalMappings = TLocalMapping<GraphicSegment>::create();
+	fLocalMappings = TLocalMapping<float,2>::create();
 
 	fMsgHandlerMap["map"]		= TMethodMsgHandler<IShapeMap>::create(this, &IShapeMap::mapMsg);
 	fMsgHandlerMap["map+"]		= TMethodMsgHandler<IShapeMap>::create(this, &IShapeMap::mapAddMsg);
@@ -42,7 +42,7 @@ IShapeMap::IShapeMap( const std::string& name, IObject* parent ) : IShape(name,p
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IShapeMap::mapFileMsg (const IMessage* msg )	
 { 
-	MsgHandler::msgStatus status = TMapMsgHandler<GraphicSegment>::mapFileMsg( msg , localMappings() , this );
+	MsgHandler::msgStatus status = TMapMsgHandler<float,2>::mapFileMsg( msg , localMappings() , this );
 	if (status & MsgHandler::kProcessed) localMapModified(true);
 	return status;
 }
@@ -50,7 +50,7 @@ MsgHandler::msgStatus IShapeMap::mapFileMsg (const IMessage* msg )
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IShapeMap::mapMsg (const IMessage* msg )	
 { 
-	MsgHandler::msgStatus status = TMapMsgHandler<GraphicSegment>::mapMsg( msg , localMappings() , this); 
+	MsgHandler::msgStatus status = TMapMsgHandler<float,2>::mapMsg( msg , localMappings() , this); 
 	if (status & MsgHandler::kProcessed) localMapModified(true);
 	return status;
 }
@@ -58,7 +58,7 @@ MsgHandler::msgStatus IShapeMap::mapMsg (const IMessage* msg )
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IShapeMap::mapAddMsg (const IMessage* msg )
 { 
-	MsgHandler::msgStatus status = TMapMsgHandler<GraphicSegment>::addMapMsg( msg , localMappings() , this ); 
+	MsgHandler::msgStatus status = TMapMsgHandler<float,2>::addMapMsg( msg , localMappings() , this ); 
 	if (status & MsgHandler::kProcessed) localMapModified(true);
 	return status;
 }
