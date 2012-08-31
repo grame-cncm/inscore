@@ -66,6 +66,10 @@ template<typename T> class TSegment<T, 1>
 
        /// return the segment interval
 		inline TInterval<T> interval() const			{ return fInterval; }
+       /// return the segment start value
+		inline T start() const							{ return fInterval.first(); }
+       /// return the segment end value
+		inline T end() const							{ return fInterval.second(); }
        /// return the segment dimension
 		inline unsigned int dimension() const			{ return 1; }
        /// return the segment size
