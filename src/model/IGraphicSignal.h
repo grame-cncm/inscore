@@ -93,7 +93,7 @@ class IGraphicSignal : public IShape
 		///! gives the input signal
 		const SISignal &		getSignal() const		{ return fSignal; }
 		///! gives the input signal value at index \c i
-		virtual GraphicFrames	get (int i) const		{ return fSignal->ParallelSignal::get<GraphicFrames>(i); }
+		virtual GraphicFrames	getGraphicFrames (int i) const		{ return fSignal->ParallelSignal::get<GraphicFrames>(i); }
 
 		///! gives the graphic signal dimension i.e. the count of simple graphic signals
 		virtual int			dimension () const;
