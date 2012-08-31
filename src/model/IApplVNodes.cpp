@@ -47,7 +47,7 @@ void IApplDebug::accept (Updater* u)
 //--------------------------------------------------------------------------
 // message handlers
 //--------------------------------------------------------------------------
-IMessageList IApplDebug::get () const
+IMessageList IApplDebug::getSetMsg () const
 {
 	IMessageList outMsgs = IObjectDebug::getSetMsg();
 	IMessage * msg = new IMessage (getOSCAddress(), "osc");
