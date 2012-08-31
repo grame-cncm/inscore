@@ -57,7 +57,7 @@ IGraphicSignal::IGraphicSignal( const std::string& name, IObject* parent ) : ISh
 	fCurveType(kRoundCurveType), fDrawLine(kDrawLineBoth), fThicknessMode(kThicknessCentered),
 	fIgnoreSignalColor(false),fPenIgnoreSignalColor(false)
 {
-	fLocalMappings = TLocalMapping<FrameSegment>::create();
+	fLocalMappings = TLocalMapping<long,1>::create();
 	fTypeString = kGraphicType;
 	setWidth(1.0f);
 	setHeight(1.0f);
@@ -99,7 +99,7 @@ void IGraphicSignal::setHandlers ()
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IGraphicSignal::mapFileMsg (const IMessage* msg )	
 { 
-	MsgHandler::msgStatus status = TMapMsgHandler<FrameSegment>::mapFileMsg( msg , localMappings() , this ); 
+	MsgHandler::msgStatus status = TMapMsgHandler<long,1>::mapFileMsg( msg , localMappings() , this ); 
 	if (status & MsgHandler::kProcessed) localMapModified(true);
 	return status;
 }
@@ -107,7 +107,7 @@ MsgHandler::msgStatus IGraphicSignal::mapFileMsg (const IMessage* msg )
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IGraphicSignal::mapMsg (const IMessage* msg )	
 { 
-	MsgHandler::msgStatus status = TMapMsgHandler<FrameSegment>::mapMsg( msg , localMappings() , this ); 
+	MsgHandler::msgStatus status = TMapMsgHandler<long,1>::mapMsg( msg , localMappings() , this ); 
 	if (status & MsgHandler::kProcessed) localMapModified(true);
 	return status;
 }
@@ -115,7 +115,7 @@ MsgHandler::msgStatus IGraphicSignal::mapMsg (const IMessage* msg )
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IGraphicSignal::mapAddMsg (const IMessage* msg )	
 { 
-	MsgHandler::msgStatus status = TMapMsgHandler<FrameSegment>::addMapMsg( msg , localMappings() , this ); 
+	MsgHandler::msgStatus status = TMapMsgHandler<long,1>::addMapMsg( msg , localMappings() , this ); 
 	if (status & MsgHandler::kProcessed) localMapModified(true);
 	return status;
 }

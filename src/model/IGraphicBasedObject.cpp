@@ -41,7 +41,7 @@ namespace inscore
 IGraphicBasedObject::IGraphicBasedObject( const std::string& name, IObject * parent )
 	: IObject(name, parent) 
 { 
-	fLocalMappings = TLocalMapping<IntPointSegment>::create();
+	fLocalMappings = TLocalMapping<long,2>::create();
 
 	fMsgHandlerMap["map"]		= TMethodMsgHandler<IGraphicBasedObject>::create(this, &IGraphicBasedObject::mapMsg);
 	fMsgHandlerMap["map+"]		= TMethodMsgHandler<IGraphicBasedObject>::create(this, &IGraphicBasedObject::mapAddMsg);
@@ -51,7 +51,7 @@ IGraphicBasedObject::IGraphicBasedObject( const std::string& name, IObject * par
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IGraphicBasedObject::mapFileMsg (const IMessage* msg )
 { 
-	MsgHandler::msgStatus status = TMapMsgHandler<IntPointSegment>::mapFileMsg( msg , localMappings() , this ); 
+	MsgHandler::msgStatus status = TMapMsgHandler<long,2>::mapFileMsg( msg , localMappings() , this );
 	if (status & MsgHandler::kProcessed) localMapModified(true);
 	return status;
 }
@@ -59,7 +59,7 @@ MsgHandler::msgStatus IGraphicBasedObject::mapFileMsg (const IMessage* msg )
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IGraphicBasedObject::mapAddMsg (const IMessage* msg )
 { 
-	MsgHandler::msgStatus status = TMapMsgHandler<IntPointSegment>::addMapMsg( msg , localMappings() , this ); 
+	MsgHandler::msgStatus status = TMapMsgHandler<long,2>::addMapMsg( msg , localMappings() , this ); 
 	if (status & MsgHandler::kProcessed) localMapModified(true);
 	return status;
 }
@@ -67,7 +67,7 @@ MsgHandler::msgStatus IGraphicBasedObject::mapAddMsg (const IMessage* msg )
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IGraphicBasedObject::mapMsg (const IMessage* msg )
 { 
-	MsgHandler::msgStatus status = TMapMsgHandler<IntPointSegment>::mapMsg( msg , localMappings() , this ); 
+	MsgHandler::msgStatus status = TMapMsgHandler<long,2>::mapMsg( msg , localMappings() , this ); 
 	if (status & MsgHandler::kProcessed) localMapModified(true);
 	return status;
 }
