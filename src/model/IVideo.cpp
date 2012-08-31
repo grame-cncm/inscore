@@ -26,12 +26,18 @@
 #include "IVideo.h"
 #include "Updater.h"
 #include "IMessage.h"
-#include "segment2relativetimereader.h"
 #include "MapTools.h"
 #include "IScene.h"
 #include "VObjectView.h"
 
+#include "imapreader.h"
+#include "long_to_rational_reader.h"
+#include "long2D_to_rational_reader.h"
+#include "float_to_rational_reader.h"
+#include "float2D_to_rational_reader.h"
+
 using namespace std;
+using namespace libmapping;
 
 namespace inscore
 {
@@ -106,9 +112,10 @@ MsgHandler::msgStatus IVideo::videoMapMsg (const IMessage* msg )
 		string map = msg->params()[0]->value<std::string>("");
 
 		if (map.size()) {
-			segment2relativetimereader<FloatSegment> r;
-			if (r.read(map)) {
-				fConverter = Date2SecondMappingConverter::create(r.getMapping());
+			_imapreader<float,1> reader; std::istringstream s(map);
+			imapreader r (&reader, &s);
+			if (r.parse()) {
+				fConverter = Date2SecondMappingConverter::create(reader.mapping());
 				return MsgHandler::kProcessed;
 			}
 		}
@@ -144,9 +151,10 @@ MsgHandler::msgStatus IVideo::videoMapFileMsg (const IMessage* msg )
 		
 		file = getScene()->absolutePath(file);
 		if (file.size()) {
-			segment2relativetimereader<FloatSegment> r;
-			if (r.readfile(file)) {
-				fConverter = Date2SecondMappingConverter::create(r.getMapping());
+			_imapreader<float,1> reader; std::ifstream s(file.c_str());
+			imapreader r (&reader, &s);
+			if (r.parse()) {
+				fConverter = Date2SecondMappingConverter::create(reader.mapping());
 				return MsgHandler::kProcessed;
 			}
 		}
