@@ -32,7 +32,7 @@
 #include "IShapeMap.h"
 #include "TComposition.h"
 #include "TRelation.h"
-#include "TVirtualRelation.h"
+//#include "TVirtualRelation.h"
 #include "TSegment.h"
 #include "TSegmentation.h"
 #include "IMappingUpdater.h"
@@ -42,6 +42,7 @@
 #include "VGraphicsItemView.h"
 
 using namespace std;
+using namespace libmapping;
 
 namespace inscore
 {
@@ -200,18 +201,18 @@ static set<GraphicSegment> unite (const set<GraphicSegment>& s1, const set<Graph
 	set<GraphicSegment> outset;
 	if (s1.size() != s2.size()) return outset;
 
-	set<GraphicSegment>::const_iterator i1 = s1.begin();
-	set<GraphicSegment>::const_iterator i2 = s2.begin();
-	while (i1 != s1.end()) {
-		GraphicSegment  inter = *i1 & *i2;
-		GraphicSegment  u = i1->unite(*i2, 0.00001f);
-		if (u.empty() || inter.size()) {
-			outset.clear();
-			break;
-		}
-		outset.insert (u);
-		i1++; i2++;
-	}
+//	set<GraphicSegment>::const_iterator i1 = s1.begin();
+//	set<GraphicSegment>::const_iterator i2 = s2.begin();
+//	while (i1 != s1.end()) {
+//		GraphicSegment  inter = *i1 & *i2;
+//		GraphicSegment  u = i1->unite(*i2, 0.00001f);
+//		if (u.empty() || inter.size()) {
+//			outset.clear();
+//			break;
+//		}
+//		outset.insert (u);
+//		i1++; i2++;
+//	}
 	return outset;
 }
 
@@ -228,17 +229,17 @@ static SRelativeTime2GraphicMapping reduce( const SRelativeTime2GraphicMapping& 
 			graphsegs = i->second;
 		}
 		else {
-			RelativeTimeSegment u1 = timeseg.unite(i->first);
-			set<GraphicSegment> u2 = unite (graphsegs, i->second);
-			if (u1.empty() || !u2.size()) {
-				outmap->add (timeseg, graphsegs);
-				timeseg = i->first;
-				graphsegs = i->second;
-			}
-			else {
-				timeseg = u1;
-				graphsegs = u2;
-			}
+//			RelativeTimeSegment u1 = timeseg.unite(i->first);
+//			set<GraphicSegment> u2 = unite (graphsegs, i->second);
+//			if (u1.empty() || !u2.size()) {
+//				outmap->add (timeseg, graphsegs);
+//				timeseg = i->first;
+//				graphsegs = i->second;
+//			}
+//			else {
+//				timeseg = u1;
+//				graphsegs = u2;
+//			}
 		}
 	}
 	if (graphsegs.size())
@@ -250,15 +251,15 @@ static SRelativeTime2GraphicMapping reduce( const SRelativeTime2GraphicMapping& 
 static SRelativeTime2GraphicMapping getsubmap( const SRelativeTime2GraphicMapping& map, const RelativeTimeSegment& seg)
 {
 	SRelativeTime2GraphicMapping outmap = RelativeTime2GraphicMapping::create();
-	const RelativeTime2GraphicRelation& rel = map->direct();
-	TVirtualRelation<RelativeTimeSegment,GraphicSegment> vrel( rel );
-	for (RelativeTime2GraphicRelation::const_iterator i = rel.begin(); i != rel.end(); i++) {
-		RelativeTimeSegment inter = i->first & seg;
-		if (inter == i->first)	// current segment is included
-			outmap->add (i->first, i->second);
-		else if (inter.size())
-			outmap->add (inter, vrel.get(inter));
-	}
+//	const RelativeTime2GraphicRelation& rel = map->direct();
+//	TVirtualRelation<RelativeTimeSegment,GraphicSegment> vrel( rel );
+//	for (RelativeTime2GraphicRelation::const_iterator i = rel.begin(); i != rel.end(); i++) {
+//		RelativeTimeSegment inter = i->first & seg;
+//		if (inter == i->first)	// current segment is included
+//			outmap->add (i->first, i->second);
+//		else if (inter.size())
+//			outmap->add (inter, vrel.get(inter));
+//	}
 	return outmap;
 }
 
@@ -289,7 +290,7 @@ SRelativeTime2GraphicMapping IMappingUpdater::timeshift (const SRelativeTime2Gra
 {
 	if (!map ) return 0;
 	SRelativeTime2GraphicMapping smap =  RelativeTime2GraphicMapping::create();
-	typedef TRelation<RelativeTimeSegment,GraphicSegment>::const_iterator const_iterator;
+	typedef TRelation<rational,1,float,2>::const_iterator const_iterator;
 	
 	for (const_iterator i = map->direct().begin(); i != map->direct().end(); i++) {
 			TSegment<rational,1> shifted (i->first.interval() + date);
@@ -318,7 +319,7 @@ void IMappingUpdater::intersect (const RelativeTime2GraphicRelation& r1, const R
 //---------------------------------------------------------------------------------------
 SGraphic2GraphicMapping IMappingUpdater::relink (const Graphic2GraphicRelation& rel, float epsilon) const
 {
-	SGraphic2GraphicMapping g2gm = TMapping<GraphicSegment,GraphicSegment>::create();
+	SGraphic2GraphicMapping g2gm = TMapping<float,2,float,2>::create();
 	Graphic2GraphicRelation::const_iterator previous, i = rel.begin();
 	if (i == rel.end()) return g2gm;
 
@@ -380,8 +381,8 @@ SGraphic2GraphicMapping IMappingUpdater::verticalAdjust (const SGraphic2GraphicM
 	if ( (valign == Master::kSyncOver) && (stretch & Master::kStretchV) && TFloat::eq(master->getDy(),0))
 		return map;			// nothing to do
 
-	SGraphic2GraphicMapping g2gr = TMapping<GraphicSegment,GraphicSegment>::create();
-	const TRelation<GraphicSegment,GraphicSegment>& rmap = map->direct();
+	SGraphic2GraphicMapping g2gr = TMapping<float,2,float,2>::create();
+	const TRelation<float,2,float,2>& rmap = map->direct();
 
 	bool vstretch = stretch & Master::kStretchV;
 	for (Graphic2GraphicRelation::const_iterator i =rmap.begin(); i !=rmap.end(); i++) {
@@ -400,7 +401,7 @@ void IMappingUpdater::hstretchUpdate (IObject* o, const Master* master)
 	SRelativeTime2GraphicMapping mastermap = master->getMaster()->getMapping( master->getMasterMapName() );
 	if (master->getStretch() & Master::kStretchHH)
 		mastermap = groupmap(mastermap, slavemap);
-	SGraphic2GraphicMapping g2gr = TMapping<GraphicSegment,GraphicSegment>::create();
+	SGraphic2GraphicMapping g2gr = TMapping<float,2,float,2>::create();
 
 	if (!slavemap) {
 		ITLErr << o->getOSCAddress() << ": time to graphic mapping is missing (slave map)." << ITLEndl;
@@ -415,22 +416,22 @@ void IMappingUpdater::hstretchUpdate (IObject* o, const Master* master)
 		return;
 	}
 
-	const TRelation<RelativeTimeSegment, GraphicSegment>& slavet2gr = slavemap->direct();
-	const TRelation<RelativeTimeSegment, GraphicSegment>& mastert2gr = mastermap->direct();
+	const TRelation<rational,1, float,2>& slavet2gr = slavemap->direct();
+	const TRelation<rational,1, float,2>& mastert2gr = mastermap->direct();
 	
 	set<RelativeTimeSegment> timeIntersection;
 	intersect(slavet2gr, mastert2gr, timeIntersection);
 
-	TVirtualRelation<RelativeTimeSegment,GraphicSegment> vrs( slavet2gr);
-	TVirtualRelation<RelativeTimeSegment,GraphicSegment> vrm( mastert2gr);
-	// iterate thru the time segments intersection
-	for (set<RelativeTimeSegment>::const_iterator i = timeIntersection.begin(); i != timeIntersection.end(); i++) {
-		set<GraphicSegment> gslave = vrs.get(*i);
-		set<GraphicSegment> gmaster = vrm.get(*i);
-		for (set<GraphicSegment>::const_iterator j = gslave.begin(); j != gslave.end(); j++) {
-			g2gr->add(*j, gmaster);
-		}
-	}
+//	TVirtualRelation<RelativeTimeSegment,GraphicSegment> vrs( slavet2gr);
+//	TVirtualRelation<RelativeTimeSegment,GraphicSegment> vrm( mastert2gr);
+//	// iterate thru the time segments intersection
+//	for (set<RelativeTimeSegment>::const_iterator i = timeIntersection.begin(); i != timeIntersection.end(); i++) {
+//		set<GraphicSegment> gslave = vrs.get(*i);
+//		set<GraphicSegment> gmaster = vrm.get(*i);
+//		for (set<GraphicSegment>::const_iterator j = gslave.begin(); j != gslave.end(); j++) {
+//			g2gr->add(*j, gmaster);
+//		}
+//	}
 
 	g2gr = verticalAdjust( g2gr, o, master);	// graphic segments adjustment according to vertical pos and stretch
 	g2gr = relink (g2gr->direct(), 0.0001f);	// check adjacent segments and make sure the end and begin match

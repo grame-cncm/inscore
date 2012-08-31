@@ -52,8 +52,8 @@ class MapTools
 {
 	public :
 		struct Relation { 
-			rational r, p; 
-			Relation(rational a, rational b)	: r(a), p(b) {}
+			libmapping::rational r, p; 
+			Relation(libmapping::rational a, libmapping::rational b)	: r(a), p(b) {}
 		};
 		class SegmRelation : public std::vector<Relation > {};
 
@@ -67,8 +67,8 @@ class MapTools
 			\return a double value in the interval [0, 1] when the location is included in the interval
 			\warning it's the caller responsibility to check for empty intervals
 		*/
-		template <typename T> static rational relativepos (const T& loc, const TInterval<T>& i)				
-											{ return rational(loc - i.first(), i.size()); }
+		template <typename T> static libmapping::rational relativepos (const T& loc, const libmapping::TInterval<T>& i)				
+											{ return libmapping::rational(loc - i.first(), i.size()); }
 
 		//--------------------------------------------------------------------------------
 		// intervals relations and related intervals
@@ -80,10 +80,10 @@ class MapTools
 			\return a pair of values \c (r,p) where \c r if the ratio between the intervals 
 					and \c p the relative position of \c i2 to \c i1
 		*/
-		template <typename T> static Relation relation(const TInterval<T>& i1, const TInterval<T>& i2)	
+		template <typename T> static Relation relation(const libmapping::TInterval<T>& i1, const libmapping::TInterval<T>& i2)	
 			{
 				T w(i1.size());
-				return w ? Relation( rational(i2.size(), w), relativepos(i2.first(), i1)) 
+				return w ? Relation( libmapping::rational(i2.size(), w), relativepos(i2.first(), i1)) 
 						 : Relation(0,0);
 			}
 
@@ -93,11 +93,11 @@ class MapTools
 			\param r a relation
 			\return an interval related to \c i according to the relation \c r
 		*/
-		template <typename T>	static TInterval<T> related(const TInterval<T>& i, const Relation& r)	
+		template <typename T>	static libmapping::TInterval<T> related(const libmapping::TInterval<T>& i, const Relation& r)	
 			{
 				T w(i.size());
 				T a = T(r.p * w) + i.first();
-				return TInterval<T> (a, a + T(r.r * w));
+				return libmapping::TInterval<T> (a, a + T(r.r * w));
 			}
 
 		//--------------------------------------------------------------------------------
@@ -109,7 +109,7 @@ class MapTools
 			\param s2 a segment
 			\return a list of relations, one for each segment dimension
 		*/
-		template <typename T> SegmRelation static relation (const TSegment<T,1>& s1, const TSegment<T,1>& s2) 
+		template <typename T> SegmRelation static relation (const libmapping::TSegment<T,1>& s1, const libmapping::TSegment<T,1>& s2) 
 			{ 
 				SegmRelation r; 
 				r.push_back( relation( s1.interval(), s2.interval() ) );
@@ -122,10 +122,10 @@ class MapTools
 			\param r a relations list
 			\return a segment related to \c s according to the relation list \c r
 		*/
-		template <typename T> TSegment<T,1>	static related (const TSegment<T,1>& s, SegmRelation& r)
+		template <typename T> libmapping::TSegment<T,1>	static related (const libmapping::TSegment<T,1>& s, SegmRelation& r)
 			{ 
 				if (r.size() < 1) r.push_back(Relation(1,0));
-				return TSegment<T,1> (related (s.interval(), r[0])); 
+				return libmapping::TSegment<T,1> (related (s.interval(), r[0])); 
 			}
 
 		/*!
@@ -134,7 +134,7 @@ class MapTools
 			\param s2 a segment
 			\return a list of relations, one for each segment dimension
 		*/
-		template <typename T> SegmRelation static relation (const TSegment<T,2>& s1, const TSegment<T,2>& s2) 
+		template <typename T> SegmRelation static relation (const libmapping::TSegment<T,2>& s1, const libmapping::TSegment<T,2>& s2) 
 			{
 				SegmRelation r; 
 				r.push_back( relation( s1.xinterval(), s2.xinterval() ) );
@@ -148,10 +148,10 @@ class MapTools
 			\param r a relations list
 			\return a 2D segment related to \c s according to the relation list \c r
 		*/
-		template <typename T> TSegment<T,2>	static related (const TSegment<T,2>& s, SegmRelation& r)
+		template <typename T> libmapping::TSegment<T,2>	static related (const libmapping::TSegment<T,2>& s, SegmRelation& r)
 			{ 
 				while (r.size() < 2) r.push_back(Relation(1,0));
-				return TSegment<T,2> (related (s.xinterval(), r[0]), related (s.yinterval(), r[1]));
+				return libmapping::TSegment<T,2> (related (s.xinterval(), r[0]), related (s.yinterval(), r[1]));
 			}
 
 		//--------------------------------------------------------------------------------
@@ -180,61 +180,61 @@ class MapTools
 		//--------------------------------------------------------------------------------
 		// mapping reduction i.e. segments union when possible
 		//--------------------------------------------------------------------------------
-		template <typename T1, typename T2> static SMARTP<TMapping<T1,T2> > reduce (const SMARTP<TMapping<T1,T2> >& map)
-		{
-			SMARTP<TMapping<T1,T2> > outmap = TMapping<T1,T2>::create();
-			const TRelation<T1,T2>& rel = map->direct();
-			typedef typename TRelation<T1,T2>::const_iterator const_iterator;
-
-			T1 seg;
-			std::set<T2> related;
-			for (const_iterator i = rel.begin(); i != rel.end(); i++) {
-				if (!related.size()) {		// first time (just entering the loop)
-					seg = i->first;
-					related = i->second;
-				}
-				else {
-					T1 u1 = seg.unite(i->first);
-					std::set<T2> u2 = MapTools::unite (related, i->second);
-					if (u1.empty() || !u2.size()) {
-						outmap->add (seg, related);
-						seg = i->first;
-						related = i->second;
-					}
-					else {
-						seg = u1;
-						related = u2;
-					}
-				}
-			}
-			if (related.size())
-				outmap->add (seg, related);
-			return outmap;
-		}
+//		template <typename T1, typename T2> static libmapping::SMARTP<libmapping::TMapping<T1,T2> > reduce (const libmapping::SMARTP<TMapping<T1,T2> >& map)
+//		{
+//			libmapping::SMARTP<libmapping::TMapping<T1,T2> > outmap = TMapping<T1,T2>::create();
+//			const libmapping::TRelation<T1,T2>& rel = map->direct();
+//			typedef typename TRelation<T1,T2>::const_iterator const_iterator;
+//
+//			T1 seg;
+//			std::set<T2> related;
+//			for (const_iterator i = rel.begin(); i != rel.end(); i++) {
+//				if (!related.size()) {		// first time (just entering the loop)
+//					seg = i->first;
+//					related = i->second;
+//				}
+//				else {
+//					T1 u1 = seg.unite(i->first);
+//					std::set<T2> u2 = MapTools::unite (related, i->second);
+//					if (u1.empty() || !u2.size()) {
+//						outmap->add (seg, related);
+//						seg = i->first;
+//						related = i->second;
+//					}
+//					else {
+//						seg = u1;
+//						related = u2;
+//					}
+//				}
+//			}
+//			if (related.size())
+//				outmap->add (seg, related);
+//			return outmap;
+//		}
 		
 
 		//--------------------------------------------------------------------------------
 		// segmentations intersection
 		//--------------------------------------------------------------------------------
-		template <typename T1, typename T2, typename T3> static void intersect (const TRelation<T1,T2>& r1, const TRelation<T1,T3>& r2, std::set<T1>& outlist)
-		{
-			typedef typename TRelation<T1,T2>::const_iterator const_iterator1;
-			typedef typename TRelation<T1,T3>::const_iterator const_iterator2;
-			for (const_iterator1 i = r1.begin(); i != r1.end(); i++) {
-				for (const_iterator2 j = r2.begin(); j != r2.end(); j++) {
-					T1 inter = i->first & j->first;
-					if (inter.size() || (inter == i->first) || (inter == j->first))
-						outlist.insert(inter);
-				}
-			}
-		}
-
-		template <typename T> RelativeTimeSegment static find (const rational& date, const TRelation<RelativeTimeSegment,T>& rel)
+//		template <typename T1, typename T2, typename T3> static void intersect (const libmapping::TRelation<T1,T2>& r1, const libmapping::TRelation<T1,T3>& r2, std::set<T1>& outlist)
+//		{
+//			typedef typename TRelation<T1,T2>::const_iterator const_iterator1;
+//			typedef typename TRelation<T1,T3>::const_iterator const_iterator2;
+//			for (const_iterator1 i = r1.begin(); i != r1.end(); i++) {
+//				for (const_iterator2 j = r2.begin(); j != r2.end(); j++) {
+//					T1 inter = i->first & j->first;
+//					if (inter.size() || (inter == i->first) || (inter == j->first))
+//						outlist.insert(inter);
+//				}
+//			}
+//		}
+//
+		template <typename T, unsigned int D> RelativeTimeSegment static find (const libmapping::rational& date, const libmapping::TRelation<libmapping::rational,1,T,D>& rel)
 			{
-				typedef typename TRelation<RelativeTimeSegment,T>::const_iterator const_iterator;
+				typedef typename libmapping::TRelation<libmapping::rational,1,T,D>::const_iterator const_iterator;
 				for (const_iterator i = rel.begin(); i != rel.end(); i++)
 					if ( i->first.interval().include(date) ) return i->first;
-				return RelativeTimeSegment (rational(0), rational(0));
+				return RelativeTimeSegment (libmapping::rational(0), libmapping::rational(0));
 			}
 };
 
