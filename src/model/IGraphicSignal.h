@@ -59,9 +59,9 @@ namespace inscore
 
 class Updater;
 class IGraphicSignal;
-typedef class SMARTP<IGraphicSignal>	SIGraphicSignal;
+typedef class libmapping::SMARTP<IGraphicSignal>	SIGraphicSignal;
 class ISGraphicSignal;
-typedef class SMARTP<ISGraphicSignal>	SISGraphicSignal;
+typedef class libmapping::SMARTP<ISGraphicSignal>	SISGraphicSignal;
 
 //--------------------------------------------------------------------------
 /*!
@@ -72,7 +72,7 @@ class IGraphicSignal : public IShape
 	SISignal		fSignal;
 	
 	protected:
-		typedef SMARTP<TLocalMapping<FrameSegment> >	SLocalMapping;
+		typedef libmapping::SMARTP<TLocalMapping<long,1> >	SLocalMapping;
 		SLocalMapping	fLocalMappings;
 	std::string		fCurveType;		/// < How the border of the graphs are drawn.
 	std::string		fDrawLine;		/// < Which border of the graphs are drawn with a pen.
@@ -130,7 +130,7 @@ class IGraphicSignal : public IShape
 		MsgHandler::msgStatus mapAddMsg (const IMessage* msg );
 
 		/// \brief get an object maps
-		virtual IMessageList __getMaps () const	{ return TMapMsgHandler<FrameSegment>::getMapMsgs( localMappings() , this ); }
+		virtual IMessageList __getMaps () const	{ return TMapMsgHandler<long,1>::getMapMsgs( localMappings() , this ); }
 
 		///! \brief get the curve type
 //		virtual void setCurveType(const std::string& curveType) { fCurveType = curveType; }
