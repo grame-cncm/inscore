@@ -109,7 +109,6 @@ void VGraphicsItemView::drawMapping(IObject* o)
 		{
 			RelativeTimeSegment timeSegment = j->first;
 			QString timeString = ((std::string)timeSegment.interval()).c_str();
-			
 			const std::set<GraphicSegment>& related = j->second;
 			// For each master segment corresponding to the slave segment.
 			for ( std::set<GraphicSegment>::const_iterator j=related.begin() ; j != related.end(); j++ )
@@ -400,12 +399,12 @@ double VGraphicsItemView::relative2SceneHeight(float height) const
 }
 
 //--------------------------------------------------------------------------
-QRectF VGraphicsItemView::relative2SceneRect( const TFloatRect& rect  ) const
-{
-	QPointF a( relative2SceneX(rect.x()) , relative2SceneY(rect.y()) ); 
-	QPointF b( relative2SceneX(rect.right()) , relative2SceneY(rect.bottom()) );
-	return QRectF( a.x() , a.y() , b.x() - a.x() , b.y() - a.y() );
-}
+//QRectF VGraphicsItemView::relative2SceneRect( const TFloatRect& rect  ) const
+//{
+//	QPointF a( relative2SceneX(rect.x()) , relative2SceneY(rect.y()) ); 
+//	QPointF b( relative2SceneX(rect.right()) , relative2SceneY(rect.bottom()) );
+//	return QRectF( a.x() , a.y() , b.x() - a.x() , b.y() - a.y() );
+//}
 
 //--------------------------------------------------------------------------
 double VGraphicsItemView::scene2RelativeWidth(float width) const
@@ -462,7 +461,8 @@ QRectF VGraphicsItemView::iObject2QGraphicsItem(const TFloatRect& rect) const
 //------------------------------------------------------------------------------------------------------------
 QRectF VGraphicsItemView::iObject2QGraphicsItem(const GraphicSegment& s) const
 {
-	return QRectF( s.xinterval().first() , s.yinterval().first() ,s.xinterval().second() , s.yinterval().second() );
+	TFloatRect r ( TFloatPoint(s.left(), s.top()), TFloatPoint(s.right(), s.bottom()) );
+	return iObject2QGraphicsItem( r );
 }
 
 //------------------------------------------------------------------------------------------------------------

@@ -77,7 +77,7 @@ class VGraphicsItemView : public VObjectView
 		/// \brief Maps the IObject [0,2] height value to the corresponding referenceRect() value.
 		double relative2SceneHeight(float height) const;
 		/// \brief Maps a rect expressed in [-1,1] scene coordinate to a QRectF expressed in referenceRect() coordinates.
-		QRectF relative2SceneRect( const TFloatRect& rect) const;
+//		QRectF relative2SceneRect( const TFloatRect& rect) const;
 
 		/// \brief Maps the referenceRect() width value to the corresponding [0,2] value.
 		double scene2RelativeWidth(float width) const;
