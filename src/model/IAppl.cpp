@@ -364,7 +364,7 @@ MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
 				}
 				else ITLErr << "while parsing file" << srcfile << ITLEndl;
 			}
-			else ITLErr << "can't open file \"" << srcfile << "\"" << ITLEndl;
+			else ITLErr << "IAppl can't open file \"" << srcfile << "\"" << ITLEndl;
 			return MsgHandler::kProcessed;
 		}
 	}
