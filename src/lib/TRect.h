@@ -29,6 +29,7 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <sstream>
 #include "TSegment.h"
 
 namespace inscore
@@ -158,7 +159,16 @@ template<typename T> class TRect
 
 		TPoint<T>	center()	const					{ return (pos() + brpos())/T(2); }
 		void		moveBy( const TPoint<T>& delta )	{ setPos( pos() + delta ); }
+
+        operator std::string () const					{
+			std::ostringstream res;
+			res << fTopLeft << "," << fBottomRight;
+			return res.str();
+		}
 };
+
+template<typename T>
+std::ostream& operator << (std::ostream& out, const TRect<T>& r) { out << std::string(r); return out; }
 
 typedef TRect<long>		TLongRect;
 typedef TRect<float>	TFloatRect;
