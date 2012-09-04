@@ -29,6 +29,7 @@
 #include "MapTools.h"
 #include "IScene.h"
 #include "VObjectView.h"
+#include "TMapMsgHandler.h"
 
 #include "imapreader.h"
 #include "long_to_rational_reader.h"
