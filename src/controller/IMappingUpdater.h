@@ -76,6 +76,8 @@ class IMappingUpdater : public SlaveMapUpdater
 		void	intersect (const RelativeTime2GraphicRelation& r1, const RelativeTime2GraphicRelation& r2, std::set<RelativeTimeSegment>& outlist) const;
 
 	public:
+		using Updater::updateTo;
+		
 				 IMappingUpdater() {}
 		virtual ~IMappingUpdater() {}
 		
