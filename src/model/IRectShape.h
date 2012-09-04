@@ -27,7 +27,6 @@
 #ifndef __IRectShape__
 #define __IRectShape__
 
-#include "IShape.h"
 #include "IShapeMap.h"
 
 namespace inscore
