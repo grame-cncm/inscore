@@ -73,7 +73,6 @@ IMessageList IObjectDebug::getSetMsg () const
 	msg = new IMessage(getOSCAddress(), "signal");
 	*msg << getSignalDebug();
 	outMsgs += msg;
-	outMsgs += msg;
 	return outMsgs;
 }
 
