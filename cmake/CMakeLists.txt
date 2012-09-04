@@ -25,8 +25,6 @@ else(WIN32)
 	add_definitions(-Wall)
 endif(WIN32)
 
-message ("CMAKE_SYSTEM_VERSION ${CMAKE_SYSTEM_VERSION}")
-
 if(APPLE)
 	if (${CMAKE_SYSTEM_VERSION} VERSION_LESS 9.0.0)
 		set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.4u.sdk)
