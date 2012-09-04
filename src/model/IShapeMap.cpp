@@ -24,7 +24,7 @@
 */
 
 #include "IShapeMap.h"
-//#include "segment2relativetimereader.h"
+#include "TMapMsgHandler.h"
 
 namespace inscore
 {
@@ -37,6 +37,12 @@ IShapeMap::IShapeMap( const std::string& name, IObject* parent ) : IShape(name,p
 	fMsgHandlerMap["map"]		= TMethodMsgHandler<IShapeMap>::create(this, &IShapeMap::mapMsg);
 	fMsgHandlerMap["map+"]		= TMethodMsgHandler<IShapeMap>::create(this, &IShapeMap::mapAddMsg);
 	fMsgHandlerMap["mapf"]		= TMethodMsgHandler<IShapeMap>::create(this, &IShapeMap::mapFileMsg);
+}
+
+//--------------------------------------------------------------------------
+IMessageList IShapeMap::__getMaps () const
+{
+	return TMapMsgHandler<float,2>::getMapMsgs( localMappings() , this );
 }
 
 //--------------------------------------------------------------------------
