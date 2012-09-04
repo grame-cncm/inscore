@@ -34,8 +34,7 @@
 #include "TLocalMapping.h"
 #include "IMessage.h"
 #include "IObject.h"
-//#include "segment2relativetimereader.h"
-#include "IAppl.h"
+#include "IScene.h"
 
 #include "imapreader.h"
 #include "long_to_rational_reader.h"
@@ -109,13 +108,6 @@ template<typename T, unsigned int D> class TMapMsgHandler
 			if (parseMsg (msg, mapName, map)) {
 				std::istringstream s(map);
 				return setMapping (localMapping, object, &s, mapName, true);
-//				_imapreader<T,D> reader; std::istringstream s(map);
-//				imapreader r (&reader, &s);
-//				if (r.parse()) {
-//					localMapping->addMapping( mapName , reader.mapping() );	// add the new localMapping without erasing the previous one.
-//					if (mapName.empty()) object->fAutoMap = false;
-//					return MsgHandler::kProcessed;
-//				}
 			}
 			return MsgHandler::kBadParameters;
 		}
@@ -133,14 +125,6 @@ template<typename T, unsigned int D> class TMapMsgHandler
 				else {
 					std::stringstream s(map);
 					return setMapping (localMapping, object, &s, mapName);
-//					_imapreader<T,D> reader; std::stringstream s(map);
-//					imapreader r (&reader, &s);
-//					if (r.parse()) {
-//						localMapping->setMapping( mapName , reader.mapping() );	// Set the new localMapping, also erasing the previous local<->graphic mapping.
-//																				// (which is no longer up-to-date)							
-//						if (mapName.empty()) object->fAutoMap = false;
-//						return MsgHandler::kProcessed;
-//					}
 				}
 			}
 			return MsgHandler::kBadParameters;
@@ -151,17 +135,9 @@ template<typename T, unsigned int D> class TMapMsgHandler
 		{ 
 			std::string mapName, file;
 			if (parseMsg (msg, mapName, file)) {
-				file = IAppl::absolutePath(file);
+				file = object->getScene()->absolutePath(file);
 				std::ifstream s(file.c_str());
 				return setMapping (localMapping, object, &s, mapName);
-//				_imapreader<T,D> reader; std::ifstream s(file.c_str());
-//				imapreader r (&reader, &s);
-//				if (r.parse()) {
-//					localMapping->setMapping( mapName , reader.mapping() );		// Set the new localMapping, also erasing the previous local<->graphic mapping.
-//																				// (which is no longer up-to-date)
-//					if (mapName.empty()) object->fAutoMap = false;
-//					return MsgHandler::kProcessed;
-//				}
 			}
 			return MsgHandler::kBadParameters;
 		}
