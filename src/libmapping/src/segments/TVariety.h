@@ -27,6 +27,7 @@
 #define __TVariety__
 
 #include "TInterval.h"
+#include "TSegment.h"
 #include "lmtools.h"
 
 namespace libmapping
@@ -86,7 +87,6 @@ class TVariety {
 				~TVariety() {} 
 		static const TVFunction* identity()  { return &fIdentity; }
 };
-TVFunction	TVariety::fIdentity;
 
 //--------------------------------------------------------------------------
 /*!
