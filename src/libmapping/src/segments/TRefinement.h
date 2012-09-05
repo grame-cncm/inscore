@@ -70,6 +70,7 @@ template<typename T, unsigned int D> class TRefinement
 					if (!inter.empty()) 					// when not empty
 						outsgt->add (inter);				// adds the intersection to the segmentation
 					if (*i2 < *i1) i2++;					// moves the smallest segment (see segments < operator)
+					else if (!inter.empty()) i2++;
 					else i1++;
 				}
 			}
