@@ -269,6 +269,30 @@ template<typename T1, typename T2> void testRefinedRelation12(int n)
 }
 
 //--------------------------------------------------------------------------------
+static void debugRefinedComposition()
+{
+	cout << "\ndebugRefinedComposition" << endl;
+	cout << "---------------------------" << endl;
+ 	SMARTP<TMapping<rational,1,rational,1> > map1 = TMapping<rational,1,rational,1>::create();
+ 	SMARTP<TMapping<rational,1,rational,1> > map2 = TMapping<rational,1,rational,1>::create();
+
+	map1->add (TSegment<rational,1>(rational(0,1),rational(5,4)), TSegment<rational,1>(rational(0,1),rational(5,4)));
+
+	map2->add (TSegment<rational,1>(rational(0,1),rational(1,4)), TSegment<rational,1>(rational(0,1),rational(1,4)));
+	map2->add (TSegment<rational,1>(rational(1,4),rational(1,2)), TSegment<rational,1>(rational(1,4),rational(1,2)));
+	map2->add (TSegment<rational,1>(rational(1,2),rational(3,4)), TSegment<rational,1>(rational(1,2),rational(3,4)));
+	map2->add (TSegment<rational,1>(rational(3,4),rational(1,1)), TSegment<rational,1>(rational(3,4),rational(1,1)));
+	map2->add (TSegment<rational,1>(rational(1,1),rational(6,4)), TSegment<rational,1>(rational(1,1),rational(6,4)));
+	
+	cout << "map1 :\n" << map1->direct() << endl;
+	cout << "map2 :\n" << map2->direct() << endl;
+
+	typedef TRefinedComposition <libmapping::rational,1,rational,1, rational,1> T2TComposition;
+	SMARTP<TMapping<rational,1,rational,1> > t2t = T2TComposition::create( map1->direct(), map2->direct() );
+	cout << "refined comp. :\n" << t2t->direct() << endl;
+}
+
+//--------------------------------------------------------------------------------
 template<typename T1, typename T2, typename T3> void testRefinedComposition121(int n)
 {
 	cout << "\ntestRefinedComposition 121" << " (" << n << ")" << endl;
@@ -402,6 +426,11 @@ int main (int argc, char* argv[])
 		testRefinedRelation11<int, rational>(6);
 		testRefinedRelation12<int,int>(6);
 		testRefinedRelation12<rational,int>(6);
+		done++;
+	}
+
+	if (lopt("-refinedbg", argc, argv)) {
+		debugRefinedComposition();
 		done++;
 	}
 
