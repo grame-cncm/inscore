@@ -76,7 +76,7 @@ class TRefinedRelation : public TRelation<T1,D1,T2,D2>
 							// and for each relation
 							for (const_iterator2 j = rel.begin(); j != rel.end(); j++) {
 								// adds a relation between the refined segment and refined relation
-								add (*i, TSegmentVariety<T2,D2>(*j, &f).get());
+								this->add (*i, TSegmentVariety<T2,D2>(*j, &f).get());
 							}
 						}
 					}
