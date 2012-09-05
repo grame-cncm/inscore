@@ -67,9 +67,9 @@ template<typename T> class TAXBFunction : public TVFunction {
 																				fB = (i.first() - a.first()) / double(a.size());
 																			 }
 
-		virtual float getA() const					{ return fA; }		///< gives the \c a coefficient
-		virtual float getB() const					{ return fB; }		///< gives the \c b coefficient
-		virtual double operator () (double v) const { return (fA*v) + fB; }
+		virtual float getA() const					{ return fA; }				///< gives the \c a coefficient
+		virtual float getB() const					{ return fB; }				///< gives the \c b coefficient
+		virtual double operator () (double v) const { return (fA*v) + fB; }		///< applies the function to the value v
 
 		/// equality operator : actually check for coefficients equality
 		virtual bool  operator == (const TAXBFunction& f) const { return (fA==f.fA) && (fB==f.fB); }
