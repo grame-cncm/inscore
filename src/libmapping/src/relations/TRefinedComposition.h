@@ -27,6 +27,7 @@
 #define __TRefinedComposition__
 
 #include "TMapping.h"
+#include "TComposition.h"
 #include "TRefinement.h"
 #include "TRefinedRelation.h"
 
