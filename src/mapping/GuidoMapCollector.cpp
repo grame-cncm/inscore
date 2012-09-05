@@ -124,7 +124,6 @@ void GuidoStaffCollector::process (Time2GraphicMap* outmap)
 				RelativeTimeSegment ts (guidodate2rational(i->first.first), guidodate2rational(i->first.second));
 				GraphicSegment gs ( fCurrentPageOrigin.x()+i->second.left, fCurrentPageOrigin.y()+i->second.top, 
 									fCurrentPageOrigin.x()+i->second.right, fCurrentPageOrigin.y()+i->second.bottom);
-//				(*outmap)[ts] = gs;
 				outmap->push_back(make_pair(ts, gs));
 			}
 		}
@@ -154,7 +153,6 @@ void GuidoSystemCollector::process (Time2GraphicMap* outmap)
 				RelativeTimeSegment ts (guidodate2rational(i->first.first), guidodate2rational(i->first.second));
 				GraphicSegment gs ( fCurrentPageOrigin.x()+i->second.left, fCurrentPageOrigin.y()+i->second.top, 
 									fCurrentPageOrigin.x()+i->second.right, fCurrentPageOrigin.y()+i->second.bottom);
-//				(*outmap)[ts] = gs;
 				outmap->push_back(make_pair(ts, gs));
 			}
 		}
