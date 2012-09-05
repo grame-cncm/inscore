@@ -94,10 +94,16 @@ bool IMappingUpdater::date2point (const rational& date, const SRelativeTime2Grap
 	set<GraphicSegment> v = map->direct().get(t);						// get the corresponding graphic segments
 
 	if (v.size())  {
-		outSeg = *(v.begin());
-		x = outSeg.xinterval().first();						// get the graphic segment first x coordinate
-		float ratio = MapTools::relativepos(date, t.interval());		// get the relative position of date within the time segment
-		x += outSeg.xinterval().size() * ratio;
+		RationalInterval pos(date, date);
+		TAXBFunction<rational> f(t.interval(), pos);		// computes the linear interpolation function that goes from t to pos
+		outSeg = *(v.begin());								// this is the graphic segment corresponding to date
+		TSegmentVariety<float,2> v (outSeg, &f);			// create a variety of this segment using the previous linear interpolation function
+		x = v.getx( f(date) );								// x is now the variety x pos et date relative pos regarding f
+		
+//		outSeg = *(v.begin());
+//		x = outSeg.xinterval().first();									// get the graphic segment first x coordinate
+//		float ratio = MapTools::relativepos(date, t.interval());		// get the relative position of date within the time segment
+//		x += outSeg.xinterval().size() * ratio;
 		return true;
 	}
 	return false;

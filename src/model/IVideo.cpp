@@ -30,6 +30,7 @@
 #include "IScene.h"
 #include "VObjectView.h"
 #include "TMapMsgHandler.h"
+#include "TVariety.h"
 
 #include "imapreader.h"
 #include "long_to_rational_reader.h"
@@ -194,9 +195,15 @@ float IVideo::Date2SecondMappingConverter::convert(const rational& r) const
 	std::set<FloatSegment> dates = fMapping->reverse().get(t);
 	float date = -1;
 	if (dates.size()) {
-		float ratio = MapTools::relativepos(r, t.interval());		// get the relative position of date within the time segment
-		const FloatInterval& i = dates.begin()->interval();
-		date = i.first() + i.size() * ratio;
+		RationalInterval pos(r, r);
+		TAXBFunction<rational> f(t.interval(), pos);		// computes the linear interpolation function that goes from t to pos
+		TSegmentVariety<float,1> v (*dates.begin(), &f);	// create a variety of this segment using the previous linear interpolation function
+		date = v.get( f(r) );								// x is now the variety x pos et date relative pos regarding f
+
+
+//		float ratio = MapTools::relativepos(r, t.interval());		// get the relative position of date within the time segment
+//		const FloatInterval& i = dates.begin()->interval();
+//		date = i.first() + i.size() * ratio;
 	}
 	return date;
 }
