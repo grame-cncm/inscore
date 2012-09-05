@@ -56,7 +56,7 @@ namespace inscore
 float VGuidoItemView::fCm2GuidoUnit = 0;
 
 //----------------------------------------------------------------------
-class RolledEnrolledCollector: public TimeMapCollector
+class RolledUnrolledCollector: public TimeMapCollector
 {
 	public:
 		typedef std::map<RelativeTimeSegment, RelativeTimeSegment> T2TMap;
@@ -67,8 +67,8 @@ class RolledEnrolledCollector: public TimeMapCollector
 		rational	fLastDate;
 	
 	public:
-				 RolledEnrolledCollector(QGuidoGraphicsItem* item) : fItem(item) , fMap(0), fLastDate(0,4) {}
-		virtual ~RolledEnrolledCollector() {}
+				 RolledUnrolledCollector(QGuidoGraphicsItem* item) : fItem(item) , fMap(0), fLastDate(0,4) {}
+		virtual ~RolledUnrolledCollector() {}
 
 		rational lastDate() const		{ return fLastDate; }
 
@@ -93,9 +93,7 @@ class RolledEnrolledCollector: public TimeMapCollector
 
 		RelativeTimeSegment relativeTimeSegment(const TimeSegment& dates) const
 		{
-			rational segmentStart( dates.first.num , dates.first.denom );
-			rational segmentEnd( dates.second.num , dates.second.denom );
-			return RelativeTimeSegment( segmentStart , segmentEnd );
+			return RelativeTimeSegment( rational( dates.first.num , dates.first.denom ) , rational( dates.second.num , dates.second.denom ) );
 		}
 
 };
@@ -174,53 +172,22 @@ void VGuidoItemView::pageFormatUpdate (IGuidoCode* guidoCode)
 }
 
 //----------------------------------------------------------------------
-SRelativeTimeSegmentation VGuidoItemView::timeMapUpdate (SRelativeTime2RelativeTimeMapping& map)
+void VGuidoItemView::timeMapUpdate (SRelativeTime2RelativeTimeMapping& map)
 {
-	RolledEnrolledCollector timeCollector( fGuidoItem );
-	RolledEnrolledCollector::T2TMap t2tmap;
+	RolledUnrolledCollector timeCollector( fGuidoItem );
+	RolledUnrolledCollector::T2TMap t2tmap;
 	timeCollector.process(&t2tmap);
-	// Create the unrolled time segmentation.
-	SRelativeTimeSegmentation segm = RelativeTimeSegmentation::create( RelativeTimeSegment(rational(0,1) , timeCollector.lastDate()) );	
-	RolledEnrolledCollector::T2TMap::const_iterator timeIter = t2tmap.begin();	// Iterates thru the map 
+
+	RolledUnrolledCollector::T2TMap::const_iterator timeIter = t2tmap.begin();	// Iterates thru the map
 																				// Map is 'unrolled' to 'rolled', so: time -> local.	
 	while (timeIter != t2tmap.end()) {
 		map->add ( timeIter->second , timeIter->first );	// Put the rolled -> unrolled relation in the mapping.
-		segm->add(timeIter->first);							// Also put the unrolled segment in the time segmentation.			
 		timeIter++;
 	}
-	return segm;
 }
 
 //----------------------------------------------------------------------
-static SRelativeTime2RelativeTimeMapping intersect (const SRelativeTime2RelativeTimeMapping& t2t, const std::set<RelativeTimeSegment>& inter)
-{
-	SRelativeTime2RelativeTimeMapping outmap = RelativeTime2RelativeTimeMapping::create();
-//	TVirtualRelation<RelativeTimeSegment,RelativeTimeSegment> vrel(t2t->direct());
-//	for (std::set<RelativeTimeSegment>::const_iterator i = inter.begin(); i != inter.end(); i++) {
-//		std::set<RelativeTimeSegment> tsegs = vrel.get(*i);
-//		for (std::set<RelativeTimeSegment>::const_iterator j = tsegs.begin(); j != tsegs.end(); j++) {
-//			outmap->add (*i, *j);
-//		}	
-//	}
-	return outmap;
-}
-
-//----------------------------------------------------------------------
-static SGraphic2RelativeTimeMapping intersect (const SGraphic2RelativeTimeMapping& g2t, const std::set<RelativeTimeSegment>& inter)
-{
-	SGraphic2RelativeTimeMapping outmap = Graphic2RelativeTimeMapping::create();
-//	TVirtualRelation<RelativeTimeSegment,GraphicSegment> vrel(g2t->reverse());
-//	for (std::set<RelativeTimeSegment>::const_iterator i = inter.begin(); i != inter.end(); i++) {
-//		std::set<GraphicSegment> gsegs = vrel.get(*i);
-//		for (std::set<GraphicSegment>::const_iterator j = gsegs.begin(); j != gsegs.end(); j++) {
-//			outmap->add (*j, *i);
-//		}	
-//	}
-	return outmap;
-}
-
-//----------------------------------------------------------------------
-void VGuidoItemView::graphMapUpdate (IGuidoCode* guidoCode, SRelativeTime2RelativeTimeMapping& ttmap, SRelativeTimeSegmentation& timeseg)
+void VGuidoItemView::graphMapUpdate (IGuidoCode* guidoCode, SRelativeTime2RelativeTimeMapping& ttmap)
 {
 	float itemWidth  = fGuidoItem->boundingRect().width();
 	float itemHeight = fGuidoItem->boundingRect().height();	
@@ -232,7 +199,6 @@ void VGuidoItemView::graphMapUpdate (IGuidoCode* guidoCode, SRelativeTime2Relati
 		if ( collector )
 		{
 			SGraphic2RelativeTimeMapping g2l_mapping = Graphic2RelativeTimeMapping::create();					// Build the 'graphic -> rolled relative time' mapping.
-//			SGraphicSegmentation graphicSegmentation = GraphicSegmentation::create( GraphicSegment(-1,-1,1,1) );// Create the graphic segmentation.
 
 			GuidoMapCollector::Time2GraphicMap map;
 			collector->process (&map);
@@ -244,18 +210,12 @@ void VGuidoItemView::graphMapUpdate (IGuidoCode* guidoCode, SRelativeTime2Relati
 									2*iter->second.yinterval().second()/itemHeight -1);	// Transform from QGraphicsItem space to IObject space.
 				
 				g2l_mapping->add ( transformedGraphicSegment , iter->first);	// Put the time -> graphic relation in the mapping.
-//				graphicSegmentation->add(transformedGraphicSegment);			// Also put the graphic segment in the graphic segmentation.
 			}
 
 			// the steps below are required to make sure that the time to time and the time to graphic mappings
 			// share the same time segmentation, which is  not the case for system map for example
-//			ttmap = MapTools::reduce(ttmap);			// reduce the time to time mapping
-//			std::set<RelativeTimeSegment> inter;		// computes the intersection with the time to graphic segmentation
-//			MapTools::intersect(ttmap->direct(), g2l_mapping->reverse(), inter);
-//			g2l_mapping = intersect(g2l_mapping, inter);// rebuilds the time to graphic mapping with the intersection
-//			ttmap = intersect(ttmap, inter);			// rebuilds the time to mapping with the intersection
-
-			guidoCode->localMappings()->setMapping( mapNames[i], ttmap );	// Add the both mappings to the IGuidoCode.
+			ttmap = MapTools::reduce(ttmap);			// reduce the time to time mapping
+			guidoCode->localMappings()->setMapping( mapNames[i], ttmap );	// Add mapping to the IGuidoCode.
 			// Add the composed mapping to the IGuidoCode.
 			VGraphicsItemView::setMapping<rational,1>( guidoCode , guidoCode->requestedMappings()[i] , g2l_mapping , ttmap );
 			delete collector;
@@ -271,10 +231,10 @@ void VGuidoItemView::updateLocalMapping (IGuidoCode* guidoCode)
 		
 	// Build the Rolled->Unrolled mapping
 	SRelativeTime2RelativeTimeMapping l2t_mapping = TMapping<rational,1, rational,1>::create();	// Create the 'rolled -> unrolled' mapping.
-	SRelativeTimeSegmentation unrolledTimeSegmentation = timeMapUpdate (l2t_mapping);
+	timeMapUpdate (l2t_mapping);
 
 	// Build the time->graphic mapping.
-	graphMapUpdate (guidoCode, l2t_mapping, unrolledTimeSegmentation);
+	graphMapUpdate (guidoCode, l2t_mapping);
 
 	// checks for default mapping (should be useless for guido code)
 	VGraphicsItemView::buildDefaultMapping (guidoCode);
@@ -307,7 +267,7 @@ GuidoMapCollector* VGuidoItemView::getMapBuilder(const string& mapName) const
 		mb = new GuidoMapCollector(fGuidoItem, kGuidoSystemSlice);
 	else if ( name.startsWith( kMeasureMap ) )
 		mb = new GuidoStaffCollector ( fGuidoItem, getMapNum (name, kMeasureMap.size()) );
-	else cerr << "unknwown guido mapping name \"" << mapName << "\" requested" << endl;
+	else ITLErr << "unknwown guido mapping name \"" << mapName << "\" requested" << ITLEndl;
 	
 	return mb;
 }
