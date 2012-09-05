@@ -60,6 +60,7 @@ typedef libmapping::SMARTP<GraphicSegmentation>				SGraphicSegmentation;
 typedef libmapping::TRelation<float,2,float,2>						Graphic2GraphicRelation;
 typedef libmapping::TRelation<libmapping::rational,1,float,2>		RelativeTime2GraphicRelation;
 typedef libmapping::TRelation<float,2,libmapping::rational,1>		Graphic2RelativeTimeRelation;
+typedef libmapping::TRelation<libmapping::rational,1,libmapping::rational,1> RelativeTime2RelativeTimeRelation;
 
 typedef libmapping::TMapping<float,2,float,2>						Graphic2GraphicMapping;
 typedef libmapping::TMapping<libmapping::rational,1,float,2>		RelativeTime2GraphicMapping;
