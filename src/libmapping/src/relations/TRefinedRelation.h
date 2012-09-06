@@ -69,7 +69,7 @@ class TRefinedRelation : public TRelation<T1,D1,T2,D2>
 						// find the segments that intersect with the current segment in the primary segmentation
 						std::vector<TSegment<T1,D1> > intervect;
 						s->intersectWith(*ri, intervect);
-						for (int i = 0; i < intervect.size(); i++) {	// for each intersecting segment
+						for (unsigned int i = 0; i < intervect.size(); i++) {	// for each intersecting segment
 							TSegment<T1,D1> inter = *ri & intervect[i];	// get the intersection
 							// next we get the transform function to go from the container to the refined segment
 							TAXBFunction<T1> f (intervect[i].interval(), inter.interval());
