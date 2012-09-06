@@ -160,6 +160,28 @@ template<typename T> class TSegment<T, 2>
 		/// intersection relationship between segments
 		inline bool intersect(const TSegment<T, 2>& s) const	{  return xinterval().intersect(s.xinterval()) && yinterval().intersect(s.yinterval()); }
 
+		/*!
+			\brief segments merge on x axis
+			
+			\param s the segment to merge
+			\param epsilon tolerance for the gap between segments
+		*/
+		inline TSegment<T,2> xmerge (const TSegment<T,2>& s, T epsilon = T(0)) const
+								{ return (yinterval() == s.yinterval())
+									? TSegment<T,2>( xinterval().merge(s.xinterval(), epsilon), yinterval())
+									: TSegment<T,2>( TInterval<T>(), yinterval()); }
+
+		/*!
+			\brief segments merge on y axis
+			
+			\param s the segment to merge
+			\param epsilon tolerance for the gap between segments
+		*/
+		inline TSegment<T,2> ymerge (const TSegment<T,2>& s, T epsilon = T(0)) const
+								{ return (xinterval() == s.xinterval())
+									? TSegment<T,2>( yinterval().merge(s.yinterval(), epsilon), xinterval())
+									: TSegment<T,2>( yinterval(), TInterval<T>()); }
+
         /// segments == operator
 		inline bool operator== (const TSegment<T, 2>& s) const	{ return (xinterval() == s.xinterval()) && (yinterval() == s.yinterval()); }
 		inline bool operator!= (const TSegment<T, 2>& s) const	{ return (xinterval() != s.xinterval()) || (yinterval() != s.yinterval()); }
