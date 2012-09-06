@@ -52,8 +52,13 @@ class Master : public libmapping::smartable
 		typedef std::vector< std::string > SyncOptions;
 
 		enum VAlignType { kUnknown=-1, kSyncOver=0, kSyncTop, kSyncBottom, kDefaultSync=kSyncOver};
-		enum StretchType {	kStretchUnknown=0x8000, kNoStretch=0, kStretchH=1, kStretchHH=2, kStretchV=4, 
-							kStretchHV = kStretchH + kStretchV, kStretchHHV = kStretchHH + kStretchV, 
+		enum StretchType {	kStretchUnknown=0x8000,
+							kNoStretch=0,							///< no stretch
+							kStretchH=1,							///< horizontal stretch 
+							kStretchHH=2,							///< horizontal stretch but without inner distortion when possible
+							kStretchV=4,							///< vertical stretch
+							kStretchHV = kStretchH + kStretchV,		///< horizontal and vertical stretch
+							kStretchHHV = kStretchHH + kStretchV,	///< horizontal and vertical stretch without inner distortion
 							kDefaultStretch=kNoStretch};
 //		enum { kLinearInterpolation, kNoInterpolation, kDefaultInterpolation=kLinearInterpolation };
 		
