@@ -34,7 +34,7 @@
 #include "IModel.h"
 #include "IText.h"
 #include "ISync.h"
-#include "TComposition.h"
+#include "TRefinedComposition.h"
 #include "QStretchTilerItem.h"
 #include "GraphicEffect.h"
 #include "maptypes.h"
@@ -101,13 +101,22 @@ class VGraphicsItemView : public VObjectView
 		float getIObjectHeight() const { return scene2RelativeHeight( fItem->boundingRect().height() ); }	// Gives the object's height in interlude scene coordinates.
 		
 		template <typename T, unsigned int D>
-		static void setMapping( IObject* object , const std::string& mapName , libmapping::SMARTP<libmapping::TMapping<float,2,T,D> > g2l_mapping , libmapping::SMARTP<libmapping::TMapping<T,D, libmapping::rational,1> > local2time_mapping)
+		static void setMapping( IObject* object ,
+				const std::string& mapName , libmapping::SMARTP<libmapping::TMapping<float,2,T,D> > g2l_mapping ,
+				libmapping::SMARTP<libmapping::TMapping<T,D, libmapping::rational,1> > local2time_mapping,
+				bool refine=false)
 		{
-			// create the graphic to time composition
-			// composition reduction to a simple mapping
-			typedef libmapping::TComposition <libmapping::rational,1,T,D, float,2> T2GComposition;
-			SRelativeTime2GraphicMapping t2gr = T2GComposition::create( local2time_mapping->reverse(), g2l_mapping->reverse() );
-			object->setMapping( mapName , t2gr );
+			// if refined, create the graphic to time composition using a refined composition
+			if (refine) {
+				typedef libmapping::TRefinedComposition <libmapping::rational,1,T,D, float,2> T2GComposition;
+				SRelativeTime2GraphicMapping t2gr = T2GComposition::create( local2time_mapping->direct(), g2l_mapping->reverse() );
+				object->setMapping( mapName , t2gr );
+			}
+			else {
+				typedef libmapping::TComposition <libmapping::rational,1,T,D, float,2> T2GComposition;
+				SRelativeTime2GraphicMapping t2gr = T2GComposition::create( local2time_mapping->reverse(), g2l_mapping->reverse() );
+				object->setMapping( mapName , t2gr );
+			}
 		}
 		
 		/// \brief Returns the reference rectangle for the QGraphicsItem coordinate: the master QRect or the scene QRect (if there's no master).
