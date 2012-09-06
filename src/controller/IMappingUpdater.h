@@ -72,8 +72,6 @@ class IMappingUpdater : public SlaveMapUpdater
 		SRelativeTime2GraphicMapping	timeshift (const SRelativeTime2GraphicMapping& map, const libmapping::rational& date) const;
 		/// adjust the segments vertical dimension and position
 		SGraphic2GraphicMapping			verticalAdjust (const SGraphic2GraphicMapping& map, IObject* o, const Master* master) const;
-		/// compute the intersection of two time segmentations
-		void	intersect (const RelativeTime2GraphicRelation& r1, const RelativeTime2GraphicRelation& r2, std::set<RelativeTimeSegment>& outlist) const;
 
 	public:
 		using Updater::updateTo;
