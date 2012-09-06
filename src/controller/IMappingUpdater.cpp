@@ -238,7 +238,7 @@ static SRelativeTime2GraphicMapping reduce( const SRelativeTime2GraphicMapping& 
 		}
 		else {							// here we have the previous segments
 			RelativeTimeSegment u1 = timeseg.merge(i->first);		// merge the time segments
-			set<GraphicSegment> u2 = merge (graphsegs, i->second);	// and try to merge the corresponding graphic segments
+			set<GraphicSegment> u2 = merge (graphsegs, i->second);	// and merge the corresponding graphic segments
 			if (u1.empty() || !u2.size()) {							// it fails: empty merged time segment of graphic segments set
 				outmap->add (timeseg, graphsegs);					// add the relation as is
 				timeseg = i->first;									// and set the current time and graphic segment
