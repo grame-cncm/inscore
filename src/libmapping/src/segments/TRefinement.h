@@ -69,8 +69,11 @@ template<typename T, unsigned int D> class TRefinement
 					SegmentT inter = *i1 & *i2;				// compute the current segments intersection
 					if (!inter.empty()) 					// when not empty
 						outsgt->add (inter);				// adds the intersection to the segmentation
-					if (*i2 < *i1) i2++;					// moves the smallest segment (see segments < operator)
-					else if (!inter.empty()) i2++;
+
+					// check now how to move to the next comparison
+					if (i2->include (*i1)) i1++;
+					else if (i1->include (*i2)) i2++;
+					else if (*i2 < *i1) i2++;
 					else i1++;
 				}
 			}

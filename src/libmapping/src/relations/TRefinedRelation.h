@@ -64,19 +64,21 @@ class TRefinedRelation : public TRelation<T1,D1,T2,D2>
 				 TRefinedRelation (const rtype& m, const segmtype1& r) {
 					// first we get the primary segmentation of the relation
 					segmtype1 s = m.getPrimarySet();
-					// for each segment of the refined segmentation given as argument
-					for (const_iterator i = r->begin(); i!= r->end(); i++) {
-						// find its container segment in the primary segmentation
-						TSegment<T1,D1> container = s->find (*i);
-						if (!container.empty()) {		// empty segments are discarded
+					// for each segment of the segmentation given as argument
+					for (const_iterator ri = r->begin(); ri!= r->end(); ri++) {
+						// find the segments that intersect with the current segment in the primary segmentation
+						std::vector<TSegment<T1,D1> > intervect;
+						s->intersectWith(*ri, intervect);
+						for (int i = 0; i < intervect.size(); i++) {	// for each intersecting segment
+							TSegment<T1,D1> inter = *ri & intervect[i];	// get the intersection
 							// next we get the transform function to go from the container to the refined segment
-							TAXBFunction<T1> f(container.interval(), i->interval());
+							TAXBFunction<T1> f (intervect[i].interval(), inter.interval());
 							// we retrieve the relations of the container
-							std::set<TSegment<T2,D2> > rel = m.get(container);
+							std::set<TSegment<T2,D2> > rel = m.get(intervect[i]);
 							// and for each relation
 							for (const_iterator2 j = rel.begin(); j != rel.end(); j++) {
 								// adds a relation between the refined segment and refined relation
-								this->add (*i, TSegmentVariety<T2,D2>(*j, &f).get());
+								this->add (inter, TSegmentVariety<T2,D2>(*j, &f).get());
 							}
 						}
 					}
