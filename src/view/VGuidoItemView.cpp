@@ -217,7 +217,7 @@ void VGuidoItemView::graphMapUpdate (IGuidoCode* guidoCode, SRelativeTime2Relati
 			ttmap = MapTools::reduce(ttmap);			// reduce the time to time mapping
 			guidoCode->localMappings()->setMapping( mapNames[i], ttmap );	// Add mapping to the IGuidoCode.
 			// Add the composed mapping to the IGuidoCode.
-			VGraphicsItemView::setMapping<rational,1>( guidoCode , guidoCode->requestedMappings()[i] , g2l_mapping , ttmap );
+			VGraphicsItemView::setMapping<rational,1>( guidoCode , guidoCode->requestedMappings()[i] , g2l_mapping , ttmap, true );
 			delete collector;
 		}
 	}
