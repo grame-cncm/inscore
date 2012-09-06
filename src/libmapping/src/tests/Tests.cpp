@@ -269,9 +269,29 @@ template<typename T1, typename T2> void testRefinedRelation12(int n)
 }
 
 //--------------------------------------------------------------------------------
-static void debugRefinedComposition()
+static void debugRefinedRelation()
 {
 	cout << "\ndebugRefinedComposition" << endl;
+	cout << "---------------------------" << endl;
+	TSegment<rational,1> seg(rational(7,4), rational(9,4));
+	SMARTP<TSegmentation<rational,1> > rts = TSegmentation<rational,1>::create(seg);
+	rts->add (seg);
+
+	TRelation<rational,1,float,1> rel;
+	rel.add(TSegment<rational,1>(rational(2,2), rational(3,2)), TSegment<float,1>(2.,3.));
+	rel.add(TSegment<rational,1>(rational(3,2), rational(4,2)), TSegment<float,1>(3.,4.));
+	rel.add(TSegment<rational,1>(rational(4,2), rational(5,2)), TSegment<float,1>(4.,5.));
+
+	TRefinedRelation<rational,1, float,1> refined (rel, rts);
+	cout << "relation :\n" << rel;
+	cout << "segmentation :\n" << rts << endl;
+	cout << "refined :\n" << refined;
+}
+
+//--------------------------------------------------------------------------------
+static void debugRefinedComposition1()
+{
+	cout << "\ndebugRefinedComposition1" << endl;
 	cout << "---------------------------" << endl;
  	SMARTP<TMapping<rational,1,rational,1> > map1 = TMapping<rational,1,rational,1>::create();
  	SMARTP<TMapping<rational,1,rational,1> > map2 = TMapping<rational,1,rational,1>::create();
@@ -290,6 +310,29 @@ static void debugRefinedComposition()
 	typedef TRefinedComposition <libmapping::rational,1,rational,1, rational,1> T2TComposition;
 	SMARTP<TMapping<rational,1,rational,1> > t2t = T2TComposition::create( map1->direct(), map2->direct() );
 	cout << "refined comp. :\n" << t2t->direct() << endl;
+}
+
+//--------------------------------------------------------------------------------
+static void debugRefinedComposition2()
+{
+	cout << "\ndebugRefinedComposition2" << endl;
+	cout << "---------------------------" << endl;
+ 	SMARTP<TMapping<rational,1,float,1> > map1 = TMapping<rational,1,float,1>::create();
+ 	SMARTP<TMapping<rational,1,float,1> > map2 = TMapping<rational,1,float,1>::create();
+
+	map1->add (TSegment<rational,1>(rational(1,4),rational(5,4)), TSegment<float,1>(0.,1.));
+	map1->add (TSegment<rational,1>(rational(5,4),rational(9,4)), TSegment<float,1>(1.,2.));
+
+	map2->add (TSegment<rational,1>(rational(0,1),rational(1,1)), TSegment<float,1>(0.,1.));
+	map2->add (TSegment<rational,1>(rational(1,1),rational(2,1)), TSegment<float,1>(1.,2.));
+	map2->add (TSegment<rational,1>(rational(2,1),rational(3,1)), TSegment<float,1>(2.,3.));
+	
+	cout << "map1 :\n" << map1->direct() << endl;
+	cout << "map2 :\n" << map2->direct() << endl;
+
+	typedef TRefinedComposition <float,1, rational,1, float,1> F2FComposition;
+	SMARTP<TMapping<float,1,float,1> > f2f = F2FComposition::create( map1->direct(), map2->direct() );
+	cout << "refined comp. :\n" << f2f->direct() << endl;
 }
 
 //--------------------------------------------------------------------------------
@@ -363,7 +406,10 @@ static void usage(const char* name)
 	cout << "  -mapping : mapping test" << endl;
 	cout << "  -composition : mapping composition test" << endl;
 	cout << "  -refinedrel : refined relation test" << endl;
+	cout << "  -refinedreldbg : refined relation debug test" << endl;
 	cout << "  -refinedcomp : refined composition test" << endl;
+	cout << "  -refinedcompdbg1 : refined composition debug test" << endl;
+	cout << "  -refinedcompdbg2 : refined composition debug test" << endl;
 	exit (1);
 }
 
@@ -429,8 +475,18 @@ int main (int argc, char* argv[])
 		done++;
 	}
 
-	if (lopt("-refinedbg", argc, argv)) {
-		debugRefinedComposition();
+	if (lopt("-refinedreldbg", argc, argv)) {
+		debugRefinedRelation();
+		done++;
+	}
+
+	if (lopt("-refinedcompdbg1", argc, argv)) {
+		debugRefinedComposition1();
+		done++;
+	}
+
+	if (lopt("-refinedcompdbg2", argc, argv)) {
+		debugRefinedComposition2();
 		done++;
 	}
 
