@@ -12,6 +12,12 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 1.00
+- internal change: mappings are now implemented as a separable library strictly complying to the 
+  mappings formalism.
+
+
+----------------------------------------------------
 Version 0.99
 - new 'rate' message at application level to control the time task rate.
 - new 'frameless' message for the scene.
