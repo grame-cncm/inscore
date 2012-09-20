@@ -1417,7 +1417,7 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {81}{ date : ('date' | 'rdate') (| ':' mapname) (| '[n/d]') \par
+\rail@i {81}{ date : ('date' | 'rdate') (| ':' mapname) (| '[n/d]') (| '\%' 'f') \par
 }
 \rail@o {81}{
 \rail@index{date}
@@ -1435,6 +1435,11 @@
 \rail@bar
 \rail@nextbar{1}
 \rail@term{[n/d]}[]
+\rail@endbar
+\rail@bar
+\rail@nextbar{1}
+\rail@term{\%}[]
+\rail@term{f}[]
 \rail@endbar
 \rail@end
 }

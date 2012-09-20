@@ -15,7 +15,7 @@ It has been supported by the ANR (ANR-08-CORD-010)
 Version 1.00
 - internal change: mappings are now implemented as a separable library strictly complying to the 
   mappings formalism.
-
+- new %f format for the date variable to request a float value (instead a rational value).
 
 ----------------------------------------------------
 Version 0.99
