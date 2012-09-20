@@ -16,6 +16,7 @@ Version 1.00
 - internal change: mappings are now implemented as a separable library strictly complying to the 
   mappings formalism.
 - new %f format for the date variable to request a float value (instead a rational value).
+- interaction messages are not any more generated when the date can't be resolved.
 
 ----------------------------------------------------
 Version 0.99
