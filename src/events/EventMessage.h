@@ -56,11 +56,12 @@ typedef struct MouseLocation {
 typedef struct EventContext {
 	MouseLocation			mouse;
 	libmapping::rational	date;
+	bool					floatdate;
 	const IObject*			object;
 	const IMessage*			varmsg;
 
-	EventContext (const MouseLocation& ml, const libmapping::rational& d, const IObject* o)
-		: mouse(ml), date(d), object(o), varmsg(0) {}
+	EventContext (const MouseLocation& ml, const libmapping::rational& d, bool fdate, const IObject* o)
+		: mouse(ml), date(d), floatdate(fdate), object(o), varmsg(0) {}
 	EventContext (const IObject* o)
 		: object(o), varmsg(0) {}
 } EventContext;
@@ -89,9 +90,9 @@ class EventMessage : public libmapping::smartable
 	bool	checkfloat (const char* param) const;
 	
 	// evaluate the parameters of a message in a given context
-	void	eval (const IMessage *msg, EventContext& env, IMessage& outmsg) const;
+	bool	eval (const IMessage *msg, EventContext& env, IMessage& outmsg) const;
 	// evaluate a message variable in a given context
-	void	eval (const std::string& var, EventContext& env, IMessage& outmsg) const;
+	bool	eval (const std::string& var, EventContext& env, IMessage& outmsg) const;
 	// evaluate a variable message in a given context
 	void	eval (const IMessage* msg, const IObject * object, IMessage& outmsg) const;
 			
@@ -107,14 +108,15 @@ class EventMessage : public libmapping::smartable
 		void	send () const;
 		void	send (EventContext& env);
 
-		bool	hasDateVar (std::string& mapname, int& num, int& denum, bool& relative) const;
-		bool	isDateVar (const std::string& var, std::string& mapname, int& num, int& denum, bool& relative) const;
+		bool	hasDateVar (std::string& mapname, int& num, int& denum, bool& relative, bool& floatval) const;
+		bool	isDateVar (const std::string& var, std::string& mapname, int& num, int& denum, bool& relative, bool& floatval) const;
 		const IMessage * message() const		{ return fMessage; }
 		
 		std::string address() const;
 
 	static bool parseMap (const std::string& var, std::string& map);
 	static bool parseQuant (const std::string& var, int& n, int& d);
+	static bool parseFloat (const std::string& var, bool& floatval);
 };
 
 } // end namespoace

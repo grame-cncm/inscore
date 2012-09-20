@@ -223,13 +223,28 @@ bool EventMessage::parseMap (const string& var, string& map)
 	while (++n <= l) {
 		char c = var[n];
 		if (c == '[') break;
+		else if (c == '%') break;
 		else map += c;
 	}
 	return true;
 }
 
 //----------------------------------------------------------------------
-bool EventMessage::isDateVar (const string& var, string& mapname, int& num, int& denum, bool& relative) const
+bool EventMessage::parseFloat (const string& var, bool& floatval)
+{
+	floatval = false;
+	size_t n = var.find('%');
+	if (n == string::npos) return false;
+
+	n++;
+	char c = var[n++];
+	if ((n == var.size()) && (c == 'f')) floatval = true;
+	else return false;
+	return true;
+}
+
+//----------------------------------------------------------------------
+bool EventMessage::isDateVar (const string& var, string& mapname, int& num, int& denum, bool& relative, bool& floatval) const
 {
 	size_t datelength = strlen(kDateVar);
 	size_t rdatelength = strlen(kRelativeDateVar);
@@ -241,19 +256,20 @@ bool EventMessage::isDateVar (const string& var, string& mapname, int& num, int&
 		relative = false;
 	parseMap (var, mapname);
 	parseQuant (var, num, denum);
+	parseFloat (var, floatval);
 	return true;
 }
 
 //----------------------------------------------------------------------
-bool EventMessage::hasDateVar (std::string& mapname, int& num, int& denum, bool& relative) const
+bool EventMessage::hasDateVar (std::string& mapname, int& num, int& denum, bool& relative, bool& floatval) const
 {
 	if (!fMessage) return false;
-	if (isDateVar (fMessage->message(), mapname, num, denum, relative)) return true;
+	if (isDateVar (fMessage->message(), mapname, num, denum, relative, floatval)) return true;
 	int n = fMessage->size();
 	for (int i=0; i<n; i++) {
 		string str;
 		if (fMessage->param(i, str))
-			if (isDateVar (str, mapname, num, denum, relative))  return true;
+			if (isDateVar (str, mapname, num, denum, relative, floatval))  return true;
 	}
 	return false;	
 }
@@ -324,10 +340,11 @@ void EventMessage::eval (const IMessage* msg, const IObject * object, IMessage& 
 // in case of  variable message, the message is processed and the value
 // is taken from the output message parameters
 //----------------------------------------------------------------------
-void EventMessage::eval (const string& var, EventContext& env, IMessage& outmsg) const
+bool EventMessage::eval (const string& var, EventContext& env, IMessage& outmsg) const
 {
 	string mapname;
 	int num=0, denum=0;
+	bool floatval;
 	bool relative = false;
 	if (var[1] == 'x')	{
 		if (checkfloat(var.c_str())) outmsg << checkfloatrange(var.substr(2), env.mouse.fx); 
@@ -343,16 +360,24 @@ void EventMessage::eval (const string& var, EventContext& env, IMessage& outmsg)
 	else if (var == kSceneYVar)		outmsg << env.mouse.fsy;
 	else if (var == kNameVar)		outmsg << env.object->name();
 	else if (var == kAddressVar)	outmsg << env.object->getOSCAddress();
-	else if (isDateVar (var, mapname, num, denum, relative)) {
-		if (num && env.date.getDenominator()) {
+	else if (isDateVar (var, mapname, num, denum, relative, floatval)) {
+		if (!env.date.getDenominator()) return false;		// date can't be resolved
+		if (num) {
 			float fd = float(env.date);
-			rational qdate (int(fd * denum / num) * num, denum);
-			outmsg << qdate;
+			if (!floatval) {
+				rational qdate (int(fd * denum / num) * num, denum);
+				outmsg << qdate;
+			}
+			else outmsg << fd;
 		}
-		else outmsg << env.date;
+		else if (floatval)
+			outmsg << float(env.date);
+		else
+			outmsg << env.date;
 	}
 	else if (env.varmsg)	eval(env.varmsg, env.object, outmsg);
 	else outmsg << var;
+	return true;
 }
 
 //----------------------------------------------------------------------
@@ -360,7 +385,7 @@ void EventMessage::eval (const string& var, EventContext& env, IMessage& outmsg)
 // actually, a variable (i.e. a param starting with a '$') is replaced by 
 // its value (which may be a list of values in case of variable messages)
 //----------------------------------------------------------------------
-void EventMessage::eval (const IMessage *msg, EventContext& env, IMessage& outmsg) const
+bool EventMessage::eval (const IMessage *msg, EventContext& env, IMessage& outmsg) const
 {
 	string strvalue = msg->message();
 	map<int, SIMessage>::const_iterator mi;
@@ -368,7 +393,7 @@ void EventMessage::eval (const IMessage *msg, EventContext& env, IMessage& outms
 		mi = fVarMsgs.find(-1);
 		if (mi == fVarMsgs.end())  env.varmsg = 0;
 		else env.varmsg = mi->second;
-		eval (strvalue, env, outmsg);
+		if (!eval (strvalue, env, outmsg)) return false;
 	}
 	else outmsg.setMessage (strvalue);
 	
@@ -378,10 +403,11 @@ void EventMessage::eval (const IMessage *msg, EventContext& env, IMessage& outms
 			mi = fVarMsgs.find(i);
 			if (mi == fVarMsgs.end())  env.varmsg = 0;
 			else env.varmsg = mi->second;
-			eval (strvalue, env, outmsg);
+			if (!eval (strvalue, env, outmsg)) return false;
 		}
 		else outmsg.add(msg->params()[i]);
 	}
+	return true;
 }
 
 //----------------------------------------------------------------------
@@ -389,9 +415,10 @@ void EventMessage::send(EventContext& env)
 {
 	if (fMessage) {
 		IMessage msg (fMessage->address());
-		eval (fMessage, env, msg);							// evaluate the parameters of the message
-		if (fDest.empty())	localSend (&msg);
-		else				sockSend (&msg, fDest, fPort);
+		if (eval (fMessage, env, msg)) {							// evaluate the parameters of the message
+			if (fDest.empty())	localSend (&msg);
+			else				sockSend (&msg, fDest, fPort);
+		}
 	}
 }
 

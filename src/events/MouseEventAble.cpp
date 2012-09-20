@@ -127,16 +127,17 @@ void _MouseEventAble::handleEvent (const IObject * obj, QPointF pos,  EventsAble
 	for (unsigned int i=0; i<msgs.size(); i++) {
 		std::string mapname;
 		int num=0, denum=0;
+		bool floatval;
 		rational date (0,0);
 		bool relative;
-		if (msgs[i]->hasDateVar (mapname, num, denum, relative)) {
+		if (msgs[i]->hasDateVar (mapname, num, denum, relative, floatval)) {
 			date = point2date (obj, relx, rely, mapname, 0, relative);
 			if (num && date.getDenominator()) {
 				float fd = float(date);
 				date.set (int(fd * denum / num) * num, denum);
 			}
 		}
-		EventContext env(mouse, date, obj);
+		EventContext env(mouse, date, floatval, obj);
 		msgs[i]->send(env);
 	}
 }
