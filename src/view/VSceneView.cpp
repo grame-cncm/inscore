@@ -184,7 +184,7 @@ void VSceneView::updateOnScreen( IScene * scene )
 			fGraphicsView->showNormal ();
 		}
 	}
-	else if (flags != fDefaultFlags) {
+	else if ((flags != fDefaultFlags) && !scene->getFullScreen()) {
 		fGraphicsView->setWindowFlags (fDefaultFlags);
 		fGraphicsView->showNormal ();
 	}
