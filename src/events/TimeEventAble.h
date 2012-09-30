@@ -45,14 +45,25 @@ class TimeEventAble
 		virtual ~TimeEventAble() {}
 
 		void handleTimeChange (libmapping::rational from, libmapping::rational to) const;
+		void handleDurChange  (libmapping::rational from, libmapping::rational to) const;
+
+		void watchInterval	(int type, const RationalInterval&);
+		void delInterval	(int type, const RationalInterval&);
+		void clearList		(int type);
+
+	protected:
 
 		void watchTime	(const RationalInterval&);
 		void delTime	(const RationalInterval&);
 		void clearTime	();
 
-	protected:
+		void watchDur	(const RationalInterval&);
+		void delDur		(const RationalInterval&);
+		void clearDur	();
+
 		const EventsAble *			fEventsHandler;
-		std::set<RationalInterval>	fWatchList;
+		std::set<RationalInterval>	fWatchTimeList;
+		std::set<RationalInterval>	fWatchDurList;
 				
 		void send (const std::vector<SEventMessage>& msgs) const;
 };

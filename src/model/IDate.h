@@ -77,7 +77,7 @@ class IDate : public TimeEventAble
 		/// \brief sets the object date \param date a date expressed as a rational
 		virtual void	setDate (const libmapping::rational& date);
 		/// \brief sets the object duration \param dur a duration expressed as a rational
-		virtual void	setDuration (const libmapping::rational& dur)	{  fDuration = dur;  fDurationChanged = true;  }
+		virtual void	setDuration (const libmapping::rational& dur);
 		/// \brief moves the date
 		virtual void	addDate (const libmapping::rational& date)		{ setDate(fDate + date); }
 		/// \brief moves the duration
