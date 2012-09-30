@@ -426,6 +426,12 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		/// \brief the \c 'watch' message handler
 		virtual MsgHandler::msgStatus watchMsgAdd(const IMessage* msg)	{ return _watchMsg (msg, true); }
 
+		/// \brief the \c 'push' message handler
+		virtual MsgHandler::msgStatus pushMsg(const IMessage* msg);
+
+		/// \brief the \c 'pop' message handler
+		virtual MsgHandler::msgStatus popMsg(const IMessage* msg);
+
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 

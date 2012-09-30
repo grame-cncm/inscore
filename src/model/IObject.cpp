@@ -98,6 +98,8 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fMsgHandlerMap["save"]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::saveMsg);
 	fMsgHandlerMap["watch"]		= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsg);
 	fMsgHandlerMap["watch+"]	= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsgAdd);
+	fMsgHandlerMap["push"]		= TMethodMsgHandler<IObject>::create(this, &IObject::pushMsg);
+	fMsgHandlerMap["pop"]		= TMethodMsgHandler<IObject>::create(this, &IObject::popMsg);
 	
 //	fGetMsgHandlerMap["watch"]	= TGetParamMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
 
@@ -612,6 +614,21 @@ SGetParamMultiMsgHandler IObject::getMultiMessageHandler(const std::string& para
 //}
 
 //--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::pushMsg(const IMessage* msg)
+{
+	if (msg->size()) return MsgHandler::kBadParameters;
+	EventsAble::pushWatch();
+	return MsgHandler::kProcessed;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::popMsg(const IMessage* msg)
+{
+	if (msg->size()) return MsgHandler::kBadParameters;
+	return EventsAble::popWatch() ? MsgHandler::kProcessed : MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::set(const IMessage* msg)	
 {
 	string type = msg->params()[0]->value<std::string>("");
@@ -781,6 +798,8 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 
 		case EventsAble::kTimeEnter:
 		case EventsAble::kTimeLeave:
+		case EventsAble::kDurEnter:
+		case EventsAble::kDurLeave:
 			if (msg->params().size() >= 5) {
 				rational start, end;
 				if (!msg->param(1,start) || !msg->param(3, end))
@@ -789,16 +808,16 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 				if (msg->params().size() > 5) {
 					if (!add) eventsHandler()->setTimeMsg (t, time, EventMessage::create (name(), getScene()->name(), msg, 5));
 					else eventsHandler()->addTimeMsg (t, time, EventMessage::create (name(), getScene()->name(), msg, 5));
-					watchTime(time);
+					watchInterval(t, time);
 				}
 				else if (!add) {
-					delTime (time);
+					delInterval (t, time);
 					eventsHandler()->setTimeMsg (t, time, 0);
 				}
 			}
 			else if (msg->params().size() == 1) {
 				if (!add) {
-					clearTime();
+					clearList(t);
 					eventsHandler()->clearTimeMsg(t);
 				}
 			}
