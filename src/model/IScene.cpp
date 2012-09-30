@@ -58,7 +58,8 @@ IScene::~IScene()
 	elements().clear();		// this is required to avoid orphan QGraphicsItem (and crash after that)
 }
 
-IScene::IScene(const std::string& name, IObject * parent) : IRectShape(name, parent), fFullScreen(false), fFrameless(false)
+IScene::IScene(const std::string& name, IObject * parent) 
+		: IRectShape(name, parent), fFullScreen(false), fFrameless(false), fAbsoluteCoordinates(false)
 {
 	fTypeString = kSceneType;
 	setColor( IColor(255,255,255,255) );
@@ -70,12 +71,14 @@ IScene::IScene(const std::string& name, IObject * parent) : IRectShape(name, par
 	fMsgHandlerMap["reset"]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::reset);
 //	fMsgHandlerMap["foreground"]	= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::foreground);
 	fMsgHandlerMap["fullscreen"]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFullScreen);
-	fMsgHandlerMap["frameless"]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFrameless);
+	fMsgHandlerMap["frameless"]		= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFrameless);
+	fMsgHandlerMap["absolutexy"]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setAbsoluteCoordinates);
 	fMsgHandlerMap["load"]			= TMethodMsgHandler<IScene>::create(this, &IScene::loadMsg);
 	fMsgHandlerMap["rootPath"]		= TSetMethodMsgHandler<IScene, string>::create(this, &IScene::setRootPath);
 
 	fGetMsgHandlerMap["fullscreen"] = TGetParamMsgHandler<bool>::create(fFullScreen);
-	fGetMsgHandlerMap["frameless"] = TGetParamMsgHandler<bool>::create(fFrameless);
+	fGetMsgHandlerMap["frameless"]	= TGetParamMsgHandler<bool>::create(fFrameless);
+	fGetMsgHandlerMap["absolutexy"] = TGetParamMsgHandler<bool>::create(fAbsoluteCoordinates);
 	fGetMsgHandlerMap["watch"]		= TGetParamMethodHandler<IScene, IMessageList (IScene::*)() const>::create(this, &IScene::getWatch);
 	fGetMsgHandlerMap["rootPath"]	= TGetParamMsgHandler<string>::create(fRootPath);
 }

@@ -59,6 +59,7 @@ class IScene : public IRectShape, public PeriodicTask
 {	
 	bool			fFullScreen;
 	bool			fFrameless;
+	bool			fAbsoluteCoordinates;
 	SISceneSync		fSync;
 	SIFileWatcher	fFileWatcher;
 	SISignalNode	fSignals;
@@ -75,6 +76,8 @@ class IScene : public IRectShape, public PeriodicTask
 		void			setFullScreen(bool state)	{ fFullScreen = state; }
 		bool			getFrameless() const		{ return fFrameless; }
 		void			setFrameless(bool state)	{ fFrameless = state; }
+		bool			getAbsoluteCoordinates() const		{ return fAbsoluteCoordinates; }
+		void			setAbsoluteCoordinates(bool state)	{ fAbsoluteCoordinates = state; }
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*);
 
