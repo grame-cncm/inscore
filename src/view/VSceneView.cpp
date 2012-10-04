@@ -161,9 +161,16 @@ void VSceneView::updateOnScreen( IScene * scene )
 			}
 
 			// Position
-			QPointF screenCenter = r.center();
-			QPoint newPos(screenCenter.x() + (scene->getXPos() ) * lowestDimension / 2.0f - fGraphicsView->width()/2.0f,
+			QPoint newPos;
+			if (scene->getAbsoluteCoordinates()) {
+				newPos= QPoint (scene->getXPos(), scene->getYPos());
+			}
+			else {
+				QPointF screenCenter = r.center();
+				newPos= QPoint (screenCenter.x() + (scene->getXPos() ) * lowestDimension / 2.0f - fGraphicsView->width()/2.0f,
 									screenCenter.y() + (scene->getYPos() ) * lowestDimension / 2.0f - fGraphicsView->height()/2.0f);
+			}
+			fEventFilter->setAbsoluteXY (scene->getAbsoluteCoordinates());
 			bool needMove = (newPos != fGraphicsView->pos());
 
 			if (needMove) {
@@ -184,7 +191,7 @@ void VSceneView::updateOnScreen( IScene * scene )
 			fGraphicsView->showNormal ();
 		}
 	}
-	else if (flags != fDefaultFlags) {
+	else if ((flags != fDefaultFlags) && !scene->getFullScreen()) {
 		fGraphicsView->setWindowFlags (fDefaultFlags);
 		fGraphicsView->showNormal ();
 	}
@@ -239,7 +246,7 @@ void VSceneView::updateView( IScene * scene )
 
 //--------------------------------------------------------------------------
 WindowEventFilter::WindowEventFilter(const std::string& address, QGraphicsView* parent) 
-	: QObject(parent), fOSCAddress(address)
+	: QObject(parent), fAbsoluteXY(false), fOSCAddress(address)
 {
 	fTimer = new QTimer(this);
 	fTimer->setSingleShot(true);
@@ -277,12 +284,19 @@ void WindowEventFilter::updateModel()
 		return;
 	}
 
+	float x, y;
 	QRect r = QApplication::desktop()->screenGeometry();
 	float lowestDimension = qMin( r.width(), r.height() );
-	QPointF screenCenter = r.center();
+	if (fAbsoluteXY) {
+		x = view->pos().x();
+		y = view->pos().y();
+	}
+	else {
+		QPointF screenCenter = r.center();
 
-	float x = (view->pos().x() + view->width()/2.0f - screenCenter.x()) / (lowestDimension/2.0f);
-	float y = (view->pos().y() + view->height()/2.0f - screenCenter.y()) / (lowestDimension/2.0f);
+		x = (view->pos().x() + view->width()/2.0f - screenCenter.x()) / (lowestDimension/2.0f);
+		y = (view->pos().y() + view->height()/2.0f - screenCenter.y()) / (lowestDimension/2.0f);
+	}
 	sendMessage( fOSCAddress.c_str() , OSC_X_MSG , x );
 	sendMessage( fOSCAddress.c_str() , OSC_Y_MSG , y );
 

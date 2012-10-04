@@ -37,7 +37,7 @@ namespace inscore
 {
 
 class IMessageStack;
-typedef class SMARTP<IMessageStack>	SIMessageStack;
+typedef class libmapping::SMARTP<IMessageStack>	SIMessageStack;
 
 /*!
 \addtogroup ITLCtrl Controller
@@ -47,14 +47,14 @@ typedef class SMARTP<IMessageStack>	SIMessageStack;
 /*!
 	\brief an OSC listener that converts OSC input to IMessage
 */
-class IOSCListener : public osc::OscPacketListener, public smartable
+class IOSCListener : public osc::OscPacketListener, public libmapping::smartable
 {
 	UdpListeningReceiveSocket fSocket;	///< the udp socket listener
 	SIMessageStack	fMsgStack;			///< the messages stack
 	bool	fRunning;
 
 	public:
-		static SMARTP<IOSCListener> create(SIMessageStack& stack, int port = 7000)
+		static libmapping::SMARTP<IOSCListener> create(SIMessageStack& stack, int port = 7000)
 			{ return new IOSCListener(stack, port); }
 
 		/*!
@@ -72,7 +72,7 @@ class IOSCListener : public osc::OscPacketListener, public smartable
 		virtual ~IOSCListener();
 
 };
-typedef class SMARTP<IOSCListener>	SIOSCListener;
+typedef class libmapping::SMARTP<IOSCListener>	SIOSCListener;
 
 /*!
 @}

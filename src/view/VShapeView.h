@@ -48,8 +48,9 @@ class VShapeView: public VGraphicsItemView
 	QAbstractGraphicsShapeItem * fAbstractGraphicsShapeItem;
 
 	public :
-		virtual ~VShapeView() {}
+		using VGraphicsItemView::updateView;
 
+		virtual ~VShapeView() {}
 		virtual void updateView( IShape * shape );
 
 	protected:

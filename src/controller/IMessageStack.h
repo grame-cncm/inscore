@@ -43,12 +43,12 @@ class IMessage;
 /*!
 	\brief a lock-free message fifo
 */
-class IMessageStack : public smartable
+class IMessageStack : public libmapping::smartable
 {
 	private:
 		fifo		 fMsgFifo;	
 	public:
-		static SMARTP<IMessageStack> create()			{ return new IMessageStack; }
+		static libmapping::SMARTP<IMessageStack> create()			{ return new IMessageStack; }
 
 		/*!
 			\brief returns the messages stack size
@@ -73,7 +73,7 @@ class IMessageStack : public smartable
 				 IMessageStack();
 		virtual ~IMessageStack();
 };
-typedef class SMARTP<IMessageStack>	SIMessageStack;
+typedef class libmapping::SMARTP<IMessageStack>	SIMessageStack;
 
 /*!
 @}

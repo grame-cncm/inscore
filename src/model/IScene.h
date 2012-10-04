@@ -42,15 +42,15 @@ namespace inscore
 */
 
 class Master;
-typedef class SMARTP<Master>			SMaster;
+typedef class libmapping::SMARTP<Master>			SMaster;
 class IScene;
-typedef class SMARTP<IScene>			SIScene;
+typedef class libmapping::SMARTP<IScene>			SIScene;
 class ISceneSync;
-typedef class SMARTP<ISceneSync>		SISceneSync;
+typedef class libmapping::SMARTP<ISceneSync>		SISceneSync;
 class IFileWatcher;
-typedef class SMARTP<IFileWatcher>		SIFileWatcher;
+typedef class libmapping::SMARTP<IFileWatcher>		SIFileWatcher;
 class ISignalNode;
-typedef class SMARTP<ISignalNode>		SISignalNode;
+typedef class libmapping::SMARTP<ISignalNode>		SISignalNode;
 
 //--------------------------------------------------------------------------
 /*! \brief a scene model
@@ -59,6 +59,7 @@ class IScene : public IRectShape, public PeriodicTask
 {	
 	bool			fFullScreen;
 	bool			fFrameless;
+	bool			fAbsoluteCoordinates;
 	SISceneSync		fSync;
 	SIFileWatcher	fFileWatcher;
 	SISignalNode	fSignals;
@@ -69,12 +70,14 @@ class IScene : public IRectShape, public PeriodicTask
 	
 	public:		
 		static const std::string kSceneType;
-		static SMARTP<IScene> create(const std::string& name, IObject * parent)	{ return new IScene(name, parent); }
+		static libmapping::SMARTP<IScene> create(const std::string& name, IObject * parent)	{ return new IScene(name, parent); }
 
 		bool			getFullScreen() const		{ return fFullScreen; }
 		void			setFullScreen(bool state)	{ fFullScreen = state; }
 		bool			getFrameless() const		{ return fFrameless; }
 		void			setFrameless(bool state)	{ fFrameless = state; }
+		bool			getAbsoluteCoordinates() const		{ return fAbsoluteCoordinates; }
+		void			setAbsoluteCoordinates(bool state)	{ fAbsoluteCoordinates = state; }
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*);
 

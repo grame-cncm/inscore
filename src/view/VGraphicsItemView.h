@@ -34,9 +34,10 @@
 #include "IModel.h"
 #include "IText.h"
 #include "ISync.h"
-#include "TComposition.h"
+#include "TRefinedComposition.h"
 #include "QStretchTilerItem.h"
 #include "GraphicEffect.h"
+#include "maptypes.h"
 
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
@@ -76,7 +77,7 @@ class VGraphicsItemView : public VObjectView
 		/// \brief Maps the IObject [0,2] height value to the corresponding referenceRect() value.
 		double relative2SceneHeight(float height) const;
 		/// \brief Maps a rect expressed in [-1,1] scene coordinate to a QRectF expressed in referenceRect() coordinates.
-		QRectF relative2SceneRect( const TFloatRect& rect) const;
+//		QRectF relative2SceneRect( const TFloatRect& rect) const;
 
 		/// \brief Maps the referenceRect() width value to the corresponding [0,2] value.
 		double scene2RelativeWidth(float width) const;
@@ -99,14 +100,23 @@ class VGraphicsItemView : public VObjectView
 		float getIObjectWidth() const { return scene2RelativeWidth( fItem->boundingRect().width() ); }		// Gives the object's width in interlude scene coordinates.
 		float getIObjectHeight() const { return scene2RelativeHeight( fItem->boundingRect().height() ); }	// Gives the object's height in interlude scene coordinates.
 		
-		template <typename L>
-		static void setMapping( IObject* object , const std::string& mapName , SMARTP<TMapping<GraphicSegment, L> > g2l_mapping , SMARTP<TMapping<L, RelativeTimeSegment> > l2t_mapping)
+		template <typename T, unsigned int D>
+		static void setMapping( IObject* object ,
+				const std::string& mapName , libmapping::SMARTP<libmapping::TMapping<float,2,T,D> > g2l_mapping ,
+				libmapping::SMARTP<libmapping::TMapping<T,D, libmapping::rational,1> > local2time_mapping,
+				bool refine=false)
 		{
-			// create the graphic to time composition
-			// composition reduction to a simple mapping
-			typedef TComposition <RelativeTimeSegment, L, GraphicSegment>		T2GComposition;
-			SRelativeTime2GraphicMapping t2gr = T2GComposition::create( l2t_mapping->reverse(), g2l_mapping->reverse() );
-			object->setMapping( mapName , t2gr );
+			// if refined, create the graphic to time composition using a refined composition
+			if (refine) {
+				typedef libmapping::TRefinedComposition <libmapping::rational,1,T,D, float,2> T2GComposition;
+				SRelativeTime2GraphicMapping t2gr = T2GComposition::create( local2time_mapping->direct(), g2l_mapping->reverse() );
+				object->setMapping( mapName , t2gr );
+			}
+			else {
+				typedef libmapping::TComposition <libmapping::rational,1,T,D, float,2> T2GComposition;
+				SRelativeTime2GraphicMapping t2gr = T2GComposition::create( local2time_mapping->reverse(), g2l_mapping->reverse() );
+				object->setMapping( mapName , t2gr );
+			}
 		}
 		
 		/// \brief Returns the reference rectangle for the QGraphicsItem coordinate: the master QRect or the scene QRect (if there's no master).
@@ -121,8 +131,12 @@ class VGraphicsItemView : public VObjectView
 		QPointF iObject2QGraphicsItem(const TFloatPoint& point) const;
 		/// \brief Maps a rect in IObject internal coordinate to a rect in QGraphicsItem coordinate.
 		QRectF iObject2QGraphicsItem(const TFloatRect& rect) const;
+		/// \brief Maps a segment in IObject internal coordinate to a point in the specified QRectF.
+		QRectF iObject2QGraphicsItem(const GraphicSegment& s) const;
 		/// \brief Maps a point in IObject internal coordinate to a point in the specified QRectF.
 		QPointF iObject2QGraphicsItem(const TFloatPoint& point, const QRectF& qrect) const;
+		/// \brief Maps a segment in IObject internal coordinate to a point in the specified QRectF.
+		QRectF iObject2QGraphicsItem(const GraphicSegment& rect, const QRectF& qrect) const;
 		/// \brief Maps a rect in IObject internal coordinate to a rect in the specified QRectF.
 		QRectF iObject2QGraphicsItem(const TFloatRect& rect, const QRectF& qrect) const;
 
@@ -159,7 +173,7 @@ class VGraphicsItemView : public VObjectView
 		QRectF fLastValidRect;
 		bool fIsStretchOn;
 };
-typedef class SMARTP<VGraphicsItemView>	SVGraphicsItemView;
+typedef class libmapping::SMARTP<VGraphicsItemView>	SVGraphicsItemView;
 
 /*!@} */
 

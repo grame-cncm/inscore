@@ -51,7 +51,7 @@ class IRectShape;
 class export VQtUpdater : public ViewUpdater
 {
 	public :
-		static SMARTP<VQtUpdater> create()	{ return new VQtUpdater(); }
+		static libmapping::SMARTP<VQtUpdater> create()	{ return new VQtUpdater(); }
 
 		void updateTo (IAppl* appl);
 		void updateTo (IScene*);
@@ -88,7 +88,7 @@ class export VQtUpdater : public ViewUpdater
 			}
 		}
 };
-typedef class SMARTP<VQtUpdater> SVQtUpdater;
+typedef class libmapping::SMARTP<VQtUpdater> SVQtUpdater;
 
 /*!@} */
 

@@ -37,7 +37,7 @@ namespace inscore
 {
 
 class TEnv;
-typedef SMARTP<TEnv> STEnv;
+typedef libmapping::SMARTP<TEnv> STEnv;
 
 //--------------------------------------------------------------------------------------------
 class TLua 

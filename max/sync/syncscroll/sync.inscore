@@ -1,0 +1,14 @@
+/ITL/scene/* del ;
+/ITL/scene/signal/* del ;
+/ITL/scene/myScore set "gmnf" "score.gmn" ;
+/ITL/scene/myScore scale 2.70000 ;
+/ITL/scene/myScore map "system" ;
+/ITL/scene/myScore map "voice1" ;
+/ITL/scene/window set "rect" 0.500000 0.100000 ;
+/ITL/scene/window color 255 225 0 60 ;
+/ITL/scene/window duration 5 4 ;
+/ITL/scene/rond set "ellipse" 0.500000 0.500000 ;
+/ITL/scene/rond color 25 144 0 90 ;
+/ITL/scene/rond date 0 1 ;
+/ITL/scene/rond duration 1 4 ;
+/ITL/scene/sync rond "myScore" ;

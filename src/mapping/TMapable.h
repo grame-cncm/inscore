@@ -29,6 +29,7 @@
 #include <map>
 #include <string>
 
+//#include "libmapping/maptypes.h"
 #include "maptypes.h"
 #include "TMapping.h"
 
@@ -46,50 +47,34 @@ namespace inscore {
 class TMapable
 {
 	public:
-	
-		typedef struct {
-			SRelativeTimeSegmentation		fTimeSegm;			// the time segmentation
-			SGraphicSegmentation			fGraphicSegm;		// the graphic segmentation
-			SRelativeTime2GraphicMapping	fTime2Graphic;		// and the relation between time and graphic
-		} MapSet;
-		typedef std::map<std::string,MapSet> namedMapping;	
-		typedef std::map<std::string,MapSet>::const_iterator	const_iterator;
-		typedef std::map<std::string,MapSet>::iterator			iterator;
+		typedef std::map<std::string, SRelativeTime2GraphicMapping> namedMapping;	
+		typedef std::map<std::string, SRelativeTime2GraphicMapping>::const_iterator	const_iterator;
+		typedef std::map<std::string, SRelativeTime2GraphicMapping>::iterator		iterator;
 
 	private:
 	
-	const MapSet* find (const std::string& name) const;
-		  MapSet* find (const std::string& name);
+	const SRelativeTime2GraphicMapping find (const std::string& name) const;
+		  SRelativeTime2GraphicMapping find (const std::string& name);
 
-	namedMapping	fMappings;					// intended to support different named mappings
-	MapSet			fNullSet;
-	bool			fUseMapping;
-	bool			fLocalMapModified;
-	
-	SGraphic2GraphicMapping fSlave2Master;
+	namedMapping					fMappings;					// intended to support different named mappings
+	bool							fUseMapping;
+	bool							fLocalMapModified;	
+	SGraphic2GraphicMapping			fSlave2Master;
 	
 	public:
-		bool fAutoMap;		// a flag to indicate mappings automatically build from object duration
+		bool fAutoMap;											// a flag to indicate mappings automatically build from object duration
 
 				 TMapable() : fUseMapping(false), fLocalMapModified(false), fAutoMap(false) {}
 		virtual ~TMapable() {}
 		
-		const SRelativeTime2GraphicMapping& getMapping(const std::string& name) const;
-		const SGraphicSegmentation&			getGraphicSegmentation(const std::string& name) const;
-		const SRelativeTimeSegmentation&	getTimeSegmentation(const std::string& name) const;
-		const SGraphic2GraphicMapping&		getSlave2MasterMapping() const		{ return fSlave2Master; }
-		
-		const namedMapping& namedMappings() const { return fMappings; }
+		const SRelativeTime2GraphicMapping  getMapping(const std::string& name) const	{ return find (name); }
 
-		bool removeMapping(const std::string& name);	/// <brief Returns true if the specified 'name' has been found and removed.
+		const SGraphic2GraphicMapping&		getSlave2MasterMapping() const		{ return fSlave2Master; }		
+		const namedMapping& namedMappings() const								{ return fMappings; }
 
-		void setMapping				(const std::string& name, SRelativeTime2GraphicMapping m);
-		void setMapping				(const std::string& name, SRelativeTime2GraphicMapping, SRelativeTimeSegmentation, SGraphicSegmentation);
-		void setTimeSegmentation	(const std::string& name, SRelativeTimeSegmentation s);
-		void addTimeSegmentation	(const std::string& name, SRelativeTimeSegmentation s);
-		void setGraphicSegmentation (const std::string& name, SGraphicSegmentation s);
-
-		void setSlave2MasterMapping (const SGraphic2GraphicMapping& map)		{ fSlave2Master = map; }
+		bool removeMapping(const std::string& name);			// Returns true if the specified 'name' has been found and removed.
+		void setMapping				(const std::string& name, SRelativeTime2GraphicMapping m)	{ fMappings[name] = m; }
+		void setSlave2MasterMapping (const SGraphic2GraphicMapping& map)						{ fSlave2Master = map; }
 		
 		void	UseGraphic2GraphicMapping (bool val)		{ fUseMapping = val; }
 		bool	UseGraphic2GraphicMapping () const			{ return fUseMapping; }

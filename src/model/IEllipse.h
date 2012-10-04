@@ -39,7 +39,7 @@ namespace inscore
 
 class Updater;
 class IEllipse;
-typedef class SMARTP<IEllipse>	SIEllipse;
+typedef class libmapping::SMARTP<IEllipse>	SIEllipse;
 //--------------------------------------------------------------------------
 /*!
 	\brief an ellipse.

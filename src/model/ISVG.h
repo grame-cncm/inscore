@@ -40,7 +40,7 @@ namespace inscore
 
 class Updater;
 class ISVG;
-typedef class SMARTP<ISVG>	SISVG;
+typedef class libmapping::SMARTP<ISVG>	SISVG;
 //--------------------------------------------------------------------------
 /*!
 	\brief a SVG element

@@ -41,9 +41,9 @@ namespace inscore
 
 class Updater;
 class ISignal;
-typedef class SMARTP<ISignal>	SISignal;
+typedef class libmapping::SMARTP<ISignal>	SISignal;
 class ISignalNode;
-typedef class SMARTP<ISignalNode>	SISignalNode;
+typedef class libmapping::SMARTP<ISignalNode>	SISignalNode;
 //--------------------------------------------------------------------------
 /*!
 	\brief a signal
@@ -60,6 +60,7 @@ class ISignal : public IObject, public ParallelSignal
 		virtual void	cleanup ();
 
 	protected:
+		using IObject::print;
 
 				 ISignal( const std::string& name, IObject * parent);
 		virtual ~ISignal() {}
@@ -84,7 +85,7 @@ class ISignal : public IObject, public ParallelSignal
 		virtual void	print (IMessage& out) const;
 
 		/// \brief put the message values into a projection of the signal
-		virtual bool	put (const IMessage* msg, int index, int step);
+		virtual bool	putAt (const IMessage* msg, int index, int step);
 
 		/// \brief set signals to the message signals
 		virtual MsgHandler::msgStatus	set (const IMessage* msg);
@@ -110,7 +111,7 @@ class ISignal : public IObject, public ParallelSignal
 		virtual MsgHandler::msgStatus projectionDataMsg (const IMessage* msg);
 		
 		class GetDefaultParamMsgHandler;
-		typedef SMARTP<GetDefaultParamMsgHandler> SGetDefaultParamMsgHandler;
+		typedef libmapping::SMARTP<GetDefaultParamMsgHandler> SGetDefaultParamMsgHandler;
 		class GetDefaultParamMsgHandler : public GetParamMsgHandler {
 				ISignal* fSignal;
 				GetDefaultParamMsgHandler(ISignal* signal) : GetParamMsgHandler() , fSignal(signal) {}

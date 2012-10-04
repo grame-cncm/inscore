@@ -28,7 +28,6 @@
 #define __IShapeMap__
 
 #include "TLocalMapping.h"
-#include "TMapMsgHandler.h"
 #include "IShape.h"
 
 namespace inscore
@@ -46,11 +45,11 @@ namespace inscore
 class IShapeMap: public IShape
 {
 	protected:
-		typedef SMARTP<TLocalMapping<GraphicSegment> >	SLocalMapping;
+		typedef libmapping::SMARTP<TLocalMapping<float,2> >	SLocalMapping;
 		SLocalMapping	fLocalMappings;
 
 		/// \brief get an object maps
-		virtual IMessageList __getMaps () const	{ return TMapMsgHandler<GraphicSegment>::getMapMsgs( localMappings() , this ); }
+		virtual IMessageList __getMaps () const;
 
 	public:
 				 IShapeMap( const std::string& name, IObject* parent );

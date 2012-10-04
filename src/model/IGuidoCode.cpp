@@ -30,6 +30,7 @@
 #include "GUIDOEngine.h"
 
 using namespace std;
+using namespace libmapping;
 
 namespace inscore
 {
@@ -42,7 +43,7 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 	IObject (name, parent) , fGRHandler(0), fPage(1), fPageFormat( 21.0f, 29.7f ), fPageCount(0),
 	fNbOfPageColumns(2), fNbOfPageRows(1)
 {
-	fLocalMappings = TLocalMapping<RelativeTimeSegment>::create();
+	fLocalMappings = TLocalMapping<rational,1>::create();
 
 	fTypeString = kGuidoCodeType;
 

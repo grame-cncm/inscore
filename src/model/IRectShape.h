@@ -27,7 +27,6 @@
 #ifndef __IRectShape__
 #define __IRectShape__
 
-#include "IShape.h"
 #include "IShapeMap.h"
 
 namespace inscore
@@ -40,7 +39,7 @@ namespace inscore
 
 class Updater;
 class IRectShape;
-typedef class SMARTP<IRectShape>	SIRectShape;
+typedef class libmapping::SMARTP<IRectShape>	SIRectShape;
 //--------------------------------------------------------------------------
 /*!
 	\brief a rectangle shape.

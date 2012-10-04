@@ -35,7 +35,7 @@ namespace inscore
 {
 
 class IFileWatcher;
-typedef class SMARTP<IFileWatcher>	SIFileWatcher;
+typedef class libmapping::SMARTP<IFileWatcher>	SIFileWatcher;
 
 /*!
 \addtogroup ITLView
@@ -86,7 +86,7 @@ class IFileWatcher: public IVNode
 		/*!
 		*	\brief Starts notifying changes of the file 'fileName' for the attention of object whose address is 'oscAddress'.
 		*/
-		virtual void add(const WatcherAssociation& association) = 0;
+		virtual void addAssociation(const WatcherAssociation& association) = 0;
 
 		/*!
 		*	\brief Stops notifying object whose address is 'oscAdress' on changes of the file 'fileName'.

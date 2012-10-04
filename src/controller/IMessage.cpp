@@ -35,6 +35,7 @@
 #endif
 
 using namespace std;
+using namespace libmapping;
 
 namespace inscore
 {
@@ -90,7 +91,7 @@ static string escape (const string& str)
 }
 
 //--------------------------------------------------------------------------
-bool IMessage::param(int i, rational& val) const 
+bool IMessage::param(int i, rational& val) const
 { 
 	if (size() < (i+2)) return false;
 	int num, denum;

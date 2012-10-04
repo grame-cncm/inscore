@@ -35,94 +35,94 @@ namespace inscore
 class IMessage;
 
 class IAppl;
-typedef class SMARTP<IAppl>			SIAppl;
+typedef class libmapping::SMARTP<IAppl>			SIAppl;
 
 class IColor;
-typedef class SMARTP<IColor>		SIColor;
+typedef class libmapping::SMARTP<IColor>		SIColor;
 
 class ICurve;
-typedef class SMARTP<ICurve>		SICurve;
+typedef class libmapping::SMARTP<ICurve>		SICurve;
 
 class IEllipse;
-typedef class SMARTP<IEllipse>		SIEllipse;
+typedef class libmapping::SMARTP<IEllipse>		SIEllipse;
 
 class IFileWatcher;
-typedef class SMARTP<IFileWatcher>	SIFileWatcher;
+typedef class libmapping::SMARTP<IFileWatcher>	SIFileWatcher;
 
 class IGraphicSignal;
-typedef class SMARTP<IGraphicSignal> SIGraphicSignal;
+typedef class libmapping::SMARTP<IGraphicSignal> SIGraphicSignal;
 
 class ISGraphicSignal;
-typedef class SMARTP<ISGraphicSignal> SISGraphicSignal;
+typedef class libmapping::SMARTP<ISGraphicSignal> SISGraphicSignal;
 
 class IGraphicBasedObject;
-typedef class SMARTP<IGraphicBasedObject> SIGraphicBasedObject;
+typedef class libmapping::SMARTP<IGraphicBasedObject> SIGraphicBasedObject;
 
 class IGrid;
-typedef class SMARTP<IGrid> SIGrid;
+typedef class libmapping::SMARTP<IGrid> SIGrid;
 
 class IGuidoCode;
-typedef class SMARTP<IGuidoCode>	SIGuidoCode;
+typedef class libmapping::SMARTP<IGuidoCode>	SIGuidoCode;
 
 class IGuidoFile;
-typedef class SMARTP<IGuidoFile>	SIGuidoFile;
+typedef class libmapping::SMARTP<IGuidoFile>	SIGuidoFile;
 
 class IHtml;
-typedef class SMARTP<IHtml>			SIHtml;
+typedef class libmapping::SMARTP<IHtml>			SIHtml;
 
 class IHtmlFile;
-typedef class SMARTP<IHtmlFile>		SIHtmlFile;
+typedef class libmapping::SMARTP<IHtmlFile>		SIHtmlFile;
 
 class IImage;
-typedef class SMARTP<IImage>		SIImage;
+typedef class libmapping::SMARTP<IImage>		SIImage;
 
 class ILine;
-typedef class SMARTP<ILine>		SILine;
+typedef class libmapping::SMARTP<ILine>		SILine;
 
 class IObject;
-typedef class SMARTP<IObject>		SIObject;
+typedef class libmapping::SMARTP<IObject>		SIObject;
 
 class IObjectDebug;
-typedef class SMARTP<IObjectDebug>	SIObjectDebug;
+typedef class libmapping::SMARTP<IObjectDebug>	SIObjectDebug;
 
 class IPDF;
-typedef class SMARTP<IPDF>			SIPDF;
+typedef class libmapping::SMARTP<IPDF>			SIPDF;
 
 class IPolygon;
-typedef class SMARTP<IPolygon>		SIPolygon;
+typedef class libmapping::SMARTP<IPolygon>		SIPolygon;
 
 class IRect;
-typedef class SMARTP<IRect>			SIRect;
+typedef class libmapping::SMARTP<IRect>			SIRect;
 
 class IScene;
-typedef class SMARTP<IScene>		SIScene;
+typedef class libmapping::SMARTP<IScene>		SIScene;
 
 class ISceneSync;
-typedef class SMARTP<ISceneSync>	SISceneSync;
+typedef class libmapping::SMARTP<ISceneSync>	SISceneSync;
 
 class IShape;
-typedef class SMARTP<IShape>		SIShape;
+typedef class libmapping::SMARTP<IShape>		SIShape;
 
 class IShapeMap;
-typedef class SMARTP<IShapeMap>		SIShapeMap;
+typedef class libmapping::SMARTP<IShapeMap>		SIShapeMap;
 
 class IText;
-typedef class SMARTP<IText>			SIText;
+typedef class libmapping::SMARTP<IText>			SIText;
 
 class ITextFile;
-typedef class SMARTP<ITextFile>		SITextFile;
+typedef class libmapping::SMARTP<ITextFile>		SITextFile;
 
 class ISVG;
-typedef class SMARTP<ISVG>			SISVG;
+typedef class libmapping::SMARTP<ISVG>			SISVG;
 
 class ISVGFile;
-typedef class SMARTP<ISVGFile>		SISVGFile;
+typedef class libmapping::SMARTP<ISVGFile>		SISVGFile;
 
 class IVideo;
-typedef class SMARTP<IVideo>		SIVideo;
+typedef class libmapping::SMARTP<IVideo>		SIVideo;
 
 class IWatcher;
-typedef class SMARTP<IWatcher>		SIWatcher;
+typedef class libmapping::SMARTP<IWatcher>		SIWatcher;
 
 class Master;
 class ISync;

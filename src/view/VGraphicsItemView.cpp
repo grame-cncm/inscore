@@ -27,6 +27,8 @@
 
 #include "TComposition.h"
 #include "VGraphicsItemView.h"
+#include "maptypes.h"
+#include "TSegment.h"
 
 #include <QtDebug>
 #include <QGraphicsScene>
@@ -37,6 +39,8 @@
 #include "VExport.h"
 
 #define NB_OF_COLORS 12
+
+using namespace libmapping;
 
 namespace inscore
 {
@@ -99,13 +103,12 @@ void VGraphicsItemView::drawMapping(IObject* o)
 		
 		float z = 0;
 		int colorindex = 0;
-		const RelativeTime2GraphicRelation& rt2g = i->second.fTime2Graphic->direct();
+		const RelativeTime2GraphicRelation& rt2g = i->second->direct();
 		// For each time segment in the mapping, draw its corresponding GraphicSegment.
 		for (RelativeTime2GraphicRelation::const_iterator j = rt2g.begin(); j != rt2g.end() ; j++ )
 		{
 			RelativeTimeSegment timeSegment = j->first;
 			QString timeString = ((std::string)timeSegment.interval()).c_str();
-			
 			const std::set<GraphicSegment>& related = j->second;
 			// For each master segment corresponding to the slave segment.
 			for ( std::set<GraphicSegment>::const_iterator j=related.begin() ; j != related.end(); j++ )
@@ -303,15 +306,9 @@ void VGraphicsItemView::buildDefaultMapping (IObject* object)
 		RelativeTimeSegment wholeTimeSegment( rational(0,1) , object->getDuration() );
 		GraphicSegment		wholeGraphicSegment( -1 , -1 , 1 , 1 );
 		
-		SRelativeTime2GraphicMapping t2g_mapping = TMapping<RelativeTimeSegment,GraphicSegment>::create();
-		SGraphicSegmentation		gSegmentation = GraphicSegmentation::create(		wholeGraphicSegment );
-		SRelativeTimeSegmentation	tSegmentation = RelativeTimeSegmentation::create(	wholeTimeSegment );
-					
+		SRelativeTime2GraphicMapping t2g_mapping = TMapping<rational,1,float,2>::create();
 		t2g_mapping->add ( wholeTimeSegment , wholeGraphicSegment );
-		gSegmentation->add( wholeGraphicSegment );
-		tSegmentation->add( wholeTimeSegment );
-
-		object->setMapping( "" , t2g_mapping, tSegmentation, gSegmentation);
+		object->setMapping( "" , t2g_mapping);
 		object->fAutoMap = true;
 	}
 }
@@ -402,12 +399,12 @@ double VGraphicsItemView::relative2SceneHeight(float height) const
 }
 
 //--------------------------------------------------------------------------
-QRectF VGraphicsItemView::relative2SceneRect( const TFloatRect& rect  ) const
-{
-	QPointF a( relative2SceneX(rect.x()) , relative2SceneY(rect.y()) ); 
-	QPointF b( relative2SceneX(rect.right()) , relative2SceneY(rect.bottom()) );
-	return QRectF( a.x() , a.y() , b.x() - a.x() , b.y() - a.y() );
-}
+//QRectF VGraphicsItemView::relative2SceneRect( const TFloatRect& rect  ) const
+//{
+//	QPointF a( relative2SceneX(rect.x()) , relative2SceneY(rect.y()) ); 
+//	QPointF b( relative2SceneX(rect.right()) , relative2SceneY(rect.bottom()) );
+//	return QRectF( a.x() , a.y() , b.x() - a.x() , b.y() - a.y() );
+//}
 
 //--------------------------------------------------------------------------
 double VGraphicsItemView::scene2RelativeWidth(float width) const
@@ -462,11 +459,26 @@ QRectF VGraphicsItemView::iObject2QGraphicsItem(const TFloatRect& rect) const
 }
 
 //------------------------------------------------------------------------------------------------------------
+QRectF VGraphicsItemView::iObject2QGraphicsItem(const GraphicSegment& s) const
+{
+	TFloatRect r ( TFloatPoint(s.left(), s.top()), TFloatPoint(s.right(), s.bottom()) );
+	return iObject2QGraphicsItem( r );
+}
+
+//------------------------------------------------------------------------------------------------------------
 QPointF VGraphicsItemView::iObject2QGraphicsItem(const TFloatPoint& point, const QRectF& qrect) const
 {
 	float x = ( point.x() + 1 ) * ( qrect.width() / 2.0f ) + qrect.x();
 	float y = ( point.y() + 1 ) * ( qrect.height() / 2.0f ) + qrect.y();
 	return QPointF( x,y );
+}
+
+//------------------------------------------------------------------------------------------------------------
+QRectF VGraphicsItemView::iObject2QGraphicsItem(const GraphicSegment& s, const QRectF& qrect) const
+{
+	QPointF a = iObject2QGraphicsItem(TFloatPoint(s.xinterval().first(), s.yinterval().first()), qrect);
+	QPointF b = iObject2QGraphicsItem(TFloatPoint(s.xinterval().second(), s.yinterval().second()), qrect);
+	return QRectF( a.x() , a.y() , b.x() - a.x() , b.y() - a.y() );
 }
 
 //------------------------------------------------------------------------------------------------------------

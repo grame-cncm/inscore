@@ -136,7 +136,7 @@ SISignalNode ISignal::getSignalNode()
 }
 
 //--------------------------------------------------------------------------
-bool ISignal::put (const IMessage* msg, int index, int step)
+bool ISignal::putAt (const IMessage* msg, int index, int step)
 {
 	float err = 999.9f;
 	int size = msg->params().size();
@@ -247,7 +247,7 @@ MsgHandler::msgStatus ISignal::defaultMsg (const IMessage* msg)
 MsgHandler::msgStatus ISignal::dataMsg (const IMessage* msg)
 {
 	if (!msg->params().size()) return MsgHandler::kBadParameters;
-	return put(msg, 0, 1) ? MsgHandler::kProcessed : MsgHandler::kBadParameters;
+	return putAt(msg, 0, 1) ? MsgHandler::kProcessed : MsgHandler::kBadParameters;
 }
 
 //--------------------------------------------------------------------------
@@ -257,7 +257,7 @@ MsgHandler::msgStatus ISignal::projectionDataMsg (const IMessage* msg)
 	const string& msgstr = msg->message();
 	int index, step;
 	if (decodeProjection(msgstr, index, step))
-		return put(msg, index, step) ? MsgHandler::kProcessed : MsgHandler::kBadParameters;
+		return putAt(msg, index, step) ? MsgHandler::kProcessed : MsgHandler::kBadParameters;
 	return MsgHandler::kBadParameters;
 }
 

@@ -42,18 +42,18 @@ namespace inscore
 
 class Updater;
 class IGraphicBasedObject;
-typedef class SMARTP<IGraphicBasedObject>	SIGraphicBasedObject;
+typedef class libmapping::SMARTP<IGraphicBasedObject>	SIGraphicBasedObject;
 //--------------------------------------------------------------------------
 /*!
 	\brief the base class for objects that supports "2-dimensions long int" segmentations
 */
 class IGraphicBasedObject : public IObject
 {
-		typedef SMARTP<TLocalMapping<IntPointSegment> >	SLocalMapping;
+		typedef libmapping::SMARTP<TLocalMapping<long,2> >	SLocalMapping;
 		SLocalMapping	fLocalMappings;
 
 		/// \brief get an object maps
-		virtual IMessageList __getMaps () const	{ return TMapMsgHandler<IntPointSegment>::getMapMsgs( localMappings() , this ); }
+		virtual IMessageList __getMaps () const	{ return TMapMsgHandler<long,2>::getMapMsgs( localMappings() , this ); }
 
 	public:
 

@@ -41,7 +41,7 @@ class IMessage;
 */
 
 class ISceneSync;
-typedef class SMARTP<ISceneSync>	SISceneSync;
+typedef class libmapping::SMARTP<ISceneSync>	SISceneSync;
 //--------------------------------------------------------------------------
 /*! \brief the scene synchronization node
 */
@@ -56,7 +56,7 @@ class ISceneSync : public IVNode
 	
 	public:	
 		static const std::string fTypeString;
-		static SMARTP<ISceneSync> create(IObject * parent)	{ return new ISceneSync(parent); }
+		static libmapping::SMARTP<ISceneSync> create(IObject * parent)	{ return new ISceneSync(parent); }
 
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*);

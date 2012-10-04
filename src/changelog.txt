@@ -12,6 +12,16 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 1.00
+- extension of the time related events to duration: new durEnter and durLeave watchable events.
+- new 'absolutexy' message at scene level to switch to absolute coordinates (in pixels).
+- new 'push' and 'pop' messages to store and restore current watched events and associated messages.
+- internal change: mappings are now implemented as a separable library strictly complying to the 
+  mappings formalism.
+- new %f format for the date variable to request a float value (instead a rational value).
+- interaction messages are not any more generated when the date can't be resolved.
+
+----------------------------------------------------
 Version 0.99
 - new 'rate' message at application level to control the time task rate.
 - new 'frameless' message for the scene.

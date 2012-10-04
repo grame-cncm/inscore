@@ -44,7 +44,7 @@ class _MouseEventAble
 		
 		static void handleEvent (const IObject * obj, QPointF pos,  EventsAble::eventype type);
 		// converts a point to a date in the context of an object and a given map
-		static rational point2date (const IObject * obj, float x, float y, const std::string& mapname, int n, bool relative);
+		static libmapping::rational point2date (const IObject * obj, float x, float y, const std::string& mapname, int n, bool relative);
 };
 
 //----------------------------------------------------------------------

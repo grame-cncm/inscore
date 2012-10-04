@@ -43,7 +43,7 @@ namespace inscore
 
 class Updater;
 class IImage;
-typedef class SMARTP<IImage>	SIImage;
+typedef class libmapping::SMARTP<IImage>	SIImage;
 //--------------------------------------------------------------------------
 /*!
 	\brief a file based image

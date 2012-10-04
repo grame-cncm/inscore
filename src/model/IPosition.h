@@ -47,7 +47,7 @@ class IMessage;
 
 class IPosition;
 class IObject;
-typedef class SMARTP<IObject>	SIObject;
+typedef class libmapping::SMARTP<IObject>	SIObject;
 
 
 //--------------------------------------------------------------------------

@@ -26,12 +26,20 @@
 #include "IVideo.h"
 #include "Updater.h"
 #include "IMessage.h"
-#include "segment2relativetimereader.h"
 #include "MapTools.h"
 #include "IScene.h"
 #include "VObjectView.h"
+#include "TMapMsgHandler.h"
+#include "TVariety.h"
+
+#include "imapreader.h"
+#include "long_to_rational_reader.h"
+#include "long2D_to_rational_reader.h"
+#include "float_to_rational_reader.h"
+#include "float2D_to_rational_reader.h"
 
 using namespace std;
+using namespace libmapping;
 
 namespace inscore
 {
@@ -106,9 +114,10 @@ MsgHandler::msgStatus IVideo::videoMapMsg (const IMessage* msg )
 		string map = msg->params()[0]->value<std::string>("");
 
 		if (map.size()) {
-			segment2relativetimereader<FloatSegment> r;
-			if (r.read(map)) {
-				fConverter = Date2SecondMappingConverter::create(r.getMapping());
+			_imapreader<float,1> reader; std::istringstream s(map);
+			imapreader r (&reader, &s);
+			if (r.parse()) {
+				fConverter = Date2SecondMappingConverter::create(reader.mapping());
 				return MsgHandler::kProcessed;
 			}
 		}
@@ -144,9 +153,10 @@ MsgHandler::msgStatus IVideo::videoMapFileMsg (const IMessage* msg )
 		
 		file = getScene()->absolutePath(file);
 		if (file.size()) {
-			segment2relativetimereader<FloatSegment> r;
-			if (r.readfile(file)) {
-				fConverter = Date2SecondMappingConverter::create(r.getMapping());
+			_imapreader<float,1> reader; std::ifstream s(file.c_str());
+			imapreader r (&reader, &s);
+			if (r.parse()) {
+				fConverter = Date2SecondMappingConverter::create(reader.mapping());
 				return MsgHandler::kProcessed;
 			}
 		}
@@ -185,9 +195,15 @@ float IVideo::Date2SecondMappingConverter::convert(const rational& r) const
 	std::set<FloatSegment> dates = fMapping->reverse().get(t);
 	float date = -1;
 	if (dates.size()) {
-		float ratio = MapTools::relativepos(r, t.interval());		// get the relative position of date within the time segment
-		const FloatInterval& i = dates.begin()->interval();
-		date = i.first() + i.size() * ratio;
+		RationalInterval pos(r, r);
+		TAXBFunction<rational> f(t.interval(), pos);		// computes the linear interpolation function that goes from t to pos
+		TSegmentVariety<float,1> v (*dates.begin(), &f);	// create a variety of this segment using the previous linear interpolation function
+		date = v.get( f(r) );								// x is now the variety x pos et date relative pos regarding f
+
+
+//		float ratio = MapTools::relativepos(r, t.interval());		// get the relative position of date within the time segment
+//		const FloatInterval& i = dates.begin()->interval();
+//		date = i.first() + i.size() * ratio;
 	}
 	return date;
 }

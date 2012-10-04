@@ -41,7 +41,7 @@ namespace inscore
 
 class Updater;
 class IHtmlFile;
-typedef class SMARTP<IHtmlFile>	SIHtmlFile;
+typedef class libmapping::SMARTP<IHtmlFile>	SIHtmlFile;
 //--------------------------------------------------------------------------
 /*!
 	\brief a text element based on a file

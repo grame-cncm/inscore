@@ -37,12 +37,12 @@ namespace inscore
 {
 
 class TEnv;
-typedef SMARTP<TEnv> 	STEnv;
+typedef libmapping::SMARTP<TEnv> 	STEnv;
 
 /*!
 \brief The inscore scripting environment definition.
 */
-class TEnv : public smartable
+class TEnv : public libmapping::smartable
 {
 	public:
 		typedef std::map<std::string, Sbaseparam>	TEnvList;

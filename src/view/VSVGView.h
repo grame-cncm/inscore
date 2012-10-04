@@ -74,6 +74,9 @@ class VSVGView: public VIntPointObjectView
 	MouseEventAble<VSVGItem>*  item() const	{ return (MouseEventAble<VSVGItem>*)fItem; }
 	
 	public :
+		using VIntPointObjectView::updateView;
+		using VIntPointObjectView::updateLocalMapping;
+
 				 VSVGView(QGraphicsScene * scene, const ISVG* svg);
 				 VSVGView(QGraphicsScene * scene, const ISVGFile* svg);
 		virtual ~VSVGView() {}

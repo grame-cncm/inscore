@@ -40,7 +40,7 @@ class IMessage;
 */
 
 class IApplDebug;
-typedef class SMARTP<IApplDebug>		SIApplDebug;
+typedef class libmapping::SMARTP<IApplDebug>		SIApplDebug;
 
 //--------------------------------------------------------------------------
 /*!
@@ -68,7 +68,7 @@ class IApplDebug : public IObjectDebug
 		virtual ~IApplDebug() {}
 
 		/// \brief object \c 'get' without parameter form: gives the corresponding 'set' message list
-		virtual IMessageList get () const;
+		virtual IMessageList getSetMsg () const;
 
 		void		setOSCDebug(bool state)		{ fOSCDebug = state; }
 };
