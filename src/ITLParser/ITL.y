@@ -30,9 +30,7 @@
 	inscore::IMessageList*		msgList;
 }
 
-%token INT
-%token UINT
-%token FLOAT
+%token INT UINT FLOAT
 %token IDENTIFIER
 %token EQUAL
 %token MAPIDENTIFIER

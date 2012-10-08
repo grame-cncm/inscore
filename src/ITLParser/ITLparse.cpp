@@ -189,7 +189,7 @@ typedef struct YYLTYPE
 
 
 /* Copy the second part of user declarations.  */
-#line 67 "ITL.y"
+#line 65 "ITL.y"
 
 
 #include <iostream>
@@ -517,10 +517,10 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   103,   103,   104,   108,   109,   110,   114,   115,   119,
-     120,   121,   124,   125,   128,   131,   132,   135,   136,   139,
-     140,   143,   144,   145,   146,   151,   152,   153,   156,   159,
-     160
+       0,   101,   101,   102,   106,   107,   108,   112,   113,   117,
+     118,   119,   122,   123,   126,   129,   130,   133,   134,   137,
+     138,   141,   142,   143,   144,   149,   150,   151,   154,   157,
+     158
 };
 #endif
 
@@ -1483,127 +1483,127 @@ yyreduce:
   switch (yyn)
     {
         case 4:
-#line 108 "ITL.y"
+#line 106 "ITL.y"
     { context->fReader.add((yyvsp[(1) - (1)].msg)); ;}
     break;
 
   case 7:
-#line 114 "ITL.y"
+#line 112 "ITL.y"
     { if (!context->fReader.luaEval(context->fText.c_str())) YYABORT;  ;}
     break;
 
   case 8:
-#line 115 "ITL.y"
+#line 113 "ITL.y"
     { if (!context->fReader.jsEval(context->fText.c_str(), lineno(context))) YYABORT;  ;}
     break;
 
   case 9:
-#line 119 "ITL.y"
+#line 117 "ITL.y"
     {	(yyval.msg) = new inscore::IMessage(*(yyvsp[(1) - (3)].str), "", *(yyvsp[(2) - (3)].plist)); delete (yyvsp[(1) - (3)].str); delete (yyvsp[(2) - (3)].plist); ;}
     break;
 
   case 10:
-#line 120 "ITL.y"
+#line 118 "ITL.y"
     {	(yyval.msg) = new inscore::IMessage(*(yyvsp[(1) - (3)].str), *(yyvsp[(2) - (3)].str));  delete (yyvsp[(1) - (3)].str); delete (yyvsp[(2) - (3)].str); ;}
     break;
 
   case 11:
-#line 121 "ITL.y"
+#line 119 "ITL.y"
     {	(yyval.msg) = new inscore::IMessage(*(yyvsp[(1) - (4)].str), *(yyvsp[(2) - (4)].str), *(yyvsp[(3) - (4)].plist)); delete (yyvsp[(1) - (4)].str); delete (yyvsp[(2) - (4)].str); delete (yyvsp[(3) - (4)].plist); ;}
     break;
 
   case 12:
-#line 124 "ITL.y"
+#line 122 "ITL.y"
     { (yyval.str) = (yyvsp[(1) - (1)].str); ;}
     break;
 
   case 13:
-#line 125 "ITL.y"
+#line 123 "ITL.y"
     { *(yyvsp[(1) - (2)].str) += *(yyvsp[(2) - (2)].str); (yyval.str) = (yyvsp[(1) - (2)].str); delete (yyvsp[(2) - (2)].str); ;}
     break;
 
   case 14:
-#line 128 "ITL.y"
+#line 126 "ITL.y"
     { (yyval.str) = new string("/" + *(yyvsp[(2) - (2)].str)); delete (yyvsp[(2) - (2)].str); ;}
     break;
 
   case 15:
-#line 131 "ITL.y"
+#line 129 "ITL.y"
     { (yyval.str) = new string(context->fText); ;}
     break;
 
   case 16:
-#line 132 "ITL.y"
+#line 130 "ITL.y"
     { (yyval.str) = new string(context->fText); ;}
     break;
 
   case 17:
-#line 135 "ITL.y"
+#line 133 "ITL.y"
     { (yyval.str) = new string(context->fText); ;}
     break;
 
   case 18:
-#line 136 "ITL.y"
+#line 134 "ITL.y"
     { (yyval.str) = new string(context->fText); ;}
     break;
 
   case 19:
-#line 139 "ITL.y"
+#line 137 "ITL.y"
     { (yyval.plist) = new inscore::IMessage::argslist; (yyval.plist)->push_back(*(yyvsp[(1) - (1)].p)); delete (yyvsp[(1) - (1)].p); ;}
     break;
 
   case 20:
-#line 140 "ITL.y"
+#line 138 "ITL.y"
     { (yyvsp[(1) - (2)].plist)->push_back(*(yyvsp[(2) - (2)].p)); (yyval.plist) = (yyvsp[(1) - (2)].plist); delete (yyvsp[(2) - (2)].p); ;}
     break;
 
   case 21:
-#line 143 "ITL.y"
+#line 141 "ITL.y"
     { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<int>((yyvsp[(1) - (1)].num))); ;}
     break;
 
   case 22:
-#line 144 "ITL.y"
+#line 142 "ITL.y"
     { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); ;}
     break;
 
   case 23:
-#line 145 "ITL.y"
+#line 143 "ITL.y"
     { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); ;}
     break;
 
   case 24:
-#line 146 "ITL.y"
+#line 144 "ITL.y"
     { (yyval.p) = context->fReader.resolve((yyvsp[(2) - (2)].str)->c_str()); if (!(yyval.p)) { VARERROR("unknown variable ", (yyvsp[(2) - (2)].str)->c_str()) }; delete (yyvsp[(2) - (2)].str); ;}
     break;
 
   case 25:
-#line 151 "ITL.y"
+#line 149 "ITL.y"
     { context->fReader.variable((yyvsp[(1) - (3)].str)->c_str(), (yyvsp[(3) - (3)].num));					delete (yyvsp[(1) - (3)].str); ;}
     break;
 
   case 26:
-#line 152 "ITL.y"
+#line 150 "ITL.y"
     { context->fReader.variable((yyvsp[(1) - (3)].str)->c_str(),  context->fFloat);		delete (yyvsp[(1) - (3)].str); ;}
     break;
 
   case 27:
-#line 153 "ITL.y"
+#line 151 "ITL.y"
     { context->fReader.variable((yyvsp[(1) - (3)].str)->c_str(), context->fText.c_str()); delete (yyvsp[(1) - (3)].str); ;}
     break;
 
   case 28:
-#line 156 "ITL.y"
+#line 154 "ITL.y"
     { (yyval.str) = new string(context->fText); ;}
     break;
 
   case 29:
-#line 159 "ITL.y"
+#line 157 "ITL.y"
     { (yyval.num) = context->fInt; ;}
     break;
 
   case 30:
-#line 160 "ITL.y"
+#line 158 "ITL.y"
     { (yyval.num) = context->fInt; ;}
     break;
 
@@ -1829,7 +1829,7 @@ yyreturn:
 }
 
 
-#line 163 "ITL.y"
+#line 161 "ITL.y"
 
 
 //} // end namespace
