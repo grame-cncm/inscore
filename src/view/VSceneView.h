@@ -66,6 +66,8 @@ class VSceneView : public VDummyObjectView
 	void				updateOffScreen( IScene * scene );
 
 	public :
+		using VDummyObjectView::updateView;
+		
 				 VSceneView(const std::string& address, QGraphicsScene * scene);
 		virtual ~VSceneView();
 
