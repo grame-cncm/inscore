@@ -81,7 +81,7 @@ MsgHandler::msgStatus IFileWatcher::addMsg (const IMessage* msg )
 		if ( fileName.size() ) {
 			IMessage watcherMessage;
 			if (IFileWatcher::buildMessage(*msg,watcherMessage)) {
-				add( WatcherAssociation( IAppl::absolutePath(fileName) , watcherMessage ) );
+				addAssociation( WatcherAssociation( IAppl::absolutePath(fileName) , watcherMessage ) );
 				return MsgHandler::kProcessed;
 			}
 		}

@@ -78,9 +78,10 @@ class VObjectView
 		virtual double scene2RelativeY(float y) const						= 0;
 
 		/// \brief updates the local mapping (do nothing at IObject level) 
-		virtual void	updateLocalMapping (IObject* obj)	{}
+		virtual void	updateLocalMapping (IObject* )					{}
+		
 		/// \brief initialize an object view (do nothing at IObject level)
-		virtual void	initialize (IObject* obj)			{}
+		virtual void	initialize (IObject* )							{}
 
 };
 

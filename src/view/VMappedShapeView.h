@@ -44,6 +44,8 @@ namespace inscore
 class VMappedShapeView: public VShapeView
 {
 	public :
+		using VShapeView::updateLocalMapping;
+		
 		virtual ~VMappedShapeView() {}
 		
 		virtual void updateLocalMapping (IShapeMap* shapeMap)	{ updateGraphic2GraphicMapping(shapeMap); }

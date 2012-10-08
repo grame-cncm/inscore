@@ -41,16 +41,18 @@ class IMessage;
 */
 
 class ISignal;
-typedef class SMARTP<ISignal>		SISignal;
+typedef class libmapping::SMARTP<ISignal>		SISignal;
 class ISignalNode;
-typedef class SMARTP<ISignalNode>	SISignalNode;
+typedef class libmapping::SMARTP<ISignalNode>	SISignalNode;
 //--------------------------------------------------------------------------
 /*! \brief the scene signals node
 */
 class ISignalNode : public IVNode
 {	
-	public:	
-		static SMARTP<ISignalNode> create(IObject * parent)	{ return new ISignalNode(parent); }
+	public:
+		using IVNode::find;
+	
+		static libmapping::SMARTP<ISignalNode> create(IObject * parent)	{ return new ISignalNode(parent); }
 
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*);

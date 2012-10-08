@@ -34,7 +34,7 @@ namespace inscore
 /*!
 	\brief base class for objects that need to be periodically called  
 */
-class PeriodicTask : virtual public smartable
+class PeriodicTask : virtual public libmapping::smartable
 {
 	protected:
 		virtual ~PeriodicTask() {}
@@ -42,7 +42,7 @@ class PeriodicTask : virtual public smartable
 		virtual void ptask () = 0;
 };
 
-typedef class SMARTP<PeriodicTask>	SPeriodicTask;
+typedef class libmapping::SMARTP<PeriodicTask>	SPeriodicTask;
 
 } // end namespoace
 

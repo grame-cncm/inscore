@@ -39,7 +39,7 @@ namespace inscore
 
 class Updater;
 class ILine;
-typedef class SMARTP<ILine>	SILine;
+typedef class libmapping::SMARTP<ILine>	SILine;
 
 //--------------------------------------------------------------------------
 /*!

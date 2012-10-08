@@ -30,6 +30,7 @@
 #include "IGrid.h"
 
 using namespace std;
+using namespace libmapping;
 
 namespace inscore
 {
@@ -75,9 +76,7 @@ void VGridView::updateLocalMapping (IGrid* grid)
 		rational d = grid->getDuration() / (cols * rows);
 		rational t (0, 1);
 
-		SRelativeTime2GraphicMapping t2g_mapping = TMapping<RelativeTimeSegment,GraphicSegment>::create();
-		SGraphicSegmentation		gSegmentation = GraphicSegmentation::create( GraphicSegment(-1, -1, 1, 1) );
-		SRelativeTimeSegmentation	tSegmentation = RelativeTimeSegmentation::create( RelativeTimeSegment(t, d) );
+		SRelativeTime2GraphicMapping t2g_mapping = TMapping<rational,1, float,2>::create();
 
 		if (grid->getOrder() == IGrid::kLeftRight) {
 			for (int i=0; i< rows; i++) {
@@ -85,8 +84,6 @@ void VGridView::updateLocalMapping (IGrid* grid)
 					RelativeTimeSegment timeseg (t, t+d);
 					GraphicSegment	graphseg (left, top, left+w, top+h);
 					t2g_mapping->add ( timeseg, graphseg );
-					gSegmentation->add( graphseg );
-					tSegmentation->add( timeseg );
 					t += d;
 					left += w + xborder*2;
 				}
@@ -100,8 +97,6 @@ void VGridView::updateLocalMapping (IGrid* grid)
 					RelativeTimeSegment timeseg (t, t+d);
 					GraphicSegment	graphseg (left, top, left+w, top+h);
 					t2g_mapping->add ( timeseg, graphseg );
-					gSegmentation->add( graphseg );
-					tSegmentation->add( timeseg );
 					t += d;
 					top += h + yborder*2;
 				}
@@ -109,7 +104,7 @@ void VGridView::updateLocalMapping (IGrid* grid)
 				top = -1 + xborder;
 			}
 		}
-		grid->setMapping( "" , t2g_mapping, tSegmentation, gSegmentation);
+		grid->setMapping( "" , t2g_mapping);
 		grid->fAutoMap = true;
 	}
 }

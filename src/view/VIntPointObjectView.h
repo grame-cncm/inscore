@@ -45,6 +45,8 @@ namespace inscore
 class VIntPointObjectView: public VGraphicsItemView
 {
 	public :
+		using VGraphicsItemView::updateLocalMapping;
+		
 		virtual void updateLocalMapping (IGraphicBasedObject * object);
 
 	protected:

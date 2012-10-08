@@ -46,34 +46,24 @@ namespace inscore {
 	an object local mapping includes a mapping between the local space segmentation
 	the time and the graphic segmentations
 */
-template <typename T> class TLocalMapping : public smartable
+template <typename T, unsigned int D> class TLocalMapping : public libmapping::smartable
 {
 	public:
-		typedef SMARTP<TMapping<GraphicSegment, T> >		SGraphic2LocalMapping;
-		typedef SMARTP<TMapping<T, RelativeTimeSegment> >	SLocal2TimeMapping;
+		typedef libmapping::SMARTP<libmapping::TMapping<T, D, libmapping::rational, 1> >	SLocal2TimeMapping;
 
-		struct MapSet {
-			SGraphic2LocalMapping	fGraphic2Local;
-			SLocal2TimeMapping		fLocal2Time;
-			MapSet () {}
-			MapSet (const SGraphic2LocalMapping& g2l, const SLocal2TimeMapping& l2t)
-				: fGraphic2Local(g2l), fLocal2Time(l2t) {}
-		};
-		typedef std::map<std::string,MapSet> namedMapping;
-		typedef typename std::map<std::string,MapSet>::const_iterator	const_iterator;
-		typedef typename std::map<std::string,MapSet>::iterator			iterator;
+		typedef std::map<std::string,SLocal2TimeMapping> namedMapping;
+		typedef typename std::map<std::string,SLocal2TimeMapping>::const_iterator	const_iterator;
+		typedef typename std::map<std::string,SLocal2TimeMapping>::iterator			iterator;
 
 	private:
+		namedMapping				fMappings;
 
-		namedMapping	fMappings;
-		const MapSet	fNullSet;
-
-		const MapSet* find (const std::string& name) const
+		const SLocal2TimeMapping find (const std::string& name) const
 				{
 					const_iterator found = fMappings.find(name);
 					return (found == fMappings.end()) ? 0 : &(found->second);
 				}
-			  MapSet* find (const std::string& name)
+			  SLocal2TimeMapping find (const std::string& name)
 				{
 					iterator found = fMappings.find(name);
 					return (found == fMappings.end()) ? 0 : &(found->second);
@@ -83,37 +73,13 @@ template <typename T> class TLocalMapping : public smartable
 		virtual ~TLocalMapping() {}
 	
 	public:
-		static SMARTP<TLocalMapping<T> > create()	{ return new TLocalMapping; }
+		static libmapping::SMARTP<TLocalMapping<T,D> > create()	{ return new TLocalMapping; }
 
-		const namedMapping& namedMappings() const { return fMappings; }
+		const namedMapping& namedMappings() const	{ return fMappings; }			
+		bool remove(const std::string& name)		{ return fMappings.erase(name)==1; }	// Returns true if the specified 'name' has been found and removed.
 
-		const SGraphic2LocalMapping&	getGraphic2LocalMapping(const std::string& name) const 
-			{ const MapSet* s = find(name); return s ? s->fGraphic2Local : fNullSet.fGraphic2Local; }
-		const SLocal2TimeMapping&		getLocal2relTimeMapping(const std::string& name) const
-			{ const MapSet* s = find(name); return s ? s->fLocal2Time : fNullSet.fLocal2Time; }
-			
-		bool remove(const std::string& name) { return fMappings.erase(name)==1; }	/// <brief Returns true if the specified 'name' has been found and removed.
-
-		void setMapping	(const std::string& name, const SGraphic2LocalMapping& g2l, const SLocal2TimeMapping& l2t)
-			{ 
-				MapSet* s = find(name); 
-				if (s) {
-					s->fGraphic2Local = g2l;
-					s->fLocal2Time = l2t;
-				} 
-				else fMappings[name] = MapSet(g2l, l2t);
-			}
-
-		void addMapping	(const std::string& name, const SGraphic2LocalMapping& g2l, const SLocal2TimeMapping& l2t)
-			{ 
-				MapSet* s = find(name); 
-				if (s) {
-					// it looks like s->fGraphic2Local is not used
-					if (g2l) s->fGraphic2Local->add(*g2l);
-					if (l2t) s->fLocal2Time->add(*l2t);
-				} 
-				else fMappings[name] = MapSet(g2l, l2t);
-			}
+		void setMapping	(const std::string& name, const SLocal2TimeMapping& l2t)	{ fMappings[name] = l2t; }
+		void addMapping	(const std::string& name, const SLocal2TimeMapping& l2t)	{ fMappings[name] = l2t; }
 };
 
 /*! @} */

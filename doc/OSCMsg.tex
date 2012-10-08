@@ -71,7 +71,7 @@
 
 \begin{document}
 
-\title{INScore \\ OSC Messages Reference \\v.0.99}
+\title{INScore \\ OSC Messages Reference \\v.1.00}
 
 \author{D. Fober\\ GRAME\\ Centre national de cr\'eation musicale\\
 {\small <fober@grame.fr>} \\
@@ -253,6 +253,7 @@ sceneMsg :  'new'
 			| 'foreground'
 			| ('fullscreen' int32)
 			| ('frameless' int32)
+			| ('absolutexy' int32)
 			| commonMsg
 \end{rail}
 \index{Scene messages}
@@ -264,6 +265,7 @@ sceneMsg :  'new'
 \index{Scene messages!foreground}
 \index{Scene messages!fullscreen}
 \index{Scene messages!frameless}
+\index{Scene messages!absolutexy}
 
 \begin{itemize}
 \item \OSC{new}: creates a new scene and opens it in a new window.
@@ -274,6 +276,7 @@ sceneMsg :  'new'
 \item \OSC{foreground}: put the scene to foreground.
 \item \OSC{fullscreen}: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is \values{0}.
 \item \OSC{frameless}: requests the scene to switch to frameless or normal window.  The parameter is interpreted as a boolean value. Default value is \values{0}.
+\item \OSC{absolutexy}: requests the scene to absolute or relative cooridnates. Absolute coordinates are in pixels relative to the top left corner of the screen. Relative coordinates are in the range [-1, 1] where [0,0] is the center of the screen. The message parameter is interpreted as a boolean value. Default value is \values{0}.
 \item \OSC{commonMsg}: see section \fullref{common}.
 \end{itemize}
 
@@ -1656,10 +1659,14 @@ Request the object \OSC{myObject} to watch \OSC{mouseDown} events and send a "st
 
 Events currently \emph{watchable} are:
 \begin{rail}
-what : 'timeEnter' timezone | 'timeLeave' timezone | 'newElement'
+what : 	'timeEnter' timezone | 'timeLeave' timezone 
+		| 'durEnter' timezone | 'durLeave' timezone 
+		| 'newElement'
 \end{rail}
 \index{Interaction!timeEnter}
 \index{Interaction!timeLeave}
+\index{Interaction!durEnter}
+\index{Interaction!durLeave}
 \index{Interaction!newElement}
 
 \begin{rail}
@@ -1667,6 +1674,18 @@ timezone : int32 int32 int32 int32
 \end{rail}
 A time zone is defined by 2 dates expressed as rational values (i.e. with 4 integers).
 \index{Interaction! timezone}
+
+\begin{itemize}
+\item \OSC{timeEnter}, \OSC{timeLeave} are triggered when an object date is moved to or out of a watched \OSC{timezone},
+\item \OSC{durEnter}, \OSC{durLeave} are triggered when an object duration is moved to or out of a watched \OSC{timezone} that should be viewed as a duration range.
+\end{itemize}
+
+Example: a cursor that displays a given music page when it enters its time zone.
+\samplev{
+/ITL/scene/cursor watch 'timeEnter' 10 1 18 1 '/ITL/scene/score' 'set' 'img' 'page2.png';
+}
+
+
 
 The \OSC{newElement} event is supported at scene level only and triggered when a new element is added to the scene.
 
@@ -1701,17 +1720,18 @@ xy : ('x' | 'y') ( | '[low,high]')
 Note also that the values are not clipped to the object dimensions and could exceed its width or height or become negative in case of mouse move events.
 
 \item \OSC{\$sx} \OSC{\$sy}: denotes the mouse pointer position in the scene coordinates space. 
+
+\item \OSC{\$name}, \OSC{\$address}: replaced by the target object name or OSC address. Note that in case of \OSC{newElement} event, the target object is the new element. 
 \end{itemize}
 
 \begin{rail} 
-date : ('date' | 'rdate') (| ':'  mapname) (| '[n/d]')
+date : ('date' | 'rdate') (| ':'  mapname) (| '[n/d]') (| '\%' 'f')
 
 \end{rail}
 
 \begin{itemize}
-\item \OSC{\$date}: denotes the object date corresponding to the mouse pointer position at the time of the event. It is optionnaly followed by a colon and the name of the mapping to be used to compute the date. The \OSC{\$date} variable is replaced by its rational value (i.e. two integers values). The optional rational enclosed in brackets may be used to indicate a quantification: the date value is rounded to an integer count of the specified rational value. 
+\item \OSC{\$date}: denotes the object date corresponding to the mouse pointer position at the time of the event. It is optionnaly followed by a colon and the name of the mapping to be used to compute the date. The \OSC{\$date} variable is replaced by its rational value (i.e. two integers values). The optional rational enclosed in brackets may be used to indicate a quantification: the date value is rounded to an integer count of the specified rational value. The optional \OSC{\%f} may be used to get the date delivered as a float value.
 \item \OSC{\$rdate}: is similar to \OSC{\$date} but ignores the target current date: the date is relative to the object mapping only.
-\item \OSC{\$name}, \OSC{\$address}: replaced by the target object name or OSC address. Note that in case of \OSC{newElement} event, the target object is the new element. 
 \end{itemize}
 
 Note that a variable can be used several times in a message, but several \OSC{\$date} variables must always refer to the same mapping.
@@ -1753,6 +1773,29 @@ The OSC address parameter of a watch message supports the following variables:
 \item \OSC{\$scene}: replaced by the scene name at the time of the message setting.
 \end{itemize}
 Note: the system doesn't check for the consistency of the variables placement.
+
+
+%===============================
+%:   States management
+\sublevel{States management}
+\label{evtstats}
+
+For a given object, its \emph{interaction state} (i.e. the watched events and the associated messages) can be saved and restored.
+\begin{rail} 
+stateMsg : 'push' | 'pop'
+\end{rail}
+\index{Interaction!push}
+\index{Interaction!pop}
+
+Actually every object embeds a stack to push and pop interaction states. 
+\begin{itemize}
+\item \OSC{push}: push the current interaction state on top of the stack.
+\item \OSC{pop}: replace the current interaction state with the one poped from the top of the stack.
+Note that the effect of a pop message addressed to an empty stack is to clear the current interaction state.
+\end{itemize}
+
+
+
 
 %===============================
 %:Scripting

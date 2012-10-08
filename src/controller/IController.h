@@ -37,7 +37,7 @@ namespace inscore
 {
 
 class IObject;
-typedef class SMARTP<IObject>	SIObject;
+typedef class libmapping::SMARTP<IObject>	SIObject;
 
 /*!
 \addtogroup ITLCtrl
@@ -64,14 +64,14 @@ class MsgListener
 //--------------------------------------------------------------------------
 /*! \brief a controller that processes all pending messages
 */
-class IController : public smartable
+class IController : public libmapping::smartable
 {
 	private:
 		MsgListener*	fListener;		///< a messages listener
 	
 	public:
 		/// \brief creates a new controller
-		static SMARTP<IController> create()	{ return new IController(); }
+		static libmapping::SMARTP<IController> create()	{ return new IController(); }
 
 			/*! \brief process all the pending messages on a model
 				\param msgs the messages to be applied to the model
@@ -98,7 +98,7 @@ class IController : public smartable
 		virtual int	processMsg (const IMessage* msg, SIObject& obj);
 
 };
-typedef class SMARTP<IController>	SIController;
+typedef class libmapping::SMARTP<IController>	SIController;
 
 /*!
 @}

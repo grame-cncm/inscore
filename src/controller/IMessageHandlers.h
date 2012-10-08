@@ -48,12 +48,12 @@ namespace inscore
 
 class IObject;
 class Master;
-typedef class SMARTP<IObject>	SIObject;
+typedef class libmapping::SMARTP<IObject>	SIObject;
 
 
 //--------------------------------------------------------------------------
 /// \brief The base class for message handling
-class MsgHandler : public smartable {
+class MsgHandler : public libmapping::smartable {
 	protected:
 		virtual ~MsgHandler() {}
 	public:
@@ -61,7 +61,7 @@ class MsgHandler : public smartable {
 		enum msgStatus	{ kBadAddress, kProcessed=1, kProcessedNoChange=2, kBadParameters=4, kCreateFailure=8 };
 		virtual msgStatus operator ()(const IMessage* msg)  = 0;
 };
-typedef SMARTP<MsgHandler> SMsgHandler;
+typedef libmapping::SMARTP<MsgHandler> SMsgHandler;
 
 //--------------------------------------------------------------------------
 /// \brief a message handler that calls an object method with the message as argument
@@ -130,23 +130,23 @@ template <typename O, typename T> class TSetMethodMsgHandler : public MsgHandler
 		TSetMethodMsgHandler(O* obj, MsgHandlerMethod method) : fObject(obj), fMethod(method) {}
 };
 
-template <typename O> class TSetMethodMsgHandler<O, rational> : public MsgHandler 
+template <typename O> class TSetMethodMsgHandler<O, libmapping::rational> : public MsgHandler 
 {
 	public: 
-		typedef void (O::*MsgHandlerMethod)(const rational&);
+		typedef void (O::*MsgHandlerMethod)(const libmapping::rational&);
 		
-		static SMsgHandler create(O* obj, MsgHandlerMethod method)	{ return new TSetMethodMsgHandler<O,rational> (obj, method); }
+		static SMsgHandler create(O* obj, MsgHandlerMethod method)	{ return new TSetMethodMsgHandler<O,libmapping::rational> (obj, method); }
 		virtual msgStatus operator ()(const IMessage* msg)			{ 
 			if ( msg->size() == 1 ) {
 				int n; float nf;
-				if (msg->param(0, n)) (fObject->*fMethod)( rational(n,1) );
-				else if (msg->param(0, nf)) (fObject->*fMethod)( rational(int(nf*10000),10000) );
+				if (msg->param(0, n)) (fObject->*fMethod)( libmapping::rational(n,1) );
+				else if (msg->param(0, nf)) (fObject->*fMethod)( libmapping::rational(int(nf*10000),10000) );
 				else return kBadParameters;
 			}
 			else if ( msg->size() == 2 ) {
 				int n, d;
 				if ( !msg->param(0, n) || !msg->param(1, d)) return kBadParameters;
-				(fObject->*fMethod)( rational(n,d) );
+				(fObject->*fMethod)( libmapping::rational(n,d) );
 			}
 			else return kBadParameters;
 			return kProcessed;
@@ -249,7 +249,7 @@ template <typename T, typename S=TSetOperator> class TSetMsgHandler : public Msg
 	virtual ~TSetMsgHandler() {}
 
 	public:
-	static SMARTP<TSetMsgHandler> create(T& val) { return new TSetMsgHandler<T,S> (val); }
+	static libmapping::SMARTP<TSetMsgHandler> create(T& val) { return new TSetMsgHandler<T,S> (val); }
 
 		msgStatus operator ()(const IMessage* msg)
 		{ 
@@ -274,7 +274,7 @@ template <typename S> class TSetMsgHandler<TFloatSize,S> : public MsgHandler
 	virtual ~TSetMsgHandler() {}
 
 	public:
-	static SMARTP<TSetMsgHandler> create(TFloatSize& val) { return new TSetMsgHandler<TFloatSize,S> (val); }
+	static libmapping::SMARTP<TSetMsgHandler> create(TFloatSize& val) { return new TSetMsgHandler<TFloatSize,S> (val); }
 
 		virtual msgStatus operator ()(const IMessage* msg)
 			{ 
@@ -291,15 +291,15 @@ template <typename S> class TSetMsgHandler<TFloatSize,S> : public MsgHandler
 
 //--------------------------------------------------------------------------------
 /// \brief a message handler to set a rational value
-template <typename S> class TSetMsgHandler<rational,S> : public MsgHandler
+template <typename S> class TSetMsgHandler<libmapping::rational,S> : public MsgHandler
 {
 	protected:
-		rational& fValue;
-			 TSetMsgHandler(rational& val) : fValue(val) {}
+		libmapping::rational& fValue;
+			 TSetMsgHandler(libmapping::rational& val) : fValue(val) {}
 	virtual ~TSetMsgHandler() {}
 
 	public:
-	static SMARTP<TSetMsgHandler> create(rational& val) { return new TSetMsgHandler<rational,S> (val); }
+	static libmapping::SMARTP<TSetMsgHandler> create(libmapping::rational& val) { return new TSetMsgHandler<libmapping::rational,S> (val); }
 
 		virtual msgStatus operator ()(const IMessage* msg)
 			{ 
@@ -307,7 +307,7 @@ template <typename S> class TSetMsgHandler<rational,S> : public MsgHandler
 				int n, d;
 				if (msg->param(0, n) && msg->param(1, d)) {
 					S  setOp;
-					setOp.set(fValue, rational(n,d)); 
+					setOp.set(fValue, libmapping::rational(n,d)); 
 					return MsgHandler::kProcessed;
 				}
 				return MsgHandler::kBadParameters;
@@ -318,24 +318,24 @@ template <typename S> class TSetMsgHandler<rational,S> : public MsgHandler
 //--------------------------------------------------------------------------
 ///!	\brief The base class for \c get messages handling.
 //--------------------------------------------------------------------------
-class GetParamMsgHandler : public smartable {
+class GetParamMsgHandler : public libmapping::smartable {
 	public: 
 		virtual ~GetParamMsgHandler() {}
 		/// \brief output a value of an object to a message
 		virtual IMessage&  print(IMessage&) const = 0;
 };
-typedef SMARTP<GetParamMsgHandler> SGetParamMsgHandler;
+typedef libmapping::SMARTP<GetParamMsgHandler> SGetParamMsgHandler;
 
 //--------------------------------------------------------------------------
 ///!	\brief The base class for handling messages returning a message list.
 //--------------------------------------------------------------------------
-class GetParamMultiMsgHandler : public smartable {
+class GetParamMultiMsgHandler : public libmapping::smartable {
 	public: 
 		virtual ~GetParamMultiMsgHandler() {}
 		/// \brief output a value of an object to a message
 		virtual IMessageList&  print(IMessageList&) const = 0;
 };
-typedef SMARTP<GetParamMultiMsgHandler> SGetParamMultiMsgHandler;
+typedef libmapping::SMARTP<GetParamMultiMsgHandler> SGetParamMultiMsgHandler;
 
 //--------------------------------------------------------------------------
 ///! \brief a get object parameter message handler 

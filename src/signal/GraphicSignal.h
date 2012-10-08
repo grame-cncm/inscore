@@ -127,7 +127,7 @@ template <typename T> class TypedParallelSignal : public ParallelSignal
 				 TypedParallelSignal() {}
 		virtual ~TypedParallelSignal() {}
 	public:	
-		static SMARTP<TypedParallelSignal> create()	{ return new TypedParallelSignal<T>(); }		
+		static libmapping::SMARTP<TypedParallelSignal> create()	{ return new TypedParallelSignal<T>(); }		
 		virtual T get(int n) const					{ return ParallelSignal::get<T> (n); }
 };
 
@@ -138,13 +138,13 @@ std::ostream& operator << (std::ostream& out, const GraphicFrame& gframe);
 	
 //--------------------------------------------------------------------------
 typedef TypedParallelSignal<HSBAColor>		ColorSignal;
-typedef SMARTP<ColorSignal>					SColorSignal;
+typedef libmapping::SMARTP<ColorSignal>					SColorSignal;
 
 typedef TypedParallelSignal<GraphicFrame>	GraphicSignal;
-typedef SMARTP<GraphicSignal>				SGraphicSignal;
+typedef libmapping::SMARTP<GraphicSignal>				SGraphicSignal;
 
 typedef TypedParallelSignal<GraphicFrames>	GraphicSignals;
-typedef SMARTP<GraphicSignals>				SGraphicSignals;
+typedef libmapping::SMARTP<GraphicSignals>				SGraphicSignals;
 
 /*! @} */
 	

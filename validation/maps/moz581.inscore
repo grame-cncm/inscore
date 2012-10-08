@@ -1,4 +1,5 @@
 /ITL/scene reset ;
+/ITL/scene/comment set "txt" "staff + system mapping test" ;
 /ITL/scene/comment xorigin -1.00000 ;
 /ITL/scene/comment yorigin -1.00000 ;
 /ITL/scene/comment x -0.950000 ;

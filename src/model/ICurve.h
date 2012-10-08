@@ -39,7 +39,7 @@ namespace inscore
 
 class Updater;
 class ICurve;
-typedef class SMARTP<ICurve>	SICurve;
+typedef class libmapping::SMARTP<ICurve>	SICurve;
 
 //--------------------------------------------------------------------------
 /*!

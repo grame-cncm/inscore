@@ -43,7 +43,7 @@ namespace inscore
 */
 
 class IScene;
-typedef class SMARTP<IScene>	SIScene;
+typedef class libmapping::SMARTP<IScene>	SIScene;
 //--------------------------------------------------------------------------
 /*!
 	\brief a base class for file based elements of the model

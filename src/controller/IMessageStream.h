@@ -48,11 +48,11 @@ namespace inscore
 //--------------------------------------------------------------------------
 // a set of '<<' operators to set a message parameters
 //--------------------------------------------------------------------------
-class rational;
-IMessage& operator <<(IMessage& msg, const rational& val);
+class libmapping::rational;
+IMessage& operator <<(IMessage& msg, const libmapping::rational& val);
 
-template <typename T>
-IMessage& operator <<(IMessage& msg, const TRelation<T,RelativeTimeSegment>& val)
+template <typename T, unsigned int D>
+IMessage& operator <<(IMessage& msg, const libmapping::TRelation<T,D,libmapping::rational,1>& val)
 {
 	std::ostringstream map;
 	val.print (map);

@@ -29,7 +29,9 @@
 #include "MapTools.h"
 
 #include "rational.h"
- 
+
+using namespace libmapping;
+
 namespace inscore
 {
 
@@ -38,9 +40,9 @@ namespace inscore
 //----------------------------------------------------------------------
 static GraphicSegment find (const std::pair<float,float>& p, const Graphic2RelativeTimeRelation& rel)
 {
-	typedef TRelation<GraphicSegment,RelativeTimeSegment>::const_iterator const_iterator;
+	typedef TRelation<float,2, rational,1>::const_iterator const_iterator;
 	for (const_iterator i = rel.begin(); i != rel.end(); i++)
-		if ( i->first.include(p) ) return i->first;
+		if ( i->first.include(p.first, p.second) ) return i->first;
 	return GraphicSegment();
 }
 
@@ -125,16 +127,17 @@ void _MouseEventAble::handleEvent (const IObject * obj, QPointF pos,  EventsAble
 	for (unsigned int i=0; i<msgs.size(); i++) {
 		std::string mapname;
 		int num=0, denum=0;
+		bool floatval;
 		rational date (0,0);
 		bool relative;
-		if (msgs[i]->hasDateVar (mapname, num, denum, relative)) {
+		if (msgs[i]->hasDateVar (mapname, num, denum, relative, floatval)) {
 			date = point2date (obj, relx, rely, mapname, 0, relative);
 			if (num && date.getDenominator()) {
 				float fd = float(date);
 				date.set (int(fd * denum / num) * num, denum);
 			}
 		}
-		EventContext env(mouse, date, obj);
+		EventContext env(mouse, date, floatval, obj);
 		msgs[i]->send(env);
 	}
 }

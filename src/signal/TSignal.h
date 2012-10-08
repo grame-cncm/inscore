@@ -42,12 +42,12 @@ namespace inscore
  */
 
 class TSignal;
-typedef SMARTP<TSignal> STSignal;
+typedef libmapping::SMARTP<TSignal> STSignal;
 //--------------------------------------------------------------------------
 /*!
  \brief a simple signal base class 
  */
-class TSignal : virtual public smartable
+class TSignal : virtual public libmapping::smartable
 {
 	protected:
 		std::string	fName;				///< the signal name
@@ -119,7 +119,7 @@ class TSignal : virtual public smartable
 };
 
 class		 ConstTSignal;
-typedef SMARTP<ConstTSignal> SConstTSignal;
+typedef libmapping::SMARTP<ConstTSignal> SConstTSignal;
 
 //--------------------------------------------------------------------------
 /*!
@@ -143,7 +143,7 @@ class ConstTSignal : public TSignal
 
 
 class ParallelSignal;
-typedef SMARTP<ParallelSignal>			SParallelSignal;
+typedef libmapping::SMARTP<ParallelSignal>			SParallelSignal;
 //--------------------------------------------------------------------------
 /*!
  \brief a parallel signal 
@@ -152,7 +152,7 @@ typedef SMARTP<ParallelSignal>			SParallelSignal;
 	  It is actually a vector of Signal and the value of a parallel signal
 	  at time \c t is the vector of the values of its enclosed signals at \c t
  */
-class ParallelSignal : virtual public smartable
+class ParallelSignal : virtual public libmapping::smartable
 {
 	protected:
 		typedef	std::vector<STSignal> SigList;
@@ -264,7 +264,7 @@ class ParallelSignal : virtual public smartable
 		/*! \brief adds a ParallelSignal to the parallel signal
 			\param sig a ParallelSignal
 		*/
-		template <typename C> ParallelSignal& operator << (const SMARTP<C>& sig) {
+		template <typename C> ParallelSignal& operator << (const libmapping::SMARTP<C>& sig) {
 														for (int i = 0; i < sig->dimension(); i++)
 															this->operator << (sig->signalList()[i]);
 														return *this;

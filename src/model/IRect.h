@@ -39,7 +39,7 @@ namespace inscore
 
 class Updater;
 class IRect;
-typedef class SMARTP<IRect>	SIRect;
+typedef class libmapping::SMARTP<IRect>	SIRect;
 //--------------------------------------------------------------------------
 /*!
 	\brief a rectangle shape.

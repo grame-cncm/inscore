@@ -10,10 +10,10 @@ set (APPLTARGET	INScoreViewer)
 
 #######################################
 # versions management
-set (INSFWKVERS 0.99)
-set (INSFWKSTRVERS "v.0.99")
-set (INSAPPVERS 0.99)
-set (INSAPPSTRVERS "v.0.99")
+set (INSFWKVERS 1.00)
+set (INSFWKSTRVERS "v.1.00")
+set (INSAPPVERS 1.00)
+set (INSAPPSTRVERS "v.1.00")
 set (SOVERS 1)
 
 #######################################
@@ -48,7 +48,9 @@ endif(APPLE)
 #######################################
 # set directories, src and headers.
 set (ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../src)
+set (MAP ${ROOT}/libmapping)
 set (INSFOLDERS  controller events lib model view mapping interface graph signal signal/faust ITLParser scripting)
+set (LIBMAPFOLDERS libmapping/src/misc libmapping/src/segments libmapping/src/parser)
 set (RSRC  "${ROOT}/../rsrc")
 set (LOCALLIB  "${ROOT}/../lib")
 set (OSC_PATH  "${LOCALLIB}/oscpack")
@@ -125,23 +127,27 @@ endif(MSVC)
 
 foreach(folder ${INSFOLDERS})
 	set(SRC ${SRC} "${ROOT}/${folder}/*.cpp")			# add source files
-endforeach(folder)
+endforeach()
+foreach(folder ${LIBMAPFOLDERS})
+	set(SRC ${SRC} "${ROOT}/${folder}/*.cpp")			# add source files
+endforeach()
 set(SRC ${SRC} "${ROOT}/atomic/*.cpp")
+
 if(MSVC)
 	enable_language(RC)
 	set(SRC ${SRC} ../win32/${TARGET}.rc)
-endif(MSVC)
+endif()
 file (GLOB CORESRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${SRC})
 
 foreach(folder ${INSFOLDERS})
 	set(HEADERS ${HEADERS} "${ROOT}/${folder}/*.h")		# add header files
-endforeach(folder)
+endforeach()
 file (GLOB COREH RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${HEADERS})
 
 foreach(folder ${INSFOLDERS})
 	set(INCL ${INCL} "${ROOT}/${folder}")				# add include folders
-endforeach(folder)
-set(INCL ${INCL} "${ROOT}/atomic" ${SCRIPTINCL})
+endforeach()
+set(INCL ${MAP}/package/libmapping ${INCL} "${ROOT}/atomic" ${SCRIPTINCL})
 
 
 #######################################
@@ -155,24 +161,24 @@ if(APPLE OR WIN32)
  #message("QT_QTCORE_INCLUDE_DIR ${QT_QTCORE_INCLUDE_DIR}")
  #message("QT_QTGUI_INCLUDE_DIR ${QT_QTGUI_INCLUDE_DIR}")
 
-else(APPLE OR WIN32)
+else()
   set(DESIRED_QT_VERSION 4.6)
   FIND_PACKAGE(Qt4 REQUIRED)
   set (QTLIBS "-lQtCore -lQtGui -lQtSvg -lphonon" )
-endif(APPLE OR WIN32)
+endif()
 
 if(APPLE)
 	set (QTLIBS "-framework QtCore -framework QtGui -framework QtSvg -framework phonon" )
 	set (CORE_FOUNDATION "-framework CoreFoundation")
-endif(APPLE)
+endif()
 
 if(WIN32)
 	if(MINGW)
 		set(QTLIBS "${QT_LIBRARY_DIR}/libQtCore4.a" "${QT_LIBRARY_DIR}/libQtGui4.a"  "${QT_LIBRARY_DIR}/libQtSvg4.a" "${QT_LIBRARY_DIR}/libQtXml4.a" "${QT_LIBRARY_DIR}/libphonon4.a" )
-	else(MINGW)
+	else()
 		set(QTLIBS "${QT_LIBRARY_DIR}/QtCore4.lib" "${QT_LIBRARY_DIR}/QtGui4.lib"  "${QT_LIBRARY_DIR}/QtSvg4.lib" "${QT_LIBRARY_DIR}/QtXml4.lib" "${QT_LIBRARY_DIR}/phonon4.lib" )
-	endif(MINGW)
-endif(WIN32)
+	endif()
+endif()
 
 set (QTHEADERS "${QT_INCLUDE_DIR}" "${QT_QTCORE_INCLUDE_DIR}" "${QT_QTGUI_INCLUDE_DIR}" "${QT_QTSVG_INCLUDE_DIR}" "${QT_PHONON_INCLUDE_DIR}")
 file (GLOB PUBLICHEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${ROOT}/interface/INScore.h)
@@ -184,13 +190,13 @@ if(WIN32)
 		set(OSCPACK  ${OSC_PATH}/MinGW/liboscpack.a)
 		set(GUIDOQT  ${LOCALLIB}/GuidoQt/win32/libGuidoQt.a)
 		set(GUIDO    ${LOCALLIB}/GuidoEngine/win32/libGUIDOEngine.dll.a)
-	else(MINGW)
+	else()
 		set(OSCPACK  ${OSC_PATH}/cmake/release/oscpack.lib)
 		set(GUIDOQT  ${LOCALLIB}/GuidoQt/win32/GuidoQt.lib)
 		set(GUIDO    ${LOCALLIB}/GuidoEngine/win32/GUIDOEngine.lib)
 		set(INSLIBS  winmm.lib ws2_32.lib)
-	endif(MINGW)
-endif(WIN32)
+	endif()
+endif()
 
 if(APPLE)
 	set(OSCPACK  ${OSC_PATH}/cmake/Release/liboscpack.a)
@@ -200,7 +206,7 @@ elseif(UNIX)
 	set(OSCPACK  -L${OSC_PATH}/cmake -loscpack)
 	set(GUIDOQT  -L${ROOT}/../lib/GuidoQt/linux -lGuidoQt)
 	set(GUIDO    -lGUIDOEngine)
-endif(APPLE)
+endif()
 
 set(INSLIBS  ${INSLIBS} ${OSCPACK} ${GUIDOQT} ${GUIDO} ${SCRIPTS} ${QTLIBS} ${CORE_FOUNDATION} )
 
@@ -230,7 +236,7 @@ set_target_properties (${TARGET} PROPERTIES
 target_link_libraries( ${TARGET} ${INSLIBS} )
 if(MINGW)
 	target_link_libraries( ${TARGET} winmm ws2_32 )
-endif(MINGW)
+endif()
 
 
 
@@ -253,11 +259,11 @@ set_target_properties (${APPLTARGET} PROPERTIES
 	LINK_FLAGS_DEBUG /subsystem:console)
 elseif(UNIX AND NOT APPLE)
 	set_target_properties (${APPLTARGET} PROPERTIES OUTPUT_NAME inscoreviewer)
-endif(WIN32)
+endif()
 
 if(APPLE)
 	set_target_properties (${TARGET} PROPERTIES FRAMEWORK TRUE FRAMEWORK_VERSION ${INSFWKVERS})
-endif(APPLE)
+endif()
 
 target_link_libraries( ${APPLTARGET} ${TARGET})
 add_dependencies(${APPLTARGET} ${TARGET})
@@ -267,7 +273,7 @@ add_dependencies(${APPLTARGET} ${TARGET})
 if(APPLE)
 set(FRMWK  FRAMEWORK DESTINATION "/Library/Frameworks" CONFIGURATIONS Release)
 set(APPBUNDLE BUNDLE DESTINATION "/Applications/INScore-${INSAPPVERS}"  CONFIGURATIONS Release)
-endif(APPLE)
+endif()
 
 if (WIN32)
 
@@ -281,5 +287,5 @@ install ( TARGETS ${APPLTARGET}
 	RUNTIME DESTINATION /usr/bin
     ${APPBUNDLE}
 )
-endif (WIN32)
+endif ()
 

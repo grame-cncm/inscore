@@ -40,7 +40,7 @@ class IMessage;
 */
 
 class IVNode;
-typedef class SMARTP<IVNode>	SIVNode;
+typedef class libmapping::SMARTP<IVNode>	SIVNode;
 
 //--------------------------------------------------------------------------
 /*!

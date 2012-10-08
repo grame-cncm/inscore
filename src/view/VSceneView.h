@@ -67,7 +67,7 @@ class VSceneView : public VDummyObjectView
 
 	public :
 		using VDummyObjectView::updateView;
-		
+
 				 VSceneView(const std::string& address, QGraphicsScene * scene);
 		virtual ~VSceneView();
 
@@ -90,7 +90,7 @@ class VSceneView : public VDummyObjectView
 class WindowEventFilter : public QObject
 {
 	Q_OBJECT
-
+	bool	fAbsoluteXY;
 	std::string fOSCAddress;	
 	QTimer * fTimer;
 
@@ -98,6 +98,7 @@ class WindowEventFilter : public QObject
 		WindowEventFilter(const std::string& address, QGraphicsView* parent=0 );
 		bool running() const { return fTimer->isActive(); }	/// < Returns the status of timer: the timer is only running
 															/// during a move/resize sequence.
+		void setAbsoluteXY(bool state) { fAbsoluteXY = state; }
 		
 	protected:
 	

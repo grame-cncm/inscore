@@ -47,13 +47,13 @@ namespace inscore
 
 template <typename T> class IMsgParam;
 class baseparam;
-typedef SMARTP<baseparam>	Sbaseparam;
+typedef libmapping::SMARTP<baseparam>	Sbaseparam;
 
 //--------------------------------------------------------------------------
 /*!
 	\brief base class of a message parameters
 */
-class baseparam : public smartable
+class baseparam : public libmapping::smartable
 {
 	public:
 		virtual ~baseparam() {}
@@ -90,7 +90,7 @@ class baseparam : public smartable
 				return !equal<float>(p) && !equal<int>(p) && !equal<std::string>(p);
 			}
 			
-		virtual SMARTP<baseparam> copy() const = 0;
+		virtual libmapping::SMARTP<baseparam> copy() const = 0;
 };
 
 inline std::ostream& operator << (std::ostream& os, const baseparam* p) { 
@@ -114,7 +114,7 @@ template <typename T> class IMsgParam : public baseparam
 		
 		T	getValue() const { return fParam; }
 		
-		virtual SMARTP<baseparam> copy() const { return new IMsgParam<T>(fParam); }
+		virtual libmapping::SMARTP<baseparam> copy() const { return new IMsgParam<T>(fParam); }
 };
 
 //--------------------------------------------------------------------------
@@ -125,12 +125,12 @@ template <typename T> class IMsgParam : public baseparam
 	a message string that may be viewed as a method name
 	and a list of message parameters.
 */
-class IMessage : public Message, public smartable
+class IMessage : public Message, public libmapping::smartable
 {
 //static unsigned long allocated;
 //static unsigned long freed;
 	public:
-		typedef SMARTP<baseparam>		argPtr;		///< a message argument ptr type
+		typedef libmapping::SMARTP<baseparam>		argPtr;		///< a message argument ptr type
 		typedef std::vector<argPtr>		argslist;	///< args list type
 
 	private:
@@ -304,10 +304,10 @@ class IMessage : public Message, public smartable
 		\param val on output: the parameter value when the parameter type matches
 		\return false when types don't match
 	*/
-	bool	param(int i, rational& val) const;
+	bool	param(int i, libmapping::rational& val) const;
 };
 
-typedef SMARTP<IMessage>	SIMessage;
+typedef libmapping::SMARTP<IMessage>	SIMessage;
 
 //--------------------------------------------------------------------------
 /*!

@@ -47,7 +47,7 @@ namespace inscore
 class export VQtLocalMappingUpdater : public LocalMapUpdater
 {
 	public :
-		static SMARTP<VQtLocalMappingUpdater> create()		{ return new VQtLocalMappingUpdater(); }
+		static libmapping::SMARTP<VQtLocalMappingUpdater> create()		{ return new VQtLocalMappingUpdater(); }
 
 		void updateTo (IGraphicSignal* graph);
 		void updateTo (IGuidoCode* guidoCode);
@@ -71,7 +71,7 @@ class export VQtLocalMappingUpdater : public LocalMapUpdater
 		template <typename T> T* view(IObject* obj) { return static_cast<T*>(obj->getView()); }
 		
 };
-typedef class SMARTP<VQtLocalMappingUpdater>	SVQtLocalMappingUpdater;
+typedef class libmapping::SMARTP<VQtLocalMappingUpdater>	SVQtLocalMappingUpdater;
 
 /*!@} */
 

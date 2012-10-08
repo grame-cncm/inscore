@@ -52,7 +52,7 @@ QFileWatcher::~QFileWatcher()
 }
 
 //----------------------------------------------------------------------
-void QFileWatcher::add(const WatcherAssociation& association)
+void QFileWatcher::addAssociation(const WatcherAssociation& association)
 {
 	if ( QFile::exists( association.mFileName.c_str() ) )
 	{

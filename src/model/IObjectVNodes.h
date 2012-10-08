@@ -39,7 +39,7 @@ class IMessage;
 */
 
 class IObjectDebug;
-typedef class SMARTP<IObjectDebug>			SIObjectDebug;
+typedef class libmapping::SMARTP<IObjectDebug>			SIObjectDebug;
 //--------------------------------------------------------------------------
 /*!
 	\brief an object debug virtual node
@@ -77,7 +77,7 @@ class IObjectDebug : public IVNode
 		virtual void timeAble ()		{}
 
 		/// \brief object \c 'get' without parameter form: gives the corresponding 'set' message list
-		virtual IMessageList get () const;
+		virtual IMessageList getSetMsg () const;
 
 		virtual int	execute (const IMessage* msg);
 

@@ -40,6 +40,8 @@ const char* kMouseDoubleClickStr = "doubleClick";
 const char* kFileStr		= "file";
 const char* kTimeEnterStr	= "timeEnter";
 const char* kTimeLeaveStr	= "timeLeave";
+const char* kDurEnterStr	= "durEnter";
+const char* kDurLeaveStr	= "durLeave";
 
 const char* kNewElementStr	= "newElement";
 
@@ -65,7 +67,42 @@ void EventsAble::reset ()
 	fMsgMap.clear();
 	fTimeEnterMsgMap.clear();
 	fTimeLeaveMsgMap.clear();
+	fDurEnterMsgMap.clear();
+	fDurLeaveMsgMap.clear();
 	fFileMessageMap.clear();
+	while (fWatchStack.size())
+		fWatchStack.pop();
+}
+
+//----------------------------------------------------------------------
+void EventsAble::pushWatch ()
+{ 
+	EventsMaps m;
+	m.fMsg			= fMsgMap;
+	m.fTimeEnterMsg = fTimeEnterMsgMap;
+	m.fTimeLeaveMsg	= fTimeLeaveMsgMap;
+	m.fDurEnterMsg	= fDurEnterMsgMap;
+	m.fDurLeaveMsg	= fDurLeaveMsgMap;
+	m.fFileMessage	= fFileMessageMap;	
+	fWatchStack.push(m);
+}
+
+//----------------------------------------------------------------------
+bool EventsAble::popWatch ()
+{ 
+	if (fWatchStack.size()) {
+		EventsMaps m = fWatchStack.top();
+		fMsgMap			= m.fMsg;
+		fTimeEnterMsgMap= m.fTimeEnterMsg;
+		fTimeLeaveMsgMap= m.fTimeLeaveMsg;
+		fDurEnterMsgMap	= m.fDurEnterMsg;
+		fDurLeaveMsgMap	= m.fDurLeaveMsg;
+		fFileMessageMap = m.fFileMessage;	
+		fWatchStack.pop();
+		return true;
+	}
+	reset();
+	return false;
 }
 
 //----------------------------------------------------------------------
@@ -77,15 +114,25 @@ void EventsAble::addMsg (eventype t, SEventMessage msg)
 //----------------------------------------------------------------------
 void EventsAble::clearTimeMsg (eventype t)
 {
-	if (t == kTimeEnter)		fTimeEnterMsgMap.clear();
-	else if (t == kTimeLeave)	fTimeLeaveMsgMap.clear();
+	switch (t) {
+		case kTimeEnter:	fTimeEnterMsgMap.clear(); break;
+		case kTimeLeave:	fTimeLeaveMsgMap.clear(); break;
+		case kDurEnter:		fDurLeaveMsgMap.clear(); break;
+		case kDurLeave:		fDurLeaveMsgMap.clear(); break;
+		default:	;
+	}
 }
 
 //----------------------------------------------------------------------
 void EventsAble::setTimeMsg (eventype t, const RationalInterval& time, SEventMessage msg)
 {
-	if (t == kTimeEnter)		fTimeEnterMsgMap[time].clear();
-	else if (t == kTimeLeave)	fTimeLeaveMsgMap[time].clear();
+	switch (t) {
+		case kTimeEnter:	fTimeEnterMsgMap[time].clear(); break;
+		case kTimeLeave:	fTimeLeaveMsgMap[time].clear(); break;
+		case kDurEnter:		fDurLeaveMsgMap[time].clear(); break;
+		case kDurLeave:		fDurLeaveMsgMap[time].clear(); break;
+		default:	;
+	}
 	addTimeMsg (t, time, msg);
 }
 
@@ -93,8 +140,13 @@ void EventsAble::setTimeMsg (eventype t, const RationalInterval& time, SEventMes
 void EventsAble::addTimeMsg (eventype t, const RationalInterval& time, SEventMessage msg)
 {
 	if (msg) {
-		if (t == kTimeEnter)		fTimeEnterMsgMap[time].push_back(msg);
-		else if (t == kTimeLeave)	fTimeLeaveMsgMap[time].push_back(msg);
+		switch (t) {
+			case kTimeEnter:	fTimeEnterMsgMap[time].push_back(msg); break;
+			case kTimeLeave:	fTimeLeaveMsgMap[time].push_back(msg); break;
+			case kDurEnter:		fDurEnterMsgMap[time].push_back(msg); break;
+			case kDurLeave:		fDurLeaveMsgMap[time].push_back(msg); break;
+			default:	;
+		}
 	}
 }
 
@@ -136,15 +188,26 @@ const vector<SEventMessage>& EventsAble::getMessages (eventype t) const
 const vector<SEventMessage>& EventsAble::getTimeMsgs (eventype t, const RationalInterval& time) const
 {
 	_TimeMsgMap::const_iterator i, end;
-	if (t == kTimeEnter) {
-		i = fTimeEnterMsgMap.find(time);
-		end = fTimeEnterMsgMap.end();
+	switch (t) {
+		case kTimeEnter:	
+			i	= fTimeEnterMsgMap.find(time);
+			end = fTimeEnterMsgMap.end();
+			break;
+		case kTimeLeave:
+			i	= fTimeLeaveMsgMap.find(time);
+			end = fTimeLeaveMsgMap.end();
+			break;
+		case kDurEnter:
+			i	= fDurEnterMsgMap.find(time);
+			end = fDurEnterMsgMap.end();
+			break;
+		case kDurLeave:
+			i	= fDurLeaveMsgMap.find(time);
+			end = fDurLeaveMsgMap.end();
+			break;
+		default:
+			return _static_nomsgs;
 	}
-	else if (t == kTimeLeave) {
-		i = fTimeLeaveMsgMap.find(time);
-		end = fTimeLeaveMsgMap.end();
-	}
-	else return _static_nomsgs;
 	if (i != end)
 		return i->second;
 	return _static_nomsgs;
@@ -245,6 +308,12 @@ IMessageList EventsAble::getWatch (const char* address) const
 	for (_TimeMsgMap::const_iterator i = fTimeLeaveMsgMap.begin(); i != fTimeLeaveMsgMap.end(); i++) {
 		getMsgs (address, kTimeLeaveStr, i->first, i->second, list);
 	}
+	for (_TimeMsgMap::const_iterator i = fDurEnterMsgMap.begin(); i != fDurEnterMsgMap.end(); i++) {
+		getMsgs (address, kDurEnterStr, i->first, i->second, list);
+	}
+	for (_TimeMsgMap::const_iterator i = fDurLeaveMsgMap.begin(); i != fDurLeaveMsgMap.end(); i++) {
+		getMsgs (address, kDurLeaveStr, i->first, i->second, list);
+	}
 	for (_FileMsgMap::const_iterator i = fFileMessageMap.begin(); i != fFileMessageMap.end(); i++) {
 		getMsgs (address, kFileStr, i->first, i->second, list);
 	}
@@ -264,6 +333,8 @@ const char* EventsAble::type2string (eventype type)
 		case kFile:			return kFileStr;
 		case kTimeEnter:	return kTimeEnterStr;
 		case kTimeLeave: 	return kTimeLeaveStr;
+		case kDurEnter:		return kDurEnterStr;
+		case kDurLeave: 	return kDurLeaveStr;
 		case kNewElement: 	return kNewElementStr;
 		default: return "";
 	}
@@ -282,6 +353,8 @@ void EventsAble::init ()
 		fTypeStr[kFileStr]		= kFile;
 		fTypeStr[kTimeEnterStr]	= kTimeEnter;
 		fTypeStr[kTimeLeaveStr]	= kTimeLeave;
+		fTypeStr[kDurEnterStr]	= kDurEnter;
+		fTypeStr[kDurLeaveStr]	= kDurLeave;
 		fTypeStr[kNewElementStr]= kNewElement;
 	}
 }

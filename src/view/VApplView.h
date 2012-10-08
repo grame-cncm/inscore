@@ -51,6 +51,8 @@ class Master;
 class VApplView : public VDummyObjectView
 {
 	public :
+		using VDummyObjectView::updateView;
+		
 				 VApplView() {}
 		virtual ~VApplView() {}
 		

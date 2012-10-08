@@ -57,6 +57,8 @@ class VGuidoItemView: public VGraphicsItemView
 	IQGuidoGraphicsItem* fGuidoItem;
 
 	public :
+		using VGraphicsItemView::updateView;
+		using VGraphicsItemView::updateLocalMapping;
 
 		VGuidoItemView(QGraphicsScene * scene, const IGuidoCode*);
 		virtual ~VGuidoItemView() {}
@@ -66,13 +68,13 @@ class VGuidoItemView: public VGraphicsItemView
 
 	protected:
 		/// update to guido code i.e. update ar and gr handlers
-		bool						gmnUpdate (IGuidoCode* guidoCode);
+		bool		gmnUpdate (IGuidoCode* guidoCode);
 		/// update the page format
-		void						pageFormatUpdate (IGuidoCode* guidoCode);
+		void		pageFormatUpdate (IGuidoCode* guidoCode);
 		/// computes the rolled to unrolled time mapping
-		SRelativeTimeSegmentation	timeMapUpdate (SRelativeTime2RelativeTimeMapping& map);
+		void		timeMapUpdate (SRelativeTime2RelativeTimeMapping& map);
 		/// computes the time to graphic mapping
-		void						graphMapUpdate (IGuidoCode* guidoCode, SRelativeTime2RelativeTimeMapping& map, SRelativeTimeSegmentation& timeseg);
+		void		graphMapUpdate (IGuidoCode* guidoCode, SRelativeTime2RelativeTimeMapping& map);
 		
 		GuidoMapCollector * getMapBuilder (const std::string& mapName) const;
 };

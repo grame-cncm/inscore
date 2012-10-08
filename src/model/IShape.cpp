@@ -27,7 +27,7 @@
 #include "IMessage.h"
 #include "IAppl.h"
 #include "Updater.h"
-#include "segment2relativetimereader.h"
+//#include "segment2relativetimereader.h"
 
 using namespace std;
 

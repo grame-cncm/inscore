@@ -41,7 +41,7 @@ namespace inscore
 
 class Updater;
 class ITextFile;
-typedef class SMARTP<ITextFile>	SITextFile;
+typedef class libmapping::SMARTP<ITextFile>	SITextFile;
 //--------------------------------------------------------------------------
 /*!
 	\brief a text element based on a file

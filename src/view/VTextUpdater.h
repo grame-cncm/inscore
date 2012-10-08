@@ -43,7 +43,7 @@ namespace inscore
 */
 
 class IObject;
-typedef class SMARTP<IObject>	SIObject;
+typedef class libmapping::SMARTP<IObject>	SIObject;
 
 //--------------------------------------------------------------------------
 /// \brief a textual view of the model state
@@ -52,7 +52,9 @@ class export VTextUpdater : public ViewUpdater
 	std::ostream&	fOutStream;
 	
 	public :
-		static SMARTP<VTextUpdater> create(std::ostream& out)	{ return new VTextUpdater(out); }
+		using ViewUpdater::updateTo;
+
+		static libmapping::SMARTP<VTextUpdater> create(std::ostream& out)	{ return new VTextUpdater(out); }
 
 		virtual void updateTo (IObject* model, const Master* master);
 		virtual void updateTo (IAppl*, const Master* master);
@@ -76,7 +78,7 @@ class export VTextUpdater : public ViewUpdater
 
 		virtual void print (IObject* model, const Master* master);
 };
-typedef class SMARTP<VTextUpdater>	SVTextUpdater;
+typedef class libmapping::SMARTP<VTextUpdater>	SVTextUpdater;
 
 /*!@} */
 
