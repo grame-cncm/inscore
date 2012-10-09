@@ -66,6 +66,7 @@ DIGIT	[0-9]
 LETTER  [a-zA-Z]
 STARTID [_a-zA-Z]
 IDCHAR  [-_a-zA-Z0-9]
+HOSTCHAR [-a-zA-Z0-9]
 
 RECHAR  [-_a-zA-Z0-9?+*]
 RESTART [_a-zA-Z?+*]
@@ -100,284 +101,284 @@ EOL		[\x0a\x0d]
  /* ----------------------------------------- */
  /*	application messages */
  /* ----------------------------------------- */
-"hello"			return HELLO;
-"load"			return LOAD;
-"require"		return REQUIRE;
-"quit"			return QUIT;
-"mouse"			return MOUSE;
-"rootPath"		return ROOTPATH;
-"defaultShow"	return DEFAULTSHOW;
+"hello"			yyextra->fText = yytext; return HELLO;
+"load"			yyextra->fText = yytext; return LOAD;
+"require"		yyextra->fText = yytext; return REQUIRE;
+"quit"			yyextra->fText = yytext; return QUIT;
+"mouse"			yyextra->fText = yytext; return MOUSE;
+"rootPath"		yyextra->fText = yytext; return ROOTPATH;
+"defaultShow"	yyextra->fText = yytext; return DEFAULTSHOW;
 
-"port"			return PORT;
-"outport"		return OUTPORT;
-"errport"		return ERRPORT;
-"rate"			return RATE;
+"port"			yyextra->fText = yytext; return PORT;
+"outport"		yyextra->fText = yytext; return OUTPORT;
+"errport"		yyextra->fText = yytext; return ERRPORT;
+"rate"			yyextra->fText = yytext; return RATE;
 
-"startBench"	return STARTBENCH;
-"stopBench"		return STOPBENCH;
-"resetBench"	return RESETBENCH;
-"writeBench"	return WRITEBENCH;
+"startBench"	yyextra->fText = yytext; return STARTBENCH;
+"stopBench"		yyextra->fText = yytext; return STOPBENCH;
+"resetBench"	yyextra->fText = yytext; return RESETBENCH;
+"writeBench"	yyextra->fText = yytext; return WRITEBENCH;
 
  /* ----------------------------------------- */
  /*	boolean */
  /* ----------------------------------------- */
-"yes"		return YES;
-"no"		return NO;
+"yes"		yyextra->fText = yytext; return YES;
+"no"		yyextra->fText = yytext; return NO;
 
  /* ----------------------------------------- */
  /*	application vnode (debug) */
  /* ----------------------------------------- */
-"osc"		return OSCDBG;
+"osc"		yyextra->fText = yytext; return OSCDBG;
 
  /* ----------------------------------------- */
  /*	(file) watcher messages (should become obsolete) */
  /* ----------------------------------------- */
-"add"		return ADD;
-"remove"	return REMOVE;
-"clear"		return CLEAR;
+"add"		yyextra->fText = yytext; return ADD;
+"remove"	yyextra->fText = yytext; return REMOVE;
+"clear"		yyextra->fText = yytext; return CLEAR;
 
  /* ----------------------------------------- */
  /*	mapping messages */
  /* ----------------------------------------- */
-"map"		return MAP;
-"map+"		return MAPPLUS;
-"mapf"		return MAPFILE;
+"map"		yyextra->fText = yytext; return MAP;
+"map+"		yyextra->fText = yytext; return MAPPLUS;
+"mapf"		yyextra->fText = yytext; return MAPFILE;
 
 
  /* ----------------------------------------- */
  /*	IGrid messages */
  /* ----------------------------------------- */
-"columns"	return COLUMNS;
-"rows"		return ROWS;
-"xborder"	return XBORDER;
-"yborder"	return YBORDER;
-"order"		return ORDER;
+"columns"	yyextra->fText = yytext; return COLUMNS;
+"rows"		yyextra->fText = yytext; return ROWS;
+"xborder"	yyextra->fText = yytext; return XBORDER;
+"yborder"	yyextra->fText = yytext; return YBORDER;
+"order"		yyextra->fText = yytext; return ORDER;
 
  /* ----------------------------------------- */
  /* guido specific messages */
  /* ----------------------------------------- */
-"page"			return PAGE;
-"dpage"			return DPAGE;
-"pageFormat"	return PAGEFORMAT;
+"page"			yyextra->fText = yytext; return PAGE;
+"dpage"			yyextra->fText = yytext; return DPAGE;
+"pageFormat"	yyextra->fText = yytext; return PAGEFORMAT;
 
 
  /* ----------------------------------------- */
  /*	common messages */
  /* ----------------------------------------- */
-"alias"		return ALIAS;
-"set"		return SET;
-"get"		return GET;
-"del"		return DEL;
-"export"	return EXPORT;
-"rename"	return RENAME;
-"save"		return SAVE;
-"watch"		return WATCH;
-"watch+"	return WATCHPLUS;
-"push"		return PUSH;
-"pop"		return POP;
+"alias"		yyextra->fText = yytext; return ALIAS;
+"set"		yyextra->fText = yytext; return SET;
+"get"		yyextra->fText = yytext; return GET;
+"del"		yyextra->fText = yytext; return DEL;
+"export"	yyextra->fText = yytext; return EXPORT;
+"rename"	yyextra->fText = yytext; return RENAME;
+"save"		yyextra->fText = yytext; return SAVE;
+"watch"		yyextra->fText = yytext; return WATCH;
+"watch+"	yyextra->fText = yytext; return WATCHPLUS;
+"push"		yyextra->fText = yytext; return PUSH;
+"pop"		yyextra->fText = yytext; return POP;
 
  /* ----------------------------------------- */
  /*	common color messages */
  /* ----------------------------------------- */
-"rgb"			return RGB;
-"red"			return RED;
-"green"			return GREEN;
-"blue"			return BLUE;
-"alpha"			return ALPHA;
-"hsb"			return HSB;
-"hue"			return HUE;
-"saturation"	return SATURATION;
-"brightness"	return BRIGHTNESS;
-"drgb"			return DRGB;
-"dred"			return DRED;
-"dgreen"		return DGREEN;
-"dblue"			return DBLUE;
-"dalpha"		return DALPHA;
-"dhsb"			return DHSB;
-"dhue"			return DHUE;
-"dsaturation"	return DSATURATION;
-"dbrightness"	return DBRIGHTNESS;
+"rgb"			yyextra->fText = yytext; return RGB;
+"red"			yyextra->fText = yytext; return RED;
+"green"			yyextra->fText = yytext; return GREEN;
+"blue"			yyextra->fText = yytext; return BLUE;
+"alpha"			yyextra->fText = yytext; return ALPHA;
+"hsb"			yyextra->fText = yytext; return HSB;
+"hue"			yyextra->fText = yytext; return HUE;
+"saturation"	yyextra->fText = yytext; return SATURATION;
+"brightness"	yyextra->fText = yytext; return BRIGHTNESS;
+"drgb"			yyextra->fText = yytext; return DRGB;
+"dred"			yyextra->fText = yytext; return DRED;
+"dgreen"		yyextra->fText = yytext; return DGREEN;
+"dblue"			yyextra->fText = yytext; return DBLUE;
+"dalpha"		yyextra->fText = yytext; return DALPHA;
+"dhsb"			yyextra->fText = yytext; return DHSB;
+"dhue"			yyextra->fText = yytext; return DHUE;
+"dsaturation"	yyextra->fText = yytext; return DSATURATION;
+"dbrightness"	yyextra->fText = yytext; return DBRIGHTNESS;
 
  /* ----------------------------------------- */
  /*	common position messages */
  /* ----------------------------------------- */
-"x"			return X;
-"y"			return Y;
-"z"			return Z;
-"angle"		return ANGLE;
-"scale"		return SCALE;
-"xorigin"	return XORIGIN;
-"yorigin"	return YORIGIN;
-"dx"		return DX;
-"dy"		return DY;
-"dz"		return DZ;
-"dangle"	return DANGLE;
-"dscale"	return DSCALE;
-"dxorigin"	return DXORIGIN;
-"dyorigin"	return DYORIGIN;
+"x"			yyextra->fText = yytext; return X;
+"y"			yyextra->fText = yytext; return Y;
+"z"			yyextra->fText = yytext; return Z;
+"angle"		yyextra->fText = yytext; return ANGLE;
+"scale"		yyextra->fText = yytext; return SCALE;
+"xorigin"	yyextra->fText = yytext; return XORIGIN;
+"yorigin"	yyextra->fText = yytext; return YORIGIN;
+"dx"		yyextra->fText = yytext; return DX;
+"dy"		yyextra->fText = yytext; return DY;
+"dz"		yyextra->fText = yytext; return DZ;
+"dangle"	yyextra->fText = yytext; return DANGLE;
+"dscale"	yyextra->fText = yytext; return DSCALE;
+"dxorigin"	yyextra->fText = yytext; return DXORIGIN;
+"dyorigin"	yyextra->fText = yytext; return DYORIGIN;
 
-"shear"		return SHEAR;
-"rotatex"	return ROTATEX;
-"rotatey"	return ROTATEY;
-"rotatez"	return ROTATEZ;
-"show"		return SHOW;
-"effect"	return EFFECT;
+"shear"		yyextra->fText = yytext; return SHEAR;
+"rotatex"	yyextra->fText = yytext; return ROTATEX;
+"rotatey"	yyextra->fText = yytext; return ROTATEY;
+"rotatez"	yyextra->fText = yytext; return ROTATEZ;
+"show"		yyextra->fText = yytext; return SHOW;
+"effect"	yyextra->fText = yytext; return EFFECT;
 
  /* ----------------------------------------- */
  /*	common date messages */
  /* ----------------------------------------- */
-"date"		return DATE;
-"duration"	return DURATION;
-"ddate"		return DDATE;
-"dduration" return DDURATION;
-"clock"		return CLOCK;
-"durClock"	return DURCLOCK;
+"date"		yyextra->fText = yytext; return DATE;
+"duration"	yyextra->fText = yytext; return DURATION;
+"ddate"		yyextra->fText = yytext; return DDATE;
+"dduration" yyextra->fText = yytext; return DDURATION;
+"clock"		yyextra->fText = yytext; return CLOCK;
+"durClock"	yyextra->fText = yytext; return DURCLOCK;
 
  /* ----------------------------------------- */
  /*	common debug messages */
  /* ----------------------------------------- */
-"name"		return NAME;
+"name"		yyextra->fText = yytext; return NAME;
 
  /* ----------------------------------------- */
  /*	common rect shaped messages */
  /* ----------------------------------------- */
-"width"		return WIDTH;
-"height"	return HEIGHT;
+"width"		yyextra->fText = yytext; return WIDTH;
+"height"	yyextra->fText = yytext; return HEIGHT;
 
  /* ----------------------------------------- */
  /*	common shape messages */
  /* ----------------------------------------- */
-"penColor"		return PENCOLOR;
-"penAlpha"		return PENALPHA;
-"pendAlpha"		return PENDALPHA
-"penWidth"		return PENWIDTH;
-"penStyle"  	return PENSTYLE;
+"penColor"		yyextra->fText = yytext; return PENCOLOR;
+"penAlpha"		yyextra->fText = yytext; return PENALPHA;
+"pendAlpha"		yyextra->fText = yytext; return PENDALPHA
+"penWidth"		yyextra->fText = yytext; return PENWIDTH;
+"penStyle"  	yyextra->fText = yytext; return PENSTYLE;
 
  /* ----------------------------------------- */
  /*	scene messages */
  /* ----------------------------------------- */
-"new"			return NEW;
-"reset"			return RESET;
-"fullscreen"	return FULLSCREEN;
-"frameless"		return FRAMELESS;
-"absolutexy"	return ABSOLUTEXY; 
+"new"			yyextra->fText = yytext; return NEW;
+"reset"			yyextra->fText = yytext; return RESET;
+"fullscreen"	yyextra->fText = yytext; return FULLSCREEN;
+"frameless"		yyextra->fText = yytext; return FRAMELESS;
+"absolutexy"	yyextra->fText = yytext; return ABSOLUTEXY;
 
  /* ----------------------------------------- */
  /*	sync node messages */
  /* ----------------------------------------- */
-"*"				return WILDCARD;
+"*"				yyextra->fText = yytext; return WILDCARD;
 
  /* ----------------------------------------- */
  /*	signals messages */
  /* ----------------------------------------- */
-"default"			return DEFAULT;
-"size"	 			return SIZE;
-"\\[[0-9+\\"		return SIGSELECT;
-"\\[[0-9+~[0-9*\\"	return SIGSELECTMOD;
-"debug"				return DEBUG;
+"default"			yyextra->fText = yytext; return DEFAULT;
+"size"	 			yyextra->fText = yytext; return SIZE;
+"\\[[0-9+\\"		yyextra->fText = yytext; return SIGSELECT;
+"\\[[0-9+~[0-9*\\"	yyextra->fText = yytext; return SIGSELECTMOD;
+"debug"				yyextra->fText = yytext; return DEBUG;
 
  /* ----------------------------------------- */
  /*	video mapping */
  /* ----------------------------------------- */
-"videoMap"			return VIDEOMAP;
-"videoMapf"			return VIDEOMAPFILE;
+"videoMap"			yyextra->fText = yytext; return VIDEOMAP;
+"videoMapf"			yyextra->fText = yytext; return VIDEOMAPFILE;
 
 
  /* ----------------------------------------- */
  /*	objects types */
  /* ----------------------------------------- */
-"line"		return TLINE;
-"polygon"	return TPOLYGON;
-"rect"		return TRECT;
-"curve"		return TCURVE;
-"ellipse"	return TELLIPSE;
+"line"		yyextra->fText = yytext; return TLINE;
+"polygon"	yyextra->fText = yytext; return TPOLYGON;
+"rect"		yyextra->fText = yytext; return TRECT;
+"curve"		yyextra->fText = yytext; return TCURVE;
+"ellipse"	yyextra->fText = yytext; return TELLIPSE;
 
-"graph"		return TGRAPH;
-"fastgraph"	return TFASTGRAPH;
-"grid"		return TGRID;
+"graph"		yyextra->fText = yytext; return TGRAPH;
+"fastgraph"	yyextra->fText = yytext; return TFASTGRAPH;
+"grid"		yyextra->fText = yytext; return TGRID;
 
-"gmn"		return TGMN;
-"gmnf"		return TGMNFILE;
-"html"		return THTML;
-"htmlf"		return THTMLFILE;
-"svg"		return TSVG;
-"svgf"		return TSVGFILE;
-"txt"		return TTXT;
-"txtf"		return TTXTFILE;
+"gmn"		yyextra->fText = yytext; return TGMN;
+"gmnf"		yyextra->fText = yytext; return TGMNFILE;
+"html"		yyextra->fText = yytext; return THTML;
+"htmlf"		yyextra->fText = yytext; return THTMLFILE;
+"svg"		yyextra->fText = yytext; return TSVG;
+"svgf"		yyextra->fText = yytext; return TSVGFILE;
+"txt"		yyextra->fText = yytext; return TTXT;
+"txtf"		yyextra->fText = yytext; return TTXTFILE;
 
-"img"		return TIMG;
-"video"		return TVIDEO;
+"img"		yyextra->fText = yytext; return TIMG;
+"video"		yyextra->fText = yytext; return TVIDEO;
 
 
 
  /* ----------------------------------------- */
  /*	special get forms */
  /* ----------------------------------------- */
-"version"			return VERSION;
-"guido-version"		return GUIDOVERSION;
-"musicxml-version"	return MXMLVERSION;
+"version"			yyextra->fText = yytext; return VERSION;
+"guido-version"		yyextra->fText = yytext; return GUIDOVERSION;
+"musicxml-version"	yyextra->fText = yytext; return MXMLVERSION;
 
  /* special gmn get forms */
-"pageCount"			return PAGECOUNT;
-"pageDate"			return PAGEDATE;
+"pageCount"			yyextra->fText = yytext; return PAGECOUNT;
+"pageDate"			yyextra->fText = yytext; return PAGEDATE;
 
  /* special signal get forms */
-"dimension"			return DIMENSION;
+"dimension"			yyextra->fText = yytext; return DIMENSION;
 
  /* special faust plugin get forms */
-"in"				return IN;
-"out"				return OUT;
+"in"				yyextra->fText = yytext; return IN;
+"out"				yyextra->fText = yytext; return OUT;
 
  /* ----------------------------------------- */
  /*	effects */
  /* ----------------------------------------- */
-"none"				return NONE;
-"blur"				return BLUR;
-"colorize"			return COLORIZE; 
-"shadow"			return SHADOW;
+"none"				yyextra->fText = yytext; return NONE;
+"blur"				yyextra->fText = yytext; return BLUR;
+"colorize"			yyextra->fText = yytext; return COLORIZE;
+"shadow"			yyextra->fText = yytext; return SHADOW;
 
  /* ----------------------------------------- */
  /*	blur hint */
  /* ----------------------------------------- */
-"performance"		return BPERFORMANCE;
-"quality"			return BQUALITY;
-"animation"			return BANIMATION;
+"performance"		yyextra->fText = yytext; return BPERFORMANCE;
+"quality"			yyextra->fText = yytext; return BQUALITY;
+"animation"			yyextra->fText = yytext; return BANIMATION;
 
  /* ----------------------------------------- */
  /*	pen styles */
  /* ----------------------------------------- */
-"solid"				return PENSOLID;
-"dash"				return PENDASH;
-"dot"				return PENDOT;
-"dashDot"			return PENDASHDOT;
-"dashDotDot"		return PENDASHDOTDOT;
+"solid"				yyextra->fText = yytext; return PENSOLID;
+"dash"				yyextra->fText = yytext; return PENDASH;
+"dot"				yyextra->fText = yytext; return PENDOT;
+"dashDot"			yyextra->fText = yytext; return PENDASHDOT;
+"dashDotDot"		yyextra->fText = yytext; return PENDASHDOTDOT;
 
  /* ----------------------------------------- */
  /*	sync align and stretch */
  /* ----------------------------------------- */
-"syncOver"		return SYNCOVER;
-"syncTop"		return SYNCTOP;
-"syncBottom"	return SYNCBOTTOM;
-"h"				return HSTRETCH;
-"v"				return VSTRETCH;
-"hv"			return HVSTRETCH;
+"syncOver"		yyextra->fText = yytext; return SYNCOVER;
+"syncTop"		yyextra->fText = yytext; return SYNCTOP;
+"syncBottom"	yyextra->fText = yytext; return SYNCBOTTOM;
+"h"				yyextra->fText = yytext; return HSTRETCH;
+"v"				yyextra->fText = yytext; return VSTRETCH;
+"hv"			yyextra->fText = yytext; return HVSTRETCH;
 
  /* ----------------------------------------- */
  /*	interaction messages */
  /* ----------------------------------------- */
-"mouseDown"		return MOUSEDOWN;
-"mouseUp"		return MOUSEUP;
-"mouseEnter"	return MOUSEENTER;
-"mouseLeave"	return MOUSELEAVE;
-"mouseMove"		return MOUSEMOVE;
-"doubleClick"	return DOUBLECLICK;
+"mouseDown"		yyextra->fText = yytext; return MOUSEDOWN;
+"mouseUp"		yyextra->fText = yytext; return MOUSEUP;
+"mouseEnter"	yyextra->fText = yytext; return MOUSEENTER;
+"mouseLeave"	yyextra->fText = yytext; return MOUSELEAVE;
+"mouseMove"		yyextra->fText = yytext; return MOUSEMOVE;
+"doubleClick"	yyextra->fText = yytext; return DOUBLECLICK;
 
-"timeEnter"		return TIMEENTER;
-"timeLeave"		return TIMELEAVE;
-"durEnter"		return DURENTER;
-"durLeave"		return DURLEAVE;
+"timeEnter"		yyextra->fText = yytext; return TIMEENTER;
+"timeLeave"		yyextra->fText = yytext; return TIMELEAVE;
+"durEnter"		yyextra->fText = yytext; return DURENTER;
+"durLeave"		yyextra->fText = yytext; return DURLEAVE;
 
-"newElement"	return NEWELEMENT;
+"newElement"	yyextra->fText = yytext; return NEWELEMENT;
 
 
  /* ----------------------------------------- */
@@ -393,9 +394,15 @@ EOL		[\x0a\x0d]
 <COMMENT>"*)"		if (--nested==0) BEGIN INITIAL;
 {SPACE}*"(*"		nested=1; BEGIN COMMENT;
 
+ /* ----------------------------------------- */
+ /*	identifiers */
+ /* ----------------------------------------- */
 {STARTID}{IDCHAR}*						yyextra->fText = yytext; return IDENTIFIER;		/* identifiers */
 {LETTER}{IDCHAR}*":"{LETTER}{IDCHAR}*	yyextra->fText = yytext; return MAPIDENTIFIER;	/* identifiers with map name */
 
+ /* ----------------------------------------- */
+ /*	quoted strings */
+ /* ----------------------------------------- */
 "\""						BEGIN DQSTR;
 "'"							BEGIN QSTR;
 <DQSTR>([^\"]|"\\\"")*		yyextra->fText = unescape(yytext); return STRING;
@@ -403,6 +410,10 @@ EOL		[\x0a\x0d]
 <DQSTR>\"					BEGIN INITIAL;
 <QSTR>'						BEGIN INITIAL;
 
+
+ /* ----------------------------------------- */
+ /*	lang sections */
+ /* ----------------------------------------- */
 "<?"{SPACE}*"lua"			BEGIN LUASECTION;
 <LUASECTION>"?>"			BEGIN INITIAL;
 <LUASECTION>({EOL}|"?"[^>]|[^?])*	yyextra->fText = unescape(yytext); return LUASCRIPT;
@@ -411,7 +422,14 @@ EOL		[\x0a\x0d]
 <JSECTION>"?>"				BEGIN INITIAL;
 <JSECTION>({EOL}|"?"[^>]|[^?])*		yyextra->fText = unescape(yytext); return JSCRIPT;
 
+ /* ----------------------------------------- */
+ /*	hostname part */
+ /* ----------------------------------------- */
+{HOSTCHAR}+				return HOSTNAME;
 
+ /* ----------------------------------------- */
+ /*	regular expressions */
+ /* ----------------------------------------- */
 {RESTART}{RECHAR}*				yyextra->fText = yytext; return REGEXP;			/* regular expression */
 {RESTART}*"["..*"]"{RECHAR}*	yyextra->fText = yytext; return REGEXP;			/* regular expression */
 
