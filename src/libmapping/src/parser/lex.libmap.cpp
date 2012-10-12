@@ -188,7 +188,7 @@ typedef size_t yy_size_t;
      */
     #define  YY_LESS_LINENO(n) \
             do { \
-                yy_size_t yyl;\
+                int yyl;\
                 for ( yyl = n; yyl < yyleng; ++yyl )\
                     if ( yytext[yyl] == '\n' )\
                         --yylineno;\
@@ -486,6 +486,8 @@ static yyconst flex_int32_t yy_rule_can_match_eol[27] =
 #line 1 "mapping.l"
 #line 12 "mapping.l"
 
+#define YY_NO_UNISTD_H
+
 #include "TInterval.h"
 #include "TSegment.h"
 #include "rational.h"
@@ -509,7 +511,7 @@ static yyconst flex_int32_t yy_rule_can_match_eol[27] =
 
 
 
-#line 513 "lex.libmap.cpp"
+#line 515 "lex.libmap.cpp"
 
 #define INITIAL 0
 #define CMNTLN 1
@@ -750,9 +752,9 @@ YY_DECL
 	register int yy_act;
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
-#line 43 "mapping.l"
+#line 45 "mapping.l"
 
-#line 756 "lex.libmap.cpp"
+#line 758 "lex.libmap.cpp"
 
     yylval = yylval_param;
 
@@ -832,7 +834,7 @@ yy_find_action:
 
 		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
 			{
-			yy_size_t yyl;
+			int yyl;
 			for ( yyl = yyg->yy_more_len; yyl < yyleng; ++yyl )
 				if ( yytext[yyl] == '\n' )
 					   
@@ -855,143 +857,143 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 44 "mapping.l"
+#line 46 "mapping.l"
 yyextra->fInt = atoi(yytext); return NUMBER;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 45 "mapping.l"
+#line 47 "mapping.l"
 yyextra->fInt = atoi(yytext); return NUMBER;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 46 "mapping.l"
+#line 48 "mapping.l"
 yyextra->fFloat = atof(yytext); return FLOAT;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 47 "mapping.l"
+#line 49 "mapping.l"
 yyextra->fFloat = atof(yytext); return FLOAT;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 48 "mapping.l"
+#line 50 "mapping.l"
 yyextra->fFloat = atof(yytext); return FLOAT;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 49 "mapping.l"
+#line 51 "mapping.l"
 yyextra->fFloat = atof(yytext); return FLOAT;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 50 "mapping.l"
+#line 52 "mapping.l"
 yyextra->fFloat = atof(yytext); return FLOAT;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 51 "mapping.l"
+#line 53 "mapping.l"
 yyextra->fFloat = atof(yytext); return FLOAT;
 	YY_BREAK
 case 9:
 /* rule 9 can match eol */
 YY_RULE_SETUP
-#line 53 "mapping.l"
+#line 55 "mapping.l"
 BEGIN CMNTLN;
 	YY_BREAK
 case 10:
 /* rule 10 can match eol */
 YY_RULE_SETUP
-#line 54 "mapping.l"
+#line 56 "mapping.l"
 BEGIN CMNTLN;
 	YY_BREAK
 case 11:
 /* rule 11 can match eol */
 YY_RULE_SETUP
-#line 55 "mapping.l"
+#line 57 "mapping.l"
 BEGIN CMNTLN;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 56 "mapping.l"
+#line 58 "mapping.l"
 
 	YY_BREAK
 case 13:
 /* rule 13 can match eol */
 YY_RULE_SETUP
-#line 57 "mapping.l"
+#line 59 "mapping.l"
 BEGIN INITIAL;
 	YY_BREAK
 case 14:
 /* rule 14 can match eol */
 YY_RULE_SETUP
-#line 59 "mapping.l"
+#line 61 "mapping.l"
 
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 60 "mapping.l"
+#line 62 "mapping.l"
 yyextra->fNested++; 
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 61 "mapping.l"
+#line 63 "mapping.l"
 if (--yyextra->fNested==0) BEGIN INITIAL;
 	YY_BREAK
 case 17:
 /* rule 17 can match eol */
 YY_RULE_SETUP
-#line 62 "mapping.l"
+#line 64 "mapping.l"
 yyextra->fNested=1; BEGIN COMMENT;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 64 "mapping.l"
+#line 66 "mapping.l"
 return RATIONAL_BAR;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 65 "mapping.l"
+#line 67 "mapping.l"
 return SEGMENT_START;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 66 "mapping.l"
+#line 68 "mapping.l"
 return SEGMENT_END;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 67 "mapping.l"
+#line 69 "mapping.l"
 return INTERVAL_BAR;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 68 "mapping.l"
+#line 70 "mapping.l"
 return SEP;
 	YY_BREAK
 case 23:
 /* rule 23 can match eol */
 YY_RULE_SETUP
-#line 71 "mapping.l"
+#line 73 "mapping.l"
 yylloc->first_column=0; /* ignore */
 	YY_BREAK
 case 24:
 /* rule 24 can match eol */
 YY_RULE_SETUP
-#line 72 "mapping.l"
+#line 74 "mapping.l"
 /* eat up space */
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 73 "mapping.l"
+#line 75 "mapping.l"
 return ERROR;	/* any extra text generates errors */
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 75 "mapping.l"
+#line 77 "mapping.l"
 ECHO;
 	YY_BREAK
-#line 995 "lex.libmap.cpp"
+#line 997 "lex.libmap.cpp"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(CMNTLN):
 case YY_STATE_EOF(COMMENT):
@@ -2137,7 +2139,7 @@ void libmapfree (void * ptr , yyscan_t yyscanner)
 
 #define YYTABLES_NAME "yytables"
 
-#line 75 "mapping.l"
+#line 77 "mapping.l"
 
 
 
