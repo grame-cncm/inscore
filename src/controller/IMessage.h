@@ -196,6 +196,12 @@ class IMessage : public Message, public libmapping::smartable
 		\param val the parameter
 	*/
 	void	add( argPtr val )				{ fArguments.push_back( val ); }
+	
+	/*!
+		\brief adds a set of parameter to the message
+		\param params the parameters
+	*/
+	void	add( const argslist& params );
 
 	/*!
 		\brief sets the message address

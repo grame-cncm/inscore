@@ -91,6 +91,14 @@ static string escape (const string& str)
 }
 
 //--------------------------------------------------------------------------
+void IMessage::add( const argslist& params )
+{ 
+	for (unsigned int i=0; i<params.size(); i++) {
+		fArguments.push_back( params[i] );
+	}
+}
+
+//--------------------------------------------------------------------------
 bool IMessage::param(int i, rational& val) const
 { 
 	if (size() < (i+2)) return false;
