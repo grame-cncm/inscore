@@ -1,6 +1,8 @@
 todo
 ----
 
+- corriger le problème graphic sync incorrecte parce que la taille n'est pas disponible la première fois
+
 - revoir le traitement des messages get (cf watch)
 - revoir la gestion de iappl::oscdebug -> static ?
 [ok] IObject messages click et select -> deprecated
