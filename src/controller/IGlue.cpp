@@ -263,7 +263,9 @@ void IGlue::viewUpdate()		{ if (fViewUpdater) fViewUpdater->update (fModel); }
 //--------------------------------------------------------------------------
 void IGlue::timerEvent ( QTimerEvent *)
 {
-	if (fMsgStack->size()) {
+	int n = fMsgStack->size();
+	if (n) {
+		fModel->setReceivedOSC(n);
 //		QMutexLocker locker (&fTimeViewMutex);
 
 		timebench ("model", modelUpdate());

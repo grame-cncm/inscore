@@ -72,4 +72,28 @@ ostream& operator << (ostream& out, const SIApplDebug& o)
 	return out;
 }
 
+//--------------------------------------------------------------------------
+// IAppl statistics
+//--------------------------------------------------------------------------
+IMessageList IApplStat::getSetMsg () const
+{
+	IMessageList outMsgs;
+	IMessage * msg = new IMessage (getOSCAddress(), "osc");
+	*msg << fMsgCount;
+	outMsgs += msg;
+	return outMsgs;
+}
+
+//--------------------------------------------------------------------------
+void IApplStat::accept (Updater* u)
+{
+	u->updateTo(this);
+}
+
+//--------------------------------------------------------------------------
+IApplStat::IApplStat(IObject * parent) : IVNode("stats", parent), fMsgCount(0)
+{
+	fMsgHandlerMap["reset"]		= TMethodMsgHandler<IApplStat, void (IApplStat::*)(void)>::create(this, &IApplStat::reset);
+}
+
 }
