@@ -104,7 +104,7 @@ class IApplStat : public IVNode
 
 		/// \brief object \c 'get' without parameter form: gives the corresponding 'set' message list
 		virtual IMessageList getSetMsg () const;
-		void		reset()						{ fMsgCount = 0; }
+		void		reset();
 };
 
 

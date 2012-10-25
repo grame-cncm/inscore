@@ -46,7 +46,8 @@ class IMessage;
 class IMessageStack : public libmapping::smartable
 {
 	private:
-		fifo		 fMsgFifo;	
+		int			fReceivedCount;
+		fifo		fMsgFifo;	
 	public:
 		static libmapping::SMARTP<IMessageStack> create()			{ return new IMessageStack; }
 
@@ -68,6 +69,18 @@ class IMessageStack : public libmapping::smartable
 			\brief flushes the messages stack
 		*/
 		void		flush();	
+		/*!
+			\brief increments the count of received messages
+		*/
+		void		inc()			{ fReceivedCount++; }
+		/*!
+			\brief increments the count of received messages
+		*/
+		void		reset()			{ fReceivedCount = 0; }
+		/*!
+			\brief gives the count of received messages
+		*/
+		int			stat() const	{ return fReceivedCount; }
 	
 	protected:
 				 IMessageStack();

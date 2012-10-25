@@ -31,7 +31,7 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-IMessageStack::IMessageStack()	{ fifoinit(&fMsgFifo); }
+IMessageStack::IMessageStack() : fReceivedCount(0)	{ fifoinit(&fMsgFifo); }
 IMessageStack::~IMessageStack()	{ flush(); }
 	
 //--------------------------------------------------------------------------
