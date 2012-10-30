@@ -23,6 +23,7 @@
 
 */
 
+//#include <QMutexLocker>
 
 #include "IMessageStack.h"
 #include "IMessage.h"
@@ -32,15 +33,28 @@ namespace inscore
 
 //--------------------------------------------------------------------------
 IMessageStack::IMessageStack() : fReceivedCount(0)	{ fifoinit(&fMsgFifo); }
-IMessageStack::~IMessageStack()	{ flush(); }
+IMessageStack::~IMessageStack()	
+{ 
+	flush(); 
+}
 	
 //--------------------------------------------------------------------------
-int IMessageStack::size()					{ return fifosize(&fMsgFifo); } 
-void IMessageStack::push(IMessage* msg)		{ fifoput (&fMsgFifo, new fifocell(msg)); } 
+int IMessageStack::size() 
+{ 
+//	QMutexLocker locker (&fMutex);
+	return fifosize(&fMsgFifo); 
+} 
+
+void IMessageStack::push(IMessage* msg)	
+{ 
+//	QMutexLocker locker (&fMutex);
+	fifoput (&fMsgFifo, new fifocell(msg)); 
+} 
 
 //--------------------------------------------------------------------------
 IMessage* IMessageStack::pop()
 { 
+//	QMutexLocker locker (&fMutex);
 	fifocell * c = fifoget (&fMsgFifo);
 	IMessage* msg = 0;
 	if (c) {

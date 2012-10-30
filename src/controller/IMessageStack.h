@@ -27,6 +27,8 @@
 #ifndef __IMessageStack__
 #define __IMessageStack__
 
+//#include <QMutex>
+
 #include "lffifo.h"
 #include "smartpointer.h"
 
@@ -46,6 +48,7 @@ class IMessage;
 class IMessageStack : public libmapping::smartable
 {
 	private:
+//		QMutex		fMutex;					// this is to handle lffifo issue
 		int			fReceivedCount;
 		fifo		fMsgFifo;	
 	public:
