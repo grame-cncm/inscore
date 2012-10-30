@@ -246,6 +246,7 @@ IMessageList IAppl::getAll() const
 //--------------------------------------------------------------------------
 int IAppl::processMsg (const std::string& address, const std::string& addressTail, const IMessage* imsg)
 {
+	setReceivedOSC (1);
 	string head = address;
 	string tail = addressTail;
 	IMessage* msg = new IMessage (*imsg);
