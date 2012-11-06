@@ -41,7 +41,7 @@ bool IColor::getRGBA( const IMessage* msg, int& r, int& g, int& b, int& a)
 	float fr, fg, fb, fa = 1.;
 	a = 255;
 	if (msg->param(0, fr) && msg->param(1, fg) && msg->param(2, fb)) {
-		if ((n == 4) && !msg->param(3, fa)) return MsgHandler::kBadParameters;
+		if ((n == 4) && !msg->param(3, fa)) return false;
 		r = floatRGB2int(fr);
 		g = floatRGB2int(fg);
 		b = floatRGB2int(fb);
