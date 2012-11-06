@@ -25,6 +25,10 @@
 #include <iostream>
 #include "rational.h"
 
+#ifdef WIN32
+inline long lround(double x) { return long(floor(x + 0.5)); }
+#endif
+
 namespace libmapping 
 {
 
