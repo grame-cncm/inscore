@@ -1,12 +1,13 @@
 
 #CXXFLAGS := -I.. -I../../controller -I../../lib -I../../interface -I../../mapping -I../../model -I../../view -I../../scripting -I../../../lib/oscpack -arch i386 -DPARSERTEST
 
-CXXFLAGS := -DNO_OSCSTREAM -I.. -I../../controller -I../../lib -I../../interface -I../../mapping -I../../model -I../../view -I../../scripting -arch i386 -DPARSERTEST
-OBJ := ../ITLparser.o  ../../lib/rational.o ../../controller/IMessage.o  ../../scripting/TLoop.o ../../scripting/TLoopEval.o ../../scripting/TScripting.o testparser.o
-OSCPACK=""
+CXXFLAGS :=  -DV8ENGINE -I.. -I../../controller -I../../lib -I../../interface -I../../mapping -I../../model -I../../view -I../../scripting -I../../libmapping/package/libmapping -I../../../lib/oscpack -I../../../lib/javascript/v8/include -arch i386 -DPARSERTEST
+
+OBJ := ../ITLparser.o ../ITLparse.o ../ITLlex.o  ../../libmapping/src/misc/rational.o ../../controller/IMessage.o  ../../scripting/TScripting.o testparser.o ../../scripting/TLua.o ../../scripting/TV8Js.o ../../lib/ITLError.o ../../lib/OSCStream.o
+OSCPACK="../../../lib/oscpack/liboscpack.a"
 
 testparser: $(OBJ) 
-	g++ $(CXXFLAGS)  $(OBJ) $(OSCPACK) -o testparser
+	g++ $(CXXFLAGS)  $(OBJ) $(OSCPACK) -L/Users/fober/src/v8 -lv8 -llua -o testparser
 
 clean:
 	rm -f $(OBJ) testparser

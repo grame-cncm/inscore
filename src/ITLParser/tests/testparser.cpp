@@ -22,6 +22,7 @@
 */
 
 #include <iostream>
+#include <fstream>
 #include "ITLparser.h"
 #include "IMessage.h"
 #include "IMessageStream.h"
@@ -32,9 +33,10 @@ using namespace inscore;
 int main (int argc, char * argv[])
 {
 	if (argc > 1) {
-		ITLparser p;
+		ifstream in (argv[1]);
+		ITLparser p(&in, 1, 0, 0);
 		IMessageList* outMsgs;
-		outMsgs = p.readfile (argv[1]);
+		outMsgs = p.parse ();
 		if (outMsgs)
 			cout << *outMsgs;
 		else
