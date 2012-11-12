@@ -74,6 +74,7 @@ void TScripting::add (IMessageList* msgs)
 //--------------------------------------------------------------------------------------------
 // lua support
 //--------------------------------------------------------------------------------------------
+#ifdef LUA
 bool TScripting::luaEval (const char* script)
 {
 	if (fLua) {
@@ -92,10 +93,19 @@ bool TScripting::luaEval (const char* script)
 	else ITLErr << "lua is not available!" << ITLEndl;
 	return false;
 }
+#else
+bool TScripting::luaEval (const char* script)
+{
+	ITLErr << "lua is not available!" << ITLEndl;
+	return false;
+}
+#endif
+
 
 //--------------------------------------------------------------------------------------------
 // javascript support
 //--------------------------------------------------------------------------------------------
+#ifdef V8ENGINE
 bool TScripting::jsEval (const char* script, int lineno)
 {
 	if (fJavascript) {
@@ -114,6 +124,13 @@ bool TScripting::jsEval (const char* script, int lineno)
 	else ITLErr << "javascript is not available!" << ITLEndl;
 	return false;
 }
+#else
+bool TScripting::jsEval (const char* script, int lineno)
+{
+	ITLErr << "javascript is not available!" << ITLEndl;
+	return false;
+}
+#endif
 
 //--------------------------------------------------------------------------------------------
 Sbaseparam*	TScripting::resolve (const char* var)
