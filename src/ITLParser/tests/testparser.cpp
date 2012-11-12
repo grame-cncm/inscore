@@ -26,7 +26,6 @@
 #include "ITLparser.h"
 #include "IMessage.h"
 #include "IMessageStream.h"
-#include "TScripting.h"
 
 using namespace std;
 using namespace inscore;
@@ -39,7 +38,7 @@ int main (int argc, char * argv[])
 {
 	if (argc > 1) {
 		ifstream in (argv[1]);
-		ITLparser p(&in, 1, &gJavascript, &gLua);
+		ITLparser p(&in, 1, 0, 0);
 		IMessageList* outMsgs;
 		outMsgs = p.parse ();
 		if (outMsgs)
