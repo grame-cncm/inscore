@@ -10,6 +10,8 @@
 
 %{
 
+#define YY_NO_UNISTD_H
+
 #include "TInterval.h"
 #include "TSegment.h"
 #include "rational.h"

@@ -24,12 +24,15 @@
 */
 
 #include "IApplVNodes.h"
+#include "IMessageStack.h"
 #include "Updater.h"
 
 using namespace std;
 
 namespace inscore
 {
+
+extern SIMessageStack gMsgStack;
 
 //--------------------------------------------------------------------------
 IApplDebug::IApplDebug(IObject * parent) : IObjectDebug(parent), fOSCDebug(true)
@@ -70,6 +73,33 @@ ostream& operator << (ostream& out, const SIApplDebug& o)
 {
 	if (o) o->print(out);
 	return out;
+}
+
+//--------------------------------------------------------------------------
+// IAppl statistics
+//--------------------------------------------------------------------------
+IMessageList IApplStat::getSetMsg () const
+{
+	IMessageList outMsgs;
+	IMessage * msg = new IMessage (getOSCAddress(), "");
+	*msg << string("osc") << fMsgCount << string("udp") << gMsgStack->stat();
+	outMsgs += msg;
+	return outMsgs;
+}
+
+//--------------------------------------------------------------------------
+void IApplStat::accept (Updater* u)
+{
+	u->updateTo(this);
+}
+
+//--------------------------------------------------------------------------
+void IApplStat::reset()				{ fMsgCount = 0; gMsgStack->reset(); }
+
+//--------------------------------------------------------------------------
+IApplStat::IApplStat(IObject * parent) : IVNode("stats", parent), fMsgCount(0)
+{
+	fMsgHandlerMap["reset"]		= TMethodMsgHandler<IApplStat, void (IApplStat::*)(void)>::create(this, &IApplStat::reset);
 }
 
 }

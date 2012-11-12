@@ -183,6 +183,9 @@ string IAppl::checkRootPath(const std::string& s)
 }
 
 //--------------------------------------------------------------------------
+void IAppl::setReceivedOSC(int n)		{ fApplStat->count(n); }
+
+//--------------------------------------------------------------------------
 void IAppl::setRootPath(const std::string& s)
 {
 	IAppl::fRootPath = checkRootPath(s);
@@ -202,8 +205,10 @@ void IAppl::print (ostream& out) const
 void IAppl::createVirtualNodes()
 {
 	fApplDebug = IApplDebug::create(this);
+	fApplStat  = IApplStat::create(this);					// statistics
 	fDebug = fApplDebug;
 	add ( fDebug );
+	add ( fApplStat );
 }
 
 //--------------------------------------------------------------------------
@@ -241,6 +246,7 @@ IMessageList IAppl::getAll() const
 //--------------------------------------------------------------------------
 int IAppl::processMsg (const std::string& address, const std::string& addressTail, const IMessage* imsg)
 {
+	setReceivedOSC (1);
 	string head = address;
 	string tail = addressTail;
 	IMessage* msg = new IMessage (*imsg);

@@ -7,3 +7,6 @@ OK - extension of the time related events to duration
 OK - absolute coordinates in pixels for the scene
 OK - save/restaure : save empile le comportement existant d'un objet, 
   ce qui permet ensuite de le modifier temporairement et ensuite de faire un restaure (YO)
+- embarquer le compilateur faust pour générer des plugins de manière dynamique
+- architecture de plugins (compilateur faust, gesture follower)
+- improve documentation for signals (with examples)

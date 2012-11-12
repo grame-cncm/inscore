@@ -87,6 +87,7 @@ void IOSCListener::ProcessMessage( const osc::ReceivedMessage& m, const IpEndpoi
 		i++;
 	}
 	fMsgStack->push (msg);
+	fMsgStack->inc();
 }
 
 } // end namespoace

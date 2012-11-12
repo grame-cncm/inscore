@@ -147,6 +147,7 @@ bool ISignal::putAt (const IMessage* msg, int index, int step)
 		if ((value < err) && (value > -err))	// catch nan and inf input
 			values.push_back(value);
 	}
+	if (!values.size()) return false;
 
 	if (!dimension()) *this << TSignal::create(name(), values.size());
 	SParallelSignal s = getProjection(index, step);
