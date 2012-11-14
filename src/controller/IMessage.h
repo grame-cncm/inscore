@@ -131,7 +131,19 @@ class IMessage : public Message, public libmapping::smartable
 //static unsigned long freed;
 	public:
 		typedef libmapping::SMARTP<baseparam>		argPtr;		///< a message argument ptr type
-		typedef std::vector<argPtr>		argslist;	///< args list type
+		class argslist : public std::vector<argPtr> {
+			public:
+				void push_back( const argslist& l) {
+					for (const_iterator i = l.begin(); i != l.end(); i++) std::vector<argPtr>::push_back(*i);
+				}
+				void push_back( const argslist* l) {
+					for (const_iterator i = l->begin(); i != l->end(); i++) std::vector<argPtr>::push_back(*i);
+				}
+				void push_back( const argPtr& arg) {
+					std::vector<argPtr>::push_back(arg);
+				}
+		};
+//		typedef std::vector<argPtr>		argslist;	///< args list type
 
 	private:
 		unsigned long	fSrcIP;			///< the message source IP number
