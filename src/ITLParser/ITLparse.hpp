@@ -48,18 +48,16 @@
      REGEXP = 264,
      PATHSEP = 265,
      STRING = 266,
-     MSG = 267,
-     ERR = 268,
-     ENDEXPR = 269,
-     LPAR = 270,
-     RPAR = 271,
-     SEP = 272,
-     LOOP = 273,
-     LOOPIDENTIFIER = 274,
-     LOOPREGEXP = 275,
-     VARSTART = 276,
-     LUASCRIPT = 277,
-     JSCRIPT = 278
+     QUOTEDSTRING = 267,
+     MSG = 268,
+     ERR = 269,
+     ENDEXPR = 270,
+     LPAR = 271,
+     RPAR = 272,
+     SEP = 273,
+     VARSTART = 274,
+     LUASCRIPT = 275,
+     JSCRIPT = 276
    };
 #endif
 /* Tokens.  */
@@ -72,18 +70,16 @@
 #define REGEXP 264
 #define PATHSEP 265
 #define STRING 266
-#define MSG 267
-#define ERR 268
-#define ENDEXPR 269
-#define LPAR 270
-#define RPAR 271
-#define SEP 272
-#define LOOP 273
-#define LOOPIDENTIFIER 274
-#define LOOPREGEXP 275
-#define VARSTART 276
-#define LUASCRIPT 277
-#define JSCRIPT 278
+#define QUOTEDSTRING 267
+#define MSG 268
+#define ERR 269
+#define ENDEXPR 270
+#define LPAR 271
+#define RPAR 272
+#define SEP 273
+#define VARSTART 274
+#define LUASCRIPT 275
+#define JSCRIPT 276
 
 
 
@@ -101,7 +97,7 @@ typedef union YYSTYPE
 	inscore::IMessageList*		msgList;
 }
 /* Line 1529 of yacc.c.  */
-#line 105 "ITLparse.hpp"
+#line 101 "ITLparse.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

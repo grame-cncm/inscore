@@ -30,15 +30,11 @@
 using namespace std;
 using namespace inscore;
 
-TJSEngine		gJavascript;
-TLua			gLua;
-
-
 int main (int argc, char * argv[])
 {
 	if (argc > 1) {
 		ifstream in (argv[1]);
-		ITLparser p(&in, 1, 0, 0);
+		ITLparser p(&in, 0, 0, 0);
 		IMessageList* outMsgs;
 		outMsgs = p.parse ();
 		if (outMsgs)

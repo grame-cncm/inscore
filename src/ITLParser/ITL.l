@@ -72,6 +72,7 @@ RECHAR  [-_a-zA-Z0-9?+*]
 RESTART [_a-zA-Z?+*]
 
 SPACE	[ \t]
+STRCHAR	[^ \t"'\x0a\x0d?+*]
 EOL		[\x0a\x0d]
 
 %%
@@ -95,7 +96,7 @@ EOL		[\x0a\x0d]
 ")"					return RPAR;
 ","					return SEP;
 "/"					return PATHSEP;			/* OSC address and path separator */
- /*";"					return ENDMSG;			 end of expression */
+";"					return ENDEXPR;			/* end of expression */
 "$"					return VARSTART;
 
  /* ----------------------------------------- */
@@ -429,13 +430,15 @@ EOL		[\x0a\x0d]
  /*"$"{STARTID}{IDCHAR}*					yyextra->fText = yytext; return VARIABLE;	 */
 {LETTER}{IDCHAR}*":"{LETTER}{IDCHAR}*	yyextra->fText = yytext; return MAPIDENTIFIER;	/* identifiers with map name */
 
+ /* {STRCHAR}{STRCHAR}*						yyextra->fText = yytext; return STRING; */
+
  /* ----------------------------------------- */
  /*	quoted strings */
  /* ----------------------------------------- */
 "\""						BEGIN DQSTR;
 "'"							BEGIN QSTR;
-<DQSTR>([^\"]|"\\\"")*		yyextra->fText = unescape(yytext); return STRING;
-<QSTR>([^']|"\\'")*			yyextra->fText = unescape(yytext); return STRING;
+<DQSTR>([^\"]|"\\\"")*		yyextra->fText = unescape(yytext); return QUOTEDSTRING;
+<QSTR>([^']|"\\'")*			yyextra->fText = unescape(yytext); return QUOTEDSTRING;
 <DQSTR>\"					BEGIN INITIAL;
 <QSTR>'						BEGIN INITIAL;
 

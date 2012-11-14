@@ -36,7 +36,7 @@
 %token MAPIDENTIFIER
 %token REGEXP
 %token PATHSEP
-%token STRING
+%token STRING QUOTEDSTRING
 %token MSG
 %token ERR
 %token ENDEXPR
@@ -44,9 +44,6 @@
 %token LPAR
 %token RPAR
 %token SEP
-%token LOOP
-%token LOOPIDENTIFIER
-%token LOOPREGEXP
 %token VARSTART
 
 %token LUASCRIPT
@@ -55,8 +52,8 @@
 /*------------------------------   types  ------------------------------*/
 %type <num> 	INT number
 %type <real>	FLOAT
-%type <str>		STRING MSG PATHSEP IDENTIFIER MAPIDENTIFIER REGEXP LUASCRIPT JSCRIPT
-%type <str>		identifier oscaddress oscpath msgstring varname
+%type <str>		STRING QUOTEDSTRING MSG PATHSEP IDENTIFIER MAPIDENTIFIER REGEXP LUASCRIPT JSCRIPT
+%type <str>		identifier oscaddress oscpath msgstring varname variable
 %type <msg>		message
 %type <p>		param
 %type <plist>	params
@@ -104,7 +101,7 @@ start		: expr
 
 //_______________________________________________
 expr		: message  			{ context->fReader.add($1); }
-			| variable ENDEXPR
+			| variable ENDEXPR	{ delete $1; }
 			| script
 			;
 
@@ -131,24 +128,33 @@ identifier	: IDENTIFIER		{ $$ = new string(context->fText); }
 			;
 
 msgstring	: MSG				{ $$ = new string(context->fText); }
-			| IDENTIFIER		{ $$ = new string(context->fText); }
 			;
 
 params		: param				{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
 			| params param		{ $1->push_back(*$2); $$ = $1; delete $2; }
+			| VARSTART varname	{ $$ = new inscore::IMessage::argslist;
+								  inscore::IMessage::argslist v = context->fReader.resolve($2->c_str()); 
+								  if (v.empty()) { VARERROR("unknown variable ", $2->c_str()) } 
+								  else $$->push_back(v); 
+								  delete $2; 
+								}
+			| params VARSTART varname	{	$$ = $1; 
+											inscore::IMessage::argslist v = context->fReader.resolve($3->c_str()); 
+											if (v.empty()) { VARERROR("unknown variable ", $3->c_str()) } 
+											else $$->push_back(v); 
+											delete $3; 
+										}
 			;
 
 param		: number			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1)); }
 			| FLOAT				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); }
-			| STRING			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
-			| VARSTART varname	{ $$ = context->fReader.resolve($2->c_str()); if (!$$) { VARERROR("unknown variable ", $2->c_str()) }; delete $2; }
+			| identifier		{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
+			| QUOTEDSTRING		{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
 			;
 
 
 //_______________________________________________
-variable	: varname EQUAL number	{ context->fReader.variable($1->c_str(), $3);					delete $1; }
-			| varname EQUAL FLOAT	{ context->fReader.variable($1->c_str(),  context->fFloat);		delete $1; }
-			| varname EQUAL STRING	{ context->fReader.variable($1->c_str(), context->fText.c_str()); delete $1; }
+variable	: varname EQUAL params	{ $$=$1; context->fReader.variable($1->c_str(), $3); delete $3;}
 			;
 
 varname		: IDENTIFIER			{ $$ = new string(context->fText); }
