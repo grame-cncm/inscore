@@ -161,23 +161,26 @@ TV8Js::~TV8Js()
 //--------------------------------------------------------------------------------------------
 void TV8Js::bindEnv  (const STEnv& env)
 {
-	stringstream s;
-	for (TEnv::TEnvList::const_iterator i = env->begin(); i != env->end(); i++) {
-		s << i->first << "=";
-		if (i->second->isType<int>())			s << i->second->value(0);
-		else if (i->second->isType<float>())	s << i->second->value(0.);
-		else if (i->second->isType<string>())	s << '"' <<  i->second->value(string("")) << '"';
-		else {
-			ITLErr << i->first << " unknown variable type " << ITLEndl;
-			break;
-		}
-		s << ";\n";
-	}
-	if (s.str().size()) {
-		string out;
-		if (!eval (0, s.str().c_str(), out))
-			ITLErr << "can't export export variables to javascript" << ITLEndl;
-	}
+//	stringstream s;
+//	for (TEnv::TEnvList::const_iterator i = env->begin(); i != env->end(); i++) {
+//		s << i->first << "=";
+//		if (i->second.size() == 1) {
+//			IMessage::argPtr i->second.begin();
+//			if (val->isType<int>())			s << val->value(0);
+//			else if (val->isType<float>())	s << val->value(0.);
+//			else if (val->isType<string>())	s << '"' <<  val->value(string("")) << '"';
+//			else {
+//				ITLErr << i->first << " unknown variable type " << ITLEndl;
+//				break;
+//			}
+//		}
+//		s << ";\n";
+//	}
+//	if (s.str().size()) {
+//		string out;
+//		if (!eval (0, s.str().c_str(), out))
+//			ITLErr << "can't export export variables to javascript" << ITLEndl;
+//	}
 }
 
 //--------------------------------------------------------------------------------------------
@@ -224,7 +227,7 @@ bool TV8Js::eval(int line, const char* jscode, std::string& outStr)
 }
 
 //--------------------------------------------------------------------------------------------
-// Reset teh current javascript engine (actually allocate a new one
+// Reset the current javascript engine (actually allocate a new one)
 void TV8Js::Initialize  () 
 { 
 	fContext->Exit();
@@ -232,8 +235,6 @@ void TV8Js::Initialize  ()
 	fContext = CreateV8Context();
 	if (!fContext.IsEmpty())
 		fContext->Enter();
-//	fContext->Exit();		// exit the current context
-//	fContext->Enter();		// and reenter a new one
 }
 
 #else
