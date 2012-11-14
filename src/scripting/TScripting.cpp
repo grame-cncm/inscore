@@ -28,7 +28,6 @@
 
 #include "TScripting.h"
 
-#include "IMessage.h"
 #include "TEnv.h"
 #include "ITLparser.h"
 #include "ITLError.h"
@@ -55,9 +54,12 @@ TScripting::TScripting(TJSEngine* js, TLua* lua)
 TScripting::~TScripting()	{ delete fMessages; }
 
 //--------------------------------------------------------------------------------------------
-void TScripting::variable	(const char* ident, int val)				{ fEnv->bind( ident, val); }
-void TScripting::variable	(const char* ident, float val)				{ fEnv->bind( ident, val); }
-void TScripting::variable	(const char* ident, const char* val)		{ fEnv->bind( ident, val); }
+void TScripting::variable	(const char* ident, const IMessage::argslist* values)		
+{ 
+	fEnv->clear( ident ); 
+	for (IMessage::argslist::const_iterator i = values->begin(); i != values->end(); i++)
+		fEnv->bind( ident, *i); 
+}
 
 //--------------------------------------------------------------------------------------------
 void TScripting::add (IMessage* msg)
@@ -96,7 +98,11 @@ bool TScripting::luaEval (const char* script)
 #else
 bool TScripting::luaEval (const char* script)
 {
+#ifdef NO_OSCSTREAM
+	cerr << "lua is not available!" << endl;
+#else
 	ITLErr << "lua is not available!" << ITLEndl;
+#endif
 	return false;
 }
 #endif
@@ -127,16 +133,19 @@ bool TScripting::jsEval (const char* script, int lineno)
 #else
 bool TScripting::jsEval (const char* script, int lineno)
 {
+#ifdef NO_OSCSTREAM
+	cerr << "javascript is not available!" << endl;
+#else
 	ITLErr << "javascript is not available!" << ITLEndl;
+#endif
 	return false;
 }
 #endif
 
 //--------------------------------------------------------------------------------------------
-Sbaseparam*	TScripting::resolve (const char* var)
+IMessage::argslist TScripting::resolve (const char* var)
 {
-	Sbaseparam value = fEnv->value (var);
-	return value ? new Sbaseparam(value) : 0;
+	return fEnv->value (var);
 }
 
 } // namespace

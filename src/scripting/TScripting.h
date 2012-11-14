@@ -31,6 +31,7 @@
 #include <TLua.h>
 #include <TMozillaJs.h>
 #include <TV8Js.h>
+#include "IMessage.h"
 
 #include "smartpointer.h"
 
@@ -70,14 +71,12 @@ class TScripting
 
 		void	add			(IMessage* msg);
 		void	add			(IMessageList* msg);
-		void	variable	(const char* ident, int val);
-		void	variable	(const char* ident, float val);
-		void	variable	(const char* ident, const char* val);
+		void	variable	(const char* ident, const IMessage::argslist* values);
 
 		bool	luaEval		(const char* script);
 		bool	jsEval		(const char* script, int lineno);
 
-		Sbaseparam*	resolve (const char* var);	
+		IMessage::argslist	resolve (const char* var);	
 		IMessageList* messages() const { return fMessages; }
 };
 
