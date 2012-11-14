@@ -45,7 +45,7 @@ typedef libmapping::SMARTP<TEnv> 	STEnv;
 class TEnv : public libmapping::smartable
 {
 	public:
-		typedef std::map<std::string, Sbaseparam>	TEnvList;
+		typedef std::map<std::string, IMessage::argslist>	TEnvList;
     protected:
 				 TEnvList	fVariables;
 
@@ -60,23 +60,24 @@ class TEnv : public libmapping::smartable
 		TEnvList::const_iterator begin() const		{ return fVariables.begin(); }
 		TEnvList::const_iterator end() const		{ return fVariables.end(); }
 
-		STEnv	bind (const char* e, int v)			{ fVariables[e] = new IMsgParam<int>(v); return this; }
-		STEnv	bind (const char* e, float v)		{ fVariables[e] = new IMsgParam<float>(v); return this; }
-		STEnv	bind (const char* e, const char* v)	{ fVariables[e] = new IMsgParam<std::string>(v); return this; }
-		void		clear()							{ fVariables.clear(); }
-		int			size() const					{ return fVariables.size(); }
+		STEnv	bind (const char* e, const IMessage::argPtr v)	{ fVariables[e].push_back(v); return this; }
+		void	clear()								{ fVariables.clear(); }
+		void	clear (const char* e)				{ fVariables[e].clear(); }
+		int		size() const						{ return fVariables.size(); }
 		
-		Sbaseparam value(const std::string& e) const { 
-			std::map<std::string, Sbaseparam>::const_iterator i = fVariables.find(e);
+		IMessage::argslist value(const std::string& e) const { 
+			std::map<std::string, IMessage::argslist>::const_iterator i = fVariables.find(e);
 			if (i != fVariables.end()) return i->second;
-			return 0;
+			return IMessage::argslist();
 		}
 		
 		void	print(std::ostream& os)	const { 
 			os << "env size:" << size() << " : ";
-			std::map<std::string, Sbaseparam>::const_iterator i = fVariables.begin();
+			std::map<std::string, IMessage::argslist>::const_iterator i = fVariables.begin();
 			while (i != fVariables.end()) {
-				os << i->first << ":" << i->second << " , ";
+				os << i->first << ":";
+				for (IMessage::argslist::const_iterator j = i->second.begin(); j != i->second.end(); j++)
+					os << (*j) << " , ";
 				i++;
 			}
 		}
