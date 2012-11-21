@@ -56,11 +56,6 @@ template<typename T> SIObject _create(const std::string& name , IObject* parent)
 	return obj->getView() ? obj : 0;
 }
 
-template<> SIObject _create<IWatcher>(const std::string& name , IObject* parent) 
-{
-	return IWatcher::create(name, parent);
-}
-
 template<> SIObject _create<ISignal>(const std::string& name , IObject* parent) 
 {
 	return ISignal::create(name, parent);
@@ -145,9 +140,6 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 
 	else if ( type == IVideo::kVideoType )
 		obj = _create<IVideo> (name, parent);
-		
-	else if ( type == IWatcher::kWatcherType )
-		obj = _create<IWatcher> (name, parent);
 
 	else if ( type == ISVGFile::kSVGFileType )
 		obj = _create<ISVGFile> (name, parent);
