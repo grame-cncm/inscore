@@ -85,7 +85,7 @@ template<typename T, unsigned int D> class TMapMsgHandler
 
 	static bool parseMsg (const IMessage* msg , std::string& mapname,  std::string& data)
 	{
-		switch (msg->params().size()) {
+		switch (msg->size()) {
 			case 2:
 				if (!msg->param(0, mapname)) return false;
 				if (!msg->param(1, data)) return false;
