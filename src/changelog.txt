@@ -13,7 +13,10 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.00
-- creash bug in signal creation corrected: a signal size created with an incorrect stream 
+- 'click' and 'select' messages are not supported any more.
+- new 'stats' virutal node at application level (address /ITL/stats), supports 'get' and 'reset' messages
+  the node gives statistics about the incoming messages [DOC TODO]
+- crash bug in signal creation corrected: a signal size created with an incorrect stream 
   (e.g. a string value) was 0 and no buffer was allocated.
 - OSC statistics support (count of received messages) at vnode /ITL/stats (supports 'get' and 'reset' messages)
 - extension of the time related events to duration: new durEnter and durLeave watchable events.
