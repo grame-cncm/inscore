@@ -64,7 +64,7 @@ template <typename T> class TSize;
 template <typename T>	IMessage& operator <<(IMessage& msg, TSize<T> val) { msg << val.width() << val.height(); return msg; }
 
 // boolean is store as integer value
-inline IMessage& operator <<(IMessage& msg, bool val)		{ msg.add<int>(val); return msg; }
+inline IMessage& operator <<(IMessage& msg, bool val)		{ msg.add(int(val)); return msg; }
 
 // strings: checks if quotes are needed
 IMessage& operator <<(IMessage& msg, const std::string& val);
@@ -76,7 +76,7 @@ IMessage& operator <<(IMessage& msg, const TFloatPoint& val);
 IMessage& operator <<(IMessage& msg, const TIntSize& val);
 
 // catch any other supported type
-template <typename T>	IMessage& operator <<(IMessage& msg, T val)		{ msg.add<T>(val); return msg; }
+template <typename T>	IMessage& operator <<(IMessage& msg, T val)		{ msg.add(val); return msg; }
 
 // catch vectors
 template <typename T>	IMessage& operator <<(IMessage& msg, const std::vector<T>& val)

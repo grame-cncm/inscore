@@ -162,7 +162,7 @@ void EventMessage::decodeMessage (const string& objname, const std::string& scen
 		}
 		for (int i = startindex, n=0; i < msg->size(); i++, n++) {
 			string pstr;
-			fMessage->params().push_back( msg->params()[i]);
+			fMessage->add( msg->param(i));
 			if ( msg->param (i, pstr) ) checkVariableMsg (pstr, n);
 		}
 	}
@@ -329,7 +329,7 @@ void EventMessage::eval (const IMessage* msg, const IObject * object, IMessage& 
 	for (IMessageList::const_iterator i = list.begin(); i != list.end(); i++) {
 		IMessage * m = *i;
 		for (int n=0; n < m->size(); n++) {
-			outmsg.add (m->params()[n]);
+			outmsg.add (m->param(n));
 		}
 	}
 }
@@ -405,7 +405,7 @@ bool EventMessage::eval (const IMessage *msg, EventContext& env, IMessage& outms
 			else env.varmsg = mi->second;
 			if (!eval (strvalue, env, outmsg)) return false;
 		}
-		else outmsg.add(msg->params()[i]);
+		else outmsg.add(msg->param(i));
 	}
 	return true;
 }

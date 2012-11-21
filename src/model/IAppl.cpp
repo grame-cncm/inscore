@@ -100,7 +100,8 @@ std::string IAppl::fRootPath = std::string(getenv("HOME")) + "/";
 MsgHandler::msgStatus IAppl::writeBench(const IMessage* msg)
 {
 	if (msg->size() == 1) {
-		string file = msg->params()[0]->value<string>("");
+		string file;
+		if (!msg->param(0, file)) return MsgHandler::kBadParameters;
 		if (file.size()) {
 			bench::write (absolutePath(file));
 			return MsgHandler::kProcessed;
@@ -353,7 +354,8 @@ MsgHandler::msgStatus IAppl::cursor(const IMessage* msg)
 MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
 {
 	if (msg->size() == 1) {
-		string srcfile = msg->params()[0]->value<string>("");
+		string srcfile;
+		if (msg->param(0, srcfile)) return MsgHandler::kBadParameters;
 		if (srcfile.size()) {
 			fstream file (absolutePath(srcfile).c_str(), fstream::in);
 			if (file.is_open()) {

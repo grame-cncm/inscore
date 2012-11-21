@@ -139,7 +139,7 @@ bool IFaustProcessor::putAt (const IMessage* msg, int index, int step)
 {
 	if (!dimension()) return true;		// nothing to do: there is no space for output signals
 
-	int size = msg->params().size();
+	int size = msg->size();
 	if (!fNumIntputs) {
 		call_compute(size, index, step);
 		return true;

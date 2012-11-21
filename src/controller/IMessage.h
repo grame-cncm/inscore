@@ -117,6 +117,7 @@ template <typename T> class IMsgParam : public baseparam
 		virtual libmapping::SMARTP<baseparam> copy() const { return new IMsgParam<T>(fParam); }
 };
 
+class IMessageList;
 //--------------------------------------------------------------------------
 /*!
 	\brief a message description
@@ -127,8 +128,6 @@ template <typename T> class IMsgParam : public baseparam
 */
 class IMessage : public Message, public libmapping::smartable
 {
-//static unsigned long allocated;
-//static unsigned long freed;
 	public:
 		typedef libmapping::SMARTP<baseparam>		argPtr;		///< a message argument ptr type
 		class argslist : public std::vector<argPtr> {
@@ -143,30 +142,41 @@ class IMessage : public Message, public libmapping::smartable
 					std::vector<argPtr>::push_back(arg);
 				}
 		};
+		class TUrl {
+			public:
+				std::string	fHostname;
+				int			fPort;
+							TUrl () : fPort(0) {}
+							TUrl (const char* host, int port) : fHostname(host), fPort(port) {}
+		};
 //		typedef std::vector<argPtr>		argslist;	///< args list type
 
 	private:
 		unsigned long	fSrcIP;			///< the message source IP number
 		std::string	fAddress;			///< the message osc destination address
-		std::string	fMessage;			///< the message 'message'
-		argslist	fArguments;			///< the message arguments
+//		std::string	fMessage;			///< the message 'message'
+		argslist	fArguments;			///< the message arguments, index 0 is reserved for the message string
+		bool		fHasMessage;		///< indicates when arguments start with a message string
+		TUrl		fUrl;
+		
+		inline int index (int i) const	{ return fHasMessage ? i+1 : i; }
 	
 	public:
 			/*!
 				\brief an empty message constructor
 			*/
-			 IMessage() {}
+			 IMessage() : fHasMessage(false)  {}
 			/*!
 				\brief a message constructor
 				\param address the message destination address
 			*/
-			 IMessage(const std::string& address) : fAddress(address) {}
+			 IMessage(const std::string& address) : fAddress(address), fHasMessage(false) {}
 			/*!
 				\brief a message constructor
 				\param address the message destination address
 				\param msg the message message
 			*/
-			 IMessage(const std::string& address, const std::string& msg) : fAddress(address), fMessage(msg) {}
+			 IMessage(const std::string& address, const std::string& msg) : fAddress(address) { setMessage(msg); } //, fMessage(msg) {}
 			/*!
 				\brief a message constructor
 				\param address the message destination address
@@ -174,13 +184,20 @@ class IMessage : public Message, public libmapping::smartable
 				\param args the message parameters
 			*/
 			 IMessage(const std::string& address, const std::string& msg, const argslist& args) 
-				: fAddress(address), fMessage(msg), fArguments(args) {}
+				: fAddress(address)  /*, fMessage(msg), fArguments(args)*/ { setMessage(msg); add(args); }
+			/*!
+				\brief a message constructor
+				\param address the message destination address
+				\param args the message parameters, param 0 is scanned to set the message bool attribute
+			*/
+			 IMessage(const std::string& address, const argslist& args, const TUrl& url);
 			/*!
 				\brief a message constructor
 				\param msg a message
 			*/
-			 IMessage(const IMessage& msg);
-	virtual ~IMessage() {} //{ freed++; std::cout << "running messages: " << (allocated - freed) << std::endl; }
+//			 IMessage(const IMessage& msg);
+	virtual ~IMessage() {}
+
 
 	/*!
 		\brief adds a parameter to the message
@@ -202,12 +219,23 @@ class IMessage : public Message, public libmapping::smartable
 		\param val the parameter value
 	*/
 	void	add(const std::string& val)		{ add<std::string>(val); }
+	/*!
+		\brief adds a string parameter to the message
+		\param val the parameter value
+	*/
+	void	add(const char* val)			{ add<std::string>(val); }
 	
 	/*!
 		\brief adds a parameter to the message
 		\param val the parameter
 	*/
 	void	add( argPtr val )				{ fArguments.push_back( val ); }
+	
+	/*!
+		\brief adds a parameter to the message
+		\param val the parameter
+	*/
+	void	add( IMessageList* val )		{ fArguments.push_back( new IMsgParam<IMessageList*>(val) ); }
 	
 	/*!
 		\brief adds a set of parameter to the message
@@ -230,7 +258,7 @@ class IMessage : public Message, public libmapping::smartable
 		\brief sets the message string
 		\param msg the message string
 	*/
-	void				setMessage(const std::string& msg)		{ fMessage = msg; }
+	void				setMessage(const std::string& msg);
 	/*!
 		\brief print the message
 		\param out the output stream
@@ -259,23 +287,27 @@ class IMessage : public Message, public libmapping::smartable
 															if (param(i, fv))			out << fv;
 															else if (param(i, iv))		out << iv;
 															else if (param(i, str))		out << str;
-															else ITLErr << "IMessage::print(OSCStream& out): unknown message parameter type" << ITLEndl;
+															else ITLErr << "IMessage::print: unknown message parameter type" << ITLEndl;
 														}
 													}
 #endif
 
 	/// \brief gives the message address
 	const std::string&	address() const		{ return fAddress; }
+	/// \brief check for extended address
+	bool		extendedAddress() const		{ return fUrl.fPort != 0; }
+	/// \brief gives the address extension
+	const TUrl&	url() const					{ return fUrl; }
 	/// \brief gives the message message
-	const std::string&	message() const		{ return fMessage; }
-	/// \brief gives the message parameters list
-	const argslist&		params() const		{ return fArguments; }
-	/// \brief gives the message parameters list
-	argslist&			params()			{ return fArguments; }
-	/// \brief gives the message source IP 
+	std::string			message() const;
+	/// \brief gives a single parameter by index
+	const argPtr&		param(unsigned int i) const		{ return fArguments[index(i)]; }
+	/// \brief sets parameter value
+	template <typename T> void setparam(unsigned int i, T val)  { fArguments[index(i)] = new IMsgParam<T>(val); }
+	/// \brief gives the message source IP
 	unsigned long		src() const			{ return fSrcIP; }
 	/// \brief gives the message parameters count
-	int					size() const		{ return fArguments.size(); }
+	int					size() const		{ int  n = fArguments.size(); return fHasMessage ? n -1 : n; }
 	
 	bool operator == (const IMessage& other) const;	
 
@@ -286,14 +318,14 @@ class IMessage : public Message, public libmapping::smartable
 		\param val on output: the parameter value when the parameter type matches
 		\return false when types don't match
 	*/
-	bool	param(int i, float& val) const		{ val = params()[i]->value<float>(val); return params()[i]->isType<float>(); }
+	bool	param(int i, float& val) const		{ val = param(i)->value<float>(val); return param(i)->isType<float>(); }
 	/*!
 		\brief gives a message int parameter
 		\param i the parameter index (0 <= i < size())
 		\param val on output: the parameter value when the parameter type matches
 		\return false when types don't match
 	*/
-	bool	param(int i, int& val) const		{ val = params()[i]->value<int>(val); return params()[i]->isType<int>(); }
+	bool	param(int i, int& val) const		{ val = param(i)->value<int>(val); return param(i)->isType<int>(); }
 	/*!
 		\brief gives a message int parameter
 		\param i the parameter index (0 <= i < size())
@@ -301,21 +333,21 @@ class IMessage : public Message, public libmapping::smartable
 		\return false when types don't match
 		\note a boolean value is handled as integer
 	*/
-	bool	param(int i, bool& val) const		{ int ival = 0; ival = params()[i]->value<int>(ival); val = ival!=0; return params()[i]->isType<int>(); }
+	bool	param(int i, bool& val) const		{ int ival = 0; ival = param(i)->value<int>(ival); val = ival!=0; return param(i)->isType<int>(); }
 	/*!
 		\brief gives a message int parameter
 		\param i the parameter index (0 <= i < size())
 		\param val on output: the parameter value when the parameter type matches
 		\return false when types don't match
 	*/
-	bool	param(int i, long int& val) const	{ val = long(params()[i]->value<int>(val)); return params()[i]->isType<int>(); }
+	bool	param(int i, long int& val) const	{ val = long(param(i)->value<int>(val)); return param(i)->isType<int>(); }
 	/*!
 		\brief gives a message string parameter
 		\param i the parameter index (0 <= i < size())
 		\param val on output: the parameter value when the parameter type matches
 		\return false when types don't match
 	*/
-	bool	param(int i, std::string& val) const { val = params()[i]->value<std::string>(val); return params()[i]->isType<std::string>(); }
+	bool	param(int i, std::string& val) const { val = param(i)->value<std::string>(val); return param(i)->isType<std::string>(); }
 	/*!
 		\brief gives a message rational parameters
 		\param i the parameters start index (0 <= i < size()-1)
@@ -323,6 +355,13 @@ class IMessage : public Message, public libmapping::smartable
 		\return false when types don't match
 	*/
 	bool	param(int i, libmapping::rational& val) const;
+	/*!
+		\brief gives a message messages parameters
+		\param i the parameters start index (0 <= i < size()-1)
+		\param val on output: the parameter value when the parameter type matches
+		\return false when types don't match
+	*/
+	bool	param(int i, IMessageList*& val) const { val = param(i)->value<IMessageList*>(val); return param(i)->isType<IMessageList*>(); }
 };
 
 typedef libmapping::SMARTP<IMessage>	SIMessage;
@@ -333,7 +372,7 @@ typedef libmapping::SMARTP<IMessage>	SIMessage;
 	
 	Note that IMessageList doesn't delete it's messages unless the \c clear method is called.
 */
-class IMessageList : public std::vector<IMessage *>
+class IMessageList : public std::vector<IMessage *>, public libmapping::smartable
 {
 	public:
 				 IMessageList() {}

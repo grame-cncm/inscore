@@ -278,7 +278,7 @@ template <typename S> class TSetMsgHandler<TFloatSize,S> : public MsgHandler
 
 		virtual msgStatus operator ()(const IMessage* msg)
 			{ 
-				if (msg->params().size() != 2) return MsgHandler::kBadParameters;
+				if (msg->size() != 2) return MsgHandler::kBadParameters;
 				float n, d;
 				if (msg->param(0, n) && msg->param(1, d)) {
 					S  setOp;
@@ -303,7 +303,7 @@ template <typename S> class TSetMsgHandler<libmapping::rational,S> : public MsgH
 
 		virtual msgStatus operator ()(const IMessage* msg)
 			{ 
-				if (msg->params().size() != 2) return MsgHandler::kBadParameters;
+				if (msg->size() != 2) return MsgHandler::kBadParameters;
 				int n, d;
 				if (msg->param(0, n) && msg->param(1, d)) {
 					S  setOp;

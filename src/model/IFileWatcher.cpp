@@ -53,21 +53,30 @@ void IFileWatcher::print (ostream& out) const
 //--------------------------------------------------------------------------
 bool IFileWatcher::buildMessage(const IMessage& source, IMessage& outMsg)
 {
-	outMsg = source;
-
-	const std::string err = "";
-	const std::string oscAddress	= source.params()[1]->value<std::string>(err);
-	const std::string message		= source.params()[2]->value<std::string>(err);
-	if ( ( oscAddress == err ) || ( message == err ) )
+	std::string oscAddress, message;
+	if (!source.param(1, oscAddress) || !source.param(2, message))
 		return false;
 
 	outMsg.setAddress( oscAddress );	// moves the address from params to address field
 	outMsg.setMessage( message );		// moves the message from params to message field
-	
-	// and removes the file, address and message from the parameters list
-	IMessage::argslist::iterator first = outMsg.params().begin();
-	outMsg.params().erase(first, first + 3);
+	for (int i= 3; i<source.size(); i++)
+		outMsg.add (source.param(i));
 	return true;
+
+
+//	outMsg = source;
+//
+//	std::string oscAddress, message;
+//	if (!source.param(1, oscAddress) || !source.param(2, message))
+//		return false;
+//
+//	outMsg.setAddress( oscAddress );	// moves the address from params to address field
+//	outMsg.setMessage( message );		// moves the message from params to message field
+//	
+//	// and removes the file, address and message from the parameters list
+//	IMessage::argslist::iterator first = outMsg.params().begin();
+//	outMsg.params().erase(first, first + 3);
+//	return true;
 }
 
 //--------------------------------------------------------------------------
@@ -76,8 +85,9 @@ MsgHandler::msgStatus IFileWatcher::addMsg (const IMessage* msg )
 	// the 'add' message expects the following parameters: 'filePath' OSCMessage
 	// where OSCMessage format is: 'address' 'msg' <opt parameters>
 	// thus a minimum of 3 parameters is expected
-	if (msg->params().size() >= 3) {
-		const std::string fileName	= msg->params()[0]->value<std::string>("");
+	if (msg->size() >= 3) {
+		std::string fileName;
+		if (!msg->param(0, fileName)) return MsgHandler::kBadParameters;
 		if ( fileName.size() ) {
 			IMessage watcherMessage;
 			if (IFileWatcher::buildMessage(*msg,watcherMessage)) {
@@ -92,15 +102,17 @@ MsgHandler::msgStatus IFileWatcher::addMsg (const IMessage* msg )
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IFileWatcher::removeMsg (const IMessage* msg )	
 {
-	if (msg->params().size() == 1) {
-		const std::string oscAddress	= msg->params()[0]->value<std::string>("");
+	if (msg->size() == 1) {
+		string oscAddress;
+		if (!msg->param(0, oscAddress)) return MsgHandler::kBadParameters;
 		if ( oscAddress.size() ) {
 			remove( oscAddress );
 			return MsgHandler::kProcessed;
 		}
 	}	
-	else if (msg->params().size() >= 3) {
-		const std::string fileName	= msg->params()[0]->value<std::string>("");
+	else if (msg->size() >= 3) {
+		std::string fileName;
+		if (!msg->param(0, fileName)) return MsgHandler::kBadParameters;
 		if ( fileName.size() ) {
 			IMessage watcherMessage;
 			if (IFileWatcher::buildMessage(*msg,watcherMessage)) {
@@ -115,7 +127,7 @@ MsgHandler::msgStatus IFileWatcher::removeMsg (const IMessage* msg )
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IFileWatcher::clearMsg (const IMessage* msg)
 {
-	if (msg->params().size() == 0) {
+	if (msg->size() == 0) {
 		clear();
 		return MsgHandler::kProcessed;
 	}

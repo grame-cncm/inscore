@@ -290,7 +290,7 @@ IMessage* EventsAble::putMsg (IMessage * msg, const SEventMessage& ev) const
 		msg->add (ev->address());
 		msg->add (evmsg->message());
 		for (int i=0; i < evmsg->size(); i++)
-			msg->add (evmsg->params()[i]);
+			msg->add (evmsg->param(i));
 	}
 	return msg;
 }

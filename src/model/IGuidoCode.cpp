@@ -132,9 +132,8 @@ MsgHandler::msgStatus IGuidoCode::set ( const IMessage* msg )
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status;
 
-	if (msg->params().size() == 2) {
-		const std::string err = "";
-		string t = msg->params()[1]->value<std::string>(err);
+	string t;
+	if ((msg->size() == 2) && msg->param(1, t)) {
 		if ( t != getGMN() ) {
 			setGMN( t );
 			status = MsgHandler::kProcessed;
@@ -151,9 +150,9 @@ MsgHandler::msgStatus IGuidoCode::set ( const IMessage* msg )
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IGuidoCode::mapMsg (const IMessage* msg )
 {
-	if (msg->params().size() >= 1)
+	string mapName;
+	if ((msg->size() >= 1) && msg->param(0, mapName))
 	{
-		string mapName = msg->params()[0]->value<std::string>("");
 		if ( mapName.size() )
 		{
 			bool doDel = false;
@@ -164,7 +163,7 @@ MsgHandler::msgStatus IGuidoCode::mapMsg (const IMessage* msg )
 				mapName = "";
 			}
 			// - or "del" be second parameter, meaning "delete 'mapName' mapping".
-			else if ( (msg->params().size() == 2) && ( msg->params()[1]->value<std::string>("") == "del" ) )
+			else if ( (msg->size() == 2) && ( msg->param(1)->value<std::string>("") == "del" ) )
 				doDel = true;
 
 			if ( doDel )
@@ -176,7 +175,7 @@ MsgHandler::msgStatus IGuidoCode::mapMsg (const IMessage* msg )
 			}
 			else
 			{
-				if (msg->params().size() == 2)	// 2 parameters but no "del" => error.
+				if (msg->size() == 2)	// 2 parameters but no "del" => error.
 					return MsgHandler::kBadParameters;
 				else
 				{
@@ -194,9 +193,10 @@ MsgHandler::msgStatus IGuidoCode::mapMsg (const IMessage* msg )
 IMessageList IGuidoCode::getMsgs(const IMessage* msg) const
 {
 	IMessageList outMsgs;
-	for ( unsigned int i = 0 ; i < msg->params().size() ; i++ )
+	for ( unsigned int i = 0 ; i < msg->size() ; i++ )
 	{
-		string param = msg->params()[i]->value<string>("-");
+		string param = "-";
+		msg->param(i, param);
 		if ( param == "map" )
 		{
 			for ( std::vector<string>::const_iterator i = fRequestedMappings.begin() ; i != fRequestedMappings.end() ; i++ )
@@ -211,7 +211,7 @@ IMessageList IGuidoCode::getMsgs(const IMessage* msg) const
 		{
 			i++;
 			int pagenumber;
-			if (i < msg->params().size() && msg->param(i, pagenumber) && (pagenumber <= fPageCount)) {
+			if (i < msg->size() && msg->param(i, pagenumber) && (pagenumber <= fPageCount)) {
 				IMessage* msg = new IMessage(getOSCAddress(), param);
 				*msg << pagenumber << getPageDate(pagenumber);
 				outMsgs += msg;

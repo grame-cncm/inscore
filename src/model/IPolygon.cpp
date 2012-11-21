@@ -75,16 +75,16 @@ MsgHandler::msgStatus IPolygon::set (const IMessage* msg)
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
-	if ( (msg->params().size() > 1) && ( (msg->params().size() % 2)==1 ) ) {
+	if ( (msg->size() > 1) && ( (msg->size() % 2)==1 ) ) {
 		const float err = -55555;
 
 		unsigned int i;
 		//Build the vector of points reading the message.
 		std::vector< std::pair<float,float> > points;
-		for ( i = 1 ; i < msg->params().size() ; i+=2 ) {
+		for ( i = 1 ; i < msg->size() ; i+=2 ) {
 			std::pair<float,float> point;
-			point.first = msg->params()[i]->value<float>(err);
-			point.second = msg->params()[i+1]->value<float>(err);
+			point.first = msg->param(i)->value<float>(err);
+			point.second = msg->param(i+1)->value<float>(err);
 			if ( (point.first==err) || (point.second==err) )
 				return MsgHandler::kBadParameters;
 			points.push_back( point );
