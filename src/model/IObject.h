@@ -358,12 +358,6 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		/// \brief object \c 'get' a given param 
 		virtual IMessage* getParam(const std::string& what, const SGetParamMsgHandler& h) const;
 
-		/// \brief object \c 'get' a given param 
-		virtual IMessage* click(const IMessage* msg) const;
-
-		/// \brief object \c 'get' a given param 
-		virtual IMessage* select(const IMessage* msg) const;
-
 		/*!
 			\brief gives a handler for a message
 			\param param the string message
@@ -438,20 +432,8 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		/// \brief object \c 'get' message handler.
 		virtual MsgHandler::msgStatus get (const IMessage* msg) const;
 
-		/// \brief object \c 'click' message handler.
-		virtual MsgHandler::msgStatus clickMsg (const IMessage* msg) const;
-
-		/// \brief object \c 'select' message handler.
-		virtual MsgHandler::msgStatus selectMsg (const IMessage* msg) const;
-
 		/// \brief object \c 'save' message handler.
 		virtual MsgHandler::msgStatus saveMsg (const IMessage* msg) const;
-
-		/// \brief object \c 'dcolor' message handler.		
-//		virtual MsgHandler::msgStatus dcolorMsg(const IMessage* msg);
-
-		/// \brief object \c 'dcolor' message handler.				
-//		virtual MsgHandler::msgStatus dhsvMsg(const IMessage* msg);
 };
 
 IMessage&		operator << (IMessage&, const SGetParamMsgHandler&);
