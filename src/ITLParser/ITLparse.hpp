@@ -44,20 +44,21 @@
      FLOAT = 260,
      IDENTIFIER = 261,
      EQUAL = 262,
-     MAPIDENTIFIER = 263,
-     REGEXP = 264,
-     PATHSEP = 265,
-     STRING = 266,
-     QUOTEDSTRING = 267,
-     MSG = 268,
-     ERR = 269,
-     ENDEXPR = 270,
-     LPAR = 271,
-     RPAR = 272,
-     SEP = 273,
-     VARSTART = 274,
-     LUASCRIPT = 275,
-     JSCRIPT = 276
+     REGEXP = 263,
+     PATHSEP = 264,
+     STRING = 265,
+     QUOTEDSTRING = 266,
+     MSG = 267,
+     ERR = 268,
+     ENDEXPR = 269,
+     VARSTART = 270,
+     COLON = 271,
+     COMMA = 272,
+     POINT = 273,
+     HOSTNAME = 274,
+     IPNUM = 275,
+     LUASCRIPT = 276,
+     JSCRIPT = 277
    };
 #endif
 /* Tokens.  */
@@ -66,38 +67,41 @@
 #define FLOAT 260
 #define IDENTIFIER 261
 #define EQUAL 262
-#define MAPIDENTIFIER 263
-#define REGEXP 264
-#define PATHSEP 265
-#define STRING 266
-#define QUOTEDSTRING 267
-#define MSG 268
-#define ERR 269
-#define ENDEXPR 270
-#define LPAR 271
-#define RPAR 272
-#define SEP 273
-#define VARSTART 274
-#define LUASCRIPT 275
-#define JSCRIPT 276
+#define REGEXP 263
+#define PATHSEP 264
+#define STRING 265
+#define QUOTEDSTRING 266
+#define MSG 267
+#define ERR 268
+#define ENDEXPR 269
+#define VARSTART 270
+#define COLON 271
+#define COMMA 272
+#define POINT 273
+#define HOSTNAME 274
+#define IPNUM 275
+#define LUASCRIPT 276
+#define JSCRIPT 277
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 23 "ITL.y"
+#line 25 "ITL.y"
 {
 	int		num;
 	float	real;
 	std::string* str;
+	inscore::ITLparser::address*	addr;
 	inscore::Sbaseparam *			p;
 	inscore::IMessage::argslist*	plist;
+	inscore::IMessage::TUrl*		url;
 	inscore::IMessage*			msg;
 	inscore::IMessageList*		msgList;
 }
 /* Line 1529 of yacc.c.  */
-#line 101 "ITLparse.hpp"
+#line 105 "ITLparse.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
