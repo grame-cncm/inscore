@@ -75,13 +75,13 @@ void IOSCListener::ProcessMessage( const osc::ReceivedMessage& m, const IpEndpoi
 		if (i->IsString()) {
 			// the message string is expected to be the first parameter
 			if (first) msg->setMessage(i->AsStringUnchecked());
-			else msg->add<string>(i->AsStringUnchecked());			
+			else msg->add(i->AsStringUnchecked());
 		}
 		else if (i->IsInt32()) {
-			msg->add<int>(i->AsInt32Unchecked());			
+			msg->add( int(i->AsInt32Unchecked()) );
 		}
 		else if (i->IsFloat()) {
-			msg->add<float>(i->AsFloatUnchecked());			
+			msg->add(i->AsFloatUnchecked());			
 		}
 		if (first) first = false;
 		i++;
