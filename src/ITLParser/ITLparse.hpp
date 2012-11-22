@@ -48,17 +48,19 @@
      PATHSEP = 264,
      STRING = 265,
      QUOTEDSTRING = 266,
-     MSG = 267,
+     WATCH = 267,
      ERR = 268,
      ENDEXPR = 269,
      VARSTART = 270,
-     COLON = 271,
-     COMMA = 272,
-     POINT = 273,
-     HOSTNAME = 274,
-     IPNUM = 275,
-     LUASCRIPT = 276,
-     JSCRIPT = 277
+     LEFTPAR = 271,
+     RIGHTPAR = 272,
+     COLON = 273,
+     COMMA = 274,
+     POINT = 275,
+     HOSTNAME = 276,
+     IPNUM = 277,
+     LUASCRIPT = 278,
+     JSCRIPT = 279
    };
 #endif
 /* Tokens.  */
@@ -71,17 +73,19 @@
 #define PATHSEP 264
 #define STRING 265
 #define QUOTEDSTRING 266
-#define MSG 267
+#define WATCH 267
 #define ERR 268
 #define ENDEXPR 269
 #define VARSTART 270
-#define COLON 271
-#define COMMA 272
-#define POINT 273
-#define HOSTNAME 274
-#define IPNUM 275
-#define LUASCRIPT 276
-#define JSCRIPT 277
+#define LEFTPAR 271
+#define RIGHTPAR 272
+#define COLON 273
+#define COMMA 274
+#define POINT 275
+#define HOSTNAME 276
+#define IPNUM 277
+#define LUASCRIPT 278
+#define JSCRIPT 279
 
 
 
@@ -97,11 +101,11 @@ typedef union YYSTYPE
 	inscore::Sbaseparam *			p;
 	inscore::IMessage::argslist*	plist;
 	inscore::IMessage::TUrl*		url;
-	inscore::IMessage*			msg;
-	inscore::IMessageList*		msgList;
+	inscore::SIMessage*				msg;
+	inscore::SIMessageList*			msgList;
 }
 /* Line 1529 of yacc.c.  */
-#line 105 "ITLparse.hpp"
+#line 109 "ITLparse.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

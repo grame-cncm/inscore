@@ -30,8 +30,8 @@
 	inscore::Sbaseparam *			p;
 	inscore::IMessage::argslist*	plist;
 	inscore::IMessage::TUrl*		url;
-	inscore::IMessage*			msg;
-	inscore::IMessageList*		msgList;
+	inscore::SIMessage*				msg;
+	inscore::SIMessageList*			msgList;
 }
 
 %token INT UINT FLOAT
@@ -40,11 +40,11 @@
 %token REGEXP
 %token PATHSEP
 %token STRING QUOTEDSTRING
-%token MSG
+%token WATCH
 %token ERR
 %token ENDEXPR
 
-%token VARSTART
+%token VARSTART LEFTPAR RIGHTPAR
 %token COLON COMMA POINT HOSTNAME IPNUM
 
 %token LUASCRIPT
@@ -53,12 +53,12 @@
 /*------------------------------   types  ------------------------------*/
 %type <num> 	UINT INT number
 %type <real>	FLOAT
-%type <str>		STRING QUOTEDSTRING MSG PATHSEP IDENTIFIER REGEXP LUASCRIPT JSCRIPT
+%type <str>		STRING QUOTEDSTRING PATHSEP IDENTIFIER REGEXP LUASCRIPT JSCRIPT
 %type <str>		identifier oscaddress oscpath varname variable hostname
 %type <msg>		message
-%type <msgList>	messagelist
-%type <p>		param
-%type <plist>	params
+%type <msgList>	messagelist script
+%type <p>		param watchparam
+%type <plist>	params watchparams varvalue
 %type <url>		urlprefix
 %type <addr>	address
 
@@ -105,29 +105,57 @@ start		: expr
 //_______________________________________________
 // expression of the script language
 //_______________________________________________
-expr		: message  ENDEXPR	{ context->fReader.add($1); }
+expr		: message  ENDEXPR	{ context->fReader.add(*$1); delete $1; }
 			| variable ENDEXPR	{ delete $1; }
-			| script
+			| script			{	if (*$1) {
+										for (unsigned int i=0; i < (*$1)->list().size(); i++)
+											context->fReader.add((*$1)->list()[i]);
+									}
+									delete $1;
+								}
 			;
 
 //_______________________________________________
 // javascript and lua support
 //_______________________________________________
-script		: LUASCRIPT			{ if (!context->fReader.luaEval(context->fText.c_str())) YYABORT;  }
-			| JSCRIPT			{ if (!context->fReader.jsEval(context->fText.c_str(), lineno(context))) YYABORT;  }
+script		: LUASCRIPT			{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
+									*$$ = context->fReader.luaEval(context->fText.c_str());
+									if (! *$$) YYABORT; }
+			| JSCRIPT			{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
+									*$$ = context->fReader.jsEval(context->fText.c_str(), yylloc.last_line);
+								}
 			;
 
 //_______________________________________________
 // messages specification (extends osc spec.)
 //_______________________________________________
-message		: address params			{ $$ = new inscore::IMessage($1->fOsc, *$2, $1->fUrl); delete $1; delete $2; }
+
+message		: address params			{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl)); delete $1; delete $2; }
 			;
 
-message		: address params messagelist { $$ = new inscore::IMessage($1->fOsc, *$2, $1->fUrl); delete $1; delete $2; cout << *$3 << endl; }
+message		: address watchparams LEFTPAR messagelist RIGHTPAR
+										{	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
+											(*$$)->add(*$4);
+											delete $1; delete $2; delete $4; }
+
+//message		: address watchparams script {	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
+//												if (*$3) (*$$)->add(*$3);
+//												delete $1; delete $2; delete $3; }
+//			;
+
+message		: address watchparams JSCRIPT {	cout << "watch js " << endl; $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
+											(*$$)->add(inscore::TJavaScript(context->fText.c_str()));
+											delete $1; delete $2; }
+			;
+message		: address watchparams LUASCRIPT {	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
+												(*$$)->add(inscore::TLuaScript(context->fText.c_str()));
+												delete $1; delete $2; delete $3; }
 			;
 
-messagelist : message					{ $$ = new inscore::IMessageList; *$$ += $1; }
-			| messagelist COMMA message { $$ = $1; *$$ += $3; }
+messagelist : message					{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
+											(*$$)->list().push_back(*$1);
+											delete $1}
+			| messagelist COMMA message {	$$ = $1; (*$$)->list().push_back(*$3); delete $3}
 			;
 
 //_______________________________________________
@@ -156,21 +184,29 @@ identifier	: IDENTIFIER		{ $$ = new string(context->fText); }
 			| REGEXP			{ $$ = new string(context->fText); }
 			;
 
-params		: param				{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
-			| VARSTART varname	{ $$ = new inscore::IMessage::argslist;
-								  inscore::IMessage::argslist v = context->fReader.resolve($2->c_str()); 
-								  if (v.empty()) { VARERROR("unknown variable ", $2->c_str()) } 
-								  else $$->push_back(v); 
-								  delete $2; 
+//_______________________________________________
+// parameters definitions
+// watchparams need a special case since messages are expected as argument
+watchparams	: watchparam params	{ $$ = new inscore::IMessage::argslist;
+								  $$->push_back(*$1);
+								  $$->push_back($2);
+								  delete $1; delete $2;
 								}
+
+params		: param				{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
+			| varvalue			{ $$ = $1; }
+			| params varvalue	{ $1->push_back($2);  $$ = $1; delete $2; }
 			| params param		{ $1->push_back(*$2); $$ = $1; delete $2; }
-			| params VARSTART varname	{	$$ = $1;
-											inscore::IMessage::argslist v = context->fReader.resolve($3->c_str()); 
-											if (v.empty()) { VARERROR("unknown variable ", $3->c_str()) } 
-											else $$->push_back(v); 
-											delete $3; 
-										}
 			;
+
+watchparam	: WATCH				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
+			;
+
+varvalue	: VARSTART varname	{ $$ = new inscore::IMessage::argslist;
+								  std::string var = "$" + *$2;
+								  $$->push_back (context->fReader.resolve($2->c_str(), var.c_str()));
+								  delete $2;
+								}
 
 param		: number			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1)); }
 			| FLOAT				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); }
@@ -180,7 +216,7 @@ param		: number			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1)
 
 
 //_______________________________________________
-// variable description
+// variable declaration
 variable	: varname EQUAL params	{ $$=$1; context->fReader.variable($1->c_str(), $3); delete $3;}
 			;
 
@@ -201,7 +237,7 @@ number		: UINT					{ $$ = context->fInt; }
 namespace inscore 
 {
 
-IMessageList* ITLparser::parse() 
+SIMessageList ITLparser::parse()
 {
 	yyparse (this);
 	return fReader.messages();

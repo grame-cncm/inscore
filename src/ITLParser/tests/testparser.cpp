@@ -26,19 +26,25 @@
 #include "ITLparser.h"
 #include "IMessage.h"
 #include "IMessageStream.h"
+#include "TV8Js.h"
 
 using namespace std;
 using namespace inscore;
 
+
 int main (int argc, char * argv[])
 {
 	if (argc > 1) {
+		TJSEngine js;
 		ifstream in (argv[1]);
-		ITLparser p(&in, 0, 0, 0);
-		IMessageList* outMsgs;
+		js.Initialize();
+		ITLparser p(&in, 0, &js, 0);
+		SIMessageList outMsgs;
 		outMsgs = p.parse ();
-		if (outMsgs)
-			cout << *outMsgs;
+		if (outMsgs) {
+			outMsgs->list().set("", "\n");
+			cout << outMsgs->list() << endl;
+		}
 		else
 			cout << "error reading " << argv[1] << endl;
 	}

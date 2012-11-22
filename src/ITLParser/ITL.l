@@ -116,6 +116,14 @@ EOL		[\x0a\x0d]
 ":"					return COLON;
 ","					return COMMA;
 "."					return POINT;
+"("					return LEFTPAR;
+")"					return RIGHTPAR;
+
+ /* ----------------------------------------- */
+ /*	method requiring messages as argument */
+ /* ----------------------------------------- */
+"watch"			yyextra->fText = yytext; return WATCH;
+"require"		yyextra->fText = yytext; return WATCH;
 
  /* ----------------------------------------- */
  /*	comments */
