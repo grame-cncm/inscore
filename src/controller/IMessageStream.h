@@ -93,7 +93,6 @@ template <typename T>	IMessage& operator <<(IMessage& msg, const std::pair<T,T>&
 
 IMessage& operator << (IMessage& out, const IMessage* m);
 std::ostream& operator << (std::ostream& out, const IMessage* m);
-std::ostream& operator << (std::ostream& out, const IMessageList&);
 
 IMessage& operator <<(IMessage& msg, const GraphicEffect& effect);
 

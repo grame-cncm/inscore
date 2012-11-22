@@ -61,18 +61,18 @@ void IObjectDebug::accept (Updater* u)
 //--------------------------------------------------------------------------
 // message handlers
 //--------------------------------------------------------------------------
-IMessageList IObjectDebug::getSetMsg () const
+SIMessageList IObjectDebug::getSetMsg () const
 {
-	IMessageList outMsgs;
-	IMessage * msg = new IMessage(getOSCAddress(), "map");
+	SIMessageList outMsgs = IMessageList::create();
+	SIMessage msg = IMessage::create(getOSCAddress(), "map");
 	*msg << getMapDebug();
-	outMsgs += msg;
-	msg = new IMessage(getOSCAddress(), "name");
+	outMsgs->list().push_back (msg);
+	msg = IMessage::create(getOSCAddress(), "name");
 	*msg << getNameDebug();
-	outMsgs += msg;
-	msg = new IMessage(getOSCAddress(), "signal");
+	outMsgs->list().push_back (msg);
+	msg = IMessage::create(getOSCAddress(), "signal");
 	*msg << getSignalDebug();
-	outMsgs += msg;
+	outMsgs->list().push_back (msg);
 	return outMsgs;
 }
 

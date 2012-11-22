@@ -79,7 +79,7 @@ IScene::IScene(const std::string& name, IObject * parent)
 	fGetMsgHandlerMap["fullscreen"] = TGetParamMsgHandler<bool>::create(fFullScreen);
 	fGetMsgHandlerMap["frameless"]	= TGetParamMsgHandler<bool>::create(fFrameless);
 	fGetMsgHandlerMap["absolutexy"] = TGetParamMsgHandler<bool>::create(fAbsoluteCoordinates);
-	fGetMsgHandlerMap["watch"]		= TGetParamMethodHandler<IScene, IMessageList (IScene::*)() const>::create(this, &IScene::getWatch);
+	fGetMsgHandlerMap["watch"]		= TGetParamMethodHandler<IScene, SIMessageList (IScene::*)() const>::create(this, &IScene::getWatch);
 	fGetMsgHandlerMap["rootPath"]	= TGetParamMsgHandler<string>::create(fRootPath);
 }
 
@@ -207,9 +207,9 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 			fstream file (absolutePath(srcfile).c_str(), fstream::in);
 			if (file.is_open()) {
 				ITLparser p (&file, 0, &fJavascript, &fLua);
-				IMessageList* msgs = p.parse();
+				SIMessageList msgs = p.parse();
 				if (msgs) {
-					for (IMessageList::const_iterator i = msgs->begin(); i != msgs->end(); i++) {
+					for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
 						IMessage * msg = *i;
 						string address = address2scene (msg->address().c_str());
 						string beg  = OSCAddress::addressFirst(address);
@@ -219,7 +219,6 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 							IGlue::trace(*i, ret);
 						}
 					}
-					msgs->clear();
 				}
 				else ITLErr << "while parsing file" << srcfile << ITLEndl;
 			}

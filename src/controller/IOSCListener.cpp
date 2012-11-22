@@ -67,7 +67,7 @@ void IOSCListener::stop()
 //--------------------------------------------------------------------------
 void IOSCListener::ProcessMessage( const osc::ReceivedMessage& m, const IpEndpointName& src )
 {
-	IMessage* msg = new IMessage(m.AddressPattern());
+	SIMessage msg = IMessage::create(m.AddressPattern());
 	msg->setSrcIP (src.address);
 	ReceivedMessageArgumentIterator i = m.ArgumentsBegin();
 	bool first = true;		// used to handle the message string
@@ -86,7 +86,7 @@ void IOSCListener::ProcessMessage( const osc::ReceivedMessage& m, const IpEndpoi
 		if (first) first = false;
 		i++;
 	}
-	fMsgStack->push (msg);
+	fMsgStack->push (new SIMessage(msg));
 	fMsgStack->inc();
 }
 

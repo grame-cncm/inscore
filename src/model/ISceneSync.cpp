@@ -68,27 +68,27 @@ void ISceneSync::sort (IObject::subnodes& nodes)
 }
 
 //--------------------------------------------------------------------------
-static IMessage* buildSyncMsg (const string& address, SIObject o, const SMaster master)
+static SIMessage buildSyncMsg (const string& address, SIObject o, const SMaster master)
 {
 	string target = o->name();
 	if (master) {
 		const string& smap = master->getSlaveMapName();
 		if (smap.size()) target += ":" + smap;
-		IMessage * msg = new IMessage(address);
+		SIMessage msg = IMessage::create(address);
 		if (msg) {
 			*msg << target;
 			*msg << *master;
 		}
 		return msg;
 	}
-	return new IMessage(address, target);
+	return IMessage::create(address, target);
 }
 
 //--------------------------------------------------------------------------
-IMessageList ISceneSync::getMsgs (const IMessage* msg) const
+SIMessageList ISceneSync::getMsgs (const IMessage* msg) const
 {
-	IMessageList outMsgs = IObject::getMsgs (msg);
-	if (outMsgs.size()) return outMsgs;
+	SIMessageList outMsgs = IObject::getMsgs (msg);
+	if (outMsgs->list().size()) return outMsgs;
 
 	const string& address = getOSCAddress();
 	if (msg->size() == 1) {
@@ -98,15 +98,15 @@ IMessageList ISceneSync::getMsgs (const IMessage* msg) const
 		subnodes list;
 		if (fParent->find(name, list)) {
 			for (subnodes::const_iterator i = list.begin(); i != list.end(); i++) {				
-				IMessage * msg = buildSyncMsg (address, *i,  getMaster(*i));
-				outMsgs += msg;
+				SIMessage msg = buildSyncMsg (address, *i,  getMaster(*i));
+				outMsgs->list().push_back (msg);
 			}
 		}
 	}
 	else if (msg->size() == 0) {
 		for (ISync::const_iterator i = fSync.begin(); i != fSync.end(); i++) {
-			IMessage * msg = buildSyncMsg (address, i->first,  i->second);
-			outMsgs += msg;
+			SIMessage msg = buildSyncMsg (address, i->first,  i->second);
+			outMsgs->list().push_back (msg);
 		}
 	}
 	return outMsgs;	
@@ -263,16 +263,16 @@ MsgHandler::msgStatus ISceneSync::oldsyncMsg (const IMessage* msg)
 
 //--------------------------------------------------------------------------
 // the 'get' to retrieve all the objects parameters
-IMessageList ISceneSync::getAllParams() const
+SIMessageList ISceneSync::getAllParams() const
 {
-	IMessageList outMsgs = 	IObject::getAllParams();
+	SIMessageList outMsgs = 	IObject::getAllParams();
 	ISync::const_iterator i = fSync.begin();
 	// and distribute the message to synced nodes
 	while (i != fSync.end()) {
 		const SIObject& elt = i->first;
-		IMessage msg (getOSCAddress(), "get");
-		msg.add<string>(elt->name());
-		outMsgs += getMsgs(&msg);
+		SIMessage msg = IMessage::create(getOSCAddress(), "get");
+		msg->add (elt->name());
+		outMsgs->list().push_back (getMsgs(msg)->list());
 		i++;
 	}
 	return outMsgs;

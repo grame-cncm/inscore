@@ -119,12 +119,12 @@ void ISignal::print (IMessage& out) const
 }
 
 //--------------------------------------------------------------------------
-IMessageList ISignal::getSetMsg() const
+SIMessageList ISignal::getSetMsg() const
 {
-	IMessageList outMsgs;
-	IMessage * msg = new IMessage (getOSCAddress());
+	SIMessageList outMsgs = IMessageList::create();
+	SIMessage msg = IMessage::create (getOSCAddress());
 	print(*msg);
-	outMsgs += msg;
+	outMsgs->list().push_back (msg);
 	return outMsgs;
 }
 
@@ -263,12 +263,12 @@ MsgHandler::msgStatus ISignal::projectionDataMsg (const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
-IMessage&  ISignal::GetDefaultParamMsgHandler::print(IMessage& out) const
+SIMessage&  ISignal::GetDefaultParamMsgHandler::print(SIMessage& out) const
 {
 	std::vector<float> outVal;
 	fSignal->ParallelSignal::defaultValue(outVal);
 	for ( unsigned int i = 0 ; i < outVal.size() ; i++ )
-		out << outVal[i];
+		*out << outVal[i];
 	return out;
 }
 
