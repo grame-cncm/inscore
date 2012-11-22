@@ -142,7 +142,7 @@ class IAppl : public IObject, public PeriodicTask
 		void		setUDPErrAddress(const std::string& a)	{ fUDP.fErrDstAddress = a; }
 		void		setDefaultShow(bool state)				{ fDefaultShow = state; }
 
-		virtual		IMessageList getAll () const;
+		virtual		SIMessageList getAll () const;
 
 		IMessage*	hello() const;
 		void		helloMsg() const;

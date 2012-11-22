@@ -50,12 +50,12 @@ void IApplDebug::accept (Updater* u)
 //--------------------------------------------------------------------------
 // message handlers
 //--------------------------------------------------------------------------
-IMessageList IApplDebug::getSetMsg () const
+SIMessageList IApplDebug::getSetMsg () const
 {
-	IMessageList outMsgs = IObjectDebug::getSetMsg();
-	IMessage * msg = new IMessage (getOSCAddress(), "osc");
+	SIMessageList outMsgs = IObjectDebug::getSetMsg();
+	SIMessage msg = IMessage::create(getOSCAddress(), "osc");
 	*msg << fOSCDebug;
-	outMsgs += msg;
+	outMsgs->list().push_back (msg);
 	return outMsgs;
 }
 
@@ -78,12 +78,12 @@ ostream& operator << (ostream& out, const SIApplDebug& o)
 //--------------------------------------------------------------------------
 // IAppl statistics
 //--------------------------------------------------------------------------
-IMessageList IApplStat::getSetMsg () const
+SIMessageList IApplStat::getSetMsg () const
 {
-	IMessageList outMsgs;
-	IMessage * msg = new IMessage (getOSCAddress(), "");
+	SIMessageList outMsgs = IMessageList::create();
+	SIMessage msg = IMessage::create (getOSCAddress(), "");
 	*msg << string("osc") << fMsgCount << string("udp") << gMsgStack->stat();
-	outMsgs += msg;
+	outMsgs->list().push_back(msg);
 	return outMsgs;
 }
 

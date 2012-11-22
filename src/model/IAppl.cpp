@@ -231,13 +231,13 @@ void IAppl::accept (Updater* u)
 // the 'get' at root level
 // applications parameters are flushed first since
 // next messages may depend on the application state
-IMessageList IAppl::getAll() const
+SIMessageList IAppl::getAll() const
 {
-	IMessageList outMsgs = getParams();
+	SIMessageList outMsgs = getParams();
 	for (unsigned int i = 0; i < elements().size(); i++) {
 		nodePtr elt = elements()[i];
 		if (!elt->getDeleted())
-			outMsgs += elt->getAll();
+			outMsgs->list().push_back (elt->getAll()->list());
 	}
 	return outMsgs;
 }
@@ -250,7 +250,7 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 	setReceivedOSC (1);
 	string head = address;
 	string tail = addressTail;
-	IMessage* msg = new IMessage (*imsg);
+	SIMessage msg = IMessage::create (*imsg);
 	TAliasesMap::const_iterator i = fAliases.find(imsg->address());
 	if (i != fAliases.end()) {
 		msg->setAddress (i->second.first);
@@ -277,7 +277,7 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 //--------------------------------------------------------------------------
 IMessage * IAppl::hello()	const
 {
-	IMessage* msg = new IMessage(getOSCAddress());
+	SIMessage msg = IMessage::create (getOSCAddress());
 	*msg << getIP() << getUDPInPort() << getUDPOutPort() << getUDPErrPort();
 	return msg;
 }
@@ -285,9 +285,8 @@ IMessage * IAppl::hello()	const
 //--------------------------------------------------------------------------
 void IAppl::helloMsg() const
 {
-	IMessage * msg = hello();
+	SIMessage msg = hello();
 	msg->print(oscout);
-	delete msg;
 }
 
 //--------------------------------------------------------------------------
@@ -360,15 +359,14 @@ MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
 			fstream file (absolutePath(srcfile).c_str(), fstream::in);
 			if (file.is_open()) {
 				ITLparser p (&file, 0, &fJavascript, &fLua);
-				IMessageList* msgs = p.parse();
+				SIMessageList msgs = p.parse();
 				if (msgs) {
-					for (IMessageList::const_iterator i = msgs->begin(); i != msgs->end(); i++) {
+					for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
 						string beg  = OSCAddress::addressFirst((*i)->address());
 						string tail = OSCAddress::addressTail((*i)->address());
 						bool ret = processMsg(beg, tail, *i);
 						if (oscDebug()) IGlue::trace(*i, ret);
 					}
-					msgs->clear();
 				}
 				else ITLErr << "while parsing file" << srcfile << ITLEndl;
 			}

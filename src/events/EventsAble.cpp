@@ -224,40 +224,43 @@ const vector<SEventMessage>& EventsAble::getFileMsgs (const std::string& file) c
 
 //----------------------------------------------------------------------
 void EventsAble::getMsgs (const char * address, const string& type, const RationalInterval& time, 
-						  const vector<SEventMessage>& evm, IMessageList& list) const
+						  const vector<SEventMessage>& evm, SIMessageList& list) const
 {
-	const char * msg = "watch";
+	const char * method = "watch";
 	for (vector<SEventMessage>::const_iterator i = evm.begin(); i != evm.end(); i++) {
-		list += getMsg (address, type, msg, time, *i);
-		msg = "watch+";
+		SIMessage msg = getMsg (address, type, method, time, *i);
+		list->list().push_back ( msg );
+		method = "watch+";
 	}	
 }
 
 //----------------------------------------------------------------------
 void EventsAble::getMsgs (const char * address, const string& type, const string& file, 
-						  const vector<SEventMessage>& evm, IMessageList& list) const
+						  const vector<SEventMessage>& evm, SIMessageList& list) const
 {
-	const char * msg = "watch";
+	const char * method = "watch";
 	for (vector<SEventMessage>::const_iterator i = evm.begin(); i != evm.end(); i++) {
-		list += getMsg (address, type, msg, file, *i);
-		msg = "watch+";
+		SIMessage msg = getMsg (address, type, method, file, *i);
+		list->list().push_back ( msg );
+		method = "watch+";
 	}	
 }
 
 //----------------------------------------------------------------------
-void EventsAble::getMsgs (const char * address, const string& type, const vector<SEventMessage>& evm, IMessageList& list) const
+void EventsAble::getMsgs (const char * address, const string& type, const vector<SEventMessage>& evm, SIMessageList& list) const
 {
-	const char * msg = "watch";
+	const char * method = "watch";
 	for (vector<SEventMessage>::const_iterator i = evm.begin(); i != evm.end(); i++) {
-		list += getMsg (address, type, msg, *i);
-		msg = "watch+";
+		SIMessage msg = getMsg (address, type, method, *i);
+		list->list().push_back ( msg );
+		method = "watch+";
 	}
 }
 
-IMessage* EventsAble::getMsg (const char * address, const string& type, const char* mth, 
+SIMessage EventsAble::getMsg (const char * address, const string& type, const char* mth,
 		const RationalInterval& time, const SEventMessage& ev) const
 {
-	IMessage * msg = new IMessage (address, mth);
+	SIMessage msg = IMessage::create (address, mth);
 	msg->add (type);
 	msg->add (int(time.first().getNumerator()));
 	msg->add (int(time.first().getDenominator()));
@@ -266,24 +269,24 @@ IMessage* EventsAble::getMsg (const char * address, const string& type, const ch
 	return putMsg (msg, ev);
 }
 
-IMessage* EventsAble::getMsg (const char * address, const string& type, const char* mth, 
+SIMessage EventsAble::getMsg (const char * address, const string& type, const char* mth,
 		const string& file, const SEventMessage& ev) const
 {
-	IMessage * msg = new IMessage (address, mth);
+	SIMessage msg = IMessage::create (address, mth);
 	msg->add (type);
 	msg->add (file);
 	return putMsg (msg, ev);
 }
 
-IMessage* EventsAble::getMsg (const char * address, const string& type, const char* mth, const SEventMessage& ev) const
+SIMessage EventsAble::getMsg (const char * address, const string& type, const char* mth, const SEventMessage& ev) const
 {
-	IMessage * msg = new IMessage (address, mth);
+	SIMessage msg = IMessage::create (address, mth);
 	msg->add (type);
 	return putMsg (msg, ev);
 }
 
 //----------------------------------------------------------------------
-IMessage* EventsAble::putMsg (IMessage * msg, const SEventMessage& ev) const
+SIMessage EventsAble::putMsg (SIMessage& msg, const SEventMessage& ev) const
 {
 	const IMessage * evmsg = ev->message();
 	if (msg && evmsg) {
@@ -296,9 +299,9 @@ IMessage* EventsAble::putMsg (IMessage * msg, const SEventMessage& ev) const
 }
 
 //----------------------------------------------------------------------
-IMessageList EventsAble::getWatch (const char* address) const
+SIMessageList EventsAble::getWatch (const char* address) const
 {
-	IMessageList list;
+	SIMessageList list = IMessageList::create();
 	for (_TMsgMap::const_iterator i = fMsgMap.begin(); i != fMsgMap.end(); i++) {
 		getMsgs (address, type2string (i->first), i->second, list);
 	}

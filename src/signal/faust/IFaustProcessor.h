@@ -121,7 +121,7 @@ class IFaustProcessor : public ISignal, public TPlugin
 				float* fValue;
 				GetFaustParamMsgHandler(float* value) : fValue(value) {}
 			public:
-				virtual IMessage&  print(IMessage&) const;
+				virtual SIMessage&  print(SIMessage&) const;
 				static SGetFaustParamMsgHandler create(float* value) { return new GetFaustParamMsgHandler(value); }
 		};
 };

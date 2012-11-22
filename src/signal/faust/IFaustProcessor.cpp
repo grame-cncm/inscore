@@ -261,9 +261,9 @@ MsgHandler::msgStatus IFaustProcessor::set (const IMessage* msg)
 //--------------------------------------------------------------------------
 // message handlers
 //--------------------------------------------------------------------------
-IMessage&  IFaustProcessor::GetFaustParamMsgHandler::print(IMessage& out) const
+SIMessage&  IFaustProcessor::GetFaustParamMsgHandler::print(SIMessage& out) const
 {
-	out << *fValue;
+	*out << *fValue;
 	return out;
 }
 
