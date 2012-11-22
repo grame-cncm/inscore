@@ -40,6 +40,7 @@ IFileWatcher::IFileWatcher(IObject * parent) : IVNode(kFileWatcherType, parent)
 { 
 	fMsgHandlerMap["add"]		= TMethodMsgHandler<IFileWatcher>::create(this, &IFileWatcher::addMsg);
 	fMsgHandlerMap["remove"]	= TMethodMsgHandler<IFileWatcher>::create(this, &IFileWatcher::removeMsg);
+	fMsgHandlerMap["clear"]		= TMethodMsgHandler<IFileWatcher>::create(this, &IFileWatcher::clearMsg);
 	fMsgHandlerMap["watch"]		= 0L;
 	fMsgHandlerMap["watch+"]	= 0L;
 }
@@ -51,17 +52,16 @@ void IFileWatcher::print (ostream& out) const
 }
 
 //--------------------------------------------------------------------------
-bool IFileWatcher::buildMessage(const IMessage& source, IMessage& outMsg)
+SIMessage IFileWatcher::buildMessage(const IMessage* source)
 {
 	std::string oscAddress, message;
-	if (!source.param(1, oscAddress) || !source.param(2, message))
-		return false;
+	if (!source->param(1, oscAddress) || !source->param(2, message))
+		return 0;
 
-	outMsg.setAddress( oscAddress );	// moves the address from params to address field
-	outMsg.setMessage( message );		// moves the message from params to message field
-	for (int i= 3; i<source.size(); i++)
-		outMsg.add (source.param(i));
-	return true;
+	SIMessage outMsg = IMessage::create(oscAddress, message);
+	for (int i= 3; i<source->size(); i++)
+		outMsg->add (source->param(i));
+	return outMsg;
 
 
 //	outMsg = source;
@@ -85,42 +85,42 @@ MsgHandler::msgStatus IFileWatcher::addMsg (const IMessage* msg )
 	// the 'add' message expects the following parameters: 'filePath' OSCMessage
 	// where OSCMessage format is: 'address' 'msg' <opt parameters>
 	// thus a minimum of 3 parameters is expected
-	if (msg->size() >= 3) {
-		std::string fileName;
-		if (!msg->param(0, fileName)) return MsgHandler::kBadParameters;
-		if ( fileName.size() ) {
-			IMessage watcherMessage;
-			if (IFileWatcher::buildMessage(*msg,watcherMessage)) {
-				addAssociation( WatcherAssociation( IAppl::absolutePath(fileName) , watcherMessage ) );
-				return MsgHandler::kProcessed;
-			}
-		}
-	}
+//	if (msg->size() >= 3) {
+//		std::string fileName;
+//		if (!msg->param(0, fileName)) return MsgHandler::kBadParameters;
+//		if ( fileName.size() ) {
+//			SIMessage watcherMessage = IMessage::create();
+//			if (IFileWatcher::buildMessage (msg, watcherMessage)) {
+//				addAssociation( WatcherAssociation( IAppl::absolutePath(fileName) , watcherMessage ) );
+//				return MsgHandler::kProcessed;
+//			}
+//		}
+//	}
 	return MsgHandler::kBadParameters;
 }
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IFileWatcher::removeMsg (const IMessage* msg )	
 {
-	if (msg->size() == 1) {
-		string oscAddress;
-		if (!msg->param(0, oscAddress)) return MsgHandler::kBadParameters;
-		if ( oscAddress.size() ) {
-			remove( oscAddress );
-			return MsgHandler::kProcessed;
-		}
-	}	
-	else if (msg->size() >= 3) {
-		std::string fileName;
-		if (!msg->param(0, fileName)) return MsgHandler::kBadParameters;
-		if ( fileName.size() ) {
-			IMessage watcherMessage;
-			if (IFileWatcher::buildMessage(*msg,watcherMessage)) {
-				remove( WatcherAssociation(IAppl::absolutePath(fileName) , watcherMessage) );
-				return MsgHandler::kProcessed;
-			}
-		}
-	}
+//	if (msg->size() == 1) {
+//		string oscAddress;
+//		if (!msg->param(0, oscAddress)) return MsgHandler::kBadParameters;
+//		if ( oscAddress.size() ) {
+//			remove( oscAddress );
+//			return MsgHandler::kProcessed;
+//		}
+//	}	
+//	else if (msg->size() >= 3) {
+//		std::string fileName;
+//		if (!msg->param(0, fileName)) return MsgHandler::kBadParameters;
+//		if ( fileName.size() ) {
+//			SIMessage watcherMessage = buildMessage(msg);
+//			if (watcherMessage) {
+//				remove( IAppl::absolutePath(fileName), watcherMessage );
+//				return MsgHandler::kProcessed;
+//			}
+//		}
+//	}
 	return MsgHandler::kBadParameters;
 }
 
@@ -128,25 +128,20 @@ MsgHandler::msgStatus IFileWatcher::removeMsg (const IMessage* msg )
 MsgHandler::msgStatus IFileWatcher::clearMsg (const IMessage* msg)
 {
 	if (msg->size() == 0) {
-		clear();
+		fWatchList.clear();
 		return MsgHandler::kProcessed;
 	}
 	return MsgHandler::kBadParameters;
 }
 
 //--------------------------------------------------------------------------
-IMessageList IFileWatcher::getMsgs (const IMessage* msg) const
+SIMessageList IFileWatcher::getMsgs (const IMessage* msg) const
 {
-	IMessageList outMsgs;
-
-	vector<WatcherAssociation> associations;
-	getList(associations);
-	
-	for ( unsigned int i = 0 ; i < associations.size() ; i++ ) {
-		const IMessage * cmsg = &(associations[i].mMessage);
-		IMessage* msg = new IMessage(getOSCAddress(), "add");
-		*msg << associations[i].mFileName << cmsg;
-		outMsgs += msg;
+	SIMessageList outMsgs = IMessageList::create();
+	for ( TWatchList::const_iterator i = fWatchList.begin(); i != fWatchList.end() ; i++ ) {
+		SIMessage msg = IMessage::create(getOSCAddress(), "add");
+		*msg << i->first << i->second;
+		outMsgs->list().push_back(msg);
 	}
 	return outMsgs;
 }

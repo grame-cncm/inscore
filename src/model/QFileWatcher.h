@@ -54,7 +54,7 @@ class QFileWatcher: public QObject, public IFileWatcher
 
 	QFileSystemWatcher* mWatcher;
 
-	QMultiMap<QString,IMessage>	mFilesMap;	// fileName -> msg map.
+	QMultiMap<QString, SIMessage>	mFilesMap;	// fileName -> msg map.
 
 	public:
 		
@@ -62,19 +62,20 @@ class QFileWatcher: public QObject, public IFileWatcher
 
 	protected:
 	
-		QFileWatcher(IObject * parent);
+				 QFileWatcher(IObject * parent);
 		virtual ~QFileWatcher();
 	
 		/*! \brief IFileWatcher implementation */
-		virtual void addAssociation(const WatcherAssociation& association);
-		/*! \brief IFileWatcher implementation */
-		virtual void remove(const WatcherAssociation& association);
-		/*! \brief IFileWatcher implementation */
-		virtual void remove(const std::string& oscAddress);
+//		virtual void addAssociation(const WatcherAssociation& association);
+//		/*! \brief IFileWatcher implementation */
+//		virtual void remove(const WatcherAssociation& association);
+//		/*! \brief IFileWatcher implementation */
+//		virtual void remove(const std::string& oscAddress);
 		/*! \brief IFileWatcher implementation */
 		virtual void clear();		
-			
-		virtual void getList(std::vector<WatcherAssociation>& outAssociations) const;
+//
+//		virtual bool contains (QString, const IMessage*) const;
+//		virtual void getList(std::vector<WatcherAssociation>& outAssociations) const;
 
 	protected slots:
 		void fileChangedSlot(const QString& fileName);

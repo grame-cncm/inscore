@@ -28,6 +28,7 @@
 #define __IFileWatcher__
 
 #include <string>
+#include <map>
 
 #include "IVNode.h"
 
@@ -63,43 +64,26 @@ class IFileWatcher: public IVNode
 		
 		/// \brief clear the monitoring list.
 		virtual void clear() = 0;
+		typedef std::map<std::string, SIMessageList>	TWatchList;
 				
 	protected:
+		TWatchList	fWatchList;
 	
-		IFileWatcher(IObject * parent);
+				 IFileWatcher(IObject * parent);
 		virtual ~IFileWatcher() {}
-	
-
-		typedef struct WatcherAssociation
-		{
-			WatcherAssociation() : mFileName("") {}
-			WatcherAssociation(const std::string& fileName, const IMessage& message)
-								 : mFileName(fileName), mMessage(message) {}
-			std::string mFileName;
-			IMessage mMessage;
-		} WatcherAssociation;
-		
 
 		/// \brief fileWatcher \c 'get' message handler
-		virtual IMessageList getMsgs (const IMessage* msg) const;
-
-		/*!
-		*	\brief Starts notifying changes of the file 'fileName' for the attention of object whose address is 'oscAddress'.
-		*/
-		virtual void addAssociation(const WatcherAssociation& association) = 0;
+		virtual SIMessageList getMsgs (const IMessage* msg) const;
 
 		/*!
 		*	\brief Stops notifying object whose address is 'oscAdress' on changes of the file 'fileName'.
 		*/
-		virtual void remove(const WatcherAssociation& association) = 0;
+		virtual void remove(const char* fileName, const IMessage* msg ) {}
 	
 		/*!
 		*	\brief Stops notifying object whose address is 'oscAdress' on any file changes.
 		*/
-		virtual void remove(const std::string& oscAddress) = 0;
-		
-		virtual void getList(std::vector<WatcherAssociation>& outAssociations) const = 0;
-
+		virtual void remove(const std::string& oscAddress) {}
 
 		/// \brief the \c 'add' message handler
 		virtual MsgHandler::msgStatus addMsg (const IMessage* msg);
@@ -114,7 +98,7 @@ class IFileWatcher: public IVNode
 		virtual void positionAble ()	{}
 		virtual void timeAble ()		{}
 
-		static bool buildMessage(const IMessage& source,IMessage& target);
+		static SIMessage buildMessage(const IMessage* source);
 };
 
 /*!@} */
