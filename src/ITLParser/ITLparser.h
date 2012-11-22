@@ -61,7 +61,7 @@ class ITLparser {
 				 ITLparser(std::istream* stream, int line, TJSEngine* js, TLua* lua);
 		virtual ~ITLparser();
 		
-		IMessageList* parse();
+		SIMessageList parse();
 };
 
 } // end namespace
