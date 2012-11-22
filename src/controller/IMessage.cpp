@@ -41,33 +41,13 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-// messages list management
-//--------------------------------------------------------------------------
-void IMessageList::clear()
-{
-	for (unsigned int i=0; i < size(); i++)
-		delete (*this)[i];
-	vector<IMessage*>::clear();
-}
- 
-void IMessageList::operator += (const IMessageList& msgs) 
-{
-	for (unsigned int i=0; i < msgs.size(); i++)
-		push_back (msgs[i]);
-}
-
-//--------------------------------------------------------------------------
-ostream& operator << (ostream& out, const IMessageList& msg)
-{
-	for (unsigned int i=0; i < msg.size(); i++) {
-		msg[i]->print(out);
-		out << ';' << endl;
-	}
-	return out;
-}
-
-//--------------------------------------------------------------------------
 // IMessage implementation
+//--------------------------------------------------------------------------
+IMessage::IMessage(const IMessage& msg)
+{
+	*this = msg;
+}
+
 //--------------------------------------------------------------------------
 IMessage::IMessage(const std::string& address, const argslist& args, const TUrl& url)
 				: fAddress(address), fHasMessage(true), fUrl(url.fHostname.c_str(), url.fPort)
@@ -75,13 +55,6 @@ IMessage::IMessage(const std::string& address, const argslist& args, const TUrl&
 	fArguments = args;
 	fHasMessage = fArguments.size() && fArguments[0]->isType<string>();
 }
-
-//IMessage::IMessage(const IMessage& msg)
-//{
-//	setAddress (msg.address());
-////	setMessage (msg.message());
-//	fArguments = msg.params();
-//}
 
 //--------------------------------------------------------------------------
 static string escape (const string& str)
@@ -147,43 +120,54 @@ bool IMessage::param(int i, rational& val) const
 }
 
 //--------------------------------------------------------------------------
+// print a single parameter
+//--------------------------------------------------------------------------
+void IMessage::print(std::ostream& out, int i, int nested) const
+{
+	string str; int val; float fval; SIMessageList msgs; TJavaScript js; TLuaScript lua;
+
+	if (param(i, str)) {
+		const char * q = needQuotes (str) ? "\"" : "";
+		out << q << escape(str) << q;
+	}
+	else if (param(i, val))
+		out << val;
+	else if (param(i, fval))
+		out << fval;
+	else if (param(i, msgs)) {
+		string prefix;
+		while (nested--) { prefix += "	"; }
+		msgs->list().set(prefix.c_str(), ",\n");
+		out << "\n" << msgs->list();
+	}
+	else if (param(i, js))
+		out << "<? javascript " << js << " ?>";
+	else if (param(i, lua))
+		out << "<? lua " << js << " ?>";
+}
+
+//--------------------------------------------------------------------------
 void IMessage::print(std::ostream& out) const
 {
+	static int nested = 0;
+	nested++;
 	ios::fmtflags f = out.flags ( ios::showpoint );
 	const char * msg = message().c_str();
 
 	if (fUrl.fPort) out << fUrl.fHostname << ':' << fUrl.fPort;
 	out << address() << " ";
-	if (*msg) out << message() << " ";
-	for (int i=0; i< size(); i++) {
-		string str; int val; float fval;
-		if (param(i, str)) {
-			const char * q = needQuotes (str) ? "\"" : "";
-			out << q << escape(str) << q << " ";
+	if (*msg) out << message();
+	if (size()) {
+		out << " ";
+		for (int i=0; i< size()-1; i++) {
+			print (out, i, nested);
+			out << " ";
 		}
-		else if (param(i, val))
-			out << val << " ";
-		else if (param(i, fval))
-			out << fval << " ";
+		print (out, size()-1, nested);
 	}
+	if (nested == 1) out << ";";
+	nested--;
 	out.flags ( f );
-
-//	argslist::const_iterator i = params().begin();
-//
-//	ios::fmtflags f = out.flags ( ios::showpoint );
-//	while (i != params().end()) {
-//		IMsgParam<string>* s = dynamic_cast<IMsgParam<string>*>((baseparam*)(*i));
-//		if (s) {
-//			const char * q = needQuotes (s->getValue()) ? "\"" : "";
-//			out << q << escape(s->getValue()) << q << " ";
-//		}
-//		IMsgParam<int>* ip = dynamic_cast<IMsgParam<int>*>((baseparam*)(*i));
-//		if (ip) out << ip->getValue() << " ";
-//		IMsgParam<float>* f = dynamic_cast<IMsgParam<float>*>((baseparam*)(*i));
-//		if (f) out << f->getValue() << " ";
-//		i++;
-//	}
-//	out.flags ( f );
 }
 
 //--------------------------------------------------------------------------

@@ -29,11 +29,13 @@
 
 #include <string>
 #include <vector>
-#include <iostream>
+#include <ostream>
+
 #include "message.h"
 #include "ITLError.h"
 #include "OSCStream.h"
 #include "rational.h"
+#include "extvector.h"
 #include "smartpointer.h"
 
 
@@ -117,7 +119,26 @@ template <typename T> class IMsgParam : public baseparam
 		virtual libmapping::SMARTP<baseparam> copy() const { return new IMsgParam<T>(fParam); }
 };
 
+class IMessage;
+typedef libmapping::SMARTP<IMessage>		SIMessage;
 class IMessageList;
+typedef libmapping::SMARTP<IMessageList>	SIMessageList;
+
+/// a javascript type definition to handle javascript as message argument
+class TJavaScript : public std::string	{
+	public:
+				 TJavaScript(const char* v) : std::string(v) {}
+				 TJavaScript() {}
+		virtual ~TJavaScript() {}
+};
+/// a lua type definition to handle javascript as message argument
+class TLuaScript : public std::string	{
+	public:
+				 TLuaScript(const char* v) : std::string(v) {}
+				 TLuaScript() {}
+		virtual ~TLuaScript() {}
+};
+
 //--------------------------------------------------------------------------
 /*!
 	\brief a message description
@@ -129,19 +150,8 @@ class IMessageList;
 class IMessage : public Message, public libmapping::smartable
 {
 	public:
-		typedef libmapping::SMARTP<baseparam>		argPtr;		///< a message argument ptr type
-		class argslist : public std::vector<argPtr> {
-			public:
-				void push_back( const argslist& l) {
-					for (const_iterator i = l.begin(); i != l.end(); i++) std::vector<argPtr>::push_back(*i);
-				}
-				void push_back( const argslist* l) {
-					for (const_iterator i = l->begin(); i != l->end(); i++) std::vector<argPtr>::push_back(*i);
-				}
-				void push_back( const argPtr& arg) {
-					std::vector<argPtr>::push_back(arg);
-				}
-		};
+		typedef libmapping::SMARTP<baseparam>	argPtr;		///< a message argument ptr type
+		typedef extvector<argPtr>				argslist;	///< type for arguments list
 		class TUrl {
 			public:
 				std::string	fHostname;
@@ -149,55 +159,54 @@ class IMessage : public Message, public libmapping::smartable
 							TUrl () : fPort(0) {}
 							TUrl (const char* host, int port) : fHostname(host), fPort(port) {}
 		};
-//		typedef std::vector<argPtr>		argslist;	///< args list type
 
 	private:
 		unsigned long	fSrcIP;			///< the message source IP number
 		std::string	fAddress;			///< the message osc destination address
-//		std::string	fMessage;			///< the message 'message'
 		argslist	fArguments;			///< the message arguments, index 0 is reserved for the message string
 		bool		fHasMessage;		///< indicates when arguments start with a message string
 		TUrl		fUrl;
 		
 		inline int index (int i) const	{ return fHasMessage ? i+1 : i; }
+		void		print(std::ostream& out, int param, int nested) const;	///< print a single param
 	
-	public:
+	protected:
 			/*!
 				\brief an empty message constructor
 			*/
 			 IMessage() : fHasMessage(false)  {}
 			/*!
-				\brief a message constructor
+				\brief an empty message constructor
+			*/
+			 IMessage(const IMessage& msg);
+			/*!
+				\brief a message constructor with an osc address
 				\param address the message destination address
 			*/
 			 IMessage(const std::string& address) : fAddress(address), fHasMessage(false) {}
 			/*!
-				\brief a message constructor
+				\brief a message constructor with an osc address and a message string
 				\param address the message destination address
 				\param msg the message message
 			*/
-			 IMessage(const std::string& address, const std::string& msg) : fAddress(address) { setMessage(msg); } //, fMessage(msg) {}
+			 IMessage(const std::string& address, const std::string& msg) : fAddress(address) { setMessage(msg); }
 			/*!
-				\brief a message constructor
-				\param address the message destination address
-				\param msg the message message
-				\param args the message parameters
-			*/
-			 IMessage(const std::string& address, const std::string& msg, const argslist& args) 
-				: fAddress(address)  /*, fMessage(msg), fArguments(args)*/ { setMessage(msg); add(args); }
-			/*!
-				\brief a message constructor
+				\brief a message constructor with arguments and address extension
 				\param address the message destination address
 				\param args the message parameters, param 0 is scanned to set the message bool attribute
+				\param url the osc address extension. Empty url discards the extension
 			*/
 			 IMessage(const std::string& address, const argslist& args, const TUrl& url);
-			/*!
-				\brief a message constructor
-				\param msg a message
-			*/
-//			 IMessage(const IMessage& msg);
 	virtual ~IMessage() {}
 
+	
+	public:
+		static SIMessage create()													{ return new IMessage(); }
+		static SIMessage create(const IMessage& msg)								{ return new IMessage(msg); }
+		static SIMessage create(const std::string& address)							{ return new IMessage(address); }
+		static SIMessage create(const std::string& address, const std::string& msg)	{ return new IMessage(address, msg); }
+		static SIMessage create(const std::string& address, const argslist& args, const TUrl& url)
+				{ return new IMessage(address, args, url); }
 
 	/*!
 		\brief adds a parameter to the message
@@ -235,7 +244,19 @@ class IMessage : public Message, public libmapping::smartable
 		\brief adds a parameter to the message
 		\param val the parameter
 	*/
-	void	add( IMessageList* val )		{ fArguments.push_back( new IMsgParam<IMessageList*>(val) ); }
+	void	add(const SIMessageList& val )	{ fArguments.push_back( new IMsgParam<SIMessageList>(val) ); }
+	
+	/*!
+		\brief adds a parameter to the message
+		\param val the parameter
+	*/
+	void	add(const TJavaScript& val )	{ fArguments.push_back( new IMsgParam<TJavaScript>(val) ); }
+	
+	/*!
+		\brief adds a parameter to the message
+		\param val the parameter
+	*/
+	void	add(const TLuaScript& val )	{ fArguments.push_back( new IMsgParam<TLuaScript>(val) ); }
 	
 	/*!
 		\brief adds a set of parameter to the message
@@ -361,26 +382,49 @@ class IMessage : public Message, public libmapping::smartable
 		\param val on output: the parameter value when the parameter type matches
 		\return false when types don't match
 	*/
-	bool	param(int i, IMessageList*& val) const { val = param(i)->value<IMessageList*>(val); return param(i)->isType<IMessageList*>(); }
+	bool	param(int i, SIMessageList& val) const { val = param(i)->value<SIMessageList>(val); return param(i)->isType<SIMessageList>(); }
+	/*!
+		\brief gives a message messages parameters
+		\param i the parameters start index (0 <= i < size()-1)
+		\param val on output: the parameter value when the parameter type matches
+		\return false when types don't match
+	*/
+	bool	param(int i, TJavaScript& val) const { val = param(i)->value<TJavaScript>(val); return param(i)->isType<TJavaScript>(); }
+	/*!
+		\brief gives a message messages parameters
+		\param i the parameters start index (0 <= i < size()-1)
+		\param val on output: the parameter value when the parameter type matches
+		\return false when types don't match
+	*/
+	bool	param(int i, TLuaScript& val) const { val = param(i)->value<TLuaScript>(val); return param(i)->isType<TLuaScript>(); }
 };
-
-typedef libmapping::SMARTP<IMessage>	SIMessage;
 
 //--------------------------------------------------------------------------
 /*!
-	\brief a messages list utility
-	
-	Note that IMessageList doesn't delete it's messages unless the \c clear method is called.
+	\brief a messages list utility	
 */
-class IMessageList : public std::vector<IMessage *>, public libmapping::smartable
+class IMessageList : public libmapping::smartable
 {
-	public:
+	protected:
+		extvector<SIMessage> fList;
+		
 				 IMessageList() {}
 		virtual ~IMessageList() {}
 
-		void  clear();			///< delete the enclosed messages
-		void  operator += (const IMessageList&);	
-		void  operator += (IMessage* msg)					{ push_back(msg); }
+	public:
+		typedef extvector<SIMessage> TMessageList;
+
+		static SIMessageList create()				{ return new IMessageList; }
+		
+		const	extvector<SIMessage>& list() const	{ return fList; }
+				extvector<SIMessage>& list()		{ return fList; }
+
+//		void  print (std::ostream& out, const char* prefix, const char* suffix ) const;
+//		
+//		void  push_back (SIMessageList l)			{ extvector<SIMessage>* lptr = (extvector<SIMessage>*)l; extvector<SIMessage>::push_back(lptr); }
+//		void  push_back (SIMessage& msg)			{ extvector<SIMessage>::push_back(msg); }
+//		for (unsigned int i = 0; i < l->size(); i++) push_back(l[i]); }
+//		void  push_back (SIMessageList l)			{ for (IMessageList::iterator i = l->begin(); i != l-> end(); i++) push_back(*i); }
 };
 
 /*!
