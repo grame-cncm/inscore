@@ -138,7 +138,7 @@ void IMessage::print(std::ostream& out, int i, int nested) const
 		string prefix;
 		while (nested--) { prefix += "	"; }
 		msgs->list().set(prefix.c_str(), ",\n");
-		out << "\n" << msgs->list();
+		out << "(\n" << msgs->list() << " )";
 	}
 	else if (param(i, js))
 		out << "<? javascript " << js << " ?>";
