@@ -53,7 +53,7 @@ class IGraphicBasedObject : public IObject
 		SLocalMapping	fLocalMappings;
 
 		/// \brief get an object maps
-		virtual IMessageList __getMaps () const	{ return TMapMsgHandler<long,2>::getMapMsgs( localMappings() , this ); }
+		virtual SIMessageList __getMaps () const	{ return TMapMsgHandler<long,2>::getMapMsgs( localMappings() , this ); }
 
 	public:
 

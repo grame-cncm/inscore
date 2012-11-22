@@ -197,9 +197,9 @@ MsgHandler::msgStatus IGraphicSignal::set (const IMessage* msg )
 }
 
 //--------------------------------------------------------------------------
-IMessage& IGraphicSignal::getDimParamMsgHandler::print(IMessage& out) const
+SIMessage& IGraphicSignal::getDimParamMsgHandler::print(SIMessage& out) const
 {
-	out << fGraph->dimension();
+	*out << fGraph->dimension();
 	return out;
 }
 

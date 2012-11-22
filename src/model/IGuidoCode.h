@@ -121,7 +121,7 @@ class IGuidoCode : public IObject
 		MsgHandler::msgStatus mapMsg (const IMessage* msg );
 		
 		/// \brief Overrides IObject to handle 'get map' msg.
-		IMessageList getMsgs(const IMessage* msg) const;
+		SIMessageList getMsgs(const IMessage* msg) const;
 };
 
 /*! @} */

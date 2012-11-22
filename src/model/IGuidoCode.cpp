@@ -190,9 +190,9 @@ MsgHandler::msgStatus IGuidoCode::mapMsg (const IMessage* msg )
 }
 
 //--------------------------------------------------------------------------
-IMessageList IGuidoCode::getMsgs(const IMessage* msg) const
+SIMessageList IGuidoCode::getMsgs(const IMessage* msg) const
 {
-	IMessageList outMsgs;
+	SIMessageList outMsgs = IMessageList::create();
 	for ( unsigned int i = 0 ; i < msg->size() ; i++ )
 	{
 		string param = "-";
@@ -201,9 +201,9 @@ IMessageList IGuidoCode::getMsgs(const IMessage* msg) const
 		{
 			for ( std::vector<string>::const_iterator i = fRequestedMappings.begin() ; i != fRequestedMappings.end() ; i++ )
 			{
-				IMessage* msg = new IMessage(getOSCAddress(), "map");
+				SIMessage msg = IMessage::create(getOSCAddress(), "map");
 				*msg << (*i);
-				outMsgs += msg;
+				outMsgs->list().push_back (msg);
 			}
 			break;
 		}
@@ -212,13 +212,13 @@ IMessageList IGuidoCode::getMsgs(const IMessage* msg) const
 			i++;
 			int pagenumber;
 			if (i < msg->size() && msg->param(i, pagenumber) && (pagenumber <= fPageCount)) {
-				IMessage* msg = new IMessage(getOSCAddress(), param);
+				SIMessage msg = IMessage::create(getOSCAddress(), param);
 				*msg << pagenumber << getPageDate(pagenumber);
-				outMsgs += msg;
+				outMsgs->list().push_back (msg);
 			}
 		}
 	}
-	outMsgs += IObject::getMsgs(msg);
+	outMsgs->list().push_back (IObject::getMsgs(msg)->list());
 	return outMsgs;
 }
 
