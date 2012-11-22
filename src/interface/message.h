@@ -79,7 +79,8 @@ class export Message
 	/// \brief gives the message address
 	virtual const std::string&	address() const	= 0;
 	/// \brief gives the message message
-	virtual const std::string&	message() const	= 0;
+//	virtual const std::string&	message() const	= 0;
+	virtual std::string	message() const	= 0;
 	
 	/// \brief gives the message parameters count
 	virtual int					size() const = 0;
