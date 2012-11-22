@@ -143,16 +143,16 @@ template<typename T, unsigned int D> class TMapMsgHandler
 		}
 		
 		/// \brief Overrides IObject to handle 'get map' msg.
-		static IMessageList getMapMsgs(const libmapping::SMARTP<TLocalMapping<T,D> >& localMapping , const IObject* object )
+		static SIMessageList getMapMsgs(const libmapping::SMARTP<TLocalMapping<T,D> >& localMapping , const IObject* object )
 		{ 
-			IMessageList outMsgs;
+			SIMessageList outMsgs = IMessageList::create();
 			for ( typename TLocalMapping<T,D>::const_iterator iter = localMapping->namedMappings().begin() ; iter != localMapping->namedMappings().end() ; iter++ )
 			{
-				IMessage* msg = new IMessage(object->getOSCAddress(), "map");
+				SIMessage msg = IMessage::create(object->getOSCAddress(), "map");
 				if ( iter->first.size() )
 					*msg << iter->first;
 				*msg << iter->second->direct();
-				outMsgs += msg;
+				outMsgs->list().push_back(msg);
 			}
 			return outMsgs;
 		}
