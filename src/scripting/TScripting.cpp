@@ -30,7 +30,12 @@
 
 #include "TEnv.h"
 #include "ITLparser.h"
+#ifdef NO_OSCSTREAM
+# define ITLErr		cerr
+# define ITLEndl	endl
+#else
 #include "ITLError.h"
+#endif
 
 using namespace std;
 extern inscore::TScripting* gScripter;
@@ -47,11 +52,11 @@ class TEnv;
 TScripting::TScripting(TJSEngine* js, TLua* lua)
 	: 	fJavascript(js), fLua(lua)
 {
-	fMessages = new IMessageList;
+	fMessages = IMessageList::create();
 	fEnv = TEnv::create();
 }
 
-TScripting::~TScripting()	{ delete fMessages; }
+TScripting::~TScripting()	{}
 
 //--------------------------------------------------------------------------------------------
 void TScripting::variable	(const char* ident, const IMessage::argslist* values)		
@@ -62,22 +67,24 @@ void TScripting::variable	(const char* ident, const IMessage::argslist* values)
 }
 
 //--------------------------------------------------------------------------------------------
-void TScripting::add (IMessage* msg)
+void TScripting::add (SIMessage& msg)
 {
-	*fMessages += msg;
+	fMessages->list().push_back (msg);
 }
 
 //--------------------------------------------------------------------------------------------
-void TScripting::add (IMessageList* msgs)
+void TScripting::add (SIMessageList& msgs)
 {
-	*fMessages += *msgs;
+	fMessages->list().push_back (msgs->list());
 }
 
 //--------------------------------------------------------------------------------------------
 // lua support
 //--------------------------------------------------------------------------------------------
 #ifdef LUA
-bool TScripting::luaEval (const char* script)
+bool TScripting::checkLua () const							{ return fLua != 0; }
+
+SIMessageList TScripting::luaEval (const char* script)
 {
 	if (fLua) {
 		fLua->bindEnv (fEnv);
@@ -86,24 +93,19 @@ bool TScripting::luaEval (const char* script)
 			if (luaout.size()) {
 				istringstream stream(luaout);
 				ITLparser p (&stream, 0, fJavascript, fLua);
-				IMessageList* msgs = p.parse();
-				if (msgs) add (msgs);
+				return p.parse();
 			}
-			return true;
 		}
 	}
 	else ITLErr << "lua is not available!" << ITLEndl;
-	return false;
+	return 0;
 }
 #else
-bool TScripting::luaEval (const char* script)
+bool TScripting::checkLua () const							{ return false; }
+SIMessageList TScripting::luaEval (const char* script)
 {
-#ifdef NO_OSCSTREAM
-	cerr << "lua is not available!" << endl;
-#else
 	ITLErr << "lua is not available!" << ITLEndl;
-#endif
-	return false;
+	return 0;
 }
 #endif
 
@@ -112,40 +114,54 @@ bool TScripting::luaEval (const char* script)
 // javascript support
 //--------------------------------------------------------------------------------------------
 #ifdef V8ENGINE
-bool TScripting::jsEval (const char* script, int lineno)
+bool TScripting::checkJavascript () const						{ return fJavascript != 0; }
+
+static int countlines (const char* script)
+{
+	int n = 1;
+	while (*script) {
+		int c = *script++;
+		if (c == 0x0D) {
+			n++;
+			if (*script == 0x0A) script++;
+		}
+		else if (c == 0x0A) n++;
+	}
+	return n;
+}
+
+SIMessageList TScripting::jsEval (const char* script, int lineno)
 {
 	if (fJavascript) {
 		fJavascript->bindEnv (fEnv);
 		string jsout;
-		if (fJavascript->eval(lineno, script, jsout)) {
+		if (fJavascript->eval(lineno - countlines(script), script, jsout)) {
 			if (jsout.size()) {
 				istringstream stream(jsout);
 				ITLparser p (&stream, 0, fJavascript, fLua);
-				IMessageList* msgs = p.parse();
-				if (msgs) add (msgs);
+				return p.parse();
 			}
-			return true;
 		}
 	}
 	else ITLErr << "javascript is not available!" << ITLEndl;
-	return false;
+	return 0;
 }
 #else
-bool TScripting::jsEval (const char* script, int lineno)
+bool TScripting::checkJavascript () const						{ return false; }
+SIMessageList TScripting::jsEval (const char* script, int lineno)
 {
-#ifdef NO_OSCSTREAM
-	cerr << "javascript is not available!" << endl;
-#else
 	ITLErr << "javascript is not available!" << ITLEndl;
-#endif
-	return false;
+	return 0;
 }
 #endif
 
 //--------------------------------------------------------------------------------------------
-IMessage::argslist TScripting::resolve (const char* var)
+IMessage::argslist TScripting::resolve (const char* var, const char * defaultVal)
 {
-	return fEnv->value (var);
+	IMessage::argslist val = fEnv->value (var);
+	if (val.empty() && defaultVal)
+		val.push_back(new IMsgParam<string>(defaultVal));
+	return val;
 }
 
 } // namespace
