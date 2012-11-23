@@ -1,9 +1,10 @@
-
-CXXFLAGSJS :=  -g -DNO_OSCSTREAM -DV8ENGINE -I.. -I../../controller -I../../lib -I../../interface -I../../mapping -I../../model -I../../view -I../../scripting -I../../libmapping/package/libmapping -I../../../lib/oscpack -I../../../lib/javascript/v8/include -arch x86_64 -DPARSERTEST
+#ARCH := x86_64
+ARCH := i386
+CXXFLAGSJS :=  -g -DNO_OSCSTREAM -DV8ENGINE -I.. -I../../controller -I../../lib -I../../interface -I../../mapping -I../../model -I../../view -I../../scripting -I../../libmapping/package/libmapping -I../../../lib/oscpack -I../../../lib/javascript/v8/include -arch $(ARCH) -DPARSERTEST
 
 OBJJS := ../ITLparser.o ../ITLparse.o ../ITLlex.o  ../../libmapping/src/misc/rational.o ../../controller/IMessage.o  ../../scripting/TScripting.o  ../../scripting/TV8Js.o testparser.o 
 
-CXXFLAGS :=  -g -DNO_OSCSTREAM -I.. -I../../controller -I../../lib -I../../interface -I../../mapping -I../../model -I../../view -I../../scripting -I../../libmapping/package/libmapping -I../../../lib/oscpack -I../../../lib/javascript/v8/include -arch x86_64 -DPARSERTEST
+CXXFLAGS :=  -g -DNO_OSCSTREAM -I.. -I../../controller -I../../lib -I../../interface -I../../mapping -I../../model -I../../view -I../../scripting -I../../libmapping/package/libmapping -I../../../lib/oscpack -I../../../lib/javascript/v8/include -arch $(ARCH) -DPARSERTEST
 
 OBJ := ../ITLparser.o ../ITLparse.o ../ITLlex.o  ../../libmapping/src/misc/rational.o ../../controller/IMessage.o  ../../scripting/TScripting.o testparser.o 
 
