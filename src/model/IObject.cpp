@@ -521,7 +521,7 @@ SIMessageList IObject::getMsgs(const IMessage* msg) const
 	if (msg->size() == 0) {
 		outMsgs = getSetMsg();
 	}
-	else for (unsigned int i=0; i<msg->size(); i++) {
+	else for (int i=0; i<msg->size(); i++) {
 		string what;
 		if (msg->param(i, what)) {
 			SGetParamMsgHandler handler = getMessageHandler(what);
