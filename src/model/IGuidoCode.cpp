@@ -193,7 +193,7 @@ MsgHandler::msgStatus IGuidoCode::mapMsg (const IMessage* msg )
 SIMessageList IGuidoCode::getMsgs(const IMessage* msg) const
 {
 	SIMessageList outMsgs = IMessageList::create();
-	for ( unsigned int i = 0 ; i < msg->size() ; i++ )
+	for ( int i = 0 ; i < msg->size() ; i++ )
 	{
 		string param = "-";
 		msg->param(i, param);

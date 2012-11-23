@@ -78,11 +78,9 @@ MsgHandler::msgStatus ICurve::set (const IMessage* msg)
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
 	if ( (msg->size() > 1) && ( (msg->size() % 8)==1 ) ) {
-//		const float err = -55555;
-		unsigned int i;
 		//Build the vector of points reading the message.
 		CurveData curveData;
-		for ( i = 1 ; i < msg->size() ; i+=8 ) {
+		for ( int i = 1 ; i < msg->size() ; i+=8 ) {
 			BezierCurve bezierCurve;
 			if (!msg->param(i,   bezierCurve.fPointA.first)	||
 				!msg->param(i+1, bezierCurve.fPointA.second) ||
@@ -93,22 +91,6 @@ MsgHandler::msgStatus ICurve::set (const IMessage* msg)
 				!msg->param(i+6, bezierCurve.fPointD.first) ||
 				!msg->param(i+7, bezierCurve.fPointD.second))
 				return MsgHandler::kBadParameters;
-
-//			bezierCurve.fPointA.first = msg->param(i)->value<float>(err);
-//			bezierCurve.fPointA.second = msg->param(i+1)->value<float>(err);
-//			bezierCurve.fPointB.first = msg->param(i+2)->value<float>(err);
-//			bezierCurve.fPointB.second = msg->param(i+3)->value<float>(err);
-//			bezierCurve.fPointC.first = msg->param(i+4)->value<float>(err);
-//			bezierCurve.fPointC.second = msg->param(i+5)->value<float>(err);
-//			bezierCurve.fPointD.first = msg->param(i+6)->value<float>(err);
-//			bezierCurve.fPointD.second = msg->param(i+7)->value<float>(err);
-//			if (	(bezierCurve.fPointA.first==err) || (bezierCurve.fPointA.second==err)
-//				||	(bezierCurve.fPointB.first==err) || (bezierCurve.fPointB.second==err)
-//				||	(bezierCurve.fPointC.first==err) || (bezierCurve.fPointC.second==err)
-//				||	(bezierCurve.fPointD.first==err) || (bezierCurve.fPointD.second==err)
-//				)
-//				return MsgHandler::kBadParameters;
-
 			curveData.push_back( bezierCurve );
 		}
 		
@@ -118,7 +100,7 @@ MsgHandler::msgStatus ICurve::set (const IMessage* msg)
 			newData(true);
 			return MsgHandler::kProcessed;
 		}
-		for ( i = 0 ; i < curveData.size() ; i++ )
+		for ( unsigned i = 0 ; i < curveData.size() ; i++ )
 		{
 			if (curveData[i] != getPoints()[i])
 			{

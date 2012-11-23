@@ -228,9 +228,9 @@ MsgHandler::msgStatus ISignal::resetMsg (const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus ISignal::defaultMsg (const IMessage* msg)
 {
-	if (msg->size() ==  (unsigned int)(ParallelSignal::dimension()) ) {
+	if (msg->size() ==  ParallelSignal::dimension() ) {
 		std::vector<float> defaultValue;
-		for ( unsigned int i = 0 ; i < msg->size() ; i++ )
+		for ( int i = 0 ; i < msg->size() ; i++ )
 		{
 			float val;
 			if (msg->param(i, val)) {

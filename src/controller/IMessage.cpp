@@ -179,7 +179,7 @@ bool IMessage::operator == (const IMessage& other) const
 		return false;
 	if ( size() != other.size() )
 		return false;
-	for ( unsigned int i = 0 ; i < size() ; i++ )
+	for ( int i = 0 ; i < size() ; i++ )
 	{
 		if (param(i) != other.param(i))
 			return false;
