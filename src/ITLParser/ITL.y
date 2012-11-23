@@ -131,26 +131,24 @@ script		: LUASCRIPT			{	$$ = new inscore::SIMessageList (inscore::IMessageList::
 //_______________________________________________
 
 message		: address params			{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl)); delete $1; delete $2; }
-			;
-
-message		: address watchparams LEFTPAR messagelist RIGHTPAR
+			| address watchparams		{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl)); delete $1; delete $2; }
+			| address watchparams LEFTPAR messagelist RIGHTPAR
 										{	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
 											(*$$)->add(*$4);
 											delete $1; delete $2; delete $4; }
+
+			| address watchparams JSCRIPT {	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
+											(*$$)->add(inscore::TJavaScript(context->fText.c_str()));
+											delete $1; delete $2; }
+			| address watchparams LUASCRIPT {	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
+												(*$$)->add(inscore::TLuaScript(context->fText.c_str()));
+												delete $1; delete $2; delete $3; }
+			;
 
 //message		: address watchparams script {	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
 //												if (*$3) (*$$)->add(*$3);
 //												delete $1; delete $2; delete $3; }
 //			;
-
-message		: address watchparams JSCRIPT {	cout << "watch js " << endl; $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
-											(*$$)->add(inscore::TJavaScript(context->fText.c_str()));
-											delete $1; delete $2; }
-			;
-message		: address watchparams LUASCRIPT {	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
-												(*$$)->add(inscore::TLuaScript(context->fText.c_str()));
-												delete $1; delete $2; delete $3; }
-			;
 
 messagelist : message					{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
 											(*$$)->list().push_back(*$1);
@@ -187,7 +185,8 @@ identifier	: IDENTIFIER		{ $$ = new string(context->fText); }
 //_______________________________________________
 // parameters definitions
 // watchparams need a special case since messages are expected as argument
-watchparams	: watchparam params	{ $$ = new inscore::IMessage::argslist;
+watchparams	: watchparam		{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
+			| watchparam params	{ $$ = new inscore::IMessage::argslist;
 								  $$->push_back(*$1);
 								  $$->push_back($2);
 								  delete $1; delete $2;

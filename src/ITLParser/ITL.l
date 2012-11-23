@@ -123,6 +123,7 @@ EOL		[\x0a\x0d]
  /*	method requiring messages as argument */
  /* ----------------------------------------- */
 "watch"			yyextra->fText = yytext; return WATCH;
+"watch+"		yyextra->fText = yytext; return WATCH;
 "require"		yyextra->fText = yytext; return WATCH;
 
  /* ----------------------------------------- */
