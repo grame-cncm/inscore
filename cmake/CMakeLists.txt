@@ -82,13 +82,13 @@ if (LUA STREQUAL "yes")
 		set(SCRIPTS ${SCRIPTS} -llua)
 		set(SCRIPTINCL ${SCRIPTINCL} /usr/local/include)
 	else ()
-		EXECUTE_PROCESS ( COMMAND "pkg-config" "--cflags" "lua5.1"
+		EXECUTE_PROCESS ( COMMAND "pkg-config" "--cflags" "lua"
 			OUTPUT_VARIABLE TMP
 			ERROR_VARIABLE TMP
 		)
 		string(STRIP ${TMP} LUACFG)
 		add_definitions(${LUACFG})
-		EXECUTE_PROCESS ( COMMAND "pkg-config" "--libs" "lua5.1"
+		EXECUTE_PROCESS ( COMMAND "pkg-config" "--libs" "lua"
 			OUTPUT_VARIABLE TMP
 			ERROR_VARIABLE TMP
 		)

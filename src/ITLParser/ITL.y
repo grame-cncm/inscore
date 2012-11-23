@@ -120,7 +120,7 @@ expr		: message  ENDEXPR	{ context->fReader.add(*$1); delete $1; }
 //_______________________________________________
 script		: LUASCRIPT			{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
 									*$$ = context->fReader.luaEval(context->fText.c_str());
-									if (! *$$) YYABORT; }
+								}
 			| JSCRIPT			{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
 									*$$ = context->fReader.jsEval(context->fText.c_str(), yylloc.last_line);
 								}
@@ -136,19 +136,16 @@ message		: address params			{ $$ = new inscore::SIMessage(inscore::IMessage::cre
 										{	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
 											(*$$)->add(*$4);
 											delete $1; delete $2; delete $4; }
-
-			| address watchparams JSCRIPT {	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
-											(*$$)->add(inscore::TJavaScript(context->fText.c_str()));
-											delete $1; delete $2; }
-			| address watchparams LUASCRIPT {	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
-												(*$$)->add(inscore::TLuaScript(context->fText.c_str()));
+//			| address watchparams JSCRIPT {	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
+//											(*$$)->add(inscore::TJavaScript(context->fText.c_str()));
+//											delete $1; delete $2; }
+//			| address watchparams LUASCRIPT {	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
+//												(*$$)->add(inscore::TLuaScript(context->fText.c_str()));
+//												delete $1; delete $2; delete $3; }
+			| address watchparams script {	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
+												if (*$3) (*$$)->add(*$3);
 												delete $1; delete $2; delete $3; }
 			;
-
-//message		: address watchparams script {	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
-//												if (*$3) (*$$)->add(*$3);
-//												delete $1; delete $2; delete $3; }
-//			;
 
 messagelist : message					{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
 											(*$$)->list().push_back(*$1);

@@ -28,9 +28,12 @@
 #define __TLua__
 
 #include <string>
+#include <string>
 #ifdef LUA
+#include <sstream>
 #include <lua.hpp>
 #endif
+#include "IMessage.h"
 #include "smartpointer.h"
 
 namespace inscore 
@@ -46,6 +49,8 @@ class TLua
 	lua_State * fLua;
 	std::string getTable (lua_State* L, int i) const;
 	bool check( int code ) const;
+	void bindEnv  (std::stringstream& s, const std::string& name, const IMessage::argslist& values);
+	bool bindEnv  (std::stringstream& s, const std::string& name, const IMessage::argPtr& val);
 #endif
 
 	public:	

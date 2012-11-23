@@ -29,7 +29,12 @@
 #include "TLua.h"
 #include "TEnv.h"
 #include "OSCStream.h"
+#ifdef NO_OSCSTREAM
+# define ITLErr		cerr
+# define ITLEndl	endl
+#else
 #include "ITLError.h"
+#endif
 
 using namespace std;
 
@@ -41,31 +46,53 @@ namespace inscore
 static int luaPrint(lua_State *L)
 {
 	int n = lua_gettop(L);
-	cout << "lua: ";
+#ifndef NO_OSCSTREAM
 	oscout << OSCStart("lua:");
+#endif
 	for (int i=1; i<=n; i++)
 	{
+		const char* sep = (i<n) ? " " : "";
 		if (lua_isstring(L,i)) {
-			cout << lua_tostring(L,i) << " ";
+			cout << lua_tostring(L,i) << sep;
+#ifndef NO_OSCSTREAM
 			oscout << lua_tostring(L,i);
+#endif
 		}
 		else if (lua_isnil(L,i)) {
-			cout << "nil ";
+			cout << "nil" << sep;
+#ifndef NO_OSCSTREAM
 			oscout << "nil";
+#endif
 		}
 		else if (lua_isboolean(L,i)) {
-			cout << (lua_toboolean(L,i) ? "true " : "false ");
+			cout << (lua_toboolean(L,i) ? "true" : "false") << sep;
+#ifndef NO_OSCSTREAM
 			oscout << (lua_toboolean(L,i) ? "true" : "false");
+#endif
 		}
 		else {
 			char buff[64];
 			sprintf (buff, "%p", lua_topointer(L,i));
 			cout << luaL_typename(L,i) << ":" << buff;
+#ifndef NO_OSCSTREAM
 			oscout << luaL_typename(L,i) << ":" << buff;
+#endif
 		}
 	}
+#ifndef NO_OSCSTREAM
 	oscout << OSCEnd();
+#endif
 	return 0;
+}
+
+//--------------------------------------------------------------------------------------------
+static int luaVersion(lua_State *L)
+{
+#ifndef NO_OSCSTREAM
+	oscout << OSCStart("lua:") << LUA_RELEASE << OSCEnd();
+#endif
+	lua_pushstring (L, LUA_RELEASE);
+	return 1;
 }
 
 //--------------------------------------------------------------------------------------------
@@ -73,28 +100,60 @@ TLua::TLua()
 {
 	fLua = lua_open();
 	lua_register(fLua, "print", luaPrint);
+	lua_register(fLua, "version", luaVersion);
 }
-
-TLua::~TLua()
-{
-	lua_close (fLua);
-}
+TLua::~TLua() { lua_close (fLua); }
 
 
 //--------------------------------------------------------------------------------------------
 // lua support
 //--------------------------------------------------------------------------------------------
+bool TLua::bindEnv  (stringstream& s, const string& name, const IMessage::argPtr& val)
+{
+	if (val->isType<int>())			s << val->value(0);
+	else if (val->isType<float>())	s << val->value(0.);
+	else if (val->isType<string>())	s << '"' <<  val->value(string("")) << '"';
+	else {
+		ITLErr << name << " unknown variable type " << ITLEndl;
+		return false;
+	}
+	return true;
+}
+
+//--------------------------------------------------------------------------------------------
+void TLua::bindEnv  (stringstream& s, const string& name, const IMessage::argslist& values)
+{
+	unsigned int n = values.size();
+	if (n == 0) return;
+
+	stringstream tmp;
+	tmp << name << "=";
+	if (n == 1) {
+		if (!bindEnv (tmp, name, values[0])) return;
+	}
+	else {
+		tmp << "{";
+		for (unsigned int i=0; i<n;) {
+			if (!bindEnv (tmp, name, values[i])) return;
+			i++;
+			if (i<n) tmp << ", ";
+		}
+		tmp << "}";
+	}
+	s << tmp.str() << "\n";
+}
+
+//--------------------------------------------------------------------------------------------
 void TLua::bindEnv (const STEnv& env)
 {
+	stringstream s;
 	for (TEnv::TEnvList::const_iterator i = env->begin(); i != env->end(); i++) {
-		if (i->second->isType<int>()) lua_pushnumber (fLua, i->second->value(0));
-		else if (i->second->isType<float>()) lua_pushnumber (fLua, i->second->value(0.));
-		else if (i->second->isType<string>()) lua_pushstring (fLua, i->second->value(string("")).c_str());
-		else {
-			ITLErr << i->first << " unknown variable type " << ITLEndl;
-			break;
-		}
-		lua_setfield(fLua, LUA_GLOBALSINDEX, i->first.c_str());
+		bindEnv (s, i->first, i->second);
+	}
+	if (s.str().size()) {
+		string out;
+		if (!eval (s.str().c_str(), out))
+			ITLErr << "can't export export variables to lua" << ITLEndl;
 	}
 }
 
@@ -123,17 +182,16 @@ bool TLua::check( int code ) const
 //--------------------------------------------------------------------------------------------
 bool TLua::eval (const char* script, string& outStr)
 {
-	if (check (luaL_loadstring (fLua, script))) {
-		if (check (lua_pcall(fLua, 0, LUA_MULTRET, 0))) {
-			int n = lua_gettop (fLua);
-			string luaout;
-			for (int i=1; i<=n; i++) {
-				if (lua_istable (fLua, i)) outStr += getTable(fLua, i);
-				else if (lua_isstring (fLua, i)) outStr += lua_tostring(fLua, i);
-			}
-			return true;
+	if (check (luaL_dostring (fLua, script))) {
+		int n = lua_gettop (fLua);
+		for (int i=1; i<=n; i++) {
+			if (lua_istable (fLua, i)) outStr += getTable(fLua, i);
+			else if (lua_isstring (fLua, i)) outStr += lua_tostring(fLua, i);
 		}
+		lua_pop (fLua, n);
+		return true;
 	}
+	else cout << "  >>>>> luaL_dostring failed" << endl;
 	return false;
 }
 
@@ -152,7 +210,7 @@ string TLua::getTable (lua_State* L, int i) const
 }
 
 //--------------------------------------------------------------------------------------------
-void TLua::Initialize () 
+void TLua::Initialize ()
 {
 	lua_close (fLua);
 	fLua = lua_open();

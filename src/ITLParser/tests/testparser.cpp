@@ -35,10 +35,16 @@ using namespace inscore;
 int main (int argc, char * argv[])
 {
 	if (argc > 1) {
-		TJSEngine js;
 		ifstream in (argv[1]);
-		js.Initialize();
+#ifdef V8ENGINE
+		TJSEngine js;
 		ITLparser p(&in, 0, &js, 0);
+#elif defined(LUA)
+		TLua lua;
+		ITLparser p(&in, 0, 0, &lua);
+#else
+		ITLparser p(&in, 0, 0, 0);
+#endif
 		SIMessageList outMsgs;
 		outMsgs = p.parse ();
 		if (outMsgs) {
