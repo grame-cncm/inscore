@@ -47,15 +47,14 @@ IController::~IController()	{}
 //--------------------------------------------------------------------------
 void IController::processOn(SIMessageStack& msgs, SIObject& obj)
 {
-	SIMessage* msgptr = msgs->pop();
-	while (msgptr) {
-		SIMessage msg = *msgptr;
+	IMessage* msg = msgs->pop();
+	while (msg) {
 		oscout.setAddress(msg->src());
 		oscerr.setAddress(msg->src());
 		int status = processMsg (msg, obj);
 		if (fListener) fListener->msgReceived (msg, status);
-		delete msgptr;
-		msgptr = msgs->pop();
+		delete msg;
+		msg = msgs->pop();
 	}
 }
 

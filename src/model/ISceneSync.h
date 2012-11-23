@@ -101,9 +101,9 @@ class ISceneSync : public IVNode
 		virtual bool name2mapName (const std::string& str, std::string& name, std::string& map) const;
 
 		/// \brief sync \c 'get' message handler
-		virtual SIMessageList getAllParams () const;
+		virtual IMessageList getAllParams () const;
 		/// \brief sync \c 'get' message handler
-		virtual SIMessageList getMsgs (const IMessage* msg) const;
+		virtual IMessageList getMsgs (const IMessage* msg) const;
 		/// \brief sync message handler
 		virtual MsgHandler::msgStatus syncMsg (const IMessage*);
 		virtual MsgHandler::msgStatus oldsyncMsg (const IMessage*);

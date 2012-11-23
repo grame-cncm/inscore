@@ -224,43 +224,40 @@ const vector<SEventMessage>& EventsAble::getFileMsgs (const std::string& file) c
 
 //----------------------------------------------------------------------
 void EventsAble::getMsgs (const char * address, const string& type, const RationalInterval& time, 
-						  const vector<SEventMessage>& evm, SIMessageList& list) const
+						  const vector<SEventMessage>& evm, IMessageList& list) const
 {
-	const char * method = "watch";
+	const char * msg = "watch";
 	for (vector<SEventMessage>::const_iterator i = evm.begin(); i != evm.end(); i++) {
-		SIMessage msg = getMsg (address, type, method, time, *i);
-		list->list().push_back ( msg );
-		method = "watch+";
+		list += getMsg (address, type, msg, time, *i);
+		msg = "watch+";
 	}	
 }
 
 //----------------------------------------------------------------------
 void EventsAble::getMsgs (const char * address, const string& type, const string& file, 
-						  const vector<SEventMessage>& evm, SIMessageList& list) const
+						  const vector<SEventMessage>& evm, IMessageList& list) const
 {
-	const char * method = "watch";
+	const char * msg = "watch";
 	for (vector<SEventMessage>::const_iterator i = evm.begin(); i != evm.end(); i++) {
-		SIMessage msg = getMsg (address, type, method, file, *i);
-		list->list().push_back ( msg );
-		method = "watch+";
+		list += getMsg (address, type, msg, file, *i);
+		msg = "watch+";
 	}	
 }
 
 //----------------------------------------------------------------------
-void EventsAble::getMsgs (const char * address, const string& type, const vector<SEventMessage>& evm, SIMessageList& list) const
+void EventsAble::getMsgs (const char * address, const string& type, const vector<SEventMessage>& evm, IMessageList& list) const
 {
-	const char * method = "watch";
+	const char * msg = "watch";
 	for (vector<SEventMessage>::const_iterator i = evm.begin(); i != evm.end(); i++) {
-		SIMessage msg = getMsg (address, type, method, *i);
-		list->list().push_back ( msg );
-		method = "watch+";
+		list += getMsg (address, type, msg, *i);
+		msg = "watch+";
 	}
 }
 
-SIMessage EventsAble::getMsg (const char * address, const string& type, const char* mth,
+IMessage* EventsAble::getMsg (const char * address, const string& type, const char* mth, 
 		const RationalInterval& time, const SEventMessage& ev) const
 {
-	SIMessage msg = IMessage::create (address, mth);
+	IMessage * msg = new IMessage (address, mth);
 	msg->add (type);
 	msg->add (int(time.first().getNumerator()));
 	msg->add (int(time.first().getDenominator()));
@@ -269,39 +266,39 @@ SIMessage EventsAble::getMsg (const char * address, const string& type, const ch
 	return putMsg (msg, ev);
 }
 
-SIMessage EventsAble::getMsg (const char * address, const string& type, const char* mth,
+IMessage* EventsAble::getMsg (const char * address, const string& type, const char* mth, 
 		const string& file, const SEventMessage& ev) const
 {
-	SIMessage msg = IMessage::create (address, mth);
+	IMessage * msg = new IMessage (address, mth);
 	msg->add (type);
 	msg->add (file);
 	return putMsg (msg, ev);
 }
 
-SIMessage EventsAble::getMsg (const char * address, const string& type, const char* mth, const SEventMessage& ev) const
+IMessage* EventsAble::getMsg (const char * address, const string& type, const char* mth, const SEventMessage& ev) const
 {
-	SIMessage msg = IMessage::create (address, mth);
+	IMessage * msg = new IMessage (address, mth);
 	msg->add (type);
 	return putMsg (msg, ev);
 }
 
 //----------------------------------------------------------------------
-SIMessage EventsAble::putMsg (SIMessage& msg, const SEventMessage& ev) const
+IMessage* EventsAble::putMsg (IMessage * msg, const SEventMessage& ev) const
 {
 	const IMessage * evmsg = ev->message();
 	if (msg && evmsg) {
 		msg->add (ev->address());
 		msg->add (evmsg->message());
 		for (int i=0; i < evmsg->size(); i++)
-			msg->add (evmsg->param(i));
+			msg->add (evmsg->params()[i]);
 	}
 	return msg;
 }
 
 //----------------------------------------------------------------------
-SIMessageList EventsAble::getWatch (const char* address) const
+IMessageList EventsAble::getWatch (const char* address) const
 {
-	SIMessageList list = IMessageList::create();
+	IMessageList list;
 	for (_TMsgMap::const_iterator i = fMsgMap.begin(); i != fMsgMap.end(); i++) {
 		getMsgs (address, type2string (i->first), i->second, list);
 	}

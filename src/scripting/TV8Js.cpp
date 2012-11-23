@@ -29,12 +29,7 @@
 #include "TV8Js.h"
 #include "TEnv.h"
 #include "OSCStream.h"
-#ifdef NO_OSCSTREAM
-# define ITLErr		cerr
-# define ITLEndl	endl
-#else
 #include "ITLError.h"
-#endif
 
 using namespace std;
 
@@ -85,9 +80,8 @@ static v8::Handle<v8::Value> Print(const v8::Arguments& args)
 {
 	bool first = true;
 	cout << "javascript: ";
-#ifndef NO_OSCSTREAM
 	oscout << OSCStart("javascript:");
-#endif
+
 	for (int i = 0; i < args.Length(); i++) {
 		v8::HandleScope handle_scope;
 		if (first)
@@ -96,20 +90,18 @@ static v8::Handle<v8::Value> Print(const v8::Arguments& args)
 		v8::String::Utf8Value str(args[i]);
 		const char* cstr = ToCString(str);
 		cout << cstr;
-#ifndef NO_OSCSTREAM
 		oscout << cstr;
-#endif
 	}
 	cout << endl;
-#ifndef NO_OSCSTREAM
 	oscout << OSCEnd();
-#endif
 	return v8::Undefined();
 }
 
 static v8::Handle<v8::Value> Version(const v8::Arguments& args) {
   return v8::String::New(v8::V8::GetVersion());
 }
+
+//int	TV8Js::fRefCount = 0;
 
 //--------------------------------------------------------------------------------------------
 /* The javascript error reporter callback. */
@@ -148,55 +140,22 @@ v8::Persistent<v8::Context> TV8Js::CreateV8Context()
 //--------------------------------------------------------------------------------------------
 TV8Js::TV8Js()
 {
-	fContext = CreateV8Context();
-	if (!fContext.IsEmpty()) {
-		fContext->Enter();
-	}
-	else  ITLErr << "Error creating javascript context" << ITLEndl;
+//	if (!fRefCount) {
+		fContext = CreateV8Context();
+		if (!fContext.IsEmpty()) {
+			fContext->Enter();
+//			fRefCount++;
+		}
+		else  ITLErr << "Error creating javascript context" << ITLEndl;
+//	}
 }
 
 TV8Js::~TV8Js()
 { 
-	if (!fContext.IsEmpty()) {
+	if (!fContext.IsEmpty()) { // && !--fRefCount) {
 		fContext->Exit();
 		fContext.Dispose();
 	}
-}
-
-//--------------------------------------------------------------------------------------------
-bool TV8Js::bindEnv  (stringstream& s, const string& name, const IMessage::argPtr& val)
-{
-	if (val->isType<int>())			s << val->value(0);
-	else if (val->isType<float>())	s << val->value(0.);
-	else if (val->isType<string>())	s << '"' <<  val->value(string("")) << '"';
-	else {
-		ITLErr << name << " unknown variable type " << ITLEndl;
-		return false;
-	}
-	return true;
-}
-
-//--------------------------------------------------------------------------------------------
-void TV8Js::bindEnv  (stringstream& s, const string& name, const IMessage::argslist& values)
-{
-	if (values.size() == 0) return;
-
-	stringstream tmp;
-	tmp << name << "=";
-	unsigned int n = values.size();
-	if (n == 1) {
-		if (!bindEnv (tmp, name, values[0])) return;
-	}
-	else {
-		tmp << "[";
-		for (unsigned int i=0; i<n;) {
-			if (!bindEnv (tmp, name, values[i])) return;
-			i++;
-			if (i<n) tmp << ", ";
-		}
-		tmp << "]";
-	}
-	s << tmp.str() << "\n";
 }
 
 //--------------------------------------------------------------------------------------------
@@ -204,7 +163,15 @@ void TV8Js::bindEnv  (const STEnv& env)
 {
 	stringstream s;
 	for (TEnv::TEnvList::const_iterator i = env->begin(); i != env->end(); i++) {
-		bindEnv (s, i->first, i->second);
+		s << i->first << "=";
+		if (i->second->isType<int>())			s << i->second->value(0);
+		else if (i->second->isType<float>())	s << i->second->value(0.);
+		else if (i->second->isType<string>())	s << '"' <<  i->second->value(string("")) << '"';
+		else {
+			ITLErr << i->first << " unknown variable type " << ITLEndl;
+			break;
+		}
+		s << ";\n";
 	}
 	if (s.str().size()) {
 		string out;
@@ -229,7 +196,7 @@ void TV8Js::getResult (const v8::Handle<v8::Value>& result, std::string& outStr)
 // Executes a string within the current v8 context.
 bool TV8Js::eval(int line, const char* jscode, std::string& outStr)
 {
-	fLineOffset = line;
+	fLineOffset = 0; //line;
 	v8::HandleScope handle_scope;
 	v8::TryCatch try_catch;
 	v8::Local<v8::String> name(v8::String::New("(INScore)"));
@@ -257,7 +224,7 @@ bool TV8Js::eval(int line, const char* jscode, std::string& outStr)
 }
 
 //--------------------------------------------------------------------------------------------
-// Reset the current javascript engine (actually allocate a new one)
+// Reset teh current javascript engine (actually allocate a new one
 void TV8Js::Initialize  () 
 { 
 	fContext->Exit();
@@ -265,6 +232,8 @@ void TV8Js::Initialize  ()
 	fContext = CreateV8Context();
 	if (!fContext.IsEmpty())
 		fContext->Enter();
+//	fContext->Exit();		// exit the current context
+//	fContext->Enter();		// and reenter a new one
 }
 
 #else

@@ -29,7 +29,6 @@
 
 #include <map>
 #include <string>
-#include "smartpointer.h"
 
 namespace inscore
 {
@@ -40,7 +39,6 @@ namespace inscore
 */
 
 class IMessage;
-typedef libmapping::SMARTP<IMessage>	SIMessage;
 //--------------------------------------------------------------------------
 /*!
 	\brief a message translator
@@ -58,7 +56,7 @@ class IMessageTranslator
 		\param msg the message to be translated
 		\return a translated message when a translation exists otherwise null
 	*/
-			SIMessage	translateFileType(const IMessage* msg);
+			IMessage *	translateFileType(const IMessage* msg);
 
 	public:
 				 IMessageTranslator();
@@ -69,7 +67,7 @@ class IMessageTranslator
 		\return a translated message when a translation exists otherwise null
 		\note it's the caller responsibility to free the translated message
 	*/
-	virtual SIMessage	translate(const IMessage* msg);
+	virtual IMessage *	translate(const IMessage* msg);
 };
 
 /*!

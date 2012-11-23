@@ -85,7 +85,7 @@ template<typename T, unsigned int D> class TMapMsgHandler
 
 	static bool parseMsg (const IMessage* msg , std::string& mapname,  std::string& data)
 	{
-		switch (msg->size()) {
+		switch (msg->params().size()) {
 			case 2:
 				if (!msg->param(0, mapname)) return false;
 				if (!msg->param(1, data)) return false;
@@ -143,16 +143,16 @@ template<typename T, unsigned int D> class TMapMsgHandler
 		}
 		
 		/// \brief Overrides IObject to handle 'get map' msg.
-		static SIMessageList getMapMsgs(const libmapping::SMARTP<TLocalMapping<T,D> >& localMapping , const IObject* object )
+		static IMessageList getMapMsgs(const libmapping::SMARTP<TLocalMapping<T,D> >& localMapping , const IObject* object )
 		{ 
-			SIMessageList outMsgs = IMessageList::create();
+			IMessageList outMsgs;
 			for ( typename TLocalMapping<T,D>::const_iterator iter = localMapping->namedMappings().begin() ; iter != localMapping->namedMappings().end() ; iter++ )
 			{
-				SIMessage msg = IMessage::create(object->getOSCAddress(), "map");
+				IMessage* msg = new IMessage(object->getOSCAddress(), "map");
 				if ( iter->first.size() )
 					*msg << iter->first;
 				*msg << iter->second->direct();
-				outMsgs->list().push_back(msg);
+				outMsgs += msg;
 			}
 			return outMsgs;
 		}

@@ -100,8 +100,7 @@ std::string IAppl::fRootPath = std::string(getenv("HOME")) + "/";
 MsgHandler::msgStatus IAppl::writeBench(const IMessage* msg)
 {
 	if (msg->size() == 1) {
-		string file;
-		if (!msg->param(0, file)) return MsgHandler::kBadParameters;
+		string file = msg->params()[0]->value<string>("");
 		if (file.size()) {
 			bench::write (absolutePath(file));
 			return MsgHandler::kProcessed;
@@ -231,13 +230,13 @@ void IAppl::accept (Updater* u)
 // the 'get' at root level
 // applications parameters are flushed first since
 // next messages may depend on the application state
-SIMessageList IAppl::getAll() const
+IMessageList IAppl::getAll() const
 {
-	SIMessageList outMsgs = getParams();
+	IMessageList outMsgs = getParams();
 	for (unsigned int i = 0; i < elements().size(); i++) {
 		nodePtr elt = elements()[i];
 		if (!elt->getDeleted())
-			outMsgs->list().push_back (elt->getAll()->list());
+			outMsgs += elt->getAll();
 	}
 	return outMsgs;
 }
@@ -250,7 +249,7 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 	setReceivedOSC (1);
 	string head = address;
 	string tail = addressTail;
-	SIMessage msg = IMessage::create (*imsg);
+	IMessage* msg = new IMessage (*imsg);
 	TAliasesMap::const_iterator i = fAliases.find(imsg->address());
 	if (i != fAliases.end()) {
 		msg->setAddress (i->second.first);
@@ -277,7 +276,7 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 //--------------------------------------------------------------------------
 IMessage * IAppl::hello()	const
 {
-	SIMessage msg = IMessage::create (getOSCAddress());
+	IMessage* msg = new IMessage(getOSCAddress());
 	*msg << getIP() << getUDPInPort() << getUDPOutPort() << getUDPErrPort();
 	return msg;
 }
@@ -285,8 +284,9 @@ IMessage * IAppl::hello()	const
 //--------------------------------------------------------------------------
 void IAppl::helloMsg() const
 {
-	SIMessage msg = hello();
+	IMessage * msg = hello();
 	msg->print(oscout);
+	delete msg;
 }
 
 //--------------------------------------------------------------------------
@@ -353,20 +353,20 @@ MsgHandler::msgStatus IAppl::cursor(const IMessage* msg)
 MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
 {
 	if (msg->size() == 1) {
-		string srcfile;
-		if (msg->param(0, srcfile)) return MsgHandler::kBadParameters;
+		string srcfile = msg->params()[0]->value<string>("");
 		if (srcfile.size()) {
 			fstream file (absolutePath(srcfile).c_str(), fstream::in);
 			if (file.is_open()) {
 				ITLparser p (&file, 0, &fJavascript, &fLua);
-				SIMessageList msgs = p.parse();
+				IMessageList* msgs = p.parse();
 				if (msgs) {
-					for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
+					for (IMessageList::const_iterator i = msgs->begin(); i != msgs->end(); i++) {
 						string beg  = OSCAddress::addressFirst((*i)->address());
 						string tail = OSCAddress::addressTail((*i)->address());
 						bool ret = processMsg(beg, tail, *i);
 						if (oscDebug()) IGlue::trace(*i, ret);
 					}
+					msgs->clear();
 				}
 				else ITLErr << "while parsing file" << srcfile << ITLEndl;
 			}

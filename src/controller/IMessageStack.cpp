@@ -23,12 +23,7 @@
 
 */
 
-#ifdef FIFOLOCK
-#include <QMutexLocker>
-#define lockfifo(m)	QMutexLocker locker (&m)
-#else
-#define lockfifo(m)	
-#endif
+//#include <QMutexLocker>
 
 #include "IMessageStack.h"
 #include "IMessage.h"
@@ -46,24 +41,24 @@ IMessageStack::~IMessageStack()
 //--------------------------------------------------------------------------
 int IMessageStack::size() 
 { 
-	lockfifo(&fMutex);
+//	QMutexLocker locker (&fMutex);
 	return fifosize(&fMsgFifo); 
 } 
 
-void IMessageStack::push(SIMessage* msg)
+void IMessageStack::push(IMessage* msg)	
 { 
-	lockfifo(&fMutex);
+//	QMutexLocker locker (&fMutex);
 	fifoput (&fMsgFifo, new fifocell(msg)); 
 } 
 
 //--------------------------------------------------------------------------
-SIMessage* IMessageStack::pop()
+IMessage* IMessageStack::pop()
 { 
-	lockfifo(&fMutex);
+//	QMutexLocker locker (&fMutex);
 	fifocell * c = fifoget (&fMsgFifo);
-	SIMessage* msg = 0;
+	IMessage* msg = 0;
 	if (c) {
-		msg = (SIMessage*)c->msg;
+		msg = (IMessage*)c->msg;
 		delete c;
 	}
 	return msg;
@@ -72,7 +67,7 @@ SIMessage* IMessageStack::pop()
 //--------------------------------------------------------------------------
 void IMessageStack::flush()
 {
-	SIMessage* msg = pop();
+	IMessage* msg = pop();
 	while (msg) {
 		delete msg;
 		msg = pop();

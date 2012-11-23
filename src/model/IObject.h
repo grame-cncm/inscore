@@ -304,7 +304,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		virtual bool			offscreen()	const	{ return fParent ? fParent->offscreen() : false; }
 
 		/// \brief recursively get all objects state
-		virtual SIMessageList getAll () const;
+		virtual IMessageList getAll () const;
 		
 		/*!
 			\brief gives a handler for the \c get message
@@ -321,7 +321,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		virtual SGetParamMultiMsgHandler getMultiMessageHandler(const std::string& param) const;
 
 		/// \brief object \c 'get' message handler.
-		virtual SIMessageList getMsgs (const IMessage* msg) const;
+		virtual IMessageList getMsgs (const IMessage* msg) const;
 		
 		/// \brief sets the message handlers.
 		virtual void setHandlers ();
@@ -341,22 +341,28 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 
 
 		/// \brief get an object maps
-		virtual SIMessageList getMaps () const;
+		virtual IMessageList getMaps () const;
 
 		/// \brief get an object maps
-		virtual SIMessageList __getMaps () const;
+		virtual IMessageList __getMaps () const;
 
 		/// \brief object \c 'get' without parameter form: gives the corresponding 'set' message list
-		virtual SIMessageList getSetMsg () const;
+		virtual IMessageList getSetMsg () const;
 
 		/// \brief get an object parameters
-		virtual SIMessageList getParams() const;
+		virtual IMessageList getParams() const;
 
 		/// \brief recursively get object parameters
-		virtual SIMessageList getAllParams () const;
+		virtual IMessageList getAllParams () const;
 
 		/// \brief object \c 'get' a given param 
-		virtual SIMessage getParam(const std::string& what, const SGetParamMsgHandler& h) const;
+		virtual IMessage* getParam(const std::string& what, const SGetParamMsgHandler& h) const;
+
+		/// \brief object \c 'get' a given param 
+		virtual IMessage* click(const IMessage* msg) const;
+
+		/// \brief object \c 'get' a given param 
+		virtual IMessage* select(const IMessage* msg) const;
 
 		/*!
 			\brief gives a handler for a message
@@ -399,8 +405,8 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		/// \brief the \c 'effect' message handler
 		virtual MsgHandler::msgStatus effectMsg(const IMessage* msg);
 		virtual GraphicEffect getEffect () const;
-		virtual SIMessageList  getWatch () const;
-		virtual SIMessageList  getAliases () const;
+		virtual IMessageList  getWatch () const;
+		virtual IMessageList  getAliases () const;
 
 		/// \brief the \c 'watch' message handler
 		virtual MsgHandler::msgStatus aliasMsg(const IMessage* msg);
@@ -432,8 +438,20 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		/// \brief object \c 'get' message handler.
 		virtual MsgHandler::msgStatus get (const IMessage* msg) const;
 
+		/// \brief object \c 'click' message handler.
+		virtual MsgHandler::msgStatus clickMsg (const IMessage* msg) const;
+
+		/// \brief object \c 'select' message handler.
+		virtual MsgHandler::msgStatus selectMsg (const IMessage* msg) const;
+
 		/// \brief object \c 'save' message handler.
 		virtual MsgHandler::msgStatus saveMsg (const IMessage* msg) const;
+
+		/// \brief object \c 'dcolor' message handler.		
+//		virtual MsgHandler::msgStatus dcolorMsg(const IMessage* msg);
+
+		/// \brief object \c 'dcolor' message handler.				
+//		virtual MsgHandler::msgStatus dhsvMsg(const IMessage* msg);
 };
 
 IMessage&		operator << (IMessage&, const SGetParamMsgHandler&);

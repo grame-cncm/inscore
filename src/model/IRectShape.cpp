@@ -57,10 +57,10 @@ MsgHandler::msgStatus IRectShape::set (const IMessage* msg)
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 	
-	if (msg->size() == 3) {
+	if (msg->params().size() == 3) {
 		const float err = -1;
-		float width = msg->param(1)->value<float>(err);
-		float height = msg->param(2)->value<float>(err);
+		float width = msg->params()[1]->value<float>(err);
+		float height = msg->params()[2]->value<float>(err);
 
 		if ( (width != err) && (height != err) && ( ( width != getWidth() ) || ( height != getHeight() ) ) )
 		{

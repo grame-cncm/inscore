@@ -110,8 +110,8 @@ float IVideo::currentTime() const
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IVideo::videoMapMsg (const IMessage* msg )	
 { 
-	if (msg->size() == 1) {
-		string map = msg->param(0)->value<std::string>("");
+	if (msg->params().size() == 1) {
+		string map = msg->params()[0]->value<std::string>("");
 
 		if (map.size()) {
 			_imapreader<float,1> reader; std::istringstream s(map);
@@ -122,14 +122,14 @@ MsgHandler::msgStatus IVideo::videoMapMsg (const IMessage* msg )
 			}
 		}
 	}
-	else if (msg->size() >= 2) {
+	else if (msg->params().size() >= 2) {
 		int i = 0;
-		while ( (i < msg->size()) && (i < 4) )
+		while ( (i < int(msg->params().size())) && (i < 4) )
 		{
-			string keyWord = msg->param(i)->value<std::string>("");
-			if ( !msg->param(i+1)->isType<float>() )
+			string keyWord = msg->params()[i]->value<std::string>("");
+			if ( !msg->params()[i+1]->isType<float>() )
 				return MsgHandler::kBadParameters;
-			float value = msg->param(i+1)->value<float>(0);
+			float value = msg->params()[i+1]->value<float>(0);
 
 			if ( keyWord == VIDEO_MAP_TEMPO )
 				fTempo = value;
@@ -148,8 +148,8 @@ MsgHandler::msgStatus IVideo::videoMapMsg (const IMessage* msg )
 //---------------------------------------------------------------------------
 MsgHandler::msgStatus IVideo::videoMapFileMsg (const IMessage* msg )	
 { 
-	if (msg->size() == 1) {
-		string file = msg->param(0)->value<std::string>("");
+	if (msg->params().size() == 1) {
+		string file = msg->params()[0]->value<std::string>("");
 		
 		file = getScene()->absolutePath(file);
 		if (file.size()) {

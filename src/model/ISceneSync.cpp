@@ -68,45 +68,45 @@ void ISceneSync::sort (IObject::subnodes& nodes)
 }
 
 //--------------------------------------------------------------------------
-static SIMessage buildSyncMsg (const string& address, SIObject o, const SMaster master)
+static IMessage* buildSyncMsg (const string& address, SIObject o, const SMaster master)
 {
 	string target = o->name();
 	if (master) {
 		const string& smap = master->getSlaveMapName();
 		if (smap.size()) target += ":" + smap;
-		SIMessage msg = IMessage::create(address);
+		IMessage * msg = new IMessage(address);
 		if (msg) {
 			*msg << target;
 			*msg << *master;
 		}
 		return msg;
 	}
-	return IMessage::create(address, target);
+	return new IMessage(address, target);
 }
 
 //--------------------------------------------------------------------------
-SIMessageList ISceneSync::getMsgs (const IMessage* msg) const
+IMessageList ISceneSync::getMsgs (const IMessage* msg) const
 {
-	SIMessageList outMsgs = IObject::getMsgs (msg);
-	if (outMsgs->list().size()) return outMsgs;
+	IMessageList outMsgs = IObject::getMsgs (msg);
+	if (outMsgs.size()) return outMsgs;
 
 	const string& address = getOSCAddress();
-	if (msg->size() == 1) {
-		string who = msg->param(0)->value<string>("-");
+	if (msg->params().size() == 1) {
+		string who = msg->params()[0]->value<string>("-");
 		string name, mapname;
 		name2mapName (who, name, mapname);
 		subnodes list;
 		if (fParent->find(name, list)) {
 			for (subnodes::const_iterator i = list.begin(); i != list.end(); i++) {				
-				SIMessage msg = buildSyncMsg (address, *i,  getMaster(*i));
-				outMsgs->list().push_back (msg);
+				IMessage * msg = buildSyncMsg (address, *i,  getMaster(*i));
+				outMsgs += msg;
 			}
 		}
 	}
-	else if (msg->size() == 0) {
+	else if (msg->params().size() == 0) {
 		for (ISync::const_iterator i = fSync.begin(); i != fSync.end(); i++) {
-			SIMessage msg = buildSyncMsg (address, i->first,  i->second);
-			outMsgs->list().push_back (msg);
+			IMessage * msg = buildSyncMsg (address, i->first,  i->second);
+			outMsgs += msg;
 		}
 	}
 	return outMsgs;	
@@ -179,7 +179,7 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const std::string& slave, const std::
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)	
 {
-	int n = msg->size();
+	int n = msg->params().size();
 	string slave, slaveMapName;
 	int nextindex = 0;
 	if (msg->message().size()) {
@@ -187,18 +187,18 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)
 		if (!n) return syncMsg (slave);
 	}
 	else if (n) {
-		name2mapName (msg->param(0)->value<string>(""), slave, slaveMapName);
+		name2mapName (msg->params()[0]->value<string>(""), slave, slaveMapName);
 		if (n > 1) nextindex = 1;
 		else return syncMsg (slave);
 	}
 	else return MsgHandler::kBadParameters;
 	
 	string master, masterMapName;
-	name2mapName (msg->param(nextindex)->value<string>(""), master, masterMapName);
+	name2mapName (msg->params()[nextindex]->value<string>(""), master, masterMapName);
 	Master::VAlignType align = Master::kDefaultSync;
 	Master::StretchType stretch = Master::kDefaultStretch;
 	for (int i=nextindex+1; i<n; i++) {
-		string mode = msg->param(i)->value<string>("");
+		string mode = msg->params()[i]->value<string>("");
 		Master::VAlignType val = Master::string2syncmode(mode);
 		if (val != Master::kUnknown) align = val;
 		else {
@@ -212,11 +212,11 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus ISceneSync::oldsyncMsg (const IMessage* msg)	
 {
-	int n = msg->size();
+	int n = msg->params().size();
 	if (!n)  return MsgHandler::kBadParameters;
 
 	string slave, slaveMapName;
-	name2mapName (msg->param(0)->value<string>(""), slave, slaveMapName);
+	name2mapName (msg->params()[0]->value<string>(""), slave, slaveMapName);
 //	name2mapName (msg->message(), slave, slaveMapName);
 
 	subnodes so;
@@ -225,13 +225,13 @@ MsgHandler::msgStatus ISceneSync::oldsyncMsg (const IMessage* msg)
 	MsgHandler::msgStatus result = MsgHandler::kBadParameters;
 	if (n > 1) {
 		string master, masterMapName;
-		name2mapName (msg->param(1)->value<string>(""), master, masterMapName);
+		name2mapName (msg->params()[1]->value<string>(""), master, masterMapName);
 
 		Master::VAlignType align = Master::kDefaultSync;
 		Master::StretchType stretch = Master::kDefaultStretch;
 		
 		for (int i=2; i<n; i++) {
-			string mode = msg->param(i)->value<string>("");
+			string mode = msg->params()[i]->value<string>("");
 			Master::VAlignType val = Master::string2syncmode(mode);
 			if (val != Master::kUnknown) align = val;
 			else {
@@ -263,16 +263,16 @@ MsgHandler::msgStatus ISceneSync::oldsyncMsg (const IMessage* msg)
 
 //--------------------------------------------------------------------------
 // the 'get' to retrieve all the objects parameters
-SIMessageList ISceneSync::getAllParams() const
+IMessageList ISceneSync::getAllParams() const
 {
-	SIMessageList outMsgs = 	IObject::getAllParams();
+	IMessageList outMsgs = 	IObject::getAllParams();
 	ISync::const_iterator i = fSync.begin();
 	// and distribute the message to synced nodes
 	while (i != fSync.end()) {
 		const SIObject& elt = i->first;
-		SIMessage msg = IMessage::create(getOSCAddress(), "get");
-		msg->add (elt->name());
-		outMsgs->list().push_back (getMsgs(msg)->list());
+		IMessage msg (getOSCAddress(), "get");
+		msg.add<string>(elt->name());
+		outMsgs += getMsgs(&msg);
 		i++;
 	}
 	return outMsgs;

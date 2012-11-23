@@ -63,33 +63,32 @@ IMessageTranslator::IMessageTranslator()
 }
 
 //--------------------------------------------------------------------------
-SIMessage IMessageTranslator::translateFileType(const IMessage* msg)
+IMessage * IMessageTranslator::translateFileType(const IMessage* msg)
 {
-	SIMessage translated;
-	string file;
-	if (msg->param(1, file)) {
-		size_t dotpos = file.find_last_of ('.');
-		if (dotpos != string::npos) {
-			string extension = file.substr(dotpos + 1);
-			map<string, string>::const_iterator t = fFileTypeTranslationTable.find(extension);
-			if (t != fFileTypeTranslationTable.end()) {
-				string type = t->second;
-				translated = IMessage::create();
-				*translated = *msg;
-				translated->setparam(0, type);
-			}
+	IMessage * translated = 0;
+	string file = msg->params()[1]->value<string>("");
+	size_t dotpos = file.find_last_of ('.');
+	if (dotpos != string::npos) {
+		string extension = file.substr(dotpos + 1);
+		map<string, string>::const_iterator t = fFileTypeTranslationTable.find(extension);
+		if (t != fFileTypeTranslationTable.end()) {
+			string type = t->second;
+			translated = new IMessage;
+			*translated = *msg;
+			translated->params()[0] = new IMsgParam<string>(type);
 		}
 	}
 	return translated;
 }
 
 //--------------------------------------------------------------------------
-SIMessage IMessageTranslator::translate(const IMessage* msg)
+IMessage * IMessageTranslator::translate(const IMessage* msg)
 {
-	if ((msg->size() >= 2) && (msg->message() == "set") && (msg->param(0)->value<string>("") == "file")) {
-		return translateFileType (msg);
+	IMessage * translated = 0;
+	if ((msg->size() >= 2) && (msg->message() == "set") && (msg->params()[0]->value<string>("") == "file")) {
+		translated = translateFileType (msg);
 	}
-	return 0;
+	return translated;
 }
 
 

@@ -79,7 +79,7 @@ class ISignal : public IObject, public ParallelSignal
 		virtual bool	decodeProjection (const std::string& proj, int& index, int& step) const;
 
 		/// \brief signal \c 'get' message handler
-		virtual SIMessageList getSetMsg () const;
+		virtual IMessageList getSetMsg () const;
 
 		/// \brief print the signals list
 		virtual void	print (IMessage& out) const;
@@ -117,7 +117,7 @@ class ISignal : public IObject, public ParallelSignal
 				GetDefaultParamMsgHandler(ISignal* signal) : GetParamMsgHandler() , fSignal(signal) {}
 			public:
 				virtual ~GetDefaultParamMsgHandler() {}
-				virtual SIMessage&  print(SIMessage&) const;
+				virtual IMessage&  print(IMessage&) const;
 				static SGetDefaultParamMsgHandler create(ISignal* signal) { return new GetDefaultParamMsgHandler(signal); }
 		};
 };

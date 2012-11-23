@@ -63,6 +63,9 @@ EventMessage::EventMessage (const string& objname, const std::string& scene, con
 }
 
 //----------------------------------------------------------------------
+EventMessage::~EventMessage () { delete fMessage; }
+
+//----------------------------------------------------------------------
 string EventMessage::checkVariableAddress (const string& address, const string& objname, const string& scene) const
 {
 	CRegexpT<char> regexp1("\\$self", EXTENDED);
@@ -134,7 +137,7 @@ void EventMessage::checkVariableMsg (const string& param, int index)
 		splitMsg (param.substr(2, param.size()-3).c_str(), parts);
 		int n = parts.size();
 		if ((n > 1) && (parts[1] == "get")) {
-			SIMessage vmsg = IMessage::create (parts[0], parts[1]);
+			IMessage* vmsg = new IMessage (parts[0], parts[1]);
 			for (int i=2; i<n; i++)
 				vmsg->add (parts[i]);
 			fVarMsgs[index] = vmsg;
@@ -150,7 +153,7 @@ void EventMessage::decodeMessage (const string& objname, const std::string& scen
 	if (msg->param (startindex++, address)) {
 		string oscAddress;
 		decodeAddress (address, oscAddress, fDest, fPort);
-		fMessage = IMessage::create (checkVariableAddress(oscAddress, objname, scene));
+		fMessage = new IMessage (checkVariableAddress(oscAddress, objname, scene));
 		string msgStr;
 		if ( msg->param (startindex, msgStr) ) {
 			fMessage->setMessage (msgStr);
@@ -159,7 +162,7 @@ void EventMessage::decodeMessage (const string& objname, const std::string& scen
 		}
 		for (int i = startindex, n=0; i < msg->size(); i++, n++) {
 			string pstr;
-			fMessage->add( msg->param(i));
+			fMessage->params().push_back( msg->params()[i]);
 			if ( msg->param (i, pstr) ) checkVariableMsg (pstr, n);
 		}
 	}
@@ -178,8 +181,8 @@ void EventMessage::sockSend (const IMessage* msg, const string& dst, int port) c
 //----------------------------------------------------------------------
 void EventMessage::localSend (const IMessage* msg) const
 {
-	SIMessage copy = IMessage::create(*msg);
-	if (copy) gMsgStack->push(new SIMessage(copy));
+	IMessage* copy = new IMessage (*msg);
+	if (copy) gMsgStack->push(copy);
 }
 
 //----------------------------------------------------------------------
@@ -314,22 +317,19 @@ int EventMessage::checkintrange (const string& param, float val) const
 // the object argument is only used to retrieve the scene root node
 // and to get the target objects from the message OSC address 
 //----------------------------------------------------------------------
-void EventMessage::eval (const IMessage* msg, const IObject * object, SIMessage& outmsg) const
+void EventMessage::eval (const IMessage* msg, const IObject * object, IMessage& outmsg) const
 {
-	SIMessageList list = IMessageList::create();
+	IMessageList list;
 	vector<const IObject*> targets;
 	object->getRoot()->getObjects(msg->address(), targets);
 	for (unsigned int i=0; i < targets.size(); i++) {
-		const IObject* o = targets[i];
-		SIMessageList l = o->getMsgs (msg);
-		list->list().push_back (l->list());
-//		list->add (targets[i]->getMsgs (msg));
+		list += targets[i]->getMsgs (msg);
 	}
 
-	for (IMessageList::TMessageList::const_iterator i = list->list().begin(); i != list->list().end(); i++) {
-		const SIMessage& m = *i;
+	for (IMessageList::const_iterator i = list.begin(); i != list.end(); i++) {
+		IMessage * m = *i;
 		for (int n=0; n < m->size(); n++) {
-			outmsg->add (m->param(n));
+			outmsg.add (m->params()[n]);
 		}
 	}
 }
@@ -340,43 +340,43 @@ void EventMessage::eval (const IMessage* msg, const IObject * object, SIMessage&
 // in case of  variable message, the message is processed and the value
 // is taken from the output message parameters
 //----------------------------------------------------------------------
-bool EventMessage::eval (const string& var, EventContext& env, SIMessage& outmsg) const
+bool EventMessage::eval (const string& var, EventContext& env, IMessage& outmsg) const
 {
 	string mapname;
 	int num=0, denum=0;
 	bool floatval;
 	bool relative = false;
 	if (var[1] == 'x')	{
-		if (checkfloat(var.c_str())) *outmsg << checkfloatrange(var.substr(2), env.mouse.fx);
-		else *outmsg << checkintrange(var.substr(2), env.mouse.fx);
+		if (checkfloat(var.c_str())) outmsg << checkfloatrange(var.substr(2), env.mouse.fx); 
+		else outmsg << checkintrange(var.substr(2), env.mouse.fx);
 	}
 	else if (var[1] == 'y')	{
-		if (checkfloat(var.c_str())) *outmsg << checkfloatrange(var.substr(2), env.mouse.fy);
-		else *outmsg << checkintrange(var.substr(2), env.mouse.fy);
+		if (checkfloat(var.c_str())) outmsg << checkfloatrange(var.substr(2), env.mouse.fy); 
+		else outmsg << checkintrange(var.substr(2), env.mouse.fy);
 	}
-	else if (var == kAbsXVar)		*outmsg << env.mouse.fabsx;
-	else if (var == kAbsYVar)		*outmsg << env.mouse.fabsy;
-	else if (var == kSceneXVar) 	*outmsg << env.mouse.fsx;
-	else if (var == kSceneYVar)		*outmsg << env.mouse.fsy;
-	else if (var == kNameVar)		*outmsg << env.object->name();
-	else if (var == kAddressVar)	*outmsg << env.object->getOSCAddress();
+	else if (var == kAbsXVar)		outmsg << env.mouse.fabsx;
+	else if (var == kAbsYVar)		outmsg << env.mouse.fabsy;
+	else if (var == kSceneXVar) 	outmsg << env.mouse.fsx;
+	else if (var == kSceneYVar)		outmsg << env.mouse.fsy;
+	else if (var == kNameVar)		outmsg << env.object->name();
+	else if (var == kAddressVar)	outmsg << env.object->getOSCAddress();
 	else if (isDateVar (var, mapname, num, denum, relative, floatval)) {
 		if (!env.date.getDenominator()) return false;		// date can't be resolved
 		if (num) {
 			float fd = float(env.date);
 			if (!floatval) {
 				rational qdate (int(fd * denum / num) * num, denum);
-				*outmsg << qdate;
+				outmsg << qdate;
 			}
-			else *outmsg << fd;
+			else outmsg << fd;
 		}
 		else if (floatval)
-			*outmsg << float(env.date);
+			outmsg << float(env.date);
 		else
-			*outmsg << env.date;
+			outmsg << env.date;
 	}
 	else if (env.varmsg)	eval(env.varmsg, env.object, outmsg);
-	else *outmsg << var;
+	else outmsg << var;
 	return true;
 }
 
@@ -385,7 +385,7 @@ bool EventMessage::eval (const string& var, EventContext& env, SIMessage& outmsg
 // actually, a variable (i.e. a param starting with a '$') is replaced by 
 // its value (which may be a list of values in case of variable messages)
 //----------------------------------------------------------------------
-bool EventMessage::eval (const IMessage *msg, EventContext& env, SIMessage& outmsg) const
+bool EventMessage::eval (const IMessage *msg, EventContext& env, IMessage& outmsg) const
 {
 	string strvalue = msg->message();
 	map<int, SIMessage>::const_iterator mi;
@@ -395,7 +395,7 @@ bool EventMessage::eval (const IMessage *msg, EventContext& env, SIMessage& outm
 		else env.varmsg = mi->second;
 		if (!eval (strvalue, env, outmsg)) return false;
 	}
-	else outmsg->setMessage (strvalue);
+	else outmsg.setMessage (strvalue);
 	
 	int n = fMessage->size();
 	for (int i=0; i<n; i++) {
@@ -405,7 +405,7 @@ bool EventMessage::eval (const IMessage *msg, EventContext& env, SIMessage& outm
 			else env.varmsg = mi->second;
 			if (!eval (strvalue, env, outmsg)) return false;
 		}
-		else outmsg->add(msg->param(i));
+		else outmsg.add(msg->params()[i]);
 	}
 	return true;
 }
@@ -414,10 +414,10 @@ bool EventMessage::eval (const IMessage *msg, EventContext& env, SIMessage& outm
 void EventMessage::send(EventContext& env)
 {
 	if (fMessage) {
-		SIMessage msg = IMessage::create(fMessage->address());
+		IMessage msg (fMessage->address());
 		if (eval (fMessage, env, msg)) {							// evaluate the parameters of the message
-			if (fDest.empty())	localSend (msg);
-			else				sockSend (msg, fDest, fPort);
+			if (fDest.empty())	localSend (&msg);
+			else				sockSend (&msg, fDest, fPort);
 		}
 	}
 }

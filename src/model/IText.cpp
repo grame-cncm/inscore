@@ -68,7 +68,7 @@ MsgHandler::msgStatus IText::set( const IMessage* msg )
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
-	int n = msg->size();
+	int n = msg->params().size();
 	if (n >= 2) {
 		stringstream stream;
 		const char * sep = "";

@@ -107,9 +107,8 @@ void TFile::print (ostream& out) const
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus TFile::set (const IMessage* msg )	
 { 
-	if (msg->size() == 2) {
-		std::string file;
-		if (!msg->param(1, file)) return MsgHandler::kBadParameters;
+	if (msg->params().size() == 2) {
+		std::string file = msg->params()[1]->value<std::string>("");
 		std::string completePath = fScene ? fScene->absolutePath(file) : IAppl::absolutePath(file);
 		if ( file.size())
 		{

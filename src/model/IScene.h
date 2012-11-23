@@ -139,7 +139,7 @@ class IScene : public IRectShape, public PeriodicTask
 
 		/// \brief the \c 'watch' message handler
 		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
-		virtual SIMessageList  getWatch () const	{ return IObject::getWatch(); }
+		virtual IMessageList  getWatch () const		{ return IObject::getWatch(); }
 
 		void		setRootPath(const std::string& s);
 		MsgHandler::msgStatus loadMsg(const IMessage* msg);

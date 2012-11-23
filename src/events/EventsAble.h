@@ -60,7 +60,7 @@ class EventsAble
 		void			setFileMsg (const std::string& file, SEventMessage msg);
 		void			addFileMsg (const std::string& file, SEventMessage msg);
 
-		SIMessageList	getWatch (const char* address) const;
+		IMessageList	getWatch (const char* address) const;
 		void			reset();
 
 		void			pushWatch ();		// push the current watched events and associated msgs on a stack
@@ -96,13 +96,13 @@ class EventsAble
 	_TimeMsgMap	fDurLeaveMsgMap;
 	_FileMsgMap fFileMessageMap;
 	
-	void		getMsgs (const char * address, const std::string& type, const std::vector<SEventMessage>&, SIMessageList&) const;
-	void		getMsgs (const char * address, const std::string& type, const RationalInterval&, const std::vector<SEventMessage>&, SIMessageList&) const;
-	void		getMsgs (const char * address, const std::string& type, const std::string&, const std::vector<SEventMessage>&, SIMessageList&) const;
-	SIMessage	getMsg (const char * address, const std::string& type, const char* msg, const SEventMessage&) const;
-	SIMessage	getMsg (const char * address, const std::string& type, const char* msg, const RationalInterval&, const SEventMessage&) const;
-	SIMessage	getMsg (const char * address, const std::string& type, const char* msg, const std::string&, const SEventMessage&) const;
-	SIMessage	putMsg (SIMessage& msg, const SEventMessage&) const;
+	void		getMsgs (const char * address, const std::string& type, const std::vector<SEventMessage>&, IMessageList&) const;
+	void		getMsgs (const char * address, const std::string& type, const RationalInterval&, const std::vector<SEventMessage>&, IMessageList&) const;
+	void		getMsgs (const char * address, const std::string& type, const std::string&, const std::vector<SEventMessage>&, IMessageList&) const;
+	IMessage*	getMsg (const char * address, const std::string& type, const char* msg, const SEventMessage&) const;
+	IMessage*	getMsg (const char * address, const std::string& type, const char* msg, const RationalInterval&, const SEventMessage&) const;
+	IMessage*	getMsg (const char * address, const std::string& type, const char* msg, const std::string&, const SEventMessage&) const;
+	IMessage*	putMsg (IMessage * msg, const SEventMessage&) const;
 
 	static std::map<std::string, eventype>	fTypeStr;
 };

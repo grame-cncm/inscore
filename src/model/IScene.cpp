@@ -79,7 +79,7 @@ IScene::IScene(const std::string& name, IObject * parent)
 	fGetMsgHandlerMap["fullscreen"] = TGetParamMsgHandler<bool>::create(fFullScreen);
 	fGetMsgHandlerMap["frameless"]	= TGetParamMsgHandler<bool>::create(fFrameless);
 	fGetMsgHandlerMap["absolutexy"] = TGetParamMsgHandler<bool>::create(fAbsoluteCoordinates);
-	fGetMsgHandlerMap["watch"]		= TGetParamMethodHandler<IScene, SIMessageList (IScene::*)() const>::create(this, &IScene::getWatch);
+	fGetMsgHandlerMap["watch"]		= TGetParamMethodHandler<IScene, IMessageList (IScene::*)() const>::create(this, &IScene::getWatch);
 	fGetMsgHandlerMap["rootPath"]	= TGetParamMsgHandler<string>::create(fRootPath);
 }
 
@@ -202,14 +202,14 @@ extern SIMessageStack gMsgStack;
 MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 {
 	if (msg->size() == 1) {
-		string srcfile = msg->param(0)->value<string>("");
+		string srcfile = msg->params()[0]->value<string>("");
 		if (srcfile.size()) {
 			fstream file (absolutePath(srcfile).c_str(), fstream::in);
 			if (file.is_open()) {
 				ITLparser p (&file, 0, &fJavascript, &fLua);
-				SIMessageList msgs = p.parse();
+				IMessageList* msgs = p.parse();
 				if (msgs) {
-					for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
+					for (IMessageList::const_iterator i = msgs->begin(); i != msgs->end(); i++) {
 						IMessage * msg = *i;
 						string address = address2scene (msg->address().c_str());
 						string beg  = OSCAddress::addressFirst(address);
@@ -219,6 +219,7 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 							IGlue::trace(*i, ret);
 						}
 					}
+					msgs->clear();
 				}
 				else ITLErr << "while parsing file" << srcfile << ITLEndl;
 			}
@@ -243,13 +244,13 @@ void IScene::add (const nodePtr& node)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IScene::_watchMsg(const IMessage* msg, bool add)
 { 
-	if (msg->size()) {
+	if (msg->params().size()) {
 		string what;
 		if (msg->param (0, what)) {
 			EventsAble::eventype t = EventsAble::string2type (what);
 			switch (t) {
 				case EventsAble::kNewElement:
-					if (msg->size() > 1)
+					if (msg->params().size() > 1)
 						if (add) eventsHandler()->addMsg (t, EventMessage::create (name(), getScene()->name(), msg, 1));
 						else eventsHandler()->setMsg (t, EventMessage::create (name(), getScene()->name(),msg, 1));
 					else if (!add) eventsHandler()->setMsg (t, 0);

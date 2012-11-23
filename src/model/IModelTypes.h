@@ -121,6 +121,9 @@ typedef class libmapping::SMARTP<ISVGFile>		SISVGFile;
 class IVideo;
 typedef class libmapping::SMARTP<IVideo>		SIVideo;
 
+class IWatcher;
+typedef class libmapping::SMARTP<IWatcher>		SIWatcher;
+
 class Master;
 class ISync;
 

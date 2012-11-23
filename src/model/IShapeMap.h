@@ -49,7 +49,7 @@ class IShapeMap: public IShape
 		SLocalMapping	fLocalMappings;
 
 		/// \brief get an object maps
-		virtual SIMessageList __getMaps () const;
+		virtual IMessageList __getMaps () const;
 
 	public:
 				 IShapeMap( const std::string& name, IObject* parent );

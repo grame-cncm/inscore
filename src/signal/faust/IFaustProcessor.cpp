@@ -139,7 +139,7 @@ bool IFaustProcessor::putAt (const IMessage* msg, int index, int step)
 {
 	if (!dimension()) return true;		// nothing to do: there is no space for output signals
 
-	int size = msg->size();
+	int size = msg->params().size();
 	if (!fNumIntputs) {
 		call_compute(size, index, step);
 		return true;
@@ -261,9 +261,9 @@ MsgHandler::msgStatus IFaustProcessor::set (const IMessage* msg)
 //--------------------------------------------------------------------------
 // message handlers
 //--------------------------------------------------------------------------
-SIMessage&  IFaustProcessor::GetFaustParamMsgHandler::print(SIMessage& out) const
+IMessage&  IFaustProcessor::GetFaustParamMsgHandler::print(IMessage& out) const
 {
-	*out << *fValue;
+	out << *fValue;
 	return out;
 }
 

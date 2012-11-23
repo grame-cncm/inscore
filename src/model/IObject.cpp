@@ -93,15 +93,19 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fMsgHandlerMap["del"]		= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::del);
 	fMsgHandlerMap["export"]	= TMethodMsgHandler<IObject>::create(this, &IObject::exportMsg);
 	fMsgHandlerMap["rename"]	= TMethodMsgHandler<IObject>::create(this, &IObject::renameMsg);
+	fMsgHandlerMap["click"]		= TMethodMsgHandler<IObject,MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::clickMsg);
+	fMsgHandlerMap["select"]	= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::selectMsg);
 	fMsgHandlerMap["save"]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::saveMsg);
 	fMsgHandlerMap["watch"]		= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsg);
 	fMsgHandlerMap["watch+"]	= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsgAdd);
 	fMsgHandlerMap["push"]		= TMethodMsgHandler<IObject>::create(this, &IObject::pushMsg);
 	fMsgHandlerMap["pop"]		= TMethodMsgHandler<IObject>::create(this, &IObject::popMsg);
+	
+//	fGetMsgHandlerMap["watch"]	= TGetParamMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
 
-	fGetMultiMsgHandlerMap["watch"]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
-	fGetMultiMsgHandlerMap["map"]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getMaps);
-	fGetMultiMsgHandlerMap["alias"]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getAliases);
+	fGetMultiMsgHandlerMap["watch"]	= TGetParamMultiMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
+	fGetMultiMsgHandlerMap["map"]	= TGetParamMultiMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getMaps);
+	fGetMultiMsgHandlerMap["alias"]	= TGetParamMultiMethodHandler<IObject, IMessageList (IObject::*)() const>::create(this, &IObject::getAliases);
 }
 
 
@@ -397,7 +401,7 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 		}
 		else {										// addressTail indicates a terminal node
 			IMessageTranslator translator;
-			SIMessage translated = translator.translate(msg);
+			IMessage* translated = translator.translate(msg);
 			subnodes targets;		
 			if (find (beg, targets)) {				// looks for subnodes matching addressTail
 				unsigned int n = targets.size();
@@ -411,6 +415,7 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 			}
 			// can't find the target node: try to create it
 			else result = IProxy::execute (translated ? translated : msg, beg, this);
+			delete translated;
 		}
 	}
 	if (result & MsgHandler::kProcessed) 
@@ -420,17 +425,16 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 
 //--------------------------------------------------------------------------
 // the 'get' to retrieve an object parameters
-SIMessageList IObject::getParams() const
+IMessageList IObject::getParams() const
 {
-	SIMessageList outMsgs = IMessageList::create();
+	IMessageList outMsgs;
 	
 	map<std::string, SGetParamMsgHandler>::const_iterator i = fGetMsgHandlerMap.begin();
 	while (i != fGetMsgHandlerMap.end()) {
 		const string& what = i->first;
 		const SGetParamMsgHandler& handler = what.size() ? i->second : 0;
 		if (handler)  {
-			SIMessage msg = getParam(i->first, i->second);
-			outMsgs->list().push_back (msg);
+			outMsgs += getParam(i->first, i->second);
 		}
 		i++;
 	}
@@ -440,8 +444,8 @@ SIMessageList IObject::getParams() const
 		const string& what = j->first;
 		const SGetParamMultiMsgHandler& handler = what.size() ? j->second : 0;
 		if (handler)  {
-			SIMessageList mlist = IMessageList::create();
-			outMsgs->list().push_back(handler->print(mlist)->list());
+			IMessageList mlist;
+			outMsgs += handler->print(mlist);
 		}
 		j++;
 	}
@@ -450,14 +454,14 @@ SIMessageList IObject::getParams() const
 
 //--------------------------------------------------------------------------
 // the 'get' to retrieve all the objects parameters
-SIMessageList IObject::getAllParams() const
+IMessageList IObject::getAllParams() const
 {
-	SIMessageList outMsgs = getParams();
+	IMessageList outMsgs = 	getParams();
 	// and distribute the message to subnodes
 	for (unsigned int i = 0; i < elements().size(); i++) {
 		nodePtr elt = elements()[i];
 		if (!elt->getDeleted())
-			outMsgs->list().push_back (elt->getAllParams()->list());
+			outMsgs += elt->getAllParams();
 	}
 	return outMsgs;
 }
@@ -467,28 +471,28 @@ SIMessageList IObject::getAllParams() const
 // note that getSetMsg() and getAllParams() are both recursive
 // this design is intended to retrieve all the objects first
 // in order to avoid dependencies with the messages order
-SIMessageList IObject::getAll() const
+IMessageList IObject::getAll() const
 {
-	SIMessageList outMsgs = IMessageList::create();
-	outMsgs->list().push_back (getSetMsg()->list());		// first get all objects state
-	outMsgs->list().push_back (getAllParams()->list());		// next get the objects parameters
+	IMessageList outMsgs;
+	outMsgs += getSetMsg();			// first get all objects state
+	outMsgs += getAllParams();		// next get the objects parameters
 	return outMsgs;
 }
 
 //--------------------------------------------------------------------------
 // the 'get' form without parameter
-SIMessageList IObject::getSetMsg() const
+IMessageList IObject::getSetMsg() const
 {
-	SIMessageList outMsgs = IMessageList::create();
+	IMessageList outMsgs;
 	string address = getOSCAddress();
 	
 	// check first if there is an existing message handler
 	SGetParamMsgHandler handler = getMessageHandler("");
 	if (handler) {
-		SIMessage msg = IMessage::create(address, "set");
+		IMessage* msg = new IMessage(address, "set");
 		*msg << getTypeString();
-		handler->print(msg);	
-		outMsgs->list().push_back (msg);
+		handler->print(*msg);	
+		outMsgs += msg;
 	}
 
 	// else distributes the message to subnodes
@@ -497,8 +501,8 @@ SIMessageList IObject::getSetMsg() const
 		for (unsigned int i = 0; i < elements().size(); i++) {
 			nodePtr elt = elements()[i];
 			if (!elt->getDeleted()) {
-				SIMessage msg = IMessage::create(address + elt->name(), "get");
-				outMsgs->list().push_back (elt->getMsgs(msg)->list());
+				IMessage msg(address + elt->name(), "get");
+				outMsgs += elt->getMsgs(&msg);
 			}
 		}
 	}
@@ -506,34 +510,34 @@ SIMessageList IObject::getSetMsg() const
 }
 
 //--------------------------------------------------------------------------
-SIMessage IObject::getParam(const string& what, const SGetParamMsgHandler& h) const
+IMessage* IObject::getParam(const string& what, const SGetParamMsgHandler& h) const
 {
-	SIMessage msg = IMessage::create(getOSCAddress(), what);
-	h->print(msg);
+	IMessage* msg = new IMessage(getOSCAddress(), what);
+	h->print(*msg); 
 	return msg;
 }
 
 //--------------------------------------------------------------------------
-SIMessageList IObject::getMsgs(const IMessage* msg) const
+IMessageList IObject::getMsgs(const IMessage* msg) const
 { 
-	SIMessageList outMsgs = IMessageList::create();
+	IMessageList outMsgs;
 
-	if (msg->size() == 0) {
+	if (msg->params().size() == 0) {
 		outMsgs = getSetMsg();
 	}
-	else for (int i=0; i<msg->size(); i++) {
+	else for (unsigned int i=0; i<msg->params().size(); i++) {
 		string what;
 		if (msg->param(i, what)) {
 			SGetParamMsgHandler handler = getMessageHandler(what);
 			SGetParamMultiMsgHandler multihandler = getMultiMessageHandler(what);
 			if (handler) {
-				SIMessage outmsg = getParam(what, handler);
-				if (outmsg) outMsgs->list().push_back(outmsg);
+				IMessage * outmsg = getParam(what, handler);
+				if (outmsg) outMsgs += outmsg;
 				else break;
 			}
 			else if (multihandler) {
-				SIMessageList mlist = IMessageList::create();
-				outMsgs->list().push_back( multihandler->print(mlist)->list() );
+				IMessageList mlist;
+				outMsgs += multihandler->print(mlist);
 			}
 			else if (what == "*")
 				outMsgs = getAll();
@@ -544,15 +548,16 @@ SIMessageList IObject::getMsgs(const IMessage* msg) const
 }
 
 //--------------------------------------------------------------------------
-SIMessageList IObject::getMaps() const		{ return __getMaps(); }
-SIMessageList IObject::__getMaps() const	{ return IMessageList::create(); }
+IMessageList IObject::getMaps() const	{ return __getMaps(); }
+IMessageList IObject::__getMaps() const	{ return IMessageList(); }
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::get(const IMessage* msg) const
 { 
-	SIMessageList msgs = getMsgs (msg);
-	if (msgs->list().size()) {
-		oscout << msgs;
+	IMessageList msgs = getMsgs (msg);
+	if (msgs.size()) {
+		oscout << &msgs;
+		msgs.clear();
 	}
 	return MsgHandler::kProcessedNoChange;
 }
@@ -602,6 +607,13 @@ SGetParamMultiMsgHandler IObject::getMultiMessageHandler(const std::string& para
 }
 
 //--------------------------------------------------------------------------
+//SMsgHandler IObject::setMessageHandler(const std::string& param) const
+//{
+//	map<string, SMsgHandler>::const_iterator h = fSetMsgHandlerMap.find(param);
+//	return h == fSetMsgHandlerMap.end() ? 0 : h->second;
+//}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::pushMsg(const IMessage* msg)
 {
 	if (msg->size()) return MsgHandler::kBadParameters;
@@ -619,8 +631,8 @@ MsgHandler::msgStatus IObject::popMsg(const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::set(const IMessage* msg)	
 {
-	string type;
-	if (!msg->param(0, type)) return MsgHandler::kBadParameters;
+	string type = msg->params()[0]->value<std::string>("");
+//	if ((type != getTypeString()) && !virtualNode()) {
 	if (type != getTypeString()) {
 		// types don't match
 		// try to re-create the object with the new type
@@ -670,34 +682,33 @@ GraphicEffect IObject::getEffect ()	const
 }
 
 //--------------------------------------------------------------------------
-SIMessageList IObject::getWatch() const
+IMessageList IObject::getWatch() const
 {
 	return EventsAble::getWatch (getOSCAddress().c_str());
 }
 
 //--------------------------------------------------------------------------
-SIMessageList IObject::getAliases() const
+IMessageList IObject::getAliases() const
 {
-	SIMessageList list = IMessageList::create();
+	IMessageList list;
 	vector<pair<string, string> > aliases;
 	IAppl::getAliases (getOSCAddress(), aliases);
 	unsigned int n = aliases.size();
-	SIMessage msg = IMessage::create (getOSCAddress(), "alias");
 	for (unsigned i = 0; i < n; i++) {
+		IMessage* msg = new IMessage (getOSCAddress(), "alias");
 		msg->add (aliases[i].first);
 		if (aliases[i].second.size()) msg->add (aliases[i].second);
-		list->list().push_back (msg);
+		list += msg;
 	}
-	if (list->list().empty()) {
-		list->list().push_back (msg);
-	}
+	if (list.empty())
+		list += new IMessage (getOSCAddress(), "alias");
 	return list;
 }
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::aliasMsg(const IMessage* msg)
 { 
-	unsigned int n = msg->size();
+	unsigned int n = msg->params().size();
 	if (n == 0)
 		IAppl::delAliases (getOSCAddress());
 	
@@ -715,7 +726,7 @@ MsgHandler::msgStatus IObject::aliasMsg(const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::renameMsg(const IMessage* msg)
 { 
-	if (msg->size() == 1) {
+	if (msg->params().size() == 1) {
 		string newname;
 		if (msg->param(0, newname)) {
 			setName (newname);
@@ -728,10 +739,10 @@ MsgHandler::msgStatus IObject::renameMsg(const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
 {
-	if (msg->size() == 1) {
-		std::string fileName;
-		if (!msg->param(0, fileName)) return MsgHandler::kBadParameters;
-		if (fileName.length()) {
+	if (msg->params().size() == 1) {
+		const std::string err = "";
+		std::string fileName = msg->params()[0]->value<std::string>(err);
+		if ( (fileName != err) && (fileName.length()) ) {
 			SIScene scene = getScene();
 			std::string absolutePath = scene ? scene->absolutePath(fileName) : IAppl::absolutePath(fileName);
 			if ( isDirectory(absolutePath) )	//Argument is a directory: export to "directory/objectName".
@@ -749,7 +760,7 @@ MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
 			return MsgHandler::kProcessed;
 		}
 	}
-	else if (msg->size() == 0) {	//No argument : export to "objectName".
+	else if (msg->params().size() == 0) {	//No argument : export to "objectName".
 		setExportFlag( getScene()->absolutePath(name() ) );
 		return MsgHandler::kProcessed;
 	}
@@ -759,7 +770,7 @@ MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 { 
-	if (!msg->size()) {					// no param to watch message
+	if (!msg->params().size()) {		// no param to watch message
 		EventsAble::reset();			// clear every watched events
 		return MsgHandler::kProcessed;	// and exit
 	}
@@ -776,7 +787,7 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 		case EventsAble::kMouseDoubleClick:
 		case EventsAble::kMouseEnter:
 		case EventsAble::kMouseLeave:
-			if (msg->size() > 1)
+			if (msg->params().size() > 1)
 				if (add) eventsHandler()->addMsg (t, EventMessage::create (name(), getScene()->name(), msg, 1));
 				else eventsHandler()->setMsg (t, EventMessage::create (name(), getScene()->name(),msg, 1));
 			else if (!add) eventsHandler()->setMsg (t, 0);
@@ -789,12 +800,12 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 		case EventsAble::kTimeLeave:
 		case EventsAble::kDurEnter:
 		case EventsAble::kDurLeave:
-			if (msg->size() >= 5) {
+			if (msg->params().size() >= 5) {
 				rational start, end;
 				if (!msg->param(1,start) || !msg->param(3, end))
 					return MsgHandler::kBadParameters;
 				RationalInterval time(start,end);
-				if (msg->size() > 5) {
+				if (msg->params().size() > 5) {
 					if (!add) eventsHandler()->setTimeMsg (t, time, EventMessage::create (name(), getScene()->name(), msg, 5));
 					else eventsHandler()->addTimeMsg (t, time, EventMessage::create (name(), getScene()->name(), msg, 5));
 					watchInterval(t, time);
@@ -804,7 +815,7 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 					eventsHandler()->setTimeMsg (t, time, 0);
 				}
 			}
-			else if (msg->size() == 1) {
+			else if (msg->params().size() == 1) {
 				if (!add) {
 					clearList(t);
 					eventsHandler()->clearTimeMsg(t);
@@ -820,21 +831,47 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 }
 
 //--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::clickMsg (const IMessage* msg) const
+{ 
+	IMessage * outmsg = click(msg);
+	if (outmsg) {
+		outmsg->print(oscout);
+		delete outmsg;
+		oscerr << OSCWarn() << "the 'click' message is deprecated." << OSCEnd();
+		return MsgHandler::kProcessedNoChange;
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::selectMsg (const IMessage* msg) const
+{ 
+	IMessage * outmsg = select(msg);
+	if (outmsg) {
+		outmsg->print(oscout);
+		delete outmsg;
+		oscerr << OSCWarn() << "the 'select' message is deprecated." << OSCEnd();
+		return MsgHandler::kProcessedNoChange;
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
 void IObject::save(ostream& out) const
 {
-	SIMessageList outMsgs = getAll();
-	out << (IMessageList*)outMsgs;
+	IMessageList outMsgs = getAll();
+	out << outMsgs;
 }
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::saveMsg (const IMessage* msg) const
 { 
 	if ((msg->size() > 0) && (msg->size() < 3)) {
-		string destfile = msg->param(0)->value<string>("");
+		string destfile = msg->params()[0]->value<string>("");
 		if (destfile.size()) {
 			ios_base::openmode mode = ios_base::out;
 			if (msg->size() == 2) {
-				string mstr = msg->param(1)->value<string>("");
+				string mstr = msg->params()[1]->value<string>("");
 				if (mstr == "+")
 					mode |= ios_base::app;
 				else return MsgHandler::kBadParameters;
@@ -850,9 +887,88 @@ MsgHandler::msgStatus IObject::saveMsg (const IMessage* msg) const
 
 
 //--------------------------------------------------------------------------
+IMessage * IObject::select (const IMessage* msg) const
+{ 
+	IMessage * outmsg = 0;
+	vector<SIObject> list;
+	string mode = "intersect";	// default value
+	if (msg->params().size() == 1)
+		mode = msg->params()[0]->value<string>("");
+
+	if (IPosition::selectPos (msg, fParent, list)) {
+		outmsg = new IMessage(getOSCAddress(), mode);
+		for (unsigned i=0; i<list.size(); i++)
+			*outmsg << list[i]->name();
+	}
+	return outmsg;
+}
+
+//--------------------------------------------------------------------------
+IMessage * IObject::click (const IMessage* msg) const
+{ 
+	IMessage * outmsg = 0;
+	vector<SIObject> list;
+	string mode = "topleft";	// default values
+	if (msg->params().size() == 1)
+		mode = msg->params()[0]->value<string>("");
+
+	if (IPosition::clickPos (msg, SIObject(fParent), list)) {
+		outmsg = new IMessage(getOSCAddress(), mode);
+		for (unsigned i=0; i<list.size(); i++)
+			*outmsg << list[i]->name();
+	}
+	return outmsg;
+}
+
+//--------------------------------------------------------------------------
+//MsgHandler::msgStatus IObject::dcolorMsg(const IMessage* msg)
+//{
+//	if ( ( msg->params().size() == 3 ) || ( msg->params().size() == 4 ) )
+//	{
+//		int r,g,b,a;
+//		r = msg->params()[0]->value<int>(0);
+//		g = msg->params()[1]->value<int>(0);
+//		b = msg->params()[2]->value<int>(0);
+//		a = ( msg->params().size() == 4 ) ? msg->params()[3]->value<int>(0) : 0;
+//
+////		IColor c( getColor() );
+//		IColor c( *this );
+//		c.dR( r );
+//		c.dG( g );
+//		c.dB( b );
+//		c.dA( a );
+//		setColor( c );
+//		return MsgHandler::kProcessed;
+//	}
+//	return MsgHandler::kBadParameters;
+//}
+//
+////--------------------------------------------------------------------------
+//MsgHandler::msgStatus IObject::dhsvMsg(const IMessage* msg)
+//{
+//	if ( ( msg->params().size() == 3 ) || ( msg->params().size() == 4 ) )
+//	{
+//		int h,s,v,a;
+//		h = msg->params()[0]->value<int>(0);
+//		s = msg->params()[1]->value<int>(0);
+//		v = msg->params()[2]->value<int>(0);
+//		a = ( msg->params().size() == 4 ) ? msg->params()[3]->value<int>(0) : 0;
+//
+//		IColor c( *this );
+//		c.dH(h);
+//		c.dS(s);		
+//		c.dV(v);
+//		c.dA(a);
+//		setColor( c );
+//		return MsgHandler::kProcessed;
+//	}
+//	return MsgHandler::kBadParameters;
+//}
+
+//--------------------------------------------------------------------------
 // OSCStream support
 //--------------------------------------------------------------------------
-SIMessage& operator << (SIMessage& out, const SGetParamMsgHandler& h)
+IMessage& operator << (IMessage& out, const SGetParamMsgHandler& h)
 {
 	return h->print(out);
 }
@@ -860,7 +976,8 @@ SIMessage& operator << (SIMessage& out, const SGetParamMsgHandler& h)
 IMessage& operator << (IMessage& out, const IObject::subnodes& l)
 {
 	for (IObject::subnodes::const_iterator i = l.begin(); i != l.end(); i++) {
-		if (!(*i)->getDeleted())
+//		if (!(*i)->getDeleted() && ((*i)->getTypeString()!=IVNode::fTypeString)) 
+		if (!(*i)->getDeleted()) 
 			out << (*i)->name();
 	}
 	return out;

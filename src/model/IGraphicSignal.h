@@ -130,7 +130,7 @@ class IGraphicSignal : public IShape
 		MsgHandler::msgStatus mapAddMsg (const IMessage* msg );
 
 		/// \brief get an object maps
-		virtual SIMessageList __getMaps () const	{ return TMapMsgHandler<long,1>::getMapMsgs( localMappings() , this ); }
+		virtual IMessageList __getMaps () const	{ return TMapMsgHandler<long,1>::getMapMsgs( localMappings() , this ); }
 
 		///! \brief get the curve type
 //		virtual void setCurveType(const std::string& curveType) { fCurveType = curveType; }
@@ -140,7 +140,7 @@ class IGraphicSignal : public IShape
 				getDimParamMsgHandler(IGraphicSignal* o) : fGraph(o) {}
 			public: 
 				static SGetParamMsgHandler create(IGraphicSignal* o) { return new getDimParamMsgHandler(o); }
-				virtual SIMessage&  print(SIMessage& out) const;
+				virtual IMessage&  print(IMessage& out) const;
 		};
 };
 

@@ -54,7 +54,7 @@ typedef class libmapping::SMARTP<IObject>	SIObject;
 /*!
 	\brief an object position data
 */
-class IPosition
+class Position
 {
 	protected:	
 		float	fXPos, fYPos;			///< the object coordinates
@@ -73,12 +73,12 @@ class IPosition
 		TFloatSize fShear;				///< the shear attributes
 
 	public:
-				 IPosition();
-		virtual ~IPosition() {}
+				 Position();
+		virtual ~Position() {}
 	
 		enum {	kDefaultX=0, kDefaultY=0 };
 
-		virtual void setPos(const IPosition& p);
+		virtual void setPos(const Position& p);
 
 		/// \brief returns the object modification state
 		virtual bool	modified () const			{ return fModified; }
@@ -213,6 +213,36 @@ class IPosition
 		TFloatRect		getBoundingRect() const;
 
 };
+
+//--------------------------------------------------------------------------
+/*!
+	\brief an object position data with message handlers.
+*/
+class IPosition: public Position
+{
+	protected:
+				 IPosition() {}
+		virtual ~IPosition() {}
+
+		/*!
+			\brief selects a list of components under the object position.
+			\param msg the message
+			\param parent the parent object of the current object
+			\param outlist on output, a components list
+			\return true when the message has been correctly processed
+		*/
+		virtual bool	clickPos (const IMessage* msg, IObject * parent, std::vector<SIObject>& outlist) const;
+
+		/*!
+			\brief selects a list of components that intersect or are included in the object bounding rect.
+			\param msg the message
+			\param parent the parent object of the current object
+			\param outlist on output, a components list
+			\return true when the message has been correctly processed
+		*/
+		virtual bool	selectPos (const IMessage* msg, IObject * parent, std::vector<SIObject>& outlist) const;
+};
+
 
 /*! @} */
 

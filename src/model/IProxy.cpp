@@ -46,7 +46,7 @@ int IProxy::signal (const IMessage* msg, const std::string& objName, SIObject pa
 	if (msg->message() == "get") return MsgHandler::kBadParameters;
 	if (!msg->size())			return MsgHandler::kBadParameters;
 
-	string objType = msg->param(0)->value<string>("");
+	string objType = msg->params()[0]->value<string>("");
 	SIObject obj;
 	if (objType == IFaustProcessor::kFaustProcessorType)
 		obj = IObjectFactory::create(objName, objType, parent);
@@ -71,14 +71,13 @@ int IProxy::execute (const IMessage* msg, const std::string& objName, SIObject p
 	string objType;
 	if (parent && (parent->getTypeString() == IAppl::kApplType)) {
 		if (msg->message() != "new") return MsgHandler::kBadAddress;
-		if (msg->size()) return MsgHandler::kBadParameters;
+		if (msg->params().size()) return MsgHandler::kBadParameters;
 		objType = IScene::kSceneType;
 	}
 	else {
-		string tmp = msg->message();
 		if (msg->message() != "set") return MsgHandler::kBadAddress;
-		if (msg->size() == 0) return MsgHandler::kBadParameters;
-		objType = msg->param(0)->value<string>("");
+		if (msg->params().size() == 0) return MsgHandler::kBadParameters;
+		objType = msg->params()[0]->value<string>("");
 	}
 
 	SIObject obj = IObjectFactory::create(objName, objType, parent);

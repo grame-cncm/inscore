@@ -32,7 +32,6 @@
 #include <QDebug>
 
 #include <iostream>
-#include <map>
 
 #include "GUIDOEngine.h"
 
@@ -66,8 +65,7 @@ class JavaThread : public QThread
 };
 
 
-SIMessageStack				gMsgStack;		// the messages stack
-map<INScore::MessagePtr, SIMessage>	gMsgMemory;		// allocated messages are stored in a map for refcounting
+SIMessageStack gMsgStack;
 
 #define kUPDPort 7000
 
@@ -166,34 +164,32 @@ void INScore::postMessage	(const char* address, MessagePtr msg)
 	IMessage* m = Message2IMessage (msg);
 	if (m) {
 		m->setAddress(address);
-		if (gMsgStack) gMsgStack->push(new SIMessage(m));
-		gMsgMemory[msg] = 0;
+		if (gMsgStack) gMsgStack->push(m);
 	}
 }
 
 //--------------------------------------------------------------------------
 INScore::MessagePtr INScore::newMessage (const char* msg)
 {
-	SIMessage m = IMessage::create();
+	IMessage* m = new IMessage;
 	m->setSrcIP (localhost);
 	m->setMessage(msg);
-	gMsgMemory[MessagePtr(m)] = m;
 	return MessagePtr(m);
 }
 
 //--------------------------------------------------------------------------
 INScore::MessagePtr INScore::newMessage ()
 {
-	SIMessage m = IMessage::create();
+	IMessage* m = new IMessage;
 	m->setSrcIP (localhost);
-	gMsgMemory[MessagePtr(m)] = m;
 	return MessagePtr(m);
 }
 
 //--------------------------------------------------------------------------
 void INScore::delMessage(MessagePtr msg)
 {
-	gMsgMemory[msg] = 0;
+	IMessage* m = Message2IMessage (msg);
+	if (m) delete m;
 }
 
 //--------------------------------------------------------------------------

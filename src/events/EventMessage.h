@@ -69,7 +69,7 @@ typedef struct EventContext {
 //----------------------------------------------------------------------
 class EventMessage : public libmapping::smartable
 {
-	SIMessage					fMessage;
+	IMessage *			fMessage;
 	std::map<int, SIMessage>	fVarMsgs;		// messages used as variables stored with their index
 	std::string	fDest;
 	int			fPort;
@@ -90,15 +90,15 @@ class EventMessage : public libmapping::smartable
 	bool	checkfloat (const char* param) const;
 	
 	// evaluate the parameters of a message in a given context
-	bool	eval (const IMessage *msg, EventContext& env, SIMessage& outmsg) const;
+	bool	eval (const IMessage *msg, EventContext& env, IMessage& outmsg) const;
 	// evaluate a message variable in a given context
-	bool	eval (const std::string& var, EventContext& env, SIMessage& outmsg) const;
+	bool	eval (const std::string& var, EventContext& env, IMessage& outmsg) const;
 	// evaluate a variable message in a given context
-	void	eval (const IMessage* msg, const IObject * object, SIMessage& outmsg) const;
+	void	eval (const IMessage* msg, const IObject * object, IMessage& outmsg) const;
 			
 	protected:
 				 EventMessage(const std::string& objname, const std::string& scene, const IMessage* msg, int startindex);
-		virtual ~EventMessage() {}
+		virtual ~EventMessage();
 
 	public:
 		enum { kDefaultUPDPort = 7001 };
@@ -110,7 +110,7 @@ class EventMessage : public libmapping::smartable
 
 		bool	hasDateVar (std::string& mapname, int& num, int& denum, bool& relative, bool& floatval) const;
 		bool	isDateVar (const std::string& var, std::string& mapname, int& num, int& denum, bool& relative, bool& floatval) const;
-		const SIMessage message() const		{ return fMessage; }
+		const IMessage * message() const		{ return fMessage; }
 		
 		std::string address() const;
 

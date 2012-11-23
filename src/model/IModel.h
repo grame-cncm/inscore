@@ -54,4 +54,5 @@
 #include "IText.h"
 #include "ITextFile.h"
 #include "IVideo.h"
+#include "IWatcher.h"
 #endif

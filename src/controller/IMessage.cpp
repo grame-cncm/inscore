@@ -41,23 +41,43 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
+// messages list management
+//--------------------------------------------------------------------------
+void IMessageList::clear()
+{
+	for (unsigned int i=0; i < size(); i++)
+		delete (*this)[i];
+	vector<IMessage*>::clear();
+}
+ 
+void IMessageList::operator += (const IMessageList& msgs) 
+{
+	for (unsigned int i=0; i < msgs.size(); i++)
+		push_back (msgs[i]);
+}
+
+//--------------------------------------------------------------------------
+ostream& operator << (ostream& out, const IMessageList& msg)
+{
+	for (unsigned int i=0; i < msg.size(); i++) {
+		msg[i]->print(out);
+		out << ';' << endl;
+	}
+	return out;
+}
+
+//--------------------------------------------------------------------------
 // IMessage implementation
 //--------------------------------------------------------------------------
 IMessage::IMessage(const IMessage& msg)
 {
-	*this = msg;
+	setAddress (msg.address());
+	setMessage (msg.message());
+	fArguments = msg.params();
 }
 
 //--------------------------------------------------------------------------
-IMessage::IMessage(const std::string& address, const argslist& args, const TUrl& url)
-				: fAddress(address), fHasMessage(true), fUrl(url.fHostname.c_str(), url.fPort)
-{
-	fArguments = args;
-	fHasMessage = fArguments.size() && fArguments[0]->isType<string>();
-}
-
-//--------------------------------------------------------------------------
-static string escape (const string& str)
+static string escape (const string& str) 
 {
 	string out;
 	const char *ptr = str.c_str();
@@ -68,44 +88,6 @@ static string escape (const string& str)
 		else out += c;
 	}
 	return out;
-}
-
-//--------------------------------------------------------------------------
-static bool needQuotes (const string& str)
-{
-	const char *ptr = str.c_str();
-	while (*ptr) {
-		char c = *ptr++;
-		if ((c == ' ') || (c == '\t') || (c == 0x0a) || (c == 0x0d))
-			return true;
-	}
-	return false;
-}
-
-//--------------------------------------------------------------------------
-void IMessage::setMessage(const string& msg)
-{
-	argPtr p = new IMsgParam<string>(msg);
-	if (fHasMessage)
-		fArguments[0] = p;
-	else
-		fArguments.insert (fArguments.begin(), p);
-	fHasMessage = true;
-}
-
-//--------------------------------------------------------------------------
-string IMessage::message() const
-{
-	if (!fHasMessage) return "";
-	return fArguments[0]->value<string>("");
-}
-
-//--------------------------------------------------------------------------
-void IMessage::add( const argslist& params )
-{ 
-	for (unsigned int i=0; i<params.size(); i++) {
-		fArguments.push_back( params[i] );
-	}
 }
 
 //--------------------------------------------------------------------------
@@ -120,53 +102,21 @@ bool IMessage::param(int i, rational& val) const
 }
 
 //--------------------------------------------------------------------------
-// print a single parameter
-//--------------------------------------------------------------------------
-void IMessage::print(std::ostream& out, int i, int nested) const
-{
-	string str; int val; float fval; SIMessageList msgs; TJavaScript js; TLuaScript lua;
-
-	if (param(i, str)) {
-		const char * q = needQuotes (str) ? "\"" : "";
-		out << q << escape(str) << q;
-	}
-	else if (param(i, val))
-		out << val;
-	else if (param(i, fval))
-		out << fval;
-	else if (param(i, msgs)) {
-		string prefix;
-		while (nested--) { prefix += "	"; }
-		msgs->list().set(prefix.c_str(), ",\n");
-		out << "(\n" << msgs->list() << " )";
-	}
-	else if (param(i, js))
-		out << "<? javascript " << js << " ?>";
-	else if (param(i, lua))
-		out << "<? lua " << js << " ?>";
-}
-
-//--------------------------------------------------------------------------
 void IMessage::print(std::ostream& out) const
 {
-	static int nested = 0;
-	nested++;
-	ios::fmtflags f = out.flags ( ios::showpoint );
-	const char * msg = message().c_str();
+	out << address() << " " << message() << " ";
+	argslist::const_iterator i = params().begin();
 
-	if (fUrl.fPort) out << fUrl.fHostname << ':' << fUrl.fPort;
-	out << address() << " ";
-	if (*msg) out << message();
-	if (size()) {
-		out << " ";
-		for (int i=0; i< size()-1; i++) {
-			print (out, i, nested);
-			out << " ";
-		}
-		print (out, size()-1, nested);
+	ios::fmtflags f = out.flags ( ios::showpoint );
+	while (i != params().end()) {
+		IMsgParam<string>* s = dynamic_cast<IMsgParam<string>*>((baseparam*)(*i));
+		if (s) out << "\"" << escape(s->getValue()) << "\" ";
+		IMsgParam<int>* ip = dynamic_cast<IMsgParam<int>*>((baseparam*)(*i));
+		if (ip) out << ip->getValue() << " ";
+		IMsgParam<float>* f = dynamic_cast<IMsgParam<float>*>((baseparam*)(*i));
+		if (f) out << f->getValue() << " ";
+		i++;
 	}
-	if (nested == 1) out << ";";
-	nested--;
 	out.flags ( f );
 }
 
@@ -177,11 +127,11 @@ bool IMessage::operator == (const IMessage& other) const
 		return false;
 	if ( message() != other.message() )
 		return false;
-	if ( size() != other.size() )
+	if ( params().size() != other.params().size() )
 		return false;
-	for ( int i = 0 ; i < size() ; i++ )
+	for ( unsigned int i = 0 ; i < params().size() ; i++ )
 	{
-		if (param(i) != other.param(i))
+		if (params()[i] != other.params()[i])
 			return false;
 	}
 	return true;
@@ -190,24 +140,24 @@ bool IMessage::operator == (const IMessage& other) const
 //--------------------------------------------------------------------------
 IMessage& operator << (IMessage& out, const rational& val)
 {
-	out.add(int(val.getNumerator()));
-	out.add(int(val.getDenominator()));
+	out.add<int>(val.getNumerator());
+	out.add<int>(val.getDenominator());
 	return out;
 }
 
 //--------------------------------------------------------------------------
 IMessage& operator <<(IMessage& msg, const TFloatPoint& val)
 {
-	msg.add(val.x());
-	msg.add(val.y());
+	msg.add<float>(val.x()); 
+	msg.add<float>(val.y()); 
 	return msg; 
 }
 
 //--------------------------------------------------------------------------
 IMessage& operator <<(IMessage& msg, const TIntSize& val)
 {
-	msg.add(val.width());
-	msg.add(val.height()); 
+	msg.add<int>(val.width()); 
+	msg.add<int>(val.height()); 
 	return msg; 
 }
 
@@ -223,7 +173,7 @@ IMessage& operator <<(IMessage& msg, const std::string& val)
 		}
 		ptr++;
 	}
-	msg.add(val);
+	msg.add<std::string>(val);
 	return msg; 
 }
 

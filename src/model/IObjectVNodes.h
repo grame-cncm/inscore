@@ -77,7 +77,7 @@ class IObjectDebug : public IVNode
 		virtual void timeAble ()		{}
 
 		/// \brief object \c 'get' without parameter form: gives the corresponding 'set' message list
-		virtual SIMessageList getSetMsg () const;
+		virtual IMessageList getSetMsg () const;
 
 		virtual int	execute (const IMessage* msg);
 

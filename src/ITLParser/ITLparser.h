@@ -39,17 +39,8 @@ class ITLparser {
 		
 	void initScanner();
 	void destroyScanner();
-	
-	public:
-		class address {
-			public:
-				std::string				fOsc;		// the osc address
-				inscore::IMessage::TUrl	fUrl;		// the address extension (if any)
-				 address (const std::string& osc) : fOsc(osc) {}
-				 address (const std::string& osc, const inscore::IMessage::TUrl& url) : fOsc(osc), fUrl(url.fHostname.c_str(), url.fPort) {}
-				~address () {}
-		};
 
+	public:
 		TScripting		fReader;
 		void*			fScanner;	// the flex scanner
 		std::istream*	fStream;    // input stream
@@ -61,7 +52,7 @@ class ITLparser {
 				 ITLparser(std::istream* stream, int line, TJSEngine* js, TLua* lua);
 		virtual ~ITLparser();
 		
-		SIMessageList parse();
+		IMessageList* parse();
 };
 
 } // end namespace
