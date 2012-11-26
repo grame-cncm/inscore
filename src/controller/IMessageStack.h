@@ -44,6 +44,10 @@ namespace inscore
 
 class IMessage;
 typedef libmapping::SMARTP<IMessage>		SIMessage;
+class IMessageStack;
+typedef libmapping::SMARTP<IMessageStack>	SIMessageStack;
+extern SIMessageStack gMsgStack;
+
 //--------------------------------------------------------------------------
 /*!
 	\brief a lock-free message fifo
@@ -94,7 +98,6 @@ class IMessageStack : public libmapping::smartable
 				 IMessageStack();
 		virtual ~IMessageStack();
 };
-typedef class libmapping::SMARTP<IMessageStack>	SIMessageStack;
 
 /*!
 @}
