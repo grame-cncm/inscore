@@ -51,15 +51,18 @@
      MSG = 267,
      ERR = 268,
      ENDEXPR = 269,
-     LPAR = 270,
-     RPAR = 271,
-     SEP = 272,
-     LOOP = 273,
-     LOOPIDENTIFIER = 274,
-     LOOPREGEXP = 275,
-     VARSTART = 276,
-     LUASCRIPT = 277,
-     JSCRIPT = 278
+     COMMENTSTR = 270,
+     SPACE = 271,
+     EOL = 272,
+     LPAR = 273,
+     RPAR = 274,
+     SEP = 275,
+     LOOP = 276,
+     LOOPIDENTIFIER = 277,
+     LOOPREGEXP = 278,
+     VARSTART = 279,
+     LUASCRIPT = 280,
+     JSCRIPT = 281
    };
 #endif
 /* Tokens.  */
@@ -75,22 +78,25 @@
 #define MSG 267
 #define ERR 268
 #define ENDEXPR 269
-#define LPAR 270
-#define RPAR 271
-#define SEP 272
-#define LOOP 273
-#define LOOPIDENTIFIER 274
-#define LOOPREGEXP 275
-#define VARSTART 276
-#define LUASCRIPT 277
-#define JSCRIPT 278
+#define COMMENTSTR 270
+#define SPACE 271
+#define EOL 272
+#define LPAR 273
+#define RPAR 274
+#define SEP 275
+#define LOOP 276
+#define LOOPIDENTIFIER 277
+#define LOOPREGEXP 278
+#define VARSTART 279
+#define LUASCRIPT 280
+#define JSCRIPT 281
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 23 "ITL.y"
+#line 24 "ITL.y"
 {
 	int		num;
 	float	real;
@@ -101,7 +107,7 @@ typedef union YYSTYPE
 	inscore::SIMessageList*		msgList;
 }
 /* Line 1529 of yacc.c.  */
-#line 105 "ITLparse.hpp"
+#line 111 "ITLparse.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

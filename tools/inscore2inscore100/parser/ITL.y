@@ -6,6 +6,7 @@
 #include <string>
 #include "ITLparser.h"
 #include "IMessage.h"
+#include "IMessageStream.h"
 #include "ITLparse.hpp"
 
 %}
@@ -30,9 +31,7 @@
 	inscore::SIMessageList*		msgList;
 }
 
-%token INT
-%token UINT
-%token FLOAT
+%token INT UINT FLOAT
 %token IDENTIFIER
 %token EQUAL
 %token MAPIDENTIFIER
@@ -42,6 +41,7 @@
 %token MSG
 %token ERR
 %token ENDEXPR
+%token COMMENTSTR SPACE EOL
 
 %token LPAR
 %token RPAR
@@ -58,12 +58,10 @@
 %type <num> 	INT number
 %type <real>	FLOAT
 %type <str>		STRING MSG PATHSEP IDENTIFIER MAPIDENTIFIER REGEXP LUASCRIPT JSCRIPT
-%type <str>		identifier oscaddress oscpath msgstring varname
+%type <str>		identifier oscaddress oscpath msgstring varname variable script
 %type <msg>		message
 %type <p>		param
-%type <plist>	params varvalue 
-%type <msgList>	script
-
+%type <plist>	params 
 
 %{
 
@@ -106,36 +104,30 @@ start		: expr
 			;
 
 //_______________________________________________
-expr		: message  			{ context->fReader.add(*$1); delete $1; }
-			| variable ENDEXPR	{}
-			| script			{ if (*$1) {
-										for (unsigned int i=0; i < (*$1)->list().size(); i++)
-											context->fReader.add((*$1)->list()[i]);
-									}
-									delete $1;
-								}
+expr		: message  			{ cout << *$1; }
+			| variable ENDEXPR	{ cout << *$1; }
+			| script
+			| COMMENTSTR		{ cout << context->fText.c_str(); }
+			| SPACE				{ cout << context->fText.c_str(); }
+			| EOL				{ cout << context->fText.c_str(); }
 			;
 
 //_______________________________________________
-script		: LUASCRIPT			{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
-									*$$ = context->fReader.luaEval(context->fText.c_str());
-								}
-			| JSCRIPT			{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
-									*$$ = context->fReader.jsEval(context->fText.c_str(), yylloc.last_line);
-								}
+script		: LUASCRIPT			{ cout << "<? lua " << context->fText.c_str() << "?>;"; }
+			| JSCRIPT			{ cout << "<? javascript " << context->fText.c_str() << "?>;"; }
 			;
 
 //_______________________________________________
-message		: oscaddress params	ENDEXPR				{}// $$ = new inscore::SIMessage (inscore::IMessage::create(*$1, *$2, inscore::IMessage::TUrl())); delete $1; delete $2; }
-			| oscaddress msgstring ENDEXPR			{}// $$ = new inscore::SIMessage (inscore::IMessage::create(*$1, *$2));  delete $1; delete $2; }
-			| oscaddress msgstring params ENDEXPR	{}// $$ = new inscore::SIMessage (inscore::IMessage::create(*$1, *$2)); (*$$)->add(*$3); delete $1; delete $2; delete $3; }
+message		: oscaddress params	ENDEXPR				{ $$ = new inscore::SIMessage (inscore::IMessage::create(*$1, *$2, inscore::IMessage::TUrl())); }
+			| oscaddress msgstring ENDEXPR			{ $$ = new inscore::SIMessage (inscore::IMessage::create(*$1, *$2)); }
+			| oscaddress msgstring params ENDEXPR	{ $$ = new inscore::SIMessage (inscore::IMessage::create(*$1, *$2));  (*$$)->add(*$3); }
 			;
 
 oscaddress	: oscpath				{ $$ = $1; }
-			| oscaddress oscpath	{ *$1 += *$2; $$ = $1; delete $2; }
+			| oscaddress oscpath	{ *$1 += *$2; $$ = $1; }
 			;
 
-oscpath		: PATHSEP identifier	{ $$ = new string("/" + *$2); delete $2; }
+oscpath		: PATHSEP identifier	{ $$ = new string("/" + *$2); }
 			;
 
 identifier	: IDENTIFIER		{ $$ = new string(context->fText); }
@@ -146,29 +138,21 @@ msgstring	: MSG				{ $$ = new string(context->fText); }
 			| IDENTIFIER		{ $$ = new string(context->fText); }
 			;
 
-params		: param				{}// $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
-			| params param		{}// $1->push_back(*$2); $$ = $1; delete $2; }
-			| varvalue			{}// $$ = $1; }
-			| params varvalue	{}// $1->push_back($2);  $$ = $1; delete $2; }
+params		: param				{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); }
+			| params param		{ $1->push_back(*$2); $$ = $1; }
 			;
 
-varvalue	: VARSTART varname	{}// $$ = new inscore::IMessage::argslist;
-//								  std::string var = "$" + *$2;
-//								  $$->push_back (context->fReader.resolve($2->c_str(), var.c_str()));
-//								  delete $2;
-//								}
-			;
-
-param		: number			{ } // $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1)); }
-			| FLOAT				{ } // $$ = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); }
-			| STRING			{ } // $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
+param		: number			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1)); }
+			| FLOAT				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); }
+			| STRING			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
+			| VARSTART varname  { $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>("$" + *$2)); }
 			;
 
 
 //_______________________________________________
-variable	: varname EQUAL number	{ context->fReader.variable($1->c_str(), $3);					delete $1; }
-			| varname EQUAL FLOAT	{ context->fReader.variable($1->c_str(),  context->fFloat);		delete $1; }
-			| varname EQUAL STRING	{ context->fReader.variable($1->c_str(), context->fText.c_str()); delete $1; }
+variable	: varname EQUAL number	{ std::stringstream s; s << *$1 << "=" << $3;  $$ = new string(s.str()); }
+			| varname EQUAL FLOAT	{ std::stringstream s; s << *$1 << "=" << context->fFloat;  $$ = new string(s.str()); }
+			| varname EQUAL STRING	{ $$ = new string(*$1 + " = " + context->fText.c_str()); }
 			;
 
 varname		: IDENTIFIER			{ $$ = new string(context->fText); }

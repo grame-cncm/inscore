@@ -24,10 +24,10 @@
 #include <iostream>
 #include <fstream>
 #include "ITLparser.h"
-#include "IMessage.h"
-#include "IMessageStream.h"
-#include "TV8Js.h"
-#include "TLua.h"
+//#include "IMessage.h"
+//#include "IMessageStream.h"
+//#include "TV8Js.h"
+//#include "TLua.h"
 
 using namespace std;
 using namespace inscore;
@@ -35,17 +35,18 @@ using namespace inscore;
 int main (int argc, char * argv[])
 {
 	if (argc > 1) {
-		TJSEngine js; TLua lua;
+//		TJSEngine js; TLua lua;
 		ifstream in (argv[1]);
-		ITLparser p(&in, 0, &js, &lua);
-		SIMessageList outMsgs;
-		outMsgs = p.parse ();
-		if (outMsgs) {
-			outMsgs->list().set("", "\n");
-			cout << outMsgs->list() << endl;
-		}
-		else
-			cout << "error reading " << argv[1] << endl;
+		ITLparser p(&in, 0, 0, 0);
+//		ITLparser p(&in, 0, &js, &lua);
+//		SIMessageList outMsgs;
+		p.parse ();
+//		if (outMsgs) {
+//			outMsgs->list().set("", "\n");
+//			cout << outMsgs->list() << endl;
+//		}
+//		else
+//			cout << "error reading " << argv[1] << endl;
 	}
  	return 0;
 }

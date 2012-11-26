@@ -78,48 +78,48 @@ SPACE	[ \t]
 EOL		[\x0a\x0d]
 
 %%
-{DIGIT}+				yyextra->fInt = atoi(yytext); return UINT;
-"+"{DIGIT}+				yyextra->fInt = atoi(yytext); return UINT;
-"-"{DIGIT}+				yyextra->fInt = atoi(yytext); return INT;
+{SPACE}*{DIGIT}+				yyextra->fInt = atoi(yytext); return UINT;
+{SPACE}*"+"{DIGIT}+				yyextra->fInt = atoi(yytext); return UINT;
+{SPACE}*"-"{DIGIT}+				yyextra->fInt = atoi(yytext); return INT;
 
-[+-]*{DIGIT}*"."{DIGIT}* 				yyextra->fFloat = atof(yytext); return FLOAT;
-[+-]*{DIGIT}*"."{DIGIT}*e[-+]?{DIGIT}+ 	yyextra->fFloat = atof(yytext); return FLOAT;
-[+-]*{DIGIT}+e[-+]?{DIGIT}+ 			yyextra->fFloat = atof(yytext); return FLOAT;
+{SPACE}*[+-]*{DIGIT}*"."{DIGIT}* 				yyextra->fFloat = atof(yytext); return FLOAT;
+{SPACE}*[+-]*{DIGIT}*"."{DIGIT}*e[-+]?{DIGIT}+ 	yyextra->fFloat = atof(yytext); return FLOAT;
+{SPACE}*[+-]*{DIGIT}+e[-+]?{DIGIT}+ 			yyextra->fFloat = atof(yytext); return FLOAT;
 
-"="					return EQUAL;
-"("					return LPAR;
+{SPACE}*"="{SPACE}*	return EQUAL;
+{SPACE}*"("			return LPAR;
 ")"					return RPAR;
 ","					return SEP;
 "/"					return PATHSEP;			/* OSC address and path separator */
 ";"					return ENDEXPR;			/* end of expression */
-"$"					return VARSTART;
+{SPACE}*"$"			return VARSTART;
 
-{SPACE}*"#"			BEGIN CMNTLN;
-{SPACE}*"!"			BEGIN CMNTLN;
-<CMNTLN>.*	
-<CMNTLN>{EOL}+		BEGIN INITIAL;
+{SPACE}*"#"			BEGIN CMNTLN; yyextra->fText = yytext; return COMMENTSTR;
+{SPACE}*"!"			BEGIN CMNTLN; yyextra->fText = yytext; return COMMENTSTR;
+<CMNTLN>.*			yyextra->fText = yytext; return COMMENTSTR; 
+<CMNTLN>{EOL}		BEGIN INITIAL; yyextra->fText = yytext; return COMMENTSTR;
 
-<COMMENT>.|{EOL}*
-<COMMENT>"(*"		nested++; 
-<COMMENT>"*)"		if (--nested==0) BEGIN INITIAL;
-{SPACE}*"(*"		nested=1; BEGIN COMMENT;
+<COMMENT>.|{EOL}	yyextra->fText = yytext; return COMMENTSTR;
+<COMMENT>"(*"		yyextra->fText = yytext; nested++; return COMMENTSTR;
+<COMMENT>"*)"		yyextra->fText = yytext; if (--nested==0) { BEGIN INITIAL; } return COMMENTSTR;
+{SPACE}*"(*"		yyextra->fText = yytext;  nested=1; BEGIN COMMENT; return COMMENTSTR;
 
-{STARTID}{IDCHAR}*						yyextra->fText = yytext; return IDENTIFIER;		/* identifiers */
-{LETTER}{IDCHAR}*":"{LETTER}{IDCHAR}*	yyextra->fText = yytext; return MAPIDENTIFIER;	/* identifiers with map name */
-{MSGLETTER}*							yyextra->fText = yytext; return MSG;			/* messages */
+{SPACE}*{STARTID}{IDCHAR}*{SPACE}*						yyextra->fText = yytext; return IDENTIFIER;		/* identifiers */
+{SPACE}*{LETTER}{IDCHAR}*":"{LETTER}{IDCHAR}*{SPACE}*	yyextra->fText = yytext; return MAPIDENTIFIER;	/* identifiers with map name */
+{SPACE}*{MSGLETTER}*{SPACE}*							yyextra->fText = yytext; return MSG;			/* messages */
 
-"\""						BEGIN DQSTR;
-"'"							BEGIN QSTR;
+{SPACE}*"\""				BEGIN DQSTR;
+{SPACE}*"'"					BEGIN QSTR;
 <DQSTR>([^\"]|"\\\"")*		yyextra->fText = unescape(yytext); return STRING;
 <QSTR>([^']|"\\'")*			yyextra->fText = unescape(yytext); return STRING;
 <DQSTR>\"					BEGIN INITIAL;
 <QSTR>'						BEGIN INITIAL;
 
-"<?"{SPACE}*"lua"			BEGIN LUASECTION;
+{SPACE}*"<?"{SPACE}*"lua"			BEGIN LUASECTION;
 <LUASECTION>"?>"			BEGIN INITIAL;
 <LUASECTION>({EOL}|"?"[^>]|[^?])*	yyextra->fText = unescape(yytext); return LUASCRIPT;
 
-"<?"{SPACE}*"javascript"	BEGIN JSECTION;
+{SPACE}*"<?"{SPACE}*"javascript"	BEGIN JSECTION;
 <JSECTION>"?>"				BEGIN INITIAL;
 <JSECTION>({EOL}|"?"[^>]|[^?])*		yyextra->fText = unescape(yytext); return JSCRIPT;
 
@@ -127,9 +127,9 @@ EOL		[\x0a\x0d]
 {RESTART}{RECHAR}*				yyextra->fText = yytext; return REGEXP;			/* regular expression */
 {RESTART}*"["..*"]"{RECHAR}*	yyextra->fText = yytext; return REGEXP;			/* regular expression */
 
-{SPACE}+			;   /* eat up space */
+{SPACE}+			;   yyextra->fText = yytext; return SPACE;
 
-{EOL}					yylloc->first_column=0; /* ignore */
+{EOL}					yylloc->first_column=0; yyextra->fText = yytext; return EOL;
 
 .						yyextra->fText = yytext; return ERR;
 

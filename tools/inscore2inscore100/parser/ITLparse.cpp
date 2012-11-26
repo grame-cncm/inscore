@@ -86,15 +86,18 @@
      MSG = 267,
      ERR = 268,
      ENDEXPR = 269,
-     LPAR = 270,
-     RPAR = 271,
-     SEP = 272,
-     LOOP = 273,
-     LOOPIDENTIFIER = 274,
-     LOOPREGEXP = 275,
-     VARSTART = 276,
-     LUASCRIPT = 277,
-     JSCRIPT = 278
+     COMMENTSTR = 270,
+     SPACE = 271,
+     EOL = 272,
+     LPAR = 273,
+     RPAR = 274,
+     SEP = 275,
+     LOOP = 276,
+     LOOPIDENTIFIER = 277,
+     LOOPREGEXP = 278,
+     VARSTART = 279,
+     LUASCRIPT = 280,
+     JSCRIPT = 281
    };
 #endif
 /* Tokens.  */
@@ -110,15 +113,18 @@
 #define MSG 267
 #define ERR 268
 #define ENDEXPR 269
-#define LPAR 270
-#define RPAR 271
-#define SEP 272
-#define LOOP 273
-#define LOOPIDENTIFIER 274
-#define LOOPREGEXP 275
-#define VARSTART 276
-#define LUASCRIPT 277
-#define JSCRIPT 278
+#define COMMENTSTR 270
+#define SPACE 271
+#define EOL 272
+#define LPAR 273
+#define RPAR 274
+#define SEP 275
+#define LOOP 276
+#define LOOPIDENTIFIER 277
+#define LOOPREGEXP 278
+#define VARSTART 279
+#define LUASCRIPT 280
+#define JSCRIPT 281
 
 
 
@@ -132,6 +138,7 @@
 #include <string>
 #include "ITLparser.h"
 #include "IMessage.h"
+#include "IMessageStream.h"
 #include "ITLparse.hpp"
 
 
@@ -156,7 +163,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 23 "ITL.y"
+#line 24 "ITL.y"
 {
 	int		num;
 	float	real;
@@ -167,7 +174,7 @@ typedef union YYSTYPE
 	inscore::SIMessageList*		msgList;
 }
 /* Line 193 of yacc.c.  */
-#line 171 "ITLparse.cpp"
+#line 178 "ITLparse.cpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -189,7 +196,7 @@ typedef struct YYLTYPE
 
 
 /* Copy the second part of user declarations.  */
-#line 68 "ITL.y"
+#line 66 "ITL.y"
 
 
 #include <iostream>
@@ -222,7 +229,7 @@ using namespace std;
 
 
 /* Line 216 of yacc.c.  */
-#line 226 "ITLparse.cpp"
+#line 233 "ITLparse.cpp"
 
 #ifdef short
 # undef short
@@ -437,22 +444,22 @@ union yyalloc
 #endif
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  16
+#define YYFINAL  19
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   66
+#define YYLAST   65
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  24
+#define YYNTOKENS  27
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  15
+#define YYNNTS  14
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  32
+#define YYNRULES  33
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  43
+#define YYNSTATES  44
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   278
+#define YYMAXUTOK   281
 
 #define YYTRANSLATE(YYX)						\
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -487,7 +494,8 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    23
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
+      25,    26
 };
 
 #if YYDEBUG
@@ -496,32 +504,32 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint8 yyprhs[] =
 {
        0,     0,     3,     5,     8,    10,    13,    15,    17,    19,
-      23,    27,    32,    34,    37,    40,    42,    44,    46,    48,
-      50,    53,    55,    58,    61,    63,    65,    67,    71,    75,
-      79,    81,    83
+      21,    23,    25,    29,    33,    38,    40,    43,    46,    48,
+      50,    52,    54,    56,    59,    61,    63,    65,    68,    72,
+      76,    80,    82,    84
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      25,     0,    -1,    26,    -1,    25,    26,    -1,    28,    -1,
-      36,    14,    -1,    27,    -1,    22,    -1,    23,    -1,    29,
-      33,    14,    -1,    29,    32,    14,    -1,    29,    32,    33,
-      14,    -1,    30,    -1,    29,    30,    -1,    10,    31,    -1,
-       6,    -1,     9,    -1,    12,    -1,     6,    -1,    35,    -1,
-      33,    35,    -1,    34,    -1,    33,    34,    -1,    21,    37,
-      -1,    38,    -1,     5,    -1,    11,    -1,    37,     7,    38,
-      -1,    37,     7,     5,    -1,    37,     7,    11,    -1,     6,
-      -1,     4,    -1,     3,    -1
+      28,     0,    -1,    29,    -1,    28,    29,    -1,    31,    -1,
+      38,    14,    -1,    30,    -1,    15,    -1,    16,    -1,    17,
+      -1,    25,    -1,    26,    -1,    32,    36,    14,    -1,    32,
+      35,    14,    -1,    32,    35,    36,    14,    -1,    33,    -1,
+      32,    33,    -1,    10,    34,    -1,     6,    -1,     9,    -1,
+      12,    -1,     6,    -1,    37,    -1,    36,    37,    -1,    40,
+      -1,     5,    -1,    11,    -1,    24,    39,    -1,    39,     7,
+      40,    -1,    39,     7,     5,    -1,    39,     7,    11,    -1,
+       6,    -1,     4,    -1,     3,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   104,   104,   105,   109,   110,   111,   120,   123,   129,
-     130,   131,   134,   135,   138,   141,   142,   145,   146,   149,
-     150,   151,   152,   155,   162,   163,   164,   169,   170,   171,
-     174,   177,   178
+       0,   102,   102,   103,   107,   108,   109,   110,   111,   112,
+     116,   117,   121,   122,   123,   126,   127,   130,   133,   134,
+     137,   138,   141,   142,   145,   146,   147,   148,   153,   154,
+     155,   158,   161,   162
 };
 #endif
 
@@ -532,10 +540,11 @@ static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "INT", "UINT", "FLOAT", "IDENTIFIER",
   "EQUAL", "MAPIDENTIFIER", "REGEXP", "PATHSEP", "STRING", "MSG", "ERR",
-  "ENDEXPR", "LPAR", "RPAR", "SEP", "LOOP", "LOOPIDENTIFIER", "LOOPREGEXP",
-  "VARSTART", "LUASCRIPT", "JSCRIPT", "$accept", "start", "expr", "script",
-  "message", "oscaddress", "oscpath", "identifier", "msgstring", "params",
-  "varvalue", "param", "variable", "varname", "number", 0
+  "ENDEXPR", "COMMENTSTR", "SPACE", "EOL", "LPAR", "RPAR", "SEP", "LOOP",
+  "LOOPIDENTIFIER", "LOOPREGEXP", "VARSTART", "LUASCRIPT", "JSCRIPT",
+  "$accept", "start", "expr", "script", "message", "oscaddress", "oscpath",
+  "identifier", "msgstring", "params", "param", "variable", "varname",
+  "number", 0
 };
 #endif
 
@@ -546,26 +555,26 @@ static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
-     275,   276,   277,   278
+     275,   276,   277,   278,   279,   280,   281
 };
 # endif
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    24,    25,    25,    26,    26,    26,    27,    27,    28,
-      28,    28,    29,    29,    30,    31,    31,    32,    32,    33,
-      33,    33,    33,    34,    35,    35,    35,    36,    36,    36,
-      37,    38,    38
+       0,    27,    28,    28,    29,    29,    29,    29,    29,    29,
+      30,    30,    31,    31,    31,    32,    32,    33,    34,    34,
+      35,    35,    36,    36,    37,    37,    37,    37,    38,    38,
+      38,    39,    40,    40
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     1,     2,     1,     2,     1,     1,     1,     3,
-       3,     4,     1,     2,     2,     1,     1,     1,     1,     1,
-       2,     1,     2,     2,     1,     1,     1,     3,     3,     3,
-       1,     1,     1
+       0,     2,     1,     2,     1,     2,     1,     1,     1,     1,
+       1,     1,     3,     3,     4,     1,     2,     2,     1,     1,
+       1,     1,     1,     2,     1,     1,     1,     2,     3,     3,
+       3,     1,     1,     1
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -573,37 +582,37 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,    30,     0,     7,     8,     0,     2,     6,     4,     0,
-      12,     0,     0,    15,    16,    14,     1,     3,    32,    31,
-      25,    18,    26,    17,     0,    13,     0,     0,    21,    19,
-      24,     5,     0,    23,    10,     0,     9,    22,    20,    28,
-      29,    27,    11
+       0,    31,     0,     7,     8,     9,    10,    11,     0,     2,
+       6,     4,     0,    15,     0,     0,    18,    19,    17,     1,
+       3,    33,    32,    25,    21,    26,    20,     0,    16,     0,
+       0,    22,    24,     5,     0,    27,    13,     0,    12,    23,
+      29,    30,    28,    14
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     5,     6,     7,     8,     9,    10,    15,    26,    27,
-      28,    29,    11,    12,    30
+      -1,     8,     9,    10,    11,    12,    13,    18,    29,    30,
+      31,    14,    15,    32
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -21
+#define YYPACT_NINF -11
 static const yytype_int8 yypact[] =
 {
-      11,   -21,    22,   -21,   -21,     0,   -21,   -21,   -21,     8,
-     -21,   -10,    20,   -21,   -21,   -21,   -21,   -21,   -21,   -21,
-     -21,   -21,   -21,   -21,    -1,   -21,    21,    33,   -21,   -21,
-     -21,   -21,    -2,   -21,   -21,    45,   -21,   -21,   -21,   -21,
-     -21,   -21,   -21
+      39,   -11,    -1,   -11,   -11,   -11,   -11,   -11,     0,   -11,
+     -11,   -11,     8,   -11,   -10,    14,   -11,   -11,   -11,   -11,
+     -11,   -11,   -11,   -11,   -11,   -11,   -11,     1,   -11,    19,
+      24,   -11,   -11,   -11,    -2,   -11,   -11,    36,   -11,   -11,
+     -11,   -11,   -11,   -11
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -21,   -21,    25,   -21,   -21,   -21,    30,   -21,   -21,    14,
-     -20,   -19,   -21,    17,    13
+     -11,   -11,    23,   -11,   -11,   -11,    22,   -11,   -11,    13,
+       7,   -11,     9,    12
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -613,35 +622,35 @@ static const yytype_int8 yypgoto[] =
 #define YYTABLE_NINF -1
 static const yytype_uint8 yytable[] =
 {
-      16,    18,    19,    39,    31,     1,     1,    37,    38,    40,
-       2,    18,    19,    20,    21,    37,    38,     1,     2,    22,
-      23,     2,     3,     4,    18,    19,    20,    32,    13,    24,
-      17,    14,    22,     3,     4,    34,    18,    19,    20,    25,
-      35,    33,    24,     0,    22,    41,     0,    36,    18,    19,
-      20,     0,     0,     0,    24,     0,    22,     0,     0,    42,
-       0,     0,     0,     0,     0,     0,    24
+      19,    21,    22,    40,    33,    16,     1,     1,    17,    41,
+       2,    21,    22,    23,    24,     3,     4,     5,     2,    25,
+      26,    34,    21,    22,    23,     6,     7,    21,    22,    23,
+      25,    20,    27,    36,    28,    25,    35,    39,    38,    21,
+      22,    23,    37,    27,    39,     1,    42,    25,    27,     2,
+      43,     0,     0,     0,     3,     4,     5,     0,     0,     0,
+      27,     0,     0,     0,     6,     7
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,     3,     4,     5,    14,     6,     6,    27,    27,    11,
-      10,     3,     4,     5,     6,    35,    35,     6,    10,    11,
-      12,    10,    22,    23,     3,     4,     5,     7,     6,    21,
-       5,     9,    11,    22,    23,    14,     3,     4,     5,     9,
-      26,    24,    21,    -1,    11,    32,    -1,    14,     3,     4,
-       5,    -1,    -1,    -1,    21,    -1,    11,    -1,    -1,    14,
-      -1,    -1,    -1,    -1,    -1,    -1,    21
+       0,     3,     4,     5,    14,     6,     6,     6,     9,    11,
+      10,     3,     4,     5,     6,    15,    16,    17,    10,    11,
+      12,     7,     3,     4,     5,    25,    26,     3,     4,     5,
+      11,     8,    24,    14,    12,    11,    27,    30,    14,     3,
+       4,     5,    29,    24,    37,     6,    34,    11,    24,    10,
+      14,    -1,    -1,    -1,    15,    16,    17,    -1,    -1,    -1,
+      24,    -1,    -1,    -1,    25,    26
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     6,    10,    22,    23,    25,    26,    27,    28,    29,
-      30,    36,    37,     6,     9,    31,     0,    26,     3,     4,
-       5,     6,    11,    12,    21,    30,    32,    33,    34,    35,
-      38,    14,     7,    37,    14,    33,    14,    34,    35,     5,
-      11,    38,    14
+       0,     6,    10,    15,    16,    17,    25,    26,    28,    29,
+      30,    31,    32,    33,    38,    39,     6,     9,    34,     0,
+      29,     3,     4,     5,     6,    11,    12,    24,    33,    35,
+      36,    37,    40,    14,     7,    39,    14,    36,    14,    37,
+       5,    11,    40,    14
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1484,156 +1493,147 @@ yyreduce:
   switch (yyn)
     {
         case 4:
-#line 109 "ITL.y"
-    { context->fReader.add(*(yyvsp[(1) - (1)].msg)); delete (yyvsp[(1) - (1)].msg); ;}
+#line 107 "ITL.y"
+    { cout << *(yyvsp[(1) - (1)].msg); ;}
     break;
 
   case 5:
-#line 110 "ITL.y"
-    {;}
-    break;
-
-  case 6:
-#line 111 "ITL.y"
-    { if (*(yyvsp[(1) - (1)].msgList)) {
-										for (unsigned int i=0; i < (*(yyvsp[(1) - (1)].msgList))->list().size(); i++)
-											context->fReader.add((*(yyvsp[(1) - (1)].msgList))->list()[i]);
-									}
-									delete (yyvsp[(1) - (1)].msgList);
-								;}
+#line 108 "ITL.y"
+    { cout << *(yyvsp[(1) - (2)].str); ;}
     break;
 
   case 7:
-#line 120 "ITL.y"
-    {	(yyval.msgList) = new inscore::SIMessageList (inscore::IMessageList::create());
-									*(yyval.msgList) = context->fReader.luaEval(context->fText.c_str());
-								;}
+#line 110 "ITL.y"
+    { cout << context->fText.c_str(); ;}
     break;
 
   case 8:
-#line 123 "ITL.y"
-    {	(yyval.msgList) = new inscore::SIMessageList (inscore::IMessageList::create());
-									*(yyval.msgList) = context->fReader.jsEval(context->fText.c_str(), yylloc.last_line);
-								;}
+#line 111 "ITL.y"
+    { cout << context->fText.c_str(); ;}
     break;
 
   case 9:
-#line 129 "ITL.y"
-    {;}
+#line 112 "ITL.y"
+    { cout << context->fText.c_str(); ;}
     break;
 
   case 10:
-#line 130 "ITL.y"
-    {;}
+#line 116 "ITL.y"
+    { cout << "<? lua " << context->fText.c_str() << "?>;"; ;}
     break;
 
   case 11:
-#line 131 "ITL.y"
-    {;}
+#line 117 "ITL.y"
+    { cout << "<? javascript " << context->fText.c_str() << "?>;"; ;}
     break;
 
   case 12:
-#line 134 "ITL.y"
-    { (yyval.str) = (yyvsp[(1) - (1)].str); ;}
+#line 121 "ITL.y"
+    { (yyval.msg) = new inscore::SIMessage (inscore::IMessage::create(*(yyvsp[(1) - (3)].str), *(yyvsp[(2) - (3)].plist), inscore::IMessage::TUrl())); ;}
     break;
 
   case 13:
-#line 135 "ITL.y"
-    { *(yyvsp[(1) - (2)].str) += *(yyvsp[(2) - (2)].str); (yyval.str) = (yyvsp[(1) - (2)].str); delete (yyvsp[(2) - (2)].str); ;}
+#line 122 "ITL.y"
+    { (yyval.msg) = new inscore::SIMessage (inscore::IMessage::create(*(yyvsp[(1) - (3)].str), *(yyvsp[(2) - (3)].str))); ;}
     break;
 
   case 14:
-#line 138 "ITL.y"
-    { (yyval.str) = new string("/" + *(yyvsp[(2) - (2)].str)); delete (yyvsp[(2) - (2)].str); ;}
+#line 123 "ITL.y"
+    { (yyval.msg) = new inscore::SIMessage (inscore::IMessage::create(*(yyvsp[(1) - (4)].str), *(yyvsp[(2) - (4)].str)));  (*(yyval.msg))->add(*(yyvsp[(3) - (4)].plist)); ;}
     break;
 
   case 15:
-#line 141 "ITL.y"
-    { (yyval.str) = new string(context->fText); ;}
+#line 126 "ITL.y"
+    { (yyval.str) = (yyvsp[(1) - (1)].str); ;}
     break;
 
   case 16:
-#line 142 "ITL.y"
-    { (yyval.str) = new string(context->fText); ;}
+#line 127 "ITL.y"
+    { *(yyvsp[(1) - (2)].str) += *(yyvsp[(2) - (2)].str); (yyval.str) = (yyvsp[(1) - (2)].str); ;}
     break;
 
   case 17:
-#line 145 "ITL.y"
-    { (yyval.str) = new string(context->fText); ;}
+#line 130 "ITL.y"
+    { (yyval.str) = new string("/" + *(yyvsp[(2) - (2)].str)); ;}
     break;
 
   case 18:
-#line 146 "ITL.y"
+#line 133 "ITL.y"
     { (yyval.str) = new string(context->fText); ;}
     break;
 
   case 19:
-#line 149 "ITL.y"
-    {;}
-    break;
-
-  case 20:
-#line 150 "ITL.y"
-    {;}
-    break;
-
-  case 21:
-#line 151 "ITL.y"
-    {;}
-    break;
-
-  case 22:
-#line 152 "ITL.y"
-    {;}
-    break;
-
-  case 23:
-#line 155 "ITL.y"
-    {;}
-    break;
-
-  case 24:
-#line 162 "ITL.y"
-    { ;}
-    break;
-
-  case 25:
-#line 163 "ITL.y"
-    { ;}
-    break;
-
-  case 26:
-#line 164 "ITL.y"
-    { ;}
-    break;
-
-  case 27:
-#line 169 "ITL.y"
-    { context->fReader.variable((yyvsp[(1) - (3)].str)->c_str(), (yyvsp[(3) - (3)].num));					delete (yyvsp[(1) - (3)].str); ;}
-    break;
-
-  case 28:
-#line 170 "ITL.y"
-    { context->fReader.variable((yyvsp[(1) - (3)].str)->c_str(),  context->fFloat);		delete (yyvsp[(1) - (3)].str); ;}
-    break;
-
-  case 29:
-#line 171 "ITL.y"
-    { context->fReader.variable((yyvsp[(1) - (3)].str)->c_str(), context->fText.c_str()); delete (yyvsp[(1) - (3)].str); ;}
-    break;
-
-  case 30:
-#line 174 "ITL.y"
+#line 134 "ITL.y"
     { (yyval.str) = new string(context->fText); ;}
     break;
 
+  case 20:
+#line 137 "ITL.y"
+    { (yyval.str) = new string(context->fText); ;}
+    break;
+
+  case 21:
+#line 138 "ITL.y"
+    { (yyval.str) = new string(context->fText); ;}
+    break;
+
+  case 22:
+#line 141 "ITL.y"
+    { (yyval.plist) = new inscore::IMessage::argslist; (yyval.plist)->push_back(*(yyvsp[(1) - (1)].p)); ;}
+    break;
+
+  case 23:
+#line 142 "ITL.y"
+    { (yyvsp[(1) - (2)].plist)->push_back(*(yyvsp[(2) - (2)].p)); (yyval.plist) = (yyvsp[(1) - (2)].plist); ;}
+    break;
+
+  case 24:
+#line 145 "ITL.y"
+    { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<int>((yyvsp[(1) - (1)].num))); ;}
+    break;
+
+  case 25:
+#line 146 "ITL.y"
+    { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); ;}
+    break;
+
+  case 26:
+#line 147 "ITL.y"
+    { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); ;}
+    break;
+
+  case 27:
+#line 148 "ITL.y"
+    { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>("$" + *(yyvsp[(2) - (2)].str))); ;}
+    break;
+
+  case 28:
+#line 153 "ITL.y"
+    { std::stringstream s; s << *(yyvsp[(1) - (3)].str) << "=" << (yyvsp[(3) - (3)].num);  (yyval.str) = new string(s.str()); ;}
+    break;
+
+  case 29:
+#line 154 "ITL.y"
+    { std::stringstream s; s << *(yyvsp[(1) - (3)].str) << "=" << context->fFloat;  (yyval.str) = new string(s.str()); ;}
+    break;
+
+  case 30:
+#line 155 "ITL.y"
+    { (yyval.str) = new string(*(yyvsp[(1) - (3)].str) + " = " + context->fText.c_str()); ;}
+    break;
+
   case 31:
-#line 177 "ITL.y"
-    { (yyval.num) = context->fInt; ;}
+#line 158 "ITL.y"
+    { (yyval.str) = new string(context->fText); ;}
     break;
 
   case 32:
-#line 178 "ITL.y"
+#line 161 "ITL.y"
+    { (yyval.num) = context->fInt; ;}
+    break;
+
+  case 33:
+#line 162 "ITL.y"
     { (yyval.num) = context->fInt; ;}
     break;
 
@@ -1859,7 +1859,7 @@ yyreturn:
 }
 
 
-#line 181 "ITL.y"
+#line 165 "ITL.y"
 
 
 //} // end namespace
