@@ -40,8 +40,6 @@ using namespace libmapping;
 namespace inscore
 {
 
-extern SIMessageStack gMsgStack;
-
 const char* kXVar		= "$x";
 const char* kYVar		= "$y";
 const char* kSceneXVar	= "$sx";
@@ -165,16 +163,6 @@ void EventMessage::decodeMessage (const string& objname, const std::string& scen
 	}
 }
 
-static 	UdpSocket gEvtSocket;
-OSCStream gStream (&gEvtSocket);
-//----------------------------------------------------------------------
-void EventMessage::sockSend (const IMessage* msg, const string& dst, int port) const
-{
-	gStream.setAddress (dst);
-	gStream.setPort(port);
-	msg->print(gStream);
-}
-
 //----------------------------------------------------------------------
 void EventMessage::localSend (const IMessage* msg) const
 {
@@ -187,7 +175,7 @@ void EventMessage::send () const
 {
 	if (fMessage) {
 		if (fDest.empty())	localSend (fMessage);
-		else				sockSend (fMessage, fDest, fPort);
+		else				OSCStream::sendEvent (fMessage, fDest, fPort);
 	}
 }
 
@@ -417,7 +405,7 @@ void EventMessage::send(EventContext& env)
 		SIMessage msg = IMessage::create(fMessage->address());
 		if (eval (fMessage, env, msg)) {							// evaluate the parameters of the message
 			if (fDest.empty())	localSend (msg);
-			else				sockSend (msg, fDest, fPort);
+			else				OSCStream::sendEvent (msg, fDest, fPort);
 		}
 	}
 }

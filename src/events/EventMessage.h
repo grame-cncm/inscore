@@ -75,7 +75,6 @@ class EventMessage : public libmapping::smartable
 	int			fPort;
 	
 	void decodeAddress	(const std::string& address, std::string& oscAddress, std::string& host, int& port) const;
-	void sockSend		(const IMessage* msg, const std::string& dst, int port) const;
 	void localSend		(const IMessage* msg) const;
 
 	void	decodeMessage	(const std::string& objname, const std::string& scene, const IMessage* msg, int startindex);
