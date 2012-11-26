@@ -57,16 +57,8 @@ typedef class libmapping::SMARTP<IFileWatcher>	SIFileWatcher;
 */
 class IFileWatcher: public IVNode
 {
-	public:
-		static const std::string kFileWatcherType;
-		
-		virtual void	print(std::ostream& out) const;
-		
-		/// \brief clear the monitoring list.
-		virtual void clear() = 0;
-		typedef std::map<std::string, SIMessageList>	TWatchList;
-				
 	protected:
+		typedef std::map<std::string, SIMessageList>	TWatchList;
 		TWatchList	fWatchList;
 	
 				 IFileWatcher(IObject * parent);
@@ -75,30 +67,36 @@ class IFileWatcher: public IVNode
 		/// \brief fileWatcher \c 'get' message handler
 		virtual SIMessageList getMsgs (const IMessage* msg) const;
 
-		/*!
-		*	\brief Stops notifying object whose address is 'oscAdress' on changes of the file 'fileName'.
-		*/
-		virtual void remove(const char* fileName, const IMessage* msg ) {}
-	
-		/*!
-		*	\brief Stops notifying object whose address is 'oscAdress' on any file changes.
-		*/
-		virtual void remove(const std::string& oscAddress) {}
+		/// \brief set a file associated message
+//		virtual void set (const std::string& file, const IMessage* msg);
+		/// \brief set a file associated messages
+		virtual void set (const std::string& file, SIMessageList msg);
+		/// \brief add a message to a file associated message list
+//		virtual void add (const std::string& file, const IMessage* msg);
+		/// \brief add a list of messages to a file associated message list
+		virtual void add (const std::string& file, SIMessageList msg);
+		/// \brief clear the messages associated to file
+		virtual void clear (const std::string& file);
 
-		/// \brief the \c 'add' message handler
-		virtual MsgHandler::msgStatus addMsg (const IMessage* msg);
-		/// \brief the \c 'remove' message handler
-		virtual MsgHandler::msgStatus removeMsg (const IMessage* msg);
-		/// \brief the \c 'clear' message handler
-		virtual MsgHandler::msgStatus clearMsg (const IMessage* msg);
-		
+		/// \brief the \c 'watch' message handler
+		virtual MsgHandler::msgStatus watchMsg (const IMessage* msg);
+		/// \brief the \c 'watch+' message handler
+		virtual MsgHandler::msgStatus addWatchMsg (const IMessage* msg);
 
 		// overrides get handlers for color, position and time
 		virtual void colorAble ()		{}
 		virtual void positionAble ()	{}
 		virtual void timeAble ()		{}
 
-		static SIMessage buildMessage(const IMessage* source);
+		static SIMessageList buildMessage(const IMessage* source);
+
+	public:
+		static const std::string kFileWatcherType;
+
+		///	\brief Clear the files list and the associated events.
+		virtual void clear()								{ fWatchList.clear(); }
+		///	\brief send the messages associated to the file 'fileName'.
+		virtual void trigger (const std::string& fileName) const;
 };
 
 /*!@} */
