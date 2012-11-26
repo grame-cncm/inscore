@@ -13,6 +13,8 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.00
+- syntax changes in inscore script files
+- fileWatcher methods renamed and simplified
 - 'click' and 'select' messages are not supported any more.
 - new 'stats' virutal node at application level (address /ITL/stats), supports 'get' and 'reset' messages
   the node gives statistics about the incoming messages [DOC TODO]
