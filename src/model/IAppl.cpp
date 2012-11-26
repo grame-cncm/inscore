@@ -248,6 +248,12 @@ SIMessageList IAppl::getAll() const
 int IAppl::processMsg (const std::string& address, const std::string& addressTail, const IMessage* imsg)
 {
 	setReceivedOSC (1);
+
+	if (imsg->extendedAddress()) {
+		OSCStream::sendEvent (imsg, imsg->url().fHostname, imsg->url().fPort);
+		return MsgHandler::kProcessed;
+	}
+
 	string head = address;
 	string tail = addressTail;
 	SIMessage msg = IMessage::create (*imsg);
