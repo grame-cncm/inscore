@@ -79,6 +79,7 @@ class OSCStream
 	public:
 	static bool start();
 	static void stop();
+	static void sendEvent(const IMessage* msg, const std::string& dst, int port);
 
 				 OSCStream(UdpSocket* socket) 
 					: fState(kIdle), fPort(1024), fAddress(kLocalhost), fOutStream(fBuffer, kOutBufferSize), fSocket(socket) {} 
@@ -163,6 +164,7 @@ template <typename T>	OSCErrorStream& operator <<(OSCErrorStream& s, const std::
 
 extern OSCStream*		_oscout;		// OSC standard output stream
 extern OSCErrorStream*	_oscerr;		// OSC standard input stream
+extern OSCStream		gEventsStream;
 
 #define oscout (*_oscout)
 #define oscerr (*_oscerr)
