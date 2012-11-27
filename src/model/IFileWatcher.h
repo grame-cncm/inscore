@@ -60,6 +60,8 @@ class IFileWatcher: public IVNode
 	protected:
 		typedef std::map<std::string, SIMessageList>	TWatchList;
 		TWatchList	fWatchList;
+		using IObject::set;
+		using IObject::add;
 	
 				 IFileWatcher(IObject * parent);
 		virtual ~IFileWatcher() {}
@@ -67,13 +69,9 @@ class IFileWatcher: public IVNode
 		/// \brief fileWatcher \c 'get' message handler
 		virtual SIMessageList getMsgs (const IMessage* msg) const;
 
-		/// \brief set a file associated message
-//		virtual void set (const std::string& file, const IMessage* msg);
 		/// \brief set a file associated messages
 		virtual void set (const std::string& file, SIMessageList msg);
-		/// \brief add a message to a file associated message list
-//		virtual void add (const std::string& file, const IMessage* msg);
-		/// \brief add a list of messages to a file associated message list
+		/// \brief add messages to a file associated message list
 		virtual void add (const std::string& file, SIMessageList msg);
 		/// \brief clear the messages associated to file
 		virtual void clear (const std::string& file);
