@@ -219,6 +219,8 @@ int yyerror (YYLTYPE* locp, inscore::ITLparser* context, const char*s);
 int yylex(YYSTYPE* lvalp, YYLTYPE* llocp, void* scanner);
 int lineno(inscore::ITLparser* context);
 
+inscore::SIMessage watchMessage (inscore::SIMessage msg);
+
 #define scanner context->fScanner
 
 using namespace std;
@@ -229,7 +231,7 @@ using namespace std;
 
 
 /* Line 216 of yacc.c.  */
-#line 233 "ITLparse.cpp"
+#line 235 "ITLparse.cpp"
 
 #ifdef short
 # undef short
@@ -526,10 +528,10 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   102,   102,   103,   107,   108,   109,   110,   111,   112,
-     116,   117,   121,   122,   123,   126,   127,   130,   133,   134,
-     137,   138,   141,   142,   145,   146,   147,   148,   153,   154,
-     155,   158,   161,   162
+       0,   104,   104,   105,   109,   110,   111,   112,   113,   114,
+     118,   119,   123,   124,   125,   132,   133,   136,   139,   140,
+     143,   144,   147,   148,   151,   152,   153,   154,   159,   160,
+     161,   164,   167,   168
 };
 #endif
 
@@ -1493,153 +1495,157 @@ yyreduce:
   switch (yyn)
     {
         case 4:
-#line 107 "ITL.y"
+#line 109 "ITL.y"
     { cout << *(yyvsp[(1) - (1)].msg); ;}
     break;
 
   case 5:
-#line 108 "ITL.y"
+#line 110 "ITL.y"
     { cout << *(yyvsp[(1) - (2)].str); ;}
     break;
 
   case 7:
-#line 110 "ITL.y"
-    { cout << context->fText.c_str(); ;}
-    break;
-
-  case 8:
-#line 111 "ITL.y"
-    { cout << context->fText.c_str(); ;}
-    break;
-
-  case 9:
 #line 112 "ITL.y"
     { cout << context->fText.c_str(); ;}
     break;
 
+  case 8:
+#line 113 "ITL.y"
+    { cout << context->fText.c_str(); ;}
+    break;
+
+  case 9:
+#line 114 "ITL.y"
+    { cout << context->fText.c_str(); ;}
+    break;
+
   case 10:
-#line 116 "ITL.y"
+#line 118 "ITL.y"
     { cout << "<? lua " << context->fText.c_str() << "?>;"; ;}
     break;
 
   case 11:
-#line 117 "ITL.y"
+#line 119 "ITL.y"
     { cout << "<? javascript " << context->fText.c_str() << "?>;"; ;}
     break;
 
   case 12:
-#line 121 "ITL.y"
+#line 123 "ITL.y"
     { (yyval.msg) = new inscore::SIMessage (inscore::IMessage::create(*(yyvsp[(1) - (3)].str), *(yyvsp[(2) - (3)].plist), inscore::IMessage::TUrl())); ;}
     break;
 
   case 13:
-#line 122 "ITL.y"
+#line 124 "ITL.y"
     { (yyval.msg) = new inscore::SIMessage (inscore::IMessage::create(*(yyvsp[(1) - (3)].str), *(yyvsp[(2) - (3)].str))); ;}
     break;
 
   case 14:
-#line 123 "ITL.y"
-    { (yyval.msg) = new inscore::SIMessage (inscore::IMessage::create(*(yyvsp[(1) - (4)].str), *(yyvsp[(2) - (4)].str)));  (*(yyval.msg))->add(*(yyvsp[(3) - (4)].plist)); ;}
+#line 125 "ITL.y"
+    { inscore::SIMessage msg = inscore::IMessage::create(*(yyvsp[(1) - (4)].str), *(yyvsp[(2) - (4)].str)); 
+														msg->add(*(yyvsp[(3) - (4)].plist));
+														inscore::SIMessage watch = watchMessage (msg);
+														(yyval.msg) = new inscore::SIMessage (watch ? watch : msg);
+													;}
     break;
 
   case 15:
-#line 126 "ITL.y"
+#line 132 "ITL.y"
     { (yyval.str) = (yyvsp[(1) - (1)].str); ;}
     break;
 
   case 16:
-#line 127 "ITL.y"
+#line 133 "ITL.y"
     { *(yyvsp[(1) - (2)].str) += *(yyvsp[(2) - (2)].str); (yyval.str) = (yyvsp[(1) - (2)].str); ;}
     break;
 
   case 17:
-#line 130 "ITL.y"
+#line 136 "ITL.y"
     { (yyval.str) = new string("/" + *(yyvsp[(2) - (2)].str)); ;}
     break;
 
   case 18:
-#line 133 "ITL.y"
+#line 139 "ITL.y"
     { (yyval.str) = new string(context->fText); ;}
     break;
 
   case 19:
-#line 134 "ITL.y"
+#line 140 "ITL.y"
     { (yyval.str) = new string(context->fText); ;}
     break;
 
   case 20:
-#line 137 "ITL.y"
+#line 143 "ITL.y"
     { (yyval.str) = new string(context->fText); ;}
     break;
 
   case 21:
-#line 138 "ITL.y"
+#line 144 "ITL.y"
     { (yyval.str) = new string(context->fText); ;}
     break;
 
   case 22:
-#line 141 "ITL.y"
+#line 147 "ITL.y"
     { (yyval.plist) = new inscore::IMessage::argslist; (yyval.plist)->push_back(*(yyvsp[(1) - (1)].p)); ;}
     break;
 
   case 23:
-#line 142 "ITL.y"
+#line 148 "ITL.y"
     { (yyvsp[(1) - (2)].plist)->push_back(*(yyvsp[(2) - (2)].p)); (yyval.plist) = (yyvsp[(1) - (2)].plist); ;}
     break;
 
   case 24:
-#line 145 "ITL.y"
+#line 151 "ITL.y"
     { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<int>((yyvsp[(1) - (1)].num))); ;}
     break;
 
   case 25:
-#line 146 "ITL.y"
+#line 152 "ITL.y"
     { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); ;}
     break;
 
   case 26:
-#line 147 "ITL.y"
+#line 153 "ITL.y"
     { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); ;}
     break;
 
   case 27:
-#line 148 "ITL.y"
+#line 154 "ITL.y"
     { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>("$" + *(yyvsp[(2) - (2)].str))); ;}
     break;
 
   case 28:
-#line 153 "ITL.y"
-    { std::stringstream s; s << *(yyvsp[(1) - (3)].str) << "=" << (yyvsp[(3) - (3)].num);  (yyval.str) = new string(s.str()); ;}
+#line 159 "ITL.y"
+    { std::stringstream s; s << *(yyvsp[(1) - (3)].str) << "=" << (yyvsp[(3) - (3)].num) << ";";  (yyval.str) = new string(s.str()); ;}
     break;
 
   case 29:
-#line 154 "ITL.y"
-    { std::stringstream s; s << *(yyvsp[(1) - (3)].str) << "=" << context->fFloat;  (yyval.str) = new string(s.str()); ;}
+#line 160 "ITL.y"
+    { std::stringstream s; s << *(yyvsp[(1) - (3)].str) << "=" << context->fFloat << ";";  (yyval.str) = new string(s.str()); ;}
     break;
 
   case 30:
-#line 155 "ITL.y"
+#line 161 "ITL.y"
     { (yyval.str) = new string(*(yyvsp[(1) - (3)].str) + " = " + context->fText.c_str()); ;}
     break;
 
   case 31:
-#line 158 "ITL.y"
+#line 164 "ITL.y"
     { (yyval.str) = new string(context->fText); ;}
     break;
 
   case 32:
-#line 161 "ITL.y"
+#line 167 "ITL.y"
     { (yyval.num) = context->fInt; ;}
     break;
 
   case 33:
-#line 162 "ITL.y"
+#line 168 "ITL.y"
     { (yyval.num) = context->fInt; ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1643 "ITLparse.cpp"
+#line 1649 "ITLparse.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1859,7 +1865,7 @@ yyreturn:
 }
 
 
-#line 165 "ITL.y"
+#line 171 "ITL.y"
 
 
 //} // end namespace

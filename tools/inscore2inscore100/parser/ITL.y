@@ -85,6 +85,8 @@ int yyerror (YYLTYPE* locp, inscore::ITLparser* context, const char*s);
 int yylex(YYSTYPE* lvalp, YYLTYPE* llocp, void* scanner);
 int lineno(inscore::ITLparser* context);
 
+inscore::SIMessage watchMessage (inscore::SIMessage msg);
+
 #define scanner context->fScanner
 
 using namespace std;
@@ -120,7 +122,11 @@ script		: LUASCRIPT			{ cout << "<? lua " << context->fText.c_str() << "?>;"; }
 //_______________________________________________
 message		: oscaddress params	ENDEXPR				{ $$ = new inscore::SIMessage (inscore::IMessage::create(*$1, *$2, inscore::IMessage::TUrl())); }
 			| oscaddress msgstring ENDEXPR			{ $$ = new inscore::SIMessage (inscore::IMessage::create(*$1, *$2)); }
-			| oscaddress msgstring params ENDEXPR	{ $$ = new inscore::SIMessage (inscore::IMessage::create(*$1, *$2));  (*$$)->add(*$3); }
+			| oscaddress msgstring params ENDEXPR	{ inscore::SIMessage msg = inscore::IMessage::create(*$1, *$2); 
+														msg->add(*$3);
+														inscore::SIMessage watch = watchMessage (msg);
+														$$ = new inscore::SIMessage (watch ? watch : msg);
+													}
 			;
 
 oscaddress	: oscpath				{ $$ = $1; }
@@ -150,8 +156,8 @@ param		: number			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1)
 
 
 //_______________________________________________
-variable	: varname EQUAL number	{ std::stringstream s; s << *$1 << "=" << $3;  $$ = new string(s.str()); }
-			| varname EQUAL FLOAT	{ std::stringstream s; s << *$1 << "=" << context->fFloat;  $$ = new string(s.str()); }
+variable	: varname EQUAL number	{ std::stringstream s; s << *$1 << "=" << $3 << ";";  $$ = new string(s.str()); }
+			| varname EQUAL FLOAT	{ std::stringstream s; s << *$1 << "=" << context->fFloat << ";";  $$ = new string(s.str()); }
 			| varname EQUAL STRING	{ $$ = new string(*$1 + " = " + context->fText.c_str()); }
 			;
 

@@ -23,30 +23,67 @@
 
 #include <iostream>
 #include <fstream>
+#include "IMessage.h"
+#include "IMessageStream.h"
 #include "ITLparser.h"
-//#include "IMessage.h"
-//#include "IMessageStream.h"
-//#include "TV8Js.h"
-//#include "TLua.h"
 
 using namespace std;
 using namespace inscore;
 
+//----------------------------------------------
+string strip (string str)
+{
+	string out;
+	const char * ptr = str.c_str();
+	while (*ptr) {
+		if ((*ptr != ' ') && (*ptr != '\t'))
+			out += *ptr;
+		ptr++;
+	}
+	return out;
+}
+
+//----------------------------------------------
+SIMessage watchMessage (SIMessage msg)
+{
+	string method = strip(msg->message());
+	if ((method == "watch") || (method == "watch+")) {
+		string what;
+		if ((msg->size() > 1) && msg->param(0, what)) {
+			what = strip(what);
+			if ((what == "mouseDown") ||
+				(what == "mouseUp") ||
+				(what == "mouseEnter") ||
+				(what == "mouseLeave") ||
+				(what == "mouseMove") ||
+				(what == "doubleClick"))
+				return msg->buildWatchMsg (1);
+			if ((what == "timeEnter") ||
+				(what == "timeLeave") ||
+				(what == "durLeave") ||
+				(what == "durLeave"))
+				return msg->buildWatchMsg (5);
+			if (what == "newElement")
+				return msg->buildWatchMsg (1);
+		}
+	}
+	else if (method == "add") {				// this is for the file watcher
+		SIMessage translated = msg->buildWatchMsg (1);
+		translated->setMessage("watch");	// the method name has changed
+		return translated;
+	}
+	else if (method == "require")
+		return msg->buildWatchMsg (1);
+	return msg;
+}
+
+//----------------------------------------------
 int main (int argc, char * argv[])
 {
 	if (argc > 1) {
-//		TJSEngine js; TLua lua;
 		ifstream in (argv[1]);
 		ITLparser p(&in, 0, 0, 0);
-//		ITLparser p(&in, 0, &js, &lua);
-//		SIMessageList outMsgs;
 		p.parse ();
-//		if (outMsgs) {
-//			outMsgs->list().set("", "\n");
-//			cout << outMsgs->list() << endl;
-//		}
-//		else
-//			cout << "error reading " << argv[1] << endl;
 	}
  	return 0;
 }

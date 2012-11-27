@@ -91,7 +91,7 @@ EOL		[\x0a\x0d]
 ")"					return RPAR;
 ","					return SEP;
 "/"					return PATHSEP;			/* OSC address and path separator */
-";"					return ENDEXPR;			/* end of expression */
+{SPACE}*";"			return ENDEXPR;			/* end of expression */
 {SPACE}*"$"			return VARSTART;
 
 {SPACE}*"#"			BEGIN CMNTLN; yyextra->fText = yytext; return COMMENTSTR;
