@@ -274,7 +274,13 @@ class IMessage : public Message, public libmapping::smartable
 		\brief sets the message address
 		\param addr the address
 	*/
-	void				setAddress(const std::string& addr)		{ fAddress = addr; }
+	void				setAddress(const std::string& addr)	{ fAddress = addr; }
+
+	/*!
+		\brief sets the message url
+		\param url the address extension
+	*/
+	void				setUrl(const TUrl& url)				{ fUrl = url; }
 	/*!
 		\brief sets the message string
 		\param msg the message string
@@ -316,7 +322,7 @@ class IMessage : public Message, public libmapping::smartable
 	/// \brief gives the message address
 	const std::string&	address() const		{ return fAddress; }
 	/// \brief check for extended address
-	bool		extendedAddress() const		{ return fUrl.fPort != 0; }
+	bool				extendedAddress() const		{ return fUrl.fPort != 0; }
 	/// \brief gives the address extension
 	const TUrl&	url() const					{ return fUrl; }
 	/// \brief gives the message message
@@ -397,6 +403,38 @@ class IMessage : public Message, public libmapping::smartable
 		\return false when types don't match
 	*/
 	bool	param(int i, TLuaScript& val) const { val = param(i)->value<TLuaScript>(val); return param(i)->isType<TLuaScript>(); }
+
+
+	// ----------------------- utilities ----------------------
+	/*!
+		\brief extract a 'watch' associated message from a 'watch' message
+		\param index the enclosed message start index, update to the next message index
+		\return a message or 0 when the conversion fails
+	*/
+	SIMessage		watchMsg2Msg(int& index);
+
+	/*!
+		\brief extract 'watch' associated messages from a 'watch' message
+		\param startIndex the enclosed messages start index
+		\return a list of messages
+		
+		Building a correct 'watch' message is in charge of the parser for inscore scripts.
+		This method is provided for watch messages received over OSC. It parses the message 
+		arguments from \c startIndex and builds a message list. 
+		
+		Note that when the OSC message includes several associated messages, they should be 
+		separated by a colon or a comma (as part of the arguments). 
+	*/
+	SIMessageList	watchMsg2Msgs(int startIndex);
+
+	/*!
+		\brief transforms a 'watch' message with inline associated messages into a message with enclosed messages
+		\param startIndex the inlined messages start index
+		\return a message or 0 if the conversion fails
+	*/
+	SIMessage		buildWatchMsg(int startIndex);
+
+
 };
 
 //--------------------------------------------------------------------------

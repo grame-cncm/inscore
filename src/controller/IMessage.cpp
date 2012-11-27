@@ -119,6 +119,78 @@ bool IMessage::param(int i, rational& val) const
 	return true;
 }
 
+//----------------------------------------------------------------------
+static bool decodeAddress (const std::string& address, std::string& oscAddress, IMessage::TUrl& url)
+{
+	size_t startOsc = address.find_first_of('/');
+	if (startOsc == string::npos) return false;		// incorrect osc address (no '/')
+	oscAddress = address.substr (startOsc);			// stores the osc address
+
+	url.fPort = 0;									// first disable address extension
+	if (startOsc > 0) {								// and check for the extension
+		size_t startPort = address.find_first_of(':');
+		if ((startPort != string::npos) && (startPort < startOsc)) {
+			url.fHostname = address.substr (0, startPort);
+			string portStr = address.substr (startPort+1, startOsc-1);
+			url.fPort = atoi(portStr.c_str());
+		}
+	}
+	return true;
+}
+
+//--------------------------------------------------------------------------
+SIMessage IMessage::watchMsg2Msg(int& index)
+{
+	string address, oscaddress; TUrl url;
+	if (!param(index++, address) || !decodeAddress (address, oscaddress, url)) {
+		ITLErr << "incorrect address in watch message" << ITLEndl;
+		return 0;
+	}
+	
+	argslist args;
+	int n = size();
+	while (index < n) {
+		// first look for the messages separator ( ',' or ':')
+		string str;
+		if (param(index, str) && ((str == ",") || (str == ":")) ) {
+			index++;
+			break;
+		}
+		args.push_back(param(index++));
+	}
+	return IMessage::create (oscaddress, args, url);
+}
+
+//--------------------------------------------------------------------------
+SIMessageList IMessage::watchMsg2Msgs(int startIndex)
+{
+	SIMessageList list = IMessageList::create();
+	int n = size();
+	while (startIndex < n) {
+		SIMessage msg = watchMsg2Msg (startIndex);
+		if (!msg) break;
+		else list->list().push_back(msg);
+	}
+	return list;
+}
+
+//--------------------------------------------------------------------------
+SIMessage IMessage::buildWatchMsg(int startIndex)
+{
+	SIMessageList msgs = watchMsg2Msgs (startIndex);
+	if (!msgs) return 0;
+
+	SIMessage msg = IMessage::create();
+	msg->setSrcIP( src() );
+	msg->setAddress( address());
+	msg->setMessage( message());
+	msg->setUrl( url());
+	for (int i=0; i < startIndex; i++)		// add the first args of the watch message
+		msg->add(param(i));
+	msg->add(msgs);							// next add the messages
+	return msg;
+}
+
 //--------------------------------------------------------------------------
 // print a single parameter
 //--------------------------------------------------------------------------
