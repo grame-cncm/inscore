@@ -91,7 +91,6 @@ endforeach(folder)
 #
 #######################################
 # set targets
-message(SCRIPTINCL ${SCRIPTINCL})
 include_directories(${INCL} ${OSC_PATH})
 add_executable( ${APPLTARGET} ${CORESRC} )
 
