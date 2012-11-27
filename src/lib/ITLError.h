@@ -23,6 +23,12 @@
 #define __ITLError__
 
 #include <iostream>
+
+#ifdef NO_OSCSTREAM
+#define ITLErr	cerr
+#define ITLEndl	endl
+
+#else
 #include "OSCStream.h"
 
 namespace inscore
@@ -46,23 +52,19 @@ typedef struct ITLErrorEnd {
 inline ITLError& operator << (ITLError& err, ITLErrEnd end)
 {
 	std::cerr << std::endl;
-#ifndef NO_OSC
 	oscerr <<  OSCEnd();
 	err.oscpending = false;
-#endif
 	return err;
 }
 
 template <typename T>	ITLError& operator << (ITLError& err, const T& arg)
 {
 	std::cerr << arg;
-#ifndef NO_OSC
 	if (!err.oscpending) {
 		oscerr << OSCErr();
 		err.oscpending = true;
 	}
 	oscerr << arg;
-#endif
 	return err;
 }
 
@@ -70,5 +72,6 @@ extern ITLError ITLErr;			// static ITL error output stream
 extern ITLErrEnd ITLEndl;		// static ITL error output stream end
 
 } // end namespace
+#endif
 
 #endif
