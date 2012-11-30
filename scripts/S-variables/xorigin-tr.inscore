@@ -1,3 +1,3 @@
 
-/ITL/scene/rect xorigin 1.;
-/ITL/scene/rect yorigin -1.;
+/ITL/scene/rect  xorigin  1.00000;
+/ITL/scene/rect  yorigin  -1.00000;
