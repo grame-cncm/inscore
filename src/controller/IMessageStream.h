@@ -75,8 +75,8 @@ IMessage& operator <<(IMessage& msg, const TFloatPoint& val);
 // TFloatPoint: linearizes x and y
 IMessage& operator <<(IMessage& msg, const TIntSize& val);
 
-// catch any other supported type
-template <typename T>	IMessage& operator <<(IMessage& msg, T val)		{ msg.add(val); return msg; }
+// SIMessageList: put it as is
+inline IMessage& operator <<(IMessage& msg, const SIMessageList& val)		{ msg.add(val); return msg; }
 
 // catch vectors
 template <typename T>	IMessage& operator <<(IMessage& msg, const std::vector<T>& val)
