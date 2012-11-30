@@ -200,21 +200,21 @@ void INScore::delMessage(MessagePtr msg)
 void INScore::add (MessagePtr p, const char* s)
 {
 	IMessage* m = Message2IMessage (p);
-	if (m) m->add<string>(s);
+	if (m) m->add(s);
 }
 
 //--------------------------------------------------------------------------
 void INScore::add (MessagePtr p, float f)
 {
 	IMessage* m = Message2IMessage (p);
-	if (m) m->add<float>(f);
+	if (m) m->add(f);
 }
 
 //--------------------------------------------------------------------------
 void INScore::add (MessagePtr p, int n)
 {
 	IMessage* m = Message2IMessage (p);
-	if (m) m->add<int>(n);
+	if (m) m->add(n);
 }
 
 }
