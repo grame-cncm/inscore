@@ -119,6 +119,7 @@ template <typename T> class IMsgParam : public baseparam
 		virtual libmapping::SMARTP<baseparam> copy() const { return new IMsgParam<T>(fParam); }
 };
 
+class OSCStream;
 class IMessage;
 typedef libmapping::SMARTP<IMessage>		SIMessage;
 class IMessageList;
@@ -169,6 +170,11 @@ class IMessage : public Message, public libmapping::smartable
 		
 		inline int index (int i) const	{ return fHasMessage ? i+1 : i; }
 		void		print(std::ostream& out, int param, int nested) const;	///< print a single param
+		/*!
+			\brief adds a parameter to the message
+			\param val the parameter
+		*/
+		template <typename T> void add(T val)	{ fArguments.push_back(new IMsgParam<T>(val)); }
 	
 	protected:
 			/*!
@@ -189,7 +195,7 @@ class IMessage : public Message, public libmapping::smartable
 				\param address the message destination address
 				\param msg the message message
 			*/
-			 IMessage(const std::string& address, const std::string& msg) : fAddress(address) { setMessage(msg); }
+			 IMessage(const std::string& address, const std::string& msg);
 			/*!
 				\brief a message constructor with arguments and address extension
 				\param address the message destination address
@@ -208,11 +214,6 @@ class IMessage : public Message, public libmapping::smartable
 		static SIMessage create(const std::string& address, const argslist& args, const TUrl& url)
 				{ return new IMessage(address, args, url); }
 
-	/*!
-		\brief adds a parameter to the message
-		\param val the parameter
-	*/
-	template <typename T> void add(T val)	{ fArguments.push_back(new IMsgParam<T>(val)); }
 	/*!
 		\brief adds a float parameter to the message
 		\param val the parameter value
@@ -297,26 +298,13 @@ class IMessage : public Message, public libmapping::smartable
 		\brief send the message to OSC
 		\param out the OSC output stream
 	*/
-	template <typename T> void	print(T& out) const {
-														out << OSCStart(address().c_str());
-														if (message().size()) out << message();
-														printArgs(out);
-														out << OSCEnd();
-													}
+	void	print(OSCStream& out, bool start=true) const;
 	
 	/*!
 		\brief print message arguments
 		\param out the OSC output stream
 	*/
-	template <typename T> void printArgs(T& out) const {
-														for (int i=0; i < size(); i++) {
-															std::string str; float fv; int iv;
-															if (param(i, fv))			out << fv;
-															else if (param(i, iv))		out << iv;
-															else if (param(i, str))		out << str;
-															else ITLErr << "IMessage::print: unknown message parameter type" << ITLEndl;
-														}
-													}
+	void printArgs(OSCStream& out) const;
 #endif
 
 	/// \brief gives the message address
@@ -411,7 +399,7 @@ class IMessage : public Message, public libmapping::smartable
 		\param index the enclosed message start index, update to the next message index
 		\return a message or 0 when the conversion fails
 	*/
-	SIMessage		watchMsg2Msg(int& index);
+	SIMessage		watchMsg2Msg(int& index) const;
 
 	/*!
 		\brief extract 'watch' associated messages from a 'watch' message
@@ -425,15 +413,22 @@ class IMessage : public Message, public libmapping::smartable
 		Note that when the OSC message includes several associated messages, they should be 
 		separated by a colon or a comma (as part of the arguments). 
 	*/
-	SIMessageList	watchMsg2Msgs(int startIndex);
+	SIMessageList	watchMsg2Msgs(int startIndex) const;
 
 	/*!
 		\brief transforms a 'watch' message with inline associated messages into a message with enclosed messages
 		\param startIndex the inlined messages start index
 		\return a message or 0 if the conversion fails
 	*/
-	SIMessage		buildWatchMsg(int startIndex);
+	SIMessage		buildWatchMsg(int startIndex) const;
 
+	/*!
+		\brief sends a message
+		
+		The message is locally distributed (i.e. put on the message stack) when its address is not extended.
+		Otherwise, the message is send over the network to the extended address destination.
+	*/
+	void	send () const;
 
 };
 
@@ -456,13 +451,9 @@ class IMessageList : public libmapping::smartable
 		
 		const	extvector<SIMessage>& list() const	{ return fList; }
 				extvector<SIMessage>& list()		{ return fList; }
-
-//		void  print (std::ostream& out, const char* prefix, const char* suffix ) const;
-//		
-//		void  push_back (SIMessageList l)			{ extvector<SIMessage>* lptr = (extvector<SIMessage>*)l; extvector<SIMessage>::push_back(lptr); }
-//		void  push_back (SIMessage& msg)			{ extvector<SIMessage>::push_back(msg); }
-//		for (unsigned int i = 0; i < l->size(); i++) push_back(l[i]); }
-//		void  push_back (SIMessageList l)			{ for (IMessageList::iterator i = l->begin(); i != l-> end(); i++) push_back(*i); }
+				
+		/// \brief sends all the messages
+		void	send () const;
 };
 
 /*!

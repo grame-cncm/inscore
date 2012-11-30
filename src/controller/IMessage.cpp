@@ -28,9 +28,11 @@
 
 #include "IMessage.h"
 #include "IMessageStream.h"
+#include "IMessageStack.h"
 #include "rational.h"
 
 #ifndef NO_OSCSTREAM
+#include "OSCStream.h"
 #include "ITLError.h"
 #endif
 
@@ -49,8 +51,16 @@ IMessage::IMessage(const IMessage& msg)
 }
 
 //--------------------------------------------------------------------------
+IMessage::IMessage(const std::string& address, const std::string& msg)
+				: fAddress(address)
+{
+	fArguments.push_back (new IMsgParam<string>(msg));
+	fHasMessage = true;
+}
+
+//--------------------------------------------------------------------------
 IMessage::IMessage(const std::string& address, const argslist& args, const TUrl& url)
-				: fAddress(address), fHasMessage(true), fUrl(url.fHostname.c_str(), url.fPort)
+				: fAddress(address), fHasMessage(false), fUrl(url.fHostname.c_str(), url.fPort)
 {
 	fArguments = args;
 	fHasMessage = fArguments.size() && fArguments[0]->isType<string>();
@@ -73,13 +83,17 @@ static string escape (const string& str)
 //--------------------------------------------------------------------------
 static bool needQuotes (const string& str)
 {
+	bool ret = false;
 	const char *ptr = str.c_str();
+	if (*ptr == '$') return true;
 	while (*ptr) {
-		char c = *ptr++;
-		if ((c == ' ') || (c == '\t') || (c == 0x0a) || (c == 0x0d))
-			return true;
+		int c = *ptr++;
+		if (!isdigit(c) && !isalpha(c)					// number and letters
+			&& (c != '-') && (c != '_')					// identifiers chars
+			&& (c != '+') && (c != '*') && (c != '?'))	// regexp chars (note that class description needs quotes)
+			ret = true;
 	}
-	return false;
+	return ret;
 }
 
 //--------------------------------------------------------------------------
@@ -139,7 +153,7 @@ static bool decodeAddress (const std::string& address, std::string& oscAddress, 
 }
 
 //--------------------------------------------------------------------------
-SIMessage IMessage::watchMsg2Msg(int& index)
+SIMessage IMessage::watchMsg2Msg(int& index) const
 {
 	string address, oscaddress; TUrl url;
 	if (!param(index++, address) || !decodeAddress (address, oscaddress, url)) {
@@ -162,7 +176,7 @@ SIMessage IMessage::watchMsg2Msg(int& index)
 }
 
 //--------------------------------------------------------------------------
-SIMessageList IMessage::watchMsg2Msgs(int startIndex)
+SIMessageList IMessage::watchMsg2Msgs(int startIndex) const
 {
 	SIMessageList list = IMessageList::create();
 	int n = size();
@@ -175,7 +189,7 @@ SIMessageList IMessage::watchMsg2Msgs(int startIndex)
 }
 
 //--------------------------------------------------------------------------
-SIMessage IMessage::buildWatchMsg(int startIndex)
+SIMessage IMessage::buildWatchMsg(int startIndex) const
 {
 	SIMessageList msgs = watchMsg2Msgs (startIndex);
 	if (!msgs) return 0;
@@ -192,11 +206,39 @@ SIMessage IMessage::buildWatchMsg(int startIndex)
 }
 
 //--------------------------------------------------------------------------
+// sending messages
+//--------------------------------------------------------------------------
+void IMessage::send() const
+{
+	if (extendedAddress()) {
+#ifndef NO_OSCSTREAM
+		OSCStream::sendEvent (this, url().fHostname, url().fPort);
+#endif
+	}
+	else {
+#ifndef PARSERTEST
+		SIMessage copy = IMessage::create(*this);
+		if (copy) gMsgStack->push(new SIMessage(copy));
+#endif
+	}
+}
+
+//--------------------------------------------------------------------------
+void IMessageList::send() const
+{
+	for (unsigned int i=0; i < list().size(); i++) {
+		const IMessage * msg = list()[i];
+		if (msg) msg->send();
+	}
+}
+
+//--------------------------------------------------------------------------
 // print a single parameter
 //--------------------------------------------------------------------------
 void IMessage::print(std::ostream& out, int i, int nested) const
 {
-	string str; int val; float fval; SIMessageList msgs; TJavaScript js; TLuaScript lua;
+	string str; int val; float fval;
+	SIMessageList msgs; TJavaScript js; TLuaScript lua;
 
 	if (param(i, str)) {
 		const char * q = needQuotes (str) ? "\"" : "";
@@ -241,6 +283,43 @@ void IMessage::print(std::ostream& out) const
 	nested--;
 	out.flags ( f );
 }
+
+#ifndef NO_OSCSTREAM
+//--------------------------------------------------------------------------
+void IMessage::print(OSCStream& osc, bool start) const
+{
+	if (start)
+		osc << OSCStart(address().c_str());
+	else
+		osc << address().c_str();
+	if (message().size()) osc << message();
+	printArgs(osc);
+	if (start)
+		osc << OSCEnd();
+}
+	
+//--------------------------------------------------------------------------
+void IMessage::printArgs(OSCStream& osc) const
+{
+	for (int i=0; i < size(); i++) {
+		std::string str; float fv; int iv;
+		SIMessageList msgs;
+		if (param(i, fv))			osc << fv;
+		else if (param(i, iv))		osc << iv;
+		else if (param(i, str))		osc << str;
+		else if (param(i, msgs)) {
+			int n = msgs->list().size() - 1;
+			for (int i=0; i < n; i++) {
+				const IMessage* msg = msgs->list()[i];
+				msg->print(osc, false);
+				osc << ":";
+			}
+			if (n >= 0) msgs->list()[n]->print(osc, false);
+		}
+		else ITLErr << "IMessage::printArgs to OSC: unknown message parameter type" << ITLEndl;
+	}
+}
+#endif
 
 //--------------------------------------------------------------------------
 bool IMessage::operator == (const IMessage& other) const
