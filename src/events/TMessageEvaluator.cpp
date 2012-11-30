@@ -51,7 +51,7 @@ const char* kSelfVar	= "$self";
 const char* kNameVar	= "$name";
 const char* kAddressVar	= "$address";
 
-map<const char*, int> TMessageEvaluator::fVarLength;
+map<const char*, int> TMessageEvaluator::fVarLength; 
 
 //----------------------------------------------------------------------
 void TMessageEvaluator::init ()

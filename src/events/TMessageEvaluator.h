@@ -150,7 +150,7 @@ class TMessageEvaluator
 	static std::string	parseMap (const std::string& var);
 	/// \brief gives the quantification of a date variable or an empty string when no quantification is specified
 	static std::string	parseQuant (const std::string& var);
-	/// \brief check if a date variable requests a float value
+	/// \brief check if a date variable requests a float value 
 	static bool			floatRequested (const std::string& var);
 };
 
