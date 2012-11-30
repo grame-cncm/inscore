@@ -86,6 +86,7 @@ int yylex(YYSTYPE* lvalp, YYLTYPE* llocp, void* scanner);
 int lineno(inscore::ITLparser* context);
 
 inscore::SIMessage watchMessage (inscore::SIMessage msg);
+void printMessage (const inscore::IMessage* msg);
 
 #define scanner context->fScanner
 
@@ -106,7 +107,7 @@ start		: expr
 			;
 
 //_______________________________________________
-expr		: message  			{ cout << *$1; }
+expr		: message  			{ printMessage(*$1); delete $1; }
 			| variable ENDEXPR	{ cout << *$1; }
 			| script
 			| COMMENTSTR		{ cout << context->fText.c_str(); }

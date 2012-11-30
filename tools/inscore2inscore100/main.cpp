@@ -23,6 +23,8 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include "deelx.h"
 #include "IMessage.h"
 #include "IMessageStream.h"
 #include "ITLparser.h"
@@ -41,6 +43,50 @@ string strip (string str)
 		ptr++;
 	}
 	return out;
+}
+
+//----------------------------------------------------------------------
+static string replacevar (const char* str)
+{	
+	string out;
+	bool instring = false;
+	bool inmsg = false;
+	bool invar = false;
+	while (*str) {
+		if (*str == '"') {
+			if (inmsg) {				// inside a watch message
+				out += *str;			// don't change the content
+			}
+			else {						// ouside a watch message
+				if (invar) invar = false;	// closing a variable: skip '"'
+				else if (str[1] == '$')		// check for variable start
+					invar = true;			// yes: skip '"'
+				else {						// not end or beg of a variable
+					out += *str;			// don't change
+					instring = !instring;	// swap the string status
+				}
+			}
+		}
+		else if ((*str == '(') && !instring) {	// check for watch message start
+			inmsg = true;				
+			out += *str;
+		}
+		else if ((*str == ')') && inmsg) {		// check for watch message end
+			inmsg = false;
+			out += *str;
+		}
+		else out += *str;
+		str++;
+	}
+	return out;
+}
+
+//----------------------------------------------
+void printMessage (const IMessage* msg)
+{
+	stringstream s;
+	msg->print (s);
+	cout << replacevar(s.str().c_str());
 }
 
 //----------------------------------------------
