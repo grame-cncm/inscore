@@ -27,7 +27,6 @@
 #include <fstream>
 #include "deelx.h"
 
-#include "EventMessage.h"
 #include "IAppl.h"
 #include "IGlue.h"
 #include "IGraphicSignal.h"
@@ -112,7 +111,7 @@ void IScene::reset ()
 	setHeight(1.0f);
 	signalsNode()->delsubnodes();
 	delsubnodes();
-	fFileWatcher->clear();
+	fFileWatcher->list().clear();
 	fRootPath.clear();
 	fFullScreen = false; 
 	fFrameless = false;
@@ -232,11 +231,11 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 //--------------------------------------------------------------------------
 void IScene::add (const nodePtr& node)
 { 
-	vector<SEventMessage> msgs = getMessages (EventsAble::kNewElement);
-	for (unsigned int i=0; i < msgs.size(); i++) {
-		EventContext env (node);
-		msgs[i]->send(env);
-	}
+//	vector<SEventMessage> msgs = getMessages (EventsAble::kNewElement);
+//	for (unsigned int i=0; i < msgs.size(); i++) {
+//		EventContext env (node);
+//		msgs[i]->send(env);
+//	}
 	IObject::add (node);
 }
 
@@ -249,10 +248,10 @@ MsgHandler::msgStatus IScene::_watchMsg(const IMessage* msg, bool add)
 			EventsAble::eventype t = EventsAble::string2type (what);
 			switch (t) {
 				case EventsAble::kNewElement:
-					if (msg->size() > 1)
-						if (add) eventsHandler()->addMsg (t, EventMessage::create (name(), getScene()->name(), msg, 1));
-						else eventsHandler()->setMsg (t, EventMessage::create (name(), getScene()->name(),msg, 1));
-					else if (!add) eventsHandler()->setMsg (t, 0);
+//					if (msg->size() > 1)
+//						if (add) eventsHandler()->addMsg (t, EventMessage::create (name(), getScene()->name(), msg, 1));
+//						else eventsHandler()->setMsg (t, EventMessage::create (name(), getScene()->name(),msg, 1));
+//					else if (!add) eventsHandler()->setMsg (t, 0);
 					return MsgHandler::kProcessed;
 					break;
 
