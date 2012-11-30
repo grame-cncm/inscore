@@ -29,7 +29,6 @@
 
 #include <set>
 
-#include "EventMessage.h"
 #include "rational.h"
 #include "maptypes.h"
 
@@ -37,18 +36,34 @@ namespace inscore
 {
 
 class EventsAble;
+class IMessageList;
+struct EventContext;
 //----------------------------------------------------------------------
+/**
+* \brief support for time related events
+
+	The TimeEventAble stores the watched time and duration intervals.
+	When it applies, it retrieves the messages associated to a watched interval.
+*/
 class TimeEventAble
 {
 	public:
 				 TimeEventAble(const EventsAble* h) : fEventsHandler(h)	{}
 		virtual ~TimeEventAble() {}
 
+		/// \brief handles changes in time
 		void handleTimeChange (libmapping::rational from, libmapping::rational to) const;
+
+		/// \brief handles changes in duration
 		void handleDurChange  (libmapping::rational from, libmapping::rational to) const;
 
+		/// \brief adds an interval to the watched intervals list
 		void watchInterval	(int type, const RationalInterval&);
+
+		/// \brief removes an interval from the watched intervals list
 		void delInterval	(int type, const RationalInterval&);
+
+		/// \brief clear a watched intervals list
 		void clearList		(int type);
 
 	protected:
@@ -61,11 +76,11 @@ class TimeEventAble
 		void delDur		(const RationalInterval&);
 		void clearDur	();
 
+		void eval (const IMessageList* msgs, const EventContext& env) const;
+
 		const EventsAble *			fEventsHandler;
 		std::set<RationalInterval>	fWatchTimeList;
 		std::set<RationalInterval>	fWatchDurList;
-				
-		void send (const std::vector<SEventMessage>& msgs) const;
 };
 
 } // end namespoace

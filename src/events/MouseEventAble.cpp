@@ -24,65 +24,55 @@
 */
 
 #include <QDebug>
+#include <set>
+
 #include "MouseEventAble.h"
 #include "VGraphicsItemView.h"
-#include "MapTools.h"
+#include "TMessageEvaluator.h"
+#include "TRefinedRelation.h"
 
 #include "rational.h"
 
 using namespace libmapping;
+using namespace std;
 
 namespace inscore
 {
 
-// todo : cleanup (static function, point2date method ...)
-
 //----------------------------------------------------------------------
-static GraphicSegment find (const std::pair<float,float>& p, const Graphic2RelativeTimeRelation& rel)
-{
-	typedef TRelation<float,2, rational,1>::const_iterator const_iterator;
-	for (const_iterator i = rel.begin(); i != rel.end(); i++)
-		if ( i->first.include(p.first, p.second) ) return i->first;
-	return GraphicSegment();
-}
-
-//----------------------------------------------------------------------
-// converts a point to a date in the context of an object and a given map
-rational _MouseEventAble::point2date (const IObject * obj, float x, float y, const std::string& mapname, int n, bool relative)
+/** \brief converts a point to a date in the context of an object and a given map
+*
+*	\param obj		the object context
+*	\param x		the point x coordinate
+*	\param y		the point y coordinate
+*	\param mapname	the map to be used for conversion
+*	\param n		the repeat number to be retrieved (indexed from 0)
+*/
+rational _MouseEventAble::point2date (const IObject * obj, float x, float y, const std::string& mapname, int n)
 {
 	rational nodate(0,0);
-	const SRelativeTime2GraphicMapping&	mapping = obj->getMapping (mapname);
-	if (!mapping) return nodate;
-	const Graphic2RelativeTimeRelation& g2rt = mapping->reverse();
-	std::pair<float,float> location (x*2 - 1, y*2 - 1);
-	GraphicSegment seg = find (location, g2rt);
-	if (seg.empty()) return nodate;
+	const SRelativeTime2GraphicMapping&	mapping = obj->getMapping (mapname);	// get the mapping first
+	if (!mapping) return nodate;												// failed to get the mapping
 	
-	rational rpos = MapTools::relativepos (location.first, seg.xinterval());
+	GraphicSegment gseg (x, y, x+1, y+1);
+	SGraphicSegmentation gset = GraphicSegmentation::create(gseg);				// create a graphic segmentation
+	gset->add (gseg);															// and adds a segment starting at x, y
 
-	std::set<RelativeTimeSegment> rels = g2rt.get (seg);
-	if (!rels.size()) return nodate;
+	TRefinedRelation<float,2,rational,1> g2rt (mapping->reverse(), gset);		// defines a refined relation using this segmentation
+	set<RelativeTimeSegment> dates = g2rt.get (gseg);							// and query the relation to get the dates associated to x, y
 	
-	std::set<RelativeTimeSegment>::const_iterator i = rels.begin();
-	
-	RelativeTimeSegment ts;
-	while (i != rels.end()) {
-		if (!n) {
-			ts = *i;
-			break;
+	for (set<RelativeTimeSegment>::const_iterator i = dates.begin(); i != dates.end(); i++, n--) {
+		// n is used in case of repeated sections to select a given repetition
+		if (n == 0) {
+			rational outdate = i->start();		// returns the time segment start, that corresponds to x, y
+			outdate.rationalize();
+			while (outdate.getNumerator() > 0xfffffff)  // check for int overflow
+				// this is necessary because the value is sent over OSC and thus cast to osc-int
+				outdate.set(outdate.getNumerator()/2, outdate.getDenominator()/2);
+			return outdate;
 		}
-		i++;
 	}
-	if (ts.empty()) return nodate;
-	rational offset(0,1);
-	if (!relative) offset = obj->getDate();
-	rational outDate = ts.size() * rpos;
-	outDate += ts.start() + offset;
-	outDate.rationalize();
-	while (outDate.getNumerator() > 0xfffffff)  // check for int overflow
-		// this is necessary because the value is sent over OSC and thus cast to osc-int
-		outDate.set(outDate.getNumerator()/2, outDate.getDenominator()/2);
-	return outDate;
+	return nodate;							// no such segment or repeat
 }
 
 //----------------------------------------------------------------------
@@ -97,8 +87,29 @@ static void originshift (const IObject * obj, float& relx, float& rely)
 }
 
 //----------------------------------------------------------------------
+SIMessageList _MouseEventAble::eval (const IMessageList* msgs, float x, float y, EventContext& env)
+{
+	TMessageEvaluator me;
+	SIMessageList outmsgs = IMessageList::create();
+	for (unsigned int i=0; i < msgs->list().size(); i++) {
+		const IMessage* msg = msgs->list()[i];
+
+		std::string mapname;
+		if (me.hasDateVar (msg, mapname))
+			env.date = point2date (env.object, x, y, mapname, 0);
+
+		SIMessage evaluated = me.eval (msg, env);
+		if (evaluated) outmsgs->list().push_back(evaluated);
+	}
+	return outmsgs;
+}
+
+//----------------------------------------------------------------------
 void _MouseEventAble::handleEvent (const IObject * obj, QPointF pos,  EventsAble::eventype type)
 {
+	const IMessageList* msgs = obj->getMouseMsgs (type);
+	if (!msgs || msgs->list().empty()) return;		// nothing to do, no associated message
+	
 	VObjectView*	view = obj->getView();
 	float x = pos.x();
 	float y = pos.y();
@@ -123,23 +134,27 @@ void _MouseEventAble::handleEvent (const IObject * obj, QPointF pos,  EventsAble
 //if (type == EventsAble::kMouseDown)
 //qDebug() << "handle event pos " << " w/h " << w << h << "xy" << relx << rely << pos ;
 	
-	const std::vector<SEventMessage>& msgs = obj->getMouseMsgs (type);
-	for (unsigned int i=0; i<msgs.size(); i++) {
-		std::string mapname;
-		int num=0, denum=0;
-		bool floatval;
-		rational date (0,0);
-		bool relative;
-		if (msgs[i]->hasDateVar (mapname, num, denum, relative, floatval)) {
-			date = point2date (obj, relx, rely, mapname, 0, relative);
-			if (num && date.getDenominator()) {
-				float fd = float(date);
-				date.set (int(fd * denum / num) * num, denum);
-			}
-		}
-		EventContext env(mouse, date, floatval, obj);
-		msgs[i]->send(env);
-	}
+	EventContext env(mouse, rational(0,1), obj);
+	SIMessageList outmsgs = eval (msgs, relx, rely, env);
+	if (outmsgs && outmsgs->list().size()) outmsgs->send();
+	
+//	for (unsigned int i=0; i<msgs->list().size(); i++) {
+//		std::string mapname;
+//		int num=0, denum=0;
+//		bool floatval;
+//		rational date (0,0);
+//		bool relative;
+//		EventContext env(mouse, date, obj);
+//		if (msgs->list()[i]->hasDateVar (mapname, num, denum, relative, floatval)) {
+//			date = point2date (obj, relx, rely, mapname, 0, relative);
+//			if (num && date.getDenominator()) {
+//				float fd = float(date);
+//				date.set (int(fd * denum / num) * num, denum);
+//			}
+//		}
+//		EventContext env(mouse, date, floatval, obj);
+//		msgs[i]->send(env);
+//	}
 }
 
 } // end namespoace

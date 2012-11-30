@@ -32,9 +32,9 @@
 #include <vector>
 #include <stack>
 
-#include "EventMessage.h"
 #include "IMessage.h"
 #include "maptypes.h"
+#include "TWatcher.h"
 
 namespace inscore
 {
@@ -45,64 +45,57 @@ class EventsAble
 	public:
 		enum eventype { kUnknownEvent=0, 
 			kMouseDown, kMouseUp, kMouseDoubleClick, kMouseEnter, kMouseLeave, kMouseMove,
-			kFile, kTimeEnter, kTimeLeave, kDurEnter, kDurLeave, kNewElement };
+			kTimeEnter, kTimeLeave, kDurEnter, kDurLeave, kNewElement };
 			
 				 EventsAble();
 		virtual ~EventsAble();
 		
-		void			setMsg (eventype t, SEventMessage msg);
-		void			addMsg (eventype t, SEventMessage msg);
+		/// \brief replaces the message list associated to the event t
+		void			setMsg (eventype t, SIMessageList msgs)		{ fMsgMap.set(t, msgs); }
+		/// \brief adds a message list to the messages associated to the event t
+		void			addMsg (eventype t, SIMessageList msgs)		{ fMsgMap.add(t, msgs); }
 
-		void			setTimeMsg (eventype t, const RationalInterval& time, SEventMessage msg);
-		void			addTimeMsg (eventype t, const RationalInterval& time, SEventMessage msg);
+		/// \brief replaces the message list associated to the time event \c t and the interval \c time
+		void			setTimeMsg (eventype t, const RationalInterval& time, SIMessageList msg);
+		/// \brief adds a message list to the messages associated to the time event \c t and the interval \c time
+		void			addTimeMsg (eventype t, const RationalInterval& time, SIMessageList msg);
+		/// \brief clear a time message list
 		void			clearTimeMsg (eventype t);
 
-		void			setFileMsg (const std::string& file, SEventMessage msg);
-		void			addFileMsg (const std::string& file, SEventMessage msg);
+		void			pushWatch ();		///< push the current watched events and associated msgs on a stack
+		bool			popWatch ();		///< restore watched events and associated messages from the stack
 
-		SIMessageList	getWatch (const char* address) const;
-		void			reset();
+		const IMessageList*	getMessages (eventype t) const			{ return fMsgMap.get(t); }
+		const IMessageList*	getMouseMsgs (eventype t) const			{ return fMsgMap.get(t); }
+		const IMessageList*	getTimeMsgs (eventype t, const RationalInterval& time) const;
 
-		void			pushWatch ();		// push the current watched events and associated msgs on a stack
-		bool			popWatch ();		// restore watched events and associated messages from the stack
-
-		const std::vector<SEventMessage>&	getMessages (eventype t) const;
-		const std::vector<SEventMessage>&	getMouseMsgs (eventype t) const;
-		const std::vector<SEventMessage>&	getTimeMsgs (eventype t, const RationalInterval& time) const;
-		const std::vector<SEventMessage>&	getFileMsgs (const std::string& file) const;
+		SIMessageList	getWatch (const char* address) const;	///< returns a list of 'watch' messages
+		void			reset();								///< clear all the messages maps
 
 		static void	init ();
-		static eventype	string2type (const std::string& str);
+		static eventype	string2type (const std::string& str)		{ return fTypeStr[str]; }
 		static const char* type2string (eventype type);
 
 	private:
-	typedef std::map<eventype, std::vector<SEventMessage> >			_TMsgMap;
-	typedef std::map<RationalInterval, std::vector<SEventMessage> >	_TimeMsgMap;
-	typedef std::map<std::string, std::vector<SEventMessage> >		_FileMsgMap;
-	typedef struct EventsMaps {
-		_TMsgMap	fMsg;
-		_TimeMsgMap	fTimeEnterMsg;
-		_TimeMsgMap	fTimeLeaveMsg;
-		_TimeMsgMap	fDurEnterMsg;
-		_TimeMsgMap	fDurLeaveMsg;
-		_FileMsgMap fFileMessage;	
-	} EventsMaps;
-	std::stack<EventsMaps>	fWatchStack;
-	
-	_TMsgMap	fMsgMap;
-	_TimeMsgMap	fTimeEnterMsgMap;
-	_TimeMsgMap	fTimeLeaveMsgMap;
-	_TimeMsgMap	fDurEnterMsgMap;
-	_TimeMsgMap	fDurLeaveMsgMap;
-	_FileMsgMap fFileMessageMap;
-	
-	void		getMsgs (const char * address, const std::string& type, const std::vector<SEventMessage>&, SIMessageList&) const;
-	void		getMsgs (const char * address, const std::string& type, const RationalInterval&, const std::vector<SEventMessage>&, SIMessageList&) const;
-	void		getMsgs (const char * address, const std::string& type, const std::string&, const std::vector<SEventMessage>&, SIMessageList&) const;
-	SIMessage	getMsg (const char * address, const std::string& type, const char* msg, const SEventMessage&) const;
-	SIMessage	getMsg (const char * address, const std::string& type, const char* msg, const RationalInterval&, const SEventMessage&) const;
-	SIMessage	getMsg (const char * address, const std::string& type, const char* msg, const std::string&, const SEventMessage&) const;
-	SIMessage	putMsg (SIMessage& msg, const SEventMessage&) const;
+		typedef TWatcher<eventype>			_TMsgMap;
+		typedef TWatcher<RationalInterval>	_TimeMsgMap;
+		typedef struct EventsMaps {
+			_TMsgMap	fMsg;
+			_TimeMsgMap	fTimeEnterMsg;
+			_TimeMsgMap	fTimeLeaveMsg;
+			_TimeMsgMap	fDurEnterMsg;
+			_TimeMsgMap	fDurLeaveMsg;
+		} EventsMaps;
+		std::stack<EventsMaps>	fWatchStack;
+		
+		_TMsgMap	fMsgMap;
+		_TimeMsgMap	fTimeEnterMsgMap;
+		_TimeMsgMap	fTimeLeaveMsgMap;
+		_TimeMsgMap	fDurEnterMsgMap;
+		_TimeMsgMap	fDurLeaveMsgMap;
+		
+		SIMessage	buildGetMsg (const char * address, const std::string& type, const SIMessageList&) const;
+		SIMessage	buildGetMsg (const char * address, const std::string& type, const RationalInterval&, const IMessageList*) const;
 
 	static std::map<std::string, eventype>	fTypeStr;
 };

@@ -2,7 +2,7 @@
 
   INScore Project
 
-  Copyright (C) 2009,2010  Grame
+  Copyright (C) 2009,2012  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -25,41 +25,33 @@
 
 
 #include "EventsAble.h"
-#include "EventMessage.h"
+#include "IMessageStream.h"
 #include "TInterval.h"
 #include "OSCStream.h"
 
 using namespace std;
 
-const char* kMouseMoveStr	= "mouseMove";
-const char* kMouseDownStr	= "mouseDown";
-const char* kMouseUpStr		= "mouseUp";
-const char* kMouseEnterStr	= "mouseEnter";
-const char* kMouseLeaveStr	= "mouseLeave";
-const char* kMouseDoubleClickStr = "doubleClick";
-const char* kFileStr		= "file";
-const char* kTimeEnterStr	= "timeEnter";
-const char* kTimeLeaveStr	= "timeLeave";
-const char* kDurEnterStr	= "durEnter";
-const char* kDurLeaveStr	= "durLeave";
+static const char* kMouseMoveStr	= "mouseMove";
+static const char* kMouseDownStr	= "mouseDown";
+static const char* kMouseUpStr		= "mouseUp";
+static const char* kMouseEnterStr	= "mouseEnter";
+static const char* kMouseLeaveStr	= "mouseLeave";
+static const char* kMouseDoubleClickStr = "doubleClick";
+static const char* kTimeEnterStr	= "timeEnter";
+static const char* kTimeLeaveStr	= "timeLeave";
+static const char* kDurEnterStr	= "durEnter";
+static const char* kDurLeaveStr	= "durLeave";
 
-const char* kNewElementStr	= "newElement";
+static const char* kNewElementStr	= "newElement";
 
 namespace inscore
 {
-static vector<SEventMessage> _static_nomsgs;
 
 map<string, EventsAble::eventype>	EventsAble::fTypeStr;
 //----------------------------------------------------------------------
 EventsAble::EventsAble ()	{}
 EventsAble::~EventsAble ()	{}
 
-//----------------------------------------------------------------------
-void EventsAble::setMsg (eventype t, SEventMessage msg)		
-{ 
-	fMsgMap[t].clear(); 
-	addMsg (t, msg);
-}
 
 //----------------------------------------------------------------------
 void EventsAble::reset ()
@@ -69,7 +61,6 @@ void EventsAble::reset ()
 	fTimeLeaveMsgMap.clear();
 	fDurEnterMsgMap.clear();
 	fDurLeaveMsgMap.clear();
-	fFileMessageMap.clear();
 	while (fWatchStack.size())
 		fWatchStack.pop();
 }
@@ -83,7 +74,6 @@ void EventsAble::pushWatch ()
 	m.fTimeLeaveMsg	= fTimeLeaveMsgMap;
 	m.fDurEnterMsg	= fDurEnterMsgMap;
 	m.fDurLeaveMsg	= fDurLeaveMsgMap;
-	m.fFileMessage	= fFileMessageMap;	
 	fWatchStack.push(m);
 }
 
@@ -97,18 +87,11 @@ bool EventsAble::popWatch ()
 		fTimeLeaveMsgMap= m.fTimeLeaveMsg;
 		fDurEnterMsgMap	= m.fDurEnterMsg;
 		fDurLeaveMsgMap	= m.fDurLeaveMsg;
-		fFileMessageMap = m.fFileMessage;	
 		fWatchStack.pop();
 		return true;
 	}
 	reset();
 	return false;
-}
-
-//----------------------------------------------------------------------
-void EventsAble::addMsg (eventype t, SEventMessage msg)
-{ 
-	if (msg) fMsgMap[t].push_back (msg); 
 }
 
 //----------------------------------------------------------------------
@@ -124,177 +107,60 @@ void EventsAble::clearTimeMsg (eventype t)
 }
 
 //----------------------------------------------------------------------
-void EventsAble::setTimeMsg (eventype t, const RationalInterval& time, SEventMessage msg)
+void EventsAble::setTimeMsg (eventype t, const RationalInterval& time, SIMessageList msgs)
 {
 	switch (t) {
-		case kTimeEnter:	fTimeEnterMsgMap[time].clear(); break;
-		case kTimeLeave:	fTimeLeaveMsgMap[time].clear(); break;
-		case kDurEnter:		fDurLeaveMsgMap[time].clear(); break;
-		case kDurLeave:		fDurLeaveMsgMap[time].clear(); break;
+		case kTimeEnter:	fTimeEnterMsgMap.set(time, msgs); break;
+		case kTimeLeave:	fTimeLeaveMsgMap.set(time, msgs); break;
+		case kDurEnter:		fDurLeaveMsgMap.set(time, msgs); break;
+		case kDurLeave:		fDurLeaveMsgMap.set(time, msgs); break;
 		default:	;
 	}
-	addTimeMsg (t, time, msg);
 }
 
 //----------------------------------------------------------------------
-void EventsAble::addTimeMsg (eventype t, const RationalInterval& time, SEventMessage msg)
+void EventsAble::addTimeMsg (eventype t, const RationalInterval& time, SIMessageList msgs)
 {
-	if (msg) {
-		switch (t) {
-			case kTimeEnter:	fTimeEnterMsgMap[time].push_back(msg); break;
-			case kTimeLeave:	fTimeLeaveMsgMap[time].push_back(msg); break;
-			case kDurEnter:		fDurEnterMsgMap[time].push_back(msg); break;
-			case kDurLeave:		fDurLeaveMsgMap[time].push_back(msg); break;
-			default:	;
-		}
-	}
-}
-
-//----------------------------------------------------------------------
-void EventsAble::setFileMsg (const std::string& file, SEventMessage msg)
-{
-	fFileMessageMap[file].clear();
-	addFileMsg (file, msg);
-}
-
-//----------------------------------------------------------------------
-void EventsAble::addFileMsg (const std::string& file, SEventMessage msg)
-{
-	if (msg) fFileMessageMap[file].push_back (msg); 
-}
-
-//----------------------------------------------------------------------
-EventsAble::eventype EventsAble::string2type (const string& str)
-{
-	return fTypeStr[str];
-}
-
-//----------------------------------------------------------------------
-const vector<SEventMessage>& EventsAble::getMouseMsgs (eventype t) const
-{
-	return getMessages(t);
-}
-
-//----------------------------------------------------------------------
-const vector<SEventMessage>& EventsAble::getMessages (eventype t) const
-{
-	_TMsgMap::const_iterator i = fMsgMap.find(t);
-	if (i != fMsgMap.end())
-		return i->second;
-	return _static_nomsgs;
-}
-
-//----------------------------------------------------------------------
-const vector<SEventMessage>& EventsAble::getTimeMsgs (eventype t, const RationalInterval& time) const
-{
-	_TimeMsgMap::const_iterator i, end;
 	switch (t) {
-		case kTimeEnter:	
-			i	= fTimeEnterMsgMap.find(time);
-			end = fTimeEnterMsgMap.end();
-			break;
-		case kTimeLeave:
-			i	= fTimeLeaveMsgMap.find(time);
-			end = fTimeLeaveMsgMap.end();
-			break;
-		case kDurEnter:
-			i	= fDurEnterMsgMap.find(time);
-			end = fDurEnterMsgMap.end();
-			break;
-		case kDurLeave:
-			i	= fDurLeaveMsgMap.find(time);
-			end = fDurLeaveMsgMap.end();
-			break;
+		case kTimeEnter:	fTimeEnterMsgMap.add(time, msgs); break;
+		case kTimeLeave:	fTimeLeaveMsgMap.add(time, msgs); break;
+		case kDurEnter:		fDurLeaveMsgMap.add(time, msgs); break;
+		case kDurLeave:		fDurLeaveMsgMap.add(time, msgs); break;
+		default:	;
+	}
+}
+
+//----------------------------------------------------------------------
+const IMessageList* EventsAble::getTimeMsgs (eventype t, const RationalInterval& time) const
+{
+	switch (t) {
+		case kTimeEnter:	return fTimeEnterMsgMap.get(time);
+		case kTimeLeave:	return fTimeLeaveMsgMap.get(time);
+		case kDurEnter:		return fDurEnterMsgMap.get(time);
+		case kDurLeave:		return fDurLeaveMsgMap.get(time);
 		default:
-			return _static_nomsgs;
+			;
 	}
-	if (i != end)
-		return i->second;
-	return _static_nomsgs;
+	return 0;
 }
 
 //----------------------------------------------------------------------
-const vector<SEventMessage>& EventsAble::getFileMsgs (const std::string& file) const
+SIMessage EventsAble::buildGetMsg (const char * address, const string& what, const RationalInterval& time, const IMessageList* mlist) const
 {
-	_FileMsgMap::const_iterator i = fFileMessageMap.find(file);
-	if (i != fFileMessageMap.end())
-		return i->second;
-	return _static_nomsgs;
+	SIMessage msg = IMessage::create (address, "watch");
+	*msg << what << int(time.first().getNumerator())
+		<< int(time.first().getDenominator())
+		<< int(time.second().getNumerator())
+		<< int(time.second().getDenominator())
+		<< mlist;
+	return msg;
 }
 
 //----------------------------------------------------------------------
-void EventsAble::getMsgs (const char * address, const string& type, const RationalInterval& time, 
-						  const vector<SEventMessage>& evm, SIMessageList& list) const
+SIMessage EventsAble::buildGetMsg (const char * address, const string& what, const SIMessageList& msgs) const
 {
-	const char * method = "watch";
-	for (vector<SEventMessage>::const_iterator i = evm.begin(); i != evm.end(); i++) {
-		SIMessage msg = getMsg (address, type, method, time, *i);
-		list->list().push_back ( msg );
-		method = "watch+";
-	}	
-}
-
-//----------------------------------------------------------------------
-void EventsAble::getMsgs (const char * address, const string& type, const string& file, 
-						  const vector<SEventMessage>& evm, SIMessageList& list) const
-{
-	const char * method = "watch";
-	for (vector<SEventMessage>::const_iterator i = evm.begin(); i != evm.end(); i++) {
-		SIMessage msg = getMsg (address, type, method, file, *i);
-		list->list().push_back ( msg );
-		method = "watch+";
-	}	
-}
-
-//----------------------------------------------------------------------
-void EventsAble::getMsgs (const char * address, const string& type, const vector<SEventMessage>& evm, SIMessageList& list) const
-{
-	const char * method = "watch";
-	for (vector<SEventMessage>::const_iterator i = evm.begin(); i != evm.end(); i++) {
-		SIMessage msg = getMsg (address, type, method, *i);
-		list->list().push_back ( msg );
-		method = "watch+";
-	}
-}
-
-SIMessage EventsAble::getMsg (const char * address, const string& type, const char* mth,
-		const RationalInterval& time, const SEventMessage& ev) const
-{
-	SIMessage msg = IMessage::create (address, mth);
-	msg->add (type);
-	msg->add (int(time.first().getNumerator()));
-	msg->add (int(time.first().getDenominator()));
-	msg->add (int(time.second().getNumerator()));
-	msg->add (int(time.second().getDenominator()));
-	return putMsg (msg, ev);
-}
-
-SIMessage EventsAble::getMsg (const char * address, const string& type, const char* mth,
-		const string& file, const SEventMessage& ev) const
-{
-	SIMessage msg = IMessage::create (address, mth);
-	msg->add (type);
-	msg->add (file);
-	return putMsg (msg, ev);
-}
-
-SIMessage EventsAble::getMsg (const char * address, const string& type, const char* mth, const SEventMessage& ev) const
-{
-	SIMessage msg = IMessage::create (address, mth);
-	msg->add (type);
-	return putMsg (msg, ev);
-}
-
-//----------------------------------------------------------------------
-SIMessage EventsAble::putMsg (SIMessage& msg, const SEventMessage& ev) const
-{
-	const IMessage * evmsg = ev->message();
-	if (msg && evmsg) {
-		msg->add (ev->address());
-		msg->add (evmsg->message());
-		for (int i=0; i < evmsg->size(); i++)
-			msg->add (evmsg->param(i));
-	}
+	SIMessage msg = IMessage::create (address, "watch");
+	*msg << what << msgs;
 	return msg;
 }
 
@@ -302,24 +168,20 @@ SIMessage EventsAble::putMsg (SIMessage& msg, const SEventMessage& ev) const
 SIMessageList EventsAble::getWatch (const char* address) const
 {
 	SIMessageList list = IMessageList::create();
-	for (_TMsgMap::const_iterator i = fMsgMap.begin(); i != fMsgMap.end(); i++) {
-		getMsgs (address, type2string (i->first), i->second, list);
-	}
-	for (_TimeMsgMap::const_iterator i = fTimeEnterMsgMap.begin(); i != fTimeEnterMsgMap.end(); i++) {
-		getMsgs (address, kTimeEnterStr, i->first, i->second, list);
-	}
-	for (_TimeMsgMap::const_iterator i = fTimeLeaveMsgMap.begin(); i != fTimeLeaveMsgMap.end(); i++) {
-		getMsgs (address, kTimeLeaveStr, i->first, i->second, list);
-	}
-	for (_TimeMsgMap::const_iterator i = fDurEnterMsgMap.begin(); i != fDurEnterMsgMap.end(); i++) {
-		getMsgs (address, kDurEnterStr, i->first, i->second, list);
-	}
-	for (_TimeMsgMap::const_iterator i = fDurLeaveMsgMap.begin(); i != fDurLeaveMsgMap.end(); i++) {
-		getMsgs (address, kDurLeaveStr, i->first, i->second, list);
-	}
-	for (_FileMsgMap::const_iterator i = fFileMessageMap.begin(); i != fFileMessageMap.end(); i++) {
-		getMsgs (address, kFileStr, i->first, i->second, list);
-	}
+	for (_TMsgMap::const_iterator i = fMsgMap.begin(); i != fMsgMap.end(); i++)
+		list->list().push_back( buildGetMsg (address, type2string (i->first), i->second));
+
+	for (_TimeMsgMap::const_iterator i = fTimeEnterMsgMap.begin(); i != fTimeEnterMsgMap.end(); i++)
+		list->list().push_back( buildGetMsg (address, kTimeEnterStr, i->first, i->second));
+
+	for (_TimeMsgMap::const_iterator i = fTimeLeaveMsgMap.begin(); i != fTimeLeaveMsgMap.end(); i++)
+		list->list().push_back( buildGetMsg (address, kTimeLeaveStr, i->first, i->second));
+
+	for (_TimeMsgMap::const_iterator i = fDurEnterMsgMap.begin(); i != fDurEnterMsgMap.end(); i++)
+		list->list().push_back( buildGetMsg (address, kDurEnterStr, i->first, i->second));
+
+	for (_TimeMsgMap::const_iterator i = fDurLeaveMsgMap.begin(); i != fDurLeaveMsgMap.end(); i++)
+		list->list().push_back( buildGetMsg (address, kDurLeaveStr, i->first, i->second));
 	return list;
 }
 
@@ -333,7 +195,6 @@ const char* EventsAble::type2string (eventype type)
 		case kMouseEnter:	return kMouseEnterStr;
 		case kMouseLeave:	return kMouseLeaveStr;
 		case kMouseDoubleClick: return kMouseDoubleClickStr;
-		case kFile:			return kFileStr;
 		case kTimeEnter:	return kTimeEnterStr;
 		case kTimeLeave: 	return kTimeLeaveStr;
 		case kDurEnter:		return kDurEnterStr;
@@ -353,7 +214,6 @@ void EventsAble::init ()
 		fTypeStr[kMouseEnterStr]= kMouseEnter;
 		fTypeStr[kMouseLeaveStr]= kMouseLeave;
 		fTypeStr[kMouseDoubleClickStr]	= kMouseDoubleClick;
-		fTypeStr[kFileStr]		= kFile;
 		fTypeStr[kTimeEnterStr]	= kTimeEnter;
 		fTypeStr[kTimeLeaveStr]	= kTimeLeave;
 		fTypeStr[kDurEnterStr]	= kDurEnter;
