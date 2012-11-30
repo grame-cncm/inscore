@@ -73,7 +73,7 @@ ASCII   [{LETTER}{DIGIT}]
  /* allowed character set for first identifier char */
 STARTID [_{LETTER}]
  /* allowed character set for first identifier char */
-IDCHAR  [-_{ASCII}]
+IDCHAR  [_{ASCII}]
 
  /* allowed character set for host names
 	see RFC952 and RFC1123
@@ -83,7 +83,7 @@ HOSTCHAR [-a-zA-Z0-9]
  /* regular expression characters
     as defined by the OSC specification */
 RECHAR  [?+*{IDCHAR}]
-RECLASS [-^[ASCII]]
+RECLASS [{IDCHAR}^]
 
  /* RECHAR  [-_a-zA-Z0-9?+*]
     RESTART [_a-zA-Z?+*] */
@@ -105,19 +105,6 @@ EOL		[\x0a\x0d]
 [+-]*{DIGIT}+"."{DIGIT}* 				yyextra->fFloat = atof(yytext); return FLOAT;
 [+-]*{DIGIT}+"."{DIGIT}+e[-+]?{DIGIT}+ 	yyextra->fFloat = atof(yytext); return FLOAT;
 [+-]*{DIGIT}+e[-+]?{DIGIT}+ 			yyextra->fFloat = atof(yytext); return FLOAT;
-
- /* ----------------------------------------- */
- /*	basic delimiters and markers */
- /* ----------------------------------------- */
-"="					return EQUAL;
-"/"					return PATHSEP;			/* OSC address and path separator */
-";"					return ENDEXPR;			/* end of expression */
-"$"					return VARSTART;
-":"					return COLON;
-","					return COMMA;
-"."					return POINT;
-"("					return LEFTPAR;
-")"					return RIGHTPAR;
 
  /* ----------------------------------------- */
  /*	method requiring messages as argument */
@@ -175,9 +162,24 @@ EOL		[\x0a\x0d]
  /* ----------------------------------------- */
  /*	regular expressions */
  /* ----------------------------------------- */
-{RECHAR}+								yyextra->fText = yytext; return REGEXP;			/* regular expression */
-{RECHAR}*"["{RECLASS}+"]"{RECHAR}*		yyextra->fText = yytext; return REGEXP;			/* regular expression */
-{RECHAR}*"{"[{IDCHAR},]+"}"{RECHAR}*	yyextra->fText = yytext; return REGEXP;			/* regular expression */
+{RECHAR}+								yyextra->fText = yytext; cout << "REGEXP1 " << yytext << endl; return REGEXP;			/* regular expression */
+{RECHAR}*"["{RECLASS}+"]"{RECHAR}*		yyextra->fText = yytext; cout << "REGEXP2 " << yytext << endl; return REGEXP;			/* regular expression */
+{RECHAR}*"{"[{IDCHAR},]+"}"{RECHAR}*	yyextra->fText = yytext; cout << "REGEXP3 " << yytext << endl; return REGEXP;			/* regular expression */
+
+ /* ----------------------------------------- */
+ /*	basic delimiters and markers */
+ /* ----------------------------------------- */
+"="					return EQUAL;
+"/"					return PATHSEP;			/* OSC address and path separator */
+";"					return ENDEXPR;			/* end of expression */
+"$"					return VARSTART;
+":"					return COLON;
+","					return COMMA;
+"."					return POINT;
+"("					return LEFTPAR;
+")"					return RIGHTPAR;
+ /*"["					return LEFTBRACKET; */
+ /*"]"					return RIGHTBRACKET; */
 
 {SPACE}+			;   /* eat up space */
 

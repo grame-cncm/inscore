@@ -51,13 +51,13 @@
 %token JSCRIPT
 
 /*------------------------------   types  ------------------------------*/
-%type <num> 	UINT INT number
+%type <num> 	number
 %type <real>	FLOAT
 %type <str>		STRING QUOTEDSTRING PATHSEP IDENTIFIER REGEXP LUASCRIPT JSCRIPT
 %type <str>		identifier oscaddress oscpath varname variable hostname
 %type <msg>		message
 %type <msgList>	messagelist script
-%type <p>		param watchparam
+%type <p>		param watchmethod
 %type <plist>	params watchparams varvalue
 %type <url>		urlprefix
 %type <addr>	address
@@ -164,6 +164,7 @@ oscaddress	: oscpath					{ $$ = $1; }
 			;
 
 oscpath		: PATHSEP identifier		{ $$ = new string("/" + *$2); delete $2; }
+			| PATHSEP WATCH				{ $$ = new string("/" + context->fText); }
 			;
 
 urlprefix	: hostname COLON UINT		{ $$ = new inscore::IMessage::TUrl($1->c_str(), context->fInt); delete $1; }
@@ -182,8 +183,8 @@ identifier	: IDENTIFIER		{ $$ = new string(context->fText); }
 //_______________________________________________
 // parameters definitions
 // watchparams need a special case since messages are expected as argument
-watchparams	: watchparam		{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
-			| watchparam params	{ $$ = new inscore::IMessage::argslist;
+watchparams	: watchmethod		{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
+			| watchmethod params { $$ = new inscore::IMessage::argslist;
 								  $$->push_back(*$1);
 								  $$->push_back($2);
 								  delete $1; delete $2;
@@ -195,7 +196,7 @@ params		: param				{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); d
 			| params param		{ $1->push_back(*$2); $$ = $1; delete $2; }
 			;
 
-watchparam	: WATCH				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
+watchmethod	: WATCH				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
 			;
 
 varvalue	: VARSTART varname	{ $$ = new inscore::IMessage::argslist;
