@@ -68,12 +68,11 @@ static  char* unescape (char * str) {
 
 DIGIT	[0-9]
 LETTER  [a-zA-Z]
-ASCII   [{LETTER}{DIGIT}]
 
  /* allowed character set for first identifier char */
-STARTID [_{LETTER}]
+STARTID [_a-zA-Z]
  /* allowed character set for first identifier char */
-IDCHAR  [_{ASCII}]
+IDCHAR  [_a-zA-Z0-9]
 
  /* allowed character set for host names
 	see RFC952 and RFC1123
@@ -82,11 +81,8 @@ HOSTCHAR [-a-zA-Z0-9]
 
  /* regular expression characters
     as defined by the OSC specification */
-RECHAR  [?+*{IDCHAR}]
-RECLASS [{IDCHAR}^]
-
- /* RECHAR  [-_a-zA-Z0-9?+*]
-    RESTART [_a-zA-Z?+*] */
+RECHAR  [-_a-zA-Z0-9?+*]
+RECLASS [-_a-zA-Z0-9^]
 
 ANYCHAR	[^ \t"'\x0a\x0d?+*]
 
@@ -162,9 +158,9 @@ EOL		[\x0a\x0d]
  /* ----------------------------------------- */
  /*	regular expressions */
  /* ----------------------------------------- */
-{RECHAR}+								yyextra->fText = yytext; cout << "REGEXP1 " << yytext << endl; return REGEXP;			/* regular expression */
-{RECHAR}*"["{RECLASS}+"]"{RECHAR}*		yyextra->fText = yytext; cout << "REGEXP2 " << yytext << endl; return REGEXP;			/* regular expression */
-{RECHAR}*"{"[{IDCHAR},]+"}"{RECHAR}*	yyextra->fText = yytext; cout << "REGEXP3 " << yytext << endl; return REGEXP;			/* regular expression */
+{RECHAR}+								yyextra->fText = yytext; return REGEXP;			/* regular expression */
+{RECHAR}*"["{RECLASS}+"]"{RECHAR}*		yyextra->fText = yytext; return REGEXP;			/* regular expression */
+{RECHAR}*"{"[_a-zA-Z0-9,]+"}"{RECHAR}*	yyextra->fText = yytext; return REGEXP;			/* regular expression */
 
  /* ----------------------------------------- */
  /*	basic delimiters and markers */
