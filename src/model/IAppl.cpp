@@ -43,7 +43,7 @@
 #include "ip/NetworkingUtils.h"
 #include "INScore.h"
 #include "ITLError.h"
-#include "EventMessage.h"
+//#include "EventMessage.h"
 
 #include "INScore.h"
 
@@ -326,11 +326,11 @@ MsgHandler::msgStatus IAppl::requireMsg(const IMessage* msg)
 			}
 			else {
 				ITLErr << "Version " << required << " is required: current version is " << version  << ITLEndl;
-				SEventMessage reqmsg = EventMessage::create (name(), "", msg, 1);
-				if (reqmsg) {
-					EventContext context (this);
-					reqmsg->send(context);
-				}				
+//				SEventMessage reqmsg = EventMessage::create (name(), "", msg, 1);
+//				if (reqmsg) {
+//					EventContext context (this);
+//					reqmsg->send(context);
+//				}
 			}
 			return MsgHandler::kProcessed;
 		}
