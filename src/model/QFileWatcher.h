@@ -60,6 +60,9 @@ class QFileWatcher: public QObject, public IFileWatcher
 		static SQFileWatcher create(IObject * parent) { return new QFileWatcher(parent); }
 
 	protected:
+		using IFileWatcher::set;
+		using IFileWatcher::add;
+
 				 QFileWatcher(IObject * parent);
 		virtual ~QFileWatcher()		{}
 	

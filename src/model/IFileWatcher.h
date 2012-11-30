@@ -31,6 +31,7 @@
 #include <map>
 
 #include "IVNode.h"
+#include "TWatcher.h"
 
 namespace inscore
 {
@@ -39,42 +40,29 @@ class IFileWatcher;
 typedef class libmapping::SMARTP<IFileWatcher>	SIFileWatcher;
 
 /*!
-\addtogroup ITLView
+\addtogroup ITLModel
 @{
 */
 
 //--------------------------------------------------------------------------
 /**
-*	\brief an abstract file watcher.
+*	\brief a file watcher.
 *
-*	A file watcher monitors file modifications for the attention of an model object, defined by its osc address.
-*	Each time a monitored file is modified (or renamed, or erased), the file watcher posts a 'reload' message for
-*	the attention of the model object(s) concerned.
-*
-*	The file watcher can monitor several files for 1 object ; it can also monitor 1 file for several objects.
+*	A file watcher monitors file modifications.
+*	Each time a monitored file is modified (or renamed, or erased), the file watcher sends the associated messages.
 *
 *	\note Once a monitored file has been removed (or renamed), its monitoring stops.
 */
 class IFileWatcher: public IVNode
 {
 	protected:
-		typedef std::map<std::string, SIMessageList>	TWatchList;
-		TWatchList	fWatchList;
-		using IObject::set;
-		using IObject::add;
+		TWatcher<std::string>	fWatchList;
 	
 				 IFileWatcher(IObject * parent);
 		virtual ~IFileWatcher() {}
 
 		/// \brief fileWatcher \c 'get' message handler
 		virtual SIMessageList getMsgs (const IMessage* msg) const;
-
-		/// \brief set a file associated messages
-		virtual void set (const std::string& file, SIMessageList msg);
-		/// \brief add messages to a file associated message list
-		virtual void add (const std::string& file, SIMessageList msg);
-		/// \brief clear the messages associated to file
-		virtual void clear (const std::string& file);
 
 		/// \brief the \c 'watch' message handler
 		virtual MsgHandler::msgStatus watchMsg (const IMessage* msg);
@@ -86,15 +74,13 @@ class IFileWatcher: public IVNode
 		virtual void positionAble ()	{}
 		virtual void timeAble ()		{}
 
-		static SIMessageList buildMessage(const IMessage* source);
+		static SIMessageList getMessages(const IMessage* source);
 
 	public:
 		static const std::string kFileWatcherType;
 
-		///	\brief Clear the files list and the associated events.
-		virtual void clear()								{ fWatchList.clear(); }
-		///	\brief send the messages associated to the file 'fileName'.
-		virtual void trigger (const std::string& fileName) const;
+		TWatcher<std::string>			list()			{ return fWatchList; }
+		const TWatcher<std::string>&	list() const	{ return fWatchList; }
 };
 
 /*!@} */

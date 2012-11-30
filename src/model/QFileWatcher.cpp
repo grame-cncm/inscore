@@ -52,7 +52,7 @@ void QFileWatcher::set (const std::string& filename, SIMessageList msgs)
 {
 	QString qfile (filename.c_str());
 	if (!contains (qfile)) fWatcher.addPath( qfile );
-	IFileWatcher::set(filename, msgs);	
+	list().set(filename, msgs);
 }
 
 //----------------------------------------------------------------------
@@ -60,21 +60,21 @@ void QFileWatcher::add (const std::string& filename, SIMessageList msgs)
 {
 	QString qfile (filename.c_str());
 	if (!contains (qfile)) fWatcher.addPath( qfile );
-	IFileWatcher::add(filename, msgs);	
+	list().add(filename, msgs);	
 }
 
 //----------------------------------------------------------------------
 void QFileWatcher::clear (const std::string& filename)
 {
 	fWatcher.removePath( filename.c_str() );
-	IFileWatcher::clear(filename);	
+	list().clear(filename);	
 }
 
 //----------------------------------------------------------------------
 void QFileWatcher::clear()
 {
 	fWatcher.removePaths (fWatcher.files() );
-	IFileWatcher::clear();	
+	list().clear();	
 }
 
 //----------------------------------------------------------------------
@@ -82,7 +82,7 @@ void QFileWatcher::fileChangedSlot(const QString& filename)
 {	
 	// The file has changed (modified, renamed, deleted)
 	if ( QFile::exists( filename ) )
-		IFileWatcher::trigger (filename.toStdString());
+		list().trigger (filename.toStdString());
 	else
 	{
 		// The file has been removed or renamed.
