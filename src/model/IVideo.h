@@ -28,6 +28,7 @@
 #define __IVideo__
 
 #include <string>
+#include <sstream>
 #include "IRectShape.h"
 #include "TFile.h"
 
@@ -92,7 +93,7 @@ class IVideo : public IRectShape,  public TFile
 				static libmapping::SMARTP<Date2SecondConverter> create( SFloat2RelativeTimeMapping mapping ) { return new Date2SecondMappingConverter(mapping); }
 				virtual ~Date2SecondMappingConverter() {}
 				float convert(const libmapping::rational& r) const;
-				virtual SIMessage&  print(SIMessage& m) const	{ *m << fMapping; return m; }
+				virtual SIMessage&  print(SIMessage& m) const	{ std::stringstream s; fMapping->direct().print(s); *m << s.str(); return m; }
 		};
 		class Date2SecondTempoConverter: public Date2SecondConverter
 		{ 
