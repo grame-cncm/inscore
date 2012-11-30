@@ -28,7 +28,6 @@
 #include <fstream>
 
 #include "EventsAble.h"
-#include "EventMessage.h"
 #include "IAppl.h"
 #include "IMessage.h"
 #include "IMessageTranslator.h"
@@ -776,13 +775,14 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 		case EventsAble::kMouseDoubleClick:
 		case EventsAble::kMouseEnter:
 		case EventsAble::kMouseLeave:
-			if (msg->size() > 1)
-				if (add) eventsHandler()->addMsg (t, EventMessage::create (name(), getScene()->name(), msg, 1));
-				else eventsHandler()->setMsg (t, EventMessage::create (name(), getScene()->name(),msg, 1));
-			else if (!add) eventsHandler()->setMsg (t, 0);
-			break;
+			if (msg->size() > 1) {
+				SIMessageList watchMsg = msg->watchMsg2Msgs (1);
+				if (!watchMsg) return MsgHandler::kBadParameters;
 
-		case EventsAble::kFile:		// not yet implemented : should replace the filewatcher
+				if (add) eventsHandler()->addMsg (t, watchMsg);
+				else eventsHandler()->setMsg (t, watchMsg);
+			}
+			else if (!add) eventsHandler()->setMsg (t, 0);
 			break;
 
 		case EventsAble::kTimeEnter:
@@ -795,8 +795,10 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 					return MsgHandler::kBadParameters;
 				RationalInterval time(start,end);
 				if (msg->size() > 5) {
-					if (!add) eventsHandler()->setTimeMsg (t, time, EventMessage::create (name(), getScene()->name(), msg, 5));
-					else eventsHandler()->addTimeMsg (t, time, EventMessage::create (name(), getScene()->name(), msg, 5));
+					SIMessageList watchMsg = msg->watchMsg2Msgs (5);
+					if (!watchMsg) return MsgHandler::kBadParameters;
+					if (!add) eventsHandler()->setTimeMsg (t, time, watchMsg);
+					else eventsHandler()->addTimeMsg (t, time, watchMsg);
 					watchInterval(t, time);
 				}
 				else if (!add) {
