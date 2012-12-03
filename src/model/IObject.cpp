@@ -31,6 +31,7 @@
 #include "IAppl.h"
 #include "IMessage.h"
 #include "IMessageTranslator.h"
+#include "IMessageStream.h"
 #include "IObject.h"
 #include "IObjectVNodes.h"
 #include "IProxy.h"
@@ -824,8 +825,9 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 //--------------------------------------------------------------------------
 void IObject::save(ostream& out) const
 {
-	SIMessageList outMsgs = getAll();
-	out << (IMessageList*)outMsgs;
+	SIMessageList msgs = getAll();
+	msgs->list().set("", "\n");
+	out <<  msgs->list();
 }
 
 //--------------------------------------------------------------------------
