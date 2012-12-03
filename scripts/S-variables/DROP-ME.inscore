@@ -34,11 +34,10 @@ y =-0.2;
 
 
 /ITL/scene/rect  watch   mouseDown (
-	localhost:7001/pos $x "$y" );
-/ITL/scene/rect  watch+  mouseDown (
-	localhost:7001/apos $absx "$absy" );
-/ITL/scene/rect  watch+  mouseDown (
-	localhost:7001/spos $sx "$sy" );
+	localhost:7001/pos "$x" "$y", 
+	localhost:7001/apos "$absx" "$absy",
+	localhost:7001/spos "$sx" "$sy" );
+
 /ITL/scene/rect  watch+  mouseDown (
 	/ITL/scene/vpos set txt "$x" "$y" );
 /ITL/scene/rect  watch+  mouseDown (
