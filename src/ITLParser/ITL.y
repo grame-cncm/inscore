@@ -165,6 +165,7 @@ oscaddress	: oscpath					{ $$ = $1; }
 
 oscpath		: PATHSEP identifier		{ $$ = new string("/" + *$2); delete $2; }
 			| PATHSEP WATCH				{ $$ = new string("/" + context->fText); }
+			| PATHSEP VARSTART varname	{ $$ = new string("/$" + context->fText); }
 			;
 
 urlprefix	: hostname COLON UINT		{ $$ = new inscore::IMessage::TUrl($1->c_str(), context->fInt); delete $1; }
