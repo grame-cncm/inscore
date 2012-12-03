@@ -87,6 +87,7 @@ int lineno(inscore::ITLparser* context);
 
 inscore::SIMessage watchMessage (inscore::SIMessage msg);
 void printMessage (const inscore::IMessage* msg);
+std::string strip (const std::string& str);
 
 #define scanner context->fScanner
 
@@ -137,12 +138,12 @@ oscaddress	: oscpath				{ $$ = $1; }
 oscpath		: PATHSEP identifier	{ $$ = new string("/" + *$2); }
 			;
 
-identifier	: IDENTIFIER		{ $$ = new string(context->fText); }
-			| REGEXP			{ $$ = new string(context->fText); }
+identifier	: IDENTIFIER		{ $$ = new string( strip(context->fText)); }
+			| REGEXP			{ $$ = new string( strip(context->fText)); }
 			;
 
-msgstring	: MSG				{ $$ = new string(context->fText); }
-			| IDENTIFIER		{ $$ = new string(context->fText); }
+msgstring	: MSG				{ $$ = new string( strip(context->fText) ); }
+			| IDENTIFIER		{ $$ = new string( strip(context->fText) ); }
 			;
 
 params		: param				{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); }
@@ -151,7 +152,7 @@ params		: param				{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); }
 
 param		: number			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1)); }
 			| FLOAT				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); }
-			| STRING			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
+			| STRING			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(strip(context->fText))); }
 			| VARSTART varname  { $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>("$" + *$2)); }
 			;
 
@@ -159,7 +160,7 @@ param		: number			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1)
 //_______________________________________________
 variable	: varname EQUAL number	{ std::stringstream s; s << *$1 << "=" << $3 << ";";  $$ = new string(s.str()); }
 			| varname EQUAL FLOAT	{ std::stringstream s; s << *$1 << "=" << context->fFloat << ";";  $$ = new string(s.str()); }
-			| varname EQUAL STRING	{ $$ = new string(*$1 + " = " + context->fText.c_str()); }
+			| varname EQUAL STRING	{ $$ = new string(*$1 + " = " + strip(context->fText.c_str())); }
 			;
 
 varname		: IDENTIFIER			{ $$ = new string(context->fText); }

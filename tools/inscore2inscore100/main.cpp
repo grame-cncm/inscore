@@ -24,6 +24,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <string>
 #include "deelx.h"
 #include "IMessage.h"
 #include "IMessageStream.h"
@@ -33,17 +34,36 @@ using namespace std;
 using namespace inscore;
 
 //----------------------------------------------
-string strip (string str)
+string strip (const string& str)
 {
 	string out;
-	const char * ptr = str.c_str();
+	const char* ptr = str.c_str();
 	while (*ptr) {
-		if ((*ptr != ' ') && (*ptr != '\t'))
-			out += *ptr;
-		ptr++;
+		char c = *ptr;
+		if ((c != ' ') && (c!='\t')) break;
+		else ptr++;
 	}
+	if ((*ptr =='"') || (*ptr =='\'')) return ptr;
+	while (*ptr) {
+		char c = *ptr++;
+		if ((c == ' ') || (c == '\t')) break;
+		out += c;
+	}
+//cout << "strip '" << str << " '" << out << "'" << endl;
 	return out;
 }
+
+//string strip (string str)
+//{
+//	string out;
+//	const char * ptr = str.c_str();
+//	while (*ptr) {
+//		if ((*ptr != ' ') && (*ptr != '\t'))
+//			out += *ptr;
+//		ptr++;
+//	}
+//	return out;
+//}
 
 //----------------------------------------------------------------------
 static string replacevar (const char* str)
