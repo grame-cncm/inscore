@@ -148,11 +148,12 @@ const IMessageList* EventsAble::getTimeMsgs (eventype t, const RationalInterval&
 SIMessage EventsAble::buildGetMsg (const char * address, const string& what, const RationalInterval& time, const IMessageList* mlist) const
 {
 	SIMessage msg = IMessage::create (address, "watch");
-	*msg << what << int(time.first().getNumerator())
-		<< int(time.first().getDenominator())
-		<< int(time.second().getNumerator())
-		<< int(time.second().getDenominator())
-		<< mlist;
+	*msg << what << time.first() << time.second();
+	if (mlist) {
+		SIMessageList msgs = IMessageList::create();
+		*msgs = *mlist;
+		*msg << msgs;
+	}
 	return msg;
 }
 
