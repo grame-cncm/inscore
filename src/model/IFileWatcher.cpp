@@ -45,16 +45,6 @@ IFileWatcher::IFileWatcher(IObject * parent) : IVNode(kFileWatcherType, parent)
 }
 
 //--------------------------------------------------------------------------
-SIMessageList IFileWatcher::getMessages(const IMessage* source)
-{
-	SIMessageList list;
-	if (source->param(1, list))			// message already built by the parser
-		return list;
-	
-	return source->watchMsg2Msgs(1);
-}
-
-//--------------------------------------------------------------------------
 MsgHandler::msgStatus IFileWatcher::addWatchMsg (const IMessage* msg )	
 {
 	if (msg->size() < 4) return MsgHandler::kBadParameters;
@@ -62,9 +52,11 @@ MsgHandler::msgStatus IFileWatcher::addWatchMsg (const IMessage* msg )
 	std::string filename;				// a file name is expected as first argument
 	if (!msg->param(0, filename) || !filename.size()) return MsgHandler::kBadParameters;
 
-	SIMessageList watchmsgs = getMessages (msg);
-	if ( watchmsgs ) list().add ( IAppl::absolutePath(filename), watchmsgs);
-	else return MsgHandler::kBadParameters;
+	SIMessageList watchmsgs = msg->watchMsg2Msgs(1);
+	if ( watchmsgs && watchmsgs->list().size())
+		add ( IAppl::absolutePath(filename), watchmsgs);
+	else
+		return MsgHandler::kBadParameters;
 	return MsgHandler::kProcessed;
 }
 
@@ -73,17 +65,19 @@ MsgHandler::msgStatus IFileWatcher::watchMsg (const IMessage* msg )
 {
 	int n = msg->size();
 	// 'watch' message without argument clear the watch list
-	if (n == 0) list().clear();
+	if (n == 0) clear();
 	else {
 		std::string filename;				// a file name is expected as first argument
 		if (!msg->param(0, filename) || !filename.size()) return MsgHandler::kBadParameters;
 		
 		if (n == 1)							// 'watch' message with 1 argument: clear a file associated watch list			
-			list().clear (IAppl::absolutePath(filename));
+			clear (IAppl::absolutePath(filename));
 		else {								// more parameters: build the message and associates it to filename
-			SIMessageList watchmsgs = getMessages (msg);
-			if ( watchmsgs ) list().set ( IAppl::absolutePath(filename), watchmsgs);
-			else return MsgHandler::kBadParameters;
+			SIMessageList watchmsgs = msg->watchMsg2Msgs(1);
+			if ( watchmsgs && watchmsgs->list().size())
+				set ( IAppl::absolutePath(filename), watchmsgs);
+			else
+				return MsgHandler::kBadParameters;
 		}
 	}
 	return MsgHandler::kProcessed;
@@ -98,6 +92,7 @@ SIMessageList IFileWatcher::getMsgs (const IMessage*) const
 		*msg << i->first << i->second;
 		outMsgs->list().push_back(msg);
 	}
+	if (outMsgs->list().empty()) outMsgs->list().push_back(IMessage::create(getOSCAddress(), "watch"));
 	return outMsgs;
 }
 

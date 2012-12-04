@@ -56,10 +56,20 @@ typedef class libmapping::SMARTP<IFileWatcher>	SIFileWatcher;
 class IFileWatcher: public IVNode
 {
 	protected:
+		using IObject::set;
+		using IObject::add;
+		
 		TWatcher<std::string>	fWatchList;
 	
 				 IFileWatcher(IObject * parent);
 		virtual ~IFileWatcher() {}
+	
+		/// \brief overrides IFileWatcher method
+		virtual void set (const std::string& file, SIMessageList l)		{ fWatchList.set(file, l); }
+		/// \brief overrides IFileWatcher method
+		virtual void add (const std::string& file, SIMessageList l)		{ fWatchList.add(file, l); }
+		/// \brief overrides IFileWatcher method
+		virtual void clear (const std::string& file)					{ fWatchList.clear(file); }
 
 		/// \brief fileWatcher \c 'get' message handler
 		virtual SIMessageList getMsgs (const IMessage* msg) const;
@@ -74,13 +84,12 @@ class IFileWatcher: public IVNode
 		virtual void positionAble ()	{}
 		virtual void timeAble ()		{}
 
-		static SIMessageList getMessages(const IMessage* source);
-
 	public:
 		static const std::string kFileWatcherType;
 
-		TWatcher<std::string>			list()			{ return fWatchList; }
 		const TWatcher<std::string>&	list() const	{ return fWatchList; }
+		/// \brief overrides IFileWatcher method
+		virtual void clear()							{ fWatchList.clear(); }
 };
 
 /*!@} */
