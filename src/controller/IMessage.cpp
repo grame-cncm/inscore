@@ -297,14 +297,22 @@ void IMessage::print(std::ostream& out) const
 	out.flags ( f );
 }
 
+IMessage::TUrl::operator string() const
+{
+	stringstream str;
+	str << fHostname << ':' << fPort;
+	return str.str();
+}
+
 #ifndef NO_OSCSTREAM
 //--------------------------------------------------------------------------
 void IMessage::print(OSCStream& osc, bool start) const
 {
+	string addr = extendedAddress() ? (string(fUrl) + address()) : address();
 	if (start)
-		osc << OSCStart(address().c_str());
+		osc << OSCStart(addr.c_str());
 	else
-		osc << address().c_str();
+		osc << addr.c_str();
 	if (message().size()) osc << message();
 	printArgs(osc);
 	if (start)

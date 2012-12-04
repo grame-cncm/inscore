@@ -159,6 +159,7 @@ class IMessage : public Message, public libmapping::smartable
 				int			fPort;
 							TUrl () : fPort(0) {}
 							TUrl (const char* host, int port) : fHostname(host), fPort(port) {}
+				operator std::string() const;
 		};
 
 	private:
