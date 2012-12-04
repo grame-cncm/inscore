@@ -1523,12 +1523,12 @@ yyreduce:
 
   case 10:
 #line 120 "ITL.y"
-    { cout << "<? lua " << context->fText.c_str() << "?>;"; ;}
+    { cout << "<? lua " << context->fText.c_str() << "?>"; ;}
     break;
 
   case 11:
 #line 121 "ITL.y"
-    { cout << "<? javascript " << context->fText.c_str() << "?>;"; ;}
+    { cout << "<? javascript " << context->fText.c_str() << "?>"; ;}
     break;
 
   case 12:

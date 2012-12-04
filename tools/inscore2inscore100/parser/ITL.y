@@ -117,8 +117,8 @@ expr		: message  			{ printMessage(*$1); delete $1; }
 			;
 
 //_______________________________________________
-script		: LUASCRIPT			{ cout << "<? lua " << context->fText.c_str() << "?>;"; }
-			| JSCRIPT			{ cout << "<? javascript " << context->fText.c_str() << "?>;"; }
+script		: LUASCRIPT			{ cout << "<? lua " << context->fText.c_str() << "?>"; }
+			| JSCRIPT			{ cout << "<? javascript " << context->fText.c_str() << "?>"; }
 			;
 
 //_______________________________________________
