@@ -67,9 +67,9 @@ template<> SIObject _create<IFaustProcessor>(const std::string& name , IObject* 
 }
 
 #ifndef NOVIEW
-template<> SIObject _create<IScene>(const std::string& name , IObject* parent) 
+template<> SIObject _create<IScene>(const std::string& name , IObject* parent)
 {
-	SMARTP<IScene> obj = IScene::create(name, parent);
+	SIScene obj = IScene::create(name, parent);
 	if (obj) {
 		string oscaddress = parent->getOSCAddress();
 		oscaddress += "/";
