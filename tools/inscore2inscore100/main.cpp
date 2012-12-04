@@ -43,27 +43,24 @@ string strip (const string& str)
 		if ((c != ' ') && (c!='\t')) break;
 		else ptr++;
 	}
-	if ((*ptr =='"') || (*ptr =='\'')) return ptr;
+
+	string tmp;
 	while (*ptr) {
 		char c = *ptr++;
-		if ((c == ' ') || (c == '\t')) break;
-		out += c;
+		if ((c == ' ') || (c == '\t')) {
+			tmp += c;
+		}
+		else {
+			if (tmp.size()) {
+				out += tmp;
+				tmp.clear();
+			}
+			out += c;
+		}
 	}
-//cout << "strip '" << str << " '" << out << "'" << endl;
+//cout << "strip '" << str << "' '" << out << "'" << endl;
 	return out;
 }
-
-//string strip (string str)
-//{
-//	string out;
-//	const char * ptr = str.c_str();
-//	while (*ptr) {
-//		if ((*ptr != ' ') && (*ptr != '\t'))
-//			out += *ptr;
-//		ptr++;
-//	}
-//	return out;
-//}
 
 //----------------------------------------------------------------------
 static string replacevar (const char* str)
