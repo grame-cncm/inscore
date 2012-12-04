@@ -183,6 +183,8 @@ SIMessageList EventsAble::getWatch (const char* address) const
 
 	for (_TimeMsgMap::const_iterator i = fDurLeaveMsgMap.begin(); i != fDurLeaveMsgMap.end(); i++)
 		list->list().push_back( buildGetMsg (address, kDurLeaveStr, i->first, i->second));
+
+	if (list->list().empty()) list->list().push_back(IMessage::create (address, "watch"));
 	return list;
 }
 
