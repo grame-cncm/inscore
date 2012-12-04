@@ -55,8 +55,9 @@ template <typename T> class TWatcher
 				 TWatcher()	{}
 		virtual ~TWatcher() {}
 
-		const_iterator begin() const							{ return fWatchList.begin(); }
-		const_iterator end() const								{ return fWatchList.end(); }
+		const_iterator	begin() const							{ return fWatchList.begin(); }
+		const_iterator	end() const								{ return fWatchList.end(); }
+		int				size() const							{ return fWatchList.size(); }
 
 		/// \brief gives the map of messages list
 		const TWatchList& map() const							{ return fWatchList; }
