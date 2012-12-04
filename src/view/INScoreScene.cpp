@@ -45,7 +45,7 @@ using namespace inscore;
 using namespace libmapping;
 
 //_______________________________________________________________________
-INScoreScene::INScoreScene (const std::string& address, SMARTP<inscore::IScene> scene) 
+INScoreScene::INScoreScene (const std::string& address, inscore::IScene* scene)
 	: QGraphicsScene (), fScene(scene), fOscAddress(address) {}
 
 //_______________________________________________________________________

@@ -31,15 +31,15 @@
 #include "smartpointer.h"
 
 class QEvent;
-class IScene;
+class inscore::IScene;
 
 //_______________________________________________________________________
 class INScoreScene : public QGraphicsScene
 {
-	libmapping::SMARTP<inscore::IScene> fScene;		// the corresponding scene
+	inscore::IScene* fScene;		// the corresponding scene
 	
 	public:
-				 INScoreScene (const std::string& address, libmapping::SMARTP<inscore::IScene> scene);
+				 INScoreScene (const std::string& address, inscore::IScene* scene);
 		virtual ~INScoreScene() {}
 
 	protected:
