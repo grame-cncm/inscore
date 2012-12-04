@@ -1,17 +1,19 @@
-/ITL/scene/* del ;
-/ITL/tutorial watch ;
+/ITL/scene/* del;
+/ITL/tutorial watch;
 ! clear the new element event
 
-/ITL/scene/title set "html" "<h1>The message details</h1>" ;
-/ITL/scene/title y -0.700000 ;
-/ITL/scene/title scale 1.80000 ;
-/ITL/scene/msgsd2 set "htmlf" "rsrc/msgsd2.html" ;
-/ITL/scene/msgsd2 scale 2.00000 ;
-/ITL/scene/msgsd2 y -0.00000 ;
-/ITL/scene/msgsd2 xorigin -1.00000 ;
-/ITL/scene/msgsd2 x -0.750000 ;
-/ITL/scene load "previous.inscore" ;
-/ITL/scene/previous watch "mouseDown" "/ITL/scene" "load" "msgs-detail.inscore" ;
-/ITL/scene load "next.inscore" ;
-/ITL/scene/next watch "mouseDown" "/ITL/scene" "load" "msgs-time.inscore" ;
-/ITL/scene load "summary.inscore" ;
+/ITL/scene/title set html "<h1>The message details</h1>";
+/ITL/scene/title y -0.700000;
+/ITL/scene/title scale 1.80000;
+/ITL/scene/msgsd2 set htmlf "rsrc/msgsd2.html";
+/ITL/scene/msgsd2 scale 2.00000;
+/ITL/scene/msgsd2 y -0.00000;
+/ITL/scene/msgsd2 xorigin -1.00000;
+/ITL/scene/msgsd2 x -0.750000;
+/ITL/scene load "previous.inscore";
+/ITL/scene/previous watch mouseDown (
+	/ITL/scene load "msgs-detail.inscore" );
+/ITL/scene load "next.inscore";
+/ITL/scene/next watch mouseDown (
+	/ITL/scene load "msgs-time.inscore" );
+/ITL/scene load "summary.inscore";
