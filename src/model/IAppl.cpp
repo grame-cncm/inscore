@@ -360,7 +360,7 @@ MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
 {
 	if (msg->size() == 1) {
 		string srcfile;
-		if (msg->param(0, srcfile)) return MsgHandler::kBadParameters;
+		if (!msg->param(0, srcfile)) return MsgHandler::kBadParameters;
 		if (srcfile.size()) {
 			fstream file (absolutePath(srcfile).c_str(), fstream::in);
 			if (file.is_open()) {

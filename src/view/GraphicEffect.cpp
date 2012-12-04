@@ -123,7 +123,7 @@ MsgHandler::msgStatus GraphicEffect::set (const IMessage* msg)
 {
 	if (msg->size() >= 1) {
 		std::string effect;
-		if (msg->param(0, effect)) return MsgHandler::kBadParameters;
+		if (!msg->param(0, effect)) return MsgHandler::kBadParameters;
 		if ( effect == kNone) return MsgHandler::kProcessed;
 		
 		if ( effect == kBlur)			fEffect = buildBlurEffect (msg);
