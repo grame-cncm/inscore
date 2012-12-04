@@ -277,7 +277,7 @@ void IMessage::print(std::ostream& out) const
 	ios::fmtflags f = out.flags ( ios::showpoint );
 	const char * msg = message().c_str();
 
-	if (fUrl.fPort) out << fUrl.fHostname << ':' << fUrl.fPort;
+	if (extendedAddress()) out << string(fUrl);
 	out << address() << " ";
 	if (*msg) {
 		const string method = message();
@@ -306,17 +306,21 @@ IMessage::TUrl::operator string() const
 
 #ifndef NO_OSCSTREAM
 //--------------------------------------------------------------------------
-void IMessage::print(OSCStream& osc, bool start) const
+void IMessage::linearize(OSCStream& osc) const
 {
 	string addr = extendedAddress() ? (string(fUrl) + address()) : address();
-	if (start)
-		osc << OSCStart(addr.c_str());
-	else
-		osc << addr.c_str();
+	osc << addr.c_str();
 	if (message().size()) osc << message();
 	printArgs(osc);
-	if (start)
-		osc << OSCEnd();
+}
+
+//--------------------------------------------------------------------------
+void IMessage::print(OSCStream& osc) const
+{
+	osc << OSCStart(address().c_str());
+	if (message().size()) osc << message();
+	printArgs(osc);
+	osc << OSCEnd();
 }
 	
 //--------------------------------------------------------------------------
@@ -332,10 +336,10 @@ void IMessage::printArgs(OSCStream& osc) const
 			int n = msgs->list().size() - 1;
 			for (int i=0; i < n; i++) {
 				const IMessage* msg = msgs->list()[i];
-				msg->print(osc, false);
+				msg->linearize(osc);
 				osc << ":";
 			}
-			if (n >= 0) msgs->list()[n]->print(osc, false);
+			if (n >= 0) msgs->list()[n]->linearize(osc);
 		}
 		else ITLErr << "IMessage::printArgs to OSC: unknown message parameter type" << ITLEndl;
 	}
@@ -345,6 +349,8 @@ void IMessage::printArgs(OSCStream& osc) const
 //--------------------------------------------------------------------------
 bool IMessage::operator == (const IMessage& other) const
 {
+	if ( url() != other.url() )
+		return false;
 	if ( address() != other.address() )
 		return false;
 	if ( message() != other.message() )
@@ -402,6 +408,8 @@ IMessage& operator <<(IMessage& msg, const std::string& val)
 //--------------------------------------------------------------------------
 IMessage& operator << (IMessage& out, const IMessage* m)
 {
+//	string addr = m->extendedAddress() ? (string(m->url()) + m->address()) : m->address();
+//	out << addr << m->message();
 	out << m->address() << m->message();
 	for (int i = 0; i < m->size(); i++) {
 		string strv; int iv; float fv;

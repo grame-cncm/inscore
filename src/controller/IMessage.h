@@ -160,6 +160,8 @@ class IMessage : public Message, public libmapping::smartable
 							TUrl () : fPort(0) {}
 							TUrl (const char* host, int port) : fHostname(host), fPort(port) {}
 				operator std::string() const;
+				bool operator ==(const TUrl& other) const	{ return (fPort == other.fPort) && (fHostname == other.fHostname); }
+				bool operator !=(const TUrl& other) const	{ return (fPort != other.fPort) || (fHostname != other.fHostname); }
 		};
 
 	private:
@@ -299,7 +301,13 @@ class IMessage : public Message, public libmapping::smartable
 		\brief send the message to OSC
 		\param out the OSC output stream
 	*/
-	void	print(OSCStream& out, bool start=true) const;
+	void	print(OSCStream& out) const;
+
+	/*!
+		\brief linearize a message to OSC
+		\param out the OSC output stream
+	*/
+	void	linearize(OSCStream& out) const;
 	
 	/*!
 		\brief print message arguments
