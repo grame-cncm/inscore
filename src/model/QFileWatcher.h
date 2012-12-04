@@ -54,15 +54,11 @@ class QFileWatcher: public QObject, public IFileWatcher
 	Q_OBJECT
 
 	QFileSystemWatcher fWatcher;
-//	QMultiMap<QString, SIMessage>	mFilesMap;	// fileName -> msg map.
 
 	public:
 		static SQFileWatcher create(IObject * parent) { return new QFileWatcher(parent); }
 
 	protected:
-		using IFileWatcher::set;
-		using IFileWatcher::add;
-
 				 QFileWatcher(IObject * parent);
 		virtual ~QFileWatcher()		{}
 	

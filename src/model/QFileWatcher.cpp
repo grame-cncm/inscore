@@ -51,30 +51,35 @@ bool QFileWatcher::contains (const QString& filename)
 void QFileWatcher::set (const std::string& filename, SIMessageList msgs)
 {
 	QString qfile (filename.c_str());
+	if (!QFile::exists( qfile )) return;
+
 	if (!contains (qfile)) fWatcher.addPath( qfile );
-	list().set(filename, msgs);
+	IFileWatcher::set(filename, msgs);
 }
 
 //----------------------------------------------------------------------
 void QFileWatcher::add (const std::string& filename, SIMessageList msgs)
 {
 	QString qfile (filename.c_str());
+	if (!QFile::exists( qfile )) return;
+
 	if (!contains (qfile)) fWatcher.addPath( qfile );
-	list().add(filename, msgs);	
+	IFileWatcher::add(filename, msgs);
 }
 
 //----------------------------------------------------------------------
 void QFileWatcher::clear (const std::string& filename)
 {
 	fWatcher.removePath( filename.c_str() );
-	list().clear(filename);	
+	IFileWatcher::clear(filename);
 }
 
 //----------------------------------------------------------------------
 void QFileWatcher::clear()
 {
-	fWatcher.removePaths (fWatcher.files() );
-	list().clear();	
+	if (fWatcher.files().size())
+		fWatcher.removePaths (fWatcher.files() );
+	IFileWatcher::clear();
 }
 
 //----------------------------------------------------------------------
