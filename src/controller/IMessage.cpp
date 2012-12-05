@@ -29,6 +29,7 @@
 #include "IMessage.h"
 #include "IMessageStream.h"
 #include "IMessageStack.h"
+#include "Tools.h"
 #include "rational.h"
 
 #ifndef NO_OSCSTREAM
@@ -256,7 +257,7 @@ void IMessage::print(std::ostream& out, int i, int nested) const
 	else if (param(i, val))
 		out << val;
 	else if (param(i, fval))
-		out << fval;
+		out << Tools::ensurefloat (fval);
 	else if (param(i, msgs)) {
 		string prefix;
 		while (nested--) { prefix += "	"; }

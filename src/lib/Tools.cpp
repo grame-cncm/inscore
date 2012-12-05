@@ -19,6 +19,7 @@
   
 */
 
+#include <sstream>
 #include "Tools.h"
 
 
@@ -34,6 +35,21 @@ bool Tools::regexp (const std::string& str)
 			return true;
 	}
 	return false;
+}
+
+//--------------------------------------------------------------------------
+std::string Tools::ensurefloat (double f, int precision)
+{
+	std::stringstream stream;
+	stream.precision(precision);
+	stream << f;
+	const char* ptr = stream.str().c_str();
+	bool hasdot = false;
+	while(*ptr) {
+		if (*ptr++ == '.') hasdot = true;
+	}
+	if (!hasdot) stream << ".0";
+	return stream.str();
 }
 
 

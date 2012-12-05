@@ -28,7 +28,7 @@
 #include "IAppl.h"
 #include "IText.h"
 #include "IMessage.h"
-//#include "segment2relativetimereader.h"
+#include "Tools.h"
 #include "TComposition.h"
 #include "Updater.h"
 
@@ -63,7 +63,7 @@ void IText::print (ostream& out) const
 //--------------------------------------------------------------------------
 // message handlers
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus IText::set( const IMessage* msg )	
+MsgHandler::msgStatus IText::set( const IMessage* msg )
 { 
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
@@ -76,7 +76,7 @@ MsgHandler::msgStatus IText::set( const IMessage* msg )
 			string text; int itext; float ftext;
 			stream << sep;
 			if (msg->param(i, itext))			stream << itext;
-			else if (msg->param(i, ftext))		stream << ftext;
+			else if (msg->param(i, ftext))		stream << Tools::ensurefloat(ftext);
 			else if (msg->param(i, text))		stream << text;
 			sep = " ";
 		}
