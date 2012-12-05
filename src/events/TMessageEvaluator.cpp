@@ -267,7 +267,7 @@ SIMessage TMessageEvaluator::eval (const IMessage *msg, const EventContext& env)
 		string method = methodlist[0]->value<string>("");
 		if (method.size()) outmsg->setMessage (method);
 	}
-	for (int i=1; i<methodlist.size(); i++)
+	for (unsigned int i=1; i<methodlist.size(); i++)
 		outmsg->add( methodlist[i] );
 
 	// evaluate all the parameters
@@ -288,7 +288,7 @@ SIMessage TMessageEvaluator::eval (const IMessage *msg, const EventContext& env)
 SIMessageList TMessageEvaluator::eval (const IMessageList* msgs, const EventContext& env) const
 {
 	SIMessageList outmsgs = IMessageList::create();
-	for (int i = 0; i <  msgs->list().size(); i++) {
+	for (unsigned int i = 0; i <  msgs->list().size(); i++) {
 		const IMessage *msg = msgs->list()[i];
 		SIMessage emsg = eval (msg, env);
 		if (emsg) outmsgs->list().push_back(emsg);
