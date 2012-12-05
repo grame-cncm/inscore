@@ -39,6 +39,8 @@
 #include "ITLparser.h"
 #include "OSCAddress.h"
 #include "QFileWatcher.h"
+#include "rational.h"
+#include "TMessageEvaluator.h"
 #include "Updater.h"
 
 #include "VSceneView.h"
@@ -78,7 +80,6 @@ IScene::IScene(const std::string& name, IObject * parent)
 	fGetMsgHandlerMap["fullscreen"] = TGetParamMsgHandler<bool>::create(fFullScreen);
 	fGetMsgHandlerMap["frameless"]	= TGetParamMsgHandler<bool>::create(fFrameless);
 	fGetMsgHandlerMap["absolutexy"] = TGetParamMsgHandler<bool>::create(fAbsoluteCoordinates);
-	fGetMsgHandlerMap["watch"]		= TGetParamMethodHandler<IScene, SIMessageList (IScene::*)() const>::create(this, &IScene::getWatch);
 	fGetMsgHandlerMap["rootPath"]	= TGetParamMsgHandler<string>::create(fRootPath);
 }
 
@@ -111,7 +112,7 @@ void IScene::reset ()
 	setHeight(1.0f);
 	signalsNode()->delsubnodes();
 	delsubnodes();
-	fFileWatcher->list().clear();
+	fFileWatcher->clear();
 	fRootPath.clear();
 	fFullScreen = false; 
 	fFrameless = false;
@@ -230,13 +231,17 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 
 //--------------------------------------------------------------------------
 void IScene::add (const nodePtr& node)
-{ 
-//	vector<SEventMessage> msgs = getMessages (EventsAble::kNewElement);
-//	for (unsigned int i=0; i < msgs.size(); i++) {
-//		EventContext env (node);
-//		msgs[i]->send(env);
-//	}
+{
 	IObject::add (node);
+
+	const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kNewElement);
+	if (!msgs || msgs->list().empty()) return;		// nothing to do, no associated message
+
+	MouseLocation mouse (0, 0, 0, 0, 0, 0);
+	EventContext env(mouse, libmapping::rational(0,1), node);
+	TMessageEvaluator me;
+	SIMessageList outmsgs = me.eval (msgs, env);
+	if (outmsgs && outmsgs->list().size()) outmsgs->send();
 }
 
 //--------------------------------------------------------------------------
@@ -248,12 +253,11 @@ MsgHandler::msgStatus IScene::_watchMsg(const IMessage* msg, bool add)
 			EventsAble::eventype t = EventsAble::string2type (what);
 			switch (t) {
 				case EventsAble::kNewElement:
-//					if (msg->size() > 1)
-//						if (add) eventsHandler()->addMsg (t, EventMessage::create (name(), getScene()->name(), msg, 1));
-//						else eventsHandler()->setMsg (t, EventMessage::create (name(), getScene()->name(),msg, 1));
-//					else if (!add) eventsHandler()->setMsg (t, 0);
+					if (msg->size() > 1)
+						if (add) eventsHandler()->addMsg (t, msg->watchMsg2Msgs(1));
+						else eventsHandler()->setMsg (t, msg->watchMsg2Msgs(1));
+					else if (!add) eventsHandler()->setMsg (t, 0);
 					return MsgHandler::kProcessed;
-					break;
 
 				default:
 					break;

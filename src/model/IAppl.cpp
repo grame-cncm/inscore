@@ -41,9 +41,9 @@
 #include "OSCAddress.h"
 #include "Updater.h"
 #include "ip/NetworkingUtils.h"
+#include "TMessageEvaluator.h"
 #include "INScore.h"
 #include "ITLError.h"
-//#include "EventMessage.h"
 
 #include "INScore.h"
 
@@ -317,7 +317,7 @@ string IAppl::musicxmlversion() const
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IAppl::requireMsg(const IMessage* msg)
 {
-	if (msg->size() >= 3) {
+	if (msg->size() > 0) {
 		float version = INScore::version();
 		float required;
 		if (msg->param(0, required)) {
@@ -326,11 +326,16 @@ MsgHandler::msgStatus IAppl::requireMsg(const IMessage* msg)
 			}
 			else {
 				ITLErr << "Version " << required << " is required: current version is " << version  << ITLEndl;
-//				SEventMessage reqmsg = EventMessage::create (name(), "", msg, 1);
-//				if (reqmsg) {
-//					EventContext context (this);
-//					reqmsg->send(context);
-//				}
+				if (msg->size() > 1) {
+					const IMessageList* msgs = msg->watchMsg2Msgs(1);
+					if (!msgs || msgs->list().empty()) return MsgHandler::kBadParameters;
+
+					MouseLocation mouse (0, 0, 0, 0, 0, 0);
+					EventContext env(mouse, libmapping::rational(0,1), this);
+					TMessageEvaluator me;
+					SIMessageList outmsgs = me.eval (msgs, env);
+					if (outmsgs && outmsgs->list().size()) outmsgs->send();
+				}
 			}
 			return MsgHandler::kProcessed;
 		}
