@@ -33,6 +33,8 @@
 #include "IScene.h"
 #include "deelx.h"
 
+#include "INScore.h"
+
 using namespace std;
 using namespace libmapping;
 
@@ -49,7 +51,9 @@ const char* kDateVar	= "$date";
 const char* kRelativeDateVar = "$rdate";
 const char* kSelfVar	= "$self";
 const char* kNameVar	= "$name";
+const char* kSceneVar	= "$scene";
 const char* kAddressVar	= "$address";
+const char* kVersion	= "$version";
 
 map<const char*, int> TMessageEvaluator::fVarLength; 
 
@@ -67,7 +71,9 @@ void TMessageEvaluator::init ()
 		fVarLength[kRelativeDateVar] = strlen(kRelativeDateVar);
 		fVarLength[kSelfVar]	= strlen(kSelfVar);
 		fVarLength[kNameVar]	= strlen(kNameVar);
+		fVarLength[kSceneVar]	= strlen(kSceneVar);
 		fVarLength[kAddressVar]	= strlen(kAddressVar);
+		fVarLength[kVersion]	= strlen(kVersion);
 	}
 }
 
@@ -84,7 +90,7 @@ string TMessageEvaluator::evalAddress (const string& address, const IObject* obj
 {
 	const IScene* scene = obj->getScene();
 	string objname = obj->name();
-	string scenename = scene ? scene->name() : "";
+	string scenename = scene ? scene->name() : "scene";
 	
 	CRegexpT<char> regexp1("\\$self", EXTENDED);
 	char* tmp1 = regexp1.Replace (address.c_str(), objname.c_str());
@@ -225,12 +231,14 @@ IMessage::argslist TMessageEvaluator::evalVariable (const string& var, const Eve
 		
 		else if (var == kNameVar)			outval.push_back ( new IMsgParam<string>(env.object->name()));
 		else if (var == kAddressVar)		outval.push_back ( new IMsgParam<string>(env.object->getOSCAddress()));
+		else if (var == kSceneVar)			outval.push_back ( new IMsgParam<string>(env.object->getScene()->name()));
+		else if (var == kVersion)			outval.push_back ( new IMsgParam<float>(INScore::version()));
 
 		else if (dateVariable (var, relative)) {
 			if (!env.date.getDenominator()) return outval;		// date can't be resolved
 			outval.push_back ( evalDate (var, env, relative));
 		}
-		
+		else outval.push_back ( new IMsgParam<string>(var) );	// default for unknown variable: push the variable name
 	}
 	else outval.push_back ( new IMsgParam<string>(var) );
 	return outval;
