@@ -53,8 +53,10 @@ rational _MouseEventAble::point2date (const IObject * obj, float x, float y, con
 	rational nodate(0,0);
 	const SRelativeTime2GraphicMapping&	mapping = obj->getMapping (mapname);	// get the mapping first
 	if (!mapping) return nodate;												// failed to get the mapping
-	
-	GraphicSegment gseg (x, y, x+1, y+1);
+
+	x = x * 2 - 1;   // normalizes x and y to [-1 1] space
+	y = y * 2 - 1;
+	GraphicSegment gseg (x, y, x+0.000001, y+0.00001);
 	SGraphicSegmentation gset = GraphicSegmentation::create(gseg);				// create a graphic segmentation
 	gset->add (gseg);															// and adds a segment starting at x, y
 
