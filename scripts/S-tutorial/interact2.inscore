@@ -29,12 +29,10 @@
 /ITL/tutorial/num dy -1.65000;
 
 /ITL/tutorial/rect watch mouseDown (
-	localhost:7001/ITL/debug date '$date%f' ,
 	/ITL/tutorial/circ date '$date' ,
 	/ITL/tutorial/num set txt '$x' );
 
 /ITL/tutorial/rect watch mouseMove (
-	localhost:7001/ITL/debug date '$date' ,
 	/ITL/tutorial/circ date '$date' ,
 	/ITL/tutorial/num set txt '$x' );
 
