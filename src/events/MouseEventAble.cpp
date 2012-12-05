@@ -54,8 +54,6 @@ rational _MouseEventAble::point2date (const IObject * obj, float x, float y, con
 	const SRelativeTime2GraphicMapping&	mapping = obj->getMapping (mapname);	// get the mapping first
 	if (!mapping) return nodate;												// failed to get the mapping
 
-	x = x * 2 - 1;   // normalizes x and y to [-1 1] space
-	y = y * 2 - 1;
 	GraphicSegment gseg (x, y, x+0.000001, y+0.00001);
 	SGraphicSegmentation gset = GraphicSegmentation::create(gseg);				// create a graphic segmentation
 	gset->add (gseg);															// and adds a segment starting at x, y
@@ -78,10 +76,11 @@ rational _MouseEventAble::point2date (const IObject * obj, float x, float y, con
 }
 
 //----------------------------------------------------------------------
+// shift the relative coordinates regarding the object origin
 static void originshift (const IObject * obj, float& relx, float& rely)
 {
-	float xoriginscaled = (obj->getXOrigin() + 1) / 2.;
-	float yoriginscaled = (obj->getYOrigin() + 1) / 2.;
+	float xoriginscaled = (obj->getXOrigin() + 1) / 2.;	// scaled coordinate is in the interval [0, 1]
+	float yoriginscaled = (obj->getYOrigin() + 1) / 2.;	// when the object origin is inside the object
 	relx = xoriginscaled - relx;
 	rely = yoriginscaled - rely;
 	if (relx < 0) relx = -relx;
@@ -98,7 +97,8 @@ SIMessageList _MouseEventAble::eval (const IMessageList* msgs, float x, float y,
 
 		std::string mapname;
 		if (me.hasDateVar (msg, mapname))
-			env.date = point2date (env.object, x, y, mapname, 0);
+			// resolves the date in a normalized x and y coordinate space [-1 1]
+			env.date = point2date (env.object, x * 2 - 1, y * 2 - 1, mapname, 0);
 
 		SIMessage evaluated = me.eval (msg, env);
 		if (evaluated) outmsgs->list().push_back(evaluated);
@@ -113,50 +113,29 @@ void _MouseEventAble::handleEvent (const IObject * obj, QPointF pos,  EventsAble
 	if (!msgs || msgs->list().empty()) return;		// nothing to do, no associated message
 	
 	VObjectView*	view = obj->getView();
-	float x = pos.x();
+	float x = pos.x();											// first retrieve the x and y event position
 	float y = pos.y();
-	float w = view->relative2SceneWidth (obj->getWidth());
-	float h = view->relative2SceneHeight(obj->getHeight());
+	float w = view->relative2SceneWidth (obj->getWidth());		// next get the object width and height
+	float h = view->relative2SceneHeight(obj->getHeight());		// in scene coordinates space
 
-	float xpos = obj->getXPos();
-	float ypos = obj->getYPos();
+	float xpos = obj->getXPos();								// here is the object position
+	float ypos = obj->getYPos();								// in scene coordinates space
 
-	float clippedx = (x < 0) ? 0 : (x > w) ? w : x;
+	float clippedx = (x < 0) ? 0 : (x > w) ? w : x;				// clip the coordinates to the object width and height
 	float clippedy = (y < 0) ? 0 : (y > h) ? h : y;
 
-	float relx = clippedx / w;
+	float relx = clippedx / w;									// relative position makes use of the clipped values
 	float rely = clippedy / h;
 
-	float sx = xpos + (obj->getWidth()  * obj->getScale()/2 * (relx * 2 - 1));
-	float sy = ypos + (obj->getHeight() * obj->getScale()/2 * (rely * 2 - 1));
+	float sx = xpos + (obj->getWidth()  * obj->getScale()/2 * (relx * 2 - 1));	// get the position in scene coordinates
+	float sy = ypos + (obj->getHeight() * obj->getScale()/2 * (rely * 2 - 1));	// using the object position and the clipped coordinates
 
 	MouseLocation mouse (relx, rely, x, y, sx, sy);
-	originshift (obj, mouse.fx, mouse.fy);
-
-//if (type == EventsAble::kMouseDown)
-//qDebug() << "handle event pos " << " w/h " << w << h << "xy" << relx << rely << pos ;
+	originshift (obj, mouse.fx, mouse.fy);						// shift x and y accordind to the object xorigin and yorigin
 	
-	EventContext env(mouse, rational(0,1), obj);
-	SIMessageList outmsgs = eval (msgs, relx, rely, env);
-	if (outmsgs && outmsgs->list().size()) outmsgs->send();
-	
-//	for (unsigned int i=0; i<msgs->list().size(); i++) {
-//		std::string mapname;
-//		int num=0, denum=0;
-//		bool floatval;
-//		rational date (0,0);
-//		bool relative;
-//		EventContext env(mouse, date, obj);
-//		if (msgs->list()[i]->hasDateVar (mapname, num, denum, relative, floatval)) {
-//			date = point2date (obj, relx, rely, mapname, 0, relative);
-//			if (num && date.getDenominator()) {
-//				float fd = float(date);
-//				date.set (int(fd * denum / num) * num, denum);
-//			}
-//		}
-//		EventContext env(mouse, date, floatval, obj);
-//		msgs[i]->send(env);
-//	}
+	EventContext env(mouse, rational(0,1), obj);				// create a context
+	SIMessageList outmsgs = eval (msgs, relx, rely, env);		// evaluates the variable parts of the message list
+	if (outmsgs && outmsgs->list().size()) outmsgs->send();		// when not empty, sends the evaluated messages
 }
 
 } // end namespoace
