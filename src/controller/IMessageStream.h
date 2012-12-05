@@ -76,7 +76,10 @@ IMessage& operator <<(IMessage& msg, const TFloatPoint& val);
 IMessage& operator <<(IMessage& msg, const TIntSize& val);
 
 // SIMessageList: put it as is
-inline IMessage& operator <<(IMessage& msg, const SIMessageList& val)		{ msg.add(val); return msg; }
+inline IMessage& operator <<(IMessage& msg, const SIMessageList& val)		{ if (val->list().size()) msg.add(val); return msg; }
+
+// generic input method
+template <typename T> IMessage& operator <<(IMessage& msg, T val)		{ msg.add(val); return msg; }
 
 // catch vectors
 template <typename T>	IMessage& operator <<(IMessage& msg, const std::vector<T>& val)

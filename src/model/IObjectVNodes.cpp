@@ -38,6 +38,8 @@ IObjectDebug::IObjectDebug(IObject * parent) : IVNode("debug", parent), fMap(fal
 {
 	fMsgHandlerMap["map"]		= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setMapDebug);
 	fMsgHandlerMap["name"]		= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setNameDebug);
+	fMsgHandlerMap["watch"]		= 0;
+	fMsgHandlerMap["watch+"]	= 0;
 	
 	fGetMsgHandlerMap["map"]	= TGetParamMsgHandler<bool>::create(fMap);
 	fGetMsgHandlerMap["name"]	= TGetParamMsgHandler<bool>::create(fName);	

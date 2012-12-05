@@ -148,8 +148,11 @@ void INScoreScene::openfile (const char* fullpath)
 void INScoreScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 {
 	if (event->mimeData()->hasUrls()) {
-		QString fileName = event->mimeData()->urls().first().toLocalFile();
-		open ( fileName.toLocal8Bit().data() );
+		QList<QUrl> urls = event->mimeData()->urls();
+		for (QList<QUrl>::const_iterator i = urls.begin(); i != urls.end(); i++) {
+			QString fileName = i->toLocalFile();
+			open ( fileName.toLocal8Bit().data() );
+		}
 		event->accept();
 	}
 

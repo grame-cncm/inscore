@@ -43,29 +43,7 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-// IMessage implementation
-//--------------------------------------------------------------------------
-IMessage::IMessage(const IMessage& msg)
-{
-	*this = msg;
-}
-
-//--------------------------------------------------------------------------
-IMessage::IMessage(const std::string& address, const std::string& msg)
-				: fAddress(address)
-{
-	fArguments.push_back (new IMsgParam<string>(msg));
-	fHasMessage = true;
-}
-
-//--------------------------------------------------------------------------
-IMessage::IMessage(const std::string& address, const argslist& args, const TUrl& url)
-				: fAddress(address), fHasMessage(false), fUrl(url.fHostname.c_str(), url.fPort)
-{
-	fArguments = args;
-	fHasMessage = fArguments.size() && fArguments[0]->isType<string>();
-}
-
+// some static tools
 //--------------------------------------------------------------------------
 static string escape (const string& str)
 {
@@ -94,6 +72,33 @@ static bool needQuotes (const string& str)
 			ret = true;
 	}
 	return ret;
+}
+
+//--------------------------------------------------------------------------
+// IMessage implementation
+//--------------------------------------------------------------------------
+IMessage::IMessage(const IMessage& msg)
+{
+	*this = msg;
+}
+
+//--------------------------------------------------------------------------
+IMessage::IMessage(const std::string& address, const std::string& msg)
+				: fAddress(address)
+{
+	fArguments.push_back (new IMsgParam<string>(msg));
+	fHasMessage = true;
+}
+
+//--------------------------------------------------------------------------
+IMessage::IMessage(const std::string& address, const argslist& args, const TUrl& url)
+				: fAddress(address), fHasMessage(false), fUrl(url.fHostname.c_str(), url.fPort)
+{
+	fArguments = args;
+	if (fArguments.size()) {
+		string method = fArguments[0]->value<string>("");
+		fHasMessage = method.size() && !needQuotes(method);
+	}
 }
 
 //--------------------------------------------------------------------------
@@ -178,7 +183,11 @@ SIMessage IMessage::watchMsg2Msg(int& index) const
 //--------------------------------------------------------------------------
 SIMessageList IMessage::watchMsg2Msgs(int startIndex) const
 {
-	SIMessageList list = IMessageList::create();
+	SIMessageList list;
+	if (param(startIndex, list))	{		// message has already the correct format (parsed message)
+		return list;
+	}
+	list = IMessageList::create();
 	int n = size();
 	while (startIndex < n) {
 		SIMessage msg = watchMsg2Msg (startIndex);
@@ -270,7 +279,11 @@ void IMessage::print(std::ostream& out) const
 
 	if (fUrl.fPort) out << fUrl.fHostname << ':' << fUrl.fPort;
 	out << address() << " ";
-	if (*msg) out << message();
+	if (*msg) {
+		const string method = message();
+		const char * q = needQuotes (method) ? "\"" : "";
+		out << q << escape(method) << q;
+	}
 	if (size()) {
 		out << " ";
 		for (int i=0; i< size()-1; i++) {

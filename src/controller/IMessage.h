@@ -95,13 +95,13 @@ class baseparam : public libmapping::smartable
 		virtual libmapping::SMARTP<baseparam> copy() const = 0;
 };
 
-inline std::ostream& operator << (std::ostream& os, const baseparam* p) { 
-	if (p->isType<int>())				os << p->value(0);
-	else if (p->isType<float>())		os << p->value(0.);
-	else if (p->isType<std::string>())	os << p->value("");
-	else os << "unknown parameter type";
-	return os; 
-}
+//inline std::ostream& operator << (std::ostream& os, const baseparam* p) { 
+//	if (p->isType<int>())				os << p->value(0);
+//	else if (p->isType<float>())		os << p->value(0.);
+//	else if (p->isType<std::string>())	os << p->value("");
+//	else os << "unknown parameter type";
+//	return os; 
+//}
 
 //--------------------------------------------------------------------------
 /*!
@@ -453,8 +453,10 @@ class IMessageList : public libmapping::smartable
 				extvector<SIMessage>& list()		{ return fList; }
 				
 		/// \brief sends all the messages
-		void	send () const;
+		void	send () const;				
 };
+
+inline std::ostream& operator << (std::ostream& os, const SIMessage& m)			{ if (m) m->print(os); else os << "null msg"; return os; }
 
 /*!
 @}

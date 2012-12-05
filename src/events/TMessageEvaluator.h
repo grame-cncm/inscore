@@ -119,7 +119,7 @@ class TMessageEvaluator
 		IMessage::argslist evalVariable (const std::string& var, const EventContext& env) const;
 
 	public:
-				 TMessageEvaluator() {}
+				 TMessageEvaluator() { init(); }
 		virtual ~TMessageEvaluator() {}
 
 		/**

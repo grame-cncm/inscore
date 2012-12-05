@@ -71,19 +71,19 @@ class TEnv : public libmapping::smartable
 			return IMessage::argslist();
 		}
 		
-		void	print(std::ostream& os)	const { 
-			os << "env size:" << size() << " : ";
-			std::map<std::string, IMessage::argslist>::const_iterator i = fVariables.begin();
-			while (i != fVariables.end()) {
-				os << i->first << ":";
-				for (IMessage::argslist::const_iterator j = i->second.begin(); j != i->second.end(); j++)
-					os << (*j) << " , ";
-				i++;
-			}
-		}
+//		void	print(std::ostream& os)	const { 
+//			os << "env size:" << size() << " : ";
+//			std::map<std::string, IMessage::argslist>::const_iterator i = fVariables.begin();
+//			while (i != fVariables.end()) {
+//				os << i->first << ":";
+//				for (IMessage::argslist::const_iterator j = i->second.begin(); j != i->second.end(); j++)
+//					os << (*j) << " , ";
+//				i++;
+//			}
+//		}
 };
 
-inline std::ostream& operator << (std::ostream& os, const TEnv* env) { env->print(os); return os; }
+//inline std::ostream& operator << (std::ostream& os, const TEnv* env) { env->print(os); return os; }
 
 } // namespace
 
