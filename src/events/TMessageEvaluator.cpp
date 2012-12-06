@@ -31,6 +31,8 @@
 #include "IMessageStream.h"
 #include "IObject.h"
 #include "IScene.h"
+#include "ITLparser.h"
+
 #include "deelx.h"
 
 #include "INScore.h"
@@ -80,7 +82,7 @@ void TMessageEvaluator::init ()
 //----------------------------------------------------------------------
 bool TMessageEvaluator::checkrange (const char* param)
 {
-	CRegexpT <char> regexp("\\[\\d+.*\\d*,\\d+.*\\d*\\]");
+	CRegexpT <char> regexp("\\[.+,.+\\]");
     MatchResult result = regexp.MatchExact(param);
     return result.IsMatched();
 }
@@ -117,6 +119,7 @@ Sbaseparam TMessageEvaluator::evalRange (const string& range, float pos) const
 	float low, high;
 	int n = sscanf (range.c_str(), "[%f,%f]", &low, &high);
 	if (n == 2) pos = pos * (high - low) + low;
+	else ITLErr << "incorrect range:" << range << ITLEndl;
 	if (floatRequired (range.c_str()))
 		return new IMsgParam<float>(pos);
 	else 
@@ -126,7 +129,7 @@ Sbaseparam TMessageEvaluator::evalRange (const string& range, float pos) const
 //----------------------------------------------------------------------
 Sbaseparam TMessageEvaluator::evalPosition (const string& range, float pos) const
 {
-	if (range.size() && checkrange (range.c_str())) {
+	if (!range.empty() && checkrange (range.c_str())) {
 		return evalRange (range, pos);
 	}
 	return new IMsgParam<float>(pos);
@@ -181,6 +184,13 @@ bool TMessageEvaluator::dateVariable (const string& var, bool& relative)
 }
 
 //----------------------------------------------------------------------
+bool TMessageEvaluator::messageVariable (const string& var)
+{
+	int n = var.size();
+	return (n > 4) && (var[1] == '(') && (var[n-1] == ')');
+}
+
+//----------------------------------------------------------------------
 void TMessageEvaluator::parseDateVariable (const std::string& var, libmapping::rational quant, bool& floatval) const
 {
 	string quantstr = parseQuant(var);
@@ -216,6 +226,56 @@ IMessage::argslist TMessageEvaluator::evalDate (const string& var, const EventCo
 }
 
 //----------------------------------------------------------------------
+// evaluation of a message variable
+IMessage::argslist TMessageEvaluator::evalMessage (const IMessage* msg, const EventContext& env) const
+{
+	IMessage::argslist outval;
+
+	vector<const IObject*> targets;			// first get the message target objects
+	env.object->getRoot()->getObjects( msg->address(), targets);
+	unsigned int n = targets.size();
+	if (!n) return outval;					// no target: exit
+	
+	SIMessageList msgs = IMessageList::create();			// prepare for getting messages from the targets
+	for (unsigned int i=0; i< n; i++) {
+		SIMessageList l = targets[i]->getMsgs (msg);		// call each target getMsgs method
+		if (l && l->list().size())							// when getMsgs returns a valid list of messages
+			msgs->list().push_back (l->list());				// push them to the list
+	}
+	n = msgs->list().size();
+	for (unsigned int i=0; i< n; i++) {			
+		const IMessage* reply = msgs->list()[i];			// next for each reply
+		for (int p = 0; p < reply->size(); p++) {
+			outval.push_back(reply->param(p));
+		}
+	}
+	return outval;
+}
+
+//----------------------------------------------------------------------
+// evaluation of a message variable string
+IMessage::argslist TMessageEvaluator::evalMessage (const string& var, const EventContext& env) const
+{
+	IMessage::argslist outval;
+
+	stringstream stream (var);
+	IObject* o = const_cast<IObject*>(env.object);			// an UGLY const_cast just to be able to retrieve the js and lua engines
+	IScene* scene = o->getScene();							// here a const IScene could be used but the getJS and getLua methods are not const
+	TJSEngine* js = scene ? (TJSEngine*)scene->getJSEngine () : 0;		// get a javascript engine
+	TLua* lua = scene ? scene->getLUAEngine() : 0;						// get a lua engine
+	ITLparser p(&stream, 0, js, lua);						// create a parser
+	SIMessageList outmsgs = p.parse ();						// parses the string
+	if (!outmsgs) return outval;							// parsing failed : return an empty list
+	
+//	outmsgs = eval (outmsgs, env);			// first evaluate variable parts of the parsed messages
+	for (unsigned int i=0; i < outmsgs->list().size(); i++) {
+		const IMessage* msg = outmsgs->list()[i];			// and for each parsed message
+		outval.push_back( evalMessage (msg, env) );			// evaluate the message and push the result in outval
+	}
+	return outval;
+}
+
+//----------------------------------------------------------------------
 IMessage::argslist TMessageEvaluator::evalVariable (const string& var, const EventContext& env) const
 {
 	IMessage::argslist outval;
@@ -237,6 +297,10 @@ IMessage::argslist TMessageEvaluator::evalVariable (const string& var, const Eve
 		else if (dateVariable (var, relative)) {
 			if (!env.date.getDenominator()) return outval;		// date can't be resolved
 			outval.push_back ( evalDate (var, env, relative));
+		}
+		
+		else if (messageVariable (var)) {
+			outval.push_back ( evalMessage (var.substr(2, var.size()-3), env) );
 		}
 		else outval.push_back ( new IMsgParam<string>(var) );	// default for unknown variable: push the variable name
 	}

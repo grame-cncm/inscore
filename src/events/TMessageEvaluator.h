@@ -64,9 +64,7 @@ typedef struct MouseLocation {
 typedef struct EventContext {
 	MouseLocation			mouse;		///< the current mouse position
 	libmapping::rational	date;		///< the object date at the mouse position
-//	bool					floatdate;	///< the date expressed as a float value
 	const IObject*			object;		///< the object which context is attached to
-//	const IMessage*			varmsg;		///< the message to be evaluated
 
 	EventContext (const MouseLocation& ml, const libmapping::rational& d, const IObject* o)
 		: mouse(ml), date(d), object(o) {} //, varmsg(0) {}
@@ -110,6 +108,23 @@ class TMessageEvaluator
 			\return a list or arguments to be used as parameters in place of the variable
 		*/
 		IMessage::argslist evalDate (const std::string& var, const EventContext& env, bool relative) const;
+
+		/**
+		*	\brief evaluates a message
+			\param msg the message
+			\param env the context of the event
+			\return a list or arguments to be used as parameters in place of the variable
+		*/
+		IMessage::argslist evalMessage (const IMessage* msg, const EventContext& env) const;
+
+		/**
+		*	\brief evaluates a message variable
+			\param var the message string
+			\param env the context of the event
+			\return a list or arguments to be used as parameters in place of the variable
+		*/
+		IMessage::argslist evalMessage (const std::string& var, const EventContext& env) const;
+
 		/**
 		*	\brief evaluates a variable
 			\param var the variable
@@ -140,6 +155,8 @@ class TMessageEvaluator
 		*/
 		SIMessageList	eval (const IMessageList* msgs, const EventContext& env) const;
 
+	/// \brief check if a variable is a message variable
+	static bool			messageVariable (const std::string& var);
 	/// \brief check if a variable is a date variable
 	static bool			dateVariable (const std::string& var, bool& relative);
 	/// \brief check if a message has a date variable and gives the date requested map name
