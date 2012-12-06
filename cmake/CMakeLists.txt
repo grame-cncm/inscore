@@ -50,7 +50,7 @@ endif(APPLE)
 set (ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../src)
 set (MAP ${ROOT}/libmapping)
 set (INSFOLDERS  controller events lib model view mapping interface graph signal signal/faust ITLParser scripting)
-set (LIBMAPFOLDERS libmapping/src/misc libmapping/src/segments libmapping/src/parser)
+set (LIBMAPFOLDERS libmapping/src/misc libmapping/src/parser libmapping/src/relations libmapping/src/segments)
 set (RSRC  "${ROOT}/../rsrc")
 set (LOCALLIB  "${ROOT}/../lib")
 set (OSC_PATH  "${LOCALLIB}/oscpack")
@@ -144,10 +144,10 @@ foreach(folder ${INSFOLDERS})
 endforeach()
 file (GLOB COREH RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${HEADERS})
 
-foreach(folder ${INSFOLDERS})
+foreach(folder ${INSFOLDERS} ${LIBMAPFOLDERS})
 	set(INCL ${INCL} "${ROOT}/${folder}")				# add include folders
 endforeach()
-set(INCL ${MAP}/package/libmapping ${INCL} "${ROOT}/atomic" ${SCRIPTINCL})
+set(INCL ${INCL} "${ROOT}/atomic" ${SCRIPTINCL})
 
 
 #######################################
