@@ -6,7 +6,7 @@ ARCH = -arch x86_64
 # no script options
 CXXFLAGS :=  -g -DNO_OSCSTREAM -I.. -I../../controller -I../../lib -I../../interface -I../../mapping -I../../model -I../../view -I../../atomic -I../../scripting -I../../libmapping/package/libmapping -I../../../lib/oscpack $(ARCH) -DPARSERTEST
 
-OBJ := ../ITLparser.o ../ITLparse.o ../ITLlex.o  ../../libmapping/src/misc/rational.o ../../controller/IMessage.o  ../../scripting/TScripting.o testparser.o 
+OBJ := ../ITLparser.o ../ITLparse.o ../ITLlex.o  ../../libmapping/src/misc/rational.o ../../controller/IMessage.o  ../../scripting/TScripting.o ../../lib/Tools.o testparser.o 
 
 ###################
 # lua options
