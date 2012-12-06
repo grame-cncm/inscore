@@ -1,63 +1,66 @@
 
-/ITL/scene/* del ;
-/ITL/scene/title set "txt" "Muller-Lyer illusions" ;
-/ITL/scene/title scale 2.70000 ;
-/ITL/scene/title y -0.900000 ;
-/ITL/scene/line1 set "line" "xy" -1.00000 0.00000 ;
-/ITL/scene/line2 set "line" "xy" -1.00000 0.00000 ;
-/ITL/scene/line1 y -0.200000 ;
-/ITL/scene/line2 y 0.200000 ;
-/ITL/scene/al1 set "line" "wa" 0.200000 45.0000 ;
-/ITL/scene/al2 set "line" "wa" 0.200000 -45.0000 ;
-/ITL/scene/ar1 set "line" "wa" 0.200000 -45.0000 ;
-/ITL/scene/ar2 set "line" "wa" 0.200000 45.0000 ;
-/ITL/scene/br1 set "line" "wa" 0.200000 45.0000 ;
-/ITL/scene/br2 set "line" "wa" 0.200000 -45.0000 ;
-/ITL/scene/bl1 set "line" "wa" 0.200000 -45.0000 ;
-/ITL/scene/bl2 set "line" "wa" 0.200000 45.0000 ;
-/ITL/scene/al* xorigin 1.00000 ;
-/ITL/scene/ar* xorigin -1.00000 ;
-/ITL/scene/bl* xorigin -1.00000 ;
-/ITL/scene/br* xorigin 1.00000 ;
-/ITL/scene/??1 yorigin 1.00000 ;
-/ITL/scene/??2 yorigin -1.00000 ;
-/ITL/scene/?l* x -0.500000 ;
-/ITL/scene/?r* x 0.500000 ;
-/ITL/scene/a* y -0.200000 ;
-/ITL/scene/b* y 0.200000 ;
+width = 0.18;	! the rotating lines width
 
+/ITL/scene/* del;
+/ITL/scene/title set txt "Muller-Lyer illusions";
+/ITL/scene/title scale 2.70;
+/ITL/scene/title y -0.9;
+/ITL/scene/line1 set line xy -1.0 0.0;
+/ITL/scene/line2 set line xy -1.0 0.0;
+/ITL/scene/line1 y -0.2;
+/ITL/scene/line2 y 0.2;
+/ITL/scene/al1 set line wa $width 45.0;
+/ITL/scene/al2 set line wa $width -45.0;
+/ITL/scene/ar1 set line wa $width -45.0;
+/ITL/scene/ar2 set line wa $width 45.0;
+/ITL/scene/br1 set line wa $width 45.0;
+/ITL/scene/br2 set line wa $width -45.0;
+/ITL/scene/bl1 set line wa $width -45.0;
+/ITL/scene/bl2 set line wa $width 45.0;
+/ITL/scene/al* xorigin 1.0;
+/ITL/scene/ar* xorigin -1.0;
+/ITL/scene/bl* xorigin -1.0;
+/ITL/scene/br* xorigin 1.0;
+/ITL/scene/??1 yorigin 1.0;
+/ITL/scene/??2 yorigin -1.0;
+/ITL/scene/?l* x -0.5;
+/ITL/scene/?r* x 0.5;
+/ITL/scene/a* y -0.2;
+/ITL/scene/b* y 0.2;
 
-w = 0.05;
-y = 0.9;
-/ITL/scene/slider set "rect" 1. $w ;
-/ITL/scene/slider penWidth 1. ;
-/ITL/scene/slider penColor 0 0 0 ;
-/ITL/scene/slider z 1. ;
-/ITL/scene/slider color 255 255 255 0 ;
-/ITL/scene/sliderloc set "ellipse" $w $w;
-/ITL/scene/sliderloc color 0. 0. 0. ;
-/ITL/scene/slider* xorigin -1.0 ;
-/ITL/scene/slider* x -0.5 ;
+h =0.05;		! the slider height
+y =0.9;			! the slider y position
+/ITL/scene/slider set rect 1.0 $h ;
+/ITL/scene/slider penWidth 1.0;
+/ITL/scene/slider penColor 0 0 0;
+/ITL/scene/slider z 1.0;
+/ITL/scene/slider color 255 255 255 0;
+/ITL/scene/sliderloc set ellipse $h  $h;
+/ITL/scene/sliderloc color 0.0 0.0 0.0;
+/ITL/scene/slider* xorigin -1.0;
+/ITL/scene/slider* x -0.5;
 /ITL/scene/slider* y $y ;
-/ITL/scene/sync 'sliderloc' 'slider' 'v';
+/ITL/scene/sync sliderloc slider v;
 /ITL/scene/sliderloc date 0.5;
 
-/ITL/scene/slider watch  "mouseDown" "/ITL/scene/sliderloc" "date" "$x" ;
-/ITL/scene/slider watch+ "mouseDown" "/ITL/scene/br2" "set" 'line' 'wa' 0.18 "$x[-90.,0.]" ;
-/ITL/scene/slider watch+ "mouseDown" "/ITL/scene/bl1" "set" 'line' 'wa' 0.18 "$x[-90.,0.]" ;
-/ITL/scene/slider watch+ "mouseDown" "/ITL/scene/br1" "set" 'line' 'wa' 0.18 "$x[90.,0.]" ;
-/ITL/scene/slider watch+ "mouseDown" "/ITL/scene/bl2" "set" 'line' 'wa' 0.18 "$x[90.,0.]" ;
-/ITL/scene/slider watch+ "mouseDown" "/ITL/scene/ar1" "set" 'line' 'wa' 0.18 "$x[-90.,0.]" ;
-/ITL/scene/slider watch+ "mouseDown" "/ITL/scene/al2" "set" 'line' 'wa' 0.18 "$x[-90.,0.]" ;
-/ITL/scene/slider watch+ "mouseDown" "/ITL/scene/ar2" "set" 'line' 'wa' 0.18 "$x[90.,0.]" ;
-/ITL/scene/slider watch+ "mouseDown" "/ITL/scene/al1" "set" 'line' 'wa' 0.18 "$x[90.,0.]" ;
+/ITL/scene/slider watch mouseDown (
+	/ITL/scene/sliderloc date "$x" ,
+	/ITL/scene/br2 set line wa $width "$x[-90.,0.]" ,
+	/ITL/scene/bl1 set line wa $width "$x[-90.,0.]" ,
+	/ITL/scene/br1 set line wa $width "$x[90.,0.]" ,
+	/ITL/scene/bl2 set line wa $width "$x[90.,0.]" ,
+	/ITL/scene/ar1 set line wa $width "$x[-90.,0.]" ,
+	/ITL/scene/al2 set line wa $width "$x[-90.,0.]" ,
+	/ITL/scene/ar2 set line wa $width "$x[90.,0.]" ,
+	/ITL/scene/al1 set line wa $width "$x[90.,0.]" );
 
-/ITL/scene/slider watch  "mouseMove" "/ITL/scene/sliderloc" "date" "$x" ;
-/ITL/scene/slider watch+ "mouseMove" "/ITL/scene/br2" "set" 'line' 'wa' 0.18 "$x[-90.,0.]" ;
-/ITL/scene/slider watch+ "mouseMove" "/ITL/scene/bl1" "set" 'line' 'wa' 0.18 "$x[-90.,0.]" ;
-/ITL/scene/slider watch+ "mouseMove" "/ITL/scene/br1" "set" 'line' 'wa' 0.18 "$x[90.,0.]" ;
-/ITL/scene/slider watch+ "mouseMove" "/ITL/scene/bl2" "set" 'line' 'wa' 0.18 "$x[90.,0.]" ;
-/ITL/scene/slider watch+ "mouseMove" "/ITL/scene/ar1" "set" 'line' 'wa' 0.18 "$x[-90.,0.]" ;
-/ITL/scene/slider watch+ "mouseMove" "/ITL/scene/al2" "set" 'line' 'wa' 0.18 "$x[-90.,0.]" ;
-/ITL/scene/slider watch+ "mouseMove" "/ITL/scene/ar2" "set" 'line' 'wa' 0.18 "$x[90.,0.]" ;
-/ITL/scene/slider watch+ "mouseMove" "/ITL/scene/al1" "set" 'line' 'wa' 0.18 "$x[90.,0.]" ;
+/ITL/scene/slider watch mouseMove (
+	/ITL/scene/sliderloc date "$x" ,
+	/ITL/scene/br2 set line wa $width "$x[-90.,0.]" ,
+	/ITL/scene/bl1 set line wa $width "$x[-90.,0.]" ,
+	/ITL/scene/br1 set line wa $width "$x[90.,0.]" ,
+	/ITL/scene/bl2 set line wa $width "$x[90.,0.]" ,
+	/ITL/scene/ar1 set line wa $width "$x[-90.,0.]" ,
+	/ITL/scene/al2 set line wa $width "$x[-90.,0.]" ,
+	/ITL/scene/ar2 set line wa $width "$x[90.,0.]" ,
+	/ITL/scene/al1 set line wa $width "$x[90.,0.]" );

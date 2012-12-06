@@ -11,7 +11,6 @@ y =-0.2;
 /ITL/scene/rect  z  1.00000;
 
 /ITL/scene/rep1  set  img "repere.png";
-!/ITL/scene/rep1 scale 1.2;
 /ITL/scene/rep2  set  img "repere.png";
 /ITL/scene/rep2  x  $x;
 /ITL/scene/rep2  y  $y;
@@ -31,6 +30,9 @@ y =-0.2;
 /ITL/scene/[tv]pos  y  0.400000;
 /ITL/scene/[tv]apos  y  0.500000;
 /ITL/scene/[tv]spos  y  0.600000;
+
+/ITL/scene/comment  set  txt "You can drop any of the xorigin* script to the scene";
+/ITL/scene/comment y 0.9;
 
 
 /ITL/scene/rect  watch+  mouseDown (
