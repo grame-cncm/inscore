@@ -30,7 +30,7 @@ namespace inscore
 struct Tools
 {
 	static bool			regexp (const std::string& str);
-	static std::string	ensurefloat (double f, int precision=10);
+	static std::string	ensurefloat (float f, int precision=0);
 };
 
 
