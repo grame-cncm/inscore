@@ -36,7 +36,7 @@ namespace inscore
 
 const string ILine::kLineType("line");
 //--------------------------------------------------------------------------
-ILine::ILine( const std::string& name, IObject* parent ) : IShapeMap(name, parent)
+ILine::ILine( const std::string& name, IObject* parent ) : IShapeMap(name, parent), fWAMode(false)
 { 
 	fTypeString = kLineType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler< TFloatPoint >::create( getPoint() );
@@ -55,6 +55,18 @@ void ILine::print (ostream& out) const
 {
 	IShapeMap::print (out);
 	out << fPoint << endl;
+}
+
+
+//--------------------------------------------------------------------------
+// the 'get' form without parameter
+SIMessageList ILine::getSetMsg() const
+{
+	SIMessageList outmsgs = IMessageList::create();
+	SIMessage msg = IMessage::create(getOSCAddress(), "set");
+	*msg << "xy" << fPoint;
+	outmsgs->list().push_back (msg);
+	return outmsgs;
 }
 
 //--------------------------------------------------------------------------
@@ -81,12 +93,13 @@ MsgHandler::msgStatus ILine::set (const IMessage* msg)
 			setPoint( TFloatPoint(a,b) );
 		}
 		else if (mode == "wa") {
+			fWAMode = true;
 			float x = a * cos(M_PI * b / 180);
 			float y = a * sin(M_PI * b / 180);
 			setPoint( TFloatPoint(x,y) );
 		}
-		status = MsgHandler::kProcessed;
 		newData(true);
+		status = MsgHandler::kProcessed;
 	}
 	else status = MsgHandler::kBadParameters;
 	return status;
