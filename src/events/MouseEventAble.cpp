@@ -54,22 +54,19 @@ rational _MouseEventAble::point2date (const IObject * obj, float x, float y, con
 	const SRelativeTime2GraphicMapping&	mapping = obj->getMapping (mapname);	// get the mapping first
 	if (!mapping) return nodate;												// failed to get the mapping
 
-	GraphicSegment gseg (x, y, x+0.000001, y+0.00001);
-	SGraphicSegmentation gset = GraphicSegmentation::create(gseg);				// create a graphic segmentation
-	gset->add (gseg);															// and adds a segment starting at x, y
-
-	TRefinedRelation<float,2,rational,1> g2rt (mapping->reverse(), gset);		// defines a refined relation using this segmentation
-	set<RelativeTimeSegment> dates = g2rt.get (gseg);							// and query the relation to get the dates associated to x, y
-	
-	for (set<RelativeTimeSegment>::const_iterator i = dates.begin(); i != dates.end(); i++, n--) {
-		// n is used in case of repeated sections to select a given repetition
-		if (n == 0) {
-			rational outdate = i->start();		// returns the time segment start, that corresponds to x, y
-			outdate.rationalize();
-			while (outdate.getNumerator() > 0xfffffff)  // check for int overflow
-				// this is necessary because the value is sent over OSC and thus cast to osc-int
-				outdate.set(outdate.getNumerator()/2, outdate.getDenominator()/2);
-			return outdate;
+	const Graphic2RelativeTimeRelation& g2t = mapping->reverse();	// get the graphic to time relation
+	for (TRelation<float,2,libmapping::rational,1>::const_iterator i = g2t.begin(); i != g2t.end(); i++) {
+		if (i->first.include (x, y)) {								// check if graphic segment includes the location
+			std::set<RelativeTimeSegment> s = i->second;			// if yes, get the corresponding time segments
+			int repeat = n;											// initializes the repeat count
+			double a = (x - i->first.xinterval().first()) / i->first.xinterval().size(); // this is the relative point position
+			for (std::set<RelativeTimeSegment>::const_iterator si = s.begin(); si != s.end(); si++) {
+				if (!repeat--) {									// expected repeat reached
+					// the date is computed as a float value to avoid overflow of rational values
+					float date = float(si->start()) + float(si->size()) * a;
+					return rational(date);							// and return the float value as a rational
+				}
+			}
 		}
 	}
 	return nodate;							// no such segment or repeat
