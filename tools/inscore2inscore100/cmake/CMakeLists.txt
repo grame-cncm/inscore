@@ -40,7 +40,8 @@ set (LOCALLIB  "${ROOT}/../../lib/")
 set (INSCORE ${ROOT}/../../src)
 set (INSFOLDERS  controller lib model mapping view interface scripting atomic libmapping/package/libmapping)
 
-set(SRC "${ROOT}/*.cpp" "${ROOT}/parser/*.cpp" "${INSCORE}/scripting/TScripting.cpp")		# add source files
+# add source files
+set(SRC "${ROOT}/*.cpp" "${ROOT}/parser/*.cpp" "${INSCORE}/scripting/TScripting.cpp" "${INSCORE}/lib/Tools.cpp")
 set(SRC "${SRC}" "${INSCORE}/libmapping/src/misc/rational.cpp" "${INSCORE}/controller/IMessage.cpp")
 
 file (GLOB CORESRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${SRC})
