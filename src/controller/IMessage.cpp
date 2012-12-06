@@ -275,13 +275,10 @@ void IMessage::print(std::ostream& out) const
 {
 	static int nested = 0;
 	nested++;
-	ios::fmtflags f = out.flags ( ios::showpoint );
-	const char * msg = message().c_str();
-
 	if (extendedAddress()) out << string(fUrl);
 	out << address() << " ";
-	if (*msg) {
-		const string method = message();
+	const string method = message();
+	if (method.size()) {
 		const char * q = needQuotes (method) ? "\"" : "";
 		out << q << escape(method) << q;
 	}
@@ -295,7 +292,6 @@ void IMessage::print(std::ostream& out) const
 	}
 	if (nested == 1) out << ";";
 	nested--;
-	out.flags ( f );
 }
 
 IMessage::TUrl::operator string() const
@@ -393,15 +389,6 @@ IMessage& operator <<(IMessage& msg, const TIntSize& val)
 //--------------------------------------------------------------------------
 IMessage& operator <<(IMessage& msg, const std::string& val)
 { 
-	const char *ptr = val.c_str();
-	bool quote = false;
-	while (*ptr) {
-		if (*ptr == ' ') {
-			quote = true;
-			break;
-		}
-		ptr++;
-	}
 	msg.add(val);
 	return msg; 
 }
