@@ -4,7 +4,7 @@ ARCH = -arch x86_64
 
 ###################
 # no script options
-CXXFLAGS :=  -g -DNO_OSCSTREAM -I.. -I../../controller -I../../lib -I../../interface -I../../mapping -I../../model -I../../view -I../../atomic -I../../scripting -I../../libmapping/package/libmapping -I../../../lib/oscpack $(ARCH) -DPARSERTEST
+CXXFLAGS :=  -g -DNO_OSCSTREAM -I.. -I../../controller -I../../lib -I../../interface -I../../mapping -I../../model -I../../view -I../../atomic -I../../scripting -I../../libmapping/src/misc -I../../libmapping/src/parser -I../../libmapping/src/relations -I../../libmapping/src/segments -I../../../lib/oscpack $(ARCH) -DPARSERTEST
 
 OBJ := ../ITLparser.o ../ITLparse.o ../ITLlex.o  ../../libmapping/src/misc/rational.o ../../controller/IMessage.o  ../../scripting/TScripting.o ../../lib/Tools.o testparser.o 
 
