@@ -1116,18 +1116,31 @@ The \OSC{get} message without parameter is equivalent to a \OSC{get} message add
 %:   Synchronization modes
 \sublevel{Synchronization modes}
 
+Synchronizing a component \values{A} to a component \values{B} has the following effect:
+\begin{itemize}
+\item \values{A} position (x,y) is modified to match the \values{B} time position corresponding to \values{A} date.
+\item depending on the optional \OSC{syncStretch}, \values{A} width and/or height are modified to match the  corresponding \values{B} dimensions (see below).
+\item if \values{A} date has no graphic correspondance in \values{B} mapping (the date is not mapped, or out of \values{B} mapping bounds ), \values{A} won't be visible.
+\end{itemize}
+
 \begin{rail}
-syncmode : syncAlignment | syncStretch | mapName
+syncmode : syncHow| syncStretch | syncPos | mapName
 \end{rail}
 \index{Synchronization!syncmode}
 
 \begin{rail}
-syncAlignment : 'syncOver' | 'syncTop' | 'syncBottom'
+syncHow : 'relative' | 'absolute'
 \end{rail}
-\index{Synchronization!syncAlignment}
-\index{Synchronization!syncAlignment!syncOver}
-\index{Synchronization!syncAlignment!syncTop}
-\index{Synchronization!syncAlignment!syncBottom}
+\index{Synchronization!syncHow}
+\index{Synchronization!syncHow!relative}
+\index{Synchronization!syncHow!absolute}
+
+The synchronization mode makes use of the master time to graphic mapping to compute the slave position. It may also use the master current date, depending on the following options:
+\begin{itemize}
+\item \OSC{absolute}: the time position where the slave appears corresponds to the mapping absolute date only.
+\item \OSC{relative}: the time position where the slave appears is relative to the mapping and the master current date.
+\end{itemize}
+By default, the relative mode is used.
 
 \begin{rail}
 syncStretch : 'h' | 'v' | 'hv'
@@ -1137,32 +1150,32 @@ syncStretch : 'h' | 'v' | 'hv'
 \index{Synchronization!syncStretch!v}
 \index{Synchronization!syncStretch!hv}
 
-Synchronizing a component \values{A} to a component \values{B} has the following effect:
-\begin{itemize}
-\item \values{A} position (x,y) is modified to match the \values{B} time position corresponding to \values{A} date.
-\item depending on the optional \OSC{syncStretch}, \values{A} width and/or height are modified to match the  corresponding \values{B} dimensions (see below).
-\item if \values{A} date has no graphic correspondance in \values{B} mapping (the date is not mapped, or out of \values{B} mapping bounds ), \values{A} won't be visible.
-\end{itemize}
-
-The synchronization alignment modes have the following effects on the slave \values{y} position:
-\begin{itemize}
-\item \OSC{syncOver}: the center of the slave is aligned to the master center.
-\item \OSC{syncTop}: the bottom of the slave is aligned to the top of the master.
-\item \OSC{syncBottom}: the top of the slave is aligned to the bottom of the master.
-\end{itemize}
-\index{Synchronization!syncAlignment!syncOver}
-\index{Synchronization!syncAlignment!syncTop}
-\index{Synchronization!syncAlignment!syncBottom}
-
-The default synchronization mode is \OSC{syncOver}.
-
-The synchronization stretch modes have the following effects on the slave dimensions:
+The synchronization stretch mode has the following effect on the slave dimensions:
 \begin{itemize}
 \item \OSC{h}: the slave is horizontally stretched to align its begin and end dates to the corresponding master locations.
 \item \OSC{v}: the slave is vertically stretched to the master vertical dimension.
 \item \OSC{hv}: combines the above parameters.
 \end{itemize}
 By default, no stretching is applied.
+
+\begin{rail}
+syncPos : 'syncOver' | 'syncTop' | 'syncBottom'
+\end{rail}
+\index{Synchronization!syncPos}
+\index{Synchronization!syncPos!syncOver}
+\index{Synchronization!syncPos!syncTop}
+\index{Synchronization!syncPos!syncBottom}
+
+The synchronization position mode has the following effects on the slave \values{y} position:
+\begin{itemize}
+\item \OSC{syncOver}: the center of the slave is aligned to the master center.
+\item \OSC{syncTop}: the bottom of the slave is aligned to the top of the master.
+\item \OSC{syncBottom}: the top of the slave is aligned to the bottom of the master.
+\end{itemize}
+\index{Synchronization!syncPos!syncOver}
+\index{Synchronization!syncPos!syncTop}
+\index{Synchronization!syncPos!syncBottom}
+The default synchronization mode is \OSC{syncOver}.
 
 The optional 'mapName' string argument specifies which mapping of the master object should be used (see \OSC{map} message). If the master doesn't have a mapping with the specified 'mapName', the slave object won't be visible.
 Not specifying the map name is equivalent to an \emph{empty name} mapping.
