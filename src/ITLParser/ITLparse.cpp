@@ -548,7 +548,7 @@ static const char *const yytname[] =
   "HOSTNAME", "IPNUM", "LUASCRIPT", "JSCRIPT", "$accept", "start", "expr",
   "script", "message", "messagelist", "address", "oscaddress", "oscpath",
   "urlprefix", "hostname", "identifier", "watchparams", "params",
-  "watchmethod", "varvalue", "param", "variable", "varname", "number", 0
+  "watchmethod", "variable", "param", "variabledecl", "varname", "number", 0
 };
 #endif
 

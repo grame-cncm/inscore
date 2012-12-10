@@ -54,11 +54,11 @@
 %type <num> 	number
 %type <real>	FLOAT
 %type <str>		STRING QUOTEDSTRING PATHSEP IDENTIFIER REGEXP LUASCRIPT JSCRIPT
-%type <str>		identifier oscaddress oscpath varname variable hostname
+%type <str>		identifier oscaddress oscpath varname variabledecl hostname
 %type <msg>		message
 %type <msgList>	messagelist script
 %type <p>		param watchmethod
-%type <plist>	params watchparams varvalue
+%type <plist>	params watchparams variable
 %type <url>		urlprefix
 %type <addr>	address
 
@@ -105,8 +105,8 @@ start		: expr
 //_______________________________________________
 // expression of the script language
 //_______________________________________________
-expr		: message  ENDEXPR	{ context->fReader.add(*$1); delete $1; }
-			| variable ENDEXPR	{ delete $1; }
+expr		: message  ENDEXPR		{ context->fReader.add(*$1); delete $1; }
+			| variabledecl ENDEXPR	{ delete $1; }
 			| script			{	if (*$1) {
 										for (unsigned int i=0; i < (*$1)->list().size(); i++)
 											context->fReader.add((*$1)->list()[i]);
@@ -192,15 +192,15 @@ watchparams	: watchmethod		{ $$ = new inscore::IMessage::argslist; $$->push_back
 								}
 
 params		: param				{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
-			| varvalue			{ $$ = $1; }
-			| params varvalue	{ $1->push_back($2);  $$ = $1; delete $2; }
+			| variable			{ $$ = $1; }
+			| params variable	{ $1->push_back($2);  $$ = $1; delete $2; }
 			| params param		{ $1->push_back(*$2); $$ = $1; delete $2; }
 			;
 
 watchmethod	: WATCH				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
 			;
 
-varvalue	: VARSTART varname	{ $$ = new inscore::IMessage::argslist;
+variable	: VARSTART varname	{ $$ = new inscore::IMessage::argslist;
 								  std::string var = "$" + *$2;
 								  $$->push_back (context->fReader.resolve($2->c_str(), var.c_str()));
 								  delete $2;
@@ -215,7 +215,7 @@ param		: number			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1)
 
 //_______________________________________________
 // variable declaration
-variable	: varname EQUAL params	{ $$=$1; context->fReader.variable($1->c_str(), $3); delete $3;}
+variabledecl : varname EQUAL params	{ $$=$1; context->fReader.variable($1->c_str(), $3); delete $3;}
 			;
 
 varname		: IDENTIFIER			{ $$ = new string(context->fText); }
