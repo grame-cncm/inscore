@@ -1,3 +1,4 @@
+1 demo /ITL/debug osc 0;
 1 demo /ITL defaultShow 0;
 1 demo /ITL/scene/* del;
 1 demo /ITL/scene color 255 255 255 255;
@@ -27,7 +28,7 @@
 10 demotime play 1 tempo 140 dest *;
 500 demo /ITL/scene/comment1 set txt supports:;
 1 demo /ITL/scene/comment1 x -0.686667;
-1 demo /ITL/scene/comment1 y -0.0333334;
+1 demo /ITL/scene/comment1 y -0.033333;
 1 demo /ITL/scene/comment1 scale 3.79747;
 1 demo /ITL/scene/comment1 color 178 42 64 255;
 1 demo /ITL/scene/comment1 show 1;
@@ -1303,7 +1304,7 @@
 1 demo /ITL/scene/guido y 0.1;
 1 demo /ITL/scene/guido scale 2.5;
 1 demo /ITL/scene/slave* scale 0.6;
-1 demo /ITL/scene/slave* z 2.0;
+1 demo /ITL/scene/slave* z 2.;
 1 demo /ITL/scene/slave* duration 1 4;
 1 demo /ITL/scene/slave1 date 2 1;
 1 demo /ITL/scene/slave2 date 4 1;
@@ -1373,7 +1374,7 @@
 1 demo /ITL/scene/slave color 0 221 0 120;
 1 demo /ITL/scene/slave date 0 1;
 1 demo /ITL/scene/slave duration 1 4;
-1 demo /ITL/scene/sync slave comment ;
+1 demo /ITL/scene/sync slave comment;
 1 demo /ITL/scene/* show 1;
 4000 demo /ITL/scene/img set file rsrc/parm-oeil.jpg;
 1 demo /ITL/scene/comment del;
@@ -1387,7 +1388,7 @@
 1 demo /ITL/scene/* date 0 1;
 1 demo /ITL/scene/slavecomment show 1;
 1 demo /ITL/scene/sync slavecomment img;
-1 demo /ITL/scene/sync slave slavecomment;
+1 demo /ITL/scene/sync slave slavecomment absolute;
 3001 demo /ITL/scene/comment1 set txtf rsrc/syncomment8.txt;
 1 demo /ITL/scene/comment1 scale 2.648;
 1 demo /ITL/scene/comment1 x 0.04;
