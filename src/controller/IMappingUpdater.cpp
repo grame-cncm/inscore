@@ -32,7 +32,6 @@
 #include "IShapeMap.h"
 #include "TComposition.h"
 #include "TRelation.h"
-//#include "TVirtualRelation.h"
 #include "TSegment.h"
 #include "TSegmentation.h"
 #include "IMappingUpdater.h"
@@ -98,12 +97,7 @@ bool IMappingUpdater::date2point (const rational& date, const SRelativeTime2Grap
 		TAXBFunction<rational> f(t.interval(), pos);		// computes the linear interpolation function that goes from t to pos
 		outSeg = *(v.begin());								// this is the graphic segment corresponding to date
 		TSegmentVariety<float,2> v (outSeg, &f);			// create a variety of this segment using the previous linear interpolation function
-		x = v.getx( f(date) );								// x is now the variety x pos et date relative pos regarding f
-		
-//		outSeg = *(v.begin());
-//		x = outSeg.xinterval().first();									// get the graphic segment first x coordinate
-//		float ratio = MapTools::relativepos(date, t.interval());		// get the relative position of date within the time segment
-//		x += outSeg.xinterval().size() * ratio;
+		x = v.getx( f(date) );								// x is now the variety x pos et date relative pos regarding f		
 		return true;
 	}
 	return false;
@@ -127,7 +121,8 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, const Master* m
 	// get the master graphic and time mapping
 	rational mdate = master->getDate();
 	rational date = slave->getDate();
-	const SRelativeTime2GraphicMapping& map = timeshift(master->getMapping( mapName ), mdate);
+	const SRelativeTime2GraphicMapping& map = (m->getMode()==Master::kSyncRelative) ? timeshift(master->getMapping( mapName ), mdate)
+																					: master->getMapping( mapName );
 	const SRelativeTime2GraphicMapping& slavemap = timeshift(slave->getMapping( "" ), date);
 	if ( !map ) {
 		ITLErr << slave->getOSCAddress() << ": mapping is missing." << ITLEndl;

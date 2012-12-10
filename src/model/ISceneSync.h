@@ -52,7 +52,7 @@ class ISceneSync : public IVNode
 	MsgHandler::msgStatus syncMsg (const std::string& slave);
 	MsgHandler::msgStatus syncMsg ( const std::string& slave, const std::string& slaveMap, 
 									const std::string& master, const std::string& masterMap,
-									Master::StretchType stretch, Master::VAlignType valign);
+									Master::StretchType stretch, Master::SyncType sync, Master::VAlignType valign);
 	
 	public:	
 		static const std::string fTypeString;
@@ -106,7 +106,6 @@ class ISceneSync : public IVNode
 		virtual SIMessageList getMsgs (const IMessage* msg) const;
 		/// \brief sync message handler
 		virtual MsgHandler::msgStatus syncMsg (const IMessage*);
-		virtual MsgHandler::msgStatus oldsyncMsg (const IMessage*);
 };
 
 /*!

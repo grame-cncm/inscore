@@ -41,19 +41,11 @@ void ISync::print (ostream& out) const
 	for (const_iterator i = begin(); i != end(); i++)
 	{
 		out << i->second->getMaster()->name() << " -> " << i->second->getMaster()->name() 
-			<< " align: " << Master::syncmode2string(i->second->getAlignment()) 
+			<< " align: " << Master::syncalign2string(i->second->getAlignment())
 			<< " stretch: " << Master::stretchmode2string(i->second->getStretch()) 
 			<< " dy: " << i->second->getDy() 
-//			<< " interpolate:"<< Master::interpolatemode2string(i->second->getInterpolate())
 			<< " masterMapName: " << i->second->getMasterMapName()
 			<< " slaveMapName: " << i->second->getSlaveMapName();
-			
-//		if ( i->second->getCustomOptions().size() )
-//		{
-//			out << " custom options:";
-//			for ( unsigned int j = 0 ; j < i->second->getCustomOptions().size() ; j++ )
-//				out << i->second->getCustomOptions()[j] << ";";
-//		}
 		out << endl;
 	}
 }
@@ -120,25 +112,35 @@ void ISync::cleanup()
 	}
 }
 
-#define SYNC_OVER	"syncOver"
-#define SYNC_TOP	"syncTop"
-#define SYNC_BOTTOM	"syncBottom"
-#define STRETCH_H	"h"
-#define STRETCH_HH	"H"
-#define STRETCH_V	"v"
-#define STRETCH_HV	"hv"
-#define STRETCH_HHV	"Hv"
-#define INTERPOLATION_LINEAR	"linearInterpolatation"
-#define INTERPOLATION_NO		"noInterpolation"
+static const char* kSyncOverStr		= "syncOver";
+static const char* kSyncTopStr		= "syncTop";
+static const char* kSyncBottomStr	= "syncBottom";
+static const char* kSyncStretchHStr	= "h";
+static const char* kSyncStretchHHStr= "H";
+static const char* kSyncStretchVStr	= "v";
+static const char* kSyncStretchHVStr= "hv";
+static const char* kSyncStretchHHVStr="Hv";
+static const char* kSyncRelativeStr	= "relative";
+static const char* kSyncAbsoluteStr	= "absolute";
 
 
 //--------------------------------------------------------------------------
-std::string	Master::syncmode2string(int syncmode)
+std::string	Master::syncalign2string(int align)
 {
-	switch (syncmode) {
-		case kSyncOver:		return SYNC_OVER;
-		case kSyncTop:		return SYNC_TOP;
-		case kSyncBottom:	return SYNC_BOTTOM;
+	switch (align) {
+		case kSyncOver:		return kSyncOverStr;
+		case kSyncTop:		return kSyncTopStr;
+		case kSyncBottom:	return kSyncBottomStr;
+		default:			return "unknown";
+	}
+}
+
+//--------------------------------------------------------------------------
+std::string	Master::synctype2string(int sync)
+{
+	switch (sync) {
+		case kSyncRelative:		return kSyncRelativeStr;
+		case kSyncAbsolute:		return kSyncAbsoluteStr;
 		default:			return "unknown";
 	}
 }
@@ -147,41 +149,52 @@ std::string	Master::syncmode2string(int syncmode)
 std::string	Master::stretchmode2string(int stretchmode)
 {
 	switch (stretchmode) {
-		case kStretchH:		return STRETCH_H;
-		case kStretchHH:	return STRETCH_HH;
-		case kStretchV:		return STRETCH_V;
-		case kStretchHV:	return STRETCH_HV;
-		case kStretchHHV:	return STRETCH_HHV;
+		case kStretchH:		return kSyncStretchHStr;
+		case kStretchHH:	return kSyncStretchHHStr;
+		case kStretchV:		return kSyncStretchVStr;
+		case kStretchHV:	return kSyncStretchHVStr;
+		case kStretchHHV:	return kSyncStretchHHVStr;
 		case kNoStretch:	return "";
 		default:			return "unknown";
 	}
 }
 
-std::map<std::string, Master::VAlignType> Master::fSyncStr;
-std::map<std::string, Master::StretchType> Master::fStretchStr;
+std::map<std::string, Master::VAlignType>	Master::fAlignStr;
+std::map<std::string, Master::StretchType>	Master::fStretchStr;
+std::map<std::string, Master::SyncType>		Master::fTypeStr;
+
 //std::map<std::string, int> Master::fInterpolationStr;
 //--------------------------------------------------------------------------
 void Master::initMap()
 {
-	if (!fSyncStr.size()) {
-		fSyncStr[SYNC_OVER]		= kSyncOver;
-		fSyncStr[SYNC_TOP]		= kSyncTop;
-		fSyncStr[SYNC_BOTTOM]	= kSyncBottom;
-		fStretchStr[STRETCH_H]	= kStretchH;
-		fStretchStr[STRETCH_HH]	= kStretchHH;
-		fStretchStr[STRETCH_V]	= kStretchV;
-		fStretchStr[STRETCH_HV]	= kStretchHV;
-		fStretchStr[STRETCH_HHV]= kStretchHHV;
-//		fInterpolationStr[INTERPOLATION_LINEAR] = kLinearInterpolation;
-//		fInterpolationStr[INTERPOLATION_NO] = kNoInterpolation;
+	if (!fAlignStr.size()) {
+		fAlignStr[kSyncOverStr]			= kSyncOver;
+		fAlignStr[kSyncTopStr]			= kSyncTop;
+		fAlignStr[kSyncBottomStr]		= kSyncBottom;
+
+		fStretchStr[kSyncStretchHStr]	= kStretchH;
+		fStretchStr[kSyncStretchHHStr]	= kStretchHH;
+		fStretchStr[kSyncStretchVStr]	= kStretchV;
+		fStretchStr[kSyncStretchHVStr]	= kStretchHV;
+		fStretchStr[kSyncStretchHHVStr]	= kStretchHHV;
+
+		fTypeStr[kSyncAbsoluteStr]		= kSyncAbsolute;
+		fTypeStr[kSyncRelativeStr]		= kSyncRelative;
 	}
 }
 
 //--------------------------------------------------------------------------
-Master::VAlignType Master::string2syncmode(std::string syncmode)
+Master::VAlignType Master::string2syncalign(std::string align)
 {
-	map<string, Master::VAlignType>::const_iterator i = fSyncStr.find(syncmode);
-	return (i == fSyncStr.end()) ? kUnknown : i->second;
+	map<string, Master::VAlignType>::const_iterator i = fAlignStr.find(align);
+	return (i == fAlignStr.end()) ? kUnknown : i->second;
+}
+
+//--------------------------------------------------------------------------
+Master::SyncType Master::string2synctype(std::string syncmode)
+{
+	map<string, Master::SyncType>::const_iterator i = fTypeStr.find(syncmode);
+	return (i == fTypeStr.end()) ? kTypeUnknown : i->second;
 }
 
 //--------------------------------------------------------------------------
@@ -192,46 +205,6 @@ Master::StretchType	Master::string2stretchmode(std::string stretchmode)
 }
 
 //--------------------------------------------------------------------------
-//std::string	Master::interpolatemode2string(int interpolateMode)
-//{
-//	switch (interpolateMode) {
-//		case kLinearInterpolation:	return INTERPOLATION_LINEAR;
-//		case kNoInterpolation:		return INTERPOLATION_NO;
-//		default:					return "unknown";
-//	}
-//}
-
-//--------------------------------------------------------------------------
-//int Master::string2interpolatemode(std::string interpolateMode)
-//{
-//	map<string, int>::const_iterator i = fInterpolationStr.find(interpolateMode);
-//	return (i == fInterpolationStr.end()) ? kUnknown : i->second;
-//}
-		
-//--------------------------------------------------------------------------
-//OSCStream&	operator << (OSCStream& out, const Master& m)
-//{
-//	out << m.getMaster()->name();
-//	int syncMode = m.getAlignment();
-//	if (syncMode != Master::kDefaultSync)
-//		out <<  Master::syncmode2string(syncMode);
-//	int stretchMode = m.getStretch();
-//	if (stretchMode != Master::kDefaultStretch)
-//		out <<  Master::stretchmode2string(stretchMode);
-//	if (m.getDy() != 0)
-//		out <<  " dy " << m.getDy();
-//	if ( m.getInterpolate() != Master::kDefaultInterpolation )
-//	out << " interpolate="<< Master::interpolatemode2string(m.getInterpolate()) ;
-//	if ( m.getCustomOptions().size() )
-//	{
-//		out << " custom options:";
-//		for ( unsigned int i = 0 ; i < m.getCustomOptions().size() ; i++ )
-//			out << m.getCustomOptions()[i];
-//	}
-//	return out;
-//}
-
-//--------------------------------------------------------------------------
 IMessage&	operator << (IMessage& out, const Master& m)
 {
 	string mname = m.getMaster()->name();
@@ -239,14 +212,15 @@ IMessage&	operator << (IMessage& out, const Master& m)
 	if (mmap.size())
 		mname += ":" + mmap;
 	out << mname;
-	int syncMode = m.getAlignment();
-	if (syncMode != Master::kDefaultSync)
-		out <<  Master::syncmode2string(syncMode);
+	int syncAlign = m.getAlignment();
+	if (syncAlign != Master::kDefaultSync)
+		out <<  Master::syncalign2string(syncAlign);
 	int stretchMode = m.getStretch();
 	if (stretchMode != Master::kDefaultStretch)
 		out <<  Master::stretchmode2string(stretchMode);
-//	if (m.getDy() != 0)
-//		out <<  " dy " << m.getDy();
+	int syncMode = m.getMode();
+	if (syncMode != Master::kDefaultSync)
+		out <<  Master::synctype2string(syncMode);
 	return out;
 }
 

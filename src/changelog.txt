@@ -13,6 +13,7 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.00
+- new 'relative | absolute' synchronization mode
 - a scene accepts multiple dropped files
 - syntax changes in inscore script files
 - fileWatcher methods renamed and simplified
