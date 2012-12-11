@@ -129,7 +129,7 @@ map<string, pair<string, string> > IAppl::fAliases;
 
 //--------------------------------------------------------------------------
 IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool offscreen) 
-	: IObject(kName, 0), fOffscreen(offscreen), fUDP(udpport,outport,errport), fRate(10), fAppl(appl)
+	: IObject(kName, 0), fCurrentTime(0), fOffscreen(offscreen), fUDP(udpport,outport,errport), fRate(10), fAppl(appl)
 {
 	fTypeString = kApplType;
 	fVersion = INScore::versionStr();
@@ -141,15 +141,17 @@ IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool of
 	fMsgHandlerMap["quit"]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::quit);
 	fMsgHandlerMap["mouse"]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::cursor);
 	fMsgHandlerMap["forward"]	= TMethodMsgHandler<IAppl>::create(this, &IAppl::forward);
+	fMsgHandlerMap["time"]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::setTime);
 
-	fGetMsgHandlerMap["version"]	= TGetParamMsgHandler<string>::create(fVersion);
-	fGetMsgHandlerMap["rootPath"]	= TGetParamMsgHandler<string>::create(fRootPath);
-	fGetMsgHandlerMap["port"]		= TGetParamMsgHandler<int>::create(fUDP.fInPort);
-	fGetMsgHandlerMap["outport"]	= TGetParamMsgHandler<int>::create(fUDP.fOutPort);
-	fGetMsgHandlerMap["errport"]	= TGetParamMsgHandler<int>::create(fUDP.fErrPort);
-	fGetMsgHandlerMap["defaultShow"]= TGetParamMsgHandler<bool>::create(fDefaultShow);
-	fGetMsgHandlerMap["rate"]		= TGetParamMsgHandler<bool>::create(fRate);
+	fGetMsgHandlerMap["version"]	= TGetParamMsgHandler<const string&>::create(fVersion);
+	fGetMsgHandlerMap["rootPath"]	= TGetParamMsgHandler<const string&>::create(fRootPath);
+	fGetMsgHandlerMap["port"]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getUDPInPort);
+	fGetMsgHandlerMap["outport"]	= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getUDPOutPort);
+	fGetMsgHandlerMap["errport"]	= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getUDPErrPort);
+	fGetMsgHandlerMap["defaultShow"]= TGetParamMethodHandler<IAppl, bool (IAppl::*)() const>::create(this, &IAppl::defaultShow);
+	fGetMsgHandlerMap["rate"]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getRate);
 	fGetMsgHandlerMap["forward"]	= TGetParamMsgHandler<vector<IMessage::TUrl> >::create(fForwardList);
+	fGetMsgHandlerMap["time"]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::time);
 
 	fGetMsgHandlerMap["guido-version"]		= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::guidoversion);
 	fGetMsgHandlerMap["musicxml-version"]	= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::musicxmlversion);
@@ -378,6 +380,19 @@ MsgHandler::msgStatus IAppl::forward(const IMessage* msg)
 		else return MsgHandler::kBadParameters;
 	}
 	return MsgHandler::kProcessed;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IAppl::setTime(const IMessage* msg)
+{
+	if (msg->size() == 1) {
+		int time;
+		if (msg->param(0, time)) {
+			fCurrentTime = time;
+			return MsgHandler::kProcessed;
+		}
+	}
+	return MsgHandler::kBadParameters;
 }
 
 //--------------------------------------------------------------------------

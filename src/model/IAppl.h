@@ -63,6 +63,7 @@ class IAppl : public IObject, public PeriodicTask
 	static std::string	fRootPath;
 	static bool			fRunning;
 		
+		int			fCurrentTime;				// the application current time i.e. the count of clocks
 		std::string fVersion;					// the application version number
 		SIApplDebug	fApplDebug;					// debug flags
 		SIApplStat	fApplStat;					// statistics
@@ -82,7 +83,7 @@ class IAppl : public IObject, public PeriodicTask
 		static const std::string kName;
 		static SIAppl			create(int udpport, int outport, int errport,  QApplication* appl, bool offscreen=false)		
 			{ return new IAppl(udpport, outport, errport, appl, offscreen); }
-		static std::string		getRootPath()			{ return fRootPath; }	//< returns the application root path
+		static std::string		getRootPath()				{ return fRootPath; }	//< returns the application root path
 		static std::string		absolutePath( const std::string& path );		//< returns the absolute path corresponding to 'path',
 		static std::string		makeAbsolutePath( const std::string& path, const std::string& file );
 
@@ -93,10 +94,13 @@ class IAppl : public IObject, public PeriodicTask
 		static bool	running() 		{ return fRunning; }
 
 		bool	oscDebug() const;
+		void	clock()						{ fCurrentTime += fRate; }
+		int		time() const				{ return fCurrentTime; }
 		void	quit()						{ fRunning = false; }
 		int		getUDPInPort() const		{ return fUDP.fInPort; }
 		int		getUDPOutPort() const		{ return fUDP.fOutPort; }
 		int		getUDPErrPort() const		{ return fUDP.fErrPort; }
+		bool	defaultShow() const			{ return fDefaultShow; }
 		const std::string&	getUDPOutAddress() const		{ return fUDP.fOutDstAddress; }
 		const std::string&	getUDPErrAddress() const		{ return fUDP.fErrDstAddress; }
 		
@@ -166,6 +170,9 @@ class IAppl : public IObject, public PeriodicTask
 
 		/// \brief application \c 'forward' message handler.
 		virtual MsgHandler::msgStatus forward (const IMessage* msg);
+
+		/// \brief application \c 'time' message handler.
+		virtual MsgHandler::msgStatus setTime (const IMessage* msg);
 
 #ifdef RUNBENCH
 		void	startBench()			{ bench::start(); }
