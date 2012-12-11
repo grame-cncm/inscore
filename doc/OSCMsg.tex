@@ -65,6 +65,8 @@
 								\end{minipage}}\end{center}}
 
 
+\newcommand{\warning}[1]	{\textbf{\textsc{Warning:}} #1}
+
 \makeatother
 \makeindex
 
@@ -170,56 +172,116 @@ Note that regular expressions are not supported by the alias mechanism and could
 %:ITL messages
 \toplevel{Application messages}
 \label{ITL}
-Application messages are accepted by the static OSC address \OSC{/ITL}. It covers the following messages:
+Application messages are accepted by the static OSC address \OSC{/ITL}. 
+
+
+%===============================
+%: Application management
+\sublevel{Application management}
+
 \begin{rail}
 ITLMsg : 'quit' 
 		| ('rootPath' path) 
-		| ('port' int32)
-		| ('outport' int32)
-		| ('errport' int32)
 		| ('mouse' ('show' | 'hide'))
 		| ('defaultShow' int32)
 		| ('load' filePath)
 		| ('require' int32 oscMsg)
+		| ('time' int32)
 		| ('rate' int32)
 		| 'hello'
 \end{rail}
 \index{ITL messages!rootPath}
-\index{ITL messages!port}
-\index{ITL messages!outport}
-\index{ITL messages!errport}
 \index{ITL messages!mouse}
 \index{ITL messages!defaultShow}
 \index{ITL messages!load}
 \index{ITL messages!hello}
 \index{ITL messages!require}
 \index{ITL messages!rate}
-
+\index{ITL messages!time}
 
 \begin{itemize}
 \item \OSC{quit}: requests the client application to quit.
 
 \item \OSC{rootPath}: \emph{rootPath} of an Interlude application is the default path where the application reads or writes a file when a relative path is used for this file. The default value is the user home directory. Sending the \OSC{rootPath} message without parameter resets the application path to its default value.
 
-\item \OSC{port}, \OSC{outport}, \OSC{errport}: changes the UDP port numbers. \OSC{port} defines the listening port number, \OSC{outport} and \OSC{errport} define the ports used to send messages and error messages. The \OSC{int32} parameter should be a positive value in the range \values{[1024-49150]}. \\
-The default \OSC{port}, \OSC{outport} and \OSC{errport} values are 7000, 7001 and 7002.
-
 \item \OSC{mouse}: hide or show the mouse pointer.
 
 \item \OSC{defaultShow}: changes the default \OSC{show} status for new objects. \\
 The default \OSC{defaultShow} value is 1.
 
-\item \OSC{rate}: changes the time task rate. Note that null values are ignored.\\
-The default \OSC{rate} value is 10.
-
-\item \OSC{load}: loads a file previously saved using the \OSC{save} message (see section \fullref{common}). Note that the load operation appends the new objects to the existing scene. Whe necessary, it's the sender responsability to clear the scene before loading a file.
-
-\item \OSC{hello}: query the host IP number. The message is intended for ITL applications discovery. Answer to the query has the following format: \\
-\example \OSC{IP} \OSC{inPort outPort errPort} where \OSC{IP} is sent as a string and port numbers as integer values.
+\item \OSC{load}: loads a file previously saved using the \OSC{save} message (see section \fullref{common}). Note that the load operation appends the new objects to the existing scene. When necessary, it is the sender responsibility to clear the scene before loading a file.
 
 \item \OSC{require}: check for a version number equal or greater to the number given as argument. The version number should be encoded as an integer value (for example: 76 for version 0.76, 112 for version 1.12). An OSC message is associated to the require message with the same syntax and semantic described in section \fullref{interaction}. This message is triggered when the check fails.
 
+\item \OSC{rate}: changes the time task rate. Note that null values are ignored.\\
+The default \OSC{rate} value is 10.
+
+\item \OSC{time}: sets the application current time. The current rate is internally added to the current time by the time task.
+
+\item \OSC{hello}: query the host IP number. The message is intended for ITL applications discovery. Answer to the query has the following format: \\
+\example \OSC{IP  inPort outPort errPort} where \OSC{IP} is sent as a string and port numbers as integer values.
+
 \end{itemize}
+
+Example:\\
+when sending the message:
+\sample{/ITL hello}
+the application could answer with the following message:
+\sample{/ITL 192.168.0.5  7000 7001 7003}
+when it runs on a host which IP number is \OSC{192.168.0.5} using the default port numbers.
+
+%===============================
+%: Ports management
+\sublevel{Ports management}
+\label{ITLPorts}
+
+\begin{rail}
+ITLPortsMsg : ('port' int32)
+		| ('outport' int32)
+		| ('errport' int32)
+\end{rail}
+\index{ITL messages!port}
+\index{ITL messages!outport}
+\index{ITL messages!errport}
+
+Changes the UDP port numbers:
+\begin{itemize}
+\item \OSC{port} defines the listening port number, 
+\item \OSC{outport} and \OSC{errport} define the ports used to send replies to queries and error messages. 
+\end{itemize}
+The \OSC{int32} parameter should be a positive value in the range \values{[1024-49150]}. \\
+The default \OSC{port}, \OSC{outport} and \OSC{errport} values are 7000, 7001 and 7002.
+
+%===============================
+%: Messages forwarding
+\sublevel{Messages forwarding}
+\label{ITLForward}
+
+The messages handled by the application can be forwarded to arbitrary remote hosts using the \OSC{forward} message. The \OSC{forward} message itself can't be forwarded. 
+ 
+\begin{rail}
+ITLMsgForward : ('forward' ( [1] | [2] hostname +))
+\end{rail}
+\index{ITL messages!forward}
+
+\begin{itemize}
+
+\item 1) removes the set of forwarded destinations,
+\item 2) set a list of remote hosts for forwarding. Note that \OSC{hostname} can be any legal host name or IP number, optionally extended with a port number separated by a semi-colon. By default, when no port number is specified, the current application listening port number is used.
+\end{itemize}
+Example:
+\sample{/ITL forward host1.adomain.org host2.adomain.org:5100}
+Forwards messages to \OSC{host1.adomain.org} using the current application listening port number \\
+and to \OSC{host2.adomain.org} on port number 5100.
+
+\warning{forwarding messages to the application host results in an infinite loop with unpredictable results. Thus it is not recommended to use the local network broadcast address for forwarding.}
+
+
+
+%===============================
+%: Application level queries
+\sublevel{Application level queries}
+\label{ITLQuery}
 
 The application supports the \OSC{get} messages for its parameters (see section \fullref{getsect}). In addition, it provides the following messages to query version numbers.
 
@@ -1876,6 +1938,16 @@ Example:
 /ITL load "call-javascript.inscore";
 }
 
+
+
+%===============================
+%:Appendix
+\toplevel{Appendices}
+\sublevel{Grammar definition}
+\input{yacc.tex}
+
+\sublevel{Lexical tokens}
+\input{tokens.tex}
 
 
 %===============================
