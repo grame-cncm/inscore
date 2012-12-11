@@ -63,6 +63,9 @@ IMessage& operator <<(IMessage& msg, const libmapping::TRelation<T,D,libmapping:
 template <typename T> class TSize;
 template <typename T>	IMessage& operator <<(IMessage& msg, TSize<T> val) { msg << val.width() << val.height(); return msg; }
 
+inline IMessage& operator <<(IMessage& msg, int val)		{ msg.add(val); return msg; }
+inline IMessage& operator <<(IMessage& msg, float val)		{ msg.add(val); return msg; }
+
 // boolean is store as integer value
 inline IMessage& operator <<(IMessage& msg, bool val)		{ msg.add(int(val)); return msg; }
 
