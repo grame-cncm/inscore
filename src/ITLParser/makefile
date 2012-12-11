@@ -14,6 +14,9 @@ ITLparse.hpp : ITL.y
 
 ITLlex.cpp : ITL.l ITLparse.hpp
 	$(LEX)  -oITLlex.cpp -I -P$(PREFIX) ITL.l
+	
+doc :
+	./makedoc
 
 clean:
 	rm -f $(OUT)
