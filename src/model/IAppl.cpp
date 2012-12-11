@@ -300,7 +300,7 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 //--------------------------------------------------------------------------
 // messages handlers
 //--------------------------------------------------------------------------
-IMessage * IAppl::hello()	const
+SIMessage IAppl::hello()	const
 {
 	SIMessage msg = IMessage::create (getOSCAddress());
 	*msg << getIP() << getUDPInPort() << getUDPOutPort() << getUDPErrPort();

@@ -153,7 +153,7 @@ class IAppl : public IObject, public PeriodicTask
 
 		virtual		SIMessageList getAll () const;
 
-		IMessage*	hello() const;
+		SIMessage	hello() const;
 		void		helloMsg() const;
 //		void		activate() const;
 		std::string	guidoversion() const;
