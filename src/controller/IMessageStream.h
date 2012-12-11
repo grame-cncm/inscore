@@ -79,7 +79,14 @@ IMessage& operator <<(IMessage& msg, const TIntSize& val);
 inline IMessage& operator <<(IMessage& msg, const SIMessageList& val)	{ if (val->list().size()) msg.add(val); return msg; }
 
 // generic input method
-template <typename T> IMessage& operator <<(IMessage& msg, T val)		{ msg.add(val); return msg; }
+//template <typename T> IMessage& operator <<(IMessage& msg, T val)		{ msg.add(val); return msg; }
+
+// catch TUrl lists
+template <typename T>	IMessage& operator <<(IMessage& msg, const std::vector<IMessage::TUrl>& urls)
+						{ 
+							for (unsigned int i =0; i < urls.size(); i++) msg << std::string(urls[i]);
+							return msg; 
+						}
 
 // catch vectors
 template <typename T>	IMessage& operator <<(IMessage& msg, const std::vector<T>& val)

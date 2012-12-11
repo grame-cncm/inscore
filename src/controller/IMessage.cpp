@@ -140,7 +140,20 @@ bool IMessage::param(int i, rational& val) const
 }
 
 //----------------------------------------------------------------------
-static bool decodeAddress (const std::string& address, std::string& oscAddress, IMessage::TUrl& url)
+bool IMessage::TUrl::parse (const std::string& address)
+{
+	size_t startPort = address.find_first_of(':');
+	if (startPort != string::npos) {
+		fHostname = address.substr (0, startPort);
+		string portStr = address.substr (startPort+1);
+		fPort = atoi(portStr.c_str());
+	}
+	else fHostname = address;
+	return true;
+}
+
+//----------------------------------------------------------------------
+bool IMessage::decodeAddress (const std::string& address, std::string& oscAddress, IMessage::TUrl& url)
 {
 	size_t startOsc = address.find_first_of('/');
 	if (startOsc == string::npos) return false;		// incorrect osc address (no '/')
@@ -297,7 +310,8 @@ void IMessage::print(std::ostream& out) const
 IMessage::TUrl::operator string() const
 {
 	stringstream str;
-	str << fHostname << ':' << fPort;
+	str << fHostname;
+	if (fPort) str << ':' << fPort;
 	return str.str();
 }
 

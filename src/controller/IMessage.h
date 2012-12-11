@@ -157,8 +157,13 @@ class IMessage : public Message, public libmapping::smartable
 			public:
 				std::string	fHostname;
 				int			fPort;
-							TUrl () : fPort(0) {}
-							TUrl (const char* host, int port) : fHostname(host), fPort(port) {}
+
+						 TUrl () : fPort(0) {}
+						 TUrl (const char* host, int port) : fHostname(host), fPort(port) {}
+				virtual ~TUrl() {}
+
+				/// \brief parse the string to separate host name and port number
+				bool parse(const std::string& host);
 				operator std::string() const;
 				bool operator ==(const TUrl& other) const	{ return (fPort == other.fPort) && (fHostname == other.fHostname); }
 				bool operator !=(const TUrl& other) const	{ return (fPort != other.fPort) || (fHostname != other.fHostname); }
@@ -439,6 +444,16 @@ class IMessage : public Message, public libmapping::smartable
 	*/
 	void	send () const;
 
+
+	/*!
+		\brief decode an extended address
+		
+		\param address the whole address as a string
+		\param oscAddress on output, the osc address
+		\param url on output, an optional url used for address extension
+		\return true when the address is correctly decoded
+	*/
+	static bool decodeAddress (const std::string& address, std::string& oscAddress, IMessage::TUrl& url);
 };
 
 //--------------------------------------------------------------------------

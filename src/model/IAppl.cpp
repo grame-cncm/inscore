@@ -140,6 +140,7 @@ IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool of
 	fMsgHandlerMap["require"]	= TMethodMsgHandler<IAppl>::create(this, &IAppl::requireMsg);
 	fMsgHandlerMap["quit"]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::quit);
 	fMsgHandlerMap["mouse"]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::cursor);
+	fMsgHandlerMap["forward"]	= TMethodMsgHandler<IAppl>::create(this, &IAppl::forward);
 
 	fGetMsgHandlerMap["version"]	= TGetParamMsgHandler<string>::create(fVersion);
 	fGetMsgHandlerMap["rootPath"]	= TGetParamMsgHandler<string>::create(fRootPath);
@@ -148,6 +149,7 @@ IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool of
 	fGetMsgHandlerMap["errport"]	= TGetParamMsgHandler<int>::create(fUDP.fErrPort);
 	fGetMsgHandlerMap["defaultShow"]= TGetParamMsgHandler<bool>::create(fDefaultShow);
 	fGetMsgHandlerMap["rate"]		= TGetParamMsgHandler<bool>::create(fRate);
+	fGetMsgHandlerMap["forward"]	= TGetParamMsgHandler<vector<IMessage::TUrl> >::create(fForwardList);
 
 	fGetMsgHandlerMap["guido-version"]		= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::guidoversion);
 	fGetMsgHandlerMap["musicxml-version"]	= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::musicxmlversion);
@@ -245,13 +247,28 @@ SIMessageList IAppl::getAll() const
 //--------------------------------------------------------------------------
 // messages processing
 //--------------------------------------------------------------------------
+bool IAppl::filter (const IMessage* msg)
+{
+	if (msg->message() == "forward") return true;
+	return false;
+}
+
+//--------------------------------------------------------------------------
 int IAppl::processMsg (const std::string& address, const std::string& addressTail, const IMessage* imsg)
 {
 	setReceivedOSC (1);
 
+	int n = fForwardList.size();
+
 	if (imsg->extendedAddress()) {
 		OSCStream::sendEvent (imsg, imsg->url().fHostname, imsg->url().fPort);
 		return MsgHandler::kProcessed;
+	}
+	else if (!filter(imsg)) {
+		for (int i = 0; i < n; i++) {
+			IMessage::TUrl url = fForwardList[i];
+			OSCStream::sendEvent (imsg, url.fHostname, url.fPort);
+		}
 	}
 
 	string head = address;
@@ -341,6 +358,26 @@ MsgHandler::msgStatus IAppl::requireMsg(const IMessage* msg)
 		}
 	}
 	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IAppl::forward(const IMessage* msg)
+{
+	fForwardList.clear();						// clear the forward list first
+	if (msg->size() == 0)						// no other param
+		return MsgHandler::kProcessed;			// that's done
+
+	for (int i=0; i<msg->size(); i++) {
+		string address;
+		if (msg->param(i, address)) {
+			IMessage::TUrl url;
+			url.parse (address);
+			if (!url.fPort) url.fPort = getUDPInPort();
+			fForwardList.push_back (url);
+		}
+		else return MsgHandler::kBadParameters;
+	}
+	return MsgHandler::kProcessed;
 }
 
 //--------------------------------------------------------------------------

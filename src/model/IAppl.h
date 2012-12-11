@@ -73,6 +73,8 @@ class IAppl : public IObject, public PeriodicTask
 
 		TJSEngine		fJavascript;
 		TLua			fLua;
+		
+		std::vector<IMessage::TUrl>	fForwardList;	// list of hosts to forward incoming messages
 
 	public:
 		static bool fDefaultShow;
@@ -137,6 +139,9 @@ class IAppl : public IObject, public PeriodicTask
 				 IAppl(int udpport, int outport, int errport,  QApplication* appl, bool offscreen);
 		virtual ~IAppl();
 
+		/// \brief forwarding messages filtering.
+		virtual bool filter (const IMessage* msg);
+		
 		void		setRootPath(const std::string& s);
 		void		setUDPOutAddress(const std::string& a)	{ fUDP.fOutDstAddress = a; }
 		void		setUDPErrAddress(const std::string& a)	{ fUDP.fErrDstAddress = a; }
@@ -156,8 +161,11 @@ class IAppl : public IObject, public PeriodicTask
 		/// \brief application \c 'load' message handler.
 		virtual MsgHandler::msgStatus loadMsg (const IMessage* msg);
 
-		/// \brief application \c 'load' message handler.
+		/// \brief application \c 'mouse' message handler.
 		virtual MsgHandler::msgStatus cursor (const IMessage* msg);
+
+		/// \brief application \c 'forward' message handler.
+		virtual MsgHandler::msgStatus forward (const IMessage* msg);
 
 #ifdef RUNBENCH
 		void	startBench()			{ bench::start(); }
