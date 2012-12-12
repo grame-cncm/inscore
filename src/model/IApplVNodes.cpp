@@ -37,8 +37,12 @@ extern SIMessageStack gMsgStack;
 //--------------------------------------------------------------------------
 IApplDebug::IApplDebug(IObject * parent) : IObjectDebug(parent), fOSCDebug(true)
 {
-	fGetMsgHandlerMap["osc"]	= TGetParamMsgHandler<bool>::create(fOSCDebug);
 	fMsgHandlerMap["osc"]		= TSetMethodMsgHandler<IApplDebug,bool>::create(this, &IApplDebug::setOSCDebug);
+	fGetMsgHandlerMap["osc"]	= TGetParamMsgHandler<bool>::create(fOSCDebug);
+
+	fGetMsgHandlerMap["map"]		= 0;
+	fGetMsgHandlerMap["name"]		= 0;
+	fGetMsgHandlerMap["signal"]		= 0;
 }
 
 //--------------------------------------------------------------------------
