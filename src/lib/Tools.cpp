@@ -24,6 +24,7 @@
 #include "Tools.h"
 
 using namespace std;
+using namespace libmapping;
 
 namespace inscore
 {
@@ -37,6 +38,17 @@ bool Tools::regexp (const string& str)
 			return true;
 	}
 	return false;
+}
+
+//--------------------------------------------------------------------------
+/**
+ *	Convert a string to a rational value.
+ */
+rational Tools::str2rational (const std::string& rationalstr)
+{
+	int num, d;
+	int n = sscanf (rationalstr.c_str(), "%d/%d", &num, &d);
+	return (n == 2) ? rational (num, d) : rational (0,0);
 }
 
 //--------------------------------------------------------------------------
