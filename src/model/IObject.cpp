@@ -92,7 +92,7 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fMsgHandlerMap["get"]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const >::create(this, &IObject::get);
 	fMsgHandlerMap["del"]		= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::del);
 	fMsgHandlerMap["export"]	= TMethodMsgHandler<IObject>::create(this, &IObject::exportMsg);
-	fMsgHandlerMap["rename"]	= TMethodMsgHandler<IObject>::create(this, &IObject::renameMsg);
+//	fMsgHandlerMap["rename"]	= TMethodMsgHandler<IObject>::create(this, &IObject::renameMsg);
 	fMsgHandlerMap["save"]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::saveMsg);
 	fMsgHandlerMap["watch"]		= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsg);
 	fMsgHandlerMap["watch+"]	= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsgAdd);
@@ -737,12 +737,12 @@ MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
 			if ( isDirectory(absolutePath) )	//Argument is a directory: export to "directory/objectName".
 			{
 #ifdef WIN32
-				const char sep = '\\';
+				const char* sep = "\\";
 #else
-				const char sep = '/';
+				const char* sep = "/";
 #endif
-				std::string addedSeparator = ( absolutePath[ absolutePath.length() - 1 ] != sep ) ? std::string(&sep) : "";
-				setExportFlag( absolutePath + addedSeparator + name() );
+				const char* tmp = ( absolutePath[ absolutePath.length() - 1 ] != *sep ) ? sep : "";
+				setExportFlag( absolutePath + tmp + name() );
 			}
 			else								//Argument is a file: export to this file.
 				setExportFlag( absolutePath );
