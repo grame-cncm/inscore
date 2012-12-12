@@ -47,19 +47,19 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 
 	fTypeString = kGuidoCodeType;
 
-	fMsgHandlerMap["page"]			= TSetMethodMsgHandler<IGuidoCode,int>::create(this, &IGuidoCode::setPage);
-	fMsgHandlerMap["dpage"]			= TSetMethodMsgHandler<IGuidoCode,int>::create(this, &IGuidoCode::setdPage);
-	fMsgHandlerMap["pageFormat"]	= TSetMethodMsgHandler<IGuidoCode,TFloatSize>::create(this, &IGuidoCode::setPageFormat);
-	fMsgHandlerMap["columns"]		= TSetMethodMsgHandler<IGuidoCode,int>::create(this, &IGuidoCode::setNbOfPageColumns);
-	fMsgHandlerMap["rows"]			= TSetMethodMsgHandler<IGuidoCode,int>::create(this, &IGuidoCode::setNbOfPageRows);
-	fMsgHandlerMap["map"]			= TMethodMsgHandler<IGuidoCode>::create(this, &IGuidoCode::mapMsg);
+	fMsgHandlerMap[kpage_GetSetMethod]			= TSetMethodMsgHandler<IGuidoCode,int>::create(this, &IGuidoCode::setPage);
+	fMsgHandlerMap[kdpage_SetMethod]			= TSetMethodMsgHandler<IGuidoCode,int>::create(this, &IGuidoCode::setdPage);
+	fMsgHandlerMap[kpageFormat_GetSetMethod]	= TSetMethodMsgHandler<IGuidoCode,TFloatSize>::create(this, &IGuidoCode::setPageFormat);
+	fMsgHandlerMap[kcolumns_GetSetMethod]		= TSetMethodMsgHandler<IGuidoCode,int>::create(this, &IGuidoCode::setNbOfPageColumns);
+	fMsgHandlerMap[krows_GetSetMethod]			= TSetMethodMsgHandler<IGuidoCode,int>::create(this, &IGuidoCode::setNbOfPageRows);
+	fMsgHandlerMap[kmap_GetSetMethod]			= TMethodMsgHandler<IGuidoCode>::create(this, &IGuidoCode::mapMsg);
 
-	fGetMsgHandlerMap["page"]		= TGetParamMsgHandler<int>::create(fPage);
-	fGetMsgHandlerMap["pageCount"]	= TGetParamMsgHandler<int>::create(fPageCount);
-	fGetMsgHandlerMap["pageFormat"]	= TGetParamMsgHandler<TFloatSize>::create(fPageFormat);
-	fGetMsgHandlerMap["columns"]	= TGetParamMsgHandler<int>::create(fNbOfPageColumns);
-	fGetMsgHandlerMap["rows"]		= TGetParamMsgHandler<int>::create(fNbOfPageRows);
-	fGetMsgHandlerMap[""]			= TGetParamMsgHandler<std::string>::create(fGMN);
+	fGetMsgHandlerMap[kpage_GetSetMethod]		= TGetParamMsgHandler<int>::create(fPage);
+	fGetMsgHandlerMap[kpageCount_GetMethod]		= TGetParamMsgHandler<int>::create(fPageCount);
+	fGetMsgHandlerMap[kpageFormat_GetSetMethod]	= TGetParamMsgHandler<TFloatSize>::create(fPageFormat);
+	fGetMsgHandlerMap[kcolumns_GetSetMethod]	= TGetParamMsgHandler<int>::create(fNbOfPageColumns);
+	fGetMsgHandlerMap[krows_GetSetMethod]		= TGetParamMsgHandler<int>::create(fNbOfPageRows);
+	fGetMsgHandlerMap[""]						= TGetParamMsgHandler<std::string>::create(fGMN);
 
 	requestMapping("");
 }
@@ -157,13 +157,13 @@ MsgHandler::msgStatus IGuidoCode::mapMsg (const IMessage* msg )
 		{
 			bool doDel = false;
 			// - "del" string can be first parameter, meaning "delete no-named mapping".
-			if ( mapName == "del" )
+			if ( mapName == kdel_SetMethod )
 			{
 				doDel = true;
 				mapName = "";
 			}
 			// - or "del" be second parameter, meaning "delete 'mapName' mapping".
-			else if ( (msg->size() == 2) && ( msg->param(1)->value<std::string>("") == "del" ) )
+			else if ( (msg->size() == 2) && ( msg->param(1)->value<std::string>("") == kdel_SetMethod ) )
 				doDel = true;
 
 			if ( doDel )
@@ -197,11 +197,11 @@ SIMessageList IGuidoCode::getMsgs(const IMessage* msg) const
 	{
 		string param = "-";
 		msg->param(i, param);
-		if ( param == "map" )
+		if ( param == kmap_GetSetMethod )
 		{
 			for ( std::vector<string>::const_iterator i = fRequestedMappings.begin() ; i != fRequestedMappings.end() ; i++ )
 			{
-				SIMessage msg = IMessage::create(getOSCAddress(), "map");
+				SIMessage msg = IMessage::create(getOSCAddress(), kmap_GetSetMethod);
 				*msg << (*i);
 				outMsgs->list().push_back (msg);
 			}

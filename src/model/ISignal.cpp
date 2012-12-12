@@ -45,20 +45,20 @@ ISignal::ISignal( const std::string& name, IObject * parent ) : IObject (name, p
 {
 	fTypeString = kSignalType;
 
-	fMsgHandlerMap["default"]= TMethodMsgHandler<ISignal>::create(this, &ISignal::defaultMsg);
-	fMsgHandlerMap["size"]	 = TMethodMsgHandler<ISignal>::create(this, &ISignal::sizeMsg);
-	fMsgHandlerMap["reset"]	 = TMethodMsgHandler<ISignal>::create(this, &ISignal::resetMsg);
+	fMsgHandlerMap[kdefault_GetSetMethod]= TMethodMsgHandler<ISignal>::create(this, &ISignal::defaultMsg);
+	fMsgHandlerMap[ksize_GetSetMethod]	 = TMethodMsgHandler<ISignal>::create(this, &ISignal::sizeMsg);
+	fMsgHandlerMap[kreset_SetMethod]	 = TMethodMsgHandler<ISignal>::create(this, &ISignal::resetMsg);
 	fMsgHandlerMap[""]		 = TMethodMsgHandler<ISignal>::create(this, &ISignal::dataMsg);
-	fMsgHandlerMap["watch"]	 = (void*)0;
-	fMsgHandlerMap["watch+"] = (void*)0;
+	fMsgHandlerMap[kwatch_GetSetMethod]	 = (void*)0;
+	fMsgHandlerMap[kwatchplus_SetMethod] = (void*)0;
 
 	SMsgHandler projhandler = TMethodMsgHandler<ISignal>::create(this, &ISignal::projectionDataMsg);
 	fMsgHandlerMap["\\[[0-9]+\\]"]			= projhandler;
 	fMsgHandlerMap["\\[[0-9]+~[0-9]*\\]"]	= projhandler;
 
-	fGetMsgHandlerMap["size"]		= TGetParamMethodHandler<ISignal, int (ParallelSignal::*)() const>::create(this, &ParallelSignal::size);
-	fGetMsgHandlerMap["dimension"]	= TGetParamMethodHandler<ISignal, int (ParallelSignal::*)() const>::create(this, &ParallelSignal::dimension);
-	fGetMsgHandlerMap["default"]	= GetDefaultParamMsgHandler::create(this);
+	fGetMsgHandlerMap[ksize_GetSetMethod]		= TGetParamMethodHandler<ISignal, int (ParallelSignal::*)() const>::create(this, &ParallelSignal::size);
+	fGetMsgHandlerMap[kdimension_GetMethod]	= TGetParamMethodHandler<ISignal, int (ParallelSignal::*)() const>::create(this, &ParallelSignal::dimension);
+	fGetMsgHandlerMap[kdefault_GetSetMethod]	= GetDefaultParamMsgHandler::create(this);
 }
 
 //--------------------------------------------------------------------------
@@ -100,14 +100,14 @@ void ISignal::print (IMessage& out) const
 		if (values.size())
 			out << values;
 		else {
-			out.setMessage("size");
+			out.setMessage(ksize_GetSetMethod);
 			int size = signal(0)->size();
 			out << size;
 		}
 
 	}
 	else {
-		out.setMessage("set");
+		out.setMessage(kset_SetMethod);
 		for (int i = 0; i < n; i++) {
 			const string& signame = signal(i)->name();
 			if (signame.size())

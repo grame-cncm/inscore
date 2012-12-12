@@ -67,20 +67,20 @@ IScene::IScene(const std::string& name, IObject * parent)
 	setWidth(1.0f);
 	setHeight(1.0f);
 	
-	fMsgHandlerMap["new"]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::newScene);
-	fMsgHandlerMap["del"]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::del);
-	fMsgHandlerMap["reset"]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::reset);
+	fMsgHandlerMap[knew_SetMethod]				= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::newScene);
+	fMsgHandlerMap[kdel_SetMethod]				= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::del);
+	fMsgHandlerMap[kreset_SetMethod]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::reset);
 //	fMsgHandlerMap["foreground"]	= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::foreground);
-	fMsgHandlerMap["fullscreen"]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFullScreen);
-	fMsgHandlerMap["frameless"]		= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFrameless);
-	fMsgHandlerMap["absolutexy"]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setAbsoluteCoordinates);
-	fMsgHandlerMap["load"]			= TMethodMsgHandler<IScene>::create(this, &IScene::loadMsg);
-	fMsgHandlerMap["rootPath"]		= TSetMethodMsgHandler<IScene, string>::create(this, &IScene::setRootPath);
+	fMsgHandlerMap[kfullscreen_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFullScreen);
+	fMsgHandlerMap[kframeless_GetSetMethod]		= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFrameless);
+	fMsgHandlerMap[kabsolutexy_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setAbsoluteCoordinates);
+	fMsgHandlerMap[kload_SetMethod]				= TMethodMsgHandler<IScene>::create(this, &IScene::loadMsg);
+	fMsgHandlerMap[krootPath_GetSetMethod]		= TSetMethodMsgHandler<IScene, string>::create(this, &IScene::setRootPath);
 
-	fGetMsgHandlerMap["fullscreen"] = TGetParamMsgHandler<bool>::create(fFullScreen);
-	fGetMsgHandlerMap["frameless"]	= TGetParamMsgHandler<bool>::create(fFrameless);
-	fGetMsgHandlerMap["absolutexy"] = TGetParamMsgHandler<bool>::create(fAbsoluteCoordinates);
-	fGetMsgHandlerMap["rootPath"]	= TGetParamMsgHandler<string>::create(fRootPath);
+	fGetMsgHandlerMap[kfullscreen_GetSetMethod] = TGetParamMsgHandler<bool>::create(fFullScreen);
+	fGetMsgHandlerMap[kframeless_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fFrameless);
+	fGetMsgHandlerMap[kabsolutexy_GetSetMethod] = TGetParamMsgHandler<bool>::create(fAbsoluteCoordinates);
+	fGetMsgHandlerMap[krootPath_GetSetMethod]	= TGetParamMsgHandler<string>::create(fRootPath);
 }
 
 //--------------------------------------------------------------------------
@@ -92,8 +92,8 @@ void IScene::setHandlers ()
 	colorAble();
 	positionAble();
 	fGetMsgHandlerMap[""]			= (void*)0;	// force standard propagation of the get message
-	fMsgHandlerMap["effect"]		= (void*)0;	// no effects at scene level
-	fGetMsgHandlerMap["effect"]		= (void*)0;	// no effects at scene level
+	fMsgHandlerMap[keffect_GetSetMethod]		= (void*)0;	// no effects at scene level
+	fGetMsgHandlerMap[keffect_GetSetMethod]		= (void*)0;	// no effects at scene level
 }
 
 //--------------------------------------------------------------------------

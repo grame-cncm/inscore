@@ -87,21 +87,21 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 {
 	fTypeString = "obj";
 
-	fMsgHandlerMap["alias"]		= TMethodMsgHandler<IObject>::create(this, &IObject::aliasMsg);
-	fMsgHandlerMap["set"]		= TMethodMsgHandler<IObject>::create(this, &IObject::set);
-	fMsgHandlerMap["get"]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const >::create(this, &IObject::get);
-	fMsgHandlerMap["del"]		= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::del);
-	fMsgHandlerMap["export"]	= TMethodMsgHandler<IObject>::create(this, &IObject::exportMsg);
-//	fMsgHandlerMap["rename"]	= TMethodMsgHandler<IObject>::create(this, &IObject::renameMsg);
-	fMsgHandlerMap["save"]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::saveMsg);
-	fMsgHandlerMap["watch"]		= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsg);
-	fMsgHandlerMap["watch+"]	= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsgAdd);
-	fMsgHandlerMap["push"]		= TMethodMsgHandler<IObject>::create(this, &IObject::pushMsg);
-	fMsgHandlerMap["pop"]		= TMethodMsgHandler<IObject>::create(this, &IObject::popMsg);
+	fMsgHandlerMap[kalias_GetSetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::aliasMsg);
+	fMsgHandlerMap[kset_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::set);
+	fMsgHandlerMap[kget_SetMethod]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const >::create(this, &IObject::get);
+	fMsgHandlerMap[kdel_SetMethod]		= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::del);
+	fMsgHandlerMap[kexport_SetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::exportMsg);
+//	fMsgHandlerMap["rename"]			= TMethodMsgHandler<IObject>::create(this, &IObject::renameMsg);
+	fMsgHandlerMap[ksave_SetMethod]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::saveMsg);
+	fMsgHandlerMap[kwatch_GetSetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsg);
+	fMsgHandlerMap[kwatchplus_SetMethod]= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsgAdd);
+	fMsgHandlerMap[kpush_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::pushMsg);
+	fMsgHandlerMap[kpop_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::popMsg);
 
-	fGetMultiMsgHandlerMap["watch"]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
-	fGetMultiMsgHandlerMap["map"]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getMaps);
-	fGetMultiMsgHandlerMap["alias"]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getAliases);
+	fGetMultiMsgHandlerMap[kwatch_GetSetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
+	fGetMultiMsgHandlerMap[kmap_GetSetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getMaps);
+	fGetMultiMsgHandlerMap[kalias_GetSetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getAliases);
 }
 
 
@@ -116,105 +116,105 @@ void IObject::setHandlers()
 //--------------------------------------------------------------------------
 void IObject::colorAble()
 {
-	fMsgHandlerMap["color"]		= TMethodMsgHandler<IColor>::create(this, &IColor::set);
-	fMsgHandlerMap["hsb"]		= TMethodMsgHandler<IColor>::create(this, &IColor::setHSV);
+	fMsgHandlerMap[kcolor_GetSetMethod]		= TMethodMsgHandler<IColor>::create(this, &IColor::set);
+	fMsgHandlerMap[khsb_SetMethod]			= TMethodMsgHandler<IColor>::create(this, &IColor::setHSV);
 
-	fMsgHandlerMap["red"]		= IColor::SetColorMsgHandler::create(this, &IObject::setR, &IObject::setR);
-	fMsgHandlerMap["green"]		= IColor::SetColorMsgHandler::create(this, &IObject::setG, &IObject::setG);
-	fMsgHandlerMap["blue"]		= IColor::SetColorMsgHandler::create(this, &IObject::setB, &IObject::setB);
-	fMsgHandlerMap["alpha"]		= IColor::SetColorMsgHandler::create(this, &IObject::setA, &IObject::setA);
-	fMsgHandlerMap["hue"]		= IColor::SetColorMsgHandler::create(this, &IObject::setH, &IObject::setH);
-	fMsgHandlerMap["saturation"]= IColor::SetColorMsgHandler::create(this, &IObject::setS, &IObject::setS);
-	fMsgHandlerMap["brightness"]= IColor::SetColorMsgHandler::create(this, &IObject::setV, &IObject::setV);
+	fMsgHandlerMap[kred_GetSetMethod]		= IColor::SetColorMsgHandler::create(this, &IObject::setR, &IObject::setR);
+	fMsgHandlerMap[kgreen_GetSetMethod]		= IColor::SetColorMsgHandler::create(this, &IObject::setG, &IObject::setG);
+	fMsgHandlerMap[kblue_GetSetMethod]		= IColor::SetColorMsgHandler::create(this, &IObject::setB, &IObject::setB);
+	fMsgHandlerMap[kalpha_GetSetMethod]		= IColor::SetColorMsgHandler::create(this, &IObject::setA, &IObject::setA);
+	fMsgHandlerMap[khue_GetSetMethod]		= IColor::SetColorMsgHandler::create(this, &IObject::setH, &IObject::setH);
+	fMsgHandlerMap[ksaturation_GetSetMethod]= IColor::SetColorMsgHandler::create(this, &IObject::setS, &IObject::setS);
+	fMsgHandlerMap[kbrightness_GetSetMethod]= IColor::SetColorMsgHandler::create(this, &IObject::setV, &IObject::setV);
 
-	fMsgHandlerMap["dcolor"]	= TMethodMsgHandler<IObject>::create(this, &IObject::dcolorMsg);
-	fMsgHandlerMap["dhsb"]		= TMethodMsgHandler<IObject>::create(this, &IObject::dhsvMsg);
+	fMsgHandlerMap[kdcolor_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::dcolorMsg);
+	fMsgHandlerMap[kdhsb_SetMethod]			= TMethodMsgHandler<IObject>::create(this, &IObject::dhsvMsg);
 
-	fMsgHandlerMap["dred"]			= IColor::SetColorMsgHandler::create(this, &IObject::dR, &IObject::dR);
-	fMsgHandlerMap["dgreen"]		= IColor::SetColorMsgHandler::create(this, &IObject::dG, &IObject::dG);
-	fMsgHandlerMap["dblue"]			= IColor::SetColorMsgHandler::create(this, &IObject::dB, &IObject::dB);
-	fMsgHandlerMap["dalpha"]		= IColor::SetColorMsgHandler::create(this, &IObject::dA, &IObject::dA);
-	fMsgHandlerMap["dhue"]			= IColor::SetColorMsgHandler::create(this, &IObject::dH, &IObject::dH);
-	fMsgHandlerMap["dsaturation"]	= IColor::SetColorMsgHandler::create(this, &IObject::dS, &IObject::dS);
-	fMsgHandlerMap["dbrightness"]	= IColor::SetColorMsgHandler::create(this, &IObject::dV, &IObject::dV);
+	fMsgHandlerMap[kdred_SetMethod]			= IColor::SetColorMsgHandler::create(this, &IObject::dR, &IObject::dR);
+	fMsgHandlerMap[kdgreen_SetMethod]		= IColor::SetColorMsgHandler::create(this, &IObject::dG, &IObject::dG);
+	fMsgHandlerMap[kdblue_SetMethod]		= IColor::SetColorMsgHandler::create(this, &IObject::dB, &IObject::dB);
+	fMsgHandlerMap[kdalpha_SetMethod]		= IColor::SetColorMsgHandler::create(this, &IObject::dA, &IObject::dA);
+	fMsgHandlerMap[kdhue_SetMethod]			= IColor::SetColorMsgHandler::create(this, &IObject::dH, &IObject::dH);
+	fMsgHandlerMap[kdsaturation_SetMethod]	= IColor::SetColorMsgHandler::create(this, &IObject::dS, &IObject::dS);
+	fMsgHandlerMap[kdbrightness_SetMethod]	= IColor::SetColorMsgHandler::create(this, &IObject::dV, &IObject::dV);
 
-	fGetMsgHandlerMap["color"]		= TGetParamMsgHandler<IColor>::create(*(IColor*)this);
-	fGetMsgHandlerMap["red"]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getR);
-	fGetMsgHandlerMap["green"]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getG);
-	fGetMsgHandlerMap["blue"]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getB);
-	fGetMsgHandlerMap["alpha"]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getA);
-	fGetMsgHandlerMap["hue"]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getH);
-	fGetMsgHandlerMap["saturation"] = TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getS);
-	fGetMsgHandlerMap["brightness"]	= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getV);
+	fGetMsgHandlerMap[kcolor_GetSetMethod]		= TGetParamMsgHandler<IColor>::create(*(IColor*)this);
+	fGetMsgHandlerMap[kred_GetSetMethod]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getR);
+	fGetMsgHandlerMap[kgreen_GetSetMethod]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getG);
+	fGetMsgHandlerMap[kblue_GetSetMethod]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getB);
+	fGetMsgHandlerMap[kalpha_GetSetMethod]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getA);
+	fGetMsgHandlerMap[khue_GetSetMethod]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getH);
+	fGetMsgHandlerMap[ksaturation_GetSetMethod] = TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getS);
+	fGetMsgHandlerMap[kbrightness_GetSetMethod]	= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getV);
 }
 
 //--------------------------------------------------------------------------
 void IObject::positionAble()
 {
-	fGetMsgHandlerMap["x"]		= TGetParamMsgHandler<float>::create(fXPos);
-	fGetMsgHandlerMap["y"]		= TGetParamMsgHandler<float>::create(fYPos);
-	fGetMsgHandlerMap["xorigin"]= TGetParamMsgHandler<float>::create(fXOrigin);
-	fGetMsgHandlerMap["yorigin"]= TGetParamMsgHandler<float>::create(fYOrigin);
-	fGetMsgHandlerMap["z"]		= TGetParamMsgHandler<float>::create(fZOrder);
-	fGetMsgHandlerMap["angle"]	= TGetParamMsgHandler<float>::create(fAngle);
-	fGetMsgHandlerMap["scale"]	= TGetParamMsgHandler<float>::create(fScale);
-	fGetMsgHandlerMap["show"]	= TGetParamMsgHandler<bool>::create(fVisible);
-	fGetMsgHandlerMap["width"]	= TGetParamMsgHandler<float>::create(fWidth);
-	fGetMsgHandlerMap["height"] = TGetParamMsgHandler<float>::create(fHeight);
-	fGetMsgHandlerMap["shear"]	= TGetParamMsgHandler<TFloatSize>::create(fShear);
-	fGetMsgHandlerMap["rotatex"]= TGetParamMsgHandler<float>::create(fXAngle);
-	fGetMsgHandlerMap["rotatey"]= TGetParamMsgHandler<float>::create(fYAngle);
-	fGetMsgHandlerMap["rotatez"]= TGetParamMsgHandler<float>::create(fZAngle);
-	fGetMsgHandlerMap["effect"]	= TGetParamMethodHandler<IObject, GraphicEffect (IObject::*)() const>::create(this, &IObject::getEffect);
+	fGetMsgHandlerMap[kx_GetSetMethod]		= TGetParamMsgHandler<float>::create(fXPos);
+	fGetMsgHandlerMap[ky_GetSetMethod]		= TGetParamMsgHandler<float>::create(fYPos);
+	fGetMsgHandlerMap[kxorigin_GetSetMethod]= TGetParamMsgHandler<float>::create(fXOrigin);
+	fGetMsgHandlerMap[kyorigin_GetSetMethod]= TGetParamMsgHandler<float>::create(fYOrigin);
+	fGetMsgHandlerMap[kz_GetSetMethod]		= TGetParamMsgHandler<float>::create(fZOrder);
+	fGetMsgHandlerMap[kangle_GetSetMethod]	= TGetParamMsgHandler<float>::create(fAngle);
+	fGetMsgHandlerMap[kscale_GetSetMethod]	= TGetParamMsgHandler<float>::create(fScale);
+	fGetMsgHandlerMap[kshow_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fVisible);
+	fGetMsgHandlerMap[kwidth_GetSetMethod]	= TGetParamMsgHandler<float>::create(fWidth);
+	fGetMsgHandlerMap[kheight_GetSetMethod] = TGetParamMsgHandler<float>::create(fHeight);
+	fGetMsgHandlerMap[kshear_GetSetMethod]	= TGetParamMsgHandler<TFloatSize>::create(fShear);
+	fGetMsgHandlerMap[krotatex_GetSetMethod]= TGetParamMsgHandler<float>::create(fXAngle);
+	fGetMsgHandlerMap[krotatey_GetSetMethod]= TGetParamMsgHandler<float>::create(fYAngle);
+	fGetMsgHandlerMap[krotatez_GetSetMethod]= TGetParamMsgHandler<float>::create(fZAngle);
+	fGetMsgHandlerMap[keffect_GetSetMethod]	= TGetParamMethodHandler<IObject, GraphicEffect (IObject::*)() const>::create(this, &IObject::getEffect);
 
-	fMsgHandlerMap["x"]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setXPos);
-	fMsgHandlerMap["y"]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setYPos);
-	fMsgHandlerMap["xorigin"]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setXOrigin);
-	fMsgHandlerMap["yorigin"]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setYOrigin);
-	fMsgHandlerMap["z"]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setZOrder);
-	fMsgHandlerMap["angle"]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setAngle);
-	fMsgHandlerMap["scale"]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setScale);
-	fMsgHandlerMap["shear"]		= TSetMethodMsgHandler<IObject,TFloatSize>::create(this, &IObject::setShear);
-	fMsgHandlerMap["rotatex"]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setRotateX);
-	fMsgHandlerMap["rotatey"]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setRotateY);
-	fMsgHandlerMap["rotatez"]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setRotateZ);
-	fMsgHandlerMap["show"]		= TSetMethodMsgHandler<IObject,bool>::create(this, &IObject::setVisible);
-	fMsgHandlerMap["effect"]	= TMethodMsgHandler<IObject>::create(this, &IObject::effectMsg);
+	fMsgHandlerMap[kx_GetSetMethod]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setXPos);
+	fMsgHandlerMap[ky_GetSetMethod]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setYPos);
+	fMsgHandlerMap[kxorigin_GetSetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setXOrigin);
+	fMsgHandlerMap[kyorigin_GetSetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setYOrigin);
+	fMsgHandlerMap[kz_GetSetMethod]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setZOrder);
+	fMsgHandlerMap[kangle_GetSetMethod]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setAngle);
+	fMsgHandlerMap[kscale_GetSetMethod]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setScale);
+	fMsgHandlerMap[kshear_GetSetMethod]		= TSetMethodMsgHandler<IObject,TFloatSize>::create(this, &IObject::setShear);
+	fMsgHandlerMap[krotatex_GetSetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setRotateX);
+	fMsgHandlerMap[krotatey_GetSetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setRotateY);
+	fMsgHandlerMap[krotatez_GetSetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setRotateZ);
+	fMsgHandlerMap[kshow_GetSetMethod]		= TSetMethodMsgHandler<IObject,bool>::create(this, &IObject::setVisible);
+	fMsgHandlerMap[keffect_GetSetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::effectMsg);
 
-	fMsgHandlerMap["dx"]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addXPos);
-	fMsgHandlerMap["dy"]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYPos);
-	fMsgHandlerMap["dxorigin"]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addXOrigin);
-	fMsgHandlerMap["dyorigin"]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYOrigin);
-	fMsgHandlerMap["dz"]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addZOrder);
-	fMsgHandlerMap["dangle"]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addAngle);
-	fMsgHandlerMap["dscale"]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::multScale);
+	fMsgHandlerMap[kdx_SetMethod]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addXPos);
+	fMsgHandlerMap[kdy_SetMethod]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYPos);
+	fMsgHandlerMap[kdxorigin_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addXOrigin);
+	fMsgHandlerMap[kdyorigin_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYOrigin);
+	fMsgHandlerMap[kdz_SetMethod]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addZOrder);
+	fMsgHandlerMap[kdangle_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addAngle);
+	fMsgHandlerMap[kdscale_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::multScale);
 }
 
 //--------------------------------------------------------------------------
 void IObject::setdyMsgHandler ()
 { 
-	fMsgHandlerMap["dy"] = TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYPos); 
+	fMsgHandlerMap[kdy_SetMethod] = TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYPos);
 }
 
 //--------------------------------------------------------------------------
 void IObject::setdyMsgHandler (Master* m)
 { 
-	fMsgHandlerMap["dy"] = TSetMethodMsgHandler<Master,void (Master::*)(float)>::create(this, m, &Master::setDy); 
+	fMsgHandlerMap[kdy_SetMethod] = TSetMethodMsgHandler<Master,void (Master::*)(float)>::create(this, m, &Master::setDy); 
 }
 
 //--------------------------------------------------------------------------
 void IObject::timeAble()
 {
-	fGetMsgHandlerMap["date"]		= TGetParamMsgHandler<rational>::create(fDate);
-	fGetMsgHandlerMap["duration"]	= TGetParamMsgHandler<rational>::create(fDuration);
+	fGetMsgHandlerMap[kdate_GetSetMethod]		= TGetParamMsgHandler<rational>::create(fDate);
+	fGetMsgHandlerMap[kduration_GetSetMethod]	= TGetParamMsgHandler<rational>::create(fDuration);
 
-	fMsgHandlerMap["date"]		= TSetMethodMsgHandler<IObject,rational>::create(this, &IObject::setDate);
-	fMsgHandlerMap["duration"]	= TSetMethodMsgHandler<IObject,rational>::create(this, &IObject::setDuration);
-	fMsgHandlerMap["ddate"]		= TSetMethodMsgHandler<IObject,rational>::create(this, &IObject::addDate);
-	fMsgHandlerMap["dduration"]	= TSetMethodMsgHandler<IObject,rational>::create(this, &IObject::addDuration);
+	fMsgHandlerMap[kdate_GetSetMethod]		= TSetMethodMsgHandler<IObject,rational>::create(this, &IObject::setDate);
+	fMsgHandlerMap[kduration_GetSetMethod]	= TSetMethodMsgHandler<IObject,rational>::create(this, &IObject::setDuration);
+	fMsgHandlerMap[kddate_SetMethod]		= TSetMethodMsgHandler<IObject,rational>::create(this, &IObject::addDate);
+	fMsgHandlerMap[kdduration_SetMethod]	= TSetMethodMsgHandler<IObject,rational>::create(this, &IObject::addDuration);
 
-	fMsgHandlerMap["clock"]		= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::clock);
-	fMsgHandlerMap["durClock"]	= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::durclock);
+	fMsgHandlerMap[kclock_SetMethod]		= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::clock);
+	fMsgHandlerMap[kdurClock_SetMethod]	= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::durclock);
 }
 
 //--------------------------------------------------------------------------
@@ -485,7 +485,7 @@ SIMessageList IObject::getSetMsg() const
 	// check first if there is an existing message handler
 	SGetParamMsgHandler handler = getMessageHandler("");
 	if (handler) {
-		SIMessage msg = IMessage::create(address, "set");
+		SIMessage msg = IMessage::create(address, kset_SetMethod);
 		*msg << getTypeString();
 		handler->print(msg);	
 		outMsgs->list().push_back (msg);
@@ -497,7 +497,7 @@ SIMessageList IObject::getSetMsg() const
 		for (unsigned int i = 0; i < elements().size(); i++) {
 			nodePtr elt = elements()[i];
 			if (!elt->getDeleted()) {
-				SIMessage msg = IMessage::create(address + elt->name(), "get");
+				SIMessage msg = IMessage::create(address + elt->name(), kget_SetMethod);
 				outMsgs->list().push_back (elt->getMsgs(msg)->list());
 			}
 		}
@@ -682,7 +682,7 @@ SIMessageList IObject::getAliases() const
 	vector<pair<string, string> > aliases;
 	IAppl::getAliases (getOSCAddress(), aliases);
 	unsigned int n = aliases.size();
-	SIMessage msg = IMessage::create (getOSCAddress(), "alias");
+	SIMessage msg = IMessage::create (getOSCAddress(), kalias_GetSetMethod);
 	for (unsigned i = 0; i < n; i++) {
 		msg->add (aliases[i].first);
 		if (aliases[i].second.size()) msg->add (aliases[i].second);

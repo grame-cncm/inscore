@@ -39,6 +39,7 @@
 #include "IMessageHandlers.h"
 #include "IPosition.h"
 #include "maptypes.h"
+#include "Methods.h"
 #include "rational.h"
 #include "TSegmentation.h"
 #include "TRelation.h"

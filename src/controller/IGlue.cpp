@@ -142,7 +142,7 @@ void IGlue::initialize (bool offscreen, QApplication* appl)
 	fModel->createVirtualNodes();
 	fModel->setView (ViewFactory::create(fModel));
 
-	INScore::MessagePtr msg = INScore::newMessage ("new");
+	INScore::MessagePtr msg = INScore::newMessage (knew_SetMethod);
 	string address (fModel->getOSCAddress());
 	address += "/scene";
 	INScore::postMessage (address.c_str(), msg);

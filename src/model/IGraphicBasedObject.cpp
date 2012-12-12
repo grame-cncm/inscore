@@ -43,9 +43,9 @@ IGraphicBasedObject::IGraphicBasedObject( const std::string& name, IObject * par
 { 
 	fLocalMappings = TLocalMapping<long,2>::create();
 
-	fMsgHandlerMap["map"]		= TMethodMsgHandler<IGraphicBasedObject>::create(this, &IGraphicBasedObject::mapMsg);
-	fMsgHandlerMap["map+"]		= TMethodMsgHandler<IGraphicBasedObject>::create(this, &IGraphicBasedObject::mapAddMsg);
-	fMsgHandlerMap["mapf"]		= TMethodMsgHandler<IGraphicBasedObject>::create(this, &IGraphicBasedObject::mapFileMsg);
+	fMsgHandlerMap[kmap_GetSetMethod]		= TMethodMsgHandler<IGraphicBasedObject>::create(this, &IGraphicBasedObject::mapMsg);
+	fMsgHandlerMap[kmapplus_SetMethod]		= TMethodMsgHandler<IGraphicBasedObject>::create(this, &IGraphicBasedObject::mapAddMsg);
+	fMsgHandlerMap[kmapf_SetMethod]			= TMethodMsgHandler<IGraphicBasedObject>::create(this, &IGraphicBasedObject::mapFileMsg);
 }
 
 //--------------------------------------------------------------------------

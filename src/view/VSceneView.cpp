@@ -44,11 +44,6 @@
 
 #define SCENE_RECT QRect(-400,-400,800,800)
 
-//#define OSC_SCENE_ADDRESS	"/ITL/scene"
-#define OSC_HEIGHT_MSG		"height"
-#define OSC_WIDTH_MSG		"width"
-#define OSC_X_MSG			"x"
-#define OSC_Y_MSG			"y"
 
 namespace inscore
 {
@@ -75,7 +70,7 @@ class ZoomingGraphicsView : public QGraphicsView
 //------------------------------------------------------------------------------------------------------------------------
 void ZoomingGraphicsView::closeEvent (QCloseEvent * event) 
 {
-	INScore::MessagePtr msg = INScore::newMessage ("del");
+	INScore::MessagePtr msg = INScore::newMessage (kdel_SetMethod);
 	INScore::postMessage (fSceneAddress.c_str(), msg);
 	event->accept();
 }
@@ -297,13 +292,13 @@ void WindowEventFilter::updateModel()
 		x = (view->pos().x() + view->width()/2.0f - screenCenter.x()) / (lowestDimension/2.0f);
 		y = (view->pos().y() + view->height()/2.0f - screenCenter.y()) / (lowestDimension/2.0f);
 	}
-	sendMessage( fOSCAddress.c_str() , OSC_X_MSG , x );
-	sendMessage( fOSCAddress.c_str() , OSC_Y_MSG , y );
+	sendMessage( fOSCAddress.c_str() , kx_GetSetMethod , x );
+	sendMessage( fOSCAddress.c_str() , ky_GetSetMethod , y );
 
 	float width = view->width() / (lowestDimension/2.0f);
 	float height = view->height() / (lowestDimension/2.0f);
-	sendMessage( fOSCAddress.c_str() , OSC_WIDTH_MSG , width );
-	sendMessage( fOSCAddress.c_str() , OSC_HEIGHT_MSG , height );
+	sendMessage( fOSCAddress.c_str() , kwidth_GetSetMethod , width );
+	sendMessage( fOSCAddress.c_str() , kheight_GetSetMethod , height );
 }
 
 } // end namespoace

@@ -27,6 +27,7 @@
 #include "EventsAble.h"
 #include "IMessageStream.h"
 #include "TInterval.h"
+#include "Methods.h"
 #include "OSCStream.h"
 
 using namespace std;
@@ -147,7 +148,7 @@ const IMessageList* EventsAble::getTimeMsgs (eventype t, const RationalInterval&
 //----------------------------------------------------------------------
 SIMessage EventsAble::buildGetMsg (const char * address, const string& what, const RationalInterval& time, const IMessageList* mlist) const
 {
-	SIMessage msg = IMessage::create (address, "watch");
+	SIMessage msg = IMessage::create (address, kwatch_GetSetMethod);
 	*msg << what << time.first() << time.second();
 	if (mlist) {
 		SIMessageList msgs = IMessageList::create();
@@ -160,7 +161,7 @@ SIMessage EventsAble::buildGetMsg (const char * address, const string& what, con
 //----------------------------------------------------------------------
 SIMessage EventsAble::buildGetMsg (const char * address, const string& what, const SIMessageList& msgs) const
 {
-	SIMessage msg = IMessage::create (address, "watch");
+	SIMessage msg = IMessage::create (address, kwatch_GetSetMethod);
 	*msg << what << msgs;
 	return msg;
 }
@@ -184,7 +185,7 @@ SIMessageList EventsAble::getWatch (const char* address) const
 	for (_TimeMsgMap::const_iterator i = fDurLeaveMsgMap.begin(); i != fDurLeaveMsgMap.end(); i++)
 		list->list().push_back( buildGetMsg (address, kDurLeaveStr, i->first, i->second));
 
-	if (list->list().empty()) list->list().push_back(IMessage::create (address, "watch"));
+	if (list->list().empty()) list->list().push_back(IMessage::create (address, kwatch_GetSetMethod));
 	return list;
 }
 

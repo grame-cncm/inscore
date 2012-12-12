@@ -40,8 +40,8 @@ const string IFileWatcher::kFileWatcherType("fileWatcher");
 //--------------------------------------------------------------------------
 IFileWatcher::IFileWatcher(IObject * parent) : IVNode(kFileWatcherType, parent)
 { 
-	fMsgHandlerMap["watch"]		= TMethodMsgHandler<IFileWatcher>::create(this, &IFileWatcher::watchMsg);
-	fMsgHandlerMap["watch+"]	= TMethodMsgHandler<IFileWatcher>::create(this, &IFileWatcher::addWatchMsg);
+	fMsgHandlerMap[kwatch_GetSetMethod]		= TMethodMsgHandler<IFileWatcher>::create(this, &IFileWatcher::watchMsg);
+	fMsgHandlerMap[kwatchplus_SetMethod]	= TMethodMsgHandler<IFileWatcher>::create(this, &IFileWatcher::addWatchMsg);
 }
 
 //--------------------------------------------------------------------------
@@ -91,16 +91,16 @@ SIMessageList IFileWatcher::getMsgs (const IMessage* msg) const
 	if (!doit) {				// look for a 'watch' parameters
 		string what;
 		for (int i=0; (i < msg->size()) && !doit; i++)
-			doit = msg->param(i, what) && (what == "watch");
+			doit = msg->param(i, what) && (what == kwatch_GetSetMethod);
 	}
 	if (!doit)	return outMsgs;
 	
 	for ( TWatcher<string>::const_iterator i = list().begin(); i != list().end() ; i++ ) {
-		SIMessage msg = IMessage::create(getOSCAddress(), "watch");
+		SIMessage msg = IMessage::create(getOSCAddress(), kwatch_GetSetMethod);
 		*msg << i->first << i->second;
 		outMsgs->list().push_back(msg);
 	}
-	if (outMsgs->list().empty()) outMsgs->list().push_back(IMessage::create(getOSCAddress(), "watch"));
+	if (outMsgs->list().empty()) outMsgs->list().push_back(IMessage::create(getOSCAddress(), kwatch_GetSetMethod));
 	return outMsgs;
 }
 

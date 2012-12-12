@@ -48,6 +48,7 @@
 
 #include "INScore.h"
 #include "INScoreAppl.h"
+#include "Methods.h"
 
 using namespace inscore;
 using namespace std;
@@ -129,11 +130,11 @@ void INScoreAppl::open(const string& file)
 	size_t pos = file.find_last_of (sep);
 	if (pos != string::npos) {
 		string path = file.substr(0, pos);
-		INScore::MessagePtr msg = INScore::newMessage ("rootPath");
+		INScore::MessagePtr msg = INScore::newMessage (krootPath_GetSetMethod);
 		INScore::add (msg, path.c_str());
 		INScore::postMessage ("/ITL", msg);
 	}
-	INScore::MessagePtr msg = INScore::newMessage ("load");
+	INScore::MessagePtr msg = INScore::newMessage (kload_SetMethod);
 	INScore::add (msg, file.c_str());
 	INScore::postMessage ("/ITL", msg);
 }
