@@ -134,16 +134,21 @@ IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool of
 	fTypeString = kApplType;
 	fVersion = INScore::versionStr();
 
-	fMsgHandlerMap["hello"]		= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::helloMsg);
-//	fMsgHandlerMap["activate"]	= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::activate);
-	fMsgHandlerMap["load"]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadMsg);
-	fMsgHandlerMap["require"]	= TMethodMsgHandler<IAppl>::create(this, &IAppl::requireMsg);
-	fMsgHandlerMap["quit"]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::quit);
-	fMsgHandlerMap["mouse"]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::cursor);
-	fMsgHandlerMap["forward"]	= TMethodMsgHandler<IAppl>::create(this, &IAppl::forward);
-	fMsgHandlerMap["time"]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::setTime);
+	fMsgHandlerMap["hello"]			= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::helloMsg);
+//	fMsgHandlerMap["activate"]		= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::activate);
+	fMsgHandlerMap["load"]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadMsg);
+	fMsgHandlerMap["require"]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::requireMsg);
+	fMsgHandlerMap["quit"]			= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::quit);
+	fMsgHandlerMap["mouse"]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::cursor);
+	fMsgHandlerMap["forward"]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::forward);
+	fMsgHandlerMap["time"]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::setTime);
+	fMsgHandlerMap["rootPath"]		= TSetMethodMsgHandler<IAppl, string>::create(this, &IAppl::setRootPath);
+	fMsgHandlerMap["port"]			= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPInPort);
+	fMsgHandlerMap["outport"]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPOutPort);
+	fMsgHandlerMap["errport"]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPErrPort);
+	fMsgHandlerMap["defaultShow"]	= TSetMethodMsgHandler<IAppl,bool>::create(this, &IAppl::setDefaultShow);
+	fMsgHandlerMap["rate"]			= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setRate);
 
-	fGetMsgHandlerMap["version"]	= TGetParamMsgHandler<const string&>::create(fVersion);
 	fGetMsgHandlerMap["rootPath"]	= TGetParamMsgHandler<const string&>::create(fRootPath);
 	fGetMsgHandlerMap["port"]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getUDPInPort);
 	fGetMsgHandlerMap["outport"]	= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getUDPOutPort);
@@ -153,15 +158,9 @@ IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool of
 	fGetMsgHandlerMap["forward"]	= TGetParamMsgHandler<vector<IMessage::TUrl> >::create(fForwardList);
 	fGetMsgHandlerMap["time"]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::time);
 
+	fGetMsgHandlerMap["version"]			= TGetParamMsgHandler<const string&>::create(fVersion);
 	fGetMsgHandlerMap["guido-version"]		= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::guidoversion);
 	fGetMsgHandlerMap["musicxml-version"]	= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::musicxmlversion);
-
-	fMsgHandlerMap["rootPath"]		= TSetMethodMsgHandler<IAppl, string>::create(this, &IAppl::setRootPath);
-	fMsgHandlerMap["port"]			= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPInPort);
-	fMsgHandlerMap["outport"]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPOutPort);
-	fMsgHandlerMap["errport"]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPErrPort);
-	fMsgHandlerMap["defaultShow"]	= TSetMethodMsgHandler<IAppl,bool>::create(this, &IAppl::setDefaultShow);
-	fMsgHandlerMap["rate"]			= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setRate);
 
 #ifdef RUNBENCH
 	fMsgHandlerMap["startBench"]	= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::startBench);
