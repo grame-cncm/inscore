@@ -16,6 +16,7 @@ Version 1.00
 - new 'time' message at application level for querying or setting the current time
 - new 'forward' message at application level for messages forwarding to remote hosts
 - new 'relative | absolute' synchronization mode
+- 'rename' message not supported any more
 - a scene accepts multiple dropped files
 - syntax changes in inscore script files
 - fileWatcher methods renamed and simplified
