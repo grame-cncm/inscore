@@ -36,6 +36,7 @@
 #include "IMessage.h"
 #include "rational.h"
 #include "TRect.h"
+#include "Tools.h"
 #include "smartpointer.h"
 
 namespace inscore
@@ -132,15 +133,24 @@ template <typename O, typename T> class TSetMethodMsgHandler : public MsgHandler
 
 template <typename O> class TSetMethodMsgHandler<O, libmapping::rational> : public MsgHandler 
 {
-	public: 
+	protected:
 		typedef void (O::*MsgHandlerMethod)(const libmapping::rational&);
-		
+
+		O*	fObject;
+		MsgHandlerMethod	fMethod;
+		TSetMethodMsgHandler(O* obj, MsgHandlerMethod method) : fObject(obj), fMethod(method) {}
+
+	public:		
 		static SMsgHandler create(O* obj, MsgHandlerMethod method)	{ return new TSetMethodMsgHandler<O,libmapping::rational> (obj, method); }
 		virtual msgStatus operator ()(const IMessage* msg)			{ 
 			if ( msg->size() == 1 ) {
-				int n; float nf;
+				int n; float nf; std::string datestr;
 				if (msg->param(0, n)) (fObject->*fMethod)( libmapping::rational(n,1) );
 				else if (msg->param(0, nf)) (fObject->*fMethod)( libmapping::rational(int(nf*10000),10000) );
+				else if (msg->param(0, datestr)) {
+					libmapping::rational date = Tools::str2rational(datestr);
+					if (date.getDenominator()) (fObject->*fMethod)( date );
+				}
 				else return kBadParameters;
 			}
 			else if ( msg->size() == 2 ) {
@@ -151,11 +161,6 @@ template <typename O> class TSetMethodMsgHandler<O, libmapping::rational> : publ
 			else return kBadParameters;
 			return kProcessed;
 		}
-
-	protected:
-		O*	fObject;
-		MsgHandlerMethod	fMethod;
-		TSetMethodMsgHandler(O* obj, MsgHandlerMethod method) : fObject(obj), fMethod(method) {}
 };
 
 template <typename O> class TSetMethodMsgHandler<O, std::string> : public MsgHandler 
