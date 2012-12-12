@@ -84,9 +84,17 @@ MsgHandler::msgStatus IFileWatcher::watchMsg (const IMessage* msg )
 }
 
 //--------------------------------------------------------------------------
-SIMessageList IFileWatcher::getMsgs (const IMessage*) const
+SIMessageList IFileWatcher::getMsgs (const IMessage* msg) const
 {
 	SIMessageList outMsgs = IMessageList::create();
+	bool doit = (msg->size() == 0);
+	if (!doit) {				// look for a 'watch' parameters
+		string what;
+		for (int i=0; (i < msg->size()) && !doit; i++)
+			doit = msg->param(i, what) && (what == "watch");
+	}
+	if (!doit)	return outMsgs;
+	
 	for ( TWatcher<string>::const_iterator i = list().begin(); i != list().end() ; i++ ) {
 		SIMessage msg = IMessage::create(getOSCAddress(), "watch");
 		*msg << i->first << i->second;
