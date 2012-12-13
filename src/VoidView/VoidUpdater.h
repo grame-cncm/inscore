@@ -53,28 +53,28 @@ class export VoidUpdater : public Updater
 		virtual void update (IObject*);
 		virtual const char* name()	{ return "VoidUpdater"; }
 };
-typedef class SMARTP<VoidUpdater>	SVoidUpdater;
+typedef class libmapping::SMARTP<VoidUpdater>	SVoidUpdater;
 
 
 class export VoidViewUpdater : public VoidUpdater {
 	public:	
 		virtual bool needupdate (IObject*);
 		virtual const char* name()	{ return "VoidViewUpdater"; }
-	static SMARTP<VoidViewUpdater> create()	{ return new VoidViewUpdater(); }
+	static libmapping::SMARTP<VoidViewUpdater> create()	{ return new VoidViewUpdater(); }
 };
 
 class export VoidLocalMapUpdater : public VoidUpdater {
 	public:	
 		virtual bool needupdate (IObject*);
 		virtual const char* name()	{ return "VoidLocalMapUpdater"; }
-	static SMARTP<VoidLocalMapUpdater> create()	{ return new VoidLocalMapUpdater(); }
+	static libmapping::SMARTP<VoidLocalMapUpdater> create()	{ return new VoidLocalMapUpdater(); }
 };
 
 class export VoidSlaveMapUpdater : public VoidUpdater {
 	public:	
 		virtual bool needupdate (IObject*);
 		virtual const char* name()	{ return "VoidSlaveMapUpdater"; }
-	static SMARTP<VoidSlaveMapUpdater> create()	{ return new VoidSlaveMapUpdater(); }
+	static libmapping::SMARTP<VoidSlaveMapUpdater> create()	{ return new VoidSlaveMapUpdater(); }
 };
 
 
