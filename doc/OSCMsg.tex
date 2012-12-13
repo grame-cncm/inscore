@@ -37,7 +37,8 @@
 \providecommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
 \newcommand{\OSC}[1]		{\texttt{#1}}
 \newcommand{\values}[1]	{\texttt{#1}}
-\newcommand{\example}		{\hspace*{1cm}}
+\newcommand{\oldexample}		{\hspace*{1cm}}
+\newcommand{\example}		{\textbf{\hspace{-1.5cm}\textit{Example:}}}
 \renewcommand{\seealso}	{\textbf{See also: }}
 
 \newcommand{\osctype}[1]{\textbf{\texttt{{\small #1}}}}
@@ -219,14 +220,14 @@ The default \OSC{rate} value is 10.
 \item \OSC{time}: sets the application current time. The current rate is internally added to the current time by the time task.
 
 \item \OSC{hello}: query the host IP number. The message is intended for ITL applications discovery. Answer to the query has the following format: \\
-\example \OSC{IP  inPort outPort errPort} where \OSC{IP} is sent as a string and port numbers as integer values.
+\oldexample \OSC{IP  inPort outPort errPort} where \OSC{IP} is sent as a string and port numbers as integer values.
 
 \end{itemize}
 
-Example:\\
+\example \\
 when sending the message:
 \sample{/ITL hello}
-the application could answer with the following message:
+the application will answer with the following message:
 \sample{/ITL 192.168.0.5  7000 7001 7003}
 when it runs on a host which IP number is \OSC{192.168.0.5} using the default port numbers.
 
@@ -269,7 +270,7 @@ ITLMsgForward : ('forward' ( [1] | [2] hostname +))
 \item 1) removes the set of forwarded destinations,
 \item 2) set a list of remote hosts for forwarding. Note that \OSC{hostname} can be any legal host name or IP number, optionally extended with a port number separated by a semi-colon. By default, when no port number is specified, the current application listening port number is used.
 \end{itemize}
-Example:
+\example
 \sample{/ITL forward host1.adomain.org host2.adomain.org:5100}
 Forwards messages to \OSC{host1.adomain.org} using the current application listening port number \\
 and to \OSC{host2.adomain.org} on port number 5100.
@@ -344,8 +345,8 @@ sceneMsg :  'new'
 
 
 %===============================
-%:Common components messages
-\toplevel{Common components messages}
+%:Common messages
+\toplevel{Common messages}
 \label{common}
 Common messages are mainly intended to control the graphic appearance of the components and  of the scene.
 They could be sent to any address with the form \OSC{/ITL/scene} or \OSC{/ITL/scene/\textit{identifier}} where \OSC{\textit{identifier}} is the unique identifier string of a scene component.
@@ -392,9 +393,10 @@ When the destination file is not completely specified (third form or missing ext
 PositionMsg : 		absPosMsg 
 				|	relPosMsg 
 				|	originMsg 
+				| 	transformMsg
 \end{rail}
 
-Graphic position messages are absolute position messages or relative position messages.
+Graphic position messages are absolute position or relative position messages. They can also control an object \emph{origin} and transformations like rotation around an axis.
 
 \subsublevel{Absolute positioning}
 
@@ -483,7 +485,7 @@ originMsg :
 
 %-------------------------------
 %:   Components transformations
-\subsublevel{Components transformations}
+\sublevel{Components transformations}
 \label{transform}
 
 A component tranformation specifies 2D transformations of its coordinate system. It includes shear and object rotation.
@@ -512,7 +514,7 @@ ColorMsg : 	absColorMsg
 			|	relColorMsg 
 \end{rail}
 
-Color messages are absolute or relative color control messages.
+Color messages are absolute or relative color control messages. Color may be expressed in RGBA or HSBA.
 
 \subsublevel{Absolute color messages}
 
@@ -651,61 +653,61 @@ The blur radius should be given as an int32 value. By default, the blur radius i
 
 %-------------------------------
 %:The 'click' and 'select' messages
-\sublevel{The 'click' and 'select' messages}
-\label{csmsg}
-
-\textbf{Warning}: the \OSC{click} and \OSC{select} messages are deprecated and will be removed in a future version.
-
-The \OSC{click} and \OSC{select} messages can be sent to any address with the form \OSC{/ITL/scene/\textit{identifier}} where \OSC{\textit{identifier}} is the unique identifier string of a scene component. They are intended to provide information about components relative positions: it returns a list of components identifiers that are 'under' the \emph{clicked} component: z order of the components is used for the 'under' relationship. 
- 
-\begin{rail}
-click :		'click' ( | clickMode)
-\end{rail}
-\index{Common messages!click}
- 
-\begin{rail}
-clickMode :	'topleft' | 'bottomright' | 'topright' | 'bottomleft' | 'center'
-\end{rail}
-\index{Common messages!click!topleft}
-\index{Common messages!click!bottomright}
-\index{Common messages!click!topright}
-\index{Common messages!click!bottomleft}
-\index{Common messages!click!center}
-
- 
-\begin{itemize}
-\item \OSC{topleft}, \OSC{bottomright}, \OSC{topright}, \OSC{bottomleft}, \OSC{center}: collects the components that are respectively under the top-left, bottom-right, top-right, bottom-left or center point of the target component. The clicked point is computed from the component bounding box.
-\item Sent without parameter, the \OSC{click} message is equivalent to \OSC{click topleft}.
-\end{itemize}
-
-Reply of the \OSC{click} message has the following form:
-\begin{rail}
-clickReply :	OSCAddress	clickMode ( | (identifier +))
-\end{rail}
-
-where 'identifier' is a component name. Note that 'identifiers' are sorted by decreasing z order.
-
-\begin{rail}
-select :	'select' ( 	| selectMode)
-\end{rail}
-\index{Common messages!select}
- 
-\begin{rail}
-selectMode :	'intersect' | 'include'
-\end{rail}
-\index{Common messages!select!intersect}
-\index{Common messages!select!include}
-
-\begin{itemize}
-\item \OSC{intersect}: looks for the components that are under the \emph{clicked} component and that intersect with its bounding box.
-\item \OSC{include}: looks for the components that are under the \emph{clicked} component and that are included in its bounding box.
-\item Sent without parameter, the \OSC{select} message is equivalent to \OSC{select intersect}.
-\end{itemize}
-
-Reply of the \OSC{select} message is similar to \OSC{click} reply:
-\begin{rail}
-selectReply :	OSCAddress	selectMode ( | (identifier +))
-\end{rail}
+%\sublevel{The 'click' and 'select' messages}
+%\label{csmsg}
+%
+%\textbf{Warning}: the \OSC{click} and \OSC{select} messages are deprecated and will be removed in a future version.
+%
+%The \OSC{click} and \OSC{select} messages can be sent to any address with the form \OSC{/ITL/scene/\textit{identifier}} where \OSC{\textit{identifier}} is the unique identifier string of a scene component. They are intended to provide information about components relative positions: it returns a list of components identifiers that are 'under' the \emph{clicked} component: z order of the components is used for the 'under' relationship. 
+% 
+%\begin{rail}
+%click :		'click' ( | clickMode)
+%\end{rail}
+%\index{Common messages!click}
+% 
+%\begin{rail}
+%clickMode :	'topleft' | 'bottomright' | 'topright' | 'bottomleft' | 'center'
+%\end{rail}
+%\index{Common messages!click!topleft}
+%\index{Common messages!click!bottomright}
+%\index{Common messages!click!topright}
+%\index{Common messages!click!bottomleft}
+%\index{Common messages!click!center}
+%
+% 
+%\begin{itemize}
+%\item \OSC{topleft}, \OSC{bottomright}, \OSC{topright}, \OSC{bottomleft}, \OSC{center}: collects the components that are respectively under the top-left, bottom-right, top-right, bottom-left or center point of the target component. The clicked point is computed from the component bounding box.
+%\item Sent without parameter, the \OSC{click} message is equivalent to \OSC{click topleft}.
+%\end{itemize}
+%
+%Reply of the \OSC{click} message has the following form:
+%\begin{rail}
+%clickReply :	OSCAddress	clickMode ( | (identifier +))
+%\end{rail}
+%
+%where 'identifier' is a component name. Note that 'identifiers' are sorted by decreasing z order.
+%
+%\begin{rail}
+%select :	'select' ( 	| selectMode)
+%\end{rail}
+%\index{Common messages!select}
+% 
+%\begin{rail}
+%selectMode :	'intersect' | 'include'
+%\end{rail}
+%\index{Common messages!select!intersect}
+%\index{Common messages!select!include}
+%
+%\begin{itemize}
+%\item \OSC{intersect}: looks for the components that are under the \emph{clicked} component and that intersect with its bounding box.
+%\item \OSC{include}: looks for the components that are under the \emph{clicked} component and that are included in its bounding box.
+%\item Sent without parameter, the \OSC{select} message is equivalent to \OSC{select intersect}.
+%\end{itemize}
+%
+%Reply of the \OSC{select} message is similar to \OSC{click} reply:
+%\begin{rail}
+%selectReply :	OSCAddress	selectMode ( | (identifier +))
+%\end{rail}
 
 
 %===============================
@@ -874,10 +876,18 @@ getMsg : 'get' ( | getParam +)
 
 The \OSC{get} message without parameter is the counterpart of the \OSC{set} message. 
 
+\example \\
+Sending the following request to an object which position is 0.3 0.5
+\sample{/ITL/scene/myobject get x y}
+will give the following messages on outpout port:
+\sample{/ITL/scene/myobject x 0.3 \\
+/ITL/scene/myobject y 0.5}
+
 %-------------------------------
 \sublevel{Special 'get' forms}
 
 The \OSC{get} message without parameter addressed to a container (the application \OSC{/ITL}, a scene \OSC{/ITL/scene}, the signal node \OSC{/ITL/scene/signal}) is actually relayed to each of the container component.  
+
 
 The \OSC{get width} and \OSC{get height} messages adressed to components that have no explicit width and height (text, images, etc.) return 0 as long as the target component has not been drew.
 
@@ -1358,7 +1368,7 @@ fileWatcher : ('add' filePath OSCMessage)
 
 where \OSC{OSCMessage} is any message complying to the format desscribed in section \fullref{genformat}.
 
-Example:
+\example
 \sample{
 /ITL/scene/fileWatcher add 'fuga.gmn' '/ITL/scene/score' 'set' 'gmnf' 'fuga.gmn';
 }
@@ -1454,7 +1464,7 @@ simpleSignal : [1] ( float32 + )
 \item \textbf{[6]} the \OSC{del} message deletes the signal from the \OSC{signal} space. Note that it is safe to delete a signal even when used by a graphic signal. 
 \end{itemize}
 
-Example:
+\example
 \sample{/ITL/scene/signal/null 0.0;}
 creates a constant signal named \OSC{null}, which value is \values{0}.
 
@@ -1510,7 +1520,7 @@ projectionString :  '[' int32 (| '\~{}' (| int32)) ']'
 
 The projection string is made of a \emph{index value}, followed by an optional \emph{parallel marker} (\OSC{\~{}}), followed by an optional \emph{step value}, all enclosed in brackets.
 The \emph{index value} \values{n} is the index of a target signal. When the \emph{parallel marker} option is not present, the values are directed to the target signal and the message is equivalent to:
-\example \texttt{/ITL/scene/signal/target values...} \\
+\oldexample \texttt{/ITL/scene/signal/target values...} \\
 where \OSC{\textit{target}} is the name of the target signal addressed by \values{n}. \\
 Note that:
 \begin{itemize}
@@ -1520,10 +1530,10 @@ Note that:
 
 The \emph{parallel marker} (\OSC{\~{}}) and the \emph{step value} \values{w} options affect the target signals. Let's consider \values{s[n]} as the signal at index \values{n}. The values are distributed in sequence and in loop to the signals \values{s[n], s[n+w]...s[m]} where \values{m} is the greatest value of the index \values{n+(w.i)} that is less than the signal dimension. The default  \emph{step value} is \values{1}.
 
-Example: \\
-\example the message: 
+\example \\
+the message: 
 \sample{/ITL/scene/signal/target [2\~{}] 0.1 0.2}
-\example is equivalent to the following messages:
+is equivalent to the following messages:
 \ \sample{
 /ITL/scene/signal/target [2] 0.1\\
 /ITL/scene/signal/target [3] 0.2
@@ -1717,7 +1727,7 @@ what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'do
 \index{Interaction!doubleClick}
 
 
-Example:
+\example
 \sample{
 /ITL/scene/myObject watch mouseDown "/ITL/scene/myObject" "show" 0;
 }
@@ -1755,7 +1765,8 @@ A time zone is defined by 2 dates expressed as rational values (i.e. with 4 inte
 \item \OSC{durEnter}, \OSC{durLeave} are triggered when an object duration is moved to or out of a watched \OSC{timezone} that should be viewed as a duration range.
 \end{itemize}
 
-Example: a cursor that displays a given music page when it enters its time zone.
+\example \\
+ a cursor that displays a given music page when it enters its time zone.
 \samplev{
 /ITL/scene/cursor watch 'timeEnter' 10 1 18 1 '/ITL/scene/score' 'set' 'img' 'page2.png';
 }
@@ -1827,7 +1838,7 @@ msgVar : '(' oscaddress 'get' (| params) ')'
 The evaluation of a 'get' message produces a message or a list of messages. The message based variable will be replaced by the parameters of the messages resulting from the evaluation of the 'get' message.
 Note that all the 'get' messages attached to an event are evaluated at the same time.
 
-Example:
+\example
 \sample{ 
 /ITL/s/o1 watch  'mouseDown' '/ITL/s/o1' 'show' \$('/ITL/s/o2' get 'show'); \\
 /ITL/s/o1 watch+ 'mouseDown' '/ITL/s/o2' 'show' \$('/ITL/s/o1' get 'show'); \\
@@ -1891,7 +1902,7 @@ A variable may be used in place of any message parameter. A reference to a varia
 
 Note that interaction messages may also use variables with similar reference forms (\$ident). There is however no ambiguity concerning these references: interaction variables are always passed as strings and should be quoted, scripts variables as used without quotes.
 
-Example:
+\example
 \sample{
 x=0.5;\\
 /ITL/scene/a x \$x;\\
@@ -1916,7 +1927,7 @@ lang : '<?' ('javascript' | 'lua') script '?>'
 The output of the script section is parsed like INScore messages. \\
 Note that INScore variables are exported to the current language environment.
 
-Example:
+\example
 \sample{
 <?javascript \\
 \hspace*{3mm} "/ITL/scene/version set 'txt' 'Javascript v."  + version() + "';"; \\
@@ -1932,7 +1943,7 @@ further evaluation. Thus when including a file containing javascript (or lua), t
 language context won't be available to the next messages in the script. The workaround 
 for structured script consists in designing a top level script that only contains 'load' messages.
 
-Example:
+\example
 \sample{
 \hspace*{-3mm} /ITL load "javascript-code.inscore";\\
 /ITL load "call-javascript.inscore";
