@@ -41,7 +41,7 @@ namespace inscore
 IPosition::IPosition():
 	fXPos(kDefaultX), fYPos(kDefaultY), fXOrigin(0), fYOrigin(0), 
 	fWidth(0), fHeight(0) , fZOrder(0),
-	fAngle(0), fVisible(true), fScale(1.0), fModified(true),
+	fVisible(true), fScale(1.0), fModified(true),
 	fXAngle(0), fYAngle(0), fZAngle(0), fShear (0,0)
 {}
 
