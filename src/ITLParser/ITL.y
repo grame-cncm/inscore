@@ -143,8 +143,8 @@ message		: address params			{ $$ = new inscore::SIMessage(inscore::IMessage::cre
 
 messagelist : message					{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
 											(*$$)->list().push_back(*$1);
-											delete $1}
-			| messagelist COMMA message {	$$ = $1; (*$$)->list().push_back(*$3); delete $3}
+											delete $1 }
+			| messagelist COMMA message {	$$ = $1; (*$$)->list().push_back(*$3); delete $3; }
 			;
 
 //_______________________________________________
@@ -159,7 +159,7 @@ oscaddress	: oscpath					{ $$ = $1; }
 
 oscpath		: PATHSEP identifier		{ $$ = new string("/" + *$2); delete $2; }
 			| PATHSEP WATCH				{ $$ = new string("/" + context->fText); }
-			| PATHSEP VARSTART varname	{ $$ = new string("/$" + context->fText); }
+			| PATHSEP VARSTART varname	{ $$ = new string("/$" + *$3); delete $3; }
 			;
 
 urlprefix	: hostname COLON UINT		{ $$ = new inscore::IMessage::TUrl($1->c_str(), context->fInt); delete $1; }
@@ -202,7 +202,7 @@ variable	: VARSTART varname	{ $$ = new inscore::IMessage::argslist;
 
 param		: number			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1)); }
 			| FLOAT				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); }
-			| identifier		{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
+			| identifier		{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); delete $1; }
 			| QUOTEDSTRING		{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
 			;
 

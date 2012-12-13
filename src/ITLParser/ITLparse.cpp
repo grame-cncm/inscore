@@ -1568,12 +1568,12 @@ yyreduce:
 #line 144 "ITL.y"
     {	(yyval.msgList) = new inscore::SIMessageList (inscore::IMessageList::create());
 											(*(yyval.msgList))->list().push_back(*(yyvsp[(1) - (1)].msg));
-											delete (yyvsp[(1) - (1)].msg);}
+											delete (yyvsp[(1) - (1)].msg) ;}
     break;
 
   case 14:
 #line 147 "ITL.y"
-    {	(yyval.msgList) = (yyvsp[(1) - (3)].msgList); (*(yyval.msgList))->list().push_back(*(yyvsp[(3) - (3)].msg)); delete (yyvsp[(3) - (3)].msg);}
+    {	(yyval.msgList) = (yyvsp[(1) - (3)].msgList); (*(yyval.msgList))->list().push_back(*(yyvsp[(3) - (3)].msg)); delete (yyvsp[(3) - (3)].msg); ;}
     break;
 
   case 15:
@@ -1608,7 +1608,7 @@ yyreduce:
 
   case 21:
 #line 162 "ITL.y"
-    { (yyval.str) = new string("/$" + context->fText); ;}
+    { (yyval.str) = new string("/$" + *(yyvsp[(3) - (3)].str)); delete (yyvsp[(3) - (3)].str); ;}
     break;
 
   case 22:
@@ -1706,7 +1706,7 @@ yyreduce:
 
   case 39:
 #line 205 "ITL.y"
-    { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); ;}
+    { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); delete (yyvsp[(1) - (1)].str); ;}
     break;
 
   case 40:
