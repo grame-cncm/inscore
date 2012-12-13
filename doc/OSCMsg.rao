@@ -217,16 +217,18 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {12}{ PositionMsg : absPosMsg | relPosMsg | originMsg }
+\rail@i {12}{ PositionMsg : absPosMsg | relPosMsg | originMsg | transformMsg }
 \rail@o {12}{
 \rail@index{PositionMsg}
-\rail@begin{3}{PositionMsg}
+\rail@begin{4}{PositionMsg}
 \rail@bar
 \rail@nont{absPosMsg}[]
 \rail@nextbar{1}
 \rail@nont{relPosMsg}[]
 \rail@nextbar{2}
 \rail@nont{originMsg}[]
+\rail@nextbar{3}
+\rail@nont{transformMsg}[]
 \rail@endbar
 \rail@end
 }
