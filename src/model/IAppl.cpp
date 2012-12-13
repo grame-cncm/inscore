@@ -134,39 +134,39 @@ IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool of
 	fTypeString = kApplType;
 	fVersion = INScore::versionStr();
 
-	fMsgHandlerMap["hello"]			= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::helloMsg);
-//	fMsgHandlerMap["activate"]		= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::activate);
-	fMsgHandlerMap["load"]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadMsg);
-	fMsgHandlerMap["require"]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::requireMsg);
-	fMsgHandlerMap["quit"]			= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::quit);
-	fMsgHandlerMap["mouse"]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::cursor);
-	fMsgHandlerMap["forward"]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::forward);
-	fMsgHandlerMap["time"]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::setTime);
-	fMsgHandlerMap["rootPath"]		= TSetMethodMsgHandler<IAppl, string>::create(this, &IAppl::setRootPath);
-	fMsgHandlerMap["port"]			= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPInPort);
-	fMsgHandlerMap["outport"]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPOutPort);
-	fMsgHandlerMap["errport"]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPErrPort);
-	fMsgHandlerMap["defaultShow"]	= TSetMethodMsgHandler<IAppl,bool>::create(this, &IAppl::setDefaultShow);
-	fMsgHandlerMap["rate"]			= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setRate);
+	fMsgHandlerMap[khello_SetMethod]			= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::helloMsg);
+//	fMsgHandlerMap["activate"]					= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::activate);
+	fMsgHandlerMap[kload_SetMethod]				= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadMsg);
+	fMsgHandlerMap[krequire_SetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::requireMsg);
+	fMsgHandlerMap[kquit_SetMethod]				= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::quit);
+	fMsgHandlerMap[kmouse_SetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::cursor);
+	fMsgHandlerMap[kforward_GetSetMethod]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::forward);
+	fMsgHandlerMap[ktime_GetSetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::setTime);
+	fMsgHandlerMap[krootPath_GetSetMethod]		= TSetMethodMsgHandler<IAppl, string>::create(this, &IAppl::setRootPath);
+	fMsgHandlerMap[kport_GetSetMethod]			= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPInPort);
+	fMsgHandlerMap[koutport_GetSetMethod]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPOutPort);
+	fMsgHandlerMap[kerrport_GetSetMethod]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPErrPort);
+	fMsgHandlerMap[kdefaultShow_GetSetMethod]	= TSetMethodMsgHandler<IAppl,bool>::create(this, &IAppl::setDefaultShow);
+	fMsgHandlerMap[krate_GetSetMethod]			= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setRate);
 
-	fGetMsgHandlerMap["rootPath"]	= TGetParamMsgHandler<string>::create(fRootPath);
-	fGetMsgHandlerMap["port"]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getUDPInPort);
-	fGetMsgHandlerMap["outport"]	= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getUDPOutPort);
-	fGetMsgHandlerMap["errport"]	= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getUDPErrPort);
-	fGetMsgHandlerMap["defaultShow"]= TGetParamMethodHandler<IAppl, bool (IAppl::*)() const>::create(this, &IAppl::defaultShow);
-	fGetMsgHandlerMap["rate"]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getRate);
-	fGetMsgHandlerMap["forward"]	= TGetParamMsgHandler<vector<IMessage::TUrl> >::create(fForwardList);
-	fGetMsgHandlerMap["time"]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::time);
+	fGetMsgHandlerMap[krootPath_GetSetMethod]	= TGetParamMsgHandler<string>::create(fRootPath);
+	fGetMsgHandlerMap[kport_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getUDPInPort);
+	fGetMsgHandlerMap[koutport_GetSetMethod]	= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getUDPOutPort);
+	fGetMsgHandlerMap[kerrport_GetSetMethod]	= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getUDPErrPort);
+	fGetMsgHandlerMap[kdefaultShow_GetSetMethod]= TGetParamMethodHandler<IAppl, bool (IAppl::*)() const>::create(this, &IAppl::defaultShow);
+	fGetMsgHandlerMap[krate_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getRate);
+	fGetMsgHandlerMap[kforward_GetSetMethod]	= TGetParamMsgHandler<vector<IMessage::TUrl> >::create(fForwardList);
+	fGetMsgHandlerMap[ktime_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::time);
 
-	fGetMsgHandlerMap["version"]			= TGetParamMsgHandler<string>::create(fVersion);
-	fGetMsgHandlerMap["guido-version"]		= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::guidoversion);
-	fGetMsgHandlerMap["musicxml-version"]	= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::musicxmlversion);
+	fGetMsgHandlerMap[kversion_GetMethod]		= TGetParamMsgHandler<string>::create(fVersion);
+	fGetMsgHandlerMap["guido-version"]			= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::guidoversion);
+	fGetMsgHandlerMap["musicxml-version"]		= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::musicxmlversion);
 
 #ifdef RUNBENCH
-	fMsgHandlerMap["startBench"]	= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::startBench);
-	fMsgHandlerMap["stopBench"]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::stopBench);
-	fMsgHandlerMap["resetBench"]	= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::resetBench);
-	fMsgHandlerMap["writeBench"]	= TMethodMsgHandler<IAppl>::create(this, &IAppl::writeBench);
+	fMsgHandlerMap[kstartBench_SetMethod]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::startBench);
+	fMsgHandlerMap[kstopBench_SetMethod]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::stopBench);
+	fMsgHandlerMap[kresetBench_SetMethod]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::resetBench);
+	fMsgHandlerMap[kwriteBench_SetMethod]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::writeBench);
 #endif
 }
 
@@ -250,7 +250,7 @@ SIMessageList IAppl::getAll() const
 //--------------------------------------------------------------------------
 bool IAppl::filter (const IMessage* msg)
 {
-	if (msg->message() == "forward") return true;
+	if (msg->message() == kforward_GetSetMethod) return true;
 	return false;
 }
 

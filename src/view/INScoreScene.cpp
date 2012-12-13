@@ -119,14 +119,14 @@ void INScoreScene::openscene (const char* fullpath)
 	appl += IAppl::kName;
 	if (pos != string::npos) {
 		string path = file.substr(0, pos);
-		INScore::MessagePtr msg = INScore::newMessage ("rootPath");
+		INScore::MessagePtr msg = INScore::newMessage (krootPath_GetSetMethod);
 		INScore::add (msg, path.c_str());
 		INScore::postMessage (fOscAddress.c_str(), msg);
-		msg = INScore::newMessage ("rootPath");
+		msg = INScore::newMessage (krootPath_GetSetMethod);
 		INScore::add (msg, path.c_str());
 		INScore::postMessage (appl.c_str(), msg);
 	}
-	INScore::MessagePtr msg = INScore::newMessage ("load");
+	INScore::MessagePtr msg = INScore::newMessage (kload_SetMethod);
 	INScore::add (msg, file.c_str());
 	INScore::postMessage (fOscAddress.c_str(), msg);
 }
@@ -138,7 +138,7 @@ void INScoreScene::openfile (const char* fullpath)
 	string address = fOscAddress;
 	address += "/";
 	address += makename (fullpath);
-	INScore::MessagePtr msg = INScore::newMessage ("set");
+	INScore::MessagePtr msg = INScore::newMessage (kset_SetMethod);
 	INScore::add (msg, "file");
 	INScore::add (msg, file.c_str());
 	INScore::postMessage (address.c_str(), msg);

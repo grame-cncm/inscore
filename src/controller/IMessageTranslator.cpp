@@ -27,6 +27,7 @@
 
 #include "IMessageTranslator.h"
 #include "IMessage.h"
+#include "Methods.h"
 
 using namespace std;
 
@@ -86,7 +87,7 @@ SIMessage IMessageTranslator::translateFileType(const IMessage* msg)
 //--------------------------------------------------------------------------
 SIMessage IMessageTranslator::translate(const IMessage* msg)
 {
-	if ((msg->size() >= 2) && (msg->message() == "set") && (msg->param(0)->value<string>("") == "file")) {
+	if ((msg->size() >= 2) && (msg->message() == kset_SetMethod) && (msg->param(0)->value<string>("") == "file")) {
 		return translateFileType (msg);
 	}
 	return 0;

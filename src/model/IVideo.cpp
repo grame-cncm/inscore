@@ -54,10 +54,10 @@ IVideo::IVideo( const std::string& name, IObject * parent )
 	fTypeString = kVideoType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler<string>::create(getFile());
 	
-	fMsgHandlerMap["videoMap"]		= TMethodMsgHandler<IVideo>::create(this, &IVideo::videoMapMsg);
-	fMsgHandlerMap["videoMapf"]		= TMethodMsgHandler<IVideo>::create(this, &IVideo::videoMapFileMsg);
+	fMsgHandlerMap[kvideoMap_GetSetMethod]		= TMethodMsgHandler<IVideo>::create(this, &IVideo::videoMapMsg);
+	fMsgHandlerMap[kvideoMapf_SetMethod]		= TMethodMsgHandler<IVideo>::create(this, &IVideo::videoMapFileMsg);
 	
-	fGetMsgHandlerMap["videoMap"]	= GetVideoMapMsgHandler::create(this);
+	fGetMsgHandlerMap[kvideoMap_GetSetMethod]	= GetVideoMapMsgHandler::create(this);
 	
 	fTempo = 60.0f;
 	fStartSecond = 0.0f;

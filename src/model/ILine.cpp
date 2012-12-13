@@ -63,7 +63,7 @@ void ILine::print (ostream& out) const
 SIMessageList ILine::getSetMsg() const
 {
 	SIMessageList outmsgs = IMessageList::create();
-	SIMessage msg = IMessage::create(getOSCAddress(), "set");
+	SIMessage msg = IMessage::create(getOSCAddress(), kset_SetMethod);
 	*msg << "xy" << fPoint;
 	outmsgs->list().push_back (msg);
 	return outmsgs;

@@ -47,20 +47,18 @@ IGrid::IGrid( const std::string& name, IObject* parent ) : IRectShape(name, pare
 	
 	setColor (IColor(255,255,255,0));
 
-	fMsgHandlerMap["columns"]		= TSetMethodMsgHandler<IGrid,int>::create(this, &IGrid::setColumns);
-	fMsgHandlerMap["rows"]			= TSetMethodMsgHandler<IGrid,int>::create(this, &IGrid::setRows);
-	fMsgHandlerMap["xborder"]		= TSetMethodMsgHandler<IGrid,float>::create(this, &IGrid::setXBorder);
-	fMsgHandlerMap["yborder"]		= TSetMethodMsgHandler<IGrid,float>::create(this, &IGrid::setYBorder);
-//	fMsgHandlerMap["order"]			= TSetMethodMsgHandler<IGrid,int>::create(this, &IGrid::setOrder);
-	fMsgHandlerMap["order"]			= TSetMethodMsgHandler<IGrid,string>::create(this, &IGrid::setOrderStr);
+	fMsgHandlerMap[kcolumns_GetSetMethod]		= TSetMethodMsgHandler<IGrid,int>::create(this, &IGrid::setColumns);
+	fMsgHandlerMap[krows_GetSetMethod]			= TSetMethodMsgHandler<IGrid,int>::create(this, &IGrid::setRows);
+	fMsgHandlerMap[kxborder_GetSetMethod]		= TSetMethodMsgHandler<IGrid,float>::create(this, &IGrid::setXBorder);
+	fMsgHandlerMap[kyborder_GetSetMethod]		= TSetMethodMsgHandler<IGrid,float>::create(this, &IGrid::setYBorder);
+	fMsgHandlerMap[korder_GetSetMethod]			= TSetMethodMsgHandler<IGrid,string>::create(this, &IGrid::setOrderStr);
 
-
-	fGetMsgHandlerMap[""]			= TGetParamMsgHandler<TIntSize>::create(getDims());
-	fGetMsgHandlerMap["columns"]	= TGetParamMethodHandler<IGrid, int (IGrid::*)() const>::create(this, &IGrid::getColumns);
-	fGetMsgHandlerMap["rows"]		= TGetParamMethodHandler<IGrid, int (IGrid::*)() const>::create(this, &IGrid::getRows);
-	fGetMsgHandlerMap["xborder"]	= TGetParamMethodHandler<IGrid, float (IGrid::*)() const>::create(this, &IGrid::getXBorder);
-	fGetMsgHandlerMap["yborder"]	= TGetParamMethodHandler<IGrid, float (IGrid::*)() const>::create(this, &IGrid::getYBorder);
-	fGetMsgHandlerMap["order"]		= TGetParamMethodHandler<IGrid, string (IGrid::*)() const>::create(this, &IGrid::getOrderStr);
+	fGetMsgHandlerMap[""]						= TGetParamMsgHandler<TIntSize>::create(getDims());
+	fGetMsgHandlerMap[kcolumns_GetSetMethod]	= TGetParamMethodHandler<IGrid, int (IGrid::*)() const>::create(this, &IGrid::getColumns);
+	fGetMsgHandlerMap[krows_GetSetMethod]		= TGetParamMethodHandler<IGrid, int (IGrid::*)() const>::create(this, &IGrid::getRows);
+	fGetMsgHandlerMap[kxborder_GetSetMethod]	= TGetParamMethodHandler<IGrid, float (IGrid::*)() const>::create(this, &IGrid::getXBorder);
+	fGetMsgHandlerMap[kyborder_GetSetMethod]	= TGetParamMethodHandler<IGrid, float (IGrid::*)() const>::create(this, &IGrid::getYBorder);
+	fGetMsgHandlerMap[korder_GetSetMethod]		= TGetParamMethodHandler<IGrid, string (IGrid::*)() const>::create(this, &IGrid::getOrderStr);
 }
 
 //--------------------------------------------------------------------------

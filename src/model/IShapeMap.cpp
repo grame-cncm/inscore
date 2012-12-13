@@ -34,9 +34,9 @@ IShapeMap::IShapeMap( const std::string& name, IObject* parent ) : IShape(name,p
 {
 	fLocalMappings = TLocalMapping<float,2>::create();
 
-	fMsgHandlerMap["map"]		= TMethodMsgHandler<IShapeMap>::create(this, &IShapeMap::mapMsg);
-	fMsgHandlerMap["map+"]		= TMethodMsgHandler<IShapeMap>::create(this, &IShapeMap::mapAddMsg);
-	fMsgHandlerMap["mapf"]		= TMethodMsgHandler<IShapeMap>::create(this, &IShapeMap::mapFileMsg);
+	fMsgHandlerMap[kmap_GetSetMethod]		= TMethodMsgHandler<IShapeMap>::create(this, &IShapeMap::mapMsg);
+	fMsgHandlerMap[kmapplus_SetMethod]		= TMethodMsgHandler<IShapeMap>::create(this, &IShapeMap::mapAddMsg);
+	fMsgHandlerMap[kmapf_SetMethod]			= TMethodMsgHandler<IShapeMap>::create(this, &IShapeMap::mapFileMsg);
 }
 
 //--------------------------------------------------------------------------

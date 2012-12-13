@@ -68,17 +68,15 @@ IGraphicSignal::IGraphicSignal( const std::string& name, IObject* parent ) : ISh
 void IGraphicSignal::setHandlers ()
 {
 	IShape::setHandlers();
-	fGetMsgHandlerMap[""]			= TGetParamMsgHandler<SISignal>::create(fSignal);
-	fGetMsgHandlerMap["dimension"]	= getDimParamMsgHandler::create(this);
+	fGetMsgHandlerMap[""]					= TGetParamMsgHandler<SISignal>::create(fSignal);
+	fGetMsgHandlerMap[kdimension_GetMethod]	= getDimParamMsgHandler::create(this);
 	
-	fMsgHandlerMap["width"]		= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setWidth);	// 'width' param is writable for IGraphicSignal
-	fMsgHandlerMap["height"]	= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setHeight);	// 'height' param is writable for IGraphicSignal
-//	fMsgHandlerMap["width"]		= TSetMsgHandler<float>::create(fWidth);	// 'width' param is writable for IGraphicSignal
-//	fMsgHandlerMap["height"]	= TSetMsgHandler<float>::create(fHeight);	// 'height' param is writable for IGraphicSignal
+	fMsgHandlerMap[kwidth_GetSetMethod]		= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setWidth);	// 'width' param is writable for IGraphicSignal
+	fMsgHandlerMap[kheight_GetSetMethod]	= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setHeight);	// 'height' param is writable for IGraphicSignal
 
-	fMsgHandlerMap["map"]		= TMethodMsgHandler<IGraphicSignal>::create(this, &IGraphicSignal::mapMsg);
-	fMsgHandlerMap["map+"]		= TMethodMsgHandler<IGraphicSignal>::create(this, &IGraphicSignal::mapAddMsg);
-	fMsgHandlerMap["mapf"]		= TMethodMsgHandler<IGraphicSignal>::create(this, &IGraphicSignal::mapFileMsg);
+	fMsgHandlerMap[kmap_GetSetMethod]		= TMethodMsgHandler<IGraphicSignal>::create(this, &IGraphicSignal::mapMsg);
+	fMsgHandlerMap[kmapplus_SetMethod]		= TMethodMsgHandler<IGraphicSignal>::create(this, &IGraphicSignal::mapAddMsg);
+	fMsgHandlerMap[kmapf_SetMethod]			= TMethodMsgHandler<IGraphicSignal>::create(this, &IGraphicSignal::mapFileMsg);
 
 //	fSetMsgHandlerMap["curveType"]	= TSetFieldHandler<std::string>::create( fCurveType );
 //	fGetMsgHandlerMap["curveType"]	= TGetParamMsgHandler<std::string>::create(fCurveType);

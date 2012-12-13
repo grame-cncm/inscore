@@ -40,9 +40,9 @@ const string IRectShape::kRectShapeType("rshape");
 IRectShape::IRectShape( const std::string& name, IObject* parent ) : IShapeMap(name, parent)
 { 
 	fTypeString = kRectShapeType;
-	fGetMsgHandlerMap[""]		= TGetParamMethodHandler<IRectShape, TFloatSize (IRectShape::*)() const>::create(this, &IRectShape::getDimension);
-	fMsgHandlerMap["width"]		= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setWidth);
-	fMsgHandlerMap["height"]	= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setHeight);
+	fGetMsgHandlerMap[""]					= TGetParamMethodHandler<IRectShape, TFloatSize (IRectShape::*)() const>::create(this, &IRectShape::getDimension);
+	fMsgHandlerMap[kwidth_GetSetMethod]		= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setWidth);
+	fMsgHandlerMap[kheight_GetSetMethod]	= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setHeight);
 }
 
 //--------------------------------------------------------------------------

@@ -36,13 +36,13 @@ namespace inscore
 //--------------------------------------------------------------------------
 IObjectDebug::IObjectDebug(IObject * parent) : IVNode("debug", parent), fMap(false), fName(false)
 {
-	fMsgHandlerMap["map"]		= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setMapDebug);
-	fMsgHandlerMap["name"]		= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setNameDebug);
-	fMsgHandlerMap["watch"]		= 0;
-	fMsgHandlerMap["watch+"]	= 0;
+	fMsgHandlerMap[kmap_GetSetMethod]		= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setMapDebug);
+	fMsgHandlerMap[kname_GetSetMethod]		= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setNameDebug);
+	fMsgHandlerMap[kwatch_GetSetMethod]		= 0;
+	fMsgHandlerMap[kwatchplus_SetMethod]	= 0;
 	
-	fGetMsgHandlerMap["map"]	= TGetParamMsgHandler<bool>::create(fMap);
-	fGetMsgHandlerMap["name"]	= TGetParamMsgHandler<bool>::create(fName);	
+	fGetMsgHandlerMap[kmap_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fMap);
+	fGetMsgHandlerMap[kname_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fName);
 }
 
 //--------------------------------------------------------------------------
@@ -66,13 +66,13 @@ void IObjectDebug::accept (Updater* u)
 SIMessageList IObjectDebug::getSetMsg () const
 {
 	SIMessageList outMsgs = IMessageList::create();
-	SIMessage msg = IMessage::create(getOSCAddress(), "map");
+	SIMessage msg = IMessage::create(getOSCAddress(), kmap_GetSetMethod);
 	*msg << getMapDebug();
 	outMsgs->list().push_back (msg);
-	msg = IMessage::create(getOSCAddress(), "name");
+	msg = IMessage::create(getOSCAddress(), kname_GetSetMethod);
 	*msg << getNameDebug();
 	outMsgs->list().push_back (msg);
-	msg = IMessage::create(getOSCAddress(), "signal");
+	msg = IMessage::create(getOSCAddress(), ksignal_GetMethod);
 	*msg << getSignalDebug();
 	outMsgs->list().push_back (msg);
 	return outMsgs;

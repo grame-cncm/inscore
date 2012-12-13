@@ -12,6 +12,7 @@ function extract()
 		| grep HandlerMap \
 		| sed -e 's/[ \t]*=[ \t]*..*//' \
 		| grep -v '""' \
+		| grep -v 'Methods.cpp' \
 		| sed -e 's/fMsgHandlerMap\["/Set	/' \
 		| sed -e 's/fGet.*HandlerMap\["/Get	/' \
 		| sed -e 's/"\][ 	]*//' \

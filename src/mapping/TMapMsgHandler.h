@@ -117,7 +117,7 @@ template<typename T, unsigned int D> class TMapMsgHandler
 		{
 			std::string mapName, map;
 			if (parseMsg (msg, mapName, map)) {
-				if ( map == "del" ) {
+				if ( map == kdel_SetMethod ) {
 					localMapping->remove( mapName );
 					object->removeMapping( mapName );
 					return MsgHandler::kProcessed;
@@ -148,7 +148,7 @@ template<typename T, unsigned int D> class TMapMsgHandler
 			SIMessageList outMsgs = IMessageList::create();
 			for ( typename TLocalMapping<T,D>::const_iterator iter = localMapping->namedMappings().begin() ; iter != localMapping->namedMappings().end() ; iter++ )
 			{
-				SIMessage msg = IMessage::create(object->getOSCAddress(), "map");
+				SIMessage msg = IMessage::create(object->getOSCAddress(), kmap_GetSetMethod);
 				if ( iter->first.size() )
 					*msg << iter->first;
 				*msg << iter->second->direct();

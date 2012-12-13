@@ -37,12 +37,12 @@ extern SIMessageStack gMsgStack;
 //--------------------------------------------------------------------------
 IApplDebug::IApplDebug(IObject * parent) : IObjectDebug(parent), fOSCDebug(true)
 {
-	fMsgHandlerMap["osc"]		= TSetMethodMsgHandler<IApplDebug,bool>::create(this, &IApplDebug::setOSCDebug);
-	fGetMsgHandlerMap["osc"]	= TGetParamMsgHandler<bool>::create(fOSCDebug);
+	fMsgHandlerMap[kosc_GetSetMethod]		= TSetMethodMsgHandler<IApplDebug,bool>::create(this, &IApplDebug::setOSCDebug);
+	fGetMsgHandlerMap[kosc_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fOSCDebug);
 
-	fGetMsgHandlerMap["map"]		= 0;
-	fGetMsgHandlerMap["name"]		= 0;
-	fGetMsgHandlerMap["signal"]		= 0;
+	fGetMsgHandlerMap[kmap_GetSetMethod]	= 0;
+	fGetMsgHandlerMap[kname_GetSetMethod]	= 0;
+	fGetMsgHandlerMap[ksignal_GetMethod]	= 0;
 }
 
 //--------------------------------------------------------------------------
@@ -57,7 +57,7 @@ void IApplDebug::accept (Updater* u)
 SIMessageList IApplDebug::getSetMsg () const
 {
 	SIMessageList outMsgs = IObjectDebug::getSetMsg();
-	SIMessage msg = IMessage::create(getOSCAddress(), "osc");
+	SIMessage msg = IMessage::create(getOSCAddress(), kosc_GetSetMethod);
 	*msg << fOSCDebug;
 	outMsgs->list().push_back (msg);
 	return outMsgs;
@@ -103,7 +103,7 @@ void IApplStat::reset()				{ fMsgCount = 0; gMsgStack->reset(); }
 //--------------------------------------------------------------------------
 IApplStat::IApplStat(IObject * parent) : IVNode("stats", parent), fMsgCount(0)
 {
-	fMsgHandlerMap["reset"]		= TMethodMsgHandler<IApplStat, void (IApplStat::*)(void)>::create(this, &IApplStat::reset);
+	fMsgHandlerMap[kreset_SetMethod]	= TMethodMsgHandler<IApplStat, void (IApplStat::*)(void)>::create(this, &IApplStat::reset);
 }
 
 }

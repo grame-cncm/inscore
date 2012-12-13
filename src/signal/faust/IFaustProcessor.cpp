@@ -89,8 +89,8 @@ IFaustProcessor::IFaustProcessor( const std::string& name, IObject * parent ) : 
 	fBuildUI(0), fCompute(0), fInputs(0), fOutputs(0), fInit(0), fNumIntputs(0), fNumOutputs(0), fInBuffers(0), fOutBuffers(0)
 {
 	fTypeString = kFaustProcessorType;
-	fGetMsgHandlerMap["in"]		= TGetParamMsgHandler<int>::create(fNumIntputs);
-	fGetMsgHandlerMap["out"]	= TGetParamMsgHandler<int>::create(fNumOutputs);
+	fGetMsgHandlerMap[kin_GetMethod]		= TGetParamMsgHandler<int>::create(fNumIntputs);
+	fGetMsgHandlerMap[kout_GetMethod]	= TGetParamMsgHandler<int>::create(fNumOutputs);
 }
 
 //--------------------------------------------------------------------------
@@ -113,7 +113,7 @@ void IFaustProcessor::accept (Updater* u)
 //--------------------------------------------------------------------------
 void IFaustProcessor::print (IMessage& out) const
 {
-	out.setMessage("set");
+	out.setMessage(kset_SetMethod);
 	out << kFaustProcessorType << fLibrary;
 }
 

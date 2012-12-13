@@ -46,8 +46,8 @@ ISignalNode::ISignalNode(IObject * parent) : IVNode(kName, parent), fDebug(false
 {
 	fGetMsgHandlerMap["debug"]	= TGetParamMsgHandler<bool>::create(fDebug);
 	fMsgHandlerMap["debug"]		= TSetMethodMsgHandler<ISignalNode, bool>::create(this,&ISignalNode::debug);
-	fMsgHandlerMap["watch"]		= 0L;
-	fMsgHandlerMap["watch+"]	= 0L;
+	fMsgHandlerMap[kwatch_GetSetMethod]		= 0L;
+	fMsgHandlerMap[kwatchplus_SetMethod]	= 0L;
 }
 
 //--------------------------------------------------------------------------
