@@ -790,13 +790,27 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 		case EventsAble::kTimeLeave:
 		case EventsAble::kDurEnter:
 		case EventsAble::kDurLeave:
-			if (msg->size() >= 5) {
+			if (msg->size() >= 3) {
+				int msgindex = 3;
 				rational start, end;
-				if (!msg->param(1,start) || !msg->param(3, end))
-					return MsgHandler::kBadParameters;
+				if (!msg->param(1,start) || !msg->param(3, end)) {			// try to read rational values
+					int istart, iend;
+					float fstart, fend;
+					if (msg->param(1,istart) && msg->param(2, iend)) {		// try to read int values (with implicit denominator = 1)
+						start = rational (istart, 1);
+						end = rational (iend, 1);
+					}
+					else if (msg->param(1,fstart) && msg->param(2, fend)) { // try to read float values
+						start = rational (fstart);
+						end = rational (fend);
+					}
+					else return MsgHandler::kBadParameters;
+				}
+				else msgindex = 5;
+
 				RationalInterval time(start,end);
-				if (msg->size() > 5) {
-					SIMessageList watchMsg = msg->watchMsg2Msgs (5);
+				if (msg->size() > msgindex) {
+					SIMessageList watchMsg = msg->watchMsg2Msgs (msgindex);
 					if (!watchMsg) return MsgHandler::kBadParameters;
 					if (!add) eventsHandler()->setTimeMsg (t, time, watchMsg);
 					else eventsHandler()->addTimeMsg (t, time, watchMsg);
