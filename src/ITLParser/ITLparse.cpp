@@ -1988,7 +1988,7 @@ int yyerror(YYLTYPE* loc, ITLparser* context, const char*s) {
 #ifdef NO_OSCSTREAM
 	cerr << "error line: " << loc->last_line + context->fLine << " col: " << loc->first_column << ": " << s << endl;
 #else
-	ITLErr << "error line: " << loc->last_line + context->fLine << " col: " << loc->first_column << ": " << s << ITLEndl;
+	ITLErr << "error line:" << loc->last_line + context->fLine << "col:" << loc->first_column << ":" << s << ITLEndl;
 #endif
 	return 0;
 }
@@ -1997,7 +1997,7 @@ int VARerror(YYLTYPE* loc, ITLparser* context, const char*s, const char* var) {
 #ifdef NO_OSCSTREAM
 	cerr << "error line " << loc->last_line + context->fLine << ": " << s << var << endl;
 #else
-	ITLErr << "error line " << loc->last_line + context->fLine << ": " << s << var << ITLEndl;
+	ITLErr << "error line" << loc->last_line + context->fLine << ":" << s << var << ITLEndl;
 #endif
 	return 0;
 }

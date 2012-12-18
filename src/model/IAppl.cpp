@@ -178,7 +178,7 @@ bool IAppl::oscDebug() const								{ return fApplDebug->getOSCDebug(); }
 string IAppl::checkRootPath(const std::string& s)
 {
 	if ( !QDir( QString::fromUtf8(s.c_str()) ).exists() )
-		ITLErr << "rootPath is an invalid location: " << s << ITLEndl;
+		ITLErr << "rootPath is an invalid location:" << s << ITLEndl;
 	string root = s;
 	char end = root[root.length()-1];
 	if (end == '\\')   root[root.length()-1] = '/';
@@ -343,7 +343,7 @@ MsgHandler::msgStatus IAppl::requireMsg(const IMessage* msg)
 				return MsgHandler::kProcessed;
 			}
 			else {
-				ITLErr << "Version " << required << " is required: current version is " << version  << ITLEndl;
+				ITLErr << "Version" << required << "is required: current version is" << version  << ITLEndl;
 				if (msg->size() > 1) {
 					const IMessageList* msgs = msg->watchMsg2Msgs(1);
 					if (!msgs || msgs->list().empty()) return MsgHandler::kBadParameters;
@@ -432,7 +432,7 @@ MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
 				}
 				else ITLErr << "while parsing file" << srcfile << ITLEndl;
 			}
-			else ITLErr << "IAppl can't open file \"" << srcfile << "\"" << ITLEndl;
+			else ITLErr << "IAppl can't open file" << srcfile << ITLEndl;
 			return MsgHandler::kProcessed;
 		}
 	}

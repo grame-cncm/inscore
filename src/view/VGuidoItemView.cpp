@@ -140,7 +140,7 @@ bool VGuidoItemView::gmnUpdate (IGuidoCode* guidoCode)
 			if ( fGuidoItem->setGMNCode( VApplView::toQString( converted.str().c_str() ) ) )	
 				return true;
 	}
-	ITLErr << guidoCode->getOSCAddress() << "invalid gmn code: " << fGuidoItem->getLastErrorMessage().toAscii().data() << ITLEndl;
+	ITLErr << guidoCode->getOSCAddress() << "invalid gmn code:" << fGuidoItem->getLastErrorMessage().toAscii().data() << ITLEndl;
 	return false;
 }
 
@@ -267,7 +267,7 @@ GuidoMapCollector* VGuidoItemView::getMapBuilder(const string& mapName) const
 		mb = new GuidoMapCollector(fGuidoItem, kGuidoSystemSlice);
 	else if ( name.startsWith( kMeasureMap ) )
 		mb = new GuidoStaffCollector ( fGuidoItem, getMapNum (name, kMeasureMap.size()) );
-	else ITLErr << "unknwown guido mapping name \"" << mapName << "\" requested" << ITLEndl;
+	else ITLErr << "unknwown guido mapping name" << mapName << "requested" << ITLEndl;
 	
 	return mb;
 }

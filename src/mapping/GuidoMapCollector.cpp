@@ -102,7 +102,7 @@ void GuidoVoiceCollector::process (Time2GraphicMap* outmap)
 			CopyMap (map);
 		}
 		else {
-			ITLErr << "error getting voice " << fVoiceNum << " map on page " << page << ": " << GuidoGetErrorString(err) << ITLEndl;
+			ITLErr << "error getting voice" << fVoiceNum << "map on page" << page << ": " << GuidoGetErrorString(err) << ITLEndl;
 			break;
 		}
 	}
@@ -128,7 +128,7 @@ void GuidoStaffCollector::process (Time2GraphicMap* outmap)
 			}
 		}
 		else {
-			ITLErr << "error getting staff " << fStaffNum << " map on page " << page << ": " << GuidoGetErrorString(err) << ITLEndl;
+			ITLErr << "error getting staff" << fStaffNum << "map on page" << page << ":" << GuidoGetErrorString(err) << ITLEndl;
 			break;
 		}
 	}
@@ -157,7 +157,7 @@ void GuidoSystemCollector::process (Time2GraphicMap* outmap)
 			}
 		}
 		else {
-			ITLErr << "error getting system map on page " << page << ": " << GuidoGetErrorString(err) << ITLEndl;
+			ITLErr << "error getting system map on page" << page << ":" << GuidoGetErrorString(err) << ITLEndl;
 			break;
 		}
 	}
@@ -171,8 +171,7 @@ void GuidoSystemCollector::processNoDiv (Time2GraphicMap* outmap)
 	int M,m,s;
 	GuidoGetVersionNums (&M, &m, &s);
 	if (GuidoCheckVersionNums (1, 4, 2) != guidoNoErr)
-		ITLErr << "correct system map requires GUIDOEngine version 1.4.2 or greater - current version is "
-				<< M << "." << m << "." << s << ITLEndl;
+		ITLErr << "correct system map requires GUIDOEngine version 1.4.2 or greater - current version is" << GuidoGetVersionStr() << ITLEndl;
 
 	GuidoMapCollector systemCollector(fItem, kGuidoSystem);
 	GuidoMapCollector slicesCollector(fItem, kGuidoSystemSlice);

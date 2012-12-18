@@ -91,7 +91,7 @@ void QFileWatcher::fileChangedSlot(const QString& filename)
 	else
 	{
 		// The file has been removed or renamed.
-		ITLErr << name() << ": can't find file: " << filename.toStdString() << ITLEndl;	
+		ITLErr << name() << ": can't find file:" << filename.toStdString() << ITLEndl;	
 		fWatcher.removePath( filename );
 	}
 }

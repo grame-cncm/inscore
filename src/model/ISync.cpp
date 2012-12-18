@@ -70,7 +70,7 @@ bool ISync::checkLoop(const IObject* slave, IObject* master)
 void ISync::sync(const SIObject& slave, SMaster master) 
 {
 	if (slave == master->getMaster()) {
-		ITLErr << "unexpected synchronization request:" << slave->name() << " -> " << slave->name() << ITLEndl;
+		ITLErr << "unexpected synchronization request:" << slave->name() << "->" << slave->name() << ITLEndl;
 		return;
 	}
 

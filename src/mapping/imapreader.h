@@ -53,7 +53,7 @@ class imapreader : public libmapping::mapparser, libmapping::mapreader
 		bool map(const libmapping::TSegment<float,1>& f, const libmapping::TSegment<libmapping::rational,1>& r)		{ return fReader->map(f, r); }
 
 		/// error management
-		void error(const char * msg, int lineno)				{ ITLErr << "parse error line " << lineno << ": " << msg << ITLEndl; }
+		void error(const char * msg, int lineno)				{ ITLErr << "parse error line" << lineno << ":" << msg << ITLEndl; }
 };
 
 } // namespace

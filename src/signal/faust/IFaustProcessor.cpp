@@ -234,7 +234,7 @@ void IFaustProcessor::init ()
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IFaustProcessor::set (const IMessage* msg)
 {
-	const char* cantload = "can't load faust plugin: ";
+	const char* cantload = "can't load faust plugin:";
 	if (msg->size() != 2) return MsgHandler::kBadParameters;
 	string library;
 	if (!msg->param(1, library)) return MsgHandler::kBadParameters;
@@ -247,7 +247,7 @@ MsgHandler::msgStatus IFaustProcessor::set (const IMessage* msg)
 		fInit		= resolve<fpinit>(kfpinit);
 		if (!fBuildUI || !fCompute || !fInputs || !fOutputs || !fInit) {
 			unload();
-			ITLErr << cantload <<  " unresolved functions." << ITLEndl;
+			ITLErr << cantload <<  "unresolved functions." << ITLEndl;
 			return MsgHandler::kBadParameters;
 		}
 		init();

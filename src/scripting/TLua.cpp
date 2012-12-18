@@ -114,7 +114,7 @@ bool TLua::bindEnv  (stringstream& s, const string& name, const IMessage::argPtr
 	else if (val->isType<float>())	s << val->value(0.);
 	else if (val->isType<string>())	s << '"' <<  val->value(string("")) << '"';
 	else {
-		ITLErr << name << " unknown variable type " << ITLEndl;
+		ITLErr << name << "unknown variable type" << ITLEndl;
 		return false;
 	}
 	return true;
@@ -162,13 +162,13 @@ bool TLua::check( int code ) const
 {
 	switch (code) {
 	case LUA_ERRSYNTAX:
-		ITLErr << "lua: syntax error: " << lua_tostring(fLua, 1) << ITLEndl;
+		ITLErr << "lua: syntax error:" << lua_tostring(fLua, 1) << ITLEndl;
 		break;
 	case LUA_ERRMEM:
 		ITLErr << "lua: memory allocation error" << ITLEndl;
 		break;
 	case LUA_ERRRUN:
-		ITLErr << "lua: runtime error: " << lua_tostring(fLua, 1) << ITLEndl;
+		ITLErr << "lua: runtime error:" << lua_tostring(fLua, 1) << ITLEndl;
 		break;
 	case LUA_ERRERR:
 		ITLErr << "lua: error while running the error handler function" << ITLEndl;

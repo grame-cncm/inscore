@@ -187,7 +187,7 @@ MsgHandler::msgStatus ISignal::set (const IMessage* msg)
 					signals.push_back(dynamic_cast<ISignal*>((IObject*)siglist[0]));
 				}
 				else {
-					ITLErr << "parallel signal " << this->name() << ": unknown signal " << name << ITLEndl;
+					ITLErr << "parallel signal" << this->name() << ": unknown signal" << name << ITLEndl;
 					return MsgHandler::kBadParameters;
 				}
 			}

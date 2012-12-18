@@ -30,9 +30,14 @@
 
 #else
 #include "OSCStream.h"
+#include "smartpointer.h"
 
 namespace inscore
 {
+
+class IMessage;
+class IMessageList;
+typedef libmapping::SMARTP<IMessageList>	SIMessageList;
 
 //--------------------------------------------------------------------------
 /*!
@@ -49,17 +54,13 @@ typedef struct ITLErrorEnd {
 } ITLErrEnd;
 
 
-inline ITLError& operator << (ITLError& err, ITLErrEnd end)
-{
-	std::cerr << std::endl;
-	oscerr <<  OSCEnd();
-	err.oscpending = false;
-	return err;
-}
+ITLError& operator << (ITLError& err, ITLErrEnd end);
+ITLError& operator << (ITLError& err, const IMessage* msg );
+ITLError& operator << (ITLError& err, const SIMessageList& msg );
 
 template <typename T>	ITLError& operator << (ITLError& err, const T& arg)
 {
-	std::cerr << arg;
+	std::cerr << arg << " ";
 	if (!err.oscpending) {
 		oscerr << OSCErr();
 		err.oscpending = true;

@@ -121,14 +121,14 @@ void TV8Js::ReportException(v8::TryCatch* try_catch) const
 	v8::Handle<v8::Message> message = try_catch->Message();
 	if (message.IsEmpty()) {
 		// V8 didn't provide any extra information about this error; just print the exception.
-		ITLErr <<  "javascript error: " << exception_string << ITLEndl;
+		ITLErr <<  "javascript error:" << exception_string << ITLEndl;
 	} 
 	else {
-		ITLErr <<  "javascript error line " << message->GetLineNumber() + fLineOffset << ": " << exception_string << ITLEndl;
+		ITLErr <<  "javascript error line" << message->GetLineNumber() + fLineOffset << ":" << exception_string << ITLEndl;
 		// Print line of source code.
 		v8::String::Utf8Value sourceline(message->GetSourceLine());
 		const char* sourceline_string = ToCString(sourceline);
-		ITLErr <<  "javascript error context: " << sourceline_string << ITLEndl;
+		ITLErr <<  "javascript error context:" << sourceline_string << ITLEndl;
 	}
 }
 
@@ -170,7 +170,7 @@ bool TV8Js::bindEnv  (stringstream& s, const string& name, const IMessage::argPt
 	else if (val->isType<float>())	s << val->value(0.);
 	else if (val->isType<string>())	s << '"' <<  val->value(string("")) << '"';
 	else {
-		ITLErr << name << " unknown variable type " << ITLEndl;
+		ITLErr << name << ": unknown variable type" << ITLEndl;
 		return false;
 	}
 	return true;

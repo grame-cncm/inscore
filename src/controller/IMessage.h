@@ -93,15 +93,9 @@ class baseparam : public libmapping::smartable
 			}
 			
 		virtual libmapping::SMARTP<baseparam> copy() const = 0;
+		virtual void print(ITLError to) const {}
 };
 
-//inline std::ostream& operator << (std::ostream& os, const baseparam* p) { 
-//	if (p->isType<int>())				os << p->value(0);
-//	else if (p->isType<float>())		os << p->value(0.);
-//	else if (p->isType<std::string>())	os << p->value("");
-//	else os << "unknown parameter type";
-//	return os; 
-//}
 
 //--------------------------------------------------------------------------
 /*!
@@ -116,7 +110,8 @@ template <typename T> class IMsgParam : public baseparam
 		
 		T	getValue() const { return fParam; }
 		
-		virtual libmapping::SMARTP<baseparam> copy() const { return new IMsgParam<T>(fParam); }
+		virtual libmapping::SMARTP<baseparam> copy() const	{ return new IMsgParam<T>(fParam); }
+		virtual void print(ITLError out) const				{ out << fParam; }
 };
 
 class OSCStream;
@@ -305,6 +300,7 @@ class IMessage : public Message, public libmapping::smartable
 	/*!
 		\brief send the message to OSC
 		\param out the OSC output stream
+		\param start a boolean to indicate wether the stream needs to be started (OSC specific)
 	*/
 	void	print(OSCStream& out) const;
 
