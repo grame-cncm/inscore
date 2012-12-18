@@ -657,10 +657,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {34}{ ITLStat : 'get' | 'reset' }
+\rail@i {34}{ ITLStats : 'get' | 'reset' }
 \rail@o {34}{
-\rail@index{ITLStat}
-\rail@begin{2}{ITLStat}
+\rail@index{ITLStats}
+\rail@begin{2}{ITLStats}
 \rail@bar
 \rail@term{get}[]
 \rail@nextbar{1}

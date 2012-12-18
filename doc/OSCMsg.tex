@@ -930,10 +930,10 @@ will give the following as output:
 \sublevel{The 'stats' and 'debug' nodes}
 \label{ITLdebug}
 
-The application level provides two static nodes - \OSC{stats} and \OSC{debug} to help debugging communication and INScore scripts design.
+The application level provides two static nodes - \OSC{stats} and \OSC{debug}, available at \OSC{/ITL/stats} and \OSC{/ITL/debug} to help debugging communication and INScore scripts design.
 
 \begin{rail}
-ITLStat : 'get'  | 'reset'
+ITLStats : 'get'  | 'reset'
 \end{rail}
 \index{ITL stat!get}
 \index{ITL stat!reset}
@@ -1016,6 +1016,13 @@ Setting a scene to fullscreen:
 Creating a new score named \OSC{myScore}:
 \sample{/ITL/myScore new}
 
+
+%===============================
+%: The debug nodes
+\sublevel{The 'debug' nodes}
+\label{scenedebug}
+
+The \emph{scene} level provides a static nodes - \OSC{debug}, available at \OSC{/ITL/scene/debug} to help debugging communication and INScore scripts design.
 
 %===============================
 %:Component specific messages
