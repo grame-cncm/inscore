@@ -185,197 +185,6 @@ makes the object \OSC{myobject} addressable using the address \OSC{/1/fader1}.
 \note Regular expressions are not supported by the alias mechanism and could lead to unpredictable results.
 
 
-%===============================
-%:ITL messages
-\toplevel{Application messages}
-\label{ITL}
-Application messages are accepted by the static OSC address \OSC{/ITL}. 
-
-
-%===============================
-%: Application management
-\sublevel{Application management}
-
-\begin{rail}
-ITLMsg : 'quit' 
-		| ('rootPath' path) 
-		| ('mouse' ('show' | 'hide'))
-		| ('defaultShow' int32)
-		| ('load' filePath)
-		| ('require' int32 oscMsg)
-		| ('time' int32)
-		| ('rate' int32)
-		| 'hello'
-\end{rail}
-\index{ITL messages!rootPath}
-\index{ITL messages!mouse}
-\index{ITL messages!defaultShow}
-\index{ITL messages!load}
-\index{ITL messages!hello}
-\index{ITL messages!require}
-\index{ITL messages!rate}
-\index{ITL messages!time}
-
-\begin{itemize}
-\item \OSC{quit}: requests the client application to quit.
-
-\item \OSC{rootPath}: \emph{rootPath} of an Interlude application is the default path where the application reads or writes a file when a relative path is used for this file. The default value is the user home directory. Sending the \OSC{rootPath} message without parameter resets the application path to its default value.
-
-\item \OSC{mouse}: hide or show the mouse pointer.
-
-\item \OSC{defaultShow}: changes the default \OSC{show} status for new objects. \\
-The default \OSC{defaultShow} value is 1.
-
-\item \OSC{load}: loads a file previously saved using the \OSC{save} message (see section \fullref{common}). Note that the load operation appends the new objects to the existing scene. When necessary, it is the sender responsibility to clear the scene before loading a file.
-
-\item \OSC{require}: check for a version number equal or greater to the number given as argument. The version number should be encoded as an integer value (for example: 76 for version 0.76, 112 for version 1.12). An OSC message is associated to the require message with the same syntax and semantic described in section \fullref{interaction}. This message is triggered when the check fails.
-
-\item \OSC{rate}: changes the time task rate. Note that null values are ignored.\\
-The default \OSC{rate} value is 10.
-
-\item \OSC{time}: sets the application current time. The current rate is internally added to the current time by the time task.
-
-\item \OSC{hello}: query the host IP number. The message is intended for ITL applications discovery. Answer to the query has the following format: \\
-\oldexample \OSC{IP  inPort outPort errPort} where \OSC{IP} is sent as a string and port numbers as integer values.
-
-\end{itemize}
-
-\example \\
-when sending the message:
-\sample{/ITL hello}
-the application will answer with the following message:
-\sample{/ITL 192.168.0.5  7000 7001 7003}
-when it runs on a host which IP number is \OSC{192.168.0.5} using the default port numbers.
-
-%===============================
-%: Ports management
-\sublevel{Ports management}
-\label{ITLPorts}
-
-\begin{rail}
-ITLPortsMsg : ('port' int32)
-		| ('outport' int32)
-		| ('errport' int32)
-\end{rail}
-\index{ITL messages!port}
-\index{ITL messages!outport}
-\index{ITL messages!errport}
-
-Changes the UDP port numbers:
-\begin{itemize}
-\item \OSC{port} defines the listening port number, 
-\item \OSC{outport} defines the port used to send replies to queries, 
-\item \OSC{errport} defines the port used to send error messages. 
-\end{itemize}
-The \OSC{int32} parameter should be a positive value in the range \values{[1024-49150]}. \\
-The default \OSC{port}, \OSC{outport} and \OSC{errport} values are 7000, 7001 and 7002.
-
-\note Error messages are sent as a single string.
-
-%===============================
-%: Messages forwarding
-\sublevel{Messages forwarding}
-\label{ITLForward}
-
-The messages handled by the application can be forwarded to arbitrary remote hosts using the \OSC{forward} message. The \OSC{forward} message itself can't be forwarded. 
- 
-\begin{rail}
-ITLMsgForward : ('forward' ( [1] | [2] hostname +))
-\end{rail}
-\index{ITL messages!forward}
-
-\begin{itemize}
-
-\item 1) removes the set of forwarded destinations,
-\item 2) set a list of remote hosts for forwarding. Note that \OSC{hostname} can be any legal host name or IP number, optionally extended with a port number separated by a semi-colon. By default, when no port number is specified, the current application listening port number is used.
-\end{itemize}
-\example
-\sample{/ITL forward host1.adomain.org host2.adomain.org:5100}
-Forwards messages to \OSC{host1.adomain.org} using the current application listening port number \\
-and to \OSC{host2.adomain.org} on port number 5100.
-
-\warning{forwarding messages to the application host results in an infinite loop with unpredictable results. Thus it is not recommended to use the local network broadcast address for forwarding.}
-
-
-
-%===============================
-%: Application level queries
-\sublevel{Application level queries}
-\label{ITLQuery}
-
-The application supports the \OSC{get} messages for its parameters (see section \fullref{getsect}). In addition, it provides the following messages to query version numbers.
-
-\begin{rail}
-ITLRequest : 'get'  ('version' | 'guido-version' | 'musicxml-version')
-\end{rail}
-\index{ITL messages!version}
-\index{ITL messages!guido-version}
-\index{ITL messages!musicxml-version}
-
-\begin{itemize}
-\item \OSC{version}: version number request.
-\item \OSC{guido-version}: Guido engine version number request.
-\item \OSC{musicxml-version}: MusicXML and Guido converter version numbers request. Returns "not available" when the library is not found.
-
-\end{itemize}
-
-\example \\
-Querying INScore version:
-\sample{/ITL get version}
-will give the following as output:
-\sample{/ITL version 1.00}
-
-%===============================
-%:Scene messages
-\toplevel{Scene messages}
-\label{scene}
-A scene may be viewed as a window on the score elements. Its address is \OSC{/ITL/\textit{sceneIdentifier}} where \OSC{\textit{sceneIdentifier}} is the scene name. It handles the following messages:
-\begin{rail}
-sceneMsg :  'new'
-			| 'del'
-			| 'reset'
-			| ('rootPath' path) 
-			| ('load' filePath)
-			| ('fullscreen' int32)
-			| ('frameless' int32)
-			| ('absolutexy' int32)
-			| commonMsg
-\end{rail}
-\index{Scene messages}
-\index{Scene messages!new}
-\index{Scene messages!del}
-\index{Scene messages!rootPath}
-\index{Scene messages!load}
-\index{Scene messages!reset}
-\index{Scene messages!fullscreen}
-\index{Scene messages!frameless}
-\index{Scene messages!absolutexy}
-
-\begin{itemize}
-\item \OSC{new}: creates a new scene and opens it in a new window.
-\item \OSC{del}: deletes a scene and closes the corresponding window.
-\item \OSC{reset}: clears the scene (i.e. delete all components) and resets the scene to its default state (position, size and color).
-\item \OSC{rootPath}: \emph{rootPath} of a scene is the default path where the scene reads or writes a file when a relative path is used for this file. When no value has been specified, the application  \emph{rootPath} is used.
-\item \OSC{load}: loads an INScore file to the scene. Note that the OSC addresses are translated to the scene OSC address.
-%\item \OSC{foreground}: put the scene to foreground.
-\item \OSC{fullscreen}: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is \values{0}.
-\item \OSC{frameless}: requests the scene to switch to frameless or normal window.  The parameter is interpreted as a boolean value. Default value is \values{0}.
-\item \OSC{absolutexy}: requests the scene to absolute or relative coordinates. Absolute coordinates are in pixels relative to the top left corner of the screen. Relative coordinates are in the range [-1, 1] where [0,0] is the center of the screen. The message parameter is interpreted as a boolean value. Default value is \values{0}.
-\item \OSC{commonMsg}: see section \fullref{common}.
-\end{itemize}
-
-\example \\
-Setting a scene current path:
-\sample{/ITL/scene rootPath "/path/to/my/folder"}
-Loading an INScore file:
-\sample{/ITL/scene load "myscript.inscore"}
-will load \OSC{/path/to/my/folder/myscript.inscore} into the scene. 
-
-Setting a scene to fullscreen:
-\sample{/ITL/scene fullscreen 1}
-Creating a new score named \OSC{myScore}:
-\sample{/ITL/myScore new}
-
 
 %===============================
 %:Common messages
@@ -975,6 +784,237 @@ will give the corresponding \OSC{set} message:
 
 The \OSC{get} message without parameter addressed to a container (the application \OSC{/ITL}, a scene \OSC{/ITL/scene}, the signal node \OSC{/ITL/scene/signal}) is also distributed to all the container components.
 
+
+%===============================
+%:ITL messages
+\toplevel{Application messages}
+\label{ITL}
+Application messages are accepted by the static OSC address \OSC{/ITL}. 
+
+
+%===============================
+%: Application management
+\sublevel{Application management}
+
+\begin{rail}
+ITLMsg : 'quit' 
+		| ('rootPath' path) 
+		| ('mouse' ('show' | 'hide'))
+		| ('defaultShow' int32)
+		| ('load' filePath)
+		| ('require' int32 oscMsg)
+		| ('time' int32)
+		| ('rate' int32)
+		| 'hello'
+\end{rail}
+\index{ITL messages!rootPath}
+\index{ITL messages!mouse}
+\index{ITL messages!defaultShow}
+\index{ITL messages!load}
+\index{ITL messages!hello}
+\index{ITL messages!require}
+\index{ITL messages!rate}
+\index{ITL messages!time}
+
+\begin{itemize}
+\item \OSC{quit}: requests the client application to quit.
+
+\item \OSC{rootPath}: \emph{rootPath} of an Interlude application is the default path where the application reads or writes a file when a relative path is used for this file. The default value is the user home directory. Sending the \OSC{rootPath} message without parameter resets the application path to its default value.
+
+\item \OSC{mouse}: hide or show the mouse pointer.
+
+\item \OSC{defaultShow}: changes the default \OSC{show} status for new objects. \\
+The default \OSC{defaultShow} value is 1.
+
+\item \OSC{load}: loads a file previously saved using the \OSC{save} message (see section \fullref{common}). Note that the load operation appends the new objects to the existing scene. When necessary, it is the sender responsibility to clear the scene before loading a file.
+
+\item \OSC{require}: check for a version number equal or greater to the number given as argument. The version number should be encoded as an integer value (for example: 76 for version 0.76, 112 for version 1.12). An OSC message is associated to the require message with the same syntax and semantic described in section \fullref{interaction}. This message is triggered when the check fails.
+
+\item \OSC{rate}: changes the time task rate. Note that null values are ignored.\\
+The default \OSC{rate} value is 10.
+
+\item \OSC{time}: sets the application current time. The current rate is internally added to the current time by the time task.
+
+\item \OSC{hello}: query the host IP number. The message is intended for ITL applications discovery. Answer to the query has the following format: \\
+\oldexample \OSC{IP  inPort outPort errPort} where \OSC{IP} is sent as a string and port numbers as integer values.
+
+\end{itemize}
+
+\example \\
+when sending the message:
+\sample{/ITL hello}
+the application will answer with the following message:
+\sample{/ITL 192.168.0.5  7000 7001 7003}
+when it runs on a host which IP number is \OSC{192.168.0.5} using the default port numbers.
+
+%===============================
+%: Ports management
+\sublevel{Ports management}
+\label{ITLPorts}
+
+\begin{rail}
+ITLPortsMsg : ('port' int32)
+		| ('outport' int32)
+		| ('errport' int32)
+\end{rail}
+\index{ITL messages!port}
+\index{ITL messages!outport}
+\index{ITL messages!errport}
+
+Changes the UDP port numbers:
+\begin{itemize}
+\item \OSC{port} defines the listening port number, 
+\item \OSC{outport} defines the port used to send replies to queries, 
+\item \OSC{errport} defines the port used to send error messages. 
+\end{itemize}
+The \OSC{int32} parameter should be a positive value in the range \values{[1024-49150]}. \\
+The default \OSC{port}, \OSC{outport} and \OSC{errport} values are 7000, 7001 and 7002.
+
+\note Error messages are sent as a single string.
+
+%===============================
+%: Messages forwarding
+\sublevel{Messages forwarding}
+\label{ITLForward}
+
+The messages handled by the application can be forwarded to arbitrary remote hosts using the \OSC{forward} message. The \OSC{forward} message itself can't be forwarded. 
+ 
+\begin{rail}
+ITLMsgForward : ('forward' ( [1] | [2] hostname +))
+\end{rail}
+\index{ITL messages!forward}
+
+\begin{itemize}
+
+\item 1) removes the set of forwarded destinations,
+\item 2) set a list of remote hosts for forwarding. Note that \OSC{hostname} can be any legal host name or IP number, optionally extended with a port number separated by a semi-colon. By default, when no port number is specified, the current application listening port number is used.
+\end{itemize}
+\example
+\sample{/ITL forward host1.adomain.org host2.adomain.org:5100}
+Forwards messages to \OSC{host1.adomain.org} using the current application listening port number \\
+and to \OSC{host2.adomain.org} on port number 5100.
+
+\warning{forwarding messages to the application host results in an infinite loop with unpredictable results. Thus it is not recommended to use the local network broadcast address for forwarding.}
+
+
+
+%===============================
+%: Application level queries
+\sublevel{Application level queries}
+\label{ITLQuery}
+
+The application supports the \OSC{get} messages for its parameters (see section \fullref{getsect}). In addition, it provides the following messages to query version numbers.
+
+\begin{rail}
+ITLRequest : 'get'  ('version' | 'guido-version' | 'musicxml-version')
+\end{rail}
+\index{ITL messages!version}
+\index{ITL messages!guido-version}
+\index{ITL messages!musicxml-version}
+
+\begin{itemize}
+\item \OSC{version}: version number request.
+\item \OSC{guido-version}: Guido engine version number request.
+\item \OSC{musicxml-version}: MusicXML and Guido converter version numbers request. Returns "not available" when the library is not found.
+
+\end{itemize}
+
+\example \\
+Querying INScore version:
+\sample{/ITL get version}
+will give the following as output:
+\sample{/ITL version 1.00}
+
+%===============================
+%: The stat and debug nodes
+\sublevel{The 'stats' and 'debug' nodes}
+\label{ITLdebug}
+
+The application level provides two static nodes - \OSC{stats} and \OSC{debug} to help debugging communication and INScore scripts design.
+
+\begin{rail}
+ITLStat : 'get'  | 'reset'
+\end{rail}
+\index{ITL stat!get}
+\index{ITL stat!reset}
+
+\begin{itemize}
+\item \OSC{get} gives the count of handled messages at OSC and UDP levels: the UDP count indicates the count of messages received from the network, the OSC count includes the UDP count and the messages received internally.
+\item \OSC{reset} resets the counters to zero. Note that querying the \OSC{stats} node increments at least the OSC the counter.
+\end{itemize}
+
+\example \\
+Answer to a \OSC{get} message addressed to \OSC{/ITL/stats}
+\sample{/ITL/stats osc 15 udp 10}
+
+\begin{rail}
+ITLdebug : 'osc' int23
+\end{rail}
+\index{ITL debug!osc}
+
+\begin{itemize}
+\item switch the debug mode ON or OFF. The parameter is interpreted as a boolean value. When in debug mode, INScore sends verbose messages to the OSC error port for every message that can't be correctly handled.
+\end{itemize}
+
+\example \\
+Error messages generated on error port in debug mode:
+\sample{error:  incorrect OSC address: /ITL/stat\\
+error:  incorrect parameters: /ITL/scene/foo unknown 0.1\\
+error:  incorrect parameters: /ITL/scene/foo x "incorrectType"
+}
+
+
+
+%===============================
+%:Scene messages
+\toplevel{Scene messages}
+\label{scene}
+A scene may be viewed as a window on the score elements. Its address is \OSC{/ITL/\textit{sceneIdentifier}} where \OSC{\textit{sceneIdentifier}} is the scene name. It handles the following messages:
+\begin{rail}
+sceneMsg :  'new'
+			| 'del'
+			| 'reset'
+			| ('rootPath' path) 
+			| ('load' filePath)
+			| ('fullscreen' int32)
+			| ('frameless' int32)
+			| ('absolutexy' int32)
+			| commonMsg
+\end{rail}
+\index{Scene messages}
+\index{Scene messages!new}
+\index{Scene messages!del}
+\index{Scene messages!rootPath}
+\index{Scene messages!load}
+\index{Scene messages!reset}
+\index{Scene messages!fullscreen}
+\index{Scene messages!frameless}
+\index{Scene messages!absolutexy}
+
+\begin{itemize}
+\item \OSC{new}: creates a new scene and opens it in a new window.
+\item \OSC{del}: deletes a scene and closes the corresponding window.
+\item \OSC{reset}: clears the scene (i.e. delete all components) and resets the scene to its default state (position, size and color).
+\item \OSC{rootPath}: \emph{rootPath} of a scene is the default path where the scene reads or writes a file when a relative path is used for this file. When no value has been specified, the application  \emph{rootPath} is used.
+\item \OSC{load}: loads an INScore file to the scene. Note that the OSC addresses are translated to the scene OSC address.
+%\item \OSC{foreground}: put the scene to foreground.
+\item \OSC{fullscreen}: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is \values{0}.
+\item \OSC{frameless}: requests the scene to switch to frameless or normal window.  The parameter is interpreted as a boolean value. Default value is \values{0}.
+\item \OSC{absolutexy}: requests the scene to absolute or relative coordinates. Absolute coordinates are in pixels relative to the top left corner of the screen. Relative coordinates are in the range [-1, 1] where [0,0] is the center of the screen. The message parameter is interpreted as a boolean value. Default value is \values{0}.
+\item \OSC{commonMsg}: see section \fullref{common}.
+\end{itemize}
+
+\example \\
+Setting a scene current path:
+\sample{/ITL/scene rootPath "/path/to/my/folder"}
+Loading an INScore file:
+\sample{/ITL/scene load "myscript.inscore"}
+will load \OSC{/path/to/my/folder/myscript.inscore} into the scene. 
+
+Setting a scene to fullscreen:
+\sample{/ITL/scene fullscreen 1}
+Creating a new score named \OSC{myScore}:
+\sample{/ITL/myScore new}
 
 
 %===============================
