@@ -130,7 +130,8 @@ script		: LUASCRIPT			{	$$ = new inscore::SIMessageList (inscore::IMessageList::
 // messages specification (extends osc spec.)
 //_______________________________________________
 
-message		: address params			{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl)); delete $1; delete $2; }
+message		: address					{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc)); (*$$)->setUrl($1->fUrl); delete $1; }
+			| address params			{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl)); delete $1; delete $2; }
 			| address watchparams		{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl)); delete $1; delete $2; }
 			| address watchparams LEFTPAR messagelist RIGHTPAR
 										{	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
