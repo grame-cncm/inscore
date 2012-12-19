@@ -408,6 +408,13 @@ IMessage& operator <<(IMessage& msg, const std::string& val)
 }
 
 //--------------------------------------------------------------------------
+IMessage& operator <<(IMessage& msg, const char* val)
+{ 
+	msg.add(string(val));
+	return msg; 
+}
+
+//--------------------------------------------------------------------------
 IMessage& operator << (IMessage& out, const IMessage* m)
 {
 //	string addr = m->extendedAddress() ? (string(m->url()) + m->address()) : m->address();

@@ -69,8 +69,9 @@ inline IMessage& operator <<(IMessage& msg, float val)		{ msg.add(val); return m
 // boolean is store as integer value
 inline IMessage& operator <<(IMessage& msg, bool val)		{ msg.add(int(val)); return msg; }
 
-// strings: checks if quotes are needed
+// strings
 IMessage& operator <<(IMessage& msg, const std::string& val);
+IMessage& operator <<(IMessage& msg, const char* val);
 
 // TFloatPoint: linearizes x and y
 IMessage& operator <<(IMessage& msg, const TFloatPoint& val);
