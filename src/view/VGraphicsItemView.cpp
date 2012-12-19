@@ -254,7 +254,7 @@ void VGraphicsItemView::updateView(IObject* o)
 //		fItem->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
 		updateTransform (o);
 		fItem->scale(  o->getScale() ,  o->getScale() );
-		fItem->rotate(  o->getAngle() );
+//		fItem->rotate(  o->getAngle() );
 	
 		//	Centers the item on its origin.
 		QRectF objectBoundingRect = fItem->boundingRect();
