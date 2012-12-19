@@ -1,0 +1,6 @@
+/ITL/scene/score map system;
+
+/ITL/scene/score map staff3 del;
+/ITL/scene/score map staff5 del;
+
+/ITL/scene/comment set  txt "Only stave 1 and the whole system have a mapping.";

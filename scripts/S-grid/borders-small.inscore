@@ -1,0 +1,3 @@
+border = 0.03;
+/ITL/scene/grid xborder $border;
+/ITL/scene/grid yborder $border;

@@ -14,7 +14,7 @@ alpha=150;
 /ITL/scene/cursor watch timeEnter 1 2		( /ITL/scene/rect color 76 254 212 $alpha );	
 /ITL/scene/cursor watch timeEnter 2 3		( /ITL/scene/rect scale 1.4 ,
 											  /ITL/scene/rect color 212 76 254 $alpha );	
-/ITL/scene/cursor watch timeEnter 3 4		( /ITL/scene/rect angle 22.5 ,
+/ITL/scene/cursor watch timeEnter 3 4		( /ITL/scene/rect angle 45. ,
 											  /ITL/scene/rect color 212 254 76 $alpha );	
 /ITL/scene/cursor watch timeEnter 4 1000	( /ITL/scene/cursor date 0 1 );
 

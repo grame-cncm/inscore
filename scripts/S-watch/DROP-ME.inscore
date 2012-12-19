@@ -14,7 +14,7 @@ alpha=150;
 		/ITL/$scene/$self scale 1.4,
 		/ITL/$scene/$self color 212 76 254 $alpha,
 		/ITL/$scene/$self watch mouseDown (
-			/ITL/$scene/$self angle 22.5 ,
+			/ITL/$scene/$self angle 45. ,
 			/ITL/$scene/$self color 212 254 76 $alpha,
 			/ITL/$scene/$self watch mouseDown (
 				/ITL/scene load 'DROP-ME.inscore'

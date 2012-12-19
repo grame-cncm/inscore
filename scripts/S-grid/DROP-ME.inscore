@@ -22,8 +22,9 @@ dur  = 100;
 
 /ITL/scene/comment1 set txt "This script illustrates the 'grid' object.";
 /ITL/scene/comment1 y -0.93;
-/ITL/scene/comment2 set txt "You can drop any of the accompanying scripts to the scene.";
-/ITL/scene/comment2 y 0.9;
+/ITL/scene/comment2 set txt "You can drop any of the accompanying scripts to the scene
+and send clock messages to '/ITL/scene/slave'.";
+/ITL/scene/comment2 y 0.92;
 /ITL/scene/comment1 scale 1.7;
 /ITL/scene/comment2 scale 1.2;
 /ITL/scene/comment* color 255 255 255;
