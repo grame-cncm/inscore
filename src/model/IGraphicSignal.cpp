@@ -71,8 +71,10 @@ void IGraphicSignal::setHandlers ()
 	fGetMsgHandlerMap[""]					= TGetParamMsgHandler<SISignal>::create(fSignal);
 	fGetMsgHandlerMap[kdimension_GetMethod]	= getDimParamMsgHandler::create(this);
 	
-	fMsgHandlerMap[kwidth_GetSetMethod]		= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setWidth);	// 'width' param is writable for IGraphicSignal
-	fMsgHandlerMap[kheight_GetSetMethod]	= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setHeight);	// 'height' param is writable for IGraphicSignal
+	// 'width' param is writable for IGraphicSignal
+	fMsgHandlerMap[kwidth_GetSetMethod]		= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setWidth);
+	// 'height' param is writable for IGraphicSignal
+	fMsgHandlerMap[kheight_GetSetMethod]	= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setHeight);
 
 	fMsgHandlerMap[kmap_GetSetMethod]		= TMethodMsgHandler<IGraphicSignal>::create(this, &IGraphicSignal::mapMsg);
 	fMsgHandlerMap[kmapplus_SetMethod]		= TMethodMsgHandler<IGraphicSignal>::create(this, &IGraphicSignal::mapAddMsg);
