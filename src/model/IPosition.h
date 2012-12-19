@@ -98,7 +98,7 @@ class IPosition
 		/// \brief returns the object z order
 		virtual float	getZOrder() const			{ return fZOrder; }
 		/// \brief returns the object angle
-		virtual float	getAngle() const			{ return fZAngle; }
+//		virtual float	getAngle() const			{ return fZAngle; }
 		/// \brief returns the scaling factor of the object
 		virtual float	getScale () const			{ return fScale; }
 		/// \brief returns the object position as a TFloatPoint

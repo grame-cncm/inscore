@@ -634,7 +634,6 @@ MsgHandler::msgStatus IObject::set(const IMessage* msg)
 			newobj->setScale (getScale());
 			newobj->setVisible (getVisible());
 			newobj->setZOrder (getZOrder());
-			newobj->setAngle (getAngle());
 			newobj->setShear (getShear());
 			newobj->setRotateX (getRotateX());
 			newobj->setRotateY (getRotateY());

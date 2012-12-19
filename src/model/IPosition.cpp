@@ -51,7 +51,7 @@ void IPosition::setPos(const IPosition& p)
 	setYPos( p.getYPos() );
 	setZOrder( p.getZOrder() );
 	setScale( p.getScale() );
-	setAngle( p.getAngle() );
+	setAngle( p.getRotateZ() );
 	setWidth( p.getWidth() );
 	setHeight( p.getHeight() );
 	setVisible( p.getVisible() );
@@ -74,7 +74,7 @@ TFloatRect IPosition::getBoundingRect() const
 {
 	TFloatRect result(0.0f,0.0f);
 	result.setSize( getDimension() );
-	if ( getAngle() != 0 )
+	if ( getRotateZ() != 0 )
 	{
 		float x = result.size().width() / 2.0f;
 		float y = result.size().height() / 2.0f;
@@ -84,10 +84,10 @@ TFloatRect IPosition::getBoundingRect() const
 		float bottomRightAngle = -topRightAngle;
 
 		float Ax, Ay, Bx, By;
-		rotateXY( topRightAngle , getAngle() , r , Ax , Ay );
-		rotateXY( bottomRightAngle , getAngle() , r , Bx , By );
+		rotateXY( topRightAngle , getRotateZ() , r , Ax , Ay );
+		rotateXY( bottomRightAngle , getRotateZ() , r , Bx , By );
 
-		int modAngle = int(getAngle()) % 360;
+		int modAngle = int(getRotateZ()) % 360;
 		if ( ( modAngle >= 0 ) && ( modAngle < 90 ) )
 		{
 			result.setPos( TFloatPoint( -Bx , -Ay ) );
