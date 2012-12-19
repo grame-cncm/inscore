@@ -26,6 +26,7 @@
 #include <math.h>
 
 #include "ILine.h"
+#include "ITLError.h"
 #include "IMessage.h"
 #include "Updater.h"
 
@@ -64,7 +65,7 @@ SIMessageList ILine::getSetMsg() const
 {
 	SIMessageList outmsgs = IMessageList::create();
 	SIMessage msg = IMessage::create(getOSCAddress(), kset_SetMethod);
-	*msg << "xy" << fPoint;
+	*msg << kLineType << "xy" << fPoint;
 	outmsgs->list().push_back (msg);
 	return outmsgs;
 }
@@ -82,7 +83,7 @@ MsgHandler::msgStatus ILine::set (const IMessage* msg)
 		setPoint( TFloatPoint(x,y) );
 		status = MsgHandler::kProcessed;
 		newData(true);
-		oscerr << OSCWarn() << "set line without mode is deprecated" << OSCEnd();
+		ITLErr << "set line without mode is deprecated" << ITLEndl;
 	}
 	else if (msg->size() == 4) {
 		string mode; float a, b;
