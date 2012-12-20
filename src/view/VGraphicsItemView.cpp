@@ -298,6 +298,8 @@ static bool checkAutoRefresh (IObject* object, const RelativeTime2GraphicRelatio
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::buildDefaultMapping (IObject* object)
 {
+	if (object->namedMappings().size()) return;  // no need to build the default mapping
+	
 	const SRelativeTime2GraphicMapping& map = object->getMapping("");
 	// Check if the un-named mapping exists or if it needs to be refreshed. 
 	if ( !map ||  checkAutoRefresh(object, map->direct()))	
