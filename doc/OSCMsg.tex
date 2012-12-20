@@ -39,7 +39,7 @@
 \newcommand{\values}[1]	{\texttt{#1}}
 \newcommand{\oldexample}		{\hspace*{1cm}}
 \newcommand{\example}		{\textbf{\hspace{-1.5cm}\textbf{\textsc{Example }}}}
-\newcommand{\note}			{\vspace{2mm}\textbf{\hspace{-1.03cm}\textbf{\textsc{Note }}}}
+\newcommand{\note}	[1]		{\vspace{2mm}\textbf{\hspace{-1.03cm}\textbf{\textsc{Note #1}}}}
 \renewcommand{\seealso}	{\textbf{See also: }}
 
 \newcommand{\osctype}[1]{\textbf{\texttt{{\small #1}}}}
@@ -57,15 +57,15 @@
 
 
 \definecolor{mygrey}{gray}{0.93}
-\newcommand{\sample}	[1]			{\vspace{-1mm}\begin{center}\colorbox{mygrey}{
+\newcommand{\sample}	[1]			{\vspace{-2mm}\begin{center}\colorbox{mygrey}{
 								\begin{minipage}[t]{0.9\columnwidth} 
 								{\small \texttt{#1}}
-								\end{minipage}}\end{center}\vspace{-2mm}}
+								\end{minipage}}\end{center}\vspace{-1mm}}
 \newcommand{\samplev}[1]			{\begin{center}\colorbox{mygrey}{
 								\begin{minipage}[t]{\columnwidth} 
 								{\small \texttt{#1}}
 								\end{minipage}}\end{center}}
-
+\newcommand{\sampleindent}	{ \hspace{0.5cm} }
 
 \newcommand{\warning}[1]	{\textbf{\textsc{Warning:}} #1}
 
@@ -116,7 +116,7 @@ The address is similar to a Unix path and supports regular expressions as define
 OSCAddress : '/' (identifier | regexp) +
 \end{rail}
 
-Identifiers may include letters, hyphen, underscore and numbers apart at first position.
+Identifiers may include letters, hyphen, underscore and numbers apart at first position (see lexical definition section \fullref{lex}).
 \railalias{startid}{[-\_a-zA-Z]}
 \railalias{nextid}{[-\_a-zA-Z0-9]]}
 \begin{rail}
@@ -131,12 +131,12 @@ OSCMessage : OSCAddress parameters
 %===============================
 \sublevel{Parameters}
 
-Message parameters types are between the OSC types \emph{int32}, \emph{float32} and \emph{OSC-string}. In the remainder of this document, they are used as terminal symbols, denoted by \oscint, \oscfloat\ and \oscstring. 
+Message parameters types are the OSC types \emph{int32}, \emph{float32} and \emph{OSC-string}. In the remainder of this document, they are used as terminal symbols, denoted by \oscint, \oscfloat\ and \oscstring. 
 
-When used in a script file (see section \ref{scripting}), \oscstring\ should be single or double quoted.
+When used in a script file (see section \ref{scripting}), \oscstring\ should be single or double quoted when they include characters not allowed in identifiers (space, punctuation marks, etc.).
 If an ambiguous double or single quote is part of the string, it must be escaped using a '$\backslash$'.
 
-Parameters types policy is relaxed: the system makes its best to convert a parameter to the expected type, which depend on the message string. Whith an incorrect type and when no conversion is applied, an incorrect parameter message is issued.
+Parameters types policy is relaxed: the system makes its best to convert a parameter to the expected type, which depend on the message string. With an incorrect type and when no conversion is applied, an incorrect parameter message is issued.
 
 %===============================
 \sublevel{Address space}
@@ -150,17 +150,18 @@ The OSC address space is made of static and dynamic nodes, hierarchically organi
 
 OSC messages are accepted at any level of the hierarchy:
 \begin{itemize}
-\item the application level responds to messages for application management (udp ports management, loading files, query messages). \\
-It includes a static node named \OSC{stats} that collects statistics about incoming messages, and a static \OSC{debug} node that can be used to get debug information.
-\item at \emph{scene} level, each node is associated to a window and respond to specific scene/window management messages.
-\item the \emph{component} level contains the scene objects and two static nodes:
+\item \textbf{the application level} responds to messages for application management (udp ports management, loading files, query messages). \\
+It includes a static node named \OSC{stats} that collects information about incoming messages, and a static \OSC{debug} node that can be used to get debug information.
+\item \textbf{the scene level} contains \emph{scores} that are associated to a window and respond to specific scene/window management messages.
+\item \textbf{the component level} contains the scene objects and two static nodes:
 
 \begin{itemize}
 \item a \emph{signal} node that may be viewed as a folder containing signals
 \item a \emph{sync} node, in charge of the synchronization messages
 \end{itemize}
+
 Each component includes a static node named \OSC{debug} that provides debugging information.
-\item the \emph{signals} level contains signals i.e. objects that accept data streams and that may be graphically rendered as a scene component (see Signals and Graphic signals section \fullref{graphsig}).
+\item \textbf{the signals level} contains signals i.e. objects that accept data streams and that may be graphically rendered as a scene component (see Signals and Graphic signals section \fullref{graphsig}).
 
 \end{itemize}
 
@@ -180,7 +181,7 @@ alias : OSCAddress 'alias' (([1] OSCAlias (message | ) ) | [2])
 
 \example
 \sample{/ITL/scene/myobject alias '/1/fader1'}
-makes the object \OSC{myobject} addressable using the address \OSC{/1/fader1}.
+\sampleindent makes the object \OSC{myobject} addressable using the address \OSC{/1/fader1}.
 
 \note Regular expressions are not supported by the alias mechanism and could lead to unpredictable results.
 
@@ -190,8 +191,8 @@ makes the object \OSC{myobject} addressable using the address \OSC{/1/fader1}.
 %:Common messages
 \toplevel{Common messages}
 \label{common}
-Common messages are mainly intended to control the graphic appearance of the components and  of the scene.
-They could be sent to any address with the form \OSC{/ITL/scene} or \OSC{/ITL/scene/\textit{identifier}} where \OSC{\textit{identifier}} is the unique identifier string of a scene component.
+Common messages are intended to control the graphic and the time space of the components of a scene.
+They could be sent to any address with the form \OSC{/ITL/\textit{scene}} or \OSC{/ITL/\textit{scene}/\textit{identifier}} where \OSC{\textit{identifier}} is the unique identifier of a scene component.
 \begin{rail}
 commonMsg :  ('show' int32)
 			| 'del'
@@ -217,7 +218,7 @@ commonMsg :  ('show' int32)
 3) exports to \OSC{rootPath/\textit{identifier}.pdf}.\\
 When the destination file is not completely specified (third form or missing extension), there is an automatic numbering of output names when the destination file already exists.
 
-\item \OSC{save}: recursively saves objects states to a file.  The \OSC{filePath} can be relative or absolute. When relative, an absolute path is build using the current \OSC{rootPath}. The optional \OSC{+} parameter indicates an append mode for the write operation. The message must be sent to the \OSC{/ITL} address to save the whole application state.\\
+\item \OSC{save}: recursively saves objects states to a file.  The \OSC{filePath} can be relative or absolute. When relative, an absolute path is build using the current \OSC{rootPath} (see application or scene current paths  p.\pageref{applmgmt} and  p.\pageref{scene}). The optional \OSC{+} parameter indicates an append mode for the write operation. The message must be sent to the address \OSC{/ITL} to save the whole application state.\\
 Note that the file extension for INScore files is \OSC{.inscore}. INScore files dropped on the application or on a window are interpreted as script files (see section \fullref{scripting}).
 
 %\item \OSC{rename}: rename the destination object. Changes its OSC address. \textbf{Warning}: OSC pattern matching allows to give the same name to a whole collection of objects; in this case, there is no way to individually address an object when its name is shared with other objects.
@@ -238,7 +239,7 @@ Hiding an object:
 \sample{/ITL/scene/myObject show 0}
 
 %-------------------------------
-%:   Positioning
+%:    Positioning
 \sublevel{Positioning}
 
 \begin{rail}
@@ -291,7 +292,7 @@ Moving and scaling an object:
 }
 
 %-------------------------------
-%:   Relative positioning
+%:    Relative positioning
 \subsublevel{Relative positioning}
 \label{relpos}
 
@@ -322,7 +323,7 @@ Relative displacement of an object:
 \sample{/ITL/scene/myObject dx 0.1}
 
 %-------------------------------
-%:   Components origin
+%:    Components origin
 \subsublevel{Components origin}
 \label{origin}
 
@@ -345,9 +346,14 @@ originMsg :
 \item \OSC{dxorigin}, \OSC{dyorigin} represents displacement of the current \OSC{xorigin} or \OSC{yorigin}.
 \end{itemize}
 
+\example \\
+Setting an object graphic origin to the top left corner.
+\sample{/ITL/scene/myObject xorigin -1.\\
+/ITL/scene/myObject yorigin -1.
+}
 
 %-------------------------------
-%:   Components transformations
+%:    Components transformations
 \sublevel{Components transformations}
 \label{transform}
 
@@ -366,8 +372,11 @@ transformMsg :
 \item \OSC{shear} transforms the component in x and y dimensions. \OSC{x} and \OSC{y} are float values expressing the transformation value in the corresponding dimension.
 \end{itemize}
 
-\note \OSC{angle} and \OSC{rotatez} are equivalent. \OSC{angle} has been introduced before the transformation messages and is maintained for compatibility reasons.
+\example \\
+Rotating an object graphic on the \OSC{z} axis.
+\sample{/ITL/scene/myObject rotatez 90.}
 
+\note \OSC{angle} and \OSC{rotatez} are equivalent. \OSC{angle} has been introduced before the transformation messages and is maintained for compatibility reasons.
 
 %-------------------------------
 %:Color messages
@@ -405,38 +414,68 @@ absColorMsg :    color
 \index{Common messages!color!brightness}
 
 
-\OSC{red}, \OSC{green}, \OSC{blue}, \OSC{hue}, \OSC{saturation}, \OSC{brightness}, \OSC{alpha} messages address a specific part of a color using RGB or HSB schemes.
-The value may be specified as integer or float values. When expressed as float, the range is \values{[-1,1]}. The correspondence between the float and integer ranges is given below.
+\OSC{red}, \OSC{green}, \OSC{blue}, \OSC{hue}, \OSC{saturation}, \OSC{brightness}, \OSC{alpha} messages address a specific part of a color using the RGB or HSB scheme.
 
 \begin{rail}
 colorvalue :    int32 | float32
 \end{rail}
+
+The value may be specified as integer or float. The data range is given in table \ref{colorrange}.
+When the alpha component is not specified, the color is assumed to be opaque. 
+
+\begin{table}[htdp]
+\begin{center}
+\begin{tabular}{|r|c|c|}
+\hline
+Component & integer range & float range \\
+\hline
+\OSC{red} [R] 		& [0,255] & [-1,1] \\
+\OSC{green} [G] 	& [0,255] & [-1,1] \\
+\OSC{blue} [B]		& [0,255] & [-1,1] \\
+\OSC{alpha} [A] 	& [0,255] & [-1,1] \\
+\OSC{hue} [H] 		& [0,360] & [-1,1] mapped to [-180,180]\\
+\OSC{saturation} [S] 	& [0,100] & [-1,1] \\
+\OSC{brightness} [B] 	& [0,100] & [-1,1] \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Color components data ranges when expressed as integer or float.}
+\label{colorrange}
+\end{table}%
+
+
+\example \\
+The same alpha channel specified as integer value or as floating point value:
+\sample{/ITL/scene/myObject alpha 51 \\
+/ITL/scene/myObject alpha 0.2
+}
+
+\subsublevel{The color messages}
 
 \begin{rail}
 color :		'color' ('r' 'g' 'b' | 'r' 'g' 'b' 'a') 
 \end{rail}
 \index{Common messages!color}
 
-\OSC{color} sets an object color. The color scheme is RGBA. 
+\OSC{color} sets an object color in the RGBA space.
 When A is not specified, the color is assumed to be opaque. 
-The integer data range for each color component is \values{[0,255]}.
-The float data range \values{[-1,1]} is linearly mapped to \values{[0,255]}. \\
 Default color value is \values{[0,0,0,255]}.
+
+
+\subsublevel{The hsb messages}
 
 \begin{rail}
 hsb :		'hsb' ('h' 's' 'b' | 'h' 's' 'b' 'a') 
 \end{rail}
 \index{Common messages!hsb}
 
-\OSC{hsb} is similar to \OSC{color} but using an HSBA scheme. 
+\OSC{hsb} sets an object color in the HSBA space. 
 When A is not specified, the color is assumed to be opaque. 
-The data range for S, B is \values{[0,100]}, \values{[0,360]} for H, and \values{[0,255]} for A. \\
-The float data range \values{[-1,1]} is mapped to \values{[0,100]} for S and B. 
-For H, \values{0} refers always to the red color and thus \values{[0,1]} is mapped to \values{[0,180]} and \values{[-1,0]} is mapped to \values{[360,180]}.
+
 
 
 %-------------------------------
-%:   Relative color messages
+%:    Relative color messages
 \subsublevel{Relative color messages}
 \label{relcolormsg}
 
@@ -470,7 +509,7 @@ relColorMsg :
 \example \\
 Moving a color in the RGBA space:
 \sample{TL/scene/myObject dcolor 10 5 0 -10}
-will increase the red component by 10, the blue component by 5, and decrease the transparency by 10.
+\sampleindent will increase the red component by 10, the blue component by 5, and decrease the transparency by 10.
 
 \note Objects that are carrying color information (images, SVG) don't respond to color change but are sensitive to transparency changes.
 
@@ -543,7 +582,7 @@ The blur radius should be given as an int32 value. By default, the blur radius i
 
 \example \\
 Setting a shadow effect on \OSC{myObject}. \\
-The shadow offset is (10,10), the color is a transparent grey (100,100,100, 50) and the blur is 8 pixels.
+The shadow offset is (10,10) pixels, the color is a transparent grey (100,100,100, 50) and the blur is 8 pixels.
 \sample{/ITL/scene/myObject effect shadow 10 10 100 100 100 50 8}
 
 
@@ -551,7 +590,7 @@ The shadow offset is (10,10), the color is a transparent grey (100,100,100, 50) 
 %:Time management messages
 \toplevel{Time management messages}
 \label{time}
-Time messages control the time dimension of the score components. They could be sent to any address with the form \OSC{/ITL/scene/\textit{identifier}} where \OSC{\textit{identifier}} is the unique identifier string of a scene component.
+Time messages control the time dimension of the score components. They could be sent to any address with the form \OSC{/ITL/\textit{scene}/\textit{identifier}} where \OSC{\textit{identifier}} is the unique identifier string of a scene component.
 \begin{rail}
 timeMsg : 'clock'
 		| 'durClock' 
@@ -573,7 +612,7 @@ time : (([1] int32 int32) | [2] int32 | [3] float32 | [4] 'n/d')
 
 \begin{itemize}
 \item 1) Time is specified as a rational value \values{d/n} where \values{1/1} represents a whole note. 
-\item 2) Time may be specified with a single integer, then 1 is used as implicit denominator value
+\item 2) Time may be specified with a single integer, then 1 is used as implicit denominator value.
 \item 3) Time may be specified as a single float value that is converted using the following approximation: let \values{f} be the floating point date, the corresponding rational date is computed as \values{f x 10000 / 10000}.
 \item 4) Time may also be specified as a string in the form \OSC{'n/d'}.
 \end{itemize}
@@ -629,7 +668,7 @@ Creating a line specified using width and angle.
 
 
 %===============================
-%: Inline components
+%:  Inline components
 \sublevel{Inline components}
 \label{inlineset}
 
@@ -647,7 +686,8 @@ setMsg : 'set' (
 	('polygon' ( (x y) +)) |
 	('curve' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) |
 	('line' ('xy' x y | 'wa' width angle)) |
-	setFile
+	('grid' int32 int32) |
+	('faust' 'pluginname' )
 )
 \end{rail}
 \index{Common messages!set}
@@ -662,6 +702,7 @@ setMsg : 'set' (
 \index{Set type!polygon}
 \index{Set type!curve}
 \index{Set type!line}
+\index{Set type!grid}
 
 \begin{itemize}
 \item \OSC{txt}: a textual component.
@@ -675,6 +716,7 @@ setMsg : 'set' (
 \item \OSC{polygon}: a polygon specified by a sequence of points, each point being defined by its (x,y) coordinates. The coordinates are expressed in the \OSC{scene} coordinate space, but only the relative position of the points is taken into account (\emph{i.e} a polygon A = \{ (0,0) ; (1,1) ; (0,1) \} is equivalent to a polygon B = \{ (1,1) ; (2,2) ; (1,2) \}).
 \item \OSC{curve}: a sequence of 4-points bezier cubic curve. If the end-point of a curve doesn't match the start-point of the following one, the curves are linked by a straight line. The first curve follows the last curve. The inner space defined by the sequence of curves is filled, using the object color. The points coordinates are handled like in a \OSC{polygon}.
 \item \OSC{line}: a simple line specified by a point (x,y) expressed in \OSC{scene} coordinate space or by a width and angle. The point form is used to compute a line from (0,0) to (x,y), which is next drawn centered on the scene.
+\item \OSC{grid}: a white transparent object that provides a predefined time to graphic mapping (see section \fullref{grid} for more details and section \fullref{mapping} for time to graphic relations). The parameters are int32 values representing the number of columns and rows.
 \end{itemize}
 
 \note The default position of any component is \values{[0,0]}. Objects are drawn centered on their position.
@@ -686,7 +728,7 @@ txtStream :  (string | int32 | float32) +
 
 
 %===============================
-%: File based components
+%:  File based components
 \sublevel{File based components}
 \label{fileset}
 
@@ -726,7 +768,8 @@ setFile :
 Creating an image.
 \sample{/ITL/scene/myObject set img "myImage.png"}
 Using the \OSC{file} type.
-\sample{/ITL/scene/myObject set file "myImage.png" // will be translated into \\
+\sample{/ITL/scene/myObject set file "myImage.png" \\
+will be translated into \\
 /ITL/scene/myObject set img "myImage.png"
 }
 
@@ -764,37 +807,186 @@ getMsg : 'get' ( | getParam +)
 \end{rail}
 \index{Common messages!get}
 
-The \OSC{get} message without parameter is the counterpart of the \OSC{set} message. 
+The \OSC{get} message without parameter is the counterpart of the \OSC{set} message. When addressed to a container (the application \OSC{/ITL}, a scene \OSC{/ITL/scene}, the signal node \OSC{/ITL/scene/signal}) is also distributed to all the container components.
+
+Specific \OSC{get} forms may be available, depending on the component type (see section \fullref{specmsgs}).
 
 \example \\
 Sending the following request to an object which position is 0.3 0.5
 \sample{/ITL/scene/myobject get x y}
-will give the following messages on outpout port:
+\sampleindent will give the following messages on outpout port:
 \sample{/ITL/scene/myobject x 0.3 \\
 /ITL/scene/myobject y 0.5}
 Querying an object content
 \sample{/ITL/scene/myobject get}
-will give the corresponding \OSC{set} message:
+\sampleindent will give the corresponding \OSC{set} message:
 \sample{/ITL/scene/myobject set txt "Hello world!"}
 
-\note The \OSC{get width} and \OSC{get height} messages addressed to components that have no explicit width and height (text, images, etc.) returns 0 as long as the target component has not been drew.
+\note \\
+The \OSC{get width} and \OSC{get height} messages addressed to components that have no explicit width and height (text, images, etc.) returns 0 as long as the target component has not been drew.
 
-%-------------------------------
-\sublevel{Special 'get' forms}
-
-The \OSC{get} message without parameter addressed to a container (the application \OSC{/ITL}, a scene \OSC{/ITL/scene}, the signal node \OSC{/ITL/scene/signal}) is also distributed to all the container components.
 
 
 %===============================
-%:ITL messages
+%:Type specific messages
+\toplevel{Type specific messages}
+\label{specificMsg}
+Some of the messages are specific to the component \OSC{type}.
+
+%-------------------------------
+\sublevel{Pen control}
+
+Specific pen messages accepted by the components types \OSC{rect | ellipse | polygon | curve | line | graph | fast graph | grid}.
+\begin{rail}
+penMsg : 	  'penColor' color 
+			| 'penAlpha' colorvalue
+			| 'pendAlpha' colorvalue
+			| 'penWidth' float32
+			| 'penStyle' penstyle
+\end{rail}
+\index{Specific messages! penColor}
+\index{Specific messages! penAlpha}
+\index{Specific messages! pendAlpha}
+\index{Specific messages! penWidth}
+\index{Specific messages! penStyle}
+
+\begin{itemize}
+\item \OSC{penColor} controls the pen color. The color should be given in the RGBA space. The default value is opaque black (0 0 0 255).
+\item \OSC{penAlpha, pendAlpha} controls the pen transparency only. See section \fullref{colormsg} for the expected \item \OSC{penWidth} controls the pen width. The default value is 0 (excepted for \OSC{line} objects, where 1.0 is the default value). It is expressed in arbitrary units (1 is a reasonable value).
+\item \OSC{penStyle} controls the pen style.
+ \end{itemize}
+
+
+\begin{rail}
+penstyle : 'solid' | 'dash' | 'dot' | 'dashDot' | 'dashDotDot'
+\end{rail}
+\index{Specific messages! penStyle! solid}
+\index{Specific messages! penStyle! dash}
+\index{Specific messages! penStyle! dot}
+\index{Specific messages! penStyle! dashDot}
+\index{Specific messages! penStyle! dashDotDot}
+
+The pen style default value is \OSC{solid}.\\
+
+\example \\
+Setting a rectangle border width and color:
+\sample{/ITL/scene/rect set rect 0.5 0.5; \\
+/ITL/scene/rect penWidth 2.; \\
+/ITL/scene/rect penColor 255 0 0 ; 
+}
+
+
+%-------------------------------
+\sublevel{Width and height control}
+
+Specific width and height messages accepted by the components types \OSC{rect | ellipse | graph | fastgraph | grid}.
+
+\begin{rail}
+widthMsg :  'width' float32
+			| 'height' float32
+\end{rail}
+\index{Specific messages! width}
+\index{Specific messages! height}
+
+
+
+%-------------------------------
+\sublevel{Symbolic score management}
+\label{gmnpage}
+
+Messages accepted by the components types \OSC{gmn | gmnf}. 
+\begin{rail}
+scoreMsg :      'page' int32
+			| 'dpage' int32
+			| 'pageFormat' float32 float32
+			| 'columns' int32
+			| 'rows' int32
+			| 'get' 'pageCount'
+\end{rail}
+\index{Specific messages! score! page}
+\index{Specific messages! score! dpage}
+\index{Specific messages! score! pageFormat}
+\index{Specific messages! score! columns}
+\index{Specific messages! score! rows}
+\index{Specific messages! score! pageCount}
+
+
+\begin{itemize}
+\item \OSC{page}: set the score current page
+\item \OSC{dpage}: moves the score current page
+\item \OSC{pageFormat}: set the page format. The parameters are the page width and height. Note that the message has no effect when the score already includes a $\backslash$pageformat tag.
+\item \OSC{columns}: for multi pages display: set the number of columns.
+\item \OSC{rows}: for multi pages display: set the number of rows.
+\item \OSC{pageCount}:  a read only attribute, gives the score pages count.
+\end{itemize}
+
+\example \\
+Displaying a multi-pages score on two pages starting at page 3:
+\sample{/ITL/scene/myScore columns 2; \\
+/ITL/scene/myScore page 3;
+}
+
+
+%-------------------------------
+\sublevel{The 'grid' object}
+\label{grid}
+
+The \OSC{grid} object provides a pre-defined time to graphic mapping organized in columns and row. By default, it is not visible (white, transparent) but supports all the attributes of rectangles (color, pen, effects, etc.). Each element of a grid has a duration that is computed as the grid duration divided by the total number of elements ( columns x rows) and is placed in the time space from the date 0 to the end of the grid duration.
+
+\begin{rail}
+gridMsg : 'columns' int32
+		| ('rows' int32) 
+		| ('xborder' float)
+		| ('yborder' float)
+		| ('order' ('leftright' | 'topbottom'))
+\end{rail}
+
+\begin{itemize}
+\item \OSC{columns} set the number of columns of the grid,
+\item \OSC{rows} set the number of rows of the grid,
+\item \OSC{xborder} set the horizontal spacing between the elements of the grid (default is 0.),
+\item \OSC{yborder} set the vertical spacing between the elements of the grid (default is 0.),
+\item \OSC{order} defines the time order of the elements. By default, elements are organized from left to right first and from top to bottom next (\OSC{leftright}). The \OSC{topbottom} parameter changes this order from top to bottom first and from left to right next.
+\end{itemize}
+
+\example \\
+Creating a 10 x 10 grid organized from top to bottom with a border:
+\sample{/ITL/scene/grid set grid 10 10\\
+/ITL/scene/grid xborder 3. \\
+/ITL/scene/grid yborder 3. \\
+/ITL/scene/grid order topbottom
+}
+
+%===============================
+%:  The debug nodes
+\sublevel{The 'debug' nodes}
+\label{debugnode}
+
+Each component includes a static \OSC{debug} nodes provided to give information about components.
+\begin{rail}
+debugMsg : 'map' int32
+		| ('name' int32) 
+\end{rail}
+\index{Common messages!debug!map}
+\index{Common messages!debug!name}
+
+\begin{itemize}
+\item \OSC{map} is used to display the time to graphic mapping. The parameter is a boolean value. Default is 0.
+\item \OSC{name} is used to display both the object name and bounding box. The parameter is a boolean value. Default is 0.
+\end{itemize}
+
+
+%===============================
+%:Application messages
 \toplevel{Application messages}
 \label{ITL}
 Application messages are accepted by the static OSC address \OSC{/ITL}. 
 
 
 %===============================
-%: Application management
+%:  Application management
 \sublevel{Application management}
+\label{applmgmt}
 
 \begin{rail}
 ITLMsg : 'quit' 
@@ -843,12 +1035,12 @@ The default \OSC{rate} value is 10.
 \example \\
 when sending the message:
 \sample{/ITL hello}
-the application will answer with the following message:
+\sampleindent the application will answer with the following message:
 \sample{/ITL 192.168.0.5  7000 7001 7003}
-when it runs on a host which IP number is \OSC{192.168.0.5} using the default port numbers.
+\sampleindent when it runs on a host which IP number is \OSC{192.168.0.5} using the default port numbers.
 
 %===============================
-%: Ports management
+%:  Ports management
 \sublevel{Ports management}
 \label{ITLPorts}
 
@@ -870,10 +1062,11 @@ Changes the UDP port numbers:
 The \OSC{int32} parameter should be a positive value in the range \values{[1024-49150]}. \\
 The default \OSC{port}, \OSC{outport} and \OSC{errport} values are 7000, 7001 and 7002.
 
-\note Error messages are sent as a single string.
+\note \\
+Error messages are sent as a single string.
 
 %===============================
-%: Messages forwarding
+%:  Messages forwarding
 \sublevel{Messages forwarding}
 \label{ITLForward}
 
@@ -899,7 +1092,7 @@ and to \OSC{host2.adomain.org} on port number 5100.
 
 
 %===============================
-%: Application level queries
+%:  Application level queries
 \sublevel{Application level queries}
 \label{ITLQuery}
 
@@ -922,11 +1115,11 @@ ITLRequest : 'get'  ('version' | 'guido-version' | 'musicxml-version')
 \example \\
 Querying INScore version:
 \sample{/ITL get version}
-will give the following as output:
+\sampleindent will give the following as output:
 \sample{/ITL version 1.00}
 
 %===============================
-%: The stat and debug nodes
+%:  The stat and debug nodes
 \sublevel{The 'stats' and 'debug' nodes}
 \label{ITLdebug}
 
@@ -1001,7 +1194,7 @@ sceneMsg :  'new'
 \item \OSC{fullscreen}: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is \values{0}.
 \item \OSC{frameless}: requests the scene to switch to frameless or normal window.  The parameter is interpreted as a boolean value. Default value is \values{0}.
 \item \OSC{absolutexy}: requests the scene to absolute or relative coordinates. Absolute coordinates are in pixels relative to the top left corner of the screen. Relative coordinates are in the range [-1, 1] where [0,0] is the center of the screen. The message parameter is interpreted as a boolean value. Default value is \values{0}.
-\item \OSC{commonMsg}: see section \fullref{common}.
+\item \OSC{commonMsg}: a scene support the common graphic attributes. See section \fullref{common}.
 \end{itemize}
 
 \example \\
@@ -1009,97 +1202,13 @@ Setting a scene current path:
 \sample{/ITL/scene rootPath "/path/to/my/folder"}
 Loading an INScore file:
 \sample{/ITL/scene load "myscript.inscore"}
-will load \OSC{/path/to/my/folder/myscript.inscore} into the scene. 
+\sampleindent will load \OSC{/path/to/my/folder/myscript.inscore} into the scene. 
 
 Setting a scene to fullscreen:
 \sample{/ITL/scene fullscreen 1}
 Creating a new score named \OSC{myScore}:
 \sample{/ITL/myScore new}
 
-
-%===============================
-%: The debug nodes
-\sublevel{The 'debug' nodes}
-\label{scenedebug}
-
-The \emph{scene} level provides a static nodes - \OSC{debug}, available at \OSC{/ITL/scene/debug} to help debugging communication and INScore scripts design.
-
-%===============================
-%:Component specific messages
-\toplevel{Component specific messages}
-\label{specificMsg}
-Some of the messages are specific to the component \OSC{type}. These messages can be sent to addresses of the form \OSC{/ITL/scene/\textit{identifier}}. They are ignored by objects that don't support the message. 
-
-%-------------------------------
-\sublevel{Pen control}
-
-Messages accepted by the components types \OSC{rect | ellipse | polygon | curve | line | graph}.
-\begin{rail}
-penMsg : 	  'penColor' color 
-			| 'penWidth' float32
-			| 'penStyle' penstyle
-\end{rail}
-\index{Specific messages! penColor}
-\index{Specific messages! penWidth}
-\index{Specific messages! penStyle}
-
-\begin{rail}
-penstyle : 'solid' | 'dash' | 'dot' | 'dashDot' | 'dashDotDot'
-\end{rail}
-\index{Specific messages! penStyle! solid}
-\index{Specific messages! penStyle! dash}
-\index{Specific messages! penStyle! dot}
-\index{Specific messages! penStyle! dashDot}
-\index{Specific messages! penStyle! dashDotDot}
-
-The pen width default value is 0 (excepted for \OSC{line} objects, where 1.0 is the default value). It is expressed in arbitrary units (1 is a reasonable value).
-The pen style default value is \OSC{solid}.\\
-The color scheme is described in section \ref{colormsg}.
-
-
-%-------------------------------
-\sublevel{Width and height control}
-
-Messages accepted by the components types \OSC{rect | ellipse | graph.}
-
-\begin{rail}
-whMsg : 	  'width' float32
-			| 'height' float32
-\end{rail}
-\index{Specific messages! width}
-\index{Specific messages! height}
-
-
-
-%-------------------------------
-\sublevel{Score pages management}
-\label{gmnpage}
-
-Messages accepted by the components types \OSC{gmn | gmnf}. 
-\begin{rail}
-scoreMsg :      'page' int32
-			| 'dpage' int32
-			| 'pageFormat' float32 float32
-			| 'columns' int32
-			| 'rows' int32
-			| 'get' 'pageCount'
-\end{rail}
-\index{Specific messages! score! page}
-\index{Specific messages! score! dpage}
-\index{Specific messages! score! pageFormat}
-\index{Specific messages! score! columns}
-\index{Specific messages! score! rows}
-\index{Specific messages! score! pageCount}
-
-
-\begin{itemize}
-\item \OSC{page}: set the score current page
-\item \OSC{dpage}: set the score current page
-\item \OSC{pageFormat}: set the page format. The parameters are the page width and height. Note that the message has no effect when the score already includes a $\backslash$pageformat tag.
-\item \OSC{columns}: for multi pages display: set the number of columns.
-\item \OSC{rows}: for multi pages display: set the number of rows.
-\item \OSC{pageCount}:  a read only attribute, gives the score pages count.
-\end{itemize}
 
 
 %-------------------------------
@@ -1163,24 +1272,26 @@ scoreMsg :      'page' int32
 %The \OSC{videoMapf} message is similar to the \OSC{videoMap} message but expects the path name of a file containing the mapping data.
 
 %===============================
-%:Time to space mapping
-\toplevel{Time to space mapping}
+%:Mapping graphic space to time space
+\toplevel{Mapping graphic space to time space}
 \label{mapping}
 
-Time to space mapping refers to the description of relationship between an object local graphic space and its time space. 
+Time to space mapping refers to the description of relationship between an object local graphic space and its time space. A mapping consists in a set of relations between the two spaces. INScore provides specific messages to describes mappings and to synchronize arbitrary objects i.e. to display their time relationships in the graphic space.
 
 %===============================
-%:   The 'map' message
+%:    The 'map' message
 \sublevel{The 'map' message}
 \label{mapMsg}
 
-The \OSC{map} messages can be sent to any address with the form \OSC{/ITL/scene/\textit{identifier}}. It is intended to describe the target object relation to time and sets a relation between an object segmentation and a time segmentation. 
+The \OSC{map} messages can be sent to any address with the form \OSC{/ITL/\textit{scene}/\textit{identifier}}. It is intended to describe the target object relation to time and sets a relation between an object segmentation and a time segmentation. 
 The global form of the message is:
 
 \begin{rail}
 mapMsg : 'map' ( | mapName ) (relation	|	( del ))
 \end{rail}
 \index{Common messages!map}
+
+The \OSC{relation} parameter must be sent as a single string which format is described below. It consists in a list of associations between the object local space and its time space expressed as segments.
 
 \begin{rail}
 relation : 
@@ -1197,7 +1308,7 @@ The different kind of relations corresponds to:
 \item \textbf{[2]} a relation between a 2 dimensions segmentation expressed in integer values and a relative time segmentation. These segmentations are used by \OSC{txt, txtf, img} components. 
 \item \textbf{[3]} a relation between a 1 dimension segmentation expressed in integer values and a relative time segmentation. These segmentations are used by the \OSC{graph} component and express a relation between a signal space and time.
 \end{itemize}
-Table \ref{maptable} summarizes the specific segmentations used by each component type. 
+Table \ref{maptable} summarizes the specific local segmentation used by each component type. 
 
 The specified \OSC{map} can be named with an optional \OSC{mapName} string; this name can be further reused, during object synchronization, to specify the mapping to use. When \OSC{mapName} is not specified, the mapping has a default \emph{empty name}.
 
@@ -1205,7 +1316,7 @@ The \OSC{del} command deletes the mapping specified with \OSC{mapName}, or the \
 
 
 \begin{table}[htdp]
-\caption{Mapping resources for each component}
+\caption{Local segmentation type for each component}
 \begin{center}
 \begin{tabular}{|r|l|}
 \hline
@@ -1221,9 +1332,6 @@ component type & segmentation type \\
 \end{center}
 \label{maptable}
 \end{table}
-
-Note for \OSC{html, htmlf} + guido score mappings
-
 
 \begin{rail}
 relativeTimeSegment : '(' relativeTimeInterval ')' 
@@ -1255,9 +1363,28 @@ Relative time is expressed as \OSC{rational} values where $1$ represents a whole
 rational : int32 '/' int32
 \end{rail}
 
+\example \\
+Mapping an image graphic space to time:
+\sample{/ITL/scene/myImage map \\
+\hspace*{1cm}"( [0, 67[    [0, 86[ ) ( [0/2, 1/2[ ) \\
+\hspace*{1.15cm}( [67, 113[  [0, 86[ ) ( [1/2, 1/1[ ) \\
+\hspace*{1.15cm}( [113, 153[ [0, 86[ ) ( [1/1, 3/2[ ) \\
+\hspace*{1.15cm}( [153, 190[ [0, 86[ ) ( [3/2, 2/1[ ) \\
+\hspace*{1.15cm}( [190, 235[ [0, 86[ ) ( [2/1, 5/2[ )"
+}
+the image is horizontally segmented into 5 different graphic segments that express pixel positions. The vertical dimension of the segments remains the same and corresponds to the interval \values{[0, 86[}. Each graphic segment is associated to a time interval which duration is 1/2 (a half note).
+
+\note{about local spaces}
+\begin{itemize}
+\item Text objects (\OSC{txt txtf}) local space is expressed by intervals on columns and rows.
+\item Html object (\OSC{html, htmlf}) do not support mapping because there is not correspondence between the text and the graphic space.
+\item Vectorial objects (\OSC{rect, ellipse, polygon, curve, svg,...}) express their local graphic space in internal coordinates system i.e. on the [-1.,1.] interval.
+\item Bitmap objects (\OSC{img}) express their local graphic space in pixels.
+\end{itemize}
+
 
 %===============================
-%:   The 'map+' message
+%:    The 'map+' message
 \sublevel{The 'map+' message}
 \label{mapAddMsg}
 The \OSC{map+} messages is similar to the \OSC{map} message but doesn't replace the existing mapping data: the specified relations are added to the existing one.
@@ -1269,7 +1396,7 @@ mapAddMsg : 'map+' ( | mapName ) relation
 
 
 %===============================
-%:   Mapping files
+%:    Mapping files
 \sublevel{Mapping files}
 \label{mapFileMsg}
 The \OSC{mapf} messages is similar to the \OSC{map} message but gives the path name of a file containing the mapping data, along with the optional map name.
@@ -1280,12 +1407,49 @@ mapfMsg : 'mapf' ( | mapName ) mapFilePath
 
 
 
+%===============================
+%:    Symbolic score mappings
+\sublevel{Symbolic score mappings}
+\label{guidomap}
+
+Mapping between the graphic and time space is automatically computed for symbolic score \OSC{gun, gmnf}. However and depending on the application, the graphic space may be segmented in different ways, for instance: different graphic segments for different staves, a single graphic segment traversing all a system, etc. Thus for a symbolic score, the \OSC{map} message different and is only intended to select one king mapping supported by the system.
+
+\begin{rail}
+scoreMap : 'map' ('page' | 'system' | 'systemflat' | 'staffn' | 'voicen' )
+\end{rail}
+\index{Synchronization!Guido map}
+\index{Synchronization!Guido map!page}
+\index{Synchronization!Guido map!system}
+\index{Synchronization!Guido map!systemflat}
+\index{Synchronization!Guido map!staff}
+\index{Synchronization!Guido map!voice}
+
+\begin{itemize}
+\item \OSC{page}: a page level mapping
+\item \OSC{system}: a system level mapping
+\item \OSC{systemflat}: a system level mapping without system subdivision (one graphic segment per system)
+\item \OSC{staff\textit{n}}: a staff level mapping: the staff number is indicated by \OSC{n}, a number between 1 and the score staves count.
+\item \OSC{voice\textit{n}}: a voice level mapping: the voice number is indicated by \OSC{n}, a number between 1 and the score voices count.
+\end{itemize}
+
+The default mapping for a symbolic score is unnamed but equivalent to \OSC{staff1}.
+
+\example \\
+Requesting the mapping of the $3^{rd}$ staff of a score:
+\sample{/ITL/scene/myScore map staff3}
+Requesting the system mapping :
+\sample{/ITL/scene/myScore map system}
+
+\note \\
+A voice may be distributed on several staves and thus a staff may contain several voices.
+
+
 %-------------------------------
 %:Synchronization
 \toplevel{Synchronization}
 \label{syncmsg}
 
-Synchronization between components is achieved at \OSC{scene} level: a \OSC{sync} node is automatically embedded in the scene, its address is \OSC{/ITL/scene/sync} and it supports messages to add or remove a master / slave relation between components or to query the synchronizations state.
+Synchronization between components is in charge of the static \OSC{sync} node, automatically embedded in each scene. Its address is \OSC{/ITL/\textit{scene}/sync} and it supports messages to add or remove a master / slave relation between components or to query the synchronizations state.
 \begin{rail}
 sync : syncIdentifier 
 	 ( [1] syncIdentifier (| syncmode +) 
@@ -1297,11 +1461,10 @@ sync : syncIdentifier
 
 
 \begin{itemize}
-\item \textbf{[1]} this is the \OSC{slave} \OSC{master} form followed by an optional synchronization mode. It adds a slave / master relation between components identified by identifier1 and identifier2. \\
-\item \textbf{[2]} this is the \OSC{slave} form that removes the slave synchronization for the component identified by identifier1.
-\item \textbf{[3]} the \OSC{get} message is intended to query the synchronization state. The optional parameter is the identifier of a component,
+\item \textbf{[1]} the \OSC{slave} \OSC{master} form is followed by an optional synchronization mode (see below). It adds a slave / master relation between the first and the second component.
+\item \textbf{[2]} the \OSC{slave} form without \OSC{master} removes a slave synchronization.
+\item \textbf{[3]} the \OSC{get} message is intended to query the synchronization state. The optional parameter is the identifier of a component. The \OSC{get} message without parameter is equivalent to a \OSC{get} message addressed to each object declared in the \OSC{sync} node.
 \end{itemize}
-Synchronization between components has no effect if any of the required mapping is missing (see table \ref{maptable}).
 
 \begin{rail}
 syncIdentifier : [1] identifier 
@@ -1309,21 +1472,30 @@ syncIdentifier : [1] identifier
 \end{rail}
 \index{Synchronization! syncIdentifier}
 
-Synchronization identifiers indicates 1) the name of a \OSC{scene} component or 2) the name of a \OSC{scene} component associated to a mapping name.
+Synchronization identifiers indicates 1) the name of a \OSC{scene} component or 2) the name of a \OSC{scene} component associated to a mapping name. Using the first form (i.e. without explicit mapping name), the system uses the default unnamed mapping (see section \fullref{mapMsg} mappings and named mappings).
 
+Synchronization between components has no effect if any of the required mapping is missing (see table \ref{maptable}).
 
-\note The \OSC{sync} node doesn't responds to common component messages, but accept the \OSC{get} message. 
-The \OSC{get} message without parameter is equivalent to a \OSC{get} message addressed to each object declared in the \OSC{sync} node.
+\note \\
+A slave object can have only one master. Synchronizing a slave object to a different object replaces the previous relation with the new one.
+
+\example \\
+Synchronizing two objects:
+\sample{/ITL/scene/sync mySlave myMaster}
+
+Synchronizing two objects using a specific mapping (the second object is assumed to be a symbolic score (\OSC{gmn} or \OSC{gmnf}) which \OSC{system} mapping has been previously requested:
+\sample{/ITL/scene/sync mySlave myMaster:system}
 
 %-------------------------------
-%:   Synchronization modes
+%:    Synchronization modes
 \sublevel{Synchronization modes}
 
-Synchronizing a component \values{A} to a component \values{B} has the following effect:
+Synchronizing a slave component \values{A} to a master component \values{B} has the following effect:
 \begin{itemize}
-\item \values{A} position (x,y) is modified to match the \values{B} time position corresponding to \values{A} date.
-\item depending on the optional \OSC{syncStretch}, \values{A} width and/or height are modified to match the  corresponding \values{B} dimensions (see below).
-\item if \values{A} date has no graphic correspondance in \values{B} mapping (the date is not mapped, or out of \values{B} mapping bounds ), \values{A} won't be visible.
+\item \values{A} position (x) is modified to match the \values{B} time position corresponding to \values{A} date.
+\item depending on the optional \OSC{syncStretch} option, \values{A} width and/or height is modified to match the  corresponding \values{B} dimension (see below).
+\item depending on the optional \OSC{syncPos} option, \values{A} vertical position (y) is modified. Note that the \OSC{y} position remains free and could always be modified using a \OSC{dy} message.
+\item if \values{A} date has no graphic correspondence in \values{B} mapping (the date is not mapped, or out of \values{B} mapping bounds ), \values{A} won't be visible.
 \end{itemize}
 
 \begin{rail}
@@ -1331,6 +1503,7 @@ syncmode : syncHow| syncStretch | syncPos | mapName
 \end{rail}
 \index{Synchronization!syncmode}
 
+\subsublevel{Using the master date}
 \begin{rail}
 syncHow : 'relative' | 'absolute'
 \end{rail}
@@ -1340,10 +1513,21 @@ syncHow : 'relative' | 'absolute'
 
 The synchronization mode makes use of the master time to graphic mapping to compute the slave position. It may also use the master current date, depending on the following options:
 \begin{itemize}
-\item \OSC{absolute}: the time position where the slave appears corresponds to the mapping absolute date only.
-\item \OSC{relative}: the time position where the slave appears is relative to the mapping and the master current date.
+\item \OSC{relative}: the time position where the slave appears is relative to the mapping and to the master current date (actually, it shifts the mapping from the master current date). The relative mode is used by default.
+\item \OSC{absolute}: the time position where the slave appears corresponds to the mapping date only.
 \end{itemize}
-By default, the relative mode is used.
+
+\note \\
+Use of the \OSC{absolute} mode may take sense with nested synchronizations: A slave of B, which is slave of C.
+In \OSC{relative} mode and if A and B receive the same \OSC{clock} messages, A will remain at a fixed position on B although it is moving in time.
+
+\example \\
+Describing nested synchronizations, the first one using the \OSC{absolute} mode:
+\sample{/ITL/scene/sync slave masterSlave absolute \\
+/ITL/scene/sync masterSlave master
+}
+
+\subsublevel{Representing the objects duration}
 
 \begin{rail}
 syncStretch : 'h' | 'v' | 'hv'
@@ -1356,10 +1540,17 @@ syncStretch : 'h' | 'v' | 'hv'
 The synchronization stretch mode has the following effect on the slave dimensions:
 \begin{itemize}
 \item \OSC{h}: the slave is horizontally stretched to align its begin and end dates to the corresponding master locations.
-\item \OSC{v}: the slave is vertically stretched to the master vertical dimension.
+\item \OSC{v}: the slave is vertically stretched to the master map vertical dimension.
 \item \OSC{hv}: combines the above parameters.
 \end{itemize}
 By default, no stretching is applied.
+
+\example \\
+Synchronizing two objects, aligning the slave duration to the corresponding master space and stretching the slave to the master map vertical dimension:
+\sample{/ITL/scene/sync mySlave myMaster hv}
+
+
+\subsublevel{Controlling the slave \OSC{y} position}
 
 \begin{rail}
 syncPos : 'syncOver' | 'syncTop' | 'syncBottom'
@@ -1375,101 +1566,512 @@ The synchronization position mode has the following effects on the slave \values
 \item \OSC{syncTop}: the bottom of the slave is aligned to the top of the master.
 \item \OSC{syncBottom}: the top of the slave is aligned to the bottom of the master.
 \end{itemize}
-\index{Synchronization!syncPos!syncOver}
-\index{Synchronization!syncPos!syncTop}
-\index{Synchronization!syncPos!syncBottom}
-The default synchronization mode is \OSC{syncOver}.
+The default position mode is \OSC{syncOver}. The \OSC{y} attribute of the slave remains available to displacement (\OSC{dy}). 
 
-The optional 'mapName' string argument specifies which mapping of the master object should be used (see \OSC{map} message). If the master doesn't have a mapping with the specified 'mapName', the slave object won't be visible.
-Not specifying the map name is equivalent to an \emph{empty name} mapping.
+\example \\
+Synchronizing two objects, aligning the slave duration to the corresponding master space, the slave being below the master map:
+\sample{/ITL/scene/sync mySlave myMaster h syncBottom}
 
 
 %===============================
-%:Score specific messages
-\toplevel{Score specific messages}
+%:Signals and graphic signals
+\toplevel{Signals and graphic signals}
+\label{graphsig}
+
+The graphic representation of a signal is approached with \emph{graphic signals}. As illustrated in figure \ref{graphimg}, the graphic representation of a signal could be viewed as a stream of a limited set of parameters : the $y$ coordinate at a time $t$, a thickness $h$ and a color $c$. 
+A \emph{graphic signal} is a composite signal including a set of 3 parallel signals that control these parameters. Thus the INScore library provides messages to create signals and to combine them into \emph{graphic signals}. 
+
+\begin{figure}[h]
+	\centering \includegraphics[width=90mm]{imgs/graph}
+ \caption{A simple graphic signal, defined at time t by a coordinate y, a thickness h and a color c}
+ \label{graphimg}
+\end{figure}
 
 %-------------------------------
-%:   Specific score mappings
-\sublevel{Specific score mappings}
-\label{guidomaps}
+%:    The signal static node.
+\sublevel{The 'signal' static node.}
+A \OSC{scene} includes a static signal node, which OSC address is \OSC{/ITL/\textit{scene}/signal} which may be viewed as a container for signals. It is also used for \textit{composing signals in parallel}.
 
-Music score mappings are automatically computed  by the system. However, since a score may support a large number of mappings (staff based, system based, voice based, etc.), music scores supports a specific \OSC{map} message to request the computation of a specific mapping. This message has the form:
+The \OSC{signal} node supports only the \OSC{get} message that gives the list of the defined signals.
+
+\example \\
+Querying the signal node:
+\sample{/ITL/scene/signal get}
+\sampleindent will give the enclosed signals definitions:
+\sample{/ITL/scene/signal/y size 200 \\
+/ITL/scene/signal/h size 200}
+
+
+\subsublevel{Signal messages.}
+\label{ssignal}
+Signal messages can be sent to any address with the form \OSC{/ITL/\textit{scene}/signal/\textit{identifier}}, where \OSC{\textit{identifier}} is a unique signal identifier.
+The set of messages supported by a signal is the following:
 \begin{rail}
-scoreMapMsg : 'map' ('page' | 'system' | 'systemflat' | ('staff' 'staffNum') | 'voice' 'voiceNum' )
+simpleSignal : [1] ( float32 + )
+		| [2] ('size' int32) 
+		| [3] ('default' float32)
+		| [4] 'get' ( | 'size' | 'default')
+		| [5] 'reset'
+		| [6] 'del'
 \end{rail}
-\index{Synchronization!Guido map}
-\index{Synchronization!Guido map!page}
-\index{Synchronization!Guido map!system}
-\index{Synchronization!Guido map!systemflat}
-\index{Synchronization!Guido map!staff}
-\index{Synchronization!Guido map!voice}
-
-The Guido map name must be concatenated as a string (as a usual map name).
+\index{signal}
+\index{signal!simple signal!size}
+\index{signal!simple signal!default}
+\index{signal!simple signal!get}
+\index{signal!simple signal!reset}
+\index{signal!simple signal!del}
 
 \begin{itemize}
-\item \OSC{page}: a page level mapping
-\item \OSC{system}: a system level mapping
-\item \OSC{systemflat}: a system level mapping without system subdivision (one graphic segment per system)
-\item \OSC{staff}: a staff level mapping: the staff indicated by the next parameter (between 1 and the score staves count).
-\item \OSC{voice}: a voice level mapping: the voice indicated by the next parameter (between 1 and the score voices count).
+\item \textbf{[1]} push an arbitrary data count into the signal buffer. The expected data range is \values{[-1,1]}. Note that the internal data buffer is a ring buffer, thus data are wrapped when the data count if greater than the buffer size. 
+\item \textbf{[2]} the \OSC{size} message sets the signal buffer size. When not specified, the buffer size value is the size of the first data message. 
+\item \textbf{[3]} the \OSC{default} message sets the \emph{default signal value}. A signal \emph{default value} is the value returned when a query asks for data past the available values.
+\item \textbf{[4]} the \OSC{get} message without parameter gives the signal current values. The \OSC{size} and  \OSC{default} parameters are used to query the signal size and default values.
+\item \textbf{[5]} the \OSC{reset} message clears the signal data. 
+\item \textbf{[6]} the \OSC{del} message deletes the signal from the \OSC{signal} space. Note that it is safe to delete a signal even when used by a graphic signal. 
 \end{itemize}
 
-
-The default synchronization mode for a Guido score is \OSC{staff1}.
-
-\note A voice may be distributed on several staves and thus a staff may contain several voices.
+\example \\
+Creating a signal with a given buffer size:
+\sample{/ITL/scene/signal/mySig size 200}
+Creating a signal with a given set of data (the buffer size will be the data size):
+\sample{/ITL/scene/signal/mySig 0.\ 0.1\ 0.2\ 0.3\ 0.4\ 0.5\ 0.4\ 0.3\ 0.2\ 0.1\ 0.\ -0.1\ -0.2}
 
 
 %-------------------------------
-%:   Score browsing and layout
-\sublevel{Score browsing and layout}
-\label{guidolayout}
+%:    Composing signals in parallel.
+\subsublevel{Composing signals in parallel.}\label{parcomp}
+Composing signals in parallel produces a signal which value at a time \values{t} is a vector of the composed signals values. Thus an additional read-only attribute is defined on \emph{parallel signals} : the signal \emph{dimension} which is size of the signals vector. Note that the dimension property holds also for simple signals.
 
+The format of the messages for parallel signals is the following:
 \begin{rail}
-scoreMsg : 	  'page' int32
-				| 'pageFormat' float32 float32
-				| 'columns' int32
-				| 'rows' int32
+parallelSignal :  
+		  [1] 'set' ( signal + )
+		| [2] (| projectionString) ( float32 + )
+		| [3] ('get' 'dimension') 
+\end{rail}
+\index{signal!parallel signal}
+\index{signal!parallel signal!get}
+where 
+\begin{rail}
+signal :  
+		  [4] identifier
+		| [5] float32
 \end{rail}
 
 \begin{itemize}
-\item \OSC{page}: sets the first displayed page. Index starts at \values{1}. Default: \values{1}.
+\item \textbf{[1]} defines a new signal composed of the signals given as parameters. A signal parameter is defined as:
 
-\item \OSC{pageFormat}: sets the score's page format, in cm (Warning: the \OSC{pageFormat} is not used when another page format is 'hard-coded' in the score's Guido code). Default: \values{(21.0 , 29.7)}.
+\begin{itemize}
+\item \textbf{[4]} an \OSC{identifier} i.e. a signal name referring to an existing signal in the \OSC{signal} node. 
+\item \textbf{[5]} or as a float value. This form is equivalent to an anonymous constant signal holding the given value. 
+\end{itemize}
 
-\item \OSC{columns}: as multiples pages can be displayed and organized in a \emph{grid of pages}, \OSC{columns} sets the number of columns in the grid. Default: \values{2}.
+\item \textbf{[2]} sets the values of the signals using a projection string. See section \fullref{sigproj}. 
+\item \textbf{[3]} in addition to the \OSC{get} format defined for signals, a parallel signal supports the \OSC{get dimension} message, that gives the number of simple signals in parallel. The dimension of a simple signal is 1. 
+\end{itemize}
 
-\item \OSC{rows}: as multiples pages can be displayed and organized in a \emph{grid of pages}, \OSC{rows} sets the number of rows in the grid. Default: \values{1}.
+\example \\
+Putting a signal \OSC{y} and constant signals 0.01 0. 1. 1. 1. in parallel:
+\sample{/ITL/scene/signal/mySig set y 0.01 0. 1. 1. 1.}
+Querying the previously defined parallel signal:
+\sample{/ITL/scene/signal/mySig get \\
+will give the following output: \\
+/ITL/scene/signal/mySig set y 0.01 0. 1. 1. 1.
+}
+
+\note \\
+For a parallel signal:
+\begin{itemize}
+\item the \OSC{get size} message gives the maximum of the components size. 
+\item the \OSC{get default} message gives the default value of the first signal. 
 \end{itemize}
 
 %-------------------------------
-%:   Score queries
-\sublevel{Score queries}
-\label{guidoqueries}
+%:    Distributing data to signals in parallel
+\subsublevel{Distributing data to signals in parallel}
+\label{sigproj}
 
+When signals are in parallel, a \emph{projection string} may be used to distribute data over each signal.
+Individual components of a parallel signal may be addressed using a \emph{projection string} that is defined as follows:
 \begin{rail}
-scoreQuery : 	'get' (
-				'pageCount'
-			| 	'pageDate' int32
-			)
+projectionString :  '[' int32 (| '\~{}' (| int32)) ']'
 \end{rail}
+\index{signal!parallel signal!projection string}
 
+The projection string is made of a \emph{index value}, followed by an optional \emph{parallel marker} (\OSC{\~{}}), followed by an optional \emph{step value}, all enclosed in brackets.
+
+The \emph{index value} \values{n} is the index of a target signal. When the \emph{parallel marker} option is not present, the values are directed to the target signal.
+
+\example \\
+Sending data to the second component of a parallel signal:
+\sample{/ITL/scene/signal/sig '[2]' 0.\ 0.1\ 0.2\ 0.3\ 0.4\ 0.5\ 0.4\ 0.3\ 0.2\ 0.1\ 0.}
+\sampleindent is equivalent to the following message (assuming that the second signal name is 's2'):
+\sample{/ITL/scene/signal/s2 0.\ 0.1\ 0.2\ 0.3\ 0.4\ 0.5\ 0.4\ 0.3\ 0.2\ 0.1\ 0.}
+
+Note that:
 \begin{itemize}
-\item \OSC{pageCount}: gives the score page count.
-\item \OSC{pageDate}: gives the time location of a page, which number is given as argument. The system reply has the form \OSC{pageDate pageNum date} where \OSC{pageNum} is the request page number given as argument and \OSC{date} is the page time location expressed as a ra	tional number.
+\item the message is ignored when \values{n} is greater than the number of signals in parallel. Default \values{n} value is \values{0}. 
+\item setting directly the values of a simple signal or as the projection of a parallel signal are equivalent.
 \end{itemize}
 
-\note A score object duration is automatically set to the score duration. It can be retrieved using a \OSC{get duration} message.
+The \emph{parallel marker} (\OSC{\~{}}) and the \emph{step value} \values{w} options affect the target signals. Let's consider \values{s[n]} as the signal at index \values{n}. The values are distributed in sequence and in loop to the signals \values{s[n], s[n+w]...s[m]} where \values{m} is the greatest value of the index \values{n+(w.i)} that is less than the signal dimension. The default  \emph{step value} is \values{1}.
+
+\example \\
+Sending data to the second and third components of a parallel signal:
+\sample{/ITL/scene/signal/sig [2\~{}] 0.1 0.2}
+\sampleindent is equivalent to the following messages (assuming that the signals names are 's2' and 's3'):
+\sample{/ITL/scene/signal/sig [2] 0.1\\
+/ITL/scene/signal/sig [3] 0.2
+}
+\sampleindent or to the following (assuming that the signals names are 's2' and 's3'):
+\sample{/ITL/scene/signal/s2 0.1\\
+/ITL/scene/signal/s3 0.2
+}
+
+
+%-------------------------------
+%:    Graphic signals.
+\sublevel{Graphic signals.}
+\label{gsignal}
+
+A graphic signal is created in the standard scene address space. A simple graphic signal is defined by a parallel signal controling the \values{y} value, the graphic thickness and the color at each time position. The color is encoded as HSBA colors (Hue, Saturation, Brightness, Transparency). The mapping of a signal value  (\values{[-1,1]}) to the HSBA color space is given by the table \ref{hsbamap}. 
+
+\begin{figure}[h]
+	\centering \includegraphics[width=65mm]{imgs/hsb}
+ \caption{The HSB color space}
+ \label{hsbfiug}
+\end{figure}
+
+
+\begin{table}[htdp]
+\caption{HSBA color values.}
+\begin{center}
+\begin{tabular}{|r|cl|}
+\hline
+parameter & mapping & \\
+\hline
+\OSC{hue}				& \OSC{[-1,1]} & corresponds to \OSC{[-180,180]} angular degree where \OSC{0} is red. \\
+\OSC{saturation}		& \OSC{[-1,1]} & corresponds \OSC{0\%} to \OSC{100\%} saturation. \\
+\OSC{brigthness}		& \OSC{[-1,1]} & corresponds \OSC{0\%} (black) to \OSC{100\%} (white) brithgness. \\
+\OSC{transparency}		& \OSC{[-1,1]} & corresponds \OSC{0\%} to \OSC{100\%} tranparency. \\
+\hline
+\end{tabular}
+\end{center}
+\label{hsbamap}
+\end{table}
+
+
+
+A graphic signal responds to common component messages (section \fullref{common}). In addition, it supports the following messages:
+\begin{rail}
+graphicSignal : 'set' 'graph' signalIdentifier 
+			| 'get'
+			| 'get' 'dimension'
+\end{rail}
+\index{Graphic signal!set}
+\index{Graphic signal!get}
+\index{Graphic signal! dimension}
+
+\begin{itemize}
+\item the \OSC{set} message is followed by the \OSC{graph} type and a \OSC{\textit{signalIdentifier}}, where \OSC{signalIdentifier} must correspond to an existing signal from the \OSC{signal} address space. In case \OSC{signalIdentifier} doesn't exist, then a new signal is created at the \OSC{signalIdentifier} address with default values. 
+\item the \OSC{get} message is the counterpart of the \OSC{set} message (see section \fullref{getsect}). 
+\item the \OSC{get dimension} message gives the number of graphic signals in parallel (see section \fullref{pgsignal}). 
+ \end{itemize}
+
+%-------------------------------
+%:    Graphic signal default values.
+\subsublevel{Graphic signal default values.}
+As mentionned above, a graphic signal expects to be connected to parallel signals having at least an \values{y} component, a graphic thickness component and HSBA components. Thus, from graphic signal viewpoint, the expected dimension of a signal should be equal or greater than 6. In case the \OSC{signalIdentifier} dimension is less than 6, the graphic signal will use the default values defined in table \ref{gsigdefault}.
+
+\begin{table}[htdp]
+\caption{Graphic signal default values.}
+\begin{center}
+\begin{tabular}{|r|cl|}
+\hline
+parameter & default value & \\
+\hline
+\OSC{y}					& \OSC{0} & the center line of the graphic \\
+\OSC{thickness}		& \OSC{0} & \\
+\OSC{hue}				& \OSC{0} & meaningless due to brigthness value \\
+\OSC{saturation}		& \OSC{0} & meaningless due to brigthness value \\
+\OSC{brigthness}		& \OSC{-1} & black \\
+\OSC{transparency}		& \OSC{1} & opaque \\
+\hline
+\end{tabular}
+\end{center}
+\label{gsigdefault}
+\end{table}
+
+%-------------------------------
+%:    Parallel graphic signals.
+\subsublevel{Parallel graphic signals.}
+\label{pgsignal}
+When the dimension \textit{d} of a signal connected to a graphic signal is greater than 6, then the input signal is interpreted like parallel graphic signals. More generally, the dimension \textit{n} of a graphic signal is:
+\[
+n  \  |\ n \in \mathbb{N}\ \land\ 6.(n-1) < d \leqslant 6.n
+\]
+where \textit{d} is the dimension of the input signal.
+
+\note When \textit{d} is not a mutiple of 6, then the last graphic signal makes use of the default values mentionned above.
 
 
 %===============================
-%:Virtual address space
-\toplevel{Virtual address space}
+%:FAUST plugins
+\toplevel{FAUST plugins}
+\label{faust}
 
-Virtual address space extends the OSC address scheme to objects automatically embedded into other objects. 
+FAUST [Functional Audio Stream]\footnote{\url{http://faust.grame.fr}} is a functional programming language specifically designed for real-time signal processing and synthesis. A FAUST/INScore architecture allows to embed FAUST processors in INScore, for the purpose of signals computation. A FAUST/INScore plugin is viewed as a parallel signal and thus it is created in the \OSC{signal} address space. Thus and similarly to signals, a FAUST plugin is associated to OSC addresses in the form \OSC{/ITL/\emph{scene}/signal/\emph{name}} where \OSC{\emph{name}} is a user defined name.
+
+\begin{rail}
+faustprocessor : 'set' 'faust' "path"
+\end{rail}
+\index{faustprocessor!set}
+A FAUST processor is created with a \OSC{set} message followed by the \OSC{faust} type, followed by the plugin path name. Thus the \OSC{faust} name is a reserved signal name.
+
 
 %===============================
-%:   File watcher
+%:   Specific messages
+\sublevel{Specific messages}
+\label{faustmsg}
+A FAUST processor is characterized by the numbers of input and output channels and by a set of parameters. Each parameter carries a name defined by the FAUST program. The set of messages supported by a FAUST processor is the set of signals messages extended with the parameters names and with specific query messages. 
+
+\begin{rail}
+faustmessage : signalMsgs
+			 | [1] 'msg' float32
+			 | [2] 'get' ('in' | 'out')
+\end{rail}
+\index{faustprocessor!in}
+\index{faustprocessor!out}
+\index{faustprocessor!min}
+\index{faustprocessor!max}
+
+\begin{itemize}
+\item [1] \OSC{\emph{msg}} is any of the FAUST processor parameters, as defined by the FAUST program.
+\item [2] the \OSC{get} message is extended to query the FAUST processor: \OSC{in} and \OSC{out} give the number of input and output channels.
+% \OSC{msgs} gives the list of the processor specific messages under the form of separate messages including the message name followed by its default, minimum and maximum values.
+\end{itemize}
+
+
+%===============================
+%:   Feeding and composing FAUST processors
+\sublevel{Feeding and composing FAUST processors}
+\label{composefaust}
+
+A FAUST processor accepts float values as input, which are taken as interleaved data.
+
+From composition viewpoint, a FAUST processor is a parallel signal which dimension is the number of output channels. 
+Thus, a FAUST processor can be used like any parallel signal. However, the signal identifier defined in \ref{parcomp} is extended to support adressing single components of parallel signal as follows:
+\begin{rail}
+signal :  
+		  identifier ( | "/" n)
+		| float32
+\end{rail}
+where $n$ selects the signal \#n of a parallel signal. Note that indexes start at 0.
+
+
+%===============================
+%:Events and Interaction
+\toplevel{Events and Interaction}
+\label{interaction}
+
+Interaction messages are user defined messages associated to events and triggered when these events occur. These messages accept variables as message arguments.
+
+The general form of the message is:
+
+\begin{rail}
+interactMsg : (('watch' | 'watch+')  ([1] | what  ( | oscMsg))) 
+\end{rail}
+\index{Interaction!watch}
+\index{Interaction!watch+}
+
+\begin{itemize}
+\item \OSC{watch}: clears the messages associated to the event and when specified, associates the new message to the watched event. \OSC{watch} without arguments ([1]) clears all the messages associated to all events.
+\item \OSC{watch+}: adds a message to the watched event message list. 
+\end{itemize}
+
+The associated OSC message is any valid OSC message (not restricted to the Interlude message set), with an extended address scheme, supporting IP addresses or host names and udp port number to be specified as OSC addresses prefix. The message parameters are any valid OSC type or variables (see section \ref{interactvar}).
+\begin{rail} 
+oscMsg : (| fullAddress)  OSCAddress ( (parameters | variable) + )
+\end{rail}
+
+\begin{rail} 
+fullAddress : (IPAddress | hostname) ':' port
+\end{rail}
+
+
+%===============================
+%:    Interaction messages
+\sublevel{Interaction messages}
+\label{interactmsg}
+
+Events currently \emph{watchable} are:
+\begin{rail}
+what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'doubleClick' 
+\end{rail}
+\index{Interaction!mouseDown}
+\index{Interaction!mouseUp}
+\index{Interaction!mouseEnter}
+\index{Interaction!mouseLeave}
+\index{Interaction!mouseMove}
+\index{Interaction!doubleClick}
+
+
+\example
+\sample{
+/ITL/scene/myObject watch mouseDown "/ITL/scene/myObject" "show" 0;
+}
+Request the object \OSC{myObject} to watch \OSC{mouseDown} events and send a message to itself.
+\sample{
+/ITL/scene/myObject watch mouseDown "host.domain.org:12100/an/address" "start";
+}
+Request the object \OSC{myObject} to watch \OSC{mouseDown} events and send a "start" message to host.domain.org on udp port 12100 to OSC address /an/address
+
+%===============================
+%:    Notification messages
+\sublevel{Notification messages}
+\label{notifymsg}
+
+Events currently \emph{watchable} are:
+\begin{rail}
+what : 	'timeEnter' timezone | 'timeLeave' timezone 
+		| 'durEnter' timezone | 'durLeave' timezone 
+		| 'newElement'
+\end{rail}
+\index{Interaction!timeEnter}
+\index{Interaction!timeLeave}
+\index{Interaction!durEnter}
+\index{Interaction!durLeave}
+\index{Interaction!newElement}
+
+\begin{rail}
+timezone : int32 int32 int32 int32
+\end{rail}
+A time zone is defined by 2 dates expressed as rational values (i.e. with 4 integers).
+\index{Interaction! timezone}
+
+\begin{itemize}
+\item \OSC{timeEnter}, \OSC{timeLeave} are triggered when an object date is moved to or out of a watched \OSC{timezone},
+\item \OSC{durEnter}, \OSC{durLeave} are triggered when an object duration is moved to or out of a watched \OSC{timezone} that should be viewed as a duration range.
+\end{itemize}
+
+\example \\
+ a cursor that displays a given music page when it enters its time zone.
+\samplev{
+/ITL/scene/cursor watch 'timeEnter' 10 1 18 1 '/ITL/scene/score' 'set' 'img' 'page2.png';
+}
+
+
+
+The \OSC{newElement} event is supported at scene level only and triggered when a new element is added to the scene.
+
+
+%===============================
+%:    Message variables
+\sublevel{Variables}
+\label{interactvar}
+
+Variables denote values computed when an event is triggered. These values are send in place of the variable. A variable name starts with a '\$' sign. Currently, the following variables are supported by mouse events:
+\begin{rail} 
+variable : (xy | 'absx' | 'absy' | 'sx' | 'sy' | date | 'name' | 'address') 
+\end{rail}
+\index{Interaction!variable!x}
+\index{Interaction!variable!y}
+\index{Interaction!variable!absx}
+\index{Interaction!variable!absy}
+\index{Interaction!variable!sx}
+\index{Interaction!variable!sy}
+\index{Interaction!variable!date}
+\index{Interaction!variable!name}
+\index{Interaction!variable!address}
+
+\begin{rail} 
+xy : ('x' | 'y') ( | '[low,high]') 
+\end{rail}
+
+\begin{itemize}
+\item \OSC{\$x} \OSC{\$y}: denotes the mouse pointer position at the time of the event. The values are in the range $[0,1]$ where 1 is the object size in the x or y dimension. The value is computed according to the object origin: it represents the mouse pointer distance from the object x or y origin (see \fullref{origin}). \OSC{\$x} and \OSC{\$y} variables support an optional range in the form \OSC{[low, high]} that transforms the $[0,1]$  values range into the $[low, high]$ range.
+
+\item \OSC{\$absx} \OSC{\$absy}: denotes the mouse pointer absolute position at the time of the event. The values represent a pixel position relative to the top-left point of the target object. Note that this position is unaffected by scale. 
+Note also that the values are not clipped to the object dimensions and could exceed its width or height or become negative in case of mouse move events.
+
+\item \OSC{\$sx} \OSC{\$sy}: denotes the mouse pointer position in the scene coordinates space. 
+
+\item \OSC{\$name}, \OSC{\$address}: replaced by the target object name or OSC address. Note that in case of \OSC{newElement} event, the target object is the new element. 
+\end{itemize}
+
+\begin{rail} 
+date : ('date' | 'rdate') (| ':'  mapname) (| '[n/d]') (| '\%' 'f')
+
+\end{rail}
+
+\begin{itemize}
+\item \OSC{\$date}: denotes the object date corresponding to the mouse pointer position at the time of the event. It is optionnaly followed by a colon and the name of the mapping to be used to compute the date. The \OSC{\$date} variable is replaced by its rational value (i.e. two integers values). The optional rational enclosed in brackets may be used to indicate a quantification: the date value is rounded to an integer count of the specified rational value. The optional \OSC{\%f} may be used to get the date delivered as a float value.
+\item \OSC{\$rdate}: is similar to \OSC{\$date} but ignores the target current date: the date is relative to the object mapping only.
+\end{itemize}
+
+\note A variable can be used several times in a message, but several \OSC{\$date} variables must always refer to the same mapping.
+
+\vspace{5mm}
+\texttt{\textbf{Warning:}} the interaction message set is provided for experiment. It is likely to change in a future version. Ideas, comments, suggestions are welcome for the design of a stable API.
+
+%===============================
+%:    Message based variables
+\sublevel{Message based variables}
+\label{msgvar}
+
+A message based variable is a variable containing an OSC message which will be evaluated at the time of the event. They are supported by all kind of events. Like  the variables above, a message based variable starts with a '\$' sign followed by a valid 'get' message enclosed in parenthesis:
+\begin{rail} 
+msgVar : '(' oscaddress 'get' (| params) ')'
+\end{rail}
+
+The evaluation of a 'get' message produces a message or a list of messages. The message based variable will be replaced by the parameters of the messages resulting from the evaluation of the 'get' message.
+Note that all the 'get' messages attached to an event are evaluated at the same time.
+
+\example
+\sample{ 
+/ITL/s/o1 watch  'mouseDown' '/ITL/s/o1' 'show' \$('/ITL/s/o2' get 'show'); \\
+/ITL/s/o1 watch+ 'mouseDown' '/ITL/s/o2' 'show' \$('/ITL/s/o1' get 'show'); \\
+/ITL/s/o2 watch  'mouseDown' '/ITL/s/o1' 'show' \$('/ITL/s/o2' get 'show'); \\
+/ITL/s/o2 watch+ 'mouseDown' '/ITL/s/o2' 'show' \$('/ITL/s/o1' get 'show')
+}
+When clicked, the objects \OSC{o1} and \OSC{o2} swap their visibility state.
+
+
+
+%===============================
+%:    OSC address variables
+\sublevel{OSC address variables}
+\label{oscvar}
+The OSC address parameter of a watch message supports the following variables:
+\begin{itemize}
+\item \OSC{\$self}: replaced by the object name at the time of the message setting.
+\item \OSC{\$scene}: replaced by the scene name at the time of the message setting.
+\end{itemize}
+Note: the system doesn't check for the consistency of the variables placement.
+
+
+%===============================
+%:    States management
+\sublevel{States management}
+\label{evtstats}
+
+For a given object, its \emph{interaction state} (i.e. the watched events and the associated messages) can be saved and restored.
+\begin{rail} 
+stateMsg : 'push' | 'pop'
+\end{rail}
+\index{Interaction!push}
+\index{Interaction!pop}
+
+Actually every object embeds a stack to push and pop interaction states. 
+\begin{itemize}
+\item \OSC{push}: push the current interaction state on top of the stack.
+\item \OSC{pop}: replace the current interaction state with the one poped from the top of the stack.
+Note that the effect of a pop message addressed to an empty stack is to clear the current interaction state.
+\end{itemize}
+
+
+%===============================
+%:    File watcher
 \sublevel{File watcher}
 \label{watch}
 
@@ -1528,491 +2130,6 @@ debug : 		('name'  int32)
 \item When the \OSC{signal} flag is on, each object (even the scene or the application) will, according to its type, emit 'performance related' signals (or no signal). This 'performance signal' is specific to the type of object. The name of 'performance signal' is of the form \OSC{debug-}\emph{objectName}\OSC{-}\emph{SomeName}. Currently, only the \OSC{application}, the \OSC{scene} and \OSC{graph} objects emit 'performance signals'.
 \end{itemize}
 
-%===============================
-%:Signals and graphic signals
-\toplevel{Signals and graphic signals}
-\label{graphsig}
-
-The graphic representation of a signal is approached with \emph{graphic signals}. As illustrated in figure \ref{graphimg}, a graphic representation of a signal could be viewed as a stream of a limited set of parameters : the y coordinate, the graph thickness h and the graph color c. 
-A \emph{graphic signal} is a composite signal including a set of 3 parallel signals that control these parameters. Thus the INScore library provides messages to create signals and to combine them into \emph{graphic signals}. 
-
-\begin{figure}[h]
-	\centering \includegraphics[width=90mm]{imgs/graph}
- \caption{A simple graphic signal, defined at time t by a coordinate y, a thickness h and a color c}
- \label{graphimg}
-\end{figure}
-
-%-------------------------------
-%:   The signal virtual address space.
-\sublevel{The \textit{signal} virtual address space.}
-A \OSC{scene} includes a virtual address space, which OSC address is \OSC{/ITL/scene/signal}. This address space is reserved for \emph{simple signals} as well as for composing signals in parallel.
-
-The \OSC{signal} virtual address space supports only the \OSC{get} messages that gives the list of the defined signals with a set of messages complying to the syntax defined in section \ref{ssignal}.
-
-%\begin{rail}
-%signal : 'garbage'
-%		| 'get'
-%\end{rail}
-%%		| 'debug' int32
-%%		| 'get' (| 'debug')
-%\index{signal}
-%\index{signal!get}
-%\index{signal!garbage}
-%%\index{signal!debug}
-%
-%\begin{itemize}
-%\item the \OSC{garbage} message deletes all the \emph{unused} signals i.e. all the signal not connected to a \emph{graphic} signal (see section \fullref{gsignal}. 
-%%\item the \OSC{debug} message followed by \OSC{[0,1]} control debug messages sent when xruns are detected.
-%\item the \OSC{get} message gives the list of the defined signals with a set of messages complying to the syntax defined in section \ref{ssignal}. 
-%%\item the \OSC{get debug} message gives the debug state. 
-%\end{itemize}
-
-
-\subsublevel{Simple signals.}
-\label{ssignal}
-The signal messages can be sent to any address with the form \OSC{/ITL/scene/signal/\textit{identifier}}, where \OSC{\textit{identifier}} is a unique signal identifier.
-The set of messages supported by a signal is the following:
-\begin{rail}
-simpleSignal : [1] ( float32 + )
-		| [2] ('size' int32) 
-		| [3] ('default' float32)
-		| [4] 'get' ( | 'size' | 'default')
-		| [5] 'reset'
-		| [6] 'del'
-\end{rail}
-\index{signal}
-\index{signal!simple signal!size}
-\index{signal!simple signal!default}
-\index{signal!simple signal!get}
-\index{signal!simple signal!reset}
-\index{signal!simple signal!del}
-
-\begin{itemize}
-\item \textbf{[1]} push an arbitrary data count into the signal buffer. The data range should be \values{[-1,1]}. Note that the signal buffer behaves like a ring buffer, thus data are wrapped when the data count if greater than the signal size. 
-\item \textbf{[2]} the \OSC{size} message sets the signal buffer size. When not specified, the buffer size value is the size of the first data message. 
-\item \textbf{[3]} the \OSC{default} message sets the \emph{default signal value}. A signal \emph{default value} is the value returned when a query asks for data past the available values.
-\item \textbf{[4]} the \OSC{get} gives the signal values. The \OSC{size} and  \OSC{default} parameters are used to query the signal size and default values.
-\item \textbf{[5]} the \OSC{reset} message clears the signal data. 
-\item \textbf{[6]} the \OSC{del} message deletes the signal from the \OSC{signal} space. Note that it is safe to delete a signal even when used by a graphic signal. 
-\end{itemize}
-
-\example
-\sample{/ITL/scene/signal/null 0.0;}
-creates a constant signal named \OSC{null}, which value is \values{0}.
-
-%-------------------------------
-%:   Composing signals in parallel.
-\subsublevel{Composing signals in parallel.}\label{parcomp}
-Composing signals in parallel produces a signal which value at a time \values{t} is a vector of the composed signals values. Thus an additional property is defined on \emph{parallel signals} : the signal \emph{dimension} which is size of the signals values vector. Note that the dimension property holds also for simple signals.
-The format of the messages for parallel signals is the following:
-\begin{rail}
-parallelSignal :  
-		  [1] 'set' ( signal + )
-		| [2] (| projectionString) ( float32 + )
-		| [3] ('get' 'dimension') 
-\end{rail}
-\index{signal!parallel signal}
-\index{signal!parallel signal!get}
-where 
-\begin{rail}
-signal :  
-		  [4] identifier
-		| [5] float32
-\end{rail}
-\index{signal!parallel signal!list}
-
-\begin{itemize}
-\item \textbf{[1]} defines a new signal composed of the signals list and which address is the message OSC address. A signal list element is defined as:
-
-\begin{itemize}
-\item \textbf{[4]} an \OSC{identifier} i.e. a signal name refering to an existing signal in the \OSC{signal} virtual address space. 
-\item \textbf{[5]} or as a float value. This form is equivalent to an anonymous constant signal holding the given value. 
-\end{itemize}
-
-\item \textbf{[2]} sets the values of the signals addressed by a projection string. See section \fullref{sigproj}. 
-\item \textbf{[3]} in addition to the \OSC{get} format defined for signals, a parallel signal supports the \OSC{get dimension} message, which gives the number of simple signals in parallel. It is actually the sum of each signal dimension. The dimension of a simple signal is 1. 
-\end{itemize}
-
-Note that for a parallel signal:
-\begin{itemize}
-\item the \OSC{get} message gives the list of the signals in parallel with the exact form of the composing message in [1]. 
-\item the \OSC{get size} message gives the maximum of the components size. 
-\item the \OSC{get default} message gives the default value of the first signal. 
-\end{itemize}
-
-%-------------------------------
-%:   Signals projection.
-\subsublevel{Signals projection.}
-\label{sigproj}
-Individual components of a parallel signal may be addressed using a \emph{projection string} which is defined as:
-\begin{rail}
-projectionString :  '[' int32 (| '\~{}' (| int32)) ']'
-\end{rail}
-\index{signal!parallel signal!projection string}
-
-The projection string is made of a \emph{index value}, followed by an optional \emph{parallel marker} (\OSC{\~{}}), followed by an optional \emph{step value}, all enclosed in brackets.
-The \emph{index value} \values{n} is the index of a target signal. When the \emph{parallel marker} option is not present, the values are directed to the target signal and the message is equivalent to:
-\oldexample \texttt{/ITL/scene/signal/target values...} \\
-where \OSC{\textit{target}} is the name of the target signal addressed by \values{n}. \\
-Note that:
-\begin{itemize}
-\item the message is ignored when \values{n} is greater than the number of signals in parallel. Default \values{n} value is \values{0}. 
-\item setting directly the values of a simple signal or as the projection of a parallel signal are equivalent.
-\end{itemize}
-
-The \emph{parallel marker} (\OSC{\~{}}) and the \emph{step value} \values{w} options affect the target signals. Let's consider \values{s[n]} as the signal at index \values{n}. The values are distributed in sequence and in loop to the signals \values{s[n], s[n+w]...s[m]} where \values{m} is the greatest value of the index \values{n+(w.i)} that is less than the signal dimension. The default  \emph{step value} is \values{1}.
-
-\example \\
-the message: 
-\sample{/ITL/scene/signal/target [2\~{}] 0.1 0.2}
-is equivalent to the following messages:
-\ \sample{
-/ITL/scene/signal/target [2] 0.1\\
-/ITL/scene/signal/target [3] 0.2
-}
-
-
-%-------------------------------
-%:   Graphic signals.
-\sublevel{Graphic signals.}
-\label{gsignal}
-
-A graphic signal is created in the standard scene address space. A simple graphic signal is defined by a parallel signal controling the \values{y} value, the graphic thickness and the color at each time position. The color is encoded as HSBA colors (Hue, Saturation, Brightness, Transparency). The mapping of a signal value  (\values{[-1,1]}) to the HSBA color space is given by the table \ref{hsbamap}. 
-
-\begin{figure}[h]
-	\centering \includegraphics[width=65mm]{imgs/hsb}
- \caption{The HSB color space}
- \label{hsbfiug}
-\end{figure}
-
-
-\begin{table}[htdp]
-\caption{HSBA color values.}
-\begin{center}
-\begin{tabular}{|r|cl|}
-\hline
-parameter & mapping & \\
-\hline
-\OSC{hue}				& \OSC{[-1,1]} & corresponds to \OSC{[-180,180]} angular degree where \OSC{0} is red. \\
-\OSC{saturation}		& \OSC{[-1,1]} & corresponds \OSC{0\%} to \OSC{100\%} saturation. \\
-\OSC{brigthness}		& \OSC{[-1,1]} & corresponds \OSC{0\%} (black) to \OSC{100\%} (white) brithgness. \\
-\OSC{transparency}		& \OSC{[-1,1]} & corresponds \OSC{0\%} to \OSC{100\%} tranparency. \\
-\hline
-\end{tabular}
-\end{center}
-\label{hsbamap}
-\end{table}
-
-
-
-A graphic signal responds to common component messages (section \fullref{common}). In addition, it supports the following messages:
-\begin{rail}
-graphicSignal : 'set' 'graph' signalIdentifier 
-			| 'get'
-			| 'get' 'dimension'
-\end{rail}
-\index{Graphic signal!set}
-\index{Graphic signal!get}
-\index{Graphic signal! dimension}
-
-\begin{itemize}
-\item the \OSC{set} message is followed by the \OSC{graph} type and a \OSC{\textit{signalIdentifier}}, where \OSC{signalIdentifier} must correspond to an existing signal from the \OSC{signal} address space. In case \OSC{signalIdentifier} doesn't exist, then a new signal is created at the \OSC{signalIdentifier} address with default values. 
-\item the \OSC{get} message is the counterpart of the \OSC{set} message (see section \fullref{getsect}). 
-\item the \OSC{get dimension} message gives the number of graphic signals in parallel (see section \fullref{pgsignal}). 
- \end{itemize}
-
-%-------------------------------
-%:   Graphic signal default values.
-\subsublevel{Graphic signal default values.}
-As mentionned above, a graphic signal expects to be connected to parallel signals having at least an \values{y} component, a graphic thickness component and HSBA components. Thus, from graphic signal viewpoint, the expected dimension of a signal should be equal or greater than 6. In case the \OSC{signalIdentifier} dimension is less than 6, the graphic signal will use the default values defined in table \ref{gsigdefault}.
-
-\begin{table}[htdp]
-\caption{Graphic signal default values.}
-\begin{center}
-\begin{tabular}{|r|cl|}
-\hline
-parameter & default value & \\
-\hline
-\OSC{y}					& \OSC{0} & the center line of the graphic \\
-\OSC{thickness}		& \OSC{0} & \\
-\OSC{hue}				& \OSC{0} & meaningless due to brigthness value \\
-\OSC{saturation}		& \OSC{0} & meaningless due to brigthness value \\
-\OSC{brigthness}		& \OSC{-1} & black \\
-\OSC{transparency}		& \OSC{1} & opaque \\
-\hline
-\end{tabular}
-\end{center}
-\label{gsigdefault}
-\end{table}
-
-%-------------------------------
-%:   Parallel graphic signals.
-\subsublevel{Parallel graphic signals.}
-\label{pgsignal}
-When the dimension \textit{d} of a signal connected to a graphic signal is greater than 6, then the input signal is interpreted like parallel graphic signals. More generally, the dimension \textit{n} of a graphic signal is:
-\[
-n  \  |\ n \in \mathbb{N}\ \land\ 6.(n-1) < d \leqslant 6.n
-\]
-where \textit{d} is the dimension of the input signal.
-
-\note When \textit{d} is not a mutiple of 6, then the last graphic signal makes use of the default values mentionned above.
-
-
-%===============================
-%:FAUST plugins
-\toplevel{FAUST plugins}
-\label{faust}
-
-FAUST [Functional Audio Stream]\footnote{\url{http://faust.grame.fr}} is a functional programming language specifically designed for real-time signal processing and synthesis. A FAUST/INScore architecture allows to embed FAUST processors in INScore, for the purpose of signals computation. A FAUST/INScore plugin is viewed as a parallel signal and thus it is created in the \OSC{signal} address space. Thus and similarly to signals, a FAUST plugin is associated to OSC addresses in the form \OSC{/ITL/\emph{scene}/signal/\emph{name}} where \OSC{\emph{name}} is a user defined name.
-
-\begin{rail}
-faustprocessor : 'set' 'faust' "path"
-\end{rail}
-\index{faustprocessor!set}
-A FAUST processor is created with a \OSC{set} message followed by the \OSC{faust} type, followed by the plugin path name. Thus the \OSC{faust} name is a reserved signal name.
-
-
-%===============================
-%:  Specific messages
-\sublevel{Specific messages}
-\label{faustmsg}
-A FAUST processor is characterized by the numbers of input and output channels and by a set of parameters. Each parameter carries a name defined by the FAUST program. The set of messages supported by a FAUST processor is the set of signals messages extended with the parameters names and with specific query messages. 
-
-\begin{rail}
-faustmessage : signalMsgs
-			 | [1] 'msg' float32
-			 | [2] 'get' ('in' | 'out')
-\end{rail}
-\index{faustprocessor!in}
-\index{faustprocessor!out}
-\index{faustprocessor!min}
-\index{faustprocessor!max}
-
-\begin{itemize}
-\item [1] \OSC{\emph{msg}} is any of the FAUST processor parameters, as defined by the FAUST program.
-\item [2] the \OSC{get} message is extended to query the FAUST processor: \OSC{in} and \OSC{out} give the number of input and output channels.
-% \OSC{msgs} gives the list of the processor specific messages under the form of separate messages including the message name followed by its default, minimum and maximum values.
-\end{itemize}
-
-
-%===============================
-%:  Feeding and composing FAUST processors
-\sublevel{Feeding and composing FAUST processors}
-\label{composefaust}
-
-A FAUST processor accepts float values as input, which are taken as interleaved data.
-
-From composition viewpoint, a FAUST processor is a parallel signal which dimension is the number of output channels. 
-Thus, a FAUST processor can be used like any parallel signal. However, the signal identifier defined in \ref{parcomp} is extended to support adressing single components of parallel signal as follows:
-\begin{rail}
-signal :  
-		  identifier ( | "/" n)
-		| float32
-\end{rail}
-where $n$ selects the signal \#n of a parallel signal. Note that indexes start at 0.
-
-
-%===============================
-%:Events and Interaction
-\toplevel{Events and Interaction}
-\label{interaction}
-
-Interaction messages are user defined messages associated to events and triggered when these events occur. These messages accept variables as message arguments.
-
-The general form of the message is:
-
-\begin{rail}
-interactMsg : (('watch' | 'watch+')  ([1] | what  ( | oscMsg))) 
-\end{rail}
-\index{Interaction!watch}
-\index{Interaction!watch+}
-
-\begin{itemize}
-\item \OSC{watch}: clears the messages associated to the event and when specified, associates the new message to the watched event. \OSC{watch} without arguments ([1]) clears all the messages associated to all events.
-\item \OSC{watch+}: adds a message to the watched event message list. 
-\end{itemize}
-
-The associated OSC message is any valid OSC message (not restricted to the Interlude message set), with an extended address scheme, supporting IP addresses or host names and udp port number to be specified as OSC addresses prefix. The message parameters are any valid OSC type or variables (see section \ref{interactvar}).
-\begin{rail} 
-oscMsg : (| fullAddress)  OSCAddress ( (parameters | variable) + )
-\end{rail}
-
-\begin{rail} 
-fullAddress : (IPAddress | hostname) ':' port
-\end{rail}
-
-
-%===============================
-%:   Interaction messages
-\sublevel{Interaction messages}
-\label{interactmsg}
-
-Events currently \emph{watchable} are:
-\begin{rail}
-what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'doubleClick' 
-\end{rail}
-\index{Interaction!mouseDown}
-\index{Interaction!mouseUp}
-\index{Interaction!mouseEnter}
-\index{Interaction!mouseLeave}
-\index{Interaction!mouseMove}
-\index{Interaction!doubleClick}
-
-
-\example
-\sample{
-/ITL/scene/myObject watch mouseDown "/ITL/scene/myObject" "show" 0;
-}
-Request the object \OSC{myObject} to watch \OSC{mouseDown} events and send a message to itself.
-\sample{
-/ITL/scene/myObject watch mouseDown "host.domain.org:12100/an/address" "start";
-}
-Request the object \OSC{myObject} to watch \OSC{mouseDown} events and send a "start" message to host.domain.org on udp port 12100 to OSC address /an/address
-
-%===============================
-%:   Notification messages
-\sublevel{Notification messages}
-\label{notifymsg}
-
-Events currently \emph{watchable} are:
-\begin{rail}
-what : 	'timeEnter' timezone | 'timeLeave' timezone 
-		| 'durEnter' timezone | 'durLeave' timezone 
-		| 'newElement'
-\end{rail}
-\index{Interaction!timeEnter}
-\index{Interaction!timeLeave}
-\index{Interaction!durEnter}
-\index{Interaction!durLeave}
-\index{Interaction!newElement}
-
-\begin{rail}
-timezone : int32 int32 int32 int32
-\end{rail}
-A time zone is defined by 2 dates expressed as rational values (i.e. with 4 integers).
-\index{Interaction! timezone}
-
-\begin{itemize}
-\item \OSC{timeEnter}, \OSC{timeLeave} are triggered when an object date is moved to or out of a watched \OSC{timezone},
-\item \OSC{durEnter}, \OSC{durLeave} are triggered when an object duration is moved to or out of a watched \OSC{timezone} that should be viewed as a duration range.
-\end{itemize}
-
-\example \\
- a cursor that displays a given music page when it enters its time zone.
-\samplev{
-/ITL/scene/cursor watch 'timeEnter' 10 1 18 1 '/ITL/scene/score' 'set' 'img' 'page2.png';
-}
-
-
-
-The \OSC{newElement} event is supported at scene level only and triggered when a new element is added to the scene.
-
-
-%===============================
-%:   Message variables
-\sublevel{Variables}
-\label{interactvar}
-
-Variables denote values computed when an event is triggered. These values are send in place of the variable. A variable name starts with a '\$' sign. Currently, the following variables are supported by mouse events:
-\begin{rail} 
-variable : (xy | 'absx' | 'absy' | 'sx' | 'sy' | date | 'name' | 'address') 
-\end{rail}
-\index{Interaction!variable!x}
-\index{Interaction!variable!y}
-\index{Interaction!variable!absx}
-\index{Interaction!variable!absy}
-\index{Interaction!variable!sx}
-\index{Interaction!variable!sy}
-\index{Interaction!variable!date}
-\index{Interaction!variable!name}
-\index{Interaction!variable!address}
-
-\begin{rail} 
-xy : ('x' | 'y') ( | '[low,high]') 
-\end{rail}
-
-\begin{itemize}
-\item \OSC{\$x} \OSC{\$y}: denotes the mouse pointer position at the time of the event. The values are in the range $[0,1]$ where 1 is the object size in the x or y dimension. The value is computed according to the object origin: it represents the mouse pointer distance from the object x or y origin (see \fullref{origin}). \OSC{\$x} and \OSC{\$y} variables support an optional range in the form \OSC{[low, high]} that transforms the $[0,1]$  values range into the $[low, high]$ range.
-
-\item \OSC{\$absx} \OSC{\$absy}: denotes the mouse pointer absolute position at the time of the event. The values represent a pixel position relative to the top-left point of the target object. Note that this position is unaffected by scale. 
-Note also that the values are not clipped to the object dimensions and could exceed its width or height or become negative in case of mouse move events.
-
-\item \OSC{\$sx} \OSC{\$sy}: denotes the mouse pointer position in the scene coordinates space. 
-
-\item \OSC{\$name}, \OSC{\$address}: replaced by the target object name or OSC address. Note that in case of \OSC{newElement} event, the target object is the new element. 
-\end{itemize}
-
-\begin{rail} 
-date : ('date' | 'rdate') (| ':'  mapname) (| '[n/d]') (| '\%' 'f')
-
-\end{rail}
-
-\begin{itemize}
-\item \OSC{\$date}: denotes the object date corresponding to the mouse pointer position at the time of the event. It is optionnaly followed by a colon and the name of the mapping to be used to compute the date. The \OSC{\$date} variable is replaced by its rational value (i.e. two integers values). The optional rational enclosed in brackets may be used to indicate a quantification: the date value is rounded to an integer count of the specified rational value. The optional \OSC{\%f} may be used to get the date delivered as a float value.
-\item \OSC{\$rdate}: is similar to \OSC{\$date} but ignores the target current date: the date is relative to the object mapping only.
-\end{itemize}
-
-\note A variable can be used several times in a message, but several \OSC{\$date} variables must always refer to the same mapping.
-
-\vspace{5mm}
-\texttt{\textbf{Warning:}} the interaction message set is provided for experiment. It is likely to change in a future version. Ideas, comments, suggestions are welcome for the design of a stable API.
-
-%===============================
-%:   Message based variables
-\sublevel{Message based variables}
-\label{msgvar}
-
-A message based variable is a variable containing an OSC message which will be evaluated at the time of the event. They are supported by all kind of events. Like  the variables above, a message based variable starts with a '\$' sign followed by a valid 'get' message enclosed in parenthesis:
-\begin{rail} 
-msgVar : '(' oscaddress 'get' (| params) ')'
-\end{rail}
-
-The evaluation of a 'get' message produces a message or a list of messages. The message based variable will be replaced by the parameters of the messages resulting from the evaluation of the 'get' message.
-Note that all the 'get' messages attached to an event are evaluated at the same time.
-
-\example
-\sample{ 
-/ITL/s/o1 watch  'mouseDown' '/ITL/s/o1' 'show' \$('/ITL/s/o2' get 'show'); \\
-/ITL/s/o1 watch+ 'mouseDown' '/ITL/s/o2' 'show' \$('/ITL/s/o1' get 'show'); \\
-/ITL/s/o2 watch  'mouseDown' '/ITL/s/o1' 'show' \$('/ITL/s/o2' get 'show'); \\
-/ITL/s/o2 watch+ 'mouseDown' '/ITL/s/o2' 'show' \$('/ITL/s/o1' get 'show')
-}
-When clicked, the objects \OSC{o1} and \OSC{o2} swap their visibility state.
-
-
-
-%===============================
-%:   OSC address variables
-\sublevel{OSC address variables}
-\label{oscvar}
-The OSC address parameter of a watch message supports the following variables:
-\begin{itemize}
-\item \OSC{\$self}: replaced by the object name at the time of the message setting.
-\item \OSC{\$scene}: replaced by the scene name at the time of the message setting.
-\end{itemize}
-Note: the system doesn't check for the consistency of the variables placement.
-
-
-%===============================
-%:   States management
-\sublevel{States management}
-\label{evtstats}
-
-For a given object, its \emph{interaction state} (i.e. the watched events and the associated messages) can be saved and restored.
-\begin{rail} 
-stateMsg : 'push' | 'pop'
-\end{rail}
-\index{Interaction!push}
-\index{Interaction!pop}
-
-Actually every object embeds a stack to push and pop interaction states. 
-\begin{itemize}
-\item \OSC{push}: push the current interaction state on top of the stack.
-\item \OSC{pop}: replace the current interaction state with the one poped from the top of the stack.
-Note that the effect of a pop message addressed to an empty stack is to clear the current interaction state.
-\end{itemize}
-
-
 
 
 %===============================
@@ -2023,7 +2140,7 @@ Note that the effect of a pop message addressed to an empty stack is to clear th
 Since INScore saves its states as text files containing lists of OSC messages, it becomes natural to design INSCore scenes using these messages as a textual scripting language. For a better support of scripting, \emph{variables} have been introduced to provide a better parameters control and programming languages have been embedded to generate messages algorithmically.
 
 %===============================
-%:   variables
+%:    variables
 \sublevel{Variables}\label{scriptvar}
 
 A variable may hold any value supported by the parameter types. \oscstring\ must be enclosed in simple or double quotes. It is declared as follows:
@@ -2043,7 +2160,7 @@ x=0.5;\\
 }
 
 %===============================
-%:   languages
+%:    languages
 \sublevel{Languages}\label{scriptlang}
 
 \index{Scripting!javascript}
@@ -2088,9 +2205,11 @@ for structured script consists in designing a top level script that only contain
 %:Appendix
 \toplevel{Appendices}
 \sublevel{Grammar definition}
+\label{yacc}
 \input{yacc.tex}
 
 \sublevel{Lexical tokens}
+\label{lex}
 \input{tokens.tex}
 
 
@@ -2100,7 +2219,7 @@ for structured script consists in designing a top level script that only contain
 
 
 %===============================
-%:   Differences to version 0.98
+%:    Differences to version 0.98
 \sublevel{Differences to version 0.98}
 \begin{itemize}
 \item new \OSC{rate} message at application level to control the time task rate (see section \fullref{ITL})
@@ -2108,7 +2227,7 @@ for structured script consists in designing a top level script that only contain
 \end{itemize}
 
 %===============================
-%:   Differences to version 0.97
+%:    Differences to version 0.97
 \sublevel{Differences to version 0.97}
 \begin{itemize}
 \item new \OSC{fastgraph} object for graphic signals fast rendering (see section \fullref{setsect})
@@ -2122,7 +2241,7 @@ for structured script consists in designing a top level script that only contain
 \end{itemize}
 
 %===============================
-%:   Differences to version 0.96
+%:    Differences to version 0.96
 \sublevel{Differences to version 0.96}
 \begin{itemize}
 \item  objects position, date and watched events preserved through type change
@@ -2134,7 +2253,7 @@ for structured script consists in designing a top level script that only contain
 \end{itemize}
 
 %===============================
-%:   Differences to version 0.95
+%:    Differences to version 0.95
 \sublevel{Differences to version 0.95}
 \begin{itemize}
 \item switch to v8 javascript engine
@@ -2142,7 +2261,7 @@ for structured script consists in designing a top level script that only contain
 \end{itemize}
 
 %===============================
-%:   Differences to version 0.92
+%:    Differences to version 0.92
 \sublevel{Differences to version 0.92}
 \begin{itemize}
 \item new 'mouse' 'show/hide' message supported at application level (see section \fullref{ITL})
@@ -2152,7 +2271,7 @@ for structured script consists in designing a top level script that only contain
 \end{itemize}
 
 %===============================
-%:   Differences to version 0.91
+%:    Differences to version 0.91
 \sublevel{Differences to version 0.91}
 \begin{itemize}
 \item bug corrected: crash with messages addressed to a signal without argument
@@ -2161,14 +2280,14 @@ for structured script consists in designing a top level script that only contain
 \end{itemize}
 
 %===============================
-%:   Differences to version 0.90
+%:    Differences to version 0.90
 \sublevel{Differences to version 0.90}
 \begin{itemize}
 \item bug in sync management corrected (introduced with the new sync parsing scheme)
 \end{itemize}
 
 %===============================
-%:   Differences to version 0.82
+%:    Differences to version 0.82
 \sublevel{Differences to version 0.82}
 \begin{itemize}
 \item at application level: osc debug is now 'on' by default
@@ -2184,7 +2303,7 @@ for structured script consists in designing a top level script that only contain
 \end{itemize}
 
 %===============================
-%:   Differences to version 0.81
+%:    Differences to version 0.81
 \sublevel{Differences to version 0.81}
 \begin{itemize}
 \item new Faust plugins for signals processing
@@ -2198,7 +2317,7 @@ for structured script consists in designing a top level script that only contain
 \end{itemize}
 
 %===============================
-%:   Differences to version 0.80
+%:    Differences to version 0.80
 \sublevel{Differences to version 0.80}
 \begin{itemize}
 \item behavior change with synchronization without stretch: now the system looks also in the
@@ -2209,7 +2328,7 @@ for structured script consists in designing a top level script that only contain
 
 
 %===============================
-%:   Differences to version 0.79
+%:    Differences to version 0.79
 \sublevel{Differences to version 0.79}
 \begin{itemize}
 \item corrects the map not saved by the \OSC{save} message issue
@@ -2217,7 +2336,7 @@ for structured script consists in designing a top level script that only contain
 \end{itemize}
 
 %===============================
-%:   Differences to version 0.78
+%:    Differences to version 0.78
 \sublevel{Differences to version 0.78}
 \begin{itemize}
 \item crash bug corrected for the 'save' message addressed to '/ITL'
@@ -2230,7 +2349,7 @@ Known issues:
 \end{itemize}
 
 %===============================
-%:   Differences to version 0.77
+%:    Differences to version 0.77
 \sublevel{Differences to version 0.77}
 \begin{itemize}
 \item guido system map extended: supports flat map or subdivided map (see section \fullref{guidomaps}).
@@ -2244,7 +2363,7 @@ Known issues:
 \end{itemize}
 
 %===============================
-%:   Differences to version 0.76
+%:    Differences to version 0.76
 \sublevel{Differences to version 0.76}
 \begin{itemize}
 \item  get \OSC{guido-version} and \OSC{musicxml-version} messages supported by the application (see section \fullref{ITL}).
@@ -2258,7 +2377,7 @@ Known issues:
 
 
 %===============================
-%:   Differences to version 0.75
+%:    Differences to version 0.75
 \sublevel{Differences to version 0.75}
 \begin{itemize}
 \item new \OSC{require} message supported by the \OSC{/ITL} node (see section \fullref{ITL}).
@@ -2276,7 +2395,7 @@ Known issues:
 \end{itemize}
 
 %===============================
-%:   Differences to version 0.74
+%:    Differences to version 0.74
 \sublevel{Differences to version 0.74}
 \begin{itemize}
 \item new \OSC{map+} message  (see section \fullref{mapAddMsg}).
@@ -2284,7 +2403,7 @@ Known issues:
 \end{itemize}
 
 %===============================
-%:   Differences to version 0.63
+%:    Differences to version 0.63
 \sublevel{Differences to version 0.63}
 \begin{itemize}
 \item new \OSC{dpage} message accepted by \OSC{gmn} objects (see section \fullref{gmnpage}).
@@ -2305,7 +2424,7 @@ Known issues:
 \end{itemize}
 
 %===============================
-%:   Differences to version 0.60
+%:    Differences to version 0.60
 \sublevel{Differences to version 0.60}
 \begin{itemize}
 \item new 'mousemove' event (see section \fullref{interactmsg}).
@@ -2324,7 +2443,7 @@ Known issues:
 \end{itemize}
 
 %===============================
-%:   Differences to version 0.55
+%:    Differences to version 0.55
 \sublevel{Differences to version 0.55}
 \begin{itemize}
 \item new 'xorigin' and 'yorigin' messages (section \fullref{origin}).
@@ -2342,7 +2461,7 @@ Known issues:
 \end{itemize}
 
 %===============================
-%:   Differences to version 0.53
+%:    Differences to version 0.53
 \sublevel{Differences to version 0.53}
 \begin{itemize}
 \item ITL parser corrected to support regexp in message string (used by messages addressed to sync node)
@@ -2359,7 +2478,7 @@ Known issues:
 \end{itemize}
 
 %===============================
-%:   Differences to version 0.50
+%:    Differences to version 0.50
 \sublevel{Differences to version 0.50}
 \begin{itemize}
 \item Graphic signal thickness is now symmetrically drawn around y position.
@@ -2380,7 +2499,7 @@ Known issues:
 \end{itemize}
 
 %===============================
-%:   Differences to version 0.42
+%:    Differences to version 0.42
 \sublevel{Differences to version 0.42}
 
 \begin{itemize}

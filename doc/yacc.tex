@@ -23,7 +23,8 @@ script      : LUASCRIPT
 //_______________________________________________
 // messages specification (extends osc spec.)
 //_______________________________________________
-message	    : address params            
+message	    : address 
+            | address params            
             | address watchparams		
             | address watchparams LEFTPAR messagelist RIGHTPAR
             | address watchparams script 
