@@ -13,6 +13,7 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.00
+- bug correction in $sx and $sy computation corrected (xorigin and yorigin was not taken into account)
 - new 'time' message at application level for querying or setting the current time
 - new 'forward' message at application level for messages forwarding to remote hosts
 - new 'relative | absolute' synchronization mode

@@ -123,9 +123,13 @@ void _MouseEventAble::handleEvent (const IObject * obj, QPointF pos,  EventsAble
 
 	float relx = clippedx / w;									// relative position makes use of the clipped values
 	float rely = clippedy / h;
+	
+	float scale = obj->getScale();
+	float xo = view->scene2RelativeX (w * obj->getXOrigin());	// get the xorigin displacement in scene coordinates
+	float yo = view->scene2RelativeY (h * obj->getYOrigin());	// get the yorigin displacement in scene coordinates
 
-	float sx = xpos + (obj->getWidth()  * obj->getScale()/2 * (relx * 2 - 1));	// get the position in scene coordinates
-	float sy = ypos + (obj->getHeight() * obj->getScale()/2 * (rely * 2 - 1));	// using the object position and the clipped coordinates
+	float sx = xpos - xo + (obj->getWidth()  * scale/2 * (relx * 2 - 1));	// get the position in scene coordinates
+	float sy = ypos - yo + (obj->getHeight() * scale/2 * (rely * 2 - 1));	// using the object position and the clipped coordinates
 
 	MouseLocation mouse (relx, rely, x, y, sx, sy);
 	originshift (obj, mouse.fx, mouse.fy);						// shift x and y accordind to the object xorigin and yorigin
