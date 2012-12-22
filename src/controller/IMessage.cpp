@@ -98,7 +98,7 @@ IMessage::IMessage(const std::string& address, const argslist& args, const TUrl&
 	fArguments = args;
 	if (fArguments.size()) {
 		string method = fArguments[0]->value<string>("");
-		fHasMessage = method.size() && !needQuotes(method);
+		fHasMessage = method.size(); // && !needQuotes(method);
 	}
 }
 
