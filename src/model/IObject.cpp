@@ -564,9 +564,10 @@ struct msgMatchPredicat {
 	const char* msg;
 			 msgMatchPredicat(const string& s) : msg(s.c_str()) {}
 	bool operator() (const pair<string, SMsgHandler>& elt) const { 
-		if (elt.first == "*") return false;
-		OSCRegexp regexp (elt.first.c_str());	
-		return regexp.match(msg);
+		if (elt.first.empty() ||(elt.first == "*") ) return false;
+		CRegexpT<char> regexp(elt.first.c_str(), EXTENDED);
+		bool ret = regexp.Match(msg);
+		return ret;
 	}
 };
 
