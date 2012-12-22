@@ -80,13 +80,13 @@ void ISignal::accept (Updater* u)
 bool ISignal::decodeProjection (const std::string& proj, int& index, int& step) const
 {
 	int i=0, s=0;
-	char c= ' ';
+	char c = ' ';
 	int result = sscanf(proj.c_str(), "[%d%c%d]", &i, &c, &s);
 	if (!result) return false;			// incorrect string format
 
 	index = i;
 	step = 0;
-	if ((result == 2) && (c=='~')) step = 1;
+	if ((result == 2) && (c == '~')) step = 1;
 	else if (result == 3) step = s;
 	return true;
 }
@@ -142,8 +142,8 @@ bool ISignal::putAt (const IMessage* msg, int index, int step)
 	int size = msg->size();
 	vector<float> values;
 	for (int i = 0; i< size; i++) {
-		float value = msg->param(i)->value<float>(err);
-		if (value == err) return false;			// error in parameter types
+		float value;
+		if (!msg->param(i, value)) return false;
 		if ((value < err) && (value > -err))	// catch nan and inf input
 			values.push_back(value);
 	}
