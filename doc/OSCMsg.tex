@@ -870,9 +870,9 @@ The pen style default value is \OSC{solid}.\\
 
 \example \\
 Setting a rectangle border width and color:
-\sample{/ITL/scene/rect set rect 0.5 0.5; \\
-/ITL/scene/rect penWidth 2.; \\
-/ITL/scene/rect penColor 255 0 0 ; 
+\sample{/ITL/scene/rect set rect 0.5 0.5 \\
+/ITL/scene/rect penWidth 2. \\
+/ITL/scene/rect penColor 255 0 0  
 }
 
 
@@ -922,8 +922,8 @@ scoreMsg :      'page' int32
 
 \example \\
 Displaying a multi-pages score on two pages starting at page 3:
-\sample{/ITL/scene/myScore columns 2; \\
-/ITL/scene/myScore page 3;
+\sample{/ITL/scene/myScore columns 2 \\
+/ITL/scene/myScore page 3
 }
 
 
@@ -994,7 +994,7 @@ ITLMsg : 'quit'
 		| ('mouse' ('show' | 'hide'))
 		| ('defaultShow' int32)
 		| ('load' filePath)
-		| ('require' int32 oscMsg)
+		| ('require' float oscMsg)
 		| ('time' int32)
 		| ('rate' int32)
 		| 'hello'
@@ -1020,7 +1020,7 @@ The default \OSC{defaultShow} value is 1.
 
 \item \OSC{load}: loads a file previously saved using the \OSC{save} message (see section \fullref{common}). Note that the load operation appends the new objects to the existing scene. When necessary, it is the sender responsibility to clear the scene before loading a file.
 
-\item \OSC{require}: check for a version number equal or greater to the number given as argument. The version number should be encoded as an integer value (for example: 76 for version 0.76, 112 for version 1.12). An OSC message is associated to the require message with the same syntax and semantic described in section \fullref{interaction}. This message is triggered when the check fails.
+\item \OSC{require}: check that the current INScore version number is equal or greater to the number given as argument. The version number is given as a float value. A message is associated to the \OSC{require} message, which is triggered when the check fails. See section \fullref{interaction} for more details.
 
 \item \OSC{rate}: changes the time task rate. Note that null values are ignored.\\
 The default \OSC{rate} value is 10.
@@ -1599,7 +1599,8 @@ Querying the signal node:
 \sample{/ITL/scene/signal get}
 \sampleindent will give the enclosed signals definitions:
 \sample{/ITL/scene/signal/y size 200 \\
-/ITL/scene/signal/h size 200}
+/ITL/scene/signal/h size 200
+}
 
 
 \subsublevel{Signal messages.}
@@ -1700,11 +1701,11 @@ projectionString :  '[' int32 (| '\~{}' (| int32)) ']'
 
 The projection string is made of a \emph{index value}, followed by an optional \emph{parallel marker} (\OSC{\~{}}), followed by an optional \emph{step value}, all enclosed in brackets.
 
-The \emph{index value} \values{n} is the index of a target signal. When the \emph{parallel marker} option is not present, the values are directed to the target signal.
+The \emph{index value} \values{n} is the index of a target signal. When the \emph{parallel marker} option is not present, the values are directed to the target signal. Indexes start at 0.
 
 \example \\
 Sending data to the second component of a parallel signal:
-\sample{/ITL/scene/signal/sig '[2]' 0.\ 0.1\ 0.2\ 0.3\ 0.4\ 0.5\ 0.4\ 0.3\ 0.2\ 0.1\ 0.}
+\sample{/ITL/scene/signal/sig '[1]' 0.\ 0.1\ 0.2\ 0.3\ 0.4\ 0.5\ 0.4\ 0.3\ 0.2\ 0.1\ 0.}
 \sampleindent is equivalent to the following message (assuming that the second signal name is 's2'):
 \sample{/ITL/scene/signal/s2 0.\ 0.1\ 0.2\ 0.3\ 0.4\ 0.5\ 0.4\ 0.3\ 0.2\ 0.1\ 0.}
 
@@ -1717,13 +1718,13 @@ Note that:
 The \emph{parallel marker} (\OSC{\~{}}) and the \emph{step value} \values{w} options affect the target signals. Let's consider \values{s[n]} as the signal at index \values{n}. The values are distributed in sequence and in loop to the signals \values{s[n], s[n+w]...s[m]} where \values{m} is the greatest value of the index \values{n+(w.i)} that is less than the signal dimension. The default  \emph{step value} is \values{1}.
 
 \example \\
-Sending data to the second and third components of a parallel signal:
-\sample{/ITL/scene/signal/sig [2\~{}] 0.1 0.2}
-\sampleindent is equivalent to the following messages (assuming that the signals names are 's2' and 's3'):
-\sample{/ITL/scene/signal/sig [2] 0.1\\
-/ITL/scene/signal/sig [3] 0.2
+Sending data to the second and third components of a set of 3 parallel signals:
+\sample{/ITL/scene/signal/sig [1\~{}] 0.1 0.2}
+\sampleindent is equivalent to the following messages (assuming that the signal dimension is 3):
+\sample{/ITL/scene/signal/sig [1] 0.1\\
+/ITL/scene/signal/sig [2] 0.2
 }
-\sampleindent or to the following (assuming that the signals names are 's2' and 's3'):
+\sampleindent or to the following (assuming that the target signal names are 's2' and 's3'):
 \sample{/ITL/scene/signal/s2 0.1\\
 /ITL/scene/signal/s3 0.2
 }
@@ -1734,7 +1735,7 @@ Sending data to the second and third components of a parallel signal:
 \sublevel{Graphic signals.}
 \label{gsignal}
 
-A graphic signal is created in the standard scene address space. A simple graphic signal is defined by a parallel signal controling the \values{y} value, the graphic thickness and the color at each time position. The color is encoded as HSBA colors (Hue, Saturation, Brightness, Transparency). The mapping of a signal value  (\values{[-1,1]}) to the HSBA color space is given by the table \ref{hsbamap}. 
+A graphic signal is the graphic representation of a set of parallel signals. It is created in the standard scene address space. A simple graphic signal is defined by a parallel signal controling the \values{y} deviation value, the thickness and the color at each time position. The color is encoded as HSBA colors (Hue, Saturation, Brightness, Transparency). The mapping of a signal value  (\values{[-1,1]}) to the HSBA color space is given by the table \ref{hsbamap}. 
 
 \begin{figure}[h]
 	\centering \includegraphics[width=65mm]{imgs/hsb}
@@ -1762,21 +1763,26 @@ parameter & mapping & \\
 
 
 
-A graphic signal responds to common component messages (section \fullref{common}). In addition, it supports the following messages:
+A graphic signal responds to common component messages (section \fullref{common}). Its specific messages are the following:
 \begin{rail}
 graphicSignal : 'set' 'graph' signalIdentifier 
-			| 'get'
 			| 'get' 'dimension'
 \end{rail}
 \index{Graphic signal!set}
-\index{Graphic signal!get}
 \index{Graphic signal! dimension}
 
 \begin{itemize}
 \item the \OSC{set} message is followed by the \OSC{graph} type and a \OSC{\textit{signalIdentifier}}, where \OSC{signalIdentifier} must correspond to an existing signal from the \OSC{signal} address space. In case \OSC{signalIdentifier} doesn't exist, then a new signal is created at the \OSC{signalIdentifier} address with default values. 
-\item the \OSC{get} message is the counterpart of the \OSC{set} message (see section \fullref{getsect}). 
 \item the \OSC{get dimension} message gives the number of graphic signals in parallel (see section \fullref{pgsignal}). 
  \end{itemize}
+ 
+\example \\
+Creating a signal and its graphic representation:
+\sample{/ITL/scene/signal/y size 200  \\
+! use of constant anonymous signals for thickness and color\\
+/ITL/scene/signal/sig set y 0.1 0. 1. 1. 1.  \\
+/ITL/scene/siggraph set graph sig 
+}
 
 %-------------------------------
 %:    Graphic signal default values.
@@ -1812,7 +1818,24 @@ n  \  |\ n \in \mathbb{N}\ \land\ 6.(n-1) < d \leqslant 6.n
 \]
 where \textit{d} is the dimension of the input signal.
 
-\note When \textit{d} is not a mutiple of 6, then the last graphic signal makes use of the default values mentionned above.
+When \textit{d} is not a mutiple of 6, then the last graphic signal makes use of the default values mentionned above.
+
+ 
+\example \\
+Creating parallel graphic signals:
+\sample{/ITL/scene/signal/y1 size 200  \\
+/ITL/scene/signal/y2 size 200  \\
+! use of constant anonymous signals for thickness and color\\
+/ITL/scene/signal/sig1 set y1 0.1 0. 1. 1. 1.  \\
+! use a different color for 'sig2'\\
+/ITL/scene/signal/sig2 set y2 0.1 0.6 1. 1. 1.  \\
+! put 'sig1' and 'sig2' in parallel\\
+/ITL/scene/signal/sig set sig1 sig2    \hspace{1CM}! 'sig' dimension is 12\\
+/ITL/scene/siggraph set graph sig 
+}
+
+\note \\
+Using data projection may be convenient when the input signal represents interleaved data. For example, the projection string \OSC{[n\~{}6]} distribute data over similar components of a set of graphic signals, where \OSC{n} represents the index of the graphic signal target component.
 
 
 %===============================
@@ -1820,20 +1843,20 @@ where \textit{d} is the dimension of the input signal.
 \toplevel{FAUST plugins}
 \label{faust}
 
-FAUST [Functional Audio Stream]\footnote{\url{http://faust.grame.fr}} is a functional programming language specifically designed for real-time signal processing and synthesis. A FAUST/INScore architecture allows to embed FAUST processors in INScore, for the purpose of signals computation. A FAUST/INScore plugin is viewed as a parallel signal and thus it is created in the \OSC{signal} address space. Thus and similarly to signals, a FAUST plugin is associated to OSC addresses in the form \OSC{/ITL/\emph{scene}/signal/\emph{name}} where \OSC{\emph{name}} is a user defined name.
+FAUST [Functional Audio Stream]\footnote{\url{http://faust.grame.fr}} is a functional programming language specifically designed for real-time signal processing and synthesis. A FAUST/INScore architecture allows to embed FAUST processors in INScore, for the purpose of signals computation. A FAUST plugin is viewed as a parallel signal and thus it is created in the \OSC{signal} address space. Similarly to signals, it is associated to an OSC address in the form \OSC{/ITL/\emph{scene}/signal/\emph{name}} where \OSC{\emph{name}} is a user defined name.
 
 \begin{rail}
 faustprocessor : 'set' 'faust' "path"
 \end{rail}
 \index{faustprocessor!set}
-A FAUST processor is created with a \OSC{set} message followed by the \OSC{faust} type, followed by the plugin path name. Thus the \OSC{faust} name is a reserved signal name.
+A FAUST processor is created with a \OSC{set} message followed by the \OSC{faust} type, followed by the plugin path name. 
 
 
 %===============================
 %:   Specific messages
 \sublevel{Specific messages}
 \label{faustmsg}
-A FAUST processor is characterized by the numbers of input and output channels and by a set of parameters. Each parameter carries a name defined by the FAUST program. The set of messages supported by a FAUST processor is the set of signals messages extended with the parameters names and with specific query messages. 
+A FAUST processor is characterized by the numbers of input and output channels and by a set of parameters. Each parameter carries a name defined by the FAUST processor. The set of messages supported by a FAUST processor is the set of signals messages extended with the parameters names and with specific query messages. 
 
 \begin{rail}
 faustmessage : signalMsgs
@@ -1846,18 +1869,32 @@ faustmessage : signalMsgs
 \index{faustprocessor!max}
 
 \begin{itemize}
-\item [1] \OSC{\emph{msg}} is any of the FAUST processor parameters, as defined by the FAUST program.
+\item [1] \OSC{\emph{msg}} is any of the FAUST processor parameters, which are defined by the FAUST processor.
 \item [2] the \OSC{get} message is extended to query the FAUST processor: \OSC{in} and \OSC{out} give the number of input and output channels.
 % \OSC{msgs} gives the list of the processor specific messages under the form of separate messages including the message name followed by its default, minimum and maximum values.
 \end{itemize}
 
+\example \\
+Creating a FAUST processor and querying its input and output count:
+\sample{/ITL/scene/signal/myFaust set faust aFaustPlugin \\
+/ITL/scene/signal/myFaust get in out
+}
+\sampleindent gives as output:
+\sample{/ITL/scene/signal/myFaust in 2 \\
+/ITL/scene/signal/myFaust out 4
+}
+Modifying the value of a FAUST processor parameter named \OSC{volume}:
+\sample{/ITL/scene/signal/myFaust volume 0.8}
+
+\note \\
+The plugins are shared libraries which extension is platform dependent. The plugin name should not include the extension. The expected extensions are the following: .dylib on MacOS and Linux, .dll on Windows.
 
 %===============================
 %:   Feeding and composing FAUST processors
 \sublevel{Feeding and composing FAUST processors}
 \label{composefaust}
 
-A FAUST processor accepts float values as input, which are taken as interleaved data.
+A FAUST processor accepts float values as input, which are taken as interleaved data and distributed to the input channels.
 
 From composition viewpoint, a FAUST processor is a parallel signal which dimension is the number of output channels. 
 Thus, a FAUST processor can be used like any parallel signal. However, the signal identifier defined in \ref{parcomp} is extended to support adressing single components of parallel signal as follows:
@@ -1868,6 +1905,12 @@ signal :
 \end{rail}
 where $n$ selects the signal \#n of a parallel signal. Note that indexes start at 0.
 
+\example \\
+Creating 3 parallel signals using the 3 output channels of a FAUST processor named \OSC{myFaust}:
+\sample{/ITL/scene/signal/y1 set 'myFaust/0' 0.01 0. 1. 1. 1. \\
+/ITL/scene/signal/y2 set 'myFaust/1' 0.01 0.5 1. 1. 1. \\
+/ITL/scene/signal/y3 set 'myFaust/2' 0.01 -0.5 1. 1. 1.
+}
 
 %===============================
 %:Events and Interaction
@@ -1876,103 +1919,125 @@ where $n$ selects the signal \#n of a parallel signal. Note that indexes start a
 
 Interaction messages are user defined messages associated to events and triggered when these events occur. These messages accept variables as message arguments.
 
-The general form of the message is:
-
+The general form of the message is the following:
 \begin{rail}
-interactMsg : (('watch' | 'watch+')  ([1] | what  ( | oscMsg))) 
+interactMsg : (('watch' | 'watch+')  ([1] | what  ( [2] | [3]  ( ( message  )+ "," ) )  )) 
 \end{rail}
 \index{Interaction!watch}
 \index{Interaction!watch+}
 
+\OSC{what} represents the event to watch and \OSC{message} is a list of associated messages, separated by a comma. 
+
 \begin{itemize}
-\item \OSC{watch}: clears the messages associated to the event and when specified, associates the new message to the watched event. \OSC{watch} without arguments ([1]) clears all the messages associated to all events.
-\item \OSC{watch+}: adds a message to the watched event message list. 
+\item [1]: clear all the messages for all the events.
+\item [2]: clear the messages associated to the \OSC{what} event.
+\item [3]: associate a list of messages to the \OSC{what} event. With \OSC{watch}, the messages replace previously associated messages. Using \OSC{watch+}, the messages are appended to the messages currently associated to the event.
 \end{itemize}
 
-The associated OSC message is any valid OSC message (not restricted to the Interlude message set), with an extended address scheme, supporting IP addresses or host names and udp port number to be specified as OSC addresses prefix. The message parameters are any valid OSC type or variables (see section \ref{interactvar}).
-\begin{rail} 
-oscMsg : (| fullAddress)  OSCAddress ( (parameters | variable) + )
-\end{rail}
+\note \\
+	The [1] and [2] form has no effect with the \OSC{watch+} message. \\
+	In some environments, the comma has a special meaning, making tricky to use it as a message separator. This is why ':' is also accepted as separator.
 
 \begin{rail} 
-fullAddress : (IPAddress | hostname) ':' port
+message : (| addressPrefix)  OSCAddress ( | (parameters | variable) + )
 \end{rail}
+
+The associated messages are any valid OSC message (not restricted to the INScore message set), with an extended address scheme, supporting IP addresses or host names and udp port number to be specified as OSC addresses prefix. The message parameters are any valid OSC type or variables (see section \ref{interactvar}).
+
+\begin{rail} 
+addressPrefix : (IPAddress | hostname) ':' port
+\end{rail}
+
+%===============================
+%:    Defined events
+\sublevel{Defined events}
+\label{defevents}
 
 
 %===============================
-%:    Interaction messages
-\sublevel{Interaction messages}
-\label{interactmsg}
+%:       UI events
+\subsublevel{UI events}
+\label{uievents}
 
-Events currently \emph{watchable} are:
+User interface events are typical mouse events:
 \begin{rail}
 what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'doubleClick' 
 \end{rail}
-\index{Interaction!mouseDown}
-\index{Interaction!mouseUp}
-\index{Interaction!mouseEnter}
-\index{Interaction!mouseLeave}
-\index{Interaction!mouseMove}
-\index{Interaction!doubleClick}
+\index{Interaction!Events!mouseDown}
+\index{Interaction!Events!mouseUp}
+\index{Interaction!Events!mouseEnter}
+\index{Interaction!Events!mouseLeave}
+\index{Interaction!Events!mouseMove}
+\index{Interaction!Events!doubleClick}
+	
+\example \\
+Triggering a message on mouse down:
+\sample{/ITL/scene/myObject watch mouseDown /ITL/scene/myObject show 0}
+\sampleindent the object hides itself on mouse click. \\
+Triggering a message on mouse down but addressed to another host on udp port 12100:
+\sample{/ITL/scene/myObject watch mouseDown host.domain.org:12100/an/address start }
 
-
-\example
-\sample{
-/ITL/scene/myObject watch mouseDown "/ITL/scene/myObject" "show" 0;
-}
-Request the object \OSC{myObject} to watch \OSC{mouseDown} events and send a message to itself.
-\sample{
-/ITL/scene/myObject watch mouseDown "host.domain.org:12100/an/address" "start";
-}
-Request the object \OSC{myObject} to watch \OSC{mouseDown} events and send a "start" message to host.domain.org on udp port 12100 to OSC address /an/address
+\note \\
+UI events are not supported by objects that are synchronized as slave.
 
 %===============================
-%:    Notification messages
-\sublevel{Notification messages}
-\label{notifymsg}
+%:       Time events
+\subsublevel{Time events}
+\label{timeevents}
 
-Events currently \emph{watchable} are:
+Events are also defined on the time domain:
 \begin{rail}
-what : 	'timeEnter' timezone | 'timeLeave' timezone 
-		| 'durEnter' timezone | 'durLeave' timezone 
-		| 'newElement'
+what : 	'timeEnter' time time | 'timeLeave' time time 
+		| 'durEnter' time time | 'durLeave' time time 
 \end{rail}
-\index{Interaction!timeEnter}
-\index{Interaction!timeLeave}
-\index{Interaction!durEnter}
-\index{Interaction!durLeave}
-\index{Interaction!newElement}
+\index{Interaction!Events!timeEnter}
+\index{Interaction!Events!timeLeave}
+\index{Interaction!Events!durEnter}
+\index{Interaction!Events!durLeave}
 
-\begin{rail}
-timezone : int32 int32 int32 int32
-\end{rail}
-A time zone is defined by 2 dates expressed as rational values (i.e. with 4 integers).
-\index{Interaction! timezone}
+Each event takes a time interval as parameter, defined by two \OSC{time} specifications (see section \fullref{time} for the time format)
 
 \begin{itemize}
-\item \OSC{timeEnter}, \OSC{timeLeave} are triggered when an object date is moved to or out of a watched \OSC{timezone},
-\item \OSC{durEnter}, \OSC{durLeave} are triggered when an object duration is moved to or out of a watched \OSC{timezone} that should be viewed as a duration range.
+\item \OSC{timeEnter}, \OSC{timeLeave} are triggered when an object date is moved to or out of a watched time interval,
+\item \OSC{durEnter}, \OSC{durLeave} are triggered when an object duration is moved to or out of a watched time interval.
 \end{itemize}
 
 \example \\
- a cursor that displays a given music page when it enters its time zone.
-\samplev{
-/ITL/scene/cursor watch 'timeEnter' 10 1 18 1 '/ITL/scene/score' 'set' 'img' 'page2.png';
-}
-
-
-
-The \OSC{newElement} event is supported at scene level only and triggered when a new element is added to the scene.
+An object that moves a score to a given page number when it enters its time zone.
+\samplev{/ITL/scene/myObject watch timeEnter 10/1 18/1 (/ITL/scene/score page 2)}
 
 
 %===============================
-%:    Message variables
+%:       Miscellaneous events
+\subsublevel{Miscellaneous events}
+\label{miscevents}
+
+\begin{rail}
+what : 	 'newElement'
+\end{rail}
+\index{Interaction!Events!newElement}
+
+The \OSC{newElement} event is supported at scene level only and triggered when a new element is added to the scene.
+
+\example \\
+Displaying a welcome message to new elements:
+\sample{/ITL/scene watch newElement (/ITL/scene/msg set txt "Welcome")}
+
+%===============================
+%:    Variables
 \sublevel{Variables}
 \label{interactvar}
 
-Variables denote values computed when an event is triggered. These values are send in place of the variable. A variable name starts with a '\$' sign. Currently, the following variables are supported by mouse events:
+Variables are values computed when an event is triggered. These values are send in place of the variable. A variable name starts with a '\$' sign. 
+
+%===============================
+\subsublevel{Position variables}
+\label{posvar}
+
+Position variables reflects the current mouse position for mouse events. They are set to $0$ for the other events. 
+
 \begin{rail} 
-variable : (xy | 'absx' | 'absy' | 'sx' | 'sy' | date | 'name' | 'address') 
+posVar : xy | 'absx' | 'absy' | 'sx' | 'sy' 
 \end{rail}
 \index{Interaction!variable!x}
 \index{Interaction!variable!y}
@@ -1980,10 +2045,8 @@ variable : (xy | 'absx' | 'absy' | 'sx' | 'sy' | date | 'name' | 'address')
 \index{Interaction!variable!absy}
 \index{Interaction!variable!sx}
 \index{Interaction!variable!sy}
-\index{Interaction!variable!date}
-\index{Interaction!variable!name}
-\index{Interaction!variable!address}
 
+where
 \begin{rail} 
 xy : ('x' | 'y') ( | '[low,high]') 
 \end{rail}
@@ -1995,28 +2058,67 @@ xy : ('x' | 'y') ( | '[low,high]')
 Note also that the values are not clipped to the object dimensions and could exceed its width or height or become negative in case of mouse move events.
 
 \item \OSC{\$sx} \OSC{\$sy}: denotes the mouse pointer position in the scene coordinates space. 
-
-\item \OSC{\$name}, \OSC{\$address}: replaced by the target object name or OSC address. Note that in case of \OSC{newElement} event, the target object is the new element. 
 \end{itemize}
 
-\begin{rail} 
-date : ('date' | 'rdate') (| ':'  mapname) (| '[n/d]') (| '\%' 'f')
+\example \\
+An object that follows mouse move.\\
+\sample{/ITL/scene/myObject watch mouseDown ( \\
+\hspace*{3cm}/ITL/scene/myObject x '\$sx', \\
+\hspace*{3cm}/ITL/scene/myObject y '\$sy' )}
 
+
+%===============================
+\subsublevel{Time variables}
+\label{timevar}
+
+Time variables reflects the date corresponding to the current mouse position for mouse events. 
+They are set to $0$ for the other events. 
+
+\begin{rail} 
+timeVar :  ('date' | 'rdate') (| ':'  mapname) (| '[n/d]') (| '\%' 'f')
 \end{rail}
+\index{Interaction!variable!date}
+\index{Interaction!variable!rdate}
 
 \begin{itemize}
 \item \OSC{\$date}: denotes the object date corresponding to the mouse pointer position at the time of the event. It is optionnaly followed by a colon and the name of the mapping to be used to compute the date. The \OSC{\$date} variable is replaced by its rational value (i.e. two integers values). The optional rational enclosed in brackets may be used to indicate a quantification: the date value is rounded to an integer count of the specified rational value. The optional \OSC{\%f} may be used to get the date delivered as a float value.
 \item \OSC{\$rdate}: is similar to \OSC{\$date} but ignores the target current date: the date is relative to the object mapping only.
 \end{itemize}
 
-\note A variable can be used several times in a message, but several \OSC{\$date} variables must always refer to the same mapping.
+\note \\
+A variable can be used several times in a message, but several \OSC{\$date} variables must always refer to the same mapping.
 
-\vspace{5mm}
-\texttt{\textbf{Warning:}} the interaction message set is provided for experiment. It is likely to change in a future version. Ideas, comments, suggestions are welcome for the design of a stable API.
+\example \\
+Sending the current date as a float value to an external application:\\
+\sample{/ITL/scene/myObject watch mouseDown ( targetHost:12000/date '\$date\%f' )}
+
+%===============================
+\subsublevel{Miscellaneous variables}
+\label{miscvar}
+
+\begin{rail} 
+variable :  'name' | 'scene' | 'address'
+\end{rail}
+\index{Interaction!variable!scene}
+\index{Interaction!variable!name}
+\index{Interaction!variable!address}
+
+\begin{itemize}
+\item \OSC{\$name} is replaced by the target object name.
+\item \OSC{\$scene} is replaced by the target object scene name.
+\item \OSC{\$address} is replaced by the target object OSC address. 
+\end{itemize}
+
+\note \\
+For the \OSC{newElement} event, the target object is the new element. 
+
+\example \\
+Using an object name:
+\sample{/ITL/scene watch newElement (/ITL/scene/welcome set txt "Welcome" '\$name')}
 
 %===============================
 %:    Message based variables
-\sublevel{Message based variables}
+\subsublevel{Message based variables}
 \label{msgvar}
 
 A message based variable is a variable containing an OSC message which will be evaluated at the time of the event. They are supported by all kind of events. Like  the variables above, a message based variable starts with a '\$' sign followed by a valid 'get' message enclosed in parenthesis:
@@ -2027,32 +2129,31 @@ msgVar : '(' oscaddress 'get' (| params) ')'
 The evaluation of a 'get' message produces a message or a list of messages. The message based variable will be replaced by the parameters of the messages resulting from the evaluation of the 'get' message.
 Note that all the 'get' messages attached to an event are evaluated at the same time.
 
-\example
-\sample{ 
-/ITL/s/o1 watch  'mouseDown' '/ITL/s/o1' 'show' \$('/ITL/s/o2' get 'show'); \\
-/ITL/s/o1 watch+ 'mouseDown' '/ITL/s/o2' 'show' \$('/ITL/s/o1' get 'show'); \\
-/ITL/s/o2 watch  'mouseDown' '/ITL/s/o1' 'show' \$('/ITL/s/o2' get 'show'); \\
-/ITL/s/o2 watch+ 'mouseDown' '/ITL/s/o2' 'show' \$('/ITL/s/o1' get 'show')
-}
-When clicked, the objects \OSC{o1} and \OSC{o2} swap their visibility state.
-
+\example \\
+An object that takes the $x$ position of another object on mouse down:
+\sample{/ITL/scene/myObject watch mouseDown \\
+\hspace*{3cm}(/ITL/scene/myObject x '\$(/ITL/scene/obj get x)')}
 
 
 %===============================
 %:    OSC address variables
-\sublevel{OSC address variables}
+\subsublevel{OSC address variables}
 \label{oscvar}
-The OSC address parameter of a watch message supports the following variables:
+The OSC address of a message associated to an event supports the following variables:
 \begin{itemize}
-\item \OSC{\$self}: replaced by the object name at the time of the message setting.
-\item \OSC{\$scene}: replaced by the scene name at the time of the message setting.
+\item \OSC{\$self}: replaced by the object name.
+\item \OSC{\$scene}: replaced by the scene name.
 \end{itemize}
-Note: the system doesn't check for the consistency of the variables placement.
 
+\example \\
+Requesting a set of objects to send a message to themselves on a mouse event:
+\sample{/ITL/scene/* watch mouseDown \hspace*{2.4cm}! request all the objects of the scene \\
+\hspace*{2.7cm}(/ITL/scene/\$self x '\$sx') ! to send a message to themselves
+}
 
 %===============================
-%:    States management
-\sublevel{States management}
+%:    Interaction state management
+\sublevel{Interaction state management}
 \label{evtstats}
 
 For a given object, its \emph{interaction state} (i.e. the watched events and the associated messages) can be saved and restored.
@@ -2062,12 +2163,14 @@ stateMsg : 'push' | 'pop'
 \index{Interaction!push}
 \index{Interaction!pop}
 
-Actually every object embeds a stack to push and pop interaction states. 
+Interaction states are managed using a stack where the states are pushed to or popped from.
 \begin{itemize}
 \item \OSC{push}: push the current interaction state on top of the stack.
-\item \OSC{pop}: replace the current interaction state with the one poped from the top of the stack.
-Note that the effect of a pop message addressed to an empty stack is to clear the current interaction state.
+\item \OSC{pop}: replace the current interaction state with the one popped from the top of the stack.
 \end{itemize}
+
+\note \\
+The effect of a pop message addressed to an object with an empty stack is to clear the object current interaction state.
 
 
 %===============================
@@ -2075,60 +2178,39 @@ Note that the effect of a pop message addressed to an empty stack is to clear th
 \sublevel{File watcher}
 \label{watch}
 
-The \OSC{fileWatcher} is a component automatically embedded at scene level. \\
+The \OSC{fileWatcher} is a static node of a scene that is intended to watch file modifications. \\
 It receives messages at the address \OSC{/ITL/scene/fileWatcher}.
 
-The \OSC{fileWatcher} service monitors files on demand; it is aware of file modifications and file removals (or renamings, which is equivalent). The \OSC{fileWatcher} works with associations between a file and an OSC message : when a file change occurs, the file watcher posts the associated OSC message.
-
-The \OSC{fileWatcher} is controlled with 4 messages:
-\begin{itemize}
-\item the \OSC{add} message is used to add a new 'file' - 'OSC message' association ;
-\item the \OSC{remove} message is used to remove a 'file' - 'OSC message' association.
-\item the \OSC{clear} message is used to clear all existing associations.
-\item the \OSC{get} message is used to retrieve the current associations.
-\end{itemize}
-\index{fileWatcher}
+The \OSC{fileWatcher} support the \OSC{watch} and \OSC{watch+} messages as described in section \fullref{interaction} with a file name used in place of the \OSC{what} parameter.
 
 \begin{rail}
-fileWatcher : ('add' filePath OSCMessage) 
-		| 'remove' (filePath OSCMessage | OSCAddress )
-		| 'clear'
-		| 'get'
+fileWatcher : (('watch' | 'watch+')  ( | filePath  ( |  ( ( message  )+ "," ) )  )) 
 \end{rail}
-\index{fileWatcher!add}
-\index{fileWatcher!remove}
-\index{fileWatcher!clear}
-\index{fileWatcher!get}
+\index{fileWatcher!watch}
+\index{fileWatcher!watch+}
 
-where \OSC{OSCMessage} is any message complying to the format desscribed in section \fullref{genformat}.
-
-\example
+\example \\
+Reload aa INScore script on file modification:
 \sample{
-/ITL/scene/fileWatcher add 'fuga.gmn' '/ITL/scene/score' 'set' 'gmnf' 'fuga.gmn';
+/ITL/scene/fileWatcher wach 'myScript.inscore' \\
+\hspace*{3cm}( /ITL/scene load 'myScript.inscore' )
 }
 
-\note The \OSC{get} query returns a set of messages complying to the \OSC{add} message format.\\
-
-The \OSC{remove} message may take only 1 parameter, in which case the only parameter is an OSC address : it stops monitoring any file associated to an OSC message with this OSC address.
-
-\note An OSC message can be associated to several files, and a file can be associated to several OSC messages.
-When a file has been removed (or renamed), the \OSC{fileWatcher} stops monitoring it.
-
-\sublevel{Debug}
-
-Each object has a \OSC{debug} sub-node for debugging purposes. This \OSC{debug} virtual node has 3 flags, that can be actived or desactived with \OSC{0} or \OSC{1}:
-
-\begin{rail}
-debug : 		('name'  int32)
-		|	('map' int32)
-		|	('signal' int32)
-\end{rail}
-
-\begin{itemize}
-\item When the \OSC{name} flag is on, each scene component displays its bounding rectangle and name.
-\item When the \OSC{map} flag is on, each scene component displays its mappings.
-\item When the \OSC{signal} flag is on, each object (even the scene or the application) will, according to its type, emit 'performance related' signals (or no signal). This 'performance signal' is specific to the type of object. The name of 'performance signal' is of the form \OSC{debug-}\emph{objectName}\OSC{-}\emph{SomeName}. Currently, only the \OSC{application}, the \OSC{scene} and \OSC{graph} objects emit 'performance signals'.
-\end{itemize}
+%\sublevel{Debug}
+%
+%Each object has a \OSC{debug} sub-node for debugging purposes. This \OSC{debug} virtual node has 3 flags, that can be actived or desactived with \OSC{0} or \OSC{1}:
+%
+%\begin{rail}
+%debug : 		('name'  int32)
+%		|	('map' int32)
+%		|	('signal' int32)
+%\end{rail}
+%
+%\begin{itemize}
+%\item When the \OSC{name} flag is on, each scene component displays its bounding rectangle and name.
+%\item When the \OSC{map} flag is on, each scene component displays its mappings.
+%\item When the \OSC{signal} flag is on, each object (even the scene or the application) will, according to its type, emit 'performance related' signals (or no signal). This 'performance signal' is specific to the type of object. The name of 'performance signal' is of the form \OSC{debug-}\emph{objectName}\OSC{-}\emph{SomeName}. Currently, only the \OSC{application}, the \OSC{scene} and \OSC{graph} objects emit 'performance signals'.
+%\end{itemize}
 
 
 
@@ -2137,7 +2219,19 @@ debug : 		('name'  int32)
 \toplevel{Scripting}
 \label{scripting}
 
-Since INScore saves its states as text files containing lists of OSC messages, it becomes natural to design INSCore scenes using these messages as a textual scripting language. For a better support of scripting, \emph{variables} have been introduced to provide a better parameters control and programming languages have been embedded to generate messages algorithmically.
+INScore saves its state to files containing textual OSC messages. These files can be created from scratch and the OSC syntax has been extended at textual level in order to provide users with a scripting language.
+
+
+%===============================
+%:    Statements
+\sublevel{Statements}\label{scriptstatement}
+
+
+%===============================
+%:    variables
+\sublevel{Types}\label{scripttypes}
+
+
 
 %===============================
 %:    variables
@@ -2381,7 +2475,7 @@ Known issues:
 \sublevel{Differences to version 0.75}
 \begin{itemize}
 \item new \OSC{require} message supported by the \OSC{/ITL} node (see section \fullref{ITL}).
-\item new event named \OSC{newElement} supported at scene level (see section \fullref{notifymsg}).
+\item new event named \OSC{newElement} supported at scene level (see section \fullref{timeevents}).
 \item new \OSC{name} and \OSC{address} variables (see section \fullref{interactvar}).
 \item new system map computation making use of the new slices map provided by the guidolib version 1.42
 \item INScore API: the \OSC{newMessage} method sets now the message src IP to localhost
@@ -2427,7 +2521,7 @@ Known issues:
 %:    Differences to version 0.60
 \sublevel{Differences to version 0.60}
 \begin{itemize}
-\item new 'mousemove' event (see section \fullref{interactmsg}).
+\item new 'mousemove' event (see section \fullref{uievents}).
 \item interaction messages accept variables (\$x, \$y, \$date...) (see section \fullref{interactvar}).
 \item SVG code and files support (see section \fullref{setfile}).
 \item set line message change: the \OSC{x y} form is deprecated, it is replaced by

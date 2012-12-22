@@ -696,7 +696,7 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {36}{ ITLMsg : 'quit' | ('rootPath' path) | ('mouse' ('show' | 'hide')) | ('defaultShow' int32) | ('load' filePath) | ('require' int32 oscMsg) | ('time' int32) | ('rate' int32) | 'hello' }
+\rail@i {36}{ ITLMsg : 'quit' | ('rootPath' path) | ('mouse' ('show' | 'hide')) | ('defaultShow' int32) | ('load' filePath) | ('require' float oscMsg) | ('time' int32) | ('rate' int32) | 'hello' }
 \rail@o {36}{
 \rail@index{ITLMsg}
 \rail@begin{10}{ITLMsg}
@@ -720,7 +720,7 @@
 \rail@nont{filePath}[]
 \rail@nextbar{6}
 \rail@term{require}[]
-\rail@token{int32}[]
+\rail@nont{float}[]
 \rail@nont{oscMsg}[]
 \rail@nextbar{7}
 \rail@term{time}[]
@@ -1184,17 +1184,15 @@
 \rail@term{]}[]
 \rail@end
 }
-\rail@i {66}{ graphicSignal : 'set' 'graph' signalIdentifier | 'get' | 'get' 'dimension' }
+\rail@i {66}{ graphicSignal : 'set' 'graph' signalIdentifier | 'get' 'dimension' }
 \rail@o {66}{
 \rail@index{graphicSignal}
-\rail@begin{3}{graphicSignal}
+\rail@begin{2}{graphicSignal}
 \rail@bar
 \rail@term{set}[]
 \rail@term{graph}[]
 \rail@nont{signalIdentifier}[]
 \rail@nextbar{1}
-\rail@term{get}[]
-\rail@nextbar{2}
 \rail@term{get}[]
 \rail@term{dimension}[]
 \rail@endbar
@@ -1246,10 +1244,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {70}{ interactMsg : (('watch' | 'watch+') ([1] | what ( | oscMsg))) }
+\rail@i {70}{ interactMsg : (('watch' | 'watch+') ([1] | what ( [2] | [3] ( ( message )+ "," ) ) )) }
 \rail@o {70}{
 \rail@index{interactMsg}
-\rail@begin{3}{interactMsg}
+\rail@begin{4}{interactMsg}
 \rail@bar
 \rail@term{watch}[]
 \rail@nextbar{1}
@@ -1260,35 +1258,44 @@
 \rail@nextbar{1}
 \rail@nont{what}[]
 \rail@bar
+\rail@annote[2]
 \rail@nextbar{2}
-\rail@nont{oscMsg}[]
+\rail@annote[3]
+\rail@plus
+\rail@nont{message}[]
+\rail@nextplus{3}
+\rail@cterm{,}[]
+\rail@endplus
 \rail@endbar
 \rail@endbar
 \rail@end
 }
-\rail@i {71}{ oscMsg : (| fullAddress) OSCAddress ( (parameters | variable) + ) }
+\rail@i {71}{ message : (| addressPrefix) OSCAddress ( | (parameters | variable) + ) }
 \rail@o {71}{
-\rail@index{oscMsg}
-\rail@begin{3}{oscMsg}
+\rail@index{message}
+\rail@begin{4}{message}
 \rail@bar
 \rail@nextbar{1}
-\rail@nont{fullAddress}[]
+\rail@nont{addressPrefix}[]
 \rail@endbar
 \rail@nont{OSCAddress}[]
+\rail@bar
+\rail@nextbar{1}
 \rail@plus
 \rail@bar
 \rail@nont{parameters}[]
-\rail@nextbar{1}
+\rail@nextbar{2}
 \rail@nont{variable}[]
 \rail@endbar
-\rail@nextplus{2}
+\rail@nextplus{3}
 \rail@endplus
+\rail@endbar
 \rail@end
 }
-\rail@i {72}{ fullAddress : (IPAddress | hostname) ':' port }
+\rail@i {72}{ addressPrefix : (IPAddress | hostname) ':' port }
 \rail@o {72}{
-\rail@index{fullAddress}
-\rail@begin{2}{fullAddress}
+\rail@index{addressPrefix}
+\rail@begin{2}{addressPrefix}
 \rail@bar
 \rail@nont{IPAddress}[]
 \rail@nextbar{1}
@@ -1317,41 +1324,40 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {74}{ what : 'timeEnter' timezone | 'timeLeave' timezone | 'durEnter' timezone | 'durLeave' timezone | 'newElement' }
+\rail@i {74}{ what : 'timeEnter' time time | 'timeLeave' time time | 'durEnter' time time | 'durLeave' time time }
 \rail@o {74}{
 \rail@index{what}
-\rail@begin{5}{what}
+\rail@begin{4}{what}
 \rail@bar
 \rail@term{timeEnter}[]
-\rail@nont{timezone}[]
+\rail@nont{time}[]
+\rail@nont{time}[]
 \rail@nextbar{1}
 \rail@term{timeLeave}[]
-\rail@nont{timezone}[]
+\rail@nont{time}[]
+\rail@nont{time}[]
 \rail@nextbar{2}
 \rail@term{durEnter}[]
-\rail@nont{timezone}[]
+\rail@nont{time}[]
+\rail@nont{time}[]
 \rail@nextbar{3}
 \rail@term{durLeave}[]
-\rail@nont{timezone}[]
-\rail@nextbar{4}
-\rail@term{newElement}[]
+\rail@nont{time}[]
+\rail@nont{time}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {75}{ timezone : int32 int32 int32 int32 }
+\rail@i {75}{ what : 'newElement' }
 \rail@o {75}{
-\rail@index{timezone}
-\rail@begin{1}{timezone}
-\rail@token{int32}[]
-\rail@token{int32}[]
-\rail@token{int32}[]
-\rail@token{int32}[]
+\rail@index{what}
+\rail@begin{1}{what}
+\rail@term{newElement}[]
 \rail@end
 }
-\rail@i {76}{ variable : (xy | 'absx' | 'absy' | 'sx' | 'sy' | date | 'name' | 'address') }
+\rail@i {76}{ posVar : xy | 'absx' | 'absy' | 'sx' | 'sy' }
 \rail@o {76}{
-\rail@index{variable}
-\rail@begin{8}{variable}
+\rail@index{posVar}
+\rail@begin{5}{posVar}
 \rail@bar
 \rail@nont{xy}[]
 \rail@nextbar{1}
@@ -1362,12 +1368,6 @@
 \rail@term{sx}[]
 \rail@nextbar{4}
 \rail@term{sy}[]
-\rail@nextbar{5}
-\rail@nont{date}[]
-\rail@nextbar{6}
-\rail@term{name}[]
-\rail@nextbar{7}
-\rail@term{address}[]
 \rail@endbar
 \rail@end
 }
@@ -1386,11 +1386,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {78}{ date : ('date' | 'rdate') (| ':' mapname) (| '[n/d]') (| '\%' 'f') \par
-}
+\rail@i {78}{ timeVar : ('date' | 'rdate') (| ':' mapname) (| '[n/d]') (| '\%' 'f') }
 \rail@o {78}{
-\rail@index{date}
-\rail@begin{2}{date}
+\rail@index{timeVar}
+\rail@begin{2}{timeVar}
 \rail@bar
 \rail@term{date}[]
 \rail@nextbar{1}
@@ -1412,8 +1411,21 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {79}{ msgVar : '(' oscaddress 'get' (| params) ')' }
+\rail@i {79}{ variable : 'name' | 'scene' | 'address' }
 \rail@o {79}{
+\rail@index{variable}
+\rail@begin{3}{variable}
+\rail@bar
+\rail@term{name}[]
+\rail@nextbar{1}
+\rail@term{scene}[]
+\rail@nextbar{2}
+\rail@term{address}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {80}{ msgVar : '(' oscaddress 'get' (| params) ')' }
+\rail@o {80}{
 \rail@index{msgVar}
 \rail@begin{2}{msgVar}
 \rail@term{(}[]
@@ -1426,8 +1438,8 @@
 \rail@term{)}[]
 \rail@end
 }
-\rail@i {80}{ stateMsg : 'push' | 'pop' }
-\rail@o {80}{
+\rail@i {81}{ stateMsg : 'push' | 'pop' }
+\rail@o {81}{
 \rail@index{stateMsg}
 \rail@begin{2}{stateMsg}
 \rail@bar
@@ -1437,42 +1449,26 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {81}{ fileWatcher : ('add' filePath OSCMessage) | 'remove' (filePath OSCMessage | OSCAddress ) | 'clear' | 'get' }
-\rail@o {81}{
-\rail@index{fileWatcher}
-\rail@begin{5}{fileWatcher}
-\rail@bar
-\rail@term{add}[]
-\rail@nont{filePath}[]
-\rail@nont{OSCMessage}[]
-\rail@nextbar{1}
-\rail@term{remove}[]
-\rail@bar
-\rail@nont{filePath}[]
-\rail@nont{OSCMessage}[]
-\rail@nextbar{2}
-\rail@nont{OSCAddress}[]
-\rail@endbar
-\rail@nextbar{3}
-\rail@term{clear}[]
-\rail@nextbar{4}
-\rail@term{get}[]
-\rail@endbar
-\rail@end
-}
-\rail@i {82}{ debug : ('name' int32) | ('map' int32) | ('signal' int32) }
+\rail@i {82}{ fileWatcher : (('watch' | 'watch+') ( | filePath ( | ( ( message )+ "," ) ) )) }
 \rail@o {82}{
-\rail@index{debug}
-\rail@begin{3}{debug}
+\rail@index{fileWatcher}
+\rail@begin{4}{fileWatcher}
 \rail@bar
-\rail@term{name}[]
-\rail@token{int32}[]
+\rail@term{watch}[]
 \rail@nextbar{1}
-\rail@term{map}[]
-\rail@token{int32}[]
+\rail@term{watch+}[]
+\rail@endbar
+\rail@bar
+\rail@nextbar{1}
+\rail@nont{filePath}[]
+\rail@bar
 \rail@nextbar{2}
-\rail@term{signal}[]
-\rail@token{int32}[]
+\rail@plus
+\rail@nont{message}[]
+\rail@nextplus{3}
+\rail@cterm{,}[]
+\rail@endplus
+\rail@endbar
 \rail@endbar
 \rail@end
 }
