@@ -29,6 +29,7 @@
 #include "IMessage.h"
 #include "IMessageStream.h"
 #include "IMessageStack.h"
+#include "Methods.h"
 #include "Tools.h"
 #include "rational.h"
 
@@ -172,22 +173,65 @@ bool IMessage::decodeAddress (const std::string& address, std::string& oscAddres
 }
 
 //--------------------------------------------------------------------------
+//bool IMessage::watchMsg(int& msgIndex) const
+//{
+//	if (message().empty()) return false;
+//	return (message() == krequire_SetMethod)
+//		msgIndex = 1;
+//	else if (message() == kwatch_GetSetMethod) || (message() == kwatchplus_SetMethod)) {
+//		string what;
+//		if (!msg->param (0, what))				// can't decode event to watch when not a string
+//			return false;						// exit with bad parameter
+//			
+//		EventsAble::eventype t = EventsAble::string2type (what);
+//		switch (t) {
+//			case EventsAble::kMouseMove:
+//			case EventsAble::kMouseDown:
+//			case EventsAble::kMouseUp:
+//			case EventsAble::kMouseDoubleClick:
+//			case EventsAble::kMouseEnter:
+//			case EventsAble::kMouseLeave:
+//				if (msg->size() > 1) {
+//					msgIndex = 1);
+//					if (!watchMsg) return MsgHandler::kBadParameters;
+//
+//					if (add) eventsHandler()->addMsg (t, watchMsg);
+//					else eventsHandler()->setMsg (t, watchMsg);
+//				}
+//				else if (!add) eventsHandler()->setMsg (t, 0);
+//				break;
+//
+//			case EventsAble::kTimeEnter:
+//			case EventsAble::kTimeLeave:
+//			case EventsAble::kDurEnter:
+//			case EventsAble::kDurLeave:
+//	}
+//	else return false;
+//	return true;
+//}
+
+//--------------------------------------------------------------------------
 SIMessage IMessage::watchMsg2Msg(int& index) const
 {
 	string address, oscaddress; TUrl url;
 	if (!param(index++, address) || !decodeAddress (address, oscaddress, url)) {
-		ITLErr << "incorrect address in watch message" << ITLEndl;
+		ITLErr << "incorrect address " << address << " in watch message" << ITLEndl;
 		return 0;
 	}
 	
 	argslist args;
 	int n = size();
 	while (index < n) {
-		// first look for the messages separator ( ',' or ':')
 		string str;
-		if (param(index, str) && ((str == ",") || (str == ":")) ) {
-			index++;
-			break;
+		if (param(index, str)) {
+			// first look for the messages separator ( ',' or ':') or end list marker
+			if ((str == ",") || (str == ":") || (str == ")")) {
+				break;
+			}
+			else if (str == "(") {			// enclosed messages list
+				args.push_back(new IMsgParam<SIMessageList>(_watchMsg2Msgs (++index)));
+				break;
+			}
 		}
 		args.push_back(param(index++));
 	}
@@ -201,31 +245,36 @@ SIMessageList IMessage::watchMsg2Msgs(int startIndex) const
 	if (param(startIndex, list))	{		// message has already the correct format (parsed message)
 		return list;
 	}
-	list = IMessageList::create();
-	int n = size();
-	while (startIndex < n) {
-		SIMessage msg = watchMsg2Msg (startIndex);
-		if (!msg) break;
-		else list->list().push_back(msg);
+
+	string listMarker;
+	if (!param (startIndex, listMarker) || (listMarker != "(" )) {	// look for opening parenthesis first
+		ITLErr << "incorrect watch message format: missing opening '('" << ITLEndl;
+		return 0;
 	}
-	return list;
+	startIndex++;
+	return _watchMsg2Msgs (startIndex);
 }
 
 //--------------------------------------------------------------------------
-SIMessage IMessage::buildWatchMsg(int startIndex) const
+SIMessageList IMessage::_watchMsg2Msgs(int& startIndex) const
 {
-	SIMessageList msgs = watchMsg2Msgs (startIndex);
-	if (!msgs) return 0;
-
-	SIMessage msg = IMessage::create();
-	msg->setSrcIP( src() );
-	msg->setAddress( address());
-	msg->setMessage( message());
-	msg->setUrl( url());
-	for (int i=0; i < startIndex; i++)		// add the first args of the watch message
-		msg->add(param(i));
-	msg->add(msgs);							// next add the messages
-	return msg;
+	SIMessageList list = IMessageList::create();
+	int n = size();
+	while (startIndex < n) {
+		string str;
+		if (param(startIndex, str) && (str == ")")) {
+			startIndex++;			// list end marker found
+			return list;			// return the list
+		}
+		else {
+			if ((str != ",") && (str != ":")) {	
+				SIMessage msg = watchMsg2Msg (startIndex);
+				if (msg) list->list().push_back(msg);
+			}
+			else startIndex++;		// skip messages separators
+		}
+	}
+	return list;
 }
 
 //--------------------------------------------------------------------------
@@ -340,17 +389,20 @@ void IMessage::printArgs(OSCStream& osc) const
 	for (int i=0; i < size(); i++) {
 		std::string str; float fv; int iv;
 		SIMessageList msgs;
-		if (param(i, fv))			osc << fv;
-		else if (param(i, iv))		osc << iv;
-		else if (param(i, str))		osc << str;
-		else if (param(i, msgs)) {
+		if (param(i, fv))			osc << fv;		// param is a float value
+		else if (param(i, iv))		osc << iv;		// param is an int32 value
+		else if (param(i, str))		osc << str;		// param is a string
+		else if (param(i, msgs)) {					// param is a list of messages
 			int n = msgs->list().size() - 1;
+			if (n < 0) continue;					// empty message list
+			osc << "(";
 			for (int i=0; i < n; i++) {
 				const IMessage* msg = msgs->list()[i];
 				msg->linearize(osc);
 				osc << ":";
 			}
-			if (n >= 0) msgs->list()[n]->linearize(osc);
+			msgs->list()[n]->linearize(osc);
+			osc << ")";
 		}
 		else ITLErr << "IMessage::printArgs to OSC: unknown message parameter type" << ITLEndl;
 	}
