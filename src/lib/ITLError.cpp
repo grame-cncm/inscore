@@ -42,7 +42,7 @@ ITLError& operator << (ITLError& err, ITLErrEnd end)
 
 ITLError& operator << (ITLError& err, const SIMessageList& msgs )
 {
-	for (int i=0; i < msgs->list().size(); i++)
+	for (unsigned int i=0; i < msgs->list().size(); i++)
 		err << msgs->list()[i];
 	return err;
 }
