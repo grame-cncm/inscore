@@ -81,7 +81,7 @@ class ISceneSync : public IVNode
 		/*! \brief cleanup the relations set
 			\see ISync::cleanup
 		*/
-		virtual void cleanup()	{ fSync.cleanup(); }
+		virtual void cleanup()	{ fSync.cleanup(); IObject::cleanup(); }
 
 		/// \brief makes a topological sort of the scene elements according to their synchronizations set
 		virtual void	sort (IObject::subnodes& nodes);
