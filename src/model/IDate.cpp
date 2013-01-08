@@ -50,18 +50,22 @@ void IDate::cleanup ()
 void IDate::setDate (const rational& date)
 { 
 	if (date.getDenominator() == 0) return;
-	handleTimeChange(fDate, date); 
-	fDate = date;  
-	fDateChanged = true; 
+	if (fDate != date) {
+		handleTimeChange(fDate, date);
+		fDate = date;
+		fDateChanged = true;
+	}
 }
 
 //--------------------------------------------------------------------------
-void IDate::setDuration (const libmapping::rational& dur)
+void IDate::setDuration (const rational& dur)
 {  
 	if (dur.getDenominator() == 0) return;
-	handleDurChange(fDuration, dur);
-	fDuration = dur;  
-	fDurationChanged = true;  
+	if (fDuration != dur) {
+		handleDurChange(fDuration, dur);
+		fDuration = dur;
+		fDurationChanged = true;
+	}
 }
 
 //--------------------------------------------------------------------------
