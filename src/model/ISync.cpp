@@ -108,7 +108,10 @@ void ISync::cleanup()
 			i++;
 			this->remove(d->first);
 		}
-		else i++;
+		else {
+			i->second->modified (false);
+			i++;
+		}
 	}
 }
 
