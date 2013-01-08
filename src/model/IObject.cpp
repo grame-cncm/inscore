@@ -273,7 +273,6 @@ void IObject::cleanup ()
 	IPosition::cleanup();
 	IDate::cleanup();
 	IColor::cleanup();
-//	fModified = false;
 	fNewData = false;
 	localMapModified (false);
 	fExportFlag = "";
