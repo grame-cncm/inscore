@@ -306,16 +306,8 @@ void IGlue::trace( const IMessage* msg, int status )
 {
 	if (status == MsgHandler::kBadAddress) 
 		ITLErr << "incorrect OSC address:" << msg->address() << ITLEndl;
-	if (status == MsgHandler::kBadParameters) {
+	else if (status == MsgHandler::kBadParameters)
 		ITLErr << "incorrect parameters:"<< msg << ITLEndl;
-//		msg->print(ITLErr, false);
-//		ITLErr << ITLEndl;
-
-//		oscerr << OSCWarn() << "incorrect parameters: " << msg->address() << msg->message();
-//		msg->printArgs(oscerr);
-//		oscerr << OSCEnd();
-	}
-// cout << msg << endl;
 }
 
 //--------------------------------------------------------------------------
