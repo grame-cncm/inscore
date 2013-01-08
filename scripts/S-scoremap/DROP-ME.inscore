@@ -12,6 +12,7 @@
 /ITL/scene/score map staff5;
 /ITL/scene/score/debug map 1;
 
-/ITL/scene/comment set  txt "Only staves 1 (default), 3 and 5 have a mapping.";
+/ITL/scene/comment set  txt "Only staves 1 (default), 3 and 5 have a mapping.
+You can drop 'systemMap.inscore' to change the mapping";
 /ITL/scene/comment y 0.9;
 
