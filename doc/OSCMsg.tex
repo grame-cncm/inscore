@@ -111,7 +111,7 @@ sends the message \OSC{x} to the object which address is \OSC{/ITL/scene/score} 
 
 The address is similar to a Unix path and supports regular expressions as defined by the OSC specification. 
 
-\note A valid address always starts with \OSC{/ITL} that is the application address and that is also used as a discriminant for incoming messages.
+\note{} A valid address always starts with \OSC{/ITL} that is the application address and that is also used as a discriminant for incoming messages.
 \begin{rail}
 OSCAddress : '/' (identifier | regexp) +
 \end{rail}
@@ -183,7 +183,7 @@ alias : OSCAddress 'alias' (([1] OSCAlias (message | ) ) | [2])
 \sample{/ITL/scene/myobject alias '/1/fader1'}
 \sampleindent makes the object \OSC{myobject} addressable using the address \OSC{/1/fader1}.
 
-\note Regular expressions are not supported by the alias mechanism and could lead to unpredictable results.
+\note{} Regular expressions are not supported by the alias mechanism and could lead to unpredictable results.
 
 
 
@@ -376,7 +376,7 @@ transformMsg :
 Rotating an object graphic on the \OSC{z} axis.
 \sample{/ITL/scene/myObject rotatez 90.}
 
-\note \OSC{angle} and \OSC{rotatez} are equivalent. \OSC{angle} has been introduced before the transformation messages and is maintained for compatibility reasons.
+\note{} \OSC{angle} and \OSC{rotatez} are equivalent. \OSC{angle} has been introduced before the transformation messages and is maintained for compatibility reasons.
 
 %-------------------------------
 %:Color messages
@@ -511,7 +511,7 @@ Moving a color in the RGBA space:
 \sample{TL/scene/myObject dcolor 10 5 0 -10}
 \sampleindent will increase the red component by 10, the blue component by 5, and decrease the transparency by 10.
 
-\note Objects that are carrying color information (images, SVG) don't respond to color change but are sensitive to transparency changes.
+\note{} Objects that are carrying color information (images, SVG) don't respond to color change but are sensitive to transparency changes.
 
 
 %-------------------------------
@@ -537,7 +537,7 @@ effectMsg : 'effect' ( 'none'
 \item \OSC{blur, colorize, shadow}: sets the corresponding effect. An effect always replaces any previous effect. The effect name is followed by optional specific effects parameters.
 \end{itemize}
 
-\note An effect affects the target object but also all the target slaves.
+\note{} An effect affects the target object but also all the target slaves.
 
 \subsublevel{The blur effect}
 
@@ -719,7 +719,7 @@ setMsg : 'set' (
 \item \OSC{grid}: a white transparent object that provides a predefined time to graphic mapping (see section \fullref{grid} for more details and section \fullref{mapping} for time to graphic relations). The parameters are int32 values representing the number of columns and rows.
 \end{itemize}
 
-\note The default position of any component is \values{[0,0]}. Objects are drawn centered on their position.
+\note{} The default position of any component is \values{[0,0]}. Objects are drawn centered on their position.
 
 Text may be specified by a single quoted string or using an arbitrary count of parameters that are converted to a single string with a space used as separator.
 \begin{rail}
@@ -822,7 +822,7 @@ Querying an object content
 \sampleindent will give the corresponding \OSC{set} message:
 \sample{/ITL/scene/myobject set txt "Hello world!"}
 
-\note \\
+\note{} \\
 The \OSC{get width} and \OSC{get height} messages addressed to components that have no explicit width and height (text, images, etc.) returns 0 as long as the target component has not been drew.
 
 
@@ -1062,7 +1062,7 @@ Changes the UDP port numbers:
 The \OSC{int32} parameter should be a positive value in the range \values{[1024-49150]}. \\
 The default \OSC{port}, \OSC{outport} and \OSC{errport} values are 7000, 7001 and 7002.
 
-\note \\
+\note{} \\
 Error messages are sent as a single string.
 
 %===============================
@@ -1440,7 +1440,7 @@ Requesting the mapping of the $3^{rd}$ staff of a score:
 Requesting the system mapping :
 \sample{/ITL/scene/myScore map system}
 
-\note \\
+\note{} \\
 A voice may be distributed on several staves and thus a staff may contain several voices.
 
 
@@ -1476,7 +1476,7 @@ Synchronization identifiers indicates 1) the name of a \OSC{scene} component or 
 
 Synchronization between components has no effect if any of the required mapping is missing (see table \ref{maptable}).
 
-\note \\
+\note{} \\
 A slave object can have only one master. Synchronizing a slave object to a different object replaces the previous relation with the new one.
 
 \example \\
@@ -1517,9 +1517,9 @@ The synchronization mode makes use of the master time to graphic mapping to comp
 \item \OSC{absolute}: the time position where the slave appears corresponds to the mapping date only.
 \end{itemize}
 
-\note \\
-Use of the \OSC{absolute} mode may take sense with nested synchronizations: A slave of B, which is slave of C.
-In \OSC{relative} mode and if A and B receive the same \OSC{clock} messages, A will remain at a fixed position on B although it is moving in time.
+\note{} \\
+Use of the \OSC{absolute} mode may take sense with nested synchronizations: let's consider an object $A$, slave of $B$, which is slave of $C$.
+In \OSC{relative} mode and if $A$ and $B$ receive the same \OSC{clock} messages, $A$ will remain at a fixed position on $B$ although it is moving in time.
 
 \example \\
 Describing nested synchronizations, the first one using the \OSC{absolute} mode:
@@ -1527,7 +1527,7 @@ Describing nested synchronizations, the first one using the \OSC{absolute} mode:
 /ITL/scene/sync masterSlave master
 }
 
-\subsublevel{Representing the objects duration}
+\subsublevel{Synchronizing an object duration}
 
 \begin{rail}
 syncStretch : 'h' | 'v' | 'hv'
@@ -1567,6 +1567,8 @@ The synchronization position mode has the following effects on the slave \values
 \item \OSC{syncBottom}: the top of the slave is aligned to the bottom of the master.
 \end{itemize}
 The default position mode is \OSC{syncOver}. The \OSC{y} attribute of the slave remains available to displacement (\OSC{dy}). 
+
+\note{} The $y$ position of a synchronized object remains a free attribute. To control this position, you should send \OSC{dy} messages.  
 
 \example \\
 Synchronizing two objects, aligning the slave duration to the corresponding master space, the slave being below the master map:
@@ -1680,7 +1682,7 @@ will give the following output: \\
 /ITL/scene/signal/mySig set y 0.01 0. 1. 1. 1.
 }
 
-\note \\
+\note{} \\
 For a parallel signal:
 \begin{itemize}
 \item the \OSC{get size} message gives the maximum of the components size. 
@@ -1834,7 +1836,7 @@ Creating parallel graphic signals:
 /ITL/scene/siggraph set graph sig 
 }
 
-\note \\
+\note{} \\
 Using data projection may be convenient when the input signal represents interleaved data. For example, the projection string \OSC{[n\~{}6]} distribute data over similar components of a set of graphic signals, where \OSC{n} represents the index of the graphic signal target component.
 
 
@@ -1886,7 +1888,7 @@ Creating a FAUST processor and querying its input and output count:
 Modifying the value of a FAUST processor parameter named \OSC{volume}:
 \sample{/ITL/scene/signal/myFaust volume 0.8}
 
-\note \\
+\note{} \\
 The plugins are shared libraries which extension is platform dependent. The plugin name should not include the extension. The expected extensions are the following: .dylib on MacOS and Linux, .dll on Windows.
 
 %===============================
@@ -1921,7 +1923,7 @@ Interaction messages are user defined messages associated to events and triggere
 
 The general form of the message is the following:
 \begin{rail}
-interactMsg : (('watch' | 'watch+')  ([1] | what  ( [2] | [3]  ( ( message  )+ "," ) )  )) 
+interactMsg : (('watch' | 'watch+')  ([1] | what  ( [2] | [3] "(" ( ( message  )+ "," ) ")" )  )) 
 \end{rail}
 \index{Interaction!watch}
 \index{Interaction!watch+}
@@ -1934,7 +1936,7 @@ interactMsg : (('watch' | 'watch+')  ([1] | what  ( [2] | [3]  ( ( message  )+ "
 \item [3]: associate a list of messages to the \OSC{what} event. With \OSC{watch}, the messages replace previously associated messages. Using \OSC{watch+}, the messages are appended to the messages currently associated to the event.
 \end{itemize}
 
-\note \\
+\note{} \\
 	The [1] and [2] form has no effect with the \OSC{watch+} message. \\
 	In some environments, the comma has a special meaning, making tricky to use it as a message separator. This is why ':' is also accepted as separator.
 
@@ -1949,8 +1951,8 @@ addressPrefix : (IPAddress | hostname) ':' port
 \end{rail}
 
 %===============================
-%:    Defined events
-\sublevel{Defined events}
+%:    Events
+\sublevel{Events}
 \label{defevents}
 
 
@@ -1977,7 +1979,7 @@ Triggering a message on mouse down:
 Triggering a message on mouse down but addressed to another host on udp port 12100:
 \sample{/ITL/scene/myObject watch mouseDown host.domain.org:12100/an/address start }
 
-\note \\
+\note{} \\
 UI events are not supported by objects that are synchronized as slave.
 
 %===============================
@@ -2085,7 +2087,7 @@ timeVar :  ('date' | 'rdate') (| ':'  mapname) (| '[n/d]') (| '\%' 'f')
 \item \OSC{\$rdate}: is similar to \OSC{\$date} but ignores the target current date: the date is relative to the object mapping only.
 \end{itemize}
 
-\note \\
+\note{} \\
 A variable can be used several times in a message, but several \OSC{\$date} variables must always refer to the same mapping.
 
 \example \\
@@ -2109,7 +2111,7 @@ variable :  'name' | 'scene' | 'address'
 \item \OSC{\$address} is replaced by the target object OSC address. 
 \end{itemize}
 
-\note \\
+\note{} \\
 For the \OSC{newElement} event, the target object is the new element. 
 
 \example \\
@@ -2169,7 +2171,7 @@ Interaction states are managed using a stack where the states are pushed to or p
 \item \OSC{pop}: replace the current interaction state with the one popped from the top of the stack.
 \end{itemize}
 
-\note \\
+\note{} \\
 The effect of a pop message addressed to an object with an empty stack is to clear the object current interaction state.
 
 

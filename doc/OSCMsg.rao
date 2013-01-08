@@ -1244,7 +1244,7 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {70}{ interactMsg : (('watch' | 'watch+') ([1] | what ( [2] | [3] ( ( message )+ "," ) ) )) }
+\rail@i {70}{ interactMsg : (('watch' | 'watch+') ([1] | what ( [2] | [3] "(" ( ( message )+ "," ) ")" ) )) }
 \rail@o {70}{
 \rail@index{interactMsg}
 \rail@begin{4}{interactMsg}
@@ -1261,11 +1261,13 @@
 \rail@annote[2]
 \rail@nextbar{2}
 \rail@annote[3]
+\rail@term{(}[]
 \rail@plus
 \rail@nont{message}[]
 \rail@nextplus{3}
 \rail@cterm{,}[]
 \rail@endplus
+\rail@term{)}[]
 \rail@endbar
 \rail@endbar
 \rail@end
