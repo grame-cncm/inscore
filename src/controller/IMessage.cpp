@@ -247,11 +247,8 @@ SIMessageList IMessage::watchMsg2Msgs(int startIndex) const
 	}
 
 	string listMarker;
-	if (!param (startIndex, listMarker) || (listMarker != "(" )) {	// look for opening parenthesis first
-		ITLErr << "incorrect watch message format: missing opening '('" << ITLEndl;
-		return 0;
-	}
-	startIndex++;
+	if (param (startIndex, listMarker) && (listMarker == "(" ))		// look for opening parenthesis first
+		startIndex++;
 	return _watchMsg2Msgs (startIndex);
 }
 
