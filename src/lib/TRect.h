@@ -76,7 +76,7 @@ template<typename T> class TPoint
 		operator bool () const	{ return (fX != 0) || (fY != 0); }
 };
 typedef TPoint<long>	TLongPoint;
-typedef TPoint<float>	TFloatPoint;
+typedef TPoint<double>	TFloatPoint;
 
 template<typename T>
 std::ostream& operator << (std::ostream& out, const TPoint<T>& p) { out << std::string(p); return out; }
@@ -106,7 +106,7 @@ class TSize : public TPoint<T>
 
 typedef TSize<int>		TIntSize;
 typedef TSize<long>		TLongSize;
-typedef TSize<float>	TFloatSize;
+typedef TSize<double>	TFloatSize;
 
 //--------------------------------------------------------------------------
 /*!
@@ -171,7 +171,7 @@ template<typename T>
 std::ostream& operator << (std::ostream& out, const TRect<T>& r) { out << std::string(r); return out; }
 
 typedef TRect<long>		TLongRect;
-typedef TRect<float>	TFloatRect;
+typedef TRect<double>	TFloatRect;
 typedef std::vector<TLongRect >		TLongRectList;
 typedef std::vector<TFloatRect >	TFloatRectList;
 

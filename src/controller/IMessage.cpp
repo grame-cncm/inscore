@@ -426,6 +426,13 @@ bool IMessage::operator == (const IMessage& other) const
 }
 
 //--------------------------------------------------------------------------
+template <>	IMessage& operator <<(IMessage& msg, TSize<double> val)
+{
+	msg << float(val.width()) << float(val.height());
+	return msg;
+}
+
+//--------------------------------------------------------------------------
 IMessage& operator << (IMessage& out, const rational& val)
 {
 	out.add(int(val.getNumerator()));
@@ -436,8 +443,8 @@ IMessage& operator << (IMessage& out, const rational& val)
 //--------------------------------------------------------------------------
 IMessage& operator <<(IMessage& msg, const TFloatPoint& val)
 {
-	msg.add(val.x());
-	msg.add(val.y());
+	msg.add(float(val.x()));
+	msg.add(float(val.y()));
 	return msg; 
 }
 

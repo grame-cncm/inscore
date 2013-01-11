@@ -73,7 +73,7 @@ bool isDirectory( std::string path )
 //--------------------------------------------------------------------------
 OSCStream& operator <<(OSCStream& s, const TFloatPoint& val)
 {
-	s << val.x() << val.y();
+	s << float(val.x()) << float(val.y());
 	return s;
 }
 
