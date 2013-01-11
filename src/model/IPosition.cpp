@@ -111,7 +111,7 @@ TFloatRect IPosition::getBoundingRect() const
 	}
 
 	//Scale
-	result.setSize( result.size() * getScale() );
+	result.setSize( result.size() * (double)getScale() );
 	//Pos: rectangle is centered on getPos().
 	result.setPos( getPos() - TFloatPoint( 0.5f * result.width() , 0.5f * result.height() ) );
 	return result;
