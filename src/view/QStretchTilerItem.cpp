@@ -53,7 +53,6 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
 {
 	if ( fNeedCacheUpdate )
 	{
-//		qDebug() << "QStretchTilerItem::paint: " << fCacheFactor;
 		fCache = VExport::itemToImage( fStretchTiledItem , 1.f , 1.f );
 		fNeedCacheUpdate = false;
 	}	
@@ -68,18 +67,11 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
 		QRectF sourceRect( fMapping[i].first.x(), fMapping[i].first.y(), fMapping[i].first.width(), fMapping[i].first.height());
 		QRectF destRect( fMapping[i].second.x(), fMapping[i].second.y(), fMapping[i].second.width() + adjust, fMapping[i].second.height());
 
-//qDebug() << "QStretchTilerItem::paint: " << sourceRect << " \t-> " << destRect;
-//		painter->drawImage( destRect , fCache , sourceRect );
-
 #ifdef DONTADJUST
 		painter->drawImage( fMapping[i].second , fCache , fMapping[i].first );
 #else
 		painter->drawImage( destRect , fCache , fMapping[i].first );
 #endif
-
-//		float yd = fMapping[i].second.y() + i;
-//		painter->drawLine( fMapping[i].second.left(), yd, fMapping[i].second.right(), yd );
-		
 	}
 }
 
