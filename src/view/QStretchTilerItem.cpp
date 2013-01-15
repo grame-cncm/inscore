@@ -55,7 +55,9 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
 	{
 		// scaling by 2.0 is necessary to correct approximations due to int size of images
 		// it minimizes the cast effect and drawing looks correct using this scaling
-		fCache = VExport::itemToImage( fStretchTiledItem , 2.f , 2.f );
+		float xscale = 2.f;
+		float yscale = 2.f;
+		fCache = VExport::itemToImage( fStretchTiledItem , xscale , yscale );
 		fNeedCacheUpdate = false;
 	}	
 
