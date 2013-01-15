@@ -81,12 +81,14 @@ class VExport
 		*/
 		static void		exportScene( QGraphicsView * sceneview , QString fileName );
 										
-		/*!	\brief Paints the QGraphicsItem on a QPixmap and returns the QPixmap.
+		/*!	\brief Paints the QGraphicsItem on a QImage and returns the QImage.
 		*
-		*	The pixmap can be streched vertically and horizontally with xScaleFactor and yScaleFactor.
+		*	The image can be streched vertically and horizontally with xScale and yScale.
+		* \param item the object to draw to the image
+		* \param xScale a reference to the x scale factor. Note that it may be dynamically changed to ensure a minimum size of 10 x 10
+		* \param yScale a reference to the y scale factor. Note that it may be dynamically changed to ensure a minimum size of 10 x 10
 		*/
-		static QImage	itemToImage( QGraphicsItem * item , float xScaleFactor , float yScaleFactor , 
-										const QColor fillColor = QColor(255,255,255,0) );
+		static QImage	itemToImage( QGraphicsItem * item, float& xScale, float& yScale, const QColor fillColor = QColor(255,255,255,0) );
 
 		/*!
 		*	\brief Exports the specified QGraphicsItem to an image ; the format is infered from
@@ -97,7 +99,7 @@ class VExport
 		*
 		*	The output image can be horizontally and vertically streched with xScaleFactor and yScaleFactor.
 		*/
-		static void		exportToImage( QGraphicsItem * item, const QString& fileName, float xScaleFactor, float yScaleFactor );
+		static void		exportToImage( QGraphicsItem * item, const QString& fileName, float& xScale, float& yScale );
 		
 		/*!
 		*	\brief Exports the specified QGraphicsItem to a pdf ; the format is infered from
