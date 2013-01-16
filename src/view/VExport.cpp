@@ -57,16 +57,6 @@ void VExport::paintOnDevice( QPaintDevice * device , QGraphicsItem * item , floa
 QImage VExport::itemToImage( QGraphicsItem * item , float& xScaleFactor , float& yScaleFactor , const QColor fillColor )
 {
 	QRectF rect = item->boundingRect();
-	// ensure a minimum 10 x 10 size
-	while ((rect.width() * xScaleFactor) < 10) {
-		xScaleFactor *= 2;
-		yScaleFactor *= 2;
-	}
-	while ((rect.height() * yScaleFactor) < 10){
-		xScaleFactor *= 2;
-		yScaleFactor *= 2;
-	}
-
 	QImage pic( int(rect.width() * xScaleFactor), int(rect.height() * yScaleFactor), QImage::Format_ARGB32 );
 	pic.fill( fillColor.rgba() );
 	paintOnDevice( &pic , item , xScaleFactor , yScaleFactor );

@@ -51,12 +51,24 @@ namespace inscore
 #if 1
 void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsItem * , QWidget * )
 {
+	float xscale = 1.f;
+	float yscale = 1.f;
+
+	QRectF rect = fStretchTiledItem->boundingRect();
+	// ensure a minimum 10 x 10 size
+	while ((rect.width() * xscale) < 20) {
+		xscale += 1;
+		yscale += 1;
+	}
+	while ((rect.height() * yscale) < 20){
+		xscale += 1;
+		yscale += 1;
+	}
+
 	if ( fNeedCacheUpdate )
 	{
 		// scaling by 2.0 is necessary to correct approximations due to int size of images
 		// it minimizes the cast effect and drawing looks correct using this scaling
-		float xscale = 2.f;
-		float yscale = 2.f;
 		fCache = VExport::itemToImage( fStretchTiledItem , xscale , yscale );
 		fNeedCacheUpdate = false;
 	}	
@@ -68,7 +80,7 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
 	float adjust = (img || video) ? kGapAdjust : 0;
 	for ( int i = 0 ;  i < fMapping.size(); i++ )
 	{
-		QRectF sourceRect( fMapping[i].first.x(), fMapping[i].first.y(), fMapping[i].first.width(), fMapping[i].first.height());
+		QRectF sourceRect( fMapping[i].first.x()*xscale, fMapping[i].first.y()*yscale, fMapping[i].first.width()*xscale, fMapping[i].first.height()*yscale);
 		QRectF destRect( fMapping[i].second.x(), fMapping[i].second.y(), fMapping[i].second.width() + adjust, fMapping[i].second.height());
 
 //		QGraphicsRectItem * rect = new QGraphicsRectItem( destRect, this );
@@ -77,7 +89,7 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
 #ifdef DONTADJUST
 		painter->drawImage( fMapping[i].second , fCache , fMapping[i].first );
 #else
-		painter->drawImage( destRect , fCache , fMapping[i].first );
+		painter->drawImage( destRect , fCache , sourceRect );
 #endif
 	}
 }
