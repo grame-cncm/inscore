@@ -200,6 +200,11 @@ variable	: VARSTART varname	{ $$ = new inscore::IMessage::argslist;
 								  $$->push_back (context->fReader.resolve($2->c_str(), var.c_str()));
 								  delete $2;
 								}
+			| VARSTART LEFTPAR message RIGHTPAR { $$ = new inscore::IMessage::argslist;
+								  $$->push_back (context->fReader.resolve(*$3));
+								  delete $3;
+								}
+			;
 
 param		: number			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1)); }
 			| FLOAT				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); }
