@@ -289,8 +289,9 @@ IMessage::argslist TMessageEvaluator::evalMessage (const string& var, const Even
 IMessage::argslist TMessageEvaluator::evalVariable (const string& var, const EventContext& env) const
 {
 	IMessage::argslist outval;
-	bool relative = false;
+	if (var.empty()) return outval;
 
+	bool relative = false;
 	if (var[0] == '$') {
 		if (posVariable (var, kXVar))			outval.push_back ( evalPosition (var.substr(fVarLength[kXVar]), env.mouse.fx));
 		else if (posVariable (var, kYVar))		outval.push_back ( evalPosition (var.substr(fVarLength[kYVar]), env.mouse.fy));
@@ -321,10 +322,14 @@ IMessage::argslist TMessageEvaluator::evalVariable (const string& var, const Eve
 //----------------------------------------------------------------------
 bool TMessageEvaluator::hasDateVar (const IMessage *msg, string& mapname)
 {
+	bool relative;
+	string str = msg->message();
+	if (dateVariable(str, relative)) {
+		mapname = parseMap(str);
+		return true;
+	}
 	for (int i=0; i < msg->size(); i++) {
-		string str;
 		if (msg->param( i, str)) {
-			bool relative;
 			if (dateVariable(str, relative)) {
 				mapname = parseMap(str);
 				return true;
@@ -337,8 +342,6 @@ bool TMessageEvaluator::hasDateVar (const IMessage *msg, string& mapname)
 //----------------------------------------------------------------------
 SIMessage TMessageEvaluator::eval (const IMessage *msg, const EventContext& env) const
 {
-	// evaluate the address that may contain variable parts
-//	string address = evalAddress (msg->address(), env.object);
 	// create a new message with an evaluated address
 	SIMessage outmsg = IMessage::create( evalAddress (msg->address(), env.object));
 	outmsg->setUrl ( msg->url() );
@@ -348,9 +351,10 @@ SIMessage TMessageEvaluator::eval (const IMessage *msg, const EventContext& env)
 	if (methodlist.size()) {
 		string method = methodlist[0]->value<string>("");
 		if (method.size()) outmsg->setMessage (method);
+		else outmsg->add( methodlist[0] );
+		for (unsigned int i=1; i<methodlist.size(); i++)
+			outmsg->add( methodlist[i] );
 	}
-	for (unsigned int i=1; i<methodlist.size(); i++)
-		outmsg->add( methodlist[i] );
 
 	// evaluate all the parameters
 	for (int i=0; i < msg->size(); i++) {
