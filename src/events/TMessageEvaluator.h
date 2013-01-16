@@ -110,14 +110,6 @@ class TMessageEvaluator
 		IMessage::argslist evalDate (const std::string& var, const EventContext& env, bool relative) const;
 
 		/**
-		*	\brief evaluates a message
-			\param msg the message
-			\param env the context of the event
-			\return a list or arguments to be used as parameters in place of the variable
-		*/
-		IMessage::argslist evalMessage (const IMessage* msg, const EventContext& env) const;
-
-		/**
 		*	\brief evaluates a message variable
 			\param var the message string
 			\param env the context of the event
@@ -154,6 +146,14 @@ class TMessageEvaluator
 			\return an evaluated message list
 		*/
 		SIMessageList	eval (const IMessageList* msgs, const EventContext& env) const;
+
+		/**
+		*	\brief evaluates a message
+			\param msg the message
+			\param env the context of the event
+			\return a list or arguments to be used as parameters in place of the variable
+		*/
+		IMessage::argslist evalMessage (const IMessage* msg, const EventContext& env) const;
 
 	/// \brief check if a variable is a message variable
 	static bool			messageVariable (const std::string& var);
