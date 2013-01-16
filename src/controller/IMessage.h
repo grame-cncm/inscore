@@ -93,7 +93,9 @@ class baseparam : public libmapping::smartable
 			}
 			
 		virtual libmapping::SMARTP<baseparam> copy() const = 0;
+#ifndef NO_OSCSTREAM
 		virtual void print(ITLError to) const {}
+#endif
 };
 
 
@@ -111,7 +113,9 @@ template <typename T> class IMsgParam : public baseparam
 		T	getValue() const { return fParam; }
 		
 		virtual libmapping::SMARTP<baseparam> copy() const	{ return new IMsgParam<T>(fParam); }
+#ifndef NO_OSCSTREAM
 		virtual void print(ITLError out) const				{ out << fParam; }
+#endif
 };
 
 class OSCStream;
