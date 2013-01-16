@@ -61,6 +61,9 @@ IGlue::IGlue(int udpport, int outport, int errport)
 IGlue::~IGlue()	{ clean(); }
 
 //--------------------------------------------------------------------------
+const IObject* IGlue::root () const  { return dynamic_cast<const IObject*>((IAppl*)fModel); }
+
+//--------------------------------------------------------------------------
 void IGlue::clean()
 {
 	if (fOscThread) {

@@ -69,6 +69,7 @@ class OSCStream;
 class IAppl;
 class GraphicUpdateListener;
 typedef class libmapping::SMARTP<IAppl>	SIAppl;
+
 //--------------------------------------------------------------------------
 /*!	\brief a glue between osc, a basic model and a controller
 
@@ -80,8 +81,8 @@ class export IGlue : public MsgListener, public QTimer
 	SUpdater 		fViewUpdater;
 	SUpdater 		fLocalMapUpdater;
 	SUpdater 		fSlaveMapUpdater;
-	SIController	fController;
 	SIAppl			fModel;
+	SIController	fController;
 	SIMessageStack	fMsgStack;
 	SPeriodicTask	fTimeTask;
 	GraphicUpdateListener * fViewListener;
@@ -106,6 +107,7 @@ class export IGlue : public MsgListener, public QTimer
 
 				void setGraphicListener(GraphicUpdateListener* listener)	{ fViewListener = listener; }
 				bool getSceneView(unsigned int* dest, int w, int h, bool smooth=false );
+				const IObject* root () const;
 
 		virtual void timerEvent ( QTimerEvent * event );
 
