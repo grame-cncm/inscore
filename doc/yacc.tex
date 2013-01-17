@@ -78,7 +78,9 @@ params      : param
 watchmethod : WATCH            	
             ;
 
-variable    : VARSTART varname	
+variable    : VARSTART varname
+            | VARSTART LEFTPAR message RIGHTPAR
+            ;
 
 param       : number            
             | FLOAT            	
