@@ -38,8 +38,10 @@ y =-0.2;
 /ITL/scene/[tv]spos  y  0.6;
 /ITL/scene/[tv]date  y  0.7;
 
-/ITL/scene/comment  set  txt "You can drop any of the accompanying scripts to the scene";
-/ITL/scene/comment y 0.9;
+/ITL/scene/comment1  set  txt "Click the rectangle to get the variables values.";
+/ITL/scene/comment1 y 0.855;
+/ITL/scene/comment2  set  txt "You can drop any of the accompanying scripts to the scene";
+/ITL/scene/comment2 y 0.9;
 
 
 /ITL/scene/rect  watch  mouseDown (

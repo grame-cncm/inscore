@@ -54,20 +54,19 @@ void VExport::paintOnDevice( QPaintDevice * device , QGraphicsItem * item , floa
 };
 
 //------------------------------------------------------------------------------------------------------------------------
-QImage VExport::itemToImage( QGraphicsItem * item , float xScaleFactor , float yScaleFactor , const QColor fillColor )
+QImage VExport::itemToImage( QGraphicsItem * item , float& xScaleFactor , float& yScaleFactor , const QColor fillColor )
 {
-	QRectF picRect = item->boundingRect();
-	QImage pic( (int)(picRect.width() * xScaleFactor) , (int)(picRect.height() * yScaleFactor), QImage::Format_ARGB32 );
-
+	QRectF rect = item->boundingRect();
+	QImage pic( int(rect.width() * xScaleFactor), int(rect.height() * yScaleFactor), QImage::Format_ARGB32 );
 	pic.fill( fillColor.rgba() );
 	paintOnDevice( &pic , item , xScaleFactor , yScaleFactor );
 	return pic;
 };
 
 //------------------------------------------------------------------------------------------------------------------------
-void VExport::exportToImage( QGraphicsItem * item , const QString& fileName , float xScaleFactor , float yScaleFactor )
+void VExport::exportToImage( QGraphicsItem * item , const QString& fileName , float& xScale , float& yScale )
 {
-	itemToImage(item , xScaleFactor , yScaleFactor , Qt::white ).save( fileName );
+	itemToImage(item , xScale , yScale , Qt::white ).save( fileName );
 }
 
 //------------------------------------------------------------------------------------------------------------------------

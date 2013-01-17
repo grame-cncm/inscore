@@ -14,5 +14,5 @@
 
 /ITL/scene/comment set  txt "Only staves 1 (default), 3 and 5 have a mapping.
 You can drop 'systemMap.inscore' to change the mapping";
-/ITL/scene/comment y 0.9;
+/ITL/scene/comment y 0.92;
 

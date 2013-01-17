@@ -1923,7 +1923,10 @@ Interaction messages are user defined messages associated to events and triggere
 
 The general form of the message is the following:
 \begin{rail}
-interactMsg : (('watch' | 'watch+')  ([1] | what  ( [2] | [3] "(" ( ( message  )+ "," ) ")" )  )) 
+interactMsg : (('watch' | 'watch+')  ([1] | 
+					what  ( [2] 
+							| [3] "(" ( ( message  )+ "," ) ")" 
+							| [4] message )  )) 
 \end{rail}
 \index{Interaction!watch}
 \index{Interaction!watch+}
@@ -1934,21 +1937,27 @@ interactMsg : (('watch' | 'watch+')  ([1] | what  ( [2] | [3] "(" ( ( message  )
 \item [1]: clear all the messages for all the events.
 \item [2]: clear the messages associated to the \OSC{what} event.
 \item [3]: associate a list of messages to the \OSC{what} event. With \OSC{watch}, the messages replace previously associated messages. Using \OSC{watch+}, the messages are appended to the messages currently associated to the event.
+\item [4]: associate or add a single message to the \OSC{what} event. This form is provided for compatibility with previous versions.
 \end{itemize}
 
 \note{} \\
 	The [1] and [2] form has no effect with the \OSC{watch+} message. \\
-	In some environments, the comma has a special meaning, making tricky to use it as a message separator. This is why ':' is also accepted as separator.
+	In some environments, the comma has a special meaning, making tricky to use it as a message separator. This is why ':' is also accepted as separator in OSC messages.
 
 \begin{rail} 
 message : (| addressPrefix)  OSCAddress ( | (parameters | variable) + )
 \end{rail}
 
-The associated messages are any valid OSC message (not restricted to the INScore message set), with an extended address scheme, supporting IP addresses or host names and udp port number to be specified as OSC addresses prefix. The message parameters are any valid OSC type or variables (see section \ref{interactvar}).
+The associated messages are any valid OSC message (not restricted to the INScore message set), with an extended address scheme, supporting IP addresses or host names and udp port number to be specified as OSC addresses prefix. The message parameters are any valid OSC type or variable (see section \ref{interactvar}).
+
 
 \begin{rail} 
 addressPrefix : (IPAddress | hostname) ':' port
 \end{rail}
+
+\example \\
+An extended address to send messages to \OSC{localhost} on port \OSC{12000}:
+\sample{localhost:12000/your/osc/address}
 
 %===============================
 %:    Events

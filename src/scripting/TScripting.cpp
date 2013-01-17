@@ -27,15 +27,11 @@
 #include <sstream>
 
 #include "TScripting.h"
+#include "TMessageEvaluator.h"
 
 #include "TEnv.h"
 #include "ITLparser.h"
-#ifdef NO_OSCSTREAM
-# define ITLErr		cerr
-# define ITLEndl	endl
-#else
 #include "ITLError.h"
-#endif
 
 using namespace std;
 extern inscore::TScripting* gScripter;
@@ -154,6 +150,21 @@ SIMessageList TScripting::jsEval (const char* script, int lineno)
 	return 0;
 }
 #endif
+
+//--------------------------------------------------------------------------------------------
+IMessage::argslist TScripting::resolve (const IMessage* msg)
+{
+#ifdef PARSERTEST
+	IMessage::argslist out;
+	out.push_back (new inscore::IMsgParam<std::string>("unresoved"));
+#else
+	MouseLocation ml;
+	libmapping::rational date (0,1);
+	EventContext env (ml, date, 0);
+	TMessageEvaluator me;
+	return me.evalMessage(msg, env);
+#endif
+}
 
 //--------------------------------------------------------------------------------------------
 IMessage::argslist TScripting::resolve (const char* var, const char * defaultVal)

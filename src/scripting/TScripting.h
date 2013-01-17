@@ -82,6 +82,7 @@ class TScripting
 		bool			checkJavascript () const;
 
 		IMessage::argslist		resolve	(const char* var, const char * defaultVal=0);
+		IMessage::argslist		resolve	(const IMessage* var);
 		const SIMessageList&	messages() const { return fMessages; }
 };
 

@@ -30,7 +30,7 @@
 /ITL/scene/label3 set txt Curtain;
 /ITL/scene/label* z 1.0;
 /ITL/scene/label* color 127 120 0;
-/ITL/scene/level1 set rect 0.1 0.35;
+/ITL/scene/level1 set rect 0.1 0.75;
 /ITL/scene/level2 set rect 0.05 0.35;
 /ITL/scene/level2 scale 2.0;
 /ITL/scene/level3 set rect 0.1 0.35;

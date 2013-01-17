@@ -32,6 +32,7 @@
 #include "IObject.h"
 #include "IScene.h"
 #include "ITLparser.h"
+#include "IGlue.h"
 
 #include "deelx.h"
 
@@ -42,6 +43,8 @@ using namespace libmapping;
 
 namespace inscore
 {
+
+extern IGlue* gGlue;
 
 const char* kXVar		= "$x";
 const char* kYVar		= "$y";
@@ -90,6 +93,8 @@ bool TMessageEvaluator::checkrange (const char* param)
 //----------------------------------------------------------------------
 string TMessageEvaluator::evalAddress (const string& address, const IObject* obj) const
 {
+	if (!obj) return address;
+
 	const IScene* scene = obj->getScene();
 	string objname = obj->name();
 	string scenename = scene ? scene->name() : "scene";
@@ -211,7 +216,7 @@ IMessage::argslist TMessageEvaluator::evalDate (const string& var, const EventCo
 
 	parseDateVariable (var, quant, floatrequired);
 	rational date = env.date;
-	if (!relative) date += env.object->getDate();
+	if (env.object && !relative) date += env.object->getDate();
 	if (quant.getNumerator()) {									// date quantification required
 		date *= quant;
 		date /= quant;
@@ -232,7 +237,8 @@ IMessage::argslist TMessageEvaluator::evalMessage (const IMessage* msg, const Ev
 	IMessage::argslist outval;
 
 	vector<const IObject*> targets;			// first get the message target objects
-	env.object->getRoot()->getObjects( msg->address(), targets);
+	const IObject * root = env.object ? env.object->getRoot() : gGlue->root();
+	root->getObjects( msg->address(), targets);
 	unsigned int n = targets.size();
 	if (!n) return outval;					// no target: exit
 	
@@ -257,9 +263,13 @@ IMessage::argslist TMessageEvaluator::evalMessage (const IMessage* msg, const Ev
 IMessage::argslist TMessageEvaluator::evalMessage (const string& var, const EventContext& env) const
 {
 	IMessage::argslist outval;
+	IObject* o = const_cast<IObject*>(env.object);			// an UGLY const_cast just to be able to retrieve the js and lua engines
+	if (!o) {
+		ITLErr << "no target object to evaluate" << var << ITLEndl;
+		return outval;										// no target object in the environment: return an empty list
+	}
 
 	stringstream stream (var);
-	IObject* o = const_cast<IObject*>(env.object);			// an UGLY const_cast just to be able to retrieve the js and lua engines
 	IScene* scene = o->getScene();							// here a const IScene could be used but the getJS and getLua methods are not const
 	TJSEngine* js = scene ? (TJSEngine*)scene->getJSEngine () : 0;		// get a javascript engine
 	TLua* lua = scene ? scene->getLUAEngine() : 0;						// get a lua engine
@@ -279,8 +289,9 @@ IMessage::argslist TMessageEvaluator::evalMessage (const string& var, const Even
 IMessage::argslist TMessageEvaluator::evalVariable (const string& var, const EventContext& env) const
 {
 	IMessage::argslist outval;
-	bool relative = false;
+	if (var.empty()) return outval;
 
+	bool relative = false;
 	if (var[0] == '$') {
 		if (posVariable (var, kXVar))			outval.push_back ( evalPosition (var.substr(fVarLength[kXVar]), env.mouse.fx));
 		else if (posVariable (var, kYVar))		outval.push_back ( evalPosition (var.substr(fVarLength[kYVar]), env.mouse.fy));
@@ -311,10 +322,14 @@ IMessage::argslist TMessageEvaluator::evalVariable (const string& var, const Eve
 //----------------------------------------------------------------------
 bool TMessageEvaluator::hasDateVar (const IMessage *msg, string& mapname)
 {
+	bool relative;
+	string str = msg->message();
+	if (dateVariable(str, relative)) {
+		mapname = parseMap(str);
+		return true;
+	}
 	for (int i=0; i < msg->size(); i++) {
-		string str;
 		if (msg->param( i, str)) {
-			bool relative;
 			if (dateVariable(str, relative)) {
 				mapname = parseMap(str);
 				return true;
@@ -327,8 +342,6 @@ bool TMessageEvaluator::hasDateVar (const IMessage *msg, string& mapname)
 //----------------------------------------------------------------------
 SIMessage TMessageEvaluator::eval (const IMessage *msg, const EventContext& env) const
 {
-	// evaluate the address that may contain variable parts
-	string address = evalAddress (msg->address(), env.object);
 	// create a new message with an evaluated address
 	SIMessage outmsg = IMessage::create( evalAddress (msg->address(), env.object));
 	outmsg->setUrl ( msg->url() );
@@ -338,9 +351,10 @@ SIMessage TMessageEvaluator::eval (const IMessage *msg, const EventContext& env)
 	if (methodlist.size()) {
 		string method = methodlist[0]->value<string>("");
 		if (method.size()) outmsg->setMessage (method);
+		else outmsg->add( methodlist[0] );
+		for (unsigned int i=1; i<methodlist.size(); i++)
+			outmsg->add( methodlist[i] );
 	}
-	for (unsigned int i=1; i<methodlist.size(); i++)
-		outmsg->add( methodlist[i] );
 
 	// evaluate all the parameters
 	for (int i=0; i < msg->size(); i++) {
