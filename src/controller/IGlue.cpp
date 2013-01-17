@@ -266,6 +266,13 @@ void IGlue::viewUpdate()		{ if (fViewUpdater) fViewUpdater->update (fModel); }
 //--------------------------------------------------------------------------
 void IGlue::timerEvent ( QTimerEvent *)
 {
+#ifdef RUNBENCH
+	static __uint64 prevtime = 0;
+	__uint64 time = getTime();
+	bench::put ("time", prevtime ? (time - prevtime)/1000 : 0);
+	prevtime = time;
+#endif
+
 	fModel->clock();
 	if (fMsgStack->size()) {
 //		QMutexLocker locker (&fTimeViewMutex);
@@ -280,13 +287,16 @@ void IGlue::timerEvent ( QTimerEvent *)
 			checkUDPChange();
 			if (fModel->getUDPInPort() != fUDP.fInPort)					// check for udp port number changes
 				oscinit (fModel->getUDPInPort());
+			if (fModel->getRate() != fCurrentRate) {
+				fCurrentRate = fModel->getRate();
+				if (fCurrentRate) QTimer::setInterval(fCurrentRate);
+			}
 		}
 
 		if (fModel->getState() & IObject::kSubModified) {
 			fController->setListener (fModel->oscDebug() ? this : 0);	// check for debug flag changes
 			if (fViewListener) fViewListener->update();
-		}
-		
+		}		
 		fModel->cleanup();
 	}
 #ifdef RUNBENCH
@@ -298,10 +308,6 @@ void IGlue::timerEvent ( QTimerEvent *)
 	}
 	bench::put ("total", getTime() - time);
 #endif
-	if (fModel->getRate() != fCurrentRate) {
-		fCurrentRate = fModel->getRate();
-		if (fCurrentRate) QTimer::setInterval(fCurrentRate);
-	}
 }
 
 //--------------------------------------------------------------------------

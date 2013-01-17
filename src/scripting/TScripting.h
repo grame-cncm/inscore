@@ -75,6 +75,7 @@ class TScripting
 		void	add			(SIMessage& msg);
 		void	add			(SIMessageList& msg);
 		void	variable	(const char* ident, const IMessage::argslist* values);
+		void	variable	(const char* ident, const SIMessageList* msgs);
 
 		SIMessageList	luaEval		(const char* script);
 		SIMessageList	jsEval		(const char* script, int lineno);

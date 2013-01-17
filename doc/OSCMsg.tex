@@ -60,7 +60,7 @@
 \newcommand{\sample}	[1]			{\vspace{-2mm}\begin{center}\colorbox{mygrey}{
 								\begin{minipage}[t]{0.9\columnwidth} 
 								{\small \texttt{#1}}
-								\end{minipage}}\end{center}\vspace{-1mm}}
+								\end{minipage}}\end{center}}
 \newcommand{\samplev}[1]			{\begin{center}\colorbox{mygrey}{
 								\begin{minipage}[t]{\columnwidth} 
 								{\small \texttt{#1}}
@@ -1082,12 +1082,13 @@ ITLMsgForward : ('forward' ( [1] | [2] hostname +))
 \item 1) removes the set of forwarded destinations,
 \item 2) set a list of remote hosts for forwarding. Note that \OSC{hostname} can be any legal host name or IP number, optionally extended with a port number separated by a semi-colon. By default, when no port number is specified, the current application listening port number is used.
 \end{itemize}
-\example
-\sample{/ITL forward host1.adomain.org host2.adomain.org:5100}
-Forwards messages to \OSC{host1.adomain.org} using the current application listening port number \\
+\example\\
+Forwarding messages to \OSC{host1.adomain.org} using the current application listening port number
 and to \OSC{host2.adomain.org} on port number 5100.
 
-\warning{forwarding messages to the application host results in an infinite loop with unpredictable results. Thus it is not recommended to use the local network broadcast address for forwarding.}
+\sample{/ITL forward host1.adomain.org host2.adomain.org:5100}
+
+\warning{forwarding messages to the application host results in an infinite loop with unpredictable results. Thus it is not recommended to use the local network broadcast address for forwarding unless using a different UDP port number.}
 
 
 
@@ -1140,13 +1141,14 @@ ITLStats : 'get'  | 'reset'
 Answer to a \OSC{get} message addressed to \OSC{/ITL/stats}
 \sample{/ITL/stats osc 15 udp 10}
 
+The \OSC{debug} node is used to activate debugging information.
 \begin{rail}
 ITLdebug : 'osc' int23
 \end{rail}
 \index{ITL debug!osc}
 
 \begin{itemize}
-\item switch the debug mode ON or OFF. The parameter is interpreted as a boolean value. When in debug mode, INScore sends verbose messages to the OSC error port for every message that can't be correctly handled.
+\item switch the debug mode ON or OFF. The parameter is interpreted as a boolean value. When in debug mode, INScore sends verbose messages to the OSC error port for every message that can't be correctly handled. Debugging is ON by default.
 \end{itemize}
 
 \example \\
@@ -2230,8 +2232,7 @@ Reload aa INScore script on file modification:
 \toplevel{Scripting}
 \label{scripting}
 
-INScore saves its state to files containing textual OSC messages. These files can be created from scratch and the OSC syntax has been extended at textual level in order to provide users with a scripting language.
-
+INScore saves its state to files containing textual OSC messages. These files can be created from scratch using any text editor. In order to provide users with a scripting language, the OSC syntax has been extended at textual level.
 
 %===============================
 %:    Statements

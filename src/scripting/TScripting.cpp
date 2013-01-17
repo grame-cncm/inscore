@@ -55,11 +55,18 @@ TScripting::TScripting(TJSEngine* js, TLua* lua)
 TScripting::~TScripting()	{}
 
 //--------------------------------------------------------------------------------------------
-void TScripting::variable	(const char* ident, const IMessage::argslist* values)		
+void TScripting::variable (const char* ident, const IMessage::argslist* values)		
 { 
 	fEnv->clear( ident ); 
 	for (IMessage::argslist::const_iterator i = values->begin(); i != values->end(); i++)
 		fEnv->bind( ident, *i); 
+}
+
+//--------------------------------------------------------------------------------------------
+void TScripting::variable (const char* ident, const SIMessageList* msgs)
+{
+	fEnv->clear( ident );
+	fEnv->bind( ident, new IMsgParam<SIMessageList>(*msgs));
 }
 
 //--------------------------------------------------------------------------------------------

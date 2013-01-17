@@ -216,6 +216,7 @@ param		: number			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1)
 //_______________________________________________
 // variable declaration
 variabledecl : varname EQUAL params	{ $$=$1; context->fReader.variable($1->c_str(), $3); delete $3;}
+			| varname EQUAL LEFTPAR messagelist RIGHTPAR { $$=$1; context->fReader.variable($1->c_str(), $4); delete $4;}
 			;
 
 varname		: IDENTIFIER			{ $$ = new string(context->fText); }
