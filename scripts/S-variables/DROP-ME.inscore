@@ -43,16 +43,12 @@ y =-0.2;
 /ITL/scene/comment2  set  txt "You can drop any of the accompanying scripts to the scene";
 /ITL/scene/comment2 y 0.9;
 
-
-/ITL/scene/rect  watch  mouseDown (
+watchMsgs = (
 	/ITL/scene/vpos set txt "$x" "$y",
 	/ITL/scene/vapos set txt "$absx" "$absy",
 	/ITL/scene/vspos set txt "$sx" "$sy",
 	/ITL/scene/vdate set txt "$date%f" );
 
-/ITL/scene/rect  watch   mouseMove (
-	/ITL/scene/vpos set txt "$x" "$y",
-	/ITL/scene/vapos set txt "$absx" "$absy",
-	/ITL/scene/vspos set txt "$sx" "$sy",
-	/ITL/scene/vdate set txt "$date%f" );
+/ITL/scene/rect  watch  mouseDown $watchMsgs;
+/ITL/scene/rect  watch  mouseMove $watchMsgs;
 
