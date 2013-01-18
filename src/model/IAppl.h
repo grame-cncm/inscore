@@ -27,6 +27,8 @@
 #ifndef __IAppl__
 #define __IAppl__
 
+#include <QMutex>
+
 #include "IMessageHandlers.h"
 #include "PeriodicTask.h"
 #include "IObject.h"
@@ -63,7 +65,9 @@ class IAppl : public IObject, public PeriodicTask
 	static std::string	fRootPath;
 	static bool			fRunning;
 		
-		int			fCurrentTime;				// the application current time i.e. the count of clocks
+		int			fStartTime;					// the application start time
+		int			fCurrentTime;				// the application current time
+		int			fCurrentTicks;				// the current count of clocks
 		std::string fVersion;					// the application version number
 		SIApplDebug	fApplDebug;					// debug flags
 		SIApplStat	fApplStat;					// statistics
@@ -71,6 +75,7 @@ class IAppl : public IObject, public PeriodicTask
 		udpinfo		fUDP;						// udp port settings
 		int			fRate;						// the time task rate
 		QApplication*	fAppl;					// the Qt application
+		QMutex		fTimeMutex;
 
 		TJSEngine		fJavascript;
 		TLua			fLua;
@@ -94,8 +99,9 @@ class IAppl : public IObject, public PeriodicTask
 		static bool	running() 		{ return fRunning; }
 
 		bool	oscDebug() const;
-		void	clock()						{ fCurrentTime += fRate; }
+		void	clock();
 		int		time() const				{ return fCurrentTime; }
+		int		ticks() const				{ return fCurrentTicks; }
 		void	quit()						{ fRunning = false; }
 		int		getUDPInPort() const		{ return fUDP.fInPort; }
 		int		getUDPOutPort() const		{ return fUDP.fOutPort; }
@@ -173,6 +179,9 @@ class IAppl : public IObject, public PeriodicTask
 
 		/// \brief application \c 'time' message handler.
 		virtual MsgHandler::msgStatus setTime (const IMessage* msg);
+
+		/// \brief application \c 'ticks' message handler.
+		virtual MsgHandler::msgStatus setTicks (const IMessage* msg);
 
 #ifdef RUNBENCH
 		void	startBench()			{ bench::start(); }

@@ -121,6 +121,7 @@ const char* ksize_GetSetMethod		= "size";			// Get Set
 const char* kstartBench_SetMethod	= "startBench";		// Set
 const char* kstopBench_SetMethod	= "stopBench";		// Set
 const char* ktime_GetSetMethod		= "time";			// Get Set
+const char* kticks_GetSetMethod		= "ticks";			// Get Set
 const char* kversion_GetMethod		= "version";		// Get
 const char* kvideoMap_GetSetMethod	= "videoMap";		// Get Set
 const char* kvideoMapf_SetMethod	= "videoMapf";		// Set
