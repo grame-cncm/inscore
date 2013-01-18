@@ -1,0 +1,3 @@
+
+/ITL/scene/out set  txt "The rectangle width and height:" $(/ITL/scene/rect get width height);
+
