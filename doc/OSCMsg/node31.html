@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>9.2 The 'map+' message</TITLE>
-<META NAME="description" CONTENT="9.2 The 'map+' message">
+<TITLE>6.5 The 'debug' nodes</TITLE>
+<META NAME="description" CONTENT="6.5 The 'debug' nodes">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,61 +19,71 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node32.html">
 <LINK REL="previous" HREF="node30.html">
-<LINK REL="up" HREF="node29.html">
+<LINK REL="up" HREF="node26.html">
 <LINK REL="next" HREF="node32.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html635"
+<A NAME="tex2html683"
   HREF="node32.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html629"
-  HREF="node29.html">
+<A NAME="tex2html677"
+  HREF="node26.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html623"
+<A NAME="tex2html673"
   HREF="node30.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html631"
+<A NAME="tex2html679"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html633"
-  HREF="node85.html">
+<A NAME="tex2html681"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html636"
-  HREF="node32.html">9.3 Mapping files</A>
-<B> Up:</B> <A NAME="tex2html630"
-  HREF="node29.html">9. Time to space</A>
-<B> Previous:</B> <A NAME="tex2html624"
-  HREF="node30.html">9.1 The 'map' message</A>
- &nbsp; <B>  <A NAME="tex2html632"
+<B> Next:</B> <A NAME="tex2html684"
+  HREF="node32.html">7. Application messages</A>
+<B> Up:</B> <A NAME="tex2html678"
+  HREF="node26.html">6. Type specific messages</A>
+<B> Previous:</B> <A NAME="tex2html674"
+  HREF="node30.html">6.4 The 'grid' object</A>
+ &nbsp; <B>  <A NAME="tex2html680"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html634"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html682"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001020000000000000000"></A>
-<A NAME="mapAddMsg"></A>
+<H1><A NAME="SECTION00750000000000000000"></A>
+<A NAME="debugnode"></A>
 <BR>
-9.2 The 'map+' message
+6.5 The 'debug' nodes
 </H1>
-The <TT>map+</TT> messages is similar to the <TT>map</TT> message but doesn't replace the existing mapping data: the specified relations are added to the existing one.
 
 <P>
+Each component includes a static <TT>debug</TT> nodes provided to give information about components.
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img62.gif"
+ WIDTH="241" HEIGHT="88" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
  ALT="\begin{rail}
-mapAddMsg : 'map+' ( \vert mapName ) relation
+debugMsg : 'map' int32
+\vert ('name' int32)
 \end{rail}">
 <BR>
-<A NAME="754"></A>
+<A NAME="676"></A>
+<A NAME="677"></A>
+
+<P>
+
+<UL>
+<LI><TT>map</TT> is used to display the time to graphic mapping. The parameter is a boolean value. Default is 0.
+</LI>
+<LI><TT>name</TT> is used to display both the object name and bounding box. The parameter is a boolean value. Default is 0.
+</LI>
+</UL>
 
 <P>
 <BR><HR>

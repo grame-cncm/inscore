@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.16 Differences to version 0.74</TITLE>
-<META NAME="description" CONTENT="17.16 Differences to version 0.74">
+<TITLE>14.5 Message based parameters</TITLE>
+<META NAME="description" CONTENT="14.5 Message based parameters">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,55 +21,123 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node79.html">
 <LINK REL="previous" HREF="node77.html">
-<LINK REL="up" HREF="node62.html">
+<LINK REL="up" HREF="node73.html">
 <LINK REL="next" HREF="node79.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1322"
+<A NAME="tex2html1375"
   HREF="node79.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1316"
-  HREF="node62.html">
+<A NAME="tex2html1369"
+  HREF="node73.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1310"
+<A NAME="tex2html1363"
   HREF="node77.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1318"
+<A NAME="tex2html1371"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1320"
-  HREF="node85.html">
+<A NAME="tex2html1373"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1323"
-  HREF="node79.html">17.17 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1317"
-  HREF="node62.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1311"
-  HREF="node77.html">17.15 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1319"
+<B> Next:</B> <A NAME="tex2html1376"
+  HREF="node79.html">14.6 Languages</A>
+<B> Up:</B> <A NAME="tex2html1370"
+  HREF="node73.html">14. Scripting</A>
+<B> Previous:</B> <A NAME="tex2html1364"
+  HREF="node77.html">14.4 Variables</A>
+ &nbsp; <B>  <A NAME="tex2html1372"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1321"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1374"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION0018160000000000000000">
-17.16 Differences to version 0.74</A>
+<H1><A NAME="SECTION001550000000000000000"></A><A NAME="scriptmsgparam"></A>
+<BR>
+14.5 Message based parameters
 </H1>
 
-<UL>
-<LI>new <TT>map+</TT> message  (see section <A HREF="node31.html#mapAddMsg">9.2</A> p.<A HREF="node31.html#mapAddMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>the <TT>click</TT> and <TT>select</TT> messages are deprecated (but still supported). They will be removed in a future version (see section <A HREF="node20.html#csmsg">4.4</A> p.<A HREF="node20.html#csmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-</UL>
+<P>
+Similarly to message based variables (see section <A HREF="node69.html#msgvar">13.2.4</A> p.<A HREF="node69.html#msgvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>), a message parameter may also use the result of a <TT>get</TT> message as parameters specified like a message based variable.
+The message must be enclosed in parameters with a leading $ sign.
+<BR>
+<IMG
+ WIDTH="220" HEIGHT="46" ALIGN="BOTTOM" BORDER="0"
+ SRC="img86.gif"
+ ALT="\begin{rail}
+msgparam : '(' (message) ')'
+\end{rail}">
+<BR>
+<A NAME="1527"></A>
 
 <P>
-<BR><HR>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Displaying INScore version using a message parameter:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/version set  txt "INScore version is" $(/ITL get version);</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
+<BR><B> <B>N<SMALL>OTE </SMALL></B></B>
+<BR>
+Message based parameters are evaluated by the parser. Thus when the system state is modified by a script before a message parameter, these modifications won't be visible at the time of the parameter evaluation because all the messages will be processed by the next time task. For example:
+<BR>
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/obj x 0.1
+<BR>/ITL/scene/foo x $(/ITL/scene/foo get x);</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+x position of <TT>/ITL/scene/foo</TT> will be set to x position of <TT>/ITL/scene/obj</TT> at the time of the script evaluation (that may be different to 0.1).
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1375"
+  HREF="node79.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html1369"
+  HREF="node73.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html1363"
+  HREF="node77.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html1371"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html1373"
+  HREF="node106.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html1376"
+  HREF="node79.html">14.6 Languages</A>
+<B> Up:</B> <A NAME="tex2html1370"
+  HREF="node73.html">14. Scripting</A>
+<B> Previous:</B> <A NAME="tex2html1364"
+  HREF="node77.html">14.4 Variables</A>
+ &nbsp; <B>  <A NAME="tex2html1372"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1374"
+  HREF="node106.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

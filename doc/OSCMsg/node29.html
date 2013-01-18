@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>9. Time to space mapping</TITLE>
-<META NAME="description" CONTENT="9. Time to space mapping">
+<TITLE>6.3 Symbolic score management</TITLE>
+<META NAME="description" CONTENT="6.3 Symbolic score management">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,67 +19,108 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node33.html">
-<LINK REL="previous" HREF="node25.html">
-<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="next" HREF="node30.html">
+<LINK REL="previous" HREF="node28.html">
+<LINK REL="up" HREF="node26.html">
 <LINK REL="next" HREF="node30.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html604"
+<A NAME="tex2html657"
   HREF="node30.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html598"
-  HREF="OSCMsg.html">
+<A NAME="tex2html651"
+  HREF="node26.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html592"
+<A NAME="tex2html645"
   HREF="node28.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html600"
+<A NAME="tex2html653"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html602"
-  HREF="node85.html">
+<A NAME="tex2html655"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html605"
-  HREF="node30.html">9.1 The 'map' message</A>
-<B> Up:</B> <A NAME="tex2html599"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html593"
-  HREF="node28.html">8.3 Score pages management</A>
- &nbsp; <B>  <A NAME="tex2html601"
+<B> Next:</B> <A NAME="tex2html658"
+  HREF="node30.html">6.4 The 'grid' object</A>
+<B> Up:</B> <A NAME="tex2html652"
+  HREF="node26.html">6. Type specific messages</A>
+<B> Previous:</B> <A NAME="tex2html646"
+  HREF="node28.html">6.2 Width and height</A>
+ &nbsp; <B>  <A NAME="tex2html654"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html603"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html656"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001000000000000000000"></A>
-<A NAME="mapping"></A>
+<H1><A NAME="SECTION00730000000000000000"></A>
+<A NAME="gmnpage"></A>
 <BR>
-9. Time to space mapping
+6.3 Symbolic score management
 </H1>
 
 <P>
-Time to space mapping refers to the description of relationship between an object local graphic space and its time space. 
+Messages accepted by the components types <TT>gmn | gmnf</TT>. 
+<BR>
+<IMG
+ WIDTH="396" HEIGHT="241" ALIGN="BOTTOM" BORDER="0"
+ SRC="img33.gif"
+ ALT="\begin{rail}
+scoreMsg : 'page' int32
+\vert 'dpage' int32
+\vert 'pageFormat' fl...
+...2
+\vert 'columns' int32
+\vert 'rows' int32
+\vert 'get' 'pageCount'
+\end{rail}">
+<BR>
+<A NAME="641"></A>
+<A NAME="642"></A>
+<A NAME="643"></A>
+<A NAME="644"></A>
+<A NAME="645"></A>
+<A NAME="646"></A>
 
 <P>
-<BR><HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><A NAME="tex2html606"
-  HREF="node30.html">9.1 The 'map' message</A>
-<LI><A NAME="tex2html607"
-  HREF="node31.html">9.2 The 'map+' message</A>
-<LI><A NAME="tex2html608"
-  HREF="node32.html">9.3 Mapping files</A>
+<LI><TT>page</TT>: set the score current page
+</LI>
+<LI><TT>dpage</TT>: moves the score current page
+</LI>
+<LI><TT>pageFormat</TT>: set the page format. The parameters are the page width and height. Note that the message has no effect when the score already includes a <code>\</code>pageformat tag.
+</LI>
+<LI><TT>columns</TT>: for multi pages display: set the number of columns.
+</LI>
+<LI><TT>rows</TT>: for multi pages display: set the number of rows.
+</LI>
+<LI><TT>pageCount</TT>:  a read only attribute, gives the score pages count.
+</LI>
 </UL>
-<!--End of Table of Child-Links-->
+
+<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Displaying a multi-pages score on two pages starting at page 3:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/myScore columns 2 
+<BR>/ITL/scene/myScore page 3
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
 <BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>

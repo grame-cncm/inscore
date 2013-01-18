@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>12. Virtual address space</TITLE>
-<META NAME="description" CONTENT="12. Virtual address space">
+<TITLE>9. Mapping graphic space to time space</TITLE>
+<META NAME="description" CONTENT="9. Mapping graphic space to time space">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,50 +19,52 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node42.html">
-<LINK REL="previous" HREF="node35.html">
+<LINK REL="next" HREF="node44.html">
+<LINK REL="previous" HREF="node38.html">
 <LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node40.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html745"
+<A NAME="tex2html798"
   HREF="node40.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html739"
+<A NAME="tex2html792"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html733"
+<A NAME="tex2html786"
   HREF="node38.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html741"
+<A NAME="tex2html794"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html743"
-  HREF="node85.html">
+<A NAME="tex2html796"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html746"
-  HREF="node40.html">12.1 File watcher</A>
-<B> Up:</B> <A NAME="tex2html740"
+<B> Next:</B> <A NAME="tex2html799"
+  HREF="node40.html">9.1 The 'map' message</A>
+<B> Up:</B> <A NAME="tex2html793"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html734"
-  HREF="node38.html">11.3 Score queries</A>
- &nbsp; <B>  <A NAME="tex2html742"
+<B> Previous:</B> <A NAME="tex2html787"
+  HREF="node38.html">8. Scene messages</A>
+ &nbsp; <B>  <A NAME="tex2html795"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html744"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html797"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001300000000000000000">
-12. Virtual address space</A>
+<H1><A NAME="SECTION001000000000000000000"></A>
+<A NAME="mapping"></A>
+<BR>
+9. Mapping graphic space to time space
 </H1>
 
 <P>
-Virtual address space extends the OSC address scheme to objects automatically embedded into other objects. 
+Time to space mapping refers to the description of relationship between an object local graphic space and its time space. A mapping consists in a set of relations between the two spaces. INScore provides specific messages to describes mappings and to synchronize arbitrary objects i.e. to display their time relationships in the graphic space.
 
 <P>
 <BR><HR>
@@ -70,10 +72,14 @@ Virtual address space extends the OSC address scheme to objects automatically em
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><A NAME="tex2html747"
-  HREF="node40.html">12.1 File watcher</A>
-<LI><A NAME="tex2html748"
-  HREF="node41.html">12.2 Debug</A>
+<LI><A NAME="tex2html800"
+  HREF="node40.html">9.1 The 'map' message</A>
+<LI><A NAME="tex2html801"
+  HREF="node41.html">9.2 The 'map+' message</A>
+<LI><A NAME="tex2html802"
+  HREF="node42.html">9.3 Mapping files</A>
+<LI><A NAME="tex2html803"
+  HREF="node43.html">9.4 Symbolic score mappings</A>
 </UL>
 <!--End of Table of Child-Links-->
 <BR><HR>

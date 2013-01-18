@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>11. Score specific messages</TITLE>
-<META NAME="description" CONTENT="11. Score specific messages">
+<TITLE>7.3 Messages forwarding</TITLE>
+<META NAME="description" CONTENT="7.3 Messages forwarding">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,63 +19,122 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node39.html">
-<LINK REL="previous" HREF="node33.html">
-<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="next" HREF="node36.html">
+<LINK REL="previous" HREF="node34.html">
+<LINK REL="up" HREF="node32.html">
 <LINK REL="next" HREF="node36.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html688"
+<A NAME="tex2html744"
   HREF="node36.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html682"
-  HREF="OSCMsg.html">
+<A NAME="tex2html738"
+  HREF="node32.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html676"
+<A NAME="tex2html732"
   HREF="node34.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html684"
+<A NAME="tex2html740"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html686"
-  HREF="node85.html">
+<A NAME="tex2html742"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html689"
-  HREF="node36.html">11.1 Specific score mappings</A>
-<B> Up:</B> <A NAME="tex2html683"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html677"
-  HREF="node34.html">10.1 Synchronization modes</A>
- &nbsp; <B>  <A NAME="tex2html685"
+<B> Next:</B> <A NAME="tex2html745"
+  HREF="node36.html">7.4 Application level queries</A>
+<B> Up:</B> <A NAME="tex2html739"
+  HREF="node32.html">7. Application messages</A>
+<B> Previous:</B> <A NAME="tex2html733"
+  HREF="node34.html">7.2 Ports management</A>
+ &nbsp; <B>  <A NAME="tex2html741"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html687"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html743"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001200000000000000000">
-11. Score specific messages</A>
+<H1><A NAME="SECTION00830000000000000000"></A>
+<A NAME="ITLForward"></A>
+<BR>
+7.3 Messages forwarding
 </H1>
 
 <P>
-<BR><HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+The messages handled by the application can be forwarded to arbitrary remote hosts using the <TT>forward</TT> message. The <TT>forward</TT> message itself can't be forwarded. 
+
+<P>
+<BR>
+<IMG
+ WIDTH="358" HEIGHT="114" ALIGN="BOTTOM" BORDER="0"
+ SRC="img38.gif"
+ ALT="\begin{rail}
+ITLMsgForward : ('forward' ( [1] \vert [2] hostname +))
+\end{rail}">
+<BR>
+<A NAME="748"></A>
+
+<P>
 
 <UL>
-<LI><A NAME="tex2html690"
-  HREF="node36.html">11.1 Specific score mappings</A>
-<LI><A NAME="tex2html691"
-  HREF="node37.html">11.2 Score browsing and layout</A>
-<LI><A NAME="tex2html692"
-  HREF="node38.html">11.3 Score queries</A>
+<LI>1) removes the set of forwarded destinations,
+</LI>
+<LI>2) set a list of remote hosts for forwarding. Note that <TT>hostname</TT> can be any legal host name or IP number, optionally extended with a port number separated by a semi-colon. By default, when no port number is specified, the current application listening port number is used.
+</LI>
 </UL>
-<!--End of Table of Child-Links-->
-<BR><HR>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Forwarding messages to <TT>host1.adomain.org</TT> using the current application listening port number
+and to <TT>host2.adomain.org</TT> on port number 5100.
+
+<P>
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL forward host1.adomain.org host2.adomain.org:5100</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
+<B>W<SMALL>ARNING:</SMALL></B> forwarding messages to the application host results in an infinite loop with unpredictable results. Thus it is not recommended to use the local network broadcast address for forwarding unless using a different UDP port number.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html744"
+  HREF="node36.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html738"
+  HREF="node32.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html732"
+  HREF="node34.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html740"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html742"
+  HREF="node106.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html745"
+  HREF="node36.html">7.4 Application level queries</A>
+<B> Up:</B> <A NAME="tex2html739"
+  HREF="node32.html">7. Application messages</A>
+<B> Previous:</B> <A NAME="tex2html733"
+  HREF="node34.html">7.2 Ports management</A>
+ &nbsp; <B>  <A NAME="tex2html741"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html743"
+  HREF="node106.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

@@ -17,7 +17,7 @@ fullhtml:
 	rail OSCMsg/images
 	rm -f  OSCMsg/img*.*
 	latex2html $(HTMLOPT) OSCMsg.tex
-	cp OSCMsg.css OSCMsg
+	cp css/OSCMsg.css OSCMsg
 
 htmlclean:
 	rm -f  OSCMsg/*.pl  OSCMsg/*.[trila]*   OSCMsg/WARNINGS

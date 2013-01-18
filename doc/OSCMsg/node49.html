@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>13.2.2 Parallel graphic signals.</TITLE>
-<META NAME="description" CONTENT="13.2.2 Parallel graphic signals.">
+<TITLE>11. Signals and graphic signals</TITLE>
+<META NAME="description" CONTENT="11. Signals and graphic signals">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,72 +19,95 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="previous" HREF="node48.html">
-<LINK REL="up" HREF="node47.html">
+<LINK REL="next" HREF="node57.html">
+<LINK REL="previous" HREF="node44.html">
+<LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node50.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html891"
+<A NAME="tex2html943"
   HREF="node50.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html885"
-  HREF="node47.html">
+<A NAME="tex2html937"
+  HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html881"
+<A NAME="tex2html931"
   HREF="node48.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html887"
+<A NAME="tex2html939"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html889"
-  HREF="node85.html">
+<A NAME="tex2html941"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html892"
-  HREF="node50.html">14. FAUST plugins</A>
-<B> Up:</B> <A NAME="tex2html886"
-  HREF="node47.html">13.2 Graphic signals.</A>
-<B> Previous:</B> <A NAME="tex2html882"
-  HREF="node48.html">13.2.1 Graphic signal default</A>
- &nbsp; <B>  <A NAME="tex2html888"
+<B> Next:</B> <A NAME="tex2html944"
+  HREF="node50.html">11.1 The 'signal' static</A>
+<B> Up:</B> <A NAME="tex2html938"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html932"
+  HREF="node48.html">10.1.3 Controlling the slave</A>
+ &nbsp; <B>  <A NAME="tex2html940"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html890"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html942"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION001422000000000000000"></A>
-<A NAME="pgsignal"></A>
+<H1><A NAME="SECTION001200000000000000000"></A>
+<A NAME="graphsig"></A>
 <BR>
-13.2.2 Parallel graphic signals.
-</H2>
-When the dimension <I>d</I> of a signal connected to a graphic signal is greater than 6, then the input signal is interpreted like parallel graphic signals. More generally, the dimension <I>n</I> of a graphic signal is:
-<BR><P></P>
-<DIV ALIGN="CENTER">
-<!-- MATH
- \begin{displaymath}
-n  \  |\ n \in \mathbb{N}\ \land\ 6.(n-1) < d \leqslant 6.n
-\end{displaymath}
- -->
+11. Signals and graphic signals
+</H1>
 
-<IMG
- WIDTH="384" HEIGHT="28" BORDER="0"
- SRC="img79.gif"
- ALT="\begin{displaymath}
-n \ \vert\ n \in \mathbb{N}\ \land\ 6.(n-1) &lt; d \leqslant 6.n
-\end{displaymath}">
+<P>
+The graphic representation of a signal is approached with <I>graphic signals</I>. As illustrated in figure <A HREF="#graphimg">11.1</A>, the graphic representation of a signal could be viewed as a stream of a limited set of parameters : the <TT>y</TT> coordinate at a time <TT>t</TT>, a thickness <TT>h</TT> and a color <TT>c</TT>. 
+A <I>graphic signal</I> is a composite signal including a set of 3 parallel signals that control these parameters. Thus the INScore library provides messages to create signals and to combine them into <I>graphic signals</I>. 
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="graphimg"></A><A NAME="1074"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 11.1:</STRONG>
+A simple graphic signal, defined at time t by a coordinate y, a thickness h and a color c</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER"><IMG
+  WIDTH="355" HEIGHT="144" ALIGN="BOTTOM" BORDER="0"
+ SRC="./graph.gif"
+ ALT="Image graph">
+ </DIV></TD></TR>
+</TABLE>
 </DIV>
-<BR CLEAR="ALL">
-<P></P>
-where <I>d</I> is the dimension of the input signal.
 
 <P>
-Note than when <I>d</I> is not a mutiple of 6, then the last graphic signal makes use of the default values mentionned above.
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
-<P>
+<UL>
+<LI><A NAME="tex2html945"
+  HREF="node50.html">11.1 The 'signal' static node.</A>
+<UL>
+<LI><A NAME="tex2html946"
+  HREF="node51.html">11.1.1 Signal messages.</A>
+<LI><A NAME="tex2html947"
+  HREF="node52.html">11.1.2 Composing signals in parallel.</A>
+<LI><A NAME="tex2html948"
+  HREF="node53.html">11.1.3 Distributing data to signals in parallel</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html949"
+  HREF="node54.html">11.2 Graphic signals.</A>
+<UL>
+<LI><A NAME="tex2html950"
+  HREF="node55.html">11.2.1 Graphic signal default values.</A>
+<LI><A NAME="tex2html951"
+  HREF="node56.html">11.2.2 Parallel graphic signals.</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
 <BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>

@@ -42,11 +42,12 @@
 \newcommand{\note}	[1]		{\vspace{2mm}\textbf{\hspace{-1.03cm}\textbf{\textsc{Note #1}}}}
 \renewcommand{\seealso}	{\textbf{See also: }}
 
-\newcommand{\osctype}[1]{\textbf{\texttt{{\small #1}}}}
-\newcommand{\oscint}{\osctype{int32}}
-\newcommand{\oscfloat}{\osctype{float32}}
-\newcommand{\oscstring}{\osctype{string}}
-\newcommand{\rational}{\osctype{rational}}
+\newcommand{\osctype}[1]	{\textbf{\texttt{{\small #1}}}}
+\newcommand{\oscint}		{\osctype{int32}}
+\newcommand{\oscfloat}	{\osctype{float32}}
+\newcommand{\oscstring}	{\osctype{string}}
+\newcommand{\rational}	{\osctype{rational}}
+%\newcommand{\var}[1] 		{\emph{#1}}
 
 \setlength\parskip{2pt}
 \setlength\railnamesep{-1mm}
@@ -134,7 +135,7 @@ OSCMessage : OSCAddress parameters
 Message parameters types are the OSC types \emph{int32}, \emph{float32} and \emph{OSC-string}. In the remainder of this document, they are used as terminal symbols, denoted by \oscint, \oscfloat\ and \oscstring. 
 
 When used in a script file (see section \ref{scripting}), \oscstring\ should be single or double quoted when they include characters not allowed in identifiers (space, punctuation marks, etc.).
-If an ambiguous double or single quote is part of the string, it must be escaped using a '$\backslash$'.
+If an ambiguous double or single quote is part of the string, it must be escaped using a '\verb+\+'.
 
 Parameters types policy is relaxed: the system makes its best to convert a parameter to the expected type, which depend on the message string. With an incorrect type and when no conversion is applied, an incorrect parameter message is issued.
 
@@ -277,11 +278,11 @@ absPosMsg :
 For a \OSC{scene} component, -1 is the leftmost or topmost position, 1 is the rightmost or bottommost position. \values{[0,0]} represents the center of the \OSC{scene}. \\
 For the \OSC{scene} itself, it moves the window in the screen space and the coordinate space is orthonormal, based on the screen lowest dimension (\emph{i.e.} with a 4:3 screen, \OSC{y=-1} and \OSC{y=1} are respectively the exact top and bottom of the screen, but neither \OSC{x=-1} nor \OSC{x=1} are the exact left and right of the screen). \\
 Default coordinates are \values{[0,0]}.
-\item \OSC{z}: sets the \values{z} order of a component. The range is $[0,\infty[$. \values{z} order is actually relative to the \OSC{scene} components: objects of high \values{z} order will be drawn on top of components with a lower \values{z} order. Components sharing the same \values{z} order will be drawn in an undefined order, although the order will stay the same for as long as they live. \\
+\item \OSC{z}: sets the \values{z} order of a component. \values{z} order is actually relative to the \OSC{scene} components: objects of high \values{z} order will be drawn on top of components with a lower \values{z} order. Components sharing the same \values{z} order will be drawn in an undefined order, although the order will stay the same for as long as they live. \\
 Default \values{z} order is 0.
 \item \OSC{angle}: sets the \values{angle} value of a component, which is used to rotate it around its center. The angle is measured in clockwise degrees from the \values{x} axis.\\
 Default angle value is 0.
-\item \OSC{scale}: reduce/enlarge a component. The range is $[0,\infty[$. Default scale is \values{1}.
+\item \OSC{scale}: reduce/enlarge a component. Default scale is \values{1}.
 \end{itemize}
 
 \example \\
@@ -327,7 +328,7 @@ Relative displacement of an object:
 \subsublevel{Components origin}
 \label{origin}
 
-The origin of a component is the point $(x_o, y_o)$ such that the $(x, y)$ coordinates and the $(x_o, y_o)$ point coincide graphically. For example, when the origin is the top left corner, the component top left corner is drawn  at the $(x, y)$ coordinates.
+The origin of a component is the point \values{(xo, yo)} such that the \values{(x, y)} coordinates and the \values{(xo, yo)} point coincide graphically. For example, when the origin is the top left corner, the component top left corner is drawn  at the \values{(x, y)} coordinates.
 
 \begin{rail}
 originMsg :  
@@ -342,7 +343,7 @@ originMsg :
 \index{Position messages!relative!dyorigin}
 
 \begin{itemize}
-\item \OSC{xorigin}, \OSC{yorigin} are relative to the component coordinates space i.e. $[-1,1]$, where -1 is the top or left border and 1 is the bottom or right border. The default origin is $[0,0]$ i.e. the component is centered on its $(x,y)$ coordinates.
+\item \OSC{xorigin}, \OSC{yorigin} are relative to the component coordinates space i.e. \values{[-1,1]}, where -1 is the top or left border and 1 is the bottom or right border. The default origin is \values{[0,0]} i.e. the component is centered on its \values{(x,y)} coordinates.
 \item \OSC{dxorigin}, \OSC{dyorigin} represents displacement of the current \OSC{xorigin} or \OSC{yorigin}.
 \end{itemize}
 
@@ -914,7 +915,7 @@ scoreMsg :      'page' int32
 \begin{itemize}
 \item \OSC{page}: set the score current page
 \item \OSC{dpage}: moves the score current page
-\item \OSC{pageFormat}: set the page format. The parameters are the page width and height. Note that the message has no effect when the score already includes a $\backslash$pageformat tag.
+\item \OSC{pageFormat}: set the page format. The parameters are the page width and height. Note that the message has no effect when the score already includes a \verb+\+pageformat tag.
 \item \OSC{columns}: for multi pages display: set the number of columns.
 \item \OSC{rows}: for multi pages display: set the number of rows.
 \item \OSC{pageCount}:  a read only attribute, gives the score pages count.
@@ -996,6 +997,7 @@ ITLMsg : 'quit'
 		| ('load' filePath)
 		| ('require' float oscMsg)
 		| ('time' int32)
+		| ('ticks' int32)
 		| ('rate' int32)
 		| 'hello'
 \end{rail}
@@ -1007,6 +1009,7 @@ ITLMsg : 'quit'
 \index{ITL messages!require}
 \index{ITL messages!rate}
 \index{ITL messages!time}
+\index{ITL messages!ticks}
 
 \begin{itemize}
 \item \OSC{quit}: requests the client application to quit.
@@ -1025,7 +1028,9 @@ The default \OSC{defaultShow} value is 1.
 \item \OSC{rate}: changes the time task rate. Note that null values are ignored.\\
 The default \OSC{rate} value is 10.
 
-\item \OSC{time}: sets the application current time. The current rate is internally added to the current time by the time task.
+\item \OSC{time}: sets the application current time. The time is expressed in milliseconds.
+
+\item \OSC{time}: sets the application current ticks count. The ticks count indicates the number of time tasks performed by the application.
 
 \item \OSC{hello}: query the host IP number. The message is intended for ITL applications discovery. Answer to the query has the following format: \\
 \oldexample \OSC{IP  inPort outPort errPort} where \OSC{IP} is sent as a string and port numbers as integer values.
@@ -1302,7 +1307,7 @@ relation :
 	| 	([3] int1DSegment relativeTimeSegment ) + 
 \end{rail}
 
-Segments are expressed as a list of intervals. For a 1 dimension resource, a segment is a made of a single interval. For a 2 dimensions resource, a segment is a made of 2 intervals: an interval on the $x$-axis and one on the $y$-axis for graphic based resource, or an interval on columns and one on lines for text based resources. Intervals are right-opened.
+Segments are expressed as a list of intervals. For a 1 dimension resource, a segment is a made of a single interval. For a 2 dimensions resource, a segment is a made of 2 intervals: an interval on the \values{x}-axis and one on the \values{y}-axis for graphic based resource, or an interval on columns and one on lines for text based resources. Intervals are right-opened.
 
 The different kind of relations corresponds to:
 \begin{itemize}
@@ -1359,7 +1364,7 @@ floatInterval : '[' float32 ',' float32 '['
 intInterval : '[' int32 ',' int32 '['
 \end{rail}
 
-Relative time is expressed as \OSC{rational} values where $1$ represents a whole note.
+Relative time is expressed as \OSC{rational} values where \values{1} represents a whole note.
 
 \begin{rail}
 rational : int32 '/' int32
@@ -1437,7 +1442,7 @@ scoreMap : 'map' ('page' | 'system' | 'systemflat' | 'staffn' | 'voicen' )
 The default mapping for a symbolic score is unnamed but equivalent to \OSC{staff1}.
 
 \example \\
-Requesting the mapping of the $3^{rd}$ staff of a score:
+Requesting the mapping of the third staff of a score:
 \sample{/ITL/scene/myScore map staff3}
 Requesting the system mapping :
 \sample{/ITL/scene/myScore map system}
@@ -1490,7 +1495,7 @@ Synchronizing two objects using a specific mapping (the second object is assumed
 
 %-------------------------------
 %:    Synchronization modes
-\sublevel{Synchronization modes}
+\sublevel{Synchronization modes}\label{syncmode}
 
 Synchronizing a slave component \values{A} to a master component \values{B} has the following effect:
 \begin{itemize}
@@ -1520,8 +1525,8 @@ The synchronization mode makes use of the master time to graphic mapping to comp
 \end{itemize}
 
 \note{} \\
-Use of the \OSC{absolute} mode may take sense with nested synchronizations: let's consider an object $A$, slave of $B$, which is slave of $C$.
-In \OSC{relative} mode and if $A$ and $B$ receive the same \OSC{clock} messages, $A$ will remain at a fixed position on $B$ although it is moving in time.
+Use of the \OSC{absolute} mode may take sense with nested synchronizations: let's consider an object \values{A}, slave of \values{B}, which is slave of \values{C}.
+In \OSC{relative} mode and if \values{A} and \values{B} receive the same \OSC{clock} messages, \values{A} will remain at a fixed position on \values{B} although it is moving in time.
 
 \example \\
 Describing nested synchronizations, the first one using the \OSC{absolute} mode:
@@ -1570,7 +1575,8 @@ The synchronization position mode has the following effects on the slave \values
 \end{itemize}
 The default position mode is \OSC{syncOver}. The \OSC{y} attribute of the slave remains available to displacement (\OSC{dy}). 
 
-\note{} The $y$ position of a synchronized object remains a free attribute. To control this position, you should send \OSC{dy} messages.  
+\note{} \\
+The \values{y} position of a synchronized object remains a free attribute. To control this position, you should send \OSC{dy} messages.  
 
 \example \\
 Synchronizing two objects, aligning the slave duration to the corresponding master space, the slave being below the master map:
@@ -1582,7 +1588,7 @@ Synchronizing two objects, aligning the slave duration to the corresponding mast
 \toplevel{Signals and graphic signals}
 \label{graphsig}
 
-The graphic representation of a signal is approached with \emph{graphic signals}. As illustrated in figure \ref{graphimg}, the graphic representation of a signal could be viewed as a stream of a limited set of parameters : the $y$ coordinate at a time $t$, a thickness $h$ and a color $c$. 
+The graphic representation of a signal is approached with \emph{graphic signals}. As illustrated in figure \ref{graphimg}, the graphic representation of a signal could be viewed as a stream of a limited set of parameters : the \values{y} coordinate at a time \values{t}, a thickness \values{h} and a color \values{c}. 
 A \emph{graphic signal} is a composite signal including a set of 3 parallel signals that control these parameters. Thus the INScore library provides messages to create signals and to combine them into \emph{graphic signals}. 
 
 \begin{figure}[h]
@@ -1907,7 +1913,7 @@ signal :
 		  identifier ( | "/" n)
 		| float32
 \end{rail}
-where $n$ selects the signal \#n of a parallel signal. Note that indexes start at 0.
+where \values{n} selects the signal \#n of a parallel signal. Note that indexes start at 0.
 
 \example \\
 Creating 3 parallel signals using the 3 output channels of a FAUST processor named \OSC{myFaust}:
@@ -2047,7 +2053,7 @@ Variables are values computed when an event is triggered. These values are send 
 \subsublevel{Position variables}
 \label{posvar}
 
-Position variables reflects the current mouse position for mouse events. They are set to $0$ for the other events. 
+Position variables reflects the current mouse position for mouse events. They are set to \values{0} for the other events. 
 
 \begin{rail} 
 posVar : xy | 'absx' | 'absy' | 'sx' | 'sy' 
@@ -2065,7 +2071,7 @@ xy : ('x' | 'y') ( | '[low,high]')
 \end{rail}
 
 \begin{itemize}
-\item \OSC{\$x} \OSC{\$y}: denotes the mouse pointer position at the time of the event. The values are in the range $[0,1]$ where 1 is the object size in the x or y dimension. The value is computed according to the object origin: it represents the mouse pointer distance from the object x or y origin (see \fullref{origin}). \OSC{\$x} and \OSC{\$y} variables support an optional range in the form \OSC{[low, high]} that transforms the $[0,1]$  values range into the $[low, high]$ range.
+\item \OSC{\$x} \OSC{\$y}: denotes the mouse pointer position at the time of the event. The values are in the range \values{[0,1]} where 1 is the object size in the x or y dimension. The value is computed according to the object origin: it represents the mouse pointer distance from the object x or y origin (see \fullref{origin}). \OSC{\$x} and \OSC{\$y} variables support an optional range in the form \OSC{[low, high]} that transforms the \values{[0,1]}  values range into the \values{[low, high]} range.
 
 \item \OSC{\$absx} \OSC{\$absy}: denotes the mouse pointer absolute position at the time of the event. The values represent a pixel position relative to the top-left point of the target object. Note that this position is unaffected by scale. 
 Note also that the values are not clipped to the object dimensions and could exceed its width or height or become negative in case of mouse move events.
@@ -2085,7 +2091,7 @@ An object that follows mouse move.\\
 \label{timevar}
 
 Time variables reflects the date corresponding to the current mouse position for mouse events. 
-They are set to $0$ for the other events. 
+They are set to \values{0} for the other events. 
 
 \begin{rail} 
 timeVar :  ('date' | 'rdate') (| ':'  mapname) (| '[n/d]') (| '\%' 'f')
@@ -2143,7 +2149,7 @@ The evaluation of a 'get' message produces a message or a list of messages. The 
 Note that all the 'get' messages attached to an event are evaluated at the same time.
 
 \example \\
-An object that takes the $x$ position of another object on mouse down:
+An object that takes the \values{x} position of another object on mouse down:
 \sample{/ITL/scene/myObject watch mouseDown \\
 \hspace*{3cm}(/ITL/scene/myObject x '\$(/ITL/scene/obj get x)')}
 
@@ -2167,7 +2173,7 @@ Requesting a set of objects to send a message to themselves on a mouse event:
 %===============================
 %:    Interaction state management
 \sublevel{Interaction state management}
-\label{evtstats}
+\label{evtstate}
 
 For a given object, its \emph{interaction state} (i.e. the watched events and the associated messages) can be saved and restored.
 \begin{rail} 
@@ -2189,7 +2195,7 @@ The effect of a pop message addressed to an object with an empty stack is to cle
 %===============================
 %:    File watcher
 \sublevel{File watcher}
-\label{watch}
+\label{filewatch}
 
 The \OSC{fileWatcher} is a static node of a scene that is intended to watch file modifications. \\
 It receives messages at the address \OSC{/ITL/scene/fileWatcher}.
@@ -2232,38 +2238,123 @@ Reload aa INScore script on file modification:
 \toplevel{Scripting}
 \label{scripting}
 
-INScore saves its state to files containing textual OSC messages. These files can be created from scratch using any text editor. In order to provide users with a scripting language, the OSC syntax has been extended at textual level.
+INScore saves its state to files containing textual OSC messages. These files can be edited or created from scratch using any text editor. In order to provide users with a scripting language, the OSC syntax has been extended at textual level.
 
 %===============================
 %:    Statements
 \sublevel{Statements}\label{scriptstatement}
+An INScore file is a list of textual expressions. A script expression is:
+\begin{itemize}
+\item a message: basically a textual OSC message extended to support URL like addresses and variables as parameters.
+\item a variable declaration.
+\item a foreign language script that may generate messages as output.
+\end{itemize}
 
+\begin{rail}
+expression :  
+		 	message ";"
+		| 	variabledecl ";"
+		| 	script
+\end{rail}
+\index{Scripting!expressions}
+
+Messages and variables declarations must be followed by a semicolon, used as statements separator.
 
 %===============================
-%:    variables
+%:    Messages
+\sublevel{Messages}\label{scriptmsgs}
+
+Messages are basically OSC messages that support the address extension scheme described in section \fullref{interaction}.
+Thus a script may be designed to initialize an INScore scene and external applications as well, including on remote hosts.
+
+\example\\
+Initializing a score and an external application listening on port 12000 and running on a remote host named \OSC{host.adomain.net}.
+\sample{/ITL/scene/score set gmnf 'myscore.gmn';\\
+host.adomain.net:12000/run 1;
+}
+
+Messages parameters can be replaced by variables that are evaluated at parsing level. Variables are described in section \ref{scriptvar}.
+
+%===============================
+%:    types
 \sublevel{Types}\label{scripttypes}
 
+Using OSC, the message parameters are typed by the OSC protocol. 
+With their textual version, any parameter is converted to an OSC type (i.e. int32, float or string) at parsing level.
+A special attention must be given to strings in order to discriminate addresses and parameters. Strings intended as parameters must:
+\begin{itemize}
+\item be quoted, using single or double quotes. Note that an ambiguous quote included in a string can be escaped using a '\verb+\+'.
+\item or make use of the following characters set: \OSC{[-a-zA-Z0-9]+} or \OSC{[\_a-zA-Z][\_a-zA-Z0-9]*}.
+ \end{itemize}
+
+\example \\
+Different string parameter
+\sample{/ITL/scene/text set txt "Hello world";  ! string including a space must be quoted \\
+/ITL/scene/img set file 'anImage.png';  ! dots must be quoted too \\
+/ITL/scene/foo set txt no\_quotes\_needed;
+}
 
 
 %===============================
-%:    variables
+%:    Variables
 \sublevel{Variables}\label{scriptvar}
 
-A variable may hold any value supported by the parameter types. \oscstring\ must be enclosed in simple or double quotes. It is declared as follows:
+A variable declaration associates a name with a list of parameters or a list of messages.
+Parameters must follow the rules given in section \ref{scripttypes}. They may include previously declared variables. A message list must be enclosed in parenthesis and a comma must be used as messages separator.
 \begin{rail} 
-variabledecl : 'ident' '=' ( int32 | float32 | string ) ';'
+variabledecl : 'ident' '=' ( (param | variable) +
+					| '(' (message + ',') ')' ) ';'
 \end{rail}
 \index{Scripting! variable}
-A variable may be used in place of any message parameter. A reference to a variable must have the form \OSC{\$ident} where \OSC{ident} is a previously declared variable. 
 
-Note that interaction messages may also use variables with similar reference forms (\$ident). There is however no ambiguity concerning these references: interaction variables are always passed as strings and should be quoted, scripts variables as used without quotes.
+\example \\
+Variables declarations
+\sample{color = 200 200 200; \\
+colorwithalpha = \$color 100; ! using another variable \\
+msgsvar= ( \hspace*{2.7cm}  ! a variable refering to a message list \\
+\hspace*{1cm} localhost:7001/world "Hello world", \\
+\hspace*{1cm} localhost:7001/world "how are you ?" );
+}
 
-\example
-\sample{
-x=0.5;\\
+
+A variable may be used in place of any message parameter. A reference to a variable must have the form \OSC{\$ident} where \OSC{ident} is a previously declared variable. A variable is evaluated at parsing level and replaced by its content.
+
+\example \\
+Using a variable to share a common position:
+\sample{x = 0.5;\\
 /ITL/scene/a x \$x;\\
 /ITL/scene/b x \$x;
 }
+
+Variables can be used in interaction messages as well, which may also use the variables available in the interaction context (see section \fullref{interactvar}). To differentiate between a \emph{script} and an \emph{interaction} variable, the latter must be quoted to be passed as strings and to prevent their evaluation by the parser. 
+
+\example \\
+Using variables in interaction messages: \$sx is evaluated at event occurrence	and \$y is evaluated at parsing level.
+\sample{y = 0.5;\\
+/ITL/scene/foo watch mouseDown (/ITL/scene/foo "\$sx" \$y);
+}
+
+
+%===============================
+%:    Message based parameters
+\sublevel{Message based parameters}\label{scriptmsgparam}
+
+Similarly to message based variables (see section \fullref{msgvar}), a message parameter may also use the result of a \OSC{get} message as parameters specified like a message based variable.
+The message must be enclosed in parameters with a leading \$ sign.
+\begin{rail} 
+msgparam : '(' (message) ')'
+\end{rail}
+\index{Scripting! message based parameters}
+
+\example \\
+Displaying INScore version using a message parameter:
+\sample{/ITL/scene/version set  txt "INScore version is" \$(/ITL get version);}
+
+\note{}\\
+Message based parameters are evaluated by the parser. Thus when the system state is modified by a script before a message parameter, these modifications won't be visible at the time of the parameter evaluation because all the messages will be processed by the next time task. For example:\\
+\sample{/ITL/scene/obj x 0.1\\
+/ITL/scene/foo x \$(/ITL/scene/foo get x);}
+x position of \OSC{/ITL/scene/foo} will be set to x position of \OSC{/ITL/scene/obj} at the time of the script evaluation (that may be different to 0.1).
 
 %===============================
 %:    languages
@@ -2272,15 +2363,16 @@ x=0.5;\\
 \index{Scripting!javascript}
 \index{Scripting!lua}
 
-INScore supports Javascript and Lua as scripting languages. Javascript is embedded by default (using the v8 engine - see \url{http://code.google.com/p/v8/}. You need to recompile INScore to embed the Lua engine (\url{http://www.lua.org/}). 
-
-The principle of scripting using a programming language is the following: you can embed \emph{javascript} of \emph{lua} code in an INScore file in a way similar to scripts embedded into html files. This code is expected to produce INScore messages on output.
+INScore supports Javascript and Lua as scripting languages. Javascript is embedded by default (using the v8 engine\footnote{\url{http://code.google.com/p/v8/}}). INScore needs to be recompiled to embed the Lua engine\footnote{\url{http://www.lua.org/}}. A script section is indicated similarly to a Javascript section in html i.e. enclosed in an opening \OSC{<?} and a closing \OSC{?>}.
 \begin{rail} 
-lang : '<?' ('javascript' | 'lua') script '?>'
+script : '<?' ('javascript' | 'lua') script '?>'
 \end{rail}
-\index{Scripting! language}
+\index{Scripting! javascript}
+\index{Scripting! lua}
 
-The output of the script section is parsed like INScore messages. \\
+The principle of using an embedded programming language in script files is the following: \emph{javascript} or \emph{lua} sections are given to the corresponding engine and are expected to produce INScore messages on output.
+These messages are then parsed as if replacing the corresponding script section.
+
 Note that INScore variables are exported to the current language environment.
 
 \example
@@ -2292,18 +2384,18 @@ Note that INScore variables are exported to the current language environment.
 
 
 A single persistent context is created at application level and for each scene.
-It allows scripts to reuse previously defined functions and thus design more structured scripts.
+It allows scripts to reuse previously defined functions and thus to design more structured scripts.
 
-Note: the effect of 'load' message is actually to push the messages on the system stack for
-further evaluation. Thus when including a file containing javascript (or lua), the new 
-language context won't be available to the next messages in the script. The workaround 
-for structured script consists in designing a top level script that only contains 'load' messages.
-
-\example
-\sample{
-\hspace*{-3mm} /ITL load "javascript-code.inscore";\\
-/ITL load "call-javascript.inscore";
-}
+%\note{}\\
+%The effect of \OSC{load} message is actually to push the messages on the system stack for evaluation by the next time task. Thus when including a file containing javascript (or lua), the new 
+%language context won't be available to the next messages in the script. The workaround 
+%for structured script consists in designing a top level script that only contains \OSC{load} messages.
+%
+%\example
+%\sample{
+%\hspace*{-3mm} /ITL load 'javascript-code.inscore';\\
+%/ITL load 'call-javascript.inscore';
+%}
 
 
 
@@ -2328,6 +2420,29 @@ for structured script consists in designing a top level script that only contain
 %:    Differences to version 0.98
 \sublevel{Differences to version 0.98}
 \begin{itemize}
+\item bug correction in streching very small objects (due to approximations)
+\item bug correction in \$sx and \$sy computation corrected (xorigin and yorigin was not taken into account)
+\item new 'ticks' message at application level for querying or setting the current count of time tasks (see section \fullref{applmgmt})
+\item new 'time' message at application level for querying or setting the current time (see section \fullref{applmgmt})
+\item new 'forward' message at application level for messages forwarding to remote hosts (see section \fullref{applmgmt})
+\item new 'relative | absolute' synchronization mode (see section \fullref{syncmode})
+\item 'rename' message not supported any more
+\item a scene accepts multiple dropped files
+\item significant extension and syntax changes in inscore script files (see Scripting documentation section \fullref{scripting})
+\item fileWatcher methods renamed and simplified (see section \fullref{filewatch})
+\item 'click' and 'select' messages are not supported any more.
+\item new 'stats' virtual node at application level (address /ITL/stats), supports 'get' and 'reset' messages
+  the node gives statistics about the incoming messages (see section \fullref{ITLdebug})
+\item crash bug in signal creation corrected: a signal size created with an incorrect stream 
+  (e.g. a string value) was 0 and no buffer was allocated.
+\item extension of the time related events to duration: new 'durEnter' and 'durLeave' watchable events (see section \fullref{timeevents})
+\item new 'absolutexy' message at scene level to switch to absolute coordinates (in pixels) (see section \fullref{scene})
+\item new 'push' and 'pop' messages to store and restore current watched events and associated messages (see section \fullref{evtstate})
+\item internal change: mappings are now implemented as a separable library strictly complying to the 
+  mappings formalism.
+\item new \%f format for the date variable to request a float value (instead a rational value) (see section \fullref{timevar}).
+\item dates may be specified as rational strings (see section \fullref{time}).
+\item interaction messages are not any more generated when the date can't be resolved.
 \item new \OSC{rate} message at application level to control the time task rate (see section \fullref{ITL})
 \item new \OSC{frameless} message at scene level to switch to frameless or normal window (see section \fullref{scene})
 \end{itemize}
@@ -2353,7 +2468,7 @@ for structured script consists in designing a top level script that only contain
 \item  objects position, date and watched events preserved through type change
 \item  bug in quantified dates corrected (null denominator set to the quantified value)
 \item  new 'alias' message providing arbitrary OSC addresses support
-\item  bug in parser corrected: $backslash$ escape only ' and " chars, otherwise it is literal
+\item  bug in parser corrected: \verb+\+ escape only ' and " chars, otherwise it is literal
 \item  guido score map makes use of the new guidolib extended mapping API for staff and system
 \item  chords map correction (corrected by guido engine) 
 \end{itemize}
@@ -2505,7 +2620,7 @@ Known issues:
 \sublevel{Differences to version 0.74}
 \begin{itemize}
 \item new \OSC{map+} message  (see section \fullref{mapAddMsg}).
-\item the \OSC{click} and \OSC{select} messages are deprecated (but still supported). They will be removed in a future version (see section \fullref{csmsg}).
+\item the \OSC{click} and \OSC{select} messages are deprecated (but still supported). They will be removed in a future version.
 \end{itemize}
 
 %===============================
@@ -2612,18 +2727,18 @@ Known issues:
 \item \OSC{identifier} specification change (section \fullref{genformat}).
 \item new application \OSC{hello} and  \OSC{defaultShow} messages (section \fullref{ITL}).
 \item new \OSC{load} and \OSC{save} messages  (sections \fullref{ITL} and  \fullref{common}).
-\item \OSC{click} and \OSC{select} messages (section \fullref{csmsg}):
+\item \OSC{click} and \OSC{select} messages:
 \begin{itemize}
 \item \OSC{rightbottom} and \OSC{leftbottom} modes renamed to \OSC{bottomright} and \OSC{bottomleft}
 \item new \OSC{center} mode for the \OSC{click} message
 \item query mode sent back with the reply both for \OSC{click} and  \OSC{select} messages
 \end{itemize}
 \item new \OSC{file}, \OSC{html} and  \OSC{htmlf} types for the \OSC{set} message (section \fullref{setsect}).
-\item \OSC{get} syntax change for the \OSC{scene} (section \fullref{sceneget}).
-\item \OSC{fileWatcher} messages completely redesigned (section \fullref{watch}).
+\item \OSC{get} syntax change for the \OSC{scene}.
+\item \OSC{fileWatcher} messages completely redesigned.
 \item mappings can be identified by names (section \fullref{mapMsg}).
 \item rect, ellipse, curve, line and polygon object support graphic to relative-time mapping
-\item new synchronization modes for Guido scores: voice1, voice2, ... , staff1, staff2, ... , system, page (section \fullref{guidomaps}).
+\item new synchronization modes for Guido scores: voice1, voice2, ... , staff1, staff2, ... , system, page.
 \item Guido mapping manages repeat bars.
 \item Graphic signals messages design (section \fullref{gsignal}).
 \end{itemize}

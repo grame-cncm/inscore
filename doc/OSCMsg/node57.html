@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.4 Message based variables</TITLE>
-<META NAME="description" CONTENT="15.4 Message based variables">
+<TITLE>12. FAUST plugins</TITLE>
+<META NAME="description" CONTENT="12. FAUST plugins">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,113 +19,79 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node58.html">
-<LINK REL="previous" HREF="node56.html">
-<LINK REL="up" HREF="node53.html">
+<LINK REL="next" HREF="node60.html">
+<LINK REL="previous" HREF="node49.html">
+<LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node58.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1008"
+<A NAME="tex2html1061"
   HREF="node58.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1002"
-  HREF="node53.html">
+<A NAME="tex2html1055"
+  HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html996"
+<A NAME="tex2html1049"
   HREF="node56.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1004"
+<A NAME="tex2html1057"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1006"
-  HREF="node85.html">
+<A NAME="tex2html1059"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1009"
-  HREF="node58.html">15.5 OSC address variables</A>
-<B> Up:</B> <A NAME="tex2html1003"
-  HREF="node53.html">15. Events and Interaction</A>
-<B> Previous:</B> <A NAME="tex2html997"
-  HREF="node56.html">15.3 Variables</A>
- &nbsp; <B>  <A NAME="tex2html1005"
+<B> Next:</B> <A NAME="tex2html1062"
+  HREF="node58.html">12.1 Specific messages</A>
+<B> Up:</B> <A NAME="tex2html1056"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html1050"
+  HREF="node56.html">11.2.2 Parallel graphic signals.</A>
+ &nbsp; <B>  <A NAME="tex2html1058"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1007"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1060"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001640000000000000000"></A>
-<A NAME="msgvar"></A>
+<H1><A NAME="SECTION001300000000000000000"></A>
+<A NAME="faust"></A>
 <BR>
-15.4 Message based variables
+12. FAUST plugins
 </H1>
 
 <P>
-A message based variable is a variable containing an OSC message which will be evaluated at the time of the event. They are supported by all kind of events. Like  the variables above, a message based variable starts with a '$' sign followed by a valid 'get' message enclosed in parenthesis:
+FAUST [Functional Audio Stream]<A NAME="tex2html9"
+  HREF="footnode.html#foot1602"><SUP>12.1</SUP></A> is a functional programming language specifically designed for real-time signal processing and synthesis. A FAUST/INScore architecture allows to embed FAUST processors in INScore, for the purpose of signals computation. A FAUST plugin is viewed as a parallel signal and thus it is created in the <TT>signal</TT> address space. Similarly to signals, it is associated to an OSC address in the form <TT>/ITL/<I>scene</I>/signal/<I>name</I></TT> where <TT><I>name</I></TT> is a user defined name.
+
+<P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img95.gif"
+ WIDTH="243" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="img68.gif"
  ALT="\begin{rail}
-msgVar : '(' oscaddress 'get' (\vert params) ')'
+faustprocessor : 'set' 'faust' ''path''
 \end{rail}">
 <BR>
+<A NAME="1285"></A>
+A FAUST processor is created with a <TT>set</TT> message followed by the <TT>faust</TT> type, followed by the plugin path name. 
 
 <P>
-The evaluation of a 'get' message produces a message or a list of messages. The message based variable will be replaced by the parameters of the messages resulting from the evaluation of the 'get' message.
-Note that all the 'get' messages attached to an event are evaluated at the same time.
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
-<P>
-Example:
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT> 
-/ITL/s/o1 watch  'mouseDown' '/ITL/s/o1' 'show' $('/ITL/s/o2' get 'show'); 
-<BR>/ITL/s/o1 watch+ 'mouseDown' '/ITL/s/o2' 'show' $('/ITL/s/o1' get 'show'); 
-<BR>/ITL/s/o2 watch  'mouseDown' '/ITL/s/o1' 'show' $('/ITL/s/o2' get 'show'); 
-<BR>/ITL/s/o2 watch+ 'mouseDown' '/ITL/s/o2' 'show' $('/ITL/s/o1' get 'show')
-</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
-When clicked, the objects <TT>o1</TT> and <TT>o2</TT> swap their visibility state.
-
-<P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html1008"
-  HREF="node58.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1002"
-  HREF="node53.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html996"
-  HREF="node56.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1004"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1006"
-  HREF="node85.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html1009"
-  HREF="node58.html">15.5 OSC address variables</A>
-<B> Up:</B> <A NAME="tex2html1003"
-  HREF="node53.html">15. Events and Interaction</A>
-<B> Previous:</B> <A NAME="tex2html997"
-  HREF="node56.html">15.3 Variables</A>
- &nbsp; <B>  <A NAME="tex2html1005"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1007"
-  HREF="node85.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<UL>
+<LI><A NAME="tex2html1063"
+  HREF="node58.html">12.1 Specific messages</A>
+<LI><A NAME="tex2html1064"
+  HREF="node59.html">12.2 Feeding and composing FAUST processors</A>
+</UL>
+<!--End of Table of Child-Links-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

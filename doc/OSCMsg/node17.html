@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>4.3.1 The blur effect</TITLE>
-<META NAME="description" CONTENT="4.3.1 The blur effect">
+<TITLE>2.4 The 'effect' messages</TITLE>
+<META NAME="description" CONTENT="2.4 The 'effect' messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,73 +19,95 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node18.html">
-<LINK REL="previous" HREF="node16.html">
-<LINK REL="up" HREF="node16.html">
+<LINK REL="previous" HREF="node12.html">
+<LINK REL="up" HREF="node6.html">
 <LINK REL="next" HREF="node18.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html440"
+<A NAME="tex2html483"
   HREF="node18.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html434"
-  HREF="node16.html">
+<A NAME="tex2html477"
+  HREF="node6.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html428"
+<A NAME="tex2html473"
   HREF="node16.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html436"
+<A NAME="tex2html479"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html438"
-  HREF="node85.html">
+<A NAME="tex2html481"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html441"
-  HREF="node18.html">4.3.2 The colorize effect</A>
-<B> Up:</B> <A NAME="tex2html435"
-  HREF="node16.html">4.3 The 'effect' messages</A>
-<B> Previous:</B> <A NAME="tex2html429"
-  HREF="node16.html">4.3 The 'effect' messages</A>
- &nbsp; <B>  <A NAME="tex2html437"
+<B> Next:</B> <A NAME="tex2html484"
+  HREF="node18.html">2.4.1 The blur effect</A>
+<B> Up:</B> <A NAME="tex2html478"
+  HREF="node6.html">2. Common messages</A>
+<B> Previous:</B> <A NAME="tex2html474"
+  HREF="node16.html">2.3.4 Relative color messages</A>
+ &nbsp; <B>  <A NAME="tex2html480"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html439"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html482"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION00531000000000000000">
-4.3.1 The blur effect</A>
-</H2>
+<H1><A NAME="SECTION00340000000000000000"></A>
+<A NAME="effectmsg"></A>
+<BR>
+2.4 The 'effect' messages
+</H1>
+
+<P>
+The <TT>effect</TT> message sets a graphic effect on the target object.
 
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img28.gif"
+ WIDTH="456" HEIGHT="164" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.gif"
  ALT="\begin{rail}
-blurParams : radius (\vert blurHint)
+effectMsg : 'effect' ( 'none'
+\vert ('blur'
+\vert 'colorize'
+\vert 'shadow') (\vert params))
 \end{rail}">
 <BR>
+<A NAME="397"></A>
+<A NAME="398"></A>
+<A NAME="399"></A>
+<A NAME="400"></A>
 
 <P>
-Blur parameters are the blur radius and a rendering hint. The radius is an int32 value. By default, it is 5 pixels. The radius is given in device coordinates, meaning it is unaffected by scale. 
+
+<UL>
+<LI><TT>none</TT>: removes any effect set on the target object.
+</LI>
+<LI><TT>blur, colorize, shadow</TT>: sets the corresponding effect. An effect always replaces any previous effect. The effect name is followed by optional specific effects parameters.
+</LI>
+</UL>
 
 <P>
-<BR>
-<IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img29.gif"
- ALT="\begin{rail}
-blurHint : 'performance' \vert 'quality' \vert 'animation'
-\end{rail}">
-<BR>
-Use the <TT>performance</TT> hint to say that you want a faster blur, the <TT>quality</TT> hint to say that you prefer a higher quality blur, or the <TT>animation</TT> when you want to animate the blur radius. The default hint value is <TT>performance</TT>.
+<BR><B> <B>N<SMALL>OTE </SMALL></B></B> An effect affects the target object but also all the target slaves.
 
 <P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html485"
+  HREF="node18.html">2.4.1 The blur effect</A>
+<LI><A NAME="tex2html486"
+  HREF="node19.html">2.4.2 The colorize effect</A>
+<LI><A NAME="tex2html487"
+  HREF="node20.html">2.4.3 The shadow effect</A>
+</UL>
+<!--End of Table of Child-Links-->
 <BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>

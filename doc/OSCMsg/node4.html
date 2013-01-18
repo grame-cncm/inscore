@@ -19,6 +19,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node5.html">
 <LINK REL="previous" HREF="node3.html">
 <LINK REL="up" HREF="node2.html">
 <LINK REL="next" HREF="node5.html">
@@ -26,32 +27,32 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html240"
+<A NAME="tex2html288"
   HREF="node5.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html234"
+<A NAME="tex2html282"
   HREF="node2.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html230"
+<A NAME="tex2html276"
   HREF="node3.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html236"
+<A NAME="tex2html284"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html238"
-  HREF="node85.html">
+<A NAME="tex2html286"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html241"
-  HREF="node5.html">2. Application messages</A>
-<B> Up:</B> <A NAME="tex2html235"
+<B> Next:</B> <A NAME="tex2html289"
+  HREF="node5.html">1.3 Aliases</A>
+<B> Up:</B> <A NAME="tex2html283"
   HREF="node2.html">1. General format</A>
-<B> Previous:</B> <A NAME="tex2html231"
+<B> Previous:</B> <A NAME="tex2html277"
   HREF="node3.html">1.1 Parameters</A>
- &nbsp; <B>  <A NAME="tex2html237"
+ &nbsp; <B>  <A NAME="tex2html285"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html239"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html287"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
@@ -59,11 +60,11 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <H1><A NAME="SECTION00220000000000000000">
 1.2 Address space</A>
 </H1>
-The OSC address space is made of static and dynamic nodes, hierarchically organized as follows (figure <A HREF="#fig:addrspace">1.1</A>):
+The OSC address space is made of static and dynamic nodes, hierarchically organized as in figure <A HREF="#fig:addrspace">1.1</A>:
 
 <P>
 
-<DIV ALIGN="CENTER"><A NAME="fig:addrspace"></A><A NAME="110"></A>
+<DIV ALIGN="CENTER"><A NAME="fig:addrspace"></A><A NAME="129"></A>
 <TABLE>
 <CAPTION ALIGN="BOTTOM"><STRONG>Figure 1.1:</STRONG>
 The OSC address space. Nodes in italic/blue are dynamic nodes.</CAPTION>
@@ -80,11 +81,13 @@ The OSC address space. Nodes in italic/blue are dynamic nodes.</CAPTION>
 OSC messages are accepted at any level of the hierarchy:
 
 <UL>
-<LI>the application level responds to messages for application management (udp ports management, loading files, query messages)
+<LI><B>the application level</B> responds to messages for application management (udp ports management, loading files, query messages). 
+<BR>
+It includes a static node named <TT>stats</TT> that collects information about incoming messages, and a static <TT>debug</TT> node that can be used to get debug information.
 </LI>
-<LI>at <I>scene</I> level, each node is associated to a window and respond to specific scene/window management messages.
+<LI><B>the scene level</B> contains <I>scores</I> that are associated to a window and respond to specific scene/window management messages.
 </LI>
-<LI>the <I>component</I> level contains the scene objects and two static nodes:
+<LI><B>the component level</B> contains the scene objects and two static nodes:
 
 <P>
 
@@ -96,64 +99,43 @@ OSC messages are accepted at any level of the hierarchy:
 </UL>
 
 <P>
+Each component includes a static node named <TT>debug</TT> that provides debugging information.
 </LI>
-<LI>the <I>signals</I> level contains signals i.e. objects that accept data streams an d that may be graphically rendered as a scene component.
+<LI><B>the signals level</B> contains signals i.e. objects that accept data streams and that may be graphically rendered as a scene component (see Signals and Graphic signals section <A HREF="node49.html#graphsig">11</A> p.<A HREF="node49.html#graphsig"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
 
 <P>
 </LI>
 </UL>
-
-<P>
-In addition, an alias mechanism allows an arbitrary OSC address to be used in place of a real address. An <TT>alias</TT> message is provided to describe aliases: 
-<BR>
-<IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img6.gif"
- ALT="\begin{rail}
-alias : OSCAddress 'alias' (([1] OSCAlias (message \vert ) ) \vert [2])
-\end{rail}">
-<BR>
-<A NAME="125"></A>
-
-<UL>
-<LI><B>[1]</B> sets <TT>OSCAlias</TT> as an alias of <TT>OSCAddress</TT>. The alias may be optionally followed by a message string which is then taken as an implied message i.e. the alias is translated to <TT>OSCAddress message</TT>.
-</LI>
-<LI><B>[2]</B> removes <TT>OSCAddress</TT> aliases.
-</LI>
-</UL>
-
-<P>
-Note that regular expressions are not supported by the alias mechanism and could lead to unpredictable results.
 
 <P>
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html240"
+<A NAME="tex2html288"
   HREF="node5.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html234"
+<A NAME="tex2html282"
   HREF="node2.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html230"
+<A NAME="tex2html276"
   HREF="node3.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html236"
+<A NAME="tex2html284"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html238"
-  HREF="node85.html">
+<A NAME="tex2html286"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html241"
-  HREF="node5.html">2. Application messages</A>
-<B> Up:</B> <A NAME="tex2html235"
+<B> Next:</B> <A NAME="tex2html289"
+  HREF="node5.html">1.3 Aliases</A>
+<B> Up:</B> <A NAME="tex2html283"
   HREF="node2.html">1. General format</A>
-<B> Previous:</B> <A NAME="tex2html231"
+<B> Previous:</B> <A NAME="tex2html277"
   HREF="node3.html">1.1 Parameters</A>
- &nbsp; <B>  <A NAME="tex2html237"
+ &nbsp; <B>  <A NAME="tex2html285"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html239"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html287"
+  HREF="node106.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
