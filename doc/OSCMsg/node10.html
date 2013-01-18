@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>4.1.2 Relative positioning</TITLE>
-<META NAME="description" CONTENT="4.1.2 Relative positioning">
+<TITLE>2.1.3 Components origin</TITLE>
+<META NAME="description" CONTENT="2.1.3 Components origin">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,81 +19,95 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node11.html">
 <LINK REL="previous" HREF="node9.html">
-<LINK REL="up" HREF="node8.html">
+<LINK REL="up" HREF="node7.html">
 <LINK REL="next" HREF="node11.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html341"
+<A NAME="tex2html385"
   HREF="node11.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html335"
-  HREF="node8.html">
+<A NAME="tex2html379"
+  HREF="node7.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html329"
+<A NAME="tex2html375"
   HREF="node9.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html337"
+<A NAME="tex2html381"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html339"
-  HREF="node85.html">
+<A NAME="tex2html383"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html342"
-  HREF="node11.html">4.1.3 Components origin</A>
-<B> Up:</B> <A NAME="tex2html336"
-  HREF="node8.html">4.1 Positioning</A>
-<B> Previous:</B> <A NAME="tex2html330"
-  HREF="node9.html">4.1.1 Absolute positioning</A>
- &nbsp; <B>  <A NAME="tex2html338"
+<B> Next:</B> <A NAME="tex2html386"
+  HREF="node11.html">2.2 Components transformations</A>
+<B> Up:</B> <A NAME="tex2html380"
+  HREF="node7.html">2.1 Positioning</A>
+<B> Previous:</B> <A NAME="tex2html376"
+  HREF="node9.html">2.1.2 Relative positioning</A>
+ &nbsp; <B>  <A NAME="tex2html382"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html340"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html384"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION00512000000000000000"></A>
-<A NAME="relpos"></A>
+<H2><A NAME="SECTION00313000000000000000"></A>
+<A NAME="origin"></A>
 <BR>
-4.1.2 Relative positioning
+2.1.3 Components origin
 </H2>
+
+<P>
+The origin of a component is the point <TT>(xo, yo)</TT> such that the <TT>(x, y)</TT> coordinates and the <TT>(xo, yo)</TT> point coincide graphically. For example, when the origin is the top left corner, the component top left corner is drawn  at the <TT>(x, y)</TT> coordinates.
 
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img14.gif"
+ WIDTH="291" HEIGHT="165" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.gif"
  ALT="\begin{rail}
-relPosMsg :
-('dx' float32)
-\vert ('dy' float32)
-\vert ('dz' float32)
-\vert ('dangle' float32)
-\vert ('dscale' float32)
+originMsg :
+('xorigin' float32)
+\vert ('yorigin' float32)
+\vert ('dxorigin' float32)
+\vert ('dyorigin' float32)
 \end{rail}">
 <BR>
-<A NAME="306"></A>
-<A NAME="307"></A>
-<A NAME="308"></A>
-<A NAME="309"></A>
-<A NAME="310"></A>
-<A NAME="311"></A>
-<A NAME="312"></A>
-<A NAME="313"></A>
+<A NAME="282"></A>
+<A NAME="283"></A>
+<A NAME="284"></A>
+<A NAME="285"></A>
 
 <P>
 
 <UL>
-<LI><TT>dx</TT>,<TT>dy</TT>, etc. messages are similar to <TT>x</TT>,<TT>y</TT>, etc. messages but the parameters represents values represent a displacement of the current target value.
+<LI><TT>xorigin</TT>, <TT>yorigin</TT> are relative to the component coordinates space i.e. <TT>[-1,1]</TT>, where -1 is the top or left border and 1 is the bottom or right border. The default origin is <TT>[0,0]</TT> i.e. the component is centered on its <TT>(x,y)</TT> coordinates.
 </LI>
-<LI><TT>dscale</TT> is similar to <TT>scale</TT> but the parameters represents a scale multiplying factor.
+<LI><TT>dxorigin</TT>, <TT>dyorigin</TT> represents displacement of the current <TT>xorigin</TT> or <TT>yorigin</TT>.
 </LI>
 </UL>
+
+<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Setting an object graphic origin to the top left corner.
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/myObject xorigin -1.
+<BR>/ITL/scene/myObject yorigin -1.
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
 
 <P>
 <BR><HR>

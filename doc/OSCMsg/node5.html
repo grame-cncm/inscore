@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>2. Application messages</TITLE>
-<META NAME="description" CONTENT="2. Application messages">
+<TITLE>1.3 Aliases</TITLE>
+<META NAME="description" CONTENT="1.3 Aliases">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,183 +19,85 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node6.html">
-<LINK REL="previous" HREF="node2.html">
-<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node2.html">
 <LINK REL="next" HREF="node6.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html254"
+<A NAME="tex2html300"
   HREF="node6.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html248"
-  HREF="OSCMsg.html">
+<A NAME="tex2html294"
+  HREF="node2.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html242"
+<A NAME="tex2html290"
   HREF="node4.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html250"
+<A NAME="tex2html296"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html252"
-  HREF="node85.html">
+<A NAME="tex2html298"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html255"
-  HREF="node6.html">3. Scene messages</A>
-<B> Up:</B> <A NAME="tex2html249"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html243"
+<B> Next:</B> <A NAME="tex2html301"
+  HREF="node6.html">2. Common messages</A>
+<B> Up:</B> <A NAME="tex2html295"
+  HREF="node2.html">1. General format</A>
+<B> Previous:</B> <A NAME="tex2html291"
   HREF="node4.html">1.2 Address space</A>
- &nbsp; <B>  <A NAME="tex2html251"
+ &nbsp; <B>  <A NAME="tex2html297"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html253"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html299"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION00300000000000000000"></A>
-<A NAME="ITL"></A>
+<H1><A NAME="SECTION00230000000000000000"></A>
+<A NAME="alias"></A>
 <BR>
-2. Application messages
+1.3 Aliases
 </H1>
-Application messages are accepted by the static OSC address <TT>/ITL</TT>. It covers the following messages:
+An alias mechanism allows an arbitrary OSC address to be used in place of a real address. An <TT>alias</TT> message is provided to describe aliases: 
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img7.gif"
+ WIDTH="539" HEIGHT="110" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
  ALT="\begin{rail}
-ITLMsg : 'quit'
-\vert ('rootPath' path)
-\vert ('port' int32)
-\...
-...
-\vert ('require' int32 oscMsg)
-\vert ('rate' int32)
-\vert 'hello'
+alias : OSCAddress 'alias' (([1] OSCAlias (message \vert ) ) \vert [2])
 \end{rail}">
 <BR>
-<A NAME="139"></A>
-<A NAME="140"></A>
-<A NAME="141"></A>
-<A NAME="142"></A>
-<A NAME="143"></A>
-<A NAME="144"></A>
-<A NAME="145"></A>
-<A NAME="146"></A>
-<A NAME="147"></A>
-<A NAME="148"></A>
-
-<P>
+<A NAME="152"></A>
 
 <UL>
-<LI><TT>quit</TT>: requests the client application to quit.
-
-<P>
+<LI><B>[1]</B> sets <TT>OSCAlias</TT> as an alias of <TT>OSCAddress</TT>. The alias may be optionally followed by a message string which is then taken as an implied message i.e. the alias is translated to <TT>OSCAddress message</TT>.
 </LI>
-<LI><TT>rootPath</TT>: <I>rootPath</I> of an Interlude application is the default path where the application reads or writes a file when a relative path is used for this file. The default value is the user home directory. Sending the <TT>rootPath</TT> message without parameter resets the application path to its default value.
-
-<P>
-</LI>
-<LI><TT>port</TT>, <TT>outport</TT>, <TT>errport</TT>: changes the UDP port numbers. <TT>port</TT> defines the listening port number, <TT>outport</TT> and <TT>errport</TT> define the ports used to send messages and error messages. The <TT>int32</TT> parameter should be a positive value in the range <TT>[1024-49150]</TT>. 
-<BR>
-The default <TT>port</TT>, <TT>outport</TT> and <TT>errport</TT> values are 7000, 7001 and 7002.
-
-<P>
-</LI>
-<LI><TT>mouse</TT>: hide or show the mouse pointer.
-
-<P>
-</LI>
-<LI><TT>defaultShow</TT>: changes the default <TT>show</TT> status for new objects. 
-<BR>
-The default <TT>defaultShow</TT> value is 1.
-
-<P>
-</LI>
-<LI><TT>rate</TT>: changes the time task rate. Note that null values are ignored.
-<BR>
-The default <TT>rate</TT> value is 10.
-
-<P>
-</LI>
-<LI><TT>load</TT>: loads a file previously saved using the <TT>save</TT> message (see section <A HREF="node7.html#common">4</A> p.<A HREF="node7.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). Note that the load operation appends the new objects to the existing scene. Whe necessary, it's the sender responsability to clear the scene before loading a file.
-
-<P>
-</LI>
-<LI><TT>hello</TT>: query the host IP number. The message is intended for ITL applications discovery. Answer to the query has the following format: 
-<BR> <TT>IP</TT> <TT>inPort outPort errPort</TT> where <TT>IP</TT> is sent as a string and port numbers as integer values.
-
-<P>
-</LI>
-<LI><TT>require</TT>: check for a version number equal or greater to the number given as argument. The version number should be encoded as an integer value (for example: 76 for version 0.76, 112 for version 1.12). An OSC message is associated to the require message with the same syntax and semantic described in section <A HREF="node53.html#interaction">15</A> p.<A HREF="node53.html#interaction"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>. This message is triggered when the check fails.
-
-<P>
+<LI><B>[2]</B> removes <TT>OSCAddress</TT> aliases.
 </LI>
 </UL>
 
 <P>
-The application supports the <TT>get</TT> messages for its parameters (see section <A HREF="node23.html#getsect">7</A> p.<A HREF="node23.html#getsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). In addition, it provides the following messages to query version numbers.
-
-<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
 <BR>
-<IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img8.gif"
- ALT="\begin{rail}
-ITLRequest : 'get' ('version' \vert 'guido-version' \vert 'musicxml-version')
-\end{rail}">
-<BR>
-<A NAME="185"></A>
-<A NAME="186"></A>
-<A NAME="187"></A>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/myobject alias '/1/fader1'</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+makes the object <TT>myobject</TT> addressable using the address <TT>/1/fader1</TT>.
 
 <P>
-
-<UL>
-<LI><TT>version</TT>: version number request.
-</LI>
-<LI><TT>guido-version</TT>: Guido engine version number request.
-</LI>
-<LI><TT>musicxml-version</TT>: MusicXML and Guido converter version numbers request. Returns "not available" when the library is not found.
+<BR><B> <B>N<SMALL>OTE </SMALL></B></B> Regular expressions are not supported by the alias mechanism and could lead to unpredictable results.
 
 <P>
-</LI>
-</UL>
-
-<P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html254"
-  HREF="node6.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html248"
-  HREF="OSCMsg.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html242"
-  HREF="node4.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html250"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html252"
-  HREF="node85.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html255"
-  HREF="node6.html">3. Scene messages</A>
-<B> Up:</B> <A NAME="tex2html249"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html243"
-  HREF="node4.html">1.2 Address space</A>
- &nbsp; <B>  <A NAME="tex2html251"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html253"
-  HREF="node85.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

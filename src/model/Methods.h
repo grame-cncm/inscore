@@ -122,6 +122,7 @@ extern const char* ksize_GetSetMethod;
 extern const char* kstartBench_SetMethod;
 extern const char* kstopBench_SetMethod;
 extern const char* ktime_GetSetMethod;
+extern const char* kticks_GetSetMethod;
 extern const char* kversion_GetMethod;
 extern const char* kvideoMap_GetSetMethod;
 extern const char* kvideoMapf_SetMethod;

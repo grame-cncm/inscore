@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>4.2.2 Relative color messages</TITLE>
-<META NAME="description" CONTENT="4.2.2 Relative color messages">
+<TITLE>2.3.3 The hsb messages</TITLE>
+<META NAME="description" CONTENT="2.3.3 The hsb messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,82 +19,62 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node16.html">
 <LINK REL="previous" HREF="node14.html">
-<LINK REL="up" HREF="node13.html">
+<LINK REL="up" HREF="node12.html">
 <LINK REL="next" HREF="node16.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html409"
+<A NAME="tex2html459"
   HREF="node16.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html403"
-  HREF="node13.html">
+<A NAME="tex2html453"
+  HREF="node12.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html399"
+<A NAME="tex2html447"
   HREF="node14.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html405"
+<A NAME="tex2html455"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html407"
-  HREF="node85.html">
+<A NAME="tex2html457"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html410"
-  HREF="node16.html">4.3 The 'effect' messages</A>
-<B> Up:</B> <A NAME="tex2html404"
-  HREF="node13.html">4.2 Color messages</A>
-<B> Previous:</B> <A NAME="tex2html400"
-  HREF="node14.html">4.2.1 Absolute color messages</A>
- &nbsp; <B>  <A NAME="tex2html406"
+<B> Next:</B> <A NAME="tex2html460"
+  HREF="node16.html">2.3.4 Relative color messages</A>
+<B> Up:</B> <A NAME="tex2html454"
+  HREF="node12.html">2.3 Color messages</A>
+<B> Previous:</B> <A NAME="tex2html448"
+  HREF="node14.html">2.3.2 The color messages</A>
+ &nbsp; <B>  <A NAME="tex2html456"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html408"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html458"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION00522000000000000000"></A>
-<A NAME="relcolormsg"></A>
-<BR>
-4.2.2 Relative color messages
+<H2><A NAME="SECTION00333000000000000000">
+2.3.3 The hsb messages</A>
 </H2>
 
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img26.gif"
+ WIDTH="321" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
  ALT="\begin{rail}
-relColorMsg :
-('dcolor' color)
-\vert ('dhsb' hsb)
-\vert ('dre...
-...ue)
-\vert ('dbrightness' colorvalue)
-\vert ('dalpha' colorvalue)
+hsb : 'hsb' ('h' 's' 'b' \vert 'h' 's' 'b' 'a')
 \end{rail}">
 <BR>
-<A NAME="404"></A>
-<A NAME="405"></A>
-<A NAME="406"></A>
-<A NAME="407"></A>
-<A NAME="408"></A>
-<A NAME="409"></A>
-<A NAME="410"></A>
-<A NAME="411"></A>
-<A NAME="412"></A>
+<A NAME="367"></A>
 
 <P>
-
-<UL>
-<LI><TT>dred</TT>,<TT>dgreen</TT>, etc. messages are similar to <TT>red</TT>,<TT>green</TT>, etc. messages but the parameters values represent a displacement of the current target value.
-</LI>
-<LI><TT>dcolor</TT> and <TT>dhsb</TT> are similar and each color parameter represents a displacement of the corresponding target value.
-</LI>
-</UL>
+<TT>hsb</TT> sets an object color in the HSBA space. 
+When A is not specified, the color is assumed to be opaque. 
 
 <P>
 <BR><HR>

@@ -696,10 +696,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {36}{ ITLMsg : 'quit' | ('rootPath' path) | ('mouse' ('show' | 'hide')) | ('defaultShow' int32) | ('load' filePath) | ('require' float oscMsg) | ('time' int32) | ('rate' int32) | 'hello' }
+\rail@i {36}{ ITLMsg : 'quit' | ('rootPath' path) | ('mouse' ('show' | 'hide')) | ('defaultShow' int32) | ('load' filePath) | ('require' float oscMsg) | ('time' int32) | ('ticks' int32) | ('rate' int32) | 'hello' }
 \rail@o {36}{
 \rail@index{ITLMsg}
-\rail@begin{10}{ITLMsg}
+\rail@begin{11}{ITLMsg}
 \rail@bar
 \rail@term{quit}[]
 \rail@nextbar{1}
@@ -726,9 +726,12 @@
 \rail@term{time}[]
 \rail@token{int32}[]
 \rail@nextbar{8}
-\rail@term{rate}[]
+\rail@term{ticks}[]
 \rail@token{int32}[]
 \rail@nextbar{9}
+\rail@term{rate}[]
+\rail@token{int32}[]
+\rail@nextbar{10}
 \rail@term{hello}[]
 \rail@endbar
 \rail@end
@@ -1477,26 +1480,61 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {83}{ variabledecl : 'ident' '=' ( int32 | float32 | string ) ';' }
+\rail@i {83}{ expression : message ";" | variabledecl ";" | script }
 \rail@o {83}{
+\rail@index{expression}
+\rail@begin{3}{expression}
+\rail@bar
+\rail@nont{message}[]
+\rail@term{;}[]
+\rail@nextbar{1}
+\rail@nont{variabledecl}[]
+\rail@term{;}[]
+\rail@nextbar{2}
+\rail@nont{script}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {84}{ variabledecl : 'ident' '=' ( (param | variable) + | '(' (message + ',') ')' ) ';' }
+\rail@o {84}{
 \rail@index{variabledecl}
-\rail@begin{3}{variabledecl}
+\rail@begin{5}{variabledecl}
 \rail@term{ident}[]
 \rail@term{=}[]
 \rail@bar
-\rail@token{int32}[]
+\rail@plus
+\rail@bar
+\rail@nont{param}[]
 \rail@nextbar{1}
-\rail@token{float32}[]
-\rail@nextbar{2}
-\rail@token{string}[]
+\rail@nont{variable}[]
+\rail@endbar
+\rail@nextplus{2}
+\rail@endplus
+\rail@nextbar{3}
+\rail@term{(}[]
+\rail@plus
+\rail@nont{message}[]
+\rail@nextplus{4}
+\rail@cterm{,}[]
+\rail@endplus
+\rail@term{)}[]
 \rail@endbar
 \rail@term{;}[]
 \rail@end
 }
-\rail@i {84}{ lang : '<?' ('javascript' | 'lua') script '?>' }
-\rail@o {84}{
-\rail@index{lang}
-\rail@begin{2}{lang}
+\rail@i {85}{ msgparam : '(' (message) ')' }
+\rail@o {85}{
+\rail@index{msgparam}
+\rail@begin{1}{msgparam}
+\rail@term{(}[]
+\rail@nont{message}[]
+\rail@term{)}[]
+\rail@end
+}
+\rail@i {86}{ script : '<?' ('javascript' | 'lua') script '?>' }
+\rail@o {86}{
+\rail@index{script}
+\rail@begin{2}{script}
 \rail@term{<?}[]
 \rail@bar
 \rail@term{javascript}[]

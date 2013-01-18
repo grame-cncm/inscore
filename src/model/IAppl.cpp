@@ -133,6 +133,7 @@ IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool of
 {
 	fTypeString = kApplType;
 	fVersion = INScore::versionStr();
+	fStartTime = getTime() / 1000;
 
 	fMsgHandlerMap[khello_SetMethod]			= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::helloMsg);
 //	fMsgHandlerMap["activate"]					= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::activate);
@@ -142,6 +143,7 @@ IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool of
 	fMsgHandlerMap[kmouse_SetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::cursor);
 	fMsgHandlerMap[kforward_GetSetMethod]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::forward);
 	fMsgHandlerMap[ktime_GetSetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::setTime);
+	fMsgHandlerMap[kticks_GetSetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::setTicks);
 	fMsgHandlerMap[krootPath_GetSetMethod]		= TSetMethodMsgHandler<IAppl, string>::create(this, &IAppl::setRootPath);
 	fMsgHandlerMap[kport_GetSetMethod]			= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPInPort);
 	fMsgHandlerMap[koutport_GetSetMethod]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPOutPort);
@@ -157,6 +159,7 @@ IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool of
 	fGetMsgHandlerMap[krate_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getRate);
 	fGetMsgHandlerMap[kforward_GetSetMethod]	= TGetParamMsgHandler<vector<IMessage::TUrl> >::create(fForwardList);
 	fGetMsgHandlerMap[ktime_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::time);
+	fGetMsgHandlerMap[kticks_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::ticks);
 
 	fGetMsgHandlerMap[kversion_GetMethod]		= TGetParamMsgHandler<string>::create(fVersion);
 	fGetMsgHandlerMap["guido-version"]			= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::guidoversion);
@@ -382,12 +385,35 @@ MsgHandler::msgStatus IAppl::forward(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
+void IAppl::clock()
+{
+	QMutexLocker locker (&fTimeMutex);
+	fCurrentTime = getTime() / 1000 - fStartTime;
+	fCurrentTicks++;
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus IAppl::setTime(const IMessage* msg)
 {
 	if (msg->size() == 1) {
 		int time;
 		if (msg->param(0, time)) {
-			fCurrentTime = time;
+			QMutexLocker locker (&fTimeMutex);
+			fStartTime = getTime() / 1000 + time;
+			return MsgHandler::kProcessed;
+		}
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IAppl::setTicks(const IMessage* msg)
+{
+	if (msg->size() == 1) {
+		int ticks;
+		if (msg->param(0, ticks)) {
+			QMutexLocker locker (&fTimeMutex);
+			fCurrentTicks = ticks;
 			return MsgHandler::kProcessed;
 		}
 	}

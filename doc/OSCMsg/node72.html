@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.10 Differences to version 0.80</TITLE>
-<META NAME="description" CONTENT="17.10 Differences to version 0.80">
+<TITLE>13.4 File watcher</TITLE>
+<META NAME="description" CONTENT="13.4 File watcher">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,57 +19,86 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node73.html">
 <LINK REL="previous" HREF="node71.html">
-<LINK REL="up" HREF="node62.html">
+<LINK REL="up" HREF="node60.html">
 <LINK REL="next" HREF="node73.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1238"
+<A NAME="tex2html1285"
   HREF="node73.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1232"
-  HREF="node62.html">
+<A NAME="tex2html1279"
+  HREF="node60.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1226"
+<A NAME="tex2html1275"
   HREF="node71.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1234"
+<A NAME="tex2html1281"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1236"
-  HREF="node85.html">
+<A NAME="tex2html1283"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1239"
-  HREF="node73.html">17.11 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1233"
-  HREF="node62.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1227"
-  HREF="node71.html">17.9 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1235"
+<B> Next:</B> <A NAME="tex2html1286"
+  HREF="node73.html">14. Scripting</A>
+<B> Up:</B> <A NAME="tex2html1280"
+  HREF="node60.html">13. Events and Interaction</A>
+<B> Previous:</B> <A NAME="tex2html1276"
+  HREF="node71.html">13.3 Interaction state management</A>
+ &nbsp; <B>  <A NAME="tex2html1282"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1237"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1284"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION0018100000000000000000">
-17.10 Differences to version 0.80</A>
+<H1><A NAME="SECTION001440000000000000000"></A>
+<A NAME="filewatch"></A>
+<BR>
+13.4 File watcher
 </H1>
 
-<UL>
-<LI>behavior change with synchronization without stretch: now the system looks also in the
-  slave map for a segment corresponding to the master date.
-</LI>
-<LI><TT>$date</TT> variable change: the value is now (0,0) when no date is available and <TT>$date</TT> is time shifted according to the object date.
-</LI>
-<LI><TT>date</TT> message change: the date 0 0 is ignored
-</LI>
-</UL>
+<P>
+The <TT>fileWatcher</TT> is a static node of a scene that is intended to watch file modifications. 
+<BR>
+It receives messages at the address <TT>/ITL/scene/fileWatcher</TT>.
+
+<P>
+The <TT>fileWatcher</TT> support the <TT>watch</TT> and <TT>watch+</TT> messages as described in section <A HREF="node60.html#interaction">13</A> p.<A HREF="node60.html#interaction"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> with a file name used in place of the <TT>what</TT> parameter.
+
+<P>
+<BR>
+<IMG
+ WIDTH="500" HEIGHT="164" ALIGN="BOTTOM" BORDER="0"
+ SRC="img83.gif"
+ ALT="\begin{rail}
+fileWatcher : (('watch' \vert 'watch+') ( \vert filePath ( \vert ( ( message )+ '','' ) ) ))
+\end{rail}">
+<BR>
+<A NAME="1480"></A>
+<A NAME="1481"></A>
+
+<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Reload aa INScore script on file modification:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>
+/ITL/scene/fileWatcher wach 'myScript.inscore' 
+<BR> ( /ITL/scene load 'myScript.inscore' )
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
 
 <P>
 <BR><HR>

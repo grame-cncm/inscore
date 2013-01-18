@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>11.3 Score queries</TITLE>
-<META NAME="description" CONTENT="11.3 Score queries">
+<TITLE>8. Scene messages</TITLE>
+<META NAME="description" CONTENT="8. Scene messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,76 +19,178 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="previous" HREF="node37.html">
-<LINK REL="up" HREF="node35.html">
+<LINK REL="next" HREF="node39.html">
+<LINK REL="previous" HREF="node32.html">
+<LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node39.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html731"
+<A NAME="tex2html784"
   HREF="node39.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html725"
-  HREF="node35.html">
+<A NAME="tex2html778"
+  HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html721"
+<A NAME="tex2html772"
   HREF="node37.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html727"
+<A NAME="tex2html780"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html729"
-  HREF="node85.html">
+<A NAME="tex2html782"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html732"
-  HREF="node39.html">12. Virtual address space</A>
-<B> Up:</B> <A NAME="tex2html726"
-  HREF="node35.html">11. Score specific messages</A>
-<B> Previous:</B> <A NAME="tex2html722"
-  HREF="node37.html">11.2 Score browsing and</A>
- &nbsp; <B>  <A NAME="tex2html728"
+<B> Next:</B> <A NAME="tex2html785"
+  HREF="node39.html">9. Mapping graphic space</A>
+<B> Up:</B> <A NAME="tex2html779"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html773"
+  HREF="node37.html">7.5 The 'stats' and</A>
+ &nbsp; <B>  <A NAME="tex2html781"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html730"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html783"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001230000000000000000"></A>
-<A NAME="guidoqueries"></A>
+<H1><A NAME="SECTION00900000000000000000"></A>
+<A NAME="scene"></A>
 <BR>
-11.3 Score queries
+8. Scene messages
 </H1>
-
-<P>
+A scene may be viewed as a window on the score elements. Its address is <TT>/ITL/<I>sceneIdentifier</I></TT> where <TT><I>sceneIdentifier</I></TT> is the scene name. It handles the following messages:
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img71.gif"
+ WIDTH="290" HEIGHT="356" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.gif"
  ALT="\begin{rail}
-scoreQuery : 'get' (
-'pageCount'
-\vert 'pageDate' int32
-)
+sceneMsg : 'new'
+\vert 'del'
+\vert 'reset'
+\vert ('rootPath' pat...
+...vert ('frameless' int32)
+\vert ('absolutexy' int32)
+\vert commonMsg
 \end{rail}">
 <BR>
+<A NAME="803"></A>
+<A NAME="804"></A>
+<A NAME="805"></A>
+<A NAME="806"></A>
+<A NAME="807"></A>
+<A NAME="808"></A>
+<A NAME="809"></A>
+<A NAME="810"></A>
+<A NAME="811"></A>
 
 <P>
 
 <UL>
-<LI><TT>pageCount</TT>: gives the score page count.
+<LI><TT>new</TT>: creates a new scene and opens it in a new window.
 </LI>
-<LI><TT>pageDate</TT>: gives the time location of a page, which number is given as argument. The system reply has the form <TT>pageDate pageNum date</TT> where <TT>pageNum</TT> is the request page number given as argument and <TT>date</TT> is the page time location expressed as a ra	tional number.
+<LI><TT>del</TT>: deletes a scene and closes the corresponding window.
+</LI>
+<LI><TT>reset</TT>: clears the scene (i.e. delete all components) and resets the scene to its default state (position, size and color).
+</LI>
+<LI><TT>rootPath</TT>: <I>rootPath</I> of a scene is the default path where the scene reads or writes a file when a relative path is used for this file. When no value has been specified, the application  <I>rootPath</I> is used.
+</LI>
+<LI><TT>load</TT>: loads an INScore file to the scene. Note that the OSC addresses are translated to the scene OSC address.
+</LI>
+<LI><TT>fullscreen</TT>: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is <TT>0</TT>.
+</LI>
+<LI><TT>frameless</TT>: requests the scene to switch to frameless or normal window.  The parameter is interpreted as a boolean value. Default value is <TT>0</TT>.
+</LI>
+<LI><TT>absolutexy</TT>: requests the scene to absolute or relative coordinates. Absolute coordinates are in pixels relative to the top left corner of the screen. Relative coordinates are in the range [-1, 1] where [0,0] is the center of the screen. The message parameter is interpreted as a boolean value. Default value is <TT>0</TT>.
+</LI>
+<LI><TT>commonMsg</TT>: a scene support the common graphic attributes. See section <A HREF="node6.html#common">2</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>.
 </LI>
 </UL>
 
 <P>
-Note that a score object duration is automatically set to the score duration. It can be retrieved using a <TT>get duration</TT> message.
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Setting a scene current path:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene rootPath "/path/to/my/folder"</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+Loading an INScore file:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene load "myscript.inscore"</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+will load <TT>/path/to/my/folder/myscript.inscore</TT> into the scene. 
 
 <P>
-<BR><HR>
+Setting a scene to fullscreen:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene fullscreen 1</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+Creating a new score named <TT>myScore</TT>:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/myScore new</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html784"
+  HREF="node39.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html778"
+  HREF="OSCMsg.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html772"
+  HREF="node37.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html780"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html782"
+  HREF="node106.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html785"
+  HREF="node39.html">9. Mapping graphic space</A>
+<B> Up:</B> <A NAME="tex2html779"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html773"
+  HREF="node37.html">7.5 The 'stats' and</A>
+ &nbsp; <B>  <A NAME="tex2html781"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html783"
+  HREF="node106.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

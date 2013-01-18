@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>8.2 Width and height control</TITLE>
-<META NAME="description" CONTENT="8.2 Width and height control">
+<TITLE>6.1 Pen control</TITLE>
+<META NAME="description" CONTENT="6.1 Pen control">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,64 +21,146 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node28.html">
 <LINK REL="previous" HREF="node26.html">
-<LINK REL="up" HREF="node25.html">
+<LINK REL="up" HREF="node26.html">
 <LINK REL="next" HREF="node28.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html578"
+<A NAME="tex2html629"
   HREF="node28.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html572"
-  HREF="node25.html">
+<A NAME="tex2html623"
+  HREF="node26.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html566"
+<A NAME="tex2html617"
   HREF="node26.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html574"
+<A NAME="tex2html625"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html576"
-  HREF="node85.html">
+<A NAME="tex2html627"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html579"
-  HREF="node28.html">8.3 Score pages management</A>
-<B> Up:</B> <A NAME="tex2html573"
-  HREF="node25.html">8. Component specific messages</A>
-<B> Previous:</B> <A NAME="tex2html567"
-  HREF="node26.html">8.1 Pen control</A>
- &nbsp; <B>  <A NAME="tex2html575"
+<B> Next:</B> <A NAME="tex2html630"
+  HREF="node28.html">6.2 Width and height</A>
+<B> Up:</B> <A NAME="tex2html624"
+  HREF="node26.html">6. Type specific messages</A>
+<B> Previous:</B> <A NAME="tex2html618"
+  HREF="node26.html">6. Type specific messages</A>
+ &nbsp; <B>  <A NAME="tex2html626"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html577"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html628"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION00920000000000000000">
-8.2 Width and height control</A>
+<H1><A NAME="SECTION00710000000000000000">
+6.1 Pen control</A>
 </H1>
 
 <P>
-Messages accepted by the components types <TT>rect | ellipse | graph.</TT>
+Specific pen messages accepted by the components types <TT>rect | ellipse | polygon | curve | line | graph | fast graph | grid</TT>.
+<BR>
+<IMG
+ WIDTH="308" HEIGHT="203" ALIGN="BOTTOM" BORDER="0"
+ SRC="img30.gif"
+ ALT="\begin{rail}
+penMsg : 'penColor' color
+\vert 'penAlpha' colorvalue
+\vert 'pendAlpha' colorvalue
+\vert 'penWidth' float32
+\vert 'penStyle' penstyle
+\end{rail}">
+<BR>
+<A NAME="608"></A>
+<A NAME="609"></A>
+<A NAME="610"></A>
+<A NAME="611"></A>
+<A NAME="612"></A>
+
+<P>
+
+<UL>
+<LI><TT>penColor</TT> controls the pen color. The color should be given in the RGBA space. The default value is opaque black (0 0 0 255).
+</LI>
+<LI><TT>penAlpha, pendAlpha</TT> controls the pen transparency only. See section <A HREF="node12.html#colormsg">2.3</A> p.<A HREF="node12.html#colormsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> for the expected
+</LI>
+<LI><TT>penWidth</TT> controls the pen width. The default value is 0 (excepted for <TT>line</TT> objects, where 1.0 is the default value). It is expressed in arbitrary units (1 is a reasonable value).
+</LI>
+<LI><TT>penStyle</TT> controls the pen style.
+ 
+</LI>
+</UL>
 
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img47.gif"
+ WIDTH="221" HEIGHT="203" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.gif"
  ALT="\begin{rail}
-whMsg : 'width' float32
-\vert 'height' float32
+penstyle : 'solid' \vert 'dash' \vert 'dot' \vert 'dashDot' \vert 'dashDotDot'
 \end{rail}">
 <BR>
-<A NAME="669"></A>
-<A NAME="670"></A>
+<A NAME="623"></A>
+<A NAME="624"></A>
+<A NAME="625"></A>
+<A NAME="626"></A>
+<A NAME="627"></A>
 
 <P>
-<BR><HR>
+The pen style default value is <TT>solid</TT>.
+<BR>
+<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Setting a rectangle border width and color:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/rect set rect 0.5 0.5 
+<BR>/ITL/scene/rect penWidth 2. 
+<BR>/ITL/scene/rect penColor 255 0 0  
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html629"
+  HREF="node28.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html623"
+  HREF="node26.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html617"
+  HREF="node26.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html625"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html627"
+  HREF="node106.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html630"
+  HREF="node28.html">6.2 Width and height</A>
+<B> Up:</B> <A NAME="tex2html624"
+  HREF="node26.html">6. Type specific messages</A>
+<B> Previous:</B> <A NAME="tex2html618"
+  HREF="node26.html">6. Type specific messages</A>
+ &nbsp; <B>  <A NAME="tex2html626"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html628"
+  HREF="node106.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

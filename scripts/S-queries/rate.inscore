@@ -1,0 +1,3 @@
+
+/ITL/scene/out set  txt "INScore time rate is" $(/ITL get rate) ms;
+

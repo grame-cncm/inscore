@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>12.1 File watcher</TITLE>
-<META NAME="description" CONTENT="12.1 File watcher">
+<TITLE>9.1 The 'map' message</TITLE>
+<META NAME="description" CONTENT="9.1 The 'map' message">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,138 +27,264 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html761"
+<A NAME="tex2html816"
   HREF="node41.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html755"
+<A NAME="tex2html810"
   HREF="node39.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html749"
+<A NAME="tex2html804"
   HREF="node39.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html757"
+<A NAME="tex2html812"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html759"
-  HREF="node85.html">
+<A NAME="tex2html814"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html762"
-  HREF="node41.html">12.2 Debug</A>
-<B> Up:</B> <A NAME="tex2html756"
-  HREF="node39.html">12. Virtual address space</A>
-<B> Previous:</B> <A NAME="tex2html750"
-  HREF="node39.html">12. Virtual address space</A>
- &nbsp; <B>  <A NAME="tex2html758"
+<B> Next:</B> <A NAME="tex2html817"
+  HREF="node41.html">9.2 The 'map+' message</A>
+<B> Up:</B> <A NAME="tex2html811"
+  HREF="node39.html">9. Mapping graphic space</A>
+<B> Previous:</B> <A NAME="tex2html805"
+  HREF="node39.html">9. Mapping graphic space</A>
+ &nbsp; <B>  <A NAME="tex2html813"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html760"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html815"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001310000000000000000"></A>
-<A NAME="watch"></A>
+<H1><A NAME="SECTION001010000000000000000"></A>
+<A NAME="mapMsg"></A>
 <BR>
-12.1 File watcher
+9.1 The 'map' message
 </H1>
 
 <P>
-The <TT>fileWatcher</TT> is a component automatically embedded at scene level. 
-<BR>
-It receives messages at the address <TT>/ITL/scene/fileWatcher</TT>.
-
-<P>
-The <TT>fileWatcher</TT> service monitors files on demand; it is aware of file modifications and file removals (or renamings, which is equivalent). The <TT>fileWatcher</TT> works with associations between a file and an OSC message : when a file change occurs, the file watcher posts the associated OSC message.
-
-<P>
-The <TT>fileWatcher</TT> is controlled with 4 messages:
-
-<UL>
-<LI>the <TT>add</TT> message is used to add a new 'file' - 'OSC message' association ;
-</LI>
-<LI>the <TT>remove</TT> message is used to remove a 'file' - 'OSC message' association.
-</LI>
-<LI>the <TT>clear</TT> message is used to clear all existing associations.
-</LI>
-<LI>the <TT>get</TT> message is used to retrieve the current associations.
-</LI>
-</UL>
-<A NAME="904"></A>
+The <TT>map</TT> messages can be sent to any address with the form <TT>/ITL/<I>scene</I>/<I>identifier</I></TT>. It is intended to describe the target object relation to time and sets a relation between an object segmentation and a time segmentation. 
+The global form of the message is:
 
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.gif"
+ WIDTH="384" HEIGHT="89" ALIGN="BOTTOM" BORDER="0"
+ SRC="img43.gif"
  ALT="\begin{rail}
-fileWatcher : ('add' filePath OSCMessage)
-\vert 'remove' (filePath OSCMessage \vert OSCAddress )
-\vert 'clear'
-\vert 'get'
+mapMsg : 'map' ( \vert mapName ) (relation \vert ( del ))
 \end{rail}">
 <BR>
-<A NAME="907"></A>
-<A NAME="908"></A>
-<A NAME="909"></A>
-<A NAME="910"></A>
+<A NAME="844"></A>
 
 <P>
-where <TT>OSCMessage</TT> is any message complying to the format desscribed in section <A HREF="node2.html#genformat">1</A> p.<A HREF="node2.html#genformat"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>.
+The <TT>relation</TT> parameter must be sent as a single string which format is described below. It consists in a list of associations between the object local space and its time space expressed as segments.
 
 <P>
-Example:
+<BR>
+<IMG
+ WIDTH="478" HEIGHT="225" ALIGN="BOTTOM" BORDER="0"
+ SRC="img44.gif"
+ ALT="\begin{rail}
+relation :
+([1] float2DSegment relativeTimeSegment ) +
+\vert ([2...
+...tiveTimeSegment ) +
+\vert ([3] int1DSegment relativeTimeSegment ) +
+\end{rail}">
+<BR>
+
+<P>
+Segments are expressed as a list of intervals. For a 1 dimension resource, a segment is a made of a single interval. For a 2 dimensions resource, a segment is a made of 2 intervals: an interval on the <TT>x</TT>-axis and one on the <TT>y</TT>-axis for graphic based resource, or an interval on columns and one on lines for text based resources. Intervals are right-opened.
+
+<P>
+The different kind of relations corresponds to:
+
+<UL>
+<LI><B>[1]</B> a relation between a 2 dimensions segmentation expressed in float values and a relative time segmentation. These segmentations are used by <TT>rect, ellipse, polygon, curve, line</TT> components.
+</LI>
+<LI><B>[2]</B> a relation between a 2 dimensions segmentation expressed in integer values and a relative time segmentation. These segmentations are used by <TT>txt, txtf, img</TT> components. 
+</LI>
+<LI><B>[3]</B> a relation between a 1 dimension segmentation expressed in integer values and a relative time segmentation. These segmentations are used by the <TT>graph</TT> component and express a relation between a signal space and time.
+</LI>
+</UL>
+Table <A HREF="#maptable">9.1</A> summarizes the specific local segmentation used by each component type. 
+
+<P>
+The specified <TT>map</TT> can be named with an optional <TT>mapName</TT> string; this name can be further reused, during object synchronization, to specify the mapping to use. When <TT>mapName</TT> is not specified, the mapping has a default <I>empty name</I>.
+
+<P>
+The <TT>del</TT> command deletes the mapping specified with <TT>mapName</TT>, or the <I>'empty name'</I> mapping if no map name is specified.
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<DIV ALIGN="CENTER">
+<A NAME="867"></A>
+<TABLE CELLPADDING=3 BORDER="1">
+<CAPTION><STRONG>Table 9.1:</STRONG>
+Local segmentation type for each component</CAPTION>
+<TR><TD ALIGN="RIGHT">component type</TD>
+<TD ALIGN="LEFT">segmentation type</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>txt, txtf</TT></TD>
+<TD ALIGN="LEFT">int2DSegments</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>img</TT></TD>
+<TD ALIGN="LEFT">int2DSegments</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>rect, ellipse, polygon, curve</TT></TD>
+<TD ALIGN="LEFT">float2DSegments</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>graph</TT></TD>
+<TD ALIGN="LEFT">int1DSegments</TD>
+</TR>
+</TABLE>
+</DIV>
+<A NAME="maptable"></A>
+</DIV>
+<BR>
+
+<P>
+<BR>
+<IMG
+ WIDTH="295" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="img45.gif"
+ ALT="\begin{rail}
+relativeTimeSegment : '(' relativeTimeInterval ')'
+\end{rail}">
+<BR>
+<BR>
+<IMG
+ WIDTH="351" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="img46.gif"
+ ALT="\begin{rail}
+float2DSegment : '(' floatInterval floatInterval ')'
+\end{rail}">
+<BR>
+<BR>
+<IMG
+ WIDTH="326" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="img47.gif"
+ ALT="\begin{rail}
+int2DSegment : '(' intInterval intInterval ')'
+\end{rail}">
+<BR>
+<BR>
+<IMG
+ WIDTH="232" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="img48.gif"
+ ALT="\begin{rail}
+int1DSegment : '(' intInterval ')'
+\end{rail}">
+<BR>
+
+<P>
+<BR>
+<IMG
+ WIDTH="332" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.gif"
+ ALT="\begin{rail}
+relativeTimeInterval : '[' rational ',' rational '['
+\end{rail}">
+<BR>
+<BR>
+<IMG
+ WIDTH="357" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.gif"
+ ALT="\begin{rail}
+floatInterval : '[' float32 ',' float32 '['
+\end{rail}">
+<BR>
+<BR>
+<IMG
+ WIDTH="320" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
+ SRC="img51.gif"
+ ALT="\begin{rail}
+intInterval : '[' int32 ',' int32 '['
+\end{rail}">
+<BR>
+
+<P>
+Relative time is expressed as <TT>rational</TT> values where <TT>1</TT> represents a whole note.
+
+<P>
+<BR>
+<IMG
+ WIDTH="241" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
+ SRC="img52.gif"
+ ALT="\begin{rail}
+rational : int32 '/' int32
+\end{rail}">
+<BR>
+
+<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Mapping an image graphic space to time:
+<BR>
 <DIV ALIGN="CENTER">
 <BLINK><FONT COLOR="#ededed">
 								</DIV><TABLE  WIDTH="0%">
 <TR><TD> 
-								<FONT SIZE="-1"><TT>
-/ITL/scene/fileWatcher add 'fuga.gmn' '/ITL/scene/score' 'set' 'gmnf' 'fuga.gmn';
+								<FONT SIZE="-1"><TT>/ITL/scene/myImage map 
+<BR> "( [0, 67[    [0, 86[ ) ( [0/2, 1/2[ ) 
+<BR> ( [67, 113[  [0, 86[ ) ( [1/2, 1/1[ ) 
+<BR> ( [113, 153[ [0, 86[ ) ( [1/1, 3/2[ ) 
+<BR> ( [153, 190[ [0, 86[ ) ( [3/2, 2/1[ ) 
+<BR> ( [190, 235[ [0, 86[ ) ( [2/1, 5/2[ )"
 </TT></FONT>
 								</TD></TR>
 </TABLE>
 <DIV ALIGN="CENTER"></FONT></BLINK>
 </DIV>
+the image is horizontally segmented into 5 different graphic segments that express pixel positions. The vertical dimension of the segments remains the same and corresponds to the interval <TT>[0, 86[</TT>. Each graphic segment is associated to a time interval which duration is 1/2 (a half note).
 
 <P>
-Note that the <TT>get</TT> query returns a set of messages complying to the <TT>add</TT> message format.
-<BR>
-<P>
-The <TT>remove</TT> message may take only 1 parameter, in which case the only parameter is an OSC address : it stops monitoring any file associated to an OSC message with this OSC address.
+<BR><B> <B>N<SMALL>OTE ABOUT LOCAL SPACES</SMALL></B></B>
 
-<P>
-Note that an OSC message can be associated to several files, and that a file can be associated to several OSC messages.
-When a file has been removed (or renamed), the <TT>fileWatcher</TT> stops monitoring it.
+<UL>
+<LI>Text objects (<TT>txt txtf</TT>) local space is expressed by intervals on columns and rows.
+</LI>
+<LI>Html object (<TT>html, htmlf</TT>) do not support mapping because there is not correspondence between the text and the graphic space.
+</LI>
+<LI>Vectorial objects (<TT>rect, ellipse, polygon, curve, svg,...</TT>) express their local graphic space in internal coordinates system i.e. on the [-1.,1.] interval.
+</LI>
+<LI>Bitmap objects (<TT>img</TT>) express their local graphic space in pixels.
+</LI>
+</UL>
 
 <P>
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html761"
+<A NAME="tex2html816"
   HREF="node41.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html755"
+<A NAME="tex2html810"
   HREF="node39.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html749"
+<A NAME="tex2html804"
   HREF="node39.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html757"
+<A NAME="tex2html812"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html759"
-  HREF="node85.html">
+<A NAME="tex2html814"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html762"
-  HREF="node41.html">12.2 Debug</A>
-<B> Up:</B> <A NAME="tex2html756"
-  HREF="node39.html">12. Virtual address space</A>
-<B> Previous:</B> <A NAME="tex2html750"
-  HREF="node39.html">12. Virtual address space</A>
- &nbsp; <B>  <A NAME="tex2html758"
+<B> Next:</B> <A NAME="tex2html817"
+  HREF="node41.html">9.2 The 'map+' message</A>
+<B> Up:</B> <A NAME="tex2html811"
+  HREF="node39.html">9. Mapping graphic space</A>
+<B> Previous:</B> <A NAME="tex2html805"
+  HREF="node39.html">9. Mapping graphic space</A>
+ &nbsp; <B>  <A NAME="tex2html813"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html760"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html815"
+  HREF="node106.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.4 Differences to version 0.95</TITLE>
-<META NAME="description" CONTENT="17.4 Differences to version 0.95">
+<TITLE>13.2.1 Position variables</TITLE>
+<META NAME="description" CONTENT="13.2.1 Position variables">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,55 +21,142 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node67.html">
 <LINK REL="previous" HREF="node65.html">
-<LINK REL="up" HREF="node62.html">
+<LINK REL="up" HREF="node65.html">
 <LINK REL="next" HREF="node67.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1154"
+<A NAME="tex2html1205"
   HREF="node67.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1148"
-  HREF="node62.html">
+<A NAME="tex2html1199"
+  HREF="node65.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1142"
+<A NAME="tex2html1193"
   HREF="node65.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1150"
+<A NAME="tex2html1201"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1152"
-  HREF="node85.html">
+<A NAME="tex2html1203"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1155"
-  HREF="node67.html">17.5 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1149"
-  HREF="node62.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1143"
-  HREF="node65.html">17.3 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1151"
+<B> Next:</B> <A NAME="tex2html1206"
+  HREF="node67.html">13.2.2 Time variables</A>
+<B> Up:</B> <A NAME="tex2html1200"
+  HREF="node65.html">13.2 Variables</A>
+<B> Previous:</B> <A NAME="tex2html1194"
+  HREF="node65.html">13.2 Variables</A>
+ &nbsp; <B>  <A NAME="tex2html1202"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1153"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1204"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001840000000000000000">
-17.4 Differences to version 0.95</A>
-</H1>
+<H2><A NAME="SECTION001421000000000000000"></A>
+<A NAME="posvar"></A>
+<BR>
+13.2.1 Position variables
+</H2>
+
+<P>
+Position variables reflects the current mouse position for mouse events. They are set to <TT>0</TT> for the other events. 
+
+<P>
+<BR>
+<IMG
+ WIDTH="172" HEIGHT="203" ALIGN="BOTTOM" BORDER="0"
+ SRC="img77.gif"
+ ALT="\begin{rail}
+posVar : xy \vert 'absx' \vert 'absy' \vert 'sx' \vert 'sy'
+\end{rail}">
+<BR>
+<A NAME="1386"></A>
+<A NAME="1387"></A>
+<A NAME="1388"></A>
+<A NAME="1389"></A>
+<A NAME="1390"></A>
+<A NAME="1391"></A>
+
+<P>
+where
+<BR>
+<IMG
+ WIDTH="310" HEIGHT="84" ALIGN="BOTTOM" BORDER="0"
+ SRC="img78.gif"
+ ALT="\begin{rail}
+xy : ('x' \vert 'y') ( \vert '[low,high]')
+\end{rail}">
+<BR>
+
+<P>
 
 <UL>
-<LI>switch to v8 javascript engine
+<LI><TT>$x</TT> <TT>$y</TT>: denotes the mouse pointer position at the time of the event. The values are in the range <TT>[0,1]</TT> where 1 is the object size in the x or y dimension. The value is computed according to the object origin: it represents the mouse pointer distance from the object x or y origin (see <A HREF="node10.html#origin">2.1.3</A> p.<A HREF="node10.html#origin"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). <TT>$x</TT> and <TT>$y</TT> variables support an optional range in the form <TT>[low, high]</TT> that transforms the <TT>[0,1]</TT>  values range into the <TT>[low, high]</TT> range.
+
+<P>
 </LI>
-<LI>lua not embedded by default
+<LI><TT>$absx</TT> <TT>$absy</TT>: denotes the mouse pointer absolute position at the time of the event. The values represent a pixel position relative to the top-left point of the target object. Note that this position is unaffected by scale. 
+Note also that the values are not clipped to the object dimensions and could exceed its width or height or become negative in case of mouse move events.
+
+<P>
+</LI>
+<LI><TT>$sx</TT> <TT>$sy</TT>: denotes the mouse pointer position in the scene coordinates space. 
 </LI>
 </UL>
 
 <P>
-<BR><HR>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+An object that follows mouse move.
+<BR>
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/myObject watch mouseDown ( 
+<BR> /ITL/scene/myObject x '$sx', 
+<BR> /ITL/scene/myObject y '$sy' )</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1205"
+  HREF="node67.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html1199"
+  HREF="node65.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html1193"
+  HREF="node65.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html1201"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html1203"
+  HREF="node106.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html1206"
+  HREF="node67.html">13.2.2 Time variables</A>
+<B> Up:</B> <A NAME="tex2html1200"
+  HREF="node65.html">13.2 Variables</A>
+<B> Previous:</B> <A NAME="tex2html1194"
+  HREF="node65.html">13.2 Variables</A>
+ &nbsp; <B>  <A NAME="tex2html1202"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1204"
+  HREF="node106.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>
