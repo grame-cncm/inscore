@@ -30,10 +30,12 @@
 #include "VGraphicsItemView.h"
 #include "MouseEventAble.h"
 
+#include <QPixmap>
 #include <map>
 #include <string>
 
-class QGuidoGraphicsItem;
+#include "QGuidoGraphicsItem.h"
+//class QGuidoGraphicsItem;
 
 namespace inscore
 {
@@ -47,12 +49,29 @@ class EventsAble;
 */
 
 //--------------------------------------------------------------------------
+class QCachedGuidoGraphicsItem : public QGuidoGraphicsItem
+{
+	bool		fInvalide;			// a flag to invalidate the image cache
+//	QImage*		fCache;				// an image used as the score cache
+	QPixmap*	fCache;				// a pixmap used as the score cache
+
+	public:
+				 QCachedGuidoGraphicsItem(QGraphicsItem * parent = 0)
+					: QGuidoGraphicsItem(parent), fInvalide(true), fCache(0) {} // setCacheMode (QGraphicsItem::ItemCoordinateCache); }
+		virtual ~QCachedGuidoGraphicsItem() { delete fCache; }
+		
+		void paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget=0);
+		void invalidate ()		{ fInvalide = true; }
+};
+
+//--------------------------------------------------------------------------
 /**
 *	\brief a graphic view of a IGuidoFile or a IGuidoCode.
 */
 class VGuidoItemView: public VGraphicsItemView
 {
 	static float fCm2GuidoUnit;
+//	typedef MouseEventAble<QCachedGuidoGraphicsItem>	IQGuidoGraphicsItem;
 	typedef MouseEventAble<QGuidoGraphicsItem>	IQGuidoGraphicsItem;
 	IQGuidoGraphicsItem* fGuidoItem;
 
