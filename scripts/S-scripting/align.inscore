@@ -14,26 +14,25 @@
 /ITL/scene/_[hv]* scale 0.7;
 
 /ITL/scene/_hleft watch mouseDown (
-	/ITL/$scene/[^_]* xorigin -1. );
-/ITL/scene/_hleft watch+ mouseDown (
+	/ITL/$scene/[^_]* xorigin -1. ,
 	/ITL/$scene/[^_]* x -0.6 );
+
 /ITL/scene/_hright watch mouseDown (
-	/ITL/$scene/[^_]* xorigin 1. );
-/ITL/scene/_hright watch+ mouseDown (
+	/ITL/$scene/[^_]* xorigin 1. ,
 	/ITL/$scene/[^_]* x 0.6 );
+
 /ITL/scene/_hcenter watch mouseDown (
-	/ITL/$scene/[^_]* xorigin 0. );
-/ITL/scene/_hcenter watch+ mouseDown (
+	/ITL/$scene/[^_]* xorigin 0. ,
 	/ITL/$scene/[^_]* x 0. );
+
 /ITL/scene/_vtop watch mouseDown (
-	/ITL/$scene/[^_]* yorigin -1. );
-/ITL/scene/_vtop watch+ mouseDown (
+	/ITL/$scene/[^_]* yorigin -1. ,
 	/ITL/$scene/[^_]* y -0.6 );
+
 /ITL/scene/_vbottom watch mouseDown (
-	/ITL/$scene/[^_]* yorigin 1. );
-/ITL/scene/_vbottom watch+ mouseDown (
+	/ITL/$scene/[^_]* yorigin 1. ,
 	/ITL/$scene/[^_]* y 0.6 );
+
 /ITL/scene/_vcenter watch mouseDown (
-	/ITL/$scene/[^_]* yorigin 0. );
-/ITL/scene/_vcenter watch+ mouseDown (
+	/ITL/$scene/[^_]* yorigin 0. ,
 	/ITL/$scene/[^_]* y 0. );

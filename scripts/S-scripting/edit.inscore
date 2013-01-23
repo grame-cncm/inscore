@@ -1,5 +1,7 @@
 
 /ITL/scene/[^_]* watch mouseDown (
+	/ITL/$scene/$self xorigin 0,
+	/ITL/$scene/$self yorigin 0,
 	/ITL/$scene/$self x '$sx',
 	/ITL/$scene/$self y '$sy' );
 
