@@ -1,11 +1,10 @@
 ﻿======================================================
-Interlude project (ANR-08-CORD-010)
+INScore project
 ------------------------------------------------------
 GRAME - Centre national de creation musicale
 http://www.grame.fr
-research@grame.fr
 ======================================================
-Copyright GRAME (c) 2009-2011
+Copyright GRAME (c) 2009-2013
 
 
 ======================================================
