@@ -1,20 +1,20 @@
 
-/ITL/scene/turenas xorigin -1.;
+/ITL/scene/turenas xorigin -1.0;
 
-/ITL/scene/cursor x 0. ;
-/ITL/scene/cursor y 0. ;
+/ITL/scene/cursor x 0.0;
+/ITL/scene/cursor y 0.0;
 /ITL/scene/cursorsmall show 1;
 /ITL/scene/_smallturenas show 1;
 
-/ITL/scene/_cursor set "rect" 0.008 0.8 ;
-/ITL/scene/_cursor color 0 0 255 ;
-/ITL/scene/_cursor z 2.00000 ;
-/ITL/scene/cursorsmall color 0 0 255 180 ;
+/ITL/scene/_cursor set rect 0.008 0.8;
+/ITL/scene/_cursor color 0 0 255;
+/ITL/scene/_cursor z 2.0;
+/ITL/scene/cursorsmall color 0 0 255 180;
 
-/ITL/scene/sync cursor ;
-/ITL/scene/sync turenas "cursor" ;
-/ITL/scene/sync cursorsmall "_smallturenas" "v" ;
+/ITL/scene/sync cursor;
+/ITL/scene/sync turenas cursor;
+/ITL/scene/sync cursorsmall _smallturenas v;
 
-/ITL load "scripts/watchLine.inscore" ;
-/ITL load "scripts/watchLine.inscore" ;
-/ITL load "commentsOff.inscore" ;
+/ITL load "scripts/watchLine.inscore";
+/ITL load "scripts/watchLine.inscore";
+/ITL load "commentsOff.inscore";

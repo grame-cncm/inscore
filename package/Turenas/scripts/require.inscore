@@ -1,9 +1,11 @@
 !-------------------------------------------------------
 ! required version
 !-------------------------------------------------------
-version = 0.74;
+version = 1.0;
+gray = 100;
 
-/ITL require $version "/ITL/scene/warning" "set" "txt" "Warning: this score requires version 0.74" ;
-/ITL require $version "/ITL/scene/warning" "scale" 2.00000 ;
-/ITL require $version "/ITL/scene/warning" "color" 200 0 0 ;
-/ITL require $version "/ITL/scene/warning" "y" 0.800000 ;
+/ITL require $version  (
+	/ITL/scene/warning set txt "Warning: this script requires INScore version"  $version ,
+	/ITL/scene/warning scale 3.0 ,
+	/ITL/scene/warning color $gray $gray $gray ,
+	/ITL/scene/warning z 1.0 );
