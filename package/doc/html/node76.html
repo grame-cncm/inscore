@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.14 Differences to version 0.76</TITLE>
-<META NAME="description" CONTENT="17.14 Differences to version 0.76">
+<TITLE>14.3 Types</TITLE>
+<META NAME="description" CONTENT="14.3 Types">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,60 +21,77 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node77.html">
 <LINK REL="previous" HREF="node75.html">
-<LINK REL="up" HREF="node62.html">
+<LINK REL="up" HREF="node73.html">
 <LINK REL="next" HREF="node77.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1294"
+<A NAME="tex2html1347"
   HREF="node77.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1288"
-  HREF="node62.html">
+<A NAME="tex2html1341"
+  HREF="node73.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1282"
+<A NAME="tex2html1335"
   HREF="node75.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1290"
+<A NAME="tex2html1343"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1292"
-  HREF="node85.html">
+<A NAME="tex2html1345"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1295"
-  HREF="node77.html">17.15 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1289"
-  HREF="node62.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1283"
-  HREF="node75.html">17.13 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1291"
+<B> Next:</B> <A NAME="tex2html1348"
+  HREF="node77.html">14.4 Variables</A>
+<B> Up:</B> <A NAME="tex2html1342"
+  HREF="node73.html">14. Scripting</A>
+<B> Previous:</B> <A NAME="tex2html1336"
+  HREF="node75.html">14.2 Messages</A>
+ &nbsp; <B>  <A NAME="tex2html1344"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1293"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1346"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION0018140000000000000000">
-17.14 Differences to version 0.76</A>
+<H1><A NAME="SECTION001530000000000000000"></A><A NAME="scripttypes"></A>
+<BR>
+14.3 Types
 </H1>
 
+<P>
+Using OSC, the message parameters are typed by the OSC protocol. 
+With their textual version, any parameter is converted to an OSC type (i.e. int32, float or string) at parsing level.
+A special attention must be given to strings in order to discriminate addresses and parameters. Strings intended as parameters must:
+
 <UL>
-<LI>get <TT>guido-version</TT> and <TT>musicxml-version</TT> messages supported by the application (see section <A HREF="node5.html#ITL">2</A> p.<A HREF="node5.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>be quoted, using single or double quotes. Note that an ambiguous quote included in a string can be escaped using a '<code>\</code>'.
 </LI>
-<LI><TT>save</TT> message bug correction - introduced with version 0.70: only partial state of objects was saved
-</LI>
-<LI><TT>rootPath</TT> message introduced at scene level (see section <A HREF="node6.html#scene">3</A> p.<A HREF="node6.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>scene name translation strategy change: only the explicit 'scene' name is 
-  translated by the scene load message handler into the current scene name, 
-  other names are left unchanged.
-</LI>
-<LI>bitmap copy adjustment in sync stretched mode is now only made for images
+<LI>or make use of the following characters set: <TT>[-a-zA-Z0-9]+</TT> or <TT>[_a-zA-Z][_a-zA-Z0-9]*</TT>.
+ 
 </LI>
 </UL>
+
+<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Different string parameter
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/text set txt "Hello world";  ! string including a space must be quoted 
+<BR>/ITL/scene/img set file 'anImage.png';  ! dots must be quoted too 
+<BR>/ITL/scene/foo set txt no_quotes_needed;
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
 
 <P>
 <BR><HR>

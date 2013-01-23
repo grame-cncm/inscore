@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>11.1 Specific score mappings</TITLE>
-<META NAME="description" CONTENT="11.1 Specific score mappings">
+<TITLE>7.4 Application level queries</TITLE>
+<META NAME="description" CONTENT="7.4 Application level queries">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,117 +21,105 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node37.html">
 <LINK REL="previous" HREF="node35.html">
-<LINK REL="up" HREF="node35.html">
+<LINK REL="up" HREF="node32.html">
 <LINK REL="next" HREF="node37.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html705"
+<A NAME="tex2html758"
   HREF="node37.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html699"
-  HREF="node35.html">
+<A NAME="tex2html752"
+  HREF="node32.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html693"
+<A NAME="tex2html746"
   HREF="node35.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html701"
+<A NAME="tex2html754"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html703"
-  HREF="node85.html">
+<A NAME="tex2html756"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html706"
-  HREF="node37.html">11.2 Score browsing and</A>
-<B> Up:</B> <A NAME="tex2html700"
-  HREF="node35.html">11. Score specific messages</A>
-<B> Previous:</B> <A NAME="tex2html694"
-  HREF="node35.html">11. Score specific messages</A>
- &nbsp; <B>  <A NAME="tex2html702"
+<B> Next:</B> <A NAME="tex2html759"
+  HREF="node37.html">7.5 The 'stats' and</A>
+<B> Up:</B> <A NAME="tex2html753"
+  HREF="node32.html">7. Application messages</A>
+<B> Previous:</B> <A NAME="tex2html747"
+  HREF="node35.html">7.3 Messages forwarding</A>
+ &nbsp; <B>  <A NAME="tex2html755"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html704"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html757"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001210000000000000000"></A>
-<A NAME="guidomaps"></A>
+<H1><A NAME="SECTION00840000000000000000"></A>
+<A NAME="ITLQuery"></A>
 <BR>
-11.1 Specific score mappings
+7.4 Application level queries
 </H1>
 
 <P>
-Music score mappings are automatically computed  by the system. However, since a score may support a large number of mappings (staff based, system based, voice based, etc.), music scores supports a specific <TT>map</TT> message to request the computation of a specific mapping. This message has the form:
-<BR>
-<IMG
- WIDTH="324" HEIGHT="203" ALIGN="BOTTOM" BORDER="0"
- SRC="img69.gif"
- ALT="\begin{rail}
-scoreMapMsg : 'map' ('page' \vert 'system' \vert 'systemflat' \vert ('staff' 'staffNum') \vert 'voice' 'voiceNum' )
-\end{rail}">
-<BR>
-<A NAME="844"></A>
-<A NAME="845"></A>
-<A NAME="846"></A>
-<A NAME="847"></A>
-<A NAME="848"></A>
-<A NAME="849"></A>
+The application supports the <TT>get</TT> messages for its parameters (see section <A HREF="node25.html#getsect">5</A> p.<A HREF="node25.html#getsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). In addition, it provides the following messages to query version numbers.
 
 <P>
-The Guido map name must be concatenated as a string (as a usual map name).
+<BR>
+<IMG
+ WIDTH="321" HEIGHT="127" ALIGN="BOTTOM" BORDER="0"
+ SRC="img39.gif"
+ ALT="\begin{rail}
+ITLRequest : 'get' ('version' \vert 'guido-version' \vert 'musicxml-version')
+\end{rail}">
+<BR>
+<A NAME="762"></A>
+<A NAME="763"></A>
+<A NAME="764"></A>
 
 <P>
 
 <UL>
-<LI><TT>page</TT>: a page level mapping
+<LI><TT>version</TT>: version number request.
 </LI>
-<LI><TT>system</TT>: a system level mapping
+<LI><TT>guido-version</TT>: Guido engine version number request.
 </LI>
-<LI><TT>systemflat</TT>: a system level mapping without system subdivision (one graphic segment per system)
-</LI>
-<LI><TT>staff</TT>: a staff level mapping: the staff indicated by the next parameter (between 1 and the score staves count).
-</LI>
-<LI><TT>voice</TT>: a voice level mapping: the voice indicated by the next parameter (between 1 and the score voices count).
+<LI><TT>musicxml-version</TT>: MusicXML and Guido converter version numbers request. Returns "not available" when the library is not found.
+
+<P>
 </LI>
 </UL>
 
 <P>
-The default synchronization mode for a Guido score is <TT>staff1</TT>.
-Note that a voice may be distributed on several staves and thus a staff may contain serveral voices.
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Querying INScore version:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL get version</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+will give the following as output:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL version 1.00</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
 
 <P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html705"
-  HREF="node37.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html699"
-  HREF="node35.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html693"
-  HREF="node35.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html701"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html703"
-  HREF="node85.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html706"
-  HREF="node37.html">11.2 Score browsing and</A>
-<B> Up:</B> <A NAME="tex2html700"
-  HREF="node35.html">11. Score specific messages</A>
-<B> Previous:</B> <A NAME="tex2html694"
-  HREF="node35.html">11. Score specific messages</A>
- &nbsp; <B>  <A NAME="tex2html702"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html704"
-  HREF="node85.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

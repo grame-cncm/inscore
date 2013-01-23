@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>11.2 Score browsing and layout</TITLE>
-<META NAME="description" CONTENT="11.2 Score browsing and layout">
+<TITLE>7.5 The 'stats' and 'debug' nodes</TITLE>
+<META NAME="description" CONTENT="7.5 The 'stats' and 'debug' nodes">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,84 +19,157 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node38.html">
 <LINK REL="previous" HREF="node36.html">
-<LINK REL="up" HREF="node35.html">
+<LINK REL="up" HREF="node32.html">
 <LINK REL="next" HREF="node38.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html719"
+<A NAME="tex2html770"
   HREF="node38.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html713"
-  HREF="node35.html">
+<A NAME="tex2html764"
+  HREF="node32.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html707"
+<A NAME="tex2html760"
   HREF="node36.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html715"
+<A NAME="tex2html766"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html717"
-  HREF="node85.html">
+<A NAME="tex2html768"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html720"
-  HREF="node38.html">11.3 Score queries</A>
-<B> Up:</B> <A NAME="tex2html714"
-  HREF="node35.html">11. Score specific messages</A>
-<B> Previous:</B> <A NAME="tex2html708"
-  HREF="node36.html">11.1 Specific score mappings</A>
- &nbsp; <B>  <A NAME="tex2html716"
+<B> Next:</B> <A NAME="tex2html771"
+  HREF="node38.html">8. Scene messages</A>
+<B> Up:</B> <A NAME="tex2html765"
+  HREF="node32.html">7. Application messages</A>
+<B> Previous:</B> <A NAME="tex2html761"
+  HREF="node36.html">7.4 Application level queries</A>
+ &nbsp; <B>  <A NAME="tex2html767"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html718"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html769"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001220000000000000000"></A>
-<A NAME="guidolayout"></A>
+<H1><A NAME="SECTION00850000000000000000"></A>
+<A NAME="ITLdebug"></A>
 <BR>
-11.2 Score browsing and layout
+7.5 The 'stats' and 'debug' nodes
 </H1>
+
+<P>
+The application level provides two static nodes - <TT>stats</TT> and <TT>debug</TT>, available at <TT>/ITL/stats</TT> and <TT>/ITL/debug</TT> to help debugging communication and INScore scripts design.
 
 <P>
 <BR>
 <IMG
- WIDTH="396" HEIGHT="165" ALIGN="BOTTOM" BORDER="0"
- SRC="img70.gif"
+ WIDTH="179" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
+ SRC="img40.gif"
  ALT="\begin{rail}
-scoreMsg : 'page' int32
-\vert 'pageFormat' float32 float32
-\vert 'columns' int32
-\vert 'rows' int32
+ITLStats : 'get' \vert 'reset'
 \end{rail}">
 <BR>
+<A NAME="780"></A>
+<A NAME="781"></A>
 
 <P>
 
 <UL>
-<LI><TT>page</TT>: sets the first displayed page. Index starts at <TT>1</TT>. Default: <TT>1</TT>.
-
-<P>
+<LI><TT>get</TT> gives the count of handled messages at OSC and UDP levels: the UDP count indicates the count of messages received from the network, the OSC count includes the UDP count and the messages received internally.
 </LI>
-<LI><TT>pageFormat</TT>: sets the score's page format, in cm (Warning: the <TT>pageFormat</TT> is not used when another page format is 'hard-coded' in the score's Guido code). Default: <TT>(21.0 , 29.7)</TT>.
-
-<P>
-</LI>
-<LI><TT>columns</TT>: as multiples pages can be displayed and organized in a <I>grid of pages</I>, <TT>columns</TT> sets the number of columns in the grid. Default: <TT>2</TT>.
-
-<P>
-</LI>
-<LI><TT>rows</TT>: as multiples pages can be displayed and organized in a <I>grid of pages</I>, <TT>rows</TT> sets the number of rows in the grid. Default: <TT>1</TT>.
+<LI><TT>reset</TT> resets the counters to zero. Note that querying the <TT>stats</TT> node increments at least the OSC the counter.
 </LI>
 </UL>
 
 <P>
-<BR><HR>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Answer to a <TT>get</TT> message addressed to <TT>/ITL/stats</TT>
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/stats osc 15 udp 10</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
+The <TT>debug</TT> node is used to activate debugging information.
+<BR>
+<IMG
+ WIDTH="173" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="img41.gif"
+ ALT="\begin{rail}
+ITLdebug : 'osc' int23
+\end{rail}">
+<BR>
+<A NAME="793"></A>
+
+<P>
+
+<UL>
+<LI>switch the debug mode ON or OFF. The parameter is interpreted as a boolean value. When in debug mode, INScore sends verbose messages to the OSC error port for every message that can't be correctly handled. Debugging is ON by default.
+</LI>
+</UL>
+
+<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Error messages generated on error port in debug mode:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>error:  incorrect OSC address: /ITL/stat
+<BR>
+error:  incorrect parameters: /ITL/scene/foo unknown 0.1
+<BR>
+error:  incorrect parameters: /ITL/scene/foo x "incorrectType"
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html770"
+  HREF="node38.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html764"
+  HREF="node32.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html760"
+  HREF="node36.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html766"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html768"
+  HREF="node106.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html771"
+  HREF="node38.html">8. Scene messages</A>
+<B> Up:</B> <A NAME="tex2html765"
+  HREF="node32.html">7. Application messages</A>
+<B> Previous:</B> <A NAME="tex2html761"
+  HREF="node36.html">7.4 Application level queries</A>
+ &nbsp; <B>  <A NAME="tex2html767"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html769"
+  HREF="node106.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

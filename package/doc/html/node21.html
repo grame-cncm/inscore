@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>5. Time management messages</TITLE>
-<META NAME="description" CONTENT="5. Time management messages">
+<TITLE>3. Time management messages</TITLE>
+<META NAME="description" CONTENT="3. Time management messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -20,53 +20,53 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
 <LINK REL="next" HREF="node22.html">
-<LINK REL="previous" HREF="node7.html">
+<LINK REL="previous" HREF="node6.html">
 <LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node22.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html492"
+<A NAME="tex2html540"
   HREF="node22.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html486"
+<A NAME="tex2html534"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html480"
+<A NAME="tex2html528"
   HREF="node20.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html488"
+<A NAME="tex2html536"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html490"
-  HREF="node85.html">
+<A NAME="tex2html538"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html493"
-  HREF="node22.html">6. The 'set' message</A>
-<B> Up:</B> <A NAME="tex2html487"
+<B> Next:</B> <A NAME="tex2html541"
+  HREF="node22.html">4. The 'set' message</A>
+<B> Up:</B> <A NAME="tex2html535"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html481"
-  HREF="node20.html">4.4 The 'click' and</A>
- &nbsp; <B>  <A NAME="tex2html489"
+<B> Previous:</B> <A NAME="tex2html529"
+  HREF="node20.html">2.4.3 The shadow effect</A>
+ &nbsp; <B>  <A NAME="tex2html537"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html491"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html539"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION00600000000000000000"></A>
+<H1><A NAME="SECTION00400000000000000000"></A>
 <A NAME="time"></A>
 <BR>
-5. Time management messages
+3. Time management messages
 </H1>
-Time messages control the time dimension if the score components. They could be sent to any address with the form <TT>/ITL/scene/<I>identifier</I></TT> where <TT><I>identifier</I></TT> is the unique identifier string of a scene component.
+Time messages control the time dimension of the score components. They could be sent to any address with the form <TT>/ITL/<I>scene</I>/<I>identifier</I></TT> where <TT><I>identifier</I></TT> is the unique identifier string of a scene component.
 <BR>
 <IMG
  WIDTH="267" HEIGHT="242" ALIGN="BOTTOM" BORDER="0"
- SRC="img38.gif"
+ SRC="img23.gif"
  ALT="\begin{rail}
 timeMsg : 'clock'
 \vert 'durClock'
@@ -76,31 +76,33 @@ timeMsg : 'clock'
 \vert ('dduration' time)
 \end{rail}">
 <BR>
-<A NAME="509"></A>
-<A NAME="510"></A>
-<A NAME="511"></A>
-<A NAME="512"></A>
-<A NAME="513"></A>
-<A NAME="514"></A>
+<A NAME="438"></A>
+<A NAME="439"></A>
+<A NAME="440"></A>
+<A NAME="441"></A>
+<A NAME="442"></A>
+<A NAME="443"></A>
 
 <P>
 <BR>
 <IMG
- WIDTH="252" HEIGHT="124" ALIGN="BOTTOM" BORDER="0"
- SRC="img39.gif"
+ WIDTH="274" HEIGHT="162" ALIGN="BOTTOM" BORDER="0"
+ SRC="img24.gif"
  ALT="\begin{rail}
-time : (( int32 int32) \vert int32 \vert float32 )
+time : (([1] int32 int32) \vert [2] int32 \vert [3] float32 \vert [4] 'n/d')
 \end{rail}">
 <BR>
 
 <P>
 
 <UL>
-<LI>Time is specified as a rational value <TT>d/n</TT> where <TT>n</TT> represents the whole note division and <TT>d</TT> the divisions count. The parameters order is <TT>numerator</TT> followed by <TT>denominator</TT>. 
+<LI>1) Time is specified as a rational value <TT>d/n</TT> where <TT>1/1</TT> represents a whole note. 
 </LI>
-<LI>Time may also be specified with a single integer, then 1 is used as implicit denominator value
+<LI>2) Time may be specified with a single integer, then 1 is used as implicit denominator value.
 </LI>
-<LI>or using a single float value converted to int32 using the following approximation: when <TT>f</TT> is the floating point value, the corresponding rational value is <TT>f x 10000 / 10000</TT>.
+<LI>3) Time may be specified as a single float value that is converted using the following approximation: let <TT>f</TT> be the floating point date, the corresponding rational date is computed as <TT>f x 10000 / 10000</TT>.
+</LI>
+<LI>4) Time may also be specified as a string in the form <TT>'n/d'</TT>.
 </LI>
 </UL>
 
@@ -122,34 +124,66 @@ time : (( int32 int32) \vert int32 \vert float32 )
 </UL>
 
 <P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Various ways to set an object date.
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/myObject date 2 1 
+<BR>/ITL/scene/myObject date 2      // the denominator is 1 (implied) 
+<BR>/ITL/scene/myObject date 0.5     // equivalent to 1/2 
+<BR>/ITL/scene/myObject date '1/2'   // the string form
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+Similar ways to move an object date.
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/myObject clock   
+<BR>/ITL/scene/myObject ddate '1/96'
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html492"
+<A NAME="tex2html540"
   HREF="node22.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html486"
+<A NAME="tex2html534"
   HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html480"
+<A NAME="tex2html528"
   HREF="node20.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html488"
+<A NAME="tex2html536"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html490"
-  HREF="node85.html">
+<A NAME="tex2html538"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html493"
-  HREF="node22.html">6. The 'set' message</A>
-<B> Up:</B> <A NAME="tex2html487"
+<B> Next:</B> <A NAME="tex2html541"
+  HREF="node22.html">4. The 'set' message</A>
+<B> Up:</B> <A NAME="tex2html535"
   HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html481"
-  HREF="node20.html">4.4 The 'click' and</A>
- &nbsp; <B>  <A NAME="tex2html489"
+<B> Previous:</B> <A NAME="tex2html529"
+  HREF="node20.html">2.4.3 The shadow effect</A>
+ &nbsp; <B>  <A NAME="tex2html537"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html491"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html539"
+  HREF="node106.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>

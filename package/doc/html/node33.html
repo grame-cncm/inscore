@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>10. Synchronization</TITLE>
-<META NAME="description" CONTENT="10. Synchronization">
+<TITLE>7.1 Application management</TITLE>
+<META NAME="description" CONTENT="7.1 Application management">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,135 +19,181 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node35.html">
-<LINK REL="previous" HREF="node29.html">
-<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="next" HREF="node34.html">
+<LINK REL="previous" HREF="node32.html">
+<LINK REL="up" HREF="node32.html">
 <LINK REL="next" HREF="node34.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html661"
+<A NAME="tex2html716"
   HREF="node34.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html655"
-  HREF="OSCMsg.html">
+<A NAME="tex2html710"
+  HREF="node32.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html649"
+<A NAME="tex2html704"
   HREF="node32.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html657"
+<A NAME="tex2html712"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html659"
-  HREF="node85.html">
+<A NAME="tex2html714"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html662"
-  HREF="node34.html">10.1 Synchronization modes</A>
-<B> Up:</B> <A NAME="tex2html656"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html650"
-  HREF="node32.html">9.3 Mapping files</A>
- &nbsp; <B>  <A NAME="tex2html658"
+<B> Next:</B> <A NAME="tex2html717"
+  HREF="node34.html">7.2 Ports management</A>
+<B> Up:</B> <A NAME="tex2html711"
+  HREF="node32.html">7. Application messages</A>
+<B> Previous:</B> <A NAME="tex2html705"
+  HREF="node32.html">7. Application messages</A>
+ &nbsp; <B>  <A NAME="tex2html713"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html660"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html715"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001100000000000000000"></A>
-<A NAME="syncmsg"></A>
+<H1><A NAME="SECTION00810000000000000000"></A>
+<A NAME="applmgmt"></A>
 <BR>
-10. Synchronization
+7.1 Application management
 </H1>
 
 <P>
-Synchronization between components is achieved at <TT>scene</TT> level: a <TT>sync</TT> node is automatically embedded in the scene, its address is <TT>/ITL/scene/sync</TT> and it supports messages to add or remove a master / slave relation between components or to query the synchronizations state.
 <BR>
 <IMG
- WIDTH="609" HEIGHT="237" ALIGN="BOTTOM" BORDER="0"
- SRC="img64.gif"
+ WIDTH="330" HEIGHT="432" ALIGN="BOTTOM" BORDER="0"
+ SRC="img36.gif"
  ALT="\begin{rail}
-sync : syncIdentifier
-( [1] syncIdentifier (\vert syncmode +)
-\vert [2])
-\vert [3] 'get' ( \vert identifier)
+ITLMsg : 'quit'
+\vert ('rootPath' path)
+\vert ('mouse' ('show' ...
+...e' int32)
+\vert ('ticks' int32)
+\vert ('rate' int32)
+\vert 'hello'
 \end{rail}">
 <BR>
-<A NAME="769"></A>
-<A NAME="770"></A>
+<A NAME="689"></A>
+<A NAME="690"></A>
+<A NAME="691"></A>
+<A NAME="692"></A>
+<A NAME="693"></A>
+<A NAME="694"></A>
+<A NAME="695"></A>
+<A NAME="696"></A>
+<A NAME="697"></A>
 
 <P>
 
 <UL>
-<LI><B>[1]</B> this is the <TT>slave</TT> <TT>master</TT> form followed by an optional synchronization mode. It adds a slave / master relation between components identified by identifier1 and identifier2. 
-<BR></LI>
-<LI><B>[2]</B> this is the <TT>slave</TT> form that removes the slave synchronization for the component identified by identifier1.
+<LI><TT>quit</TT>: requests the client application to quit.
+
+<P>
 </LI>
-<LI><B>[3]</B> the <TT>get</TT> message is intended to query the synchronization state. The optional parameter is the identifier of a component,
+<LI><TT>rootPath</TT>: <I>rootPath</I> of an Interlude application is the default path where the application reads or writes a file when a relative path is used for this file. The default value is the user home directory. Sending the <TT>rootPath</TT> message without parameter resets the application path to its default value.
+
+<P>
+</LI>
+<LI><TT>mouse</TT>: hide or show the mouse pointer.
+
+<P>
+</LI>
+<LI><TT>defaultShow</TT>: changes the default <TT>show</TT> status for new objects. 
+<BR>
+The default <TT>defaultShow</TT> value is 1.
+
+<P>
+</LI>
+<LI><TT>load</TT>: loads a file previously saved using the <TT>save</TT> message (see section <A HREF="node6.html#common">2</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). Note that the load operation appends the new objects to the existing scene. When necessary, it is the sender responsibility to clear the scene before loading a file.
+
+<P>
+</LI>
+<LI><TT>require</TT>: check that the current INScore version number is equal or greater to the number given as argument. The version number is given as a float value. A message is associated to the <TT>require</TT> message, which is triggered when the check fails. See section <A HREF="node60.html#interaction">13</A> p.<A HREF="node60.html#interaction"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> for more details.
+
+<P>
+</LI>
+<LI><TT>rate</TT>: changes the time task rate. Note that null values are ignored.
+<BR>
+The default <TT>rate</TT> value is 10.
+
+<P>
+</LI>
+<LI><TT>time</TT>: sets the application current time. The time is expressed in milliseconds.
+
+<P>
+</LI>
+<LI><TT>time</TT>: sets the application current ticks count. The ticks count indicates the number of time tasks performed by the application.
+
+<P>
+</LI>
+<LI><TT>hello</TT>: query the host IP number. The message is intended for ITL applications discovery. Answer to the query has the following format: 
+<BR> <TT>IP  inPort outPort errPort</TT> where <TT>IP</TT> is sent as a string and port numbers as integer values.
+
+<P>
 </LI>
 </UL>
-Synchronization between components has no effect if any of the required mapping is missing (see table <A HREF="node30.html#maptable">9.1</A>).
 
 <P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
 <BR>
-<IMG
- WIDTH="351" HEIGHT="88" ALIGN="BOTTOM" BORDER="0"
- SRC="img65.gif"
- ALT="\begin{rail}
-syncIdentifier : [1] identifier
-\vert [2] identifier ':' mapName
-\end{rail}">
+when sending the message:
 <BR>
-<A NAME="783"></A>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL hello</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+the application will answer with the following message:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL 192.168.0.5  7000 7001 7003</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+when it runs on a host which IP number is <TT>192.168.0.5</TT> using the default port numbers.
 
 <P>
-Synchronization identifiers indicates 1) the name of a <TT>scene</TT> component or 2) the name of a <TT>scene</TT> component associated to a mapping name.
-
-<P>
-Note that the <TT>sync</TT> node doesn't responds to common component messages, but accept the <TT>get</TT> message. 
-The <TT>get</TT> message without parameter is equivalent to a <TT>get</TT> message addressed to each object declared in the <TT>sync</TT> node.
-
-<P>
-<BR><HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
-
-<UL>
-<LI><A NAME="tex2html663"
-  HREF="node34.html">10.1 Synchronization modes</A>
-</UL>
-<!--End of Table of Child-Links-->
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html661"
+<A NAME="tex2html716"
   HREF="node34.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html655"
-  HREF="OSCMsg.html">
+<A NAME="tex2html710"
+  HREF="node32.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html649"
+<A NAME="tex2html704"
   HREF="node32.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html657"
+<A NAME="tex2html712"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html659"
-  HREF="node85.html">
+<A NAME="tex2html714"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html662"
-  HREF="node34.html">10.1 Synchronization modes</A>
-<B> Up:</B> <A NAME="tex2html656"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html650"
-  HREF="node32.html">9.3 Mapping files</A>
- &nbsp; <B>  <A NAME="tex2html658"
+<B> Next:</B> <A NAME="tex2html717"
+  HREF="node34.html">7.2 Ports management</A>
+<B> Up:</B> <A NAME="tex2html711"
+  HREF="node32.html">7. Application messages</A>
+<B> Previous:</B> <A NAME="tex2html705"
+  HREF="node32.html">7. Application messages</A>
+ &nbsp; <B>  <A NAME="tex2html713"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html660"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html715"
+  HREF="node106.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>

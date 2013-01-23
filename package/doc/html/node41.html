@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>12.2 Debug</TITLE>
-<META NAME="description" CONTENT="12.2 Debug">
+<TITLE>9.2 The 'map+' message</TITLE>
+<META NAME="description" CONTENT="9.2 The 'map+' message">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,6 +19,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node42.html">
 <LINK REL="previous" HREF="node40.html">
 <LINK REL="up" HREF="node39.html">
 <LINK REL="next" HREF="node42.html">
@@ -26,65 +27,53 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html773"
+<A NAME="tex2html830"
   HREF="node42.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html767"
+<A NAME="tex2html824"
   HREF="node39.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html763"
+<A NAME="tex2html818"
   HREF="node40.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html769"
+<A NAME="tex2html826"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html771"
-  HREF="node85.html">
+<A NAME="tex2html828"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html774"
-  HREF="node42.html">13. Signals and graphic</A>
-<B> Up:</B> <A NAME="tex2html768"
-  HREF="node39.html">12. Virtual address space</A>
-<B> Previous:</B> <A NAME="tex2html764"
-  HREF="node40.html">12.1 File watcher</A>
- &nbsp; <B>  <A NAME="tex2html770"
+<B> Next:</B> <A NAME="tex2html831"
+  HREF="node42.html">9.3 Mapping files</A>
+<B> Up:</B> <A NAME="tex2html825"
+  HREF="node39.html">9. Mapping graphic space</A>
+<B> Previous:</B> <A NAME="tex2html819"
+  HREF="node40.html">9.1 The 'map' message</A>
+ &nbsp; <B>  <A NAME="tex2html827"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html772"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html829"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001320000000000000000">
-12.2 Debug</A>
+<H1><A NAME="SECTION001020000000000000000"></A>
+<A NAME="mapAddMsg"></A>
+<BR>
+9.2 The 'map+' message
 </H1>
-
-<P>
-Each object has a <TT>debug</TT> sub-node for debugging purposes. This <TT>debug</TT> virtual node has 3 flags, that can be actived or desactived with <TT>0</TT> or <TT>1</TT>:
+The <TT>map+</TT> messages is similar to the <TT>map</TT> message but doesn't replace the existing mapping data: the specified relations are added to the existing one.
 
 <P>
 <BR>
 <IMG
- WIDTH="258" HEIGHT="126" ALIGN="BOTTOM" BORDER="0"
- SRC="img73.gif"
+ WIDTH="341" HEIGHT="88" ALIGN="BOTTOM" BORDER="0"
+ SRC="img53.gif"
  ALT="\begin{rail}
-debug : ('name' int32)
-\vert ('map' int32)
-\vert ('signal' int32)
+mapAddMsg : 'map+' ( \vert mapName ) relation
 \end{rail}">
 <BR>
-
-<P>
-
-<UL>
-<LI>When the <TT>name</TT> flag is on, each scene component displays its bounding rectangle and name.
-</LI>
-<LI>When the <TT>map</TT> flag is on, each scene component displays its mappings.
-</LI>
-<LI>When the <TT>signal</TT> flag is on, each object (even the scene or the application) will, according to its type, emit 'performance related' signals (or no signal). This 'performance signal' is specific to the type of object. The name of 'performance signal' is of the form <TT>debug-</TT><I>objectName</I><TT>-</TT><I>SomeName</I>. Currently, only the <TT>application</TT>, the <TT>scene</TT> and <TT>graph</TT> objects emit 'performance signals'.
-</LI>
-</UL>
+<A NAME="916"></A>
 
 <P>
 <BR><HR>

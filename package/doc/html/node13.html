@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>4.2 Color messages</TITLE>
-<META NAME="description" CONTENT="4.2 Color messages">
+<TITLE>2.3.1 Absolute color messages</TITLE>
+<META NAME="description" CONTENT="2.3.1 Absolute color messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,77 +19,184 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node16.html">
-<LINK REL="previous" HREF="node8.html">
-<LINK REL="up" HREF="node7.html">
+<LINK REL="next" HREF="node14.html">
+<LINK REL="previous" HREF="node12.html">
+<LINK REL="up" HREF="node12.html">
 <LINK REL="next" HREF="node14.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html381"
+<A NAME="tex2html431"
   HREF="node14.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html375"
-  HREF="node7.html">
+<A NAME="tex2html425"
+  HREF="node12.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html369"
+<A NAME="tex2html419"
   HREF="node12.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html377"
+<A NAME="tex2html427"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html379"
-  HREF="node85.html">
+<A NAME="tex2html429"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html382"
-  HREF="node14.html">4.2.1 Absolute color messages</A>
-<B> Up:</B> <A NAME="tex2html376"
-  HREF="node7.html">4. Common components messages</A>
-<B> Previous:</B> <A NAME="tex2html370"
-  HREF="node12.html">4.1.4 Components transformations</A>
- &nbsp; <B>  <A NAME="tex2html378"
+<B> Next:</B> <A NAME="tex2html432"
+  HREF="node14.html">2.3.2 The color messages</A>
+<B> Up:</B> <A NAME="tex2html426"
+  HREF="node12.html">2.3 Color messages</A>
+<B> Previous:</B> <A NAME="tex2html420"
+  HREF="node12.html">2.3 Color messages</A>
+ &nbsp; <B>  <A NAME="tex2html428"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html380"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html430"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION00520000000000000000"></A>
-<A NAME="colormsg"></A>
-<BR>
-4.2 Color messages
-</H1>
+<H2><A NAME="SECTION00331000000000000000">
+2.3.1 Absolute color messages</A>
+</H2>
 
 <P>
 <BR>
 <IMG
- WIDTH="223" HEIGHT="88" ALIGN="BOTTOM" BORDER="0"
- SRC="img21.gif"
+ WIDTH="314" HEIGHT="356" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.gif"
  ALT="\begin{rail}
-ColorMsg : absColorMsg
-\vert relColorMsg
+absColorMsg : color
+\vert hsb
+\vert 'red' colorvalue
+\vert 'gree...
+...orvalue
+\vert 'saturation' colorvalue
+\vert 'brightness' colorvalue
+\end{rail}">
+<BR>
+<A NAME="323"></A>
+<A NAME="324"></A>
+<A NAME="325"></A>
+<A NAME="326"></A>
+<A NAME="327"></A>
+<A NAME="328"></A>
+<A NAME="329"></A>
+<A NAME="330"></A>
+
+<P>
+<TT>red</TT>, <TT>green</TT>, <TT>blue</TT>, <TT>hue</TT>, <TT>saturation</TT>, <TT>brightness</TT>, <TT>alpha</TT> messages address a specific part of a color using the RGB or HSB scheme.
+
+<P>
+<BR>
+<IMG
+ WIDTH="198" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="\begin{rail}
+colorvalue : int32 \vert float32
 \end{rail}">
 <BR>
 
 <P>
-Color messages are absolute or relative color control messages.
+The value may be specified as integer or float. The data range is given in table <A HREF="#colorrange">2.1</A>.
+When the alpha component is not specified, the color is assumed to be opaque. 
 
 <P>
-<BR><HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+<BR><P></P>
+<DIV ALIGN="CENTER"><A NAME="354"></A>
+<TABLE>
+<CAPTION><STRONG>Table 2.1:</STRONG>
+Color components data ranges when expressed as integer or float.</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1" ALIGN="CENTER">
+<TR><TD ALIGN="RIGHT">Component</TD>
+<TD ALIGN="CENTER">integer range</TD>
+<TD ALIGN="CENTER">float range</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>red</TT> [R]</TD>
+<TD ALIGN="CENTER">[0,255]</TD>
+<TD ALIGN="CENTER">[-1,1]</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>green</TT> [G]</TD>
+<TD ALIGN="CENTER">[0,255]</TD>
+<TD ALIGN="CENTER">[-1,1]</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>blue</TT> [B]</TD>
+<TD ALIGN="CENTER">[0,255]</TD>
+<TD ALIGN="CENTER">[-1,1]</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>alpha</TT> [A]</TD>
+<TD ALIGN="CENTER">[0,255]</TD>
+<TD ALIGN="CENTER">[-1,1]</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>hue</TT> [H]</TD>
+<TD ALIGN="CENTER">[0,360]</TD>
+<TD ALIGN="CENTER">[-1,1] mapped to [-180,180]</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>saturation</TT> [S]</TD>
+<TD ALIGN="CENTER">[0,100]</TD>
+<TD ALIGN="CENTER">[-1,1]</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>brightness</TT> [B]</TD>
+<TD ALIGN="CENTER">[0,100]</TD>
+<TD ALIGN="CENTER">[-1,1]</TD>
+</TR>
+</TABLE>
+</DIV>
 
-<UL>
-<LI><A NAME="tex2html383"
-  HREF="node14.html">4.2.1 Absolute color messages</A>
-<LI><A NAME="tex2html384"
-  HREF="node15.html">4.2.2 Relative color messages</A>
-</UL>
-<!--End of Table of Child-Links-->
-<BR><HR>
+<A NAME="colorrange"></A></TD></TR>
+</TABLE>
+</DIV><P></P>
+<BR>
+<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+The same alpha channel specified as integer value or as floating point value:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/myObject alpha 51 
+<BR>/ITL/scene/myObject alpha 0.2
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html431"
+  HREF="node14.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html425"
+  HREF="node12.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html419"
+  HREF="node12.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html427"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html429"
+  HREF="node106.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html432"
+  HREF="node14.html">2.3.2 The color messages</A>
+<B> Up:</B> <A NAME="tex2html426"
+  HREF="node12.html">2.3 Color messages</A>
+<B> Previous:</B> <A NAME="tex2html420"
+  HREF="node12.html">2.3 Color messages</A>
+ &nbsp; <B>  <A NAME="tex2html428"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html430"
+  HREF="node106.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

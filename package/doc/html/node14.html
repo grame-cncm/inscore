@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>4.2.1 Absolute color messages</TITLE>
-<META NAME="description" CONTENT="4.2.1 Absolute color messages">
+<TITLE>2.3.2 The color messages</TITLE>
+<META NAME="description" CONTENT="2.3.2 The color messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,147 +21,64 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node15.html">
 <LINK REL="previous" HREF="node13.html">
-<LINK REL="up" HREF="node13.html">
+<LINK REL="up" HREF="node12.html">
 <LINK REL="next" HREF="node15.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html397"
+<A NAME="tex2html445"
   HREF="node15.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html391"
-  HREF="node13.html">
+<A NAME="tex2html439"
+  HREF="node12.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html385"
+<A NAME="tex2html433"
   HREF="node13.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html393"
+<A NAME="tex2html441"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html395"
-  HREF="node85.html">
+<A NAME="tex2html443"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html398"
-  HREF="node15.html">4.2.2 Relative color messages</A>
-<B> Up:</B> <A NAME="tex2html392"
-  HREF="node13.html">4.2 Color messages</A>
-<B> Previous:</B> <A NAME="tex2html386"
-  HREF="node13.html">4.2 Color messages</A>
- &nbsp; <B>  <A NAME="tex2html394"
+<B> Next:</B> <A NAME="tex2html446"
+  HREF="node15.html">2.3.3 The hsb messages</A>
+<B> Up:</B> <A NAME="tex2html440"
+  HREF="node12.html">2.3 Color messages</A>
+<B> Previous:</B> <A NAME="tex2html434"
+  HREF="node13.html">2.3.1 Absolute color messages</A>
+ &nbsp; <B>  <A NAME="tex2html442"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html396"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html444"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION00521000000000000000">
-4.2.1 Absolute color messages</A>
+<H2><A NAME="SECTION00332000000000000000">
+2.3.2 The color messages</A>
 </H2>
 
 <P>
 <BR>
 <IMG
- WIDTH="314" HEIGHT="356" ALIGN="BOTTOM" BORDER="0"
- SRC="img22.gif"
- ALT="\begin{rail}
-absColorMsg : color
-\vert hsb
-\vert 'red' colorvalue
-\vert 'gree...
-...orvalue
-\vert 'saturation' colorvalue
-\vert 'brightness' colorvalue
-\end{rail}">
-<BR>
-<A NAME="357"></A>
-<A NAME="358"></A>
-<A NAME="359"></A>
-<A NAME="360"></A>
-<A NAME="361"></A>
-<A NAME="362"></A>
-<A NAME="363"></A>
-<A NAME="364"></A>
-where
-<BR>
-<IMG
- WIDTH="198" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
- SRC="img23.gif"
- ALT="\begin{rail}
-colorvalue : int32 \vert float32
-\end{rail}">
-<BR>
-
-<P>
-The value of a colors may be specified as integer or float values. When expressed as float, the value range is <TT>[-1,1]</TT>. The correspondence between the float and integer ranges is expressed below.
-
-<P>
-<BR>
-<IMG
  WIDTH="337" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
- SRC="img24.gif"
+ SRC="img15.gif"
  ALT="\begin{rail}
 color : 'color' ('r' 'g' 'b' \vert 'r' 'g' 'b' 'a')
 \end{rail}">
 <BR>
-<A NAME="370"></A>
-<BR>
-<IMG
- WIDTH="321" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
- SRC="img25.gif"
- ALT="\begin{rail}
-hsb : 'hsb' ('h' 's' 'b' \vert 'h' 's' 'b' 'a')
-\end{rail}">
-<BR>
-<A NAME="373"></A>
+<A NAME="361"></A>
 
 <P>
-
-<UL>
-<LI><TT>color</TT>: sets an object color. The color scheme is RGBA. When A is not specified, the color is assumed to be opaque. The integer data range for each color component is <TT>[0,255]</TT>. The float data range <TT>[-1,1]</TT> is linearly mapped to <TT>[0,255]</TT>. Default color value is <TT>[0,0,0,255]</TT>.
-</LI>
-<LI><TT>hsb</TT>: similar to <TT>color</TT> but using an HSBA scheme. When A is not specified, the color is assumed to be opaque. The data range for S, B is <TT>[0,100]</TT>, <TT>[0,360]</TT> for H, and <TT>[0,255]</TT> for A. 
-<BR>
-The float data range <TT>[-1,1]</TT> is mapped to <TT>[0,100]</TT> for S and B. 
-<BR>
-For H, <TT>0</TT> refers always to the red color and thus <TT>[0,1]</TT> is mapped to <TT>[0,180]</TT> and <TT>[-1,0]</TT> is mapped to <TT>[360,180]</TT>.
-</LI>
-<LI><TT>red</TT>,<TT>green</TT>,<TT>blue</TT>, <TT>hue</TT>,<TT>saturation</TT>,<TT>brightness</TT>,<TT>alpha</TT> messages address only the specified part of the color using the ranges and schemes described above.
-</LI>
-</UL>
+<TT>color</TT> sets an object color in the RGBA space.
+When A is not specified, the color is assumed to be opaque. 
+Default color value is <TT>[0,0,0,255]</TT>.
 
 <P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html397"
-  HREF="node15.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html391"
-  HREF="node13.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html385"
-  HREF="node13.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html393"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html395"
-  HREF="node85.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html398"
-  HREF="node15.html">4.2.2 Relative color messages</A>
-<B> Up:</B> <A NAME="tex2html392"
-  HREF="node13.html">4.2 Color messages</A>
-<B> Previous:</B> <A NAME="tex2html386"
-  HREF="node13.html">4.2 Color messages</A>
- &nbsp; <B>  <A NAME="tex2html394"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html396"
-  HREF="node85.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

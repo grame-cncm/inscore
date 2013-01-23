@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>9.1 The 'map' message</TITLE>
-<META NAME="description" CONTENT="9.1 The 'map' message">
+<TITLE>6.4 The 'grid' object</TITLE>
+<META NAME="description" CONTENT="6.4 The 'grid' object">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,243 +21,128 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node31.html">
 <LINK REL="previous" HREF="node29.html">
-<LINK REL="up" HREF="node29.html">
+<LINK REL="up" HREF="node26.html">
 <LINK REL="next" HREF="node31.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html621"
+<A NAME="tex2html671"
   HREF="node31.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html615"
-  HREF="node29.html">
+<A NAME="tex2html665"
+  HREF="node26.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html609"
+<A NAME="tex2html659"
   HREF="node29.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html617"
+<A NAME="tex2html667"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html619"
-  HREF="node85.html">
+<A NAME="tex2html669"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html622"
-  HREF="node31.html">9.2 The 'map+' message</A>
-<B> Up:</B> <A NAME="tex2html616"
-  HREF="node29.html">9. Time to space</A>
-<B> Previous:</B> <A NAME="tex2html610"
-  HREF="node29.html">9. Time to space</A>
- &nbsp; <B>  <A NAME="tex2html618"
+<B> Next:</B> <A NAME="tex2html672"
+  HREF="node31.html">6.5 The 'debug' nodes</A>
+<B> Up:</B> <A NAME="tex2html666"
+  HREF="node26.html">6. Type specific messages</A>
+<B> Previous:</B> <A NAME="tex2html660"
+  HREF="node29.html">6.3 Symbolic score management</A>
+ &nbsp; <B>  <A NAME="tex2html668"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html620"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html670"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001010000000000000000"></A>
-<A NAME="mapMsg"></A>
+<H1><A NAME="SECTION00740000000000000000"></A>
+<A NAME="grid"></A>
 <BR>
-9.1 The 'map' message
+6.4 The 'grid' object
 </H1>
 
 <P>
-The <TT>map</TT> messages can be sent to any address with the form <TT>/ITL/scene/<I>identifier</I></TT>. It is intended to describe the target object relation to time and sets a relation between an object segmentation and a time segmentation. 
-The global form of the message is:
+The <TT>grid</TT> object provides a pre-defined time to graphic mapping organized in columns and row. By default, it is not visible (white, transparent) but supports all the attributes of rectangles (color, pen, effects, etc.). Each element of a grid has a duration that is computed as the grid duration divided by the total number of elements ( columns x rows) and is placed in the time space from the date 0 to the end of the grid duration.
 
 <P>
 <BR>
 <IMG
- WIDTH="384" HEIGHT="89" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.gif"
+ WIDTH="331" HEIGHT="241" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
  ALT="\begin{rail}
-mapMsg : 'map' ( \vert mapName ) (relation \vert ( del ))
-\end{rail}">
-<BR>
-<A NAME="698"></A>
-
-<P>
-<BR>
-<IMG
- WIDTH="478" HEIGHT="225" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.gif"
- ALT="\begin{rail}
-relation :
-([1] float2DSegment relativeTimeSegment ) +
-\vert ([2...
-...tiveTimeSegment ) +
-\vert ([3] int1DSegment relativeTimeSegment ) +
+gridMsg : 'columns' int32
+\vert ('rows' int32)
+\vert ('xborder' ...
+...rt ('yborder' float)
+\vert ('order' ('leftright' \vert 'topbottom'))
 \end{rail}">
 <BR>
 
 <P>
-Segments are expressed as a list of intervals. For a 1 dimension resource, a segment is a made of a single interval. For a 2 dimensions resource, a segment is a made of 2 intervals: an interval on the <IMG
- WIDTH="13" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img51.gif"
- ALT="$x$">-axis and one on the <IMG
- WIDTH="13" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img52.gif"
- ALT="$y$">-axis for graphic based resource, or an interval on columns and one on lines for text based resources. Intervals are right-opened.
-
-<P>
-The different kind of relations corresponds to:
 
 <UL>
-<LI><B>[1]</B> a relation between a 2 dimensions segmentation expressed in float values and a relative time segmentation. These segmentations are used by <TT>rect, ellipse, polygon, curve, line</TT> components.
+<LI><TT>columns</TT> set the number of columns of the grid,
 </LI>
-<LI><B>[2]</B> a relation between a 2 dimensions segmentation expressed in integer values and a relative time segmentation. These segmentations are used by <TT>txt, txtf, img</TT> components. 
+<LI><TT>rows</TT> set the number of rows of the grid,
 </LI>
-<LI><B>[3]</B> a relation between a 1 dimension segmentation expressed in integer values and a relative time segmentation. These segmentations are used by the <TT>graph</TT> component and express a relation between a signal space and time.
+<LI><TT>xborder</TT> set the horizontal spacing between the elements of the grid (default is 0.),
+</LI>
+<LI><TT>yborder</TT> set the vertical spacing between the elements of the grid (default is 0.),
+</LI>
+<LI><TT>order</TT> defines the time order of the elements. By default, elements are organized from left to right first and from top to bottom next (<TT>leftright</TT>). The <TT>topbottom</TT> parameter changes this order from top to bottom first and from left to right next.
 </LI>
 </UL>
-Table <A HREF="#maptable">9.1</A> summarizes the specific segmentations used by each component type. 
 
 <P>
-The specified <TT>map</TT> can be named with an optional <TT>mapName</TT> string; this name can be further reused, during object synchronization, to specify the mapping to use. When <TT>mapName</TT> is not specified, the mapping has a default <I>empty name</I>.
-
-<P>
-The <TT>del</TT> command deletes the mapping specified with <TT>mapName</TT>, or the <I>'empty name'</I> mapping if no map name is specified.
-
-<P>
-<BR><P></P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Creating a 10 x 10 grid organized from top to bottom with a border:
+<BR>
 <DIV ALIGN="CENTER">
-
-<DIV ALIGN="CENTER">
-<A NAME="718"></A>
-<TABLE CELLPADDING=3 BORDER="1">
-<CAPTION><STRONG>Table 9.1:</STRONG>
-Mapping resources for each component</CAPTION>
-<TR><TD ALIGN="RIGHT">component type</TD>
-<TD ALIGN="LEFT">segmentation type</TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><TT>txt, txtf</TT></TD>
-<TD ALIGN="LEFT">int2DSegments</TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><TT>img</TT></TD>
-<TD ALIGN="LEFT">int2DSegments</TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><TT>rect, ellipse, polygon, curve</TT></TD>
-<TD ALIGN="LEFT">float2DSegments</TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><TT>graph</TT></TD>
-<TD ALIGN="LEFT">int1DSegments</TD>
-</TR>
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/grid set grid 10 10
+<BR>/ITL/scene/grid xborder 3. 
+<BR>/ITL/scene/grid yborder 3. 
+<BR>/ITL/scene/grid order topbottom
+</TT></FONT>
+								</TD></TR>
 </TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
 </DIV>
-<A NAME="maptable"></A>
-</DIV>
-<BR>
-
-<P>
-Note for <TT>html, htmlf</TT> + guido score mappings
-
-<P>
-<BR>
-<IMG
- WIDTH="295" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
- SRC="img53.gif"
- ALT="\begin{rail}
-relativeTimeSegment : '(' relativeTimeInterval ')'
-\end{rail}">
-<BR>
-<BR>
-<IMG
- WIDTH="351" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
- SRC="img54.gif"
- ALT="\begin{rail}
-float2DSegment : '(' floatInterval floatInterval ')'
-\end{rail}">
-<BR>
-<BR>
-<IMG
- WIDTH="326" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
- SRC="img55.gif"
- ALT="\begin{rail}
-int2DSegment : '(' intInterval intInterval ')'
-\end{rail}">
-<BR>
-<BR>
-<IMG
- WIDTH="232" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
- SRC="img56.gif"
- ALT="\begin{rail}
-int1DSegment : '(' intInterval ')'
-\end{rail}">
-<BR>
-
-<P>
-<BR>
-<IMG
- WIDTH="332" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
- SRC="img57.gif"
- ALT="\begin{rail}
-relativeTimeInterval : '[' rational ',' rational '['
-\end{rail}">
-<BR>
-<BR>
-<IMG
- WIDTH="357" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
- SRC="img58.gif"
- ALT="\begin{rail}
-floatInterval : '[' float32 ',' float32 '['
-\end{rail}">
-<BR>
-<BR>
-<IMG
- WIDTH="320" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
- SRC="img59.gif"
- ALT="\begin{rail}
-intInterval : '[' int32 ',' int32 '['
-\end{rail}">
-<BR>
-
-<P>
-Relative time is expressed as <TT>rational</TT> values where <IMG
- WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img60.gif"
- ALT="$1$"> represents a whole note.
-
-<P>
-<BR>
-<IMG
- WIDTH="241" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
- SRC="img61.gif"
- ALT="\begin{rail}
-rational : int32 '/' int32
-\end{rail}">
-<BR>
 
 <P>
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html621"
+<A NAME="tex2html671"
   HREF="node31.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html615"
-  HREF="node29.html">
+<A NAME="tex2html665"
+  HREF="node26.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html609"
+<A NAME="tex2html659"
   HREF="node29.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html617"
+<A NAME="tex2html667"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html619"
-  HREF="node85.html">
+<A NAME="tex2html669"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html622"
-  HREF="node31.html">9.2 The 'map+' message</A>
-<B> Up:</B> <A NAME="tex2html616"
-  HREF="node29.html">9. Time to space</A>
-<B> Previous:</B> <A NAME="tex2html610"
-  HREF="node29.html">9. Time to space</A>
- &nbsp; <B>  <A NAME="tex2html618"
+<B> Next:</B> <A NAME="tex2html672"
+  HREF="node31.html">6.5 The 'debug' nodes</A>
+<B> Up:</B> <A NAME="tex2html666"
+  HREF="node26.html">6. Type specific messages</A>
+<B> Previous:</B> <A NAME="tex2html660"
+  HREF="node29.html">6.3 Symbolic score management</A>
+ &nbsp; <B>  <A NAME="tex2html668"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html620"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html670"
+  HREF="node106.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
