@@ -1,14 +1,18 @@
 version := 1.00
 system	:= $(shell uname -s)
 
-i2i90 := ../tools/inscore2inscore90
+i2i90  := ../tools/inscore2inscore90
+i2i100 := ../tools/inscore2inscore100
 ifeq ($(system), Darwin)
-  tools := $(i2i90)/cmake/Release/inscore2inscore90
+  i2i90tool  := $(i2i90)/cmake/Release/inscore2inscore90
+  i2i100tool := $(i2i100)/cmake/Release/inscore2inscore100
 else
 ifeq ($(system), MINGW32_NT-6.1)
-  tools := $(i2i90)/cmake/Release/inscore2inscore90.exe
+  i2i90tool  := $(i2i90)/cmake/Release/inscore2inscore90.exe
+  i2i100tool := $(i2i100)/cmake/Release/inscore2inscore100.exe
 else
-  tools := $(i2i90)/cmake/inscore2inscore90
+  i2i90tool  := $(i2i90)/cmake/inscore2inscore90
+  i2i100tool := $(i2i90)/cmake/inscore2inscore100
 endif
 endif
 
@@ -67,8 +71,11 @@ common:
 	cp readme.txt $(package)
 	cp ../src/changelog.txt $(package)
 	[ -d $(package)/inscore2inscore90 ] || mkdir $(package)/inscore2inscore90
-	cp $(tools) $(package)/inscore2inscore90
+	[ -d $(package)/inscore2inscore100 ] || mkdir $(package)/inscore2inscore100
+	cp $(i2i90tool)  $(package)/inscore2inscore90
+	cp $(i2i100tool) $(package)/inscore2inscore100
 	cp $(i2i90)/readme.txt $(package)/inscore2inscore90
+	cp $(i2i100)/readme.txt $(package)/inscore2inscore100
 		
 doc: 
 	make -C $(docsrc)
@@ -107,6 +114,11 @@ cleanrsrc:
 	@rm -f $(hfiles)
 	rm -rf $(rsrc)/Max/* $(rsrc)/Max/PureData
 
+samples:
+	[ -d $(package)/samples ] || mkdir -p $(package)/samples
+	rm -rf $(package)/samples/*
+	cp -R ../scripts/S* $(package)/samples
+	
 src:
 	[ -d $(package)-src/cmake ] || mkdir -p $(package)-src/cmake
 	cp -rf ../src $(package)-src/
