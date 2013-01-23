@@ -27,7 +27,9 @@
 
 #include "TimeEventAble.h"
 #include "EventsAble.h"
+#include "TMessageEvaluator.h"
 #include "TInterval.h"
+#include "IObject.h"
 
 using namespace std;
 using namespace libmapping;
@@ -36,36 +38,47 @@ namespace inscore
 {
 
 //----------------------------------------------------------------------
+void TimeEventAble::eval (const IMessageList* msgs, const EventContext& env) const
+{
+	if (msgs && msgs->list().size()) {
+		TMessageEvaluator me;
+		SIMessageList evaluated = me.eval (msgs, env);
+		evaluated->send();
+	}
+}
+
+//----------------------------------------------------------------------
 void TimeEventAble::handleTimeChange (rational from, rational to) const
 {
+	TMessageEvaluator me;
+	EventContext env (dynamic_cast<const IObject*>(this));
+	env.mouse = MouseLocation (0,0,0,0,0,0);
+	env.date = to;
 	for (std::set<RationalInterval>::const_iterator i=fWatchTimeList.begin(); i != fWatchTimeList.end(); i++) {
 		if (i->include(from) && !i->include(to)) {			// leaving the time interval
-			send (fEventsHandler->getTimeMsgs (EventsAble::kTimeLeave, *i));
+			eval (fEventsHandler->getTimeMsgs (EventsAble::kTimeLeave, *i), env);
 		}
 		else if (!i->include(from) && i->include(to)) {		// entering the time interval
-			send (fEventsHandler->getTimeMsgs (EventsAble::kTimeEnter, *i));
-		}				
+			eval (fEventsHandler->getTimeMsgs (EventsAble::kTimeEnter, *i), env);
+		}
 	}
 }
 
 //----------------------------------------------------------------------
 void TimeEventAble::handleDurChange (rational from, rational to) const
 {
+	TMessageEvaluator me;
+	EventContext env (dynamic_cast<const IObject*>(this));
+	env.mouse = MouseLocation (0,0,0,0,0,0);
+	env.date = to;
 	for (std::set<RationalInterval>::const_iterator i=fWatchDurList.begin(); i != fWatchDurList.end(); i++) {
 		if (i->include(from) && !i->include(to)) {			// leaving the duration interval
-			send (fEventsHandler->getTimeMsgs (EventsAble::kDurLeave, *i));
+			eval (fEventsHandler->getTimeMsgs (EventsAble::kDurLeave, *i), env);
 		}
 		else if (!i->include(from) && i->include(to)) {		// entering the duration interval
-			send (fEventsHandler->getTimeMsgs (EventsAble::kDurEnter, *i));
-		}				
+			eval (fEventsHandler->getTimeMsgs (EventsAble::kDurEnter, *i), env);
+		}
 	}
-}
-
-//----------------------------------------------------------------------
-void TimeEventAble::send (const std::vector<SEventMessage>& msgs) const
-{
-	for (unsigned int i=0; i<msgs.size(); i++)
-		msgs[i]->send();
 }
 
 //----------------------------------------------------------------------

@@ -19,12 +19,44 @@
   
 */
 
+#include <string>
+
 #include "ITLError.h"
+#include "IMessage.h"
+
+using namespace std;
 
 namespace inscore
 {
 
 ITLError ITLErr;			// static ITL error output stream
 ITLErrEnd ITLEndl;			// static ITL error output stream end
+
+ITLError& operator << (ITLError& err, ITLErrEnd end)
+{
+	std::cerr << std::endl;
+	oscerr <<  OSCEnd();
+	err.oscpending = false;
+	return err;
+}
+
+ITLError& operator << (ITLError& err, const SIMessageList& msgs )
+{
+	for (unsigned int i=0; i < msgs->list().size(); i++)
+		err << msgs->list()[i];
+	return err;
+}
+
+ITLError& operator << (ITLError& err, const IMessage* msg )
+{
+	std::cerr << msg;
+	string addr = msg->extendedAddress() ? (string(msg->url()) + msg->address()) : msg->address();
+	err << addr.c_str();
+	if (msg->message().size()) err << msg->message();
+	for (int i = 0; i < msg->size(); i++)
+		msg->param(i)->print(err);
+	return err;
+}
+
 
 } // end namespace

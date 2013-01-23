@@ -41,7 +41,7 @@ namespace inscore
 Position::Position():
 	fXPos(kDefaultX), fYPos(kDefaultY), fXOrigin(0), fYOrigin(0), 
 	fWidth(0), fHeight(0) , fZOrder(0),
-	fAngle(0), fVisible(true), fScale(1.0), fModified(true),
+	fVisible(true), fScale(1.0), fModified(true),
 	fXAngle(0), fYAngle(0), fZAngle(0), fShear (0,0)
 {}
 
@@ -51,7 +51,7 @@ void Position::setPos(const Position& p)
 	setYPos( p.getYPos() );
 	setZOrder( p.getZOrder() );
 	setScale( p.getScale() );
-	setAngle( p.getAngle() );
+	setAngle( p.getRotateZ() );
 	setWidth( p.getWidth() );
 	setHeight( p.getHeight() );
 	setVisible( p.getVisible() );
@@ -74,7 +74,7 @@ TFloatRect Position::getBoundingRect() const
 {
 	TFloatRect result(0.0f,0.0f);
 	result.setSize( getDimension() );
-	if ( getAngle() != 0 )
+	if ( getRotateZ() != 0 )
 	{
 		float x = result.size().width() / 2.0f;
 		float y = result.size().height() / 2.0f;
@@ -84,10 +84,10 @@ TFloatRect Position::getBoundingRect() const
 		float bottomRightAngle = -topRightAngle;
 
 		float Ax, Ay, Bx, By;
-		rotateXY( topRightAngle , getAngle() , r , Ax , Ay );
-		rotateXY( bottomRightAngle , getAngle() , r , Bx , By );
+		rotateXY( topRightAngle , getRotateZ() , r , Ax , Ay );
+		rotateXY( bottomRightAngle , getRotateZ() , r , Bx , By );
 
-		int modAngle = int(getAngle()) % 360;
+		int modAngle = int(getRotateZ()) % 360;
 		if ( ( modAngle >= 0 ) && ( modAngle < 90 ) )
 		{
 			result.setPos( TFloatPoint( -Bx , -Ay ) );
@@ -111,7 +111,7 @@ TFloatRect Position::getBoundingRect() const
 	}
 
 	//Scale
-	result.setSize( result.size() * getScale() );
+	result.setSize( result.size() * (double)getScale() );
 	//Pos: rectangle is centered on getPos().
 	result.setPos( getPos() - TFloatPoint( 0.5f * result.width() , 0.5f * result.height() ) );
 	return result;

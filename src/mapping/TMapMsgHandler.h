@@ -85,7 +85,7 @@ template<typename T, unsigned int D> class TMapMsgHandler
 
 	static bool parseMsg (const IMessage* msg , std::string& mapname,  std::string& data)
 	{
-		switch (msg->params().size()) {
+		switch (msg->size()) {
 			case 2:
 				if (!msg->param(0, mapname)) return false;
 				if (!msg->param(1, data)) return false;
@@ -117,7 +117,7 @@ template<typename T, unsigned int D> class TMapMsgHandler
 		{
 			std::string mapName, map;
 			if (parseMsg (msg, mapName, map)) {
-				if ( map == "del" ) {
+				if ( map == kdel_SetMethod ) {
 					localMapping->remove( mapName );
 					object->removeMapping( mapName );
 					return MsgHandler::kProcessed;
@@ -143,16 +143,16 @@ template<typename T, unsigned int D> class TMapMsgHandler
 		}
 		
 		/// \brief Overrides IObject to handle 'get map' msg.
-		static IMessageList getMapMsgs(const libmapping::SMARTP<TLocalMapping<T,D> >& localMapping , const IObject* object )
+		static SIMessageList getMapMsgs(const libmapping::SMARTP<TLocalMapping<T,D> >& localMapping , const IObject* object )
 		{ 
-			IMessageList outMsgs;
+			SIMessageList outMsgs = IMessageList::create();
 			for ( typename TLocalMapping<T,D>::const_iterator iter = localMapping->namedMappings().begin() ; iter != localMapping->namedMappings().end() ; iter++ )
 			{
-				IMessage* msg = new IMessage(object->getOSCAddress(), "map");
+				SIMessage msg = IMessage::create(object->getOSCAddress(), kmap_GetSetMethod);
 				if ( iter->first.size() )
 					*msg << iter->first;
 				*msg << iter->second->direct();
-				outMsgs += msg;
+				outMsgs->list().push_back(msg);
 			}
 			return outMsgs;
 		}

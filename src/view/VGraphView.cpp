@@ -136,14 +136,14 @@ GraphicSegment VGraphView::getGraphicSegment( const FrameSegment& frameSegment ,
 	int signalSize = graph->getSignal()->ParallelSignal::size();
 	if ( frameSegment.start() < 0 )
 	{
-		ITLErr << "frame mapping of object " << graph->getOSCAddress() << " refers to 'out of bounds' (< 0) frame: " << frameSegment.start() << ITLEndl;
+		ITLErr << "frame mapping of object" << graph->getOSCAddress() << "refers to 'out of bounds' (< 0) frame:" << frameSegment.start() << ITLEndl;
 		mapOk = false;
 		return GraphicSegment();
 	}		
 	if ( frameSegment.end() > signalSize )
 	{
-		ITLErr << "frame mapping of object " << graph->getOSCAddress() << " refers to 'out of bounds' (> signal size) frame: " << frameSegment.end()
-		<< " (note: signal size = " << signalSize << ")" << ITLEndl;
+		ITLErr << "frame mapping of object" << graph->getOSCAddress() << "refers to 'out of bounds' (> signal size) frame:" << frameSegment.end()
+		<< "(note: signal size =" << signalSize << ")" << ITLEndl;
 		mapOk = false;
 		return GraphicSegment();
 	}

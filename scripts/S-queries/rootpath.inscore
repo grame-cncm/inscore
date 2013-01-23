@@ -1,0 +1,3 @@
+
+/ITL/scene/out set  txt "The scene rootpath is" $(/ITL/scene get rootPath);
+

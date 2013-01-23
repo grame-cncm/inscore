@@ -50,6 +50,7 @@ using namespace std;
 namespace inscore 
 {
 
+IGlue* gGlue;
 //_______________________________________________________________________
 /*!
 	\brief a specific thread for Java JNI
@@ -90,6 +91,7 @@ IGlue* INScore::start(int timeInterval, int udpport, int outport, int errport, Q
 		glue->setLocalMapUpdater(VQtLocalMappingUpdater::create() );
 		glue->setViewUpdater	(VQtUpdater::create() );
 #endif
+		gGlue = glue;
 		return glue;
 	}
 	std::cerr << "INScore initialization failed" << std::endl;
@@ -100,6 +102,7 @@ IGlue* INScore::start(int timeInterval, int udpport, int outport, int errport, Q
 //--------------------------------------------------------------------------
 void INScore::stop(IGlue* glue)
 {
+	gGlue = 0;
 	delete glue;
 }
 
@@ -196,21 +199,21 @@ void INScore::delMessage(MessagePtr msg)
 void INScore::add (MessagePtr p, const char* s)
 {
 	IMessage* m = Message2IMessage (p);
-	if (m) m->add<string>(s);
+	if (m) m->add(s);
 }
 
 //--------------------------------------------------------------------------
 void INScore::add (MessagePtr p, float f)
 {
 	IMessage* m = Message2IMessage (p);
-	if (m) m->add<float>(f);
+	if (m) m->add(f);
 }
 
 //--------------------------------------------------------------------------
 void INScore::add (MessagePtr p, int n)
 {
 	IMessage* m = Message2IMessage (p);
-	if (m) m->add<int>(n);
+	if (m) m->add(n);
 }
 
 }

@@ -19,14 +19,18 @@
   
 */
 
+#include <iostream>
+#include <sstream>
 #include "Tools.h"
 
+using namespace std;
+using namespace libmapping;
 
 namespace inscore
 {
 
 //--------------------------------------------------------------------------
-bool Tools::regexp (const std::string& str)
+bool Tools::regexp (const string& str)
 {
 	unsigned int n = str.size();
 	for (unsigned int i = 0; i < n; i++) {
@@ -34,6 +38,36 @@ bool Tools::regexp (const std::string& str)
 			return true;
 	}
 	return false;
+}
+
+//--------------------------------------------------------------------------
+/**
+ *	Convert a string to a rational value.
+ */
+rational Tools::str2rational (const std::string& rationalstr)
+{
+	int num, d;
+	int n = sscanf (rationalstr.c_str(), "%d/%d", &num, &d);
+	return (n == 2) ? rational (num, d) : rational (0,0);
+}
+
+//--------------------------------------------------------------------------
+/**
+ *	Convert a float into a string.
+ *	Ensure a float representation for integer values.
+ */
+string Tools::ensurefloat (float f, int precision)
+{
+	stringstream stream;
+	if (precision) stream.precision(precision);
+	stream << f;
+	const char* ptr = stream.str().c_str();
+	bool hasdot = false;
+	while(*ptr) {
+		if (*ptr++ == '.') hasdot = true;
+	}
+	if (!hasdot) stream << ".0";
+	return stream.str();
 }
 
 

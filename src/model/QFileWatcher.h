@@ -30,6 +30,7 @@
 #include "IFileWatcher.h"
 #include <QObject>
 #include <QMultiMap>
+#include <QFileSystemWatcher>
 
 class QFileSystemWatcher;
 
@@ -52,29 +53,26 @@ class QFileWatcher: public QObject, public IFileWatcher
 {
 	Q_OBJECT
 
-	QFileSystemWatcher* mWatcher;
-
-	QMultiMap<QString,IMessage>	mFilesMap;	// fileName -> msg map.
+	QFileSystemWatcher fWatcher;
 
 	public:
-		
 		static SQFileWatcher create(IObject * parent) { return new QFileWatcher(parent); }
 
 	protected:
+				 QFileWatcher(IObject * parent);
+		virtual ~QFileWatcher()		{}
 	
-		QFileWatcher(IObject * parent);
-		virtual ~QFileWatcher();
-	
-		/*! \brief IFileWatcher implementation */
-		virtual void addAssociation(const WatcherAssociation& association);
-		/*! \brief IFileWatcher implementation */
-		virtual void remove(const WatcherAssociation& association);
-		/*! \brief IFileWatcher implementation */
-		virtual void remove(const std::string& oscAddress);
-		/*! \brief IFileWatcher implementation */
-		virtual void clear();		
-			
-		virtual void getList(std::vector<WatcherAssociation>& outAssociations) const;
+		/// \brief overrides IFileWatcher method
+		virtual void set (const std::string& file, SIMessageList );
+		/// \brief overrides IFileWatcher method
+		virtual void add (const std::string& file, SIMessageList );
+		/// \brief overrides IFileWatcher method
+		virtual void clear (const std::string& file);
+		/// \brief overrides IFileWatcher method
+		virtual void clear();
+		
+	private:
+		bool contains (const QString& filename);
 
 	protected slots:
 		void fileChangedSlot(const QString& fileName);

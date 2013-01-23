@@ -218,7 +218,7 @@ void VGraphicsItemView::updateView(IObject* o)
 	// stretch mode: setup and use of fTilerItem
 	if ( fIsStretchOn && item()->parentItem() )
 	{
-		const SGraphic2GraphicMapping& slave2Master = o->getSlave2MasterMapping();		
+		const SGraphic2GraphicMapping& slave2Master = o->getSlave2MasterMapping();
 		fTilerItem->clearSegments();
 		fTilerItem->setRect( item()->parentItem()->boundingRect() );
 		
@@ -233,6 +233,7 @@ void VGraphicsItemView::updateView(IObject* o)
 				continue;
 
 			QRectF slaveSourceRect = iObject2QGraphicsItem( iter->first, fItem->boundingRect() );
+//qDebug() << "VGraphicsItemView::updateView slaveSourceRect: " << slaveSourceRect;
 			
 			const std::set<GraphicSegment>& related = iter->second;
 			for ( std::set<GraphicSegment>::const_iterator i=related.begin() ; i != related.end(); i++ )	// For each master segment corresponding to the slave segment.
@@ -251,15 +252,13 @@ void VGraphicsItemView::updateView(IObject* o)
 		//	Sets the item position in the QGraphicsScene, using 'relative coordinate -> QGraphicsScene coordinate' 
 		//	mapping functions.
 		fItem->setPos( relative2SceneX( o->getXPos() ) , relative2SceneY(  o->getYPos() ) );
-//		fItem->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
 		updateTransform (o);
 		fItem->scale(  o->getScale() ,  o->getScale() );
-		fItem->rotate(  o->getAngle() );
 	
 		//	Centers the item on its origin.
 		QRectF objectBoundingRect = fItem->boundingRect();
-		float xoffset = objectBoundingRect.width() * o->getXOrigin()  / 2;
-		float yoffset = objectBoundingRect.height() * o->getYOrigin() / 2;
+		double xoffset = objectBoundingRect.width() * o->getXOrigin()  / 2;
+		double yoffset = objectBoundingRect.height() * o->getYOrigin() / 2;
 		fItem->translate( -objectBoundingRect.center().x() - xoffset, -objectBoundingRect.center().y() - yoffset );
 	}
 
@@ -298,6 +297,8 @@ static bool checkAutoRefresh (IObject* object, const RelativeTime2GraphicRelatio
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::buildDefaultMapping (IObject* object)
 {
+//	if ((object->namedMappings().size() == 1) && ()) return;  // no need to build the default mapping
+	
 	const SRelativeTime2GraphicMapping& map = object->getMapping("");
 	// Check if the un-named mapping exists or if it needs to be refreshed. 
 	if ( !map ||  checkAutoRefresh(object, map->direct()))	
@@ -310,6 +311,7 @@ void VGraphicsItemView::buildDefaultMapping (IObject* object)
 		t2g_mapping->add ( wholeTimeSegment , wholeGraphicSegment );
 		object->setMapping( "" , t2g_mapping);
 		object->fAutoMap = true;
+		object->localMapModified(true);
 	}
 }
 
@@ -441,8 +443,8 @@ TFloatPoint VGraphicsItemView::qGraphicsItem2IObject(const QPointF& point) const
 //------------------------------------------------------------------------------------------------------------
 TFloatPoint VGraphicsItemView::qGraphicsItem2IObject(const QPointF& point, const QRectF& rect) const
 {
-	float x = (point.x() - rect.x()) / (rect.width()/2.0f) - 1;
-	float y = (point.y() - rect.y()) / (rect.height()/2.0f) - 1;
+	double x = (point.x() - rect.x()) / (rect.width()/2.0f) - 1;
+	double y = (point.y() - rect.y()) / (rect.height()/2.0f) - 1;
 	return TFloatPoint(x,y);
 }
 
@@ -468,8 +470,10 @@ QRectF VGraphicsItemView::iObject2QGraphicsItem(const GraphicSegment& s) const
 //------------------------------------------------------------------------------------------------------------
 QPointF VGraphicsItemView::iObject2QGraphicsItem(const TFloatPoint& point, const QRectF& qrect) const
 {
-	float x = ( point.x() + 1 ) * ( qrect.width() / 2.0f ) + qrect.x();
-	float y = ( point.y() + 1 ) * ( qrect.height() / 2.0f ) + qrect.y();
+//	double x = ( point.x() + 1 ) * ( qrect.width() / 2.0f ) + qrect.x();
+//	double y = ( point.y() + 1 ) * ( qrect.height() / 2.0f ) + qrect.y();
+	double x = (( point.x() + 1 ) * qrect.width())  / 2.0f + qrect.x();
+	double y = (( point.y() + 1 ) * qrect.height()) / 2.0f + qrect.y();
 	return QPointF( x,y );
 }
 

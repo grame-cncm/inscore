@@ -77,26 +77,20 @@ MsgHandler::msgStatus ICurve::set (const IMessage* msg)
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
-	if ( (msg->params().size() > 1) && ( (msg->params().size() % 8)==1 ) ) {
-		const float err = -55555;
-		unsigned int i;
+	if ( (msg->size() > 1) && ( (msg->size() % 8)==1 ) ) {
+
 		//Build the vector of points reading the message.
 		CurveData curveData;
-		for ( i = 1 ; i < msg->params().size() ; i+=8 ) {
+		for ( int i = 1 ; i < msg->size() ; i+=8 ) {
 			BezierCurve bezierCurve;
-			bezierCurve.fPointA.first = msg->params()[i]->value<float>(err);
-			bezierCurve.fPointA.second = msg->params()[i+1]->value<float>(err);
-			bezierCurve.fPointB.first = msg->params()[i+2]->value<float>(err);
-			bezierCurve.fPointB.second = msg->params()[i+3]->value<float>(err);
-			bezierCurve.fPointC.first = msg->params()[i+4]->value<float>(err);
-			bezierCurve.fPointC.second = msg->params()[i+5]->value<float>(err);
-			bezierCurve.fPointD.first = msg->params()[i+6]->value<float>(err);
-			bezierCurve.fPointD.second = msg->params()[i+7]->value<float>(err);
-			if (	(bezierCurve.fPointA.first==err) || (bezierCurve.fPointA.second==err)
-				||	(bezierCurve.fPointB.first==err) || (bezierCurve.fPointB.second==err)
-				||	(bezierCurve.fPointC.first==err) || (bezierCurve.fPointC.second==err)
-				||	(bezierCurve.fPointD.first==err) || (bezierCurve.fPointD.second==err)
-				)
+			if (!msg->param(i,   bezierCurve.fPointA.first)	||
+				!msg->param(i+1, bezierCurve.fPointA.second) ||
+				!msg->param(i+2, bezierCurve.fPointB.first) ||
+				!msg->param(i+3, bezierCurve.fPointB.second) ||
+				!msg->param(i+4, bezierCurve.fPointC.first) ||
+				!msg->param(i+5, bezierCurve.fPointC.second) ||
+				!msg->param(i+6, bezierCurve.fPointD.first) ||
+				!msg->param(i+7, bezierCurve.fPointD.second))
 				return MsgHandler::kBadParameters;
 			curveData.push_back( bezierCurve );
 		}
@@ -107,7 +101,7 @@ MsgHandler::msgStatus ICurve::set (const IMessage* msg)
 			newData(true);
 			return MsgHandler::kProcessed;
 		}
-		for ( i = 0 ; i < curveData.size() ; i++ )
+		for (unsigned int i = 0 ; i < curveData.size() ; i++ )
 		{
 			if (curveData[i] != getPoints()[i])
 			{

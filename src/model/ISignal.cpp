@@ -45,20 +45,20 @@ ISignal::ISignal( const std::string& name, IObject * parent ) : IObject (name, p
 {
 	fTypeString = kSignalType;
 
-	fMsgHandlerMap["default"]= TMethodMsgHandler<ISignal>::create(this, &ISignal::defaultMsg);
-	fMsgHandlerMap["size"]	 = TMethodMsgHandler<ISignal>::create(this, &ISignal::sizeMsg);
-	fMsgHandlerMap["reset"]	 = TMethodMsgHandler<ISignal>::create(this, &ISignal::resetMsg);
+	fMsgHandlerMap[kdefault_GetSetMethod]= TMethodMsgHandler<ISignal>::create(this, &ISignal::defaultMsg);
+	fMsgHandlerMap[ksize_GetSetMethod]	 = TMethodMsgHandler<ISignal>::create(this, &ISignal::sizeMsg);
+	fMsgHandlerMap[kreset_SetMethod]	 = TMethodMsgHandler<ISignal>::create(this, &ISignal::resetMsg);
 	fMsgHandlerMap[""]		 = TMethodMsgHandler<ISignal>::create(this, &ISignal::dataMsg);
-	fMsgHandlerMap["watch"]	 = (void*)0;
-	fMsgHandlerMap["watch+"] = (void*)0;
+	fMsgHandlerMap[kwatch_GetSetMethod]	 = (void*)0;
+	fMsgHandlerMap[kwatchplus_SetMethod] = (void*)0;
 
 	SMsgHandler projhandler = TMethodMsgHandler<ISignal>::create(this, &ISignal::projectionDataMsg);
 	fMsgHandlerMap["\\[[0-9]+\\]"]			= projhandler;
 	fMsgHandlerMap["\\[[0-9]+~[0-9]*\\]"]	= projhandler;
 
-	fGetMsgHandlerMap["size"]		= TGetParamMethodHandler<ISignal, int (ParallelSignal::*)() const>::create(this, &ParallelSignal::size);
-	fGetMsgHandlerMap["dimension"]	= TGetParamMethodHandler<ISignal, int (ParallelSignal::*)() const>::create(this, &ParallelSignal::dimension);
-	fGetMsgHandlerMap["default"]	= GetDefaultParamMsgHandler::create(this);
+	fGetMsgHandlerMap[ksize_GetSetMethod]		= TGetParamMethodHandler<ISignal, int (ParallelSignal::*)() const>::create(this, &ParallelSignal::size);
+	fGetMsgHandlerMap[kdimension_GetMethod]	= TGetParamMethodHandler<ISignal, int (ParallelSignal::*)() const>::create(this, &ParallelSignal::dimension);
+	fGetMsgHandlerMap[kdefault_GetSetMethod]	= GetDefaultParamMsgHandler::create(this);
 }
 
 //--------------------------------------------------------------------------
@@ -80,13 +80,13 @@ void ISignal::accept (Updater* u)
 bool ISignal::decodeProjection (const std::string& proj, int& index, int& step) const
 {
 	int i=0, s=0;
-	char c= ' ';
+	char c = ' ';
 	int result = sscanf(proj.c_str(), "[%d%c%d]", &i, &c, &s);
 	if (!result) return false;			// incorrect string format
 
 	index = i;
 	step = 0;
-	if ((result == 2) && (c=='~')) step = 1;
+	if ((result == 2) && (c == '~')) step = 1;
 	else if (result == 3) step = s;
 	return true;
 }
@@ -100,14 +100,14 @@ void ISignal::print (IMessage& out) const
 		if (values.size())
 			out << values;
 		else {
-			out.setMessage("size");
+			out.setMessage(ksize_GetSetMethod);
 			int size = signal(0)->size();
 			out << size;
 		}
 
 	}
 	else {
-		out.setMessage("set");
+		out.setMessage(kset_SetMethod);
 		for (int i = 0; i < n; i++) {
 			const string& signame = signal(i)->name();
 			if (signame.size())
@@ -119,12 +119,12 @@ void ISignal::print (IMessage& out) const
 }
 
 //--------------------------------------------------------------------------
-IMessageList ISignal::getSetMsg() const
+SIMessageList ISignal::getSetMsg() const
 {
-	IMessageList outMsgs;
-	IMessage * msg = new IMessage (getOSCAddress());
+	SIMessageList outMsgs = IMessageList::create();
+	SIMessage msg = IMessage::create (getOSCAddress());
 	print(*msg);
-	outMsgs += msg;
+	outMsgs->list().push_back (msg);
 	return outMsgs;
 }
 
@@ -139,11 +139,11 @@ SISignalNode ISignal::getSignalNode()
 bool ISignal::putAt (const IMessage* msg, int index, int step)
 {
 	float err = 999.9f;
-	int size = msg->params().size();
+	int size = msg->size();
 	vector<float> values;
 	for (int i = 0; i< size; i++) {
-		float value = msg->params()[i]->value<float>(err);
-		if (value == err) return false;			// error in parameter types
+		float value;
+		if (!msg->param(i, value)) return false;
 		if ((value < err) && (value > -err))	// catch nan and inf input
 			values.push_back(value);
 	}
@@ -187,7 +187,7 @@ MsgHandler::msgStatus ISignal::set (const IMessage* msg)
 					signals.push_back(dynamic_cast<ISignal*>((IObject*)siglist[0]));
 				}
 				else {
-					ITLErr << "parallel signal " << this->name() << ": unknown signal " << name << ITLEndl;
+					ITLErr << "parallel signal" << this->name() << ": unknown signal" << name << ITLEndl;
 					return MsgHandler::kBadParameters;
 				}
 			}
@@ -205,8 +205,8 @@ MsgHandler::msgStatus ISignal::set (const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus ISignal::sizeMsg (const IMessage* msg)
 {
-	if (msg->params().size() == 1) {
-		int size = msg->params()[0]->value<int>(-1);
+	if (msg->size() == 1) {
+		int size = msg->param(0)->value<int>(-1);
 		if (size > 0) {
 			if (!dimension()) {
 				*this << TSignal::create(name(), size);
@@ -220,7 +220,7 @@ MsgHandler::msgStatus ISignal::sizeMsg (const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus ISignal::resetMsg (const IMessage* msg)
 {
-	if (msg->params().size()) return MsgHandler::kBadParameters;	// no arg expected
+	if (msg->size()) return MsgHandler::kBadParameters;	// no arg expected
 	ParallelSignal::reset();
 	return MsgHandler::kProcessed;
 }
@@ -228,9 +228,9 @@ MsgHandler::msgStatus ISignal::resetMsg (const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus ISignal::defaultMsg (const IMessage* msg)
 {
-	if (msg->params().size() ==  (unsigned int)(ParallelSignal::dimension()) ) {
+	if (msg->size() ==  ParallelSignal::dimension()) {
 		std::vector<float> defaultValue;
-		for ( unsigned int i = 0 ; i < msg->params().size() ; i++ )
+		for ( int i = 0 ; i < msg->size() ; i++ )
 		{
 			float val;
 			if (msg->param(i, val)) {
@@ -247,14 +247,14 @@ MsgHandler::msgStatus ISignal::defaultMsg (const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus ISignal::dataMsg (const IMessage* msg)
 {
-	if (!msg->params().size()) return MsgHandler::kBadParameters;
+	if (!msg->size()) return MsgHandler::kBadParameters;
 	return putAt(msg, 0, 1) ? MsgHandler::kProcessed : MsgHandler::kBadParameters;
 }
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus ISignal::projectionDataMsg (const IMessage* msg)
 {
-	if (!msg->params().size()) return MsgHandler::kBadParameters;
+	if (!msg->size()) return MsgHandler::kBadParameters;
 	const string& msgstr = msg->message();
 	int index, step;
 	if (decodeProjection(msgstr, index, step))
@@ -263,12 +263,12 @@ MsgHandler::msgStatus ISignal::projectionDataMsg (const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
-IMessage&  ISignal::GetDefaultParamMsgHandler::print(IMessage& out) const
+SIMessage&  ISignal::GetDefaultParamMsgHandler::print(SIMessage& out) const
 {
 	std::vector<float> outVal;
 	fSignal->ParallelSignal::defaultValue(outVal);
 	for ( unsigned int i = 0 ; i < outVal.size() ; i++ )
-		out << outVal[i];
+		*out << outVal[i];
 	return out;
 }
 

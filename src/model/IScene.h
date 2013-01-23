@@ -41,6 +41,12 @@ namespace inscore
 @{
 */
 
+#ifdef V8ENGINE
+typedef TV8Js		TJSEngine;
+#else
+typedef TMozillaJs	TJSEngine;
+#endif
+
 class Master;
 typedef class libmapping::SMARTP<Master>			SMaster;
 class IScene;
@@ -125,11 +131,7 @@ class IScene : public IRectShape, public PeriodicTask
 		std::string			absolutePath( const std::string& path ) const;
 		QGraphicsScene *	getGraphicScene () const;
 
-#ifdef V8ENGINE
-		TV8Js*			getJSEngine()		{ return &fJavascript; }
-#else
-		TMozillaJs*		getJSEngine()		{ return &fJavascript; }
-#endif
+		TJSEngine*		getJSEngine()		{ return &fJavascript; }
 		TLua*			getLUAEngine()		{ return &fLua; }
 
 
@@ -139,7 +141,6 @@ class IScene : public IRectShape, public PeriodicTask
 
 		/// \brief the \c 'watch' message handler
 		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
-		virtual IMessageList  getWatch () const		{ return IObject::getWatch(); }
 
 		void		setRootPath(const std::string& s);
 		MsgHandler::msgStatus loadMsg(const IMessage* msg);

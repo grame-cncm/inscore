@@ -24,6 +24,7 @@
 */
 
 #include <iostream>
+#include <QDebug>
 
 
 #include "MapTools.h"
@@ -36,6 +37,8 @@
 #include "QGuidoImporter.h"
 
 #include "GuidoMapCollector.h"
+
+#include "benchtools.h"
 
 using namespace std;
 
@@ -98,6 +101,40 @@ class RolledUnrolledCollector: public TimeMapCollector
 
 };
 
+#define USEPIXMAP
+//----------------------------------------------------------------------
+void QCachedGuidoGraphicsItem::paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
+{
+	__uint64 time = getTime();
+	QRectF rect = boundingRect();
+	QSize size (rect.width(), rect.height());
+qDebug() << "QCachedGuidoGraphicsItem::paint rect" << rect;
+qDebug() << "QCachedGuidoGraphicsItem::paint clipBoundingRect" << painter->clipBoundingRect();
+#if 0
+	if (fInvalide) {
+		delete fCache;
+# ifdef USEPIXMAP
+		fCache = new QPixmap (size);
+# else
+		fCache = new QImage (size, QImage::Format_ARGB32);
+# endif
+		QPainter cachepainter (fCache);
+		cachepainter.setRenderHints (QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
+		QGuidoGraphicsItem::paint (&cachepainter, option, widget);
+		fInvalide = false;
+	}
+	painter->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
+# ifdef USEPIXMAP
+	painter->drawPixmap(0, 0, *fCache);
+# else
+	painter->drawImage(0, 0, *fCache);
+# endif
+#else
+	QGuidoGraphicsItem::paint (painter, option, widget);
+#endif
+	cout << "QCachedGuidoGraphicsItem::paint elapsed: " << (getTime() - time) / 1000 << endl;
+}
+
 //----------------------------------------------------------------------
 VGuidoItemView::VGuidoItemView(QGraphicsScene * scene, const IGuidoCode* h)
 					: VGraphicsItemView( scene , new IQGuidoGraphicsItem(h) )
@@ -140,7 +177,7 @@ bool VGuidoItemView::gmnUpdate (IGuidoCode* guidoCode)
 			if ( fGuidoItem->setGMNCode( VApplView::toQString( converted.str().c_str() ) ) )	
 				return true;
 	}
-	ITLErr << guidoCode->getOSCAddress() << "invalid gmn code: " << fGuidoItem->getLastErrorMessage().toAscii().data() << ITLEndl;
+	ITLErr << guidoCode->getOSCAddress() << "invalid gmn code:" << fGuidoItem->getLastErrorMessage().toAscii().data() << ITLEndl;
 	return false;
 }
 
@@ -267,7 +304,7 @@ GuidoMapCollector* VGuidoItemView::getMapBuilder(const string& mapName) const
 		mb = new GuidoMapCollector(fGuidoItem, kGuidoSystemSlice);
 	else if ( name.startsWith( kMeasureMap ) )
 		mb = new GuidoStaffCollector ( fGuidoItem, getMapNum (name, kMeasureMap.size()) );
-	else ITLErr << "unknwown guido mapping name \"" << mapName << "\" requested" << ITLEndl;
+	else ITLErr << "unknwown guido mapping name" << mapName << "requested" << ITLEndl;
 	
 	return mb;
 }

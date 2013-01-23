@@ -27,6 +27,7 @@
 #include <sstream>
 
 #include "TScripting.h"
+#include "TMessageEvaluator.h"
 
 #include "IMessage.h"
 #include "TEnv.h"
@@ -48,33 +49,43 @@ class TEnv;
 TScripting::TScripting(TJSEngine* js, TLua* lua)
 	: 	fJavascript(js), fLua(lua)
 {
-	fMessages = new IMessageList;
+	fMessages = IMessageList::create();
 	fEnv = TEnv::create();
 }
 
-TScripting::~TScripting()	{ delete fMessages; }
+TScripting::~TScripting()	{}
 
 //--------------------------------------------------------------------------------------------
-void TScripting::variable	(const char* ident, int val)				{ fEnv->bind( ident, val); }
-void TScripting::variable	(const char* ident, float val)				{ fEnv->bind( ident, val); }
-void TScripting::variable	(const char* ident, const char* val)		{ fEnv->bind( ident, val); }
-
-//--------------------------------------------------------------------------------------------
-void TScripting::add (IMessage* msg)
-{
-	*fMessages += msg;
+void TScripting::variable (const char* ident, const IMessage::argslist* values)		
+{ 
+	fEnv->clear( ident ); 
+	for (IMessage::argslist::const_iterator i = values->begin(); i != values->end(); i++)
+		fEnv->bind( ident, *i); 
 }
 
 //--------------------------------------------------------------------------------------------
-void TScripting::add (IMessageList* msgs)
+void TScripting::variable (const char* ident, const SIMessageList* msgs)
 {
-	*fMessages += *msgs;
+	fEnv->clear( ident );
+	fEnv->bind( ident, new IMsgParam<SIMessageList>(*msgs));
+}
+
+//--------------------------------------------------------------------------------------------
+void TScripting::add (SIMessage& msg)
+{
+	fMessages->list().push_back (msg);
+}
+
+//--------------------------------------------------------------------------------------------
+void TScripting::add (SIMessageList& msgs)
+{
+	fMessages->list().push_back (msgs->list());
 }
 
 //--------------------------------------------------------------------------------------------
 // lua support
 //--------------------------------------------------------------------------------------------
-bool TScripting::luaEval (const char* script)
+SIMessageList TScripting::luaEval (const char* script)
 {
 	if (fLua) {
 		fLua->bindEnv (fEnv);
@@ -83,43 +94,73 @@ bool TScripting::luaEval (const char* script)
 			if (luaout.size()) {
 				istringstream stream(luaout);
 				ITLparser p (&stream, 0, fJavascript, fLua);
-				IMessageList* msgs = p.parse();
-				if (msgs) add (msgs);
+				return p.parse();
 			}
-			return true;
 		}
 	}
 	else ITLErr << "lua is not available!" << ITLEndl;
-	return false;
+	return 0;
 }
+#else
+bool TScripting::checkLua () const							{ return false; }
+SIMessageList TScripting::luaEval (const char* script)
+{
+	ITLErr << "lua is not available!" << ITLEndl;
+	return 0;
+}
+#endif
+
 
 //--------------------------------------------------------------------------------------------
 // javascript support
 //--------------------------------------------------------------------------------------------
-bool TScripting::jsEval (const char* script, int lineno)
+SIMessageList TScripting::jsEval (const char* script, int lineno)
 {
 	if (fJavascript) {
 		fJavascript->bindEnv (fEnv);
 		string jsout;
-		if (fJavascript->eval(lineno, script, jsout)) {
+		if (fJavascript->eval(lineno - countlines(script), script, jsout)) {
 			if (jsout.size()) {
 				istringstream stream(jsout);
 				ITLparser p (&stream, 0, fJavascript, fLua);
-				IMessageList* msgs = p.parse();
-				if (msgs) add (msgs);
+				return p.parse();
 			}
-			return true;
 		}
 	}
 	else ITLErr << "javascript is not available!" << ITLEndl;
-	return false;
+	return 0;
+}
+#else
+bool TScripting::checkJavascript () const						{ return false; }
+SIMessageList TScripting::jsEval (const char* script, int lineno)
+{
+	ITLErr << "javascript is not available!" << ITLEndl;
+	return 0;
+}
+#endif
+
+//--------------------------------------------------------------------------------------------
+IMessage::argslist TScripting::resolve (const IMessage* msg)
+{
+#ifdef PARSERTEST
+	IMessage::argslist out;
+	out.push_back (new inscore::IMsgParam<std::string>("unresoved"));
+#else
+	MouseLocation ml;
+	libmapping::rational date (0,1);
+	EventContext env (ml, date, 0);
+	TMessageEvaluator me;
+	return me.evalMessage(msg, env);
+#endif
 }
 
 //--------------------------------------------------------------------------------------------
-Sbaseparam*	TScripting::resolve (const char* var)
+IMessage::argslist TScripting::resolve (const char* var, const char * defaultVal)
 {
-	Sbaseparam value = fEnv->value (var);
-	return value ? new Sbaseparam(value) : 0;
+	IMessage::argslist val = fEnv->value (var);
+	if (val.empty() && defaultVal)
+		val.push_back(new IMsgParam<string>(defaultVal));
+	return val;
 }
 
 } // namespace

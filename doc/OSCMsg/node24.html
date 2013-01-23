@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>7.1 Special 'get' forms</TITLE>
-<META NAME="description" CONTENT="7.1 Special 'get' forms">
+<TITLE>4.2 File based components</TITLE>
+<META NAME="description" CONTENT="4.2 File based components">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -20,54 +20,190 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
 <LINK REL="previous" HREF="node23.html">
-<LINK REL="up" HREF="node23.html">
+<LINK REL="up" HREF="node22.html">
 <LINK REL="next" HREF="node25.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html533"
+<A NAME="tex2html582"
   HREF="node25.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html527"
-  HREF="node23.html">
+<A NAME="tex2html576"
+  HREF="node22.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html523"
+<A NAME="tex2html572"
   HREF="node23.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html529"
+<A NAME="tex2html578"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html531"
-  HREF="node85.html">
+<A NAME="tex2html580"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html534"
-  HREF="node25.html">8. Component specific messages</A>
-<B> Up:</B> <A NAME="tex2html528"
-  HREF="node23.html">7. The 'get' messages</A>
-<B> Previous:</B> <A NAME="tex2html524"
-  HREF="node23.html">7. The 'get' messages</A>
- &nbsp; <B>  <A NAME="tex2html530"
+<B> Next:</B> <A NAME="tex2html583"
+  HREF="node25.html">5. The 'get' messages</A>
+<B> Up:</B> <A NAME="tex2html577"
+  HREF="node22.html">4. The 'set' message</A>
+<B> Previous:</B> <A NAME="tex2html573"
+  HREF="node23.html">4.1 Inline components</A>
+ &nbsp; <B>  <A NAME="tex2html579"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html532"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html581"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION00810000000000000000">
-7.1 Special 'get' forms</A>
+<H1><A NAME="SECTION00520000000000000000"></A>
+<A NAME="fileset"></A>
+<BR>
+4.2 File based components
 </H1>
 
 <P>
-The <TT>get</TT> message without parameter addressed to a container (the application <TT>/ITL</TT>, a scene <TT>/ITL/scene</TT>, the signal node <TT>/ITL/scene/signal</TT>) is actually relayed to each of the container component.  
+<A NAME="setfile"></A>
+<BR>
+<IMG
+ WIDTH="289" HEIGHT="276" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.gif"
+ ALT="\begin{rail}
+setFile :
+('txtf' textFilePath) \vert
+('htmlf' htmlFilePath) \ve...
+...
+('img' imgPath) \vert
+('video' videoPath) \vert
+('file' filePath)
+\end{rail}">
+<BR>
+<A NAME="531"></A>
+<A NAME="532"></A>
+<A NAME="533"></A>
+<A NAME="534"></A>
+<A NAME="535"></A>
+<A NAME="536"></A>
+<A NAME="537"></A>
 
 <P>
-The <TT>get width</TT> and <TT>get height</TT> messages adressed to components that have no explicit width and height (text, images, etc.) return 0 as long as the target component has not been drew.
+
+<UL>
+<LI><TT>txtf</TT>: a textual component defined by a file.
+</LI>
+<LI><TT>htmlf</TT>: an html component defined by an HTML file.
+</LI>
+<LI><TT>gmnf</TT>: a Guido score defined by a GMN file.
+</LI>
+<LI><TT>svgf</TT>: vectorial graphics defined by a SVG file.
+</LI>
+<LI><TT>img</TT>: an image file based component. The image format is infered from the file extension.
+</LI>
+<LI><TT>video</TT>: a video file based component. The video format is infered from the file extension. Note that navigation through the video is made using its <TT>date</TT>.
+</LI>
+<LI><TT>file</TT>: a generic type to handle file based objects. Actually, the <TT>file</TT> type is translated into a one of the <TT>txtf</TT>, <TT>gmnf</TT>, <TT>img</TT> or <TT>video</TT> types, according to the file extension (see table <A HREF="#fileTranslate">4.1</A>).
+</LI>
+</UL>
 
 <P>
-<BR><HR>
+<B>See also: </B>the application <TT>rootPath</TT> message (section <A HREF="node32.html#ITL">7</A> p.<A HREF="node32.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>) for file based objects.
+
+<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Creating an image.
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/myObject set img "myImage.png"</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+Using the <TT>file</TT> type.
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/myObject set file "myImage.png" 
+<BR>
+will be translated into 
+<BR>/ITL/scene/myObject set img "myImage.png"
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<DIV ALIGN="CENTER">
+<A NAME="1584"></A>
+<TABLE CELLPADDING=3 BORDER="1">
+<CAPTION><STRONG>Table 4.1:</STRONG>
+File extensions supported by the <TT>file</TT> translation scheme.</CAPTION>
+<TR><TD ALIGN="RIGHT">file extension</TD>
+<TD ALIGN="CENTER">translated type</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>.txt .text</TT></TD>
+<TD ALIGN="CENTER"><TT>txtf</TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>.htm .html</TT></TD>
+<TD ALIGN="CENTER"><TT>htmlf</TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>.gmn .xml</TT></TD>
+<TD ALIGN="CENTER"><TT>gmnf</TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>.svg</TT></TD>
+<TD ALIGN="CENTER"><TT>svgf</TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>.jpg .jpeg .png .gif .bmp .tiff</TT></TD>
+<TD ALIGN="CENTER"><TT>img</TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>.avi .wmv .mpg .mpeg .mp4</TT></TD>
+<TD ALIGN="CENTER"><TT>video</TT></TD>
+</TR>
+</TABLE>
+</DIV>
+<A NAME="fileTranslate"></A>
+</DIV>
+<BR>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html582"
+  HREF="node25.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html576"
+  HREF="node22.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html572"
+  HREF="node23.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html578"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html580"
+  HREF="node106.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html583"
+  HREF="node25.html">5. The 'get' messages</A>
+<B> Up:</B> <A NAME="tex2html577"
+  HREF="node22.html">4. The 'set' message</A>
+<B> Previous:</B> <A NAME="tex2html573"
+  HREF="node23.html">4.1 Inline components</A>
+ &nbsp; <B>  <A NAME="tex2html579"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html581"
+  HREF="node106.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

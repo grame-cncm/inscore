@@ -48,6 +48,7 @@ typedef class libmapping::SMARTP<ILine>	SILine;
 class ILine : public IShapeMap
 {
 	TFloatPoint fPoint;
+	bool		fWAMode;
 
 	public:
 		static const std::string kLineType;
@@ -61,6 +62,9 @@ class ILine : public IShapeMap
 	protected:
 				 ILine( const std::string& name, IObject* parent );
 		virtual ~ILine() {}
+
+		/// \brief the 'get' form without parameter
+		virtual SIMessageList getSetMsg() const;
 
 		void	setPoint(const TFloatPoint& p)		{ fPoint = p; }
 		/// \brief the \c 'set' message handler

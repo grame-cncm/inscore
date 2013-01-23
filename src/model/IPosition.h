@@ -61,7 +61,7 @@ class Position
 		float	fXOrigin, fYOrigin;		///< the origin coordinates (range [-1,1] where 0,0 is the object center)
 		float	fWidth, fHeight;		///< the object dimensions
 		float	fZOrder;				///< the object Z-order
-		float	fAngle;					///< the object angle
+//		float	fAngle;					///< the object angle
 		bool	fVisible;				///< the object visibility
 		float	fScale;					///< the object scaling factor
 		bool	fModified;				///< the modification state
@@ -98,7 +98,7 @@ class Position
 		/// \brief returns the object z order
 		virtual float	getZOrder() const			{ return fZOrder; }
 		/// \brief returns the object angle
-		virtual float	getAngle() const			{ return fAngle; }
+//		virtual float	getAngle() const			{ return fZAngle; }
 		/// \brief returns the scaling factor of the object
 		virtual float	getScale () const			{ return fScale; }
 		/// \brief returns the object position as a TFloatPoint
@@ -193,8 +193,8 @@ class Position
 		*	The object will be rotated around its origin 
 		*	(top-left corner in most of the cases).
 		*/
-		virtual void	setAngle(float angle)		{ fAngle = angle; fModified = true; }
-		virtual void	addAngle(float angle)		{ setAngle(fAngle + angle); }
+		virtual void	setAngle(float angle)		{ fZAngle = angle; fModified = true; }
+		virtual void	addAngle(float angle)		{ setAngle(fZAngle + angle); }
 
 		
 		/// \brief sets the object shear

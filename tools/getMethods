@@ -1,0 +1,51 @@
+#!/bin/sh
+#
+# a tool to retrieve all the message handlers from the source code
+# and to generate the correspondant declarations
+
+
+src=../src			# the src code location
+
+function extract()
+{
+	grep -r '"[a-zA-Z]*"' $src/* \
+		| grep HandlerMap \
+		| sed -e 's/[ \t]*=[ \t]*..*//' \
+		| grep -v '""' \
+		| grep -v 'Methods.cpp' \
+		| sed -e 's/fMsgHandlerMap\["/Set	/' \
+		| sed -e 's/fGet.*HandlerMap\["/Get	/' \
+		| sed -e 's/"\][ 	]*//' \
+		| grep -v '\/\/' \
+		| sed -e 's/^..*\///' \
+		| sed -e 's/\.cpp://'
+}
+
+function getmethods()
+{
+	extract | awk '{ print $3, "	// ", $2 }' \
+			| sort -u 
+}
+
+if [ $# -gt 0 ]
+then
+	case $1 in 
+	"raw") 
+		extract
+		;;
+	"methods")
+		getmethods
+		;;
+	"src")
+		getmethods | awk -f getsrc.awk 
+		;;
+	"header")
+		getmethods | awk -f getheader.awk 
+		;;
+	*)
+		echo unknown request $1 
+		;;
+	esac
+else
+	extract
+fi

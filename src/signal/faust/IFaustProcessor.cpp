@@ -89,8 +89,8 @@ IFaustProcessor::IFaustProcessor( const std::string& name, IObject * parent ) : 
 	fBuildUI(0), fCompute(0), fInputs(0), fOutputs(0), fInit(0), fNumIntputs(0), fNumOutputs(0), fInBuffers(0), fOutBuffers(0)
 {
 	fTypeString = kFaustProcessorType;
-	fGetMsgHandlerMap["in"]		= TGetParamMsgHandler<int>::create(fNumIntputs);
-	fGetMsgHandlerMap["out"]	= TGetParamMsgHandler<int>::create(fNumOutputs);
+	fGetMsgHandlerMap[kin_GetMethod]		= TGetParamMsgHandler<int>::create(fNumIntputs);
+	fGetMsgHandlerMap[kout_GetMethod]	= TGetParamMsgHandler<int>::create(fNumOutputs);
 }
 
 //--------------------------------------------------------------------------
@@ -113,7 +113,7 @@ void IFaustProcessor::accept (Updater* u)
 //--------------------------------------------------------------------------
 void IFaustProcessor::print (IMessage& out) const
 {
-	out.setMessage("set");
+	out.setMessage(kset_SetMethod);
 	out << kFaustProcessorType << fLibrary;
 }
 
@@ -234,7 +234,7 @@ void IFaustProcessor::init ()
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IFaustProcessor::set (const IMessage* msg)
 {
-	const char* cantload = "can't load faust plugin: ";
+	const char* cantload = "can't load faust plugin:";
 	if (msg->size() != 2) return MsgHandler::kBadParameters;
 	string library;
 	if (!msg->param(1, library)) return MsgHandler::kBadParameters;
@@ -247,7 +247,7 @@ MsgHandler::msgStatus IFaustProcessor::set (const IMessage* msg)
 		fInit		= resolve<fpinit>(kfpinit);
 		if (!fBuildUI || !fCompute || !fInputs || !fOutputs || !fInit) {
 			unload();
-			ITLErr << cantload <<  " unresolved functions." << ITLEndl;
+			ITLErr << cantload <<  "unresolved functions." << ITLEndl;
 			return MsgHandler::kBadParameters;
 		}
 		init();

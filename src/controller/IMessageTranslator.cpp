@@ -27,6 +27,7 @@
 
 #include "IMessageTranslator.h"
 #include "IMessage.h"
+#include "Methods.h"
 
 using namespace std;
 
@@ -63,32 +64,33 @@ IMessageTranslator::IMessageTranslator()
 }
 
 //--------------------------------------------------------------------------
-IMessage * IMessageTranslator::translateFileType(const IMessage* msg)
+SIMessage IMessageTranslator::translateFileType(const IMessage* msg)
 {
-	IMessage * translated = 0;
-	string file = msg->params()[1]->value<string>("");
-	size_t dotpos = file.find_last_of ('.');
-	if (dotpos != string::npos) {
-		string extension = file.substr(dotpos + 1);
-		map<string, string>::const_iterator t = fFileTypeTranslationTable.find(extension);
-		if (t != fFileTypeTranslationTable.end()) {
-			string type = t->second;
-			translated = new IMessage;
-			*translated = *msg;
-			translated->params()[0] = new IMsgParam<string>(type);
+	SIMessage translated;
+	string file;
+	if (msg->param(1, file)) {
+		size_t dotpos = file.find_last_of ('.');
+		if (dotpos != string::npos) {
+			string extension = file.substr(dotpos + 1);
+			map<string, string>::const_iterator t = fFileTypeTranslationTable.find(extension);
+			if (t != fFileTypeTranslationTable.end()) {
+				string type = t->second;
+				translated = IMessage::create();
+				*translated = *msg;
+				translated->setparam(0, type);
+			}
 		}
 	}
 	return translated;
 }
 
 //--------------------------------------------------------------------------
-IMessage * IMessageTranslator::translate(const IMessage* msg)
+SIMessage IMessageTranslator::translate(const IMessage* msg)
 {
-	IMessage * translated = 0;
-	if ((msg->size() >= 2) && (msg->message() == "set") && (msg->params()[0]->value<string>("") == "file")) {
-		translated = translateFileType (msg);
+	if ((msg->size() >= 2) && (msg->message() == kset_SetMethod) && (msg->param(0)->value<string>("") == "file")) {
+		return translateFileType (msg);
 	}
-	return translated;
+	return 0;
 }
 
 

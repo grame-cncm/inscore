@@ -29,11 +29,13 @@
 
 #include <string>
 #include <vector>
-#include <iostream>
+#include <ostream>
+
 #include "message.h"
 #include "ITLError.h"
 #include "OSCStream.h"
 #include "rational.h"
+#include "extvector.h"
 #include "smartpointer.h"
 
 
@@ -91,15 +93,11 @@ class baseparam : public libmapping::smartable
 			}
 			
 		virtual libmapping::SMARTP<baseparam> copy() const = 0;
+#ifndef NO_OSCSTREAM
+		virtual void print(ITLError to) const {}
+#endif
 };
 
-inline std::ostream& operator << (std::ostream& os, const baseparam* p) { 
-	if (p->isType<int>())				os << p->value(0);
-	else if (p->isType<float>())		os << p->value(0.);
-	else if (p->isType<std::string>())	os << p->value("");
-	else os << "unknown parameter type";
-	return os; 
-}
 
 //--------------------------------------------------------------------------
 /*!
@@ -114,7 +112,31 @@ template <typename T> class IMsgParam : public baseparam
 		
 		T	getValue() const { return fParam; }
 		
-		virtual libmapping::SMARTP<baseparam> copy() const { return new IMsgParam<T>(fParam); }
+		virtual libmapping::SMARTP<baseparam> copy() const	{ return new IMsgParam<T>(fParam); }
+#ifndef NO_OSCSTREAM
+		virtual void print(ITLError out) const				{ out << fParam; }
+#endif
+};
+
+class OSCStream;
+class IMessage;
+typedef libmapping::SMARTP<IMessage>		SIMessage;
+class IMessageList;
+typedef libmapping::SMARTP<IMessageList>	SIMessageList;
+
+/// a javascript type definition to handle javascript as message argument
+class TJavaScript : public std::string	{
+	public:
+				 TJavaScript(const char* v) : std::string(v) {}
+				 TJavaScript() {}
+		virtual ~TJavaScript() {}
+};
+/// a lua type definition to handle javascript as message argument
+class TLuaScript : public std::string	{
+	public:
+				 TLuaScript(const char* v) : std::string(v) {}
+				 TLuaScript() {}
+		virtual ~TLuaScript() {}
 };
 
 //--------------------------------------------------------------------------
@@ -127,54 +149,78 @@ template <typename T> class IMsgParam : public baseparam
 */
 class IMessage : public Message, public libmapping::smartable
 {
-//static unsigned long allocated;
-//static unsigned long freed;
 	public:
-		typedef libmapping::SMARTP<baseparam>		argPtr;		///< a message argument ptr type
-		typedef std::vector<argPtr>		argslist;	///< args list type
+		typedef libmapping::SMARTP<baseparam>	argPtr;		///< a message argument ptr type
+		typedef extvector<argPtr>				argslist;	///< type for arguments list
+		class TUrl {
+			public:
+				std::string	fHostname;
+				int			fPort;
+
+						 TUrl () : fPort(0) {}
+						 TUrl (const char* host, int port) : fHostname(host), fPort(port) {}
+				virtual ~TUrl() {}
+
+				/// \brief parse the string to separate host name and port number
+				bool parse(const std::string& host);
+				operator std::string() const;
+				bool operator ==(const TUrl& other) const	{ return (fPort == other.fPort) && (fHostname == other.fHostname); }
+				bool operator !=(const TUrl& other) const	{ return (fPort != other.fPort) || (fHostname != other.fHostname); }
+		};
 
 	private:
 		unsigned long	fSrcIP;			///< the message source IP number
 		std::string	fAddress;			///< the message osc destination address
-		std::string	fMessage;			///< the message 'message'
-		argslist	fArguments;			///< the message arguments
+		argslist	fArguments;			///< the message arguments, index 0 is reserved for the message string
+		bool		fHasMessage;		///< indicates when arguments start with a message string
+		TUrl		fUrl;
+		
+		inline int index (int i) const	{ return fHasMessage ? i+1 : i; }
+		void		print(std::ostream& out, int param, int nested) const;	///< print a single param
+		/*!
+			\brief adds a parameter to the message
+			\param val the parameter
+		*/
+		template <typename T> void add(T val)	{ fArguments.push_back(new IMsgParam<T>(val)); }
 	
-	public:
+	protected:
 			/*!
 				\brief an empty message constructor
 			*/
-			 IMessage() {}
+			 IMessage() : fHasMessage(false)  {}
 			/*!
-				\brief a message constructor
-				\param address the message destination address
-			*/
-			 IMessage(const std::string& address) : fAddress(address) {}
-			/*!
-				\brief a message constructor
-				\param address the message destination address
-				\param msg the message message
-			*/
-			 IMessage(const std::string& address, const std::string& msg) : fAddress(address), fMessage(msg) {}
-			/*!
-				\brief a message constructor
-				\param address the message destination address
-				\param msg the message message
-				\param args the message parameters
-			*/
-			 IMessage(const std::string& address, const std::string& msg, const argslist& args) 
-				: fAddress(address), fMessage(msg), fArguments(args) {}
-			/*!
-				\brief a message constructor
-				\param msg a message
+				\brief an empty message constructor
 			*/
 			 IMessage(const IMessage& msg);
-	virtual ~IMessage() {} //{ freed++; std::cout << "running messages: " << (allocated - freed) << std::endl; }
+			/*!
+				\brief a message constructor with an osc address
+				\param address the message destination address
+			*/
+			 IMessage(const std::string& address) : fAddress(address), fHasMessage(false) {}
+			/*!
+				\brief a message constructor with an osc address and a message string
+				\param address the message destination address
+				\param msg the message message
+			*/
+			 IMessage(const std::string& address, const std::string& msg);
+			/*!
+				\brief a message constructor with arguments and address extension
+				\param address the message destination address
+				\param args the message parameters, param 0 is scanned to set the message bool attribute
+				\param url the osc address extension. Empty url discards the extension
+			*/
+			 IMessage(const std::string& address, const argslist& args, const TUrl& url);
+	virtual ~IMessage() {}
 
-	/*!
-		\brief adds a parameter to the message
-		\param val the parameter
-	*/
-	template <typename T> void add(T val)	{ fArguments.push_back(new IMsgParam<T>(val)); }
+	
+	public:
+		static SIMessage create()													{ return new IMessage(); }
+		static SIMessage create(const IMessage& msg)								{ return new IMessage(msg); }
+		static SIMessage create(const std::string& address)							{ return new IMessage(address); }
+		static SIMessage create(const std::string& address, const std::string& msg)	{ return new IMessage(address, msg); }
+		static SIMessage create(const std::string& address, const argslist& args, const TUrl& url)
+				{ return new IMessage(address, args, url); }
+
 	/*!
 		\brief adds a float parameter to the message
 		\param val the parameter value
@@ -190,12 +236,41 @@ class IMessage : public Message, public libmapping::smartable
 		\param val the parameter value
 	*/
 	void	add(const std::string& val)		{ add<std::string>(val); }
+	/*!
+		\brief adds a string parameter to the message
+		\param val the parameter value
+	*/
+	void	add(const char* val)			{ add<std::string>(val); }
 	
 	/*!
 		\brief adds a parameter to the message
 		\param val the parameter
 	*/
 	void	add( argPtr val )				{ fArguments.push_back( val ); }
+	
+	/*!
+		\brief adds a parameter to the message
+		\param val the parameter
+	*/
+	void	add(const SIMessageList& val )	{ fArguments.push_back( new IMsgParam<SIMessageList>(val) ); }
+	
+	/*!
+		\brief adds a parameter to the message
+		\param val the parameter
+	*/
+	void	add(const TJavaScript& val )	{ fArguments.push_back( new IMsgParam<TJavaScript>(val) ); }
+	
+	/*!
+		\brief adds a parameter to the message
+		\param val the parameter
+	*/
+	void	add(const TLuaScript& val )	{ fArguments.push_back( new IMsgParam<TLuaScript>(val) ); }
+	
+	/*!
+		\brief adds a set of parameter to the message
+		\param params the parameters
+	*/
+	void	add( const argslist& params );
 
 	/*!
 		\brief sets the message address
@@ -207,12 +282,18 @@ class IMessage : public Message, public libmapping::smartable
 		\brief sets the message address
 		\param addr the address
 	*/
-	void				setAddress(const std::string& addr)		{ fAddress = addr; }
+	void				setAddress(const std::string& addr)	{ fAddress = addr; }
+
+	/*!
+		\brief sets the message url
+		\param url the address extension
+	*/
+	void				setUrl(const TUrl& url)				{ fUrl = url; }
 	/*!
 		\brief sets the message string
 		\param msg the message string
 	*/
-	void				setMessage(const std::string& msg)		{ fMessage = msg; }
+	void				setMessage(const std::string& msg);
 	/*!
 		\brief print the message
 		\param out the output stream
@@ -223,41 +304,39 @@ class IMessage : public Message, public libmapping::smartable
 	/*!
 		\brief send the message to OSC
 		\param out the OSC output stream
+		\param start a boolean to indicate wether the stream needs to be started (OSC specific)
 	*/
-	template <typename T> void	print(T& out) const {
-														out << OSCStart(address().c_str());
-														if (message().size()) out << message();
-														printArgs(out);
-														out << OSCEnd();
-													}
+	void	print(OSCStream& out) const;
+
+	/*!
+		\brief linearize a message to OSC
+		\param out the OSC output stream
+	*/
+	void	linearize(OSCStream& out) const;
 	
 	/*!
 		\brief print message arguments
 		\param out the OSC output stream
 	*/
-	template <typename T> void printArgs(T& out) const {
-														for (int i=0; i < size(); i++) {
-															std::string str; float fv; int iv;
-															if (param(i, fv))			out << fv;
-															else if (param(i, iv))		out << iv;
-															else if (param(i, str))		out << str;
-															else ITLErr << "IMessage::print(OSCStream& out): unknown message parameter type" << ITLEndl;
-														}
-													}
+	void printArgs(OSCStream& out) const;
 #endif
 
 	/// \brief gives the message address
 	const std::string&	address() const		{ return fAddress; }
+	/// \brief check for extended address
+	bool				extendedAddress() const		{ return fUrl.fPort != 0; }
+	/// \brief gives the address extension
+	const TUrl&	url() const					{ return fUrl; }
 	/// \brief gives the message message
-	const std::string&	message() const		{ return fMessage; }
-	/// \brief gives the message parameters list
-	const argslist&		params() const		{ return fArguments; }
-	/// \brief gives the message parameters list
-	argslist&			params()			{ return fArguments; }
-	/// \brief gives the message source IP 
+	std::string			message() const;
+	/// \brief gives a single parameter by index
+	const argPtr&		param(unsigned int i) const		{ return fArguments[index(i)]; }
+	/// \brief sets parameter value
+	template <typename T> void setparam(unsigned int i, T val)  { fArguments[index(i)] = new IMsgParam<T>(val); }
+	/// \brief gives the message source IP
 	unsigned long		src() const			{ return fSrcIP; }
 	/// \brief gives the message parameters count
-	int					size() const		{ return fArguments.size(); }
+	int					size() const		{ int  n = fArguments.size(); return fHasMessage ? n -1 : n; }
 	
 	bool operator == (const IMessage& other) const;	
 
@@ -268,14 +347,14 @@ class IMessage : public Message, public libmapping::smartable
 		\param val on output: the parameter value when the parameter type matches
 		\return false when types don't match
 	*/
-	bool	param(int i, float& val) const		{ val = params()[i]->value<float>(val); return params()[i]->isType<float>(); }
+	bool	param(int i, float& val) const		{ val = param(i)->value<float>(val); return param(i)->isType<float>(); }
 	/*!
 		\brief gives a message int parameter
 		\param i the parameter index (0 <= i < size())
 		\param val on output: the parameter value when the parameter type matches
 		\return false when types don't match
 	*/
-	bool	param(int i, int& val) const		{ val = params()[i]->value<int>(val); return params()[i]->isType<int>(); }
+	bool	param(int i, int& val) const		{ val = param(i)->value<int>(val); return param(i)->isType<int>(); }
 	/*!
 		\brief gives a message int parameter
 		\param i the parameter index (0 <= i < size())
@@ -283,21 +362,21 @@ class IMessage : public Message, public libmapping::smartable
 		\return false when types don't match
 		\note a boolean value is handled as integer
 	*/
-	bool	param(int i, bool& val) const		{ int ival = 0; ival = params()[i]->value<int>(ival); val = ival!=0; return params()[i]->isType<int>(); }
+	bool	param(int i, bool& val) const		{ int ival = 0; ival = param(i)->value<int>(ival); val = ival!=0; return param(i)->isType<int>(); }
 	/*!
 		\brief gives a message int parameter
 		\param i the parameter index (0 <= i < size())
 		\param val on output: the parameter value when the parameter type matches
 		\return false when types don't match
 	*/
-	bool	param(int i, long int& val) const	{ val = long(params()[i]->value<int>(val)); return params()[i]->isType<int>(); }
+	bool	param(int i, long int& val) const	{ val = long(param(i)->value<int>(val)); return param(i)->isType<int>(); }
 	/*!
 		\brief gives a message string parameter
 		\param i the parameter index (0 <= i < size())
 		\param val on output: the parameter value when the parameter type matches
 		\return false when types don't match
 	*/
-	bool	param(int i, std::string& val) const { val = params()[i]->value<std::string>(val); return params()[i]->isType<std::string>(); }
+	bool	param(int i, std::string& val) const { val = param(i)->value<std::string>(val); return param(i)->isType<std::string>(); }
 	/*!
 		\brief gives a message rational parameters
 		\param i the parameters start index (0 <= i < size()-1)
@@ -305,26 +384,107 @@ class IMessage : public Message, public libmapping::smartable
 		\return false when types don't match
 	*/
 	bool	param(int i, libmapping::rational& val) const;
-};
+	/*!
+		\brief gives a message messages parameters
+		\param i the parameters start index (0 <= i < size()-1)
+		\param val on output: the parameter value when the parameter type matches
+		\return false when types don't match
+	*/
+	bool	param(int i, SIMessageList& val) const { val = param(i)->value<SIMessageList>(val); return param(i)->isType<SIMessageList>(); }
+	/*!
+		\brief gives a message messages parameters
+		\param i the parameters start index (0 <= i < size()-1)
+		\param val on output: the parameter value when the parameter type matches
+		\return false when types don't match
+	*/
+	bool	param(int i, TJavaScript& val) const { val = param(i)->value<TJavaScript>(val); return param(i)->isType<TJavaScript>(); }
+	/*!
+		\brief gives a message messages parameters
+		\param i the parameters start index (0 <= i < size()-1)
+		\param val on output: the parameter value when the parameter type matches
+		\return false when types don't match
+	*/
+	bool	param(int i, TLuaScript& val) const { val = param(i)->value<TLuaScript>(val); return param(i)->isType<TLuaScript>(); }
 
-typedef libmapping::SMARTP<IMessage>	SIMessage;
+
+	// ----------------------- utilities ----------------------
+private:
+	/*!
+		\brief extract a 'watch' associated message from a 'watch' message
+		\param index the enclosed message start index, updated to the next message index
+		\return a message or 0 when the conversion fails
+	*/
+	SIMessage		watchMsg2Msg(int& index) const;
+
+	/*!
+		\brief extract 'watch' associated messages from a 'watch' message
+		\param startIndex the enclosed messages start index
+		\return a list of messages
+		
+		Internal implementation of watchMsg2Msgs. 
+	*/
+	SIMessageList	_watchMsg2Msgs(int& startIndex) const;
+
+public:
+	/*!
+		\brief extract 'watch' associated messages from a 'watch' message
+		\param startIndex the enclosed messages start index
+		\return a list of messages
+		
+		Building a correct 'watch' message is in charge of the parser for inscore scripts.
+		This method is provided for watch messages received over OSC. It parses the message 
+		arguments from \c startIndex and builds a message list. 
+		
+		Note that when the OSC message includes several associated messages, they should be 
+		separated by a colon or a comma (as part of the arguments). 
+	*/
+	SIMessageList	watchMsg2Msgs(int startIndex) const;
+
+	/*!
+		\brief sends a message
+		
+		The message is locally distributed (i.e. put on the message stack) when its address is not extended.
+		Otherwise, the message is send over the network to the extended address destination.
+	*/
+	void	send () const;
+
+
+	/*!
+		\brief decode an extended address
+		
+		\param address the whole address as a string
+		\param oscAddress on output, the osc address
+		\param url on output, an optional url used for address extension
+		\return true when the address is correctly decoded
+	*/
+	static bool decodeAddress (const std::string& address, std::string& oscAddress, IMessage::TUrl& url);
+};
 
 //--------------------------------------------------------------------------
 /*!
-	\brief a messages list utility
-	
-	Note that IMessageList doesn't delete it's messages unless the \c clear method is called.
+	\brief a messages list utility	
 */
-class IMessageList : public std::vector<IMessage *>
+class IMessageList : public libmapping::smartable
 {
-	public:
+	protected:
+		extvector<SIMessage> fList;
+		
 				 IMessageList() {}
 		virtual ~IMessageList() {}
 
-		void  clear();			///< delete the enclosed messages
-		void  operator += (const IMessageList&);	
-		void  operator += (IMessage* msg)					{ push_back(msg); }
+	public:
+		typedef extvector<SIMessage> TMessageList;
+
+		static SIMessageList create()				{ return new IMessageList; }
+		
+		const	extvector<SIMessage>& list() const	{ return fList; }
+				extvector<SIMessage>& list()		{ return fList; }
+				
+		/// \brief sends all the messages
+		void	send () const;				
 };
+
+inline std::ostream& operator << (std::ostream& os, const SIMessage& m)			{ if (m) m->print(os); else os << "null msg"; return os; }
 
 /*!
 @}

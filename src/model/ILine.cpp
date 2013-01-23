@@ -26,6 +26,7 @@
 #include <math.h>
 
 #include "ILine.h"
+#include "ITLError.h"
 #include "IMessage.h"
 #include "Updater.h"
 
@@ -36,7 +37,7 @@ namespace inscore
 
 const string ILine::kLineType("line");
 //--------------------------------------------------------------------------
-ILine::ILine( const std::string& name, IObject* parent ) : IShapeMap(name, parent)
+ILine::ILine( const std::string& name, IObject* parent ) : IShapeMap(name, parent), fWAMode(false)
 { 
 	fTypeString = kLineType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler< TFloatPoint >::create( getPoint() );
@@ -57,6 +58,18 @@ void ILine::print (ostream& out) const
 	out << fPoint << endl;
 }
 
+
+//--------------------------------------------------------------------------
+// the 'get' form without parameter
+SIMessageList ILine::getSetMsg() const
+{
+	SIMessageList outmsgs = IMessageList::create();
+	SIMessage msg = IMessage::create(getOSCAddress(), kset_SetMethod);
+	*msg << kLineType << "xy" << fPoint;
+	outmsgs->list().push_back (msg);
+	return outmsgs;
+}
+
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus ILine::set (const IMessage* msg)	
 {
@@ -70,7 +83,7 @@ MsgHandler::msgStatus ILine::set (const IMessage* msg)
 		setPoint( TFloatPoint(x,y) );
 		status = MsgHandler::kProcessed;
 		newData(true);
-		oscerr << OSCWarn() << "set line without mode is deprecated" << OSCEnd();
+		ITLErr << "set line without mode is deprecated" << ITLEndl;
 	}
 	else if (msg->params().size() == 4) {
 		string mode; float a, b;
@@ -81,12 +94,13 @@ MsgHandler::msgStatus ILine::set (const IMessage* msg)
 			setPoint( TFloatPoint(a,b) );
 		}
 		else if (mode == "wa") {
+			fWAMode = true;
 			float x = a * cos(M_PI * b / 180);
 			float y = a * sin(M_PI * b / 180);
 			setPoint( TFloatPoint(x,y) );
 		}
-		status = MsgHandler::kProcessed;
 		newData(true);
+		status = MsgHandler::kProcessed;
 	}
 	else status = MsgHandler::kBadParameters;
 	return status;

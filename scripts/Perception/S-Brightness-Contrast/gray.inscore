@@ -1,17 +1,17 @@
-/ITL/scene/* del ;
-/ITL/scene/title set "txt" "Simultaneous Brightness Contrast" ;
-/ITL/scene/title scale 2.7 ;
-/ITL/scene/title y -0.90 ;
+/ITL/scene/* del;
+/ITL/scene/title set txt "Simultaneous Brightness Contrast";
+/ITL/scene/title scale 2.70;
+/ITL/scene/title y -0.9;
 
 nrows=9;
 grey=120;
-<?javascript
+<? javascript 
 	function rects (address, n, w, h, x, dx, gray, dgray)
 	{
 		var j=1;
 		var out = new Array;
 		for (i=1; i <= n; i++) {
-			out[j++]= address+i+" set 'rect' " + w + " " + h + ";"; 
+			out[j++]= address+i+" set rect " + w + " " + h + ";"; 
 			out[j++]= address+i+" x " + x + " ;" ;
 			out[j++]= address+i+" color " + gray + " " + gray + " " + gray + " ;" ;
 			gray -= dgray;
@@ -21,45 +21,59 @@ grey=120;
 	}
 ?>
 
-<?javascript rects ("/ITL/scene/rect", 4, 0.1, 0.2, -0.6, 0.4, grey, 0); ?>
-<?javascript 
+<? javascript  rects ("/ITL/scene/rect", 4, 0.1, 0.2, -0.6, 0.4, grey, 0); ?>
+<? javascript  
 	var w = 2/(nrows+2.5);
 	rects ("/ITL/scene/row", nrows, w+0.001, 1.5, -0.7, w, 227, Math.floor(227/nrows)); 
 ?>
-/ITL/scene/rect* z 1.0 ;
+/ITL/scene/rect* z 1.0;
 
-w = 0.05;
-y = 0.9;
-/ITL/scene/slider set "rect" 1. $w ;
-/ITL/scene/slider penWidth 1. ;
-/ITL/scene/slider penColor 0 0 0 ;
-/ITL/scene/slider z 1. ;
-/ITL/scene/slider color 255 255 255 0 ;
-/ITL/scene/sliderloc set "ellipse" $w $w;
-/ITL/scene/sliderloc color $grey $grey $grey ;
-/ITL/scene/slider* xorigin -1.0 ;
-/ITL/scene/slider* x -0.5 ;
+w =0.05;
+y =0.9;
+/ITL/scene/slider set rect 1.0 $w ;
+/ITL/scene/slider penWidth 1.0;
+/ITL/scene/slider penColor 0 0 0;
+/ITL/scene/slider z 1.0;
+/ITL/scene/slider color 255 255 255 0;
+/ITL/scene/sliderloc set ellipse $w  $w;
+/ITL/scene/sliderloc color $grey  $grey  $grey ;
+/ITL/scene/slider* xorigin -1.0;
+/ITL/scene/slider* x -0.5;
 /ITL/scene/slider* y $y ;
-/ITL/scene/sync 'sliderloc' 'slider' 'v';
-/ITL/scene/sliderloc date 0.47;
-/ITL/scene/slider watch  "mouseDown" "/ITL/scene/sliderloc" "date" "$x" ;
-/ITL/scene/slider watch+ "mouseDown" "/ITL/scene/sliderloc" "brightness" "$x" ;
-/ITL/scene/slider watch+ "mouseDown" "/ITL/scene/rect*" "brightness" "$x[-1.,1.]" ;
-/ITL/scene/slider watch  "mouseMove" "/ITL/scene/sliderloc" "date" "$x" ;
-/ITL/scene/slider watch+ "mouseMove" "/ITL/scene/sliderloc" "brightness" "$x[-1.,1.]" ;
-/ITL/scene/slider watch+ "mouseMove" "/ITL/scene/rect*" "brightness" "$x[-1.,1.]" ;
+/ITL/scene/sync sliderloc slider v;
+/ITL/scene/sliderloc date 0.4699999988;
+/ITL/scene/slider watch mouseDown (
+	/ITL/scene/sliderloc date "$x" ,
+	/ITL/scene/sliderloc brightness "$x" ,
+	/ITL/scene/rect* brightness "$x[-1.,1.]" );
+/ITL/scene/slider watch mouseMove (
+	/ITL/scene/sliderloc date "$x" ,
+	/ITL/scene/sliderloc brightness "$x[-1.,1.]" ,
+	/ITL/scene/rect* brightness "$x[-1.,1.]" );
+/ITL/scene/labela set txt "Gray level";
+/ITL/scene/labela yorigin 1;
+/ITL/scene/labela date 0.5;
+/ITL/scene/sync labela slider syncTop;
 
-/ITL/scene/buttonON  set "rect" $w $w ;
-/ITL/scene/buttonOFF set "rect" $w $w ;
-/ITL/scene/buttonON  color 120 120 120 ;
-/ITL/scene/buttonOFF color 255 255 255 ;
-/ITL/scene/button* penWidth 1. ;
-/ITL/scene/button* penColor 0 0 0 ;
-/ITL/scene/buttonON z 1. ;
-/ITL/scene/buttonOFF z 0.1 ;
+
+/ITL/scene/buttonON set rect $w  $w ;
+/ITL/scene/buttonOFF set rect $w  $w ;
+/ITL/scene/buttonON color 120 120 120;
+/ITL/scene/buttonOFF color 255 255 255;
+/ITL/scene/button* penWidth 1.0;
+/ITL/scene/button* penColor 0 0 0;
+/ITL/scene/buttonON z 1.0;
+/ITL/scene/buttonOFF z 0.1000000015;
 /ITL/scene/button* x 0.75;
 /ITL/scene/button* y $y;
-/ITL/scene/buttonON watch  "mouseDown" "/ITL/scene/buttonON" "z" 0. ;
-/ITL/scene/buttonON watch+ "mouseDown" "/ITL/scene/row*" "show" 0 ;
-/ITL/scene/buttonOFF watch  "mouseDown" "/ITL/scene/buttonON" "z" 1. ;
-/ITL/scene/buttonOFF watch+ "mouseDown" "/ITL/scene/row*" "show" 1 ;
+/ITL/scene/labelb set txt "Hide/Show";
+/ITL/scene/labelb yorigin 1;
+/ITL/scene/labelb date 0.5;
+/ITL/scene/sync labelb buttonON syncTop;
+
+/ITL/scene/buttonON watch mouseDown (
+	/ITL/scene/buttonON z 0.0 ,
+	/ITL/scene/row* show 0 );
+/ITL/scene/buttonOFF watch mouseDown (
+	/ITL/scene/buttonON z 1.0 ,
+	/ITL/scene/row* show 1 );

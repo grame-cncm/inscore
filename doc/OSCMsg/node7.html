@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>4. Common components messages</TITLE>
-<META NAME="description" CONTENT="4. Common components messages">
+<TITLE>2.1 Positioning</TITLE>
+<META NAME="description" CONTENT="2.1 Positioning">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,104 +19,63 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node21.html">
+<LINK REL="next" HREF="node11.html">
 <LINK REL="previous" HREF="node6.html">
-<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="up" HREF="node6.html">
 <LINK REL="next" HREF="node8.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html282"
+<A NAME="tex2html342"
   HREF="node8.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html276"
-  HREF="OSCMsg.html">
+<A NAME="tex2html336"
+  HREF="node6.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html270"
+<A NAME="tex2html330"
   HREF="node6.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html278"
+<A NAME="tex2html338"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html280"
-  HREF="node85.html">
+<A NAME="tex2html340"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html283"
-  HREF="node8.html">4.1 Positioning</A>
-<B> Up:</B> <A NAME="tex2html277"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html271"
-  HREF="node6.html">3. Scene messages</A>
- &nbsp; <B>  <A NAME="tex2html279"
+<B> Next:</B> <A NAME="tex2html343"
+  HREF="node8.html">2.1.1 Absolute positioning</A>
+<B> Up:</B> <A NAME="tex2html337"
+  HREF="node6.html">2. Common messages</A>
+<B> Previous:</B> <A NAME="tex2html331"
+  HREF="node6.html">2. Common messages</A>
+ &nbsp; <B>  <A NAME="tex2html339"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html281"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html341"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION00500000000000000000"></A>
-<A NAME="common"></A>
-<BR>
-4. Common components messages
+<H1><A NAME="SECTION00310000000000000000">
+2.1 Positioning</A>
 </H1>
-Common messages are mainly intended to control the graphic appearance of the components and  of the scene.
-They could be sent to any address with the form <TT>/ITL/scene</TT> or <TT>/ITL/scene/<I>identifier</I></TT> where <TT><I>identifier</I></TT> is the unique identifier string of a scene component.
+
+<P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img10.gif"
+ WIDTH="227" HEIGHT="165" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
  ALT="\begin{rail}
-commonMsg : ('show' int32)
-\vert 'del'
-\vert 'export' ((fullPathF...
-...vert PositionMsg
-\vert ColorMsg
-\vert TimeMsg
-\vert clickSelectMsg
+PositionMsg : absPosMsg
+\vert relPosMsg
+\vert originMsg
+\vert transformMsg
 \end{rail}">
 <BR>
-<A NAME="231"></A>
-<A NAME="232"></A>
-<A NAME="233"></A>
-<A NAME="234"></A>
 
 <P>
-
-<UL>
-<LI><TT>show</TT>: shows or hides the destination object. The parameter is interpreted as a boolean value. Default value is <TT>1</TT>. 
-</LI>
-<LI><TT>del</TT>: deletes the destination object. 
-
-<P>
-</LI>
-<LI><TT>export</TT>: exports an object to an image file. 
-<BR>
-The first form exports to the parameter file, which specifies a full path name. The file extension is used to infer the export format. Supported extensions and formats are: <I>pdf, bmp, gif, jpeg, png, pgm, ppm, tiff, xbm, xpm</I>. 
-<BR>
-The second form exports to <TT>path/<I>identifier</I>.pdf</TT>. When path is a relative path, it exports to <TT>rootPath/path/<I>identifier</I>.pdf</TT>. A scene <I>identifier</I> is '<TT>scene</TT>'.
-<BR>
-The third form exports to <TT>rootPath/<I>identifier</I>.pdf</TT>.
-<BR>
-When the destination file is not completely specified (third form or missing extension), there is an automatic numbering of output names when the destination file already exists.
-
-<P>
-</LI>
-<LI><TT>save</TT>: recursively saves objects states to a file.  The <TT>filePath</TT> can be relative or absolute. When relative, an absolute path is build using the current <TT>rootPath</TT>. The optional <TT>+</TT> parameter indicates an append mode for the write operation. The message must be sent to the <TT>/ITL</TT> address to save the whole application state.
-</LI>
-<LI><TT>rename</TT>: rename the destination object. Changes its OSC address. <B>Warning</B>: OSC pattern matching allows to give the same name to a whole collection of objects; in this case, there is no way to individually address an object when its name is shared with other objects.
-</LI>
-<LI>'PositionMsg' are absolute and relative position messages.
-</LI>
-<LI>'ColorMsg' are absolute and relative color control messages.
-</LI>
-<LI>'TimeMsg' are time management messages. They are described in chaper <A HREF="node21.html#time">5</A> p.<A HREF="node21.html#time"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>.
-</LI>
-<LI>'clickSelectMsg' are provided to query objects relative positions.
-</LI>
-</UL>
+Graphic position messages are absolute position or relative position messages. They can also control an object <I>origin</I> and transformations like rotation around an axis.
 
 <P>
 <BR><HR>
@@ -124,72 +83,15 @@ When the destination file is not completely specified (third form or missing ext
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><A NAME="tex2html284"
-  HREF="node8.html">4.1 Positioning</A>
-<UL>
-<LI><A NAME="tex2html285"
-  HREF="node9.html">4.1.1 Absolute positioning</A>
-<LI><A NAME="tex2html286"
-  HREF="node10.html">4.1.2 Relative positioning</A>
-<LI><A NAME="tex2html287"
-  HREF="node11.html">4.1.3 Components origin</A>
-<LI><A NAME="tex2html288"
-  HREF="node12.html">4.1.4 Components transformations</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html289"
-  HREF="node13.html">4.2 Color messages</A>
-<UL>
-<LI><A NAME="tex2html290"
-  HREF="node14.html">4.2.1 Absolute color messages</A>
-<LI><A NAME="tex2html291"
-  HREF="node15.html">4.2.2 Relative color messages</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html292"
-  HREF="node16.html">4.3 The 'effect' messages</A>
-<UL>
-<LI><A NAME="tex2html293"
-  HREF="node17.html">4.3.1 The blur effect</A>
-<LI><A NAME="tex2html294"
-  HREF="node18.html">4.3.2 The colorize effect</A>
-<LI><A NAME="tex2html295"
-  HREF="node19.html">4.3.3 The shadow effect</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html296"
-  HREF="node20.html">4.4 The 'click' and 'select' messages</A>
+<LI><A NAME="tex2html344"
+  HREF="node8.html">2.1.1 Absolute positioning</A>
+<LI><A NAME="tex2html345"
+  HREF="node9.html">2.1.2 Relative positioning</A>
+<LI><A NAME="tex2html346"
+  HREF="node10.html">2.1.3 Components origin</A>
 </UL>
 <!--End of Table of Child-Links-->
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html282"
-  HREF="node8.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html276"
-  HREF="OSCMsg.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html270"
-  HREF="node6.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html278"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html280"
-  HREF="node85.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html283"
-  HREF="node8.html">4.1 Positioning</A>
-<B> Up:</B> <A NAME="tex2html277"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html271"
-  HREF="node6.html">3. Scene messages</A>
- &nbsp; <B>  <A NAME="tex2html279"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html281"
-  HREF="node85.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

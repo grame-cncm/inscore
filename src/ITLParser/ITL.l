@@ -43,9 +43,6 @@ static  char* unescape (char * str) {
 	for (int r=0, w=0; r <= n; r++) {		
 		if (str[r] == '\\') {			// escape char '\' is found
 			char next = str[r+1];
-//			if (next == '\\')			// when next char is also an escape char '\'
-//				str[w++] = str[r++];	// then put the '\' at write location
-//			else 
 			if ((next != '\'') && (next != '"')) 	// escape only ' and "
 				str[w++] = str[r];		// output the escape char 
 		}
@@ -60,40 +57,61 @@ static  char* unescape (char * str) {
 
 %x CMNTLN
 %x COMMENT
+		/* for double quoted strings */
 %x DQSTR
+		/* for quoted strings */
 %x QSTR
+		/* lua section */
 %x LUASECTION
+		/* javascript section */
 %x JSECTION
 
 DIGIT	[0-9]
 LETTER  [a-zA-Z]
-MSGLETTER  [a-zA-Z+]
-STARTID [_a-zA-Z]
-IDCHAR  [-_a-zA-Z0-9]
 
+ /* allowed character set for first identifier char */
+STARTID [_a-zA-Z]
+ /* allowed character set for first identifier char */
+IDCHAR  [_a-zA-Z0-9]
+
+ /* allowed character set for host names
+	see RFC952 and RFC1123
+ */
+HOSTCHAR [-a-zA-Z0-9]
+
+ /* regular expression characters
+    as defined by the OSC specification */
 RECHAR  [-_a-zA-Z0-9?+*]
-RESTART [_a-zA-Z?+*]
+RECLASS [-_a-zA-Z0-9^]
+
+ANYCHAR	[^ \t"'\x0a\x0d?+*]
 
 SPACE	[ \t]
 EOL		[\x0a\x0d]
 
 %%
+
+ /* ----------------------------------------- */
+ /*	digits */
+ /* ----------------------------------------- */
 {DIGIT}+				yyextra->fInt = atoi(yytext); return UINT;
 "+"{DIGIT}+				yyextra->fInt = atoi(yytext); return UINT;
 "-"{DIGIT}+				yyextra->fInt = atoi(yytext); return INT;
 
-[+-]*{DIGIT}*"."{DIGIT}* 				yyextra->fFloat = atof(yytext); return FLOAT;
-[+-]*{DIGIT}*"."{DIGIT}*e[-+]?{DIGIT}+ 	yyextra->fFloat = atof(yytext); return FLOAT;
+[+-]*{DIGIT}+"."{DIGIT}* 				yyextra->fFloat = atof(yytext); return FLOAT;
+[+-]*{DIGIT}+"."{DIGIT}+e[-+]?{DIGIT}+ 	yyextra->fFloat = atof(yytext); return FLOAT;
 [+-]*{DIGIT}+e[-+]?{DIGIT}+ 			yyextra->fFloat = atof(yytext); return FLOAT;
 
-"="					return EQUAL;
-"("					return LPAR;
-")"					return RPAR;
-","					return SEP;
-"/"					return PATHSEP;			/* OSC address and path separator */
-";"					return ENDEXPR;			/* end of expression */
-"$"					return VARSTART;
+ /* ----------------------------------------- */
+ /*	method requiring messages as argument */
+ /* ----------------------------------------- */
+"watch"			yyextra->fText = yytext; return WATCH;
+"watch+"		yyextra->fText = yytext; return WATCH;
+"require"		yyextra->fText = yytext; return WATCH;
 
+ /* ----------------------------------------- */
+ /*	comments */
+ /* ----------------------------------------- */
 {SPACE}*"#"			BEGIN CMNTLN;
 {SPACE}*"!"			BEGIN CMNTLN;
 <CMNTLN>.*	
@@ -104,17 +122,31 @@ EOL		[\x0a\x0d]
 <COMMENT>"*)"		if (--nested==0) BEGIN INITIAL;
 {SPACE}*"(*"		nested=1; BEGIN COMMENT;
 
-{STARTID}{IDCHAR}*						yyextra->fText = yytext; return IDENTIFIER;		/* identifiers */
-{LETTER}{IDCHAR}*":"{LETTER}{IDCHAR}*	yyextra->fText = yytext; return MAPIDENTIFIER;	/* identifiers with map name */
-{MSGLETTER}*							yyextra->fText = yytext; return MSG;			/* messages */
+ /* ----------------------------------------- */
+ /*	hostname part */
+ /* ----------------------------------------- */
+ {HOSTCHAR}+									yyextra->fText = yytext; return HOSTNAME;
+ {DIGIT}+"."{DIGIT}+"."{DIGIT}+"."{DIGIT}+		yyextra->fText = yytext; return IPNUM;
 
+ /* ----------------------------------------- */
+ /*	identifiers */
+ /* ----------------------------------------- */
+{STARTID}{IDCHAR}*				yyextra->fText = yytext; return IDENTIFIER;
+
+ /* ----------------------------------------- */
+ /*	quoted strings */
+ /* ----------------------------------------- */
 "\""						BEGIN DQSTR;
 "'"							BEGIN QSTR;
-<DQSTR>([^\"]|"\\\"")*		yyextra->fText = unescape(yytext); return STRING;
-<QSTR>([^']|"\\'")*			yyextra->fText = unescape(yytext); return STRING;
+<DQSTR>([^\"]|"\\\"")*		yyextra->fText = unescape(yytext); return QUOTEDSTRING;
+<QSTR>([^']|"\\'")*			yyextra->fText = unescape(yytext); return QUOTEDSTRING;
 <DQSTR>\"					BEGIN INITIAL;
 <QSTR>'						BEGIN INITIAL;
 
+
+ /* ----------------------------------------- */
+ /*	lang sections */
+ /* ----------------------------------------- */
 "<?"{SPACE}*"lua"			BEGIN LUASECTION;
 <LUASECTION>"?>"			BEGIN INITIAL;
 <LUASECTION>({EOL}|"?"[^>]|[^?])*	yyextra->fText = unescape(yytext); return LUASCRIPT;
@@ -123,9 +155,27 @@ EOL		[\x0a\x0d]
 <JSECTION>"?>"				BEGIN INITIAL;
 <JSECTION>({EOL}|"?"[^>]|[^?])*		yyextra->fText = unescape(yytext); return JSCRIPT;
 
+ /* ----------------------------------------- */
+ /*	regular expressions */
+ /* ----------------------------------------- */
+{RECHAR}+								yyextra->fText = yytext; return REGEXP;			/* regular expression */
+{RECHAR}*"["{RECLASS}+"]"{RECHAR}*		yyextra->fText = yytext; return REGEXP;			/* regular expression */
+{RECHAR}*"{"[_a-zA-Z0-9,]+"}"{RECHAR}*	yyextra->fText = yytext; return REGEXP;			/* regular expression */
 
-{RESTART}{RECHAR}*				yyextra->fText = yytext; return REGEXP;			/* regular expression */
-{RESTART}*"["..*"]"{RECHAR}*	yyextra->fText = yytext; return REGEXP;			/* regular expression */
+ /* ----------------------------------------- */
+ /*	basic delimiters and markers */
+ /* ----------------------------------------- */
+"="					return EQUAL;
+"/"					return PATHSEP;			/* OSC address and path separator */
+";"					return ENDEXPR;			/* end of expression */
+"$"					return VARSTART;
+":"					return COLON;
+","					return COMMA;
+"."					return POINT;
+"("					return LEFTPAR;
+")"					return RIGHTPAR;
+ /*"["					return LEFTBRACKET; */
+ /*"]"					return RIGHTBRACKET; */
 
 {SPACE}+			;   /* eat up space */
 

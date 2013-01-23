@@ -28,10 +28,8 @@
 #include "ITLError.h"
 #include "INScore.h"
 
-#include <QFileSystemWatcher>
 #include <QFile>
 #include <QStringList>
-
 #include <QtDebug>
 
 namespace inscore
@@ -40,112 +38,62 @@ namespace inscore
 //----------------------------------------------------------------------
 QFileWatcher::QFileWatcher(IObject * parent) : IFileWatcher(parent)
 {
-	mWatcher = new QFileSystemWatcher();
-
-	connect( mWatcher, SIGNAL(fileChanged(const QString&)), this, SLOT(fileChangedSlot(const QString&)) );
+	connect( &fWatcher, SIGNAL(fileChanged(const QString&)), this, SLOT(fileChangedSlot(const QString&)) );
 }
 
 //----------------------------------------------------------------------
-QFileWatcher::~QFileWatcher()
+bool QFileWatcher::contains (const QString& filename)
 {
-	delete mWatcher;
+	return fWatcher.files().contains (filename);
 }
 
 //----------------------------------------------------------------------
-void QFileWatcher::addAssociation(const WatcherAssociation& association)
+void QFileWatcher::set (const std::string& filename, SIMessageList msgs)
 {
-	if ( QFile::exists( association.mFileName.c_str() ) )
-	{
-		if ( !mFilesMap.contains(association.mFileName.c_str() , association.mMessage) )
-		{
-			mWatcher->addPath( association.mFileName.c_str() );
-			mFilesMap.insert( association.mFileName.c_str() , association.mMessage );
-		}
-		else
-		{
-/*
-			const char* msg = "fileWatcher: 'add': file already being watched :";
-			std::cerr << msg << fileName << std::endl;
-			oscerr << OSCWarn() << msg << fileName << OSCEnd();
-*/
-		}
-	}
-	else ITLErr << "fileWatcher: 'add': file doesn't exists: " << association.mFileName << ITLEndl;
+	QString qfile (filename.c_str());
+	if (!QFile::exists( qfile )) return;
+
+	if (!contains (qfile)) fWatcher.addPath( qfile );
+	IFileWatcher::set(filename, msgs);
 }
 
 //----------------------------------------------------------------------
-void QFileWatcher::remove(const WatcherAssociation& association)
+void QFileWatcher::add (const std::string& filename, SIMessageList msgs)
 {
-	if ( mFilesMap.contains( association.mFileName.c_str() , association.mMessage ) )
-	{
-		mFilesMap.remove( association.mFileName.c_str() , association.mMessage );
+	QString qfile (filename.c_str());
+	if (!QFile::exists( qfile )) return;
 
-		if ( !mFilesMap.contains( association.mFileName.c_str() ) )
-			mWatcher->removePath( association.mFileName.c_str() );
-	}
-	else
-	{
-/*
-		const char* msg = "fileWatcher: 'remove': file";
-		const char* msg2 = "wasn't being watched by :"; 
-		std::cerr << msg << fileName << msg2 << oscAddress << std::endl;
-		oscerr << OSCWarn() << msg << fileName << msg2 << oscAddress << OSCEnd();
-*/
-	}
+	if (!contains (qfile)) fWatcher.addPath( qfile );
+	IFileWatcher::add(filename, msgs);
 }
 
 //----------------------------------------------------------------------
-void QFileWatcher::remove(const std::string& oscAddress)
+void QFileWatcher::clear (const std::string& filename)
 {
-
-	QMultiMap<QString,IMessage>::iterator i = mFilesMap.begin();
-	while ( i != mFilesMap.end() )
-	{
-		if ( i.value().address() == oscAddress )
-			i  = mFilesMap.erase(i);
-		else
-			i++;
-	}
+	fWatcher.removePath( filename.c_str() );
+	IFileWatcher::clear(filename);
 }
 
 //----------------------------------------------------------------------
 void QFileWatcher::clear()
 {
-	mFilesMap.clear();
-	while ( mWatcher->files().size() )
-		mWatcher->removePath( mWatcher->files()[0] );
+	if (fWatcher.files().size())
+		fWatcher.removePaths (fWatcher.files() );
+	IFileWatcher::clear();
 }
 
 //----------------------------------------------------------------------
-void QFileWatcher::fileChangedSlot(const QString& fileName)
+void QFileWatcher::fileChangedSlot(const QString& filename)
 {	
-	if ( QFile::exists( fileName ) )
-	{
-		// The file contents have changed
-		QList<IMessage> messages = mFilesMap.values( fileName );
-		for ( int i = 0 ; i < messages.size() ; i++ )
-		{
-			IMessage * msg = new IMessage( messages[i] );
-			INScore::postMessage( msg->address().c_str() , msg );
-		}
-		mWatcher->removePath( fileName );
-		mWatcher->addPath( fileName );
-	}
+	// The file has changed (modified, renamed, deleted)
+	if ( QFile::exists( filename ) )
+		list().trigger (filename.toStdString());
 	else
 	{
-		// The file has been removed or renamed.	
-		ITLErr << "fileWatcher: can't find file: " << fileName.toAscii().data() << ITLEndl;
-	
-		mWatcher->removePath( fileName );
-		mFilesMap.remove( fileName );
+		// The file has been removed or renamed.
+		ITLErr << name() << ": can't find file:" << filename.toStdString() << ITLEndl;	
+		fWatcher.removePath( filename );
 	}
-}
-
-//----------------------------------------------------------------------
-void QFileWatcher::getList(std::vector<WatcherAssociation>& outAssociations) const
-{
-	for ( QMultiMap<QString,IMessage>::const_iterator i = mFilesMap.begin() ; i != mFilesMap.end() ; i++ )
-		outAssociations.push_back( WatcherAssociation( i.key().toAscii().data() , i.value() ) );
 }
 
 } // end namespoace

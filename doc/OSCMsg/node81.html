@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.19 Differences to version 0.55</TITLE>
-<META NAME="description" CONTENT="17.19 Differences to version 0.55">
+<TITLE>15.1 Grammar definition</TITLE>
+<META NAME="description" CONTENT="15.1 Grammar definition">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,70 +21,152 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node82.html">
 <LINK REL="previous" HREF="node80.html">
-<LINK REL="up" HREF="node62.html">
+<LINK REL="up" HREF="node80.html">
 <LINK REL="next" HREF="node82.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1364"
+<A NAME="tex2html1417"
   HREF="node82.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1358"
-  HREF="node62.html">
+<A NAME="tex2html1411"
+  HREF="node80.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1352"
+<A NAME="tex2html1405"
   HREF="node80.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1360"
+<A NAME="tex2html1413"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1362"
-  HREF="node85.html">
+<A NAME="tex2html1415"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1365"
-  HREF="node82.html">17.20 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1359"
-  HREF="node62.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1353"
-  HREF="node80.html">17.18 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1361"
+<B> Next:</B> <A NAME="tex2html1418"
+  HREF="node82.html">15.2 Lexical tokens</A>
+<B> Up:</B> <A NAME="tex2html1412"
+  HREF="node80.html">15. Appendices</A>
+<B> Previous:</B> <A NAME="tex2html1406"
+  HREF="node80.html">15. Appendices</A>
+ &nbsp; <B>  <A NAME="tex2html1414"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1363"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1416"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION0018190000000000000000">
-17.19 Differences to version 0.55</A>
+<H1><A NAME="SECTION001610000000000000000"></A>
+<A NAME="yacc"></A>
+<BR>
+15.1 Grammar definition
 </H1>
+<PRE>
+//_______________________________________________
+// relaxed simple INScore format specification
+//_______________________________________________
+start       : expr
+            | start expr
+            ;
 
-<UL>
-<LI>new 'xorigin' and 'yorigin' messages (section <A HREF="node11.html#origin">4.1.3</A> p.<A HREF="node11.html#origin"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>new interaction messages set (section <A HREF="node53.html#interaction">15</A> p.<A HREF="node53.html#interaction"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>alpha channel handled by images and video
-</LI>
-<LI>bug correction in line creation corrected (false incorrect parameter returned)
-</LI>
-<LI>bug correction in line 'get' message handling
-</LI>
-<LI>memory leak correction (messages not deleted)
-</LI>
-</UL>
+//_______________________________________________
+// expression of the script language
+//_______________________________________________
+expr        : message  ENDEXPR		
+            | variabledecl ENDEXPR	
+            | script            
+            ;
 
-<P>
-Known issues: 
+//_______________________________________________
+// javascript and lua support
+//_______________________________________________
+script      : LUASCRIPT            
+            | JSCRIPT            
+            ;
+//_______________________________________________
+// messages specification (extends osc spec.)
+//_______________________________________________
+message	    : address 
+            | address params            
+            | address watchparams		
+            | address watchparams LEFTPAR messagelist RIGHTPAR
+            | address watchparams script 
+            ;
 
-<UL>
-<LI>incorrect graphic rendering when 'sync a b' is changed to 'sync b a' in the same update loop
-</LI>
-<LI>incorrect nested synchronization when master is horizontaly stretched,
-</LI>
-</UL>
+messagelist : message            		
+            | messagelist COMMA message 
+            ;
+
+//_______________________________________________
+// address specification (extends osc spec.)
+address	    : oscaddress            	
+            | urlprefix oscaddress		
+            ;
+
+oscaddress  : oscpath            		
+            | oscaddress oscpath		
+            ;
+
+oscpath	     : PATHSEP identifier		
+            | PATHSEP WATCH            	
+            | PATHSEP VARSTART varname	
+            ;
+
+urlprefix   : hostname COLON UINT		
+            | IPNUM COLON UINT            
+            ;
+
+hostname    : HOSTNAME            		
+            | hostname POINT HOSTNAME	
+            ;
+
+identifier  : IDENTIFIER		
+            | HOSTNAME            
+            | REGEXP            
+            ;
+
+//_______________________________________________
+// parameters definitions
+// watchparams need a special case since messages are expected as argument
+//_______________________________________________
+watchparams : watchmethod		
+            | watchmethod params 
+
+params      : param            	
+            | variable            
+            | params variable	
+            | params param		
+            ;
+
+watchmethod : WATCH            	
+            ;
+
+variable    : VARSTART varname
+            | VARSTART LEFTPAR message RIGHTPAR
+            ;
+
+param       : number            
+            | FLOAT            	
+            | identifier		
+            | QUOTEDSTRING		
+            ;
+
+//_______________________________________________
+// variable declaration
+variabledecl : varname EQUAL params	
+            ;
+
+varname	    : IDENTIFIER            
+            | HOSTNAME            	
+            ;
+
+//_______________________________________________
+// misc
+number      : UINT            		
+            | INT            		
+            ;
+</PRE>
 
 <P>
 <BR><HR>

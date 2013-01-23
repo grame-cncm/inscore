@@ -28,8 +28,10 @@
 #define __IFileWatcher__
 
 #include <string>
+#include <map>
 
 #include "IVNode.h"
+#include "TWatcher.h"
 
 namespace inscore
 {
@@ -38,83 +40,56 @@ class IFileWatcher;
 typedef class libmapping::SMARTP<IFileWatcher>	SIFileWatcher;
 
 /*!
-\addtogroup ITLView
+\addtogroup ITLModel
 @{
 */
 
 //--------------------------------------------------------------------------
 /**
-*	\brief an abstract file watcher.
+*	\brief a file watcher.
 *
-*	A file watcher monitors file modifications for the attention of an model object, defined by its osc address.
-*	Each time a monitored file is modified (or renamed, or erased), the file watcher posts a 'reload' message for
-*	the attention of the model object(s) concerned.
-*
-*	The file watcher can monitor several files for 1 object ; it can also monitor 1 file for several objects.
+*	A file watcher monitors file modifications.
+*	Each time a monitored file is modified (or renamed, or erased), the file watcher sends the associated messages.
 *
 *	\note Once a monitored file has been removed (or renamed), its monitoring stops.
 */
 class IFileWatcher: public IVNode
 {
-	public:
-		static const std::string kFileWatcherType;
-		
-		virtual void	print(std::ostream& out) const;
-		
-		/// \brief clear the monitoring list.
-		virtual void clear() = 0;
-				
 	protected:
+		using IObject::set;
+		using IObject::add;
+		
+		TWatcher<std::string>	fWatchList;
 	
-		IFileWatcher(IObject * parent);
+				 IFileWatcher(IObject * parent);
 		virtual ~IFileWatcher() {}
 	
-
-		typedef struct WatcherAssociation
-		{
-			WatcherAssociation() : mFileName("") {}
-			WatcherAssociation(const std::string& fileName, const IMessage& message)
-								 : mFileName(fileName), mMessage(message) {}
-			std::string mFileName;
-			IMessage mMessage;
-		} WatcherAssociation;
-		
+		/// \brief overrides IFileWatcher method
+		virtual void set (const std::string& file, SIMessageList l)		{ fWatchList.set(file, l); }
+		/// \brief overrides IFileWatcher method
+		virtual void add (const std::string& file, SIMessageList l)		{ fWatchList.add(file, l); }
+		/// \brief overrides IFileWatcher method
+		virtual void clear (const std::string& file)					{ fWatchList.clear(file); }
 
 		/// \brief fileWatcher \c 'get' message handler
-		virtual IMessageList getMsgs (const IMessage* msg) const;
+		virtual SIMessageList getMsgs (const IMessage* msg) const;
 
-		/*!
-		*	\brief Starts notifying changes of the file 'fileName' for the attention of object whose address is 'oscAddress'.
-		*/
-		virtual void addAssociation(const WatcherAssociation& association) = 0;
-
-		/*!
-		*	\brief Stops notifying object whose address is 'oscAdress' on changes of the file 'fileName'.
-		*/
-		virtual void remove(const WatcherAssociation& association) = 0;
-	
-		/*!
-		*	\brief Stops notifying object whose address is 'oscAdress' on any file changes.
-		*/
-		virtual void remove(const std::string& oscAddress) = 0;
-		
-		virtual void getList(std::vector<WatcherAssociation>& outAssociations) const = 0;
-
-
-		/// \brief the \c 'add' message handler
-		virtual MsgHandler::msgStatus addMsg (const IMessage* msg);
-		/// \brief the \c 'remove' message handler
-		virtual MsgHandler::msgStatus removeMsg (const IMessage* msg);
-		/// \brief the \c 'clear' message handler
-		virtual MsgHandler::msgStatus clearMsg (const IMessage* msg);
-		
+		/// \brief the \c 'watch' message handler
+		virtual MsgHandler::msgStatus watchMsg (const IMessage* msg);
+		/// \brief the \c 'watch+' message handler
+		virtual MsgHandler::msgStatus addWatchMsg (const IMessage* msg);
 
 		// overrides get handlers for color, position and time
 		virtual void colorAble ()		{}
 		virtual void positionAble ()	{}
 		virtual void timeAble ()		{}
 
-		static bool buildMessage(const IMessage& source,IMessage& target);
+	public:
+		static const std::string kFileWatcherType;
+
+		const TWatcher<std::string>&	list() const	{ return fWatchList; }
+		/// \brief overrides IFileWatcher method
+		virtual void clear()							{ fWatchList.clear(); }
 };
 
 /*!@} */

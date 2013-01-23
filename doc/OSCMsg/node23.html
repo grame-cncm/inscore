@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>7. The 'get' messages</TITLE>
-<META NAME="description" CONTENT="7. The 'get' messages">
+<TITLE>4.1 Inline components</TITLE>
+<META NAME="description" CONTENT="4.1 Inline components">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,77 +19,154 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node25.html">
+<LINK REL="next" HREF="node24.html">
 <LINK REL="previous" HREF="node22.html">
-<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="up" HREF="node22.html">
 <LINK REL="next" HREF="node24.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html520"
+<A NAME="tex2html570"
   HREF="node24.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html514"
-  HREF="OSCMsg.html">
+<A NAME="tex2html564"
+  HREF="node22.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html508"
+<A NAME="tex2html558"
   HREF="node22.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html516"
+<A NAME="tex2html566"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html518"
-  HREF="node85.html">
+<A NAME="tex2html568"
+  HREF="node106.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html521"
-  HREF="node24.html">7.1 Special 'get' forms</A>
-<B> Up:</B> <A NAME="tex2html515"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html509"
-  HREF="node22.html">6. The 'set' message</A>
- &nbsp; <B>  <A NAME="tex2html517"
+<B> Next:</B> <A NAME="tex2html571"
+  HREF="node24.html">4.2 File based components</A>
+<B> Up:</B> <A NAME="tex2html565"
+  HREF="node22.html">4. The 'set' message</A>
+<B> Previous:</B> <A NAME="tex2html559"
+  HREF="node22.html">4. The 'set' message</A>
+ &nbsp; <B>  <A NAME="tex2html567"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html519"
-  HREF="node85.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html569"
+  HREF="node106.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION00800000000000000000"></A>
-<A NAME="getsect"></A>
+<H1><A NAME="SECTION00510000000000000000"></A>
+<A NAME="inlineset"></A>
 <BR>
-7. The 'get' messages
+4.1 Inline components
 </H1>
 
 <P>
-The <TT>get</TT> messages can be sent to any valid OSC address. It is intended to query the system state. It is the counterpart of all the messages modifying this state.  The result of the query is sent to the OSC output port with the exact syntax of the counterpart message. 
-The global form of the message is:
+Format of the <TT>set</TT> message is:
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img44.gif"
+ WIDTH="638" HEIGHT="623" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.gif"
  ALT="\begin{rail}
-getMsg : 'get' ( \vert getParam +)
+setMsg : 'set' (
+('txt' txtStream) \vert
+('html' string) \vert
+(...
+... angle)) \vert
+('grid' int32 int32) \vert
+('faust' 'pluginname' )
+)
 \end{rail}">
 <BR>
-<A NAME="634"></A>
+<A NAME="484"></A>
+<A NAME="485"></A>
+<A NAME="486"></A>
+<A NAME="487"></A>
+<A NAME="488"></A>
+<A NAME="489"></A>
+<A NAME="490"></A>
+<A NAME="491"></A>
+<A NAME="492"></A>
+<A NAME="493"></A>
+<A NAME="494"></A>
+<A NAME="495"></A>
+<A NAME="496"></A>
 
 <P>
-The <TT>get</TT> message without parameter is the counterpart of the <TT>set</TT> message. 
-
-<P>
-<BR><HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><A NAME="tex2html522"
-  HREF="node24.html">7.1 Special 'get' forms</A>
+<LI><TT>txt</TT>: a textual component.
+</LI>
+<LI><TT>html</TT>: an html component defined by an HTML string.
+</LI>
+<LI><TT>gmn</TT>: a Guido score defined by a GMN string.
+</LI>
+<LI><TT>svg</TT>: SVG graphics defined by a SVG string.
+</LI>
+<LI><TT>graph</TT>: graphic of a signal. See section <A HREF="node49.html#graphsig">11</A> p.<A HREF="node49.html#graphsig"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> for details about the <TT>graph</TT> objects data.
+</LI>
+<LI><TT>fastgraph</TT>: fast rendering graphic signal. See also section <A HREF="node49.html#graphsig">11</A> p.<A HREF="node49.html#graphsig"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>.
+</LI>
+<LI><TT>rect</TT>: a rectangle specified by a width and height. Width and height are expressed in <TT>scene</TT> coordinates space, thus a width or a height of 2 corresponds to the width or a height of the <TT>scene</TT>.
+</LI>
+<LI><TT>ellipse</TT>: an ellipse specified by a width and height.
+</LI>
+<LI><TT>polygon</TT>: a polygon specified by a sequence of points, each point being defined by its (x,y) coordinates. The coordinates are expressed in the <TT>scene</TT> coordinate space, but only the relative position of the points is taken into account (<I>i.e</I> a polygon A = { (0,0) ; (1,1) ; (0,1) } is equivalent to a polygon B = { (1,1) ; (2,2) ; (1,2) }).
+</LI>
+<LI><TT>curve</TT>: a sequence of 4-points bezier cubic curve. If the end-point of a curve doesn't match the start-point of the following one, the curves are linked by a straight line. The first curve follows the last curve. The inner space defined by the sequence of curves is filled, using the object color. The points coordinates are handled like in a <TT>polygon</TT>.
+</LI>
+<LI><TT>line</TT>: a simple line specified by a point (x,y) expressed in <TT>scene</TT> coordinate space or by a width and angle. The point form is used to compute a line from (0,0) to (x,y), which is next drawn centered on the scene.
+</LI>
+<LI><TT>grid</TT>: a white transparent object that provides a predefined time to graphic mapping (see section <A HREF="node30.html#grid">6.4</A> p.<A HREF="node30.html#grid"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> for more details and section <A HREF="node39.html#mapping">9</A> p.<A HREF="node39.html#mapping"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> for time to graphic relations). The parameters are int32 values representing the number of columns and rows.
+</LI>
 </UL>
-<!--End of Table of Child-Links-->
-<BR><HR>
+
+<P>
+<BR><B> <B>N<SMALL>OTE </SMALL></B></B> The default position of any component is <TT>[0,0]</TT>. Objects are drawn centered on their position.
+
+<P>
+Text may be specified by a single quoted string or using an arbitrary count of parameters that are converted to a single string with a space used as separator.
+<BR>
+<IMG
+ WIDTH="249" HEIGHT="149" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.gif"
+ ALT="\begin{rail}
+txtStream : (string \vert int32 \vert float32) +
+\end{rail}">
+<BR>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html570"
+  HREF="node24.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html564"
+  HREF="node22.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html558"
+  HREF="node22.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html566"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html568"
+  HREF="node106.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html571"
+  HREF="node24.html">4.2 File based components</A>
+<B> Up:</B> <A NAME="tex2html565"
+  HREF="node22.html">4. The 'set' message</A>
+<B> Previous:</B> <A NAME="tex2html559"
+  HREF="node22.html">4. The 'set' message</A>
+ &nbsp; <B>  <A NAME="tex2html567"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html569"
+  HREF="node106.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

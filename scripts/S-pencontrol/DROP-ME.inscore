@@ -1,0 +1,16 @@
+
+gray = 220;
+
+/ITL/scene/* del;
+
+/ITL/scene/title  set  txt "The accompanying scripts illustrate pen control messages.";
+/ITL/scene/title  y -0.8;
+/ITL/scene/title scale 1.7;
+
+/ITL/scene/rect set rect 0.5 0.5;
+/ITL/scene/rect color $gray $gray $gray;
+
+
+/ITL/scene/comment  set  txt "Drop any of the accompanying scripts to the scene";
+/ITL/scene/comment scale 1.3;
+/ITL/scene/comment y 0.8;

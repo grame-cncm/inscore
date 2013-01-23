@@ -29,8 +29,8 @@
 
 #include <stack>
 #include <TLua.h>
-#include <TMozillaJs.h>
-#include <TV8Js.h>
+# include <TMozillaJs.h>
+#include "IMessage.h"
 
 #include "smartpointer.h"
 
@@ -59,7 +59,7 @@ class TScripting
 {
 	TJSEngine*			fJavascript;
 	TLua*				fLua;
-	IMessageList*		fMessages;
+	SIMessageList		fMessages;
 	STEnv				fEnv;
 
 	public:	
@@ -68,17 +68,19 @@ class TScripting
 				 TScripting(TJSEngine* js, TLua* lua = 0);
 		virtual ~TScripting();
 
-		void	add			(IMessage* msg);
-		void	add			(IMessageList* msg);
-		void	variable	(const char* ident, int val);
-		void	variable	(const char* ident, float val);
-		void	variable	(const char* ident, const char* val);
+		void	add			(SIMessage& msg);
+		void	add			(SIMessageList& msg);
+		void	variable	(const char* ident, const IMessage::argslist* values);
+		void	variable	(const char* ident, const SIMessageList* msgs);
 
-		bool	luaEval		(const char* script);
-		bool	jsEval		(const char* script, int lineno);
+		SIMessageList	luaEval		(const char* script);
+		SIMessageList	jsEval		(const char* script, int lineno);
+		bool			checkLua () const;
+		bool			checkJavascript () const;
 
-		Sbaseparam*	resolve (const char* var);	
-		IMessageList* messages() const { return fMessages; }
+		IMessage::argslist		resolve	(const char* var, const char * defaultVal=0);
+		IMessage::argslist		resolve	(const IMessage* var);
+		const SIMessageList&	messages() const { return fMessages; }
 };
 
 } // namespace

@@ -1,21 +1,27 @@
-/ITL/scene/_cursor show 1 ;
-/ITL/scene/_cursor date 0 1 ;
+/ITL/scene/_cursor show 1;
+/ITL/scene/_cursor date 0 1;
+
 !-------------------------------------------------------
 ! buttons feedback
 !-------------------------------------------------------
-/ITL/scene/leftbutton dblue 255 ;
+/ITL/scene/leftbutton dblue 255;
+
 !-------------------------------------------------------
 ! inhibit center and right buttons in tmap collect mode
 !-------------------------------------------------------
-/ITL/scene/centerbutton watch ;
-/ITL/scene/rightbutton watch ;
+/ITL/scene/centerbutton watch;
+/ITL/scene/rightbutton watch;
+
 !-------------------------------------------------------
 ! buttons actions for tmap collect mode
 !-------------------------------------------------------
-/ITL/scene/leftbutton watch "mouseDown" "localhost:7101/collect" 0 ;
+/ITL/scene/leftbutton watch mouseDown (
+	localhost:7101/collect  0 );
+
 !-------------------------------------------------------
 ! the score sends the click time positions
 !-------------------------------------------------------
-/ITL/scene/score watch "mouseDown" "localhost:7101/pos" "$date:system" ;
-/ITL/scene/score watch+ "mouseDown" "/ITL/scene/_*" "date" "$date:system" ;
-/ITL/scene/score watch+ "mouseDown" "/ITL/scene/pagepos" "date" "$date:system" ;
+/ITL/scene/score watch mouseDown (
+	localhost:7101/pos  "$date:system" ,
+	/ITL/scene/_* date "$date:system" ,
+	/ITL/scene/pagepos date "$date:system" );

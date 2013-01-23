@@ -1,0 +1,105 @@
+\begin{verbatim}
+//_______________________________________________
+// relaxed simple INScore format specification
+//_______________________________________________
+start       : expr
+            | start expr
+            ;
+
+//_______________________________________________
+// expression of the script language
+//_______________________________________________
+expr        : message  ENDEXPR		
+            | variabledecl ENDEXPR	
+            | script            
+            ;
+
+//_______________________________________________
+// javascript and lua support
+//_______________________________________________
+script      : LUASCRIPT            
+            | JSCRIPT            
+            ;
+//_______________________________________________
+// messages specification (extends osc spec.)
+//_______________________________________________
+message	    : address 
+            | address params            
+            | address watchparams		
+            | address watchparams LEFTPAR messagelist RIGHTPAR
+            | address watchparams script 
+            ;
+
+messagelist : message            		
+            | messagelist COMMA message 
+            ;
+
+//_______________________________________________
+// address specification (extends osc spec.)
+address	    : oscaddress            	
+            | urlprefix oscaddress		
+            ;
+
+oscaddress  : oscpath            		
+            | oscaddress oscpath		
+            ;
+
+oscpath	     : PATHSEP identifier		
+            | PATHSEP WATCH            	
+            | PATHSEP VARSTART varname	
+            ;
+
+urlprefix   : hostname COLON UINT		
+            | IPNUM COLON UINT            
+            ;
+
+hostname    : HOSTNAME            		
+            | hostname POINT HOSTNAME	
+            ;
+
+identifier  : IDENTIFIER		
+            | HOSTNAME            
+            | REGEXP            
+            ;
+
+//_______________________________________________
+// parameters definitions
+// watchparams need a special case since messages are expected as argument
+//_______________________________________________
+watchparams : watchmethod		
+            | watchmethod params 
+
+params      : param            	
+            | variable            
+            | params variable	
+            | params param		
+            ;
+
+watchmethod : WATCH            	
+            ;
+
+variable    : VARSTART varname
+            | VARSTART LEFTPAR message RIGHTPAR
+            ;
+
+param       : number            
+            | FLOAT            	
+            | identifier		
+            | QUOTEDSTRING		
+            ;
+
+//_______________________________________________
+// variable declaration
+variabledecl : varname EQUAL params	
+            ;
+
+varname	    : IDENTIFIER            
+            | HOSTNAME            	
+            ;
+
+//_______________________________________________
+// misc
+number      : UINT            		
+            | INT            		
+            ;
+\end{verbatim}

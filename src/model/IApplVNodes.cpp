@@ -37,8 +37,12 @@ extern SIMessageStack gMsgStack;
 //--------------------------------------------------------------------------
 IApplDebug::IApplDebug(IObject * parent) : IObjectDebug(parent), fOSCDebug(true)
 {
-	fGetMsgHandlerMap["osc"]	= TGetParamMsgHandler<bool>::create(fOSCDebug);
-	fMsgHandlerMap["osc"]		= TSetMethodMsgHandler<IApplDebug,bool>::create(this, &IApplDebug::setOSCDebug);
+	fMsgHandlerMap[kosc_GetSetMethod]		= TSetMethodMsgHandler<IApplDebug,bool>::create(this, &IApplDebug::setOSCDebug);
+	fGetMsgHandlerMap[kosc_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fOSCDebug);
+
+	fGetMsgHandlerMap[kmap_GetSetMethod]	= 0;
+	fGetMsgHandlerMap[kname_GetSetMethod]	= 0;
+	fGetMsgHandlerMap[ksignal_GetMethod]	= 0;
 }
 
 //--------------------------------------------------------------------------
@@ -50,12 +54,12 @@ void IApplDebug::accept (Updater* u)
 //--------------------------------------------------------------------------
 // message handlers
 //--------------------------------------------------------------------------
-IMessageList IApplDebug::getSetMsg () const
+SIMessageList IApplDebug::getSetMsg () const
 {
-	IMessageList outMsgs = IObjectDebug::getSetMsg();
-	IMessage * msg = new IMessage (getOSCAddress(), "osc");
+	SIMessageList outMsgs = IObjectDebug::getSetMsg();
+	SIMessage msg = IMessage::create(getOSCAddress(), kosc_GetSetMethod);
 	*msg << fOSCDebug;
-	outMsgs += msg;
+	outMsgs->list().push_back (msg);
 	return outMsgs;
 }
 
@@ -78,12 +82,12 @@ ostream& operator << (ostream& out, const SIApplDebug& o)
 //--------------------------------------------------------------------------
 // IAppl statistics
 //--------------------------------------------------------------------------
-IMessageList IApplStat::getSetMsg () const
+SIMessageList IApplStat::getSetMsg () const
 {
-	IMessageList outMsgs;
-	IMessage * msg = new IMessage (getOSCAddress(), "");
+	SIMessageList outMsgs = IMessageList::create();
+	SIMessage msg = IMessage::create (getOSCAddress(), "");
 	*msg << string("osc") << fMsgCount << string("udp") << gMsgStack->stat();
-	outMsgs += msg;
+	outMsgs->list().push_back(msg);
 	return outMsgs;
 }
 
@@ -99,7 +103,7 @@ void IApplStat::reset()				{ fMsgCount = 0; gMsgStack->reset(); }
 //--------------------------------------------------------------------------
 IApplStat::IApplStat(IObject * parent) : IVNode("stats", parent), fMsgCount(0)
 {
-	fMsgHandlerMap["reset"]		= TMethodMsgHandler<IApplStat, void (IApplStat::*)(void)>::create(this, &IApplStat::reset);
+	fMsgHandlerMap[kreset_SetMethod]	= TMethodMsgHandler<IApplStat, void (IApplStat::*)(void)>::create(this, &IApplStat::reset);
 }
 
 }

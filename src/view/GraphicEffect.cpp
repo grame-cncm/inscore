@@ -53,8 +53,8 @@ QGraphicsEffect * GraphicEffect::buildBlurEffect (const IMessage* msg)
 {
 	int radius = 5;
 	string hintStr;
-	if ((msg->params().size() > 1) && (!msg->param(1, radius))) return 0;
-	if ((msg->params().size() > 2) && (!msg->param(2, hintStr))) return 0;
+	if ((msg->size() > 1) && (!msg->param(1, radius))) return 0;
+	if ((msg->size() > 2) && (!msg->param(2, hintStr))) return 0;
 	QGraphicsBlurEffect::BlurHints hint = QGraphicsBlurEffect::PerformanceHint;
 	if (hintStr == kPerformanceHint)
 		hint = QGraphicsBlurEffect::PerformanceHint;
@@ -75,8 +75,8 @@ QGraphicsEffect * GraphicEffect::buildColorizeEffect (const IMessage* msg)
 	QColor color(0, 0, 192);
 	float strength = 1.0;
 
-	if ((msg->params().size() > 1) && (!msg->param(1, strength))) return 0;
-	if (msg->params().size() > 4) {
+	if ((msg->size() > 1) && (!msg->param(1, strength))) return 0;
+	if (msg->size() > 4) {
 		int r, g, b;
 		if (!msg->param(2, r)) return 0;
 		if (!msg->param(3, g)) return 0;
@@ -97,11 +97,11 @@ QGraphicsEffect * GraphicEffect::buildShadowEffect (const IMessage* msg)
 	int radius = 1;
 	int xoffset = 8, yoffset = 8;
 
-	if (msg->params().size() > 2) {
+	if (msg->size() > 2) {
 		if (!msg->param(1, xoffset)) return 0;
 		if (!msg->param(2, yoffset)) return 0;
 	}
-	if (msg->params().size() > 6) {
+	if (msg->size() > 6) {
 		int r, g, b, a;
 		if (!msg->param(3, r)) return 0;
 		if (!msg->param(4, g)) return 0;
@@ -109,7 +109,7 @@ QGraphicsEffect * GraphicEffect::buildShadowEffect (const IMessage* msg)
 		if (!msg->param(6, a)) return 0;
 		color.setRgb (r, g, b, a);
 	}
-	if ((msg->params().size() > 7) && (!msg->param(7, radius))) return 0;
+	if ((msg->size() > 7) && (!msg->param(7, radius))) return 0;
 
 	QGraphicsDropShadowEffect * effect = new QGraphicsDropShadowEffect;
 	effect->setOffset (qreal(xoffset), qreal(yoffset));
@@ -121,9 +121,9 @@ QGraphicsEffect * GraphicEffect::buildShadowEffect (const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus GraphicEffect::set (const IMessage* msg)
 {
-	if (msg->params().size() >= 1) {
-		const std::string err = "";
-		std::string effect = msg->params()[0]->value<std::string>(err);
+	if (msg->size() >= 1) {
+		std::string effect;
+		if (!msg->param(0, effect)) return MsgHandler::kBadParameters;
 		if ( effect == kNone) return MsgHandler::kProcessed;
 		
 		if ( effect == kBlur)			fEffect = buildBlurEffect (msg);

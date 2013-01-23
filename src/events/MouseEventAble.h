@@ -27,24 +27,26 @@
 #ifndef __MouseEventAble__
 #define __MouseEventAble__
 
-#include <QDebug>
 #include <QGraphicsSceneMouseEvent>
-#include <iostream>
-
 #include "EventsAble.h"
-#include "EventMessage.h"
 
 namespace inscore
 {
+
 class IObject;
+class IMessage;
+class IMessageList;
+struct EventContext;
 
 class _MouseEventAble
 {
+	static SIMessageList eval (const IMessageList* msgs, float x, float y, EventContext& env);
+
 	public:
 		
 		static void handleEvent (const IObject * obj, QPointF pos,  EventsAble::eventype type);
 		// converts a point to a date in the context of an object and a given map
-		static libmapping::rational point2date (const IObject * obj, float x, float y, const std::string& mapname, int n, bool relative);
+		static libmapping::rational point2date (const IObject * obj, float x, float y, const std::string& mapname, int n);
 };
 
 //----------------------------------------------------------------------

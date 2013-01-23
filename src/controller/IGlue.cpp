@@ -61,6 +61,9 @@ IGlue::IGlue(int udpport, int outport, int errport)
 IGlue::~IGlue()	{ clean(); }
 
 //--------------------------------------------------------------------------
+const IObject* IGlue::root () const  { return dynamic_cast<const IObject*>((IAppl*)fModel); }
+
+//--------------------------------------------------------------------------
 void IGlue::clean()
 {
 	if (fOscThread) {
@@ -142,7 +145,7 @@ void IGlue::initialize (bool offscreen, QApplication* appl)
 	fModel->createVirtualNodes();
 	fModel->setView (ViewFactory::create(fModel));
 
-	INScore::MessagePtr msg = INScore::newMessage ("new");
+	INScore::MessagePtr msg = INScore::newMessage (knew_SetMethod);
 	string address (fModel->getOSCAddress());
 	address += "/scene";
 	INScore::postMessage (address.c_str(), msg);
@@ -263,6 +266,14 @@ void IGlue::viewUpdate()		{ if (fViewUpdater) fViewUpdater->update (fModel); }
 //--------------------------------------------------------------------------
 void IGlue::timerEvent ( QTimerEvent *)
 {
+#ifdef RUNBENCH
+	static __uint64 prevtime = 0;
+	__uint64 time = getTime();
+	bench::put ("time", prevtime ? (time - prevtime)/1000 : 0);
+	prevtime = time;
+#endif
+
+	fModel->clock();
 	if (fMsgStack->size()) {
 //		QMutexLocker locker (&fTimeViewMutex);
 
@@ -276,13 +287,16 @@ void IGlue::timerEvent ( QTimerEvent *)
 			checkUDPChange();
 			if (fModel->getUDPInPort() != fUDP.fInPort)					// check for udp port number changes
 				oscinit (fModel->getUDPInPort());
+			if (fModel->getRate() != fCurrentRate) {
+				fCurrentRate = fModel->getRate();
+				if (fCurrentRate) QTimer::setInterval(fCurrentRate);
+			}
 		}
 
 		if (fModel->getState() & IObject::kSubModified) {
 			fController->setListener (fModel->oscDebug() ? this : 0);	// check for debug flag changes
 			if (fViewListener) fViewListener->update();
-		}
-		
+		}		
 		fModel->cleanup();
 	}
 #ifdef RUNBENCH
@@ -294,23 +308,15 @@ void IGlue::timerEvent ( QTimerEvent *)
 	}
 	bench::put ("total", getTime() - time);
 #endif
-	if (fModel->getRate() != fCurrentRate) {
-		fCurrentRate = fModel->getRate();
-		if (fCurrentRate) QTimer::setInterval(fCurrentRate);
-	}
 }
 
 //--------------------------------------------------------------------------
 void IGlue::trace( const IMessage* msg, int status )
 {
 	if (status == MsgHandler::kBadAddress) 
-		oscerr << OSCWarn() << "incorrect OSC address: " << msg->address() << OSCEnd();
-	if (status == MsgHandler::kBadParameters) {
-		oscerr << OSCWarn() << "incorrect parameters: " << msg->address() << msg->message();
-		msg->printArgs(oscerr);
-		oscerr << OSCEnd();
-	}
-// cout << msg << endl;
+		ITLErr << "incorrect OSC address:" << msg->address() << ITLEndl;
+	else if (status == MsgHandler::kBadParameters)
+		ITLErr << "incorrect parameters:"<< msg << ITLEndl;
 }
 
 //--------------------------------------------------------------------------

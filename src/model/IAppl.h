@@ -27,6 +27,8 @@
 #ifndef __IAppl__
 #define __IAppl__
 
+#include <QMutex>
+
 #include "IMessageHandlers.h"
 #include "PeriodicTask.h"
 #include "IObject.h"
@@ -63,6 +65,9 @@ class IAppl : public IObject, public PeriodicTask
 	static std::string	fRootPath;
 	static bool			fRunning;
 		
+		int			fStartTime;					// the application start time
+		int			fCurrentTime;				// the application current time
+		int			fCurrentTicks;				// the current count of clocks
 		std::string fVersion;					// the application version number
 		SIApplDebug	fApplDebug;					// debug flags
 		SIApplStat	fApplStat;					// statistics
@@ -70,9 +75,12 @@ class IAppl : public IObject, public PeriodicTask
 		udpinfo		fUDP;						// udp port settings
 		int			fRate;						// the time task rate
 		QApplication*	fAppl;					// the Qt application
+		QMutex		fTimeMutex;
 
 		TJSEngine		fJavascript;
 		TLua			fLua;
+		
+		std::vector<IMessage::TUrl>	fForwardList;	// list of hosts to forward incoming messages
 
 	public:
 		static bool fDefaultShow;
@@ -80,7 +88,7 @@ class IAppl : public IObject, public PeriodicTask
 		static const std::string kName;
 		static SIAppl			create(int udpport, int outport, int errport,  QApplication* appl, bool offscreen=false)		
 			{ return new IAppl(udpport, outport, errport, appl, offscreen); }
-		static std::string		getRootPath()			{ return fRootPath; }	//< returns the application root path
+		static std::string		getRootPath()				{ return fRootPath; }	//< returns the application root path
 		static std::string		absolutePath( const std::string& path );		//< returns the absolute path corresponding to 'path',
 		static std::string		makeAbsolutePath( const std::string& path, const std::string& file );
 
@@ -91,10 +99,14 @@ class IAppl : public IObject, public PeriodicTask
 		static bool	running() 		{ return fRunning; }
 
 		bool	oscDebug() const;
+		void	clock();
+		int		time() const				{ return fCurrentTime; }
+		int		ticks() const				{ return fCurrentTicks; }
 		void	quit()						{ fRunning = false; }
 		int		getUDPInPort() const		{ return fUDP.fInPort; }
 		int		getUDPOutPort() const		{ return fUDP.fOutPort; }
 		int		getUDPErrPort() const		{ return fUDP.fErrPort; }
+		bool	defaultShow() const			{ return fDefaultShow; }
 		const std::string&	getUDPOutAddress() const		{ return fUDP.fOutDstAddress; }
 		const std::string&	getUDPErrAddress() const		{ return fUDP.fErrDstAddress; }
 		
@@ -137,6 +149,9 @@ class IAppl : public IObject, public PeriodicTask
 				 IAppl(int udpport, int outport, int errport,  QApplication* appl, bool offscreen);
 		virtual ~IAppl();
 
+		/// \brief forwarding messages filtering.
+		virtual bool filter (const IMessage* msg);
+		
 		void		setRootPath(const std::string& s);
 		void		setUDPOutAddress(const std::string& a)	{ fUDP.fOutDstAddress = a; }
 		void		setUDPErrAddress(const std::string& a)	{ fUDP.fErrDstAddress = a; }
@@ -144,7 +159,7 @@ class IAppl : public IObject, public PeriodicTask
 
 		virtual		IMessageList getAll () const;
 
-		IMessage*	hello() const;
+		SIMessage	hello() const;
 		void		helloMsg() const;
 //		void		activate() const;
 		std::string	guidoversion() const;
@@ -156,8 +171,17 @@ class IAppl : public IObject, public PeriodicTask
 		/// \brief application \c 'load' message handler.
 		virtual MsgHandler::msgStatus loadMsg (const IMessage* msg);
 
-		/// \brief application \c 'load' message handler.
+		/// \brief application \c 'mouse' message handler.
 		virtual MsgHandler::msgStatus cursor (const IMessage* msg);
+
+		/// \brief application \c 'forward' message handler.
+		virtual MsgHandler::msgStatus forward (const IMessage* msg);
+
+		/// \brief application \c 'time' message handler.
+		virtual MsgHandler::msgStatus setTime (const IMessage* msg);
+
+		/// \brief application \c 'ticks' message handler.
+		virtual MsgHandler::msgStatus setTicks (const IMessage* msg);
 
 #ifdef RUNBENCH
 		void	startBench()			{ bench::start(); }

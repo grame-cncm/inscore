@@ -27,7 +27,8 @@
 #ifndef __IMessageStack__
 #define __IMessageStack__
 
-//#include <QMutex>
+#include <QMutex>
+#endif
 
 #include "lffifo.h"
 #include "smartpointer.h"
@@ -41,6 +42,11 @@ namespace inscore
 */
 
 class IMessage;
+typedef libmapping::SMARTP<IMessage>		SIMessage;
+class IMessageStack;
+typedef libmapping::SMARTP<IMessageStack>	SIMessageStack;
+extern SIMessageStack gMsgStack;
+
 //--------------------------------------------------------------------------
 /*!
 	\brief a lock-free message fifo
@@ -48,7 +54,8 @@ class IMessage;
 class IMessageStack : public libmapping::smartable
 {
 	private:
-//		QMutex		fMutex;					// this is to handle lffifo issue
+		QMutex		fMutex;					// this is to handle lffifo issue
+#endif
 		int			fReceivedCount;
 		fifo		fMsgFifo;	
 	public:
@@ -62,12 +69,12 @@ class IMessageStack : public libmapping::smartable
 		/*!
 			\brief push a message on the stack
 		*/
-		void		push(IMessage* msg);
+		void		push(SIMessage* msg);
 		/*!
 			\brief pop a message from the stack
 			\return a message pointer, null when the stack is empty
 		*/
-		IMessage*	pop();
+		SIMessage*	pop();
 		/*!
 			\brief flushes the messages stack
 		*/
@@ -89,7 +96,6 @@ class IMessageStack : public libmapping::smartable
 				 IMessageStack();
 		virtual ~IMessageStack();
 };
-typedef class libmapping::SMARTP<IMessageStack>	SIMessageStack;
 
 /*!
 @}

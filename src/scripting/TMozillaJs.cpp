@@ -49,7 +49,7 @@ static JSClass global_class = {
 /* The javascript error reporter callback. */
 static void jsReportError(JSContext *cx, const char *message, JSErrorReport *report)
 {
-    ITLErr <<  "javascript error line " << int(report->lineno) << ": " << message << ITLEndl;
+    ITLErr <<  "javascript error line" << int(report->lineno) << ":" << message << ITLEndl;
 }
 
 //--------------------------------------------------------------------------------------------
@@ -104,7 +104,7 @@ void TMozillaJs::bindEnv  (const STEnv& env)
 		else if (i->second->isType<float>())	s << i->second->value(0.);
 		else if (i->second->isType<string>())	s << '"' <<  i->second->value(string("")) << '"';
 		else {
-			ITLErr << i->first << " unknown variable type " << ITLEndl;
+			ITLErr << i->first << "unknown variable type" << ITLEndl;
 			break;
 		}
 		s << ";\n";

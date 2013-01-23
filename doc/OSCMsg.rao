@@ -66,99 +66,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {6}{ ITLMsg : 'quit' | ('rootPath' path) | ('port' int32) | ('outport' int32) | ('errport' int32) | ('mouse' ('show' | 'hide')) | ('defaultShow' int32) | ('load' filePath) | ('require' int32 oscMsg) | ('rate' int32) | 'hello' }
+\rail@i {6}{ commonMsg : ('show' int32) | 'del' | 'export' ([1] ( fullPathFileName) | [2] path | [3]) | 'save' filePath ( | '+') | PositionMsg | ColorMsg | TimeMsg | WatchMsg }
 \rail@o {6}{
-\rail@index{ITLMsg}
-\rail@begin{12}{ITLMsg}
-\rail@bar
-\rail@term{quit}[]
-\rail@nextbar{1}
-\rail@term{rootPath}[]
-\rail@nont{path}[]
-\rail@nextbar{2}
-\rail@term{port}[]
-\rail@token{int32}[]
-\rail@nextbar{3}
-\rail@term{outport}[]
-\rail@token{int32}[]
-\rail@nextbar{4}
-\rail@term{errport}[]
-\rail@token{int32}[]
-\rail@nextbar{5}
-\rail@term{mouse}[]
-\rail@bar
-\rail@term{show}[]
-\rail@nextbar{6}
-\rail@term{hide}[]
-\rail@endbar
-\rail@nextbar{7}
-\rail@term{defaultShow}[]
-\rail@token{int32}[]
-\rail@nextbar{8}
-\rail@term{load}[]
-\rail@nont{filePath}[]
-\rail@nextbar{9}
-\rail@term{require}[]
-\rail@token{int32}[]
-\rail@nont{oscMsg}[]
-\rail@nextbar{10}
-\rail@term{rate}[]
-\rail@token{int32}[]
-\rail@nextbar{11}
-\rail@term{hello}[]
-\rail@endbar
-\rail@end
-}
-\rail@i {7}{ ITLRequest : 'get' ('version' | 'guido-version' | 'musicxml-version') }
-\rail@o {7}{
-\rail@index{ITLRequest}
-\rail@begin{3}{ITLRequest}
-\rail@term{get}[]
-\rail@bar
-\rail@term{version}[]
-\rail@nextbar{1}
-\rail@term{guido-version}[]
-\rail@nextbar{2}
-\rail@term{musicxml-version}[]
-\rail@endbar
-\rail@end
-}
-\rail@i {8}{ sceneMsg : 'new' | 'del' | ('rootPath' path) | ('load' filePath) | 'reset' | 'foreground' | ('fullscreen' int32) | ('frameless' int32) | ('absolutexy' int32) | commonMsg }
-\rail@o {8}{
-\rail@index{sceneMsg}
-\rail@begin{10}{sceneMsg}
-\rail@bar
-\rail@term{new}[]
-\rail@nextbar{1}
-\rail@term{del}[]
-\rail@nextbar{2}
-\rail@term{rootPath}[]
-\rail@nont{path}[]
-\rail@nextbar{3}
-\rail@term{load}[]
-\rail@nont{filePath}[]
-\rail@nextbar{4}
-\rail@term{reset}[]
-\rail@nextbar{5}
-\rail@term{foreground}[]
-\rail@nextbar{6}
-\rail@term{fullscreen}[]
-\rail@token{int32}[]
-\rail@nextbar{7}
-\rail@term{frameless}[]
-\rail@token{int32}[]
-\rail@nextbar{8}
-\rail@term{absolutexy}[]
-\rail@token{int32}[]
-\rail@nextbar{9}
-\rail@nont{commonMsg}[]
-\rail@endbar
-\rail@end
-}
-\rail@i {9}{ commonMsg : ('show' int32) | 'del' | 'export' ((fullPathFileName) | path |) | 'save' filePath ( | '+') | 'rename' name | PositionMsg | ColorMsg | TimeMsg | clickSelectMsg }
-\rail@o {9}{
 \rail@index{commonMsg}
-\rail@begin{12}{commonMsg}
+\rail@begin{11}{commonMsg}
 \rail@bar
 \rail@term{show}[]
 \rail@token{int32}[]
@@ -167,10 +78,13 @@
 \rail@nextbar{2}
 \rail@term{export}[]
 \rail@bar
+\rail@annote[1]
 \rail@nont{fullPathFileName}[]
 \rail@nextbar{3}
+\rail@annote[2]
 \rail@nont{path}[]
 \rail@nextbar{4}
+\rail@annote[3]
 \rail@endbar
 \rail@nextbar{5}
 \rail@term{save}[]
@@ -180,34 +94,33 @@
 \rail@term{+}[]
 \rail@endbar
 \rail@nextbar{7}
-\rail@term{rename}[]
-\rail@nont{name}[]
-\rail@nextbar{8}
 \rail@nont{PositionMsg}[]
-\rail@nextbar{9}
+\rail@nextbar{8}
 \rail@nont{ColorMsg}[]
-\rail@nextbar{10}
+\rail@nextbar{9}
 \rail@nont{TimeMsg}[]
-\rail@nextbar{11}
-\rail@nont{clickSelectMsg}[]
+\rail@nextbar{10}
+\rail@nont{WatchMsg}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {10}{ PositionMsg : absPosMsg | relPosMsg | originMsg }
-\rail@o {10}{
+\rail@i {7}{ PositionMsg : absPosMsg | relPosMsg | originMsg | transformMsg }
+\rail@o {7}{
 \rail@index{PositionMsg}
-\rail@begin{3}{PositionMsg}
+\rail@begin{4}{PositionMsg}
 \rail@bar
 \rail@nont{absPosMsg}[]
 \rail@nextbar{1}
 \rail@nont{relPosMsg}[]
 \rail@nextbar{2}
 \rail@nont{originMsg}[]
+\rail@nextbar{3}
+\rail@nont{transformMsg}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {11}{ absPosMsg : ('x' float32) | ('y' float32) | ('z' float32) | ('angle' float32) | ('scale' float32) }
-\rail@o {11}{
+\rail@i {8}{ absPosMsg : ('x' float32) | ('y' float32) | ('z' float32) | ('angle' float32) | ('scale' float32) }
+\rail@o {8}{
 \rail@index{absPosMsg}
 \rail@begin{5}{absPosMsg}
 \rail@bar
@@ -228,8 +141,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {12}{ relPosMsg : ('dx' float32) | ('dy' float32) | ('dz' float32) | ('dangle' float32) | ('dscale' float32) }
-\rail@o {12}{
+\rail@i {9}{ relPosMsg : ('dx' float32) | ('dy' float32) | ('dz' float32) | ('dangle' float32) | ('dscale' float32) }
+\rail@o {9}{
 \rail@index{relPosMsg}
 \rail@begin{5}{relPosMsg}
 \rail@bar
@@ -250,8 +163,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {13}{ originMsg : ('xorigin' float32) | ('yorigin' float32) | ('dxorigin' float32) | ('dyorigin' float32) }
-\rail@o {13}{
+\rail@i {10}{ originMsg : ('xorigin' float32) | ('yorigin' float32) | ('dxorigin' float32) | ('dyorigin' float32) }
+\rail@o {10}{
 \rail@index{originMsg}
 \rail@begin{4}{originMsg}
 \rail@bar
@@ -269,8 +182,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {14}{ transformMsg : (('rotatex' | 'rotatey' | 'rotatez') float32) | ('shear' x y) }
-\rail@o {14}{
+\rail@i {11}{ transformMsg : (('rotatex' | 'rotatey' | 'rotatez') float32) | ('shear' x y) }
+\rail@o {11}{
 \rail@index{transformMsg}
 \rail@begin{4}{transformMsg}
 \rail@bar
@@ -289,8 +202,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {15}{ ColorMsg : absColorMsg | relColorMsg }
-\rail@o {15}{
+\rail@i {12}{ ColorMsg : absColorMsg | relColorMsg }
+\rail@o {12}{
 \rail@index{ColorMsg}
 \rail@begin{2}{ColorMsg}
 \rail@bar
@@ -300,8 +213,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {16}{ absColorMsg : color | hsb | 'red' colorvalue | 'green' colorvalue | 'blue' colorvalue | 'alpha' colorvalue | 'hue' colorvalue | 'saturation' colorvalue | 'brightness' colorvalue }
-\rail@o {16}{
+\rail@i {13}{ absColorMsg : color | hsb | 'red' colorvalue | 'green' colorvalue | 'blue' colorvalue | 'alpha' colorvalue | 'hue' colorvalue | 'saturation' colorvalue | 'brightness' colorvalue }
+\rail@o {13}{
 \rail@index{absColorMsg}
 \rail@begin{9}{absColorMsg}
 \rail@bar
@@ -332,8 +245,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {17}{ colorvalue : int32 | float32 }
-\rail@o {17}{
+\rail@i {14}{ colorvalue : int32 | float32 }
+\rail@o {14}{
 \rail@index{colorvalue}
 \rail@begin{2}{colorvalue}
 \rail@bar
@@ -343,8 +256,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {18}{ color : 'color' ('r' 'g' 'b' | 'r' 'g' 'b' 'a') }
-\rail@o {18}{
+\rail@i {15}{ color : 'color' ('r' 'g' 'b' | 'r' 'g' 'b' 'a') }
+\rail@o {15}{
 \rail@index{color}
 \rail@begin{2}{color}
 \rail@term{color}[]
@@ -360,8 +273,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {19}{ hsb : 'hsb' ('h' 's' 'b' | 'h' 's' 'b' 'a') }
-\rail@o {19}{
+\rail@i {16}{ hsb : 'hsb' ('h' 's' 'b' | 'h' 's' 'b' 'a') }
+\rail@o {16}{
 \rail@index{hsb}
 \rail@begin{2}{hsb}
 \rail@term{hsb}[]
@@ -377,8 +290,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {20}{ relColorMsg : ('dcolor' color) | ('dhsb' hsb) | ('dred' colorvalue) | ('dgreen' colorvalue) | ('dblue' colorvalue) | ('dhue' colorvalue) | ('dsaturation' colorvalue) | ('dbrightness' colorvalue) | ('dalpha' colorvalue) }
-\rail@o {20}{
+\rail@i {17}{ relColorMsg : ('dcolor' color) | ('dhsb' hsb) | ('dred' colorvalue) | ('dgreen' colorvalue) | ('dblue' colorvalue) | ('dhue' colorvalue) | ('dsaturation' colorvalue) | ('dbrightness' colorvalue) | ('dalpha' colorvalue) }
+\rail@o {17}{
 \rail@index{relColorMsg}
 \rail@begin{9}{relColorMsg}
 \rail@bar
@@ -411,8 +324,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {21}{ effectMsg : 'effect' ( 'none' | ('blur' | 'colorize' | 'shadow') (| params)) }
-\rail@o {21}{
+\rail@i {18}{ effectMsg : 'effect' ( 'none' | ('blur' | 'colorize' | 'shadow') (| params)) }
+\rail@o {18}{
 \rail@index{effectMsg}
 \rail@begin{4}{effectMsg}
 \rail@term{effect}[]
@@ -433,19 +346,19 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {22}{ blurParams : radius (| blurHint) }
-\rail@o {22}{
+\rail@i {19}{ blurParams : int32 (| blurHint) }
+\rail@o {19}{
 \rail@index{blurParams}
 \rail@begin{2}{blurParams}
-\rail@nont{radius}[]
+\rail@token{int32}[]
 \rail@bar
 \rail@nextbar{1}
 \rail@nont{blurHint}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {23}{ blurHint : 'performance' | 'quality' | 'animation' }
-\rail@o {23}{
+\rail@i {20}{ blurHint : 'performance' | 'quality' | 'animation' }
+\rail@o {20}{
 \rail@index{blurHint}
 \rail@begin{3}{blurHint}
 \rail@bar
@@ -457,19 +370,19 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {24}{ colorizeParams : strength (| color) }
-\rail@o {24}{
+\rail@i {21}{ colorizeParams : float32 (| color) }
+\rail@o {21}{
 \rail@index{colorizeParams}
 \rail@begin{2}{colorizeParams}
-\rail@nont{strength}[]
+\rail@token{float32}[]
 \rail@bar
 \rail@nextbar{1}
 \rail@nont{color}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {25}{ shadowParams : xoffset yoffset (| color (| blur)) }
-\rail@o {25}{
+\rail@i {22}{ shadowParams : xoffset yoffset (| color (| blur)) }
+\rail@o {22}{
 \rail@index{shadowParams}
 \rail@begin{3}{shadowParams}
 \rail@nont{xoffset}[]
@@ -484,88 +397,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {26}{ click : 'click' ( | clickMode) }
-\rail@o {26}{
-\rail@index{click}
-\rail@begin{2}{click}
-\rail@term{click}[]
-\rail@bar
-\rail@nextbar{1}
-\rail@nont{clickMode}[]
-\rail@endbar
-\rail@end
-}
-\rail@i {27}{ clickMode : 'topleft' | 'bottomright' | 'topright' | 'bottomleft' | 'center' }
-\rail@o {27}{
-\rail@index{clickMode}
-\rail@begin{5}{clickMode}
-\rail@bar
-\rail@term{topleft}[]
-\rail@nextbar{1}
-\rail@term{bottomright}[]
-\rail@nextbar{2}
-\rail@term{topright}[]
-\rail@nextbar{3}
-\rail@term{bottomleft}[]
-\rail@nextbar{4}
-\rail@term{center}[]
-\rail@endbar
-\rail@end
-}
-\rail@i {28}{ clickReply : OSCAddress clickMode ( | (identifier +)) }
-\rail@o {28}{
-\rail@index{clickReply}
-\rail@begin{3}{clickReply}
-\rail@nont{OSCAddress}[]
-\rail@nont{clickMode}[]
-\rail@bar
-\rail@nextbar{1}
-\rail@plus
-\rail@nont{identifier}[]
-\rail@nextplus{2}
-\rail@endplus
-\rail@endbar
-\rail@end
-}
-\rail@i {29}{ select : 'select' ( | selectMode) }
-\rail@o {29}{
-\rail@index{select}
-\rail@begin{2}{select}
-\rail@term{select}[]
-\rail@bar
-\rail@nextbar{1}
-\rail@nont{selectMode}[]
-\rail@endbar
-\rail@end
-}
-\rail@i {30}{ selectMode : 'intersect' | 'include' }
-\rail@o {30}{
-\rail@index{selectMode}
-\rail@begin{2}{selectMode}
-\rail@bar
-\rail@term{intersect}[]
-\rail@nextbar{1}
-\rail@term{include}[]
-\rail@endbar
-\rail@end
-}
-\rail@i {31}{ selectReply : OSCAddress selectMode ( | (identifier +)) }
-\rail@o {31}{
-\rail@index{selectReply}
-\rail@begin{3}{selectReply}
-\rail@nont{OSCAddress}[]
-\rail@nont{selectMode}[]
-\rail@bar
-\rail@nextbar{1}
-\rail@plus
-\rail@nont{identifier}[]
-\rail@nextplus{2}
-\rail@endplus
-\rail@endbar
-\rail@end
-}
-\rail@i {32}{ timeMsg : 'clock' | 'durClock' | ('date' time) | ('duration' time) | ('ddate' time) | ('dduration' time) }
-\rail@o {32}{
+\rail@i {23}{ timeMsg : 'clock' | 'durClock' | ('date' time) | ('duration' time) | ('ddate' time) | ('dduration' time) }
+\rail@o {23}{
 \rail@index{timeMsg}
 \rail@begin{6}{timeMsg}
 \rail@bar
@@ -587,22 +420,28 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {33}{ time : (( int32 int32) | int32 | float32 ) }
-\rail@o {33}{
+\rail@i {24}{ time : (([1] int32 int32) | [2] int32 | [3] float32 | [4] 'n/d') }
+\rail@o {24}{
 \rail@index{time}
-\rail@begin{3}{time}
+\rail@begin{4}{time}
 \rail@bar
+\rail@annote[1]
 \rail@token{int32}[]
 \rail@token{int32}[]
 \rail@nextbar{1}
+\rail@annote[2]
 \rail@token{int32}[]
 \rail@nextbar{2}
+\rail@annote[3]
 \rail@token{float32}[]
+\rail@nextbar{3}
+\rail@annote[4]
+\rail@term{n/d}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {34}{ setMsg : 'set' type data }
-\rail@o {34}{
+\rail@i {25}{ setMsg : 'set' type data }
+\rail@o {25}{
 \rail@index{setMsg}
 \rail@begin{1}{setMsg}
 \rail@term{set}[]
@@ -610,10 +449,10 @@
 \rail@nont{data}[]
 \rail@end
 }
-\rail@i {35}{ setMsg : 'set' ( ('txt' txtStream) | ('html' string) | ('svg' svgString) | ('gmn' gmnString) | ('graph' signals ) | ('fastgraph' signals ) | ('rect' width height) | ('ellipse' width height) | ('polygon' ( (x y) +)) | ('curve' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) | ('line' ('xy' x y | 'wa' width angle)) | setFile ) }
-\rail@o {35}{
+\rail@i {26}{ setMsg : 'set' ( ('txt' txtStream) | ('html' string) | ('svg' svgString) | ('gmn' gmnString) | ('graph' signals ) | ('fastgraph' signals ) | ('rect' width height) | ('ellipse' width height) | ('polygon' ( (x y) +)) | ('curve' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) | ('line' ('xy' x y | 'wa' width angle)) | ('grid' int32 int32) | ('faust' 'pluginname' ) ) }
+\rail@o {26}{
 \rail@index{setMsg}
-\rail@begin{15}{setMsg}
+\rail@begin{16}{setMsg}
 \rail@term{set}[]
 \rail@bar
 \rail@term{txt}[]
@@ -673,12 +512,17 @@
 \rail@nont{angle}[]
 \rail@endbar
 \rail@nextbar{14}
-\rail@nont{setFile}[]
+\rail@term{grid}[]
+\rail@token{int32}[]
+\rail@token{int32}[]
+\rail@nextbar{15}
+\rail@term{faust}[]
+\rail@term{pluginname}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {36}{ txtStream : (string | int32 | float32) + }
-\rail@o {36}{
+\rail@i {27}{ txtStream : (string | int32 | float32) + }
+\rail@o {27}{
 \rail@index{txtStream}
 \rail@begin{4}{txtStream}
 \rail@plus
@@ -693,8 +537,8 @@
 \rail@endplus
 \rail@end
 }
-\rail@i {37}{ setFile : ('txtf' textFilePath) | ('htmlf' htmlFilePath) | ('gmnf' gmnFilePath) | ('svgf' svgFilePath) | ('img' imgPath) | ('video' videoPath) | ('file' filePath) }
-\rail@o {37}{
+\rail@i {28}{ setFile : ('txtf' textFilePath) | ('htmlf' htmlFilePath) | ('gmnf' gmnFilePath) | ('svgf' svgFilePath) | ('img' imgPath) | ('video' videoPath) | ('file' filePath) }
+\rail@o {28}{
 \rail@index{setFile}
 \rail@begin{7}{setFile}
 \rail@bar
@@ -721,8 +565,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {38}{ getMsg : 'get' ( | getParam +) }
-\rail@o {38}{
+\rail@i {29}{ getMsg : 'get' ( | getParam +) }
+\rail@o {29}{
 \rail@index{getMsg}
 \rail@begin{3}{getMsg}
 \rail@term{get}[]
@@ -735,24 +579,30 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {39}{ penMsg : 'penColor' color | 'penWidth' float32 | 'penStyle' penstyle }
-\rail@o {39}{
+\rail@i {30}{ penMsg : 'penColor' color | 'penAlpha' colorvalue | 'pendAlpha' colorvalue | 'penWidth' float32 | 'penStyle' penstyle }
+\rail@o {30}{
 \rail@index{penMsg}
-\rail@begin{3}{penMsg}
+\rail@begin{5}{penMsg}
 \rail@bar
 \rail@term{penColor}[]
 \rail@nont{color}[]
 \rail@nextbar{1}
+\rail@term{penAlpha}[]
+\rail@nont{colorvalue}[]
+\rail@nextbar{2}
+\rail@term{pendAlpha}[]
+\rail@nont{colorvalue}[]
+\rail@nextbar{3}
 \rail@term{penWidth}[]
 \rail@token{float32}[]
-\rail@nextbar{2}
+\rail@nextbar{4}
 \rail@term{penStyle}[]
 \rail@nont{penstyle}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {40}{ penstyle : 'solid' | 'dash' | 'dot' | 'dashDot' | 'dashDotDot' }
-\rail@o {40}{
+\rail@i {31}{ penstyle : 'solid' | 'dash' | 'dot' | 'dashDot' | 'dashDotDot' }
+\rail@o {31}{
 \rail@index{penstyle}
 \rail@begin{5}{penstyle}
 \rail@bar
@@ -768,10 +618,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {41}{ whMsg : 'width' float32 | 'height' float32 }
-\rail@o {41}{
-\rail@index{whMsg}
-\rail@begin{2}{whMsg}
+\rail@i {32}{ widthMsg : 'width' float32 | 'height' float32 }
+\rail@o {32}{
+\rail@index{widthMsg}
+\rail@begin{2}{widthMsg}
 \rail@bar
 \rail@term{width}[]
 \rail@token{float32}[]
@@ -781,8 +631,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {42}{ scoreMsg : 'page' int32 | 'dpage' int32 | 'pageFormat' float32 float32 | 'columns' int32 | 'rows' int32 | 'get' 'pageCount' }
-\rail@o {42}{
+\rail@i {33}{ scoreMsg : 'page' int32 | 'dpage' int32 | 'pageFormat' float32 float32 | 'columns' int32 | 'rows' int32 | 'get' 'pageCount' }
+\rail@o {33}{
 \rail@index{scoreMsg}
 \rail@begin{6}{scoreMsg}
 \rail@bar
@@ -804,6 +654,180 @@
 \rail@nextbar{5}
 \rail@term{get}[]
 \rail@term{pageCount}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {34}{ gridMsg : 'columns' int32 | ('rows' int32) | ('xborder' float) | ('yborder' float) | ('order' ('leftright' | 'topbottom')) }
+\rail@o {34}{
+\rail@index{gridMsg}
+\rail@begin{6}{gridMsg}
+\rail@bar
+\rail@term{columns}[]
+\rail@token{int32}[]
+\rail@nextbar{1}
+\rail@term{rows}[]
+\rail@token{int32}[]
+\rail@nextbar{2}
+\rail@term{xborder}[]
+\rail@nont{float}[]
+\rail@nextbar{3}
+\rail@term{yborder}[]
+\rail@nont{float}[]
+\rail@nextbar{4}
+\rail@term{order}[]
+\rail@bar
+\rail@term{leftright}[]
+\rail@nextbar{5}
+\rail@term{topbottom}[]
+\rail@endbar
+\rail@endbar
+\rail@end
+}
+\rail@i {35}{ debugMsg : 'map' int32 | ('name' int32) }
+\rail@o {35}{
+\rail@index{debugMsg}
+\rail@begin{2}{debugMsg}
+\rail@bar
+\rail@term{map}[]
+\rail@token{int32}[]
+\rail@nextbar{1}
+\rail@term{name}[]
+\rail@token{int32}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {36}{ ITLMsg : 'quit' | ('rootPath' path) | ('mouse' ('show' | 'hide')) | ('defaultShow' int32) | ('load' filePath) | ('require' float oscMsg) | ('time' int32) | ('ticks' int32) | ('rate' int32) | 'hello' }
+\rail@o {36}{
+\rail@index{ITLMsg}
+\rail@begin{11}{ITLMsg}
+\rail@bar
+\rail@term{quit}[]
+\rail@nextbar{1}
+\rail@term{rootPath}[]
+\rail@nont{path}[]
+\rail@nextbar{2}
+\rail@term{mouse}[]
+\rail@bar
+\rail@term{show}[]
+\rail@nextbar{3}
+\rail@term{hide}[]
+\rail@endbar
+\rail@nextbar{4}
+\rail@term{defaultShow}[]
+\rail@token{int32}[]
+\rail@nextbar{5}
+\rail@term{load}[]
+\rail@nont{filePath}[]
+\rail@nextbar{6}
+\rail@term{require}[]
+\rail@nont{float}[]
+\rail@nont{oscMsg}[]
+\rail@nextbar{7}
+\rail@term{time}[]
+\rail@token{int32}[]
+\rail@nextbar{8}
+\rail@term{ticks}[]
+\rail@token{int32}[]
+\rail@nextbar{9}
+\rail@term{rate}[]
+\rail@token{int32}[]
+\rail@nextbar{10}
+\rail@term{hello}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {37}{ ITLPortsMsg : ('port' int32) | ('outport' int32) | ('errport' int32) }
+\rail@o {37}{
+\rail@index{ITLPortsMsg}
+\rail@begin{3}{ITLPortsMsg}
+\rail@bar
+\rail@term{port}[]
+\rail@token{int32}[]
+\rail@nextbar{1}
+\rail@term{outport}[]
+\rail@token{int32}[]
+\rail@nextbar{2}
+\rail@term{errport}[]
+\rail@token{int32}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {38}{ ITLMsgForward : ('forward' ( [1] | [2] hostname +)) }
+\rail@o {38}{
+\rail@index{ITLMsgForward}
+\rail@begin{3}{ITLMsgForward}
+\rail@term{forward}[]
+\rail@bar
+\rail@annote[1]
+\rail@nextbar{1}
+\rail@annote[2]
+\rail@plus
+\rail@nont{hostname}[]
+\rail@nextplus{2}
+\rail@endplus
+\rail@endbar
+\rail@end
+}
+\rail@i {39}{ ITLRequest : 'get' ('version' | 'guido-version' | 'musicxml-version') }
+\rail@o {39}{
+\rail@index{ITLRequest}
+\rail@begin{3}{ITLRequest}
+\rail@term{get}[]
+\rail@bar
+\rail@term{version}[]
+\rail@nextbar{1}
+\rail@term{guido-version}[]
+\rail@nextbar{2}
+\rail@term{musicxml-version}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {40}{ ITLStats : 'get' | 'reset' }
+\rail@o {40}{
+\rail@index{ITLStats}
+\rail@begin{2}{ITLStats}
+\rail@bar
+\rail@term{get}[]
+\rail@nextbar{1}
+\rail@term{reset}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {41}{ ITLdebug : 'osc' int23 }
+\rail@o {41}{
+\rail@index{ITLdebug}
+\rail@begin{1}{ITLdebug}
+\rail@term{osc}[]
+\rail@nont{int23}[]
+\rail@end
+}
+\rail@i {42}{ sceneMsg : 'new' | 'del' | 'reset' | ('rootPath' path) | ('load' filePath) | ('fullscreen' int32) | ('frameless' int32) | ('absolutexy' int32) | commonMsg }
+\rail@o {42}{
+\rail@index{sceneMsg}
+\rail@begin{9}{sceneMsg}
+\rail@bar
+\rail@term{new}[]
+\rail@nextbar{1}
+\rail@term{del}[]
+\rail@nextbar{2}
+\rail@term{reset}[]
+\rail@nextbar{3}
+\rail@term{rootPath}[]
+\rail@nont{path}[]
+\rail@nextbar{4}
+\rail@term{load}[]
+\rail@nont{filePath}[]
+\rail@nextbar{5}
+\rail@term{fullscreen}[]
+\rail@token{int32}[]
+\rail@nextbar{6}
+\rail@term{frameless}[]
+\rail@token{int32}[]
+\rail@nextbar{7}
+\rail@term{absolutexy}[]
+\rail@token{int32}[]
+\rail@nextbar{8}
+\rail@nont{commonMsg}[]
 \rail@endbar
 \rail@end
 }
@@ -955,8 +979,26 @@
 \rail@nont{mapFilePath}[]
 \rail@end
 }
-\rail@i {55}{ sync : syncIdentifier ( [1] syncIdentifier (| syncmode +) | [2]) | [3] 'get' ( | identifier) }
+\rail@i {55}{ scoreMap : 'map' ('page' | 'system' | 'systemflat' | 'staffn' | 'voicen' ) }
 \rail@o {55}{
+\rail@index{scoreMap}
+\rail@begin{5}{scoreMap}
+\rail@term{map}[]
+\rail@bar
+\rail@term{page}[]
+\rail@nextbar{1}
+\rail@term{system}[]
+\rail@nextbar{2}
+\rail@term{systemflat}[]
+\rail@nextbar{3}
+\rail@term{staffn}[]
+\rail@nextbar{4}
+\rail@term{voicen}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {56}{ sync : syncIdentifier ( [1] syncIdentifier (| syncmode +) | [2]) | [3] 'get' ( | identifier) }
+\rail@o {56}{
 \rail@index{sync}
 \rail@begin{6}{sync}
 \rail@bar
@@ -984,8 +1026,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {56}{ syncIdentifier : [1] identifier | [2] identifier ':' mapName }
-\rail@o {56}{
+\rail@i {57}{ syncIdentifier : [1] identifier | [2] identifier ':' mapName }
+\rail@o {57}{
 \rail@index{syncIdentifier}
 \rail@begin{2}{syncIdentifier}
 \rail@bar
@@ -999,34 +1041,34 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {57}{ syncmode : syncAlignment | syncStretch | mapName }
-\rail@o {57}{
+\rail@i {58}{ syncmode : syncHow| syncStretch | syncPos | mapName }
+\rail@o {58}{
 \rail@index{syncmode}
-\rail@begin{3}{syncmode}
+\rail@begin{4}{syncmode}
 \rail@bar
-\rail@nont{syncAlignment}[]
+\rail@nont{syncHow}[]
 \rail@nextbar{1}
 \rail@nont{syncStretch}[]
 \rail@nextbar{2}
+\rail@nont{syncPos}[]
+\rail@nextbar{3}
 \rail@nont{mapName}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {58}{ syncAlignment : 'syncOver' | 'syncTop' | 'syncBottom' }
-\rail@o {58}{
-\rail@index{syncAlignment}
-\rail@begin{3}{syncAlignment}
+\rail@i {59}{ syncHow : 'relative' | 'absolute' }
+\rail@o {59}{
+\rail@index{syncHow}
+\rail@begin{2}{syncHow}
 \rail@bar
-\rail@term{syncOver}[]
+\rail@term{relative}[]
 \rail@nextbar{1}
-\rail@term{syncTop}[]
-\rail@nextbar{2}
-\rail@term{syncBottom}[]
+\rail@term{absolute}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {59}{ syncStretch : 'h' | 'v' | 'hv' }
-\rail@o {59}{
+\rail@i {60}{ syncStretch : 'h' | 'v' | 'hv' }
+\rail@o {60}{
 \rail@index{syncStretch}
 \rail@begin{3}{syncStretch}
 \rail@bar
@@ -1038,100 +1080,21 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {60}{ scoreMapMsg : 'map' ('page' | 'system' | 'systemflat' | ('staff' 'staffNum') | 'voice' 'voiceNum' ) }
-\rail@o {60}{
-\rail@index{scoreMapMsg}
-\rail@begin{5}{scoreMapMsg}
-\rail@term{map}[]
-\rail@bar
-\rail@term{page}[]
-\rail@nextbar{1}
-\rail@term{system}[]
-\rail@nextbar{2}
-\rail@term{systemflat}[]
-\rail@nextbar{3}
-\rail@term{staff}[]
-\rail@term{staffNum}[]
-\rail@nextbar{4}
-\rail@term{voice}[]
-\rail@term{voiceNum}[]
-\rail@endbar
-\rail@end
-}
-\rail@i {61}{ scoreMsg : 'page' int32 | 'pageFormat' float32 float32 | 'columns' int32 | 'rows' int32 }
+\rail@i {61}{ syncPos : 'syncOver' | 'syncTop' | 'syncBottom' }
 \rail@o {61}{
-\rail@index{scoreMsg}
-\rail@begin{4}{scoreMsg}
+\rail@index{syncPos}
+\rail@begin{3}{syncPos}
 \rail@bar
-\rail@term{page}[]
-\rail@token{int32}[]
+\rail@term{syncOver}[]
 \rail@nextbar{1}
-\rail@term{pageFormat}[]
-\rail@token{float32}[]
-\rail@token{float32}[]
+\rail@term{syncTop}[]
 \rail@nextbar{2}
-\rail@term{columns}[]
-\rail@token{int32}[]
-\rail@nextbar{3}
-\rail@term{rows}[]
-\rail@token{int32}[]
+\rail@term{syncBottom}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {62}{ scoreQuery : 'get' ( 'pageCount' | 'pageDate' int32 ) }
+\rail@i {62}{ simpleSignal : [1] ( float32 + ) | [2] ('size' int32) | [3] ('default' float32) | [4] 'get' ( | 'size' | 'default') | [5] 'reset' | [6] 'del' }
 \rail@o {62}{
-\rail@index{scoreQuery}
-\rail@begin{2}{scoreQuery}
-\rail@term{get}[]
-\rail@bar
-\rail@term{pageCount}[]
-\rail@nextbar{1}
-\rail@term{pageDate}[]
-\rail@token{int32}[]
-\rail@endbar
-\rail@end
-}
-\rail@i {63}{ fileWatcher : ('add' filePath OSCMessage) | 'remove' (filePath OSCMessage | OSCAddress ) | 'clear' | 'get' }
-\rail@o {63}{
-\rail@index{fileWatcher}
-\rail@begin{5}{fileWatcher}
-\rail@bar
-\rail@term{add}[]
-\rail@nont{filePath}[]
-\rail@nont{OSCMessage}[]
-\rail@nextbar{1}
-\rail@term{remove}[]
-\rail@bar
-\rail@nont{filePath}[]
-\rail@nont{OSCMessage}[]
-\rail@nextbar{2}
-\rail@nont{OSCAddress}[]
-\rail@endbar
-\rail@nextbar{3}
-\rail@term{clear}[]
-\rail@nextbar{4}
-\rail@term{get}[]
-\rail@endbar
-\rail@end
-}
-\rail@i {64}{ debug : ('name' int32) | ('map' int32) | ('signal' int32) }
-\rail@o {64}{
-\rail@index{debug}
-\rail@begin{3}{debug}
-\rail@bar
-\rail@term{name}[]
-\rail@token{int32}[]
-\rail@nextbar{1}
-\rail@term{map}[]
-\rail@token{int32}[]
-\rail@nextbar{2}
-\rail@term{signal}[]
-\rail@token{int32}[]
-\rail@endbar
-\rail@end
-}
-\rail@i {65}{ simpleSignal : [1] ( float32 + ) | [2] ('size' int32) | [3] ('default' float32) | [4] 'get' ( | 'size' | 'default') | [5] 'reset' | [6] 'del' }
-\rail@o {65}{
 \rail@index{simpleSignal}
 \rail@begin{9}{simpleSignal}
 \rail@bar
@@ -1166,8 +1129,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {66}{ parallelSignal : [1] 'set' ( signal + ) | [2] (| projectionString) ( float32 + ) | [3] ('get' 'dimension') }
-\rail@o {66}{
+\rail@i {63}{ parallelSignal : [1] 'set' ( signal + ) | [2] (| projectionString) ( float32 + ) | [3] ('get' 'dimension') }
+\rail@o {63}{
 \rail@index{parallelSignal}
 \rail@begin{5}{parallelSignal}
 \rail@bar
@@ -1194,8 +1157,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {67}{ signal : [4] identifier | [5] float32 }
-\rail@o {67}{
+\rail@i {64}{ signal : [4] identifier | [5] float32 }
+\rail@o {64}{
 \rail@index{signal}
 \rail@begin{2}{signal}
 \rail@bar
@@ -1207,8 +1170,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {68}{ projectionString : '[' int32 (| '\unhbox \voidb@x \bgroup \let \unhbox \voidb@x \setbox \@tempboxa \hbox {\global \mathchardef \accent@spacefactor \spacefactor }\accent 3 \egroup \spacefactor \accent@spacefactor ' (| int32)) ']' }
-\rail@o {68}{
+\rail@i {65}{ projectionString : '[' int32 (| '\unhbox \voidb@x \bgroup \let \unhbox \voidb@x \setbox \@tempboxa \hbox {\global \mathchardef \accent@spacefactor \spacefactor }\accent 3 \egroup \spacefactor \accent@spacefactor ' (| int32)) ']' }
+\rail@o {65}{
 \rail@index{projectionString}
 \rail@begin{3}{projectionString}
 \rail@term{[}[]
@@ -1224,24 +1187,22 @@
 \rail@term{]}[]
 \rail@end
 }
-\rail@i {69}{ graphicSignal : 'set' 'graph' signalIdentifier | 'get' | 'get' 'dimension' }
-\rail@o {69}{
+\rail@i {66}{ graphicSignal : 'set' 'graph' signalIdentifier | 'get' 'dimension' }
+\rail@o {66}{
 \rail@index{graphicSignal}
-\rail@begin{3}{graphicSignal}
+\rail@begin{2}{graphicSignal}
 \rail@bar
 \rail@term{set}[]
 \rail@term{graph}[]
 \rail@nont{signalIdentifier}[]
 \rail@nextbar{1}
 \rail@term{get}[]
-\rail@nextbar{2}
-\rail@term{get}[]
 \rail@term{dimension}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {70}{ faustprocessor : 'set' 'faust' "path" }
-\rail@o {70}{
+\rail@i {67}{ faustprocessor : 'set' 'faust' "path" }
+\rail@o {67}{
 \rail@index{faustprocessor}
 \rail@begin{1}{faustprocessor}
 \rail@term{set}[]
@@ -1249,8 +1210,8 @@
 \rail@term{path}[]
 \rail@end
 }
-\rail@i {71}{ faustmessage : signalMsgs | [1] 'msg' float32 | [2] 'get' ('in' | 'out') }
-\rail@o {71}{
+\rail@i {68}{ faustmessage : signalMsgs | [1] 'msg' float32 | [2] 'get' ('in' | 'out') }
+\rail@o {68}{
 \rail@index{faustmessage}
 \rail@begin{4}{faustmessage}
 \rail@bar
@@ -1270,8 +1231,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {72}{ signal : identifier ( | "/" n) | float32 }
-\rail@o {72}{
+\rail@i {69}{ signal : identifier ( | "/" n) | float32 }
+\rail@o {69}{
 \rail@index{signal}
 \rail@begin{3}{signal}
 \rail@bar
@@ -1286,10 +1247,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {73}{ interactMsg : (('watch' | 'watch+') ([1] | what ( | oscMsg))) }
-\rail@o {73}{
+\rail@i {70}{ interactMsg : (('watch' | 'watch+') ([1] | what ( [2] | [3] "(" ( ( message )+ "," ) ")" | [4] message ) )) }
+\rail@o {70}{
 \rail@index{interactMsg}
-\rail@begin{3}{interactMsg}
+\rail@begin{5}{interactMsg}
 \rail@bar
 \rail@term{watch}[]
 \rail@nextbar{1}
@@ -1300,35 +1261,49 @@
 \rail@nextbar{1}
 \rail@nont{what}[]
 \rail@bar
+\rail@annote[2]
 \rail@nextbar{2}
-\rail@nont{oscMsg}[]
+\rail@annote[3]
+\rail@term{(}[]
+\rail@plus
+\rail@nont{message}[]
+\rail@nextplus{3}
+\rail@cterm{,}[]
+\rail@endplus
+\rail@term{)}[]
+\rail@nextbar{4}
+\rail@annote[4]
+\rail@nont{message}[]
 \rail@endbar
 \rail@endbar
 \rail@end
 }
-\rail@i {74}{ oscMsg : (| fullAddress) OSCAddress ( (parameters | variable) + ) }
-\rail@o {74}{
-\rail@index{oscMsg}
-\rail@begin{3}{oscMsg}
+\rail@i {71}{ message : (| addressPrefix) OSCAddress ( | (parameters | variable) + ) }
+\rail@o {71}{
+\rail@index{message}
+\rail@begin{4}{message}
 \rail@bar
 \rail@nextbar{1}
-\rail@nont{fullAddress}[]
+\rail@nont{addressPrefix}[]
 \rail@endbar
 \rail@nont{OSCAddress}[]
+\rail@bar
+\rail@nextbar{1}
 \rail@plus
 \rail@bar
 \rail@nont{parameters}[]
-\rail@nextbar{1}
+\rail@nextbar{2}
 \rail@nont{variable}[]
 \rail@endbar
-\rail@nextplus{2}
+\rail@nextplus{3}
 \rail@endplus
+\rail@endbar
 \rail@end
 }
-\rail@i {75}{ fullAddress : (IPAddress | hostname) ':' port }
-\rail@o {75}{
-\rail@index{fullAddress}
-\rail@begin{2}{fullAddress}
+\rail@i {72}{ addressPrefix : (IPAddress | hostname) ':' port }
+\rail@o {72}{
+\rail@index{addressPrefix}
+\rail@begin{2}{addressPrefix}
 \rail@bar
 \rail@nont{IPAddress}[]
 \rail@nextbar{1}
@@ -1338,8 +1313,8 @@
 \rail@nont{port}[]
 \rail@end
 }
-\rail@i {76}{ what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'doubleClick' }
-\rail@o {76}{
+\rail@i {73}{ what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'doubleClick' }
+\rail@o {73}{
 \rail@index{what}
 \rail@begin{6}{what}
 \rail@bar
@@ -1357,41 +1332,40 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {77}{ what : 'timeEnter' timezone | 'timeLeave' timezone | 'durEnter' timezone | 'durLeave' timezone | 'newElement' }
-\rail@o {77}{
+\rail@i {74}{ what : 'timeEnter' time time | 'timeLeave' time time | 'durEnter' time time | 'durLeave' time time }
+\rail@o {74}{
 \rail@index{what}
-\rail@begin{5}{what}
+\rail@begin{4}{what}
 \rail@bar
 \rail@term{timeEnter}[]
-\rail@nont{timezone}[]
+\rail@nont{time}[]
+\rail@nont{time}[]
 \rail@nextbar{1}
 \rail@term{timeLeave}[]
-\rail@nont{timezone}[]
+\rail@nont{time}[]
+\rail@nont{time}[]
 \rail@nextbar{2}
 \rail@term{durEnter}[]
-\rail@nont{timezone}[]
+\rail@nont{time}[]
+\rail@nont{time}[]
 \rail@nextbar{3}
 \rail@term{durLeave}[]
-\rail@nont{timezone}[]
-\rail@nextbar{4}
-\rail@term{newElement}[]
+\rail@nont{time}[]
+\rail@nont{time}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {78}{ timezone : int32 int32 int32 int32 }
-\rail@o {78}{
-\rail@index{timezone}
-\rail@begin{1}{timezone}
-\rail@token{int32}[]
-\rail@token{int32}[]
-\rail@token{int32}[]
-\rail@token{int32}[]
+\rail@i {75}{ what : 'newElement' }
+\rail@o {75}{
+\rail@index{what}
+\rail@begin{1}{what}
+\rail@term{newElement}[]
 \rail@end
 }
-\rail@i {79}{ variable : (xy | 'absx' | 'absy' | 'sx' | 'sy' | date | 'name' | 'address') }
-\rail@o {79}{
-\rail@index{variable}
-\rail@begin{8}{variable}
+\rail@i {76}{ posVar : xy | 'absx' | 'absy' | 'sx' | 'sy' }
+\rail@o {76}{
+\rail@index{posVar}
+\rail@begin{5}{posVar}
 \rail@bar
 \rail@nont{xy}[]
 \rail@nextbar{1}
@@ -1402,17 +1376,11 @@
 \rail@term{sx}[]
 \rail@nextbar{4}
 \rail@term{sy}[]
-\rail@nextbar{5}
-\rail@nont{date}[]
-\rail@nextbar{6}
-\rail@term{name}[]
-\rail@nextbar{7}
-\rail@term{address}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {80}{ xy : ('x' | 'y') ( | '[low,high]') }
-\rail@o {80}{
+\rail@i {77}{ xy : ('x' | 'y') ( | '[low,high]') }
+\rail@o {77}{
 \rail@index{xy}
 \rail@begin{2}{xy}
 \rail@bar
@@ -1426,11 +1394,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {81}{ date : ('date' | 'rdate') (| ':' mapname) (| '[n/d]') (| '\%' 'f') \par
-}
-\rail@o {81}{
-\rail@index{date}
-\rail@begin{2}{date}
+\rail@i {78}{ timeVar : ('date' | 'rdate') (| ':' mapname) (| '[n/d]') (| '\%' 'f') }
+\rail@o {78}{
+\rail@index{timeVar}
+\rail@begin{2}{timeVar}
 \rail@bar
 \rail@term{date}[]
 \rail@nextbar{1}
@@ -1452,8 +1419,21 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {82}{ msgVar : '(' oscaddress 'get' (| params) ')' }
-\rail@o {82}{
+\rail@i {79}{ variable : 'name' | 'scene' | 'address' }
+\rail@o {79}{
+\rail@index{variable}
+\rail@begin{3}{variable}
+\rail@bar
+\rail@term{name}[]
+\rail@nextbar{1}
+\rail@term{scene}[]
+\rail@nextbar{2}
+\rail@term{address}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {80}{ msgVar : '(' oscaddress 'get' (| params) ')' }
+\rail@o {80}{
 \rail@index{msgVar}
 \rail@begin{2}{msgVar}
 \rail@term{(}[]
@@ -1466,8 +1446,8 @@
 \rail@term{)}[]
 \rail@end
 }
-\rail@i {83}{ stateMsg : 'push' | 'pop' }
-\rail@o {83}{
+\rail@i {81}{ stateMsg : 'push' | 'pop' }
+\rail@o {81}{
 \rail@index{stateMsg}
 \rail@begin{2}{stateMsg}
 \rail@bar
@@ -1477,26 +1457,84 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {84}{ variabledecl : 'ident' '=' ( int32 | float32 | string ) ';' }
+\rail@i {82}{ fileWatcher : (('watch' | 'watch+') ( | filePath ( | ( ( message )+ "," ) ) )) }
+\rail@o {82}{
+\rail@index{fileWatcher}
+\rail@begin{4}{fileWatcher}
+\rail@bar
+\rail@term{watch}[]
+\rail@nextbar{1}
+\rail@term{watch+}[]
+\rail@endbar
+\rail@bar
+\rail@nextbar{1}
+\rail@nont{filePath}[]
+\rail@bar
+\rail@nextbar{2}
+\rail@plus
+\rail@nont{message}[]
+\rail@nextplus{3}
+\rail@cterm{,}[]
+\rail@endplus
+\rail@endbar
+\rail@endbar
+\rail@end
+}
+\rail@i {83}{ expression : message ";" | variabledecl ";" | script }
+\rail@o {83}{
+\rail@index{expression}
+\rail@begin{3}{expression}
+\rail@bar
+\rail@nont{message}[]
+\rail@term{;}[]
+\rail@nextbar{1}
+\rail@nont{variabledecl}[]
+\rail@term{;}[]
+\rail@nextbar{2}
+\rail@nont{script}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {84}{ variabledecl : 'ident' '=' ( (param | variable) + | '(' (message + ',') ')' ) ';' }
 \rail@o {84}{
 \rail@index{variabledecl}
-\rail@begin{3}{variabledecl}
+\rail@begin{5}{variabledecl}
 \rail@term{ident}[]
 \rail@term{=}[]
 \rail@bar
-\rail@token{int32}[]
+\rail@plus
+\rail@bar
+\rail@nont{param}[]
 \rail@nextbar{1}
-\rail@token{float32}[]
-\rail@nextbar{2}
-\rail@token{string}[]
+\rail@nont{variable}[]
+\rail@endbar
+\rail@nextplus{2}
+\rail@endplus
+\rail@nextbar{3}
+\rail@term{(}[]
+\rail@plus
+\rail@nont{message}[]
+\rail@nextplus{4}
+\rail@cterm{,}[]
+\rail@endplus
+\rail@term{)}[]
 \rail@endbar
 \rail@term{;}[]
 \rail@end
 }
-\rail@i {85}{ lang : '<?' ('javascript' | 'lua') script '?>' }
+\rail@i {85}{ msgparam : '(' (message) ')' }
 \rail@o {85}{
-\rail@index{lang}
-\rail@begin{2}{lang}
+\rail@index{msgparam}
+\rail@begin{1}{msgparam}
+\rail@term{(}[]
+\rail@nont{message}[]
+\rail@term{)}[]
+\rail@end
+}
+\rail@i {86}{ script : '<?' ('javascript' | 'lua') script '?>' }
+\rail@o {86}{
+\rail@index{script}
+\rail@begin{2}{script}
 \rail@term{<?}[]
 \rail@bar
 \rail@term{javascript}[]

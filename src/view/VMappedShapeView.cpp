@@ -42,12 +42,10 @@ void VMappedShapeView::updateGraphic2GraphicMapping (IShapeMap* object)
 		Graphic2RelativeTimeRelation::const_iterator iter = local2time_mapping->direct().begin();
 		
 		SGraphic2GraphicMapping g2l_mapping = TMapping<float,2, float,2>::create();	// Create the local -> graphic mapping.
-																									// (which is here a 'graphic -> graphic' identity mapping)
-//		SGraphicSegmentation graphicSegmentation = GraphicSegmentation::create( GraphicSegment(-1,-1,1,1) );	// Create the graphic segmentation.
+																					// (which is here a 'graphic -> graphic' identity mapping)
 		
 		while (iter != local2time_mapping->direct().end()) {
 			g2l_mapping->add ( iter->first , iter->first);			// Identity mapping.
-//			graphicSegmentation->add( iter->first );				// Also fill the graphic segmentation.
 			iter++;
 		}
 		object->localMappings()->setMapping( i->first, local2time_mapping );	// Finally, affect the mapping to object.

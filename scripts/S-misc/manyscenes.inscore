@@ -1,22 +1,22 @@
-left  = -0.5;
-right =  0.5;
-top   = -0.5;
-bott  =  0.5;
+left  =-0.5;
+right =0.5;
+top   =-0.5;
+bott  =0.5;
 
-<?javascript
+<? javascript 
 	function scenes (n)
 	{
 		var j=0;
 		var out = new Array;
 		for (i=0; i < n; i++) {
 			out[j++] = "/ITL/scene"+ i + " new ;";
-			out[j++] = "/ITL/scene"+ i + "/num set 'txt' '" + i + "';";
+			out[j++] = "/ITL/scene"+ i + "/num set txt " + i + ";";
 		}
 		return out;
 	}
 ?>
 
-<?javascript scenes(4); ?>
+<? javascript  scenes(4); ?>
 
 /ITL/scene del;
 
@@ -29,14 +29,16 @@ bott  =  0.5;
 /ITL/scene3 x $right ;
 /ITL/scene3 y $bott ;
 
-/ITL/scene0 color 255 0 0 ;
-/ITL/scene1 color 0 255 0 ;
-/ITL/scene2 color 0 0 255 ;
-/ITL/scene3 color 120 120 120 ;
-/ITL/* alpha 180 ;
+/ITL/scene0 color 255 0 0;
+/ITL/scene1 color 0 255 0;
+/ITL/scene2 color 0 0 255;
+/ITL/scene3 color 120 120 120;
+/ITL/* alpha 180;
 
-/ITL/*/num scale 10.0000 ;
-/ITL/scene*/num watch  "mouseDown" "/ITL/scene*/num" "color" 255 255 0 ;
-/ITL/scene*/num watch+ "mouseDown" "/ITL/scene*" "alpha" 255 ;
-/ITL/scene*/num watch  "mouseUp"   "/ITL/scene*/num" "color" 0 0 0 ;
-/ITL/scene*/num watch+ "mouseUp"   "/ITL/scene*" "alpha" 180 ;
+/ITL/*/num scale 10.0000;
+/ITL/scene*/num watch mouseDown (
+	/ITL/$scene/num color 255 255 0 ,
+	/ITL/$scene alpha 255 );
+/ITL/scene*/num watch mouseUp (
+	/ITL/$scene/num color 0 0 0 ,
+	/ITL/$scene alpha 180 );

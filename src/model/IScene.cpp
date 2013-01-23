@@ -27,7 +27,6 @@
 #include <fstream>
 #include "deelx.h"
 
-#include "EventMessage.h"
 #include "IAppl.h"
 #include "IGlue.h"
 #include "IGraphicSignal.h"
@@ -40,6 +39,8 @@
 #include "ITLparser.h"
 #include "OSCAddress.h"
 #include "QFileWatcher.h"
+#include "rational.h"
+#include "TMessageEvaluator.h"
 #include "Updater.h"
 
 #include "VSceneView.h"
@@ -66,21 +67,20 @@ IScene::IScene(const std::string& name, IObject * parent)
 	setWidth(1.0f);
 	setHeight(1.0f);
 	
-	fMsgHandlerMap["new"]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::newScene);
-	fMsgHandlerMap["del"]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::del);
-	fMsgHandlerMap["reset"]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::reset);
+	fMsgHandlerMap[knew_SetMethod]				= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::newScene);
+	fMsgHandlerMap[kdel_SetMethod]				= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::del);
+	fMsgHandlerMap[kreset_SetMethod]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::reset);
 //	fMsgHandlerMap["foreground"]	= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::foreground);
-	fMsgHandlerMap["fullscreen"]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFullScreen);
-	fMsgHandlerMap["frameless"]		= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFrameless);
-	fMsgHandlerMap["absolutexy"]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setAbsoluteCoordinates);
-	fMsgHandlerMap["load"]			= TMethodMsgHandler<IScene>::create(this, &IScene::loadMsg);
-	fMsgHandlerMap["rootPath"]		= TSetMethodMsgHandler<IScene, string>::create(this, &IScene::setRootPath);
+	fMsgHandlerMap[kfullscreen_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFullScreen);
+	fMsgHandlerMap[kframeless_GetSetMethod]		= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFrameless);
+	fMsgHandlerMap[kabsolutexy_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setAbsoluteCoordinates);
+	fMsgHandlerMap[kload_SetMethod]				= TMethodMsgHandler<IScene>::create(this, &IScene::loadMsg);
+	fMsgHandlerMap[krootPath_GetSetMethod]		= TSetMethodMsgHandler<IScene, string>::create(this, &IScene::setRootPath);
 
-	fGetMsgHandlerMap["fullscreen"] = TGetParamMsgHandler<bool>::create(fFullScreen);
-	fGetMsgHandlerMap["frameless"]	= TGetParamMsgHandler<bool>::create(fFrameless);
-	fGetMsgHandlerMap["absolutexy"] = TGetParamMsgHandler<bool>::create(fAbsoluteCoordinates);
-	fGetMsgHandlerMap["watch"]		= TGetParamMethodHandler<IScene, IMessageList (IScene::*)() const>::create(this, &IScene::getWatch);
-	fGetMsgHandlerMap["rootPath"]	= TGetParamMsgHandler<string>::create(fRootPath);
+	fGetMsgHandlerMap[kfullscreen_GetSetMethod] = TGetParamMsgHandler<bool>::create(fFullScreen);
+	fGetMsgHandlerMap[kframeless_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fFrameless);
+	fGetMsgHandlerMap[kabsolutexy_GetSetMethod] = TGetParamMsgHandler<bool>::create(fAbsoluteCoordinates);
+	fGetMsgHandlerMap[krootPath_GetSetMethod]	= TGetParamMsgHandler<string>::create(fRootPath);
 }
 
 //--------------------------------------------------------------------------
@@ -92,8 +92,8 @@ void IScene::setHandlers ()
 	colorAble();
 	positionAble();
 	fGetMsgHandlerMap[""]			= (void*)0;	// force standard propagation of the get message
-	fMsgHandlerMap["effect"]		= (void*)0;	// no effects at scene level
-	fGetMsgHandlerMap["effect"]		= (void*)0;	// no effects at scene level
+	fMsgHandlerMap[keffect_GetSetMethod]		= (void*)0;	// no effects at scene level
+	fGetMsgHandlerMap[keffect_GetSetMethod]		= (void*)0;	// no effects at scene level
 }
 
 //--------------------------------------------------------------------------
@@ -202,14 +202,14 @@ extern SIMessageStack gMsgStack;
 MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 {
 	if (msg->size() == 1) {
-		string srcfile = msg->params()[0]->value<string>("");
+		string srcfile = msg->param(0)->value<string>("");
 		if (srcfile.size()) {
 			fstream file (absolutePath(srcfile).c_str(), fstream::in);
 			if (file.is_open()) {
 				ITLparser p (&file, 0, &fJavascript, &fLua);
-				IMessageList* msgs = p.parse();
+				SIMessageList msgs = p.parse();
 				if (msgs) {
-					for (IMessageList::const_iterator i = msgs->begin(); i != msgs->end(); i++) {
+					for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
 						IMessage * msg = *i;
 						string address = address2scene (msg->address().c_str());
 						string beg  = OSCAddress::addressFirst(address);
@@ -219,11 +219,10 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 							IGlue::trace(*i, ret);
 						}
 					}
-					msgs->clear();
 				}
 				else ITLErr << "while parsing file" << srcfile << ITLEndl;
 			}
-			else ITLErr << "IScene can't open file \"" << srcfile << "\"" << ITLEndl;
+			else ITLErr << "IScene can't open file" << srcfile << ITLEndl;
 			return MsgHandler::kProcessed;
 		}
 	}
@@ -232,30 +231,33 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 
 //--------------------------------------------------------------------------
 void IScene::add (const nodePtr& node)
-{ 
-	vector<SEventMessage> msgs = getMessages (EventsAble::kNewElement);
-	for (unsigned int i=0; i < msgs.size(); i++) {
-		EventContext env (node);
-		msgs[i]->send(env);
-	}
+{
 	IObject::add (node);
+
+	const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kNewElement);
+	if (!msgs || msgs->list().empty()) return;		// nothing to do, no associated message
+
+	MouseLocation mouse (0, 0, 0, 0, 0, 0);
+	EventContext env(mouse, libmapping::rational(0,1), node);
+	TMessageEvaluator me;
+	SIMessageList outmsgs = me.eval (msgs, env);
+	if (outmsgs && outmsgs->list().size()) outmsgs->send();
 }
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IScene::_watchMsg(const IMessage* msg, bool add)
 { 
-	if (msg->params().size()) {
+	if (msg->size()) {
 		string what;
 		if (msg->param (0, what)) {
 			EventsAble::eventype t = EventsAble::string2type (what);
 			switch (t) {
 				case EventsAble::kNewElement:
-					if (msg->params().size() > 1)
-						if (add) eventsHandler()->addMsg (t, EventMessage::create (name(), getScene()->name(), msg, 1));
-						else eventsHandler()->setMsg (t, EventMessage::create (name(), getScene()->name(),msg, 1));
+					if (msg->size() > 1)
+						if (add) eventsHandler()->addMsg (t, msg->watchMsg2Msgs(1));
+						else eventsHandler()->setMsg (t, msg->watchMsg2Msgs(1));
 					else if (!add) eventsHandler()->setMsg (t, 0);
 					return MsgHandler::kProcessed;
-					break;
 
 				default:
 					break;

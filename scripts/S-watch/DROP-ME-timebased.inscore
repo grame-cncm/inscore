@@ -1,0 +1,23 @@
+alpha=150;
+
+/ITL/scene/*  del;
+/ITL/scene/text  set txt  "Send clock messages to '/ITL/scene/cursor'";
+/ITL/scene/text  scale 1.3;
+
+/ITL/scene/rect  set rect 1. 1.;
+/ITL/scene/rect  color 254 212 76 $alpha;
+
+/ITL/scene/cursor set 'rect' 1. 1.;
+/ITL/scene/cursor show 0;
+
+/ITL/scene/cursor watch timeEnter 0 1 		( /ITL/scene load 'DROP-ME-timebased.inscore' );
+/ITL/scene/cursor watch timeEnter 1 2		( /ITL/scene/rect color 76 254 212 $alpha );	
+/ITL/scene/cursor watch timeEnter 2 3		( /ITL/scene/rect scale 1.4 ,
+											  /ITL/scene/rect color 212 76 254 $alpha );	
+/ITL/scene/cursor watch timeEnter 3 4		( /ITL/scene/rect angle 45. ,
+											  /ITL/scene/rect color 212 254 76 $alpha );	
+/ITL/scene/cursor watch timeEnter 4 1000	( /ITL/scene/cursor date 0 1 );
+
+/ITL/scene/comment  set  txt "This script illustrates time 'watch' messages";
+/ITL/scene/comment scale 1.3;
+/ITL/scene/comment y 0.9;

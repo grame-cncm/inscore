@@ -33,7 +33,16 @@ OSCStream* _oscout = 0;				// OSC output stream
 OSCErrorStream* _oscerr = 0;		// OSC error stream
 
 static UdpSocket* _socket = 0;		// a shared transmit socket
+static UdpSocket  _evtSocket;
+OSCStream gEventsStream (&_evtSocket);
 
+//--------------------------------------------------------------------------
+void OSCStream::sendEvent(const IMessage* msg, const string& dst, int port)
+{
+	gEventsStream.setAddress (dst);
+	gEventsStream.setPort(port);
+	msg->print(gEventsStream);
+}
 
 //--------------------------------------------------------------------------
 bool OSCStream::start ()

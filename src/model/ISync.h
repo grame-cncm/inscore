@@ -51,7 +51,8 @@ class Master : public libmapping::smartable
 	public:
 		typedef std::vector< std::string > SyncOptions;
 
-		enum VAlignType { kUnknown=-1, kSyncOver=0, kSyncTop, kSyncBottom, kDefaultSync=kSyncOver};
+		enum VAlignType { kUnknown=-1, kSyncOver=0, kSyncTop, kSyncBottom, kDefaultSyncAlign=kSyncOver};
+		enum SyncType	{ kTypeUnknown=-1, kSyncRelative, kSyncAbsolute, kDefaultSync=kSyncRelative};
 		enum StretchType {	kStretchUnknown=0x8000,
 							kNoStretch=0,							///< no stretch
 							kStretchH=1,							///< horizontal stretch 
@@ -60,21 +61,16 @@ class Master : public libmapping::smartable
 							kStretchHV = kStretchH + kStretchV,		///< horizontal and vertical stretch
 							kStretchHHV = kStretchHH + kStretchV,	///< horizontal and vertical stretch without inner distortion
 							kDefaultStretch=kNoStretch};
-//		enum { kLinearInterpolation, kNoInterpolation, kDefaultInterpolation=kLinearInterpolation };
 		
 		static SMaster create() { return new Master(); }
-		static SMaster create(const SIObject& o, VAlignType syncmode, StretchType stretchmode, /*const SyncOptions& options ,*/ const std::string& masterMapName , const std::string& slaveMapName )
-						{  return new Master(o, syncmode, stretchmode, masterMapName, slaveMapName); }
-//		static SMaster create(const SIObject& o, VAlignType syncmode, StretchType stretchmode, float dy , int interpolate , 
-//							const SyncOptions& options , const std::string& masterMapName , const std::string& slaveMapName )
-//						{  return new Master(o, syncmode, stretchmode, dy, interpolate, options, masterMapName, slaveMapName); }
+		static SMaster create(const SIObject& o, VAlignType syncmode, StretchType stretchmode, SyncType mode, const std::string& masterMapName , const std::string& slaveMapName )
+						{  return new Master(o, syncmode, stretchmode, mode, masterMapName, slaveMapName); }
 		
 		const SIObject& getMaster() const		{ return fMaster; }
 		VAlignType		getAlignment() const	{ return fAlignment; }
 		StretchType		getStretch() const		{ return fStretch; }
+		SyncType		getMode() const			{ return fSyncType; }
 		float			getDy() const			{ return fDy; }
-//		int				getInterpolate() const	{ return fInterpolate; }
-//		const SyncOptions& getCustomOptions() const { return fCustomOptions; }
 		const std::string& getMasterMapName() const	{ return fMasterMapName; }
 		const std::string& getSlaveMapName() const	{ return fSlaveMapName; }
 
@@ -82,44 +78,34 @@ class Master : public libmapping::smartable
 		bool			modified() const 		{ return fModified; }
 		void			modified(bool state) 	{ fModified = false; }
 
-		static std::string	syncmode2string(int syncmode);
-		static VAlignType	string2syncmode(std::string syncmode);		
-		static std::string	stretchmode2string(int syncmode);
-		static StretchType	string2stretchmode(std::string syncmode);	
-//		static std::string	interpolatemode2string(int interpolateMode);
-//		static int			string2interpolatemode(std::string syncmode);
-
-//		float&			getDyRef() 			{ return fDy; }
+	static std::string	syncalign2string(int syncmode);
+	static std::string	synctype2string(int sync);
+	static VAlignType	string2syncalign(std::string syncmode);
+	static SyncType		string2synctype(std::string syncmode);
+	static std::string	stretchmode2string(int syncmode);
+	static StretchType	string2stretchmode(std::string syncmode);	
 
 	static void initMap();
 
 	protected:
 				 Master() 
-					: fAlignment(kDefaultSync), fStretch(kDefaultStretch), fDy(0), fMasterMapName(""), fSlaveMapName("") {}
-				 Master(const SIObject& o, VAlignType vmode, StretchType hmode, /*const SyncOptions& options,*/ const std::string& masterMapName, const std::string& slaveMapName ) 
-					:	fMaster(o), fAlignment(vmode), fStretch(hmode), fDy(0), //, fCustomOptions(options) , 
+					: fAlignment(kDefaultSyncAlign), fStretch(kDefaultStretch), fSyncType(kSyncRelative), fDy(0), fMasterMapName(""), fSlaveMapName("") {}
+				 Master(const SIObject& o, VAlignType vmode, StretchType hmode, SyncType mode, const std::string& masterMapName, const std::string& slaveMapName )
+					:	fMaster(o), fAlignment(vmode), fStretch(hmode), fSyncType(mode), fDy(0),
 						fMasterMapName(masterMapName), fSlaveMapName(slaveMapName), fModified(true) {}
-
-//				 Master() 
-//					: fAlignment(kDefaultSync), fStretch(kDefaultStretch), fDy(0), fInterpolate(kDefaultInterpolation), fMasterMapName(""), fSlaveMapName("") {}
-//				 Master(const SIObject& o, VAlignType syncmode, StretchType stretchmode, float dy , int interpolate , 
-//							const SyncOptions& options , const std::string& masterMapName , const std::string& slaveMapName ) 
-//					:	fMaster(o), fAlignment(syncmode), fStretch(stretchmode), 
-//						fDy(dy), fInterpolate(interpolate) , fCustomOptions(options) , fMasterMapName(masterMapName), fSlaveMapName(slaveMapName) {}
 		virtual ~Master() {}
 
 	private:
 	
-	static std::map<std::string, VAlignType>	fSyncStr;
+	static std::map<std::string, VAlignType>	fAlignStr;
 	static std::map<std::string, StretchType>	fStretchStr;
-//	static std::map<std::string, int>	fInterpolationStr;
+	static std::map<std::string, SyncType>		fTypeStr;
 	
 	SIObject	fMaster;
 	VAlignType	fAlignment;
 	StretchType	fStretch;
+	SyncType	fSyncType;
 	float		fDy;
-//	int			fInterpolate;
-//	SyncOptions fCustomOptions;
 	std::string	fMasterMapName;
 	std::string	fSlaveMapName;
 	bool		fModified;

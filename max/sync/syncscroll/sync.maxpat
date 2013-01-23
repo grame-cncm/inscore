@@ -1,9 +1,9 @@
 {
 	"patcher" : 	{
 		"fileversion" : 1,
-		"rect" : [ 25.0, 69.0, 216.0, 217.0 ],
+		"rect" : [ 498.0, 48.0, 202.0, 209.0 ],
 		"bglocked" : 0,
-		"defrect" : [ 25.0, 69.0, 216.0, 217.0 ],
+		"defrect" : [ 498.0, 48.0, 202.0, 209.0 ],
 		"openrect" : [ 25.0, 69.0, 186.0, 205.0 ],
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -188,14 +188,13 @@
 					"presentation" : 1,
 					"presentation_rect" : [ 38.0, 86.0, 18.0, 42.0 ],
 					"size" : 2,
-					"value" : 1
+					"value" : 0
 				}
 
 			}
 , 			{
 				"box" : 				{
 					"id" : "obj-7",
-					"int" : 1,
 					"maxclass" : "gswitch2",
 					"numinlets" : 2,
 					"numoutlets" : 2,
@@ -536,13 +535,13 @@
 ,
 					"patching_rect" : [ 79.0, 76.0, 44.0, 20.0 ],
 					"saved_object_attributes" : 					{
+						"globalpatchername" : "",
+						"fontface" : 0,
+						"fontsize" : 12.0,
 						"default_fontface" : 0,
 						"default_fontname" : "Arial",
 						"fontname" : "Arial",
-						"default_fontsize" : 12.0,
-						"globalpatchername" : "",
-						"fontface" : 0,
-						"fontsize" : 12.0
+						"default_fontsize" : 12.0
 					}
 ,
 					"text" : "p time"
@@ -587,8 +586,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 270.0, 341.0, 127.0, 18.0 ],
-					"text" : "/ITL load sync.inscore"
+					"patching_rect" : [ 270.0, 341.0, 163.0, 18.0 ],
+					"text" : "/ITL/scene load sync.inscore"
 				}
 
 			}

@@ -5,7 +5,7 @@ GRAME - Centre national de creation musicale
 http://www.grame.fr
 research@grame.fr
 ====================================================
-Copyright GRAME (c) 2009,2010,2011,2012
+Copyright GRAME (c) 2009-2013
 ----------------------------------------------------
 INScore originates from the Interlude project.
 It has been supported by the ANR (ANR-08-CORD-010)
@@ -13,10 +13,22 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.00
-- creash bug in signal creation corrected: a signal size created with an incorrect stream 
+- bug correction in streching very small objects (due to approximations)
+- bug correction in $sx and $sy computation corrected (xorigin and yorigin was not taken into account)
+- new 'ticks' message at application level for querying or setting the current count of time tasks.
+- new 'time' message at application level for querying or setting the current time
+- new 'forward' message at application level for messages forwarding to remote hosts
+- new 'relative | absolute' synchronization mode
+- 'rename' message not supported any more
+- a scene accepts multiple dropped files
+- significant extension and syntax changes in inscore script files (see Scripting documentation)
+- fileWatcher methods renamed and simplified
+- 'click' and 'select' messages are not supported any more.
+- new 'stats' virtual node at application level (address /ITL/stats), supports 'get' and 'reset' messages
+  the node gives statistics about the incoming messages
+- crash bug in signal creation corrected: a signal size created with an incorrect stream 
   (e.g. a string value) was 0 and no buffer was allocated.
-- OSC statistics support (count of received messages) at vnode /ITL/stats (supports 'get' and 'reset' messages)
-- extension of the time related events to duration: new durEnter and durLeave watchable events.
+- extension of the time related events to duration: new 'durEnter' and 'durLeave' watchable events.
 - new 'absolutexy' message at scene level to switch to absolute coordinates (in pixels).
 - new 'push' and 'pop' messages to store and restore current watched events and associated messages.
 - internal change: mappings are now implemented as a separable library strictly complying to the 

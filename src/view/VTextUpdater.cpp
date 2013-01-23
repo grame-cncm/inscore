@@ -40,7 +40,7 @@ void VTextUpdater::print (IObject* obj, const Master* master)
 	fOutStream << SIObject(obj) << endl;
 	if (master) {
 		fOutStream	<< "  => " << obj->name() << " is slave of " << master->getMaster()->name() 
-					<< " (mode: " << master->syncmode2string(master->getAlignment()) << ")" << endl;
+					<< " (mode: " << master->syncalign2string(master->getAlignment()) << ")" << endl;
 	}
 }
 

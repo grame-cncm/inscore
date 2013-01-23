@@ -60,7 +60,7 @@ void IImage::setFile(const std::string& path)
 	file.open (path.c_str(), ifstream::in);
 	if (file.is_open())
 		file.close();
-	else ITLErr << "can't open image file: " << path << ITLEndl;
+	else ITLErr << "can't open image file:" << path << ITLEndl;
 }
 
 //--------------------------------------------------------------------------

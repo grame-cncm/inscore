@@ -22,21 +22,35 @@
 */
 
 #include <iostream>
+#include <fstream>
 #include "ITLparser.h"
 #include "IMessage.h"
 #include "IMessageStream.h"
+#include "TV8Js.h"
 
 using namespace std;
 using namespace inscore;
 
+
 int main (int argc, char * argv[])
 {
 	if (argc > 1) {
-		ITLparser p;
-		IMessageList* outMsgs;
-		outMsgs = p.readfile (argv[1]);
-		if (outMsgs)
-			cout << *outMsgs;
+		ifstream in (argv[1]);
+#ifdef V8ENGINE
+		TJSEngine js;
+		ITLparser p(&in, 0, &js, 0);
+#elif defined(LUA)
+		TLua lua;
+		ITLparser p(&in, 0, 0, &lua);
+#else
+		ITLparser p(&in, 0, 0, 0);
+#endif
+		SIMessageList outMsgs;
+		outMsgs = p.parse ();
+		if (outMsgs) {
+			outMsgs->list().set("", "\n");
+			cout << outMsgs->list() << endl;
+		}
 		else
 			cout << "error reading " << argv[1] << endl;
 	}

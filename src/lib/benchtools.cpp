@@ -136,7 +136,7 @@ void  bench::start()		{ gRunning = true; }
 void  bench::stop()			{ gRunning = false; }
 bool  bench::running()		{ return gRunning; }
 
-#define kFieldSep	" "
+#define kFieldSep	"	"
 //_________________________________________________________________________________
 void  bench::write(const std::string& name)
 {

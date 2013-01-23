@@ -36,11 +36,13 @@ namespace inscore
 //--------------------------------------------------------------------------
 IObjectDebug::IObjectDebug(IObject * parent) : IVNode("debug", parent), fMap(false), fName(false)
 {
-	fMsgHandlerMap["map"]		= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setMapDebug);
-	fMsgHandlerMap["name"]		= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setNameDebug);
+	fMsgHandlerMap[kmap_GetSetMethod]		= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setMapDebug);
+	fMsgHandlerMap[kname_GetSetMethod]		= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setNameDebug);
+	fMsgHandlerMap[kwatch_GetSetMethod]		= 0;
+	fMsgHandlerMap[kwatchplus_SetMethod]	= 0;
 	
-	fGetMsgHandlerMap["map"]	= TGetParamMsgHandler<bool>::create(fMap);
-	fGetMsgHandlerMap["name"]	= TGetParamMsgHandler<bool>::create(fName);	
+	fGetMsgHandlerMap[kmap_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fMap);
+	fGetMsgHandlerMap[kname_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fName);
 }
 
 //--------------------------------------------------------------------------
@@ -61,18 +63,18 @@ void IObjectDebug::accept (Updater* u)
 //--------------------------------------------------------------------------
 // message handlers
 //--------------------------------------------------------------------------
-IMessageList IObjectDebug::getSetMsg () const
+SIMessageList IObjectDebug::getSetMsg () const
 {
-	IMessageList outMsgs;
-	IMessage * msg = new IMessage(getOSCAddress(), "map");
+	SIMessageList outMsgs = IMessageList::create();
+	SIMessage msg = IMessage::create(getOSCAddress(), kmap_GetSetMethod);
 	*msg << getMapDebug();
-	outMsgs += msg;
-	msg = new IMessage(getOSCAddress(), "name");
+	outMsgs->list().push_back (msg);
+	msg = IMessage::create(getOSCAddress(), kname_GetSetMethod);
 	*msg << getNameDebug();
-	outMsgs += msg;
-	msg = new IMessage(getOSCAddress(), "signal");
+	outMsgs->list().push_back (msg);
+	msg = IMessage::create(getOSCAddress(), ksignal_GetMethod);
 	*msg << getSignalDebug();
-	outMsgs += msg;
+	outMsgs->list().push_back (msg);
 	return outMsgs;
 }
 
