@@ -15,4 +15,4 @@ The changes are the following:
      they accept any number of messages as argument, enclosed in parenthesis 
      and separated by a comma)
   - string don't need to be quoted unless they include any other character than 
-    letters, numbers and 
+    letters, numbers, hyphen (-) and underscore (_)
