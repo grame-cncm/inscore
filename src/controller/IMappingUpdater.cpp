@@ -187,8 +187,10 @@ void IMappingUpdater::updateIObject (IObject* object)
 	const SIScene scene = object->getScene();
 	const Master* master = scene ? scene->getMaster(object) : 0;
 	if (!master) return;
-
-	if (object->localMapModified() || object->dateModified() || (master->getMaster()->localMapModified() || master->modified())) {
+	
+	const IObject* mobj = master->getMaster();
+	if (object->localMapModified() || object->dateModified()
+		|| mobj->localMapModified() || master->modified() || mobj->dateModified()) {
 		if (!updateNOHStretch ( object, master))
 			hstretchUpdate (object, master);
 	}
