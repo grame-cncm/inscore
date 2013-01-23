@@ -5,40 +5,12 @@ GRAME - Centre national de creation musicale
 http://www.grame.fr
 research@grame.fr
 ==================================================================
-Copyright GRAME (c) 2009-2011
+Copyright GRAME (c) 2009-2013
 INScore resources are released under the Creative Common license. 
 ------------------------------------------------------------------
 
 -------------------------------
-** April. 4 2012
+** January 23 2013
 -------------------------------
-- pd and max patches updated to set both application and scene rootPath
-  (avoid conflicts with inscore files drag and drop)
-- new PureData/player.pd patch
-- tutorial layout revised
-
--------------------------------
-** Nov. 7 2011
--------------------------------
-- new Faust plugins support and example
-- new javascript samples included in the StandAlone archive
-
--------------------------------
-** July 13 2011
--------------------------------
-- new transform Max patch for 3D rotation and shearing
-- improved mapbuilder Max patch with extensions for offsets and fixed segments
-
--------------------------------
-** May 17 2011
--------------------------------
-INScore resources include now a standalone tutorial (no need to run 
-Max/MSP or PureData).
-
--------------------------------
-** March 14 2011
--------------------------------
-First separate pubication of the resources. The inscore scripts were 
-previously included in the INScore package up to version 0.74.
-The current resources update the Max/pageturner folder that was not 
-finalized with the last INScore-0.74 distribution.
+Restructuration of sample scripts and patches.
+Includes more sample INScore scripts.

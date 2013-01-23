@@ -1,18 +1,20 @@
-/ITL/scene reset ;
-/ITL/scene width 1.60000 ;
-/ITL/scene/myGuidoFile set "gmnf" "bwv789.gmn" ;
-/ITL/scene/myGuidoFile columns 2 ;
-/ITL/scene/myGuidoFile scale 3.10000 ;
-/ITL/scene/myGuidoFile map "voice1" ;
-/ITL/scene/myGuidoFile map "voice2" ;
-/ITL/scene/myGuidoFile map "voice3" ;
-/ITL/scene/spot1 set "ellipse" 0.0500000 0.0500000 ;
-/ITL/scene/spot1 color 178 0 0 160 ;
-/ITL/scene/spot2 set "ellipse" 0.0500000 0.0500000 ;
-/ITL/scene/spot2 color 0 161 0 160 ;
-/ITL/scene/spot3 set "ellipse" 0.0500000 0.0500000 ;
-/ITL/scene/spot3 color 0 0 150 160 ;
-/ITL/scene/spot* date 3 64 ;
-/ITL/scene/sync spot1 "myGuidoFile:voice1" ;
-/ITL/scene/sync spot2 "myGuidoFile:voice2" ;
-/ITL/scene/sync spot3 "myGuidoFile:voice3" ;
+/ITL/scene reset;
+/ITL/scene width 1.6;
+/ITL/scene/myGuidoFile set gmnf "bwv789.gmn";
+/ITL/scene/myGuidoFile columns 2;
+/ITL/scene/myGuidoFile scale 3.1;
+/ITL/scene/myGuidoFile map voice1;
+/ITL/scene/myGuidoFile map voice2;
+/ITL/scene/myGuidoFile map voice3;
+
+/ITL/scene/spot1 set ellipse 0.05 0.05;
+/ITL/scene/spot1 color 178 0 0 160;
+/ITL/scene/spot2 set ellipse 0.05 0.05;
+/ITL/scene/spot2 color 0 161 0 160;
+/ITL/scene/spot3 set ellipse 0.05 0.05;
+/ITL/scene/spot3 color 0 0 150 160;
+/ITL/scene/spot* date 3 64;
+
+/ITL/scene/sync spot1 "myGuidoFile:voice1";
+/ITL/scene/sync spot2 "myGuidoFile:voice2";
+/ITL/scene/sync spot3 "myGuidoFile:voice3";
