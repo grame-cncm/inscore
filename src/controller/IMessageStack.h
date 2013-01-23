@@ -27,6 +27,7 @@
 #ifndef __IMessageStack__
 #define __IMessageStack__
 
+#ifdef FIFOLOCK
 #include <QMutex>
 #endif
 
@@ -54,6 +55,7 @@ extern SIMessageStack gMsgStack;
 class IMessageStack : public libmapping::smartable
 {
 	private:
+#ifdef FIFOLOCK
 		QMutex		fMutex;					// this is to handle lffifo issue
 #endif
 		int			fReceivedCount;

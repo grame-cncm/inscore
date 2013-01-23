@@ -172,8 +172,9 @@ MsgHandler::msgStatus IGraphicSignal::set (const IMessage* msg )
 	MsgHandler::msgStatus status = IShape::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
-	if (msg->params().size() == 2) {
-		string signame = msg->params()[1]->value<string>( "" );
+	if (msg->size() == 2) {
+		string signame;
+		if (!msg->param(1, signame)) return MsgHandler::kBadParameters;
 		SIScene scene = getScene();
 		if (!scene) return MsgHandler::kCreateFailure;
 		SISignalNode signals = scene->signalsNode();
@@ -196,9 +197,9 @@ MsgHandler::msgStatus IGraphicSignal::set (const IMessage* msg )
 }
 
 //--------------------------------------------------------------------------
-IMessage& IGraphicSignal::getDimParamMsgHandler::print(IMessage& out) const
+SIMessage& IGraphicSignal::getDimParamMsgHandler::print(SIMessage& out) const
 {
-	out << fGraph->dimension();
+	*out << fGraph->dimension();
 	return out;
 }
 

@@ -38,14 +38,14 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-Position::Position():
+IPosition::IPosition():
 	fXPos(kDefaultX), fYPos(kDefaultY), fXOrigin(0), fYOrigin(0), 
 	fWidth(0), fHeight(0) , fZOrder(0),
 	fVisible(true), fScale(1.0), fModified(true),
 	fXAngle(0), fYAngle(0), fZAngle(0), fShear (0,0)
 {}
 
-void Position::setPos(const Position& p)
+void IPosition::setPos(const IPosition& p)
 {
 	setXPos( p.getXPos() );
 	setYPos( p.getYPos() );
@@ -70,7 +70,7 @@ void rotateXY( float startDeg, float rotateDeg, float r , float& outX, float& ou
 	outY = r * sin( resultingTeta );
 }
 
-TFloatRect Position::getBoundingRect() const
+TFloatRect IPosition::getBoundingRect() const
 {
 	TFloatRect result(0.0f,0.0f);
 	result.setSize( getDimension() );
@@ -163,58 +163,58 @@ typedef struct zorderSort {
 //--------------------------------------------------------------------------
 // click and select messages
 //--------------------------------------------------------------------------
-bool IPosition::clickPos(const IMessage* msg, IObject* parent, vector<SIObject>& outlist)	const
-{ 
-	if (!parent || (msg->params().size() > 1)) return false;
-	
-	string point = "topleft";	// default values
-	if (msg->params().size() == 1)
-		point = msg->params()[0]->value<string>("");
-
-	TFloatRect r = getBoundingRect();
-	TPoint<float> p;
-	if (point == "topleft")				p = r.pos();
-	else if (point == "bottomright")	p = r.brpos();
-	else if (point == "topright")		p = r.trpos();
-	else if (point == "bottomleft")		p = r.blpos();
-	else if (point == "center")			p = TPoint<float>(r.x()+(r.width()/2), r.y()+(r.height()/2));
-	else return false;
-
-	clickPredicat<float> predicat(p, getZOrder());
-	parent->selectsubnodes<clickPredicat<float> > (predicat, outlist);
-	sort(outlist.begin(), outlist.end(), zorderSort());
-	return true;
-}
+//bool IPosition::clickPos(const IMessage* msg, IObject* parent, vector<SIObject>& outlist)	const
+//{ 
+//	if (!parent || (msg->size() > 1)) return false;
+//	
+//	string point = "topleft";	// default values
+//	if (msg->size() == 1)
+//		point = msg->param(0)->value<string>("");
+//
+//	TFloatRect r = getBoundingRect();
+//	TPoint<float> p;
+//	if (point == "topleft")				p = r.pos();
+//	else if (point == "bottomright")	p = r.brpos();
+//	else if (point == "topright")		p = r.trpos();
+//	else if (point == "bottomleft")		p = r.blpos();
+//	else if (point == "center")			p = TPoint<float>(r.x()+(r.width()/2), r.y()+(r.height()/2));
+//	else return false;
+//
+//	clickPredicat<float> predicat(p, getZOrder());
+//	parent->selectsubnodes<clickPredicat<float> > (predicat, outlist);
+//	sort(outlist.begin(), outlist.end(), zorderSort());
+//	return true;
+//}
 
 
 //--------------------------------------------------------------------------
-bool IPosition::selectPos(const IMessage* msg, IObject* parent, vector<SIObject>& outlist) const
-{ 
-	if (!parent || (msg->params().size() > 1)) return false;
-	
-	string mode = "intersect";	// default values
-	if (msg->params().size() == 1)
-		mode = msg->params()[0]->value<string>("");
-
-	if (mode == "intersect") {
-		selectPredicat<float> p(getBoundingRect(), getZOrder());
-		parent->selectsubnodes<selectPredicat<float> > (p, outlist);
-	}
-	else if (mode == "include") {
-		includePredicat<float> p(getBoundingRect(), getZOrder());
-		parent->selectsubnodes<includePredicat<float> > (p, outlist);
-	}
-	else return false;
-
-	sort(outlist.begin(), outlist.end(), zorderSort());
-	return true;
-}
+//bool IPosition::selectPos(const IMessage* msg, IObject* parent, vector<SIObject>& outlist) const
+//{ 
+//	if (!parent || (msg->size() > 1)) return false;
+//	
+//	string mode = "intersect";	// default values
+//	if (msg->size() == 1)
+//		mode = msg->param(0)->value<string>("");
+//
+//	if (mode == "intersect") {
+//		selectPredicat<float> p(getBoundingRect(), getZOrder());
+//		parent->selectsubnodes<selectPredicat<float> > (p, outlist);
+//	}
+//	else if (mode == "include") {
+//		includePredicat<float> p(getBoundingRect(), getZOrder());
+//		parent->selectsubnodes<includePredicat<float> > (p, outlist);
+//	}
+//	else return false;
+//
+//	sort(outlist.begin(), outlist.end(), zorderSort());
+//	return true;
+//}
 
 
 //--------------------------------------------------------------------------
 // debugging facilities
 //--------------------------------------------------------------------------
-void Position::print (ostream& out) const
+void IPosition::print (ostream& out) const
 {
 	out << "  pos: [" << getXPos() << "," << getYPos() << "," << getZOrder() << "]" << endl;
 	out << "  size: [" << getWidth() << "," << getHeight() << "]" << endl;

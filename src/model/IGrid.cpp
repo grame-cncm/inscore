@@ -73,7 +73,7 @@ MsgHandler::msgStatus IGrid::set (const IMessage* msg)
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 	
-	if (msg->params().size() == 3) {
+	if (msg->size() == 3) {
 		int cols, rows;
 		if (msg->param(1, cols) && msg->param(2, rows)) {
 			if ( ( cols != getColumns() ) || ( rows != getRows()) )  {

@@ -40,7 +40,7 @@ IShapeMap::IShapeMap( const std::string& name, IObject* parent ) : IShape(name,p
 }
 
 //--------------------------------------------------------------------------
-IMessageList IShapeMap::__getMaps () const
+SIMessageList IShapeMap::__getMaps () const
 {
 	return TMapMsgHandler<float,2>::getMapMsgs( localMappings() , this );
 }

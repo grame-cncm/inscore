@@ -29,7 +29,9 @@
 
 #include <string>
 #ifdef V8ENGINE
+#include <sstream>
 #include <v8.h>
+#include "IMessage.h"
 #endif
 
 #include "smartpointer.h"
@@ -43,9 +45,11 @@ typedef libmapping::SMARTP<TEnv> STEnv;
 class TV8Js 
 {
 #ifdef V8ENGINE
-//	static int	fRefCount;
     v8::Persistent<v8::Context>	fContext;
 	int				fLineOffset;
+
+	bool bindEnv  (std::stringstream& s, const std::string& name, const IMessage::argPtr& val);
+	void bindEnv  (std::stringstream& s, const std::string& name, const IMessage::argslist& values);
 
 	v8::Persistent<v8::Context> CreateV8Context();
 	void ReportException(v8::TryCatch* try_catch) const;

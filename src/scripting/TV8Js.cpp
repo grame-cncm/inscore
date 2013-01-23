@@ -29,6 +29,10 @@
 #include "TV8Js.h"
 #include "TEnv.h"
 #include "OSCStream.h"
+#ifdef NO_OSCSTREAM
+# define ITLErr		cerr
+# define ITLEndl	endl
+#else
 #include "ITLError.h"
 #endif
 

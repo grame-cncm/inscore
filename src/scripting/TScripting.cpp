@@ -29,7 +29,6 @@
 #include "TScripting.h"
 #include "TMessageEvaluator.h"
 
-#include "IMessage.h"
 #include "TEnv.h"
 #include "ITLparser.h"
 #include "ITLError.h"
@@ -85,6 +84,9 @@ void TScripting::add (SIMessageList& msgs)
 //--------------------------------------------------------------------------------------------
 // lua support
 //--------------------------------------------------------------------------------------------
+#ifdef LUA
+bool TScripting::checkLua () const							{ return fLua != 0; }
+
 SIMessageList TScripting::luaEval (const char* script)
 {
 	if (fLua) {
@@ -114,6 +116,23 @@ SIMessageList TScripting::luaEval (const char* script)
 //--------------------------------------------------------------------------------------------
 // javascript support
 //--------------------------------------------------------------------------------------------
+#ifdef V8ENGINE
+bool TScripting::checkJavascript () const						{ return fJavascript != 0; }
+
+static int countlines (const char* script)
+{
+	int n = 1;
+	while (*script) {
+		int c = *script++;
+		if (c == 0x0D) {
+			n++;
+			if (*script == 0x0A) script++;
+		}
+		else if (c == 0x0A) n++;
+	}
+	return n;
+}
+
 SIMessageList TScripting::jsEval (const char* script, int lineno)
 {
 	if (fJavascript) {

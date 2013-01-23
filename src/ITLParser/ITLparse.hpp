@@ -44,22 +44,23 @@
      FLOAT = 260,
      IDENTIFIER = 261,
      EQUAL = 262,
-     MAPIDENTIFIER = 263,
-     REGEXP = 264,
-     PATHSEP = 265,
-     STRING = 266,
-     MSG = 267,
+     REGEXP = 263,
+     PATHSEP = 264,
+     STRING = 265,
+     QUOTEDSTRING = 266,
+     WATCH = 267,
      ERR = 268,
      ENDEXPR = 269,
-     LPAR = 270,
-     RPAR = 271,
-     SEP = 272,
-     LOOP = 273,
-     LOOPIDENTIFIER = 274,
-     LOOPREGEXP = 275,
-     VARSTART = 276,
-     LUASCRIPT = 277,
-     JSCRIPT = 278
+     VARSTART = 270,
+     LEFTPAR = 271,
+     RIGHTPAR = 272,
+     COLON = 273,
+     COMMA = 274,
+     POINT = 275,
+     HOSTNAME = 276,
+     IPNUM = 277,
+     LUASCRIPT = 278,
+     JSCRIPT = 279
    };
 #endif
 /* Tokens.  */
@@ -68,40 +69,43 @@
 #define FLOAT 260
 #define IDENTIFIER 261
 #define EQUAL 262
-#define MAPIDENTIFIER 263
-#define REGEXP 264
-#define PATHSEP 265
-#define STRING 266
-#define MSG 267
+#define REGEXP 263
+#define PATHSEP 264
+#define STRING 265
+#define QUOTEDSTRING 266
+#define WATCH 267
 #define ERR 268
 #define ENDEXPR 269
-#define LPAR 270
-#define RPAR 271
-#define SEP 272
-#define LOOP 273
-#define LOOPIDENTIFIER 274
-#define LOOPREGEXP 275
-#define VARSTART 276
-#define LUASCRIPT 277
-#define JSCRIPT 278
+#define VARSTART 270
+#define LEFTPAR 271
+#define RIGHTPAR 272
+#define COLON 273
+#define COMMA 274
+#define POINT 275
+#define HOSTNAME 276
+#define IPNUM 277
+#define LUASCRIPT 278
+#define JSCRIPT 279
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 23 "ITL.y"
+#line 25 "ITL.y"
 {
 	int		num;
 	float	real;
 	std::string* str;
+	inscore::ITLparser::address*	addr;
 	inscore::Sbaseparam *			p;
 	inscore::IMessage::argslist*	plist;
-	inscore::IMessage*			msg;
-	inscore::IMessageList*		msgList;
+	inscore::IMessage::TUrl*		url;
+	inscore::SIMessage*				msg;
+	inscore::SIMessageList*			msgList;
 }
 /* Line 1529 of yacc.c.  */
-#line 105 "ITLparse.hpp"
+#line 109 "ITLparse.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

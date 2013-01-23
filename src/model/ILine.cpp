@@ -76,7 +76,7 @@ MsgHandler::msgStatus ILine::set (const IMessage* msg)
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
-	if (msg->params().size() == 3) {
+	if (msg->size() == 3) {
 		float x, y;
 		if ((!msg->param(1, x)) || (!msg->param(2, y)))
 			return MsgHandler::kBadParameters;
@@ -85,7 +85,7 @@ MsgHandler::msgStatus ILine::set (const IMessage* msg)
 		newData(true);
 		ITLErr << "set line without mode is deprecated" << ITLEndl;
 	}
-	else if (msg->params().size() == 4) {
+	else if (msg->size() == 4) {
 		string mode; float a, b;
 		if (!msg->param(1, mode) || (!msg->param(2, a)) || (!msg->param(3, b)))
 			return MsgHandler::kBadParameters;

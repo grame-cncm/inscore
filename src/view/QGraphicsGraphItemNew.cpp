@@ -113,7 +113,7 @@ void QGraphicsGraphItemNew::paint( QPainter * painter, const QStyleOptionGraphic
 	int n = signal()->dimension();
 	for (int i=0; i < n; i += GraphicFrame::FrameSize()) {
 		SParallelSignal	sig = signal()->getProjection (i, 1, i + GraphicFrame::FrameSize());
-		drawSignal (sig, painter, size, stepWidth, yHeight);
+		if (sig) drawSignal (sig, painter, size, stepWidth, yHeight);
 	}
 }
 

@@ -108,8 +108,8 @@ void QCachedGuidoGraphicsItem::paint( QPainter * painter, const QStyleOptionGrap
 	__uint64 time = getTime();
 	QRectF rect = boundingRect();
 	QSize size (rect.width(), rect.height());
-qDebug() << "QCachedGuidoGraphicsItem::paint rect" << rect;
-qDebug() << "QCachedGuidoGraphicsItem::paint clipBoundingRect" << painter->clipBoundingRect();
+//qDebug() << "QCachedGuidoGraphicsItem::paint rect" << rect;
+//qDebug() << "QCachedGuidoGraphicsItem::paint clipBoundingRect" << painter->clipBoundingRect();
 #if 0
 	if (fInvalide) {
 		delete fCache;

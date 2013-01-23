@@ -102,8 +102,8 @@ OSCStream& operator <<(OSCStream& s, const string& val)
 //--------------------------------------------------------------------------
 OSCStream& operator <<(OSCStream& s, const IMessageList* list)	
 { 
-	for (unsigned int i =0; i < list->size(); i++) {
-		IMessage* msg = (*list)[i];
+	for (unsigned int i =0; i < list->list().size(); i++) {
+		IMessage* msg = (list->list())[i];
 		s << msg;
 	}
 	return s; 
@@ -131,8 +131,8 @@ OSCErrorStream& operator <<(OSCErrorStream& s, const string& val)
 //--------------------------------------------------------------------------
 OSCErrorStream& operator <<(OSCErrorStream& s, const IMessageList* list)	
 { 
-	for (unsigned int i =0; i < list->size(); i++) {
-		IMessage* msg = (*list)[i];
+	for (unsigned int i =0; i < list->list().size(); i++) {
+		IMessage* msg = (list->list())[i];
 		s << msg;
 	}
 	return s; 

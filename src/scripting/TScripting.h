@@ -29,7 +29,11 @@
 
 #include <stack>
 #include <TLua.h>
+#ifdef V8ENGINE
+# include <TV8Js.h>
+#else
 # include <TMozillaJs.h>
+#endif
 #include "IMessage.h"
 
 #include "smartpointer.h"

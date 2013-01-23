@@ -68,7 +68,7 @@ class IApplDebug : public IObjectDebug
 		virtual ~IApplDebug() {}
 
 		/// \brief object \c 'get' without parameter form: gives the corresponding 'set' message list
-		virtual IMessageList getSetMsg () const;
+		virtual SIMessageList getSetMsg () const;
 
 		void		setOSCDebug(bool state)		{ fOSCDebug = state; }
 };
@@ -103,7 +103,7 @@ class IApplStat : public IVNode
 		virtual ~IApplStat() {}
 
 		/// \brief object \c 'get' without parameter form: gives the corresponding 'set' message list
-		virtual IMessageList getSetMsg () const;
+		virtual SIMessageList getSetMsg () const;
 		void		reset();
 };
 

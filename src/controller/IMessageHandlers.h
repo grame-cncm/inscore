@@ -283,7 +283,7 @@ template <typename S> class TSetMsgHandler<TFloatSize,S> : public MsgHandler
 
 		virtual msgStatus operator ()(const IMessage* msg)
 			{ 
-				if (msg->params().size() != 2) return MsgHandler::kBadParameters;
+				if (msg->size() != 2) return MsgHandler::kBadParameters;
 				float n, d;
 				if (msg->param(0, n) && msg->param(1, d)) {
 					S  setOp;
@@ -308,7 +308,7 @@ template <typename S> class TSetMsgHandler<libmapping::rational,S> : public MsgH
 
 		virtual msgStatus operator ()(const IMessage* msg)
 			{ 
-				if (msg->params().size() != 2) return MsgHandler::kBadParameters;
+				if (msg->size() != 2) return MsgHandler::kBadParameters;
 				int n, d;
 				if (msg->param(0, n) && msg->param(1, d)) {
 					S  setOp;
@@ -327,7 +327,7 @@ class GetParamMsgHandler : public libmapping::smartable {
 	public: 
 		virtual ~GetParamMsgHandler() {}
 		/// \brief output a value of an object to a message
-		virtual IMessage&  print(IMessage&) const = 0;
+		virtual SIMessage&  print(SIMessage&) const = 0;
 };
 typedef libmapping::SMARTP<GetParamMsgHandler> SGetParamMsgHandler;
 
@@ -338,7 +338,7 @@ class GetParamMultiMsgHandler : public libmapping::smartable {
 	public: 
 		virtual ~GetParamMultiMsgHandler() {}
 		/// \brief output a value of an object to a message
-		virtual IMessageList&  print(IMessageList&) const = 0;
+		virtual SIMessageList  print(SIMessageList&) const = 0;
 };
 typedef libmapping::SMARTP<GetParamMultiMsgHandler> SGetParamMultiMsgHandler;
 
@@ -350,7 +350,7 @@ template <typename T> class TGetParamMsgHandler : public GetParamMsgHandler {
 		TGetParamMsgHandler(const T& val) : fValue(val) {}
 	public: 
 		static SGetParamMsgHandler create(const T& val) { return new TGetParamMsgHandler<T> (val); }
-		virtual IMessage&  print(IMessage& out) const	{ out << fValue; return out; }
+		virtual SIMessage&  print(SIMessage& out) const	{ *out << fValue; return out; }
 };
 
 //--------------------------------------------------------------------------
@@ -362,7 +362,7 @@ template <typename C, typename T> class TGetParamMethodHandler : public GetParam
 		TGetParamMethodHandler(C* obj, T method) : fObject(obj), fMethod(method) {}
 	public: 
 		static SGetParamMsgHandler create(C* obj, T method) { return new TGetParamMethodHandler<C,T> (obj, method); }
-		virtual IMessage&  print(IMessage& out) const	{ out << (fObject->*fMethod)(); return out; }
+		virtual SIMessage&  print(SIMessage& out) const	{ *out << (fObject->*fMethod)(); return out; }
 };
 
 //--------------------------------------------------------------------------
@@ -374,7 +374,7 @@ template <typename C, typename T> class TGetParamMultiMethodHandler : public Get
 		TGetParamMultiMethodHandler(C* obj, T method) : fObject(obj), fMethod(method) {}
 	public: 
 		static SGetParamMultiMsgHandler create(C* obj, T method) { return new TGetParamMultiMethodHandler<C,T> (obj, method); }
-		virtual IMessageList&  print(IMessageList& out) const	{ out += (fObject->*fMethod)(); return out; }
+		virtual SIMessageList  print(SIMessageList& out) const	{ out->list().push_back( (fObject->*fMethod)()->list() ); return out; }
 };
 
 /*! @} */

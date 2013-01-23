@@ -62,6 +62,7 @@ class TEnv : public libmapping::smartable
 
 		STEnv	bind (const char* e, const IMessage::argPtr v)	{ fVariables[e].push_back(v); return this; }
 		void	clear()								{ fVariables.clear(); }
+		void	clear (const char* e)				{ fVariables[e].clear(); }
 		int		size() const						{ return fVariables.size(); }
 		
 		IMessage::argslist value(const std::string& e) const { 

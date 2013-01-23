@@ -159,9 +159,9 @@ void INScoreScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 	if (event->mimeData()->hasText()) {
 		stringstream sstr (event->mimeData()->text().toStdString());
 		ITLparser p (&sstr, 0, fScene->getJSEngine(), fScene->getLUAEngine());
-		IMessageList* msgs = p.parse();
+		SIMessageList msgs = p.parse();
 		if (msgs) {
-			for (IMessageList::const_iterator i = msgs->begin(); i != msgs->end(); i++) {
+			for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
 				INScore::postMessage ((*i)->address().c_str(), *i);
 			}
 		}
