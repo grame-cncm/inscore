@@ -19,7 +19,7 @@ docsrc := ../doc
 docdst := ./doc
 icns   := ../rsrc/INScoreViewer.icns
 
-rsrcf   := Max PureData python lisp
+rsrcf   := ../scripts
 rfolders:= $(foreach dir, $(rsrcf), $(shell find $(dir) -type d))
 rfiles  := $(foreach dir, $(rsrcf), $(shell find $(dir) -type f))
 hfiles  := $(foreach dir, $(rsrcf), $(shell find $(dir) -name .DS_Store))
@@ -80,8 +80,6 @@ copydoc:
 	make -C $(docsrc) htmlclean
 	rm -f $(docdst)/html/*
 	cp  $(docsrc)/OSCMsg/* $(docdst)/html
-	cp -f $(docsrc)/presentation/INScore-fr.pdf $(docdst)
-	cp -f $(docsrc)/presentation/INScore-en.pdf $(docdst)
 
 rsrc:
 	make cleanrsrc
