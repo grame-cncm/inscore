@@ -1,0 +1,3 @@
+
+/ITL/scene load 'scripts/cursor.inscore';
+/ITL/scene/sync 'cursor' 'score';

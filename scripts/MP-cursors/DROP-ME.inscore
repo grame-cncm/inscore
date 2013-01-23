@@ -1,0 +1,11 @@
+
+/ITL/scene/* del;
+/ITL/scene/signal/* del;
+
+/ITL/scene/score set 'gmnf' '07.gmn';
+/ITL/scene/score scale 2.5;
+
+/ITL/scene load 'cursor-line.inscore';
+
+!/ITL/scene/score watch "mouseDown" "localhost:7100/date" "$date";
+!/ITL/scene/score watch+ "mouseDown" "/ITL/scene/cursor" 'date' "$date";
