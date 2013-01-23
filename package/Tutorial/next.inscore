@@ -1,7 +1,0 @@
-/ITL/scene/next set "img" "rsrc/next.png" ;
-/ITL/scene/next scale 0.400000 ;
-/ITL/scene/next x 0.900000 ;
-/ITL/scene/next y 0.900000 ;
-/ITL/scene/next alpha 160 ;
-/ITL/scene/next watch "mouseEnter" "/ITL/$scene/$self" "alpha" 255 ;
-/ITL/scene/next watch "mouseLeave" "/ITL/$scene/$self" "alpha" 160 ;

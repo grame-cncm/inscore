@@ -1,7 +1,0 @@
-/ITL/scene/msgs2 set "htmlf" "rsrc/msgs2.html" ;
-/ITL/scene/msgs2 scale 2.00000 ;
-/ITL/scene/msgs2 y 0.300000 ;
-/ITL/scene/msgs2 xorigin -1.00000 ;
-/ITL/scene/msgs2 x -0.750000 ;
-/ITL/scene load "next.inscore" ;
-/ITL/scene/next watch "mouseDown" "/ITL/scene" "load" "msgs-detail.inscore" ;
