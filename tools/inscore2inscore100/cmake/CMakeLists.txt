@@ -38,7 +38,7 @@ set (ROOT ${CMAKE_CURRENT_SOURCE_DIR}/..)
 set (OSC_PATH  "${ROOT}/../../lib/oscpack")
 set (LOCALLIB  "${ROOT}/../../lib/")
 set (INSCORE ${ROOT}/../../src)
-set (INSFOLDERS  controller lib model mapping view interface scripting atomic libmapping/package/libmapping)
+set (INSFOLDERS  controller events lib model mapping view interface scripting atomic libmapping/src/misc libmapping/src/segments libmapping/src/relations)
 
 # add source files
 set(SRC "${ROOT}/*.cpp" "${ROOT}/parser/*.cpp" "${INSCORE}/scripting/TScripting.cpp" "${INSCORE}/lib/Tools.cpp")
