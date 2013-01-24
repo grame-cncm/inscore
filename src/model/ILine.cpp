@@ -95,8 +95,8 @@ MsgHandler::msgStatus ILine::set (const IMessage* msg)
 		}
 		else if (mode == "wa") {
 			fWAMode = true;
-			float x = a * cos(M_PI * b / 180);
-			float y = a * sin(M_PI * b / 180);
+			double x = a * cos(M_PI * b / 180);
+			double y = a * sin(M_PI * b / 180);
 			setPoint( TFloatPoint(x,y) );
 		}
 		newData(true);
