@@ -164,6 +164,7 @@ IMessage::argslist TScripting::resolve (const IMessage* msg)
 #ifdef PARSERTEST
 	IMessage::argslist out;
 	out.push_back (new inscore::IMsgParam<std::string>("unresoved"));
+	return out;
 #else
 	MouseLocation ml;
 	libmapping::rational date (0,1);
