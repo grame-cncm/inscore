@@ -448,6 +448,12 @@ public:
 	*/
 	void	send () const;
 
+	/*!
+		\brief transforms a 'watch' message with inline associated messages into a message with enclosed messages
+		\param startIndex the inlined messages start index
+		\return a message or 0 if the conversion fails
+	*/
+	SIMessage		buildWatchMsg(int startIndex) const;
 
 	/*!
 		\brief decode an extended address

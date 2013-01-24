@@ -173,42 +173,21 @@ bool IMessage::decodeAddress (const std::string& address, std::string& oscAddres
 }
 
 //--------------------------------------------------------------------------
-//bool IMessage::watchMsg(int& msgIndex) const
-//{
-//	if (message().empty()) return false;
-//	return (message() == krequire_SetMethod)
-//		msgIndex = 1;
-//	else if (message() == kwatch_GetSetMethod) || (message() == kwatchplus_SetMethod)) {
-//		string what;
-//		if (!msg->param (0, what))				// can't decode event to watch when not a string
-//			return false;						// exit with bad parameter
-//			
-//		EventsAble::eventype t = EventsAble::string2type (what);
-//		switch (t) {
-//			case EventsAble::kMouseMove:
-//			case EventsAble::kMouseDown:
-//			case EventsAble::kMouseUp:
-//			case EventsAble::kMouseDoubleClick:
-//			case EventsAble::kMouseEnter:
-//			case EventsAble::kMouseLeave:
-//				if (msg->size() > 1) {
-//					msgIndex = 1);
-//					if (!watchMsg) return MsgHandler::kBadParameters;
-//
-//					if (add) eventsHandler()->addMsg (t, watchMsg);
-//					else eventsHandler()->setMsg (t, watchMsg);
-//				}
-//				else if (!add) eventsHandler()->setMsg (t, 0);
-//				break;
-//
-//			case EventsAble::kTimeEnter:
-//			case EventsAble::kTimeLeave:
-//			case EventsAble::kDurEnter:
-//			case EventsAble::kDurLeave:
-//	}
-//	else return false;
-//	return true;
-//}
+SIMessage IMessage::buildWatchMsg(int startIndex) const
+{
+	SIMessageList msgs = watchMsg2Msgs (startIndex);
+	if (!msgs) return 0;
+
+	SIMessage msg = IMessage::create();
+	msg->setSrcIP( src() );
+	msg->setAddress( address());
+	msg->setMessage( message());
+	msg->setUrl( url());
+	for (int i=0; i < startIndex; i++)		// add the first args of the watch message
+		msg->add(param(i));
+	msg->add(msgs);							// next add the messages
+	return msg;
+}
 
 //--------------------------------------------------------------------------
 SIMessage IMessage::watchMsg2Msg(int& index) const
