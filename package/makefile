@@ -76,6 +76,7 @@ common:
 	cp $(i2i100tool) $(package)/inscore2inscore100
 	cp $(i2i90)/readme.txt $(package)/inscore2inscore90
 	cp $(i2i100)/readme.txt $(package)/inscore2inscore100
+	make samples
 		
 doc: 
 	make -C $(docsrc)
