@@ -108,6 +108,7 @@ class OSCStream
 				inline	OSCStream& operator <<(OSCStream& s, int val)		{ s.stream() << val; return s; }
 				inline	OSCStream& operator <<(OSCStream& s, long val)		{ s.stream() << (int)val; return s; }
 				inline	OSCStream& operator <<(OSCStream& s, float val)		{ s.stream() << val; return s; }
+				inline	OSCStream& operator <<(OSCStream& s, double val)	{ s.stream() << float(val); return s; }
 
 template <typename T> 	OSCStream& operator <<(OSCStream& s, const TSize<T>& size)	{ s << size.width() << size.height(); return s; }
 
@@ -147,6 +148,7 @@ class OSCErrorStream : public OSCStream
 				inline	OSCErrorStream& operator <<(OSCErrorStream& s, int val)			{ s.stream() << " " << val; return s; }
 				inline	OSCErrorStream& operator <<(OSCErrorStream& s, long val)		{ s.stream() << " " << (int)val; return s; }
 				inline	OSCErrorStream& operator <<(OSCErrorStream& s, float val)		{ s.stream() << " " << val; return s; }
+				inline	OSCErrorStream& operator <<(OSCErrorStream& s, double val)		{ s.stream() << float(val); return s; }
 
 template <typename T> 	OSCErrorStream& operator <<(OSCErrorStream& s, const TSize<T>& size)	{ s << size.width() << size.height(); return s; }
 
