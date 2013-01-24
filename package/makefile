@@ -12,7 +12,7 @@ ifeq ($(system), MINGW32_NT-6.1)
   i2i100tool := $(i2i100)/cmake/Release/inscore2inscore100.exe
 else
   i2i90tool  := $(i2i90)/cmake/inscore2inscore90
-  i2i100tool := $(i2i90)/cmake/inscore2inscore100
+  i2i100tool := $(i2i100)/cmake/inscore2inscore100
 endif
 endif
 
