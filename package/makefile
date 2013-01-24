@@ -87,6 +87,7 @@ copydoc:
 	make -C $(docsrc) htmlclean
 	rm -f $(docdst)/html/*
 	cp  $(docsrc)/OSCMsg/* $(docdst)/html
+	cp  $(docsrc)/INScore-refcard.pdf $(docdst)
 
 rsrc:
 	make cleanrsrc
