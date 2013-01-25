@@ -19,6 +19,7 @@ endif
 package:= INScore-$(version)
 rsrc   := INScore-rsrc-$(version)
 viewer := INScoreViewer
+interf := interfaces
 docsrc := ../doc
 docdst := ./doc
 icns   := ../rsrc/INScoreViewer.icns
@@ -90,19 +91,37 @@ copydoc:
 	cp  $(docsrc)/OSCMsg/* $(docdst)/html
 	cp  $(docsrc)/INScore-refcard.pdf $(docdst)
 
+interfaces:
+	[ -d $(rsrc)/$(interf) ] || mkdir -p $(rsrc)/$(interf)
+	tar czf $(rsrc)/$(interf)/python.tgz ../$(interf)/python
+	tar czf $(rsrc)/$(interf)/lisp.tgz ../$(interf)/lisp
+	tar czf $(rsrc)/$(interf)/csound.tgz ../$(interf)/csound	
+
+scripts:
+	[ -d $(rsrc)/scripts ] || mkdir -p $(rsrc)/scripts
+	cp -R ../scripts/S-* $(rsrc)/scripts
+	rm -f $(shell find $(rsrc)/scripts -name "*DS_Store")
+	cd $(rsrc) && tar czf scripts.tgz scripts
+
+patches:
+	[ -d $(rsrc)/patches ] || mkdir -p $(rsrc)/patches
+	cp -R ../scripts/MP-* $(rsrc)/patches
+	rm -f $(shell find $(rsrc)/patches -name "*DS_Store")
+	mv $(rsrc)/patches/MP-Turenas $(rsrc)/Turenas
+	cd $(rsrc) && tar czf patches.tgz patches
+	cd $(rsrc) && tar czf Turenas.tgz Turenas
+
 rsrc:
-	make cleanrsrc
-	./maketar Max $(rsrc)
-	./maketar PureData $(rsrc)
-	tar czf $(rsrc)/python.tgz python
-	tar czf $(rsrc)/lisp.tgz lisp
-	tar czf $(rsrc)/StandAlone.tgz StandAlone
-	tar czf $(rsrc)/Faust.tgz Faust
-	tar czf $(rsrc)/Tutorial.tgz Tutorial
-	tar czf $(rsrc).tgz $(rsrc)
-	mv $(rsrc).tgz $(rsrc)/all.tgz
-	tar czf $(rsrc)/Max.tgz $(rsrc)/Max
-	tar czf $(rsrc)/PureData.tgz $(rsrc)/PureData
+	make interfaces
+	make scripts
+	make patches
+	cp -R ../scripts/Perception $(rsrc)
+	cd $(rsrc) && tar czf Perception.tgz Perception
+	cp -R ../scripts/M-tools $(rsrc)
+	cd $(rsrc) && tar czf M-tools.tgz M-tools
+	cp -R ../scripts/P-tools $(rsrc)
+	cd $(rsrc) && tar czf P-tools.tgz P-tools
+	cp -R ../scripts/readme* $(rsrc)
 	cp rsrc/cclicense.pdf $(rsrc)/license.pdf
 	cp rsrc/cclicense.html $(rsrc)/license.html
 	cp rsrc/whatsnew.txt $(rsrc)
