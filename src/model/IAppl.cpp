@@ -129,7 +129,8 @@ map<string, pair<string, string> > IAppl::fAliases;
 
 //--------------------------------------------------------------------------
 IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool offscreen) 
-	: IObject(kName, 0), fCurrentTime(0), fOffscreen(offscreen), fUDP(udpport,outport,errport), fRate(10), fAppl(appl)
+	: IObject(kName, 0), fCurrentTime(0), fCurrentTicks(0), 
+	fOffscreen(offscreen), fUDP(udpport,outport,errport), fRate(10), fAppl(appl)
 {
 	fTypeString = kApplType;
 	fVersion = INScore::versionStr();
