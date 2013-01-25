@@ -62,7 +62,8 @@ string Tools::ensurefloat (float f, int precision)
 	stringstream stream;
 	if (precision) stream.precision(precision);
 	stream << f;
-	const char* ptr = stream.str().c_str();
+	const string& s = stream.str();
+	const char* ptr = s.c_str();
 	bool hasdot = false;
 	while(*ptr) {
 		if (*ptr++ == '.') hasdot = true;
