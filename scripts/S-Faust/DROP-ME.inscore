@@ -32,7 +32,8 @@
 /ITL/scene/signal/stack alias "/1/fader5" volume;
 
 /ITL/scene/comment1 set  txt "You should launch TouchOSC on your smartphone, activate the accelerometers and send them to INScore.";
-/ITL/scene/comment1 y 0.855;
-/ITL/scene/comment2 set  txt "You can drop 'colors.inscore' or 'level.inscore' to control the graphic signal appearance";
+/ITL/scene/comment1 y 0.84;
+/ITL/scene/comment2 set  txt "You can drop 'colors.inscore' or 'level.inscore' to control the graphic signal appearance.
+With the 'Simple' TouchOSC layout, you can also use the sliders.";
 /ITL/scene/comment2 y 0.9;
 
