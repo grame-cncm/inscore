@@ -45,7 +45,7 @@ class EventsAble
 	public:
 		enum eventype { kUnknownEvent=0, 
 			kMouseDown, kMouseUp, kMouseDoubleClick, kMouseEnter, kMouseLeave, kMouseMove,
-			kTimeEnter, kTimeLeave, kDurEnter, kDurLeave, kNewElement };
+			kTimeEnter, kTimeLeave, kDurEnter, kDurLeave, kNewElement, kExport, kEndPaint };
 			
 				 EventsAble();
 		virtual ~EventsAble();

@@ -42,7 +42,10 @@ static const char* kTimeEnterStr	= "timeEnter";
 static const char* kTimeLeaveStr	= "timeLeave";
 static const char* kDurEnterStr	= "durEnter";
 static const char* kDurLeaveStr	= "durLeave";
+static const char* kExportStr	= "export";
 
+// scene specific events
+static const char* kEndPaintStr		= "endPaint";
 static const char* kNewElementStr	= "newElement";
 
 namespace inscore
@@ -204,6 +207,8 @@ const char* EventsAble::type2string (eventype type)
 		case kDurEnter:		return kDurEnterStr;
 		case kDurLeave: 	return kDurLeaveStr;
 		case kNewElement: 	return kNewElementStr;
+		case kExport:		return kExportStr;
+		case kEndPaint:		return kEndPaintStr;
 		default: return "";
 	}
 }
@@ -222,7 +227,9 @@ void EventsAble::init ()
 		fTypeStr[kTimeLeaveStr]	= kTimeLeave;
 		fTypeStr[kDurEnterStr]	= kDurEnter;
 		fTypeStr[kDurLeaveStr]	= kDurLeave;
+		fTypeStr[kExportStr]	= kExport;
 		fTypeStr[kNewElementStr]= kNewElement;
+		fTypeStr[kEndPaintStr]	= kEndPaint;
 	}
 }
 
