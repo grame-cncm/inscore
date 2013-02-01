@@ -66,6 +66,7 @@ class IScene : public IRectShape, public PeriodicTask
 	bool			fFullScreen;
 	bool			fFrameless;
 	bool			fAbsoluteCoordinates;
+	bool			fWindowOpacity;
 	SISceneSync		fSync;
 	SIFileWatcher	fFileWatcher;
 	SISignalNode	fSignals;
@@ -84,8 +85,14 @@ class IScene : public IRectShape, public PeriodicTask
 		void			setFrameless(bool state)	{ fFrameless = state; }
 		bool			getAbsoluteCoordinates() const		{ return fAbsoluteCoordinates; }
 		void			setAbsoluteCoordinates(bool state)	{ fAbsoluteCoordinates = state; }
+		bool			getWindowOpacity() const			{ return fWindowOpacity; }
+		void			setWindowOpacity(bool state)		{ fWindowOpacity = state; }
+		
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*);
+		
+		/// \brief end paint event handler
+		void endPaint () const;
 
 		/// \brief creates the scene virtual nodes
 		virtual void	createVirtualNodes ();

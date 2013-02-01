@@ -60,7 +60,7 @@ IScene::~IScene()
 }
 
 IScene::IScene(const std::string& name, IObject * parent) 
-		: IRectShape(name, parent), fFullScreen(false), fFrameless(false), fAbsoluteCoordinates(false)
+		: IRectShape(name, parent), fFullScreen(false), fFrameless(false), fAbsoluteCoordinates(false), fWindowOpacity(false)
 {
 	fTypeString = kSceneType;
 	setColor( IColor(255,255,255,255) );
@@ -74,12 +74,14 @@ IScene::IScene(const std::string& name, IObject * parent)
 	fMsgHandlerMap[kfullscreen_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFullScreen);
 	fMsgHandlerMap[kframeless_GetSetMethod]		= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFrameless);
 	fMsgHandlerMap[kabsolutexy_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setAbsoluteCoordinates);
+	fMsgHandlerMap[kwindowOpacity_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setWindowOpacity);
 	fMsgHandlerMap[kload_SetMethod]				= TMethodMsgHandler<IScene>::create(this, &IScene::loadMsg);
 	fMsgHandlerMap[krootPath_GetSetMethod]		= TSetMethodMsgHandler<IScene, string>::create(this, &IScene::setRootPath);
 
 	fGetMsgHandlerMap[kfullscreen_GetSetMethod] = TGetParamMsgHandler<bool>::create(fFullScreen);
 	fGetMsgHandlerMap[kframeless_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fFrameless);
 	fGetMsgHandlerMap[kabsolutexy_GetSetMethod] = TGetParamMsgHandler<bool>::create(fAbsoluteCoordinates);
+	fGetMsgHandlerMap[kwindowOpacity_GetSetMethod] = TGetParamMsgHandler<bool>::create(fWindowOpacity);
 	fGetMsgHandlerMap[krootPath_GetSetMethod]	= TGetParamMsgHandler<string>::create(fRootPath);
 }
 
@@ -230,6 +232,19 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
+void IScene::endPaint () const
+{
+	const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kEndPaint);
+	if (!msgs || msgs->list().empty()) return;		// nothing to do, no associated message
+
+	MouseLocation mouse (0, 0, 0, 0, 0, 0);
+	EventContext env(mouse, libmapping::rational(0,1), 0);
+	TMessageEvaluator me;
+	SIMessageList outmsgs = me.eval (msgs, env);
+	if (outmsgs && outmsgs->list().size()) outmsgs->send();
+}
+
+//--------------------------------------------------------------------------
 void IScene::add (const nodePtr& node)
 {
 	IObject::add (node);
@@ -253,6 +268,7 @@ MsgHandler::msgStatus IScene::_watchMsg(const IMessage* msg, bool add)
 			EventsAble::eventype t = EventsAble::string2type (what);
 			switch (t) {
 				case EventsAble::kNewElement:
+				case EventsAble::kEndPaint:
 					if (msg->size() > 1)
 						if (add) eventsHandler()->addMsg (t, msg->watchMsg2Msgs(1));
 						else eventsHandler()->setMsg (t, msg->watchMsg2Msgs(1));
