@@ -12,6 +12,12 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 1.01
+- new 'export' event
+- new 'endPoint' event at scene level
+- new 'windowOpacity' method at scene level
+
+----------------------------------------------------
 Version 1.00
 - bug correction in streching very small objects (due to approximations)
 - bug correction in $sx and $sy computation corrected (xorigin and yorigin was not taken into account)
