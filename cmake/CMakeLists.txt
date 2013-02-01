@@ -10,10 +10,10 @@ set (APPLTARGET	INScoreViewer)
 
 #######################################
 # versions management
-set (INSFWKVERS 1.00)
-set (INSFWKSTRVERS "v.1.00")
-set (INSAPPVERS 1.00)
-set (INSAPPSTRVERS "v.1.00")
+set (INSFWKVERS 1.01)
+set (INSFWKSTRVERS "v.1.01")
+set (INSAPPVERS 1.01)
+set (INSAPPSTRVERS "v.1.01")
 set (SOVERS 1)
 
 #######################################
