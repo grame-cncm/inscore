@@ -38,6 +38,7 @@
 
 #include "IScene.h"
 #include "IColor.h"
+#include "TMessageEvaluator.h"
 #include "VExport.h"
 #include "INScore.h"
 #include "ISignalProfiler.h"
@@ -50,22 +51,33 @@ namespace inscore
 
 class ZoomingGraphicsView : public QGraphicsView
 {
-	std::string fSceneAddress;
-	VSceneView * fSceneView;
+	std::string		fSceneAddress;
+//	VSceneView* fSceneView;
+	const IScene*	fScene;
 
 	public :
-		ZoomingGraphicsView(QGraphicsScene * s) : QGraphicsView(s) {}
+		ZoomingGraphicsView(QGraphicsScene * s) : QGraphicsView(s), fScene(0) {}
 		virtual ~ZoomingGraphicsView() {}
 
 		void setSceneAddress(const std::string& name)	{ fSceneAddress = name; }
+		void setScene		(const IScene* scene)		{ fScene = scene; }
 
 	protected:
-		virtual void closeEvent(QCloseEvent *);
+		virtual void	closeEvent	(QCloseEvent *);
+		virtual void	paintEvent  (QPaintEvent * );
+
 		void resizeEvent ( QResizeEvent * event ) {
 			// scene adaptation to avoid scroll bars
 			fitInView( SCENE_RECT , Qt::KeepAspectRatio );
 		}
 };
+
+//------------------------------------------------------------------------------------------------------------------------
+void ZoomingGraphicsView::paintEvent (QPaintEvent * event) 
+{
+	QGraphicsView::paintEvent (event);
+	if (fScene) fScene->endPaint();
+}
 
 //------------------------------------------------------------------------------------------------------------------------
 void ZoomingGraphicsView::closeEvent (QCloseEvent * event) 
@@ -126,7 +138,8 @@ void VSceneView::updateOnScreen( IScene * scene )
 	}
 
 	// Transparency
-	fGraphicsView->setWindowOpacity(sc.getA()/255.0f);
+	if (!scene->getWindowOpacity())
+		fGraphicsView->setWindowOpacity(sc.getA()/255.0f);
 
 	// Fullscreen/Normalscreen
 	// switch screen mode before resizing in order to get the correct size and position
@@ -233,10 +246,20 @@ void VSceneView::updateView( IScene * scene )
 
 	if (fGraphicsView) updateOnScreen (scene);
 	else updateOffScreen (scene);
+	fGraphicsView->setScene (scene);
 
 	// Export
-	if ( scene->getExportFlag().length() )
+	if ( scene->getExportFlag().length() ) {
 		VExport::exportScene( fGraphicsView , scene->getExportFlag().c_str() );
+		const IMessageList*	msgs = scene->getMessages(EventsAble::kExport);
+		if (msgs) {
+			MouseLocation mouse (0, 0, 0, 0, 0, 0);
+			EventContext env(mouse, scene->getDate(), scene);
+			TMessageEvaluator me;
+			SIMessageList outmsgs = me.eval (msgs, env);
+			if (outmsgs && outmsgs->list().size()) outmsgs->send();
+		}
+	}
 }
 
 //--------------------------------------------------------------------------
