@@ -36,6 +36,7 @@
 #include "QStretchTilerItem.h"
 
 #include "IObject.h"
+#include "TMessageEvaluator.h"
 #include "VExport.h"
 
 #define NB_OF_COLORS 12
@@ -270,8 +271,18 @@ void VGraphicsItemView::updateView(IObject* o)
 	item()->setZValue(  o->getZOrder() );
 
 	//Exports the item if necessary.
-	if ( o->getExportFlag().length() )	
+	if ( o->getExportFlag().length() ) {
 		VExport::exportItem( item() , o->getExportFlag().c_str() ,  o->getScale() ,  o->getScale() );
+		const IMessageList*	msgs = o->getMessages(EventsAble::kExport);
+		if (msgs) {
+			MouseLocation mouse (0, 0, 0, 0, 0, 0);
+			EventContext env(mouse, libmapping::rational(0,1), o);
+			TMessageEvaluator me;
+			SIMessageList outmsgs = me.eval (msgs, env);
+			if (outmsgs && outmsgs->list().size()) outmsgs->send();
+		}
+		
+	}
 
 	//	Debug mapping mode:
 	//		- erase mapping QGraphicsRectItem anyways
