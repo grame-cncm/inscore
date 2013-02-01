@@ -129,6 +129,7 @@ extern const char* kvideoMapf_SetMethod;
 extern const char* kwatch_GetSetMethod;
 extern const char* kwatchplus_SetMethod;
 extern const char* kwidth_GetSetMethod;
+extern const char* kwindowOpacity_GetSetMethod;
 extern const char* kwriteBench_SetMethod;
 extern const char* kx_GetSetMethod;
 extern const char* kxborder_GetSetMethod;

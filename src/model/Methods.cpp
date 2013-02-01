@@ -128,6 +128,7 @@ const char* kvideoMapf_SetMethod	= "videoMapf";		// Set
 const char* kwatch_GetSetMethod		= "watch";			// Get Set
 const char* kwatchplus_SetMethod	= "watch+";			// Get Set
 const char* kwidth_GetSetMethod		= "width";			// Set
+const char* kwindowOpacity_GetSetMethod = "windowOpacity";
 const char* kwriteBench_SetMethod	= "writeBench";		// Set
 const char* kx_GetSetMethod			= "x";				// Get Set
 const char* kxborder_GetSetMethod	= "xborder";		// Get Set
