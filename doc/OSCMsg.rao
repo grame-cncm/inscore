@@ -801,10 +801,10 @@
 \rail@nont{int23}[]
 \rail@end
 }
-\rail@i {42}{ sceneMsg : 'new' | 'del' | 'reset' | ('rootPath' path) | ('load' filePath) | ('fullscreen' int32) | ('frameless' int32) | ('absolutexy' int32) | commonMsg }
+\rail@i {42}{ sceneMsg : 'new' | 'del' | 'reset' | ('rootPath' path) | ('load' filePath) | ('fullscreen' int32) | ('frameless' int32) | ('absolutexy' int32) | ('windowOpacity' int32) | commonMsg }
 \rail@o {42}{
 \rail@index{sceneMsg}
-\rail@begin{9}{sceneMsg}
+\rail@begin{10}{sceneMsg}
 \rail@bar
 \rail@term{new}[]
 \rail@nextbar{1}
@@ -827,6 +827,9 @@
 \rail@term{absolutexy}[]
 \rail@token{int32}[]
 \rail@nextbar{8}
+\rail@term{windowOpacity}[]
+\rail@token{int32}[]
+\rail@nextbar{9}
 \rail@nont{commonMsg}[]
 \rail@endbar
 \rail@end
@@ -1355,11 +1358,17 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {75}{ what : 'newElement' }
+\rail@i {75}{ what : 'export' | 'newElement' | 'endPaint' }
 \rail@o {75}{
 \rail@index{what}
-\rail@begin{1}{what}
+\rail@begin{3}{what}
+\rail@bar
+\rail@term{export}[]
+\rail@nextbar{1}
 \rail@term{newElement}[]
+\rail@nextbar{2}
+\rail@term{endPaint}[]
+\rail@endbar
 \rail@end
 }
 \rail@i {76}{ posVar : xy | 'absx' | 'absy' | 'sx' | 'sy' }

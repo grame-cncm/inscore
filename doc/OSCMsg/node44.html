@@ -67,7 +67,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 Synchronization between components is in charge of the static <TT>sync</TT> node, automatically embedded in each scene. Its address is <TT>/ITL/<I>scene</I>/sync</TT> and it supports messages to add or remove a master / slave relation between components or to query the synchronizations state.
 <BR>
 <IMG
- WIDTH="26" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="609" HEIGHT="237" ALIGN="BOTTOM" BORDER="0"
  SRC="img56.gif"
  ALT="\begin{rail}
 sync : syncIdentifier
@@ -76,8 +76,8 @@ sync : syncIdentifier
 \vert [3] 'get' ( \vert identifier)
 \end{rail}">
 <BR>
-<A NAME="955"></A>
-<A NAME="956"></A>
+<A NAME="957"></A>
+<A NAME="958"></A>
 
 <P>
 
@@ -93,14 +93,14 @@ sync : syncIdentifier
 <P>
 <BR>
 <IMG
- WIDTH="26" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="351" HEIGHT="88" ALIGN="BOTTOM" BORDER="0"
  SRC="img57.gif"
  ALT="\begin{rail}
 syncIdentifier : [1] identifier
 \vert [2] identifier ':' mapName
 \end{rail}">
 <BR>
-<A NAME="972"></A>
+<A NAME="974"></A>
 
 <P>
 Synchronization identifiers indicates 1) the name of a <TT>scene</TT> component or 2) the name of a <TT>scene</TT> component associated to a mapping name. Using the first form (i.e. without explicit mapping name), the system uses the default unnamed mapping (see section <A HREF="node40.html#mapMsg">9.1</A> p.<A HREF="node40.html#mapMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> mappings and named mappings).

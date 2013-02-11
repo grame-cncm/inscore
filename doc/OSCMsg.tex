@@ -1179,6 +1179,7 @@ sceneMsg :  'new'
 			| ('fullscreen' int32)
 			| ('frameless' int32)
 			| ('absolutexy' int32)
+			| ('windowOpacity' int32)
 			| commonMsg
 \end{rail}
 \index{Scene messages}
@@ -1201,6 +1202,7 @@ sceneMsg :  'new'
 \item \OSC{fullscreen}: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is \values{0}.
 \item \OSC{frameless}: requests the scene to switch to frameless or normal window.  The parameter is interpreted as a boolean value. Default value is \values{0}.
 \item \OSC{absolutexy}: requests the scene to absolute or relative coordinates. Absolute coordinates are in pixels relative to the top left corner of the screen. Relative coordinates are in the range [-1, 1] where [0,0] is the center of the screen. The message parameter is interpreted as a boolean value. Default value is \values{0}.
+\item \OSC{windowOpacity}: switch the scene window to opaque or transparent mode. When in transparent mode, the scene alpha channel controls the window opacity (from completely opaque to completely transparent). In opaque mode, the scene alpha channel controls the background brush only. Default value is \values{0}.
 \item \OSC{commonMsg}: a scene support the common graphic attributes. See section \fullref{common}.
 \end{itemize}
 
@@ -2032,11 +2034,19 @@ An object that moves a score to a given page number when it enters its time zone
 \label{miscevents}
 
 \begin{rail}
-what : 	 'newElement'
+what : 	  'export'
+		| 'newElement'
+		| 'endPaint'
 \end{rail}
+\index{Interaction!Events!export}
 \index{Interaction!Events!newElement}
+\index{Interaction!Events!endPaint}
 
-The \OSC{newElement} event is supported at scene level only and triggered when a new element is added to the scene.
+\begin{itemize}
+\item the \OSC{export} event is supported by all the components. It is triggered after an export message has been handled and could be used to simulate synchronous exports.
+\item the \OSC{newElement} event is supported at scene level only and triggered when a new element is added to the scene.
+\item the \OSC{endPaint} event is supported at scene level only and triggered after a scene has been painted.
+\end{itemize}
 
 \example \\
 Displaying a welcome message to new elements:

@@ -65,16 +65,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <P>
 <BR>
 <IMG
- WIDTH="26" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="219" HEIGHT="123" ALIGN="BOTTOM" BORDER="0"
  SRC="img76.gif"
  ALT="\begin{rail}
-what : 'newElement'
+what : 'export'
+\vert 'newElement'
+\vert 'endPaint'
 \end{rail}">
 <BR>
-<A NAME="1376"></A>
+<A NAME="1378"></A>
+<A NAME="1379"></A>
+<A NAME="1380"></A>
 
 <P>
-The <TT>newElement</TT> event is supported at scene level only and triggered when a new element is added to the scene.
+
+<UL>
+<LI>the <TT>export</TT> event is supported by all the components. It is triggered after an export message has been handled and could be used to simulate synchronous exports.
+</LI>
+<LI>the <TT>newElement</TT> event is supported at scene level only and triggered when a new element is added to the scene.
+</LI>
+<LI>the <TT>endPaint</TT> event is supported at scene level only and triggered after a scene has been painted.
+</LI>
+</UL>
 
 <P>
 <B> <B>E<SMALL>XAMPLE </SMALL></B></B>

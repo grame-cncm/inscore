@@ -70,13 +70,13 @@ The global form of the message is:
 <P>
 <BR>
 <IMG
- WIDTH="26" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="384" HEIGHT="89" ALIGN="BOTTOM" BORDER="0"
  SRC="img43.gif"
  ALT="\begin{rail}
 mapMsg : 'map' ( \vert mapName ) (relation \vert ( del ))
 \end{rail}">
 <BR>
-<A NAME="844"></A>
+<A NAME="846"></A>
 
 <P>
 The <TT>relation</TT> parameter must be sent as a single string which format is described below. It consists in a list of associations between the object local space and its time space expressed as segments.
@@ -84,7 +84,7 @@ The <TT>relation</TT> parameter must be sent as a single string which format is 
 <P>
 <BR>
 <IMG
- WIDTH="26" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="478" HEIGHT="225" ALIGN="BOTTOM" BORDER="0"
  SRC="img44.gif"
  ALT="\begin{rail}
 relation :
@@ -122,7 +122,7 @@ The <TT>del</TT> command deletes the mapping specified with <TT>mapName</TT>, or
 <DIV ALIGN="CENTER">
 
 <DIV ALIGN="CENTER">
-<A NAME="867"></A>
+<A NAME="869"></A>
 <TABLE CELLPADDING=3 BORDER="1">
 <CAPTION><STRONG>Table 9.1:</STRONG>
 Local segmentation type for each component</CAPTION>
@@ -150,7 +150,7 @@ Local segmentation type for each component</CAPTION>
 <P>
 <BR>
 <IMG
- WIDTH="26" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="295" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
  SRC="img45.gif"
  ALT="\begin{rail}
 relativeTimeSegment : '(' relativeTimeInterval ')'
@@ -158,7 +158,7 @@ relativeTimeSegment : '(' relativeTimeInterval ')'
 <BR>
 <BR>
 <IMG
- WIDTH="26" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="351" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
  SRC="img46.gif"
  ALT="\begin{rail}
 float2DSegment : '(' floatInterval floatInterval ')'
@@ -166,7 +166,7 @@ float2DSegment : '(' floatInterval floatInterval ')'
 <BR>
 <BR>
 <IMG
- WIDTH="26" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="326" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
  SRC="img47.gif"
  ALT="\begin{rail}
 int2DSegment : '(' intInterval intInterval ')'
@@ -174,7 +174,7 @@ int2DSegment : '(' intInterval intInterval ')'
 <BR>
 <BR>
 <IMG
- WIDTH="26" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="232" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
  SRC="img48.gif"
  ALT="\begin{rail}
 int1DSegment : '(' intInterval ')'
@@ -184,7 +184,7 @@ int1DSegment : '(' intInterval ')'
 <P>
 <BR>
 <IMG
- WIDTH="26" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="332" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
  SRC="img49.gif"
  ALT="\begin{rail}
 relativeTimeInterval : '[' rational ',' rational '['
@@ -192,7 +192,7 @@ relativeTimeInterval : '[' rational ',' rational '['
 <BR>
 <BR>
 <IMG
- WIDTH="26" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="357" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
  SRC="img50.gif"
  ALT="\begin{rail}
 floatInterval : '[' float32 ',' float32 '['
@@ -200,7 +200,7 @@ floatInterval : '[' float32 ',' float32 '['
 <BR>
 <BR>
 <IMG
- WIDTH="26" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="320" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
  SRC="img51.gif"
  ALT="\begin{rail}
 intInterval : '[' int32 ',' int32 '['
@@ -213,7 +213,7 @@ Relative time is expressed as <TT>rational</TT> values where <TT>1</TT> represen
 <P>
 <BR>
 <IMG
- WIDTH="26" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="241" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
  SRC="img52.gif"
  ALT="\begin{rail}
 rational : int32 '/' int32

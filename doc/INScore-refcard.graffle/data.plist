@@ -34,7 +34,7 @@
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2013-01-22 17:17:54 +0000</string>
+	<string>2013-02-06 16:32:39 +0000</string>
 	<key>Modifier</key>
 	<string>Dominique Fober</string>
 	<key>NotesVisible</key>
@@ -28096,7 +28096,7 @@ timeEnter, timeLeave, durEnter, durLeave, newElement}</string>
 			<key>RowSpacing</key>
 			<real>36</real>
 			<key>SheetTitle</key>
-			<string>tmp</string>
+			<string>Specific messages</string>
 			<key>UniqueID</key>
 			<integer>3</integer>
 			<key>VPages</key>
@@ -28116,7 +28116,7 @@ timeEnter, timeLeave, durEnter, durLeave, newElement}</string>
 		<key>ExpandedCanvases</key>
 		<array/>
 		<key>Frame</key>
-		<string>{{196, 153}, {1364, 981}}</string>
+		<string>{{75, 133}, {1364, 981}}</string>
 		<key>ListView</key>
 		<true/>
 		<key>OutlineWidth</key>
@@ -28136,7 +28136,7 @@ timeEnter, timeLeave, durEnter, durLeave, newElement}</string>
 		<key>ZoomValues</key>
 		<array>
 			<array>
-				<string>tmp</string>
+				<string>Specific messages</string>
 				<real>1.3999999761581421</real>
 				<real>1.4354838132858276</real>
 			</array>
