@@ -1,0 +1,65 @@
+
+/ITL/scene/* del;
+
+/ITL/scene/r11 set gmnf "r1.gmn";
+/ITL/scene/r12 set gmnf "r1.gmn";
+/ITL/scene/r21 set gmnf "r2.gmn";
+/ITL/scene/r22 set gmnf "r2.gmn";
+/ITL/scene/r23 set gmnf "r2.gmn";
+/ITL/scene/r3 set gmnf "r3.gmn";
+/ITL/scene/t set gmnf "r4.gmn";
+/ITL/scene/ch1 set gmnf "ch1.gmn";
+/ITL/scene/ch2 set gmnf "ch2.gmn";
+/ITL/scene/ch3 set gmnf "ch3.gmn";
+/ITL/scene/ch4 set gmnf "ch4.gmn";
+/ITL/scene/ch5 set gmnf "ch5.gmn";
+/ITL/scene/ch6 set gmnf "ch6.gmn";
+
+/ITL/scene/r* color 0 0 0 0;
+/ITL/scene/t color 0 127 37 255;
+/ITL/scene/r* scale 4.0;
+/ITL/scene/t scale 4.0;
+/ITL/scene/r11 x -0.3;
+/ITL/scene/r11 y -0.4;
+/ITL/scene/r21 x 0.0;
+/ITL/scene/r21 y -0.45;
+/ITL/scene/r22 x 0.35;
+/ITL/scene/r22 y -0.3;
+/ITL/scene/r23 x 0.4;
+/ITL/scene/r23 y 0.2;
+/ITL/scene/r3 x 0.1;
+/ITL/scene/r3 y 0.5;
+/ITL/scene/r12 x -0.3;
+/ITL/scene/r12 y 0.5;
+
+/ITL/scene/t x -0.5;
+/ITL/scene/t y 0.0;
+
+/ITL/scene/ch1 x -0.5;
+/ITL/scene/ch1 y -0.6;
+/ITL/scene/ch1 scale 4.0;
+/ITL/scene/ch2 x 0.0;
+/ITL/scene/ch2 y -0.65;
+/ITL/scene/ch2 scale 4.0;
+/ITL/scene/ch3 x 0.55;
+/ITL/scene/ch3 y -0.6;
+/ITL/scene/ch3 scale 4.0;
+/ITL/scene/ch4 x 0.6;
+/ITL/scene/ch4 y 0.4;
+/ITL/scene/ch4 scale 4.0;
+/ITL/scene/ch5 x 0.3;
+/ITL/scene/ch5 y 0.7;
+/ITL/scene/ch5 scale 4.0;
+/ITL/scene/ch6 x -0.5;
+/ITL/scene/ch6 y 0.7;
+/ITL/scene/ch6 scale 4.0;
+
+/ITL/scene/blue set ellipse 0.1 0.1;
+/ITL/scene/blue color 0 0 255;
+/ITL/scene/blue x -0.02;
+/ITL/scene/blue y -0.32;
+
+/ITL/scene/red set ellipse 0.1 0.1;
+/ITL/scene/red color 255 0 0;
+/ITL/scene/red x 0.02;
+/ITL/scene/red y 0.32;

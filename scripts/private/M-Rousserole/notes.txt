@@ -1,0 +1,23 @@
+
+- la durée courante est affectée dynamiquement à l'accord courant
+
+mode 1
+on tourne sur l'axe des durées avec un geste (dans les 2 sens)
+on tourne sur l'axe des accords avec un autre geste (dans les 2 sens)
+
+
+mode 2
+performance
+les deux axes tournent et on commande la vitesse 
+si on ne tourne pas il ne se passe rien sinon ça fait avancer, avec variation de vitesse
+
+
+en paramètres:
+le nombre d'accords et de durées
+
+
+
+--------------
+partir d'une représentation guido atome et outil de conversion midi
+faire une abstraction des nombres d'accords et de rythmes
+

@@ -1,0 +1,65 @@
+
+/ITL/scene/* del;
+/ITL/scene width 1.4;
+
+# title and credits
+/ITL/scene/title1 set img "rsrc/title1.png";
+/ITL/scene/title2 set img "rsrc/title2.png";
+/ITL/scene/title* xorigin -1.0;
+/ITL/scene/title1 x -1.1;
+/ITL/scene/title2 x 0.2;
+/ITL/scene/title* scale 0.7;
+/ITL/scene/title* yorigin 1.0;
+/ITL/scene/title* y -0.5;
+
+# navigation
+/ITL/scene/navbar set img "rsrc/artikulation-line.png";
+/ITL/scene/navbar y 0.7;
+/ITL/scene/navbar duration 227 4;
+
+# Add rectangles as cursors
+/ITL/scene/cursor set rect 0.001 0.2;
+/ITL/scene/cursornav set rect 0.00075 0.2;
+/ITL/scene/cursor* date 1000 1;
+/ITL/scene/cursor* duration 1 64;
+/ITL/scene/cursor* color 255 0 48 200;
+/ITL/scene/cursor* z 1.0;
+
+pages=20;
+<? javascript 
+	var n=0;
+	var t = [ 0, 86, 174, 270, 366, 471, 559, 661, 736, 823, 912, 1020, 1124, 1220, 1304, 1398, 1494, 1582, 1676, 1740, 1816 ];
+	var out = new Array;
+    for (i=1; i <= pages; i++) {
+    	var ipage = "/ITL/scene/page"+i;
+		out[n++] = ipage+" set 'img' 'rsrc/sc"+i+".png';" ;
+		out[n++] = ipage+" mapf 'rsrc/sc"+i+".map';" ;
+		out[n++] = "/ITL/scene/cursor watch  'timeEnter' "+t[i-1]+ " 32 " +t[i]+ " 32 '" +ipage+ "' 'show' 1;" ;
+		out[n++] = "/ITL/scene/cursor watch+ 'timeEnter' "+t[i-1]+ " 32 " +t[i]+ " 32  '/ITL/scene/sync' 'cursor' 'page" +i+ "' 'v';" ;
+		out[n++] = "/ITL/scene/cursor watch  'timeLeave' "+t[i-1]+ " 32 " +t[i]+ " 32 '" +ipage+ "' 'show' 0;" ;
+	}
+	out;
+?>
+
+/ITL/scene/page* scale 0.6;
+/ITL/scene/page* show 0;
+/ITL/scene/page* watch mouseDown (
+	/ITL/scene/cursor* date "$date" ,
+	localhost:7001/date  "$date" );
+
+/ITL/scene/page* watch mouseMove (
+	/ITL/scene/cursor* date "$date" ,
+	localhost:7001/date  "$date" );
+
+/ITL/scene/navbar watch mouseDown (
+	/ITL/scene/cursor* date "$date" ,
+	localhost:7100/date  "$date" );
+
+/ITL/scene/navbar watch mouseMove (
+	/ITL/scene/cursor* date "$date" ,
+	localhost:7100/date  "$date" );
+
+/ITL/scene/sync cursor page1 v;
+/ITL/scene/sync cursornav navbar v;
+/ITL/scene/cursor* date 0 1;
+
