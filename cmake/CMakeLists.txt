@@ -22,12 +22,14 @@ if(WIN32)
 		set (TARGET	INScore64)
 		set (X64 -D__x86_64__)
 	endif()
-	if(MSVC)
-		add_definitions(-DMSVC -D_USE_MATH_DEFINES ${X64})
-	endif(MSVC)
-else(WIN32)
+
+	if(${CMAKE_GENERATOR} STREQUAL "Visual Studio 10")
+		set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
+	endif()
+	add_definitions(-DMSVC -D_USE_MATH_DEFINES ${X64})
+else()
 	add_definitions(-Wall)
-endif(WIN32)
+endif()
 
 if(APPLE)
 	if (${CMAKE_SYSTEM_VERSION} VERSION_LESS 9.0.0)
@@ -47,7 +49,7 @@ if(APPLE)
 	message (STATUS "Only the current architecture will be compiled - Use -DDIST=yes to change.")
  endif ()
 	set (CMAKE_C++_FLAGS -mmacosx-version-min=10.4)
-endif(APPLE)
+endif()
 
 #######################################
 # set directories, src and headers.
@@ -158,16 +160,16 @@ set(INCL ${INCL} "${ROOT}/atomic" ${SCRIPTINCL})
 # qt setup
 
 if(APPLE OR WIN32)
-  set(DESIRED_QT_VERSION 4.7)
-  FIND_PACKAGE(QT4 REQUIRED)
- #message("QT_LIBRARY_DIR ${QT_LIBRARY_DIR}")
- #message("QT_INCLUDE_DIR ${QT_INCLUDE_DIR}")
- #message("QT_QTCORE_INCLUDE_DIR ${QT_QTCORE_INCLUDE_DIR}")
- #message("QT_QTGUI_INCLUDE_DIR ${QT_QTGUI_INCLUDE_DIR}")
-
+  set(DESIRED_QT_VERSION 5.0)
+  FIND_PACKAGE(Qt5Widgets REQUIRED)
+  FIND_PACKAGE(Qt5Svg REQUIRED)
+  FIND_PACKAGE(Qt5PrintSupport REQUIRED)
+# message("Qt5Svg_LIBRARIES ${Qt5Svg_LIBRARIES}")
+# message("Qt5Svg_INCLUDE_DIRS ${Qt5Svg_INCLUDE_DIRS}")
 else()
-  set(DESIRED_QT_VERSION 4.6)
-  FIND_PACKAGE(Qt4 REQUIRED)
+  set(DESIRED_QT_VERSION 5.0)
+  FIND_PACKAGE(Qt5Widgets REQUIRED)
+  FIND_PACKAGE(Qt5Svg REQUIRED)
   set (QTLIBS "-lQtCore -lQtGui -lQtSvg -lphonon" )
 endif()
 
@@ -177,14 +179,10 @@ if(APPLE)
 endif()
 
 if(WIN32)
-	if(MINGW)
-		set(QTLIBS "${QT_LIBRARY_DIR}/libQtCore4.a" "${QT_LIBRARY_DIR}/libQtGui4.a"  "${QT_LIBRARY_DIR}/libQtSvg4.a" "${QT_LIBRARY_DIR}/libQtXml4.a" "${QT_LIBRARY_DIR}/libphonon4.a" )
-	else()
-		set(QTLIBS "${QT_LIBRARY_DIR}/QtCore4.lib" "${QT_LIBRARY_DIR}/QtGui4.lib"  "${QT_LIBRARY_DIR}/QtSvg4.lib" "${QT_LIBRARY_DIR}/QtXml4.lib" "${QT_LIBRARY_DIR}/phonon4.lib" )
-	endif()
+	set(QTLIBS ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5PrintSupport_LIBRARIES})
 endif()
 
-set (QTHEADERS "${QT_INCLUDE_DIR}" "${QT_QTCORE_INCLUDE_DIR}" "${QT_QTGUI_INCLUDE_DIR}" "${QT_QTSVG_INCLUDE_DIR}" "${QT_PHONON_INCLUDE_DIR}")
+set (QTHEADERS "${Qt5Widgets_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS}  ${Qt5PrintSupport_INCLUDE_DIRS}")
 file (GLOB PUBLICHEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${ROOT}/interface/INScore.h)
 
 #######################################
@@ -222,7 +220,7 @@ QT_WRAP_CPP (${APPLTARGET} APPL_MOC_FILES ${ROOT}/INScoreAppl.h)
 
 SET(QtApp_RCCS  ${ROOT}/../rsrc/inscore.qrc)
 #SET(INScoreQRC  inscore.qrc)
-QT4_ADD_RESOURCES(INScoreQRC ${QtApp_RCCS})
+QT5_ADD_RESOURCES(INScoreQRC ${QtApp_RCCS})
 
 #######################################
 # set targets
