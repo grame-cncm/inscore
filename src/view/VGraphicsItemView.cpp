@@ -126,7 +126,7 @@ void VGraphicsItemView::drawMapping(IObject* o)
 				QGraphicsTextItem * textItem = new QGraphicsTextItem( timeString , mappingSegment );
 				textItem->setDefaultTextColor( Qt::black );
 				float scale = 4.0f;
-				textItem->scale(1.0f/scale,1.0f/scale);
+				textItem->setScale(1.0f/scale);
 				if (colorindex & 1)
 					textItem->setPos( qtRect.x() , qtRect.y() + qtRect.height()); // + textItem->boundingRect().height()/scale );
 				else
@@ -197,7 +197,7 @@ void VGraphicsItemView::updateObjectSize(IObject* o)
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateTransform(IObject* o)
 {
-	fItem->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
+//	fItem->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
 	QTransform matrix;
 	TFloatSize shear = o->getShear();
 	if (shear)
@@ -253,14 +253,15 @@ void VGraphicsItemView::updateView(IObject* o)
 		//	Sets the item position in the QGraphicsScene, using 'relative coordinate -> QGraphicsScene coordinate' 
 		//	mapping functions.
 		fItem->setPos( relative2SceneX( o->getXPos() ) , relative2SceneY(  o->getYPos() ) );
+		fItem->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
 		updateTransform (o);
-		fItem->scale(  o->getScale() ,  o->getScale() );
-	
+		fItem->setScale(  o->getScale() );
+
 		//	Centers the item on its origin.
-		QRectF objectBoundingRect = fItem->boundingRect();
-		double xoffset = objectBoundingRect.width() * o->getXOrigin()  / 2;
-		double yoffset = objectBoundingRect.height() * o->getYOrigin() / 2;
-		fItem->translate( -objectBoundingRect.center().x() - xoffset, -objectBoundingRect.center().y() - yoffset );
+		QRectF bbrect = fItem->boundingRect();
+		double xo = bbrect.width()  * (o->getXOrigin() + 1) / 2;
+		double yo = bbrect.height() * (o->getYOrigin() + 1) / 2;
+		fItem->setTransform(QTransform::fromTranslate(-xo*o->getScale(), -yo*o->getScale()), true);
 	}
 
 	// Visibility
