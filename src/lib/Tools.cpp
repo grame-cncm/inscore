@@ -19,6 +19,10 @@
   
 */
 
+#ifdef WIN32
+#pragma warning (disable : 4996)
+#endif
+
 #include <stdio.h>
 #include <iostream>
 #include <sstream>
