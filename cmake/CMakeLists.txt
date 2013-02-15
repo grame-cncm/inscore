@@ -194,7 +194,7 @@ if(WIN32)
 		set(GUIDO    ${LOCALLIB}/GuidoEngine/win32/libGUIDOEngine.dll.a)
 	else()
 		set(OSCPACK  ${OSC_PATH}/cmake/release/oscpack.lib)
-		set(GUIDOQT  ${LOCALLIB}/GuidoQt/win32/GuidoQt.lib)
+		set(GUIDOQT  optimized ${LOCALLIB}/GuidoQt/win32/GuidoQt.lib debug ${LOCALLIB}/GuidoQt/win32/GuidoQtD.lib)
 		set(GUIDO    ${LOCALLIB}/GuidoEngine/win32/GUIDOEngine.lib)
 		set(INSLIBS  winmm.lib ws2_32.lib)
 	endif()
@@ -210,7 +210,7 @@ elseif(UNIX)
 	set(GUIDO    -lGUIDOEngine)
 endif()
 
-set(INSLIBS  ${INSLIBS} ${OSCPACK} ${GUIDOQT} ${GUIDO} ${SCRIPTS} ${QTLIBS} ${CORE_FOUNDATION} )
+set(INSLIBS  ${INSLIBS} ${OSCPACK} ${GUIDO} ${SCRIPTS} ${QTLIBS} ${CORE_FOUNDATION} ${GUIDOQT} )
 
 #######################################
 # moc settings
