@@ -26,7 +26,7 @@
 #include <iostream>
 #include <vector>
 
-#include "float.h"
+#include "ifloat.h"
 #include "ITLError.h"
 #include "IModel.h"
 #include "IShapeMap.h"
