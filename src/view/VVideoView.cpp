@@ -44,8 +44,8 @@ VVideoView::VVideoView(QGraphicsScene * scene, const IVideo* h)
 void VVideoView::initFile( IVideo * video, const QString&  videoFile )
 {
 	fVideoItem->setMediaFile( videoFile );
-	fVideoItem->media()->play();
-	fVideoItem->media()->pause();	
+//	fVideoItem->media()->play();
+//	fVideoItem->media()->pause();	
 	updateObjectSize (video);
 }
 
@@ -83,7 +83,7 @@ void VVideoView::updateView( IVideo * video  )
 		// 2. Update video size.
 		fVideoItem->setOpacity (video->getA() / 255.f);
 		fVideoItem->resize( QSizeF( relative2SceneWidth(video->getWidth()),relative2SceneHeight(video->getHeight()) ) );
-		fVideoItem->media()->seek( video->currentTime() * 1000 );		
+//		fVideoItem->media()->seek( video->currentTime() * 1000 );		
 
 		// TODO Checker le support video de Phonon.
 	}

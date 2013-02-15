@@ -28,10 +28,13 @@
 #define __QGraphicsVideoItem__
 
 #include <QGraphicsProxyWidget>
+#ifdef USEPHONON
 #include <phonon/phonon>
+#endif
 
 namespace inscore {
 
+#ifdef USEPHONON
 class QGraphicsVideoItem : public QGraphicsProxyWidget
 {
 	Phonon::MediaObject *	fMedia;
@@ -74,6 +77,24 @@ class QGraphicsVideoItem : public QGraphicsProxyWidget
 		}
 		
 };
+
+#else
+
+class QGraphicsVideoItem : public QGraphicsProxyWidget
+{
+	public:
+				 QGraphicsVideoItem( QGraphicsItem * parent = 0 ) 
+									: QGraphicsProxyWidget(parent) {}
+		virtual ~QGraphicsVideoItem()		{ close(); }
+		
+		void * media()		{ return 0; }
+		void setMediaFile(const QString& fileName) {}
+
+	protected:
+		void close() {}
+};
+
+#endif
 
 }	// namespace
 
