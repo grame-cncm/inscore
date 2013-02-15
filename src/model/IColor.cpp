@@ -62,7 +62,7 @@ bool IColor::getHSBA( const IMessage* msg, int& h, int& s, int& b, int& a)
 	float fh, fs, fb, fa = 1.;
 	a = 255;
 	if (msg->param(0, fh) && msg->param(1, fs) && msg->param(2, fb)) {
-		if ((n == 4) && !msg->param(3, fa)) return MsgHandler::kBadParameters;
+		if ((n == 4) && !msg->param(3, fa)) return false;
 		h = floatH2int(fh);
 		s = floatSV2int(fs);
 		b = floatSV2int(fb);
