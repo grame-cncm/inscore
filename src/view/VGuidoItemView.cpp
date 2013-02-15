@@ -177,7 +177,7 @@ bool VGuidoItemView::gmnUpdate (IGuidoCode* guidoCode)
 			if ( fGuidoItem->setGMNCode( VApplView::toQString( converted.str().c_str() ) ) )	
 				return true;
 	}
-	ITLErr << guidoCode->getOSCAddress() << "invalid gmn code:" << fGuidoItem->getLastErrorMessage().toAscii().data() << ITLEndl;
+	ITLErr << guidoCode->getOSCAddress() << "invalid gmn code:" << fGuidoItem->getLastErrorMessage().toUtf8().data() << ITLEndl;
 	return false;
 }
 
