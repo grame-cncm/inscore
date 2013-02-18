@@ -158,31 +158,61 @@ set(INCL ${INCL} "${ROOT}/atomic" ${SCRIPTINCL})
 
 #######################################
 # qt setup
-
-if(APPLE OR WIN32)
-  set(DESIRED_QT_VERSION 5.0)
-  FIND_PACKAGE(Qt5Widgets REQUIRED)
-  FIND_PACKAGE(Qt5Svg REQUIRED)
-  FIND_PACKAGE(Qt5PrintSupport REQUIRED)
-# message("Qt5Svg_LIBRARIES ${Qt5Svg_LIBRARIES}")
-# message("Qt5Svg_INCLUDE_DIRS ${Qt5Svg_INCLUDE_DIRS}")
-else()
-  set(DESIRED_QT_VERSION 5.0)
-  FIND_PACKAGE(Qt5Widgets REQUIRED)
-  FIND_PACKAGE(Qt5Svg REQUIRED)
-  set (QTLIBS "-lQtCore -lQtGui -lQtSvg -lphonon" )
+if (NOT DEFINED QTVERSION) 
+set (QTVERSION 5)
 endif()
+
+message (STATUS "Using Qt version ${QTVERSION} - Use -DQTVERSION=vers to change.")
+
+if (QTVERSION EQUAL "5")
+	if(APPLE OR WIN32)
+	  set(DESIRED_QT_VERSION 5.0)
+	  FIND_PACKAGE(Qt5Widgets REQUIRED)
+	  FIND_PACKAGE(Qt5Svg REQUIRED)
+	  FIND_PACKAGE(Qt5PrintSupport REQUIRED)
+	# message("Qt5Svg_LIBRARIES ${Qt5Svg_LIBRARIES}")
+	# message("Qt5Svg_INCLUDE_DIRS ${Qt5Svg_INCLUDE_DIRS}")
+	else()
+	  set(DESIRED_QT_VERSION 5.0)
+	  FIND_PACKAGE(Qt5Widgets REQUIRED)
+	  FIND_PACKAGE(Qt5Svg REQUIRED)
+	  set (QTLIBS "-lQtCore -lQtGui -lQtSvg -lphonon" )
+	endif()
+	
+	if(APPLE)
+		set (QTLIBS "-framework QtCore -framework QtGui -framework QtSvg -framework phonon" )
+	endif()
+	
+	if(WIN32)
+		set(QTLIBS ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5PrintSupport_LIBRARIES})
+	endif()
+	set (QTHEADERS "${Qt5Widgets_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS}  ${Qt5PrintSupport_INCLUDE_DIRS}")
+
+else (QTVERSION EQUAL "5")   # assume we're using Qt4
+	if(APPLE OR WIN32)
+	  set(DESIRED_QT_VERSION 4.7)
+	  FIND_PACKAGE(QT4 REQUIRED)
+	else()
+	  set(DESIRED_QT_VERSION 4.6)
+	  FIND_PACKAGE(Qt4 REQUIRED)
+	  set (QTLIBS "-lQtCore -lQtGui -lQtSvg -lphonon" )
+	endif()
+	
+	if(APPLE)
+		set (QTLIBS "-framework QtCore -framework QtGui -framework QtSvg -framework phonon" )
+	endif()
+	
+	if(WIN32)
+		set(QTLIBS "${QT_LIBRARY_DIR}/QtCore4.lib" "${QT_LIBRARY_DIR}/QtGui4.lib"  "${QT_LIBRARY_DIR}/QtSvg4.lib" "${QT_LIBRARY_DIR}/QtXml4.lib" "${QT_LIBRARY_DIR}/phonon4.lib" )
+	endif()
+	
+	set (QTHEADERS "${QT_INCLUDE_DIR}" "${QT_QTCORE_INCLUDE_DIR}" "${QT_QTGUI_INCLUDE_DIR}" "${QT_QTSVG_INCLUDE_DIR}" "${QT_PHONON_INCLUDE_DIR}")
+
+endif(QTVERSION EQUAL "5")
 
 if(APPLE)
-	set (QTLIBS "-framework QtCore -framework QtGui -framework QtSvg -framework phonon" )
 	set (CORE_FOUNDATION "-framework CoreFoundation")
 endif()
-
-if(WIN32)
-	set(QTLIBS ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5PrintSupport_LIBRARIES})
-endif()
-
-set (QTHEADERS "${Qt5Widgets_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS}  ${Qt5PrintSupport_INCLUDE_DIRS}")
 file (GLOB PUBLICHEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${ROOT}/interface/INScore.h)
 
 #######################################
@@ -219,8 +249,11 @@ QT_WRAP_CPP (${TARGET} MOC_FILES ${MOC_HEADERS})
 QT_WRAP_CPP (${APPLTARGET} APPL_MOC_FILES ${ROOT}/INScoreAppl.h)
 
 SET(QtApp_RCCS  ${ROOT}/../rsrc/inscore.qrc)
-#SET(INScoreQRC  inscore.qrc)
-QT5_ADD_RESOURCES(INScoreQRC ${QtApp_RCCS})
+if (QTVERSION EQUAL "5")
+	QT5_ADD_RESOURCES(INScoreQRC ${QtApp_RCCS})
+else()
+	QT4_ADD_RESOURCES(INScoreQRC ${QtApp_RCCS})
+endif()
 
 #######################################
 # set targets
