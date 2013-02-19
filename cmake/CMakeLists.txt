@@ -170,6 +170,8 @@ if (QTVERSION EQUAL "5")
 	  FIND_PACKAGE(Qt5Widgets REQUIRED)
 	  FIND_PACKAGE(Qt5Svg REQUIRED)
 	  FIND_PACKAGE(Qt5PrintSupport REQUIRED)
+	  FIND_PACKAGE(Qt5Multimedia REQUIRED)
+	  FIND_PACKAGE(Qt5MultimediaWidgets REQUIRED)
 	# message("Qt5Svg_LIBRARIES ${Qt5Svg_LIBRARIES}")
 	# message("Qt5Svg_INCLUDE_DIRS ${Qt5Svg_INCLUDE_DIRS}")
 	else()
@@ -178,17 +180,13 @@ if (QTVERSION EQUAL "5")
 	  FIND_PACKAGE(Qt5Svg REQUIRED)
 	  set (QTLIBS "-lQtCore -lQtGui -lQtSvg -lphonon" )
 	endif()
-	
-	if(APPLE)
-		set (QTLIBS "-framework QtCore -framework QtGui -framework QtSvg -framework phonon" )
-	endif()
-	
-	if(WIN32)
-		set(QTLIBS ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5PrintSupport_LIBRARIES})
-	endif()
-	set (QTHEADERS "${Qt5Widgets_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS}  ${Qt5PrintSupport_INCLUDE_DIRS}")
+
+	set(QTLIBS ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} ${Qt5Multimedia_LIBRARIES} ${Qt5MultimediaWidgets_LIBRARIES})	
+	set (QTHEADERS "${Qt5Widgets_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS}  ${Qt5PrintSupport_INCLUDE_DIRS}  ${Qt5Multimedia_INCLUDE_DIRS}  ${Qt5MultimediaWidgets_INCLUDE_DIRS}")
 
 else (QTVERSION EQUAL "5")   # assume we're using Qt4
+	add_definitions(-DUSEPHONON)
+
 	if(APPLE OR WIN32)
 	  set(DESIRED_QT_VERSION 4.7)
 	  FIND_PACKAGE(QT4 REQUIRED)
