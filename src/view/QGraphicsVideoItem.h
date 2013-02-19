@@ -30,6 +30,10 @@
 #include <QGraphicsProxyWidget>
 #ifdef USEPHONON
 #include <phonon/phonon>
+#else
+#include <QMediaPlayer>
+#include <QMovie>
+#include <QWidget>
 #endif
 
 namespace inscore {
@@ -82,14 +86,24 @@ class QGraphicsVideoItem : public QGraphicsProxyWidget
 
 class QGraphicsVideoItem : public QGraphicsProxyWidget
 {
+	private:
+		QMediaPlayer		 fMediaPlayer;
+		QGraphicsVideoItem * fVideoItem;
+
 	public:
 				 QGraphicsVideoItem( QGraphicsItem * parent = 0 ) 
-									: QGraphicsProxyWidget(parent) {}
+									: QGraphicsProxyWidget(parent), fMediaPlayer(0, QMediaPlayer::VideoSurface) {}
 		virtual ~QGraphicsVideoItem()		{ close(); }
 		
-		void * media()		{ return 0; }
-		void setMediaFile(const QString& fileName) {}
-
+		QMediaPlayer * media()						{ return &fMediaPlayer; }
+		void setMediaFile(const QString& fileName)	{
+			if (!fileName.isEmpty())
+				fMediaPlayer.setMedia(QUrl::fromLocalFile(fileName));
+				fVideoItem = new QGraphicsVideoItem;
+				fMediaPlayer.setVideoOutput (fVideoItem);
+//				fVideoItem->setSize(QSizeF(640, 480));
+			}
+		
 	protected:
 		void close() {}
 };

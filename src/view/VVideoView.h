@@ -27,10 +27,17 @@
 #ifndef __VVideoView__
 #define __VVideoView__
 
+#ifdef USEPHONON
+#include "QGraphicsVideoItem.h"
+#else
+#include <QMediaPlayer>
+#endif
+
 #include "VGraphicsItemView.h"
 #include "VMappedShapeView.h"
-#include "QGraphicsVideoItem.h"
 #include "MouseEventAble.h"
+
+class QGraphicsVideoItem;
 
 namespace inscore
 {
@@ -47,7 +54,11 @@ namespace inscore
 class VVideoView: public VGraphicsItemView
 {
 	typedef MouseEventAble<QGraphicsVideoItem> IQGraphicsVideoItem;
-	QGraphicsVideoItem* fVideoItem;
+	QGraphicsVideoItem*	fVideoItem;
+#ifndef USEPHONON
+	QMediaPlayer		fMediaPlayer;
+#endif
+
 	void initFile( IVideo * video, const QString&  videoFile );
 
 	public :

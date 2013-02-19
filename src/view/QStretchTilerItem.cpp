@@ -34,7 +34,12 @@ using namespace std;
 #include <QtDebug>
 
 #include "VImageView.h"
+
+#ifdef USEPHONON
 #include "QGraphicsVideoItem.h"
+#else
+#include <QGraphicsVideoItem>
+#endif
 
 #define USEPRECISION
 //#define PRECISION 1000.0f

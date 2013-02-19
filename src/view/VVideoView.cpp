@@ -23,11 +23,13 @@
 
 */
 
-#include "VVideoView.h"
-
 #include <iostream>
 #include <QFile>
+#ifndef USEPHONON
+#include <QGraphicsVideoItem>
+#endif
 
+#include "VVideoView.h"
 #include "VApplView.h"
 
 namespace inscore
@@ -35,7 +37,10 @@ namespace inscore
 
 //----------------------------------------------------------------------
 VVideoView::VVideoView(QGraphicsScene * scene, const IVideo* h)
- : VGraphicsItemView( scene , new IQGraphicsVideoItem(h) )
+ :	VGraphicsItemView( scene , new IQGraphicsVideoItem(h) )
+#ifndef USEPHONON
+	, fMediaPlayer(0, QMediaPlayer::VideoSurface)
+#endif
 {
 	fVideoItem = (IQGraphicsVideoItem*)(fItem);
 }
@@ -43,7 +48,14 @@ VVideoView::VVideoView(QGraphicsScene * scene, const IVideo* h)
 //----------------------------------------------------------------------
 void VVideoView::initFile( IVideo * video, const QString&  videoFile )
 {
+#ifdef USEPHONON
 	fVideoItem->setMediaFile( videoFile );
+#else
+	fMediaPlayer.setMedia(QUrl::fromLocalFile(videoFile));
+	fMediaPlayer.setVideoOutput (fVideoItem);
+	fMediaPlayer.play ();
+	fMediaPlayer.pause ();
+#endif
 //	fVideoItem->media()->play();
 //	fVideoItem->media()->pause();	
 	updateObjectSize (video);
@@ -82,9 +94,13 @@ void VVideoView::updateView( IVideo * video  )
 //		}
 		// 2. Update video size.
 		fVideoItem->setOpacity (video->getA() / 255.f);
+#ifdef USEPHONON
 		fVideoItem->resize( QSizeF( relative2SceneWidth(video->getWidth()),relative2SceneHeight(video->getHeight()) ) );
-//		fVideoItem->media()->seek( video->currentTime() * 1000 );		
-
+		fVideoItem->media()->seek( video->currentTime() * 1000 );
+#else
+		fVideoItem->setSize( QSizeF( relative2SceneWidth(video->getWidth()),relative2SceneHeight(video->getHeight()) ) );
+		fMediaPlayer.setPosition( qint64(video->currentTime() * 1000) );
+#endif
 		// TODO Checker le support video de Phonon.
 	}
 	else
