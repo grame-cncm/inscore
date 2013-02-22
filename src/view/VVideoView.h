@@ -27,17 +27,20 @@
 #ifndef __VVideoView__
 #define __VVideoView__
 
+#include <string>
+
 #ifdef USEPHONON
 #include "QGraphicsVideoItem.h"
+class QGraphicsVideoItem;
 #else
 #include <QMediaPlayer>
+#include <QGraphicsVideoItem>
 #endif
 
 #include "VGraphicsItemView.h"
 #include "VMappedShapeView.h"
 #include "MouseEventAble.h"
 
-class QGraphicsVideoItem;
 
 namespace inscore
 {
@@ -47,31 +50,45 @@ namespace inscore
 @{
 */
 
+class IVideo;
 //--------------------------------------------------------------------------
 /**
 *	\brief a graphic view of a IVide.
 */
-class VVideoView: public VGraphicsItemView
+class VVideoView: public QObject, public VGraphicsItemView
 {
-	typedef MouseEventAble<QGraphicsVideoItem> IQGraphicsVideoItem;
-	QGraphicsVideoItem*	fVideoItem;
-#ifndef USEPHONON
-	QMediaPlayer		fMediaPlayer;
-#endif
-
-	void initFile( IVideo * video, const QString&  videoFile );
+    Q_OBJECT
 
 	public :
 		using VGraphicsItemView::updateView;
 		using VGraphicsItemView::updateLocalMapping;
 
 				 VVideoView(QGraphicsScene * scene, const IVideo* h);
-		virtual ~VVideoView() {}
+		virtual ~VVideoView() { fMediaPlayer.stop(); }
 
 				void initialize( IVideo * video );
 		virtual void initialize (IObject* obj)					{ initialize(static_cast<IVideo*>(obj)); }
 		virtual void updateView ( IVideo * video );
 		virtual void updateLocalMapping (IShapeMap* shapeMap)	{ VMappedShapeView::updateGraphic2GraphicMapping(shapeMap); }
+
+
+	private:
+	typedef MouseEventAble<QGraphicsVideoItem> IQGraphicsVideoItem;
+	QGraphicsVideoItem*			fVideoItem;
+#ifndef USEPHONON
+	QMediaPlayer				fMediaPlayer;
+	QMediaPlayer::MediaStatus	fStatus;
+	IVideo*						fVideo;
+	
+#endif
+
+	void initFile( IVideo * video, const QString&  videoFile );
+	bool error() const;
+
+protected slots:
+	void	error (QMediaPlayer::Error error);
+	void	mediaStatusChanged (QMediaPlayer::MediaStatus status);
+	void	nativeSizeChanged(const QSizeF & size);
 };
 
 
