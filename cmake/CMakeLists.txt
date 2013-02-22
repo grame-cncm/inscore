@@ -10,10 +10,10 @@ set (APPLTARGET	INScoreViewer)
 
 #######################################
 # versions management
-set (INSFWKVERS 1.01)
-set (INSFWKSTRVERS "v.1.01")
-set (INSAPPVERS 1.01)
-set (INSAPPSTRVERS "v.1.01")
+set (INSFWKVERS 1.02)
+set (INSFWKSTRVERS "v.1.02")
+set (INSAPPVERS 1.02)
+set (INSAPPSTRVERS "v.1.02")
 set (SOVERS 1)
 
 #######################################
@@ -165,6 +165,7 @@ endif()
 message (STATUS "Using Qt version ${QTVERSION} - Use -DQTVERSION=vers to change.")
 
 if (QTVERSION EQUAL "5")
+	set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/view/VVideoView.h ${ROOT}/model/QFileWatcher.h )
 	if(APPLE OR WIN32)
 	  set(DESIRED_QT_VERSION 5.0)
 	  FIND_PACKAGE(Qt5Widgets REQUIRED)
@@ -185,6 +186,7 @@ if (QTVERSION EQUAL "5")
 	set (QTHEADERS "${Qt5Widgets_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS}  ${Qt5PrintSupport_INCLUDE_DIRS}  ${Qt5Multimedia_INCLUDE_DIRS}  ${Qt5MultimediaWidgets_INCLUDE_DIRS}")
 
 else (QTVERSION EQUAL "5")   # assume we're using Qt4
+	set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h )
 	add_definitions(-DUSEPHONON)
 
 	if(APPLE OR WIN32)
@@ -242,7 +244,6 @@ set(INSLIBS  ${INSLIBS} ${OSCPACK} ${GUIDO} ${SCRIPTS} ${QTLIBS} ${CORE_FOUNDATI
 
 #######################################
 # moc settings
-set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h)
 QT_WRAP_CPP (${TARGET} MOC_FILES ${MOC_HEADERS})
 QT_WRAP_CPP (${APPLTARGET} APPL_MOC_FILES ${ROOT}/INScoreAppl.h)
 
