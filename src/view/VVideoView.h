@@ -57,15 +57,20 @@ class IVideo;
 */
 class VVideoView: public QObject, public VGraphicsItemView
 {
+#ifndef USEPHONON
     Q_OBJECT
+#endif
 
 	public :
 		using VGraphicsItemView::updateView;
 		using VGraphicsItemView::updateLocalMapping;
 
 				 VVideoView(QGraphicsScene * scene, const IVideo* h);
+#ifndef USEPHONON
 		virtual ~VVideoView() { fMediaPlayer.stop(); }
-
+#else
+		virtual ~VVideoView() {}
+#endif
 				void initialize( IVideo * video );
 		virtual void initialize (IObject* obj)					{ initialize(static_cast<IVideo*>(obj)); }
 		virtual void updateView ( IVideo * video );
@@ -79,16 +84,17 @@ class VVideoView: public QObject, public VGraphicsItemView
 	QMediaPlayer				fMediaPlayer;
 	QMediaPlayer::MediaStatus	fStatus;
 	IVideo*						fVideo;
-	
 #endif
 
 	void initFile( IVideo * video, const QString&  videoFile );
 	bool error() const;
 
+#ifndef USEPHONON
 protected slots:
 	void	error (QMediaPlayer::Error error);
 	void	mediaStatusChanged (QMediaPlayer::MediaStatus status);
 	void	nativeSizeChanged(const QSizeF & size);
+#endif
 };
 
 

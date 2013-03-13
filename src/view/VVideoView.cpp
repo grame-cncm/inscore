@@ -46,11 +46,14 @@ VVideoView::VVideoView(QGraphicsScene * scene, const IVideo* video)
 #endif
 {
 	fVideoItem = (IQGraphicsVideoItem*)(fItem);
+#ifndef USEPHONON
     connect(&fMediaPlayer, SIGNAL(error(QMediaPlayer::Error)), this, SLOT(error(QMediaPlayer::Error)));
     connect(&fMediaPlayer, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(mediaStatusChanged(QMediaPlayer::MediaStatus)));
+#endif
 }
 
 //----------------------------------------------------------------------
+#ifndef USEPHONON
 void VVideoView::error(QMediaPlayer::Error error)
 {
 	ITLErr << (fVideo ? fVideo->getOSCAddress().c_str() : "no video address") << fMediaPlayer.errorString().toStdString() << ITLEndl;
@@ -89,6 +92,7 @@ void VVideoView::mediaStatusChanged (QMediaPlayer::MediaStatus status)
 			break;
 	}
 }
+#endif
 
 //----------------------------------------------------------------------
 void VVideoView::initFile( IVideo * video, const QString&  videoFile )
@@ -130,7 +134,7 @@ void VVideoView::updateView( IVideo * video  )
 		QSizeF size ( relative2SceneWidth(video->getWidth()),relative2SceneHeight(video->getHeight()));
 		qint64 pos = video->currentTime() * 1000;
 #ifdef USEPHONON
-		fVideoItem->resize( size ) );
+		fVideoItem->resize( size );
 		fVideoItem->media()->seek( pos );
 #else
 		if (pos < 0 ) pos = 0;
