@@ -216,10 +216,9 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 						string address = address2scene (msg->address().c_str());
 						string beg  = OSCAddress::addressFirst(address);
 						string tail = OSCAddress::addressTail(address);
-						bool ret = getRoot()->processMsg(beg, tail, *i);
-						if (!ret) {
+						int ret = getRoot()->processMsg(beg, tail, *i);
+//						if ( (ret & MsgHandler::kProcessed) == 0)
 							IGlue::trace(*i, ret);
-						}
 					}
 				}
 				else ITLErr << "while parsing file" << srcfile << ITLEndl;

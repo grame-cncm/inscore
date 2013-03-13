@@ -12,9 +12,13 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 1.02
+- bug correction: error messages not generated for dropped files (actually for the scene load method)
+
+----------------------------------------------------
 Version 1.01
 - new 'export' event
-- new 'endPoint' event at scene level
+- new 'endPaint' event at scene level
 - new 'windowOpacity' method at scene level
 
 ----------------------------------------------------
