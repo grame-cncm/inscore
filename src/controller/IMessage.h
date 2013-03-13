@@ -169,6 +169,8 @@ class IMessage : public Message, public libmapping::smartable
 		};
 
 	private:
+		enum { kLocalHost = 0x7F000001 };
+
 		unsigned long	fSrcIP;			///< the message source IP number
 		std::string	fAddress;			///< the message osc destination address
 		argslist	fArguments;			///< the message arguments, index 0 is reserved for the message string
@@ -187,16 +189,16 @@ class IMessage : public Message, public libmapping::smartable
 			/*!
 				\brief an empty message constructor
 			*/
-			 IMessage() : fHasMessage(false)  {}
+			 IMessage() : fSrcIP(kLocalHost), fHasMessage(false)  {}
 			/*!
-				\brief an empty message constructor
+				\brief a clone constructor
 			*/
 			 IMessage(const IMessage& msg);
 			/*!
 				\brief a message constructor with an osc address
 				\param address the message destination address
 			*/
-			 IMessage(const std::string& address) : fAddress(address), fHasMessage(false) {}
+			 IMessage(const std::string& address) : fSrcIP(kLocalHost), fAddress(address), fHasMessage(false) {}
 			/*!
 				\brief a message constructor with an osc address and a message string
 				\param address the message destination address
