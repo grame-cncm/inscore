@@ -1,0 +1,327 @@
+
+%===============================
+%:    Differences to version 0.98
+\sublevel{Differences to version 0.98}
+\begin{itemize}
+\item bug correction in streching very small objects (due to approximations)
+\item bug correction in \$sx and \$sy computation (xorigin and yorigin was not taken into account)
+\item new 'ticks' message at application level for querying or setting the current count of time tasks (see section \fullref{applmgmt})
+\item new 'time' message at application level for querying or setting the current time (see section \fullref{applmgmt})
+\item new 'forward' message at application level for messages forwarding to remote hosts (see section \fullref{applmgmt})
+\item new 'relative | absolute' synchronization mode (see section \fullref{syncmode})
+\item 'rename' message not supported any more
+\item a scene accepts multiple dropped files
+\item significant extension and syntax changes in inscore script files (see Scripting documentation section \fullref{scripting})
+\item fileWatcher methods renamed and simplified (see section \fullref{filewatch})
+\item 'click' and 'select' messages are not supported any more.
+\item new 'stats' virtual node at application level (address /ITL/stats), supports 'get' and 'reset' messages
+  the node gives statistics about the incoming messages (see section \fullref{ITLdebug})
+\item crash bug in signal creation corrected: a signal size created with an incorrect stream 
+  (e.g. a string value) was 0 and no buffer was allocated.
+\item extension of the time related events to duration: new 'durEnter' and 'durLeave' watchable events (see section \fullref{timeevents})
+\item new 'absolutexy' message at scene level to switch to absolute coordinates (in pixels) (see section \fullref{scene})
+\item new 'push' and 'pop' messages to store and restore current watched events and associated messages (see section \fullref{evtstate})
+\item internal change: mappings are now implemented as a separable library strictly complying to the 
+  mappings formalism.
+\item new \%f format for the date variable to request a float value (instead a rational value) (see section \fullref{timevar}).
+\item dates may be specified as rational strings (see section \fullref{time}).
+\item interaction messages are not any more generated when the date can't be resolved.
+\item new \OSC{rate} message at application level to control the time task rate (see section \fullref{ITL})
+\item new \OSC{frameless} message at scene level to switch to frameless or normal window (see section \fullref{scene})
+\end{itemize}
+
+%===============================
+%:    Differences to version 0.97
+\sublevel{Differences to version 0.97}
+\begin{itemize}
+\item new \OSC{fastgraph} object for graphic signals fast rendering (see section \fullref{setsect})
+\item \$date variable overflow catched
+\item files dropped on application icon correctly opened when the application is not running
+\item supports drag and drop of textual osc message strings
+\item osc error stream normalized: the message address is 'error:' or 'warning:'
+   followed by a single message string.
+\item javascript and lua support: a single persistent context is created at application level and for each scene. 
+(see section \fullref{scriptlang})
+\end{itemize}
+
+%===============================
+%:    Differences to version 0.96
+\sublevel{Differences to version 0.96}
+\begin{itemize}
+\item  objects position, date and watched events preserved through type change
+\item  bug in quantified dates corrected (null denominator set to the quantified value)
+\item  new 'alias' message providing arbitrary OSC addresses support
+\item  bug in parser corrected: \verb+\+ escape only ' and " chars, otherwise it is literal
+\item  guido score map makes use of the new guidolib extended mapping API for staff and system
+\item  chords map correction (corrected by guido engine) 
+\end{itemize}
+
+%===============================
+%:    Differences to version 0.95
+\sublevel{Differences to version 0.95}
+\begin{itemize}
+\item switch to v8 javascript engine
+\item lua not embedded by default
+\end{itemize}
+
+%===============================
+%:    Differences to version 0.92
+\sublevel{Differences to version 0.92}
+\begin{itemize}
+\item new 'mouse' 'show/hide' message supported at application level (see section \fullref{ITL})
+\item graphic signal supports alpha messages at object level
+\item javascript and lua embedded and supported in inscore scripts  (see section \fullref{scriptlang}).
+\item bug correction in sync delete (introduced with version 0.90)
+\end{itemize}
+
+%===============================
+%:    Differences to version 0.91
+\sublevel{Differences to version 0.91}
+\begin{itemize}
+\item bug corrected: crash with messages addressed to a signal without argument
+\item date and duration messages support one arg form using 1 as implicit denominator value 
+  the one arg form accepts float values  (see section \fullref{time}).
+\end{itemize}
+
+%===============================
+%:    Differences to version 0.90
+\sublevel{Differences to version 0.90}
+\begin{itemize}
+\item bug in sync management corrected (introduced with the new sync parsing scheme)
+\end{itemize}
+
+%===============================
+%:    Differences to version 0.82
+\sublevel{Differences to version 0.82}
+\begin{itemize}
+\item at application level: osc debug is now 'on' by default
+\item new scripting features (variables)  (see section \fullref{scriptvar}).
+\item ITL file format change: \\
+  - semicolon added at the end of each message \\
+  - '//' comment not supported any more \\
+  - '\%' comment char replaced by '!' \\
+  - new variables scripting features \\
+  - single quote support for strings \\
+  - messages addressed to sync node must use the string format
+\item new 'grid' object for automatic segmentation and mapping
+\end{itemize}
+
+%===============================
+%:    Differences to version 0.81
+\sublevel{Differences to version 0.81}
+\begin{itemize}
+\item new Faust plugins for signals processing
+\item colors management change: all the color models (RGBA and HSBA) accept now
+  float values that are interpreted in the common [-1,1] range. For the
+  hue value, 0 always corresponds to 'red' whatever the scale used.
+\item stretch adjustment for video objects (corrects gaps in sync h mode)
+\item support for opening inscore files on the command line
+\item system mapping correction
+\item splash screen and about menu implemented by the viewer
+\end{itemize}
+
+%===============================
+%:    Differences to version 0.80
+\sublevel{Differences to version 0.80}
+\begin{itemize}
+\item behavior change with synchronization without stretch: now the system looks also in the
+  slave map for a segment corresponding to the master date.
+\item \OSC{\$date} variable change: the value is now (0,0) when no date is available and \OSC{\$date} is time shifted according to the object date.
+\item \OSC{date} message change: the date 0 0 is ignored
+\end{itemize}
+
+
+%===============================
+%:    Differences to version 0.79
+\sublevel{Differences to version 0.79}
+\begin{itemize}
+\item corrects the map not saved by the \OSC{save} message issue
+\item corrects \OSC{get map} output: 2D segments were not correctly converted to string
+\end{itemize}
+
+%===============================
+%:    Differences to version 0.78
+\sublevel{Differences to version 0.78}
+\begin{itemize}
+\item crash bug corrected for the 'save' message addressed to '/ITL'
+\item message policy change: relaxed numeric parameters policy (float are accepted for int and int for float)
+\item bug in \OSC{get watch} for time events corrected (incorrect reply)
+\end{itemize}
+Known issues:
+\begin{itemize}
+\item map not saved by the \OSC{save} message 
+\end{itemize}
+
+%===============================
+%:    Differences to version 0.77
+\sublevel{Differences to version 0.77}
+\begin{itemize}
+\item guido system map extended: supports flat map or subdivided map (see section \fullref{guidomaps}).
+\item new \OSC{shear} and \OSC{rotate} transformations messages (see section \fullref{transform}).
+\item new \OSC{rename} message to change an object name (and thus its OSC address) (see section \fullref{common}).
+\item relaxed bool parameter policy: objects accept float values for bool parameters 
+\item automatic numbering of exports when destination file is not completely specified 
+  i.e. no name, no extension. (see section \fullref{common}).
+\item quantification introduced to \$date variable (see section \fullref{interactvar}).
+\item \OSC{reset} message addressed to a scene clears the scene rootPath
+\end{itemize}
+
+%===============================
+%:    Differences to version 0.76
+\sublevel{Differences to version 0.76}
+\begin{itemize}
+\item  get \OSC{guido-version} and \OSC{musicxml-version} messages supported by the application (see section \fullref{ITL}).
+\item  \OSC{save} message bug correction - introduced with version 0.70: only partial state of objects was saved
+\item  \OSC{rootPath} message introduced at scene level (see section \fullref{scene}).
+\item  scene name translation strategy change: only the explicit 'scene' name is 
+  translated by the scene load message handler into the current scene name, 
+  other names are left unchanged.
+\item  bitmap copy adjustment in sync stretched mode is now only made for images
+\end{itemize}
+
+
+%===============================
+%:    Differences to version 0.75
+\sublevel{Differences to version 0.75}
+\begin{itemize}
+\item new \OSC{require} message supported by the \OSC{/ITL} node (see section \fullref{ITL}).
+\item new event named \OSC{newElement} supported at scene level (see section \fullref{timeevents}).
+\item new \OSC{name} and \OSC{address} variables (see section \fullref{interactvar}).
+\item new system map computation making use of the new slices map provided by the guidolib version 1.42
+\item INScore API: the \OSC{newMessage} method sets now the message src IP to localhost
+  With the previous version and the lack of src IP, replies to queries or error 
+  messages could be sent to undefined addresses (and mostly lost).
+\item bug corrected with ellipse and rect : integer graphic size computation changed 
+  to float (prevents objects disappearance with small width or height)
+\item bug in scene export: left and right borders could be cut, depending  on the scene size
+  corrected by rendering the QGraphicsView container instead the QGraphicsScene
+\item crash bug with \$date:name corrected: crashed when there is no mapping named \OSC{name}.
+\end{itemize}
+
+%===============================
+%:    Differences to version 0.74
+\sublevel{Differences to version 0.74}
+\begin{itemize}
+\item new \OSC{map+} message  (see section \fullref{mapAddMsg}).
+\item the \OSC{click} and \OSC{select} messages are deprecated (but still supported). They will be removed in a future version.
+\end{itemize}
+
+%===============================
+%:    Differences to version 0.63
+\sublevel{Differences to version 0.63}
+\begin{itemize}
+\item new \OSC{dpage} message accepted by \OSC{gmn} objects (see section \fullref{gmnpage}).
+\item x and y variables: automatic range type detection (int | float)
+\item set \OSC{txt} message: accepts polymorphic stream like parameters (see section \fullref{setsect}).
+\item drag and drop files support in INScore viewer
+\item interaction variables extension: \OSC{\$sx}, \OSC{\$sy} variables added to support scene coordinate space (see section \fullref{interactvar}).
+\item automatic range mapping for \OSC{\$x}, \OSC{\$y} variables.
+\item new \OSC{\$self} and \OSC{\$scene} variables in the address field (see section \fullref{oscvar}).
+\item OSC identifiers characters set extended with '\_' and '-' (see section \fullref{genformat}).
+\item support for multiple scenes: \OSC{new}, \OSC{del} and \OSC{foreground} messages (see section \fullref{scene}).
+\item \OSC{load} message supported at scene level (see section \fullref{scene}).
+\item \OSC{get watch} implemented.
+\item \OSC{watch} message without argument to clear all the watched events (see section \fullref{interactvar}).
+\item order of rendering and width, height update corrected (may lead to incorrect rendering)
+\item bug with gmn score corrected: missing update for page, columns and rows changes.
+\item package delivered with the Guido Engine version 1.41 that corrects minimum staves distance and incorrect mapping when optimum page fill is off.
+\end{itemize}
+
+%===============================
+%:    Differences to version 0.60
+\sublevel{Differences to version 0.60}
+\begin{itemize}
+\item new 'mousemove' event (see section \fullref{uievents}).
+\item interaction messages accept variables (\$x, \$y, \$date...) (see section \fullref{interactvar}).
+\item SVG code and files support (see section \fullref{setfile}).
+\item set line message change: the \OSC{x y} form is deprecated, it is replaced by
+  the following forms: \\
+  \OSC{'xy' x y} (equivalent to the former form) 
+  and \OSC{'wa' width angle}   
+  (see section \fullref{setsect}).
+\item new 'effect' message  (section \fullref{effectmsg}).
+\item utf8 support on windows corrected
+\item transparency support for stretched synchronized objects corrected
+\item multiple application instances supported with dynamic udp port number allocation.
+\item command line option with --port portnumber option to set the receive udp port number at startup.
+\end{itemize}
+
+%===============================
+%:    Differences to version 0.55
+\sublevel{Differences to version 0.55}
+\begin{itemize}
+\item new 'xorigin' and 'yorigin' messages (section \fullref{origin}).
+\item new interaction messages set (section \fullref{interaction}).
+\item alpha channel handled by images and video
+\item bug correction in line creation corrected (false incorrect parameter returned)
+\item bug correction in line 'get' message handling
+\item memory leak correction (messages not deleted)
+\end{itemize}
+
+Known issues: 
+\begin{itemize}
+\item incorrect graphic rendering when 'sync a b' is changed to 'sync b a' in the same update loop
+\item incorrect nested synchronization when master is horizontaly stretched,
+\end{itemize}
+
+%===============================
+%:    Differences to version 0.53
+\sublevel{Differences to version 0.53}
+\begin{itemize}
+\item ITL parser corrected to support regexp in message string (used by messages addressed to sync node)
+\item format of mapping files and strings changed (section \fullref{mapMsg}).
+\item format of sync messages extended to include map name (section \fullref{syncmsg}).
+\item signal node: 'garbage' message removed
+\item new 'reset' message for the scene (/ITL/scene) (section \fullref{scene}).
+\item new 'version' message for the application (/ITL) (section \fullref{ITL}).
+\item new 'reset' message for signals (section \fullref{ssignal}).
+\item bug parsing messages without params corrected
+\item slave segmentation used for synchronization
+\item new H synchronization mode (preserves slave segmentation)
+\item crash bug corrected for load message and missing ITL files
+\end{itemize}
+
+%===============================
+%:    Differences to version 0.50
+\sublevel{Differences to version 0.50}
+\begin{itemize}
+\item Graphic signal thickness is now symmetrically drawn around y position.
+\item ITL file format supports regular expressions in OSC addresses.
+\item IP of a message sender is now used for the reply or for error reporting.
+\item new \OSC{line} object (section \fullref{setsect}).
+\item new \OSC{penStyle} message for vectorial graphics (section \fullref{specificMsg}).
+\item new color messages \OSC{red, green, blue, alpha, dcolor, dred, dgreen, dblue} (section \fullref{common} and  \fullref{relpos}).
+\item color values for objects are bounded to [0,255]
+\item \OSC{get map} message behaves according to new map message (section \fullref{getsect}).
+\item \OSC{get width} and  \OSC{get height} is now supported by all objects (section \fullref{getsect}).
+\item  bug in signal projection corrected (index 0 rejected)
+\item  bug in signals default value delivery corrected
+\item  new \OSC{pageCount} message for guido scores
+\item  debug nodes modified state propagated to parent node (corrects the debug informations graphic update issue)
+\item rational values catch null denominator (to prevents divide by zero exceptions).
+
+\end{itemize}
+
+%===============================
+%:    Differences to version 0.42
+\sublevel{Differences to version 0.42}
+
+\begin{itemize}
+\item \OSC{identifier} specification change (section \fullref{genformat}).
+\item new application \OSC{hello} and  \OSC{defaultShow} messages (section \fullref{ITL}).
+\item new \OSC{load} and \OSC{save} messages  (sections \fullref{ITL} and  \fullref{common}).
+\item \OSC{click} and \OSC{select} messages:
+\begin{itemize}
+\item \OSC{rightbottom} and \OSC{leftbottom} modes renamed to \OSC{bottomright} and \OSC{bottomleft}
+\item new \OSC{center} mode for the \OSC{click} message
+\item query mode sent back with the reply both for \OSC{click} and  \OSC{select} messages
+\end{itemize}
+\item new \OSC{file}, \OSC{html} and  \OSC{htmlf} types for the \OSC{set} message (section \fullref{setsect}).
+\item \OSC{get} syntax change for the \OSC{scene}.
+\item \OSC{fileWatcher} messages completely redesigned.
+\item mappings can be identified by names (section \fullref{mapMsg}).
+\item rect, ellipse, curve, line and polygon object support graphic to relative-time mapping
+\item new synchronization modes for Guido scores: voice1, voice2, ... , staff1, staff2, ... , system, page.
+\item Guido mapping manages repeat bars.
+\item Graphic signals messages design (section \fullref{gsignal}).
+\end{itemize}

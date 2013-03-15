@@ -1489,8 +1489,121 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {83}{ expression : message ";" | variabledecl ";" | script }
+\rail@i {83}{ gesturefollower : 'set' 'imtrgf' gesturedimension bufsize ( name + ) }
 \rail@o {83}{
+\rail@index{gesturefollower}
+\rail@begin{2}{gesturefollower}
+\rail@term{set}[]
+\rail@term{imtrgf}[]
+\rail@nont{gesturedimension}[]
+\rail@nont{bufsize}[]
+\rail@plus
+\rail@nont{name}[]
+\rail@nextplus{1}
+\rail@endplus
+\rail@end
+}
+\rail@i {84}{ gesturefollower : [1] ( float32 + ) | [2] ('learn' name) | [3] 'follow' | [4] 'stop' | [5] ('likelihoodwindow' float32) | [6] ('tolerance' float32) }
+\rail@o {84}{
+\rail@index{gesturefollower}
+\rail@begin{7}{gesturefollower}
+\rail@bar
+\rail@annote[1]
+\rail@plus
+\rail@token{float32}[]
+\rail@nextplus{1}
+\rail@endplus
+\rail@nextbar{2}
+\rail@annote[2]
+\rail@term{learn}[]
+\rail@nont{name}[]
+\rail@nextbar{3}
+\rail@annote[3]
+\rail@term{follow}[]
+\rail@nextbar{4}
+\rail@annote[4]
+\rail@term{stop}[]
+\rail@nextbar{5}
+\rail@annote[5]
+\rail@term{likelihoodwindow}[]
+\rail@token{float32}[]
+\rail@nextbar{6}
+\rail@annote[6]
+\rail@term{tolerance}[]
+\rail@token{float32}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {85}{ gesture : 'set' ( float32 +) | 'clear' }
+\rail@o {85}{
+\rail@index{gesture}
+\rail@begin{3}{gesture}
+\rail@bar
+\rail@term{set}[]
+\rail@plus
+\rail@token{float32}[]
+\rail@nextplus{1}
+\rail@endplus
+\rail@nextbar{2}
+\rail@term{clear}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {86}{ gestureevents : 'watch' ( 'gfEnter' | 'gfLeave') messages | 'likelihoodThreshold' float32 }
+\rail@o {86}{
+\rail@index{gestureevents}
+\rail@begin{3}{gestureevents}
+\rail@bar
+\rail@term{watch}[]
+\rail@bar
+\rail@term{gfEnter}[]
+\rail@nextbar{1}
+\rail@term{gfLeave}[]
+\rail@endbar
+\rail@nont{messages}[]
+\rail@nextbar{2}
+\rail@term{likelihoodThreshold}[]
+\rail@token{float32}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {87}{ gesturestream : 'send' ( 'active' | 'idle') ( [1] | [2] messages ) }
+\rail@o {87}{
+\rail@index{gesturestream}
+\rail@begin{2}{gesturestream}
+\rail@term{send}[]
+\rail@bar
+\rail@term{active}[]
+\rail@nextbar{1}
+\rail@term{idle}[]
+\rail@endbar
+\rail@bar
+\rail@annote[1]
+\rail@nextbar{1}
+\rail@annote[2]
+\rail@nont{messages}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {88}{ gesturevariable : ( 'likelihood' | 'pos' | 'speed') ( | '[low,high]') }
+\rail@o {88}{
+\rail@index{gesturevariable}
+\rail@begin{3}{gesturevariable}
+\rail@bar
+\rail@term{likelihood}[]
+\rail@nextbar{1}
+\rail@term{pos}[]
+\rail@nextbar{2}
+\rail@term{speed}[]
+\rail@endbar
+\rail@bar
+\rail@nextbar{1}
+\rail@term{[low,high]}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {89}{ expression : message ";" | variabledecl ";" | script }
+\rail@o {89}{
 \rail@index{expression}
 \rail@begin{3}{expression}
 \rail@bar
@@ -1504,8 +1617,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {84}{ variabledecl : 'ident' '=' ( (param | variable) + | '(' (message + ',') ')' ) ';' }
-\rail@o {84}{
+\rail@i {90}{ variabledecl : 'ident' '=' ( (param | variable) + | '(' (message + ',') ')' ) ';' }
+\rail@o {90}{
 \rail@index{variabledecl}
 \rail@begin{5}{variabledecl}
 \rail@term{ident}[]
@@ -1531,8 +1644,8 @@
 \rail@term{;}[]
 \rail@end
 }
-\rail@i {85}{ msgparam : '(' (message) ')' }
-\rail@o {85}{
+\rail@i {91}{ msgparam : '(' (message) ')' }
+\rail@o {91}{
 \rail@index{msgparam}
 \rail@begin{1}{msgparam}
 \rail@term{(}[]
@@ -1540,8 +1653,8 @@
 \rail@term{)}[]
 \rail@end
 }
-\rail@i {86}{ script : '<?' ('javascript' | 'lua') script '?>' }
-\rail@o {86}{
+\rail@i {92}{ script : '<?' ('javascript' | 'lua') script '?>' }
+\rail@o {92}{
 \rail@index{script}
 \rail@begin{2}{script}
 \rail@term{<?}[]
