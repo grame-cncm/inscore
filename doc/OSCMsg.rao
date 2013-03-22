@@ -1667,3 +1667,11 @@
 \rail@term{?>}[]
 \rail@end
 }
+\rail@i {93}{ javascript : 'run' 'code' }
+\rail@o {93}{
+\rail@index{javascript}
+\rail@begin{1}{javascript}
+\rail@term{run}[]
+\rail@term{code}[]
+\rail@end
+}

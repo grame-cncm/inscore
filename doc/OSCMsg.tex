@@ -704,6 +704,7 @@ setMsg : 'set' (
 \index{Set type!curve}
 \index{Set type!line}
 \index{Set type!grid}
+\index{Set type!faust}
 
 \begin{itemize}
 \item \OSC{txt}: a textual component.
@@ -718,6 +719,8 @@ setMsg : 'set' (
 \item \OSC{curve}: a sequence of 4-points bezier cubic curve. If the end-point of a curve doesn't match the start-point of the following one, the curves are linked by a straight line. The first curve follows the last curve. The inner space defined by the sequence of curves is filled, using the object color. The points coordinates are handled like in a \OSC{polygon}.
 \item \OSC{line}: a simple line specified by a point (x,y) expressed in \OSC{scene} coordinate space or by a width and angle. The point form is used to compute a line from (0,0) to (x,y), which is next drawn centered on the scene.
 \item \OSC{grid}: a white transparent object that provides a predefined time to graphic mapping (see section \fullref{grid} for more details and section \fullref{mapping} for time to graphic relations). The parameters are int32 values representing the number of columns and rows.
+
+\item \OSC{faust}: a FAUST object (see section \ref{faust})
 \end{itemize}
 
 \note{} The default position of any component is \values{[0,0]}. Objects are drawn centered on their position.
@@ -2551,6 +2554,22 @@ Note that INScore variables are exported to the current language environment.
 
 A single persistent context is created at application level and for each scene.
 It allows scripts to reuse previously defined functions and thus to design more structured scripts.
+
+
+%===============================
+%:    The Javascript objects
+\subsublevel{The Javascript object}\label{jsobj}
+
+The Javascript engine is available at runtime at the address \OSC{/ITL/\textit{scene}/javascript}. It has a \OSC{run} method that takes a javascript string as parameter.
+
+\begin{rail} 
+javascript :  'run' 'code'
+\end{rail}
+\index{Scripting! javascript! run}
+
+The \OSC{run} method evaluates the code. Similarly to javascript sections in scripts, the output of the evaluation is expected to be a string containing valid INScore messages that are next executed. 
+Actually, including a javascript section in a script is equivalent to send the \OSC{run} message with the same code as parameter to the javascript object.
+
 
 %\note{}\\
 %The effect of \OSC{load} message is actually to push the messages on the system stack for evaluation by the next time task. Thus when including a file containing javascript (or lua), the new 
