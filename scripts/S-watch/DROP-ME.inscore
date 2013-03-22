@@ -9,6 +9,7 @@ alpha=150;
 /ITL/scene/text  scale 1.5;
 
 /ITL/scene/rect watch mouseDown (
+	/ITL/scene/rect push,								! push the object interaction state
 	/ITL/$scene/$self color 76 254 212 $alpha,
 	/ITL/$scene/$self watch mouseDown (
 		/ITL/$scene/$self scale 1.4,
@@ -17,13 +18,16 @@ alpha=150;
 			/ITL/$scene/$self angle 45. ,
 			/ITL/$scene/$self color 212 254 76 $alpha,
 			/ITL/$scene/$self watch mouseDown (
-				/ITL/scene load 'DROP-ME.inscore'
+				/ITL/$scene/$self  color  254 212 76 $alpha ,
+				/ITL/$scene/$self angle 0. ,
+				/ITL/$scene/$self scale 1.,
+				/ITL/scene/rect pop						! pop the interaction state i.e. loop
 			)
 		)
 	)
 );
 
-/ITL/scene/comment  set  txt "This script illustrates nested 'watch' messages";
+/ITL/scene/comment  set  txt "This script illustrates nested 'watch' messages and infinite loops.";
 /ITL/scene/comment scale 1.3;
 /ITL/scene/comment y 0.9;
 /ITL/scene/comment z 0.9;
