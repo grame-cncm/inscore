@@ -1,0 +1,36 @@
+version = 0.96; ! version required for javascript
+gray = 100;
+
+/ITL/scene/* del;
+
+<? javascript
+	function inscoreval () { return (Math.random() * 2) - 1; }
+	function random (size, huespan, hue) {
+		var n = Math.round( Math.random() * 20) + 3;
+		var out = new Array;
+		out[0] = "/ITL/scene/rect* del;";
+		var j = 1;	
+		for (i=1; i <= n; i++) {
+			var target = "/ITL/scene/rect" + i;
+			out[j++] = target + " set rect 0.1 0.1;";
+			out[j++] = target + " x " + inscoreval()*0.9 + ";";
+			out[j++] = target + " y " + inscoreval()*0.9 + ";";
+			out[j++] = target + " color " + inscoreval() + " " + inscoreval() + " " + inscoreval() + " 0. ;";
+		}
+		return out;
+	}
+?>
+
+
+/ITL/scene/comment1 set txt "This script shows the use of the /ITL/scene/javascript static object.";
+/ITL/scene/comment1 y -0.8;
+/ITL/scene/comment2 set txt "Drop the 'jscall.inscore' file to run the javascript engine.";
+/ITL/scene/comment2 y 0.8;
+/ITL/scene/comment1 scale 1.7;
+/ITL/scene/comment2 scale 1.2;
+
+/ITL require $version ( /ITL/scene/warning set txt "WARNING: javascript requires version" $version "or greater" ,
+						/ITL/scene/warning color $gray $gray $gray ,
+						/ITL/scene/warning y 0.9 ,
+						/ITL/scene/warning scale 1.5 
+					  );
