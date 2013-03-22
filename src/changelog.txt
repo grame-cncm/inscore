@@ -13,8 +13,9 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.02
-- bug correction: error messages not generated for dropped files (actually for the scene load method)
 - javascript engine is available at the static address /ITL/scene/javascript and can be activated using a 'run' method
+- bug correction: error messages not generated for dropped files (actually for the scene load method)
+- bug correction: infinite loop catched in QStretchTilerItem::paint method
 
 ----------------------------------------------------
 Version 1.01

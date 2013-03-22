@@ -60,6 +60,8 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
 	float yscale = 1.f;
 
 	QRectF rect = fStretchTiledItem->boundingRect();
+	if ((rect.width() == 0) || (rect.height() == 0)) return;
+
 	// ensure a minimum 10 x 10 size
 	while ((rect.width() * xscale) < 20) {
 		xscale += 1;
