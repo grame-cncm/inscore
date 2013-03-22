@@ -110,6 +110,7 @@ const char* krotatex_GetSetMethod	= "rotatex";		// Get Set
 const char* krotatey_GetSetMethod	= "rotatey";		// Get Set
 const char* krotatez_GetSetMethod	= "rotatez";		// Get Set
 const char* krows_GetSetMethod		= "rows";			// Get Set
+const char* krun_SetMethod			= "run";			// Set
 const char* ksaturation_GetSetMethod= "saturation";		// Get Set
 const char* ksave_SetMethod			= "save";			// Set
 const char* kscale_GetSetMethod		= "scale";			// Get Set

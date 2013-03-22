@@ -57,6 +57,8 @@ class IFileWatcher;
 typedef class libmapping::SMARTP<IFileWatcher>		SIFileWatcher;
 class ISignalNode;
 typedef class libmapping::SMARTP<ISignalNode>		SISignalNode;
+class IJavascript;
+typedef class libmapping::SMARTP<IJavascript>		SIJavascript;
 
 //--------------------------------------------------------------------------
 /*! \brief a scene model
@@ -70,6 +72,7 @@ class IScene : public IRectShape, public PeriodicTask
 	SISceneSync		fSync;
 	SIFileWatcher	fFileWatcher;
 	SISignalNode	fSignals;
+	SIJavascript	fJSObject;
 	std::string		fRootPath;
 
 	TJSEngine		fJavascript;

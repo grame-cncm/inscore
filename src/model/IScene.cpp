@@ -42,6 +42,7 @@
 #include "rational.h"
 #include "TMessageEvaluator.h"
 #include "Updater.h"
+#include "IJavascript.h"
 
 #include "VSceneView.h"
 
@@ -145,10 +146,12 @@ void IScene::createVirtualNodes()
 
 	fSync = ISceneSync::create(this);
 	fFileWatcher = QFileWatcher::create(this);
+	fJSObject = IJavascript::create(this, &fJavascript);
 	fSignals = ISignalNode::create(this);
 	fSignals->createVirtualNodes();
 	add ( fSignals );
 	add ( fFileWatcher );
+	add ( fJSObject );
 	add ( fSync );
 }
 

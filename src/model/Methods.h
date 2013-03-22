@@ -111,6 +111,7 @@ extern const char* krotatex_GetSetMethod;
 extern const char* krotatey_GetSetMethod;
 extern const char* krotatez_GetSetMethod;
 extern const char* krows_GetSetMethod;
+extern const char* krun_SetMethod;
 extern const char* ksaturation_GetSetMethod;
 extern const char* ksave_SetMethod;
 extern const char* kscale_GetSetMethod;
