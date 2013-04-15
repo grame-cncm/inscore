@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>14.1 Statements</TITLE>
-<META NAME="description" CONTENT="14.1 Statements">
+<TITLE>14.1 Basic principle</TITLE>
+<META NAME="description" CONTENT="14.1 Basic principle">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,70 +27,81 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1319"
+<A NAME="tex2html1334"
   HREF="node75.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1313"
+<A NAME="tex2html1328"
   HREF="node73.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1307"
+<A NAME="tex2html1322"
   HREF="node73.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1315"
+<A NAME="tex2html1330"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1317"
-  HREF="node106.html">
+<A NAME="tex2html1332"
+  HREF="node114.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1320"
+<B> Next:</B> <A NAME="tex2html1335"
   HREF="node75.html">14.2 Messages</A>
-<B> Up:</B> <A NAME="tex2html1314"
-  HREF="node73.html">14. Scripting</A>
-<B> Previous:</B> <A NAME="tex2html1308"
-  HREF="node73.html">14. Scripting</A>
- &nbsp; <B>  <A NAME="tex2html1316"
+<B> Up:</B> <A NAME="tex2html1329"
+  HREF="node73.html">14. Gesture Follower</A>
+<B> Previous:</B> <A NAME="tex2html1323"
+  HREF="node73.html">14. Gesture Follower</A>
+ &nbsp; <B>  <A NAME="tex2html1331"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1318"
-  HREF="node106.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1333"
+  HREF="node114.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001510000000000000000"></A><A NAME="scriptstatement"></A>
+<H1><A NAME="SECTION001510000000000000000"></A><A NAME="gfbasic"></A>
 <BR>
-14.1 Statements
+14.1 Basic principle
 </H1>
-An INScore file is a list of textual expressions. A script expression is:
-
-<UL>
-<LI>a message: basically a textual OSC message extended to support URL like addresses and variables as parameters.
-</LI>
-<LI>a variable declaration.
-</LI>
-<LI>a foreign language script that may generate messages as output.
-</LI>
-</UL>
+Gesture following is provided as a mean to interact with a score. From input viewpoint, the gesture follower is similar to signals (see section <A HREF="node51.html#ssignal">11.1.1</A> p.<A HREF="node51.html#ssignal"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>): it accepts data stream as input both in learning and following modes. It implements a specific set of events related to gesture following and can generate message streams parametrized with the gesture follower current state.
 
 <P>
+A gesture follower is setup to handle a given count of gestures, which are actually denoted by streams of float vectors. We'll refer to the size of the float vector as the <I>gesture dimension</I>. For example, the dimension of a gesture captured from x, y and z accelerometers is 3.
+
+<P>
+A gesture follower operates in two distinct phases: a <I>learning phase</I> where it actually stores the gestures data, and a <I>following phase</I> where it tries to match incoming data to the stored gestures data. When not learning nor following, we'll talk of an idle phase. 
+
+<P>
+In the <I>following phase</I>, the system maintains a list of likelihood for the learned gestures, a list of positions in the gestures and a list of speeds representing how fast the gestures are made. Of course, the higher the likelihood, the more these data are meaningfull. It's the user responsability to decide on the meaningfull likelihood threshold value. Interaction events are triggered only in the <I>following phase</I> and for meaningfull likelihoods.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1334"
+  HREF="node75.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html1328"
+  HREF="node73.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html1322"
+  HREF="node73.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html1330"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html1332"
+  HREF="node114.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<IMG
- WIDTH="254" HEIGHT="127" ALIGN="BOTTOM" BORDER="0"
- SRC="img84.gif"
- ALT="\begin{rail}
-expression :
-message '';''
-\vert variabledecl '';''
-\vert script
-\end{rail}">
-<BR>
-<A NAME="1499"></A>
-
-<P>
-Messages and variables declarations must be followed by a semicolon, used as statements separator.
-
-<P>
-<BR><HR>
+<B> Next:</B> <A NAME="tex2html1335"
+  HREF="node75.html">14.2 Messages</A>
+<B> Up:</B> <A NAME="tex2html1329"
+  HREF="node73.html">14. Gesture Follower</A>
+<B> Previous:</B> <A NAME="tex2html1323"
+  HREF="node73.html">14. Gesture Follower</A>
+ &nbsp; <B>  <A NAME="tex2html1331"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1333"
+  HREF="node114.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

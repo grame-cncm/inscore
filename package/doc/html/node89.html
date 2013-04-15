@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>16.6 Differences to version 0.91</TITLE>
-<META NAME="description" CONTENT="16.6 Differences to version 0.91">
+<TITLE>16.2 Lexical tokens</TITLE>
+<META NAME="description" CONTENT="16.2 Lexical tokens">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,55 +19,99 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node90.html">
 <LINK REL="previous" HREF="node88.html">
-<LINK REL="up" HREF="node83.html">
+<LINK REL="up" HREF="node87.html">
 <LINK REL="next" HREF="node90.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1549"
+<A NAME="tex2html1544"
   HREF="node90.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1543"
-  HREF="node83.html">
+<A NAME="tex2html1538"
+  HREF="node87.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1537"
+<A NAME="tex2html1534"
   HREF="node88.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1545"
+<A NAME="tex2html1540"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1547"
-  HREF="node106.html">
+<A NAME="tex2html1542"
+  HREF="node114.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1550"
-  HREF="node90.html">16.7 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1544"
-  HREF="node83.html">16. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1538"
-  HREF="node88.html">16.5 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1546"
+<B> Next:</B> <A NAME="tex2html1545"
+  HREF="node90.html">17. Changes list</A>
+<B> Up:</B> <A NAME="tex2html1539"
+  HREF="node87.html">16. Appendices</A>
+<B> Previous:</B> <A NAME="tex2html1535"
+  HREF="node88.html">16.1 Grammar definition</A>
+ &nbsp; <B>  <A NAME="tex2html1541"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1548"
-  HREF="node106.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1543"
+  HREF="node114.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001760000000000000000">
-16.6 Differences to version 0.91</A>
+<H1><A NAME="SECTION001720000000000000000"></A>
+<A NAME="lex"></A>
+<BR>
+16.2 Lexical tokens
 </H1>
+<PRE>
+//_______________________________________________
+// numbers
+//_______________________________________________
+INT       a signed integer
+UINT      an unsigned integer
+FLOAT     a floating point number
 
-<UL>
-<LI>bug corrected: crash with messages addressed to a signal without argument
-</LI>
-<LI>date and duration messages support one arg form using 1 as implicit denominator value 
-  the one arg form accepts float values  (see section <A HREF="node21.html#time">3</A> p.<A HREF="node21.html#time"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-</UL>
+
+//_______________________________________________
+// hosts addresses
+//_______________________________________________
+// allowed character set for host names (see RFC952 and RFC1123)
+HOSTNAME       : [-a-zA-Z0-9]+ 
+IPNUM          :  {DIGIT}+"."{DIGIT}+"."{DIGIT}+"."{DIGIT}+
+
+
+//_______________________________________________
+// OSC addresses
+//_______________________________________________
+// allowed characters for identifiers
+IDENTIFIER     : [_a-zA-Z][_a-zA-Z0-9]*
+REGEXP           see OSC doc for regular expressions
+
+//_______________________________________________
+// parameters
+//_______________________________________________
+QUOTEDSTRING     quotes could be single (') or double quotes (")
+WATCH          : watch
+               | watch+
+               | require
+
+//_______________________________________________
+// languages support
+//_______________________________________________
+JSCRIPT        : &lt;?javascript any javascript code ?&gt;
+LUASCRIPT      : &lt;?lua any lua code ?&gt;
+
+//_______________________________________________
+// misc.
+//_______________________________________________
+PATHSEP        : '/'
+POINT          : '.'
+VARSTART       : '$'
+COLON          : ':'
+COMMA          : ','
+LEFTPAR        : '('
+RIGHTPAR       : ')'
+EQUAL          : '='
+ENDEXPR        : ';'
+</PRE>
 
 <P>
 <BR><HR>

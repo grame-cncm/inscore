@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>16. Changes list</TITLE>
-<META NAME="description" CONTENT="16. Changes list">
+<TITLE>15.4 Variables</TITLE>
+<META NAME="description" CONTENT="15.4 Variables">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,101 +19,158 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node106.html">
-<LINK REL="previous" HREF="node80.html">
-<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="next" HREF="node84.html">
+<LINK REL="previous" HREF="node82.html">
+<LINK REL="up" HREF="node79.html">
 <LINK REL="next" HREF="node84.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1443"
+<A NAME="tex2html1463"
   HREF="node84.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1437"
-  HREF="OSCMsg.html">
+<A NAME="tex2html1457"
+  HREF="node79.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1431"
+<A NAME="tex2html1451"
   HREF="node82.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1439"
+<A NAME="tex2html1459"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1441"
-  HREF="node106.html">
+<A NAME="tex2html1461"
+  HREF="node114.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1444"
-  HREF="node84.html">16.1 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1438"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html1432"
-  HREF="node82.html">15.2 Lexical tokens</A>
- &nbsp; <B>  <A NAME="tex2html1440"
+<B> Next:</B> <A NAME="tex2html1464"
+  HREF="node84.html">15.5 Message based parameters</A>
+<B> Up:</B> <A NAME="tex2html1458"
+  HREF="node79.html">15. Scripting</A>
+<B> Previous:</B> <A NAME="tex2html1452"
+  HREF="node82.html">15.3 Types</A>
+ &nbsp; <B>  <A NAME="tex2html1460"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1442"
-  HREF="node106.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1462"
+  HREF="node114.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001700000000000000000">
-16.  Changes list</A>
+<H1><A NAME="SECTION001640000000000000000"></A><A NAME="scriptvar"></A>
+<BR>
+15.4 Variables
 </H1>
 
 <P>
-<BR><HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+A variable declaration associates a name with a list of parameters or a list of messages.
+Parameters must follow the rules given in section <A HREF="node82.html#scripttypes">15.3</A>. They may include previously declared variables. A message list must be enclosed in parenthesis and a comma must be used as messages separator.
+<BR>
+<IMG
+ WIDTH="471" HEIGHT="199" ALIGN="BOTTOM" BORDER="0"
+ SRC="img91.gif"
+ ALT="\begin{rail}
+variabledecl : 'ident' '=' ( (param \vert variable) +
+\vert '(' (message + ',') ')' ) ';'
+\end{rail}">
+<BR>
+<A NAME="1619"></A>
 
-<UL>
-<LI><A NAME="tex2html1445"
-  HREF="node84.html">16.1 Differences to version 0.98</A>
-<LI><A NAME="tex2html1446"
-  HREF="node85.html">16.2 Differences to version 0.97</A>
-<LI><A NAME="tex2html1447"
-  HREF="node86.html">16.3 Differences to version 0.96</A>
-<LI><A NAME="tex2html1448"
-  HREF="node87.html">16.4 Differences to version 0.95</A>
-<LI><A NAME="tex2html1449"
-  HREF="node88.html">16.5 Differences to version 0.92</A>
-<LI><A NAME="tex2html1450"
-  HREF="node89.html">16.6 Differences to version 0.91</A>
-<LI><A NAME="tex2html1451"
-  HREF="node90.html">16.7 Differences to version 0.90</A>
-<LI><A NAME="tex2html1452"
-  HREF="node91.html">16.8 Differences to version 0.82</A>
-<LI><A NAME="tex2html1453"
-  HREF="node92.html">16.9 Differences to version 0.81</A>
-<LI><A NAME="tex2html1454"
-  HREF="node93.html">16.10 Differences to version 0.80</A>
-<LI><A NAME="tex2html1455"
-  HREF="node94.html">16.11 Differences to version 0.79</A>
-<LI><A NAME="tex2html1456"
-  HREF="node95.html">16.12 Differences to version 0.78</A>
-<LI><A NAME="tex2html1457"
-  HREF="node96.html">16.13 Differences to version 0.77</A>
-<LI><A NAME="tex2html1458"
-  HREF="node97.html">16.14 Differences to version 0.76</A>
-<LI><A NAME="tex2html1459"
-  HREF="node98.html">16.15 Differences to version 0.75</A>
-<LI><A NAME="tex2html1460"
-  HREF="node99.html">16.16 Differences to version 0.74</A>
-<LI><A NAME="tex2html1461"
-  HREF="node100.html">16.17 Differences to version 0.63</A>
-<LI><A NAME="tex2html1462"
-  HREF="node101.html">16.18 Differences to version 0.60</A>
-<LI><A NAME="tex2html1463"
-  HREF="node102.html">16.19 Differences to version 0.55</A>
-<LI><A NAME="tex2html1464"
-  HREF="node103.html">16.20 Differences to version 0.53</A>
-<LI><A NAME="tex2html1465"
-  HREF="node104.html">16.21 Differences to version 0.50</A>
-<LI><A NAME="tex2html1466"
-  HREF="node105.html">16.22 Differences to version 0.42</A>
-</UL>
-<!--End of Table of Child-Links-->
-<BR><HR>
+<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Variables declarations
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>color = 200 200 200; 
+<BR>
+colorwithalpha = $color 100; ! using another variable 
+<BR>
+msgsvar= (    ! a variable refering to a message list 
+<BR>
+localhost:7001/world "Hello world", 
+<BR>
+localhost:7001/world "how are you ?" );
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
+A variable may be used in place of any message parameter. A reference to a variable must have the form <TT>$ident</TT> where <TT>ident</TT> is a previously declared variable. A variable is evaluated at parsing level and replaced by its content.
+
+<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Using a variable to share a common position:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>x = 0.5;
+<BR>/ITL/scene/a x $x;
+<BR>/ITL/scene/b x $x;
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
+Variables can be used in interaction messages as well, which may also use the variables available in the interaction context (see section <A HREF="node65.html#interactvar">13.2</A> p.<A HREF="node65.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). To differentiate between a <I>script</I> and an <I>interaction</I> variable, the latter must be quoted to be passed as strings and to prevent their evaluation by the parser. 
+
+<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Using variables in interaction messages: $sx is evaluated at event occurrence	and $y is evaluated at parsing level.
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>y = 0.5;
+<BR>/ITL/scene/foo watch mouseDown (/ITL/scene/foo "$sx" $y);
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1463"
+  HREF="node84.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html1457"
+  HREF="node79.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html1451"
+  HREF="node82.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html1459"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html1461"
+  HREF="node114.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html1464"
+  HREF="node84.html">15.5 Message based parameters</A>
+<B> Up:</B> <A NAME="tex2html1458"
+  HREF="node79.html">15. Scripting</A>
+<B> Previous:</B> <A NAME="tex2html1452"
+  HREF="node82.html">15.3 Types</A>
+ &nbsp; <B>  <A NAME="tex2html1460"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1462"
+  HREF="node114.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

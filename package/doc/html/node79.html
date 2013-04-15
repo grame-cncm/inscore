@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>14.6 Languages</TITLE>
-<META NAME="description" CONTENT="14.6 Languages">
+<TITLE>15. Scripting</TITLE>
+<META NAME="description" CONTENT="15. Scripting">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,125 +19,77 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="previous" HREF="node78.html">
-<LINK REL="up" HREF="node73.html">
+<LINK REL="next" HREF="node87.html">
+<LINK REL="previous" HREF="node73.html">
+<LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node80.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1387"
+<A NAME="tex2html1400"
   HREF="node80.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1381"
-  HREF="node73.html">
+<A NAME="tex2html1394"
+  HREF="OSCMsg.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1377"
+<A NAME="tex2html1388"
   HREF="node78.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1383"
+<A NAME="tex2html1396"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1385"
-  HREF="node106.html">
+<A NAME="tex2html1398"
+  HREF="node114.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1388"
-  HREF="node80.html">15. Appendices</A>
-<B> Up:</B> <A NAME="tex2html1382"
-  HREF="node73.html">14. Scripting</A>
-<B> Previous:</B> <A NAME="tex2html1378"
-  HREF="node78.html">14.5 Message based parameters</A>
- &nbsp; <B>  <A NAME="tex2html1384"
+<B> Next:</B> <A NAME="tex2html1401"
+  HREF="node80.html">15.1 Statements</A>
+<B> Up:</B> <A NAME="tex2html1395"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html1389"
+  HREF="node78.html">14.3.1 Gestures variables</A>
+ &nbsp; <B>  <A NAME="tex2html1397"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1386"
-  HREF="node106.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1399"
+  HREF="node114.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001560000000000000000"></A><A NAME="scriptlang"></A>
+<H1><A NAME="SECTION001600000000000000000"></A>
+<A NAME="scripting"></A>
 <BR>
-14.6 Languages
+15. Scripting
 </H1>
 
 <P>
-<A NAME="1543"></A>
-<A NAME="1544"></A>
+INScore saves its state to files containing textual OSC messages. These files can be edited or created from scratch using any text editor. In order to provide users with a scripting language, the OSC syntax has been extended at textual level.
 
 <P>
-INScore supports Javascript and Lua as scripting languages. Javascript is embedded by default (using the v8 engine<A NAME="tex2html11"
-  HREF="footnode.html#foot1619"><SUP>14.1</SUP></A>). INScore needs to be recompiled to embed the Lua engine<A NAME="tex2html13"
-  HREF="footnode.html#foot1620"><SUP>14.2</SUP></A>. A script section is indicated similarly to a Javascript section in html i.e. enclosed in an opening <TT>&lt;?</TT> and a closing <TT>?&gt;</TT>.
-<BR>
-<IMG
- WIDTH="372" HEIGHT="89" ALIGN="BOTTOM" BORDER="0"
- SRC="img87.gif"
- ALT="\begin{rail}
-script : '&lt;?' ('javascript' \vert 'lua') script '?&gt;'
-\end{rail}">
-<BR>
-<A NAME="1551"></A>
-<A NAME="1552"></A>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
-<P>
-The principle of using an embedded programming language in script files is the following: <I>javascript</I> or <I>lua</I> sections are given to the corresponding engine and are expected to produce INScore messages on output.
-These messages are then parsed as if replacing the corresponding script section.
-
-<P>
-Note that INScore variables are exported to the current language environment.
-
-<P>
-<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
-<BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>
-&lt;?javascript 
-<BR>  "/ITL/scene/version set 'txt' 'Javascript v."  + version() + "';"; 
-<BR>  ?&gt;
-</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
-
-<P>
-A single persistent context is created at application level and for each scene.
-It allows scripts to reuse previously defined functions and thus to design more structured scripts.
-
-<P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html1387"
-  HREF="node80.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1381"
-  HREF="node73.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1377"
-  HREF="node78.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1383"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1385"
-  HREF="node106.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html1388"
-  HREF="node80.html">15. Appendices</A>
-<B> Up:</B> <A NAME="tex2html1382"
-  HREF="node73.html">14. Scripting</A>
-<B> Previous:</B> <A NAME="tex2html1378"
-  HREF="node78.html">14.5 Message based parameters</A>
- &nbsp; <B>  <A NAME="tex2html1384"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1386"
-  HREF="node106.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<UL>
+<LI><A NAME="tex2html1402"
+  HREF="node80.html">15.1 Statements</A>
+<LI><A NAME="tex2html1403"
+  HREF="node81.html">15.2 Messages</A>
+<LI><A NAME="tex2html1404"
+  HREF="node82.html">15.3 Types</A>
+<LI><A NAME="tex2html1405"
+  HREF="node83.html">15.4 Variables</A>
+<LI><A NAME="tex2html1406"
+  HREF="node84.html">15.5 Message based parameters</A>
+<LI><A NAME="tex2html1407"
+  HREF="node85.html">15.6 Languages</A>
+<UL>
+<LI><A NAME="tex2html1408"
+  HREF="node86.html">15.6.1 The Javascript object</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

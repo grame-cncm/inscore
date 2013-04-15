@@ -19,7 +19,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node76.html">
+<LINK REL="next" HREF="node77.html">
 <LINK REL="previous" HREF="node74.html">
 <LINK REL="up" HREF="node73.html">
 <LINK REL="next" HREF="node76.html">
@@ -27,67 +27,80 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1333"
+<A NAME="tex2html1348"
   HREF="node76.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1327"
+<A NAME="tex2html1342"
   HREF="node73.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1321"
+<A NAME="tex2html1336"
   HREF="node74.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1329"
+<A NAME="tex2html1344"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1331"
-  HREF="node106.html">
+<A NAME="tex2html1346"
+  HREF="node114.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1334"
-  HREF="node76.html">14.3 Types</A>
-<B> Up:</B> <A NAME="tex2html1328"
-  HREF="node73.html">14. Scripting</A>
-<B> Previous:</B> <A NAME="tex2html1322"
-  HREF="node74.html">14.1 Statements</A>
- &nbsp; <B>  <A NAME="tex2html1330"
+<B> Next:</B> <A NAME="tex2html1349"
+  HREF="node76.html">14.2.1 Gestures management</A>
+<B> Up:</B> <A NAME="tex2html1343"
+  HREF="node73.html">14. Gesture Follower</A>
+<B> Previous:</B> <A NAME="tex2html1337"
+  HREF="node74.html">14.1 Basic principle</A>
+ &nbsp; <B>  <A NAME="tex2html1345"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1332"
-  HREF="node106.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1347"
+  HREF="node114.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001520000000000000000"></A><A NAME="scriptmsgs"></A>
+<H1><A NAME="SECTION001520000000000000000"></A><A NAME="gfmessages"></A>
 <BR>
 14.2 Messages
 </H1>
+A gesture follower is created in a scene using the <TT>imtrgf</TT> type. It has a graphic appearance that may be used for debug purpose but it is hidden by default.
 
 <P>
-Messages are basically OSC messages that support the address extension scheme described in section <A HREF="node60.html#interaction">13</A> p.<A HREF="node60.html#interaction"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>.
-Thus a script may be designed to initialize an INScore scene and external applications as well, including on remote hosts.
-
-<P>
-<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
 <BR>
-Initializing a score and an external application listening on port 12000 and running on a remote host named <TT>host.adomain.net</TT>.
+<IMG
+ WIDTH="517" HEIGHT="75" ALIGN="BOTTOM" BORDER="0"
+ SRC="img84.gif"
+ ALT="\begin{rail}
+gesturefollower : 'set' 'imtrgf' gesturedimension bufsize ( name + )
+\end{rail}">
 <BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene/score set gmnf 'myscore.gmn';
-<BR>
-host.adomain.net:12000/run 1;
-</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
+<A NAME="1509"></A>
 
 <P>
-Messages parameters can be replaced by variables that are evaluated at parsing level. Variables are described in section <A HREF="node77.html#scriptvar">14.4</A>.
+The parameters are:
+
+<UL>
+<LI><TT>gesturedimension</TT>: the size of the gestures data vector.
+</LI>
+<LI><TT>bufsize</TT>: the size of the gesture data storage.
+</LI>
+<LI><TT>name</TT>: a list of names to be used to refer to the learned gestures.
+</LI>
+</UL>
 
 <P>
+<BR><B> <B>N<SMALL>OTE </SMALL></B></B> 
+<BR>
+A gesture follower is created with a fixed count of gestures that can be stored and followed. These gestures are named and can be addressed at <TT>/ITL/<I>scene</I>/<I>myfollower</I>/<I>gesturename</I></TT> where the part in italic are user defined names and where <TT>myfollower</TT> is a gesture follower.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html1350"
+  HREF="node76.html">14.2.1 Gestures management</A>
+</UL>
+<!--End of Table of Child-Links-->
 <BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>16.2 Differences to version 0.97</TITLE>
-<META NAME="description" CONTENT="16.2 Differences to version 0.97">
+<TITLE>15.6 Languages</TITLE>
+<META NAME="description" CONTENT="15.6 Languages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,67 +19,134 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node86.html">
 <LINK REL="previous" HREF="node84.html">
-<LINK REL="up" HREF="node83.html">
+<LINK REL="up" HREF="node79.html">
 <LINK REL="next" HREF="node86.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1493"
+<A NAME="tex2html1489"
   HREF="node86.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1487"
-  HREF="node83.html">
+<A NAME="tex2html1483"
+  HREF="node79.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1481"
+<A NAME="tex2html1479"
   HREF="node84.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1489"
+<A NAME="tex2html1485"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1491"
-  HREF="node106.html">
+<A NAME="tex2html1487"
+  HREF="node114.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1494"
-  HREF="node86.html">16.3 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1488"
-  HREF="node83.html">16. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1482"
-  HREF="node84.html">16.1 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1490"
+<B> Next:</B> <A NAME="tex2html1490"
+  HREF="node86.html">15.6.1 The Javascript object</A>
+<B> Up:</B> <A NAME="tex2html1484"
+  HREF="node79.html">15. Scripting</A>
+<B> Previous:</B> <A NAME="tex2html1480"
+  HREF="node84.html">15.5 Message based parameters</A>
+ &nbsp; <B>  <A NAME="tex2html1486"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1492"
-  HREF="node106.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1488"
+  HREF="node114.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001720000000000000000">
-16.2 Differences to version 0.97</A>
+<H1><A NAME="SECTION001660000000000000000"></A><A NAME="scriptlang"></A>
+<BR>
+15.6 Languages
 </H1>
 
-<UL>
-<LI>new <TT>fastgraph</TT> object for graphic signals fast rendering (see section <A HREF="node22.html#setsect">4</A> p.<A HREF="node22.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>)
-</LI>
-<LI>$date variable overflow catched
-</LI>
-<LI>files dropped on application icon correctly opened when the application is not running
-</LI>
-<LI>supports drag and drop of textual osc message strings
-</LI>
-<LI>osc error stream normalized: the message address is 'error:' or 'warning:'
-   followed by a single message string.
-</LI>
-<LI>javascript and lua support: a single persistent context is created at application level and for each scene. 
-(see section <A HREF="node79.html#scriptlang">14.6</A> p.<A HREF="node79.html#scriptlang"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>)
-</LI>
-</UL>
+<P>
+<A NAME="1644"></A>
+<A NAME="1645"></A>
+
+<P>
+INScore supports Javascript and Lua as scripting languages. Javascript is embedded by default (using the v8 engine<A NAME="tex2html11"
+  HREF="footnode.html#foot1731"><SUP>15.1</SUP></A>). INScore needs to be recompiled to embed the Lua engine<A NAME="tex2html13"
+  HREF="footnode.html#foot1732"><SUP>15.2</SUP></A>. A script section is indicated similarly to a Javascript section in html i.e. enclosed in an opening <TT>&lt;?</TT> and a closing <TT>?&gt;</TT>.
+<BR>
+<IMG
+ WIDTH="372" HEIGHT="89" ALIGN="BOTTOM" BORDER="0"
+ SRC="img93.gif"
+ ALT="\begin{rail}
+script : '&lt;?' ('javascript' \vert 'lua') script '?&gt;'
+\end{rail}">
+<BR>
+<A NAME="1652"></A>
+<A NAME="1653"></A>
+
+<P>
+The principle of using an embedded programming language in script files is the following: <I>javascript</I> or <I>lua</I> sections are given to the corresponding engine and are expected to produce INScore messages on output.
+These messages are then parsed as if replacing the corresponding script section.
+
+<P>
+Note that INScore variables are exported to the current language environment.
+
+<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>
+&lt;?javascript 
+<BR>  "/ITL/scene/version set 'txt' 'Javascript v."  + version() + "';"; 
+<BR>  ?&gt;
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
+A single persistent context is created at application level and for each scene.
+It allows scripts to reuse previously defined functions and thus to design more structured scripts.
 
 <P>
 <BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html1491"
+  HREF="node86.html">15.6.1 The Javascript object</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1489"
+  HREF="node86.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<A NAME="tex2html1483"
+  HREF="node79.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
+<A NAME="tex2html1479"
+  HREF="node84.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<A NAME="tex2html1485"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<A NAME="tex2html1487"
+  HREF="node114.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html1490"
+  HREF="node86.html">15.6.1 The Javascript object</A>
+<B> Up:</B> <A NAME="tex2html1484"
+  HREF="node79.html">15. Scripting</A>
+<B> Previous:</B> <A NAME="tex2html1480"
+  HREF="node84.html">15.5 Message based parameters</A>
+ &nbsp; <B>  <A NAME="tex2html1486"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1488"
+  HREF="node114.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>14.4 Variables</TITLE>
-<META NAME="description" CONTENT="14.4 Variables">
+<TITLE>14.3 Events and interaction</TITLE>
+<META NAME="description" CONTENT="14.3 Events and interaction">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,157 +19,150 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node78.html">
-<LINK REL="previous" HREF="node76.html">
+<LINK REL="previous" HREF="node75.html">
 <LINK REL="up" HREF="node73.html">
 <LINK REL="next" HREF="node78.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1361"
+<A NAME="tex2html1373"
   HREF="node78.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1355"
+<A NAME="tex2html1367"
   HREF="node73.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1349"
+<A NAME="tex2html1363"
   HREF="node76.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1357"
+<A NAME="tex2html1369"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1359"
-  HREF="node106.html">
+<A NAME="tex2html1371"
+  HREF="node114.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1362"
-  HREF="node78.html">14.5 Message based parameters</A>
-<B> Up:</B> <A NAME="tex2html1356"
-  HREF="node73.html">14. Scripting</A>
-<B> Previous:</B> <A NAME="tex2html1350"
-  HREF="node76.html">14.3 Types</A>
- &nbsp; <B>  <A NAME="tex2html1358"
+<B> Next:</B> <A NAME="tex2html1374"
+  HREF="node78.html">14.3.1 Gestures variables</A>
+<B> Up:</B> <A NAME="tex2html1368"
+  HREF="node73.html">14. Gesture Follower</A>
+<B> Previous:</B> <A NAME="tex2html1364"
+  HREF="node76.html">14.2.1 Gestures management</A>
+ &nbsp; <B>  <A NAME="tex2html1370"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1360"
-  HREF="node106.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1372"
+  HREF="node114.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001540000000000000000"></A><A NAME="scriptvar"></A>
+<H1><A NAME="SECTION001530000000000000000"></A><A NAME="gfevents"></A>
 <BR>
-14.4 Variables
+14.3 Events and interaction
 </H1>
 
 <P>
-A variable declaration associates a name with a list of parameters or a list of messages.
-Parameters must follow the rules given in section <A HREF="node76.html#scripttypes">14.3</A>. They may include previously declared variables. A message list must be enclosed in parenthesis and a comma must be used as messages separator.
+Events and likelihood threshold are defined at gesture level. Thus events management messages should be addressed to gestures. 
+
+<P>
+A gesture could be in two states:
+
+<UL>
+<LI>an active state: when its likelihood is greater or equal to the likelihood threshold.
+</LI>
+<LI>an idle state: when its likelihood is lower than the likelihood threshold.
+</LI>
+</UL>
+
+<P>
 <BR>
 <IMG
- WIDTH="471" HEIGHT="199" ALIGN="BOTTOM" BORDER="0"
- SRC="img85.gif"
+ WIDTH="403" HEIGHT="124" ALIGN="BOTTOM" BORDER="0"
+ SRC="img87.gif"
  ALT="\begin{rail}
-variabledecl : 'ident' '=' ( (param \vert variable) +
-\vert '(' (message + ',') ')' ) ';'
+gestureevents :
+'watch' ( 'gfEnter' \vert 'gfLeave') messages
+\vert 'likelihoodThreshold' float32
 \end{rail}">
 <BR>
-<A NAME="1518"></A>
+<A NAME="1557"></A>
+<A NAME="1558"></A>
+<A NAME="1559"></A>
+<A NAME="1560"></A>
 
 <P>
-<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
-<BR>
-Variables declarations
-<BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>color = 200 200 200; 
-<BR>
-colorwithalpha = $color 100; ! using another variable 
-<BR>
-msgsvar= (    ! a variable refering to a message list 
-<BR>
-localhost:7001/world "Hello world", 
-<BR>
-localhost:7001/world "how are you ?" );
-</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
+
+<UL>
+<LI><TT>gfEnter</TT> triggered when the gesture state changes from idle to active.
+</LI>
+<LI><TT>gfLeave</TT> triggered when the gesture state changes from active to idle.
+</LI>
+<LI><TT>likelihoodThreshold</TT> sets the gesture likelihood threshold. The parameter is a float value in the range <TT>[0,1]</TT>. Default value is <TT>0.8</TT>.
+</LI>
+</UL>
 
 <P>
-A variable may be used in place of any message parameter. A reference to a variable must have the form <TT>$ident</TT> where <TT>ident</TT> is a previously declared variable. A variable is evaluated at parsing level and replaced by its content.
+In addition, a gesture can stream arbitrary messages each time its state is refreshed.
+<BR>
+<IMG
+ WIDTH="409" HEIGHT="86" ALIGN="BOTTOM" BORDER="0"
+ SRC="img88.gif"
+ ALT="\begin{rail}
+gesturestream :
+'send' ( 'active' \vert 'idle') ( [1] \vert [2] messages )
+\end{rail}">
+<BR>
+<A NAME="1570"></A>
+<A NAME="1571"></A>
+<A NAME="1572"></A>
 
 <P>
-<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
-<BR>
-Using a variable to share a common position:
-<BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>x = 0.5;
-<BR>/ITL/scene/a x $x;
-<BR>/ITL/scene/b x $x;
-</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
+
+<UL>
+<LI><TT>active</TT> associates [2] or clear [1] messages to be sent when the gesture is in active state.
+</LI>
+<LI><TT>idle</TT> associates [2] or clear [1] messages to be sent when the gesture is in idle state.
+</LI>
+</UL>
 
 <P>
-Variables can be used in interaction messages as well, which may also use the variables available in the interaction context (see section <A HREF="node65.html#interactvar">13.2</A> p.<A HREF="node65.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). To differentiate between a <I>script</I> and an <I>interaction</I> variable, the latter must be quoted to be passed as strings and to prevent their evaluation by the parser. 
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
-<P>
-<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
-<BR>
-Using variables in interaction messages: $sx is evaluated at event occurrence	and $y is evaluated at parsing level.
-<BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>y = 0.5;
-<BR>/ITL/scene/foo watch mouseDown (/ITL/scene/foo "$sx" $y);
-</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
-
-<P>
+<UL>
+<LI><A NAME="tex2html1375"
+  HREF="node78.html">14.3.1 Gestures variables</A>
+</UL>
+<!--End of Table of Child-Links-->
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html1361"
+<A NAME="tex2html1373"
   HREF="node78.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1355"
+<A NAME="tex2html1367"
   HREF="node73.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1349"
+<A NAME="tex2html1363"
   HREF="node76.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1357"
+<A NAME="tex2html1369"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1359"
-  HREF="node106.html">
+<A NAME="tex2html1371"
+  HREF="node114.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1362"
-  HREF="node78.html">14.5 Message based parameters</A>
-<B> Up:</B> <A NAME="tex2html1356"
-  HREF="node73.html">14. Scripting</A>
-<B> Previous:</B> <A NAME="tex2html1350"
-  HREF="node76.html">14.3 Types</A>
- &nbsp; <B>  <A NAME="tex2html1358"
+<B> Next:</B> <A NAME="tex2html1374"
+  HREF="node78.html">14.3.1 Gestures variables</A>
+<B> Up:</B> <A NAME="tex2html1368"
+  HREF="node73.html">14. Gesture Follower</A>
+<B> Previous:</B> <A NAME="tex2html1364"
+  HREF="node76.html">14.2.1 Gestures management</A>
+ &nbsp; <B>  <A NAME="tex2html1370"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1360"
-  HREF="node106.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1372"
+  HREF="node114.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>

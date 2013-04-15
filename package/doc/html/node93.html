@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>16.10 Differences to version 0.80</TITLE>
-<META NAME="description" CONTENT="16.10 Differences to version 0.80">
+<TITLE>17.3 Differences to version 0.97</TITLE>
+<META NAME="description" CONTENT="17.3 Differences to version 0.97">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,53 +21,60 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node94.html">
 <LINK REL="previous" HREF="node92.html">
-<LINK REL="up" HREF="node83.html">
+<LINK REL="up" HREF="node90.html">
 <LINK REL="next" HREF="node94.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1605"
+<A NAME="tex2html1623"
   HREF="node94.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1599"
-  HREF="node83.html">
+<A NAME="tex2html1617"
+  HREF="node90.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1593"
+<A NAME="tex2html1611"
   HREF="node92.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1601"
+<A NAME="tex2html1619"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1603"
-  HREF="node106.html">
+<A NAME="tex2html1621"
+  HREF="node114.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1606"
-  HREF="node94.html">16.11 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1600"
-  HREF="node83.html">16. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1594"
-  HREF="node92.html">16.9 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1602"
+<B> Next:</B> <A NAME="tex2html1624"
+  HREF="node94.html">17.4 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1618"
+  HREF="node90.html">17. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1612"
+  HREF="node92.html">17.2 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1620"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1604"
-  HREF="node106.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1622"
+  HREF="node114.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION0017100000000000000000">
-16.10 Differences to version 0.80</A>
+<H1><A NAME="SECTION001830000000000000000">
+17.3 Differences to version 0.97</A>
 </H1>
 
 <UL>
-<LI>behavior change with synchronization without stretch: now the system looks also in the
-  slave map for a segment corresponding to the master date.
+<LI>new <TT>fastgraph</TT> object for graphic signals fast rendering (see section <A HREF="node22.html#setsect">4</A> p.<A HREF="node22.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>)
 </LI>
-<LI><TT>$date</TT> variable change: the value is now (0,0) when no date is available and <TT>$date</TT> is time shifted according to the object date.
+<LI>$date variable overflow catched
 </LI>
-<LI><TT>date</TT> message change: the date 0 0 is ignored
+<LI>files dropped on application icon correctly opened when the application is not running
+</LI>
+<LI>supports drag and drop of textual osc message strings
+</LI>
+<LI>osc error stream normalized: the message address is 'error:' or 'warning:'
+   followed by a single message string.
+</LI>
+<LI>javascript and lua support: a single persistent context is created at application level and for each scene. 
+(see section <A HREF="node85.html#scriptlang">15.6</A> p.<A HREF="node85.html#scriptlang"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>)
 </LI>
 </UL>
 
