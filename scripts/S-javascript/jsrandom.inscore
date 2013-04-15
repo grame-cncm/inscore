@@ -24,10 +24,18 @@ gray = 100;
 
 /ITL/scene/comment1 set txt "This script shows the use of the /ITL/scene/javascript static object.";
 /ITL/scene/comment1 y -0.8;
-/ITL/scene/comment2 set txt "Drop the 'jscall.inscore' file to run the javascript engine.";
+/ITL/scene/comment2 set txt "Drop the 'jscall.inscore' file to run the javascript engine or";
 /ITL/scene/comment2 y 0.8;
+/ITL/scene/clickme set txt "CLICK ME";
+/ITL/scene/clickme y 0.87;
 /ITL/scene/comment1 scale 1.7;
 /ITL/scene/comment2 scale 1.2;
+/ITL/scene/clickme scale 1.2;
+/ITL/scene/clickme z 2.;
+
+/ITL/scene/clickme watch mouseEnter ( /ITL/scene/clickme color 255 0 0 );
+/ITL/scene/clickme watch mouseLeave ( /ITL/scene/clickme color 0 0 0 );
+/ITL/scene/clickme watch mouseDown  ( /ITL/scene/javascript run "random()" );
 
 /ITL require $version ( /ITL/scene/warning set txt "WARNING: javascript requires version" $version "or greater" ,
 						/ITL/scene/warning color $gray $gray $gray ,
