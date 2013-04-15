@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>16.8 Differences to version 0.82</TITLE>
-<META NAME="description" CONTENT="16.8 Differences to version 0.82">
+<TITLE>17.1 Differences to version 1.0</TITLE>
+<META NAME="description" CONTENT="17.1 Differences to version 1.0">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,60 +21,58 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node92.html">
 <LINK REL="previous" HREF="node90.html">
-<LINK REL="up" HREF="node83.html">
+<LINK REL="up" HREF="node90.html">
 <LINK REL="next" HREF="node92.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1577"
+<A NAME="tex2html1595"
   HREF="node92.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1571"
-  HREF="node83.html">
+<A NAME="tex2html1589"
+  HREF="node90.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1565"
+<A NAME="tex2html1583"
   HREF="node90.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1573"
+<A NAME="tex2html1591"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1575"
-  HREF="node106.html">
+<A NAME="tex2html1593"
+  HREF="node114.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1578"
-  HREF="node92.html">16.9 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1572"
-  HREF="node83.html">16. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1566"
-  HREF="node90.html">16.7 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1574"
+<B> Next:</B> <A NAME="tex2html1596"
+  HREF="node92.html">17.2 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1590"
+  HREF="node90.html">17. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1584"
+  HREF="node90.html">17. Changes list</A>
+ &nbsp; <B>  <A NAME="tex2html1592"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1576"
-  HREF="node106.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1594"
+  HREF="node114.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001780000000000000000">
-16.8 Differences to version 0.82</A>
+<H1><A NAME="SECTION001810000000000000000">
+17.1 Differences to version 1.0</A>
 </H1>
 
 <UL>
-<LI>at application level: osc debug is now 'on' by default
+<LI>javascript engine is available at the static address /ITL/scene/javascript and can be activated using a 'run' method  (see section <A HREF="node86.html#jsobj">15.6.1</A> p.<A HREF="node86.html#jsobj"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>)
 </LI>
-<LI>new scripting features (variables)  (see section <A HREF="node77.html#scriptvar">14.4</A> p.<A HREF="node77.html#scriptvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>bug correction: error messages not generated for dropped files (actually for the scene load method)
 </LI>
-<LI>ITL file format change: 
-<BR>  - semicolon added at the end of each message 
-<BR>  - '//' comment not supported any more 
-<BR>  - '%' comment char replaced by '!' 
-<BR>  - new variables scripting features 
-<BR>  - single quote support for strings 
-<BR>  - messages addressed to sync node must use the string format
+<LI>bug correction: infinite loop catched in QStretchTilerItem::paint method
 </LI>
-<LI>new 'grid' object for automatic segmentation and mapping
+<LI>new <TT>export</TT> event (see section <A HREF="node64.html#miscevents">13.1.3</A> p.<A HREF="node64.html#miscevents"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>)
+</LI>
+<LI>new <TT>endPaint</TT> event at scene level  (see section <A HREF="node64.html#miscevents">13.1.3</A> p.<A HREF="node64.html#miscevents"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>)
+</LI>
+<LI>new <TT>windowOpacity</TT> method at scene level (see section <A HREF="node38.html#scene">8</A> p.<A HREF="node38.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>)
 </LI>
 </UL>
 

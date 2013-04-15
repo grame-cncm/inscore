@@ -1,5 +1,17 @@
 
 %===============================
+%:    Differences to version 1.0
+\sublevel{Differences to version 1.0}
+\begin{itemize}
+\item javascript engine is available at the static address /ITL/scene/javascript and can be activated using a 'run' method  (see section \fullref{jsobj})
+\item bug correction: error messages not generated for dropped files (actually for the scene load method)
+\item bug correction: infinite loop catched in QStretchTilerItem::paint method
+\item new \OSC{export} event (see section \fullref{miscevents})
+\item new \OSC{endPaint} event at scene level  (see section \fullref{miscevents})
+\item new \OSC{windowOpacity} method at scene level (see section \fullref{scene})
+\end{itemize}
+
+%===============================
 %:    Differences to version 0.98
 \sublevel{Differences to version 0.98}
 \begin{itemize}

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>14.5 Message based parameters</TITLE>
-<META NAME="description" CONTENT="14.5 Message based parameters">
+<TITLE>14.3.1 Gestures variables</TITLE>
+<META NAME="description" CONTENT="14.3.1 Gestures variables">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,125 +19,82 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node79.html">
 <LINK REL="previous" HREF="node77.html">
-<LINK REL="up" HREF="node73.html">
+<LINK REL="up" HREF="node77.html">
 <LINK REL="next" HREF="node79.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1375"
+<A NAME="tex2html1386"
   HREF="node79.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1369"
-  HREF="node73.html">
+<A NAME="tex2html1380"
+  HREF="node77.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1363"
+<A NAME="tex2html1376"
   HREF="node77.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1371"
+<A NAME="tex2html1382"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1373"
-  HREF="node106.html">
+<A NAME="tex2html1384"
+  HREF="node114.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1376"
-  HREF="node79.html">14.6 Languages</A>
-<B> Up:</B> <A NAME="tex2html1370"
-  HREF="node73.html">14. Scripting</A>
-<B> Previous:</B> <A NAME="tex2html1364"
-  HREF="node77.html">14.4 Variables</A>
- &nbsp; <B>  <A NAME="tex2html1372"
+<B> Next:</B> <A NAME="tex2html1387"
+  HREF="node79.html">15. Scripting</A>
+<B> Up:</B> <A NAME="tex2html1381"
+  HREF="node77.html">14.3 Events and interaction</A>
+<B> Previous:</B> <A NAME="tex2html1377"
+  HREF="node77.html">14.3 Events and interaction</A>
+ &nbsp; <B>  <A NAME="tex2html1383"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1374"
-  HREF="node106.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1385"
+  HREF="node114.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001550000000000000000"></A><A NAME="scriptmsgparam"></A>
+<H2><A NAME="SECTION001531000000000000000"></A><A NAME="gfvar"></A>
 <BR>
-14.5 Message based parameters
-</H1>
+14.3.1 Gestures variables
+</H2>
 
 <P>
-Similarly to message based variables (see section <A HREF="node69.html#msgvar">13.2.4</A> p.<A HREF="node69.html#msgvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>), a message parameter may also use the result of a <TT>get</TT> message as parameters specified like a message based variable.
-The message must be enclosed in parameters with a leading $ sign.
+A message associated to a gesture supports the following specific variables:
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img86.gif"
+ WIDTH="379" HEIGHT="126" ALIGN="BOTTOM" BORDER="0"
+ SRC="img89.gif"
  ALT="\begin{rail}
-msgparam : '(' (message) ')'
+gesturevariable :
+( 'likelihood'
+\vert 'pos'
+\vert 'speed') ( \vert '[low,high]')
 \end{rail}">
 <BR>
-<A NAME="1535"></A>
+<A NAME="1581"></A>
+<A NAME="1582"></A>
+<A NAME="1583"></A>
+These variables support the scaling feature associated to position variables and described in section <A HREF="node66.html#posvar">13.2.1</A> p.<A HREF="node66.html#posvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>.
 
-<P>
-<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
-<BR>
-Displaying INScore version using a message parameter:
-<BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene/version set  txt "INScore version is" $(/ITL get version);</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
+<UL>
+<LI><TT>likelihood</TT> indicates the current likelihood 
+</LI>
+<LI><TT>pos</TT> indicates the current position in the gesture 
+</LI>
+<LI><TT>speed</TT> indicates the current gesture execution speed 
+</LI>
+</UL>
 
 <P>
 <BR><B> <B>N<SMALL>OTE </SMALL></B></B>
 <BR>
-Message based parameters are evaluated by the parser. Thus when the system state is modified by a script before a message parameter, these modifications won't be visible at the time of the parameter evaluation because all the messages will be processed by the next time task. For example:
-<BR>
-<BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene/obj x 0.1
-<BR>/ITL/scene/foo x $(/ITL/scene/foo get x);</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
-x position of <TT>/ITL/scene/foo</TT> will be set to x position of <TT>/ITL/scene/obj</TT> at the time of the script evaluation (that may be different to 0.1).
+Variables described in section <A HREF="node65.html#interactvar">13.2</A> p.<A HREF="node65.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> may also be used but they are meaningless and contains default values.
 
 <P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html1375"
-  HREF="node79.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1369"
-  HREF="node73.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1363"
-  HREF="node77.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1371"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1373"
-  HREF="node106.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html1376"
-  HREF="node79.html">14.6 Languages</A>
-<B> Up:</B> <A NAME="tex2html1370"
-  HREF="node73.html">14. Scripting</A>
-<B> Previous:</B> <A NAME="tex2html1364"
-  HREF="node77.html">14.4 Variables</A>
- &nbsp; <B>  <A NAME="tex2html1372"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1374"
-  HREF="node106.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>16.19 Differences to version 0.55</TITLE>
-<META NAME="description" CONTENT="16.19 Differences to version 0.55">
+<TITLE>17.12 Differences to version 0.79</TITLE>
+<META NAME="description" CONTENT="17.12 Differences to version 0.79">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,68 +21,50 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node103.html">
 <LINK REL="previous" HREF="node101.html">
-<LINK REL="up" HREF="node83.html">
+<LINK REL="up" HREF="node90.html">
 <LINK REL="next" HREF="node103.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1731"
+<A NAME="tex2html1749"
   HREF="node103.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1725"
-  HREF="node83.html">
+<A NAME="tex2html1743"
+  HREF="node90.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1719"
+<A NAME="tex2html1737"
   HREF="node101.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1727"
+<A NAME="tex2html1745"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1729"
-  HREF="node106.html">
+<A NAME="tex2html1747"
+  HREF="node114.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1732"
-  HREF="node103.html">16.20 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1726"
-  HREF="node83.html">16. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1720"
-  HREF="node101.html">16.18 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1728"
+<B> Next:</B> <A NAME="tex2html1750"
+  HREF="node103.html">17.13 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1744"
+  HREF="node90.html">17. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1738"
+  HREF="node101.html">17.11 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1746"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1730"
-  HREF="node106.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1748"
+  HREF="node114.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION0017190000000000000000">
-16.19 Differences to version 0.55</A>
+<H1><A NAME="SECTION0018120000000000000000">
+17.12 Differences to version 0.79</A>
 </H1>
 
 <UL>
-<LI>new 'xorigin' and 'yorigin' messages (section <A HREF="node10.html#origin">2.1.3</A> p.<A HREF="node10.html#origin"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>corrects the map not saved by the <TT>save</TT> message issue
 </LI>
-<LI>new interaction messages set (section <A HREF="node60.html#interaction">13</A> p.<A HREF="node60.html#interaction"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>alpha channel handled by images and video
-</LI>
-<LI>bug correction in line creation corrected (false incorrect parameter returned)
-</LI>
-<LI>bug correction in line 'get' message handling
-</LI>
-<LI>memory leak correction (messages not deleted)
-</LI>
-</UL>
-
-<P>
-Known issues: 
-
-<UL>
-<LI>incorrect graphic rendering when 'sync a b' is changed to 'sync b a' in the same update loop
-</LI>
-<LI>incorrect nested synchronization when master is horizontaly stretched,
+<LI>corrects <TT>get map</TT> output: 2D segments were not correctly converted to string
 </LI>
 </UL>
 

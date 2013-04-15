@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>16.5 Differences to version 0.92</TITLE>
-<META NAME="description" CONTENT="16.5 Differences to version 0.92">
+<TITLE>16.1 Grammar definition</TITLE>
+<META NAME="description" CONTENT="16.1 Grammar definition">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,56 +21,152 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node89.html">
 <LINK REL="previous" HREF="node87.html">
-<LINK REL="up" HREF="node83.html">
+<LINK REL="up" HREF="node87.html">
 <LINK REL="next" HREF="node89.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1535"
+<A NAME="tex2html1532"
   HREF="node89.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1529"
-  HREF="node83.html">
+<A NAME="tex2html1526"
+  HREF="node87.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1523"
+<A NAME="tex2html1520"
   HREF="node87.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1531"
+<A NAME="tex2html1528"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1533"
-  HREF="node106.html">
+<A NAME="tex2html1530"
+  HREF="node114.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1536"
-  HREF="node89.html">16.6 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1530"
-  HREF="node83.html">16. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1524"
-  HREF="node87.html">16.4 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1532"
+<B> Next:</B> <A NAME="tex2html1533"
+  HREF="node89.html">16.2 Lexical tokens</A>
+<B> Up:</B> <A NAME="tex2html1527"
+  HREF="node87.html">16. Appendices</A>
+<B> Previous:</B> <A NAME="tex2html1521"
+  HREF="node87.html">16. Appendices</A>
+ &nbsp; <B>  <A NAME="tex2html1529"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1534"
-  HREF="node106.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1531"
+  HREF="node114.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001750000000000000000">
-16.5 Differences to version 0.92</A>
+<H1><A NAME="SECTION001710000000000000000"></A>
+<A NAME="yacc"></A>
+<BR>
+16.1 Grammar definition
 </H1>
+<PRE>
+//_______________________________________________
+// relaxed simple INScore format specification
+//_______________________________________________
+start       : expr
+            | start expr
+            ;
 
-<UL>
-<LI>new 'mouse' 'show/hide' message supported at application level (see section <A HREF="node32.html#ITL">7</A> p.<A HREF="node32.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>)
-</LI>
-<LI>graphic signal supports alpha messages at object level
-</LI>
-<LI>javascript and lua embedded and supported in inscore scripts  (see section <A HREF="node79.html#scriptlang">14.6</A> p.<A HREF="node79.html#scriptlang"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>bug correction in sync delete (introduced with version 0.90)
-</LI>
-</UL>
+//_______________________________________________
+// expression of the script language
+//_______________________________________________
+expr        : message  ENDEXPR		
+            | variabledecl ENDEXPR	
+            | script            
+            ;
+
+//_______________________________________________
+// javascript and lua support
+//_______________________________________________
+script      : LUASCRIPT            
+            | JSCRIPT            
+            ;
+//_______________________________________________
+// messages specification (extends osc spec.)
+//_______________________________________________
+message	    : address 
+            | address params            
+            | address watchparams		
+            | address watchparams LEFTPAR messagelist RIGHTPAR
+            | address watchparams script 
+            ;
+
+messagelist : message            		
+            | messagelist COMMA message 
+            ;
+
+//_______________________________________________
+// address specification (extends osc spec.)
+address	    : oscaddress            	
+            | urlprefix oscaddress		
+            ;
+
+oscaddress  : oscpath            		
+            | oscaddress oscpath		
+            ;
+
+oscpath	     : PATHSEP identifier		
+            | PATHSEP WATCH            	
+            | PATHSEP VARSTART varname	
+            ;
+
+urlprefix   : hostname COLON UINT		
+            | IPNUM COLON UINT            
+            ;
+
+hostname    : HOSTNAME            		
+            | hostname POINT HOSTNAME	
+            ;
+
+identifier  : IDENTIFIER		
+            | HOSTNAME            
+            | REGEXP            
+            ;
+
+//_______________________________________________
+// parameters definitions
+// watchparams need a special case since messages are expected as argument
+//_______________________________________________
+watchparams : watchmethod		
+            | watchmethod params 
+
+params      : param            	
+            | variable            
+            | params variable	
+            | params param		
+            ;
+
+watchmethod : WATCH            	
+            ;
+
+variable    : VARSTART varname
+            | VARSTART LEFTPAR message RIGHTPAR
+            ;
+
+param       : number            
+            | FLOAT            	
+            | identifier		
+            | QUOTEDSTRING		
+            ;
+
+//_______________________________________________
+// variable declaration
+variabledecl : varname EQUAL params	
+            ;
+
+varname	    : IDENTIFIER            
+            | HOSTNAME            	
+            ;
+
+//_______________________________________________
+// misc
+number      : UINT            		
+            | INT            		
+            ;
+</PRE>
 
 <P>
 <BR><HR>

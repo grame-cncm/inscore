@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>16.11 Differences to version 0.79</TITLE>
-<META NAME="description" CONTENT="16.11 Differences to version 0.79">
+<TITLE>17.4 Differences to version 0.96</TITLE>
+<META NAME="description" CONTENT="17.4 Differences to version 0.96">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,50 +21,58 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node95.html">
 <LINK REL="previous" HREF="node93.html">
-<LINK REL="up" HREF="node83.html">
+<LINK REL="up" HREF="node90.html">
 <LINK REL="next" HREF="node95.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1619"
+<A NAME="tex2html1637"
   HREF="node95.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1613"
-  HREF="node83.html">
+<A NAME="tex2html1631"
+  HREF="node90.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1607"
+<A NAME="tex2html1625"
   HREF="node93.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1615"
+<A NAME="tex2html1633"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1617"
-  HREF="node106.html">
+<A NAME="tex2html1635"
+  HREF="node114.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1620"
-  HREF="node95.html">16.12 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1614"
-  HREF="node83.html">16. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1608"
-  HREF="node93.html">16.10 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1616"
+<B> Next:</B> <A NAME="tex2html1638"
+  HREF="node95.html">17.5 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1632"
+  HREF="node90.html">17. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1626"
+  HREF="node93.html">17.3 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1634"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1618"
-  HREF="node106.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1636"
+  HREF="node114.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION0017110000000000000000">
-16.11 Differences to version 0.79</A>
+<H1><A NAME="SECTION001840000000000000000">
+17.4 Differences to version 0.96</A>
 </H1>
 
 <UL>
-<LI>corrects the map not saved by the <TT>save</TT> message issue
+<LI>objects position, date and watched events preserved through type change
 </LI>
-<LI>corrects <TT>get map</TT> output: 2D segments were not correctly converted to string
+<LI>bug in quantified dates corrected (null denominator set to the quantified value)
+</LI>
+<LI>new 'alias' message providing arbitrary OSC addresses support
+</LI>
+<LI>bug in parser corrected: <code>\</code> escape only ' and " chars, otherwise it is literal
+</LI>
+<LI>guido score map makes use of the new guidolib extended mapping API for staff and system
+</LI>
+<LI>chords map correction (corrected by guido engine) 
 </LI>
 </UL>
 

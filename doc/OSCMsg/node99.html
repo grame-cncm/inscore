@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>16.16 Differences to version 0.74</TITLE>
-<META NAME="description" CONTENT="16.16 Differences to version 0.74">
+<TITLE>17.9 Differences to version 0.82</TITLE>
+<META NAME="description" CONTENT="17.9 Differences to version 0.82">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,50 +21,60 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node100.html">
 <LINK REL="previous" HREF="node98.html">
-<LINK REL="up" HREF="node83.html">
+<LINK REL="up" HREF="node90.html">
 <LINK REL="next" HREF="node100.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1689"
+<A NAME="tex2html1707"
   HREF="node100.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1683"
-  HREF="node83.html">
+<A NAME="tex2html1701"
+  HREF="node90.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1677"
+<A NAME="tex2html1695"
   HREF="node98.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1685"
+<A NAME="tex2html1703"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1687"
-  HREF="node106.html">
+<A NAME="tex2html1705"
+  HREF="node114.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1690"
-  HREF="node100.html">16.17 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1684"
-  HREF="node83.html">16. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1678"
-  HREF="node98.html">16.15 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1686"
+<B> Next:</B> <A NAME="tex2html1708"
+  HREF="node100.html">17.10 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1702"
+  HREF="node90.html">17. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1696"
+  HREF="node98.html">17.8 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1704"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1688"
-  HREF="node106.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1706"
+  HREF="node114.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION0017160000000000000000">
-16.16 Differences to version 0.74</A>
+<H1><A NAME="SECTION001890000000000000000">
+17.9 Differences to version 0.82</A>
 </H1>
 
 <UL>
-<LI>new <TT>map+</TT> message  (see section <A HREF="node41.html#mapAddMsg">9.2</A> p.<A HREF="node41.html#mapAddMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>at application level: osc debug is now 'on' by default
 </LI>
-<LI>the <TT>click</TT> and <TT>select</TT> messages are deprecated (but still supported). They will be removed in a future version.
+<LI>new scripting features (variables)  (see section <A HREF="node83.html#scriptvar">15.4</A> p.<A HREF="node83.html#scriptvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+</LI>
+<LI>ITL file format change: 
+<BR>  - semicolon added at the end of each message 
+<BR>  - '//' comment not supported any more 
+<BR>  - '%' comment char replaced by '!' 
+<BR>  - new variables scripting features 
+<BR>  - single quote support for strings 
+<BR>  - messages addressed to sync node must use the string format
+</LI>
+<LI>new 'grid' object for automatic segmentation and mapping
 </LI>
 </UL>
 

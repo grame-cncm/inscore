@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.2 Lexical tokens</TITLE>
-<META NAME="description" CONTENT="15.2 Lexical tokens">
+<TITLE>15.3 Types</TITLE>
+<META NAME="description" CONTENT="15.3 Types">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,99 +19,79 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node83.html">
 <LINK REL="previous" HREF="node81.html">
-<LINK REL="up" HREF="node80.html">
+<LINK REL="up" HREF="node79.html">
 <LINK REL="next" HREF="node83.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1429"
+<A NAME="tex2html1449"
   HREF="node83.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1423"
-  HREF="node80.html">
+<A NAME="tex2html1443"
+  HREF="node79.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1419"
+<A NAME="tex2html1437"
   HREF="node81.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1425"
+<A NAME="tex2html1445"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1427"
-  HREF="node106.html">
+<A NAME="tex2html1447"
+  HREF="node114.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1430"
-  HREF="node83.html">16. Changes list</A>
-<B> Up:</B> <A NAME="tex2html1424"
-  HREF="node80.html">15. Appendices</A>
-<B> Previous:</B> <A NAME="tex2html1420"
-  HREF="node81.html">15.1 Grammar definition</A>
- &nbsp; <B>  <A NAME="tex2html1426"
+<B> Next:</B> <A NAME="tex2html1450"
+  HREF="node83.html">15.4 Variables</A>
+<B> Up:</B> <A NAME="tex2html1444"
+  HREF="node79.html">15. Scripting</A>
+<B> Previous:</B> <A NAME="tex2html1438"
+  HREF="node81.html">15.2 Messages</A>
+ &nbsp; <B>  <A NAME="tex2html1446"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1428"
-  HREF="node106.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1448"
+  HREF="node114.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001620000000000000000"></A>
-<A NAME="lex"></A>
+<H1><A NAME="SECTION001630000000000000000"></A><A NAME="scripttypes"></A>
 <BR>
-15.2 Lexical tokens
+15.3 Types
 </H1>
-<PRE>
-//_______________________________________________
-// numbers
-//_______________________________________________
-INT       a signed integer
-UINT      an unsigned integer
-FLOAT     a floating point number
 
+<P>
+Using OSC, the message parameters are typed by the OSC protocol. 
+With their textual version, any parameter is converted to an OSC type (i.e. int32, float or string) at parsing level.
+A special attention must be given to strings in order to discriminate addresses and parameters. Strings intended as parameters must:
 
-//_______________________________________________
-// hosts addresses
-//_______________________________________________
-// allowed character set for host names (see RFC952 and RFC1123)
-HOSTNAME       : [-a-zA-Z0-9]+ 
-IPNUM          :  {DIGIT}+"."{DIGIT}+"."{DIGIT}+"."{DIGIT}+
+<UL>
+<LI>be quoted, using single or double quotes. Note that an ambiguous quote included in a string can be escaped using a '<code>\</code>'.
+</LI>
+<LI>or make use of the following characters set: <TT>[-a-zA-Z0-9]+</TT> or <TT>[_a-zA-Z][_a-zA-Z0-9]*</TT>.
+ 
+</LI>
+</UL>
 
-
-//_______________________________________________
-// OSC addresses
-//_______________________________________________
-// allowed characters for identifiers
-IDENTIFIER     : [_a-zA-Z][_a-zA-Z0-9]*
-REGEXP           see OSC doc for regular expressions
-
-//_______________________________________________
-// parameters
-//_______________________________________________
-QUOTEDSTRING     quotes could be single (') or double quotes (")
-WATCH          : watch
-               | watch+
-               | require
-
-//_______________________________________________
-// languages support
-//_______________________________________________
-JSCRIPT        : &lt;?javascript any javascript code ?&gt;
-LUASCRIPT      : &lt;?lua any lua code ?&gt;
-
-//_______________________________________________
-// misc.
-//_______________________________________________
-PATHSEP        : '/'
-POINT          : '.'
-VARSTART       : '$'
-COLON          : ':'
-COMMA          : ','
-LEFTPAR        : '('
-RIGHTPAR       : ')'
-EQUAL          : '='
-ENDEXPR        : ';'
-</PRE>
+<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Different string parameter
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/text set txt "Hello world";  ! string including a space must be quoted 
+<BR>/ITL/scene/img set file 'anImage.png';  ! dots must be quoted too 
+<BR>/ITL/scene/foo set txt no_quotes_needed;
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
 
 <P>
 <BR><HR>
