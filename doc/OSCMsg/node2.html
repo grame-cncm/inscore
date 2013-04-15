@@ -66,7 +66,7 @@ An OSC message is made of an OSC address, followed by a message string, followed
 The OSC address could be string or a regular expression matching several objects.
 <BR>
 <IMG
- WIDTH="402" HEIGHT="75" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img1.gif"
  ALT="\begin{rail}
 OSCMessage : OSCAddress message (parameters \vert)
@@ -92,7 +92,7 @@ The address is similar to a Unix path and supports regular expressions as define
 <BR><B> <B>N<SMALL>OTE </SMALL></B></B> A valid address always starts with <TT>/ITL</TT> that is the application address and that is also used as a discriminant for incoming messages.
 <BR>
 <IMG
- WIDTH="286" HEIGHT="110" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img2.gif"
  ALT="\begin{rail}
 OSCAddress : '/' (identifier \vert regexp) +
@@ -105,7 +105,7 @@ startid[-_a-zA-Z]
 nextid[-_a-zA-Z0-9]]
 <BR>
 <IMG
- WIDTH="245" HEIGHT="75" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img3.gif"
  ALT="\begin{rail}
 identifier : startid (nextid +)
@@ -116,7 +116,7 @@ identifier : startid (nextid +)
 Some specific nodes (like <I>signals</I> - see section <A HREF="node51.html#ssignal">11.1.1</A>) accept OSC messages without message string:
 <BR>
 <IMG
- WIDTH="268" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
  SRC="img4.gif"
  ALT="\begin{rail}
 OSCMessage : OSCAddress parameters
