@@ -48,7 +48,6 @@ namespace inscore
 //--------------------------------------------------------------------------
 // a set of '<<' operators to set a message parameters
 //--------------------------------------------------------------------------
-class libmapping::rational;
 IMessage& operator <<(IMessage& msg, const libmapping::rational& val);
 
 template <typename T, unsigned int D>
