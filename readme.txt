@@ -43,6 +43,8 @@ You need to compile the Guido Engine and the GuidoQt libraries from the GUIDOLib
 	svn co https://guidolib.svn.sourceforge.net/svnroot/guidolib guidolib
 or from the src distribution:
 	http://sourceforge.net/projects/guidolib/files/Guidolib-src/
+Up to version 5 of Qt, you need to install 'libphonon-dev'. With Qt5, multimedia support is 
+included in Qt and phonon is not required any more.
 This project requires the Guido Engine version 1.40 or greater. 
 
 a) Compiling the GUIDO library 
