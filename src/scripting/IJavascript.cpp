@@ -50,7 +50,6 @@ MsgHandler::msgStatus IJavascript::runMsg(const IMessage* msg)
 		string code;
 		if (!msg->param(0, code)) return MsgHandler::kBadParameters;
 		if (code.size()) {
-cout << "IJavascript::runMsg " << code << endl;
 			SIMessageList msgs = fScripter.jsEval (code.c_str(), 1);
 			if (msgs) {
 				for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
