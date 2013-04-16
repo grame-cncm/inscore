@@ -31,7 +31,6 @@
 #include "smartpointer.h"
 
 class QEvent;
-class inscore::IScene;
 
 //_______________________________________________________________________
 class INScoreScene : public QGraphicsScene
