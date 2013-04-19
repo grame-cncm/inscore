@@ -135,6 +135,10 @@ SIMessageList IGestureFollower::getSetMsg () const
 		*msg << elements()[i]->name();
 	}
 	outmsgs->list().push_back (msg);
+	for (unsigned int i = fGesturesOffset; i< elements().size(); i++) {
+//		SIMessageList l = elements()[i]->getSetMsg();
+//		if (l) outmsgs->list().push_back (l->list());
+	}
 	return outmsgs;	
 }
 
