@@ -132,6 +132,9 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 	else if ( type == IFaustProcessor::kFaustProcessorType )
 		obj = _create<IFaustProcessor> (name, parent);
 
+	else if ( type == IGestureFollower::kGestureFollowerType )
+		obj = _create<IGestureFollower> (name, parent);
+
 	else if ( type == IText::kTextType )
 		obj = _create<IText> (name, parent);
 

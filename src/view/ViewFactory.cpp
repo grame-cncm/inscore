@@ -31,6 +31,7 @@
 #include "VApplView.h"
 #include "VCurveView.h"
 #include "VEllipseView.h"
+#include "VGestureFollowerView.h"
 #include "VGraphView.h"
 #include "VGuidoItemView.h"
 #include "VImageView.h"
@@ -49,6 +50,7 @@ namespace inscore
 //--------------------------------------------------------------------------
 VObjectView*	ViewFactory::create (const ICurve* object,		QGraphicsScene* scene)		{ return new VCurveView (scene, object); }
 VObjectView*	ViewFactory::create (const IEllipse* object,	QGraphicsScene* scene)		{ return new VEllipseView (scene, object); }
+VObjectView*	ViewFactory::create (const IGestureFollower* object,  QGraphicsScene* scene){ return new VGestureFollowerView (scene, object); }
 VObjectView*	ViewFactory::create (const IGraphicSignal* object,  QGraphicsScene* scene)	{ return new VGraphView (scene, object); }
 VObjectView*	ViewFactory::create (const ISGraphicSignal* object, QGraphicsScene* scene)	{ return new VSGraphView (scene, object); }
 VObjectView*	ViewFactory::create (const IGuidoCode* object,	QGraphicsScene* scene)		{ return new VGuidoItemView (scene, object); }

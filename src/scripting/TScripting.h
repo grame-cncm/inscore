@@ -27,13 +27,11 @@
 #ifndef __TScripting__
 #define __TScripting__
 
+#define V8ENGINE		// compiles the v8 javascript engine (otherwise there is no js engine included)
+
 #include <stack>
 #include <TLua.h>
-#ifdef V8ENGINE
 # include <TV8Js.h>
-#else
-# include <TMozillaJs.h>
-#endif
 #include "IMessage.h"
 
 #include "smartpointer.h"
@@ -50,12 +48,7 @@ typedef libmapping::SMARTP<baseparam> Sbaseparam;
 
 class TEnv;
 typedef libmapping::SMARTP<TEnv> STEnv;
-
-#ifdef V8ENGINE
 typedef TV8Js		TJSEngine;
-#else
-typedef TMozillaJs	TJSEngine;
-#endif
 
 
 //--------------------------------------------------------------------------------------------

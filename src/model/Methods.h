@@ -140,6 +140,15 @@ extern const char* kyborder_GetSetMethod;
 extern const char* kyorigin_GetSetMethod;
 extern const char* kz_GetSetMethod;
 
+// gesture follower methods
+extern const char* klearn_SetMethod;
+extern const char* kfollow_SetMethod;
+extern const char* kstop_SetMethod;
+extern const char* klikelihoodwindow_GetSetMethod;
+extern const char* ktolerance_GetSetMethod;
+extern const char* kclear_SetMethod;
+extern const char* klikelihoodthreshold_GetSetMethod;
+
 } //namespace
 
 #endif

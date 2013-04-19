@@ -33,6 +33,7 @@
 #include "IEllipse.h"
 #include "IFileWatcher.h"
 #include "IFaustProcessor.h"
+#include "IGestureFollower.h"
 #include "IGraphicSignal.h"
 #include "IGrid.h"
 #include "IGuidoCode.h"

@@ -49,6 +49,9 @@ typedef class libmapping::SMARTP<IEllipse>		SIEllipse;
 class IFileWatcher;
 typedef class libmapping::SMARTP<IFileWatcher>	SIFileWatcher;
 
+class IGestureFollower;
+typedef class libmapping::SMARTP<IGestureFollower> SIGestureFollower;
+
 class IGraphicSignal;
 typedef class libmapping::SMARTP<IGraphicSignal> SIGraphicSignal;
 

@@ -139,4 +139,15 @@ const char* kyborder_GetSetMethod	= "yborder";		// Get Set
 const char* kyorigin_GetSetMethod	= "yorigin";		// Get Set
 const char* kz_GetSetMethod			= "z";				// Get Set
 
+// gesture follower methods
+const char* klearn_SetMethod				= "learn";					// Set
+const char* kfollow_SetMethod				= "follow";					// Set
+const char* kstop_SetMethod					= "stop";					// Set
+const char* klikelihoodwindow_GetSetMethod	= "likelihoodwindow";		// Get Set
+const char* klikelihoodthreshold_GetSetMethod= "likelihoodthreshold";	// Get Set
+
+const char* ktolerance_GetSetMethod			= "tolerance";				// Get Set
+const char* kclear_SetMethod				= "clear";					// Set
+
+
 } //namespace

@@ -41,11 +41,7 @@ namespace inscore
 @{
 */
 
-#ifdef V8ENGINE
-typedef TV8Js		TJSEngine;
-#else
-typedef TMozillaJs	TJSEngine;
-#endif
+//typedef TV8Js		TJSEngine;
 
 class Master;
 typedef class libmapping::SMARTP<Master>			SMaster;
