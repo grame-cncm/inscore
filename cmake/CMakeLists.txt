@@ -56,6 +56,7 @@ endif()
 set (ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../src)
 set (MAP ${ROOT}/libmapping)
 set (INSFOLDERS  controller events lib model view mapping interface graph signal signal/faust ITLParser scripting)
+set (INSFOLDERS  ${INSFOLDERS} plugins/gesturefollower)
 set (LIBMAPFOLDERS libmapping/src/misc libmapping/src/parser libmapping/src/relations libmapping/src/segments)
 set (RSRC  "${ROOT}/../rsrc")
 set (LOCALLIB  "${ROOT}/../lib")
@@ -107,9 +108,9 @@ endif()
 
 #######################################
 # javascript support
-if (JAVASCRIPT STREQUAL "yes")
-	message (STATUS "javascript will be supported - Use -DJAVASCRIPT=no to change.")
-	add_definitions(-DV8ENGINE)
+#if (JAVASCRIPT STREQUAL "yes")
+#	message (STATUS "javascript will be supported - Use -DJAVASCRIPT=no to change.")
+#	add_definitions(-DV8ENGINE)
 	if (WIN32)
 		set(SCRIPTS ${SCRIPTS} "${LOCALLIB}/javascript/v8/win32/v8.lib")
 		set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/javascript/v8/include)
@@ -121,9 +122,9 @@ if (JAVASCRIPT STREQUAL "yes")
 			set(SCRIPTS ${SCRIPTS} -L${LOCALLIB}/javascript/v8/linux -lv8)
 		endif()
 	endif ()
-else ()
-	message (STATUS "javascript will not be supported - Use -DJAVASCRIPT=yes to change")
-endif()
+#else ()
+#	message (STATUS "javascript will not be supported - Use -DJAVASCRIPT=yes to change")
+#endif()
 
 #######################################
 #
