@@ -27,8 +27,6 @@
 #ifndef __TScripting__
 #define __TScripting__
 
-#define V8ENGINE		// compiles the v8 javascript engine (otherwise there is no js engine included)
-
 #include <stack>
 #include <TLua.h>
 # include <TV8Js.h>
