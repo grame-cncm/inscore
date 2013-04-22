@@ -110,7 +110,7 @@ endif()
 # javascript support
 #if (JAVASCRIPT STREQUAL "yes")
 #	message (STATUS "javascript will be supported - Use -DJAVASCRIPT=no to change.")
-#	add_definitions(-DV8ENGINE)
+	add_definitions(-DV8ENGINE)
 	if (WIN32)
 		set(SCRIPTS ${SCRIPTS} "${LOCALLIB}/javascript/v8/win32/v8.lib")
 		set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/javascript/v8/include)
