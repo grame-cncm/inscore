@@ -38,7 +38,7 @@ namespace inscore
 const string IGestureFollower::kGestureFollowerType("imtrgf");
 
 //--------------------------------------------------------------------------
-IGestureFollower::IGestureFollower( const std::string& name, IObject* parent ) : IRectShape(name, parent), fGF(0), fGesturesOffset(0)
+IGestureFollower::IGestureFollower( const std::string& name, IObject* parent ) : IRectShape(name, parent), fGFLib(0), fGesturesOffset(0), fLearner(0)
 { 
 	fTypeString = kGestureFollowerType;
 	
@@ -46,6 +46,7 @@ IGestureFollower::IGestureFollower( const std::string& name, IObject* parent ) :
 	setWidth (0.5);
 	setHeight (0.5);
 
+	fMsgHandlerMap["*"]								= TMethodMsgHandler<IGestureFollower>::create(this, &IGestureFollower::data);
 	fMsgHandlerMap[klearn_SetMethod]				= TSetMethodMsgHandler<IGestureFollower,string>::create(this, &IGestureFollower::learn);
 	fMsgHandlerMap[kfollow_SetMethod]				= TMethodMsgHandler<IGestureFollower,void (IGestureFollower::*)()>::create(this, &IGestureFollower::follow);
 	fMsgHandlerMap[kstop_SetMethod]					= TMethodMsgHandler<IGestureFollower,void (IGestureFollower::*)()>::create(this, &IGestureFollower::stop);
@@ -59,7 +60,7 @@ IGestureFollower::IGestureFollower( const std::string& name, IObject* parent ) :
 //--------------------------------------------------------------------------
 IGestureFollower::~IGestureFollower()
 { 
-	fGFLib.del (fGF);
+	delete fGFLib;
 }
 
 //--------------------------------------------------------------------------
@@ -69,33 +70,59 @@ void IGestureFollower::accept (Updater* u)
 }
 
 //--------------------------------------------------------------------------
-void IGestureFollower::clearGestureFollower ()
+bool IGestureFollower::following() const	{ return fGFLib->getState() == kDecoding; }
+bool IGestureFollower::learning() const		{ return fGFLib->getState() == kLearning; }
+
+//--------------------------------------------------------------------------
+IGesture* IGestureFollower::getGesture (const std::string& name) const
 {
-	fGFLib.del (fGF);
-	fGF = 0;
-	elements().clear();
+	for (unsigned int i = fGesturesOffset; i< elements().size(); i++) {
+		if (elements()[i]->name() == name)
+			return dynamic_cast<IGesture*>((IObject*)elements()[i]);
+	}
+	return 0;
 }
 
 //--------------------------------------------------------------------------
 bool IGestureFollower::createGestureFollower (int sigDimension, int buffsize, vector<string>& gestures)
 {
-	if (!fGFLib.load()) {
-		ITLErr << "the gesture follower library is missing" << ITLEndl;
-		return false;
-	}
-	cout << "creating gesture follower with dim " << sigDimension << " bufsize " << buffsize << " gest count: " << gestures.size() << endl;
-	fGF = fGFLib.create (gestures.size(), sigDimension, buffsize);
-	if (fGF) {
+	fGFLib = new TGestureFollowerPlugin (gestures.size(), sigDimension, buffsize);
+	if (fGFLib && fGFLib->isAvailable()) {
 		fCapacity = buffsize;
 		fFrameSize = sigDimension;
 		fGesturesOffset = elements().size();
 		for (unsigned int i = 0; i < gestures.size(); i++) {
-			SIGesture g = IGesture::create (gestures[i], this, i, fGF);
+			SIGesture g = IGesture::create (gestures[i], this, i, fGFLib);
 			add (g);
 		}
 	}
 	else return false;
 	return true;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IGestureFollower::data (const IMessage* msg)
+{
+	MsgHandler::msgStatus status = MsgHandler::kProcessed;
+	int n = msg->size();
+	if (n) {
+		float * values = new float[n];
+		float val;
+		for (int i=0; i<n; i++) {
+			if (msg->param(i, val)) values[i] = val;
+			else {
+				status = MsgHandler::kBadParameters;
+				break;
+			}
+		}
+		if (status == MsgHandler::kProcessed) {
+			if (fLearner) fLearner->observe(values, n);
+			else fGFLib->observation (values, n);
+		}
+		delete[] values;
+	}
+	else status = MsgHandler::kBadParameters;
+	return status;
 }
 
 //--------------------------------------------------------------------------
@@ -136,39 +163,43 @@ SIMessageList IGestureFollower::getSetMsg () const
 	}
 	outmsgs->list().push_back (msg);
 	for (unsigned int i = fGesturesOffset; i< elements().size(); i++) {
-//		SIMessageList l = elements()[i]->getSetMsg();
-//		if (l) outmsgs->list().push_back (l->list());
+		IGesture * gesture = dynamic_cast<IGesture*>((IObject*)elements()[i]);
+		if (gesture) {
+			SIMessageList l = gesture->getSetMsg();
+			if (l) outmsgs->list().push_back (l->list());
+		}
 	}
 	return outmsgs;	
 }
 
 //--------------------------------------------------------------------------
-void IGestureFollower::setLikelyhoodWindow (int size) 
-{
-}
+void IGestureFollower::setLikelyhoodWindow (int size)		{ fGFLib->setLikelihoodWindow (size); }
+void IGestureFollower::setTolerance (float t)				{ fGFLib->setTolerance (t); }
 
 //--------------------------------------------------------------------------
-void IGestureFollower::setTolerance (float t)
-{
-}
+int IGestureFollower::getLikelyhoodWindow () const	{ return fGFLib ? fGFLib->getLikelihoodWindow () : 0; }
+float IGestureFollower::getTolerance () const		{ return fGFLib ? fGFLib->getTolerance () : 0.; }
+void IGestureFollower::follow ()					{ fGFLib->startFollow(); }
 
 //--------------------------------------------------------------------------
-int IGestureFollower::getLikelyhoodWindow () const	{ return 0; }
-float IGestureFollower::getTolerance () const		{ return 1.0; }
-
-//--------------------------------------------------------------------------
-void IGestureFollower::follow ()
+void IGestureFollower::learn (const std::string& name)
 {
-}
-
-//--------------------------------------------------------------------------
-void IGestureFollower::learn (const std::string& gesture)
-{
+	IGesture * gesture = getGesture(name);
+	if (gesture) {
+		fLearner = gesture;
+		gesture->startLearn();
+	}
+	else ITLErr << "no such gesture:" << name << ITLEndl;
 }
 
 //--------------------------------------------------------------------------
 void IGestureFollower::stop ()
 {
+	if (fLearner) {
+		fLearner->stopLearn();
+		fLearner = 0;
+	}
+	else fGFLib->stopFollow ();
 }
 
 }

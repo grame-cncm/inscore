@@ -21,6 +21,7 @@
 
 #include <iostream>
 #include "IAppl.h"
+#include "GestureFollower.h"
 #include "TGestureFollowerPlugin.h"
 
 using namespace std;
@@ -52,11 +53,44 @@ static const char* gflibLikelihoodStr		= "likelihood";
 static const char* gflibSpeedStr			= "speed";
 static const char* gflibGetStateStr			= "getState";
 
+TGestureFollowerPlugin::TNewFunction		TGestureFollowerPlugin::fNew = 0;
+TGestureFollowerPlugin::TVoidVoidFunction	TGestureFollowerPlugin::fDel = 0;
+TGestureFollowerPlugin::TVoidIntFunction	TGestureFollowerPlugin::fStartLearn = 0;
+TGestureFollowerPlugin::TVoidVoidFunction	TGestureFollowerPlugin::fStopLearn = 0;
+TGestureFollowerPlugin::TVoidIntFunction	TGestureFollowerPlugin::fClear = 0;
+TGestureFollowerPlugin::TVoidVoidFunction	TGestureFollowerPlugin::fClearAll = 0;
+TGestureFollowerPlugin::TVoidVoidFunction	TGestureFollowerPlugin::fStartFollow = 0;
+TGestureFollowerPlugin::TVoidVoidFunction	TGestureFollowerPlugin::fStopFollow = 0;
+TGestureFollowerPlugin::TVoidIntFunction	TGestureFollowerPlugin::fSetLikelihoodWindow = 0;
+TGestureFollowerPlugin::TIntVoidFunction	TGestureFollowerPlugin::fGetMaxPhrases = 0;
+TGestureFollowerPlugin::TIntVoidFunction	TGestureFollowerPlugin::fGetFrameSize = 0;
+TGestureFollowerPlugin::TIntVoidFunction	TGestureFollowerPlugin::fGetCapacity = 0;
+TGestureFollowerPlugin::TIntVoidFunction	TGestureFollowerPlugin::fGetLikelihoodWindow = 0;
+TGestureFollowerPlugin::TVoidFloatFunction	TGestureFollowerPlugin::fSetTolerance = 0;
+TGestureFollowerPlugin::TFloatVoidFunction	TGestureFollowerPlugin::fGetTolerance = 0;
+TGestureFollowerPlugin::TVoidFloatPIntFunction TGestureFollowerPlugin::fObservation = 0;
+TGestureFollowerPlugin::TIntVoidFunction	TGestureFollowerPlugin::fLikeliest = 0;
+TGestureFollowerPlugin::TFloatPVoidFunction	TGestureFollowerPlugin::fWhere = 0;
+TGestureFollowerPlugin::TFloatPVoidFunction	TGestureFollowerPlugin::fLikelihood = 0;
+TGestureFollowerPlugin::TFloatPVoidFunction	TGestureFollowerPlugin::fSpeed = 0;
+TGestureFollowerPlugin::TIntVoidFunction	TGestureFollowerPlugin::fGetState = 0;
 
+
+//----------------------------------------------------------------------------
+bool TGestureFollowerPlugin::isResolved ()
+{
+	return	fNew && fDel && fStartLearn && fStopLearn && fClear && fClearAll &&
+			fStartFollow && fStopFollow && fSetLikelihoodWindow && fGetMaxPhrases && fGetFrameSize &&
+			fGetCapacity && fGetLikelihoodWindow && fSetTolerance && fGetTolerance && fObservation &&
+			fLikeliest && fWhere && fLikelihood && fSpeed && fGetState;
+}
 
 //----------------------------------------------------------------------------
 bool TGestureFollowerPlugin::load ()
 {
+	if (isLoaded())
+		return isResolved();
+
 	string file = IAppl::absolutePath (gflibName);
 	if (TPlugin::load(file.c_str())) {
 		fNew = resolve<TNewFunction> (gflibNewStr);
@@ -106,32 +140,61 @@ bool TGestureFollowerPlugin::load ()
 	else return false;
 	return true;
 }
+
+//----------------------------------------------------------------------------
+TGestureFollowerPlugin::TGestureFollowerPlugin(int maxPhrases, int vecSize, long capacity) : fGF(0)
+{
+	if (load())
+		fGF = create (maxPhrases, vecSize, capacity);
+}
+
+//----------------------------------------------------------------------------
+TGestureFollowerPlugin::~TGestureFollowerPlugin()		{ if (fDel && fGF) fDel(fGF); }
+
+bool TGestureFollowerPlugin::isAvailable ()		{ return isLoaded() && isResolved() && fGF; }
 		
 //----------------------------------------------------------------------------
 GestureFollower * TGestureFollowerPlugin::create (int maxPhrases, int vecSize, long capacity) const
 		{ return fNew ? fNew( maxPhrases, vecSize, capacity) : 0; }
 
-void TGestureFollowerPlugin::del (GestureFollower * gf) const						{ fDel(gf); }
-void TGestureFollowerPlugin::startLearn	(GestureFollower * gf, int phraseIndex)		{ fStartLearn(gf, phraseIndex); }
-void TGestureFollowerPlugin::stopLearn	(GestureFollower * gf)						{ fStopLearn (gf); }
-void TGestureFollowerPlugin::clear		(GestureFollower * gf, int phraseIndex)		{ fClear (gf, phraseIndex); }
-void TGestureFollowerPlugin::clearAll	(GestureFollower * gf)						{ fClearAll (gf); }
-void TGestureFollowerPlugin::startFollow(GestureFollower * gf)						{ fStartFollow (gf); }
-void TGestureFollowerPlugin::stopFollow	(GestureFollower * gf)						{ fStopFollow (gf); }
-void TGestureFollowerPlugin::setLikelihoodWindow (GestureFollower * gf, int size)	{ fSetLikelihoodWindow (gf, size); }
-int  TGestureFollowerPlugin::getMaxPhrases (GestureFollower * gf) const				{ return fGetMaxPhrases (gf); }
-int  TGestureFollowerPlugin::getFrameSize (GestureFollower * gf) const				{ return fGetFrameSize (gf); }
-int  TGestureFollowerPlugin::getCapacity (GestureFollower * gf)	const				{ return fGetCapacity (gf); }
+//----------------------------------------------------------------------------
+void TGestureFollowerPlugin::stop ()
+{
+	switch (getState()) {
+		case kDecoding:
+			stopFollow();
+			break;
+		case kLearning:
+			stopLearn();
+			break;
+	}
+}
 
-int  TGestureFollowerPlugin::getLikelihoodWindow (GestureFollower * gf) const		{ return fGetLikelihoodWindow (gf); }
-void TGestureFollowerPlugin::setTolerance (GestureFollower * gf, float tolerance)	{ fSetTolerance (gf, tolerance); }
-float TGestureFollowerPlugin::getTolerance (GestureFollower * gf) const				{ return fGetTolerance(gf); }
-void TGestureFollowerPlugin::observation (GestureFollower * gf, float* data, int size) { fObservation (gf, data, size); }
-int  TGestureFollowerPlugin::likeliest(GestureFollower * gf) const					{ return fLikeliest (gf); }
-const float* TGestureFollowerPlugin::where(GestureFollower * gf) const				{ return fWhere (gf); }
-const float* TGestureFollowerPlugin::likelihood(GestureFollower * gf) const			{ return fLikelihood (gf); }
-const float* TGestureFollowerPlugin::speed (GestureFollower * gf) const				{ return fSpeed (gf); }
-int  TGestureFollowerPlugin::getState(GestureFollower * gf) const					{ return fGetState (gf); }
+void TGestureFollowerPlugin::del () const						{ fDel(fGF); }
+void TGestureFollowerPlugin::startLearn	(int phraseIndex)		{ fStartLearn(fGF, phraseIndex); }
+void TGestureFollowerPlugin::stopLearn	()						{ fStopLearn (fGF); }
+void TGestureFollowerPlugin::clear		(int phraseIndex)		{ fClear (fGF, phraseIndex); }
+void TGestureFollowerPlugin::clearAll	()						{ fClearAll (fGF); }
+void TGestureFollowerPlugin::startFollow()						{ fStartFollow (fGF); }
+void TGestureFollowerPlugin::stopFollow	()						{ fStopFollow (fGF); }
+void TGestureFollowerPlugin::setLikelihoodWindow (int size)		{ fSetLikelihoodWindow (fGF, size); }
+int  TGestureFollowerPlugin::getMaxPhrases () const				{ return fGetMaxPhrases (fGF); }
+int  TGestureFollowerPlugin::getFrameSize () const				{ return fGetFrameSize (fGF); }
+int  TGestureFollowerPlugin::getCapacity ()	const				{ return fGetCapacity (fGF); }
+
+int  TGestureFollowerPlugin::getLikelihoodWindow () const		{ return fGetLikelihoodWindow (fGF); }
+void TGestureFollowerPlugin::setTolerance (float tolerance)		{ fSetTolerance (fGF, tolerance); }
+float TGestureFollowerPlugin::getTolerance () const				{ return fGetTolerance(fGF); }
+
+void TGestureFollowerPlugin::observation (float* data, int size) {
+	if (getState() != kIdle) fObservation (fGF, data, size);
+}
+
+int  TGestureFollowerPlugin::likeliest() const					{ return fLikeliest (fGF); }
+const float* TGestureFollowerPlugin::where() const				{ return fWhere (fGF); }
+const float* TGestureFollowerPlugin::likelihood() const			{ return fLikelihood (fGF); }
+const float* TGestureFollowerPlugin::speed () const				{ return fSpeed (fGF); }
+int  TGestureFollowerPlugin::getState() const					{ return fGetState (fGF); }
 
 
 } // end namespace

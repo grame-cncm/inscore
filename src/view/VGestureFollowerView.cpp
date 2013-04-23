@@ -23,8 +23,10 @@
 
 */
 
+#include <QDebug>
 #include <QPainter>
 #include <algorithm>
+#include <QGraphicsRectItem>
 
 #include "VGestureFollowerView.h"
 #include "IGestureFollower.h"
@@ -35,20 +37,99 @@ using namespace libmapping;
 namespace inscore
 {
 
+
+#define kAlpha	120
+#define kLow	10
+#define kMed	100
+#define kColorsCount 10
+static QColor gColors[] = {
+	QColor(255, kLow, kLow, kAlpha),
+	QColor(kLow, 255, kLow, kAlpha),
+	QColor(kLow, kLow, 255, kAlpha),
+	QColor(200, 200, kLow, kAlpha),
+	QColor(kLow, 200, 200, kAlpha),
+	QColor(200, kLow, 200, kAlpha),
+	QColor(120, 120, 120, kAlpha),
+	QColor(255, kMed, kMed, kAlpha),
+	QColor(kMed, 255, kMed, kAlpha),
+	QColor(kMed, kMed, 255, kAlpha),
+};
+
 //----------------------------------------------------------------------
-VGestureFollowerView::VGestureFollowerView(QGraphicsScene * scene, const IGestureFollower* grid) 
-	: VMappedShapeView( scene , new MouseEventAble<QGraphicsRectItem>(grid) ) 
-{}
+class GFRect : public QGraphicsRectItem
+{
+	const IGestureFollower* fGF;
+	public:
+			GFRect (QGraphicsItem * parent = 0): fGF(0) {}
+		virtual ~GFRect() {}
+		
+	void setGF (const IGestureFollower* gf)		{ fGF = gf; }
+	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
+};
+
+//----------------------------------------------------------------------
+void GFRect::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
+{
+	QGraphicsRectItem::paint(painter, option, widget);
+	QRectF ir = boundingRect();
+	float border = 5;
+	QRectF r (border, border, ir.width()-(border*2), ir.height()-(border*2));
+	if (fGF->learning()) {
+		painter->setPen(QColor(Qt::red));
+		painter->drawRect( ir );
+		painter->fillRect( ir, QColor (150,150,150,fGF->getA()));
+	}
+
+	int n = fGF->gesturesCount();
+	float wl = r.width()/n;
+	float hl = r.height()/6;
+	painter->setPen(QColor(Qt::black));
+	
+	float x = r.left();
+	const float* likelihood = fGF->likelihood();
+	for (int i=0; i<n; x+=wl, i++) {
+		float h = r.height()/2;
+		painter->drawRect( QRectF (x, r.top(), wl, h) );
+		if (fGF->following()) {
+			float wlike = h * likelihood[i];
+			QColor color = gColors[i % kColorsCount];
+			color.setAlpha (fGF->getA());
+			painter->fillRect( QRectF(x, h-wlike, wl, wlike), color );
+		}
+	}
+
+	float y = r.top() + r.height()/2;
+	const float* where = fGF->where();
+	for (int i=0; i<n; y+=hl, i++) {
+		QRectF lr (r.left(), y, r.width(), hl);
+		painter->drawRect( QRectF (r.left(), y, r.width(), hl) );
+		if (fGF->following()) {
+			float plike = r.width() * where[i];
+			QColor color = gColors[i % kColorsCount];
+			color.setAlpha (fGF->getA());
+			painter->fillRect( QRectF(0, y, plike, hl), color);
+		}
+	}
+}
+
+//----------------------------------------------------------------------
+MouseEventAble<GFRect>*  VGestureFollowerView::item() const		{ return (MouseEventAble<GFRect>*)fItem; }
+
+//----------------------------------------------------------------------
+VGestureFollowerView::VGestureFollowerView(QGraphicsScene * scene, const IGestureFollower* gf)
+	: VMappedShapeView( scene , new MouseEventAble<GFRect>(gf) )
+{
+	item()->setGF (gf);
+}
 
 //----------------------------------------------------------------------
 void VGestureFollowerView::updateView( IGestureFollower * gf  )
 {
-	QRectF newRect( 0,0,  relative2SceneWidth(gf->getWidth()), relative2SceneHeight(gf->getHeight()) );
-	if ( newRect != item()->rect() )
-	{
-		item()->setRect( newRect );
-		itemChanged();
-	}
+	float h = relative2SceneHeight(gf->getHeight());
+	float w = relative2SceneWidth(gf->getWidth());
+	QRectF newRect( 0,0, w, h );
+	item()->setRect( newRect );
+	itemChanged();
 	VShapeView::updateView( gf );
 }
 

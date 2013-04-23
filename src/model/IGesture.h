@@ -30,7 +30,6 @@
 #include <string>
 #include <vector>
 
-
 #include "IVNode.h"
 
 class GestureFollower;
@@ -44,6 +43,7 @@ namespace inscore
 */
 
 class Updater;
+class TGestureFollowerPlugin;
 class IGesture;
 typedef class libmapping::SMARTP<IGesture>	SIGesture;
 //--------------------------------------------------------------------------
@@ -52,25 +52,33 @@ typedef class libmapping::SMARTP<IGesture>	SIGesture;
 */
 class IGesture : public IVNode
 {
-	GestureFollower *	fGF;
+	TGestureFollowerPlugin * fGF;
 	int					fIndex;			// the gesture index within the follower
 	float				fLikelihoodThreshold;
+	std::vector<float>	fValues;
 
 	public:
-		static SIGesture create(const std::string& name, IObject* parent, int index, GestureFollower * gf)	
+		static SIGesture create(const std::string& name, IObject* parent, int index, TGestureFollowerPlugin * gf)	
 				{ return new IGesture(name, parent, index, gf); }
 
 		virtual void	accept (Updater*);
 
+		/// \brief \c 'get' without parameter form: gives the corresponding 'set' message
+		virtual SIMessageList getSetMsg () const;
+
+		void	observe (float* values, int size);
+		void	startLearn ();
+		void	stopLearn ();
+		void	clearGesture ();
+
 	protected:
-				 IGesture( const std::string& name, IObject* parent, int index, GestureFollower * gf);
+				 IGesture( const std::string& name, IObject* parent, int index, TGestureFollowerPlugin * gf);
 		virtual ~IGesture();	
 
 		void	setLikelihoodThreshold (float value)		{ fLikelihoodThreshold = value; }
 		float	getLikelihoodThreshold () const				{ return fLikelihoodThreshold; }
 
-		void	learn ();
-		void	clearGesture ();
+		void	learn (float* values, int size);
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);

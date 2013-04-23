@@ -40,13 +40,14 @@ namespace inscore
 @{
 */
 
+class GFRect;
 //--------------------------------------------------------------------------
 /**
 *	\brief a graphic view of a IGestureFollower.
 */
 class VGestureFollowerView: public VMappedShapeView
 {
-	MouseEventAble<QGraphicsRectItem>*  item() const		{ return (MouseEventAble<QGraphicsRectItem>*)fItem; }
+	MouseEventAble<GFRect>*  item() const;
 
 	public :
 		using VMappedShapeView::updateView;

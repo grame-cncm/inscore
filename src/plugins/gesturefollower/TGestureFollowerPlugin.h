@@ -39,55 +39,61 @@ class TGestureFollowerPlugin : public TPlugin {
 		typedef float				(* TFloatVoidFunction) (GestureFollower * gf);
 		typedef const float*		(* TFloatPVoidFunction) (GestureFollower * gf);
 
-		TNewFunction		fNew;
-		TVoidVoidFunction	fDel;
-		TVoidIntFunction	fStartLearn;
-		TVoidVoidFunction	fStopLearn;
-		TVoidIntFunction	fClear;
-		TVoidVoidFunction	fClearAll;
-		TVoidVoidFunction	fStartFollow;
-		TVoidVoidFunction	fStopFollow;
-		TVoidIntFunction	fSetLikelihoodWindow;
-		TIntVoidFunction	fGetMaxPhrases;
-		TIntVoidFunction	fGetFrameSize;
-		TIntVoidFunction	fGetCapacity;
-		TIntVoidFunction	fGetLikelihoodWindow;
-		TVoidFloatFunction	fSetTolerance;
-		TFloatVoidFunction	fGetTolerance;
-		TVoidFloatPIntFunction fObservation;
-		TIntVoidFunction	fLikeliest;
-		TFloatPVoidFunction	fWhere;
-		TFloatPVoidFunction	fLikelihood;
-		TFloatPVoidFunction	fSpeed;
-		TIntVoidFunction	fGetState;
+		static TNewFunction			fNew;
+		static TVoidVoidFunction	fDel;
+		static TVoidIntFunction		fStartLearn;
+		static TVoidVoidFunction	fStopLearn;
+		static TVoidIntFunction		fClear;
+		static TVoidVoidFunction	fClearAll;
+		static TVoidVoidFunction	fStartFollow;
+		static TVoidVoidFunction	fStopFollow;
+		static TVoidIntFunction		fSetLikelihoodWindow;
+		static TIntVoidFunction		fGetMaxPhrases;
+		static TIntVoidFunction		fGetFrameSize;
+		static TIntVoidFunction		fGetCapacity;
+		static TIntVoidFunction		fGetLikelihoodWindow;
+		static TVoidFloatFunction	fSetTolerance;
+		static TFloatVoidFunction	fGetTolerance;
+		static TVoidFloatPIntFunction fObservation;
+		static TIntVoidFunction		fLikeliest;
+		static TFloatPVoidFunction	fWhere;
+		static TFloatPVoidFunction	fLikelihood;
+		static TFloatPVoidFunction	fSpeed;
+		static TIntVoidFunction		fGetState;
+
+		bool				load ();
+		static bool			isResolved ();
+		GestureFollower *	create (int maxPhrases, int vecSize, long capacity) const;
+		void				del () const;
+		
+		GestureFollower * fGF;
 
 	public:
-				 TGestureFollowerPlugin() : fNew(0), fDel(0) {};
-		virtual ~TGestureFollowerPlugin()		{};
+				 TGestureFollowerPlugin(int maxPhrases, int vecSize, long capacity);
+		virtual ~TGestureFollowerPlugin();
 
-		bool	load ();
-		GestureFollower *	create (int maxPhrases, int vecSize, long capacity) const;
-		void			del (GestureFollower *) const;
+		bool			isAvailable	();
+		void			stop ();
 
-		void			startLearn	(GestureFollower * gf, int phraseIndex);
-		void			stopLearn	(GestureFollower * gf);		
-		void			clear		(GestureFollower * gf, int phraseIndex);
-		void			clearAll	(GestureFollower * gf);
-		void			startFollow	(GestureFollower * gf);
-		void			stopFollow	(GestureFollower * gf);
-		void			setLikelihoodWindow (GestureFollower * gf, int size);
-		int				getMaxPhrases (GestureFollower * gf) const;
-		int				getFrameSize (GestureFollower * gf) const;
-		int				getCapacity (GestureFollower * gf) const;
-		int				getLikelihoodWindow (GestureFollower * gf) const;
-		void			setTolerance (GestureFollower * gf, float tolerance);
-		float			getTolerance (GestureFollower * gf) const;
-		void			observation (GestureFollower * gf, float* data, int size);
-		int				likeliest(GestureFollower * gf) const;
-		const float*	where(GestureFollower * gf) const;
-		const float*	likelihood(GestureFollower * gf) const;
-		const float*	speed (GestureFollower * gf) const;
-		int				getState(GestureFollower * gf) const;
+		void			startLearn	(int phraseIndex);
+		void			stopLearn	();
+		void			clear		(int phraseIndex);
+		void			clearAll	();
+		void			startFollow	();
+		void			stopFollow	();
+		void			setLikelihoodWindow (int size);
+		int				getMaxPhrases () const;
+		int				getFrameSize () const;
+		int				getCapacity () const;
+		int				getLikelihoodWindow () const;
+		void			setTolerance (float tolerance);
+		float			getTolerance () const;
+		void			observation (float* data, int size);
+		int				likeliest() const;
+		const float*	where() const;
+		const float*	likelihood() const;
+		const float*	speed () const;
+		int				getState() const;
 };
 
 

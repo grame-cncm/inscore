@@ -23,7 +23,7 @@
 
 */
 
-#include "GestureFollower.h"
+#include "TGestureFollowerPlugin.h"
 #include "IGesture.h"
 #include "IMessage.h"
 #include "ITLError.h"
@@ -37,11 +37,10 @@ namespace inscore
 #define kDefaultThreshold 0.7
 
 //--------------------------------------------------------------------------
-IGesture::IGesture( const std::string& name, IObject* parent, int index, GestureFollower * gf ) 
+IGesture::IGesture( const std::string& name, IObject* parent, int index, TGestureFollowerPlugin * gf ) 
 		: IVNode (name, parent), 
 		  fGF (gf), fIndex(index), fLikelihoodThreshold (kDefaultThreshold)		   
 { 	
-	fMsgHandlerMap[klearn_SetMethod]					= TMethodMsgHandler<IGesture,void (IGesture::*)()>::create(this, &IGesture::learn);
 	fMsgHandlerMap[klikelihoodthreshold_GetSetMethod]	= TSetMethodMsgHandler<IGesture,float>::create(this, &IGesture::setLikelihoodThreshold);
 	fGetMsgHandlerMap[klikelihoodthreshold_GetSetMethod]= TGetParamMethodHandler<IGesture, float (IGesture::*)() const>::create(this, &IGesture::getLikelihoodThreshold);
 }
@@ -58,8 +57,25 @@ void IGesture::accept (Updater* u)
 }
 
 //--------------------------------------------------------------------------
-void IGesture::clearGesture ()
+void IGesture::clearGesture ()						{ fValues.clear(); fGF->clear (fIndex); }
+void IGesture::startLearn ()						{ fGF->stop(); fValues.clear(); fGF->startLearn (fIndex); }
+void IGesture::stopLearn ()							{ fGF->stopLearn(); }
+void IGesture::observe (float* values, int size)	{
+	for (int i=0; i < size; i++) fValues.push_back(values[i]);
+	fGF->observation (values, size);
+}
+
+//--------------------------------------------------------------------------
+SIMessageList IGesture::getSetMsg () const
 {
+	SIMessageList outmsgs = IMessageList::create();
+	unsigned int n = fValues.size();
+	if (n < 2) return outmsgs;
+
+	SIMessage msg = IMessage::create(getOSCAddress(), kset_SetMethod);
+	for (unsigned int i = 0; i < n; i++)
+		*msg << fValues[i];
+	return outmsgs;
 }
 
 //--------------------------------------------------------------------------
@@ -69,28 +85,28 @@ MsgHandler::msgStatus IGesture::set (const IMessage* msg)
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 	
 	int n = msg->size();
-	if (n > 3) {
-		int dim, buffsize;
-		if (!msg->param(1, dim) || !msg->param(2, buffsize)) 
-			return MsgHandler::kBadParameters;
-		vector<string> gestures;
-		for (int i=3; i < n; i++) {
-			string str;
-			if (!msg->param(i, str))
-				return MsgHandler::kBadParameters;
-			else gestures.push_back (str);
+	float* values = new float[n];
+	if (n > 2) {
+		float val; int ival;
+		for (int i=0; i<n; i++) {
+			if (msg->param(i, val))			values[i] = val;
+			else if (msg->param(i, ival))	values[i] = float(ival);
+			else return MsgHandler::kBadParameters;
 		}
-		newData(true);
+		learn (values, n);
+		delete[] values;
 		status = MsgHandler::kProcessed;
 	}
 	else status = MsgHandler::kBadParameters;
 	return status;
 }
 
-
 //--------------------------------------------------------------------------
-void IGesture::learn ()
+void IGesture::learn (float* values, int size)
 {
+	startLearn	();
+	observe (values, size);
+	stopLearn();
 }
 
 }

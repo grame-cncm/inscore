@@ -34,7 +34,6 @@
 #include "TRect.h"
 #include "IRectShape.h"
 
-class GestureFollower;
 
 namespace inscore
 {
@@ -45,6 +44,7 @@ namespace inscore
 */
 
 class Updater;
+class IGesture;
 class IGestureFollower;
 typedef class libmapping::SMARTP<IGestureFollower>	SIGestureFollower;
 //--------------------------------------------------------------------------
@@ -53,12 +53,12 @@ typedef class libmapping::SMARTP<IGestureFollower>	SIGestureFollower;
 */
 class IGestureFollower : public IRectShape
 {
-	TGestureFollowerPlugin	fGFLib;
-	GestureFollower *		fGF;
+	TGestureFollowerPlugin*	fGFLib;
 	int fGesturesOffset;			// offset to the first gesture in the elements list
 	int fCapacity, fFrameSize;
+	IGesture*	fLearner;
+
 	bool	createGestureFollower (int sigDimension, int buffsize, std::vector<std::string>& gestures);
-	void	clearGestureFollower ();
 
 	public:
 		
@@ -66,10 +66,18 @@ class IGestureFollower : public IRectShape
 		static SIGestureFollower create(const std::string& name, IObject* parent)	{ return new IGestureFollower(name, parent); }
 
 		virtual void	accept (Updater*);
+				int		gesturesCount () const		{ return elements().size() - fGesturesOffset; }
+
+		const float*	where() const				{ return fGFLib->where(); }
+		const float*	likelihood() const			{ return fGFLib->likelihood(); }
+		bool			following() const;
+		bool			learning() const;
 
 	protected:
 				 IGestureFollower( const std::string& name, IObject* parent );
 		virtual ~IGestureFollower();	
+
+		IGesture*	getGesture (const std::string& name) const;
 
 		void	setLikelyhoodWindow (int size);
 		void	setTolerance (float t);
@@ -79,6 +87,9 @@ class IGestureFollower : public IRectShape
 		void	follow ();
 		void	learn (const std::string& gesture);
 		void	stop ();
+
+		/// \brief the data message handler
+		virtual MsgHandler::msgStatus data (const IMessage* msg);
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
