@@ -116,6 +116,7 @@ bool IGestureFollower::createGestureFollower (int sigDimension, int buffsize, ve
 		}
 	}
 	else return false;
+	setVisible(false);
 	return true;
 }
 
