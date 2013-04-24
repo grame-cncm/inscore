@@ -403,7 +403,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		virtual SIMessageList  getWatch () const;
 		virtual SIMessageList  getAliases () const;
 
-		/// \brief the \c 'watch' message handler
+		/// \brief the \c 'alias' message handler
 		virtual MsgHandler::msgStatus aliasMsg(const IMessage* msg);
 
 		/// \brief the \c 'export' message handler
