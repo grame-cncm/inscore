@@ -61,15 +61,25 @@ typedef struct MouseLocation {
 /**
 * \brief context of an objects at the time of an event
 */
+typedef struct GestureContext {
+	float likelihood, position, speed;
+	bool isSet() const	{ return likelihood >= 0; }
+	GestureContext () : likelihood(-1.f) , position(-1.f), speed(-1.f) {}
+	GestureContext (float l, float p, float s) : likelihood(l) , position(p), speed(s) {}
+} GestureContext;
+
 typedef struct EventContext {
 	MouseLocation			mouse;		///< the current mouse position
 	libmapping::rational	date;		///< the object date at the mouse position
-	const IObject*			object;		///< the object which context is attached to
+	const IObject*			object;		///< the object which context is attached to	
+	GestureContext			gesture;
+	void set (const GestureContext& g) { gesture = g; }
 
 	EventContext (const MouseLocation& ml, const libmapping::rational& d, const IObject* o)
 		: mouse(ml), date(d), object(o) {} //, varmsg(0) {}
 	EventContext (const IObject* o)
 		: object(o) {} //, varmsg(0) {}
+
 } EventContext;
 
 //----------------------------------------------------------------------
@@ -89,6 +99,8 @@ class TMessageEvaluator
 
 		/// \brief check if a variable is a position variable
 		bool		posVariable (const std::string& param, const char* var) const;
+		/// \brief check if a variable is a gesture variable
+		bool		gestVariable (const std::string& param, const char* var) const;
 
 		/**
 		*	\brief parses a date variable

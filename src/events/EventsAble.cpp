@@ -40,9 +40,15 @@ static const char* kMouseLeaveStr	= "mouseLeave";
 static const char* kMouseDoubleClickStr = "doubleClick";
 static const char* kTimeEnterStr	= "timeEnter";
 static const char* kTimeLeaveStr	= "timeLeave";
-static const char* kDurEnterStr	= "durEnter";
-static const char* kDurLeaveStr	= "durLeave";
-static const char* kExportStr	= "export";
+static const char* kDurEnterStr		= "durEnter";
+static const char* kDurLeaveStr		= "durLeave";
+static const char* kExportStr		= "export";
+
+// gesture specific events
+static const char* kGFEnterStr		= "gfEnter";
+static const char* kGFLeaveStr		= "gfLeave";
+static const char* kGFActiveStr		= "gfActive";
+static const char* kGFIdleStr		= "gfIdle";
 
 // scene specific events
 static const char* kEndPaintStr		= "endPaint";
@@ -209,6 +215,12 @@ const char* EventsAble::type2string (eventype type)
 		case kNewElement: 	return kNewElementStr;
 		case kExport:		return kExportStr;
 		case kEndPaint:		return kEndPaintStr;
+
+		case kGFEnter:		return kGFEnterStr;
+		case kGFLeave:		return kGFLeaveStr;
+		case kGFActive:		return kGFActiveStr;
+		case kGFIdle:		return kGFIdleStr;
+
 		default: return "";
 	}
 }
@@ -230,6 +242,10 @@ void EventsAble::init ()
 		fTypeStr[kExportStr]	= kExport;
 		fTypeStr[kNewElementStr]= kNewElement;
 		fTypeStr[kEndPaintStr]	= kEndPaint;
+		fTypeStr[kGFEnterStr]	= kGFEnter;
+		fTypeStr[kGFLeaveStr]	= kGFLeave;
+		fTypeStr[kGFActiveStr]	= kGFActive;
+		fTypeStr[kGFIdleStr]	= kGFIdle;
 	}
 }
 

@@ -64,6 +64,11 @@ const char* kSceneVar	= "$scene";
 const char* kAddressVar	= "$address";
 const char* kVersion	= "$version";
 
+// gesture follower variables
+const char* kLikelihoodVar	= "$likelihood";
+const char* kPosVar		= "$pos";
+const char* kSpeedVar		= "$speed";
+
 map<const char*, int> TMessageEvaluator::fVarLength; 
 
 //----------------------------------------------------------------------
@@ -83,6 +88,10 @@ void TMessageEvaluator::init ()
 		fVarLength[kSceneVar]	= strlen(kSceneVar);
 		fVarLength[kAddressVar]	= strlen(kAddressVar);
 		fVarLength[kVersion]	= strlen(kVersion);
+
+		fVarLength[kLikelihoodVar]	= strlen(kLikelihoodVar);
+		fVarLength[kPosVar]			= strlen(kPosVar);
+		fVarLength[kSpeedVar]		= strlen(kSpeedVar);
 	}
 }
 
@@ -146,6 +155,12 @@ Sbaseparam TMessageEvaluator::evalPosition (const string& range, float pos) cons
 
 //----------------------------------------------------------------------
 bool TMessageEvaluator::posVariable (const string& param, const char* var) const
+{
+	return param.substr(0, fVarLength[var]) == var;
+}
+
+//----------------------------------------------------------------------
+bool TMessageEvaluator::gestVariable (const string& param, const char* var) const
 {
 	return param.substr(0, fVarLength[var]) == var;
 }
@@ -303,6 +318,12 @@ IMessage::argslist TMessageEvaluator::evalVariable (const string& var, const Eve
 		else if (posVariable (var, kAbsYVar))	outval.push_back ( evalPosition (var.substr(fVarLength[kAbsYVar]), env.mouse.fabsy));
 		else if (posVariable (var, kSceneXVar)) outval.push_back ( evalPosition (var.substr(fVarLength[kSceneXVar]), env.mouse.fsx));
 		else if (posVariable (var, kSceneYVar))	outval.push_back ( evalPosition (var.substr(fVarLength[kSceneYVar]), env.mouse.fsy));
+
+		else if (env.gesture.isSet()) {
+			if (gestVariable (var, kLikelihoodVar))	outval.push_back ( evalPosition (var.substr(fVarLength[kLikelihoodVar]), env.gesture.likelihood));
+			else if (gestVariable (var, kPosVar))	outval.push_back ( evalPosition (var.substr(fVarLength[kPosVar]), env.gesture.position));
+			else if (gestVariable (var, kSpeedVar))	outval.push_back ( evalPosition (var.substr(fVarLength[kSpeedVar]), env.gesture.speed));
+		}
 		
 		else if (var == kNameVar)			outval.push_back ( new IMsgParam<string>(env.object->name()));
 		else if (var == kAddressVar)		outval.push_back ( new IMsgParam<string>(env.object->getOSCAddress()));

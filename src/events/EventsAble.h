@@ -45,7 +45,8 @@ class EventsAble
 	public:
 		enum eventype { kUnknownEvent=0, 
 			kMouseDown, kMouseUp, kMouseDoubleClick, kMouseEnter, kMouseLeave, kMouseMove,
-			kTimeEnter, kTimeLeave, kDurEnter, kDurLeave, kNewElement, kExport, kEndPaint };
+			kTimeEnter, kTimeLeave, kDurEnter, kDurLeave, kNewElement, kExport, kEndPaint,
+			kGFEnter, kGFLeave, kGFActive, kGFIdle };
 			
 				 EventsAble();
 		virtual ~EventsAble();
@@ -62,8 +63,8 @@ class EventsAble
 		/// \brief clear a time message list
 		void			clearTimeMsg (eventype t);
 
-		void			pushWatch ();		///< push the current watched events and associated msgs on a stack
-		bool			popWatch ();		///< restore watched events and associated messages from the stack
+		virtual void		pushWatch ();		///< push the current watched events and associated msgs on a stack
+		virtual bool		popWatch ();		///< restore watched events and associated messages from the stack
 
 		const IMessageList*	getMessages (eventype t) const			{ return fMsgMap.get(t); }
 		const IMessageList*	getMouseMsgs (eventype t) const			{ return fMsgMap.get(t); }
