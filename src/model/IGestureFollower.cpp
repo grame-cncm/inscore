@@ -55,6 +55,7 @@ IGestureFollower::IGestureFollower( const std::string& name, IObject* parent ) :
 
 	fGetMsgHandlerMap[klikelihoodwindow_GetSetMethod]	= TGetParamMethodHandler<IGestureFollower, int (IGestureFollower::*)() const>::create(this, &IGestureFollower::getLikelyhoodWindow);
 	fGetMsgHandlerMap[ktolerance_GetSetMethod]			= TGetParamMethodHandler<IGestureFollower, float (IGestureFollower::*)() const>::create(this, &IGestureFollower::getTolerance);
+	setA(100);
 }
 
 //--------------------------------------------------------------------------
@@ -72,6 +73,7 @@ void IGestureFollower::accept (Updater* u)
 //--------------------------------------------------------------------------
 bool IGestureFollower::following() const	{ return fGFLib->getState() == kDecoding; }
 bool IGestureFollower::learning() const		{ return fGFLib->getState() == kLearning; }
+bool IGestureFollower::idle() const			{ return fGFLib->getState() == kIdle; }
 
 //--------------------------------------------------------------------------
 IGesture* IGestureFollower::getGesture (const std::string& name) const
@@ -84,12 +86,29 @@ IGesture* IGestureFollower::getGesture (const std::string& name) const
 }
 
 //--------------------------------------------------------------------------
+IGesture* IGestureFollower::getGesture (int index) const
+{
+	index += fGesturesOffset;
+	return (index < elements().size()) ? dynamic_cast<IGesture*>((IObject*)elements()[index]) : 0;
+}
+
+//--------------------------------------------------------------------------
+float IGestureFollower::likelihoodThreshold(int index) const
+{
+	float val = 1.f;
+	index += fGesturesOffset;
+	if (index < elements().size()) {
+		IGesture * gesture = dynamic_cast<IGesture*>((IObject*)elements()[index]);
+		if (gesture) val = gesture->getLikelihoodThreshold();
+	}
+	return val;
+}
+
+//--------------------------------------------------------------------------
 bool IGestureFollower::createGestureFollower (int sigDimension, int buffsize, vector<string>& gestures)
 {
 	fGFLib = new TGestureFollowerPlugin (gestures.size(), sigDimension, buffsize);
 	if (fGFLib && fGFLib->isAvailable()) {
-		fCapacity = buffsize;
-		fFrameSize = sigDimension;
 		fGesturesOffset = elements().size();
 		for (unsigned int i = 0; i < gestures.size(); i++) {
 			SIGesture g = IGesture::create (gestures[i], this, i, fGFLib);
@@ -105,23 +124,34 @@ MsgHandler::msgStatus IGestureFollower::data (const IMessage* msg)
 {
 	MsgHandler::msgStatus status = MsgHandler::kProcessed;
 	int n = msg->size();
-	if (n) {
-		float * values = new float[n];
-		float val;
-		for (int i=0; i<n; i++) {
-			if (msg->param(i, val)) values[i] = val;
-			else {
-				status = MsgHandler::kBadParameters;
-				break;
+	int fs = fGFLib->getFrameSize();
+	// check for correct data count regarding the frame size
+	if ((n == 0) || (n % fs)) return MsgHandler::kBadParameters;
+
+	float * values = new float[n];
+	float val;
+	for (int i=0; i<n; i++) {
+		if (msg->param(i, val)) values[i] = val;
+		else {
+			status = MsgHandler::kBadParameters;
+			break;
+		}
+	}
+	if (status == MsgHandler::kProcessed) {
+		if (fLearner) fLearner->observe(values, n);
+		else if (fGFLib->following()) {
+			for (int i=0; i<n; i+=fs)
+				fGFLib->observation (&values[i], fs);
+			const float * likelihoods = fGFLib->likelihood();
+			const float * pos = fGFLib->where();
+			const float * speed = fGFLib->speed();
+			for (int i=0; i<fGFLib->getMaxPhrases(); i++) {
+				IGesture * g = getGesture(i);
+				if (g) g->likelihood(likelihoods[i], pos[i], speed[i]);
 			}
 		}
-		if (status == MsgHandler::kProcessed) {
-			if (fLearner) fLearner->observe(values, n);
-			else fGFLib->observation (values, n);
-		}
-		delete[] values;
 	}
-	else status = MsgHandler::kBadParameters;
+	delete[] values;
 	return status;
 }
 
@@ -157,7 +187,7 @@ SIMessageList IGestureFollower::getSetMsg () const
 {
 	SIMessageList outmsgs = IMessageList::create();
 	SIMessage msg = IMessage::create(getOSCAddress(), kset_SetMethod);
-	*msg << kGestureFollowerType << fFrameSize << fCapacity;
+	*msg << kGestureFollowerType << fGFLib->getFrameSize() << fGFLib->getCapacity();
 	for (unsigned int i = fGesturesOffset; i< elements().size(); i++) {
 		*msg << elements()[i]->name();
 	}
@@ -179,7 +209,7 @@ void IGestureFollower::setTolerance (float t)				{ fGFLib->setTolerance (t); }
 //--------------------------------------------------------------------------
 int IGestureFollower::getLikelyhoodWindow () const	{ return fGFLib ? fGFLib->getLikelihoodWindow () : 0; }
 float IGestureFollower::getTolerance () const		{ return fGFLib ? fGFLib->getTolerance () : 0.; }
-void IGestureFollower::follow ()					{ fGFLib->startFollow(); }
+void IGestureFollower::follow ()					{ stop(); fGFLib->startFollow(); }
 
 //--------------------------------------------------------------------------
 void IGestureFollower::learn (const std::string& name)

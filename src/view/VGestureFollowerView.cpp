@@ -82,24 +82,35 @@ void GFRect::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, 
 
 	int n = fGF->gesturesCount();
 	float wl = r.width()/n;
-	float hl = r.height()/6;
-	painter->setPen(QColor(Qt::black));
+	float hl = r.height()/(n*2);
+
+	QColor borderColor = fGF->idle() ? Qt::gray : Qt::black;
+	QColor thresholdColor = QColor(50,50,50);
 	
 	float x = r.left();
 	const float* likelihood = fGF->likelihood();
+	float h = r.height()/2;
 	for (int i=0; i<n; x+=wl, i++) {
-		float h = r.height()/2;
+		float eqh = r.top() + h - (h * fGF->likelihoodThreshold(i));
+		painter->setPen(borderColor);
 		painter->drawRect( QRectF (x, r.top(), wl, h) );
 		if (fGF->following()) {
-			float wlike = h * likelihood[i];
+			float hlike = h * likelihood[i];
 			QColor color = gColors[i % kColorsCount];
 			color.setAlpha (fGF->getA());
-			painter->fillRect( QRectF(x, h-wlike, wl, wlike), color );
+			painter->fillRect( QRectF(x, r.top()+h-hlike, wl, hlike), color );
+			painter->setPen(thresholdColor);
+			painter->drawLine( x, eqh, x+wl, eqh );
+		}
+		else {
+			float fill = (h * fGF->getPhraseSize (i)) / fGF->getCapacity();
+			painter->fillRect( QRectF(x, r.top()+h-fill, wl, fill), QColor(100, 100, 200, fGF->getA()));
 		}
 	}
 
 	float y = r.top() + r.height()/2;
 	const float* where = fGF->where();
+	painter->setPen(borderColor);
 	for (int i=0; i<n; y+=hl, i++) {
 		QRectF lr (r.left(), y, r.width(), hl);
 		painter->drawRect( QRectF (r.left(), y, r.width(), hl) );
@@ -107,7 +118,7 @@ void GFRect::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, 
 			float plike = r.width() * where[i];
 			QColor color = gColors[i % kColorsCount];
 			color.setAlpha (fGF->getA());
-			painter->fillRect( QRectF(0, y, plike, hl), color);
+			painter->fillRect( QRectF(r.left(), y, plike, hl), color);
 		}
 	}
 }

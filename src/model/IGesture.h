@@ -30,6 +30,7 @@
 #include <string>
 #include <vector>
 
+#include "EventsAble.h"
 #include "IVNode.h"
 
 class GestureFollower;
@@ -55,6 +56,7 @@ class IGesture : public IVNode
 	TGestureFollowerPlugin * fGF;
 	int					fIndex;			// the gesture index within the follower
 	float				fLikelihoodThreshold;
+	float				fCurrentLikelihood;
 	std::vector<float>	fValues;
 
 	public:
@@ -70,18 +72,21 @@ class IGesture : public IVNode
 		void	startLearn ();
 		void	stopLearn ();
 		void	clearGesture ();
+		void	likelihood (float likelihood, float pos, float speed);	// sets the current likelihood, may trigger associated events
+		float	getLikelihoodThreshold () const				{ return fLikelihoodThreshold; }
 
 	protected:
 				 IGesture( const std::string& name, IObject* parent, int index, TGestureFollowerPlugin * gf);
 		virtual ~IGesture();	
 
-		void	setLikelihoodThreshold (float value)		{ fLikelihoodThreshold = value; }
-		float	getLikelihoodThreshold () const				{ return fLikelihoodThreshold; }
-
+		void	setLikelihoodThreshold (float value)		{ fParent->setState(kModified); fLikelihoodThreshold = value; }
 		void	learn (float* values, int size);
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
+
+		/// \brief the \c 'watch' message handler
+		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
 };
 
 /*! @} */

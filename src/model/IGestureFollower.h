@@ -55,7 +55,6 @@ class IGestureFollower : public IRectShape
 {
 	TGestureFollowerPlugin*	fGFLib;
 	int fGesturesOffset;			// offset to the first gesture in the elements list
-	int fCapacity, fFrameSize;
 	IGesture*	fLearner;
 
 	bool	createGestureFollower (int sigDimension, int buffsize, std::vector<std::string>& gestures);
@@ -70,14 +69,20 @@ class IGestureFollower : public IRectShape
 
 		const float*	where() const				{ return fGFLib->where(); }
 		const float*	likelihood() const			{ return fGFLib->likelihood(); }
+		int				getPhraseSize(int i) const	{ return fGFLib->getPhraseSize(i); }
+		int				getCapacity() const			{ return fGFLib->getCapacity(); }
 		bool			following() const;
 		bool			learning() const;
+		bool			idle() const;
+
+		float			likelihoodThreshold(int index) const;
 
 	protected:
 				 IGestureFollower( const std::string& name, IObject* parent );
 		virtual ~IGestureFollower();	
 
 		IGesture*	getGesture (const std::string& name) const;
+		IGesture*	getGesture (int index) const;
 
 		void	setLikelyhoodWindow (int size);
 		void	setTolerance (float t);

@@ -21,6 +21,7 @@
 
 #include <iostream>
 #include "IAppl.h"
+#include "ITLError.h"
 #include "GestureFollower.h"
 #include "TGestureFollowerPlugin.h"
 
@@ -51,6 +52,7 @@ static const char* gflibLikeliestStr		= "likeliest";
 static const char* gflibWhereStr			= "where";
 static const char* gflibLikelihoodStr		= "likelihood";
 static const char* gflibSpeedStr			= "speed";
+static const char* gflibGetPhraseSizeStr	= "getPhraseSize";
 static const char* gflibGetStateStr			= "getState";
 
 TGestureFollowerPlugin::TNewFunction		TGestureFollowerPlugin::fNew = 0;
@@ -73,6 +75,7 @@ TGestureFollowerPlugin::TIntVoidFunction	TGestureFollowerPlugin::fLikeliest = 0;
 TGestureFollowerPlugin::TFloatPVoidFunction	TGestureFollowerPlugin::fWhere = 0;
 TGestureFollowerPlugin::TFloatPVoidFunction	TGestureFollowerPlugin::fLikelihood = 0;
 TGestureFollowerPlugin::TFloatPVoidFunction	TGestureFollowerPlugin::fSpeed = 0;
+TGestureFollowerPlugin::TIntIntFunction		TGestureFollowerPlugin::fGetPhraseSize = 0;
 TGestureFollowerPlugin::TIntVoidFunction	TGestureFollowerPlugin::fGetState = 0;
 
 
@@ -82,7 +85,7 @@ bool TGestureFollowerPlugin::isResolved ()
 	return	fNew && fDel && fStartLearn && fStopLearn && fClear && fClearAll &&
 			fStartFollow && fStopFollow && fSetLikelihoodWindow && fGetMaxPhrases && fGetFrameSize &&
 			fGetCapacity && fGetLikelihoodWindow && fSetTolerance && fGetTolerance && fObservation &&
-			fLikeliest && fWhere && fLikelihood && fSpeed && fGetState;
+			fLikeliest && fWhere && fLikelihood && fSpeed && fGetPhraseSize && fGetState;
 }
 
 //----------------------------------------------------------------------------
@@ -134,6 +137,8 @@ bool TGestureFollowerPlugin::load ()
 		if (fLikelihood == 0) return false;
 		fSpeed					= resolve<TFloatPVoidFunction> (gflibSpeedStr);
 		if (fSpeed == 0) return false;
+		fGetPhraseSize				= resolve<TIntIntFunction> (gflibGetPhraseSizeStr);
+		if (fGetPhraseSize == 0) return false;
 		fGetState				= resolve<TIntVoidFunction> (gflibGetStateStr);
 		if (fGetState == 0) return false;
 	}
@@ -146,6 +151,8 @@ TGestureFollowerPlugin::TGestureFollowerPlugin(int maxPhrases, int vecSize, long
 {
 	if (load())
 		fGF = create (maxPhrases, vecSize, capacity);
+	else
+		ITLErr << "cannot load gesture follower plugin" << ITLEndl;
 }
 
 //----------------------------------------------------------------------------
@@ -170,12 +177,16 @@ void TGestureFollowerPlugin::stop ()
 	}
 }
 
+bool TGestureFollowerPlugin::following	()		{ return getState() == kDecoding; }
+bool TGestureFollowerPlugin::learning	()		{ return getState() == kLearning; }
+bool TGestureFollowerPlugin::idle		()		{ return getState() == kIdle; }
+
 void TGestureFollowerPlugin::del () const						{ fDel(fGF); }
 void TGestureFollowerPlugin::startLearn	(int phraseIndex)		{ fStartLearn(fGF, phraseIndex); }
 void TGestureFollowerPlugin::stopLearn	()						{ fStopLearn (fGF); }
-void TGestureFollowerPlugin::clear		(int phraseIndex)		{ fClear (fGF, phraseIndex); }
-void TGestureFollowerPlugin::clearAll	()						{ fClearAll (fGF); }
-void TGestureFollowerPlugin::startFollow()						{ fStartFollow (fGF); }
+void TGestureFollowerPlugin::clear		(int phraseIndex)		{ stop(); fClear (fGF, phraseIndex); }
+void TGestureFollowerPlugin::clearAll	()						{ stop(); fClearAll (fGF); }
+void TGestureFollowerPlugin::startFollow()						{ stop(); fStartFollow (fGF); }
 void TGestureFollowerPlugin::stopFollow	()						{ fStopFollow (fGF); }
 void TGestureFollowerPlugin::setLikelihoodWindow (int size)		{ fSetLikelihoodWindow (fGF, size); }
 int  TGestureFollowerPlugin::getMaxPhrases () const				{ return fGetMaxPhrases (fGF); }
@@ -194,6 +205,7 @@ int  TGestureFollowerPlugin::likeliest() const					{ return fLikeliest (fGF); }
 const float* TGestureFollowerPlugin::where() const				{ return fWhere (fGF); }
 const float* TGestureFollowerPlugin::likelihood() const			{ return fLikelihood (fGF); }
 const float* TGestureFollowerPlugin::speed () const				{ return fSpeed (fGF); }
+int  TGestureFollowerPlugin::getPhraseSize(int index) const		{ return fGetPhraseSize (fGF, index); }
 int  TGestureFollowerPlugin::getState() const					{ return fGetState (fGF); }
 
 
