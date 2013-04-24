@@ -101,7 +101,13 @@ class GestureFollower
 		const float*	likelihood() const;
 		/*! \brief gives the current phrases speed (i.e. a smoothed estimation of index_i - index_i-1)  */
 		const float*	speed () const;
-		
+
+		/*! \brief gives a phrase current size 
+			\param a phrase index
+			\return the phrase current size
+		*/
+		int				getPhraseSize (int index) const;
+		/*! \brief gives the follower current state (idle, learning or following) */
 		int				getState() const;
 };
 
@@ -132,6 +138,7 @@ int				likeliest(GestureFollower * gf);
 const float*	where(GestureFollower * gf);
 const float*	likelihood(GestureFollower * gf);
 const float*	speed (GestureFollower * gf);
+int				getPhraseSize(GestureFollower * gf);
 int				getState(GestureFollower * gf);
 
 #ifdef __cplusplus
