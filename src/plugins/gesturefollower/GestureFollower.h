@@ -117,6 +117,9 @@ class GestureFollower
 extern "C" {
 #endif
 
+float		gfVersion();
+const char* gfVersionStr();
+
 GestureFollower *	newGestureFollower (int maxPhrases, int vecSize, long capacity);
 void				delGestureFollower (GestureFollower * gf);
 
@@ -138,7 +141,7 @@ int				likeliest(GestureFollower * gf);
 const float*	where(GestureFollower * gf);
 const float*	likelihood(GestureFollower * gf);
 const float*	speed (GestureFollower * gf);
-int				getPhraseSize(GestureFollower * gf);
+int				getPhraseSize(GestureFollower * gf, int i);
 int				getState(GestureFollower * gf);
 
 #ifdef __cplusplus

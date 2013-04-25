@@ -21,6 +21,7 @@
 
 #include <iostream>
 #include "IAppl.h"
+#include "OSCStream.h"
 #include "ITLError.h"
 #include "GestureFollower.h"
 #include "TGestureFollowerPlugin.h"
@@ -34,6 +35,7 @@ static const char* gflibName = "GFLib";
 static const char* gflibNewStr = "newGestureFollower";
 static const char* gflibDelStr = "delGestureFollower";
 
+static const char* gflibVersionStr			= "gfVersionStr";
 static const char* gflibStartLearnStr		= "startLearn";
 static const char* gflibStopLearnStr		= "stopLearn";
 static const char* gflibClearStr			= "clear";
@@ -77,6 +79,7 @@ TGestureFollowerPlugin::TFloatPVoidFunction	TGestureFollowerPlugin::fLikelihood 
 TGestureFollowerPlugin::TFloatPVoidFunction	TGestureFollowerPlugin::fSpeed = 0;
 TGestureFollowerPlugin::TIntIntFunction		TGestureFollowerPlugin::fGetPhraseSize = 0;
 TGestureFollowerPlugin::TIntVoidFunction	TGestureFollowerPlugin::fGetState = 0;
+TGestureFollowerPlugin::TCharPVoidFunction	TGestureFollowerPlugin::fVersionStr = 0;
 
 
 //----------------------------------------------------------------------------
@@ -85,7 +88,7 @@ bool TGestureFollowerPlugin::isResolved ()
 	return	fNew && fDel && fStartLearn && fStopLearn && fClear && fClearAll &&
 			fStartFollow && fStopFollow && fSetLikelihoodWindow && fGetMaxPhrases && fGetFrameSize &&
 			fGetCapacity && fGetLikelihoodWindow && fSetTolerance && fGetTolerance && fObservation &&
-			fLikeliest && fWhere && fLikelihood && fSpeed && fGetPhraseSize && fGetState;
+			fLikeliest && fWhere && fLikelihood && fSpeed && fGetPhraseSize && fGetState && fVersionStr;
 }
 
 //----------------------------------------------------------------------------
@@ -141,8 +144,11 @@ bool TGestureFollowerPlugin::load ()
 		if (fGetPhraseSize == 0) return false;
 		fGetState				= resolve<TIntVoidFunction> (gflibGetStateStr);
 		if (fGetState == 0) return false;
+		fVersionStr				= resolve<TCharPVoidFunction> (gflibVersionStr);
+		if (fVersionStr == 0) return false;
 	}
 	else return false;
+	oscout << OSCStart("IMTR Gesture follower version") << fVersionStr() << "loaded" << OSCEnd();;
 	return true;
 }
 
@@ -176,6 +182,8 @@ void TGestureFollowerPlugin::stop ()
 			break;
 	}
 }
+
+const char*	TGestureFollowerPlugin::versionStr ()	{ return fVersionStr(); }
 
 bool TGestureFollowerPlugin::following	()		{ return getState() == kDecoding; }
 bool TGestureFollowerPlugin::learning	()		{ return getState() == kLearning; }

@@ -39,7 +39,9 @@ class TGestureFollowerPlugin : public TPlugin {
 		typedef int					(* TIntIntFunction) (GestureFollower * gf, int);
 		typedef float				(* TFloatVoidFunction) (GestureFollower * gf);
 		typedef const float*		(* TFloatPVoidFunction) (GestureFollower * gf);
+		typedef const char*			(* TCharPVoidFunction) ();
 
+		static TCharPVoidFunction	fVersionStr;
 		static TNewFunction			fNew;
 		static TVoidVoidFunction	fDel;
 		static TVoidIntFunction		fStartLearn;
@@ -74,6 +76,7 @@ class TGestureFollowerPlugin : public TPlugin {
 				 TGestureFollowerPlugin(int maxPhrases, int vecSize, long capacity);
 		virtual ~TGestureFollowerPlugin();
 
+		const char*		versionStr	();
 		bool			isAvailable	();
 		bool			following	();
 		bool			learning	();
