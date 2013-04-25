@@ -2349,32 +2349,22 @@ A gesture could be in two states:
 
 \begin{rail}
 gestureevents :
-		  	  'watch' ( 'gfEnter' | 'gfLeave') messages
-		 	| 'likelihoodThreshold' float32
+ 				'likelihoodThreshold' float32
+		  	|  	'watch' ( 'gfEnter' | 'gfLeave' | 'gfActive' | 'gfIdle' )  (  |  messages )
 \end{rail}
 \index{gesture events!watch}
 \index{gesture events!gfEnter}
 \index{gesture events!gfLeave}
+\index{gesture events!gfActive}
+\index{gesture events!gfIdle}
 \index{gesture events!likelihoodThreshold}
 
 \begin{itemize}
+\item \OSC{likelihoodThreshold} sets the gesture likelihood threshold. The parameter is a float value in the range \values{[0,1]}. Default value is \values{0.5}.
 \item \OSC{gfEnter} triggered when the gesture state changes from idle to active.
 \item \OSC{gfLeave} triggered when the gesture state changes from active to idle.
-\item \OSC{likelihoodThreshold} sets the gesture likelihood threshold. The parameter is a float value in the range \values{[0,1]}. Default value is \values{0.8}.
-\end{itemize}
-
-In addition, a gesture can stream arbitrary messages each time its state is refreshed.
-\begin{rail}
-gesturestream :
-		  	  'send' ( 'active' | 'idle') ( [1] | [2] messages )
-\end{rail}
-\index{gesture stream!send}
-\index{gesture stream!active}
-\index{gesture stream!idle}
-
-\begin{itemize}
-\item \OSC{active} associates [2] or clear [1] messages to be sent when the gesture is in active state.
-\item \OSC{idle} associates [2] or clear [1] messages to be sent when the gesture is in idle state.
+\item \OSC{gfActive} triggered in active state each time the gesture likelihood is refreshed.
+\item \OSC{gfIdle} triggered in idle state each time the gesture likelihood is refreshed.
 \end{itemize}
 
 %===============================
@@ -2384,18 +2374,18 @@ gesturestream :
 A message associated to a gesture supports the following specific variables:
 \begin{rail}
 gesturevariable : 
-		(  'likelihood'
-		| 'pos'
-		| 'speed') ( | '[low,high]')  
+		( 'gflikelihood'
+		| 'gfpos'
+		| 'gfspeed') ( | '[low,high]' ) 
 \end{rail}
-\index{gesture variables!likelihood}
-\index{gesture variables!pos}
-\index{gesture variables!speed}
+\index{gesture variables!gflikelihood}
+\index{gesture variables!gfpos}
+\index{gesture variables!gfspeed}
 These variables support the scaling feature associated to position variables and described in section \fullref{posvar}.
 \begin{itemize}
-\item \OSC{likelihood} indicates the current likelihood 
-\item \OSC{pos} indicates the current position in the gesture 
-\item \OSC{speed} indicates the current gesture execution speed 
+\item \OSC{gflikelihood} indicates the current likelihood 
+\item \OSC{gfpos} indicates the current position in the gesture 
+\item \OSC{gfspeed} indicates the current gesture execution speed 
 \end{itemize}
 
 \note{}\\

@@ -1549,52 +1549,41 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {86}{ gestureevents : 'watch' ( 'gfEnter' | 'gfLeave') messages | 'likelihoodThreshold' float32 }
+\rail@i {86}{ gestureevents : 'likelihoodThreshold' float32 | 'watch' ( 'gfEnter' | 'gfLeave' | 'gfActive' | 'gfIdle' ) ( | messages ) }
 \rail@o {86}{
 \rail@index{gestureevents}
-\rail@begin{3}{gestureevents}
+\rail@begin{5}{gestureevents}
 \rail@bar
+\rail@term{likelihoodThreshold}[]
+\rail@token{float32}[]
+\rail@nextbar{1}
 \rail@term{watch}[]
 \rail@bar
 \rail@term{gfEnter}[]
-\rail@nextbar{1}
-\rail@term{gfLeave}[]
-\rail@endbar
-\rail@nont{messages}[]
 \rail@nextbar{2}
-\rail@term{likelihoodThreshold}[]
-\rail@token{float32}[]
-\rail@endbar
-\rail@end
-}
-\rail@i {87}{ gesturestream : 'send' ( 'active' | 'idle') ( [1] | [2] messages ) }
-\rail@o {87}{
-\rail@index{gesturestream}
-\rail@begin{2}{gesturestream}
-\rail@term{send}[]
-\rail@bar
-\rail@term{active}[]
-\rail@nextbar{1}
-\rail@term{idle}[]
+\rail@term{gfLeave}[]
+\rail@nextbar{3}
+\rail@term{gfActive}[]
+\rail@nextbar{4}
+\rail@term{gfIdle}[]
 \rail@endbar
 \rail@bar
-\rail@annote[1]
-\rail@nextbar{1}
-\rail@annote[2]
+\rail@nextbar{2}
 \rail@nont{messages}[]
 \rail@endbar
+\rail@endbar
 \rail@end
 }
-\rail@i {88}{ gesturevariable : ( 'likelihood' | 'pos' | 'speed') ( | '[low,high]') }
-\rail@o {88}{
+\rail@i {87}{ gesturevariable : ( 'gflikelihood' | 'gfpos' | 'gfspeed') ( | '[low,high]' ) }
+\rail@o {87}{
 \rail@index{gesturevariable}
 \rail@begin{3}{gesturevariable}
 \rail@bar
-\rail@term{likelihood}[]
+\rail@term{gflikelihood}[]
 \rail@nextbar{1}
-\rail@term{pos}[]
+\rail@term{gfpos}[]
 \rail@nextbar{2}
-\rail@term{speed}[]
+\rail@term{gfspeed}[]
 \rail@endbar
 \rail@bar
 \rail@nextbar{1}
@@ -1602,8 +1591,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {89}{ expression : message ";" | variabledecl ";" | script }
-\rail@o {89}{
+\rail@i {88}{ expression : message ";" | variabledecl ";" | script }
+\rail@o {88}{
 \rail@index{expression}
 \rail@begin{3}{expression}
 \rail@bar
@@ -1617,8 +1606,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {90}{ variabledecl : 'ident' '=' ( (param | variable) + | '(' (message + ',') ')' ) ';' }
-\rail@o {90}{
+\rail@i {89}{ variabledecl : 'ident' '=' ( (param | variable) + | '(' (message + ',') ')' ) ';' }
+\rail@o {89}{
 \rail@index{variabledecl}
 \rail@begin{5}{variabledecl}
 \rail@term{ident}[]
@@ -1644,8 +1633,8 @@
 \rail@term{;}[]
 \rail@end
 }
-\rail@i {91}{ msgparam : '(' (message) ')' }
-\rail@o {91}{
+\rail@i {90}{ msgparam : '(' (message) ')' }
+\rail@o {90}{
 \rail@index{msgparam}
 \rail@begin{1}{msgparam}
 \rail@term{(}[]
@@ -1653,8 +1642,8 @@
 \rail@term{)}[]
 \rail@end
 }
-\rail@i {92}{ script : '<?' ('javascript' | 'lua') script '?>' }
-\rail@o {92}{
+\rail@i {91}{ script : '<?' ('javascript' | 'lua') script '?>' }
+\rail@o {91}{
 \rail@index{script}
 \rail@begin{2}{script}
 \rail@term{<?}[]
@@ -1667,8 +1656,8 @@
 \rail@term{?>}[]
 \rail@end
 }
-\rail@i {93}{ javascript : 'run' 'code' }
-\rail@o {93}{
+\rail@i {92}{ javascript : 'run' 'code' }
+\rail@o {92}{
 \rail@index{javascript}
 \rail@begin{1}{javascript}
 \rail@term{run}[]
