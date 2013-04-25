@@ -35,7 +35,7 @@ using namespace std;
 namespace inscore
 {
 
-#define kDefaultThreshold 0.7
+#define kDefaultThreshold 0.5
 
 //--------------------------------------------------------------------------
 IGesture::IGesture( const std::string& name, IObject* parent, int index, TGestureFollowerPlugin * gf ) 
