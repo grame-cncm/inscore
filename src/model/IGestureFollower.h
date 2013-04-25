@@ -71,6 +71,7 @@ class IGestureFollower : public IRectShape
 		const float*	likelihood() const			{ return fGFLib->likelihood(); }
 		int				getPhraseSize(int i) const	{ return fGFLib->getPhraseSize(i); }
 		int				getCapacity() const			{ return fGFLib->getCapacity(); }
+		int				getFrameSize() const		{ return fGFLib->getFrameSize(); }
 		bool			following() const;
 		bool			learning() const;
 		bool			idle() const;
