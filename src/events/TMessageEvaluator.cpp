@@ -65,9 +65,9 @@ const char* kAddressVar	= "$address";
 const char* kVersion	= "$version";
 
 // gesture follower variables
-const char* kLikelihoodVar	= "$likelihood";
-const char* kPosVar		= "$pos";
-const char* kSpeedVar		= "$speed";
+const char* kLikelihoodVar	= "$gflikelihood";
+const char* kPosVar			= "$gfpos";
+const char* kSpeedVar		= "$gfspeed";
 
 map<const char*, int> TMessageEvaluator::fVarLength; 
 
