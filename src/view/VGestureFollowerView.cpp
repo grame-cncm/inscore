@@ -103,7 +103,7 @@ void GFRect::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, 
 			painter->drawLine( x, eqh, x+wl, eqh );
 		}
 		else {
-			float fill = (h * fGF->getPhraseSize (i)) / fGF->getCapacity();
+			float fill = (h * fGF->getPhraseSize (i) * fGF->getFrameSize()) / fGF->getCapacity();
 			painter->fillRect( QRectF(x, r.top()+h-fill, wl, fill), QColor(100, 100, 200, fGF->getA()));
 		}
 	}
