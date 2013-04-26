@@ -99,13 +99,13 @@ void GFRect::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, 
 			QColor color = gColors[i % kColorsCount];
 			color.setAlpha (fGF->getA());
 			painter->fillRect( QRectF(x, r.top()+h-hlike, wl, hlike), color );
-			painter->setPen(thresholdColor);
-			painter->drawLine( x, eqh, x+wl, eqh );
 		}
 		else {
 			float fill = (h * fGF->getPhraseSize (i) * fGF->getFrameSize()) / fGF->getCapacity();
 			painter->fillRect( QRectF(x, r.top()+h-fill, wl, fill), QColor(100, 100, 200, fGF->getA()));
 		}
+		painter->setPen(thresholdColor);
+		painter->drawLine( x, eqh, x+wl, eqh );
 	}
 
 	float y = r.top() + r.height()/2;
