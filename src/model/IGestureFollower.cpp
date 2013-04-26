@@ -240,7 +240,13 @@ void IGestureFollower::stop ()
 		fLearner->stopLearn();
 		fLearner = 0;
 	}
-	else fGFLib->stopFollow ();
+	else if (following()) {
+		fGFLib->stopFollow ();
+		for (int i=0; i<fGFLib->getMaxPhrases(); i++) {
+			IGesture * g = getGesture(i);
+			if (g) g->likelihood(0, 0, 0);
+		}
+	}
 }
 
 }
