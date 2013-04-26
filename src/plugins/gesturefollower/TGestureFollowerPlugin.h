@@ -24,13 +24,14 @@
 
 #include "TPlugin.h"
 class GestureFollower;
+class GFClient;
 
 namespace inscore
 {
 
 class TGestureFollowerPlugin : public TPlugin {
 
-		typedef GestureFollower *	(* TNewFunction) (int maxPhrases, int vecSize, long capacity);
+		typedef GestureFollower *	(* TNewFunction) (int maxPhrases, int vecSize, long capacity, GFClient*);
 		typedef void				(* TVoidVoidFunction) (GestureFollower * gf);
 		typedef void				(* TVoidIntFunction) (GestureFollower * gf, int);
 		typedef void				(* TVoidFloatFunction) (GestureFollower * gf, float);

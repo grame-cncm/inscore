@@ -168,7 +168,7 @@ bool TGestureFollowerPlugin::isAvailable ()		{ return isLoaded() && isResolved()
 		
 //----------------------------------------------------------------------------
 GestureFollower * TGestureFollowerPlugin::create (int maxPhrases, int vecSize, long capacity) const
-		{ return fNew ? fNew( maxPhrases, vecSize, capacity) : 0; }
+		{ return fNew ? fNew( maxPhrases, vecSize, capacity, 0) : 0; }
 
 //----------------------------------------------------------------------------
 void TGestureFollowerPlugin::stop ()
