@@ -132,7 +132,10 @@ MsgHandler::msgStatus IGestureFollower::data (const IMessage* msg)
 	float * values = new float[n];
 	float val;
 	for (int i=0; i<n; i++) {
-		if (msg->param(i, val)) values[i] = val;
+		if (msg->param(i, val)) {
+//			values[i] = (val > 1.0) ? 1.0 : (val < -1.0) ? -1.0 : val;
+			values[i] = val;
+		}
 		else {
 			status = MsgHandler::kBadParameters;
 			break;
@@ -213,13 +216,20 @@ float IGestureFollower::getTolerance () const		{ return fGFLib ? fGFLib->getTole
 void IGestureFollower::follow ()					{ stop(); fGFLib->startFollow(); }
 
 //--------------------------------------------------------------------------
-void IGestureFollower::learn (const std::string& name)
+void IGestureFollower::learn (IGesture* gesture)
 {
-	IGesture * gesture = getGesture(name);
-	if (gesture) {
+	if (fLearner != gesture) {
+		if (fLearner) fLearner->stopLearn();
 		fLearner = gesture;
 		gesture->startLearn();
 	}
+}
+
+//--------------------------------------------------------------------------
+void IGestureFollower::learn (const std::string& name)
+{
+	IGesture * gesture = getGesture(name);
+	if (gesture) learn (gesture);
 	else ITLErr << "no such gesture:" << name << ITLEndl;
 }
 

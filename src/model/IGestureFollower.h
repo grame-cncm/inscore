@@ -77,6 +77,7 @@ class IGestureFollower : public IRectShape
 		bool			idle() const;
 
 		float			likelihoodThreshold(int index) const;
+		void			learn (IGesture* gesture);
 
 	protected:
 				 IGestureFollower( const std::string& name, IObject* parent );
