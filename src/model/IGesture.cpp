@@ -25,6 +25,7 @@
 
 #include "TGestureFollowerPlugin.h"
 #include "IGesture.h"
+#include "IGestureFollower.h"
 #include "IMessage.h"
 #include "ITLError.h"
 #include "TMessageEvaluator.h"
@@ -43,6 +44,7 @@ IGesture::IGesture( const std::string& name, IObject* parent, int index, TGestur
 		  fGF (gf), fIndex(index), fLikelihoodThreshold (kDefaultThreshold), fCurrentLikelihood(0.f)
 { 	
 	fMsgHandlerMap[kset_SetMethod]						= TMethodMsgHandler<IGesture>::create(this, &IGesture::set);
+	fMsgHandlerMap[klearn_SetMethod]					= TMethodMsgHandler<IGesture>::create(this, &IGesture::learn);
 	fMsgHandlerMap[klikelihoodthreshold_GetSetMethod]	= TSetMethodMsgHandler<IGesture,float>::create(this, &IGesture::setLikelihoodThreshold);
 	fGetMsgHandlerMap[klikelihoodthreshold_GetSetMethod]= TGetParamMethodHandler<IGesture, float (IGesture::*)() const>::create(this, &IGesture::getLikelihoodThreshold);
 }
@@ -142,6 +144,15 @@ SIMessageList IGesture::getSetMsg () const
 		*msg << fValues[i];
 	outmsgs->list().push_back(msg);
 	return outmsgs;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IGesture::learn (const IMessage* msg)
+{
+	if  (msg->size()) return MsgHandler::kBadParameters;
+	IGestureFollower* gf = static_cast<IGestureFollower*>(fParent);
+	gf->learn (this);
+	return MsgHandler::kProcessed;
 }
 
 //--------------------------------------------------------------------------

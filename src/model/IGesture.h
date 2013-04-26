@@ -85,6 +85,9 @@ class IGesture : public IVNode
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 
+		/// \brief the \c 'learn' message handler
+		virtual MsgHandler::msgStatus learn (const IMessage* msg);
+
 		/// \brief the \c 'watch' message handler
 		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
 };
