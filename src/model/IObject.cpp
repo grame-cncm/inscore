@@ -681,14 +681,14 @@ SIMessageList IObject::getAliases() const
 	vector<pair<string, string> > aliases;
 	IAppl::getAliases (getOSCAddress(), aliases);
 	unsigned int n = aliases.size();
-	SIMessage msg = IMessage::create (getOSCAddress(), kalias_GetSetMethod);
 	for (unsigned i = 0; i < n; i++) {
+		SIMessage msg = IMessage::create (getOSCAddress(), kalias_GetSetMethod);
 		msg->add (aliases[i].first);
 		if (aliases[i].second.size()) msg->add (aliases[i].second);
 		list->list().push_back (msg);
 	}
 	if (list->list().empty()) {
-		list->list().push_back (msg);
+		list->list().push_back (IMessage::create (getOSCAddress(), kalias_GetSetMethod));
 	}
 	return list;
 }
