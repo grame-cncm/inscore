@@ -16,6 +16,7 @@
 enum { kIdle=0, kLearning, kDecoding };
 
 class GF;
+class GFClient;
 //--------------------------------------------------------------------------
 /*!
  \brief The gesture follower interface class.
@@ -30,7 +31,7 @@ class GestureFollower
 			\param vecSize the size of each frame
 			\param capacity the internal buffer size for each phrase (in frames)
 		*/
-				 GestureFollower(int maxPhrases, int vecSize, long capacity);
+				 GestureFollower(int maxPhrases, int vecSize, long capacity, GFClient* client=0);
 		virtual ~GestureFollower();
 		
 		/*! \brief start to learn a phrase
@@ -120,7 +121,7 @@ extern "C" {
 float		gfVersion();
 const char* gfVersionStr();
 
-GestureFollower *	newGestureFollower (int maxPhrases, int vecSize, long capacity);
+GestureFollower *	newGestureFollower (int maxPhrases, int vecSize, long capacity, GFClient* client);
 void				delGestureFollower (GestureFollower * gf);
 
 void			startLearn	(GestureFollower * gf, int phraseIndex);
