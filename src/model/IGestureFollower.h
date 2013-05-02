@@ -57,6 +57,8 @@ class IGestureFollower : public IRectShape
 	int fGesturesOffset;			// offset to the first gesture in the elements list
 	IGesture*	fLearner;
 
+	void	forceNames (std::vector<std::string>& gestures);
+	bool	gfequal (int sigDimension, int buffsize, std::vector<std::string>& gestures);
 	bool	createGestureFollower (int sigDimension, int buffsize, std::vector<std::string>& gestures);
 
 	public:
@@ -76,15 +78,15 @@ class IGestureFollower : public IRectShape
 		bool			learning() const;
 		bool			idle() const;
 
-		float			likelihoodThreshold(int index) const;
+		float			likelihoodThreshold(unsigned int index) const;
 		void			learn (IGesture* gesture);
 
 	protected:
 				 IGestureFollower( const std::string& name, IObject* parent );
 		virtual ~IGestureFollower();	
 
-		IGesture*	getGesture (const std::string& name) const;
-		IGesture*	getGesture (int index) const;
+		IGesture*	getGesture (const std::string& name) const;		///< get a gesture by name
+		IGesture*	getGesture (unsigned int index) const;			///< get a gesture by index
 
 		void	setLikelyhoodWindow (int size);
 		void	setTolerance (float t);
@@ -94,6 +96,7 @@ class IGestureFollower : public IRectShape
 		void	follow ();
 		void	learn (const std::string& gesture);
 		void	stop ();
+		void	clear ();
 
 		/// \brief the data message handler
 		virtual MsgHandler::msgStatus data (const IMessage* msg);
