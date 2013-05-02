@@ -73,13 +73,13 @@ class IGesture : public IVNode
 		void	stopLearn ();
 		void	clearGesture ();
 		void	likelihood (float likelihood, float pos, float speed);	// sets the current likelihood, may trigger associated events
-		float	getLikelihoodThreshold () const				{ return fLikelihoodThreshold; }
+		float	getLikelihoodThreshold () const;
 
 	protected:
 				 IGesture( const std::string& name, IObject* parent, int index, TGestureFollowerPlugin * gf);
 		virtual ~IGesture();	
 
-		void	setLikelihoodThreshold (float value)		{ fParent->setState(kModified); fLikelihoodThreshold = value; }
+		void	setLikelihoodThreshold (float value);
 		void	learn (float* values, int size);
 
 		/// \brief the \c 'set' message handler

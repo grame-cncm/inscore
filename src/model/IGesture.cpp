@@ -44,6 +44,7 @@ IGesture::IGesture( const std::string& name, IObject* parent, int index, TGestur
 		  fGF (gf), fIndex(index), fLikelihoodThreshold (kDefaultThreshold), fCurrentLikelihood(0.f)
 { 	
 	fMsgHandlerMap[kset_SetMethod]						= TMethodMsgHandler<IGesture>::create(this, &IGesture::set);
+	fMsgHandlerMap[kclear_SetMethod]					= TMethodMsgHandler<IGesture,void (IGesture::*)()>::create(this, &IGesture::clearGesture);
 	fMsgHandlerMap[klearn_SetMethod]					= TMethodMsgHandler<IGesture>::create(this, &IGesture::learn);
 	fMsgHandlerMap[klikelihoodthreshold_GetSetMethod]	= TSetMethodMsgHandler<IGesture,float>::create(this, &IGesture::setLikelihoodThreshold);
 	fGetMsgHandlerMap[klikelihoodthreshold_GetSetMethod]= TGetParamMethodHandler<IGesture, float (IGesture::*)() const>::create(this, &IGesture::getLikelihoodThreshold);
@@ -92,7 +93,11 @@ MsgHandler::msgStatus IGesture::_watchMsg(const IMessage* msg, bool add)
 }
 
 //--------------------------------------------------------------------------
-void IGesture::clearGesture ()						{ fValues.clear(); fGF->clear (fIndex); }
+float IGesture::getLikelihoodThreshold () const		{ return fLikelihoodThreshold; }
+void IGesture::setLikelihoodThreshold (float value)	{ fParent->setState(kModified); fLikelihoodThreshold = value; }
+
+//--------------------------------------------------------------------------
+void IGesture::clearGesture ()						{ fParent->setState(kModified); fValues.clear(); fGF->clear (fIndex); }
 void IGesture::startLearn ()						{ fGF->stop(); fValues.clear(); fGF->startLearn (fIndex); }
 void IGesture::stopLearn ()							{ fGF->stopLearn(); }
 void IGesture::observe (float* values, int size)	{
