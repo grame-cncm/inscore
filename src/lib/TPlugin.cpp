@@ -19,23 +19,46 @@
   
 */
 
+#include <iostream>
+
+#include <IAppl.h>
+#include <QApplication>
 #include <QFileInfo>
+#include <QDir>
+#include <QDebug>
 #include "TPlugin.h"
+
+using namespace std;
 
 namespace inscore
 {
 
 // ------------------------------------------------------------------------------
+void TPlugin::locations (const char* library, std::vector<std::string>& list)
+{
+	list.push_back (IAppl::absolutePath (library));
+	QDir dir(QApplication::applicationDirPath());
+#if __APPLE__
+	dir.cdUp();
+	if (dir.cd("PlugIns"))
+		list.push_back (dir.absoluteFilePath(library).toStdString());
+#endif
+#ifdef WIN32
+	if (dir.cd("PlugIns"))
+		list.push_back (dir.absoluteFilePath(library).toStdString());
+#endif
+	list.push_back (library);
+}
+
+// ------------------------------------------------------------------------------
 bool TPlugin::load (const char* library)
 {
-	setFileName (library);
-	if (QLibrary::load()) return true;
-
-	// loading failed: try to get the file name only and restart
-	QFileInfo file (library);
-	setFileName (file.baseName());
-	if (QLibrary::load()) return true;
-
+	vector<string> l;
+	locations (library, l);
+	for (unsigned int i=0; i < l.size(); i++) {
+		setFileName ( l[i].c_str() );
+		if (QLibrary::load()) return true;
+	}
 	return false;
 }
 

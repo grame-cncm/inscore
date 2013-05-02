@@ -22,7 +22,9 @@
 #ifndef __TGestureFollowerPlugin__
 #define __TGestureFollowerPlugin__
 
+#include <string>
 #include "TPlugin.h"
+
 class GestureFollower;
 class GFClient;
 
@@ -66,6 +68,7 @@ class TGestureFollowerPlugin : public TPlugin {
 		static TIntIntFunction		fGetPhraseSize;
 		static TIntVoidFunction		fGetState;
 
+		
 		bool				load ();
 		static bool			isResolved ();
 		GestureFollower *	create (int maxPhrases, int vecSize, long capacity) const;

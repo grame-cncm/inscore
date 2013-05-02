@@ -94,11 +94,9 @@ bool TGestureFollowerPlugin::isResolved ()
 //----------------------------------------------------------------------------
 bool TGestureFollowerPlugin::load ()
 {
-	if (isLoaded())
-		return isResolved();
+	if (isLoaded()) return isResolved();
 
-	string file = IAppl::absolutePath (gflibName);
-	if (TPlugin::load(file.c_str())) {
+	if (TPlugin::load(gflibName)) {
 		fNew = resolve<TNewFunction> (gflibNewStr);
 		if (fNew == 0) return false;
 		fDel = resolve<TVoidVoidFunction> (gflibDelStr);

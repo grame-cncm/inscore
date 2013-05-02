@@ -239,7 +239,7 @@ MsgHandler::msgStatus IFaustProcessor::set (const IMessage* msg)
 	string library;
 	if (!msg->param(1, library)) return MsgHandler::kBadParameters;
 	fLibrary = library;
-	if (load(getScene()->absolutePath(fLibrary).c_str())) {
+	if (load(fLibrary.c_str())) {
 		fBuildUI	= resolve<buildUserInterface>(kbuildUserInterface);	
 		fCompute	= resolve<compute>(kcompute);
 		fInputs		= resolve<getNumInputs>(kgetNumInputs);

@@ -23,6 +23,7 @@
 #define __TPlugin__
 
 #include <string>
+#include <vector>
 #include <QLibrary>
 
 namespace inscore
@@ -33,6 +34,11 @@ class TPlugin : public QLibrary {
 	public:
 				 TPlugin()		{};
 		virtual ~TPlugin()		{ if (isLoaded()) unload(); };
+
+		// Gives the possible locations of a plugin in precedence order:
+		// in the current folder first, a PlugIns folder in application bundle on macos, 
+		// a PlugIns folder in application folder
+		void	locations (const char* library, std::vector<std::string>& list);
 
 		// load the libray
 		// when the library name is an absolute path and if loading fails, try to use the file name only
