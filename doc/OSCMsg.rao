@@ -1503,10 +1503,10 @@
 \rail@endplus
 \rail@end
 }
-\rail@i {84}{ gesturefollower : [1] ( float32 + ) | [2] ('learn' name) | [3] 'follow' | [4] 'stop' | [5] ('likelihoodwindow' float32) | [6] ('tolerance' float32) }
+\rail@i {84}{ gesturefollower : [1] ( float32 + ) | [2] ('learn' name) | [3] 'follow' | [4] 'stop' | [5] 'clear' | [6] ('likelihoodwindow' float32) | [7] ('tolerance' float32) }
 \rail@o {84}{
 \rail@index{gesturefollower}
-\rail@begin{7}{gesturefollower}
+\rail@begin{8}{gesturefollower}
 \rail@bar
 \rail@annote[1]
 \rail@plus
@@ -1525,19 +1525,22 @@
 \rail@term{stop}[]
 \rail@nextbar{5}
 \rail@annote[5]
-\rail@term{likelihoodwindow}[]
-\rail@token{float32}[]
+\rail@term{clear}[]
 \rail@nextbar{6}
 \rail@annote[6]
+\rail@term{likelihoodwindow}[]
+\rail@token{float32}[]
+\rail@nextbar{7}
+\rail@annote[7]
 \rail@term{tolerance}[]
 \rail@token{float32}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {85}{ gesture : 'set' ( float32 +) | 'clear' }
+\rail@i {85}{ gesture : 'set' ( float32 +) | 'clear' | 'learn' | 'likelihoodThreshold' float32 }
 \rail@o {85}{
 \rail@index{gesture}
-\rail@begin{3}{gesture}
+\rail@begin{5}{gesture}
 \rail@bar
 \rail@term{set}[]
 \rail@plus
@@ -1546,19 +1549,21 @@
 \rail@endplus
 \rail@nextbar{2}
 \rail@term{clear}[]
+\rail@nextbar{3}
+\rail@term{learn}[]
+\rail@nextbar{4}
+\rail@term{likelihoodThreshold}[]
+\rail@token{float32}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {86}{ gestureevents : 'likelihoodThreshold' float32 | 'watch' ( 'gfEnter' | 'gfLeave' | 'gfActive' | 'gfIdle' ) ( | messages ) }
+\rail@i {86}{ gestureevents : 'watch' ( | 'gfEnter' | 'gfLeave' | 'gfActive' | 'gfIdle' ) ( | messages ) }
 \rail@o {86}{
 \rail@index{gestureevents}
 \rail@begin{5}{gestureevents}
-\rail@bar
-\rail@term{likelihoodThreshold}[]
-\rail@token{float32}[]
-\rail@nextbar{1}
 \rail@term{watch}[]
 \rail@bar
+\rail@nextbar{1}
 \rail@term{gfEnter}[]
 \rail@nextbar{2}
 \rail@term{gfLeave}[]
@@ -1568,9 +1573,8 @@
 \rail@term{gfIdle}[]
 \rail@endbar
 \rail@bar
-\rail@nextbar{2}
+\rail@nextbar{1}
 \rail@nont{messages}[]
-\rail@endbar
 \rail@endbar
 \rail@end
 }

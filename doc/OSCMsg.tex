@@ -2281,12 +2281,8 @@ The parameters are:
 \end{itemize}
 
 \note{} \\
-A gesture follower is created with a fixed count of gestures that can be stored and followed. These gestures are named and can be addressed at \OSC{/ITL/\textit{scene}/\textit{myfollower}/\textit{gesturename}} where the part in italic are user defined names and where \OSC{myfollower} is a gesture follower.
+A gesture follower is created with a fixed count of gestures that can be learned and decoded. These gestures are named gestures and can be addressed at \OSC{/ITL/\textit{scene}/\textit{myfollower}/\textit{gesturename}} where the part in italic are user defined names and where \OSC{myfollower} is a gesture follower.
 
-
-%===============================
-%:    Gestures management
-\subsublevel{Gestures management}\label{gfmanagement}
 
 \begin{rail}
 gesturefollower :
@@ -2294,8 +2290,9 @@ gesturefollower :
 		| [2] ('learn' name)
 		| [3] 'follow'
 		| [4] 'stop'
-		| [5] ('likelihoodwindow' float32)
-		| [6] ('tolerance' float32)
+		| [5] 'clear'
+		| [6] ('likelihoodwindow' float32)
+		| [7] ('tolerance' float32)
 \end{rail}
 \index{gesture follower!learn}
 \index{gesture follower!follow}
@@ -2304,42 +2301,28 @@ gesturefollower :
 \index{gesture follower!tolerance}
 
 \begin{itemize}
-\item \textbf{[1]} input data into the gesture follower.
+\item \textbf{[1]} input data into the gesture follower. The data are interpreted according to the current operating mode i.e. learning, following or idle.
 \item \textbf{[2]} starts to learn the gesture designated by \emph{name}. Actually records the next input data to the gesture. 
 \item \textbf{[3]} starts following i.e. trying to match the next input data to the recorded gestures.
 \item \textbf{[4]} stops learning or following. Actually puts the system in idle phase.
-\item \textbf{[5]} sets the size of the window that contains the history of the likelihoods. May be viewed as how fast the likelihoods	will change.
-\item \textbf{[6]} sets the follower tolerance. 
+\item \textbf{[5]} clear all the gestures data. This is equivalent to send the \OSC{clear} message to all the gestures. 
+\item \textbf{[6]} sets the size of the window that contains the history of the likelihoods. May be viewed as how fast the likelihoods	will change.
+\item \textbf{[7]} sets the follower tolerance. 
 \end{itemize}
 
 \example \\
-Creating a gesture follower and a typical learning sequence:
-\sample{/ITL/scene/gf set imtrgf 3 1000 gestureA gestureB gestureC\\
+Creating a gesture follower for 3 dimensional data and a typical learning sequence:
+\sample{/ITL/scene/gf set imtrgf 3 1000 gestureA gestureB gestureC gestureD\\
 /ITL/scene/gf learn gestureA \\
-/ITL/scene/gf 0.1 0.5 -0.2 ... 0.7; \\
+/ITL/scene/gf 0.1 0.5 -0.2 ... 0.7; ! the data size must be a multiple of 3\\
 /ITL/scene/gf stop;
 }
 
-
-Messages can also be sent to gestures i.e. to addresses in the form \OSC{/ITL/\textit{scene}/\textit{myfollower}/\textit{gesturename}} where \OSC{myfollower} is a gesture follower:
-
-\begin{rail}
-gesture : 'set' ( float32 +)
-		| 'clear'
-\end{rail}
-\index{gesture!clear}
-\index{gesture!set}
-
-\begin{itemize}
-\item \OSC{set} sets the gesture data. This is equivalent to learn the corresponding data.
-\item \OSC{clear} clears the gesture data. 
-\end{itemize}
-
 %===============================
-%:    Events and interaction
-\sublevel{Events and interaction}\label{gfevents}
+%:    Gestures management
+\sublevel{Gestures management}\label{gfgestures}
 
-Events and likelihood threshold are defined at gesture level. Thus events management messages should be addressed to gestures. 
+Messages can also be sent to gestures i.e. to addresses in the form \OSC{/ITL/\textit{scene}/\textit{myfollower}/\textit{gesturename}} where \OSC{myfollower} is a gesture follower.
 
 A gesture could be in two states:
 \begin{itemize}
@@ -2348,28 +2331,47 @@ A gesture could be in two states:
 \end{itemize}
 
 \begin{rail}
+gesture : 'set' ( float32 +)
+		| 'clear'
+		| 'learn'
+ 		| 'likelihoodThreshold' float32
+\end{rail}
+\index{gesture!set}
+\index{gesture!likelihoodThreshold}
+\index{gesture!learn}
+\index{gesture!clear}
+
+
+\begin{itemize}
+\item \OSC{set}: sets the gesture data. This is equivalent to learn the corresponding data. The \OSC{set} message could be used to restored previously saved gesture data.
+\item \OSC{clear}: clears the gesture data. 
+\item \OSC{learn}: puts the gestures follower in learning mode and starts learning the corresponding gesture. This is equivalent to send OSC{learn \textit{gesturename}} to the parent gesture follower.
+\item \OSC{likelihoodThreshold}: sets the gesture likelihood threshold. The parameter is a float value in the range \values{[0,1]}. Default value is \values{0.5}.
+\end{itemize}
+
+
+%===============================
+%:    Events and interaction
+\sublevel{Events and interaction}\label{gfevents}
+
+Events are defined at gesture level and events management messages should be addressed to gestures. 
+
+\begin{rail}
 gestureevents :
- 				'likelihoodThreshold' float32
-		  	|  	'watch' ( 'gfEnter' | 'gfLeave' | 'gfActive' | 'gfIdle' )  (  |  messages )
+		  	'watch' ( | 'gfEnter' | 'gfLeave' | 'gfActive' | 'gfIdle' )  (  |  messages )
 \end{rail}
 \index{gesture events!watch}
 \index{gesture events!gfEnter}
 \index{gesture events!gfLeave}
 \index{gesture events!gfActive}
 \index{gesture events!gfIdle}
-\index{gesture events!likelihoodThreshold}
 
 \begin{itemize}
-\item \OSC{likelihoodThreshold} sets the gesture likelihood threshold. The parameter is a float value in the range \values{[0,1]}. Default value is \values{0.5}.
 \item \OSC{gfEnter} triggered when the gesture state changes from idle to active.
 \item \OSC{gfLeave} triggered when the gesture state changes from active to idle.
 \item \OSC{gfActive} triggered in active state each time the gesture likelihood is refreshed.
 \item \OSC{gfIdle} triggered in idle state each time the gesture likelihood is refreshed.
 \end{itemize}
-
-%===============================
-%:    Gestures variables
-\subsublevel{Gestures variables}\label{gfvar}
 
 A message associated to a gesture supports the following specific variables:
 \begin{rail}
@@ -2390,6 +2392,26 @@ These variables support the scaling feature associated to position variables and
 
 \note{}\\
 Variables described in section \fullref{interactvar} may also be used but they are meaningless and contains default values.
+
+
+%===============================
+%:    Gesture Follower Appearance
+\sublevel{Gesture Follower Appearance}\label{gfgraphs}
+
+A gesture follower object has a graphic appearance and supports all the standard objects properties, including mapping and synchronization. This graphic appearance is provided mainly for debug purpose and by default, the object is hidden. Figure  \ref{fig:gfgraph} shows the gesture follower appearance in its different phases:
+\begin{itemize}
+\item when idle, the upper part of the graphic indicates the buffer state of the different gestures. It also includes the gestures likelihood threshold.
+\item when learning, a red frame and a grey background indicates that a learning a gesture is currently in progress. The gesture buffer state is refreshed while learning.
+\item when following, the upper part indicates each gesture current likelihood and the lower part indicates the current estimated positions.
+\end{itemize}
+
+
+\begin{figure}[h]
+	\centering \includegraphics[width=0.95\columnwidth]{imgs/gesture-follower}
+ \caption{The gesture follower appearance in its different phases.}
+ \label{fig:gfgraph}
+\end{figure}
+
 
 
 %===============================
