@@ -56,7 +56,7 @@ Sdelmsg    sprintf    "/ITL/scene/%s","*"
            OSCsend    1,"", giSendPort, "/ITL/scene/text", "sf", "scale", 4
 gSerror1   =          ""
 gSerror2   =          ""
-kGotIt     OSClisten  giGetErr, "/ITL", "ss", gSerror1, gSerror2
+kGotIt     OSClisten  giGetErr, "error:", "s", gSerror1
 ;call subinstrument to show error message
            schedkwhennamed kGotIt, 0, 1, "ShowErrorMessage", 0, p3
 ;turn off this instrument
@@ -131,7 +131,7 @@ i "ReceiveInscoreOutput" 0 99999
   <visible>true</visible>
   <midichan>0</midichan>
   <midicc>0</midicc>
-  <label>Please start Inscore first. Then run this file and watch the Inscore panel.</label>
+  <label/>
   <alignment>left</alignment>
   <font>Arial</font>
   <fontsize>20</fontsize>

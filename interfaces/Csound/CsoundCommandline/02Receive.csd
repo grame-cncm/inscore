@@ -37,10 +37,9 @@ Sdelmsg    sprintf    "/ITL/scene/%s","*"
            OSCsend    1,"", giSendPort, "/ITL/scene/text", "sss", "set", "txt", "Now drag file\n'GetError.inscore'\nhere and watch\nCsound's output console!"
 ;scale (enlarge)
            OSCsend    1,"", giSendPort, "/ITL/scene/text", "sf", "scale", 4
-Serror     =          "error"
-Sreceive   =          ""
-kGotIt     OSClisten  giGetErr, "/ITL", "ss", Serror, Sreceive
-           printf     "Error message from INScore:\n%s\n%s", kGotIt, Serror, Sreceive
+Serror     =          ""
+kGotIt     OSClisten  giGetErr, "error:", "s", Serror
+           printf     "Error message from INScore:\n%s", kGotIt, Serror
   endin
 
 </CsInstruments>
