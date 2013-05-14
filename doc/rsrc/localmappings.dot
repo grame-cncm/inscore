@@ -1,0 +1,43 @@
+digraph mappings { 
+	margin=0.05;
+	nodesep=0.5;
+	ranksep=0.3;
+	
+	// ------------------------------------------------------
+	// comments nodes
+	// ------------------------------------------------------
+	node [shape=none];
+	defaultmap	[label="Default\nmapping", fontcolor=gray40, fontsize=11];
+	node [style=filled, color=ivory2, width=2.0];
+	localmap	[label="Local mappings"];
+
+	// ------------------------------------------------------
+	// local mapping update
+	// ------------------------------------------------------
+	node [shape=record, style=solid, color=black];
+	lsegm		[label="Local segmentation\n(opt)", fontcolor=gray40];
+	gsegm		[label="Graphic segmentation"];
+	tsegm		[label="Time segmentation"];
+
+	edge [style=invis];
+	localmap	-> lsegm
+	
+	edge [style=solid, arrowhead=normal, arrowtail=normal];
+	lsegm		-> tsegm;
+	edge [color=blue];
+	lsegm		-> gsegm;
+	gsegm		-> tsegm [label="o", fontname="Courier New"];
+
+	node [shape=record, color=gray72];
+	defaultgsegm		[label="( [-1,1[, [-1,1[ )"];
+	defaulttsegm		[label="[date, date+duration["];
+	defaultgsegm		-> defaulttsegm;
+
+	edge [style=invis];
+	gsegm	-> defaultgsegm
+	tsegm	-> defaulttsegm
+
+
+	{ rank = same; gsegm; tsegm; }
+	{ rank = same; defaultgsegm; defaulttsegm; defaultmap}
+}

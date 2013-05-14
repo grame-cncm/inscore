@@ -1,0 +1,50 @@
+digraph osc { 
+	margin=0.05;
+
+	subgraph cluster_Legend {
+		edge[style=invis, weight=4];
+		style = dashed;
+		label = "Legend";
+		edge [style=invis];
+		dynamic [shape=ellipse, color=grey];
+		static [shape=record, height=.2, fontname=Courier, fontsize=10, color=blue];
+	}
+	
+	node [shape=record, color=blue]	
+	ITL[shape=record, color=blue]		-> scene[shape=ellipse, color=grey]
+	scene	-> id[shape=ellipse, color=grey]
+	
+	node [shape=record, height=.2, fontname=Courier, fontsize=10, color=grey]	
+	edge[style=dashed, arrowhead=odiamond];
+	ITL	
+
+	scene	-> fullscreen;
+	scene	-> normalscreen;
+	scene	-> color;
+#	scene	-> scale;
+#	scene	-> show;
+#	scene	-> hide;
+#	scene	-> x;
+#	scene	-> y;
+
+	id	-> show;
+	id	-> hide;
+	id	-> color;
+	id	-> scale;
+	id	-> x;
+	id	-> y;
+	id	-> z;
+	id	-> del;
+	id	-> set;
+	id	-> export;
+
+	node [shape=note, color=gold];
+	edge[style=dotted, arrowhead=odot];
+	scale 	-> ratio;
+	x 		-> "x pos";
+	y 		-> "y pos";
+	z		-> "z order";
+	color 	-> "r g b a";
+	set	-> "type data1 ... dataN";
+	export	-> "path";
+}
