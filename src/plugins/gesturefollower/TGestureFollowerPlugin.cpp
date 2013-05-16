@@ -55,6 +55,7 @@ static const char* gflibWhereStr			= "where";
 static const char* gflibLikelihoodStr		= "likelihood";
 static const char* gflibSpeedStr			= "speed";
 static const char* gflibGetPhraseSizeStr	= "getPhraseSize";
+static const char* gflibGetPhraseDataStr	= "getPhraseData";
 static const char* gflibGetStateStr			= "getState";
 
 TGestureFollowerPlugin::TNewFunction		TGestureFollowerPlugin::fNew = 0;
@@ -78,6 +79,7 @@ TGestureFollowerPlugin::TFloatPVoidFunction	TGestureFollowerPlugin::fWhere = 0;
 TGestureFollowerPlugin::TFloatPVoidFunction	TGestureFollowerPlugin::fLikelihood = 0;
 TGestureFollowerPlugin::TFloatPVoidFunction	TGestureFollowerPlugin::fSpeed = 0;
 TGestureFollowerPlugin::TIntIntFunction		TGestureFollowerPlugin::fGetPhraseSize = 0;
+TGestureFollowerPlugin::TFloatPIntFunction	TGestureFollowerPlugin::fGetPhraseData = 0;
 TGestureFollowerPlugin::TIntVoidFunction	TGestureFollowerPlugin::fGetState = 0;
 TGestureFollowerPlugin::TCharPVoidFunction	TGestureFollowerPlugin::fVersionStr = 0;
 
@@ -140,6 +142,8 @@ bool TGestureFollowerPlugin::load ()
 		if (fSpeed == 0) return false;
 		fGetPhraseSize				= resolve<TIntIntFunction> (gflibGetPhraseSizeStr);
 		if (fGetPhraseSize == 0) return false;
+		fGetPhraseData				= resolve<TFloatPIntFunction> (gflibGetPhraseDataStr);
+		if (fGetPhraseData == 0) return false;
 		fGetState				= resolve<TIntVoidFunction> (gflibGetStateStr);
 		if (fGetState == 0) return false;
 		fVersionStr				= resolve<TCharPVoidFunction> (gflibVersionStr);
@@ -212,6 +216,7 @@ const float* TGestureFollowerPlugin::where() const				{ return fWhere (fGF); }
 const float* TGestureFollowerPlugin::likelihood() const			{ return fLikelihood (fGF); }
 const float* TGestureFollowerPlugin::speed () const				{ return fSpeed (fGF); }
 int  TGestureFollowerPlugin::getPhraseSize(int index) const		{ return fGetPhraseSize (fGF, index); }
+const float* TGestureFollowerPlugin::getPhraseData(int index) const	{ return fGetPhraseData (fGF, index); }
 int  TGestureFollowerPlugin::getState() const					{ return fGetState (fGF); }
 
 
