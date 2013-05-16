@@ -1557,8 +1557,21 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {86}{ gestureevents : 'watch' ( | 'gfEnter' | 'gfLeave' | 'gfActive' | 'gfIdle' ) ( | messages ) }
+\rail@i {86}{ gestureget : 'get' (| 'likelihoodThreshold' | 'size') }
 \rail@o {86}{
+\rail@index{gestureget}
+\rail@begin{3}{gestureget}
+\rail@term{get}[]
+\rail@bar
+\rail@nextbar{1}
+\rail@term{likelihoodThreshold}[]
+\rail@nextbar{2}
+\rail@term{size}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {87}{ gestureevents : 'watch' ( | 'gfEnter' | 'gfLeave' | 'gfActive' | 'gfIdle' ) ( | messages ) }
+\rail@o {87}{
 \rail@index{gestureevents}
 \rail@begin{5}{gestureevents}
 \rail@term{watch}[]
@@ -1578,8 +1591,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {87}{ gesturevariable : ( 'gflikelihood' | 'gfpos' | 'gfspeed') ( | '[low,high]' ) }
-\rail@o {87}{
+\rail@i {88}{ gesturevariable : ( 'gflikelihood' | 'gfpos' | 'gfspeed') ( | '[low,high]' ) }
+\rail@o {88}{
 \rail@index{gesturevariable}
 \rail@begin{3}{gesturevariable}
 \rail@bar
@@ -1595,8 +1608,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {88}{ expression : message ";" | variabledecl ";" | script }
-\rail@o {88}{
+\rail@i {89}{ expression : message ";" | variabledecl ";" | script }
+\rail@o {89}{
 \rail@index{expression}
 \rail@begin{3}{expression}
 \rail@bar
@@ -1610,8 +1623,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {89}{ variabledecl : 'ident' '=' ( (param | variable) + | '(' (message + ',') ')' ) ';' }
-\rail@o {89}{
+\rail@i {90}{ variabledecl : 'ident' '=' ( (param | variable) + | '(' (message + ',') ')' ) ';' }
+\rail@o {90}{
 \rail@index{variabledecl}
 \rail@begin{5}{variabledecl}
 \rail@term{ident}[]
@@ -1637,8 +1650,8 @@
 \rail@term{;}[]
 \rail@end
 }
-\rail@i {90}{ msgparam : '(' (message) ')' }
-\rail@o {90}{
+\rail@i {91}{ msgparam : '(' (message) ')' }
+\rail@o {91}{
 \rail@index{msgparam}
 \rail@begin{1}{msgparam}
 \rail@term{(}[]
@@ -1646,8 +1659,8 @@
 \rail@term{)}[]
 \rail@end
 }
-\rail@i {91}{ script : '<?' ('javascript' | 'lua') script '?>' }
-\rail@o {91}{
+\rail@i {92}{ script : '<?' ('javascript' | 'lua') script '?>' }
+\rail@o {92}{
 \rail@index{script}
 \rail@begin{2}{script}
 \rail@term{<?}[]
@@ -1660,8 +1673,8 @@
 \rail@term{?>}[]
 \rail@end
 }
-\rail@i {92}{ javascript : 'run' 'code' }
-\rail@o {92}{
+\rail@i {93}{ javascript : 'run' 'code' }
+\rail@o {93}{
 \rail@index{javascript}
 \rail@begin{1}{javascript}
 \rail@term{run}[]

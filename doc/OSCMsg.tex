@@ -2349,6 +2349,18 @@ gesture : 'set' ( float32 +)
 \item \OSC{likelihoodThreshold}: sets the gesture likelihood threshold. The parameter is a float value in the range \values{[0,1]}. Default value is \values{0.5}.
 \end{itemize}
 
+Gestures supports also specific queries :
+\begin{rail}
+gestureget : 'get' (| 'likelihoodThreshold' | 'size')
+\end{rail}
+\index{gesture!get}
+\index{gesture!get!size}
+
+\begin{itemize}
+\item \OSC{get}: without parameter, returns a set message when the gesture is not empty.
+\item \OSC{size}: gives the current size of the gesture, actually the number of recorded frames. 
+\end{itemize}
+
 
 %===============================
 %:    Events and interaction
