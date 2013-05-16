@@ -47,7 +47,9 @@ IGesture::IGesture( const std::string& name, IObject* parent, int index, TGestur
 	fMsgHandlerMap[kclear_SetMethod]					= TMethodMsgHandler<IGesture,void (IGesture::*)()>::create(this, &IGesture::clearGesture);
 	fMsgHandlerMap[klearn_SetMethod]					= TMethodMsgHandler<IGesture>::create(this, &IGesture::learn);
 	fMsgHandlerMap[klikelihoodthreshold_GetSetMethod]	= TSetMethodMsgHandler<IGesture,float>::create(this, &IGesture::setLikelihoodThreshold);
+
 	fGetMsgHandlerMap[klikelihoodthreshold_GetSetMethod]= TGetParamMethodHandler<IGesture, float (IGesture::*)() const>::create(this, &IGesture::getLikelihoodThreshold);
+	fGetMsgHandlerMap[ksize_GetSetMethod]				= TGetParamMethodHandler<IGesture, int (IGesture::*)() const>::create(this, &IGesture::getSize);
 }
 
 //--------------------------------------------------------------------------
@@ -93,17 +95,18 @@ MsgHandler::msgStatus IGesture::_watchMsg(const IMessage* msg, bool add)
 }
 
 //--------------------------------------------------------------------------
+int IGesture::getSize () const						{ return fGF->getPhraseSize(fIndex); }
+const float* IGesture::data () const				{ return fGF->getPhraseData(fIndex); }
 float IGesture::getLikelihoodThreshold () const		{ return fLikelihoodThreshold; }
 void IGesture::setLikelihoodThreshold (float value)	{ fParent->setState(kModified); fLikelihoodThreshold = value; }
 
 //--------------------------------------------------------------------------
-void IGesture::clearGesture ()						{ fParent->setState(kModified); fValues.clear(); fGF->clear (fIndex); }
-void IGesture::startLearn ()						{ fGF->stop(); fValues.clear(); fGF->startLearn (fIndex); }
+void IGesture::clearGesture ()						{ fParent->setState(kModified); fGF->clear (fIndex); }
+void IGesture::startLearn ()						{ fGF->stop(); fGF->startLearn (fIndex); }
 void IGesture::stopLearn ()							{ fGF->stopLearn(); }
 void IGesture::observe (float* values, int size)	{
-	int avail = fGF->getCapacity() - fValues.size();
+	int avail = fGF->getCapacity() - getSize();
 	if (size > avail) size = avail;
-	for (int i=0; i < size; i++) fValues.push_back(values[i]);
 	int n = fGF->getFrameSize();
 	for (int i=0; i < size; i+=n) fGF->observation (&values[i], n);
 }
@@ -141,12 +144,11 @@ void IGesture::likelihood (float likelihood, float pos, float speed)
 SIMessageList IGesture::getSetMsg () const
 {
 	SIMessageList outmsgs = IMessageList::create();
-	unsigned int n = fValues.size();
-	if (n < 2) return outmsgs;
-
 	SIMessage msg = IMessage::create(getOSCAddress(), kset_SetMethod);
-	for (unsigned int i = 0; i < n; i++)
-		*msg << fValues[i];
+	int n = getSize();
+	const float * values = data();
+	for (int i = 0; i < n; i++)
+		*msg << values[i];
 	outmsgs->list().push_back(msg);
 	return outmsgs;
 }
@@ -165,8 +167,8 @@ MsgHandler::msgStatus IGesture::set (const IMessage* msg)
 {
 	MsgHandler::msgStatus status = MsgHandler::kProcessed;
 	int n = msg->size();
-	float* values = new float[n];
-	if (n > 2) {
+	if (n > 0) {
+		float* values = new float[n];
 		float val; int ival;
 		for (int i=0; i<n; i++) {
 			if (msg->param(i, val))			values[i] = val;
@@ -176,7 +178,7 @@ MsgHandler::msgStatus IGesture::set (const IMessage* msg)
 		if (status == MsgHandler::kProcessed) learn (values, n);
 		delete[] values;
 	}
-	else status = MsgHandler::kBadParameters;
+	else learn (0, 0);
 	return status;
 }
 
@@ -184,7 +186,7 @@ MsgHandler::msgStatus IGesture::set (const IMessage* msg)
 void IGesture::learn (float* values, int size)
 {
 	startLearn	();
-	observe (values, size);
+	if ( size ) observe (values, size);
 	stopLearn();
 	fParent->setState(kModified);
 }
