@@ -150,7 +150,7 @@ bool TGestureFollowerPlugin::load ()
 		if (fVersionStr == 0) return false;
 	}
 	else return false;
-	oscout << OSCStart("IMTR Gesture follower version") << fVersionStr() << "loaded" << OSCEnd();;
+	oscout << OSCStart("IRCAM Gesture follower version") << fVersionStr() << "loaded" << OSCEnd();;
 	return true;
 }
 
