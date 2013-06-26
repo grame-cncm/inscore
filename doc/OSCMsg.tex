@@ -813,7 +813,7 @@ getMsg : 'get' ( | getParam +)
 
 The \OSC{get} message without parameter is the counterpart of the \OSC{set} message. When addressed to a container (the application \OSC{/ITL}, a scene \OSC{/ITL/scene}, the signal node \OSC{/ITL/scene/signal}) is also distributed to all the container components.
 
-Specific \OSC{get} forms may be available, depending on the component type (see section \fullref{specmsgs}).
+Specific \OSC{get} forms may be available, depending on the component type (see sections \ref{gmnpage},  \ref{ITLQuery}, \ref{ITLdebug}, \ref{syncmsg}, \ref{parcomp}, \ref{faustmsg}).
 
 \example \\
 Sending the following request to an object which position is 0.3 0.5
@@ -905,7 +905,7 @@ scoreMsg :      'page' int32
 			| 'pageFormat' float32 float32
 			| 'columns' int32
 			| 'rows' int32
-			| 'get' 'pageCount'
+			| 'get' ( 'pageCount'| 'systemCount' int32 )
 \end{rail}
 \index{Specific messages! score! page}
 \index{Specific messages! score! dpage}
@@ -913,6 +913,7 @@ scoreMsg :      'page' int32
 \index{Specific messages! score! columns}
 \index{Specific messages! score! rows}
 \index{Specific messages! score! pageCount}
+\index{Specific messages! score! systemCount}
 
 
 \begin{itemize}
@@ -922,6 +923,7 @@ scoreMsg :      'page' int32
 \item \OSC{columns}: for multi pages display: set the number of columns.
 \item \OSC{rows}: for multi pages display: set the number of rows.
 \item \OSC{pageCount}:  a read only attribute, gives the score pages count.
+\item \OSC{systemCount}:  a read only attribute, gives the number of systems of a given score page. The page number is given as an int32 value (pages are indexes from 1).
 \end{itemize}
 
 \example \\
@@ -1033,7 +1035,7 @@ The default \OSC{rate} value is 10.
 
 \item \OSC{time}: sets the application current time. The time is expressed in milliseconds.
 
-\item \OSC{time}: sets the application current ticks count. The ticks count indicates the number of time tasks performed by the application.
+\item \OSC{ticks}: sets the application current ticks count. The ticks count indicates the number of time tasks performed by the application.
 
 \item \OSC{hello}: query the host IP number. The message is intended for ITL applications discovery. Answer to the query has the following format: \\
 \oldexample \OSC{IP  inPort outPort errPort} where \OSC{IP} is sent as a string and port numbers as integer values.
@@ -1128,11 +1130,14 @@ Querying INScore version:
 \sample{/ITL version 1.00}
 
 %===============================
-%:  The stat and debug nodes
-\sublevel{The 'stats' and 'debug' nodes}
-\label{ITLdebug}
+%:  Application static nodes
+\sublevel{Application static nodes}
+\label{ITLStatic}
 
-The application level provides two static nodes - \OSC{stats} and \OSC{debug}, available at \OSC{/ITL/stats} and \OSC{/ITL/debug} to help debugging communication and INScore scripts design.
+The application level provides the static nodes - \OSC{stats}, \OSC{debug} and \OSC{log}, available at \OSC{/ITL/stats} \OSC{/ITL/debug} and \OSC{/ITL/log}  to help debugging communication and INScore scripts design.
+
+\subsublevel{The 'stat' nodes}
+\label{ITLstat}
 
 \begin{rail}
 ITLStats : 'get'  | 'reset'
@@ -1148,6 +1153,10 @@ ITLStats : 'get'  | 'reset'
 \example \\
 Answer to a \OSC{get} message addressed to \OSC{/ITL/stats}
 \sample{/ITL/stats osc 15 udp 10}
+
+
+\subsublevel{The 'debug' nodes}
+\label{ITLdebug}
 
 The \OSC{debug} node is used to activate debugging information.
 \begin{rail}
@@ -1166,6 +1175,26 @@ error:  incorrect parameters: /ITL/scene/foo unknown 0.1\\
 error:  incorrect parameters: /ITL/scene/foo x "incorrectType"
 }
 
+
+\subsublevel{The 'log' nodes}
+\label{ITLlog}
+
+The \OSC{log} node controls a console window that display all the messages sent to the OSC error port. Typical content is given by the example above.
+
+\begin{rail}
+ITLLog : 'show'  int32
+		| 'clear'
+		| 'wrap' int32
+\end{rail}
+\index{ITL log!show}
+\index{ITL log!clear}
+\index{ITL log!wrap}
+
+\begin{itemize}
+\item \OSC{show} show or hides the console. The parameter is a boolean value.
+\item \OSC{clear} clear the console window.
+\item \OSC{wrap} control line wrapping of the console. The parameter is a boolean value.
+\end{itemize}
 
 
 %===============================
