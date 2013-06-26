@@ -157,6 +157,7 @@ void IGlue::initialize (bool offscreen, QApplication* appl)
 	if (!fMsgStack || !fController || !fModel || !fOscThread)
 		throw("Memory allocation failed!");
 	string listen(" listening OSC on port ");
+	oscerr.setLogWindow (fModel->getLogWindow());
 	oscerr << OSCStart("INScore") << "v" << INScore::versionStr() << listen <<  fUDP.fInPort << OSCEnd();
 	cout << "INScore v " << INScore::versionStr() << listen <<  fUDP.fInPort << endl;
 
