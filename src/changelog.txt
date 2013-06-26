@@ -12,6 +12,10 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 1.03
+- new static node at application level. Its address is /ITL/log and it controls a console.
+
+----------------------------------------------------
 Version 1.02
 - IMTR gesture follower support 
 - javascript engine is available at the static address /ITL/scene/javascript and can be activated using a 'run' method
