@@ -28,6 +28,7 @@
 #define __IModel__
 
 #include "IAppl.h"
+#include "IApplVNodes.h"
 #include "IColor.h"
 #include "ICurve.h"
 #include "IEllipse.h"

@@ -36,6 +36,7 @@
 #include "VGuidoItemView.h"
 #include "VImageView.h"
 #include "VLineView.h"
+#include "VLogWindow.h"
 #include "VPolygonView.h"
 #include "VRectView.h"
 #include "VGridView.h"
@@ -66,5 +67,12 @@ void VQtUpdater::updateTo(ICurve* curve)			{ update<ICurve,	VCurveView>		(curve)
 void VQtUpdater::updateTo(ILine* line)				{ update<ILine,		VLineView>		(line); }
 void VQtUpdater::updateTo (IHtml* html)				{ update<IHtml,		VTextView>		(html); }
 void VQtUpdater::updateTo (IVideo* video )			{ update<IVideo,	VVideoView>		(video); }
+
+//--------------------------------------------------------------------------
+void VQtUpdater::updateTo(IApplLog * log)
+{
+	QWidget * w = log->window();
+	w->setVisible (log->getVisible());
+}
 
 } // end namespoace

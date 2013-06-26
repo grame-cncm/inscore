@@ -215,8 +215,10 @@ void IAppl::createVirtualNodes()
 	fApplDebug = IApplDebug::create(this);
 	fApplStat  = IApplStat::create(this);					// statistics
 	fDebug = fApplDebug;
+	fApplLog = IApplLog::create(this);
 	add ( fDebug );
 	add ( fApplStat );
+	add ( fApplLog );
 }
 
 //--------------------------------------------------------------------------

@@ -36,8 +36,8 @@ if(APPLE)
 		set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.4u.sdk)
 	elseif (${CMAKE_SYSTEM_VERSION} VERSION_LESS 10.8.0)
 		set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.5.sdk)
-	elseif (${XCODE_VERSION} VERSION_LESS 4.0.0)
-		set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.6.sdk)
+#	elseif (${XCODE_VERSION} VERSION_LESS 4.0.0)
+#		set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.6.sdk)
 	else ()
 		set (CMAKE_OSX_SYSROOT "macosx10.7")
 	endif ()
@@ -165,8 +165,9 @@ endif()
 
 message (STATUS "Using Qt version ${QTVERSION} - Use -DQTVERSION=vers to change.")
 
+set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h  ${ROOT}/view/VLogWindow.h)
 if (QTVERSION EQUAL "5")
-	set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/view/VVideoView.h ${ROOT}/model/QFileWatcher.h )
+	set (MOC_HEADERS ${MOC_HEADERS} ${ROOT}/view/VVideoView.h)
 	if(APPLE OR WIN32)
 	  set(DESIRED_QT_VERSION 5.0)
 	  FIND_PACKAGE(Qt5Widgets REQUIRED)
@@ -187,7 +188,6 @@ if (QTVERSION EQUAL "5")
 	set (QTHEADERS "${Qt5Widgets_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS}  ${Qt5PrintSupport_INCLUDE_DIRS}  ${Qt5Multimedia_INCLUDE_DIRS}  ${Qt5MultimediaWidgets_INCLUDE_DIRS}")
 
 else (QTVERSION EQUAL "5")   # assume we're using Qt4
-	set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h )
 	add_definitions(-DUSEPHONON)
 
 	if(APPLE OR WIN32)
@@ -246,7 +246,7 @@ set(INSLIBS  ${INSLIBS} ${OSCPACK} ${GUIDO} ${SCRIPTS} ${QTLIBS} ${CORE_FOUNDATI
 #######################################
 # moc settings
 QT_WRAP_CPP (${TARGET} MOC_FILES ${MOC_HEADERS})
-QT_WRAP_CPP (${APPLTARGET} APPL_MOC_FILES ${ROOT}/INScoreAppl.h)
+QT_WRAP_CPP (${APPLTARGET} APPL_MOC_FILES ${ROOT}/INScoreAppl.h )
 
 SET(QtApp_RCCS  ${ROOT}/../rsrc/inscore.qrc)
 if (QTVERSION EQUAL "5")

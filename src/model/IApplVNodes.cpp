@@ -23,9 +23,13 @@
 
 */
 
+#include <sstream>
+
 #include "IApplVNodes.h"
 #include "IMessageStack.h"
 #include "Updater.h"
+
+#include "VLogWindow.h"
 
 using namespace std;
 
@@ -104,6 +108,46 @@ void IApplStat::reset()				{ fMsgCount = 0; gMsgStack->reset(); }
 IApplStat::IApplStat(IObject * parent) : IVNode("stats", parent), fMsgCount(0)
 {
 	fMsgHandlerMap[kreset_SetMethod]	= TMethodMsgHandler<IApplStat, void (IApplStat::*)(void)>::create(this, &IApplStat::reset);
+}
+
+
+//--------------------------------------------------------------------------
+// IAppl log window
+//--------------------------------------------------------------------------
+IApplLog::IApplLog(IObject * parent) : IVNode("log", parent)
+{
+	fWindow = new VLogWindow ("INScore log");
+	fMsgHandlerMap[kclear_SetMethod]	= TMethodMsgHandler<IApplLog, void (IApplLog::*)(void)>::create(this, &IApplLog::clear);
+	fMsgHandlerMap[kwrap_GetSetMethod]	= TSetMethodMsgHandler<IApplLog,bool>::create(this, &IApplLog::setWrap);
+	positionAble();
+	setVisible(false);
+}
+IApplLog::~IApplLog()
+{
+	fWindow->close();
+	delete fWindow;
+}
+
+
+//--------------------------------------------------------------------------
+void IApplLog::accept (Updater* u)
+{
+	u->updateTo(this);
+}
+
+void IApplLog::clear()
+{
+	fWindow->clear();
+}
+
+void IApplLog::setWrap(bool state)
+{
+	fWindow->wrap (state);
+}
+
+void IApplLog::print(const char* str)
+{
+	fWindow->append (str);
 }
 
 }
