@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>10.1.2 Synchronizing an object duration</TITLE>
-<META NAME="description" CONTENT="10.1.2 Synchronizing an object duration">
+<TITLE>10. Synchronization</TITLE>
+<META NAME="description" CONTENT="10. Synchronization">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,85 +19,123 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node48.html">
-<LINK REL="previous" HREF="node46.html">
-<LINK REL="up" HREF="node45.html">
+<LINK REL="next" HREF="node52.html">
+<LINK REL="previous" HREF="node42.html">
+<LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node48.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html933"
+<A NAME="tex2html943"
   HREF="node48.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html927"
-  HREF="node45.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html921"
-  HREF="node46.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html929"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html937"
+  HREF="OSCMsg.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
 <A NAME="tex2html931"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+  HREF="node46.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html939"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html941"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html934"
-  HREF="node48.html">10.1.3 Controlling the slave</A>
-<B> Up:</B> <A NAME="tex2html928"
-  HREF="node45.html">10.1 Synchronization modes</A>
-<B> Previous:</B> <A NAME="tex2html922"
-  HREF="node46.html">10.1.1 Using the master</A>
- &nbsp; <B>  <A NAME="tex2html930"
+<B> Next:</B> <A NAME="tex2html944"
+  HREF="node48.html">10.1 Synchronization modes</A>
+<B> Up:</B> <A NAME="tex2html938"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html932"
+  HREF="node46.html">9.4 Symbolic score mappings</A>
+ &nbsp; <B>  <A NAME="tex2html940"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html932"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html942"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION001112000000000000000">
-10.1.2 Synchronizing an object duration</A>
-</H2>
+<H1><A NAME="SECTION001100000000000000000"></A>
+<A NAME="syncmsg"></A>
+<BR>
+10. Synchronization
+</H1>
+
+<P>
+Synchronization between components is in charge of the static <TT>sync</TT> node, automatically embedded in each scene. Its address is <TT>/ITL/<I>scene</I>/sync</TT> and it supports messages to add or remove a master / slave relation between components or to query the synchronizations state.
+<BR>
+<IMG
+ WIDTH="609" HEIGHT="237" ALIGN="BOTTOM" BORDER="0"
+ SRC="img57.png"
+ ALT="\begin{rail}
+sync : syncIdentifier
+( [1] syncIdentifier (\vert syncmode +)
+\vert [2])
+\vert [3] 'get' ( \vert identifier)
+\end{rail}">
+<BR>
+<A NAME="1005"></A>
+<A NAME="1006"></A>
+
+<P>
+
+<UL>
+<LI><B>[1]</B> the <TT>slave</TT> <TT>master</TT> form is followed by an optional synchronization mode (see below). It adds a slave / master relation between the first and the second component.
+</LI>
+<LI><B>[2]</B> the <TT>slave</TT> form without <TT>master</TT> removes a slave synchronization.
+</LI>
+<LI><B>[3]</B> the <TT>get</TT> message is intended to query the synchronization state. The optional parameter is the identifier of a component. The <TT>get</TT> message without parameter is equivalent to a <TT>get</TT> message addressed to each object declared in the <TT>sync</TT> node.
+</LI>
+</UL>
 
 <P>
 <BR>
 <IMG
- WIDTH="154" HEIGHT="126" ALIGN="BOTTOM" BORDER="0"
- SRC="img60.gif"
+ WIDTH="351" HEIGHT="88" ALIGN="BOTTOM" BORDER="0"
+ SRC="img58.png"
  ALT="\begin{rail}
-syncStretch : 'h' \vert 'v' \vert 'hv'
+syncIdentifier : [1] identifier
+\vert [2] identifier ':' mapName
 \end{rail}">
 <BR>
-<A NAME="1037"></A>
-<A NAME="1038"></A>
-<A NAME="1039"></A>
-<A NAME="1040"></A>
+<A NAME="1022"></A>
 
 <P>
-The synchronization stretch mode has the following effect on the slave dimensions:
+Synchronization identifiers indicates 1) the name of a <TT>scene</TT> component or 2) the name of a <TT>scene</TT> component associated to a mapping name. Using the first form (i.e. without explicit mapping name), the system uses the default unnamed mapping (see section <A HREF="node43.html#mapMsg">9.1</A> p.<A HREF="node43.html#mapMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> mappings and named mappings).
 
-<UL>
-<LI><TT>h</TT>: the slave is horizontally stretched to align its begin and end dates to the corresponding master locations.
-</LI>
-<LI><TT>v</TT>: the slave is vertically stretched to the master map vertical dimension.
-</LI>
-<LI><TT>hv</TT>: combines the above parameters.
-</LI>
-</UL>
-By default, no stretching is applied.
+<P>
+Synchronization between components has no effect if any of the required mapping is missing (see table <A HREF="node43.html#maptable">9.1</A>).
+
+<P>
+<BR><B> <B>N<SMALL>OTE </SMALL></B></B> 
+<BR>
+A slave object can have only one master. Synchronizing a slave object to a different object replaces the previous relation with the new one.
 
 <P>
 <B> <B>E<SMALL>XAMPLE </SMALL></B></B>
 <BR>
-Synchronizing two objects, aligning the slave duration to the corresponding master space and stretching the slave to the master map vertical dimension:
+Synchronizing two objects:
 <BR>
 <DIV ALIGN="CENTER">
 <BLINK><FONT COLOR="#ededed">
 								</DIV><TABLE  WIDTH="0%">
 <TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene/sync mySlave myMaster hv</TT></FONT>
+								<FONT SIZE="-1"><TT>/ITL/scene/sync mySlave myMaster</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
+Synchronizing two objects using a specific mapping (the second object is assumed to be a symbolic score (<TT>gmn</TT> or <TT>gmnf</TT>) which <TT>system</TT> mapping has been previously requested:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/sync mySlave myMaster:system</TT></FONT>
 								</TD></TR>
 </TABLE>
 <DIV ALIGN="CENTER"></FONT></BLINK>
@@ -105,6 +143,50 @@ Synchronizing two objects, aligning the slave duration to the corresponding mast
 
 <P>
 <BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html945"
+  HREF="node48.html">10.1 Synchronization modes</A>
+<UL>
+<LI><A NAME="tex2html946"
+  HREF="node49.html">10.1.1 Using the master date</A>
+<LI><A NAME="tex2html947"
+  HREF="node50.html">10.1.2 Synchronizing an object duration</A>
+<LI><A NAME="tex2html948"
+  HREF="node51.html">10.1.3 Controlling the slave <TT>y</TT> position</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html943"
+  HREF="node48.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html937"
+  HREF="OSCMsg.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html931"
+  HREF="node46.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html939"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html941"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html944"
+  HREF="node48.html">10.1 Synchronization modes</A>
+<B> Up:</B> <A NAME="tex2html938"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html932"
+  HREF="node46.html">9.4 Symbolic score mappings</A>
+ &nbsp; <B>  <A NAME="tex2html940"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html942"
+  HREF="node117.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

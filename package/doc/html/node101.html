@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.11 Differences to version 0.80</TITLE>
-<META NAME="description" CONTENT="17.11 Differences to version 0.80">
+<TITLE>17.8 Differences to version 0.90</TITLE>
+<META NAME="description" CONTENT="17.8 Differences to version 0.90">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,53 +21,48 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node102.html">
 <LINK REL="previous" HREF="node100.html">
-<LINK REL="up" HREF="node90.html">
+<LINK REL="up" HREF="node93.html">
 <LINK REL="next" HREF="node102.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1735"
+<A NAME="tex2html1752"
   HREF="node102.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1729"
-  HREF="node90.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1723"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1746"
+  HREF="node93.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1740"
   HREF="node100.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1731"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1748"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1733"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1750"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1736"
-  HREF="node102.html">17.12 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1730"
-  HREF="node90.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1724"
-  HREF="node100.html">17.10 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1732"
+<B> Next:</B> <A NAME="tex2html1753"
+  HREF="node102.html">17.9 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1747"
+  HREF="node93.html">17. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1741"
+  HREF="node100.html">17.7 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1749"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1734"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1751"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION0018110000000000000000">
-17.11 Differences to version 0.80</A>
+<H1><A NAME="SECTION001880000000000000000">
+17.8 Differences to version 0.90</A>
 </H1>
 
 <UL>
-<LI>behavior change with synchronization without stretch: now the system looks also in the
-  slave map for a segment corresponding to the master date.
-</LI>
-<LI><TT>$date</TT> variable change: the value is now (0,0) when no date is available and <TT>$date</TT> is time shifted according to the object date.
-</LI>
-<LI><TT>date</TT> message change: the date 0 0 is ignored
+<LI>bug in sync management corrected (introduced with the new sync parsing scheme)
 </LI>
 </UL>
 

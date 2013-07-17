@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>11.1.1 Signal messages.</TITLE>
-<META NAME="description" CONTENT="11.1.1 Signal messages.">
+<TITLE>10.1.3 Controlling the slave y position</TITLE>
+<META NAME="description" CONTENT="10.1.3 Controlling the slave y position">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,109 +19,89 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node52.html">
 <LINK REL="previous" HREF="node50.html">
-<LINK REL="up" HREF="node50.html">
+<LINK REL="up" HREF="node48.html">
 <LINK REL="next" HREF="node52.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html997"
+<A NAME="tex2html1002"
   HREF="node52.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html991"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html996"
+  HREF="node48.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html992"
   HREF="node50.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html985"
-  HREF="node50.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html993"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html998"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html995"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1000"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html998"
-  HREF="node52.html">11.1.2 Composing signals in</A>
-<B> Up:</B> <A NAME="tex2html992"
-  HREF="node50.html">11.1 The 'signal' static</A>
-<B> Previous:</B> <A NAME="tex2html986"
-  HREF="node50.html">11.1 The 'signal' static</A>
- &nbsp; <B>  <A NAME="tex2html994"
+<B> Next:</B> <A NAME="tex2html1003"
+  HREF="node52.html">11. Signals and graphic</A>
+<B> Up:</B> <A NAME="tex2html997"
+  HREF="node48.html">10.1 Synchronization modes</A>
+<B> Previous:</B> <A NAME="tex2html993"
+  HREF="node50.html">10.1.2 Synchronizing an object</A>
+ &nbsp; <B>  <A NAME="tex2html999"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html996"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1001"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION001211000000000000000"></A>
-<A NAME="ssignal"></A>
-<BR>
-11.1.1 Signal messages.
+<H2><A NAME="SECTION001113000000000000000">
+10.1.3 Controlling the slave <TT>y</TT> position</A>
 </H2>
-Signal messages can be sent to any address with the form <TT>/ITL/<I>scene</I>/signal/<I>identifier</I></TT>, where <TT><I>identifier</I></TT> is a unique signal identifier.
-The set of messages supported by a signal is the following:
-<BR>
-<IMG
- WIDTH="320" HEIGHT="355" ALIGN="BOTTOM" BORDER="0"
- SRC="img62.gif"
- ALT="\begin{rail}
-simpleSignal : [1] ( float32 + )
-\vert [2] ('size' int32)
-\vert ...
-...' ( \vert 'size' \vert 'default')
-\vert [5] 'reset'
-\vert [6] 'del'
-\end{rail}">
-<BR>
-<A NAME="1097"></A>
-<A NAME="1098"></A>
-<A NAME="1099"></A>
-<A NAME="1100"></A>
-<A NAME="1101"></A>
-<A NAME="1102"></A>
 
 <P>
+<BR>
+<IMG
+ WIDTH="218" HEIGHT="127" ALIGN="BOTTOM" BORDER="0"
+ SRC="img62.png"
+ ALT="\begin{rail}
+syncPos : 'syncOver' \vert 'syncTop' \vert 'syncBottom'
+\end{rail}">
+<BR>
+<A NAME="1095"></A>
+<A NAME="1096"></A>
+<A NAME="1097"></A>
+<A NAME="1098"></A>
+
+<P>
+The synchronization position mode has the following effects on the slave <TT>y</TT> position:
 
 <UL>
-<LI><B>[1]</B> push an arbitrary data count into the signal buffer. The expected data range is <TT>[-1,1]</TT>. Note that the internal data buffer is a ring buffer, thus data are wrapped when the data count if greater than the buffer size. 
+<LI><TT>syncOver</TT>: the center of the slave is aligned to the master center.
 </LI>
-<LI><B>[2]</B> the <TT>size</TT> message sets the signal buffer size. When not specified, the buffer size value is the size of the first data message. 
+<LI><TT>syncTop</TT>: the bottom of the slave is aligned to the top of the master.
 </LI>
-<LI><B>[3]</B> the <TT>default</TT> message sets the <I>default signal value</I>. A signal <I>default value</I> is the value returned when a query asks for data past the available values.
-</LI>
-<LI><B>[4]</B> the <TT>get</TT> message without parameter gives the signal current values. The <TT>size</TT> and  <TT>default</TT> parameters are used to query the signal size and default values.
-</LI>
-<LI><B>[5]</B> the <TT>reset</TT> message clears the signal data. 
-</LI>
-<LI><B>[6]</B> the <TT>del</TT> message deletes the signal from the <TT>signal</TT> space. Note that it is safe to delete a signal even when used by a graphic signal. 
+<LI><TT>syncBottom</TT>: the top of the slave is aligned to the bottom of the master.
 </LI>
 </UL>
+The default position mode is <TT>syncOver</TT>. The <TT>y</TT> attribute of the slave remains available to displacement (<TT>dy</TT>). 
+
+<P>
+<BR><B> <B>N<SMALL>OTE </SMALL></B></B> 
+<BR>
+The <TT>y</TT> position of a synchronized object remains a free attribute. To control this position, you should send <TT>dy</TT> messages.  
 
 <P>
 <B> <B>E<SMALL>XAMPLE </SMALL></B></B>
 <BR>
-Creating a signal with a given buffer size:
+Synchronizing two objects, aligning the slave duration to the corresponding master space, the slave being below the master map:
 <BR>
 <DIV ALIGN="CENTER">
 <BLINK><FONT COLOR="#ededed">
 								</DIV><TABLE  WIDTH="0%">
 <TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene/signal/mySig size 200</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
-Creating a signal with a given set of data (the buffer size will be the data size):
-<BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene/signal/mySig 0. 0.1 0.2 0.3 0.4 0.5 0.4 0.3 0.2 0.1 0. -0.1 -0.2</TT></FONT>
+								<FONT SIZE="-1"><TT>/ITL/scene/sync mySlave myMaster h syncBottom</TT></FONT>
 								</TD></TR>
 </TABLE>
 <DIV ALIGN="CENTER"></FONT></BLINK>
@@ -130,32 +110,32 @@ Creating a signal with a given set of data (the buffer size will be the data siz
 <P>
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html997"
+<A NAME="tex2html1002"
   HREF="node52.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html991"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html996"
+  HREF="node48.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html992"
   HREF="node50.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html985"
-  HREF="node50.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html993"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html998"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html995"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1000"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html998"
-  HREF="node52.html">11.1.2 Composing signals in</A>
-<B> Up:</B> <A NAME="tex2html992"
-  HREF="node50.html">11.1 The 'signal' static</A>
-<B> Previous:</B> <A NAME="tex2html986"
-  HREF="node50.html">11.1 The 'signal' static</A>
- &nbsp; <B>  <A NAME="tex2html994"
+<B> Next:</B> <A NAME="tex2html1003"
+  HREF="node52.html">11. Signals and graphic</A>
+<B> Up:</B> <A NAME="tex2html997"
+  HREF="node48.html">10.1 Synchronization modes</A>
+<B> Previous:</B> <A NAME="tex2html993"
+  HREF="node50.html">10.1.2 Synchronizing an object</A>
+ &nbsp; <B>  <A NAME="tex2html999"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html996"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1001"
+  HREF="node117.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>

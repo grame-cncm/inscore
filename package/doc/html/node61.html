@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>13.1 Events</TITLE>
-<META NAME="description" CONTENT="13.1 Events">
+<TITLE>12.1 Specific messages</TITLE>
+<META NAME="description" CONTENT="12.1 Specific messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,7 +19,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node65.html">
+<LINK REL="next" HREF="node62.html">
 <LINK REL="previous" HREF="node60.html">
 <LINK REL="up" HREF="node60.html">
 <LINK REL="next" HREF="node62.html">
@@ -27,57 +27,145 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1145"
+<A NAME="tex2html1150"
   HREF="node62.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1139"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1144"
   HREF="node60.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1133"
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1138"
   HREF="node60.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1141"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1146"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1143"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1148"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1146"
-  HREF="node62.html">13.1.1 UI events</A>
-<B> Up:</B> <A NAME="tex2html1140"
-  HREF="node60.html">13. Events and Interaction</A>
-<B> Previous:</B> <A NAME="tex2html1134"
-  HREF="node60.html">13. Events and Interaction</A>
- &nbsp; <B>  <A NAME="tex2html1142"
+<B> Next:</B> <A NAME="tex2html1151"
+  HREF="node62.html">12.2 Feeding and composing</A>
+<B> Up:</B> <A NAME="tex2html1145"
+  HREF="node60.html">12. FAUST plugins</A>
+<B> Previous:</B> <A NAME="tex2html1139"
+  HREF="node60.html">12. FAUST plugins</A>
+ &nbsp; <B>  <A NAME="tex2html1147"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1144"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1149"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001410000000000000000"></A>
-<A NAME="defevents"></A>
+<H1><A NAME="SECTION001310000000000000000"></A>
+<A NAME="faustmsg"></A>
 <BR>
-13.1 Events
+12.1 Specific messages
 </H1>
+A FAUST processor is characterized by the numbers of input and output channels and by a set of parameters. Each parameter carries a name defined by the FAUST processor. The set of messages supported by a FAUST processor is the set of signals messages extended with the parameters names and with specific query messages. 
 
 <P>
-<BR><HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+<BR>
+<IMG
+ WIDTH="290" HEIGHT="164" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="\begin{rail}
+faustmessage : signalMsgs
+\vert [1] 'msg' float32
+\vert [2] 'get' ('in' \vert 'out')
+\end{rail}">
+<BR>
+<A NAME="1342"></A>
+<A NAME="1343"></A>
+<A NAME="1344"></A>
+<A NAME="1345"></A>
 
-<UL>
-<LI><A NAME="tex2html1147"
-  HREF="node62.html">13.1.1 UI events</A>
-<LI><A NAME="tex2html1148"
-  HREF="node63.html">13.1.2 Time events</A>
-<LI><A NAME="tex2html1149"
-  HREF="node64.html">13.1.3 Miscellaneous events</A>
-</UL>
-<!--End of Table of Child-Links-->
-<BR><HR>
+<P>
+<DL COMPACT>
+<DT>1</DT>
+<DD><TT><I>msg</I></TT> is any of the FAUST processor parameters, which are defined by the FAUST processor.
+</DD>
+<DT>2</DT>
+<DD>the <TT>get</TT> message is extended to query the FAUST processor: <TT>in</TT> and <TT>out</TT> give the number of input and output channels.
+</DD>
+</DL>
+
+<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Creating a FAUST processor and querying its input and output count:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/signal/myFaust set faust aFaustPlugin 
+<BR>/ITL/scene/signal/myFaust get in out
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+gives as output:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/signal/myFaust in 2 
+<BR>/ITL/scene/signal/myFaust out 4
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+Modifying the value of a FAUST processor parameter named <TT>volume</TT>:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/signal/myFaust volume 0.8</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
+<BR><B> <B>N<SMALL>OTE </SMALL></B></B> 
+<BR>
+The plugins are shared libraries which extension is platform dependent. The plugin name should not include the extension. The expected extensions are the following: .dylib on MacOS and Linux, .dll on Windows.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1150"
+  HREF="node62.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1144"
+  HREF="node60.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1138"
+  HREF="node60.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1146"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1148"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html1151"
+  HREF="node62.html">12.2 Feeding and composing</A>
+<B> Up:</B> <A NAME="tex2html1145"
+  HREF="node60.html">12. FAUST plugins</A>
+<B> Previous:</B> <A NAME="tex2html1139"
+  HREF="node60.html">12. FAUST plugins</A>
+ &nbsp; <B>  <A NAME="tex2html1147"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1149"
+  HREF="node117.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

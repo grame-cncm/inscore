@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>8. Scene messages</TITLE>
-<META NAME="description" CONTENT="8. Scene messages">
+<TITLE>7.5.1 The 'stats' nodes</TITLE>
+<META NAME="description" CONTENT="7.5.1 The 'stats' nodes">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -20,179 +20,87 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
 <LINK REL="next" HREF="node39.html">
-<LINK REL="previous" HREF="node32.html">
-<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="previous" HREF="node37.html">
+<LINK REL="up" HREF="node37.html">
 <LINK REL="next" HREF="node39.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html800"
+<A NAME="tex2html817"
   HREF="node39.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html794"
-  HREF="OSCMsg.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html788"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html811"
   HREF="node37.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html796"
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html805"
+  HREF="node37.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html813"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html798"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html815"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html801"
-  HREF="node39.html">9. Mapping graphic space</A>
-<B> Up:</B> <A NAME="tex2html795"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html789"
-  HREF="node37.html">7.5 The 'stats' and</A>
- &nbsp; <B>  <A NAME="tex2html797"
+<B> Next:</B> <A NAME="tex2html818"
+  HREF="node39.html">7.5.2 The 'debug' nodes</A>
+<B> Up:</B> <A NAME="tex2html812"
+  HREF="node37.html">7.5 Application static nodes</A>
+<B> Previous:</B> <A NAME="tex2html806"
+  HREF="node37.html">7.5 Application static nodes</A>
+ &nbsp; <B>  <A NAME="tex2html814"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html799"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html816"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION00900000000000000000"></A>
-<A NAME="scene"></A>
+<H2><A NAME="SECTION00851000000000000000"></A>
+<A NAME="ITLstat"></A>
 <BR>
-8. Scene messages
-</H1>
-A scene may be viewed as a window on the score elements. Its address is <TT>/ITL/<I>sceneIdentifier</I></TT> where <TT><I>sceneIdentifier</I></TT> is the scene name. It handles the following messages:
+7.5.1 The 'stats' nodes
+</H2>
+
+<P>
 <BR>
 <IMG
- WIDTH="314" HEIGHT="394" ALIGN="BOTTOM" BORDER="0"
- SRC="img42.gif"
+ WIDTH="179" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
+ SRC="img40.png"
  ALT="\begin{rail}
-sceneMsg : 'new'
-\vert 'del'
-\vert 'reset'
-\vert ('rootPath' pat...
-... ('absolutexy' int32)
-\vert ('windowOpacity' int32)
-\vert commonMsg
+ITLStats : 'get' \vert 'reset'
 \end{rail}">
 <BR>
-<A NAME="806"></A>
-<A NAME="807"></A>
-<A NAME="808"></A>
-<A NAME="809"></A>
-<A NAME="810"></A>
-<A NAME="811"></A>
-<A NAME="812"></A>
 <A NAME="813"></A>
 <A NAME="814"></A>
 
 <P>
 
 <UL>
-<LI><TT>new</TT>: creates a new scene and opens it in a new window.
+<LI><TT>get</TT> gives the count of handled messages at OSC and UDP levels: the UDP count indicates the count of messages received from the network, the OSC count includes the UDP count and the messages received internally.
 </LI>
-<LI><TT>del</TT>: deletes a scene and closes the corresponding window.
-</LI>
-<LI><TT>reset</TT>: clears the scene (i.e. delete all components) and resets the scene to its default state (position, size and color).
-</LI>
-<LI><TT>rootPath</TT>: <I>rootPath</I> of a scene is the default path where the scene reads or writes a file when a relative path is used for this file. When no value has been specified, the application  <I>rootPath</I> is used.
-</LI>
-<LI><TT>load</TT>: loads an INScore file to the scene. Note that the OSC addresses are translated to the scene OSC address.
-</LI>
-<LI><TT>fullscreen</TT>: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is <TT>0</TT>.
-</LI>
-<LI><TT>frameless</TT>: requests the scene to switch to frameless or normal window.  The parameter is interpreted as a boolean value. Default value is <TT>0</TT>.
-</LI>
-<LI><TT>absolutexy</TT>: requests the scene to absolute or relative coordinates. Absolute coordinates are in pixels relative to the top left corner of the screen. Relative coordinates are in the range [-1, 1] where [0,0] is the center of the screen. The message parameter is interpreted as a boolean value. Default value is <TT>0</TT>.
-</LI>
-<LI><TT>windowOpacity</TT>: switch the scene window to opaque or transparent mode. When in transparent mode, the scene alpha channel controls the window opacity (from completely opaque to completely transparent). In opaque mode, the scene alpha channel controls the background brush only. Default value is <TT>0</TT>.
-</LI>
-<LI><TT>commonMsg</TT>: a scene support the common graphic attributes. See section <A HREF="node6.html#common">2</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>.
+<LI><TT>reset</TT> resets the counters to zero. Note that querying the <TT>stats</TT> node increments at least the OSC the counter.
 </LI>
 </UL>
 
 <P>
 <B> <B>E<SMALL>XAMPLE </SMALL></B></B>
 <BR>
-Setting a scene current path:
+Answer to a <TT>get</TT> message addressed to <TT>/ITL/stats</TT>
 <BR>
 <DIV ALIGN="CENTER">
 <BLINK><FONT COLOR="#ededed">
 								</DIV><TABLE  WIDTH="0%">
 <TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene rootPath "/path/to/my/folder"</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
-Loading an INScore file:
-<BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene load "myscript.inscore"</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
-will load <TT>/path/to/my/folder/myscript.inscore</TT> into the scene. 
-
-<P>
-Setting a scene to fullscreen:
-<BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene fullscreen 1</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
-Creating a new score named <TT>myScore</TT>:
-<BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/myScore new</TT></FONT>
+								<FONT SIZE="-1"><TT>/ITL/stats osc 15 udp 10</TT></FONT>
 								</TD></TR>
 </TABLE>
 <DIV ALIGN="CENTER"></FONT></BLINK>
 </DIV>
 
 <P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html800"
-  HREF="node39.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html794"
-  HREF="OSCMsg.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html788"
-  HREF="node37.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html796"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html798"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html801"
-  HREF="node39.html">9. Mapping graphic space</A>
-<B> Up:</B> <A NAME="tex2html795"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html789"
-  HREF="node37.html">7.5 The 'stats' and</A>
- &nbsp; <B>  <A NAME="tex2html797"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html799"
-  HREF="node114.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

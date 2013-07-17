@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>16.2 Lexical tokens</TITLE>
-<META NAME="description" CONTENT="16.2 Lexical tokens">
+<TITLE>15.6.1 The Javascript object</TITLE>
+<META NAME="description" CONTENT="15.6.1 The Javascript object">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -20,98 +20,64 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
 <LINK REL="previous" HREF="node88.html">
-<LINK REL="up" HREF="node87.html">
+<LINK REL="up" HREF="node88.html">
 <LINK REL="next" HREF="node90.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1544"
+<A NAME="tex2html1561"
   HREF="node90.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1538"
-  HREF="node87.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1534"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1555"
   HREF="node88.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1540"
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1551"
+  HREF="node88.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1557"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1542"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1559"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1545"
-  HREF="node90.html">17. Changes list</A>
-<B> Up:</B> <A NAME="tex2html1539"
-  HREF="node87.html">16. Appendices</A>
-<B> Previous:</B> <A NAME="tex2html1535"
-  HREF="node88.html">16.1 Grammar definition</A>
- &nbsp; <B>  <A NAME="tex2html1541"
+<B> Next:</B> <A NAME="tex2html1562"
+  HREF="node90.html">16. Appendices</A>
+<B> Up:</B> <A NAME="tex2html1556"
+  HREF="node88.html">15.6 Languages</A>
+<B> Previous:</B> <A NAME="tex2html1552"
+  HREF="node88.html">15.6 Languages</A>
+ &nbsp; <B>  <A NAME="tex2html1558"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1543"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1560"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001720000000000000000"></A>
-<A NAME="lex"></A>
+<H2><A NAME="SECTION001661000000000000000"></A><A NAME="jsobj"></A>
 <BR>
-16.2 Lexical tokens
-</H1>
-<PRE>
-//_______________________________________________
-// numbers
-//_______________________________________________
-INT       a signed integer
-UINT      an unsigned integer
-FLOAT     a floating point number
+15.6.1 The Javascript object
+</H2>
 
+<P>
+The Javascript engine is available at runtime at the address <TT>/ITL/<I>scene</I>/javascript</TT>. It has a <TT>run</TT> method that takes a javascript string as parameter.
 
-//_______________________________________________
-// hosts addresses
-//_______________________________________________
-// allowed character set for host names (see RFC952 and RFC1123)
-HOSTNAME       : [-a-zA-Z0-9]+ 
-IPNUM          :  {DIGIT}+"."{DIGIT}+"."{DIGIT}+"."{DIGIT}+
+<P>
+<BR>
+<IMG
+ WIDTH="174" HEIGHT="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="img95.png"
+ ALT="\begin{rail}
+javascript : 'run' 'code'
+\end{rail}">
+<BR>
+<A NAME="1726"></A>
 
-
-//_______________________________________________
-// OSC addresses
-//_______________________________________________
-// allowed characters for identifiers
-IDENTIFIER     : [_a-zA-Z][_a-zA-Z0-9]*
-REGEXP           see OSC doc for regular expressions
-
-//_______________________________________________
-// parameters
-//_______________________________________________
-QUOTEDSTRING     quotes could be single (') or double quotes (")
-WATCH          : watch
-               | watch+
-               | require
-
-//_______________________________________________
-// languages support
-//_______________________________________________
-JSCRIPT        : &lt;?javascript any javascript code ?&gt;
-LUASCRIPT      : &lt;?lua any lua code ?&gt;
-
-//_______________________________________________
-// misc.
-//_______________________________________________
-PATHSEP        : '/'
-POINT          : '.'
-VARSTART       : '$'
-COLON          : ':'
-COMMA          : ','
-LEFTPAR        : '('
-RIGHTPAR       : ')'
-EQUAL          : '='
-ENDEXPR        : ';'
-</PRE>
+<P>
+The <TT>run</TT> method evaluates the code. Similarly to javascript sections in scripts, the output of the evaluation is expected to be a string containing valid INScore messages that are next executed. 
+Actually, including a javascript section in a script is equivalent to send the <TT>run</TT> message with the same code as parameter to the javascript object.
 
 <P>
 <BR><HR>

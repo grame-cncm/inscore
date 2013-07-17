@@ -27,32 +27,32 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html673"
+<A NAME="tex2html684"
   HREF="node30.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html667"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html678"
   HREF="node26.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html661"
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html672"
   HREF="node28.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html669"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html680"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html671"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html682"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html674"
+<B> Next:</B> <A NAME="tex2html685"
   HREF="node30.html">6.4 The 'grid' object</A>
-<B> Up:</B> <A NAME="tex2html668"
+<B> Up:</B> <A NAME="tex2html679"
   HREF="node26.html">6. Type specific messages</A>
-<B> Previous:</B> <A NAME="tex2html662"
+<B> Previous:</B> <A NAME="tex2html673"
   HREF="node28.html">6.2 Width and height</A>
- &nbsp; <B>  <A NAME="tex2html670"
+ &nbsp; <B>  <A NAME="tex2html681"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html672"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html683"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
@@ -67,24 +67,24 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 Messages accepted by the components types <TT>gmn | gmnf</TT>. 
 <BR>
 <IMG
- WIDTH="396" HEIGHT="241" ALIGN="BOTTOM" BORDER="0"
- SRC="img33.gif"
+ WIDTH="396" HEIGHT="279" ALIGN="BOTTOM" BORDER="0"
+ SRC="img33.png"
  ALT="\begin{rail}
 scoreMsg : 'page' int32
 \vert 'dpage' int32
 \vert 'pageFormat' fl...
 ...2
-\vert 'columns' int32
 \vert 'rows' int32
-\vert 'get' 'pageCount'
+\vert 'get' ( 'pageCount'\vert 'systemCount' )
 \end{rail}">
 <BR>
-<A NAME="644"></A>
-<A NAME="645"></A>
-<A NAME="646"></A>
-<A NAME="647"></A>
-<A NAME="648"></A>
-<A NAME="649"></A>
+<A NAME="668"></A>
+<A NAME="669"></A>
+<A NAME="670"></A>
+<A NAME="671"></A>
+<A NAME="672"></A>
+<A NAME="673"></A>
+<A NAME="674"></A>
 
 <P>
 
@@ -100,6 +100,8 @@ scoreMsg : 'page' int32
 <LI><TT>rows</TT>: for multi pages display: set the number of rows.
 </LI>
 <LI><TT>pageCount</TT>:  a read only attribute, gives the score pages count.
+</LI>
+<LI><TT>systemCount</TT>:  a read only attribute, gives the number of systems on each of the score pages. The result is given as a list systems count ordered by page number (index 0 is page 1, etc.).
 </LI>
 </UL>
 
@@ -121,7 +123,35 @@ Displaying a multi-pages score on two pages starting at page 3:
 </DIV>
 
 <P>
-<BR><HR>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html684"
+  HREF="node30.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html678"
+  HREF="node26.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html672"
+  HREF="node28.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html680"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html682"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html685"
+  HREF="node30.html">6.4 The 'grid' object</A>
+<B> Up:</B> <A NAME="tex2html679"
+  HREF="node26.html">6. Type specific messages</A>
+<B> Previous:</B> <A NAME="tex2html673"
+  HREF="node28.html">6.2 Width and height</A>
+ &nbsp; <B>  <A NAME="tex2html681"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html683"
+  HREF="node117.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>
