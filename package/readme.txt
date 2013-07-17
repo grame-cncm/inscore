@@ -43,18 +43,29 @@ uninstall the previous version before installing the new one.
 ======================================================
  Links
 ======================================================
-The INScore project is an open source project. It has been
-developped in the framework of the Interlude project (ANR-08-CORD-010)
+The INScore project is an open source project. 
 For more information, see at:
  - http://inscore.sourceforge.net
 
-INScore depedns on the Guido Engine library and optionnaly, on
-the libMusicXML library.
-The Guido Engine library and applications, and the libMusicXML 
-library are open source projects. available at SourceForge.
-For more information and to get the latest version, see at:
- - http://www.sourceforge.net/pojects/guidolib
- - http://www.sourceforge.net/pojects/libmusicxml
+INScore makes use of the following technologies:
+	- the GUIDOEngine  							http://guidolib.sf.net
+	- the IRCAM Gesture Follower 				http://imtr.ircam.fr/imtr/Gesture_Follower
+	- the Qt5 cross-platform application and UI framework	http://qt-project.org/qt5
+	- the V8 JavaScript Engine 					https://code.google.com/p/v8/
+Optionnal dependency:
+	- the libMusicXML library					http://libmusicxml.sf.net
+
+======================================================
+ Links
+======================================================
+Acknowledgments
+------------------
+INScore was initiated in the Interlude project (http://interlude.ircam.fr), 
+funded by the French National Research Agency [ANR- 08-CORD-010].
+I would like to thank all the people who have been contributing 
+to INScore design and development, and especially Christophe Daudin, 
+Eric Ravel, my colleagues Stéphane Letz, Yann Orlarey and all the 
+Interlude team.
 
 ======================================================
 For more information, contact me at <fober@grame.fr>
