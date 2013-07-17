@@ -13,14 +13,15 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.03
-- new static node at application level. Its address is /ITL/log and it controls a console.
+- log window utility provided as a new static node at application level (/ITL/log.
+- new systemCount read only attribute for Guido scores
 
 ----------------------------------------------------
 Version 1.02
 - IMTR gesture follower support 
 - javascript engine is available at the static address /ITL/scene/javascript and can be activated using a 'run' method
 - bug correction: error messages not generated for dropped files (actually for the scene load method)
-- bug correction: infinite loop catched in QStretchTilerItem::paint method
+- bug correction: possible infinite loop in QStretchTilerItem::paint method
 - bug correction: incorrect get alias output (all the aliases were dumped out in a single message)
 
 ----------------------------------------------------
