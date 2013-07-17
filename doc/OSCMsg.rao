@@ -631,7 +631,7 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {33}{ scoreMsg : 'page' int32 | 'dpage' int32 | 'pageFormat' float32 float32 | 'columns' int32 | 'rows' int32 | 'get' ( 'pageCount'| 'systemCount' int32 ) }
+\rail@i {33}{ scoreMsg : 'page' int32 | 'dpage' int32 | 'pageFormat' float32 float32 | 'columns' int32 | 'rows' int32 | 'get' ( 'pageCount'| 'systemCount' ) }
 \rail@o {33}{
 \rail@index{scoreMsg}
 \rail@begin{7}{scoreMsg}
@@ -657,7 +657,6 @@
 \rail@term{pageCount}[]
 \rail@nextbar{6}
 \rail@term{systemCount}[]
-\rail@token{int32}[]
 \rail@endbar
 \rail@endbar
 \rail@end

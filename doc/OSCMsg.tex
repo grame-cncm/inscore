@@ -905,7 +905,7 @@ scoreMsg :      'page' int32
 			| 'pageFormat' float32 float32
 			| 'columns' int32
 			| 'rows' int32
-			| 'get' ( 'pageCount'| 'systemCount' int32 )
+			| 'get' ( 'pageCount'| 'systemCount' )
 \end{rail}
 \index{Specific messages! score! page}
 \index{Specific messages! score! dpage}
@@ -923,7 +923,7 @@ scoreMsg :      'page' int32
 \item \OSC{columns}: for multi pages display: set the number of columns.
 \item \OSC{rows}: for multi pages display: set the number of rows.
 \item \OSC{pageCount}:  a read only attribute, gives the score pages count.
-\item \OSC{systemCount}:  a read only attribute, gives the number of systems of a given score page. The page number is given as an int32 value (pages are indexes from 1).
+\item \OSC{systemCount}:  a read only attribute, gives the number of systems on each of the score pages. The result is given as a list systems count ordered by page number (index 0 is page 1, etc.).
 \end{itemize}
 
 \example \\
