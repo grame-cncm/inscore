@@ -65,7 +65,6 @@ class IGuidoCode : public IObject
 	public:
 	int fPage;					/// < Guido Page Index. When several pages are displayed: index of the first displayed page. Default 1.
 	TFloatSize fPageFormat;		/// < Guido Page Format, in cm. Default: 21 x 29.7
-	int fPageCount;			/// < Nb of pages of the score. (set by the view)
 	int fNbOfPageColumns;		/// < Nb of columns of pages. (when the score has multiple pages). Default 2.
 	int fNbOfPageRows;			/// < Nb of rows of pages. (when the score has multiple pages) Default 1.
 
@@ -73,7 +72,8 @@ class IGuidoCode : public IObject
 			SLocalMapping& localMappings()			{ return fLocalMappings; }
 	
 	protected:
-		std::string	fGMN;			/// < Guido Music Notation.
+		std::string	fGMN;								/// < Guido Music Notation code.
+//		int			fPageCount;							/// < Nb of pages of the score. (set by the view)
 		
 		std::vector<std::string> fRequestedMappings;	/// < Requested map-name list. 
 														/// The 'map' msg just expects a map-name, and then the Guido view
@@ -87,15 +87,15 @@ class IGuidoCode : public IObject
 
 		void	print (std::ostream& out) const;
 
-		const std::string&	getGMN() const		{ return fGMN; }
-		int			getPage() const				{ return fPage; }
-		TFloatSize	getPageFormat() const		{ return fPageFormat; }
-		int			getNbOfPageColumns() const	{ return fNbOfPageColumns; }
-		int			getNbOfPageRows() const		{ return fNbOfPageRows; }
-		int			getPageCount() const		{ return fPageCount; }
+		const std::string&	getGMN() const			{ return fGMN; }
+		int			getPage() const					{ return fPage; }
+		TFloatSize	getPageFormat() const			{ return fPageFormat; }
+		int			getNbOfPageColumns() const		{ return fNbOfPageColumns; }
+		int			getNbOfPageRows() const			{ return fNbOfPageRows; }
+		int			getPageCount() const; //			{ return fPageCount; }
+//		void		setPagesCount(int pageCount)	{ fPageCount = pageCount; }
+		void		setGRHandler(CGRHandler gr)		{ fGRHandler = gr; }
 		libmapping::rational	getPageDate(int pagenum) const;
-		void		setPagesCount(int pageCount)			{ fPageCount = pageCount; }
-		void		setGRHandler(CGRHandler gr)				{ fGRHandler = gr; }
 
 		/// \brief requests that the IGuidoCode build a mapping named 'mapName'. The IGuidoCode stores the number of requests.
 		virtual void requestMapping(const std::string& mapName);
@@ -103,6 +103,9 @@ class IGuidoCode : public IObject
 		/// \brief decreases the number of requests for a mapping named 'mapName'.
 		virtual void stopRequestMapping(const std::string& mapName);
 		virtual const std::vector<std::string>& requestedMappings() const	{ return fRequestedMappings;  }
+
+		/// \brief gives the systems count as a list of count ordered by page number
+		virtual std::vector<int> getSystemsCount() const;
 
 	protected:
 				 IGuidoCode( const std::string& name, IObject * parent );

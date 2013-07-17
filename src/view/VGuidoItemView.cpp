@@ -194,7 +194,6 @@ void VGuidoItemView::pageFormatUpdate (IGuidoCode* guidoCode)
 		format.height = h;
 		fGuidoItem->setGuidoPageFormat(format);
 	}
-	guidoCode->setPagesCount( fGuidoItem->pageCount() );
 
 	GuidoDate date;
 	GuidoDuration( fGuidoItem->getGRHandler(), &date );
