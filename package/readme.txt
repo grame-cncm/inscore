@@ -56,10 +56,8 @@ Optionnal dependency:
 	- the libMusicXML library					http://libmusicxml.sf.net
 
 ======================================================
- Links
+ Acknowledgments
 ======================================================
-Acknowledgments
-------------------
 INScore was initiated in the Interlude project (http://interlude.ircam.fr), 
 funded by the French National Research Agency [ANR- 08-CORD-010].
 I would like to thank all the people who have been contributing 
