@@ -24,6 +24,11 @@ docsrc := ../doc
 docdst := ./doc
 icns   := ../rsrc/INScoreViewer.icns
 
+macapp  := $(viewer)-$(version).app
+winapp  := $(viewer)-$(version).exe
+macplug := $(macapp)/Contents/Plugins
+winplug := $(package)/Plugins
+
 rsrcf   := ../scripts
 rfolders:= $(foreach dir, $(rsrcf), $(shell find $(dir) -type d))
 rfiles  := $(foreach dir, $(rsrcf), $(shell find $(dir) -type f))
@@ -60,11 +65,13 @@ macosx:
 	make common
 	make -f makeINScoreBundle
 	cp $(icns) $(viewer).app/Contents/Resources
-	-[ -d $(package)/"$(viewer) $(version).app" ] && rm -rf $(package)/"$(viewer) $(version).app"
-	mv $(viewer).app $(package)/"$(viewer) $(version).app"
-	chmod -x  $(shell find . -name "*.inscore")
+	-[ -d $(package)/$(macapp) ] && rm -rf $(package)/$(macapp)
+	mv $(viewer).app $(package)/$(macapp)
+	@chmod -x  $(shell find . -name "*.inscore")
 	cp -f ../src/guido2.ttf $(package)
 	cd $(package) && ln -sf /Applications .
+	[ -d $(package)/$(macplug) ] || mkdir $(package)/$(macplug)
+	cp ../lib/GestureFollower/libGFLib.dylib $(package)/$(macplug)
 	make dmg
 		
 common: 
