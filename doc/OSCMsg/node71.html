@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>13.3 Interaction state management</TITLE>
-<META NAME="description" CONTENT="13.3 Interaction state management">
+<TITLE>13.2.3 Miscellaneous variables</TITLE>
+<META NAME="description" CONTENT="13.2.3 Miscellaneous variables">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -20,76 +20,92 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
 <LINK REL="next" HREF="node72.html">
-<LINK REL="previous" HREF="node65.html">
-<LINK REL="up" HREF="node60.html">
+<LINK REL="previous" HREF="node70.html">
+<LINK REL="up" HREF="node68.html">
 <LINK REL="next" HREF="node72.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1289"
+<A NAME="tex2html1306"
   HREF="node72.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1283"
-  HREF="node60.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1277"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1300"
+  HREF="node68.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1294"
   HREF="node70.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1285"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1302"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1287"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1304"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1290"
-  HREF="node72.html">13.4 File watcher</A>
-<B> Up:</B> <A NAME="tex2html1284"
-  HREF="node60.html">13. Events and Interaction</A>
-<B> Previous:</B> <A NAME="tex2html1278"
-  HREF="node70.html">13.2.5 OSC address variables</A>
- &nbsp; <B>  <A NAME="tex2html1286"
+<B> Next:</B> <A NAME="tex2html1307"
+  HREF="node72.html">13.2.4 Message based variables</A>
+<B> Up:</B> <A NAME="tex2html1301"
+  HREF="node68.html">13.2 Variables</A>
+<B> Previous:</B> <A NAME="tex2html1295"
+  HREF="node70.html">13.2.2 Time variables</A>
+ &nbsp; <B>  <A NAME="tex2html1303"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1288"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1305"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001430000000000000000"></A>
-<A NAME="evtstate"></A>
+<H2><A NAME="SECTION001423000000000000000"></A>
+<A NAME="miscvar"></A>
 <BR>
-13.3 Interaction state management
-</H1>
+13.2.3 Miscellaneous variables
+</H2>
 
 <P>
-For a given object, its <I>interaction state</I> (i.e. the watched events and the associated messages) can be saved and restored.
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img82.gif"
+ WIDTH="194" HEIGHT="123" ALIGN="BOTTOM" BORDER="0"
+ SRC="img81.png"
  ALT="\begin{rail}
-stateMsg : 'push' \vert 'pop'
+variable : 'name' \vert 'scene' \vert 'address'
 \end{rail}">
 <BR>
-<A NAME="1473"></A>
-<A NAME="1474"></A>
+<A NAME="1488"></A>
+<A NAME="1489"></A>
+<A NAME="1490"></A>
 
 <P>
-Interaction states are managed using a stack where the states are pushed to or popped from.
 
 <UL>
-<LI><TT>push</TT>: push the current interaction state on top of the stack.
+<LI><TT>$name</TT> is replaced by the target object name.
 </LI>
-<LI><TT>pop</TT>: replace the current interaction state with the one popped from the top of the stack.
+<LI><TT>$scene</TT> is replaced by the target object scene name.
+</LI>
+<LI><TT>$address</TT> is replaced by the target object OSC address. 
 </LI>
 </UL>
 
 <P>
 <BR><B> <B>N<SMALL>OTE </SMALL></B></B> 
 <BR>
-The effect of a pop message addressed to an object with an empty stack is to clear the object current interaction state.
+For the <TT>newElement</TT> event, the target object is the new element. 
+
+<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Using an object name:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene watch newElement (/ITL/scene/welcome set txt "Welcome" '$name')</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
 
 <P>
 <BR><HR>

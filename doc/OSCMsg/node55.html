@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>11.2.1 Graphic signal default values.</TITLE>
-<META NAME="description" CONTENT="11.2.1 Graphic signal default values.">
+<TITLE>11.1.2 Composing signals in parallel.</TITLE>
+<META NAME="description" CONTENT="11.1.2 Composing signals in parallel.">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,92 +21,169 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node56.html">
 <LINK REL="previous" HREF="node54.html">
-<LINK REL="up" HREF="node54.html">
+<LINK REL="up" HREF="node53.html">
 <LINK REL="next" HREF="node56.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1051"
+<A NAME="tex2html1068"
   HREF="node56.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1045"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1062"
+  HREF="node53.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1056"
   HREF="node54.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1039"
-  HREF="node54.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1047"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1064"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1049"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1066"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1052"
-  HREF="node56.html">11.2.2 Parallel graphic signals.</A>
-<B> Up:</B> <A NAME="tex2html1046"
-  HREF="node54.html">11.2 Graphic signals.</A>
-<B> Previous:</B> <A NAME="tex2html1040"
-  HREF="node54.html">11.2 Graphic signals.</A>
- &nbsp; <B>  <A NAME="tex2html1048"
+<B> Next:</B> <A NAME="tex2html1069"
+  HREF="node56.html">11.1.3 Distributing data to</A>
+<B> Up:</B> <A NAME="tex2html1063"
+  HREF="node53.html">11.1 The 'signal' static</A>
+<B> Previous:</B> <A NAME="tex2html1057"
+  HREF="node54.html">11.1.1 Signal messages.</A>
+ &nbsp; <B>  <A NAME="tex2html1065"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1050"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1067"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION001221000000000000000">
-11.2.1 Graphic signal default values.</A>
+<H2><A NAME="SECTION001212000000000000000"></A><A NAME="parcomp"></A>
+<BR>
+11.1.2 Composing signals in parallel.
 </H2>
-As mentionned above, a graphic signal expects to be connected to parallel signals having at least an <TT>y</TT> component, a graphic thickness component and HSBA components. Thus, from graphic signal viewpoint, the expected dimension of a signal should be equal or greater than 6. In case the <TT>signalIdentifier</TT> dimension is less than 6, the graphic signal will use the default values defined in table <A HREF="#gsigdefault">11.2</A>.
+Composing signals in parallel produces a signal which value at a time <TT>t</TT> is a vector of the composed signals values. Thus an additional read-only attribute is defined on <I>parallel signals</I> : the signal <I>dimension</I> which is size of the signals vector. Note that the dimension property holds also for simple signals.
 
 <P>
-<BR><P></P>
-<DIV ALIGN="CENTER">
-
-<DIV ALIGN="CENTER">
-<A NAME="1250"></A>
-<TABLE CELLPADDING=3 BORDER="1">
-<CAPTION><STRONG>Table 11.2:</STRONG>
-Graphic signal default values.</CAPTION>
-<TR><TD ALIGN="RIGHT">parameter</TD>
-<TD ALIGN="CENTER">default value</TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><TT>y</TT></TD>
-<TD ALIGN="CENTER"><TT>0</TT></TD>
-<TD ALIGN="LEFT">the center line of the graphic</TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><TT>thickness</TT></TD>
-<TD ALIGN="CENTER"><TT>0</TT></TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><TT>hue</TT></TD>
-<TD ALIGN="CENTER"><TT>0</TT></TD>
-<TD ALIGN="LEFT">meaningless due to brigthness value</TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><TT>saturation</TT></TD>
-<TD ALIGN="CENTER"><TT>0</TT></TD>
-<TD ALIGN="LEFT">meaningless due to brigthness value</TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><TT>brigthness</TT></TD>
-<TD ALIGN="CENTER"><TT>-1</TT></TD>
-<TD ALIGN="LEFT">black</TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><TT>transparency</TT></TD>
-<TD ALIGN="CENTER"><TT>1</TT></TD>
-<TD ALIGN="LEFT">opaque</TD>
-</TR>
-</TABLE>
-</DIV>
-<A NAME="gsigdefault"></A>
-</DIV>
+The format of the messages for parallel signals is the following:
+<BR>
+<IMG
+ WIDTH="456" HEIGHT="203" ALIGN="BOTTOM" BORDER="0"
+ SRC="img64.png"
+ ALT="\begin{rail}
+parallelSignal :
+[1] 'set' ( signal + )
+\vert [2] (\vert projectionString) ( float32 + )
+\vert [3] ('get' 'dimension')
+\end{rail}">
+<BR>
+<A NAME="1176"></A>
+<A NAME="1177"></A>
+where 
+<BR>
+<IMG
+ WIDTH="219" HEIGHT="88" ALIGN="BOTTOM" BORDER="0"
+ SRC="img65.png"
+ ALT="\begin{rail}
+signal :
+[4] identifier
+\vert [5] float32
+\end{rail}">
 <BR>
 
 <P>
-<BR><HR>
+
+<UL>
+<LI><B>[1]</B> defines a new signal composed of the signals given as parameters. A signal parameter is defined as:
+
+<P>
+
+<UL>
+<LI><B>[4]</B> an <TT>identifier</TT> i.e. a signal name referring to an existing signal in the <TT>signal</TT> node. 
+</LI>
+<LI><B>[5]</B> or as a float value. This form is equivalent to an anonymous constant signal holding the given value. 
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI><B>[2]</B> sets the values of the signals using a projection string. See section <A HREF="node56.html#sigproj">11.1.3</A> p.<A HREF="node56.html#sigproj"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>. 
+</LI>
+<LI><B>[3]</B> in addition to the <TT>get</TT> format defined for signals, a parallel signal supports the <TT>get dimension</TT> message, that gives the number of simple signals in parallel. The dimension of a simple signal is 1. 
+</LI>
+</UL>
+
+<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Putting a signal <TT>y</TT> and constant signals 0.01 0. 1. 1. 1. in parallel:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/signal/mySig set y 0.01 0. 1. 1. 1.</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+Querying the previously defined parallel signal:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/signal/mySig get 
+<BR>
+will give the following output: 
+<BR>/ITL/scene/signal/mySig set y 0.01 0. 1. 1. 1.
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
+<BR><B> <B>N<SMALL>OTE </SMALL></B></B> 
+<BR>
+For a parallel signal:
+
+<UL>
+<LI>the <TT>get size</TT> message gives the maximum of the components size. 
+</LI>
+<LI>the <TT>get default</TT> message gives the default value of the first signal. 
+</LI>
+</UL>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1068"
+  HREF="node56.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1062"
+  HREF="node53.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1056"
+  HREF="node54.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1064"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1066"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html1069"
+  HREF="node56.html">11.1.3 Distributing data to</A>
+<B> Up:</B> <A NAME="tex2html1063"
+  HREF="node53.html">11.1 The 'signal' static</A>
+<B> Previous:</B> <A NAME="tex2html1057"
+  HREF="node54.html">11.1.1 Signal messages.</A>
+ &nbsp; <B>  <A NAME="tex2html1065"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1067"
+  HREF="node117.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

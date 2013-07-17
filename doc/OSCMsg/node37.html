@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>7.5 The 'stats' and 'debug' nodes</TITLE>
-<META NAME="description" CONTENT="7.5 The 'stats' and 'debug' nodes">
+<TITLE>7.5 Application static nodes</TITLE>
+<META NAME="description" CONTENT="7.5 Application static nodes">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -26,150 +26,60 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html786"
+<A NAME="tex2html800"
   HREF="node38.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html780"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html794"
   HREF="node32.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html776"
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html790"
   HREF="node36.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html782"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html796"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html784"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html798"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html787"
-  HREF="node38.html">8. Scene messages</A>
-<B> Up:</B> <A NAME="tex2html781"
+<B> Next:</B> <A NAME="tex2html801"
+  HREF="node38.html">7.5.1 The 'stats' nodes</A>
+<B> Up:</B> <A NAME="tex2html795"
   HREF="node32.html">7. Application messages</A>
-<B> Previous:</B> <A NAME="tex2html777"
+<B> Previous:</B> <A NAME="tex2html791"
   HREF="node36.html">7.4 Application level queries</A>
- &nbsp; <B>  <A NAME="tex2html783"
+ &nbsp; <B>  <A NAME="tex2html797"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html785"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html799"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION00850000000000000000"></A>
-<A NAME="ITLdebug"></A>
+<A NAME="ITLStatic"></A>
 <BR>
-7.5 The 'stats' and 'debug' nodes
+7.5 Application static nodes
 </H1>
 
 <P>
-The application level provides two static nodes - <TT>stats</TT> and <TT>debug</TT>, available at <TT>/ITL/stats</TT> and <TT>/ITL/debug</TT> to help debugging communication and INScore scripts design.
+The application level provides the static nodes - <TT>stats</TT>, <TT>debug</TT> and <TT>log</TT>, available at <TT>/ITL/stats</TT> <TT>/ITL/debug</TT> and <TT>/ITL/log</TT>  to help debugging communication and INScore scripts design.
 
 <P>
-<BR>
-<IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img40.gif"
- ALT="\begin{rail}
-ITLStats : 'get' \vert 'reset'
-\end{rail}">
-<BR>
-<A NAME="783"></A>
-<A NAME="784"></A>
-
-<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><TT>get</TT> gives the count of handled messages at OSC and UDP levels: the UDP count indicates the count of messages received from the network, the OSC count includes the UDP count and the messages received internally.
-</LI>
-<LI><TT>reset</TT> resets the counters to zero. Note that querying the <TT>stats</TT> node increments at least the OSC the counter.
-</LI>
+<LI><A NAME="tex2html802"
+  HREF="node38.html">7.5.1 The 'stats' nodes</A>
+<LI><A NAME="tex2html803"
+  HREF="node39.html">7.5.2 The 'debug' nodes</A>
+<LI><A NAME="tex2html804"
+  HREF="node40.html">7.5.3 The 'log' nodes</A>
 </UL>
-
-<P>
-<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
-<BR>
-Answer to a <TT>get</TT> message addressed to <TT>/ITL/stats</TT>
-<BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/stats osc 15 udp 10</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
-
-<P>
-The <TT>debug</TT> node is used to activate debugging information.
-<BR>
-<IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img41.gif"
- ALT="\begin{rail}
-ITLdebug : 'osc' int23
-\end{rail}">
-<BR>
-<A NAME="796"></A>
-
-<P>
-
-<UL>
-<LI>switch the debug mode ON or OFF. The parameter is interpreted as a boolean value. When in debug mode, INScore sends verbose messages to the OSC error port for every message that can't be correctly handled. Debugging is ON by default.
-</LI>
-</UL>
-
-<P>
-<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
-<BR>
-Error messages generated on error port in debug mode:
-<BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>error:  incorrect OSC address: /ITL/stat
-<BR>
-error:  incorrect parameters: /ITL/scene/foo unknown 0.1
-<BR>
-error:  incorrect parameters: /ITL/scene/foo x "incorrectType"
-</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
-
-<P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html786"
-  HREF="node38.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html780"
-  HREF="node32.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html776"
-  HREF="node36.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html782"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html784"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html787"
-  HREF="node38.html">8. Scene messages</A>
-<B> Up:</B> <A NAME="tex2html781"
-  HREF="node32.html">7. Application messages</A>
-<B> Previous:</B> <A NAME="tex2html777"
-  HREF="node36.html">7.4 Application level queries</A>
- &nbsp; <B>  <A NAME="tex2html783"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html785"
-  HREF="node114.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<!--End of Table of Child-Links-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>13.2.4 Message based variables</TITLE>
-<META NAME="description" CONTENT="13.2.4 Message based variables">
+<TITLE>13.2.1 Position variables</TITLE>
+<META NAME="description" CONTENT="13.2.1 Position variables">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,81 +21,142 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node70.html">
 <LINK REL="previous" HREF="node68.html">
-<LINK REL="up" HREF="node65.html">
+<LINK REL="up" HREF="node68.html">
 <LINK REL="next" HREF="node70.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1263"
+<A NAME="tex2html1278"
   HREF="node70.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1257"
-  HREF="node65.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1251"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1272"
   HREF="node68.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1259"
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1266"
+  HREF="node68.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1274"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1261"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1276"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1264"
-  HREF="node70.html">13.2.5 OSC address variables</A>
-<B> Up:</B> <A NAME="tex2html1258"
-  HREF="node65.html">13.2 Variables</A>
-<B> Previous:</B> <A NAME="tex2html1252"
-  HREF="node68.html">13.2.3 Miscellaneous variables</A>
- &nbsp; <B>  <A NAME="tex2html1260"
+<B> Next:</B> <A NAME="tex2html1279"
+  HREF="node70.html">13.2.2 Time variables</A>
+<B> Up:</B> <A NAME="tex2html1273"
+  HREF="node68.html">13.2 Variables</A>
+<B> Previous:</B> <A NAME="tex2html1267"
+  HREF="node68.html">13.2 Variables</A>
+ &nbsp; <B>  <A NAME="tex2html1275"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1262"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1277"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION001424000000000000000"></A>
-<A NAME="msgvar"></A>
+<H2><A NAME="SECTION001421000000000000000"></A>
+<A NAME="posvar"></A>
 <BR>
-13.2.4 Message based variables
+13.2.1 Position variables
 </H2>
 
 <P>
-A message based variable is a variable containing an OSC message which will be evaluated at the time of the event. They are supported by all kind of events. Like  the variables above, a message based variable starts with a '$' sign followed by a valid 'get' message enclosed in parenthesis:
+Position variables reflects the current mouse position for mouse events. They are set to <TT>0</TT> for the other events. 
+
+<P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img81.gif"
+ WIDTH="172" HEIGHT="203" ALIGN="BOTTOM" BORDER="0"
+ SRC="img78.png"
  ALT="\begin{rail}
-msgVar : '(' oscaddress 'get' (\vert params) ')'
+posVar : xy \vert 'absx' \vert 'absy' \vert 'sx' \vert 'sy'
+\end{rail}">
+<BR>
+<A NAME="1442"></A>
+<A NAME="1443"></A>
+<A NAME="1444"></A>
+<A NAME="1445"></A>
+<A NAME="1446"></A>
+<A NAME="1447"></A>
+
+<P>
+where
+<BR>
+<IMG
+ WIDTH="310" HEIGHT="84" ALIGN="BOTTOM" BORDER="0"
+ SRC="img79.png"
+ ALT="\begin{rail}
+xy : ('x' \vert 'y') ( \vert '[low,high]')
 \end{rail}">
 <BR>
 
 <P>
-The evaluation of a 'get' message produces a message or a list of messages. The message based variable will be replaced by the parameters of the messages resulting from the evaluation of the 'get' message.
-Note that all the 'get' messages attached to an event are evaluated at the same time.
+
+<UL>
+<LI><TT>$x</TT> <TT>$y</TT>: denotes the mouse pointer position at the time of the event. The values are in the range <TT>[0,1]</TT> where 1 is the object size in the x or y dimension. The value is computed according to the object origin: it represents the mouse pointer distance from the object x or y origin (see <A HREF="node10.html#origin">2.1.3</A> p.<A HREF="node10.html#origin"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>). <TT>$x</TT> and <TT>$y</TT> variables support an optional range in the form <TT>[low, high]</TT> that transforms the <TT>[0,1]</TT>  values range into the <TT>[low, high]</TT> range.
+
+<P>
+</LI>
+<LI><TT>$absx</TT> <TT>$absy</TT>: denotes the mouse pointer absolute position at the time of the event. The values represent a pixel position relative to the top-left point of the target object. Note that this position is unaffected by scale. 
+Note also that the values are not clipped to the object dimensions and could exceed its width or height or become negative in case of mouse move events.
+
+<P>
+</LI>
+<LI><TT>$sx</TT> <TT>$sy</TT>: denotes the mouse pointer position in the scene coordinates space. 
+</LI>
+</UL>
 
 <P>
 <B> <B>E<SMALL>XAMPLE </SMALL></B></B>
 <BR>
-An object that takes the <TT>x</TT> position of another object on mouse down:
+An object that follows mouse move.
+<BR>
 <BR>
 <DIV ALIGN="CENTER">
 <BLINK><FONT COLOR="#ededed">
 								</DIV><TABLE  WIDTH="0%">
 <TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene/myObject watch mouseDown 
-<BR> (/ITL/scene/myObject x '$(/ITL/scene/obj get x)')</TT></FONT>
+								<FONT SIZE="-1"><TT>/ITL/scene/myObject watch mouseDown ( 
+<BR> /ITL/scene/myObject x '$sx', 
+<BR> /ITL/scene/myObject y '$sy' )</TT></FONT>
 								</TD></TR>
 </TABLE>
 <DIV ALIGN="CENTER"></FONT></BLINK>
 </DIV>
 
 <P>
-<BR><HR>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1278"
+  HREF="node70.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1272"
+  HREF="node68.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1266"
+  HREF="node68.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1274"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1276"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html1279"
+  HREF="node70.html">13.2.2 Time variables</A>
+<B> Up:</B> <A NAME="tex2html1273"
+  HREF="node68.html">13.2 Variables</A>
+<B> Previous:</B> <A NAME="tex2html1267"
+  HREF="node68.html">13.2 Variables</A>
+ &nbsp; <B>  <A NAME="tex2html1275"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1277"
+  HREF="node117.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

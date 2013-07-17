@@ -86,7 +86,18 @@
 
 \maketitle
 
-\vspace*{22cm}
+\vspace*{18cm}
+ 
+{\small INScore makes use of the following technologies:}
+\begin{table}[h]
+\begin{tabular}{ll}
+{\small The GUIDOEngine}  						& {\small \url{http://guidolib.sf.net}} \\
+{\small The IRCAM Gesture Follower} 				& {\small \url{http://imtr.ircam.fr/imtr/Gesture_Follower}} \\
+{\small The Qt5 cross-platform application and UI framework} & {\small \url{http://qt-project.org/qt5}} \\
+{\small The V8 JavaScript Engine} 				& {\small \url{https://code.google.com/p/v8/}}
+\end{tabular}
+\end{table}%
+
 {\small INScore was initiated in the Interlude project, funded by the French National Research Agency [ANR- 08-CORD-010].}
   
 
@@ -152,8 +163,8 @@ The OSC address space is made of static and dynamic nodes, hierarchically organi
 OSC messages are accepted at any level of the hierarchy:
 \begin{itemize}
 \item \textbf{the application level} responds to messages for application management (udp ports management, loading files, query messages). \\
-It includes a static node named \OSC{stats} that collects information about incoming messages, and a static \OSC{debug} node that can be used to get debug information.
-\item \textbf{the scene level} contains \emph{scores} that are associated to a window and respond to specific scene/window management messages.
+It includes a static node named \OSC{stats} that collects information about incoming messages, a static \OSC{log} node that control an embedded log window and a static \OSC{debug} node that can be used to get debug information.
+\item \textbf{the scene level} contains \emph{scores} that are associated to a window and respond to specific scene/window management messages. It includes three static nodes: a \OSC{sync} node for synchronization management, a \OSC{signal} node that is a container for \emph{signals}, and a \OSC{javascript} node that makes the javascript engine available to OSC commands.
 \item \textbf{the component level} contains the scene objects and two static nodes:
 
 \begin{itemize}
@@ -1136,7 +1147,7 @@ Querying INScore version:
 
 The application level provides the static nodes - \OSC{stats}, \OSC{debug} and \OSC{log}, available at \OSC{/ITL/stats} \OSC{/ITL/debug} and \OSC{/ITL/log}  to help debugging communication and INScore scripts design.
 
-\subsublevel{The 'stat' nodes}
+\subsublevel{The 'stats' nodes}
 \label{ITLstat}
 
 \begin{rail}
@@ -2279,7 +2290,8 @@ Reload aa INScore script on file modification:
 \toplevel{Gesture Follower}
 \label{GF}
 
-INScore supports gesture following using the technology developped by the IRCAM IMTR team. These features are available as a plugin that is available from the IRCAM. The plugin installation is documented in the accompanying readme file.
+INScore supports gesture following using the technology developed by the IRCAM IMTR team. These features are available as a plugin that is included in the INScore distribution (version 1.03 or greater) or available from the IRCAM.
+%available from the IRCAM. The plugin installation is documented in the accompanying readme file.
 
 %===============================
 %:    Basic principle

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>14.3.1 Gestures variables</TITLE>
-<META NAME="description" CONTENT="14.3.1 Gestures variables">
+<TITLE>14.2 Messages</TITLE>
+<META NAME="description" CONTENT="14.2 Messages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,82 +19,166 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node79.html">
 <LINK REL="previous" HREF="node77.html">
-<LINK REL="up" HREF="node77.html">
+<LINK REL="up" HREF="node76.html">
 <LINK REL="next" HREF="node79.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1386"
+<A NAME="tex2html1405"
   HREF="node79.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1380"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1399"
+  HREF="node76.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1393"
   HREF="node77.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1376"
-  HREF="node77.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1382"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1401"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1384"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1403"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1387"
-  HREF="node79.html">15. Scripting</A>
-<B> Up:</B> <A NAME="tex2html1381"
-  HREF="node77.html">14.3 Events and interaction</A>
-<B> Previous:</B> <A NAME="tex2html1377"
-  HREF="node77.html">14.3 Events and interaction</A>
- &nbsp; <B>  <A NAME="tex2html1383"
+<B> Next:</B> <A NAME="tex2html1406"
+  HREF="node79.html">14.3 Gestures management</A>
+<B> Up:</B> <A NAME="tex2html1400"
+  HREF="node76.html">14. Gesture Follower</A>
+<B> Previous:</B> <A NAME="tex2html1394"
+  HREF="node77.html">14.1 Basic principle</A>
+ &nbsp; <B>  <A NAME="tex2html1402"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1385"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1404"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION001531000000000000000"></A><A NAME="gfvar"></A>
+<H1><A NAME="SECTION001520000000000000000"></A><A NAME="gfmessages"></A>
 <BR>
-14.3.1 Gestures variables
-</H2>
+14.2 Messages
+</H1>
+A gesture follower is created in a scene using the <TT>imtrgf</TT> type. It has a graphic appearance that may be used for debug purpose but it is hidden by default.
 
 <P>
-A message associated to a gesture supports the following specific variables:
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img89.gif"
+ WIDTH="517" HEIGHT="75" ALIGN="BOTTOM" BORDER="0"
+ SRC="img85.png"
  ALT="\begin{rail}
-gesturevariable :
-( 'likelihood'
-\vert 'pos'
-\vert 'speed') ( \vert '[low,high]')
+gesturefollower : 'set' 'imtrgf' gesturedimension bufsize ( name + )
 \end{rail}">
 <BR>
-<A NAME="1581"></A>
-<A NAME="1582"></A>
-<A NAME="1583"></A>
-These variables support the scaling feature associated to position variables and described in section <A HREF="node66.html#posvar">13.2.1</A> p.<A HREF="node66.html#posvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>.
+<A NAME="1554"></A>
+
+<P>
+The parameters are:
 
 <UL>
-<LI><TT>likelihood</TT> indicates the current likelihood 
+<LI><TT>gesturedimension</TT>: the size of the gestures data vector.
 </LI>
-<LI><TT>pos</TT> indicates the current position in the gesture 
+<LI><TT>bufsize</TT>: the size of the gesture data storage.
 </LI>
-<LI><TT>speed</TT> indicates the current gesture execution speed 
+<LI><TT>name</TT>: a list of names to be used to refer to the learned gestures.
 </LI>
 </UL>
 
 <P>
-<BR><B> <B>N<SMALL>OTE </SMALL></B></B>
+<BR><B> <B>N<SMALL>OTE </SMALL></B></B> 
 <BR>
-Variables described in section <A HREF="node65.html#interactvar">13.2</A> p.<A HREF="node65.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> may also be used but they are meaningless and contains default values.
+A gesture follower is created with a fixed count of gestures that can be learned and decoded. These gestures are named gestures and can be addressed at <TT>/ITL/<I>scene</I>/<I>myfollower</I>/<I>gesturename</I></TT> where the part in italic are user defined names and where <TT>myfollower</TT> is a gesture follower.
 
 <P>
-<BR><HR>
+<BR>
+<IMG
+ WIDTH="378" HEIGHT="317" ALIGN="BOTTOM" BORDER="0"
+ SRC="img86.png"
+ ALT="\begin{rail}
+gesturefollower :
+[1] ( float32 + )
+\vert [2] ('learn' name)
+\ve...
+...ert [6] ('likelihoodwindow' float32)
+\vert [7] ('tolerance' float32)
+\end{rail}">
+<BR>
+<A NAME="1567"></A>
+<A NAME="1568"></A>
+<A NAME="1569"></A>
+<A NAME="1570"></A>
+<A NAME="1571"></A>
+
+<P>
+
+<UL>
+<LI><B>[1]</B> input data into the gesture follower. The data are interpreted according to the current operating mode i.e. learning, following or idle.
+</LI>
+<LI><B>[2]</B> starts to learn the gesture designated by <I>name</I>. Actually records the next input data to the gesture. 
+</LI>
+<LI><B>[3]</B> starts following i.e. trying to match the next input data to the recorded gestures.
+</LI>
+<LI><B>[4]</B> stops learning or following. Actually puts the system in idle phase.
+</LI>
+<LI><B>[5]</B> clear all the gestures data. This is equivalent to send the <TT>clear</TT> message to all the gestures. 
+</LI>
+<LI><B>[6]</B> sets the size of the window that contains the history of the likelihoods. May be viewed as how fast the likelihoods	will change.
+</LI>
+<LI><B>[7]</B> sets the follower tolerance. 
+</LI>
+</UL>
+
+<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Creating a gesture follower for 3 dimensional data and a typical learning sequence:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/gf set imtrgf 3 1000 gestureA gestureB gestureC gestureD
+<BR>/ITL/scene/gf learn gestureA 
+<BR>/ITL/scene/gf 0.1 0.5 -0.2 ... 0.7; ! the data size must be a multiple of 3
+<BR>/ITL/scene/gf stop;
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1405"
+  HREF="node79.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1399"
+  HREF="node76.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1393"
+  HREF="node77.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1401"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1403"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html1406"
+  HREF="node79.html">14.3 Gestures management</A>
+<B> Up:</B> <A NAME="tex2html1400"
+  HREF="node76.html">14. Gesture Follower</A>
+<B> Previous:</B> <A NAME="tex2html1394"
+  HREF="node77.html">14.1 Basic principle</A>
+ &nbsp; <B>  <A NAME="tex2html1402"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1404"
+  HREF="node117.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>
