@@ -30,6 +30,7 @@
 #include <stdlib.h>
 #include <fstream>
 #include <sstream>
+#include <unistd.h>
 
 #include "IAppl.h"
 #include "IApplVNodes.h"
