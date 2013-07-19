@@ -71,7 +71,7 @@ macosx:
 	cp -f ../src/guido2.ttf $(package)
 	cd $(package) && ln -sf /Applications .
 	[ -d $(package)/$(macplug) ] || mkdir $(package)/$(macplug)
-	cp ../lib/GestureFollower/libGFLib.dylib $(package)/$(macplug)
+	cp ../lib/GestureFollower/macosx/libGFLib.dylib $(package)/$(macplug)
 	make dmg
 		
 common: 
