@@ -47,8 +47,6 @@ VLogWindow::VLogWindow(const char* name)
     fClearButton = createToolButton(tr("Clear all"), QIcon(":/images/clear.png"), SLOT(clear()));
     fWrapButton = createToolButton(tr("Wrap mode"), QIcon(":/images/wrap.png"), SLOT(wrap()));
 	
-	qDebug() << fClearButton->contentsMargins();
-
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
 	buttonsLayout->setAlignment(Qt::AlignLeft);
 	buttonsLayout->addWidget (fClearButton);
