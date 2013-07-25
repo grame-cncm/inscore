@@ -10,6 +10,11 @@ INScore resources are released under the Creative Common license.
 ------------------------------------------------------------------
 
 -------------------------------
+** July 25 2013
+-------------------------------
+New log window script (S-log), java engine access (S-javascript)
+
+-------------------------------
 ** January 23 2013
 -------------------------------
 Restructuration of sample scripts and patches.
