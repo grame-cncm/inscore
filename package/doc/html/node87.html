@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>16. Appendices</TITLE>
-<META NAME="description" CONTENT="16. Appendices">
+<TITLE>15.5 Message based parameters</TITLE>
+<META NAME="description" CONTENT="15.5 Message based parameters">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,59 +19,125 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node90.html">
-<LINK REL="previous" HREF="node79.html">
-<LINK REL="up" HREF="OSCMsg.html">
+<LINK REL="next" HREF="node88.html">
+<LINK REL="previous" HREF="node86.html">
+<LINK REL="up" HREF="node82.html">
 <LINK REL="next" HREF="node88.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1516"
+<A NAME="tex2html1536"
   HREF="node88.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1510"
-  HREF="OSCMsg.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1504"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1530"
+  HREF="node82.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1524"
   HREF="node86.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1512"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1532"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1514"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1534"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1517"
-  HREF="node88.html">16.1 Grammar definition</A>
-<B> Up:</B> <A NAME="tex2html1511"
-  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
-<B> Previous:</B> <A NAME="tex2html1505"
-  HREF="node86.html">15.6.1 The Javascript object</A>
- &nbsp; <B>  <A NAME="tex2html1513"
+<B> Next:</B> <A NAME="tex2html1537"
+  HREF="node88.html">15.6 Languages</A>
+<B> Up:</B> <A NAME="tex2html1531"
+  HREF="node82.html">15. Scripting</A>
+<B> Previous:</B> <A NAME="tex2html1525"
+  HREF="node86.html">15.4 Variables</A>
+ &nbsp; <B>  <A NAME="tex2html1533"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1515"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1535"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001700000000000000000">
-16. Appendices</A>
+<H1><A NAME="SECTION001650000000000000000"></A><A NAME="scriptmsgparam"></A>
+<BR>
+15.5 Message based parameters
 </H1>
-<BR><HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
-<UL>
-<LI><A NAME="tex2html1518"
-  HREF="node88.html">16.1 Grammar definition</A>
-<LI><A NAME="tex2html1519"
-  HREF="node89.html">16.2 Lexical tokens</A>
-</UL>
-<!--End of Table of Child-Links-->
-<BR><HR>
+<P>
+Similarly to message based variables (see section <A HREF="node72.html#msgvar">13.2.4</A> p.<A HREF="node72.html#msgvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>), a message parameter may also use the result of a <TT>get</TT> message as parameters specified like a message based variable.
+The message must be enclosed in parameters with a leading $ sign.
+<BR>
+<IMG
+ WIDTH="220" HEIGHT="46" ALIGN="BOTTOM" BORDER="0"
+ SRC="img93.png"
+ ALT="\begin{rail}
+msgparam : '(' (message) ')'
+\end{rail}">
+<BR>
+<A NAME="1698"></A>
+
+<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+Displaying INScore version using a message parameter:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/version set  txt "INScore version is" $(/ITL get version);</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+
+<P>
+<BR><B> <B>N<SMALL>OTE </SMALL></B></B>
+<BR>
+Message based parameters are evaluated by the parser. Thus when the system state is modified by a script before a message parameter, these modifications won't be visible at the time of the parameter evaluation because all the messages will be processed by the next time task. For example:
+<BR>
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>/ITL/scene/obj x 0.1
+<BR>/ITL/scene/foo x $(/ITL/scene/foo get x);</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
+x position of <TT>/ITL/scene/foo</TT> will be set to x position of <TT>/ITL/scene/obj</TT> at the time of the script evaluation (that may be different to 0.1).
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1536"
+  HREF="node88.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1530"
+  HREF="node82.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1524"
+  HREF="node86.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1532"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1534"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html1537"
+  HREF="node88.html">15.6 Languages</A>
+<B> Up:</B> <A NAME="tex2html1531"
+  HREF="node82.html">15. Scripting</A>
+<B> Previous:</B> <A NAME="tex2html1525"
+  HREF="node86.html">15.4 Variables</A>
+ &nbsp; <B>  <A NAME="tex2html1533"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1535"
+  HREF="node117.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

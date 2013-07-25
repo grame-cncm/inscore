@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>14.2 Messages</TITLE>
-<META NAME="description" CONTENT="14.2 Messages">
+<TITLE>13.4 File watcher</TITLE>
+<META NAME="description" CONTENT="13.4 File watcher">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,88 +19,88 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node77.html">
 <LINK REL="previous" HREF="node74.html">
-<LINK REL="up" HREF="node73.html">
+<LINK REL="up" HREF="node63.html">
 <LINK REL="next" HREF="node76.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1348"
+<A NAME="tex2html1358"
   HREF="node76.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1342"
-  HREF="node73.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1336"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1352"
+  HREF="node63.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1348"
   HREF="node74.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1344"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1354"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1346"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1356"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1349"
-  HREF="node76.html">14.2.1 Gestures management</A>
-<B> Up:</B> <A NAME="tex2html1343"
-  HREF="node73.html">14. Gesture Follower</A>
-<B> Previous:</B> <A NAME="tex2html1337"
-  HREF="node74.html">14.1 Basic principle</A>
- &nbsp; <B>  <A NAME="tex2html1345"
+<B> Next:</B> <A NAME="tex2html1359"
+  HREF="node76.html">14. Gesture Follower</A>
+<B> Up:</B> <A NAME="tex2html1353"
+  HREF="node63.html">13. Events and Interaction</A>
+<B> Previous:</B> <A NAME="tex2html1349"
+  HREF="node74.html">13.3 Interaction state management</A>
+ &nbsp; <B>  <A NAME="tex2html1355"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1347"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1357"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001520000000000000000"></A><A NAME="gfmessages"></A>
+<H1><A NAME="SECTION001440000000000000000"></A>
+<A NAME="filewatch"></A>
 <BR>
-14.2 Messages
+13.4 File watcher
 </H1>
-A gesture follower is created in a scene using the <TT>imtrgf</TT> type. It has a graphic appearance that may be used for debug purpose but it is hidden by default.
+
+<P>
+The <TT>fileWatcher</TT> is a static node of a scene that is intended to watch file modifications. 
+<BR>
+It receives messages at the address <TT>/ITL/scene/fileWatcher</TT>.
+
+<P>
+The <TT>fileWatcher</TT> support the <TT>watch</TT> and <TT>watch+</TT> messages as described in section <A HREF="node63.html#interaction">13</A> p.<A HREF="node63.html#interaction"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> with a file name used in place of the <TT>what</TT> parameter.
 
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img84.gif"
+ WIDTH="500" HEIGHT="164" ALIGN="BOTTOM" BORDER="0"
+ SRC="img84.png"
  ALT="\begin{rail}
-gesturefollower : 'set' 'imtrgf' gesturedimension bufsize ( name + )
+fileWatcher : (('watch' \vert 'watch+') ( \vert filePath ( \vert ( ( message )+ '','' ) ) ))
 \end{rail}">
 <BR>
-<A NAME="1509"></A>
+<A NAME="1536"></A>
+<A NAME="1537"></A>
 
 <P>
-The parameters are:
-
-<UL>
-<LI><TT>gesturedimension</TT>: the size of the gestures data vector.
-</LI>
-<LI><TT>bufsize</TT>: the size of the gesture data storage.
-</LI>
-<LI><TT>name</TT>: a list of names to be used to refer to the learned gestures.
-</LI>
-</UL>
-
-<P>
-<BR><B> <B>N<SMALL>OTE </SMALL></B></B> 
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
 <BR>
-A gesture follower is created with a fixed count of gestures that can be stored and followed. These gestures are named and can be addressed at <TT>/ITL/<I>scene</I>/<I>myfollower</I>/<I>gesturename</I></TT> where the part in italic are user defined names and where <TT>myfollower</TT> is a gesture follower.
+Reload aa INScore script on file modification:
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>
+/ITL/scene/fileWatcher wach 'myScript.inscore' 
+<BR> ( /ITL/scene load 'myScript.inscore' )
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
 
 <P>
-<BR><HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
-
-<UL>
-<LI><A NAME="tex2html1350"
-  HREF="node76.html">14.2.1 Gestures management</A>
-</UL>
-<!--End of Table of Child-Links-->
 <BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>

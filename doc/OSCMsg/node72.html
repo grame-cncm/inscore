@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>13.4 File watcher</TITLE>
-<META NAME="description" CONTENT="13.4 File watcher">
+<TITLE>13.2.4 Message based variables</TITLE>
+<META NAME="description" CONTENT="13.2.4 Message based variables">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,82 +19,76 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node73.html">
 <LINK REL="previous" HREF="node71.html">
-<LINK REL="up" HREF="node60.html">
+<LINK REL="up" HREF="node68.html">
 <LINK REL="next" HREF="node73.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1301"
+<A NAME="tex2html1320"
   HREF="node73.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1295"
-  HREF="node60.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1291"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1314"
+  HREF="node68.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1308"
   HREF="node71.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1297"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1316"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1299"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1318"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1302"
-  HREF="node73.html">14. Gesture Follower</A>
-<B> Up:</B> <A NAME="tex2html1296"
-  HREF="node60.html">13. Events and Interaction</A>
-<B> Previous:</B> <A NAME="tex2html1292"
-  HREF="node71.html">13.3 Interaction state management</A>
- &nbsp; <B>  <A NAME="tex2html1298"
+<B> Next:</B> <A NAME="tex2html1321"
+  HREF="node73.html">13.2.5 OSC address variables</A>
+<B> Up:</B> <A NAME="tex2html1315"
+  HREF="node68.html">13.2 Variables</A>
+<B> Previous:</B> <A NAME="tex2html1309"
+  HREF="node71.html">13.2.3 Miscellaneous variables</A>
+ &nbsp; <B>  <A NAME="tex2html1317"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1300"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1319"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001440000000000000000"></A>
-<A NAME="filewatch"></A>
+<H2><A NAME="SECTION001424000000000000000"></A>
+<A NAME="msgvar"></A>
 <BR>
-13.4 File watcher
-</H1>
+13.2.4 Message based variables
+</H2>
 
 <P>
-The <TT>fileWatcher</TT> is a static node of a scene that is intended to watch file modifications. 
-<BR>
-It receives messages at the address <TT>/ITL/scene/fileWatcher</TT>.
-
-<P>
-The <TT>fileWatcher</TT> support the <TT>watch</TT> and <TT>watch+</TT> messages as described in section <A HREF="node60.html#interaction">13</A> p.<A HREF="node60.html#interaction"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A> with a file name used in place of the <TT>what</TT> parameter.
-
-<P>
+A message based variable is a variable containing an OSC message which will be evaluated at the time of the event. They are supported by all kind of events. Like  the variables above, a message based variable starts with a '$' sign followed by a valid 'get' message enclosed in parenthesis:
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img83.gif"
+ WIDTH="413" HEIGHT="89" ALIGN="BOTTOM" BORDER="0"
+ SRC="img82.png"
  ALT="\begin{rail}
-fileWatcher : (('watch' \vert 'watch+') ( \vert filePath ( \vert ( ( message )+ '','' ) ) ))
+msgVar : '(' oscaddress 'get' (\vert params) ')'
 \end{rail}">
 <BR>
-<A NAME="1491"></A>
-<A NAME="1492"></A>
+
+<P>
+The evaluation of a 'get' message produces a message or a list of messages. The message based variable will be replaced by the parameters of the messages resulting from the evaluation of the 'get' message.
+Note that all the 'get' messages attached to an event are evaluated at the same time.
 
 <P>
 <B> <B>E<SMALL>XAMPLE </SMALL></B></B>
 <BR>
-Reload aa INScore script on file modification:
+An object that takes the <TT>x</TT> position of another object on mouse down:
 <BR>
 <DIV ALIGN="CENTER">
 <BLINK><FONT COLOR="#ededed">
 								</DIV><TABLE  WIDTH="0%">
 <TR><TD> 
-								<FONT SIZE="-1"><TT>
-/ITL/scene/fileWatcher wach 'myScript.inscore' 
-<BR> ( /ITL/scene load 'myScript.inscore' )
-</TT></FONT>
+								<FONT SIZE="-1"><TT>/ITL/scene/myObject watch mouseDown 
+<BR> (/ITL/scene/myObject x '$(/ITL/scene/obj get x)')</TT></FONT>
 								</TD></TR>
 </TABLE>
 <DIV ALIGN="CENTER"></FONT></BLINK>

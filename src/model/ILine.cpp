@@ -86,19 +86,29 @@ MsgHandler::msgStatus ILine::set (const IMessage* msg)
 		ITLErr << "set line without mode is deprecated" << ITLEndl;
 	}
 	else if (msg->size() == 4) {
-		string mode; float a, b;
-		if (!msg->param(1, mode) || (!msg->param(2, a)) || (!msg->param(3, b)))
+		string mode; float a, b; int ai, bi;
+		if (!msg->param(1, mode))
 			return MsgHandler::kBadParameters;
+		if (!msg->param(2, a)) {
+			if (msg->param(2, ai)) a = float(ai);
+			else return MsgHandler::kBadParameters;
+		}
+		if (!msg->param(3, b)) {
+			if (msg->param(3, bi)) b = float(bi);
+			else return MsgHandler::kBadParameters;
+		}
 
+		if (a<0) a = -a;
 		if (mode == "xy") {
-			setPoint( TFloatPoint(a,b) );
+			setPoint( TFloatPoint(a, (b<0 ? -b : b)) );
 		}
 		else if (mode == "wa") {
 			fWAMode = true;
 			double x = a * cos(M_PI * b / 180);
 			double y = a * sin(M_PI * b / 180);
-			setPoint( TFloatPoint(x,y) );
+			setPoint( TFloatPoint(x, y) );
 		}
+		else return MsgHandler::kBadParameters;
 		newData(true);
 		status = MsgHandler::kProcessed;
 	}

@@ -37,6 +37,9 @@ class IMessage;
 class IAppl;
 typedef class libmapping::SMARTP<IAppl>			SIAppl;
 
+class IApplLog;
+typedef class libmapping::SMARTP<IApplLog>		SIApplLog;
+
 class IColor;
 typedef class libmapping::SMARTP<IColor>		SIColor;
 
@@ -64,6 +67,9 @@ typedef class libmapping::SMARTP<IGraphicBasedObject> SIGraphicBasedObject;
 class IGrid;
 typedef class libmapping::SMARTP<IGrid> SIGrid;
 
+class ILayer;
+typedef class libmapping::SMARTP<ILayer> SILayer;
+    
 class IGuidoCode;
 typedef class libmapping::SMARTP<IGuidoCode>	SIGuidoCode;
 

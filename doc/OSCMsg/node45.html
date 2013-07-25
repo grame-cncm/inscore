@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>10.1 Synchronization modes</TITLE>
-<META NAME="description" CONTENT="10.1 Synchronization modes">
+<TITLE>9.3 Mapping files</TITLE>
+<META NAME="description" CONTENT="9.3 Mapping files">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,87 +19,61 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node46.html">
 <LINK REL="previous" HREF="node44.html">
-<LINK REL="up" HREF="node44.html">
+<LINK REL="up" HREF="node42.html">
 <LINK REL="next" HREF="node46.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html902"
+<A NAME="tex2html917"
   HREF="node46.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html896"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html911"
+  HREF="node42.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html905"
   HREF="node44.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html892"
-  HREF="node44.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html898"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html913"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html900"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html915"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html903"
-  HREF="node46.html">10.1.1 Using the master</A>
-<B> Up:</B> <A NAME="tex2html897"
-  HREF="node44.html">10. Synchronization</A>
-<B> Previous:</B> <A NAME="tex2html893"
-  HREF="node44.html">10. Synchronization</A>
- &nbsp; <B>  <A NAME="tex2html899"
+<B> Next:</B> <A NAME="tex2html918"
+  HREF="node46.html">9.4 Symbolic score mappings</A>
+<B> Up:</B> <A NAME="tex2html912"
+  HREF="node42.html">9. Mapping graphic space</A>
+<B> Previous:</B> <A NAME="tex2html906"
+  HREF="node44.html">9.2 The 'map+' message</A>
+ &nbsp; <B>  <A NAME="tex2html914"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html901"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html916"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001110000000000000000"></A><A NAME="syncmode"></A>
+<H1><A NAME="SECTION001030000000000000000"></A>
+<A NAME="mapFileMsg"></A>
 <BR>
-10.1 Synchronization modes
+9.3 Mapping files
 </H1>
-
-<P>
-Synchronizing a slave component <TT>A</TT> to a master component <TT>B</TT> has the following effect:
-
-<UL>
-<LI><TT>A</TT> position (x) is modified to match the <TT>B</TT> time position corresponding to <TT>A</TT> date.
-</LI>
-<LI>depending on the optional <TT>syncStretch</TT> option, <TT>A</TT> width and/or height is modified to match the  corresponding <TT>B</TT> dimension (see below).
-</LI>
-<LI>depending on the optional <TT>syncPos</TT> option, <TT>A</TT> vertical position (y) is modified. Note that the <TT>y</TT> position remains free and could always be modified using a <TT>dy</TT> message.
-</LI>
-<LI>if <TT>A</TT> date has no graphic correspondence in <TT>B</TT> mapping (the date is not mapped, or out of <TT>B</TT> mapping bounds ), <TT>A</TT> won't be visible.
-</LI>
-</UL>
-
-<P>
+The <TT>mapf</TT> messages is similar to the <TT>map</TT> message but gives the path name of a file containing the mapping data, along with the optional map name.
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img58.gif"
+ WIDTH="373" HEIGHT="88" ALIGN="BOTTOM" BORDER="0"
+ SRC="img55.png"
  ALT="\begin{rail}
-syncmode : syncHow\vert syncStretch \vert syncPos \vert mapName
+mapfMsg : 'mapf' ( \vert mapName ) mapFilePath
 \end{rail}">
 <BR>
-<A NAME="1010"></A>
+<A NAME="973"></A>
 
 <P>
-<BR><HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
-
-<UL>
-<LI><A NAME="tex2html904"
-  HREF="node46.html">10.1.1 Using the master date</A>
-<LI><A NAME="tex2html905"
-  HREF="node47.html">10.1.2 Synchronizing an object duration</A>
-<LI><A NAME="tex2html906"
-  HREF="node48.html">10.1.3 Controlling the slave <TT>y</TT> position</A>
-</UL>
-<!--End of Table of Child-Links-->
 <BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>

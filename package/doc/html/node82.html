@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.3 Types</TITLE>
-<META NAME="description" CONTENT="15.3 Types">
+<TITLE>15. Scripting</TITLE>
+<META NAME="description" CONTENT="15. Scripting">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,81 +19,76 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node83.html">
-<LINK REL="previous" HREF="node81.html">
-<LINK REL="up" HREF="node79.html">
+<LINK REL="next" HREF="node90.html">
+<LINK REL="previous" HREF="node76.html">
+<LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node83.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1449"
+<A NAME="tex2html1459"
   HREF="node83.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1443"
-  HREF="node79.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1437"
-  HREF="node81.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1445"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1453"
+  HREF="OSCMsg.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
 <A NAME="tex2html1447"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+  HREF="node81.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1455"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1457"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1450"
-  HREF="node83.html">15.4 Variables</A>
-<B> Up:</B> <A NAME="tex2html1444"
-  HREF="node79.html">15. Scripting</A>
-<B> Previous:</B> <A NAME="tex2html1438"
-  HREF="node81.html">15.2 Messages</A>
- &nbsp; <B>  <A NAME="tex2html1446"
+<B> Next:</B> <A NAME="tex2html1460"
+  HREF="node83.html">15.1 Statements</A>
+<B> Up:</B> <A NAME="tex2html1454"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html1448"
+  HREF="node81.html">14.5 Gesture Follower Appearance</A>
+ &nbsp; <B>  <A NAME="tex2html1456"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1448"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1458"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001630000000000000000"></A><A NAME="scripttypes"></A>
+<H1><A NAME="SECTION001600000000000000000"></A>
+<A NAME="scripting"></A>
 <BR>
-15.3 Types
+15. Scripting
 </H1>
 
 <P>
-Using OSC, the message parameters are typed by the OSC protocol. 
-With their textual version, any parameter is converted to an OSC type (i.e. int32, float or string) at parsing level.
-A special attention must be given to strings in order to discriminate addresses and parameters. Strings intended as parameters must:
+INScore saves its state to files containing textual OSC messages. These files can be edited or created from scratch using any text editor. In order to provide users with a scripting language, the OSC syntax has been extended at textual level.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI>be quoted, using single or double quotes. Note that an ambiguous quote included in a string can be escaped using a '<code>\</code>'.
-</LI>
-<LI>or make use of the following characters set: <TT>[-a-zA-Z0-9]+</TT> or <TT>[_a-zA-Z][_a-zA-Z0-9]*</TT>.
- 
-</LI>
-</UL>
-
-<P>
-<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
-<BR>
-Different string parameter
-<BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene/text set txt "Hello world";  ! string including a space must be quoted 
-<BR>/ITL/scene/img set file 'anImage.png';  ! dots must be quoted too 
-<BR>/ITL/scene/foo set txt no_quotes_needed;
-</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
-
-<P>
+<LI><A NAME="tex2html1461"
+  HREF="node83.html">15.1 Statements</A>
+<LI><A NAME="tex2html1462"
+  HREF="node84.html">15.2 Messages</A>
+<LI><A NAME="tex2html1463"
+  HREF="node85.html">15.3 Types</A>
+<LI><A NAME="tex2html1464"
+  HREF="node86.html">15.4 Variables</A>
+<LI><A NAME="tex2html1465"
+  HREF="node87.html">15.5 Message based parameters</A>
+<LI><A NAME="tex2html1466"
+  HREF="node88.html">15.6 Languages</A>
+<UL>
+<LI><A NAME="tex2html1467"
+  HREF="node89.html">15.6.1 The Javascript object</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
 <BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>

@@ -61,6 +61,7 @@ class export Updater : public libmapping::smartable
 		virtual void updateTo (IObject*) {}
 		virtual void updateTo (IObjectDebug*) {}
 		virtual void updateTo (IAppl*) {}
+		virtual void updateTo (IApplLog*) {}
 		virtual void updateTo (IScene*) {}
 		virtual void updateTo (IText*) {}
 		virtual void updateTo (IHtml*) {}
@@ -73,7 +74,8 @@ class export Updater : public libmapping::smartable
 		virtual void updateTo (IShape *) {}
 		virtual void updateTo (IShapeMap *) {}
 		virtual void updateTo (IRect *) {}
-		virtual void updateTo (IGrid *) {}
+        virtual void updateTo (IGrid *) {}
+        virtual void updateTo (ILayer *) {}
 		virtual void updateTo (IEllipse *) {}
 		virtual void updateTo (IPolygon *) {}
 		virtual void updateTo (ICurve*) {}

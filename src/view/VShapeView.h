@@ -57,6 +57,7 @@ class VShapeView: public VGraphicsItemView
 				VShapeView(QGraphicsScene * scene , QAbstractGraphicsShapeItem * abstractGraphicsShapeItem);
 		
 		void	setQPenStyle(const std::string& penStyle , QPen& pen) const;
+        void	setQBrushStyle(const std::string& brushStyle , QBrush& brush) const;
 };
 
 /*!@} */

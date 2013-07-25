@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.4 Variables</TITLE>
-<META NAME="description" CONTENT="15.4 Variables">
+<TITLE>15.1 Statements</TITLE>
+<META NAME="description" CONTENT="15.1 Statements">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,156 +21,76 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node84.html">
 <LINK REL="previous" HREF="node82.html">
-<LINK REL="up" HREF="node79.html">
+<LINK REL="up" HREF="node82.html">
 <LINK REL="next" HREF="node84.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1463"
+<A NAME="tex2html1480"
   HREF="node84.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1457"
-  HREF="node79.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1451"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1474"
   HREF="node82.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1459"
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1468"
+  HREF="node82.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1476"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1461"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1478"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1464"
-  HREF="node84.html">15.5 Message based parameters</A>
-<B> Up:</B> <A NAME="tex2html1458"
-  HREF="node79.html">15. Scripting</A>
-<B> Previous:</B> <A NAME="tex2html1452"
-  HREF="node82.html">15.3 Types</A>
- &nbsp; <B>  <A NAME="tex2html1460"
+<B> Next:</B> <A NAME="tex2html1481"
+  HREF="node84.html">15.2 Messages</A>
+<B> Up:</B> <A NAME="tex2html1475"
+  HREF="node82.html">15. Scripting</A>
+<B> Previous:</B> <A NAME="tex2html1469"
+  HREF="node82.html">15. Scripting</A>
+ &nbsp; <B>  <A NAME="tex2html1477"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1462"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1479"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001640000000000000000"></A><A NAME="scriptvar"></A>
+<H1><A NAME="SECTION001610000000000000000"></A><A NAME="scriptstatement"></A>
 <BR>
-15.4 Variables
+15.1 Statements
 </H1>
+An INScore file is a list of textual expressions. A script expression is:
+
+<UL>
+<LI>a message: basically a textual OSC message extended to support URL like addresses and variables as parameters.
+</LI>
+<LI>a variable declaration.
+</LI>
+<LI>a foreign language script that may generate messages as output.
+</LI>
+</UL>
 
 <P>
-A variable declaration associates a name with a list of parameters or a list of messages.
-Parameters must follow the rules given in section <A HREF="node82.html#scripttypes">15.3</A>. They may include previously declared variables. A message list must be enclosed in parenthesis and a comma must be used as messages separator.
 <BR>
 <IMG
- WIDTH="471" HEIGHT="199" ALIGN="BOTTOM" BORDER="0"
- SRC="img91.gif"
+ WIDTH="254" HEIGHT="127" ALIGN="BOTTOM" BORDER="0"
+ SRC="img91.png"
  ALT="\begin{rail}
-variabledecl : 'ident' '=' ( (param \vert variable) +
-\vert '(' (message + ',') ')' ) ';'
+expression :
+message '';''
+\vert variabledecl '';''
+\vert script
 \end{rail}">
 <BR>
-<A NAME="1619"></A>
+<A NAME="1662"></A>
 
 <P>
-<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
-<BR>
-Variables declarations
-<BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>color = 200 200 200; 
-<BR>
-colorwithalpha = $color 100; ! using another variable 
-<BR>
-msgsvar= (    ! a variable refering to a message list 
-<BR>
-localhost:7001/world "Hello world", 
-<BR>
-localhost:7001/world "how are you ?" );
-</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
+Messages and variables declarations must be followed by a semicolon, used as statements separator.
 
 <P>
-A variable may be used in place of any message parameter. A reference to a variable must have the form <TT>$ident</TT> where <TT>ident</TT> is a previously declared variable. A variable is evaluated at parsing level and replaced by its content.
-
-<P>
-<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
-<BR>
-Using a variable to share a common position:
-<BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>x = 0.5;
-<BR>/ITL/scene/a x $x;
-<BR>/ITL/scene/b x $x;
-</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
-
-<P>
-Variables can be used in interaction messages as well, which may also use the variables available in the interaction context (see section <A HREF="node65.html#interactvar">13.2</A> p.<A HREF="node65.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). To differentiate between a <I>script</I> and an <I>interaction</I> variable, the latter must be quoted to be passed as strings and to prevent their evaluation by the parser. 
-
-<P>
-<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
-<BR>
-Using variables in interaction messages: $sx is evaluated at event occurrence	and $y is evaluated at parsing level.
-<BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>y = 0.5;
-<BR>/ITL/scene/foo watch mouseDown (/ITL/scene/foo "$sx" $y);
-</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
-
-<P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html1463"
-  HREF="node84.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1457"
-  HREF="node79.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1451"
-  HREF="node82.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1459"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1461"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html1464"
-  HREF="node84.html">15.5 Message based parameters</A>
-<B> Up:</B> <A NAME="tex2html1458"
-  HREF="node79.html">15. Scripting</A>
-<B> Previous:</B> <A NAME="tex2html1452"
-  HREF="node82.html">15.3 Types</A>
- &nbsp; <B>  <A NAME="tex2html1460"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1462"
-  HREF="node114.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

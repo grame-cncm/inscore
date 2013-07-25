@@ -122,20 +122,24 @@ template <typename T>	OSCStream& operator <<(OSCStream& s, const std::vector<T>&
 							return s; 
 						}
 
+class IApplLog;
 //--------------------------------------------------------------------------
 /*!
 \brief	OSC error stream
 */
 class OSCErrorStream : public OSCStream
 {
-	std::stringstream fSStream;
+	std::stringstream	fSStream;
+	std::string			fAddress;
+	IApplLog*			fLogWindow;
 	public:
-				 OSCErrorStream(UdpSocket* socket) : OSCStream(socket) {} 
+				 OSCErrorStream(UdpSocket* socket) : OSCStream(socket), fLogWindow(0) {}
 		virtual ~OSCErrorStream() {}
 		
+		void	setLogWindow (IApplLog* w)						{ fLogWindow = w; }
 		std::stringstream& stream()								{ return fSStream; }
-		virtual OSCErrorStream&		start(const char * address) { fSStream.str(""); OSCStream::start(address); return *this; }
-		virtual OSCErrorStream&		end()						{ OSCStream::stream() << fSStream.str().c_str(); OSCStream::end(); return *this; }
+		virtual OSCErrorStream&		start(const char * address) { fSStream.str(""); fAddress = address; OSCStream::start(address); return *this; }
+		virtual OSCErrorStream&		end();
 };
 
 

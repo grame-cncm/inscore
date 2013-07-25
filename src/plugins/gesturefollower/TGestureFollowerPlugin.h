@@ -42,6 +42,7 @@ class TGestureFollowerPlugin : public TPlugin {
 		typedef int					(* TIntIntFunction) (GestureFollower * gf, int);
 		typedef float				(* TFloatVoidFunction) (GestureFollower * gf);
 		typedef const float*		(* TFloatPVoidFunction) (GestureFollower * gf);
+		typedef const float*		(* TFloatPIntFunction) (GestureFollower * gf, int);
 		typedef const char*			(* TCharPVoidFunction) ();
 
 		static TCharPVoidFunction	fVersionStr;
@@ -66,6 +67,7 @@ class TGestureFollowerPlugin : public TPlugin {
 		static TFloatPVoidFunction	fLikelihood;
 		static TFloatPVoidFunction	fSpeed;
 		static TIntIntFunction		fGetPhraseSize;
+		static TFloatPIntFunction	fGetPhraseData;
 		static TIntVoidFunction		fGetState;
 
 		
@@ -106,6 +108,7 @@ class TGestureFollowerPlugin : public TPlugin {
 		const float*	likelihood() const;
 		const float*	speed () const;
 		int				getPhraseSize(int) const;
+		const float*	getPhraseData(int) const;
 		int				getState() const;
 };
 

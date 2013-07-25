@@ -65,7 +65,7 @@ class IScene : public IRectShape, public PeriodicTask
 	bool			fFrameless;
 	bool			fAbsoluteCoordinates;
 	bool			fWindowOpacity;
-	SISceneSync		fSync;
+//	SISceneSync		fSync;
 	SIFileWatcher	fFileWatcher;
 	SISignalNode	fSignals;
 	SIJavascript	fJSObject;

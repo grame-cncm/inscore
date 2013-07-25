@@ -29,19 +29,12 @@ if(WIN32)
 	add_definitions(-DMSVC -D_USE_MATH_DEFINES ${X64})
 else()
 	add_definitions(-Wall)
+	if (NOT APPLE)
+		add_definitions(-fPIC)
+	endif()
 endif()
 
 if(APPLE)
-	if (${CMAKE_SYSTEM_VERSION} VERSION_LESS 9.0.0)
-		set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.4u.sdk)
-	elseif (${CMAKE_SYSTEM_VERSION} VERSION_LESS 10.8.0)
-		set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.5.sdk)
-	elseif (${XCODE_VERSION} VERSION_LESS 4.0.0)
-		set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.6.sdk)
-	else ()
-		set (CMAKE_OSX_SYSROOT "macosx10.7")
-	endif ()
- #######################################
  if (DIST STREQUAL "yes")
 	message (STATUS "All architectures will be compiled - Use -DDIST=no to change.")
 	set (CMAKE_OSX_ARCHITECTURES "x86_64 i386")
@@ -165,8 +158,9 @@ endif()
 
 message (STATUS "Using Qt version ${QTVERSION} - Use -DQTVERSION=vers to change.")
 
+set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h  ${ROOT}/view/VLogWindow.h)
 if (QTVERSION EQUAL "5")
-	set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/view/VVideoView.h ${ROOT}/model/QFileWatcher.h )
+	set (MOC_HEADERS ${MOC_HEADERS} ${ROOT}/view/VVideoView.h)
 	if(APPLE OR WIN32)
 	  set(DESIRED_QT_VERSION 5.0)
 	  FIND_PACKAGE(Qt5Widgets REQUIRED)
@@ -174,20 +168,20 @@ if (QTVERSION EQUAL "5")
 	  FIND_PACKAGE(Qt5PrintSupport REQUIRED)
 	  FIND_PACKAGE(Qt5Multimedia REQUIRED)
 	  FIND_PACKAGE(Qt5MultimediaWidgets REQUIRED)
-	# message("Qt5Svg_LIBRARIES ${Qt5Svg_LIBRARIES}")
-	# message("Qt5Svg_INCLUDE_DIRS ${Qt5Svg_INCLUDE_DIRS}")
+	  set(QTLIBS ${Qt5Core_LIBRARIES}  ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} ${Qt5Multimedia_LIBRARIES} ${Qt5MultimediaWidgets_LIBRARIES})	
 	else()
 	  set(DESIRED_QT_VERSION 5.0)
 	  FIND_PACKAGE(Qt5Widgets REQUIRED)
 	  FIND_PACKAGE(Qt5Svg REQUIRED)
-	  set (QTLIBS "-lQtCore -lQtGui -lQtSvg -lphonon" )
+	  FIND_PACKAGE(Qt5PrintSupport REQUIRED)
+	  FIND_PACKAGE(Qt5Multimedia REQUIRED)
+	  FIND_PACKAGE(Qt5MultimediaWidgets REQUIRED)
+	  set(QTLIBS "-lQt5Core -lQt5Gui -lQt5Widgets -lQt5Svg -lQt5PrintSupport -lQt5Multimedia -lQt5MultimediaWidgets")	
 	endif()
 
-	set(QTLIBS ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} ${Qt5Multimedia_LIBRARIES} ${Qt5MultimediaWidgets_LIBRARIES})	
 	set (QTHEADERS "${Qt5Widgets_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS}  ${Qt5PrintSupport_INCLUDE_DIRS}  ${Qt5Multimedia_INCLUDE_DIRS}  ${Qt5MultimediaWidgets_INCLUDE_DIRS}")
 
-else (QTVERSION EQUAL "5")   # assume we're using Qt4
-	set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h )
+else ()   # assume we're using Qt4
 	add_definitions(-DUSEPHONON)
 
 	if(APPLE OR WIN32)
@@ -209,7 +203,7 @@ else (QTVERSION EQUAL "5")   # assume we're using Qt4
 	
 	set (QTHEADERS "${QT_INCLUDE_DIR}" "${QT_QTCORE_INCLUDE_DIR}" "${QT_QTGUI_INCLUDE_DIR}" "${QT_QTSVG_INCLUDE_DIR}" "${QT_PHONON_INCLUDE_DIR}")
 
-endif(QTVERSION EQUAL "5")
+endif()
 
 if(APPLE)
 	set (CORE_FOUNDATION "-framework CoreFoundation")
@@ -246,7 +240,7 @@ set(INSLIBS  ${INSLIBS} ${OSCPACK} ${GUIDO} ${SCRIPTS} ${QTLIBS} ${CORE_FOUNDATI
 #######################################
 # moc settings
 QT_WRAP_CPP (${TARGET} MOC_FILES ${MOC_HEADERS})
-QT_WRAP_CPP (${APPLTARGET} APPL_MOC_FILES ${ROOT}/INScoreAppl.h)
+QT_WRAP_CPP (${APPLTARGET} APPL_MOC_FILES ${ROOT}/INScoreAppl.h )
 
 SET(QtApp_RCCS  ${ROOT}/../rsrc/inscore.qrc)
 if (QTVERSION EQUAL "5")
@@ -282,7 +276,7 @@ else()
 	add_executable( ${APPLTARGET}  MACOSX_BUNDLE ${ROOT}/INScoreAppl.cpp ${APPL_MOC_FILES}  ../win32/Viewer/${APPLTARGET}.rc ${INScoreQRC})
 endif()
 
-target_link_libraries( ${APPLTARGET} ${QTLIBS} ${GUIDO})
+#target_link_libraries( ${APPLTARGET} ${QTLIBS} ${GUIDO})
 set_target_properties (${APPLTARGET} PROPERTIES VERSION ${INSAPPVERS}
 							MACOSX_BUNDLE_ICON_FILE ${RSRC}/${APPLTARGET}.icns
 							MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist"
@@ -300,7 +294,7 @@ if(APPLE)
 	set_target_properties (${TARGET} PROPERTIES FRAMEWORK TRUE FRAMEWORK_VERSION ${INSFWKVERS})
 endif()
 
-target_link_libraries( ${APPLTARGET} ${TARGET})
+target_link_libraries( ${APPLTARGET} ${TARGET} ${QTLIBS} ${GUIDO})
 add_dependencies(${APPLTARGET} ${TARGET})
 
 #######################################

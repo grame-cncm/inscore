@@ -43,11 +43,11 @@ typedef class libmapping::SMARTP<ILine>	SILine;
 
 //--------------------------------------------------------------------------
 /*!
-*	\brief a bezier cubic line, with 3 control points. The 1st control point is (0,0).
+*	\brief a line, with 2 control points. The 1st control point is (0,0).
 */
 class ILine : public IShapeMap
 {
-	TFloatPoint fPoint;
+	TFloatPoint fPoint;			// a point that describe the line, assuming that the first point is (0, 0)
 	bool		fWAMode;
 
 	public:

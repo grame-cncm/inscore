@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>12.1 Specific messages</TITLE>
-<META NAME="description" CONTENT="12.1 Specific messages">
+<TITLE>11.2.1 Graphic signal default values.</TITLE>
+<META NAME="description" CONTENT="11.2.1 Graphic signal default values.">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,145 +27,86 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1093"
+<A NAME="tex2html1108"
   HREF="node59.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1087"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1102"
   HREF="node57.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1081"
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1096"
   HREF="node57.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1089"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1104"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1091"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1106"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1094"
-  HREF="node59.html">12.2 Feeding and composing</A>
-<B> Up:</B> <A NAME="tex2html1088"
-  HREF="node57.html">12. FAUST plugins</A>
-<B> Previous:</B> <A NAME="tex2html1082"
-  HREF="node57.html">12. FAUST plugins</A>
- &nbsp; <B>  <A NAME="tex2html1090"
+<B> Next:</B> <A NAME="tex2html1109"
+  HREF="node59.html">11.2.2 Parallel graphic signals.</A>
+<B> Up:</B> <A NAME="tex2html1103"
+  HREF="node57.html">11.2 Graphic signals.</A>
+<B> Previous:</B> <A NAME="tex2html1097"
+  HREF="node57.html">11.2 Graphic signals.</A>
+ &nbsp; <B>  <A NAME="tex2html1105"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1092"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1107"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001310000000000000000"></A>
-<A NAME="faustmsg"></A>
-<BR>
-12.1 Specific messages
-</H1>
-A FAUST processor is characterized by the numbers of input and output channels and by a set of parameters. Each parameter carries a name defined by the FAUST processor. The set of messages supported by a FAUST processor is the set of signals messages extended with the parameters names and with specific query messages. 
+<H2><A NAME="SECTION001221000000000000000">
+11.2.1 Graphic signal default values.</A>
+</H2>
+As mentionned above, a graphic signal expects to be connected to parallel signals having at least an <TT>y</TT> component, a graphic thickness component and HSBA components. Thus, from graphic signal viewpoint, the expected dimension of a signal should be equal or greater than 6. In case the <TT>signalIdentifier</TT> dimension is less than 6, the graphic signal will use the default values defined in table <A HREF="#gsigdefault">11.2</A>.
 
 <P>
-<BR>
-<IMG
- WIDTH="290" HEIGHT="164" ALIGN="BOTTOM" BORDER="0"
- SRC="img69.gif"
- ALT="\begin{rail}
-faustmessage : signalMsgs
-\vert [1] 'msg' float32
-\vert [2] 'get' ('in' \vert 'out')
-\end{rail}">
-<BR>
-<A NAME="1297"></A>
-<A NAME="1298"></A>
-<A NAME="1299"></A>
-<A NAME="1300"></A>
-
-<P>
-<DL COMPACT>
-<DT>1</DT>
-<DD><TT><I>msg</I></TT> is any of the FAUST processor parameters, which are defined by the FAUST processor.
-</DD>
-<DT>2</DT>
-<DD>the <TT>get</TT> message is extended to query the FAUST processor: <TT>in</TT> and <TT>out</TT> give the number of input and output channels.
-</DD>
-</DL>
-
-<P>
-<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
-<BR>
-Creating a FAUST processor and querying its input and output count:
-<BR>
+<BR><P></P>
 <DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene/signal/myFaust set faust aFaustPlugin 
-<BR>/ITL/scene/signal/myFaust get in out
-</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
-gives as output:
-<BR>
+
 <DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene/signal/myFaust in 2 
-<BR>/ITL/scene/signal/myFaust out 4
-</TT></FONT>
-								</TD></TR>
+<A NAME="1295"></A>
+<TABLE CELLPADDING=3 BORDER="1">
+<CAPTION><STRONG>Table 11.2:</STRONG>
+Graphic signal default values.</CAPTION>
+<TR><TD ALIGN="RIGHT">parameter</TD>
+<TD ALIGN="CENTER">default value</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>y</TT></TD>
+<TD ALIGN="CENTER"><TT>0</TT></TD>
+<TD ALIGN="LEFT">the center line of the graphic</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>thickness</TT></TD>
+<TD ALIGN="CENTER"><TT>0</TT></TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>hue</TT></TD>
+<TD ALIGN="CENTER"><TT>0</TT></TD>
+<TD ALIGN="LEFT">meaningless due to brigthness value</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>saturation</TT></TD>
+<TD ALIGN="CENTER"><TT>0</TT></TD>
+<TD ALIGN="LEFT">meaningless due to brigthness value</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>brigthness</TT></TD>
+<TD ALIGN="CENTER"><TT>-1</TT></TD>
+<TD ALIGN="LEFT">black</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><TT>transparency</TT></TD>
+<TD ALIGN="CENTER"><TT>1</TT></TD>
+<TD ALIGN="LEFT">opaque</TD>
+</TR>
 </TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
 </DIV>
-Modifying the value of a FAUST processor parameter named <TT>volume</TT>:
+<A NAME="gsigdefault"></A>
+</DIV>
 <BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene/signal/myFaust volume 0.8</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
 
 <P>
-<BR><B> <B>N<SMALL>OTE </SMALL></B></B> 
-<BR>
-The plugins are shared libraries which extension is platform dependent. The plugin name should not include the extension. The expected extensions are the following: .dylib on MacOS and Linux, .dll on Windows.
-
-<P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html1093"
-  HREF="node59.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1087"
-  HREF="node57.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1081"
-  HREF="node57.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1089"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1091"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html1094"
-  HREF="node59.html">12.2 Feeding and composing</A>
-<B> Up:</B> <A NAME="tex2html1088"
-  HREF="node57.html">12. FAUST plugins</A>
-<B> Previous:</B> <A NAME="tex2html1082"
-  HREF="node57.html">12. FAUST plugins</A>
- &nbsp; <B>  <A NAME="tex2html1090"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1092"
-  HREF="node114.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

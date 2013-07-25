@@ -10,6 +10,14 @@ else
 ifeq ($(system), MINGW32_NT-6.1)
   i2i90tool  := $(i2i90)/cmake/Release/inscore2inscore90.exe
   i2i100tool := $(i2i100)/cmake/Release/inscore2inscore100.exe
+  QT5         := /c/Qt/Qt5.1.0
+  WIN32QTPATH := $(QT5)/5.1.0/msvc2010/
+  WIN32QT	  := QT5PRINTSUPPORT.DLL QT5WIDGETS.DLL QT5GUI.DLL QT5CORE.DLL QT5OPENGL.DLL QT5XML.DLL QT5SVG.DLL QT5Multimedia.DLL  QT5MultimediaWidgets.DLL Qt5Network.dll LIBGLESV2.DLL LIBEGL.DLL ICUIN51.DLL ICUUC51.DLL ICUDT51.DLL
+  WIN32QT	  := $(patsubst %, $(WIN32QTPATH)/bin/%, $(WIN32QT))
+  WIN32QTPLUGS     := qgif.dll qtiff.dll qjpeg.dll
+  WIN32QTPLATFORMS := qminimal.dll qoffscreen.dll qwindows.dll
+  WIN32QTPLUGS     := $(patsubst %, $(WIN32QTPATH)/plugins/imageformats/%, $(WIN32QTPLUGS))
+  WIN32QTPLATFORMS := $(patsubst %, $(WIN32QTPATH)/plugins/platforms/%, $(WIN32QTPLATFORMS))
 else
   i2i90tool  := $(i2i90)/cmake/inscore2inscore90
   i2i100tool := $(i2i100)/cmake/inscore2inscore100
@@ -24,6 +32,11 @@ docsrc := ../doc
 docdst := ./doc
 icns   := ../rsrc/INScoreViewer.icns
 
+macapp  := $(viewer)-$(version).app
+winapp  := $(viewer)-$(version).exe
+macplug := $(macapp)/Contents/Plugins
+winplug := Plugins
+
 rsrcf   := ../scripts
 rfolders:= $(foreach dir, $(rsrcf), $(shell find $(dir) -type d))
 rfiles  := $(foreach dir, $(rsrcf), $(shell find $(dir) -type f))
@@ -33,7 +46,7 @@ dperm   := 755		# folders permission
 
 #########################
 # this is for win32 only
-bin    := ../cmake/release
+bin    := ../build/win32/release
 
 #########################
 
@@ -60,11 +73,13 @@ macosx:
 	make common
 	make -f makeINScoreBundle
 	cp $(icns) $(viewer).app/Contents/Resources
-	-[ -d $(package)/"$(viewer) $(version).app" ] && rm -rf $(package)/"$(viewer) $(version).app"
-	mv $(viewer).app $(package)/"$(viewer) $(version).app"
-	chmod -x  $(shell find . -name "*.inscore")
+	-[ -d $(package)/$(macapp) ] && rm -rf $(package)/$(macapp)
+	mv $(viewer).app $(package)/$(macapp)
+	@chmod -x  $(shell find . -name "*.inscore")
 	cp -f ../src/guido2.ttf $(package)
 	cd $(package) && ln -sf /Applications .
+	[ -d $(package)/$(macplug) ] || mkdir $(package)/$(macplug)
+	cp ../lib/GestureFollower/macosx/libGFLib.dylib $(package)/$(macplug)
 	make dmg
 		
 common: 
@@ -154,12 +169,18 @@ src:
 
 win32:
 	[ -d $(package) ] || mkdir -p $(package)
+	[ -d $(package)/plugins/imageformats ] || mkdir -p $(package)/plugins/imageformats
+	[ -d $(package)/plugins/platforms ] || mkdir -p $(package)/plugins/platforms
 	make common
 	cp -f $(bin)/$(viewer).exe $(package)/$(viewer).exe
 	cp -f $(bin)/*.dll $(package)
-	cp -f $(bin)/*.dll.manifest $(package)
 	cp -f ../src/guido2.ttf $(package)
-	cp  -rf DLLs/* $(package)
+	cp  $(WIN32QT) $(package)
+	cp $(QT5)/vcredist/vcredist_sp1_x86.exe $(package)
+	cp qt.conf $(package)
+	cp 	$(WIN32QTPLUGS) $(package)/plugins/imageformats
+	cp 	$(WIN32QTPLATFORMS) $(package)/plugins/platforms
+	cp ../lib/GestureFollower/win32/GFLib.dll $(package)/$(winplug)
 
 linux:
 	[ -d $(package) ] || mkdir -p $(package)

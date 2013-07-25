@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.19 Differences to version 0.60</TITLE>
-<META NAME="description" CONTENT="17.19 Differences to version 0.60">
+<TITLE>17.16 Differences to version 0.75</TITLE>
+<META NAME="description" CONTENT="17.16 Differences to version 0.75">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,73 +21,99 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node110.html">
 <LINK REL="previous" HREF="node108.html">
-<LINK REL="up" HREF="node90.html">
+<LINK REL="up" HREF="node93.html">
 <LINK REL="next" HREF="node110.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1847"
+<A NAME="tex2html1864"
   HREF="node110.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1841"
-  HREF="node90.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1835"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1858"
+  HREF="node93.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1852"
   HREF="node108.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1843"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1860"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1845"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1862"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1848"
-  HREF="node110.html">17.20 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1842"
-  HREF="node90.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1836"
-  HREF="node108.html">17.18 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1844"
+<B> Next:</B> <A NAME="tex2html1865"
+  HREF="node110.html">17.17 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1859"
+  HREF="node93.html">17. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1853"
+  HREF="node108.html">17.15 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1861"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1846"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1863"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION0018190000000000000000">
-17.19 Differences to version 0.60</A>
+<H1><A NAME="SECTION0018160000000000000000">
+17.16 Differences to version 0.75</A>
 </H1>
 
 <UL>
-<LI>new 'mousemove' event (see section <A HREF="node62.html#uievents">13.1.1</A> p.<A HREF="node62.html#uievents"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>new <TT>require</TT> message supported by the <TT>/ITL</TT> node (see section <A HREF="node32.html#ITL">7</A> p.<A HREF="node32.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>).
 </LI>
-<LI>interaction messages accept variables ($x, $y, $date...) (see section <A HREF="node65.html#interactvar">13.2</A> p.<A HREF="node65.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>new event named <TT>newElement</TT> supported at scene level (see section <A HREF="node66.html#timeevents">13.1.2</A> p.<A HREF="node66.html#timeevents"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>).
 </LI>
-<LI>SVG code and files support (see section <A HREF="node24.html#setfile">4.2</A> p.<A HREF="node24.html#setfile"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>new <TT>name</TT> and <TT>address</TT> variables (see section <A HREF="node68.html#interactvar">13.2</A> p.<A HREF="node68.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>).
 </LI>
-<LI>set line message change: the <TT>x y</TT> form is deprecated, it is replaced by
-  the following forms: 
-<BR>  <TT>'xy' x y</TT> (equivalent to the former form) 
-  and <TT>'wa' width angle</TT>   
-  (see section <A HREF="node22.html#setsect">4</A> p.<A HREF="node22.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>new system map computation making use of the new slices map provided by the guidolib version 1.42
 </LI>
-<LI>new 'effect' message  (section <A HREF="node17.html#effectmsg">2.4</A> p.<A HREF="node17.html#effectmsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>INScore API: the <TT>newMessage</TT> method sets now the message src IP to localhost
+  With the previous version and the lack of src IP, replies to queries or error 
+  messages could be sent to undefined addresses (and mostly lost).
 </LI>
-<LI>utf8 support on windows corrected
+<LI>bug corrected with ellipse and rect : integer graphic size computation changed 
+  to float (prevents objects disappearance with small width or height)
 </LI>
-<LI>transparency support for stretched synchronized objects corrected
+<LI>bug in scene export: left and right borders could be cut, depending  on the scene size
+  corrected by rendering the QGraphicsView container instead the QGraphicsScene
 </LI>
-<LI>multiple application instances supported with dynamic udp port number allocation.
-</LI>
-<LI>command line option with -port portnumber option to set the receive udp port number at startup.
+<LI>crash bug with $date:name corrected: crashed when there is no mapping named <TT>name</TT>.
 </LI>
 </UL>
 
 <P>
-<BR><HR>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1864"
+  HREF="node110.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1858"
+  HREF="node93.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1852"
+  HREF="node108.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1860"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1862"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html1865"
+  HREF="node110.html">17.17 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1859"
+  HREF="node93.html">17. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1853"
+  HREF="node108.html">17.15 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1861"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1863"
+  HREF="node117.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

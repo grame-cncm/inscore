@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.7 Differences to version 0.91</TITLE>
-<META NAME="description" CONTENT="17.7 Differences to version 0.91">
+<TITLE>17.4 Differences to version 0.96</TITLE>
+<META NAME="description" CONTENT="17.4 Differences to version 0.96">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,51 +21,58 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node98.html">
 <LINK REL="previous" HREF="node96.html">
-<LINK REL="up" HREF="node90.html">
+<LINK REL="up" HREF="node93.html">
 <LINK REL="next" HREF="node98.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1679"
+<A NAME="tex2html1696"
   HREF="node98.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1673"
-  HREF="node90.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1667"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1690"
+  HREF="node93.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1684"
   HREF="node96.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1675"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1692"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1677"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1694"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1680"
-  HREF="node98.html">17.8 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1674"
-  HREF="node90.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1668"
-  HREF="node96.html">17.6 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1676"
+<B> Next:</B> <A NAME="tex2html1697"
+  HREF="node98.html">17.5 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1691"
+  HREF="node93.html">17. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1685"
+  HREF="node96.html">17.3 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1693"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1678"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1695"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001870000000000000000">
-17.7 Differences to version 0.91</A>
+<H1><A NAME="SECTION001840000000000000000">
+17.4 Differences to version 0.96</A>
 </H1>
 
 <UL>
-<LI>bug corrected: crash with messages addressed to a signal without argument
+<LI>objects position, date and watched events preserved through type change
 </LI>
-<LI>date and duration messages support one arg form using 1 as implicit denominator value 
-  the one arg form accepts float values  (see section <A HREF="node21.html#time">3</A> p.<A HREF="node21.html#time"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>bug in quantified dates corrected (null denominator set to the quantified value)
+</LI>
+<LI>new 'alias' message providing arbitrary OSC addresses support
+</LI>
+<LI>bug in parser corrected: <code>\</code> escape only ' and " chars, otherwise it is literal
+</LI>
+<LI>guido score map makes use of the new guidolib extended mapping API for staff and system
+</LI>
+<LI>chords map correction (corrected by guido engine) 
 </LI>
 </UL>
 

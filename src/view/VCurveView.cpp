@@ -42,11 +42,15 @@ namespace inscore
 
 //----------------------------------------------------------------------
 VCurveView::VCurveView(QGraphicsScene * scene, const ICurve* h) 
-	: VMappedShapeView( scene , new MouseEventAble<QGraphicsPathItem>(h)) {}
+	: VMappedShapeView( scene , new MouseEventAble<QGraphicsPathItem>(h))
+    {}
 
 //----------------------------------------------------------------------
 void VCurveView::updateView( ICurve * curve )
 {
+    if(curve->getParent()->getTypeString() != IAppl::kApplType && curve->getParent()->getTypeString() != IScene::kSceneType)
+        setParentItem(curve->getParent()->getView()?curve->getParent()->getView():0);
+    
 	QPainterPath myPath;
 	for ( unsigned int i = 0 ; i < curve->getPoints().size() ; i++ )
 	{

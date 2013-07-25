@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>16.1 Grammar definition</TITLE>
-<META NAME="description" CONTENT="16.1 Grammar definition">
+<TITLE>15.6 Languages</TITLE>
+<META NAME="description" CONTENT="15.6 Languages">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,157 +19,134 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node89.html">
 <LINK REL="previous" HREF="node87.html">
-<LINK REL="up" HREF="node87.html">
+<LINK REL="up" HREF="node82.html">
 <LINK REL="next" HREF="node89.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1532"
+<A NAME="tex2html1548"
   HREF="node89.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1526"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1542"
+  HREF="node82.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1538"
   HREF="node87.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1520"
-  HREF="node87.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1528"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1544"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1530"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1546"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1533"
-  HREF="node89.html">16.2 Lexical tokens</A>
-<B> Up:</B> <A NAME="tex2html1527"
-  HREF="node87.html">16. Appendices</A>
-<B> Previous:</B> <A NAME="tex2html1521"
-  HREF="node87.html">16. Appendices</A>
- &nbsp; <B>  <A NAME="tex2html1529"
+<B> Next:</B> <A NAME="tex2html1549"
+  HREF="node89.html">15.6.1 The Javascript object</A>
+<B> Up:</B> <A NAME="tex2html1543"
+  HREF="node82.html">15. Scripting</A>
+<B> Previous:</B> <A NAME="tex2html1539"
+  HREF="node87.html">15.5 Message based parameters</A>
+ &nbsp; <B>  <A NAME="tex2html1545"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1531"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1547"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001710000000000000000"></A>
-<A NAME="yacc"></A>
+<H1><A NAME="SECTION001660000000000000000"></A><A NAME="scriptlang"></A>
 <BR>
-16.1 Grammar definition
+15.6 Languages
 </H1>
-<PRE>
-//_______________________________________________
-// relaxed simple INScore format specification
-//_______________________________________________
-start       : expr
-            | start expr
-            ;
 
-//_______________________________________________
-// expression of the script language
-//_______________________________________________
-expr        : message  ENDEXPR		
-            | variabledecl ENDEXPR	
-            | script            
-            ;
+<P>
+<A NAME="1706"></A>
+<A NAME="1707"></A>
 
-//_______________________________________________
-// javascript and lua support
-//_______________________________________________
-script      : LUASCRIPT            
-            | JSCRIPT            
-            ;
-//_______________________________________________
-// messages specification (extends osc spec.)
-//_______________________________________________
-message	    : address 
-            | address params            
-            | address watchparams		
-            | address watchparams LEFTPAR messagelist RIGHTPAR
-            | address watchparams script 
-            ;
+<P>
+INScore supports Javascript and Lua as scripting languages. Javascript is embedded by default (using the v8 engine<A NAME="tex2html16"
+  HREF="footnode.html#foot1798"><SUP>15.1</SUP></A>). INScore needs to be recompiled to embed the Lua engine<A NAME="tex2html18"
+  HREF="footnode.html#foot1799"><SUP>15.2</SUP></A>. A script section is indicated similarly to a Javascript section in html i.e. enclosed in an opening <TT>&lt;?</TT> and a closing <TT>?&gt;</TT>.
+<BR>
+<IMG
+ WIDTH="372" HEIGHT="89" ALIGN="BOTTOM" BORDER="0"
+ SRC="img94.png"
+ ALT="\begin{rail}
+script : '&lt;?' ('javascript' \vert 'lua') script '?&gt;'
+\end{rail}">
+<BR>
+<A NAME="1714"></A>
+<A NAME="1715"></A>
 
-messagelist : message            		
-            | messagelist COMMA message 
-            ;
+<P>
+The principle of using an embedded programming language in script files is the following: <I>javascript</I> or <I>lua</I> sections are given to the corresponding engine and are expected to produce INScore messages on output.
+These messages are then parsed as if replacing the corresponding script section.
 
-//_______________________________________________
-// address specification (extends osc spec.)
-address	    : oscaddress            	
-            | urlprefix oscaddress		
-            ;
+<P>
+Note that INScore variables are exported to the current language environment.
 
-oscaddress  : oscpath            		
-            | oscaddress oscpath		
-            ;
+<P>
+<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
+<BR>
+<DIV ALIGN="CENTER">
+<BLINK><FONT COLOR="#ededed">
+								</DIV><TABLE  WIDTH="0%">
+<TR><TD> 
+								<FONT SIZE="-1"><TT>
+&lt;?javascript 
+<BR>  "/ITL/scene/version set 'txt' 'Javascript v."  + version() + "';"; 
+<BR>  ?&gt;
+</TT></FONT>
+								</TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER"></FONT></BLINK>
+</DIV>
 
-oscpath	     : PATHSEP identifier		
-            | PATHSEP WATCH            	
-            | PATHSEP VARSTART varname	
-            ;
-
-urlprefix   : hostname COLON UINT		
-            | IPNUM COLON UINT            
-            ;
-
-hostname    : HOSTNAME            		
-            | hostname POINT HOSTNAME	
-            ;
-
-identifier  : IDENTIFIER		
-            | HOSTNAME            
-            | REGEXP            
-            ;
-
-//_______________________________________________
-// parameters definitions
-// watchparams need a special case since messages are expected as argument
-//_______________________________________________
-watchparams : watchmethod		
-            | watchmethod params 
-
-params      : param            	
-            | variable            
-            | params variable	
-            | params param		
-            ;
-
-watchmethod : WATCH            	
-            ;
-
-variable    : VARSTART varname
-            | VARSTART LEFTPAR message RIGHTPAR
-            ;
-
-param       : number            
-            | FLOAT            	
-            | identifier		
-            | QUOTEDSTRING		
-            ;
-
-//_______________________________________________
-// variable declaration
-variabledecl : varname EQUAL params	
-            ;
-
-varname	    : IDENTIFIER            
-            | HOSTNAME            	
-            ;
-
-//_______________________________________________
-// misc
-number      : UINT            		
-            | INT            		
-            ;
-</PRE>
+<P>
+A single persistent context is created at application level and for each scene.
+It allows scripts to reuse previously defined functions and thus to design more structured scripts.
 
 <P>
 <BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html1550"
+  HREF="node89.html">15.6.1 The Javascript object</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1548"
+  HREF="node89.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1542"
+  HREF="node82.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1538"
+  HREF="node87.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1544"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1546"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html1549"
+  HREF="node89.html">15.6.1 The Javascript object</A>
+<B> Up:</B> <A NAME="tex2html1543"
+  HREF="node82.html">15. Scripting</A>
+<B> Previous:</B> <A NAME="tex2html1539"
+  HREF="node87.html">15.5 Message based parameters</A>
+ &nbsp; <B>  <A NAME="tex2html1545"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1547"
+  HREF="node117.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

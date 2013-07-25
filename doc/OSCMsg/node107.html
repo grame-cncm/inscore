@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.17 Differences to version 0.74</TITLE>
-<META NAME="description" CONTENT="17.17 Differences to version 0.74">
+<TITLE>17.14 Differences to version 0.77</TITLE>
+<META NAME="description" CONTENT="17.14 Differences to version 0.77">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,50 +21,61 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node108.html">
 <LINK REL="previous" HREF="node106.html">
-<LINK REL="up" HREF="node90.html">
+<LINK REL="up" HREF="node93.html">
 <LINK REL="next" HREF="node108.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1819"
+<A NAME="tex2html1836"
   HREF="node108.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1813"
-  HREF="node90.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1807"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1830"
+  HREF="node93.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1824"
   HREF="node106.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1815"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1832"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1817"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1834"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1820"
-  HREF="node108.html">17.18 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1814"
-  HREF="node90.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1808"
-  HREF="node106.html">17.16 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1816"
+<B> Next:</B> <A NAME="tex2html1837"
+  HREF="node108.html">17.15 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1831"
+  HREF="node93.html">17. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1825"
+  HREF="node106.html">17.13 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1833"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1818"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1835"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION0018170000000000000000">
-17.17 Differences to version 0.74</A>
+<H1><A NAME="SECTION0018140000000000000000">
+17.14 Differences to version 0.77</A>
 </H1>
 
 <UL>
-<LI>new <TT>map+</TT> message  (see section <A HREF="node41.html#mapAddMsg">9.2</A> p.<A HREF="node41.html#mapAddMsg"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>guido system map extended: supports flat map or subdivided map (see section <A HREF="#guidomaps"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> p.<A HREF="#guidomaps"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>).
 </LI>
-<LI>the <TT>click</TT> and <TT>select</TT> messages are deprecated (but still supported). They will be removed in a future version.
+<LI>new <TT>shear</TT> and <TT>rotate</TT> transformations messages (see section <A HREF="node11.html#transform">2.2</A> p.<A HREF="node11.html#transform"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>).
+</LI>
+<LI>new <TT>rename</TT> message to change an object name (and thus its OSC address) (see section <A HREF="node6.html#common">2</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>).
+</LI>
+<LI>relaxed bool parameter policy: objects accept float values for bool parameters 
+</LI>
+<LI>automatic numbering of exports when destination file is not completely specified 
+  i.e. no name, no extension. (see section <A HREF="node6.html#common">2</A> p.<A HREF="node6.html#common"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>).
+</LI>
+<LI>quantification introduced to $date variable (see section <A HREF="node68.html#interactvar">13.2</A> p.<A HREF="node68.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>).
+</LI>
+<LI><TT>reset</TT> message addressed to a scene clears the scene rootPath
 </LI>
 </UL>
 

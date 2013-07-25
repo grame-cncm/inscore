@@ -28,6 +28,7 @@
 #define __IModel__
 
 #include "IAppl.h"
+#include "IApplVNodes.h"
 #include "IColor.h"
 #include "ICurve.h"
 #include "IEllipse.h"
@@ -36,6 +37,7 @@
 #include "IGestureFollower.h"
 #include "IGraphicSignal.h"
 #include "IGrid.h"
+#include "ILayer.h"
 #include "IGuidoCode.h"
 #include "IGuidoFile.h"
 #include "IHtml.h"

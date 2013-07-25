@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.2 Messages</TITLE>
-<META NAME="description" CONTENT="15.2 Messages">
+<TITLE>14.5 Gesture Follower Appearance</TITLE>
+<META NAME="description" CONTENT="14.5 Gesture Follower Appearance">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,73 +19,74 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node82.html">
 <LINK REL="previous" HREF="node80.html">
-<LINK REL="up" HREF="node79.html">
+<LINK REL="up" HREF="node76.html">
 <LINK REL="next" HREF="node82.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1435"
+<A NAME="tex2html1445"
   HREF="node82.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1429"
-  HREF="node79.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1423"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1439"
+  HREF="node76.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1435"
   HREF="node80.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1431"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1441"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1433"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1443"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1436"
-  HREF="node82.html">15.3 Types</A>
-<B> Up:</B> <A NAME="tex2html1430"
-  HREF="node79.html">15. Scripting</A>
-<B> Previous:</B> <A NAME="tex2html1424"
-  HREF="node80.html">15.1 Statements</A>
- &nbsp; <B>  <A NAME="tex2html1432"
+<B> Next:</B> <A NAME="tex2html1446"
+  HREF="node82.html">15. Scripting</A>
+<B> Up:</B> <A NAME="tex2html1440"
+  HREF="node76.html">14. Gesture Follower</A>
+<B> Previous:</B> <A NAME="tex2html1436"
+  HREF="node80.html">14.4 Events and interaction</A>
+ &nbsp; <B>  <A NAME="tex2html1442"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1434"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1444"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001620000000000000000"></A><A NAME="scriptmsgs"></A>
+<H1><A NAME="SECTION001550000000000000000"></A><A NAME="gfgraphs"></A>
 <BR>
-15.2 Messages
+14.5 Gesture Follower Appearance
 </H1>
 
 <P>
-Messages are basically OSC messages that support the address extension scheme described in section <A HREF="node60.html#interaction">13</A> p.<A HREF="node60.html#interaction"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>.
-Thus a script may be designed to initialize an INScore scene and external applications as well, including on remote hosts.
+A gesture follower object has a graphic appearance and supports all the standard objects properties, including mapping and synchronization. This graphic appearance is provided mainly for debug purpose and by default, the object is hidden. Figure  <A HREF="#fig:gfgraph">14.1</A> shows the gesture follower appearance in its different phases:
+
+<UL>
+<LI>when idle, the upper part of the graphic indicates the buffer state of the different gestures. It also includes the gestures likelihood threshold.
+</LI>
+<LI>when learning, a red frame and a grey background indicates that a learning a gesture is currently in progress. The gesture buffer state is refreshed while learning.
+</LI>
+<LI>when following, the upper part indicates each gesture current likelihood and the lower part indicates the current estimated positions.
+</LI>
+</UL>
 
 <P>
-<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
-<BR>
-Initializing a score and an external application listening on port 12000 and running on a remote host named <TT>host.adomain.net</TT>.
-<BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene/score set gmnf 'myscore.gmn';
-<BR>
-host.adomain.net:12000/run 1;
-</TT></FONT>
-								</TD></TR>
+
+<DIV ALIGN="CENTER"><A NAME="fig:gfgraph"></A><A NAME="1651"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 14.1:</STRONG>
+The gesture follower appearance in its different phases.</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER"><IMG
+  WIDTH="600" HEIGHT="178" ALIGN="BOTTOM" BORDER="0"
+ SRC="./gesture-follower.png"
+ ALT="Image gesture-follower">
+ </DIV></TD></TR>
 </TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
 </DIV>
-
-<P>
-Messages parameters can be replaced by variables that are evaluated at parsing level. Variables are described in section <A HREF="node83.html#scriptvar">15.4</A>.
 
 <P>
 <BR><HR>

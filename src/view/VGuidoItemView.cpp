@@ -139,7 +139,7 @@ void QCachedGuidoGraphicsItem::paint( QPainter * painter, const QStyleOptionGrap
 VGuidoItemView::VGuidoItemView(QGraphicsScene * scene, const IGuidoCode* h)
 					: VGraphicsItemView( scene , new IQGuidoGraphicsItem(h) )
 {
-	fGuidoItem = (IQGuidoGraphicsItem*)(fItem);
+ 	fGuidoItem = (IQGuidoGraphicsItem*)(fItem);
 	
 	GuidoLayoutSettings s = fGuidoItem->guidoLayoutSettings();
 	s.optimalPageFill = true;	// incorrect mapping generated when set to false 
@@ -152,6 +152,9 @@ VGuidoItemView::VGuidoItemView(QGraphicsScene * scene, const IGuidoCode* h)
 //----------------------------------------------------------------------
 void VGuidoItemView::updateView( IGuidoCode * guidoCode  )
 {
+    if(guidoCode->getParent()->getTypeString() != IAppl::kApplType && guidoCode->getParent()->getTypeString() != IScene::kSceneType)
+        setParentItem(guidoCode->getParent()->getView()?guidoCode->getParent()->getView():0);
+
 	// 2. Update Score color
 	QColor color(guidoCode->getR(), guidoCode->getG(), guidoCode->getB() , guidoCode->getA());
 	if ( fGuidoItem->getScoreColor() != color )
@@ -194,7 +197,6 @@ void VGuidoItemView::pageFormatUpdate (IGuidoCode* guidoCode)
 		format.height = h;
 		fGuidoItem->setGuidoPageFormat(format);
 	}
-	guidoCode->setPagesCount( fGuidoItem->pageCount() );
 
 	GuidoDate date;
 	GuidoDuration( fGuidoItem->getGRHandler(), &date );

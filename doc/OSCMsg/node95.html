@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.5 Differences to version 0.95</TITLE>
-<META NAME="description" CONTENT="17.5 Differences to version 0.95">
+<TITLE>17.2 Differences to version 0.98</TITLE>
+<META NAME="description" CONTENT="17.2 Differences to version 0.98">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,55 +21,126 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node96.html">
 <LINK REL="previous" HREF="node94.html">
-<LINK REL="up" HREF="node90.html">
+<LINK REL="up" HREF="node93.html">
 <LINK REL="next" HREF="node96.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1651"
+<A NAME="tex2html1668"
   HREF="node96.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1645"
-  HREF="node90.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1639"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1662"
+  HREF="node93.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1656"
   HREF="node94.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1647"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1664"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1649"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1666"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1652"
-  HREF="node96.html">17.6 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1646"
-  HREF="node90.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1640"
-  HREF="node94.html">17.4 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1648"
+<B> Next:</B> <A NAME="tex2html1669"
+  HREF="node96.html">17.3 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1663"
+  HREF="node93.html">17. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1657"
+  HREF="node94.html">17.1 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1665"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1650"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1667"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001850000000000000000">
-17.5 Differences to version 0.95</A>
+<H1><A NAME="SECTION001820000000000000000">
+17.2 Differences to version 0.98</A>
 </H1>
 
 <UL>
-<LI>switch to v8 javascript engine
+<LI>bug correction in streching very small objects (due to approximations)
 </LI>
-<LI>lua not embedded by default
+<LI>bug correction in $sx and $sy computation (xorigin and yorigin was not taken into account)
+</LI>
+<LI>new 'ticks' message at application level for querying or setting the current count of time tasks (see section <A HREF="node33.html#applmgmt">7.1</A> p.<A HREF="node33.html#applmgmt"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>)
+</LI>
+<LI>new 'time' message at application level for querying or setting the current time (see section <A HREF="node33.html#applmgmt">7.1</A> p.<A HREF="node33.html#applmgmt"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>)
+</LI>
+<LI>new 'forward' message at application level for messages forwarding to remote hosts (see section <A HREF="node33.html#applmgmt">7.1</A> p.<A HREF="node33.html#applmgmt"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>)
+</LI>
+<LI>new 'relative | absolute' synchronization mode (see section <A HREF="node48.html#syncmode">10.1</A> p.<A HREF="node48.html#syncmode"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>)
+</LI>
+<LI>'rename' message not supported any more
+</LI>
+<LI>a scene accepts multiple dropped files
+</LI>
+<LI>significant extension and syntax changes in inscore script files (see Scripting documentation section <A HREF="node82.html#scripting">15</A> p.<A HREF="node82.html#scripting"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>)
+</LI>
+<LI>fileWatcher methods renamed and simplified (see section <A HREF="node75.html#filewatch">13.4</A> p.<A HREF="node75.html#filewatch"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>)
+</LI>
+<LI>'click' and 'select' messages are not supported any more.
+</LI>
+<LI>new 'stats' virtual node at application level (address /ITL/stats), supports 'get' and 'reset' messages
+  the node gives statistics about the incoming messages (see section <A HREF="node39.html#ITLdebug">7.5.2</A> p.<A HREF="node39.html#ITLdebug"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>)
+</LI>
+<LI>crash bug in signal creation corrected: a signal size created with an incorrect stream 
+  (e.g. a string value) was 0 and no buffer was allocated.
+</LI>
+<LI>extension of the time related events to duration: new 'durEnter' and 'durLeave' watchable events (see section <A HREF="node66.html#timeevents">13.1.2</A> p.<A HREF="node66.html#timeevents"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>)
+</LI>
+<LI>new 'absolutexy' message at scene level to switch to absolute coordinates (in pixels) (see section <A HREF="node41.html#scene">8</A> p.<A HREF="node41.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>)
+</LI>
+<LI>new 'push' and 'pop' messages to store and restore current watched events and associated messages (see section <A HREF="node74.html#evtstate">13.3</A> p.<A HREF="node74.html#evtstate"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>)
+</LI>
+<LI>internal change: mappings are now implemented as a separable library strictly complying to the 
+  mappings formalism.
+</LI>
+<LI>new %f format for the date variable to request a float value (instead a rational value) (see section <A HREF="node70.html#timevar">13.2.2</A> p.<A HREF="node70.html#timevar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>).
+</LI>
+<LI>dates may be specified as rational strings (see section <A HREF="node21.html#time">3</A> p.<A HREF="node21.html#time"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>).
+</LI>
+<LI>interaction messages are not any more generated when the date can't be resolved.
+</LI>
+<LI>new <TT>rate</TT> message at application level to control the time task rate (see section <A HREF="node32.html#ITL">7</A> p.<A HREF="node32.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>)
+</LI>
+<LI>new <TT>frameless</TT> message at scene level to switch to frameless or normal window (see section <A HREF="node41.html#scene">8</A> p.<A HREF="node41.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>)
 </LI>
 </UL>
 
 <P>
-<BR><HR>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1668"
+  HREF="node96.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1662"
+  HREF="node93.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1656"
+  HREF="node94.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1664"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1666"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html1669"
+  HREF="node96.html">17.3 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1663"
+  HREF="node93.html">17. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1657"
+  HREF="node94.html">17.1 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1665"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1667"
+  HREF="node117.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

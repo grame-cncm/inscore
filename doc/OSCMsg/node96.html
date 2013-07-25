@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.6 Differences to version 0.92</TITLE>
-<META NAME="description" CONTENT="17.6 Differences to version 0.92">
+<TITLE>17.3 Differences to version 0.97</TITLE>
+<META NAME="description" CONTENT="17.3 Differences to version 0.97">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,54 +21,60 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node97.html">
 <LINK REL="previous" HREF="node95.html">
-<LINK REL="up" HREF="node90.html">
+<LINK REL="up" HREF="node93.html">
 <LINK REL="next" HREF="node97.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1665"
+<A NAME="tex2html1682"
   HREF="node97.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1659"
-  HREF="node90.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1653"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1676"
+  HREF="node93.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1670"
   HREF="node95.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1661"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1678"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1663"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1680"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1666"
-  HREF="node97.html">17.7 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1660"
-  HREF="node90.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1654"
-  HREF="node95.html">17.5 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1662"
+<B> Next:</B> <A NAME="tex2html1683"
+  HREF="node97.html">17.4 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1677"
+  HREF="node93.html">17. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1671"
+  HREF="node95.html">17.2 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1679"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1664"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1681"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001860000000000000000">
-17.6 Differences to version 0.92</A>
+<H1><A NAME="SECTION001830000000000000000">
+17.3 Differences to version 0.97</A>
 </H1>
 
 <UL>
-<LI>new 'mouse' 'show/hide' message supported at application level (see section <A HREF="node32.html#ITL">7</A> p.<A HREF="node32.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>)
+<LI>new <TT>fastgraph</TT> object for graphic signals fast rendering (see section <A HREF="node22.html#setsect">4</A> p.<A HREF="node22.html#setsect"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>)
 </LI>
-<LI>graphic signal supports alpha messages at object level
+<LI>$date variable overflow catched
 </LI>
-<LI>javascript and lua embedded and supported in inscore scripts  (see section <A HREF="node85.html#scriptlang">15.6</A> p.<A HREF="node85.html#scriptlang"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>files dropped on application icon correctly opened when the application is not running
 </LI>
-<LI>bug correction in sync delete (introduced with version 0.90)
+<LI>supports drag and drop of textual osc message strings
+</LI>
+<LI>osc error stream normalized: the message address is 'error:' or 'warning:'
+   followed by a single message string.
+</LI>
+<LI>javascript and lua support: a single persistent context is created at application level and for each scene. 
+(see section <A HREF="node88.html#scriptlang">15.6</A> p.<A HREF="node88.html#scriptlang"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>)
 </LI>
 </UL>
 

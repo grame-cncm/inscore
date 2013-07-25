@@ -31,11 +31,15 @@ namespace inscore
 
 //----------------------------------------------------------------------
 VLineView::VLineView(QGraphicsScene * scene, const ILine* h) 
-	: VMappedShapeView( scene , new IQGraphicsPathItem(h)) {}
+	: VMappedShapeView( scene , new IQGraphicsPathItem(h))
+    {}
 
 //----------------------------------------------------------------------
 void VLineView::updateView( ILine * line )
 {
+    if(line->getParent()->getTypeString() != IAppl::kApplType && line->getParent()->getTypeString() != IScene::kSceneType)
+        setParentItem(line->getParent()->getView()?line->getParent()->getView():0);
+    
 	QPainterPath myPath;
 	myPath.moveTo(0,0);
 	myPath.lineTo( relative2SceneX(line->getPoint().x()) , relative2SceneY(line->getPoint().y()) );

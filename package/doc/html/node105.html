@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.15 Differences to version 0.76</TITLE>
-<META NAME="description" CONTENT="17.15 Differences to version 0.76">
+<TITLE>17.12 Differences to version 0.79</TITLE>
+<META NAME="description" CONTENT="17.12 Differences to version 0.79">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,58 +21,50 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node106.html">
 <LINK REL="previous" HREF="node104.html">
-<LINK REL="up" HREF="node90.html">
+<LINK REL="up" HREF="node93.html">
 <LINK REL="next" HREF="node106.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1791"
+<A NAME="tex2html1808"
   HREF="node106.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1785"
-  HREF="node90.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1779"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1802"
+  HREF="node93.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1796"
   HREF="node104.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1787"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1804"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1789"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1806"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1792"
-  HREF="node106.html">17.16 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1786"
-  HREF="node90.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1780"
-  HREF="node104.html">17.14 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1788"
+<B> Next:</B> <A NAME="tex2html1809"
+  HREF="node106.html">17.13 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1803"
+  HREF="node93.html">17. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1797"
+  HREF="node104.html">17.11 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1805"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1790"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1807"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION0018150000000000000000">
-17.15 Differences to version 0.76</A>
+<H1><A NAME="SECTION0018120000000000000000">
+17.12 Differences to version 0.79</A>
 </H1>
 
 <UL>
-<LI>get <TT>guido-version</TT> and <TT>musicxml-version</TT> messages supported by the application (see section <A HREF="node32.html#ITL">7</A> p.<A HREF="node32.html#ITL"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
+<LI>corrects the map not saved by the <TT>save</TT> message issue
 </LI>
-<LI><TT>save</TT> message bug correction - introduced with version 0.70: only partial state of objects was saved
-</LI>
-<LI><TT>rootPath</TT> message introduced at scene level (see section <A HREF="node38.html#scene">8</A> p.<A HREF="node38.html#scene"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>).
-</LI>
-<LI>scene name translation strategy change: only the explicit 'scene' name is 
-  translated by the scene load message handler into the current scene name, 
-  other names are left unchanged.
-</LI>
-<LI>bitmap copy adjustment in sync stretched mode is now only made for images
+<LI>corrects <TT>get map</TT> output: 2D segments were not correctly converted to string
 </LI>
 </UL>
 

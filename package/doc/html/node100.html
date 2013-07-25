@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>17.10 Differences to version 0.81</TITLE>
-<META NAME="description" CONTENT="17.10 Differences to version 0.81">
+<TITLE>17.7 Differences to version 0.91</TITLE>
+<META NAME="description" CONTENT="17.7 Differences to version 0.91">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,60 +21,51 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node101.html">
 <LINK REL="previous" HREF="node99.html">
-<LINK REL="up" HREF="node90.html">
+<LINK REL="up" HREF="node93.html">
 <LINK REL="next" HREF="node101.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1721"
+<A NAME="tex2html1738"
   HREF="node101.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1715"
-  HREF="node90.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1709"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1732"
+  HREF="node93.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1726"
   HREF="node99.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1717"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1734"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1719"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1736"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1722"
-  HREF="node101.html">17.11 Differences to version</A>
-<B> Up:</B> <A NAME="tex2html1716"
-  HREF="node90.html">17. Changes list</A>
-<B> Previous:</B> <A NAME="tex2html1710"
-  HREF="node99.html">17.9 Differences to version</A>
- &nbsp; <B>  <A NAME="tex2html1718"
+<B> Next:</B> <A NAME="tex2html1739"
+  HREF="node101.html">17.8 Differences to version</A>
+<B> Up:</B> <A NAME="tex2html1733"
+  HREF="node93.html">17. Changes list</A>
+<B> Previous:</B> <A NAME="tex2html1727"
+  HREF="node99.html">17.6 Differences to version</A>
+ &nbsp; <B>  <A NAME="tex2html1735"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1720"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1737"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION0018100000000000000000">
-17.10 Differences to version 0.81</A>
+<H1><A NAME="SECTION001870000000000000000">
+17.7 Differences to version 0.91</A>
 </H1>
 
 <UL>
-<LI>new Faust plugins for signals processing
+<LI>bug corrected: crash with messages addressed to a signal without argument
 </LI>
-<LI>colors management change: all the color models (RGBA and HSBA) accept now
-  float values that are interpreted in the common [-1,1] range. For the
-  hue value, 0 always corresponds to 'red' whatever the scale used.
-</LI>
-<LI>stretch adjustment for video objects (corrects gaps in sync h mode)
-</LI>
-<LI>support for opening inscore files on the command line
-</LI>
-<LI>system mapping correction
-</LI>
-<LI>splash screen and about menu implemented by the viewer
+<LI>date and duration messages support one arg form using 1 as implicit denominator value 
+  the one arg form accepts float values  (see section <A HREF="node21.html#time">3</A> p.<A HREF="node21.html#time"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>).
 </LI>
 </UL>
 

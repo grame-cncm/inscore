@@ -57,7 +57,8 @@ class IGesture : public IVNode
 	int					fIndex;			// the gesture index within the follower
 	float				fLikelihoodThreshold;
 	float				fCurrentLikelihood;
-	std::vector<float>	fValues;
+	
+	const float* data () const;
 
 	public:
 		static SIGesture create(const std::string& name, IObject* parent, int index, TGestureFollowerPlugin * gf)	
@@ -72,8 +73,9 @@ class IGesture : public IVNode
 		void	startLearn ();
 		void	stopLearn ();
 		void	clearGesture ();
-		void	likelihood (float likelihood, float pos, float speed);	// sets the current likelihood, may trigger associated events
+		void	likelihood (float likelihood, float pos, float speed);	///< sets the current likelihood, may trigger associated events
 		float	getLikelihoodThreshold () const;
+		int		getSize () const;										///< gives the current data size
 
 	protected:
 				 IGesture( const std::string& name, IObject* parent, int index, TGestureFollowerPlugin * gf);

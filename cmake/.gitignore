@@ -17,6 +17,7 @@ CMakeFiles/
 moc_*
 INScoreViewer*
 libINScore.*
+qrc_inscore.cpp
 _*
 Makefile
 *~

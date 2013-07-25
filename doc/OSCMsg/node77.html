@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>14.3 Events and interaction</TITLE>
-<META NAME="description" CONTENT="14.3 Events and interaction">
+<TITLE>14.1 Basic principle</TITLE>
+<META NAME="description" CONTENT="14.1 Basic principle">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,150 +19,88 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="previous" HREF="node75.html">
-<LINK REL="up" HREF="node73.html">
+<LINK REL="next" HREF="node78.html">
+<LINK REL="previous" HREF="node76.html">
+<LINK REL="up" HREF="node76.html">
 <LINK REL="next" HREF="node78.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1373"
+<A NAME="tex2html1391"
   HREF="node78.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1367"
-  HREF="node73.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1363"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1385"
   HREF="node76.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1369"
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1379"
+  HREF="node76.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1387"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1371"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1389"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1374"
-  HREF="node78.html">14.3.1 Gestures variables</A>
-<B> Up:</B> <A NAME="tex2html1368"
-  HREF="node73.html">14. Gesture Follower</A>
-<B> Previous:</B> <A NAME="tex2html1364"
-  HREF="node76.html">14.2.1 Gestures management</A>
- &nbsp; <B>  <A NAME="tex2html1370"
+<B> Next:</B> <A NAME="tex2html1392"
+  HREF="node78.html">14.2 Messages</A>
+<B> Up:</B> <A NAME="tex2html1386"
+  HREF="node76.html">14. Gesture Follower</A>
+<B> Previous:</B> <A NAME="tex2html1380"
+  HREF="node76.html">14. Gesture Follower</A>
+ &nbsp; <B>  <A NAME="tex2html1388"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1372"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1390"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001530000000000000000"></A><A NAME="gfevents"></A>
+<H1><A NAME="SECTION001510000000000000000"></A><A NAME="gfbasic"></A>
 <BR>
-14.3 Events and interaction
+14.1 Basic principle
 </H1>
+Gesture following is provided as a mean to interact with a score. From input viewpoint, the gesture follower is similar to signals (see section <A HREF="node54.html#ssignal">11.1.1</A> p.<A HREF="node54.html#ssignal"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>): it accepts data stream as input both in learning and following modes. It implements a specific set of events related to gesture following and can generate message streams parametrized with the gesture follower current state.
 
 <P>
-Events and likelihood threshold are defined at gesture level. Thus events management messages should be addressed to gestures. 
+A gesture follower is setup to handle a given count of gestures, which are actually denoted by streams of float vectors. We'll refer to the size of the float vector as the <I>gesture dimension</I>. For example, the dimension of a gesture captured from x, y and z accelerometers is 3.
 
 <P>
-A gesture could be in two states:
-
-<UL>
-<LI>an active state: when its likelihood is greater or equal to the likelihood threshold.
-</LI>
-<LI>an idle state: when its likelihood is lower than the likelihood threshold.
-</LI>
-</UL>
+A gesture follower operates in two distinct phases: a <I>learning phase</I> where it actually stores the gestures data, and a <I>following phase</I> where it tries to match incoming data to the stored gestures data. When not learning nor following, we'll talk of an idle phase. 
 
 <P>
-<BR>
-<IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img87.gif"
- ALT="\begin{rail}
-gestureevents :
-'watch' ( 'gfEnter' \vert 'gfLeave') messages
-\vert 'likelihoodThreshold' float32
-\end{rail}">
-<BR>
-<A NAME="1557"></A>
-<A NAME="1558"></A>
-<A NAME="1559"></A>
-<A NAME="1560"></A>
+In the <I>following phase</I>, the system maintains a list of likelihood for the learned gestures, a list of positions in the gestures and a list of speeds representing how fast the gestures are made. Of course, the higher the likelihood, the more these data are meaningfull. It's the user responsability to decide on the meaningfull likelihood threshold value. Interaction events are triggered only in the <I>following phase</I> and for meaningfull likelihoods.
 
 <P>
-
-<UL>
-<LI><TT>gfEnter</TT> triggered when the gesture state changes from idle to active.
-</LI>
-<LI><TT>gfLeave</TT> triggered when the gesture state changes from active to idle.
-</LI>
-<LI><TT>likelihoodThreshold</TT> sets the gesture likelihood threshold. The parameter is a float value in the range <TT>[0,1]</TT>. Default value is <TT>0.8</TT>.
-</LI>
-</UL>
-
-<P>
-In addition, a gesture can stream arbitrary messages each time its state is refreshed.
-<BR>
-<IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img88.gif"
- ALT="\begin{rail}
-gesturestream :
-'send' ( 'active' \vert 'idle') ( [1] \vert [2] messages )
-\end{rail}">
-<BR>
-<A NAME="1570"></A>
-<A NAME="1571"></A>
-<A NAME="1572"></A>
-
-<P>
-
-<UL>
-<LI><TT>active</TT> associates [2] or clear [1] messages to be sent when the gesture is in active state.
-</LI>
-<LI><TT>idle</TT> associates [2] or clear [1] messages to be sent when the gesture is in idle state.
-</LI>
-</UL>
-
-<P>
-<BR><HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
-
-<UL>
-<LI><A NAME="tex2html1375"
-  HREF="node78.html">14.3.1 Gestures variables</A>
-</UL>
-<!--End of Table of Child-Links-->
 <HR>
 <!--Navigation Panel-->
-<A NAME="tex2html1373"
+<A NAME="tex2html1391"
   HREF="node78.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1367"
-  HREF="node73.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1363"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1385"
   HREF="node76.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1369"
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1379"
+  HREF="node76.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1387"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1371"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1389"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1374"
-  HREF="node78.html">14.3.1 Gestures variables</A>
-<B> Up:</B> <A NAME="tex2html1368"
-  HREF="node73.html">14. Gesture Follower</A>
-<B> Previous:</B> <A NAME="tex2html1364"
-  HREF="node76.html">14.2.1 Gestures management</A>
- &nbsp; <B>  <A NAME="tex2html1370"
+<B> Next:</B> <A NAME="tex2html1392"
+  HREF="node78.html">14.2 Messages</A>
+<B> Up:</B> <A NAME="tex2html1386"
+  HREF="node76.html">14. Gesture Follower</A>
+<B> Previous:</B> <A NAME="tex2html1380"
+  HREF="node76.html">14. Gesture Follower</A>
+ &nbsp; <B>  <A NAME="tex2html1388"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1372"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1390"
+  HREF="node117.html">Index</A></B> 
 <!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>

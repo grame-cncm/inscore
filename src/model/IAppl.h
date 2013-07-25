@@ -52,6 +52,8 @@ class IApplDebug;
 typedef class libmapping::SMARTP<IApplDebug> SIApplDebug;
 class IApplStat;
 typedef class libmapping::SMARTP<IApplStat>		SIApplStat;
+class IApplLog;
+typedef class libmapping::SMARTP<IApplLog>		SIApplLog;
 
 //--------------------------------------------------------------------------
 /*!
@@ -71,6 +73,7 @@ class IAppl : public IObject, public PeriodicTask
 		std::string fVersion;					// the application version number
 		SIApplDebug	fApplDebug;					// debug flags
 		SIApplStat	fApplStat;					// statistics
+		SIApplLog	fApplLog;					// log window
 		bool		fOffscreen;
 		udpinfo		fUDP;						// udp port settings
 		int			fRate;						// the time task rate
@@ -109,6 +112,7 @@ class IAppl : public IObject, public PeriodicTask
 		bool	defaultShow() const			{ return fDefaultShow; }
 		const std::string&	getUDPOutAddress() const		{ return fUDP.fOutDstAddress; }
 		const std::string&	getUDPErrAddress() const		{ return fUDP.fErrDstAddress; }
+		IApplLog*			getLogWindow()	{ return fApplLog; }
 		
 		int		getRate() const				{ return fRate; }
 

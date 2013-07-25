@@ -36,6 +36,7 @@
 #include "VGuidoItemView.h"
 #include "VImageView.h"
 #include "VLineView.h"
+#include "VLogWindow.h"
 #include "VPolygonView.h"
 #include "VRectView.h"
 #include "VGridView.h"
@@ -43,6 +44,7 @@
 #include "VSVGView.h"
 #include "VTextView.h"
 #include "VVideoView.h"
+#include "VLayerView.h"
 
 namespace inscore
 {
@@ -54,6 +56,7 @@ void VQtUpdater::updateTo(IScene * scene)		{ ((VSceneView*)scene->getView())->up
 void VQtUpdater::updateTo(IImage * img)				{ update<IImage,	VImageView>		(img); }
 void VQtUpdater::updateTo(IRect * rect)				{ update<IRect,		VRectView>		(rect); }
 void VQtUpdater::updateTo(IGrid * grid)				{ update<IGrid,		VGridView>		(grid); }
+void VQtUpdater::updateTo(ILayer * layer)			{ update<ILayer,		VLayerView>		(layer); }
 void VQtUpdater::updateTo(IEllipse * e)				{ update<IEllipse,	VEllipseView>	(e); }
 void VQtUpdater::updateTo(IPolygon * p)				{ update<IPolygon,	VPolygonView>	(p); }
 void VQtUpdater::updateTo(IGestureFollower * gf)	{ update<IGestureFollower,VGestureFollowerView>	(gf); }
@@ -66,5 +69,12 @@ void VQtUpdater::updateTo(ICurve* curve)			{ update<ICurve,	VCurveView>		(curve)
 void VQtUpdater::updateTo(ILine* line)				{ update<ILine,		VLineView>		(line); }
 void VQtUpdater::updateTo (IHtml* html)				{ update<IHtml,		VTextView>		(html); }
 void VQtUpdater::updateTo (IVideo* video )			{ update<IVideo,	VVideoView>		(video); }
+
+//--------------------------------------------------------------------------
+void VQtUpdater::updateTo(IApplLog * log)
+{
+	QWidget * w = log->window();
+	w->setVisible (log->getVisible());
+}
 
 } // end namespoace
