@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>15.1 Statements</TITLE>
-<META NAME="description" CONTENT="15.1 Statements">
+<TITLE>14.4 Events and interaction</TITLE>
+<META NAME="description" CONTENT="14.4 Events and interaction">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,76 +21,141 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node81.html">
 <LINK REL="previous" HREF="node79.html">
-<LINK REL="up" HREF="node79.html">
+<LINK REL="up" HREF="node76.html">
 <LINK REL="next" HREF="node81.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1421"
+<A NAME="tex2html1433"
   HREF="node81.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1415"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1427"
+  HREF="node76.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1421"
   HREF="node79.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1409"
-  HREF="node79.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1417"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1429"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1419"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1431"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1422"
-  HREF="node81.html">15.2 Messages</A>
-<B> Up:</B> <A NAME="tex2html1416"
-  HREF="node79.html">15. Scripting</A>
-<B> Previous:</B> <A NAME="tex2html1410"
-  HREF="node79.html">15. Scripting</A>
- &nbsp; <B>  <A NAME="tex2html1418"
+<B> Next:</B> <A NAME="tex2html1434"
+  HREF="node81.html">14.5 Gesture Follower Appearance</A>
+<B> Up:</B> <A NAME="tex2html1428"
+  HREF="node76.html">14. Gesture Follower</A>
+<B> Previous:</B> <A NAME="tex2html1422"
+  HREF="node79.html">14.3 Gestures management</A>
+ &nbsp; <B>  <A NAME="tex2html1430"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1420"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1432"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001610000000000000000"></A><A NAME="scriptstatement"></A>
+<H1><A NAME="SECTION001540000000000000000"></A><A NAME="gfevents"></A>
 <BR>
-15.1 Statements
+14.4 Events and interaction
 </H1>
-An INScore file is a list of textual expressions. A script expression is:
 
-<UL>
-<LI>a message: basically a textual OSC message extended to support URL like addresses and variables as parameters.
-</LI>
-<LI>a variable declaration.
-</LI>
-<LI>a foreign language script that may generate messages as output.
-</LI>
-</UL>
+<P>
+Events are defined at gesture level and events management messages should be addressed to gestures. 
 
 <P>
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img90.gif"
+ WIDTH="411" HEIGHT="200" ALIGN="BOTTOM" BORDER="0"
+ SRC="img89.png"
  ALT="\begin{rail}
-expression :
-message '';''
-\vert variabledecl '';''
-\vert script
+gestureevents :
+'watch' ( \vert 'gfEnter' \vert 'gfLeave' \vert 'gfActive' \vert 'gfIdle' ) ( \vert messages )
 \end{rail}">
 <BR>
-<A NAME="1600"></A>
+<A NAME="1620"></A>
+<A NAME="1621"></A>
+<A NAME="1622"></A>
+<A NAME="1623"></A>
+<A NAME="1624"></A>
 
 <P>
-Messages and variables declarations must be followed by a semicolon, used as statements separator.
+
+<UL>
+<LI><TT>gfEnter</TT> triggered when the gesture state changes from idle to active.
+</LI>
+<LI><TT>gfLeave</TT> triggered when the gesture state changes from active to idle.
+</LI>
+<LI><TT>gfActive</TT> triggered in active state each time the gesture likelihood is refreshed.
+</LI>
+<LI><TT>gfIdle</TT> triggered in idle state each time the gesture likelihood is refreshed.
+</LI>
+</UL>
 
 <P>
-<BR><HR>
+A message associated to a gesture supports the following specific variables:
+<BR>
+<IMG
+ WIDTH="396" HEIGHT="126" ALIGN="BOTTOM" BORDER="0"
+ SRC="img90.png"
+ ALT="\begin{rail}
+gesturevariable :
+( 'gflikelihood'
+\vert 'gfpos'
+\vert 'gfspeed') ( \vert '[low,high]' )
+\end{rail}">
+<BR>
+<A NAME="1633"></A>
+<A NAME="1634"></A>
+<A NAME="1635"></A>
+These variables support the scaling feature associated to position variables and described in section <A HREF="node69.html#posvar">13.2.1</A> p.<A HREF="node69.html#posvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>.
+
+<UL>
+<LI><TT>gflikelihood</TT> indicates the current likelihood 
+</LI>
+<LI><TT>gfpos</TT> indicates the current position in the gesture 
+</LI>
+<LI><TT>gfspeed</TT> indicates the current gesture execution speed 
+</LI>
+</UL>
+
+<P>
+<BR><B> <B>N<SMALL>OTE </SMALL></B></B>
+<BR>
+Variables described in section <A HREF="node68.html#interactvar">13.2</A> p.<A HREF="node68.html#interactvar"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> may also be used but they are meaningless and contains default values.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1433"
+  HREF="node81.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1427"
+  HREF="node76.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1421"
+  HREF="node79.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1429"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1431"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html1434"
+  HREF="node81.html">14.5 Gesture Follower Appearance</A>
+<B> Up:</B> <A NAME="tex2html1428"
+  HREF="node76.html">14. Gesture Follower</A>
+<B> Previous:</B> <A NAME="tex2html1422"
+  HREF="node79.html">14.3 Gestures management</A>
+ &nbsp; <B>  <A NAME="tex2html1430"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1432"
+  HREF="node117.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

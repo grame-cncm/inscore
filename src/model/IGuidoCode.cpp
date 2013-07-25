@@ -40,7 +40,7 @@ const string IGuidoCode::kGuidoCodeType("gmn");
 
 //--------------------------------------------------------------------------
 IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
-	IObject (name, parent) , fGRHandler(0), fPage(1), fPageFormat( 21.0f, 29.7f ), fPageCount(0),
+	IObject (name, parent) , fGRHandler(0), fPage(1), fPageFormat( 21.0f, 29.7f ),
 	fNbOfPageColumns(2), fNbOfPageRows(1)
 {
 	fLocalMappings = TLocalMapping<rational,1>::create();
@@ -55,13 +55,32 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 	fMsgHandlerMap[kmap_GetSetMethod]			= TMethodMsgHandler<IGuidoCode>::create(this, &IGuidoCode::mapMsg);
 
 	fGetMsgHandlerMap[kpage_GetSetMethod]		= TGetParamMsgHandler<int>::create(fPage);
-	fGetMsgHandlerMap[kpageCount_GetMethod]		= TGetParamMsgHandler<int>::create(fPageCount);
+//	fGetMsgHandlerMap[kpageCount_GetMethod]		= TGetParamMsgHandler<int>::create(fPageCount);
+	fGetMsgHandlerMap[kpageCount_GetMethod]		= TGetParamMethodHandler<IGuidoCode, int (IGuidoCode::*)() const>::create(this, &IGuidoCode::getPageCount);
+	fGetMsgHandlerMap[ksystemCount_GetMethod]	= TGetParamMethodHandler<IGuidoCode, vector<int> (IGuidoCode::*)() const>::create(this, &IGuidoCode::getSystemsCount);
 	fGetMsgHandlerMap[kpageFormat_GetSetMethod]	= TGetParamMsgHandler<TFloatSize>::create(fPageFormat);
 	fGetMsgHandlerMap[kcolumns_GetSetMethod]	= TGetParamMsgHandler<int>::create(fNbOfPageColumns);
 	fGetMsgHandlerMap[krows_GetSetMethod]		= TGetParamMsgHandler<int>::create(fNbOfPageRows);
 	fGetMsgHandlerMap[""]						= TGetParamMsgHandler<std::string>::create(fGMN);
 
 	requestMapping("");
+}
+
+//--------------------------------------------------------------------------
+vector<int> IGuidoCode::getSystemsCount() const
+{
+	vector<int> result;
+	int pcount = getPageCount();
+	for (int i=0; i < pcount; i++) {
+		result.push_back( GuidoGetSystemCount (fGRHandler, i+1) );
+	}
+	return result;
+}
+
+//--------------------------------------------------------------------------
+int IGuidoCode::getPageCount() const
+{
+	return GuidoGetPageCount (fGRHandler);
 }
 
 //--------------------------------------------------------------------------
@@ -73,9 +92,10 @@ void IGuidoCode::accept (Updater* u)
 //--------------------------------------------------------------------------
 void IGuidoCode::setdPage( int dpage )
 { 
+	int pcount = getPageCount();
 	int page = fPage + dpage;
 	if (page < 1) page = 1;
-	else if (page > fPageCount) page = fPageCount;
+	else if (page > pcount) page = pcount;
 	if (fPage != page) {
 		fPage = page;
 		localMapModified(true); 
@@ -210,8 +230,9 @@ SIMessageList IGuidoCode::getMsgs(const IMessage* msg) const
 		else if ( param == "pageDate" )
 		{
 			i++;
+			int pcount = getPageCount();
 			int pagenumber;
-			if (i < msg->size() && msg->param(i, pagenumber) && (pagenumber <= fPageCount)) {
+			if (i < msg->size() && msg->param(i, pagenumber) && (pagenumber <= pcount)) {
 				SIMessage msg = IMessage::create(getOSCAddress(), param);
 				*msg << pagenumber << getPageDate(pagenumber);
 				outMsgs->list().push_back (msg);

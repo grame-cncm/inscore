@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>14.2.1 Gestures management</TITLE>
-<META NAME="description" CONTENT="14.2.1 Gestures management">
+<TITLE>14. Gesture Follower</TITLE>
+<META NAME="description" CONTENT="14. Gesture Follower">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,159 +19,72 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="previous" HREF="node75.html">
-<LINK REL="up" HREF="node75.html">
+<LINK REL="next" HREF="node82.html">
+<LINK REL="previous" HREF="node63.html">
+<LINK REL="up" HREF="OSCMsg.html">
 <LINK REL="next" HREF="node77.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1361"
+<A NAME="tex2html1372"
   HREF="node77.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1355"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1366"
+  HREF="OSCMsg.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1360"
   HREF="node75.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1351"
-  HREF="node75.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1357"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1368"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1359"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1370"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1362"
-  HREF="node77.html">14.3 Events and interaction</A>
-<B> Up:</B> <A NAME="tex2html1356"
-  HREF="node75.html">14.2 Messages</A>
-<B> Previous:</B> <A NAME="tex2html1352"
-  HREF="node75.html">14.2 Messages</A>
- &nbsp; <B>  <A NAME="tex2html1358"
+<B> Next:</B> <A NAME="tex2html1373"
+  HREF="node77.html">14.1 Basic principle</A>
+<B> Up:</B> <A NAME="tex2html1367"
+  HREF="OSCMsg.html">INScore OSC Messages Reference</A>
+<B> Previous:</B> <A NAME="tex2html1361"
+  HREF="node75.html">13.4 File watcher</A>
+ &nbsp; <B>  <A NAME="tex2html1369"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1360"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1371"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION001521000000000000000"></A><A NAME="gfmanagement"></A>
+<H1><A NAME="SECTION001500000000000000000"></A>
+<A NAME="GF"></A>
 <BR>
-14.2.1 Gestures management
-</H2>
+14. Gesture Follower
+</H1>
 
 <P>
-<BR>
-<IMG
- WIDTH="378" HEIGHT="279" ALIGN="BOTTOM" BORDER="0"
- SRC="img85.gif"
- ALT="\begin{rail}
-gesturefollower :
-[1] ( float32 + )
-\vert [2] ('learn' name)
-\ve...
-...ert [5] ('likelihoodwindow' float32)
-\vert [6] ('tolerance' float32)
-\end{rail}">
-<BR>
-<A NAME="1524"></A>
-<A NAME="1525"></A>
-<A NAME="1526"></A>
-<A NAME="1527"></A>
-<A NAME="1528"></A>
+INScore supports gesture following using the technology developed by the IRCAM IMTR team. These features are available as a plugin that is included in the INScore distribution (version 1.03 or greater) or available from the IRCAM.
 
 <P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><B>[1]</B> input data into the gesture follower.
-</LI>
-<LI><B>[2]</B> starts to learn the gesture designated by <I>name</I>. Actually records the next input data to the gesture. 
-</LI>
-<LI><B>[3]</B> starts following i.e. trying to match the next input data to the recorded gestures.
-</LI>
-<LI><B>[4]</B> stops learning or following. Actually puts the system in idle phase.
-</LI>
-<LI><B>[5]</B> sets the size of the window that contains the history of the likelihoods. May be viewed as how fast the likelihoods	will change.
-</LI>
-<LI><B>[6]</B> sets the follower tolerance. 
-</LI>
+<LI><A NAME="tex2html1374"
+  HREF="node77.html">14.1 Basic principle</A>
+<LI><A NAME="tex2html1375"
+  HREF="node78.html">14.2 Messages</A>
+<LI><A NAME="tex2html1376"
+  HREF="node79.html">14.3 Gestures management</A>
+<LI><A NAME="tex2html1377"
+  HREF="node80.html">14.4 Events and interaction</A>
+<LI><A NAME="tex2html1378"
+  HREF="node81.html">14.5 Gesture Follower Appearance</A>
 </UL>
-
-<P>
-<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
-<BR>
-Creating a gesture follower and a typical learning sequence:
-<BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene/gf set imtrgf 3 1000 gestureA gestureB gestureC
-<BR>/ITL/scene/gf learn gestureA 
-<BR>/ITL/scene/gf 0.1 0.5 -0.2 ... 0.7; 
-<BR>/ITL/scene/gf stop;
-</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
-
-<P>
-Messages can also be sent to gestures i.e. to addresses in the form <TT>/ITL/<I>scene</I>/<I>myfollower</I>/<I>gesturename</I></TT> where <TT>myfollower</TT> is a gesture follower:
-
-<P>
-<BR>
-<IMG
- WIDTH="301" HEIGHT="124" ALIGN="BOTTOM" BORDER="0"
- SRC="img86.gif"
- ALT="\begin{rail}
-gesture : 'set' ( float32 +)
-\vert 'clear'
-\end{rail}">
-<BR>
-<A NAME="1545"></A>
-<A NAME="1546"></A>
-
-<P>
-
-<UL>
-<LI><TT>set</TT> sets the gesture data. This is equivalent to learn the corresponding data.
-</LI>
-<LI><TT>clear</TT> clears the gesture data. 
-</LI>
-</UL>
-
-<P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html1361"
-  HREF="node77.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1355"
-  HREF="node75.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1351"
-  HREF="node75.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1357"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1359"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html1362"
-  HREF="node77.html">14.3 Events and interaction</A>
-<B> Up:</B> <A NAME="tex2html1356"
-  HREF="node75.html">14.2 Messages</A>
-<B> Previous:</B> <A NAME="tex2html1352"
-  HREF="node75.html">14.2 Messages</A>
- &nbsp; <B>  <A NAME="tex2html1358"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1360"
-  HREF="node114.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<!--End of Table of Child-Links-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

@@ -40,6 +40,8 @@
 #ifdef WIN32
 #include <windows.h>
 #define sleep(n)	Sleep(n*1000)
+#else
+#include <unistd.h>
 #endif
 
 #include <stdlib.h>

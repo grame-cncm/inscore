@@ -86,7 +86,18 @@
 
 \maketitle
 
-\vspace*{22cm}
+\vspace*{18cm}
+ 
+{\small INScore makes use of the following technologies:}
+\begin{table}[h]
+\begin{tabular}{ll}
+{\small The GUIDOEngine}  						& {\small \url{http://guidolib.sf.net}} \\
+{\small The IRCAM Gesture Follower} 				& {\small \url{http://imtr.ircam.fr/imtr/Gesture_Follower}} \\
+{\small The Qt5 cross-platform application and UI framework} & {\small \url{http://qt-project.org/qt5}} \\
+{\small The V8 JavaScript Engine} 				& {\small \url{https://code.google.com/p/v8/}}
+\end{tabular}
+\end{table}%
+
 {\small INScore was initiated in the Interlude project, funded by the French National Research Agency [ANR- 08-CORD-010].}
   
 
@@ -152,8 +163,8 @@ The OSC address space is made of static and dynamic nodes, hierarchically organi
 OSC messages are accepted at any level of the hierarchy:
 \begin{itemize}
 \item \textbf{the application level} responds to messages for application management (udp ports management, loading files, query messages). \\
-It includes a static node named \OSC{stats} that collects information about incoming messages, and a static \OSC{debug} node that can be used to get debug information.
-\item \textbf{the scene level} contains \emph{scores} that are associated to a window and respond to specific scene/window management messages.
+It includes a static node named \OSC{stats} that collects information about incoming messages, a static \OSC{log} node that control an embedded log window and a static \OSC{debug} node that can be used to get debug information.
+\item \textbf{the scene level} contains \emph{scores} that are associated to a window and respond to specific scene/window management messages. It includes three static nodes: a \OSC{sync} node for synchronization management, a \OSC{signal} node that is a container for \emph{signals}, and a \OSC{javascript} node that makes the javascript engine available to OSC commands.
 \item \textbf{the component level} contains the scene objects and two static nodes:
 
 \begin{itemize}
@@ -813,7 +824,7 @@ getMsg : 'get' ( | getParam +)
 
 The \OSC{get} message without parameter is the counterpart of the \OSC{set} message. When addressed to a container (the application \OSC{/ITL}, a scene \OSC{/ITL/scene}, the signal node \OSC{/ITL/scene/signal}) is also distributed to all the container components.
 
-Specific \OSC{get} forms may be available, depending on the component type (see section \fullref{specmsgs}).
+Specific \OSC{get} forms may be available, depending on the component type (see sections \ref{gmnpage},  \ref{ITLQuery}, \ref{ITLdebug}, \ref{syncmsg}, \ref{parcomp}, \ref{faustmsg}).
 
 \example \\
 Sending the following request to an object which position is 0.3 0.5
@@ -905,7 +916,7 @@ scoreMsg :      'page' int32
 			| 'pageFormat' float32 float32
 			| 'columns' int32
 			| 'rows' int32
-			| 'get' 'pageCount'
+			| 'get' ( 'pageCount'| 'systemCount' )
 \end{rail}
 \index{Specific messages! score! page}
 \index{Specific messages! score! dpage}
@@ -913,6 +924,7 @@ scoreMsg :      'page' int32
 \index{Specific messages! score! columns}
 \index{Specific messages! score! rows}
 \index{Specific messages! score! pageCount}
+\index{Specific messages! score! systemCount}
 
 
 \begin{itemize}
@@ -922,6 +934,7 @@ scoreMsg :      'page' int32
 \item \OSC{columns}: for multi pages display: set the number of columns.
 \item \OSC{rows}: for multi pages display: set the number of rows.
 \item \OSC{pageCount}:  a read only attribute, gives the score pages count.
+\item \OSC{systemCount}:  a read only attribute, gives the number of systems on each of the score pages. The result is given as a list systems count ordered by page number (index 0 is page 1, etc.).
 \end{itemize}
 
 \example \\
@@ -1033,7 +1046,7 @@ The default \OSC{rate} value is 10.
 
 \item \OSC{time}: sets the application current time. The time is expressed in milliseconds.
 
-\item \OSC{time}: sets the application current ticks count. The ticks count indicates the number of time tasks performed by the application.
+\item \OSC{ticks}: sets the application current ticks count. The ticks count indicates the number of time tasks performed by the application.
 
 \item \OSC{hello}: query the host IP number. The message is intended for ITL applications discovery. Answer to the query has the following format: \\
 \oldexample \OSC{IP  inPort outPort errPort} where \OSC{IP} is sent as a string and port numbers as integer values.
@@ -1128,11 +1141,14 @@ Querying INScore version:
 \sample{/ITL version 1.00}
 
 %===============================
-%:  The stat and debug nodes
-\sublevel{The 'stats' and 'debug' nodes}
-\label{ITLdebug}
+%:  Application static nodes
+\sublevel{Application static nodes}
+\label{ITLStatic}
 
-The application level provides two static nodes - \OSC{stats} and \OSC{debug}, available at \OSC{/ITL/stats} and \OSC{/ITL/debug} to help debugging communication and INScore scripts design.
+The application level provides the static nodes - \OSC{stats}, \OSC{debug} and \OSC{log}, available at \OSC{/ITL/stats} \OSC{/ITL/debug} and \OSC{/ITL/log}  to help debugging communication and INScore scripts design.
+
+\subsublevel{The 'stats' nodes}
+\label{ITLstat}
 
 \begin{rail}
 ITLStats : 'get'  | 'reset'
@@ -1148,6 +1164,10 @@ ITLStats : 'get'  | 'reset'
 \example \\
 Answer to a \OSC{get} message addressed to \OSC{/ITL/stats}
 \sample{/ITL/stats osc 15 udp 10}
+
+
+\subsublevel{The 'debug' nodes}
+\label{ITLdebug}
 
 The \OSC{debug} node is used to activate debugging information.
 \begin{rail}
@@ -1166,6 +1186,26 @@ error:  incorrect parameters: /ITL/scene/foo unknown 0.1\\
 error:  incorrect parameters: /ITL/scene/foo x "incorrectType"
 }
 
+
+\subsublevel{The 'log' nodes}
+\label{ITLlog}
+
+The \OSC{log} node controls a console window that display all the messages sent to the OSC error port. Typical content is given by the example above.
+
+\begin{rail}
+ITLLog : 'show'  int32
+		| 'clear'
+		| 'wrap' int32
+\end{rail}
+\index{ITL log!show}
+\index{ITL log!clear}
+\index{ITL log!wrap}
+
+\begin{itemize}
+\item \OSC{show} show or hides the console. The parameter is a boolean value.
+\item \OSC{clear} clear the console window.
+\item \OSC{wrap} control line wrapping of the console. The parameter is a boolean value.
+\end{itemize}
 
 
 %===============================
@@ -2250,7 +2290,8 @@ Reload aa INScore script on file modification:
 \toplevel{Gesture Follower}
 \label{GF}
 
-INScore supports gesture following using the technology developped by the IRCAM IMTR team. These features are available as a plugin that is available from the IRCAM. The plugin installation is documented in the accompanying readme file.
+INScore supports gesture following using the technology developed by the IRCAM IMTR team. These features are available as a plugin that is included in the INScore distribution (version 1.03 or greater) or available from the IRCAM.
+%available from the IRCAM. The plugin installation is documented in the accompanying readme file.
 
 %===============================
 %:    Basic principle
@@ -2347,6 +2388,18 @@ gesture : 'set' ( float32 +)
 \item \OSC{clear}: clears the gesture data. 
 \item \OSC{learn}: puts the gestures follower in learning mode and starts learning the corresponding gesture. This is equivalent to send OSC{learn \textit{gesturename}} to the parent gesture follower.
 \item \OSC{likelihoodThreshold}: sets the gesture likelihood threshold. The parameter is a float value in the range \values{[0,1]}. Default value is \values{0.5}.
+\end{itemize}
+
+Gestures supports also specific queries :
+\begin{rail}
+gestureget : 'get' (| 'likelihoodThreshold' | 'size')
+\end{rail}
+\index{gesture!get}
+\index{gesture!get!size}
+
+\begin{itemize}
+\item \OSC{get}: without parameter, returns a set message when the gesture is not empty.
+\item \OSC{size}: gives the current size of the gesture, actually the number of recorded frames. 
 \end{itemize}
 
 

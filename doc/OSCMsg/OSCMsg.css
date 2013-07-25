@@ -40,4 +40,6 @@ A:hover     { color: #C6482C;}
 
 IMG     	{ color: #ffffff; border: 0px;}
 
+CAPTION 	{ font-size : small }
+
 /* document-specific styles come next */

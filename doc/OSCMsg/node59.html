@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>12.2 Feeding and composing FAUST processors</TITLE>
-<META NAME="description" CONTENT="12.2 Feeding and composing FAUST processors">
+<TITLE>11.2.2 Parallel graphic signals.</TITLE>
+<META NAME="description" CONTENT="11.2.2 Parallel graphic signals.">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -26,72 +26,82 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1105"
+<A NAME="tex2html1120"
   HREF="node60.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1099"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1114"
   HREF="node57.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1095"
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1110"
   HREF="node58.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1101"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1116"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1103"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1118"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1106"
-  HREF="node60.html">13. Events and Interaction</A>
-<B> Up:</B> <A NAME="tex2html1100"
-  HREF="node57.html">12. FAUST plugins</A>
-<B> Previous:</B> <A NAME="tex2html1096"
-  HREF="node58.html">12.1 Specific messages</A>
- &nbsp; <B>  <A NAME="tex2html1102"
+<B> Next:</B> <A NAME="tex2html1121"
+  HREF="node60.html">12. FAUST plugins</A>
+<B> Up:</B> <A NAME="tex2html1115"
+  HREF="node57.html">11.2 Graphic signals.</A>
+<B> Previous:</B> <A NAME="tex2html1111"
+  HREF="node58.html">11.2.1 Graphic signal default</A>
+ &nbsp; <B>  <A NAME="tex2html1117"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1104"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1119"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001320000000000000000"></A>
-<A NAME="composefaust"></A>
+<H2><A NAME="SECTION001222000000000000000"></A>
+<A NAME="pgsignal"></A>
 <BR>
-12.2 Feeding and composing FAUST processors
-</H1>
+11.2.2 Parallel graphic signals.
+</H2>
+When the dimension <I>d</I> of a signal connected to a graphic signal is greater than 6, then the input signal is interpreted like parallel graphic signals. More generally, the dimension <I>n</I> of a graphic signal is:
+<BR><P></P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ \begin{displaymath}
+n  \  |\ n \in \mathbb{N}\ \land\ 6.(n-1) < d \leqslant 6.n
+\end{displaymath}
+ -->
 
-<P>
-A FAUST processor accepts float values as input, which are taken as interleaved data and distributed to the input channels.
-
-<P>
-From composition viewpoint, a FAUST processor is a parallel signal which dimension is the number of output channels. 
-Thus, a FAUST processor can be used like any parallel signal. However, the signal identifier defined in <A HREF="node52.html#parcomp">11.1.2</A> is extended to support adressing single components of parallel signal as follows:
-<BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img70.gif"
- ALT="\begin{rail}
-signal :
-identifier ( \vert ''/'' n)
-\vert float32
-\end{rail}">
-<BR>
-where <TT>n</TT> selects the signal #n of a parallel signal. Note that indexes start at 0.
+ WIDTH="384" HEIGHT="28" BORDER="0"
+ SRC="img68.png"
+ ALT="\begin{displaymath}
+n  \vert n \in \mathbb{N} \land 6.(n-1) &lt; d \leqslant 6.n
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+where <I>d</I> is the dimension of the input signal.
+
+<P>
+When <I>d</I> is not a mutiple of 6, then the last graphic signal makes use of the default values mentionned above.
 
 <P>
 <B> <B>E<SMALL>XAMPLE </SMALL></B></B>
 <BR>
-Creating 3 parallel signals using the 3 output channels of a FAUST processor named <TT>myFaust</TT>:
+Creating parallel graphic signals:
 <BR>
 <DIV ALIGN="CENTER">
 <BLINK><FONT COLOR="#ededed">
 								</DIV><TABLE  WIDTH="0%">
 <TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene/signal/y1 set 'myFaust/0' 0.01 0. 1. 1. 1. 
-<BR>/ITL/scene/signal/y2 set 'myFaust/1' 0.01 0.5 1. 1. 1. 
-<BR>/ITL/scene/signal/y3 set 'myFaust/2' 0.01 -0.5 1. 1. 1.
+								<FONT SIZE="-1"><TT>/ITL/scene/signal/y1 size 200  
+<BR>/ITL/scene/signal/y2 size 200  
+<BR>! use of constant anonymous signals for thickness and color
+<BR>/ITL/scene/signal/sig1 set y1 0.1 0. 1. 1. 1.  
+<BR>! use a different color for 'sig2'
+<BR>/ITL/scene/signal/sig2 set y2 0.1 0.6 1. 1. 1.  
+<BR>! put 'sig1' and 'sig2' in parallel
+<BR>/ITL/scene/signal/sig set sig1 sig2     ! 'sig' dimension is 12
+<BR>/ITL/scene/siggraph set graph sig 
 </TT></FONT>
 								</TD></TR>
 </TABLE>
@@ -99,7 +109,40 @@ Creating 3 parallel signals using the 3 output channels of a FAUST processor nam
 </DIV>
 
 <P>
-<BR><HR>
+<BR><B> <B>N<SMALL>OTE </SMALL></B></B> 
+<BR>
+Using data projection may be convenient when the input signal represents interleaved data. For example, the projection string <TT>[n&#732;6]</TT> distribute data over similar components of a set of graphic signals, where <TT>n</TT> represents the index of the graphic signal target component.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1120"
+  HREF="node60.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1114"
+  HREF="node57.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1110"
+  HREF="node58.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1116"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1118"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
+<BR>
+<B> Next:</B> <A NAME="tex2html1121"
+  HREF="node60.html">12. FAUST plugins</A>
+<B> Up:</B> <A NAME="tex2html1115"
+  HREF="node57.html">11.2 Graphic signals.</A>
+<B> Previous:</B> <A NAME="tex2html1111"
+  HREF="node58.html">11.2.1 Graphic signal default</A>
+ &nbsp; <B>  <A NAME="tex2html1117"
+  HREF="node1.html">Contents</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1119"
+  HREF="node117.html">Index</A></B> 
+<!--End of Navigation Panel-->
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

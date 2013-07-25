@@ -23,6 +23,7 @@
 #include "OSCStream.h"
 #include "IMessage.h"
 #include "IColor.h"
+#include "IApplVNodes.h"
 
 using namespace std;
 
@@ -120,6 +121,17 @@ OSCStream& operator <<(OSCStream& s, const OSCStart& val)	{ return s.start(val.f
 OSCStream& operator <<(OSCStream& s, const OSCEnd val)		{ return s.end(); }
 
 
+
+//--------------------------------------------------------------------------
+OSCErrorStream&	OSCErrorStream::end()
+{
+	if (fLogWindow) {
+		fAddress+=fSStream.str();
+		fLogWindow->print(fAddress.c_str());
+	}
+	OSCStream::stream() << fSStream.str().c_str(); OSCStream::end();
+	return *this;
+}
 
 //--------------------------------------------------------------------------
 OSCErrorStream& operator <<(OSCErrorStream& s, const string& val)	

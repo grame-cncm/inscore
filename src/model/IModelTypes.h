@@ -37,6 +37,9 @@ class IMessage;
 class IAppl;
 typedef class libmapping::SMARTP<IAppl>			SIAppl;
 
+class IApplLog;
+typedef class libmapping::SMARTP<IApplLog>		SIApplLog;
+
 class IColor;
 typedef class libmapping::SMARTP<IColor>		SIColor;
 

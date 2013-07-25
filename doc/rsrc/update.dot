@@ -1,0 +1,57 @@
+digraph update { 
+	margin=0.05;
+	
+	// ------------------------------------------------------
+	// detailed update sheme: from OSC messages to rendering
+	// ------------------------------------------------------
+	node [shape=none];
+	oscmsg	[label="Message"];
+
+	node [shape=none];
+	basicupdate	[label="Core model update\n(basic model data)"];
+	extupdate	[label="Model local mapping update\n(viewer dependant)"];
+	mapupdate	[label="Slave segmentation and\nmapping update"];
+	viewdate	[label="View update\n(objects graphic rendering)"];
+
+	// ------------------------------------------------------
+	// comments nodes
+	// ------------------------------------------------------
+	node [shape=none];
+
+	node [style=filled, color=ivory2];
+	scheme	[label="Processing Scheme"];
+	steps	[label="Update Steps"];
+
+	// ------------------------------------------------------
+	// implementation
+	// ------------------------------------------------------
+	node [shape=record, style=solid, color=black];
+	edge [style=solid, arrowhead=onormal];
+	update1		[label="Update model"];
+	update2		[label="Update local map"];
+	update3		[label="Update slave map"];
+	update4		[label="Update view"];
+	
+	oscmsg		-> update1 [style=dotted, arrowtail=odiamond, arrowhead=none label=" uses", fontsize=10];
+	update1		-> update2 -> update3 -> update4;
+	
+	
+	edge [style=invis];
+	scheme 	-> steps;
+	scheme 	-> basicupdate;
+	steps  	-> oscmsg;
+	extupdate -> update2;
+	mapupdate -> update3;
+	viewdate -> update4
+
+
+	edge [style=dotted, arrowhead=none];
+	basicupdate  -> extupdate -> mapupdate -> viewdate;
+
+
+	{ rank = same; scheme; steps; }
+	{ rank = same; basicupdate; update1; }
+	{ rank = same; extupdate; update2; }
+	{ rank = same; mapupdate; update3; }
+	{ rank = same; viewdate; update4; }
+}

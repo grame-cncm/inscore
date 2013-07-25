@@ -108,6 +108,40 @@ class IApplStat : public IVNode
 };
 
 
+class IApplLog;
+class VLogWindow;
+typedef class libmapping::SMARTP<IApplLog>		SIApplLog;
+
+//--------------------------------------------------------------------------
+/*!
+	\brief an object debug virtual node
+*/
+class IApplLog : public IVNode
+{
+	VLogWindow*	fWindow;
+	
+	public:	
+		/// \brief creates a new IApplLog
+		static SIApplLog create(IObject * parent)		{ return new IApplLog(parent); }
+
+		/// \brief print the object state \param out the output stream
+		virtual void	print(std::ostream& out) const	{}
+
+		/// \brief accept an Update visitor
+		virtual void	accept (Updater*);
+		
+		VLogWindow* window()				{ return fWindow; }
+		void		print(const char*);
+
+	protected:	
+				 IApplLog(IObject * parent);
+		virtual ~IApplLog();
+
+		void	clear();
+		void	setWrap(bool state);
+};
+
+
 /*! @} */
 
 } // end namespoace

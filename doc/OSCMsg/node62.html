@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>13.1.1 UI events</TITLE>
-<META NAME="description" CONTENT="13.1.1 UI events">
+<TITLE>12.2 Feeding and composing FAUST processors</TITLE>
+<META NAME="description" CONTENT="12.2 Feeding and composing FAUST processors">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,9 +19,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
-<LINK REL="next" HREF="node63.html">
 <LINK REL="previous" HREF="node61.html">
-<LINK REL="up" HREF="node61.html">
+<LINK REL="up" HREF="node60.html">
 <LINK REL="next" HREF="node63.html">
 </HEAD>
 
@@ -29,89 +28,75 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <!--Navigation Panel-->
 <A NAME="tex2html1162"
   HREF="node63.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
 <A NAME="tex2html1156"
+  HREF="node60.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1152"
   HREF="node61.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1150"
-  HREF="node61.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
 <A NAME="tex2html1158"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
 <A NAME="tex2html1160"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
 <B> Next:</B> <A NAME="tex2html1163"
-  HREF="node63.html">13.1.2 Time events</A>
+  HREF="node63.html">13. Events and Interaction</A>
 <B> Up:</B> <A NAME="tex2html1157"
-  HREF="node61.html">13.1 Events</A>
-<B> Previous:</B> <A NAME="tex2html1151"
-  HREF="node61.html">13.1 Events</A>
+  HREF="node60.html">12. FAUST plugins</A>
+<B> Previous:</B> <A NAME="tex2html1153"
+  HREF="node61.html">12.1 Specific messages</A>
  &nbsp; <B>  <A NAME="tex2html1159"
   HREF="node1.html">Contents</A></B> 
  &nbsp; <B>  <A NAME="tex2html1161"
-  HREF="node114.html">Index</A></B> 
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION001411000000000000000"></A>
-<A NAME="uievents"></A>
+<H1><A NAME="SECTION001320000000000000000"></A>
+<A NAME="composefaust"></A>
 <BR>
-13.1.1 UI events
-</H2>
+12.2 Feeding and composing FAUST processors
+</H1>
 
 <P>
-User interface events are typical mouse events:
+A FAUST processor accepts float values as input, which are taken as interleaved data and distributed to the input channels.
+
+<P>
+From composition viewpoint, a FAUST processor is a parallel signal which dimension is the number of output channels. 
+Thus, a FAUST processor can be used like any parallel signal. However, the signal identifier defined in <A HREF="node55.html#parcomp">11.1.2</A> is extended to support adressing single components of parallel signal as follows:
 <BR>
 <IMG
- WIDTH="110" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
- SRC="img74.gif"
+ WIDTH="325" HEIGHT="126" ALIGN="BOTTOM" BORDER="0"
+ SRC="img71.png"
  ALT="\begin{rail}
-what : 'mouseDown' \vert 'mouseUp' \vert 'mouseEnter' \vert 'mouseLeave' \vert 'mouseMove' \vert 'doubleClick'
+signal :
+identifier ( \vert ''/'' n)
+\vert float32
 \end{rail}">
 <BR>
-<A NAME="1351"></A>
-<A NAME="1352"></A>
-<A NAME="1353"></A>
-<A NAME="1354"></A>
-<A NAME="1355"></A>
-<A NAME="1356"></A>
+where <TT>n</TT> selects the signal #n of a parallel signal. Note that indexes start at 0.
 
 <P>
 <B> <B>E<SMALL>XAMPLE </SMALL></B></B>
 <BR>
-Triggering a message on mouse down:
+Creating 3 parallel signals using the 3 output channels of a FAUST processor named <TT>myFaust</TT>:
 <BR>
 <DIV ALIGN="CENTER">
 <BLINK><FONT COLOR="#ededed">
 								</DIV><TABLE  WIDTH="0%">
 <TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene/myObject watch mouseDown /ITL/scene/myObject show 0</TT></FONT>
+								<FONT SIZE="-1"><TT>/ITL/scene/signal/y1 set 'myFaust/0' 0.01 0. 1. 1. 1. 
+<BR>/ITL/scene/signal/y2 set 'myFaust/1' 0.01 0.5 1. 1. 1. 
+<BR>/ITL/scene/signal/y3 set 'myFaust/2' 0.01 -0.5 1. 1. 1.
+</TT></FONT>
 								</TD></TR>
 </TABLE>
 <DIV ALIGN="CENTER"></FONT></BLINK>
 </DIV>
-the object hides itself on mouse click. 
-<BR>
-Triggering a message on mouse down but addressed to another host on udp port 12100:
-<BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene/myObject watch mouseDown host.domain.org:12100/an/address start </TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
-
-<P>
-<BR><B> <B>N<SMALL>OTE </SMALL></B></B> 
-<BR>
-UI events are not supported by objects that are synchronized as slave.
 
 <P>
 <BR><HR>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>14.1 Basic principle</TITLE>
-<META NAME="description" CONTENT="14.1 Basic principle">
+<TITLE>13.3 Interaction state management</TITLE>
+<META NAME="description" CONTENT="13.3 Interaction state management">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -20,88 +20,79 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
 <LINK REL="next" HREF="node75.html">
-<LINK REL="previous" HREF="node73.html">
-<LINK REL="up" HREF="node73.html">
+<LINK REL="previous" HREF="node68.html">
+<LINK REL="up" HREF="node63.html">
 <LINK REL="next" HREF="node75.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1334"
+<A NAME="tex2html1346"
   HREF="node75.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1328"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1340"
+  HREF="node63.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1334"
   HREF="node73.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1322"
-  HREF="node73.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1330"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1342"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1332"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1344"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1335"
-  HREF="node75.html">14.2 Messages</A>
-<B> Up:</B> <A NAME="tex2html1329"
-  HREF="node73.html">14. Gesture Follower</A>
-<B> Previous:</B> <A NAME="tex2html1323"
-  HREF="node73.html">14. Gesture Follower</A>
- &nbsp; <B>  <A NAME="tex2html1331"
+<B> Next:</B> <A NAME="tex2html1347"
+  HREF="node75.html">13.4 File watcher</A>
+<B> Up:</B> <A NAME="tex2html1341"
+  HREF="node63.html">13. Events and Interaction</A>
+<B> Previous:</B> <A NAME="tex2html1335"
+  HREF="node73.html">13.2.5 OSC address variables</A>
+ &nbsp; <B>  <A NAME="tex2html1343"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1333"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1345"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION001510000000000000000"></A><A NAME="gfbasic"></A>
+<H1><A NAME="SECTION001430000000000000000"></A>
+<A NAME="evtstate"></A>
 <BR>
-14.1 Basic principle
+13.3 Interaction state management
 </H1>
-Gesture following is provided as a mean to interact with a score. From input viewpoint, the gesture follower is similar to signals (see section <A HREF="node51.html#ssignal">11.1.1</A> p.<A HREF="node51.html#ssignal"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>): it accepts data stream as input both in learning and following modes. It implements a specific set of events related to gesture following and can generate message streams parametrized with the gesture follower current state.
 
 <P>
-A gesture follower is setup to handle a given count of gestures, which are actually denoted by streams of float vectors. We'll refer to the size of the float vector as the <I>gesture dimension</I>. For example, the dimension of a gesture captured from x, y and z accelerometers is 3.
-
-<P>
-A gesture follower operates in two distinct phases: a <I>learning phase</I> where it actually stores the gestures data, and a <I>following phase</I> where it tries to match incoming data to the stored gestures data. When not learning nor following, we'll talk of an idle phase. 
-
-<P>
-In the <I>following phase</I>, the system maintains a list of likelihood for the learned gestures, a list of positions in the gestures and a list of speeds representing how fast the gestures are made. Of course, the higher the likelihood, the more these data are meaningfull. It's the user responsability to decide on the meaningfull likelihood threshold value. Interaction events are triggered only in the <I>following phase</I> and for meaningfull likelihoods.
-
-<P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html1334"
-  HREF="node75.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1328"
-  HREF="node73.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1322"
-  HREF="node73.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1330"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1332"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+For a given object, its <I>interaction state</I> (i.e. the watched events and the associated messages) can be saved and restored.
 <BR>
-<B> Next:</B> <A NAME="tex2html1335"
-  HREF="node75.html">14.2 Messages</A>
-<B> Up:</B> <A NAME="tex2html1329"
-  HREF="node73.html">14. Gesture Follower</A>
-<B> Previous:</B> <A NAME="tex2html1323"
-  HREF="node73.html">14. Gesture Follower</A>
- &nbsp; <B>  <A NAME="tex2html1331"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1333"
-  HREF="node114.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<IMG
+ WIDTH="170" HEIGHT="89" ALIGN="BOTTOM" BORDER="0"
+ SRC="img83.png"
+ ALT="\begin{rail}
+stateMsg : 'push' \vert 'pop'
+\end{rail}">
+<BR>
+<A NAME="1518"></A>
+<A NAME="1519"></A>
+
+<P>
+Interaction states are managed using a stack where the states are pushed to or popped from.
+
+<UL>
+<LI><TT>push</TT>: push the current interaction state on top of the stack.
+</LI>
+<LI><TT>pop</TT>: replace the current interaction state with the one popped from the top of the stack.
+</LI>
+</UL>
+
+<P>
+<BR><B> <B>N<SMALL>OTE </SMALL></B></B> 
+<BR>
+The effect of a pop message addressed to an object with an empty stack is to clear the object current interaction state.
+
+<P>
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

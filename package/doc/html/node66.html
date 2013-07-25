@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>13.2.1 Position variables</TITLE>
-<META NAME="description" CONTENT="13.2.1 Position variables">
+<TITLE>13.1.2 Time events</TITLE>
+<META NAME="description" CONTENT="13.1.2 Time events">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,142 +21,92 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node67.html">
 <LINK REL="previous" HREF="node65.html">
-<LINK REL="up" HREF="node65.html">
+<LINK REL="up" HREF="node64.html">
 <LINK REL="next" HREF="node67.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1221"
+<A NAME="tex2html1233"
   HREF="node67.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1215"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1227"
+  HREF="node64.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1221"
   HREF="node65.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1209"
-  HREF="node65.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1217"
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1229"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1219"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1231"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1222"
-  HREF="node67.html">13.2.2 Time variables</A>
-<B> Up:</B> <A NAME="tex2html1216"
-  HREF="node65.html">13.2 Variables</A>
-<B> Previous:</B> <A NAME="tex2html1210"
-  HREF="node65.html">13.2 Variables</A>
- &nbsp; <B>  <A NAME="tex2html1218"
+<B> Next:</B> <A NAME="tex2html1234"
+  HREF="node67.html">13.1.3 Miscellaneous events</A>
+<B> Up:</B> <A NAME="tex2html1228"
+  HREF="node64.html">13.1 Events</A>
+<B> Previous:</B> <A NAME="tex2html1222"
+  HREF="node65.html">13.1.1 UI events</A>
+ &nbsp; <B>  <A NAME="tex2html1230"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1220"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1232"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION001421000000000000000"></A>
-<A NAME="posvar"></A>
+<H2><A NAME="SECTION001412000000000000000"></A>
+<A NAME="timeevents"></A>
 <BR>
-13.2.1 Position variables
+13.1.2 Time events
 </H2>
 
 <P>
-Position variables reflects the current mouse position for mouse events. They are set to <TT>0</TT> for the other events. 
-
-<P>
+Events are also defined on the time domain:
 <BR>
 <IMG
- WIDTH="172" HEIGHT="203" ALIGN="BOTTOM" BORDER="0"
- SRC="img77.gif"
+ WIDTH="324" HEIGHT="162" ALIGN="BOTTOM" BORDER="0"
+ SRC="img76.png"
  ALT="\begin{rail}
-posVar : xy \vert 'absx' \vert 'absy' \vert 'sx' \vert 'sy'
+what : 'timeEnter' time time \vert 'timeLeave' time time
+\vert 'durEnter' time time \vert 'durLeave' time time
 \end{rail}">
 <BR>
-<A NAME="1397"></A>
-<A NAME="1398"></A>
-<A NAME="1399"></A>
-<A NAME="1400"></A>
-<A NAME="1401"></A>
-<A NAME="1402"></A>
+<A NAME="1409"></A>
+<A NAME="1410"></A>
+<A NAME="1411"></A>
+<A NAME="1412"></A>
 
 <P>
-where
-<BR>
-<IMG
- WIDTH="310" HEIGHT="84" ALIGN="BOTTOM" BORDER="0"
- SRC="img78.gif"
- ALT="\begin{rail}
-xy : ('x' \vert 'y') ( \vert '[low,high]')
-\end{rail}">
-<BR>
+Each event takes a time interval as parameter, defined by two <TT>time</TT> specifications (see section <A HREF="node21.html#time">3</A> p.<A HREF="node21.html#time"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> for the time format)
 
 <P>
 
 <UL>
-<LI><TT>$x</TT> <TT>$y</TT>: denotes the mouse pointer position at the time of the event. The values are in the range <TT>[0,1]</TT> where 1 is the object size in the x or y dimension. The value is computed according to the object origin: it represents the mouse pointer distance from the object x or y origin (see <A HREF="node10.html#origin">2.1.3</A> p.<A HREF="node10.html#origin"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.gif"></A>). <TT>$x</TT> and <TT>$y</TT> variables support an optional range in the form <TT>[low, high]</TT> that transforms the <TT>[0,1]</TT>  values range into the <TT>[low, high]</TT> range.
-
-<P>
+<LI><TT>timeEnter</TT>, <TT>timeLeave</TT> are triggered when an object date is moved to or out of a watched time interval,
 </LI>
-<LI><TT>$absx</TT> <TT>$absy</TT>: denotes the mouse pointer absolute position at the time of the event. The values represent a pixel position relative to the top-left point of the target object. Note that this position is unaffected by scale. 
-Note also that the values are not clipped to the object dimensions and could exceed its width or height or become negative in case of mouse move events.
-
-<P>
-</LI>
-<LI><TT>$sx</TT> <TT>$sy</TT>: denotes the mouse pointer position in the scene coordinates space. 
+<LI><TT>durEnter</TT>, <TT>durLeave</TT> are triggered when an object duration is moved to or out of a watched time interval.
 </LI>
 </UL>
 
 <P>
 <B> <B>E<SMALL>XAMPLE </SMALL></B></B>
 <BR>
-An object that follows mouse move.
-<BR>
-<BR>
+An object that moves a score to a given page number when it enters its time zone.
 <DIV ALIGN="CENTER">
 <BLINK><FONT COLOR="#ededed">
 								</DIV><TABLE  WIDTH="0%">
 <TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene/myObject watch mouseDown ( 
-<BR> /ITL/scene/myObject x '$sx', 
-<BR> /ITL/scene/myObject y '$sy' )</TT></FONT>
+								<FONT SIZE="-1"><TT>/ITL/scene/myObject watch timeEnter 10/1 18/1 (/ITL/scene/score page 2)</TT></FONT>
 								</TD></TR>
 </TABLE>
 <DIV ALIGN="CENTER"></FONT></BLINK>
 </DIV>
 
 <P>
-<HR>
-<!--Navigation Panel-->
-<A NAME="tex2html1221"
-  HREF="node67.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1215"
-  HREF="node65.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1209"
-  HREF="node65.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1217"
-  HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1219"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
-<BR>
-<B> Next:</B> <A NAME="tex2html1222"
-  HREF="node67.html">13.2.2 Time variables</A>
-<B> Up:</B> <A NAME="tex2html1216"
-  HREF="node65.html">13.2 Variables</A>
-<B> Previous:</B> <A NAME="tex2html1210"
-  HREF="node65.html">13.2 Variables</A>
- &nbsp; <B>  <A NAME="tex2html1218"
-  HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1220"
-  HREF="node114.html">Index</A></B> 
-<!--End of Navigation Panel-->
+<BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
 </ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>13.1.3 Miscellaneous events</TITLE>
-<META NAME="description" CONTENT="13.1.3 Miscellaneous events">
+<TITLE>13.1 Events</TITLE>
+<META NAME="description" CONTENT="13.1 Events">
 <META NAME="keywords" CONTENT="OSCMsg">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,91 +19,64 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="OSCMsg.css">
 
+<LINK REL="next" HREF="node68.html">
 <LINK REL="previous" HREF="node63.html">
-<LINK REL="up" HREF="node61.html">
+<LINK REL="up" HREF="node63.html">
 <LINK REL="next" HREF="node65.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html1188"
+<A NAME="tex2html1202"
   HREF="node65.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.gif"></A> 
-<A NAME="tex2html1182"
-  HREF="node61.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.gif"></A> 
-<A NAME="tex2html1178"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1196"
   HREF="node63.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.gif"></A> 
-<A NAME="tex2html1184"
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1190"
+  HREF="node63.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html1198"
   HREF="node1.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.gif"></A> 
-<A NAME="tex2html1186"
-  HREF="node114.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.gif"></A> 
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html1200"
+  HREF="node117.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> 
 <BR>
-<B> Next:</B> <A NAME="tex2html1189"
-  HREF="node65.html">13.2 Variables</A>
-<B> Up:</B> <A NAME="tex2html1183"
-  HREF="node61.html">13.1 Events</A>
-<B> Previous:</B> <A NAME="tex2html1179"
-  HREF="node63.html">13.1.2 Time events</A>
- &nbsp; <B>  <A NAME="tex2html1185"
+<B> Next:</B> <A NAME="tex2html1203"
+  HREF="node65.html">13.1.1 UI events</A>
+<B> Up:</B> <A NAME="tex2html1197"
+  HREF="node63.html">13. Events and Interaction</A>
+<B> Previous:</B> <A NAME="tex2html1191"
+  HREF="node63.html">13. Events and Interaction</A>
+ &nbsp; <B>  <A NAME="tex2html1199"
   HREF="node1.html">Contents</A></B> 
- &nbsp; <B>  <A NAME="tex2html1187"
-  HREF="node114.html">Index</A></B> 
+ &nbsp; <B>  <A NAME="tex2html1201"
+  HREF="node117.html">Index</A></B> 
 <BR>
 <BR>
 <!--End of Navigation Panel-->
 
-<H2><A NAME="SECTION001413000000000000000"></A>
-<A NAME="miscevents"></A>
+<H1><A NAME="SECTION001410000000000000000"></A>
+<A NAME="defevents"></A>
 <BR>
-13.1.3 Miscellaneous events
-</H2>
+13.1 Events
+</H1>
 
 <P>
-<BR>
-<IMG
- WIDTH="219" HEIGHT="123" ALIGN="BOTTOM" BORDER="0"
- SRC="img76.gif"
- ALT="\begin{rail}
-what : 'export'
-\vert 'newElement'
-\vert 'endPaint'
-\end{rail}">
-<BR>
-<A NAME="1381"></A>
-<A NAME="1382"></A>
-<A NAME="1383"></A>
-
-<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI>the <TT>export</TT> event is supported by all the components. It is triggered after an export message has been handled and could be used to simulate synchronous exports.
-</LI>
-<LI>the <TT>newElement</TT> event is supported at scene level only and triggered when a new element is added to the scene.
-</LI>
-<LI>the <TT>endPaint</TT> event is supported at scene level only and triggered after a scene has been painted.
-</LI>
+<LI><A NAME="tex2html1204"
+  HREF="node65.html">13.1.1 UI events</A>
+<LI><A NAME="tex2html1205"
+  HREF="node66.html">13.1.2 Time events</A>
+<LI><A NAME="tex2html1206"
+  HREF="node67.html">13.1.3 Miscellaneous events</A>
 </UL>
-
-<P>
-<B> <B>E<SMALL>XAMPLE </SMALL></B></B>
-<BR>
-Displaying a welcome message to new elements:
-<BR>
-<DIV ALIGN="CENTER">
-<BLINK><FONT COLOR="#ededed">
-								</DIV><TABLE  WIDTH="0%">
-<TR><TD> 
-								<FONT SIZE="-1"><TT>/ITL/scene watch newElement (/ITL/scene/msg set txt "Welcome")</TT></FONT>
-								</TD></TR>
-</TABLE>
-<DIV ALIGN="CENTER"></FONT></BLINK>
-</DIV>
-
-<P>
+<!--End of Table of Child-Links-->
 <BR><HR>
 <ADDRESS>
 <br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>
