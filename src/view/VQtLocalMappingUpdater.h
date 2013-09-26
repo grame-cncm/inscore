@@ -57,7 +57,8 @@ class export VQtLocalMappingUpdater : public LocalMapUpdater
 		void updateTo (ISVGFile* svg);
 		void updateTo (IHtml* text);
 		void updateTo (IRect* o);
-		void updateTo (IGrid* o);
+        void updateTo (IGrid* o);
+        void updateTo (ILayer* o);
 		void updateTo (IEllipse* o);
 		void updateTo (IVideo* o);
 		void updateTo (IPolygon* o);

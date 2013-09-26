@@ -181,7 +181,7 @@ if (QTVERSION EQUAL "5")
 
 	set (QTHEADERS "${Qt5Widgets_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS}  ${Qt5PrintSupport_INCLUDE_DIRS}  ${Qt5Multimedia_INCLUDE_DIRS}  ${Qt5MultimediaWidgets_INCLUDE_DIRS}")
 
-else (QTVERSION EQUAL "5")   # assume we're using Qt4
+else ()   # assume we're using Qt4
 	add_definitions(-DUSEPHONON)
 
 	if(APPLE OR WIN32)
@@ -203,7 +203,7 @@ else (QTVERSION EQUAL "5")   # assume we're using Qt4
 	
 	set (QTHEADERS "${QT_INCLUDE_DIR}" "${QT_QTCORE_INCLUDE_DIR}" "${QT_QTGUI_INCLUDE_DIR}" "${QT_QTSVG_INCLUDE_DIR}" "${QT_PHONON_INCLUDE_DIR}")
 
-endif(QTVERSION EQUAL "5")
+endif()
 
 if(APPLE)
 	set (CORE_FOUNDATION "-framework CoreFoundation")

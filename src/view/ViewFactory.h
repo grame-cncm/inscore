@@ -56,6 +56,7 @@ class ViewFactory
 	static VObjectView*		create (const ILine* object,		QGraphicsScene* scene);
 	static VObjectView*		create (const IPolygon* object,		QGraphicsScene* scene);
 	static VObjectView*		create (const IGrid* object,		QGraphicsScene* scene);
+	static VObjectView*		create (const ILayer* object,       QGraphicsScene* parent);
 	static VObjectView*		create (const IRect* object,		QGraphicsScene* scene);
 	static VObjectView*		create (const ISVG* object,			QGraphicsScene* scene);
 	static VObjectView*		create (const ISVGFile* object,		QGraphicsScene* scene);

@@ -44,6 +44,7 @@
 #include "Updater.h"
 #include "ISync.h"
 #include "Tools.h"
+#include "ISceneSync.h"
 
 #include "VObjectView.h"
 
@@ -246,14 +247,38 @@ IObject::~IObject()
 //--------------------------------------------------------------------------
 void IObject::createVirtualNodes()
 {
+	fSync = ISceneSync::create(this);
 	fDebug = IObjectDebug::create(this);
-	add ( fDebug );
+    add(fSync);
+    add ( fDebug );
+}
+
+//--------------------------------------------------------------------------
+SMaster IObject::getMaster(SIObject o) const
+{ 
+	return fSync ? fSync->getMaster(o) : 0;
+}
+
+//--------------------------------------------------------------------------
+void IObject::cleanupSync ()		{ if (fSync) fSync->cleanup(); }
+
+//--------------------------------------------------------------------------
+void IObject::sort ()
+{
+	// topological sort of the scene elements
+	if (fSync) fSync->sort(elements());
 }
 
 //--------------------------------------------------------------------------
 string IObject::getOSCAddress() const
 {
 	return fParent ? fParent->getOSCAddress() + '/' + name() : '/' + name(); 
+}
+
+//--------------------------------------------------------------------------
+void IObject::ptask ()
+{ 
+	if (fSync) fSync->ptask();
 }
 
 //--------------------------------------------------------------------------
@@ -490,17 +515,15 @@ SIMessageList IObject::getSetMsg() const
 		outMsgs->list().push_back (msg);
 	}
 
-	// else distributes the message to subnodes
-	else {
-		address += "/";
-		for (unsigned int i = 0; i < elements().size(); i++) {
-			nodePtr elt = elements()[i];
-			if (!elt->getDeleted()) {
-				SIMessage msg = IMessage::create(address + elt->name(), kget_SetMethod);
-				outMsgs->list().push_back (elt->getMsgs(msg)->list());
-			}
-		}
-	}
+	// always distributes the message to subnodes (new with version 1.03)
+    address += "/";
+    for (unsigned int i = 0; i < elements().size(); i++) {
+        nodePtr elt = elements()[i];
+        if (!elt->getDeleted()) {
+            SIMessage msg = IMessage::create(address + elt->name(), kget_SetMethod);
+            outMsgs->list().push_back (elt->getMsgs(msg)->list());
+        }
+    }
 	return outMsgs;
 }
 

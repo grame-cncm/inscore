@@ -37,6 +37,7 @@
 #include "IGestureFollower.h"
 #include "IGraphicSignal.h"
 #include "IGrid.h"
+#include "ILayer.h"
 #include "IGuidoCode.h"
 #include "IGuidoFile.h"
 #include "IHtml.h"
