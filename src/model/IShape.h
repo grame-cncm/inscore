@@ -37,6 +37,23 @@
 #define DASH_DOT_STYLE		"dashDot"
 #define DASH_DOT_DOT_STYLE	"dashDotDot"
 
+#define DENSE1_BRUSH_STYLE  "dense1"
+#define DENSE2_BRUSH_STYLE  "dense2"
+#define DENSE3_BRUSH_STYLE  "dense3"
+#define DENSE4_BRUSH_STYLE  "dense4"
+#define DENSE5_BRUSH_STYLE  "dense5"
+#define DENSE6_BRUSH_STYLE  "dense6"
+#define DENSE7_BRUSH_STYLE  "dense7"
+#define NO_BRUSH_STYLE  "none"
+#define HOR_BRUSH_STYLE  "hor"
+#define VER_BRUSH_STYLE  "ver"
+#define CROSS_BRUSH_STYLE  "cross"
+#define BDIAG_BRUSH_STYLE  "bdiag"
+#define FDIAG_BRUSH_STYLE  "fdiag"
+#define DIAG_CROSS_BRUSH_STYLE  "diagCross"
+#define LINEAR_GRADIENT_BRUSH_STYLE  "linearGradient"
+#define RADIAL_GRADIENT_BRUSH_STYLE  "radialGradient"
+#define CONICAL_GRADIENT_BRUSH_STYLE  "conicalGradient"
 
 namespace inscore
 {
@@ -57,13 +74,16 @@ class IShape : public IObject
 {
 	public:
 		static const std::string kSolidStyle, kDashStyle, kDotStyle, kDashDotStyle, kDashDotDotStyle;	/// < Pen style supported values.
+        static const std::string kSolidBrushStyle, kDense1BrushStyle, kDense2BrushStyle, kDense3BrushStyle, kDense4BrushStyle, kDense5BrushStyle, kDense6BrushStyle, kDense7BrushStyle, kNoBrushStyle, kHorBrushStyle, kVerBrushStyle, kCrossBrushStyle, kBDiagBrushStyle, kFDiagBrushStyle, kDiagCrossBrushStyle, kLinearGradientBrushStyle, kRadialGradientBrushStyle, kConicalGradientBrushStyle;	/// < Brush style supported values.
+
 
 	protected:
 		float		fPenWidth;	/// <Width of the pen used to draw the borders of the shape
 		
 	private:
 		IColor		fPenColor;	/// <Color of the pen used to draw the borders of the shape
-		std::string fPenStyle;	/// <Style of the pen used to draw the borders of the shape
+        std::string fPenStyle;	/// <Style of the pen used to draw the borders of the shape
+        std::string fBrushStyle;	/// <Style of the brush used to fill the shape
 
 	public:
 
@@ -71,8 +91,10 @@ class IShape : public IObject
 		float			getPenWidth() const			{ return fPenWidth; }
 		/// \brief Returns the pen color
 		const IColor&	getPenColor() const			{ return fPenColor; }
-		/// \brief Returns the pen color
-		const std::string&	getPenStyle() const		{ return fPenStyle; }
+		/// \brief Returns the pen style
+        const std::string&	getPenStyle() const		{ return fPenStyle; }
+        /// \brief Returns the brush style
+        const std::string&	getBrushStyle() const		{ return fBrushStyle; }
 
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*);
@@ -86,7 +108,10 @@ class IShape : public IObject
 		/// \brief Sets the pen color
 		void			setPenColor(const IColor& penColor)			{ fPenColor = penColor; }
 		/// \brief Sets the pen style
-		void			setPenStyle(const std::string& penStyle)	{ fPenStyle = penStyle; }
+        void			setPenStyle(const std::string& penStyle)	{ fPenStyle = penStyle; }
+        /// \brief Sets the brush style
+        void			setBrushStyle(const std::string& brushStyle)	{ fBrushStyle = brushStyle; }
+
 };
 
 /*! @} */

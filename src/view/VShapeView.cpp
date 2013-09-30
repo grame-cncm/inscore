@@ -68,6 +68,82 @@ void VShapeView::setQPenStyle(const std::string& penStyle , QPen& pen) const
 		pen.setStyle( Qt::SolidLine );
 }
 
+void VShapeView::setQBrushStyle(const std::string& brushStyle , QBrush& brush) const
+{
+    if ( brushStyle == IShape::kSolidBrushStyle )
+        brush.setStyle( Qt::SolidPattern );
+    else if ( brushStyle == IShape::kDense1BrushStyle )
+    {
+        brush.setStyle( Qt::Dense1Pattern );
+    }
+    else if ( brushStyle == IShape::kDense2BrushStyle )
+    {
+        brush.setStyle( Qt::Dense2Pattern );
+    }
+    else if ( brushStyle == IShape::kDense3BrushStyle )
+    {
+        brush.setStyle( Qt::Dense3Pattern );
+    }
+    else if ( brushStyle == IShape::kDense4BrushStyle )
+    {
+        brush.setStyle( Qt::Dense4Pattern );
+    }
+    else if ( brushStyle == IShape::kDense5BrushStyle )
+    {
+        brush.setStyle( Qt::Dense5Pattern );
+    }
+    else if ( brushStyle == IShape::kDense6BrushStyle )
+    {
+        brush.setStyle( Qt::Dense6Pattern );
+    }
+    else if ( brushStyle == IShape::kDense7BrushStyle )
+    {
+        brush.setStyle( Qt::Dense7Pattern );
+    }
+    else if ( brushStyle == IShape::kNoBrushStyle )
+    {
+        brush.setStyle( Qt::NoBrush );
+    }
+    else if ( brushStyle == IShape::kHorBrushStyle )
+    {
+        brush.setStyle( Qt::HorPattern );
+    }
+    else if ( brushStyle == IShape::kVerBrushStyle )
+    {
+        brush.setStyle( Qt::VerPattern );
+    }
+    else if ( brushStyle == IShape::kCrossBrushStyle )
+    {
+        brush.setStyle( Qt::CrossPattern );
+    }
+    else if ( brushStyle == IShape::kBDiagBrushStyle )
+    {
+        brush.setStyle( Qt::BDiagPattern );
+    }
+    else if ( brushStyle == IShape::kFDiagBrushStyle )
+    {
+        brush.setStyle( Qt::FDiagPattern );
+    }
+    else if ( brushStyle == IShape::kDiagCrossBrushStyle )
+    {
+        brush.setStyle( Qt::DiagCrossPattern );
+    }
+    else if ( brushStyle == IShape::kLinearGradientBrushStyle )
+    {
+        brush.setStyle( Qt::LinearGradientPattern );
+    }
+    else if ( brushStyle == IShape::kRadialGradientBrushStyle )
+    {
+        brush.setStyle( Qt::RadialGradientPattern );
+    }
+    else if ( brushStyle == IShape::kConicalGradientBrushStyle )
+    {
+        brush.setStyle( Qt::ConicalGradientPattern );
+    }
+    else
+        brush.setStyle( Qt::SolidPattern );
+}
+    
 //----------------------------------------------------------------------
 VShapeView::VShapeView(QGraphicsScene * scene , QAbstractGraphicsShapeItem * abstractGraphicsShapeItem )
  : VGraphicsItemView( scene , abstractGraphicsShapeItem )
@@ -87,22 +163,27 @@ void VShapeView::updateView( IShape * shape  )
 	{
 		pen = QPen( QColor(shape->getPenColor().getR(), shape->getPenColor().getG(), shape->getPenColor().getB() , shape->getPenColor().getA()) , shape->getPenWidth() );
 		setQPenStyle( shape->getPenStyle() , pen );
-		pen.setCapStyle( Qt::RoundCap );
+        pen.setCapStyle( Qt::RoundCap );
 		pen.setJoinStyle( Qt::RoundJoin );
 	}
-
+    
+    
 	if ( pen != fAbstractGraphicsShapeItem->pen() )
 	{
 		fAbstractGraphicsShapeItem->setPen( pen );
 		itemChanged();
 	}
 	
-	if ( color != fAbstractGraphicsShapeItem->brush().color() )
-	{
-		fAbstractGraphicsShapeItem->setBrush( QBrush( color ) );
+    
+//	if ( color != fAbstractGraphicsShapeItem->brush().color() )
+//	{
+        QBrush brush = QBrush(color);
+        setQBrushStyle( shape->getBrushStyle() , brush );
+		fAbstractGraphicsShapeItem->setBrush( brush );
 		itemChanged();
-	}
-	VGraphicsItemView::updateView (shape);
+//	}
+    
+    VGraphicsItemView::updateView (shape);
 }
 
 } // end namespoace

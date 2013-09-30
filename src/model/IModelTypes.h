@@ -67,6 +67,9 @@ typedef class libmapping::SMARTP<IGraphicBasedObject> SIGraphicBasedObject;
 class IGrid;
 typedef class libmapping::SMARTP<IGrid> SIGrid;
 
+class ILayer;
+typedef class libmapping::SMARTP<ILayer> SILayer;
+    
 class IGuidoCode;
 typedef class libmapping::SMARTP<IGuidoCode>	SIGuidoCode;
 

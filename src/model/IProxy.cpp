@@ -66,18 +66,23 @@ int IProxy::execute (const IMessage* msg, const std::string& objName, SIObject p
 	if (parent && (parent->name() == ISignalNode::kName))
 		return signal (msg, objName, parent);
 
-	if (Tools::regexp(objName)) return MsgHandler::kBadAddress;
+	if (Tools::regexp(objName))
+        return MsgHandler::kBadAddress;
 
 	string objType;
 	if (parent && (parent->getTypeString() == IAppl::kApplType)) {
-		if (msg->message() != knew_SetMethod) return MsgHandler::kBadAddress;
-		if (msg->size()) return MsgHandler::kBadParameters;
+		if (msg->message() != knew_SetMethod)
+            return MsgHandler::kBadAddress;
+		if (msg->size())
+            return MsgHandler::kBadParameters;
 		objType = IScene::kSceneType;
 	}
 	else {
 		string tmp = msg->message();
-		if (msg->message() != kset_SetMethod) return MsgHandler::kBadAddress;
-		if (msg->size() == 0) return MsgHandler::kBadParameters;
+		if (msg->message() != kset_SetMethod)
+            return MsgHandler::kBadAddress;
+		if (msg->size() == 0)
+            return MsgHandler::kBadParameters;
 		objType = msg->param(0)->value<string>("");
 	}
 

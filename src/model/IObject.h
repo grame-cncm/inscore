@@ -65,6 +65,10 @@ class IScene;
 typedef class libmapping::SMARTP<IScene>	SIScene;
 class IObjectDebug;
 typedef class libmapping::SMARTP<IObjectDebug>	SIObjectDebug;
+class Master;
+typedef class libmapping::SMARTP<Master>			SMaster;
+class ISceneSync;
+typedef class libmapping::SMARTP<ISceneSync>		SISceneSync;
 
 //--------------------------------------------------------------------------
 /*!
@@ -90,6 +94,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 	private:
 		std::string		fName;		///< the object name, used as identifier
 		subnodes		fSubNodes;	///< child objects list
+        SISceneSync		fSync;
 
 		float	fDispStart, fDispEnd;	///< the object displayed range (0-1 covers the whole range)
 		bool	fDelete;				///< true when an object should be deleted
@@ -327,7 +332,25 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		/// \brief sets the message handlers.
 		virtual void setHandlers ();
 		virtual void setdyMsgHandler (); 
-		virtual void setdyMsgHandler (Master* m); 
+		virtual void setdyMsgHandler (Master* m);
+    
+        virtual IObject* getParent() const {return fParent;}
+
+        /*! \brief cleanup the relations set
+			\see ISync::cleanup
+		*/
+		virtual void cleanupSync();
+
+	//	/// \brief makes a topological sort of the scene elements according to their synchronizations set
+	//	virtual void	sort ();
+
+
+		/*! \brief gives the master of an object
+			\param o the object to look for in the synchronization set
+			\return the object master or 0 when not found
+		*/
+		virtual SMaster getMaster(SIObject o) const;
+    
 
 	protected:	
 		VObjectView* fView;		///< the object view

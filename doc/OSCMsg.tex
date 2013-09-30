@@ -699,6 +699,7 @@ setMsg : 'set' (
 	('curve' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) |
 	('line' ('xy' x y | 'wa' width angle)) |
 	('grid' int32 int32) |
+	('layer') |
 	('faust' 'pluginname' )
 )
 \end{rail}
@@ -848,6 +849,7 @@ The \OSC{get width} and \OSC{get height} messages addressed to components that h
 \label{specificMsg}
 Some of the messages are specific to the component \OSC{type}.
 
+
 %-------------------------------
 \sublevel{Pen control}
 
@@ -888,6 +890,54 @@ Setting a rectangle border width and color:
 \sample{/ITL/scene/rect set rect 0.5 0.5 \\
 /ITL/scene/rect penWidth 2. \\
 /ITL/scene/rect penColor 255 0 0  
+}
+
+
+%-------------------------------
+\sublevel{Brush control}
+
+Specific brush messages accepted by the components types \OSC{rect | ellipse | polygon | curve | line |  grid | layer}.
+\begin{rail}
+brushMsg : 	  'brushStyle' ('solid' | 'dense1' | 'dense2' | 'dense3' | 'dense4' | 'dense5' | 'dense6' | 'dense7' | 'none' | 'hor' | 'ver' | 'cross' | 'bdiag' | 'fdiag' | 'diagCross' | 'linearGradient' | 'radialGradient' | 'conicalGradient')
+\end{rail}
+\index{Specific messages! brushColor}
+
+\begin{itemize}
+\item \OSC{brushStyle} controls the brush style.
+ \end{itemize}
+
+
+%\begin{rail}
+%brushStyle : 'solid' | 'dense1' | 'dense2' | 'dense3' | 'dense4' | 'dense5' | 'dense6' | 'dense7' | 'none' | 'hor' | 'ver' | 'cross' | 'bdiag' | 'fdiag' | 'diagCross' | 'linearGradient' | 'radialGradient' | 'conicalGradient'
+%\end{rail}
+
+\index{Specific messages! brushStyle! solid}
+\index{Specific messages! brushStyle! dense}
+\index{Specific messages! brushStyle! dense2}
+\index{Specific messages! brushStyle! dense3}
+\index{Specific messages! brushStyle! dense4}
+\index{Specific messages! brushStyle! dense5}
+\index{Specific messages! brushStyle! dense6}
+\index{Specific messages! brushStyle! dense7}
+\index{Specific messages! brushStyle! none}
+\index{Specific messages! brushStyle! hor}
+\index{Specific messages! brushStyle! ver}
+\index{Specific messages! brushStyle! cross}
+\index{Specific messages! brushStyle! bdiag}
+\index{Specific messages! brushStyle! fdiag}
+\index{Specific messages! brushStyle! diagCross}
+\index{Specific messages! brushStyle! linearCross}
+\index{Specific messages! brushStyle! linearGradient}
+\index{Specific messages! brushStyle! radialGradient}
+\index{Specific messages! brushStyle! conicalGradient}
+
+The brush style default value is \OSC{solid}.\\
+For the \OSC{layer} object, the brush style default value is \OSC{none}.\\
+
+\example \\
+Setting a rectangle style :
+\sample{/ITL/scene/rect set rect 0.5 0.5 \\
+/ITL/scene/rect brushStyle dense4; 
 }
 
 
@@ -973,6 +1023,14 @@ Creating a 10 x 10 grid organized from top to bottom with a border:
 /ITL/scene/grid yborder 3. \\
 /ITL/scene/grid order topbottom
 }
+
+
+%-------------------------------
+\sublevel{The 'layer' object}
+\label{layer}
+
+The \OSC{layer} object provides a container of rectangular shape that is not drawn but creates a node to distinguish a group of objects from the rest. It can however be drawn by using the brush control (default brushStyle is 'none').
+
 
 %===============================
 %:  The debug nodes

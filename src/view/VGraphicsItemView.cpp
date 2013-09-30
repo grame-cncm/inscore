@@ -60,6 +60,7 @@ VGraphicsItemView::VGraphicsItemView( QGraphicsScene * scene , QGraphicsItem * i
 	scene->addItem( item );
 //	fBrushColorStartIndex = qrand();						// Randomize the color of the mapping debug items.
 	fBrushColorStartIndex = 0;
+//    setParentItem(item->parentItem());
 }
 
 //------------------------------------------------------------------------------------------------------------

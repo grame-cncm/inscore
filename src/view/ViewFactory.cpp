@@ -39,6 +39,7 @@
 #include "VPolygonView.h"
 #include "VRectView.h"
 #include "VGridView.h"
+#include "VLayerView.h"
 #include "VSceneView.h"
 #include "VSVGView.h"
 #include "VTextView.h"
@@ -67,6 +68,7 @@ VObjectView*	ViewFactory::create (const ISVGFile* object,	QGraphicsScene* scene)
 VObjectView*	ViewFactory::create (const IText* object,		QGraphicsScene* scene)		{ return new VTextView (scene, object); }
 VObjectView*	ViewFactory::create (const ITextFile* object,	QGraphicsScene* scene)		{ return new VTextView (scene, object); }
 VObjectView*	ViewFactory::create (const IVideo* object,		QGraphicsScene* scene)		{ return new VVideoView (scene, object); }
+VObjectView*    ViewFactory::create (const ILayer* object,      QGraphicsScene* scene)      { return new VLayerView (scene, object);}
 
 //--------------------------------------------------------------------------
 VObjectView* ViewFactory::create(const IScene* obj)		{ return new VSceneView (obj->getOSCAddress(), new QGraphicsScene ); }
