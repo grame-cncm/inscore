@@ -24,9 +24,12 @@
 */
 
 
-#include <QtWidgets>
+#include <QPlainTextEdit>
+#include <QIcon>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QToolButton>
 #include "VLogWindow.h"
-
 
 namespace inscore
 {
