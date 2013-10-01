@@ -51,9 +51,7 @@
 #define BDIAG_BRUSH_STYLE  "bdiag"
 #define FDIAG_BRUSH_STYLE  "fdiag"
 #define DIAG_CROSS_BRUSH_STYLE  "diagCross"
-#define LINEAR_GRADIENT_BRUSH_STYLE  "linearGradient"
-#define RADIAL_GRADIENT_BRUSH_STYLE  "radialGradient"
-#define CONICAL_GRADIENT_BRUSH_STYLE  "conicalGradient"
+
 
 namespace inscore
 {
@@ -74,7 +72,7 @@ class IShape : public IObject
 {
 	public:
 		static const std::string kSolidStyle, kDashStyle, kDotStyle, kDashDotStyle, kDashDotDotStyle;	/// < Pen style supported values.
-        static const std::string kSolidBrushStyle, kDense1BrushStyle, kDense2BrushStyle, kDense3BrushStyle, kDense4BrushStyle, kDense5BrushStyle, kDense6BrushStyle, kDense7BrushStyle, kNoBrushStyle, kHorBrushStyle, kVerBrushStyle, kCrossBrushStyle, kBDiagBrushStyle, kFDiagBrushStyle, kDiagCrossBrushStyle, kLinearGradientBrushStyle, kRadialGradientBrushStyle, kConicalGradientBrushStyle;	/// < Brush style supported values.
+        static const std::string kSolidBrushStyle, kDense1BrushStyle, kDense2BrushStyle, kDense3BrushStyle, kDense4BrushStyle, kDense5BrushStyle, kDense6BrushStyle, kDense7BrushStyle, kNoBrushStyle, kHorBrushStyle, kVerBrushStyle, kCrossBrushStyle, kBDiagBrushStyle, kFDiagBrushStyle, kDiagCrossBrushStyle; /// < Brush style supported values.
 
 
 	protected:

@@ -128,18 +128,6 @@ void VShapeView::setQBrushStyle(const std::string& brushStyle , QBrush& brush) c
     {
         brush.setStyle( Qt::DiagCrossPattern );
     }
-    else if ( brushStyle == IShape::kLinearGradientBrushStyle )
-    {
-        brush.setStyle( Qt::LinearGradientPattern );
-    }
-    else if ( brushStyle == IShape::kRadialGradientBrushStyle )
-    {
-        brush.setStyle( Qt::RadialGradientPattern );
-    }
-    else if ( brushStyle == IShape::kConicalGradientBrushStyle )
-    {
-        brush.setStyle( Qt::ConicalGradientPattern );
-    }
     else
         brush.setStyle( Qt::SolidPattern );
 }

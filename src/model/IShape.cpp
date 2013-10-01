@@ -55,9 +55,6 @@ const std::string IShape::kCrossBrushStyle = CROSS_BRUSH_STYLE;
 const std::string IShape::kBDiagBrushStyle = BDIAG_BRUSH_STYLE;
 const std::string IShape::kFDiagBrushStyle = FDIAG_BRUSH_STYLE;
 const std::string IShape::kDiagCrossBrushStyle = DIAG_CROSS_BRUSH_STYLE;
-const std::string IShape::kLinearGradientBrushStyle = LINEAR_GRADIENT_BRUSH_STYLE;
-const std::string IShape::kRadialGradientBrushStyle = RADIAL_GRADIENT_BRUSH_STYLE;
-const std::string IShape::kConicalGradientBrushStyle = CONICAL_GRADIENT_BRUSH_STYLE;
 
     
 //--------------------------------------------------------------------------

@@ -896,20 +896,15 @@ Setting a rectangle border width and color:
 %-------------------------------
 \sublevel{Brush control}
 
-Specific brush messages accepted by the components types \OSC{rect | ellipse | polygon | curve | line |  grid | layer}.
+Specific brush messages accepted by the components types \OSC{rect | ellipse | polygon | curve |  layer}.
 \begin{rail}
-brushMsg : 	  'brushStyle' ('solid' | 'dense1' | 'dense2' | 'dense3' | 'dense4' | 'dense5' | 'dense6' | 'dense7' | 'none' | 'hor' | 'ver' | 'cross' | 'bdiag' | 'fdiag' | 'diagCross' | 'linearGradient' | 'radialGradient' | 'conicalGradient')
+brushMsg : 	  'brushStyle' ('solid' | 'dense1' | 'dense2' | 'dense3' | 'dense4' | 'dense5' | 'dense6' | 'dense7' | 'none' | 'hor' | 'ver' | 'cross' | 'bdiag' | 'fdiag' | 'diagCross')
 \end{rail}
 \index{Specific messages! brushColor}
 
 \begin{itemize}
 \item \OSC{brushStyle} controls the brush style.
  \end{itemize}
-
-
-%\begin{rail}
-%brushStyle : 'solid' | 'dense1' | 'dense2' | 'dense3' | 'dense4' | 'dense5' | 'dense6' | 'dense7' | 'none' | 'hor' | 'ver' | 'cross' | 'bdiag' | 'fdiag' | 'diagCross' | 'linearGradient' | 'radialGradient' | 'conicalGradient'
-%\end{rail}
 
 \index{Specific messages! brushStyle! solid}
 \index{Specific messages! brushStyle! dense}
@@ -927,9 +922,6 @@ brushMsg : 	  'brushStyle' ('solid' | 'dense1' | 'dense2' | 'dense3' | 'dense4' 
 \index{Specific messages! brushStyle! fdiag}
 \index{Specific messages! brushStyle! diagCross}
 \index{Specific messages! brushStyle! linearCross}
-\index{Specific messages! brushStyle! linearGradient}
-\index{Specific messages! brushStyle! radialGradient}
-\index{Specific messages! brushStyle! conicalGradient}
 
 The brush style default value is \OSC{solid}.\\
 For the \OSC{layer} object, the brush style default value is \OSC{none}.\\

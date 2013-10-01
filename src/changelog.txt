@@ -12,6 +12,11 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 1.04
+- brushStyle option implemented
+- new layer object (default brushStyle = none)
+
+----------------------------------------------------
 Version 1.03
 - log window utility provided as a new static node at application level (/ITL/log.
 - new systemCount read only attribute for Guido scores
