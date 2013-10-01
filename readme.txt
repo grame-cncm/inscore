@@ -7,12 +7,12 @@ The INScore project depends on external libraries:
  - the GuidoEngine version 1.40 or greater (see http://guidolib.sourceforge.net)
  - the GuidoQt static library, actually part of the GuidoEngine library
  - the oscpack library
+ - the v8 javascript sdk (see "http://code.google.com/p/v8/)
  - optionaly: 
      - the MusicXML library  (see http://libmusicxml.sourceforge.net)
        when you want to support the MusicXMl format.
      - the programming language lua (see http://www.lua.org/)
-     - the programming language javascript (see "http://code.google.com/p/v8/)
-The GuidoEngine, the GuidoQt and oscpack libraries are required to compile INScore.
+The GuidoEngine, the GuidoQt, oscpack and v8 libraries are required to compile INScore.
 
 The present document describes how to compile the INScore projects. 
 It starts describing how to resolve the required external dependencies.
@@ -75,6 +75,18 @@ To compile oscpack do the following:
   > cmake -G "Unix Makefiles"
   > make
 
+d) Installing Qt 
+----------------
+Qt should be installed to compile the GuidoQt library and to compile INScore.
+Installation depends on your platform. See at http://qt-project.org/
+
+d) Installing the V8 javascript SDK 
+-----------------------------------
+V8 is included in the inscore repository in binary form for Mac OS and Windows and the cmake
+configuration file will automatically use them.
+On Linux, you can find a package for your distribution (named libv8-dev on Debian and Ubuntu).
+
+
 >>>>>> All platform
 ----------------------------
 You need to compile the oscpack library from the oscpack folder.
@@ -96,10 +108,13 @@ To compile:
 	type:  cmake -G "your target generator" [options]
 	run your project/makefile and compile
 
+	NOTE: that cmake assumes that Qt5 is installed. Due to differences in Qt packages, you have
+	to explicitely ask for Qt4 support when Qt4 is installed. 
+	To do so, use the option -DQTVERSION=4 when running cmake.
+
 [options] allows to embed lua or/and javascript support:
 	for lua: -DLUA=yes 
-	for javascript: -DJAVASCRIPT=yes
-Note that MusicXML support makes use of dynamic link: it is available when a library with the corresponding entry point is found.
+Note that MusicXML support makes use of dynamic link: it is available when a library with the required entry point is found.
 
 
 Note for Linux platforms:
@@ -136,13 +151,6 @@ Notes:
   along with the corresponding headers. Thus lua is ready to be supported without additional step.
 - a cmake configuration is provided in lib/lua with instructions to use. It should be used to
   generate universal binaries on Mac OS.
-
-javascript support
-----------------------------
-You should get the javascript engine from the v8 web site: 
-	http://code.google.com/p/v8/
-The distribution is based on scons. Read the v8 documentation for compiling.
-On linux/Ubuntu, you can get a binary destribution: install libv8-dev from synaptic.
 
 
 MusicXML support
