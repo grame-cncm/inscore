@@ -76,7 +76,7 @@
 
 \begin{document}
 
-\title{INScore \\ OSC Messages Reference \\v.1.03}
+\title{INScore \\ OSC Messages Reference \\v.1.04}
 
 \author{D. Fober\\ GRAME\\ Centre national de cr\'eation musicale\\
 {\small <fober@grame.fr>} \\
@@ -687,6 +687,7 @@ Creating a line specified using width and angle.
 Format of the \OSC{set} message is:
 \begin{rail}
 setMsg : 'set' (
+	'layer'  |
 	('txt' txtStream) |
 	('html' string) |
 	('svg' svgString) |
@@ -704,6 +705,7 @@ setMsg : 'set' (
 )
 \end{rail}
 \index{Common messages!set}
+\index{Set type!layer}
 \index{Set type!txt}
 \index{Set type!html}
 \index{Set type!svg}
@@ -719,6 +721,7 @@ setMsg : 'set' (
 \index{Set type!faust}
 
 \begin{itemize}
+\item \OSC{layer}: a graphic layer, may be viewed as a container (see \fullref{layers}).
 \item \OSC{txt}: a textual component.
 \item \OSC{html}: an html component defined by an HTML string.
 \item \OSC{gmn}: a Guido score defined by a GMN string.
@@ -1311,6 +1314,42 @@ Setting a scene to fullscreen:
 Creating a new score named \OSC{myScore}:
 \sample{/ITL/myScore new}
 
+
+%===============================
+%:Layers
+\toplevel{Layers}
+\label{layers}
+
+Layers may be viewed as containers. They represent a way to structure both the address space and the graphic space. 
+
+From graphic viewpoint, a layer is a scene inside a scene. All the properties of 'rect' components are available to layers: position, scale, color, transparency, etc.). By default, a layer is not visible: it has no brush and no pen.
+
+From time viewpoint, a layer has the common time attributes i.e. a date, a duration.
+
+A layer may be synchronized to other objects, including other layers. It includes a \OSC{sync} node and supports synhcronization of the enclosed objects. However, synchronization is restricted to objects from the same layer and cannot cross the border of a layer. 
+
+
+\example \\
+Creating a layer and its content:
+\sample{/ITL/scene/layer1 set layer\\
+/ITL/scene/layer1/score set gmnf 'myscore.gmn'\\
+/ITL/scene/layer1/cursor set rect 0.01 0.1}
+
+Synchronizing 2 components of a layer :
+\sample{/ITL/scene/layer1/sync cursor score	! objects must be enclosed in layer1
+}
+
+Making a layer visible :
+\sample{/ITL/scene/layer1 brushStyle solid \\
+/ITL/scene/layer1 color 120 120 120 
+}
+
+%===============================
+%:	Layers generalization
+\sublevel{Layers generalization}
+\label{layersgen}
+
+The idea of layer is generalized to all the type of objects: any INScore object can be a container without limitation on the depth.
 
 
 %-------------------------------
