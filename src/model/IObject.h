@@ -94,7 +94,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 	private:
 		std::string		fName;		///< the object name, used as identifier
 		subnodes		fSubNodes;	///< child objects list
-        SISceneSync		fSync;
+        
 
 		float	fDispStart, fDispEnd;	///< the object displayed range (0-1 covers the whole range)
 		bool	fDelete;				///< true when an object should be deleted
@@ -107,7 +107,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		std::string fTypeString;		///< the type string
 
 		SIObjectDebug	fDebug;			///< debug virtual node
-
+        SISceneSync		fSync;
 		/*!
 			\brief message handlers map
 			
@@ -341,8 +341,8 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		*/
 		virtual void cleanupSync();
 
-	//	/// \brief makes a topological sort of the scene elements according to their synchronizations set
-	//	virtual void	sort ();
+		/// \brief makes a topological sort of the scene elements according to their synchronizations set
+		virtual void	sort ();
 
 
 		/*! \brief gives the master of an object
@@ -350,6 +350,9 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 			\return the object master or 0 when not found
 		*/
 		virtual SMaster getMaster(SIObject o) const;
+    
+        /// \brief a periodic task to propagate modification state from masters to slaves
+		virtual void ptask ();
     
 
 	protected:	

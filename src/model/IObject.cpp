@@ -262,16 +262,23 @@ SMaster IObject::getMaster(SIObject o) const
 //--------------------------------------------------------------------------
 void IObject::cleanupSync ()		{ if (fSync) fSync->cleanup(); }
 
-//void IObject::sort ()
-//{
+//--------------------------------------------------------------------------
+void IObject::sort ()
+{
 	// topological sort of the scene elements
-//	if (fSync) fSync->sort(elements());
-//}
+	if (fSync) fSync->sort(elements());
+}
 
 //--------------------------------------------------------------------------
 string IObject::getOSCAddress() const
 {
 	return fParent ? fParent->getOSCAddress() + '/' + name() : '/' + name(); 
+}
+
+//--------------------------------------------------------------------------
+void IObject::ptask ()
+{ 
+	if (fSync) fSync->ptask();
 }
 
 //--------------------------------------------------------------------------
