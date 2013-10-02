@@ -144,7 +144,7 @@ void IScene::createVirtualNodes()
 {
 	IRectShape::createVirtualNodes();
 
-	fSync = ISceneSync::create(this);
+//	fSync = ISceneSync::create(this);
 	fFileWatcher = QFileWatcher::create(this);
 	fJSObject = IJavascript::create(this, &fJavascript);
 	fSignals = ISignalNode::create(this);
@@ -152,7 +152,7 @@ void IScene::createVirtualNodes()
 	add ( fSignals );
 	add ( fFileWatcher );
 	add ( fJSObject );
-	add ( fSync );
+//	add ( fSync );
 }
 
 //--------------------------------------------------------------------------

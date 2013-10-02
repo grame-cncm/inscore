@@ -44,6 +44,7 @@
 #include "VSVGView.h"
 #include "VTextView.h"
 #include "VVideoView.h"
+#include "VLayerView.h"
 
 namespace inscore
 {
@@ -55,6 +56,7 @@ void VQtUpdater::updateTo(IScene * scene)		{ ((VSceneView*)scene->getView())->up
 void VQtUpdater::updateTo(IImage * img)				{ update<IImage,	VImageView>		(img); }
 void VQtUpdater::updateTo(IRect * rect)				{ update<IRect,		VRectView>		(rect); }
 void VQtUpdater::updateTo(IGrid * grid)				{ update<IGrid,		VGridView>		(grid); }
+void VQtUpdater::updateTo(ILayer * layer)			{ update<ILayer,		VLayerView>		(layer); }
 void VQtUpdater::updateTo(IEllipse * e)				{ update<IEllipse,	VEllipseView>	(e); }
 void VQtUpdater::updateTo(IPolygon * p)				{ update<IPolygon,	VPolygonView>	(p); }
 void VQtUpdater::updateTo(IGestureFollower * gf)	{ update<IGestureFollower,VGestureFollowerView>	(gf); }

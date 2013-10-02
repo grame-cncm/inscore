@@ -96,6 +96,7 @@ extern const char* kpageFormat_GetSetMethod;
 extern const char* kpenAlpha_GetSetMethod;
 extern const char* kpenColor_GetSetMethod;
 extern const char* kpenStyle_GetSetMethod;
+extern const char* kbrushStyle_GetSetMethod;
 extern const char* kpenWidth_GetSetMethod;
 extern const char* kpendAlpha_SetMethod;
 extern const char* kpop_SetMethod;
