@@ -9,3 +9,4 @@ cmake/build/
 cmake/cmake_install.cmake
 cmake/oscpack.*
 cmake/*.vcproj*
+liboscpack.a
