@@ -1,6 +1,6 @@
 
-OBJ = testsig.o ../GraphicSignal.o ../RingBuffer.o ../Signal.o
-CXXFLAGS = -I../../lib -I..
+OBJ = testsig.o ../GraphicSignal.o ../RingBuffer.o ../TSignal.o
+CXXFLAGS = -I../../libmapping/src/misc -I..
 
 testsig : $(OBJ)
 	g++ $(OBJ) -o testsig
@@ -11,7 +11,7 @@ compile:
 clean:
 	rm -f $(OBJ) testsig
 
-testsig.o : ../GraphicSignal.h ../Signal.h ../RingBuffer.h
-../GraphicSignal.o : ../GraphicSignal.h ../Signal.h 
-../Signal.o : ../Signal.h
+testsig.o : ../GraphicSignal.h ../TSignal.h ../RingBuffer.h
+../GraphicSignal.o : ../GraphicSignal.h ../TSignal.h 
+../TSignal.o : ../TSignal.h
 ../RingBuffer.o : ../RingBuffer.h
