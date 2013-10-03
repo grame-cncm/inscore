@@ -54,7 +54,9 @@ class ISceneSync : public IVNode
 									const std::string& master, const std::string& masterMap,
 									Master::StretchType stretch, Master::SyncType sync, Master::VAlignType valign);
 	
-	public:	
+	public:
+		using IObject::sort;
+		
 		static const std::string fTypeString;
 		static libmapping::SMARTP<ISceneSync> create(IObject * parent)	{ return new ISceneSync(parent); }
 
