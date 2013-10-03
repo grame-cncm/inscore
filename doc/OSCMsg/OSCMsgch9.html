@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>9 Layers</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html,2,frames,index=3,info --> 
+<meta name="src" content="OSCMsg.tex"> 
+<meta name="date" content="2013-10-02 18:15:00"> 
+<link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
+</head><body 
+>
+<!--l. 1270--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch10.html" >next</a>] [<a 
+href="OSCMsgch8.html" >prev</a>] [<a 
+href="OSCMsgch8.html#tailOSCMsgch8.html" >prev-tail</a>] [<a 
+href="#tailOSCMsgch9.html">tail</a>] [<a 
+href="OSCMsg3.html#OSCMsgch9.html" >up</a>] </p></div>
+<h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;9</span><br /><a 
+ id="x13-420009"></a>Layers</h2>
+<!--l. 1273--><p class="noindent" >Layers may be viewed as containers. They represent a way to structure both the address space and the graphic
+space.
+<!--l. 1275--><p class="noindent" >From graphic viewpoint, a layer is a scene inside a scene. All the properties of &#8217;rect&#8217; components are available to
+layers: position, scale, color, transparency, etc.). By default, a layer is not visible: it has no brush and no
+pen.
+<!--l. 1277--><p class="noindent" >From time viewpoint, a layer has the common time attributes i.e. a date, a duration.
+<!--l. 1279--><p class="noindent" >A layer may be synchronized to other objects, including other layers. It includes a <span 
+class="pcrr8tn-">sync </span>node and supports
+synhcronization of the enclosed objects. However, synchronization is restricted to objects from the same layer and
+cannot cross the border of a layer.
+<!--l. 1282--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Creating a layer and its content:
+<div class="center" 
+>
+<!--l. 1286--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox41"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/layer1 set layer</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/layer1/score set gmnf &#8217;myscore.gmn&#8217;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/layer1/cursor set rect 0.01 0.1</span></div></div>
+</div>
+<!--l. 1288--><p class="noindent" >Synchronizing 2 components of a layer :
+<div class="center" 
+>
+<!--l. 1290--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox42"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/layer1/sync cursor score ! objects must be enclosed in layer1</span>
+</div></div>
+</div>
+<!--l. 1292--><p class="noindent" >Making a layer visible :
+<div class="center" 
+>
+<!--l. 1295--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox43"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/layer1 brushStyle solid </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/layer1 color 120 120 120</span></div></div>
+</div>
+<h3 class="sectionHead"><span class="titlemark">9.1    </span> <a 
+ id="x13-430009.1"></a>Layers generalization</h3>
+<!--l. 1302--><p class="noindent" >The idea of layer is generalized to all the type of objects: any INScore object can be a container without limitation
+on the depth.
+                                                                                 
+
+                                                                                 
+<!--l. 1367--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch10.html" >next</a>] [<a 
+href="OSCMsgch8.html" >prev</a>] [<a 
+href="OSCMsgch8.html#tailOSCMsgch8.html" >prev-tail</a>] [<a 
+href="OSCMsgch9.html" >front</a>] [<a 
+href="OSCMsg3.html#OSCMsgch9.html" >up</a>] </p></div>
+<!--l. 1367--><p class="noindent" ><a 
+ id="tailOSCMsgch9.html"></a>  
+</body></html> 

@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>8 Scene messages</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html,2,frames,index=3,info --> 
+<meta name="src" content="OSCMsg.tex"> 
+<meta name="date" content="2013-10-02 18:15:00"> 
+<link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
+</head><body 
+>
+<!--l. 1216--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch9.html" >next</a>] [<a 
+href="OSCMsgch7.html" >prev</a>] [<a 
+href="OSCMsgch7.html#tailOSCMsgch7.html" >prev-tail</a>] [<a 
+href="#tailOSCMsgch8.html">tail</a>] [<a 
+href="OSCMsg3.html#OSCMsgch8.html" >up</a>] </p></div>
+<h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;8</span><br /><a 
+ id="x12-410008"></a>Scene messages</h2>
+<!--l. 1218--><p class="noindent" >A scene may be viewed as a window on the score elements. Its address is <span 
+class="pcrr8tn-">/ITL/</span><span 
+class="pcrro8t-">sceneIdentifier </span>where
+<span 
+class="pcrro8t-">sceneIdentifier </span>is the scene name. It handles the following messages:
+<a 
+ id="dx12-41001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1230--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">sceneMsg</span> <img 
+src="OSCMsg43x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx12-41002"></a>
+<a 
+ id="dx12-41003"></a>
+<a 
+ id="dx12-41004"></a>
+<a 
+ id="dx12-41005"></a>
+<a 
+ id="dx12-41006"></a>
+<a 
+ id="dx12-41007"></a>
+<a 
+ id="dx12-41008"></a>
+<a 
+ id="dx12-41009"></a>
+<a 
+ id="dx12-41010"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">new</span>: creates a new scene and opens it in a new window.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">del</span>: deletes a scene and closes the corresponding window.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">reset</span>: clears the scene (i.e. delete all components) and resets the scene to its default state (position,
+     size and color).
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">rootPath</span>: <span 
+class="ptmri8t-">rootPath </span>of a scene is the default path where the scene reads or writes a file when a relative
+     path is used for this file. When no value has been specified, the application <span 
+class="ptmri8t-">rootPath </span>is used.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">load</span>: loads an INScore file to the scene. Note that the OSC addresses are translated to the scene OSC
+                                                                                 
+
+                                                                                 
+     address.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">fullscreen</span>: requests the scene to switch to full screen or normal screen. The parameter is interpreted
+     as a boolean value. Default value is <span 
+class="pcrr8tn-">0</span>.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">frameless</span>: requests the scene to switch to frameless or normal window. The parameter is interpreted
+     as a boolean value. Default value is <span 
+class="pcrr8tn-">0</span>.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">absolutexy</span>: requests the scene to absolute or relative coordinates. Absolute coordinates are in pixels
+     relative to the top left corner of the screen. Relative coordinates are in the range [-1, 1] where [0,0] is
+     the center of the screen. The message parameter is interpreted as a boolean value. Default value is <span 
+class="pcrr8tn-">0</span>.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">windowOpacity</span>:  switch  the  scene  window  to  opaque  or  transparent  mode.  When  in  transparent
+     mode, the scene alpha channel controls the window opacity (from completely opaque to completely
+     transparent). In opaque mode, the scene alpha channel controls the background brush only. Default
+     value is <span 
+class="pcrr8tn-">0</span>.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">commonMsg</span>: a scene support the common graphic attributes. See section <a 
+href="OSCMsgch2.html#x6-60002">2<!--tex4ht:ref: common --></a> p.<a 
+href="OSCMsgch2.html#x6-60002">10<!--tex4ht:ref: common --></a>.</li></ul>
+<!--l. 1255--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Setting a scene current path:
+<div class="center" 
+>
+<!--l. 1257--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox37"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene rootPath "/path/to/my/folder"</span>
+</div></div>
+</div>
+<!--l. 1258--><p class="noindent" >Loading an INScore file:
+<div class="center" 
+>
+<!--l. 1259--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox38"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene load "myscript.inscore"</span>
+</div></div>
+</div>
+<!--l. 1260--><p class="noindent" >&#x00A0;       will load <span 
+class="pcrr8tn-">/path/to/my/folder/myscript.inscore </span>into the scene.
+<!--l. 1262--><p class="noindent" >Setting a scene to fullscreen:
+<div class="center" 
+>
+<!--l. 1263--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox39"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene fullscreen 1</span>
+</div></div>
+</div>
+<!--l. 1264--><p class="noindent" >Creating a new score named <span 
+class="pcrr8tn-">myScore</span>:
+<div class="center" 
+>
+<!--l. 1265--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox40"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/myScore new</span>
+</div></div>
+</div>
+                                                                                 
+
+                                                                                 
+                                                                                 
+
+                                                                                 
+<!--l. 1270--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch9.html" >next</a>] [<a 
+href="OSCMsgch7.html" >prev</a>] [<a 
+href="OSCMsgch7.html#tailOSCMsgch7.html" >prev-tail</a>] [<a 
+href="OSCMsgch8.html" >front</a>] [<a 
+href="OSCMsg3.html#OSCMsgch8.html" >up</a>] </p></div>
+<!--l. 1270--><p class="noindent" ><a 
+ id="tailOSCMsgch8.html"></a>  
+</body></html> 

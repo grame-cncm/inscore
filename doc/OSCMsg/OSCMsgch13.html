@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>13 FAUST plugins</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html,2,frames,index=3,info --> 
+<meta name="src" content="OSCMsg.tex"> 
+<meta name="date" content="2013-10-02 18:15:00"> 
+<link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
+</head><body 
+>
+<!--l. 1937--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch15.html" >next</a>] [<a 
+href="OSCMsgch12.html" >prev</a>] [<a 
+href="OSCMsgch12.html#tailOSCMsgch12.html" >prev-tail</a>] [<a 
+href="#tailOSCMsgch13.html">tail</a>] [<a 
+href="OSCMsg3.html#OSCMsgch13.html" >up</a>] </p></div>
+<h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;13</span><br /><a 
+ id="x17-6200013"></a>FAUST plugins</h2>
+<!--l. 1940--><p class="noindent" >FAUST [Functional Audio Stream]<span class="footnote-mark"><a 
+href="OSCMsg18.html#fn1x145"><sup class="textsuperscript">1</sup></a></span><a 
+ id="x17-62001f1"></a> 
+is a functional programming language specifically designed for real-time signal processing and synthesis. A
+FAUST/INScore architecture allows to embed FAUST processors in INScore, for the purpose of signals
+computation. A FAUST plugin is viewed as a parallel signal and thus it is created in the <span 
+class="pcrr8tn-">signal </span>address space.
+Similarly to signals, it is associated to an OSC address in the form <span 
+class="pcrr8tn-">/ITL/</span><span 
+class="pcrro8t-">scene</span><span 
+class="pcrr8tn-">/signal/</span><span 
+class="pcrro8t-">name </span>where <span 
+class="pcrro8t-">name </span>is a
+user defined name.
+<a 
+ id="dx17-62002"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1944--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">faustprocessor</span> <img 
+src="OSCMsg71x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx17-62003"></a>
+<!--l. 1946--><p class="noindent" >A FAUST processor is created with a <span 
+class="pcrr8tn-">set </span>message followed by the <span 
+class="pcrr8tn-">faust </span>type, followed by the plugin path
+name.
+<h3 class="sectionHead"><span class="titlemark">13.1    </span> <a 
+ id="x17-6300013.1"></a>Specific messages</h3>
+<!--l. 1953--><p class="noindent" >A FAUST processor is characterized by the numbers of input and output channels and by a set of parameters. Each
+parameter carries a name defined by the FAUST processor. The set of messages supported by a FAUST
+processor is the set of signals messages extended with the parameters names and with specific query
+messages.
+<a 
+ id="dx17-63001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1959--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">faustmessage</span> <img 
+src="OSCMsg72x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx17-63002"></a>
+<a 
+ id="dx17-63003"></a>
+<a 
+ id="dx17-63004"></a>
+<a 
+ id="dx17-63005"></a>
+                                                                                 
+
+                                                                                 
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrro8t-">msg </span>is any of the FAUST processor parameters, which are defined by the FAUST processor.
+     </li>
+     <li class="itemize">the <span 
+class="pcrr8tn-">get </span>message is extended to query the FAUST processor: <span 
+class="pcrr8tn-">in </span>and <span 
+class="pcrr8tn-">out </span>give the number of input and
+     output channels.</li></ul>
+<!--l. 1971--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Creating a FAUST processor and querying its input and output count:
+<div class="center" 
+>
+<!--l. 1975--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox65"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust set faust aFaustPlugin </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust get in out</span></div></div>
+</div>
+<!--l. 1976--><p class="noindent" >&#x00A0;       gives as output:
+<div class="center" 
+>
+<!--l. 1979--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox66"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust in 2 </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust out 4</span></div></div>
+</div>
+<!--l. 1980--><p class="noindent" >Modifying the value of a FAUST processor parameter named <span 
+class="pcrr8tn-">volume</span>:
+<div class="center" 
+>
+<!--l. 1981--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox67"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust volume 0.8</span>
+</div></div>
+</div>
+<!--l. 1983--><p class="noindent" ><span 
+class="ptmbc8t-">N<span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span>  </span><br 
+class="newline" />The plugins are shared libraries which extension is platform dependent. The plugin name should not
+include the extension. The expected extensions are the following: .dylib on MacOS and Linux, .dll on
+Windows.
+<!--l. 1988--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">13.2    </span> <a 
+ id="x17-6400013.2"></a>Feeding and composing FAUST processors</h3>
+<!--l. 1991--><p class="noindent" >A FAUST processor accepts float values as input, which are taken as interleaved data and distributed to the input
+channels.
+<!--l. 1993--><p class="noindent" >From composition viewpoint, a FAUST processor is a parallel signal which dimension is the number of
+output channels. Thus, a FAUST processor can be used like any parallel signal. However, the signal
+identifier defined in <a 
+href="OSCMsgch12.html#x16-5700012.1.2">12.1.2<!--tex4ht:ref: parcomp --></a> is extended to support adressing single components of parallel signal as
+follows:
+<a 
+ id="dx17-64001"></a>
+                                                                                 
+
+                                                                                 
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1999--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">signal</span> <img 
+src="OSCMsg73x.png" alt="PICT" >
+</div></dd></dl>
+<!--l. 2000--><p class="noindent" >where <span 
+class="pcrr8tn-">n </span>selects the signal #n of a parallel signal. Note that indexes start at 0.
+<!--l. 2002--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Creating 3 parallel signals using the 3 output channels of a FAUST processor named <span 
+class="pcrr8tn-">myFaust</span>:
+<div class="center" 
+>
+<!--l. 2007--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox68"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/signal/y1 set &#8217;myFaust/0&#8217; 0.01 0. 1. 1. 1. </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/signal/y2 set &#8217;myFaust/1&#8217; 0.01 0.5 1. 1. 1. </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/signal/y3 set &#8217;myFaust/2&#8217; 0.01 -0.5 1. 1. 1.</span></div></div>
+</div>
+                                                                                 
+
+                                                                                 
+<!--l. 2011--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch15.html" >next</a>] [<a 
+href="OSCMsgch12.html" >prev</a>] [<a 
+href="OSCMsgch12.html#tailOSCMsgch12.html" >prev-tail</a>] [<a 
+href="OSCMsgch13.html" >front</a>] [<a 
+href="OSCMsg3.html#OSCMsgch13.html" >up</a>] </p></div>
+<!--l. 2011--><p class="noindent" ><a 
+ id="tailOSCMsgch13.html"></a>  
+</body></html> 
