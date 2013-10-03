@@ -51,7 +51,7 @@ class TSignal : virtual public libmapping::smartable
 {
 	protected:
 		std::string	fName;				///< the signal name
-		RingBuffer	fData;				///< the signal data ring buffer 
+		RingBuffer	fData;				///< the signal data ring buffer
 		float		fDefault;			///< a default value used when requested data is not available
 
 				 TSignal(std::string name, unsigned short size, float def) : fName(name), fDefault(def) { fData.initialize(size);}
@@ -102,16 +102,12 @@ class TSignal : virtual public libmapping::smartable
 		/// \brief get the signal data
 		/// \param n an index into the signal data buffer
 		/// \note when the index is larger than the available data, the default value is returned
-//		virtual float operator[](int n)	const					{ return (n < fData.available()) ? fData[n] : fDefault; }
 		virtual float operator[](int n)	const					{ return ((unsigned)n < fData.wpos()) ? fData.read(n): fDefault; }
-//		virtual float operator[](int n)	const					{ return ((unsigned)n < size()) ? fData.read(n): fDefault; }
 
 		/// \brief get the signal data
 		/// \param n an index into the signal data buffer
 		/// \note when the index is larger than the available data, the default value is returned
-//		virtual float get(int n) const							{ return (n < fData.available()) ? fData[n] : fDefault; }
 		virtual float get(int n) const							{ return ((unsigned)n < fData.wpos()) ? fData.read(n) : fDefault; }
-//		virtual float get(int n) const							{ return ((unsigned)n < size()) ? fData.read(n) : fDefault; }
 
 		/// \brief signals comparison based on signal size
 		/// \param sig a signal
