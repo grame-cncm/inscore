@@ -89,7 +89,6 @@ class export IGlue : public MsgListener, public QTimer
 	QMutex			fTimeViewMutex;
 	int				fCurrentRate;
 
-	int		fTimerID;
 	udpinfo fUDP;
 	
 	public :
