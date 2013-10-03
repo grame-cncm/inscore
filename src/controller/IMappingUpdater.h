@@ -88,7 +88,8 @@ class IMappingUpdater : public SlaveMapUpdater
 		inline	void updateTo (IGuidoCode* o)		{ updateIObject ( (IObject*)o); }
 		inline  void updateTo (IGuidoFile* o)		{ updateIObject ( (IObject*)o); }
 		inline	void updateTo (IGraphicSignal* o)	{ updateIObject ( (IObject*)o); }
-		inline	void updateTo (IRect * o)			{ updateIObject ( (IObject*)o); }
+        inline	void updateTo (IRect * o)			{ updateIObject ( (IObject*)o); }
+        inline	void updateTo (ILayer * o)			{ updateIObject ( (IObject*)o); }
 		inline	void updateTo (IEllipse * o)		{ updateIObject ( (IObject*)o); }
 		inline	void updateTo (IPolygon * o)		{ updateIObject ( (IObject*)o); }
 		inline	void updateTo (ICurve * o)			{ updateIObject ( (IObject*)o); }

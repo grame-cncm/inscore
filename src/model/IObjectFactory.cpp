@@ -125,7 +125,10 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 
 	else if ( type == IGrid::kGridType )
 		obj = _create<IGrid> (name, parent);
-
+    
+    else if (type == ILayer::kLayerType)
+        obj = _create<ILayer> (name, parent);
+        
 	else if ( type == ISignal::kSignalType )
 		obj = _create<ISignal> (name, parent);
 

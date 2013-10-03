@@ -71,16 +71,17 @@ void VSVGItem::paint ( QPainter * painter, const QStyleOptionGraphicsItem * opti
 //----------------------------------------------------------------------
 VSVGView::VSVGView(QGraphicsScene * scene, const ISVGFile* svg) 
 	: VIntPointObjectView( scene , new MouseEventAble<VSVGItem>(svg) )
-{
-}
+    {}
 VSVGView::VSVGView(QGraphicsScene * scene, const ISVG* svg) 
 	: VIntPointObjectView( scene , new MouseEventAble<VSVGItem>(svg) )
-{
-}
+    {}
 
 //----------------------------------------------------------------------
 void VSVGView::updateView( ISVGFile * svg  )
 {
+    if(svg->getParent()->getTypeString() != IAppl::kApplType && svg->getParent()->getTypeString() != IScene::kSceneType)
+        setParentItem(svg->getParent()->getView()?svg->getParent()->getView():0);
+    
 	if (svg->changed()) {
 		item()->setFile (svg->getFile().c_str());
 		svg->changed(false);
@@ -93,7 +94,10 @@ void VSVGView::updateView( ISVGFile * svg  )
 //----------------------------------------------------------------------
 void VSVGView::updateView( ISVG * svg  )
 {
-	if (svg->newData()) {
+	if(svg->getParent()->getTypeString() != IAppl::kApplType && svg->getParent()->getTypeString() != IScene::kSceneType)
+        setParentItem(svg->getParent()->getView()?svg->getParent()->getView():0);
+    
+    if (svg->newData()) {
 		item()->setText (svg->getText().c_str());
 	}
 	float alpha = svg->getA() / 255.f;
