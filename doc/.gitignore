@@ -6,6 +6,10 @@ OSCMsg.log
 OSCMsg.out
 OSCMsg.rai
 OSCMsg.toc
+OSCMsg.4*
+*.dvi
+*.log
+*.tmp
 OSCMsg/WARNINGS
 OSCMsg/images.aux
 OSCMsg/images.idx
