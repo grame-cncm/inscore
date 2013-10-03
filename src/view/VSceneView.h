@@ -56,7 +56,6 @@ class ZoomingGraphicsView;
 class VSceneView : public VDummyObjectView
 {
 	ZoomingGraphicsView * fGraphicsView;
-	QGraphicsRectItem * fBackground;
 	QGraphicsScene *	fScene;
 	QImage *			fImage;
 	WindowEventFilter * fEventFilter;
