@@ -39,7 +39,7 @@ VEllipseView::VEllipseView(QGraphicsScene * scene, const IEllipse* h)
 //----------------------------------------------------------------------
 void VEllipseView::updateView( IEllipse * ellipse )
 {
-    if(!ellipse->getParent()->getMaster(ellipse))
+    if(!ellipse->getParent()->getMaster(ellipse) && !ellipse->getParent()->getDeleted())
     {
         if(ellipse->getParent()->getTypeString() != IAppl::kApplType && ellipse->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(ellipse->getParent()->getView()?ellipse->getParent()->getView():0);

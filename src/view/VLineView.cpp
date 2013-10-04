@@ -37,7 +37,7 @@ VLineView::VLineView(QGraphicsScene * scene, const ILine* h)
 //----------------------------------------------------------------------
 void VLineView::updateView( ILine * line )
 {
-    if(!line->getParent()->getMaster(line))
+    if(!line->getParent()->getMaster(line) && !line->getParent()->getDeleted())
     {
         if(line->getParent()->getTypeString() != IAppl::kApplType && line->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(line->getParent()->getView()?line->getParent()->getView():0);

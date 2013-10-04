@@ -70,7 +70,7 @@ VGraphicsItemView::~VGraphicsItemView()
 
 	QList<QGraphicsItem*> children = item()->childItems();	// Break all links with children
 	for (int i = 0 ; i < children.size() ; i++ )
-		children[i]->setParentItem(0);
+		children[i]->setParentItem(fParent);
 	
 	item()->scene()->removeItem( item() );					// Remove the QGraphicsItem from the scene.
 	

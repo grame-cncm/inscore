@@ -152,7 +152,7 @@ VGuidoItemView::VGuidoItemView(QGraphicsScene * scene, const IGuidoCode* h)
 //----------------------------------------------------------------------
 void VGuidoItemView::updateView( IGuidoCode * guidoCode  )
 {
-    if(!guidoCode->getParent()->getMaster(guidoCode))
+    if(!guidoCode->getParent()->getMaster(guidoCode) && !guidoCode->getParent()->getDeleted())
     {
         if(guidoCode->getParent()->getTypeString() != IAppl::kApplType && guidoCode->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(guidoCode->getParent()->getView()?guidoCode->getParent()->getView():0);

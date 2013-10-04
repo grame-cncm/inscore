@@ -43,7 +43,7 @@ namespace inscore
     //----------------------------------------------------------------------
     void VLayerView::updateView( ILayer * layer  )
     {
-    if(!layer->getParent()->getMaster(layer))
+    if(!layer->getParent()->getMaster(layer) && !layer->getParent()->getDeleted())
     {
         if(layer->getParent()->getTypeString() != IAppl::kApplType && layer->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(layer->getParent()->getView()?layer->getParent()->getView():0);

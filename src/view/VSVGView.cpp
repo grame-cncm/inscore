@@ -79,7 +79,7 @@ VSVGView::VSVGView(QGraphicsScene * scene, const ISVG* svg)
 //----------------------------------------------------------------------
 void VSVGView::updateView( ISVGFile * svg  )
 {
-    if(!svg->getParent()->getMaster(svg))
+    if(!svg->getParent()->getMaster(svg) && !svg->getParent()->getDeleted())
     {
         if(svg->getParent()->getTypeString() != IAppl::kApplType && svg->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(svg->getParent()->getView()?svg->getParent()->getView():0);
@@ -96,7 +96,7 @@ void VSVGView::updateView( ISVGFile * svg  )
 //----------------------------------------------------------------------
 void VSVGView::updateView( ISVG * svg  )
 {
-    if(!svg->getParent()->getMaster(svg))
+    if(!svg->getParent()->getMaster(svg) && !svg->getParent()->getDeleted())
     {
         if(svg->getParent()->getTypeString() != IAppl::kApplType && svg->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(svg->getParent()->getView()?svg->getParent()->getView():0);
