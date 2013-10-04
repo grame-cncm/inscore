@@ -48,6 +48,11 @@ VSGraphView::VSGraphView(QGraphicsScene * scene, const IGraphicSignal* h)
 
 void VSGraphView::updateView( IGraphicSignal * graph )
 {
+    if(!graph->getParent()->getMaster(graph))
+    {
+        if(graph->getParent()->getTypeString() != IAppl::kApplType && graph->getParent()->getTypeString() != IScene::kSceneType)
+            setParentItem(graph->getParent()->getView()?graph->getParent()->getView():0);
+    }
 	item()->setSignal( graph->getSignal() );
 	item()->setRect( QRect( 0,0,  relative2SceneWidth(graph->getWidth()),relative2SceneHeight(graph->getHeight()) ) );
 	VShapeView::updateView( graph );
@@ -64,6 +69,11 @@ VGraphView::VGraphView(QGraphicsScene * scene, const IGraphicSignal* h, QAbstrac
 
 void VGraphView::updateView( IGraphicSignal * graph )
 {
+    if(!graph->getParent()->getMaster(graph))
+    {
+        if(graph->getParent()->getTypeString() != IAppl::kApplType && graph->getParent()->getTypeString() != IScene::kSceneType)
+            setParentItem(graph->getParent()->getView()?graph->getParent()->getView():0);
+    }
 	item()->setRect( QRect( 0,0,  relative2SceneWidth(graph->getWidth()),relative2SceneHeight(graph->getHeight()) ) );
 	float alpha = graph->getA() / 255.f;
 	item()->setOpacity (alpha);

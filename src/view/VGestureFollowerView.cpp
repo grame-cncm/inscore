@@ -136,6 +136,11 @@ VGestureFollowerView::VGestureFollowerView(QGraphicsScene * scene, const IGestur
 //----------------------------------------------------------------------
 void VGestureFollowerView::updateView( IGestureFollower * gf  )
 {
+    if(!gf->getParent()->getMaster(gf))
+    {
+        if(gf->getParent()->getTypeString() != IAppl::kApplType && gf->getParent()->getTypeString() != IScene::kSceneType)
+            setParentItem(gf->getParent()->getView()?gf->getParent()->getView():0);
+    }
 	float h = relative2SceneHeight(gf->getHeight());
 	float w = relative2SceneWidth(gf->getWidth());
 	QRectF newRect( 0,0, w, h );

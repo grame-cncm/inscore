@@ -94,7 +94,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 	private:
 		std::string		fName;		///< the object name, used as identifier
 		subnodes		fSubNodes;	///< child objects list
-        
+ 
 
 		float	fDispStart, fDispEnd;	///< the object displayed range (0-1 covers the whole range)
 		bool	fDelete;				///< true when an object should be deleted

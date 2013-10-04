@@ -65,6 +65,12 @@ VTextView::VTextView(QGraphicsScene * scene, const IHtmlFile* h)
 //----------------------------------------------------------------------
 void VTextView::updateView( IText * text )
 {
+    if(!text->getParent()->getMaster(text))
+    {
+        if(text->getParent()->getTypeString() != IAppl::kApplType && text->getParent()->getTypeString() != IScene::kSceneType)
+            setParentItem(text->getParent()->getView()?text->getParent()->getView():0);
+    }
+    
 	// 1. Update color
 	QColor color(text->getR(), text->getG(), text->getB() , text->getA());
 	if ( color != fTextItem->defaultTextColor() )

@@ -48,6 +48,11 @@ bool equals( const QPolygonF& p1 , const QPolygonF& p2 )
 //----------------------------------------------------------------------
 void VPolygonView::updateView( IPolygon * polygon)
 {
+    if(!polygon->getParent()->getMaster(polygon))
+    {
+        if(polygon->getParent()->getTypeString() != IAppl::kApplType && polygon->getParent()->getTypeString() != IScene::kSceneType)
+            setParentItem(polygon->getParent()->getView()?polygon->getParent()->getView():0);
+    }
 	QPolygon p;
 	for ( unsigned int i = 0 ; i < polygon->getPoints().size() ; i++ )
 		p << QPoint( relative2SceneX(polygon->getPoints()[i].first) , relative2SceneY(polygon->getPoints()[i].second) );

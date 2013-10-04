@@ -104,6 +104,11 @@ GraphicSegment VImageView::getGraphicSegment( const IntPointSegment& intPointSeg
 //----------------------------------------------------------------------
 void VImageView::updateView ( IImage * img)
 {
+    if(!img->getParent()->getMaster(img))
+    {
+        if(img->getParent()->getTypeString() != IAppl::kApplType && img->getParent()->getTypeString() != IScene::kSceneType)
+            setParentItem(img->getParent()->getView()?img->getParent()->getView():0);
+    }
 	float alpha = img->getA() / 255.f;
 	fImageItem->setOpacity (alpha);
 	VIntPointObjectView::updateView (img);

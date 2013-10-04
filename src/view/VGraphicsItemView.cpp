@@ -60,7 +60,7 @@ VGraphicsItemView::VGraphicsItemView( QGraphicsScene * scene , QGraphicsItem * i
 	scene->addItem( item );
 //	fBrushColorStartIndex = qrand();						// Randomize the color of the mapping debug items.
 	fBrushColorStartIndex = 0;
-//    setParentItem(item->parentItem());
+    //setParentItem(item->parentItem());
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -220,12 +220,6 @@ void VGraphicsItemView::updateTransform(IObject* o)
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateView(IObject* o)
 {	
-    if(!o->getParent()->getMaster(o))
-    {
-        if(o->getParent()->getTypeString() != IAppl::kApplType && o->getParent()->getTypeString() != IScene::kSceneType)
-            setParentItem(o->getParent()->getView()?o->getParent()->getView():0);
-    }
-    
 	setStretch( o->UseGraphic2GraphicMapping() );
 
 	// stretch mode: setup and use of fTilerItem
