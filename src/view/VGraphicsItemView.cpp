@@ -178,14 +178,19 @@ void VGraphicsItemView::drawNameAndBBox(IObject* o)
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::setParentView (IObject * object) 
 {
-	VObjectView * parent = 0;
+	VObjectView * parentView = 0;
 	if (object) {
-		const SIScene scene = object->getScene();
-		const Master* master = scene ? scene->getMaster(object) : 0;
-		if (master && !master->getMaster()->getDeleted())
-			parent = master->getMaster()->getView();
+        const SIObject parent = object->getParent();
+        const Master* master = parent ? parent->getMaster(object) : 0;
+    
+//		const SIScene scene = object->getScene();
+//		const Master* master = scene ? scene->getMaster(object) : 0;
+
+		if (master && !master->getMaster()->getDeleted()){
+			parentView = master->getMaster()->getView();
+        }
 	}
-	setParentItem( parent );
+	setParentItem( parentView );
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -215,6 +220,12 @@ void VGraphicsItemView::updateTransform(IObject* o)
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateView(IObject* o)
 {	
+    if(!o->getParent()->getMaster(o))
+    {
+        if(o->getParent()->getTypeString() != IAppl::kApplType && o->getParent()->getTypeString() != IScene::kSceneType)
+            setParentItem(o->getParent()->getView()?o->getParent()->getView():0);
+    }
+    
 	setStretch( o->UseGraphic2GraphicMapping() );
 
 	// stretch mode: setup and use of fTilerItem

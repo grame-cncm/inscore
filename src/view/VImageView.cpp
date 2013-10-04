@@ -49,8 +49,6 @@ VImageView::VImageView(QGraphicsScene * scene, const IImage* h)
 //----------------------------------------------------------------------
 void VImageView::updateLocalMapping (IImage* img)
 {
-    if(img->getParent()->getTypeString() != IAppl::kApplType && img->getParent()->getTypeString() != IScene::kSceneType)
-        setParentItem(img->getParent()->getView()?img->getParent()->getView():0);
 	// 1. Update image
 	QString file = VApplView::toQString( img->getFile().c_str() );
 	if ( QFile::exists(  file  ) )

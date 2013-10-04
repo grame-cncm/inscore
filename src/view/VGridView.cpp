@@ -43,9 +43,6 @@ VGridView::VGridView(QGraphicsScene * scene, const IGrid* grid)
 //----------------------------------------------------------------------
 void VGridView::updateView( IGrid * grid  )
 {
-    if(grid->getParent()->getTypeString() != IAppl::kApplType && grid->getParent()->getTypeString() != IScene::kSceneType)
-        setParentItem(grid->getParent()->getView()?grid->getParent()->getView():0);
-    
 	QRectF newRect( 0,0,  relative2SceneWidth(grid->getWidth()), relative2SceneHeight(grid->getHeight()) );
 	if ( newRect != item()->rect() )
 	{
