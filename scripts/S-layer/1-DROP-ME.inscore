@@ -1,5 +1,9 @@
+/ITL/scene/* del;
+
 /ITL/scene/lay1 set layer;
 /ITL/scene/lay1 color 200 0 150;
+/ITL/scene/lay1 width 1;
+/ITL/scene/lay1 height 1;
 
 /ITL/scene/lay1/rectangle set rect 1.5 1.;
 /ITL/scene/lay1/rectangle color 30 150 30;
@@ -7,7 +11,10 @@
 /ITL/scene/lay1/ell color 50 0 150;
 
 /ITL/scene/lay2 set layer;
-/ITL/scene/lay2 color 100 50 250;
+/ITL/scene/lay2 color 100 50 250 100;
+/ITL/scene/lay2 width 1.5;
+/ITL/scene/lay2 height 1.5;
+
 
 /ITL/scene/lay2/rectangle1 set rect 0.5 0.5;
 /ITL/scene/lay2/rectangle1 x 0.6;
