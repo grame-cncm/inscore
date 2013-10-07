@@ -184,10 +184,10 @@ bool IMappingUpdater::updateNOHStretch (IObject* o, const Master* m)
 //--------------------------------------------------------------------------
 void IMappingUpdater::updateIObject (IObject* object)	
 {
-//	const SIScene scene = object->getScene();
-//	const Master* master = scene ? scene->getMaster(object) : 0;
-    const SIObject parent = object->getParent();
-	const Master* master = parent ? parent->getMaster(object) : 0;
+	const SIScene scene = object->getScene();
+	const Master* master = scene ? scene->getMaster(object) : 0;
+//    const SIObject parent = object->getParent();
+//	const Master* master = parent ? parent->getMaster(object) : 0;
 	
 	if (!master) return;
 	
