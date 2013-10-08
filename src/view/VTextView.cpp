@@ -65,6 +65,7 @@ VTextView::VTextView(QGraphicsScene * scene, const IHtmlFile* h)
 //----------------------------------------------------------------------
 void VTextView::updateView( IText * text )
 {
+    text->cleanupSync();
     if(!text->getParent()->getMaster(text) && !text->getParent()->getDeleted())
     {
         if(text->getParent()->getTypeString() != IAppl::kApplType && text->getParent()->getTypeString() != IScene::kSceneType)

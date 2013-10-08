@@ -48,6 +48,7 @@ VCurveView::VCurveView(QGraphicsScene * scene, const ICurve* h)
 //----------------------------------------------------------------------
 void VCurveView::updateView( ICurve * curve )
 {
+    curve->cleanupSync();
     if(!curve->getParent()->getMaster(curve) && !curve->getParent()->getDeleted())
     {
         if(curve->getParent()->getTypeString() != IAppl::kApplType && curve->getParent()->getTypeString() != IScene::kSceneType)

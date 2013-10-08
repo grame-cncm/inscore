@@ -288,12 +288,12 @@ MsgHandler::msgStatus IScene::_watchMsg(const IMessage* msg, bool add)
 //--------------------------------------------------------------------------
 // propagates modification state from masters to slaves
 //--------------------------------------------------------------------------
-void IScene::ptask ()
+/*void IScene::ptask ()
 { 
 	if (fSync) fSync->ptask(); 
 	if (signalsNode()->getState()) propagateSignalsState();
 }
-
+*/
 //--------------------------------------------------------------------------
 void IScene::print (ostream& out) const
 {

@@ -104,6 +104,7 @@ GraphicSegment VImageView::getGraphicSegment( const IntPointSegment& intPointSeg
 //----------------------------------------------------------------------
 void VImageView::updateView ( IImage * img)
 {
+    img->cleanupSync();
     if(!img->getParent()->getMaster(img) && !img->getParent()->getDeleted())
     {
         if(img->getParent()->getTypeString() != IAppl::kApplType && img->getParent()->getTypeString() != IScene::kSceneType)

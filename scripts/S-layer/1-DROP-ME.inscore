@@ -10,19 +10,20 @@
 /ITL/scene/lay1/ell set ellipse 0.8 1.2;
 /ITL/scene/lay1/ell color 50 0 150;
 
+
 /ITL/scene/lay2 set layer;
 /ITL/scene/lay2 color 100 50 250 100;
 /ITL/scene/lay2 width 1.5;
 /ITL/scene/lay2 height 1.5;
 
-
 /ITL/scene/lay2/rectangle1 set rect 0.5 0.5;
-/ITL/scene/lay2/rectangle1 x 0.6;
-/ITL/scene/lay2/rectangle1 y 0.6;
+/ITL/scene/lay2/rectangle1 x 0.8;
+/ITL/scene/lay2/rectangle1 y 0.8;
 /ITL/scene/lay2/rectangle1/rectangle2 set rect 1.5 1.5;
 /ITL/scene/lay2/rectangle1/rectangle2 color 100 100 100;
 /ITL/scene/lay2/rectangle1/rectangle3 set rect 1. 1.;
 /ITL/scene/lay2/rectangle1/rectangle3 color 250 40 100;
+
 
 /ITL/scene/lay3 set layer;
 /ITL/scene/lay3 color 20 200 80;

@@ -37,6 +37,7 @@ VRectView::VRectView(QGraphicsScene * scene, const IRect* h)
 //----------------------------------------------------------------------
 void VRectView::updateView( IRect * rect  )
 {
+    rect->cleanupSync();
     if(!rect->getParent()->getMaster(rect) && !rect->getParent()->getDeleted())
     {
         if(rect->getParent()->getTypeString() != IAppl::kApplType && rect->getParent()->getTypeString() != IScene::kSceneType)

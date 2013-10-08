@@ -59,7 +59,7 @@ typedef class libmapping::SMARTP<IJavascript>		SIJavascript;
 //--------------------------------------------------------------------------
 /*! \brief a scene model
 */
-class IScene : public IRectShape, public PeriodicTask
+class IScene : public IRectShape//, public PeriodicTask
 {	
 	bool			fFullScreen;
 	bool			fFrameless;
@@ -128,7 +128,7 @@ class IScene : public IRectShape, public PeriodicTask
 		virtual void cleanupSync();
 
 		/// \brief a periodic task to propagate modification state from masters to slaves
-		virtual void ptask ();
+	//	virtual void ptask ();
 		
 		/// \brief adds a subnode to the object \param node the subnode
 		virtual void	add (const nodePtr& node);

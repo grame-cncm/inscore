@@ -79,6 +79,7 @@ VSVGView::VSVGView(QGraphicsScene * scene, const ISVG* svg)
 //----------------------------------------------------------------------
 void VSVGView::updateView( ISVGFile * svg  )
 {
+    svg->cleanupSync();
     if(!svg->getParent()->getMaster(svg) && !svg->getParent()->getDeleted())
     {
         if(svg->getParent()->getTypeString() != IAppl::kApplType && svg->getParent()->getTypeString() != IScene::kSceneType)
@@ -96,6 +97,7 @@ void VSVGView::updateView( ISVGFile * svg  )
 //----------------------------------------------------------------------
 void VSVGView::updateView( ISVG * svg  )
 {
+    svg->cleanupSync();
     if(!svg->getParent()->getMaster(svg) && !svg->getParent()->getDeleted())
     {
         if(svg->getParent()->getTypeString() != IAppl::kApplType && svg->getParent()->getTypeString() != IScene::kSceneType)

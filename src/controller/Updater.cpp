@@ -79,4 +79,5 @@ bool SlaveMapUpdater::needupdate (IObject* o)
 //	return (state & (IObject::kModified + IObject::kNewObject + IObject::kMasterModified));
 }
 
+
 } // end namespoace

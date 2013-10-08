@@ -136,6 +136,7 @@ VGestureFollowerView::VGestureFollowerView(QGraphicsScene * scene, const IGestur
 //----------------------------------------------------------------------
 void VGestureFollowerView::updateView( IGestureFollower * gf  )
 {
+    gf->cleanupSync();
     if(!gf->getParent()->getMaster(gf) && !gf->getParent()->getDeleted())
     {
         if(gf->getParent()->getTypeString() != IAppl::kApplType && gf->getParent()->getTypeString() != IScene::kSceneType)

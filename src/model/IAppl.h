@@ -59,7 +59,7 @@ typedef class libmapping::SMARTP<IApplLog>		SIApplLog;
 /*!
 	\brief the application object of the model
 */
-class IAppl : public IObject, public PeriodicTask
+class IAppl : public IObject//, public PeriodicTask
 {
 	typedef std::map<std::string, std::pair<std::string, std::string> >		TAliasesMap;
 	static TAliasesMap fAliases;
@@ -145,7 +145,7 @@ class IAppl : public IObject, public PeriodicTask
 
 		void		resetBench();
 		bool		offscreen()	const			{ return fOffscreen; }
-		void		ptask ();
+//		void		ptask ();
 
 		static std::string checkRootPath (const std::string& path);
 

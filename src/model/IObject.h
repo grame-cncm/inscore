@@ -44,6 +44,7 @@
 #include "TSegmentation.h"
 #include "TRelation.h"
 #include "TMapable.h"
+#include "PeriodicTask.h"
 #include "smartpointer.h"
 
 
@@ -84,7 +85,7 @@ typedef class libmapping::SMARTP<ISceneSync>		SISceneSync;
 	of the \c cleanup method.
 */
 class IObject : public IPosition, public IDate, public IColor, public EventsAble,
-				public browsable, public TMapable, virtual public libmapping::smartable
+				public browsable, public TMapable, virtual public libmapping::smartable, public PeriodicTask
 {
 	public:
 		friend class IProxy;
