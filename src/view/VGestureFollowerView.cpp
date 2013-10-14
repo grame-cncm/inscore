@@ -139,7 +139,7 @@ void VGestureFollowerView::updateView( IGestureFollower * gf  )
     gf->cleanupSync();
     if(!gf->getParent()->getMaster(gf) && !gf->getParent()->getDeleted())
     {
-        if(gf->getParent()->getTypeString() != IAppl::kApplType && gf->getParent()->getTypeString() != IScene::kSceneType)
+        if(gf->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(gf->getParent()->getView()?gf->getParent()->getView():0);
     }
 	float h = relative2SceneHeight(gf->getHeight());

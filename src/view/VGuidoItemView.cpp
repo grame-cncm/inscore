@@ -155,7 +155,7 @@ void VGuidoItemView::updateView( IGuidoCode * guidoCode  )
     guidoCode->cleanupSync();
     if(!guidoCode->getParent()->getMaster(guidoCode) && !guidoCode->getParent()->getDeleted())
     {
-        if(guidoCode->getParent()->getTypeString() != IAppl::kApplType && guidoCode->getParent()->getTypeString() != IScene::kSceneType)
+        if(guidoCode->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(guidoCode->getParent()->getView()?guidoCode->getParent()->getView():0);
     }
 	// 2. Update Score color

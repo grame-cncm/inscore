@@ -51,7 +51,7 @@ void VSGraphView::updateView( IGraphicSignal * graph )
     graph->cleanupSync();
     if(!graph->getParent()->getMaster(graph) && !graph->getParent()->getDeleted())
     {
-        if(graph->getParent()->getTypeString() != IAppl::kApplType && graph->getParent()->getTypeString() != IScene::kSceneType)
+        if(graph->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(graph->getParent()->getView()?graph->getParent()->getView():0);
     }
 	item()->setSignal( graph->getSignal() );
@@ -73,7 +73,7 @@ void VGraphView::updateView( IGraphicSignal * graph )
     graph->cleanupSync();
     if(!graph->getParent()->getMaster(graph) && !graph->getParent()->getDeleted())
     {
-        if(graph->getParent()->getTypeString() != IAppl::kApplType && graph->getParent()->getTypeString() != IScene::kSceneType)
+        if(graph->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(graph->getParent()->getView()?graph->getParent()->getView():0);
     }
 	item()->setRect( QRect( 0,0,  relative2SceneWidth(graph->getWidth()),relative2SceneHeight(graph->getHeight()) ) );

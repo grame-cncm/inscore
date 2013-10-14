@@ -40,7 +40,7 @@ void VLineView::updateView( ILine * line )
     line->cleanupSync();
     if(!line->getParent()->getMaster(line) && !line->getParent()->getDeleted())
     {
-        if(line->getParent()->getTypeString() != IAppl::kApplType && line->getParent()->getTypeString() != IScene::kSceneType)
+        if(line->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(line->getParent()->getView()?line->getParent()->getView():0);
     }
 	QPainterPath myPath;

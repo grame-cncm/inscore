@@ -56,8 +56,14 @@ const string IScene::kSceneType("scene");
 
 //--------------------------------------------------------------------------
 IScene::~IScene() 
-{ 
-	elements().clear();		// this is required to avoid orphan QGraphicsItem (and crash after that)
+{
+    for(int i=0; i<size(); i++)
+        elements()[i]->del();
+    
+    fSync->cleanup();
+    
+    elements().clear();		// this is required to avoid orphan QGraphicsItem (and crash after that)
+    
 }
 
 IScene::IScene(const std::string& name, IObject * parent) 
@@ -177,15 +183,15 @@ void IScene::accept (Updater* u)
 }
 
 //--------------------------------------------------------------------------
-SMaster IScene::getMaster(SIObject o) const		
+/*SMaster IScene::getMaster(SIObject o) const
 { 
 	return fSync ? fSync->getMaster(o) : 0;
 }
-
+*/
 //--------------------------------------------------------------------------
-void IScene::cleanupSync ()		{ if (fSync) fSync->cleanup(); }
+//void IScene::cleanupSync ()		{ if (fSync) fSync->cleanup(); }
 
-void IScene::sort () 
+void IScene::sort ()
 { 
 	// topological sort of the scene elements
 	if (fSync) fSync->sort(elements()); 
@@ -288,12 +294,13 @@ MsgHandler::msgStatus IScene::_watchMsg(const IMessage* msg, bool add)
 //--------------------------------------------------------------------------
 // propagates modification state from masters to slaves
 //--------------------------------------------------------------------------
-/*void IScene::ptask ()
-{ 
-	if (fSync) fSync->ptask(); 
+void IScene::ptask ()
+{
+IObject::ptask();
+//	if (fSync) fSync->ptask();
 	if (signalsNode()->getState()) propagateSignalsState();
 }
-*/
+
 //--------------------------------------------------------------------------
 void IScene::print (ostream& out) const
 {

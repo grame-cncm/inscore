@@ -96,6 +96,7 @@ void ISync::remove(SIObject slave)
 		VObjectView * view = slave->getView();
 		if (view)
         {
+            view->setParentItem(0);
             view->updateView(slave);
         }
 	}

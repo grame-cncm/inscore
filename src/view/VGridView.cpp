@@ -46,7 +46,7 @@ void VGridView::updateView( IGrid * grid  )
     grid->cleanupSync();
     if(!grid->getParent()->getMaster(grid) && !grid->getParent()->getDeleted())
     {
-        if(grid->getParent()->getTypeString() != IAppl::kApplType && grid->getParent()->getTypeString() != IScene::kSceneType)
+        if(grid->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(grid->getParent()->getView()?grid->getParent()->getView():0);
     }
 	QRectF newRect( 0,0,  relative2SceneWidth(grid->getWidth()), relative2SceneHeight(grid->getHeight()) );

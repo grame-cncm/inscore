@@ -145,7 +145,7 @@ class IAppl : public IObject//, public PeriodicTask
 
 		void		resetBench();
 		bool		offscreen()	const			{ return fOffscreen; }
-//		void		ptask ();
+		void		ptask ();
 
 		static std::string checkRootPath (const std::string& path);
 

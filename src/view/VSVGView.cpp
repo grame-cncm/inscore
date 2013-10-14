@@ -82,7 +82,7 @@ void VSVGView::updateView( ISVGFile * svg  )
     svg->cleanupSync();
     if(!svg->getParent()->getMaster(svg) && !svg->getParent()->getDeleted())
     {
-        if(svg->getParent()->getTypeString() != IAppl::kApplType && svg->getParent()->getTypeString() != IScene::kSceneType)
+        if(svg->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(svg->getParent()->getView()?svg->getParent()->getView():0);
     }
 	if (svg->changed()) {

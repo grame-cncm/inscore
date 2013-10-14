@@ -40,7 +40,7 @@ void VRectView::updateView( IRect * rect  )
     rect->cleanupSync();
     if(!rect->getParent()->getMaster(rect) && !rect->getParent()->getDeleted())
     {
-        if(rect->getParent()->getTypeString() != IAppl::kApplType && rect->getParent()->getTypeString() != IScene::kSceneType)
+        if(rect->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(rect->getParent()->getView()?rect->getParent()->getView():0);
     }
 	QRectF newRect( 0,0,  relative2SceneWidth(rect->getWidth()), relative2SceneHeight(rect->getHeight()) );

@@ -114,7 +114,7 @@ VSceneView::VSceneView(const std::string& address, QGraphicsScene * scene)
 
 //------------------------------------------------------------------------------------------------------------------------
 VSceneView::~VSceneView()
-{ 
+{
 	delete fImage;
 	delete fScene;
 	delete fGraphicsView; 

@@ -116,7 +116,7 @@ class IScene : public IRectShape//, public PeriodicTask
 			\param o the object to look for in the synchronization set
 			\return the object master or 0 when not found
 		*/
-		virtual SMaster getMaster(SIObject o) const;
+//		virtual SMaster getMaster(SIObject o) const;
 	
 		/// \brief gives the scene (actually self)
 		virtual SIScene			getScene()					{ return this; }
@@ -125,10 +125,10 @@ class IScene : public IRectShape//, public PeriodicTask
 		/*! \brief cleanup the relations set
 			\see ISync::cleanup
 		*/
-		virtual void cleanupSync();
+//		virtual void cleanupSync();
 
 		/// \brief a periodic task to propagate modification state from masters to slaves
-	//	virtual void ptask ();
+		virtual void ptask ();
 		
 		/// \brief adds a subnode to the object \param node the subnode
 		virtual void	add (const nodePtr& node);

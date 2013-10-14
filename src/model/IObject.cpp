@@ -240,16 +240,18 @@ IObject::~IObject()
 {
 	// removes all the child objects refs to me
 	for (int i=0; i < size(); i++)
-		elements()[i]->fParent = 0;
-	delete fView;
+    {
+		elements()[i]->fParent = fParent;
+    }
+        delete fView;
 }
 
 //--------------------------------------------------------------------------
 void IObject::createVirtualNodes()
 {
 	fSync = ISceneSync::create(this);
-	fDebug = IObjectDebug::create(this);
     add(fSync);
+	fDebug = IObjectDebug::create(this);
     add ( fDebug );
 }
 
@@ -279,6 +281,10 @@ string IObject::getOSCAddress() const
 void IObject::ptask ()
 { 
 	if (fSync) fSync->ptask();
+    
+	for (unsigned int i = 0; i < elements().size(); i++) {
+        elements()[i]->ptask();
+    }
 }
 
 //--------------------------------------------------------------------------

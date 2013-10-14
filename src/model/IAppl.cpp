@@ -226,13 +226,14 @@ void IAppl::createVirtualNodes()
 }
 
 //--------------------------------------------------------------------------
-/*void IAppl::ptask ()
+void IAppl::ptask ()
 {
 	for (unsigned int i = 0; i < elements().size(); i++) {
-		IScene* scene = dynamic_cast<IScene*>((IObject*)elements()[i]);
-		if (scene) scene->ptask();
+        elements()[i]->ptask();
+	//	IScene* scene = dynamic_cast<IScene*>((IObject*)elements()[i]);
+	//	if (scene) scene->ptask();
 	}
-}*/
+}
 
 //--------------------------------------------------------------------------
 void IAppl::accept (Updater* u)
