@@ -104,6 +104,7 @@ const char* kpush_SetMethod			= "push";			// Set
 const char* kquit_SetMethod			= "quit";			// Set
 const char* krate_GetSetMethod		= "rate";			// Get Set
 const char* kred_GetSetMethod		= "red";			// Get Set
+const char* kread_SetMethod			= "read";			// Set
 const char* krequire_SetMethod		= "require";		// Set
 const char* kreset_SetMethod		= "reset";			// Set
 const char* kresetBench_SetMethod	= "resetBench";		// Set

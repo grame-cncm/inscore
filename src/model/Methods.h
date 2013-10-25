@@ -105,6 +105,7 @@ extern const char* kpush_SetMethod;
 extern const char* kquit_SetMethod;
 extern const char* krate_GetSetMethod;
 extern const char* kred_GetSetMethod;
+extern const char* kread_SetMethod;
 extern const char* krequire_SetMethod;
 extern const char* kreset_SetMethod;
 extern const char* kresetBench_SetMethod;

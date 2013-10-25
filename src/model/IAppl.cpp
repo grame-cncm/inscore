@@ -143,6 +143,7 @@ IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool of
 	fMsgHandlerMap[khello_SetMethod]			= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::helloMsg);
 //	fMsgHandlerMap["activate"]					= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::activate);
 	fMsgHandlerMap[kload_SetMethod]				= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadMsg);
+	fMsgHandlerMap[kread_SetMethod]				= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadBuffer);
 	fMsgHandlerMap[krequire_SetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::requireMsg);
 	fMsgHandlerMap[kquit_SetMethod]				= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::quit);
 	fMsgHandlerMap[kmouse_SetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::cursor);
@@ -440,6 +441,33 @@ MsgHandler::msgStatus IAppl::cursor(const IMessage* msg)
 				fAppl->setOverrideCursor( QCursor( Qt::ArrowCursor ) );
 			return MsgHandler::kProcessed;
 		}
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IAppl::loadBuffer (const IMessage* msg)
+//bool IAppl::loadBuffer (const char* buffer)
+{
+	stringstream s;
+	for (int i=0; i<msg->size(); i++ ) {
+		string str; int ivalue; float fvalue;
+		if (msg->param(i, str)) s << str << " ";
+		else if (msg->param(i, ivalue)) s << ivalue << " ";
+		else if (msg->param(i, fvalue)) s << fvalue << " ";
+	}
+	if (!s.str().size()) return MsgHandler::kBadParameters;
+
+	ITLparser p (&s, 0, &fJavascript, &fLua);
+	SIMessageList msgs = p.parse();
+	if (msgs) {
+		for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
+			string beg  = OSCAddress::addressFirst((*i)->address());
+			string tail = OSCAddress::addressTail((*i)->address());
+			int ret = processMsg(beg, tail, *i);
+			if (oscDebug()) IGlue::trace(*i, ret);
+		}
+		return MsgHandler::kProcessed;
 	}
 	return MsgHandler::kBadParameters;
 }
