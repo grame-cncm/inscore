@@ -81,6 +81,11 @@ VLogWindow::TButton * VLogWindow::createToolButton(const QString &toolTip, const
     return button;
 }
 
+const char*	VLogWindow::getText () const
+{
+	return fLogArea->toPlainText().toUtf8().constData();
+}
+
 void VLogWindow::clear()
 {
 	fLogArea->setPlainText("");

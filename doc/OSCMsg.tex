@@ -1253,15 +1253,18 @@ The \OSC{log} node controls a console window that display all the messages sent 
 ITLLog : 'show'  int32
 		| 'clear'
 		| 'wrap' int32
+		| 'save' string
 \end{rail}
 \index{ITL log!show}
 \index{ITL log!clear}
 \index{ITL log!wrap}
+\index{ITL log!save}
 
 \begin{itemize}
 \item \OSC{show} show or hides the console. The parameter is a boolean value.
 \item \OSC{clear} clear the console window.
 \item \OSC{wrap} control line wrapping of the console. The parameter is a boolean value.
+\item \OSC{save} save the current log content to a file. The parameter is a file name. When expressed as a relative path, the file is saved under the current application root path.
 \end{itemize}
 
 
