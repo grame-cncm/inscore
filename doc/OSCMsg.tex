@@ -1064,6 +1064,7 @@ ITLMsg : 'quit'
 		| ('mouse' ('show' | 'hide'))
 		| ('defaultShow' int32)
 		| ('load' filePath)
+		| ('read' buffer)
 		| ('require' float oscMsg)
 		| ('time' int32)
 		| ('ticks' int32)
@@ -1074,6 +1075,7 @@ ITLMsg : 'quit'
 \index{ITL messages!mouse}
 \index{ITL messages!defaultShow}
 \index{ITL messages!load}
+\index{ITL messages!read}
 \index{ITL messages!hello}
 \index{ITL messages!require}
 \index{ITL messages!rate}
@@ -1091,6 +1093,8 @@ ITLMsg : 'quit'
 The default \OSC{defaultShow} value is 1.
 
 \item \OSC{load}: loads a file previously saved using the \OSC{save} message (see section \fullref{common}). Note that the load operation appends the new objects to the existing scene. When necessary, it is the sender responsibility to clear the scene before loading a file.
+
+\item \OSC{read}: read a buffer that is expected to contain a valid inscore script.
 
 \item \OSC{require}: check that the current INScore version number is equal or greater to the number given as argument. The version number is given as a float value. A message is associated to the \OSC{require} message, which is triggered when the check fails. See section \fullref{interaction} for more details.
 
