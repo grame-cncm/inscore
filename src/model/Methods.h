@@ -68,6 +68,7 @@ extern const char* kdz_SetMethod;
 extern const char* keffect_GetSetMethod;
 extern const char* kerrport_GetSetMethod;
 extern const char* kexport_SetMethod;
+extern const char* kevent_SetMethod;
 extern const char* kforward_GetSetMethod;
 extern const char* kframeless_GetSetMethod;
 extern const char* kfullscreen_GetSetMethod;

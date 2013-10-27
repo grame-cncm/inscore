@@ -66,6 +66,7 @@ const char* kdyorigin_SetMethod		= "dyorigin";		// Set
 const char* kdz_SetMethod			= "dz";				// Set
 const char* keffect_GetSetMethod	= "effect";			// Get Set
 const char* kerrport_GetSetMethod	= "errport";		// Get Set
+const char* kevent_SetMethod		= "event";			// Set
 const char* kexport_SetMethod		= "export";			// Set
 const char* kforward_GetSetMethod	= "forward";		// Get Set
 const char* kframeless_GetSetMethod	= "frameless";		// Get Set

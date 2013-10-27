@@ -31,6 +31,8 @@
 
 #include "IObject.h"
 #include "GraphicEffect.h"
+#include "EventsAble.h"
+#include "MouseEventAble.h"
 
 //#include <QRect>
 
@@ -82,7 +84,10 @@ class VObjectView
 		
 		/// \brief initialize an object view (do nothing at IObject level)
 		virtual void	initialize (IObject* )							{}
-
+		
+		/// \brief simulate UI mouse events
+		virtual void handleEvent (const inscore::IObject* obj, float x, float y, EventsAble::eventype type)
+						{ 	_MouseEventAble::handleEvent(obj, QPointF(x, y), type); }
 };
 
 /*!@} */
