@@ -2066,6 +2066,18 @@ Triggering a message on mouse down but addressed to another host on udp port 121
 \note{} \\
 UI events are not supported by objects that are synchronized as slave.
 
+Mouse events can be simulated using a \OSC{event} message:
+\begin{rail}
+uievt : 'event' mouseEvent x y
+\end{rail}
+\index{Interaction!Events!event}
+where \OSC{mouseEvent} is one of the events described above, \OSC{x} and \OSC{y} are integer values giving the click position, expressed in pixels and relative to the target object.
+
+\example \\
+Simulating a mouse down at position 10, 10 :
+\sample{/ITL/scene/myObject event mouseDown 10 10;}
+
+
 %===============================
 %:       Time events
 \subsublevel{Time events}
