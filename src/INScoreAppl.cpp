@@ -27,6 +27,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QEvent>
+#include <QFile>
 #include <QFileDialog>
 #include <QFileOpenEvent>
 #include <QLabel>
@@ -46,6 +47,7 @@
 
 #include <stdlib.h>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #include "INScore.h"
@@ -142,6 +144,14 @@ void INScoreAppl::open(const string& file)
 }
 
 //_______________________________________________________________________
+void INScoreAppl::read(const string& buffer)
+{
+	INScore::MessagePtr msg = INScore::newMessage ("read");
+	INScore::add (msg, buffer.c_str());
+	INScore::postMessage ("/ITL", msg);
+}
+
+//_______________________________________________________________________
 bool INScoreAppl::event(QEvent *ev)
 {
     if (ev->type() == QEvent::FileOpen) {
@@ -149,7 +159,7 @@ bool INScoreAppl::event(QEvent *ev)
 		if (fStarted)
 			open (fileName.toStdString());
 		else 
-			fPendingOpen = fileName.toStdString();
+			fPendingOpen.push_back(fileName.toStdString());
 		return true;
     }
 	return QApplication::event(ev);
@@ -166,6 +176,42 @@ void INScoreAppl::setupMenu()
 	
     QMenu* menu = fMenuBar->addMenu(tr("&Help"));
     menu->addAction(aboutAct);
+}
+
+//_______________________________________________________________________
+void INScoreAppl::started()
+{
+	fStarted = true;
+	if (fPendingBuffer.size()) {
+		read(fPendingBuffer);
+	}
+	for (int i=0; i<fPendingOpen.size(); i++) {
+		open (fPendingOpen[i]);
+	}
+}
+
+//_______________________________________________________________________
+INScoreAppl::INScoreAppl (int & argc, char ** argv )
+	: QApplication (argc, argv), fMenuBar(0), fStarted(false)
+{
+	for (int i = 1; i < argc; i++) {
+		string stdinopt ("-");
+		if (stdinopt == argv[i]) {
+			// read stdin
+			string str;
+			stringstream sstr;
+			while (!cin.eof()) {
+				cin >> str;
+				sstr << str << " ";
+			}
+			fPendingBuffer = sstr.str();
+		}
+		else {
+			QFile file(argv[i]);
+			if (file.exists())
+				fPendingOpen.push_back(argv[i]);
+		}
+	}
 }
 
 //_______________________________________________________________________
@@ -205,6 +251,10 @@ int main( int argc, char **argv )
 #endif
 	dir.cd("PlugIns");
 	appl.addLibraryPath		( dir.absolutePath());
+#ifndef WIN32
+	dir.cdUp();
+	dir.cdUp();
+#endif
 
 	IGlue * glue = INScore::start (kTimeInterval, udpPort, kUPDPort+1, kUPDPort+2, &appl);
 	appl.started();

@@ -1,14 +1,17 @@
 /ITL/scene reset ;
-/ITL/scene/comment set "txt" "staff + system mapping test" ;
-/ITL/scene/comment xorigin -1.00000 ;
-/ITL/scene/comment yorigin -1.00000 ;
-/ITL/scene/comment x -0.950000 ;
-/ITL/scene/comment y -0.950000 ;
-/ITL/scene/score set "gmnf" "moz581.gmn" ;
+
+/ITL/scene/comment set txt "staff + system mapping test" ;
+/ITL/scene/comment xorigin -1.0 ;
+/ITL/scene/comment yorigin -1.0 ;
+/ITL/scene/comment x -0.95 ;
+/ITL/scene/comment y -0.95 ;
+/ITL/scene/score set gmnf "moz581.gmn" ;
 /ITL/scene/score scale 2 ;
-/ITL/scene/score map "staff2" ;
-/ITL/scene/score map "staff3" ;
-/ITL/scene/score map "staff4" ;
-/ITL/scene/score map "staff5" ;
-/ITL/scene/score map "system" ;
+/ITL/scene/score map staff2 ;
+/ITL/scene/score map staff3 ;
+/ITL/scene/score map staff4 ;
+/ITL/scene/score map staff5 ;
+/ITL/scene/score map system ;
 /ITL/scene/score/debug map 1 ;
+
+/ITL/scene watch endPaint ( /ITL/scene export "moz581.pdf" );

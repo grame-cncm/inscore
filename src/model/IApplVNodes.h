@@ -139,6 +139,9 @@ class IApplLog : public IVNode
 
 		void	clear();
 		void	setWrap(bool state);
+
+		/// \brief object \c 'save' message handler.
+		virtual MsgHandler::msgStatus saveMsg (const IMessage* msg) const;
 };
 
 

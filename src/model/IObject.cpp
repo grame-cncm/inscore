@@ -97,6 +97,8 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fMsgHandlerMap[ksave_SetMethod]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::saveMsg);
 	fMsgHandlerMap[kwatch_GetSetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsg);
 	fMsgHandlerMap[kwatchplus_SetMethod]= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsgAdd);
+	fMsgHandlerMap[kevent_SetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::eventMsg);
+
 	fMsgHandlerMap[kpush_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::pushMsg);
 	fMsgHandlerMap[kpop_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::popMsg);
 
@@ -895,6 +897,21 @@ MsgHandler::msgStatus IObject::saveMsg (const IMessage* msg) const
 	return MsgHandler::kBadParameters;
 }
 
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::eventMsg (const IMessage* msg)
+{
+	if ((msg->size() == 3)) {
+		string event; int x, y;
+		if (msg->param(0, event) && msg->param(1, x) && msg->param(2, y)) {
+			VObjectView	* view = getView();
+			if (view) {
+				EventsAble::eventype type = EventsAble::string2type (event);
+				view->handleEvent (this, x, y, type);
+			}
+		}
+	}
+	return MsgHandler::kBadParameters;
+}
 
 //--------------------------------------------------------------------------
 // OSCStream support

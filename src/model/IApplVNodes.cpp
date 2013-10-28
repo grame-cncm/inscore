@@ -24,8 +24,10 @@
 */
 
 #include <sstream>
+#include <fstream>
 
 #include "IApplVNodes.h"
+#include "IAppl.h"
 #include "IMessageStack.h"
 #include "Updater.h"
 
@@ -119,6 +121,7 @@ IApplLog::IApplLog(IObject * parent) : IVNode("log", parent)
 	fWindow = new VLogWindow ("INScore log");
 	fMsgHandlerMap[kclear_SetMethod]	= TMethodMsgHandler<IApplLog, void (IApplLog::*)(void)>::create(this, &IApplLog::clear);
 	fMsgHandlerMap[kwrap_GetSetMethod]	= TSetMethodMsgHandler<IApplLog,bool>::create(this, &IApplLog::setWrap);
+	fMsgHandlerMap[ksave_SetMethod]	= TMethodMsgHandler<IApplLog, MsgHandler::msgStatus (IApplLog::*)(const IMessage*) const>::create(this, &IApplLog::saveMsg);
 	positionAble();
 	setVisible(false);
 }
@@ -128,6 +131,20 @@ IApplLog::~IApplLog()
 	delete fWindow;
 }
 
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IApplLog::saveMsg (const IMessage* msg) const
+{
+	if ((msg->size() == 1)) {
+		string destfile = msg->param(0)->value<string>("");
+		if (destfile.size()) {
+			string path = IAppl::absolutePath(destfile);
+			ofstream out (path.c_str(), ios_base::out);
+			out << fWindow->getText();
+			return MsgHandler::kProcessedNoChange;
+		}
+	}
+	return MsgHandler::kBadParameters;
+}
 
 //--------------------------------------------------------------------------
 void IApplLog::accept (Updater* u)

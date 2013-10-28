@@ -89,17 +89,27 @@ class export IGlue : public MsgListener, public QTimer
 	QMutex			fTimeViewMutex;
 	int				fCurrentRate;
 
-	int		fTimerID;
 	udpinfo fUDP;
 	
 	public :
 				 IGlue(int udpport, int outport, int errport);
 		virtual ~IGlue();
 
+
+				/*! \brief start running the glue i.e. inscore services
+
+					\param timerInterval a time interval for the time task, expressed in milliseconds
+					\param offscreen a boolean value to run without display and to draw the result in an offscreen only.
+							This is an experimental implementation intended to support java.
+					\param appl the QApplication that runs the program.
+					\return a boolean value indicating the running status at start exit
+				*/
 				bool start(int timerInterval, bool offscreen, QApplication* appl);
+
 				void setViewUpdater(SUpdater updater);
 				void setLocalMapUpdater(SUpdater updater);
 				void setSlaveMapUpdater(SUpdater updater);
+
 				void msgReceived (const IMessage* msg, int status);
 
 				void setOSCOut (const std::string& a);

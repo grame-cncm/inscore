@@ -1,0 +1,890 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>2 Common messages</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html,2,frames,index=3,info --> 
+<meta name="src" content="OSCMsg.tex"> 
+<meta name="date" content="2013-10-27 19:41:00"> 
+<link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
+</head><body 
+>
+<!--l. 204--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch3.html" >next</a>] [<a 
+href="OSCMsgch1.html" >prev</a>] [<a 
+href="OSCMsgch1.html#tailOSCMsgch1.html" >prev-tail</a>] [<a 
+href="#tailOSCMsgch2.html">tail</a>] [<a 
+href="OSCMsg3.html#OSCMsgch2.html" >up</a>] </p></div>
+<h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;2</span><br /><a 
+ id="x6-60002"></a>Common messages</h2>
+<!--l. 206--><p class="noindent" >Common messages are intended to control the graphic and the time space of the components of a scene. They could
+be sent to any address with the form <span 
+class="pcrr8tn-">/ITL/</span><span 
+class="pcrro8t-">scene </span>or <span 
+class="pcrr8tn-">/ITL/</span><span 
+class="pcrro8t-">scene</span><span 
+class="pcrr8tn-">/</span><span 
+class="pcrro8t-">identifier </span>where <span 
+class="pcrro8t-">identifier </span>is the
+unique identifier of a scene component.
+<a 
+ id="dx6-6001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 217--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">commonMsg</span> <img 
+src="OSCMsg6x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx6-6002"></a>
+<a 
+ id="dx6-6003"></a>
+<a 
+ id="dx6-6004"></a>
+<a 
+ id="dx6-6005"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">show</span>: shows or hides the destination object. The parameter is interpreted as a boolean value. Default
+     value is <span 
+class="pcrr8tn-">1</span>.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">del</span>: deletes the destination object.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">export</span>: exports an object to an image file. <br 
+class="newline" />1)  exports  to  a  full  path  name.  The  file  extension  is  used  to  infer  the  export  format.  Supported
+     extensions and formats are: <span 
+class="ptmri8t-">pdf, bmp, gif, jpeg, png, pgm, ppm, tiff, xbm, xpm</span>. <br 
+class="newline" />2)    exports    to    <span 
+class="pcrr8tn-">path/</span><span 
+class="pcrro8t-">identifier</span><span 
+class="pcrr8tn-">.pdf</span>.    When    path    is    a    relative    path,    exports    to
+     <span 
+class="pcrr8tn-">rootPath/path/</span><span 
+class="pcrro8t-">identifier</span><span 
+class="pcrr8tn-">.pdf</span>. <br 
+class="newline" />3) exports to <span 
+class="pcrr8tn-">rootPath/</span><span 
+class="pcrro8t-">identifier</span><span 
+class="pcrr8tn-">.pdf</span>.<br 
+class="newline" />When the destination file is not completely specified (third form or missing extension), there is an
+     automatic numbering of output names when the destination file already exists.
+                                                                                 
+
+                                                                                 
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">save</span>:  recursively  saves  objects  states  to  a  file.  The  <span 
+class="pcrr8tn-">filePath </span>can  be  relative  or  absolute.  When
+     relative, an absolute path is build using the current <span 
+class="pcrr8tn-">rootPath </span>(see application or scene current paths
+     p.<a 
+href="OSCMsgch7.html#x11-350007.1">49<!--tex4ht:ref: applmgmt --></a>  and  p.<a 
+href="OSCMsgch8.html#x12-430008">57<!--tex4ht:ref: scene --></a>).  The  optional  <span 
+class="pcrr8tn-">+ </span>parameter  indicates  an  append  mode  for  the  write  operation.  The
+     message must be sent to the address <span 
+class="pcrr8tn-">/ITL </span>to save the whole application state.<br 
+class="newline" />Note that the file extension for INScore files is <span 
+class="pcrr8tn-">.inscore</span>. INScore files dropped on the application
+     or on a window are interpreted as script files (see section <a 
+href="OSCMsgch14.html#x18-7700014">14<!--tex4ht:ref: scripting --></a> p.<a 
+href="OSCMsgch14.html#x18-7700014">110<!--tex4ht:ref: scripting --></a>).
+     </li>
+     <li class="itemize">&#8217;PositionMsg&#8217; are absolute and relative position messages.
+     </li>
+     <li class="itemize">&#8217;ColorMsg&#8217; are absolute and relative color control messages.
+     </li>
+     <li class="itemize">&#8217;TimeMsg&#8217; are time management messages. They are described in section <a 
+href="OSCMsgch3.html#x7-210003">3<!--tex4ht:ref: time --></a> p.<a 
+href="OSCMsgch3.html#x7-210003">26<!--tex4ht:ref: time --></a>.
+     </li>
+     <li class="itemize">&#8217;WatchMsg&#8217; are described in section <a 
+href="OSCMsgch13.html#x17-6400013">13<!--tex4ht:ref: interaction --></a> p.<a 
+href="OSCMsgch13.html#x17-6400013">98<!--tex4ht:ref: interaction --></a>.</li></ul>
+<!--l. 244--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Export of a scene to a given file as jpeg at the current root path:
+<div class="center" 
+>
+<!--l. 246--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox3"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene export &#8217;myexport.jpg&#8217;</span>
+</div></div>
+</div>
+<!--l. 247--><p class="noindent" >Saving a scene to <span 
+class="pcrr8tn-">myScore.inscore </span>at the current root path, the second form uses the append mode:
+<div class="center" 
+>
+<!--l. 249--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox4"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene save &#8217;myScore.inscore&#8217;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene save &#8217;myScore.inscore&#8217; &#8217;+&#8217;</span></div></div>
+</div>
+<!--l. 250--><p class="noindent" >Hiding an object:
+<div class="center" 
+>
+<!--l. 251--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox5"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject show 0</span>
+</div></div>
+</div>
+<h3 class="sectionHead"><span class="titlemark">2.1    </span> <a 
+ id="x6-70002.1"></a>Positioning</h3>
+<a 
+ id="dx6-7001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+                                                                                 
+
+                                                                                 
+<!--l. 262--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">PositionMsg</span> <img 
+src="OSCMsg7x.png" alt="PICT" >
+</div></dd></dl>
+<!--l. 264--><p class="noindent" >Graphic position messages are absolute position or relative position messages. They can also control an object
+<span 
+class="ptmri8t-">origin </span>and transformations like rotation around an axis.
+<!--l. 266--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">2.1.1    </span> <a 
+ id="x6-80002.1.1"></a>Absolute positioning</h4>
+<a 
+ id="dx6-8001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 275--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">absPosMsg</span> <img 
+src="OSCMsg8x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx6-8002"></a>
+<a 
+ id="dx6-8003"></a>
+<a 
+ id="dx6-8004"></a>
+<a 
+ id="dx6-8005"></a>
+<a 
+ id="dx6-8006"></a>
+<a 
+ id="dx6-8007"></a>
+<a 
+ id="dx6-8008"></a>
+<a 
+ id="dx6-8009"></a>
+<a 
+ id="dx6-8010"></a>
+<a 
+ id="dx6-8011"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">x y</span>: moves the <span 
+class="pcrr8tn-">x </span>or <span 
+class="pcrr8tn-">y </span>coordinate of a component. By default, components are centered on their <span 
+class="pcrr8tn-">x</span>, <span 
+class="pcrr8tn-">y</span>
+     coordinates. The coordinates space range is <span 
+class="pcrr8tn-">[-1,1]</span>. <br 
+class="newline" />For a <span 
+class="pcrr8tn-">scene </span>component, -1 is the leftmost or topmost position, 1 is the rightmost or bottommost
+     position. <span 
+class="pcrr8tn-">[0,0] </span>represents the center of the <span 
+class="pcrr8tn-">scene</span>. <br 
+class="newline" />For the <span 
+class="pcrr8tn-">scene </span>itself, it moves the window in the screen space and the coordinate space is orthonormal,
+     based on the screen lowest dimension (<span 
+class="ptmri8t-">i.e. </span>with a 4:3 screen, <span 
+class="pcrr8tn-">y=-1 </span>and <span 
+class="pcrr8tn-">y=1 </span>are respectively the exact
+     top and bottom of the screen, but neither <span 
+class="pcrr8tn-">x=-1 </span>nor <span 
+class="pcrr8tn-">x=1 </span>are the exact left and right of the screen). <br 
+class="newline" />Default coordinates are <span 
+class="pcrr8tn-">[0,0]</span>.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">z</span>: sets the <span 
+class="pcrr8tn-">z </span>order of a component. <span 
+class="pcrr8tn-">z </span>order is actually relative to the <span 
+class="pcrr8tn-">scene </span>components: objects of
+     high <span 
+class="pcrr8tn-">z </span>order will be drawn on top of components with a lower <span 
+class="pcrr8tn-">z </span>order. Components sharing the same
+     <span 
+class="pcrr8tn-">z </span>order will be drawn in an undefined order, although the order will stay the same for as long as they
+     live. <br 
+class="newline" />Default <span 
+class="pcrr8tn-">z </span>order is 0.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">angle</span>: sets the <span 
+class="pcrr8tn-">angle </span>value of a component, which is used to rotate it around its center. The angle is
+     measured in clockwise degrees from the <span 
+class="pcrr8tn-">x </span>axis.<br 
+class="newline" />Default angle value is 0.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">scale</span>: reduce/enlarge a component. Default scale is <span 
+class="pcrr8tn-">1</span>.</li></ul>
+<!--l. 299--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Moving and scaling an object:
+<div class="center" 
+>
+<!--l. 304--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox6"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject x -0.9 </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject y 0.9 </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject scale 2.0</span></div></div>
+</div>
+<!--l. 308--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">2.1.2    </span> <a 
+ id="x6-90002.1.2"></a>Relative positioning</h4>
+<a 
+ id="dx6-9001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 318--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">relPosMsg</span> <img 
+src="OSCMsg9x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx6-9002"></a>
+<a 
+ id="dx6-9003"></a>
+                                                                                 
+
+                                                                                 
+<a 
+ id="dx6-9004"></a>
+<a 
+ id="dx6-9005"></a>
+<a 
+ id="dx6-9006"></a>
+<a 
+ id="dx6-9007"></a>
+<a 
+ id="dx6-9008"></a>
+<a 
+ id="dx6-9009"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">dx</span>, <span 
+class="pcrr8tn-">dy</span>, <span 
+class="pcrr8tn-">dz </span>messages are similar to <span 
+class="pcrr8tn-">x</span>, <span 
+class="pcrr8tn-">y</span>, <span 
+class="pcrr8tn-">z </span>but the parameters represent a displacement relative to the
+     current target value.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">dscale </span>is similar to <span 
+class="pcrr8tn-">scale </span>but the parameters represents a scale multiplying factor.</li></ul>
+<!--l. 333--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Relative displacement of an object:
+<div class="center" 
+>
+<!--l. 335--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox7"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject dx 0.1</span>
+</div></div>
+</div>
+<!--l. 339--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">2.1.3    </span> <a 
+ id="x6-100002.1.3"></a>Components origin</h4>
+<!--l. 342--><p class="noindent" >The origin of a component is the point <span 
+class="pcrr8tn-">(xo, yo) </span>such that the <span 
+class="pcrr8tn-">(x, y) </span>coordinates and the <span 
+class="pcrr8tn-">(xo, yo) </span>point
+coincide graphically. For example, when the origin is the top left corner, the component top left corner is drawn at
+the <span 
+class="pcrr8tn-">(x, y) </span>coordinates.
+<a 
+ id="dx6-10001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 350--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">originMsg</span> <img 
+src="OSCMsg10x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx6-10002"></a>
+<a 
+ id="dx6-10003"></a>
+<a 
+ id="dx6-10004"></a>
+<a 
+ id="dx6-10005"></a>
+                                                                                 
+
+                                                                                 
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">xorigin</span>, <span 
+class="pcrr8tn-">yorigin </span>are relative to the component coordinates space i.e. <span 
+class="pcrr8tn-">[-1,1]</span>, where -1 is the top
+     or left border and 1 is the bottom or right border. The default origin is <span 
+class="pcrr8tn-">[0,0] </span>i.e. the component is
+     centered on its <span 
+class="pcrr8tn-">(x,y) </span>coordinates.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">dxorigin</span>, <span 
+class="pcrr8tn-">dyorigin </span>represents displacement of the current <span 
+class="pcrr8tn-">xorigin </span>or <span 
+class="pcrr8tn-">yorigin</span>.</li></ul>
+<!--l. 361--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Setting an object graphic origin to the top left corner.
+<div class="center" 
+>
+<!--l. 365--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox8"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject xorigin -1.</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject yorigin -1.</span></div></div>
+</div>
+<!--l. 369--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">2.2    </span> <a 
+ id="x6-110002.2"></a>Components transformations</h3>
+<!--l. 372--><p class="noindent" >A component tranformation specifies 2D transformations of its coordinate system. It includes shear and object
+rotation.
+<a 
+ id="dx6-11001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 378--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">transformMsg</span> <img 
+src="OSCMsg11x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx6-11002"></a>
+<a 
+ id="dx6-11003"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">rotatex rotatey rotatez</span>: rotates the component around the corresponding axis. Parameter value
+     expresses the rotation in degrees.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">shear </span>transforms  the  component  in  x  and  y  dimensions.  <span 
+class="pcrr8tn-">x </span>and  <span 
+class="pcrr8tn-">y </span>are  float  values  expressing  the
+     transformation value in the corresponding dimension.</li></ul>
+<!--l. 387--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Rotating an object graphic on the <span 
+class="pcrr8tn-">z </span>axis.
+                                                                                 
+
+                                                                                 
+<div class="center" 
+>
+<!--l. 389--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox9"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject rotatez 90.</span>
+</div></div>
+</div>
+<!--l. 391--><p class="noindent" ><span 
+class="ptmbc8t-">N<span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span>  </span><span 
+class="pcrr8tn-">angle </span>and <span 
+class="pcrr8tn-">rotatez </span>are equivalent. <span 
+class="pcrr8tn-">angle </span>has been introduced before the transformation messages and is
+maintained for compatibility reasons.
+<!--l. 395--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">2.3    </span> <a 
+ id="x6-120002.3"></a>Color messages</h3>
+<a 
+ id="dx6-12001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 402--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">ColorMsg</span> <img 
+src="OSCMsg12x.png" alt="PICT" >
+</div></dd></dl>
+<!--l. 404--><p class="noindent" >Color messages are absolute or relative color control messages. Color may be expressed in RGBA or
+HSBA.
+<!--l. 406--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">2.3.1    </span> <a 
+ id="x6-130002.3.1"></a>Absolute color messages</h4>
+<a 
+ id="dx6-13001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+                                                                                 
+
+                                                                                 
+<!--l. 418--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">absColorMsg</span> <img 
+src="OSCMsg13x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx6-13002"></a>
+<a 
+ id="dx6-13003"></a>
+<a 
+ id="dx6-13004"></a>
+<a 
+ id="dx6-13005"></a>
+<a 
+ id="dx6-13006"></a>
+<a 
+ id="dx6-13007"></a>
+<a 
+ id="dx6-13008"></a>
+<a 
+ id="dx6-13009"></a>
+<!--l. 429--><p class="noindent" ><span 
+class="pcrr8tn-">red</span>, <span 
+class="pcrr8tn-">green</span>, <span 
+class="pcrr8tn-">blue</span>, <span 
+class="pcrr8tn-">hue</span>, <span 
+class="pcrr8tn-">saturation</span>, <span 
+class="pcrr8tn-">brightness</span>, <span 
+class="pcrr8tn-">alpha </span>messages address a specific part of a color using the
+RGB or HSB scheme.
+<a 
+ id="dx6-13010"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 433--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">colorvalue</span> <img 
+src="OSCMsg14x.png" alt="PICT" >
+</div></dd></dl>
+<!--l. 435--><p class="noindent" >The value may be specified as integer or float. The data range is given in table <a 
+href="#x6-130111">2.1<!--tex4ht:ref: colorrange --></a>. When the alpha component is not
+specified, the color is assumed to be opaque.
+<div class="table">
+                                                                                 
+
+                                                                                 
+<!--l. 438--><p class="noindent" ><a 
+ id="x6-130111"></a><hr class="float"><div class="float" 
+>
+                                                                                 
+
+                                                                                 
+<div class="center" 
+>
+<!--l. 439--><p class="noindent" >
+<div class="tabular"> <table id="TBL-3" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-3-1g"><col 
+id="TBL-3-1"></colgroup><colgroup id="TBL-3-2g"><col 
+id="TBL-3-2"></colgroup><colgroup id="TBL-3-3g"><col 
+id="TBL-3-3"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-1-"><td  style="white-space:nowrap; text-align:right;" id="TBL-3-1-1"  
+class="td11">   Component</td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-1-2"  
+class="td11">integer range</td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-1-3"  
+class="td11">       float range              </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-2-"><td  style="white-space:nowrap; text-align:right;" id="TBL-3-2-1"  
+class="td11">       <span 
+class="pcrr8tn-">red </span>[R]</td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-2-2"  
+class="td11">  [0,255]     </td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-2-3"  
+class="td11">         [-1,1]                  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-3-"><td  style="white-space:nowrap; text-align:right;" id="TBL-3-3-1"  
+class="td11">     <span 
+class="pcrr8tn-">green </span>[G]</td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-3-2"  
+class="td11">  [0,255]     </td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-3-3"  
+class="td11">         [-1,1]                  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-4-"><td  style="white-space:nowrap; text-align:right;" id="TBL-3-4-1"  
+class="td11">      <span 
+class="pcrr8tn-">blue </span>[B]</td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-4-2"  
+class="td11">  [0,255]     </td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-4-3"  
+class="td11">         [-1,1]                  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-5-"><td  style="white-space:nowrap; text-align:right;" id="TBL-3-5-1"  
+class="td11">     <span 
+class="pcrr8tn-">alpha </span>[A]</td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-5-2"  
+class="td11">  [0,255]     </td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-5-3"  
+class="td11">         [-1,1]                  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-6-"><td  style="white-space:nowrap; text-align:right;" id="TBL-3-6-1"  
+class="td11">       <span 
+class="pcrr8tn-">hue </span>[H]</td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-6-2"  
+class="td11">  [0,360]     </td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-6-3"  
+class="td11">[-1,1] mapped to [-180,180]</td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-7-"><td  style="white-space:nowrap; text-align:right;" id="TBL-3-7-1"  
+class="td11"><span 
+class="pcrr8tn-">saturation </span>[S]</td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-7-2"  
+class="td11">  [0,100]     </td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-7-3"  
+class="td11">         [-1,1]                  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-8-"><td  style="white-space:nowrap; text-align:right;" id="TBL-3-8-1"  
+class="td11"><span 
+class="pcrr8tn-">brightness </span>[B]</td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-8-2"  
+class="td11">  [0,100]     </td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-8-3"  
+class="td11">         [-1,1]                  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-9-"><td  style="white-space:nowrap; text-align:right;" id="TBL-3-9-1"  
+class="td11">             </td></tr></table></div></div>
+<br /><div class="caption" 
+><span class="id">Table&#x00A0;2.1: </span><span  
+class="content">Color components data ranges when expressed as integer or float.</span></div><!--tex4ht:label?: x6-130111 -->
+                                                                                 
+
+                                                                                 
+</div><hr class="endfloat" />
+</div>
+<!--l. 459--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />The same alpha channel specified as integer value or as floating point value:
+<div class="center" 
+>
+<!--l. 463--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox10"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject alpha 51 </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject alpha 0.2</span></div></div>
+</div>
+<h4 class="subsectionHead"><span class="titlemark">2.3.2    </span> <a 
+ id="x6-140002.3.2"></a>The color messages</h4>
+<a 
+ id="dx6-14001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 469--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">color</span> <img 
+src="OSCMsg15x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx6-14002"></a>
+<!--l. 472--><p class="noindent" ><span 
+class="pcrr8tn-">color </span>sets an object color in the RGBA space. When A is not specified, the color is assumed to be opaque. Default
+color value is <span 
+class="pcrr8tn-">[0,0,0,255]</span>.
+<!--l. 477--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">2.3.3    </span> <a 
+ id="x6-150002.3.3"></a>The hsb messages</h4>
+<a 
+ id="dx6-15001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 481--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">hsb</span> <img 
+src="OSCMsg16x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx6-15002"></a>
+<!--l. 484--><p class="noindent" ><span 
+class="pcrr8tn-">hsb </span>sets an object color in the HSBA space. When A is not specified, the color is assumed to be opaque.
+                                                                                 
+
+                                                                                 
+<!--l. 491--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">2.3.4    </span> <a 
+ id="x6-160002.3.4"></a>Relative color messages</h4>
+<a 
+ id="dx6-16001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 505--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">relColorMsg</span> <img 
+src="OSCMsg17x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx6-16002"></a>
+<a 
+ id="dx6-16003"></a>
+<a 
+ id="dx6-16004"></a>
+<a 
+ id="dx6-16005"></a>
+<a 
+ id="dx6-16006"></a>
+<a 
+ id="dx6-16007"></a>
+<a 
+ id="dx6-16008"></a>
+<a 
+ id="dx6-16009"></a>
+<a 
+ id="dx6-16010"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">dred</span>,  <span 
+class="pcrr8tn-">dgreen</span>,  etc.  messages  are  similar  to  <span 
+class="pcrr8tn-">red</span>,  <span 
+class="pcrr8tn-">green</span>,  etc.  messages  but  the  parameters  values
+     represent a displacement of the current target value.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">dcolor </span>and <span 
+class="pcrr8tn-">dhsb </span>are similar and each color parameter represents a displacement of the corresponding
+     target value.</li></ul>
+<!--l. 521--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Moving a color in the RGBA space:
+<div class="center" 
+>
+<!--l. 523--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox11"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">TL/scene/myObject dcolor 10 5 0 -10</span>
+</div></div>
+                                                                                 
+
+                                                                                 
+</div>
+<!--l. 524--><p class="noindent" >&#x00A0;       will increase the red component by 10, the blue component by 5, and decrease the transparency by
+10.
+<!--l. 526--><p class="noindent" ><span 
+class="ptmbc8t-">N<span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span>  </span>Objects that are carrying color information (images, SVG) don&#8217;t respond to color change but are sensitive to
+transparency changes.
+<!--l. 531--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">2.4    </span> <a 
+ id="x6-170002.4"></a>The &#8217;effect&#8217; messages</h3>
+<!--l. 534--><p class="noindent" >The <span 
+class="pcrr8tn-">effect </span>message sets a graphic effect on the target object.
+<a 
+ id="dx6-17001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 541--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">effectMsg</span> <img 
+src="OSCMsg18x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx6-17002"></a>
+<a 
+ id="dx6-17003"></a>
+<a 
+ id="dx6-17004"></a>
+<a 
+ id="dx6-17005"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">none</span>: removes any effect set on the target object.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">blur, colorize, shadow</span>: sets the corresponding effect. An effect always replaces any previous
+     effect. The effect name is followed by optional specific effects parameters.</li></ul>
+<!--l. 552--><p class="noindent" ><span 
+class="ptmbc8t-">N<span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span>  </span>An effect affects the target object but also all the target slaves.
+<!--l. 554--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">2.4.1    </span> <a 
+ id="x6-180002.4.1"></a>The blur effect</h4>
+<a 
+ id="dx6-18001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+                                                                                 
+
+                                                                                 
+<!--l. 558--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">blurParams</span> <img 
+src="OSCMsg19x.png" alt="PICT" >
+</div></dd></dl>
+<!--l. 560--><p class="noindent" >Blur parameters are the blur radius and a rendering hint. The radius is an int32 value. By default, it is 5 pixels. The
+radius is given in device coordinates, meaning it is unaffected by scale.
+<a 
+ id="dx6-18002"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 564--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">blurHint</span> <img 
+src="OSCMsg20x.png" alt="PICT" >
+</div></dd></dl>
+<!--l. 565--><p class="noindent" >Use the <span 
+class="pcrr8tn-">performance </span>hint to say that you want a faster blur, the <span 
+class="pcrr8tn-">quality </span>hint to say that you prefer a higher
+quality blur, or the <span 
+class="pcrr8tn-">animation </span>when you want to animate the blur radius. The default hint value is
+<span 
+class="pcrr8tn-">performance</span>.
+<!--l. 567--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Setting a 8 pixels effect on <span 
+class="pcrr8tn-">myObject</span>
+<div class="center" 
+>
+<!--l. 569--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox12"><div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject effect blur 8</span>
+</div></div>
+</div>
+<!--l. 571--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">2.4.2    </span> <a 
+ id="x6-190002.4.2"></a>The colorize effect</h4>
+<a 
+ id="dx6-19001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 575--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">colorizeParams</span> <img 
+src="OSCMsg21x.png" alt="PICT" >
+</div></dd></dl>
+                                                                                 
+
+                                                                                 
+<!--l. 577--><p class="noindent" >Colorize parameters are a strength and a tint color. The strength is a float value. By default, it is 1.0. A strength 0.0
+equals to no effect, while 1.0 means full colorization. <br 
+class="newline" />The color is given as a RGB triplet (see <a 
+href="#x6-120002.3">2.3<!--tex4ht:ref: colormsg --></a> p.<a 
+href="#x6-120002.3">16<!--tex4ht:ref: colormsg --></a>) by default, the color value is light blue (0, 0, 192).
+<!--l. 580--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Setting a red colorize effect on <span 
+class="pcrr8tn-">myObject </span>with a 0.5 strength.
+<div class="center" 
+>
+<!--l. 582--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox13"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject effect colorize 0.5 200 0 0</span>
+</div></div>
+</div>
+<!--l. 585--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">2.4.3    </span> <a 
+ id="x6-200002.4.3"></a>The shadow effect</h4>
+<a 
+ id="dx6-20001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 589--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">shadowParams</span> <img 
+src="OSCMsg22x.png" alt="PICT" >
+</div></dd></dl>
+<!--l. 591--><p class="noindent" ><span 
+class="pcrr8tn-">xoffset </span>and <span 
+class="pcrr8tn-">yoffset </span>are the shadow offset and should be given as int32 values. The default value is 8 pixels. The
+offset is given in device coordinates, which means it is unaffected by scale. <br 
+class="newline" />The color is given as a RGBA color (see <a 
+href="#x6-120002.3">2.3<!--tex4ht:ref: colormsg --></a> p.<a 
+href="#x6-120002.3">16<!--tex4ht:ref: colormsg --></a>) by default, the color value is a semi-transparent dark gray (63,
+63, 63, 180) <br 
+class="newline" />The blur radius should be given as an int32 value. By default, the blur radius is 1 pixel.
+<!--l. 595--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Setting a shadow effect on <span 
+class="pcrr8tn-">myObject</span>. <br 
+class="newline" />The shadow offset is (10,10) pixels, the color is a transparent grey (100,100,100, 50) and the blur is 8 pixels.
+<div class="center" 
+>
+<!--l. 598--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox14"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject effect shadow 10 10 100 100 100 50 8</span>
+</div></div>
+</div>
+                                                                                 
+
+                                                                                 
+<!--l. 603--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch3.html" >next</a>] [<a 
+href="OSCMsgch1.html" >prev</a>] [<a 
+href="OSCMsgch1.html#tailOSCMsgch1.html" >prev-tail</a>] [<a 
+href="OSCMsgch2.html" >front</a>] [<a 
+href="OSCMsg3.html#OSCMsgch2.html" >up</a>] </p></div>
+<!--l. 603--><p class="noindent" ><a 
+ id="tailOSCMsgch2.html"></a>  
+</body></html> 

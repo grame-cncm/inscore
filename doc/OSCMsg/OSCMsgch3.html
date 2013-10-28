@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>3 Time management messages</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html,2,frames,index=3,info --> 
+<meta name="src" content="OSCMsg.tex"> 
+<meta name="date" content="2013-10-27 19:41:00"> 
+<link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
+</head><body 
+>
+<!--l. 603--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch4.html" >next</a>] [<a 
+href="OSCMsgch2.html" >prev</a>] [<a 
+href="OSCMsgch2.html#tailOSCMsgch2.html" >prev-tail</a>] [<a 
+href="#tailOSCMsgch3.html">tail</a>] [<a 
+href="OSCMsg3.html#OSCMsgch3.html" >up</a>] </p></div>
+<h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;3</span><br /><a 
+ id="x7-210003"></a>Time management messages</h2>
+<!--l. 605--><p class="noindent" >Time messages control the time dimension of the score components. They could be sent to any address with the
+form <span 
+class="pcrr8tn-">/ITL/</span><span 
+class="pcrro8t-">scene</span><span 
+class="pcrr8tn-">/</span><span 
+class="pcrro8t-">identifier </span>where <span 
+class="pcrro8t-">identifier </span>is the unique identifier string of a scene
+component.
+<a 
+ id="dx7-21001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 613--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">timeMsg</span> <img 
+src="OSCMsg23x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx7-21002"></a>
+<a 
+ id="dx7-21003"></a>
+<a 
+ id="dx7-21004"></a>
+<a 
+ id="dx7-21005"></a>
+<a 
+ id="dx7-21006"></a>
+<a 
+ id="dx7-21007"></a>
+<a 
+ id="dx7-21008"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 623--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">time</span> <img 
+src="OSCMsg24x.png" alt="PICT" >
+</div></dd></dl>
+     <ul class="itemize1">
+     <li class="itemize">1) Time is specified as a rational value <span 
+class="pcrr8tn-">d/n </span>where <span 
+class="pcrr8tn-">1/1 </span>represents a whole note.
+     </li>
+     <li class="itemize">2) Time may be specified with a single integer, then 1 is used as implicit denominator value.
+     </li>
+     <li class="itemize">3) Time may be specified as a single float value that is converted using the following approximation:
+     let <span 
+class="pcrr8tn-">f </span>be the floating point date, the corresponding rational date is computed as <span 
+class="pcrr8tn-">f x 10000 / 10000</span>.
+     </li>
+                                                                                 
+
+                                                                                 
+     <li class="itemize">4) Time may also be specified as a string in the form <span 
+class="pcrr8tn-">&#8217;n/d&#8217;</span>.</li></ul>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">clock</span>: similar to MIDI clock message: advances the object date by 1/24 of quarter note.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">durClock</span>: a clock message applied to duration: increases the object duration by 1/24 of quarter note.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">date</span>: sets the time position of an object. Default value is <span 
+class="pcrr8tn-">0/1</span>.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">duration</span>: changes the object duration. Default value is <span 
+class="pcrr8tn-">1/1</span>.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">ddate</span>: relative time positioning message: adds the specified value to the object date.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">dduration</span>: relative duration message: adds the specified value to the object duration.</li></ul>
+<!--l. 642--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Various ways to set an object date.
+<div class="center" 
+>
+<!--l. 648--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox15"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject date 2 1 </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject date 2 </span><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;       // the denominator is 1 (implied) </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject date 0.5 </span><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;     // equivalent to 1/2 </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject date &#8217;1/2&#8217; </span><span 
+class="pcrr8tn-x-x-90">&#x00A0;   // the string form</span></div></div>
+</div>
+<!--l. 649--><p class="noindent" >Similar ways to move an object date.
+<div class="center" 
+>
+<!--l. 652--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox16"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject clock </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject ddate &#8217;1/96&#8217;</span></div></div>
+</div>
+                                                                                 
+
+                                                                                 
+<!--l. 657--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch4.html" >next</a>] [<a 
+href="OSCMsgch2.html" >prev</a>] [<a 
+href="OSCMsgch2.html#tailOSCMsgch2.html" >prev-tail</a>] [<a 
+href="OSCMsgch3.html" >front</a>] [<a 
+href="OSCMsg3.html#OSCMsgch3.html" >up</a>] </p></div>
+<!--l. 657--><p class="noindent" ><a 
+ id="tailOSCMsgch3.html"></a>  
+</body></html> 

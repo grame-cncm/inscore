@@ -16,17 +16,18 @@ function wait () {
 	done
 }
 
-file=$1
-dest=$2
 path=$(pwd)
+file=$1
+dest=$path/$2
+
 
 echo inscore2pdf $file $dest
+src=$(basename $file)
 
-./SendOSC 7000 /ITL rootPath $path/$(dirname $file)
-./SendOSC 7000 /ITL load $(basename $file) 
-sleep 1
-./SendOSC 7000 /ITL/scene export $path/scene.pdf 
+echo rootPath $path/$(dirname $file)
+./SendOSC 7000 /ITL/scene rootPath $path/$(dirname $file)
+./SendOSC 7000 /ITL/scene watch endPaint \( /ITL/scene export $dest \)
+./SendOSC 7000 /ITL/scene load $src
 
-wait scene.pdf
-mv scene.pdf $dest
+wait $dest
 

@@ -57,7 +57,7 @@ extern SIMessageStack gMsgStack;
 
 //--------------------------------------------------------------------------
 IGlue::IGlue(int udpport, int outport, int errport) 
-	: fOscThread(0), fViewListener(0), fTimerID(0), fUDP(udpport, outport, errport) {}
+	: fOscThread(0), fViewListener(0), fUDP(udpport, outport, errport) {}
 IGlue::~IGlue()	{ clean(); }
 
 //--------------------------------------------------------------------------

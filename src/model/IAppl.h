@@ -174,6 +174,9 @@ class IAppl : public IObject//, public PeriodicTask
 
 		/// \brief application \c 'load' message handler.
 		virtual MsgHandler::msgStatus loadMsg (const IMessage* msg);
+	
+		/// \brief load a buffer containing an inscore script
+		virtual MsgHandler::msgStatus loadBuffer (const IMessage* msg);
 
 		/// \brief application \c 'mouse' message handler.
 		virtual MsgHandler::msgStatus cursor (const IMessage* msg);

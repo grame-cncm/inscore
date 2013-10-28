@@ -26,6 +26,7 @@
 #define __INScoreAppl__
 
 #include <string>
+#include <vector>
 #include <QApplication>
 
 class QMenuBar;
@@ -36,17 +37,19 @@ class INScoreAppl : public QApplication
 
 	QMenuBar *fMenuBar;
 	bool	 fStarted;
-	std::string fPendingOpen;
+	std::vector<std::string> fPendingOpen;			// a list of inscore files that should be opened
+	std::string				 fPendingBuffer;		// a buffer that should be parsed
 
 	public :
-	INScoreAppl (int & argc, char ** argv ) : QApplication (argc, argv), fMenuBar(0), fStarted(false) {}
+	INScoreAppl (int & argc, char ** argv );
 		virtual ~INScoreAppl();
 
 		void	setupMenu();
 		bool	event(QEvent *ev);
-		void	started()		{ fStarted = true; if (fPendingOpen.size()) open (fPendingOpen); }
+		void	started();
 
 	static void open(const std::string& file);
+	static void read(const std::string& buffer);
 
 	public slots:
 		void about();

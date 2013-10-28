@@ -45,7 +45,8 @@ public:
 	typedef QToolButton		TButton;
 			VLogWindow(const char* name);
 	
-	void	append (const char* text);
+	void		append (const char* text);
+	const char*	getText () const;
 
 private:
 	TButton *createToolButton(const QString &toolTip, const QIcon &icon, const char *member);

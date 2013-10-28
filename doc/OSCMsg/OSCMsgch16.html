@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>16 Appendices</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html,2,frames,index=3,info --> 
+<meta name="src" content="OSCMsg.tex"> 
+<meta name="date" content="2013-10-27 19:41:00"> 
+<link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
+</head><body 
+>
+<!--l. 2770--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch15.html" >prev</a>] [<a 
+href="OSCMsgch15.html#tailOSCMsgch15.html" >prev-tail</a>] [<a 
+href="#tailOSCMsgch16.html">tail</a>] [<a 
+href="OSCMsg3.html# " >up</a>] </p></div>
+<h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;16</span><br /><a 
+ id="x23-9500016"></a>Appendices</h2>
+<h3 class="sectionHead"><span class="titlemark">16.1    </span> <a 
+ id="x23-9600016.1"></a>Grammar definition</h3>
+                                                                                 
+
+                                                                                 
+<div class="verbatim" id="verbatim-1">
+//_______________________________________________
+&#x00A0;<br />//&#x00A0;relaxed&#x00A0;simple&#x00A0;INScore&#x00A0;format&#x00A0;specification
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />start&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;expr
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;start&#x00A0;expr
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />//&#x00A0;expression&#x00A0;of&#x00A0;the&#x00A0;script&#x00A0;language
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />expr&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;message&#x00A0;&#x00A0;ENDEXPR
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;variabledecl&#x00A0;ENDEXPR
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;script
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />//&#x00A0;javascript&#x00A0;and&#x00A0;lua&#x00A0;support
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />script&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;LUASCRIPT
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;JSCRIPT
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />//&#x00A0;messages&#x00A0;specification&#x00A0;(extends&#x00A0;osc&#x00A0;spec.)
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />message &#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;address
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;address&#x00A0;params
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;address&#x00A0;watchparams
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;address&#x00A0;watchparams&#x00A0;LEFTPAR&#x00A0;messagelist&#x00A0;RIGHTPAR
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;address&#x00A0;watchparams&#x00A0;script
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />messagelist&#x00A0;:&#x00A0;message
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;messagelist&#x00A0;COMMA&#x00A0;message
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />//&#x00A0;address&#x00A0;specification&#x00A0;(extends&#x00A0;osc&#x00A0;spec.)
+&#x00A0;<br />address &#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;oscaddress
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;urlprefix&#x00A0;oscaddress
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />oscaddress&#x00A0;&#x00A0;:&#x00A0;oscpath
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;oscaddress&#x00A0;oscpath
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />oscpath &#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;PATHSEP&#x00A0;identifier
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;PATHSEP&#x00A0;WATCH
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;PATHSEP&#x00A0;VARSTART&#x00A0;varname
+                                                                                 
+
+                                                                                 
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />urlprefix&#x00A0;&#x00A0;&#x00A0;:&#x00A0;hostname&#x00A0;COLON&#x00A0;UINT
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;IPNUM&#x00A0;COLON&#x00A0;UINT
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />hostname&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;HOSTNAME
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;hostname&#x00A0;POINT&#x00A0;HOSTNAME
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />identifier&#x00A0;&#x00A0;:&#x00A0;IDENTIFIER
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;HOSTNAME
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;REGEXP
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />//&#x00A0;parameters&#x00A0;definitions
+&#x00A0;<br />//&#x00A0;watchparams&#x00A0;need&#x00A0;a&#x00A0;special&#x00A0;case&#x00A0;since&#x00A0;messages&#x00A0;are&#x00A0;expected&#x00A0;as&#x00A0;argument
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />watchparams&#x00A0;:&#x00A0;watchmethod
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;watchmethod&#x00A0;params
+&#x00A0;<br />
+&#x00A0;<br />params&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;param
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;variable
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;params&#x00A0;variable
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;params&#x00A0;param
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />watchmethod&#x00A0;:&#x00A0;WATCH
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />variable&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;VARSTART&#x00A0;varname
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;VARSTART&#x00A0;LEFTPAR&#x00A0;message&#x00A0;RIGHTPAR
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />param&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;number
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;FLOAT
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;identifier
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;QUOTEDSTRING
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />//&#x00A0;variable&#x00A0;declaration
+&#x00A0;<br />variabledecl&#x00A0;:&#x00A0;varname&#x00A0;EQUAL&#x00A0;params
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />varname &#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;IDENTIFIER
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;HOSTNAME
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />//&#x00A0;misc
+                                                                                 
+
+                                                                                 
+&#x00A0;<br />number&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;UINT
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;INT
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;
+</div>
+<!--l. 105--><p class="nopar" >
+<!--l. 2775--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">16.2    </span> <a 
+ id="x23-9700016.2"></a>Lexical tokens</h3>
+                                                                                 
+
+                                                                                 
+<div class="verbatim" id="verbatim-2">
+//_______________________________________________
+&#x00A0;<br />//&#x00A0;numbers
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />INT&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;a&#x00A0;signed&#x00A0;integer
+&#x00A0;<br />UINT&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;an&#x00A0;unsigned&#x00A0;integer
+&#x00A0;<br />FLOAT&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;a&#x00A0;floating&#x00A0;point&#x00A0;number
+&#x00A0;<br />
+&#x00A0;<br />
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />//&#x00A0;hosts&#x00A0;addresses
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />//&#x00A0;allowed&#x00A0;character&#x00A0;set&#x00A0;for&#x00A0;host&#x00A0;names&#x00A0;(see&#x00A0;RFC952&#x00A0;and&#x00A0;RFC1123)
+&#x00A0;<br />HOSTNAME&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;[-a-zA-Z0-9]+
+&#x00A0;<br />IPNUM&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#x00A0;{DIGIT}+"."{DIGIT}+"."{DIGIT}+"."{DIGIT}+
+&#x00A0;<br />
+&#x00A0;<br />
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />//&#x00A0;OSC&#x00A0;addresses
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />//&#x00A0;allowed&#x00A0;characters&#x00A0;for&#x00A0;identifiers
+&#x00A0;<br />IDENTIFIER&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;[_a-zA-Z][_a-zA-Z0-9]*
+&#x00A0;<br />REGEXP&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;see&#x00A0;OSC&#x00A0;doc&#x00A0;for&#x00A0;regular&#x00A0;expressions
+&#x00A0;<br />
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />//&#x00A0;parameters
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />QUOTEDSTRING&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;quotes&#x00A0;could&#x00A0;be&#x00A0;single&#x00A0;(&#8217;)&#x00A0;or&#x00A0;double&#x00A0;quotes&#x00A0;(")
+&#x00A0;<br />WATCH&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;watch
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;watch+
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;require
+&#x00A0;<br />
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />//&#x00A0;languages&#x00A0;support
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />JSCRIPT&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#x003C;?javascript&#x00A0;any&#x00A0;javascript&#x00A0;code&#x00A0;?&#x003E;
+&#x00A0;<br />LUASCRIPT&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#x003C;?lua&#x00A0;any&#x00A0;lua&#x00A0;code&#x00A0;?&#x003E;
+&#x00A0;<br />
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />//&#x00A0;misc.
+&#x00A0;<br />//_______________________________________________
+&#x00A0;<br />PATHSEP&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#8217;/&#8217;
+&#x00A0;<br />POINT&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#8217;.&#8217;
+&#x00A0;<br />VARSTART&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#8217;$&#8217;
+&#x00A0;<br />COLON&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#8217;:&#8217;
+&#x00A0;<br />COMMA&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#8217;,&#8217;
+&#x00A0;<br />LEFTPAR&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#8217;(&#8217;
+&#x00A0;<br />RIGHTPAR&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#8217;)&#8217;
+&#x00A0;<br />EQUAL&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#8217;=&#8217;
+                                                                                 
+
+                                                                                 
+&#x00A0;<br />ENDEXPR&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#8217;;&#8217;
+</div>
+<!--l. 51--><p class="nopar" >
+                                                                                 
+
+                                                                                 
+<!--l. 2782--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch15.html" >prev</a>] [<a 
+href="OSCMsgch15.html#tailOSCMsgch15.html" >prev-tail</a>] [<a 
+href="OSCMsgch16.html" >front</a>] [<a 
+href="OSCMsg3.html# " >up</a>] </p></div>
+<!--l. 2782--><p class="noindent" ><a 
+ id="tailOSCMsgch16.html"></a>  
+</body></html> 
