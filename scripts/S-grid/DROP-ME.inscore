@@ -28,3 +28,5 @@ and send clock messages to '/ITL/scene/slave'.";
 /ITL/scene/comment1 scale 1.7;
 /ITL/scene/comment2 scale 1.2;
 /ITL/scene/comment* color 255 255 255;
+
+/ITL/scene/grid watch del (/ITL/scene color 255 255 255);

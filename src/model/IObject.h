@@ -260,7 +260,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 			\note an object is not directly deleted, it is first flagged as deleted
 			actual deletion is in charge of the garbage method.
 		*/
-		virtual void	del ()						{ fDelete = true; }
+		virtual void	del ();
 
 		/// \brief print the object state \param out the output stream
 		virtual void	print(std::ostream& out) const;

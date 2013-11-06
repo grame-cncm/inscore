@@ -43,6 +43,7 @@ static const char* kTimeLeaveStr	= "timeLeave";
 static const char* kDurEnterStr		= "durEnter";
 static const char* kDurLeaveStr		= "durLeave";
 static const char* kExportStr		= "export";
+static const char* kDeleteStr		= "del";
 
 // gesture specific events
 static const char* kGFEnterStr		= "gfEnter";
@@ -220,6 +221,7 @@ const char* EventsAble::type2string (eventype type)
 		case kGFLeave:		return kGFLeaveStr;
 		case kGFActive:		return kGFActiveStr;
 		case kGFIdle:		return kGFIdleStr;
+		case kDelete:		return kDeleteStr;
 
 		default: return "";
 	}
@@ -246,6 +248,7 @@ void EventsAble::init ()
 		fTypeStr[kGFLeaveStr]	= kGFLeave;
 		fTypeStr[kGFActiveStr]	= kGFActive;
 		fTypeStr[kGFIdleStr]	= kGFIdle;
+		fTypeStr[kDeleteStr]	= kDelete;
 	}
 }
 

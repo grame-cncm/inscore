@@ -1,0 +1,11 @@
+/ITL/scene/eye event mouseDown 0 0;
+/ITL/scene/eye event mouseMove 200 200;
+/ITL/scene/eye event mouseUp 200 200;
+
+/ITL/scene/tiger event mouseDown 0 0;
+/ITL/scene/tiger event mouseMove -200 -200;
+/ITL/scene/tiger event mouseUp -200 -200;
+
+/ITL/scene/butterfly event mouseDown 0 0;
+/ITL/scene/butterfly event mouseMove 400 -200;
+/ITL/scene/butterfly event mouseUp 400 -200;

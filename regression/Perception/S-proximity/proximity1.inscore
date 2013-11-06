@@ -1,0 +1,2 @@
+/ITL/scene/hslider event mouseDown 100 0;
+/ITL/scene/vslider event mouseDown 300 0;

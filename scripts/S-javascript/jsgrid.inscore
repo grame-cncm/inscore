@@ -34,3 +34,5 @@ version = 0.96; ! version required for javascript
 /ITL require $version "/ITL/scene/warning" "color" 180 180 180;
 /ITL require $version "/ITL/scene/warning" "y" 0.9;
 /ITL require $version "/ITL/scene/warning" "scale" 1.5;
+
+/ITL/scene/* watch del (/ITL/scene color 255 255 255);

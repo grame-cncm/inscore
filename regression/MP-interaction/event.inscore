@@ -1,0 +1,6 @@
+/ITL/scene/rect1 event mouseDown 0 0;
+/ITL/scene/rect2 event mouseDown 0 150;
+/ITL/scene/rect3 event mouseDown 0 200;
+/ITL/scene/move event mouseDown 0 0;
+/ITL/scene/move event mouseMove 100 0;
+/ITL/scene/move event mouseUp 100 0;

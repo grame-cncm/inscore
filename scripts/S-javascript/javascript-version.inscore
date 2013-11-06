@@ -14,3 +14,5 @@ gray=220;
 /ITL/scene/url set txt "http://code.google.com/p/v8/";
 /ITL/scene/url y 0.16;
 /ITL/scene/url scale 1.2;
+
+/ITL/scene/* watch del (/ITL/scene color 255 255 255);

@@ -1,0 +1,4 @@
+/ITL/scene/* del;
+/ITL/log clear;
+/ITL/scene/fig set rect;
+/ITL/scene/fig2 x 1.;
