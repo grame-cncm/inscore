@@ -1327,7 +1327,7 @@ Creating a new score named \OSC{myScore}:
 \toplevel{Layers}
 \label{layers}
 
-Layers may be viewed as containers. They represent a way to structure both the address space and the graphic space. 
+Layers may be viewed as containers or as groups. They represent a way to structure both the address space and the graphic space. 
 
 From graphic viewpoint, a layer is a scene inside a scene. All the properties of 'rect' components are available to layers: position, scale, color, transparency, etc.). By default, a layer is not visible: it has no brush and no pen.
 
@@ -1343,12 +1343,13 @@ Creating a layer and its content:
 /ITL/scene/layer1/cursor set rect 0.01 0.1}
 
 Synchronizing 2 components of a layer :
-\sample{/ITL/scene/layer1/sync cursor score	! objects must be enclosed in layer1
+\sample{!'score' and 'cursor' must be enclosed in layer1 \\
+/ITL/scene/layer1/sync cursor score; 
 }
 
 Making a layer visible :
-\sample{/ITL/scene/layer1 brushStyle solid \\
-/ITL/scene/layer1 color 120 120 120 
+\sample{/ITL/scene/layer1 brushStyle solid; \\
+/ITL/scene/layer1 color 120 120 120; 
 }
 
 %===============================
