@@ -105,6 +105,9 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 	else if ( type == IGuidoFile::kGuidoFileType )
 		obj = _create<IGuidoFile> (name, parent);
 
+	else if ( type == IGuidoStream::kGuidoStreamType )
+		obj = _create<IGuidoStream> (name, parent);
+    
 	else if ( type == IHtml::kHtmlType )
 		obj = _create<IHtml> (name, parent);
 
