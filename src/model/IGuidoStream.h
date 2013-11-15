@@ -55,13 +55,13 @@ class IGuidoStream : public IGuidoCode
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*u);
     
+        GuidoStream * getGuidoStream() {return fGuidoStream;}
+    
 	protected:
 				 IGuidoStream( const std::string& name, IObject * parent);
 		virtual ~IGuidoStream() ;
 
         GuidoStream *fGuidoStream;
-        GuidoParser *fGuidoParser;
-        ARHandler fARHandler;
 
         void clear();
 

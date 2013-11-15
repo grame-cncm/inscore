@@ -171,20 +171,29 @@ void VGuidoItemView::updateView( IGuidoCode * guidoCode  )
 //----------------------------------------------------------------------
 bool VGuidoItemView::gmnUpdate (IGuidoCode* guidoCode)
 {
-	QString gmnCode = VApplView::toQString( guidoCode->getGMN().c_str() );
-	if ( fGuidoItem->gmnCode() == gmnCode ) return true;		// no gmn code change, nothing to do
+    IGuidoStream * guidoStream = dynamic_cast<IGuidoStream *>(guidoCode);
+    if(guidoStream)
+    {
+        if(fGuidoItem->setGMNStream(guidoStream->getGuidoStream())) return true;
+        return false;
+    }
+    else
+    {
+        QString gmnCode = VApplView::toQString( guidoCode->getGMN().c_str() );
+        if ( fGuidoItem->gmnCode() == gmnCode ) return true;		// no gmn code change, nothing to do
 	
-	if (fGuidoItem->setGMNCode( gmnCode ) ) 	return true;	// gmn code update done
-	if (QGuidoImporter::musicxmlSupported()) {					// try to import file as MusicXML file
-		std::stringstream converted;
+        if (fGuidoItem->setGMNCode( gmnCode ) ) 	return true;	// gmn code update done
+        if (QGuidoImporter::musicxmlSupported()) {					// try to import file as MusicXML file
+            std::stringstream converted;
 																// first convert musicxml to guido
-		if ( QGuidoImporter::musicxmlString2Guido ( guidoCode->getGMN().c_str(), true, converted) )
+            if ( QGuidoImporter::musicxmlString2Guido ( guidoCode->getGMN().c_str(), true, converted) )
 																// and next try to set the converted gmn code
-			if ( fGuidoItem->setGMNCode( VApplView::toQString( converted.str().c_str() ) ) )	
-				return true;
-	}
-	ITLErr << guidoCode->getOSCAddress() << "invalid gmn code:" << fGuidoItem->getLastErrorMessage().toUtf8().data() << ITLEndl;
-	return false;
+                if ( fGuidoItem->setGMNCode( VApplView::toQString( converted.str().c_str() ) ) )
+                    return true;
+        }
+        ITLErr << guidoCode->getOSCAddress() << "invalid gmn code:" << fGuidoItem->getLastErrorMessage().toUtf8().data() << ITLEndl;
+        return false;
+    }
 }
 
 //----------------------------------------------------------------------
@@ -270,7 +279,7 @@ void VGuidoItemView::updateLocalMapping (IGuidoCode* guidoCode)
 {
 	if (!gmnUpdate (guidoCode) ) return;
 	pageFormatUpdate (guidoCode);
-		
+    
 	// Build the Rolled->Unrolled mapping
 	SRelativeTime2RelativeTimeMapping l2t_mapping = TMapping<rational,1, rational,1>::create();	// Create the 'rolled -> unrolled' mapping.
 	timeMapUpdate (l2t_mapping);

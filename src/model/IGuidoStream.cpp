@@ -41,7 +41,6 @@ IGuidoStream::IGuidoStream( const std::string& name, IObject * parent )
 {
 	fTypeString = kGuidoStreamType;
     fGuidoStream = GuidoOpenStream();
-    fGuidoParser = GuidoOpenParser();
     
 	fMsgHandlerMap[kclear_SetMethod] = TMethodMsgHandler<IGuidoStream,void (IGuidoStream::*)()>::create(this, &IGuidoStream::clear);
 }
@@ -49,7 +48,6 @@ IGuidoStream::IGuidoStream( const std::string& name, IObject * parent )
 IGuidoStream::~IGuidoStream()
 {
     GuidoCloseStream(fGuidoStream);
-	GuidoCloseParser(fGuidoParser);
 }
 
 //--------------------------------------------------------------------------
@@ -74,7 +72,6 @@ MsgHandler::msgStatus IGuidoStream::set (const IMessage* msg )
 	if ((msg->size() == 2) && msg->param(1, t)) {
         const char * newchar = t.c_str();
         GuidoWriteStream(fGuidoStream, newchar);
-        fARHandler = GuidoStream2AR(fGuidoParser, fGuidoStream);
         std::string globalString = GuidoGetGlobalStream(fGuidoStream);
         setGMN(globalString);
         status = MsgHandler::kProcessed;
