@@ -692,6 +692,7 @@ setMsg : 'set' (
 	('html' string) |
 	('svg' svgString) |
 	('gmn' gmnString) |
+	('gmnstream' gmnStream) |
 	('graph' signals ) |
 	('fastgraph' signals ) |
 	('rect' width height) |
@@ -710,6 +711,7 @@ setMsg : 'set' (
 \index{Set type!html}
 \index{Set type!svg}
 \index{Set type!gmn}
+\index{Set type!gmnstream}
 \index{Set type!graph}
 \index{Set type!fastgraph}
 \index{Set type!rect}
@@ -725,6 +727,7 @@ setMsg : 'set' (
 \item \OSC{txt}: a textual component.
 \item \OSC{html}: an html component defined by an HTML string.
 \item \OSC{gmn}: a Guido score defined by a GMN string.
+\item \OSC{gmnstream}: a Guido score defined by a GMN stream (a GMN string that can be written in several times).
 \item \OSC{svg}: SVG graphics defined by a SVG string.
 \item \OSC{graph}: graphic of a signal. See section \fullref{graphsig} for details about the \OSC{graph} objects data.
 \item \OSC{fastgraph}: fast rendering graphic signal. See also section \fullref{graphsig}.
@@ -954,7 +957,7 @@ widthMsg :  'width' float32
 \sublevel{Symbolic score management}
 \label{gmnpage}
 
-Messages accepted by the components types \OSC{gmn | gmnf}. 
+Messages accepted by the components types \OSC{gmn | gmnstream | gmnf}. 
 \begin{rail}
 scoreMsg :      'page' int32
 			| 'dpage' int32
@@ -1561,7 +1564,7 @@ mapfMsg : 'mapf' ( | mapName ) mapFilePath
 \sublevel{Symbolic score mappings}
 \label{guidomap}
 
-Mapping between the graphic and time space is automatically computed for symbolic score \OSC{gun, gmnf}. However and depending on the application, the graphic space may be segmented in different ways, for instance: different graphic segments for different staves, a single graphic segment traversing all a system, etc. Thus for a symbolic score, the \OSC{map} message different and is only intended to select one king mapping supported by the system.
+Mapping between the graphic and time space is automatically computed for symbolic score \OSC{gmn, gmnstream, gmnf}. However and depending on the application, the graphic space may be segmented in different ways, for instance: different graphic segments for different staves, a single graphic segment traversing all a system, etc. Thus for a symbolic score, the \OSC{map} message different and is only intended to select one king mapping supported by the system.
 
 \begin{rail}
 scoreMap : 'map' ('page' | 'system' | 'systemflat' | 'staffn' | 'voicen' )
@@ -1632,7 +1635,7 @@ A slave object can have only one master. Synchronizing a slave object to a diffe
 Synchronizing two objects:
 \sample{/ITL/scene/sync mySlave myMaster}
 
-Synchronizing two objects using a specific mapping (the second object is assumed to be a symbolic score (\OSC{gmn} or \OSC{gmnf}) which \OSC{system} mapping has been previously requested:
+Synchronizing two objects using a specific mapping (the second object is assumed to be a symbolic score (\OSC{gmn}, \OSC{gmnstream} or \OSC{gmnf}) which \OSC{system} mapping has been previously requested:
 \sample{/ITL/scene/sync mySlave myMaster:system}
 
 %-------------------------------
