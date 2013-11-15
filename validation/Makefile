@@ -58,8 +58,17 @@ nodlost	= "definitely lost: 0"
 noilost	= "indirectly lost: 0"
 noplost	= "possibly lost: 0"
 
-test:
-	echo $(files)
+#test:
+#	echo $(files)
+
+all:
+	make basic
+	make log
+	make save
+	make pdfmouse
+	make pdfgraphic
+	make pdfsync
+	make pdfjava
 
 pdf: forcepdfdate INScoreVersion
 	make warning
@@ -74,12 +83,24 @@ warning :
 	@echo " Make sure that INScoreViewer is running!"
 	@echo "=========================================="
 
-log: INScoreVersion $(logout)
+log: 
+	@echo "----------- Generating log files"
+	make _log
 
-save : INScoreVersion $(inscoreout)
+save : 
+	@echo "----------- Generating inscore files"
+	make _save
+
+_log: INScoreVersion $(logout)
+
+_save : INScoreVersion $(inscoreout)
+
+basic: forcepdfdate INScoreVersion
+	@echo "----------- Running basic scripts"
+	make files
 
 pdfmouse: forcepdfdate INScoreVersion
-	@echo "----------- Checking mouse interactions"
+	@echo "----------- Running mouse interactions"
 	make filesmouse
 	
 pdfgraphic: forcepdfdate INScoreVersion
@@ -119,19 +140,19 @@ checkleaks: $(leakout)
 showleaks: $(leaksfiles)
 
 files: $(pdfout)
-	./forcepdfdate 20100101120000 $(pdfout)
+	@./forcepdfdate 20100101120000 $(pdfout)
 
 filesmouse: $(pdfmouseout)
-	./forcepdfdate 20100101120000 $(pdfmouseout)
+	@./forcepdfdate 20100101120000 $(pdfmouseout)
 
 filesgraphic: $(pdfgraphicout)
-	./forcepdfdate 20100101120000 $(pdfgraphicout)
+	@./forcepdfdate 20100101120000 $(pdfgraphicout)
 
 filessync: $(pdfsyncout)
-	./forcepdfdate 20100101120000 $(pdfsyncout)
+	@./forcepdfdate 20100101120000 $(pdfsyncout)
 
 filesjava: $(pdfjavaout)
-	./forcepdfdate 20100101120000 $(pdfjavaout)
+	@./forcepdfdate 20100101120000 $(pdfjavaout)
 	
 
 	
