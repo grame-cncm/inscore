@@ -64,7 +64,9 @@ void IGuidoStream::accept (Updater* u)
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IGuidoStream::set (const IMessage* msg )
-{ 
+{
+    setVisible(true);
+    
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
@@ -84,6 +86,7 @@ MsgHandler::msgStatus IGuidoStream::set (const IMessage* msg )
 void IGuidoStream::clear()
 {
     GuidoResetStream(fGuidoStream);
+    setVisible(false);
 }
 
 }
