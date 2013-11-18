@@ -72,7 +72,7 @@ MsgHandler::msgStatus IGuidoStream::set (const IMessage* msg )
 	if ((msg->size() == 2) && msg->param(1, t)) {
         const char * newchar = t.c_str();
         GuidoWriteStream(fGuidoStream, newchar);
-        std::string globalString = GuidoGetGlobalStream(fGuidoStream);
+        std::string globalString = GuidoGetGlobalString(fGuidoStream);
         setGMN(globalString);
         status = MsgHandler::kProcessed;
         newData(true);
