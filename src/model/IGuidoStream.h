@@ -68,6 +68,11 @@ class IGuidoStream : public IGuidoCode
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 
+		/// \brief the \c 'write' message handler
+		virtual MsgHandler::msgStatus write (const IMessage* msg);
+    
+        /// \brief intern method to write the stream
+		virtual void writeStream (std::string t);
 };
 
 /*! @} */

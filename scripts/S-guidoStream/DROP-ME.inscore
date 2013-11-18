@@ -35,10 +35,7 @@
 										/ITL/scene load "10.inscore",
 										/ITL/scene/clickme watch mouseDown(
 											/ITL/scene load "11.inscore",
-											/ITL/scene/clickme watch mouseDown(
-												/ITL/scene load "clear.inscore",
-												/ITL/scene/clickme pop
-											)
+											/ITL/scene/clickme pop
 										)
 									)
 								)

@@ -1,1 +1,1 @@
-/ITL/scene/score set gmnstream ",[\meter<\"4/4\"> e d";
+/ITL/scene/score write ",[\meter<\"4/4\"> e d";

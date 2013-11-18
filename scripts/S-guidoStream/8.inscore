@@ -1,1 +1,1 @@
-/ITL/scene/score set gmnstream "a/4 d/2]";
+/ITL/scene/score write "a/4 d/2]";

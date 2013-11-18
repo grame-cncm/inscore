@@ -42,7 +42,8 @@ IGuidoStream::IGuidoStream( const std::string& name, IObject * parent )
 	fTypeString = kGuidoStreamType;
     fGuidoStream = GuidoOpenStream();
     
-	fMsgHandlerMap[kclear_SetMethod] = TMethodMsgHandler<IGuidoStream,void (IGuidoStream::*)()>::create(this, &IGuidoStream::clear);
+	fMsgHandlerMap[kclear_SetMethod] = TMethodMsgHandler<IGuidoStream, void (IGuidoStream::*)()>::create(this, &IGuidoStream::clear);
+    fMsgHandlerMap[kwrite_SetMethod]		= TMethodMsgHandler<IGuidoStream>::create(this, &IGuidoStream::write);
 }
 
 IGuidoStream::~IGuidoStream()
@@ -65,21 +66,17 @@ void IGuidoStream::accept (Updater* u)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IGuidoStream::set (const IMessage* msg )
 {
-    setVisible(true);
-    
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
-	string t;
+    clear();
+    string t;
 	if ((msg->size() == 2) && msg->param(1, t)) {
-        const char * newchar = t.c_str();
-        GuidoWriteStream(fGuidoStream, newchar);
-        std::string globalString = GuidoGetGlobalString(fGuidoStream);
-        setGMN(globalString);
         status = MsgHandler::kProcessed;
-        newData(true);
+        writeStream(t);
 	}
 	else status = MsgHandler::kBadParameters;
+
 	return status;
 }
 
@@ -87,6 +84,32 @@ void IGuidoStream::clear()
 {
     GuidoResetStream(fGuidoStream);
     setVisible(false);
+}
+
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IGuidoStream::write (const IMessage* msg )
+{
+	MsgHandler::msgStatus status; 
+
+	string t;
+	if ((msg->size() == 1) && msg->param(0, t)) {
+        status = MsgHandler::kProcessed;
+        writeStream(t);
+	}
+	else status = MsgHandler::kBadParameters;
+	return status;
+}
+
+void IGuidoStream::writeStream (std::string t)
+{
+    setVisible(true);
+    
+    const char * newchar = t.c_str();
+    GuidoWriteStream(fGuidoStream, newchar);
+    std::string globalString = GuidoGetGlobalString(fGuidoStream);
+    setGMN(globalString);
+    newData(true);
 }
 
 }

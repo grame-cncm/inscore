@@ -137,6 +137,7 @@ extern const char* kwidth_GetSetMethod;
 extern const char* kwindowOpacity_GetSetMethod;
 extern const char* kwrap_GetSetMethod;
 extern const char* kwriteBench_SetMethod;
+extern const char* kwrite_SetMethod;
 extern const char* kx_GetSetMethod;
 extern const char* kxborder_GetSetMethod;
 extern const char* kxorigin_GetSetMethod;

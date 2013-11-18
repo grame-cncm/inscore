@@ -1,1 +1,1 @@
-/ITL/scene/score set gmnstream "\fBeam(e/32 f";
+/ITL/scene/score write "\fBeam(e/32 f";

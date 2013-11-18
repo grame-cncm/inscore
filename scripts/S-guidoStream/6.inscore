@@ -1,1 +1,1 @@
-/ITL/scene/score set gmnstream " d/16 ";
+/ITL/scene/score write " d/16 ";
