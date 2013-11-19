@@ -80,6 +80,7 @@ MsgHandler::msgStatus IGuidoStream::set (const IMessage* msg )
 	return status;
 }
 
+//--------------------------------------------------------------------------
 void IGuidoStream::clear()
 {
     GuidoResetStream(fGuidoStream);
@@ -101,6 +102,7 @@ MsgHandler::msgStatus IGuidoStream::write (const IMessage* msg )
 	return status;
 }
 
+//--------------------------------------------------------------------------
 void IGuidoStream::writeStream (std::string t)
 {
     setVisible(true);
