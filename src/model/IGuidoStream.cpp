@@ -107,7 +107,7 @@ void IGuidoStream::writeStream (std::string t)
     
     const char * newchar = t.c_str();
     GuidoWriteStream(fGuidoStream, newchar);
-    std::string globalString = GuidoGetGlobalString(fGuidoStream);
+    std::string globalString = GuidoGetStream(fGuidoStream);
     setGMN(globalString);
     newData(true);
 }
