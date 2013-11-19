@@ -127,9 +127,12 @@ void VVideoView::initialize( IVideo * video  )
 //----------------------------------------------------------------------
 void VVideoView::updateView( IVideo * video  )
 {
-    if(video->getParent()->getTypeString() != IAppl::kApplType && video->getParent()->getTypeString() != IScene::kSceneType)
-        setParentItem(video->getParent()->getView()?video->getParent()->getView():0);
-
+    video->cleanupSync();
+    if(!video->getParent()->getMaster(video) && !video->getParent()->getDeleted())
+    {
+        if(video->getParent()->getTypeString() != IScene::kSceneType)
+            setParentItem(video->getParent()->getView()?video->getParent()->getView():0);
+    }
 	QString file = VApplView::toQString( video->getFile().c_str() );
 	if ( QFile::exists(  file  ) )
 	{

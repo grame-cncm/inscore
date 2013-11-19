@@ -1,0 +1,11 @@
+../scripts/S-pencontrol/DROP-ME.inscore
+../scripts/S-pencontrol/1-penwidth-large.inscore
+../scripts/S-signals/DROP-ME.inscore
+../scripts/S-signals/1-sinus-y.inscore
+../scripts/S-scripting/DROP-ME.inscore
+../scripts/S-scripting/edit.inscore
+../regression/S-scripting/scripting.inscore
+../scripts/S-scripting/align.inscore
+../regression/S-scripting/hcenter.inscore
+../scripts/MP-graphsig-sinus/sinus.inscore
+../regression/MP-graphsig-sinus/essai.inscore

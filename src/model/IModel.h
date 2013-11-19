@@ -40,6 +40,7 @@
 #include "ILayer.h"
 #include "IGuidoCode.h"
 #include "IGuidoFile.h"
+#include "IGuidoStream.h"
 #include "IHtml.h"
 #include "IHtmlFile.h"
 #include "IImage.h"

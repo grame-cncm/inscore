@@ -136,6 +136,7 @@ const char* kwidth_GetSetMethod		= "width";			// Set
 const char* kwindowOpacity_GetSetMethod = "windowOpacity";
 const char* kwrap_GetSetMethod		= "wrap";			// Get Set
 const char* kwriteBench_SetMethod	= "writeBench";		// Set
+const char* kwrite_SetMethod	= "write";		// Set
 const char* kx_GetSetMethod			= "x";				// Get Set
 const char* kxborder_GetSetMethod	= "xborder";		// Get Set
 const char* kxorigin_GetSetMethod	= "xorigin";		// Get Set

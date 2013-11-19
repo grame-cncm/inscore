@@ -46,7 +46,7 @@ class EventsAble
 		enum eventype { kUnknownEvent=0, 
 			kMouseDown, kMouseUp, kMouseDoubleClick, kMouseEnter, kMouseLeave, kMouseMove,
 			kTimeEnter, kTimeLeave, kDurEnter, kDurLeave, kNewElement, kExport, kEndPaint,
-			kGFEnter, kGFLeave, kGFActive, kGFIdle };
+			kGFEnter, kGFLeave, kGFActive, kGFIdle, kDelete };
 			
 				 EventsAble();
 		virtual ~EventsAble();

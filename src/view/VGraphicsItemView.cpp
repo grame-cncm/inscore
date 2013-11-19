@@ -60,7 +60,7 @@ VGraphicsItemView::VGraphicsItemView( QGraphicsScene * scene , QGraphicsItem * i
 	scene->addItem( item );
 //	fBrushColorStartIndex = qrand();						// Randomize the color of the mapping debug items.
 	fBrushColorStartIndex = 0;
-//    setParentItem(item->parentItem());
+    //setParentItem(item->parentItem());
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -71,9 +71,9 @@ VGraphicsItemView::~VGraphicsItemView()
 	QList<QGraphicsItem*> children = item()->childItems();	// Break all links with children
 	for (int i = 0 ; i < children.size() ; i++ )
 		children[i]->setParentItem(0);
-	
+    
 	item()->scene()->removeItem( item() );					// Remove the QGraphicsItem from the scene.
-	
+
 	delete fTilerItem;
 	delete fItem;	
 }
@@ -178,14 +178,19 @@ void VGraphicsItemView::drawNameAndBBox(IObject* o)
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::setParentView (IObject * object) 
 {
-	VObjectView * parent = 0;
+	VObjectView * parentView = 0;
 	if (object) {
-		const SIScene scene = object->getScene();
-		const Master* master = scene ? scene->getMaster(object) : 0;
-		if (master && !master->getMaster()->getDeleted())
-			parent = master->getMaster()->getView();
+        const SIObject parent = object->getParent();
+        const Master* master = parent ? parent->getMaster(object) : 0;
+    
+//		const SIScene scene = object->getScene();
+//		const Master* master = scene ? scene->getMaster(object) : 0;
+
+		if (master && !master->getMaster()->getDeleted()){
+			parentView = master->getMaster()->getView();
+        }
 	}
-	setParentItem( parent );
+	setParentItem( parentView );
 }
 
 //------------------------------------------------------------------------------------------------------------

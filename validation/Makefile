@@ -26,38 +26,112 @@ pwd	  = $(shell pwd)
 TOOL = ./INScoreNOView
 
 files = $(shell grep -v '^\#' scripts.txt)
+mousefiles = $(shell grep -v '^\#' mousescripts.txt)
+graphicfiles = $(shell grep -v '^\#' graphicscripts.txt)
+syncfiles = $(shell grep -v '^\#' syncscripts.txt)
+javafiles = $(shell grep -v '^\#' javascripts.txt)
+logfiles = $(shell grep -v '^\#' logs.txt)
+savefiles = $(shell grep -v '^\#' save.txt)
+
 pdfout  	:= $(patsubst ../%.inscore, $(version)/%.pdf, $(files))
+pdfmouseout := $(patsubst ../%.inscore, $(version)/%.pdf, $(mousefiles))
+pdfgraphicout := $(patsubst ../%.inscore, $(version)/%.pdf, $(graphicfiles))
+pdfsyncout := $(patsubst ../%.inscore, $(version)/%.pdf, $(syncfiles))
+pdfjavaout := $(patsubst ../%.inscore, $(version)/%.pdf, $(javafiles))
+logout := $(patsubst ../%.inscore, $(version)/%.log, $(logfiles))
+inscoreout := $(patsubst ../%.inscore, $(version)/%.inscore, $(savefiles))
+
 leakout 	:= $(patsubst ../%.inscore, $(version)/$(TOOL)/%.leak.txt, $(files))
 leaksfiles  := $(patsubst ../%.inscore, $(version)/%.leaks.out, $(files))
 
 allpdf 		= $(shell [ -d $(version) ] && find $(version) -name "*.pdf")
 validpdf 	= $(patsubst %.pdf, %.outpdf, $(allpdf))
 
+allLog 		= $(shell [ -d $(version) ] && find $(version) -name "*.log")
+validlog 	= $(patsubst %.log, %.outlog, $(allLog))
+
+allinscore 		= $(shell [ -d $(version) ] && find $(version) -name "*.inscore")
+validinscore 	= $(patsubst %.inscore, %.outinscore, $(allinscore))
+
 
 nodlost	= "definitely lost: 0"
 noilost	= "indirectly lost: 0"
 noplost	= "possibly lost: 0"
 
-test:
-	echo $(files)
+#test:
+#	echo $(files)
+
+all:
+	make basic
+	make log
+	make save
+	make pdfmouse
+	make pdfgraphic
+	make pdfsync
+	make pdfjava
 
 pdf: forcepdfdate INScoreVersion
+	make warning
+	make files
+	make filesmouse
+	make filesgraphic
+	make filessync
+	make filesjava
+
+warning :
 	@echo "=========================================="
 	@echo " Make sure that INScoreViewer is running!"
 	@echo "=========================================="
+
+log: 
+	@echo "----------- Generating log files"
+	make _log
+
+save : 
+	@echo "----------- Generating inscore files"
+	make _save
+
+_log: INScoreVersion $(logout)
+
+_save : INScoreVersion $(inscoreout)
+
+basic: forcepdfdate INScoreVersion
+	@echo "----------- Running basic scripts"
 	make files
 
+pdfmouse: forcepdfdate INScoreVersion
+	@echo "----------- Running mouse interactions"
+	make filesmouse
+	
+pdfgraphic: forcepdfdate INScoreVersion
+	@echo "----------- Checking graphical elements"
+	make filesgraphic
+	
+pdfsync: forcepdfdate INScoreVersion
+	@echo "----------- Checking synchronization modes"
+	make filessync
+	
+pdfjava: forcepdfdate INScoreVersion
+	@echo "----------- Checking javascript examples"
+	make filesjava
+	
 pdfclean: 
 	rm -f $(pdfout)
 
 help:
 	@echo "Makefile for testing the INScore engine output. Available targets are:"
 	@echo "'pdf' : makes pdf files for inscore files recursively enclosed in this folder"
-	@echo "           the pdf files output folder name is the current INScore version number."
+	@echo "'pdfmouse' : makes pdf files for inscore files concerning mouse events"
+	@echo "'pdfgraphic' : makes pdf files for inscore files concerning graphical elements (signal, layer, brush, pen...)"
+	@echo "'pdfsync' : makes pdf files for inscore files concerning synchronization"
+	@echo "'pdfjava' : makes pdf files for inscore files containing javascript"
+	@echo "'log' : makes log files in order to check the log option"
+	@echo "'save' : makes inscore files in order to check the save option"
+	@echo "           the pdf, log and inscore files output folder name is the current INScore version number."
 	@echo "'validate VERSION=another_version': compares the current version with another one"
 	@echo "'checkleaks [TOOL=a_check_tool]': check memory leaks using a given tool (default INScoreNOView)"
 
-validate: $(validpdf)
+validate: $(validpdf) $(validlog) $(validinscore)
 	@echo Validating version $(VERSION) with $(version)
 
 checkleaks: $(leakout)
@@ -66,8 +140,22 @@ checkleaks: $(leakout)
 showleaks: $(leaksfiles)
 
 files: $(pdfout)
-	./forcepdfdate 20100101120000 $(pdfout)
+	@./forcepdfdate 20100101120000 $(pdfout)
 
+filesmouse: $(pdfmouseout)
+	@./forcepdfdate 20100101120000 $(pdfmouseout)
+
+filesgraphic: $(pdfgraphicout)
+	@./forcepdfdate 20100101120000 $(pdfgraphicout)
+
+filessync: $(pdfsyncout)
+	@./forcepdfdate 20100101120000 $(pdfsyncout)
+
+filesjava: $(pdfjavaout)
+	@./forcepdfdate 20100101120000 $(pdfjavaout)
+	
+
+	
 $(version)/$(TOOL)/%.leak.txt: %.inscore
 	@[ -d $(@D) ] || mkdir -p $(@D)
 	valgrind --leak-check=full --suppressions=valgrindignored.txt --log-file=$@ $(TOOL) $(pwd)/$<
@@ -76,18 +164,39 @@ $(version)/%.pdf: ../%.inscore
 	@[ -d $(@D) ] || mkdir -p $(@D)
 	@./inscore2pdf $< $@
 
+$(version)/%.log: ../%.inscore
+	@[ -d $(@D) ] || mkdir -p $(@D)
+	@./inscore2log $< $@
+
+$(version)/%.inscore: ../%.inscore
+	@[ -d $(@D) ] || mkdir -p $(@D)
+	@./inscore2inscore $< $@
+	
+
 $(version)/%.leaks.out: $(version)/$(TOOL)/%.leak.txt	
 	@grep $(nodlost) $< > /dev/null || echo "$< : definitely lost bytes"
 	@grep $(noilost) $< > /dev/null || echo "$< : indirectly lost bytes"
 	@grep $(noplost) $< > /dev/null || echo "$< : possibly lost bytes"
 
 
-%.out: %.pdf
-	@diff $< $(patsubst $(version)/%, $(VERSION)/%, $<) || echo "open $<  $(patsubst $(version)/%, $(VERSION)/%, $<) to check changes"
+# ne sert plus ?????
+#%.out: %.pdf
+#	@diff $< $(patsubst $(version)/%, $(VERSION)/%, $<) || echo "open $<  $(patsubst $(version)/%, $(VERSION)/%, $<) to check changes"
 	
 %.outpdf: %.pdf
 	$(eval tmp := $(patsubst $(version)/%, $(VERSION)/%, $<))	
 	@[ -f  $(tmp) ] || echo $< : new file
 	$(eval ignored := $(shell grep $< $(version)/ignore.$(VERSION).txt 2>/dev/null || echo _none_))
 	@[ -f  $(ignored) ] || (diff $< $(tmp) 2>/dev/null >/dev/null || ([ -f  $(tmp) ] && echo "open $< $(patsubst $(version)/%, $(VERSION)/%, $<) # to check changes"; true))
+	
+%.outlog: %.log
+	$(eval tmp := $(patsubst $(version)/%, $(VERSION)/%, $<))	
+	@[ -f  $(tmp) ] || echo $< : new file
+	$(eval ignored := $(shell grep $< $(version)/ignore.$(VERSION).txt 2>/dev/null || echo _none_))
+	@[ -f  $(ignored) ] || (diff $< $(tmp) 2>/dev/null >/dev/null || ([ -f  $(tmp) ] && echo "open $< $(patsubst $(version)/%, $(VERSION)/%, $<) # to check changes"; true))
 
+%.outinscore: %.inscore
+	$(eval tmp := $(patsubst $(version)/%, $(VERSION)/%, $<))	
+	@[ -f  $(tmp) ] || echo $< : new file
+	$(eval ignored := $(shell grep $< $(version)/ignore.$(VERSION).txt 2>/dev/null || echo _none_))
+	@[ -f  $(ignored) ] || (diff $< $(tmp) 2>/dev/null >/dev/null || ([ -f  $(tmp) ] && echo "open $< $(patsubst $(version)/%, $(VERSION)/%, $<) # to check changes"; true))

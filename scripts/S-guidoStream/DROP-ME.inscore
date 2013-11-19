@@ -1,0 +1,49 @@
+/ITL/scene/* del;
+
+/ITL/scene/text set txt "This script illustrates how to use the Guido Stream object";
+/ITL/scene/text scale 2;
+/ITL/scene/text y -0.9;
+
+/ITL/scene/text2 set txt "Drop the scripts in the right order, or click on 'click me'...";
+/ITL/scene/text2 scale 1.5;
+/ITL/scene/text2 y -0.8;
+
+
+/ITL/scene/clickme set txt "CLICK ME !";
+/ITL/scene/clickme scale 2;
+/ITL/scene/clickme y 0.9;
+/ITL/scene/clickme watch mouseDown(
+	/ITL/scene/clickme push,
+	/ITL/scene load "1.inscore",
+	/ITL/scene/clickme watch mouseDown(
+		/ITL/scene load "2.inscore",
+		/ITL/scene/clickme watch mouseDown(
+			/ITL/scene load "3.inscore",
+			/ITL/scene/clickme watch mouseDown(
+				/ITL/scene load "4.inscore",
+				/ITL/scene/clickme watch mouseDown(
+					/ITL/scene load "5.inscore",
+					/ITL/scene/clickme watch mouseDown(
+						/ITL/scene load "6.inscore",
+						/ITL/scene/clickme watch mouseDown(
+							/ITL/scene load "7.inscore",
+							/ITL/scene/clickme watch mouseDown(
+								/ITL/scene load "8.inscore",
+								/ITL/scene/clickme watch mouseDown(
+									/ITL/scene load "9.inscore",
+									/ITL/scene/clickme watch mouseDown(
+										/ITL/scene load "10.inscore",
+										/ITL/scene/clickme watch mouseDown(
+											/ITL/scene load "11.inscore",
+											/ITL/scene/clickme pop
+										)
+									)
+								)
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+);

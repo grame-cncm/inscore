@@ -49,8 +49,6 @@ VImageView::VImageView(QGraphicsScene * scene, const IImage* h)
 //----------------------------------------------------------------------
 void VImageView::updateLocalMapping (IImage* img)
 {
-    if(img->getParent()->getTypeString() != IAppl::kApplType && img->getParent()->getTypeString() != IScene::kSceneType)
-        setParentItem(img->getParent()->getView()?img->getParent()->getView():0);
 	// 1. Update image
 	QString file = VApplView::toQString( img->getFile().c_str() );
 	if ( QFile::exists(  file  ) )
@@ -106,6 +104,12 @@ GraphicSegment VImageView::getGraphicSegment( const IntPointSegment& intPointSeg
 //----------------------------------------------------------------------
 void VImageView::updateView ( IImage * img)
 {
+    img->cleanupSync();
+    if(!img->getParent()->getMaster(img) && !img->getParent()->getDeleted())
+    {
+        if(img->getParent()->getTypeString() != IScene::kSceneType)
+            setParentItem(img->getParent()->getView()?img->getParent()->getView():0);
+    }
 	float alpha = img->getA() / 255.f;
 	fImageItem->setOpacity (alpha);
 	VIntPointObjectView::updateView (img);

@@ -61,6 +61,9 @@ class ISignalNode : public IVNode
 //		virtual SISignal find (std::string node) const;
 		virtual bool find (std::string node, subnodes& outlist);
 
+		/// \brief overrides virtual nodes creation
+		virtual void	createVirtualNodes ()   {}
+
 		/*! \brief gives the signal node debug state
 		*/
 		virtual bool debug () const			{ return fDebug; }

@@ -39,3 +39,5 @@ version = 0.96;
 
 /ITL/scene/rect* y 0.15 ;
 /ITL/scene color 240 240 240;
+
+/ITL/scene/* watch del (/ITL/scene color 255 255 255);

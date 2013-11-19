@@ -44,6 +44,7 @@
 #include "TSegmentation.h"
 #include "TRelation.h"
 #include "TMapable.h"
+#include "PeriodicTask.h"
 #include "smartpointer.h"
 
 
@@ -84,7 +85,7 @@ typedef class libmapping::SMARTP<ISceneSync>		SISceneSync;
 	of the \c cleanup method.
 */
 class IObject : public IPosition, public IDate, public IColor, public EventsAble,
-				public browsable, public TMapable, virtual public libmapping::smartable
+				public browsable, public TMapable, virtual public libmapping::smartable , public PeriodicTask
 {
 	public:
 		friend class IProxy;
@@ -94,7 +95,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 	private:
 		std::string		fName;		///< the object name, used as identifier
 		subnodes		fSubNodes;	///< child objects list
-        
+ 
 
 		float	fDispStart, fDispEnd;	///< the object displayed range (0-1 covers the whole range)
 		bool	fDelete;				///< true when an object should be deleted
@@ -259,7 +260,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 			\note an object is not directly deleted, it is first flagged as deleted
 			actual deletion is in charge of the garbage method.
 		*/
-		virtual void	del ()						{ fDelete = true; }
+		virtual void	del ();
 
 		/// \brief print the object state \param out the output stream
 		virtual void	print(std::ostream& out) const;

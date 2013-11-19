@@ -17,6 +17,9 @@ Version 1.04
 - new layer object (default brushStyle = none)
 - new 'save' method specific to the log window: saves the window content to a file
 - new 'event' method supported at object level for UI events simulation
+- new event watchable : 'del' (sent when deleting an object)
+- validation tools
+- guido stream included (modifications on guidoQt and GUIDOEngine)
 
 ----------------------------------------------------
 Version 1.03

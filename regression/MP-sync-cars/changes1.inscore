@@ -1,0 +1,3 @@
+/ITL/scene/sync car* myGuidoFile h;
+/ITL/scene/car* duration 1 4;
+/ITL/scene/car* ddate 16 4;

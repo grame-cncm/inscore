@@ -79,9 +79,12 @@ VSVGView::VSVGView(QGraphicsScene * scene, const ISVG* svg)
 //----------------------------------------------------------------------
 void VSVGView::updateView( ISVGFile * svg  )
 {
-    if(svg->getParent()->getTypeString() != IAppl::kApplType && svg->getParent()->getTypeString() != IScene::kSceneType)
-        setParentItem(svg->getParent()->getView()?svg->getParent()->getView():0);
-    
+    svg->cleanupSync();
+    if(!svg->getParent()->getMaster(svg) && !svg->getParent()->getDeleted())
+    {
+        if(svg->getParent()->getTypeString() != IScene::kSceneType)
+            setParentItem(svg->getParent()->getView()?svg->getParent()->getView():0);
+    }
 	if (svg->changed()) {
 		item()->setFile (svg->getFile().c_str());
 		svg->changed(false);
@@ -94,9 +97,12 @@ void VSVGView::updateView( ISVGFile * svg  )
 //----------------------------------------------------------------------
 void VSVGView::updateView( ISVG * svg  )
 {
-	if(svg->getParent()->getTypeString() != IAppl::kApplType && svg->getParent()->getTypeString() != IScene::kSceneType)
-        setParentItem(svg->getParent()->getView()?svg->getParent()->getView():0);
-    
+    svg->cleanupSync();
+    if(!svg->getParent()->getMaster(svg) && !svg->getParent()->getDeleted())
+    {
+        if(svg->getParent()->getTypeString() != IAppl::kApplType && svg->getParent()->getTypeString() != IScene::kSceneType)
+            setParentItem(svg->getParent()->getView()?svg->getParent()->getView():0);
+    }
     if (svg->newData()) {
 		item()->setText (svg->getText().c_str());
 	}

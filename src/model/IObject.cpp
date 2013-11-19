@@ -45,6 +45,7 @@
 #include "ISync.h"
 #include "Tools.h"
 #include "ISceneSync.h"
+#include "TMessageEvaluator.h"
 
 #include "VObjectView.h"
 
@@ -92,7 +93,7 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fMsgHandlerMap[kset_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::set);
 	fMsgHandlerMap[kget_SetMethod]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const >::create(this, &IObject::get);
 	fMsgHandlerMap[kdel_SetMethod]		= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::del);
-	fMsgHandlerMap[kexport_SetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::exportMsg);
+	fMsgHandlerMap[kexport_SetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::exportMsg); 
 //	fMsgHandlerMap["rename"]			= TMethodMsgHandler<IObject>::create(this, &IObject::renameMsg);
 	fMsgHandlerMap[ksave_SetMethod]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::saveMsg);
 	fMsgHandlerMap[kwatch_GetSetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsg);
@@ -242,16 +243,36 @@ IObject::~IObject()
 {
 	// removes all the child objects refs to me
 	for (int i=0; i < size(); i++)
-		elements()[i]->fParent = 0;
-	delete fView;
+    {
+		elements()[i]->fParent = fParent;
+    }
+        delete fView;
+}
+
+void IObject::del()
+{
+    // we set the delte flag to 1
+    fDelete = true;
+    
+    // ... and we send the message that the event "del" occured
+    const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kDelete);
+	if (!msgs || msgs->list().empty())
+        return;		// nothing to do, no associated message
+
+	MouseLocation mouse (0, 0, 0, 0, 0, 0);
+	EventContext env(mouse, libmapping::rational(0,1), 0);
+	TMessageEvaluator me;
+	SIMessageList outmsgs = me.eval (msgs, env);
+	if (outmsgs && outmsgs->list().size())
+        outmsgs->send();
 }
 
 //--------------------------------------------------------------------------
 void IObject::createVirtualNodes()
 {
 	fSync = ISceneSync::create(this);
-	fDebug = IObjectDebug::create(this);
     add(fSync);
+	fDebug = IObjectDebug::create(this);
     add ( fDebug );
 }
 
@@ -281,6 +302,10 @@ string IObject::getOSCAddress() const
 void IObject::ptask ()
 { 
 	if (fSync) fSync->ptask();
+    
+	for (unsigned int i = 0; i < elements().size(); i++) {
+        elements()[i]->ptask();
+    }
 }
 
 //--------------------------------------------------------------------------
@@ -304,16 +329,18 @@ void IObject::cleanup ()
 	localMapModified (false);
 	fExportFlag = "";
 	fState= kClean;
-	subnodes::iterator i = elements().begin();
-	while (i!=elements().end()) {
-		if ((*i)->fDelete) {
-			i = elements().erase(i);
+// 	if (getState() & kSubModified) {     todo: could be optimised - to be checked
+		subnodes::iterator i = elements().begin();
+		while (i!=elements().end()) {
+			if ((*i)->fDelete) {
+				i = elements().erase(i);
+			}
+			else { 
+				(*i)->cleanup();
+				i++;
+			}
 		}
-		else { 
-			(*i)->cleanup();
-			i++;
-		}
-	}
+//	}
 }
 
 //--------------------------------------------------------------------------
@@ -805,8 +832,10 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 				SIMessageList watchMsg = msg->watchMsg2Msgs (1);
 				if (!watchMsg) return MsgHandler::kBadParameters;
 
-				if (add) eventsHandler()->addMsg (t, watchMsg);
-				else eventsHandler()->setMsg (t, watchMsg);
+				if (add)
+                    eventsHandler()->addMsg (t, watchMsg);
+				else
+                    eventsHandler()->setMsg (t, watchMsg);
 			}
 			else if (!add) eventsHandler()->setMsg (t, 0);
 			break;
@@ -855,6 +884,18 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 			else return MsgHandler::kBadParameters;
 			break;
 
+        case EventsAble::kDelete:
+        	if (msg->size() > 1) {
+				SIMessageList watchMsg = msg->watchMsg2Msgs (1);
+				if (!watchMsg) return MsgHandler::kBadParameters;
+
+				if (add)
+                    eventsHandler()->addMsg (t, watchMsg);
+				else
+                    eventsHandler()->setMsg (t, watchMsg);
+			}
+			else if (!add) eventsHandler()->setMsg (t, 0);
+			break;
 		default:			// unknown event to watch
 			return MsgHandler::kBadParameters;
 	}
@@ -902,6 +943,7 @@ MsgHandler::msgStatus IObject::eventMsg (const IMessage* msg)
 				EventsAble::eventype type = EventsAble::string2type (event);
 				view->handleEvent (this, x, y, type);
 			}
+        return MsgHandler::kProcessed;
 		}
 	}
 	return MsgHandler::kBadParameters;
