@@ -6,15 +6,7 @@ then
 	exit 1
 fi
 
-function wait () {
-	what=$1
-	count=0
-	while [ $count -lt 100000 ]
-	do
-		[ -f $what ] && break
-		count=$(($count + 1))
-	done
-}
+. wait.sh
 
 path=$(pwd)
 file=$1
@@ -24,7 +16,6 @@ dest=$path/$2
 echo inscore2log $file $dest
 src=$(basename $file)
 
-echo rootPath $path/$(dirname $file)
 ./SendOSC 7000 /ITL/scene rootPath $path/$(dirname $file)
 ./SendOSC 7000 /ITL/log clear
 ./SendOSC 7000 /ITL/scene load $src

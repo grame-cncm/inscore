@@ -25,21 +25,21 @@ version	= $(shell ./INScoreVersion)
 pwd	  = $(shell pwd)
 TOOL = ./INScoreNOView
 
-files = $(shell grep -v '^\#' scripts.txt)
-mousefiles = $(shell grep -v '^\#' mousescripts.txt)
-graphicfiles = $(shell grep -v '^\#' graphicscripts.txt)
-syncfiles = $(shell grep -v '^\#' syncscripts.txt)
-javafiles = $(shell grep -v '^\#' javascripts.txt)
-logfiles = $(shell grep -v '^\#' logs.txt)
-savefiles = $(shell grep -v '^\#' save.txt)
+files 			= $(shell grep -v '^\#' scripts.txt)
+mousefiles 		= $(shell grep -v '^\#' mousescripts.txt)
+graphicfiles 	= $(shell grep -v '^\#' graphicscripts.txt)
+syncfiles 		= $(shell grep -v '^\#' syncscripts.txt)
+javafiles 		= $(shell grep -v '^\#' javascripts.txt)
+logfiles 		= $(shell grep -v '^\#' logs.txt)
+savefiles 		= $(shell grep -v '^\#' save.txt)
 
-pdfout  	:= $(patsubst ../%.inscore, $(version)/%.pdf, $(files))
-pdfmouseout := $(patsubst ../%.inscore, $(version)/%.pdf, $(mousefiles))
-pdfgraphicout := $(patsubst ../%.inscore, $(version)/%.pdf, $(graphicfiles))
-pdfsyncout := $(patsubst ../%.inscore, $(version)/%.pdf, $(syncfiles))
-pdfjavaout := $(patsubst ../%.inscore, $(version)/%.pdf, $(javafiles))
-logout := $(patsubst ../%.inscore, $(version)/%.log, $(logfiles))
-inscoreout := $(patsubst ../%.inscore, $(version)/%.inscore, $(savefiles))
+pdfout  		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(files))
+pdfmouseout 	:= $(patsubst ../%.inscore, $(version)/%.pdf, $(mousefiles))
+pdfgraphicout 	:= $(patsubst ../%.inscore, $(version)/%.pdf, $(graphicfiles))
+pdfsyncout 		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(syncfiles))
+pdfjavaout 		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(javafiles))
+logout 			:= $(patsubst ../%.inscore, $(version)/%.log, $(logfiles))
+inscoreout 		:= $(patsubst ../%.inscore, $(version)/%.inscore, $(savefiles))
 
 leakout 	:= $(patsubst ../%.inscore, $(version)/$(TOOL)/%.leak.txt, $(files))
 leaksfiles  := $(patsubst ../%.inscore, $(version)/%.leaks.out, $(files))
@@ -61,27 +61,20 @@ noplost	= "possibly lost: 0"
 #test:
 #	echo $(files)
 
-all:
-	make basic
+all: forcepdfdate INScoreVersion
+	@echo "=========================================="
+	@echo " Make sure that INScoreViewer is running!"
+	@echo "=========================================="
+	make pdf
 	make log
 	make save
+
+pdf:
+	make basic
 	make pdfmouse
 	make pdfgraphic
 	make pdfsync
 	make pdfjava
-
-pdf: forcepdfdate INScoreVersion
-	make warning
-	make files
-	make filesmouse
-	make filesgraphic
-	make filessync
-	make filesjava
-
-warning :
-	@echo "=========================================="
-	@echo " Make sure that INScoreViewer is running!"
-	@echo "=========================================="
 
 log: 
 	@echo "----------- Generating log files"
@@ -115,21 +108,29 @@ pdfjava: forcepdfdate INScoreVersion
 	@echo "----------- Checking javascript examples"
 	make filesjava
 	
+clean: 
+	make pdfclean
+	make logclean
+	make saveclean
+
 pdfclean: 
-	rm -f $(pdfout)
+	rm -f $(pdfout) $(pdfmouseout) $(pdfgraphicout) $(pdfsyncout) $(pdfjavaout)
+
+logclean: 
+	rm -f $(logout)
+
+saveclean: 
+	rm -f $(inscoreout)
 
 help:
 	@echo "Makefile for testing the INScore engine output. Available targets are:"
-	@echo "'pdf' : makes pdf files for inscore files recursively enclosed in this folder"
-	@echo "'pdfmouse' : makes pdf files for inscore files concerning mouse events"
-	@echo "'pdfgraphic' : makes pdf files for inscore files concerning graphical elements (signal, layer, brush, pen...)"
-	@echo "'pdfsync' : makes pdf files for inscore files concerning synchronization"
-	@echo "'pdfjava' : makes pdf files for inscore files containing javascript"
-	@echo "'log' : makes log files in order to check the log option"
-	@echo "'save' : makes inscore files in order to check the save option"
-	@echo "           the pdf, log and inscore files output folder name is the current INScore version number."
-	@echo "'validate VERSION=another_version': compares the current version with another one"
-	@echo "'checkleaks [TOOL=a_check_tool]': check memory leaks using a given tool (default INScoreNOView)"
+	@echo " 'all' 		: generates pdf output files, inscore output files and log files"
+	@echo " 'pdf' 		: generates pdf files for inscore files recursively enclosed in this folder"
+	@echo " 'log' 		: generates log files in order to check inscore logs"
+	@echo " 'save' 		: generates inscore files in order to check the save method"
+	@echo "  output files are generated under the current INScore version number."
+	@echo " 'validate VERSION=another_version': compares the current version with another one"
+	@echo " 'checkleaks [TOOL=a_check_tool]': check memory leaks using a given tool (default INScoreNOView)"
 
 validate: $(validpdf) $(validlog) $(validinscore)
 	@echo Validating version $(VERSION) with $(version)
@@ -179,10 +180,7 @@ $(version)/%.leaks.out: $(version)/$(TOOL)/%.leak.txt
 	@grep $(noplost) $< > /dev/null || echo "$< : possibly lost bytes"
 
 
-# ne sert plus ?????
-#%.out: %.pdf
-#	@diff $< $(patsubst $(version)/%, $(VERSION)/%, $<) || echo "open $<  $(patsubst $(version)/%, $(VERSION)/%, $<) to check changes"
-	
+
 %.outpdf: %.pdf
 	$(eval tmp := $(patsubst $(version)/%, $(VERSION)/%, $<))	
 	@[ -f  $(tmp) ] || echo $< : new file

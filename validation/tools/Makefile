@@ -9,19 +9,19 @@ LIBOSCPACK :=  -L../../lib/oscpack/cmake -loscpack
 endif
 
 tools := ../INScoreVersion ../forcepdfdate ../SendOSC
-
+G++   := g++
 
 all : $(tools)
 
 
 ../forcepdfdate: forcepdfdate.cpp
-	g++ forcepdfdate.cpp -o ../forcepdfdate
+	$(G++) forcepdfdate.cpp -o ../forcepdfdate
 
 ../INScoreVersion: INScoreVersion.cpp
-	g++ INScoreVersion.cpp -I../../src/interface $(LIBINSCORE) -o ../INScoreVersion
+	$(G++) INScoreVersion.cpp -I../../src/interface $(LIBINSCORE) -o ../INScoreVersion
 
 ../SendOSC: SendOSC.cpp
-	g++ SendOSC.cpp -I../../lib/oscpack $(LIBOSCPACK) -o ../SendOSC
+	$(G++) SendOSC.cpp -I../../lib/oscpack $(LIBOSCPACK) -o ../SendOSC
 
 clean:  
 	rm -f $(tools)
