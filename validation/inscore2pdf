@@ -27,7 +27,9 @@ src=$(basename $file)
 echo rootPath $path/$(dirname $file)
 ./SendOSC 7000 /ITL/scene rootPath $path/$(dirname $file)
 ./SendOSC 7000 /ITL/scene watch endPaint \( /ITL/scene export $dest \)
+./SendOSC 7000 /ITL/scene watch export \( /ITL/scene save $(pwd)/__tmp.inscore \)
 ./SendOSC 7000 /ITL/scene load $src
 
-wait $dest
+wait __tmp.inscore
+rm -f __tmp.inscore
 

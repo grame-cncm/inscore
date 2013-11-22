@@ -62,13 +62,13 @@ noplost	= "possibly lost: 0"
 #	echo $(files)
 
 all:
-	make basic
 	make log
 	make save
+	make basic
 	make pdfmouse
 	make pdfgraphic
-	make pdfsync
 	make pdfjava
+	make pdfsync
 
 pdf: forcepdfdate INScoreVersion
 	make warning

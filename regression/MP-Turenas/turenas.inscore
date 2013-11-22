@@ -1,0 +1,186 @@
+# cleanup the scene.
+/ITL/scene/* del;
+/ITL/scene/signal/* del;
+/ITL/scene width 1.3;
+
+!-------------------------------------------------------
+# /ITL/scene load "scripts/require.inscore";
+!-------------------------------------------------------
+
+# Add the Turenas graphic analysis as an image
+/ITL/scene/turenas set img "rsrc/schemaSonagram.png";
+
+# Sets the 'graphic to time' mapping for the Turanas graphic analysis
+/ITL/scene/turenas mapf "rsrc/schemaSonagram.map";
+
+# Add and set the position of the title text
+/ITL/scene/title set txt "Turenas - John Chowning";
+/ITL/scene/title x -0.36;
+/ITL/scene/title y -0.86;
+/ITL/scene/title scale 3.0;
+
+# Add a rectangle to make the cursor
+/ITL/scene/cursor set rect 0.004 0.217176;
+/ITL/scene/cursor date 0 64;
+/ITL/scene/cursor duration 1 64;
+/ITL/scene/cursor color 204 0 48 132;
+/ITL/scene/cursor z 1.0;
+
+# Add 'credits' text
+/ITL/scene/copyright set txt "Analyse & transcription graphique: Laurent Pottier";
+/ITL/scene/copyright y 0.95;
+
+# Organize z ordering
+/ITL/scene/turenas z -0.9;
+
+# Synchronize the cursor.
+/ITL/scene/sync cursor turenas v;
+
+# Load additionnal material
+# /ITL/scene load "scripts/sections.inscore";
+
+/ITL/scene/section1 set img "rsrc/1.tiff";
+/ITL/scene/section2 set img "rsrc/2.tiff";
+/ITL/scene/section3 set img "rsrc/3.tiff";
+/ITL/scene/section4 set img "rsrc/4.tiff";
+/ITL/scene/section5 set img "rsrc/5.tiff";
+/ITL/scene/section6 set img "rsrc/6.tiff";
+/ITL/scene/section7 set img "rsrc/8.tiff";
+/ITL/scene/section8 set img "rsrc/8.tiff";
+/ITL/scene/section9 set img "rsrc/9.tiff";
+/ITL/scene/sectionA set img "rsrc/7.tiff";
+/ITL/scene/sectionB set img "rsrc/7.tiff";
+/ITL/scene/sectionC set img "rsrc/10.tiff";
+/ITL/scene/section* show 0;
+/ITL/scene/section* date 0 1;
+
+
+# Load the comments position
+# /ITL/scene load "scripts/sectionsPos.inscore";
+
+
+/ITL/scene/section1 x -0.58;
+/ITL/scene/section2 x -0.4;
+/ITL/scene/section3 x -0.2;
+/ITL/scene/section4 x -0.05;
+/ITL/scene/section5 x 0.0;
+/ITL/scene/section6 x 0.3;
+/ITL/scene/section[123456] y 0.03;
+
+/ITL/scene/section7 x -0.47;
+/ITL/scene/section8 x -0.3;
+/ITL/scene/section9 x -0.2;
+/ITL/scene/sectionA x 0.4;
+/ITL/scene/sectionB x 0.4;
+/ITL/scene/section[789AB]* y 0.49;
+
+/ITL/scene/sectionC x 0.3;
+/ITL/scene/sectionC y 0.03;
+
+
+# default if to show the comments
+# /ITL/scene load "commentsOn.inscore";
+
+
+# Add the resources as images and sync to a transparent rect
+/ITL/scene/section1 watch timeEnter 1 32 9 4 (
+	/ITL/scene/$self show 1 );
+/ITL/scene/section1 watch timeLeave 1 32 9 4 (
+	/ITL/scene/$self show 0 );
+/ITL/scene/section2 watch timeEnter 53 8 35 4 (
+	/ITL/scene/$self show 1 );
+/ITL/scene/section2 watch timeLeave 53 8 35 4 (
+	/ITL/scene/$self show 0 );
+/ITL/scene/section3 watch timeEnter 35 4 68 4 (
+	/ITL/scene/$self show 1 );
+/ITL/scene/section3 watch timeLeave 35 4 68 4 (
+	/ITL/scene/$self show 0 );
+/ITL/scene/section4 watch timeEnter 90 4 98 4 (
+	/ITL/scene/$self show 1 );
+/ITL/scene/section4 watch timeLeave 90 4 98 4 (
+	/ITL/scene/$self show 0 );
+/ITL/scene/section5 watch timeEnter 99 4 109 4 (
+	/ITL/scene/$self show 1 );
+/ITL/scene/section5 watch timeLeave 99 4 109 4 (
+	/ITL/scene/$self show 0 );
+/ITL/scene/section6 watch timeEnter 142 4 152 4 (
+	/ITL/scene/$self show 1 );
+/ITL/scene/section6 watch timeLeave 142 4 152 4 (
+	/ITL/scene/$self show 0 );
+/ITL/scene/section7 watch timeEnter 225 4 240 4 (
+	/ITL/scene/$self show 1 );
+/ITL/scene/section7 watch timeLeave 225 4 240 4 (
+	/ITL/scene/$self show 0 );
+/ITL/scene/section8 watch timeEnter 265 4 280 4 (
+	/ITL/scene/$self show 1 );
+/ITL/scene/section8 watch timeLeave 265 4 280 4 (
+	/ITL/scene/$self show 0 );
+/ITL/scene/section9 watch timeEnter 300 4 330 4 (
+	/ITL/scene/$self show 1 );
+/ITL/scene/section9 watch timeLeave 300 4 330 4 (
+	/ITL/scene/$self show 0 );
+/ITL/scene/sectionA watch timeEnter 454 4 470 4 (
+	/ITL/scene/$self show 1 );
+/ITL/scene/sectionA watch timeLeave 454 4 470 4 (
+	/ITL/scene/$self show 0 );
+/ITL/scene/sectionB watch timeEnter 480 4 496 4 (
+	/ITL/scene/$self show 1 );
+/ITL/scene/sectionB watch timeLeave 480 4 496 4 (
+	/ITL/scene/$self show 0 );
+/ITL/scene/sectionC watch timeEnter 581 4 593 4 (
+	/ITL/scene/$self show 1 );
+/ITL/scene/sectionC watch timeLeave 581 4 593 4 (
+	/ITL/scene/$self show 0 );
+
+
+# Load interactions
+# /ITL/scene load "scripts/watch.inscore";
+
+/ITL/scene/turenas watch mouseDown (
+	/ITL/scene/[mcs]* date "$date[1/4]" ,
+	localhost:7100/date  "$date[1/4]" );
+
+/ITL/scene/turenas watch mouseMove (
+	/ITL/scene/[mcs]* date "$date[1/4]" ,
+	localhost:7100/date  "$date[1/4]" );
+
+# Load play controler
+# /ITL/scene load "scripts/control.inscore";
+
+/ITL/scene/startbutton set img "rsrc/start.png";
+/ITL/scene/startbutton z 1.0;
+/ITL/scene/stopbutton set img "rsrc/stop.png";
+/ITL/scene/stopbutton z 0.5;
+/ITL/scene/*button effect shadow 8 8 0 8 33 74 10;
+/ITL/scene/*button y 0.85;
+/ITL/scene/*button scale 0.5;
+
+/ITL/scene/startbutton watch mouseDown (
+	/ITL/scene/stopbutton z 1.1 ,
+	localhost:7100/play  1 );
+
+/ITL/scene/stopbutton watch mouseDown (
+	/ITL/scene/stopbutton z 0.5 ,
+	localhost:7100/play  0 );
+
+/ITL/scene/boulet set ellipse 0.1 0.1;
+/ITL/scene/boulet alpha 0;
+/ITL/scene/boule set img "rsrc/boule.png";
+/ITL/scene/boule scale 0.3;
+/ITL/scene/boule alpha 100;
+/ITL/scene/boule z 1.0;
+/ITL/scene/boulet z 1.0;
+/ITL/scene/boule* xorigin 1.0;
+/ITL/scene/boule* yorigin 1.0;
+/ITL/scene/boule* x 1.0;
+/ITL/scene/boule* y 1.0;
+
+/ITL/scene/boule* watch mouseEnter 	( /ITL/scene/boule alpha 255 );
+/ITL/scene/boule* watch mouseLeave 	( /ITL/scene/boule alpha 100 );
+/ITL/scene/boule watch mouseDown (
+	/ITL/scene fullscreen 1 ,
+	/ITL/scene/boulet z 1.1 );
+
+/ITL/scene/boulet watch mouseDown (
+	/ITL/scene fullscreen 0 ,
+	/ITL/scene/boulet z 0.5 );

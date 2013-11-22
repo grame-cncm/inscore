@@ -1,2 +1,3 @@
-../scripts/S-log/DROP-ME.inscore
 ../regression/S-log/errorScript.inscore
+../regression/S-log/errorScript2.inscore
+../regression/S-log/errorScript3.inscore

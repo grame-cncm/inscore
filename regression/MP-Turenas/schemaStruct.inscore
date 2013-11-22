@@ -1,0 +1,42 @@
+
+/ITL/scene/turenas del;
+/ITL/scene/turenas set img "rsrc/schemaStruct.png";
+/ITL/scene/turenas mapf "rsrc/schemaStruct.map";
+/ITL/scene/turenas scale 0.7;
+
+/ITL/scene/cursor color 0 0 240 132;
+/ITL/scene/cursor width 0.002;
+
+# Load the comments position
+# /ITL load "scripts/sectionsCenter.inscore";
+
+/ITL/scene/section* x 0.0;
+/ITL/scene/section* y 0.4;
+
+
+# reload the watched events
+# /ITL load "scripts/layoutScore.inscore";
+
+
+/ITL/scene/turenas sync;
+/ITL/scene/turenas xorigin 0.0;
+/ITL/scene/turenas x 0.0;
+/ITL/scene/_cursor del;
+
+# resynchronize the cursor.
+/ITL/scene/sync cursor turenas v;
+/ITL/scene/sync cursorsmall;
+/ITL/scene/cursorsmall show 0;
+
+/ITL/scene/_smallturenas show 0;
+
+# reload the watched events
+# /ITL load "scripts/watch.inscore";
+
+/ITL/scene/turenas watch mouseDown (
+	/ITL/scene/[mcs]* date "$date[1/4]" ,
+	localhost:7100/date  "$date[1/4]" );
+
+/ITL/scene/turenas watch mouseMove (
+	/ITL/scene/[mcs]* date "$date[1/4]" ,
+	localhost:7100/date  "$date[1/4]" );

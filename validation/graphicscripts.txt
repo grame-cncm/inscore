@@ -29,3 +29,15 @@
 ../regression/MP-graphsig-sinus/essaiythhsba.inscore
 ../scripts/MP-scene/scene.inscore
 ../regression/MP-scene/changes.inscore
+../scripts/S-guidoStream/DROP-ME.inscore
+../scripts/S-guidoStream/1.inscore
+../scripts/S-guidoStream/2.inscore
+../scripts/S-guidoStream/3.inscore
+../scripts/S-guidoStream/4.inscore
+../scripts/S-guidoStream/5.inscore
+../scripts/S-guidoStream/6.inscore
+../scripts/S-guidoStream/7.inscore
+../scripts/S-guidoStream/8.inscore
+../scripts/S-guidoStream/9.inscore
+../scripts/S-guidoStream/10.inscore
+../scripts/S-guidoStream/11.inscore
