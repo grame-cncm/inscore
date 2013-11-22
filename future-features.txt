@@ -10,5 +10,5 @@ OK - save/restaure : save empile le comportement existant d'un objet,
 - embarquer le compilateur faust pour générer des plugins de manière dynamique
 - architecture de plugins (compilateur faust, gesture follower)
 - improve documentation for signals (with examples)
-- scenes dans une scene
+OK - scenes dans une scene
 
