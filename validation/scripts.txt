@@ -4,8 +4,6 @@
 ../scripts/S-alias/scale.inscore
 ../scripts/S-queries/DROP-ME.inscore
 ../scripts/S-queries/rate.inscore
-../scripts/S-queries/rootpath.inscore
-../scripts/S-queries/stats.inscore
 ../scripts/S-queries/widthheight.inscore
 ../scripts/S-scoremap/DROP-ME.inscore
 ../scripts/S-scoremap/systemMap.inscore

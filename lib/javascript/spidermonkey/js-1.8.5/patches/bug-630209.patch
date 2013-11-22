@@ -1,0 +1,2760 @@
+diff --git a/js/jsd/jsd_xpc.cpp b/js/jsd/jsd_xpc.cpp
+--- a/js/jsd/jsd_xpc.cpp
++++ b/js/jsd/jsd_xpc.cpp
+@@ -1037,17 +1037,17 @@ PCMapEntry *
+ jsdScript::CreatePPLineMap()
+ {    
+     JSContext  *cx  = JSD_GetDefaultJSContext (mCx);
+     JSAutoRequest ar(cx);
+     JSObject   *obj = JS_NewObject(cx, NULL, NULL, NULL);
+     JSFunction *fun = JSD_GetJSFunction (mCx, mScript);
+     JSScript   *script; /* In JSD compartment */
+     PRUint32    baseLine;
+-    PRBool      scriptOwner = PR_FALSE;
++    JSObject   *scriptObj = NULL;
+     JSString   *jsstr;
+     size_t      length;
+     const jschar *chars;
+     
+     if (fun) {
+         uintN nargs;
+ 
+         {
+@@ -1075,36 +1075,40 @@ jsdScript::CreatePPLineMap()
+         if (!fun || !(script = JS_GetFunctionScript(cx, fun)))
+             return nsnull;
+         baseLine = 3;
+     } else {
+         script = JSD_GetJSScript(mCx, mScript);
+         JSString *jsstr;
+ 
+         {
+-            JSAutoEnterCompartment ac;
++            JS::AutoEnterScriptCompartment ac;
+             if (!ac.enter(cx, script))
+                 return nsnull;
+ 
+-            jsstr = JS_DecompileScript (cx, JSD_GetJSScript(mCx, mScript), "ppscript", 4);
++            jsstr = JS_DecompileScript (cx, script, "ppscript", 4);
+             if (!jsstr)
+                 return nsnull;
+ 
+             if (!(chars = JS_GetStringCharsAndLength(cx, jsstr, &length)))
+                 return nsnull;
+         }
+ 
+         JS::Anchor<JSString *> kungFuDeathGrip(jsstr);
+-        script = JS_CompileUCScript (cx, obj, chars, length, "x-jsd:ppbuffer?type=script", 1);
+-        if (!script)
++        scriptObj = JS_CompileUCScript (cx, obj, chars, length, "x-jsd:ppbuffer?type=script", 1);
++        if (!scriptObj)
+             return nsnull;
+-        scriptOwner = PR_TRUE;
++        script = JS_GetScriptFromObject(scriptObj);
+         baseLine = 1;
+     }
+ 
++    /* Make sure that a non-function script is rooted via scriptObj until the
++     * end of script usage. */
++    JS::Anchor<JSObject *> scriptAnchor(scriptObj);
++
+     PRUint32 scriptExtent = JS_GetScriptLineExtent (cx, script);
+     jsbytecode* firstPC = JS_LineNumberToPC (cx, script, 0);
+     /* allocate worst case size of map (number of lines in script + 1
+      * for our 0 record), we'll shrink it with a realloc later. */
+     PCMapEntry *lineMap =
+         static_cast<PCMapEntry *>
+                    (PR_Malloc((scriptExtent + 1) * sizeof (PCMapEntry)));
+     PRUint32 lineMapSize = 0;
+@@ -1125,19 +1129,16 @@ jsdScript::CreatePPLineMap()
+                                        lineMapSize * sizeof(PCMapEntry)));
+             if (!lineMap) {
+                 PR_Free(mPPLineMap);
+                 lineMapSize = 0;
+             }
+         }
+     }
+ 
+-    if (scriptOwner)
+-        JS_DestroyScript (cx, script);
+-
+     mPCMapSize = lineMapSize;
+     return mPPLineMap = lineMap;
+ }
+ 
+ PRUint32
+ jsdScript::PPPcToLine (PRUint32 aPC)
+ {
+     if (!mPPLineMap && !CreatePPLineMap())
+@@ -1182,17 +1183,17 @@ jsdScript::GetJSDScript(JSDScript **_rva
+ }
+ 
+ NS_IMETHODIMP
+ jsdScript::GetVersion (PRInt32 *_rval)
+ {
+     ASSERT_VALID_EPHEMERAL;
+     JSContext *cx = JSD_GetDefaultJSContext (mCx);
+     JSScript *script = JSD_GetJSScript(mCx, mScript);
+-    JSAutoEnterCompartment ac;
++    JS::AutoEnterScriptCompartment ac;
+     if (!ac.enter(cx, script))
+         return NS_ERROR_FAILURE;
+     *_rval = static_cast<PRInt32>(JS_GetScriptVersion(cx, script));
+     return NS_OK;
+ }
+ 
+ NS_IMETHODIMP
+ jsdScript::GetTag(PRUint32 *_rval)
+@@ -1378,23 +1379,24 @@ jsdScript::GetFunctionSource(nsAString &
+         return NS_ERROR_FAILURE;
+     }
+     JSFunction *fun = JSD_GetJSFunction (mCx, mScript);
+ 
+     JSAutoRequest ar(cx);
+ 
+     JSString *jsstr;
+     JSAutoEnterCompartment ac;
++    JS::AutoEnterScriptCompartment asc;
+     if (fun) {
+         if (!ac.enter(cx, JS_GetFunctionObject(fun)))
+             return NS_ERROR_FAILURE;
+         jsstr = JS_DecompileFunction (cx, fun, 4);
+     } else {
+         JSScript *script = JSD_GetJSScript (mCx, mScript);
+-        if (!ac.enter(cx, script))
++        if (!asc.enter(cx, script))
+             return NS_ERROR_FAILURE;
+         jsstr = JS_DecompileScript (cx, script, "ppscript", 4);
+     }
+     if (!jsstr)
+         return NS_ERROR_FAILURE;
+ 
+     size_t length;
+     const jschar *chars = JS_GetStringCharsZAndLength(cx, jsstr, &length);
+diff --git a/js/src/jsapi-tests/testScriptObject.cpp b/js/src/jsapi-tests/testScriptObject.cpp
+--- a/js/src/jsapi-tests/testScriptObject.cpp
++++ b/js/src/jsapi-tests/testScriptObject.cpp
+@@ -10,41 +10,25 @@ struct ScriptObjectFixture : public JSAP
+     static jschar uc_code[];
+ 
+     ScriptObjectFixture()
+     {
+         for (int i = 0; i < code_size; i++)
+             uc_code[i] = code[i];
+     }
+ 
+-    bool tryScript(JSScript *script)
++    bool tryScript(JSObject *scriptObj)
+     {
+-        CHECK(script);
+-
+-        /* We should have allocated a script object for the script already. */
+-        jsvalRoot script_object(cx, OBJECT_TO_JSVAL(JS_GetScriptObject(script)));
+-        CHECK(JSVAL_TO_OBJECT(script_object.value()));
+-
+-        /*
+-         * JS_NewScriptObject just returns the object already created for the
+-         * script. It was always a bug to call this more than once.
+-         */
+-        jsvalRoot second_script_object
+-            (cx, OBJECT_TO_JSVAL(JS_NewScriptObject(cx, script)));
+-        CHECK_SAME(second_script_object.value(), script_object.value());
++        CHECK(scriptObj);
+ 
+         JS_GC(cx);
+ 
+         /* After a garbage collection, the script should still work. */
+         jsval result;
+-        CHECK(JS_ExecuteScript(cx, global, script, &result));
+-
+-        /* JS_DestroyScript must still be safe to call, whether or not it
+-           actually has any effect. */
+-        JS_DestroyScript(cx, script);
++        CHECK(JS_ExecuteScript(cx, global, scriptObj, &result));
+ 
+         return true;
+     }
+ };
+ 
+ const char ScriptObjectFixture::code[] =
+     "(function(a, b){return a+' '+b;}('hello', 'world'))";
+ const int ScriptObjectFixture::code_size = sizeof(ScriptObjectFixture::code) - 1;
+@@ -98,31 +82,31 @@ END_FIXTURE_TEST(ScriptObjectFixture, bu
+ 
+ BEGIN_FIXTURE_TEST(ScriptObjectFixture, bug438633_JS_CompileFile)
+ {
+     TempFile tempScript;
+     static const char script_filename[] = "temp-bug438633_JS_CompileFile";
+     FILE *script_stream = tempScript.open(script_filename);
+     CHECK(fputs(code, script_stream) != EOF);
+     tempScript.close();
+-    JSScript *script = JS_CompileFile(cx, global, script_filename);
++    JSObject *scriptObj = JS_CompileFile(cx, global, script_filename);
+     tempScript.remove();
+-    return tryScript(script);
++    return tryScript(scriptObj);
+ }
+ END_FIXTURE_TEST(ScriptObjectFixture, bug438633_JS_CompileFile)
+ 
+ BEGIN_FIXTURE_TEST(ScriptObjectFixture, bug438633_JS_CompileFile_empty)
+ {
+     TempFile tempScript;
+     static const char script_filename[] = "temp-bug438633_JS_CompileFile_empty";
+     tempScript.open(script_filename);
+     tempScript.close();
+-    JSScript *script = JS_CompileFile(cx, global, script_filename);
++    JSObject *scriptObj = JS_CompileFile(cx, global, script_filename);
+     tempScript.remove();
+-    return tryScript(script);
++    return tryScript(scriptObj);
+ }
+ END_FIXTURE_TEST(ScriptObjectFixture, bug438633_JS_CompileFile_empty)
+ 
+ BEGIN_FIXTURE_TEST(ScriptObjectFixture, bug438633_JS_CompileFileHandle)
+ {
+     TempFile tempScript;
+     FILE *script_stream = tempScript.open("temp-bug438633_JS_CompileFileHandle");
+     CHECK(fputs(code, script_stream) != EOF);
+@@ -147,24 +131,8 @@ BEGIN_FIXTURE_TEST(ScriptObjectFixture, 
+     FILE *script_stream = tempScript.open("temp-bug438633_JS_CompileFileHandleForPrincipals");
+     CHECK(fputs(code, script_stream) != EOF);
+     CHECK(fseek(script_stream, 0, SEEK_SET) != EOF);
+     return tryScript(JS_CompileFileHandleForPrincipals(cx, global,
+                                                        "temporary file",
+                                                        script_stream, NULL));
+ }
+ END_FIXTURE_TEST(ScriptObjectFixture, bug438633_JS_CompileFileHandleForPrincipals)
+-
+-BEGIN_TEST(testScriptObject_ScriptlessScriptObjects)
+-{
+-    /* JS_NewScriptObject(cx, NULL) should return a fresh object each time. */
+-    jsvalRoot script_object1(cx, OBJECT_TO_JSVAL(JS_NewScriptObject(cx, NULL)));
+-    CHECK(!JSVAL_IS_PRIMITIVE(script_object1.value()));
+-
+-    jsvalRoot script_object2(cx, OBJECT_TO_JSVAL(JS_NewScriptObject(cx, NULL)));
+-    CHECK(!JSVAL_IS_PRIMITIVE(script_object2.value()));
+-
+-    if (script_object1.value() == script_object2.value())
+-        return false;
+-
+-    return true;
+-}
+-END_TEST(testScriptObject_ScriptlessScriptObjects)
+diff --git a/js/src/jsapi-tests/testTrap.cpp b/js/src/jsapi-tests/testTrap.cpp
+--- a/js/src/jsapi-tests/testTrap.cpp
++++ b/js/src/jsapi-tests/testTrap.cpp
+@@ -25,52 +25,56 @@ BEGIN_TEST(testTrap_gc)
+ "while (i < 10) {\n"
+ "    sum += i;\n"
+ "    ++i;\n"
+ "}\n"
+ "({ result: sum });\n"
+         ;
+ 
+     // compile
+-    JSScript *script = JS_CompileScript(cx, global, source, strlen(source), __FILE__, 1);
+-    CHECK(script);
+-    JSObject *scrobj = JS_NewScriptObject(cx, script);
+-    CHECK(scrobj);
+-    jsvalRoot v(cx, OBJECT_TO_JSVAL(scrobj));
++    JSObject *scriptObj = JS_CompileScript(cx, global, source, strlen(source), __FILE__, 1);
++    CHECK(scriptObj);
+ 
+     // execute
+     jsvalRoot v2(cx);
+-    CHECK(JS_ExecuteScript(cx, global, script, v2.addr()));
++    CHECK(JS_ExecuteScript(cx, global, scriptObj, v2.addr()));
+     CHECK(JSVAL_IS_OBJECT(v2));
+     CHECK(emptyTrapCallCount == 0);
+ 
+     // Disable JIT for debugging
+     JS_SetOptions(cx, JS_GetOptions(cx) & ~JSOPTION_JIT);
+ 
+     // Enable debug mode
+     CHECK(JS_SetDebugMode(cx, JS_TRUE));
+ 
+-    jsbytecode *line2 = JS_LineNumberToPC(cx, script, 1);
+-    CHECK(line2);
++    static const char trapClosureText[] = "some trap closure";
+ 
+-    jsbytecode *line6 = JS_LineNumberToPC(cx, script, 5);
+-    CHECK(line2);
+-
+-    static const char trapClosureText[] = "some trap closure";
+-    JSString *trapClosure = JS_NewStringCopyZ(cx, trapClosureText);
+-    CHECK(trapClosure);
+-    JS_SetTrap(cx, script, line2, EmptyTrapHandler, STRING_TO_JSVAL(trapClosure));
+-    JS_SetTrap(cx, script, line6, EmptyTrapHandler, STRING_TO_JSVAL(trapClosure));
+-
+-    JS_GC(cx);
+-
+-    CHECK(JS_FlatStringEqualsAscii(JS_ASSERT_STRING_IS_FLAT(trapClosure), trapClosureText));
++    // scope JSScript  usage to make sure that it is not used after
++    // JS_ExecuteScript. This way we avoid using Anchor.
++    JSString *trapClosure;
++    {
++        JSScript *script = JS_GetScriptFromObject(scriptObj);
++        jsbytecode *line2 = JS_LineNumberToPC(cx, script, 1);
++        CHECK(line2);
++        
++        jsbytecode *line6 = JS_LineNumberToPC(cx, script, 5);
++        CHECK(line2);
++        
++        trapClosure = JS_NewStringCopyZ(cx, trapClosureText);
++        CHECK(trapClosure);
++        JS_SetTrap(cx, script, line2, EmptyTrapHandler, STRING_TO_JSVAL(trapClosure));
++        JS_SetTrap(cx, script, line6, EmptyTrapHandler, STRING_TO_JSVAL(trapClosure));
++        
++        JS_GC(cx);
++        
++        CHECK(JS_FlatStringEqualsAscii(JS_ASSERT_STRING_IS_FLAT(trapClosure), trapClosureText));
++    }
+ 
+     // execute
+-    CHECK(JS_ExecuteScript(cx, global, script, v2.addr()));
++    CHECK(JS_ExecuteScript(cx, global, scriptObj, v2.addr()));
+     CHECK(emptyTrapCallCount == 11);
+ 
+     JS_GC(cx);
+ 
+     CHECK(JS_FlatStringEqualsAscii(JS_ASSERT_STRING_IS_FLAT(trapClosure), trapClosureText));
+ 
+     return true;
+ }
+diff --git a/js/src/jsapi-tests/testVersion.cpp b/js/src/jsapi-tests/testVersion.cpp
+--- a/js/src/jsapi-tests/testVersion.cpp
++++ b/js/src/jsapi-tests/testVersion.cpp
+@@ -36,17 +36,17 @@ struct VersionFixture : public JSAPITest
+                JS_DefineFunction(cx, global, "checkNewScriptNoXML", CheckNewScriptNoXML, 0, 0) &&
+                JS_DefineFunction(cx, global, "overrideVersion15", OverrideVersion15, 0, 0) &&
+                JS_DefineFunction(cx, global, "captureVersion", CaptureVersion, 0, 0) &&
+                JS_DefineFunction(cx, global, "checkOverride", CheckOverride, 1, 0) &&
+                JS_DefineFunction(cx, global, "evalScriptVersion16",
+                                  EvalScriptVersion16, 0, 0);
+     }
+ 
+-    JSScript *fakeScript(const char *contents, size_t length) {
++    JSObject *fakeScript(const char *contents, size_t length) {
+         return JS_CompileScript(cx, global, contents, length, "<test>", 1);
+     }
+ 
+     bool hasXML(uintN version) {
+         return VersionHasXML(JSVersion(version));
+     }
+ 
+     bool hasXML(JSScript *script) {
+@@ -69,19 +69,19 @@ struct VersionFixture : public JSAPITest
+ 
+     bool checkVersionIsOverridden() {
+         CHECK(cx->isVersionOverridden());
+         return true;
+     }
+ 
+     /* Check that script compilation results in a version without XML. */
+     bool checkNewScriptNoXML() {
+-        JSScript *script = fakeScript("", 0);
+-        CHECK(script);
+-        CHECK(!hasXML(script->getVersion()));
++        JSObject *scriptObj = fakeScript("", 0);
++        CHECK(scriptObj);
++        CHECK(!hasXML(JS_GetScriptFromObject(scriptObj)->getVersion()));
+         return true;
+     }
+ 
+     bool checkVersionHasXML() {
+         CHECK(VersionHasXML(cx->findVersion()));
+         return true;
+     }
+ 
+@@ -190,25 +190,22 @@ BEGIN_FIXTURE_TEST(VersionFixture, testO
+ 
+     /* Enable XML and compile a script to activate. */
+     enableXML();
+     const char toActivateChars[] =
+         "checkVersionHasXML();"
+         "disableXMLOption();"
+         "callSetVersion17();"
+         "checkNewScriptNoXML();";
+-    JSScript *toActivate = fakeScript(toActivateChars, sizeof(toActivateChars) - 1);
++    JSObject *toActivate = fakeScript(toActivateChars, sizeof(toActivateChars) - 1);
+     CHECK(toActivate);
+-    JSObject *scriptObject = JS_GetScriptObject(toActivate);
+-    CHECK(hasXML(toActivate));
++    CHECK(hasXML(JS_GetScriptFromObject(toActivate)));
+ 
+     disableXML();
+ 
+-    CHECK(scriptObject);
+-
+     /* Activate the script. */
+     jsval dummy;
+     CHECK(JS_ExecuteScript(cx, global, toActivate, &dummy));
+     return true;
+ }
+ END_FIXTURE_TEST(VersionFixture, testOptionsAreUsedForVersionFlags)
+ 
+ /*
+diff --git a/js/src/jsapi-tests/testXDR.cpp b/js/src/jsapi-tests/testXDR.cpp
+--- a/js/src/jsapi-tests/testXDR.cpp
++++ b/js/src/jsapi-tests/testXDR.cpp
+@@ -11,87 +11,75 @@ BEGIN_TEST(testXDR_bug506491)
+     const char *s =
+         "function makeClosure(s, name, value) {\n"
+         "    eval(s);\n"
+         "    return let (n = name, v = value) function () { return String(v); };\n"
+         "}\n"
+         "var f = makeClosure('0;', 'status', 'ok');\n";
+ 
+     // compile
+-    JSScript *script = JS_CompileScript(cx, global, s, strlen(s), __FILE__, __LINE__);
+-    CHECK(script);
+-    JSObject *scrobj = JS_NewScriptObject(cx, script);
+-    CHECK(scrobj);
+-    jsvalRoot v(cx, OBJECT_TO_JSVAL(scrobj));
++    JSObject *scriptObj = JS_CompileScript(cx, global, s, strlen(s), __FILE__, __LINE__);
++    CHECK(scriptObj);
+ 
+     // freeze
+     JSXDRState *w = JS_XDRNewMem(cx, JSXDR_ENCODE);
+     CHECK(w);
+-    CHECK(JS_XDRScript(w, &script));
++    CHECK(JS_XDRScriptObject(w, &scriptObj));
+     uint32 nbytes;
+     void *p = JS_XDRMemGetData(w, &nbytes);
+     CHECK(p);
+     void *frozen = JS_malloc(cx, nbytes);
+     CHECK(frozen);
+     memcpy(frozen, p, nbytes);
+     JS_XDRDestroy(w);
+ 
+     // thaw
+-    script = NULL;
++    scriptObj = NULL;
+     JSXDRState *r = JS_XDRNewMem(cx, JSXDR_DECODE);
+     JS_XDRMemSetData(r, frozen, nbytes);
+-    CHECK(JS_XDRScript(r, &script));
++    CHECK(JS_XDRScriptObject(r, &scriptObj));
+     JS_XDRDestroy(r);  // this frees `frozen`
+-    scrobj = JS_NewScriptObject(cx, script);
+-    CHECK(scrobj);
+-    v = OBJECT_TO_JSVAL(scrobj);
+ 
+     // execute
+     jsvalRoot v2(cx);
+-    CHECK(JS_ExecuteScript(cx, global, script, v2.addr()));
++    CHECK(JS_ExecuteScript(cx, global, scriptObj, v2.addr()));
+ 
+     // try to break the Block object that is the parent of f
+     JS_GC(cx);
+ 
+     // confirm
+     EVAL("f() === 'ok';\n", v2.addr());
+     jsvalRoot trueval(cx, JSVAL_TRUE);
+     CHECK_SAME(v2, trueval);
+     return true;
+ }
+ END_TEST(testXDR_bug506491)
+ 
+ BEGIN_TEST(testXDR_bug516827)
+ {
+     // compile an empty script
+-    JSScript *script = JS_CompileScript(cx, global, "", 0, __FILE__, __LINE__);
+-    CHECK(script);
+-    JSObject *scrobj = JS_NewScriptObject(cx, script);
+-    CHECK(scrobj);
+-    jsvalRoot v(cx, OBJECT_TO_JSVAL(scrobj));
++    JSObject *scriptObj = JS_CompileScript(cx, global, "", 0, __FILE__, __LINE__);
++    CHECK(scriptObj);
+ 
+     // freeze
+     JSXDRState *w = JS_XDRNewMem(cx, JSXDR_ENCODE);
+     CHECK(w);
+-    CHECK(JS_XDRScript(w, &script));
++    CHECK(JS_XDRScriptObject(w, &scriptObj));
+     uint32 nbytes;
+     void *p = JS_XDRMemGetData(w, &nbytes);
+     CHECK(p);
+     void *frozen = JS_malloc(cx, nbytes);
+     CHECK(frozen);
+     memcpy(frozen, p, nbytes);
+     JS_XDRDestroy(w);
+ 
+     // thaw
+-    script = NULL;
++    scriptObj = NULL;
+     JSXDRState *r = JS_XDRNewMem(cx, JSXDR_DECODE);
+     JS_XDRMemSetData(r, frozen, nbytes);
+-    CHECK(JS_XDRScript(r, &script));
++    CHECK(JS_XDRScriptObject(r, &scriptObj));
+     JS_XDRDestroy(r);  // this frees `frozen`
+-    scrobj = JS_NewScriptObject(cx, script);
+-    CHECK(scrobj);
+-    v = OBJECT_TO_JSVAL(scrobj);
+ 
+     // execute with null result meaning no result wanted
+-    CHECK(JS_ExecuteScript(cx, global, script, NULL));
++    CHECK(JS_ExecuteScript(cx, global, scriptObj, NULL));
+     return true;
+ }
+ END_TEST(testXDR_bug516827)
+diff --git a/js/src/jsapi.cpp b/js/src/jsapi.cpp
+--- a/js/src/jsapi.cpp
++++ b/js/src/jsapi.cpp
+@@ -77,17 +77,16 @@
+ #include "jsparse.h"
+ #include "jsproxy.h"
+ #include "jsregexp.h"
+ #include "jsscan.h"
+ #include "jsscope.h"
+ #include "jsscript.h"
+ #include "jsstr.h"
+ #include "jstracer.h"
+-#include "jsdbgapi.h"
+ #include "prmjtime.h"
+ #include "jsstaticcheck.h"
+ #include "jsvector.h"
+ #include "jswrapper.h"
+ #include "jstypedarray.h"
+ 
+ #include "jsatominlines.h"
+ #include "jscntxtinlines.h"
+@@ -107,26 +106,16 @@
+ 
+ #if JS_HAS_XML_SUPPORT
+ #include "jsxml.h"
+ #endif
+ 
+ using namespace js;
+ using namespace js::gc;
+ 
+-static JSClass dummy_class = {
+-    "jdummy",
+-    JSCLASS_GLOBAL_FLAGS,
+-    JS_PropertyStub,  JS_PropertyStub,
+-    JS_PropertyStub,  JS_StrictPropertyStub,
+-    JS_EnumerateStub, JS_ResolveStub,
+-    JS_ConvertStub,   NULL,
+-    JSCLASS_NO_OPTIONAL_MEMBERS
+-};
+-
+ /*
+  * This class is a version-establising barrier at the head of a VM entry or
+  * re-entry. It ensures that:
+  *
+  * - |newVersion| is the starting (default) version used for the context.
+  * - The starting version state is not an override.
+  * - Overrides in the VM session are not propagated to the caller.
+  */
+@@ -1187,16 +1176,26 @@ JS_EnterCrossCompartmentCall(JSContext *
+         return NULL;
+     }
+     return reinterpret_cast<JSCrossCompartmentCall *>(call);
+ }
+ 
+ JS_PUBLIC_API(JSCrossCompartmentCall *)
+ JS_EnterCrossCompartmentCallScript(JSContext *cx, JSScript *target)
+ {
++    static JSClass dummy_class = {
++        "jdummy",
++        JSCLASS_GLOBAL_FLAGS,
++        JS_PropertyStub,  JS_PropertyStub,
++        JS_PropertyStub,  JS_StrictPropertyStub,
++        JS_EnumerateStub, JS_ResolveStub,
++        JS_ConvertStub,   NULL,
++        JSCLASS_NO_OPTIONAL_MEMBERS
++    };
++
+     CHECK_REQUEST(cx);
+ 
+     JS_ASSERT(target);
+     JSObject *scriptObject = target->u.object;
+     if (!scriptObject) {
+         SwitchToCompartment sc(cx, target->compartment);
+         scriptObject = JS_NewGlobalObject(cx, &dummy_class);
+         if (!scriptObject)
+@@ -1221,33 +1220,37 @@ JSAutoEnterCompartment::enter(JSContext 
+     if (cx->compartment == target->getCompartment()) {
+         call = reinterpret_cast<JSCrossCompartmentCall*>(1);
+         return true;
+     }
+     call = JS_EnterCrossCompartmentCall(cx, target);
+     return call != NULL;
+ }
+ 
++void
++JSAutoEnterCompartment::enterAndIgnoreErrors(JSContext *cx, JSObject *target)
++{
++    (void) enter(cx, target);
++}
++
++namespace JS {
++
+ bool
+-JSAutoEnterCompartment::enter(JSContext *cx, JSScript *target)
++AutoEnterScriptCompartment::enter(JSContext *cx, JSScript *target)
+ {
+     JS_ASSERT(!call);
+     if (cx->compartment == target->compartment) {
+         call = reinterpret_cast<JSCrossCompartmentCall*>(1);
+         return true;
+     }
+     call = JS_EnterCrossCompartmentCallScript(cx, target);
+     return call != NULL;    
+ }
+ 
+-void
+-JSAutoEnterCompartment::enterAndIgnoreErrors(JSContext *cx, JSObject *target)
+-{
+-    (void) enter(cx, target);
+-}
++} /* namespace JS */
+ 
+ JS_PUBLIC_API(void *)
+ JS_SetCompartmentPrivate(JSContext *cx, JSCompartment *compartment, void *data)
+ {
+     CHECK_REQUEST(cx);
+     void *old = compartment->data;
+     compartment->data = data;
+     return old;
+@@ -2181,16 +2184,21 @@ JS_RemoveObjectRoot(JSContext *cx, JSObj
+ 
+ JS_PUBLIC_API(JSBool)
+ JS_RemoveGCThingRoot(JSContext *cx, void **rp)
+ {
+     CHECK_REQUEST(cx);
+     return js_RemoveRoot(cx->runtime, (void *)rp);
+ }
+ 
++JS_NEVER_INLINE JS_PUBLIC_API(void)
++JS_AnchorPtr(void *p)
++{
++}
++
+ #ifdef DEBUG
+ 
+ JS_PUBLIC_API(void)
+ JS_DumpNamedRoots(JSRuntime *rt,
+                   void (*dump)(const char *name, void *rp, JSGCRootType type, void *data),
+                   void *data)
+ {
+     js_DumpNamedRoots(rt, dump, data);
+@@ -4510,94 +4518,97 @@ LAST_FRAME_CHECKS(JSContext *cx, bool re
+ 
+ inline static uint32
+ JS_OPTIONS_TO_TCFLAGS(JSContext *cx)
+ {
+     return (cx->hasRunOption(JSOPTION_COMPILE_N_GO) ? TCF_COMPILE_N_GO : 0) |
+            (cx->hasRunOption(JSOPTION_NO_SCRIPT_RVAL) ? TCF_NO_SCRIPT_RVAL : 0);
+ }
+ 
+-static JSScript *
++static JSObject *
+ CompileUCScriptForPrincipalsCommon(JSContext *cx, JSObject *obj, JSPrincipals *principals,
+                                       const jschar *chars, size_t length,
+                                       const char *filename, uintN lineno, JSVersion version)
+ {
+     JS_THREADSAFE_ASSERT(cx->compartment != cx->runtime->atomsCompartment);
+     CHECK_REQUEST(cx);
+     assertSameCompartment(cx, obj, principals);
+ 
+     uint32 tcflags = JS_OPTIONS_TO_TCFLAGS(cx) | TCF_NEED_MUTABLE_SCRIPT;
+     JSScript *script = Compiler::compileScript(cx, obj, NULL, principals, tcflags,
+                                                chars, length, filename, lineno, version);
+-    if (script && !js_NewScriptObject(cx, script)) {
+-        js_DestroyScript(cx, script);
+-        script = NULL;
++    JSObject *scriptObj = NULL;
++    if (script) {
++        scriptObj = js_NewScriptObject(cx, script);
++        if (!scriptObj)
++            js_DestroyScript(cx, script);
+     }
+-    LAST_FRAME_CHECKS(cx, script);
+-    return script;
+-}
+-
+-extern JS_PUBLIC_API(JSScript *)
++    LAST_FRAME_CHECKS(cx, scriptObj);
++    return scriptObj;
++}
++
++extern JS_PUBLIC_API(JSObject *)
+ JS_CompileUCScriptForPrincipalsVersion(JSContext *cx, JSObject *obj,
+                                        JSPrincipals *principals,
+                                        const jschar *chars, size_t length,
+                                        const char *filename, uintN lineno,
+                                        JSVersion version)
+ {
+     AutoVersionAPI avi(cx, version);
+     return CompileUCScriptForPrincipalsCommon(cx, obj, principals, chars, length, filename, lineno,
+                                               avi.version());
+ }
+ 
+-JS_PUBLIC_API(JSScript *)
++JS_PUBLIC_API(JSObject *)
+ JS_CompileUCScriptForPrincipals(JSContext *cx, JSObject *obj, JSPrincipals *principals,
+                                 const jschar *chars, size_t length,
+                                 const char *filename, uintN lineno)
+ {
+     return CompileUCScriptForPrincipalsCommon(cx, obj, principals, chars, length, filename, lineno,
+                                               cx->findVersion());
+ }
+ 
+-JS_PUBLIC_API(JSScript *)
++JS_PUBLIC_API(JSObject *)
+ JS_CompileUCScript(JSContext *cx, JSObject *obj, const jschar *chars, size_t length,
+                    const char *filename, uintN lineno)
+ {
+     JS_THREADSAFE_ASSERT(cx->compartment != cx->runtime->atomsCompartment);
+     return JS_CompileUCScriptForPrincipals(cx, obj, NULL, chars, length, filename, lineno);
+ }
+ 
+-JS_PUBLIC_API(JSScript *)
++JS_PUBLIC_API(JSObject *)
+ JS_CompileScriptForPrincipalsVersion(JSContext *cx, JSObject *obj,
+                                      JSPrincipals *principals,
+                                      const char *bytes, size_t length,
+                                      const char *filename, uintN lineno,
+                                      JSVersion version)
+ {
+     AutoVersionAPI ava(cx, version);
+     return JS_CompileScriptForPrincipals(cx, obj, principals, bytes, length, filename, lineno);
+ }
+ 
+-JS_PUBLIC_API(JSScript *)
++JS_PUBLIC_API(JSObject *)
+ JS_CompileScriptForPrincipals(JSContext *cx, JSObject *obj,
+                               JSPrincipals *principals,
+                               const char *bytes, size_t length,
+                               const char *filename, uintN lineno)
+ {
+     JS_THREADSAFE_ASSERT(cx->compartment != cx->runtime->atomsCompartment);
+     CHECK_REQUEST(cx);
+ 
+     jschar *chars = js_InflateString(cx, bytes, &length);
+     if (!chars)
+         return NULL;
+-    JSScript *script = JS_CompileUCScriptForPrincipals(cx, obj, principals, chars, length, filename, lineno);
++    JSObject *scriptObj =
++        JS_CompileUCScriptForPrincipals(cx, obj, principals, chars, length, filename, lineno);
+     cx->free(chars);
+-    return script;
+-}
+-
+-JS_PUBLIC_API(JSScript *)
++    return scriptObj;
++}
++
++JS_PUBLIC_API(JSObject *)
+ JS_CompileScript(JSContext *cx, JSObject *obj, const char *bytes, size_t length,
+                  const char *filename, uintN lineno)
+ {
+     JS_THREADSAFE_ASSERT(cx->compartment != cx->runtime->atomsCompartment);
+     return JS_CompileScriptForPrincipals(cx, obj, NULL, bytes, length, filename, lineno);
+ }
+ 
+ JS_PUBLIC_API(JSBool)
+@@ -4645,18 +4656,18 @@ JS_BufferIsCompilableUnit(JSContext *cx,
+ #if defined(HAVE_GETC_UNLOCKED)
+ # define fast_getc getc_unlocked
+ #elif defined(HAVE__GETC_NOLOCK)
+ # define fast_getc _getc_nolock
+ #else
+ # define fast_getc getc
+ #endif
+ 
+-static JSScript *
+-CompileFileHelper(JSContext *cx, JSObject *obj, JSPrincipals *principals, uint32 tcflags,
++static JSObject *
++CompileFileHelper(JSContext *cx, JSObject *obj, JSPrincipals *principals,
+                   const char* filename, FILE *fp)
+ {
+     struct stat st;
+     int ok = fstat(fileno(fp), &st);
+     if (ok != 0)
+         return NULL;
+ 
+     jschar *buf = NULL;
+@@ -4667,165 +4678,122 @@ CompileFileHelper(JSContext *cx, JSObjec
+     /* Read in the whole file, then compile it. */
+     if (fp == stdin) {
+         JS_ASSERT(len == 0);
+         len = 8;  /* start with a small buffer, expand as necessary */
+         int c;
+         bool hitEOF = false;
+         while (!hitEOF) {
+             len *= 2;
+-            jschar* tmpbuf = (jschar *) cx->realloc(buf, len * sizeof(jschar));
++            jschar* tmpbuf = (jschar *) js_realloc(buf, len * sizeof(jschar));
+             if (!tmpbuf) {
+                 cx->free(buf);
+                 return NULL;
+             }
+             buf = tmpbuf;
+ 
+             while (i < len) {
+                 c = fast_getc(fp);
+                 if (c == EOF) {
+                     hitEOF = true;
+                     break;
+                 }
+                 buf[i++] = (jschar) (unsigned char) c;
+             }
+         }
+     } else {
+-        buf = (jschar *) cx->malloc(len * sizeof(jschar));
++        buf = (jschar *) js_malloc(len * sizeof(jschar));
+         if (!buf)
+             return NULL;
+ 
+         int c;
+         while ((c = fast_getc(fp)) != EOF)
+             buf[i++] = (jschar) (unsigned char) c;
+     }
+ 
+     JS_ASSERT(i <= len);
+     len = i;
++    uint32 tcflags = JS_OPTIONS_TO_TCFLAGS(cx) | TCF_NEED_MUTABLE_SCRIPT;
+     script = Compiler::compileScript(cx, obj, NULL, principals, tcflags, buf, len, filename, 1,
+                                      cx->findVersion());
+-    cx->free(buf);
+-    return script;
+-}
+-
+-JS_PUBLIC_API(JSScript *)
++    js_free(buf);
++    if (!script)
++        return NULL;
++
++    JSObject *scriptObj = js_NewScriptObject(cx, script);
++    if (!scriptObj)
++        js_DestroyScript(cx, script);
++    
++    return scriptObj;
++}
++
++JS_PUBLIC_API(JSObject *)
+ JS_CompileFile(JSContext *cx, JSObject *obj, const char *filename)
+ {
+     JS_THREADSAFE_ASSERT(cx->compartment != cx->runtime->atomsCompartment);
+-    FILE *fp;
+-    uint32 tcflags;
+-    JSScript *script;
+ 
+     CHECK_REQUEST(cx);
+     assertSameCompartment(cx, obj);
+-    if (!filename || strcmp(filename, "-") == 0) {
+-        fp = stdin;
+-    } else {
+-        fp = fopen(filename, "r");
+-        if (!fp) {
+-            JS_ReportErrorNumber(cx, js_GetErrorMessage, NULL, JSMSG_CANT_OPEN,
+-                                 filename, "No such file or directory");
+-            return NULL;
++    JSObject *scriptObj = NULL;
++    do {
++        FILE *fp;
++        if (!filename || strcmp(filename, "-") == 0) {
++            fp = stdin;
++        } else {
++            fp = fopen(filename, "r");
++            if (!fp) {
++                JS_ReportErrorNumber(cx, js_GetErrorMessage, NULL, JSMSG_CANT_OPEN,
++                                     filename, "No such file or directory");
++                break;
++            }
+         }
+-    }
+-
+-    tcflags = JS_OPTIONS_TO_TCFLAGS(cx) | TCF_NEED_MUTABLE_SCRIPT;
+-    script = CompileFileHelper(cx, obj, NULL, tcflags, filename, fp);
+-
+-    if (fp != stdin)
+-        fclose(fp);
+-    if (script && !js_NewScriptObject(cx, script)) {
+-        js_DestroyScript(cx, script);
+-        script = NULL;
+-    }
+-    LAST_FRAME_CHECKS(cx, script);
+-    return script;
+-}
+-
+-JS_PUBLIC_API(JSScript *)
+-JS_CompileFileHandleForPrincipals(JSContext *cx, JSObject *obj, const char *filename, FILE *file,
+-                                  JSPrincipals *principals)
++
++        scriptObj = CompileFileHelper(cx, obj, NULL, filename, fp);
++        if (fp != stdin)
++            fclose(fp);
++    } while (false);
++    
++    LAST_FRAME_CHECKS(cx, scriptObj);
++    return scriptObj;
++}
++
++JS_PUBLIC_API(JSObject *)
++JS_CompileFileHandleForPrincipals(JSContext *cx, JSObject *obj, const char *filename,
++                                  FILE *file, JSPrincipals *principals)
+ {
+     JS_THREADSAFE_ASSERT(cx->compartment != cx->runtime->atomsCompartment);
+-    uint32 tcflags;
+-    JSScript *script;
+ 
+     CHECK_REQUEST(cx);
+     assertSameCompartment(cx, obj, principals);
+-    tcflags = JS_OPTIONS_TO_TCFLAGS(cx) | TCF_NEED_MUTABLE_SCRIPT;
+-    script = CompileFileHelper(cx, obj, principals, tcflags, filename, file);
+-
+-    if (script && !js_NewScriptObject(cx, script)) {
+-        js_DestroyScript(cx, script);
+-        script = NULL;
+-    }
+-    LAST_FRAME_CHECKS(cx, script);
+-    return script;
+-}
+-
+-JS_PUBLIC_API(JSScript *)
++    JSObject *scriptObj = CompileFileHelper(cx, obj, principals, filename, file);
++    LAST_FRAME_CHECKS(cx, scriptObj);
++    return scriptObj;
++}
++
++JS_PUBLIC_API(JSObject *)
+ JS_CompileFileHandleForPrincipalsVersion(JSContext *cx, JSObject *obj, const char *filename,
+                                          FILE *file, JSPrincipals *principals, JSVersion version)
+ {
+     AutoVersionAPI ava(cx, version);
+     return JS_CompileFileHandleForPrincipals(cx, obj, filename, file, principals);
+ }
+ 
+-JS_PUBLIC_API(JSScript *)
++JS_PUBLIC_API(JSObject *)
+ JS_CompileFileHandle(JSContext *cx, JSObject *obj, const char *filename, FILE *file)
+ {
+     JS_THREADSAFE_ASSERT(cx->compartment != cx->runtime->atomsCompartment);
+     return JS_CompileFileHandleForPrincipals(cx, obj, filename, file, NULL);
+ }
+ 
+-JS_PUBLIC_API(JSObject *)
+-JS_NewScriptObject(JSContext *cx, JSScript *script)
+-{
+-    JS_THREADSAFE_ASSERT(cx->compartment != cx->runtime->atomsCompartment);
+-    CHECK_REQUEST(cx);
+-    assertSameCompartment(cx, script);
+-    if (!script)
+-        return NewNonFunction<WithProto::Class>(cx, &js_ScriptClass, NULL, NULL);
+-
+-    /*
+-     * This function should only ever be applied to JSScripts that had
+-     * script objects allocated for them when they were created, as
+-     * described in the comment for JSScript::u.object.
+-     */
+-    JS_ASSERT(script->u.object);
+-    return script->u.object;
+-}
+-
+-JS_PUBLIC_API(JSObject *)
+-JS_GetScriptObject(JSScript *script)
+-{
+-    /*
+-     * This function should only ever be applied to JSScripts that had
+-     * script objects allocated for them when they were created, as
+-     * described in the comment for JSScript::u.object.
+-     */
+-    JS_ASSERT(script->u.object);
+-    return script->u.object;
+-}
+-
+-JS_PUBLIC_API(void)
+-JS_DestroyScript(JSContext *cx, JSScript *script)
+-{
+-    CHECK_REQUEST(cx);
+-
+-    /*
+-     * Originally, JSScript lifetimes were managed explicitly, and this function
+-     * was used to free a JSScript. Now, this function does nothing, and the
+-     * garbage collector manages JSScripts; you must root the JSScript's script
+-     * object (obtained via JS_GetScriptObject) to keep it alive.
+-     *
+-     * However, since the script objects have taken over this responsibility, it
+-     * follows that every script passed here must have a script object.
+-     */
+-    JS_ASSERT(script->u.object);
++JS_PUBLIC_API(JSScript *)
++JS_GetScriptFromObject(JSObject *scriptObj)
++{
++    JS_ASSERT(scriptObj->isScript());
++
++    return (JSScript *) scriptObj->getPrivate();
+ }
+ 
+ static JSFunction *
+ CompileUCFunctionForPrincipalsCommon(JSContext *cx, JSObject *obj,
+                                      JSPrincipals *principals, const char *name,
+                                      uintN nargs, const char **argnames,
+                                      const jschar *chars, size_t length,
+                                      const char *filename, uintN lineno, JSVersion version)
+@@ -4985,16 +4953,22 @@ JS_DecompileScript(JSContext *cx, JSScri
+         str = js_GetPrinterOutput(jp);
+     else
+         str = NULL;
+     js_DestroyPrinter(jp);
+     return str;
+ }
+ 
+ JS_PUBLIC_API(JSString *)
++JS_DecompileScriptObject(JSContext *cx, JSObject *scriptObj, const char *name, uintN indent)
++{
++    return JS_DecompileScript(cx, scriptObj->getScript(), name, indent);
++}
++
++JS_PUBLIC_API(JSString *)
+ JS_DecompileFunction(JSContext *cx, JSFunction *fun, uintN indent)
+ {
+     JS_THREADSAFE_ASSERT(cx->compartment != cx->runtime->atomsCompartment);
+     CHECK_REQUEST(cx);
+     assertSameCompartment(cx, fun);
+     return js_DecompileToString(cx, "JS_DecompileFunction", fun,
+                                 indent & ~JS_DONT_PRETTY_PRINT,
+                                 !(indent & JS_DONT_PRETTY_PRINT),
+@@ -5009,36 +4983,34 @@ JS_DecompileFunctionBody(JSContext *cx, 
+     assertSameCompartment(cx, fun);
+     return js_DecompileToString(cx, "JS_DecompileFunctionBody", fun,
+                                 indent & ~JS_DONT_PRETTY_PRINT,
+                                 !(indent & JS_DONT_PRETTY_PRINT),
+                                 false, false, js_DecompileFunctionBody);
+ }
+ 
+ JS_PUBLIC_API(JSBool)
+-JS_ExecuteScript(JSContext *cx, JSObject *obj, JSScript *script, jsval *rval)
++JS_ExecuteScript(JSContext *cx, JSObject *obj, JSObject *scriptObj, jsval *rval)
+ {
+     JS_THREADSAFE_ASSERT(cx->compartment != cx->runtime->atomsCompartment);
+-    JSBool ok;
+ 
+     CHECK_REQUEST(cx);
+-    assertSameCompartment(cx, obj, script);
+-    /* This should receive only scripts handed out via the JSAPI. */
+-    JS_ASSERT(script->u.object);
+-    ok = Execute(cx, obj, script, NULL, 0, Valueify(rval));
++    assertSameCompartment(cx, obj, scriptObj);
++
++    JSBool ok = Execute(cx, obj, scriptObj->getScript(), NULL, 0, Valueify(rval));
+     LAST_FRAME_CHECKS(cx, ok);
+     return ok;
+ }
+ 
+ JS_PUBLIC_API(JSBool)
+-JS_ExecuteScriptVersion(JSContext *cx, JSObject *obj, JSScript *script, jsval *rval,
++JS_ExecuteScriptVersion(JSContext *cx, JSObject *obj, JSObject *scriptObj, jsval *rval,
+                         JSVersion version)
+ {
+     AutoVersionAPI ava(cx, version);
+-    return JS_ExecuteScript(cx, obj, script, rval);
++    return JS_ExecuteScript(cx, obj, scriptObj, rval);
+ }
+ 
+ bool
+ EvaluateUCScriptForPrincipalsCommon(JSContext *cx, JSObject *obj,
+                                     JSPrincipals *principals,
+                                     const jschar *chars, uintN length,
+                                     const char *filename, uintN lineno,
+                                     jsval *rval, JSVersion compileVersion)
+@@ -6184,30 +6156,16 @@ JS_ClearContextThread(JSContext *cx)
+      * with the GC that may delete t.
+      */
+     return reinterpret_cast<jsword>(t->id);
+ #else
+     return 0;
+ #endif
+ }
+ 
+-#ifdef MOZ_TRACE_JSCALLS
+-JS_PUBLIC_API(void)
+-JS_SetFunctionCallback(JSContext *cx, JSFunctionCallback fcb)
+-{
+-    cx->functionCallback = fcb;
+-}
+-
+-JS_PUBLIC_API(JSFunctionCallback)
+-JS_GetFunctionCallback(JSContext *cx)
+-{
+-    return cx->functionCallback;
+-}
+-#endif
+-
+ #ifdef JS_GC_ZEAL
+ JS_PUBLIC_API(void)
+ JS_SetGCZeal(JSContext *cx, uint8 zeal)
+ {
+     cx->runtime->gcZeal = zeal;
+ }
+ #endif
+ 
+diff --git a/js/src/jsapi.h b/js/src/jsapi.h
+--- a/js/src/jsapi.h
++++ b/js/src/jsapi.h
+@@ -983,19 +983,16 @@ JS_SetCompartmentCallback(JSRuntime *rt,
+ extern JS_PUBLIC_API(JSWrapObjectCallback)
+ JS_SetWrapObjectCallbacks(JSRuntime *rt,
+                           JSWrapObjectCallback callback,
+                           JSPreWrapCallback precallback);
+ 
+ extern JS_PUBLIC_API(JSCrossCompartmentCall *)
+ JS_EnterCrossCompartmentCall(JSContext *cx, JSObject *target);
+ 
+-extern JS_PUBLIC_API(JSCrossCompartmentCall *)
+-JS_EnterCrossCompartmentCallScript(JSContext *cx, JSScript *target);
+-
+ extern JS_PUBLIC_API(void)
+ JS_LeaveCrossCompartmentCall(JSCrossCompartmentCall *call);
+ 
+ extern JS_PUBLIC_API(void *)
+ JS_SetCompartmentPrivate(JSContext *cx, JSCompartment *compartment, void *data);
+ 
+ extern JS_PUBLIC_API(void *)
+ JS_GetCompartmentPrivate(JSContext *cx, JSCompartment *compartment);
+@@ -1030,18 +1027,16 @@ class JS_PUBLIC_API(JSAutoEnterCompartme
+ {
+     JSCrossCompartmentCall *call;
+ 
+   public:
+     JSAutoEnterCompartment() : call(NULL) {}
+ 
+     bool enter(JSContext *cx, JSObject *target);
+ 
+-    bool enter(JSContext *cx, JSScript *target);
+-
+     void enterAndIgnoreErrors(JSContext *cx, JSObject *target);
+ 
+     bool entered() const { return call != NULL; }
+ 
+     ~JSAutoEnterCompartment() {
+         if (call && call != reinterpret_cast<JSCrossCompartmentCall*>(1))
+             JS_LeaveCrossCompartmentCall(call);
+     }
+@@ -1468,16 +1463,23 @@ inline Anchor<jsval>::~Anchor() {
+ #endif
+ 
+ }  /* namespace JS */
+ 
+ JS_BEGIN_EXTERN_C
+ #endif
+ 
+ /*
++ * C-compatible version of the Anchor class. It should be called after the last
++ * use of the variable it protects.
++ */
++extern JS_NEVER_INLINE JS_PUBLIC_API(void)
++JS_AnchorPtr(void *p);
++
++/*
+  * This symbol may be used by embedders to detect the change from the old
+  * JS_AddRoot(JSContext *, void *) APIs to the new ones above.
+  */
+ #define JS_TYPED_ROOTING_API
+ 
+ /* Obsolete rooting APIs. */
+ #define JS_ClearNewbornRoots(cx) ((void) 0)
+ #define JS_EnterLocalRootScope(cx) (JS_TRUE)
+@@ -2653,106 +2655,70 @@ JS_CloneFunctionObject(JSContext *cx, JS
+  * JS_TRUE.  The intent is to support interactive compilation - accumulate
+  * lines in a buffer until JS_BufferIsCompilableUnit is true, then pass it to
+  * the compiler.
+  */
+ extern JS_PUBLIC_API(JSBool)
+ JS_BufferIsCompilableUnit(JSContext *cx, JSObject *obj,
+                           const char *bytes, size_t length);
+ 
+-/*
+- * The JSScript objects returned by the following functions refer to string and
+- * other kinds of literals, including doubles and RegExp objects.  These
+- * literals are vulnerable to garbage collection; to root script objects and
+- * prevent literals from being collected, create a rootable object using
+- * JS_NewScriptObject, and root the resulting object using JS_Add[Named]Root.
+- */
+-extern JS_PUBLIC_API(JSScript *)
++extern JS_PUBLIC_API(JSObject *)
+ JS_CompileScript(JSContext *cx, JSObject *obj,
+                  const char *bytes, size_t length,
+                  const char *filename, uintN lineno);
+ 
+-extern JS_PUBLIC_API(JSScript *)
++extern JS_PUBLIC_API(JSObject *)
+ JS_CompileScriptForPrincipals(JSContext *cx, JSObject *obj,
+                               JSPrincipals *principals,
+                               const char *bytes, size_t length,
+                               const char *filename, uintN lineno);
+ 
+-extern JS_PUBLIC_API(JSScript *)
++extern JS_PUBLIC_API(JSObject *)
+ JS_CompileScriptForPrincipalsVersion(JSContext *cx, JSObject *obj,
+                                      JSPrincipals *principals,
+                                      const char *bytes, size_t length,
+                                      const char *filename, uintN lineno,
+                                      JSVersion version);
+ 
+-extern JS_PUBLIC_API(JSScript *)
++extern JS_PUBLIC_API(JSObject *)
+ JS_CompileUCScript(JSContext *cx, JSObject *obj,
+                    const jschar *chars, size_t length,
+                    const char *filename, uintN lineno);
+ 
+-extern JS_PUBLIC_API(JSScript *)
++extern JS_PUBLIC_API(JSObject *)
+ JS_CompileUCScriptForPrincipals(JSContext *cx, JSObject *obj,
+                                 JSPrincipals *principals,
+                                 const jschar *chars, size_t length,
+                                 const char *filename, uintN lineno);
+ 
+-extern JS_PUBLIC_API(JSScript *)
++extern JS_PUBLIC_API(JSObject *)
+ JS_CompileUCScriptForPrincipalsVersion(JSContext *cx, JSObject *obj,
+                                        JSPrincipals *principals,
+                                        const jschar *chars, size_t length,
+                                        const char *filename, uintN lineno,
+                                        JSVersion version);
+ 
+-extern JS_PUBLIC_API(JSScript *)
++extern JS_PUBLIC_API(JSObject *)
+ JS_CompileFile(JSContext *cx, JSObject *obj, const char *filename);
+ 
+-extern JS_PUBLIC_API(JSScript *)
++extern JS_PUBLIC_API(JSObject *)
+ JS_CompileFileHandle(JSContext *cx, JSObject *obj, const char *filename,
+                      FILE *fh);
+ 
+-extern JS_PUBLIC_API(JSScript *)
++extern JS_PUBLIC_API(JSObject *)
+ JS_CompileFileHandleForPrincipals(JSContext *cx, JSObject *obj,
+                                   const char *filename, FILE *fh,
+                                   JSPrincipals *principals);
+ 
+-extern JS_PUBLIC_API(JSScript *)
++extern JS_PUBLIC_API(JSObject *)
+ JS_CompileFileHandleForPrincipalsVersion(JSContext *cx, JSObject *obj,
+                                          const char *filename, FILE *fh,
+                                          JSPrincipals *principals,
+                                          JSVersion version);
+ 
+-/*
+- * NB: you must use JS_NewScriptObject and root a pointer to its return value
+- * in order to keep a JSScript and its atoms safe from garbage collection after
+- * creating the script via JS_Compile* and before a JS_ExecuteScript* call.
+- * E.g., and without error checks:
+- *
+- *    JSScript *script = JS_CompileFile(cx, global, filename);
+- *    JSObject *scrobj = JS_NewScriptObject(cx, script);
+- *    JS_AddNamedObjectRoot(cx, &scrobj, "scrobj");
+- *    do {
+- *        jsval result;
+- *        JS_ExecuteScript(cx, global, script, &result);
+- *        JS_GC();
+- *    } while (!JSVAL_IS_BOOLEAN(result) || JSVAL_TO_BOOLEAN(result));
+- *    JS_RemoveObjectRoot(cx, &scrobj);
+- */
+-extern JS_PUBLIC_API(JSObject *)
+-JS_NewScriptObject(JSContext *cx, JSScript *script);
+-
+-/*
+- * Infallible getter for a script's object.  If JS_NewScriptObject has not been
+- * called on script yet, the return value will be null.
+- */
+-extern JS_PUBLIC_API(JSObject *)
+-JS_GetScriptObject(JSScript *script);
+-
+-extern JS_PUBLIC_API(void)
+-JS_DestroyScript(JSContext *cx, JSScript *script);
+-
+ extern JS_PUBLIC_API(JSFunction *)
+ JS_CompileFunction(JSContext *cx, JSObject *obj, const char *name,
+                    uintN nargs, const char **argnames,
+                    const char *bytes, size_t length,
+                    const char *filename, uintN lineno);
+ 
+ extern JS_PUBLIC_API(JSFunction *)
+ JS_CompileFunctionForPrincipals(JSContext *cx, JSObject *obj,
+@@ -2778,18 +2744,17 @@ extern JS_PUBLIC_API(JSFunction *)
+ JS_CompileUCFunctionForPrincipalsVersion(JSContext *cx, JSObject *obj,
+                                          JSPrincipals *principals, const char *name,
+                                          uintN nargs, const char **argnames,
+                                          const jschar *chars, size_t length,
+                                          const char *filename, uintN lineno,
+                                          JSVersion version);
+ 
+ extern JS_PUBLIC_API(JSString *)
+-JS_DecompileScript(JSContext *cx, JSScript *script, const char *name,
+-                   uintN indent);
++JS_DecompileScriptObject(JSContext *cx, JSObject *scriptObj, const char *name, uintN indent);
+ 
+ /*
+  * API extension: OR this into indent to avoid pretty-printing the decompiled
+  * source resulting from JS_DecompileFunction{,Body}.
+  */
+ #define JS_DONT_PRETTY_PRINT    ((uintN)0x8000)
+ 
+ extern JS_PUBLIC_API(JSString *)
+@@ -2829,20 +2794,20 @@ JS_DecompileFunctionBody(JSContext *cx, 
+  * points with signatures matching the following six, and that doesn't seem
+  * worth the code bloat cost.  Such new entry points would probably have less
+  * obvious names, too, so would not tend to be used.  The JS_SetOption call,
+  * OTOH, can be more easily hacked into existing code that does not depend on
+  * the bug; such code can continue to use the familiar JS_EvaluateScript,
+  * etc., entry points.
+  */
+ extern JS_PUBLIC_API(JSBool)
+-JS_ExecuteScript(JSContext *cx, JSObject *obj, JSScript *script, jsval *rval);
++JS_ExecuteScript(JSContext *cx, JSObject *obj, JSObject *scriptObj, jsval *rval);
+ 
+ extern JS_PUBLIC_API(JSBool)
+-JS_ExecuteScriptVersion(JSContext *cx, JSObject *obj, JSScript *script, jsval *rval,
++JS_ExecuteScriptVersion(JSContext *cx, JSObject *obj, JSObject *scriptObj, jsval *rval,
+                         JSVersion version);
+ 
+ /*
+  * Execute either the function-defining prolog of a script, or the script's
+  * main body, but not both.
+  */
+ typedef enum JSExecPart { JSEXEC_PROLOG, JSEXEC_MAIN } JSExecPart;
+ 
+@@ -3775,38 +3740,16 @@ extern JS_PUBLIC_API(jsword)
+ JS_GetContextThread(JSContext *cx);
+ 
+ extern JS_PUBLIC_API(jsword)
+ JS_SetContextThread(JSContext *cx);
+ 
+ extern JS_PUBLIC_API(jsword)
+ JS_ClearContextThread(JSContext *cx);
+ 
+-#ifdef MOZ_TRACE_JSCALLS
+-typedef void (*JSFunctionCallback)(const JSFunction *fun,
+-                                   const JSScript *scr,
+-                                   const JSContext *cx,
+-                                   int entering);
+-
+-/*
+- * The callback is expected to be quick and noninvasive. It should not
+- * trigger interrupts, turn on debugging, or produce uncaught JS
+- * exceptions. The state of the stack and registers in the context
+- * cannot be relied upon, since this callback may be invoked directly
+- * from either JIT. The 'entering' field means we are entering a
+- * function if it is positive, leaving a function if it is zero or
+- * negative.
+- */
+-extern JS_PUBLIC_API(void)
+-JS_SetFunctionCallback(JSContext *cx, JSFunctionCallback fcb);
+-
+-extern JS_PUBLIC_API(JSFunctionCallback)
+-JS_GetFunctionCallback(JSContext *cx);
+-#endif
+-
+ /************************************************************************/
+ 
+ /*
+  * JS_IsConstructing must be called from within a native given the
+  * native's original cx and vp arguments. If JS_IsConstructing is true,
+  * JS_THIS must not be used; the constructor should construct and return a
+  * new object. Otherwise, the native is called as an ordinary function and
+  * JS_THIS may be used.
+diff --git a/js/src/jsarray.cpp b/js/src/jsarray.cpp
+--- a/js/src/jsarray.cpp
++++ b/js/src/jsarray.cpp
+@@ -86,17 +86,16 @@
+ #include "jsarray.h"
+ #include "jsatom.h"
+ #include "jsbit.h"
+ #include "jsbool.h"
+ #include "jstracer.h"
+ #include "jsbuiltins.h"
+ #include "jscntxt.h"
+ #include "jsversion.h"
+-#include "jsdbgapi.h" /* for js_TraceWatchPoints */
+ #include "jsfun.h"
+ #include "jsgc.h"
+ #include "jsinterp.h"
+ #include "jsiter.h"
+ #include "jslock.h"
+ #include "jsnum.h"
+ #include "jsobj.h"
+ #include "jsscope.h"
+diff --git a/js/src/jsdbgapi.cpp b/js/src/jsdbgapi.cpp
+--- a/js/src/jsdbgapi.cpp
++++ b/js/src/jsdbgapi.cpp
+@@ -155,17 +155,17 @@ JS_SetDebugModeForCompartment(JSContext 
+ 
+     // All scripts compiled from this point on should be in the requested debugMode.
+     comp->debugMode = !!debug;
+ 
+     // Discard JIT code for any scripts that change debugMode. This function
+     // assumes that 'comp' is in the same thread as 'cx'.
+ 
+ #ifdef JS_METHODJIT
+-    JSAutoEnterCompartment ac;
++    JS::AutoEnterScriptCompartment ac;
+ 
+     for (JSScript *script = (JSScript *)comp->scripts.next;
+          &script->links != &comp->scripts;
+          script = (JSScript *)script->links.next)
+     {
+         if (!script->debugMode == !debug)
+             continue;
+ 
+@@ -2666,8 +2666,25 @@ js_ShutdownEthogram(JSContext *cx, uintN
+     if (traceVisScriptTable)
+         JS_HashTableDestroy(traceVisScriptTable);
+ 
+     JS_SET_RVAL(cx, vp, JSVAL_VOID);
+     return true;
+ }
+ 
+ #endif /* MOZ_TRACEVIS */
++
++#ifdef MOZ_TRACE_JSCALLS
++
++JS_PUBLIC_API(void)
++JS_SetFunctionCallback(JSContext *cx, JSFunctionCallback fcb)
++{
++    cx->functionCallback = fcb;
++}
++
++JS_PUBLIC_API(JSFunctionCallback)
++JS_GetFunctionCallback(JSContext *cx)
++{
++    return cx->functionCallback;
++}
++
++#endif /* MOZ_TRACE_JSCALLS */
++
+diff --git a/js/src/jsdbgapi.h b/js/src/jsdbgapi.h
+--- a/js/src/jsdbgapi.h
++++ b/js/src/jsdbgapi.h
+@@ -1,9 +1,9 @@
+-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
++/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+  * vim: set ts=8 sw=4 et tw=99:
+  *
+  * ***** BEGIN LICENSE BLOCK *****
+  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+  *
+  * The contents of this file are subject to the Mozilla Public License Version
+  * 1.1 (the "License"); you may not use this file except in compliance with
+  * the License. You may obtain a copy of the License at
+@@ -44,16 +44,52 @@
+  * JS debugger API.
+  */
+ #include "jsapi.h"
+ #include "jsopcode.h"
+ #include "jsprvtd.h"
+ 
+ JS_BEGIN_EXTERN_C
+ 
++extern JS_PUBLIC_API(JSCrossCompartmentCall *)
++JS_EnterCrossCompartmentCallScript(JSContext *cx, JSScript *target);
++
++#ifdef __cplusplus
++JS_END_EXTERN_C
++
++namespace JS {
++
++class JS_PUBLIC_API(AutoEnterScriptCompartment)
++{
++    JSCrossCompartmentCall *call;
++
++  public:
++    AutoEnterScriptCompartment() : call(NULL) {}
++
++    bool enter(JSContext *cx, JSScript *target);
++
++    bool entered() const { return call != NULL; }
++
++    ~AutoEnterScriptCompartment() {
++        if (call && call != reinterpret_cast<JSCrossCompartmentCall*>(1))
++            JS_LeaveCrossCompartmentCall(call);
++    }
++};
++
++} /* namespace JS */
++
++JS_BEGIN_EXTERN_C
++#endif
++
++extern JS_PUBLIC_API(JSScript *)
++JS_GetScriptFromObject(JSObject *scriptObject);
++
++extern JS_PUBLIC_API(JSString *)
++JS_DecompileScript(JSContext *cx, JSScript *script, const char *name, uintN indent);
++
+ /*
+  * Currently, we only support runtime-wide debugging. In the future, we should
+  * be able to support compartment-wide debugging.
+  */
+ extern JS_PUBLIC_API(void)
+ JS_SetRuntimeDebugMode(JSRuntime *rt, JSBool debug);
+ 
+ /*
+@@ -558,11 +594,33 @@ js_ResumeVtune(JSContext *cx, uintN argc
+ 
+ #ifdef MOZ_TRACEVIS
+ extern JS_FRIEND_API(JSBool)
+ js_InitEthogram(JSContext *cx, uintN argc, jsval *vp);
+ extern JS_FRIEND_API(JSBool)
+ js_ShutdownEthogram(JSContext *cx, uintN argc, jsval *vp);
+ #endif /* MOZ_TRACEVIS */
+ 
++#ifdef MOZ_TRACE_JSCALLS
++typedef void (*JSFunctionCallback)(const JSFunction *fun,
++                                   const JSScript *scr,
++                                   const JSContext *cx,
++                                   int entering);
++
++/*
++ * The callback is expected to be quick and noninvasive. It should not
++ * trigger interrupts, turn on debugging, or produce uncaught JS
++ * exceptions. The state of the stack and registers in the context
++ * cannot be relied upon, since this callback may be invoked directly
++ * from either JIT. The 'entering' field means we are entering a
++ * function if it is positive, leaving a function if it is zero or
++ * negative.
++ */
++extern JS_PUBLIC_API(void)
++JS_SetFunctionCallback(JSContext *cx, JSFunctionCallback fcb);
++
++extern JS_PUBLIC_API(JSFunctionCallback)
++JS_GetFunctionCallback(JSContext *cx);
++#endif /* MOZ_TRACE_JSCALLS */
++
+ JS_END_EXTERN_C
+ 
+ #endif /* jsdbgapi_h___ */
+diff --git a/js/src/jsexn.cpp b/js/src/jsexn.cpp
+--- a/js/src/jsexn.cpp
++++ b/js/src/jsexn.cpp
+@@ -46,17 +46,16 @@
+ #include "jstypes.h"
+ #include "jsstdint.h"
+ #include "jsbit.h"
+ #include "jsutil.h"
+ #include "jsprf.h"
+ #include "jsapi.h"
+ #include "jscntxt.h"
+ #include "jsversion.h"
+-#include "jsdbgapi.h"
+ #include "jsexn.h"
+ #include "jsfun.h"
+ #include "jsinterp.h"
+ #include "jsnum.h"
+ #include "jsobj.h"
+ #include "jsopcode.h"
+ #include "jsscope.h"
+ #include "jsscript.h"
+diff --git a/js/src/jsfun.cpp b/js/src/jsfun.cpp
+--- a/js/src/jsfun.cpp
++++ b/js/src/jsfun.cpp
+@@ -48,17 +48,16 @@
+ #include "jsutil.h"
+ #include "jsapi.h"
+ #include "jsarray.h"
+ #include "jsatom.h"
+ #include "jsbool.h"
+ #include "jsbuiltins.h"
+ #include "jscntxt.h"
+ #include "jsversion.h"
+-#include "jsdbgapi.h"
+ #include "jsemit.h"
+ #include "jsfun.h"
+ #include "jsgc.h"
+ #include "jsinterp.h"
+ #include "jslock.h"
+ #include "jsnum.h"
+ #include "jsobj.h"
+ #include "jsopcode.h"
+diff --git a/js/src/jsobj.h b/js/src/jsobj.h
+--- a/js/src/jsobj.h
++++ b/js/src/jsobj.h
+@@ -1049,16 +1049,22 @@ struct JSObject : js::gc::Cell {
+     /*
+      * Iterator-specific getters and setters.
+      */
+ 
+     inline js::NativeIterator *getNativeIterator() const;
+     inline void setNativeIterator(js::NativeIterator *);
+ 
+     /*
++     * Script-related getters.
++     */
++
++    inline JSScript *getScript() const;
++
++    /*
+      * XML-related getters and setters.
+      */
+ 
+     /*
+      * Slots for XML-related classes are as follows:
+      * - js_NamespaceClass.base reserves the *_NAME_* and *_NAMESPACE_* slots.
+      * - js_QNameClass.base, js_AttributeNameClass, js_AnyNameClass reserve
+      *   the *_NAME_* and *_QNAME_* slots.
+@@ -1291,16 +1297,17 @@ struct JSObject : js::gc::Cell {
+     inline bool isFunction() const;
+     inline bool isObject() const;
+     inline bool isWith() const;
+     inline bool isBlock() const;
+     inline bool isStaticBlock() const;
+     inline bool isClonedBlock() const;
+     inline bool isCall() const;
+     inline bool isRegExp() const;
++    inline bool isScript() const;
+     inline bool isXML() const;
+     inline bool isXMLId() const;
+     inline bool isNamespace() const;
+     inline bool isQName() const;
+ 
+     inline bool isProxy() const;
+     inline bool isObjectProxy() const;
+     inline bool isFunctionProxy() const;
+diff --git a/js/src/jsopcode.cpp b/js/src/jsopcode.cpp
+--- a/js/src/jsopcode.cpp
++++ b/js/src/jsopcode.cpp
+@@ -53,17 +53,16 @@
+ #include "jsarena.h"
+ #include "jsutil.h"
+ #include "jsprf.h"
+ #include "jsapi.h"
+ #include "jsarray.h"
+ #include "jsatom.h"
+ #include "jscntxt.h"
+ #include "jsversion.h"
+-#include "jsdbgapi.h"
+ #include "jsemit.h"
+ #include "jsfun.h"
+ #include "jsiter.h"
+ #include "jsnum.h"
+ #include "jsobj.h"
+ #include "jsopcode.h"
+ #include "jsregexp.h"
+ #include "jsscan.h"
+diff --git a/js/src/jsprvtd.h b/js/src/jsprvtd.h
+--- a/js/src/jsprvtd.h
++++ b/js/src/jsprvtd.h
+@@ -80,16 +80,17 @@ typedef struct JSArgumentFormatMap  JSAr
+ typedef struct JSCodeGenerator      JSCodeGenerator;
+ typedef struct JSGCThing            JSGCThing;
+ typedef struct JSGenerator          JSGenerator;
+ typedef struct JSNativeEnumerator   JSNativeEnumerator;
+ typedef struct JSFunctionBox        JSFunctionBox;
+ typedef struct JSObjectBox          JSObjectBox;
+ typedef struct JSParseNode          JSParseNode;
+ typedef struct JSProperty           JSProperty;
++typedef struct JSScript             JSScript;
+ typedef struct JSSharpObjectMap     JSSharpObjectMap;
+ typedef struct JSThread             JSThread;
+ typedef struct JSThreadData         JSThreadData;
+ typedef struct JSTreeContext        JSTreeContext;
+ typedef struct JSTryNote            JSTryNote;
+ 
+ /* Friend "Advanced API" typedefs. */
+ typedef struct JSLinearString       JSLinearString;
+diff --git a/js/src/jspubtd.h b/js/src/jspubtd.h
+--- a/js/src/jspubtd.h
++++ b/js/src/jspubtd.h
+@@ -151,17 +151,16 @@ typedef struct JSErrorReport     JSError
+ typedef struct JSFunction        JSFunction;
+ typedef struct JSFunctionSpec    JSFunctionSpec;
+ typedef struct JSTracer          JSTracer;
+ typedef struct JSIdArray         JSIdArray;
+ typedef struct JSPropertyDescriptor JSPropertyDescriptor;
+ typedef struct JSPropertySpec    JSPropertySpec;
+ typedef struct JSObjectMap       JSObjectMap;
+ typedef struct JSRuntime         JSRuntime;
+-typedef struct JSScript          JSScript;
+ typedef struct JSStackFrame      JSStackFrame;
+ typedef struct JSXDRState        JSXDRState;
+ typedef struct JSExceptionState  JSExceptionState;
+ typedef struct JSLocaleCallbacks JSLocaleCallbacks;
+ typedef struct JSSecurityCallbacks JSSecurityCallbacks;
+ typedef struct JSONParser        JSONParser;
+ typedef struct JSCompartment     JSCompartment;
+ typedef struct JSCrossCompartmentCall JSCrossCompartmentCall;
+@@ -462,22 +461,16 @@ typedef JSBool
+  * stored in data.
+  */
+ typedef void
+ (* JSTraceDataOp)(JSTracer *trc, void *data);
+ 
+ typedef JSBool
+ (* JSOperationCallback)(JSContext *cx);
+ 
+-/*
+- * Deprecated form of JSOperationCallback.
+- */
+-typedef JSBool
+-(* JSBranchCallback)(JSContext *cx, JSScript *script);
+-
+ typedef void
+ (* JSErrorReporter)(JSContext *cx, const char *message, JSErrorReport *report);
+ 
+ /*
+  * Possible exception types. These types are part of a JSErrorFormatString
+  * structure. They define which error to throw in case of a runtime error.
+  * JSEXN_NONE marks an unthrowable error.
+  */
+diff --git a/js/src/jsscript.cpp b/js/src/jsscript.cpp
+--- a/js/src/jsscript.cpp
++++ b/js/src/jsscript.cpp
+@@ -289,17 +289,17 @@ Bindings::makeImmutable()
+ 
+ void
+ Bindings::trace(JSTracer *trc)
+ {
+     for (const Shape *shape = lastBinding; shape; shape = shape->previous())
+         shape->trace(trc);
+ }
+ 
+-} // namespace js
++} /* namespace js */
+ 
+ #if JS_HAS_XDR
+ 
+ enum ScriptBits {
+     NoScriptRval,
+     SavedCallerFun,
+     HasSharps,
+     StrictModeCode,
+@@ -1700,40 +1700,40 @@ js_TraceScript(JSTracer *trc, JSScript *
+     }
+ 
+     if (IS_GC_MARKING_TRACER(trc) && script->filename)
+         js_MarkScriptFilename(script->filename);
+ 
+     script->bindings.trace(trc);
+ }
+ 
+-JSBool
++JSObject *
+ js_NewScriptObject(JSContext *cx, JSScript *script)
+ {
+     AutoScriptRooter root(cx, script);
+ 
+     JS_ASSERT(!script->u.object);
+ 
+     JSObject *obj = NewNonFunction<WithProto::Class>(cx, &js_ScriptClass, NULL, NULL);
+     if (!obj)
+-        return JS_FALSE;
++        return NULL;
+     obj->setPrivate(script);
+     script->u.object = obj;
+ 
+     /*
+      * Clear the object's proto, to avoid entraining stuff. Once we no longer use the parent
+      * for security checks, then we can clear the parent, too.
+      */
+     obj->clearProto();
+ 
+ #ifdef CHECK_SCRIPT_OWNER
+     script->owner = NULL;
+ #endif
+ 
+-    return JS_TRUE;
++    return obj;
+ }
+ 
+ typedef struct GSNCacheEntry {
+     JSDHashEntryHdr     hdr;
+     jsbytecode          *pc;
+     jssrcnote           *sn;
+ } GSNCacheEntry;
+ 
+@@ -1968,17 +1968,17 @@ js_CloneScript(JSContext *cx, JSScript *
+     // serialize script
+     JSXDRState *w = JS_XDRNewMem(cx, JSXDR_ENCODE);
+     if (!w)
+         return NULL;
+ 
+     // we don't want gecko to transcribe our principals for us
+     DisablePrincipalsTranscoding disable(cx);
+ 
+-    if (!JS_XDRScript(w, &script)) {
++    if (!js_XDRScript(w, &script, NULL)) {
+         JS_XDRDestroy(w);
+         return NULL;
+     }
+ 
+     uint32 nbytes;
+     void *p = JS_XDRMemGetData(w, &nbytes);
+     if (!p) {
+         JS_XDRDestroy(w);
+@@ -1992,17 +1992,16 @@ js_CloneScript(JSContext *cx, JSScript *
+         return NULL;
+     }
+ 
+     // Hand p off from w to r.  Don't want them to share the data
+     // mem, lest they both try to free it in JS_XDRDestroy
+     JS_XDRMemSetData(r, p, nbytes);
+     JS_XDRMemSetData(w, NULL, 0);
+ 
+-    // We can't use the public API because it makes a script object.
+     if (!js_XDRScript(r, &script, NULL))
+         return NULL;
+ 
+     JS_XDRDestroy(r);
+     JS_XDRDestroy(w);
+ 
+     // set the proper principals for the script
+     script->principals = script->compartment->principals;
+diff --git a/js/src/jsscript.h b/js/src/jsscript.h
+--- a/js/src/jsscript.h
++++ b/js/src/jsscript.h
+@@ -674,17 +674,17 @@ js_DestroyScriptFromGC(JSContext *cx, JS
+  * is already dead.
+  */
+ extern void
+ js_DestroyCachedScript(JSContext *cx, JSScript *script);
+ 
+ extern void
+ js_TraceScript(JSTracer *trc, JSScript *script);
+ 
+-extern JSBool
++extern JSObject *
+ js_NewScriptObject(JSContext *cx, JSScript *script);
+ 
+ /*
+  * To perturb as little code as possible, we introduce a js_GetSrcNote lookup
+  * cache without adding an explicit cx parameter.  Thus js_GetSrcNote becomes
+  * a macro that uses cx from its calls' lexical environments.
+  */
+ #define js_GetSrcNote(script,pc) js_GetSrcNoteCached(cx, script, pc)
+@@ -729,9 +729,22 @@ js_CloneScript(JSContext *cx, JSScript *
+  *
+  * NB: after a successful JSXDR_DECODE, js_XDRScript callers must do any
+  * required subsequent set-up of owning function or script object and then call
+  * js_CallNewScriptHook.
+  */
+ extern JSBool
+ js_XDRScript(JSXDRState *xdr, JSScript **scriptp, JSBool *hasMagic);
+ 
++inline bool
++JSObject::isScript() const
++{
++    return getClass() == &js_ScriptClass;
++}
++
++inline JSScript *
++JSObject::getScript() const
++{
++    JS_ASSERT(isScript());
++    return static_cast<JSScript *>(getPrivate());
++}
++
+ #endif /* jsscript_h___ */
+diff --git a/js/src/jsxdrapi.cpp b/js/src/jsxdrapi.cpp
+--- a/js/src/jsxdrapi.cpp
++++ b/js/src/jsxdrapi.cpp
+@@ -661,31 +661,39 @@ js_XDRAtom(JSXDRState *xdr, JSAtom **ato
+ 
+     if (!atom)
+         return JS_FALSE;
+     *atomp = atom;
+     return JS_TRUE;
+ }
+ 
+ JS_PUBLIC_API(JSBool)
+-JS_XDRScript(JSXDRState *xdr, JSScript **scriptp)
++JS_XDRScriptObject(JSXDRState *xdr, JSObject **scriptObjp)
+ {
+-    if (!js_XDRScript(xdr, scriptp, NULL))
+-        return JS_FALSE;
++    JSScript *script;
++    if (xdr->mode == JSXDR_DECODE) {
++        script = NULL;
++        *scriptObjp = NULL;
++    } else {
++        script = (*scriptObjp)->getScript();
++    }
++    
++    if (!js_XDRScript(xdr, &script, NULL))
++        return false;
+ 
+     if (xdr->mode == JSXDR_DECODE) {
+-        js_CallNewScriptHook(xdr->cx, *scriptp, NULL);
+-        if (!js_NewScriptObject(xdr->cx, *scriptp)) {
+-            js_DestroyScript(xdr->cx, *scriptp);
+-            *scriptp = NULL;
+-            return JS_FALSE;
++        js_CallNewScriptHook(xdr->cx, script, NULL);
++        *scriptObjp = js_NewScriptObject(xdr->cx, script);
++        if (!*scriptObjp) {
++            js_DestroyScript(xdr->cx, script);
++            return false;
+         }
+     }
+ 
+-    return JS_TRUE;
++    return true;
+ }
+ 
+ #define CLASS_REGISTRY_MIN      8
+ #define CLASS_INDEX_TO_ID(i)    ((i)+1)
+ #define CLASS_ID_TO_INDEX(id)   ((id)-1)
+ 
+ typedef struct JSRegHashEntry {
+     JSDHashEntryHdr hdr;
+diff --git a/js/src/jsxdrapi.h b/js/src/jsxdrapi.h
+--- a/js/src/jsxdrapi.h
++++ b/js/src/jsxdrapi.h
+@@ -165,17 +165,17 @@ JS_XDRStringOrNull(JSXDRState *xdr, JSSt
+ 
+ extern JS_PUBLIC_API(JSBool)
+ JS_XDRDouble(JSXDRState *xdr, jsdouble *dp);
+ 
+ extern JS_PUBLIC_API(JSBool)
+ JS_XDRValue(JSXDRState *xdr, jsval *vp);
+ 
+ extern JS_PUBLIC_API(JSBool)
+-JS_XDRScript(JSXDRState *xdr, JSScript **scriptp);
++JS_XDRScriptObject(JSXDRState *xdr, JSObject **scriptObjp);
+ 
+ extern JS_PUBLIC_API(JSBool)
+ JS_XDRRegisterClass(JSXDRState *xdr, JSClass *clasp, uint32 *lp);
+ 
+ extern JS_PUBLIC_API(uint32)
+ JS_XDRFindClassIdByName(JSXDRState *xdr, const char *name);
+ 
+ extern JS_PUBLIC_API(JSClass *)
+diff --git a/js/src/shell/js.cpp b/js/src/shell/js.cpp
+--- a/js/src/shell/js.cpp
++++ b/js/src/shell/js.cpp
+@@ -392,17 +392,17 @@ SetContextOptions(JSContext *cx)
+ #ifdef WINCE
+ int errno;
+ #endif
+ 
+ static void
+ Process(JSContext *cx, JSObject *obj, char *filename, JSBool forceTTY)
+ {
+     JSBool ok, hitEOF;
+-    JSScript *script;
++    JSObject *scriptObj;
+     jsval result;
+     JSString *str;
+     char *buffer;
+     size_t size;
+     int lineno;
+     int startline;
+     FILE *file;
+     uint32 oldopts;
+@@ -441,20 +441,20 @@ Process(JSContext *cx, JSObject *obj, ch
+                     break;
+             }
+         }
+         ungetc(ch, file);
+ 
+         int64 t1 = PRMJ_Now();
+         oldopts = JS_GetOptions(cx);
+         JS_SetOptions(cx, oldopts | JSOPTION_COMPILE_N_GO | JSOPTION_NO_SCRIPT_RVAL);
+-        script = JS_CompileFileHandle(cx, obj, filename, file);
++        scriptObj = JS_CompileFileHandle(cx, obj, filename, file);
+         JS_SetOptions(cx, oldopts);
+-        if (script && !compileOnly) {
+-            (void)JS_ExecuteScript(cx, obj, script, NULL);
++        if (scriptObj && !compileOnly) {
++            (void) JS_ExecuteScript(cx, obj, scriptObj, NULL);
+             int64 t2 = PRMJ_Now() - t1;
+             if (printTiming)
+                 printf("runtime = %.3f ms\n", double(t2) / PRMJ_USEC_PER_MSEC);
+         }
+ 
+         goto cleanup;
+     }
+ 
+@@ -530,23 +530,23 @@ Process(JSContext *cx, JSObject *obj, ch
+ 
+         /* Clear any pending exception from previous failed compiles. */
+         JS_ClearPendingException(cx);
+ 
+         /* Even though we're interactive, we have a compile-n-go opportunity. */
+         oldopts = JS_GetOptions(cx);
+         if (!compileOnly)
+             JS_SetOptions(cx, oldopts | JSOPTION_COMPILE_N_GO);
+-        script = JS_CompileScript(cx, obj, buffer, len, "typein",
+-                                  startline);
++        scriptObj = JS_CompileScript(cx, obj, buffer, len, "typein",
++                                     startline);
+         if (!compileOnly)
+             JS_SetOptions(cx, oldopts);
+ 
+-        if (script && !compileOnly) {
+-            ok = JS_ExecuteScript(cx, obj, script, &result);
++        if (scriptObj && !compileOnly) {
++            ok = JS_ExecuteScript(cx, obj, scriptObj, &result);
+             if (ok && !JSVAL_IS_VOID(result)) {
+                 str = JS_ValueToSource(cx, result);
+                 ok = !!str;
+                 if (ok) {
+                     JSAutoByteString bytes(cx, str);
+                     ok = !!bytes;
+                     if (ok)
+                         fprintf(gOutFile, "%s\n", bytes.ptr());
+@@ -1013,46 +1013,42 @@ Options(JSContext *cx, uintN argc, jsval
+         return JS_FALSE;
+     *vp = STRING_TO_JSVAL(str);
+     return JS_TRUE;
+ }
+ 
+ static JSBool
+ Load(JSContext *cx, uintN argc, jsval *vp)
+ {
+-    uintN i;
+-    JSString *str;
+-    JSScript *script;
+-    uint32 oldopts;
+-
+     JSObject *thisobj = JS_THIS_OBJECT(cx, vp);
+     if (!thisobj)
+         return JS_FALSE;
+ 
+     jsval *argv = JS_ARGV(cx, vp);
+-    for (i = 0; i < argc; i++) {
+-        str = JS_ValueToString(cx, argv[i]);
++    for (uintN i = 0; i < argc; i++) {
++        JSString *str = JS_ValueToString(cx, argv[i]);
+         if (!str)
+-            return JS_FALSE;
++            return false;
+         argv[i] = STRING_TO_JSVAL(str);
+         JSAutoByteString filename(cx, str);
+         if (!filename)
+             return JS_FALSE;
+         errno = 0;
+-        oldopts = JS_GetOptions(cx);
++        uint32 oldopts = JS_GetOptions(cx);
+         JS_SetOptions(cx, oldopts | JSOPTION_COMPILE_N_GO | JSOPTION_NO_SCRIPT_RVAL);
+-        script = JS_CompileFile(cx, thisobj, filename.ptr());
+-        if (!script)
+-            return JS_FALSE;
++        JSObject *scriptObj = JS_CompileFile(cx, thisobj, filename.ptr());
+         JS_SetOptions(cx, oldopts);
+-        if (!compileOnly && !JS_ExecuteScript(cx, thisobj, script, NULL))
+-            return JS_FALSE;
+-    }
+-
+-    return JS_TRUE;
++        if (!scriptObj)
++            return false;
++
++        if (!compileOnly && !JS_ExecuteScript(cx, thisobj, scriptObj, NULL))
++            return false;
++    }
++
++    return true;
+ }
+ 
+ static JSBool
+ Evaluate(JSContext *cx, uintN argc, jsval *vp)
+ {
+     if (argc != 1 || !JSVAL_IS_STRING(JS_ARGV(cx, vp)[0])) {
+         JS_ReportErrorNumber(cx, my_GetErrorMessage, NULL,
+                              (argc != 1) ? JSSMSG_NOT_ENOUGH_ARGS : JSSMSG_INVALID_ARGS,
+@@ -1155,27 +1151,22 @@ Run(JSContext *cx, uintN argc, jsval *vp
+     if (!ucbuf)
+         return false;
+ 
+     JS::Anchor<JSString *> a_str(str);
+     uint32 oldopts = JS_GetOptions(cx);
+     JS_SetOptions(cx, oldopts | JSOPTION_COMPILE_N_GO | JSOPTION_NO_SCRIPT_RVAL);
+ 
+     int64 startClock = PRMJ_Now();
+-    JSScript *script = JS_CompileUCScript(cx, thisobj, ucbuf, buflen, filename.ptr(), 1);
++    JSObject *scriptObj = JS_CompileUCScript(cx, thisobj, ucbuf, buflen, filename.ptr(), 1);
+     JS_SetOptions(cx, oldopts);
+-    if (!script)
++    if (!scriptObj || !JS_ExecuteScript(cx, thisobj, scriptObj, NULL))
+         return false;
+ 
+-    JSBool ok = JS_ExecuteScript(cx, thisobj, script, NULL);
+     int64 endClock = PRMJ_Now();
+-    JS_DestroyScript(cx, script);
+-    if (!ok)
+-        return false;
+-
+     JS_SET_RVAL(cx, vp, DOUBLE_TO_JSVAL((endClock - startClock) / double(PRMJ_USEC_PER_MSEC)));
+     return true;
+ }
+ 
+ /*
+  * function readline()
+  * Provides a hook for scripts to read a line from stdin.
+  */
+@@ -2252,40 +2243,35 @@ DisassFile(JSContext *cx, uintN argc, js
+         return JS_TRUE;
+     }
+ 
+     /* Support extra options at the start, just like Dissassemble. */
+     uintN _argc = argc;
+     argv += argc-1;
+     argc = 1;
+ 
+-
+     JSObject *thisobj = JS_THIS_OBJECT(cx, vp);
+     if (!thisobj)
+         return JS_FALSE;
+ 
+     JSString *str = JS_ValueToString(cx, argv[0]);
+     if (!str)
+         return JS_FALSE;
+     JSAutoByteString filename(cx, str);
+     if (!filename)
+         return JS_FALSE;
+ 
+     uint32 oldopts = JS_GetOptions(cx);
+     JS_SetOptions(cx, oldopts | JSOPTION_COMPILE_N_GO | JSOPTION_NO_SCRIPT_RVAL);
+-    JSScript *script = JS_CompileFile(cx, thisobj, filename.ptr());
++    JSObject *scriptObj = JS_CompileFile(cx, thisobj, filename.ptr());
+     JS_SetOptions(cx, oldopts);
+-    if (!script)
+-        return JS_FALSE;
+-
+-    JSObject *obj = JS_NewScriptObject(cx, script);
+-    if (!obj)
+-        return JS_FALSE;
+-
+-    argv[0] = OBJECT_TO_JSVAL(obj); /* I like to root it, root it. */
++    if (!scriptObj)
++        return false;
++
++    argv[0] = OBJECT_TO_JSVAL(scriptObj);
+     JSBool ok = Disassemble(cx, _argc, vp); /* gross, but works! */
+     JS_SET_RVAL(cx, vp, JSVAL_VOID);
+     return ok;
+ }
+ 
+ static JSBool
+ DisassWithSrc(JSContext *cx, uintN argc, jsval *vp)
+ {
+@@ -4313,20 +4299,20 @@ Compile(JSContext *cx, uintN argc, jsval
+     jsval arg0 = JS_ARGV(cx, vp)[0];
+     if (!JSVAL_IS_STRING(arg0)) {
+         const char *typeName = JS_GetTypeName(cx, JS_TypeOfValue(cx, arg0));
+         JS_ReportError(cx, "expected string to compile, got %s", typeName);
+         return JS_FALSE;
+     }
+ 
+     JSString *scriptContents = JSVAL_TO_STRING(arg0);
+-    JSScript *result = JS_CompileUCScript(cx, NULL, JS_GetStringCharsZ(cx, scriptContents),
+-                                          JS_GetStringLength(scriptContents), "<string>", 0);
+-    if (!result)
+-        return JS_FALSE;
++    if (!JS_CompileUCScript(cx, NULL, JS_GetStringCharsZ(cx, scriptContents),
++                            JS_GetStringLength(scriptContents), "<string>", 0)) {
++        return false;
++    }
+ 
+     JS_SET_RVAL(cx, vp, JSVAL_VOID);
+     return JS_TRUE;
+ }
+ 
+ static JSBool
+ Parse(JSContext *cx, uintN argc, jsval *vp)
+ {
+diff --git a/js/src/shell/jsworkers.cpp b/js/src/shell/jsworkers.cpp
+--- a/js/src/shell/jsworkers.cpp
++++ b/js/src/shell/jsworkers.cpp
+@@ -890,23 +890,22 @@ class InitEvent : public Event
+         jsval s;
+         if (!deserializeData(cx, &s))
+             return fail;
+         JS_ASSERT(JSVAL_IS_STRING(s));
+         JSAutoByteString filename(cx, JSVAL_TO_STRING(s));
+         if (!filename)
+             return fail;
+ 
+-        JSScript *script = JS_CompileFile(cx, child->getGlobal(), filename.ptr());
+-        if (!script)
++        JSObject *scriptObj = JS_CompileFile(cx, child->getGlobal(), filename.ptr());
++        if (!scriptObj)
+             return fail;
+ 
+         AutoValueRooter rval(cx);
+-        JSBool ok = JS_ExecuteScript(cx, child->getGlobal(), script, Jsvalify(rval.addr()));
+-        JS_DestroyScript(cx, script);
++        JSBool ok = JS_ExecuteScript(cx, child->getGlobal(), scriptObj, Jsvalify(rval.addr()));
+         return Result(ok);
+     }
+ };
+ 
+ class DownMessageEvent : public Event
+ {
+   public:
+     static DownMessageEvent *create(JSContext *cx, Worker *child, jsval data) {
+diff --git a/js/src/xpconnect/loader/mozJSComponentLoader.cpp b/js/src/xpconnect/loader/mozJSComponentLoader.cpp
+--- a/js/src/xpconnect/loader/mozJSComponentLoader.cpp
++++ b/js/src/xpconnect/loader/mozJSComponentLoader.cpp
+@@ -341,35 +341,35 @@ ReportOnCaller(JSCLContextHelper &helper
+     }
+ 
+     return OutputError(cx, format, ap);
+ }
+ 
+ #ifdef MOZ_ENABLE_LIBXUL
+ static nsresult
+ ReadScriptFromStream(JSContext *cx, nsIObjectInputStream *stream,
+-                     JSScript **script)
++                     JSObject **scriptObj)
+ {
+-    *script = nsnull;
++    *scriptObj = nsnull;
+ 
+     PRUint32 size;
+     nsresult rv = stream->Read32(&size);
+     NS_ENSURE_SUCCESS(rv, rv);
+ 
+     char *data;
+     rv = stream->ReadBytes(size, &data);
+     NS_ENSURE_SUCCESS(rv, rv);
+ 
+     JSXDRState *xdr = JS_XDRNewMem(cx, JSXDR_DECODE);
+     NS_ENSURE_TRUE(xdr, NS_ERROR_OUT_OF_MEMORY);
+ 
+     xdr->userdata = stream;
+     JS_XDRMemSetData(xdr, data, size);
+ 
+-    if (!JS_XDRScript(xdr, script)) {
++    if (!JS_XDRScriptObject(xdr, scriptObj)) {
+         rv = NS_ERROR_FAILURE;
+     }
+ 
+     // Update data in case ::JS_XDRScript called back into C++ code to
+     // read an XPCOM object.
+     //
+     // In that case, the serialization process must have flushed a run
+     // of counted bytes containing JS data at the point where the XPCOM
+@@ -400,26 +400,26 @@ ReadScriptFromStream(JSContext *cx, nsIO
+     if (data) {
+         nsMemory::Free(data);
+     }
+ 
+     return rv;
+ }
+ 
+ static nsresult
+-WriteScriptToStream(JSContext *cx, JSScript *script,
++WriteScriptToStream(JSContext *cx, JSObject *scriptObj,
+                     nsIObjectOutputStream *stream)
+ {
+     JSXDRState *xdr = JS_XDRNewMem(cx, JSXDR_ENCODE);
+     NS_ENSURE_TRUE(xdr, NS_ERROR_OUT_OF_MEMORY);
+ 
+     xdr->userdata = stream;
+     nsresult rv = NS_OK;
+ 
+-    if (JS_XDRScript(xdr, &script)) {
++    if (JS_XDRScriptObject(xdr, &scriptObj)) {
+         // Get the encoded JSXDRState data and write it.  The JSXDRState owns
+         // this buffer memory and will free it beneath ::JS_XDRDestroy.
+         //
+         // If an XPCOM object needs to be written in the midst of the JS XDR
+         // encoding process, the C++ code called back from the JS engine (e.g.,
+         // nsEncodeJSPrincipals in caps/src/nsJSPrincipals.cpp) will flush data
+         // from the JSXDRState to aStream, then write the object, then return
+         // to JS XDR code with xdr reset so new JS data is encoded at the front
+@@ -822,27 +822,16 @@ class JSPrincipalsHolder
+     JSPrincipalsHolder(JSContext *cx, JSPrincipals *principals)
+         : mCx(cx), mPrincipals(principals) {}
+     ~JSPrincipalsHolder() { JSPRINCIPALS_DROP(mCx, mPrincipals); }
+  private:
+     JSContext *mCx;
+     JSPrincipals *mPrincipals;
+ };
+ 
+-class JSScriptHolder
+-{
+- public:
+-    JSScriptHolder(JSContext *cx, JSScript *script)
+-        : mCx(cx), mScript(script) {}
+-    ~JSScriptHolder() { ::JS_DestroyScript(mCx, mScript); }
+- private:
+-    JSContext *mCx;
+-    JSScript *mScript;
+-};
+-
+ /**
+  * PathifyURI transforms mozilla .js uris into useful zip paths
+  * to make it makes it easier to manipulate startup cache entries
+  * using standard zip tools.
+  * Transformations applied:
+  *  * jsloader/<scheme> prefix is used to group mozJSComponentLoader cache entries in
+  *    a top-level zip directory.
+  *  * In MOZ_OMNIJAR case resource:/// and resource://gre/ URIs refer to the same path
+@@ -880,17 +869,17 @@ PathifyURI(nsIURI *in, nsACString &out)
+    out.Append(".bin");
+    return NS_OK;
+ }
+ 
+ /* static */
+ #ifdef MOZ_ENABLE_LIBXUL
+ nsresult
+ mozJSComponentLoader::ReadScript(StartupCache* cache, nsIURI *uri,
+-                                 JSContext *cx, JSScript **script)
++                                 JSContext *cx, JSObject **scriptObj)
+ {
+     nsresult rv;
+     
+     nsCAutoString spec;
+     rv = PathifyURI(uri, spec);
+     NS_ENSURE_SUCCESS(rv, rv);
+     
+     nsAutoArrayPtr<char> buf;   
+@@ -902,37 +891,37 @@ mozJSComponentLoader::ReadScript(Startup
+     }
+ 
+     LOG(("Found %s in startupcache\n", spec.get()));
+     nsCOMPtr<nsIObjectInputStream> ois;
+     rv = NS_NewObjectInputStreamFromBuffer(buf, len, getter_AddRefs(ois));
+     NS_ENSURE_SUCCESS(rv, rv);
+     buf.forget();
+ 
+-    return ReadScriptFromStream(cx, ois, script);
++    return ReadScriptFromStream(cx, ois, scriptObj);
+ }
+ 
+ nsresult
+-mozJSComponentLoader::WriteScript(StartupCache* cache, JSScript *script,
++mozJSComponentLoader::WriteScript(StartupCache* cache, JSObject *scriptObj,
+                                   nsIFile *component, nsIURI *uri, JSContext *cx)
+ {
+     nsresult rv;
+ 
+     nsCAutoString spec;
+     rv = PathifyURI(uri, spec);
+     NS_ENSURE_SUCCESS(rv, rv);
+ 
+     LOG(("Writing %s to startupcache\n", spec.get()));
+     nsCOMPtr<nsIObjectOutputStream> oos;
+     nsCOMPtr<nsIStorageStream> storageStream; 
+     rv = NS_NewObjectOutputWrappedStorageStream(getter_AddRefs(oos),
+                                                 getter_AddRefs(storageStream));
+     NS_ENSURE_SUCCESS(rv, rv);
+ 
+-    rv = WriteScriptToStream(cx, script, oos);
++    rv = WriteScriptToStream(cx, scriptObj, oos);
+     oos->Close();
+     NS_ENSURE_SUCCESS(rv, rv);
+  
+     nsAutoArrayPtr<char> buf;
+     PRUint32 len;
+     rv = NS_NewBufferFromStorageStream(storageStream, getter_Transfers(buf), 
+                                        &len);
+     NS_ENSURE_SUCCESS(rv, rv);
+@@ -1036,40 +1025,40 @@ mozJSComponentLoader::GlobalForLocation(
+     // See: http://bugzilla.mozilla.org/show_bug.cgi?id=121438
+ #ifdef XPCONNECT_STANDALONE
+     localFile->GetNativePath(nativePath);
+ #else
+     rv = aURI->GetSpec(nativePath);
+     NS_ENSURE_SUCCESS(rv, rv);
+ #endif
+ 
+-    JSScript *script = nsnull;
++    JSObject *scriptObj = nsnull;
+ 
+ #ifdef MOZ_ENABLE_LIBXUL  
+     // Before compiling the script, first check to see if we have it in
+     // the startupcache.  Note: as a rule, startupcache errors are not fatal
+     // to loading the script, since we can always slow-load.
+     
+     PRBool writeToCache = PR_FALSE;
+     StartupCache* cache = StartupCache::GetSingleton();
+ 
+     if (cache) {
+-        rv = ReadScript(cache, aURI, cx, &script);
++        rv = ReadScript(cache, aURI, cx, &scriptObj);
+         if (NS_SUCCEEDED(rv)) {
+             LOG(("Successfully loaded %s from startupcache\n", nativePath.get()));
+         } else {
+             // This is ok, it just means the script is not yet in the
+             // cache. Could mean that the cache was corrupted and got removed,
+             // but either way we're going to write this out.
+             writeToCache = PR_TRUE;
+         }
+     }
+ #endif
+ 
+-    if (!script) {
++    if (!scriptObj) {
+         // The script wasn't in the cache , so compile it now.
+         LOG(("Slow loading %s\n", nativePath.get()));
+ 
+         // If |exception| is non-null, then our caller wants us to propagate
+         // any exceptions out to our caller. Ensure that the engine doesn't
+         // eagerly report the exception.
+         uint32 oldopts = 0;
+         if (exception) {
+@@ -1120,17 +1109,17 @@ mozJSComponentLoader::GlobalForLocation(
+ 
+             char *buf = static_cast<char*>(PR_MemMap(map, 0, fileSize32));
+             if (!buf) {
+                 NS_WARNING("Failed to map file");
+                 JS_SetOptions(cx, oldopts);
+                 return NS_ERROR_FAILURE;
+             }
+ 
+-            script = JS_CompileScriptForPrincipalsVersion(
++            scriptObj = JS_CompileScriptForPrincipalsVersion(
+               cx, global, jsPrincipals, buf, fileSize32, nativePath.get(), 1,
+               JSVERSION_LATEST);
+ 
+             PR_MemUnmap(buf, fileSize32);
+ 
+ #else  /* HAVE_PR_MEMMAP */
+ 
+             /**
+@@ -1176,78 +1165,73 @@ mozJSComponentLoader::GlobalForLocation(
+ 
+             /* read the file in one swoop */
+             rv = scriptStream->Read(buf, len, &bytesRead);
+             if (bytesRead != len)
+                 return NS_BASE_STREAM_OSERROR;
+ 
+             buf[len] = '\0';
+ 
+-            script = JS_CompileScriptForPrincipalsVersion(
++            scriptObj = JS_CompileScriptForPrincipalsVersion(
+               cx, global, jsPrincipals, buf, bytesRead, nativePath.get(), 1,
+               JSVERSION_LATEST);
+         }
+         // Propagate the exception, if one exists. Also, don't leave the stale
+         // exception on this context.
+-        // NB: The caller must stick exception into a rooted slot (probably on
+-        // its context) as soon as possible to avoid GC hazards.
+         if (exception) {
+             JS_SetOptions(cx, oldopts);
+-            if (!script) {
++            if (!scriptObj) {
+                 JS_GetPendingException(cx, exception);
+                 JS_ClearPendingException(cx);
+             }
+         }
+     }
+ 
+-    if (!script) {
++    if (!scriptObj) {
+ #ifdef DEBUG_shaver_off
+         fprintf(stderr, "mJCL: script compilation of %s FAILED\n",
+                 nativePath.get());
+ #endif
+         return NS_ERROR_FAILURE;
+     }
+ 
+-    // Ensure that we clean up the script on return.
+-    JSScriptHolder scriptHolder(cx, script);
+-
+     // Flag this script as a system script
+     // FIXME: BUG 346139: We actually want to flag this exact filename, not
+     // anything that starts with this filename... Maybe we need a way to do
+     // that?  On the other hand, the fact that this is in our components dir
+     // means that if someone snuck a malicious file into this dir we're screwed
+     // anyway...  So maybe flagging as a prefix is fine.
+     xpc->FlagSystemFilenamePrefix(nativePath.get(), PR_TRUE);
+ 
+ #ifdef DEBUG_shaver_off
+     fprintf(stderr, "mJCL: compiled JS component %s\n",
+             nativePath.get());
+ #endif
+ 
+ #ifdef MOZ_ENABLE_LIBXUL
+     if (writeToCache) {
+         // We successfully compiled the script, so cache it. 
+-        rv = WriteScript(cache, script, aComponentFile, aURI, cx);
++        rv = WriteScript(cache, scriptObj, aComponentFile, aURI, cx);
+ 
+         // Don't treat failure to write as fatal, since we might be working
+         // with a read-only cache.
+         if (NS_SUCCEEDED(rv)) {
+             LOG(("Successfully wrote to cache\n"));
+         } else {
+             LOG(("Failed to write to cache\n"));
+         }
+     }
+ #endif
+ 
+     // Assign aGlobal here so that it's available to recursive imports.
+     // See bug 384168.
+     *aGlobal = global;
+ 
+     jsval retval;
+-    if (!JS_ExecuteScriptVersion(cx, global, script, &retval, JSVERSION_LATEST)) {
++    if (!JS_ExecuteScriptVersion(cx, global, scriptObj, &retval, JSVERSION_LATEST)) {
+ #ifdef DEBUG_shaver_off
+         fprintf(stderr, "mJCL: failed to execute %s\n", nativePath.get());
+ #endif
+         *aGlobal = nsnull;
+         return NS_ERROR_FAILURE;
+     }
+ 
+     /* Freed when we remove from the table. */
+diff --git a/js/src/xpconnect/loader/mozJSComponentLoader.h b/js/src/xpconnect/loader/mozJSComponentLoader.h
+--- a/js/src/xpconnect/loader/mozJSComponentLoader.h
++++ b/js/src/xpconnect/loader/mozJSComponentLoader.h
+@@ -130,18 +130,18 @@ class mozJSComponentLoader : public mozi
+     nsresult GlobalForLocation(nsILocalFile* aComponentFile,
+                                nsIURI *aComponent,
+                                JSObject **aGlobal,
+                                char **location,
+                                jsval *exception);
+ 
+ #ifdef MOZ_ENABLE_LIBXUL
+     nsresult ReadScript(StartupCache *cache, nsIURI *uri, 
+-                        JSContext *cx, JSScript **script);
+-    nsresult WriteScript(StartupCache *cache, JSScript *script,
++                        JSContext *cx, JSObject **scriptObj);
++    nsresult WriteScript(StartupCache *cache, JSObject *scriptObj,
+                          nsIFile *component, nsIURI *uri, JSContext *cx);
+ #endif
+ 
+     nsCOMPtr<nsIComponentManager> mCompMgr;
+     nsCOMPtr<nsIJSRuntimeService> mRuntimeService;
+     nsCOMPtr<nsIThreadJSContextStack> mContextStack;
+ #ifndef XPCONNECT_STANDALONE
+     nsCOMPtr<nsIPrincipal> mSystemPrincipal;
+diff --git a/js/src/xpconnect/shell/xpcshell.cpp b/js/src/xpconnect/shell/xpcshell.cpp
+--- a/js/src/xpconnect/shell/xpcshell.cpp
++++ b/js/src/xpconnect/shell/xpcshell.cpp
+@@ -457,57 +457,47 @@ Dump(JSContext *cx, uintN argc, jsval *v
+     fputs(bytes.ptr(), gOutFile);
+     fflush(gOutFile);
+     return JS_TRUE;
+ }
+ 
+ static JSBool
+ Load(JSContext *cx, uintN argc, jsval *vp)
+ {
+-    uintN i;
+-    JSString *str;
+-    JSScript *script;
+-    JSBool ok;
+-    jsval result;
+-    FILE *file;
+-
+     JSObject *obj = JS_THIS_OBJECT(cx, vp);
+     if (!obj)
+-        return JS_FALSE;
++        return false;
+ 
+     jsval *argv = JS_ARGV(cx, vp);
+-    for (i = 0; i < argc; i++) {
+-        str = JS_ValueToString(cx, argv[i]);
++    for (uintN i = 0; i < argc; i++) {
++        JSString *str = JS_ValueToString(cx, argv[i]);
+         if (!str)
+-            return JS_FALSE;
++            return false;
+         argv[i] = STRING_TO_JSVAL(str);
+         JSAutoByteString filename(cx, str);
+         if (!filename)
+-            return JS_FALSE;
+-        file = fopen(filename.ptr(), "r");
++            return false;
++        FILE *file = fopen(filename.ptr(), "r");
+         if (!file) {
+             JS_ReportError(cx, "cannot open file '%s' for reading",
+                            filename.ptr());
+-            return JS_FALSE;
++            return false;
+         }
+-        script = JS_CompileFileHandleForPrincipals(cx, obj, filename.ptr(),
+-                                                   file, gJSPrincipals);
++        JSObject *scriptObj = JS_CompileFileHandleForPrincipals(cx, obj, filename.ptr(),
++                                                                file, gJSPrincipals);
+         fclose(file);
+-        if (!script)
+-            return JS_FALSE;
++        if (!scriptObj)
++            return false;
+ 
+-        ok = !compileOnly
+-             ? JS_ExecuteScript(cx, obj, script, &result)
+-             : JS_TRUE;
+-        JS_DestroyScript(cx, script);
+-        if (!ok)
+-            return JS_FALSE;
++        jsval result;
++        if (!compileOnly && !JS_ExecuteScript(cx, obj, scriptObj, &result))
++            return false;
+     }
+     JS_SET_RVAL(cx, vp, JSVAL_VOID);
+-    return JS_TRUE;
++    return true;
+ }
+ 
+ static JSBool
+ Version(JSContext *cx, uintN argc, jsval *vp)
+ {
+     if (argc > 0 && JSVAL_IS_INT(JS_ARGV(cx, vp)[0]))
+         JS_SET_RVAL(cx, vp, INT_TO_JSVAL(JS_SetVersion(cx, JSVersion(JSVAL_TO_INT(JS_ARGV(cx, vp)[0])))));
+     else
+@@ -1041,17 +1031,17 @@ my_GetErrorMessage(void *userRef, const 
+         else
+             return NULL;
+ }
+ 
+ static void
+ ProcessFile(JSContext *cx, JSObject *obj, const char *filename, FILE *file,
+             JSBool forceTTY)
+ {
+-    JSScript *script;
++    JSObject *scriptObj;
+     jsval result;
+     int lineno, startline;
+     JSBool ok, hitEOF;
+     char *bufp, buffer[4096];
+     JSString *str;
+ 
+     if (forceTTY) {
+         file = stdin;
+@@ -1074,24 +1064,21 @@ ProcessFile(JSContext *cx, JSObject *obj
+             while((ch = fgetc(file)) != EOF) {
+                 if(ch == '\n' || ch == '\r')
+                     break;
+             }
+         }
+         ungetc(ch, file);
+         DoBeginRequest(cx);
+ 
+-        script = JS_CompileFileHandleForPrincipals(cx, obj, filename, file,
+-                                                   gJSPrincipals);
++        scriptObj = JS_CompileFileHandleForPrincipals(cx, obj, filename, file,
++                                                      gJSPrincipals);
+ 
+-        if (script) {
+-            if (!compileOnly)
+-                (void)JS_ExecuteScript(cx, obj, script, &result);
+-            JS_DestroyScript(cx, script);
+-        }
++        if (scriptObj && !compileOnly)
++            (void)JS_ExecuteScript(cx, obj, scriptObj, &result);
+         DoEndRequest(cx);
+ 
+         return;
+     }
+ 
+     /* It's an interactive filehandle; drop into read-eval-print loop. */
+     lineno = 1;
+     hitEOF = JS_FALSE;
+@@ -1113,36 +1100,35 @@ ProcessFile(JSContext *cx, JSObject *obj
+             }
+             bufp += strlen(bufp);
+             lineno++;
+         } while (!JS_BufferIsCompilableUnit(cx, obj, buffer, strlen(buffer)));
+ 
+         DoBeginRequest(cx);
+         /* Clear any pending exception from previous failed compiles.  */
+         JS_ClearPendingException(cx);
+-        script = JS_CompileScriptForPrincipals(cx, obj, gJSPrincipals, buffer,
+-                                               strlen(buffer), "typein", startline);
+-        if (script) {
++        scriptObj = JS_CompileScriptForPrincipals(cx, obj, gJSPrincipals, buffer,
++                                                  strlen(buffer), "typein", startline);
++        if (scriptObj) {
+             JSErrorReporter older;
+ 
+             if (!compileOnly) {
+-                ok = JS_ExecuteScript(cx, obj, script, &result);
++                ok = JS_ExecuteScript(cx, obj, scriptObj, &result);
+                 if (ok && result != JSVAL_VOID) {
+                     /* Suppress error reports from JS_ValueToString(). */
+                     older = JS_SetErrorReporter(cx, NULL);
+                     str = JS_ValueToString(cx, result);
+                     JS_SetErrorReporter(cx, older);
+                     JSAutoByteString bytes;
+                     if (str && bytes.encode(cx, str))
+                         fprintf(gOutFile, "%s\n", bytes.ptr());
+                     else
+                         ok = JS_FALSE;
+                 }
+             }
+-            JS_DestroyScript(cx, script);
+         }
+         DoEndRequest(cx);
+     } while (!hitEOF && !gQuitting);
+ 
+     fprintf(gOutFile, "\n");
+ }
+ 
+ static void
+diff --git a/js/src/xpconnect/src/xpcstack.cpp b/js/src/xpconnect/src/xpcstack.cpp
+--- a/js/src/xpconnect/src/xpcstack.cpp
++++ b/js/src/xpconnect/src/xpcstack.cpp
+@@ -155,21 +155,21 @@ XPCJSStackFrame::CreateStack(JSContext* 
+             else
+                 self->mLanguage = nsIProgrammingLanguage::JAVASCRIPT;
+             if(self->IsJSFrame())
+             {
+                 JSScript* script = JS_GetFrameScript(cx, fp);
+                 jsbytecode* pc = JS_GetFramePC(cx, fp);
+                 if(script && pc)
+                 {
+-                    JSAutoEnterCompartment ac;
++                    JS::AutoEnterScriptCompartment ac;
+                     if(ac.enter(cx, script))
+-                     {
+-                         const char* filename = JS_GetScriptFilename(cx, script);
+-                         if(filename)
++                    {
++                        const char* filename = JS_GetScriptFilename(cx, script);
++                        if(filename)
+                         {
+                             self->mFilename = (char*)
+                                     nsMemory::Clone(filename,
+                                             sizeof(char)*(strlen(filename)+1));
+                         }
+ 
+                         self->mLineno = (PRInt32) JS_PCToLineNumber(cx, script, pc);
+ 
+diff --git a/js/src/xpconnect/tests/TestXPC.cpp b/js/src/xpconnect/tests/TestXPC.cpp
+--- a/js/src/xpconnect/tests/TestXPC.cpp
++++ b/js/src/xpconnect/tests/TestXPC.cpp
+@@ -94,42 +94,34 @@ Print(JSContext *cx, uintN argc, jsval *
+     return true;
+ }
+ 
+ static JSBool
+ Load(JSContext *cx, uintN argc, jsval *vp)
+ {
+     uintN i;
+     JSString *str;
+-    JSScript *script;
+-    JSBool ok;
+     jsval result;
+ 
+     JSObject *obj = JS_THIS_OBJECT(cx, vp);
+     if (!obj)
+         return JS_FALSE;
+ 
+     jsval *argv = JS_ARGV(cx, vp);
+     for (i = 0; i < argc; i++) {
+         str = JS_ValueToString(cx, argv[i]);
+         if (!str)
+             return JS_FALSE;
+         argv[i] = STRING_TO_JSVAL(str);
+         JSAutoByteString filename(cx, str);
+         if (!filename)
+             return false;
+-        script = JS_CompileFile(cx, obj, filename.ptr());
+-        if (!script)
+-            ok = JS_FALSE;
+-        else {
+-            ok = JS_ExecuteScript(cx, obj, script, &result);
+-            JS_DestroyScript(cx, script);
+-        }
+-        if (!ok)
+-            return JS_FALSE;
++        JSObject *scriptObj = JS_CompileFile(cx, obj, filename.ptr());
++        if (!scriptObj || !JS_ExecuteScript(cx, obj, scriptObj, &result))
++            return false;
+     }
+     JS_SET_RVAL(cx, vp, JSVAL_VOID);
+     return JS_TRUE;
+ }
+ 
+ static JSFunctionSpec glob_functions[] = {
+     {"print",           Print,          0,0},
+     {"load",            Load,           1,0},

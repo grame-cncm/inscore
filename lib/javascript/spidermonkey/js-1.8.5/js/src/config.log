@@ -1,0 +1,291 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:759: checking host system type
+configure:780: checking target system type
+configure:798: checking build system type
+configure:859: checking for mawk
+configure:983: checking for perl5
+configure:2139: checking for gcc
+configure:2252: checking whether the C compiler (gcc-4.2 -arch i386 ) works
+configure:2268: gcc-4.2 -o conftest -arch i386   conftest.c  1>&5
+configure:2294: checking whether the C compiler (gcc-4.2 -arch i386 ) is a cross-compiler
+configure:2299: checking whether we are using GNU C
+configure:2327: checking whether gcc-4.2 accepts -g
+configure:2363: checking for c++
+configure:2395: checking whether the C++ compiler (g++-4.2 -arch i386 ) works
+configure:2411: g++-4.2 -o conftest -arch i386   conftest.C  1>&5
+configure:2437: checking whether the C++ compiler (g++-4.2 -arch i386 ) is a cross-compiler
+configure:2442: checking whether we are using GNU C++
+configure:2470: checking whether g++-4.2 accepts -g
+configure:2504: checking for ranlib
+configure:2536: checking for as
+configure:2590: checking for ar
+configure:2625: checking for ld
+configure:2660: checking for strip
+configure:2695: checking for windres
+configure:3465: checking whether gcc-4.2 and cc understand -c and -o together
+configure:3525: checking how to run the C preprocessor
+configure:3605: checking how to run the C++ preprocessor
+configure:3713: checking for sb-conf
+configure:3713: checking for ve
+configure:3780: checking for a BSD compatible install
+configure:3833: checking whether ln -s works
+configure:3856: checking for minimum required perl version >= 5.006
+configure:3867: checking for full perl installation
+configure:3882: checking for python2.7
+configure:3942: checking for doxygen
+configure:3991: checking for autoconf
+configure:4040: checking for unzip
+configure:4091: checking for zip
+configure:4145: checking for makedepend
+configure:4193: checking for xargs
+configure:4267: checking for pbbuild
+configure:4330: checking for sdp
+configure:4566: checking for gmake
+configure:4629: checking for X
+configure:5917: checking whether the compiler supports -Wno-invalid-offsetof
+configure:5940: g++-4.2 -c -arch i386 -fno-strict-aliasing -Wno-invalid-offsetof  conftest.C 1>&5
+configure:5967: checking whether the compiler supports -Wno-variadic-macros
+configure:5990: g++-4.2 -c -arch i386 -fno-strict-aliasing -Wno-variadic-macros  conftest.C 1>&5
+configure:6017: checking whether the compiler supports -Werror=return-type
+configure:6040: g++-4.2 -c -arch i386 -fno-strict-aliasing -Werror=return-type  conftest.C 1>&5
+configure:6076: checking whether ld has archive extraction flags
+configure:6133: checking that static assertion macros used in autoconf tests work
+configure:6245: checking for 64-bit OS
+configure:6254: gcc-4.2 -c -arch i386 -fno-strict-aliasing  conftest.c 1>&5
+configure: In function 'main':
+configure:6255: error: size of array 'static_assert_line_6254' is negative
+configure: failed program was:
+#line 6247 "configure"
+#include "confdefs.h"
+
+#define CONFIGURE_STATIC_ASSERT(condition) CONFIGURE_STATIC_ASSERT_IMPL(condition, __LINE__)
+#define CONFIGURE_STATIC_ASSERT_IMPL(condition, line) CONFIGURE_STATIC_ASSERT_IMPL2(condition, line)
+#define CONFIGURE_STATIC_ASSERT_IMPL2(condition, line) typedef int static_assert_line_##line[(condition) ? 1 : -1]
+
+int main() {
+CONFIGURE_STATIC_ASSERT(sizeof(void*) == 8)
+; return 0; }
+configure:6393: checking for Python version >= 2.5 but not 3.x
+configure:6671: checking for -dead_strip option to ld
+configure:6682: gcc-4.2 -o conftest -arch i386 -fno-strict-aliasing -fpascal-strings -fno-common   -framework Cocoa -lobjc -Wl,-dead_strip conftest.c  1>&5
+configure:8126: checking for ANSI C header files
+configure:8230: checking for working const
+configure:8305: checking for mode_t
+configure:8338: checking for off_t
+configure:8371: checking for pid_t
+configure:8404: checking for size_t
+configure:8444: checking for __stdcall
+configure:8487: checking for ssize_t
+configure:8522: checking for st_blksize in struct stat
+configure:8556: checking for siginfo_t
+configure:8594: checking for stdint.h
+configure:8840: checking for the size of void*
+configure:8895: checking for the alignment of void*
+configure:8939: checking for the size of double
+configure:8980: checking for int16_t
+configure:9015: checking for int32_t
+configure:9050: checking for int64_t
+configure:9085: checking for int64
+configure:9120: checking for uint
+configure:9155: checking for uint_t
+configure:9190: checking for uint16_t
+configure:9234: checking for uname.domainname
+configure:9271: checking for uname.__domainname
+configure:9317: checking for visibility(hidden) attribute
+configure:9342: checking for visibility(default) attribute
+configure:9367: checking for visibility pragma support
+configure:9392: checking For gcc visibility bug with class-level attributes (GCC bug 26905)
+configure:9420: checking For x86_64 gcc visibility bug with builtins (GCC bug 20297)
+configure:9474: checking for __force_align_arg_pointer__ attribute
+configure:9513: checking for dirent.h that defines DIR
+configure:9551: checking for opendir in -ldir
+configure:9643: checking for sys/byteorder.h
+configure:9643: checking for compat.h
+configure:9643: checking for getopt.h
+configure:9683: checking for sys/bitypes.h
+configure:9683: checking for memory.h
+configure:9683: checking for unistd.h
+configure:9723: checking for gnu/libc-version.h
+configure:9723: checking for nl_types.h
+configure:9763: checking for malloc.h
+configure:9803: checking for X11/XKBlib.h
+configure:9843: checking for io.h
+configure:9884: checking for sys/statvfs.h
+configure:9884: checking for sys/statfs.h
+configure:9884: checking for sys/vfs.h
+configure:9884: checking for sys/mount.h
+configure:9925: checking for sys/quota.h
+configure:9965: checking for linux/quota.h
+configure:10006: checking for mmintrin.h
+configure:10053: checking for new
+configure:10155: checking for sys/cdefs.h
+configure:10196: checking for linux/perf_event.h
+configure:10234: checking for gethostbyname_r in -lc_r
+configure:10396: checking for dladdr
+configure:10559: checking for socket in -lsocket
+configure:10608: checking for ARM SIMD support in compiler
+configure:10617: gcc-4.2 -c -arch i386 -fno-strict-aliasing -fpascal-strings -fno-common  conftest.c 1>&5
+/var/folders/Ud/Ud9XHjhVE7G21+M7FfpT4U+++TI/-Tmp-//ccteimZM.s:7:no such instruction: `uqadd8 r1, r1,r2'
+configure: failed program was:
+#line 10610 "configure"
+#include "confdefs.h"
+
+int main() {
+asm("uqadd8 r1, r1, r2");
+; return 0; }
+configure:10638: checking for ARM NEON support in compiler
+configure:10652: gcc-4.2 -c -arch i386 -fno-strict-aliasing -fpascal-strings -fno-common -mfpu=neon -mfloat-abi=softfp  conftest.c 1>&5
+cc1: error: unrecognized command line option "-mfpu=neon"
+cc1: error: unrecognized command line option "-mfloat-abi=softfp"
+configure: failed program was:
+#line 10645 "configure"
+#include "confdefs.h"
+
+int main() {
+asm("vadd.i8 d0, d0, d0");
+; return 0; }
+configure:10808: checking whether gcc-4.2 accepts -pthread
+configure:10926: checking whether mmap() sees write()s
+configure:10969: gcc-4.2 -o conftest -arch i386 -fno-strict-aliasing -fpascal-strings -fno-common -pthread    -framework Cocoa -lobjc conftest.c  1>&5
+configure:10994: checking whether gcc-4.2 needs -traditional
+configure:11040: checking for 8-bit clean memcmp
+configure:11080: checking for fchmod
+configure:11080: checking for flockfile
+configure:11080: checking for getc_unlocked
+configure:11080: checking for _getc_nolock
+configure:11080: checking for getpagesize
+configure:11080: checking for lchown
+configure:11080: checking for localtime_r
+configure:11080: checking for lstat64
+configure:11080: checking for memmove
+configure:11080: checking for random
+configure:11080: checking for rint
+configure:11080: checking for sbrk
+configure:11080: checking for snprintf
+configure:11080: checking for stat64
+configure:11080: checking for statvfs
+configure:11080: checking for statvfs64
+configure:11080: checking for strerror
+configure:11080: checking for strtok_r
+configure:11080: checking for truncate64
+configure:11136: checking for clock_gettime(CLOCK_MONOTONIC) and -lrt
+configure:11182: gcc-4.2 -o conftest -arch i386 -fno-strict-aliasing -fpascal-strings -fno-common -pthread    -framework Cocoa -lobjc conftest.c  1>&5
+configure:11176:21: error: windows.h: No such file or directory
+configure: In function 'main':
+configure:11178: error: 'SYSTEMTIME' undeclared (first use in this function)
+configure:11178: error: (Each undeclared identifier is reported only once
+configure:11178: error: for each function it appears in.)
+configure:11178: error: expected ';' before 'st'
+configure:11178: error: 'FILETIME' undeclared (first use in this function)
+configure:11178: error: expected ';' before 'ft'
+configure:11178: error: 'st' undeclared (first use in this function)
+configure:11178: error: 'ft' undeclared (first use in this function)
+configure: failed program was:
+#line 11175 "configure"
+#include "confdefs.h"
+#include <windows.h>
+int main() {
+SYSTEMTIME st;FILETIME ft;SystemTimeToFileTime(&st,&ft);
+; return 0; }
+configure:11206: gcc-4.2 -o conftest -arch i386 -fno-strict-aliasing -fpascal-strings -fno-common -pthread    -framework Cocoa -lobjc conftest.c  1>&5
+configure:11200:21: error: windows.h: No such file or directory
+configure: In function 'main':
+configure:11202: error: 'FILETIME' undeclared (first use in this function)
+configure:11202: error: (Each undeclared identifier is reported only once
+configure:11202: error: for each function it appears in.)
+configure:11202: error: expected ';' before 'ft'
+configure:11202: error: 'ft' undeclared (first use in this function)
+configure: failed program was:
+#line 11199 "configure"
+#include "confdefs.h"
+#include <windows.h>
+int main() {
+FILETIME ft;GetSystemTimeAsFileTime(&ft);
+; return 0; }
+configure:11233: checking for wcrtomb
+configure:11265: checking for mbrtowc
+configure:11306: checking for res_ninit()
+configure:11353: checking for gnu_get_libc_version()
+configure:11628: checking for an implementation of va_copy()
+configure:11669: checking for an implementation of __va_copy()
+configure:11710: checking whether va_lists can be copied by value
+configure:11883: checking for gcc 3.0 ABI
+configure:11925: checking for C++ "explicit" keyword
+configure:11961: checking for C++ "typename" keyword
+configure:12006: checking for modern C++ template specialization syntax support
+configure:12043: checking whether partial template specialization works
+configure:12077: checking whether operators must be re-defined for templates derived from templates
+configure:12116: checking whether we need to cast a derived template to pass as its base class
+configure:12151: checking whether the compiler can resolve const ambiguities for templates
+configure:12199: checking whether the C++ "using" keyword can change access
+configure:12251: checking whether the C++ "using" keyword resolves ambiguity
+configure:12293: checking for "std::" namespace
+configure:12326: checking whether standard template operator!=() is ambiguous
+configure:12363: checking for C++ reinterpret_cast
+configure:12397: checking for C++ dynamic_cast to void*
+configure:12448: checking whether C++ requires implementation of unused virtual methods
+configure:12483: checking for trouble comparing to zero near std::operator!=()
+configure:12523: checking for __thread keyword for TLS variables
+configure:12572: checking for malloc.h
+configure:12606: checking for malloc/malloc.h
+configure:12684: checking for strndup
+configure:12684: checking for posix_memalign
+configure:12684: checking for memalign
+configure:12684: checking for valloc
+configure:12742: checking for __attribute__((always_inline))
+configure:12769: checking for __attribute__((malloc))
+configure:12796: checking for __attribute__((warn_unused_result))
+configure:12823: checking for __attribute__((noreturn))
+configure:12859: checking for LC_MESSAGES
+configure:12894: checking for localeconv
+configure:13445: checking for valid optimization flags
+configure:13456: gcc-4.2 -c -arch i386 -fno-strict-aliasing -fpascal-strings -fno-common -pthread -O3 -fomit-frame-pointer  conftest.c 1>&5
+configure:14167: checking for __cxa_demangle
+configure:14246: checking for unwind.h
+configure:14275: checking for _Unwind_Backtrace
+configure:14352: checking for gcc -pipe support
+dummy-hello.c:2:21: warning: missing terminating " character
+dummy-hello.c: In function 'main':
+dummy-hello.c:2: error: missing terminating " character
+dummy-hello.c:3:1: warning: missing terminating " character
+dummy-hello.c:3: error: missing terminating " character
+dummy-hello.c:3: error: expected expression at end of input
+dummy-hello.c:3: warning: format not a string literal and no format arguments
+dummy-hello.c:3: error: expected declaration or statement at end of input
+configure:14374: gcc-4.2 -c -arch i386 -fno-strict-aliasing -fpascal-strings -fno-common -pthread -pipe  conftest.c 1>&5
+configure:14419: checking whether C compiler supports -fprofile-generate
+configure:14428: gcc-4.2 -c -arch i386 -fno-strict-aliasing -fpascal-strings -fno-common -pthread -pipe -fprofile-generate -fprofile-correction  conftest.c 1>&5
+cc1: error: unrecognized command line option "-fprofile-correction"
+configure: failed program was:
+#line 14421 "configure"
+#include "confdefs.h"
+
+int main() {
+return 0;
+; return 0; }
+configure:14526: checking for correct temporary object destruction order
+configure:14554: g++-4.2 -o conftest -arch i386 -fno-strict-aliasing -fpascal-strings -fno-common -pthread -pipe    -framework Cocoa -lobjc conftest.C  1>&5
+configure:14575: checking for correct overload resolution with const and templates
+configure:14610: g++-4.2 -c -arch i386 -fno-strict-aliasing -fpascal-strings -fno-common -pthread -pipe  -Wall -Wpointer-arith -Woverloaded-virtual -Wsynth -Wno-ctor-dtor-privacy -Wno-non-virtual-dtor -Wcast-align -Wno-invalid-offsetof -Wno-variadic-macros -Werror=return-type  conftest.C 1>&5
+configure:14633: checking for tm_zone tm_gmtoff in struct tm
+configure:15127: checking for posix_fallocate
+configure:15137: gcc-4.2 -o conftest -Wall -W -Wno-unused -Wpointer-arith -Wcast-align -W -arch i386 -fno-strict-aliasing -fpascal-strings -fno-common -pthread -pipe    -framework Cocoa -lobjc conftest.c  1>&5
+configure: In function 'main':
+configure:15133: warning: implicit declaration of function 'posix_fallocate'
+Undefined symbols:
+  "_posix_fallocate", referenced from:
+      _main in ccQhp2AF.o
+ld: symbol(s) not found
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 15129 "configure"
+#include "confdefs.h"
+#define _XOPEN_SOURCE 600
+  #include <fcntl.h>
+int main() {
+posix_fallocate(0, 0, 0);
+; return 0; }
+configure:15282: checking for setlocale
+configure:15337: checking for localeconv

@@ -1,0 +1,208 @@
+diff --git a/README b/README
+--- a/README
++++ b/README
+@@ -1,7 +1,59 @@
+ 1.  The latest release notes for SpiderMonkey can be found at:
+ 
+       https://developer.mozilla.org/En/SpiderMonkey/1.8.5
+ 
+ 
+ 2.  js/jsd contains code for debugging support for the JavaScript engine in js/src.
+ 
++
++Packaging Notes
++---------------
++This release is based on revision 5f8f494a4c29 of https://hg.mozilla.org/releases/mozilla-2.0, with
++a few trivial changes applied to improve the manageability of the standalone-release. In addition 
++to running autoconf 2.13 before bundling the release, the changes in the patches directory were
++applied.
++
++This standalone release introduces a new, experimental, naming convention for the SpiderMonkey
++shared library.  This naming convention will not be rolled back into the mainline Mozilla source
++tree, however the relevant patches are included with this distribution.
++
++Note: Please copy wes@page.ca on bugs related to packaging this standalone release.
++
++Linux and non-Mac OS X Unices
++-----------------------------
++Previous releases and the master source repositories build a shared library named libmozjs.so. In
++an effort to make version identification easier for embedders and OS distribution maintainers, this
++standalone release builds libmozjs185.so.1.0.0  (.dylib.1.0.0 on Mac OS X).
++
++libmozjs185 indicates that this is the SpiderMonkey library which implements JavaScript 1.8.5. The
++1.0.0 suffix is of the form major.minor.micro revision.  While it is unlikely that more than one 
++official source release for a given version of JavaScript will be published, it has happened in the
++past (e.g JS 1.4-1), and we want to provide clear direction in case there is a compelling need:
++
++* a change in major revision number indicates a change which is ABI and API incompatible with the
++  previous release,
++
++* a change in minor revision number indicates a change which is ABI incompatible, but API 
++  compatible with the previous release,
++
++* a change in micro revision number indicates a change which is both ABI and API compatible with
++  the previous release.
++ 
++A symbolic link will be provided linking libmoz185.js.so to this library, along with
++libmoz185.js.so.1.0 when building the install target.
++
++Most embeddings building on Unix or Linux should link against libmozjs185.so.1.0.
++
++The static library has been renamed, from libjs_static.a to libmozjs185-1.0.a.
++
++Mac OS X
++--------
++The versioning rules and symbolic links are the same as for the other flavours of Unix, but the
++library name is now libmozjs185.1.0.0.dylib.
++
++Most embeddings building on Mac OS X should link against libmozjs185.1.0.dylib.
++
++Microsoft Windows
++-----------------
++The versioning rules are the same as for Unix, but the the library name is now 
++libmozjs185-1.0.dll. Symbolic links will not be created.
+diff --git a/js/src/Makefile.in b/js/src/Makefile.in
+--- a/js/src/Makefile.in
++++ b/js/src/Makefile.in
+@@ -66,18 +66,25 @@ ifdef ENABLE_TESTS
+ DIRS += jsapi-tests
+ endif
+ endif
+ 
+ ifdef ENABLE_TESTS
+ DIRS += tests
+ endif
+ 
++SRCREL_VERSION      = 1.0.0
++SRCREL_ABI_VERSION  := $(word 1,$(subst ., ,$(SRCREL_VERSION))).$(word 2,$(subst ., ,$(SRCREL_VERSION)))
++
+ MODULE		    = js
+-LIBRARY_NAME	    = mozjs
++ifeq (,$(HOST_BIN_SUFFIX))
++LIBRARY_NAME	    = mozjs185
++else
++LIBRARY_NAME	    = mozjs185-$(SRCREL_ABI_VERSION)
++endif
+ STATIC_LIBRARY_NAME = js_static
+ GRE_MODULE	    = 1
+ 
+ LIBS		= $(NSPR_LIBS) 
+ 
+ ifdef GNU_CXX
+ ifdef INTEL_CXX
+ # icc gets special optimize flags
+@@ -789,16 +796,17 @@ endif
+ 
+ # Compute the linker flags that programs linking against SpiderMonkey should
+ # pass to get SpiderMonkey and its dependencies, beyond just the -L and -l
+ # for the SpiderMonkey library itself.
+ # - EXTRA_DSO_LDOPTS includes the NSPR -L and -l flags.
+ # - OS_LIBS includes libraries selected by the configure script.
+ # - EXTRA_LIBS includes libraries selected by this Makefile.
+ JS_CONFIG_LIBS=$(EXTRA_DSO_LDOPTS) $(OS_LIBS) $(EXTRA_LIBS) 
++JS_CONFIG_MOZ_JS_LIBS=-L$(libdir) -l$(LIBRARY_NAME)
+ 
+ # The configure script invokes this rule explicitly at configure time!
+ # It's important that js-config be ready by the time we're done
+ # configuring, because we may be running other configure scripts that
+ # would like to run js-config themselves, before js is built.
+ #
+ # This file and rules.mk go through a certain amount of work to decide
+ # which libraries to build, what to name them, and what flags to pass
+@@ -814,34 +822,80 @@ js-config: js-config.in Makefile $(DEPTH
+ 	-e 's|$(at)prefix$(at)|$(prefix)|' \
+ 	-e 's|$(at)exec_prefix$(at)|$(exec_prefix)|' \
+ 	-e 's|$(at)includedir$(at)|$(includedir)|' \
+ 	-e 's|$(at)libdir$(at)|$(libdir)|' \
+ 	-e 's|$(at)MOZILLA_VERSION$(at)|$(MOZILLA_VERSION)|' \
+ 	-e 's|$(at)LIBRARY_NAME$(at)|$(LIBRARY_NAME)|' \
+ 	-e 's|$(at)NSPR_CFLAGS$(at)|$(NSPR_CFLAGS)|' \
+ 	-e 's|$(at)JS_CONFIG_LIBS$(at)|$(JS_CONFIG_LIBS)|' \
+-	-e 's|$(at)MOZ_JS_LIBS$(at)|$(MOZ_JS_LIBS)|' \
++	-e 's|$(at)MOZ_JS_LIBS$(at)|$(JS_CONFIG_MOZ_JS_LIBS)|' \
+ 	&& mv js-config.tmp $@ && chmod +x $@
+ 
+ SCRIPTS = js-config
+ SDK_BINARY = js-config
+ 
++pkg_config_files = \
++	mozjs185.pc \
++	$(NULL)
++
++GARBAGE += $(pkg_config_files)
++
++%.pc: $(srcdir)/%.pc.in Makefile
++	cat $< | sed \
++	-e "s|%prefix%|$(prefix)|" \
++	-e "s|%includedir%|$(includedir)|" \
++	-e "s|%libdir%|$(libdir)|" \
++	-e 's|%MOZILLA_VERSION%|$(MOZILLA_VERSION)|' \
++	> $@ && chmod 644 $@
++
++install:: $(pkg_config_files)
++	@echo pkg_config_file: $(pkg_config_files)
++	$(SYSINSTALL) $(IFLAGS1) $^ $(DESTDIR)$(libdir)/pkgconfig
++
+ install:: $(INSTALLED_HEADERS)
+ 	$(SYSINSTALL) $^ $(DESTDIR)$(includedir)/$(MODULE)
+ 
+ install:: $(SCRIPTS)
+ 	$(SYSINSTALL) $^ $(DESTDIR)$(bindir)
+ 
++ifeq (,$(HOST_BIN_SUFFIX))
++ifeq (.dylib,$(DLL_SUFFIX))
++# Mac OS X
++SHLIB_ANY_VER   := $(DESTDIR)$(libdir)/$(SHARED_LIBRARY)
++SHLIB_ABI_VER   := $(DESTDIR)$(libdir)/$(SHARED_LIBRARY:$(DLL_SUFFIX)=.$(SRCREL_ABI_VERSION)$(DLL_SUFFIX))
++SHLIB_EXACT_VER := $(DESTDIR)$(libdir)/$(SHARED_LIBRARY:$(DLL_SUFFIX)=.$(SRCREL_VERSION)$(DLL_SUFFIX))
++$(SHARED_LIBRARY): EXTRA_DSO_LDOPTS += -install_name $(SHLIB_ABI_VER)
++$(SHARED_LIBRARY): EXTRA_DSO_LDOPTS += -current_version $(SRCREL_VERSION)
++$(SHARED_LIBRARY): EXTRA_DSO_LDOPTS += -compatibility_version $(SRCREL_ABI_VERSION)
++else
++# Generic Unix / Linux
++SHLIB_ANY_VER   := $(DESTDIR)$(libdir)/$(SHARED_LIBRARY)
++SHLIB_ABI_VER   := $(DESTDIR)$(libdir)/$(SHARED_LIBRARY).$(SRCREL_ABI_VERSION)
++SHLIB_EXACT_VER := $(DESTDIR)$(libdir)/$(SHARED_LIBRARY).$(SRCREL_VERSION)
++$(SHARED_LIBRARY): EXTRA_DSO_LDOPTS += -Wl,-soname,$(notdir $(SHLIB_ABI_VER))
++endif
++endif
++
+ install:: $(LIBRARY) $(SHARED_LIBRARY) $(IMPORT_LIBRARY)
+ ifneq (,$(LIBRARY))
+ 	$(SYSINSTALL) $(LIBRARY) $(DESTDIR)$(libdir)
++	mv -f $(DESTDIR)$(libdir)/$(LIBRARY) $(subst $(STATIC_LIBRARY_NAME),mozjs185-$(SRCREL_ABI_VERSION),$(DESTDIR)$(libdir)/$(LIBRARY))
+ endif
+ ifneq (,$(SHARED_LIBRARY))
++ifeq (,$(HOST_BIN_SUFFIX))
++	@[ ! -h $(SHLIB_ANY_VER) ] || rm -f $(SHLIB_ANY_VER)
++endif
+ 	$(SYSINSTALL) $(SHARED_LIBRARY) $(DESTDIR)$(libdir)
++ifeq (,$(HOST_BIN_SUFFIX))
++	mv -f $(SHLIB_ANY_VER) $(SHLIB_EXACT_VER)
++	@[ ! -h $(SHLIB_ABI_VER) ] || rm -f $(SHLIB_ABI_VER)
++	ln -s $(SHLIB_EXACT_VER) $(SHLIB_ABI_VER)
++	ln -s $(SHLIB_ABI_VER) $(SHLIB_ANY_VER)
++endif
+ endif
+ ifneq (,$(IMPORT_LIBRARY))
+ 	$(SYSINSTALL) $(IMPORT_LIBRARY) $(DESTDIR)$(libdir)
+ endif
+ 
+ # Extra dependancies and rules for auto-generated headers
+ host_jskwgen.$(OBJ_SUFFIX): jsversion.h jskeyword.tbl
+ 
+diff --git a/js/src/mozjs185.pc.in b/js/src/mozjs185.pc.in
+new file mode 100644
+--- /dev/null
++++ b/js/src/mozjs185.pc.in
+@@ -0,0 +1,10 @@
++prefix=%prefix%
++libdir=%libdir%
++includedir=%includedir%
++
++Name: SpiderMonkey 1.8.5
++Description: The Mozilla library for JavaScript 1.8.5
++Version: %MOZILLA_VERSION%
++Requires: nspr >= 4.7
++Libs: -L${libdir} -lmozjs185
++Cflags: -I${includedir}/js

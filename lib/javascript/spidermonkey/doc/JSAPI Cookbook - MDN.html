@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook -->
+<html lang="en" dir="ltr" id="developer-mozilla-org"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>JSAPI Cookbook - MDN</title>
+
+<meta charset="utf-8">
+
+<meta name="MSSmartTagsPreventParsing" content="true">
+<meta name="Copyright" content="Copyright (c) 2005-2011 Mozilla.">
+<meta name="Rating" content="General">
+
+<link rel="home" href="https://developer.mozilla.org/">
+<link rel="copyright" href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#copyright">
+<meta name="robots" content="index,follow">
+<link rel="shortcut icon" href="https://developer.mozilla.org/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="What&#39;s new feed" href="https://developer.mozilla.org/index.php?title=Special:Recentchanges&feed=rss">
+<link rel="alternate" type="application/rss+xml" title="Page and subpages changes feed" href="https://developer.mozilla.org/index.php?title=Special:Article&type=feed&feedtype=subpagechanges&pageid=8236">
+<link rel="alternate" type="application/rss+xml" title="Page changes feed" href="https://developer.mozilla.org/index.php?title=Special:Article&type=feed&pageid=8236">
+<meta name="generator" content="MindTouch">
+<link rel="search" type="application/opensearchdescription+xml" title="MDN Search" href="https://developer.mozilla.org/deki/gui/opensearch.php?type=description">
+<link rel="stylesheet" type="text/css" media="screen" href="./JSAPI Cookbook - MDN_files/css.php"> <!--[if IE 7]><style type="text/css">@import "/skins/common/_ie7.css";</style><![endif]--><!--[if IE 6]><style type="text/css">@import "/skins/common/_ie.css";</style><![endif]--><link rel="stylesheet" type="text/css" media="print" href="./JSAPI Cookbook - MDN_files/print.css">
+<link rel="stylesheet" type="text/css" media="screen,projection" href="./JSAPI Cookbook - MDN_files/css(1).php">
+<!--[if lte IE 7]><link rel="stylesheet" type="text/css" media="all" href="/skins/mdn/Transitional/ie7.css"><![endif]-->
+<!--[if lte IE 6]><link rel="stylesheet" type="text/css" media="all" href="/skins/mdn/Transitional/ie6.css"><![endif]-->
+<link rel="stylesheet" type="text/css" media="print" href="./JSAPI Cookbook - MDN_files/print(1).css">
+
+<script type="text/javascript">CKEDITOR_BASEPATH = "/deki/plugins/page_editor_ckeditor/ckeditor/";</script>
+<script type="text/javascript" src="./JSAPI Cookbook - MDN_files/js.php"></script><script type="text/javascript">var _starttime = new Date().getTime();</script>
+
+<!--[if IE]>
+<meta http-equiv="imagetoolbar" content="no">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<script src="/skins/mdn/Transitional/js/html5.js"></script>
+<![endif]-->
+
+	<script type="text/javascript">
+
+		var aLt = aLt || [];aLt["attach-no-description"] = 'No description'; aLt["cancel"] = 'Cancel'; aLt["close"] = 'Close'; aLt["comment-delete"] = 'Are you sure you want to delete this comment?'; aLt["contentrating-title-popup"] = 'Thanks for your feedback'; aLt["error"] = 'Error'; aLt["error-permission-denied"] = 'Permission denied'; aLt["error-permission-details"] = 'Your account does not have sufficient permissions to perform that action.'; aLt["gallery-close"] = 'close'; aLt["gallery-next"] = 'next'; aLt["gallery-prev"] = 'prev'; aLt["internal-error"] = 'Sorry, but there was an internal problem - please try again soon.'; aLt["js-label_cancel"] = 'Cancel'; aLt["js-label_save"] = 'Save'; aLt["js-tooltip_cancel"] = 'Exit Without Saving Changes'; aLt["js-tooltip_save"] = 'Save and Exit (Alt+S)'; aLt["ldap-provide-credentials"] = 'Please provide external service login credentials.'; aLt["loading"] = 'Loading...'; aLt["menu-confirm-delete"] = 'Are you sure you want to delete this file?'; aLt["menu-delete-file"] = 'Delete'; aLt["menu-edit-description"] = 'Edit description'; aLt["menu-move-file"] = 'Move'; aLt["menu-previous-versions"] = 'Previous versions'; aLt["menu-view-original"] = 'View original'; aLt["ready"] = 'Ready'; aLt["remove-tag"] = 'Remove tag'; aLt["restore-tag"] = 'Restore tag'; aLt["adding-tags"] = 'Adding Tags...'; aLt["save"] = 'Save'; aLt["submit"] = 'Submit'; aLt["wikibits-attach-another"] = 'Attach another file'; aLt["wikibits-attach-file"] = 'Attach File'; aLt["wikibits-cant-attach-editing"] = 'Sorry, you can\'t attach files while editing a page. Please close the editor first.'; aLt["wikibits-edit-section"] = 'Edit section'; aLt["wikibits-remove-file"] = 'Remove file'; aLt["advanced-search"] = 'Advanced Search'; aLt["standard-search"] = 'Standard Search';  var wfMsg = wfMsg || function (key) { return aLt[key] ? aLt[key] : 'MISSING: ' + key; };
+	//hook in menu clicking events to the document's body
+	YAHOO.util.Event.addListener(document, "click", function () { DWMenu.BodyClick(); });
+	YAHOO.util.Event.onDOMReady(function () { new clientWindow });
+
+		
+
+			YAHOO.util.Event.onDOMReady(function() {
+			tb_init("a.lightbox, area.lightbox, input.lightbox, a[rel='awesomebox']");//pass where to apply thickbox
+		});
+	
+			YAHOO.util.Event.onDOMReady(function() {
+			MTComments.HookBehavior();
+		});
+		</script>
+<script type="text/javascript" src="./JSAPI Cookbook - MDN_files/rgbcolor.js"></script>
+<script type="text/javascript" src="./JSAPI Cookbook - MDN_files/nav.js"></script>
+
+<script type="text/javascript">
+
+Deki.BaseHref = 'https://developer.mozilla.org';
+Deki.PageId = 8236;
+Deki.PageTitle = 'En/SpiderMonkey/JSAPI Cookbook';
+Deki.PageLanguageCode = 'en';
+Deki.FollowRedirects = 1;
+Deki.PathTpl = '/skins/mdn';
+Deki.PathSkin = '/skins/mdn/Transitional';
+Deki.PathCommon = '/skins/common';
+Deki.UserName = 'Anonymous';
+Deki.Today = '1 Oct 2011';
+Deki.UserIsAnonymous = true;
+Deki.EditorConfigToken = '47c12e42';
+Deki.EditorStylesToken = 'c8bee353';
+Deki.PageEditable = false;
+</script>
+<script type="text/javascript">aLt["commercial-required"] = 'Gather feedback on your content with <strong>community scoring</strong> - these ratings weight results in adaptive search. Through curation analytics, ratings are used to highlight pages in need of attention. <a href="http://www.mindtouch.com/redir/mindtouch-tcs/">Learn more on enabling these capabilities with MindTouch 2010.</a>';aLt["login-required"] = 'You must be <a href="/index.php?title=Special:Userlogin&returntotitle=En%2FSpiderMonkey%2FJSAPI+Cookbook">logged in</a> to perform that action';</script><link href="./JSAPI Cookbook - MDN_files/custom_css.php" rel="stylesheet" type="text/css"> 
+ 
+<script src="./JSAPI Cookbook - MDN_files/ga.js"></script></head>
+
+<body id="docs" class="section-docs en ltr yui-skin-sam PageDW-EnSpiderMonkeyJSAPICookbook hasJS" role="document">
+<!--[if lte IE 8]>
+<noscript><div class="global-notice">
+<p><strong>Warning:</strong> The Mozilla Developer Network website employs emerging web standards that may not be fully supported in some versions of MicroSoft Internet Explorer. You can improve your experience of this website by enabling JavaScript.</p>
+</div></noscript>
+<![endif]-->
+<noscript>&lt;div class="noscript"&gt;This application requires Javascript to be enabled.&lt;/div&gt;</noscript>
+<header id="masthead" role="banner">
+  <div class="wrap">
+  
+    <div id="branding">
+      <h1 id="logo"><a href="https://developer.mozilla.org/"><img src="./JSAPI Cookbook - MDN_files/mdn-logo-compact.png" alt="Mozilla Developer Network" title="Mozilla Developer Network" width="148" height="46"></a></h1>
+    </div>
+
+    <form id="site-search" method="get" action="https://developer.mozilla.org/search">
+      <p>
+        <input type="text" role="search" placeholder="Search MDN" id="q" name="q">
+        <noscript>&lt;button type="submit"&gt;Search&lt;/button&gt;</noscript>
+      </p>
+      
+      <div id="site-search-gg"><div class="gsc-branding"><table cellspacing="0" cellpadding="0" class="gsc-branding"><tbody><tr><td class="gsc-branding-text"><div class="gsc-branding-text">powered by</div></td><td class="gsc-branding-img-noclear"><img src="./JSAPI Cookbook - MDN_files/small-logo.png" class="gsc-branding-img-noclear"></td></tr></tbody></table></div></div>
+    </form>
+
+    <nav id="nav" role="menubar">
+      <ul id="nav-main">
+        <li id="nav-main-topics" class="menu"><a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#nav-sub-topics" aria-haspopup="true" class="toggle" title="Explore other parts of MDN">Topics</a>
+          <ul id="nav-sub-topics" class="sub-menu" aria-hidden="true">
+            <li id="nav-sub-web"><a href="https://developer.mozilla.org/web">Web</a></li>
+            <li id="nav-sub-mobile"><a href="https://developer.mozilla.org/mobile">Mobile</a></li>
+            <li id="nav-sub-addons"><a href="https://developer.mozilla.org/addons">Add-ons</a></li>
+            <li id="nav-sub-mozilla"><a href="https://developer.mozilla.org/mozilla">Mozilla</a></li>
+          </ul>
+        </li>
+        <li id="nav-main-docs" class="menu"><a href="https://developer.mozilla.org/docs" class="docs toggle" aria-haspopup="true" aria-labelledby="nav-main-docs">Docs</a>
+          <div id="nav-sub-docs" class="sub-menu" aria-hidden="true">
+            <ul>
+              <li>
+                <ul>
+                  <li><a href="https://developer.mozilla.org/en/HTML">HTML</a></li>
+                  <li><a href="https://developer.mozilla.org/en/DOM">DOM</a></li>
+                  <li><a href="https://developer.mozilla.org/en/Using_audio_and_video_in_Firefox">Video</a></li>
+                  <li><a href="https://developer.mozilla.org/en/Using_audio_and_video_in_Firefox">Audio</a></li>
+                  <li><a href="https://developer.mozilla.org/en/SVG">SVG</a></li>
+                  <li><a href="https://developer.mozilla.org/en/WebGL">WebGL</a></li>
+                </ul>
+              </li>
+              <li>
+                <ul>
+                  <li><a href="https://developer.mozilla.org/en/HTML/HTML5">HTML5</a></li>
+                  <li><a href="https://developer.mozilla.org/en/WebSockets">WebSockets</a></li>
+                  <li><a href="https://developer.mozilla.org/en/Offline_resources_in_Firefox">Offline Cache</a></li>
+                  <li><a href="https://developer.mozilla.org/en/DOM/Storage">Local Storage</a></li>
+                  <li><a href="https://developer.mozilla.org/en/IndexedDB">IndexedDB</a></li>
+                  <li><a href="https://developer.mozilla.org/en/Using_files_from_web_applications">File API</a></li>
+                </ul>
+              </li>
+              <li>
+                <ul>
+                  <li><a href="https://developer.mozilla.org/en/CSS">CSS</a></li>
+                  <li><a href="https://developer.mozilla.org/en/Using_gradients">Gradients</a></li>
+                  <li><a href="https://developer.mozilla.org/en/CSS/Using_CSS_transforms">Transforms</a></li>
+                  <li><a href="https://developer.mozilla.org/en/CSS/CSS_transitions">Transitions</a></li>
+                  <li><a href="https://developer.mozilla.org/en/CSS/CSS_animations">Animations</a></li>
+                  <li><a href="https://developer.mozilla.org/en/CSS/Media_queries">Media Queries</a></li>
+                </ul>
+              </li>
+              <li>
+                <ul>
+                  <li><a href="https://developer.mozilla.org/en/JavaScript">JavaScript</a></li>
+                  <li><a href="https://developer.mozilla.org/en/Ajax">Ajax</a></li>
+                  <li><a href="https://developer.mozilla.org/en/HTML/Canvas">Canvas</a></li>
+                  <li><a href="https://developer.mozilla.org/en/Using_geolocation">Geolocation</a></li>
+                  <li><a href="https://developer.mozilla.org/en/DragDrop/Drag_and_Drop">Drag &amp; Drop</a></li>
+                  <li><a href="https://developer.mozilla.org/en/Using_web_workers">Web Workers</a></li>
+                </ul>
+              </li>
+            </ul>
+            <p><a href="https://developer.mozilla.org/docs">More docs…</a></p>
+          </div>
+        </li>
+        <li id="nav-main-demos"><a href="https://developer.mozilla.org/demos" class="demos">Demos</a></li>
+        <li id="nav-main-learning"><a href="https://developer.mozilla.org/learn" class="learning">Learning</a></li>
+        <li id="nav-main-community" class="menu"><a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#nav-sub-community" class="community toggle" aria-haspopup="true" aria-labelledby="nav-main-community">Community</a>
+          <ul id="nav-sub-community" class="sub-menu" aria-hidden="true">
+            <li><a href="https://developer.mozilla.org/events">Events</a></li>
+            <li><a href="https://developer.mozilla.org/discussions">Discussions</a></li>
+            <li><a href="https://developer.mozilla.org/promote">Promote</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    
+      <ul class="user-state superfish">
+              <li>	<a href="https://developer.mozilla.org/index.php?title=Special:Userlogin&register=true" title="Join MDN">Join MDN</a>
+</li>
+        <li><a href="https://developer.mozilla.org/index.php?title=Special:Userlogin&returntotitle=En%2FSpiderMonkey%2FJSAPI+Cookbook" class="user-login">Log in</a></li>
+            </ul>
+
+  </div>
+</header>
+
+
+<section id="nav-toolbar">
+<div class="wrap">
+
+<nav id="tool-menus">
+  <ul id="tools" class="superfish">
+    <li class="menu">
+      <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#site-tools" class="toggle">Site tools</a>
+      <ul id="site-tools" class="sub-menu" role="navigation" style="display: none; visibility: hidden; ">
+         
+        <li class="site-recent">	<a href="https://developer.mozilla.org/Special:Recentchanges" title="Recent changes">Recent changes</a>
+</li>
+        <li class="site-rss">	<a href="https://developer.mozilla.org/Special:ListRss" title="RSS feeds">RSS feeds</a>
+</li>
+      	<li class="siteListusers"><a href="https://developer.mozilla.org/User:" title="Users">Users</a></li>
+              <li class="site-templates">	<a href="https://developer.mozilla.org/Template:" title="Templates">Templates</a>
+</li>
+              <li class="site-map">	<a href="https://developer.mozilla.org/Special:Sitemap" title="Sitemap">Sitemap</a>
+</li>
+        <li class="site-popular">	<a href="https://developer.mozilla.org/Special:Popularpages" title="Popular pages">Popular pages</a>
+</li>
+      	<li class="siteAbout"><a href="https://developer.mozilla.org/Special:About" title="About MDN">About MDN</a></li>
+      </ul>
+    </li>
+    <li class="menu">
+      <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#page-tools" class="toggle">This page</a>
+      <ul id="page-tools" class="sub-menu" role="navigation" style="display: none; visibility: hidden; ">
+                                <li class="page-new"><a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#" title="New page" class="disabled ">New sub-page</a></li>
+                    <li class="page-history"><a href="https://developer.mozilla.org/index.php?title=En/SpiderMonkey/JSAPI_Cookbook&action=history" title="Page history">History</a></li>
+                    <li class="page-talk">	<a href="https://developer.mozilla.org/Talk:En/SpiderMonkey/JSAPI_Cookbook" title="Talk page">Talk page</a>
+</li>
+                                                        <li class="page-print">	<a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#" onclick="return window.print();" title="Print page">Print page</a>
+</li>
+            <li class="page-backlinks"><a href="https://developer.mozilla.org/index.php?title=Special:Article&type=backlinks&pageid=8236">Pages that link here</a></li>      </ul>
+    </li>
+    </ul>
+</nav>
+
+  <nav class="crumbs" role="navigation">
+    <ol>
+      <li class="crumb-one"><a href="https://developer.mozilla.org/">MDN</a></li>
+      <li class="crumb-two"><a href="https://developer.mozilla.org/docs">Docs</a></li>
+    <li class="first"><a href="https://developer.mozilla.org/" class="deki-ns">MDN</a></li>
+<li class="second"><a href="https://developer.mozilla.org/en" class="deki-ns">MDN</a></li>
+<li><a href="https://developer.mozilla.org/en/SpiderMonkey" class="deki-ns">SpiderMonkey</a></li>
+<li class="last"><a href="./JSAPI Cookbook - MDN_files/JSAPI Cookbook - MDN.html" class="deki-ns current">JSAPI Cookbook</a></li> 
+    </ol>
+  </nav>
+
+</div>
+</section>
+
+<section id="content">
+<div class="wrap">
+  <div id="content-main" class="full">
+
+    <div id="sessionMsg"><div class="inner"><ul></ul></div></div>
+        
+    <article class="article PageDW-EnSpiderMonkeyJSAPICookbook" role="main">
+            
+            <div class="page-title hideforedit">
+              <h1 class="first" id="title">JSAPI Cookbook</h1>            
+      
+              <ul id="page-buttons">
+          <li class="page-edit"><a href="https://developer.mozilla.org/index.php?title=Special:Userlogin&returntotitle=En%2FSpiderMonkey%2FJSAPI+Cookbook" class="disabled" title="Log in or sign up to edit this page">Edit</a></li>
+          <li class="page-watch"><a href="https://developer.mozilla.org/index.php?title=Special:Userlogin&returntotitle=En%2FSpiderMonkey%2FJSAPI+Cookbook" class="disabled" title="Log in or sign up to add this page to your watch list">Watch</a></li>
+        </ul> 
+            </div>
+      
+    <div class="page-content boxed">
+
+     
+      <div id="article-nav" class="hideforedit">      
+              <div class="page-toc">
+          <h2>Table of contents</h2>
+          <ol style="list-style-type:none; margin-left:0px; padding-left:0px;"><li><span>1.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Basics" rel="internal">Basics</a><ol style="list-style-type:none; margin-left:0px; padding-left:15px;"><li><span>1.1.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Defining_a_function" rel="internal">Defining a function</a></li><li><span>1.2.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Creating_an_Array" rel="internal">Creating an Array</a></li><li><span>1.3.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Creating_an_Object" rel="internal">Creating an Object</a></li><li><span>1.4.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Constructing_an_object_with_new" rel="internal">Constructing an object with new</a></li><li><span>1.5.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Calling_a_global_JS_function" rel="internal">Calling a global JS function</a></li><li><span>1.6.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Calling_a_JS_function_via_a_local_variable" rel="internal">Calling a JS function via a local variable</a></li><li><span>1.7.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Returning_an_integer" rel="internal">Returning an integer</a></li><li><span>1.8.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Returning_a_floating-point_number" rel="internal">Returning a floating-point number</a></li></ol></li><li><span>2.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Exception_handling" rel="internal">Exception handling</a><ol style="list-style-type:none; margin-left:0px; padding-left:15px;"><li><span>2.1.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#throw" rel="internal">throw</a></li><li><span>2.2.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#catch" rel="internal">catch</a></li><li><span>2.3.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#finally" rel="internal">finally</a></li></ol></li><li><span>3.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Object_properties" rel="internal">Object properties</a><ol style="list-style-type:none; margin-left:0px; padding-left:15px;"><li><span>3.1.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Getting_a_property" rel="internal">Getting a property</a></li><li><span>3.2.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Setting_a_property" rel="internal">Setting a property</a></li><li><span>3.3.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Checking_for_a_property" rel="internal">Checking for a property</a></li><li><span>3.4.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Defining_a_constant_property" rel="internal">Defining a constant property</a></li><li><span>3.5.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Defining_a_property_with_a_getter_and_setter" rel="internal">Defining a property with a getter and setter</a></li><li><span>3.6.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Defining_a_read-only_property_with_only_a_getter" rel="internal">Defining a read-only property with only a getter</a></li></ol></li><li><span>4.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Working_with_the_prototype_chain" rel="internal">Working with the prototype chain</a><ol style="list-style-type:none; margin-left:0px; padding-left:15px;"><li><span>4.1.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Defining_a_native_read-only_property_on_the_String.prototype" rel="internal">Defining a native read-only property on the String.prototype</a></li></ol></li><li><span>5.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Wanted" rel="internal">Wanted</a></li></ol>        </div>
+      
+        <ul class="page-anchors">
+          <li class="anchor-tags"><a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#page-tags" title="Jump to tags for this article">Tags</a></li>
+          <li class="anchor-files"><a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#page-files" title="Jump to files for this article">Files</a></li>
+        </ul>
+
+              <div id="deki-page-alerts" class="disabled">
+				<div class="toggle">
+					<a href="javascript:void(0);" class="off">
+						<span>Page Notifications</span>
+						<span class="status">Off</span>
+					</a>
+				</div></div>      
+      
+      </div> 
+    
+            
+      <div id="page-top"><div id="pageToc"><div class="pageToc"><h5>Table of contents</h5><ol style="list-style-type:none; margin-left:0px; padding-left:0px;"><li><span>1.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Basics" rel="internal">Basics</a><ol style="list-style-type:none; margin-left:0px; padding-left:15px;"><li><span>1.1.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Defining_a_function" rel="internal">Defining a function</a></li><li><span>1.2.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Creating_an_Array" rel="internal">Creating an Array</a></li><li><span>1.3.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Creating_an_Object" rel="internal">Creating an Object</a></li><li><span>1.4.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Constructing_an_object_with_new" rel="internal">Constructing an object with new</a></li><li><span>1.5.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Calling_a_global_JS_function" rel="internal">Calling a global JS function</a></li><li><span>1.6.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Calling_a_JS_function_via_a_local_variable" rel="internal">Calling a JS function via a local variable</a></li><li><span>1.7.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Returning_an_integer" rel="internal">Returning an integer</a></li><li><span>1.8.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Returning_a_floating-point_number" rel="internal">Returning a floating-point number</a></li></ol></li><li><span>2.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Exception_handling" rel="internal">Exception handling</a><ol style="list-style-type:none; margin-left:0px; padding-left:15px;"><li><span>2.1.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#throw" rel="internal">throw</a></li><li><span>2.2.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#catch" rel="internal">catch</a></li><li><span>2.3.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#finally" rel="internal">finally</a></li></ol></li><li><span>3.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Object_properties" rel="internal">Object properties</a><ol style="list-style-type:none; margin-left:0px; padding-left:15px;"><li><span>3.1.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Getting_a_property" rel="internal">Getting a property</a></li><li><span>3.2.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Setting_a_property" rel="internal">Setting a property</a></li><li><span>3.3.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Checking_for_a_property" rel="internal">Checking for a property</a></li><li><span>3.4.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Defining_a_constant_property" rel="internal">Defining a constant property</a></li><li><span>3.5.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Defining_a_property_with_a_getter_and_setter" rel="internal">Defining a property with a getter and setter</a></li><li><span>3.6.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Defining_a_read-only_property_with_only_a_getter" rel="internal">Defining a read-only property with only a getter</a></li></ol></li><li><span>4.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Working_with_the_prototype_chain" rel="internal">Working with the prototype chain</a><ol style="list-style-type:none; margin-left:0px; padding-left:15px;"><li><span>4.1.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Defining_a_native_read-only_property_on_the_String.prototype" rel="internal">Defining a native read-only property on the String.prototype</a></li></ol></li><li><span>5.</span> <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#Wanted" rel="internal">Wanted</a></li></ol></div></div><div class="pageText" id="pageText">
+<p>This article shows the JSAPI equivalent for a tiny handful of common JavaScript idioms.</p>
+<div class="note">Note: The <a class="internal" title="En/SpiderMonkey/FOSS" rel="internal" href="https://developer.mozilla.org/En/SpiderMonkey/FOSS">FOSS</a> wiki page contains a few links to other libraries and programs that can make life easier when using Spidermonkey and JSAPI.</div>
+<div id="section_1"><span id="Basics"></span><h2 class="editable">Basics</h2>
+<div id="section_2"><span id="Defining_a_function"></span><h3 class="editable">Defining a function</h3>
+<pre class="eval">// <strong>JavaScript</strong>
+function justForFun() {
+    return null;
+}
+</pre>
+<pre class="eval">/* <strong>JSAPI</strong> */
+JSBool justForFun(JSContext *cx, JSObject *obj, uintN argc, jsval *argv, jsval *rval)
+{
+   *rval = <a title="en/SpiderMonkey/JSAPI_Reference/JSVAL_NULL" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JSVAL_NULL">JSVAL_NULL</a>;
+   return JS_TRUE;
+}
+
+...
+
+/*
+ * Add this to your JSContext setup code.
+ * This makes your C function visible as a global function in JavaScript.
+ */
+if (!<a title="en/SpiderMonkey/JSAPI_Reference/JS_DefineFunction" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_DefineFunction">JS_DefineFunction</a>(cx, <a title="en/SpiderMonkey/JSAPI_Reference/JS_GetGlobalObject" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_GetGlobalObject">JS_GetGlobalObject</a>(cx), "justForFun", &amp;justForFun, 0, 0))
+    return JS_FALSE;
+</pre>
+<p>To define many JSAPI functions at once, use <code><a title="en/SpiderMonkey/JSAPI_Reference/JS_DefineFunctions" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_DefineFunctions">JS_DefineFunctions</a></code>.</p>
+</div><div id="section_3"><span id="Creating_an_Array"></span><h3 class="editable">Creating an Array</h3>
+<pre class="eval">// <strong>JavaScript</strong>
+var x = [];  // or "x = Array()", or "x = new Array"
+</pre>
+<pre class="eval">/* <strong>JSAPI</strong> */
+JSObject *x = <a title="en/SpiderMonkey/JSAPI_Reference/JS_NewArrayObject" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_NewArrayObject">JS_NewArrayObject</a>(cx, 0, NULL);
+if (x == NULL)
+    return JS_FALSE;
+</pre>
+</div><div id="section_4"><span id="Creating_an_Object"></span><h3 class="editable">Creating an Object</h3>
+<pre class="eval">// <strong>JavaScript</strong>
+var x = {};  // or "x = Object()", or "x = new Object"
+</pre>
+<pre class="eval">/* <strong>JSAPI</strong> */
+JSObject *x = <a title="en/SpiderMonkey/JSAPI_Reference/JS_NewObject" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_NewObject">JS_NewObject</a>(cx, NULL, NULL, NULL);
+if (x == NULL)
+    return JS_FALSE;
+</pre>
+</div><div id="section_5"><span id="Constructing_an_object_with_new"></span><h3 class="editable">Constructing an object with new</h3>
+<pre class="eval">// <strong>JavaScript</strong>
+var person = new Person("Dave", 24);
+</pre>
+<p>If <code>Person</code> is known to be a class initialized using <code>JS_InitClass</code>, and not a JavaScript function, then this is fairly easy:</p>
+<pre class="eval">/* <strong>JSAPI</strong> */
+
+JSObject *obj;
+void *mark;
+jsval *argv;
+
+argv = <a class="internal" title="en/SpiderMonkey/JSAPI Reference/JS PushArguments" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_PushArguments">JS_PushArguments</a>(cx, &amp;mark, "si", "Dave", 24);
+if (!argv)
+    return JS_FALSE;
+obj = <a class="internal" title="en/SpiderMonkey/JSAPI Reference/JS ConstructObject" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_ConstructObject">JS_ConstructObjectWithArguments</a>(cx, &amp;PersonClass, NULL, NULL, 2, argv);
+<a class="internal" title="en/SpiderMonkey/JSAPI Reference/JS PopArguments" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_PopArguments">JS_PopArguments</a>(cx, mark);
+if (!obj)
+    return JS_FALSE;
+</pre>
+<p>However, if <code>Person</code> might be a JavaScript function and might be a native function, this is actually quite hard to emulate using the JSAPI. The only approach that guarantees correctness is to write what you mean in JavaScript, and embed that line of JavaScript in your C/C++ source code:</p>
+<pre class="eval">/* <strong>JSAPI</strong> */
+
+jsval person;
+const char *src = "new Person(\"Dave\", 24);";
+
+if (!<a class="internal" title="en/SpiderMonkey/JSAPI Reference/JS EvaluateScript" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_EvaluateScript">JS_EvaluateScript</a>(cx, <a class="internal" title="en/SpiderMonkey/JSAPI Reference/JS GetGlobalObject" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_GetGlobalObject">JS_GetGlobalObject</a>(cx), src, strlen(src), __FILE__, __LINE__, &amp;person))
+    return JS_FALSE;
+</pre>
+<p>Of course, the parameters are hard-coded here, which is not realistic in most situations. So another way is:</p>
+<pre class="eval">/* <strong>JSAPI</strong> */
+
+jsval person;
+const char *funsrc;
+jsval funval;  /* BUG - not rooted */
+void *mark;
+jsval *argv;
+JSBool ok;
+
+/* Compile a function that calls `new Person`. */
+funsrc = "(function (name, height) { return new Person(name, height); });";
+if (!<a class="internal" title="en/SpiderMonkey/JSAPI Reference/JS EvaluateScript" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_EvaluateScript">JS_EvaluateScript</a>(cx, <a class="internal" title="en/SpiderMonkey/JSAPI Reference/JS GetGlobalObject" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_GetGlobalObject">JS_GetGlobalObject</a>(cx), funsrc, strlen(funsrc), __FILE__, __LINE__, &amp;funval))
+    return JS_FALSE;
+
+/* Call the function. */
+argv = <a class="internal" title="en/SpiderMonkey/JSAPI Reference/JS PushArguments" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_PushArguments">JS_PushArguments</a>(cx, mark, "si", "Dave", 24); /*&nbsp;&lt;-- your arguments here */
+if (!argv)
+    return JS_FALSE;
+ok = <a class="internal" title="en/SpiderMonkey/JSAPI Reference/JS CallFunctionValue" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_CallFunctionValue">JS_CallFunctionValue</a>(cx, <a class="internal" title="en/SpiderMonkey/JSAPI Reference/JS GetGlobalObject" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_GetGlobalObject">JS_GetGlobalObject</a>(cx), funval, 2, argv, &amp;person);
+<a class="internal" title="en/SpiderMonkey/JSAPI Reference/JS PopArguments" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_PopArguments">JS_PopArguments</a>(cx, mark);
+if (!ok)
+    return JS_FALSE;
+</pre>
+</div><div id="section_6"><span id="Calling_a_global_JS_function"></span><h3 class="editable">Calling a global JS function</h3>
+<pre class="eval">// <strong>JavaScript</strong>
+var r = foo();  // where f is a global function
+</pre>
+<pre class="eval">/* <strong>JSAPI</strong>
+ *
+ * Suppose the script defines a global JavaScript
+ * function foo() and we want to call it from C.
+ */
+jsval r;
+if (!<a title="en/SpiderMonkey/JSAPI_Reference/JS_CallFunctionName" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_CallFunctionName">JS_CallFunctionName</a>(cx, <a title="en/SpiderMonkey/JSAPI_Reference/JS_GetGlobalObject" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_GetGlobalObject">JS_GetGlobalObject</a>(cx), "foo", 0, NULL, &amp;r))
+   return JS_FALSE;
+</pre>
+</div><div id="section_7"><span id="Calling_a_JS_function_via_a_local_variable"></span><h3 class="editable">Calling a JS function via a local variable</h3>
+<pre class="eval">// <strong>JavaScript</strong>
+var r = f();  // where f is a local variable
+</pre>
+<pre class="eval">/* <strong>JSAPI</strong>
+ *
+ * Suppose f is a local C variable of type jsval.
+ */
+jsval r;
+if (!<a title="en/SpiderMonkey/JSAPI_Reference/JS_CallFunctionValue" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_CallFunctionValue">JS_CallFunctionValue</a>(cx, NULL, f, 0, NULL, &amp;r)
+    return JS_FALSE;
+</pre>
+</div><div id="section_8"><span id="Returning_an_integer"></span><h3 class="editable">Returning an integer</h3>
+<pre class="eval">// <strong>JavaScript</strong>
+return 23;
+</pre>
+<pre class="eval">/* <strong>JSAPI</strong>
+ *
+ * Warning: This only works for integers that fit in 31 (not 32) bits.
+ * Otherwise, convert the number to floating point (see the next example).
+ */
+*rval = <a title="en/SpiderMonkey/JSAPI_Reference/INT_TO_JSVAL" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/INT_TO_JSVAL">INT_TO_JSVAL</a>(23);
+return JS_TRUE;
+</pre>
+</div><div id="section_9"><span id="Returning_a_floating-point_number"></span><h3 class="editable">Returning a floating-point number</h3>
+<pre class="eval">// <strong>JavaScript</strong>
+return 3.14159;
+</pre>
+<pre class="eval">/* <strong>JSAPI</strong> */
+<a title="en/SpiderMonkey/JSAPI_Reference/jsdouble" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/jsdouble">jsdouble</a> n = 3.14159;
+return <a title="en/SpiderMonkey/JSAPI_Reference/JS_NewNumberValue" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_NewNumberValue">JS_NewNumberValue</a>(cx, n, rval);
+</pre>
+</div></div><div id="section_10"><span id="Exception_handling"></span><h2 class="editable">Exception handling</h2>
+<div id="section_11"><span id="throw"></span><h3 class="editable"><code>throw</code></h3>
+<p>The most common idiom is to create a new <code>Error</code> object and throw that. <a title="en/SpiderMonkey/JSAPI_Reference/JS_ReportError" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_ReportError"><code>JS_ReportError</code></a> does this. Note that JavaScript exceptions are not the same thing as C++ exceptions. The JSAPI code also has to return <code>JS_FALSE</code> to signal failure to the caller.</p>
+<pre>// <strong>JavaScript</strong>
+throw new Error("Failed to grow " + varietal + ": too many greenflies.");
+</pre>
+<pre>/* <strong>JSAPI</strong> */
+<a href="mks://localhost/en/SpiderMonkey/JSAPI_Reference/JS_ReportError">JS_ReportError</a>(cx, "Failed to grow %s: too many greenflies.", varietal);
+return JS_FALSE;
+</pre>
+<p>To internationalize your error messages, and to throw other error types, such as <code>SyntaxError</code> or <code>TypeError</code>, use <a title="en/SpiderMonkey/JSAPI_Reference/JS_ReportErrorNumber" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_ReportErrorNumber"><code>JS_ReportErrorNumber</code></a> instead.</p>
+<p>JavaScript also supports throwing any value at all, not just <code>Error</code> objects. Use <a title="en/SpiderMonkey/JSAPI_Reference/JS_SetPendingException" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_SetPendingException"><code>JS_SetPendingException</code></a> to throw an arbitrary <code>jsval</code> from C/C++.</p>
+<pre class="eval">// <strong>JavaScript</strong>
+throw exc;
+</pre>
+<pre class="eval">/* <strong>JSAPI</strong> */
+<a title="en/SpiderMonkey/JSAPI_Reference/JS_SetPendingException" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_SetPendingException">JS_SetPendingException</a>(cx, exc);
+return JS_FALSE;
+</pre>
+<p>When <code>JS_ReportError</code> creates a new <code>Error</code> object, it sets the <code>fileName</code> and <code>lineNumber</code> properties to the line of JavaScript code currently at the top of the stack. This is usually the line of code that called your native function, so it's usually what you want. JSAPI code can override this by creating the <code>Error</code> object directly and passing additional arguments to the constructor:</p>
+<pre class="eval">// <strong>JavaScript</strong>
+throw new Error(message, filename, lineno);
+</pre>
+<pre class="eval">/* <strong>JSAPI</strong> */
+JSBool ThrowError(JSContext *cx, const char *message, const char *filename, int32 lineno)
+{
+    JSString *messageStr;
+    JSString *filenameStr;
+    jsval args[3];
+    jsval exc;
+
+    messageStr = JS_NewStringCopyZ(cx, message);
+    if (!messageStr)
+        return JS_FALSE;
+    filenameStr = JS_NewStringCopyZ(cx, filename);
+    if (!filenameStr)
+        return JS_FALSE;
+
+    args[0] = STRING_TO_JSVAL(messageStr);
+    args[1] = STRING_TO_JSVAL(filenameStr);
+    args[2] = INT_TO_JSVAL(lineno);
+    if (<a title="en/SpiderMonkey/JSAPI_Reference/JS_CallFunctionName" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_CallFunctionName">JS_CallFunctionName</a>(cx, <a title="en/SpiderMonkey/JSAPI_Reference/JS_GetGlobalObject" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_GetGlobalObject">JS_GetGlobalObject</a>(cx), "Error", 3, args, &amp;exc))
+        <a title="en/SpiderMonkey/JSAPI_Reference/JS_SetPendingException" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_SetPendingException">JS_SetPendingException</a>(cx, exc);
+    return JS_FALSE;
+}
+
+...
+
+return ThrowError(cx, message);
+</pre>
+<p>The JSAPI code here is actually simulating <code>throw Error(message)</code> without the <code>new</code>, as <code>new</code> is a bit harder to simulate using the JSAPI. In this case, unless the script has redefined <code>Error</code>, it amounts to the same thing.</p></div><div id="section_12"><span id="catch"></span><h3 class="editable"><code>catch</code></h3>
+<pre class="eval">// <strong>JavaScript</strong>
+try {
+    // try some stuff here; for example:
+    foo();
+    bar();
+} catch (exc) {
+    // do error-handling stuff here
+}
+</pre>
+<pre class="eval">/* <strong>JSAPI</strong> */
+    jsval exc;
+
+    /* try some stuff here; for example: */
+    if (!JS_CallFunctionName(cx, JS_GetGlobalObject(cx), "foo", 0, NULL, &amp;r))
+        goto catch_block;  /* instead of returning JS_FALSE */
+    if (!JS_CallFunctionName(cx, JS_GetGlobalObject(cx), "bar", 0, NULL, &amp;r))
+        goto catch_block;  /* instead of returning JS_FALSE */
+    return JS_TRUE;
+
+catch_block:
+    if (!<a title="en/SpiderMonkey/JSAPI_Reference/JS_GetPendingException" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_GetPendingException">JS_GetPendingException</a>(cx, &amp;exc))
+        return JS_FALSE;
+    <a title="en/SpiderMonkey/JSAPI_Reference/JS_ClearPendingException" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_ClearPendingException">JS_ClearPendingException</a>(cx);
+    /* do error-handling stuff here */
+    return JS_TRUE;
+</pre>
+</div><div id="section_13"><span id="finally"></span><h3 class="editable"><code>finally</code></h3>
+<pre class="eval">// <strong>JavaScript</strong>
+try {
+   foo();
+   bar();
+} finally {
+   cleanup();
+}
+</pre>
+<p>If your C/C++ cleanup code doesn't call back into the JSAPI, this is straightforward:</p>
+<pre class="eval">/* <strong>JSAPI</strong> */
+    <a title="En/SpiderMonkey/JSAPI_Reference/JSBool" rel="internal" href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Reference/JSBool">JSBool</a> success = JS_FALSE;
+
+    if (!JS_CallFunctionName(cx, JS_GetGlobalObject(cx), "foo", 0, NULL, &amp;r))
+        goto finally_block;  /* instead of returning JS_FALSE immediately */
+    if (!JS_CallFunctionName(cx, JS_GetGlobalObject(cx), "bar", 0, NULL, &amp;r))
+        goto finally_block;
+    success = JS_TRUE;
+    /* Intentionally fall through to the finally block. */
+
+finally_block:
+    cleanup();
+    return success;
+</pre>
+<p>However, if <code>cleanup()</code> is actually a JavaScript function, there's a catch. When an error occurs, the <code>JSContext</code>'s <em>pending exception</em> is set. If this happens in <code>foo()</code> or <code>bar()</code> in the above example, the pending exception will still be set when you call <code>cleanup()</code>, which would be bad. To avoid this, your JSAPI code implementing the <code>finally</code> block must:</p>
+<ul> <li>save the old exception, if any</li> <li>clear the pending exception so that your cleanup code can run</li> <li>do your cleanup</li> <li>restore the old exception, if any</li> <li>return JS_FALSE if an exception occurred, so that the exception is propagated up.</li>
+</ul>
+<pre class="eval">/* <strong>JSAPI</strong> */
+    <a title="En/SpiderMonkey/JSAPI_Reference/JSBool" rel="internal" href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Reference/JSBool">JSBool</a> success = JS_FALSE;
+    <a title="en/SpiderMonkey/JSAPI_Reference/JSExceptionState" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JSExceptionState">JSExceptionState</a> *exc_state;
+
+    if (!JS_CallFunctionName(cx, JS_GetGlobalObject(cx), "foo", 0, NULL, &amp;r))
+        goto finally_block;  /* instead of returning JS_FALSE immediately */
+    if (!JS_CallFunctionName(cx, JS_GetGlobalObject(cx), "bar", 0, NULL, &amp;r))
+        goto finally_block;
+    success = JS_TRUE;
+    /* Intentionally fall through to the finally block. */
+
+finally_block:
+    exc_state = <a title="en/SpiderMonkey/JSAPI_Reference/JS_SaveExceptionState" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_SaveExceptionState">JS_SaveExceptionState</a>(cx);
+    if (exc_state == NULL)
+        return JS_FALSE;
+    <a title="en/SpiderMonkey/JSAPI_Reference/JS_ClearPendingException" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_ClearPendingException">JS_ClearPendingException</a>(cx);
+
+    if (!JS_CallFunctionName(cx, JS_GetGlobalObject(cx), "cleanup", 0, NULL, &amp;r)) {
+        /* The new error replaces the previous one, so discard the saved exception state. */
+        <a title="en/SpiderMonkey/JSAPI_Reference/JS_DropExceptionState" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_DropExceptionState">JS_DropExceptionState</a>(cx, exc_state);
+        return JS_FALSE;
+    }
+    <a title="en/SpiderMonkey/JSAPI_Reference/JS_RestoreExceptionState" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_RestoreExceptionState">JS_RestoreExceptionState</a>(cx, exc_state);
+    return success;
+</pre>
+</div></div><div id="section_14"><span id="Object_properties"></span><h2 class="editable">Object properties</h2>
+<div id="section_15"><span id="Getting_a_property"></span><h3 class="editable">Getting a property</h3>
+<pre class="eval">// <strong>JavaScript</strong>
+var x = y.myprop;
+</pre>
+<p>The JSAPI function that does this is <code><a title="en/SpiderMonkey/JSAPI_Reference/JS_GetProperty" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_GetProperty">JS_GetProperty</a></code>. It requires a <code>JSObject&nbsp;*</code> argument. Since JavaScript values are usually stored in <code>jsval</code> variables, a cast or conversion is needed.</p>
+<p>In cases where it is certain that <code>y</code> is an object (that is, not a boolean, number, string, <code>null</code>, or <code>undefined</code>), this is fairly straightforward. Use <code><a title="en/SpiderMonkey/JSAPI_Reference/JSVAL_TO_OBJECT" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JSVAL_TO_OBJECT">JSVAL_TO_OBJECT</a></code> to cast <code>y</code> to type <code>JSObject&nbsp;*</code>.</p>
+<pre class="eval">/* <strong>JSAPI</strong> */
+jsval x;
+
+assert(<a title="en/SpiderMonkey/JSAPI_Reference/JSVAL_IS_OBJECT" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JSVAL_IS_OBJECT">JSVAL_IS_OBJECT</a>(y)); 
+if (!<a title="en/SpiderMonkey/JSAPI_Reference/JS_GetProperty" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_GetProperty">JS_GetProperty</a>(cx, <a title="en/SpiderMonkey/JSAPI_Reference/JSVAL_TO_OBJECT" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JSVAL_TO_OBJECT">JSVAL_TO_OBJECT</a>(y), "myprop", &amp;x))
+    return JS_FALSE;
+</pre>
+<p>That code will crash if <code>y</code> is not an object. That's often unacceptable. An alternative would be to simulate the behavior of the JavaScript <code>.</code> notation exactly. It's a nice thought—JavaScript wouldn't crash, at least—but implementing its exact behavior turns out to be quite complicated, and most of the work is not particularly helpful.</p>
+<p>Usually it is best to check for <code>!<a title="en/SpiderMonkey/JSAPI_Reference/JSVAL_IS_OBJECT" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JSVAL_IS_OBJECT">JSVAL_IS_OBJECT</a>(y)</code> and throw a <code>TypeError</code> with a nice error message.</p>
+<pre class="eval">/* <strong>JSAPI</strong> */
+jsval x;
+
+if (!<a title="en/SpiderMonkey/JSAPI_Reference/JSVAL_IS_OBJECT" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JSVAL_IS_OBJECT">JSVAL_IS_OBJECT</a>(y))
+    return ThrowTypeError("Parameter y must be an object.");  /* see the <a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#throw">#throw</a> example */
+if (!<a title="en/SpiderMonkey/JSAPI_Reference/JS_GetProperty" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_GetProperty">JS_GetProperty</a>(cx, JSVAL_TO_OBJECT(y), "myprop", &amp;x))
+    return JS_FALSE;
+</pre>
+</div><div id="section_16"><span id="Setting_a_property"></span><h3 class="editable">Setting a property</h3>
+<pre class="eval">// <strong>JavaScript</strong>
+y.myprop = x;
+</pre>
+<p>See "Getting a property", above, concerning the case where <code>y</code> is not an object.</p>
+<pre class="eval">/* <strong>JSAPI</strong> */
+assert(<a title="en/SpiderMonkey/JSAPI_Reference/JSVAL_IS_OBJECT" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JSVAL_IS_OBJECT">JSVAL_IS_OBJECT</a>(y));
+if (!<a title="en/SpiderMonkey/JSAPI_Reference/JS_SetProperty" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_SetProperty">JS_SetProperty</a>(cx, <a title="en/SpiderMonkey/JSAPI_Reference/JSVAL_TO_OBJECT" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JSVAL_TO_OBJECT">JSVAL_TO_OBJECT</a>(y), "myprop", &amp;x))
+    return JS_FALSE;
+</pre>
+</div><div id="section_17"><span id="Checking_for_a_property"></span><h3 class="editable">Checking for a property</h3>
+<pre class="eval">// <strong>JavaScript</strong>
+if ("myprop" in y) {
+    // then do something
+}
+</pre>
+<p>See "Getting a property", above, concerning the case where <code>y</code> is not an object.</p>
+<pre class="eval">/* <strong>JSAPI</strong> */
+JSBool found;
+
+assert(<a title="en/SpiderMonkey/JSAPI_Reference/JSVAL_IS_OBJECT" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JSVAL_IS_OBJECT">JSVAL_IS_OBJECT</a>(y));
+if (!<a title="en/SpiderMonkey/JSAPI_Reference/JS_HasProperty" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_HasProperty">JS_HasProperty</a>(cx, <a title="en/SpiderMonkey/JSAPI_Reference/JSVAL_TO_OBJECT" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JSVAL_TO_OBJECT">JSVAL_TO_OBJECT</a>(y), "myprop", &amp;found))
+    return JS_FALSE;
+if (found) {
+    // then do something
+}
+</pre>
+</div><div id="section_18"><span id="Defining_a_constant_property"></span><h3 class="editable">Defining a constant property</h3>
+<p>This is the first of three examples involving the built-in function <code>Object.defineProperty()</code>, which gives JavaScript code fine-grained control over the behavior of individual properties of any object.</p>
+<p>You can use this function to create a constant property, one that can't be overwritten or deleted. Specify <code>writeable: false</code> to make the property read-only and <code>configurable: false</code> to prevent it from being deleted or redefined. The flag <code>enumerable: true</code> causes this property to be seen by for loops.</p>
+<pre class="eval">// <strong>JavaScript</strong>
+Object.defineProperty(obj, "prop", {value: 123,
+                                    writeable: false,
+                                    enumerable: true,
+                                    configurable: false});
+</pre>
+<p>The analogous JSAPI function is <code><a title="en/SpiderMonkey/JSAPI_Reference/JS_DefineProperty" rel="internal" href="https://developer.mozilla.org/en/SpiderMonkey/JSAPI_Reference/JS_DefineProperty">JS_DefineProperty</a></code>. The property attribute <code>JSPROP_READONLY</code> corresponds to <code>writeable: false</code>, <code>JSPROP_ENUMERATE</code> to <code>enumerable: true</code>, and <code>JSPROP_PERMANENT</code> to <code>configurable: false</code>. To get the opposite behavior for any of these settings, simply omit the property attribute bits you don't want.</p>
+<pre class="eval">/* <strong>JSAPI</strong> */
+if (!JS_DefineProperty(cx, obj, "prop", INT_TO_JSVAL(123),
+                       JS_PropertyStub, JS_PropertyStub,
+                       JSPROP_READONLY | JSPROP_ENUMERATE | JSPROP_PERMANENT)) {
+   return JS_FALSE;
+}
+</pre>
+</div><div id="section_19"><span id="Defining_a_property_with_a_getter_and_setter"></span><h3 class="editable">Defining a property with a getter and setter</h3>
+<p><code>Object.defineProperty()</code> can be used to define properties in terms of two accessor functions.</p>
+<pre class="eval">// <strong>JavaScript</strong>
+Object.defineProperty(obj, "prop", {get: GetPropFunc,
+                                    set: SetPropFunc,
+                                    enumerable: true});
+</pre>
+<p>In the JSAPI version, <code>GetPropFunc</code> and <code>SetPropFunc</code> are C/C++ functions of type <a title="En/SpiderMonkey/JSAPI Reference/JSPropertyOp" rel="internal" href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Reference/JSPropertyOp"><code>JSPropertyOp</code></a>.</p>
+<pre class="eval">/* <strong>JSAPI</strong> */
+if (!JS_DefineProperty(cx, obj, "prop", JSVAL_VOID,
+                       GetPropFunc, SetPropFunc,
+                       JSPROP_SHARED | JSPROP_ENUMERATE)) {
+    return JS_FALSE;
+}
+</pre>
+</div><div id="section_20"><span id="Defining_a_read-only_property_with_only_a_getter"></span><h3 class="editable">Defining a read-only property with only a getter</h3>
+<pre class="eval">// <strong>JavaScript</strong>
+Object.defineProperty(obj, "prop", {get: GetPropFunc,
+                                    enumerable: true});
+</pre>
+<p>In the JSAPI version, to signify that the property is read-only, pass <code>NULL</code> for the setter and add the <code>JSPROP_READONLY</code> attribute.</p>
+<pre class="eval">/* <strong>JSAPI</strong> */
+if (!JS_DefineProperty(cx, obj, "prop", JSVAL_VOID,
+                       GetPropFunc, NULL,
+                       JSPROP_SHARED | JSPROP_READONLY | JSPROP_ENUMERATE)) {
+    return JS_FALSE;
+}
+</pre>
+</div></div><div id="section_21"><span id="Prototypes"></span><span id="Working_with_the_prototype_chain"></span><h2 class="editable">Working with the prototype chain</h2>
+<div id="section_22"><span id="Defining_a_native_read-only_property_on_the_String.prototype"></span><h3 class="editable">Defining a native read-only property on the String.prototype</h3>
+<pre class="eval">// <strong>JavaScript</strong>
+Object.defineProperty(String.prototype, "md5sum", {get: GetMD5Func,
+                                                   enumerable: true});	<br></pre>
+<p>The following trick couldn't work if someone has replaced the global String object with something.</p>
+<pre class="eval">/* <strong>JSAPI</strong> */
+JSObject   *string, *string_prototype;
+jsval       val;
+
+// get the String object from the current context global object
+if (!JS_GetProperty(cx, JS_GetGlobalObject(cx), "String", &amp;val)) {
+    return JS_FALSE;
+}
+
+// check if String is an object
+if (!JSVAL_IS_OBJECT(val)) {
+    return JS_FALSE;
+}
+
+string = JSVAL_TO_OBJECT(val);
+
+if (!JS_GetProperty(cx, string, "prototype", &amp;val)) {
+    return JS_FALSE;
+}
+
+// check if the String.prototype is an object too
+if (!JSVAL_IS_OBJECT(val)) {
+	return JS_FALSE;
+}
+
+string_prototype = JSVAL_TO_OBJECT(val);
+
+// and now we can add some new functionality to all the strings
+JS_DefineProperty(cx, string_prototype, "md5sum", JSVAL_VOID, GetMD5Func, NULL, JSPROP_READONLY | JSPROP_ENUMERATE));</pre></div></div><div id="section_23"><span id="Wanted"></span><h2 class="editable">Wanted</h2>
+<ul> <li>Using <code><a title="en/JS_GetStandardClass" rel="internal" href="https://developer.mozilla.org/en/JS_GetStandardClass" class="new ">JS_GetStandardClass</a></code> in the <code>throw new Error</code> example, so it throws an actual <code>Error</code> even if the program has deleted or assigned to the global property <code>Error</code>.</li> <li>Simulating <code>for</code> and <code>for each</code>.</li> <li>Actually outputting errors.</li>
+</ul></div></div></div>
+            <section class="page-meta">
+                  <section id="page-tags">
+            <h2>Tags <span class="sub">(0)</span></h2>
+              <a href="https://developer.mozilla.org/index.php?title=Special:Tags&pageId=8236" class="disabled" onclick="return false;" id="deki-page-tags-toggleview">Edit tags</a>              <div id="deki-page-tags"><ul class="tags no-tags"><li>No tags</li></ul></div>          </section>
+        
+                  <section id="page-files">
+            <h2>Attachments <span class="sub">(0)</span></h2>
+            <div id="pageFiles"><div class="nofiles">&nbsp;</div></div>            <div id="deki-image-gallery-lite"><table class="table empty" width="100%" cellspacing="0" cellpadding="0" border="0"><colgroup><col width="33%"><col width="33%"><col width="33%"></colgroup><tbody><tr class="bg1"><th class="col1" colspan="3">Images 0</th></tr><tr class="bg2"><td class="col1 empty" colspan="3">No images to display in the gallery.</td></tr></tbody></table></div>            <p class="add"><a title="Attach file" class="disabled ">Attach file</a></p>
+          </section>
+        
+                        
+        </section>
+        </div>
+
+    </article>
+
+    <p class="last-mod hideforedit">
+      Page last modified <a href="https://developer.mozilla.org/index.php?title=En/SpiderMonkey/JSAPI_Cookbook&action=history" title="16:20, 17 Aug 2011">16:20, 17 Aug 2011</a> by <a href="https://developer.mozilla.org/User:Jorend" class="link-user" rel="internal">Jorend</a>    </p>
+
+  </div><!-- /#content-main -->
+
+</div><!-- /.wrap -->
+</section><!-- /#content -->
+
+
+
+<footer id="site-info" role="contentinfo">
+<div class="wrap">
+  <div id="legal">
+    <img src="./JSAPI Cookbook - MDN_files/mdn-logo-tiny.png" alt="" width="42" height="48">
+    <p id="copyright">© 2011 Mozilla Developer Network</p>
+    <p>Content is available under <a href="https://developer.mozilla.org/Project:Copyrights">these licenses</a> • <a href="https://developer.mozilla.org/Project:en/About">About MDN</a> • <a href="http://www.mozilla.org/about/policies/privacy-policy.html">Privacy Policy</a> • <a href="https://developer.mozilla.org/Project:en/Using_the_Mozilla_Developer_Center">Help</a></p>
+  </div>
+  <p class="user-state superfish">
+          <a href="https://developer.mozilla.org/index.php?title=Special:Userlogin&returntotitle=En%2FSpiderMonkey%2FJSAPI+Cookbook" class="user-login">Log in</a> | 	<a href="https://developer.mozilla.org/index.php?title=Special:Userlogin&register=true" title="Join MDN">Join MDN</a>
+      
+  </p>
+</div>
+</footer>
+
+
+			
+<div class="ui-msg-wrap" id="MTMessage" style="display: none;">
+	<div class="ui-msg ui-errormsg" id="MTMessageStyle">
+		<div class="ui-msg-opt">
+			<ul>
+				<li><a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#" class="dismiss" onclick="return MTMessage.Hide();">dismiss message</a></li>
+				<li><a href="https://developer.mozilla.org/En/SpiderMonkey/JSAPI_Cookbook#" class="details" id="MTMessageDetailsLink" onclick="return MTMessage.ShowDetails(this);">view details</a></li>
+			</ul>
+			<div class="ui-msg-autoclose">
+				<span id="MTMessageUnpaused" style="display: inline;">Message will close by itself in <span id="MTMessageTimer"></span> seconds</span>
+				<span id="MTMessagePaused" style="display: none;">Message timer has been stopped</span>
+			</div>
+		</div>
+		<div class="ui-msg-header" id="MTMessageHeader"></div>
+		<div class="ui-msg-desc" id="MTMessageDesc"></div>
+		<div class="ui-msg-desc" id="MTMessageDetails" style="display: none;">
+			<p>Viewing Details:</p>
+		</div>
+	</div>
+</div><script type="text/javascript">$(function() {var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");$.getScript(gaJsHost + "google-analytics.com/ga.js", function() {try {var pageTracker = _gat._getTracker("UA-68075-16");pageTracker._setDomainName(".mindtouch.com");pageTracker._trackPageview();} catch(e) {}});});</script>
+<!-- Served by pm-dekiwiki02.mozilla.org in 0.51 secs. -->
+<!--
+	Verb      Path                                              Time(ms)       API Stats
+	GET       /deki/site/settings                                  18.79       request-time-ms=16; mysql-queries=2; mysql-time-ms=14; cache-ratio=0.00; cache-hit=0; cache-miss=-1; cache-del=0; cache-ins=1;
+	GET       /deki/users/=Anonymous                                6.76       request-time-ms=5; mysql-queries=4; mysql-time-ms=3; cache-ratio=-0.67; cache-hit=2; cache-miss=-5; cache-del=0; cache-ins=5;
+	GET       /deki/license                                         6.73       request-time-ms=3; mysql-queries=2; mysql-time-ms=1; cache-ratio=-0.50; cache-hit=1; cache-miss=-3; cache-del=0; cache-ins=3;
+	GET       /deki/pages/8236/contents                            90.25       request-time-ms=88; mysql-queries=10; mysql-time-ms=32; cache-ratio=Infinity; cache-hit=11; cache-miss=-11; cache-del=0; cache-ins=11;
+	GET       /deki/pages/8236                                     49.11       request-time-ms=44; mysql-queries=19; mysql-time-ms=23; cache-ratio=8.67; cache-hit=26; cache-miss=-23; cache-del=0; cache-ins=23;
+	GET       /deki/pages/8236/info                                 5.91       request-time-ms=4; mysql-queries=3; mysql-time-ms=3; cache-ratio=-0.67; cache-hit=2; cache-miss=-5; cache-del=0; cache-ins=5;
+	GET       /deki/pages/8236/tags                                 7.05       request-time-ms=5; mysql-queries=4; mysql-time-ms=4; cache-ratio=-0.75; cache-hit=3; cache-miss=-7; cache-del=0; cache-ins=7;
+	GET       /deki/site/properties                                12.15       request-time-ms=10; mysql-queries=4; mysql-time-ms=7; cache-ratio=-0.25; cache-hit=1; cache-miss=-5; cache-del=0; cache-ins=5;
+	GET       /deki/site/nav/=En%252FSpiderMonkey%252FJSAPI%2BCookbook/full   235.92       request-time-ms=234; mysql-queries=6; mysql-time-ms=231; cache-ratio=-6.00; cache-hit=6; cache-miss=-7; cache-del=0; cache-ins=7;
+	GET       /deki/pages/8236/tags                                 6.12       request-time-ms=4; mysql-queries=4; mysql-time-ms=3; cache-ratio=-0.75; cache-hit=3; cache-miss=-7; cache-del=0; cache-ins=7;
+	                                                             =======
+	                                                     Total:   438.78      
+	                                                     Ideal:   432.66      
+-->
+ 
+<div id="popupMessage"></div> <div id="popupMask"></div>
+<div id="menuFiller"></div>
+<div id="bodyHeight"></div>
+
+<script src="./JSAPI Cookbook - MDN_files/jsapi"></script>
+<script src="./JSAPI Cookbook - MDN_files/javascript.min.js"></script><script src="./JSAPI Cookbook - MDN_files/saved_resource" type="text/javascript"></script><script src="./JSAPI Cookbook - MDN_files/default+en.I.js" type="text/javascript"></script>
+
+ 
+<script type="text/javascript">
+//<![CDATA[
+var _tag=new WebTrends();
+_tag.dcsGetId();
+// Add custom parameters here.
+//_tag.DCSext.param_name=param_value;
+_tag.dcsCollect();
+//]]>>
+</script>
+<noscript>
+&lt;div&gt;&lt;img alt="DCSIMG" id="DCSIMG" width="1" height="1" src="https://statse.webtrendslive.com/dcs8yrjuavz5bdaun34r2o8bi_8o8x/njs.gif?dcsuri=/nojavascript&amp;amp;WT.js=No&amp;amp;WT.tv=8.6.2"/&gt;&lt;/div&gt;
+</noscript>
+<!-- END OF SmartSource Data Collector TAG -->
+
+ 
+
+
+</body></html>

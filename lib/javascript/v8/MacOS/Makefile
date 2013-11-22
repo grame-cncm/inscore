@@ -4,7 +4,10 @@
 # [2012-04-10] adapted to v8/gyp
 #
 
-V8 = $(HOME)/src/v8
+V8 = $(HOME)/src/v8/git
+
+V832 = $(V8)/out/ia32.release/libv8_base.ia32.a
+V864 = $(V8)/out/x64.release/libv8_base.x64.a
 
 help:
 	@echo This makefile is intended to build v8 and to combine 32 bits and 64 bits architectures
@@ -16,16 +19,16 @@ help:
 
 lib : libv8.a
 
-v32 : $(V8)/out/ia32.release/libv8_base.a
-v64 : $(V8)/out/x64.release/libv8_base.a
+v32 : $(V832)
+v64 : $(V864)
 
-libv8.a :  $(V8)/out/ia32.release/libv8_base.a $(V8)/out/x64.release/libv8_base.a
-	libtool -o libv8.a $(V8)/out/ia32.release/libv8_base.a $(V8)/out/ia32.release/libv8_snapshot.a $(V8)/out/x64.release/libv8_base.a $(V8)/out/x64.release/libv8_snapshot.a
+libv8.a :  $(V832) $(V864)
+	libtool -o libv8.a $(V832) $(V8)/out/ia32.release/libv8_snapshot.a $(V864) $(V8)/out/x64.release/libv8_snapshot.a
 
-$(V8)/out/ia32.release/libv8_base.a :
+$(V832) :
 	cd $(V8) && make ia32.release
 
-$(V8)/out/x64.release/libv8_base.a :
+$(V864) :
 	cd $(V8) && make x64.release
 
 clean:

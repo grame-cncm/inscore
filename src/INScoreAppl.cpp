@@ -176,6 +176,9 @@ void INScoreAppl::setupMenu()
 	
     QMenu* menu = fMenuBar->addMenu(tr("&Help"));
     menu->addAction(aboutAct);
+	
+    menu = fMenuBar->addMenu(tr("&Toto"));
+    menu = fMenuBar->addMenu(tr("&titi"));
 }
 
 //_______________________________________________________________________

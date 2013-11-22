@@ -1,0 +1,548 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		069D05B0128AE5DC7EE31738 /* QtCore.framework in Frameworks & Libraries */ = {isa = PBXBuildFile; fileRef = 7BC2E65A5E699A5E5D834CA2 /* QtCore.framework */; };
+		0C6D4628EE0B0D1479A20551 /* AGL.framework in Frameworks & Libraries */ = {isa = PBXBuildFile; fileRef = C6766F86E49E9C8701C8E637 /* AGL.framework */; };
+		0DBE4429E2F5C7286FC399D8 /* abstractobject.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = A428F0CAE3647787490A4C24 /* abstractobject.cpp */; settings = {ATTRIBUTES = (); }; };
+		1CF2D9FABAC9C6A29C2F184A /* moc_image.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = D10F9FD4242F74A5343065F8 /* moc_image.cpp */; settings = {ATTRIBUTES = (); }; };
+		2B093CA6F071B023A473CED0 /* main.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = 118FCBAABA162BA17933C789 /* main.cpp */; settings = {ATTRIBUTES = (); }; };
+		3BB3E46F7EC8C7405B55E0CE /* camera.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = 6238797CCAABFF441D08F08B /* camera.cpp */; settings = {ATTRIBUTES = (); }; };
+		3CC62C3BEDDB5D38E2F45772 /* image.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = 2739D59049B6C6013D48AEF6 /* image.cpp */; settings = {ATTRIBUTES = (); }; };
+		427711BEEDB0E33141EEAEF2 /* vector.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = E570DCABC3D0AABD8608CD1F /* vector.cpp */; settings = {ATTRIBUTES = (); }; };
+		450A0D11527AF164AEFE7377 /* QtOpenGL.framework in Frameworks & Libraries */ = {isa = PBXBuildFile; fileRef = C374004D45E01156F931B37D /* QtOpenGL.framework */; };
+		501667F26B3C1FF6767A7C12 /* QtGui.framework in Frameworks & Libraries */ = {isa = PBXBuildFile; fileRef = 9B36DA7E32F0304E780E7972 /* QtGui.framework */; };
+		504234905C48E5B8BF1049EE /* widgetopengl.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = 20BE40DBC1B31E1D75B9A694 /* widgetopengl.cpp */; settings = {ATTRIBUTES = (); }; };
+		5548BD96ABEC92A71F9CF50C /* point.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = 167FFC3E3A61C6D4EEA3088B /* point.cpp */; settings = {ATTRIBUTES = (); }; };
+		5CB6E97155D6669A8C16ECE7 /* fenetre.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = 529B39A47AAD02A70F632485 /* fenetre.cpp */; settings = {ATTRIBUTES = (); }; };
+		6785A42B4D5D4ED9E549E8DC /* trajectoire.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = 0E68977FB0881D5DE2EE93A5 /* trajectoire.cpp */; settings = {ATTRIBUTES = (); }; };
+		7A84D3527CDBE4ACA07ADBED /* quaternion.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = 2B156BC23D7CB8F577E690A4 /* quaternion.cpp */; settings = {ATTRIBUTES = (); }; };
+		A4E4FF3D4127F90BAF498952 /* moc_widgetopengl.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = E2B4E09C15EF06692474282E /* moc_widgetopengl.cpp */; settings = {ATTRIBUTES = (); }; };
+		ABADBD062D51B0369F10733E /* point3d.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = 91587053FB2524F95E5C8CC0 /* point3d.cpp */; settings = {ATTRIBUTES = (); }; };
+		AF7789F649F43B35529415C9 /* moc_fenetre.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = 51D78A3AA3C2D8853FA3909B /* moc_fenetre.cpp */; settings = {ATTRIBUTES = (); }; };
+		B97CF13C3F0925634D620504 /* vnoeud.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = 91A513C04E408C4B4B9B30CE /* vnoeud.cpp */; settings = {ATTRIBUTES = (); }; };
+		BCEF71E1EDFB18DA77DC750B /* OpenGL.framework in Frameworks & Libraries */ = {isa = PBXBuildFile; fileRef = DA18A6831232F53228631AD1 /* OpenGL.framework */; };
+		D362249E1394E2A100EFE643 /* OpenGL.app in Project Copy */ = {isa = PBXBuildFile; fileRef = D362249B1394E2A100EFE643 /* OpenGL.app */; };
+		E4A0E7B643626950E87631CA /* hierarchicalgroup.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = 85638939317A446F3B153914 /* hierarchicalgroup.cpp */; settings = {ATTRIBUTES = (); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F6069D5A5DA8AA28EDB8B3C6 /* Project Copy */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /Users/fober/src/Interlude/git/essais/OpenGL;
+			dstSubfolderSpec = 0;
+			files = (
+				D362249E1394E2A100EFE643 /* OpenGL.app in Project Copy */,
+			);
+			name = "Project Copy";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0A91ACF0FF13FDDFFC41BE64 /* point3d.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = point3d.h; sourceTree = "<group>"; };
+		0E68977FB0881D5DE2EE93A5 /* trajectoire.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = trajectoire.cpp; sourceTree = "<group>"; };
+		118FCBAABA162BA17933C789 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		13DF19CBD48E4CE612FB3B73 /* fenetre.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fenetre.h; sourceTree = "<group>"; };
+		1480081DD2F69DB3319FB793 /* camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = camera.h; sourceTree = "<group>"; };
+		167FFC3E3A61C6D4EEA3088B /* point.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = point.cpp; sourceTree = "<group>"; };
+		20BE40DBC1B31E1D75B9A694 /* widgetopengl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = widgetopengl.cpp; sourceTree = "<group>"; };
+		2739D59049B6C6013D48AEF6 /* image.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = image.cpp; sourceTree = "<group>"; };
+		2B156BC23D7CB8F577E690A4 /* quaternion.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = quaternion.cpp; sourceTree = "<group>"; };
+		302AA2C34912291A6FB3A7A8 /* trajectoire.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = trajectoire.h; sourceTree = "<group>"; };
+		4CEF6D91E5C6EC5413785629 /* quaternion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = quaternion.h; sourceTree = "<group>"; };
+		51D78A3AA3C2D8853FA3909B /* moc_fenetre.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = moc_fenetre.cpp; sourceTree = "<group>"; };
+		529B39A47AAD02A70F632485 /* fenetre.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = fenetre.cpp; sourceTree = "<group>"; };
+		6238797CCAABFF441D08F08B /* camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = camera.cpp; sourceTree = "<group>"; };
+		7BC2E65A5E699A5E5D834CA2 /* QtCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtCore.framework; path = /Library/Frameworks/QtCore.framework; sourceTree = "<absolute>"; };
+		7FBFA52F503C52FF7EC1B6D6 /* hierarchicalgroup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hierarchicalgroup.h; sourceTree = "<group>"; };
+		813091F228C74EE18D4B445C /* abstractobject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = abstractobject.h; sourceTree = "<group>"; };
+		82D8B25CCB81DC76CBD3D254 /* image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = image.h; sourceTree = "<group>"; };
+		85638939317A446F3B153914 /* hierarchicalgroup.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = hierarchicalgroup.cpp; sourceTree = "<group>"; };
+		91587053FB2524F95E5C8CC0 /* point3d.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = point3d.cpp; sourceTree = "<group>"; };
+		91A513C04E408C4B4B9B30CE /* vnoeud.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vnoeud.cpp; sourceTree = "<group>"; };
+		9649FE5F3E41397EB8AF30EF /* vnoeud.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vnoeud.h; sourceTree = "<group>"; };
+		9B36DA7E32F0304E780E7972 /* QtGui.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtGui.framework; path = /Library/Frameworks/QtGui.framework; sourceTree = "<absolute>"; };
+		A428F0CAE3647787490A4C24 /* abstractobject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = abstractobject.cpp; sourceTree = "<group>"; };
+		B104F2574FAB578700E9B96C /* vector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vector.h; sourceTree = "<group>"; };
+		C374004D45E01156F931B37D /* QtOpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtOpenGL.framework; path = /Library/Frameworks/QtOpenGL.framework; sourceTree = "<absolute>"; };
+		C6766F86E49E9C8701C8E637 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
+		D10F9FD4242F74A5343065F8 /* moc_image.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = moc_image.cpp; sourceTree = "<group>"; };
+		D208B51B422DB3C7745F7B41 /* OpenGL.pro */ = {isa = PBXFileReference; lastKnownFileType = text; path = OpenGL.pro; sourceTree = "<group>"; };
+		D362249B1394E2A100EFE643 /* OpenGL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenGL.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D663C370794946DC56D94181 /* widgetopengl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = widgetopengl.h; sourceTree = "<group>"; };
+		D66F01609A7EBDE666F4E174 /* point.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = point.h; sourceTree = "<group>"; };
+		DA18A6831232F53228631AD1 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
+		E2B4E09C15EF06692474282E /* moc_widgetopengl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = moc_widgetopengl.cpp; sourceTree = "<group>"; };
+		E570DCABC3D0AABD8608CD1F /* vector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vector.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2A1043669E6E5A7426EA502A /* Frameworks & Libraries */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				450A0D11527AF164AEFE7377 /* QtOpenGL.framework in Frameworks & Libraries */,
+				501667F26B3C1FF6767A7C12 /* QtGui.framework in Frameworks & Libraries */,
+				069D05B0128AE5DC7EE31738 /* QtCore.framework in Frameworks & Libraries */,
+				BCEF71E1EDFB18DA77DC750B /* OpenGL.framework in Frameworks & Libraries */,
+				0C6D4628EE0B0D1479A20551 /* AGL.framework in Frameworks & Libraries */,
+			);
+			name = "Frameworks & Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		05596AB53D8D521C69802C27 /* OpenGL */ = {
+			isa = PBXGroup;
+			children = (
+				FB61758D0F0FDA4BA867C3D5 /* Sources */,
+				46E892BBB6BB6952967E0561 /* Temporary Sources */,
+				883D7615C4D2DE3FA1218F12 /* Headers */,
+				7CABE3C80E79AD2B307756D2 /* Sources [qmake] */,
+				ED1E82605DD74B483AF3C982 /* External Frameworks and Libraries */,
+				D362249C1394E2A100EFE643 /* Products */,
+			);
+			name = OpenGL;
+			sourceTree = "<group>";
+		};
+		46E892BBB6BB6952967E0561 /* Temporary Sources */ = {
+			isa = PBXGroup;
+			children = (
+				E2B4E09C15EF06692474282E /* moc_widgetopengl.cpp */,
+				51D78A3AA3C2D8853FA3909B /* moc_fenetre.cpp */,
+				D10F9FD4242F74A5343065F8 /* moc_image.cpp */,
+			);
+			name = "Temporary Sources";
+			sourceTree = "<group>";
+		};
+		7CABE3C80E79AD2B307756D2 /* Sources [qmake] */ = {
+			isa = PBXGroup;
+			children = (
+				D208B51B422DB3C7745F7B41 /* OpenGL.pro */,
+			);
+			name = "Sources [qmake]";
+			sourceTree = "<group>";
+		};
+		883D7615C4D2DE3FA1218F12 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				D663C370794946DC56D94181 /* widgetopengl.h */,
+				13DF19CBD48E4CE612FB3B73 /* fenetre.h */,
+				9649FE5F3E41397EB8AF30EF /* vnoeud.h */,
+				0A91ACF0FF13FDDFFC41BE64 /* point3d.h */,
+				82D8B25CCB81DC76CBD3D254 /* image.h */,
+				4CEF6D91E5C6EC5413785629 /* quaternion.h */,
+				1480081DD2F69DB3319FB793 /* camera.h */,
+				D66F01609A7EBDE666F4E174 /* point.h */,
+				B104F2574FAB578700E9B96C /* vector.h */,
+				302AA2C34912291A6FB3A7A8 /* trajectoire.h */,
+				7FBFA52F503C52FF7EC1B6D6 /* hierarchicalgroup.h */,
+				813091F228C74EE18D4B445C /* abstractobject.h */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		D362249C1394E2A100EFE643 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D362249B1394E2A100EFE643 /* OpenGL.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ED1E82605DD74B483AF3C982 /* External Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				C374004D45E01156F931B37D /* QtOpenGL.framework */,
+				9B36DA7E32F0304E780E7972 /* QtGui.framework */,
+				7BC2E65A5E699A5E5D834CA2 /* QtCore.framework */,
+				DA18A6831232F53228631AD1 /* OpenGL.framework */,
+				C6766F86E49E9C8701C8E637 /* AGL.framework */,
+			);
+			name = "External Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		FB61758D0F0FDA4BA867C3D5 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				118FCBAABA162BA17933C789 /* main.cpp */,
+				20BE40DBC1B31E1D75B9A694 /* widgetopengl.cpp */,
+				529B39A47AAD02A70F632485 /* fenetre.cpp */,
+				91A513C04E408C4B4B9B30CE /* vnoeud.cpp */,
+				91587053FB2524F95E5C8CC0 /* point3d.cpp */,
+				2739D59049B6C6013D48AEF6 /* image.cpp */,
+				2B156BC23D7CB8F577E690A4 /* quaternion.cpp */,
+				6238797CCAABFF441D08F08B /* camera.cpp */,
+				167FFC3E3A61C6D4EEA3088B /* point.cpp */,
+				E570DCABC3D0AABD8608CD1F /* vector.cpp */,
+				0E68977FB0881D5DE2EE93A5 /* trajectoire.cpp */,
+				85638939317A446F3B153914 /* hierarchicalgroup.cpp */,
+				A428F0CAE3647787490A4C24 /* abstractobject.cpp */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2F70C9EFF191C5DC29806732 /* OpenGL */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D36224B31394E2C000EFE643 /* Build configuration list for PBXNativeTarget "OpenGL" */;
+			buildPhases = (
+				D7BA7D76DAB5DD13389D6332 /* Qt Qmake */,
+				A0A52A2ADF7A1E2A99738674 /* Qt Preprocessors */,
+				F6069D5A5DA8AA28EDB8B3C6 /* Project Copy */,
+				C29B8785722055ED95EF7B57 /* Build Sources */,
+				2A1043669E6E5A7426EA502A /* Frameworks & Libraries */,
+				3787F99312C85FF0073FD7BA /* Bundle Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OpenGL;
+			productName = OpenGL;
+			productReference = D362249B1394E2A100EFE643 /* OpenGL.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		91B15E841AA80083484172DE /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 2A951308CDB28F104D0A4BD2 /* Build configuration list for PBXProject "OpenGL" */;
+			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 05596AB53D8D521C69802C27 /* OpenGL */;
+			productRefGroup = D362249C1394E2A100EFE643 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2F70C9EFF191C5DC29806732 /* OpenGL */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3787F99312C85FF0073FD7BA /* Bundle Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "Bundle Resources";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A0A52A2ADF7A1E2A99738674 /* Qt Preprocessors */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "Qt Preprocessors";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C /Users/fober/src/Interlude/git/essais/OpenGL -f 'OpenGL.xcodeproj/qt_preprocess.mak'";
+		};
+		D7BA7D76DAB5DD13389D6332 /* Qt Qmake */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "Qt Qmake";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C /Users/fober/src/Interlude/git/essais/OpenGL -f 'OpenGL.xcodeproj/qt_makeqmake.mak'";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C29B8785722055ED95EF7B57 /* Build Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B093CA6F071B023A473CED0 /* main.cpp in Build Sources */,
+				504234905C48E5B8BF1049EE /* widgetopengl.cpp in Build Sources */,
+				5CB6E97155D6669A8C16ECE7 /* fenetre.cpp in Build Sources */,
+				B97CF13C3F0925634D620504 /* vnoeud.cpp in Build Sources */,
+				ABADBD062D51B0369F10733E /* point3d.cpp in Build Sources */,
+				3CC62C3BEDDB5D38E2F45772 /* image.cpp in Build Sources */,
+				7A84D3527CDBE4ACA07ADBED /* quaternion.cpp in Build Sources */,
+				3BB3E46F7EC8C7405B55E0CE /* camera.cpp in Build Sources */,
+				5548BD96ABEC92A71F9CF50C /* point.cpp in Build Sources */,
+				427711BEEDB0E33141EEAEF2 /* vector.cpp in Build Sources */,
+				6785A42B4D5D4ED9E549E8DC /* trajectoire.cpp in Build Sources */,
+				E4A0E7B643626950E87631CA /* hierarchicalgroup.cpp in Build Sources */,
+				0DBE4429E2F5C7286FC399D8 /* abstractobject.cpp in Build Sources */,
+				A4E4FF3D4127F90BAF498952 /* moc_widgetopengl.cpp in Build Sources */,
+				AF7789F649F43B35529415C9 /* moc_fenetre.cpp in Build Sources */,
+				1CF2D9FABAC9C6A29C2F184A /* moc_image.cpp in Build Sources */,
+			);
+			name = "Build Sources";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		8DB1DD96F65B1BF1FFC506E0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+			};
+			name = Debug;
+		};
+		95E1EB2E5DDD587BE5B3E548 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+			};
+			name = Release;
+		};
+		D36224AE1394E2A200EFE643 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_ROOT = /Users/fober/src/Interlude/git/essais/OpenGL;
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1.0;
+				DYLIB_CURRENT_VERSION = 1.0.0;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = (
+					/Library/Frameworks/QtCore.framework/Versions/4/Headers,
+					/usr/include/QtCore,
+					/Library/Frameworks/QtGui.framework/Versions/4/Headers,
+					/usr/include/QtGui,
+					/Library/Frameworks/QtOpenGL.framework/Versions/4/Headers,
+					/usr/include/QtOpenGL,
+					/usr/include,
+					/Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/OpenAL.framework/Versions/A/Headers,
+					/System/Library/Frameworks/OpenGL.framework/Versions/A/Headers,
+					/System/Library/Frameworks/AGL.framework/Headers,
+					.,
+					/usr/local/include,
+					/System/Library/Frameworks/CarbonCore.framework/Headers,
+					"/usr/local/Qt4.7/mkspecs/macx-xcode",
+				);
+				INFOPLIST_FILE = Info.plist;
+				LEXFLAGS = "";
+				LIBRARY_SEARCH_PATHS = (
+					/Library/Frameworks,
+					"/tmp/qt-stuff-6474/source/qt-everywhere-opensource-src-4.7.0/lib",
+					/System/Library/Frameworks/,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				OTHER_CFLAGS = (
+					"-pipe",
+					"-g",
+					"-Wall",
+					"-W",
+					"-DQT_OPENGL_LIB",
+					"-DQT_GUI_LIB",
+					"-DQT_CORE_LIB",
+					"-DQT_SHARED",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-pipe",
+					"-g",
+					"-Wall",
+					"-W",
+					"-DQT_OPENGL_LIB",
+					"-DQT_GUI_LIB",
+					"-DQT_CORE_LIB",
+					"-DQT_SHARED",
+				);
+				OTHER_LDFLAGS = (
+					"-headerpad_max_install_names",
+					"-L/Library/Frameworks",
+					"-F/Library/Frameworks",
+					"-L/tmp/qt-stuff-6474/source/qt-everywhere-opensource-src-4.7.0/lib",
+					"-F/tmp/qt-stuff-6474/source/qt-everywhere-opensource-src-4.7.0/lib",
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = OpenGL;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "";
+				YACCFLAGS = "-d";
+			};
+			name = Debug;
+		};
+		D36224AF1394E2A200EFE643 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_ROOT = /Users/fober/src/Interlude/git/essais/OpenGL;
+				COPY_PHASE_STRIP = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1.0;
+				DYLIB_CURRENT_VERSION = 1.0.0;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				HEADER_SEARCH_PATHS = (
+					/Library/Frameworks/QtCore.framework/Versions/4/Headers,
+					/usr/include/QtCore,
+					/Library/Frameworks/QtGui.framework/Versions/4/Headers,
+					/usr/include/QtGui,
+					/Library/Frameworks/QtOpenGL.framework/Versions/4/Headers,
+					/usr/include/QtOpenGL,
+					/usr/include,
+					/Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/OpenAL.framework/Versions/A/Headers,
+					/System/Library/Frameworks/OpenGL.framework/Versions/A/Headers,
+					/System/Library/Frameworks/AGL.framework/Headers,
+					.,
+					/usr/local/include,
+					/System/Library/Frameworks/CarbonCore.framework/Headers,
+					"/usr/local/Qt4.7/mkspecs/macx-xcode",
+				);
+				INFOPLIST_FILE = Info.plist;
+				LEXFLAGS = "";
+				LIBRARY_SEARCH_PATHS = (
+					/Library/Frameworks,
+					"/tmp/qt-stuff-6474/source/qt-everywhere-opensource-src-4.7.0/lib",
+					/System/Library/Frameworks/,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				OTHER_CFLAGS = (
+					"-pipe",
+					"-g",
+					"-Wall",
+					"-W",
+					"-DQT_OPENGL_LIB",
+					"-DQT_GUI_LIB",
+					"-DQT_CORE_LIB",
+					"-DQT_SHARED",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-pipe",
+					"-g",
+					"-Wall",
+					"-W",
+					"-DQT_OPENGL_LIB",
+					"-DQT_GUI_LIB",
+					"-DQT_CORE_LIB",
+					"-DQT_SHARED",
+				);
+				OTHER_LDFLAGS = (
+					"-headerpad_max_install_names",
+					"-L/Library/Frameworks",
+					"-F/Library/Frameworks",
+					"-L/tmp/qt-stuff-6474/source/qt-everywhere-opensource-src-4.7.0/lib",
+					"-F/tmp/qt-stuff-6474/source/qt-everywhere-opensource-src-4.7.0/lib",
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = OpenGL;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "";
+				YACCFLAGS = "-d";
+			};
+			name = Release;
+		};
+		D36224B01394E2A200EFE643 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_ROOT = /Users/fober/src/Interlude/git/essais/OpenGL;
+				DYLIB_COMPATIBILITY_VERSION = 1.0;
+				DYLIB_CURRENT_VERSION = 1.0.0;
+				HEADER_SEARCH_PATHS = (
+					/Library/Frameworks/QtCore.framework/Versions/4/Headers,
+					/usr/include/QtCore,
+					/Library/Frameworks/QtGui.framework/Versions/4/Headers,
+					/usr/include/QtGui,
+					/Library/Frameworks/QtOpenGL.framework/Versions/4/Headers,
+					/usr/include/QtOpenGL,
+					/usr/include,
+					/Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/OpenAL.framework/Versions/A/Headers,
+					/System/Library/Frameworks/OpenGL.framework/Versions/A/Headers,
+					/System/Library/Frameworks/AGL.framework/Headers,
+					.,
+					/usr/local/include,
+					/System/Library/Frameworks/CarbonCore.framework/Headers,
+					"/usr/local/Qt4.7/mkspecs/macx-xcode",
+				);
+				INFOPLIST_FILE = Info.plist;
+				LEXFLAGS = "";
+				LIBRARY_SEARCH_PATHS = (
+					/Library/Frameworks,
+					"/tmp/qt-stuff-6474/source/qt-everywhere-opensource-src-4.7.0/lib",
+					/System/Library/Frameworks/,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				OTHER_CFLAGS = (
+					"-pipe",
+					"-g",
+					"-Wall",
+					"-W",
+					"-DQT_OPENGL_LIB",
+					"-DQT_GUI_LIB",
+					"-DQT_CORE_LIB",
+					"-DQT_SHARED",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-pipe",
+					"-g",
+					"-Wall",
+					"-W",
+					"-DQT_OPENGL_LIB",
+					"-DQT_GUI_LIB",
+					"-DQT_CORE_LIB",
+					"-DQT_SHARED",
+				);
+				OTHER_LDFLAGS = (
+					"-headerpad_max_install_names",
+					"-L/Library/Frameworks",
+					"-F/Library/Frameworks",
+					"-L/tmp/qt-stuff-6474/source/qt-everywhere-opensource-src-4.7.0/lib",
+					"-F/tmp/qt-stuff-6474/source/qt-everywhere-opensource-src-4.7.0/lib",
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = OpenGL;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "";
+				YACCFLAGS = "-d";
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2A951308CDB28F104D0A4BD2 /* Build configuration list for PBXProject "OpenGL" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8DB1DD96F65B1BF1FFC506E0 /* Debug */,
+				95E1EB2E5DDD587BE5B3E548 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D36224B31394E2C000EFE643 /* Build configuration list for PBXNativeTarget "OpenGL" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D36224AE1394E2A200EFE643 /* Debug */,
+				D36224AF1394E2A200EFE643 /* Release */,
+				D36224B01394E2A200EFE643 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 91B15E841AA80083484172DE /* Project object */;
+}

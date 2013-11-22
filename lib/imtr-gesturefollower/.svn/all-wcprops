@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/repos/imtr-libs/!svn/ver/2725/trunk/GFXlib/src
+END
+GFphrase.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/repos/imtr-libs/!svn/ver/2725/trunk/GFXlib/src/GFphrase.cpp
+END
+GFclient.h
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/repos/imtr-libs/!svn/ver/2420/trunk/GFXlib/src/GFclient.h
+END
+GFlib.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/repos/imtr-libs/!svn/ver/2725/trunk/GFXlib/src/GFlib.cpp
+END
+GFregions.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/repos/imtr-libs/!svn/ver/1563/trunk/GFXlib/src/GFregions.cpp
+END
+GFphrase.h
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/repos/imtr-libs/!svn/ver/2188/trunk/GFXlib/src/GFphrase.h
+END
+GFlibUtility.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/repos/imtr-libs/!svn/ver/2677/trunk/GFXlib/src/GFlibUtility.cpp
+END
+GFlib.h
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/repos/imtr-libs/!svn/ver/2725/trunk/GFXlib/src/GFlib.h
+END
+GFregions.h
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/repos/imtr-libs/!svn/ver/1563/trunk/GFXlib/src/GFregions.h
+END
+GFCodeTrace.h
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/repos/imtr-libs/!svn/ver/1563/trunk/GFXlib/src/GFCodeTrace.h
+END
+GFlibUtility.h
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/repos/imtr-libs/!svn/ver/2673/trunk/GFXlib/src/GFlibUtility.h
+END

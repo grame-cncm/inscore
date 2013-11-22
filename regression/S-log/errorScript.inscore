@@ -1,4 +1,11 @@
 /ITL/scene/* del;
 /ITL/log clear;
+
 /ITL/scene/fig set rect;
 /ITL/scene/fig2 x 1.;
+/ITL/scene/score set gmn "[a b";
+/ITL/scene load "file.inscore";
+/ITL/scene/javascript run "function()";
+
+/ITL/scene/slave set rect 1. 1.;
+/ITL/scene/sync slave slave;
