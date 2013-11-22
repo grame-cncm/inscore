@@ -53,6 +53,7 @@ class INScoreAppl : public QApplication
 
 	public slots:
 		void about();
+		void logwindow();
 };
 
 

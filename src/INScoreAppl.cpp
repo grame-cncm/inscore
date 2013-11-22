@@ -121,6 +121,14 @@ void INScoreAppl::about()
 	if (gAbout) gAbout->show();
 }
 
+//_______________________________________________________________________
+void INScoreAppl::logwindow()
+{
+	INScore::MessagePtr msg = INScore::newMessage ("show");
+	INScore::add (msg, 1);
+	INScore::postMessage ("/ITL/log", msg);
+}
+
 
 #if WIN32
 #define sep '\\'
@@ -174,11 +182,16 @@ void INScoreAppl::setupMenu()
     aboutAct->setStatusTip(tr("Show the application's About box"));
     connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
 	
-    QMenu* menu = fMenuBar->addMenu(tr("&Help"));
+    QMenu* menu = fMenuBar->addMenu(tr("&About"));
     menu->addAction(aboutAct);
+
+
+    QAction* logAct = new QAction(tr("&Show log window"), this);
+    logAct->setStatusTip(tr("Show the application log window"));
+    connect(logAct, SIGNAL(triggered()), this, SLOT(logwindow()));
 	
-    menu = fMenuBar->addMenu(tr("&Toto"));
-    menu = fMenuBar->addMenu(tr("&titi"));
+    menu = fMenuBar->addMenu(tr("&Tools"));
+    menu->addAction(logAct);
 }
 
 //_______________________________________________________________________
