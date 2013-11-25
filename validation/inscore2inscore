@@ -27,7 +27,6 @@ grep -v "/ITL guido-version" $inscore \
 	| grep -v "/ITL ticks" \
 	| grep -v "/ITL time" \
 	| grep -v "/ITL/scene [xy]" \
-	| grep -v "^/ITL.*/debug *signal *[01];$" \
 	| grep -v "/ITL version" > tmp$$
 
 mv -f tmp$$ $inscore

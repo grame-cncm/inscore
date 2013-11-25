@@ -82,6 +82,7 @@ log:
 
 save : 
 	@echo "----------- Generating inscore files"
+	./SendOSC 7000 /ITL/scene reset
 	make _save
 
 _log: INScoreVersion $(logout)
