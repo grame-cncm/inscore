@@ -451,7 +451,7 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 		else {										// addressTail indicates a terminal node
 			IMessageTranslator translator;
 			SIMessage translated = translator.translate(msg);
-			subnodes targets;		
+			subnodes targets;
 			if (find (beg, targets)) {				// looks for subnodes matching addressTail
 				unsigned int n = targets.size();
 				for (unsigned int i = 0; i< n; i++) {
@@ -463,6 +463,7 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 				}
 			}
 			// can't find the target node: try to create it
+			else if (Tools::regexp(beg)) result = MsgHandler::kProcessedNoChange;
 			else result = IProxy::execute (translated ? translated : msg, beg, this);
 		}
 	}
