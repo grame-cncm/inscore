@@ -202,7 +202,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		/// \brief returns the names debug flag
 				bool	nameDebug() const;
 		/// \brief returns the signal debug flag
-				bool	signalDebug() const;
+//				bool	signalDebug() const;
 		/// \brief returns the click debug flag
 				bool	clickDebug() const;
 

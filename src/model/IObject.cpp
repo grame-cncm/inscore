@@ -412,7 +412,7 @@ int IObject::execute (const IMessage* msg)
 //--------------------------------------------------------------------------
 bool IObject::mapDebug() const			{ return fDebug->getMapDebug(); }
 bool IObject::nameDebug() const			{ return fDebug->getNameDebug(); }
-bool IObject::signalDebug() const		{ return fDebug->getSignalDebug(); }
+//bool IObject::signalDebug() const		{ return fDebug->getSignalDebug(); }
 bool IObject::clickDebug() const		{ return fDebug->getClickDebug(); }
 
 //--------------------------------------------------------------------------

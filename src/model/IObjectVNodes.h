@@ -49,7 +49,7 @@ class IObjectDebug : public IVNode
 	protected:
 		bool fMap;						///< flag to display the graphic map
 		bool fName;						///< flag to display names
-		bool fSignal;					///< flag to emit profiling signal
+//		bool fSignal;					///< flag to emit profiling signal
 		bool fClick;					///< flag to send osc feedback on mouse-click
 	
 	public:	
@@ -64,7 +64,7 @@ class IObjectDebug : public IVNode
 
 		virtual bool	getMapDebug () const	{ return fMap; }
 		virtual bool	getNameDebug () const	{ return fName; }
-		virtual bool	getSignalDebug () const { return fSignal; }
+//		virtual bool	getSignalDebug () const { return fSignal; }
 		virtual bool	getClickDebug () const	{ return fClick; }
 		
 	protected:	
@@ -86,7 +86,7 @@ class IObjectDebug : public IVNode
 		/// \brief sets the mapping debug flag
 		void		setNameDebug(bool state)			{ fName = state; }
 		/// \brief sets the mapping debug flag
-		void		setSignalDebug(bool state)			{ fSignal = state; }
+//		void		setSignalDebug(bool state)			{ fSignal = state; }
 		/// \brief sets the click debug flag
 //		void		setClickDebug(bool state)			{ fClick = state; }
 };
