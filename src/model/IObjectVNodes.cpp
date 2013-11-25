@@ -74,9 +74,6 @@ SIMessageList IObjectDebug::getSetMsg () const
 	msg = IMessage::create(getOSCAddress(), kname_GetSetMethod);
 	*msg << getNameDebug();
 	outMsgs->list().push_back (msg);
-//	msg = IMessage::create(getOSCAddress(), ksignal_GetMethod);
-//	*msg << getSignalDebug();
-	outMsgs->list().push_back (msg);
 	return outMsgs;
 }
 
