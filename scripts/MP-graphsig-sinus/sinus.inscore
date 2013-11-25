@@ -3,7 +3,6 @@
 /ITL/scene/signal/* del;
 /ITL/scene/myRect set rect 1.21172 1.19157;
 /ITL/scene/myRect color 170 239 255 255;
-/ITL/scene/myGraph del;
 /ITL/scene/signal/y size 100;
 /ITL/scene/signal/t size 100;
 /ITL/scene/signal/h size 100;
