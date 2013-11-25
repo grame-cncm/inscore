@@ -65,9 +65,9 @@ all: forcepdfdate INScoreVersion
 	@echo "=========================================="
 	@echo " Make sure that INScoreViewer is running!"
 	@echo "=========================================="
-	make pdf
 	make log
 	make save
+	make pdf
 
 pdf:
 	make basic
@@ -198,4 +198,4 @@ $(version)/%.leaks.out: $(version)/$(TOOL)/%.leak.txt
 	$(eval tmp := $(patsubst $(version)/%, $(VERSION)/%, $<))	
 	@[ -f  $(tmp) ] || echo $< : new file
 	$(eval ignored := $(shell grep $< $(version)/ignore.$(VERSION).txt 2>/dev/null || echo _none_))
-	@[ -f  $(ignored) ] || (diff $< $(tmp) 2>/dev/null >/dev/null || ([ -f  $(tmp) ] && echo "open $< $(patsubst $(version)/%, $(VERSION)/%, $<) # to check changes"; true))
+	@[ -f  $(ignored) ] || (diff $< $(tmp) 2>/dev/null >/dev/null || ([ -f  $(tmp) ] && echo "open -t $< $(patsubst $(version)/%, $(VERSION)/%, $<) # to check changes"; true))

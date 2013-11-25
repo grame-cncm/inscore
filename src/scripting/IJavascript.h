@@ -65,6 +65,10 @@ class IJavascript: public IVNode
 		virtual void colorAble ()		{}
 		virtual void positionAble ()	{}
 		virtual void timeAble ()		{}
+    
+        /// \brief the \c 'watch' message handler
+		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
+
 
 	public:
 		static SIJavascript create(IObject * parent, TJSEngine* js) { return new IJavascript(parent, js); }

@@ -65,4 +65,10 @@ MsgHandler::msgStatus IJavascript::runMsg(const IMessage* msg)
 	return MsgHandler::kBadParameters;
 }
 
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IJavascript::_watchMsg(const IMessage* msg, bool add)
+{
+    return MsgHandler::kProcessed;
+}
+
 } // end namespoace
