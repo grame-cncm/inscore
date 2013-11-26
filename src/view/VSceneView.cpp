@@ -198,10 +198,14 @@ void VSceneView::updateOnScreen( IScene * scene )
 			fGraphicsView->setWindowFlags (Qt::FramelessWindowHint);
 			fGraphicsView->showNormal ();
 		}
+		fEventFilter->setFrameless(true);
 	}
-	else if ((flags != fDefaultFlags) && !scene->getFullScreen()) {
-		fGraphicsView->setWindowFlags (fDefaultFlags);
-		fGraphicsView->showNormal ();
+	else {
+		fEventFilter->setFrameless(false);
+		if ((flags != fDefaultFlags) && !scene->getFullScreen()) {
+			fGraphicsView->setWindowFlags (fDefaultFlags);
+			fGraphicsView->showNormal ();
+		}
 	}
 }
 
@@ -264,7 +268,7 @@ void VSceneView::updateView( IScene * scene )
 
 //--------------------------------------------------------------------------
 WindowEventFilter::WindowEventFilter(const std::string& address, QGraphicsView* parent) 
-	: QObject(parent), fAbsoluteXY(false), fOSCAddress(address)
+	: QObject(parent), fAbsoluteXY(false), fFrameless(false), fOSCAddress(address)
 {
 	fTimer = new QTimer(this);
 	fTimer->setSingleShot(true);
@@ -296,6 +300,8 @@ bool WindowEventFilter::eventFilter(QObject *obj, QEvent *event)
 //--------------------------------------------------------------------------
 void WindowEventFilter::updateModel()
 {
+	if (fFrameless) return;
+
 	QWidget * view = dynamic_cast<QWidget *>(parent());
 	if ( !view ) {
 		qFatal("WindowEventFilter::update(): WindowEventFilter parent must be a QWidget");

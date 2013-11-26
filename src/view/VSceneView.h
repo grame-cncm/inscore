@@ -90,14 +90,16 @@ class WindowEventFilter : public QObject
 {
 	Q_OBJECT
 	bool	fAbsoluteXY;
-	std::string fOSCAddress;	
+	bool	fFrameless;
+	std::string fOSCAddress;
 	QTimer * fTimer;
 
 	public:
 		WindowEventFilter(const std::string& address, QGraphicsView* parent=0 );
 		bool running() const { return fTimer->isActive(); }	/// < Returns the status of timer: the timer is only running
 															/// during a move/resize sequence.
-		void setAbsoluteXY(bool state) { fAbsoluteXY = state; }
+		void setAbsoluteXY(bool state)	{ fAbsoluteXY = state; }
+		void setFrameless(bool state)	{ fFrameless = state; }
 		
 	protected:
 	
