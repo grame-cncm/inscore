@@ -17,6 +17,12 @@ set (INSAPPSTRVERS "v.1.04")
 set (SOVERS 1)
 
 #######################################
+# Options disabled by default
+option ( NOVIEW 	"compiles a viewer with no view (for debug purpose)" off )
+option ( LUA 		"embed a lua engine" off )
+option ( DIST 		"compiles universal binaries (x86_64 i386) - MacOSX only" off )
+
+#######################################
 if(WIN32)
 	if (${CMAKE_GENERATOR} MATCHES ".*Win64")
 		set (TARGET	INScore64)
@@ -59,12 +65,12 @@ set (GUIDOQT_PATH  "${LOCALLIB}/GuidoQt")
 
 #######################################
 # validation support
-if (NOVIEW STREQUAL "yes")
-	message (STATUS "Compiled with no view - Use -DNOVIEW=no to change.")
+if ( NOVIEW )
+	message (STATUS "Compiled with no view - Use -DNOVIEW=off to change.")
 	add_definitions(-DNOVIEW)
 	set (INSFOLDERS  ${INSFOLDERS} VoidView)
 else()
-	message (STATUS "Using standard Qt view - Use -DNOVIEW=yes to change")
+	message (STATUS "Using standard Qt view - Use -DNOVIEW=on to change")
 endif()
 
 
@@ -72,8 +78,8 @@ set (SCRIPT "")
 set (SCRIPTINCL "")
 #######################################
 # lua support
-if (LUA STREQUAL "yes")
-	message (STATUS "lua will be supported - Use -DLUA=no to change.")
+if (LUA)
+	message (STATUS "lua will be supported - Use -DLUA=off to change.")
 	add_definitions(-DLUA)
 	if (WIN32)
 		set(SCRIPTS ${SCRIPTS} ${LOCALLIB}/lua/win32/lua.lib)
@@ -96,28 +102,23 @@ if (LUA STREQUAL "yes")
 		set(SCRIPTS ${SCRIPTS} ${LUACFG})
 	endif()
 else()
-	message (STATUS "lua will not be supported - Use -DLUA=yes to change")
+	message (STATUS "lua will not be supported - Use -DLUA=on to change")
 endif()
 
 #######################################
 # javascript support
-#if (JAVASCRIPT STREQUAL "yes")
-#	message (STATUS "javascript will be supported - Use -DJAVASCRIPT=no to change.")
-	add_definitions(-DV8ENGINE)
-	if (WIN32)
-		set(SCRIPTS ${SCRIPTS} "${LOCALLIB}/javascript/v8/win32/v8.lib")
-		set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/javascript/v8/include)
+add_definitions(-DV8ENGINE)
+if (WIN32)
+	set(SCRIPTS ${SCRIPTS} "${LOCALLIB}/javascript/v8/win32/v8.lib")
+	set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/javascript/v8/include)
+else()
+	set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/javascript/v8/include)
+	if(APPLE)
+		set(SCRIPTS ${SCRIPTS} -L${LOCALLIB}/javascript/v8/MacOS -lv8)
 	else()
-		set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/javascript/v8/include)
-		if(APPLE)
-			set(SCRIPTS ${SCRIPTS} -L${LOCALLIB}/javascript/v8/MacOS -lv8)
-		else()
-			set(SCRIPTS ${SCRIPTS} -L${LOCALLIB}/javascript/v8/linux -lv8)
-		endif()
-	endif ()
-#else ()
-#	message (STATUS "javascript will not be supported - Use -DJAVASCRIPT=yes to change")
-#endif()
+		set(SCRIPTS ${SCRIPTS} -L${LOCALLIB}/javascript/v8/linux -lv8)
+	endif()
+endif ()
 
 #######################################
 #
@@ -269,7 +270,7 @@ endif()
 
 
 
-if (NOVIEW STREQUAL "yes")
+if (NOVIEW)
 	set (APPLTARGET  INScoreNOView)
 	add_executable( ${APPLTARGET}  ${ROOT}/INScoreNoView.cpp )
 else()
@@ -296,6 +297,8 @@ endif()
 
 target_link_libraries( ${APPLTARGET} ${TARGET} ${QTLIBS} ${GUIDO})
 add_dependencies(${APPLTARGET} ${TARGET})
+
+#include ( report.cmake )
 
 #######################################
 # install setup
