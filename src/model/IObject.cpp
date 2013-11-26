@@ -462,8 +462,9 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 					}
 				}
 			}
-			// can't find the target node: try to create it
+			// can't find the target node but name is a regular expression: ignore 
 			else if (Tools::regexp(beg)) result = MsgHandler::kProcessedNoChange;
+			// can't find the target node: try to create it
 			else result = IProxy::execute (translated ? translated : msg, beg, this);
 		}
 	}
