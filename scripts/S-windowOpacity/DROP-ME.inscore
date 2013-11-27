@@ -1,0 +1,62 @@
+/ITL/scene/* del;
+/ITL/scene color 200 0 100;
+/ITL/scene/score set gmn "[ c d e f g a b c2]";
+/ITL/scene/score scale 4;
+
+/ITL/scene/title set txt "This script illustrates the 'windowOpacity' option";
+/ITL/scene/title y -0.9;
+/ITL/scene/title scale 2;
+
+/ITL/scene/subtitle1 set txt "You can switch from transparent to opaque mode by clicking on it.";
+/ITL/scene/subtitle2 set txt "To modify the alpha parameter click on the slider on the left.";
+/ITL/scene/subtitle1 y -0.77;
+/ITL/scene/subtitle2 y -0.7;
+/ITL/scene/subtitle* scale 1.5;
+
+/ITL/scene/click set txt "opaque";
+/ITL/scene/click scale 3;
+/ITL/scene/click y 0.9;
+
+/ITL/scene/click watch mouseEnter(
+	/ITL/scene/click color 250 150 0
+);
+
+/ITL/scene/click watch mouseLeave(
+	/ITL/scene/click color 0 0 0
+);
+
+
+/ITL/scene/click watch mouseDown(
+	/ITL/scene/click push,
+	/ITL/scene windowOpacity 1,
+	/ITL/scene/click set txt "transparent",
+	/ITL/scene/click watch mouseDown(
+		/ITL/scene windowOpacity 0,
+		/ITL/scene/click set txt "opaque",
+		/ITL/scene/click pop
+	)
+);
+
+/ITL/scene/textcursor set txt "alpha";
+/ITL/scene/textcursor scale 2.;
+/ITL/scene/textcursor rotatez -90;
+/ITL/scene/textcursor x -0.9;
+
+w=0.05;
+
+/ITL/scene/slider set "rect" $w 1. ;
+/ITL/scene/slider penWidth 1. ;
+/ITL/scene/slider penColor 0 0 0 ;
+/ITL/scene/slider z 1. ;
+/ITL/scene/slider color 255 255 255 0 ;
+/ITL/scene/slider yorigin 1.00000 ;
+/ITL/scene/sliderdur set "rect" $w 1. ;
+/ITL/scene/sliderdur color 200 200 200 255 ;
+/ITL/scene/sliderdur yorigin 1. ;
+/ITL/scene/slider* x -0.75 ;
+/ITL/scene/slider* y 0.5 ;
+
+/ITL/scene/slider watch  "mouseDown" "/ITL/scene" "alpha" "$y[0,255]" ;
+/ITL/scene/slider watch  "mouseMove" "/ITL/scene" "alpha" "$y[0,255]" ;
+/ITL/scene/slider watch+ "mouseDown" "/ITL/scene/sliderdur" "height" "$y" ;
+/ITL/scene/slider watch+ "mouseMove" "/ITL/scene/sliderdur" "height" "$y" ;
