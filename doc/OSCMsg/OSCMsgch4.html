@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2013-10-27 19:41:00"> 
+<meta name="date" content="2013-11-27 16:22:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
@@ -133,6 +133,8 @@ src="OSCMsg26x.png" alt="PICT" >
  id="dx8-23015"></a>
 <a 
  id="dx8-23016"></a>
+<a 
+ id="dx8-23017"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">layer</span>: a graphic layer, may be viewed as a container (see <a 
@@ -147,6 +149,10 @@ class="pcrr8tn-">html</span>: an html component defined by an HTML string.
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">gmn</span>: a Guido score defined by a GMN string.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">gmnstream</span>: a Guido score defined by a GMN stream (a GMN string that can be written in several
+     times).
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">svg</span>: SVG graphics defined by a SVG string.
@@ -200,31 +206,31 @@ href="OSCMsgch6.html#x10-310006.5">46<!--tex4ht:ref: grid --></a> for more detai
 href="OSCMsgch10.html#x14-4600010">10<!--tex4ht:ref: mapping --></a> p.<a 
 href="OSCMsgch10.html#x14-4600010">63<!--tex4ht:ref: mapping --></a> for time to graphic relations). The parameters are int32
      values representing the number of columns and rows.
+                                                                                 
+
+                                                                                 
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">faust</span>: a FAUST object (see section <a 
 href="OSCMsgch15.html#x21-8600015.1">15.1<!--tex4ht:ref: faust --></a>)</li></ul>
-<!--l. 741--><p class="noindent" ><span 
+<!--l. 743--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
 class="small-caps">E</span>  </span>The default position of any component is <span 
 class="pcrr8tn-">[0,0]</span>. Objects are drawn centered on their position.
-                                                                                 
-
-                                                                                 
-<!--l. 743--><p class="noindent" >Text may be specified by a single quoted string or using an arbitrary count of parameters that are converted to a
+<!--l. 745--><p class="noindent" >Text may be specified by a single quoted string or using an arbitrary count of parameters that are converted to a
 single string with a space used as separator.
 <a 
- id="dx8-23017"></a>
+ id="dx8-23018"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 746--><p class="noindent" ><div class="minipage"><span 
+<!--l. 748--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">txtStream</span> <img 
 src="OSCMsg27x.png" alt="PICT" >
 </div></dd></dl>
-<!--l. 751--><p class="noindent" >
+<!--l. 753--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">4.2    </span> <a 
  id="x8-240004.2"></a>File based components</h3>
 <a 
@@ -232,7 +238,7 @@ src="OSCMsg27x.png" alt="PICT" >
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 765--><p class="noindent" ><div class="minipage"><span 
+<!--l. 767--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">setFile</span> <img 
 src="OSCMsg28x.png" alt="PICT" >
 </div></dd></dl>
@@ -244,15 +250,15 @@ src="OSCMsg28x.png" alt="PICT" >
  id="dx8-24004"></a>
 <a 
  id="dx8-24005"></a>
+                                                                                 
+
+                                                                                 
 <a 
  id="dx8-24006"></a>
 <a 
  id="dx8-24007"></a>
 <a 
  id="dx8-24008"></a>
-                                                                                 
-
-                                                                                 
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">txtf</span>: a textual component defined by a file.
@@ -283,12 +289,12 @@ class="pcrr8tn-">gmnf</span>, <span
 class="pcrr8tn-">img </span>or <span 
 class="pcrr8tn-">video </span>types, according to the file extension (see table <a 
 href="#x8-240091">4.1<!--tex4ht:ref: fileTranslate --></a>).</li></ul>
-<!--l. 784--><p class="noindent" ><span 
+<!--l. 786--><p class="noindent" ><span 
 class="ptmb8t-">See also: </span>the application <span 
 class="pcrr8tn-">rootPath </span>message (section <a 
 href="OSCMsgch7.html#x11-340007">7<!--tex4ht:ref: ITL --></a> p.<a 
 href="OSCMsgch7.html#x11-340007">49<!--tex4ht:ref: ITL --></a>) for file based objects.
-<!--l. 786--><p class="noindent" ><span 
+<!--l. 788--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -299,17 +305,17 @@ class="small-caps">E</span> </span><br
 class="newline" />Creating an image.
 <div class="center" 
 >
-<!--l. 788--><p class="noindent" >
+<!--l. 790--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox21"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject set img "myImage.png"</span>
 </div></div>
 </div>
-<!--l. 789--><p class="noindent" >Using the <span 
+<!--l. 791--><p class="noindent" >Using the <span 
 class="pcrr8tn-">file </span>type.
 <div class="center" 
 >
-<!--l. 793--><p class="noindent" >
+<!--l. 795--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox22"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject set file "myImage.png" </span><br 
@@ -322,7 +328,7 @@ class="pcrr8tn-x-x-90">/ITL/scene/myObject set img "myImage.png"</span></div></d
                                                                                  
 
                                                                                  
-<!--l. 795--><p class="noindent" ><a 
+<!--l. 797--><p class="noindent" ><a 
  id="x8-240091"></a><hr class="float"><div class="float" 
 >
                                                                                  
@@ -334,7 +340,7 @@ class="content">File extensions supported by the <span
 class="pcrr8tn-">file </span>translation scheme.</span></div><!--tex4ht:label?: x8-240091 -->
 <div class="center" 
 >
-<!--l. 797--><p class="noindent" >
+<!--l. 799--><p class="noindent" >
 <div class="tabular"> <table id="TBL-4" class="tabular" 
 cellspacing="0" cellpadding="0" rules="groups" 
 ><colgroup id="TBL-4-1g"><col 
@@ -392,12 +398,12 @@ class="td11">                               </td></tr></table></div></div>
                                                                                  
 
                                                                                  
-<!--l. 817--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 819--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch5.html" >next</a>] [<a 
 href="OSCMsgch3.html" >prev</a>] [<a 
 href="OSCMsgch3.html#tailOSCMsgch3.html" >prev-tail</a>] [<a 
 href="OSCMsgch4.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch4.html" >up</a>] </p></div>
-<!--l. 817--><p class="noindent" ><a 
+<!--l. 819--><p class="noindent" ><a 
  id="tailOSCMsgch4.html"></a>  
 </body></html> 

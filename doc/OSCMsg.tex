@@ -701,7 +701,6 @@ setMsg : 'set' (
 	('curve' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) |
 	('line' ('xy' x y | 'wa' width angle)) |
 	('grid' int32 int32) |
-	('layer') |
 	('faust' 'pluginname' )
 )
 \end{rail}
@@ -901,7 +900,7 @@ Setting a rectangle border width and color:
 
 %-------------------------------
 \sublevel{Brush control}
-
+\label{brush}
 Specific brush messages accepted by the components types \OSC{rect | ellipse | polygon | curve |  layer}.
 \begin{rail}
 brushMsg : 	  'brushStyle' ('solid' | 'dense1' | 'dense2' | 'dense3' | 'dense4' | 'dense5' | 'dense6' | 'dense7' | 'none' | 'hor' | 'ver' | 'cross' | 'bdiag' | 'fdiag' | 'diagCross')
@@ -2118,18 +2117,18 @@ An object that moves a score to a given page number when it enters its time zone
 what : 	  'export'
 		| 'newElement'
 		| 'endPaint'
-		| 'delete'
+		| 'del'
 \end{rail}
 \index{Interaction!Events!export}
 \index{Interaction!Events!newElement}
 \index{Interaction!Events!endPaint}
-\index{Interaction!Events!delete}
+\index{Interaction!Events!del}
 
 \begin{itemize}
 \item the \OSC{export} event is supported by all the components. It is triggered after an export message has been handled and could be used to simulate synchronous exports.
 \item the \OSC{newElement} event is supported at scene level only and triggered when a new element is added to the scene.
 \item the \OSC{endPaint} event is supported at scene level only and triggered after a scene has been painted.
-\item the \OSC{delete} event is triggered when an object is being deleted.
+\item the \OSC{del} event is triggered when an object is being deleted.
 \end{itemize}
 
 \example \\
