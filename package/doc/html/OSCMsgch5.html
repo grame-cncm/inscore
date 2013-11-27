@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>5 The &#8217;get&#8217; messages</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html,2,frames,index=3,info --> 
+<meta name="src" content="OSCMsg.tex"> 
+<meta name="date" content="2013-11-27 16:22:00"> 
+<link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
+</head><body 
+>
+<!--l. 819--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch6.html" >next</a>] [<a 
+href="OSCMsgch4.html" >prev</a>] [<a 
+href="OSCMsgch4.html#tailOSCMsgch4.html" >prev-tail</a>] [<a 
+href="#tailOSCMsgch5.html">tail</a>] [<a 
+href="OSCMsg3.html#OSCMsgch5.html" >up</a>] </p></div>
+<h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;5</span><br /><a 
+ id="x9-250005"></a>The &#8217;get&#8217; messages</h2>
+<!--l. 824--><p class="noindent" >The <span 
+class="pcrr8tn-">get </span>messages can be sent to any valid OSC address. It is intended to query the system state. It is the
+counterpart of all the messages modifying this state. The result of the query is sent to the OSC output port with the
+exact syntax of the counterpart message. The global form of the message is:
+<a 
+ id="dx9-25001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 828--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">getMsg</span> <img 
+src="OSCMsg29x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx9-25002"></a>
+<!--l. 831--><p class="noindent" >The <span 
+class="pcrr8tn-">get </span>message without parameter is the counterpart of the <span 
+class="pcrr8tn-">set </span>message. When addressed to a container (the
+application <span 
+class="pcrr8tn-">/ITL</span>, a scene <span 
+class="pcrr8tn-">/ITL/scene</span>, the signal node <span 
+class="pcrr8tn-">/ITL/scene/signal</span>) is also distributed to all the container
+components.
+<!--l. 833--><p class="noindent" >Specific <span 
+class="pcrr8tn-">get </span>forms may be available, depending on the component type (see sections <a 
+href="OSCMsgch6.html#x10-300006.4">6.4<!--tex4ht:ref: gmnpage --></a>, <a 
+href="OSCMsgch7.html#x11-380007.4">7.4<!--tex4ht:ref: ITLQuery --></a>, <a 
+href="OSCMsgch7.html#x11-410007.5.2">7.5.2<!--tex4ht:ref: ITLdebug --></a>, <a 
+href="OSCMsgch11.html#x15-5100011">11<!--tex4ht:ref: syncmsg --></a>, <a 
+href="OSCMsgch12.html#x16-5900012.1.2">12.1.2<!--tex4ht:ref: parcomp --></a>,
+<a 
+href="OSCMsgch15.html#x21-8700015.1.1">15.1.1<!--tex4ht:ref: faustmsg --></a>).
+<!--l. 835--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Sending the following request to an object which position is 0.3 0.5
+<div class="center" 
+>
+<!--l. 837--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox23"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myobject get x y</span>
+</div></div>
+</div>
+<!--l. 838--><p class="noindent" >&#x00A0;       will give the following messages on outpout port:
+<div class="center" 
+>
+<!--l. 840--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox24"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myobject x 0.3 </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myobject y 0.5</span></div></div>
+</div>
+<!--l. 841--><p class="noindent" >Querying an object content
+<div class="center" 
+>
+<!--l. 842--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox25"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myobject get</span>
+</div></div>
+</div>
+<!--l. 843--><p class="noindent" >&#x00A0;       will give the corresponding <span 
+class="pcrr8tn-">set </span>message:
+<div class="center" 
+>
+                                                                                 
+
+                                                                                 
+<!--l. 844--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox26"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myobject set txt "Hello world!"</span>
+</div></div>
+</div>
+<!--l. 846--><p class="noindent" ><span 
+class="ptmbc8t-">N<span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span>  </span><br 
+class="newline" />The <span 
+class="pcrr8tn-">get width </span>and <span 
+class="pcrr8tn-">get height </span>messages addressed to components that have no explicit width and height (text,
+images, etc.) returns 0 as long as the target component has not been drew.
+                                                                                 
+
+                                                                                 
+<!--l. 853--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch6.html" >next</a>] [<a 
+href="OSCMsgch4.html" >prev</a>] [<a 
+href="OSCMsgch4.html#tailOSCMsgch4.html" >prev-tail</a>] [<a 
+href="OSCMsgch5.html" >front</a>] [<a 
+href="OSCMsg3.html#OSCMsgch5.html" >up</a>] </p></div>
+<!--l. 853--><p class="noindent" ><a 
+ id="tailOSCMsgch5.html"></a>  
+</body></html> 
