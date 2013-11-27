@@ -1,0 +1,4 @@
+../scripts/S-frameless/DROP-ME.inscore
+../scripts/S-frameless/frameless1.inscore
+../scripts/S-frameless/frameless0.inscore
+../scripts/S-windowOpacity/DROP-ME.inscore
