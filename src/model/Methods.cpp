@@ -123,6 +123,7 @@ const char* kshear_GetSetMethod		= "shear";			// Get Set
 const char* kshow_GetSetMethod		= "show";			// Get Set
 const char* ksignal_GetMethod		= "signal";			// Get
 const char* ksize_GetSetMethod		= "size";			// Get Set
+const char* kstack_GetMethod		= "stack";			// Get
 const char* kstartBench_SetMethod	= "startBench";		// Set
 const char* kstopBench_SetMethod	= "stopBench";		// Set
 const char* ktime_GetSetMethod		= "time";			// Get Set

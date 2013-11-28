@@ -71,6 +71,7 @@ class EventsAble
 		const IMessageList*	getTimeMsgs (eventype t, const RationalInterval& time) const;
 
 		SIMessageList	getWatch (const char* address) const;	///< returns a list of 'watch' messages
+        SIMessageList	getStack (const char* address) const;	///< returns a list of the states in the fWatchStack
 		void			reset();								///< clear all the messages maps
 
 		static void	init ();

@@ -106,6 +106,7 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fGetMultiMsgHandlerMap[kwatch_GetSetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
 	fGetMultiMsgHandlerMap[kmap_GetSetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getMaps);
 	fGetMultiMsgHandlerMap[kalias_GetSetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getAliases);
+    fGetMultiMsgHandlerMap[kstack_GetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getStack);
 }
 
 
@@ -726,6 +727,12 @@ GraphicEffect IObject::getEffect ()	const
 SIMessageList IObject::getWatch() const
 {
 	return EventsAble::getWatch (getOSCAddress().c_str());
+}
+
+//--------------------------------------------------------------------------
+SIMessageList IObject::getStack() const
+{
+	return EventsAble::getStack (getOSCAddress().c_str());
 }
 
 //--------------------------------------------------------------------------
