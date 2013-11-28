@@ -449,10 +449,10 @@
 \rail@nont{data}[]
 \rail@end
 }
-\rail@i {26}{ setMsg : 'set' ( 'layer' | ('txt' txtStream) | ('html' string) | ('svg' svgString) | ('gmn' gmnString) | ('gmnstream' gmnStream) | ('graph' signals ) | ('fastgraph' signals ) | ('rect' width height) | ('ellipse' width height) | ('polygon' ( (x y) +)) | ('curve' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) | ('line' ('xy' x y | 'wa' width angle)) | ('grid' int32 int32) | ('layer') | ('faust' 'pluginname' ) ) }
+\rail@i {26}{ setMsg : 'set' ( 'layer' | ('txt' txtStream) | ('html' string) | ('svg' svgString) | ('gmn' gmnString) | ('gmnstream' gmnStream) | ('graph' signals ) | ('fastgraph' signals ) | ('rect' width height) | ('ellipse' width height) | ('polygon' ( (x y) +)) | ('curve' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) | ('line' ('xy' x y | 'wa' width angle)) | ('grid' int32 int32) | ('faust' 'pluginname' ) ) }
 \rail@o {26}{
 \rail@index{setMsg}
-\rail@begin{19}{setMsg}
+\rail@begin{18}{setMsg}
 \rail@term{set}[]
 \rail@bar
 \rail@term{layer}[]
@@ -521,8 +521,6 @@
 \rail@token{int32}[]
 \rail@token{int32}[]
 \rail@nextbar{17}
-\rail@term{layer}[]
-\rail@nextbar{18}
 \rail@term{faust}[]
 \rail@term{pluginname}[]
 \rail@endbar
@@ -1392,7 +1390,7 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {75}{ what : 'export' | 'newElement' | 'endPaint' | 'delete' }
+\rail@i {75}{ what : 'export' | 'newElement' | 'endPaint' | 'del' }
 \rail@o {75}{
 \rail@index{what}
 \rail@begin{4}{what}
@@ -1403,7 +1401,7 @@
 \rail@nextbar{2}
 \rail@term{endPaint}[]
 \rail@nextbar{3}
-\rail@term{delete}[]
+\rail@term{del}[]
 \rail@endbar
 \rail@end
 }
