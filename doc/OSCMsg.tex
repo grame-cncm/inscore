@@ -2298,10 +2298,17 @@ stateMsg : 'push' | 'pop'
 \index{Interaction!pop}
 
 Interaction states are managed using a stack where the states are pushed to or popped from.
+
 \begin{itemize}
 \item \OSC{push}: push the current interaction state on top of the stack.
 \item \OSC{pop}: replace the current interaction state with the one popped from the top of the stack.
 \end{itemize}
+
+The different states stored in this stack can be obtain with the message :
+
+\begin{rail} 
+stackMsg : 'get' 'stack'
+\end{rail}
 
 \note{} \\
 The effect of a pop message addressed to an object with an empty stack is to clear the object current interaction state.
