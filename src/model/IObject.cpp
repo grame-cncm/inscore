@@ -259,7 +259,11 @@ void IObject::del()
     const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kDelete);
 	if (!msgs || msgs->list().empty())
         return;		// nothing to do, no associated message
-
+    for (int i=0; i < size(); i++)
+    {
+        elements()[i]->setState(IObject::kMasterModified);
+	}
+    setState(IObject::kSubModified);
 	MouseLocation mouse (0, 0, 0, 0, 0, 0);
 	EventContext env(mouse, libmapping::rational(0,1), 0);
 	TMessageEvaluator me;
@@ -469,9 +473,16 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 			else result = IProxy::execute (translated ? translated : msg, beg, this);
 		}
 	}
-	if (result & MsgHandler::kProcessed) 
+	if (result & MsgHandler::kProcessed)
+    {
+        unsigned int n = elements().size();
+        for (unsigned int i = 0; i < n; i++)
+        {
+            elements()[i]->setState(kModified);
+        }
 		setState(IObject::kSubModified);
-	return result;
+	}
+    return result;
 }
 
 //--------------------------------------------------------------------------

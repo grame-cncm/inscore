@@ -39,13 +39,7 @@ void Updater::update (IObject* object)
 {
 	if (needupdate (object)) {
 		object->accept(this);
-        IObject::subnodes::const_iterator i = object->elements().begin();
-		while (i != object->elements().end()) {
-			(*i)->setState((IObject::kMasterModified));
-            update (*i);
-			i++;
-		}
-	}
+    }
 	if (object->getState() & IObject::kSubModified) {
 		IObject::subnodes::const_iterator i = object->elements().begin();
 		while (i != object->elements().end()) {
