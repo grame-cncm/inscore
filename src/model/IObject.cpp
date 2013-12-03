@@ -259,12 +259,8 @@ void IObject::del()
     const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kDelete);
 	if (!msgs || msgs->list().empty())
         return;		// nothing to do, no associated message
-    for (int i=0; i < size(); i++)
-    {
-        elements()[i]->setState(IObject::kMasterModified);
-	}
-    setState(IObject::kSubModified);
-	MouseLocation mouse (0, 0, 0, 0, 0, 0);
+    
+    MouseLocation mouse (0, 0, 0, 0, 0, 0);
 	EventContext env(mouse, libmapping::rational(0,1), 0);
 	TMessageEvaluator me;
 	SIMessageList outmsgs = me.eval (msgs, env);
