@@ -85,6 +85,8 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
 	VGraphicsImageItem * img = dynamic_cast<VGraphicsImageItem*>(fStretchTiledItem);
 	QGraphicsVideoItem * video = dynamic_cast<QGraphicsVideoItem*>(fStretchTiledItem);
 	float adjust = (img || video) ? kGapAdjust : 0;
+    if(!fMapping.size())
+        painter->drawImage(rect, fCache, rect);
 	for ( int i = 0 ;  i < fMapping.size(); i++ )
 	{
 		QRectF sourceRect( fMapping[i].first.x()*xscale, fMapping[i].first.y()*yscale, fMapping[i].first.width()*xscale, fMapping[i].first.height()*yscale);
