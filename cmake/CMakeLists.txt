@@ -41,13 +41,13 @@ else()
 endif()
 
 if(APPLE)
- if (DIST STREQUAL "yes")
+ if ( DIST )
 	message (STATUS "All architectures will be compiled - Use -DDIST=no to change.")
 	set (CMAKE_OSX_ARCHITECTURES "x86_64 i386")
  else ()
 	message (STATUS "Only the current architecture will be compiled - Use -DDIST=yes to change.")
  endif ()
-#	set (CMAKE_C++_FLAGS -mmacosx-version-min=10.4)
+ set (CMAKE_C++_FLAGS -mmacosx-version-min=10.6)
 endif()
 
 #######################################
