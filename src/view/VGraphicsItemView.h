@@ -151,14 +151,14 @@ class VGraphicsItemView : public VObjectView
 		static QPointF floatPointToQPointF(const TFloatPoint& p)	{ return QPointF(p.x(),p.y());}
 
 		/// \brief Activate/desactivate stretch.
-		void setStretch( bool isStretchOn )     {fIsStretchOn = isStretchOn;}
+		void setStretch( bool isStretchOn ) ;
 
     
         void setSlave(bool isSlaved);
 
 		/// \brief Returns the QGraphicsItem or the QTilerItem, whether stretch-mode is on or off.
-				QGraphicsItem * item()			{ return fIsSlaved ? fTilerItem : fItem; }
-		const	QGraphicsItem * item() const	{ return fIsSlaved ? fTilerItem : fItem; }
+				QGraphicsItem * item()	;
+		const	QGraphicsItem * item() const;
     
 		bool isStretchOn() const { return fIsStretchOn; }
 		
@@ -171,6 +171,7 @@ class VGraphicsItemView : public VObjectView
 
 		QGraphicsItem * fItem;			/// \brief The QGraphicsItem used to render the IObject.
 		QStretchTilerItem * fTilerItem; /// \brief The QTilerItem used when the object is a synchronized
+        QStretchTilerItem * fTilerStretchItem; /// \brief The QTilerItem used when the object is stretched
 		QList<QGraphicsItem*> fDebugItems;
 		int fBrushColorStartIndex;
 

@@ -54,7 +54,7 @@ QColor brushColors[NB_OF_COLORS] = {	Qt::darkBlue , Qt::darkRed , Qt::darkYellow
 //												Member functions
 //------------------------------------------------------------------------------------------------------------
 VGraphicsItemView::VGraphicsItemView( QGraphicsScene * scene , QGraphicsItem * item )
-	 : fTilerItem(0), fIsStretchOn(false), fIsSlaved(false)
+	 : fTilerItem(0), fTilerStretchItem(0), fIsStretchOn(false), fIsSlaved(false)
 {
 	fItem = item;
 	scene->addItem( item );
@@ -75,6 +75,7 @@ VGraphicsItemView::~VGraphicsItemView()
 	item()->scene()->removeItem( item() );					// Remove the QGraphicsItem from the scene.
 
 	delete fTilerItem;
+    delete fTilerStretchItem;
 	delete fItem;	
 }
 
@@ -233,11 +234,11 @@ void VGraphicsItemView::updateView(IObject* o)
 	if ( fIsStretchOn && item()->parentItem() )
 	{
         const SGraphic2GraphicMapping& slave2Master = o->getSlave2MasterMapping();
-        fTilerItem->clearSegments();
-        fTilerItem->setRect( item()->parentItem()->boundingRect() );
+        fTilerStretchItem->clearSegments();
+        fTilerStretchItem->setRect( item()->parentItem()->boundingRect() );
 		
         float alpha = o->getA() / 255.f;
-        fTilerItem->setOpacity (alpha);
+        fTilerStretchItem->setOpacity (alpha);
 		
         
         Graphic2GraphicRelation::const_iterator iter;
@@ -257,10 +258,10 @@ void VGraphicsItemView::updateView(IObject* o)
                     continue;
 
                 QRectF masterDestRect = iObject2QGraphicsItem( *i, item()->parentItem()->boundingRect() );
-                fTilerItem->addSegment( slaveSourceRect , masterDestRect );
+                fTilerStretchItem->addSegment( slaveSourceRect , masterDestRect );
             }
         }
-        fTilerItem->update();
+        fTilerStretchItem->update();
 	}
 	else		// stretch is not on
 	{
@@ -350,8 +351,10 @@ QStretchTilerItem* VGraphicsItemView::buildTiler()
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::itemChanged()
 {
-	if ( fIsStretchOn || fIsSlaved)
+	if ( fIsSlaved && !fIsStretchOn)
         fTilerItem->updateCache();
+    if(fIsStretchOn)
+        fTilerStretchItem->updateCache();
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -381,15 +384,55 @@ void VGraphicsItemView::setSlave( bool isSlaved )
 		//		- replacing it in the QGraphicsItems parent-children relationship.	
 		if ( !fTilerItem )				// Build fTilerItem if it didn't exist.
 			fTilerItem = buildTiler();
-		switchItem (fItem, fTilerItem);
 		fTilerItem->setGraphicsEffect (fItem->graphicsEffect());
+		switchItem (fItem, fTilerItem);
 	}
 	else {
-		switchItem (fTilerItem, fItem);
-		fItem->setGraphicsEffect (fTilerItem->graphicsEffect());
+		fItem->setGraphicsEffect (item()->graphicsEffect());
+		switchItem (item(), fItem);
         fIsStretchOn = false;
 	}
 	fIsSlaved = isSlaved;
+}
+
+//------------------------------------------------------------------------------------------------------------
+void VGraphicsItemView::setStretch( bool isStretch )
+{	
+	if ( isStretch == fIsStretchOn ) return;
+
+	if ( isStretch ) {
+		// Switch from fItem to fTilerItem: the fItem will be replaced by the fTilerItem, meaning:
+		//		- replacing it in the scene
+		//		- replacing it in the QGraphicsItems parent-children relationship.	
+		if ( !fTilerStretchItem )				// Build fTilerItem if it didn't exist.
+			fTilerStretchItem = buildTiler();
+		fTilerStretchItem->setGraphicsEffect (item()->graphicsEffect());
+		switchItem (item(), fTilerStretchItem);
+	}
+	else if(fIsSlaved){
+		fTilerItem->setGraphicsEffect (fTilerStretchItem->graphicsEffect());
+		switchItem (fTilerStretchItem, fTilerItem);
+	}
+    else{
+        fItem->setGraphicsEffect(fTilerStretchItem->graphicsEffect());
+        switchItem(fTilerStretchItem, fItem);
+    }
+	fIsStretchOn = isStretch;
+}
+
+QGraphicsItem * VGraphicsItemView::item()
+{
+    if(fIsSlaved)
+        return fIsStretchOn ? fTilerStretchItem : fTilerItem;
+    else
+        return fItem;
+}
+const	QGraphicsItem * VGraphicsItemView::item() const
+{
+    if(fIsSlaved)
+        return fIsStretchOn ? fTilerStretchItem : fTilerItem;
+    else
+        return fItem;
 }
 
 //------------------------------------------------------------------------------------------------------------
