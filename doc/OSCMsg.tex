@@ -984,10 +984,32 @@ scoreMsg :      'page' int32
 \item \OSC{systemCount}:  a read only attribute, gives the number of systems on each of the score pages. The result is given as a list systems count ordered by page number (index 0 is page 1, etc.).
 \end{itemize}
 
+
 \example \\
 Displaying a multi-pages score on two pages starting at page 3:
 \sample{/ITL/scene/myScore columns 2 \\
 /ITL/scene/myScore page 3
+}
+
+
+\begin{rail}
+gmnstreamMsg :      'write' gmnStream
+				| 'clear' 
+\end{rail}
+\index{Specific messages! score! write}
+\index{Specific messages! score! clear}
+
+\begin{itemize}
+\item \OSC{write}: add the stream in parameter to the global stream
+\item \OSC{clear}: reinitialize the stream
+\end{itemize}
+
+
+\example \\
+Writing a score in 3 steps:
+\sample{/ITL/scene/myScore set gmnstream "[ c" \\
+/ITL/scene/myScore write " d e"\\
+/ITL/scene/myScore write " f]"
 }
 
 
