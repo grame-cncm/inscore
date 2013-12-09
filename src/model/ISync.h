@@ -121,13 +121,14 @@ IMessage&		operator << (IMessage&, const Master&);
 	
 	actually a surjection from SIObject to Master 
 */
-class ISync : public std::map<SIObject, SMaster>
+class ISync : public std::multimap<SIObject, SMaster>
 {
 	bool fModified;
 	bool checkLoop(const IObject* slave, IObject* master);
 	
 	public:	
-		typedef std::map<SIObject, SMaster>::const_iterator	const_iterator;
+		typedef std::multimap<SIObject, SMaster>::const_iterator	const_iterator;
+		typedef std::multimap<SIObject, SMaster>::iterator	iterator;
 
 				 ISync() : fModified(false) {}
 		virtual ~ISync() {}
@@ -141,7 +142,7 @@ class ISync : public std::map<SIObject, SMaster>
 		/*! \brief removes a slave from the sync set
 			\param o the object to be removed from the relations set
 		*/
-		void	remove(SIObject o);
+		void	remove(SIObject o, SMaster m=0);
 
 		/*! \brief sort a set of nodes according to their relations
 			\param nodes the set of nodes to be sorted

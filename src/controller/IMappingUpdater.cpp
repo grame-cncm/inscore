@@ -430,7 +430,7 @@ void IMappingUpdater::hstretchUpdate (IObject* o, const Master* master)
 	g2gr = verticalAdjust( g2gr, o, master);	// graphic segments adjustment according to vertical pos and stretch
 	g2gr = relink (g2gr->direct(), 0.0001f);	// check adjacent segments and make sure the end and begin match
 	TMapable* m = o;
-	m->setSlave2MasterMapping (g2gr);			// create the slave graphic to master graphic composition
+	m->setSlave2MasterMapping (master->getSlaveMapName(), g2gr);			// create the slave graphic to master graphic composition
 	m->UseGraphic2GraphicMapping (true);	
 }
 

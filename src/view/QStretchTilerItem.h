@@ -41,9 +41,9 @@ class QStretchTilerItem: public QGraphicsRectItem
 	QGraphicsItem * fStretchTiledItem;
 
 #ifdef PIXMAPBASED
-	QPixmap fCache;
+	/*std::map<QGraphicsItem,*/QPixmap/*>*/ fCache;
 #else
-	QImage fCache;
+	/*std::map<QGraphicsItem,*/QImage/*>*/ fCache;
 #endif
 	float fCacheFactor;
 	typedef QPair<QRectF,QRectF> QRectFPair;
@@ -73,6 +73,8 @@ class QStretchTilerItem: public QGraphicsRectItem
 
 		/// \brief QGraphicsItem implementation (a QGraphicsItem must not draw outside of its boundingRect()).
 		QRectF boundingRect() const { return rect(); }
+    
+       // void setParentItem(QGraphicsItem *parent);
 };
 
 }

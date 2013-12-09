@@ -63,9 +63,10 @@ class VGraphicsItemView : public VObjectView
 		virtual void updateObjectSize( IObject * object );	// updates the object size
 		virtual void setParentView (IObject * object);		// updates the object parent view
 		virtual void setParentItem( VObjectView* master )		{ setParentItem((VGraphicsItemView*)master); }
-		virtual void setParentItem( VGraphicsItemView* master )	{ fParent= master ? master->item() : 0;
+		virtual void setParentItem( VGraphicsItemView* master ){ fParent= master ? master->item() : 0;
                                                                 item()->setParentItem(master ? master->item() : 0);}
-
+		//virtual void deleteParentItem( VObjectView* master )		{ deleteParentItem((VGraphicsItemView*)master); }
+		//virtual void deleteParentItem( VGraphicsItemView* master );
 		virtual void setEffect (GraphicEffect& effect)		{ item()->setGraphicsEffect (effect.get()); }
 		virtual GraphicEffect getEffect () const			{ return GraphicEffect ( item()->graphicsEffect()); }
 
@@ -157,8 +158,8 @@ class VGraphicsItemView : public VObjectView
         void setSlave(bool isSlaved);
 
 		/// \brief Returns the QGraphicsItem or the QTilerItem, whether stretch-mode is on or off.
-				QGraphicsItem * item()	;
-		const	QGraphicsItem * item() const;
+				QGraphicsItem * item()	{return fIsSlaved ? fTilerItem : fItem;}
+		const	QGraphicsItem * item() const    {return fIsSlaved ? fTilerItem : fItem;}
     
 		bool isStretchOn() const { return fIsStretchOn; }
 		
@@ -171,14 +172,14 @@ class VGraphicsItemView : public VObjectView
 
 		QGraphicsItem * fItem;			/// \brief The QGraphicsItem used to render the IObject.
 		QStretchTilerItem * fTilerItem; /// \brief The QTilerItem used when the object is a synchronized
-        QStretchTilerItem * fTilerStretchItem; /// \brief The QTilerItem used when the object is stretched
-		QList<QGraphicsItem*> fDebugItems;
+        QList<QGraphicsItem*> fDebugItems;
 		int fBrushColorStartIndex;
 
 		QRectF fLastValidRect;
 		bool fIsStretchOn;
         bool fIsSlaved;
     
+        //std::list<QGraphicsItem> fParents;
         QGraphicsItem* fParent;
 };
 typedef class libmapping::SMARTP<VGraphicsItemView>	SVGraphicsItemView;

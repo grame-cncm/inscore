@@ -40,12 +40,12 @@ void ISync::print (ostream& out) const
 {
 	for (const_iterator i = begin(); i != end(); i++)
 	{
-		out << i->second->getMaster()->name() << " -> " << i->second->getMaster()->name() 
+		out << (*i).second->getMaster()->name() << " -> " << (*i).second->getMaster()->name()
 			<< " align: " << Master::syncalign2string(i->second->getAlignment())
-			<< " stretch: " << Master::stretchmode2string(i->second->getStretch()) 
-			<< " dy: " << i->second->getDy() 
-			<< " masterMapName: " << i->second->getMasterMapName()
-			<< " slaveMapName: " << i->second->getSlaveMapName();
+			<< " stretch: " << Master::stretchmode2string((*i).second->getStretch())
+			<< " dy: " << (*i).second->getDy()
+			<< " masterMapName: " << (*i).second->getMasterMapName()
+			<< " slaveMapName: " << (*i).second->getSlaveMapName();
 		out << endl;
 	}
 }
@@ -56,7 +56,7 @@ bool ISync::checkLoop(const IObject* slave, IObject* master)
 {
 	const_iterator i = this->find (master);				// look for possible master of the master
 	if (i == this->end()) return false;					// there is none : no loop
-	IObject* nextmaster = i->second->getMaster();
+	IObject* nextmaster = (*i).second->getMaster();
 	if (slave == nextmaster) {							// loop detected !
 //		IObject* node = i->first;
 //		remove (node);
@@ -75,19 +75,59 @@ void ISync::sync(const SIObject& slave, SMaster master)
 	}
 
 	if (!checkLoop (slave, master->getMaster())) {
-		(*this)[slave] = master;
+        // We have now a multimap to allow a slave to have several masters. But we don't want it to take into account
+        // the different items of a same master..
+        // -> So we look for the slave in the list
+        for (iterator it=equal_range(slave).first; it!=equal_range(slave).second; ++it)
+        {
+            // if we find it, we compare the master to the one we want to add
+            if((*it).second->getMaster() == master->getMaster())
+            {
+                // and if they're the same, we erase the previous pair before adding the new one
+                erase(it);
+                //slave->getView()->deleteParentItem(master->getView());
+            }
+        }
+        insert(std::pair<SIObject,SMaster>(slave, master));
 		slave->modify();
 		slave->setState(IObject::kModified);
-		slave->getView()->setParentItem(master->getMaster()->getView());
+		slave->getView()->setParentItem(master->getMaster()->getView()); //to be modified ??
 		slave->setdyMsgHandler(master);
 		fModified = true;
 	}
 }
 
 //--------------------------------------------------------------------------
-void ISync::remove(SIObject slave) 
+void ISync::remove(SIObject slave, SMaster m)
 {
-	if (this->erase(slave)) {
+    if(m && count(slave)) // if the master is specified, we just want to erase the pair <slave,master> and not all pairs corresponding to the slave
+    {
+        std::pair <std::multimap<SIObject,SMaster>::iterator, std::multimap<SIObject,SMaster>::iterator> ret;
+        ret = equal_range(slave);
+        for (iterator it=ret.first; it!=ret.second; ++it)
+        {
+            if((*it).second->getMaster() == m->getMaster())
+            {
+                erase(it);
+                if(!count(slave))
+                    slave->UseGraphic2GraphicMapping (false);
+                slave->setdyMsgHandler();
+                slave->modify();
+                slave->setState(IObject::kModified);
+                fModified = true;
+                VObjectView * view = slave->getView();
+                if (view)
+                {
+                    view->setParentItem(0); // to be checked... // deleteParentItem ?
+                    view->updateView(slave);
+                }
+                // There should not be more than one pair with the same slave and the same master (Cf sync)
+                // so if we find it we can stop.
+                return;
+            }
+        }
+    }
+	else if(this->erase(slave)) { // when the master is not specified, we delete all the possible pairs with the slave
 		slave->UseGraphic2GraphicMapping (false);
 		slave->setdyMsgHandler();
 		slave->modify();
@@ -96,7 +136,7 @@ void ISync::remove(SIObject slave)
 		VObjectView * view = slave->getView();
 		if (view)
         {
-            view->setParentItem(0);
+            view->setParentItem(0); // to be checked ...
             view->updateView(slave);
         }
 	}
@@ -107,13 +147,13 @@ void ISync::cleanup()
 {
 	iterator i = begin();
 	while (i != end()) {
-		if (i->first->getDeleted() || i->second->getMaster()->getDeleted()) {
+		if ((*i).first->getDeleted() || (*i).second->getMaster()->getDeleted()) {
 			iterator d = i;
 			i++;
-			this->remove(d->first);
+			this->remove((*d).first);
 		}
 		else {
-			i->second->modified (false);
+			(*i).second->modified (false);
 			i++;
 		}
 	}

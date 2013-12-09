@@ -46,6 +46,20 @@ const SRelativeTime2GraphicMapping TMapable::find (const std::string& name) cons
 }
 
 //______________________________________________________________________________
+SGraphic2GraphicMapping TMapable::findS2M (const std::string& name)
+{
+	m_iterator found = fSlave2MasterMappings.find(name);
+	return (found == fSlave2MasterMappings.end()) ? 0 : found->second;
+}
+
+const SGraphic2GraphicMapping TMapable::findS2M (const std::string& name) const
+{
+	m_const_iterator found = fSlave2MasterMappings.find(name);
+	return (found == fSlave2MasterMappings.end()) ? 0 : found->second;
+}
+
+
+//______________________________________________________________________________
 bool TMapable::removeMapping(const std::string& name) 
 { 
 	if (name.empty()) fAutoMap = false;
