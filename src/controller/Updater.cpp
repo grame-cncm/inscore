@@ -41,7 +41,7 @@ void Updater::update (IObject* object)
 		object->accept(this);
         IObject::subnodes::const_iterator i = object->elements().begin();
 		while (i != object->elements().end()) {
-			(*i)->setState((IObject::kMasterModified));
+//			(*i)->setState((IObject::kMasterModified));    ?????????
             update (*i);
 			i++;
 		}
