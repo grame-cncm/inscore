@@ -91,7 +91,7 @@ void ISync::sync(const SIObject& slave, SMaster master)
         insert(std::pair<SIObject,SMaster>(slave, master));
 		slave->modify();
 		slave->setState(IObject::kModified);
-		slave->getView()->setParentItem(master->getMaster()->getView()); //to be modified ??
+		slave->getView()->setParentItem(master->getMaster()->getView()); //addMasterItem ??
 		slave->setdyMsgHandler(master);
 		fModified = true;
 	}
@@ -118,7 +118,7 @@ void ISync::remove(SIObject slave, SMaster m)
                 VObjectView * view = slave->getView();
                 if (view)
                 {
-                    view->setParentItem(0); // to be checked... // deleteParentItem ?
+                    view->setParentItem(0); // to be checked... // deleteMasterItem ?
                     view->updateView(slave);
                 }
                 // There should not be more than one pair with the same slave and the same master (Cf sync)
@@ -136,7 +136,7 @@ void ISync::remove(SIObject slave, SMaster m)
 		VObjectView * view = slave->getView();
 		if (view)
         {
-            view->setParentItem(0); // to be checked ...
+            view->setParentItem(0); // deleteMasterItem ?
             view->updateView(slave);
         }
 	}

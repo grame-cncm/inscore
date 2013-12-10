@@ -74,7 +74,8 @@ class QStretchTilerItem: public QGraphicsRectItem
 		/// \brief QGraphicsItem implementation (a QGraphicsItem must not draw outside of its boundingRect()).
 		QRectF boundingRect() const { return rect(); }
     
-       // void setParentItem(QGraphicsItem *parent);
+        void addMasterItem(QGraphicsItem *master);
+        void deleteMasterItem(QGraphicsItem *master);
 };
 
 }

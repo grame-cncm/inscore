@@ -62,11 +62,13 @@ class VGraphicsItemView : public VObjectView
 		virtual void updateView(IObject * object);			// updates the object view
 		virtual void updateObjectSize( IObject * object );	// updates the object size
 		virtual void setParentView (IObject * object);		// updates the object parent view
-		virtual void setParentItem( VObjectView* master )		{ setParentItem((VGraphicsItemView*)master); }
-		virtual void setParentItem( VGraphicsItemView* master ){ fParent= master ? master->item() : 0;
-                                                                item()->setParentItem(master ? master->item() : 0);}
-		//virtual void deleteParentItem( VObjectView* master )		{ deleteParentItem((VGraphicsItemView*)master); }
-		//virtual void deleteParentItem( VGraphicsItemView* master );
+		virtual void setParentItem( VObjectView* parent )		{ setParentItem((VGraphicsItemView*)parent); }
+		virtual void setParentItem( VGraphicsItemView* parent ){ fParent = parent ? parent->item() : 0;
+                                                                item()->setParentItem(parent ? parent->item() : 0);}
+		virtual void deleteMasterItem( VObjectView* master )	{ deleteMasterItem((VGraphicsItemView*)master); }
+		virtual void deleteMasterItem( VGraphicsItemView* master ){if(fTilerItem) fTilerItem->deleteMasterItem(master->item());}
+		virtual void addMasterItem( VObjectView* master )		{ addMasterItem((VGraphicsItemView*)master); }
+		virtual void addMasterItem( VGraphicsItemView* master ){if(fTilerItem) fTilerItem->addMasterItem(master->item());}
 		virtual void setEffect (GraphicEffect& effect)		{ item()->setGraphicsEffect (effect.get()); }
 		virtual GraphicEffect getEffect () const			{ return GraphicEffect ( item()->graphicsEffect()); }
 

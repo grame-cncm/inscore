@@ -192,9 +192,14 @@ void QStretchTilerItem::addSegment( const QRectF& sourceRect , const QRectF& des
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-/*void QStretchTilerItem::setParentItem(QGraphicsItem *parent)
+void QStretchTilerItem::addMasterItem(QGraphicsItem *master)
 {
     
-}*/
+}
+
+void QStretchTilerItem::deleteMasterItem(QGraphicsItem *master)
+{
+
+}
 
 }

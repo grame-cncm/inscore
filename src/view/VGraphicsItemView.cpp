@@ -70,7 +70,7 @@ VGraphicsItemView::~VGraphicsItemView()
 
 	QList<QGraphicsItem*> children = item()->childItems();	// Break all links with children
 	for (int i = 0 ; i < children.size() ; i++ )
-		children[i]->setParentItem(0);
+		children[i]->setParentItem(0); // maybe distinguish the children by synchronization (->setMasterItem) and the ones from hierarchy
     
 	item()->scene()->removeItem( item() );					// Remove the QGraphicsItem from the scene.
 
@@ -176,7 +176,7 @@ void VGraphicsItemView::drawNameAndBBox(IObject* o)
 }
 
 //------------------------------------------------------------------------------------------------------------
-void VGraphicsItemView::setParentView (IObject * object) 
+void VGraphicsItemView::setParentView (IObject * object) // not used ...
 {
 	VObjectView * parentView = 0;
 	if (object) {
@@ -361,12 +361,12 @@ static void switchItem( QGraphicsItem* object, QGraphicsItem* newContainer )
 	QGraphicsItem * parent = object->parentItem();	// Get the item's parent.
 	scene->removeItem( object );					// Remove the object from the scene.
 	if ( parent ) 						// Add the newContainer to the item's former parent...
-		newContainer->setParentItem(parent);
+		newContainer->setParentItem(parent); // addMasterItem ?
 	else								// ... or to the scene, if there was no parent.	
 		scene->addItem( newContainer );
 
 	QList<QGraphicsItem*> children = object->childItems();	// Get the item's children.
-	for (int i = 0 ; i < children.size() ; i++ )
+	for (int i = 0 ; i < children.size() ; i++ ) // maybe distinguish the children by synchronization (->setMasterItem) and the ones from hierarchy ?
 		children[i]->setParentItem(newContainer);			// and propagates the new container change
 }
 

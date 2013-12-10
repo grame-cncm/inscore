@@ -56,9 +56,9 @@ class VObjectView
 		virtual void updateView(IObject * object)			= 0;
 		virtual void updateObjectSize( IObject * object )	= 0;
 		virtual void setParentView (IObject * object)		= 0;
-		virtual void setParentItem( VObjectView* master )	= 0;
-  //      virtual void deleteParentView (IObject * object)		= 0;
-	//	virtual void deleteParentItem( VObjectView* master )	= 0;
+		virtual void setParentItem( VObjectView* parent )	= 0;
+        virtual void addMasterItem (VObjectView * master)		= 0;
+		virtual void deleteMasterItem( VObjectView* master )	= 0;
 
 		virtual void setEffect (GraphicEffect& effect)		= 0;
 		virtual GraphicEffect getEffect () const			= 0;
