@@ -44,9 +44,11 @@ typedef libmapping::SMARTP<TEnv> STEnv;
 //--------------------------------------------------------------------------------------------
 class TV8Js 
 {
+	std::string fRootPath;
 #ifdef V8ENGINE
     v8::Persistent<v8::Context>	fContext;
 	int				fLineOffset;
+	
 
 	bool bindEnv  (std::stringstream& s, const std::string& name, const IMessage::argPtr& val);
 	void bindEnv  (std::stringstream& s, const std::string& name, const IMessage::argslist& values);
@@ -54,6 +56,8 @@ class TV8Js
 	v8::Persistent<v8::Context> CreateV8Context();
 	void ReportException(v8::TryCatch* try_catch) const;
 	void getResult (const v8::Handle<v8::Value>& result, std::string& outStr) const;
+
+	std::string makeAbsolutePath (const char* file) const;   // introduced for the readfile function
 #endif
 
 	public:	
@@ -63,6 +67,7 @@ class TV8Js
 		void	Initialize	();
 		void	bindEnv		(const STEnv& env);
 		bool	eval		(int line, const char* script, std::string& outStr);
+		void	setRootPath	(const char* path);
 };
 
 } // namespace
