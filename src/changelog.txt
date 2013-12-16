@@ -13,6 +13,8 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.04
+- incorrect error message for watch messages corrected
+- new javascript readfile function
 - log window is now available from the application menu
 - brushStyle option implemented
 - new 'layer' object (default brushStyle = none)
