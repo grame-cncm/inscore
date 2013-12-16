@@ -309,6 +309,7 @@ class IMessage : public Message, public libmapping::smartable
 		\param start a boolean to indicate wether the stream needs to be started (OSC specific)
 	*/
 	void	print(OSCStream& out) const;
+	void	print(OSCErrorStream& out) const;
 
 	/*!
 		\brief linearize a message to OSC

@@ -353,10 +353,23 @@ void IMessage::linearize(OSCStream& osc) const
 //--------------------------------------------------------------------------
 void IMessage::print(OSCStream& osc) const
 {
-	osc << OSCStart(address().c_str());
+	bool start = (osc.state() == OSCStream::kIdle);
+	if (start) osc << OSCStart(address().c_str());
+	else osc << address().c_str();
 	if (message().size()) osc << message();
 	printArgs(osc);
-	osc << OSCEnd();
+	if (start) osc << OSCEnd();
+}
+
+//--------------------------------------------------------------------------
+void IMessage::print(OSCErrorStream& osc) const
+{
+	bool start = (osc.state() == OSCStream::kIdle);
+	if (start) osc << OSCStart(address().c_str());
+	else osc << address().c_str();
+	if (message().size()) osc << message();
+	printArgs(osc);
+	if (start) osc << OSCEnd();
 }
 	
 //--------------------------------------------------------------------------
