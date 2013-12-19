@@ -53,7 +53,13 @@ class VExport
 		*	The drawing can be sterched vertically and horizontally with xScaleFactor and yScaleFactor.
 		*/
 		static void		paintOnDevice(QPaintDevice * device, QGraphicsItem * item, float xScaleFactor, float yScaleFactor);
-
+	
+        /*!	\brief Paints the children on the QPainterDevice.
+		*
+		*	The drawing can be sterched vertically and horizontally with xScaleFactor and yScaleFactor.
+		*/
+		static void		paintChildrenOnDevice( QPainter * painter, QStyleOptionGraphicsItem option, QList<QGraphicsItem*> list);
+    
 		/*!	\brief Paints the QGraphicsView on the QPainterDevice.
 		*/
 		static void		paintOnDevice(QPaintDevice * device, QGraphicsView * item);

@@ -39,7 +39,7 @@ namespace inscore
 //------------------------------------------------------------------------------------------------------------------------
 void VExport::paintOnDevice( QPaintDevice * device , QGraphicsItem * item , float xScaleFactor , float yScaleFactor )
 {
-	QRectF rect(0,0,device->width() , device->height() );
+//	QRectF rect(0,0,device->width() , device->height() ); // not used ?
 	QPainter painter;
 	painter.begin( device );
 //	painter.setRenderHint( QPainter::Antialiasing );
@@ -50,8 +50,33 @@ void VExport::paintOnDevice( QPaintDevice * device , QGraphicsItem * item , floa
 	painter.scale( xScaleFactor , yScaleFactor );
 	painter.translate( -item->boundingRect().topLeft() );
 	item->paint( &painter , &option , 0 );
+    QList<QGraphicsItem*> list = item->childItems();
+    paintChildrenOnDevice(&painter, option, list);
 	painter.end();
 };
+
+void VExport::paintChildrenOnDevice( QPainter * painter, QStyleOptionGraphicsItem option, QList<QGraphicsItem*> list)
+{
+    QList<QGraphicsItem*>::iterator it;
+    float dx = 0;
+    float dy = 0;
+    for(it = list.begin(); it != list.end(); it++)
+    {
+        painter->translate((*it)->x(), (*it)->y()); // the painter goes to the center of the child element
+        painter->translate(-(*it)->boundingRect().center()); // the painter goes to the top left corner of the child element
+        (*it)->paint( painter , &option , 0 );
+        
+        dx = (*it)->boundingRect().center().x()-(*it)->x();
+        dy = (*it)->boundingRect().center().y()-(*it)->y();
+        
+        QList<QGraphicsItem*> listOfChildren = (*it)->childItems();
+        if(!listOfChildren.empty())
+            paintChildrenOnDevice(painter, option, listOfChildren);
+        
+        painter->translate(dx,dy); // we replace the painter at the "origin" position : top left corner of the parent (item).
+        
+    }
+}
 
 //------------------------------------------------------------------------------------------------------------------------
 QImage VExport::itemToImage( QGraphicsItem * item , float& xScaleFactor , float& yScaleFactor , const QColor fillColor )
