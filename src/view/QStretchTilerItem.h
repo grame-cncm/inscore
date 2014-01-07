@@ -38,7 +38,7 @@ namespace inscore
 
 class QStretchTilerItem: public QGraphicsRectItem
 {
-	QGraphicsItem * fStretchTiledItem;
+	QGraphicsItem * fOriginItem;
 
 #ifdef PIXMAPBASED
 	/*std::map<QGraphicsItem,*/QPixmap/*>*/ fCache;
@@ -52,8 +52,8 @@ class QStretchTilerItem: public QGraphicsRectItem
 
 	public:
 
-		QStretchTilerItem( QGraphicsItem* tiledItem , QGraphicsItem* parent = 0 )
-		: QGraphicsRectItem( QRect() , parent ) , fStretchTiledItem(tiledItem) , fCacheFactor(1.0) , fNeedCacheUpdate(true) {}
+		QStretchTilerItem( QGraphicsItem* tiledItem , QImage cache , QGraphicsItem* parent = 0)
+		: QGraphicsRectItem( QRect() , parent ) , fOriginItem(tiledItem), fCache(cache) , fCacheFactor(1.0) , fNeedCacheUpdate(true) {}
 		
 		virtual ~QStretchTilerItem() {}
 		
@@ -62,7 +62,7 @@ class QStretchTilerItem: public QGraphicsRectItem
 		*		- Updates 'just-in-time' the cache rendering of the fTiledItem if updateCache() has been called.
 		*		- then draws parts of this cache to their destination (set with addSegment)
 		*/
-		void paint ( QPainter * painter , const QStyleOptionGraphicsItem * , QWidget * );
+		virtual void paint ( QPainter * painter , const QStyleOptionGraphicsItem * , QWidget * );
 
 		virtual void clearSegments() { fMapping.clear(); }
 
@@ -70,6 +70,9 @@ class QStretchTilerItem: public QGraphicsRectItem
 		
 		/// \brief	To be called when the tiled-Item appearance has changed.
 		void updateCache() { fNeedCacheUpdate = true; }
+
+		/// \brief	setting of the new image
+		void setCache(QImage &cache) { fCache.swap(cache);}
 
 		/// \brief QGraphicsItem implementation (a QGraphicsItem must not draw outside of its boundingRect()).
 		QRectF boundingRect() const { return rect(); }

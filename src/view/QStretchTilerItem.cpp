@@ -55,12 +55,12 @@ namespace inscore
 //-------------------------------------------------------------------------------------------------------------------
 #if 1
 void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsItem * , QWidget * )
-{
-	float xscale = 1.f;
-	float yscale = 1.f;
-
-	QRectF rect = fStretchTiledItem->boundingRect();
+{	
+	QRectF rect = fOriginItem->boundingRect();
 	if ((rect.width() == 0) || (rect.height() == 0)) return;
+
+    float xscale = fCache.width()/rect.width();
+	float yscale = fCache.width()/rect.height();
 
 	// ensure a minimum 10 x 10 size
 	while ((rect.width() * xscale) < 20) {
@@ -71,22 +71,25 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
 		xscale += 1;
 		yscale += 1;
 	}
-
+/*
 	if ( fNeedCacheUpdate )
 	{
 		// scaling by 2.0 is necessary to correct approximations due to int size of images
 		// it minimizes the cast effect and drawing looks correct using this scaling
-		fCache = VExport::itemToImage( fStretchTiledItem , xscale , yscale );
-		fNeedCacheUpdate = false;
-	}	
-
+		fCache = VExport::itemToImage( fOriginItem , xscale , yscale, QColor(255, 255, 255, 0), true );
+        fNeedCacheUpdate = false;
+	}
+*/
 	painter->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
 
-	VGraphicsImageItem * img = dynamic_cast<VGraphicsImageItem*>(fStretchTiledItem);
-	QGraphicsVideoItem * video = dynamic_cast<QGraphicsVideoItem*>(fStretchTiledItem);
+	VGraphicsImageItem * img = dynamic_cast<VGraphicsImageItem*>(fOriginItem);
+	QGraphicsVideoItem * video = dynamic_cast<QGraphicsVideoItem*>(fOriginItem);
 	float adjust = (img || video) ? kGapAdjust : 0;
     if(!fMapping.size())
-        painter->drawImage(rect, fCache, rect);
+    {
+        QRectF sourceRect = QRectF(rect.left(), rect.top(), fCache.width(), fCache.height());
+        painter->drawImage(rect, fCache, sourceRect);
+    }
 	for ( int i = 0 ;  i < fMapping.size(); i++ )
 	{
 		QRectF sourceRect( fMapping[i].first.x()*xscale, fMapping[i].first.y()*yscale, fMapping[i].first.width()*xscale, fMapping[i].first.height()*yscale);
@@ -168,7 +171,7 @@ void QStretchTilerItem::addSegment( const QRectF& sourceRect , const QRectF& des
 //		qWarning() << "QStretchTilerItem::addSegment: destRect out of the bounds :" << destRect;
 //		return;
 //	}
-	
+    
 	fMapping << QRectFPair(sourceRect,destRect);
 
 //#define INCREASING_CACHE_FACTOR

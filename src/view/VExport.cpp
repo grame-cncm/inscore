@@ -37,7 +37,7 @@ namespace inscore
 {
 
 //------------------------------------------------------------------------------------------------------------------------
-void VExport::paintOnDevice( QPaintDevice * device , QGraphicsItem * item , float xScaleFactor , float yScaleFactor )
+void VExport::paintOnDevice( QPaintDevice * device , QGraphicsItem * item , float xScaleFactor , float yScaleFactor, float dx, float dy, bool drawChildren )
 {
 //	QRectF rect(0,0,device->width() , device->height() ); // not used ?
 	QPainter painter;
@@ -49,12 +49,17 @@ void VExport::paintOnDevice( QPaintDevice * device , QGraphicsItem * item , floa
 	option.exposedRect = item->boundingRect();
 	painter.scale( xScaleFactor , yScaleFactor );
 	painter.translate( -item->boundingRect().topLeft() );
+    painter.translate( dx, dy);
 	item->paint( &painter , &option , 0 );
-    QList<QGraphicsItem*> list = item->childItems();
-    paintChildrenOnDevice(&painter, option, list);
-	painter.end();
+    if(drawChildren)
+    {
+        QList<QGraphicsItem*> list = item->childItems();
+        paintChildrenOnDevice(&painter, option, list);
+	}
+    painter.end();
 };
 
+//------------------------------------------------------------------------------------------------------------------------
 void VExport::paintChildrenOnDevice( QPainter * painter, QStyleOptionGraphicsItem option, QList<QGraphicsItem*> list)
 {
     QList<QGraphicsItem*>::iterator it;
@@ -79,45 +84,58 @@ void VExport::paintChildrenOnDevice( QPainter * painter, QStyleOptionGraphicsIte
 }
 
 //------------------------------------------------------------------------------------------------------------------------
-QImage VExport::itemToImage( QGraphicsItem * item , float& xScaleFactor , float& yScaleFactor , const QColor fillColor )
+QImage VExport::itemToImage( QGraphicsItem * item , float& xScaleFactor , float& yScaleFactor , const QColor fillColor, bool drawChildren )
 {
-	QRectF rect = item->boundingRect();
+    QRectF rect = item->boundingRect();
+	if(drawChildren)
+    {
+        rect |= item->childrenBoundingRect();
+    }
+    float dx = item->boundingRect().x() - rect.x();
+    float dy = item->boundingRect().y() - rect.y();
 	QImage pic( int(rect.width() * xScaleFactor), int(rect.height() * yScaleFactor), QImage::Format_ARGB32 );
 	pic.fill( fillColor.rgba() );
-	paintOnDevice( &pic , item , xScaleFactor , yScaleFactor );
+	paintOnDevice( &pic , item , xScaleFactor , yScaleFactor, dx, dy, drawChildren );
 	return pic;
 };
 
 //------------------------------------------------------------------------------------------------------------------------
-void VExport::exportToImage( QGraphicsItem * item , const QString& fileName , float& xScale , float& yScale )
+void VExport::exportToImage( QGraphicsItem * item , const QString& fileName , float& xScale , float& yScale, bool drawChildren )
 {
-	itemToImage(item , xScale , yScale , Qt::white ).save( fileName );
+	itemToImage(item , xScale , yScale , Qt::white, drawChildren ).save( fileName );
 }
 
 //------------------------------------------------------------------------------------------------------------------------
-void VExport::exportToPdf( QGraphicsItem * item , const QString& fileName , float xScaleFactor , float yScaleFactor )
+void VExport::exportToPdf( QGraphicsItem * item , const QString& fileName , float xScaleFactor , float yScaleFactor, bool drawChildren )
 {
 	QPrinter printer;
 	printer.setFullPage(true);
 	printer.setOutputFileName( QString(fileName) );
 	printer.setOutputFormat( QPrinter::PdfFormat );
 
-	QSizeF pageSize(item->boundingRect().width() * xScaleFactor , item->boundingRect().height() * yScaleFactor );
+    QRectF rect = item->boundingRect();
+	if(drawChildren)
+    {
+        rect |= item->childrenBoundingRect();
+    }
+    float dx = item->boundingRect().x() - rect.x();
+    float dy = item->boundingRect().y() - rect.y();
+	QSizeF pageSize(rect.width() * xScaleFactor , rect.height() * yScaleFactor );
 	printer.setPaperSize( pageSize , QPrinter::DevicePixel );
 
-	paintOnDevice( &printer , item , xScaleFactor , xScaleFactor );
+	paintOnDevice( &printer , item , xScaleFactor , xScaleFactor, dx, dy, drawChildren );
 }
 
 //------------------------------------------------------------------------------------------------------------------------
-void VExport::exportItem(QGraphicsItem * item , QString fileName , float xScaleFactor , float yScaleFactor)
+void VExport::exportItem(QGraphicsItem * item , QString fileName , float xScaleFactor , float yScaleFactor, bool drawChildren)
 {
 	if ( QFileInfo(fileName).suffix().isEmpty() )
 		fileName += DEFAULT_EXPORT_FORMAT;
 
 	if ( fileName.toUpper().endsWith( PDF_FORMAT.toUpper() ) )
-		exportToPdf( item , fileName , xScaleFactor , yScaleFactor );
+		exportToPdf( item , fileName , xScaleFactor , yScaleFactor, drawChildren );
 	else
-		exportToImage( item , fileName , xScaleFactor , yScaleFactor );
+		exportToImage( item , fileName , xScaleFactor , yScaleFactor, drawChildren );
 }
 
 //------------------------------------------------------------------------------------------------------------------------

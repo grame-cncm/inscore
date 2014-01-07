@@ -58,6 +58,7 @@ VGraphicsItemView::VGraphicsItemView( QGraphicsScene * scene , QGraphicsItem * i
 {
 	fItem = item;
 	scene->addItem( item );
+    updateCache();
 //	fBrushColorStartIndex = qrand();						// Randomize the color of the mapping debug items.
 	fBrushColorStartIndex = 0;
     //setParentItem(item->parentItem());
@@ -218,6 +219,14 @@ void VGraphicsItemView::updateTransform(IObject* o)
 }
 
 //------------------------------------------------------------------------------------------------------------
+void VGraphicsItemView::updateCache()
+{
+    float xscale = 1.f;
+	float yscale = 1.f;
+    fCache = VExport::itemToImage( item() , xscale , yscale, QColor(255, 255, 255, 0), true );
+}
+
+//------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateView(IObject* o)
 {
     SMaster master = o->getParent()? o->getParent()->getMaster(o) : o->getScene()->getMaster(o);
@@ -287,7 +296,7 @@ void VGraphicsItemView::updateView(IObject* o)
 
 	//Exports the item if necessary.
 	if ( o->getExportFlag().length() ) {
-		VExport::exportItem( item() , o->getExportFlag().c_str() ,  o->getScale() ,  o->getScale() );
+		VExport::exportItem( item() , o->getExportFlag().c_str() ,  o->getScale() ,  o->getScale(), o->getDrawChildren() );
 		const IMessageList*	msgs = o->getMessages(EventsAble::kExport);
 		if (msgs) {
 			MouseLocation mouse (0, 0, 0, 0, 0, 0);
@@ -310,6 +319,7 @@ void VGraphicsItemView::updateView(IObject* o)
 	// ----------------------------------------------------------------------------------------------
 	// Debug graphic feedback : displays the bounding rectangle and the object name
 	if ( o->nameDebug() ) drawNameAndBBox (o);
+    
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -344,14 +354,18 @@ void VGraphicsItemView::buildDefaultMapping (IObject* object)
 //------------------------------------------------------------------------------------------------------------
 QStretchTilerItem* VGraphicsItemView::buildTiler()
 {
-	return new QStretchTilerItem( fItem );
+
+	QStretchTilerItem * newItem = new QStretchTilerItem( fItem, fCache );
+    return newItem;
 }
 
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::itemChanged()
 {
-	if ( fIsSlaved )
-        fTilerItem->updateCache();
+	if ( fIsSlaved ){
+        fTilerItem->setCache(fCache);
+    }
+    //fTilerItem->updateCache();
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -372,22 +386,30 @@ static void switchItem( QGraphicsItem* object, QGraphicsItem* newContainer )
 
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::setSlave( bool isSlaved )
-{	
+{
+    
 	if ( isSlaved == fIsSlaved ) return;
-
+    
+    QList<QGraphicsItem*> children = item()->childItems();	// Get the item's children.
+    
 	if ( isSlaved ) {
 		// Switch from fItem to fTilerItem: the fItem will be replaced by the fTilerItem, meaning:
 		//		- replacing it in the scene
 		//		- replacing it in the QGraphicsItems parent-children relationship.	
 		if ( !fTilerItem )				// Build fTilerItem if it didn't exist.
 			fTilerItem = buildTiler();
+        fTilerItem->setCache(fCache);
 		fTilerItem->setGraphicsEffect (fItem->graphicsEffect());
-		switchItem (fItem, fTilerItem);
+        switchItem (fItem, fTilerItem);
+        for (int i = 0 ; i < children.size() ; i++ )
+            children[i]->setVisible(false);
 	}
 	else {
 		fItem->setGraphicsEffect (item()->graphicsEffect());
 		switchItem (item(), fItem);
         setStretch(false);
+        for (int i = 0 ; i < children.size() ; i++ )
+            children[i]->setVisible(true);
 	}
 	fIsSlaved = isSlaved;
 }

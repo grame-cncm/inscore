@@ -52,7 +52,7 @@ class VExport
 		*
 		*	The drawing can be sterched vertically and horizontally with xScaleFactor and yScaleFactor.
 		*/
-		static void		paintOnDevice(QPaintDevice * device, QGraphicsItem * item, float xScaleFactor, float yScaleFactor);
+		static void		paintOnDevice(QPaintDevice * device, QGraphicsItem * item, float xScaleFactor, float yScaleFactor, float dx, float dy, bool drawChildren = false);
 	
         /*!	\brief Paints the children on the QPainterDevice.
 		*
@@ -63,7 +63,8 @@ class VExport
 		/*!	\brief Paints the QGraphicsView on the QPainterDevice.
 		*/
 		static void		paintOnDevice(QPaintDevice * device, QGraphicsView * item);
-
+    
+    
 	public :
 	
 		/*!
@@ -76,7 +77,7 @@ class VExport
 		*	The output image can be horizontally and vertically streched with xScaleFactor and yScaleFactor.
 		*/
 		static void		exportItem(QGraphicsItem * item , QString fileName , 
-										float xScaleFactor , float yScaleFactor);
+										float xScaleFactor , float yScaleFactor, bool drawChildren = false);
 
 		/*!
 		*	\brief Exports the QGraphicsScene to the specified fileName ; the format is infered from
@@ -94,7 +95,7 @@ class VExport
 		* \param xScale a reference to the x scale factor. Note that it may be dynamically changed to ensure a minimum size of 10 x 10
 		* \param yScale a reference to the y scale factor. Note that it may be dynamically changed to ensure a minimum size of 10 x 10
 		*/
-		static QImage	itemToImage( QGraphicsItem * item, float& xScale, float& yScale, const QColor fillColor = QColor(255,255,255,0) );
+		static QImage	itemToImage( QGraphicsItem * item, float& xScale, float& yScale, const QColor fillColor = QColor(255,255,255,0), bool drawChildren = false );
 
 		/*!
 		*	\brief Exports the specified QGraphicsItem to an image ; the format is infered from
@@ -105,7 +106,7 @@ class VExport
 		*
 		*	The output image can be horizontally and vertically streched with xScaleFactor and yScaleFactor.
 		*/
-		static void		exportToImage( QGraphicsItem * item, const QString& fileName, float& xScale, float& yScale );
+		static void		exportToImage( QGraphicsItem * item, const QString& fileName, float& xScale, float& yScale, bool drawChildren = false );
 		
 		/*!
 		*	\brief Exports the specified QGraphicsItem to a pdf ; the format is infered from
@@ -113,7 +114,7 @@ class VExport
 		*
 		*	The output image can be horizontally and vertically streched with xScaleFactor and yScaleFactor.
 		*/
-		static void		exportToPdf( QGraphicsItem * item, const QString& fileName, float xScaleFactor, float yScaleFactor);
+		static void		exportToPdf( QGraphicsItem * item, const QString& fileName, float xScaleFactor, float yScaleFactor, bool drawChildren = false);
 	
 };
 

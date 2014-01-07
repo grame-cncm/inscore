@@ -55,6 +55,7 @@ class VObjectView
 
 		virtual void updateView(IObject * object)			= 0;
 		virtual void updateObjectSize( IObject * object )	= 0;
+        virtual void updateCache()                          = 0;
 		virtual void setParentView (IObject * object)		= 0;
 		virtual void setParentItem( VObjectView* parent )	= 0;
         virtual void addMasterItem (VObjectView * master)		= 0;

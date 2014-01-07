@@ -101,6 +101,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		bool	fDelete;				///< true when an object should be deleted
 		int		fState;					///< the object modification state
 		std::string	fExportFlag;		///< the object export flag
+        bool    fDrawChildren;
 
 		bool	fNewData;
 		
@@ -155,6 +156,9 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		/// \brief returns the object export-flag
 		virtual std::string		getExportFlag() const	{ return fExportFlag; }
 
+		/// \brief returns the boolean that indicates if children should be exported as well
+		virtual bool		getDrawChildren() const	{ return fDrawChildren; }
+    
 		/// \brief access to the graphic view
 		virtual VObjectView*	getView() const				{ return fView; }
 

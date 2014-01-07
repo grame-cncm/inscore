@@ -73,11 +73,12 @@ void ISync::sync(const SIObject& slave, SMaster master)
 		ITLErr << "unexpected synchronization request:" << slave->name() << "->" << slave->name() << ITLEndl;
 		return;
 	}
-
+    
 	if (!checkLoop (slave, master->getMaster())) {
         // We have now a multimap to allow a slave to have several masters. But we don't want it to take into account
         // the different items of a same master..
         // -> So we look for the slave in the list
+        bool alreadyExists = false;
         for (iterator it=equal_range(slave).first; it!=equal_range(slave).second; ++it)
         {
             // if we find it, we compare the master to the one we want to add
@@ -85,9 +86,12 @@ void ISync::sync(const SIObject& slave, SMaster master)
             {
                 // and if they're the same, we erase the previous pair before adding the new one
                 erase(it);
+                alreadyExists = true;
                 //slave->getView()->deleteParentItem(master->getView());
             }
         }
+        if(!alreadyExists)
+            slave->getView()->updateCache();
         insert(std::pair<SIObject,SMaster>(slave, master));
 		slave->modify();
 		slave->setState(IObject::kModified);

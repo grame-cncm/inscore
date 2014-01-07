@@ -85,7 +85,7 @@ OSCStream& operator <<(OSCStream& s, const TFloatPoint& val)
 //--------------------------------------------------------------------------
 IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 					fName(name), fDispStart(0), fDispEnd(1),
-					fDelete (false), fState(kNewObject), fNewData(true), fView(0), fParent(parent)
+					fDelete (false), fState(kNewObject), fDrawChildren(false), fNewData(true), fView(0), fParent(parent)
 {
 	fTypeString = "obj";
 
@@ -795,7 +795,7 @@ MsgHandler::msgStatus IObject::renameMsg(const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
 {
-	if (msg->size() == 1) {
+	if (msg->size() == 1 || msg->size()== 2) {
 		std::string fileName;
 		if (!msg->param(0, fileName)) return MsgHandler::kBadParameters;
 		if (fileName.length()) {
@@ -813,8 +813,19 @@ MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
 			}
 			else								//Argument is a file: export to this file.
 				setExportFlag( absolutePath );
-			return MsgHandler::kProcessed;
+            fDrawChildren = false;
 		}
+        if(msg->size() == 2)
+        {
+            std::string option;
+            if (!msg->param(1, option)) return MsgHandler::kBadParameters;
+            if(option.length() && option == "children")
+                fDrawChildren = true;
+            else
+                fDrawChildren = false;
+        }
+            
+        return MsgHandler::kProcessed;
 	}
 	else if (msg->size() == 0) {	//No argument : export to "objectName".
 		setExportFlag( getScene()->absolutePath(name() ) );
