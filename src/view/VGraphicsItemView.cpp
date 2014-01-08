@@ -228,7 +228,7 @@ void VGraphicsItemView::updateCache()
 
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateView(IObject* o)
-{
+{std::cout << "updateView " << o->name() << std::endl;
     SMaster master = o->getParent()? o->getParent()->getMaster(o) : o->getScene()->getMaster(o);
 
     if(master)
@@ -354,9 +354,7 @@ void VGraphicsItemView::buildDefaultMapping (IObject* object)
 //------------------------------------------------------------------------------------------------------------
 QStretchTilerItem* VGraphicsItemView::buildTiler()
 {
-
-	QStretchTilerItem * newItem = new QStretchTilerItem( fItem, fCache );
-    return newItem;
+    return new QStretchTilerItem( fItem, fCache );
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -401,6 +399,7 @@ void VGraphicsItemView::setSlave( bool isSlaved )
         fTilerItem->setCache(fCache);
 		fTilerItem->setGraphicsEffect (fItem->graphicsEffect());
         switchItem (fItem, fTilerItem);
+        //we will use the fCache : an image that contains the images of the children. So we don't want to draw them twice
         for (int i = 0 ; i < children.size() ; i++ )
             children[i]->setVisible(false);
 	}
@@ -408,6 +407,7 @@ void VGraphicsItemView::setSlave( bool isSlaved )
 		fItem->setGraphicsEffect (item()->graphicsEffect());
 		switchItem (item(), fItem);
         setStretch(false);
+        // as soon as we come back to the "simple" representation (not slaved) we draw the children
         for (int i = 0 ; i < children.size() ; i++ )
             children[i]->setVisible(true);
 	}

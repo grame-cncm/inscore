@@ -87,7 +87,8 @@ void VExport::paintChildrenOnDevice( QPainter * painter, QStyleOptionGraphicsIte
 QImage VExport::itemToImage( QGraphicsItem * item , float& xScaleFactor , float& yScaleFactor , const QColor fillColor, bool drawChildren )
 {
     QRectF rect = item->boundingRect();
-	if(drawChildren)
+	//if we export the children with the object, they might be out of its bounds : we have to take the smallest boundingRect that contains the item AND its children
+    if(drawChildren)
     {
         rect |= item->childrenBoundingRect();
     }
@@ -114,6 +115,7 @@ void VExport::exportToPdf( QGraphicsItem * item , const QString& fileName , floa
 	printer.setOutputFormat( QPrinter::PdfFormat );
 
     QRectF rect = item->boundingRect();
+	//if we export the children with the object, they might be out of its bounds : we have to take the smallest boundingRect that contains the item AND its children
 	if(drawChildren)
     {
         rect |= item->childrenBoundingRect();

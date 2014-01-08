@@ -73,7 +73,7 @@ void ISync::sync(const SIObject& slave, SMaster master)
 		ITLErr << "unexpected synchronization request:" << slave->name() << "->" << slave->name() << ITLEndl;
 		return;
 	}
-    
+    std::cout << "-- slave : " << slave->name() << " - master : " << master->getMaster()->name() << std::endl;
 	if (!checkLoop (slave, master->getMaster())) {
         // We have now a multimap to allow a slave to have several masters. But we don't want it to take into account
         // the different items of a same master..
@@ -87,9 +87,9 @@ void ISync::sync(const SIObject& slave, SMaster master)
                 // and if they're the same, we erase the previous pair before adding the new one
                 erase(it);
                 alreadyExists = true;
-                //slave->getView()->deleteParentItem(master->getView());
             }
         }
+        // if the relation we wanted to add already exists, we don't need to update the cache
         if(!alreadyExists)
             slave->getView()->updateCache();
         insert(std::pair<SIObject,SMaster>(slave, master));

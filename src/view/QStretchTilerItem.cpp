@@ -59,6 +59,7 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
 	QRectF rect = fOriginItem->boundingRect();
 	if ((rect.width() == 0) || (rect.height() == 0)) return;
 
+    //the fCache corresponds to the "source" dimensions and the rect to the "destination"
     float xscale = fCache.width()/rect.width();
 	float yscale = fCache.height()/rect.height();
 

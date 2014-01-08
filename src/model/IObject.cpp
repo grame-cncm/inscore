@@ -792,6 +792,8 @@ MsgHandler::msgStatus IObject::renameMsg(const IMessage* msg)
 	return MsgHandler::kBadParameters;
 }
 
+static const char* kExportChildrenStr		= "children";
+
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
 {
@@ -813,13 +815,13 @@ MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
 			}
 			else								//Argument is a file: export to this file.
 				setExportFlag( absolutePath );
-            fDrawChildren = false;
+            fDrawChildren = false; //if not specified, we don't export the children with the object
 		}
         if(msg->size() == 2)
         {
             std::string option;
             if (!msg->param(1, option)) return MsgHandler::kBadParameters;
-            if(option.length() && option == "children")
+            if(option.length() && option == kExportChildrenStr)
                 fDrawChildren = true;
             else
                 fDrawChildren = false;

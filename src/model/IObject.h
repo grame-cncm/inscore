@@ -101,7 +101,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		bool	fDelete;				///< true when an object should be deleted
 		int		fState;					///< the object modification state
 		std::string	fExportFlag;		///< the object export flag
-        bool    fDrawChildren;
+        bool    fDrawChildren;          ///< the object childexport option flag (if the children should be exported as well)
 
 		bool	fNewData;
 		

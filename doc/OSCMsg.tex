@@ -1622,12 +1622,13 @@ A voice may be distributed on several staves and thus a staff may contain severa
 \toplevel{Synchronization}
 \label{syncmsg}
 
-Synchronization between components is in charge of the static \OSC{sync} node, automatically embedded in each scene. Its address is \OSC{/ITL/\textit{scene}/sync} and it supports messages to add or remove a master / slave relation between components or to query the synchronizations state.
+Synchronization between components is in charge of the static \OSC{sync} node, automatically embedded in each object. Its address is \OSC{/ITL/.../\textit{object}/sync} and it supports messages to add or remove a master / slave relation between components (a master should be allowed to have several slaves, and a slave several masters) or to query the synchronizations state.
 \begin{rail}
 sync : syncIdentifier 
 	 ( [1] syncIdentifier (| syncmode +) 
-	   | [2])
-	   | [3] 'get' ( | identifier)
+	   | [2] syncIdentifier 'del'
+	   | [3] )
+	   | [4] 'get' ( | identifier)
 \end{rail}
 \index{Synchronization}
 \index{Synchronization!get}
@@ -1635,8 +1636,9 @@ sync : syncIdentifier
 
 \begin{itemize}
 \item \textbf{[1]} the \OSC{slave} \OSC{master} form is followed by an optional synchronization mode (see below). It adds a slave / master relation between the first and the second component.
-\item \textbf{[2]} the \OSC{slave} form without \OSC{master} removes a slave synchronization.
-\item \textbf{[3]} the \OSC{get} message is intended to query the synchronization state. The optional parameter is the identifier of a component. The \OSC{get} message without parameter is equivalent to a \OSC{get} message addressed to each object declared in the \OSC{sync} node.
+\item \textbf{[2]} the \OSC{slave} \OSC{master} \OSC{del} form removes the specified slave/master relation.
+\item \textbf{[3]} the \OSC{slave} form without \OSC{master} removes all synchronizations with the slave.
+\item \textbf{[4]} the \OSC{get} message is intended to query the synchronization state. The optional parameter is the identifier of a component. The \OSC{get} message without parameter is equivalent to a \OSC{get} message addressed to each object declared in the \OSC{sync} node.
 \end{itemize}
 
 \begin{rail}
@@ -1645,19 +1647,16 @@ syncIdentifier : [1] identifier
 \end{rail}
 \index{Synchronization! syncIdentifier}
 
-Synchronization identifiers indicates 1) the name of a \OSC{scene} component or 2) the name of a \OSC{scene} component associated to a mapping name. Using the first form (i.e. without explicit mapping name), the system uses the default unnamed mapping (see section \fullref{mapMsg} mappings and named mappings).
+Synchronization identifiers indicates 1) the name of an object or 2) the name of an object associated to a mapping name. Using the first form (i.e. without explicit mapping name), the system uses the default unnamed mapping (see section \fullref{mapMsg} mappings and named mappings).
 
 Synchronization between components has no effect if any of the required mapping is missing (see table \ref{maptable}).
 
-\note{} \\
-A slave object can have only one master. Synchronizing a slave object to a different object replaces the previous relation with the new one.
-
 \example \\
 Synchronizing two objects:
-\sample{/ITL/scene/sync mySlave myMaster}
+\sample{/ITL/scene/myParent/sync mySlave myMaster}
 
-Synchronizing two objects using a specific mapping (the second object is assumed to be a symbolic score (\OSC{gmn}, \OSC{gmnstream} or \OSC{gmnf}) which \OSC{system} mapping has been previously requested:
-\sample{/ITL/scene/sync mySlave myMaster:system}
+Synchronizing two objects using a specific mapping (the second object is assumed to be a symbolic score (\OSC{gmn}, \OSC{gmnstream} or \OSC{gmnf}) which \OSC{system} mapping has been previously requested):
+\sample{/ITL/scene/myParent/sync mySlave myMaster:system}
 
 %-------------------------------
 %:    Synchronization modes
