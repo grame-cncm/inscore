@@ -902,6 +902,14 @@ Setting a rectangle border width and color:
 %-------------------------------
 \sublevel{Brush control}
 \label{brush}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=15cm]{imgs/brushStyle.png}
+\caption{Qt brush styles}
+\label{fig:brushStyles}
+\end{figure}
+
 Specific brush messages accepted by the components types \OSC{rect | ellipse | polygon | curve |  layer}.
 \begin{rail}
 brushMsg : 	  'brushStyle' ('solid' | 'dense1' | 'dense2' | 'dense3' | 'dense4' | 'dense5' | 'dense6' | 'dense7' | 'none' | 'hor' | 'ver' | 'cross' | 'bdiag' | 'fdiag' | 'diagCross')
@@ -909,7 +917,7 @@ brushMsg : 	  'brushStyle' ('solid' | 'dense1' | 'dense2' | 'dense3' | 'dense4' 
 \index{Specific messages! brushColor}
 
 \begin{itemize}
-\item \OSC{brushStyle} controls the brush style.
+\item \OSC{brushStyle} controls the brush style (see Figure \ref{fig:brushStyles}).
  \end{itemize}
 
 \index{Specific messages! brushStyle! solid}
@@ -928,6 +936,7 @@ brushMsg : 	  'brushStyle' ('solid' | 'dense1' | 'dense2' | 'dense3' | 'dense4' 
 \index{Specific messages! brushStyle! fdiag}
 \index{Specific messages! brushStyle! diagCross}
 \index{Specific messages! brushStyle! linearCross}
+
 
 The brush style default value is \OSC{solid}.\\
 For the \OSC{layer} object, the brush style default value is \OSC{none}.\\
