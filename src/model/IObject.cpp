@@ -284,6 +284,12 @@ SMaster IObject::getMaster(SIObject o) const
 }
 
 //--------------------------------------------------------------------------
+std::vector<SMaster> IObject::getMasters(SIObject o) const
+{ 
+	return fSync ? fSync->getMasters(o) : std::vector<SMaster>();
+}
+
+//--------------------------------------------------------------------------
 void IObject::cleanupSync ()		{ if (fSync) fSync->cleanup(); }
 
 //--------------------------------------------------------------------------

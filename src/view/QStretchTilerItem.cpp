@@ -55,23 +55,23 @@ namespace inscore
 //-------------------------------------------------------------------------------------------------------------------
 #if 1
 void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsItem * , QWidget * )
-{	
-	QRectF rect = fOriginItem->boundingRect();
-	if ((rect.width() == 0) || (rect.height() == 0)) return;
+{
+    QRectF rect = boundingRect();
+    if ((rect.width() == 0) || (rect.height() == 0)) return;
 
     //the fCache corresponds to the "source" dimensions and the rect to the "destination"
     float xscale = fCache.width()/rect.width();
-	float yscale = fCache.height()/rect.height();
+    float yscale = fCache.height()/rect.height();
 
-	// ensure a minimum 10 x 10 size
-	while ((rect.width() * xscale) < 20) {
-		xscale += 1;
-		yscale += 1;
-	}
-	while ((rect.height() * yscale) < 20){
-		xscale += 1;
-		yscale += 1;
-	}
+    // ensure a minimum 10 x 10 size
+    while ((rect.width() * xscale) < 20) {
+        xscale += 1;
+        yscale += 1;
+    }
+    while ((rect.height() * yscale) < 20){
+        xscale += 1;
+        yscale += 1;
+    }
 /*
 	if ( fNeedCacheUpdate )
 	{
@@ -81,30 +81,32 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
         fNeedCacheUpdate = false;
 	}
 */
-	painter->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+    painter->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+    
+    VGraphicsImageItem * img = dynamic_cast<VGraphicsImageItem*>(fOriginItem);
+    QGraphicsVideoItem * video = dynamic_cast<QGraphicsVideoItem*>(fOriginItem);
+    float adjust = (img || video) ? kGapAdjust : 0;
 
-	VGraphicsImageItem * img = dynamic_cast<VGraphicsImageItem*>(fOriginItem);
-	QGraphicsVideoItem * video = dynamic_cast<QGraphicsVideoItem*>(fOriginItem);
-	float adjust = (img || video) ? kGapAdjust : 0;
     if(!fMapping.size())
     {
         QRectF sourceRect = QRectF(rect.left(), rect.top(), fCache.width(), fCache.height());
         painter->drawImage(rect, fCache, sourceRect);
     }
-	for ( int i = 0 ;  i < fMapping.size(); i++ )
-	{
-		QRectF sourceRect( fMapping[i].first.x()*xscale, fMapping[i].first.y()*yscale, fMapping[i].first.width()*xscale, fMapping[i].first.height()*yscale);
-		QRectF destRect( fMapping[i].second.x(), fMapping[i].second.y(), fMapping[i].second.width() + adjust, fMapping[i].second.height());
+    for ( int i = 0 ;  i < fMapping.size(); i++ )
+    {
+        QRectF sourceRect( fMapping[i].first.x()*xscale, fMapping[i].first.y()*yscale, fMapping[i].first.width()*xscale, fMapping[i].first.height()*yscale);
+        QRectF destRect( fMapping[i].second.x(), fMapping[i].second.y(), fMapping[i].second.width() + adjust, fMapping[i].second.height());
 
 //		QGraphicsRectItem * rect = new QGraphicsRectItem( destRect, this );
 //		rect->setPen( QPen( QColor(Qt::blue) ));
 
 #ifdef DONTADJUST
-		painter->drawImage( fMapping[i].second , fCache , fMapping[i].first );
+        painter->drawImage( fMapping[i].second , fCache , fMapping[i].first );
 #else
-		painter->drawImage( destRect , fCache , sourceRect );
+        painter->drawImage( destRect , fCache , sourceRect );
 #endif
-	}
+    }
+    
 }
 
 #else
@@ -163,8 +165,9 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
 #endif
 
 //-------------------------------------------------------------------------------------------------------------------
-void QStretchTilerItem::addSegment( const QRectF& sourceRect , const QRectF& destRect )
+void QStretchTilerItem::addSegment( const QRectF& sourceRect , const QRectF& destRect)
 {
+
 	// to be checked ! this is not supposed to be the case (handled by the mappings)
 //	if ( !rect().contains(destRect) )
 //	{
@@ -173,37 +176,26 @@ void QStretchTilerItem::addSegment( const QRectF& sourceRect , const QRectF& des
 //		return;
 //	}
     
-	fMapping << QRectFPair(sourceRect,destRect);
+    fMapping << QRectFPair(sourceRect,destRect);
 
-//#define INCREASING_CACHE_FACTOR
-#ifdef INCREASING_CACHE_FACTOR
-	// Compute the cache factor so that the cache pixmap is large enough to have a nice rendering.
+    //#define INCREASING_CACHE_FACTOR
+    #ifdef INCREASING_CACHE_FACTOR
+    // Compute the cache factor so that the cache pixmap is large enough to have a nice rendering.
 	
-	// The cacheFactor will be the biggest destination-rect's dimension/source-rect's dimension ratio.
-	float xScaleRatio = destRect.width() / sourceRect.width();
-	float yScaleRatio = destRect.height() / sourceRect.height();
+    // The cacheFactor will be the biggest destination-rect's dimension/source-rect's dimension ratio.
+    float xScaleRatio = destRect.width() / sourceRect.width();
+    float yScaleRatio = destRect.height() / sourceRect.height();
 
-	float cacheFactor = qMax( xScaleRatio , yScaleRatio );
-	// fCacheFactor never decreases: use the new value only if its bigger.
-	if ( cacheFactor > fCacheFactor )
-	{
-		fCacheFactor = cacheFactor;
-		// The cache now needs to be updated, to have a bigger one.
-		updateCache();
-	}
-#endif
-//	update();
-}
-
-//-------------------------------------------------------------------------------------------------------------------
-void QStretchTilerItem::addMasterItem(QGraphicsItem *master)
-{
-    
-}
-
-void QStretchTilerItem::deleteMasterItem(QGraphicsItem *master)
-{
-
+    float cacheFactor = qMax( xScaleRatio , yScaleRatio );
+    // fCacheFactor never decreases: use the new value only if its bigger.
+    if ( cacheFactor > fCacheFactor )
+    {
+        fCacheFactor = cacheFactor;
+        // The cache now needs to be updated, to have a bigger one.
+        updateCache();
+    }
+    #endif
+    //	update();
 }
 
 }

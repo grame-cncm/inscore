@@ -33,6 +33,7 @@
 #include "GraphicEffect.h"
 #include "EventsAble.h"
 #include "MouseEventAble.h"
+#include <QGraphicsItem>
 
 //#include <QRect>
 
@@ -58,29 +59,27 @@ class VObjectView
         virtual void updateCache()                          = 0;
 		virtual void setParentView (IObject * object)		= 0;
 		virtual void setParentItem( VObjectView* parent )	= 0;
-        virtual void addMasterItem (VObjectView * master)		= 0;
-		virtual void deleteMasterItem( VObjectView* master )	= 0;
 
 		virtual void setEffect (GraphicEffect& effect)		= 0;
 		virtual GraphicEffect getEffect () const			= 0;
 
 		/// \brief Maps the IObject [-1,1] y coordinate to the referenceRect().
-		virtual double relative2SceneY(float y) const						= 0;
+		virtual double relative2SceneY(float y, QGraphicsItem * item = 0 ) const						= 0;
 		/// \brief Maps the IObject [-1,1] x coordinate to the referenceRect().
-		virtual double relative2SceneX(float x) const						= 0;
+		virtual double relative2SceneX(float x, QGraphicsItem * item = 0 ) const						= 0;
 		/// \brief Maps the IObject [0,2] width value to the corresponding referenceRect() value.
-		virtual double relative2SceneWidth(float width) const				= 0;
+		virtual double relative2SceneWidth(float width, QGraphicsItem * item = 0 ) const				= 0;
 		/// \brief Maps the IObject [0,2] height value to the corresponding referenceRect() value.
-		virtual double relative2SceneHeight(float height) const				= 0;
+		virtual double relative2SceneHeight(float height, QGraphicsItem * item = 0 ) const				= 0;
 
 		/// \brief Maps the referenceRect() width value to the corresponding [0,2] value.
-		virtual double scene2RelativeWidth(float width) const				= 0;
+		virtual double scene2RelativeWidth(float width, QGraphicsItem * item = 0 ) const				= 0;
 		/// \brief Maps the referenceRect() height value to the corresponding [0,2] value.
-		virtual double scene2RelativeHeight(float height) const				= 0;
+		virtual double scene2RelativeHeight(float height, QGraphicsItem * item = 0 ) const				= 0;
 		/// \brief Maps the referenceRect() x value to the corresponding [-1,1] value.
-		virtual double scene2RelativeX(float x) const						= 0;
+		virtual double scene2RelativeX(float x, QGraphicsItem * item = 0 ) const						= 0;
 		/// \brief Maps the referenceRect() y value to the corresponding [-1,1] value.
-		virtual double scene2RelativeY(float y) const						= 0;
+		virtual double scene2RelativeY(float y, QGraphicsItem * item = 0 ) const						= 0;
 
 		/// \brief updates the local mapping (do nothing at IObject level) 
 		virtual void	updateLocalMapping (IObject* )					{}

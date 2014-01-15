@@ -59,6 +59,16 @@ SMaster ISceneSync::getMaster(SIObject o) const
 }
 
 //--------------------------------------------------------------------------
+std::vector<SMaster> ISceneSync::getMasters(SIObject o) const
+{
+    std::pair<ISync::const_iterator,ISync::const_iterator> range = fSync.equal_range(o);
+    std::vector<SMaster> masters;
+    for(ISync::const_iterator it = range.first; it !=range.second; it++)
+        masters.push_back(it->second);
+    return masters;
+}
+
+//--------------------------------------------------------------------------
 void ISceneSync::sort (IObject::subnodes& nodes)
 {
 	if (fSync.modified()) {

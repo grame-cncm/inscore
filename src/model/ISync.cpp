@@ -73,8 +73,7 @@ void ISync::sync(const SIObject& slave, SMaster master)
 		ITLErr << "unexpected synchronization request:" << slave->name() << "->" << slave->name() << ITLEndl;
 		return;
 	}
-    std::cout << "-- slave : " << slave->name() << " - master : " << master->getMaster()->name() << std::endl;
-	if (!checkLoop (slave, master->getMaster())) {
+    if (!checkLoop (slave, master->getMaster())) {
         // We have now a multimap to allow a slave to have several masters. But we don't want it to take into account
         // the different items of a same master..
         // -> So we look for the slave in the list
@@ -95,7 +94,8 @@ void ISync::sync(const SIObject& slave, SMaster master)
         insert(std::pair<SIObject,SMaster>(slave, master));
 		slave->modify();
 		slave->setState(IObject::kModified);
-		slave->getView()->setParentItem(master->getMaster()->getView()); //addMasterItem ??
+	//	slave->getView()->setParentItem(master->getMaster()->getView());    // for now, we just change the parent of the Qt item, the view keeps one parent (and
+                                                                            //  several masters)
 		slave->setdyMsgHandler(master);
 		fModified = true;
 	}
@@ -114,7 +114,7 @@ void ISync::remove(SIObject slave, SMaster m)
             {
                 erase(it);
                 if(!count(slave))
-                    slave->UseGraphic2GraphicMapping (false);
+                    slave->UseGraphic2GraphicMapping (false, m->getMaster()->name());
                 slave->setdyMsgHandler();
                 slave->modify();
                 slave->setState(IObject::kModified);
@@ -122,7 +122,7 @@ void ISync::remove(SIObject slave, SMaster m)
                 VObjectView * view = slave->getView();
                 if (view)
                 {
-                    view->setParentItem(0); // to be checked... // deleteMasterItem ?
+                  //  view->setParentItem(0);
                     view->updateView(slave);
                 }
                 // There should not be more than one pair with the same slave and the same master (Cf sync)
@@ -132,7 +132,7 @@ void ISync::remove(SIObject slave, SMaster m)
         }
     }
 	else if(this->erase(slave)) { // when the master is not specified, we delete all the possible pairs with the slave
-		slave->UseGraphic2GraphicMapping (false);
+        slave->UseGraphic2GraphicMapping (false);
 		slave->setdyMsgHandler();
 		slave->modify();
 		slave->setState(IObject::kModified);
@@ -140,7 +140,7 @@ void ISync::remove(SIObject slave, SMaster m)
 		VObjectView * view = slave->getView();
 		if (view)
         {
-            view->setParentItem(0); // deleteMasterItem ?
+            //view->setParentItem(0);
             view->updateView(slave);
         }
 	}

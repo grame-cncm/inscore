@@ -129,7 +129,7 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, const Master* m
 		return masterSeg;
 	}
 
-	slave->UseGraphic2GraphicMapping (false);						// don't use the object graphic segmentation and mapping
+	slave->UseGraphic2GraphicMapping (false, master->name());						// don't use the object graphic segmentation and mapping
 	float x, xs; bool found = false;
 	GraphicSegment slaveSeg;
 
@@ -187,16 +187,19 @@ void IMappingUpdater::updateIObject (IObject* object)
 //	const SIScene scene = object->getScene();
 //	const Master* master = scene ? scene->getMaster(object) : 0;
     const SIObject parent = object->getParent();
-	const Master* master = parent ? parent->getMaster(object) : 0;
+	const std::vector<SMaster> masters = parent ? parent->getMasters(object) : object->getScene()->getMasters(object);
+    
+	if (masters.empty()) return;
 	
-	if (!master) return;
-	
-	const IObject* mobj = master->getMaster();
-	if (object->localMapModified() || object->dateModified()
-		|| mobj->localMapModified() || master->modified() || mobj->dateModified()) {
-		if (!updateNOHStretch ( object, master))
-			hstretchUpdate (object, master);
-	}
+    for(int i = 0; i<masters.size(); i++)
+    {
+        const IObject* mobj = masters[i]->getMaster();
+        if (object->localMapModified() || object->dateModified()
+            || mobj->localMapModified() || masters[i]->modified() || mobj->dateModified()) {
+            if (!updateNOHStretch ( object, masters[i]))
+                hstretchUpdate (object, masters[i]);
+        }
+    }
 }
 
 //--------------------------------------------------------------------------
@@ -430,8 +433,8 @@ void IMappingUpdater::hstretchUpdate (IObject* o, const Master* master)
 	g2gr = verticalAdjust( g2gr, o, master);	// graphic segments adjustment according to vertical pos and stretch
 	g2gr = relink (g2gr->direct(), 0.0001f);	// check adjacent segments and make sure the end and begin match
 	TMapable* m = o;
-	m->setSlave2MasterMapping (master->getSlaveMapName(), g2gr);			// create the slave graphic to master graphic composition
-	m->UseGraphic2GraphicMapping (true);	
+	m->setSlave2MasterMapping (master->getMaster()->name(), g2gr);			// create the slave graphic to master graphic composition
+	m->UseGraphic2GraphicMapping (true, master->getMaster()->name());
 }
 
 } // end namespoace

@@ -63,11 +63,17 @@ class ISceneSync : public IVNode
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*);
 
-		/*! \brief gives the master of an object
+		/*! \brief gives (one of) the master(s) of an object
 			\param o the object to look for in the synchronization set
 			\return the master when found
 		*/
 		virtual SMaster getMaster(SIObject o) const;
+
+        /*! \brief gives the masters of an object
+			\param o the object to look for in the synchronization set
+			\return the vector of masters
+		*/
+		virtual std::vector<SMaster> getMasters(SIObject o) const;
 
 		/*! \brief synchronizes two objects
 			\param o a slave object

@@ -350,11 +350,18 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		virtual void	sort ();
 
 
-		/*! \brief gives the master of an object
+		/*! \brief gives (one of) the master(s) of an object
 			\param o the object to look for in the synchronization set
 			\return the object master or 0 when not found
 		*/
 		virtual SMaster getMaster(SIObject o) const;
+    
+    
+		/*! \brief gives the masters of an object
+			\param o the object to look for in the synchronization set
+			\return a vector of all the masters or an empty vector when not found
+		*/    
+        virtual std::vector<SMaster> getMasters(SIObject o) const;
     
         /// \brief a periodic task to propagate modification state from masters to slaves
 		virtual void ptask ();
