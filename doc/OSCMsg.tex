@@ -208,7 +208,7 @@ They could be sent to any address with the form \OSC{/ITL/\textit{scene}} or \OS
 \begin{rail}
 commonMsg :  ('show' int32)
 			| 'del'
-			| 'export' ([1] ( fullPathFileName) | [2] path | [3])
+			| 'export' ([1] ( fullPathFileName) | [2] path | [3])(|'children')
 			| 'save' filePath ( | '+')
 			| PositionMsg
 			| ColorMsg
@@ -228,7 +228,8 @@ commonMsg :  ('show' int32)
 1) exports to a full path name. The file extension is used to infer the export format. Supported extensions and formats are: \emph{pdf, bmp, gif, jpeg, png, pgm, ppm, tiff, xbm, xpm}. \\
 2) exports to \OSC{path/\textit{identifier}.pdf}. When path is a relative path, exports to \OSC{rootPath/path/\textit{identifier}.pdf}. \\
 3) exports to \OSC{rootPath/\textit{identifier}.pdf}.\\
-When the destination file is not completely specified (third form or missing extension), there is an automatic numbering of output names when the destination file already exists.
+When the destination file is not completely specified (third form or missing extension), there is an automatic numbering of output names when the destination file already exists. \\ 
+The 'children' option specify that we want to export the children of the object as well.
 
 \item \OSC{save}: recursively saves objects states to a file.  The \OSC{filePath} can be relative or absolute. When relative, an absolute path is build using the current \OSC{rootPath} (see application or scene current paths  p.\pageref{applmgmt} and  p.\pageref{scene}). The optional \OSC{+} parameter indicates an append mode for the write operation. The message must be sent to the address \OSC{/ITL} to save the whole application state.\\
 Note that the file extension for INScore files is \OSC{.inscore}. INScore files dropped on the application or on a window are interpreted as script files (see section \fullref{scripting}).
