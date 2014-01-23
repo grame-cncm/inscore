@@ -3,7 +3,7 @@
 \usepackage{interlude}
 \usepackage{pslatex}
 \usepackage[T1]{fontenc}
-\usepackage[utf8x]{inputenc}
+\usepackage[utf8]{inputenc}
 \setlength\parskip{\medskipamount}
 \setlength\parindent{0pt}
 \usepackage{graphicx}
@@ -38,11 +38,7 @@
 \title{Graphic rendering of synchronized objects specification \\ v.1.04}
 
 
-\author{Grame, Centre National de Création Musicale\\
-{\small <research@grame.fr>} \\
-\vspace{2mm}
-ANR-08-CORD-010
-}
+\author{Grame \\ Centre national de cr\'eation musicale}
 
 \maketitle
 
@@ -92,7 +88,7 @@ As the hierarchy between objects defines their OSC path, we can therefore agree 
   \draw[child] (I)--(S);
   \draw[child] (S)--(O1); \draw[child] (S)--(O2);
   \draw[child] (O1)--(C1); \draw[child] (O1)--(C2); \draw[child] (O1)--(C3);
-  % la l�gende
+  % la légende
   \draw[child] (3,2.5)--(4.5,2.5)node[midway,above]{parent-child};
   
 \end{tikzpicture}
