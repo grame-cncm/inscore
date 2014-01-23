@@ -66,7 +66,7 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {6}{ commonMsg : ('show' int32) | 'del' | 'export' ([1] ( fullPathFileName) | [2] path | [3]) | 'save' filePath ( | '+') | PositionMsg | ColorMsg | TimeMsg | WatchMsg }
+\rail@i {6}{ commonMsg : ('show' int32) | 'del' | 'export' ([1] ( fullPathFileName) | [2] path | [3])(|'children') | 'save' filePath ( | '+') | PositionMsg | ColorMsg | TimeMsg | WatchMsg }
 \rail@o {6}{
 \rail@index{commonMsg}
 \rail@begin{11}{commonMsg}
@@ -85,6 +85,10 @@
 \rail@nont{path}[]
 \rail@nextbar{4}
 \rail@annote[3]
+\rail@endbar
+\rail@bar
+\rail@nextbar{3}
+\rail@term{children}[]
 \rail@endbar
 \rail@nextbar{5}
 \rail@term{save}[]
@@ -704,8 +708,20 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {35}{ gridMsg : 'columns' int32 | ('rows' int32) | ('xborder' float) | ('yborder' float) | ('order' ('leftright' | 'topbottom')) }
+\rail@i {35}{ gmnstreamMsg : 'write' gmnStream | 'clear' }
 \rail@o {35}{
+\rail@index{gmnstreamMsg}
+\rail@begin{2}{gmnstreamMsg}
+\rail@bar
+\rail@term{write}[]
+\rail@nont{gmnStream}[]
+\rail@nextbar{1}
+\rail@term{clear}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {36}{ gridMsg : 'columns' int32 | ('rows' int32) | ('xborder' float) | ('yborder' float) | ('order' ('leftright' | 'topbottom')) }
+\rail@o {36}{
 \rail@index{gridMsg}
 \rail@begin{6}{gridMsg}
 \rail@bar
@@ -730,8 +746,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {36}{ debugMsg : 'map' int32 | ('name' int32) }
-\rail@o {36}{
+\rail@i {37}{ debugMsg : 'map' int32 | ('name' int32) }
+\rail@o {37}{
 \rail@index{debugMsg}
 \rail@begin{2}{debugMsg}
 \rail@bar
@@ -743,8 +759,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {37}{ ITLMsg : 'quit' | ('rootPath' path) | ('mouse' ('show' | 'hide')) | ('defaultShow' int32) | ('load' filePath) | ('read' buffer) | ('require' float oscMsg) | ('time' int32) | ('ticks' int32) | ('rate' int32) | 'hello' }
-\rail@o {37}{
+\rail@i {38}{ ITLMsg : 'quit' | ('rootPath' path) | ('mouse' ('show' | 'hide')) | ('defaultShow' int32) | ('load' filePath) | ('read' buffer) | ('require' float oscMsg) | ('time' int32) | ('ticks' int32) | ('rate' int32) | 'hello' }
+\rail@o {38}{
 \rail@index{ITLMsg}
 \rail@begin{12}{ITLMsg}
 \rail@bar
@@ -786,8 +802,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {38}{ ITLPortsMsg : ('port' int32) | ('outport' int32) | ('errport' int32) }
-\rail@o {38}{
+\rail@i {39}{ ITLPortsMsg : ('port' int32) | ('outport' int32) | ('errport' int32) }
+\rail@o {39}{
 \rail@index{ITLPortsMsg}
 \rail@begin{3}{ITLPortsMsg}
 \rail@bar
@@ -802,8 +818,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {39}{ ITLMsgForward : ('forward' ( [1] | [2] hostname +)) }
-\rail@o {39}{
+\rail@i {40}{ ITLMsgForward : ('forward' ( [1] | [2] hostname +)) }
+\rail@o {40}{
 \rail@index{ITLMsgForward}
 \rail@begin{3}{ITLMsgForward}
 \rail@term{forward}[]
@@ -818,8 +834,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {40}{ ITLRequest : 'get' ('version' | 'guido-version' | 'musicxml-version') }
-\rail@o {40}{
+\rail@i {41}{ ITLRequest : 'get' ('version' | 'guido-version' | 'musicxml-version') }
+\rail@o {41}{
 \rail@index{ITLRequest}
 \rail@begin{3}{ITLRequest}
 \rail@term{get}[]
@@ -832,8 +848,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {41}{ ITLStats : 'get' | 'reset' }
-\rail@o {41}{
+\rail@i {42}{ ITLStats : 'get' | 'reset' }
+\rail@o {42}{
 \rail@index{ITLStats}
 \rail@begin{2}{ITLStats}
 \rail@bar
@@ -843,16 +859,16 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {42}{ ITLdebug : 'osc' int23 }
-\rail@o {42}{
+\rail@i {43}{ ITLdebug : 'osc' int23 }
+\rail@o {43}{
 \rail@index{ITLdebug}
 \rail@begin{1}{ITLdebug}
 \rail@term{osc}[]
 \rail@nont{int23}[]
 \rail@end
 }
-\rail@i {43}{ ITLLog : 'show' int32 | 'clear' | 'wrap' int32 | 'save' string }
-\rail@o {43}{
+\rail@i {44}{ ITLLog : 'show' int32 | 'clear' | 'wrap' int32 | 'save' string }
+\rail@o {44}{
 \rail@index{ITLLog}
 \rail@begin{4}{ITLLog}
 \rail@bar
@@ -869,8 +885,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {44}{ sceneMsg : 'new' | 'del' | 'reset' | ('rootPath' path) | ('load' filePath) | ('fullscreen' int32) | ('frameless' int32) | ('absolutexy' int32) | ('windowOpacity' int32) | commonMsg }
-\rail@o {44}{
+\rail@i {45}{ sceneMsg : 'new' | 'del' | 'reset' | ('rootPath' path) | ('load' filePath) | ('fullscreen' int32) | ('frameless' int32) | ('absolutexy' int32) | ('windowOpacity' int32) | commonMsg }
+\rail@o {45}{
 \rail@index{sceneMsg}
 \rail@begin{10}{sceneMsg}
 \rail@bar
@@ -902,8 +918,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {45}{ mapMsg : 'map' ( | mapName ) (relation | ( del )) }
-\rail@o {45}{
+\rail@i {46}{ mapMsg : 'map' ( | mapName ) (relation | ( del )) }
+\rail@o {46}{
 \rail@index{mapMsg}
 \rail@begin{2}{mapMsg}
 \rail@term{map}[]
@@ -918,8 +934,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {46}{ relation : ([1] float2DSegment relativeTimeSegment ) + | ([2] int2DSegment relativeTimeSegment ) + | ([3] int1DSegment relativeTimeSegment ) + }
-\rail@o {46}{
+\rail@i {47}{ relation : ([1] float2DSegment relativeTimeSegment ) + | ([2] int2DSegment relativeTimeSegment ) + | ([3] int1DSegment relativeTimeSegment ) + }
+\rail@o {47}{
 \rail@index{relation}
 \rail@begin{6}{relation}
 \rail@bar
@@ -946,8 +962,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {47}{ relativeTimeSegment : '(' relativeTimeInterval ')' }
-\rail@o {47}{
+\rail@i {48}{ relativeTimeSegment : '(' relativeTimeInterval ')' }
+\rail@o {48}{
 \rail@index{relativeTimeSegment}
 \rail@begin{1}{relativeTimeSegment}
 \rail@term{(}[]
@@ -955,8 +971,8 @@
 \rail@term{)}[]
 \rail@end
 }
-\rail@i {48}{ float2DSegment : '(' floatInterval floatInterval ')' }
-\rail@o {48}{
+\rail@i {49}{ float2DSegment : '(' floatInterval floatInterval ')' }
+\rail@o {49}{
 \rail@index{float2DSegment}
 \rail@begin{1}{float2DSegment}
 \rail@term{(}[]
@@ -965,8 +981,8 @@
 \rail@term{)}[]
 \rail@end
 }
-\rail@i {49}{ int2DSegment : '(' intInterval intInterval ')' }
-\rail@o {49}{
+\rail@i {50}{ int2DSegment : '(' intInterval intInterval ')' }
+\rail@o {50}{
 \rail@index{int2DSegment}
 \rail@begin{1}{int2DSegment}
 \rail@term{(}[]
@@ -975,8 +991,8 @@
 \rail@term{)}[]
 \rail@end
 }
-\rail@i {50}{ int1DSegment : '(' intInterval ')' }
-\rail@o {50}{
+\rail@i {51}{ int1DSegment : '(' intInterval ')' }
+\rail@o {51}{
 \rail@index{int1DSegment}
 \rail@begin{1}{int1DSegment}
 \rail@term{(}[]
@@ -984,8 +1000,8 @@
 \rail@term{)}[]
 \rail@end
 }
-\rail@i {51}{ relativeTimeInterval : '[' rational ',' rational '[' }
-\rail@o {51}{
+\rail@i {52}{ relativeTimeInterval : '[' rational ',' rational '[' }
+\rail@o {52}{
 \rail@index{relativeTimeInterval}
 \rail@begin{1}{relativeTimeInterval}
 \rail@term{[}[]
@@ -995,8 +1011,8 @@
 \rail@term{[}[]
 \rail@end
 }
-\rail@i {52}{ floatInterval : '[' float32 ',' float32 '[' }
-\rail@o {52}{
+\rail@i {53}{ floatInterval : '[' float32 ',' float32 '[' }
+\rail@o {53}{
 \rail@index{floatInterval}
 \rail@begin{1}{floatInterval}
 \rail@term{[}[]
@@ -1006,8 +1022,8 @@
 \rail@term{[}[]
 \rail@end
 }
-\rail@i {53}{ intInterval : '[' int32 ',' int32 '[' }
-\rail@o {53}{
+\rail@i {54}{ intInterval : '[' int32 ',' int32 '[' }
+\rail@o {54}{
 \rail@index{intInterval}
 \rail@begin{1}{intInterval}
 \rail@term{[}[]
@@ -1017,8 +1033,8 @@
 \rail@term{[}[]
 \rail@end
 }
-\rail@i {54}{ rational : int32 '/' int32 }
-\rail@o {54}{
+\rail@i {55}{ rational : int32 '/' int32 }
+\rail@o {55}{
 \rail@index{rational}
 \rail@begin{1}{rational}
 \rail@token{int32}[]
@@ -1026,8 +1042,8 @@
 \rail@token{int32}[]
 \rail@end
 }
-\rail@i {55}{ mapAddMsg : 'map+' ( | mapName ) relation }
-\rail@o {55}{
+\rail@i {56}{ mapAddMsg : 'map+' ( | mapName ) relation }
+\rail@o {56}{
 \rail@index{mapAddMsg}
 \rail@begin{2}{mapAddMsg}
 \rail@term{map+}[]
@@ -1038,8 +1054,8 @@
 \rail@nont{relation}[]
 \rail@end
 }
-\rail@i {56}{ mapfMsg : 'mapf' ( | mapName ) mapFilePath }
-\rail@o {56}{
+\rail@i {57}{ mapfMsg : 'mapf' ( | mapName ) mapFilePath }
+\rail@o {57}{
 \rail@index{mapfMsg}
 \rail@begin{2}{mapfMsg}
 \rail@term{mapf}[]
@@ -1050,8 +1066,8 @@
 \rail@nont{mapFilePath}[]
 \rail@end
 }
-\rail@i {57}{ scoreMap : 'map' ('page' | 'system' | 'systemflat' | 'staffn' | 'voicen' ) }
-\rail@o {57}{
+\rail@i {58}{ scoreMap : 'map' ('page' | 'system' | 'systemflat' | 'staffn' | 'voicen' ) }
+\rail@o {58}{
 \rail@index{scoreMap}
 \rail@begin{5}{scoreMap}
 \rail@term{map}[]
@@ -1068,10 +1084,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {58}{ sync : syncIdentifier ( [1] syncIdentifier (| syncmode +) | [2]) | [3] 'get' ( | identifier) }
-\rail@o {58}{
+\rail@i {59}{ sync : syncIdentifier ( [1] syncIdentifier (| syncmode +) | [2] syncIdentifier 'del' | [3] ) | [4] 'get' ( | identifier) }
+\rail@o {59}{
 \rail@index{sync}
-\rail@begin{6}{sync}
+\rail@begin{7}{sync}
 \rail@bar
 \rail@nont{syncIdentifier}[]
 \rail@bar
@@ -1086,19 +1102,23 @@
 \rail@endbar
 \rail@nextbar{3}
 \rail@annote[2]
-\rail@endbar
+\rail@nont{syncIdentifier}[]
+\rail@term{del}[]
 \rail@nextbar{4}
 \rail@annote[3]
+\rail@endbar
+\rail@nextbar{5}
+\rail@annote[4]
 \rail@term{get}[]
 \rail@bar
-\rail@nextbar{5}
+\rail@nextbar{6}
 \rail@nont{identifier}[]
 \rail@endbar
 \rail@endbar
 \rail@end
 }
-\rail@i {59}{ syncIdentifier : [1] identifier | [2] identifier ':' mapName }
-\rail@o {59}{
+\rail@i {60}{ syncIdentifier : [1] identifier | [2] identifier ':' mapName }
+\rail@o {60}{
 \rail@index{syncIdentifier}
 \rail@begin{2}{syncIdentifier}
 \rail@bar
@@ -1112,8 +1132,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {60}{ syncmode : syncHow| syncStretch | syncPos | mapName }
-\rail@o {60}{
+\rail@i {61}{ syncmode : syncHow| syncStretch | syncPos | mapName }
+\rail@o {61}{
 \rail@index{syncmode}
 \rail@begin{4}{syncmode}
 \rail@bar
@@ -1127,8 +1147,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {61}{ syncHow : 'relative' | 'absolute' }
-\rail@o {61}{
+\rail@i {62}{ syncHow : 'relative' | 'absolute' }
+\rail@o {62}{
 \rail@index{syncHow}
 \rail@begin{2}{syncHow}
 \rail@bar
@@ -1138,8 +1158,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {62}{ syncStretch : 'h' | 'v' | 'hv' }
-\rail@o {62}{
+\rail@i {63}{ syncStretch : 'h' | 'v' | 'hv' }
+\rail@o {63}{
 \rail@index{syncStretch}
 \rail@begin{3}{syncStretch}
 \rail@bar
@@ -1151,8 +1171,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {63}{ syncPos : 'syncOver' | 'syncTop' | 'syncBottom' }
-\rail@o {63}{
+\rail@i {64}{ syncPos : 'syncOver' | 'syncTop' | 'syncBottom' }
+\rail@o {64}{
 \rail@index{syncPos}
 \rail@begin{3}{syncPos}
 \rail@bar
@@ -1164,8 +1184,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {64}{ simpleSignal : [1] ( float32 + ) | [2] ('size' int32) | [3] ('default' float32) | [4] 'get' ( | 'size' | 'default') | [5] 'reset' | [6] 'del' }
-\rail@o {64}{
+\rail@i {65}{ simpleSignal : [1] ( float32 + ) | [2] ('size' int32) | [3] ('default' float32) | [4] 'get' ( | 'size' | 'default') | [5] 'reset' | [6] 'del' }
+\rail@o {65}{
 \rail@index{simpleSignal}
 \rail@begin{9}{simpleSignal}
 \rail@bar
@@ -1200,8 +1220,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {65}{ parallelSignal : [1] 'set' ( signal + ) | [2] (| projectionString) ( float32 + ) | [3] ('get' 'dimension') }
-\rail@o {65}{
+\rail@i {66}{ parallelSignal : [1] 'set' ( signal + ) | [2] (| projectionString) ( float32 + ) | [3] ('get' 'dimension') }
+\rail@o {66}{
 \rail@index{parallelSignal}
 \rail@begin{5}{parallelSignal}
 \rail@bar
@@ -1228,8 +1248,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {66}{ signal : [4] identifier | [5] float32 }
-\rail@o {66}{
+\rail@i {67}{ signal : [4] identifier | [5] float32 }
+\rail@o {67}{
 \rail@index{signal}
 \rail@begin{2}{signal}
 \rail@bar
@@ -1241,8 +1261,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {67}{ projectionString : '[' int32 (| '\unhbox \voidb@x \bgroup \let \unhbox \voidb@x \setbox \@tempboxa \hbox {\global \mathchardef \accent@spacefactor \spacefactor }\accent 3 \egroup \spacefactor \accent@spacefactor ' (| int32)) ']' }
-\rail@o {67}{
+\rail@i {68}{ projectionString : '[' int32 (| '\unhbox \voidb@x \bgroup \let \unhbox \voidb@x \setbox \@tempboxa \hbox {\global \mathchardef \accent@spacefactor \spacefactor }\accent 3 \egroup \spacefactor \accent@spacefactor ' (| int32)) ']' }
+\rail@o {68}{
 \rail@index{projectionString}
 \rail@begin{3}{projectionString}
 \rail@term{[}[]
@@ -1258,8 +1278,8 @@
 \rail@term{]}[]
 \rail@end
 }
-\rail@i {68}{ graphicSignal : 'set' 'graph' signalIdentifier | 'get' 'dimension' }
-\rail@o {68}{
+\rail@i {69}{ graphicSignal : 'set' 'graph' signalIdentifier | 'get' 'dimension' }
+\rail@o {69}{
 \rail@index{graphicSignal}
 \rail@begin{2}{graphicSignal}
 \rail@bar
@@ -1272,8 +1292,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {69}{ interactMsg : (('watch' | 'watch+') ([1] | what ( [2] | [3] "(" ( ( message )+ "," ) ")" | [4] message ) )) }
-\rail@o {69}{
+\rail@i {70}{ interactMsg : (('watch' | 'watch+') ([1] | what ( [2] | [3] "(" ( ( message )+ "," ) ")" | [4] message ) )) }
+\rail@o {70}{
 \rail@index{interactMsg}
 \rail@begin{5}{interactMsg}
 \rail@bar
@@ -1303,8 +1323,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {70}{ message : (| addressPrefix) OSCAddress ( | (parameters | variable) + ) }
-\rail@o {70}{
+\rail@i {71}{ message : (| addressPrefix) OSCAddress ( | (parameters | variable) + ) }
+\rail@o {71}{
 \rail@index{message}
 \rail@begin{4}{message}
 \rail@bar
@@ -1325,8 +1345,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {71}{ addressPrefix : (IPAddress | hostname) ':' port }
-\rail@o {71}{
+\rail@i {72}{ addressPrefix : (IPAddress | hostname) ':' port }
+\rail@o {72}{
 \rail@index{addressPrefix}
 \rail@begin{2}{addressPrefix}
 \rail@bar
@@ -1338,8 +1358,8 @@
 \rail@nont{port}[]
 \rail@end
 }
-\rail@i {72}{ what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'doubleClick' }
-\rail@o {72}{
+\rail@i {73}{ what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'doubleClick' }
+\rail@o {73}{
 \rail@index{what}
 \rail@begin{6}{what}
 \rail@bar
@@ -1357,8 +1377,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {73}{ uievt : 'event' mouseEvent x y }
-\rail@o {73}{
+\rail@i {74}{ uievt : 'event' mouseEvent x y }
+\rail@o {74}{
 \rail@index{uievt}
 \rail@begin{1}{uievt}
 \rail@term{event}[]
@@ -1367,8 +1387,8 @@
 \rail@nont{y}[]
 \rail@end
 }
-\rail@i {74}{ what : 'timeEnter' time time | 'timeLeave' time time | 'durEnter' time time | 'durLeave' time time }
-\rail@o {74}{
+\rail@i {75}{ what : 'timeEnter' time time | 'timeLeave' time time | 'durEnter' time time | 'durLeave' time time }
+\rail@o {75}{
 \rail@index{what}
 \rail@begin{4}{what}
 \rail@bar
@@ -1390,8 +1410,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {75}{ what : 'export' | 'newElement' | 'endPaint' | 'del' }
-\rail@o {75}{
+\rail@i {76}{ what : 'export' | 'newElement' | 'endPaint' | 'del' }
+\rail@o {76}{
 \rail@index{what}
 \rail@begin{4}{what}
 \rail@bar
@@ -1405,8 +1425,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {76}{ posVar : xy | 'absx' | 'absy' | 'sx' | 'sy' }
-\rail@o {76}{
+\rail@i {77}{ posVar : xy | 'absx' | 'absy' | 'sx' | 'sy' }
+\rail@o {77}{
 \rail@index{posVar}
 \rail@begin{5}{posVar}
 \rail@bar
@@ -1422,8 +1442,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {77}{ xy : ('x' | 'y') ( | '[low,high]') }
-\rail@o {77}{
+\rail@i {78}{ xy : ('x' | 'y') ( | '[low,high]') }
+\rail@o {78}{
 \rail@index{xy}
 \rail@begin{2}{xy}
 \rail@bar
@@ -1437,8 +1457,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {78}{ timeVar : ('date' | 'rdate') (| ':' mapname) (| '[n/d]') (| '\%' 'f') }
-\rail@o {78}{
+\rail@i {79}{ timeVar : ('date' | 'rdate') (| ':' mapname) (| '[n/d]') (| '\%' 'f') }
+\rail@o {79}{
 \rail@index{timeVar}
 \rail@begin{2}{timeVar}
 \rail@bar
@@ -1462,8 +1482,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {79}{ variable : 'name' | 'scene' | 'address' }
-\rail@o {79}{
+\rail@i {80}{ variable : 'name' | 'scene' | 'address' }
+\rail@o {80}{
 \rail@index{variable}
 \rail@begin{3}{variable}
 \rail@bar
@@ -1475,8 +1495,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {80}{ msgVar : '(' oscaddress 'get' (| params) ')' }
-\rail@o {80}{
+\rail@i {81}{ msgVar : '(' oscaddress 'get' (| params) ')' }
+\rail@o {81}{
 \rail@index{msgVar}
 \rail@begin{2}{msgVar}
 \rail@term{(}[]
@@ -1489,8 +1509,8 @@
 \rail@term{)}[]
 \rail@end
 }
-\rail@i {81}{ stateMsg : 'push' | 'pop' }
-\rail@o {81}{
+\rail@i {82}{ stateMsg : 'push' | 'pop' }
+\rail@o {82}{
 \rail@index{stateMsg}
 \rail@begin{2}{stateMsg}
 \rail@bar
@@ -1500,8 +1520,16 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {82}{ fileWatcher : (('watch' | 'watch+') ( | filePath ( | ( ( message )+ "," ) ) )) }
-\rail@o {82}{
+\rail@i {83}{ stackMsg : 'get' 'stack' }
+\rail@o {83}{
+\rail@index{stackMsg}
+\rail@begin{1}{stackMsg}
+\rail@term{get}[]
+\rail@term{stack}[]
+\rail@end
+}
+\rail@i {84}{ fileWatcher : (('watch' | 'watch+') ( | filePath ( | ( ( message )+ "," ) ) )) }
+\rail@o {84}{
 \rail@index{fileWatcher}
 \rail@begin{4}{fileWatcher}
 \rail@bar
@@ -1523,8 +1551,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {83}{ expression : message ";" | variabledecl ";" | script }
-\rail@o {83}{
+\rail@i {85}{ expression : message ";" | variabledecl ";" | script }
+\rail@o {85}{
 \rail@index{expression}
 \rail@begin{3}{expression}
 \rail@bar
@@ -1538,8 +1566,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {84}{ variabledecl : 'ident' '=' ( (param | variable) + | '(' (message + ',') ')' ) ';' }
-\rail@o {84}{
+\rail@i {86}{ variabledecl : 'ident' '=' ( (param | variable) + | '(' (message + ',') ')' ) ';' }
+\rail@o {86}{
 \rail@index{variabledecl}
 \rail@begin{5}{variabledecl}
 \rail@term{ident}[]
@@ -1565,8 +1593,8 @@
 \rail@term{;}[]
 \rail@end
 }
-\rail@i {85}{ msgparam : '(' (message) ')' }
-\rail@o {85}{
+\rail@i {87}{ msgparam : '(' (message) ')' }
+\rail@o {87}{
 \rail@index{msgparam}
 \rail@begin{1}{msgparam}
 \rail@term{(}[]
@@ -1574,8 +1602,8 @@
 \rail@term{)}[]
 \rail@end
 }
-\rail@i {86}{ script : '<?' ('javascript' | 'lua') script '?>' }
-\rail@o {86}{
+\rail@i {88}{ script : '<?' ('javascript' | 'lua') script '?>' }
+\rail@o {88}{
 \rail@index{script}
 \rail@begin{2}{script}
 \rail@term{<?}[]
@@ -1588,16 +1616,16 @@
 \rail@term{?>}[]
 \rail@end
 }
-\rail@i {87}{ javascript : 'run' 'code' }
-\rail@o {87}{
+\rail@i {89}{ javascript : 'run' 'code' }
+\rail@o {89}{
 \rail@index{javascript}
 \rail@begin{1}{javascript}
 \rail@term{run}[]
 \rail@term{code}[]
 \rail@end
 }
-\rail@i {88}{ faustprocessor : 'set' 'faust' "path" }
-\rail@o {88}{
+\rail@i {90}{ faustprocessor : 'set' 'faust' "path" }
+\rail@o {90}{
 \rail@index{faustprocessor}
 \rail@begin{1}{faustprocessor}
 \rail@term{set}[]
@@ -1605,8 +1633,8 @@
 \rail@term{path}[]
 \rail@end
 }
-\rail@i {89}{ faustmessage : signalMsgs | [1] 'msg' float32 | [2] 'get' ('in' | 'out') }
-\rail@o {89}{
+\rail@i {91}{ faustmessage : signalMsgs | [1] 'msg' float32 | [2] 'get' ('in' | 'out') }
+\rail@o {91}{
 \rail@index{faustmessage}
 \rail@begin{4}{faustmessage}
 \rail@bar
@@ -1626,8 +1654,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {90}{ signal : identifier ( | "/" n) | float32 }
-\rail@o {90}{
+\rail@i {92}{ signal : identifier ( | "/" n) | float32 }
+\rail@o {92}{
 \rail@index{signal}
 \rail@begin{3}{signal}
 \rail@bar
@@ -1642,8 +1670,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {91}{ gesturefollower : 'set' 'imtrgf' gesturedimension bufsize ( name + ) }
-\rail@o {91}{
+\rail@i {93}{ gesturefollower : 'set' 'imtrgf' gesturedimension bufsize ( name + ) }
+\rail@o {93}{
 \rail@index{gesturefollower}
 \rail@begin{2}{gesturefollower}
 \rail@term{set}[]
@@ -1656,8 +1684,8 @@
 \rail@endplus
 \rail@end
 }
-\rail@i {92}{ gesturefollower : [1] ( float32 + ) | [2] ('learn' name) | [3] 'follow' | [4] 'stop' | [5] 'clear' | [6] ('likelihoodwindow' float32) | [7] ('tolerance' float32) }
-\rail@o {92}{
+\rail@i {94}{ gesturefollower : [1] ( float32 + ) | [2] ('learn' name) | [3] 'follow' | [4] 'stop' | [5] 'clear' | [6] ('likelihoodwindow' float32) | [7] ('tolerance' float32) }
+\rail@o {94}{
 \rail@index{gesturefollower}
 \rail@begin{8}{gesturefollower}
 \rail@bar
@@ -1690,8 +1718,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {93}{ gesture : 'set' ( float32 +) | 'clear' | 'learn' | 'likelihoodThreshold' float32 }
-\rail@o {93}{
+\rail@i {95}{ gesture : 'set' ( float32 +) | 'clear' | 'learn' | 'likelihoodThreshold' float32 }
+\rail@o {95}{
 \rail@index{gesture}
 \rail@begin{5}{gesture}
 \rail@bar
@@ -1710,8 +1738,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {94}{ gestureget : 'get' (| 'likelihoodThreshold' | 'size') }
-\rail@o {94}{
+\rail@i {96}{ gestureget : 'get' (| 'likelihoodThreshold' | 'size') }
+\rail@o {96}{
 \rail@index{gestureget}
 \rail@begin{3}{gestureget}
 \rail@term{get}[]
@@ -1723,8 +1751,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {95}{ gestureevents : 'watch' ( | 'gfEnter' | 'gfLeave' | 'gfActive' | 'gfIdle' ) ( | messages ) }
-\rail@o {95}{
+\rail@i {97}{ gestureevents : 'watch' ( | 'gfEnter' | 'gfLeave' | 'gfActive' | 'gfIdle' ) ( | messages ) }
+\rail@o {97}{
 \rail@index{gestureevents}
 \rail@begin{5}{gestureevents}
 \rail@term{watch}[]
@@ -1744,8 +1772,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {96}{ gesturevariable : ( 'gflikelihood' | 'gfpos' | 'gfspeed') ( | '[low,high]' ) }
-\rail@o {96}{
+\rail@i {98}{ gesturevariable : ( 'gflikelihood' | 'gfpos' | 'gfspeed') ( | '[low,high]' ) }
+\rail@o {98}{
 \rail@index{gesturevariable}
 \rail@begin{3}{gesturevariable}
 \rail@bar
