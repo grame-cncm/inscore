@@ -63,9 +63,9 @@ In order to understand the problematics of graphic rendering for the synchronize
 %======================================== HIERARCHY ==========================================================
 \subsection{Hierarchy (parent-child relation)}\label{subsec:hierarchy}
 
-"A is parent of B" will be symbolized by : A \subset B
+"A is parent of B" will be symbolized by : $A \subset B$
 
-"B is child of A" will be symbolized by : B \supset A
+"B is child of A" will be symbolized by : $B \supset A$
 
 \bigskip
 
@@ -105,9 +105,9 @@ As the hierarchy between objects defines their OSC path, we can therefore agree 
 %================================== SYNCHRONIZATION ================================================================
 \subsection{Synchronization (master-slave relation)}\label{subsec:sync}
 
-"A is master of B" will be symbolized by : A \leftarrowtail B
+"A is master of B" will be symbolized by : $A \leftarrowtail B$
 
-"B is slave of A" will be symbolized by : B \rightarrowtail A
+"B is slave of A" will be symbolized by : $B \rightarrowtail A$
 \bigskip
 
 On a same level of hierarchy (objects having the same parent), we then can define synchronization between objects. 
@@ -195,7 +195,7 @@ As said before, it is possible for a slave to have several masters. This means t
 
 Now that we have defined the main characteristics of both graphic and time hierarchies, we should try to specify the behavior of synchronized objects, that themselves may have children and/or slaves : What should we do with those children and slaves ? Should they be drawn with their parent or master ? Should they be stretched with it ? Mapped ?
 
-The object A with all its children and slaves will be represented by \AA.
+The object A with all its children and slaves will be represented by $\r A$.
 
 %\begin{multicols}{2}
 %
@@ -232,7 +232,7 @@ The set of all those segments is called segmentation. Without specification, the
 
 \bigskip
 
-The segmentation of the object A will be represented by S_A
+The segmentation of the object A will be represented by $S_A$
 
 %The bounding box of the object A will be represented by B_A
 
@@ -263,11 +263,11 @@ The children having the possibility of being drawn outside of their parent's bou
 \end{tikzpicture}
 \\
 
- B \rightarrowtail A
+ $B \rightarrowtail A$
 
- B \supset (a, b, c)
+ $B \supset (a, b, c)$
 
- B \leftarrowtail C
+ $B \leftarrowtail C$
 
 \columnbreak
 
