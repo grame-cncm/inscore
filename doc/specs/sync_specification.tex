@@ -1,0 +1,310 @@
+
+\documentclass[a4paper]{article}
+\usepackage{interlude}
+\usepackage{pslatex}
+\usepackage[T1]{fontenc}
+\usepackage[utf8x]{inputenc}
+\setlength\parskip{\medskipamount}
+\setlength\parindent{0pt}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{verbatim}
+\usepackage{multicol}
+\usepackage{fixltx2e}
+%\usepackage{hyperref}
+
+\makeatletter
+
+\providecommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
+\newcommand{\ASL}			{ASL}
+\newcommand{\OSC}[1]		{\texttt{#1}}
+\newcommand{\lra}			{$\leftrightarrow$}
+\newcommand{\seg}[1]		{Seg(#1)}
+
+\newenvironment{inscore}	{\vspace{-2mm}\small\verbatim}{\endverbatim\vspace{-2mm}}
+
+\tikzstyle{box}=[rectangle,draw,fill=white!50,text=black] 
+\tikzstyle{child}=[->,very thick,>=latex]
+\tikzstyle{childD}=[->,dotted,very thick,>=latex]
+
+
+\setlength{\parskip}{1mm}
+
+\makeatother
+
+\begin{document}
+
+\title{Graphic rendering of synchronized objects specification \\ v.1.04}
+
+
+\author{Grame, Centre National de Cr√©ation Musicale\\
+{\small <research@grame.fr>} \\
+\vspace{2mm}
+ANR-08-CORD-010
+}
+
+\maketitle
+
+%=============================================== INTRO ===================================================
+\section{Introduction}\label{sec:intro}
+
+An augmented music score is a graphic space that supports music scores and arbitrary graphic resources, including real-time elements, and providing time synchronization between all the score components. Each of those elements possesses a time position and a mapping that bounds their graphical dimensions to the time space.
+
+In a context of interaction between elements (and possibly in the future with other musical processes), we define two types of dependencies between elements : the hierarchy and the synchronization. The first one on a mainly graphical base, and the second one on a time base, influencing the graphical representation.
+
+The aim of this specification is to define the behavior of multiple or chained synchronizations, involving objects with children and slaves.
+
+%======================================== 2 TYPES OF RELATION ==========================================================
+\section{Two types of relations between objects}\label{sec:relations}
+
+In order to understand the problematics of graphic rendering for the synchronized objects, we should first try to describe the two possibility of interaction between objects in an augmented score : the parent-child relation, and the master-slave relation. 
+
+%======================================== HIERARCHY ==========================================================
+\subsection{Hierarchy (parent-child relation)}\label{subsec:hierarchy}
+
+"A is parent of B" will be symbolized by : A \subset B
+
+"B is child of A" will be symbolized by : B \supset A
+
+\bigskip
+
+With the 1.04 version of INScore, any objects of the scene can have children objects, corresponding to a subnode in their OSC address. 
+
+This is a purely graphical relation : the child object is drawn by its parent and in its parent's relative coordinates. It has no meaning in the time space. 
+
+As the hierarchy between objects defines their OSC path, we can therefore agree that a single object can only have a single parent (but several children). 
+
+\bigskip
+
+\begin{figure}[h]
+
+\begin{tikzpicture}
+
+  \node[box] (I) at (0,3) {ITL};
+  \node[box] (S) at (0,1.5) {Scene};
+  \node[box] (O1) at (-1.5,0) {Object1};
+  \node[box] (O2) at (1.5,0) {Object2};
+  \node[box] (C1) at (-3,-1.5) {Child1};
+  \node[box] (C2) at (-1.5,-1.5) {Child2};
+  \node[box] (C3) at (0,-1.5) {Child3};
+  
+  \draw[child] (I)--(S);
+  \draw[child] (S)--(O1); \draw[child] (S)--(O2);
+  \draw[child] (O1)--(C1); \draw[child] (O1)--(C2); \draw[child] (O1)--(C3);
+  % la légende
+  \draw[child] (3,2.5)--(4.5,2.5)node[midway,above]{parent-child};
+  
+\end{tikzpicture}
+
+ \caption{The parent-child hierarchy}
+ \label{fig:hierarchy}
+
+\end{figure}
+
+%================================== SYNCHRONIZATION ================================================================
+\subsection{Synchronization (master-slave relation)}\label{subsec:sync}
+
+"A is master of B" will be symbolized by : A \leftarrowtail B
+
+"B is slave of A" will be symbolized by : B \rightarrowtail A
+\bigskip
+
+On a same level of hierarchy (objects having the same parent), we then can define synchronization between objects. 
+
+Each object on the augmented score has a time position and duration. The other objects on its level can then be synchronized on it, which means that they will be positioned, and possibly stretched, to fit their time position and duration relatively to their master's, and depending on the synchronization mode.
+
+A master can have several slaves and a slave several masters. Each master-slave relation should have its own options and behavior.
+
+This "time hierarchy" will lead to a graphical hierarchy, drove by the relation between the master's and the slave's time and duration.
+
+\begin{figure}[h]
+
+\begin{tikzpicture}
+
+  \node[box] (P) at (0,3) {Parent};
+  \node[box] (O) at (0,1.5) {Object};
+  \node[box] (C1) at (-2,0) {Child1};
+  \node[box] (C2) at (0,0) {Child2};
+  \node[box] (C3) at (2,0) {Child3};
+  
+  \draw[child] (P)--(O);
+  \draw[child] (O)--(C1); \draw[child] (O)--(C2); \draw[child] (O)--(C3);
+  \draw[childD] (C2)to[bend right](C3); \draw[childD] (C1.south)to[bend right](C3.south);
+  %
+  \draw[child] (3,2.5)--(4.5,2.5)node[midway,above]{parent-child};
+  \draw[childD] (3,1.5)--(4.5,1.5)node[midway,above]{is slave of};
+    
+ \end{tikzpicture}
+
+ \caption{The slave-master synchronization}
+ \label{fig:sync}
+
+\end{figure}
+
+
+%==================================== MULTIPLE SYNC ==============================================================
+\section{Multiple synchronizations}\label{sec:multSync}
+
+As said before, it is possible for a slave to have several masters. This means that it will be drawn as many times as the number of masters. The object's appearance will vary depending on its relation with each of its masters (stretch or not, placed on the top or on the bottom, in a relative or absolute time...).
+
+\begin{inscore}
+/ITL/scene/parent/sync child1 child2;
+/ITL/scene/parent/sync child1 child3 h;
+/ITL/scene/parent/sync child1 child4 hv;
+\end{inscore}
+
+%exemple avec partitions et curseur
+
+\begin{figure}[h]
+
+\begin{tikzpicture}
+
+  \node[box] (P) at (0,2) {Parent};
+  \node[box] (C1) at (-3,0) {Child1};
+  \node[box] (C2) at (-1,0) {Child2};
+  \node[box] (C3) at (1,0) {Child3};
+  \node[box] (C4) at (3,0) {Child4};
+  
+  \draw[child] (P)--(C1); \draw[child] (P)--(C2); \draw[child] (P)--(C3); \draw[child] (P)--(C4);
+  \draw[childD] (C1)to[bend right](C2); \draw[childD] (C1)to[bend right](C3); \draw[childD] (C1)to[bend right](C4);
+  % 
+  \draw[child] (3,2)--(4.5,2)node[midway,above]{parent-child};
+  \draw[childD] (3,1)--(4.5,1)node[midway,above]{is slave of};
+    
+ \end{tikzpicture}
+
+\caption{Exemple of multiple synchronization}
+\label{fig:multipleSync} 
+ 
+\end{figure}
+   
+\begin{figure}[h]
+\centering
+
+\includegraphics[width=5cm]{img/sync2.png}   	            
+\includegraphics[width=5cm]{img/sync.png}
+\caption{The purple circle is synchronized on the three other objects}
+\label{fig:sync}
+\end{figure}
+
+
+
+%==================================================================================================
+\section{Synchronization on objects with children or slaves}\label{sec:sync_children}
+
+Now that we have defined the main characteristics of both graphic and time hierarchies, we should try to specify the behavior of synchronized objects, that themselves may have children and/or slaves : What should we do with those children and slaves ? Should they be drawn with their parent or master ? Should they be stretched with it ? Mapped ?
+
+The object A with all its children and slaves will be represented by \AA.
+
+%\begin{multicols}{2}
+%
+%\begin{tikzpicture}
+%  \node[box] (P) at (0,1.5) {Parent};
+%  \node[box] (A) at (-1.5,0) {A};
+%  \node[box] (B) at (1.5,0) {B};
+%  \node[box] (a) at (-3,-1.5) {a};
+%  \node[box] (b) at (-1.5,-1.5) {b};
+%  \node[box] (c) at (0,-1.5) {c};
+%  
+%  \draw[child] (P)--(A); \draw[child] (P)--(B);
+%  \draw[child] (A)--(a); \draw[child] (A)--(b); \draw[child] (A)--(c);
+%  \draw[childD] (B)to[bend left](A);
+%\end{tikzpicture}
+%
+%\columnbreak
+%
+%A \supset (a, b, c)
+%
+%A \leftarrowtail B
+%
+%\r A  =  \bigcup (A, B, a, b, c)
+%
+%\end{multicols}
+
+\subsection{Bounding Boxes, mappings and notations}\label{subsec:bb}
+
+Time synchronization represents the possibility to graphically synchronize the augmented score components in order to align the graphic sections of the score components that correspond to equivalent time spaces. Time synchronization addresses an issue identified as time to graphic mapping, which is the core of the augmented score research project. Both of the slave and master objects should have their own time to graphic mapping, that can be then used to create a graphic to graphic mapping corresponding to the direct link between the two elements. 
+
+This graphic to graphic mapping defines graphical segments in the slave (source) element, that will correspond to graphical segments in the master (destination) element.
+
+The set of all those segments is called segmentation. Without specification, the default mapping will be a unique segment corresponding to the object's bounding box.
+
+\bigskip
+
+The segmentation of the object A will be represented by S_A
+
+%The bounding box of the object A will be represented by B_A
+
+\subsection{Case of the default mapping for the slave}\label{subsec:defaultMap}
+
+In the case of a default mapping, $S_B$ is the bounding box of B. We are then dealing with a synchronization with no stretch or with a vertical stretch. 
+
+Let's take the following case of an object B synchronized on A, with B possessing children and slaves. 
+The children having the possibility of being drawn outside of their parent's bound, the general case is : $S_B \cap S_{child} \neq S_{child}$
+
+\bigskip
+
+\begin{multicols}{2}
+
+\begin{tikzpicture}
+  \node[box] (P) at (0,1.5) {Parent};
+  \node[box] (A) at (-2,0) {A};
+  \node[box] (B) at (0,0) {B};
+  \node[box] (C) at (2,0) {C};
+  \node[box] (a) at (-1.5,-1.5) {a};
+  \node[box] (b) at (0,-1.5) {b};
+  \node[box] (c) at (1.5,-1.5) {c};
+  
+  \draw[child] (P)--(A); \draw[child] (P)--(B); \draw[child] (P)--(C);
+  \draw[child] (B)--(a); \draw[child] (B)--(b); \draw[child] (B)--(c);
+  \draw[childD] (B)to[bend left](A);
+  \draw[childD] (C)to[bend left](B);
+\end{tikzpicture}
+\\
+
+ B \rightarrowtail A
+
+ B \supset (a, b, c)
+
+ B \leftarrowtail C
+
+\columnbreak
+
+\includegraphics[width=8cm]{img/exemple.png}   	            
+
+\end{multicols}
+
+We know that the segment (or, in this case, bounding box) $S_B$ is linked to another segment $S'_B$ that depends on the object master A.
+
+The aim here is to define this segment $S'_B$, but also to find the corresponding segment $S'\textsubscript{\r{B}}$ linked to $S\textsubscript{\r{B}}$, the bounding box of \r{B}.
+
+\begin{multicols}{2}
+
+\includegraphics[width=6cm]{img/exemple3.png}   	            
+
+\columnbreak
+
+ ------  $S\textsubscript{B}$ and its destination segment $S'\textsubscript{B}$
+
+\bigskip
+
+ - - - -  $S\textsubscript{\r{B}}$ and its destination segment $S'\textsubscript{\r{B}}$
+
+\bigskip
+
+ $S\textsubscript{\r{B}} = \bigcup(S_B, S_A, S_a, S_b, S_c) $
+
+\end{multicols}
+
+
+\subsubsection{Definition of $S'\textsubscript{B}$}\label{subsubsec:defDestRect}
+
+\subsubsection{Definition of $S'\textsubscript{\r{B}}$}\label{subsubsec:defDestChildRect}
+
+\subsection{Case of stretching (more complex mapping) of the slave}\label{subsec:complexMap}
+
+\bibliographystyle{unsrt}
+\bibliography{specification}
+
+\end{document}
