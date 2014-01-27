@@ -55,7 +55,7 @@ The aim of this specification is to define the behavior of multiple or chained s
 %======================================== 2 TYPES OF RELATION ==========================================================
 \section{Two types of relations between objects}\label{sec:relations}
 
-In order to understand the problematics of graphic rendering for the synchronized objects, we should first try to describe the two possibility of interaction between objects in an augmented score : the parent-child relation, and the master-slave relation. 
+In order to understand the problematics of graphic rendering for the synchronized objects, we should first try to describe the two possibilities of interaction between objects in an augmented score : the parent-child relation, and the master-slave relation. 
 
 %-------------------------------------------------- Hierarchy ---------------------------------------------------
 \subsection{Hierarchy (parent-child relation)}\label{subsec:hierarchy}
@@ -75,7 +75,7 @@ As the hierarchy between objects defines their OSC path, we can therefore agree 
 \bigskip
 
 \begin{figure}[h]
-
+\begin{center}
 \begin{tikzpicture}
 
   \node[box] (I) at (0,3) {ITL};
@@ -97,6 +97,7 @@ As the hierarchy between objects defines their OSC path, we can therefore agree 
  \caption{The parent-child hierarchy}
  \label{fig:hierarchy}
 
+\end{center}
 \end{figure}
 
 %-------------------------------------------------- Synchronization ---------------------------------------------------
@@ -116,6 +117,7 @@ A master can have several slaves and a slave several masters. Each master-slave 
 This "time hierarchy" will lead to a graphical hierarchy, drove by the relation between the master's and the slave's time and duration.
 
 \begin{figure}[h]
+\begin{center}
 
 \begin{tikzpicture}
 
@@ -137,6 +139,7 @@ This "time hierarchy" will lead to a graphical hierarchy, drove by the relation 
  \caption{The slave-master synchronization}
  \label{fig:sync}
 
+\end{center}
 \end{figure}
 
 
@@ -154,6 +157,7 @@ As said before, it is possible for a slave to have several masters. This means t
 %exemple avec partitions et curseur
 
 \begin{figure}[h]
+\begin{center}
 
 \begin{tikzpicture}
 
@@ -174,6 +178,7 @@ As said before, it is possible for a slave to have several masters. This means t
 \caption{Example of multiple synchronization}
 \label{fig:multipleSync} 
  
+\end{center}
 \end{figure}
    
 \begin{figure}[h]
@@ -226,7 +231,7 @@ Time synchronization represents the possibility to graphically synchronize the a
 
 This graphic to graphic mapping defines graphical segments in the slave (source) element, that will correspond to graphical segments in the master (destination) element.
 
-The set of all those segments is called segmentation. Without specification, the default mapping will be a unique segment corresponding to the object's bounding box.
+The set of all those segments is called segmentation. Without specification, the default segmentation will be a unique segment corresponding to the object's bounding box.
 
 \bigskip
 
@@ -242,9 +247,7 @@ The time to graphic mapping of the object A will be represented by $M_A = Seg_A 
 
 The graphic to graphic mapping of a synchronization between two elements will be represented by $M_{slave/master}$
 
-The date (time position) of the object A will be represented by $t_A$ and its duration (time segment) by $d_A$
-
-
+The date (time position) of the object A will be represented by $t_A$ and its duration (time segment) by $d_A$.
 
 
 %-------------------------------------------------- Default mapping ---------------------------------------------------
@@ -300,13 +303,13 @@ We know that the segment (or, in this case, bounding box) $S_B$ is linked, throu
 
 \begin{center} $(S_B, S'_B) \in M_{B/A}$ with $M_{B/A} = Seg_B * Seg_A$ \end{center}
 
-The aim here is to define this segment $S'_B$, but also to find the corresponding segment $S'\textsubscript{\r{B}}$ linked to $S\textsubscript{\r{B}}$, the bounding box of \r{B}.
+The aim here is to define this segment $S'_B$, but also to find the corresponding segment $S'\textsubscript{\r{B}}$ linked to $S\textsubscript{\r{B}}$, the bounding box of \r{B} (see Figure \ref{fig:sync}).
 
 \begin{figure}[h]
 
 \begin{multicols}{2}
 
-\includegraphics[width=6cm]{img/exemple3.png}   	            
+\includegraphics[width=6cm]{img/exemple2.png}   	            
 
 \columnbreak
 
@@ -333,7 +336,8 @@ To define our destination segments $S'_B$ and $S'\textsubscript{\r{B}}$, we will
 \\
 
 For $\theta : [0,1] \rightarrow [0,1]$ and $I = [a,b[$, we name variety of I, the set of points $V(I,\theta)$ from I defined by :
-\begin{center}$V(I, \theta) =  \lbrace (1 - \theta(t)).a + \theta(t).b \mid t \in [0, 1[ \rbrace$ 
+\begin{center}
+$V(I, \theta) =  \lbrace (1 - \theta(t)).a + \theta(t).b \mid t \in [0, 1[ \rbrace$ 
 \end{center}
 
 Intuitively, the variety of an interval expresses the relationship between this interval and its variety using a function $\theta$ defined on $[0, 1[$.
@@ -353,13 +357,13 @@ Intuitively, the variety of an interval expresses the relationship between this 
 
 Let's now remember that the INScore scene has time representation on its horizontal (x-axis) dimension. The vertical one being purely graphical.
 
-If we look for the position and dimension of our destination segment $S'_B$, we should first try to find the relation between B's date, $t_B$, and an x-position in the mapping $M_A$. 
+If we look for the position and dimension of our destination segment $S'_B$, we should first try to find the relation between the time position of B, $t_B$, and an x-position in the mapping $M_A$. 
 
 As long as we have a time segment $D_A$ in $T_A$ (the time segmentation) that contains the time position $t_B$, we know that we have a graphical segment $S_A$ in $Seg_A$ (the graphical segmentation) that will contain our slave's position. If there is no such segment in $T_A$, the slave will simply not be drawn.
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=12cm]{img/time_graphic3.png}
+\includegraphics[width=9cm]{img/time_graphic3.png}
 \caption{Relation between time and graphical mappings}
 \label{fig:time2graphic}
 \end{center}
@@ -386,7 +390,7 @@ In order to find our destination segment $S'_B$, we will define it as :
 \begin{itemize}
   \item centered on $S'_A$, for its x position,
   \item with a x dimension corresponding to the source $S_B$ width,
-  \item with y position and dimension depending on the vertical stretch and on the synchronization option "syncPos" (syncOver, syncBottom, syncTop).
+  \item with y position and dimension depending on the vertical stretch and on the synchronization option "syncPos" (see Figure \ref{fig:possibleDestRect}).
 \end{itemize}
 
 
@@ -409,7 +413,13 @@ height_{S'_A} & \text{if vertical stretch}
 \end{array}\right.\\
 \end{array}\right.$
 
-% SCHEMA ?
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=15cm]{img/top_over_bottomF.png}
+\caption{Different possibilities for the destination segment $S'_B$}
+\label{fig:possibleDestRect}
+\end{center}
+\end{figure}
 
 
 
@@ -435,8 +445,12 @@ S'_B = V(S'\textsubscript{\r{B}}, \theta)
 \end{array}\right.$
 \end{center}
 
+% SCHEMA ?
+
 %-------------------------------------------------- Case of stretching ---------------------------------------------------
 \subsection{Case of stretching (more complex mapping) of the slave}\label{subsec:complexMap}
+
+
 
 \bibliographystyle{unsrt}
 \bibliography{specification}
