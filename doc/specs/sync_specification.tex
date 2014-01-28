@@ -44,7 +44,7 @@
 \maketitle
 
 %=============================================== INTRO ===================================================
-\section{Introduction}\label{sec:intro}
+\section*{Introduction}\label{sec:intro}
 
 An augmented music score is a graphic space that supports music scores and arbitrary graphic resources, including real-time elements, and providing time synchronization between all the score components. Each of those elements possesses a time position and a mapping that bounds their graphical dimensions to the time space.
 
@@ -415,7 +415,7 @@ height_{S'_A} & \text{if vertical stretch}
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=15cm]{img/top_over_bottomF.png}
+\includegraphics[width=13cm]{img/top_over_bottomF.png}
 \caption{Different possibilities for the destination segment $S'_B$}
 \label{fig:possibleDestRect}
 \end{center}
@@ -445,12 +445,32 @@ S'_B = V(S'\textsubscript{\r{B}}, \theta)
 \end{array}\right.$
 \end{center}
 
-% SCHEMA ?
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=50mm]{img/exemple3.png} 
+\caption{Varieties between $S'_B$ and $S'\textsubscript{\r{B}}$ and between $S_B$ and $S\textsubscript{\r{B}}$}
+\label{fig:mapping}
+\end{center}
+\end{figure}
 
 %-------------------------------------------------- Case of stretching ---------------------------------------------------
-\subsection{Case of stretching (more complex mapping) of the slave}\label{subsec:complexMap}
+\subsection{Case of stretching (the slave is mapped)}\label{subsec:complexMap}
 
+In the case of a slave with mapping that should be stretched horizontally to fit its parent's mapping, it has been decided to take only into account the children that are in the object's bound.
+As our object can be partially mapped, and so partially drawn in its master's mapping, there are no more reasons to extrapolate the drawing of its children than the drawing of the rest (not in the mapping) of the object itself.
 
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=8cm]{img/mapping.png} \hspace*{2cm}
+\includegraphics[width=4cm]{img/mapping2.png}
+\caption{Case of a slave with mapping}
+\label{fig:mapping}
+\end{center}
+\end{figure}
+
+%-------------------------------------------------- Conclusion ---------------------------------------------------
+%\section*{Conclusion}\label{sec:conclusion}
+% conlusion ?
 
 \bibliographystyle{unsrt}
 \bibliography{specification}
