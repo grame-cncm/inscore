@@ -17,11 +17,11 @@
 
 \makeatletter
 
-\providecommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
-\newcommand{\ASL}			{ASL}
+\newcommand{\parent}			{\supset}
+\newcommand{\child}			{\subset}
+\newcommand{\master}			{\leftarrowtail}
+\newcommand{\slave}			{\rightarrowtail}
 \newcommand{\OSC}[1]		{\texttt{#1}}
-\newcommand{\lra}			{$\leftrightarrow$}
-\newcommand{\seg}[1]		{Seg(#1)}
 
 \newenvironment{inscore}	{\vspace{-2mm}\small\verbatim}{\endverbatim\vspace{-2mm}}
 
@@ -60,9 +60,9 @@ In order to understand the problematics of graphic rendering for the synchronize
 %-------------------------------------------------- Hierarchy ---------------------------------------------------
 \subsection{Hierarchy (parent-child relation)}\label{subsec:hierarchy}
 
-"A is parent of B" will be symbolized by : $A \supset B$
+"A is parent of B" will be symbolized by : $A \parent B$
 
-"B is child of A" will be symbolized by : $B \subset A$
+"B is child of A" will be symbolized by : $B \child A$
 
 \bigskip
 
@@ -103,9 +103,9 @@ As the hierarchy between objects defines their OSC path, we can therefore agree 
 %-------------------------------------------------- Synchronization ---------------------------------------------------
 \subsection{Synchronization (master-slave relation)}\label{subsec:sync}
 
-"A is master of B" will be symbolized by : $A \leftarrowtail B$
+"A is master of B" will be symbolized by : $A \master B$
 
-"B is slave of A" will be symbolized by : $B \rightarrowtail A$
+"B is slave of A" will be symbolized by : $B \slave A$
 \bigskip
 
 On a same level of hierarchy (objects having the same parent), we can define synchronization between objects. 
@@ -281,11 +281,11 @@ The children having the possibility of being drawn outside of their parent's bou
 \end{tikzpicture}
 \\
 
- $B \rightarrowtail A$
+ $B \slave A$
 
- $B \supset (a, b, c)$
+ $B \parent (a, b, c)$
 
- $B \leftarrowtail C$
+ $B \master C$
 
 \columnbreak
 
