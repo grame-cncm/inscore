@@ -1253,7 +1253,7 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {68}{ projectionString : '[' int32 (| '\unhbox \voidb@x \bgroup \let \unhbox \voidb@x \setbox \@tempboxa \hbox {\global \mathchardef \accent@spacefactor \spacefactor }\accent 3 \egroup \spacefactor \accent@spacefactor ' (| int32)) ']' }
+\rail@i {68}{ projectionString : '[' int32 (| '\let \prOteCt \relax \Protect \csname acp:c\endcsname {22}{}' (| int32)) ']' }
 \rail@o {68}{
 \rail@index{projectionString}
 \rail@begin{3}{projectionString}
@@ -1261,7 +1261,7 @@
 \rail@token{int32}[]
 \rail@bar
 \rail@nextbar{1}
-\rail@term{\unhbox \voidb@x \bgroup \let \unhbox \voidb@x \setbox \@tempboxa \hbox {\global \mathchardef \accent@spacefactor \spacefactor }\accent 3 \egroup \spacefactor \accent@spacefactor }[]
+\rail@term{\let \prOteCt \relax \Protect \csname acp:c\endcsname {22}{}}[]
 \rail@bar
 \rail@nextbar{2}
 \rail@token{int32}[]
@@ -1449,7 +1449,7 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {79}{ timeVar : ('date' | 'rdate') (| ':' mapname) (| '[n/d]') (| '\%' 'f') }
+\rail@i {79}{ timeVar : ('date' | 'rdate') (| ':' mapname) (| '[n/d]') (| '%' 'f') }
 \rail@o {79}{
 \rail@index{timeVar}
 \rail@begin{2}{timeVar}
@@ -1469,7 +1469,7 @@
 \rail@endbar
 \rail@bar
 \rail@nextbar{1}
-\rail@term{\%}[]
+\rail@term{%}[]
 \rail@term{f}[]
 \rail@endbar
 \rail@end
