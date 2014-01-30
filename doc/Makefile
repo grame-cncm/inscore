@@ -9,6 +9,9 @@ TMP := tmpl2h.tex
 all: $(DOC)
 	
 html:
+	make htlatex
+
+oldhtml:
 	latex2html $(HTMLOPT) OSCMsg.tex
 	cp css/OSCMsg.css OSCMsg
 
