@@ -10,6 +10,12 @@ INScore resources are released under the Creative Common license.
 ------------------------------------------------------------------
 
 -------------------------------
+** January 30 2014
+-------------------------------
+New window opacity script (S-windowOpacity)
+New layers scripts (S-layer)
+
+-------------------------------
 ** July 25 2013
 -------------------------------
 New log window script (S-log), java engine access (S-javascript)
