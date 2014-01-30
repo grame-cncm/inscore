@@ -1,4 +1,4 @@
-version := 1.044
+version := 1.05
 system	:= $(shell uname -s)
 
 i2i90  := ../tools/inscore2inscore90
