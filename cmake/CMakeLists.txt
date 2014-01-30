@@ -47,6 +47,8 @@ if(APPLE)
  else ()
 	message (STATUS "Only the current architecture will be compiled - Use -DDIST=yes to change.")
  endif ()
+ set (CMAKE_OSX_DEPLOYMENT_TARGET 10.6)
+ set (MACOSX_DEPLOYMENT_TARGET 10.6)
  set (CMAKE_C++_FLAGS -mmacosx-version-min=10.6)
 endif()
 
