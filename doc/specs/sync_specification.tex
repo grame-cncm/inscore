@@ -22,6 +22,7 @@
 \newcommand{\master}			{\leftarrowtail}
 \newcommand{\slave}			{\rightarrowtail}
 \newcommand{\OSC}[1]		{\texttt{#1}}
+\newcommand{\variete}			{\ensuremath{\mathcal{V}}}
 
 \newenvironment{inscore}	{\vspace{-2mm}\small\verbatim}{\endverbatim\vspace{-2mm}}
 
@@ -108,13 +109,12 @@ As the hierarchy between objects defines their OSC path, we can therefore agree 
 "B is slave of A" will be symbolized by : $B \slave A$
 \bigskip
 
-On a same level of hierarchy (objects having the same parent), we can define synchronization between objects. 
+Time synchronization represents the possibility to graphically synchronize the augmented score components in order to align the graphic sections of the score components that correspond to equivalent time spaces. Each object on the augmented score has a time position and a duration. The other objects on its level of hierarchy (objects having the same parent) can then be synchronized on it, which means that they will be positioned, and possibly stretched, to fit their time position and duration relatively to their master's, and depending on the synchronization mode. 
 
-Each object on the augmented score has a time position and duration. The other objects on its level can then be synchronized on it, which means that they will be positioned, and possibly stretched, to fit their time position and duration relatively to their master's, and depending on the synchronization mode.
+Both of the slave and master objects should have their own time to graphic mapping, that can then be used to create a graphic to graphic mapping corresponding to the direct link between the two elements. 
 
 A master can have several slaves and a slave several masters. Each master-slave relation should have its own options and behavior.
 
-This "time hierarchy" will lead to a graphical hierarchy, drove by the relation between the master's and the slave's time and duration.
 
 \begin{figure}[h]
 \begin{center}
@@ -142,11 +142,33 @@ This "time hierarchy" will lead to a graphical hierarchy, drove by the relation 
 \end{center}
 \end{figure}
 
+This graphic to graphic mapping defines graphical segments in the slave (source) element, that will correspond to graphical segments in the master (destination) element.
+The set of all those segments is called segmentation. Without specification, the default segmentation will be a unique segment corresponding to the object's bounding box.
+
+In practice, the graphic to graphic mapping is built by calculating a list of pairs of graphical segments (or rectangles), each one of these pairs representing the path from the slave's to master's spaces.
+
+\bigskip
+
+The graphical segmentation of the object A will be represented by $Seg_A$
+
+%The middle point of a graphical segment S will be represented by $m_S$
+
+The bounding box of the object A will be represented by $S_A$
+
+The time segmentation of the object A will be represented by $T_A$
+
+The time to graphic mapping of the object A will be represented by $M_A = Seg_A \times T_A$
+
+The graphic to graphic mapping of a synchronization between two elements will be represented by $M_{slave/master}$
+
+The date (time position) of the object A will be represented by $t_A$ and its duration (time segment) by $d_A$.
+
+
 
 %==================================== MULTIPLE SYNC ==============================================================
 \section{Multiple synchronizations}\label{sec:multSync}
 
-As said before, it is possible for a slave to have several masters. This means that it will be drawn as many times as the number of masters. The object's appearance will vary depending on its relation with each of its masters (stretch or not, placed on the top or on the bottom, in a relative or absolute time...).
+As said before, it is possible for a slave to have several masters. This means that it will be drawn as many times as the number of masters, and have as many mappings (a list of lists of pairs of rectangles !). The object's appearance will vary depending on its relation with each of its masters (stretch or not, placed on the top or on the bottom, in a relative or absolute time...).
 
 \begin{inscore}
 /ITL/scene/parent/sync child1 child2;
@@ -190,14 +212,93 @@ As said before, it is possible for a slave to have several masters. This means t
 \label{fig:sync}
 \end{figure}
 
-
-
 %========================================== SYNC WITH CHILDREN AND SLAVES ========================================================
 \section{Synchronization on objects with children or slaves}\label{sec:sync_children}
 
 Now that we have defined the main characteristics of both graphic and time hierarchies, we should try to specify the behavior of synchronized objects, that themselves may have children and/or slaves : What should we do with those children and slaves ? Should they be drawn with their parent or master ? Should they be stretched with it ? Mapped ?
+\\
 
 The object A with all its children and slaves will be represented by \r{A}.
+\\
+
+Let's take the following case of an object B synchronized on a score A and having a slave C and children d, e and f. 
+\\
+\begin{figure}[h]
+\centering
+\includegraphics[width=8cm]{img/score.png}   	            
+\caption{Synchronization of an object with children and slaves}
+\label{fig:defaultMap}
+\end{figure}
+
+\begin{center}
+\begin{tikzpicture}
+  \node[box] (P) at (0,3) {Parent};
+  \node[box] (A) at (-2,1.5) {A};
+  \node[box] (B) at (0,1.5) {B};
+  \node[box] (C) at (2,1.5) {C};
+  \node[box] (d) at (-1.5,0) {d};
+  \node[box] (e) at (0,0) {e};
+  \node[box] (f) at (1.5,0) {f};
+  
+  \draw[child] (P)--(A); \draw[child] (P)--(B); \draw[child] (P)--(C);
+  \draw[child] (B)--(d); \draw[child] (B)--(e); \draw[child] (B)--(f);
+  \draw[childD] (B)to[bend left](A);
+  \draw[childD] (C)to[bend left](B);
+\end{tikzpicture}
+\end{center}
+
+ $B \slave A$
+
+ $B \parent (d, e, f)$
+
+ $B \master C$
+
+
+
+%-------------------------------------------------- Bounding Box---------------------------------------------------
+\subsection{Bounding Boxes of parent and children}\label{subsec:bb}
+
+First of all, we should define the rectangle $S\textsubscript{\r{B}}$ corresponding to the set of the object with its $n$ children and slaves. 
+
+\begin{center} $ S\textsubscript{\r{B}}  =\{ \bigcup \limits_{i=1}^n S_i \} \bigcup S_B$ \end{center}
+
+Note that the union of rectangles used here is defined in \cite{fober12cmj2} by the bounding box of all rectangles.% (figure \ref{fig:rectunion}).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=40mm]{img/rect.png}
+\caption{Union of two rectangles (graphical segments)}
+\label{fig:rectunion}
+\end{figure}
+
+The children having the possibility of being drawn outside of their parent's bound, the general case is : 
+\begin{center} $i \child B \nRightarrow S_i \subset S_B$ \end{center}
+%and so :
+%\begin{center} $ S\textsubscript{\r{B}} \bigcap S_B \neq S\textsubscript{\r{B}}$  \end{center}
+
+\begin{figure}[h]
+
+\begin{multicols}{2}
+
+\includegraphics[width=4cm]{img/score3.png}   	            
+
+\columnbreak
+
+ - - - -  $S\textsubscript{B}$ %and its destination segment $S'\textsubscript{B}$
+
+\bigskip
+
+ ------  $S\textsubscript{\r{B}}$ %and its destination segment $S'\textsubscript{\r{B}}$
+
+\bigskip
+
+ $S\textsubscript{\r{B}} = \bigcup(S_B, S_A, S_C, S_d, S_e, S_f) $
+
+\end{multicols}
+\caption{The source graphical segments}
+\label{fig:sync}
+\end{figure}
+
 
 %\begin{multicols}{2}
 %
@@ -224,131 +325,38 @@ The object A with all its children and slaves will be represented by \r{A}.
 %
 %\end{multicols}
 
-%-------------------------------------------------- Mapping and notations ---------------------------------------------------
-\subsection{Bounding Boxes, mappings and notations}\label{subsec:bb}
-
-Time synchronization represents the possibility to graphically synchronize the augmented score components in order to align the graphic sections of the score components that correspond to equivalent time spaces. Both of the slave and master objects should have their own time to graphic mapping, that can then be used to create a graphic to graphic mapping corresponding to the direct link between the two elements. 
-
-This graphic to graphic mapping defines graphical segments in the slave (source) element, that will correspond to graphical segments in the master (destination) element.
-
-The set of all those segments is called segmentation. Without specification, the default segmentation will be a unique segment corresponding to the object's bounding box.
-
-\bigskip
-
-The graphical segmentation of the object A will be represented by $Seg_A$
-
-%The middle point of a graphical segment S will be represented by $m_S$
-
-The bounding box of the object A will be represented by $S_A$
-
-The time segmentation of the object A will be represented by $T_A$
-
-The time to graphic mapping of the object A will be represented by $M_A = Seg_A * T_A$
-
-The graphic to graphic mapping of a synchronization between two elements will be represented by $M_{slave/master}$
-
-The date (time position) of the object A will be represented by $t_A$ and its duration (time segment) by $d_A$.
-
-
 %-------------------------------------------------- Default mapping ---------------------------------------------------
 \subsection{Case of the default mapping for the slave}\label{subsec:defaultMap}
 
-In the case of a default mapping, $Seg_B = S_B$ . We are then dealing with a synchronization with no stretch or with a vertical stretch. 
-
-Let's take the following case of an object B synchronized on A, with B possessing children and slaves. 
-The children having the possibility of being drawn outside of their parent's bound, the general case is : 
-\begin{center} $S_B \cap S_{child} \neq S_{child}$ \end{center}
-
-\bigskip
-
-\begin{figure}[h]
-
-\begin{multicols}{2}
-
-\begin{tikzpicture}
-  \node[box] (P) at (0,1.5) {Parent};
-  \node[box] (A) at (-2,0) {A};
-  \node[box] (B) at (0,0) {B};
-  \node[box] (C) at (2,0) {C};
-  \node[box] (a) at (-1.5,-1.5) {a};
-  \node[box] (b) at (0,-1.5) {b};
-  \node[box] (c) at (1.5,-1.5) {c};
-  
-  \draw[child] (P)--(A); \draw[child] (P)--(B); \draw[child] (P)--(C);
-  \draw[child] (B)--(a); \draw[child] (B)--(b); \draw[child] (B)--(c);
-  \draw[childD] (B)to[bend left](A);
-  \draw[childD] (C)to[bend left](B);
-\end{tikzpicture}
+In the case of a default mapping, $Seg_B = \{S_B\}$ . We are then dealing with a synchronization with no stretch or with a vertical stretch. 
 \\
-
- $B \slave A$
-
- $B \parent (a, b, c)$
-
- $B \master C$
-
-\columnbreak
-
-\includegraphics[width=8cm]{img/exemple.png}   	            
-
-\end{multicols}
-
-\caption{Synchronization of an object with children and slaves}
-\label{fig:defaultMap}
-\end{figure}
-
-\bigskip
 
 We know that the segment (or, in this case, bounding box) $S_B$ is linked, through a graphic to graphic mapping, to another segment $S'_B$ that depends on the object master A : 
 
-\begin{center} $(S_B, S'_B) \in M_{B/A}$ with $M_{B/A} = Seg_B * Seg_A$ \end{center}
+\begin{center} $(S_B, S'_B) \in M_{B/A}$ with $M_{B/A} = Seg_B \times Seg_A$ \end{center}
 
-The aim here is to define this segment $S'_B$, but also to find the corresponding segment $S'\textsubscript{\r{B}}$ linked to $S\textsubscript{\r{B}}$, the bounding box of \r{B} (see Figure \ref{fig:sync}).
-
-\begin{figure}[h]
-
-\begin{multicols}{2}
-
-\includegraphics[width=6cm]{img/exemple2.png}   	            
-
-\columnbreak
-
- ------  $S\textsubscript{B}$ and its destination segment $S'\textsubscript{B}$
-
-\bigskip
-
- - - - -  $S\textsubscript{\r{B}}$ and its destination segment $S'\textsubscript{\r{B}}$
-
-\bigskip
-
- $S\textsubscript{\r{B}} = \bigcup(S_B, S_A, S_a, S_b, S_c) $
-
-\end{multicols}
-\caption{The source and destination graphical segments}
-\label{fig:sync}
-\end{figure}
-
+The aim here is to define this segment $S'_B$, but also to find the corresponding segment $S'\textsubscript{\r{B}}$ linked to $S\textsubscript{\r{B}}$, the bounding box of \r{B}.
 
 %-------------------------------------------------- variety  ---------------------------------------------------
 \subsubsection{Variety of a segment}\label{subsubsec:variety}
 
-To define our destination segments $S'_B$ and $S'\textsubscript{\r{B}}$, we will appeal to the concepts of continuous mapping and variety.
+To define our destination segments $S_B$ and $S'\textsubscript{\r{B}}$, we will appeal to the concepts of continuous mapping and variety .%\cite{fober:10b}.
 \\
 
-For $\theta : [0,1] \rightarrow [0,1]$ and $I = [a,b[$, we name variety of I, the set of points $V(I,\theta)$ from I defined by :
+For $\theta : [0,1] \rightarrow [0,1]$ and $I = [a,b[$, we name variety of I, the set of points $\variete(I,\theta)$ from I defined by :
 \begin{center}
-$V(I, \theta) =  \lbrace (1 - \theta(t)).a + \theta(t).b \mid t \in [0, 1[ \rbrace$ 
+$\variete(I, \theta) =  \lbrace (1 - \theta(t)).a + \theta(t).b \mid t \in [0, 1[ \rbrace$ 
 \end{center}
 
 Intuitively, the variety of an interval expresses the relationship between this interval and its variety using a function $\theta$ defined on $[0, 1[$.
 \\
 \begin{figure}[h]
-\includegraphics[width=15cm]{img/variety.png}
+\centering
+\includegraphics[width=11cm]{img/vmapping.pdf}
 \caption{Varieties of two graphical segments}
 \label{fig:variety}
 \end{figure}
 % référence : pas publiée ??
-
 
 %-------------------------------------------------- destination rect ---------------------------------------------------
 \subsubsection{Definition of $S'\textsubscript{B}$}\label{subsubsec:defDestRect}
@@ -363,7 +371,7 @@ As long as we have a time segment $D_A$ in $T_A$ (the time segmentation) that co
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=9cm]{img/time_graphic3.png}
+\includegraphics[width=9cm]{img/time_graphic4.png}
 \caption{Relation between time and graphical mappings}
 \label{fig:time2graphic}
 \end{center}
@@ -372,8 +380,8 @@ As long as we have a time segment $D_A$ in $T_A$ (the time segmentation) that co
 We can see the time position $t_B$ as a time segment $d_B = [t_B, t_B[$ that is a variety of $D_A$. We can then deduce a graphical segment $S'_A$ corresponding to the time segment $d_B$ :
 
 \begin{center}
-$d_B = V(D_A, \theta)$\\
-$S'_A = V(S_A, (\theta, 1))$
+$d_B = \variete(D_A, \theta)$\\
+$S'_A = \variete(S_A, (\theta, 1))$
 \end{center}
 
 This relation gives us a one-dimensional segment $S'_A$ with :
@@ -388,7 +396,7 @@ This relation gives us a one-dimensional segment $S'_A$ with :
 
 In order to find our destination segment $S'_B$, we will define it as :
 \begin{itemize}
-  \item centered on $S'_A$, for its x position,
+  \item with its x origin position aligned on $S'_A$,
   \item with a x dimension corresponding to the source $S_B$ width,
   \item with y position and dimension depending on the vertical stretch and on the synchronization option "syncPos" (see Figure \ref{fig:possibleDestRect}).
 \end{itemize}
@@ -415,13 +423,11 @@ height_{S'_A} & \text{if vertical stretch}
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=13cm]{img/top_over_bottomF.png}
+\includegraphics[width=16cm]{img/top_over_bottomF.png}
 \caption{Different possibilities for the destination segment $S'_B$}
 \label{fig:possibleDestRect}
 \end{center}
 \end{figure}
-
-
 
 
 %-------------------------------------------------- destination rect with children ---------------------------------------------------
@@ -432,7 +438,7 @@ We can see that, if we know $S_B$ (the object's bounding box) and $S\textsubscri
 Furthermore, the mapping $M_{B/A}$ gives us the destination segment $S'_B$, so we can deduce the segment $S'\textsubscript{\r{B}}$ by applying the same relation between $S'_B$ and $S'\textsubscript{\r{B}}$ than between $S_B$ and $S\textsubscript{\r{B}}$.
 \\
 
-for : \begin{center} $(S_B, S'_B) \in M_{B/A}$ and $M_{B/A} = Seg_B * Seg_A$ \end{center}
+for : \begin{center} $(S_B, S'_B) \in M_{B/A}$ and $M_{B/A} = Seg_B \times Seg_A$ \end{center}
 
 we have :
 
@@ -440,17 +446,38 @@ we have :
 $(S\textsubscript{\r{B}}, S'\textsubscript{\r{B}}) \mid \left\lbrace 
 \begin{array}{lcl} 
 S\textsubscript{\r{B}} \cap S_B = S_B\\ [0.5cm]
-\exists \theta \mid S_B = V(S\textsubscript{\r{B}}, \theta)\\ [0.5cm]
-S'_B = V(S'\textsubscript{\r{B}}, \theta)
+\exists \theta \mid S_B = \variete(S\textsubscript{\r{B}}, \theta)\\ [0.5cm]
+S'_B = \variete(S'\textsubscript{\r{B}}, \theta)
 \end{array}\right.$
 \end{center}
 
 \begin{figure}[h]
+\begin{multicols}{2}
 \begin{center}
-\includegraphics[width=50mm]{img/exemple3.png} 
-\caption{Varieties between $S'_B$ and $S'\textsubscript{\r{B}}$ and between $S_B$ and $S\textsubscript{\r{B}}$}
-\label{fig:mapping}
+\includegraphics[width=5cm]{img/score3.png} 
 \end{center}
+\columnbreak
+
+\bigskip
+
+\begin{center}
+ - - - -  $S\textsubscript{B}$ and its destination segment $S'\textsubscript{B}$
+
+\bigskip
+
+ ------  $S\textsubscript{\r{B}}$ and its destination segment $S'\textsubscript{\r{B}}$
+
+\bigskip
+
+\includegraphics[width=9cm]{img/scorefinalbox.png}
+
+\end{center}
+
+\end{multicols}
+
+\caption{The source and destination graphical segments}
+\label{fig:mapping}
+
 \end{figure}
 
 %-------------------------------------------------- Case of stretching ---------------------------------------------------
@@ -461,8 +488,17 @@ As our object can be partially mapped, and so partially drawn in its master's ma
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=8cm]{img/mapping.png} \hspace*{2cm}
-\includegraphics[width=4cm]{img/mapping2.png}
+\begin{multicols}{2}
+source B:
+
+\includegraphics[width=6cm]{img/stretchB.png} 
+
+\columnbreak
+destination A: 
+\vspace{10cm}
+\includegraphics[width=9cm]{img/stretchA.png}
+
+\end{multicols}
 \caption{Case of a slave with mapping}
 \label{fig:mapping}
 \end{center}
@@ -473,6 +509,6 @@ As our object can be partially mapped, and so partially drawn in its master's ma
 % conlusion ?
 
 \bibliographystyle{unsrt}
-\bibliography{specification}
+\bibliography{interlude}
 
 \end{document}
