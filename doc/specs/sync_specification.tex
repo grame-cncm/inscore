@@ -272,7 +272,7 @@ Note that the union of rectangles used here is defined in \cite{fober12cmj2} by 
 \end{figure}
 
 The children having the possibility of being drawn outside of their parent's bound, the general case is : 
-\begin{center} $i \child B \nRightarrow S_i \subset S_B$ \end{center}
+\begin{center} $i \child B \nRightarrow S_i \subset S_B$ \hspace{0.2cm} and \hspace{0.2cm} $ S_B \subseteq S\textsubscript{\r{B}} $ \end{center}
 %and so :
 %\begin{center} $ S\textsubscript{\r{B}} \bigcap S_B \neq S\textsubscript{\r{B}}$  \end{center}
 
@@ -410,9 +410,9 @@ width_{S'_B} = width_{S_B}\\
 \bigskip
 y _{S'_B} = \left\lbrace
 \begin{array}{lcl}
-y_{S_B} = y_{S'_A} - (height_{S'_A} + height_{S_B})/2 & \text{if syncTop}\\ 
+y_{S_B} = y_{top_{S'_A}} - \hspace{1mm} height_{S_B}/2 & \text{if syncTop}\\ 
 y_{S_B} = y_{S'_A} & \text{if syncOver}\\
-y_{S_B} = y_{S'_A} + (height_{S'_A} + height_{S_B})/2 & \text{if syncBottom}
+y_{S_B} = y_{bottom_{S'_A}} + \hspace{1mm} height_{S_B}/2 & \text{if syncBottom}
 \end{array}\right.\\
 height _{S'_B} = \left\lbrace
 \begin{array}{lcl}
@@ -445,9 +445,12 @@ we have :
 \begin{center}
 $(S\textsubscript{\r{B}}, S'\textsubscript{\r{B}}) \mid \left\lbrace 
 \begin{array}{lcl} 
-S\textsubscript{\r{B}} \cap S_B = S_B\\ [0.5cm]
-\exists \theta \mid S_B = \variete(S\textsubscript{\r{B}}, \theta)\\ [0.5cm]
-S'_B = \variete(S'\textsubscript{\r{B}}, \theta)
+  S\textsubscript{\r{B}} \cap S_B = S_B\\ [0.2cm]
+  \exists \theta \mid \left\lbrace
+  \begin{array}{lcl}
+    S_B = \variete(S\textsubscript{\r{B}}, \theta)\\% [0.5cm]
+    S'_B = \variete(S'\textsubscript{\r{B}}, \theta)
+  \end{array}\right.
 \end{array}\right.$
 \end{center}
 
