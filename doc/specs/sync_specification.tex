@@ -67,7 +67,7 @@ In order to understand the problematics of graphic rendering for the synchronize
 
 \bigskip
 
-With the 1.04 version of INScore, any objects of the scene can have children objects, corresponding to a subnode in their OSC address. 
+With the 1.04 version of INScore, any object of the scene can have children objects, each one corresponding to a subnode in their OSC address. 
 
 This is a purely graphical relation : the child object is drawn by its parent and in its parent's relative coordinates. It has no meaning in the time space. 
 
@@ -331,7 +331,7 @@ The children having the possibility of being drawn outside of their parent's bou
 In the case of a default mapping, $Seg_B = \{S_B\}$ . We are then dealing with a synchronization with no stretch or with a vertical stretch. 
 \\
 
-We know that the segment (or, in this case, bounding box) $S_B$ is linked, through a graphic to graphic mapping, to another segment $S'_B$ that depends on the object master A : 
+We know that the segment (or, in this case, bounding box) $S_B$ is linked, through a graphic to graphic mapping, to another segment $S'_B$ that depends on the master object A : 
 
 \begin{center} $(S_B, S'_B) \in M_{B/A}$ with $M_{B/A} = Seg_B \times Seg_A$ \end{center}
 
