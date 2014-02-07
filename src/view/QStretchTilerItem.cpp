@@ -56,6 +56,14 @@ namespace inscore
 #if 1
 void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsItem * , QWidget * )
 {
+	if ( fNeedCacheUpdate )
+	{
+		updateCache();
+        fNeedCacheUpdate = false;
+	}
+
+    chooseCache();
+    
     QRectF rect = boundingRect();
     if ((rect.width() == 0) || (rect.height() == 0)) return;
 
@@ -72,15 +80,7 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
         xscale += 1;
         yscale += 1;
     }
-/*
-	if ( fNeedCacheUpdate )
-	{
-		// scaling by 2.0 is necessary to correct approximations due to int size of images
-		// it minimizes the cast effect and drawing looks correct using this scaling
-		fCache = VExport::itemToImage( fOriginItem , xscale , yscale, QColor(255, 255, 255, 0), true );
-        fNeedCacheUpdate = false;
-	}
-*/
+
     painter->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
     
     VGraphicsImageItem * img = dynamic_cast<VGraphicsImageItem*>(fOriginItem);
@@ -89,7 +89,9 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
 
     if(!fMapping.size())
     {
-        QRectF sourceRect = QRectF(rect.left(), rect.top(), fCache.width(), fCache.height());
+        // the offset means that the top-left points of the images with and without children are not the same.
+        rect = QRectF(rect.x()-(offset.x()/xscale), rect.y()-(offset.y()/yscale), rect.width(), rect.height());
+        QRectF sourceRect = QRectF(0, 0, fCache.width(), fCache.height());
         painter->drawImage(rect, fCache, sourceRect);
     }
     for ( int i = 0 ;  i < fMapping.size(); i++ )
@@ -106,7 +108,6 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
         painter->drawImage( destRect , fCache , sourceRect );
 #endif
     }
-    
 }
 
 #else

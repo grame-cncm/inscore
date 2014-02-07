@@ -61,7 +61,6 @@ class VGraphicsItemView : public VObjectView
 
 		virtual void updateView(IObject * object);			// updates the object view
 		virtual void updateObjectSize( IObject * object );	// updates the object size
-        virtual void updateCache(); //updates the image to be passed to the QStretchTilerItem
 		virtual void setParentView (IObject * object);		// updates the object parent view
 		virtual void setParentItem( VObjectView* parent )		{ setParentItem((VGraphicsItemView*)parent); }
 		virtual void setParentItem( VGraphicsItemView* parent ){ fParent = parent ? parent->item() : 0;
@@ -69,6 +68,9 @@ class VGraphicsItemView : public VObjectView
     
         virtual void setEffect (GraphicEffect& effect)		{ item()->setGraphicsEffect (effect.get()); }
 		virtual GraphicEffect getEffect () const			{ return GraphicEffect ( item()->graphicsEffect()); }
+
+        virtual void setHeight(SMaster m, float height);
+        virtual void setPos(SMaster m, QPointF pos);
 
 		/// \brief Maps the IObject [-1,1] y coordinate to the referenceRect().
 		double relative2SceneY(float y, QGraphicsItem * item = 0 ) const;
@@ -150,37 +152,50 @@ class VGraphicsItemView : public VObjectView
 		static TFloatPoint qPointFToFloatPoint(const QPointF& p)	{ return TFloatPoint(p.x(),p.y());}
 		/// \brief TFloatPoint to QPointF converter.
 		static QPointF floatPointToQPointF(const TFloatPoint& p)	{ return QPointF(p.x(),p.y());}
-
-		/// \brief Activate/desactivate stretch.
-		//void setStretch( bool isStretchOn, SMaster master ) ;
-
     
-        void setSlave(std::vector<SMaster> masters);
+        /// \brief Look in the fTilerItems map to see if we must add new pairs of slave-master (new representation)
+		void findNewSync(SMaster master);
+    
+        /// \brief Look in the fTilerItems map if some pairs of slave-master (and so fTilerItems) are obsolete
+		void findObsoleteSync(std::vector<SMaster> masters);
+    
+        /// \brief handles the fTilerItems to make them fit the model list of slave-master
+		void setSlave(std::vector<SMaster> masters);
         
 		/// \brief Returns the QGraphicsItem or the QTilerItem, whether the object is slaved or not
 				QGraphicsItem * item(SMaster m = 0)	{return m ? fTilerItems.find(m)->second : fItem;}
 		const	QGraphicsItem * item(SMaster m = 0) const    {return m ? fTilerItems.find(m)->second : fItem;}
-
-    
-	//	bool isStretchOn() const { return fIsStretchOn; }
 		
 		/// \brief Builds the QTilerItem to be used for stretching.
 		virtual QStretchTilerItem* buildTiler();
-		/// \brief Must be called when the QGraphicsItem has been modified in VGraphicsItemView subclasses.
+		
+        /// \brief Must be called when the QGraphicsItem has been modified in VGraphicsItemView subclasses.
 		void itemChanged();
 		
-		void deleteDebugItems();		/// \brief deletes the debug node items
+        /// \brief deletes the debug node items
+		void deleteDebugItems();
+
+        /// \brief updates the fTilerItem when it is h stretch (with mapping)
+        void updateItemHStretch(QStretchTilerItem * item, const SGraphic2GraphicMapping& slave2Master);
+
+        /// \brief updates the fTilerItem when it has no stretch
+        void updateItemNoStretch(QStretchTilerItem* item, IObject* o, SMaster master);
+
+        /// \brief updates the geometry (position, centering, scale) of the item
+        void updateGeometry(QGraphicsItem* item, IObject* o, float x, float y);
+
+        /// \brief updates the attributes of the QItem
+        void updateItem(QGraphicsItem* item, IObject* o);
 
 		QGraphicsItem * fItem;			/// \brief The QGraphicsItem used to render the IObject.
 		std::map<SMaster, QStretchTilerItem *> fTilerItems; /// \brief The QTilerItem used when the object is a synchronized
+        std::map<std::string, QPointF> fPositions;
+        std::map<std::string, float> fHeights;
         QList<QGraphicsItem*> fDebugItems;
 		int fBrushColorStartIndex;
 
 		QRectF fLastValidRect;
-	//	bool fIsStretchOn;
-    //    bool fIsSlaved;
         int fNbMasters;
-        QImage fCache;
     
         QGraphicsItem* fParent;
         QGraphicsScene* fScene;

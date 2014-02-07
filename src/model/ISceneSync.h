@@ -49,7 +49,7 @@ class ISceneSync : public IVNode
 {	
 	ISync	fSync;
 
-	MsgHandler::msgStatus syncMsg (const std::string& slave);
+	MsgHandler::msgStatus syncMsg (const std::string& slave, const std::string& master = "");
 	MsgHandler::msgStatus syncMsg ( const std::string& slave, const std::string& slaveMap, 
 									const std::string& master, const std::string& masterMap,
 									Master::StretchType stretch, Master::SyncType sync, Master::VAlignType valign);
@@ -84,7 +84,7 @@ class ISceneSync : public IVNode
 		/*! \brief breaks a synchronization link
 			\param o a slave object
 		*/
-		virtual void delsync(SIObject& o)						{ fSync.remove (o);}
+		virtual void delsync(SIObject& o, SMaster m = 0)	{ fSync.remove (o, m);}
 
 		/*! \brief cleanup the relations set
 			\see ISync::cleanup

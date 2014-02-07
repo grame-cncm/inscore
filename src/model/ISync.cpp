@@ -89,8 +89,8 @@ void ISync::sync(const SIObject& slave, SMaster master)
             }
         }
         // if the relation we wanted to add already exists, we don't need to update the cache
-        if(!alreadyExists)
-            slave->getView()->updateCache();
+      //  if(!alreadyExists)
+      //      slave->getView()->updateCache();
         insert(std::pair<SIObject,SMaster>(slave, master));
 		slave->modify();
 		slave->setState(IObject::kModified);

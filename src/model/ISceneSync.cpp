@@ -153,15 +153,29 @@ bool ISceneSync::name2mapName (const string& str, string& name, string& map) con
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus ISceneSync::syncMsg (const std::string& slave)
+MsgHandler::msgStatus ISceneSync::syncMsg (const std::string& slave, const std::string& master)
 {
 	subnodes so;
 	if (!fParent->find(slave, so)) return MsgHandler::kBadParameters;		// no target objects to be slave
-	for (subnodes::iterator i = so.begin(); i != so.end(); i++) {
-		delsync(*i);
-		(*i)->UseGraphic2GraphicMapping (false);
-		(*i)->setState (kMasterModified);
-	}
+	subnodes mso;
+    if (master.size() && fParent->find(master, mso))
+    {
+        for (subnodes::iterator i = so.begin(); i != so.end(); i++) {
+            std::vector<SMaster> masters = fParent->getMasters((*i));
+            for(int j = 0; j < masters.size(); j++)
+            {
+                if (masters[j]->getMaster()->name() == master)
+                    delsync((*i),masters[j]);
+            }
+        }
+    }
+    else
+    {
+        for (subnodes::iterator i = so.begin(); i != so.end(); i++) {
+            delsync(*i);
+            (*i)->setState (kMasterModified);
+        }
+    }
 	return MsgHandler::kProcessed;
 }
 
@@ -208,20 +222,30 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)
 	Master::VAlignType align = Master::kDefaultSyncAlign;
 	Master::StretchType stretch = Master::kDefaultStretch;
 	Master::SyncType syncType = Master::kDefaultSync;
-	for (int i=nextindex+1; i<n; i++) {
-		string mode = msg->param(i)->value<string>("");
-		Master::VAlignType val = Master::string2syncalign(mode);
-		if (val != Master::kUnknown) align = val;
-		else {
-			Master::StretchType sval = Master::string2stretchmode(mode);
-			if (sval != Master::kStretchUnknown) stretch = sval;
-			else {
-				Master::SyncType mval = Master::string2synctype(mode);
-				if (mval != Master::kTypeUnknown) syncType = mval;
-			}
-		}
-	}
-	return syncMsg (slave, slaveMapName, master, masterMapName, stretch, syncType, align);
+	
+    string firstParam;
+    if((nextindex+1) < n)
+        firstParam = msg->param(nextindex+1)->value<string>("");
+    
+    if(firstParam == "del")
+        return syncMsg(slave, master);
+    else
+    {
+        for (int i=nextindex+1; i<n; i++) {
+            string mode = msg->param(i)->value<string>("");
+            Master::VAlignType val = Master::string2syncalign(mode);
+            if (val != Master::kUnknown) align = val;
+            else {
+                Master::StretchType sval = Master::string2stretchmode(mode);
+                if (sval != Master::kStretchUnknown) stretch = sval;
+                else {
+                    Master::SyncType mval = Master::string2synctype(mode);
+                    if (mval != Master::kTypeUnknown) syncType = mval;
+                }
+            }
+        }
+        return syncMsg (slave, slaveMapName, master, masterMapName, stretch, syncType, align);
+    }
 }
 
 //--------------------------------------------------------------------------

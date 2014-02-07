@@ -60,11 +60,11 @@ class IMappingUpdater : public SlaveMapUpdater
 
 	protected:
 				void			hstretchUpdate (IObject* o, const Master* m);				
-				void			VStretch		(IObject* o, const GraphicSegment& gseg);
-				bool			updateNOHStretch (IObject* o, const Master* m);
+				void			VStretch		(IObject* o, const GraphicSegment& gseg, SMaster m);
+				bool			updateNOHStretch (IObject* o, SMaster m);
 				
-				GraphicSegment	updateNoStretch (IObject*, const Master* master);
-				void			updateVStretch  (IObject*, const Master* master);
+				GraphicSegment	updateNoStretch (IObject*, SMaster master);
+				void			updateVStretch  (IObject*, SMaster master);
 
 		/// check adjacent segments and make sure the end and begin of successives egments match at an epsilon approximate
 		SGraphic2GraphicMapping			relink (const Graphic2GraphicRelation& rel, float epsilon) const;

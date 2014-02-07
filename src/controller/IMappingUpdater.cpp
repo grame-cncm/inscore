@@ -57,13 +57,10 @@ template <typename T>	std::ostream& operator << (std::ostream& out, const std::s
 }
 
 //--------------------------------------------------------------------------
-void IMappingUpdater::VStretch (IObject* o, const GraphicSegment& gseg)	
-{ 
+void IMappingUpdater::VStretch (IObject* o, const GraphicSegment& gseg, SMaster m)
+{
 	float h = gseg.yinterval().size();		// get the graphic segment height
-//	o->graphicView()->updateObjectSize (o);
-	float oh = o->getHeight();
-//	if (oh) o->setSyncScale ( h / oh);		// and scale the slave object accordingly
-	if (oh) o->setScale ( h / oh);			// and scale the slave object accordingly
+    o->getView()->setHeight(m, h); // we now don't change the scale of the object itself but only the HEIGHT of one of its REPRESENTATION (QStretchTilerItem)
 }
 
 //---------------------------------------------------------------------------------------
@@ -110,7 +107,7 @@ bool IMappingUpdater::date2point (const rational& date, const SRelativeTime2Grap
 // when the slave date is outside the master map, then the master date is taken and the 
 // system looks for the corresponding location in the slave map.
 //---------------------------------------------------------------------------------------
-GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, const Master* m)	
+GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m)
 { 
 	GraphicSegment masterSeg;
 
@@ -130,7 +127,8 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, const Master* m
 	}
 
 	slave->UseGraphic2GraphicMapping (false, master->name());						// don't use the object graphic segmentation and mapping
-	float x, xs; bool found = false;
+	slave->getView()->setHeight(m,slave->getHeight());
+    float x, xs; bool found = false;
 	GraphicSegment slaveSeg;
 
 	if (date2point (date, map, masterSeg, x)) {						// do the slave date exists in the master map ?
@@ -146,25 +144,24 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, const Master* m
 		}
 	}
 	if (found) {
-		slave->setXPos( x );									//  set the slave x coordinate
 		float y = getYPos (slave, masterSeg, align);
-		slave->setYPos( y + m->getDy());						// set the slave y coordinate 
+		slave->getView()->setPos(m, QPointF(x,y + m->getDy())); // we now don't change the position of the object itself but only of one of its REPRESENTATION (QStretchTilerItem)
 		return masterSeg;
 	}
-	slave->setXPos( kUnknownLocation );			// puts the object away when no mapping available or missing resources
-	slave->setYPos( kUnknownLocation );	
+//	slave->setXPos( kUnknownLocation );			// puts the object away when no mapping available or missing resources
+//	slave->setYPos( kUnknownLocation );
 	return masterSeg;
 }
 
 //--------------------------------------------------------------------------
-void IMappingUpdater::updateVStretch (IObject* o, const Master* m)	
+void IMappingUpdater::updateVStretch (IObject* o, SMaster m)
 { 
 	GraphicSegment gseg = updateNoStretch (o, m);
-	VStretch (o, gseg);
+	VStretch (o, gseg, m);
 }
 
 //--------------------------------------------------------------------------
-bool IMappingUpdater::updateNOHStretch (IObject* o, const Master* m)	
+bool IMappingUpdater::updateNOHStretch (IObject* o, SMaster m)
 { 
 	if (m &&  m->getMaster()) {
 		switch (m->getStretch()) {

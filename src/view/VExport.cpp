@@ -84,11 +84,12 @@ void VExport::paintChildrenOnDevice( QPainter * painter, QStyleOptionGraphicsIte
 }
 
 //------------------------------------------------------------------------------------------------------------------------
-QImage VExport::itemToImage( QGraphicsItem * item , float& xScaleFactor , float& yScaleFactor , const QColor fillColor, bool drawChildren )
+QImage VExport::itemToImage( QGraphicsItem * item , float& xScaleFactor , float& yScaleFactor, QPointF& offset , const QColor fillColor, bool drawChildren, bool extend )
 {
     QRectF rect = item->boundingRect();
-	//if we export the children with the object, they might be out of its bounds : we have to take the smallest boundingRect that contains the item AND its children
-    if(drawChildren)
+	// if we export the children with the object, they might be out of its bounds : we have to take the smallest boundingRect that contains the item AND its children.
+    // nonetheless, we keep the different behaviors : draw children ot not, extend the bounding rect or not.
+    if(drawChildren && extend)
     {
         rect |= item->childrenBoundingRect();
     }
@@ -97,13 +98,20 @@ QImage VExport::itemToImage( QGraphicsItem * item , float& xScaleFactor , float&
 	QImage pic( int(rect.width() * xScaleFactor), int(rect.height() * yScaleFactor), QImage::Format_ARGB32 );
 	pic.fill( fillColor.rgba() );
 	paintOnDevice( &pic , item , xScaleFactor , yScaleFactor, dx, dy, drawChildren );
+    
+    // we need to register this information in the case of an export made by a QStretchTilerItem, to know where to place the extended rect ( with children ),
+    // so that the "origin" rect (of the object alone) keeps its position
+    offset.setX(dx);
+    offset.setY(dy);
+    
 	return pic;
 };
 
 //------------------------------------------------------------------------------------------------------------------------
 void VExport::exportToImage( QGraphicsItem * item , const QString& fileName , float& xScale , float& yScale, bool drawChildren )
 {
-	itemToImage(item , xScale , yScale , Qt::white, drawChildren ).save( fileName );
+    QPointF point;
+	itemToImage(item , xScale , yScale , point , Qt::white, drawChildren ).save( fileName );
 }
 
 //------------------------------------------------------------------------------------------------------------------------

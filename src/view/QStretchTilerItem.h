@@ -30,6 +30,7 @@
 #include <QGraphicsRectItem>
 #include <QImage>
 #include <QPair>
+#include <VExport.h>
 
 //#define PIXMAPBASED
 
@@ -44,16 +45,20 @@ class QStretchTilerItem: public QGraphicsRectItem
 	QPixmap fCache;
 #else
 	QImage fCache;
+	QImage fExtendedCache;
+	QImage fSimpleCache;
 #endif
-	float fCacheFactor;
 	typedef QPair<QRectF,QRectF> QRectFPair;
 	QList<QRectFPair> fMapping;
+    QPointF offset;
 
+    bool fNeedCacheUpdate;
+    bool fIsExtended;
 
 	public:
 
-		QStretchTilerItem( QGraphicsItem* tiledItem , QImage cache , QGraphicsItem* parent = 0)
-		: QGraphicsRectItem( QRect() , parent ) , fOriginItem(tiledItem), fCache(cache) , fCacheFactor(1.0) {}
+		QStretchTilerItem( QGraphicsItem* tiledItem, QGraphicsItem* parent = 0)
+		: QGraphicsRectItem( QRect() , parent ) , fOriginItem(tiledItem), fNeedCacheUpdate(true), fIsExtended(false) {}
 		
 		virtual ~QStretchTilerItem() {}
 		
@@ -69,7 +74,22 @@ class QStretchTilerItem: public QGraphicsRectItem
 		virtual void addSegment( const QRectF& sourceRect , const QRectF& destRect);
 		
 		/// \brief	setting of the new image
-		void setCache(QImage &cache) { fCache.swap(cache);}
+		void setExtended(bool extended) {fIsExtended = extended;}
+    
+        void needUpdate(bool needCacheUpdate){fNeedCacheUpdate = needCacheUpdate;}
+
+        void updateCache(){
+            float xscale = 1.f;
+            float yscale = 1.f;
+            // the offset means that the top-left points of the images with and without children are not the same.
+            // the first boolean means that we draw also the children
+            // the second boolean means that we extend or not the bounding rect to the children.
+            fSimpleCache = VExport::itemToImage( fOriginItem , xscale , yscale, offset, QColor(255, 255, 255, 0), true, false );
+            fExtendedCache = VExport::itemToImage( fOriginItem , xscale , yscale, offset, QColor(255, 255, 255, 0), true, true );
+            
+        }
+    
+        void chooseCache(){fCache = fIsExtended ? fExtendedCache : fSimpleCache;}
 
 		/// \brief QGraphicsItem implementation (a QGraphicsItem must not draw outside of its boundingRect()).
 		QRectF boundingRect() const { return rect(); }
