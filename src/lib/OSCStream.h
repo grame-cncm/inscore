@@ -63,8 +63,11 @@ class IColor;
 */
 class OSCStream 
 {
-	enum		{ kOutBufferSize = 16384 };
+	public:
 	enum state	{ kIdle, kInProgress };
+	
+	private:
+	enum		{ kOutBufferSize = 16384 };
 	
 	state		fState;
 	int			fPort;				// the destination UDP port
@@ -77,6 +80,7 @@ class OSCStream
 //	void initSocket();
 	
 	public:
+
 	static bool start();
 	static void stop();
 	static void sendEvent(const IMessage* msg, const std::string& dst, int port);

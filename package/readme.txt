@@ -62,9 +62,8 @@ INScore was initiated in the Interlude project (http://interlude.ircam.fr),
 funded by the French National Research Agency [ANR- 08-CORD-010].
 I would like to thank all the people who have been contributing 
 to INScore design and development, and especially Christophe Daudin, 
-Eric Ravel, my colleagues Stéphane Letz, Yann Orlarey and all the 
-Interlude team.
+Eric Ravel, Camille Le Roi, my colleagues Stéphane Letz, Yann Orlarey 
+and all the Interlude team.
 
 ======================================================
 For more information, contact me at <fober@grame.fr>
-

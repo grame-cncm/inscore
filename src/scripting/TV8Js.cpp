@@ -24,11 +24,14 @@
 */
 
 #include <iostream>
+#include <fstream>
 #include <sstream>
 
 #include "TV8Js.h"
 #include "TEnv.h"
+#include "IAppl.h"
 #include "OSCStream.h"
+
 #ifdef NO_OSCSTREAM
 # define ITLErr		cerr
 # define ITLEndl	endl
@@ -48,6 +51,13 @@ class V8Disposer {
 		virtual ~V8Disposer() {	v8::V8::Dispose(); }
 };
 static V8Disposer gV8Disposer;
+
+
+//--------------------------------------------------------------------------------------------
+static std::string makeAbsolutePath( const char* file )
+{
+	return IAppl::absolutePath (file);
+}
 
 //--------------------------------------------------------------------------------------------
 /* tools for v8 */
@@ -76,6 +86,32 @@ static void ArrayString2IString(const char* str, string& out)
 		out += c;
 		prev = c;
 	}
+}
+
+// The callback that is invoked by v8 whenever the JavaScript 'readfile'
+// function is called. Read the file and returns its content as a string.
+static v8::Handle<v8::Value> ReadFile(const v8::Arguments& args)
+{
+	if (args.Length() != 1) {
+		ITLErr << "javascript : readfile invoked with incorrect arguments" << ITLEndl;
+		return v8::Undefined();
+	}
+	v8::String::Utf8Value str(args[0]);
+	std::string path = makeAbsolutePath (ToCString(str));
+	ifstream file (path.c_str());
+	if (!file.is_open()) {
+		ITLErr << "javascript : readfile can't open file " << path << ITLEndl;
+		return v8::Undefined();
+	}
+    file.seekg (0, file.end);
+    int length = file.tellg();
+    file.seekg (0, file.beg);
+    char * buffer = new char [length];
+    // read data as a block:
+	file.read (buffer,length);
+	v8::Local<v8::String> content = v8::String::New(buffer);
+	delete[] buffer;
+	return content;
 }
 
 // The callback that is invoked by v8 whenever the JavaScript 'print'
@@ -111,6 +147,14 @@ static v8::Handle<v8::Value> Version(const v8::Arguments& args) {
   return v8::String::New(v8::V8::GetVersion());
 }
 
+
+//--------------------------------------------------------------------------------------------
+void TV8Js::setRootPath	(const char* path)
+{
+	fRootPath = path;
+//	global->Set(v8::String::New("rootpath"), v8::String::New(path));
+}
+
 //--------------------------------------------------------------------------------------------
 /* The javascript error reporter callback. */
 void TV8Js::ReportException(v8::TryCatch* try_catch) const
@@ -140,6 +184,8 @@ v8::Persistent<v8::Context> TV8Js::CreateV8Context()
 	v8::Handle<v8::ObjectTemplate> global = v8::ObjectTemplate::New();
 	// Bind the global 'print' function to the C++ Print callback.
 	global->Set(v8::String::New("print"), v8::FunctionTemplate::New(Print));
+	// Bind the global 'print' function to the C++ Print callback.
+	global->Set(v8::String::New("readfile"), v8::FunctionTemplate::New(ReadFile));
 	// Bind the 'version' function
 	global->Set(v8::String::New("version"), v8::FunctionTemplate::New(Version));
 	return v8::Context::New(NULL, global);

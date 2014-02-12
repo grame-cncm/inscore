@@ -1,15 +1,24 @@
 
 %===============================
+%:    Differences to version 1.03
+\sublevel{Differences to version 1.03}
+\begin{itemize}
+\item incorrect error message for watch messages corrected
+\item new javascript \OSC{readfile} function (see section \fullref{jsobj})
+\item log window is now available from the application 'Tools' menu
+\item new \OSC{brushStyle} attribute (see section \fullref{brush})
+\item new \OSC{layer} object (see section \fullref{inlineset})
+\item new \OSC{save} method specific to the log window: saves the window content to a file (see section \fullref{ITLlog})
+\item new \OSC{event} method supported at object level for UI events simulation
+\item new \OSC{del} watchable event: sent when deleting an object (see section \fullref{miscevents})
+\item new \OSC{gmnstream} guido stream object (see section \fullref{inlineset})
+\end{itemize}
+
+%===============================
 %:    Differences to version 1.0
 \sublevel{Differences to version 1.0}
 \begin{itemize}
-\item new \OSC{layer} object (see section \fullref{inlineset})
-\item new \OSC{gmnstream} guido stream object (see section \fullref{inlineset})
-\item new brush \OSC{brushStyle} option (see section \fullref{brush})
-\item new \OSC{save} method specific to the log window: saves the window content to a file
-\item new \OSC{event} method supported at object level for UI events simulation
-\item new \OSC{del} watchable event: sent when deleting an object (see section \fullref{miscevents})
-\item log window utility provided as a new static node at application level (/ITL/log). (see section \fullref{ITLlog}). The log window is also available from the viewer 'Tools' menu.
+\item log window utility provided as a new static node at application level (\OSC{/ITL/log}) (see section \fullref{ITLlog}).
 \item new \OSC{systemCount} read only attribute for Guido scores (see section \fullref{gmnpage})
 \item IRCAM gesture follower support (see section \fullref{GF})
 \item javascript engine is available at the static address /ITL/scene/javascript and can be activated using a 'run' method  (see section \fullref{jsobj})

@@ -95,7 +95,7 @@ common:
 	make samples
 		
 doc: 
-	make -C $(docsrc)
+#	make -C $(docsrc)
 	make copydoc
 		
 copydoc: 
@@ -165,6 +165,9 @@ src:
 	cp readme.txt $(package)-src
 	cp ../readme.txt $(package)-src/install
 	cp -r doc $(package)-src
+	@echo ===================================	
+	@echo manually cleanup src folder from hidden, unused and unwanted files
+	@echo ===================================	
 	tar czf $(package)-src.tgz $(package)-src
 
 win32:

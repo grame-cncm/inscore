@@ -84,7 +84,6 @@ MsgHandler::msgStatus IGuidoStream::set (const IMessage* msg )
 void IGuidoStream::clear()
 {
     GuidoResetStream(fGuidoStream);
-    setVisible(false);
 }
 
 
@@ -105,9 +104,7 @@ MsgHandler::msgStatus IGuidoStream::write (const IMessage* msg )
 //--------------------------------------------------------------------------
 void IGuidoStream::writeStream (std::string t)
 {
-    setVisible(true);
-    
-    const char * newchar = t.c_str();
+	const char * newchar = t.c_str();
     GuidoWriteStream(fGuidoStream, newchar);
     std::string globalString = GuidoGetStream(fGuidoStream);
     setGMN(globalString);
