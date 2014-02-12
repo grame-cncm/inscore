@@ -80,13 +80,10 @@ class QStretchTilerItem: public QGraphicsRectItem
         void updateCache(){
             float xscale = 1.f;
             float yscale = 1.f;
-            // the offset means that the top-left points of the images with and without children are not the same.
             // the first boolean means that we draw also the children
             // the second boolean means that we extend or not the bounding rect to the children.
             fSimpleCache = VExport::itemToImage( fOriginItem , xscale , yscale, QColor(255, 255, 255, 0), true, false );
-            fSimpleCache.save("/users/camille/simpleCache.png");
             fExtendedCache = VExport::itemToImage( fOriginItem , xscale , yscale, QColor(255, 255, 255, 0), true, true );
-            fExtendedCache.save("/users/camille/extendedCache.png");
         }
     
         void chooseCache(){fCache = fIsStretch ? fSimpleCache : fExtendedCache;}
