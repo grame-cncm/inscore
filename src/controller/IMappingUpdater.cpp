@@ -60,7 +60,7 @@ template <typename T>	std::ostream& operator << (std::ostream& out, const std::s
 void IMappingUpdater::VStretch (IObject* o, const GraphicSegment& gseg, SMaster m)
 {
 	float h = gseg.yinterval().size();		// get the graphic segment height
-    o->getView()->setHeight(m, h); // we now don't change the scale of the object itself but only the HEIGHT of one of its REPRESENTATION (QStretchTilerItem)
+    o->getView()->setSyncHeight(m, h); // we now don't change the scale of the object itself but only the HEIGHT of one of its REPRESENTATION (QStretchTilerItem)
 }
 
 //---------------------------------------------------------------------------------------
@@ -127,7 +127,7 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m)
 	}
 
 	slave->UseGraphic2GraphicMapping (false, master->name());						// don't use the object graphic segmentation and mapping
-	slave->getView()->setHeight(m,slave->getHeight());
+	slave->getView()->setSyncHeight(m,slave->getHeight());
     float x, xs; bool found = false;
 	GraphicSegment slaveSeg;
 
@@ -145,11 +145,10 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m)
 	}
 	if (found) {
 		float y = getYPos (slave, masterSeg, align);
-		slave->getView()->setPos(m, QPointF(x,y + m->getDy())); // we now don't change the position of the object itself but only of one of its REPRESENTATION (QStretchTilerItem)
+		slave->getView()->setSyncPos(m, QPointF(x,y + m->getDy())); // we now don't change the position of the object itself but only of one of its REPRESENTATION (QStretchTilerItem)
 		return masterSeg;
 	}
-//	slave->setXPos( kUnknownLocation );			// puts the object away when no mapping available or missing resources
-//	slave->setYPos( kUnknownLocation );
+    slave->getView()->setSyncPos(m, QPointF(kUnknownLocation,kUnknownLocation)); // puts the object away when no mapping available or missing resources
 	return masterSeg;
 }
 

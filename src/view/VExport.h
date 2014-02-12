@@ -95,7 +95,7 @@ class VExport
 		* \param xScale a reference to the x scale factor. Note that it may be dynamically changed to ensure a minimum size of 10 x 10
 		* \param yScale a reference to the y scale factor. Note that it may be dynamically changed to ensure a minimum size of 10 x 10
 		*/
-		static QImage	itemToImage( QGraphicsItem * item, float& xScale, float& yScale, QPointF& offset, const QColor fillColor = QColor(255,255,255,0), bool drawChildren = false, bool extend = false );
+		static QImage	itemToImage( QGraphicsItem * item, float& xScale, float& yScale, const QColor fillColor = QColor(255,255,255,0), bool drawChildren = false, bool extend = false );
 
 		/*!
 		*	\brief Exports the specified QGraphicsItem to an image ; the format is infered from

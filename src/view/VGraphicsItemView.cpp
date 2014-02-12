@@ -227,7 +227,7 @@ void VGraphicsItemView::updateTransform(IObject* o)
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateItemHStretch(QStretchTilerItem * item, const SGraphic2GraphicMapping& slave2Master)
 {
-    item->setExtended(false);
+    item->setStretch(true);
     item->setRect(item->parentItem() ? item->parentItem()->boundingRect():item->scene()->sceneRect());
     float x = item->boundingRect().center().x();
     float y = item->boundingRect().center().y();
@@ -259,24 +259,23 @@ void VGraphicsItemView::updateItemHStretch(QStretchTilerItem * item, const SGrap
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateItemNoStretch(QStretchTilerItem* item, IObject* o, SMaster master)
 {
-    item->setExtended(true);
+    item->setStretch(false);
     
     QRectF originRect = fItem->boundingRect();
     QRectF extendedRect = originRect | fItem->childrenBoundingRect();
     float xscale = extendedRect.width()/originRect.width();
     float yscale = extendedRect.height()/originRect.height();
     
-    double width = relative2SceneWidth(o->getWidth(), item);
-    double height = relative2SceneHeight((fHeights.find(master->getMaster()->name())->second), item);
+    double width = relative2SceneWidth(o->getWidth(), item)*xscale;
+    double height = relative2SceneHeight((fHeights.find(master->getMaster()->name())->second), item)*yscale;
+    
     double x = relative2SceneX( fPositions.find(master->getMaster()->name())->second.x(), item );
     double y = relative2SceneY( fPositions.find(master->getMaster()->name())->second.y(), item );
     
-    // first we set the bounding rect to the object's rect (to set the positions corresponding to the object)
-    item->setRect(QRectF(0,0,width, height));
-    updateGeometry(item, o, x, y);
-    // and then we can set the bounding rect to the "extended rect" (including the children)
-    item->setRect(QRectF(0,0,width*xscale,height*yscale));
-    
+    double dx = (originRect.center().x()-extendedRect.center().x())/extendedRect.width()*width;
+    double dy = (originRect.center().y()-extendedRect.center().y())/extendedRect.height()*height;
+    item->setRect(QRectF(0,0,width,height));
+    updateGeometry(item, o, x-dx, y-dy);
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -492,7 +491,7 @@ void VGraphicsItemView::setSlave( std::vector<SMaster> masters )
 }
 
 //------------------------------------------------------------------------------------------------------------
-void VGraphicsItemView::setHeight(SMaster m, float height)
+void VGraphicsItemView::setSyncHeight(SMaster m, float height)
 {
     std::map<std::string, float>::iterator it = fHeights.find(m->getMaster()->name());
     if(it != fHeights.end())
@@ -502,7 +501,7 @@ void VGraphicsItemView::setHeight(SMaster m, float height)
 }
 
 //------------------------------------------------------------------------------------------------------------
-void VGraphicsItemView::setPos(SMaster m, QPointF pos)
+void VGraphicsItemView::setSyncPos(SMaster m, QPointF pos)
 {
     std::map<std::string, QPointF>::iterator it = fPositions.find(m->getMaster()->name());
     if(it != fPositions.end())

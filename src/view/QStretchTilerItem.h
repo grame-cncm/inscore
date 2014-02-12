@@ -50,15 +50,14 @@ class QStretchTilerItem: public QGraphicsRectItem
 #endif
 	typedef QPair<QRectF,QRectF> QRectFPair;
 	QList<QRectFPair> fMapping;
-    QPointF offset;
 
     bool fNeedCacheUpdate;
-    bool fIsExtended;
+    bool fIsStretch;
 
 	public:
 
 		QStretchTilerItem( QGraphicsItem* tiledItem, QGraphicsItem* parent = 0)
-		: QGraphicsRectItem( QRect() , parent ) , fOriginItem(tiledItem), fNeedCacheUpdate(true), fIsExtended(false) {}
+		: QGraphicsRectItem( QRect() , parent ) , fOriginItem(tiledItem), fNeedCacheUpdate(true), fIsStretch(false) {}
 		
 		virtual ~QStretchTilerItem() {}
 		
@@ -74,7 +73,7 @@ class QStretchTilerItem: public QGraphicsRectItem
 		virtual void addSegment( const QRectF& sourceRect , const QRectF& destRect);
 		
 		/// \brief	setting of the new image
-		void setExtended(bool extended) {fIsExtended = extended;}
+		void setStretch(bool stretch) {fIsStretch = stretch;}
     
         void needUpdate(bool needCacheUpdate){fNeedCacheUpdate = needCacheUpdate;}
 
@@ -84,12 +83,13 @@ class QStretchTilerItem: public QGraphicsRectItem
             // the offset means that the top-left points of the images with and without children are not the same.
             // the first boolean means that we draw also the children
             // the second boolean means that we extend or not the bounding rect to the children.
-            fSimpleCache = VExport::itemToImage( fOriginItem , xscale , yscale, offset, QColor(255, 255, 255, 0), true, false );
-            fExtendedCache = VExport::itemToImage( fOriginItem , xscale , yscale, offset, QColor(255, 255, 255, 0), true, true );
-            
+            fSimpleCache = VExport::itemToImage( fOriginItem , xscale , yscale, QColor(255, 255, 255, 0), true, false );
+            fSimpleCache.save("/users/camille/simpleCache.png");
+            fExtendedCache = VExport::itemToImage( fOriginItem , xscale , yscale, QColor(255, 255, 255, 0), true, true );
+            fExtendedCache.save("/users/camille/extendedCache.png");
         }
     
-        void chooseCache(){fCache = fIsExtended ? fExtendedCache : fSimpleCache;}
+        void chooseCache(){fCache = fIsStretch ? fSimpleCache : fExtendedCache;}
 
 		/// \brief QGraphicsItem implementation (a QGraphicsItem must not draw outside of its boundingRect()).
 		QRectF boundingRect() const { return rect(); }

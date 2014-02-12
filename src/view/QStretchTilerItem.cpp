@@ -87,10 +87,9 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
     QGraphicsVideoItem * video = dynamic_cast<QGraphicsVideoItem*>(fOriginItem);
     float adjust = (img || video) ? kGapAdjust : 0;
 
-    if(!fMapping.size())
+    if(!fMapping.size() && !fIsStretch)
     {
         // the offset means that the top-left points of the images with and without children are not the same.
-        rect = QRectF(rect.x()-(offset.x()/xscale), rect.y()-(offset.y()/yscale), rect.width(), rect.height());
         QRectF sourceRect = QRectF(0, 0, fCache.width(), fCache.height());
         painter->drawImage(rect, fCache, sourceRect);
     }

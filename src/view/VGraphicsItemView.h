@@ -69,8 +69,8 @@ class VGraphicsItemView : public VObjectView
         virtual void setEffect (GraphicEffect& effect)		{ item()->setGraphicsEffect (effect.get()); }
 		virtual GraphicEffect getEffect () const			{ return GraphicEffect ( item()->graphicsEffect()); }
 
-        virtual void setHeight(SMaster m, float height);
-        virtual void setPos(SMaster m, QPointF pos);
+        virtual void setSyncHeight(SMaster m, float height);
+        virtual void setSyncPos(SMaster m, QPointF pos);
 
 		/// \brief Maps the IObject [-1,1] y coordinate to the referenceRect().
 		double relative2SceneY(float y, QGraphicsItem * item = 0 ) const;
