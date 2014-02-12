@@ -125,7 +125,10 @@ The address is similar to a Unix path and supports regular expressions as define
 
 \note{} A valid address always starts with \OSC{/ITL} that is the application address and that is also used as a discriminant for incoming messages.
 \begin{rail}
-OSCAddress : '/' (identifier | regexp) +
+OSCAddress : '/' target +
+\end{rail}
+\begin{rail}
+target : identifier | regexp
 \end{rail}
 
 Identifiers may include letters, hyphen, underscore and numbers apart at first position (see lexical definition section \fullref{lex}).
@@ -134,6 +137,8 @@ Identifiers may include letters, hyphen, underscore and numbers apart at first p
 \begin{rail}
 identifier : startid (nextid +)
 \end{rail}
+
+\OSC{regexp} represents regular expressions as defined by the Open Sound Control.
 
 Some specific nodes (like \emph{signals} - see section \ref{ssignal}) accept OSC messages without message string:
 \begin{rail}
