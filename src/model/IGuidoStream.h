@@ -29,7 +29,7 @@
 
 #include <string>
 #include "IGuidoCode.h"
-#include "GuidoParse.h"
+#include "GUIDOParse.h"
 
 namespace inscore
 {
