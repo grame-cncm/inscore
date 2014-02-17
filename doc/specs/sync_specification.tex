@@ -156,7 +156,7 @@ A master can have several slaves and a slave several masters. Each master-slave 
 This graphic to graphic mapping defines graphical segments in the slave (source) element, that will correspond to graphical segments in the master (destination) element.
 The set of all those segments is called segmentation. 
 
-In practice, the graphic to graphic mapping is built by calculating a list of pairs of graphical segments (or rectangles), each one of these pairs representing the path from the slave's to master's spaces.
+In practice, the graphic to graphic mapping is built by calculating a list of pairs of graphical segments (or rectangles), each one of these pairs representing the path from the slave's to the master's spaces.
 \\
 
 Without specification, the default segmentation will be a unique segment corresponding to the object's bounding box.
@@ -390,7 +390,7 @@ This relation gives us a one-dimensional segment $S'_A$ with :
 
 In order to find our destination segment $S'_B$, we will define it as :
 \begin{itemize}
-  \item with its x origin position aligned on $S'_A$,
+  \item with its x origin aligned on $S'_A$,
   \item with a x size corresponding to the source $S_B$ width,
   \item with y position and size depending on the vertical stretch and on the synchronization option "syncPos" (see Figure \ref{fig:possibleDestRect}).
 \end{itemize}
@@ -400,18 +400,18 @@ $S'_B = [{x_0} , {x_1}[ \times [{y_0} , {y_1}[  \hspace{2mm} \mid \left\lbrace
 \begin{array}{lcl} 
   x_0 = x_{S'_A} - ( 1 + x_{S_B} ) \times w_{S_B}/2 \\
   \bigskip
-  x_1 = x_{S'_A} + ( 1 + x_{S_B} ) \times w_{S_B}/2 \\
+  x_1 = x_{S'_A} + ( 1 - x_{S_B} ) \times w_{S_B}/2 \\
   \bigskip
   \begin{array}{lcl}
-    y_0 = y_{S'_B} - h_{S'_B}/2\\
-    y_1 = y_{S'_B} + h_{S'_B}/2 
+    y_0 = y_{S'_B} - ( 1 + y_{S_B}) \times h_{S'_B}/2\\
+    y_1 = y_{S'_B} + ( 1 - y_{S_B}) \times h_{S'_B}/2 
   \end{array}\bigg\} \hspace{2mm} \mid \hspace{2mm} \left\lbrace 
   \begin{array}{lcl}
     y _{S'_B} = \left\lbrace
     \begin{array}{lcl}
-      {y_0}_{S'_A} -  (1 + y_{S_B}) \times h_{S'_B}/2 & \text{if syncTop}\\ 
+      {y_0}_{S'_A} - h_{S'_B}/2 & \text{if syncTop}\\ 
       y_{S'_A} & \text{if syncOver}\\
-      {y_1}_{S'_A} + (1 + y_{S_B}) \times h_{S'_B}/2 & \text{if syncBottom}
+      {y_1}_{S'_A} +  h_{S'_B}/2 & \text{if syncBottom}
     \end{array}\right.\\
     h _{S'_B} = \left\lbrace 
     \begin{array}{lcl}
@@ -433,7 +433,7 @@ $S'_B = [{x_0} , {x_1}[ \times [{y_0} , {y_1}[  \hspace{2mm} \mid \left\lbrace
 %-------------------------------------------------- destination rect with children ---------------------------------------------------
 \subsubsection{Definition of $S'\textsubscript{\r{B}}$}\label{subsubsec:defDestChildRect}
 
-We can see that, if we know $S_B$ (the object's bounding box) and $S\textsubscript{\r{B}}$ (the bounding box of the object and all its children and slaves), we can define the relation between them, that is the variety. 
+We can see that, if we know $S_B$ (the object's bounding box) and $S\textsubscript{\r{B}}$ (the bounding box of the object and all its children and slaves), we can define the relation between them, which is the variety. 
 
 Furthermore, the mapping $M_{B/A}$ gives us the destination segment $S'_B$, so we can deduce the segment $S'\textsubscript{\r{B}}$ by applying the same relation between $S'_B$ and $S'\textsubscript{\r{B}}$ than between $S_B$ and $S\textsubscript{\r{B}}$.
 \\

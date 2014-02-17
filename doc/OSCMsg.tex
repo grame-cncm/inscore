@@ -1643,7 +1643,7 @@ sync : syncIdentifier
 	 ( [1] syncIdentifier (| syncmode +) 
 	   | [2] syncIdentifier 'del'
 	   | [3] )
-	   | [4] 'get' ( | identifier)
+	   | [4] 'get' ( | target)
 \end{rail}
 \index{Synchronization}
 \index{Synchronization!get}
@@ -1657,8 +1657,8 @@ sync : syncIdentifier
 \end{itemize}
 
 \begin{rail}
-syncIdentifier : [1] identifier 
-		| [2] identifier ':' mapName
+syncIdentifier : [1] target 
+		| [2] target ':' mapName
 \end{rail}
 \index{Synchronization! syncIdentifier}
 
