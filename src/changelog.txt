@@ -5,7 +5,7 @@ GRAME - Centre national de creation musicale
 http://www.grame.fr
 research@grame.fr
 ====================================================
-Copyright GRAME (c) 2009-2013
+Copyright GRAME (c) 2009-2014
 ----------------------------------------------------
 INScore originates from the Interlude project.
 It has been supported by the ANR (ANR-08-CORD-010)

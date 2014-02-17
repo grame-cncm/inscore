@@ -48,12 +48,12 @@ For more information, see at:
  - http://inscore.sourceforge.net
 
 INScore makes use of the following technologies:
-	- the GUIDOEngine  							http://guidolib.sf.net
-	- the IRCAM Gesture Follower 				http://imtr.ircam.fr/imtr/Gesture_Follower
-	- the Qt5 cross-platform application and UI framework	http://qt-project.org/qt5
-	- the V8 JavaScript Engine 					https://code.google.com/p/v8/
+  - the GUIDOEngine                           http://guidolib.sf.net
+  - the IRCAM Gesture Follower                http://imtr.ircam.fr/imtr/Gesture_Follower
+  - the Qt5 cross-platform application and UI framework    http://qt-project.org/qt5
+  - the V8 JavaScript Engine                  https://code.google.com/p/v8/
 Optionnal dependency:
-	- the libMusicXML library					http://libmusicxml.sf.net
+  - the libMusicXML library                   http://libmusicxml.sf.net
 
 ======================================================
  Acknowledgments
@@ -62,8 +62,16 @@ INScore was initiated in the Interlude project (http://interlude.ircam.fr),
 funded by the French National Research Agency [ANR- 08-CORD-010].
 I would like to thank all the people who have been contributing 
 to INScore design and development, and especially Christophe Daudin, 
-Eric Ravel, Camille Le Roi, my colleagues Stéphane Letz, Yann Orlarey 
-and all the Interlude team.
+Eric Ravel, Camille Le Roi.
+Many thanks also to the Interlude team - Frédéric Bevilacqua, Norbert Schnell, 
+Nicolas Rasamimanana, Emmanuel Fléty, Fabrice Guédy, Jean-Louis Frechin, 
+Uros Petrevski, Bernard Garabédian, Rémi Dury, Bruno Verbrugghe - who contributed
+to the elaboration of the project foundations.
+And of course, warmest thanks to my colleagues and friends Stéphane Letz 
+and Yann Orlarey.
+
+-- 
+Dominique Fober
 
 ======================================================
 For more information, contact me at <fober@grame.fr>
