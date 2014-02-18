@@ -46,7 +46,8 @@ class TVFunction {
 	public :  
 		virtual double operator () (double v) const				{ return v; }
 		virtual bool  operator == (const TVFunction& f) const	{ return true; }
-				~TVFunction() {} 
+        virtual void invert() {}
+				~TVFunction() {}
 };
 
 /*!
@@ -66,6 +67,7 @@ template<typename T> class TAXBFunction : public TVFunction {
 																				fA = i.size() / double(a.size());
 																				fB = (i.first() - a.first()) / double(a.size());
 																			 }
+                TAXBFunction(const double A, const double B){fA = A; fB = B;}
 
 		virtual float getA() const					{ return float(fA); }		///< gives the \c a coefficient
 		virtual float getB() const					{ return float(fB); }		///< gives the \c b coefficient
@@ -74,6 +76,8 @@ template<typename T> class TAXBFunction : public TVFunction {
 		/// equality operator : actually check for coefficients equality
 		virtual bool  operator == (const TAXBFunction& f) const { return (fA==f.fA) && (fB==f.fB); }
 		virtual bool  near (const TAXBFunction& f) const		{ return near::check(fA, f.fA) && near::check(fB, f.fB); }
+    
+        virtual void invert()    {double B = -fB/fA; double A = 1/fA; fB = B; fA = A;}
 };
 
 //--------------------------------------------------------------------------
@@ -97,17 +101,21 @@ template<typename T> class TIntervalVariety : public TVariety
 	protected :
 		const TVFunction*	fFunction;
 		TInterval<T>		fInterval;
+        TInterval<T>        fVarietyInterval;
 		
 	public :
 				 TIntervalVariety(const TInterval<T>& i, const TVFunction* f=identity()) : fFunction(f), fInterval(i) {}
+				 TIntervalVariety(const TInterval<T>& i, const TInterval<T>& j) : fInterval(i), fVarietyInterval(j) {
+                        const TAXBFunction<T> axbF(i, j); fFunction = &axbF;}
 		virtual ~TIntervalVariety() {}
 		
 		///< Gives a location from the interval variety.
 		///< According to the variety specification, we must have 0 <= loc <= 1 
 		inline virtual T	get(double loc)		{ return smartdouble<T>(fInterval.first()*(1-(*fFunction)(loc)) + fInterval.second()*(*fFunction)(loc)); }
+    
 		///< gives the interval variety
 		inline TInterval<T>	get()				{ return TInterval<T>(get(T(0)), get(T(1))); }
-
+		
 		virtual bool operator == (const TIntervalVariety<T>& v) const	{ return fFunction == v.fFunction; }
 		inline const TVFunction* function() const						{ return fFunction; }
 };
@@ -129,11 +137,13 @@ template<typename T> class TSegmentVariety<T, 1>
 		
 	public :
 				 TSegmentVariety(const TSegment<T,1>& s, const TVFunction* f=TVariety::identity()) : fIntervalVar(s.interval(), f) {}
+				 TSegmentVariety(const TSegment<T,1>& s, const TSegment<T,1>& s2) : fIntervalVar(s.interval(), s2.interval()) {}
+    
 		virtual ~TSegmentVariety() {}
 		
 		inline T				get(double loc)	{ return fIntervalVar.get(loc); }
-		inline TSegment<T,1>	get()			{ return TSegment<T,1>(fIntervalVar.get()); }
-
+        inline TSegment<T,1>	get()			{ return TSegment<T,1>(fIntervalVar.get()); }
+		
 		inline bool operator == (const TSegmentVariety<T,1>& v) const { return fIntervalVar == v.fIntervalVar; }
 		inline const TVFunction* function() const						{ return fIntervalVar.function(); }
 };
@@ -153,12 +163,14 @@ template<typename T> class TSegmentVariety<T, 2>
 						: fXIntervalVar(s.xinterval(), f), fYIntervalVar(s.yinterval(), TVariety::identity()) {}
 				 TSegmentVariety(const TSegment<T,2>& s, const TVFunction* f1, const TVFunction* f2)	
 						: fXIntervalVar(s.xinterval(), f1), fYIntervalVar(s.yinterval(), f2) {}
+				 TSegmentVariety(const TSegment<T,2>& s, const TSegment<T,2>& s2)
+						: fXIntervalVar(s.xinterval(), s2.xinterval()), fYIntervalVar(s.yinterval(), s2.yinterval()) {}
 		virtual ~TSegmentVariety() {}
 		
 		inline T				getx(double loc)	{ return fXIntervalVar.get(loc); }
 		inline T				gety(double loc)	{ return fYIntervalVar.get(loc); }
 		inline TSegment<T,2>	get()				{ return TSegment<T,2>(fXIntervalVar.get(), fYIntervalVar.get()); }
-
+		
 		inline bool operator == (const TSegmentVariety<T,2>& v) const 
 				{ return (fXIntervalVar == v.fXIntervalVar) && (fYIntervalVar == v.fYIntervalVar); }
 
