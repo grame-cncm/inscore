@@ -32,7 +32,7 @@
 	<key>CFBundleIconFile</key>
 	<string>INScoreViewer.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string></string>
+	<string>fr.grame.INScore</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleLongVersionString</key>
@@ -49,9 +49,13 @@
 	<string>1.05</string>
 	<key>CSResourcesFileMapped</key>
 	<true/>
-	<key>LSRequiresCarbon</key>
-	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string></string>
+	<string>Copyright 2009-2014 Grame</string>
+	<key>LSAppNapIsDisabled</key>
+	<true/>
+	<key>NSAppSleepDisabled</key>
+	<true/>
+	<key>NSHighResolutionCapable</key>
+	<true/>
 </dict>
 </plist>
