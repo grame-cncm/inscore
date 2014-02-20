@@ -34,6 +34,7 @@
 #include "IColor.h"
 #include "IMessageHandlers.h"
 #include "TRect.h"
+#include "QPointF"
 
 namespace inscore
 {
@@ -69,6 +70,10 @@ class IPosition
 		float	fXAngle;				///< the object x rotation
 		float	fYAngle;				///< the object y rotation
 		float	fZAngle;				///< the object z rotation
+    
+        std::map<std::string, QPointF> fPositions;				///< the slaved object positions for each master
+        std::map<std::string, float> fHeights;                  ///< the slaved object heights for each master
+        std::map<std::string, float> fWidths;                   ///< the slaved object widths for each master
 
 		TFloatSize fShear;				///< the shear attributes
 
@@ -206,7 +211,21 @@ class IPosition
 		/// \brief sets the object z rotation
 		virtual void	setRotateZ(float a)					{ fZAngle = a; }
 
-		/*! \brief Computes the bounding rect in Scene coordinates. 
+        /// \brief sets the object height corresponding to one master (the string is the master's name)
+		virtual void setSyncHeight(std::string m, float height);
+        /// \brief sets the object width corresponding to one master
+        virtual void setSyncWidth(std::string m, float width);
+        /// \brief sets the object pos corresponding to one master
+        virtual void setSyncPos(std::string m, QPointF pos);
+    
+        /// \brief gets the object height corresponding to one master
+        virtual float getSyncHeight (std::string m) {return fHeights.find(m)->second;}
+        /// \brief gets the object width corresponding to one master
+        virtual float getSyncWidth (std::string m) {return fWidths.find(m)->second;}
+        /// \brief gets the object pos corresponding to one master
+        virtual QPointF getSyncPos (std::string m) {return fPositions.find(m)->second;}
+
+		/*! \brief Computes the bounding rect in Scene coordinates.
 		
 			Takes position, scale and rotation into account.
 		*/

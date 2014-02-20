@@ -290,6 +290,12 @@ std::vector<SMaster> IObject::getMasters(SIObject o) const
 }
 
 //--------------------------------------------------------------------------
+std::vector<SIObject> IObject::getSlaves(SIObject o) const
+{ 
+	return fSync ? fSync->getSlaves(o) : std::vector<SIObject>();
+}
+
+//--------------------------------------------------------------------------
 void IObject::cleanupSync ()		{ if (fSync) fSync->cleanup(); }
 
 //--------------------------------------------------------------------------

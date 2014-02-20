@@ -69,9 +69,6 @@ class VGraphicsItemView : public VObjectView
         virtual void setEffect (GraphicEffect& effect)		{ item()->setGraphicsEffect (effect.get()); }
 		virtual GraphicEffect getEffect () const			{ return GraphicEffect ( item()->graphicsEffect()); }
 
-        virtual void setSyncHeight(SMaster m, float height);
-        virtual void setSyncPos(SMaster m, QPointF pos);
-
 		/// \brief Maps the IObject [-1,1] y coordinate to the referenceRect().
 		double relative2SceneY(float y, QGraphicsItem * item = 0 ) const;
 		/// \brief Maps the IObject [-1,1] x coordinate to the referenceRect().
@@ -189,8 +186,6 @@ class VGraphicsItemView : public VObjectView
 
 		QGraphicsItem * fItem;			/// \brief The QGraphicsItem used to render the IObject.
 		std::map<SMaster, QStretchTilerItem *> fTilerItems; /// \brief The QTilerItem used when the object is a synchronized
-        std::map<std::string, QPointF> fPositions;
-        std::map<std::string, float> fHeights;
         QList<QGraphicsItem*> fDebugItems;
 		int fBrushColorStartIndex;
 

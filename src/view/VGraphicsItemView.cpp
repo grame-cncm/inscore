@@ -74,7 +74,8 @@ VGraphicsItemView::~VGraphicsItemView()
     
     for(std::map<SMaster,QStretchTilerItem*>::iterator it = fTilerItems.begin(); it != fTilerItems.end(); it++)
     {
-        fScene->removeItem(it->second);
+        if(it->second->scene())
+            fScene->removeItem(it->second);
     }
     
     fTilerItems.clear();
@@ -261,21 +262,14 @@ void VGraphicsItemView::updateItemNoStretch(QStretchTilerItem* item, IObject* o,
 {
     item->setStretch(false);
     
-    QRectF originRect = fItem->boundingRect();
-    QRectF extendedRect = originRect | fItem->childrenBoundingRect();
-    float xscale = extendedRect.width()/originRect.width();
-    float yscale = extendedRect.height()/originRect.height();
+    double width = relative2SceneWidth(o->getSyncWidth(master->getMaster()->name()), item);
+    double height = relative2SceneHeight(o->getSyncHeight(master->getMaster()->name()), item);
     
-    double width = relative2SceneWidth(o->getWidth(), item)*xscale;
-    double height = relative2SceneHeight((fHeights.find(master->getMaster()->name())->second), item)*yscale;
+    double x = relative2SceneX( o->getSyncPos(master->getMaster()->name()).x(), item );
+    double y = relative2SceneY( o->getSyncPos(master->getMaster()->name()).y(), item );
     
-    double x = relative2SceneX( fPositions.find(master->getMaster()->name())->second.x(), item );
-    double y = relative2SceneY( fPositions.find(master->getMaster()->name())->second.y(), item );
-    
-    double dx = (originRect.center().x()-extendedRect.center().x())/extendedRect.width()*width;
-    double dy = (originRect.center().y()-extendedRect.center().y())/extendedRect.height()*height;
     item->setRect(QRectF(0,0,width,height));
-    updateGeometry(item, o, x-dx, y-dy);
+    updateGeometry(item, o, x, y);
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -313,7 +307,7 @@ void VGraphicsItemView::updateView(IObject* o)
     
     setSlave(masters);
 
-	// stretch mode: setup and use of fTilerItem
+	// slave mode: setup and use of fTilerItem
     for(std::map<SMaster, QStretchTilerItem*>::iterator i = fTilerItems.begin(); i != fTilerItems.end(); i++)
     {
         SMaster master = i->first;
@@ -340,6 +334,7 @@ void VGraphicsItemView::updateView(IObject* o)
         updateGeometry(fItem, o, relative2SceneX(o->getXPos()), relative2SceneY(o->getYPos()));
         updateItem(fItem, o);
 	}
+
 
 	//Exports the item if necessary.
 	if ( o->getExportFlag().length() ) {
@@ -424,12 +419,6 @@ void VGraphicsItemView::findNewSync(SMaster master)
         VGraphicsItemView * masterView = dynamic_cast<VGraphicsItemView*>(master->getMaster()->getView());
         fTilerItem->setParentItem(masterView->item());
         fTilerItems.insert(std::pair<SMaster, QStretchTilerItem*>(master,fTilerItem));
-            
-        // we set the default pos and height if they have not been set before
-        if(fPositions.find(master->getMaster()->name()) == fPositions.end())
-            fPositions.insert(std::pair<std::string, QPointF>(master->getMaster()->name(),fItem->pos()));
-        if(fHeights.find(master->getMaster()->name()) == fHeights.end())
-            fHeights.insert(std::pair<std::string, float>(master->getMaster()->name(),fItem->boundingRect().height()));
     }
 }
 
@@ -489,27 +478,6 @@ void VGraphicsItemView::setSlave( std::vector<SMaster> masters )
     }
     fNbMasters = masters.size(); // finally we update the number of masters
 }
-
-//------------------------------------------------------------------------------------------------------------
-void VGraphicsItemView::setSyncHeight(SMaster m, float height)
-{
-    std::map<std::string, float>::iterator it = fHeights.find(m->getMaster()->name());
-    if(it != fHeights.end())
-        it->second = height;
-    else
-        fHeights.insert(std::pair<std::string, float>(m->getMaster()->name(),height));
-}
-
-//------------------------------------------------------------------------------------------------------------
-void VGraphicsItemView::setSyncPos(SMaster m, QPointF pos)
-{
-    std::map<std::string, QPointF>::iterator it = fPositions.find(m->getMaster()->name());
-    if(it != fPositions.end())
-        it->second = pos;
-    else
-        fPositions.insert(std::pair<std::string, QPointF>(m->getMaster()->name(), pos));
-}
-
 
 //------------------------------------------------------------------------------------------------------------
 //											Conversion methods

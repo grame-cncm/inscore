@@ -56,18 +56,11 @@ template <typename T>	std::ostream& operator << (std::ostream& out, const std::s
 	return out; 
 }
 
-//--------------------------------------------------------------------------
-void IMappingUpdater::VStretch (IObject* o, const GraphicSegment& gseg, SMaster m)
-{
-	float h = gseg.yinterval().size();		// get the graphic segment height
-    o->getView()->setSyncHeight(m, h); // we now don't change the scale of the object itself but only the HEIGHT of one of its REPRESENTATION (QStretchTilerItem)
-}
-
 //---------------------------------------------------------------------------------------
-float IMappingUpdater::getYPos (IObject* o, const GraphicSegment& masterSeg, Master::VAlignType align) const
+float IMappingUpdater::getYPos (float height, const GraphicSegment& masterSeg, Master::VAlignType align) const
 {
 	float y = 0;
-	float displacement = o->getHeight() * o->getScale() / 2;
+	float displacement = height / 2;
 	switch (align) {						//  computes the slave y coordinate according to the alignment mode
 		case Master::kSyncTop:
 			y = masterSeg.yinterval().first() - displacement;
@@ -101,13 +94,65 @@ bool IMappingUpdater::date2point (const rational& date, const SRelativeTime2Grap
 }
 
 //---------------------------------------------------------------------------------------
+GraphicSegment IMappingUpdater::computeSegment(IObject* o, float h, float w, float x, float y)
+{
+    float x0 = x - (1 + o->getXOrigin()) * w/2;
+    float x1 = x + (1 - o->getXOrigin()) * w/2;
+    float y0 = y - (1 + o->getYOrigin()) * h/2;
+    float y1 = y + (1 - o->getYOrigin()) * h/2;
+    GraphicSegment seg(x0, y0, x1, y1);
+    return seg;
+}
+
+//---------------------------------------------------------------------------------------
+GraphicSegment IMappingUpdater::computeSegment(IObject* o)
+{
+    float h = o->getHeight() * o->getScale();
+    float w = o->getWidth() * o->getScale();
+    float x = o->getXPos();
+    float y = o->getYPos();
+
+    float x0 = x - (1 + o->getXOrigin()) * w/2;
+    float x1 = x + (1 - o->getXOrigin()) * w/2;
+    float y0 = y - (1 + o->getYOrigin()) * h/2;
+    float y1 = y + (1 - o->getYOrigin()) * h/2;
+    GraphicSegment seg(x0, y0, x1, y1);
+    return seg;
+}
+
+
+//---------------------------------------------------------------------------------------
+GraphicSegment IMappingUpdater::computeSegmentWithChildren(IObject* o, GraphicSegment seg)
+{
+    GraphicSegment gseg = seg;
+    for(int i = 0; i<o->elements().size(); i++)
+    {
+        SIObject child = o->elements()[i];
+        GraphicSegment cSeg = computeSegment(child);
+        gseg = gseg | cSeg;
+    }
+    std::vector<SIObject> slaves = o->getParent()->getSlaves(o);
+    for(int i = 0; i<slaves.size(); i++)
+    {
+        SIObject slave = slaves[i];
+        float width = slave->getSyncWidth(o->name());
+        float height = slave->getSyncHeight(o->name());
+        float x = slave->getSyncPos(o->name()).x();
+        float y = slave->getSyncPos(o->name()).y();
+        GraphicSegment sSeg = computeSegment(slave, height, width, x, y);
+        gseg = gseg | sSeg;
+    }
+    return gseg;
+}
+
+//---------------------------------------------------------------------------------------
 // Update when no horizontal stretch is required
 // The strategy consists in aligning the date location of the slave with the corresponding
 // location of the master;
 // when the slave date is outside the master map, then the master date is taken and the 
 // system looks for the corresponding location in the slave map.
 //---------------------------------------------------------------------------------------
-GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m)
+GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool isVStretch)
 { 
 	GraphicSegment masterSeg;
 
@@ -127,8 +172,7 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m)
 	}
 
 	slave->UseGraphic2GraphicMapping (false, master->name());						// don't use the object graphic segmentation and mapping
-	slave->getView()->setSyncHeight(m,slave->getHeight());
-    float x, xs; bool found = false;
+	float x, xs; bool found = false;
 	GraphicSegment slaveSeg;
 
 	if (date2point (date, map, masterSeg, x)) {						// do the slave date exists in the master map ?
@@ -143,21 +187,35 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m)
 			found = true;
 		}
 	}
+    
 	if (found) {
-		float y = getYPos (slave, masterSeg, align);
-		slave->getView()->setSyncPos(m, QPointF(x,y + m->getDy())); // we now don't change the position of the object itself but only of one of its REPRESENTATION (QStretchTilerItem)
+        float w = slave->getWidth()*slave->getScale();
+        float h = isVStretch ? h = masterSeg.yinterval().size() * master->getScale() : slave->getHeight()*slave->getScale();
+        float y = getYPos (h, masterSeg, align);
+        
+        GraphicSegment destSeg = computeSegment(slave, h, w, x, y); // this is the destination segment of the slave alone (in master's coordinate)
+        
+        GraphicSegment extendedSeg = computeSegmentWithChildren(slave, slaveSeg); //this is the source segment of the slave and its children (in slave's coordinate)
+        TSegmentAXBVariety<float, 2> variety(extendedSeg, slaveSeg); // we define the segment slave as a variety of the segment slave+children
+        const TAXBFunction<float> * xFunction = variety.xfunction(); // ... so that we can know the functions that bind them
+        const TAXBFunction<float> * yFunction = variety.yfunction();
+        
+        TSegmentInvertedVariety<float, 2> invertedVariety (destSeg, xFunction, yFunction);
+        GraphicSegment extendedDestSeg = invertedVariety.get(); // with the inverted variety we apply the inverted function to go from or destination segment (slave alone)
+                                                                // to the destination segment of the slave and its children (in master's coordinate)
+        x = invertedVariety.getx(0.5); // the center
+        y = invertedVariety.gety(0.5);
+        
+		slave->setSyncPos(m->getMaster()->name(), QPointF(x,y + m->getDy()));
+        slave->setSyncHeight(m->getMaster()->name(), extendedDestSeg.yinterval().size());
+        slave->setSyncWidth(m->getMaster()->name(), extendedDestSeg.xinterval().size());
+        
 		return masterSeg;
 	}
-    slave->getView()->setSyncPos(m, QPointF(kUnknownLocation,kUnknownLocation)); // puts the object away when no mapping available or missing resources
+    slave->setSyncPos(m->getMaster()->name(), QPointF(kUnknownLocation,kUnknownLocation)); // puts the object away when no mapping available or missing resources
 	return masterSeg;
 }
 
-//--------------------------------------------------------------------------
-void IMappingUpdater::updateVStretch (IObject* o, SMaster m)
-{ 
-	GraphicSegment gseg = updateNoStretch (o, m);
-	VStretch (o, gseg, m);
-}
 
 //--------------------------------------------------------------------------
 bool IMappingUpdater::updateNOHStretch (IObject* o, SMaster m)
@@ -168,7 +226,7 @@ bool IMappingUpdater::updateNOHStretch (IObject* o, SMaster m)
 				updateNoStretch (o, m);
 				break;
 			case Master::kStretchV:
-				updateVStretch (o, m);
+				updateNoStretch (o, m, true);
 				break;
 			default:
 				return false;

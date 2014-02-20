@@ -69,6 +69,18 @@ std::vector<SMaster> ISceneSync::getMasters(SIObject o) const
 }
 
 //--------------------------------------------------------------------------
+std::vector<SIObject> ISceneSync::getSlaves(SIObject o) const
+{
+    std::vector<SIObject> slaves;
+    for(ISync::const_iterator it = fSync.begin(); it !=fSync.end(); it++)
+    {
+        if(it->second->getMaster() == o)
+            slaves.push_back(it->first);
+    }
+    return slaves;
+}
+
+//--------------------------------------------------------------------------
 void ISceneSync::sort (IObject::subnodes& nodes)
 {
 	if (fSync.modified()) {

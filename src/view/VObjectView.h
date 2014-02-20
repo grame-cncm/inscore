@@ -62,9 +62,6 @@ class VObjectView
 		virtual void setEffect (GraphicEffect& effect)		= 0;
 		virtual GraphicEffect getEffect () const			= 0;
 
-        virtual void setSyncHeight(SMaster m, float height)     = 0;
-        virtual void setSyncPos(SMaster m, QPointF pos)         = 0;
-    
 		/// \brief Maps the IObject [-1,1] y coordinate to the referenceRect().
 		virtual double relative2SceneY(float y, QGraphicsItem * item = 0 ) const						= 0;
 		/// \brief Maps the IObject [-1,1] x coordinate to the referenceRect().
