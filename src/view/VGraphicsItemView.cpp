@@ -439,7 +439,10 @@ void VGraphicsItemView::findObsoleteSync(std::vector<SMaster> masters)
         }
         if(!found)
         {
-            fScene->removeItem(it->second);
+            if(it->second->scene())
+                fScene->removeItem(it->second);
+            else
+                it->second->setParentItem(0);
             fTilerItems.erase(it);
         }
     }
@@ -450,31 +453,18 @@ void VGraphicsItemView::setSlave( std::vector<SMaster> masters )
 {
     if(fNbMasters == masters.size()) return; //there is no master-slave relation to add or remove
     
-    // we first look for new masters, in order to add new representation 
-	for(int i = 0; i < masters.size(); i++)
+	for(int i = 0; i < masters.size(); i++)    // we first look for new masters, in order to add new representation
     {
         SMaster master = masters[i];
         findNewSync(master);
     }
-    // Then we check if some representation could be obsolete (master/slave relation deleted)
-    findObsoleteSync(masters);
     
-    // After that, if there is no master, then we should go back to the non-slaved version
-    if(masters.empty())
+    findObsoleteSync(masters); // Then we check if some representation could be obsolete (master/slave relation deleted)
+    
+    if(!fNbMasters)    // this is the first master added, so we have to remove the classic fItem and switch to the slaved verison
     {
-        fScene->addItem(fItem);
-        QList<QGraphicsItem*> children = fItem->childItems();	// Get the item's children.
-        for (int i = 0 ; i < children.size() ; i++ )
-            children[i]->setVisible(true);
-    }
-    // this is the first master added, so we have to remove the classic fItem and switch to the slaved verison
-    else if(!fNbMasters)
-    {
-        fScene->removeItem(fItem);
-        
-        QList<QGraphicsItem*> children = fItem->childItems();	// Get the item's children.
-        for (int i = 0 ; i < children.size() ; i++ )
-            children[i]->setVisible(false);
+        if(fItem->scene())
+            fScene->removeItem(fItem);
     }
     fNbMasters = masters.size(); // finally we update the number of masters
 }

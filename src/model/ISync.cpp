@@ -88,9 +88,6 @@ void ISync::sync(const SIObject& slave, SMaster master)
                 alreadyExists = true;
             }
         }
-        // if the relation we wanted to add already exists, we don't need to update the cache
-      //  if(!alreadyExists)
-      //      slave->getView()->updateCache();
         insert(std::pair<SIObject,SMaster>(slave, master));
 		slave->modify();
 		slave->setState(IObject::kModified);
@@ -119,12 +116,6 @@ void ISync::remove(SIObject slave, SMaster m)
                 slave->modify();
                 slave->setState(IObject::kModified);
                 fModified = true;
-                VObjectView * view = slave->getView();
-                if (view)
-                {
-                  //  view->setParentItem(0);
-                    view->updateView(slave);
-                }
                 // There should not be more than one pair with the same slave and the same master (Cf sync)
                 // so if we find it we can stop.
                 return;
@@ -137,12 +128,6 @@ void ISync::remove(SIObject slave, SMaster m)
 		slave->modify();
 		slave->setState(IObject::kModified);
 		fModified = true;
-		VObjectView * view = slave->getView();
-		if (view)
-        {
-            //view->setParentItem(0);
-            view->updateView(slave);
-        }
 	}
 }
 

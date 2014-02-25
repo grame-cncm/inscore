@@ -125,10 +125,17 @@ GraphicSegment IMappingUpdater::computeSegment(IObject* o)
 GraphicSegment IMappingUpdater::computeSegmentWithChildren(IObject* o, GraphicSegment seg)
 {
     GraphicSegment gseg = seg;
-    for(int i = 0; i<o->elements().size(); i++)
+    
+    for(int i = 0; i < o->elements().size(); i++)
     {
         SIObject child = o->elements()[i];
-        GraphicSegment cSeg = computeSegment(child);
+        GraphicSegment cSeg = computeSegment(child); // in the current object's coordinates
+        float ax = (cSeg.xinterval().first() + 1)/2;
+        float bx = (cSeg.xinterval().second() + 1)/2;
+        float ay = (cSeg.yinterval().first() + 1)/2;
+        float by = (cSeg.yinterval().second() + 1)/2;
+        cSeg = GraphicSegment(seg.xinterval().resize(ax, bx), seg.yinterval().resize(ay, by)); // relatively to the master's coordinates
+        cSeg = computeSegmentWithChildren(child, cSeg);
         gseg = gseg | cSeg;
     }
     std::vector<SIObject> slaves = o->getParent()->getSlaves(o);
@@ -139,7 +146,7 @@ GraphicSegment IMappingUpdater::computeSegmentWithChildren(IObject* o, GraphicSe
         float height = slave->getSyncHeight(o->name());
         float x = slave->getSyncPos(o->name()).x();
         float y = slave->getSyncPos(o->name()).y();
-        GraphicSegment sSeg = computeSegment(slave, height, width, x, y);
+        GraphicSegment sSeg = GraphicSegment(x-width/2, y-height/2, x+width/2, y+height/2); // in object's coordinates
         gseg = gseg | sSeg;
     }
     return gseg;
@@ -153,7 +160,7 @@ GraphicSegment IMappingUpdater::computeSegmentWithChildren(IObject* o, GraphicSe
 // system looks for the corresponding location in the slave map.
 //---------------------------------------------------------------------------------------
 GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool isVStretch)
-{ 
+{
 	GraphicSegment masterSeg;
 
 	const SIObject& master = m->getMaster();
@@ -201,7 +208,7 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
         const TAXBFunction<float> * yFunction = variety.yfunction();
         
         TSegmentInvertedVariety<float, 2> invertedVariety (destSeg, xFunction, yFunction);
-        GraphicSegment extendedDestSeg = invertedVariety.get(); // with the inverted variety we apply the inverted function to go from or destination segment (slave alone)
+        GraphicSegment extendedDestSeg = invertedVariety.get(); // with the inverted variety we apply the inverted function to go from our destination segment (slave alone)
                                                                 // to the destination segment of the slave and its children (in master's coordinate)
         x = invertedVariety.getx(0.5); // the center
         y = invertedVariety.gety(0.5);
@@ -238,8 +245,6 @@ bool IMappingUpdater::updateNOHStretch (IObject* o, SMaster m)
 //--------------------------------------------------------------------------
 void IMappingUpdater::updateIObject (IObject* object)	
 {
-//	const SIScene scene = object->getScene();
-//	const Master* master = scene ? scene->getMaster(object) : 0;
     const SIObject parent = object->getParent();
 	const std::vector<SMaster> masters = parent ? parent->getMasters(object) : object->getScene()->getMasters(object);
     
@@ -248,7 +253,7 @@ void IMappingUpdater::updateIObject (IObject* object)
     for(int i = 0; i<masters.size(); i++)
     {
         const IObject* mobj = masters[i]->getMaster();
-        if (object->localMapModified() || object->dateModified()
+        if (object->localMapModified() || object->getState() || object->dateModified()
             || mobj->localMapModified() || masters[i]->modified() || mobj->dateModified()) {
             if (!updateNOHStretch ( object, masters[i]))
                 hstretchUpdate (object, masters[i]);

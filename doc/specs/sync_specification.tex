@@ -457,7 +457,7 @@ $(S\textsubscript{\r{B}}, S'\textsubscript{\r{B}}) \mid \left\lbrace
 \begin{figure}[h]
 \begin{multicols}{2}
 \begin{center}
-\includegraphics[width=5cm]{img/score3.png} 
+\includegraphics[width=6cm]{img/score3.png} 
 \end{center}
 \columnbreak
 
@@ -487,7 +487,7 @@ $(S\textsubscript{\r{B}}, S'\textsubscript{\r{B}}) \mid \left\lbrace
 \subsection{Case of stretching (the slave is mapped)}\label{subsec:complexMap}
 
 In the case of a slave with mapping that should be stretched horizontally to fit its parent's mapping, it has been decided to take only into account the children that are in the object's bound.
-As our object can be partially mapped, and so partially drawn in its master's mapping, there are no more reasons to extrapolate the drawing of its children than the drawing of the rest (not in the mapping) of the object itself.
+As our object can be partially mapped, and then partially drawn in its master's mapping, there are no more reasons to extrapolate the drawing of its children than the drawing of the rest (not in the mapping) of the object itself.
 
 \begin{figure}[h]
 \begin{center}
@@ -497,9 +497,55 @@ As our object can be partially mapped, and so partially drawn in its master's ma
 \end{center}
 \end{figure}
 
-%\section{Updates}\label{sec:updates}
+\section{Updates}\label{sec:updates}
 
-%Once those questions of mapping resolved, we should finally try to define the order of the updates.
+Once those questions of mapping resolved, we should finally try to define the order of the updates.
+
+Indeed, the computation and the drawing of our elements have to be done in a certain order, so that every step can have all the informations needed. In the IMappingUpdater class, we need to know for each object the positions and dimensions of its children and slaves. This means that we should "climb" the hierarchy from the bottom (last level object) to the top (Scene).
+
+\begin{figure}[h]
+\begin{center}
+\begin{tikzpicture}
+    \tikzstyle{rond} = [circle, minimum width=8pt, draw]
+
+  \node[rond] (17) at (0,3) {17};
+  \node[rond] (16) at (-2,1.5) {16};
+  \node[rond] (13) at (0,1.5) {13};
+  \node[rond] (5) at (2,1.5) {5};
+  \node[rond] (14) at (-4.5,0) {14};
+  \node[rond] (15) at (-3,0) {15};
+  \node[rond] (10) at (-1.5,0) {10};
+  \node[rond] (11) at (0,0) {11};
+  \node[rond] (12) at (1.5,0) {12};
+  \node[rond] (4) at (3,0) {4};
+  \node[rond] (3) at (4.5,0) {3};
+  \node[rond] (6) at (-3.6,-1.5) {6};
+  \node[rond] (7) at (-2.2,-1.5) {7};
+  \node[rond] (8) at (-0.8,-1.5) {8};
+  \node[rond] (9) at (0.6,-1.5) {9};
+  \node[rond] (2) at (4,-1.5) {2};
+  \node[rond] (1) at (5,-1.5) {1};
+    
+  \draw[child] (17)--(16); \draw[child] (17)--(13); \draw[child] (17)--(5);
+  \draw[child] (13)--(11); \draw[child] (13)--(10); \draw[child] (13)--(12);
+  \draw[child] (16)--(14); \draw[child] (16)--(15);
+  \draw[child] (5)--(4); \draw[child] (5)--(3);
+  \draw[child] (3)--(1); \draw[child] (3)--(2);
+  \draw[child] (10)--(6); \draw[child] (10)--(7); \draw[child] (10)--(8);\draw[child] (10)--(9);
+  \draw[childD] (13)to[bend left](16);
+  \draw[childD] (5)to[bend left](13);
+  \draw[childD] (1)to[bend left](2);
+  \draw[childD] (3)to[bend left](4);
+  \draw[childD] (6)to[bend right](7);
+  \draw[childD] (6)to[bend right](8);
+  \draw[childD] (8)to[bend right](9);
+  \draw[childD] (11)to[bend right](12);
+\end{tikzpicture}
+
+\end{center}
+\caption{One possible order of updates for this configuration}
+\label{fig:order}
+\end{figure}
 
 %-------------------------------------------------- Conclusion ---------------------------------------------------
 %\section*{Conclusion}\label{sec:conclusion}
