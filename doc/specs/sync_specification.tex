@@ -33,7 +33,7 @@
 \tikzstyle{slave}=[->,dotted,very thick,>=latex]
 
 \tikzstyle{debutfin}=[ellipse,draw]
-\tikzstyle{test}=[diamond, aspect=2.5,thick,draw=blue,fill=orange!50,text=blue]
+\tikzstyle{test}=[diamond, aspect=2.5,thick,draw=blue,text=blue]
 \tikzstyle{es}=[rectangle,draw,rounded corners=4pt,fill=blue!25]
 \tikzstyle{suite}=[-triangle 45,thick,rounded corners=4pt]
 
@@ -569,14 +569,14 @@ To make sure that the objects on a same level of hierarchy are updated in the ri
 \node[debutfin] (begin) at (-5,12) {Begin};
 \node[es] (i) at (-5,10.5) {$i = 0$};
 \node[test] (hasSlaves) at (-5,7.5) {elements[i] has slaves  ?};
-\node[es] (j) at (-5,5.5) {$j = i$};
-\node[es] (j++) at (-5,3.5) {$j++$};
+\node[es] (j) at (-5,5.5) {$j = i + 1$};
+\node[es] (j++) at (5,4) {$j++$};
 \node[es] (it) at (-5,2) {$it = 0$};
 \node[test] (findSlave) at (-5,-0.5) {elements[j] = slaves[it]  ?};
 \node[es] (switch) at (-5,-2.5) {switch elements[i] and elements[j]};
 \node[debutfin] (end) at (0,12) {End};
 \node[test] (testI) at (0,9) {$i = elements.size$ ?};
-\node[test] (testJ) at (0,4.5) {$j = elements.size - 1$ ?};
+\node[test] (testJ) at (0,4) {$j = elements.size$ ?};
 \node[test] (testIT) at (0,1) {$it = slaves.size$ ?};
 \node[es] (i++) at (5,9) {$i++$};
 \node[es] (it++) at (5,1) {$it++$};
@@ -585,16 +585,16 @@ To make sure that the objects on a same level of hierarchy are updated in the ri
 \draw[suite] (begin) -- (i);
 \draw[suite] (i) -- (hasSlaves);
 \draw[suite] (hasSlaves) -- (j);
-\draw[suite] (j) -- (j++);
-\draw[suite] (j++) -- (it);
+\draw[suite] (j) -- (it);
 \draw[suite] (it) -- (findSlave);
 \draw[suite] (findSlave) -- (switch);
 \draw[suite] (switch) |- (-9, -4) |- (-5,9);
 \draw[suite] (findSlave.east) -- (5,-0.5) node[near start,fill=white] {no} -- (it++.south);
 \draw[suite] (it++) -- (testIT);
 \draw[suite] (testIT) -- (-5,1) node[midway,fill=white] {no};
-\draw[suite] (testIT.north) -- (testJ);
-\draw[suite] (testJ.west) -- (-5,4.5) node[midway,fill=white] {no};
+\draw[suite] (testIT.north) -- (0,2.5) -- (5,2.5) -- (j++);
+\draw[suite] (j++) -- (testJ);
+\draw[suite] (testJ.west) -- (-5,4) node[midway,fill=white] {no};
 \draw[suite] (testJ.north) -- (0,6.5) -|  (i++) ;
 \draw[suite] (hasSlaves.east) -| (i++) node[near start,fill=white] {no};
 \draw[suite] (i++) -- (testI);
