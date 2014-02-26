@@ -9,6 +9,8 @@
 \usepackage{graphicx}
 \usepackage{amssymb}
 \usepackage{tikz}
+\usetikzlibrary{shapes}
+\usetikzlibrary{arrows}
 \usepackage{verbatim}
 \usepackage{multicol}
 \usepackage{fixltx2e}
@@ -28,7 +30,12 @@
 
 \tikzstyle{box}=[rectangle,draw,fill=white!50,text=black] 
 \tikzstyle{child}=[->,very thick,>=latex]
-\tikzstyle{childD}=[->,dotted,very thick,>=latex]
+\tikzstyle{slave}=[->,dotted,very thick,>=latex]
+
+\tikzstyle{debutfin}=[ellipse,draw]
+\tikzstyle{test}=[diamond, aspect=2.5,thick,draw=blue,fill=orange!50,text=blue]
+\tikzstyle{es}=[rectangle,draw,rounded corners=4pt,fill=blue!25]
+\tikzstyle{suite}=[-triangle 45,thick,rounded corners=4pt]
 
 
 \setlength{\parskip}{1mm}
@@ -127,10 +134,10 @@ Both of the slave and master objects should have their own time to graphic mappi
   
   \draw[child] (P)--(O);
   \draw[child] (O)--(C1); \draw[child] (O)--(C2); \draw[child] (O)--(C3);
-  \draw[childD] (C2)to[bend right](C3); \draw[childD] (C1.south)to[bend right](C3.south);
+  \draw[slave] (C2)to[bend right](C3); \draw[slave] (C1.south)to[bend right](C3.south);
   %
   \draw[child] (3,2.5)--(4.5,2.5)node[midway,above]{parent-child};
-  \draw[childD] (3,1.5)--(4.5,1.5)node[midway,above]{is slave of};
+  \draw[slave] (3,1.5)--(4.5,1.5)node[midway,above]{is slave of};
     
  \end{tikzpicture}
 
@@ -204,10 +211,10 @@ As said before, it is possible for a slave to have several masters. This means t
   \node[box] (C4) at (3,0) {Child4};
   
   \draw[child] (P)--(C1); \draw[child] (P)--(C2); \draw[child] (P)--(C3); \draw[child] (P)--(C4);
-  \draw[childD] (C1)to[bend right](C2); \draw[childD] (C1)to[bend right](C3); \draw[childD] (C1)to[bend right](C4);
+  \draw[slave] (C1)to[bend right](C2); \draw[slave] (C1)to[bend right](C3); \draw[slave] (C1)to[bend right](C4);
   % 
   \draw[child] (3,2)--(4.5,2)node[midway,above]{parent-child};
-  \draw[childD] (3,1)--(4.5,1)node[midway,above]{is slave of};
+  \draw[slave] (3,1)--(4.5,1)node[midway,above]{is slave of};
     
  \end{tikzpicture}
 
@@ -306,8 +313,8 @@ Let's take the following case of an object B synchronized on a score A and havin
   
   \draw[child] (P)--(A); \draw[child] (P)--(B); \draw[child] (P)--(C);
   \draw[child] (B)--(d); \draw[child] (B)--(e); \draw[child] (B)--(f);
-  \draw[childD] (B)to[bend left](A);
-  \draw[childD] (C)to[bend left](B);
+  \draw[slave] (B)to[bend left](A);
+  \draw[slave] (C)to[bend left](B);
 \end{tikzpicture}
 \end{center}
 
@@ -503,49 +510,99 @@ Once those questions of mapping resolved, we should finally try to define the or
 
 Indeed, the computation and the drawing of our elements have to be done in a certain order, so that every step can have all the informations needed. In the IMappingUpdater class, we need to know for each object the positions and dimensions of its children and slaves. This means that we should "climb" the hierarchy from the bottom (last level object) to the top (Scene).
 
-\begin{figure}[h]
+%\begin{figure}[h]
+%\begin{center}
+%\begin{tikzpicture}
+%    \tikzstyle{rond} = [circle, minimum width=8pt, draw]
+%
+%  \node[rond] (17) at (0,3) {17};
+%  \node[rond] (16) at (-2,1.5) {16};
+%  \node[rond] (13) at (0,1.5) {13};
+%  \node[rond] (5) at (2,1.5) {5};
+%  \node[rond] (14) at (-4.5,0) {14};
+%  \node[rond] (15) at (-3,0) {15};
+%  \node[rond] (10) at (-1.5,0) {10};
+%  \node[rond] (11) at (0,0) {11};
+%  \node[rond] (12) at (1.5,0) {12};
+%  \node[rond] (4) at (3,0) {4};
+%  \node[rond] (3) at (4.5,0) {3};
+%  \node[rond] (6) at (-3.6,-1.5) {6};
+%  \node[rond] (7) at (-2.2,-1.5) {7};
+%  \node[rond] (8) at (-0.8,-1.5) {8};
+%  \node[rond] (9) at (0.6,-1.5) {9};
+%  \node[rond] (2) at (4,-1.5) {2};
+%  \node[rond] (1) at (5,-1.5) {1};
+%    
+%  \draw[child] (17)--(16); \draw[child] (17)--(13); \draw[child] (17)--(5);
+%  \draw[child] (13)--(11); \draw[child] (13)--(10); \draw[child] (13)--(12);
+%  \draw[child] (16)--(14); \draw[child] (16)--(15);
+%  \draw[child] (5)--(4); \draw[child] (5)--(3);
+%  \draw[child] (3)--(1); \draw[child] (3)--(2);
+%  \draw[child] (10)--(6); \draw[child] (10)--(7); \draw[child] (10)--(8);\draw[child] (10)--(9);
+%  \draw[slave] (13)to[bend left](16);
+%  \draw[slave] (5)to[bend left](13);
+%  \draw[slave] (1)to[bend left](2);
+%  \draw[slave] (3)to[bend left](4);
+%  \draw[slave] (6)to[bend right](7);
+%  \draw[slave] (6)to[bend right](8);
+%  \draw[slave] (8)to[bend right](9);
+%  \draw[slave] (11)to[bend right](12);
+%\end{tikzpicture}
+%
+%\end{center}
+%\caption{One possible order of updates for this configuration}
+%\label{fig:order}
+%\end{figure}
+
+To make sure that the objects on a same level of hierarchy are updated in the right order - the slaves before their master(s) - we have to do a topological sort of all children for each object. The topological sort works as follows :
+\begin{itemize}
+  \item we examine the list of elements from the beginning
+  \item for each position in the list, we look for the possible slaves of this object
+  \item then we examine each following element in the list, to find one of the slaves
+  \item if we find one, we switch the position of our current element with its slave, in this case, we have to re-examine the same position to see if the slave object has slaves himself
+  \item if we don't find any slave in the rest of the list, this means that they are all placed before our current element, and we have nothing to do, so we go to the next position.
+\end{itemize}
+
 \begin{center}
 \begin{tikzpicture}
-    \tikzstyle{rond} = [circle, minimum width=8pt, draw]
 
-  \node[rond] (17) at (0,3) {17};
-  \node[rond] (16) at (-2,1.5) {16};
-  \node[rond] (13) at (0,1.5) {13};
-  \node[rond] (5) at (2,1.5) {5};
-  \node[rond] (14) at (-4.5,0) {14};
-  \node[rond] (15) at (-3,0) {15};
-  \node[rond] (10) at (-1.5,0) {10};
-  \node[rond] (11) at (0,0) {11};
-  \node[rond] (12) at (1.5,0) {12};
-  \node[rond] (4) at (3,0) {4};
-  \node[rond] (3) at (4.5,0) {3};
-  \node[rond] (6) at (-3.6,-1.5) {6};
-  \node[rond] (7) at (-2.2,-1.5) {7};
-  \node[rond] (8) at (-0.8,-1.5) {8};
-  \node[rond] (9) at (0.6,-1.5) {9};
-  \node[rond] (2) at (4,-1.5) {2};
-  \node[rond] (1) at (5,-1.5) {1};
-    
-  \draw[child] (17)--(16); \draw[child] (17)--(13); \draw[child] (17)--(5);
-  \draw[child] (13)--(11); \draw[child] (13)--(10); \draw[child] (13)--(12);
-  \draw[child] (16)--(14); \draw[child] (16)--(15);
-  \draw[child] (5)--(4); \draw[child] (5)--(3);
-  \draw[child] (3)--(1); \draw[child] (3)--(2);
-  \draw[child] (10)--(6); \draw[child] (10)--(7); \draw[child] (10)--(8);\draw[child] (10)--(9);
-  \draw[childD] (13)to[bend left](16);
-  \draw[childD] (5)to[bend left](13);
-  \draw[childD] (1)to[bend left](2);
-  \draw[childD] (3)to[bend left](4);
-  \draw[childD] (6)to[bend right](7);
-  \draw[childD] (6)to[bend right](8);
-  \draw[childD] (8)to[bend right](9);
-  \draw[childD] (11)to[bend right](12);
+\node[debutfin] (begin) at (-5,12) {Begin};
+\node[es] (i) at (-5,10.5) {$i = 0$};
+\node[test] (hasSlaves) at (-5,7.5) {elements[i] has slaves  ?};
+\node[es] (j) at (-5,5.5) {$j = i$};
+\node[es] (j++) at (-5,3.5) {$j++$};
+\node[es] (it) at (-5,2) {$it = 0$};
+\node[test] (findSlave) at (-5,-0.5) {elements[j] = slaves[it]  ?};
+\node[es] (switch) at (-5,-2.5) {switch elements[i] and elements[j]};
+\node[debutfin] (end) at (0,12) {End};
+\node[test] (testI) at (0,9) {$i = elements.size$ ?};
+\node[test] (testJ) at (0,4.5) {$j = elements.size - 1$ ?};
+\node[test] (testIT) at (0,1) {$it = slaves.size$ ?};
+\node[es] (i++) at (5,9) {$i++$};
+\node[es] (it++) at (5,1) {$it++$};
+
+
+\draw[suite] (begin) -- (i);
+\draw[suite] (i) -- (hasSlaves);
+\draw[suite] (hasSlaves) -- (j);
+\draw[suite] (j) -- (j++);
+\draw[suite] (j++) -- (it);
+\draw[suite] (it) -- (findSlave);
+\draw[suite] (findSlave) -- (switch);
+\draw[suite] (switch) |- (-9, -4) |- (-5,9);
+\draw[suite] (findSlave.east) -- (5,-0.5) node[near start,fill=white] {no} -- (it++.south);
+\draw[suite] (it++) -- (testIT);
+\draw[suite] (testIT) -- (-5,1) node[midway,fill=white] {no};
+\draw[suite] (testIT.north) -- (testJ);
+\draw[suite] (testJ.west) -- (-5,4.5) node[midway,fill=white] {no};
+\draw[suite] (testJ.north) -- (0,6.5) -|  (i++) ;
+\draw[suite] (hasSlaves.east) -| (i++) node[near start,fill=white] {no};
+\draw[suite] (i++) -- (testI);
+\draw[suite] (testI) -- (-5,9) node[midway,fill=white] {no};
+\draw[suite] (testI) -- (end);
+
 \end{tikzpicture}
-
 \end{center}
-\caption{One possible order of updates for this configuration}
-\label{fig:order}
-\end{figure}
 
 %-------------------------------------------------- Conclusion ---------------------------------------------------
 %\section*{Conclusion}\label{sec:conclusion}

@@ -83,10 +83,7 @@ std::vector<SIObject> ISceneSync::getSlaves(SIObject o) const
 //--------------------------------------------------------------------------
 void ISceneSync::sort (IObject::subnodes& nodes)
 {
-	if (fSync.modified()) {
-//		fSync.topologicalSort (nodes);
-		fSync.modified(false);
-	}
+    fSync.topologicalSort (nodes);
 }
 
 //--------------------------------------------------------------------------

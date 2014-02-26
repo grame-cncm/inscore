@@ -51,6 +51,38 @@ void ISync::print (ostream& out) const
 }
 
 //--------------------------------------------------------------------------
+void ISync::topologicalSort(IObject::subnodes& nodes) const
+{
+    int i = 0;
+    while( i != nodes.size())
+    {
+        SIObject node = nodes[i];
+        IObject::subnodes slaves = node->getParent()->getSlaves(node);
+        bool found = false;
+        int j = i;
+        SIObject slave;
+        while( !slaves.empty() && j < nodes.size()-1 && !found)
+        {
+            j++;
+            int it = 0; 
+            while(it < slaves.size() && !found)
+            {
+                slave = slaves[it];
+                if(nodes[j] == slave) found = true;
+                it++;
+            }
+        }
+        if(found)
+        {
+            nodes.at(i)=slave;
+            nodes.at(j)=node;
+        }
+        else
+            i++;
+    }
+}
+
+//--------------------------------------------------------------------------
 // looking for loops in the sync scheme
 bool ISync::checkLoop(const IObject* slave, IObject* master)
 {
