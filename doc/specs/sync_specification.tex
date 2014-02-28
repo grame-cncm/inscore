@@ -230,7 +230,7 @@ As said before, it is possible for a slave to have several masters. This means t
 \includegraphics[width=5cm]{img/sync2.png}   	            
 \includegraphics[width=5cm]{img/sync.png}
 \caption{The purple circle is synchronized on the three other objects}
-\label{fig:sync}
+\label{fig:sync2}
 \end{figure}
 
 %========================================== SYNC WITH CHILDREN AND SLAVES ========================================================
@@ -500,7 +500,7 @@ As our object can be partially mapped, and then partially drawn in its master's 
 \begin{center}
 \includegraphics[width=15cm]{img/withStretchTotal.png}
 \caption{Case of a slave with mapping}
-\label{fig:mapping}
+\label{fig:mapping2}
 \end{center}
 \end{figure}
 
@@ -556,12 +556,16 @@ Indeed, the computation and the drawing of our elements have to be done in a cer
 
 To make sure that the objects on a same level of hierarchy are updated in the right order - the slaves before their master(s) - we have to do a topological sort of all children for each object. The topological sort works as follows :
 \begin{itemize}
-  \item we examine the list of elements from the beginning
-  \item for each position in the list, we look for the possible slaves of this object
-  \item then we examine each following element in the list, to find one of the slaves
-  \item if we find one, we switch the position of our current element with its slave, in this case, we have to re-examine the same position to see if the slave object has slaves himself
+  \item we examine the list of elements from the beginning,
+  \item for each position in the list, we look for the possible slaves of this object,
+  \item then we examine each following element in the list, to find one of the slaves,
+  \item if we find one, we switch the position of our current element with its slave, in this case, we have to re-examine the same position to see if the slave object has slaves himself,
   \item if we don't find any slave in the rest of the list, this means that they are all placed before our current element, and we have nothing to do, so we go to the next position.
 \end{itemize}
+
+The figure below shows us the steps of the topological sort.
+
+\begin{figure}[h]
 
 \begin{center}
 \begin{tikzpicture}
@@ -575,7 +579,7 @@ To make sure that the objects on a same level of hierarchy are updated in the ri
 \node[test] (findSlave) at (-5,-0.5) {elements[j] = slaves[it]  ?};
 \node[es] (switch) at (-5,-2.5) {switch elements[i] and elements[j]};
 \node[debutfin] (end) at (0,12) {End};
-\node[test] (testI) at (0,9) {$i = elements.size$ ?};
+\node[test] (testI) at (0,9) {$i = elements.size - 1$ ?};
 \node[test] (testJ) at (0,4) {$j = elements.size$ ?};
 \node[test] (testIT) at (0,1) {$it = slaves.size$ ?};
 \node[es] (i++) at (5,9) {$i++$};
@@ -603,6 +607,11 @@ To make sure that the objects on a same level of hierarchy are updated in the ri
 
 \end{tikzpicture}
 \end{center}
+
+\label{fig:topsort}
+\caption{Diagram explaining the topological sort}
+
+\end{figure}
 
 %-------------------------------------------------- Conclusion ---------------------------------------------------
 %\section*{Conclusion}\label{sec:conclusion}

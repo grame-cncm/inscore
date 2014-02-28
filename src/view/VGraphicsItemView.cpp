@@ -296,8 +296,6 @@ void VGraphicsItemView::updateItem(QGraphicsItem* item, IObject* o)
     // Z order. A negative 'z' value puts the object behind its parent - if it has one.
     item->setFlag( QGraphicsItem::ItemStacksBehindParent , (o->getZOrder() < 0) );
     item->setZValue(  o->getZOrder() );
-            
-    item->setOpacity (o->getA() / 255.f);
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -313,6 +311,8 @@ void VGraphicsItemView::updateView(IObject* o)
         SMaster master = i->first;
         QStretchTilerItem * fTilerItem = fTilerItems.find(master)->second;
         fTilerItem->clearSegments();
+            
+        fTilerItem->setOpacity (o->getA() / 255.f);
         
         const SGraphic2GraphicMapping& slave2Master = o->getSlave2MasterMapping(master->getMaster()->name());
         bool isHStretch =  o->UseGraphic2GraphicMapping(master->getMaster()->name());
