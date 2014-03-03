@@ -60,3 +60,5 @@ w=0.05;
 /ITL/scene/slider watch  "mouseMove" "/ITL/scene" "alpha" "$y[0,255]" ;
 /ITL/scene/slider watch+ "mouseDown" "/ITL/scene/sliderdur" "height" "$y" ;
 /ITL/scene/slider watch+ "mouseMove" "/ITL/scene/sliderdur" "height" "$y" ;
+
+/ITL/scene/* watch del (/ITL/scene color 255 255 255);

@@ -171,7 +171,7 @@ void ISync::cleanup()
 		if ((*i).first->getDeleted() || (*i).second->getMaster()->getDeleted()) {
 			iterator d = i;
 			i++;
-			this->remove((*d).first);
+			this->remove((*d).first, (*d).second);
 		}
 		else {
 			(*i).second->modified (false);

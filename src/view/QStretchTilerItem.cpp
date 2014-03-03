@@ -72,7 +72,7 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
     float yscale = fCache.height()/rect.height();
 
     // ensure a minimum 10 x 10 size
-    while ((rect.width() * xscale) < 20) {
+/*    while ((rect.width() * xscale) < 20) {
         xscale += 1;
         yscale += 1;
     }
@@ -80,7 +80,7 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
         xscale += 1;
         yscale += 1;
     }
-
+*/
     painter->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
     
     VGraphicsImageItem * img = dynamic_cast<VGraphicsImageItem*>(fOriginItem);

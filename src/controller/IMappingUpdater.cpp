@@ -197,8 +197,8 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
     
 	if (found) {
         float w = slave->getWidth()*slave->getScale();
-        float h = isVStretch ? h = masterSeg.yinterval().size() * master->getScale() : slave->getHeight()*slave->getScale();
-        float y = getYPos (h, masterSeg, align);
+        float h = isVStretch ? h = masterSeg.yinterval().size() : slave->getHeight()*slave->getScale();
+        float y = getYPos (h, masterSeg, align) + m->getDy();
         
         GraphicSegment destSeg = computeSegment(slave, h, w, x, y); // this is the destination segment of the slave alone (in master's coordinate)
         
@@ -213,7 +213,7 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
         x = invertedVariety.getx(0.5); // the center
         y = invertedVariety.gety(0.5);
         
-		slave->setSyncPos(m->getMaster()->name(), QPointF(x,y + m->getDy()));
+		slave->setSyncPos(m->getMaster()->name(), QPointF(x,y));
         slave->setSyncHeight(m->getMaster()->name(), extendedDestSeg.yinterval().size());
         slave->setSyncWidth(m->getMaster()->name(), extendedDestSeg.xinterval().size());
         

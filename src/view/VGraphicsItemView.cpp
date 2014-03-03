@@ -280,7 +280,6 @@ void VGraphicsItemView::updateGeometry(QGraphicsItem* item, IObject* o, float x,
     item->setPos(x, y);
     item->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
     updateTransform (o);
-    item->setScale(  o->getScale() );
     QRectF bbrect = item->boundingRect();
     double xo = bbrect.width()  * (o->getXOrigin() + 1) * o->getScale() / 2;
     double yo = bbrect.height() * (o->getYOrigin() + 1) * o->getScale() / 2;
@@ -333,6 +332,7 @@ void VGraphicsItemView::updateView(IObject* o)
 	{
         updateGeometry(fItem, o, relative2SceneX(o->getXPos()), relative2SceneY(o->getYPos()));
         updateItem(fItem, o);
+        fItem->setScale(  o->getScale() );
 	}
 
 
