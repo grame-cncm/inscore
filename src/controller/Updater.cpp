@@ -41,9 +41,10 @@ void Updater::update (IObject* object)
 		object->accept(this);
     }
 	if (object->getState() & IObject::kSubModified) {
-        object->sort();
-		IObject::subnodes::const_iterator i = object->elements().begin();
-		while (i != object->elements().end()) {
+        ViewUpdater * vu = dynamic_cast<ViewUpdater*>(this);
+        IObject::subnodes elements = vu ? object->invertedSort() : object->sort();
+		IObject::subnodes::const_iterator i = elements.begin();
+		while (i != elements.end()) {
 			update (*i);
 			i++;
 		}

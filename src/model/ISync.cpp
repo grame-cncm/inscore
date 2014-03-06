@@ -51,35 +51,71 @@ void ISync::print (ostream& out) const
 }
 
 //--------------------------------------------------------------------------
-void ISync::topologicalSort(IObject::subnodes& nodes) const
+IObject::subnodes ISync::topologicalSort(IObject::subnodes& nodes) const
 {
     int i = 0;
-    while( i != nodes.size())
+    IObject::subnodes out = nodes;
+    while( i != out.size())
     {
-        SIObject node = nodes[i];
+        SIObject node = out[i];
         IObject::subnodes slaves = node->getParent()->getSlaves(node);
         bool found = false;
         int j = i;
         SIObject slave;
-        while( !slaves.empty() && j < nodes.size()-1 && !found)
+        while( !slaves.empty() && j < out.size()-1 && !found)
         {
             j++;
             int it = 0; 
             while(it < slaves.size() && !found)
             {
                 slave = slaves[it];
-                if(nodes[j] == slave) found = true;
+                if(out[j] == slave) found = true;
                 it++;
             }
         }
         if(found)
         {
-            nodes.at(i)=slave;
-            nodes.at(j)=node;
+            out.at(i)=slave;
+            out.at(j)=node;
         }
         else
             i++;
     }
+    return out;
+}
+
+//--------------------------------------------------------------------------
+IObject::subnodes ISync::invertedTopologicalSort(IObject::subnodes& nodes) const
+{
+    int i = 0;
+    IObject::subnodes out = nodes;
+    while( i != out.size())
+    {
+        SIObject node = out[i];
+        std::vector<SMaster> masters = node->getParent()->getMasters(node);
+        bool found = false;
+        int j = i;
+        SIObject master;
+        while( !masters.empty() && j < out.size()-1 && !found)
+        {
+            j++;
+            int it = 0; 
+            while(it < masters.size() && !found)
+            {
+                master = masters[it]->getMaster();
+                if(out[j] == master) found = true;
+                it++;
+            }
+        }
+        if(found)
+        {
+            out.at(i)=master;
+            out.at(j)=node;
+        }
+        else
+            i++;
+    }
+    return out;
 }
 
 //--------------------------------------------------------------------------

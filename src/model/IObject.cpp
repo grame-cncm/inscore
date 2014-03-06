@@ -299,10 +299,23 @@ std::vector<SIObject> IObject::getSlaves(SIObject o) const
 void IObject::cleanupSync ()		{ if (fSync) fSync->cleanup(); }
 
 //--------------------------------------------------------------------------
-void IObject::sort ()
+IObject::subnodes IObject::sort ()
 {
 	// topological sort of the scene elements
-	if (fSync) fSync->sort(elements());
+	if (fSync)
+        return fSync->sort(elements());
+    else
+        return elements();
+}
+
+//--------------------------------------------------------------------------
+IObject::subnodes IObject::invertedSort ()
+{
+	// topological sort of the scene elements
+	if (fSync)
+        return fSync->invertedSort(elements());
+    else
+        return elements();
 }
 
 //--------------------------------------------------------------------------

@@ -48,7 +48,7 @@ class VDummyObjectView : public VObjectView
 
 		virtual void updateView(IObject * object)			{}
 		virtual void updateObjectSize( IObject * object )	{}
-		virtual void setParentView (IObject * object)		{}
+		//virtual void setParentView (IObject * object)		{}
 		virtual void setParentItem( VObjectView* parent )	{}
 
 		virtual void setEffect (GraphicEffect& effect)		{}

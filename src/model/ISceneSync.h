@@ -98,7 +98,10 @@ class ISceneSync : public IVNode
 		virtual void cleanup()	{ fSync.cleanup(); IObject::cleanup(); }
 
 		/// \brief makes a topological sort of the scene elements according to their synchronizations set
-		virtual void	sort (IObject::subnodes& nodes);
+		virtual IObject::subnodes	sort (IObject::subnodes& nodes);
+
+		/// \brief makes a topological sort of the scene elements according to their synchronizations set (inverted compared to sort())
+		virtual IObject::subnodes	invertedSort (IObject::subnodes& nodes);
 
 		/// \brief a periodic task to propagate modification state from masters to slaves
 		virtual void ptask ();

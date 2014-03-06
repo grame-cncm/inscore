@@ -184,7 +184,7 @@ void VGraphicsItemView::drawNameAndBBox(IObject* o)
 }
 
 //------------------------------------------------------------------------------------------------------------
-void VGraphicsItemView::setParentView (IObject * object) // not used ...
+/*void VGraphicsItemView::setParentView (IObject * object) // not used ...
 {
 	VObjectView * parentView = 0;
 	if (object) {
@@ -199,7 +199,7 @@ void VGraphicsItemView::setParentView (IObject * object) // not used ...
         }
 	}
 	setParentItem( parentView );
-}
+}*/
 
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateObjectSize(IObject* o)
@@ -428,16 +428,7 @@ void VGraphicsItemView::findObsoleteSync(std::vector<SMaster> masters)
     std::map<SMaster, QStretchTilerItem*>::iterator it;
     for(it = fTilerItems.begin(); it != fTilerItems.end(); it++)
     {
-        bool found = false;
-        for(int i = 0; i<masters.size(); i++)
-        {
-            if(masters[i] == it->first)
-            {
-                found = true;
-                i = masters.size();
-            }
-        }
-        if(!found)
+        if(std::find(masters.begin(), masters.end(), it->first) == masters.end())
         {
             if(it->second->scene())
                 fScene->removeItem(it->second);

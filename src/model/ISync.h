@@ -147,7 +147,12 @@ class ISync : public std::multimap<SIObject, SMaster>
 		/*! \brief sort a set of nodes according to their relations
 			\param nodes the set of nodes to be sorted
 		*/
-		void	topologicalSort(IObject::subnodes& nodes) const;
+		IObject::subnodes	topologicalSort(IObject::subnodes& nodes) const;
+
+		/*! \brief sort a set of nodes according to their relations (inverted compared to topologicalSort() )
+			\param nodes the set of nodes to be sorted
+		*/
+		IObject::subnodes invertedTopologicalSort(IObject::subnodes& nodes) const;
 
 		/*! \brief returns the modified state of the synchronization set
 		*/

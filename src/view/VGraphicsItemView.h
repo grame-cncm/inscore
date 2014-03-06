@@ -61,7 +61,7 @@ class VGraphicsItemView : public VObjectView
 
 		virtual void updateView(IObject * object);			// updates the object view
 		virtual void updateObjectSize( IObject * object );	// updates the object size
-		virtual void setParentView (IObject * object);		// updates the object parent view
+		//virtual void setParentView (IObject * object);		// updates the object parent view
 		virtual void setParentItem( VObjectView* parent )		{ setParentItem((VGraphicsItemView*)parent); }
 		virtual void setParentItem( VGraphicsItemView* parent ){ fParent = parent ? parent->item() : 0;
                                                                 fItem->setParentItem(parent ? parent->item() : 0);}

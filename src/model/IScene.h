@@ -96,9 +96,6 @@ class IScene : public IRectShape//, public PeriodicTask
 		/// \brief creates the scene virtual nodes
 		virtual void	createVirtualNodes ();
 
-		/// \brief makes a topological sort of the scene elements according to their synchronizations set
-		virtual void	sort ();
-
 		/// \brief sets the message handlers.
 		virtual void setHandlers ();
 		/*!
@@ -112,12 +109,6 @@ class IScene : public IRectShape//, public PeriodicTask
 		/// \brief gives the signals node
 		virtual SISignalNode	signalsNode () const;
 
-		/*! \brief gives the master of an object
-			\param o the object to look for in the synchronization set
-			\return the object master or 0 when not found
-		*/
-//		virtual SMaster getMaster(SIObject o) const;
-	
 		/// \brief gives the scene (actually self)
 		virtual SIScene			getScene()					{ return this; }
 		virtual const IScene*	getScene() const			{ return this; }

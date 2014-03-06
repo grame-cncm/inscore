@@ -183,19 +183,7 @@ void IScene::accept (Updater* u)
 }
 
 //--------------------------------------------------------------------------
-/*SMaster IScene::getMaster(SIObject o) const
-{ 
-	return fSync ? fSync->getMaster(o) : 0;
-}
-*/
-//--------------------------------------------------------------------------
 //void IScene::cleanupSync ()		{ if (fSync) fSync->cleanup(); }
-
-void IScene::sort ()
-{ 
-	// topological sort of the scene elements
-	if (fSync) fSync->sort(elements()); 
-}
 
 //--------------------------------------------------------------------------
 string IScene::address2scene (const char* addr) const

@@ -347,16 +347,18 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		virtual void cleanupSync();
 
 		/// \brief makes a topological sort of the scene elements according to their synchronizations set
-		virtual void	sort ();
+		virtual subnodes	sort ();
 
-
-		/*! \brief gives (one of) the master(s) of an object
+        /// \brief makes a topological sort of the scene elements according to their synchronizations set (inverted compared to sort() )
+		virtual subnodes	invertedSort ();
+    
+    
+		/*! \brief gives (one of) the masters of an object
 			\param o the object to look for in the synchronization set
 			\return the object master or 0 when not found
-		*/
-		virtual SMaster getMaster(SIObject o) const;
-    
-    
+		*/    
+        virtual SMaster getMaster(SIObject o) const;
+
 		/*! \brief gives the masters of an object
 			\param o the object to look for in the synchronization set
 			\return a vector of all the masters or an empty vector when not found
