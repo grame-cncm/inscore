@@ -54,30 +54,22 @@ void ISceneSync::accept (Updater* u)
 //--------------------------------------------------------------------------
 SMaster ISceneSync::getMaster(SIObject o) const
 {
-	ISync::const_iterator found = fSync.find(o);
-	return (found != fSync.end()) ? found->second : 0;
+    if(fSync.hasMaster(o))
+        return fSync.getMasters(o).front();
+    else
+        return 0;
 }
 
 //--------------------------------------------------------------------------
 std::vector<SMaster> ISceneSync::getMasters(SIObject o) const
 {
-    std::pair<ISync::const_iterator,ISync::const_iterator> range = fSync.equal_range(o);
-    std::vector<SMaster> masters;
-    for(ISync::const_iterator it = range.first; it !=range.second; it++)
-        masters.push_back(it->second);
-    return masters;
+    return fSync.getMasters(o);
 }
 
 //--------------------------------------------------------------------------
 std::vector<SIObject> ISceneSync::getSlaves(SIObject o) const
 {
-    std::vector<SIObject> slaves;
-    for(ISync::const_iterator it = fSync.begin(); it !=fSync.end(); it++)
-    {
-        if(it->second->getMaster() == o)
-            slaves.push_back(it->first);
-    }
-    return slaves;
+    return fSync.getSlaves(o);
 }
 
 //--------------------------------------------------------------------------
@@ -129,9 +121,15 @@ SIMessageList ISceneSync::getMsgs (const IMessage* msg) const
 		}
 	}
 	else if (msg->size() == 0) {
-		for (ISync::const_iterator i = fSync.begin(); i != fSync.end(); i++) {
-			SIMessage msg = buildSyncMsg (address, i->first,  i->second);
-			outMsgs->list().push_back (msg);
+        std::map<SIObject, std::vector<SMaster> > s2m = fSync.getSlaves2Masters();
+        ISync::const_slave_iterator it = s2m.begin();
+        while(it != s2m.end())
+        {
+            for (int i = 0; i < it->second.size(); i++) {
+                SIMessage msg = buildSyncMsg (address, it->first,  it->second[i]);
+                outMsgs->list().push_back (msg);
+            }
+            it++;
 		}
 	}
 	return outMsgs;	
@@ -142,11 +140,7 @@ SIMessageList ISceneSync::getMsgs (const IMessage* msg) const
 //--------------------------------------------------------------------------
 void ISceneSync::ptask ()
 {
-	for (ISync::iterator i = fSync.begin(); i != fSync.end(); i++) {
-		const SIObject& master = i->second->getMaster();
-		if (master->getState() & kModified)
-			i->first->setState(kMasterModified);
-	}
+    fSync.ptask();
 }
 
 //--------------------------------------------------------------------------
@@ -268,9 +262,10 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)
 SIMessageList ISceneSync::getAllParams() const
 {
 	SIMessageList outMsgs = 	IObject::getAllParams();
-	ISync::const_iterator i = fSync.begin();
+    std::map<SIObject, std::vector<SMaster> > s2m = fSync.getSlaves2Masters();
+	ISync::const_slave_iterator i = s2m.begin();
 	// and distribute the message to synced nodes
-	while (i != fSync.end()) {
+	while (i != s2m.end()) {
 		const SIObject& elt = i->first;
 		SIMessage msg = IMessage::create(getOSCAddress(), "get");
 		msg->add (elt->name());

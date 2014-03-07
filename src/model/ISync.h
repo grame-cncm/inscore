@@ -121,17 +121,34 @@ IMessage&		operator << (IMessage&, const Master&);
 	
 	actually a surjection from SIObject to Master 
 */
-class ISync : public std::multimap<SIObject, SMaster>
+class ISync
 {
 	bool fModified;
-	bool checkLoop(const IObject* slave, IObject* master);
-	
+	bool checkLoop(const SIObject slave, SIObject master);
+	std::map<SIObject, std::vector<SMaster> > fSlaves2Masters;
+	std::map<SIObject, std::vector<SIObject> > fMasters2Slaves;
+    
 	public:	
-		typedef std::multimap<SIObject, SMaster>::const_iterator	const_iterator;
-		typedef std::multimap<SIObject, SMaster>::iterator	iterator;
+		typedef std::map<SIObject, std::vector<SMaster> >::const_iterator	const_slave_iterator;
+		typedef std::map<SIObject, std::vector<SMaster> >::iterator	slave_iterator;
+		typedef std::map<SIObject, std::vector<SIObject> >::const_iterator	const_master_iterator;
+		typedef std::map<SIObject, std::vector<SIObject> >::iterator	master_iterator;
+        enum relation{ kNoRelation = 0, kSlave = 1, kMaster = 2 };
 
 				 ISync() : fModified(false) {}
 		virtual ~ISync() {}
+    
+        bool hasMaster(SIObject s) const {return fSlaves2Masters.find(s) != fSlaves2Masters.end();}
+    
+        bool hasSlave(SIObject m) const {return fMasters2Slaves.find(m) != fMasters2Slaves.end();}
+
+        std::vector<SMaster> getMasters(SIObject slave) const;
+
+        std::vector<SIObject> getSlaves(SIObject master) const;
+    
+        std::map<SIObject, std::vector<SMaster> > getSlaves2Masters() const;
+
+        relation getRelation(SIObject o1, SIObject o2) const;
 
 		/*! \brief adds a slave -> master relation between two objects
 			\param slave the slave object
@@ -171,6 +188,9 @@ class ISync : public std::multimap<SIObject, SMaster>
 
 		/// debug utility
 		void	print(std::ostream& out) const;
+
+		/// \brief a periodic task to propagate modification state from masters to slaves
+		virtual void ptask ();
 
 };
 
