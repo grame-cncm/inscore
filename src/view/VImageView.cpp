@@ -64,6 +64,8 @@ void VImageView::updateLocalMapping (IImage* img)
 	{
 		// File not found. Do nothing. (Error msg is handled by the model.)
 	}
+    img->setWidth(scene2RelativeWidth(fImageItem->boundingRect().width()));
+    img->setHeight(scene2RelativeHeight(fImageItem->boundingRect().height()));
 
 	// 2. Update mapping
 	VIntPointObjectView::updateLocalMapping( img );
