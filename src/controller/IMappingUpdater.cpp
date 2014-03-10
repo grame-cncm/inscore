@@ -68,7 +68,6 @@ float IMappingUpdater::getYPos (float height, const GraphicSegment& masterSeg, M
 		case Master::kSyncBottom:
 			y = masterSeg.yinterval().second() + displacement;
 			break;
-		case Master::kSyncOver:
 		default:
 			y = masterSeg.yinterval().center();
 			break;
@@ -197,7 +196,7 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
     
 	if (found) {
         float w = slave->getWidth()*slave->getScale();
-        float h = isVStretch ? h = masterSeg.yinterval().size() : slave->getHeight()*slave->getScale();
+        float h = isVStretch ? masterSeg.yinterval().size() : slave->getHeight()*slave->getScale();
         float y = getYPos (h, masterSeg, align) + m->getDy();
         
         GraphicSegment destSeg = computeSegment(slave, h, w, x, y); // this is the destination segment of the slave alone (in master's coordinate)

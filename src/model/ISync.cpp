@@ -102,68 +102,68 @@ ISync::relation ISync::getRelation(SIObject o1, SIObject o2) const
 //--------------------------------------------------------------------------
 IObject::subnodes ISync::topologicalSort(IObject::subnodes& nodes) const
 {
-    int i = 0;
-    IObject::subnodes out = nodes;
-    while( i != out.size())
+    IObject::subnodes in = nodes;
+    IObject::subnodes out;
+    do
     {
-        SIObject node = out[i];
-        IObject::subnodes slaves = node->getParent()->getSlaves(node);
-        bool found = false;
-        int j = i;
-        SIObject slave;
-        while( !slaves.empty() && j < out.size()-1 && !found)
+        IObject::subnodes sameLevelOfSync;
+        IObject::subnodes::iterator it = in.begin();
+        while(it != in.end())
         {
-            j++;
-            int it = 0; 
-            while(it < slaves.size() && !found)
+            bool addToVector = true;
+            if(hasSlave(*it))
             {
-                slave = slaves[it];
-                if(out[j] == slave) found = true;
-                it++;
+                std::vector<SIObject> slaves = getSlaves(*it);
+                for(int i = 0; i<slaves.size(); i++)
+                    if(std::find(out.begin(), out.end(), slaves[i]) == out.end())   // if one of the slaves of the node is not in the "already-sorted-nodes",
+                        addToVector = false;                                        // we won't add the node to the final vector yet.
             }
+            if(addToVector)
+            {
+                sameLevelOfSync.push_back(*it);
+                in.erase(it);
+            }
+            else
+                it++;
         }
-        if(found)
-        {
-            out.at(i)=slave;
-            out.at(j)=node;
-        }
-        else
-            i++;
-    }
+        for(int j = 0; j<sameLevelOfSync.size(); j++)
+            out.push_back(sameLevelOfSync[j]);
+    }while(!in.empty());
+   
     return out;
 }
 
 //--------------------------------------------------------------------------
 IObject::subnodes ISync::invertedTopologicalSort(IObject::subnodes& nodes) const
 {
-    int i = 0;
-    IObject::subnodes out = nodes;
-    while( i != out.size())
+    IObject::subnodes in = nodes;
+    IObject::subnodes out;
+    do
     {
-        SIObject node = out[i];
-        std::vector<SMaster> masters = node->getParent()->getMasters(node);
-        bool found = false;
-        int j = i;
-        SIObject master;
-        while( !masters.empty() && j < out.size()-1 && !found)
+        IObject::subnodes sameLevelOfSync;
+        IObject::subnodes::iterator it = in.begin();
+        while(it != in.end())
         {
-            j++;
-            int it = 0; 
-            while(it < masters.size() && !found)
+            bool addToVector = true;
+            if(hasMaster(*it))
             {
-                master = masters[it]->getMaster();
-                if(out[j] == master) found = true;
-                it++;
+                std::vector<SMaster> masters = getMasters(*it);
+                for(int i = 0; i<masters.size(); i++)
+                    if(std::find(out.begin(), out.end(), masters[i]->getMaster()) == out.end()) // if one of the masters is not in the "already-sorted-nodes",
+                        addToVector = false;                                                    // we won't add the node to the final vector yet.
             }
+            if(addToVector)
+            {
+                sameLevelOfSync.push_back(*it);
+                in.erase(it);
+            }
+            else
+                it++;
         }
-        if(found)
-        {
-            out.at(i)=master;
-            out.at(j)=node;
-        }
-        else
-            i++;
-    }
+        for(int j = 0; j<sameLevelOfSync.size(); j++)
+            out.push_back(sameLevelOfSync[j]);
+    }while(!in.empty());
+    
     return out;
 }
 

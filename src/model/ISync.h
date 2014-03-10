@@ -138,16 +138,34 @@ class ISync
 				 ISync() : fModified(false) {}
 		virtual ~ISync() {}
     
+		/*! \brief returns true if the object has at least one master
+			\param s the slave object
+		*/
         bool hasMaster(SIObject s) const {return fSlaves2Masters.find(s) != fSlaves2Masters.end();}
     
+		/*! \brief returns true if the object has at least one slave
+			\param m the master object
+		*/
         bool hasSlave(SIObject m) const {return fMasters2Slaves.find(m) != fMasters2Slaves.end();}
 
+		/*! \brief returns the vector of masters for a slave
+			\param slave the slave object
+		*/
         std::vector<SMaster> getMasters(SIObject slave) const;
 
+		/*! \brief returns the vector of slaves for a master
+			\param master the master object
+		*/
         std::vector<SIObject> getSlaves(SIObject master) const;
     
+		/*! \brief returns the map slaves to masters
+		*/
         std::map<SIObject, std::vector<SMaster> > getSlaves2Masters() const;
 
+		/*! \brief adds a slave -> master relation between two objects
+			\param o1 the first object
+			\param o2 the second object
+		*/
         relation getRelation(SIObject o1, SIObject o2) const;
 
 		/*! \brief adds a slave -> master relation between two objects
@@ -160,7 +178,7 @@ class ISync
 			\param o the object to be removed from the relations set
 		*/
 		void	remove(SIObject o, SMaster m=0);
-
+    
 		/*! \brief sort a set of nodes according to their relations
 			\param nodes the set of nodes to be sorted
 		*/

@@ -269,11 +269,11 @@ void VGraphicsItemView::updateItemNoStretch(QStretchTilerItem* item, IObject* o,
     double y = relative2SceneY( o->getSyncPos(master->getMaster()->name()).y(), item );
     
     item->setRect(QRectF(0,0,width,height));
-    updateGeometry(item, o, x, y);
+    updateGeometry(item, o, x, y, 1.f);
 }
 
 //------------------------------------------------------------------------------------------------------------
-void VGraphicsItemView::updateGeometry(QGraphicsItem* item, IObject* o, float x, float y)
+void VGraphicsItemView::updateGeometry(QGraphicsItem* item, IObject* o, float x, float y, float scale)
 {
     //	Sets the item position in the QGraphicsScene, using 'relative coordinate -> QGraphicsScene coordinate'
     //	mapping functions.
@@ -281,8 +281,8 @@ void VGraphicsItemView::updateGeometry(QGraphicsItem* item, IObject* o, float x,
     item->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
     updateTransform (o);
     QRectF bbrect = item->boundingRect();
-    double xo = bbrect.width()  * (o->getXOrigin() + 1) * o->getScale() / 2;
-    double yo = bbrect.height() * (o->getYOrigin() + 1) * o->getScale() / 2;
+    double xo = bbrect.width()  * (o->getXOrigin() + 1) * scale / 2;
+    double yo = bbrect.height() * (o->getYOrigin() + 1) * scale / 2;
     item->setTransform(QTransform::fromTranslate(-xo, -yo), true);
 }
 
@@ -330,10 +330,10 @@ void VGraphicsItemView::updateView(IObject* o)
     // the item is not slaved
 	if(fTilerItems.empty())
 	{
-        updateGeometry(fItem, o, relative2SceneX(o->getXPos()), relative2SceneY(o->getYPos()));
-        updateItem(fItem, o);
         fItem->setScale(  o->getScale() );
-	}
+	    updateGeometry(fItem, o, relative2SceneX(o->getXPos()), relative2SceneY(o->getYPos()), o->getScale());
+        updateItem(fItem, o);
+    }
 
 
 	//Exports the item if necessary.

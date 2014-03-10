@@ -179,7 +179,7 @@ class VGraphicsItemView : public VObjectView
         void updateItemNoStretch(QStretchTilerItem* item, IObject* o, SMaster master);
 
         /// \brief updates the geometry (position, centering, scale) of the item
-        void updateGeometry(QGraphicsItem* item, IObject* o, float x, float y);
+        void updateGeometry(QGraphicsItem* item, IObject* o, float x, float y, float scale);
 
         /// \brief updates the attributes of the QItem
         void updateItem(QGraphicsItem* item, IObject* o);
