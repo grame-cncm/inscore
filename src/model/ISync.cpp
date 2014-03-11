@@ -197,8 +197,12 @@ void ISync::sync(const SIObject& slave, SMaster master)
 		ITLErr << "unexpected synchronization request:" << slave->name() << "->" << slave->name() << ITLEndl;
 		return;
 	}
-    if(getRelation(slave, master->getMaster()) == kSlave) // already exists
-        remove(slave, master);
+    if(getRelation(slave, master->getMaster()) == kSlave){ // already exists
+    
+        for(std::vector<SMaster>::iterator it = fSlaves2Masters.find(slave)->second.begin(); it != fSlaves2Masters.find(slave)->second.end(); it++)
+            if((*it)->getMaster() == master->getMaster())   (*it) = master;
+        return;
+    }
     if (!checkLoop (slave, master->getMaster())) {
         if(hasMaster(slave))
             fSlaves2Masters.find(slave)->second.push_back(master);
@@ -218,8 +222,6 @@ void ISync::sync(const SIObject& slave, SMaster master)
         }
 		slave->modify();
 		slave->setState(IObject::kModified);
-	//	slave->getView()->setParentItem(master->getMaster()->getView());    // for now, we just change the parent of the Qt item, the view keeps one parent (and
-                                                                            //  several masters)
 		slave->setdyMsgHandler(master);
 		fModified = true;
 	}
@@ -234,7 +236,7 @@ void ISync::remove(SIObject slave, SMaster m)
         {
             if(getMasters(slave).size()>1)
                 fSlaves2Masters.find(slave)->second.erase(std::find(fSlaves2Masters.find(slave)->second.begin(), fSlaves2Masters.find(slave)->second.end(), m));
-            else
+            else if (hasMaster(slave))
             {
                 fSlaves2Masters.erase(fSlaves2Masters.find(slave));
                 slave->UseGraphic2GraphicMapping (false, m->getMaster()->name());
@@ -246,7 +248,7 @@ void ISync::remove(SIObject slave, SMaster m)
                 fMasters2Slaves.erase(fMasters2Slaves.find(m->getMaster()));
         }
     }
-	else {// when the master is not specified, we delete all the possible pairs with the slave
+	else if(hasMaster(slave)){// when the master is not specified, we delete all the possible pairs with the slave
         std::vector<SMaster> masters = getMasters(slave);
         fSlaves2Masters.erase(fSlaves2Masters.find(slave));
         for(int i=0; i<masters.size(); i++)
