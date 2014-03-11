@@ -456,7 +456,10 @@ void VGraphicsItemView::setSlave( std::vector<SMaster> masters )
     }
     
     findObsoleteSync(masters); // Then we check if some representation could be obsolete (master/slave relation deleted)
-    
+    if(masters.empty())
+    {
+        fScene->addItem(fItem);
+    }
     if(!fNbMasters)    // this is the first master added, so we have to remove the classic fItem and switch to the slaved verison
     {
         if(fItem->scene())
