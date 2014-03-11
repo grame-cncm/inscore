@@ -78,6 +78,11 @@ VGraphicsItemView::~VGraphicsItemView()
             fScene->removeItem(it->second);
     }
     
+    for(std::map<SMaster, QStretchTilerItem*>::iterator i = fTilerItems.begin(); i != fTilerItems.end(); i++)
+    {
+        delete i->second;
+    }
+    
     fTilerItems.clear();
     
     if(fItem->scene())
