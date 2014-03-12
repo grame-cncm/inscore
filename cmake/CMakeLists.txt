@@ -114,11 +114,11 @@ if (WIN32)
 	set(SCRIPTS ${SCRIPTS} "${LOCALLIB}/javascript/v8/win32/v8.lib")
 	set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/javascript/v8/include)
 else()
-	set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/javascript/v8/include)
 	if(APPLE)
+		set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/javascript/v8/include)
 		set(SCRIPTS ${SCRIPTS} -L${LOCALLIB}/javascript/v8/MacOS -lv8)
 	else()
-		set(SCRIPTS ${SCRIPTS} -L${LOCALLIB}/javascript/v8/linux -lv8)
+		set(SCRIPTS ${SCRIPTS} -lv8) # on linux, use of the v8 package
 	endif()
 endif ()
 
