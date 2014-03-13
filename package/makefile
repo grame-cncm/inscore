@@ -160,6 +160,7 @@ src:
 	cp -rf ../src $(package)-src/
 	cp -rf ../cmake/CMakeLists.txt $(package)-src/cmake
 	cp -rf ../lib $(package)-src/
+	cp -rf ../win32 $(package)-src/
 	rm -rf $(package)-src/lib/poppler
 	rm -rf $(package)-src/lib/javascript/MacOS
 	cp readme.txt $(package)-src
