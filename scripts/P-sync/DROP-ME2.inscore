@@ -1,0 +1,24 @@
+/ITL/scene/* del;
+
+/ITL/scene/score1 set gmnf "1voice-846_2f.gmn";
+/ITL/scene/score1 columns 1;
+/ITL/scene/score1 scale 2.2;
+/ITL/scene/score1 color 0 150 0;
+
+/ITL/scene/score2 set gmnf "846_2f.gmn";
+/ITL/scene/score2 columns 1;
+/ITL/scene/score2 page 2;
+/ITL/scene/score2 scale 2.2;
+/ITL/scene/score2 color 0 0 150;
+
+/ITL/scene/cursor set rect 0.01 0.1;
+/ITL/scene/cursor color 150 0 0 150;
+/ITL/scene/sync score1 cursor;
+/ITL/scene/sync score2 cursor;
+
+/ITL/scene/legend set txt 
+"       This script illustrates the synchronization of 2 different scores on a single cursor :
+the second score's beginning date corresponds to the position 44/4 in the first one.
+                               You can use the player to make it move";
+/ITL/scene/legend y 0.93;
+/ITL/scene/legend scale 1.3;

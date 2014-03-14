@@ -165,6 +165,12 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
 	const SIObject& master = m->getMaster();
 	const string& mapName = m->getMasterMapName();
 	Master::VAlignType align = m->getAlignment();
+    
+    if(!master->getWidth() || !master->getHeight())
+        master->getView()->updateObjectSize (master);
+    if(slave->getWidth() || !slave->getHeight())
+        slave->getView()->updateObjectSize (slave);
+    
 
 	// get the master graphic and time mapping
 	rational mdate = master->getDate();
@@ -188,17 +194,16 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
 	}
 	else if (date2point (mdate, slavemap, slaveSeg, xs)) {			// look for the master date in the slave map
 		if (date2point (mdate, map, masterSeg, x)) {				// this is mainly to retrieve the master segment
-			x -= slave->getWidth() * (1+xs) / 2;
-			x *= slave->getScale();								// update x according to the slave scale
+			x -= slave->getWidth()*slave->getScale()/(master->getWidth()) * (xs-slave->getXOrigin());
 			found = true;
 		}
 	}
     
 	if (found) {
-        float w = slave->getWidth()*slave->getScale();
-        float h = isVStretch ? masterSeg.yinterval().size() : slave->getHeight()*slave->getScale();
+        float h = isVStretch ? masterSeg.yinterval().size() : 2*slave->getHeight()*slave->getScale()/(master->getHeight());
+        float w = 2*slave->getWidth()*slave->getScale()/(master->getWidth());
         float y = getYPos (h, masterSeg, align) + m->getDy();
-        
+        y -= slaveSeg.yinterval().center()*slave->getHeight()*slave->getScale()/(master->getHeight());
         GraphicSegment destSeg = computeSegment(slave, h, w, x, y); // this is the destination segment of the slave alone (in master's coordinate)
         
         GraphicSegment extendedSeg = computeSegmentWithChildren(slave, slaveSeg); //this is the source segment of the slave and its children (in slave's coordinate)
@@ -440,6 +445,12 @@ SGraphic2GraphicMapping IMappingUpdater::verticalAdjust (const SGraphic2GraphicM
 {
 	Master::VAlignType	valign = master->getAlignment();
 	Master::StretchType	stretch = master->getStretch();
+    
+    if(!master->getMaster()->getWidth() || !master->getMaster()->getHeight())
+        master->getMaster()->getView()->updateObjectSize (master->getMaster());
+    if(o->getWidth() || !o->getHeight())
+        o->getView()->updateObjectSize (o);
+    
 	if ( (valign == Master::kSyncOver) && (stretch & Master::kStretchV) && TFloat::eq(master->getDy(),0))
 		return map;			// nothing to do
 
@@ -448,7 +459,7 @@ SGraphic2GraphicMapping IMappingUpdater::verticalAdjust (const SGraphic2GraphicM
 
 	bool vstretch = stretch & Master::kStretchV;
 	for (Graphic2GraphicRelation::const_iterator i =rmap.begin(); i !=rmap.end(); i++) {
-		float size = vstretch ? 0.f : o->getHeight() * o->getScale() * i->first.yinterval().size() / 2;
+		float size = vstretch ? 0.f : o->getHeight() * o->getScale() * i->first.yinterval().size() / master->getMaster()->getHeight();
 		set<GraphicSegment> hsized;
 		adjustset (i->second, hsized, size, valign, master->getDy());
 		g2gr->add (i->first, hsized);
