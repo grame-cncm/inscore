@@ -11,6 +11,16 @@ INScore originates from the Interlude project.
 It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
+Version 1.06
+- 2 different types of hierarchy : the graphical one with the parent-child relation, 
+and the temporal one with the master-slave synchronization that can be done on any level of hierarchy.
+- a slave can have several masters
+- the synchronized objects (slaves) are now automatically exported in an offscreen
+to be drawn in the master coordinates. they don't change their proportions, unlike the children.
+- new specification on synchronization
+- some modifications on examples (Turenas and cursors) have been made : some settings of scale were 
+in fact done to avoid side-effects that don't exist anymore.
+
 ----------------------------------------------------
 Version 1.05
 - incorrect error message for watch messages corrected
@@ -22,7 +32,7 @@ Version 1.05
 - new 'event' method supported at object level for UI events simulation
 - new watchable event: 'del' (triggered when deleting an object)
 - validation tools
-- new 'gmnstream' guido stream object (require Guido engine v. 1.52)
+- new 'gmnstream' guido stream object (requires Guido engine v. 1.52)
 
 ----------------------------------------------------
 Version 1.03
