@@ -1,5 +1,6 @@
 /ITL/scene/turenas set img "rsrc/schemaSonagramLine.png";
 /ITL/scene/turenas mapf "rsrc/schemaSonagramLine.map";
+/ITL/scene/turenas scale 1.;
 
 /ITL/scene/cursor color 255 0 0 180;
 /ITL/scene/turenas xorigin -1.0;

@@ -4,7 +4,7 @@
 /ITL/scene/turenas scale 0.87;
 
 /ITL/scene/cursor color 0 0 240 132;
-/ITL/scene/cursor width 0.002;
+/ITL/scene/cursor width 0.01;
 
 # Load the comments position
 /ITL load "scripts/sectionsPos.inscore";
