@@ -39,6 +39,8 @@
 #include "TMessageEvaluator.h"
 #include "VExport.h"
 
+#include "MouseEventAble.h"
+
 #define NB_OF_COLORS 12
 
 using namespace libmapping;
@@ -311,9 +313,7 @@ void VGraphicsItemView::updateItem(QGraphicsItem* item, IObject* o)
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateView(IObject* o)
 {
-    std::vector<SMaster> masters = o->getParent()? o->getParent()->getMasters(o) : o->getScene()->getMasters(o);
-    
-    setSlave(masters);
+    setSlave(o);
 
 	// slave mode: setup and use of fTilerItem
     for(std::map<SMaster, QStretchTilerItem*>::iterator i = fTilerItems.begin(); i != fTilerItems.end(); i++)
@@ -405,9 +405,11 @@ void VGraphicsItemView::buildDefaultMapping (IObject* object)
 }
 
 //------------------------------------------------------------------------------------------------------------
-QStretchTilerItem* VGraphicsItemView::buildTiler()
+QStretchTilerItem* VGraphicsItemView::buildTiler(SIObject o)
 {
-    return new QStretchTilerItem( fItem );
+    MouseEventAble<QStretchTilerItem>* item = new MouseEventAble<QStretchTilerItem>( o );
+    item->setOriginItem(fItem);
+    return item;
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -420,13 +422,13 @@ void VGraphicsItemView::itemChanged()
 }
 
 //------------------------------------------------------------------------------------------------------------
-void VGraphicsItemView::findNewSync(SMaster master)
+void VGraphicsItemView::findNewSync(SMaster master, SIObject slave)
 {
     std::map<SMaster, QStretchTilerItem*>::iterator it = fTilerItems.find(master);
     QStretchTilerItem * fTilerItem;
     if(it == fTilerItems.end())
     {
-        fTilerItem = buildTiler();
+        fTilerItem = buildTiler(slave);
         VGraphicsItemView * masterView = dynamic_cast<VGraphicsItemView*>(master->getMaster()->getView());
         fTilerItem->setParentItem(masterView->item());
         fTilerItems.insert(std::pair<SMaster, QStretchTilerItem*>(master,fTilerItem));
@@ -451,14 +453,16 @@ void VGraphicsItemView::findObsoleteSync(std::vector<SMaster> masters)
 }
 
 //------------------------------------------------------------------------------------------------------------
-void VGraphicsItemView::setSlave( std::vector<SMaster> masters )
+void VGraphicsItemView::setSlave(SIObject o )
 {
+    std::vector<SMaster> masters = o->getParent()? o->getParent()->getMasters(o) : o->getScene()->getMasters(o);
+    
     if(fNbMasters == masters.size()) return; //there is no master-slave relation to add or remove
     
 	for(int i = 0; i < masters.size(); i++)    // we first look for new masters, in order to add new representation
     {
         SMaster master = masters[i];
-        findNewSync(master);
+        findNewSync(master, o);
     }
     
     findObsoleteSync(masters); // Then we check if some representation could be obsolete (master/slave relation deleted)

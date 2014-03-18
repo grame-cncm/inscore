@@ -56,11 +56,13 @@ class QStretchTilerItem: public QGraphicsRectItem
 
 	public:
 
-		QStretchTilerItem( QGraphicsItem* tiledItem, QGraphicsItem* parent = 0)
+		QStretchTilerItem( QGraphicsItem* tiledItem = 0, QGraphicsItem* parent = 0)
 		: QGraphicsRectItem( QRect() , parent ) , fOriginItem(tiledItem), fNeedCacheUpdate(true), fIsStretch(false) {}
 		
 		virtual ~QStretchTilerItem() {}
 		
+        void setOriginItem(QGraphicsItem * item){fOriginItem = item;}
+    
 		/*! 
 		*	\brief QGraphicsItem::paint implementation.
 		*		- Updates 'just-in-time' the cache rendering of the fTiledItem if updateCache() has been called.

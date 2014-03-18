@@ -151,20 +151,20 @@ class VGraphicsItemView : public VObjectView
 		static QPointF floatPointToQPointF(const TFloatPoint& p)	{ return QPointF(p.x(),p.y());}
     
         /// \brief Look in the fTilerItems map to see if we must add new pairs of slave-master (new representation)
-		void findNewSync(SMaster master);
+		void findNewSync(SMaster master, SIObject slave);
     
         /// \brief Look in the fTilerItems map if some pairs of slave-master (and so fTilerItems) are obsolete
 		void findObsoleteSync(std::vector<SMaster> masters);
     
         /// \brief handles the fTilerItems to make them fit the model list of slave-master
-		void setSlave(std::vector<SMaster> masters);
+		void setSlave(SIObject o);
         
 		/// \brief Returns the QGraphicsItem or the QTilerItem, whether the object is slaved or not
 				QGraphicsItem * item(SMaster m = 0)	{return m ? fTilerItems.find(m)->second : fItem;}
 		const	QGraphicsItem * item(SMaster m = 0) const    {return m ? fTilerItems.find(m)->second : fItem;}
 		
 		/// \brief Builds the QTilerItem to be used for stretching.
-		virtual QStretchTilerItem* buildTiler();
+		virtual QStretchTilerItem* buildTiler(SIObject o);
 		
         /// \brief Must be called when the QGraphicsItem has been modified in VGraphicsItemView subclasses.
 		void itemChanged();
