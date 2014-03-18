@@ -1,3 +1,5 @@
+/ITL/scene/sync turenas;
+
 /ITL/scene/turenas del;
 /ITL/scene/turenas set img "rsrc/schema4Voix.png";
 /ITL/scene/turenas mapf "rsrc/schema4Voix.map";

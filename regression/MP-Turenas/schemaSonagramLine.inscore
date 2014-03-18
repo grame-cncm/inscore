@@ -14,7 +14,6 @@
 
 # /ITL load "scripts/layoutLine.inscore";
 
-
 /ITL/scene/turenas xorigin -1.0;
 
 /ITL/scene/cursor x 0.0;
@@ -31,7 +30,6 @@
 /ITL/scene/sync turenas cursor;
 /ITL/scene/sync cursorsmall _smallturenas v;
 
-# /ITL load "scripts/watchLine.inscore";
 # /ITL load "scripts/watchLine.inscore";
 
 /ITL/scene/turenas watch mouseDown (
@@ -54,3 +52,7 @@
 
 
 # /ITL load "commentsOff.inscore";
+
+/ITL/scene/section* watch;
+/ITL/scene/section* show 0;
+

@@ -1,14 +1,15 @@
+/ITL/scene/sync turenas;
+
 /ITL/scene/turenas del;
 /ITL/scene/turenas set img "rsrc/schema4Voix.png";
 /ITL/scene/turenas mapf "rsrc/schema4Voix.map";
 /ITL/scene/turenas scale 0.87;
 
 /ITL/scene/cursor color 0 0 240 132;
-/ITL/scene/cursor width 0.002;
+/ITL/scene/cursor width 0.01;
 
 # Load the comments position
 # /ITL load "scripts/sectionsPos.inscore";
-
 
 /ITL/scene/section1 x -0.58;
 /ITL/scene/section2 x -0.4;
@@ -28,11 +29,12 @@
 /ITL/scene/sectionC x 0.3;
 /ITL/scene/sectionC y 0.03;
 
+/ITL/scene/section* z 2.;
 
 # reload the watched events
 # /ITL load "scripts/layoutScore.inscore";
 
-/ITL/scene/turenas sync;
+
 /ITL/scene/turenas xorigin 0.0;
 /ITL/scene/turenas x 0.0;
 /ITL/scene/_cursor del;
