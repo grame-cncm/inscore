@@ -74,22 +74,19 @@ VGraphicsItemView::~VGraphicsItemView()
 	for (int i = 0 ; i < children.size() ; i++ )
 		children[i]->setParentItem(0);
     
-    for(std::map<SMaster,QStretchTilerItem*>::iterator it = fTilerItems.begin(); it != fTilerItems.end(); it++)
+    std::map<SMaster, QStretchTilerItem*>::iterator it = fTilerItems.begin();
+    while(it != fTilerItems.end())
     {
-        if(it->second->scene())
-            fScene->removeItem(it->second);
+        std::map<SMaster, QStretchTilerItem*>::iterator toErase = it;
+        it++;
+        if(toErase->second->scene())
+            fScene->removeItem(toErase->second);
+        delete toErase->second;
     }
-    
-    for(std::map<SMaster, QStretchTilerItem*>::iterator i = fTilerItems.begin(); i != fTilerItems.end(); i++)
-    {
-        delete i->second;
-    }
-    
     fTilerItems.clear();
     
     if(fItem->scene())
         fItem->scene()->removeItem( fItem );					// Remove the QGraphicsItem from the scene.
-
 	delete fItem;	
 }
 
@@ -472,7 +469,7 @@ void VGraphicsItemView::setSlave(SIObject o )
     }
     
     findObsoleteSync(masters); // Then we check if some representation could be obsolete (master/slave relation deleted)
-    if(masters.empty())
+    if(masters.empty() && !fItem->scene())
     {
         fScene->addItem(fItem);
     }

@@ -63,24 +63,24 @@
 /ITL/scene/rect1/txt2 watch mouseLeave (/ITL/scene/rect1/txt2 color 250 250 250);
 
 /ITL/scene/rect1/subrect0/txt set txt "sync slave subrect0 del;";
-/ITL/scene/rect1/subrect0/txt color 250 250 250;
-/ITL/scene/rect1/subrect0/txt y 0.6;
+/ITL/scene/rect1/subrect0/txt y 1.2;
+/ITL/scene/rect1/subrect0/txt x -0.4;
 /ITL/scene/rect1/subrect0/txt watch mouseEnter (/ITL/scene/rect1/subrect0/txt color 200 0 100);
-/ITL/scene/rect1/subrect0/txt watch mouseLeave (/ITL/scene/rect1/subrect0/txt color 250 250 250);
+/ITL/scene/rect1/subrect0/txt watch mouseLeave (/ITL/scene/rect1/subrect0/txt color 0 0 0);
 /ITL/scene/rect1/subrect0/txt watch mouseDown (/ITL/scene/rect1/sync slave subrect0 del);
 
 /ITL/scene/rect1/subrect1/txt set txt "sync slave subrect1 del;";
 /ITL/scene/rect1/subrect1/txt color 250 250 250;
-/ITL/scene/rect1/subrect1/txt y 0.6;
+/ITL/scene/rect1/subrect1/txt y 1.2;
 /ITL/scene/rect1/subrect1/txt watch mouseEnter (/ITL/scene/rect1/subrect1/txt color 200 0 100);
 /ITL/scene/rect1/subrect1/txt watch mouseLeave (/ITL/scene/rect1/subrect1/txt color 250 250 250);
 /ITL/scene/rect1/subrect1/txt watch mouseDown (/ITL/scene/rect1/sync slave subrect1 del);
 
 /ITL/scene/rect1/subrect2/txt set txt "sync slave subrect2 del;";
-/ITL/scene/rect1/subrect2/txt color 250 250 250;
-/ITL/scene/rect1/subrect2/txt y 0.6;
+/ITL/scene/rect1/subrect2/txt y 1.2;
+/ITL/scene/rect1/subrect2/txt x 0.4;
 /ITL/scene/rect1/subrect2/txt watch mouseEnter (/ITL/scene/rect1/subrect2/txt color 200 0 100);
-/ITL/scene/rect1/subrect2/txt watch mouseLeave (/ITL/scene/rect1/subrect2/txt color 250 250 250);
+/ITL/scene/rect1/subrect2/txt watch mouseLeave (/ITL/scene/rect1/subrect2/txt color 0 0 0);
 /ITL/scene/rect1/subrect2/txt watch mouseDown (/ITL/scene/rect1/sync slave subrect2 del);
 
 /ITL/scene/rect1/subrect3/txt set txt "sync slave subrect3 del;";
