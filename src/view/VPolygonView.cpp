@@ -49,7 +49,7 @@ bool equals( const QPolygonF& p1 , const QPolygonF& p2 )
 void VPolygonView::updateView( IPolygon * polygon)
 {
     polygon->cleanupSync();
-    if(!polygon->getParent()->getMaster(polygon) && !polygon->getParent()->getDeleted())
+    if(!polygon->getParent()->getDeleted())
     {
         if(polygon->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(polygon->getParent()->getView()?polygon->getParent()->getView():0);

@@ -128,7 +128,7 @@ void VVideoView::initialize( IVideo * video  )
 void VVideoView::updateView( IVideo * video  )
 {
     video->cleanupSync();
-    if(!video->getParent()->getMaster(video) && !video->getParent()->getDeleted())
+    if(!video->getParent()->getDeleted())
     {
         if(video->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(video->getParent()->getView()?video->getParent()->getView():0);

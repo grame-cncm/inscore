@@ -44,7 +44,7 @@ VGridView::VGridView(QGraphicsScene * scene, const IGrid* grid)
 void VGridView::updateView( IGrid * grid  )
 {
     grid->cleanupSync();
-    if(!grid->getParent()->getMaster(grid) && !grid->getParent()->getDeleted())
+    if(!grid->getParent()->getDeleted())
     {
         if(grid->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(grid->getParent()->getView()?grid->getParent()->getView():0);

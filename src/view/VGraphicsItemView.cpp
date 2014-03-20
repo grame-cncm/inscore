@@ -460,6 +460,12 @@ void VGraphicsItemView::setSlave(SIObject o )
 {
     std::vector<SMaster> masters = o->getParent()? o->getParent()->getMasters(o) : o->getScene()->getMasters(o);
     
+    if(masters.size())    // this is the first master added, so we have to remove the classic fItem and switch to the slaved verison
+    {
+        if(fItem->scene())
+            fScene->removeItem(fItem);
+    }
+    
     if(fNbMasters == masters.size()) return; //there is no master-slave relation to add or remove
     
 	for(int i = 0; i < masters.size(); i++)    // we first look for new masters, in order to add new representation
@@ -472,11 +478,6 @@ void VGraphicsItemView::setSlave(SIObject o )
     if(masters.empty() && !fItem->scene())
     {
         fScene->addItem(fItem);
-    }
-    if(!fNbMasters)    // this is the first master added, so we have to remove the classic fItem and switch to the slaved verison
-    {
-        if(fItem->scene())
-            fScene->removeItem(fItem);
     }
     fNbMasters = masters.size(); // finally we update the number of masters
 }
