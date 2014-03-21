@@ -507,7 +507,7 @@ As our object can be partially mapped, and then partially drawn in its master's 
 
 Once those questions of mapping resolved, we should finally try to define the order of the updates.
 
-Indeed, the computation and the drawing of our elements have to be done in a certain order, so that every step can have all the informations needed. For the mapping updater, we need to know for each object the positions and dimensions of its children and slaves, but for the view updater, the masters must be drawn before the slaves. This means that we should "climb" the hierarchy from the bottom (last level object) to the top (Scene) for the Model, and do the opposite for the View.
+Indeed, the computation and the drawing of our elements have to be done in a certain order, so that every step can have all the informations needed. For the mapping updater, we need to know for each object the positions and dimensions of its children and slaves, but for the view updater, the masters must be drawn before the slaves. This means that we should "climb" the hierarchy from the bottom (objects without any slave) to the top (object without any master) for the Model, and do the opposite for the View.
 
 %\begin{figure}[h]
 %\begin{center}
