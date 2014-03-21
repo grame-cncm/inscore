@@ -34,13 +34,16 @@ namespace inscore
 //----------------------------------------------------------------------
 VEllipseView::VEllipseView(QGraphicsScene * scene, const IEllipse* h) 
 	: VMappedShapeView( scene , new MouseEventAble<QGraphicsEllipseItem>(h) )
-    {}
+    {
+        if(!h->getParent()->getDeleted() && h->getParent()->getTypeString() != IScene::kSceneType)
+            setParentItem(h->getParent()->getView()?h->getParent()->getView():0);
+    }
 
 //----------------------------------------------------------------------
 void VEllipseView::updateView( IEllipse * ellipse )
 {
     ellipse->cleanupSync();
-    if(!ellipse->getParent()->getDeleted())
+    if(!ellipse->getParent()->getMaster(ellipse) && !ellipse->getParent()->getDeleted())
     {
         if(ellipse->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(ellipse->getParent()->getView()?ellipse->getParent()->getView():0);

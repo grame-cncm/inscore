@@ -44,12 +44,15 @@ namespace inscore
 //----------------------------------------------------------------------
 VSGraphView::VSGraphView(QGraphicsScene * scene, const IGraphicSignal* h) 
 	: VGraphView( scene , h, new MouseEventAble<QGraphicsGraphItemNew>(h) )
-    {}
+    {
+        if(!h->getParent()->getDeleted() && h->getParent()->getTypeString() != IScene::kSceneType)
+            setParentItem(h->getParent()->getView()?h->getParent()->getView():0);
+    }
 
 void VSGraphView::updateView( IGraphicSignal * graph )
 {
     graph->cleanupSync();
-    if(!graph->getParent()->getDeleted())
+    if(!graph->getParent()->getMaster(graph) && !graph->getParent()->getDeleted())
     {
         if(graph->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(graph->getParent()->getView()?graph->getParent()->getView():0);
@@ -63,15 +66,21 @@ void VSGraphView::updateView( IGraphicSignal * graph )
 //----------------------------------------------------------------------
 VGraphView::VGraphView(QGraphicsScene * scene, const IGraphicSignal* h) 
 	: VShapeView( scene , new MouseEventAble<QGraphicsGraphItem>(h) )
-    {}
+    {
+        if(!h->getParent()->getDeleted() && h->getParent()->getTypeString() != IScene::kSceneType)
+            setParentItem(h->getParent()->getView()?h->getParent()->getView():0);
+    }
 
 VGraphView::VGraphView(QGraphicsScene * scene, const IGraphicSignal* h, QAbstractGraphicsShapeItem * item) 
-	: VShapeView( scene , item ) {}
+	: VShapeView( scene , item ) {
+        if(!h->getParent()->getDeleted() && h->getParent()->getTypeString() != IScene::kSceneType)
+            setParentItem(h->getParent()->getView()?h->getParent()->getView():0);
+    }
 
 void VGraphView::updateView( IGraphicSignal * graph )
 {
     graph->cleanupSync();
-    if(!graph->getParent()->getDeleted())
+    if(!graph->getParent()->getMaster(graph) && !graph->getParent()->getDeleted())
     {
         if(graph->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(graph->getParent()->getView()?graph->getParent()->getView():0);

@@ -22,18 +22,13 @@
 /ITL/scene/lay1/score map staff2;
 
 	! cursor sync on score
-/ITL/scene/lay1/cursor set rect 0.8 0.1;
+/ITL/scene/lay1/cursor set rect 0.01 0.06;
 /ITL/scene/lay1/cursor color 200 50 100;
 /ITL/scene/lay1/cursor brushStyle dense4;
 /ITL/scene/lay1/cursor date 0 4;
 /ITL/scene/lay1/cursor duration 4 4;
 /ITL/scene/lay1/sync cursor score;
 
-	! text sync on a smaller invisible rectangle
-/ITL/scene/lay1/cursor/rec set rect 1.8 1.5;
-/ITL/scene/lay1/cursor/rec brushStyle none;
-/ITL/scene/lay1/cursor/text set txt "quatre temps";
-/ITL/scene/lay1/cursor/sync text rec h ;
 
 	! clickme button to move cursor 1/4
 /ITL/scene/lay1/clickme1 set txt "click me";
@@ -59,11 +54,9 @@
 /ITL/scene/lay1/duration1 watch mouseDown ( 
 	/ITL/scene/lay1/duration1 push,
 	/ITL/scene/lay1/cursor duration 8 4,
-	/ITL/scene/lay1/cursor/text set txt "huit temps",
 	/ITL/scene/lay1/duration1 set txt "change to 4/4",
 	/ITL/scene/lay1/duration1 watch mouseDown (
 		/ITL/scene/lay1/cursor duration 4 4,
-		/ITL/scene/lay1/cursor/text set txt "quatre temps",
 		/ITL/scene/lay1/duration1 set txt "change to 8/4",
 		/ITL/scene/lay1/duration1 pop
 	)
@@ -114,39 +107,12 @@
 /ITL/scene/lay2/score2 scale 2.2;
 
 	! cursor sync on score, page 2
-/ITL/scene/lay2/cursor2 set rect 0.6 0.1;
+/ITL/scene/lay2/cursor2 set rect 0.01 0.06;
 /ITL/scene/lay2/cursor2 color 40 200 80;
 /ITL/scene/lay2/cursor2 brushStyle dense4;
 /ITL/scene/lay2/cursor2 date 48 4;
 /ITL/scene/lay2/cursor2 duration 4 4;
 /ITL/scene/lay2/sync cursor2 score2;
-
-	! markers bound to the cursor
-/ITL/scene/lay2/cursor2/t0 set txt "0/4";
-/ITL/scene/lay2/cursor2/t0 x -1.;
-/ITL/scene/lay2/cursor2/t0 y 1.;
-/ITL/scene/lay2/cursor2/t0 scale 0.4;
-/ITL/scene/lay2/cursor2/t0 color 200 0 80;
-/ITL/scene/lay2/cursor2/t1 set txt "1/4";
-/ITL/scene/lay2/cursor2/t1 x -0.5;
-/ITL/scene/lay2/cursor2/t1 y 1.;
-/ITL/scene/lay2/cursor2/t1 scale 0.4;
-/ITL/scene/lay2/cursor2/t1 color 200 0 80;
-/ITL/scene/lay2/cursor2/t2 set txt "2/4";
-/ITL/scene/lay2/cursor2/t2 x 0.;
-/ITL/scene/lay2/cursor2/t2 y 1.;
-/ITL/scene/lay2/cursor2/t2 scale 0.4;
-/ITL/scene/lay2/cursor2/t2 color 200 0 80;
-/ITL/scene/lay2/cursor2/t3 set txt "3/4";
-/ITL/scene/lay2/cursor2/t3 x 0.5;
-/ITL/scene/lay2/cursor2/t3 y 1.;
-/ITL/scene/lay2/cursor2/t3 scale 0.4;
-/ITL/scene/lay2/cursor2/t3 color 200 0 80;
-/ITL/scene/lay2/cursor2/t4 set txt "4/4";
-/ITL/scene/lay2/cursor2/t4 x 1.;
-/ITL/scene/lay2/cursor2/t4 y 1.;
-/ITL/scene/lay2/cursor2/t4 scale 0.4;
-/ITL/scene/lay2/cursor2/t4 color 200 0 80;
 
 	! clickme button to move cursor 1/4
 /ITL/scene/lay2/clickme2 set txt "click me";

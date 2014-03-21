@@ -32,13 +32,16 @@ namespace inscore
 //----------------------------------------------------------------------
 VRectView::VRectView(QGraphicsScene * scene, const IRect* h) 
 	: VMappedShapeView( scene , new MouseEventAble<QGraphicsRectItem>(h) )
-    {}
+    {
+        if(!h->getParent()->getDeleted() && h->getParent()->getTypeString() != IScene::kSceneType)
+            setParentItem(h->getParent()->getView()?h->getParent()->getView():0);
+    }
 
 //----------------------------------------------------------------------
 void VRectView::updateView( IRect * rect  )
 {
     rect->cleanupSync();
-    if(!rect->getParent()->getDeleted())
+    if(!rect->getParent()->getMaster(rect) && !rect->getParent()->getDeleted())
     {
         if(rect->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(rect->getParent()->getView()?rect->getParent()->getView():0);

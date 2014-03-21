@@ -32,7 +32,10 @@ namespace inscore
 //----------------------------------------------------------------------
 VPolygonView::VPolygonView(QGraphicsScene * scene, const IPolygon* h) 
 	: VMappedShapeView( scene , new IQGraphicsPolygonItem(h) )
-    {}
+    {
+        if(!h->getParent()->getDeleted() && h->getParent()->getTypeString() != IScene::kSceneType)
+            setParentItem(h->getParent()->getView()?h->getParent()->getView():0);
+    }
 
 bool equals( const QPolygonF& p1 , const QPolygonF& p2 )
 {
@@ -49,7 +52,7 @@ bool equals( const QPolygonF& p1 , const QPolygonF& p2 )
 void VPolygonView::updateView( IPolygon * polygon)
 {
     polygon->cleanupSync();
-    if(!polygon->getParent()->getDeleted())
+    if(!polygon->getParent()->getMaster(polygon) && !polygon->getParent()->getDeleted())
     {
         if(polygon->getParent()->getTypeString() != IScene::kSceneType)
             setParentItem(polygon->getParent()->getView()?polygon->getParent()->getView():0);
