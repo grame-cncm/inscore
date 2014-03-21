@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2014-01-30 12:07:00"> 
+<meta name="date" content="2014-02-18 12:29:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
@@ -481,21 +481,18 @@ class="pcrr8tn-x-x-90">/ITL/scene/myObject watch mouseDown ( targetHost:12000/da
 <!--l. 2230--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">13.2.3    </span> <a 
  id="x17-7200013.2.3"></a>Miscellaneous variables</h4>
-<a 
- id="dx17-72001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2235--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">variable</span> <img 
+<!--l. 2235--><p class="noindent" ><div class="minipage"><!--l. 2235--><p class="center" ><img 
 src="OSCMsg83x.png" alt="PICT" >
 </div></dd></dl>
+<a 
+ id="dx17-72001"></a>
 <a 
  id="dx17-72002"></a>
 <a 
  id="dx17-72003"></a>
-<a 
- id="dx17-72004"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">$name </span>is replaced by the target object name.
@@ -521,9 +518,6 @@ class="small-caps">P</span><span
 class="small-caps">L</span><span 
 class="small-caps">E</span> </span><br 
 class="newline" />Using an object name:
-                                                                                 
-
-                                                                                 
 <div class="center" 
 >
 <!--l. 2251--><p class="noindent" >
@@ -532,19 +526,19 @@ class="colorbox" id="colorbox75"> <div class="minipage"><span
 class="pcrr8tn-x-x-90">/ITL/scene watch newElement (/ITL/scene/welcome set txt "Welcome" &#8217;$name&#8217;)</span>
 </div></div>
 </div>
+                                                                                 
+
+                                                                                 
 <!--l. 2255--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">13.2.4    </span> <a 
  id="x17-7300013.2.4"></a>Message based variables</h4>
 <!--l. 2258--><p class="noindent" >A message based variable is a variable containing an OSC message which will be evaluated at the time of the event.
 They are supported by all kind of events. Like the variables above, a message based variable starts with a &#8217;$&#8217; sign
 followed by a valid &#8217;get&#8217; message enclosed in parenthesis:
-<a 
- id="dx17-73001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2261--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">msgVar</span> <img 
+<!--l. 2261--><p class="noindent" ><div class="minipage"><!--l. 2261--><p class="center" ><img 
 src="OSCMsg84x.png" alt="PICT" >
 </div></dd></dl>
 <!--l. 2263--><p class="noindent" >The evaluation of a &#8217;get&#8217; message produces a message or a list of messages. The message based variable will be
@@ -592,9 +586,6 @@ class="small-caps">P</span><span
 class="small-caps">L</span><span 
 class="small-caps">E</span> </span><br 
 class="newline" />Requesting a set of objects to send a message to themselves on a mouse event:
-                                                                                 
-
-                                                                                 
 <div class="center" 
 >
 <!--l. 2286--><p class="noindent" >
@@ -615,25 +606,25 @@ class="pcrr8tn-x-x-90">&#x00A0;</span><span
 class="pcrr8tn-x-x-90">&#x00A0;</span><span 
 class="pcrr8tn-x-x-90">&#x00A0;                 (/ITL/scene/$self x &#8217;$sx&#8217;) ! to send a message to themselves</span></div></div>
 </div>
+                                                                                 
+
+                                                                                 
 <!--l. 2290--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">13.3    </span> <a 
  id="x17-7500013.3"></a>Interaction state management</h3>
 <!--l. 2293--><p class="noindent" >For a given object, its <span 
 class="ptmri8t-">interaction state </span>(i.e. the watched events and the associated messages) can be saved and
 restored.
-<a 
- id="dx17-75001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2296--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">stateMsg</span> <img 
+<!--l. 2296--><p class="noindent" ><div class="minipage"><!--l. 2296--><p class="center" ><img 
 src="OSCMsg85x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx17-75002"></a>
+ id="dx17-75001"></a>
 <a 
- id="dx17-75003"></a>
+ id="dx17-75002"></a>
 <!--l. 2300--><p class="noindent" >Interaction states are managed using a stack where the states are pushed to or popped from.
      <ul class="itemize1">
      <li class="itemize"><span 
@@ -663,22 +654,16 @@ href="#x17-6400013">13<!--tex4ht:ref: interaction --></a> p.<a
 href="#x17-6400013">99<!--tex4ht:ref: interaction --></a> with a file name used in
 place of the <span 
 class="pcrr8tn-">what </span>parameter.
-<a 
- id="dx17-76001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-                                                                                 
-
-                                                                                 
-<!--l. 2322--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">fileWatcher</span> <img 
+<!--l. 2322--><p class="noindent" ><div class="minipage"><!--l. 2322--><p class="center" ><img 
 src="OSCMsg86x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx17-76002"></a>
+ id="dx17-76001"></a>
 <a 
- id="dx17-76003"></a>
+ id="dx17-76002"></a>
 <!--l. 2326--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 

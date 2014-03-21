@@ -5,7 +5,7 @@ GRAME - Centre national de creation musicale
 http://www.grame.fr
 research@grame.fr
 ====================================================
-Copyright GRAME (c) 2009-2013
+Copyright GRAME (c) 2009-2014
 ----------------------------------------------------
 INScore originates from the Interlude project.
 It has been supported by the ANR (ANR-08-CORD-010)
@@ -22,7 +22,7 @@ to be drawn in the master coordinates. they don't change their proportions, unli
 in fact done to avoid side-effects that don't exist anymore.
 
 ----------------------------------------------------
-Version 1.05
+Version 1.05 - 2014-02-17
 - incorrect error message for watch messages corrected
 - new javascript readfile function
 - log window is now available from the application menu
@@ -35,7 +35,7 @@ Version 1.05
 - new 'gmnstream' guido stream object (requires Guido engine v. 1.52)
 
 ----------------------------------------------------
-Version 1.03
+Version 1.03 - 2013-07-25
 - log window utility provided as a new static node at application level (/ITL/log.
 - new systemCount read only attribute for Guido scores
 
@@ -54,7 +54,7 @@ Version 1.01
 - new 'windowOpacity' method at scene level
 
 ----------------------------------------------------
-Version 1.00
+Version 1.00 - 2013-01-28
 - bug correction in streching very small objects (due to approximations)
 - bug correction in $sx and $sy computation corrected (xorigin and yorigin was not taken into account)
 - new 'ticks' message at application level for querying or setting the current count of time tasks.
@@ -101,7 +101,7 @@ Version 0.98
          messages.
 
 ----------------------------------------------------
-Version 0.97
+Version 0.97 - 2012-04-05
  - objects position, date and watched events preserved through type change
  - bug in quantified dates corrected (null denominator set to the quantified value)
  - new 'alias' message providing arbitrary OSC addresses support
@@ -110,7 +110,7 @@ Version 0.97
  - chords map correction (corrected by guido engine v. 1.49 - required) 
 
 ----------------------------------------------------
-Version 0.96
+Version 0.96 - 2011-12-09
  - switch to v8 javascript engine
  - lua not embedded by default
 
@@ -156,7 +156,7 @@ Version 0.82
 - splash screen and about menu implemented by the viewer
 
 ----------------------------------------------------
-Version 0.81
+Version 0.81 - 2011-07-13
 - behavior change with synchronization without stretch: now the system looks also in the
   slave map for a segment corresponding to the master date.
 - $date variable change: the value is now (0,0) when no date is available
@@ -224,7 +224,7 @@ Version 0.75
 - guido staff graphic map correction: staff change was not correctly detected
 
 ----------------------------------------------------
-Version 0.74 - March 10 2011
+Version 0.74 - 2011-03-10
 - new 'dpage' message accepted by 'gmn' objects 
 - x and y variables: automatic range type detection (int | float)
 - polymorphism for the set 'txt' message params
@@ -264,7 +264,7 @@ Version 0.64
   new $self variable in the address field
 
 ----------------------------------------------------
-Version 0.63 - January 25 2011
+Version 0.63 - 2011-01-25
 - new 'mousemove' event
 - interaction messages accept variables ($x, $y, $date...)
 - new 'svg' and 'svgf' types for svg components
