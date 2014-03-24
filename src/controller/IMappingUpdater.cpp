@@ -141,12 +141,19 @@ GraphicSegment IMappingUpdater::computeSegmentWithChildren(IObject* o, GraphicSe
     for(int i = 0; i<slaves.size(); i++)
     {
         SIObject slave = slaves[i];
-        float width = slave->getSyncWidth(o->name());
-        float height = slave->getSyncHeight(o->name());
-        float x = slave->getSyncPos(o->name()).x();
-        float y = slave->getSyncPos(o->name()).y();
-        GraphicSegment sSeg = GraphicSegment(x-width/2, y-height/2, x+width/2, y+height/2); // in object's coordinates
-        gseg = gseg | sSeg;
+        std::vector<SMaster> masters = slave->getParent()->getMasters(slave);
+        for(int j = 0; j<masters.size(); j++)
+        {
+            if(masters[j]->getMaster() == o)
+            {
+                float width = slave->getSyncWidth(masters[j]->getMasterMapName());
+                float height = slave->getSyncHeight(masters[j]->getMasterMapName());
+                float x = slave->getSyncPos(masters[j]->getMasterMapName()).x();
+                float y = slave->getSyncPos(masters[j]->getMasterMapName()).y();
+                GraphicSegment sSeg = GraphicSegment(x-width/2, y-height/2, x+width/2, y+height/2); // in object's coordinates
+                gseg = gseg | sSeg;
+            }
+        }
     }
     return gseg;
 }
@@ -217,13 +224,13 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
         x = invertedVariety.getx(0.5); // the center
         y = invertedVariety.gety(0.5);
         
-		slave->setSyncPos(m->getMaster()->name(), QPointF(x,y));
-        slave->setSyncHeight(m->getMaster()->name(), extendedDestSeg.yinterval().size());
-        slave->setSyncWidth(m->getMaster()->name(), extendedDestSeg.xinterval().size());
+		slave->setSyncPos(m->getMasterMapName(), QPointF(x,y));
+        slave->setSyncHeight(m->getMasterMapName(), extendedDestSeg.yinterval().size());
+        slave->setSyncWidth(m->getMasterMapName(), extendedDestSeg.xinterval().size());
         
 		return masterSeg;
 	}
-    slave->setSyncPos(m->getMaster()->name(), QPointF(kUnknownLocation,kUnknownLocation)); // puts the object away when no mapping available or missing resources
+    slave->setSyncPos(m->getMasterMapName(), QPointF(kUnknownLocation,kUnknownLocation)); // puts the object away when no mapping available or missing resources
 	return masterSeg;
 }
 

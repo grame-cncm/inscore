@@ -197,8 +197,9 @@ void ISync::sync(const SIObject& slave, SMaster master)
 		ITLErr << "unexpected synchronization request:" << slave->name() << "->" << slave->name() << ITLEndl;
 		return;
 	}
-    if(getRelation(slave, master->getMaster()) == kSlave){ // already exists
-    
+    std::vector<SMaster> existingMasters = getMasters(slave);
+    std::vector<SMaster>::iterator i = std::find(existingMasters.begin(), existingMasters.end(), master);
+    if(i != existingMasters.end()){ // already exists
         for(std::vector<SMaster>::iterator it = fSlaves2Masters.find(slave)->second.begin(); it != fSlaves2Masters.find(slave)->second.end(); it++)
             if((*it)->getMaster() == master->getMaster())   (*it) = master;
         return;

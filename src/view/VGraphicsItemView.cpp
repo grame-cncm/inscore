@@ -266,11 +266,11 @@ void VGraphicsItemView::updateItemNoStretch(QStretchTilerItem* item, IObject* o,
 {
     item->setStretch(false);
     
-    double width = relative2SceneWidth(o->getSyncWidth(master->getMaster()->name()), item);
-    double height = relative2SceneHeight(o->getSyncHeight(master->getMaster()->name()), item);
+    double width = relative2SceneWidth(o->getSyncWidth(master->getMasterMapName()), item);
+    double height = relative2SceneHeight(o->getSyncHeight(master->getMasterMapName()), item);
     
-    double x = relative2SceneX( o->getSyncPos(master->getMaster()->name()).x(), item );
-    double y = relative2SceneY( o->getSyncPos(master->getMaster()->name()).y(), item );
+    double x = relative2SceneX( o->getSyncPos(master->getMasterMapName()).x(), item );
+    double y = relative2SceneY( o->getSyncPos(master->getMasterMapName()).y(), item );
     
     item->setRect(QRectF(0,0,width,height));
     item->setPos(x, y);
