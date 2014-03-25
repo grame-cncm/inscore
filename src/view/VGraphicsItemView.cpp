@@ -479,6 +479,7 @@ void VGraphicsItemView::setSlave(SIObject o )
     if(masters.empty() && !fItem->scene())
     {
         fScene->addItem(fItem);
+        fItem->setParentItem(fParent);
     }
     fNbMasters = masters.size(); // finally we update the number of masters
 }

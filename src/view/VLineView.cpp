@@ -32,21 +32,13 @@ namespace inscore
 //----------------------------------------------------------------------
 VLineView::VLineView(QGraphicsScene * scene, const ILine* h) 
 	: VMappedShapeView( scene , new IQGraphicsPathItem(h))
-    {
-        if(!h->getParent()->getDeleted() && h->getParent()->getTypeString() != IScene::kSceneType)
-            setParentItem(h->getParent()->getView()?h->getParent()->getView():0);
-    }
+    {}
 
 //----------------------------------------------------------------------
 void VLineView::updateView( ILine * line )
 {
     line->cleanupSync();
-    if(!line->getParent()->getMaster(line) && !line->getParent()->getDeleted())
-    {
-        if(line->getParent()->getTypeString() != IScene::kSceneType)
-            setParentItem(line->getParent()->getView()?line->getParent()->getView():0);
-    }
-	QPainterPath myPath;
+    QPainterPath myPath;
 	myPath.moveTo(0,0);
 	myPath.lineTo( relative2SceneX(line->getPoint().x()) , relative2SceneY(line->getPoint().y()) );
 

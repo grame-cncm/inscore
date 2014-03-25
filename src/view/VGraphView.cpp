@@ -44,20 +44,12 @@ namespace inscore
 //----------------------------------------------------------------------
 VSGraphView::VSGraphView(QGraphicsScene * scene, const IGraphicSignal* h) 
 	: VGraphView( scene , h, new MouseEventAble<QGraphicsGraphItemNew>(h) )
-    {
-        if(!h->getParent()->getDeleted() && h->getParent()->getTypeString() != IScene::kSceneType)
-            setParentItem(h->getParent()->getView()?h->getParent()->getView():0);
-    }
+    {}
 
 void VSGraphView::updateView( IGraphicSignal * graph )
 {
     graph->cleanupSync();
-    if(!graph->getParent()->getMaster(graph) && !graph->getParent()->getDeleted())
-    {
-        if(graph->getParent()->getTypeString() != IScene::kSceneType)
-            setParentItem(graph->getParent()->getView()?graph->getParent()->getView():0);
-    }
-	item()->setSignal( graph->getSignal() );
+    item()->setSignal( graph->getSignal() );
 	item()->setRect( QRect( 0,0,  relative2SceneWidth(graph->getWidth()),relative2SceneHeight(graph->getHeight()) ) );
 	VShapeView::updateView( graph );
 	itemChanged();
@@ -66,25 +58,14 @@ void VSGraphView::updateView( IGraphicSignal * graph )
 //----------------------------------------------------------------------
 VGraphView::VGraphView(QGraphicsScene * scene, const IGraphicSignal* h) 
 	: VShapeView( scene , new MouseEventAble<QGraphicsGraphItem>(h) )
-    {
-        if(!h->getParent()->getDeleted() && h->getParent()->getTypeString() != IScene::kSceneType)
-            setParentItem(h->getParent()->getView()?h->getParent()->getView():0);
-    }
+    {}
 
 VGraphView::VGraphView(QGraphicsScene * scene, const IGraphicSignal* h, QAbstractGraphicsShapeItem * item) 
-	: VShapeView( scene , item ) {
-        if(!h->getParent()->getDeleted() && h->getParent()->getTypeString() != IScene::kSceneType)
-            setParentItem(h->getParent()->getView()?h->getParent()->getView():0);
-    }
+	: VShapeView( scene , item ) {}
 
 void VGraphView::updateView( IGraphicSignal * graph )
 {
     graph->cleanupSync();
-    if(!graph->getParent()->getMaster(graph) && !graph->getParent()->getDeleted())
-    {
-        if(graph->getParent()->getTypeString() != IScene::kSceneType)
-            setParentItem(graph->getParent()->getView()?graph->getParent()->getView():0);
-    }
 	item()->setRect( QRect( 0,0,  relative2SceneWidth(graph->getWidth()),relative2SceneHeight(graph->getHeight()) ) );
 	float alpha = graph->getA() / 255.f;
 	item()->setOpacity (alpha);

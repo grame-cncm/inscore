@@ -51,9 +51,6 @@ VVideoView::VVideoView(QGraphicsScene * scene, const IVideo* video)
     connect(&fMediaPlayer, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(mediaStatusChanged(QMediaPlayer::MediaStatus)));
 #endif
 
-    if(!video->getParent()->getDeleted() && video->getParent()->getTypeString() != IScene::kSceneType)
-        setParentItem(video->getParent()->getView()?video->getParent()->getView():0);
-
 }
 
 //----------------------------------------------------------------------
@@ -132,12 +129,7 @@ void VVideoView::initialize( IVideo * video  )
 void VVideoView::updateView( IVideo * video  )
 {
     video->cleanupSync();
-    if(!video->getParent()->getMaster(video) && !video->getParent()->getDeleted())
-    {
-        if(video->getParent()->getTypeString() != IScene::kSceneType)
-            setParentItem(video->getParent()->getView()?video->getParent()->getView():0);
-    }
-	QString file = VApplView::toQString( video->getFile().c_str() );
+    QString file = VApplView::toQString( video->getFile().c_str() );
 	if ( QFile::exists(  file  ) )
 	{
 		fVideoItem->setOpacity (video->getA() / 255.f);

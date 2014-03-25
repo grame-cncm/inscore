@@ -51,6 +51,10 @@ template<typename T> SIObject _create(const std::string& name , IObject* parent)
 		obj->setView ( VoidViewFactory::create(obj));
 #else
 		obj->setView ( ViewFactory::create(obj, parent->getScene()->getGraphicScene()));
+        
+        if(!obj->getParent()->getDeleted() && obj->getParent()->getTypeString() != IScene::kSceneType)
+            obj->getView()->setParentItem(obj->getParent()->getView()?obj->getParent()->getView():0);
+    
 #endif
 	}
 	return obj->getView() ? obj : 0;

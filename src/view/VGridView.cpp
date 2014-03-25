@@ -38,21 +38,13 @@ namespace inscore
 //----------------------------------------------------------------------
 VGridView::VGridView(QGraphicsScene * scene, const IGrid* grid) 
 	: VMappedShapeView( scene , new MouseEventAble<QGraphicsRectItem>(grid) )
-    {
-        if(!grid->getParent()->getDeleted() && grid->getParent()->getTypeString() != IScene::kSceneType)
-            setParentItem(grid->getParent()->getView()?grid->getParent()->getView():0);
-    }
+    {}
 
 //----------------------------------------------------------------------
 void VGridView::updateView( IGrid * grid  )
 {
     grid->cleanupSync();
-    if(!grid->getParent()->getMaster(grid) && !grid->getParent()->getDeleted())
-    {
-        if(grid->getParent()->getTypeString() != IScene::kSceneType)
-            setParentItem(grid->getParent()->getView()?grid->getParent()->getView():0);
-    }
-	QRectF newRect( 0,0,  relative2SceneWidth(grid->getWidth()), relative2SceneHeight(grid->getHeight()) );
+    QRectF newRect( 0,0,  relative2SceneWidth(grid->getWidth()), relative2SceneHeight(grid->getHeight()) );
 	if ( newRect != item()->rect() )
 	{
 		item()->setRect( newRect );
