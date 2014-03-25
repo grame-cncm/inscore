@@ -146,10 +146,11 @@ GraphicSegment IMappingUpdater::computeSegmentWithChildren(IObject* o, GraphicSe
         {
             if(masters[j]->getMaster() == o)
             {
-                float width = slave->getSyncWidth(masters[j]->getMasterMapName());
-                float height = slave->getSyncHeight(masters[j]->getMasterMapName());
-                float x = slave->getSyncPos(masters[j]->getMasterMapName()).x();
-                float y = slave->getSyncPos(masters[j]->getMasterMapName()).y();
+                std::string mapName = masters[j]->getMaster()->name() + ":" + masters[j]->getMasterMapName();
+                float width = slave->getSyncWidth(mapName);
+                float height = slave->getSyncHeight(mapName);
+                float x = slave->getSyncPos(mapName).x();
+                float y = slave->getSyncPos(mapName).y();
                 GraphicSegment sSeg = GraphicSegment(x-width/2, y-height/2, x+width/2, y+height/2); // in object's coordinates
                 gseg = gseg | sSeg;
             }
@@ -190,7 +191,8 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
 		return masterSeg;
 	}
 
-	slave->UseGraphic2GraphicMapping (false, master->name());						// don't use the object graphic segmentation and mapping
+    std::string masterMapName = master->name() + ":" + m->getMasterMapName();
+	slave->UseGraphic2GraphicMapping (false, masterMapName);						// don't use the object graphic segmentation and mapping
 	float x, xs; bool found = false;
 	GraphicSegment slaveSeg;
 
@@ -224,13 +226,13 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
         x = invertedVariety.getx(0.5); // the center
         y = invertedVariety.gety(0.5);
         
-		slave->setSyncPos(m->getMasterMapName(), QPointF(x,y));
-        slave->setSyncHeight(m->getMasterMapName(), extendedDestSeg.yinterval().size());
-        slave->setSyncWidth(m->getMasterMapName(), extendedDestSeg.xinterval().size());
+		slave->setSyncPos(masterMapName, QPointF(x,y));
+        slave->setSyncHeight(masterMapName, extendedDestSeg.yinterval().size());
+        slave->setSyncWidth(masterMapName, extendedDestSeg.xinterval().size());
         
 		return masterSeg;
 	}
-    slave->setSyncPos(m->getMasterMapName(), QPointF(kUnknownLocation,kUnknownLocation)); // puts the object away when no mapping available or missing resources
+    slave->setSyncPos(masterMapName, QPointF(kUnknownLocation,kUnknownLocation)); // puts the object away when no mapping available or missing resources
 	return masterSeg;
 }
 
@@ -509,8 +511,10 @@ void IMappingUpdater::hstretchUpdate (IObject* o, const Master* master)
 	g2gr = verticalAdjust( g2gr, o, master);	// graphic segments adjustment according to vertical pos and stretch
 	g2gr = relink (g2gr->direct(), 0.0001f);	// check adjacent segments and make sure the end and begin match
 	TMapable* m = o;
-	m->setSlave2MasterMapping (master->getMaster()->name(), g2gr);			// create the slave graphic to master graphic composition
-	m->UseGraphic2GraphicMapping (true, master->getMaster()->name());
+    std::string masterMapName = master->getMaster()->name() + ":" + master->getMasterMapName();
+
+	m->setSlave2MasterMapping (masterMapName, g2gr);			// create the slave graphic to master graphic composition
+	m->UseGraphic2GraphicMapping (true, masterMapName);
 }
 
 } // end namespoace

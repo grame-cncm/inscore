@@ -240,7 +240,8 @@ void ISync::remove(SIObject slave, SMaster m)
             else if (hasMaster(slave))
             {
                 fSlaves2Masters.erase(fSlaves2Masters.find(slave));
-                slave->UseGraphic2GraphicMapping (false, m->getMaster()->name());
+                std::string masterMapName = m->getMaster()->name() + ":" + m->getMasterMapName();
+                slave->UseGraphic2GraphicMapping (false, masterMapName);
             }
             
             if(getSlaves(m->getMaster()).size()>1)

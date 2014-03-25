@@ -266,11 +266,12 @@ void VGraphicsItemView::updateItemNoStretch(QStretchTilerItem* item, IObject* o,
 {
     item->setStretch(false);
     
-    double width = relative2SceneWidth(o->getSyncWidth(master->getMasterMapName()), item);
-    double height = relative2SceneHeight(o->getSyncHeight(master->getMasterMapName()), item);
+    std::string mapName = master->getMaster()->name() + ":" + master->getMasterMapName();
+    double width = relative2SceneWidth(o->getSyncWidth(mapName), item);
+    double height = relative2SceneHeight(o->getSyncHeight(mapName), item);
     
-    double x = relative2SceneX( o->getSyncPos(master->getMasterMapName()).x(), item );
-    double y = relative2SceneY( o->getSyncPos(master->getMasterMapName()).y(), item );
+    double x = relative2SceneX( o->getSyncPos(mapName).x(), item );
+    double y = relative2SceneY( o->getSyncPos(mapName).y(), item );
     
     item->setRect(QRectF(0,0,width,height));
     item->setPos(x, y);
@@ -320,9 +321,9 @@ void VGraphicsItemView::updateView(IObject* o)
         fTilerItem->clearSegments();
             
         fTilerItem->setOpacity (o->getA() / 255.f);
-        
-        const SGraphic2GraphicMapping& slave2Master = o->getSlave2MasterMapping(master->getMaster()->name());
-        bool isHStretch =  o->UseGraphic2GraphicMapping(master->getMaster()->name());
+        std::string masterMapName = master->getMaster()->name() + ":" + master->getMasterMapName();
+        const SGraphic2GraphicMapping& slave2Master = o->getSlave2MasterMapping(masterMapName);
+        bool isHStretch =  o->UseGraphic2GraphicMapping(masterMapName);
             
         if(slave2Master && isHStretch)
         {

@@ -1,0 +1,11 @@
+/ITL/scene/* del;
+
+/ITL/scene/rect1 set rect 1. 0.5;
+/ITL/scene/rect2 set rect 1. 1.;
+/ITL/scene/rect2 color 200 0 0;
+/ITL/scene/sync rect2 rect1;
+
+/ITL/scene/rect2 watch mouseEnter (
+	/ITL/scene/rect2 color 0 200 50 );
+/ITL/scene/rect2 watch mouseLeave (
+	/ITL/scene/rect2 color 200 0 0 );
