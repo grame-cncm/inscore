@@ -50,11 +50,14 @@ template<typename T> SIObject _create(const std::string& name , IObject* parent)
 #ifdef NOVIEW
 		obj->setView ( VoidViewFactory::create(obj));
 #else
-		obj->setView ( ViewFactory::create(obj, parent->getScene()->getGraphicScene()));
+        // We created the object, then we create the view
+        VObjectView* view = ViewFactory::create(obj, parent->getScene()->getGraphicScene());
+        // We set the parent view (only if different from the scene)
+        if(parent->getTypeString() != IScene::kSceneType)
+            view->setParentItem(parent->getView()?parent->getView():0);
+        // and finally we set the view to the object
+		obj->setView (view);
         
-        if(!obj->getParent()->getDeleted() && obj->getParent()->getTypeString() != IScene::kSceneType)
-            obj->getView()->setParentItem(obj->getParent()->getView()?obj->getParent()->getView():0);
-    
 #endif
 	}
 	return obj->getView() ? obj : 0;
