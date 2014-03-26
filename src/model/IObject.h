@@ -70,6 +70,8 @@ class Master;
 typedef class libmapping::SMARTP<Master>			SMaster;
 class ISceneSync;
 typedef class libmapping::SMARTP<ISceneSync>		SISceneSync;
+class ISignalNode;
+typedef class libmapping::SMARTP<ISignalNode>		SISignalNode;
 
 //--------------------------------------------------------------------------
 /*!
@@ -110,6 +112,8 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 
 		SIObjectDebug	fDebug;			///< debug virtual node
         SISceneSync		fSync;
+        SISignalNode	fSignals;
+
 		/*!
 			\brief message handlers map
 			
@@ -220,6 +224,11 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		/// \brief creates the object virtual nodes
 		virtual void	createVirtualNodes ();
 
+		/// \brief propagates signals modification state to graphic signals
+		virtual void	propagateSignalsState ();
+
+		/// \brief gives the signals node
+		virtual SISignalNode	signalsNode () const;
 		/*!
 			\brief find a named node within the subnodes (without recursion)
 			\param name the name of the node to look for

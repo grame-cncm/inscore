@@ -20,6 +20,7 @@ to be drawn in the master coordinates. they don't change their proportions, unli
 - new specification on synchronization
 - some modifications on examples (Turenas and cursors) have been made : some settings of scale were 
 in fact done to avoid side-effects that don't exist anymore.
+- the signal node is available on any level of hierarchy (as well as the sync node)
 
 ----------------------------------------------------
 Version 1.05 - 2014-02-17

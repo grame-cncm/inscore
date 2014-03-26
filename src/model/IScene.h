@@ -47,12 +47,8 @@ class Master;
 typedef class libmapping::SMARTP<Master>			SMaster;
 class IScene;
 typedef class libmapping::SMARTP<IScene>			SIScene;
-class ISceneSync;
-typedef class libmapping::SMARTP<ISceneSync>		SISceneSync;
 class IFileWatcher;
 typedef class libmapping::SMARTP<IFileWatcher>		SIFileWatcher;
-class ISignalNode;
-typedef class libmapping::SMARTP<ISignalNode>		SISignalNode;
 class IJavascript;
 typedef class libmapping::SMARTP<IJavascript>		SIJavascript;
 
@@ -65,9 +61,7 @@ class IScene : public IRectShape//, public PeriodicTask
 	bool			fFrameless;
 	bool			fAbsoluteCoordinates;
 	bool			fWindowOpacity;
-//	SISceneSync		fSync;
 	SIFileWatcher	fFileWatcher;
-	SISignalNode	fSignals;
 	SIJavascript	fJSObject;
 	std::string		fRootPath;
 
@@ -103,23 +97,9 @@ class IScene : public IRectShape//, public PeriodicTask
 		*/
 		virtual void	reset ();
 
-		/// \brief propagates signals modification state to graphic signals
-		virtual void	propagateSignalsState ();
-
-		/// \brief gives the signals node
-		virtual SISignalNode	signalsNode () const;
-
 		/// \brief gives the scene (actually self)
 		virtual SIScene			getScene()					{ return this; }
 		virtual const IScene*	getScene() const			{ return this; }
-			
-		/*! \brief cleanup the relations set
-			\see ISync::cleanup
-		*/
-//		virtual void cleanupSync();
-
-		/// \brief a periodic task to propagate modification state from masters to slaves
-		virtual void ptask ();
 		
 		/// \brief adds a subnode to the object \param node the subnode
 		virtual void	add (const nodePtr& node);

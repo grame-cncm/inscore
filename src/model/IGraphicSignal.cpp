@@ -175,9 +175,9 @@ MsgHandler::msgStatus IGraphicSignal::set (const IMessage* msg )
 	if (msg->size() == 2) {
 		string signame;
 		if (!msg->param(1, signame)) return MsgHandler::kBadParameters;
-		SIScene scene = getScene();
-		if (!scene) return MsgHandler::kCreateFailure;
-		SISignalNode signals = scene->signalsNode();
+		SIObject parent = getParent();
+        if (!parent) return MsgHandler::kCreateFailure;
+		SISignalNode signals = parent->signalsNode();
 		if (!signals) return MsgHandler::kCreateFailure;
 
 		subnodes sigs;
@@ -203,14 +203,5 @@ SIMessage& IGraphicSignal::getDimParamMsgHandler::print(SIMessage& out) const
 	return out;
 }
 
-//--------------------------------------------------------------------------
-// modification state propagation
-//--------------------------------------------------------------------------
-void SigModified::updateTo (IGraphicSignal* gs)
-{
-	if (gs->getSignal()->getState()) {
-		gs->setState (IObject::kModified);
-	}
-}
 
 }

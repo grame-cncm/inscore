@@ -27,6 +27,7 @@
 #include "Updater.h"
 #include "IObject.h"
 #include "ISync.h"
+#include "IGraphicSignal.h"
 
 #include <iostream>
 using namespace std;
@@ -75,5 +76,14 @@ bool SlaveMapUpdater::needupdate (IObject* o)
 //	return (state & (IObject::kModified + IObject::kNewObject + IObject::kMasterModified));
 }
 
+//--------------------------------------------------------------------------
+// modification state propagation
+//--------------------------------------------------------------------------
+void SigModified::updateTo (IGraphicSignal* gs)
+{
+	if (gs->getSignal()->getState()) {
+		gs->setState (IObject::kModified);
+	}
+}
 
 } // end namespoace

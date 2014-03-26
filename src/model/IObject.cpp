@@ -46,6 +46,7 @@
 #include "Tools.h"
 #include "ISceneSync.h"
 #include "TMessageEvaluator.h"
+#include "ISignalNode.h"
 
 #include "VObjectView.h"
 
@@ -271,10 +272,33 @@ void IObject::del()
 //--------------------------------------------------------------------------
 void IObject::createVirtualNodes()
 {
-	fSync = ISceneSync::create(this);
-    add(fSync);
-	fDebug = IObjectDebug::create(this);
+    fDebug = IObjectDebug::create(this);
     add ( fDebug );
+    fSync = ISceneSync::create(this);
+    fSignals = ISignalNode::create(this);
+	fSignals->createVirtualNodes();
+	add ( fSignals );
+    add(fSync);
+	
+}
+
+//--------------------------------------------------------------------------
+SISignalNode IObject::signalsNode () const			{ return fSignals; }
+
+#define useiterator 0
+//--------------------------------------------------------------------------
+void IObject::propagateSignalsState ()
+{
+	SigModified visitor;
+#if useiterator
+	for (subnodes::iterator i = elements().begin(); i != elements().end(); i++) {
+		(*i)->accept(&visitor);
+	}
+#else
+	for (unsigned int i = 0; i < elements().size(); i++) {
+		elements()[i]->accept(&visitor);
+	}
+#endif
 }
 
 //--------------------------------------------------------------------------
@@ -328,6 +352,7 @@ string IObject::getOSCAddress() const
 void IObject::ptask ()
 { 
 	if (fSync) fSync->ptask();
+	if (signalsNode() && signalsNode()->getState()) propagateSignalsState();
     
 	for (unsigned int i = 0; i < elements().size(); i++) {
         elements()[i]->ptask();
