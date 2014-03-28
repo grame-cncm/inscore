@@ -12,6 +12,11 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 1.06
+- an object alias is removed when the object is deleted
+
+
+----------------------------------------------------
 Version 1.05 - 2014-02-17
 - incorrect error message for watch messages corrected
 - new javascript readfile function

@@ -253,7 +253,8 @@ void IObject::del()
 {
     // we set the delte flag to 1
     fDelete = true;
-    
+	IAppl::delAliases (getOSCAddress());
+
     // ... and we send the message that the event "del" occured
     const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kDelete);
 	if (!msgs || msgs->list().empty())
@@ -751,8 +752,10 @@ SIMessageList IObject::getAliases() const
 MsgHandler::msgStatus IObject::aliasMsg(const IMessage* msg)
 { 
 	unsigned int n = msg->size();
-	if (n == 0)
+	if (n == 0) {
 		IAppl::delAliases (getOSCAddress());
+		return MsgHandler::kProcessed;
+	}
 	
 	else if ( n <= 2 ) {
 		string alias, msgstr;
