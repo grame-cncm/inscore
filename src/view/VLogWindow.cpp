@@ -86,6 +86,14 @@ const char*	VLogWindow::getText () const
 	return fLogArea->toPlainText().toUtf8().constData();
 }
 
+void VLogWindow::setVisible(bool visible) {
+	QWidget::setVisible (visible);
+	if (visible) {
+		raise ();
+	}
+}
+
+
 void VLogWindow::clear()
 {
 	fLogArea->setPlainText("");
