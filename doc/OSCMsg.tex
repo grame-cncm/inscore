@@ -1780,7 +1780,7 @@ A \emph{graphic signal} is a composite signal including a set of 3 parallel sign
 %-------------------------------
 %:    The signal static node.
 \sublevel{The 'signal' static node.}
-A \OSC{scene} includes a static signal node, which OSC address is \OSC{/ITL/\textit{scene}/signal} which may be viewed as a container for signals. It is also used for \textit{composing signals in parallel}.
+Every object includes a static signal node, which OSC address is \OSC{/ITL/scene/.../\textit{object}/signal} which may be viewed as a container for signals. It is also used for \textit{composing signals in parallel}.
 
 The \OSC{signal} node supports only the \OSC{get} message that gives the list of the defined signals.
 
@@ -1795,7 +1795,7 @@ Querying the signal node:
 
 \subsublevel{Signal messages.}
 \label{ssignal}
-Signal messages can be sent to any address with the form \OSC{/ITL/\textit{scene}/signal/\textit{identifier}}, where \OSC{\textit{identifier}} is a unique signal identifier.
+Signal messages can be sent to any address with the form \OSC{/ITL/scene/.../\textit{object}/signal/\textit{identifier}}, where \OSC{\textit{identifier}} is a unique signal identifier.
 The set of messages supported by a signal is the following:
 \begin{rail}
 simpleSignal : [1] ( float32 + )
