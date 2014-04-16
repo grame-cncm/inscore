@@ -305,6 +305,77 @@ IMessage::argslist TMessageEvaluator::evalMessage (const string& var, const Even
 }
 
 //----------------------------------------------------------------------
+string TMessageEvaluator::getVar (const char* ptr) const
+{
+	string str; bool scaling = false; bool inMsg = false;
+	while (*ptr) {
+		if ((*ptr == '$') || ((*ptr >= 'a') && (*ptr <= 'z')))
+			str += *ptr;
+		else if (!scaling && *ptr == '[') {
+			scaling = true;
+			str += *ptr;
+		}
+		else if (scaling) {
+			str += *ptr;
+			if (*ptr == ']') break;
+		}
+		else if (!inMsg && *ptr == '(') {
+			inMsg = true;
+			str += *ptr;
+		}
+		else if (inMsg) {
+			str += *ptr;
+			if (*ptr == ')') break;
+		}
+		else break;
+		ptr++;
+	}
+	return str;
+}
+
+//----------------------------------------------------------------------
+IMessage::argslist TMessageEvaluator::evalVariableString (const string& var, const EventContext& env) const
+{
+	IMessage::argslist outval;
+
+	size_t n = 0;
+	vector<pair<string, string> > res;						// list of strings for regular expressions
+	do {
+		n = var.find('$', n);
+		if (n != string::npos) {							// there is a variable inside the parameter
+			string s = getVar(&var.c_str()[n]);				// get the variable
+			IMessage::argslist args = evalVariable(s, env);	// evaluate this variable
+			stringstream stream;
+			string sep;
+			for (int i=0; i < args.size(); i++) {			// and convert the results into a string
+				stream << sep;
+				args[i]->print(stream);
+				sep = " ";
+			}
+			n++;
+			string re ("\\Q");								// build the string for regexp use
+			re += s;
+			re += "\\E";									// i.e. disable metacharacters from \Q till \E
+			res.push_back(make_pair(re, stream.str()));		// and store with the replacement value
+		}
+		else break;
+	} while (true);
+
+	if (res.size()) {										// variables have been expanded
+		string newparam(var);								// the string for new value storage
+		for (int i=0; i<res.size(); i++) {					// loop until no more var is expanded
+			CRegexpT<char> regexp(res[i].first.c_str(), EXTENDED);						// use the previous as a regexp
+			char * replaced = regexp.Replace (newparam.c_str(), res[i].second.c_str());	// and replace with the associated value
+			newparam = replaced;
+			regexp.ReleaseString (replaced);
+		}
+		outval.push_back ( new IMsgParam<string>(newparam) );
+	}
+	else outval.push_back ( new IMsgParam<string>(var) );	// no variable part: put the var as is
+	return outval;
+}
+
+//----------------------------------------------------------------------
 IMessage::argslist TMessageEvaluator::evalVariable (const string& var, const EventContext& env) const
 {
 	IMessage::argslist outval;
@@ -336,12 +407,15 @@ IMessage::argslist TMessageEvaluator::evalVariable (const string& var, const Eve
 		}
 		
 		else if (messageVariable (var)) {
-			outval.push_back ( evalMessage (var.substr(2, var.size()-3), env) );
+			string msg = var.substr(2, var.size()-3);
+			size_t n = msg.find_last_of(';');
+			if (n == string::npos) msg += ';';
+			outval.push_back ( evalMessage (msg, env) );
 		}
 		else outval.push_back ( new IMsgParam<string>(var) );	// default for unknown variable: push the variable name
+		return outval;
 	}
-	else outval.push_back ( new IMsgParam<string>(var) );
-	return outval;
+	return evalVariableString (var, env);		// not a direct variable, try to decode variables inside strings (for javascript run method)
 }
 
 //----------------------------------------------------------------------
