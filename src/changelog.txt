@@ -13,6 +13,8 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.06
+- variables are now evaluated and expanded inside strings. 
+  Thus interaction variables can now be passed as argument of javascript functions.
 - corrects musicxml-version output
 - log window is put to front when the show menu is recalled
 - an object alias is removed when the object is deleted
