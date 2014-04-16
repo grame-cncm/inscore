@@ -35,9 +35,10 @@ using namespace std;
 namespace inscore
 {
 
+const char* IJavascript::kName = "javascript";
 //--------------------------------------------------------------------------
 IJavascript::IJavascript(IObject * parent, TJSEngine* js) 
-:	IVNode ("javascript", parent),
+:	IVNode (kName, parent),
 	fScripter (js) 
 {
 	fMsgHandlerMap[krun_SetMethod]	= TMethodMsgHandler<IJavascript>::create(this, &IJavascript::runMsg);
