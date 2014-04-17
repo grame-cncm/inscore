@@ -12,6 +12,9 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 1.07
+
+----------------------------------------------------
 Version 1.06
 - 'save' message can now take an optional list of attributes to be saved
 - variables are now evaluated and expanded inside strings. 
