@@ -36,18 +36,22 @@
 
 \providecommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
 \newcommand{\OSC}[1]		{\texttt{#1}}
-\newcommand{\values}[1]	{\texttt{#1}}
-\newcommand{\oldexample}		{\hspace*{1cm}}
+\newcommand{\values}[1]		{\texttt{#1}}
+\newcommand{\oldexample}	{\hspace*{1cm}}
 \newcommand{\example}		{\textbf{\hspace{-1.5cm}\textbf{\textsc{Example }}}}
 \newcommand{\note}	[1]		{\vspace{2mm}\textbf{\hspace{-1.03cm}\textbf{\textsc{Note #1}}}}
-\renewcommand{\seealso}	{\textbf{See also: }}
+\renewcommand{\seealso}		{\textbf{See also: }}
 
 \newcommand{\osctype}[1]	{\textbf{\texttt{{\small #1}}}}
 \newcommand{\oscint}		{\osctype{int32}}
-\newcommand{\oscfloat}	{\osctype{float32}}
-\newcommand{\oscstring}	{\osctype{string}}
-\newcommand{\rational}	{\osctype{rational}}
-%\newcommand{\var}[1] 		{\emph{#1}}
+\newcommand{\oscfloat}		{\osctype{float32}}
+\newcommand{\oscstring}		{\osctype{string}}
+\newcommand{\rational}		{\osctype{rational}}
+
+\let\olditemize\itemize
+\let\oldenditemize\enditemize
+\renewenvironment{itemize} 	{\olditemize \setlength{\itemsep}{1mm}}{\oldenditemize}
+
 
 \setlength\parskip{2pt}
 \setlength\railnamesep{-1mm}
@@ -209,7 +213,7 @@ They could be sent to any address with the form \OSC{/ITL/\textit{scene}} or \OS
 commonMsg :  ('show' int32)
 			| 'del'
 			| 'export' ([1] ( fullPathFileName) | [2] path | [3])
-			| 'save' filePath ( | '+')
+			| 'save' (| 'message' +) filePath ( | '+')
 			| PositionMsg
 			| ColorMsg
 			| TimeMsg
@@ -226,12 +230,14 @@ commonMsg :  ('show' int32)
 
 \item \OSC{export}: exports an object to an image file. \\
 1) exports to a full path name. The file extension is used to infer the export format. Supported extensions and formats are: \emph{pdf, bmp, gif, jpeg, png, pgm, ppm, tiff, xbm, xpm}. \\
-2) exports to \OSC{path/\textit{identifier}.pdf}. When path is a relative path, exports to \OSC{rootPath/path/\textit{identifier}.pdf}. \\
+2) exports to \OSC{path/\textit{identifier}.pdf}. \\
+When path is a relative path, exports to \OSC{rootPath/path/\textit{identifier}.pdf}. \\
 3) exports to \OSC{rootPath/\textit{identifier}.pdf}.\\
 When the destination file is not completely specified (third form or missing extension), there is an automatic numbering of output names when the destination file already exists.
 
-\item \OSC{save}: recursively saves objects states to a file.  The \OSC{filePath} can be relative or absolute. When relative, an absolute path is build using the current \OSC{rootPath} (see application or scene current paths  p.\pageref{applmgmt} and  p.\pageref{scene}). The optional \OSC{+} parameter indicates an append mode for the write operation. The message must be sent to the address \OSC{/ITL} to save the whole application state.\\
-Note that the file extension for INScore files is \OSC{.inscore}. INScore files dropped on the application or on a window are interpreted as script files (see section \fullref{scripting}).
+\item \OSC{save}: recursively saves objects states to a file. When a \OSC{message} list is present, only the specified attributes are saved. The \OSC{filePath} can be relative or absolute. When relative, an absolute path is build using the current \OSC{rootPath} (see application or scene current paths  p.\pageref{applmgmt} and  p.\pageref{scene}). The optional \OSC{+} parameter indicates an append mode for the write operation. The message must be sent to the address \OSC{/ITL} to save the whole application state.\\
+\textbf{Note}: when a list of attributes is specified, unknown attributes are silently ignored. \\
+\textbf{Note}: the file extension for INScore files is \OSC{.inscore}. INScore files dropped on the application or on a window are interpreted as script files (see section \fullref{scripting}).
 
 %\item \OSC{rename}: rename the destination object. Changes its OSC address. \textbf{Warning}: OSC pattern matching allows to give the same name to a whole collection of objects; in this case, there is no way to individually address an object when its name is shared with other objects.
 \item 'PositionMsg' are absolute and relative position messages.
@@ -244,8 +250,9 @@ Note that the file extension for INScore files is \OSC{.inscore}. INScore files 
 \example \\
 Export of a scene to a given file as jpeg at the current root path:
 \sample{/ITL/scene export 'myexport.jpg'}
-Saving a scene to \OSC{myScore.inscore} at the current root path, the second form uses the append mode:
+Saving a scene to \OSC{myScore.inscore} at the current root path, the second form saves only the \OSC{x}, \OSC{y} and \OSC{z} attributes, the third form uses the append mode:
 \sample{/ITL/scene save 'myScore.inscore'\\
+/ITL/scene save x y z 'thePositions.inscore' \\
 /ITL/scene save 'myScore.inscore' '+'}
 Hiding an object:
 \sample{/ITL/scene/myObject show 0}
