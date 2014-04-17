@@ -59,6 +59,7 @@ IMessageTranslator::IMessageTranslator()
 		fFileTypeTranslationTable["mpg"]	= "video";
 		fFileTypeTranslationTable["mpeg"]	= "video";
 		fFileTypeTranslationTable["mp4"]	= "video";
+		fFileTypeTranslationTable["m4v"]	= "video";
 		fFileTypeTranslationTable["mov"]	= "video";
 	}
 }
