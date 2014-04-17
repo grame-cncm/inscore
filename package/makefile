@@ -75,7 +75,7 @@ macosx:
 	cp $(icns) $(viewer).app/Contents/Resources
 	-[ -d $(package)/$(macapp) ] && rm -rf $(package)/$(macapp)
 	mv $(viewer).app $(package)/$(macapp)
-	@chmod -x  $(shell find . -name "*.inscore")
+	@chmod -x  $(shell find $(package) -name "*.inscore")
 	cp -f ../src/guido2.ttf $(package)
 	cd $(package) && ln -sf /Applications .
 	[ -d $(package)/$(macplug) ] || mkdir $(package)/$(macplug)
