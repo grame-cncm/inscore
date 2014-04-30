@@ -1756,7 +1756,7 @@ The synchronization position mode has the following effects on the slave \values
 The default position mode is \OSC{syncOver}. The \OSC{y} attribute of the slave remains available to displacement (\OSC{dy}). 
 
 \note{} \\
-The \values{y} position of a synchronized object remains a free attribute. To control this position, you should send \OSC{dy} messages.  
+The \values{y} position of a synchronized object remains a free attribute. To control it, you should send \OSC{dy} messages.  
 
 \example \\
 Synchronizing two objects, aligning the slave duration to the corresponding master space, the slave being below the master map:
@@ -1782,7 +1782,38 @@ A \emph{graphic signal} is a composite signal including a set of 3 parallel sign
 \sublevel{The 'signal' static node.}
 Every object includes a static signal node, which OSC address is \OSC{/ITL/scene/.../\textit{object}/signal} which may be viewed as a container for signals. It is also used for \textit{composing signals in parallel}.
 
-The \OSC{signal} node supports only the \OSC{get} message that gives the list of the defined signals.
+\subsublevel{The signal node messages.}
+\label{signalnodemsg}
+
+The \OSC{signal} node supports only the \OSC{get} message that gives the list of the defined signals, and the \OSC{connect} message that links a signal to one or more attributes of objects on the same level as the node.
+
+\begin{rail}
+signalNodeMsg : 'get'
+		| 'connect' connection
+\end{rail}
+
+\begin{rail}
+connection : identifier ( objectsAttribute + )
+\end{rail}
+
+\begin{rail}
+objectsAttribute :  object ':' attribute ( | range )
+\end{rail}
+
+\begin{rail}
+range : ( '[' r1 ',' r2 ']' )
+\end{rail}
+
+\begin{itemize}
+\item \OSC{identifier} is a signal name referring to an existing signal in the \OSC{signal} node. 
+\item \OSC{object} is the name of the object (on the same level of hierarchy as the \OSC{signal} node) whose attribute we want to connect.
+\item \OSC{attribute} is the name of the attribute we want to connect to the signal (same name as the method used to set the attribute).
+\item \OSC{r1} and \OSC{r2} are the optional range bounds to define other bounds for the attribute as the default ones.
+\end{itemize}
+
+\index{signal}
+\index{signal!get}
+\index{signal!connect}
 
 \example \\
 Querying the signal node:
@@ -1791,6 +1822,11 @@ Querying the signal node:
 \sample{/ITL/scene/signal/y size 200 \\
 /ITL/scene/signal/h size 200
 }
+
+\example \\
+Connecting signals to attributes:
+\sample{/ITL/scene/signal connect sig1 rect:red \\
+/ITL/scene/signal connect sig2 rect:blue image:rotatey[0,360] cursor:date[0,15] }
 
 
 \subsublevel{Signal messages.}

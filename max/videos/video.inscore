@@ -2,7 +2,7 @@
 /ITL/scene/signal/* del ;
 
 
-/ITL/scene/video set video "countdown.mov" ;
+/ITL/scene/video set video "essais/countdown.mpeg2.mp4" ;
 /ITL/scene/video z -1.0 ;
 /ITL/scene/video mapf "video.map" ;
 /ITL/scene/video videoMapf "videotime2.map" ;

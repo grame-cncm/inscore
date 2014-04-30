@@ -37,6 +37,8 @@
 #include "GraphicEffect.h"
 #include "IDate.h"
 #include "IMessageHandlers.h"
+#include "ISignalHandlers.h"
+#include "IColor.h"
 #include "IPosition.h"
 #include "maptypes.h"
 #include "Methods.h"
@@ -121,6 +123,8 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 			to handle this specific message. 
 		*/
 		std::map<std::string,SMsgHandler>			fMsgHandlerMap;
+    
+        std::map<std::string,SSigHandler>          fSigHandlerMap;
 
 		/// \brief state query handlers map
 		std::map<std::string, SGetParamMsgHandler>	fGetMsgHandlerMap;
@@ -221,6 +225,13 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		*/
 		virtual int	execute (const IMessage* msg);
 
+		/*!
+			\brief executes a signal and possibly modifies the object state.
+			\param sig the signal
+			\return the signal processing status
+		*/
+		virtual int	executeSignal (const std::string method, const ParallelSignal* sig);
+    
 		/// \brief creates the object virtual nodes
 		virtual void	createVirtualNodes ();
 
@@ -303,6 +314,13 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		*/
 		virtual int processMsg (const std::string& address, const std::string& addressTail, const IMessage* msg);
 
+		/*!
+			\brief process a signal
+			
+			\return the signal processing status
+		*/
+		virtual int processSig ();
+    
 		/// \brief adds a subnode to the object \param node the subnode
 		virtual void	add (const nodePtr& node)	{ fSubNodes.push_back(node); setState(kSubModified); }
 
@@ -422,6 +440,14 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		*/
 		virtual SMsgHandler			messageHandler(const std::string& param, bool match=false) const;
 
+		/*!
+			\brief gives a handler for a signal
+			\param param the string method
+			\param match a boolean to evaluate regular expressions
+			\return the corresponding handler if any
+		*/
+		virtual SSigHandler			signalHandler(const std::string& method, bool match=false) const;
+    
 		/*!
 			\brief sets an object display range
 			

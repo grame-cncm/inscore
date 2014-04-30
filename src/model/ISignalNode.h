@@ -70,13 +70,25 @@ class ISignalNode : public IVNode
 		virtual void debug (bool state)		{ fDebug = state; }
 		
 		static const std::string kName;
+    
+        std::map<std::string, SParallelSignal> getConnections() {return fConnections;}
+        std::map<std::string, SParallelSignal> getConnectionsOf(std::string objectName);
 
 	protected:
 		bool fDebug;
 
+        std::map< std::string, SParallelSignal > fConnections;
+    
+        MsgHandler::msgStatus connect(SParallelSignal signal, std::string ObjectsMethod);
+        MsgHandler::msgStatus disconnect(SParallelSignal signal, std::string ObjectsMethod = "");
+    
+        MsgHandler::msgStatus connectMsg (const IMessage* msg);
+        MsgHandler::msgStatus disconnectMsg (const IMessage* msg);
+    
 				 ISignalNode(IObject * parent);
 		virtual ~ISignalNode() {}
 		virtual bool debug (int state);
+    
 };
 
 /*!

@@ -43,6 +43,9 @@ IRectShape::IRectShape( const std::string& name, IObject* parent ) : IShapeMap(n
 	fGetMsgHandlerMap[""]					= TGetParamMethodHandler<IRectShape, TFloatSize (IRectShape::*)() const>::create(this, &IRectShape::getDimension);
 	fMsgHandlerMap[kwidth_GetSetMethod]		= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setWidth);
 	fMsgHandlerMap[kheight_GetSetMethod]	= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setHeight);
+    
+	fSigHandlerMap[kwidth_GetSetMethod]		= TSetMethodSigHandler<IObject, float>::create(this, &IObject::setWidth);
+	fSigHandlerMap[kheight_GetSetMethod]	= TSetMethodSigHandler<IObject, float>::create(this, &IObject::setHeight);
 }
 
 //--------------------------------------------------------------------------

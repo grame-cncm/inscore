@@ -155,11 +155,11 @@ class ParallelSignal : virtual public libmapping::smartable
 
 		SigList fSignals;
 		
+	public :
+
 				 ParallelSignal() {}
 		virtual ~ParallelSignal() {}
 	
-	public :
-
 		static SParallelSignal create()				{ return new ParallelSignal(); }		
 		const SigList&	signalList() const			{ return fSignals; }
 		const STSignal&	signal(int i) const			{ return signalList()[i]; }

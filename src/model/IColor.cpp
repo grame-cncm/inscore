@@ -138,6 +138,17 @@ MsgHandler::msgStatus IColor::SetColorMsgHandler::operator ()(const IMessage* ms
 	return MsgHandler::kProcessed;
 }
 
+
+//--------------------------------------------------------------------------------
+SigHandler::sigStatus IColor::SetColorSigHandler::operator ()(const ParallelSignal* sig, std::string range)
+{
+	if (sig->dimension() != 1) return SigHandler::kBadParameters;
+	std::vector<float> dump = sig->signal(0)->dump();
+    float fval = dump.empty() ? sig->signal(0)->defaultValue() : dump.back();
+    (fColor->*fSetFloat)(fval);
+	return SigHandler::kProcessed;
+}
+
 //--------------------------------------------------------------------------------
 void IColor::setParam( int& param , int value , int min , int max , bool isHSV )
 {

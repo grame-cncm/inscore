@@ -1,0 +1,15 @@
+! cleanup
+/ITL/scene/* del;
+/ITL/scene/signal/* del;
+/ITL/scene/cursor set rect 0.01 0.03;
+/ITL/scene/cursor color 0 100 0 150;
+/ITL/scene/cursor duration 0.5;
+/ITL/scene/score set gmnf "846_2f.gmn";
+/ITL/scene/score columns 1;
+/ITL/scene/score scale 2.2;
+/ITL/scene/sync cursor score h;
+/ITL/scene/signal/sig size 100;
+/ITL/scene/signal connect sig "cursor:date[0,12]";
+/ITL/scene/signal connect sig "cursor:blue";
+/ITL/scene/signal connect sig "score:rotatex[0,380]";
+/ITL/scene/signal connect sig "score:angle[0,380]";
