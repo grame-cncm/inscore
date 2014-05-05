@@ -12,6 +12,7 @@
 /ITL/scene/score set gmnf "846_2f.gmn";
 /ITL/scene/score columns 1;
 /ITL/scene/score scale 2.2;
+/ITL/scene/score y -0.1;
 /ITL/scene/sync cursor score h;
 /ITL/scene/signal/sig size 100;
 /ITL/scene/signal connect sig "cursor:date[0,12]";
