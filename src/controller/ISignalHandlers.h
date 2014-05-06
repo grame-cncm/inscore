@@ -122,7 +122,7 @@ template <typename O> class TSetMethodSigHandler<O, libmapping::rational> : publ
             // handling the range if specified
             if(!range.empty() && range.find("[") == 0 && range.find(",") != std::string::npos && range.find("]") == range.size()-1)
             { // range : "[r1,r2]"
-                std::string r1str = range.substr(1, range.find(","));
+                std::string r1str = range.substr(1, range.find(",")-1);
                 std::string r2str = range.substr(range.find(",")+1);
                 r2str = r2str.substr(0, r2str.find("]"));
                 if(!r1str.empty() && !r2str.empty())

@@ -145,7 +145,33 @@ SigHandler::sigStatus IColor::SetColorSigHandler::operator ()(const ParallelSign
 	if (sig->dimension() != 1) return SigHandler::kBadParameters;
 	std::vector<float> dump = sig->signal(0)->dump();
     float fval = dump.empty() ? sig->signal(0)->defaultValue() : dump.back();
-    (fColor->*fSetFloat)(fval);
+    if(range.empty())
+        (fColor->*fSetFloat)(fval);
+    else if (range.find("[") == 0 && range.find(",") != std::string::npos && range.find("]") == range.size()-1)
+    {
+        std::string r1str = range.substr(1, range.find(",")-1);
+        std::string r2str = range.substr(range.find(",")+1);
+        r2str = r2str.substr(0, r2str.find("]"));
+        if(!r1str.empty() && !r2str.empty())
+        {
+            // convert to numbers
+            if(r1str.find(".") != r1str.npos || r2str.find(".") !=r2str.npos)
+            {
+                float r1f = std::atof( r1str.c_str() );
+                float r2f = std::atof( r2str.c_str() );
+                // change the value with the range
+                fval = r1f + (r2f-r1f)*(fval+1)/2; //should be replaced by a better method (TEvaluatorMessage)
+                (fColor->*fSetFloat)(fval);
+            }
+            else
+            {
+                int r1i = std::atoi(r1str.c_str());
+                int r2i = std::atoi(r2str.c_str());
+                int ival = (int)(r1i + (r2i - r1i)*(fval+1)/2);
+                (fColor->*fSetInt)(ival);
+            }
+        }
+    }
 	return SigHandler::kProcessed;
 }
 

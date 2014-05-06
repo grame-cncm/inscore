@@ -1785,19 +1785,28 @@ Every object includes a static signal node, which OSC address is \OSC{/ITL/scene
 \subsublevel{The signal node messages.}
 \label{signalnodemsg}
 
-The \OSC{signal} node supports only the \OSC{get} message that gives the list of the defined signals, and the \OSC{connect} message that links a signal to one or more attributes of objects on the same level as the node.
+The \OSC{signal} node supports only the \OSC{get} message that gives the list of the defined signals, the \OSC{connect} message that links a signal to one or more attributes of objects on the same level as the node, and the \OSC{disconnect} message that can break those links.
 
 \begin{rail}
-signalNodeMsg : 'get'
-		| 'connect' connection
+signalNodeMsg : [1] 'get'
+		| [2] 'connect' connection
+		| 'disconnect' ( [3] identifier | [4] connection)
+\end{rail}
+
+
+\begin{itemize}
+\item \textbf{[1]} the \OSC{get} message gives us the list of the signals
+\item \textbf{[2]} the \OSC{connect} message makes connection between a signal and one or several attributes of one or several objects.
+\item \textbf{[3]} the \OSC{disconnect} message with only the \OSC{identifier} parameter disconnects all links with this signal
+\item \textbf{[4]} the \OSC{disconnect} message will only delete the connection specified.
+\end{itemize}
+
+\begin{rail}
+connection : identifier ( objectsAttributes + )
 \end{rail}
 
 \begin{rail}
-connection : identifier ( objectsAttribute + )
-\end{rail}
-
-\begin{rail}
-objectsAttribute :  object ':' attribute ( | range )
+objectsAttributes :  object ( ':' attribute ( | range ) + )
 \end{rail}
 
 \begin{rail}
@@ -1808,7 +1817,7 @@ range : ( '[' r1 ',' r2 ']' )
 \item \OSC{identifier} is a signal name referring to an existing signal in the \OSC{signal} node. 
 \item \OSC{object} is the name of the object (on the same level of hierarchy as the \OSC{signal} node) whose attribute we want to connect.
 \item \OSC{attribute} is the name of the attribute we want to connect to the signal (same name as the method used to set the attribute).
-\item \OSC{r1} and \OSC{r2} are the optional range bounds to define other bounds for the attribute as the default ones.
+\item \OSC{r1} and \OSC{r2} are the optional range bounds to define other bounds for the attribute as the default ones. (there is no rule for their range or their order : r1 < r2 or r2 < r1) They can only be used when setting the connections, but not for disconnection (useless).
 \end{itemize}
 
 \index{signal}
@@ -1825,8 +1834,10 @@ Querying the signal node:
 
 \example \\
 Connecting signals to attributes:
-\sample{/ITL/scene/signal connect sig1 rect:red \\
-/ITL/scene/signal connect sig2 rect:blue image:rotatey[0,360] cursor:date[0,15] }
+\sample{/ITL/scene/signal connect sig1 "rect:red" \\
+/ITL/scene/signal connect sig2 "rect:blue:x:rotatey[0,360]" "cursor:date[0,15]"}
+Disconnecting some of the links :
+\sample{/ITL/scene/signal disconnect sig2 "cursor:date" "rect:rotatey:blue" }
 
 
 \subsublevel{Signal messages.}

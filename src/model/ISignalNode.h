@@ -71,16 +71,16 @@ class ISignalNode : public IVNode
 		
 		static const std::string kName;
     
-        std::map<std::string, SParallelSignal> getConnections() {return fConnections;}
-        std::map<std::string, SParallelSignal> getConnectionsOf(std::string objectName);
+        std::map<std::string, std::pair<SParallelSignal, std::string> > getConnections() {return fConnections;}
+        std::map<std::string, std::pair<SParallelSignal, std::string> > getConnectionsOf(std::string objectName);
 
 	protected:
 		bool fDebug;
 
-        std::map< std::string, SParallelSignal > fConnections;
+        std::map< std::string, std::pair<SParallelSignal, std::string> > fConnections;
     
-        MsgHandler::msgStatus connect(SParallelSignal signal, std::string ObjectsMethod);
-        MsgHandler::msgStatus disconnect(SParallelSignal signal, std::string ObjectsMethod = "");
+        MsgHandler::msgStatus connect(SParallelSignal signal, std::string object, std::string methods);
+        MsgHandler::msgStatus disconnect(SParallelSignal signal, std::string object = "", std::string methods = "");
     
         MsgHandler::msgStatus connectMsg (const IMessage* msg);
         MsgHandler::msgStatus disconnectMsg (const IMessage* msg);

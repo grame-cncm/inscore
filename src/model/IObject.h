@@ -230,7 +230,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 			\param sig the signal
 			\return the signal processing status
 		*/
-		virtual int	executeSignal (const std::string method, const ParallelSignal* sig);
+		virtual int	executeSignal (const std::string method, const std::string range, const ParallelSignal* sig);
     
 		/// \brief creates the object virtual nodes
 		virtual void	createVirtualNodes ();

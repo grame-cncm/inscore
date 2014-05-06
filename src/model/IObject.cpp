@@ -500,11 +500,8 @@ int IObject::execute (const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
-int IObject::executeSignal (const std::string methodAndRange, const ParallelSignal* sig)
+int IObject::executeSignal (const std::string method, const std::string range, const ParallelSignal* sig)
 {
-    std::string method = methodAndRange.substr(0,methodAndRange.find("["));
-    std::string range = (methodAndRange.find("[") != std::string::npos) ? methodAndRange.substr(methodAndRange.find("[")) : "";
-
 	SSigHandler handler = signalHandler(method);
 	if ( handler ) return (*handler)(sig, range);
 
@@ -598,14 +595,14 @@ int IObject::processSig ()
     for(int i = 0; i<size(); i++)
     {
         // looks for the object elements()[i] in all the signal connections
-        std::map<std::string, SParallelSignal> connections;
+        std::map<std::string, std::pair<SParallelSignal, std::string> > connections;
         if(fSignals) connections = fSignals->getConnectionsOf(elements()[i]->name());
         if(!connections.empty())
         {
             // if found, we call the method executeSignal to link the attribute and the signal.
-            std::map<std::string, SParallelSignal>::iterator it ;
+            std::map<std::string, std::pair<SParallelSignal, std::string> >::iterator it ;
             for(it = connections.begin(); it != connections.end(); it++)
-                result |= elements()[i]->executeSignal(it->first, it->second);
+                result |= elements()[i]->executeSignal(it->first, it->second.second, it->second.first);
         }
         elements()[i]->processSig();
     }
