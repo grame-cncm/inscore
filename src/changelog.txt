@@ -13,6 +13,7 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.07
+- new 'write' method supported by the 'log' window
 
 ----------------------------------------------------
 Version 1.06
