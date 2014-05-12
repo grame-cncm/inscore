@@ -79,11 +79,21 @@ class ISignalNode : public IVNode
 
         std::map< std::string, std::pair<SParallelSignal, std::string> > fConnections;
     
-        MsgHandler::msgStatus connect(SParallelSignal signal, std::string object, std::string methods);
-        MsgHandler::msgStatus disconnect(SParallelSignal signal, std::string object = "", std::string methods = "");
+        /*! \brief makes the connections between a signal and one ore more methods of an object
+		*/
+		MsgHandler::msgStatus connect(SParallelSignal signal, std::string object, std::string methods);
     
-        MsgHandler::msgStatus connectMsg (const IMessage* msg);
-        MsgHandler::msgStatus disconnectMsg (const IMessage* msg);
+        /*! \brief breaks the connections of a signal (all of them, or only some specified)
+		*/
+		MsgHandler::msgStatus disconnect(SParallelSignal signal, std::string object = "", std::string methods = "");
+    
+        /*! \brief handles the "connect" message
+		*/
+		MsgHandler::msgStatus connectMsg (const IMessage* msg);
+    
+        /*! \brief handles the "disconnect" message
+		*/
+		MsgHandler::msgStatus disconnectMsg (const IMessage* msg);
     
 				 ISignalNode(IObject * parent);
 		virtual ~ISignalNode() {}

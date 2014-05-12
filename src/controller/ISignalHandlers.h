@@ -40,6 +40,8 @@
 #include "Tools.h"
 #include "smartpointer.h"
 
+#include "deelx.h"
+
 namespace inscore
 {
 
@@ -52,12 +54,12 @@ class IObject;
 typedef class libmapping::SMARTP<IObject>	SIObject;
 
 //--------------------------------------------------------------------------
-/// \brief The base class for message handling
+/// \brief The base class for signal handling
 class SigHandler : public libmapping::smartable {
 	protected:
 		virtual ~SigHandler() {}
 	public:
-		/// \brief the possible message processing states
+		/// \brief the possible signal processing states
 		enum sigStatus	{ kBadParameters, kProcessed=1};
 		virtual sigStatus operator ()(const ParallelSignal* sig, std::string range = "")  = 0;
 };
@@ -78,21 +80,23 @@ template <typename O, typename T> class TSetMethodSigHandler : public SigHandler
 			T val; float fval;
             std::vector<float> dump = sig->signal(0)->dump();
             fval = dump.empty() ? sig->signal(0)->defaultValue() : dump.back(); // we take the last written value of the buffer
+            
             // handling the range if specified
-            if(!range.empty() && range.find("[") == 0 && range.find(",") != std::string::npos && range.find("]") == range.size()-1)
-            { // range : "[r1,r2]"
-                std::string r1str = range.substr(1, range.find(","));
-                std::string r2str = range.substr(range.find(",")+1);
-                r2str = r2str.substr(0, r2str.find("]"));
-                if(!r1str.empty() && !r2str.empty())
+            
+            if(!range.empty())
+            {
+                CRegexpT <char> regexp("^\\[.+,.+\\]$");
+                // range : "[r1,r2]"
+                if(regexp.MatchExact(range.c_str()))
                 {
-                    // convert to numbers
-                    float r1 = std::atof( r1str.c_str() );
-                    float r2 = std::atof( r2str.c_str() );
-                    // change the value with the range
-                    fval = r1 + (r2-r1)*(fval+1)/2;
+                    float r1, r2;
+                    int n = sscanf (range.c_str(), "[%f,%f]", &r1, &r2);
+                    if (n == 2) fval = r1 + (r2-r1)*(fval+1)/2;
+                    else return SigHandler::kBadParameters;
                 }
+                else return SigHandler::kBadParameters;
             }
+            
             val = T(fval);
             (fObject->*fMethod)(val);
             return kProcessed;
@@ -119,21 +123,35 @@ template <typename O> class TSetMethodSigHandler<O, libmapping::rational> : publ
 			if(sig->dimension() != 1) return kBadParameters;
             std::vector<float> dump = sig->signal(0)->dump();
             float fval = dump.empty() ? sig->signal(0)->defaultValue() : dump.back();
+            
             // handling the range if specified
-            if(!range.empty() && range.find("[") == 0 && range.find(",") != std::string::npos && range.find("]") == range.size()-1)
-            { // range : "[r1,r2]"
-                std::string r1str = range.substr(1, range.find(",")-1);
-                std::string r2str = range.substr(range.find(",")+1);
-                r2str = r2str.substr(0, r2str.find("]"));
-                if(!r1str.empty() && !r2str.empty())
+            
+            if(!range.empty())
+            {
+                CRegexpT <char> regexp("^\\[.+,.+\\]$");
+                if(regexp.MatchExact(range.c_str()))
                 {
-                    // convert to numbers
-                    float r1 = std::atof( r1str.c_str() );
-                    float r2 = std::atof( r2str.c_str() );
-                    // change the value with the range
-                    fval = r1 + (r2-r1)*(fval+1)/2;
+                    CRegexpT <char> regexp2("^\\[.+ .+,.+ .+\\]$");
+                    if(!range.empty() && regexp2.MatchExact(range.c_str()))
+                    {
+                        int n1, d1, n2, d2;
+                        int n = sscanf (range.c_str(), "[%i %i,%i %i]", &n1, &d1, &n2, &d2);
+                        float r1 = (float)(n1)/(float)(d1);
+                        float r2 = (float)(n2)/(float)(d2);
+                        if (n == 4) fval = r1 + (r2-r1)*(fval+1)/2;
+                        else return SigHandler::kBadParameters;
+                    }
+                    else
+                    {
+                        float r1, r2;
+                        int n = sscanf (range.c_str(), "[%f,%f]", &r1, &r2);
+                        if (n == 2) fval = r1 + (r2-r1)*(fval+1)/2;
+                        else return SigHandler::kBadParameters;
+                    }
                 }
+                else return SigHandler::kBadParameters;
             }
+            
             (fObject->*fMethod)(libmapping::rational(fval));
             return kProcessed;
 		}

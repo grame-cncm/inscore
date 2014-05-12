@@ -28,6 +28,8 @@
 #include "IMessage.h"
 #include <algorithm>
 
+#include "deelx.h"
+
 using namespace std;
 
 namespace inscore
@@ -147,30 +149,29 @@ SigHandler::sigStatus IColor::SetColorSigHandler::operator ()(const ParallelSign
     float fval = dump.empty() ? sig->signal(0)->defaultValue() : dump.back();
     if(range.empty())
         (fColor->*fSetFloat)(fval);
-    else if (range.find("[") == 0 && range.find(",") != std::string::npos && range.find("]") == range.size()-1)
+    else
     {
-        std::string r1str = range.substr(1, range.find(",")-1);
-        std::string r2str = range.substr(range.find(",")+1);
-        r2str = r2str.substr(0, r2str.find("]"));
-        if(!r1str.empty() && !r2str.empty())
+        CRegexpT <char> regexp("^\\[.+,.+\\]$");
+        if(regexp.MatchExact(range.c_str()))
         {
-            // convert to numbers
-            if(r1str.find(".") != r1str.npos || r2str.find(".") !=r2str.npos)
+            int i1, i2;
+            float f1, f2;
+            if(sscanf (range.c_str(), "[%i,%i]", &i1, &i2) == 2) // the range is expressed with integers
             {
-                float r1f = std::atof( r1str.c_str() );
-                float r2f = std::atof( r2str.c_str() );
-                // change the value with the range
-                fval = r1f + (r2f-r1f)*(fval+1)/2; //should be replaced by a better method (TEvaluatorMessage)
-                (fColor->*fSetFloat)(fval);
-            }
-            else
-            {
-                int r1i = std::atoi(r1str.c_str());
-                int r2i = std::atoi(r2str.c_str());
-                int ival = (int)(r1i + (r2i - r1i)*(fval+1)/2);
+                f1 = (float)(i1);
+                f2 = (float)(i2);
+                fval = f1 + (f2-f1)*(fval+1)/2;
+                int ival = (int)(fval);
                 (fColor->*fSetInt)(ival);
             }
+            else if(sscanf (range.c_str(), "[%f,%f]", &f1, &f2) == 2) // the range is expressed with floats
+            {
+                fval = f1 + (f2-f1)*(fval+1)/2;
+                (fColor->*fSetFloat)(fval);
+            }
+            else return SigHandler::kBadParameters;
         }
+        else return SigHandler::kBadParameters;
     }
 	return SigHandler::kProcessed;
 }

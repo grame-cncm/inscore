@@ -109,11 +109,13 @@ bool ISignalNode::debug(int state)
 MsgHandler::msgStatus ISignalNode::connectMsg (const IMessage* msg)
 {
 	int n = msg->size();
+    // We must at least have 2 parameters : the signal and at least one pair "object:method"
     if(n < 2) return MsgHandler::kBadParameters;
     
     std::string signalStr, objectsParameterStr, objectStr;
     if(!msg->param(0, signalStr)) return MsgHandler::kBadParameters;
     
+    // We check if the first parameter is indeed a signal and is on our list
     subnodes signalList;
     if(!find(signalStr, signalList)) return MsgHandler::kBadParameters;
     IObject* sig = signalList[0];
@@ -121,6 +123,9 @@ MsgHandler::msgStatus ISignalNode::connectMsg (const IMessage* msg)
     
     if(!signal) return MsgHandler::kBadParameters;
     
+    // Then, for each parameter, we separate the first name (the object) and the rest of the string (one or more methods) :
+    // "object:method1[range1]:method2[range2]" --> "object" + "method1[range1]:method2[range2]"
+    // And for each pair of object-methods, we call connect(signal, objectStr, methods)
     MsgHandler::msgStatus result;
     for(int i = 1; i<n; i++)
     {
@@ -141,6 +146,7 @@ MsgHandler::msgStatus ISignalNode::disconnectMsg (const IMessage* msg)
 	int n = msg->size();
     if(!n) return MsgHandler::kBadParameters;
     
+    // We check that the first parameter is a signal, and that it is on the list
     std::string signalStr;
     if(!msg->param(0, signalStr)) return MsgHandler::kBadParameters;
     
@@ -151,9 +157,11 @@ MsgHandler::msgStatus ISignalNode::disconnectMsg (const IMessage* msg)
     
     if(!signal) return MsgHandler::kBadParameters;
     
+    // If there is only one parameter, we disconnect all connections with the signal
     if(n == 1)
         return disconnect(signal);
     
+    // If we have more parameters, we distinguish each object from its list of methods and call disconnect(signal, objectStr, objectList)
     std::string objectMethodsStr, objectStr;
     MsgHandler::msgStatus result;
     for(int i = 1; i<n; i++)
@@ -179,13 +187,17 @@ MsgHandler::msgStatus ISignalNode::connect(SParallelSignal signal, std::string o
     std::string range = "";
     std::string objectMethod;
     int i = allMethodStr.find(":");
+    
+    // We separate all the methods of the list, and also distinguish the method and the range, to add to the map fConnections :
+    // "method1[range1]:method2[range2]" --> insert <"object:method1", <signal, "[range1]"> > + <"object:method2", <signal, "[range2]"> >
+    
     while(i != allMethodStr.npos)
     {
         methodStr = allMethodStr.substr(0,i);
-        if(methodStr.find("[") != methodStr.npos)
+        if(methodStr.find("[") != methodStr.npos) // "method(n)[range(n)]"
         {
-            range = methodStr.substr(methodStr.find("["));
-            methodStr = methodStr.substr(0, methodStr.find("["));
+            range = methodStr.substr(methodStr.find("[")); // "[range(n)]"
+            methodStr = methodStr.substr(0, methodStr.find("[")); // "method(n)"
         }
         else
             range = "";
@@ -193,17 +205,19 @@ MsgHandler::msgStatus ISignalNode::connect(SParallelSignal signal, std::string o
         objectMethod += ":";
         objectMethod += methodStr;
         std::map<std::string, std::pair<SParallelSignal, std::string> >::iterator it = fConnections.find(objectMethod);
-        if(it != fConnections.end()) // If this attribute of the object has already been stored, we replace the corresponding signal
+        if(it != fConnections.end()) // If this method of the object has already been stored, we replace the corresponding signal and range
         {
             it->second.first = signal;
             it->second.second = range;
         }
         else
             fConnections.insert(std::pair<std::string, std::pair<SParallelSignal, std::string> >(objectMethod, std::pair<SParallelSignal, std::string>(signal, range)));
-        allMethodStr = allMethodStr.substr(i+1);
-        i = allMethodStr.find(":");
+        
+        allMethodStr = allMethodStr.substr(i+1); // rest of the string (after the ":")
+        i = allMethodStr.find(":"); // next position of ":"
     }
     
+    // No ":" were found : We handle the last method of the list.
     if(allMethodStr.find("[") != allMethodStr.npos)
     {
         range = allMethodStr.substr(allMethodStr.find("["));
@@ -217,7 +231,7 @@ MsgHandler::msgStatus ISignalNode::connect(SParallelSignal signal, std::string o
     objectMethod += allMethodStr;
     
     std::map<std::string, std::pair<SParallelSignal, std::string> >::iterator it = fConnections.find(objectMethod);
-    if(it != fConnections.end()) // If this attribute of the object has already been stored, we replace the corresponding signal
+    if(it != fConnections.end()) // If this method of the object has already been stored, we replace the corresponding signal and range
     {
         it->second.first = signal;
         it->second.second = range;
@@ -231,7 +245,7 @@ MsgHandler::msgStatus ISignalNode::connect(SParallelSignal signal, std::string o
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus ISignalNode::disconnect(SParallelSignal signal, std::string object, std::string methods)
 {
-    if(object.empty()) // if the method is not specified, we disconnect all connections with the signal
+    if(object.empty()) // if the object is not specified, we disconnect all connections with the signal
     {
         std::map<std::string, std::pair<SParallelSignal, std::string> >::iterator it = fConnections.begin();
         while(it != fConnections.end())
@@ -243,6 +257,9 @@ MsgHandler::msgStatus ISignalNode::disconnect(SParallelSignal signal, std::strin
             }
         }
     }
+    // We separate all the methods of the list to erase them from the map fConnections (after checking that they were indeed connected to the signal) :
+    // "method1:method2:method3" --> erase "object:method1", "object:method2", "object:method3"
+    
     else
     {
         std::string allMethodStr = methods;
@@ -256,9 +273,11 @@ MsgHandler::msgStatus ISignalNode::disconnect(SParallelSignal signal, std::strin
             objectMethod += ":";
             objectMethod += methodStr;
             std::map<std::string, std::pair<SParallelSignal, std::string> >::iterator it = fConnections.find(objectMethod);
-            if(it == fConnections.end())
+            if(it == fConnections.end())            // no such parameter
                 return MsgHandler::kBadParameters;
-            else
+            else if(it->second.first != signal)     // the parameter was not connected to this signal
+                return MsgHandler::kBadParameters;
+            else                                    // this pair exists : we erase it
                 fConnections.erase(it);
             
             allMethodStr = allMethodStr.substr(i+1);
@@ -283,10 +302,10 @@ std::map<std::string, std::pair<SParallelSignal, std::string> > ISignalNode::get
     std::map<std::string, std::pair<SParallelSignal, std::string> >::iterator it;
     for (it = fConnections.begin(); it != fConnections.end(); it++)
     {
-        std::string objectsMethod = it->first; // object:method[range]
-        if(objectsMethod.find(":") != std::string::npos && !objectsMethod.compare(0, objectsMethod.find(":"), objectName)) // object
+        std::string objectsMethod = it->first; // "object:method[range]"
+        if(objectsMethod.find(":") != std::string::npos && !objectsMethod.compare(0, objectsMethod.find(":"), objectName)) // "object"
         {
-            std::string methods = objectsMethod.substr(objectsMethod.find(":")); // method[range]
+            std::string methods = objectsMethod.substr(objectsMethod.find(":")); // "method[range]"
             connections.insert(std::pair<std::string, std::pair<SParallelSignal, std::string> >(methods, it->second));
         }
     }

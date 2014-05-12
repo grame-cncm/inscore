@@ -121,7 +121,7 @@ The signal node will receive the connection messages and store all the links bet
 The syntax chosen for the OSC message is :
 
 \begin{center}
-\OSC{/ITL/scene/.../object/signal connect mySig myChild:myAttribute[r1,r2] }
+\OSC{/ITL/scene/.../object/signal connect mySig myChild1:myAttribute1[r1,r2]:myAttribute2[r1',r2']:myAttribute3 myChild2:myAttribute1 }
 \end{center}
 
 
@@ -129,32 +129,32 @@ Where r1 and r2 are optional range bounds to specify the range of our values if 
 \\
 
 Indeed, by default a signal will have a range of [-1, 1]. For some attributes, such as the position, the dimensions or the scale, those values stay exactly the same, because they correspond to our graphical space. Nonetheless, there are some attributes that must have another default range, the [-1,1] range having no meaning for them : the date, the duration, the angle, the color...
-
-The table \ref{ranges} gives us the default data range corresponding to the signal float range [-1, 1] .
-
-\begin{table}[htdp]
-\begin{center}
-\begin{tabular}{|r|c|c|}
-\hline
-Attribute & attribute's range\\
-\hline
-\OSC{x, y, z} [position] 	& [-1,1]\\
-\OSC{width, height} [dimension] 	& [-1,1] \\
-\OSC{scale} 		& [-1,1] \\
-\OSC{date} 		& [0,1]\\
-\OSC{duration} 	& [0,1] \\
-\OSC{angle}		& [0,360] \\
-\OSC{rotatex, rotatey, rotatez} 		& [0,360] \\
-\OSC{red, green, blue, alpha}			& [0,255] \\
-\OSC{hue}  		& [0,360]\\
-\OSC{saturation}  	& [0,100] \\
-\OSC{brightness}  	& [0,100] \\
-\hline
-\end{tabular}
-\end{center}
-\caption{Attributes ranges corresponding to the signal range [-1,1].}
-\label{ranges}
-\end{table}%
+%
+%The table \ref{ranges} gives us the default data range corresponding to the signal float range [-1, 1] .
+%
+%\begin{table}[htdp]
+%\begin{center}
+%\begin{tabular}{|r|c|c|}
+%\hline
+%Attribute & attribute's range\\
+%\hline
+%\OSC{x, y, z} [position] 	& [-1,1]\\
+%\OSC{width, height} [dimension] 	& [-1,1] \\
+%\OSC{scale} 		& [-1,1] \\
+%\OSC{date} 		& [0,1]\\
+%\OSC{duration} 	& [0,1] \\
+%\OSC{angle}		& [0,360] \\
+%\OSC{rotatex, rotatey, rotatez} 		& [0,360] \\
+%\OSC{red, green, blue, alpha}			& [0,255] \\
+%\OSC{hue}  		& [0,360]\\
+%\OSC{saturation}  	& [0,100] \\
+%\OSC{brightness}  	& [0,100] \\
+%\hline
+%\end{tabular}
+%\end{center}
+%\caption{Attributes ranges corresponding to the signal range [-1,1].}
+%\label{ranges}
+%\end{table}%
 
 However, the bounds \OSC{r1} and \OSC{r2} will allow us to change the range to fit the incoming signals or the dimension of our attributes. For example, if a cursor is synchronized on a score, we could set the range of variation of our cursor's date to the score duration, so that the values of the signal can make it move on the whole score.
 
