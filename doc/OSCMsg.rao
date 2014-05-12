@@ -870,10 +870,10 @@
 \rail@nont{int23}[]
 \rail@end
 }
-\rail@i {44}{ ITLLog : 'show' int32 | 'clear' | 'wrap' int32 | 'save' string }
+\rail@i {44}{ ITLLog : 'show' int32 | 'clear' | 'wrap' int32 | 'write' (arg +) | 'save' string }
 \rail@o {44}{
 \rail@index{ITLLog}
-\rail@begin{4}{ITLLog}
+\rail@begin{6}{ITLLog}
 \rail@bar
 \rail@term{show}[]
 \rail@token{int32}[]
@@ -883,6 +883,12 @@
 \rail@term{wrap}[]
 \rail@token{int32}[]
 \rail@nextbar{3}
+\rail@term{write}[]
+\rail@plus
+\rail@nont{arg}[]
+\rail@nextplus{4}
+\rail@endplus
+\rail@nextbar{5}
 \rail@term{save}[]
 \rail@token{string}[]
 \rail@endbar
