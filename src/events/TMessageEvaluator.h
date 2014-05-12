@@ -101,6 +101,8 @@ class TMessageEvaluator
 		bool		posVariable (const std::string& param, const char* var) const;
 		/// \brief check if a variable is a gesture variable
 		bool		gestVariable (const std::string& param, const char* var) const;
+		/// \brief extract a variable from a string. The string should start with a '$'
+		std::string	getVar (const char* ptr) const;
 
 		/**
 		*	\brief parses a date variable
@@ -136,6 +138,14 @@ class TMessageEvaluator
 			\return a list or arguments to be used as parameters in place of the variable
 		*/
 		IMessage::argslist evalVariable (const std::string& var, const EventContext& env) const;
+
+		/**
+		*	\brief evaluates a string that may contain a variable
+			\param str the string
+			\param env the context of the event
+			\return a list or arguments to be used as parameters in place of the string
+		*/
+		IMessage::argslist evalVariableString (const std::string& str, const EventContext& env) const;
 
 	public:
 				 TMessageEvaluator() { init(); }

@@ -343,6 +343,9 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 
 		/// \brief recursively get all objects state
 		virtual SIMessageList getAll () const;
+
+		/// \brief recursively get the specified attributes from all objects
+		virtual SIMessageList getAttributes (const std::vector<std::string>& attributes) const;
 		
 		/*!
 			\brief gives a handler for the \c get message
@@ -426,8 +429,14 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		/// \brief get an object parameters
 		virtual SIMessageList getParams() const;
 
+		/// \brief get the specified attributes from an object
+		virtual SIMessageList getParams(const std::vector<std::string>& attributes) const;
+
 		/// \brief recursively get object parameters
 		virtual SIMessageList getAllParams () const;
+
+		/// \brief recursively get the specified attributes from objects
+		virtual SIMessageList getAllParams (const std::vector<std::string>& attributes) const;
 
 		/// \brief object \c 'get' a given param 
 		virtual SIMessage getParam(const std::string& what, const SGetParamMsgHandler& h) const;
@@ -472,8 +481,9 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		/*!
 		*	\brief writes the object and subnodes state to a stream
 		*	\param out the output stream
+		*	\param attributes a list of attributes to be saved, saves all the attributes when the list is empty
 		*/
-		virtual void	save(std::ostream& out) const;
+		virtual void	save(std::ostream& out, const std::vector<std::string>& attributes) const;
 
 	//--------------------------------------------------------------------------
 	// the message handlers

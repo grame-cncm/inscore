@@ -130,8 +130,8 @@ void INScore::stop(IGlue* glue)
 //--------------------------------------------------------------------------
 // versions 
 //--------------------------------------------------------------------------
-float INScore::version	()				{ return 1.06; }
-const char* INScore::versionStr ()		{ return "1.06"; }
+float INScore::version	()				{ return 1.07; }
+const char* INScore::versionStr ()		{ return "1.07"; }
 
 //--------------------------------------------------------------------------
 const char* INScore::guidoversion()
@@ -149,10 +149,13 @@ const char* INScore::guidoversion()
 const char* INScore::musicxmlversion()
 {
 	if (QGuidoImporter::musicxmlSupported())
-	{	
-		static string version = QGuidoImporter::musicxmlVersion();
-		version += " using the guido converter version ";
-		version += QGuidoImporter::musicxml2guidoVersion();
+	{
+		static string version;
+		if (!version.size()) {
+			version = QGuidoImporter::musicxmlVersion();
+			version += " using the guido converter version ";
+			version += QGuidoImporter::musicxml2guidoVersion();
+		}
 		return version.c_str();
 	}
 	return "not available";

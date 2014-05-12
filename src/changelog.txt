@@ -24,6 +24,19 @@ in fact done to avoid side-effects that don't exist anymore.
 - it is possible to connect a signal to some of the object's attributes
 
 ----------------------------------------------------
+Version 1.07
+- new 'write' method supported by the 'log' window
+
+----------------------------------------------------
+Version 1.06
+- 'save' message can now take an optional list of attributes to be saved
+- variables are now evaluated and expanded inside strings. 
+  Thus interaction variables can now be passed as argument of javascript functions.
+- corrects musicxml-version output
+- log window is put to front when the show menu is recalled
+- an object alias is removed when the object is deleted
+
+----------------------------------------------------
 Version 1.05 - 2014-02-17
 - incorrect error message for watch messages corrected
 - new javascript readfile function
