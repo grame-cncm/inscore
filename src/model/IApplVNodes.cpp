@@ -155,6 +155,7 @@ MsgHandler::msgStatus IApplLog::writeMsg (const IMessage* msg) const
 		
 		for (int i=0; i < msg->size(); i++) {
 			msg->param(i)->print(sstr);
+			sstr << " ";
 		}
 		fWindow->append (sstr.str().c_str());
 		return MsgHandler::kProcessedNoChange;
