@@ -11,6 +11,17 @@ INScore originates from the Interlude project.
 It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
+
+Version 1.08
+- the signal node is available on any level of hierarchy (as well as the sync node)
+- it is possible to connect a signal to some of the object's attributes
+- new 'connect' and 'disconnect' messages on the signal node
+
+----------------------------------------------------
+Version 1.07
+- new 'write' method supported by the 'log' window
+
+----------------------------------------------------
 Version 1.06
 - 2 different types of hierarchy : the graphical one with the parent-child relation, 
 and the temporal one with the master-slave synchronization that can be done on any level of hierarchy.
@@ -20,12 +31,6 @@ to be drawn in the master coordinates. they don't change their proportions, unli
 - new specification on synchronization
 - some modifications on examples (Turenas and cursors) have been made : some settings of scale were 
 in fact done to avoid side-effects that don't exist anymore.
-- the signal node is available on any level of hierarchy (as well as the sync node)
-- it is possible to connect a signal to some of the object's attributes
-
-----------------------------------------------------
-Version 1.07
-- new 'write' method supported by the 'log' window
 
 ----------------------------------------------------
 Version 1.06

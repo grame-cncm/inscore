@@ -71,13 +71,15 @@ class ISignalNode : public IVNode
 		
 		static const std::string kName;
     
-        std::map<std::string, std::pair<SParallelSignal, std::string> > getConnections() {return fConnections;}
+        std::map<std::string, SParallelSignal > getConnections() {return fConnections;}
         std::map<std::string, std::pair<SParallelSignal, std::string> > getConnectionsOf(std::string objectName);
 
 	protected:
 		bool fDebug;
 
-        std::map< std::string, std::pair<SParallelSignal, std::string> > fConnections;
+        std::map< std::string, SParallelSignal > fConnections; // the connections between attributes and signals
+    
+        std::map< std::string, std::string > fRanges; // the ranges corresponding to each connection
     
         /*! \brief makes the connections between a signal and one ore more methods of an object
 		*/

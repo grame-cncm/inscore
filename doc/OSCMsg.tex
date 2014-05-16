@@ -1777,14 +1777,6 @@ Synchronizing two objects, aligning the slave duration to the corresponding mast
 \toplevel{Signals and graphic signals}
 \label{graphsig}
 
-The graphic representation of a signal is approached with \emph{graphic signals}. As illustrated in figure \ref{graphimg}, the graphic representation of a signal could be viewed as a stream of a limited set of parameters : the \values{y} coordinate at a time \values{t}, a thickness \values{h} and a color \values{c}. 
-A \emph{graphic signal} is a composite signal including a set of 3 parallel signals that control these parameters. Thus the INScore library provides messages to create signals and to combine them into \emph{graphic signals}. 
-
-\begin{figure}[h]
-	\centering \includegraphics[width=90mm]{imgs/graph}
- \caption{A simple graphic signal, defined at time t by a coordinate y, a thickness h and a color c}
- \label{graphimg}
-\end{figure}
 
 %-------------------------------
 %:    The signal static node.
@@ -1841,7 +1833,6 @@ Querying the signal node:
 /ITL/scene/signal/h size 200
 }
 
-\example \\
 Connecting signals to attributes:
 \sample{/ITL/scene/signal connect sig1 "rect:red" \\
 /ITL/scene/signal connect sig2 "rect:blue:x:rotatey[0,360]" "cursor:date[0,15]"}
@@ -1898,7 +1889,7 @@ parallelSignal :
 \end{rail}
 \index{signal!parallel signal}
 \index{signal!parallel signal!get}
-where 
+
 \begin{rail}
 signal :  
 		  [4] identifier
@@ -1981,7 +1972,18 @@ Sending data to the second and third components of a set of 3 parallel signals:
 \sublevel{Graphic signals.}
 \label{gsignal}
 
-A graphic signal is the graphic representation of a set of parallel signals. It is created in the standard scene address space. A simple graphic signal is defined by a parallel signal controling the \values{y} deviation value, the thickness and the color at each time position. The color is encoded as HSBA colors (Hue, Saturation, Brightness, Transparency). The mapping of a signal value  (\values{[-1,1]}) to the HSBA color space is given by the table \ref{hsbamap}. 
+
+
+\begin{figure}[h]
+	\centering \includegraphics[width=90mm]{imgs/graph}
+ \caption{A simple graphic signal, defined at time t by a coordinate y, a thickness h and a color c}
+ \label{graphimg}
+\end{figure}
+
+The graphic representation of a signal is approached with \emph{graphic signals}. As illustrated in figure \ref{graphimg}, the graphic representation of a signal could be viewed as a stream of a limited set of parameters : the \values{y} coordinate at a time \values{t}, a thickness \values{h} and a color \values{c}. 
+\\
+
+A simple graphic signal is defined by a parallel signal controling the \values{y} deviation value, the thickness and the color at each time position. The color is encoded as HSBA colors (Hue, Saturation, Brightness, Transparency). The mapping of a signal value  (\values{[-1,1]}) to the HSBA color space is given by the table \ref{hsbamap}. 
 
 \begin{figure}[h]
 	\centering \includegraphics[width=65mm]{imgs/hsb}
