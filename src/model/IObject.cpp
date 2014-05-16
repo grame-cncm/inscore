@@ -212,6 +212,7 @@ void IObject::positionAble()
 	fSigHandlerMap[kscale_GetSetMethod]		= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setScale);
 	fSigHandlerMap[krotatex_GetSetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setRotateX);
 	fSigHandlerMap[krotatey_GetSetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setRotateY);
+	fSigHandlerMap[krotatez_GetSetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setRotateZ);
     
 	fMsgHandlerMap[kdx_SetMethod]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addXPos);
 	fMsgHandlerMap[kdy_SetMethod]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYPos);
