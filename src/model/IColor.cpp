@@ -142,37 +142,27 @@ MsgHandler::msgStatus IColor::SetColorMsgHandler::operator ()(const IMessage* ms
 
 
 //--------------------------------------------------------------------------------
-SigHandler::sigStatus IColor::SetColorSigHandler::operator ()(const ParallelSignal* sig, std::string range)
+SigHandler::sigStatus IColor::SetColorSigHandler::operator ()(const ParallelSignal* sig, std::pair<float,float> range)
 {
 	if (sig->dimension() != 1) return SigHandler::kBadParameters;
 	std::vector<float> dump = sig->signal(0)->dump();
     float fval = dump.empty() ? sig->signal(0)->defaultValue() : dump.back();
-    if(range.empty())
-        (fColor->*fSetFloat)(fval);
-    else
-    {
-        CRegexpT <char> regexp("^\\[.+,.+\\]$");
-        if(regexp.MatchExact(range.c_str()))
-        {
-            int i1, i2;
-            float f1, f2;
-            if(sscanf (range.c_str(), "[%i,%i]", &i1, &i2) == 2) // the range is expressed with integers
-            {
-                f1 = (float)(i1);
-                f2 = (float)(i2);
-                fval = f1 + (f2-f1)*(fval+1)/2;
-                int ival = (int)(fval);
-                (fColor->*fSetInt)(ival);
-            }
-            else if(sscanf (range.c_str(), "[%f,%f]", &f1, &f2) == 2) // the range is expressed with floats
-            {
-                fval = f1 + (f2-f1)*(fval+1)/2;
-                (fColor->*fSetFloat)(fval);
-            }
-            else return SigHandler::kBadParameters;
-        }
-        else return SigHandler::kBadParameters;
-    }
+    //appply the range
+    fval = range.first + (range.second-range.first)*(fval+1)/2;
+    (fColor->*fSetFloat)(fval);
+	return SigHandler::kProcessed;
+}
+
+//--------------------------------------------------------------------------------
+SigHandler::sigStatus IColor::SetColorSigHandler::operator ()(const ParallelSignal* sig, std::pair<int,int> range)
+{
+	if (sig->dimension() != 1) return SigHandler::kBadParameters;
+	std::vector<float> dump = sig->signal(0)->dump();
+    float fval = dump.empty() ? sig->signal(0)->defaultValue() : dump.back();
+    //appply the range
+    fval = range.first + (range.second-range.first)*(fval+1)/2;
+    int val = (int)(fval);
+    (fColor->*fSetInt)(val);
 	return SigHandler::kProcessed;
 }
 

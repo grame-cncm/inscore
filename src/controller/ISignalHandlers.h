@@ -61,7 +61,8 @@ class SigHandler : public libmapping::smartable {
 	public:
 		/// \brief the possible signal processing states
 		enum sigStatus	{ kBadParameters, kProcessed=1};
-		virtual sigStatus operator ()(const ParallelSignal* sig, std::string range = "")  = 0;
+		virtual sigStatus operator ()(const ParallelSignal* sig, std::pair<float,float> range)  = 0;
+        virtual sigStatus operator ()(const ParallelSignal* sig, std::pair<int,int> range) = 0;
 };
 typedef libmapping::SMARTP<SigHandler> SSigHandler;
 
@@ -75,32 +76,20 @@ template <typename O, typename T> class TSetMethodSigHandler : public SigHandler
 		typedef void (O::*SigHandlerMethod)(T);
 		
 		static SSigHandler create(O* obj, SigHandlerMethod method)	{ return new TSetMethodSigHandler<O,T> (obj, method); }
-		virtual sigStatus operator ()(const ParallelSignal* sig, std::string range = "")			{
+		virtual sigStatus operator ()(const ParallelSignal* sig, std::pair<float,float> range)			{
             if(sig->dimension() != 1) return kBadParameters;
 			T val; float fval;
             std::vector<float> dump = sig->signal(0)->dump();
             fval = dump.empty() ? sig->signal(0)->defaultValue() : dump.back(); // we take the last written value of the buffer
-            
-            // handling the range if specified
-            
-            if(!range.empty())
-            {
-                CRegexpT <char> regexp("^\\[.+,.+\\]$");
-                // range : "[r1,r2]"
-                if(regexp.MatchExact(range.c_str()))
-                {
-                    float r1, r2;
-                    int n = sscanf (range.c_str(), "[%f,%f]", &r1, &r2);
-                    if (n == 2) fval = r1 + (r2-r1)*(fval+1)/2;
-                    else return SigHandler::kBadParameters;
-                }
-                else return SigHandler::kBadParameters;
-            }
-            
+            // apply the range
+            fval = range.first + (range.second-range.first)*(fval+1)/2;
             val = T(fval);
             (fObject->*fMethod)(val);
             return kProcessed;
 		}
+        virtual sigStatus operator ()(const ParallelSignal* sig, std::pair<int,int> range) {
+            return operator()(sig, std::pair<float,float>((float)(range.first), (float)(range.second)));
+        }
 
 	protected:
 		O*	fObject;
@@ -119,42 +108,18 @@ template <typename O> class TSetMethodSigHandler<O, libmapping::rational> : publ
 
 	public:		
 		static SSigHandler create(O* obj, SigHandlerMethod method)	{ return new TSetMethodSigHandler<O,libmapping::rational> (obj, method); }
-		virtual sigStatus operator ()(const ParallelSignal* sig, std::string range = "")			{
+		virtual sigStatus operator ()(const ParallelSignal* sig, std::pair<float, float> range)			{
 			if(sig->dimension() != 1) return kBadParameters;
             std::vector<float> dump = sig->signal(0)->dump();
             float fval = dump.empty() ? sig->signal(0)->defaultValue() : dump.back();
-            
-            // handling the range if specified
-            
-            if(!range.empty())
-            {
-                CRegexpT <char> regexp("^\\[.+,.+\\]$");
-                if(regexp.MatchExact(range.c_str()))
-                {
-                    CRegexpT <char> regexp2("^\\[.+ .+,.+ .+\\]$");
-                    if(!range.empty() && regexp2.MatchExact(range.c_str()))
-                    {
-                        int n1, d1, n2, d2;
-                        int n = sscanf (range.c_str(), "[%i %i,%i %i]", &n1, &d1, &n2, &d2);
-                        float r1 = (float)(n1)/(float)(d1);
-                        float r2 = (float)(n2)/(float)(d2);
-                        if (n == 4) fval = r1 + (r2-r1)*(fval+1)/2;
-                        else return SigHandler::kBadParameters;
-                    }
-                    else
-                    {
-                        float r1, r2;
-                        int n = sscanf (range.c_str(), "[%f,%f]", &r1, &r2);
-                        if (n == 2) fval = r1 + (r2-r1)*(fval+1)/2;
-                        else return SigHandler::kBadParameters;
-                    }
-                }
-                else return SigHandler::kBadParameters;
-            }
-            
+            // apply the range
+            fval = range.first + (range.second-range.first)*(fval+1)/2;
             (fObject->*fMethod)(libmapping::rational(fval));
             return kProcessed;
 		}
+        virtual sigStatus operator ()(const ParallelSignal* sig, std::pair<int,int> range) {
+            return operator()(sig, std::pair<float,float>((float)(range.first), (float)(range.second)));
+        }
 };
 
 

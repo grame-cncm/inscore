@@ -165,7 +165,8 @@ class IColor
 			public:
 				typedef void (IColor::*setint)(int);
 				typedef void (IColor::*setfloat)(float);
-				virtual SigHandler::sigStatus operator ()(const ParallelSignal* sig, std::string range = "");
+				virtual SigHandler::sigStatus operator ()(const ParallelSignal* sig, std::pair<float,float> range);
+				virtual SigHandler::sigStatus operator ()(const ParallelSignal* sig, std::pair<int,int> range);
 				static SSetColorSigHandler create(IColor* color, setint si, setfloat sf) { return new SetColorSigHandler(color, si, sf); }
 			protected:
 				IColor*		fColor;

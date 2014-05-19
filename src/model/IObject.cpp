@@ -133,14 +133,6 @@ void IObject::colorAble()
 	fMsgHandlerMap[ksaturation_GetSetMethod]= IColor::SetColorMsgHandler::create(this, &IObject::setS, &IObject::setS);
 	fMsgHandlerMap[kbrightness_GetSetMethod]= IColor::SetColorMsgHandler::create(this, &IObject::setV, &IObject::setV);
 
-	fSigHandlerMap[kred_GetSetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::setR, &IObject::setR);
-	fSigHandlerMap[kgreen_GetSetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::setG, &IObject::setG);
-	fSigHandlerMap[kblue_GetSetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::setB, &IObject::setB);
-	fSigHandlerMap[kalpha_GetSetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::setA, &IObject::setA);
-	fSigHandlerMap[khue_GetSetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::setH, &IObject::setH);
-	fSigHandlerMap[ksaturation_GetSetMethod]= IColor::SetColorSigHandler::create(this, &IObject::setS, &IObject::setS);
-	fSigHandlerMap[kbrightness_GetSetMethod]= IColor::SetColorSigHandler::create(this, &IObject::setV, &IObject::setV);
-    
 	fMsgHandlerMap[kdcolor_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::dcolorMsg);
 	fMsgHandlerMap[kdhsb_SetMethod]			= TMethodMsgHandler<IObject>::create(this, &IObject::dhsvMsg);
 
@@ -152,14 +144,6 @@ void IObject::colorAble()
 	fMsgHandlerMap[kdsaturation_SetMethod]	= IColor::SetColorMsgHandler::create(this, &IObject::dS, &IObject::dS);
 	fMsgHandlerMap[kdbrightness_SetMethod]	= IColor::SetColorMsgHandler::create(this, &IObject::dV, &IObject::dV);
 
-	fSigHandlerMap[kdred_SetMethod]			= IColor::SetColorSigHandler::create(this, &IObject::dR, &IObject::dR);
-	fSigHandlerMap[kdgreen_SetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::dG, &IObject::dG);
-	fSigHandlerMap[kdblue_SetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::dB, &IObject::dB);
-	fSigHandlerMap[kdalpha_SetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::dA, &IObject::dA);
-	fSigHandlerMap[kdhue_SetMethod]			= IColor::SetColorSigHandler::create(this, &IObject::dH, &IObject::dH);
-	fSigHandlerMap[kdsaturation_SetMethod]	= IColor::SetColorSigHandler::create(this, &IObject::dS, &IObject::dS);
-	fSigHandlerMap[kdbrightness_SetMethod]	= IColor::SetColorSigHandler::create(this, &IObject::dV, &IObject::dV);
-    
 	fGetMsgHandlerMap[kcolor_GetSetMethod]		= TGetParamMsgHandler<IColor>::create(*(IColor*)this);
 	fGetMsgHandlerMap[kred_GetSetMethod]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getR);
 	fGetMsgHandlerMap[kgreen_GetSetMethod]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getG);
@@ -168,6 +152,22 @@ void IObject::colorAble()
 	fGetMsgHandlerMap[khue_GetSetMethod]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getH);
 	fGetMsgHandlerMap[ksaturation_GetSetMethod] = TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getS);
 	fGetMsgHandlerMap[kbrightness_GetSetMethod]	= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getV);
+    
+    fSigHandlerMap[kred_GetSetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::setR, &IObject::setR);
+	fSigHandlerMap[kgreen_GetSetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::setG, &IObject::setG);
+	fSigHandlerMap[kblue_GetSetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::setB, &IObject::setB);
+	fSigHandlerMap[kalpha_GetSetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::setA, &IObject::setA);
+	fSigHandlerMap[khue_GetSetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::setH, &IObject::setH);
+	fSigHandlerMap[ksaturation_GetSetMethod]= IColor::SetColorSigHandler::create(this, &IObject::setS, &IObject::setS);
+	fSigHandlerMap[kbrightness_GetSetMethod]= IColor::SetColorSigHandler::create(this, &IObject::setV, &IObject::setV);
+    
+	fSigHandlerMap[kdred_SetMethod]			= IColor::SetColorSigHandler::create(this, &IObject::dR, &IObject::dR);
+	fSigHandlerMap[kdgreen_SetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::dG, &IObject::dG);
+	fSigHandlerMap[kdblue_SetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::dB, &IObject::dB);
+	fSigHandlerMap[kdalpha_SetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::dA, &IObject::dA);
+	fSigHandlerMap[kdhue_SetMethod]			= IColor::SetColorSigHandler::create(this, &IObject::dH, &IObject::dH);
+	fSigHandlerMap[kdsaturation_SetMethod]	= IColor::SetColorSigHandler::create(this, &IObject::dS, &IObject::dS);
+	fSigHandlerMap[kdbrightness_SetMethod]	= IColor::SetColorSigHandler::create(this, &IObject::dV, &IObject::dV);
 }
 
 //--------------------------------------------------------------------------
@@ -202,6 +202,14 @@ void IObject::positionAble()
 	fMsgHandlerMap[krotatez_GetSetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setRotateZ);
 	fMsgHandlerMap[kshow_GetSetMethod]		= TSetMethodMsgHandler<IObject,bool>::create(this, &IObject::setVisible);
 	fMsgHandlerMap[keffect_GetSetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::effectMsg);
+    
+	fMsgHandlerMap[kdx_SetMethod]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addXPos);
+	fMsgHandlerMap[kdy_SetMethod]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYPos);
+	fMsgHandlerMap[kdxorigin_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addXOrigin);
+	fMsgHandlerMap[kdyorigin_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYOrigin);
+	fMsgHandlerMap[kdz_SetMethod]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addZOrder);
+	fMsgHandlerMap[kdangle_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addAngle);
+	fMsgHandlerMap[kdscale_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::multScale);
 
 	fSigHandlerMap[kx_GetSetMethod]			= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setXPos);
 	fSigHandlerMap[ky_GetSetMethod]			= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setYPos);
@@ -213,14 +221,6 @@ void IObject::positionAble()
 	fSigHandlerMap[krotatex_GetSetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setRotateX);
 	fSigHandlerMap[krotatey_GetSetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setRotateY);
 	fSigHandlerMap[krotatez_GetSetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setRotateZ);
-    
-	fMsgHandlerMap[kdx_SetMethod]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addXPos);
-	fMsgHandlerMap[kdy_SetMethod]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYPos);
-	fMsgHandlerMap[kdxorigin_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addXOrigin);
-	fMsgHandlerMap[kdyorigin_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYOrigin);
-	fMsgHandlerMap[kdz_SetMethod]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addZOrder);
-	fMsgHandlerMap[kdangle_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addAngle);
-	fMsgHandlerMap[kdscale_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::multScale);
     
 	fSigHandlerMap[kdx_SetMethod]		= TSetMethodSigHandler<IObject,float>::create(this, &IObject::addXPos);
 	fSigHandlerMap[kdy_SetMethod]		= TSetMethodSigHandler<IObject,float>::create(this, &IObject::addYPos);
@@ -253,14 +253,14 @@ void IObject::timeAble()
 	fMsgHandlerMap[kduration_GetSetMethod]	= TSetMethodMsgHandler<IObject,rational>::create(this, &IObject::setDuration);
 	fMsgHandlerMap[kddate_SetMethod]		= TSetMethodMsgHandler<IObject,rational>::create(this, &IObject::addDate);
 	fMsgHandlerMap[kdduration_SetMethod]	= TSetMethodMsgHandler<IObject,rational>::create(this, &IObject::addDuration);
+    
+	fMsgHandlerMap[kclock_SetMethod]		= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::clock);
+	fMsgHandlerMap[kdurClock_SetMethod]	= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::durclock);
 
 	fSigHandlerMap[kdate_GetSetMethod]		= TSetMethodSigHandler<IObject,rational>::create(this, &IObject::setDate);
 	fSigHandlerMap[kduration_GetSetMethod]	= TSetMethodSigHandler<IObject,rational>::create(this, &IObject::setDuration);
 	fSigHandlerMap[kddate_SetMethod]		= TSetMethodSigHandler<IObject,rational>::create(this, &IObject::addDate);
 	fSigHandlerMap[kdduration_SetMethod]	= TSetMethodSigHandler<IObject,rational>::create(this, &IObject::addDuration);
-    
-	fMsgHandlerMap[kclock_SetMethod]		= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::clock);
-	fMsgHandlerMap[kdurClock_SetMethod]	= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::durclock);
 }
 
 //--------------------------------------------------------------------------
@@ -502,7 +502,23 @@ int IObject::execute (const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
-int IObject::executeSignal (const std::string method, const std::string range, const ParallelSignal* sig)
+int IObject::executeSignal (const std::string method, const std::pair<float,float> range, const ParallelSignal* sig)
+{
+	SSigHandler handler = signalHandler(method);
+	if ( handler ) return (*handler)(sig, range);
+
+	// no basic handler , try to find if there is a match
+	handler = signalHandler(method, true);
+	if ( handler ) return (*handler)(sig, range);
+
+	// try to find a default handler
+	handler = signalHandler("*");
+	if ( handler ) return (*handler)(sig, range);
+	return SigHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+int IObject::executeSignal (const std::string method, const std::pair<int,int> range, const ParallelSignal* sig)
 {
 	SSigHandler handler = signalHandler(method);
 	if ( handler ) return (*handler)(sig, range);
@@ -597,14 +613,20 @@ int IObject::processSig ()
     for(int i = 0; i<size(); i++)
     {
         // looks for the object elements()[i] in all the signal connections
-        std::map<std::string, std::pair<SParallelSignal, std::string> > connections;
+        std::vector<ISignalConnection*> connections;
         if(fSignals) connections = fSignals->getConnectionsOf(elements()[i]->name());
         if(!connections.empty())
         {
             // if found, we call the method executeSignal to link the attribute and the signal.
-            std::map<std::string, std::pair<SParallelSignal, std::string> >::iterator it ;
-            for(it = connections.begin(); it != connections.end(); it++)
-                result |= elements()[i]->executeSignal(it->first, it->second.second, it->second.first);
+            for(int it = 0; it < connections.size(); it++)
+            {
+                int status = 0;
+                if(connections[it]->getRangeType() == "float")
+                    status = elements()[i]->executeSignal(connections[it]->getMethod(), connections[it]->getFloatRange(), connections[it]->getSignal());
+                else if(connections[it]->getRangeType() == "int")
+                    status = elements()[i]->executeSignal(connections[it]->getMethod(), connections[it]->getIntRange(), connections[it]->getSignal());
+                result |= status;
+            }
         }
         elements()[i]->processSig();
     }

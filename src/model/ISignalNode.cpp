@@ -131,8 +131,6 @@ MsgHandler::msgStatus ISignalNode::connectMsg (const IMessage* msg)
     {
         if(!msg->param(i, objectsParameterStr)) return MsgHandler::kBadParameters;
         objectStr = objectsParameterStr.substr(0,objectsParameterStr.find(":"));
-        subnodes objectList;
-        if(!getParent()->find(objectStr, objectList)) return MsgHandler::kBadParameters;
         std::string methods = objectsParameterStr.substr(objectsParameterStr.find(":")+1);
         result = connect(signal, objectStr, methods);
         if(result != MsgHandler::kProcessed) return result;
@@ -182,6 +180,11 @@ MsgHandler::msgStatus ISignalNode::disconnectMsg (const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus ISignalNode::connect(SParallelSignal signal, std::string object, std::string methods)
 {
+    // We check if the object is indeed in the elements of our parent object
+    subnodes objectList;
+    if(!getParent()->find(object, objectList)) return MsgHandler::kBadParameters;
+    
+    SIObject o = objectList[0];
     std::string allMethodStr = methods;
     std::string methodStr;
     std::string range = "";
@@ -210,21 +213,78 @@ MsgHandler::msgStatus ISignalNode::connect(SParallelSignal signal, std::string o
         }
         else
             range = "";
+        
+        // we test that the method is available for connections
+        if(! o->signalHandler(methodStr)) return MsgHandler::kBadParameters;
+        
+        ISignalConnection * connection = new ISignalConnection();
+        
         objectMethod = object;
         objectMethod += ":";
         objectMethod += methodStr; // "object:method(n)"
-        std::map<std::string, SParallelSignal >::iterator it = fConnections.find(objectMethod);
-        if(it != fConnections.end()) // If this method of the object has already been stored, we replace the corresponding signal and range
+        
+        connection->setObject(object);
+        connection->setMethod(methodStr);
+        connection->setObjectMethod(objectMethod);
+        connection->setSignal(signal);
+        
+        // We now want to translate the string range into floats, ints, or rationnals.
+        if(!range.empty())
         {
-            it->second = signal;
-            std::map<std::string, std::string>::iterator it2 = fRanges.find(objectMethod); // we actualize the connections map
-            if(it2 != fRanges.end()) it2->second = range; // we actualize the ranges map
+            CRegexpT <char> regexp("^\\[.+,.+\\]$"); // range : "[r1,r2]"
+            if(regexp.MatchExact(range.c_str()))
+            {
+                CRegexpT <char> regexp2("^\\[.+ .+,.+ .+\\]$"); // range : "[n1 d1, n2 d2]"
+                if(!range.empty() && regexp2.MatchExact(range.c_str()))
+                {
+                    int n1, d1, n2, d2;
+                    int n = sscanf (range.c_str(), "[%i %i,%i %i]", &n1, &d1, &n2, &d2);
+                    if (n == 4)
+                    {
+                        float r1 = (float)(n1)/(float)(d1);
+                        float r2 = (float)(n2)/(float)(d2);
+                        // We store the information in the object connection
+                        connection->setRangeType("float");
+                        connection->setFloatRange(r1, r2);
+                    }
+                    else return MsgHandler::kBadParameters;
+                }
+                else
+                {
+                    int i1, i2;
+                    float f1, f2;
+                    if(sscanf (range.c_str(), "[%i,%i]", &i1, &i2) == 2) // the range is expressed with integers
+                    {
+                        // We store the information in the object connection
+                        connection->setRangeType("int");
+                        connection->setIntRange(i1, i2);
+                    }
+                    else if(sscanf (range.c_str(), "[%f,%f]", &f1, &f2) == 2) // the range is expressed with floats
+                    {
+                        // We store the information in the object connection
+                        connection->setRangeType("float");
+                        connection->setFloatRange(f1, f2);
+                    }
+                    else return MsgHandler::kBadParameters;
+                }
+            }
+            else return MsgHandler::kBadParameters;
         }
-        else
+
+        
+        vector<ISignalConnection*>::iterator it = fConnections.begin();
+        bool found = false;
+        while(it != fConnections.end()  && !found)
         {
-            fConnections.insert(std::pair<std::string, SParallelSignal >(objectMethod, signal));
-            fRanges.insert(std::pair<std::string, std::string>(objectMethod, range));
+            if((*it)->getObjectMethod() == objectMethod)
+                found = true;
+            else
+                it++;
         }
+        if(found) // If this method of the object has already been stored, we replace the connection
+            fConnections.erase(it);
+        
+        fConnections.push_back(connection);
     }
 
     return MsgHandler::kProcessed;
@@ -235,15 +295,12 @@ MsgHandler::msgStatus ISignalNode::disconnect(SParallelSignal signal, std::strin
 {
     if(object.empty()) // if the object is not specified, we disconnect all connections with the signal
     {
-        std::map<std::string, SParallelSignal >::iterator it = fConnections.begin();
+        std::vector<ISignalConnection* >::iterator it = fConnections.begin();
         while(it != fConnections.end())
         {
-            if(it->second == signal) // if we find the signal, we erase the pair corresponding to the object:attribute in the Connections and in the Ranges
+            if((*it)->getSignal() == signal) // if we find the signal, we erase the connection object
             {
-                std::map<std::string, std::string>::iterator it2 = fRanges.find(it->first);
-                if (it2 != fRanges.end())
-                    fRanges.erase(it2);
-                std::map<std::string, SParallelSignal>::iterator d = it;
+                std::vector<ISignalConnection*>::iterator d = it;
                 fConnections.erase(d);
                 it++;
             }
@@ -276,42 +333,33 @@ MsgHandler::msgStatus ISignalNode::disconnect(SParallelSignal signal, std::strin
             
             // we handle the fConnections map
             
-            std::map<std::string, SParallelSignal >::iterator it = fConnections.find(objectMethod);
-            
-            if(it == fConnections.end())            // no such parameter
-                return MsgHandler::kBadParameters;
-            
-            else if(it->second != signal)     // the parameter was not connected to this signal
-                return MsgHandler::kBadParameters;
-            
-            else                                    // this pair exists : we erase it, and the range corresponding
+            vector<ISignalConnection*>::iterator it = fConnections.begin();
+            bool found = false;
+            while(it != fConnections.end()  && !found)
             {
-                fConnections.erase(it);
-                // we handle the fRanges map
-                std::map<std::string, std::string>::iterator it2 = fRanges.find(objectMethod);
-                if(it2 != fRanges.end()) fRanges.erase(it2);
+                if((*it)->getObjectMethod() == objectMethod && (*it)->getSignal() == signal)
+                    found = true;
+                else
+                    it++;
             }
+            if(found)
+                fConnections.erase(it);
+            else     // this connections didn't exist
+                return MsgHandler::kBadParameters;
         }
     }
     return MsgHandler::kProcessed;
 }
 
 //--------------------------------------------------------------------------
-std::map<std::string, std::pair<SParallelSignal, std::string> > ISignalNode::getConnectionsOf(std::string objectName)
+std::vector<ISignalConnection* > ISignalNode::getConnectionsOf(std::string objectName)
 {
-    std::map<std::string, std::pair<SParallelSignal, std::string> > connections;
-    std::map<std::string, SParallelSignal >::iterator it;
-    for (it = fConnections.begin(); it != fConnections.end(); it++)
+    std::vector<ISignalConnection*> connections;
+    for (int i = 0; i < fConnections.size(); i++)
     {
-        std::string objectsMethod = it->first; // "object:method"
-        if(objectsMethod.find(":") != std::string::npos && !objectsMethod.compare(0, objectsMethod.find(":"), objectName)) // "object"
-        {
-            std::string methods = objectsMethod.substr(objectsMethod.find(":")); // "method"
-            std::string range = "";
-            std::map<std::string, std::string>::iterator it2 = fRanges.find(it->first); // "object:method"
-            if(it2 != fRanges.end()) range = it2->second;
-            connections.insert(std::pair<std::string, std::pair<SParallelSignal, std::string> >(methods, std::pair<SParallelSignal, std::string>(it->second, range)));
-        }
+        std::string object = fConnections[i]->getObject();
+        if(!object.compare(objectName))
+            connections.push_back(fConnections[i]);
     }
     return connections;
 }

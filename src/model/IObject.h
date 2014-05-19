@@ -227,10 +227,11 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 
 		/*!
 			\brief executes a signal and possibly modifies the object state.
-			\param sig the signal
+			\param connections the signal-attribute connection
 			\return the signal processing status
 		*/
-		virtual int	executeSignal (const std::string method, const std::string range, const ParallelSignal* sig);
+		virtual int	executeSignal (const std::string method, const std::pair<float,float> range, const ParallelSignal* sig);
+        virtual int	executeSignal (const std::string method, const std::pair<int,int> range, const ParallelSignal* sig);
     
 		/// \brief creates the object virtual nodes
 		virtual void	createVirtualNodes ();
@@ -404,7 +405,14 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
         /// \brief a periodic task to propagate modification state from masters to slaves
 		virtual void ptask ();
     
-
+        /*!
+			\brief gives a handler for a signal
+			\param param the string method
+			\param match a boolean to evaluate regular expressions
+			\return the corresponding handler if any
+		*/
+		virtual SSigHandler			signalHandler(const std::string& method, bool match=false) const;
+    
 	protected:	
 		VObjectView* fView;		///< the object view
 		IObject*	fParent;	///< the parent node
@@ -449,14 +457,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		*/
 		virtual SMsgHandler			messageHandler(const std::string& param, bool match=false) const;
 
-		/*!
-			\brief gives a handler for a signal
-			\param param the string method
-			\param match a boolean to evaluate regular expressions
-			\return the corresponding handler if any
-		*/
-		virtual SSigHandler			signalHandler(const std::string& method, bool match=false) const;
-    
+		
 		/*!
 			\brief sets an object display range
 			

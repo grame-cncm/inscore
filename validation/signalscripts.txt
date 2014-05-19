@@ -24,12 +24,7 @@
 ../regression/MP-signalConnection/2/sin0.inscore
 ../regression/MP-signalConnection/2/sin1.inscore
 ../regression/MP-signalConnection/2/sin2.inscore
-../regression/MP-signalConnection/2/sin3.inscore
-../regression/MP-signalConnection/2/sin4.inscore
 ../regression/MP-signalConnection/2/changes.inscore
 ../regression/MP-signalConnection/2/sin10.inscore
 ../regression/MP-signalConnection/2/sin11.inscore
 ../regression/MP-signalConnection/2/sin12.inscore
-../regression/MP-signalConnection/2/sin13.inscore
-../regression/MP-signalConnection/2/sin14.inscore
-../regression/MP-signalConnection/2/sin15.inscore
