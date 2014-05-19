@@ -270,7 +270,8 @@ MsgHandler::msgStatus ISignalNode::connect(SParallelSignal signal, std::string o
             }
             else return MsgHandler::kBadParameters;
         }
-
+        else
+            connection->setRangeType("none");
         
         vector<ISignalConnection*>::iterator it = fConnections.begin();
         bool found = false;

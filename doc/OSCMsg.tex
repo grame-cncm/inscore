@@ -1646,7 +1646,11 @@ A voice may be distributed on several staves and thus a staff may contain severa
 \toplevel{Synchronization}
 \label{syncmsg}
 
-Synchronization between components is in charge of the static \OSC{sync} node, automatically embedded in each object. Its address is \OSC{/ITL/.../\textit{object}/sync} and it supports messages to add or remove a master / slave relation between components (a master should be allowed to have several slaves, and a slave several masters) or to query the synchronizations state.
+Synchronization between components is in charge of the static \OSC{sync} node, automatically embedded in each object. Its address is \OSC{/ITL/.../\textit{object}/sync} and it supports messages to add or remove a master / slave relation between components or to query the synchronizations state.
+
+\note{} \\
+A master can naturally have several slaves, but we should mention that a slave can as well have several masters. In this case, it would be drawn several times, corresponding to each master's space.
+
 \begin{rail}
 sync : syncIdentifier 
 	 ( [1] syncIdentifier (| syncmode +) 
@@ -1676,8 +1680,9 @@ Synchronization identifiers indicates 1) the name of an object or 2) the name of
 Synchronization between components has no effect if any of the required mapping is missing (see table \ref{maptable}).
 
 \example \\
-Synchronizing two objects:
-\sample{/ITL/scene/myParent/sync mySlave myMaster}
+Synchronizing an object on several masters:
+\sample{/ITL/scene/myParent/sync mySlave myMaster1\\
+/ITL/scene/myParent/sync mySlave myMaster2}
 
 Synchronizing two objects using a specific mapping (the second object is assumed to be a symbolic score (\OSC{gmn}, \OSC{gmnstream} or \OSC{gmnf}) which \OSC{system} mapping has been previously requested):
 \sample{/ITL/scene/myParent/sync mySlave myMaster:system}
@@ -1781,65 +1786,11 @@ Synchronizing two objects, aligning the slave duration to the corresponding mast
 %-------------------------------
 %:    The signal static node.
 \sublevel{The 'signal' static node.}
-Every object includes a static signal node, which OSC address is \OSC{/ITL/scene/.../\textit{object}/signal} which may be viewed as a container for signals. It is also used for \textit{composing signals in parallel}.
-
-\subsublevel{The signal node messages.}
-\label{signalnodemsg}
-
-The \OSC{signal} node supports only the \OSC{get} message that gives the list of the defined signals, the \OSC{connect} message that links a signal to one or more attributes of objects on the same level as the node, and the \OSC{disconnect} message that can break those links.
-
-\begin{rail}
-signalNodeMsg : [1] 'get'
-		| [2] 'connect' connection
-		| 'disconnect' ( [3] identifier | [4] connection)
-\end{rail}
+Every object includes a static signal node, which OSC address is \OSC{/ITL/scene/.../\textit{object}/signal} which may be viewed as a container for signals. It is also used for \textit{composing signals in parallel} and for \textit{connecting signals to objects' attributes}.
 
 
-\begin{itemize}
-\item \textbf{[1]} the \OSC{get} message gives us the list of the signals
-\item \textbf{[2]} the \OSC{connect} message makes connection between a signal and one or several attributes of one or several objects.
-\item \textbf{[3]} the \OSC{disconnect} message with only the \OSC{identifier} parameter disconnects all links with this signal
-\item \textbf{[4]} the \OSC{disconnect} message will only delete the connection specified.
-\end{itemize}
-
-\begin{rail}
-connection : identifier ( objectsAttributes + )
-\end{rail}
-
-\begin{rail}
-objectsAttributes :  object ( ':' attribute ( | range ) + )
-\end{rail}
-
-\begin{rail}
-range : ( '[' r1 ',' r2 ']' )
-\end{rail}
-
-\begin{itemize}
-\item \OSC{identifier} is a signal name referring to an existing signal in the \OSC{signal} node. 
-\item \OSC{object} is the name of the object (on the same level of hierarchy as the \OSC{signal} node) whose attribute we want to connect.
-\item \OSC{attribute} is the name of the attribute we want to connect to the signal (same name as the method used to set the attribute).
-\item \OSC{r1} and \OSC{r2} are the optional range bounds to define other bounds for the attribute as the default ones. (there is no rule for their range or their order : r1 < r2 or r2 < r1) They can only be used when setting the connections, but not for disconnection (useless).
-\end{itemize}
-
-\index{signal}
-\index{signal!get}
-\index{signal!connect}
-
-\example \\
-Querying the signal node:
-\sample{/ITL/scene/signal get}
-\sampleindent will give the enclosed signals definitions:
-\sample{/ITL/scene/signal/y size 200 \\
-/ITL/scene/signal/h size 200
-}
-
-Connecting signals to attributes:
-\sample{/ITL/scene/signal connect sig1 "rect:red" \\
-/ITL/scene/signal connect sig2 "rect:blue:x:rotatey[0,360]" "cursor:date[0,15]"}
-Disconnecting some of the links :
-\sample{/ITL/scene/signal disconnect sig2 "cursor:date" "rect:rotatey:blue" }
-
-
+%------------------------------
+% signal messages
 \subsublevel{Signal messages.}
 \label{ssignal}
 Signal messages can be sent to any address with the form \OSC{/ITL/scene/.../\textit{object}/signal/\textit{identifier}}, where \OSC{\textit{identifier}} is a unique signal identifier.
@@ -1966,6 +1917,65 @@ Sending data to the second and third components of a set of 3 parallel signals:
 /ITL/scene/signal/s3 0.2
 }
 
+
+%---------------------------------
+% signal connections
+\subsublevel{The signal connections.}
+\label{signalnodemsg}
+
+As said before, the \OSC{signal} node is in charge of storing the simple signals and the signals in parallel, but also to receive the connection messages and to register all connections made at its level of hierarchy. This mechanism is done by the \OSC{connect} message that links a signal to one or more attributes of objects on the same level as the node, and the \OSC{disconnect} message that can break those links.
+
+\begin{rail}
+signalNodeMsg : [1] 'connect' connection
+		| 'disconnect' ( [2] identifier | [3] connection)
+\end{rail}
+
+
+\begin{itemize}
+\item \textbf{[1]} the \OSC{connect} message makes connection between a signal and one or several attributes of one or several objects.
+\item \textbf{[2]} the \OSC{disconnect} message with only the \OSC{identifier} parameter disconnects all links with this signal
+\item \textbf{[3]} the \OSC{disconnect} message will only delete the connection specified.
+\end{itemize}
+
+\begin{rail}
+connection : identifier ( objectsAttributes + )
+\end{rail}
+
+\begin{rail}
+objectsAttributes :  object ( ':' attribute ( | range ) + )
+\end{rail}
+
+\begin{rail}
+range : ( '[' r1 ',' r2 ']' )
+\end{rail}
+
+\begin{itemize}
+\item \OSC{identifier} is a signal name referring to an existing signal in the \OSC{signal} node. 
+\item \OSC{object} is the name of the object (on the same level of hierarchy as the \OSC{signal} node) whose attribute we want to connect.
+\item \OSC{attribute} is the name of the attribute we want to connect to the signal (same name as the method used to set the attribute).
+\item \OSC{r1} and \OSC{r2} are the optional range bounds to define other bounds for the attribute as the default ones. (there is no rule for their range or their order : r1 < r2 or r2 < r1) They can only be used when setting the connections, but not for disconnection (useless).
+\end{itemize}
+
+\index{signal}
+\index{signal!get}
+\index{signal!connect}
+
+\note{} \\
+For now, the connections can only be made to one-dimensional signals
+
+\example \\
+Querying the signal node:
+\sample{/ITL/scene/signal get}
+\sampleindent will give the enclosed signals definitions:
+\sample{/ITL/scene/signal/y size 200 \\
+/ITL/scene/signal/h size 200
+}
+
+Connecting signals to attributes:
+\sample{/ITL/scene/signal connect sig1 "rect:red" \\
+/ITL/scene/signal connect sig2 "rect:blue:x:rotatey[0,360]" "cursor:date[0,15]"}
+Disconnecting some of the links :
+\sample{/ITL/scene/signal disconnect sig2 "cursor:date" "rect:rotatey:blue" }
 
 %-------------------------------
 %:    Graphic signals.

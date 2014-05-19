@@ -625,6 +625,8 @@ int IObject::processSig ()
                     status = elements()[i]->executeSignal(connections[it]->getMethod(), connections[it]->getFloatRange(), connections[it]->getSignal());
                 else if(connections[it]->getRangeType() == "int")
                     status = elements()[i]->executeSignal(connections[it]->getMethod(), connections[it]->getIntRange(), connections[it]->getSignal());
+                else
+                    status = elements()[i]->executeSignal(connections[it]->getMethod(), std::pair<float, float>(-1.,1.), connections[it]->getSignal());
                 result |= status;
             }
         }
