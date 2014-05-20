@@ -257,7 +257,8 @@ IMessage::argslist TMessageEvaluator::evalMessage (const IMessage* msg, const Ev
 
 	vector<const IObject*> targets;			// first get the message target objects
 	const IObject * root = env.object ? env.object->getRoot() : gGlue->root();
-	root->getObjects( msg->address(), targets);
+	root->getObjects( evalAddress(msg->address(), env.object), targets);
+
 	unsigned int n = targets.size();
 	if (!n) return outval;					// no target: exit
 	
