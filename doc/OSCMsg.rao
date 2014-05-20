@@ -148,10 +148,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {9}{ relPosMsg : ('dx' float32) | ('dy' float32) | ('dz' float32) | ('dangle' float32) | ('dscale' float32) }
+\rail@i {9}{ relPosMsg : ('dx' float32) | ('dy' float32) | ('dz' float32) | ('drotatex' float32) | ('drotatey' float32) | ('drotatez' float32) | ('dangle' float32) | ('dscale' float32) }
 \rail@o {9}{
 \rail@index{relPosMsg}
-\rail@begin{5}{relPosMsg}
+\rail@begin{8}{relPosMsg}
 \rail@bar
 \rail@term{dx}[]
 \rail@token{float32}[]
@@ -162,9 +162,18 @@
 \rail@term{dz}[]
 \rail@token{float32}[]
 \rail@nextbar{3}
-\rail@term{dangle}[]
+\rail@term{drotatex}[]
 \rail@token{float32}[]
 \rail@nextbar{4}
+\rail@term{drotatey}[]
+\rail@token{float32}[]
+\rail@nextbar{5}
+\rail@term{drotatez}[]
+\rail@token{float32}[]
+\rail@nextbar{6}
+\rail@term{dangle}[]
+\rail@token{float32}[]
+\rail@nextbar{7}
 \rail@term{dscale}[]
 \rail@token{float32}[]
 \rail@endbar

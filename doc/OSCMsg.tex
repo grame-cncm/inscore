@@ -320,6 +320,9 @@ relPosMsg :
 			('dx' float32)
 		| 	('dy' float32)
 		| 	('dz' float32)
+		| 	('drotatex' float32)
+		| 	('drotatey' float32)
+		| 	('drotatez' float32)
 		| 	('dangle' float32)
 		| 	('dscale' float32) 
 \end{rail}
@@ -327,6 +330,9 @@ relPosMsg :
 \index{Position messages!relative!dy}
 \index{Position messages!relative!dz}
 \index{Position messages!relative!dangle}
+\index{Position messages!relative!drotatex}
+\index{Position messages!relative!drotatey}
+\index{Position messages!relative!drotatez}
 \index{Position messages!relative!dscale}
 \index{Common messages!dx}
 \index{Common messages!dy}
@@ -334,6 +340,7 @@ relPosMsg :
 
 \begin{itemize}
 \item \OSC{dx}, \OSC{dy}, \OSC{dz} messages are similar to \OSC{x}, \OSC{y}, \OSC{z} but the parameters represent a displacement relative to the current target value.
+\item \OSC{drotatex}, \OSC{drotatey}, \OSC{drotatez} are relative rotation messages. \OSC{dangle} is equivalent to \OSC{drotatez} and is maintained only for compatibility reasons.
 \item \OSC{dscale} is similar to \OSC{scale} but the parameters represents a scale multiplying factor.
 \end{itemize}
 
