@@ -14,6 +14,8 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ----------------------------------------------------
 Version 1.07
 - new 'write' method supported by the 'log' window
+- variable addresses are evaluated in message based variables
+- support relative rotations on x and y axis
 
 ----------------------------------------------------
 Version 1.06
