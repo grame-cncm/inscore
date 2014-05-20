@@ -51,7 +51,9 @@ void IPosition::setPos(const IPosition& p)
 	setYPos( p.getYPos() );
 	setZOrder( p.getZOrder() );
 	setScale( p.getScale() );
-	setAngle( p.getRotateZ() );
+	setRotateX(p.getRotateX() );
+	setRotateY( p.getRotateY() );
+	setRotateZ( p.getRotateZ() );
 	setWidth( p.getWidth() );
 	setHeight( p.getHeight() );
 	setVisible( p.getVisible() );
