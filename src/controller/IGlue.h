@@ -84,6 +84,7 @@ class export IGlue : public MsgListener, public QTimer
 	SIAppl			fModel;
 	SIController	fController;
 	SIMessageStack	fMsgStack;
+	SIMessageStack	fDelayStack;
 	SPeriodicTask	fTimeTask;
 	GraphicUpdateListener * fViewListener;
 	QMutex			fTimeViewMutex;
