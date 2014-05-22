@@ -122,6 +122,15 @@ class export INScore
 	*/
 	static void postMessage	(const char* address, MessagePtr msg);
 
+	/*! \brief post a message for delayed processing i.e. its processing is delayed by one time task
+
+		\param address the OSC destination address of the message
+		\param msg the message to send
+		\warning once a message has been posted, it is owned by the library and must not be deleted
+		by the client application
+	*/
+	static void delayMessage	(const char* address, MessagePtr msg);
+
 	/*! \brief create a new message
 		\param msg the message string
 		\return an opaque pointer to a message

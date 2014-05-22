@@ -67,7 +67,8 @@ class JavaThread : public QThread
 };
 
 
-SIMessageStack				gMsgStack;		// the messages stack
+SIMessageStack				gMsgStack;			// the messages stack
+SIMessageStack				gDelayStack;		// the delayed messages stack
 map<INScore::MessagePtr, SIMessage>	gMsgMemory;		// allocated messages are stored in a map for refcounting
 
 #define kUPDPort 7000
@@ -171,9 +172,30 @@ void INScore::postMessage	(const char* address, MessagePtr msg)
 {
 	IMessage* m = Message2IMessage (msg);
 	if (m) {
-		m->setAddress(address);
+		string oscAddress;
+		IMessage::TUrl url;
+		if (IMessage::decodeAddress (address, oscAddress, url)) {
+			m->setAddress(oscAddress);
+			m->setUrl(url);
+		}
+		else m->setAddress(address);
 		if (gMsgStack) gMsgStack->push(new SIMessage(m));
 		gMsgMemory[msg] = 0;
+	}
+}
+//--------------------------------------------------------------------------
+void INScore::delayMessage	(const char* address, MessagePtr msg)
+{
+	IMessage* m = Message2IMessage (msg);
+	if (m) {
+		string oscAddress;
+		IMessage::TUrl url;
+		if (IMessage::decodeAddress (address, oscAddress, url)) {
+			m->setAddress(oscAddress);
+			m->setUrl(url);
+		}
+		else m->setAddress(address);
+		if (gDelayStack) gDelayStack->push(new SIMessage(m));
 	}
 }
 
@@ -206,7 +228,10 @@ void INScore::delMessage(MessagePtr msg)
 void INScore::add (MessagePtr p, const char* s)
 {
 	IMessage* m = Message2IMessage (p);
-	if (m) m->add(s);
+	if (!m) return;
+	
+	if (!m->size() && m->message().empty()) m->setMessage(s);
+	else m->add(s);
 }
 
 //--------------------------------------------------------------------------
