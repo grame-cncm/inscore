@@ -661,7 +661,12 @@ MsgHandler::msgStatus IObject::get(const IMessage* msg) const
 { 
 	SIMessageList msgs = getMsgs (msg);
 	if (msgs->list().size()) {
-		oscout << msgs;
+		try {
+			oscout << msgs;
+		}
+		catch (exception& e) {
+			ITLErr << "while sending osc msg: " << e.what() << ITLEndl;
+		}
 	}
 	return MsgHandler::kProcessedNoChange;
 }
