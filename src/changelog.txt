@@ -13,6 +13,8 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.07
+- exception catched when sending osc messages: was a potential crash, 
+  e.g. in case of 'get' message sent to a signal with a large buffer -> out of buffer memory
 - new javascript 'post' function for posting delayed messages
 - new 'write' method supported by the 'log' window
 - variable addresses are evaluated in message based variables
