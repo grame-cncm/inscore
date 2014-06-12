@@ -1,4 +1,4 @@
-version := 1.05
+version := 1.07
 system	:= $(shell uname -s)
 ifeq ($(system), MINGW32_NT-6.1) 
 	win32 = yes
@@ -82,7 +82,7 @@ macosx:
 	cp $(icns) $(viewer).app/Contents/Resources
 	-[ -d $(package)/$(macapp) ] && rm -rf $(package)/$(macapp)
 	mv $(viewer).app $(package)/$(macapp)
-	@chmod -x  $(shell find . -name "*.inscore")
+	@chmod -x  $(shell find $(package) -name "*.inscore")
 	cp -f ../src/guido2.ttf $(package)
 	cd $(package) && ln -sf /Applications .
 	[ -d $(package)/$(macplug) ] || mkdir $(package)/$(macplug)
@@ -167,6 +167,7 @@ src:
 	cp -rf ../src $(package)-src/
 	cp -rf ../cmake/CMakeLists.txt $(package)-src/cmake
 	cp -rf ../lib $(package)-src/
+	cp -rf ../win32 $(package)-src/
 	rm -rf $(package)-src/lib/poppler
 	rm -rf $(package)-src/lib/javascript/MacOS
 	cp readme.txt $(package)-src

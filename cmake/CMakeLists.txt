@@ -10,10 +10,10 @@ set (APPLTARGET	INScoreViewer)
 
 #######################################
 # versions management
-set (INSFWKVERS 1.05)
-set (INSFWKSTRVERS "v.1.05")
-set (INSAPPVERS 1.05)
-set (INSAPPSTRVERS "v.1.05")
+set (INSFWKVERS 1.07)
+set (INSFWKSTRVERS "v.1.07")
+set (INSAPPVERS 1.07)
+set (INSAPPSTRVERS "v.1.07")
 set (SOVERS 1)
 
 #######################################
@@ -114,11 +114,11 @@ if (WIN32)
 	set(SCRIPTS ${SCRIPTS} "${LOCALLIB}/javascript/v8/win32/v8.lib")
 	set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/javascript/v8/include)
 else()
-	set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/javascript/v8/include)
 	if(APPLE)
+		set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/javascript/v8/include)
 		set(SCRIPTS ${SCRIPTS} -L${LOCALLIB}/javascript/v8/MacOS -lv8)
 	else()
-		set(SCRIPTS ${SCRIPTS} -L${LOCALLIB}/javascript/v8/linux -lv8)
+		set(SCRIPTS ${SCRIPTS} -lv8) # on linux, use of the v8 package
 	endif()
 endif ()
 
@@ -164,26 +164,19 @@ message (STATUS "Using Qt version ${QTVERSION} - Use -DQTVERSION=vers to change.
 set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h  ${ROOT}/view/VLogWindow.h)
 if (QTVERSION EQUAL "5")
 	set (MOC_HEADERS ${MOC_HEADERS} ${ROOT}/view/VVideoView.h)
+	set(DESIRED_QT_VERSION 5.0)
+	FIND_PACKAGE(Qt5Widgets REQUIRED)
+	FIND_PACKAGE(Qt5Svg REQUIRED)
+	FIND_PACKAGE(Qt5PrintSupport REQUIRED)
+	FIND_PACKAGE(Qt5Multimedia REQUIRED)
+	FIND_PACKAGE(Qt5MultimediaWidgets REQUIRED)
 	if(APPLE OR WIN32)
-	  set(DESIRED_QT_VERSION 5.0)
-	  FIND_PACKAGE(Qt5Widgets REQUIRED)
-	  FIND_PACKAGE(Qt5Svg REQUIRED)
-	  FIND_PACKAGE(Qt5PrintSupport REQUIRED)
-	  FIND_PACKAGE(Qt5Multimedia REQUIRED)
-	  FIND_PACKAGE(Qt5MultimediaWidgets REQUIRED)
 	  set(QTLIBS ${Qt5Core_LIBRARIES}  ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} ${Qt5Multimedia_LIBRARIES} ${Qt5MultimediaWidgets_LIBRARIES})	
 	else()
-	  set(DESIRED_QT_VERSION 5.0)
-	  FIND_PACKAGE(Qt5Widgets REQUIRED)
-	  FIND_PACKAGE(Qt5Svg REQUIRED)
-	  FIND_PACKAGE(Qt5PrintSupport REQUIRED)
-	  FIND_PACKAGE(Qt5Multimedia REQUIRED)
-	  FIND_PACKAGE(Qt5MultimediaWidgets REQUIRED)
 	  set(QTLIBS "-lQt5Core -lQt5Gui -lQt5Widgets -lQt5Svg -lQt5PrintSupport -lQt5Multimedia -lQt5MultimediaWidgets")	
 	endif()
 
-	set (QTHEADERS "${Qt5Widgets_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS}  ${Qt5PrintSupport_INCLUDE_DIRS}  ${Qt5Multimedia_INCLUDE_DIRS}  ${Qt5MultimediaWidgets_INCLUDE_DIRS}")
-
+	set (QTHEADERS ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS}  ${Qt5PrintSupport_INCLUDE_DIRS}  ${Qt5Multimedia_INCLUDE_DIRS}  ${Qt5MultimediaWidgets_INCLUDE_DIRS})
 else ()   # assume we're using Qt4
 	add_definitions(-DUSEPHONON)
 
@@ -238,7 +231,7 @@ elseif(UNIX)
 	set(GUIDO    -lGUIDOEngine)
 endif()
 
-set(INSLIBS  ${INSLIBS} ${OSCPACK} ${GUIDO} ${SCRIPTS} ${QTLIBS} ${CORE_FOUNDATION} ${GUIDOQT} )
+set(INSLIBS  ${INSLIBS} ${OSCPACK} ${SCRIPTS} ${QTLIBS} ${CORE_FOUNDATION} ${GUIDO} ${GUIDOQT} )
 
 #######################################
 # moc settings

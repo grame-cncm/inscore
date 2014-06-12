@@ -121,7 +121,8 @@ IApplLog::IApplLog(IObject * parent) : IVNode("log", parent)
 	fWindow = new VLogWindow ("INScore log");
 	fMsgHandlerMap[kclear_SetMethod]	= TMethodMsgHandler<IApplLog, void (IApplLog::*)(void)>::create(this, &IApplLog::clear);
 	fMsgHandlerMap[kwrap_GetSetMethod]	= TSetMethodMsgHandler<IApplLog,bool>::create(this, &IApplLog::setWrap);
-	fMsgHandlerMap[ksave_SetMethod]	= TMethodMsgHandler<IApplLog, MsgHandler::msgStatus (IApplLog::*)(const IMessage*) const>::create(this, &IApplLog::saveMsg);
+	fMsgHandlerMap[ksave_SetMethod]		= TMethodMsgHandler<IApplLog, MsgHandler::msgStatus (IApplLog::*)(const IMessage*) const>::create(this, &IApplLog::saveMsg);
+	fMsgHandlerMap[kwrite_SetMethod]	= TMethodMsgHandler<IApplLog, MsgHandler::msgStatus (IApplLog::*)(const IMessage*) const>::create(this, &IApplLog::writeMsg);
 	positionAble();
 	setVisible(false);
 }
@@ -142,6 +143,22 @@ MsgHandler::msgStatus IApplLog::saveMsg (const IMessage* msg) const
 			out << fWindow->getText();
 			return MsgHandler::kProcessedNoChange;
 		}
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IApplLog::writeMsg (const IMessage* msg) const
+{
+	if ((msg->size() >= 1)) {
+		stringstream sstr;
+		
+		for (int i=0; i < msg->size(); i++) {
+			msg->param(i)->print(sstr);
+			sstr << " ";
+		}
+		fWindow->append (sstr.str().c_str());
+		return MsgHandler::kProcessedNoChange;
 	}
 	return MsgHandler::kBadParameters;
 }

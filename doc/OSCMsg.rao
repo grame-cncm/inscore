@@ -66,10 +66,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {6}{ commonMsg : ('show' int32) | 'del' | 'export' ([1] ( fullPathFileName) | [2] path | [3]) | 'save' filePath ( | '+') | PositionMsg | ColorMsg | TimeMsg | WatchMsg }
+\rail@i {6}{ commonMsg : ('show' int32) | 'del' | 'export' ([1] ( fullPathFileName) | [2] path | [3]) | 'save' (| 'message' +) filePath ( | '+') | PositionMsg | ColorMsg | TimeMsg | WatchMsg }
 \rail@o {6}{
 \rail@index{commonMsg}
-\rail@begin{11}{commonMsg}
+\rail@begin{12}{commonMsg}
 \rail@bar
 \rail@term{show}[]
 \rail@token{int32}[]
@@ -88,18 +88,25 @@
 \rail@endbar
 \rail@nextbar{5}
 \rail@term{save}[]
+\rail@bar
+\rail@nextbar{6}
+\rail@plus
+\rail@term{message}[]
+\rail@nextplus{7}
+\rail@endplus
+\rail@endbar
 \rail@nont{filePath}[]
 \rail@bar
 \rail@nextbar{6}
 \rail@term{+}[]
 \rail@endbar
-\rail@nextbar{7}
-\rail@nont{PositionMsg}[]
 \rail@nextbar{8}
-\rail@nont{ColorMsg}[]
+\rail@nont{PositionMsg}[]
 \rail@nextbar{9}
-\rail@nont{TimeMsg}[]
+\rail@nont{ColorMsg}[]
 \rail@nextbar{10}
+\rail@nont{TimeMsg}[]
+\rail@nextbar{11}
 \rail@nont{WatchMsg}[]
 \rail@endbar
 \rail@end
@@ -141,10 +148,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {9}{ relPosMsg : ('dx' float32) | ('dy' float32) | ('dz' float32) | ('dangle' float32) | ('dscale' float32) }
+\rail@i {9}{ relPosMsg : ('dx' float32) | ('dy' float32) | ('dz' float32) | ('drotatex' float32) | ('drotatey' float32) | ('drotatez' float32) | ('dangle' float32) | ('dscale' float32) }
 \rail@o {9}{
 \rail@index{relPosMsg}
-\rail@begin{5}{relPosMsg}
+\rail@begin{8}{relPosMsg}
 \rail@bar
 \rail@term{dx}[]
 \rail@token{float32}[]
@@ -155,9 +162,18 @@
 \rail@term{dz}[]
 \rail@token{float32}[]
 \rail@nextbar{3}
-\rail@term{dangle}[]
+\rail@term{drotatex}[]
 \rail@token{float32}[]
 \rail@nextbar{4}
+\rail@term{drotatey}[]
+\rail@token{float32}[]
+\rail@nextbar{5}
+\rail@term{drotatez}[]
+\rail@token{float32}[]
+\rail@nextbar{6}
+\rail@term{dangle}[]
+\rail@token{float32}[]
+\rail@nextbar{7}
 \rail@term{dscale}[]
 \rail@token{float32}[]
 \rail@endbar
@@ -863,10 +879,10 @@
 \rail@nont{int23}[]
 \rail@end
 }
-\rail@i {44}{ ITLLog : 'show' int32 | 'clear' | 'wrap' int32 | 'save' string }
+\rail@i {44}{ ITLLog : 'show' int32 | 'clear' | 'wrap' int32 | 'write' (arg +) | 'save' string }
 \rail@o {44}{
 \rail@index{ITLLog}
-\rail@begin{4}{ITLLog}
+\rail@begin{6}{ITLLog}
 \rail@bar
 \rail@term{show}[]
 \rail@token{int32}[]
@@ -876,6 +892,12 @@
 \rail@term{wrap}[]
 \rail@token{int32}[]
 \rail@nextbar{3}
+\rail@term{write}[]
+\rail@plus
+\rail@nont{arg}[]
+\rail@nextplus{4}
+\rail@endplus
+\rail@nextbar{5}
 \rail@term{save}[]
 \rail@token{string}[]
 \rail@endbar
@@ -1253,7 +1275,7 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {68}{ projectionString : '[' int32 (| '\let \prOteCt \relax \Protect \csname acp:c\endcsname {22}{}' (| int32)) ']' }
+\rail@i {68}{ projectionString : '[' int32 (| '\unhbox \voidb@x \bgroup \let \unhbox \voidb@x \setbox \@tempboxa \hbox {\global \mathchardef \accent@spacefactor \spacefactor }\accent 3 \egroup \spacefactor \accent@spacefactor ' (| int32)) ']' }
 \rail@o {68}{
 \rail@index{projectionString}
 \rail@begin{3}{projectionString}
@@ -1261,7 +1283,7 @@
 \rail@token{int32}[]
 \rail@bar
 \rail@nextbar{1}
-\rail@term{\let \prOteCt \relax \Protect \csname acp:c\endcsname {22}{}}[]
+\rail@term{\unhbox \voidb@x \bgroup \let \unhbox \voidb@x \setbox \@tempboxa \hbox {\global \mathchardef \accent@spacefactor \spacefactor }\accent 3 \egroup \spacefactor \accent@spacefactor }[]
 \rail@bar
 \rail@nextbar{2}
 \rail@token{int32}[]
@@ -1449,7 +1471,7 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {79}{ timeVar : ('date' | 'rdate') (| ':' mapname) (| '[n/d]') (| '%' 'f') }
+\rail@i {79}{ timeVar : ('date' | 'rdate') (| ':' mapname) (| '[n/d]') (| '\%' 'f') }
 \rail@o {79}{
 \rail@index{timeVar}
 \rail@begin{2}{timeVar}
@@ -1469,7 +1491,7 @@
 \rail@endbar
 \rail@bar
 \rail@nextbar{1}
-\rail@term{%}[]
+\rail@term{\%}[]
 \rail@term{f}[]
 \rail@endbar
 \rail@end

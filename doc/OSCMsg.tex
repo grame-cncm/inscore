@@ -36,18 +36,22 @@
 
 \providecommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
 \newcommand{\OSC}[1]		{\texttt{#1}}
-\newcommand{\values}[1]	{\texttt{#1}}
-\newcommand{\oldexample}		{\hspace*{1cm}}
+\newcommand{\values}[1]		{\texttt{#1}}
+\newcommand{\oldexample}	{\hspace*{1cm}}
 \newcommand{\example}		{\textbf{\hspace{-1.5cm}\textbf{\textsc{Example }}}}
 \newcommand{\note}	[1]		{\vspace{2mm}\textbf{\hspace{-1.03cm}\textbf{\textsc{Note #1}}}}
-\renewcommand{\seealso}	{\textbf{See also: }}
+\renewcommand{\seealso}		{\textbf{See also: }}
 
 \newcommand{\osctype}[1]	{\textbf{\texttt{{\small #1}}}}
 \newcommand{\oscint}		{\osctype{int32}}
-\newcommand{\oscfloat}	{\osctype{float32}}
-\newcommand{\oscstring}	{\osctype{string}}
-\newcommand{\rational}	{\osctype{rational}}
-%\newcommand{\var}[1] 		{\emph{#1}}
+\newcommand{\oscfloat}		{\osctype{float32}}
+\newcommand{\oscstring}		{\osctype{string}}
+\newcommand{\rational}		{\osctype{rational}}
+
+\let\olditemize\itemize
+\let\oldenditemize\enditemize
+\renewenvironment{itemize} 	{\olditemize \setlength{\itemsep}{1mm}}{\oldenditemize}
+
 
 \setlength\parskip{2pt}
 \setlength\railnamesep{-1mm}
@@ -76,7 +80,7 @@
 
 \begin{document}
 
-\title{INScore \\ OSC Messages Reference \\v.1.05}
+\title{INScore \\ OSC Messages Reference \\v.1.07}
 
 \author{D. Fober\\ GRAME\\ Centre national de cr\'eation musicale\\
 {\small <fober@grame.fr>} \\
@@ -209,7 +213,7 @@ They could be sent to any address with the form \OSC{/ITL/\textit{scene}} or \OS
 commonMsg :  ('show' int32)
 			| 'del'
 			| 'export' ([1] ( fullPathFileName) | [2] path | [3])
-			| 'save' filePath ( | '+')
+			| 'save' (| 'message' +) filePath ( | '+')
 			| PositionMsg
 			| ColorMsg
 			| TimeMsg
@@ -226,12 +230,14 @@ commonMsg :  ('show' int32)
 
 \item \OSC{export}: exports an object to an image file. \\
 1) exports to a full path name. The file extension is used to infer the export format. Supported extensions and formats are: \emph{pdf, bmp, gif, jpeg, png, pgm, ppm, tiff, xbm, xpm}. \\
-2) exports to \OSC{path/\textit{identifier}.pdf}. When path is a relative path, exports to \OSC{rootPath/path/\textit{identifier}.pdf}. \\
+2) exports to \OSC{path/\textit{identifier}.pdf}. \\
+When path is a relative path, exports to \OSC{rootPath/path/\textit{identifier}.pdf}. \\
 3) exports to \OSC{rootPath/\textit{identifier}.pdf}.\\
 When the destination file is not completely specified (third form or missing extension), there is an automatic numbering of output names when the destination file already exists.
 
-\item \OSC{save}: recursively saves objects states to a file.  The \OSC{filePath} can be relative or absolute. When relative, an absolute path is build using the current \OSC{rootPath} (see application or scene current paths  p.\pageref{applmgmt} and  p.\pageref{scene}). The optional \OSC{+} parameter indicates an append mode for the write operation. The message must be sent to the address \OSC{/ITL} to save the whole application state.\\
-Note that the file extension for INScore files is \OSC{.inscore}. INScore files dropped on the application or on a window are interpreted as script files (see section \fullref{scripting}).
+\item \OSC{save}: recursively saves objects states to a file. When a \OSC{message} list is present, only the specified attributes are saved. The \OSC{filePath} can be relative or absolute. When relative, an absolute path is build using the current \OSC{rootPath} (see application or scene current paths  p.\pageref{applmgmt} and  p.\pageref{scene}). The optional \OSC{+} parameter indicates an append mode for the write operation. The message must be sent to the address \OSC{/ITL} to save the whole application state.\\
+\textbf{Note}: when a list of attributes is specified, unknown attributes are silently ignored. \\
+\textbf{Note}: the file extension for INScore files is \OSC{.inscore}. INScore files dropped on the application or on a window are interpreted as script files (see section \fullref{scripting}).
 
 %\item \OSC{rename}: rename the destination object. Changes its OSC address. \textbf{Warning}: OSC pattern matching allows to give the same name to a whole collection of objects; in this case, there is no way to individually address an object when its name is shared with other objects.
 \item 'PositionMsg' are absolute and relative position messages.
@@ -244,8 +250,9 @@ Note that the file extension for INScore files is \OSC{.inscore}. INScore files 
 \example \\
 Export of a scene to a given file as jpeg at the current root path:
 \sample{/ITL/scene export 'myexport.jpg'}
-Saving a scene to \OSC{myScore.inscore} at the current root path, the second form uses the append mode:
+Saving a scene to \OSC{myScore.inscore} at the current root path, the second form saves only the \OSC{x}, \OSC{y} and \OSC{z} attributes, the third form uses the append mode:
 \sample{/ITL/scene save 'myScore.inscore'\\
+/ITL/scene save x y z 'thePositions.inscore' \\
 /ITL/scene save 'myScore.inscore' '+'}
 Hiding an object:
 \sample{/ITL/scene/myObject show 0}
@@ -313,6 +320,9 @@ relPosMsg :
 			('dx' float32)
 		| 	('dy' float32)
 		| 	('dz' float32)
+		| 	('drotatex' float32)
+		| 	('drotatey' float32)
+		| 	('drotatez' float32)
 		| 	('dangle' float32)
 		| 	('dscale' float32) 
 \end{rail}
@@ -320,6 +330,9 @@ relPosMsg :
 \index{Position messages!relative!dy}
 \index{Position messages!relative!dz}
 \index{Position messages!relative!dangle}
+\index{Position messages!relative!drotatex}
+\index{Position messages!relative!drotatey}
+\index{Position messages!relative!drotatez}
 \index{Position messages!relative!dscale}
 \index{Common messages!dx}
 \index{Common messages!dy}
@@ -327,6 +340,7 @@ relPosMsg :
 
 \begin{itemize}
 \item \OSC{dx}, \OSC{dy}, \OSC{dz} messages are similar to \OSC{x}, \OSC{y}, \OSC{z} but the parameters represent a displacement relative to the current target value.
+\item \OSC{drotatex}, \OSC{drotatey}, \OSC{drotatez} are relative rotation messages. \OSC{dangle} is equivalent to \OSC{drotatez} and is maintained only for compatibility reasons.
 \item \OSC{dscale} is similar to \OSC{scale} but the parameters represents a scale multiplying factor.
 \end{itemize}
 
@@ -1277,6 +1291,7 @@ The \OSC{log} node controls a console window that display all the messages sent 
 ITLLog : 'show'  int32
 		| 'clear'
 		| 'wrap' int32
+		| 'write' (arg +)
 		| 'save' string
 \end{rail}
 \index{ITL log!show}
@@ -1288,6 +1303,7 @@ ITLLog : 'show'  int32
 \item \OSC{show} show or hides the console. The parameter is a boolean value.
 \item \OSC{clear} clear the console window.
 \item \OSC{wrap} control line wrapping of the console. The parameter is a boolean value.
+\item \OSC{write} write the \OSC{arg} list formatted as a string to the log window.
 \item \OSC{save} save the current log content to a file. The parameter is a file name. When expressed as a relative path, the file is saved under the current application root path.
 \end{itemize}
 
@@ -2521,6 +2537,7 @@ The Javascript engine is based on V8 that implements ECMAScript as specified in 
 \item \textbf{\OSC{version()}} : gives the javascript engine version number as a string.
 \item \textbf{\OSC{print(val1 [, val2 [, ...]])}} : print the arguments to the OSC standard output. The arguments list is prefixed by 'javascript:'. The function is provided for debug purpose.
 \item \textbf{\OSC{readfile(file)}} : read a file and returns its content as a string. The file name could be specified as an absolute or relative path. When relative, the file is searched in the application current \OSC{rootPath} (see section \fullref{applmgmt}).
+\item \textbf{\OSC{post(address [,...])}} : build an OSC message and post it for delayed processing i.e. to be processed by the next time task. \OSC{address} is an OSC or an extended OSC address. Optional arguments are the message parameters.
 \end{itemize}
 
 

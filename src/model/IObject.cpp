@@ -192,6 +192,11 @@ void IObject::positionAble()
 	fMsgHandlerMap[kdz_SetMethod]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addZOrder);
 	fMsgHandlerMap[kdangle_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addAngle);
 	fMsgHandlerMap[kdscale_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::multScale);
+
+	fMsgHandlerMap[kdrotatex_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addXAngle);
+	fMsgHandlerMap[kdrotatey_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYAngle);
+	fMsgHandlerMap[kdrotatez_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addAngle);
+
 }
 
 //--------------------------------------------------------------------------
@@ -253,7 +258,8 @@ void IObject::del()
 {
     // we set the delte flag to 1
     fDelete = true;
-    
+	IAppl::delAliases (getOSCAddress());
+
     // ... and we send the message that the event "del" occured
     const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kDelete);
 	if (!msgs || msgs->list().empty())
@@ -475,6 +481,30 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 
 //--------------------------------------------------------------------------
 // the 'get' to retrieve an object parameters
+SIMessageList IObject::getParams(const std::vector<std::string>& attributes) const
+{
+	SIMessageList outMsgs = IMessageList::create();
+	
+	for (int i=0; i<attributes.size(); i++) {
+		map<std::string, SGetParamMsgHandler>::const_iterator e = fGetMsgHandlerMap.find(attributes[i]);
+		if (e != fGetMsgHandlerMap.end()) {					// attribute found in msg map
+			SIMessage msg = getParam(e->first, e->second);
+			outMsgs->list().push_back (msg);
+		}
+		else {			// attribute not found: look in MultiMsgHandlerMap
+			map<std::string, SGetParamMultiMsgHandler>::const_iterator e = fGetMultiMsgHandlerMap.find(attributes[i]);
+			if (e != fGetMultiMsgHandlerMap.end()) {					// attribute found in msg map
+				SIMessageList mlist = IMessageList::create();
+				outMsgs->list().push_back(e->second->print(mlist)->list());
+			}
+		}
+	}
+	return outMsgs;
+}
+
+
+//--------------------------------------------------------------------------
+// the 'get' to retrieve an object parameters
 SIMessageList IObject::getParams() const
 {
 	SIMessageList outMsgs = IMessageList::create();
@@ -504,6 +534,20 @@ SIMessageList IObject::getParams() const
 }
 
 //--------------------------------------------------------------------------
+// the 'get' to retrieve the specified objects parameters
+SIMessageList IObject::getAllParams(const std::vector<std::string>& attributes) const
+{
+	SIMessageList outMsgs = getParams(attributes);
+	// and distribute the message to subnodes
+	for (unsigned int i = 0; i < elements().size(); i++) {
+		nodePtr elt = elements()[i];
+		if (!elt->getDeleted())
+			outMsgs->list().push_back (elt->getAllParams(attributes)->list());
+	}
+	return outMsgs;
+}
+
+//--------------------------------------------------------------------------
 // the 'get' to retrieve all the objects parameters
 SIMessageList IObject::getAllParams() const
 {
@@ -514,6 +558,18 @@ SIMessageList IObject::getAllParams() const
 		if (!elt->getDeleted())
 			outMsgs->list().push_back (elt->getAllParams()->list());
 	}
+	return outMsgs;
+}
+
+//--------------------------------------------------------------------------
+// the 'get' to retrieve all objects full state
+// note that getSetMsg() and getAllParams() are both recursive
+// this design is intended to retrieve all the objects first
+// in order to avoid dependencies with the messages order
+SIMessageList IObject::getAttributes(const vector<string>& attributes) const
+{
+	SIMessageList outMsgs = IMessageList::create();
+	outMsgs->list().push_back (getAllParams(attributes)->list());		// next get the objects parameters
 	return outMsgs;
 }
 
@@ -605,7 +661,12 @@ MsgHandler::msgStatus IObject::get(const IMessage* msg) const
 { 
 	SIMessageList msgs = getMsgs (msg);
 	if (msgs->list().size()) {
-		oscout << msgs;
+		try {
+			oscout << msgs;
+		}
+		catch (exception& e) {
+			ITLErr << "while sending osc msg: " << e.what() << ITLEndl;
+		}
 	}
 	return MsgHandler::kProcessedNoChange;
 }
@@ -751,8 +812,10 @@ SIMessageList IObject::getAliases() const
 MsgHandler::msgStatus IObject::aliasMsg(const IMessage* msg)
 { 
 	unsigned int n = msg->size();
-	if (n == 0)
+	if (n == 0) {
 		IAppl::delAliases (getOSCAddress());
+		return MsgHandler::kProcessed;
+	}
 	
 	else if ( n <= 2 ) {
 		string alias, msgstr;
@@ -905,9 +968,9 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 }
 
 //--------------------------------------------------------------------------
-void IObject::save(ostream& out) const
+void IObject::save(ostream& out, const vector<string>& attributes) const
 {
-	SIMessageList msgs = getAll();
+	SIMessageList msgs = attributes.size() ? getAttributes(attributes) : getAll();
 	msgs->list().set("", "\n");
 	out <<  msgs->list();
 }
@@ -915,6 +978,27 @@ void IObject::save(ostream& out) const
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::saveMsg (const IMessage* msg) const
 { 
+	int n = msg->size();
+	if (n > 0) {
+		vector<string> attributes;
+		string destfile;
+		ios_base::openmode mode = ios_base::out;
+		for (int i=n-1; i>=0; i--) {
+			string str;
+			if (! msg->param(i, str))	return MsgHandler::kBadParameters;	// error: incorrect parameter type
+			if (str == "+")
+				mode |= ios_base::app;
+			else if (destfile.empty()) destfile = str;
+			else attributes.push_back(str);
+		}
+		if (destfile.empty())			return MsgHandler::kBadParameters;	// error: no destination file
+		string path = getScene() ? getScene()->absolutePath(destfile) : IAppl::absolutePath(destfile);
+		ofstream out (path.c_str(), mode);
+		save (out, attributes);
+		return MsgHandler::kProcessedNoChange;
+	}
+	return MsgHandler::kBadParameters;
+/*
 	if ((msg->size() > 0) && (msg->size() < 3)) {
 		string destfile = msg->param(0)->value<string>("");
 		if (destfile.size()) {
@@ -932,6 +1016,7 @@ MsgHandler::msgStatus IObject::saveMsg (const IMessage* msg) const
 		}
 	}
 	return MsgHandler::kBadParameters;
+*/
 }
 
 //--------------------------------------------------------------------------

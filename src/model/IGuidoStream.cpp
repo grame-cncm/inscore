@@ -26,7 +26,6 @@
 #include "IGuidoStream.h"
 #include "IScene.h"
 #include "Updater.h"
-#include "GuidoParse.h"
 
 using namespace std;
 

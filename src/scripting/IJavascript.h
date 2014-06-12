@@ -72,6 +72,7 @@ class IJavascript: public IVNode
 
 	public:
 		static SIJavascript create(IObject * parent, TJSEngine* js) { return new IJavascript(parent, js); }
+		static const char* kName;
 };
 
 /*!@} */

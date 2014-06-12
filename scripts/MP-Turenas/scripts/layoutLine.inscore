@@ -16,5 +16,4 @@
 /ITL/scene/sync cursorsmall _smallturenas v;
 
 /ITL load "scripts/watchLine.inscore";
-/ITL load "scripts/watchLine.inscore";
 /ITL load "commentsOff.inscore";
