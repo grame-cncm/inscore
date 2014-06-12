@@ -140,6 +140,9 @@ class IApplLog : public IVNode
 		void	clear();
 		void	setWrap(bool state);
 
+		/// \brief object \c 'write' message handler.
+		virtual MsgHandler::msgStatus writeMsg (const IMessage* msg) const;
+
 		/// \brief object \c 'save' message handler.
 		virtual MsgHandler::msgStatus saveMsg (const IMessage* msg) const;
 };

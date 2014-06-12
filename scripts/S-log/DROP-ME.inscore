@@ -1,2 +1,4 @@
 
 /ITL/log show 1;
+/ITL/log write Hello world;
+/ITL/log write The scene position is $(/ITL/scene get x y);

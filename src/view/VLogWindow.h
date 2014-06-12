@@ -45,13 +45,14 @@ public:
 	typedef QToolButton		TButton;
 			VLogWindow(const char* name);
 	
-	void		append (const char* text);
-	const char*	getText () const;
+	void			append (const char* text);
+	const char*		getText () const;
+	virtual void	setVisible(bool visible);
 
 private:
-	TButton *createToolButton(const QString &toolTip, const QIcon &icon, const char *member);
+	TButton *		createToolButton(const QString &toolTip, const QIcon &icon, const char *member);
 
-    QPlainTextEdit *	fLogArea;
+    QPlainTextEdit* fLogArea;
 	TButton *		fClearButton;
 	TButton *		fWrapButton;
 

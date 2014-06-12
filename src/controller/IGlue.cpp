@@ -54,6 +54,7 @@ namespace inscore
 {
 
 extern SIMessageStack gMsgStack;
+extern SIMessageStack gDelayStack;
 
 //--------------------------------------------------------------------------
 IGlue::IGlue(int udpport, int outport, int errport) 
@@ -139,6 +140,8 @@ void IGlue::initialize (bool offscreen, QApplication* appl)
 
 	fMsgStack = IMessageStack::create();
 	gMsgStack = fMsgStack;
+	fDelayStack = IMessageStack::create();
+	gDelayStack = fDelayStack;
 	fController = IController::create();
 
 	fModel = IAppl::create(fUDP.fInPort, fUDP.fOutPort, fUDP.fErrPort, appl, offscreen);
@@ -309,6 +312,15 @@ void IGlue::timerEvent ( QTimerEvent *)
 	}
 	bench::put ("total", getTime() - time);
 #endif
+
+	// check delayed messages and transfer them to the messages stack
+	if (fDelayStack->size()) {
+		SIMessage* msgptr = fDelayStack->pop();
+		while (msgptr) {
+			fMsgStack->push (msgptr);
+			msgptr = fDelayStack->pop();
+		}
+	}
 }
 
 //--------------------------------------------------------------------------

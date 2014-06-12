@@ -55,6 +55,11 @@ const char* kdhue_SetMethod			= "dhue";			// Set
 const char* kdimension_GetMethod	= "dimension";		// Get
 const char* kdpage_SetMethod		= "dpage";			// Set
 const char* kdred_SetMethod			= "dred";			// Set
+
+const char* kdrotatex_SetMethod		= "drotatex";		// Set
+const char* kdrotatey_SetMethod		= "drotatey";		// Set
+const char* kdrotatez_SetMethod		= "drotatez";		// Set
+
 const char* kdsaturation_SetMethod	= "dsaturation";	// Set
 const char* kdscale_SetMethod		= "dscale";			// Set
 const char* kdurClock_SetMethod		= "durClock";		// Set

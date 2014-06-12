@@ -74,14 +74,17 @@ void ISignal::accept (Updater* u)
 }
 
 #if defined(WIN32) && !defined(__MINGW_GCC)
-#define sscanf sscanf_s
+//#define sscanf sscanf_s  
+// commented due to a bug in decodeProjection below
+// int values were not set although result was correct
+// DF 2014-02-13
 #endif
 //--------------------------------------------------------------------------
 bool ISignal::decodeProjection (const std::string& proj, int& index, int& step) const
 {
 	int i=0, s=0;
 	char c = ' ';
-	int result = sscanf(proj.c_str(), "[%d%c%d]", &i, &c, &s);
+	int result = sscanf(proj.c_str(), "[%d%c%d]", &i, &c, &s, 1);
 	if (!result) return false;			// incorrect string format
 
 	index = i;

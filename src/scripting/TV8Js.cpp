@@ -31,6 +31,7 @@
 #include "TEnv.h"
 #include "IAppl.h"
 #include "OSCStream.h"
+#include "INScore.h"
 
 #ifdef NO_OSCSTREAM
 # define ITLErr		cerr
@@ -143,6 +144,59 @@ static v8::Handle<v8::Value> Print(const v8::Arguments& args)
 	return v8::Undefined();
 }
 
+// The callback that is invoked by v8 whenever the JavaScript 'send'
+// function is called.  Prints its arguments on stdout separated by
+// spaces and ending with a newline.
+static v8::Handle<v8::Value> PostMsg(const v8::Arguments& args)
+{
+	if (! args.Length()) return v8::Undefined();
+
+	INScore::MessagePtr msg = INScore::newMessage ();
+	std::string address;
+	const char* argErr = "v8::PostMsg: unknown arg type";
+	const char* adrErr = "v8::PostMsg: incorrect OSC address";
+	for (int i = 0; i < args.Length(); i++) {
+		v8::HandleScope handle_scope;
+		if (i==0) {
+			if (args[i]->IsString()) {
+				v8::String::Utf8Value str(args[i]);
+				address = ToCString(str);
+			}
+			else {
+				cerr << adrErr << endl;
+#ifndef NO_OSCSTREAM
+				oscerr << adrErr;
+#endif
+				return v8::Undefined();
+			}
+
+		}
+		else {
+			if (args[i]->IsString()) {
+				v8::String::Utf8Value str(args[i]->ToString());
+				INScore::add(msg, ToCString(str));
+			}
+			else if (args[i]->IsInt32()) {
+				INScore::add(msg, args[i]->Int32Value());
+			}
+			else if (args[i]->IsUint32()) {
+				INScore::add(msg, int(args[i]->Uint32Value()));
+			}
+			else if (args[i]->IsNumber()) {
+				INScore::add(msg, float(args[i]->NumberValue()));
+			}
+			else {
+				cerr << argErr << endl;
+#ifndef NO_OSCSTREAM
+				oscerr << argErr;
+#endif
+			}
+		}
+	}
+	INScore::delayMessage(address.c_str(), msg);	// post the message for delayed processing
+	return v8::Undefined();
+}
+
 static v8::Handle<v8::Value> Version(const v8::Arguments& args) {
   return v8::String::New(v8::V8::GetVersion());
 }
@@ -186,6 +240,8 @@ v8::Persistent<v8::Context> TV8Js::CreateV8Context()
 	global->Set(v8::String::New("print"), v8::FunctionTemplate::New(Print));
 	// Bind the global 'print' function to the C++ Print callback.
 	global->Set(v8::String::New("readfile"), v8::FunctionTemplate::New(ReadFile));
+	// Bind the global 'print' function to the C++ Print callback.
+	global->Set(v8::String::New("post"), v8::FunctionTemplate::New(PostMsg));
 	// Bind the 'version' function
 	global->Set(v8::String::New("version"), v8::FunctionTemplate::New(Version));
 	return v8::Context::New(NULL, global);

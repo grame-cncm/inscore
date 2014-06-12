@@ -1,5 +1,12 @@
-version := 1.06
+version := 1.07
 system	:= $(shell uname -s)
+ifeq ($(system), MINGW32_NT-6.1) 
+	win32 = yes
+else
+ifeq ($(system), CYGWIN_NT-6.1) 
+	win32 = yes
+endif
+endif
 
 i2i90  := ../tools/inscore2inscore90
 i2i100 := ../tools/inscore2inscore100
@@ -7,7 +14,7 @@ ifeq ($(system), Darwin)
   i2i90tool  := $(i2i90)/cmake/Release/inscore2inscore90
   i2i100tool := $(i2i100)/cmake/Release/inscore2inscore100
 else
-ifeq ($(system), MINGW32_NT-6.1)
+ifdef win32 
   i2i90tool  := $(i2i90)/cmake/Release/inscore2inscore90.exe
   i2i100tool := $(i2i100)/cmake/Release/inscore2inscore100.exe
   QT5         := /c/Qt/Qt5.1.0
@@ -75,7 +82,7 @@ macosx:
 	cp $(icns) $(viewer).app/Contents/Resources
 	-[ -d $(package)/$(macapp) ] && rm -rf $(package)/$(macapp)
 	mv $(viewer).app $(package)/$(macapp)
-	@chmod -x  $(shell find . -name "*.inscore")
+	@chmod -x  $(shell find $(package) -name "*.inscore")
 	cp -f ../src/guido2.ttf $(package)
 	cd $(package) && ln -sf /Applications .
 	[ -d $(package)/$(macplug) ] || mkdir $(package)/$(macplug)
@@ -160,6 +167,7 @@ src:
 	cp -rf ../src $(package)-src/
 	cp -rf ../cmake/CMakeLists.txt $(package)-src/cmake
 	cp -rf ../lib $(package)-src/
+	cp -rf ../win32 $(package)-src/
 	rm -rf $(package)-src/lib/poppler
 	rm -rf $(package)-src/lib/javascript/MacOS
 	cp readme.txt $(package)-src

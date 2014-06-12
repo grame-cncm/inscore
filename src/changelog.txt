@@ -12,9 +12,27 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 1.07
+- exception catched when sending osc messages: was a potential crash, 
+  e.g. in case of 'get' message sent to a signal with a large buffer -> out of buffer memory
+- new javascript 'post' function for posting delayed messages
+- new 'write' method supported by the 'log' window
+- variable addresses are evaluated in message based variables
+- support relative rotations on x and y axis
+
+----------------------------------------------------
+Version 1.06
+- 'save' message can now take an optional list of attributes to be saved
+- variables are now evaluated and expanded inside strings. 
+  Thus interaction variables can now be passed as argument of javascript functions.
+- corrects musicxml-version output
+- log window is put to front when the show menu is recalled
+- an object alias is removed when the object is deleted
+
+----------------------------------------------------
 Version 1.05 - 2014-02-17
 - incorrect error message for watch messages corrected
-- new javascript readfile function
+- new javascript 'readfile' function
 - log window is now available from the application menu
 - brushStyle attribute added
 - new 'layer' object (default brushStyle = none)
