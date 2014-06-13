@@ -1,9 +1,9 @@
 Package: inscore
-Version: 1.0.3
+Version: 1.0.5
 Section: sound
 Priority: optional
 Architecture: amd64
-Depends: guidoengine-devel (>= 1.5.1), libc6 (>= 2.17), libgcc1 (>= 4.7.3), libqt5core5(>= 5.0.1), libqt5gui5 (>= 5.0.1), libqt5widgets5(>= 5.0.1), libstdc++6 (>= 4.7.3)
+Depends: guidoengine-devel (>= 1.5.2), libc6 (>= 2.17), libgcc1 (>= 4.7.3), libqt5core5(>= 5.0.1), libqt5gui5 (>= 5.0.1), libqt5widgets5(>= 5.0.1), libstdc++6 (>= 4.7.3)
 Installed-Size: 47423
 Maintainer: D. Fober <fober@grame.fr>
 Description: INScore - Interactive, Augmented Music Scores.
