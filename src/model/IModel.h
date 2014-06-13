@@ -34,6 +34,8 @@
 #include "IEllipse.h"
 #include "IFileWatcher.h"
 #include "IFaustProcessor.h"
+#include "IFaustDSP.h"
+#include "IFaustDSPFile.h"
 #include "IGestureFollower.h"
 #include "IGraphicSignal.h"
 #include "IGrid.h"

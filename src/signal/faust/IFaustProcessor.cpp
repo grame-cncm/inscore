@@ -85,8 +85,8 @@ class INScoreUI : public UI
 const string IFaustProcessor::kFaustProcessorType("faust");
 
 //--------------------------------------------------------------------------
-IFaustProcessor::IFaustProcessor( const std::string& name, IObject * parent ) : ISignal (name, parent),
-	fBuildUI(0), fCompute(0), fInputs(0), fOutputs(0), fInit(0), fNumIntputs(0), fNumOutputs(0), fInBuffers(0), fOutBuffers(0)
+IFaustProcessor::IFaustProcessor( const std::string& name, IObject * parent ) : IFaustSignal (name, parent),
+	fBuildUI(0), fCompute(0), fInputs(0), fOutputs(0), fInit(0)
 {
 	fTypeString = kFaustProcessorType;
 	fGetMsgHandlerMap[kin_GetMethod]		= TGetParamMsgHandler<int>::create(fNumIntputs);
@@ -94,15 +94,7 @@ IFaustProcessor::IFaustProcessor( const std::string& name, IObject * parent ) : 
 }
 
 //--------------------------------------------------------------------------
-IFaustProcessor::~IFaustProcessor()
-{
-	for (int i= 0; i < fNumIntputs; i++)
-		delete fInBuffers[i];
-	for (int i= 0; i < fNumOutputs; i++)
-		delete fOutBuffers[i];
-	delete fInBuffers;
-	delete fOutBuffers;
-}
+IFaustProcessor::~IFaustProcessor(){}
 
 //--------------------------------------------------------------------------
 void IFaustProcessor::accept (Updater* u)
@@ -134,80 +126,25 @@ void IFaustProcessor::call_compute (int nframes, int index, int step)
 //	ParallelSignal::put(values);	
 }
 
-//--------------------------------------------------------------------------
-bool IFaustProcessor::putAt (const IMessage* msg, int index, int step)
-{
-	if (!dimension()) return true;		// nothing to do: there is no space for output signals
-
-	int size = msg->size();
-	if (!fNumIntputs) {
-		call_compute(size, index, step);
-		return true;
-	}
-
-	for (int i=0; i < size; i++) {
-		int c = i % fNumIntputs;
-		int frame = i / fNumIntputs;
-		if (!msg->param(i, fInBuffers[c][frame])) return false;
-	}
-	call_compute (size/fNumIntputs, index, step);
-	return true;
-}
-
-//--------------------------------------------------------------------------
-/*
-There are potential conflicts between the Faust UI objects naming scheme and 
-the OSC address space. An OSC symbolic names is an ASCII string consisting of
-printable characters other than the following:
-	space 
-#	number sign
-*	asterisk
-,	comma
-/	forward
-?	question mark
-[	open bracket
-]	close bracket
-{	open curly brace
-}	close curly brace
-
-a simple solution to address the problem consists in replacing 
-space or tabulation with '_' (underscore)
-all the other osc excluded characters with '-' (hyphen)
-*/
-const char* IFaustProcessor::translate (const char* name) const
-{
-	static char buffer[1024];
-	char * ptr = buffer; int n=1;
-	while (*name && (n++ < 1024)) {
-		switch (*name) {
-			case ' ': case '	':
-				*ptr++ = '_';
-				break;
-			case '#': case '*': case ',': case '/': case '?':
-			case '[': case ']': case '{': case '}':
-				*ptr++ = '_';
-				break;
-			default: 
-				*ptr++ = *name;
-		}
-		name++;
-	}
-	*ptr = 0;
-	return buffer;
-}
-
-//--------------------------------------------------------------------------
-void IFaustProcessor::addMsgHandler (const char* name, float* zone)
-{
-	fMsgHandlerMap[translate(name)]	= SetFaustParamMsgHandler::create(zone);
-	fGetMsgHandlerMap[translate(name)]	= GetFaustParamMsgHandler::create(zone);
-}
-
-void IFaustProcessor::addMsgHandler (const char* name, float* zone, float min, float max)
-{
-	fMsgHandlerMap[translate(name)]	= SetCheckedFaustParamMsgHandler::create(zone, min, max);
-	fGetMsgHandlerMap[translate(name)]	= GetFaustParamMsgHandler::create(zone);
-}
+////--------------------------------------------------------------------------
+//bool IFaustProcessor::putAt (const IMessage* msg, int index, int step)
+//{
+//	if (!dimension()) return true;		// nothing to do: there is no space for output signals
+//
+//	int size = msg->size();
+//	if (!fNumIntputs) {
+//		call_compute(size, index, step);
+//		return true;
+//	}
+//
+//	for (int i=0; i < size; i++) {
+//		int c = i % fNumIntputs;
+//		int frame = i / fNumIntputs;
+//		if (!msg->param(i, fInBuffers[c][frame])) return false;
+//	}
+//	call_compute (size/fNumIntputs, index, step);
+//	return true;
+//}
 
 //--------------------------------------------------------------------------
 void IFaustProcessor::init ()
@@ -251,39 +188,11 @@ MsgHandler::msgStatus IFaustProcessor::set (const IMessage* msg)
 			return MsgHandler::kBadParameters;
 		}
 		init();
-		cout << "INScore: FAUST plugin " << library << " loaded" << endl;
+        oscerr << OSCStart("INScore: FAUST plugin ")<< library << " loaded" << OSCEnd();
 		return MsgHandler::kProcessed;
 	}
 	ITLErr << cantload <<  errorString() << ITLEndl;
 	return MsgHandler::kBadParameters;
-}
-
-//--------------------------------------------------------------------------
-// message handlers
-//--------------------------------------------------------------------------
-SIMessage&  IFaustProcessor::GetFaustParamMsgHandler::print(SIMessage& out) const
-{
-	*out << *fValue;
-	return out;
-}
-
-//--------------------------------------------------------------------------
-MsgHandler::msgStatus IFaustProcessor::SetFaustParamMsgHandler::operator ()(const IMessage* msg)
-{
-	if ( msg->size() != 1 ) return kBadParameters;
-	float val; int ival;
-	if ( msg->param(0, ival) ) val = float(ival);
-	else if ( !msg->param(0, val) ) return kBadParameters;
-	*fValue = check(val);
-	return kProcessed;
-}
-
-//--------------------------------------------------------------------------
-float IFaustProcessor::SetCheckedFaustParamMsgHandler::check(float val)
-{
-	if (val < fMin) return fMin;
-	if (val > fMax) return fMax;
-	return val;
 }
 
 }

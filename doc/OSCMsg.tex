@@ -715,7 +715,8 @@ setMsg : 'set' (
 	('curve' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) |
 	('line' ('xy' x y | 'wa' width angle)) |
 	('grid' int32 int32) |
-	('faust' 'pluginname' )
+	('faust' 'pluginname' ) |
+	('faustdsp' faustcode )
 )
 \end{rail}
 \index{Common messages!set}
@@ -751,7 +752,9 @@ setMsg : 'set' (
 \item \OSC{line}: a simple line specified by a point (x,y) expressed in \OSC{scene} coordinate space or by a width and angle. The point form is used to compute a line from (0,0) to (x,y), which is next drawn centered on the scene.
 \item \OSC{grid}: a white transparent object that provides a predefined time to graphic mapping (see section \fullref{grid} for more details and section \fullref{mapping} for time to graphic relations). The parameters are int32 values representing the number of columns and rows.
 
-\item \OSC{faust}: a FAUST object (see section \ref{faust})
+\item \OSC{faust}: a FAUST object as a plugin (see section \ref{faust})
+
+\item \OSC{faustdsp}: a FAUST object as a string (see section \ref{faust})
 \end{itemize}
 
 \note{} The default position of any component is \values{[0,0]}. Objects are drawn centered on their position.
@@ -777,6 +780,7 @@ setFile :
 	('svgf' svgFilePath) |
 	('img' imgPath) |
 	('video' videoPath) |
+	('faustdspf' faustfile) |
 	('file' filePath)
 \end{rail}
 \index{Set type!txtf}
@@ -794,6 +798,7 @@ setFile :
 \item \OSC{svgf}: vectorial graphics defined by a SVG file.
 \item \OSC{img}: an image file based component. The image format is infered from the file extension.
 \item \OSC{video}: a video file based component. The video format is infered from the file extension. Note that navigation through the video is made using its \OSC{date}.
+\item \OSC{faustdspf}: a FAUST object as a file (see section \ref{faust})
 \item \OSC{file}: a generic type to handle file based objects. Actually, the \OSC{file} type is translated into a one of the \OSC{txtf}, \OSC{gmnf}, \OSC{img} or \OSC{video} types, according to the file extension (see table \ref{fileTranslate}).
 \end{itemize}
 
@@ -2568,12 +2573,42 @@ The Javascript engine is based on V8 that implements ECMAScript as specified in 
 
 FAUST [Functional Audio Stream]\footnote{\url{http://faust.grame.fr}} is a functional programming language specifically designed for real-time signal processing and synthesis. A FAUST/INScore architecture allows to embed FAUST processors in INScore, for the purpose of signals computation. A FAUST plugin is viewed as a parallel signal and thus it is created in the \OSC{signal} address space. Similarly to signals, it is associated to an OSC address in the form \OSC{/ITL/\emph{scene}/signal/\emph{name}} where \OSC{\emph{name}} is a user defined name.
 
+\subsublevel{Set Message}
+
+There are two ways to create a FAUST Processor : 
+\begin{itemize}
+\item [1]- By charging a DSP as a plugin already compiled \\
+
 \begin{rail}
-faustprocessor : 'set' 'faust' "path"
+faustprocessor : 'set' 'faust' path
 \end{rail}
 \index{faustprocessor!set}
-A FAUST processor is created with a \OSC{set} message followed by the \OSC{faust} type, followed by the plugin path name. 
 
+\example \\
+\sample{/ITL/scene/signal/myFaust set faust aFaustPlugin}
+
+\note{} \\
+The plugin name should not include the extension. The expected extensions are the following: .dylib on MacOS and Linux, .dll on Windows. \\
+
+\item [2]- By charging libfaust as a plugin to compile a DSP on-the-fly  (as a string or a file). \\
+\begin{rail}
+faustdsp : 'set' 'faustdsp' faustcode
+\end{rail}
+\index{faustprocessor!set}
+
+\vspace{0.3cm}
+
+\begin{rail}
+faustdspfile : 'set' 'faustdspf' faustfile
+\end{rail}
+\index{faustprocessor!set}
+
+\example \\
+\sample{/ITL/scene/signal/plus set faustdsp "process=+;" \\
+/ITL/scene/signal/mydsp set faustdspf "mydsp.dsp"
+}
+
+\end{itemize}
 
 %===============================
 %:      Specific messages
@@ -2598,19 +2633,14 @@ faustmessage : signalMsgs
 \end{itemize}
 
 \example \\
-Creating a FAUST processor and querying its input and output count:
-\sample{/ITL/scene/signal/myFaust set faust aFaustPlugin \\
-/ITL/scene/signal/myFaust get in out
-}
+Querying a FAUST processor input and output count:
+\sample{/ITL/scene/signal/myFaust get in out}
 \sampleindent gives as output:
 \sample{/ITL/scene/signal/myFaust in 2 \\
 /ITL/scene/signal/myFaust out 4
 }
 Modifying the value of a FAUST processor parameter named \OSC{volume}:
 \sample{/ITL/scene/signal/myFaust volume 0.8}
-
-\note{} \\
-The plugins are shared libraries which extension is platform dependent. The plugin name should not include the extension. The expected extensions are the following: .dylib on MacOS and Linux, .dll on Windows.
 
 %===============================
 %:      Feeding and composing FAUST processors

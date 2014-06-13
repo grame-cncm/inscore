@@ -87,6 +87,7 @@ macosx:
 	cd $(package) && ln -sf /Applications .
 	[ -d $(package)/$(macplug) ] || mkdir $(package)/$(macplug)
 	cp ../lib/GestureFollower/macosx/libGFLib.dylib $(package)/$(macplug)
+	cp ../lib/faust/macosx/libfaust.dylib $(package)/$(macplug)
 	make dmg
 		
 common: 
@@ -192,6 +193,7 @@ win32:
 	cp 	$(WIN32QTPLUGS) $(package)/plugins/imageformats
 	cp 	$(WIN32QTPLATFORMS) $(package)/plugins/platforms
 	cp ../lib/GestureFollower/win32/GFLib.dll $(package)/$(winplug)
+	cp ../lib/faust/win32/libfaust.dll $(package)/$(winplug)
 
 linux:
 	[ -d $(package) ] || mkdir -p $(package)
