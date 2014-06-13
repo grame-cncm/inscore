@@ -43,7 +43,7 @@ namespace inscore
 //--------------------------------------------------------------------------
 int IProxy::signal (const IMessage* msg, const std::string& objName, SIObject parent)
 {
-	if (msg->message() == kget_SetMethod) return MsgHandler::kBadParameters;
+	if (msg->message() == kget_SetMethod) return MsgHandler::kBadAddress;
 	if (!msg->size())			return MsgHandler::kBadParameters;
 
 	string objType = msg->param(0)->value<string>("");
