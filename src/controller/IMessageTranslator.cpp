@@ -62,6 +62,7 @@ IMessageTranslator::IMessageTranslator()
 		fFileTypeTranslationTable["m4v"]	= "video";
 		fFileTypeTranslationTable["mov"]	= "video";
 		fFileTypeTranslationTable["vob"]	= "video";
+        fFileTypeTranslationTable["dsp"]	= "faustdspf";
 	}
 }
 

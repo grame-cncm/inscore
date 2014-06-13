@@ -27,7 +27,7 @@
 #ifndef __IFaustProcessor__
 #define __IFaustProcessor__
 
-#include "ISignal.h"
+#include "IFaustSignal.h"
 #include "IMessageHandlers.h"
 #include "TPlugin.h"
 #include "faust-inscore.h"
@@ -47,27 +47,21 @@ typedef class libmapping::SMARTP<IFaustProcessor>	SIFaustProcessor;
 /*!
 	\brief a Faust processor (that is also a parallel signal)
 */
-class IFaustProcessor : public ISignal, public TPlugin
+class IFaustProcessor : public IFaustSignal, public TPlugin
 {
 	buildUserInterface	fBuildUI;
 	compute				fCompute;
 	getNumInputs		fInputs;
 	getNumOutputs		fOutputs;
 	fpinit				fInit;
-	int		fNumIntputs, fNumOutputs;
-	float ** fInBuffers, **fOutBuffers;
 	
-		void		init();
-		void		call_compute (int nframes, int index, int step);
-		const char*	translate (const char* name) const;
-
-	public:		
+		virtual void		init();
+        virtual void		call_compute (int nframes, int index, int step);
+	
+    public:		
 		static const std::string kFaustProcessorType;
 		static SIFaustProcessor create(const std::string& name, IObject * parent)	{ return new IFaustProcessor(name, parent); }
 		virtual void	accept (Updater* u);
-	
-		void addMsgHandler (const char* name, float* zone);
-		void addMsgHandler (const char* name, float* zone, float min, float max);
 
 	protected:
 
@@ -75,55 +69,15 @@ class IFaustProcessor : public ISignal, public TPlugin
 		virtual ~IFaustProcessor();
 		
 		std::string	fLibrary;
-		enum { kMaxBuffer=4096 };
 
 		/// \brief print the set message
 		virtual void	print (IMessage& out) const;
 
 		/// \brief put the message values into a projection of the signal
-		virtual bool	putAt (const IMessage* msg, int index, int step);
+//		virtual bool	putAt (const IMessage* msg, int index, int step);
 
 		/// \brief set signals to the message signals
 		virtual MsgHandler::msgStatus	set (const IMessage* msg);
-
-		// ------------------------
-		// messages handling
-		// ------------------------	
-		class SetFaustParamMsgHandler;
-		typedef libmapping::SMARTP<SetFaustParamMsgHandler> SSetFaustParamMsgHandler;
-		class SetFaustParamMsgHandler : public MsgHandler {
-			protected:
-				float* fValue;
-				SetFaustParamMsgHandler(float* value) : fValue(value) {}
-			public:
-				virtual MsgHandler::msgStatus operator ()(const IMessage* msg);
-				virtual float check(float val)	{ return val; }
-				static SSetFaustParamMsgHandler create(float* value) { return new SetFaustParamMsgHandler(value); }
-		};
-		
-		// ------------------------	
-		class SetCheckedFaustParamMsgHandler;
-		typedef libmapping::SMARTP<SetCheckedFaustParamMsgHandler> SSetCheckedFaustParamMsgHandler;
-		class SetCheckedFaustParamMsgHandler : public SetFaustParamMsgHandler {
-			protected:
-				float fMin, fMax;
-				SetCheckedFaustParamMsgHandler(float* value, float min, float max) : SetFaustParamMsgHandler(value), fMin(min), fMax(max) {}
-			public:
-				virtual float check(float val);
-				static SSetFaustParamMsgHandler create(float* value, float min, float max) { return new SetCheckedFaustParamMsgHandler(value, min, max); }
-		};
-
-		// ------------------------	
-		class GetFaustParamMsgHandler;
-		typedef libmapping::SMARTP<GetFaustParamMsgHandler> SGetFaustParamMsgHandler;
-		class GetFaustParamMsgHandler : public GetParamMsgHandler {
-			protected:
-				float* fValue;
-				GetFaustParamMsgHandler(float* value) : fValue(value) {}
-			public:
-				virtual SIMessage&  print(SIMessage&) const;
-				static SGetFaustParamMsgHandler create(float* value) { return new GetFaustParamMsgHandler(value); }
-		};
 };
 
 /*! @} */

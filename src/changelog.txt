@@ -19,6 +19,7 @@ Version 1.07
 - new 'write' method supported by the 'log' window
 - variable addresses are evaluated in message based variables
 - support relative rotations on x and y axis
+- new 'faustdsp' object, charging libfaust as a plugin to compile faust DSP on-the-fly. 
 
 ----------------------------------------------------
 Version 1.06
