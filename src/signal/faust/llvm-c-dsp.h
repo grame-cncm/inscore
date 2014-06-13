@@ -27,7 +27,7 @@
 #endif
 
 #include <stdbool.h>
-#include "faust/gui/CUI.h"
+#include "CUI.h"
 
 #ifdef __cplusplus
 extern "C"
