@@ -30,7 +30,7 @@
 #include "TPlugin.h"
 #include "llvm-c-dsp.h"
 
-class Meta;
+struct Meta;
 
 namespace inscore
 {

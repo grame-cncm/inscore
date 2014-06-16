@@ -47,6 +47,8 @@
 #include "IHtmlFile.h"
 #include "IImage.h"
 #include "ILine.h"
+#include "IMusicXMLCode.h"
+#include "IMusicXMLFile.h"
 #include "IObject.h"
 #include "IObjectFactory.h"
 #include "IObjectVNodes.h"
