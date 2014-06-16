@@ -22,9 +22,9 @@
 #ifndef FAUST_UIGLUE_H
 #define FAUST_UIGLUE_H
 
-#include "faust/gui/CUI.h"
-#include "faust/gui/UI.h"
-#include "faust/gui/meta.h"
+#include "CUI.h"
+#include "UI.h"
+#include "meta.h"
 
 #ifdef __cplusplus
 extern "C" {

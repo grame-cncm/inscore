@@ -26,6 +26,7 @@
 #include "IFaustDSPFile.h"
 #include "IScene.h"
 #include "Updater.h"
+#include <iostream>
 
 using namespace std;
 
@@ -65,11 +66,12 @@ MsgHandler::msgStatus IFaustDSPFile::set (const IMessage* msg )
 		if (!read(content) )
 			return MsgHandler::kCreateFailure;
 		else{ 
-            newData(true);
-            createFaustDSP (content);
-            init();        
-            createVirtualNodes();
-        }
+           newData(true);
+          if(createFaustDSP (content)){
+				init();        
+				createVirtualNodes();
+			}
+       }
 	}
 	return status;   
 }

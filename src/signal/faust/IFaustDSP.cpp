@@ -34,6 +34,11 @@
 #include "UI.h"
 #include "UIGlue.h"
 
+#include <QApplication>
+#include <QFileInfo>
+#include <QDir>
+#include <QDebug>
+
 using namespace std;
 
 namespace inscore
@@ -121,6 +126,9 @@ void IFaustDSP::print (IMessage& out) const
 //--------------------------------------------------------------------------
 void IFaustDSP::call_compute (int nframes, int index, int step)
 {
+	if(!fFDPlugin || !fFD_Instance)
+		return;
+
 	fFDPlugin->fCompute(fFD_Instance, nframes, fInBuffers, fOutBuffers);
 
 	vector<float> values;
@@ -206,9 +214,20 @@ bool IFaustDSP::createFaustDSP (const std::string& dsp_content)
     if (fFDPlugin && fFDPlugin->isAvailable()){
         
         char err[512];
-        
-        fFD_Factory = fFDPlugin->fNewSFactory(name().c_str(), dsp_content.c_str(), 0, NULL, "", err, 3);
-        
+                
+#ifdef WIN32	
+		const char* argv[2];
+		argv[0] = "-l";
+
+		QString dir(QApplication::applicationDirPath());
+
+		dir += "\\PlugIns\\llvm_math.ll";
+		string directory = dir.toStdString();
+		argv[1] = directory.c_str();
+		fFD_Factory = fFDPlugin->fNewSFactory(name().c_str(), dsp_content.c_str(), 2, argv, "", err, 3);
+#else
+		fFD_Factory = fFDPlugin->fNewSFactory(name().c_str(), dsp_content.c_str(), 0, NULL, "", err, 3);
+#endif        
         if(fFD_Factory){
             
             fFD_Instance = fFDPlugin->fCreateInst(fFD_Factory);
