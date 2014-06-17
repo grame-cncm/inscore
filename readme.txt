@@ -168,6 +168,18 @@ To compile the MusicXML library do the following:
   > sudo make install
 
 
+Faust Compiler support
+----------------------------
+You should get the branch faust2 of libfaust development branch from git : 
+git clone git://git.code.sf.net/p/faudiostream/code faudiostream-code
+
+To compile libfaust library do the following:
+	> cd faudiostream-code
+	> git checkout faust2	
+	> make
+	> make dynamic
+	> sudo make install
+
 ======================================================
  Note about the Guido Font
 ======================================================
