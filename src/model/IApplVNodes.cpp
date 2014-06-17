@@ -46,9 +46,9 @@ IApplDebug::IApplDebug(IObject * parent) : IObjectDebug(parent), fOSCDebug(true)
 	fMsgHandlerMap[kosc_GetSetMethod]		= TSetMethodMsgHandler<IApplDebug,bool>::create(this, &IApplDebug::setOSCDebug);
 	fGetMsgHandlerMap[kosc_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fOSCDebug);
 
-	fGetMsgHandlerMap[kmap_GetSetMethod]	= 0;
-	fGetMsgHandlerMap[kname_GetSetMethod]	= 0;
-	fGetMsgHandlerMap[ksignal_GetMethod]	= 0;
+	fGetMsgHandlerMap[kmap_GetSetMethod]	= SGetParamMsgHandler(0);
+	fGetMsgHandlerMap[kname_GetSetMethod]	= SGetParamMsgHandler(0);
+	fGetMsgHandlerMap[ksignal_GetMethod]	= SGetParamMsgHandler(0);
 }
 
 //--------------------------------------------------------------------------

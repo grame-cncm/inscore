@@ -180,7 +180,7 @@ void INScore::postMessage	(const char* address, MessagePtr msg)
 		}
 		else m->setAddress(address);
 		if (gMsgStack) gMsgStack->push(new SIMessage(m));
-		gMsgMemory[msg] = 0;
+		gMsgMemory[msg] = SIMessage(0);
 	}
 }
 //--------------------------------------------------------------------------
