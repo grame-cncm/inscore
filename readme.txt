@@ -176,9 +176,8 @@ git clone git://git.code.sf.net/p/faudiostream/code faudiostream-code
 To compile libfaust library do the following:
 	> cd faudiostream-code
 	> git checkout faust2	
-	> make
 	> make dynamic
-	> sudo make install
+	> sudo make install-dynamic
 
 ======================================================
  Note about the Guido Font
