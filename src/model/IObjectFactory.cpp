@@ -116,6 +116,12 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 	else if ( type == IGuidoFile::kGuidoFileType )
 		obj = _create<IGuidoFile> (name, parent);
 
+	else if ( type == IMusicXMLCode::kMusicXMLCodeType )
+		obj = _create<IMusicXMLCode> (name, parent);
+
+	else if ( type == IMusicXMLFile::kMusicXMLFileType )
+		obj = _create<IMusicXMLFile> (name, parent);
+
 	else if ( type == IGuidoStream::kGuidoStreamType )
 		obj = _create<IGuidoStream> (name, parent);
     

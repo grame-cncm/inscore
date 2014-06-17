@@ -84,7 +84,7 @@ bool ISignal::decodeProjection (const std::string& proj, int& index, int& step) 
 {
 	int i=0, s=0;
 	char c = ' ';
-	int result = sscanf(proj.c_str(), "[%d%c%d]", &i, &c, &s, 1);
+	int result = sscanf(proj.c_str(), "[%d%c%d]", &i, &c, &s);
 	if (!result) return false;			// incorrect string format
 
 	index = i;
