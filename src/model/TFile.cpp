@@ -54,7 +54,7 @@ char* TFile::read (const std::string& path)
 {
 	char * buffer = 0;
 	ifstream file;
-	file.open (path.c_str(), ifstream::in);
+	file.open (path.c_str(), ifstream::binary);
 	if (file.is_open()) {
 		int length = getLength(file);
 		if (length) {

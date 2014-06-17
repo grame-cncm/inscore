@@ -194,6 +194,7 @@ win32:
 	cp 	$(WIN32QTPLATFORMS) $(package)/plugins/platforms
 	cp ../lib/GestureFollower/win32/GFLib.dll $(package)/$(winplug)
 	cp ../lib/faust/win32/libfaust.dll $(package)/$(winplug)
+	cp ../lib/faust/win32/llvm_math.ll $(package)/$(winplug)
 
 linux:
 	[ -d $(package) ] || mkdir -p $(package)

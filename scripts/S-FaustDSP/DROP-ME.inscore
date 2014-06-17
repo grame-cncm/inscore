@@ -37,8 +37,6 @@
 /ITL/scene/signal/moins set faustdsp "process=-;";
 /ITL/scene/signal/moins size 50;
 
-
-/ITL/scene/signal/* del;
 /ITL/log show 1;
 /ITL/log write $(/ITL/scene/signal get);
 /ITL/log write $(/ITL/scene/signal/plus get);
