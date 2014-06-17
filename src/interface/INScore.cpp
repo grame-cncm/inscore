@@ -221,7 +221,7 @@ INScore::MessagePtr INScore::newMessage ()
 //--------------------------------------------------------------------------
 void INScore::delMessage(MessagePtr msg)
 {
-	gMsgMemory[msg] = 0;
+	gMsgMemory[msg] = SIMessage(0);
 }
 
 //--------------------------------------------------------------------------
