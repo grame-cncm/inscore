@@ -37,11 +37,6 @@
 /ITL/scene/signal/moins set faustdsp "process=-;";
 /ITL/scene/signal/moins size 50;
 
-/ITL/log show 1;
-/ITL/log write $(/ITL/scene/signal get);
-/ITL/log write $(/ITL/scene/signal/plus get);
-/ITL/scene/signal/plus get;
-
 /ITL/scene/clickme set txt "CLICK ME !";
 /ITL/scene/clickme z 1.0;
 /ITL/scene/clickme scale 2;
