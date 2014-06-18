@@ -155,10 +155,10 @@ Notes:
 
 MusicXML support
 ----------------------------
-You should get the MusicXML library version 2.0 or later from SourceForge from svn:
-	svn co https://libmusicxml.svn.sourceforge.net/svnroot/libmusicxml libmusicxml
+You should get the MusicXML library version 2.0 or later from Google code:
+	https://code.google.com/p/libmusicxml/downloads/list
 or from the src distribution:
-	http://sourceforge.net/projects/libmusicxml/files/libmusicxml-src/
+	git clone http://code.google.com/p/libmusicxml/ 
 The library is not required to compile the INScore project, nor to run the INScore viewer. 
 When the library is not present, MusicXML support is not available.
 To compile the MusicXML library do the following:
