@@ -204,7 +204,7 @@ MsgHandler::msgStatus IApplPlugin::addPath (const IMessage* msg) const
 	if ((msg->size() == 1)) {
 		string path = msg->param(0)->value<string>("");
 		if (path.size()) {
-			TPlugin::location(IAppl::absolutePath(path));
+			TPlugin::location(path);
 			return MsgHandler::kProcessedNoChange;
 		}
 	}

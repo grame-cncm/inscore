@@ -38,7 +38,7 @@ std::string TPlugin::fLocation;
 void TPlugin::locations (const char* library, std::vector<std::string>& list)
 {
 	if (fLocation.size())
-		list.push_back (fLocation+'/'+library);
+		list.push_back (IAppl::absolutePath(fLocation)+'/'+library);
 
 	list.push_back (IAppl::absolutePath (library));
 	QDir dir(QApplication::applicationDirPath());
