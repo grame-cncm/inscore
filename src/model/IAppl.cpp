@@ -224,6 +224,7 @@ void IAppl::createVirtualNodes()
 	add ( fDebug );
 	add ( fApplStat );
 	add ( fApplLog );
+	add ( IApplPlugin::create(this) );
 }
 
 //--------------------------------------------------------------------------

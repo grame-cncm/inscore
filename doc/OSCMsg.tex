@@ -1430,6 +1430,25 @@ ITLLog : 'show'  int32
 \end{itemize}
 
 
+
+\subsublevel{The 'plugins' nodes}
+\label{ITLplugins}
+
+The \OSC{plugins} node controls the search path for plugins. See section \fullref{plugins} for more information on plugins and search strategies.
+
+\begin{rail}
+ITLPlugin : 'path'  folder
+		| 'reset'
+\end{rail}
+\index{ITL plugin!path}
+\index{ITL plugin!reset}
+
+\begin{itemize}
+\item \OSC{path} add \OSC{folder} as a user path. The system will look for plugins in this folder first.
+\item \OSC{reset} clear the current user path.
+\end{itemize}
+
+
 %===============================
 %:Scene messages
 \toplevel{Scene messages}
@@ -2667,6 +2686,16 @@ The Javascript engine is based on V8 that implements ECMAScript as specified in 
 %:Plugins
 \toplevel{Plugins}
 \label{plugins}
+
+A plugin is an external library that is dynamically loaded when an object that need it is created.
+The system looks for plugins in the following locations:
+\begin{itemize}
+\item in the current folder first
+\item in the PlugIns folder, located in the application bundle on macos, in the application folder on other systems
+\item in the system default locations for shared libraries
+\end{itemize}
+Additionaly, a user path can be set, where the system will look for plugins in first position. See section \fullref{ITLplugins}.
+
 
 
 %===============================

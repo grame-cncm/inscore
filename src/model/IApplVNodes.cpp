@@ -29,6 +29,7 @@
 #include "IApplVNodes.h"
 #include "IAppl.h"
 #include "IMessageStack.h"
+#include "TPlugin.h"
 #include "Updater.h"
 
 #include "VLogWindow.h"
@@ -183,5 +184,42 @@ void IApplLog::print(const char* str)
 {
 	fWindow->append (str);
 }
+
+
+
+//--------------------------------------------------------------------------
+// Plugins management
+//--------------------------------------------------------------------------
+IApplPlugin::IApplPlugin(IObject * parent) : IVNode("plugins", parent)
+{
+	fMsgHandlerMap[kpath_GetSetMethod]	= TMethodMsgHandler<IApplPlugin, MsgHandler::msgStatus (IApplPlugin::*)(const IMessage*) const>::create(this, &IApplPlugin::addPath);
+	fMsgHandlerMap[kreset_SetMethod]	= TMethodMsgHandler<IApplPlugin, MsgHandler::msgStatus (IApplPlugin::*)(const IMessage*) const>::create(this, &IApplPlugin::reset);
+
+	fGetMsgHandlerMap[kpath_GetSetMethod]= TGetParamMsgHandler<string>::create(TPlugin::fLocation);
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IApplPlugin::addPath (const IMessage* msg) const
+{
+	if ((msg->size() == 1)) {
+		string path = msg->param(0)->value<string>("");
+		if (path.size()) {
+			TPlugin::location(path);
+			return MsgHandler::kProcessedNoChange;
+		}
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IApplPlugin::reset (const IMessage* msg) const
+{
+	if (!msg->size()) {
+		TPlugin::resetlocation();
+		return MsgHandler::kProcessedNoChange;
+	}
+	return MsgHandler::kBadParameters;
+}
+
 
 }
