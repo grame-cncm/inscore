@@ -233,7 +233,7 @@ bool IFaustDSP::createFaustDSP (const std::string& dsp_content)
             fFD_Instance = fFDPlugin->fCreateInst(fFD_Factory);
             
             if(!fFD_Instance){
-                ITLErr << "impossible to create faust dsp instance" << ITLEndl;
+                ITLErr << "Impossible to create faust dsp instance" << ITLEndl;
                 return false;
             }
         }

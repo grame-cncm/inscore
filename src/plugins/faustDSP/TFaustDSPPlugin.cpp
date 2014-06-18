@@ -134,7 +134,7 @@ bool TFaustDSPPlugin::load ()
     TFaustDSPPlugin::_fPluginNumber = 0;
     
     if (!load())
-        ITLErr << "cannot load faust library " << ITLEndl;
+        ITLErr << errorString() << ITLEndl;
 }
 
 //----------------------------------------------------------------------------

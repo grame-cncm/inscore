@@ -1,8 +1,8 @@
 
 system := $(shell uname -s)
 ifeq ($(system), Darwin)
-LIBINSCORE :=  -F../../cmake/Release -framework INScore
-LIBOSCPACK :=  -L../../lib/oscpack/cmake/Release -loscpack
+LIBINSCORE :=  -F../../cmake/Release -F../../cmake -framework INScore
+LIBOSCPACK :=  -L../../lib/oscpack/cmake/Release -L../../lib/oscpack -loscpack
 else
 LIBINSCORE :=  -F../../cmake -lINScore
 LIBOSCPACK :=  -L../../lib/oscpack/cmake -loscpack
