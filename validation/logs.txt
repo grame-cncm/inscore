@@ -1,5 +1,5 @@
 ../regression/S-log/errorScript.inscore
 ../regression/S-log/errorScript2.inscore
 ../regression/S-log/errorScript3.inscore
-../regression/S-faustDSP_NoCompiler/errorTest.inscore
-../regression/S-faustDSP_Compiler/errorTest.inscore
+../regression/S-faustDSP/noCompilerError.inscore
+../regression/S-faustDSP/syntaxError.inscore
