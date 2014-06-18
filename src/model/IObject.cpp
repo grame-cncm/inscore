@@ -485,7 +485,7 @@ SIMessageList IObject::getParams(const std::vector<std::string>& attributes) con
 {
 	SIMessageList outMsgs = IMessageList::create();
 	
-	for (int i=0; i<attributes.size(); i++) {
+	for (unsigned int i=0; i<attributes.size(); i++) {
 		map<std::string, SGetParamMsgHandler>::const_iterator e = fGetMsgHandlerMap.find(attributes[i]);
 		if (e != fGetMsgHandlerMap.end()) {					// attribute found in msg map
 			SIMessage msg = getParam(e->first, e->second);

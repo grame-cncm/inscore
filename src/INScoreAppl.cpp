@@ -201,7 +201,7 @@ void INScoreAppl::started()
 	if (fPendingBuffer.size()) {
 		read(fPendingBuffer);
 	}
-	for (int i=0; i<fPendingOpen.size(); i++) {
+	for (unsigned int i=0; i<fPendingOpen.size(); i++) {
 		open (fPendingOpen[i]);
 	}
 }
