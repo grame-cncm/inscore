@@ -37,8 +37,16 @@ std::string TPlugin::fLocation;
 // ------------------------------------------------------------------------------
 void TPlugin::locations (const char* library, std::vector<std::string>& list)
 {
-	if (fLocation.size())
-		list.push_back (IAppl::absolutePath(fLocation)+'/'+library);
+	if (fLocation.size()) {
+		char ending = fLocation[fLocation.length()-1];
+#ifdef WIN32
+		const char* sep = (ending == '/') || (ending == '\\') ? "" : "/";
+#else
+		const char* sep = (ending == '/') ? "" : "/";
+#endif
+		string libpath = IAppl::absolutePath(fLocation)+sep+library;
+		list.push_back (libpath);
+	}
 
 	list.push_back (IAppl::absolutePath (library));
 	QDir dir(QApplication::applicationDirPath());
