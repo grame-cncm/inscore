@@ -211,39 +211,37 @@ void IFaustDSP::deleteFaustDSP(){
 //-------- Creation of DSP Factory & DSP Instance
 bool IFaustDSP::createFaustDSP (const std::string& dsp_content)
 {        
-    if (fFDPlugin && fFDPlugin->isAvailable()){
-        
-        char err[512];
-                
+    if(!fFDPlugin->load())
+            return false;
+    
+    char err[512];
+    
 #ifdef WIN32	
-		const char* argv[2];
-		argv[0] = "-l";
-
-		QString dir(QApplication::applicationDirPath());
-
-		dir += "\\PlugIns\\llvm_math.ll";
-		string directory = dir.toStdString();
-		argv[1] = directory.c_str();
-		fFD_Factory = fFDPlugin->fNewSFactory(name().c_str(), dsp_content.c_str(), 2, argv, "", err, 3);
+    const char* argv[2];
+    argv[0] = "-l";
+    
+    QString dir(QApplication::applicationDirPath());
+    
+    dir += "\\PlugIns\\llvm_math.ll";
+    string directory = dir.toStdString();
+    argv[1] = directory.c_str();
+    fFD_Factory = fFDPlugin->fNewSFactory(name().c_str(), dsp_content.c_str(), 2, argv, "", err, 3);
 #else
-		fFD_Factory = fFDPlugin->fNewSFactory(name().c_str(), dsp_content.c_str(), 0, NULL, "", err, 3);
+    fFD_Factory = fFDPlugin->fNewSFactory(name().c_str(), dsp_content.c_str(), 0, NULL, "", err, 3);
 #endif        
-        if(fFD_Factory){
-            
-            fFD_Instance = fFDPlugin->fCreateInst(fFD_Factory);
-            
-            if(!fFD_Instance){
-                ITLErr << "Impossible to create faust dsp instance" << ITLEndl;
-                return false;
-            }
-        }
-        else{
-            ITLErr << "Faust Compiler error : " << err << ITLEndl;
+    if(fFD_Factory){
+        
+        fFD_Instance = fFDPlugin->fCreateInst(fFD_Factory);
+        
+        if(!fFD_Instance){
+            ITLErr << "Impossible to create faust dsp instance" << ITLEndl;
             return false;
         }
     }
-    else
+    else{
+        ITLErr << "Faust Compiler error : " << err << ITLEndl;
         return false;
+    }
     
     setVisible(false);
     

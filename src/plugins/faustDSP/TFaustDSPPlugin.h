@@ -48,9 +48,9 @@ class TFaustDSPPlugin : public TPlugin {
         typedef void                (* TInitInst)   (llvm_dsp* dsp, int samplingFreq);
         typedef void                (* TBuildUI)    (llvm_dsp* dsp, UIGlue* interface);
         typedef void                (*TComputeInst) (llvm_dsp* dsp, int count, FAUSTFLOAT** input, FAUSTFLOAT** output);
-		
-		bool				load ();
+
 		static bool			isResolved ();
+        bool                error();
     
         static TFaustDSPPlugin*    _pluginInstance;
         static int                 _fPluginNumber;
@@ -60,7 +60,7 @@ class TFaustDSPPlugin : public TPlugin {
 		virtual ~TFaustDSPPlugin();
     
         bool        isAvailable ();
-    
+        bool				load ();    
 //Returns the instance of the Plugin 
 //    --> That way, the symbols are only resolved once
         static TFaustDSPPlugin*     getInstance();

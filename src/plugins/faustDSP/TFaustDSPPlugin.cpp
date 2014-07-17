@@ -71,6 +71,11 @@ bool TFaustDSPPlugin::isAvailable (){
 }
 
 //----------------------------------------------------------------------------
+bool TFaustDSPPlugin::error(){
+    ITLErr << errorString() << ITLEndl;
+    return false; 
+}
+    
 bool TFaustDSPPlugin::load ()
 {
 	if (isLoaded()){ return isResolved();}
@@ -79,23 +84,23 @@ bool TFaustDSPPlugin::load ()
         
 		fNewSFactory = resolve<TNewSFactory> (fdlibCreateFactoryS);
 		if (fNewSFactory == 0)
-         return false;   
+            return error();
         
 		fNewFFactory = resolve<TNewFFactory> (fdlibCreateFactoryF);
 		if (fNewFFactory == 0)
-            return false;
+            return error();
 
 		fDelFactory = resolve<TDeleteFactory> (fdlibDeleteFactory);
 		if (fDelFactory == 0)
-            return false;
+            return error();
         
 		fMetaDataFactory = resolve<TMetaFactory> (fdlibMetadata);
 		if (fMetaDataFactory == 0)
-            return false;
+            return error();
         
 		fCreateInst = resolve<TCreateInst> (fdlibCreateInstance);
 		if (fCreateInst == 0)
-            return false;
+            return error();
         
 		fDeleteInst = resolve<TDeleteInst> (fdlibDeleteInstance);
 		if (fDeleteInst == 0)
@@ -103,25 +108,25 @@ bool TFaustDSPPlugin::load ()
         
         fGetNumInputs = resolve<TGetNum> (fdlibGetNumInputs);
 		if (fGetNumInputs == 0)
-            return false;
+            return error();
         
         fGetNumOutputs = resolve<TGetNum> (fdlibGetNumOutputs);
 		if (fGetNumOutputs == 0)
-            return false;
+            return error();
         
         fInitInstance = resolve<TInitInst> (fdlibInitInstance);
 		if (fInitInstance == 0)
-            return false;
+            return error();
         
         fBuildUserInterface = resolve<TBuildUI> (fdlibBuildInterface);
 		if (fBuildUserInterface == 0)
-            return false;
+            return error();
         
         fCompute = resolve<TComputeInst> (fdlibComputeInstance);
 		if (fCompute == 0)
-            return false;
+            return error();
 	}
-	else return false;
+	else return error();
 //    oscerr << OSCStart("Faust")<<"Compiler loaded"<< OSCEnd();
 
 	return true;
@@ -132,9 +137,6 @@ bool TFaustDSPPlugin::load ()
     TFaustDSPPlugin::TFaustDSPPlugin()
 {
     TFaustDSPPlugin::_fPluginNumber = 0;
-    
-    if (!load())
-        ITLErr << errorString() << ITLEndl;
 }
 
 //----------------------------------------------------------------------------
