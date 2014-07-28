@@ -1,0 +1,15 @@
+build/
+lib/GuidoEngine/lib
+lib/GuidoEngine/macosx/GUIDOEngine.framework/
+lib/GuidoQt/macosx/libGuidoQt-cpp11.a
+lib/GuidoQt/macosx/libGuidoQt.a
+lib/libMusicXML/
+lib/lua/
+lib/oscpack/build/
+src/libmapping/doc/html/
+src/libmapping/doc/latex/
+tmp/
+tools/QtOSCController/.qmake.stash
+tools/QtOSCController/QtOSCController.build/
+tools/QtOSCController/qtosccontroller_plugin_import.cpp
+validation/__tmp.inscore
