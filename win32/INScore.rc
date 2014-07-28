@@ -70,12 +70,12 @@ BEGIN
         BLOCK "040c04b0"
         BEGIN
             VALUE "FileDescription", "INScore Library"
-            VALUE "FileVersion", "1, 0, 7, 0"
+            VALUE "FileVersion", "1, 0, 8, 0"
             VALUE "InternalName", "INScore"
             VALUE "LegalCopyright", "Copyright (C) 2009-2014 - Grame"
             VALUE "OriginalFilename", "INScore.dll"
             VALUE "ProductName", "INScore"
-            VALUE "ProductVersion", "1, 0, 7, 0"
+            VALUE "ProductVersion", "1, 0, 8, 0"
         END
     END
     BLOCK "VarFileInfo"
