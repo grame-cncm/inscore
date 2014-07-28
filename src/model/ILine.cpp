@@ -98,9 +98,8 @@ MsgHandler::msgStatus ILine::set (const IMessage* msg)
 			else return MsgHandler::kBadParameters;
 		}
 
-		if (a<0) a = -a;
 		if (mode == "xy") {
-			setPoint( TFloatPoint(a, (b<0 ? -b : b)) );
+			setPoint( TFloatPoint(a, b) );
 		}
 		else if (mode == "wa") {
 			fWAMode = true;

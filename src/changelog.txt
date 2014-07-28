@@ -13,6 +13,7 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.07
+- bug with 'line' initialization corrected: wrong position and orientation with negative coordinates.
 - new 'plugins' static node at application level to provide a user path to look for pugins.
 - explicit objects for musicxml scores ('musicxml' and 'musicxmlf' types)
 - new 'faustdsp' object, charging libfaust as a plugin to compile faust DSP on-the-fly. 
