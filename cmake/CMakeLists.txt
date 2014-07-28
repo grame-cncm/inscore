@@ -41,15 +41,25 @@ else()
 endif()
 
 if(APPLE)
- if ( DIST )
-	message (STATUS "All architectures will be compiled - Use -DDIST=no to change.")
-	set (CMAKE_OSX_ARCHITECTURES "x86_64 i386")
- else ()
-	message (STATUS "Only the current architecture will be compiled - Use -DDIST=yes to change.")
- endif ()
- set (CMAKE_OSX_DEPLOYMENT_TARGET 10.6)
- set (MACOSX_DEPLOYMENT_TARGET 10.6)
- set (CMAKE_C++_FLAGS -mmacosx-version-min=10.6)
+#######################################
+#   iOS support
+	if ( IOS )
+		message (STATUS "Generates project for iOS - Use -DIOS=no to change.")
+		set (CMAKE_XCODE_EFFECTIVE_PLATFORMS "iPhoneOS")
+		set (CMAKE_OSX_ARCHITECTURES "armv6 armv7 i386")
+		set (CMAKE_OSX_SYSROOT "iphoneos")
+		set (libtype STATIC)
+	else ()
+		 if ( DIST )
+			message (STATUS "All architectures will be compiled - Use -DDIST=no to change.")
+			set (CMAKE_OSX_ARCHITECTURES "x86_64 i386")
+		 else ()
+			message (STATUS "Only the current architecture will be compiled - Use -DDIST=yes to change.")
+		 endif ()
+		 set (CMAKE_OSX_DEPLOYMENT_TARGET 10.6)
+		 set (MACOSX_DEPLOYMENT_TARGET 10.6)
+		 set (CMAKE_C++_FLAGS -mmacosx-version-min=10.6)
+	endif()
 endif()
 
 #######################################
@@ -223,9 +233,17 @@ if(WIN32)
 endif()
 
 if(APPLE)
-	set(OSCPACK  ${OSC_PATH}/cmake/Release/liboscpack.a)
-	set(GUIDOQT  ${ROOT}/../lib/GuidoQt/macosx/libGuidoQt.a)
-	set(GUIDO    ${ROOT}/../lib/GuidoEngine/macosx/GUIDOEngine.framework)
+	if ( IOS )
+		message (STATUS "Generates project for iOS - Use -DIOS=no to change.")
+		set(OSCPACK  ${OSC_PATH}/build/iOS/Release-iphoneos/liboscpack.a)
+		set(GUIDOQT  ${ROOT}/../lib/GuidoQt/ios/libGuidoQt.a)
+		set(GUIDO    ${ROOT}/../lib/GuidoEngine/ios/libGUIDOEngine.a)
+	else()
+		message (STATUS "Generates project for iOS - Use -DIOS=yes to change.")
+		set(OSCPACK  ${OSC_PATH}/build/MacOS/Release/liboscpack.a)
+		set(GUIDOQT  ${ROOT}/../lib/GuidoQt/macosx/libGuidoQt.a)
+		set(GUIDO    ${ROOT}/../lib/GuidoEngine/macosx/GUIDOEngine.framework)
+	endif()
 elseif(UNIX)
 	set(OSCPACK  -L${OSC_PATH}/cmake -loscpack)
 	set(GUIDOQT  -L${ROOT}/../lib/GuidoQt/linux -lGuidoQt)
@@ -250,20 +268,25 @@ endif()
 # set targets
 include_directories(${INCL} ${OSC_PATH} ${GUIDO_PATH}/include ${GUIDOQT_PATH}/include ${QTHEADERS} )
 
-add_library( ${TARGET} SHARED ${CORESRC} ${COREH} ${MOC_FILES})
-set_source_files_properties (${COREH} PROPERTIES HEADER_FILE_ONLY TRUE)
-set_target_properties (${TARGET} PROPERTIES 
-			VERSION ${INSFWKVERS}
-			SOVERSION ${SOVERS}
-			MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${INSFWKSTRVERS}
-			MACOSX_FRAMEWORK_BUNDLE_VERSION ${INSFWKVERS}
-			PUBLIC_HEADER "${PUBLICHEADERS}"
-)
-target_link_libraries( ${TARGET} ${INSLIBS} )
+if (IOS)
+	add_library( ${TARGET} STATIC ${CORESRC} ${COREH} ${MOC_FILES})
+else()
+
+	add_library( ${TARGET} SHARED ${CORESRC} ${COREH} ${MOC_FILES})
+	set_source_files_properties (${COREH} PROPERTIES HEADER_FILE_ONLY TRUE)
+	set_target_properties (${TARGET} PROPERTIES 
+				VERSION ${INSFWKVERS}
+				SOVERSION ${SOVERS}
+				MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${INSFWKSTRVERS}
+				MACOSX_FRAMEWORK_BUNDLE_VERSION ${INSFWKVERS}
+				PUBLIC_HEADER "${PUBLICHEADERS}"
+	)
+	target_link_libraries( ${TARGET} ${INSLIBS} )
+endif()
+
 if(MINGW)
 	target_link_libraries( ${TARGET} winmm ws2_32 )
 endif()
-
 
 
 if (NOVIEW)
@@ -298,6 +321,7 @@ add_dependencies(${APPLTARGET} ${TARGET})
 
 #######################################
 # install setup
+if (NOT IOS)
 if(APPLE)
 set(FRMWK  FRAMEWORK DESTINATION "/Library/Frameworks" CONFIGURATIONS Release)
 set(APPBUNDLE BUNDLE DESTINATION "/Applications/INScore-${INSAPPVERS}"  CONFIGURATIONS Release)
@@ -315,5 +339,6 @@ install ( TARGETS ${APPLTARGET}
 	RUNTIME DESTINATION /usr/bin
     ${APPBUNDLE}
 )
+endif ()
 endif ()
 

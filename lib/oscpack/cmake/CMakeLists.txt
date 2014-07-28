@@ -32,10 +32,21 @@ endif (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL powerpc OR
 	${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL ppc)
 
 if(APPLE)
-	set (CMAKE_OSX_ARCHITECTURES "x86_64 i386")
- 	set (CMAKE_OSX_DEPLOYMENT_TARGET 10.6)
-	set (MACOSX_DEPLOYMENT_TARGET 10.6)
- 	set (CMAKE_C++_FLAGS -mmacosx-version-min=10.6)
+#######################################
+#   iOS support
+	if ( IOS )
+		message (STATUS "Generates project for iOS - Use -DIOS=no to change.")
+		set (CMAKE_XCODE_EFFECTIVE_PLATFORMS "iPhoneOS")
+		set (CMAKE_OSX_ARCHITECTURES "armv6 armv7 i386")
+		set (CMAKE_OSX_SYSROOT "iphoneos")
+		set (libtype STATIC)
+	else ()
+		message (STATUS "Generates Mac OS project- Use -DIOS=yes to change.")
+		set (CMAKE_OSX_ARCHITECTURES "x86_64 i386")
+		set (CMAKE_OSX_DEPLOYMENT_TARGET 10.6)
+		set (MACOSX_DEPLOYMENT_TARGET 10.6)
+		set (CMAKE_C++_FLAGS -mmacosx-version-min=10.6)
+	endif ()
 endif(APPLE)
 
 
