@@ -17,7 +17,8 @@
 		var out = new String;
 		
     	for (i=0; i < size; i++) {
-    		out += Math.random() * coef + " ";
+    		var r = (Math.random() * 2) - 1;
+    		out += (r * coef) + " ";
 		}
 		return out;
 	}
@@ -27,15 +28,16 @@
 	}
 ?>
 
+size = 100;
 /ITL/scene/signal/plus set faustdsp "process=+;";
-/ITL/scene/signal/plus size 50;
+/ITL/scene/signal/plus size $size;
 
 
 /ITL/scene/signal/fois set faustdspf "product.dsp";
-/ITL/scene/signal/fois size 50;
+/ITL/scene/signal/fois size $size;
 
 /ITL/scene/signal/moins set faustdsp "process=-;";
-/ITL/scene/signal/moins size 50;
+/ITL/scene/signal/moins size $size;
 
 /ITL/scene/clickme set txt "CLICK ME !";
 /ITL/scene/clickme z 1.0;
@@ -43,22 +45,23 @@
 /ITL/scene/clickme y 0.9;
 
 /ITL/scene/clickme watch mouseDown (
-	/ITL/scene/javascript run 'sinus("moins", 10, 0.4)',
-	/ITL/scene/javascript run 'sinus("plus", 10, 0.25)',
-	/ITL/scene/javascript run 'sinus("fois", 10, 2.)');
+	/ITL/scene/javascript run 'sinus("moins", 10, 0.3)',
+	/ITL/scene/javascript run 'sinus("plus", 10, 0.2)',
+	/ITL/scene/javascript run 'sinus("fois", 10, 1.5)');
 	
 
-<? javascript sinus("fois", 50, 2.0) ?>
-<? javascript sinus("moins", 50, 0.3) ?>
+<? javascript sinus("fois", 200, 2.0) ?>
+<? javascript sinus("moins", 200, 0.3) ?>
 
 /ITL/scene/signal/pitch set "plus/0";
 /ITL/scene/signal/roll set "moins/0";
 /ITL/scene/signal/yaw set "fois/0";
 /ITL/scene/signal/sig set pitch roll yaw 1.0 1.0 1.0;
 /ITL/scene/graph set graph sig;
-/ITL/scene/graph width 2.0;
+/ITL/scene/graph width 1.5;
 /ITL/scene/graph height 3.0;
 
+/ITL/log show 1;
 
 
 
