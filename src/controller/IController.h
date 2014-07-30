@@ -29,7 +29,6 @@
 
 #include <string>
 
-#include "lffifo.h"
 #include "smartpointer.h"
 #include "IMessageStack.h"
 
