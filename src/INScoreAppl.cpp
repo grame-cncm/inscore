@@ -34,6 +34,7 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QProcess>
 #include <QSplashScreen>
 #include <QString>
 #include <QUrl>
@@ -61,7 +62,17 @@ using namespace std;
 #define kTimeInterval	10			// time task interval in milliseconds
 
 static const char* kPortOption = "--port";
+static const char* kAppDomainName = "--port";
 
+
+//_______________________________________________________________________
+static void disableAppNap ()
+{
+	#if __APPLE__
+	QProcess process;
+	process.start("defaults write fr.grame.INScore NSAppSleepDisabled -bool YES");
+	#endif
+}
 
 //_______________________________________________________________________
 static int intopt (const string& opt, int defaultValue, int n, char **argv)
@@ -291,6 +302,7 @@ int main( int argc, char **argv )
 #endif
 	sleep (2);
     gAbout->hide();
+	disableAppNap();
 	ret = appl.exec();
 	INScore::stop (glue);
 	delete gAbout;
