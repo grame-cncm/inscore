@@ -211,7 +211,6 @@ void IObject::positionAble()
 	fMsgHandlerMap[kdangle_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addAngle);
 	fMsgHandlerMap[kdscale_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::multScale);
 
-<<<<<<< HEAD
 	fSigHandlerMap[kx_GetSetMethod]			= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setXPos);
 	fSigHandlerMap[ky_GetSetMethod]			= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setYPos);
 	fSigHandlerMap[kxorigin_GetSetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setXOrigin);
@@ -230,12 +229,10 @@ void IObject::positionAble()
 	fSigHandlerMap[kdz_SetMethod]		= TSetMethodSigHandler<IObject,float>::create(this, &IObject::addZOrder);
 	fSigHandlerMap[kdangle_SetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::addAngle);
 	fSigHandlerMap[kdscale_SetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::multScale);
-=======
 	fMsgHandlerMap[kdrotatex_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addXAngle);
 	fMsgHandlerMap[kdrotatey_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYAngle);
 	fMsgHandlerMap[kdrotatez_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addAngle);
 
->>>>>>> origin/dev
 }
 
 //--------------------------------------------------------------------------
