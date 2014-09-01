@@ -1,6 +1,7 @@
 CMAKE    = ../cmake
+BUILD    = ../build
 GFONT    = ../src/guido2.ttf
-APP_PATH = $(CMAKE)/Release
+APP_PATH = $(BUILD)/MacOS/Release
 APP      = INScoreViewer
 QT_PLUGIN_PATH = /Developer/Applications/Qt/plugins/
 QT_FRAMEWORK_PATH = /Library/Frameworks
@@ -23,7 +24,7 @@ bundle:
 
 	# Copy and link the application to its frameworks
 	make installFramework APP=$(APP) FWORK=GUIDOEngine    FWORK_PATH=../lib/GuidoEngine/macosx FWORK_VERSION=$(GUIDO_VERSION)
-	make installFramework APP=$(APP) FWORK=INScore      FWORK_PATH=$(CMAKE)/Release           FWORK_VERSION=$(INSCORE_BUNDLE_VERSION)
+	make installFramework APP=$(APP) FWORK=INScore      FWORK_PATH=$(BUILD)/Release           FWORK_VERSION=$(INSCORE_BUNDLE_VERSION)
 
 	# Link the frameworks between them
 	make linkFramework2Framework APP=$(APP) FWORK_1=INScore FWORK_1_VERSION=$(INSCORE_BUNDLE_VERSION) FWORK_2=GUIDOEngine    FWORK_2_VERSION=$(GUIDO_VERSION)

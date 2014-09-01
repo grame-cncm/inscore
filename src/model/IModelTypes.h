@@ -75,6 +75,12 @@ typedef class libmapping::SMARTP<IGuidoCode>	SIGuidoCode;
 
 class IGuidoFile;
 typedef class libmapping::SMARTP<IGuidoFile>	SIGuidoFile;
+    
+class IMusicXMLCode;
+typedef class libmapping::SMARTP<IMusicXMLCode>	SIMusicXMLCode;
+
+class IMusicXMLFile;
+typedef class libmapping::SMARTP<IMusicXMLFile>	SIMusicXMLFile;
 
 class IHtml;
 typedef class libmapping::SMARTP<IHtml>			SIHtml;

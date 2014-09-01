@@ -33,6 +33,8 @@
 #include "ISignalNode.h"
 #include "ISignal.h"
 #include "IFaustProcessor.h"
+#include "IFaustDSP.h"
+#include "IFaustDSPFile.h"
 #include "Tools.h"
 
 using namespace std;
@@ -43,16 +45,17 @@ namespace inscore
 //--------------------------------------------------------------------------
 int IProxy::signal (const IMessage* msg, const std::string& objName, SIObject parent)
 {
-	if (msg->message() == kget_SetMethod) return MsgHandler::kBadParameters;
+	if (msg->message() == kget_SetMethod) return MsgHandler::kBadAddress;
 	if (!msg->size())			return MsgHandler::kBadParameters;
 
 	string objType = msg->param(0)->value<string>("");
 	SIObject obj;
-	if (objType == IFaustProcessor::kFaustProcessorType)
+	if (objType == IFaustProcessor::kFaustProcessorType || objType == IFaustDSP::kFaustDSPType || objType == IFaustDSPFile::kFaustDSPFileType)
 		obj = IObjectFactory::create(objName, objType, parent);
 	else
-		obj = IObjectFactory::create(objName, ISignal::kSignalType, parent);
-	if (obj) {
+        obj = IObjectFactory::create(objName, ISignal::kSignalType, parent);
+    
+    if (obj) {
 		int status = obj->execute(msg);
 		if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) parent->add(obj);
 		return MsgHandler::kProcessed;

@@ -73,6 +73,17 @@ template<> SIObject _create<IFaustProcessor>(const std::string& name , IObject* 
 	return IFaustProcessor::create(name, parent);
 }
 
+template<> SIObject _create<IFaustDSP>(const std::string& name , IObject* parent)
+{
+    return IFaustDSP::create(name, parent);
+}
+    
+template<> SIObject _create<IFaustDSPFile>(const std::string& name , IObject* parent)
+{
+    return IFaustDSPFile::create(name, parent);
+}
+    
+
 #ifndef NOVIEW
 template<> SIObject _create<IScene>(const std::string& name , IObject* parent)
 {
@@ -112,6 +123,12 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 	else if ( type == IGuidoFile::kGuidoFileType )
 		obj = _create<IGuidoFile> (name, parent);
 
+	else if ( type == IMusicXMLCode::kMusicXMLCodeType )
+		obj = _create<IMusicXMLCode> (name, parent);
+
+	else if ( type == IMusicXMLFile::kMusicXMLFileType )
+		obj = _create<IMusicXMLFile> (name, parent);
+
 	else if ( type == IGuidoStream::kGuidoStreamType )
 		obj = _create<IGuidoStream> (name, parent);
     
@@ -144,6 +161,12 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 
 	else if ( type == IFaustProcessor::kFaustProcessorType )
 		obj = _create<IFaustProcessor> (name, parent);
+    
+    else if ( type == IFaustDSP::kFaustDSPType )
+		obj = _create<IFaustDSP> (name, parent);
+    
+    else if ( type == IFaustDSPFile::kFaustDSPFileType )
+		obj = _create<IFaustDSPFile> (name, parent);
 
 	else if ( type == IGestureFollower::kGestureFollowerType )
 		obj = _create<IGestureFollower> (name, parent);

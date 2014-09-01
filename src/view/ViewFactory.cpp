@@ -56,6 +56,8 @@ VObjectView*	ViewFactory::create (const IGraphicSignal* object,  QGraphicsScene*
 VObjectView*	ViewFactory::create (const ISGraphicSignal* object, QGraphicsScene* scene)	{ return new VSGraphView (scene, object); }
 VObjectView*	ViewFactory::create (const IGuidoCode* object,	QGraphicsScene* scene)		{ return new VGuidoItemView (scene, object); }
 VObjectView*	ViewFactory::create (const IGuidoFile* object,	QGraphicsScene* scene)		{ return new VGuidoItemView (scene, object); }
+VObjectView*	ViewFactory::create (const IMusicXMLCode* object, QGraphicsScene* scene)	{ return new VGuidoItemView (scene, object); }
+VObjectView*	ViewFactory::create (const IMusicXMLFile* object, QGraphicsScene* scene)	{ return new VGuidoItemView (scene, object); }
 VObjectView*	ViewFactory::create (const IHtml* object,		QGraphicsScene* scene)		{ return new VTextView (scene, object); }
 VObjectView*	ViewFactory::create (const IHtmlFile* object,	QGraphicsScene* scene)		{ return new VTextView (scene, object); }
 VObjectView*	ViewFactory::create (const IImage* object,		QGraphicsScene* scene)		{ return new VImageView (scene, object); }

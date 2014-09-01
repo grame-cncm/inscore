@@ -74,7 +74,10 @@ void ISignal::accept (Updater* u)
 }
 
 #if defined(WIN32) && !defined(__MINGW_GCC)
-#define sscanf sscanf_s
+//#define sscanf sscanf_s  
+// commented due to a bug in decodeProjection below
+// int values were not set although result was correct
+// DF 2014-02-13
 #endif
 //--------------------------------------------------------------------------
 bool ISignal::decodeProjection (const std::string& proj, int& index, int& step) const

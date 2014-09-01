@@ -32,6 +32,8 @@ namespace inscore
 class TPlugin : public QLibrary {
 
 	public:
+	static std::string	fLocation;
+
 				 TPlugin()		{};
 		virtual ~TPlugin()		{ if (isLoaded()) unload(); };
 
@@ -46,6 +48,11 @@ class TPlugin : public QLibrary {
 		template <typename T> T	resolve (const char* f)	{ return T(QLibrary::resolve(f)); }
 
 		std::string	errorString () const	{ return QLibrary::errorString().toStdString(); }
+
+		// add a path to the plugins locations and starts looking at this location
+		// next the standard strategy is applied
+		static void	location (std::string path)		{ fLocation = path; }
+		static void	resetlocation ()				{ fLocation.clear(); }
 };
 
 

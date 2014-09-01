@@ -29,6 +29,7 @@
 #include "IApplVNodes.h"
 #include "IAppl.h"
 #include "IMessageStack.h"
+#include "TPlugin.h"
 #include "Updater.h"
 
 #include "VLogWindow.h"
@@ -46,9 +47,9 @@ IApplDebug::IApplDebug(IObject * parent) : IObjectDebug(parent), fOSCDebug(true)
 	fMsgHandlerMap[kosc_GetSetMethod]		= TSetMethodMsgHandler<IApplDebug,bool>::create(this, &IApplDebug::setOSCDebug);
 	fGetMsgHandlerMap[kosc_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fOSCDebug);
 
-	fGetMsgHandlerMap[kmap_GetSetMethod]	= 0;
-	fGetMsgHandlerMap[kname_GetSetMethod]	= 0;
-	fGetMsgHandlerMap[ksignal_GetMethod]	= 0;
+	fGetMsgHandlerMap[kmap_GetSetMethod]	= SGetParamMsgHandler(0);
+	fGetMsgHandlerMap[kname_GetSetMethod]	= SGetParamMsgHandler(0);
+	fGetMsgHandlerMap[ksignal_GetMethod]	= SGetParamMsgHandler(0);
 }
 
 //--------------------------------------------------------------------------
@@ -155,6 +156,7 @@ MsgHandler::msgStatus IApplLog::writeMsg (const IMessage* msg) const
 		
 		for (int i=0; i < msg->size(); i++) {
 			msg->param(i)->print(sstr);
+			sstr << " ";
 		}
 		fWindow->append (sstr.str().c_str());
 		return MsgHandler::kProcessedNoChange;
@@ -182,5 +184,42 @@ void IApplLog::print(const char* str)
 {
 	fWindow->append (str);
 }
+
+
+
+//--------------------------------------------------------------------------
+// Plugins management
+//--------------------------------------------------------------------------
+IApplPlugin::IApplPlugin(IObject * parent) : IVNode("plugins", parent)
+{
+	fMsgHandlerMap[kpath_GetSetMethod]	= TMethodMsgHandler<IApplPlugin, MsgHandler::msgStatus (IApplPlugin::*)(const IMessage*) const>::create(this, &IApplPlugin::addPath);
+	fMsgHandlerMap[kreset_SetMethod]	= TMethodMsgHandler<IApplPlugin, MsgHandler::msgStatus (IApplPlugin::*)(const IMessage*) const>::create(this, &IApplPlugin::reset);
+
+	fGetMsgHandlerMap[kpath_GetSetMethod]= TGetParamMsgHandler<string>::create(TPlugin::fLocation);
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IApplPlugin::addPath (const IMessage* msg) const
+{
+	if ((msg->size() == 1)) {
+		string path = msg->param(0)->value<string>("");
+		if (path.size()) {
+			TPlugin::location(path);
+			return MsgHandler::kProcessedNoChange;
+		}
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IApplPlugin::reset (const IMessage* msg) const
+{
+	if (!msg->size()) {
+		TPlugin::resetlocation();
+		return MsgHandler::kProcessedNoChange;
+	}
+	return MsgHandler::kBadParameters;
+}
+
 
 }

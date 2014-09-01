@@ -1,5 +1,12 @@
 version := 1.08
 system	:= $(shell uname -s)
+ifeq ($(system), MINGW32_NT-6.1) 
+	win32 = yes
+else
+ifeq ($(system), CYGWIN_NT-6.1) 
+	win32 = yes
+endif
+endif
 
 i2i90  := ../tools/inscore2inscore90
 i2i100 := ../tools/inscore2inscore100
@@ -7,7 +14,7 @@ ifeq ($(system), Darwin)
   i2i90tool  := $(i2i90)/cmake/Release/inscore2inscore90
   i2i100tool := $(i2i100)/cmake/Release/inscore2inscore100
 else
-ifeq ($(system), MINGW32_NT-6.1)
+ifdef win32 
   i2i90tool  := $(i2i90)/cmake/Release/inscore2inscore90.exe
   i2i100tool := $(i2i100)/cmake/Release/inscore2inscore100.exe
   QT5         := /c/Qt/Qt5.1.0
@@ -80,6 +87,7 @@ macosx:
 	cd $(package) && ln -sf /Applications .
 	[ -d $(package)/$(macplug) ] || mkdir $(package)/$(macplug)
 	cp ../lib/GestureFollower/macosx/libGFLib.dylib $(package)/$(macplug)
+	cp ../lib/faust/macosx/libfaust.dylib $(package)/$(macplug)
 	make dmg
 		
 common: 
@@ -185,6 +193,8 @@ win32:
 	cp 	$(WIN32QTPLUGS) $(package)/plugins/imageformats
 	cp 	$(WIN32QTPLATFORMS) $(package)/plugins/platforms
 	cp ../lib/GestureFollower/win32/GFLib.dll $(package)/$(winplug)
+	cp ../lib/faust/win32/libfaust.dll $(package)/$(winplug)
+	cp ../lib/faust/win32/llvm_math.ll $(package)/$(winplug)
 
 linux:
 	[ -d $(package) ] || mkdir -p $(package)

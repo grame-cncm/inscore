@@ -147,6 +147,33 @@ class IApplLog : public IVNode
 		virtual MsgHandler::msgStatus saveMsg (const IMessage* msg) const;
 };
 
+class IApplPlugin;
+typedef class libmapping::SMARTP<IApplPlugin>		SIApplPlugin;
+
+//--------------------------------------------------------------------------
+/*!
+	\brief a virtual node for plugins managemen
+*/
+class IApplPlugin : public IVNode
+{
+	public:
+		/// \brief creates a new IApplPlugin
+		static SIApplPlugin create(IObject * parent)		{ return new IApplPlugin(parent); }
+
+		/// \brief print the object state \param out the output stream
+		virtual void	print(std::ostream& out) const	{}
+
+	protected:	
+				 IApplPlugin(IObject * parent);
+		virtual ~IApplPlugin()	{}
+
+		/// \brief object \c 'addPath' message handler.
+		virtual MsgHandler::msgStatus addPath (const IMessage* msg) const;
+
+		/// \brief object \c 'reset' message handler.
+		virtual MsgHandler::msgStatus reset (const IMessage* msg) const;
+};
+
 
 /*! @} */
 

@@ -155,10 +155,10 @@ Notes:
 
 MusicXML support
 ----------------------------
-You should get the MusicXML library version 2.0 or later from SourceForge from svn:
-	svn co https://libmusicxml.svn.sourceforge.net/svnroot/libmusicxml libmusicxml
+You should get the MusicXML library version 2.0 or later from Google code:
+	https://code.google.com/p/libmusicxml/downloads/list
 or from the src distribution:
-	http://sourceforge.net/projects/libmusicxml/files/libmusicxml-src/
+	git clone http://code.google.com/p/libmusicxml/ 
 The library is not required to compile the INScore project, nor to run the INScore viewer. 
 When the library is not present, MusicXML support is not available.
 To compile the MusicXML library do the following:
@@ -167,6 +167,17 @@ To compile the MusicXML library do the following:
   > make
   > sudo make install
 
+
+Faust Compiler support
+----------------------------
+You should get the branch faust2 of libfaust development branch from git : 
+git clone git://git.code.sf.net/p/faudiostream/code faudiostream-code
+
+To compile libfaust library do the following:
+	> cd faudiostream-code
+	> git checkout faust2	
+	> make dynamic
+	> sudo make install-dynamic
 
 ======================================================
  Note about the Guido Font

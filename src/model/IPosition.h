@@ -198,8 +198,10 @@ class IPosition
 		*	The object will be rotated around its origin 
 		*	(top-left corner in most of the cases).
 		*/
-		virtual void	setAngle(float angle)		{ fZAngle = angle; fModified = true; }
-		virtual void	addAngle(float angle)		{ setAngle(fZAngle + angle); }
+//		virtual void	setAngle(float angle)		{ fZAngle = angle; fModified = true; }
+		virtual void	addAngle(float angle)		{ setRotateZ(fZAngle + angle); }
+		virtual void	addXAngle(float angle)		{ setRotateX(fXAngle + angle); }
+		virtual void	addYAngle(float angle)		{ setRotateY(fYAngle + angle); }
 
 		
 		/// \brief sets the object shear

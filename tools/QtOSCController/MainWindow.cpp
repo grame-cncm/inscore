@@ -12,6 +12,7 @@
 #include <iostream>
 
 #define DEFAULT_ADDRESS "127.0.0.1"
+//#define DEFAULT_ADDRESS "marcopolo.grame.fr"
 #define DEFAULT_PORT 7000
 
 #define OUTPUT_BUFFER_SIZE 2048
@@ -39,7 +40,7 @@ void OSCMessage::send( const std::string& str , int port ) const
 		else if ( t == QVariant::Double )
 			p << float(mValues[i].toDouble());
 		else
-			p << mValues[i].toString().toAscii().data();
+			p << mValues[i].toString().toUtf8().data();
 	}
 	p << osc::EndMessage;
 //	p << osc::EndMessage << osc::EndBundle;
@@ -139,7 +140,7 @@ void ControllerWidget::scene1()
 //------------------------------------------------------------------------
 void ControllerWidget::rotateAll()
 {
-	send( OSCMessage( QString("/ITL/scene/" + fRotateEdit->text()).toAscii().data()  ).setCommand("dangle").addFloat( 1 ) );
+	send( OSCMessage( QString("/ITL/scene/" + fRotateEdit->text()).toUtf8().data()  ).setCommand("dangle").addFloat( 1 ) );
 }
 
 //------------------------------------------------------------------------

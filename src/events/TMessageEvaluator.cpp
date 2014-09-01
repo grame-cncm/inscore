@@ -257,7 +257,8 @@ IMessage::argslist TMessageEvaluator::evalMessage (const IMessage* msg, const Ev
 
 	vector<const IObject*> targets;			// first get the message target objects
 	const IObject * root = env.object ? env.object->getRoot() : gGlue->root();
-	root->getObjects( msg->address(), targets);
+	root->getObjects( evalAddress(msg->address(), env.object), targets);
+
 	unsigned int n = targets.size();
 	if (!n) return outval;					// no target: exit
 	
@@ -347,7 +348,7 @@ IMessage::argslist TMessageEvaluator::evalVariableString (const string& var, con
 			IMessage::argslist args = evalVariable(s, env);	// evaluate this variable
 			stringstream stream;
 			string sep;
-			for (int i=0; i < args.size(); i++) {			// and convert the results into a string
+			for (unsigned int i=0; i < args.size(); i++) {	// and convert the results into a string
 				stream << sep;
 				args[i]->print(stream);
 				sep = " ";
@@ -363,7 +364,7 @@ IMessage::argslist TMessageEvaluator::evalVariableString (const string& var, con
 
 	if (res.size()) {										// variables have been expanded
 		string newparam(var);								// the string for new value storage
-		for (int i=0; i<res.size(); i++) {					// loop until no more var is expanded
+		for (unsigned int i=0; i<res.size(); i++) {			// loop until no more var is expanded
 			CRegexpT<char> regexp(res[i].first.c_str(), EXTENDED);						// use the previous as a regexp
 			char * replaced = regexp.Replace (newparam.c_str(), res[i].second.c_str());	// and replace with the associated value
 			newparam = replaced;

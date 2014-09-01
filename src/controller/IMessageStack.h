@@ -31,7 +31,7 @@
 #include <QMutex>
 #endif
 
-#include "lffifo.h"
+#include "MessageBuffer.h"
 #include "smartpointer.h"
 
 namespace inscore
@@ -58,8 +58,8 @@ class IMessageStack : public libmapping::smartable
 #ifdef FIFOLOCK
 		QMutex		fMutex;					// this is to handle lffifo issue
 #endif
-		int			fReceivedCount;
-		fifo		fMsgFifo;	
+		int				fReceivedCount;
+		MessageBuffer	fPendingMsgs;
 	public:
 		static libmapping::SMARTP<IMessageStack> create()			{ return new IMessageStack; }
 

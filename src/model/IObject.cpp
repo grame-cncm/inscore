@@ -211,6 +211,7 @@ void IObject::positionAble()
 	fMsgHandlerMap[kdangle_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addAngle);
 	fMsgHandlerMap[kdscale_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::multScale);
 
+<<<<<<< HEAD
 	fSigHandlerMap[kx_GetSetMethod]			= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setXPos);
 	fSigHandlerMap[ky_GetSetMethod]			= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setYPos);
 	fSigHandlerMap[kxorigin_GetSetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setXOrigin);
@@ -229,6 +230,12 @@ void IObject::positionAble()
 	fSigHandlerMap[kdz_SetMethod]		= TSetMethodSigHandler<IObject,float>::create(this, &IObject::addZOrder);
 	fSigHandlerMap[kdangle_SetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::addAngle);
 	fSigHandlerMap[kdscale_SetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::multScale);
+=======
+	fMsgHandlerMap[kdrotatex_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addXAngle);
+	fMsgHandlerMap[kdrotatey_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYAngle);
+	fMsgHandlerMap[kdrotatez_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addAngle);
+
+>>>>>>> origin/dev
 }
 
 //--------------------------------------------------------------------------
@@ -642,7 +649,7 @@ SIMessageList IObject::getParams(const std::vector<std::string>& attributes) con
 {
 	SIMessageList outMsgs = IMessageList::create();
 	
-	for (int i=0; i<attributes.size(); i++) {
+	for (unsigned int i=0; i<attributes.size(); i++) {
 		map<std::string, SGetParamMsgHandler>::const_iterator e = fGetMsgHandlerMap.find(attributes[i]);
 		if (e != fGetMsgHandlerMap.end()) {					// attribute found in msg map
 			SIMessage msg = getParam(e->first, e->second);
@@ -818,7 +825,12 @@ MsgHandler::msgStatus IObject::get(const IMessage* msg) const
 { 
 	SIMessageList msgs = getMsgs (msg);
 	if (msgs->list().size()) {
-		oscout << msgs;
+		try {
+			oscout << msgs;
+		}
+		catch (exception& e) {
+			ITLErr << "while sending osc msg: " << e.what() << ITLEndl;
+		}
 	}
 	return MsgHandler::kProcessedNoChange;
 }

@@ -47,7 +47,7 @@ IMessageTranslator::IMessageTranslator()
 		fFileTypeTranslationTable["html"]	= "htmlf";
 		fFileTypeTranslationTable["htm"]	= "htmlf";
 		fFileTypeTranslationTable["gmn"]	= "gmnf";
-		fFileTypeTranslationTable["xml"]	= "gmnf";
+		fFileTypeTranslationTable["xml"]	= "musicxmlf";
 		fFileTypeTranslationTable["jpg"]	= "img";
 		fFileTypeTranslationTable["jpeg"]	= "img";
 		fFileTypeTranslationTable["gif"]	= "img";
@@ -62,6 +62,7 @@ IMessageTranslator::IMessageTranslator()
 		fFileTypeTranslationTable["m4v"]	= "video";
 		fFileTypeTranslationTable["mov"]	= "video";
 		fFileTypeTranslationTable["vob"]	= "video";
+        fFileTypeTranslationTable["dsp"]	= "faustdspf";
 	}
 }
 

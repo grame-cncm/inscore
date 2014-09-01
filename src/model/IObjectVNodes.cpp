@@ -38,13 +38,13 @@ IObjectDebug::IObjectDebug(IObject * parent) : IVNode("debug", parent), fMap(fal
 {
 	fMsgHandlerMap[kmap_GetSetMethod]		= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setMapDebug);
 	fMsgHandlerMap[kname_GetSetMethod]		= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setNameDebug);
-	fMsgHandlerMap[kwatch_GetSetMethod]		= 0;
-	fMsgHandlerMap[kwatchplus_SetMethod]	= 0;
+	fMsgHandlerMap[kwatch_GetSetMethod]		= SMsgHandler(0);
+	fMsgHandlerMap[kwatchplus_SetMethod]	= SMsgHandler(0);
 	
 	fGetMsgHandlerMap[kmap_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fMap);
 	fGetMsgHandlerMap[kname_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fName);
-	fGetMultiMsgHandlerMap[kwatch_GetSetMethod]	= 0;
-	fGetMultiMsgHandlerMap[kalias_GetSetMethod]	= 0;
+	fGetMultiMsgHandlerMap[kwatch_GetSetMethod]	= SGetParamMultiMsgHandler(0);
+	fGetMultiMsgHandlerMap[kalias_GetSetMethod]	= SGetParamMultiMsgHandler(0);
 }
 
 //--------------------------------------------------------------------------
