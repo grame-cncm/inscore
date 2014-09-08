@@ -213,7 +213,7 @@ void VGraphicsItemView::updateObjectSize(IObject* o)
 }
 
 //------------------------------------------------------------------------------------------------------------
-void VGraphicsItemView::updateTransform(IObject* o)
+void VGraphicsItemView::updateTransform(IObject* o, QGraphicsItem* item)
 {
 //	fItem->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
 	QTransform matrix;
@@ -226,7 +226,7 @@ void VGraphicsItemView::updateTransform(IObject* o)
 		matrix.rotate(o->getRotateY(), Qt::YAxis);
 	if (o->getRotateZ())
 		matrix.rotate(o->getRotateZ(), Qt::ZAxis);
-	fItem->setTransform (matrix);	
+	item->setTransform (matrix);
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -276,7 +276,7 @@ void VGraphicsItemView::updateItemNoStretch(QStretchTilerItem* item, IObject* o,
     item->setRect(QRectF(0,0,width,height));
     item->setPos(x, y);
     item->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
-    updateTransform (o);
+    updateTransform (o, item);
     QRectF bbrect = item->boundingRect();
     double xo = bbrect.width() / 2;
     double yo = bbrect.height() / 2;
@@ -290,7 +290,7 @@ void VGraphicsItemView::updateGeometry(QGraphicsItem* item, IObject* o, float x,
     //	mapping functions.
     item->setPos(x, y);
     item->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
-    updateTransform (o);
+    updateTransform (o, item);
     QRectF bbrect = item->boundingRect();
     double xo = bbrect.width()  * (o->getXOrigin() + 1) * o->getScale() / 2;
     double yo = bbrect.height() * (o->getYOrigin() + 1) * o->getScale() / 2;
