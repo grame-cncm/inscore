@@ -68,7 +68,12 @@ void VExport::paintChildrenOnDevice( QPainter * painter, QStyleOptionGraphicsIte
     for(it = list.begin(); it != list.end(); it++)
     {
         painter->translate((*it)->x(), (*it)->y()); // the painter goes to the center of the child element
-        painter->translate(-(*it)->boundingRect().center()); // the painter goes to the top left corner of the child element
+        
+        QTransform matrix = (*it)->transform();
+        painter->setTransform(matrix, true);
+        
+        //painter->translate(-(*it)->boundingRect().center()); // the painter goes to the top left corner of the child element
+        
         (*it)->paint( painter , &option , 0 );
         
         dx = (*it)->boundingRect().center().x()-(*it)->x();

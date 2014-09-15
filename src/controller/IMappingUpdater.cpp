@@ -25,6 +25,7 @@
 
 #include <iostream>
 #include <vector>
+#include <math.h>
 
 #include "ifloat.h"
 #include "ITLError.h"
@@ -111,6 +112,37 @@ GraphicSegment IMappingUpdater::computeSegment(IObject* o)
     float x = o->getXPos();
     float y = o->getYPos();
 
+    if(o->getRotateZ())
+    {
+        float diag = sqrt(pow(h,2) + pow(w,2));
+        float alpha = atan(w/h);
+        float teta = o->getRotateZ()*M_PI/180;
+        if(teta >= 0 && teta < M_PI/2)
+        {
+            h = diag * cos(alpha - teta);
+            w = diag * cos(teta - M_PI/2 + alpha);
+        }
+        else if(teta >= M_PI/2 && teta < M_PI)
+        {
+            h = - diag * cos(alpha + teta);
+            w = diag * cos(alpha - teta + M_PI/2);
+        }
+        else if(teta >=M_PI && teta < 3*M_PI/2)
+        {
+            h = - diag * cos(alpha - teta);
+            w = diag * cos(teta + M_PI/2 + alpha);
+        }
+        else
+        {
+            h = diag * cos(alpha + teta);
+            w = diag * cos(alpha - teta - M_PI/2);
+        }
+    }
+    
+    h *= cos(o->getRotateX()*M_PI/180);
+    w *= cos(o->getRotateY()*M_PI/180);
+    
+    
     float x0 = x - (1 + o->getXOrigin()) * w/2;
     float x1 = x + (1 - o->getXOrigin()) * w/2;
     float y0 = y - (1 + o->getYOrigin()) * h/2;
@@ -147,11 +179,46 @@ GraphicSegment IMappingUpdater::computeSegmentWithChildren(IObject* o, GraphicSe
             if(masters[j]->getMaster() == o)
             {
                 std::string mapName = masters[j]->getMaster()->name() + ":" + masters[j]->getMasterMapName();
-                float width = slave->getSyncWidth(mapName);
-                float height = slave->getSyncHeight(mapName);
+                float w = slave->getSyncWidth(mapName);
+                float h = slave->getSyncHeight(mapName);
+                
+                if(slave->getRotateZ())
+                {
+            
+                    float diag = sqrt(pow(h,2) + pow(w,2));
+                    float alpha = atan(w/h);
+                    float teta = slave->getRotateZ()*M_PI/180;
+            
+                    if(teta >= 0 && teta < M_PI/2)
+                    {
+                        h = diag * cos(alpha - teta);
+                        w = diag * cos(teta - M_PI/2 + alpha);
+                    }
+                    else if(teta >= M_PI/2 && teta < M_PI)
+                    {
+                        h = - diag * cos(alpha + teta);
+                        w = diag * cos(alpha - teta + M_PI/2);
+                    }
+                    else if(teta >=M_PI && teta < 3*M_PI/2)
+                    {
+                        h = - diag * cos(alpha - teta);
+                        w = diag * cos(teta + M_PI/2 + alpha);
+                    }
+                    else
+                    {
+                        h = diag * cos(alpha + teta);
+                        w = diag * cos(alpha - teta - M_PI/2);
+                    }
+                }
+    
+                h *= cos(slave->getRotateX()*M_PI/180);
+                w *= cos(slave->getRotateY()*M_PI/180);
+                
+                
                 float x = slave->getSyncPos(mapName).x();
                 float y = slave->getSyncPos(mapName).y();
-                GraphicSegment sSeg = GraphicSegment(x-width/2, y-height/2, x+width/2, y+height/2); // in object's coordinates
+                                
+                GraphicSegment sSeg = GraphicSegment(x-w/2, y-h/2, x+w/2, y+h/2); // in object's coordinates
                 gseg = gseg | sSeg;
             }
         }
@@ -192,7 +259,7 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
 	}
 
     std::string masterMapName = master->name() + ":" + m->getMasterMapName();
-	slave->UseGraphic2GraphicMapping (false, masterMapName);						// don't use the object graphic segmentation and mapping
+	slave->UseGraphic2GraphicMapping (false, masterMapName);		// don't use the object graphic segmentation and mapping
 	float x, xs; bool found = false;
 	GraphicSegment slaveSeg;
 
