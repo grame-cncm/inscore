@@ -422,9 +422,15 @@ void VGraphicsItemView::itemChanged()
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::findNewSync(SMaster master, SIObject slave)
 {
-    std::map<SMaster, QStretchTilerItem*>::iterator it = fTilerItems.find(master);
+    //std::map<SMaster, QStretchTilerItem*>::iterator it = fTilerItems.find(master);
+    bool found = false;
+    for(std::map<SMaster, QStretchTilerItem*>::iterator i = fTilerItems.begin(); i != fTilerItems.end(); i++)
+    {
+        if(i->first->getMaster() == master->getMaster())
+            found = true;
+    }
     QStretchTilerItem * fTilerItem;
-    if(it == fTilerItems.end())
+    if(!found)
     {
         fTilerItem = buildTiler(slave);
         VGraphicsItemView * masterView = dynamic_cast<VGraphicsItemView*>(master->getMaster()->getView());
@@ -496,7 +502,7 @@ QRectF VGraphicsItemView::referenceRect(QGraphicsItem * specItem) const
 }
 
 //------------------------------------------------------------------------------------------------------------
-double VGraphicsItemView::relative2SceneX(float x, QGraphicsItem * specItem) const
+float VGraphicsItemView::relative2SceneX(float x, QGraphicsItem * specItem) const
 {
 	const QRectF& refRect = referenceRect(specItem);
 	// + 1 parce que l'espace Qt va de 0->... et interlude de -1 à ...
@@ -504,20 +510,20 @@ double VGraphicsItemView::relative2SceneX(float x, QGraphicsItem * specItem) con
 }
 
 //------------------------------------------------------------------------------------------------------------
-double VGraphicsItemView::relative2SceneY(float y, QGraphicsItem * specItem) const
+float VGraphicsItemView::relative2SceneY(float y, QGraphicsItem * specItem) const
 {
 	const QRectF& refRect = referenceRect(specItem);
 	return (( y + 1 ) *  refRect.height()) / 2.0f  + refRect.y();
 }
 
 //--------------------------------------------------------------------------
-double VGraphicsItemView::relative2SceneWidth(float width, QGraphicsItem * specItem) const
+float VGraphicsItemView::relative2SceneWidth(float width, QGraphicsItem * specItem) const
 {
 	return (referenceRect(specItem).width() * width)/2.0f;
 }
 
 //--------------------------------------------------------------------------
-double VGraphicsItemView::relative2SceneHeight(float height, QGraphicsItem * specItem) const
+float VGraphicsItemView::relative2SceneHeight(float height, QGraphicsItem * specItem) const
 {
 	return (referenceRect(specItem).height() * height)/2.0f;
 }
@@ -531,26 +537,26 @@ double VGraphicsItemView::relative2SceneHeight(float height, QGraphicsItem * spe
 //}
 
 //--------------------------------------------------------------------------
-double VGraphicsItemView::scene2RelativeWidth(float width, QGraphicsItem * specItem) const
+float VGraphicsItemView::scene2RelativeWidth(float width, QGraphicsItem * specItem) const
 {
 	return 2.0f * width / referenceRect(specItem).width();
 }
 
 //--------------------------------------------------------------------------
-double VGraphicsItemView::scene2RelativeHeight(float height, QGraphicsItem * specItem) const
+float VGraphicsItemView::scene2RelativeHeight(float height, QGraphicsItem * specItem) const
 {
 	return 2.0f * height / referenceRect(specItem).height();
 }
 
 //------------------------------------------------------------------------------------------------------------
-double VGraphicsItemView::scene2RelativeX(float x, QGraphicsItem * specItem) const
+float VGraphicsItemView::scene2RelativeX(float x, QGraphicsItem * specItem) const
 {
 	const QRectF& refRect = referenceRect(specItem);
 	return ( x - refRect.x() ) / ( refRect.width() / 2.0f ) - 1 ;
 }
 
 //------------------------------------------------------------------------------------------------------------
-double VGraphicsItemView::scene2RelativeY(float y, QGraphicsItem * specItem) const
+float VGraphicsItemView::scene2RelativeY(float y, QGraphicsItem * specItem) const
 {
 	const QRectF& refRect = referenceRect(specItem);
 	return ( y - refRect.y() ) / ( refRect.height() / 2.0f ) - 1 ;

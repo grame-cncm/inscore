@@ -70,24 +70,24 @@ class VGraphicsItemView : public VObjectView
 		virtual GraphicEffect getEffect () const			{ return GraphicEffect ( item()->graphicsEffect()); }
 
 		/// \brief Maps the IObject [-1,1] y coordinate to the referenceRect().
-		double relative2SceneY(float y, QGraphicsItem * item = 0 ) const;
+		float relative2SceneY(float y, QGraphicsItem * item = 0 ) const;
 		/// \brief Maps the IObject [-1,1] x coordinate to the referenceRect().
-		double relative2SceneX(float x, QGraphicsItem * item = 0 ) const;
+		float relative2SceneX(float x, QGraphicsItem * item = 0 ) const;
 		/// \brief Maps the IObject [0,2] width value to the corresponding referenceRect() value.
-		double relative2SceneWidth(float width, QGraphicsItem * item = 0 ) const;
+		float relative2SceneWidth(float width, QGraphicsItem * item = 0 ) const;
 		/// \brief Maps the IObject [0,2] height value to the corresponding referenceRect() value.
-		double relative2SceneHeight(float height, QGraphicsItem * item = 0 ) const;
+		float relative2SceneHeight(float height, QGraphicsItem * item = 0 ) const;
 		/// \brief Maps a rect expressed in [-1,1] scene coordinate to a QRectF expressed in referenceRect() coordinates.
 //		QRectF relative2SceneRect( const TFloatRect& rect) const;
 
 		/// \brief Maps the referenceRect() width value to the corresponding [0,2] value.
-		double scene2RelativeWidth(float width, QGraphicsItem * item = 0 ) const;
+		float scene2RelativeWidth(float width, QGraphicsItem * item = 0 ) const;
 		/// \brief Maps the referenceRect() height value to the corresponding [0,2] value.
-		double scene2RelativeHeight(float height, QGraphicsItem * item = 0 ) const;
+		float scene2RelativeHeight(float height, QGraphicsItem * item = 0 ) const;
 		/// \brief Maps the referenceRect() x value to the corresponding [-1,1] value.
-		double scene2RelativeX(float x, QGraphicsItem * item = 0 ) const;
+		float scene2RelativeX(float x, QGraphicsItem * item = 0 ) const;
 		/// \brief Maps the referenceRect() y value to the corresponding [-1,1] value.
-		double scene2RelativeY(float y, QGraphicsItem * item = 0 ) const;
+		float scene2RelativeY(float y, QGraphicsItem * item = 0 ) const;
 		
 		static void buildDefaultMapping (IObject* object);
 		
