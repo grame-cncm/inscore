@@ -30,6 +30,7 @@
 #include "IImage.h"
 #include "VApplView.h"
 
+#include "QFileDownloader.h"
 #include <QImageReader>
 #include <QFile>
 #include <QDebug>
@@ -50,15 +51,22 @@ VImageView::VImageView(QGraphicsScene * scene, const IImage* h)
 void VImageView::updateLocalMapping (IImage* img)
 {
 	// 1. Update image
+    if(img->isUrl())
+    {
+        QFileDownloader * fileDownloader = img->getFileDownloader();
+        fileDownloader->setView(this);
+        QObject::connect(fileDownloader, SIGNAL(fileDownloadFinished()), fileDownloader, SLOT(updateImage()) );
+    }
 	QString file = VApplView::toQString( img->getFile().c_str() );
-	if ( QFile::exists(  file  ) )
+    if ( QFile::exists(  file  ) )
 	{
+        fFileName = file;
 		if ( !QImageReader( file ).canRead() )
 		{
 			// Invalid/Unsupported file format
 			ITLErr << "invalid image file :" << img->getFile() << ITLEndl;
 		}
-		else setImage( file );
+		else setImage();
 	}
 	else
 	{
@@ -113,9 +121,9 @@ void VImageView::updateView ( IImage * img)
 }
 
 //----------------------------------------------------------------------
-void VImageView::setImage(const QString& fileName)
+void VImageView::setImage()
 {
-	fImageItem->image().load( fileName );
+    fImageItem->image().load(fFileName);
 	itemChanged();
 }
 

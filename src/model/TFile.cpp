@@ -27,6 +27,9 @@
 #include "IScene.h"
 #include "ITLError.h"
 #include "TFile.h"
+#include "QFileDownloader.h"
+#include <QDir>
+#include <QUrl>
 
 using namespace std;
 
@@ -35,7 +38,7 @@ namespace inscore
 
 //--------------------------------------------------------------------------
 TFile::TFile(IScene* scene, const std::string& pathname ) 
-	: fFilePath (pathname), fPathChanged (true), fScene(scene)
+	: fFilePath (pathname), fPathChanged (true), fScene(scene), fIsUrl(false)
 {
 }
 
@@ -108,11 +111,26 @@ void TFile::print (ostream& out) const
 MsgHandler::msgStatus TFile::set (const IMessage* msg )	
 { 
 	if (msg->size() == 2) {
-		std::string file;
-		if (!msg->param(1, file)) return MsgHandler::kBadParameters;
-		std::string completePath = fScene ? fScene->absolutePath(file) : IAppl::absolutePath(file);
-		if ( file.size())
+		std::string path;
+		if (!msg->param(1, path)) return MsgHandler::kBadParameters;
+        
+        std::string begin;
+        begin.assign(path,0,7);
+        if(begin == "http://")
+        {
+            QUrl url(path.c_str());
+            std::string root = fScene ? fScene->getRootPath() : IAppl::getRootPath();
+            QDir dir(root.c_str());
+            filedwnld = new QFileDownloader(url, dir);
+            QString file = filedwnld->file()->fileName();
+            setFile(file.toStdString());
+            fIsUrl = true;
+            return MsgHandler::kProcessed;
+        }
+        
+		if ( path.size())
 		{
+            std::string completePath = fScene ? fScene->absolutePath(path) : IAppl::absolutePath(path);
 			setFile( completePath );
 			return MsgHandler::kProcessed;
 		}

@@ -42,6 +42,7 @@ namespace inscore
 @{
 */
 
+class QFileDownloader;
 class IScene;
 typedef class libmapping::SMARTP<IScene>	SIScene;
 //--------------------------------------------------------------------------
@@ -74,6 +75,9 @@ class TFile
 		virtual void		changed(bool state)			{ fPathChanged = state; }
 
 		virtual void		print(std::ostream& out) const;
+        virtual bool        isUrl() {return fIsUrl;}
+
+        virtual QFileDownloader* getFileDownloader() { return filedwnld; }
 
 	protected:
 				 TFile(IScene* scene, const std::string& pathname = "" );
@@ -84,6 +88,8 @@ class TFile
 
 		static char *	read(const std::string& path);
 		static int		getLength (std::ifstream& f);
+        bool            fIsUrl;
+        QFileDownloader * filedwnld;
 };
 
 /*! @} */
