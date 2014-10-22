@@ -27,54 +27,43 @@
 #ifndef __INScore__QFileDownloader__
 #define __INScore__QFileDownloader__
 
-#include "VImageView.h"
-#include <iostream>
-#include <QObject>
+#include <QThread>
 #include <QByteArray>
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
-#include <QFile>
-#include <QDir>
-
+#include "TFile.h"
 
 namespace inscore
 {
-
-
-class QFileDownloader : public QObject
+ 
+class QFileDownloader : public QThread
 {
     Q_OBJECT
- 
+    
 public:
-    QFileDownloader(const QUrl &downloadUrl, const QDir &storageLocation);
+    explicit QFileDownloader(QUrl Url, TFile * file);
  
-    QFileDownloader() : QObject() {}
+    virtual ~QFileDownloader();
  
-    inline QFile* file() const { return pFile; }
+    QByteArray downloadedData() const;
     
-    inline void setView(VObjectView * v) { fView = v; }
- 
 signals:
-    void fileDownloadFinished();
+    void downloaded();
  
-public slots:
-    void beginDownload();
-    void downloadFinished();
-    void downloadReadyRead();
-    void updateImage();
+private slots:
  
-private:
-    QFile *pFile;
-    QDir mStorageLocation;
-    QUrl mDownloadUrl;
- 
-    QNetworkReply *pNetworkReply;
-    QNetworkAccessManager mNetworkManager;
+    void fileDownloaded(QNetworkReply* pReply);
+    void update();
     
-    VObjectView * fView;
+private:
+ 
+    QNetworkAccessManager m_WebCtrl;
+    QByteArray m_DownloadedData;
+    QUrl fUrl;
+    TFile * fFile;
 };
-
+ 
 }
 
 #endif

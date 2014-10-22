@@ -61,6 +61,7 @@ class ISVGFile :  public IGraphicBasedObject, public TFile
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
+        virtual void updateFile();
 };
 
 /*! @} */

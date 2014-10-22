@@ -26,6 +26,7 @@
 #include "IGuidoFile.h"
 #include "IScene.h"
 #include "Updater.h"
+#include "VGuidoItemView.h"
 
 using namespace std;
 
@@ -63,11 +64,39 @@ MsgHandler::msgStatus IGuidoFile::set (const IMessage* msg )
 
 	status = TFile::set( msg );
 	if (status & MsgHandler::kProcessed) {
-		if (!read(fGMN) )
-			status = MsgHandler::kCreateFailure;
-		else newData(true);
+		if(fIsUrl)
+        {
+            if(read(fData))
+            {
+                fGMN = fData.data();
+                newData(true);
+            }
+            else
+                status = MsgHandler::kCreateFailure;
+        }
+        else
+        {
+            if (!read(fGMN))
+                status = MsgHandler::kCreateFailure;
+            else newData(true);
+        }
 	}
 	return status;
+}
+
+
+//--------------------------------------------------------------------------
+void IGuidoFile::updateFile()
+{
+    if(read(fData))
+        fGMN = fData.data();
+    
+    VGuidoItemView * gmnView = fView ? dynamic_cast<VGuidoItemView*>(fView) : 0;
+    if(gmnView)
+    {
+        gmnView->updateLocalMapping(this);
+        gmnView->updateView(this);
+    }
 }
 
 }

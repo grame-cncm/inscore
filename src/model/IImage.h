@@ -32,6 +32,7 @@
 #include "TFile.h"
 #include "TLocalMapping.h"
 #include "TRelation.h"
+#include <QByteArray>
 
 namespace inscore
 {
@@ -55,15 +56,14 @@ class IImage : public IGraphicBasedObject,  public TFile
 		static SIImage create(const std::string& name, IObject * parent)	{ return new IImage(name, parent); }
 		virtual void	accept (Updater* u);
 
-		/// \brief set the path name \param path the new file path
-		void			setFile(const std::string& path);
-
 	protected:
 				 IImage( const std::string& name, IObject * parent);
 		virtual ~IImage() {}
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
+    
+        virtual void updateFile();
 };
 
 /*! @} */

@@ -24,82 +24,47 @@
 */
 
 #include "QFileDownloader.h"
-#include <qpixmap.h>
-#include <qdebug.h>
+#include "VObjectView.h"
 
 namespace inscore
 {
 
 //--------------------------------------------------------------------------
-QFileDownloader::QFileDownloader(const QUrl &downloadUrl, const QDir &storageLocation) : QObject(), mStorageLocation(storageLocation), mDownloadUrl(downloadUrl)
+QFileDownloader::QFileDownloader(QUrl Url, TFile * file) : QThread()
 {
-    fView = 0;
-    beginDownload();
+    connect(&m_WebCtrl, SIGNAL(finished(QNetworkReply*)), SLOT(fileDownloaded(QNetworkReply*)));
+    connect(this, SIGNAL(downloaded()), SLOT(update()));
+    fUrl = Url;
+    fFile = file;
+    QNetworkRequest request(fUrl);
+    m_WebCtrl.get(request);
 }
  
 //--------------------------------------------------------------------------
-void QFileDownloader::beginDownload()
+QFileDownloader::~QFileDownloader()
 {
-    // Make our strings for the File
-    QString downloadFileName = QFileInfo(mDownloadUrl.path()).fileName();
-    QString absoluteFileAddress = mStorageLocation.path() + "/" + downloadFileName;
-    pFile = new QFile(absoluteFileAddress);
-    
-    // Check if we have the file open for writing
-    if (!pFile->open(QIODevice::WriteOnly))
-    {
-        // Delete file
-        if (pFile)
-        {
-            delete pFile;
-            pFile = NULL;
-        }
-        return; // Break, failed
-    }
- 
-    // Get the data from our request on the URL
-    pNetworkReply = mNetworkManager.get(QNetworkRequest(mDownloadUrl));
-    
-    // Setup signals/slots
-    connect(pNetworkReply, SIGNAL(finished()), this, SLOT(downloadFinished()));
-    connect(pNetworkReply, SIGNAL(readyRead()), this, SLOT(downloadReadyRead()));
-}
- 
- 
-//--------------------------------------------------------------------------
-void QFileDownloader::downloadFinished()
-{
-    // Make sure everything is written before we continue
-    downloadReadyRead();
-    pFile->flush();
-    pFile->close();
- 
-    pNetworkReply->deleteLater(); // Very important that we use deleteLater()!
-    pNetworkReply = NULL;
- 
-    delete pFile;
-    pFile = NULL;
- 
-    emit fileDownloadFinished();
- 
+    quit(), wait(50);
 }
  
 //--------------------------------------------------------------------------
-void QFileDownloader::downloadReadyRead()
+void QFileDownloader::fileDownloaded(QNetworkReply* pReply)
 {
-    // If pFile exists, dump all reply data to disk to save memory
-    if (pFile)
-    {
-        pFile->write(pNetworkReply->readAll());
-    }
+    m_DownloadedData = pReply->readAll();
+    pReply->deleteLater();
+    emit downloaded();
+}
+ 
+//--------------------------------------------------------------------------
+QByteArray QFileDownloader::downloadedData() const
+{
+    return m_DownloadedData;
 }
 
 //--------------------------------------------------------------------------
-void QFileDownloader::updateImage()
+void QFileDownloader::update()
 {
-    VImageView * imgView = fView ? dynamic_cast<VImageView*>(fView) : 0;
-    if(imgView)
-        imgView->setImage();
+    fFile->updateFile();
 }
+
 
 };

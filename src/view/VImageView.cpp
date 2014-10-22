@@ -51,27 +51,9 @@ VImageView::VImageView(QGraphicsScene * scene, const IImage* h)
 void VImageView::updateLocalMapping (IImage* img)
 {
 	// 1. Update image
-    if(img->isUrl())
-    {
-        QFileDownloader * fileDownloader = img->getFileDownloader();
-        fileDownloader->setView(this);
-        QObject::connect(fileDownloader, SIGNAL(fileDownloadFinished()), fileDownloader, SLOT(updateImage()) );
-    }
-	QString file = VApplView::toQString( img->getFile().c_str() );
-    if ( QFile::exists(  file  ) )
-	{
-        fFileName = file;
-		if ( !QImageReader( file ).canRead() )
-		{
-			// Invalid/Unsupported file format
-			ITLErr << "invalid image file :" << img->getFile() << ITLEndl;
-		}
-		else setImage();
-	}
-	else
-	{
-		// File not found. Do nothing. (Error msg is handled by the model.)
-	}
+    
+    setImage(img->getData());
+    
     img->setWidth(scene2RelativeWidth(fImageItem->boundingRect().width()));
     img->setHeight(scene2RelativeHeight(fImageItem->boundingRect().height()));
 
@@ -121,10 +103,10 @@ void VImageView::updateView ( IImage * img)
 }
 
 //----------------------------------------------------------------------
-void VImageView::setImage()
+void VImageView::setImage(QByteArray data)
 {
-    fImageItem->image().load(fFileName);
-	itemChanged();
+    fImageItem->image().loadFromData(data);
+    itemChanged();
 }
 
 } // end namespoace

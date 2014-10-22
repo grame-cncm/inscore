@@ -80,11 +80,10 @@ class VImageView:  public VIntPointObjectView
 		
 		virtual void updateLocalMapping (IImage* img);
 		virtual void updateView ( IImage * img );
-		virtual void setImage();
+		virtual void setImage(QByteArray data);
 
 	protected:
 		GraphicSegment getGraphicSegment( const IntPointSegment& intPointSegment , const IGraphicBasedObject * object , bool& mapOk ) const;
-        QString fFileName;
 };
 
 /*!@} */

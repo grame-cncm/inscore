@@ -38,7 +38,7 @@ namespace inscore
 
 //--------------------------------------------------------------------------
 TFile::TFile(IScene* scene, const std::string& pathname ) 
-	: fFilePath (pathname), fPathChanged (true), fScene(scene), fIsUrl(false)
+	: fFilePath (pathname), fPathChanged (true), fScene(scene), fIsUrl(false), fDownloaderThread(0)
 {
 }
 
@@ -102,6 +102,27 @@ bool TFile::read (std::string& str) const
 }
 
 //--------------------------------------------------------------------------
+bool TFile::read(QByteArray& out) const
+{
+    if(fIsUrl && fDownloaderThread)
+    {
+        out = fDownloaderThread->downloadedData();
+        return true;
+    }
+    
+    QFile file( fFilePath.c_str() );
+    if(file.open(QIODevice::ReadOnly))
+    {
+        out = file.readAll();
+        file.close();
+        return true;
+    }
+    else ITLErr << "can't open file :" << fFilePath << ITLEndl;
+	
+    return false;
+}
+
+//--------------------------------------------------------------------------
 void TFile::print (ostream& out) const
 {
 	out << "file: \"" << getFile() << "\"" << endl;
@@ -116,15 +137,19 @@ MsgHandler::msgStatus TFile::set (const IMessage* msg )
         
         std::string begin;
         begin.assign(path,0,7);
-        if(begin == "http://")
+        if(begin == "http://" || begin == "https:/")
         {
-            QUrl url(path.c_str());
-            std::string root = fScene ? fScene->getRootPath() : IAppl::getRootPath();
-            QDir dir(root.c_str());
-            filedwnld = new QFileDownloader(url, dir);
-            QString file = filedwnld->file()->fileName();
-            setFile(file.toStdString());
+            QUrl Url(path.c_str());
+            
+            if (fDownloaderThread) {
+                fDownloaderThread->terminate();
+                delete fDownloaderThread;
+            }
+            fDownloaderThread = new QFileDownloader(Url,this);
+            if (fDownloaderThread) fDownloaderThread->start();
+            
             fIsUrl = true;
+            setFile(path);
             return MsgHandler::kProcessed;
         }
         

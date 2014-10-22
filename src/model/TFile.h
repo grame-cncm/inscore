@@ -30,6 +30,8 @@
 #include <string>
 #include <ostream>
 #include <fstream>
+#include <QThread>
+#include <QUrl>
 
 #include "IObject.h"
 #include "IMessage.h"
@@ -44,6 +46,7 @@ namespace inscore
 
 class QFileDownloader;
 class IScene;
+
 typedef class libmapping::SMARTP<IScene>	SIScene;
 //--------------------------------------------------------------------------
 /*!
@@ -70,14 +73,17 @@ class TFile
 		*/
 		virtual bool		read(std::string& buff) const;
 		virtual bool		read(std::ostream& out) const;
+		virtual bool		read(QByteArray& out) const;
 
 		virtual bool		changed() const				{ return fPathChanged; }
 		virtual void		changed(bool state)			{ fPathChanged = state; }
 
 		virtual void		print(std::ostream& out) const;
-        virtual bool        isUrl() {return fIsUrl;}
+        virtual bool        isUrl() const {return fIsUrl;}
 
-        virtual QFileDownloader* getFileDownloader() { return filedwnld; }
+        virtual void        updateFile(){};
+    
+        virtual QByteArray  getData() {return fData; }
 
 	protected:
 				 TFile(IScene* scene, const std::string& pathname = "" );
@@ -85,11 +91,14 @@ class TFile
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
-
+    
 		static char *	read(const std::string& path);
 		static int		getLength (std::ifstream& f);
         bool            fIsUrl;
-        QFileDownloader * filedwnld;
+        QFileDownloader *    fDownloaderThread;
+    
+        QByteArray fData;
+
 };
 
 /*! @} */

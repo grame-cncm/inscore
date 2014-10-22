@@ -29,6 +29,7 @@
 #include "TComposition.h"
 #include "IScene.h"
 #include "Updater.h"
+#include "VImageView.h"
 
 using namespace std;
 
@@ -52,26 +53,28 @@ void IImage::accept (Updater* u)
 }
 
 //--------------------------------------------------------------------------
-void IImage::setFile(const std::string& path)
-{
-	TFile::setFile(path);
-
-	ifstream file;
-	file.open (path.c_str(), ifstream::in);
-	if (file.is_open())
-		file.close();
-	else ITLErr << "can't open image file:" << path << ITLEndl;
-}
-
-//--------------------------------------------------------------------------
 MsgHandler::msgStatus IImage::set (const IMessage* msg )
 { 
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
 	status = TFile::set( msg );
+    if(!read(fData))
+        status = MsgHandler::kBadParameters;
 	if (status & MsgHandler::kProcessed) newData(true);
 	return status;
+}
+
+//--------------------------------------------------------------------------
+void IImage::updateFile()
+{
+    read(fData);
+    VImageView * imgView = fView ? dynamic_cast<VImageView*>(fView) : 0;
+    if(imgView)
+    {
+        imgView->setImage(fData);
+        imgView->updateView(this);
+    }
 }
 
 }
