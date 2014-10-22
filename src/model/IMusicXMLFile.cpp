@@ -63,28 +63,8 @@ MsgHandler::msgStatus IMusicXMLFile::set (const IMessage* msg )
 
 	status = TFile::set( msg );
 	if (status & MsgHandler::kProcessed) {
-		if(fIsUrl)
+		if(!fIsUrl)
         {
-            if(read(fData))
-            {
-                fXML = fData.data();
-                newData(true);
-            }
-            else
-            {
-                string converted;
-                if ( convert ( fXML, converted) ) {
-                    setGMN( converted );
-                    status = MsgHandler::kProcessed;
-                    newData(true);
-                }
-                else {
-                    ITLErr << "Cannot convert MusicXML file" << ITLEndl;
-                    status = MsgHandler::kBadParameters;
-                }
-            }
-        }
-		else {
             if (!read(fXML))
                 status = MsgHandler::kCreateFailure;
             else
@@ -109,8 +89,17 @@ MsgHandler::msgStatus IMusicXMLFile::set (const IMessage* msg )
 void IMusicXMLFile::updateFile()
 {
     if(read(fData))
+    {
         fXML = fData.data();
-    
+        string converted;
+        if ( convert ( fXML, converted) ) {
+            setGMN( converted );
+            newData(true);
+        }
+        else
+            ITLErr << "updating : Cannot convert MusicXML file" << ITLEndl;
+            
+    }
     VGuidoItemView * gmnView = fView ? dynamic_cast<VGuidoItemView*>(fView) : 0;
     if(gmnView)
     {

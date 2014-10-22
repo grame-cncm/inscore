@@ -67,17 +67,7 @@ MsgHandler::msgStatus IHtmlFile::set (const IMessage* msg )
 
 	status = TFile::set( msg );
 	if (status & MsgHandler::kProcessed) {
-		if(fIsUrl)
-        {
-            if(read(fData))
-            {
-                fText = fData.data();
-                newData(true);
-            }
-            else
-                status = MsgHandler::kCreateFailure;
-        }
-        else
+		if(!fIsUrl)
         {
             if (!read(fText))
                 status = MsgHandler::kCreateFailure;

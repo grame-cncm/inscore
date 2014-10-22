@@ -60,7 +60,6 @@ private:
  
     QNetworkAccessManager m_WebCtrl;
     QByteArray m_DownloadedData;
-    QUrl fUrl;
     TFile * fFile;
 };
  

@@ -64,17 +64,7 @@ MsgHandler::msgStatus IGuidoFile::set (const IMessage* msg )
 
 	status = TFile::set( msg );
 	if (status & MsgHandler::kProcessed) {
-		if(fIsUrl)
-        {
-            if(read(fData))
-            {
-                fGMN = fData.data();
-                newData(true);
-            }
-            else
-                status = MsgHandler::kCreateFailure;
-        }
-        else
+		if(!fIsUrl)
         {
             if (!read(fGMN))
                 status = MsgHandler::kCreateFailure;

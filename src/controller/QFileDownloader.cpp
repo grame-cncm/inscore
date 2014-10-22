@@ -34,9 +34,8 @@ QFileDownloader::QFileDownloader(QUrl Url, TFile * file) : QThread()
 {
     connect(&m_WebCtrl, SIGNAL(finished(QNetworkReply*)), SLOT(fileDownloaded(QNetworkReply*)));
     connect(this, SIGNAL(downloaded()), SLOT(update()));
-    fUrl = Url;
     fFile = file;
-    QNetworkRequest request(fUrl);
+    QNetworkRequest request(Url);
     m_WebCtrl.get(request);
 }
  
