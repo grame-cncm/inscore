@@ -62,7 +62,6 @@ using namespace std;
 #define kTimeInterval	10			// time task interval in milliseconds
 
 static const char* kPortOption = "--port";
-static const char* kAppDomainName = "--port";
 
 
 //_______________________________________________________________________
