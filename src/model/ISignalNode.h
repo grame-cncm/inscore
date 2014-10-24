@@ -44,6 +44,8 @@ class ISignal;
 typedef class libmapping::SMARTP<ISignal>		SISignal;
 class ISignalNode;
 typedef class libmapping::SMARTP<ISignalNode>	SISignalNode;
+class ISignalConnection;
+
 //--------------------------------------------------------------------------
 /*! \brief the scene signals node
 */
@@ -70,14 +72,135 @@ class ISignalNode : public IVNode
 		virtual void debug (bool state)		{ fDebug = state; }
 		
 		static const std::string kName;
+    
+        std::vector<ISignalConnection* > getConnectionsOf(std::string objectName);
 
 	protected:
 		bool fDebug;
 
+        std::vector<ISignalConnection* > fConnections; // the connections between attributes and signals
+    
+        /*! \brief makes the connections between a signal and one ore more methods of an object
+		*/
+		MsgHandler::msgStatus connect(SParallelSignal signal, std::string object, std::string methods);
+    
+        /*! \brief breaks the connections of a signal (all of them, or only some specified)
+		*/
+		MsgHandler::msgStatus disconnect(SParallelSignal signal, std::string object = "", std::string methods = "");
+    
+        /*! \brief handles the "connect" message
+		*/
+		MsgHandler::msgStatus connectMsg (const IMessage* msg);
+    
+        /*! \brief handles the "disconnect" message
+		*/
+		MsgHandler::msgStatus disconnectMsg (const IMessage* msg);
+    
 				 ISignalNode(IObject * parent);
 		virtual ~ISignalNode() {}
 		virtual bool debug (int state);
+    
 };
+//--------------------------------------------------------------------------
+/*! \brief the signal-attribute connections 
+*/
+class ISignalConnection
+{	
+	public:
+    
+    
+				 ISignalConnection(){}
+		virtual ~ISignalConnection() {}
+    
+    	/*! \brief returns the object whose attribute has been connected to the signal
+		*/
+        std::string getObject(){return fObject;}
+    
+    	/*! \brief sets the object
+		*/
+        void setObject(std::string o) {fObject = o;}
+    
+        /*! \brief returns the name of the method connected
+		*/
+		std::string getMethod(){return fMethod;}
+    
+        /*! \brief sets the name of the method connected
+		*/
+		void setMethod(std::string method){fMethod = method;}
+    
+        /*! \brief returns the 'key' of this connection (string "object:method")
+		*/
+		std::string getObjectMethod(){return fKey;}
+    
+        /*! \brief sets the 'key' of this connection (string "object:method")
+		*/
+		void setObjectMethod(std::string objectmethod){fKey = objectmethod;}
+    
+		/*! \brief returns the signal to be connected
+		*/
+        SParallelSignal getSignal(){return fSignal;}
+    
+        /*! \brief sets the signal to be connected
+		*/
+        void setSignal(SParallelSignal sig){fSignal = sig;}
+    
+        /*! \brief returns the float range bounds
+		*/
+		std::pair<float, float> getFloatRange(){return fRangeFloat;}
+    
+        /*! \brief sets the float range bounds
+		*/
+		void setFloatRange(float f1, float f2){fRangeFloat = std::pair<float, float>(f1, f2);}
+    
+        /*! \brief returns the int range bounds
+		*/
+		std::pair<int, int> getIntRange() {return fRangeInt;}
+    
+        /*! \brief sets the int range bounds
+		*/
+		void setIntRange(int i1, int i2){fRangeInt = std::pair<int, int>(i1, i2);}
+    
+        /*! \brief returns the range type
+		*/
+		std::string getRangeType(){return fRangeType;}
+    
+        /*! \brief sets the range type
+		*/
+		void setRangeType(std::string type){fRangeType = type;}
+		
+	protected:
+    
+    	/*! \brief the object whose attribute has been connected to the signal
+		*/
+        std::string fObject;
+    
+        /*! \brief the name of the method connected
+		*/
+		std::string fMethod;
+    
+		/*! \brief the signal to be connected
+		*/
+        SParallelSignal fSignal;
+    
+        /*! \brief the connection key name : "object:method"
+		*/
+        std::string fKey;
+    
+        /*! \brief the float range bounds
+		*/
+		std::pair<float,float> fRangeFloat;
+    
+        /*! \brief the int range bounds
+		*/
+        std::pair<int,int> fRangeInt;
+    
+        /*! \brief the range type
+		*/
+		std::string fRangeType;
+    
+    
+};
+
 
 /*!
 @}

@@ -166,15 +166,6 @@ class ISGraphicSignal : public IGraphicSignal
 OSCStream& operator <<(OSCStream& s, const SISignal& val);
 IMessage& operator <<(IMessage& s, const SISignal& val);
 
-//--------------------------------------------------------------------------
-class SigModified : public Updater
-{
-	public:
-				 SigModified() {}
-		virtual ~SigModified() {}
-		virtual bool needupdate (IObject*)		{ return true; }
-		virtual void updateTo (IGraphicSignal*);
-};
 
 
 /*! @} */

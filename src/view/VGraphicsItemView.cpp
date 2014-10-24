@@ -39,6 +39,8 @@
 #include "TMessageEvaluator.h"
 #include "VExport.h"
 
+#include "MouseEventAble.h"
+
 #define NB_OF_COLORS 12
 
 using namespace libmapping;
@@ -54,13 +56,13 @@ QColor brushColors[NB_OF_COLORS] = {	Qt::darkBlue , Qt::darkRed , Qt::darkYellow
 //												Member functions
 //------------------------------------------------------------------------------------------------------------
 VGraphicsItemView::VGraphicsItemView( QGraphicsScene * scene , QGraphicsItem * item )
-	 : fTilerItem(0), fIsStretchOn(false)
 {
 	fItem = item;
 	scene->addItem( item );
-//	fBrushColorStartIndex = qrand();						// Randomize the color of the mapping debug items.
+    fScene = scene;
+    fParent = 0;
+    fNbMasters = 0;
 	fBrushColorStartIndex = 0;
-    //setParentItem(item->parentItem());
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -68,13 +70,23 @@ VGraphicsItemView::~VGraphicsItemView()
 {
 	deleteDebugItems();
 
-	QList<QGraphicsItem*> children = item()->childItems();	// Break all links with children
+	QList<QGraphicsItem*> children = fItem->childItems();	// Break all links with children
 	for (int i = 0 ; i < children.size() ; i++ )
 		children[i]->setParentItem(0);
     
-	item()->scene()->removeItem( item() );					// Remove the QGraphicsItem from the scene.
-
-	delete fTilerItem;
+    std::map<SMaster, QStretchTilerItem*>::iterator it = fTilerItems.begin();
+    while(it != fTilerItems.end())
+    {
+        std::map<SMaster, QStretchTilerItem*>::iterator toErase = it;
+        it++;
+        if(toErase->second->scene())
+            fScene->removeItem(toErase->second);
+        delete toErase->second;
+    }
+    fTilerItems.clear();
+    
+    if(fItem->scene())
+        fItem->scene()->removeItem( fItem );					// Remove the QGraphicsItem from the scene.
 	delete fItem;	
 }
 
@@ -92,7 +104,7 @@ void VGraphicsItemView::deleteDebugItems()
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::drawMapping(IObject* o)
 {	
-	if (fIsStretchOn) return;		// don't know where to draw 
+	//if (fIsStretchOn) return;		// don't know where to draw
 
 	int count = 0;
 	// For each time<->graphic mapping.
@@ -144,7 +156,7 @@ void VGraphicsItemView::drawMapping(IObject* o)
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::drawNameAndBBox(IObject* o)
 {	
-	if (fIsStretchOn) return;		// don't know where to draw 
+	//if (fIsStretchOn) return;		// don't know where to draw
 
 //	TFloatRect boundingRect = o->getBoundingRect();
 //	QRectF boundingRectQt( 
@@ -176,7 +188,7 @@ void VGraphicsItemView::drawNameAndBBox(IObject* o)
 }
 
 //------------------------------------------------------------------------------------------------------------
-void VGraphicsItemView::setParentView (IObject * object) 
+/*void VGraphicsItemView::setParentView (IObject * object) // not used ...
 {
 	VObjectView * parentView = 0;
 	if (object) {
@@ -191,7 +203,7 @@ void VGraphicsItemView::setParentView (IObject * object)
         }
 	}
 	setParentItem( parentView );
-}
+}*/
 
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateObjectSize(IObject* o)
@@ -201,7 +213,7 @@ void VGraphicsItemView::updateObjectSize(IObject* o)
 }
 
 //------------------------------------------------------------------------------------------------------------
-void VGraphicsItemView::updateTransform(IObject* o)
+void VGraphicsItemView::updateTransform(IObject* o, QGraphicsItem* item)
 {
 //	fItem->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
 	QTransform matrix;
@@ -214,72 +226,128 @@ void VGraphicsItemView::updateTransform(IObject* o)
 		matrix.rotate(o->getRotateY(), Qt::YAxis);
 	if (o->getRotateZ())
 		matrix.rotate(o->getRotateZ(), Qt::ZAxis);
-	fItem->setTransform (matrix);	
+	item->setTransform (matrix);
+}
+
+//------------------------------------------------------------------------------------------------------------
+void VGraphicsItemView::updateItemHStretch(QStretchTilerItem * item, const SGraphic2GraphicMapping& slave2Master)
+{
+    item->setStretch(true);
+    item->setRect(item->parentItem() ? item->parentItem()->boundingRect():item->scene()->sceneRect());
+    float x = item->boundingRect().center().x();
+    float y = item->boundingRect().center().y();
+    item->setPos( x, y);
+    
+    item->resetTransform();
+    item->setTransform(QTransform::fromTranslate(-x, -y), true);
+    Graphic2GraphicRelation::const_iterator iter;
+    for ( iter = slave2Master->direct().begin() ; iter != slave2Master->direct().end() ; iter++ )	// For each slave segment.
+    {
+        if ( !iter->first.size() )	// Skip empty segments.
+            continue;
+
+        QRectF slaveSourceRect = iObject2QGraphicsItem( iter->first, item->boundingRect() );
+			
+        const std::set<GraphicSegment>& related = iter->second;
+        // For each master segment corresponding to the slave segment.
+        for ( std::set<GraphicSegment>::const_iterator i=related.begin() ; i != related.end(); i++ )
+        {
+            if ( !i->size() )	// Skip empty segments.
+                continue;
+
+            QRectF masterDestRect = iObject2QGraphicsItem( *i, item->parentItem()->boundingRect() );
+            item->addSegment( slaveSourceRect , masterDestRect );
+        }
+    }
+}
+
+//------------------------------------------------------------------------------------------------------------
+void VGraphicsItemView::updateItemNoStretch(QStretchTilerItem* item, IObject* o, SMaster master)
+{
+    item->setStretch(false);
+    
+    std::string mapName = master->getMaster()->name() + ":" + master->getMasterMapName();
+    double width = relative2SceneWidth(o->getSyncWidth(mapName), item);
+    double height = relative2SceneHeight(o->getSyncHeight(mapName), item);
+    
+    double x = relative2SceneX( o->getSyncPos(mapName).x(), item );
+    double y = relative2SceneY( o->getSyncPos(mapName).y(), item );
+    
+    item->setRect(QRectF(0,0,width,height));
+    item->setPos(x, y);
+    item->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
+    updateTransform (o, item);
+    QRectF bbrect = item->boundingRect();
+    double xo = bbrect.width() / 2;
+    double yo = bbrect.height() / 2;
+    item->setTransform(QTransform::fromTranslate(-xo, -yo), true);
+}
+
+//------------------------------------------------------------------------------------------------------------
+void VGraphicsItemView::updateGeometry(QGraphicsItem* item, IObject* o, float x, float y)
+{
+    //	Sets the item position in the QGraphicsScene, using 'relative coordinate -> QGraphicsScene coordinate'
+    //	mapping functions.
+    item->setPos(x, y);
+    item->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
+    updateTransform (o, item);
+    QRectF bbrect = item->boundingRect();
+    double xo = bbrect.width()  * (o->getXOrigin() + 1) * o->getScale() / 2;
+    double yo = bbrect.height() * (o->getYOrigin() + 1) * o->getScale() / 2;
+    item->setTransform(QTransform::fromTranslate(-xo, -yo), true);
+}
+
+//------------------------------------------------------------------------------------------------------------
+void VGraphicsItemView::updateItem(QGraphicsItem* item, IObject* o)
+{
+    // Visibility
+    item->setVisible(  o->getVisible() );
+
+    // Z order. A negative 'z' value puts the object behind its parent - if it has one.
+    item->setFlag( QGraphicsItem::ItemStacksBehindParent , (o->getZOrder() < 0) );
+    item->setZValue(  o->getZOrder() );
 }
 
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateView(IObject* o)
-{	
-	setStretch( o->UseGraphic2GraphicMapping() );
+{
+    setSlave(o);
 
-	// stretch mode: setup and use of fTilerItem
-	if ( fIsStretchOn && item()->parentItem() )
+	// slave mode: setup and use of fTilerItem
+    for(std::map<SMaster, QStretchTilerItem*>::iterator i = fTilerItems.begin(); i != fTilerItems.end(); i++)
+    {
+        SMaster master = i->first;
+        QStretchTilerItem * fTilerItem = fTilerItems.find(master)->second;
+        fTilerItem->clearSegments();
+            
+        fTilerItem->setOpacity (o->getA() / 255.f);
+        std::string masterMapName = master->getMaster()->name() + ":" + master->getMasterMapName();
+        const SGraphic2GraphicMapping& slave2Master = o->getSlave2MasterMapping(masterMapName);
+        bool isHStretch =  o->UseGraphic2GraphicMapping(masterMapName);
+            
+        if(slave2Master && isHStretch)
+        {
+            updateItemHStretch(fTilerItem, slave2Master);
+        }
+        else
+        {
+            updateItemNoStretch(fTilerItem, o, master);
+        }
+        updateItem(fTilerItem, o);
+        fTilerItem->update();
+    }
+    // the item is not slaved
+	if(fTilerItems.empty())
 	{
-		const SGraphic2GraphicMapping& slave2Master = o->getSlave2MasterMapping();
-		fTilerItem->clearSegments();
-		fTilerItem->setRect( item()->parentItem()->boundingRect() );
-		
-		float alpha = o->getA() / 255.f;
-		fTilerItem->setOpacity (alpha);
-		
-		Graphic2GraphicRelation::const_iterator iter;
-		for ( iter = slave2Master->direct().begin() ; iter != slave2Master->direct().end() ; iter++ )	// For each slave segment.
-		{
-			
-			if ( !iter->first.size() )	// Skip empty segments.
-				continue;
+        fItem->setScale(  o->getScale() );
+	    updateGeometry(fItem, o, relative2SceneX(o->getXPos()), relative2SceneY(o->getYPos()));
+        updateItem(fItem, o);
+    }
 
-			QRectF slaveSourceRect = iObject2QGraphicsItem( iter->first, fItem->boundingRect() );
-//qDebug() << "VGraphicsItemView::updateView slaveSourceRect: " << slaveSourceRect;
-			
-			const std::set<GraphicSegment>& related = iter->second;
-			for ( std::set<GraphicSegment>::const_iterator i=related.begin() ; i != related.end(); i++ )	// For each master segment corresponding to the slave segment.
-			{
-				if ( !i->size() )	// Skip empty segments.
-					continue;
-
-				QRectF masterDestRect = iObject2QGraphicsItem( *i, item()->parentItem()->boundingRect() );
-				fTilerItem->addSegment( slaveSourceRect , masterDestRect );
-			}
-		}
-		fTilerItem->update();
-	}
-	else		// stretch is not on
-	{
-		//	Sets the item position in the QGraphicsScene, using 'relative coordinate -> QGraphicsScene coordinate' 
-		//	mapping functions.
-		fItem->setPos( relative2SceneX( o->getXPos() ) , relative2SceneY(  o->getYPos() ) );
-		fItem->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
-		updateTransform (o);
-		fItem->setScale(  o->getScale() );
-
-		//	Centers the item on its origin.
-		QRectF bbrect = fItem->boundingRect();
-		double xo = bbrect.width()  * (o->getXOrigin() + 1) / 2;
-		double yo = bbrect.height() * (o->getYOrigin() + 1) / 2;
-		fItem->setTransform(QTransform::fromTranslate(-xo*o->getScale(), -yo*o->getScale()), true);
-	}
-
-	// Visibility
-	item()->setVisible(  o->getVisible() );
-
-	// Z order. A negative 'z' value puts the object behind its parent - if it has one.
-	item()->setFlag( QGraphicsItem::ItemStacksBehindParent , (o->getZOrder() < 0) );
-	item()->setZValue(  o->getZOrder() );
 
 	//Exports the item if necessary.
 	if ( o->getExportFlag().length() ) {
-		VExport::exportItem( item() , o->getExportFlag().c_str() ,  o->getScale() ,  o->getScale() );
+		VExport::exportItem( item() , o->getExportFlag().c_str() ,  o->getScale() ,  o->getScale(), o->getDrawChildren() );
 		const IMessageList*	msgs = o->getMessages(EventsAble::kExport);
 		if (msgs) {
 			MouseLocation mouse (0, 0, 0, 0, 0, 0);
@@ -302,6 +370,7 @@ void VGraphicsItemView::updateView(IObject* o)
 	// ----------------------------------------------------------------------------------------------
 	// Debug graphic feedback : displays the bounding rectangle and the object name
 	if ( o->nameDebug() ) drawNameAndBBox (o);
+    
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -334,88 +403,129 @@ void VGraphicsItemView::buildDefaultMapping (IObject* object)
 }
 
 //------------------------------------------------------------------------------------------------------------
-QStretchTilerItem* VGraphicsItemView::buildTiler()
+QStretchTilerItem* VGraphicsItemView::buildTiler(SIObject o)
 {
-	return new QStretchTilerItem( fItem );
+    MouseEventAble<QStretchTilerItem>* item = new MouseEventAble<QStretchTilerItem>( o );
+    item->setOriginItem(fItem);
+    return item;
 }
 
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::itemChanged()
 {
-	if ( fIsStretchOn )
-		fTilerItem->updateCache();
+    for(std::map<SMaster, QStretchTilerItem*>::iterator it = fTilerItems.begin(); it != fTilerItems.end(); it++)
+    {
+        it->second->needUpdate(true);
+    }
 }
 
 //------------------------------------------------------------------------------------------------------------
-static void switchItem( QGraphicsItem* object, QGraphicsItem* newContainer )
-{	
-	QGraphicsScene * scene = object->scene();		// Get the scene.
-	QGraphicsItem * parent = object->parentItem();	// Get the item's parent.
-	scene->removeItem( object );					// Remove the object from the scene.
-	if ( parent ) 						// Add the newContainer to the item's former parent...
-		newContainer->setParentItem(parent);
-	else								// ... or to the scene, if there was no parent.	
-		scene->addItem( newContainer );
-
-	QList<QGraphicsItem*> children = object->childItems();	// Get the item's children.
-	for (int i = 0 ; i < children.size() ; i++ )
-		children[i]->setParentItem(newContainer);			// and propagates the new container change
+void VGraphicsItemView::findNewSync(SMaster master, SIObject slave)
+{
+    //std::map<SMaster, QStretchTilerItem*>::iterator it = fTilerItems.find(master);
+    bool found = false;
+    for(std::map<SMaster, QStretchTilerItem*>::iterator i = fTilerItems.begin(); i != fTilerItems.end(); i++)
+    {
+        if(i->first->getMaster() == master->getMaster())
+            found = true;
+    }
+    QStretchTilerItem * fTilerItem;
+    if(!found)
+    {
+        fTilerItem = buildTiler(slave);
+        VGraphicsItemView * masterView = dynamic_cast<VGraphicsItemView*>(master->getMaster()->getView());
+        fTilerItem->setParentItem(masterView->item());
+        fTilerItems.insert(std::pair<SMaster, QStretchTilerItem*>(master,fTilerItem));
+    }
 }
 
 //------------------------------------------------------------------------------------------------------------
-void VGraphicsItemView::setStretch( bool isStretchOn )
-{	
-	if ( isStretchOn == fIsStretchOn ) return;
+void VGraphicsItemView::findObsoleteSync(std::vector<SMaster> masters)
+{
+    std::map<SMaster, QStretchTilerItem*>::iterator it = fTilerItems.begin();
 
-	if ( isStretchOn ) {
-		// Switch from fItem to fTilerItem: the fItem will be replaced by the fTilerItem, meaning:
-		//		- replacing it in the scene
-		//		- replacing it in the QGraphicsItems parent-children relationship.	
-		if ( !fTilerItem )				// Build fTilerItem if it didn't exist.
-			fTilerItem = buildTiler();
-		switchItem (fItem, fTilerItem);
-		fTilerItem->setGraphicsEffect (fItem->graphicsEffect());
-	}
-	else {
-		switchItem (fTilerItem, fItem);
-		fItem->setGraphicsEffect (fTilerItem->graphicsEffect());
-	}
-	fIsStretchOn = isStretchOn;
+    while(it != fTilerItems.end())
+    {
+        if(std::find(masters.begin(), masters.end(), it->first) == masters.end())
+        {
+            if(it->second->scene())
+                fScene->removeItem(it->second);
+            else
+                it->second->setParentItem(0);
+            
+            std::map<SMaster, QStretchTilerItem*>::iterator toErase = it;
+            it++;
+            fTilerItems.erase(toErase);
+        }
+        else
+            it++;
+    }
+}
+
+//------------------------------------------------------------------------------------------------------------
+void VGraphicsItemView::setSlave(SIObject o )
+{
+    std::vector<SMaster> masters = o->getParent()? o->getParent()->getMasters(o) : o->getScene()->getMasters(o);
+    
+    if(fNbMasters == masters.size()) return; //there is no master-slave relation to add or remove
+    
+	for(int i = 0; i < masters.size(); i++)    // we first look for new masters, in order to add new representation
+    {
+        SMaster master = masters[i];
+        findNewSync(master, o);
+    }
+    
+    findObsoleteSync(masters); // Then we check if some representation could be obsolete (master/slave relation deleted)
+    
+    if(!fNbMasters)    // this is the first master added, so we have to remove the classic fItem and switch to the slaved verison
+    {
+        if(fItem->scene())
+            fScene->removeItem(fItem);
+    }
+    if(masters.empty() && !fItem->scene())
+    {
+        fScene->addItem(fItem);
+        fItem->setParentItem(fParent);
+    }
+    fNbMasters = masters.size(); // finally we update the number of masters
 }
 
 //------------------------------------------------------------------------------------------------------------
 //											Conversion methods
 //------------------------------------------------------------------------------------------------------------
-QRectF VGraphicsItemView::referenceRect() const
+QRectF VGraphicsItemView::referenceRect(QGraphicsItem * specItem) const
 {
-	return item()->parentItem() ? item()->parentItem()->boundingRect() : item()->scene()->sceneRect();
+    if(specItem)
+        return specItem->parentItem() ? specItem->parentItem()->boundingRect() : fScene->sceneRect();
+    else
+        return fParent ? fParent->boundingRect() : fScene->sceneRect();
 }
 
 //------------------------------------------------------------------------------------------------------------
-double VGraphicsItemView::relative2SceneX(float x) const
+float VGraphicsItemView::relative2SceneX(float x, QGraphicsItem * specItem) const
 {
-	const QRectF& refRect = referenceRect();
+	const QRectF& refRect = referenceRect(specItem);
 	// + 1 parce que l'espace Qt va de 0->... et interlude de -1 à ...
 	return (( x + 1 ) * refRect.width()) / 2.0f + refRect.x();
 }
 
 //------------------------------------------------------------------------------------------------------------
-double VGraphicsItemView::relative2SceneY(float y) const
+float VGraphicsItemView::relative2SceneY(float y, QGraphicsItem * specItem) const
 {
-	const QRectF& refRect = referenceRect();
+	const QRectF& refRect = referenceRect(specItem);
 	return (( y + 1 ) *  refRect.height()) / 2.0f  + refRect.y();
 }
 
 //--------------------------------------------------------------------------
-double VGraphicsItemView::relative2SceneWidth(float width) const
+float VGraphicsItemView::relative2SceneWidth(float width, QGraphicsItem * specItem) const
 {
-	return (referenceRect().width() * width)/2.0f;
+	return (referenceRect(specItem).width() * width)/2.0f;
 }
 
 //--------------------------------------------------------------------------
-double VGraphicsItemView::relative2SceneHeight(float height) const
+float VGraphicsItemView::relative2SceneHeight(float height, QGraphicsItem * specItem) const
 {
-	return (referenceRect().height() * height)/2.0f;
+	return (referenceRect(specItem).height() * height)/2.0f;
 }
 
 //--------------------------------------------------------------------------
@@ -427,28 +537,28 @@ double VGraphicsItemView::relative2SceneHeight(float height) const
 //}
 
 //--------------------------------------------------------------------------
-double VGraphicsItemView::scene2RelativeWidth(float width) const
+float VGraphicsItemView::scene2RelativeWidth(float width, QGraphicsItem * specItem) const
 {
-	return 2.0f * width / referenceRect().width();
+	return 2.0f * width / referenceRect(specItem).width();
 }
 
 //--------------------------------------------------------------------------
-double VGraphicsItemView::scene2RelativeHeight(float height) const
+float VGraphicsItemView::scene2RelativeHeight(float height, QGraphicsItem * specItem) const
 {
-	return 2.0f * height / referenceRect().height();
+	return 2.0f * height / referenceRect(specItem).height();
 }
 
 //------------------------------------------------------------------------------------------------------------
-double VGraphicsItemView::scene2RelativeX(float x) const
+float VGraphicsItemView::scene2RelativeX(float x, QGraphicsItem * specItem) const
 {
-	const QRectF& refRect = referenceRect();
+	const QRectF& refRect = referenceRect(specItem);
 	return ( x - refRect.x() ) / ( refRect.width() / 2.0f ) - 1 ;
 }
 
 //------------------------------------------------------------------------------------------------------------
-double VGraphicsItemView::scene2RelativeY(float y) const
+float VGraphicsItemView::scene2RelativeY(float y, QGraphicsItem * specItem) const
 {
-	const QRectF& refRect = referenceRect();
+	const QRectF& refRect = referenceRect(specItem);
 	return ( y - refRect.y() ) / ( refRect.height() / 2.0f ) - 1 ;
 }
 

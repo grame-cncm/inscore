@@ -48,6 +48,9 @@ ISignalNode::ISignalNode(IObject * parent) : IVNode(kName, parent), fDebug(false
 	fMsgHandlerMap["debug"]		= TSetMethodMsgHandler<ISignalNode, bool>::create(this,&ISignalNode::debug);
 	fMsgHandlerMap[kwatch_GetSetMethod]		= 0L;
 	fMsgHandlerMap[kwatchplus_SetMethod]	= 0L;
+    
+    fMsgHandlerMap[kconnect_GetSetMethod]	= TMethodMsgHandler<ISignalNode>::create(this, &ISignalNode::connectMsg);
+	fMsgHandlerMap[kdisconnect_SetMethod]   = TMethodMsgHandler<ISignalNode>::create(this, &ISignalNode::disconnectMsg);
 }
 
 //--------------------------------------------------------------------------
@@ -100,6 +103,266 @@ bool ISignalNode::debug(int state)
 	if (state < 0) return false;
 	fDebug = state ? true : false;
 	return true;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus ISignalNode::connectMsg (const IMessage* msg)
+{
+	int n = msg->size();
+    // We must at least have 2 parameters : the signal and at least one pair "object:method"
+    if(n < 2) return MsgHandler::kBadParameters;
+    
+    std::string signalStr, objectsParameterStr, objectStr;
+    if(!msg->param(0, signalStr)) return MsgHandler::kBadParameters;
+    
+    // We check if the first parameter is indeed a signal and is on our list
+    subnodes signalList;
+    if(!find(signalStr, signalList)) return MsgHandler::kBadParameters;
+    IObject* sig = signalList[0];
+    ISignal* signal = dynamic_cast<ISignal*>(sig);
+    
+    if(!signal) return MsgHandler::kBadParameters;
+    
+    // Then, for each parameter, we separate the first name (the object) and the rest of the string (one or more methods) :
+    // "object:method1[range1]:method2[range2]" --> "object" + "method1[range1]:method2[range2]"
+    // And for each pair of object-methods, we call connect(signal, objectStr, methods)
+    MsgHandler::msgStatus result;
+    for(int i = 1; i<n; i++)
+    {
+        if(!msg->param(i, objectsParameterStr)) return MsgHandler::kBadParameters;
+        objectStr = objectsParameterStr.substr(0,objectsParameterStr.find(":"));
+        std::string methods = objectsParameterStr.substr(objectsParameterStr.find(":")+1);
+        result = connect(signal, objectStr, methods);
+        if(result != MsgHandler::kProcessed) return result;
+    }
+    return result;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus ISignalNode::disconnectMsg (const IMessage* msg)
+{
+	int n = msg->size();
+    if(!n) return MsgHandler::kBadParameters;
+    
+    // We check that the first parameter is a signal, and that it is on the list
+    std::string signalStr;
+    if(!msg->param(0, signalStr)) return MsgHandler::kBadParameters;
+    
+    subnodes signalList;
+    if(!find(signalStr, signalList)) return MsgHandler::kBadParameters;
+    IObject* sig = signalList[0];
+    ISignal* signal = dynamic_cast<ISignal*>(sig);
+    
+    if(!signal) return MsgHandler::kBadParameters;
+    
+    // If there is only one parameter, we disconnect all connections with the signal
+    if(n == 1)
+        return disconnect(signal);
+    
+    // If we have more parameters, we distinguish each object from its list of methods and call disconnect(signal, objectStr, objectList)
+    std::string objectMethodsStr, objectStr;
+    MsgHandler::msgStatus result;
+    for(int i = 1; i<n; i++)
+    {
+        if(!msg->param(i, objectMethodsStr)) return MsgHandler::kBadParameters;
+        objectStr = objectMethodsStr.substr(0,objectMethodsStr.find(":"));
+        subnodes objectList;
+        if(!getParent()->find(objectStr, objectList)) return MsgHandler::kBadParameters;
+    
+        std::string methods = objectMethodsStr.substr(objectMethodsStr.find(":")+1);
+        result = disconnect(signal, objectStr, methods);
+        if(result != MsgHandler::kProcessed) return result;
+    }
+    return result;
+}
+
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus ISignalNode::connect(SParallelSignal signal, std::string object, std::string methods)
+{
+    // We check if the object is indeed in the elements of our parent object
+    subnodes objectList;
+    if(!getParent()->find(object, objectList)) return MsgHandler::kBadParameters;
+    
+    SIObject o = objectList[0];
+    std::string allMethodStr = methods;
+    std::string methodStr;
+    std::string range = "";
+    std::string objectMethod;
+    int i = allMethodStr.find(":");
+    
+    // We separate all the methods of the list, and also distinguish the method and the range, to add to the maps fConnections and fRanges :
+    // "method1[range1]:method2[range2]"    --> insert in fConnections <"object:method1", signal> + <"object:method2", signal >
+    //                                      --> insert in fRanges <"object:method1", range1> + <"object:method2", range2 >
+    while(!allMethodStr.empty())
+    {
+        methodStr = allMethodStr.substr(0,i);
+        
+        if(i!=allMethodStr.npos)
+        {
+            allMethodStr = allMethodStr.substr(i+1); // rest of the string (after the ":")
+            i = allMethodStr.find(":"); // next position of ":"
+        }
+        else
+            allMethodStr = "";
+        
+        if(methodStr.find("[") != methodStr.npos) // "method(n)[range(n)]"
+        {
+            range = methodStr.substr(methodStr.find("[")); // "[range(n)]"
+            methodStr = methodStr.substr(0, methodStr.find("[")); // "method(n)"
+        }
+        else
+            range = "";
+        
+        // we test that the method is available for connections
+        if(! o->signalHandler(methodStr)) return MsgHandler::kBadParameters;
+        
+        ISignalConnection * connection = new ISignalConnection();
+        
+        objectMethod = object;
+        objectMethod += ":";
+        objectMethod += methodStr; // "object:method(n)"
+        
+        connection->setObject(object);
+        connection->setMethod(methodStr);
+        connection->setObjectMethod(objectMethod);
+        connection->setSignal(signal);
+        
+        // We now want to translate the string range into floats, ints, or rationnals.
+        if(!range.empty())
+        {
+            CRegexpT <char> regexp("^\\[.+,.+\\]$"); // range : "[r1,r2]"
+            if(regexp.MatchExact(range.c_str()))
+            {
+                CRegexpT <char> regexp2("^\\[.+ .+,.+ .+\\]$"); // range : "[n1 d1, n2 d2]"
+                if(!range.empty() && regexp2.MatchExact(range.c_str()))
+                {
+                    int n1, d1, n2, d2;
+                    int n = sscanf (range.c_str(), "[%i %i,%i %i]", &n1, &d1, &n2, &d2);
+                    if (n == 4)
+                    {
+                        float r1 = (float)(n1)/(float)(d1);
+                        float r2 = (float)(n2)/(float)(d2);
+                        // We store the information in the object connection
+                        connection->setRangeType("float");
+                        connection->setFloatRange(r1, r2);
+                    }
+                    else return MsgHandler::kBadParameters;
+                }
+                else
+                {
+                    int i1, i2;
+                    float f1, f2;
+                    if(sscanf (range.c_str(), "[%i,%i]", &i1, &i2) == 2) // the range is expressed with integers
+                    {
+                        // We store the information in the object connection
+                        connection->setRangeType("int");
+                        connection->setIntRange(i1, i2);
+                    }
+                    else if(sscanf (range.c_str(), "[%f,%f]", &f1, &f2) == 2) // the range is expressed with floats
+                    {
+                        // We store the information in the object connection
+                        connection->setRangeType("float");
+                        connection->setFloatRange(f1, f2);
+                    }
+                    else return MsgHandler::kBadParameters;
+                }
+            }
+            else return MsgHandler::kBadParameters;
+        }
+        else
+            connection->setRangeType("none");
+        
+        vector<ISignalConnection*>::iterator it = fConnections.begin();
+        bool found = false;
+        while(it != fConnections.end()  && !found)
+        {
+            if((*it)->getObjectMethod() == objectMethod)
+                found = true;
+            else
+                it++;
+        }
+        if(found) // If this method of the object has already been stored, we replace the connection
+            fConnections.erase(it);
+        
+        fConnections.push_back(connection);
+    }
+
+    return MsgHandler::kProcessed;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus ISignalNode::disconnect(SParallelSignal signal, std::string object, std::string methods)
+{
+    if(object.empty()) // if the object is not specified, we disconnect all connections with the signal
+    {
+        std::vector<ISignalConnection* >::iterator it = fConnections.begin();
+        while(it != fConnections.end())
+        {
+            if((*it)->getSignal() == signal) // if we find the signal, we erase the connection object
+            {
+                std::vector<ISignalConnection*>::iterator d = it;
+                fConnections.erase(d);
+                it++;
+            }
+        }
+    }
+    // We separate all the methods of the list to erase them from the map fConnections (after checking that they were indeed connected to the signal) :
+    // "method1:method2:method3" --> erase "object:method1", "object:method2", "object:method3"
+    
+    else
+    {
+        std::string allMethodStr = methods;
+        std::string methodStr;
+        std::string objectMethod;
+        int i = allMethodStr.find(":");
+        while(!allMethodStr.empty())
+        {
+            methodStr = allMethodStr.substr(0,i);
+            
+            if(i != allMethodStr.npos)
+            {
+                allMethodStr = allMethodStr.substr(i+1);
+                i = allMethodStr.find(":");
+            }
+            else
+                allMethodStr = "";
+            
+            objectMethod = object;
+            objectMethod += ":";
+            objectMethod += methodStr;
+            
+            // we handle the fConnections map
+            
+            vector<ISignalConnection*>::iterator it = fConnections.begin();
+            bool found = false;
+            while(it != fConnections.end()  && !found)
+            {
+                if((*it)->getObjectMethod() == objectMethod && (*it)->getSignal() == signal)
+                    found = true;
+                else
+                    it++;
+            }
+            if(found)
+                fConnections.erase(it);
+            else     // this connections didn't exist
+                return MsgHandler::kBadParameters;
+        }
+    }
+    return MsgHandler::kProcessed;
+}
+
+//--------------------------------------------------------------------------
+std::vector<ISignalConnection* > ISignalNode::getConnectionsOf(std::string objectName)
+{
+    std::vector<ISignalConnection*> connections;
+    for (int i = 0; i < fConnections.size(); i++)
+    {
+        std::string object = fConnections[i]->getObject();
+        if(!object.compare(objectName))
+            connections.push_back(fConnections[i]);
+    }
+    return connections;
 }
 
 }

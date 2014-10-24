@@ -61,33 +61,33 @@ class VGraphicsItemView : public VObjectView
 
 		virtual void updateView(IObject * object);			// updates the object view
 		virtual void updateObjectSize( IObject * object );	// updates the object size
-		virtual void setParentView (IObject * object);		// updates the object parent view
-		virtual void setParentItem( VObjectView* master )		{ setParentItem((VGraphicsItemView*)master); }
-		virtual void setParentItem( VGraphicsItemView* master )	{ fParent= master ? master->item() : 0;
-                                                                item()->setParentItem(master ? master->item() : 0);}
-
-		virtual void setEffect (GraphicEffect& effect)		{ item()->setGraphicsEffect (effect.get()); }
+		//virtual void setParentView (IObject * object);		// updates the object parent view
+		virtual void setParentItem( VObjectView* parent )		{ setParentItem((VGraphicsItemView*)parent); }
+		virtual void setParentItem( VGraphicsItemView* parent ){ fParent = parent ? parent->item() : 0;
+                                                                fItem->setParentItem(parent ? parent->item() : 0);}
+    
+        virtual void setEffect (GraphicEffect& effect)		{ item()->setGraphicsEffect (effect.get()); }
 		virtual GraphicEffect getEffect () const			{ return GraphicEffect ( item()->graphicsEffect()); }
 
 		/// \brief Maps the IObject [-1,1] y coordinate to the referenceRect().
-		double relative2SceneY(float y) const;
+		float relative2SceneY(float y, QGraphicsItem * item = 0 ) const;
 		/// \brief Maps the IObject [-1,1] x coordinate to the referenceRect().
-		double relative2SceneX(float x) const;
+		float relative2SceneX(float x, QGraphicsItem * item = 0 ) const;
 		/// \brief Maps the IObject [0,2] width value to the corresponding referenceRect() value.
-		double relative2SceneWidth(float width) const;
+		float relative2SceneWidth(float width, QGraphicsItem * item = 0 ) const;
 		/// \brief Maps the IObject [0,2] height value to the corresponding referenceRect() value.
-		double relative2SceneHeight(float height) const;
+		float relative2SceneHeight(float height, QGraphicsItem * item = 0 ) const;
 		/// \brief Maps a rect expressed in [-1,1] scene coordinate to a QRectF expressed in referenceRect() coordinates.
 //		QRectF relative2SceneRect( const TFloatRect& rect) const;
 
 		/// \brief Maps the referenceRect() width value to the corresponding [0,2] value.
-		double scene2RelativeWidth(float width) const;
+		float scene2RelativeWidth(float width, QGraphicsItem * item = 0 ) const;
 		/// \brief Maps the referenceRect() height value to the corresponding [0,2] value.
-		double scene2RelativeHeight(float height) const;
+		float scene2RelativeHeight(float height, QGraphicsItem * item = 0 ) const;
 		/// \brief Maps the referenceRect() x value to the corresponding [-1,1] value.
-		double scene2RelativeX(float x) const;
+		float scene2RelativeX(float x, QGraphicsItem * item = 0 ) const;
 		/// \brief Maps the referenceRect() y value to the corresponding [-1,1] value.
-		double scene2RelativeY(float y) const;
+		float scene2RelativeY(float y, QGraphicsItem * item = 0 ) const;
 		
 		static void buildDefaultMapping (IObject* object);
 		
@@ -96,7 +96,7 @@ class VGraphicsItemView : public VObjectView
 		
 		virtual void drawMapping (IObject* o);
 		virtual void drawNameAndBBox (IObject* o);
-		virtual void updateTransform(IObject * object);		// updates the object transform matrix
+		virtual void updateTransform(IObject * object, QGraphicsItem* item);		// updates the object transform matrix
 		
 		float getIObjectWidth() const { return scene2RelativeWidth( fItem->boundingRect().width() ); }		// Gives the object's width in interlude scene coordinates.
 		float getIObjectHeight() const { return scene2RelativeHeight( fItem->boundingRect().height() ); }	// Gives the object's height in interlude scene coordinates.
@@ -121,7 +121,7 @@ class VGraphicsItemView : public VObjectView
 		}
 		
 		/// \brief Returns the reference rectangle for the QGraphicsItem coordinate: the master QRect or the scene QRect (if there's no master).
-		QRectF referenceRect() const;
+		QRectF referenceRect(QGraphicsItem * item) const;
 
 		/// \brief Maps a point in QGraphicsItem coordinate to a point in IObject internal coordinate. ( [-1,1], (0,0) is the center of the object, (-1,-1) is )
 		///	the topLeft, (1,1) is the bottomright.
@@ -149,32 +149,51 @@ class VGraphicsItemView : public VObjectView
 		static TFloatPoint qPointFToFloatPoint(const QPointF& p)	{ return TFloatPoint(p.x(),p.y());}
 		/// \brief TFloatPoint to QPointF converter.
 		static QPointF floatPointToQPointF(const TFloatPoint& p)	{ return QPointF(p.x(),p.y());}
-
-		/// \brief Activate/desactivate stretch.
-		void setStretch( bool isStretchOn );
-
-		/// \brief Returns the QGraphicsItem or the QTilerItem, whether stretch-mode is on or off.
-				QGraphicsItem * item()			{ return fIsStretchOn ? fTilerItem : fItem; }
-		const	QGraphicsItem * item() const	{ return fIsStretchOn ? fTilerItem : fItem; }
-
-		bool isStretchOn() const { return fIsStretchOn; }
+    
+        /// \brief Look in the fTilerItems map to see if we must add new pairs of slave-master (new representation)
+		void findNewSync(SMaster master, SIObject slave);
+    
+        /// \brief Look in the fTilerItems map if some pairs of slave-master (and so fTilerItems) are obsolete
+		void findObsoleteSync(std::vector<SMaster> masters);
+    
+        /// \brief handles the fTilerItems to make them fit the model list of slave-master
+		void setSlave(SIObject o);
+        
+		/// \brief Returns the QGraphicsItem or the QTilerItem, whether the object is slaved or not
+				QGraphicsItem * item(SMaster m = 0)	{return m ? fTilerItems.find(m)->second : fItem;}
+		const	QGraphicsItem * item(SMaster m = 0) const    {return m ? fTilerItems.find(m)->second : fItem;}
 		
 		/// \brief Builds the QTilerItem to be used for stretching.
-		virtual QStretchTilerItem* buildTiler();
-		/// \brief Must be called when the QGraphicsItem has been modified in VGraphicsItemView subclasses.
+		virtual QStretchTilerItem* buildTiler(SIObject o);
+		
+        /// \brief Must be called when the QGraphicsItem has been modified in VGraphicsItemView subclasses.
 		void itemChanged();
 		
-		void deleteDebugItems();		/// \brief deletes the debug node items
+        /// \brief deletes the debug node items
+		void deleteDebugItems();
+
+        /// \brief updates the fTilerItem when it is h stretch (with mapping)
+        void updateItemHStretch(QStretchTilerItem * item, const SGraphic2GraphicMapping& slave2Master);
+
+        /// \brief updates the fTilerItem when it has no stretch
+        void updateItemNoStretch(QStretchTilerItem* item, IObject* o, SMaster master);
+
+        /// \brief updates the geometry (position, centering, scale) of the item
+        void updateGeometry(QGraphicsItem* item, IObject* o, float x, float y);
+
+        /// \brief updates the attributes of the QItem
+        void updateItem(QGraphicsItem* item, IObject* o);
 
 		QGraphicsItem * fItem;			/// \brief The QGraphicsItem used to render the IObject.
-		QStretchTilerItem * fTilerItem;	/// \brief The QTilerItem used when stretching a slave item
-		QList<QGraphicsItem*> fDebugItems;
+		std::map<SMaster, QStretchTilerItem *> fTilerItems; /// \brief The QTilerItem used when the object is a synchronized
+        QList<QGraphicsItem*> fDebugItems;
 		int fBrushColorStartIndex;
 
 		QRectF fLastValidRect;
-		bool fIsStretchOn;
+        int fNbMasters;
     
         QGraphicsItem* fParent;
+        QGraphicsScene* fScene;
 };
 typedef class libmapping::SMARTP<VGraphicsItemView>	SVGraphicsItemView;
 

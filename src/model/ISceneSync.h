@@ -49,7 +49,7 @@ class ISceneSync : public IVNode
 {	
 	ISync	fSync;
 
-	MsgHandler::msgStatus syncMsg (const std::string& slave);
+	MsgHandler::msgStatus syncMsg (const std::string& slave, const std::string& master = "");
 	MsgHandler::msgStatus syncMsg ( const std::string& slave, const std::string& slaveMap, 
 									const std::string& master, const std::string& masterMap,
 									Master::StretchType stretch, Master::SyncType sync, Master::VAlignType valign);
@@ -63,11 +63,23 @@ class ISceneSync : public IVNode
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*);
 
-		/*! \brief gives the master of an object
+		/*! \brief gives (one of) the master(s) of an object
 			\param o the object to look for in the synchronization set
 			\return the master when found
 		*/
 		virtual SMaster getMaster(SIObject o) const;
+
+        /*! \brief gives the masters of an object
+			\param o the object to look for in the synchronization set
+			\return the vector of masters
+		*/
+		virtual std::vector<SMaster> getMasters(SIObject o) const;
+
+		/*! \brief gives the slaves of an object
+			\param o the object to look for in the synchronization set
+			\return the vector of slaves
+		*/
+		virtual std::vector<SIObject> getSlaves(SIObject o) const;
 
 		/*! \brief synchronizes two objects
 			\param o a slave object
@@ -78,7 +90,7 @@ class ISceneSync : public IVNode
 		/*! \brief breaks a synchronization link
 			\param o a slave object
 		*/
-		virtual void delsync(SIObject& o)						{ fSync.remove (o);}
+		virtual void delsync(SIObject& o, SMaster m = 0)	{ fSync.remove (o, m);}
 
 		/*! \brief cleanup the relations set
 			\see ISync::cleanup
@@ -86,7 +98,10 @@ class ISceneSync : public IVNode
 		virtual void cleanup()	{ fSync.cleanup(); IObject::cleanup(); }
 
 		/// \brief makes a topological sort of the scene elements according to their synchronizations set
-		virtual void	sort (IObject::subnodes& nodes);
+		virtual IObject::subnodes	sort (IObject::subnodes& nodes);
+
+		/// \brief makes a topological sort of the scene elements according to their synchronizations set (inverted compared to sort())
+		virtual IObject::subnodes	invertedSort (IObject::subnodes& nodes);
 
 		/// \brief a periodic task to propagate modification state from masters to slaves
 		virtual void ptask ();

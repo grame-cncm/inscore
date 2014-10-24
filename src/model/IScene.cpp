@@ -129,40 +129,16 @@ void IScene::reset ()
 	fLua.Initialize();
 }
 
-#define useiterator 0
-//--------------------------------------------------------------------------
-void IScene::propagateSignalsState ()
-{
-	SigModified visitor;
-#if useiterator
-	for (subnodes::iterator i = elements().begin(); i != elements().end(); i++) {
-		(*i)->accept(&visitor);
-	}
-#else
-	for (unsigned int i = 0; i < elements().size(); i++) {
-		elements()[i]->accept(&visitor);
-	}
-#endif
-}
-
 //--------------------------------------------------------------------------
 void IScene::createVirtualNodes()
 {
 	IRectShape::createVirtualNodes();
 
-//	fSync = ISceneSync::create(this);
 	fFileWatcher = QFileWatcher::create(this);
 	fJSObject = IJavascript::create(this, &fJavascript);
-	fSignals = ISignalNode::create(this);
-	fSignals->createVirtualNodes();
-	add ( fSignals );
 	add ( fFileWatcher );
 	add ( fJSObject );
-//	add ( fSync );
 }
-
-//--------------------------------------------------------------------------
-SISignalNode IScene::signalsNode () const			{ return fSignals; }
 
 //--------------------------------------------------------------------------
 string IScene::getRootPath() const
@@ -180,21 +156,6 @@ string IScene::absolutePath(const std::string& path) const
 void IScene::accept (Updater* u)
 {
 	u->updateTo (SIScene(this));
-}
-
-//--------------------------------------------------------------------------
-/*SMaster IScene::getMaster(SIObject o) const
-{ 
-	return fSync ? fSync->getMaster(o) : 0;
-}
-*/
-//--------------------------------------------------------------------------
-//void IScene::cleanupSync ()		{ if (fSync) fSync->cleanup(); }
-
-void IScene::sort ()
-{ 
-	// topological sort of the scene elements
-	if (fSync) fSync->sort(elements()); 
 }
 
 //--------------------------------------------------------------------------
@@ -289,16 +250,6 @@ MsgHandler::msgStatus IScene::_watchMsg(const IMessage* msg, bool add)
 		}
 	}
 	return IObject::_watchMsg(msg, add);
-}
-
-//--------------------------------------------------------------------------
-// propagates modification state from masters to slaves
-//--------------------------------------------------------------------------
-void IScene::ptask ()
-{
-IObject::ptask();
-//	if (fSync) fSync->ptask();
-	if (signalsNode()->getState()) propagateSignalsState();
 }
 
 //--------------------------------------------------------------------------

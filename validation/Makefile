@@ -30,6 +30,7 @@ mousefiles 		= $(shell grep -v '^\#' mousescripts.txt)
 graphicfiles 	= $(shell grep -v '^\#' graphicscripts.txt)
 syncfiles 		= $(shell grep -v '^\#' syncscripts.txt)
 javafiles 		= $(shell grep -v '^\#' javascripts.txt)
+signalfiles		= $(shell grep -v '^\#' signalscripts.txt)
 logfiles 		= $(shell grep -v '^\#' logs.txt)
 savefiles 		= $(shell grep -v '^\#' save.txt)
 
@@ -38,6 +39,7 @@ pdfmouseout 	:= $(patsubst ../%.inscore, $(version)/%.pdf, $(mousefiles))
 pdfgraphicout 	:= $(patsubst ../%.inscore, $(version)/%.pdf, $(graphicfiles))
 pdfsyncout 		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(syncfiles))
 pdfjavaout 		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(javafiles))
+pdfsignalout 	:= $(patsubst ../%.inscore, $(version)/%.pdf, $(signalfiles))
 logout 			:= $(patsubst ../%.inscore, $(version)/%.log, $(logfiles))
 inscoreout 		:= $(patsubst ../%.inscore, $(version)/%.inscore, $(savefiles))
 
@@ -75,6 +77,7 @@ pdf:
 	make pdfgraphic
 	make pdfsync
 	make pdfjava
+	make pdfsignal
 
 log: 
 	@echo "----------- Generating log files"
@@ -109,13 +112,17 @@ pdfjava: forcepdfdate INScoreVersion
 	@echo "----------- Checking javascript examples"
 	make filesjava
 	
+pdfsignal: forcepdfdate INScoreVersion
+	@echo "----------- Checking signal examples"
+	make filessignal
+	
 clean: 
 	make pdfclean
 	make logclean
 	make saveclean
 
 pdfclean: 
-	rm -f $(pdfout) $(pdfmouseout) $(pdfgraphicout) $(pdfsyncout) $(pdfjavaout)
+	rm -f $(pdfout) $(pdfmouseout) $(pdfgraphicout) $(pdfsyncout) $(pdfjavaout) $(pdfsignalout)
 
 logclean: 
 	rm -f $(logout)
@@ -156,6 +163,8 @@ filessync: $(pdfsyncout)
 filesjava: $(pdfjavaout)
 	@./forcepdfdate 20100101120000 $(pdfjavaout)
 	
+filessignal: $(pdfsignalout)
+	@./forcepdfdate 20100101120000 $(pdfsignalout)
 
 	
 $(version)/$(TOOL)/%.leak.txt: %.inscore

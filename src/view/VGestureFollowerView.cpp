@@ -131,6 +131,8 @@ VGestureFollowerView::VGestureFollowerView(QGraphicsScene * scene, const IGestur
 	: VMappedShapeView( scene , new MouseEventAble<GFRect>(gf) )
 {
 	item()->setGF (gf);
+    if(!gf->getParent()->getDeleted() && gf->getParent()->getTypeString() != IScene::kSceneType)
+        setParentItem(gf->getParent()->getView()?gf->getParent()->getView():0);
 }
 
 //----------------------------------------------------------------------

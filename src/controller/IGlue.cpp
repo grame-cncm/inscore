@@ -260,6 +260,7 @@ void IGlue::modelUpdate()
 {
 	SIObject model(fModel);
 	fController->processOn(fMsgStack, model);
+    fModel->processSig();
 }
 
 //--------------------------------------------------------------------------

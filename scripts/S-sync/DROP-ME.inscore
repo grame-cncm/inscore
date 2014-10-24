@@ -1,0 +1,99 @@
+/ITL/scene/* del;
+
+/ITL/scene/rect1 set rect 1. 0.8;
+
+/ITL/scene/rect1/slave set ellipse 0.5 1.;
+/ITL/scene/rect1/slave color 200 0 100;
+/ITL/scene/rect1/slave y 1.5;
+
+/ITL/scene/rect1/slave/child1 set ellipse 1. 1.;
+/ITL/scene/rect1/slave/child1 color 120 0 60;
+/ITL/scene/rect1/slave/child1 x 2.;
+/ITL/scene/rect1/slave/child1 y -1.5;
+
+/ITL/scene/rect1/slave/child2 set rect 1. 0.8;
+/ITL/scene/rect1/slave/child2 color 120 0 60;
+/ITL/scene/rect1/slave/child2 x -1.;
+/ITL/scene/rect1/slave/child2 y -0.;
+
+/ITL/scene/rect1/subrect0 set rect 1. 1.5;
+/ITL/scene/rect1/subrect0 x -1.1;
+/ITL/scene/rect1/subrect0 y -1.4;
+/ITL/scene/rect1/subrect0 color 200 200 200;
+
+/ITL/scene/rect1/subrect1 set rect 1. 1.5;
+/ITL/scene/rect1/subrect1 y -1.4;
+/ITL/scene/rect1/subrect1 color 200 200 200;
+
+/ITL/scene/rect1/subrect2 set rect 1. 1.5;
+/ITL/scene/rect1/subrect2 y -1.4;
+/ITL/scene/rect1/subrect2 x 1.4;
+/ITL/scene/rect1/subrect2 color 200 200 200;
+
+/ITL/scene/rect1/subrect3 set rect 0.8 0.8;
+/ITL/scene/rect1/subrect3 y 1.6;
+/ITL/scene/rect1/subrect3 x -1.;
+/ITL/scene/rect1/subrect3 color 200 200 200;
+
+/ITL/scene/rect1/subell4 set ellipse 0.8 0.8;
+/ITL/scene/rect1/subell4 x 1.;
+/ITL/scene/rect1/subell4 y 1.6;
+/ITL/scene/rect1/subell4 color 200 200 200;
+
+/ITL/scene/rect1/txt set txt "/ITL/scene/rect1/sync slave subrect0;
+/ITL/scene/rect1/sync slave subrect1 h;
+/ITL/scene/rect1/sync slave subrect2 v;
+/ITL/scene/rect1/sync slave subrect3 hv;
+/ITL/scene/rect1/sync slave subell4 hv;";
+
+/ITL/scene/rect1/txt color 250 250 250;
+/ITL/scene/rect1/txt watch mouseDown (/ITL/scene/rect1/sync slave subrect0,
+/ITL/scene/rect1/sync slave subrect1 h,
+/ITL/scene/rect1/sync slave subrect2 v,
+/ITL/scene/rect1/sync slave subrect3 hv,
+/ITL/scene/rect1/sync slave subell4 hv);
+/ITL/scene/rect1/txt watch mouseEnter (/ITL/scene/rect1/txt color 200 0 100);
+/ITL/scene/rect1/txt watch mouseLeave (/ITL/scene/rect1/txt color 250 250 250);
+
+/ITL/scene/rect1/txt2 set txt "/ITL/scene/rect1/sync slave;";
+/ITL/scene/rect1/txt2 color 250 250 250;
+/ITL/scene/rect1/txt2 y 0.4;
+/ITL/scene/rect1/txt2 watch mouseDown (/ITL/scene/rect1/sync slave);
+/ITL/scene/rect1/txt2 watch mouseEnter (/ITL/scene/rect1/txt2 color 200 0 100);
+/ITL/scene/rect1/txt2 watch mouseLeave (/ITL/scene/rect1/txt2 color 250 250 250);
+
+/ITL/scene/rect1/subrect0/txt set txt "sync slave subrect0 del;";
+/ITL/scene/rect1/subrect0/txt y 1.2;
+/ITL/scene/rect1/subrect0/txt x -0.6;
+/ITL/scene/rect1/subrect0/txt watch mouseEnter (/ITL/scene/rect1/subrect0/txt color 200 0 100);
+/ITL/scene/rect1/subrect0/txt watch mouseLeave (/ITL/scene/rect1/subrect0/txt color 0 0 0);
+/ITL/scene/rect1/subrect0/txt watch mouseDown (/ITL/scene/rect1/sync slave subrect0 del);
+
+/ITL/scene/rect1/subrect1/txt set txt "sync slave subrect1 del;";
+/ITL/scene/rect1/subrect1/txt color 250 250 250;
+/ITL/scene/rect1/subrect1/txt y 1.2;
+/ITL/scene/rect1/subrect1/txt watch mouseEnter (/ITL/scene/rect1/subrect1/txt color 200 0 100);
+/ITL/scene/rect1/subrect1/txt watch mouseLeave (/ITL/scene/rect1/subrect1/txt color 250 250 250);
+/ITL/scene/rect1/subrect1/txt watch mouseDown (/ITL/scene/rect1/sync slave subrect1 del);
+
+/ITL/scene/rect1/subrect2/txt set txt "sync slave subrect2 del;";
+/ITL/scene/rect1/subrect2/txt y 1.2;
+/ITL/scene/rect1/subrect2/txt watch mouseEnter (/ITL/scene/rect1/subrect2/txt color 200 0 100);
+/ITL/scene/rect1/subrect2/txt watch mouseLeave (/ITL/scene/rect1/subrect2/txt color 0 0 0);
+/ITL/scene/rect1/subrect2/txt watch mouseDown (/ITL/scene/rect1/sync slave subrect2 del);
+
+/ITL/scene/rect1/subrect3/txt set txt "sync slave subrect3 del;";
+/ITL/scene/rect1/subrect3/txt y 1.3;
+/ITL/scene/rect1/subrect3/txt watch mouseEnter (/ITL/scene/rect1/subrect3/txt color 200 0 100);
+/ITL/scene/rect1/subrect3/txt watch mouseLeave (/ITL/scene/rect1/subrect3/txt color 0 0 0);
+/ITL/scene/rect1/subrect3/txt watch mouseDown (/ITL/scene/rect1/sync slave subrect3 del);
+
+/ITL/scene/rect1/subell4/txt set txt "sync slave subrect0 del;";
+/ITL/scene/rect1/subell4/txt y 1.3;
+/ITL/scene/rect1/subell4/txt watch mouseEnter (/ITL/scene/rect1/subell4/txt color 200 0 100);
+/ITL/scene/rect1/subell4/txt watch mouseLeave (/ITL/scene/rect1/subell4/txt color 0 0 0);
+/ITL/scene/rect1/subell4/txt watch mouseDown (/ITL/scene/rect1/sync slave subell4 del);
+
+/ITL/scene/legend set txt "This script illustrates the synchronization of an object (with children) on several masters";
+/ITL/scene/legend y 0.95;
+/ITL/scene/legend scale 1.3;

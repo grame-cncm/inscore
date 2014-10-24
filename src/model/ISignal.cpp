@@ -134,8 +134,8 @@ SIMessageList ISignal::getSetMsg() const
 //--------------------------------------------------------------------------
 SISignalNode ISignal::getSignalNode()
 {
-	SIScene scene = getScene();
-	return scene ? scene->signalsNode() : 0;
+    SIObject parent = getParent()->getParent(); // the parent is the signal node, and we look for the parent of the node
+	return parent ? parent->signalsNode() : 0;
 }
 
 //--------------------------------------------------------------------------

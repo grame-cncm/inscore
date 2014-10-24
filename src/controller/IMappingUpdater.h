@@ -56,16 +56,18 @@ class IShapeMap;
 class IMappingUpdater : public SlaveMapUpdater
 {
 	bool	date2point (const libmapping::rational& date, const SRelativeTime2GraphicMapping& map, GraphicSegment& outSeg, float& x) const;
-	float	getYPos (IObject* o, const GraphicSegment& masterSeg, Master::VAlignType align) const;
+	float	getYPos (float height, const GraphicSegment& masterSeg, Master::VAlignType align) const;
 
-	protected:
+    GraphicSegment      computeSegmentWithChildren(IObject* o, GraphicSegment seg);
+	GraphicSegment      computeSegment(IObject* o, float h, float w, float x, float y);
+    GraphicSegment      computeSegment(IObject* o);
+
+    protected:
 				void			hstretchUpdate (IObject* o, const Master* m);				
-				void			VStretch		(IObject* o, const GraphicSegment& gseg);
-				bool			updateNOHStretch (IObject* o, const Master* m);
+				bool			updateNOHStretch (IObject* o, SMaster m);
 				
-				GraphicSegment	updateNoStretch (IObject*, const Master* master);
-				void			updateVStretch  (IObject*, const Master* master);
-
+				GraphicSegment	updateNoStretch (IObject*, SMaster master, bool isVStretch = false);
+				
 		/// check adjacent segments and make sure the end and begin of successives egments match at an epsilon approximate
 		SGraphic2GraphicMapping			relink (const Graphic2GraphicRelation& rel, float epsilon) const;
 		/// time shift a time to graphic mapping

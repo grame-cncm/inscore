@@ -1,0 +1,7 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+	<file>INScoreViewer.png</file>
+   <file>images/clear.png</file>
+   <file>images/wrap.png</file>
+</qresource> 
+</RCC>

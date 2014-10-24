@@ -46,10 +46,54 @@ const SRelativeTime2GraphicMapping TMapable::find (const std::string& name) cons
 }
 
 //______________________________________________________________________________
+SGraphic2GraphicMapping TMapable::findS2M (const std::string& name)
+{
+	m_iterator found = fSlave2MasterMappings.find(name);
+	return (found == fSlave2MasterMappings.end()) ? 0 : found->second;
+}
+
+const SGraphic2GraphicMapping TMapable::findS2M (const std::string& name) const
+{
+	m_const_iterator found = fSlave2MasterMappings.find(name);
+	return (found == fSlave2MasterMappings.end()) ? 0 : found->second;
+}
+
+
+//______________________________________________________________________________
 bool TMapable::removeMapping(const std::string& name) 
 { 
 	if (name.empty()) fAutoMap = false;
 	return fMappings.erase(name)==1; 
 }
 
+//______________________________________________________________________________
+void TMapable::UseGraphic2GraphicMapping (bool val, std::string masterName)
+{
+    if(masterName.size())
+    {
+        b_iterator it = fUseMapping.find(masterName);
+        if(it != fUseMapping.end())
+            it->second = val;
+        else
+            fUseMapping.insert(std::pair<std::string, bool>(masterName, val));
+    }
+    else
+    {
+        for(b_iterator it = fUseMapping.begin(); it != fUseMapping.end();it++)
+            it->second = val;
+    }
+}
+
+//______________________________________________________________________________
+void TMapable::setSlave2MasterMapping (const std::string& name, const SGraphic2GraphicMapping map)
+{
+    if(name.size())
+    {
+        m_iterator it = fSlave2MasterMappings.find(name);
+        if(it != fSlave2MasterMappings.end())
+            it->second = map;
+        else
+            fSlave2MasterMappings.insert(std::pair<std::string, SGraphic2GraphicMapping>(name, map));
+    }
+}
 }

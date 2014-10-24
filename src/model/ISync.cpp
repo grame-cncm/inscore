@@ -38,32 +38,156 @@ namespace inscore
 //--------------------------------------------------------------------------
 void ISync::print (ostream& out) const
 {
-	for (const_iterator i = begin(); i != end(); i++)
+	for (const_slave_iterator i = fSlaves2Masters.begin(); i != fSlaves2Masters.end(); i++)
 	{
-		out << i->second->getMaster()->name() << " -> " << i->second->getMaster()->name() 
-			<< " align: " << Master::syncalign2string(i->second->getAlignment())
-			<< " stretch: " << Master::stretchmode2string(i->second->getStretch()) 
-			<< " dy: " << i->second->getDy() 
-			<< " masterMapName: " << i->second->getMasterMapName()
-			<< " slaveMapName: " << i->second->getSlaveMapName();
-		out << endl;
+        for(int j = 0; j<(*i).second.size(); j++)
+        {
+            out << (*i).first->name() << " -> " << (*i).second[j]->getMaster()->name()
+                << " align: " << Master::syncalign2string(i->second[j]->getAlignment())
+                << " stretch: " << Master::stretchmode2string((*i).second[j]->getStretch())
+                << " dy: " << (*i).second[j]->getDy()
+                << " masterMapName: " << (*i).second[j]->getMasterMapName()
+                << " slaveMapName: " << (*i).second[j]->getSlaveMapName();
+            out << endl;
+        }
 	}
 }
 
 //--------------------------------------------------------------------------
-// looking for loops in the sync scheme
-bool ISync::checkLoop(const IObject* slave, IObject* master)
+std::vector<SMaster> ISync::getMasters(SIObject slave) const
 {
-	const_iterator i = this->find (master);				// look for possible master of the master
-	if (i == this->end()) return false;					// there is none : no loop
-	IObject* nextmaster = i->second->getMaster();
-	if (slave == nextmaster) {							// loop detected !
-//		IObject* node = i->first;
-//		remove (node);
-		ITLErr << "sync loop detected for object" << slave->name() << ITLEndl;
-		return true;
-	}
-	return checkLoop (slave, nextmaster);
+    const_slave_iterator it = fSlaves2Masters.find(slave);
+    if(it != fSlaves2Masters.end())
+        return it->second;
+    else
+        return std::vector<SMaster>();
+}
+
+
+//--------------------------------------------------------------------------
+std::vector<SIObject> ISync::getSlaves(SIObject master) const
+{
+    const_master_iterator it = fMasters2Slaves.find(master);
+    if(it != fMasters2Slaves.end())
+        return it->second;
+    else
+        return std::vector<SIObject>();
+}
+
+//--------------------------------------------------------------------------
+std::map<SIObject, std::vector<SMaster> > ISync::getSlaves2Masters() const
+{
+    return fSlaves2Masters;
+}
+
+//--------------------------------------------------------------------------
+ISync::relation ISync::getRelation(SIObject o1, SIObject o2) const
+{
+    if(hasSlave(o1))
+    {
+        std::vector<SIObject> slaves = getSlaves(o1);
+        if(std::find(slaves.begin(), slaves.end(), o2) != slaves.end())
+            return kMaster;
+    }
+    else if(hasSlave(o2))
+    {
+        std::vector<SIObject> slaves = getSlaves(o2);
+        if(std::find(slaves.begin(), slaves.end(), o1) != slaves.end())
+            return kSlave;
+    }
+    
+    return kNoRelation;
+}
+
+//--------------------------------------------------------------------------
+IObject::subnodes ISync::topologicalSort(IObject::subnodes& nodes) const
+{
+    IObject::subnodes in = nodes;
+    IObject::subnodes out;
+    do
+    {
+        IObject::subnodes sameLevelOfSync;
+        IObject::subnodes::iterator it = in.begin();
+        while(it != in.end())
+        {
+            bool addToVector = true;
+            if(hasSlave(*it))
+            {
+                std::vector<SIObject> slaves = getSlaves(*it);
+                for(int i = 0; i<slaves.size(); i++)
+                    if(std::find(out.begin(), out.end(), slaves[i]) == out.end())   // if one of the slaves of the node is not in the "already-sorted-nodes",
+                        addToVector = false;                                        // we won't add the node to the final vector yet.
+            }
+            if(addToVector)
+            {
+                sameLevelOfSync.push_back(*it);
+                in.erase(it);
+            }
+            else
+                it++;
+        }
+        for(int j = 0; j<sameLevelOfSync.size(); j++)
+            out.push_back(sameLevelOfSync[j]);
+    }while(!in.empty());
+   
+    return out;
+}
+
+//--------------------------------------------------------------------------
+IObject::subnodes ISync::invertedTopologicalSort(IObject::subnodes& nodes) const
+{
+    IObject::subnodes in = nodes;
+    IObject::subnodes out;
+    do
+    {
+        IObject::subnodes sameLevelOfSync;
+        IObject::subnodes::iterator it = in.begin();
+        while(it != in.end())
+        {
+            bool addToVector = true;
+            if(hasMaster(*it))
+            {
+                std::vector<SMaster> masters = getMasters(*it);
+                for(int i = 0; i<masters.size(); i++)
+                    if(std::find(out.begin(), out.end(), masters[i]->getMaster()) == out.end()) // if one of the masters is not in the "already-sorted-nodes",
+                        addToVector = false;                                                    // we won't add the node to the final vector yet.
+            }
+            if(addToVector)
+            {
+                sameLevelOfSync.push_back(*it);
+                in.erase(it);
+            }
+            else
+                it++;
+        }
+        for(int j = 0; j<sameLevelOfSync.size(); j++)
+            out.push_back(sameLevelOfSync[j]);
+    }while(!in.empty());
+    
+    return out;
+}
+
+//--------------------------------------------------------------------------
+// looking for loops in the sync scheme
+bool ISync::checkLoop(const SIObject slave, SIObject master)
+{
+	if(!hasMaster(master)) return false;
+    if(getRelation(slave, master) == kMaster)
+    {
+        ITLErr << "sync loop detected for object" << slave->name() << ITLEndl;
+        return true;
+    }
+    
+    std::vector<SMaster> masters = getMasters(master);
+    for(int i = 0; i<masters.size(); i++)
+    {
+        if(checkLoop(slave, masters[i]->getMaster()))
+        {
+            ITLErr << "sync loop detected for object" << slave->name() << ITLEndl;
+            return true;
+        }
+    }
+    return false;
 }
 
 //--------------------------------------------------------------------------
@@ -73,50 +197,113 @@ void ISync::sync(const SIObject& slave, SMaster master)
 		ITLErr << "unexpected synchronization request:" << slave->name() << "->" << slave->name() << ITLEndl;
 		return;
 	}
-
-	if (!checkLoop (slave, master->getMaster())) {
-		(*this)[slave] = master;
+    std::vector<SMaster> existingMasters = getMasters(slave);
+    std::vector<SMaster>::iterator i = std::find(existingMasters.begin(), existingMasters.end(), master);
+    if(i != existingMasters.end()){ // already exists
+        for(std::vector<SMaster>::iterator it = fSlaves2Masters.find(slave)->second.begin(); it != fSlaves2Masters.find(slave)->second.end(); it++)
+            if((*it)->getMaster() == master->getMaster())   (*it) = master;
+        return;
+    }
+    if (!checkLoop (slave, master->getMaster())) {
+        if(hasMaster(slave))
+            fSlaves2Masters.find(slave)->second.push_back(master);
+        else
+        {
+            std::vector<SMaster> masters = std::vector<SMaster>();
+            masters.push_back(master);
+            fSlaves2Masters.insert(std::pair<SIObject, std::vector<SMaster> >(slave, masters));
+        }
+        if(hasSlave(master->getMaster()))
+            fMasters2Slaves.find(master->getMaster())->second.push_back(slave);
+        else
+        {
+            std::vector<SIObject> slaves = std::vector<SIObject>();
+            slaves.push_back(slave);
+            fMasters2Slaves.insert(std::pair<SIObject, std::vector<SIObject> >(master->getMaster(), slaves));
+        }
 		slave->modify();
 		slave->setState(IObject::kModified);
-		slave->getView()->setParentItem(master->getMaster()->getView());
 		slave->setdyMsgHandler(master);
 		fModified = true;
 	}
 }
 
 //--------------------------------------------------------------------------
-void ISync::remove(SIObject slave) 
+void ISync::remove(SIObject slave, SMaster m)
 {
-	if (this->erase(slave)) {
-		slave->UseGraphic2GraphicMapping (false);
-		slave->setdyMsgHandler();
-		slave->modify();
-		slave->setState(IObject::kModified);
-		fModified = true;
-		VObjectView * view = slave->getView();
-		if (view)
+    if(m) // if the master is specified, we just want to erase the pair <slave,master> and not all pairs corresponding to the slave
+    {
+        if(getRelation(slave, m->getMaster()) == kSlave)
         {
-            view->setParentItem(0);
-            view->updateView(slave);
+            if(getMasters(slave).size()>1)
+                fSlaves2Masters.find(slave)->second.erase(std::find(fSlaves2Masters.find(slave)->second.begin(), fSlaves2Masters.find(slave)->second.end(), m));
+            else if (hasMaster(slave))
+            {
+                fSlaves2Masters.erase(fSlaves2Masters.find(slave));
+                std::string masterMapName = m->getMaster()->name() + ":" + m->getMasterMapName();
+                slave->UseGraphic2GraphicMapping (false, masterMapName);
+            }
+            
+            if(getSlaves(m->getMaster()).size()>1)
+                fMasters2Slaves.find(m->getMaster())->second.erase(std::find(fMasters2Slaves.find(m->getMaster())->second.begin(), fMasters2Slaves.find(m->getMaster())->second.end(), slave));
+            else
+                fMasters2Slaves.erase(fMasters2Slaves.find(m->getMaster()));
         }
+    }
+	else if(hasMaster(slave)){// when the master is not specified, we delete all the possible pairs with the slave
+        std::vector<SMaster> masters = getMasters(slave);
+        fSlaves2Masters.erase(fSlaves2Masters.find(slave));
+        for(int i=0; i<masters.size(); i++)
+        {
+            if(hasSlave(masters[i]->getMaster()))
+            {
+                if(getSlaves(masters[i]->getMaster()).size()>1)
+                    fMasters2Slaves.find(masters[i]->getMaster())->second.erase(std::find(fMasters2Slaves.find(masters[i]->getMaster())->second.begin(), fMasters2Slaves.find(masters[i]->getMaster())->second.end(), slave));
+                else
+                    fMasters2Slaves.erase(fMasters2Slaves.find(masters[i]->getMaster()));
+            }
+        }
+        slave->UseGraphic2GraphicMapping (false);
 	}
+    
+    slave->setdyMsgHandler();
+    slave->modify();
+    slave->setState(IObject::kModified);
+    fModified = true;
 }
 
 //--------------------------------------------------------------------------
 void ISync::cleanup()
 {
-	iterator i = begin();
-	while (i != end()) {
-		if (i->first->getDeleted() || i->second->getMaster()->getDeleted()) {
-			iterator d = i;
+	slave_iterator i = fSlaves2Masters.begin();
+	while (i != fSlaves2Masters.end()) {
+		if ((*i).first->getDeleted()) {
+			slave_iterator d = i;
 			i++;
-			this->remove(d->first);
+			remove((*d).first);
 		}
-		else {
-			i->second->modified (false);
-			i++;
-		}
+		else
+        {
+            slave_iterator d = i;
+            i++;
+            for(int j = 0; j<(*d).second.size(); j++)
+            {
+                if((*d).second[j]->getMaster()->getDeleted())
+                    remove((*d).first, (*d).second[j]);
+            }
+        }
 	}
+}
+
+//--------------------------------------------------------------------------
+void ISync::ptask ()
+{
+    for(const_master_iterator it = fMasters2Slaves.begin(); it != fMasters2Slaves.end(); it++)
+    {
+        if(it->first->getState() && IObject::kModified)
+            for(int i = 0; i<it->second.size(); i++)
+                it->second[i]->setState(IObject::kMasterModified);
+    }
 }
 
 static const char* kSyncOverStr		= "syncOver";

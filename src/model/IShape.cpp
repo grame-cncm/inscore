@@ -71,12 +71,16 @@ IShape::IShape( const std::string& name, IObject* parent ) : IObject(name, paren
 	fMsgHandlerMap[kpenWidth_GetSetMethod]	= TSetMethodMsgHandler<IShape, float>::create(this, &IShape::setPenWidth);
 	fMsgHandlerMap[kpenStyle_GetSetMethod]  = TSetMethodMsgHandler<IShape, string>::create(this, &IShape::setPenStyle);
     fMsgHandlerMap[kbrushStyle_GetSetMethod]  = TSetMethodMsgHandler<IShape, string>::create(this, &IShape::setBrushStyle);
-
+	
 	fGetMsgHandlerMap[kpenWidth_GetSetMethod]	= TGetParamMsgHandler<float>::create(fPenWidth);
 	fGetMsgHandlerMap[kpenColor_GetSetMethod]	= TGetParamMsgHandler<IColor>::create(fPenColor);
 	fGetMsgHandlerMap[kpenAlpha_GetSetMethod]	= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(&fPenColor, &IColor::getA);
 	fGetMsgHandlerMap[kpenStyle_GetSetMethod]	= TGetParamMsgHandler<std::string>::create(fPenStyle);
 	fGetMsgHandlerMap[kbrushStyle_GetSetMethod]	= TGetParamMsgHandler<std::string>::create(fBrushStyle);
+
+    fSigHandlerMap[kpenAlpha_GetSetMethod]	= IColor::SetColorSigHandler::create(&fPenColor, &IColor::setA, &IColor::setA);
+	fSigHandlerMap[kpendAlpha_SetMethod]	= IColor::SetColorSigHandler::create(&fPenColor, &IColor::dA, &IColor::dA);
+	fSigHandlerMap[kpenWidth_GetSetMethod]	= TSetMethodSigHandler<IShape, float>::create(this, &IShape::setPenWidth);
 }
 
 //--------------------------------------------------------------------------

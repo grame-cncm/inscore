@@ -40,12 +40,8 @@ VEllipseView::VEllipseView(QGraphicsScene * scene, const IEllipse* h)
 void VEllipseView::updateView( IEllipse * ellipse )
 {
     ellipse->cleanupSync();
-    if(!ellipse->getParent()->getMaster(ellipse) && !ellipse->getParent()->getDeleted())
-    {
-        if(ellipse->getParent()->getTypeString() != IScene::kSceneType)
-            setParentItem(ellipse->getParent()->getView()?ellipse->getParent()->getView():0);
-    }
-	QRectF r( 0,0,  relative2SceneHeight(ellipse->getWidth()),relative2SceneHeight(ellipse->getHeight()) );
+    
+	QRectF r( 0,0,  relative2SceneWidth(ellipse->getWidth()),relative2SceneHeight(ellipse->getHeight()) );
 	if ( r != item()->rect() ) {
 		item()->setRect( r );
 		itemChanged();

@@ -7,3 +7,4 @@
 ../scripts/S-queries/widthheight.inscore
 ../scripts/S-scoremap/DROP-ME.inscore
 ../scripts/S-scoremap/systemMap.inscore
+../regression/S-text/accents.inscore

@@ -54,17 +54,34 @@ void ISceneSync::accept (Updater* u)
 //--------------------------------------------------------------------------
 SMaster ISceneSync::getMaster(SIObject o) const
 {
-	ISync::const_iterator found = fSync.find(o);
-	return (found != fSync.end()) ? found->second : 0;
+    if(fSync.hasMaster(o))
+        return fSync.getMasters(o).front();
+    else
+        return 0;
 }
 
 //--------------------------------------------------------------------------
-void ISceneSync::sort (IObject::subnodes& nodes)
+std::vector<SMaster> ISceneSync::getMasters(SIObject o) const
 {
-	if (fSync.modified()) {
-//		fSync.topologicalSort (nodes);
-		fSync.modified(false);
-	}
+    return fSync.getMasters(o);
+}
+
+//--------------------------------------------------------------------------
+std::vector<SIObject> ISceneSync::getSlaves(SIObject o) const
+{
+    return fSync.getSlaves(o);
+}
+
+//--------------------------------------------------------------------------
+IObject::subnodes ISceneSync::sort (IObject::subnodes& nodes)
+{
+    return fSync.topologicalSort (nodes);
+}
+
+//--------------------------------------------------------------------------
+IObject::subnodes ISceneSync::invertedSort (IObject::subnodes& nodes)
+{
+    return fSync.invertedTopologicalSort (nodes);
 }
 
 //--------------------------------------------------------------------------
@@ -104,9 +121,15 @@ SIMessageList ISceneSync::getMsgs (const IMessage* msg) const
 		}
 	}
 	else if (msg->size() == 0) {
-		for (ISync::const_iterator i = fSync.begin(); i != fSync.end(); i++) {
-			SIMessage msg = buildSyncMsg (address, i->first,  i->second);
-			outMsgs->list().push_back (msg);
+        std::map<SIObject, std::vector<SMaster> > s2m = fSync.getSlaves2Masters();
+        ISync::const_slave_iterator it = s2m.begin();
+        while(it != s2m.end())
+        {
+            for (int i = 0; i < it->second.size(); i++) {
+                SIMessage msg = buildSyncMsg (address, it->first,  it->second[i]);
+                outMsgs->list().push_back (msg);
+            }
+            it++;
 		}
 	}
 	return outMsgs;	
@@ -117,11 +140,7 @@ SIMessageList ISceneSync::getMsgs (const IMessage* msg) const
 //--------------------------------------------------------------------------
 void ISceneSync::ptask ()
 {
-	for (ISync::iterator i = fSync.begin(); i != fSync.end(); i++) {
-		const SIObject& master = i->second->getMaster();
-		if (master->getState() & kModified)
-			i->first->setState(kMasterModified);
-	}
+    fSync.ptask();
 }
 
 //--------------------------------------------------------------------------
@@ -143,15 +162,29 @@ bool ISceneSync::name2mapName (const string& str, string& name, string& map) con
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus ISceneSync::syncMsg (const std::string& slave)
+MsgHandler::msgStatus ISceneSync::syncMsg (const std::string& slave, const std::string& master)
 {
 	subnodes so;
 	if (!fParent->find(slave, so)) return MsgHandler::kBadParameters;		// no target objects to be slave
-	for (subnodes::iterator i = so.begin(); i != so.end(); i++) {
-		delsync(*i);
-		(*i)->UseGraphic2GraphicMapping (false);
-		(*i)->setState (kMasterModified);
-	}
+	subnodes mso;
+    if (master.size() && fParent->find(master, mso))
+    {
+        for (subnodes::iterator i = so.begin(); i != so.end(); i++) {
+            std::vector<SMaster> masters = fParent->getMasters((*i));
+            for(int j = 0; j < masters.size(); j++)
+            {
+                if (masters[j]->getMaster()->name() == master)
+                    delsync((*i),masters[j]);
+            }
+        }
+    }
+    else
+    {
+        for (subnodes::iterator i = so.begin(); i != so.end(); i++) {
+            delsync(*i);
+            (*i)->setState (kMasterModified);
+        }
+    }
 	return MsgHandler::kProcessed;
 }
 
@@ -198,20 +231,30 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)
 	Master::VAlignType align = Master::kDefaultSyncAlign;
 	Master::StretchType stretch = Master::kDefaultStretch;
 	Master::SyncType syncType = Master::kDefaultSync;
-	for (int i=nextindex+1; i<n; i++) {
-		string mode = msg->param(i)->value<string>("");
-		Master::VAlignType val = Master::string2syncalign(mode);
-		if (val != Master::kUnknown) align = val;
-		else {
-			Master::StretchType sval = Master::string2stretchmode(mode);
-			if (sval != Master::kStretchUnknown) stretch = sval;
-			else {
-				Master::SyncType mval = Master::string2synctype(mode);
-				if (mval != Master::kTypeUnknown) syncType = mval;
-			}
-		}
-	}
-	return syncMsg (slave, slaveMapName, master, masterMapName, stretch, syncType, align);
+	
+    string firstParam;
+    if((nextindex+1) < n)
+        firstParam = msg->param(nextindex+1)->value<string>("");
+    
+    if(firstParam == "del")
+        return syncMsg(slave, master);
+    else
+    {
+        for (int i=nextindex+1; i<n; i++) {
+            string mode = msg->param(i)->value<string>("");
+            Master::VAlignType val = Master::string2syncalign(mode);
+            if (val != Master::kUnknown) align = val;
+            else {
+                Master::StretchType sval = Master::string2stretchmode(mode);
+                if (sval != Master::kStretchUnknown) stretch = sval;
+                else {
+                    Master::SyncType mval = Master::string2synctype(mode);
+                    if (mval != Master::kTypeUnknown) syncType = mval;
+                }
+            }
+        }
+        return syncMsg (slave, slaveMapName, master, masterMapName, stretch, syncType, align);
+    }
 }
 
 //--------------------------------------------------------------------------
@@ -219,9 +262,10 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)
 SIMessageList ISceneSync::getAllParams() const
 {
 	SIMessageList outMsgs = 	IObject::getAllParams();
-	ISync::const_iterator i = fSync.begin();
+    std::map<SIObject, std::vector<SMaster> > s2m = fSync.getSlaves2Masters();
+	ISync::const_slave_iterator i = s2m.begin();
 	// and distribute the message to synced nodes
-	while (i != fSync.end()) {
+	while (i != s2m.end()) {
 		const SIObject& elt = i->first;
 		SIMessage msg = IMessage::create(getOSCAddress(), "get");
 		msg->add (elt->name());

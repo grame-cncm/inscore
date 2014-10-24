@@ -95,6 +95,14 @@ class export LocalMapUpdater : public Updater {
 class export SlaveMapUpdater : public Updater {
 	public:	virtual bool needupdate (IObject*);
 };
+class SigModified : public Updater
+{
+	public:
+				 SigModified() {}
+		virtual ~SigModified() {}
+		virtual bool needupdate (IObject*)		{ return true; }
+		virtual void updateTo (IGraphicSignal*);
+};
 
 /*!@} */
 

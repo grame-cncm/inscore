@@ -81,6 +81,11 @@ class export VQtUpdater : public ViewUpdater
 		template <typename T, typename V> void update (T* obj) {
 			if (obj->getDeleted()) {
 				delete obj->getView();
+                for(int i = 0; i < obj->elements().size(); i++)
+                {
+                    if(obj->elements()[i]->getView())
+                        obj->elements()[i]->getView()->setParentItem(0);
+                }
 				obj->setView (0);
 			}
 			else {

@@ -38,12 +38,7 @@ VRectView::VRectView(QGraphicsScene * scene, const IRect* h)
 void VRectView::updateView( IRect * rect  )
 {
     rect->cleanupSync();
-    if(!rect->getParent()->getMaster(rect) && !rect->getParent()->getDeleted())
-    {
-        if(rect->getParent()->getTypeString() != IScene::kSceneType)
-            setParentItem(rect->getParent()->getView()?rect->getParent()->getView():0);
-    }
-	QRectF newRect( 0,0,  relative2SceneWidth(rect->getWidth()), relative2SceneHeight(rect->getHeight()) );
+    QRectF newRect( 0,0,  relative2SceneWidth(rect->getWidth()), relative2SceneHeight(rect->getHeight()) );
 	if ( newRect != item()->rect() )
 	{
 		item()->setRect( newRect );

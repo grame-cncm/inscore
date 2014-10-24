@@ -1,3 +1,3 @@
 
-/ITL/scene/cursor set 'rect' 0.01 0.12;
+/ITL/scene/cursor set 'rect' 0.005 0.06;
 /ITL/scene/cursor color 0 0 255 150;

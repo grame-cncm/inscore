@@ -50,34 +50,47 @@ class TMapable
 		typedef std::map<std::string, SRelativeTime2GraphicMapping> namedMapping;	
 		typedef std::map<std::string, SRelativeTime2GraphicMapping>::const_iterator	const_iterator;
 		typedef std::map<std::string, SRelativeTime2GraphicMapping>::iterator		iterator;
+		typedef std::map<std::string, SGraphic2GraphicMapping> masterMapping; //the string corresponds to the master name : master->getMaster()->name()
+		typedef std::map<std::string, SGraphic2GraphicMapping>::const_iterator	m_const_iterator;
+		typedef std::map<std::string, SGraphic2GraphicMapping>::iterator		m_iterator;
+    
+        typedef std::map<std::string, bool> useMappingBooleans;
+		typedef std::map<std::string, bool>::iterator		b_iterator;
 
 	private:
 	
 	const SRelativeTime2GraphicMapping find (const std::string& name) const;
 		  SRelativeTime2GraphicMapping find (const std::string& name);
+	const SGraphic2GraphicMapping findS2M (const std::string& name) const;
+		  SGraphic2GraphicMapping findS2M (const std::string& name);
 
 	namedMapping					fMappings;					// intended to support different named mappings
-	bool							fUseMapping;
+	useMappingBooleans				fUseMapping;
 	bool							fLocalMapModified;	
-	SGraphic2GraphicMapping			fSlave2Master;
+	masterMapping                   fSlave2MasterMappings;
 	
 	public:
 		bool fAutoMap;											// a flag to indicate mappings automatically build from object duration
 
-				 TMapable() : fUseMapping(false), fLocalMapModified(false), fAutoMap(false) {}
+				 TMapable() : fLocalMapModified(false), fAutoMap(false) {}
 		virtual ~TMapable() {}
 		
 		const SRelativeTime2GraphicMapping  getMapping(const std::string& name) const	{ return find (name); }
-
-		const SGraphic2GraphicMapping&		getSlave2MasterMapping() const		{ return fSlave2Master; }		
 		const namedMapping& namedMappings() const								{ return fMappings; }
 
+		const SGraphic2GraphicMapping		getSlave2MasterMapping(const std::string& name) const		{ return findS2M(name); }
+        const masterMapping& masterMappings() const								{ return fSlave2MasterMappings; }
+
 		bool removeMapping(const std::string& name);			// Returns true if the specified 'name' has been found and removed.
-		void setMapping				(const std::string& name, SRelativeTime2GraphicMapping m)	{ fMappings[name] = m; }
-		void setSlave2MasterMapping (const SGraphic2GraphicMapping& map)						{ fSlave2Master = map; }
 		
-		void	UseGraphic2GraphicMapping (bool val)		{ fUseMapping = val; }
-		bool	UseGraphic2GraphicMapping () const			{ return fUseMapping; }
+        void setMapping				(const std::string& name, SRelativeTime2GraphicMapping m)	{ fMappings[name] = m; }
+		void setSlave2MasterMapping (const std::string& name, const SGraphic2GraphicMapping map); 
+		
+		void	UseGraphic2GraphicMapping (bool val, std::string masterName = "");
+    
+		bool	UseGraphic2GraphicMapping (std::string masterName = "") const			{ return fUseMapping.find(masterName)->second; }
+     
+    
 		void	localMapModified (bool val)					{ fLocalMapModified = val; }
 		bool	localMapModified () const					{ return fLocalMapModified; }
 };

@@ -79,3 +79,5 @@
 ../regression/S-misc/switch_ex2.inscore
 ../regression/S-misc/switch_ex3.inscore
 ../regression/S-misc/switch_ex4.inscore
+../regression/S-watchSlave/DROP-ME.inscore
+../regression/S-watchSlave/mouseEnter.inscore

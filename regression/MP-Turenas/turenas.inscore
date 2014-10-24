@@ -20,7 +20,7 @@
 /ITL/scene/title scale 3.0;
 
 # Add a rectangle to make the cursor
-/ITL/scene/cursor set rect 0.004 0.217176;
+/ITL/scene/cursor set rect 0.01 0.217176;
 /ITL/scene/cursor date 0 64;
 /ITL/scene/cursor duration 1 64;
 /ITL/scene/cursor color 204 0 48 132;

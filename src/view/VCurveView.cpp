@@ -49,12 +49,7 @@ VCurveView::VCurveView(QGraphicsScene * scene, const ICurve* h)
 void VCurveView::updateView( ICurve * curve )
 {
     curve->cleanupSync();
-    if(!curve->getParent()->getMaster(curve) && !curve->getParent()->getDeleted())
-    {
-        if(curve->getParent()->getTypeString() != IScene::kSceneType)
-            setParentItem(curve->getParent()->getView()?curve->getParent()->getView():0);
-    }
-	QPainterPath myPath;
+    QPainterPath myPath;
 	for ( unsigned int i = 0 ; i < curve->getPoints().size() ; i++ )
 	{
 		QPoint startPoint	( relative2SceneX(curve->getPoints()[i].fPointA.first) , relative2SceneY(curve->getPoints()[i].fPointA.second) );

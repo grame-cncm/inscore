@@ -1,6 +1,6 @@
 /ITL/scene/turenas set img "rsrc/schemaStructLine.png";
 /ITL/scene/turenas mapf "rsrc/schemaStructLine.map";
-/ITL/scene/turenas scale 0.3;
+/ITL/scene/turenas scale 1.;
 
 /ITL/scene/cursor color 0 0 255 180;
 
@@ -9,6 +9,6 @@
 /ITL/scene/_smallturenas scale 0.25;
 /ITL/scene/_smallturenas y 0.65;
 
-/ITL/scene/cursorsmall set rect 0.0015 0.217176;
+/ITL/scene/cursorsmall set rect 0.01 0.217176;
 
 /ITL load "scripts/layoutLine.inscore";

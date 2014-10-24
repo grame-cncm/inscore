@@ -1,0 +1,14 @@
+TO DO (16/05/2014)
+
+- "get connect" method for the signal node
+- add drotate[xyz]
+- allow the regexp in the node msg (sync, connect)
+- implement a new "link" object (like in Rouages)
+- handling the errors with signals ?
+- other signal connections :  clock ? show ? rows/columns ? ...
+- think of another figure to explain the adresses in OSCMsg.tex (with other levels, and sync/sig nodes)
+
+some problems to solve :
+
+- the staves and the notes don't rotate the same way (probably a Qt problem ?)
+- video problem

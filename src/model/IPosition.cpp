@@ -162,6 +162,38 @@ typedef struct zorderSort {
 } zorderSort;
 
 
+
+//------------------------------------------------------------------------------------------------------------
+void IPosition::setSyncHeight(std::string m, float height)
+{
+    std::map<std::string, float>::iterator it = fHeights.find(m);
+    if(it != fHeights.end())
+        it->second = height;
+    else
+        fHeights.insert(std::pair<std::string, float>(m,height));
+}
+
+//------------------------------------------------------------------------------------------------------------
+void IPosition::setSyncWidth(std::string m, float width)
+{
+    std::map<std::string, float>::iterator it = fWidths.find(m);
+    if(it != fWidths.end())
+        it->second = width;
+    else
+        fWidths.insert(std::pair<std::string, float>(m,width));
+}
+
+//------------------------------------------------------------------------------------------------------------
+void IPosition::setSyncPos(std::string m, QPointF pos)
+{
+    std::map<std::string, QPointF>::iterator it = fPositions.find(m);
+    if(it != fPositions.end())
+        it->second = pos;
+    else
+        fPositions.insert(std::pair<std::string, QPointF>(m, pos));
+}
+
+
 //--------------------------------------------------------------------------
 // click and select messages
 //--------------------------------------------------------------------------

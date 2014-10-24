@@ -46,6 +46,7 @@
 #include "Tools.h"
 #include "ISceneSync.h"
 #include "TMessageEvaluator.h"
+#include "ISignalNode.h"
 
 #include "VObjectView.h"
 
@@ -85,7 +86,7 @@ OSCStream& operator <<(OSCStream& s, const TFloatPoint& val)
 //--------------------------------------------------------------------------
 IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 					fName(name), fDispStart(0), fDispEnd(1),
-					fDelete (false), fState(kNewObject), fNewData(true), fView(0), fParent(parent)
+					fDelete (false), fState(kNewObject), fDrawChildren(false), fNewData(true), fView(0), fParent(parent)
 {
 	fTypeString = "obj";
 
@@ -106,6 +107,7 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fGetMultiMsgHandlerMap[kwatch_GetSetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
 	fGetMultiMsgHandlerMap[kmap_GetSetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getMaps);
 	fGetMultiMsgHandlerMap[kalias_GetSetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getAliases);
+    fGetMultiMsgHandlerMap[kstack_GetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getStack);
 }
 
 
@@ -150,6 +152,22 @@ void IObject::colorAble()
 	fGetMsgHandlerMap[khue_GetSetMethod]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getH);
 	fGetMsgHandlerMap[ksaturation_GetSetMethod] = TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getS);
 	fGetMsgHandlerMap[kbrightness_GetSetMethod]	= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getV);
+    
+    fSigHandlerMap[kred_GetSetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::setR, &IObject::setR);
+	fSigHandlerMap[kgreen_GetSetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::setG, &IObject::setG);
+	fSigHandlerMap[kblue_GetSetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::setB, &IObject::setB);
+	fSigHandlerMap[kalpha_GetSetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::setA, &IObject::setA);
+	fSigHandlerMap[khue_GetSetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::setH, &IObject::setH);
+	fSigHandlerMap[ksaturation_GetSetMethod]= IColor::SetColorSigHandler::create(this, &IObject::setS, &IObject::setS);
+	fSigHandlerMap[kbrightness_GetSetMethod]= IColor::SetColorSigHandler::create(this, &IObject::setV, &IObject::setV);
+    
+	fSigHandlerMap[kdred_SetMethod]			= IColor::SetColorSigHandler::create(this, &IObject::dR, &IObject::dR);
+	fSigHandlerMap[kdgreen_SetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::dG, &IObject::dG);
+	fSigHandlerMap[kdblue_SetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::dB, &IObject::dB);
+	fSigHandlerMap[kdalpha_SetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::dA, &IObject::dA);
+	fSigHandlerMap[kdhue_SetMethod]			= IColor::SetColorSigHandler::create(this, &IObject::dH, &IObject::dH);
+	fSigHandlerMap[kdsaturation_SetMethod]	= IColor::SetColorSigHandler::create(this, &IObject::dS, &IObject::dS);
+	fSigHandlerMap[kdbrightness_SetMethod]	= IColor::SetColorSigHandler::create(this, &IObject::dV, &IObject::dV);
 }
 
 //--------------------------------------------------------------------------
@@ -184,7 +202,7 @@ void IObject::positionAble()
 	fMsgHandlerMap[krotatez_GetSetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setRotateZ);
 	fMsgHandlerMap[kshow_GetSetMethod]		= TSetMethodMsgHandler<IObject,bool>::create(this, &IObject::setVisible);
 	fMsgHandlerMap[keffect_GetSetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::effectMsg);
-
+    
 	fMsgHandlerMap[kdx_SetMethod]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addXPos);
 	fMsgHandlerMap[kdy_SetMethod]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYPos);
 	fMsgHandlerMap[kdxorigin_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addXOrigin);
@@ -193,6 +211,24 @@ void IObject::positionAble()
 	fMsgHandlerMap[kdangle_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addAngle);
 	fMsgHandlerMap[kdscale_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::multScale);
 
+	fSigHandlerMap[kx_GetSetMethod]			= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setXPos);
+	fSigHandlerMap[ky_GetSetMethod]			= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setYPos);
+	fSigHandlerMap[kxorigin_GetSetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setXOrigin);
+	fSigHandlerMap[kyorigin_GetSetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setYOrigin);
+	fSigHandlerMap[kz_GetSetMethod]			= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setZOrder);
+	fSigHandlerMap[kangle_GetSetMethod]		= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setRotateZ);
+	fSigHandlerMap[kscale_GetSetMethod]		= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setScale);
+	fSigHandlerMap[krotatex_GetSetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setRotateX);
+	fSigHandlerMap[krotatey_GetSetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setRotateY);
+	fSigHandlerMap[krotatez_GetSetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setRotateZ);
+    
+	fSigHandlerMap[kdx_SetMethod]		= TSetMethodSigHandler<IObject,float>::create(this, &IObject::addXPos);
+	fSigHandlerMap[kdy_SetMethod]		= TSetMethodSigHandler<IObject,float>::create(this, &IObject::addYPos);
+	fSigHandlerMap[kdxorigin_SetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::addXOrigin);
+	fSigHandlerMap[kdyorigin_SetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::addYOrigin);
+	fSigHandlerMap[kdz_SetMethod]		= TSetMethodSigHandler<IObject,float>::create(this, &IObject::addZOrder);
+	fSigHandlerMap[kdangle_SetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::addAngle);
+	fSigHandlerMap[kdscale_SetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::multScale);
 	fMsgHandlerMap[kdrotatex_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addXAngle);
 	fMsgHandlerMap[kdrotatey_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYAngle);
 	fMsgHandlerMap[kdrotatez_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addAngle);
@@ -221,9 +257,14 @@ void IObject::timeAble()
 	fMsgHandlerMap[kduration_GetSetMethod]	= TSetMethodMsgHandler<IObject,rational>::create(this, &IObject::setDuration);
 	fMsgHandlerMap[kddate_SetMethod]		= TSetMethodMsgHandler<IObject,rational>::create(this, &IObject::addDate);
 	fMsgHandlerMap[kdduration_SetMethod]	= TSetMethodMsgHandler<IObject,rational>::create(this, &IObject::addDuration);
-
+    
 	fMsgHandlerMap[kclock_SetMethod]		= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::clock);
 	fMsgHandlerMap[kdurClock_SetMethod]	= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::durclock);
+
+	fSigHandlerMap[kdate_GetSetMethod]		= TSetMethodSigHandler<IObject,rational>::create(this, &IObject::setDate);
+	fSigHandlerMap[kduration_GetSetMethod]	= TSetMethodSigHandler<IObject,rational>::create(this, &IObject::setDuration);
+	fSigHandlerMap[kddate_SetMethod]		= TSetMethodSigHandler<IObject,rational>::create(this, &IObject::addDate);
+	fSigHandlerMap[kdduration_SetMethod]	= TSetMethodSigHandler<IObject,rational>::create(this, &IObject::addDuration);
 }
 
 //--------------------------------------------------------------------------
@@ -264,8 +305,8 @@ void IObject::del()
     const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kDelete);
 	if (!msgs || msgs->list().empty())
         return;		// nothing to do, no associated message
-
-	MouseLocation mouse (0, 0, 0, 0, 0, 0);
+    
+    MouseLocation mouse (0, 0, 0, 0, 0, 0);
 	EventContext env(mouse, libmapping::rational(0,1), 0);
 	TMessageEvaluator me;
 	SIMessageList outmsgs = me.eval (msgs, env);
@@ -276,10 +317,33 @@ void IObject::del()
 //--------------------------------------------------------------------------
 void IObject::createVirtualNodes()
 {
-	fSync = ISceneSync::create(this);
-    add(fSync);
-	fDebug = IObjectDebug::create(this);
+    fDebug = IObjectDebug::create(this);
     add ( fDebug );
+    fSync = ISceneSync::create(this);
+    fSignals = ISignalNode::create(this);
+	fSignals->createVirtualNodes();
+	add ( fSignals );
+    add(fSync);
+	
+}
+
+//--------------------------------------------------------------------------
+SISignalNode IObject::signalsNode () const			{ return fSignals; }
+
+#define useiterator 0
+//--------------------------------------------------------------------------
+void IObject::propagateSignalsState ()
+{
+	SigModified visitor;
+#if useiterator
+	for (subnodes::iterator i = elements().begin(); i != elements().end(); i++) {
+		(*i)->accept(&visitor);
+	}
+#else
+	for (unsigned int i = 0; i < elements().size(); i++) {
+		elements()[i]->accept(&visitor);
+	}
+#endif
 }
 
 //--------------------------------------------------------------------------
@@ -289,13 +353,38 @@ SMaster IObject::getMaster(SIObject o) const
 }
 
 //--------------------------------------------------------------------------
+std::vector<SMaster> IObject::getMasters(SIObject o) const
+{ 
+	return fSync ? fSync->getMasters(o) : std::vector<SMaster>();
+}
+
+//--------------------------------------------------------------------------
+std::vector<SIObject> IObject::getSlaves(SIObject o) const
+{ 
+	return fSync ? fSync->getSlaves(o) : std::vector<SIObject>();
+}
+
+//--------------------------------------------------------------------------
 void IObject::cleanupSync ()		{ if (fSync) fSync->cleanup(); }
 
 //--------------------------------------------------------------------------
-void IObject::sort ()
+IObject::subnodes IObject::sort ()
 {
 	// topological sort of the scene elements
-	if (fSync) fSync->sort(elements());
+	if (fSync)
+        return fSync->sort(elements());
+    else
+        return elements();
+}
+
+//--------------------------------------------------------------------------
+IObject::subnodes IObject::invertedSort ()
+{
+	// topological sort of the scene elements
+	if (fSync)
+        return fSync->invertedSort(elements());
+    else
+        return elements();
 }
 
 //--------------------------------------------------------------------------
@@ -308,6 +397,7 @@ string IObject::getOSCAddress() const
 void IObject::ptask ()
 { 
 	if (fSync) fSync->ptask();
+	if (signalsNode() && signalsNode()->getState()) propagateSignalsState();
     
 	for (unsigned int i = 0; i < elements().size(); i++) {
         elements()[i]->ptask();
@@ -416,6 +506,38 @@ int IObject::execute (const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
+int IObject::executeSignal (const std::string method, const std::pair<float,float> range, const ParallelSignal* sig)
+{
+	SSigHandler handler = signalHandler(method);
+	if ( handler ) return (*handler)(sig, range);
+
+	// no basic handler , try to find if there is a match
+	handler = signalHandler(method, true);
+	if ( handler ) return (*handler)(sig, range);
+
+	// try to find a default handler
+	handler = signalHandler("*");
+	if ( handler ) return (*handler)(sig, range);
+	return SigHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+int IObject::executeSignal (const std::string method, const std::pair<int,int> range, const ParallelSignal* sig)
+{
+	SSigHandler handler = signalHandler(method);
+	if ( handler ) return (*handler)(sig, range);
+
+	// no basic handler , try to find if there is a match
+	handler = signalHandler(method, true);
+	if ( handler ) return (*handler)(sig, range);
+
+	// try to find a default handler
+	handler = signalHandler("*");
+	if ( handler ) return (*handler)(sig, range);
+	return SigHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
 bool IObject::mapDebug() const			{ return fDebug->getMapDebug(); }
 bool IObject::nameDebug() const			{ return fDebug->getNameDebug(); }
 //bool IObject::signalDebug() const		{ return fDebug->getSignalDebug(); }
@@ -474,10 +596,49 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 			else result = IProxy::execute (translated ? translated : msg, beg, this);
 		}
 	}
-	if (result & MsgHandler::kProcessed) 
+	if (result & MsgHandler::kProcessed)
+    {
+        unsigned int n = elements().size();
+        for (unsigned int i = 0; i < n; i++)
+        {
+            elements()[i]->setState(kModified);
+        }
 		setState(IObject::kSubModified);
-	return result;
+	}
+    return result;
 }
+
+//--------------------------------------------------------------------------
+// signals processing
+//--------------------------------------------------------------------------
+int IObject::processSig ()
+{
+	int result;
+    for(int i = 0; i<size(); i++)
+    {
+        // looks for the object elements()[i] in all the signal connections
+        std::vector<ISignalConnection*> connections;
+        if(fSignals) connections = fSignals->getConnectionsOf(elements()[i]->name());
+        if(!connections.empty())
+        {
+            // if found, we call the method executeSignal to link the attribute and the signal.
+            for(int it = 0; it < connections.size(); it++)
+            {
+                int status = 0;
+                if(connections[it]->getRangeType() == "float")
+                    status = elements()[i]->executeSignal(connections[it]->getMethod(), connections[it]->getFloatRange(), connections[it]->getSignal());
+                else if(connections[it]->getRangeType() == "int")
+                    status = elements()[i]->executeSignal(connections[it]->getMethod(), connections[it]->getIntRange(), connections[it]->getSignal());
+                else
+                    status = elements()[i]->executeSignal(connections[it]->getMethod(), std::pair<float, float>(-1.,1.), connections[it]->getSignal());
+                result |= status;
+            }
+        }
+        elements()[i]->processSig();
+    }
+    return result;
+}
+
 
 //--------------------------------------------------------------------------
 // the 'get' to retrieve an object parameters
@@ -685,6 +846,17 @@ struct msgMatchPredicat {
 	}
 };
 
+struct sigMatchPredicat {
+	const char* method;
+			 sigMatchPredicat(const string& s) : method(s.c_str()) {}
+	bool operator() (const pair<string, SSigHandler>& elt) const {
+		if (elt.first.empty() ||(elt.first == "*") ) return false;
+		CRegexpT<char> regexp(elt.first.c_str(), EXTENDED);
+		bool ret = regexp.Match(method);
+		return ret;
+	}
+};
+
 //--------------------------------------------------------------------------
 SMsgHandler IObject::messageHandler(const string& msg, bool match) const
 {
@@ -698,6 +870,22 @@ SMsgHandler IObject::messageHandler(const string& msg, bool match) const
 		msgMatchPredicat p(msg);
 		map<string, SMsgHandler>::const_iterator h = find_if(fMsgHandlerMap.begin(), fMsgHandlerMap.end(), p);
 		if (h != fMsgHandlerMap.end()) handler = h->second;
+	}
+	return handler;
+}
+
+//--------------------------------------------------------------------------
+SSigHandler IObject::signalHandler(const string& method, bool match) const
+{
+	SSigHandler handler;
+	if (!match) {
+		map<string, SSigHandler>::const_iterator h = fSigHandlerMap.find(method);
+		if (h != fSigHandlerMap.end()) handler = h->second;
+	}
+	else {
+		sigMatchPredicat p(method);
+		map<string, SSigHandler>::const_iterator h = find_if(fSigHandlerMap.begin(), fSigHandlerMap.end(), p);
+		if (h != fSigHandlerMap.end()) handler = h->second;
 	}
 	return handler;
 }
@@ -790,6 +978,12 @@ SIMessageList IObject::getWatch() const
 }
 
 //--------------------------------------------------------------------------
+SIMessageList IObject::getStack() const
+{
+	return EventsAble::getStack (getOSCAddress().c_str());
+}
+
+//--------------------------------------------------------------------------
 SIMessageList IObject::getAliases() const
 {
 	SIMessageList list = IMessageList::create();
@@ -841,10 +1035,12 @@ MsgHandler::msgStatus IObject::renameMsg(const IMessage* msg)
 	return MsgHandler::kBadParameters;
 }
 
+static const char* kExportChildrenStr		= "children";
+
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
 {
-	if (msg->size() == 1) {
+	if (msg->size() == 1 || msg->size()== 2) {
 		std::string fileName;
 		if (!msg->param(0, fileName)) return MsgHandler::kBadParameters;
 		if (fileName.length()) {
@@ -862,8 +1058,19 @@ MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
 			}
 			else								//Argument is a file: export to this file.
 				setExportFlag( absolutePath );
-			return MsgHandler::kProcessed;
+            fDrawChildren = false; //if not specified, we don't export the children with the object
 		}
+        if(msg->size() == 2)
+        {
+            std::string option;
+            if (!msg->param(1, option)) return MsgHandler::kBadParameters;
+            if(option.length() && option == kExportChildrenStr)
+                fDrawChildren = true;
+            else
+                fDrawChildren = false;
+        }
+            
+        return MsgHandler::kProcessed;
 	}
 	else if (msg->size() == 0) {	//No argument : export to "objectName".
 		setExportFlag( getScene()->absolutePath(name() ) );

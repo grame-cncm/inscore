@@ -1,3 +1,4 @@
+/ITL/scene/sync turenas;
 
 /ITL/scene/turenas del;
 /ITL/scene/turenas set img "rsrc/schemaSonagram.png";
@@ -5,7 +6,6 @@
 /ITL/scene/turenas scale 1.0;
 
 /ITL/scene/cursor color 204 0 48 132;
-/ITL/scene/cursor width 0.004;
 
 # Load the comments position
 /ITL load "scripts/sectionsPos.inscore";

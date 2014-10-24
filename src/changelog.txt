@@ -11,6 +11,17 @@ INScore originates from the Interlude project.
 It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
+
+----------------------------------------------------
+Version 1.08
+- the signal node is available on any level of hierarchy (as well as the sync node)
+- it is possible to connect a signal to some of the object's attributes
+- new 'connect' and 'disconnect' messages on the signal node
+- a slave can have several masters
+- no more side effects for synchronized objects (position change, scaling)
+- some modifications on examples (Turenas and cursors) have been made : some settings of scale were 
+in fact done to avoid side-effects that don't exist anymore.
+
 ----------------------------------------------------
 Version 1.07
 - bug with 'line' initialization corrected: wrong position and orientation with negative coordinates.
@@ -44,7 +55,7 @@ Version 1.05 - 2014-02-17
 - new 'event' method supported at object level for UI events simulation
 - new watchable event: 'del' (triggered when deleting an object)
 - validation tools
-- new 'gmnstream' guido stream object (require Guido engine v. 1.52)
+- new 'gmnstream' guido stream object (requires Guido engine v. 1.52)
 
 ----------------------------------------------------
 Version 1.03 - 2013-07-25

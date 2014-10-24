@@ -35,27 +35,21 @@ using namespace libmapping;
 namespace inscore
 {
     
-    //----------------------------------------------------------------------
-    VLayerView::VLayerView(QGraphicsScene* scene, const ILayer* layer)
-	: VMappedShapeView( scene , new MouseEventAble<QGraphicsRectItem>(layer) )
-    {}
+//----------------------------------------------------------------------
+VLayerView::VLayerView(QGraphicsScene* scene, const ILayer* layer): VMappedShapeView( scene , new MouseEventAble<QGraphicsRectItem>(layer) )
+{}
     
-    //----------------------------------------------------------------------
-    void VLayerView::updateView( ILayer * layer  )
+//----------------------------------------------------------------------
+void VLayerView::updateView( ILayer * layer  )
+{
+layer->cleanupSync();
+    QRectF newRect( 0,0,  relative2SceneWidth(layer->getWidth()), relative2SceneHeight(layer->getHeight()) );
+    if ( newRect != item()->rect() )
     {
-    layer->cleanupSync();
-    if(!layer->getParent()->getMaster(layer) && !layer->getParent()->getDeleted())
-    {
-        if(layer->getParent()->getTypeString() != IScene::kSceneType)
-            setParentItem(layer->getParent()->getView()?layer->getParent()->getView():0);
+        item()->setRect( newRect );
+        itemChanged();
     }
-        QRectF newRect( 0,0,  relative2SceneWidth(layer->getWidth()), relative2SceneHeight(layer->getHeight()) );
-        if ( newRect != item()->rect() )
-        {
-            item()->setRect( newRect );
-            itemChanged();
-        }
-        VShapeView::updateView( layer );
-    }
+    VShapeView::updateView( layer );
+}
     
 } // end namespoace

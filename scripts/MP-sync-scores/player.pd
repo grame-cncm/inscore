@@ -1,0 +1,40 @@
+#N canvas 168 75 221 200 10;
+#X obj -109 -57 cnv 15 220 30 empty empty empty 20 12 0 14 -261682
+-66577 0;
+#X text -96 -51 INScore Player;
+#X obj -57 22 tgl 15 0 \$0-play \$0-play-in empty 20 7 0 10 -228856
+-1 -1 0 1;
+#N canvas 98 200 1036 714 inside 0;
+#X obj 278 309 cnv 15 250 180 empty empty Clocks 20 12 0 12 -228856
+-66577 0;
+#X obj 287 367 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 287 396 metro 42.3;
+#X obj 287 334 r \$0-play;
+#X msg 287 427 /ITL/scene/cursor clock;
+#X obj 287 459 s itl;
+#X obj 28 309 cnv 15 240 180 empty empty OSC_Comm 20 12 0 12 -204800
+-66577 0;
+#X obj 68 426 dumpOSC 7001;
+#X obj 68 457 print ITLOut;
+#X obj 165 425 dumpOSC 7002;
+#X obj 165 456 print ITL;
+#X obj 184 398 sendOSC;
+#X msg 35 364 connect localhost 7000;
+#X obj 35 334 loadbang;
+#X obj 184 364 prepend send;
+#X obj 184 337 r itl;
+#X obj 344 368 r _tempo;
+#X connect 1 0 2 0;
+#X connect 2 0 4 0;
+#X connect 3 0 1 0;
+#X connect 4 0 5 0;
+#X connect 7 0 8 0;
+#X connect 9 0 10 0;
+#X connect 12 0 11 0;
+#X connect 13 0 12 0;
+#X connect 14 0 11 0;
+#X connect 15 0 14 0;
+#X connect 16 0 2 1;
+#X restore -77 53 pd inside;
+#X text -83 -13 Start/Stop;

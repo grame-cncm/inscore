@@ -38,33 +38,10 @@ VLineView::VLineView(QGraphicsScene * scene, const ILine* h)
 void VLineView::updateView( ILine * line )
 {
     line->cleanupSync();
-    if(!line->getParent()->getMaster(line) && !line->getParent()->getDeleted())
-    {
-        if(line->getParent()->getTypeString() != IScene::kSceneType)
-            setParentItem(line->getParent()->getView()?line->getParent()->getView():0);
-    }
-	double x = relative2SceneX(line->getPoint().x());
-	double y = relative2SceneY(line->getPoint().y());
-	double xo = 0;
-	double yo = 0;
+    QPainterPath myPath;
+	myPath.moveTo(0,0);
+	myPath.lineTo( relative2SceneX(line->getPoint().x()) , relative2SceneY(line->getPoint().y()) );
 
-	if ((x < 0) && (y < 0)) {
-		x = -x;
-		y = -y;
-	}
-	else if (x < 0) {
-		yo = y;
-		x = -x;
-		y = 0;
-	}
-	else if (y < 0) {
-		yo = -y;
-		y = 0;
-	}
-
-	QPainterPath myPath;
-	myPath.moveTo( xo,yo);
-	myPath.lineTo( x, y );
 	if ( myPath != item()->path() )
 	{
 		item()->setPath( myPath );

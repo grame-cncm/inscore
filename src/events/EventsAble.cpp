@@ -200,6 +200,47 @@ SIMessageList EventsAble::getWatch (const char* address) const
 }
 
 //----------------------------------------------------------------------
+SIMessageList EventsAble::getStack (const char* address) const
+{
+	SIMessageList list = IMessageList::create();
+    
+    stack<EventsMaps> temp = fWatchStack;
+    stack<EventsMaps> tempInverted;
+
+    while(temp.size())
+    {
+        EventsMaps m = temp.top();
+        temp.pop();
+        tempInverted.push(m);
+    }
+    while(tempInverted.size())
+    {
+        EventsMaps m = tempInverted.top();
+        for (_TMsgMap::const_iterator i = m.fMsg.begin(); i != m.fMsg.end(); i++)
+            list->list().push_back( buildGetMsg (address, type2string (i->first), i->second));
+
+        for (_TimeMsgMap::const_iterator i = m.fTimeEnterMsg.begin(); i != m.fTimeEnterMsg.end(); i++)
+            list->list().push_back( buildGetMsg (address, kTimeEnterStr, i->first, i->second));
+
+        for (_TimeMsgMap::const_iterator i = m.fTimeLeaveMsg.begin(); i != m.fTimeLeaveMsg.end(); i++)
+            list->list().push_back( buildGetMsg (address, kTimeLeaveStr, i->first, i->second));
+
+        for (_TimeMsgMap::const_iterator i = m.fDurEnterMsg.begin(); i != m.fDurEnterMsg.end(); i++)
+            list->list().push_back( buildGetMsg (address, kDurEnterStr, i->first, i->second));
+
+        for (_TimeMsgMap::const_iterator i = m.fDurLeaveMsg.begin(); i != m.fDurLeaveMsg.end(); i++)
+            list->list().push_back( buildGetMsg (address, kDurLeaveStr, i->first, i->second));
+        
+        SIMessage msg = IMessage::create(address, kpush_SetMethod);
+        list->list().push_back(msg);
+        
+        tempInverted.pop();
+
+    }
+    return list;
+}
+
+//----------------------------------------------------------------------
 const char* EventsAble::type2string (eventype type)
 {
 	switch (type) {

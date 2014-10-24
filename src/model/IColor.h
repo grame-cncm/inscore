@@ -33,6 +33,7 @@
 #include "OSCStream.h"
 #include "IMessageStream.h"
 #include "IMessageHandlers.h"
+#include "ISignalHandlers.h"
 
 namespace inscore
 {
@@ -157,7 +158,22 @@ class IColor
 				setfloat	fSetFloat;
 				SetColorMsgHandler(IColor* color, setint si, setfloat sf) : fColor(color), fSetInt(si), fSetFloat(sf) {}
 		};
-		
+    
+		class SetColorSigHandler;
+		typedef libmapping::SMARTP<SetColorSigHandler> SSetColorSigHandler;
+		class SetColorSigHandler : public SigHandler {
+			public:
+				typedef void (IColor::*setint)(int);
+				typedef void (IColor::*setfloat)(float);
+				virtual SigHandler::sigStatus operator ()(const ParallelSignal* sig, std::pair<float,float> range);
+				virtual SigHandler::sigStatus operator ()(const ParallelSignal* sig, std::pair<int,int> range);
+				static SSetColorSigHandler create(IColor* color, setint si, setfloat sf) { return new SetColorSigHandler(color, si, sf); }
+			protected:
+				IColor*		fColor;
+				setint		fSetInt;
+				setfloat	fSetFloat;
+				SetColorSigHandler(IColor* color, setint si, setfloat sf) : fColor(color), fSetInt(si), fSetFloat(sf) {}
+		};
 };
 
 inline IMessage& operator << (IMessage& out, const IColor& color)	{ color.print(out); return out; }

@@ -28,6 +28,8 @@
 #include "IMessage.h"
 #include <algorithm>
 
+#include "deelx.h"
+
 using namespace std;
 
 namespace inscore
@@ -136,6 +138,32 @@ MsgHandler::msgStatus IColor::SetColorMsgHandler::operator ()(const IMessage* ms
 	else if (msg->param(0, fval))	(fColor->*fSetFloat)(fval);
 	else return MsgHandler::kBadParameters;
 	return MsgHandler::kProcessed;
+}
+
+
+//--------------------------------------------------------------------------------
+SigHandler::sigStatus IColor::SetColorSigHandler::operator ()(const ParallelSignal* sig, std::pair<float,float> range)
+{
+	if (sig->dimension() != 1) return SigHandler::kBadParameters;
+	std::vector<float> dump = sig->signal(0)->dump();
+    float fval = dump.empty() ? sig->signal(0)->defaultValue() : dump.back();
+    //appply the range
+    fval = range.first + (range.second-range.first)*(fval+1)/2;
+    (fColor->*fSetFloat)(fval);
+	return SigHandler::kProcessed;
+}
+
+//--------------------------------------------------------------------------------
+SigHandler::sigStatus IColor::SetColorSigHandler::operator ()(const ParallelSignal* sig, std::pair<int,int> range)
+{
+	if (sig->dimension() != 1) return SigHandler::kBadParameters;
+	std::vector<float> dump = sig->signal(0)->dump();
+    float fval = dump.empty() ? sig->signal(0)->defaultValue() : dump.back();
+    //appply the range
+    fval = range.first + (range.second-range.first)*(fval+1)/2;
+    int val = (int)(fval);
+    (fColor->*fSetInt)(val);
+	return SigHandler::kProcessed;
 }
 
 //--------------------------------------------------------------------------------
