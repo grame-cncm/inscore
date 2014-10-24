@@ -148,6 +148,7 @@ rsrc:
 	cp rsrc/cclicense.pdf $(rsrc)/license.pdf
 	cp rsrc/cclicense.html $(rsrc)/license.html
 	cp rsrc/whatsnew.txt $(rsrc)
+	tar czf $(rsrc).tgz $(rsrc)/*[^z]
 
 cleanrsrc:
 	@echo set files permission to $(fperm)
