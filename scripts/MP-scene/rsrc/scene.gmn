@@ -3,7 +3,7 @@
 	\accol<id="a", range="1-2", type="none">
 	\i<"fff", dy=-6>
 	
-	\stemsDown (\pizz<"snap">(a/16 a a# a&) \decresc<dy=2>(a& g f e c2 a1 f) d)
+	\stemsDown (\pizz<"snap">(a/16 a a# a&) \decresc<dy=6>(a& g f e c2 a1 f) d)
 	\stemsUp(a a a a g a b c2 d1 f a c2) 
 	\stemsDown \stacc(\beam(a/32 a a a) \beam(a/32 g f e) \beam(c2 a1 f d))
 
