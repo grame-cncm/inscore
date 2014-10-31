@@ -49,6 +49,7 @@ ISignalNode::ISignalNode(IObject * parent) : IVNode(kName, parent), fDebug(false
 	fMsgHandlerMap[kwatch_GetSetMethod]		= 0L;
 	fMsgHandlerMap[kwatchplus_SetMethod]	= 0L;
     
+    fGetMultiMsgHandlerMap[kconnect_GetSetMethod] = TGetParamMultiMethodHandler<ISignalNode, SIMessageList(ISignalNode::*)() const>::create(this, &ISignalNode::getAllConnections);
     fMsgHandlerMap[kconnect_GetSetMethod]	= TMethodMsgHandler<ISignalNode>::create(this, &ISignalNode::connectMsg);
 	fMsgHandlerMap[kdisconnect_SetMethod]   = TMethodMsgHandler<ISignalNode>::create(this, &ISignalNode::disconnectMsg);
 }
@@ -227,6 +228,7 @@ MsgHandler::msgStatus ISignalNode::connect(SParallelSignal signal, std::string o
         connection->setMethod(methodStr);
         connection->setObjectMethod(objectMethod);
         connection->setSignal(signal);
+        connection->setRangeString(range);
         
         // We now want to translate the string range into floats, ints, or rationnals.
         if(!range.empty())
@@ -363,6 +365,24 @@ std::vector<ISignalConnection* > ISignalNode::getConnectionsOf(std::string objec
             connections.push_back(fConnections[i]);
     }
     return connections;
+}
+
+//--------------------------------------------------------------------------
+SIMessageList ISignalNode::getAllConnections() const
+{
+    SIMessageList list = IMessageList::create();
+    const char* address = getOSCAddress().c_str();
+    
+    for (int i = 0; i < fConnections.size(); i++)
+    {
+        SIMessage msg = IMessage::create (address, kconnect_GetSetMethod);
+        std::string objectMethodWithRange = fConnections[i]->getObjectMethod();
+        objectMethodWithRange.append(fConnections[i]->getRangeString());
+        *msg << fConnections[i]->getSignal()->signal(0)->getName() << objectMethodWithRange;
+        
+        list->list().push_back( msg );
+    }
+    return list;
 }
 
 }
