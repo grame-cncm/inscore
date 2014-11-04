@@ -3,6 +3,20 @@
 %:    Differences to version 1.05
 \sublevel{Differences to version 1.05}
 \begin{itemize}
+\item the signal node is available at any level of the hierarchy (as well as the sync node)
+\item new \OSC{connect} and \OSC{disconnect} messages for the signal node to support signal connection to objects graphic attributes (see section \fullref{signalcnx}).
+\item a slave can have several masters
+\item no more side effects for synchronized objects (position change, scaling)
+\item bug with 'line' initialization corrected: wrong position and orientation with negative coordinates.
+\item new \OSC{plugins} static node at application level to provide a user path to look for pugins (see section \fullref{ITLplugins}).
+\item explicit objects for musicxml scores (\OSC{musicxml} and \OSC{musicxmlf} types) (see section \fullref{symscore}).
+\item new \OSC{faustdsp} object, charging libfaust as a plugin to compile faust DSP on-the-fly (see section \fullref{sigscore}).
+\item exception catched when sending osc messages: was a potential crash, 
+  e.g. in case of \OSC{get} message sent to a signal with a large buffer -> out of buffer memory
+\item new javascript 'post' function for posting delayed messages  (see section \fullref{jsobj})
+\item new \OSC{write} method supported by the 'log' window (see section \fullref{ITLlog})
+\item variable addresses are evaluated in message based variables
+\item supports relative rotations on x and y axis
 \item \OSC{save} message can now take an optional list of attributes to be saved  (see section \fullref{common})
 \item variables are now evaluated and expanded inside strings. Thus interaction variables can now be passed as argument of javascript functions.
 \item corrects musicxml-version output

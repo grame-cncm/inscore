@@ -49,6 +49,7 @@ ISignalNode::ISignalNode(IObject * parent) : IVNode(kName, parent), fDebug(false
 	fMsgHandlerMap[kwatch_GetSetMethod]		= 0L;
 	fMsgHandlerMap[kwatchplus_SetMethod]	= 0L;
     
+    fGetMultiMsgHandlerMap[kconnect_GetSetMethod] = TGetParamMultiMethodHandler<ISignalNode, SIMessageList(ISignalNode::*)() const>::create(this, &ISignalNode::getAllConnections);
     fMsgHandlerMap[kconnect_GetSetMethod]	= TMethodMsgHandler<ISignalNode>::create(this, &ISignalNode::connectMsg);
 	fMsgHandlerMap[kdisconnect_SetMethod]   = TMethodMsgHandler<ISignalNode>::create(this, &ISignalNode::disconnectMsg);
 }
@@ -169,7 +170,11 @@ MsgHandler::msgStatus ISignalNode::disconnectMsg (const IMessage* msg)
         subnodes objectList;
         if(!getParent()->find(objectStr, objectList)) return MsgHandler::kBadParameters;
     
-        std::string methods = objectMethodsStr.substr(objectMethodsStr.find(":")+1);
+        std::string methods;
+        if(objectMethodsStr.find(":") != objectMethodsStr.npos)
+            methods = objectMethodsStr.substr(objectMethodsStr.find(":")+1);
+        else
+            methods = "";
         result = disconnect(signal, objectStr, methods);
         if(result != MsgHandler::kProcessed) return result;
     }
@@ -227,6 +232,7 @@ MsgHandler::msgStatus ISignalNode::connect(SParallelSignal signal, std::string o
         connection->setMethod(methodStr);
         connection->setObjectMethod(objectMethod);
         connection->setSignal(signal);
+        connection->setRangeString(range);
         
         // We now want to translate the string range into floats, ints, or rationnals.
         if(!range.empty())
@@ -303,13 +309,30 @@ MsgHandler::msgStatus ISignalNode::disconnect(SParallelSignal signal, std::strin
             {
                 std::vector<ISignalConnection*>::iterator d = it;
                 fConnections.erase(d);
-                it++;
             }
+            else
+                it++;
         }
+    }
+    // if we only specified the signal and the object (without methods), we look for all the connections between the signal and this object
+    else if(methods.empty())
+    {
+        vector<ISignalConnection*>::iterator it = fConnections.begin();
+        bool found = false;
+        while(it != fConnections.end()  && !found)
+        {
+            if((*it)->getObject() == object && (*it)->getSignal() == signal)
+            {
+                std::vector<ISignalConnection*>::iterator d = it;
+                fConnections.erase(d);
+            }
+            else
+                it++;
+        }
+
     }
     // We separate all the methods of the list to erase them from the map fConnections (after checking that they were indeed connected to the signal) :
     // "method1:method2:method3" --> erase "object:method1", "object:method2", "object:method3"
-    
     else
     {
         std::string allMethodStr = methods;
@@ -319,6 +342,7 @@ MsgHandler::msgStatus ISignalNode::disconnect(SParallelSignal signal, std::strin
         while(!allMethodStr.empty())
         {
             methodStr = allMethodStr.substr(0,i);
+            methodStr = methodStr.substr(0,methodStr.find("["));
             
             if(i != allMethodStr.npos)
             {
@@ -363,6 +387,24 @@ std::vector<ISignalConnection* > ISignalNode::getConnectionsOf(std::string objec
             connections.push_back(fConnections[i]);
     }
     return connections;
+}
+
+//--------------------------------------------------------------------------
+SIMessageList ISignalNode::getAllConnections() const
+{
+    SIMessageList list = IMessageList::create();
+    const char* address = getOSCAddress().c_str();
+    
+    for (int i = 0; i < fConnections.size(); i++)
+    {
+        SIMessage msg = IMessage::create (address, kconnect_GetSetMethod);
+        std::string objectMethodWithRange = fConnections[i]->getObjectMethod();
+        objectMethodWithRange.append(fConnections[i]->getRangeString());
+        *msg << fConnections[i]->getSignal()->signal(0)->getName() << objectMethodWithRange;
+        
+        list->list().push_back( msg );
+    }
+    return list;
 }
 
 }

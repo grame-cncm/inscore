@@ -112,6 +112,8 @@ class TSignal : virtual public libmapping::smartable
 		/// \brief signals comparison based on signal size
 		/// \param sig a signal
 		virtual bool  operator < (const TSignal& sig)			{ return size() < sig.size(); }
+    
+        virtual std::string getName() {return fName;}
 };
 
 class		 ConstTSignal;
