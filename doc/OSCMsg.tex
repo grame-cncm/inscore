@@ -2079,14 +2079,14 @@ When a connection between a signal and an object attribute is set, sending value
 
 \begin{rail}
 signalcnx : 	( 'connect'   connection )
-			| 	'disconnect' ( [1] connection | [2] signal )
+			| 	'disconnect' ( [1] connection | [2] signal | [3]  signal object )
 \end{rail}
 \index{signal!connect}
 \index{signal!disconnect}
 
 \begin{itemize}
 \item the \OSC{connect} message makes a connection between a signal and one or several attributes of one or several objects.
-\item the \OSC{disconnect} message breaks a connection \textbf{[1]} or all the connections of a given signal \textbf{[2]}
+\item the \OSC{disconnect} message breaks a specific connection \textbf{[1]} or all the connections of a given signal \textbf{[2]}, or all connections between a given signal and a given object \textbf{[3]}.
 \end{itemize}
 
 \begin{rail}

@@ -170,7 +170,11 @@ MsgHandler::msgStatus ISignalNode::disconnectMsg (const IMessage* msg)
         subnodes objectList;
         if(!getParent()->find(objectStr, objectList)) return MsgHandler::kBadParameters;
     
-        std::string methods = objectMethodsStr.substr(objectMethodsStr.find(":")+1);
+        std::string methods;
+        if(objectMethodsStr.find(":") != objectMethodsStr.npos)
+            methods = objectMethodsStr.substr(objectMethodsStr.find(":")+1);
+        else
+            methods = "";
         result = disconnect(signal, objectStr, methods);
         if(result != MsgHandler::kProcessed) return result;
     }
@@ -305,13 +309,30 @@ MsgHandler::msgStatus ISignalNode::disconnect(SParallelSignal signal, std::strin
             {
                 std::vector<ISignalConnection*>::iterator d = it;
                 fConnections.erase(d);
-                it++;
             }
+            else
+                it++;
         }
+    }
+    // if we only specified the signal and the object (without methods), we look for all the connections between the signal and this object
+    else if(methods.empty())
+    {
+        vector<ISignalConnection*>::iterator it = fConnections.begin();
+        bool found = false;
+        while(it != fConnections.end()  && !found)
+        {
+            if((*it)->getObject() == object && (*it)->getSignal() == signal)
+            {
+                std::vector<ISignalConnection*>::iterator d = it;
+                fConnections.erase(d);
+            }
+            else
+                it++;
+        }
+
     }
     // We separate all the methods of the list to erase them from the map fConnections (after checking that they were indeed connected to the signal) :
     // "method1:method2:method3" --> erase "object:method1", "object:method2", "object:method3"
-    
     else
     {
         std::string allMethodStr = methods;
@@ -321,6 +342,7 @@ MsgHandler::msgStatus ISignalNode::disconnect(SParallelSignal signal, std::strin
         while(!allMethodStr.empty())
         {
             methodStr = allMethodStr.substr(0,i);
+            methodStr = methodStr.substr(0,methodStr.find("["));
             
             if(i != allMethodStr.npos)
             {
