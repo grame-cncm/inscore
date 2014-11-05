@@ -23,38 +23,19 @@
 
 */
 
+#include "VUrlIntermediateObjectView.h"
+#include "IUrlIntermediateObject.h"
 
-#ifndef __IObjectFactory__
-#define __IObjectFactory__
+using namespace libmapping;
 
-#include <string>
-#include "IModelTypes.h"
 
 namespace inscore
 {
 
-/*!
-\addtogroup ITLModel
-@{
-*/
-
-//--------------------------------------------------------------------------
-/*!
-	\brief a factory producing objects for the data model.
-*/
-class IObjectFactory
+//----------------------------------------------------------------------
+VUrlIntermediateObjectView::VUrlIntermediateObjectView(QGraphicsScene * scene, const IUrlIntermediateObject* h)
+					: VGraphicsItemView( scene , new MouseEventAble<QGraphicsRectItem>(h) )
 {
-	public:
-	/*! \brief creates an IObject
-		\param name the object name
-		\param type the object type
-		\param parent its parent object
-	*/
-	static SIObject create(const std::string& name , const std::string& type, IObject* parent, bool isUrl = false);
-};
+}
 
-/*! @} */
-
-} // end namespoace
-
-#endif
+}

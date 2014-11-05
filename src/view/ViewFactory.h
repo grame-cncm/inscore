@@ -65,6 +65,7 @@ class ViewFactory
 	static VObjectView*		create (const IText* object,		QGraphicsScene* scene);
 	static VObjectView*		create (const ITextFile* object,	QGraphicsScene* scene);
 	static VObjectView*		create (const IVideo* object,		QGraphicsScene* scene);
+	static VObjectView*		create (const IUrlIntermediateObject* object, QGraphicsScene* scene);
 };
 
 /*!@} */

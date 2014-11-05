@@ -23,38 +23,25 @@
 
 */
 
+#ifndef __INScore__VUrlIntermediateObjectView__
+#define __INScore__VUrlIntermediateObjectView__
 
-#ifndef __IObjectFactory__
-#define __IObjectFactory__
-
-#include <string>
-#include "IModelTypes.h"
+#include <iostream>
+#include "VGraphicsItemView.h"
+#include "IUrlIntermediateObject.h"
 
 namespace inscore
 {
 
-/*!
-\addtogroup ITLModel
-@{
-*/
-
-//--------------------------------------------------------------------------
-/*!
-	\brief a factory producing objects for the data model.
-*/
-class IObjectFactory
+class VUrlIntermediateObjectView: public VGraphicsItemView
 {
-	public:
-	/*! \brief creates an IObject
-		\param name the object name
-		\param type the object type
-		\param parent its parent object
-	*/
-	static SIObject create(const std::string& name , const std::string& type, IObject* parent, bool isUrl = false);
+
+public :
+    VUrlIntermediateObjectView(QGraphicsScene * scene, const IUrlIntermediateObject*);
+		virtual ~VUrlIntermediateObjectView() {}
+
 };
 
-/*! @} */
+}
 
-} // end namespoace
-
-#endif
+#endif /* defined(__INScore__VUrlIntermediateObjectView__) */

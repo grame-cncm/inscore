@@ -27,9 +27,7 @@
 #include "IScene.h"
 #include "ITLError.h"
 #include "TFile.h"
-#include "QFileDownloader.h"
 #include <QDir>
-#include <QUrl>
 
 using namespace std;
 
@@ -38,7 +36,7 @@ namespace inscore
 
 //--------------------------------------------------------------------------
 TFile::TFile(IScene* scene, const std::string& pathname ) 
-	: fFilePath (pathname), fPathChanged (true), fScene(scene), fIsUrl(false), fDownloaderThread(0)
+	: fFilePath (pathname), fPathChanged (true), fScene(scene), fIsUrl(false)
 {
 }
 
@@ -104,9 +102,9 @@ bool TFile::read (std::string& str) const
 //--------------------------------------------------------------------------
 bool TFile::read(QByteArray& out) const
 {
-    if(fIsUrl && fDownloaderThread)
+    if(fIsUrl)
     {
-        out = fDownloaderThread->downloadedData();
+        out = fData;
         return true;
     }
     
@@ -139,7 +137,7 @@ MsgHandler::msgStatus TFile::set (const IMessage* msg )
         begin.assign(path,0,7);
         if(begin == "http://" || begin == "https:/")
         {
-            QUrl Url(path.c_str());
+           /* QUrl Url(path.c_str());
             
             if (fDownloaderThread) {
                 fDownloaderThread->terminate();
@@ -147,7 +145,7 @@ MsgHandler::msgStatus TFile::set (const IMessage* msg )
             }
             fDownloaderThread = new QFileDownloader(Url,this);
             if (fDownloaderThread) fDownloaderThread->start();
-            
+            */
             fIsUrl = true;
             setFile(path);
             return MsgHandler::kProcessed;

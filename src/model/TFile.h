@@ -95,7 +95,6 @@ class TFile
 		static char *	read(const std::string& path);
 		static int		getLength (std::ifstream& f);
         bool            fIsUrl;
-        QFileDownloader *    fDownloaderThread;
     
         QByteArray fData;
 

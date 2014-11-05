@@ -62,4 +62,5 @@
 #include "IText.h"
 #include "ITextFile.h"
 #include "IVideo.h"
+#include "IUrlIntermediateObject.h"
 #endif

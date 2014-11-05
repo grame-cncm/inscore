@@ -136,6 +136,9 @@ typedef class libmapping::SMARTP<ISVGFile>		SISVGFile;
 class IVideo;
 typedef class libmapping::SMARTP<IVideo>		SIVideo;
 
+class IUrlIntermediateObject;
+typedef class libmapping::SMARTP<IUrlIntermediateObject>		SIUrlIntermediateObject;
+
 class Master;
 class ISync;
 

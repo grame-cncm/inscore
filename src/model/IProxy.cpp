@@ -36,6 +36,7 @@
 #include "IFaustDSP.h"
 #include "IFaustDSPFile.h"
 #include "Tools.h"
+#include "IUrlIntermediateObject.h"
 
 using namespace std;
 
@@ -89,7 +90,22 @@ int IProxy::execute (const IMessage* msg, const std::string& objName, SIObject p
 		objType = msg->param(0)->value<string>("");
 	}
 
-	SIObject obj = IObjectFactory::create(objName, objType, parent);
+    // if we have a file that is from url : we create a "proxy" object
+    SIObject obj;
+    
+    if(objType == "textf" || objType == "image" || objType == "gmnf" || objType == "htmlf" || objType == "xmlf" || objType == "svgf")
+    {
+        std::string path;
+        if (!msg->param(1, path)) return MsgHandler::kBadParameters;
+        std::string begin;
+        begin.assign(path,0,7);
+        if(begin == "http://" || begin == "https:/")
+            obj = IObjectFactory::create(objName, IUrlIntermediateObject::kUrlIntermediateType, parent, true);
+        else
+            obj = IObjectFactory::create(objName, objType, parent, false);
+    }
+    else
+        obj = IObjectFactory::create(objName, objType, parent);
 	if (obj) {
 		int status = obj->execute(msg);
 		if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) {
