@@ -1931,7 +1931,7 @@ A \emph{graphic signal} is a composite signal including a set of 3 parallel sign
 \sublevel{The 'signal' static node.}
 A \OSC{scene} includes a static signal node, which OSC address is \OSC{/ITL/\textit{scene}/signal} which may be viewed as a container for signals. It is also used for \textit{composing signals in parallel}.
 
-The \OSC{signal} node supports only the \OSC{get} message that gives the list of the defined signals.
+The \OSC{signal} node supports the \OSC{get} message that gives the list of the defined signals and also the \OSC{get connect} message that gives a list of all connections, but doesn't take any argument.
 
 \example \\
 Querying the signal node:
@@ -1939,6 +1939,13 @@ Querying the signal node:
 \sampleindent will give the enclosed signals definitions:
 \sample{/ITL/scene/signal/y size 200 ;\\
 /ITL/scene/signal/h size 200 ;
+}
+
+And :
+\sample{/ITL/scene/signal get connect;}
+\sampleindent will give the signal connections :
+\sample{/ITL/scene/signal connect cos object1:method1 ;\\
+/ITL/scene/signal connect sin object2:method2 ;
 }
 
 
@@ -2079,14 +2086,14 @@ When a connection between a signal and an object attribute is set, sending value
 
 \begin{rail}
 signalcnx : 	( 'connect'   connection )
-			| 	'disconnect' ( [1] connection | [2] signal )
+			| 	'disconnect' ( [1] connection | [2] signal | [3]  signal object )
 \end{rail}
 \index{signal!connect}
 \index{signal!disconnect}
 
 \begin{itemize}
 \item the \OSC{connect} message makes a connection between a signal and one or several attributes of one or several objects.
-\item the \OSC{disconnect} message breaks a connection \textbf{[1]} or all the connections of a given signal \textbf{[2]}
+\item the \OSC{disconnect} message breaks a specific connection \textbf{[1]} or all the connections of a given signal \textbf{[2]}, or all connections between a given signal and a given object \textbf{[3]}.
 \end{itemize}
 
 \begin{rail}
@@ -2257,7 +2264,8 @@ interactMsg : (('watch' | 'watch+')  ([1] |
 
 \note{} \\
 	The [1] and [2] form has no effect with the \OSC{watch+} message. \\
-	In some environments, the comma has a special meaning, making tricky to use it as a message separator. This is why ':' is also accepted as separator in OSC messages.
+	In some environments, the comma has a special meaning, making tricky to use it as a message separator. This is why ':' is also accepted as separator in OSC messages. \\
+	The \OSC{get watch} message gives all the watch messages of a node, but doesn't take any argument.
 
 \begin{rail} 
 message : (| addressPrefix)  OSCAddress ( | (parameters | variable) + )

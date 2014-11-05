@@ -426,7 +426,7 @@ void VGraphicsItemView::findNewSync(SMaster master, SIObject slave)
     bool found = false;
     for(std::map<SMaster, QStretchTilerItem*>::iterator i = fTilerItems.begin(); i != fTilerItems.end(); i++)
     {
-        if(i->first->getMaster() == master->getMaster())
+        if(i->first->getMaster() == master->getMaster() && i->first->getMasterMapName() == master->getMasterMapName())
             found = true;
     }
     QStretchTilerItem * fTilerItem;
@@ -446,7 +446,11 @@ void VGraphicsItemView::findObsoleteSync(std::vector<SMaster> masters)
 
     while(it != fTilerItems.end())
     {
-        if(std::find(masters.begin(), masters.end(), it->first) == masters.end())
+        bool found = false;
+        for(std::vector<SMaster>::iterator i = masters.begin(); i != masters.end(); i++)
+            if((*i)->getMaster() == it->first->getMaster() && (*i)->getMasterMapName() == it->first->getMasterMapName())
+                found = true;
+        if(!found)
         {
             if(it->second->scene())
                 fScene->removeItem(it->second);

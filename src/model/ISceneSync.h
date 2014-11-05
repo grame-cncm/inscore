@@ -49,7 +49,7 @@ class ISceneSync : public IVNode
 {	
 	ISync	fSync;
 
-	MsgHandler::msgStatus syncMsg (const std::string& slave, const std::string& master = "");
+	MsgHandler::msgStatus syncMsg (const std::string& slave, const std::string& master = "", const std::string& masterMapName = "");
 	MsgHandler::msgStatus syncMsg ( const std::string& slave, const std::string& slaveMap, 
 									const std::string& master, const std::string& masterMap,
 									Master::StretchType stretch, Master::SyncType sync, Master::VAlignType valign);

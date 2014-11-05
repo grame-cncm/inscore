@@ -74,6 +74,8 @@ class ISignalNode : public IVNode
 		static const std::string kName;
     
         std::vector<ISignalConnection* > getConnectionsOf(std::string objectName);
+    
+        SIMessageList getAllConnections() const;
 
 	protected:
 		bool fDebug;
@@ -168,6 +170,14 @@ class ISignalConnection
 		*/
 		void setRangeType(std::string type){fRangeType = type;}
 		
+        /*! \brief returns the range as a string
+		*/
+		std::string getRangeString(){return fRangeString;}
+    
+        /*! \brief sets the range string
+		*/
+		void setRangeString(std::string range){fRangeString = range;}
+    
 	protected:
     
     	/*! \brief the object whose attribute has been connected to the signal
@@ -197,7 +207,10 @@ class ISignalConnection
         /*! \brief the range type
 		*/
 		std::string fRangeType;
-    
+
+        /*! \brief the range string
+		*/
+		std::string fRangeString;
     
 };
 

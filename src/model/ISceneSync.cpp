@@ -114,9 +114,13 @@ SIMessageList ISceneSync::getMsgs (const IMessage* msg) const
 		name2mapName (who, name, mapname);
 		subnodes list;
 		if (fParent->find(name, list)) {
-			for (subnodes::const_iterator i = list.begin(); i != list.end(); i++) {				
-				SIMessage msg = buildSyncMsg (address, *i,  getMaster(*i));
-				outMsgs->list().push_back (msg);
+			for (subnodes::const_iterator i = list.begin(); i != list.end(); i++) {
+                std::vector<SMaster> masters = getMasters(*i);
+                for(std::vector<SMaster>::iterator j = masters.begin(); j != masters.end(); j++)
+                {
+                    SIMessage msg = buildSyncMsg (address, *i, *j);
+                    outMsgs->list().push_back (msg);
+                }
 			}
 		}
 	}
@@ -162,7 +166,7 @@ bool ISceneSync::name2mapName (const string& str, string& name, string& map) con
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus ISceneSync::syncMsg (const std::string& slave, const std::string& master)
+MsgHandler::msgStatus ISceneSync::syncMsg (const std::string& slave, const std::string& master, const std::string& masterMapName)
 {
 	subnodes so;
 	if (!fParent->find(slave, so)) return MsgHandler::kBadParameters;		// no target objects to be slave
@@ -173,7 +177,7 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const std::string& slave, const std::
             std::vector<SMaster> masters = fParent->getMasters((*i));
             for(int j = 0; j < masters.size(); j++)
             {
-                if (masters[j]->getMaster()->name() == master)
+                if (masters[j]->getMaster()->name() == master && masters[j]->getMasterMapName() == masterMapName)
                     delsync((*i),masters[j]);
             }
         }
@@ -237,7 +241,7 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)
         firstParam = msg->param(nextindex+1)->value<string>("");
     
     if(firstParam == "del")
-        return syncMsg(slave, master);
+        return syncMsg(slave, master, masterMapName);
     else
     {
         for (int i=nextindex+1; i<n; i++) {

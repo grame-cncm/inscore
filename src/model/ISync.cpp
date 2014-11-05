@@ -201,7 +201,7 @@ void ISync::sync(const SIObject& slave, SMaster master)
     std::vector<SMaster>::iterator i = std::find(existingMasters.begin(), existingMasters.end(), master);
     if(i != existingMasters.end()){ // already exists
         for(std::vector<SMaster>::iterator it = fSlaves2Masters.find(slave)->second.begin(); it != fSlaves2Masters.find(slave)->second.end(); it++)
-            if((*it)->getMaster() == master->getMaster())   (*it) = master;
+            if((*it)->getMaster() == master->getMaster() && (*it)->getMasterMapName() == master->getMasterMapName())   (*it) = master;
         return;
     }
     if (!checkLoop (slave, master->getMaster())) {
