@@ -6,7 +6,7 @@
 /ITL/scene/signal/pitch set 'y' 0.05 'ycolor' 1.0 1.0 'transp' ;
 /ITL/scene/cursor set "graph" "pitch" ;
 /ITL/scene/cursor width 0.5 ;
-/ITL/scene/cursor height 0.25 ;
+/ITL/scene/cursor height 0.15 ;
 
 /ITL/scene/cursor duration -3 8;
 
