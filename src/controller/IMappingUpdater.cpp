@@ -157,6 +157,23 @@ GraphicSegment IMappingUpdater::computeSegmentWithChildren(IObject* o, GraphicSe
 {
     GraphicSegment gseg = seg;
     
+    GraphicSegment refSeg; // this is the square corresponding to our object's "scene" -> the reference square to draw its children.
+    if( o->getHeight() > o->getWidth() )
+    {
+        float yCenter = seg.yinterval().first() + seg.yinterval().size()/2;
+        float halfHeight = seg.yinterval().size() * (o->getWidth()/o->getHeight()) / 2 ;
+        refSeg = GraphicSegment(seg.xinterval().first(), yCenter - halfHeight, seg.xinterval().second(), yCenter + halfHeight);
+    }
+    else if(o->getWidth() > o->getHeight() )
+    {
+        float xCenter = seg.xinterval().first() + seg.xinterval().size()/2;
+        float halfWidth = seg.xinterval().size() * (o->getHeight()/o->getWidth()) / 2 ;
+        refSeg = GraphicSegment(xCenter - halfWidth, seg.yinterval().first(), xCenter + halfWidth, seg.yinterval().second());
+    }
+    else
+        refSeg = seg;
+    
+    
     for(int i = 0; i < o->elements().size(); i++)
     {
         SIObject child = o->elements()[i];
@@ -164,8 +181,8 @@ GraphicSegment IMappingUpdater::computeSegmentWithChildren(IObject* o, GraphicSe
         float ax = (cSeg.xinterval().first() + 1)/2;
         float bx = (cSeg.xinterval().second() + 1)/2;
         float ay = (cSeg.yinterval().first() + 1)/2;
-        float by = (cSeg.yinterval().second() + 1)/2;
-        cSeg = GraphicSegment(seg.xinterval().resize(ax, bx), seg.yinterval().resize(ay, by)); // relatively to the master's coordinates
+        float by = (cSeg.yinterval().second() + 1)/2;        
+        cSeg = GraphicSegment(refSeg.xinterval().resize(ax, bx), refSeg.yinterval().resize(ay, by)); // relatively to the master's coordinates
         cSeg = computeSegmentWithChildren(child, cSeg);
         gseg = gseg | cSeg;
     }

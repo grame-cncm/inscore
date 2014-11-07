@@ -1931,7 +1931,7 @@ A \emph{graphic signal} is a composite signal including a set of 3 parallel sign
 \sublevel{The 'signal' static node.}
 A \OSC{scene} includes a static signal node, which OSC address is \OSC{/ITL/\textit{scene}/signal} which may be viewed as a container for signals. It is also used for \textit{composing signals in parallel}.
 
-The \OSC{signal} node supports only the \OSC{get} message that gives the list of the defined signals.
+The \OSC{signal} node supports the \OSC{get} message that gives the list of the defined signals and also the \OSC{get connect} message that gives a list of all connections, but doesn't take any argument.
 
 \example \\
 Querying the signal node:
@@ -1939,6 +1939,13 @@ Querying the signal node:
 \sampleindent will give the enclosed signals definitions:
 \sample{/ITL/scene/signal/y size 200 ;\\
 /ITL/scene/signal/h size 200 ;
+}
+
+And :
+\sample{/ITL/scene/signal get connect;}
+\sampleindent will give the signal connections :
+\sample{/ITL/scene/signal connect cos object1:method1 ;\\
+/ITL/scene/signal connect sin object2:method2 ;
 }
 
 
@@ -2257,7 +2264,8 @@ interactMsg : (('watch' | 'watch+')  ([1] |
 
 \note{} \\
 	The [1] and [2] form has no effect with the \OSC{watch+} message. \\
-	In some environments, the comma has a special meaning, making tricky to use it as a message separator. This is why ':' is also accepted as separator in OSC messages.
+	In some environments, the comma has a special meaning, making tricky to use it as a message separator. This is why ':' is also accepted as separator in OSC messages. \\
+	The \OSC{get watch} message gives all the watch messages of a node, but doesn't take any argument.
 
 \begin{rail} 
 message : (| addressPrefix)  OSCAddress ( | (parameters | variable) + )

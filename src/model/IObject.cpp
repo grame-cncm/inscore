@@ -674,7 +674,7 @@ SIMessageList IObject::getParams() const
 	while (i != fGetMsgHandlerMap.end()) {
 		const string& what = i->first;
 		const SGetParamMsgHandler& handler = what.size() ? i->second : 0;
-		if (handler)  {
+		if (handler && fMsgHandlerMap.find(what) != fMsgHandlerMap.end())  {
 			SIMessage msg = getParam(i->first, i->second);
 			outMsgs->list().push_back (msg);
 		}
@@ -685,7 +685,7 @@ SIMessageList IObject::getParams() const
 	while (j != fGetMultiMsgHandlerMap.end()) {
 		const string& what = j->first;
 		const SGetParamMultiMsgHandler& handler = what.size() ? j->second : 0;
-		if (handler)  {
+		if (handler && fMsgHandlerMap.find(what) != fMsgHandlerMap.end())  {
 			SIMessageList mlist = IMessageList::create();
 			outMsgs->list().push_back(handler->print(mlist)->list());
 		}
@@ -767,7 +767,7 @@ SIMessageList IObject::getSetMsg() const
     address += "/";
     for (unsigned int i = 0; i < elements().size(); i++) {
         nodePtr elt = elements()[i];
-        if (!elt->getDeleted()) {
+        if (!elt->getDeleted() && elt->name() != "sync") {
             SIMessage msg = IMessage::create(address + elt->name(), kget_SetMethod);
             outMsgs->list().push_back (elt->getMsgs(msg)->list());
         }

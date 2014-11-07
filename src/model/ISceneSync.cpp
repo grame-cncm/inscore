@@ -43,6 +43,7 @@ ISceneSync::ISceneSync(IObject * parent) : IVNode("sync", parent)
 	fMsgHandlerMap["*"]	= TMethodMsgHandler<ISceneSync>::create(this, &ISceneSync::syncMsg);
 	fMsgHandlerMap[kwatch_GetSetMethod]		= 0L;
 	fMsgHandlerMap[kwatchplus_SetMethod]	= 0L;
+	fGetMultiMsgHandlerMap[kwatch_GetSetMethod]	= 0L;
 }
 
 //--------------------------------------------------------------------------
@@ -114,9 +115,13 @@ SIMessageList ISceneSync::getMsgs (const IMessage* msg) const
 		name2mapName (who, name, mapname);
 		subnodes list;
 		if (fParent->find(name, list)) {
-			for (subnodes::const_iterator i = list.begin(); i != list.end(); i++) {				
-				SIMessage msg = buildSyncMsg (address, *i,  getMaster(*i));
-				outMsgs->list().push_back (msg);
+			for (subnodes::const_iterator i = list.begin(); i != list.end(); i++) {
+                std::vector<SMaster> masters = getMasters(*i);
+                for(std::vector<SMaster>::iterator j = masters.begin(); j != masters.end(); j++)
+                {
+                    SIMessage msg = buildSyncMsg (address, *i, *j);
+                    outMsgs->list().push_back (msg);
+                }
 			}
 		}
 	}
