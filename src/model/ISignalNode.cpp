@@ -48,6 +48,7 @@ ISignalNode::ISignalNode(IObject * parent) : IVNode(kName, parent), fDebug(false
 	fMsgHandlerMap["debug"]		= TSetMethodMsgHandler<ISignalNode, bool>::create(this,&ISignalNode::debug);
 	fMsgHandlerMap[kwatch_GetSetMethod]		= 0L;
 	fMsgHandlerMap[kwatchplus_SetMethod]	= 0L;
+    fGetMultiMsgHandlerMap[kwatch_GetSetMethod]	= 0L;
     
     fGetMultiMsgHandlerMap[kconnect_GetSetMethod] = TGetParamMultiMethodHandler<ISignalNode, SIMessageList(ISignalNode::*)() const>::create(this, &ISignalNode::getAllConnections);
     fMsgHandlerMap[kconnect_GetSetMethod]	= TMethodMsgHandler<ISignalNode>::create(this, &ISignalNode::connectMsg);

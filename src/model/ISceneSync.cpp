@@ -43,6 +43,7 @@ ISceneSync::ISceneSync(IObject * parent) : IVNode("sync", parent)
 	fMsgHandlerMap["*"]	= TMethodMsgHandler<ISceneSync>::create(this, &ISceneSync::syncMsg);
 	fMsgHandlerMap[kwatch_GetSetMethod]		= 0L;
 	fMsgHandlerMap[kwatchplus_SetMethod]	= 0L;
+	fGetMultiMsgHandlerMap[kwatch_GetSetMethod]	= 0L;
 }
 
 //--------------------------------------------------------------------------
