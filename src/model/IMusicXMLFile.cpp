@@ -86,8 +86,10 @@ MsgHandler::msgStatus IMusicXMLFile::set (const IMessage* msg )
 }
 
 //--------------------------------------------------------------------------
-void IMusicXMLFile::updateFile()
+void IMusicXMLFile::updateUrl()
 {
+    fIsUrl = true;
+    
     if(read(fData))
     {
         fXML = fData.data();

@@ -78,8 +78,10 @@ MsgHandler::msgStatus IHtmlFile::set (const IMessage* msg )
 }
 
 //--------------------------------------------------------------------------
-void IHtmlFile::updateFile()
+void IHtmlFile::updateUrl()
 {
+    fIsUrl = true;
+    
     if(read(fData))
         fText = fData.data();
     

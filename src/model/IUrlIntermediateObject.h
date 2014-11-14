@@ -28,7 +28,7 @@
 
 #include <iostream>
 #include "TFile.h"
-#include "IObject.h"
+#include "IShapeMap.h"
 
 namespace inscore
 {
@@ -36,7 +36,7 @@ namespace inscore
 class IUrlIntermediateObject;
 typedef class libmapping::SMARTP<IUrlIntermediateObject>	SIUrlIntermediateObject;
 
-class IUrlIntermediateObject : public IObject, public TFile
+class IUrlIntermediateObject : public IShapeMap, public TFile
 {
     public:
 				 IUrlIntermediateObject( const std::string& name, IObject* parent );
@@ -55,6 +55,8 @@ class IUrlIntermediateObject : public IObject, public TFile
         std::string getType() { return fType; }
     
         virtual void updateFile();
+
+		virtual void	accept (Updater*);
     
     protected:
         std::string fUrlPath;

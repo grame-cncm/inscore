@@ -63,7 +63,7 @@ class IImage : public IGraphicBasedObject,  public TFile
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
     
-        virtual void updateFile();
+        virtual void updateUrl();
 };
 
 /*! @} */

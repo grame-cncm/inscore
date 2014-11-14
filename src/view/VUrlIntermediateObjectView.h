@@ -23,25 +23,31 @@
 
 */
 
-#ifndef __INScore__VUrlIntermediateObjectView__
-#define __INScore__VUrlIntermediateObjectView__
 
 #include <iostream>
-#include "VGraphicsItemView.h"
+#include <QGraphicsRectItem>
+
+#include "VMappedShapeView.h"
 #include "IUrlIntermediateObject.h"
+#include "MouseEventAble.h"
 
 namespace inscore
 {
 
-class VUrlIntermediateObjectView: public VGraphicsItemView
+class VUrlIntermediateObjectView: public VMappedShapeView
 {
+	MouseEventAble<QGraphicsRectItem>*  item() const			{ return (MouseEventAble<QGraphicsRectItem>*)fItem; }
 
-public :
-    VUrlIntermediateObjectView(QGraphicsScene * scene, const IUrlIntermediateObject*);
+    public :
+		using VMappedShapeView::updateView;
+    
+        VUrlIntermediateObjectView(QGraphicsScene * scene, const IUrlIntermediateObject*);
 		virtual ~VUrlIntermediateObjectView() {}
+		virtual void updateView( IUrlIntermediateObject * obj );
+		virtual void updateObjectSize( IObject * object ) {}
+        virtual void deleteFromScene() { if(fItem->scene()) fItem->scene()->removeItem( fItem ); }
 
 };
 
 }
 
-#endif /* defined(__INScore__VUrlIntermediateObjectView__) */

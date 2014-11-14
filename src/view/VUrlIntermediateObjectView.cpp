@@ -26,16 +26,27 @@
 #include "VUrlIntermediateObjectView.h"
 #include "IUrlIntermediateObject.h"
 
-using namespace libmapping;
-
 
 namespace inscore
 {
 
 //----------------------------------------------------------------------
 VUrlIntermediateObjectView::VUrlIntermediateObjectView(QGraphicsScene * scene, const IUrlIntermediateObject* h)
-					: VGraphicsItemView( scene , new MouseEventAble<QGraphicsRectItem>(h) )
+					: VMappedShapeView( scene , new MouseEventAble<QGraphicsRectItem>(h) )
 {
+}
+
+//----------------------------------------------------------------------
+void VUrlIntermediateObjectView::updateView( IUrlIntermediateObject * obj  )
+{
+    obj->cleanupSync();
+    QRectF newRect( 0,0,  relative2SceneWidth(obj->getWidth()), relative2SceneHeight(obj->getHeight()) );
+	if ( newRect != item()->rect() )
+	{
+		item()->setRect( newRect );
+        itemChanged();
+	}
+	VShapeView::updateView( obj );
 }
 
 }

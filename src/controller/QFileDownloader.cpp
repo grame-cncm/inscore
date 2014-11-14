@@ -30,11 +30,11 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-QFileDownloader::QFileDownloader(QUrl Url, TFile * file) : QThread()
+QFileDownloader::QFileDownloader(QUrl Url, IUrlIntermediateObject * temp) : QThread()
 {
     connect(&m_WebCtrl, SIGNAL(finished(QNetworkReply*)), SLOT(fileDownloaded(QNetworkReply*)));
     connect(this, SIGNAL(downloaded()), SLOT(update()));
-    fFile = file;
+    fTempUrl = temp;
     QNetworkRequest request(Url);
     m_WebCtrl.get(request);
 }
@@ -62,7 +62,7 @@ QByteArray QFileDownloader::downloadedData() const
 //--------------------------------------------------------------------------
 void QFileDownloader::update()
 {
-    fFile->updateFile();
+    fTempUrl->updateFile();
 }
 
 

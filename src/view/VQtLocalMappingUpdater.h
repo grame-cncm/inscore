@@ -64,6 +64,7 @@ class export VQtLocalMappingUpdater : public LocalMapUpdater
 		void updateTo (IPolygon* o);
 		void updateTo (ICurve* o);
 		void updateTo (ILine* o);
+		void updateTo (IUrlIntermediateObject* o);
 				
 	protected :
 				 VQtLocalMappingUpdater() {}

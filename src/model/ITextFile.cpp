@@ -80,8 +80,9 @@ MsgHandler::msgStatus ITextFile::set(const IMessage* msg )
 }
 
 //--------------------------------------------------------------------------
-void ITextFile::updateFile()
+void ITextFile::updateUrl()
 {
+    fIsUrl = true;
     if(read(fData))
         fText = fData.data();
     

@@ -72,8 +72,9 @@ MsgHandler::msgStatus ISVGFile::set(const IMessage* msg )
 }
 
 //--------------------------------------------------------------------------
-void ISVGFile::updateFile()
+void ISVGFile::updateUrl()
 {
+    fIsUrl = true;
     read(fData);
     changed(true);
     VSVGView * svgView = fView ? dynamic_cast<VSVGView*>(fView) : 0;

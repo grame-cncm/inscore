@@ -32,7 +32,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
-#include "TFile.h"
+#include "IUrlIntermediateObject.h"
 
 namespace inscore
 {
@@ -42,7 +42,7 @@ class QFileDownloader : public QThread
     Q_OBJECT
     
 public:
-    explicit QFileDownloader(QUrl Url, TFile * file);
+    explicit QFileDownloader(QUrl Url, IUrlIntermediateObject * temp);
  
     virtual ~QFileDownloader();
  
@@ -60,7 +60,7 @@ private:
  
     QNetworkAccessManager m_WebCtrl;
     QByteArray m_DownloadedData;
-    TFile * fFile;
+    IUrlIntermediateObject * fTempUrl;
 };
  
 }

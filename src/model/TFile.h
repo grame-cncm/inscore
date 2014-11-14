@@ -81,9 +81,10 @@ class TFile
 		virtual void		print(std::ostream& out) const;
         virtual bool        isUrl() const {return fIsUrl;}
 
-        virtual void        updateFile(){};
+        virtual void        updateUrl(){};
     
         virtual QByteArray  getData() {return fData; }
+        virtual void        setData(QByteArray data) {fData = data; }
 
 	protected:
 				 TFile(IScene* scene, const std::string& pathname = "" );

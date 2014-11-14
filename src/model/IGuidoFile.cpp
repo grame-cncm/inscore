@@ -76,8 +76,9 @@ MsgHandler::msgStatus IGuidoFile::set (const IMessage* msg )
 
 
 //--------------------------------------------------------------------------
-void IGuidoFile::updateFile()
+void IGuidoFile::updateUrl()
 {
+    fIsUrl = true;
     if(read(fData))
         fGMN = fData.data();
     

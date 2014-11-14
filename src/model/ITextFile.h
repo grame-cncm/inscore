@@ -59,7 +59,7 @@ class ITextFile : public IText, public TFile
 				 ITextFile( const std::string& name, IObject * parent );
 		virtual ~ITextFile() {}
 
-        void updateFile();
+        void updateUrl();
 
 
 		/// \brief the \c 'set' message handler

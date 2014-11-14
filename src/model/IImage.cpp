@@ -66,8 +66,9 @@ MsgHandler::msgStatus IImage::set (const IMessage* msg )
 }
 
 //--------------------------------------------------------------------------
-void IImage::updateFile()
+void IImage::updateUrl()
 {
+    fIsUrl = true;
     read(fData);
     VImageView * imgView = fView ? dynamic_cast<VImageView*>(fView) : 0;
     if(imgView)

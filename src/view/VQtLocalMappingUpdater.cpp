@@ -38,6 +38,7 @@
 #include "VLineView.h"
 #include "VVideoView.h"
 #include "VLayerView.h"
+#include "VUrlIntermediateObjectView.h"
 
 namespace inscore
 {
@@ -57,5 +58,7 @@ void VQtLocalMappingUpdater::updateTo(ILine* o)				{  view<VLineView>(o)->update
 void VQtLocalMappingUpdater::updateTo(IPolygon* o)			{  view<VPolygonView>(o)->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(ICurve* o)			{  view<VCurveView>(o)->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(IVideo* o)			{  view<VVideoView>(o)->updateLocalMapping( o ); }
+void VQtLocalMappingUpdater::updateTo(IUrlIntermediateObject* o){  view<VUrlIntermediateObjectView>(o)->updateLocalMapping( o ); }
+
 
 } // end namespoace

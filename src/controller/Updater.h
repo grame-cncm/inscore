@@ -81,6 +81,7 @@ class export Updater : public libmapping::smartable
 		virtual void updateTo (ICurve*) {}
 		virtual void updateTo (ILine*) {}
 		virtual void updateTo (IVideo*) {}
+		virtual void updateTo (IUrlIntermediateObject*) {}
 };
 typedef class libmapping::SMARTP<Updater>	SUpdater;
 
