@@ -4,7 +4,7 @@
 
 /ITL/scene/rect1/slave set ellipse 0.5 1.;
 /ITL/scene/rect1/slave color 200 0 100;
-/ITL/scene/rect1/slave y 1.5;
+/ITL/scene/rect1/slave y 1.7;
 
 /ITL/scene/rect1/slave/child1 set ellipse 1. 1.;
 /ITL/scene/rect1/slave/child1 color 120 0 60;
@@ -36,7 +36,7 @@
 /ITL/scene/rect1/subrect3 color 200 200 200;
 
 /ITL/scene/rect1/subell4 set ellipse 0.8 0.8;
-/ITL/scene/rect1/subell4 x 1.;
+/ITL/scene/rect1/subell4 x 1.2;
 /ITL/scene/rect1/subell4 y 1.6;
 /ITL/scene/rect1/subell4 color 200 200 200;
 
@@ -63,21 +63,22 @@
 /ITL/scene/rect1/txt2 watch mouseLeave (/ITL/scene/rect1/txt2 color 250 250 250);
 
 /ITL/scene/rect1/subrect0/txt set txt "sync slave subrect0 del;";
-/ITL/scene/rect1/subrect0/txt y 1.2;
-/ITL/scene/rect1/subrect0/txt x -0.6;
+/ITL/scene/rect1/subrect0/txt y 1.7;
+/ITL/scene/rect1/subrect0/txt x -1.5;
 /ITL/scene/rect1/subrect0/txt watch mouseEnter (/ITL/scene/rect1/subrect0/txt color 200 0 100);
 /ITL/scene/rect1/subrect0/txt watch mouseLeave (/ITL/scene/rect1/subrect0/txt color 0 0 0);
 /ITL/scene/rect1/subrect0/txt watch mouseDown (/ITL/scene/rect1/sync slave subrect0 del);
 
 /ITL/scene/rect1/subrect1/txt set txt "sync slave subrect1 del;";
 /ITL/scene/rect1/subrect1/txt color 250 250 250;
-/ITL/scene/rect1/subrect1/txt y 1.2;
+/ITL/scene/rect1/subrect1/txt y 1.7;
 /ITL/scene/rect1/subrect1/txt watch mouseEnter (/ITL/scene/rect1/subrect1/txt color 200 0 100);
 /ITL/scene/rect1/subrect1/txt watch mouseLeave (/ITL/scene/rect1/subrect1/txt color 250 250 250);
 /ITL/scene/rect1/subrect1/txt watch mouseDown (/ITL/scene/rect1/sync slave subrect1 del);
 
 /ITL/scene/rect1/subrect2/txt set txt "sync slave subrect2 del;";
-/ITL/scene/rect1/subrect2/txt y 1.2;
+/ITL/scene/rect1/subrect2/txt y 1.7;
+/ITL/scene/rect1/subrect2/txt x 0.7;
 /ITL/scene/rect1/subrect2/txt watch mouseEnter (/ITL/scene/rect1/subrect2/txt color 200 0 100);
 /ITL/scene/rect1/subrect2/txt watch mouseLeave (/ITL/scene/rect1/subrect2/txt color 0 0 0);
 /ITL/scene/rect1/subrect2/txt watch mouseDown (/ITL/scene/rect1/sync slave subrect2 del);
