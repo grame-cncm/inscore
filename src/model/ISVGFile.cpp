@@ -79,7 +79,7 @@ void ISVGFile::updateUrl()
     changed(true);
     VSVGView * svgView = fView ? dynamic_cast<VSVGView*>(fView) : 0;
     if(svgView)
-        svgView->updateView(this);
+        svgView->updateLocalMapping(this);
 }
 
 }

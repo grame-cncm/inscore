@@ -74,7 +74,7 @@ void IImage::updateUrl()
     if(imgView)
     {
         imgView->setImage(fData);
-        imgView->updateView(this);
+        imgView->updateLocalMapping(this);
     }
 }
 

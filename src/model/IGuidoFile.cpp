@@ -84,10 +84,7 @@ void IGuidoFile::updateUrl()
     
     VGuidoItemView * gmnView = fView ? dynamic_cast<VGuidoItemView*>(fView) : 0;
     if(gmnView)
-    {
         gmnView->updateLocalMapping(this);
-        gmnView->updateView(this);
-    }
 }
 
 }

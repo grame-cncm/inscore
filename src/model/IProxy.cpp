@@ -105,7 +105,7 @@ int IProxy::execute (const IMessage* msg, const std::string& objName, SIObject p
         if (!msg->param(1, path)) return MsgHandler::kBadParameters;
         std::string begin;
         begin.assign(path,0,7);
-        if(begin == "http://" || begin == "https:/")
+        if(begin == "http://" || begin == "https:/" || begin == "file://")
             obj = IObjectFactory::create(objName, objType, parent, true);
         else
             obj = IObjectFactory::create(objName, objType, parent, false);

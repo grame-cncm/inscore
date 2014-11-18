@@ -33,6 +33,7 @@
 #include "Updater.h"
 #include "VObjectView.h"
 #include "ISceneSync.h"
+#include "IMappingUpdater.h"
 #include <QUrl>
 
 #define useiterator 0
@@ -52,7 +53,7 @@ IUrlIntermediateObject::IUrlIntermediateObject( const std::string& name, IObject
     setR(100);
     setG(100);
     setB(100);
-    setA(100);
+    setA(200);
 }
 
 //--------------------------------------------------------------------------
@@ -80,7 +81,7 @@ void IUrlIntermediateObject::updateFile()
     // creation of the real object
     SIObject obj = IObjectFactory::create(name(), fType, fParent);
 
-    if(obj)
+    if(obj && fData.count())
     {
         obj->setXPos (getXPos());
         obj->setYPos (getYPos());
@@ -98,10 +99,10 @@ void IUrlIntermediateObject::updateFile()
         obj->setDuration (getDuration());
 
         *((EventsAble*)obj) = *((EventsAble*)this);
-        
+      
         fParent->add(obj);
         obj->setState(IObject::kModified);
-
+        
         TFile * file = dynamic_cast<TFile*>((IObject*)obj);
         if (file)
         {
@@ -109,11 +110,51 @@ void IUrlIntermediateObject::updateFile()
             file->setData(fData);
             file->updateUrl();
         }
+        
+        IMappingUpdater * updater = new IMappingUpdater();
+        
+        std::vector<SMaster> masters = getParent()->getMasters(this);
+        std::vector<SIObject> slaves = getParent()->getSlaves(this);
+        
+        for(int i = 0; i < getParent()->elements().size(); i++)
+        {
+            ISceneSync * sync = dynamic_cast<ISceneSync*>((IObject*)(getParent()->elements()[i]));
+            if(sync) // we found the syncnode, to get the informations about the synchronizations
+            {
+                // if the "proxy" object (this) was slaved, we have to re-create the sync relations for the new object
+                for(int j = 0; j < masters.size(); j++)
+                    sync->sync(obj,masters[j]);
+                
+                // if it had slaves ...
+                for(int j = 0; j < slaves.size(); j++)
+                {
+                    std::vector<SMaster> mastersOfSlave = getParent()->getMasters(slaves[j]);
+                    for(int k = 0 ; k < mastersOfSlave.size(); k++)
+                        if(mastersOfSlave[k]->getMaster() == this)
+                        {
+                            // we have to re-create a SMaster with same properties but with the new object
+                            SMaster master = Master::create(obj, mastersOfSlave[k]->getAlignment(), mastersOfSlave[k]->getStretch(), mastersOfSlave[k]->getMode(), mastersOfSlave[k]->getMasterMapName() , mastersOfSlave[k]->getSlaveMapName() );
+                            sync->sync(slaves[j], master);
+                            // then we have to force the building of the delault mappings, and the updating of the mapping and the view...
+                            slaves[j]->getView()->updateLocalMapping(slaves[j]);
+                            updater->update(slaves[j]);
+                            slaves[j]->getView()->updateView(slaves[j]);
+                        }
+                }
+            }
+        }
+        
+        updater->update(obj);
+        obj->getView()->updateView(obj);
+        
+        // self destruction
+        VUrlIntermediateObjectView * urlView = dynamic_cast<VUrlIntermediateObjectView*>(fView);
+        if(urlView)
+            urlView->deleteFromScene();
+        
+        del();
+        delete updater;
     }
-    // auto destruction
-    del();
-    VUrlIntermediateObjectView * urlView = dynamic_cast<VUrlIntermediateObjectView*>(fView);
-    if(urlView) urlView->deleteFromScene();
 }
 
 //--------------------------------------------------------------------------

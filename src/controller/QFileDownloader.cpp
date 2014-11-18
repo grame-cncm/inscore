@@ -48,7 +48,10 @@ QFileDownloader::~QFileDownloader()
 //--------------------------------------------------------------------------
 void QFileDownloader::fileDownloaded(QNetworkReply* pReply)
 {
-    m_DownloadedData = pReply->readAll();
+    if(!pReply->error())
+        m_DownloadedData = pReply->readAll();
+    else
+        ITLErr << pReply->errorString().toStdString() << ITLEndl;
     pReply->deleteLater();
     emit downloaded();
 }

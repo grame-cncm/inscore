@@ -88,10 +88,7 @@ void ITextFile::updateUrl()
     
     VTextView * txtView = fView ? dynamic_cast<VTextView*>(fView) : 0;
     if(txtView)
-    {
         txtView->updateLocalMapping(this);
-        txtView->updateView(this);
-    }
 }
 
 

@@ -135,17 +135,8 @@ MsgHandler::msgStatus TFile::set (const IMessage* msg )
         
         std::string begin;
         begin.assign(path,0,7);
-        if(begin == "http://" || begin == "https:/")
+        if(begin == "http://" || begin == "https:/" || begin == "file://")
         {
-           /* QUrl Url(path.c_str());
-            
-            if (fDownloaderThread) {
-                fDownloaderThread->terminate();
-                delete fDownloaderThread;
-            }
-            fDownloaderThread = new QFileDownloader(Url,this);
-            if (fDownloaderThread) fDownloaderThread->start();
-            */
             fIsUrl = true;
             setFile(path);
             return MsgHandler::kProcessed;
