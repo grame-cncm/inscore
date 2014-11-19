@@ -119,14 +119,30 @@ IApplStat::IApplStat(IObject * parent) : IVNode("stats", parent), fMsgCount(0)
 //--------------------------------------------------------------------------
 IApplLog::IApplLog(IObject * parent) : IVNode("log", parent)
 {
-	fWindow = new VLogWindow ("INScore log");
+	fWindow = new VLogWindow ("INScore log", this);
 	fMsgHandlerMap[kclear_SetMethod]	= TMethodMsgHandler<IApplLog, void (IApplLog::*)(void)>::create(this, &IApplLog::clear);
 	fMsgHandlerMap[kwrap_GetSetMethod]	= TSetMethodMsgHandler<IApplLog,bool>::create(this, &IApplLog::setWrap);
 	fMsgHandlerMap[ksave_SetMethod]		= TMethodMsgHandler<IApplLog, MsgHandler::msgStatus (IApplLog::*)(const IMessage*) const>::create(this, &IApplLog::saveMsg);
 	fMsgHandlerMap[kwrite_SetMethod]	= TMethodMsgHandler<IApplLog, MsgHandler::msgStatus (IApplLog::*)(const IMessage*) const>::create(this, &IApplLog::writeMsg);
-	positionAble();
+	fMsgHandlerMap[kx_GetSetMethod]			= TSetMethodMsgHandler<IApplLog,float>::create(this, &IApplLog::setXPos);
+	fMsgHandlerMap[ky_GetSetMethod]			= TSetMethodMsgHandler<IApplLog,float>::create(this, &IApplLog::setYPos);
+	fMsgHandlerMap[kshow_GetSetMethod]		= TSetMethodMsgHandler<IObject,bool>::create(this, &IObject::setVisible);
+	fMsgHandlerMap[kwidth_GetSetMethod]		= TSetMethodMsgHandler<IApplLog,float>::create(this, &IApplLog::setWidth);
+	fMsgHandlerMap[kheight_GetSetMethod]	= TSetMethodMsgHandler<IApplLog,float>::create(this, &IApplLog::setHeight);
+
+	fGetMsgHandlerMap[kx_GetSetMethod]		= TGetParamMsgHandler<float>::create(fXPos);
+	fGetMsgHandlerMap[ky_GetSetMethod]		= TGetParamMsgHandler<float>::create(fYPos);
+	fGetMsgHandlerMap[kwidth_GetSetMethod]	= TGetParamMsgHandler<float>::create(fWidth);
+	fGetMsgHandlerMap[kheight_GetSetMethod] = TGetParamMsgHandler<float>::create(fHeight);
+	fGetMsgHandlerMap[kshow_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fVisible);
+
 	setVisible(false);
+	setXPos (-0.9f);
+	setYPos (-0.8f);
+	setWidth (1.);
+	setHeight (0.3);
 }
+
 IApplLog::~IApplLog()
 {
 	fWindow->close();
@@ -163,6 +179,14 @@ MsgHandler::msgStatus IApplLog::writeMsg (const IMessage* msg) const
 	}
 	return MsgHandler::kBadParameters;
 }
+
+//--------------------------------------------------------------------------
+void IApplLog::setXPos (float x)			{ fXPos = x;  fWindow->imove(fXPos, fYPos); }
+void IApplLog::setYPos (float y)			{ fYPos = y;  fWindow->imove(fXPos, fYPos); }
+
+//--------------------------------------------------------------------------
+void IApplLog::setWidth (float x)			{ fWidth = x;  fWindow->istretch(fWidth, fHeight); }
+void IApplLog::setHeight (float y)			{ fHeight = y; fWindow->istretch(fWidth, fHeight); }
 
 //--------------------------------------------------------------------------
 void IApplLog::accept (Updater* u)

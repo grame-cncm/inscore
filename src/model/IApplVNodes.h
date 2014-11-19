@@ -132,6 +132,10 @@ class IApplLog : public IVNode
 		
 		VLogWindow* window()				{ return fWindow; }
 		void		print(const char*);
+		void	setX		(float x)	{ fXPos = x; }
+		void	setY		(float y)	{ fYPos = y; }
+		void	setW		(float x)	{ fWidth = x; }
+		void	setH		(float y)	{ fHeight = y; }
 
 	protected:	
 				 IApplLog(IObject * parent);
@@ -139,6 +143,12 @@ class IApplLog : public IVNode
 
 		void	clear();
 		void	setWrap(bool state);
+
+		virtual void	setXPos		(float x);
+		virtual void	setYPos		(float y);
+		virtual void	setWidth	(float w);
+		virtual void	setHeight	(float h);
+
 
 		/// \brief object \c 'write' message handler.
 		virtual MsgHandler::msgStatus writeMsg (const IMessage* msg) const;
