@@ -45,8 +45,7 @@ class VUrlIntermediateObjectView: public VMappedShapeView
 		virtual ~VUrlIntermediateObjectView() {}
 		virtual void updateView( IUrlIntermediateObject * obj );
 		virtual void updateObjectSize( IObject * object ) {}
-        virtual void deleteFromScene() { if(fItem->scene()) fItem->scene()->removeItem( fItem ); }
-
+        virtual void deleteFromScene();
 };
 
 }
