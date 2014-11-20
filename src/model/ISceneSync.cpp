@@ -68,7 +68,7 @@ std::vector<SMaster> ISceneSync::getMasters(SIObject o) const
 }
 
 //--------------------------------------------------------------------------
-std::vector<SIObject> ISceneSync::getSlaves(SIObject o) const
+std::vector<SIObject> ISceneSync::getSlaves(const SIObject o) const
 {
     return fSync.getSlaves(o);
 }

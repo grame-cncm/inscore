@@ -359,7 +359,7 @@ std::vector<SMaster> IObject::getMasters(SIObject o) const
 }
 
 //--------------------------------------------------------------------------
-std::vector<SIObject> IObject::getSlaves(SIObject o) const
+std::vector<SIObject> IObject::getSlaves(const SIObject o) const
 { 
 	return fSync ? fSync->getSlaves(o) : std::vector<SIObject>();
 }
