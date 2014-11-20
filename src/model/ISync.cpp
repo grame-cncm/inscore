@@ -65,7 +65,7 @@ std::vector<SMaster> ISync::getMasters(SIObject slave) const
 
 
 //--------------------------------------------------------------------------
-std::vector<SIObject> ISync::getSlaves(SIObject master) const
+std::vector<SIObject> ISync::getSlaves(const SIObject master) const
 {
     const_master_iterator it = fMasters2Slaves.find(master);
     if(it != fMasters2Slaves.end())
