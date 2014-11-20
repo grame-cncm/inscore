@@ -54,7 +54,9 @@ class IUrlIntermediateObject : public IShapeMap, public TFile
     
         std::string getType() { return fType; }
     
-        virtual void updateFile();
+        virtual void updateFileSucceded();
+    
+        virtual MsgHandler::msgStatus updateFileFailed(const IMessage* msg );
 
 		virtual void	accept (Updater*);
     

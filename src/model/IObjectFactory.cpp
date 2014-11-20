@@ -207,6 +207,9 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 
 	else if ( type == ISVG::kSVGType )
 		obj = _create<ISVG> (name, parent);
+    
+    else if ( type == IUrlIntermediateObject::kUrlIntermediateType )
+        obj = _create<IUrlIntermediateObject> (name, parent);
 
 	else if ( type == IScene::kSceneType )
 		obj = _create<IScene> (name, parent);

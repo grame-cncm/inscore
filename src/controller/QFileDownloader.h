@@ -42,7 +42,7 @@ class QFileDownloader : public QThread
     Q_OBJECT
     
 public:
-    explicit QFileDownloader(QUrl Url, IUrlIntermediateObject * temp);
+    explicit QFileDownloader(QUrl Url, const char* address);
  
     virtual ~QFileDownloader();
  
@@ -50,17 +50,19 @@ public:
     
 signals:
     void downloaded();
+    void failed(QNetworkReply* pReply);
  
 private slots:
  
     void fileDownloaded(QNetworkReply* pReply);
-    void update();
+    void updateSucceded();
+    void updateFailed(QNetworkReply* pReply);
     
 private:
  
     QNetworkAccessManager m_WebCtrl;
     QByteArray m_DownloadedData;
-    IUrlIntermediateObject * fTempUrl;
+    std::string fOSCAddress;
 };
  
 }

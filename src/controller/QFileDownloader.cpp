@@ -25,16 +25,18 @@
 
 #include "QFileDownloader.h"
 #include "VObjectView.h"
+#include "INScore.h"
 
 namespace inscore
 {
 
 //--------------------------------------------------------------------------
-QFileDownloader::QFileDownloader(QUrl Url, IUrlIntermediateObject * temp) : QThread()
+QFileDownloader::QFileDownloader(QUrl Url, const char* address) : QThread()
 {
     connect(&m_WebCtrl, SIGNAL(finished(QNetworkReply*)), SLOT(fileDownloaded(QNetworkReply*)));
-    connect(this, SIGNAL(downloaded()), SLOT(update()));
-    fTempUrl = temp;
+    connect(this, SIGNAL(downloaded()), SLOT(updateSucceded()));
+    connect(this, SIGNAL(failed(QNetworkReply*)), SLOT(updateFailed(QNetworkReply*)));
+    fOSCAddress = address;
     QNetworkRequest request(Url);
     m_WebCtrl.get(request);
 }
@@ -49,11 +51,15 @@ QFileDownloader::~QFileDownloader()
 void QFileDownloader::fileDownloaded(QNetworkReply* pReply)
 {
     if(!pReply->error())
+    {
         m_DownloadedData = pReply->readAll();
+        emit downloaded();
+    }
     else
-        ITLErr << pReply->errorString().toStdString() << ITLEndl;
+    {
+        emit failed(pReply);
+    }
     pReply->deleteLater();
-    emit downloaded();
 }
  
 //--------------------------------------------------------------------------
@@ -63,9 +69,19 @@ QByteArray QFileDownloader::downloadedData() const
 }
 
 //--------------------------------------------------------------------------
-void QFileDownloader::update()
+void QFileDownloader::updateSucceded()
 {
-    fTempUrl->updateFile();
+    INScore::MessagePtr msg = INScore::newMessage ("success");
+	INScore::postMessage (fOSCAddress.c_str(), msg);
+}
+
+//--------------------------------------------------------------------------
+void QFileDownloader::updateFailed(QNetworkReply* pReply)
+{
+    INScore::MessagePtr msg = INScore::newMessage ("error");
+    const char* s = pReply->errorString().toStdString().c_str();
+	INScore::add (msg, s);
+	INScore::postMessage (fOSCAddress.c_str(), msg);
 }
 
 
