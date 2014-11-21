@@ -1388,7 +1388,7 @@
 1 demo /ITL/scene/* date 0 1;
 1 demo /ITL/scene/slavecomment show 1;
 1 demo /ITL/scene/sync slave ;
-1 demo /ITL/scene/sync slavecomment img;
+12 demo /ITL/scene/sync slavecomment img;
 1 demo /ITL/scene/sync slave slavecomment absolute;
 3001 demo /ITL/scene/comment1 set txtf rsrc/syncomment8.txt;
 1 demo /ITL/scene/comment1 scale 2.648;

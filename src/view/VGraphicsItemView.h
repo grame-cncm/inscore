@@ -90,6 +90,8 @@ class VGraphicsItemView : public VObjectView
 		float scene2RelativeY(float y, QGraphicsItem * item = 0 ) const;
 		
 		static void buildDefaultMapping (IObject* object);
+    
+        void refreshSyncCache() { itemChanged(); }
 		
 	protected:
 		VGraphicsItemView( QGraphicsScene * scene , QGraphicsItem * item );

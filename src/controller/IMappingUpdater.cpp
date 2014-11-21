@@ -345,11 +345,13 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
         float h = isVStretch ? masterSeg.yinterval().size() : 2*slave->getHeight()*slave->getScale()/(master->getHeight());
         float w = 2*slave->getWidth()*slave->getScale()/(master->getWidth());
         float y = getYPos (h, masterSeg, align) + m->getDy();
-        y -= slaveSeg.yinterval().center()*slave->getHeight()*slave->getScale()/(master->getHeight());
+        //y -= slaveSeg.yinterval().center()*slave->getHeight()*slave->getScale()/(master->getHeight());
         GraphicSegment destSeg = offsetSegment(slave, h, w, x, y); // this is the destination segment of the slave alone (in master's coordinate)
         
-        GraphicSegment extendedSeg = computeSegmentWithChildren(slave, slaveSeg); //this is the source segment of the slave and its children (in slave's coordinate)
-        TSegmentAXBVariety<float, 2> variety(extendedSeg, slaveSeg); // we define the segment slave as a variety of the segment slave+children
+        GraphicSegment entireSlaveSeg = GraphicSegment(-1,-1,1,1);
+        
+        GraphicSegment extendedSeg = computeSegmentWithChildren(slave, entireSlaveSeg); //this is the source segment of the slave and its children (in slave's coordinate)
+        TSegmentAXBVariety<float, 2> variety(extendedSeg, entireSlaveSeg); // we define the segment slave as a variety of the segment slave+children
         const TAXBFunction<float> * xFunction = variety.xfunction(); // ... so that we can know the functions that bind them
         const TAXBFunction<float> * yFunction = variety.yfunction();
         
@@ -401,6 +403,7 @@ void IMappingUpdater::updateIObject (IObject* object)
         const IObject* mobj = masters[i]->getMaster();
         if (object->localMapModified() || object->getState() || object->dateModified()
             || mobj->localMapModified() || masters[i]->modified() || mobj->dateModified()) {
+            mobj->getView()->refreshSyncCache();
             if (!updateNOHStretch ( object, masters[i]))
                 hstretchUpdate (object, masters[i]);
         }
