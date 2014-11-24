@@ -34,6 +34,7 @@ const char* kalpha_GetSetMethod		= "alpha";			// Get Set
 const char* kangle_GetSetMethod		= "angle";			// Get Set
 const char* kblue_GetSetMethod		= "blue";			// Get Set
 const char* kbrightness_GetSetMethod= "brightness";		// Get Set
+const char* kcancel_SetMethod		= "cancel";			// Set
 const char* kclock_SetMethod		= "clock";			// Set
 const char* kcolor_GetSetMethod		= "color";			// Get Set
 const char* kcolumns_GetSetMethod	= "columns";		// Get Set

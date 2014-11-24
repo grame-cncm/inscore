@@ -56,9 +56,16 @@ class IUrlIntermediateObject : public IShapeMap, public TFile
     
         virtual void updateFileSucceded();
     
+        virtual void updateFileCanceled();
+    
         virtual MsgHandler::msgStatus updateFileFailed(const IMessage* msg );
 
 		virtual void	accept (Updater*);
+    
+		/// \brief the \c 'watch' message handler
+		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
+    
+        virtual void evalEventMsg(const IMessageList * list);
     
     protected:
         std::string fUrlPath;

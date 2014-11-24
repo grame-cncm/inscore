@@ -33,6 +33,7 @@
 #include "Updater.h"
 #include "VObjectView.h"
 #include "ISceneSync.h"
+#include "TMessageEvaluator.h"
 #include <QUrl>
 
 #define useiterator 0
@@ -50,8 +51,7 @@ IUrlIntermediateObject::IUrlIntermediateObject( const std::string& name, IObject
 {
     fMsgHandlerMap[ksuccess_SetMethod] = TMethodMsgHandler<IUrlIntermediateObject, void (IUrlIntermediateObject::*)(void)>::create(this, &IUrlIntermediateObject::updateFileSucceded);
 	fMsgHandlerMap[kerror_SetMethod]   = TMethodMsgHandler<IUrlIntermediateObject>::create(this, &IUrlIntermediateObject::updateFileFailed);
-	//cancel ?
-    //fMsgHandlerMap[]	= TMethodMsgHandler<ISceneSync>::create(this, &ISceneSync::syncMsg);
+	fMsgHandlerMap[kcancel_SetMethod]	= TMethodMsgHandler<IUrlIntermediateObject, void (IUrlIntermediateObject::*)(void)>::create(this, &IUrlIntermediateObject::updateFileCanceled);
 	
     fType = "";
     fWidth = 1.0;
@@ -115,13 +115,39 @@ void IUrlIntermediateObject::updateFileSucceded()
         // self destruction
         del();
     }
+    
+    const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kSuccess);
+	if (msgs && !msgs->list().empty())
+        evalEventMsg(msgs);
+    
 }
 
+//--------------------------------------------------------------------------
+void IUrlIntermediateObject::updateFileCanceled()
+{
+    setR(200);
+    
+    if (fDownloaderThread) {
+        fDownloaderThread->terminate();
+        delete fDownloaderThread;
+    }
+    
+    const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kCancel);
+	if (msgs && !msgs->list().empty())
+        evalEventMsg(msgs);
+    
+    ITLErr << "URL download canceled" << ITLEndl;
+}
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IUrlIntermediateObject::updateFileFailed(const IMessage* msg )
 {
     setR(200);
+    
+    const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kError);
+	if (msgs && !msgs->list().empty())
+        evalEventMsg(msgs);
+    
     if(msg->size() == 1)
     {
         std::string error;
@@ -131,6 +157,46 @@ MsgHandler::msgStatus IUrlIntermediateObject::updateFileFailed(const IMessage* m
     return MsgHandler::kProcessed;
 }
 
+//--------------------------------------------------------------------------
+void IUrlIntermediateObject::evalEventMsg(const IMessageList* list)
+{
+    MouseLocation mouse (0, 0, 0, 0, 0, 0);
+	EventContext env(mouse, libmapping::rational(0,1), 0);
+	TMessageEvaluator me;
+	SIMessageList outmsgs = me.eval (list, env);
+	if (outmsgs && outmsgs->list().size())
+        outmsgs->send();
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IUrlIntermediateObject::_watchMsg(const IMessage* msg, bool add)
+{ 
+	MsgHandler::msgStatus status = IObject::_watchMsg (msg, add);
+	if (status == MsgHandler::kProcessed) return status;
+
+	std::string what;
+	if (!msg->param (0, what))				// can't decode event to watch when not a string
+		return MsgHandler::kBadParameters;	// exit with bad parameter
+		
+	EventsAble::eventype t = EventsAble::string2type (what);
+	switch (t) {
+		case EventsAble::kSuccess:
+		case EventsAble::kError:
+		case EventsAble::kCancel:
+			if (msg->size() > 1) {
+				SIMessageList watchMsg = msg->watchMsg2Msgs (1);
+				if (!watchMsg) return MsgHandler::kBadParameters;
+
+				if (add) eventsHandler()->addMsg (t, watchMsg);
+				else eventsHandler()->setMsg (t, watchMsg);
+			}
+			else if (!add) eventsHandler()->setMsg (t, 0);
+			status = MsgHandler::kProcessed;
+			break;
+		default: break;
+	}
+	return status;
+}
 
 //--------------------------------------------------------------------------
 void IUrlIntermediateObject::accept (Updater* u)

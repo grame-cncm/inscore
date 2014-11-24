@@ -35,6 +35,7 @@ extern const char* kalpha_GetSetMethod;
 extern const char* kangle_GetSetMethod;
 extern const char* kblue_GetSetMethod;
 extern const char* kbrightness_GetSetMethod;
+extern const char* kcancel_SetMethod;
 extern const char* kclock_SetMethod;
 extern const char* kcolor_GetSetMethod;
 extern const char* kcolumns_GetSetMethod;

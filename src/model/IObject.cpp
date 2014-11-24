@@ -1127,6 +1127,7 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 		case EventsAble::kMouseEnter:
 		case EventsAble::kMouseLeave:
 		case EventsAble::kExport:
+        case EventsAble::kDelete:
 			if (msg->size() > 1) {
 				SIMessageList watchMsg = msg->watchMsg2Msgs (1);
 				if (!watchMsg) return MsgHandler::kBadParameters;
@@ -1183,18 +1184,6 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 			else return MsgHandler::kBadParameters;
 			break;
 
-        case EventsAble::kDelete:
-        	if (msg->size() > 1) {
-				SIMessageList watchMsg = msg->watchMsg2Msgs (1);
-				if (!watchMsg) return MsgHandler::kBadParameters;
-
-				if (add)
-                    eventsHandler()->addMsg (t, watchMsg);
-				else
-                    eventsHandler()->setMsg (t, watchMsg);
-			}
-			else if (!add) eventsHandler()->setMsg (t, 0);
-			break;
 		default:			// unknown event to watch
 			return MsgHandler::kBadParameters;
 	}
