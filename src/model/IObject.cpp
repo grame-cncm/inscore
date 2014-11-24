@@ -47,6 +47,7 @@
 #include "ISceneSync.h"
 #include "TMessageEvaluator.h"
 #include "ISignalNode.h"
+#include "INScore.h"
 
 #include "VObjectView.h"
 
@@ -920,6 +921,45 @@ MsgHandler::msgStatus IObject::popMsg(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
+void IObject::transferAttributes(SIObject newobj)
+{
+    newobj->setXPos (getXPos());
+    newobj->setYPos (getYPos());
+    newobj->setXOrigin (getXOrigin());
+    newobj->setYOrigin (getYOrigin());
+    newobj->setScale (getScale());
+    newobj->setVisible (getVisible());
+    newobj->setZOrder (getZOrder());
+    newobj->setShear (getShear());
+    newobj->setRotateX (getRotateX());
+    newobj->setRotateY (getRotateY());
+    newobj->setRotateZ (getRotateZ());
+    newobj->setR(getR());
+    newobj->setG(getG());
+    newobj->setB(getB());
+    newobj->setA(getA());
+			
+    newobj->setDate (getDate());
+    newobj->setDuration (getDuration());
+
+    *((EventsAble*)newobj) = *((EventsAble*)this);
+            
+    for(int i = 0; i < fParent->elements().size(); i++)
+    {
+        ISceneSync * sync = dynamic_cast<ISceneSync*>((IObject*)(fParent->elements()[i]));
+        if(sync) // we found the syncnode, to get the informations about the synchronizations
+        {
+            SIMessageList list = sync->getAll();
+            for(int j = 0; j < list->list().size(); j++)
+            {
+                INScore::MessagePtr msg = list->list()[j];
+                INScore::postMessage (sync->getOSCAddress().c_str(), msg);
+            }
+        }
+    }
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::set(const IMessage* msg)	
 {
 	string type;
@@ -930,22 +970,9 @@ MsgHandler::msgStatus IObject::set(const IMessage* msg)
 		IObject* newobj;
 		int status = IProxy::execute (msg, name(), fParent, &newobj);
 		if (status & MsgHandler::kProcessed) {
-			newobj->setXPos (getXPos());
-			newobj->setYPos (getYPos());
-			newobj->setXOrigin (getXOrigin());
-			newobj->setYOrigin (getYOrigin());
-			newobj->setScale (getScale());
-			newobj->setVisible (getVisible());
-			newobj->setZOrder (getZOrder());
-			newobj->setShear (getShear());
-			newobj->setRotateX (getRotateX());
-			newobj->setRotateY (getRotateY());
-			newobj->setRotateZ (getRotateZ());
-			
-			newobj->setDate (getDate());
-			newobj->setDuration (getDuration());
-
-			*((EventsAble*)newobj) = *((EventsAble*)this);
+            SIObject obj = newobj;
+	        transferAttributes(obj);
+            newobj = obj;
 			del();								// and delete the object
 			return MsgHandler::kProcessed;		// message has been handled at IObject level
 		}

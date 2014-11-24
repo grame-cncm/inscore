@@ -66,8 +66,6 @@ class IUrlIntermediateObject : public IShapeMap, public TFile
         QFileDownloader *    fDownloaderThread;
         QByteArray fData;
     
-        void updateAtrributes(SIObject &obj);
-        void updateSync(SIObject &obj);
 };
 }
 

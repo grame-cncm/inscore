@@ -33,10 +33,6 @@
 #include "Updater.h"
 #include "VObjectView.h"
 #include "ISceneSync.h"
-#include "IMappingUpdater.h"
-#include "VTextView.h"
-#include "VGuidoItemView.h"
-#include "INScore.h"
 #include <QUrl>
 
 #define useiterator 0
@@ -104,7 +100,9 @@ void IUrlIntermediateObject::updateFileSucceded()
     if(obj && fData.count())
     {
         // We pass all  the informations to the new object
-        updateAtrributes(obj);
+        fParent->add(obj);
+        transferAttributes(obj);
+        obj->setState(IObject::kModified);
         
         TFile * file = dynamic_cast<TFile*>((IObject*)obj);
         if (file)
@@ -114,125 +112,11 @@ void IUrlIntermediateObject::updateFileSucceded()
             file->updateUrl();
         }
         
-        updateSync(obj);
-        
-        /*for(int i = 0; i < fParent->elements().size(); i++)
-        {
-            ISceneSync * sync = dynamic_cast<ISceneSync*>((IObject*)(fParent->elements()[i]));
-            if(sync) // we found the syncnode, to get the informations about the synchronizations
-            {
-                IMessageList * list = sync->getAll();
-                for(int j = 0; j < list->list().size(); j++)
-                {
-                    INScore::MessagePtr msg = INScore::newMessage(list->list()[j]->message().c_str());
-                    std::string s;
-                    std::string m;
-                    if (list->list()[j]->param(0, s))
-                        INScore::add (msg, s.c_str());
-                    if(list->list()[j]->size()>1 && list->list()[j]->param(1,m))
-                        INScore::add (msg, m.c_str());
-                    std::cout << "sync message to send : " << msg << " : " << s << " " << m << std::endl;
-                    //INScore::postMessage (sync->getOSCAddress().c_str(), msg);
-                }
-            }
-        }
-    */
-        
-        
-        IText * text = dynamic_cast<IText*>((IObject*)obj);
-        IGuidoCode * gmn = dynamic_cast<IGuidoCode*>((IObject*)obj);
-        if(text)
-        {
-            VTextView * textView = dynamic_cast<VTextView*>(text->getView());
-            textView->updateView(text);
-        }
-        else if(gmn)
-        {
-            VGuidoItemView * gmnView = dynamic_cast<VGuidoItemView*>(gmn->getView());
-            gmnView->updateView(gmn);
-        }
-        else
-            obj->getView()->updateView(obj);
-        
         // self destruction
         del();
-        VUrlIntermediateObjectView * urlView = dynamic_cast<VUrlIntermediateObjectView*>(fView);
-        if(urlView)
-            urlView->deleteFromScene();
     }
 }
 
-//--------------------------------------------------------------------------
-void IUrlIntermediateObject::updateAtrributes(SIObject &obj)
-{
-    obj->setXPos (getXPos());
-    obj->setYPos (getYPos());
-    obj->setXOrigin (getXOrigin());
-    obj->setYOrigin (getYOrigin());
-    obj->setScale (getScale());
-    obj->setVisible (getVisible());
-    obj->setZOrder (getZOrder());
-    obj->setShear (getShear());
-    obj->setRotateX (getRotateX());
-    obj->setRotateY (getRotateY());
-    obj->setRotateZ (getRotateZ());
-    obj->setR(getR());
-    obj->setG(getG());
-    obj->setB(getB());
-    obj->setA(getA());
-    
-    obj->setDate (getDate());
-    obj->setDuration (getDuration());
-
-    *((EventsAble*)obj) = *((EventsAble*)this);
-    
-    fParent->add(obj);
-    obj->setState(IObject::kModified);
-}
-
-//--------------------------------------------------------------------------
-void IUrlIntermediateObject::updateSync(SIObject &obj)
-{
-    IMappingUpdater * updater = new IMappingUpdater();
-        
-    std::vector<SMaster> masters = fParent->getMasters(this);
-    std::vector<SIObject> slaves = fParent->getSlaves(this);
-        
-    for(int i = 0; i < fParent->elements().size(); i++)
-    {
-        ISceneSync * sync = dynamic_cast<ISceneSync*>((IObject*)(fParent->elements()[i]));
-        if(sync) // we found the syncnode, to get the informations about the synchronizations
-        {
-            // if the "proxy" object (this) was slaved, we have to re-create the sync relations for the new object
-            for(int j = 0; j < masters.size(); j++)
-                sync->sync(obj,masters[j]);
-            
-            // if it had slaves ...
-            for(int j = 0; j < slaves.size(); j++)
-            {
-                std::vector<SMaster> mastersOfSlave = fParent->getMasters(slaves[j]);
-                for(int k = 0 ; k < mastersOfSlave.size(); k++)
-                {
-                    if(mastersOfSlave[k]->getMaster() == this)
-                    {
-                        // we have to re-create a SMaster with same properties but with the new object
-                        SMaster master = Master::create(obj, mastersOfSlave[k]->getAlignment(), mastersOfSlave[k]->getStretch(), mastersOfSlave[k]->getMode(), mastersOfSlave[k]->getMasterMapName() , mastersOfSlave[k]->getSlaveMapName() );
-                        sync->sync(slaves[j], master);
-                        // then we have to force the building of the delault mappings, and the updating of the mapping and the view...
-                        slaves[j]->getView()->updateLocalMapping(slaves[j]);
-                        updater->update(slaves[j]);
-                        slaves[j]->getView()->updateView(slaves[j]);
-                    }
-                }
-            }
-        }
-    }
-        
-    updater->update(obj);
-    obj->getView()->updateView(obj);
-        
-    delete updater;
-}
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IUrlIntermediateObject::updateFileFailed(const IMessage* msg )
