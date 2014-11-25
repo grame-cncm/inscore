@@ -54,7 +54,7 @@ namespace inscore
 
 //-------------------------------------------------------------------------------------------------------------------
 #if 1
-void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsItem * , QWidget * )
+void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsItem * option, QWidget * )
 {
 	if ( fNeedCacheUpdate )
 	{
@@ -107,6 +107,8 @@ void QStretchTilerItem::paint ( QPainter * painter , const QStyleOptionGraphicsI
         painter->drawImage( destRect , fCache , sourceRect );
 #endif
     }
+    for(int i = 0; i <  childItems().size(); i++)
+        childItems()[i]->paint(painter, option) ;
 }
 
 #else
