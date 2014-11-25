@@ -169,7 +169,7 @@ void VGraphicsItemView::drawNameAndBBox(IObject* o)
 	// Add an item for the bounding rect
 	QRectF bboxRectQt = fItem->boundingRect();
 
-	QGraphicsRectItem * boundingRectItem = new QGraphicsRectItem( bboxRectQt );
+	QGraphicsRectItem * boundingRectItem = new QGraphicsRectDebugItem( bboxRectQt );
 	boundingRectItem->setPen( QPen( QBrush(Qt::red) , 0 , Qt::DashLine) );
 	boundingRectItem->setZValue( item()->zValue() + 0.1f );
 	boundingRectItem->setParentItem(item());
@@ -177,7 +177,7 @@ void VGraphicsItemView::drawNameAndBBox(IObject* o)
 	fDebugItems << boundingRectItem;
 	
 	// Add an item for the name.
-	QGraphicsTextItem * textItem = new QGraphicsTextItem( o->name().c_str() , boundingRectItem );
+	QGraphicsTextItem * textItem = new QGraphicsTextDebugItem( o->name().c_str() , boundingRectItem );
 	textItem->setDefaultTextColor( Qt::red );
 //	float scale = 1.0f;
 //	textItem->scale(1.0f/scale,1.0f/scale);
