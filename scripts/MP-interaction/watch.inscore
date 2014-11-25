@@ -50,9 +50,9 @@ volCtrl = ( /ITL/scene/level1 height "$y" ,
 	/ITL/scene fullscreen 0 ,
 	/ITL/scene/boulet z 0.5 );
 
-/ITL/scene/reload watch mouseDown 	( /ITL load "interact.inscore" );
-/ITL/scene/reload watch mouseEnter 	( /ITL/scene/reload red 255 );
-/ITL/scene/reload watch mouseLeave 	( /ITL/scene/reload red 0 );
+/ITL/scene/_reload watch mouseDown 		( /ITL load "interact.inscore" );
+/ITL/scene/_reload watch mouseEnter 	( /ITL/scene/_reload red 255 );
+/ITL/scene/_reload watch mouseLeave 	( /ITL/scene/_reload red 0 );
 	
 move = (	/ITL/scene/move x "$sx" ,
 			/ITL/scene/move y "$sy" );
@@ -62,5 +62,3 @@ move = (	/ITL/scene/move x "$sx" ,
 
 /ITL/scene/move watch mouseEnter ( /ITL/scene/move dred 100 );
 /ITL/scene/move watch mouseLeave ( /ITL/scene/move dred -100 );
-/ITL/scene/comment set txt "Drop the 'edit.inscore' file on the scene to edit.";
-/ITL/scene/comment y 0.9;
