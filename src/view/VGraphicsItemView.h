@@ -116,6 +116,7 @@ class VGraphicsItemView : public VObjectView
 		
 		virtual void drawMapping (IObject* o);
 		virtual void drawNameAndBBox (IObject* o);
+        virtual void drawNameAndBBoxItem(IObject* o, QGraphicsItem* item);
 		virtual void updateTransform(IObject * object, QGraphicsItem* item);		// updates the object transform matrix
 		
 		float getIObjectWidth() const { return scene2RelativeWidth( fItem->boundingRect().width() ); }		// Gives the object's width in interlude scene coordinates.

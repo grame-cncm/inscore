@@ -152,11 +152,31 @@ void VGraphicsItemView::drawMapping(IObject* o)
 }
 
 //------------------------------------------------------------------------------------------------------------
-// Debug graphic feedback : displays the bounding rectangle and the object name
+// Debug graphic feedback : displays the bounding rectangle and the object name for all the items
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::drawNameAndBBox(IObject* o)
 {	
-	//if (fIsStretchOn) return;		// don't know where to draw
+	if(fTilerItems.empty())
+    {
+        drawNameAndBBoxItem(o, item());
+    }
+    else
+    {
+        std::map<SMaster, QStretchTilerItem *>::iterator i;
+        for(i = fTilerItems.begin(); i != fTilerItems.end(); i++)
+        {
+            drawNameAndBBoxItem(o, i->second);
+        }
+    }
+}
+
+
+//------------------------------------------------------------------------------------------------------------
+// Debug graphic feedback : displays the bounding rectangle and the object name for a given item
+//------------------------------------------------------------------------------------------------------------
+void VGraphicsItemView::drawNameAndBBoxItem(IObject* o, QGraphicsItem* item)
+{
+//if (fIsStretchOn) return;		// don't know where to draw
 
 //	TFloatRect boundingRect = o->getBoundingRect();
 //	QRectF boundingRectQt( 
@@ -166,24 +186,24 @@ void VGraphicsItemView::drawNameAndBBox(IObject* o)
 //		relative2SceneHeight( boundingRect.size().height() )
 //	);
 
-	// Add an item for the bounding rect
-	QRectF bboxRectQt = fItem->boundingRect();
+        // Add an item for the bounding rect
+        QRectF bboxRectQt = fItem->boundingRect();
 
-	QGraphicsRectItem * boundingRectItem = new QGraphicsRectDebugItem( bboxRectQt );
-	boundingRectItem->setPen( QPen( QBrush(Qt::red) , 0 , Qt::DashLine) );
-	boundingRectItem->setZValue( item()->zValue() + 0.1f );
-	boundingRectItem->setParentItem(item());
-//	item()->scene()->addItem( boundingRectItem );
-	fDebugItems << boundingRectItem;
+        QGraphicsRectItem * boundingRectItem = new QGraphicsRectDebugItem( bboxRectQt );
+        boundingRectItem->setPen( QPen( QBrush(Qt::red) , 0 , Qt::DashLine) );
+        boundingRectItem->setZValue( item->zValue() + 0.1f );
+        boundingRectItem->setParentItem(item);
+        //	item()->scene()->addItem( boundingRectItem );
+        fDebugItems << boundingRectItem;
 	
-	// Add an item for the name.
-	QGraphicsTextItem * textItem = new QGraphicsTextDebugItem( o->name().c_str() , boundingRectItem );
-	textItem->setDefaultTextColor( Qt::red );
-//	float scale = 1.0f;
-//	textItem->scale(1.0f/scale,1.0f/scale);
-//	if (fIsStretchOn)
-//		textItem->setPos( boundingRectQt.x() , boundingRectQt.y() - textItem->boundingRect().height()/scale );
-//	else
+        // Add an item for the name.
+        QGraphicsTextItem * textItem = new QGraphicsTextDebugItem( o->name().c_str() , boundingRectItem );
+        textItem->setDefaultTextColor( Qt::red );
+        //	float scale = 1.0f;
+        //	textItem->scale(1.0f/scale,1.0f/scale);
+        //	if (fIsStretchOn)
+        //		textItem->setPos( boundingRectQt.x() , boundingRectQt.y() - textItem->boundingRect().height()/scale );
+        //	else
 		textItem->setPos( bboxRectQt.x() , bboxRectQt.y() - textItem->boundingRect().height() );
 }
 
