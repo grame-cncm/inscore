@@ -54,6 +54,7 @@ IUrlIntermediateObject::IUrlIntermediateObject( const std::string& name, IObject
 	fMsgHandlerMap[kcancel_SetMethod]	= TMethodMsgHandler<IUrlIntermediateObject, void (IUrlIntermediateObject::*)(void)>::create(this, &IUrlIntermediateObject::updateFileCanceled);
 	
     fType = "";
+    fTypeString = kUrlIntermediateType;
     fWidth = 1.0;
     fHeight = 1.0;
 }
@@ -61,32 +62,37 @@ IUrlIntermediateObject::IUrlIntermediateObject( const std::string& name, IObject
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IUrlIntermediateObject::set (const IMessage* msg )
 {
-	MsgHandler::msgStatus status = MsgHandler::kProcessed;
-    
-    if (msg->size() == 3) // case of direct declaration : .../urlname set url <type> <urlpath>
+	MsgHandler::msgStatus status = IObject::set(msg);
+    if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange))
+    {
+        // this means that we have a change of type (not an url anymore) : we cancel the file download
+        updateFileCanceled();
+        return status;
+    }
+    if (msg->size() == 3) // we always use the declaration : .../urlname set url <type> <urlpath>
     {
         std::string type;
-		if (!msg->param(1, type)) status = MsgHandler::kBadParameters;
+		if (!msg->param(1, type)) return MsgHandler::kBadParameters;
         setType(type);
         
         std::string path;
-		if (!msg->param(2, path)) status = MsgHandler::kBadParameters;
+		if (!msg->param(2, path)) return MsgHandler::kBadParameters;
         fIsUrl = true;
         setFile(path);
-    }
-    else // case of indirect declaration : .../urlname set type <urlpath>
-        status = TFile::set( msg );
-	
-    QUrl Url(getFile().c_str());
+        
+        QUrl Url(getFile().c_str());
             
-    if (fDownloaderThread) {
-        fDownloaderThread->terminate();
-        delete fDownloaderThread;
+        if (fDownloaderThread) {
+            updateFileCanceled();
+        }
+        
+        fDownloaderThread = new QFileDownloader(Url,getOSCAddress().c_str());
+        if (fDownloaderThread) fDownloaderThread->start();
+        
+        return MsgHandler::kProcessed;
     }
-    fDownloaderThread = new QFileDownloader(Url,getOSCAddress().c_str());
-    if (fDownloaderThread) fDownloaderThread->start();
     
-	return status;
+	return MsgHandler::kBadParameters;
 }
 
 //--------------------------------------------------------------------------
@@ -125,8 +131,6 @@ void IUrlIntermediateObject::updateFileSucceded()
 //--------------------------------------------------------------------------
 void IUrlIntermediateObject::updateFileCanceled()
 {
-    setR(200);
-    
     if (fDownloaderThread) {
         fDownloaderThread->terminate();
         delete fDownloaderThread;

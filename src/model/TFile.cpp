@@ -27,6 +27,7 @@
 #include "IScene.h"
 #include "ITLError.h"
 #include "TFile.h"
+#include "IUrlIntermediateObject.h"
 #include <QDir>
 
 using namespace std;
@@ -133,17 +134,27 @@ MsgHandler::msgStatus TFile::set (const IMessage* msg )
 		std::string path;
 		if (!msg->param(1, path)) return MsgHandler::kBadParameters;
         
+        std::string type;
+		if (!msg->param(0, type)) return MsgHandler::kBadParameters;
+        
         std::string begin;
         begin.assign(path,0,7);
+        // the creation of a url file should not go through TFile::set.
+        // this means that the current object is not a URLIntermediate, it is a file whose path has been change to an url
+        // we then have to destroy it and re-create the URLIntermediate (we send the message in the form "/urlname set url type path"
         if(begin == "http://" || begin == "https:/" || begin == "file://")
         {
-            fIsUrl = true;
-            setFile(path);
+            SIMessage newmsg = IMessage::create(msg->address(), msg->message());
+            newmsg->add(IUrlIntermediateObject::kUrlIntermediateType);
+            newmsg->add(type);
+            newmsg->add(path);
+            newmsg->send();
             return MsgHandler::kProcessed;
         }
         
 		if ( path.size())
 		{
+            fIsUrl = false;
             std::string completePath = fScene ? fScene->absolutePath(path) : IAppl::absolutePath(path);
 			setFile( completePath );
 			return MsgHandler::kProcessed;
