@@ -5,6 +5,9 @@
 /ITL/scene/score set gmnf "rsrc/07.gmn";
 /ITL/scene/score scale 2.452;
 /ITL/scene/score z 0.1;
+
 /ITL/scene/myEllipse show 1;
+/ITL/scene/myGraph scale 0.4;
+
 /ITL/scene/sync myEllipse score;
 /ITL/scene/sync myGraph score h;
