@@ -83,7 +83,7 @@ class IMappingUpdater : public SlaveMapUpdater
 		\param seg the object graphic segment
 		\return a graphic segment expressed in the master coordinates space.
 	*/
-    GraphicSegment      computeSegmentWithChildren(IObject* o, GraphicSegment seg);
+    GraphicSegment      computeSegmentWithChildren(IObject* o, const GraphicSegment seg);
 
 	/*!
 		\brief translates a graphic segment expressed in an object's master coordinates
