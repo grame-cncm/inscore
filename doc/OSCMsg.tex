@@ -900,7 +900,7 @@ setMsg : 'set' (
 \index{Set type!grid}
 
 \begin{itemize}
-\item \OSC{layer}: a graphic layer, may be viewed as a container (see \fullref{layers}).
+\item \OSC{layer}: a graphic layer, may be viewed as a container (see section \fullref{layers}).
 \item \OSC{grid}: a white transparent object that provides a predefined time to graphic mapping (see section \fullref{grid} for more details and section \fullref{mapping} for time to graphic relations). The parameters are int32 values representing the number of columns and rows.
 \end{itemize}
 
@@ -1043,11 +1043,11 @@ Specific brush messages accepted by the components types \OSC{rect | ellipse | p
 \begin{rail}
 brushMsg : 	  'brushStyle' ('solid' | 'dense1' | 'dense2' | 'dense3' | 'dense4' | 'dense5' | 'dense6' | 'dense7' | 'none' | 'hor' | 'ver' | 'cross' | 'bdiag' | 'fdiag' | 'diagCross')
 \end{rail}
-\index{Specific messages! brushColor}
+\index{Specific messages! brushStyle}
 
 \begin{itemize}
 \item \OSC{brushStyle} controls the brush style.
- \end{itemize}
+\end{itemize}
 
 \index{Specific messages! brushStyle! solid}
 \index{Specific messages! brushStyle! dense}
@@ -1180,13 +1180,6 @@ Creating a 10 x 10 grid organized from top to bottom with a border:
 /ITL/scene/grid yborder 3. ;\\
 /ITL/scene/grid order topbottom ;
 }
-
-
-%-------------------------------
-\sublevel{The 'layer' object}
-\label{layer}
-
-The \OSC{layer} object provides a container of rectangular shape that is not drawn but creates a node to distinguish a group of objects from the rest. It can however be drawn by using the brush control (default brushStyle is 'none').
 
 
 %===============================
@@ -1512,7 +1505,7 @@ Creating a new score named \OSC{myScore}:
 
 Layers may be viewed as containers or as groups. They represent a way to structure both the address space and the graphic space. 
 
-From graphic viewpoint, a layer is a scene inside a scene. All the properties of 'rect' components are available to layers: position, scale, color, transparency, etc.). By default, a layer is not visible: it has no brush and no pen.
+From graphic viewpoint, a layer is a scene inside a scene. All the properties of 'rect' components are available to layers: position, scale, color, transparency, etc.). By default, a layer is not visible: it has no brush and no pen, but changing the brush style (see section \fullref{brush}) - e.g. to \OSC{solid} - makes it visible.
 
 From time viewpoint, a layer has the common time attributes i.e. a date, a duration.
 
