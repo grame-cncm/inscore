@@ -40,7 +40,7 @@ void VLineView::updateView( ILine * line )
     line->cleanupSync();
     QPainterPath myPath;
 	myPath.moveTo(0,0);
-	myPath.lineTo( relative2SceneX(line->getPoint().x()) , relative2SceneY(line->getPoint().y()) );
+	myPath.lineTo( relative2SceneWidth(line->getPoint().x()) , relative2SceneHeight(line->getPoint().y()) );
 
 	if ( myPath != item()->path() )
 	{

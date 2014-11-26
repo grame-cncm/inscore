@@ -51,7 +51,7 @@ void VPolygonView::updateView( IPolygon * polygon)
     polygon->cleanupSync();
     QPolygon p;
 	for ( unsigned int i = 0 ; i < polygon->getPoints().size() ; i++ )
-		p << QPoint( relative2SceneX(polygon->getPoints()[i].first) , relative2SceneY(polygon->getPoints()[i].second) );
+		p << QPoint( relative2SceneWidth(polygon->getPoints()[i].first) , relative2SceneHeight(polygon->getPoints()[i].second) );
 	if ( !equals(p, item()->polygon()) )
 	{
 		item()->setPolygon( p );
