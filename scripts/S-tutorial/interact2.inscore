@@ -3,27 +3,28 @@
 /ITL/tutorial/* del;
 /ITL/tutorial/signal/* del;
 /ITL/tutorial watch;
-/ITL/scene x -0.510000;
-/ITL/tutorial x 0.510000;
-/ITL/scene/* del;
-/ITL/tutorial/* del;
+/ITL/scene x -0.51;
+/ITL/tutorial x 0.51;
+
 /ITL/scene/title set html "<h1>Interaction</h1>";
-/ITL/scene/title y -0.700000;
-/ITL/scene/title scale 2.00000;
+/ITL/scene/title y -0.70;
+/ITL/scene/title scale 2.0;
 /ITL/scene/interact2 set htmlf "rsrc/interact2.html";
-/ITL/scene/interact2 scale 2.00000;
-/ITL/scene/interact2 y -0.210000;
-/ITL/scene/interact2 xorigin -1.00000;
-/ITL/scene/interact2 x -0.750000;
-/ITL/tutorial/rect set rect 1.00000 0.100000;
+/ITL/scene/interact2 scale 2.0;
+/ITL/scene/interact2 y -0.21;
+/ITL/scene/interact2 xorigin -1.0;
+/ITL/scene/interact2 x -0.75;
+
+/ITL/tutorial/rect set rect 1.0 0.10;
 /ITL/tutorial/rect color 255 255 255 255;
-/ITL/tutorial/rect penWidth 1.00000;
-/ITL/tutorial/rect xorigin -1.00000;
-/ITL/tutorial/rect x -0.500000;
-/ITL/tutorial/circ set ellipse 1.00000 1.00000;
+/ITL/tutorial/rect penWidth 1.0;
+/ITL/tutorial/rect xorigin -1.0;
+/ITL/tutorial/rect x -0.50;
+/ITL/tutorial/circ set ellipse 0.1 0.1;
 /ITL/tutorial/circ color 255 0 0;
 /ITL/tutorial/num set txt 0;
 /ITL/tutorial/num date 1 2;
+/ITL/tutorial/num scale 1.3;
 /ITL/tutorial/sync circ rect v;
 /ITL/tutorial/sync num circ;
 /ITL/tutorial/num dy -1.65000;
@@ -42,17 +43,16 @@
                                                             /ITL/tutorial/num set txt '$x' )";
 /ITL/scene/m4 set txt "/ITL/tutorial/rect  watch  mouseMove (/ITL/tutorial/circ date '$date',
                                                             /ITL/tutorial/num set txt '$x')";
-!/ITL/scene/m5 set txt "/ITL/tutorial/rect  watch+ mouseDown (/ITL/tutorial/num set txt '$x')";
-!/ITL/scene/m6 set txt "/ITL/tutorial/rect  watch+ mouseMove (/ITL/tutorial/num set txt $x)";
-/ITL/scene/m* yorigin -1.00000;
-/ITL/scene/m1 y 0.230000;
-/ITL/scene/m2 y 0.310000;
-/ITL/scene/m3 y 0.400000;
-/ITL/scene/m4 y 0.550000;
-/ITL/scene/m* xorigin -1.00000;
-/ITL/scene/m* x -0.900000;
-/ITL/scene/m* z 1.00000;
-/ITL/scene/m* scale 1.60000;
+
+/ITL/scene/m* yorigin -1.0;
+/ITL/scene/m1 y 0.23;
+/ITL/scene/m2 y 0.31;
+/ITL/scene/m3 y 0.40;
+/ITL/scene/m4 y 0.55;
+/ITL/scene/m* xorigin -1.0;
+/ITL/scene/m* x -0.90;
+/ITL/scene/m* z 1.0;
+/ITL/scene/m* scale 1.6;
 /ITL/scene/m* alpha 160;
 
 /ITL/scene/m* watch mouseEnter (
@@ -61,10 +61,9 @@
 /ITL/scene/m* watch mouseLeave (
 	/ITL/$scene/$self alpha 160 ,
 	/ITL/$scene/$self blue 0 );
+
 /ITL/scene load "previous.inscore";
-/ITL/scene/previous watch mouseDown (
-	/ITL/scene load "interaction.inscore" );
+/ITL/scene/previous watch mouseDown (/ITL/scene load "interaction.inscore" );
 /ITL/scene load "next.inscore";
-/ITL/scene/next watch mouseDown (
-	/ITL/scene load "end.inscore" );
+/ITL/scene/next watch mouseDown 	(/ITL/scene load "end.inscore" );
 /ITL/scene load "summary.inscore";
