@@ -953,7 +953,15 @@ void IObject::transferAttributes(SIObject newobj)
             for(int j = 0; j < list->list().size(); j++)
             {
                 INScore::MessagePtr msg = list->list()[j];
-                INScore::postMessage (sync->getOSCAddress().c_str(), msg);
+                std::string slave, master;
+                if(list->list()[j]->size() != 2)
+                    continue;
+                if(!list->list()[j]->param(0, slave) || !list->list()[j]->param(1,master))
+                    continue;
+                if(slave == name())
+                    INScore::postMessage (sync->getOSCAddress().c_str(), msg);
+                else if(master == name())
+                    INScore::delayMessage(sync->getOSCAddress().c_str(), msg);
             }
         }
     }
@@ -974,6 +982,7 @@ MsgHandler::msgStatus IObject::set(const IMessage* msg)
 	        transferAttributes(obj);
             newobj = obj;
 			del();								// and delete the object
+			fParent->cleanupSync();
 			return MsgHandler::kProcessed;		// message has been handled at IObject level
 		}
 	}

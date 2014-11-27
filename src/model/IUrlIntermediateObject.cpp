@@ -120,6 +120,7 @@ void IUrlIntermediateObject::updateFileSucceded()
         
         // self destruction
         del();
+        fParent->cleanupSync();
     }
     
     const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kSuccess);
