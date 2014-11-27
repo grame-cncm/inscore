@@ -43,9 +43,9 @@ class VUrlIntermediateObjectView: public VMappedShapeView
     
         VUrlIntermediateObjectView(QGraphicsScene * scene, const IUrlIntermediateObject*);
 		virtual ~VUrlIntermediateObjectView() {}
+    
 		virtual void updateView( IUrlIntermediateObject * obj );
 		virtual void updateObjectSize( IObject * object ) {}
-        virtual void deleteFromScene();
 };
 
 }

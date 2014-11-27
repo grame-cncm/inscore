@@ -49,16 +49,4 @@ void VUrlIntermediateObjectView::updateView( IUrlIntermediateObject * obj  )
 	VShapeView::updateView( obj );
 }
 
-//----------------------------------------------------------------------
-void VUrlIntermediateObjectView::deleteFromScene()
-{
-    if(fItem->scene())
-        fItem->scene()->removeItem( fItem );
-    for(std::map<SMaster, QStretchTilerItem *>::iterator i = fTilerItems.begin(); i != fTilerItems.end(); i++)
-    {
-        if(i->second->scene())
-        i->second->scene()->removeItem(i->second);
-    }
-}
-
 }

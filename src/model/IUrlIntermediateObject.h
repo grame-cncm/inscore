@@ -39,39 +39,46 @@ typedef class libmapping::SMARTP<IUrlIntermediateObject>	SIUrlIntermediateObject
 class IUrlIntermediateObject : public IShapeMap, public TFile
 {
     public:
+		static const std::string kUrlIntermediateType;
+        static SIUrlIntermediateObject create(const std::string& name, IObject * parent)	{ return new IUrlIntermediateObject(name, parent); }
+    
+		virtual void	accept (Updater*);
+
+    
+    protected:    
 				 IUrlIntermediateObject( const std::string& name, IObject* parent );
 		virtual ~IUrlIntermediateObject() {}
     
-		static SIUrlIntermediateObject create(const std::string& name, IObject * parent)	{ return new IUrlIntermediateObject(name, parent); }
-    
-		static const std::string kUrlIntermediateType;
-    
         virtual MsgHandler::msgStatus set (const IMessage* msg );
     
-        virtual QByteArray  getData() { return fData; }
+        /// \brief returns the array of data of the file
+		virtual QByteArray  getData() { return fData; }
     
-        void setType(std::string type) {fType = type; }
+        /// \brief sets the type of file that this intermediate object momently replace
+		void setType(std::string type) {fType = type; }
     
-        std::string getType() { return fType; }
+        /// \brief returns the type of file that this intermediate object momently replace
+		std::string getType() { return fType; }
     
-        virtual void updateFileSucceded();
+        /// \brief handles the case of success ("success" message sent by the QFileDownloader if the download has succeeded)
+		virtual void updateFileSucceded();
     
-        virtual void updateFileCanceled();
+        /// \brief handles the case of cancelation ("cancel" message, or in the case of a change of path or type)
+		virtual void updateFileCanceled();
     
-        virtual MsgHandler::msgStatus updateFileFailed(const IMessage* msg );
-
-		virtual void	accept (Updater*);
+        /// \brief handles the case of failure ("error" message sent by the QFileDownloader if the download has failed)
+		virtual MsgHandler::msgStatus updateFileFailed(const IMessage* msg );
     
 		/// \brief the \c 'watch' message handler
 		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
     
         virtual void evalEventMsg(const IMessageList * list);
     
-    protected:
+    
         std::string fUrlPath;
-        std::string fType;
-        QFileDownloader *    fDownloaderThread;
-        QByteArray fData;
+        std::string fType; // the type of the object to be created once the data is ready
+        QFileDownloader *    fDownloaderThread; // the thread called to download the data from the URL. Once done, it sends the appropriate msg
+        QByteArray fData; // the data contained in the URL
     
 };
 }

@@ -486,8 +486,11 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		*/
 		virtual void	save(std::ostream& out, const std::vector<std::string>& attributes) const;
 
-
-        virtual void transferAttributes(SIObject newobj);
+        /*!
+		*	\brief transfers the attributes of the current object to a new one (recently created)
+		*	\param the new object
+		*/
+		virtual void transferAttributes(SIObject newobj);
 
 	//--------------------------------------------------------------------------
 	// the message handlers

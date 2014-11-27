@@ -923,6 +923,7 @@ MsgHandler::msgStatus IObject::popMsg(const IMessage* msg)
 //--------------------------------------------------------------------------
 void IObject::transferAttributes(SIObject newobj)
 {
+    //transfer of the attibutes
     newobj->setXPos (getXPos());
     newobj->setYPos (getYPos());
     newobj->setXOrigin (getXOrigin());
@@ -943,7 +944,8 @@ void IObject::transferAttributes(SIObject newobj)
     newobj->setDuration (getDuration());
 
     *((EventsAble*)newobj) = *((EventsAble*)this);
-            
+    
+    // transfer of the sync informations
     for(int i = 0; i < fParent->elements().size(); i++)
     {
         ISceneSync * sync = dynamic_cast<ISceneSync*>((IObject*)(fParent->elements()[i]));

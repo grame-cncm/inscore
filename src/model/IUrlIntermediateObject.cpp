@@ -52,7 +52,8 @@ IUrlIntermediateObject::IUrlIntermediateObject( const std::string& name, IObject
     fMsgHandlerMap[ksuccess_SetMethod] = TMethodMsgHandler<IUrlIntermediateObject, void (IUrlIntermediateObject::*)(void)>::create(this, &IUrlIntermediateObject::updateFileSucceded);
 	fMsgHandlerMap[kerror_SetMethod]   = TMethodMsgHandler<IUrlIntermediateObject>::create(this, &IUrlIntermediateObject::updateFileFailed);
 	fMsgHandlerMap[kcancel_SetMethod]	= TMethodMsgHandler<IUrlIntermediateObject, void (IUrlIntermediateObject::*)(void)>::create(this, &IUrlIntermediateObject::updateFileCanceled);
-	
+	fGetMsgHandlerMap[""] = TGetParamMsgHandler<std::string>::create(getFile());
+    
     fType = "";
     fTypeString = kUrlIntermediateType;
     fWidth = 1.0;
@@ -81,7 +82,8 @@ MsgHandler::msgStatus IUrlIntermediateObject::set (const IMessage* msg )
         setFile(path);
         
         QUrl Url(getFile().c_str());
-            
+        
+        // if the fDownloaderThread exists, we are changing the path : we cancel the previous download.
         if (fDownloaderThread) {
             updateFileCanceled();
         }

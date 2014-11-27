@@ -21,6 +21,10 @@ Version 1.08
 - no more side effects for synchronized objects (position change, scaling)
 - some modifications on examples (Turenas and cursors) have been made : some settings of scale were 
 in fact done to avoid side-effects that don't exist anymore.
+- Files objects can receive URL as path
+- new intermediate object for the URL (waiting for the data to be downloaded to create the real object)
+- new thread class handling the download
+- new msgs and new events associated : success, error, cancel
 
 ----------------------------------------------------
 Version 1.07
