@@ -201,7 +201,7 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const std::string& slave, const std::
 	subnodes so;
 	if (!fParent->find(slave, so)) return MsgHandler::kBadParameters;		// no target objects to be slave
 	subnodes mos;
-	if (!fParent->exactfind(master, mos)) return MsgHandler::kBadParameters;
+	if (!fParent->find(master, mos)) return MsgHandler::kBadParameters;
 
 	for (unsigned int j = 0; j < mos.size(); j++) {
 		SIObject mo = mos[j];
