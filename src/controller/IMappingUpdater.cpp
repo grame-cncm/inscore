@@ -271,6 +271,10 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
 																					: master->getMapping( mapName );
 	const SRelativeTime2GraphicMapping& slavemap = timeshift(slave->getMapping( "" ), date);
 	if ( !map ) {
+		ITLErr << master->getOSCAddress() << ": mapping is missing." << ITLEndl;
+		return masterSeg;
+	}
+    if ( !slavemap ) {
 		ITLErr << slave->getOSCAddress() << ": mapping is missing." << ITLEndl;
 		return masterSeg;
 	}
