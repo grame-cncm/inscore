@@ -51,16 +51,17 @@
      WATCH = 267,
      ERR = 268,
      ENDEXPR = 269,
-     VARSTART = 270,
-     LEFTPAR = 271,
-     RIGHTPAR = 272,
-     COLON = 273,
-     COMMA = 274,
-     POINT = 275,
-     HOSTNAME = 276,
-     IPNUM = 277,
-     LUASCRIPT = 278,
-     JSCRIPT = 279
+     ENDSCRIPT = 270,
+     VARSTART = 271,
+     LEFTPAR = 272,
+     RIGHTPAR = 273,
+     COLON = 274,
+     COMMA = 275,
+     POINT = 276,
+     HOSTNAME = 277,
+     IPNUM = 278,
+     LUASCRIPT = 279,
+     JSCRIPT = 280
    };
 #endif
 /* Tokens.  */
@@ -76,16 +77,17 @@
 #define WATCH 267
 #define ERR 268
 #define ENDEXPR 269
-#define VARSTART 270
-#define LEFTPAR 271
-#define RIGHTPAR 272
-#define COLON 273
-#define COMMA 274
-#define POINT 275
-#define HOSTNAME 276
-#define IPNUM 277
-#define LUASCRIPT 278
-#define JSCRIPT 279
+#define ENDSCRIPT 270
+#define VARSTART 271
+#define LEFTPAR 272
+#define RIGHTPAR 273
+#define COLON 274
+#define COMMA 275
+#define POINT 276
+#define HOSTNAME 277
+#define IPNUM 278
+#define LUASCRIPT 279
+#define JSCRIPT 280
 
 
 
@@ -105,7 +107,7 @@ typedef union YYSTYPE
 	inscore::SIMessageList*			msgList;
 }
 /* Line 1529 of yacc.c.  */
-#line 109 "ITLparse.hpp"
+#line 111 "ITLparse.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

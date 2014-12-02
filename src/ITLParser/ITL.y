@@ -42,7 +42,7 @@
 %token STRING QUOTEDSTRING
 %token WATCH
 %token ERR
-%token ENDEXPR
+%token ENDEXPR ENDSCRIPT
 
 %token VARSTART LEFTPAR RIGHTPAR
 %token COLON COMMA POINT HOSTNAME IPNUM
@@ -113,6 +113,7 @@ expr		: message  ENDEXPR		{ context->fReader.add(*$1); delete $1; }
 									}
 									delete $1;
 								}
+			| ENDSCRIPT			{ YYACCEPT; }
 			;
 
 //_______________________________________________

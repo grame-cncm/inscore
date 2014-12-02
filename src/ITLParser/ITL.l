@@ -123,6 +123,11 @@ EOL		[\x0a\x0d]
 {SPACE}*"(*"		nested=1; BEGIN COMMENT;
 
  /* ----------------------------------------- */
+ /*	comments */
+ /* ----------------------------------------- */
+"__END__"			return ENDSCRIPT;
+
+ /* ----------------------------------------- */
  /*	hostname part */
  /* ----------------------------------------- */
  {HOSTCHAR}+									yyextra->fText = yytext; return HOSTNAME;
