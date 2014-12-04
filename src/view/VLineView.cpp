@@ -50,5 +50,13 @@ void VLineView::updateView( ILine * line )
 	VShapeView::updateView( line );
 }
 
+//----------------------------------------------------------------------
+void VLineView::updateObjectSize(IObject* o)
+{
+    ILine * p = dynamic_cast<ILine*>(o);
+    if(p)
+        updateView(p);
+    VGraphicsItemView::updateObjectSize(o);
+}
 
 } // end namespoace

@@ -68,4 +68,14 @@ void VCurveView::updateView( ICurve * curve )
 }
 
 
+//----------------------------------------------------------------------
+void VCurveView::updateObjectSize(IObject* o)
+{
+    ICurve * p = dynamic_cast<ICurve*>(o);
+    if(p)
+        updateView(p);
+    VGraphicsItemView::updateObjectSize(o);
+}
+
+
 } // end namespoace

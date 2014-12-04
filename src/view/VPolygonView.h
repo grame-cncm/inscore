@@ -56,6 +56,7 @@ class VPolygonView: public VMappedShapeView
 		virtual ~VPolygonView() {}
 		
 		virtual void updateView( IPolygon * Polygon );
+        virtual void updateObjectSize( IObject * o );
 };
 
 /*!@} */

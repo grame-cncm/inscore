@@ -60,5 +60,13 @@ void VPolygonView::updateView( IPolygon * polygon)
 	VShapeView::updateView( polygon );
 }
 
+//----------------------------------------------------------------------
+void VPolygonView::updateObjectSize(IObject* o)
+{
+    IPolygon * p = dynamic_cast<IPolygon*>(o);
+    if(p)
+        updateView(p);
+    VGraphicsItemView::updateObjectSize(o);
+}
 
 } // end namespoace
