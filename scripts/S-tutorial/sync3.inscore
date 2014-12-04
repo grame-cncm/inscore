@@ -59,11 +59,11 @@
 
 /ITL/scene/m3 watch mouseDown (
 	/ITL/tutorial/car map "([0,51[ [0,16[ ) ([0/1, 3/4[)",
-	/ITL/tutorial/car/debug map 1 );
+	/ITL/tutorial/car/debug map 2 );
 
 /ITL/scene/m4 watch mouseDown (
 	/ITL/tutorial/car map "([0,35[ [0,16[) ([0/1, 3/4[ ) ([35,51[ [0,16[ ) ([3/4, 2/1[ )",
-	/ITL/tutorial/car/debug map 1 );
+	/ITL/tutorial/car/debug map 2 );
 
 /ITL/scene/m5 watch mouseDown (
 	/ITL/tutorial/sync cursor score del,

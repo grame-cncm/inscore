@@ -19,7 +19,7 @@
 /ITL/tutorial/car set img "rsrc/car.gif";
 /ITL/tutorial/car scale 5.;
 /ITL/tutorial/car y 0.3;
-/ITL/scene/m1 set txt "/ITL/tutorial/car/debug map 1";
+/ITL/scene/m1 set txt "/ITL/tutorial/car/debug map 2";
 /ITL/scene/m2 set txt "/ITL/tutorial/car/debug map 0";
 
 /ITL/scene/m3 set txt "/ITL/tutorial/car map ([0,51[ [0,16[ ) ([0/1, 3/4[ )";
@@ -46,7 +46,7 @@
 	/ITL/$scene/$self alpha 160,
 	/ITL/$scene/$self red 0 );
 
-/ITL/scene/m1 watch mouseDown (/ITL/tutorial/car/debug map 1);
+/ITL/scene/m1 watch mouseDown (/ITL/tutorial/car/debug map 2);
 /ITL/scene/m2 watch mouseDown (/ITL/tutorial/car/debug map 0);
 
 /ITL/scene/m3 watch mouseDown (/ITL/tutorial/car map "([0,51[ [0,16[ ) ([0/1, 3/4[ )");
