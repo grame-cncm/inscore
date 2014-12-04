@@ -210,7 +210,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 				void	newData (bool state)		{ fNewData = state; }
 
 		/// \brief returns the mapping debug flag
-				bool	mapDebug() const;
+				int		mapDebug() const;
 		/// \brief returns the names debug flag
 				bool	nameDebug() const;
 		/// \brief returns the signal debug flag

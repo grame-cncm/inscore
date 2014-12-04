@@ -135,16 +135,18 @@ void VGraphicsItemView::drawMapping(IObject* o)
 				mappingSegment->setZValue( ++z );
 				fDebugItems << mappingSegment;
 
-				// Add dates
-//				QGraphicsTextItem * textItem = new QGraphicsTextItem( timeString , mappingSegment );
-//				textItem->setDefaultTextColor( Qt::black );
-//				float scale = 4.0f;
-//				textItem->setScale(1.0f/scale);
-//				if (colorindex & 1)
-//					textItem->setPos( qtRect.x() , qtRect.y() + qtRect.height()); // + textItem->boundingRect().height()/scale );
-//				else
-//					textItem->setPos( qtRect.x() , qtRect.y() - textItem->boundingRect().height()/scale );
-//				textItem->setZValue(z);
+				if (o->mapDebug() > 1) {	// check if dates should be printed
+					// Add dates
+					QGraphicsTextItem * textItem = new QGraphicsTextItem( timeString , mappingSegment );
+					textItem->setDefaultTextColor( Qt::black );
+					float scale = 4.0f;
+					textItem->setScale(1.0f/scale);
+					if (colorindex & 1)
+						textItem->setPos( qtRect.x() , qtRect.y() + qtRect.height()); // + textItem->boundingRect().height()/scale );
+					else
+						textItem->setPos( qtRect.x() , qtRect.y() - textItem->boundingRect().height()/scale );
+					textItem->setZValue(z);
+				}
 			}
 			colorindex++;
 		}

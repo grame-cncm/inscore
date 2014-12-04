@@ -538,7 +538,7 @@ int IObject::executeSignal (const std::string method, const std::pair<int,int> r
 }
 
 //--------------------------------------------------------------------------
-bool IObject::mapDebug() const			{ return fDebug->getMapDebug(); }
+int IObject::mapDebug() const			{ return fDebug->getMapDebug(); }
 bool IObject::nameDebug() const			{ return fDebug->getNameDebug(); }
 //bool IObject::signalDebug() const		{ return fDebug->getSignalDebug(); }
 bool IObject::clickDebug() const		{ return fDebug->getClickDebug(); }
