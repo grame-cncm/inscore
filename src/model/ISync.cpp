@@ -89,7 +89,7 @@ ISync::relation ISync::getRelation(SIObject o1, SIObject o2) const
         if(std::find(slaves.begin(), slaves.end(), o2) != slaves.end())
             return kMaster;
     }
-    else if(hasSlave(o2))
+    if(hasSlave(o2))
     {
         std::vector<SIObject> slaves = getSlaves(o2);
         if(std::find(slaves.begin(), slaves.end(), o1) != slaves.end())

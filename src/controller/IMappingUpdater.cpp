@@ -236,7 +236,7 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
     
     if(!master->getWidth() || !master->getHeight())
         master->getView()->updateObjectSize (master);
-    if(slave->getWidth() || !slave->getHeight())
+    if(!slave->getWidth() || !slave->getHeight())
         slave->getView()->updateObjectSize (slave);
     
 
