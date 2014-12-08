@@ -1,0 +1,2 @@
+! suppressing all sync relations of the slave
+/ITL/scene/sync slave;

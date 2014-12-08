@@ -1,0 +1,45 @@
+
+/ITL/scene/* del;
+/ITL/scene/signal/* del;
+
+/ITL/scene/title set txt "Connecting signals to graphic attributes";
+/ITL/scene/title scale 2;
+/ITL/scene/title y -0.9;
+
+/ITL/scene/legend1 set txt 'connect sig "rectangle:scale";';
+/ITL/scene/legend1 x -0.5;
+/ITL/scene/legend2 set txt 'connect sig "text:rotatez[-120,120]:y[-0.3,-0.6]";';
+/ITL/scene/legend2 x 0.5;
+/ITL/scene/legend[12] y -0.1;
+
+/ITL/scene/legend3 set txt 'connect sig "ellipse:alpha";';
+/ITL/scene/legend3 x -0.5;
+/ITL/scene/legend4 set txt 'connect sig "image:rotatex[0,360]:x[0.2,0.7]";';
+/ITL/scene/legend4 x 0.5;
+/ITL/scene/legend[34] y 0.75;
+
+/ITL/scene/legend* scale 1.2;
+
+/ITL/scene/rectangle set rect 0.5 0.5;
+/ITL/scene/rectangle color 200 100 100;
+/ITL/scene/rectangle x -0.5;
+/ITL/scene/rectangle y -0.5;
+
+/ITL/scene/ellipse set ellipse 0.4 0.4;
+/ITL/scene/ellipse color 0 100 0;
+/ITL/scene/ellipse x -0.5;
+/ITL/scene/ellipse y 0.4;
+
+/ITL/scene/text set txt "youhou !";
+/ITL/scene/text scale 2.;
+/ITL/scene/text x 0.5;
+/ITL/scene/text y -0.5;
+
+/ITL/scene/image set file "trill.jpg";
+/ITL/scene/image x 0.5;
+/ITL/scene/image y 0.4;
+
+/ITL/scene/signal/sig size 100;
+/ITL/scene/signal connect sig "rectangle:scale" "image:rotatex[0,360]:x[0.2,0.7]";
+/ITL/scene/signal connect sig "text:rotatez[-90,90]:y[-0.3,-0.6]";
+/ITL/scene/signal connect sig "ellipse:alpha";
