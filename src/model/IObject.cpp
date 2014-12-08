@@ -674,7 +674,7 @@ SIMessageList IObject::getParams() const
 	while (i != fGetMsgHandlerMap.end()) {
 		const string& what = i->first;
 		const SGetParamMsgHandler& handler = what.size() ? i->second : 0;
-		if (handler && fMsgHandlerMap.find(what) != fMsgHandlerMap.end())  {
+		if (handler)  {
 			SIMessage msg = getParam(i->first, i->second);
 			outMsgs->list().push_back (msg);
 		}
@@ -685,7 +685,7 @@ SIMessageList IObject::getParams() const
 	while (j != fGetMultiMsgHandlerMap.end()) {
 		const string& what = j->first;
 		const SGetParamMultiMsgHandler& handler = what.size() ? j->second : 0;
-		if (handler && fMsgHandlerMap.find(what) != fMsgHandlerMap.end())  {
+		if (handler)  {
 			SIMessageList mlist = IMessageList::create();
 			outMsgs->list().push_back(handler->print(mlist)->list());
 		}
