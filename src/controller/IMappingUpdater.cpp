@@ -272,7 +272,8 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
         float h = isVStretch ? masterSeg.yinterval().size() : 2*slave->getHeight()*slave->getScale()/(master->getHeight());
         float w = 2*slave->getWidth()*slave->getScale()/(master->getWidth());
         float y = getYPos (h, masterSeg, align) + m->getDy();
-        //y -= slaveSeg.yinterval().center()*slave->getHeight()*slave->getScale()/(master->getHeight());
+        // this is the vertical offset corresponding to the slave's mapping :
+        y -= slaveSeg.yinterval().center()*slave->getHeight()*slave->getScale()/(master->getHeight());
         GraphicSegment destSeg = offsetSegment(slave, h, w, x, y); // this is the destination segment of the slave alone (in master's coordinate)
         
         GraphicSegment entireSlaveSeg = GraphicSegment(-1,-1,1,1);
