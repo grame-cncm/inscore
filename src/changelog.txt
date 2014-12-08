@@ -14,9 +14,13 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.08
+- new __END__ marker supported to end a script parsing at arbitrary location
+- when displaying the mapping, the map dates are not printed any more by default (due to size and collisions). 
+  The debug map parameter change from boolean to int value: 1 to activate the mapping display, 
+  2 to have also dates displayed.
 - the signal node is available on any level of hierarchy (as well as the sync node)
-- it is possible to connect a signal to some of the object's attributes
-- new 'connect' and 'disconnect' messages on the signal node
+- new 'connect' and 'disconnect' messages on the signal node to support signal connection 
+  to objects graphic attributes
 - a slave can have several masters
 - no more side effects for synchronized objects (position change, scaling)
 - some modifications on examples (Turenas and cursors) have been made : some settings of scale were 
