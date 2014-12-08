@@ -1196,7 +1196,7 @@ debugMsg : 'map' int32
 \index{Common messages!debug!name}
 
 \begin{itemize}
-\item \OSC{map} is used to display the time to graphic mapping. The parameter is a boolean value. Default is 0.
+\item \OSC{map} is used to display the time to graphic mapping. The parameter is a int value: 0 prevents mapping display, 1 displays only the bounding boxes and 2 displays also the dates along with the boxes. Default is 0 (no map).
 \item \OSC{name} is used to display both the object name and bounding box. The parameter is a boolean value. Default is 0.
 \end{itemize}
 
@@ -1481,7 +1481,7 @@ sceneMsg :  'new'
 \item \OSC{fullscreen}: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is \values{0}.
 \item \OSC{frameless}: requests the scene to switch to frameless or normal window.  The parameter is interpreted as a boolean value. Default value is \values{0}.
 \item \OSC{absolutexy}: requests the scene to absolute or relative coordinates. Absolute coordinates are in pixels relative to the top left corner of the screen. Relative coordinates are in the range [-1, 1] where [0,0] is the center of the screen. The message parameter is interpreted as a boolean value. Default value is \values{0}.
-\item \OSC{windowOpacity}: switch the scene window to opaque or transparent mode. When in transparent mode, the scene alpha channel controls the window opacity (from completely opaque to completely transparent). In opaque mode, the scene alpha channel controls the background brush only. Default value is \values{0}.
+\item \OSC{windowOpacity}: switch the scene window to opaque or transparent mode. When in transparent mode, the scene alpha channel controls the window opacity (from completely opaque to completely transparent). In opaque mode, the scene alpha channel controls the background brush only. Default value is \values{0} (transparent).
 \item \OSC{commonMsg}: a scene support the common graphic attributes. See section \fullref{common}.
 \end{itemize}
 
@@ -2585,6 +2585,7 @@ An INScore file is a list of textual expressions. A script expression is:
 \item a message: basically a textual OSC message extended to support URL like addresses and variables as parameters.
 \item a variable declaration.
 \item a foreign language script that may generate messages as output.
+\item an end marker '\OSC{\_\_END\_\_}' to declare a script end. After the marker, the remaining part of the script will be ignored.
 \end{itemize}
 
 \begin{rail}
@@ -2592,6 +2593,7 @@ expression :
 		 	message ";"
 		| 	variabledecl ";"
 		| 	script
+		|   end
 \end{rail}
 \index{Scripting!expressions}
 
