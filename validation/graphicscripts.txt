@@ -7,6 +7,8 @@
 ../scripts/S-pencontrol/3-pencolor-red.inscore
 ../scripts/S-pencontrol/5-penstyle-dash.inscore
 ../scripts/S-pencontrol/no-pen.inscore
+../regression/S-brushStyles/brushStyles.inscore
+../regression/S-brushStyles/brushStyles2.inscore
 ../scripts/S-guidoStream/DROP-ME.inscore
 ../scripts/S-guidoStream/1.inscore
 ../scripts/S-guidoStream/2.inscore

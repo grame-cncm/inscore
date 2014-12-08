@@ -8,13 +8,13 @@
 
 /ITL/scene/m1 set rect 0.4 0.6;
 /ITL/scene/m1 x -0.5;
-/ITL/scene/m1 y -0.5;
+/ITL/scene/m1 y -0.45;
 /ITL/scene/m1/text set txt "/ITL/scene/sync slave m1 h";
 /ITL/scene/m1/text y 1.8;
 
 /ITL/scene/m2 set rect 0.4 0.6;
 /ITL/scene/m2 x 0.5;
-/ITL/scene/m2 y -0.5;
+/ITL/scene/m2 y -0.45;
 /ITL/scene/m2 duration 1 4;
 /ITL/scene/m2/text1 set txt "/ITL/scene/m2 duration 1 4";
 /ITL/scene/m2/text1 y 1.75;
@@ -23,14 +23,14 @@
 
 /ITL/scene/m3 set rect 0.4 0.6;
 /ITL/scene/m3 x -0.5;
-/ITL/scene/m3 y 0.5;
+/ITL/scene/m3 y 0.45;
 /ITL/scene/m3/text set txt "ITL/scene/sync slave m3";
 /ITL/scene/m3/text y 1.8;
 
 /ITL/scene/m4 set rect 0.2 0.3;
 /ITL/scene/m4 scale 2;
 /ITL/scene/m4 x 0.5;
-/ITL/scene/m4 y 0.5;
+/ITL/scene/m4 y 0.45;
 /ITL/scene/m4/text1 set txt "ITL/scene/m4 scale 2";
 /ITL/scene/m4/text1 y 1.8;
 /ITL/scene/m4/text2 set txt "/ITL/scene/sync slave m4";
@@ -48,6 +48,7 @@
 /ITL/scene/slave set polygon 0. 0.1 0.2 0.1 0.15 -0.1 0.05 -0.1;
 /ITL/scene/slave color 180 50 0 230;
 /ITL/scene/slave duration 2 4;
+/ITL/scene/slave y 0.1;
 
 ! slave with children
 
