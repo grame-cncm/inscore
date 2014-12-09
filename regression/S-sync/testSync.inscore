@@ -1,4 +1,5 @@
 /ITL/scene/* del;
+/ITL/scene/signal/* del;
 
 /ITL/scene/title set txt "This script is a test for the complex synchronizations";
 /ITL/scene/title scale 1.8;
