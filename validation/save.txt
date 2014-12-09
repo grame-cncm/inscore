@@ -10,6 +10,6 @@
 ../regression/S-sync/testSync.inscore
 ../regression/S-sync/change1.inscore
 ../regression/S-sync/change3.inscore
-../scripts/S-guidoStream/DROP-ME.inscore
-../scripts/S-guidoStream/1.inscore
-../scripts/S-guidoStream/2.inscore
+../regression/S-guidoStream/DROP-ME.inscore
+../regression/S-guidoStream/1.inscore
+../regression/S-guidoStream/2.inscore

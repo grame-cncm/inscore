@@ -4,3 +4,8 @@
 ../regression/S-mouseEvent/mouse3.inscore
 ../regression/S-mouseEvent/mouse4.inscore
 ../regression/S-mouseEvent/mouse5.inscore
+../regression/S-guidoStream/DROP-ME.inscore
+../regression/S-guidoStream/1.inscore
+../regression/S-guidoStream/2.inscore
+../regression/S-guidoStream/3.inscore
+../regression/S-guidoStream/4.inscore
