@@ -5,7 +5,7 @@ GRAME - Centre national de creation musicale
 http://www.grame.fr
 fober@grame.fr
 ======================================================
-Copyright GRAME (c) 2009-2013
+Copyright GRAME (c) 2009-2014
 
 This folder contains various INScore sample scripts and Max/MSP or PureData patches provided as tools or sample of INScore use. The enclosed folders complie to the following naming scheme:
  - folder starting with 'S' contain standalone scripts i.e. INScore scripts that don't require
