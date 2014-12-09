@@ -59,6 +59,8 @@ ISignal::ISignal( const std::string& name, IObject * parent ) : IObject (name, p
 	fGetMsgHandlerMap[ksize_GetSetMethod]		= TGetParamMethodHandler<ISignal, int (ParallelSignal::*)() const>::create(this, &ParallelSignal::size);
 	fGetMsgHandlerMap[kdimension_GetMethod]	= TGetParamMethodHandler<ISignal, int (ParallelSignal::*)() const>::create(this, &ParallelSignal::dimension);
 	fGetMsgHandlerMap[kdefault_GetSetMethod]	= GetDefaultParamMsgHandler::create(this);
+    
+    fGetMultiMsgHandlerMap[kwatch_GetSetMethod]	= 0L;
 }
 
 //--------------------------------------------------------------------------
