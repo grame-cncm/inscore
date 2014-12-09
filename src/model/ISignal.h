@@ -58,6 +58,9 @@ class ISignal : public IObject, public ParallelSignal
 		/*! \brief specific signal cleanup, actually call \c done() of the ParallelSignal
 		*/
 		virtual void	cleanup ();
+    
+		/// \brief creates the object virtual nodes : none for the signals.
+		virtual void	createVirtualNodes (){}
 
 	protected:
 		using IObject::print;
