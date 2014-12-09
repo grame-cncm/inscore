@@ -1,0 +1,94 @@
+/ITL/scene/* del;
+
+/ITL/scene width 1.3;
+/ITL/scene height 1.5;
+
+/ITL/scene/gmn set gmnf "http://download2.polytechnic.edu.na/pub4/sourceforge/g/gu/guidolib/gmn-examples/complex_files/moz581.gmn";
+/ITL/scene/gmn scale 2.2;
+/ITL/scene/gmn x -0.3;
+
+/ITL/scene/imgClarinet set img "http://www.clker.com/cliparts/0/3/1/b/11954457501222562566Gerald_G_Clarinet.svg.med.png";
+/ITL/scene/imgClarinet scale 0.1;
+/ITL/scene/imgViolin set img "http://png-5.findicons.com/files/icons/872/4_music/128/violin.png";
+/ITL/scene/imgViolin scale 0.15;
+/ITL/scene/imgViola set img "http://sublevels.free.fr/tessiture-des-instruments/alto.gif";
+/ITL/scene/imgViola scale 0.1;
+/ITL/scene/imgViola angle -40;
+/ITL/scene/imgViola rotatey 160;
+/ITL/scene/imgVioloncello set img "http://images.clipshrine.com/getimg/PngThumb-cello-1-11986.png";
+/ITL/scene/imgVioloncello scale 0.12;
+/ITL/scene/imgVioloncello angle -45;
+
+
+/ITL/scene/txtClarinet set txt "Clarinet waiting";
+/ITL/scene/txtClarinet y -0.77;
+/ITL/scene/txtViolin set txt "Violin waiting";
+/ITL/scene/txtViolin y -0.55;
+/ITL/scene/txtViola set txt "Viola waiting";
+/ITL/scene/txtViola y -0.39;
+/ITL/scene/txtVioloncello set txt "Violoncello waiting";
+/ITL/scene/txtVioloncello y -0.3;
+
+/ITL/scene/txt* x 0.6;
+/ITL/scene/txt* color 200 100 0;
+
+
+/ITL/scene/imgClarinet watch success( 
+/ITL/scene/txtClarinet color 0 200 0,
+/ITL/scene/txtClarinet set txt "Clarinet done");
+/ITL/scene/imgClarinet watch error( 
+/ITL/scene/txtClarinet color 200 0 0,
+/ITL/scene/txtClarinet set txt "Clarinet failed");
+
+/ITL/scene/imgViolin watch success( 
+/ITL/scene/txtViolin color 0 200 0,
+/ITL/scene/txtViolin set txt "Violin done");
+/ITL/scene/imgViolin watch error( 
+/ITL/scene/txtViolin color 200 0 0,
+/ITL/scene/txtViolin set txt "Violin failed");
+
+/ITL/scene/imgViola watch success( 
+/ITL/scene/txtViola color 0 200 0,
+/ITL/scene/txtViola set txt "Viola done");
+/ITL/scene/imgViola watch error( 
+/ITL/scene/txtViola color 200 0 0,
+/ITL/scene/txtViola set txt "Viola failed");
+
+/ITL/scene/imgVioloncello watch success( 
+/ITL/scene/txtVioloncello color 0 200 0,
+/ITL/scene/txtVioloncello set txt "Violoncello done");
+/ITL/scene/imgVioloncello watch error( 
+/ITL/scene/txtVioloncello color 200 0 0,
+/ITL/scene/txtVioloncello set txt "Violoncello failed");
+
+/ITL/scene/gmn watch success(
+/ITL/scene/gmn map "voice1",
+/ITL/scene/gmn map "voice2",
+/ITL/scene/gmn map "voice3",
+/ITL/scene/gmn map "voice4",
+/ITL/scene/gmn map "voice5",
+/ITL/scene/sync imgClarinet "gmn:voice1",
+/ITL/scene/sync imgViolin "gmn:voice2",
+/ITL/scene/sync imgViolin "gmn:voice3",
+/ITL/scene/sync imgViola "gmn:voice4",
+/ITL/scene/sync imgVioloncello "gmn:voice5"
+);
+
+/ITL/scene/playbutton set polygon 0. 0. 0. 0.1 0.1 0.05;
+/ITL/scene/playbutton x -0.65;
+/ITL/scene/playbutton y -0.95;
+/ITL/scene/playbutton z 1.;
+/ITL/scene/playbutton color 200 0 0;
+/ITL/scene/playbutton watch mouseDown(
+/ITL/scene/img* ddate 1 4
+);
+
+/ITL/scene/stopbutton set rect 0.1 0.1;
+/ITL/scene/stopbutton color 0 0 200;
+/ITL/scene/stopbutton x -0.85;
+/ITL/scene/stopbutton y -0.95;
+/ITL/scene/stopbutton z 1.;
+/ITL/scene/stopbutton watch mouseDown(
+/ITL/scene/img* date 0 4
+);
+
