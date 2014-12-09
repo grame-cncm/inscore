@@ -1,0 +1,122 @@
+!-------------------------------------------------------
+! required version
+!-------------------------------------------------------
+/ITL require 1.0 (
+	/ITL/scene/warning set txt "WARNING: this scene requires INScore version 1.0" ,	
+	/ITL/scene/warning scale 2.0 ,
+	/ITL/scene/warning color 200 200 200 200 );
+
+/ITL/scene/score set rect 0.001 0.001;
+
+/ITL/scene/showmap set txt "Show map";
+/ITL/scene/map set ellipse 0.06 0.06;
+/ITL/scene/mapon set ellipse 0.06 0.06;
+/ITL/scene/map color 200 200 200;
+/ITL/scene/mapon color 0 255 0;
+/ITL/scene/*map* x -0.88;
+/ITL/scene/showmap y 0.84;
+/ITL/scene/map* y 0.9;
+/ITL/scene/map z 0.1;
+
+/ITL/scene/map watch mouseDown (
+	/ITL/$scene/score/debug map 1 ,
+	/ITL/scene/mapon z 0.2 );
+
+/ITL/scene/mapon watch mouseDown (
+	/ITL/$scene/score/debug map 0 ,
+	/ITL/scene/mapon z 0.0 );
+
+/ITL/scene/testmap set txt "Test map";
+/ITL/scene/testoff set ellipse 0.06 0.06;
+/ITL/scene/teston set ellipse 0.06 0.06;
+/ITL/scene/testoff color 200 200 200;
+/ITL/scene/teston color 0 255 0;
+/ITL/scene/test* x -0.88;
+/ITL/scene/test* y 0.78;
+/ITL/scene/testmap y 0.72;
+/ITL/scene/testoff z 0.1;
+
+/ITL/scene/testoff watch mouseDown (
+	/ITL/scene/sync cursor score v ,
+	/ITL/scene/cursor show 1 ,
+	/ITL/scene/cursor date 0 1 ,
+	/ITL/scene/teston z 0.2 ,
+	localhost:7100/test  1 );
+
+/ITL/scene/teston watch mouseDown (
+	/ITL/scene/cursor show 0 ,
+	/ITL/scene/teston z 0.0 ,
+	localhost:7100/test  0 );
+
+!-------------------------------------------------------
+! zoom slider
+!-------------------------------------------------------
+/ITL/scene/_zoom set txt Zoom;
+/ITL/scene/_zoom y -0.97;
+/ITL/scene/_zoom scale 1.2;
+/ITL/scene/_zoomrect set rect 0.6 0.03;
+/ITL/scene/_zoomrect y -0.92;
+/ITL/scene/_zoomrect color 255 255 255 255;
+/ITL/scene/_zoomrect penWidth 1.0;
+/ITL/scene/_zoomrect xorigin -1.0;
+/ITL/scene/_zoomrect x -0.3;
+/ITL/scene/_zoompos set ellipse 1.0 1.0;
+/ITL/scene/_zoompos color 240 0 0;
+/ITL/scene/sync _zoompos _zoomrect v;
+
+/ITL/scene/_zoomrect watch mouseDown (
+	/ITL/scene/score scale "$x[0.05,5]" ,
+	/ITL/scene/_zoompos date "$date" );
+
+/ITL/scene/_zoomrect watch mouseMove (
+	/ITL/scene/score scale "$x[0.05,5]" ,
+	/ITL/scene/_zoompos date "$date" );
+
+/ITL/scene/_zoomrect watch mouseUp (
+	/ITL/scene/score scale "$x[0.05,5]" ,
+	/ITL/scene/_zoompos date "$date" );
+
+/ITL/scene/_zoom* z 2.0;
+/ITL/scene/cursor set rect 0.01 0.2;
+/ITL/scene/cursor color 255 0 0 180;
+/ITL/scene/cursor duration 1 32;
+/ITL/scene/cursor z 5.0;
+/ITL/scene/cursor show 0;
+/ITL/scene/reloadbutton set txt Reset;
+/ITL/scene/reloadbutton x -0.6;
+/ITL/scene/rejectbutton set txt Undo;
+/ITL/scene/rejectbutton x -0.3;
+/ITL/scene/startbutton set txt Play;
+/ITL/scene/startbutton x 0.0;
+/ITL/scene/stopbutton set txt Stop;
+/ITL/scene/stopbutton x 0.3;
+/ITL/scene/savebutton set txt Save;
+/ITL/scene/savebutton x 0.6;
+/ITL/scene/*button y 0.9;
+/ITL/scene/*button z 2.5;
+/ITL/scene/*button scale 1.6;
+
+/ITL/scene/*button watch mouseEnter 	( /ITL/$scene/$self red 255 );
+/ITL/scene/*button watch mouseLeave 	( /ITL/$scene/$self red 0 );
+/ITL/scene/*button watch mouseDown 		( /ITL/$scene/b[12] del );
+/ITL/scene/rejectbutton watch mouseDown ( localhost:7100/reject  1 );
+
+/ITL/scene/startbutton watch mouseDown (
+	localhost:7100/start  1 ,
+	/ITL/scene/score z 2.0 ,
+	/ITL/scene/score alpha 150 ,
+	/ITL/scene load "time.inscore" );
+
+/ITL/scene/reloadbutton watch mouseDown (
+	/ITL/$scene/score map del ,
+	localhost:7100/reset  1 );
+
+/ITL/scene/stopbutton watch mouseDown (
+	localhost:7100/stop  0 ,
+	/ITL/scene/score z 0.0 ,
+	/ITL/scene/score alpha 255 ,
+	/ITL/scene load "watch.inscore" ,
+	/ITL/$scene/b[12] del );
+	
+/ITL/scene/savebutton watch mouseDown 	( localhost:7100/save  1 );
+/ITL/scene load "watch.inscore";

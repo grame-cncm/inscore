@@ -1,0 +1,68 @@
+
+<?javascript
+	var t=0;
+	function time() {
+		t = new Date().getTime();
+		return "/ITL/log write time is'" + t + "' ;";
+	}
+	function msl2mtime(d) {
+		var num = d/1000;
+		var den = 4;
+		var frac = num % 1;
+		while ((frac > 0.01) && (den < 256)) {
+			num *= 2;
+			den *= 2;
+			frac = num % 1;
+		}
+		return Math.round(num) + "/" +den;
+	}
+	function elapsed() {
+		var prev = t;
+		t = new Date().getTime();
+		if (prev) {
+			dur = t - prev;
+			mtime = msl2mtime (dur);
+			return "/ITL/log write time elapsed'" + dur + " " + mtime + "' ;";
+		}
+	}
+	function move(addr, deadline, offset, count, displacement) {
+		var t = new Date().getTime();
+		var target = "/ITL/scene/javascript";
+		if (t < deadline)
+			post (target, "run", "move('"+addr+"', "+deadline+", "+offset+", "+count+", "+displacement+")");
+		else {
+			count--;
+			if (count > 0) {
+				deadline+= offset;
+				post (addr, "dx", displacement);
+				post (addr, "dy", displacement);
+				post (addr, "dalpha", -1);
+				post (target, "run", "move('"+addr+"', "+deadline+", "+offset+", "+count+", "+displacement+")");
+			}
+		}
+	}
+	var dplc = -0.005;
+	function clicked(addr) {
+		var msg = new Array();
+		dplc = -dplc;
+		move (addr, new Date().getTime(), 30, 30, dplc);
+		return msg;
+	}
+?>
+
+/ITL/scene/* watch;
+/ITL/scene/a set rect 0.2 0.2;
+/ITL/scene/rect set rect 1. 1.;
+/ITL/scene/rect x 0.;
+/ITL/scene/rect y 0.;
+/ITL/scene/rect color 0 0 0;
+
+color = $(/ITL/scene/rect get color);
+!/ITL/log write color is $color;
+
+/ITL/scene/* watch mouseDown 
+	( /ITL/scene/javascript run 'clicked("$address")' );
+
+
+/ITL/log show 1;
+
