@@ -674,7 +674,7 @@ SIMessageList IObject::getParams() const
 	while (i != fGetMsgHandlerMap.end()) {
 		const string& what = i->first;
 		const SGetParamMsgHandler& handler = what.size() ? i->second : 0;
-		if (handler && (fMsgHandlerMap.find(what) != fMsgHandlerMap.end() || what == kstack_GetMethod))  {
+		if (handler && fMsgHandlerMap.find(what) != fMsgHandlerMap.end())  {
 			SIMessage msg = getParam(i->first, i->second);
 			outMsgs->list().push_back (msg);
 		}
