@@ -52,6 +52,11 @@ fperm   := 644  	# files permission
 dperm   := 755		# folders permission
 
 #########################
+# scripts provided as samples are now stored in a file
+scripts := $(shell cat samples-list.txt)
+
+
+#########################
 # this is for win32 only
 bin    := ../build/win32/release
 
@@ -160,9 +165,12 @@ cleanrsrc:
 	rm -rf $(rsrc)/Max/* $(rsrc)/Max/PureData
 
 samples:
-	[ -d $(package)/samples ] || mkdir -p $(package)/samples
+	@[ -d $(package)/samples ] || mkdir -p $(package)/samples
 	rm -rf $(package)/samples/*
-	cp -R ../scripts/S* $(package)/samples
+	@echo ========================
+	@echo " copying sample scripts"
+	@echo ========================
+	$(foreach s,$(scripts), cp -R ../scripts/$(s) $(package)/samples/;)
 	
 src:
 	[ -d $(package)-src/cmake ] || mkdir -p $(package)-src/cmake
