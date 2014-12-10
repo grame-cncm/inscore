@@ -39,9 +39,9 @@
 
 /ITL/scene/imgClarinet watch success( 
 /ITL/scene/txtClarinet color 0 200 0,
-/ITL/scene/checkClarinet set img "http://upload.wikimedia.org/wikipedia/en/thumb/f/fb/Yes_check.svg/600px-Yes_check.svg.png",
+/ITL/scene/checkClarinet set svgf "http://download2.polytechnic.edu.na/pub4/sourceforge/i/in/inscore/resources/scripts/S-scripting/svg/butterfly.svg",
 /ITL/scene/checkClarinet scale 0.05,
-/ITL/scene/checkClarinet x 0.72,
+/ITL/scene/checkClarinet x 0.69,
 /ITL/scene/checkClarinet y -0.79
 );
 /ITL/scene/imgClarinet watch error( 
@@ -50,9 +50,9 @@
 
 /ITL/scene/imgViolin watch success( 
 /ITL/scene/txtViolin color 0 200 0,
-/ITL/scene/checkViolin set img "http://upload.wikimedia.org/wikipedia/en/thumb/f/fb/Yes_check.svg/600px-Yes_check.svg.png",
+/ITL/scene/checkViolin set svgf "http://download2.polytechnic.edu.na/pub4/sourceforge/i/in/inscore/resources/scripts/S-scripting/svg/butterfly.svg",
 /ITL/scene/checkViolin scale 0.05,
-/ITL/scene/checkViolin x 0.7,
+/ITL/scene/checkViolin x 0.67,
 /ITL/scene/checkViolin y -0.57
 );
 /ITL/scene/imgViolin watch error( 
@@ -61,9 +61,9 @@
 
 /ITL/scene/imgViola watch success( 
 /ITL/scene/txtViola color 0 200 0,
-/ITL/scene/checkViola set img "http://upload.wikimedia.org/wikipedia/en/thumb/f/fb/Yes_check.svg/600px-Yes_check.svg.png",
+/ITL/scene/checkViola set svgf "http://download2.polytechnic.edu.na/pub4/sourceforge/i/in/inscore/resources/scripts/S-scripting/svg/butterfly.svg",
 /ITL/scene/checkViola scale 0.05,
-/ITL/scene/checkViola x 0.7,
+/ITL/scene/checkViola x 0.67,
 /ITL/scene/checkViola y -0.41
 );
 /ITL/scene/imgViola watch error( 
@@ -72,10 +72,10 @@
 
 /ITL/scene/imgVioloncello watch success( 
 /ITL/scene/txtVioloncello color 0 200 0,
-/ITL/scene/checkViolonello set img "http://upload.wikimedia.org/wikipedia/en/thumb/f/fb/Yes_check.svg/600px-Yes_check.svg.png",
+/ITL/scene/checkViolonello set svgf "http://download2.polytechnic.edu.na/pub4/sourceforge/i/in/inscore/resources/scripts/S-scripting/svg/butterfly.svg",
 /ITL/scene/checkViolonello scale 0.05,
-/ITL/scene/checkViolonello x 0.74,
-/ITL/scene/checkViolonello y -0.33
+/ITL/scene/checkViolonello x 0.72,
+/ITL/scene/checkViolonello y -0.32
 );
 /ITL/scene/imgVioloncello watch error( 
 /ITL/scene/txtVioloncello color 200 0 0,
