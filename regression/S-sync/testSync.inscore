@@ -5,7 +5,7 @@
 /ITL/scene/title scale 1.8;
 /ITL/scene/title y -0.9;
 
-! -> multiple masters
+! multiple masters
 
 /ITL/scene/m1 set rect 0.4 0.6;
 /ITL/scene/m1 x -0.5;
