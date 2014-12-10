@@ -5,3 +5,5 @@
 ../regression/S-sync/change4.inscore
 ../regression/S-sync/change5.inscore
 ../regression/S-sync/change6.inscore
+../scripts/S-grid/DROP-ME.inscore
+../scripts/S-grid/monov.inscore

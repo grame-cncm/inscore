@@ -9,3 +9,4 @@
 ../scripts/S-pencontrol/no-pen.inscore
 ../regression/S-brushStyles/brushStyles.inscore
 ../regression/S-brushStyles/brushStyles2.inscore
+../regression/S-text/accents.inscore

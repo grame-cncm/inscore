@@ -25,7 +25,7 @@ version	= $(shell ./INScoreVersion)
 pwd	  = $(shell pwd)
 TOOL = ./INScoreNOView
 
-files 			= $(shell grep -v '^\#' validate/scripts.txt)
+files 			= $(shell grep -v '^\#' validate/samplescripts.txt)
 mousefiles 		= $(shell grep -v '^\#' validate/mousescripts.txt)
 graphicfiles 	= $(shell grep -v '^\#' validate/graphicscripts.txt)
 syncfiles 		= $(shell grep -v '^\#' validate/syncscripts.txt)
@@ -72,12 +72,12 @@ all: forcepdfdate INScoreVersion
 	make pdf
 
 pdf:
-	make basic
 	make pdfmouse
 	make pdfgraphic
 	make pdfsync
 	make pdfjava
 	make pdfsignal
+	make basic
 
 log: 
 	@echo "----------- Generating log files"
