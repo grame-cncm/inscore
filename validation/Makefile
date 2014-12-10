@@ -25,14 +25,14 @@ version	= $(shell ./INScoreVersion)
 pwd	  = $(shell pwd)
 TOOL = ./INScoreNOView
 
-files 			= $(shell grep -v '^\#' scripts.txt)
-mousefiles 		= $(shell grep -v '^\#' mousescripts.txt)
-graphicfiles 	= $(shell grep -v '^\#' graphicscripts.txt)
-syncfiles 		= $(shell grep -v '^\#' syncscripts.txt)
-javafiles 		= $(shell grep -v '^\#' javascripts.txt)
-signalfiles		= $(shell grep -v '^\#' signalscripts.txt)
-logfiles 		= $(shell grep -v '^\#' logs.txt)
-savefiles 		= $(shell grep -v '^\#' save.txt)
+files 			= $(shell grep -v '^\#' validate/scripts.txt)
+mousefiles 		= $(shell grep -v '^\#' validate/mousescripts.txt)
+graphicfiles 	= $(shell grep -v '^\#' validate/graphicscripts.txt)
+syncfiles 		= $(shell grep -v '^\#' validate/syncscripts.txt)
+javafiles 		= $(shell grep -v '^\#' validate/javascripts.txt)
+signalfiles		= $(shell grep -v '^\#' validate/signalscripts.txt)
+logfiles 		= $(shell grep -v '^\#' validate/logs.txt)
+savefiles 		= $(shell grep -v '^\#' validate/save.txt)
 
 pdfout  		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(files))
 pdfmouseout 	:= $(patsubst ../%.inscore, $(version)/%.pdf, $(mousefiles))
@@ -139,6 +139,13 @@ help:
 	@echo "  output files are generated under the current INScore version number."
 	@echo " 'validate VERSION=another_version': compares the current version with another one"
 	@echo " 'checkleaks [TOOL=a_check_tool]': check memory leaks using a given tool (default INScoreNOView)"
+	@echo " 'tools'     : rebuild the required tools"
+
+tools:
+	make -C tools
+
+INScoreVersion:
+	make -C tools
 
 validate: $(validpdf) $(validlog) $(validinscore)
 	@echo Validating version $(VERSION) with $(version)
