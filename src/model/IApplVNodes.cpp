@@ -137,8 +137,10 @@ IApplLog::IApplLog(IObject * parent) : IVNode("log", parent)
 	fGetMsgHandlerMap[kshow_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fVisible);
 
 	setVisible(false);
+#ifndef WIN32
 	setXPos (-0.9f);
 	setYPos (-0.8f);
+#endif
 	setWidth (1.);
 	setHeight (0.3);
 }
