@@ -46,24 +46,25 @@ inscoreout 		:= $(patsubst ../%.inscore, $(version)/%.inscore, $(savefiles))
 leakout 	:= $(patsubst ../%.inscore, $(version)/$(TOOL)/%.leak.txt, $(files))
 leaksfiles  := $(patsubst ../%.inscore, $(version)/%.leaks.out, $(files))
 
-allpdf 		= $(shell [ -d $(version) ] && find $(version) -name "*.pdf")
-validpdf 	= $(patsubst %.pdf, %.outpdf, $(allpdf))
+allpdf 		:= $(shell [ -d $(version) ] && find $(version) -name "*.pdf" 2>/dev/null)
+validpdf 	:= $(patsubst %.pdf, %.outpdf, $(allpdf))
 
-allLog 		= $(shell [ -d $(version) ] && find $(version) -name "*.log")
-validlog 	= $(patsubst %.log, %.outlog, $(allLog))
+allLog 		:= $(shell [ -d $(version) ] && find $(version) -name "*.log" 2>/dev/null)
+validlog 	:= $(patsubst %.log, %.outlog, $(allLog))
 
-allinscore 		= $(shell [ -d $(version) ] && find $(version) -name "*.inscore")
-validinscore 	= $(patsubst %.inscore, %.outinscore, $(allinscore))
+allinscore 		:= $(shell [ -d $(version) ] && find $(version) -name "*.inscore" 2>/dev/null)
+validinscore 	:= $(patsubst %.inscore, %.outinscore, $(allinscore))
 
 
 nodlost	= "definitely lost: 0"
 noilost	= "indirectly lost: 0"
 noplost	= "possibly lost: 0"
 
+
 #test:
 #	echo $(files)
 
-all: forcepdfdate INScoreVersion
+all:
 	@echo "=========================================="
 	@echo " Make sure that INScoreViewer is running!"
 	@echo "=========================================="
@@ -88,31 +89,31 @@ save :
 	./SendOSC 7000 /ITL/scene reset
 	make _save
 
-_log: INScoreVersion $(logout)
+_log: $(logout)
 
-_save : INScoreVersion $(inscoreout)
+_save : $(inscoreout)
 
-basic: forcepdfdate INScoreVersion
+basic:
 	@echo "----------- Running basic scripts"
 	make files
 
-pdfmouse: forcepdfdate INScoreVersion
+pdfmouse:
 	@echo "----------- Running mouse interactions"
 	make filesmouse
 	
-pdfgraphic: forcepdfdate INScoreVersion
+pdfgraphic:
 	@echo "----------- Checking graphical elements"
 	make filesgraphic
 	
-pdfsync: forcepdfdate INScoreVersion
+pdfsync:
 	@echo "----------- Checking synchronization modes"
 	make filessync
 	
-pdfjava: forcepdfdate INScoreVersion
+pdfjava:
 	@echo "----------- Checking javascript examples"
 	make filesjava
 	
-pdfsignal: forcepdfdate INScoreVersion
+pdfsignal:
 	@echo "----------- Checking signal examples"
 	make filessignal
 	
