@@ -2,7 +2,8 @@
 system := $(shell uname -s)
 ifeq ($(system), Darwin)
 LIBINSCORE :=  -F../../build/MacOS/Release -F../../cmake -framework INScore
-LIBOSCPACK :=  -L../../lib/oscpack/cmake/Release -L../../lib/oscpack -loscpack
+LIBOSCPACK :=  -L../../lib/oscpack -loscpack
+OPT := -mmacosx-version-min=10.6
 else
 LIBINSCORE :=  -F../../cmake -lINScore
 LIBOSCPACK :=  -L../../lib/oscpack/cmake -loscpack
@@ -21,7 +22,7 @@ all : $(tools)
 	$(G++) INScoreVersion.cpp -I../../src/interface $(LIBINSCORE) -o ../INScoreVersion
 
 ../SendOSC: SendOSC.cpp
-	$(G++) SendOSC.cpp -I../../lib/oscpack $(LIBOSCPACK) -o ../SendOSC
+	$(G++) SendOSC.cpp  $(OPT) -I../../lib/oscpack $(LIBOSCPACK) -o ../SendOSC
 
 clean:  
 	rm -f $(tools)
