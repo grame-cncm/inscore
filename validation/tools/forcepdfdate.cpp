@@ -1,13 +1,17 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <inttypes.h>
-#include <libgen.h>
+#ifdef WIN32
+#define basename(a) a
+#else
+ #include <inttypes.h>
+ #include <libgen.h>
+#endif
 #include <string.h>
-
 #include <iostream>
 
 using namespace std;
+
 
 static void usage (char * name)
 {

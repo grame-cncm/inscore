@@ -2,9 +2,16 @@
     A simple tool to send osc messages from the command line
 */
 
+#ifdef WIN32
+#include <Windows.h>
+#define basename(a) a
+#define strtof		(float)strtod
+#define usleep(a)	Sleep(a/1000)
+#else
 #include <libgen.h>
-#include <stdlib.h>
 #include <unistd.h>
+#endif
+#include <stdlib.h>
 
 #include <iostream>
 #include <stdexcept>
@@ -33,7 +40,7 @@ static bool floatarg (const char* name, float& val)
 	}
 	if (dot) {
 		char* endptr = 0;
-		val = strtof (name, &endptr);
+ 		val = strtof (name, &endptr);
 		return (endptr != name) && (*endptr==0);
 	}
 	return false;
@@ -55,7 +62,10 @@ int main(int argc, char* argv[])
     try {
 		UdpTransmitSocket transmitSocket( IpEndpointName( ADDRESS, port ) );
 		osc::OutboundPacketStream p( buffer, OUTPUT_BUFFER_SIZE );
-		p << osc::BeginMessage( argv[2] );
+		string address = argv[2];
+		size_t pos = address.find("/ITL");
+		const char * addrptr = (pos == std::string::npos) ? address.c_str() : &address.c_str()[pos];
+		p << osc::BeginMessage( addrptr );
 		for (int i=3; i<argc; i++) {
 			const char* arg = argv[i];
 			float fval;
