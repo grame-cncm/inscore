@@ -110,6 +110,7 @@ copydoc:
 	rm -f $(docdst)/html/*
 	cp  $(docsrc)/OSCMsg/* $(docdst)/html
 	cp  $(docsrc)/INScore-refcard.pdf $(docdst)
+	cd  $(docdst) && tar czf html.tgz html
 
 interfaces:
 	[ -d $(rsrc)/$(interf) ] || mkdir -p $(rsrc)/$(interf)

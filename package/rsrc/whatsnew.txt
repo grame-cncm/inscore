@@ -5,9 +5,17 @@ GRAME - Centre national de creation musicale
 http://www.grame.fr
 research@grame.fr
 ==================================================================
-Copyright GRAME (c) 2009-2013
+Copyright GRAME (c) 2009-2014
 INScore resources are released under the Creative Common license. 
 ------------------------------------------------------------------
+
+-------------------------------
+** December 15 2014
+-------------------------------
+Update of all the scripts that are using the synchronization mechanisms in order to adjust the
+slaves size. An object graphic behavior has changed when synchronized: now, objects are keeping 
+their dimensions but take the parent attributes for scale. This design is a consequence of the
+synchronization extension to multiple masters.
 
 -------------------------------
 ** January 30 2014
