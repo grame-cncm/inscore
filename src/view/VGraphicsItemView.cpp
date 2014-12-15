@@ -135,7 +135,7 @@ void VGraphicsItemView::drawMapping(IObject* o)
 				mappingSegment->setZValue( ++z );
 				fDebugItems << mappingSegment;
 
-				if (o->mapDebug() > 1) {	// check if dates should be printed
+				if (o->mapDebug() > 1 && fTilerItems.empty()) {	// check if dates should be printed
 					// Add dates
 					QGraphicsTextItem * textItem = new QGraphicsTextItem( timeString , mappingSegment );
 					textItem->setDefaultTextColor( Qt::black );
