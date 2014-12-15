@@ -4,3 +4,8 @@ INScoreViewer
 SendOSC
 forcepdfdate
 *.pdf
+tools/cmake/CMakeCache.txt
+tools/cmake/CMakeFiles/
+tools/cmake/CMakeScripts/
+tools/cmake/cmake_install.cmake
+tools/cmake/inscore-tools.*
