@@ -1,0 +1,30 @@
+/ITL/scene/* del;
+/ITL/scene/signal/* del;
+
+/ITL/scene/title set txt "This scripts illustrates the brush styles";
+/ITL/scene/title scale 2.;
+/ITL/scene/title y -0.9;
+
+/ITL/scene/fig1 set rect 0.4 0.3;
+/ITL/scene/fig1 x -0.5;
+/ITL/scene/fig1 y -0.5;
+/ITL/scene/fig1 color 100 50 0;
+/ITL/scene/fig1 brushStyle dense5;
+
+/ITL/scene/fig2 set ellipse 0.4 0.4;
+/ITL/scene/fig2 x 0.5;
+/ITL/scene/fig2 y -0.5;
+/ITL/scene/fig2 color 0 50 100;
+/ITL/scene/fig2 brushStyle bdiag;
+
+/ITL/scene/fig3 set ellipse 0.4 0.5;
+/ITL/scene/fig3 x -0.5;
+/ITL/scene/fig3 y 0.5;
+/ITL/scene/fig3 color 100 0 100;
+/ITL/scene/fig3 brushStyle fdiag;
+
+/ITL/scene/fig4 set rect 0.2 0.3;
+/ITL/scene/fig4 x 0.5;
+/ITL/scene/fig4 y 0.5;
+/ITL/scene/fig4 color 0 200 50;
+/ITL/scene/fig4 brushStyle dense2;

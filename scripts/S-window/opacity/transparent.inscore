@@ -1,0 +1,5 @@
+
+/ITL/scene/state set txt "The window and its content is sensitive to transparency.";
+/ITL/scene/state scale 1.5;
+/ITL/scene/state y 0.8;
+/ITL/scene windowOpacity 0;

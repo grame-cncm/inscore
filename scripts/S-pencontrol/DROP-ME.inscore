@@ -2,6 +2,7 @@
 gray = 220;
 
 /ITL/scene/* del;
+/ITL/scene/signal/* del;
 
 /ITL/scene/title  set  txt "The accompanying scripts illustrate pen control messages.";
 /ITL/scene/title  y -0.8;

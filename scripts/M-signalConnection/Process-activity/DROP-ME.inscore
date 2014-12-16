@@ -1,0 +1,106 @@
+
+
+/ITL/scene/* del;
+/ITL/scene/signal/* del;
+!/ITL/log show 1;
+!/ITL/log clear;
+
+/ITL/scene/signal/sig size 10; 
+
+/ITL/scene/obj set rect 0.2 0.2;
+/ITL/scene/obj color 0 0 220;
+
+!====================================================
+! this is the connection part
+! an alias is used to avoid a strong connection between
+! the generated signal and inscore
+!====================================================
+/ITL/scene/signal connect sig "obj:dangle[-60,60]";
+/ITL/scene/signal/sig alias "/target1"; 
+!====================================================
+
+! the scene dimensions 
+h = 1;
+w = 1.33;
+
+<? javascript
+	function rect (xoffset, yoffset) {
+		var out = new Array;
+		var j = 0;	
+		for (i=1; i <= 4; i++) {
+			var target = "/ITL/scene/rect" + i;
+			var x = (i & 1) ? -xoffset : xoffset;
+			var y = (i > 2) ? yoffset : -yoffset;
+			out[j++] = target + " set img 'rsrc/a" + i + ".png';";
+			out[j++] = target + " x " + x + ";";
+			out[j++] = target + " y " + y + ";";
+		}
+		return out;
+	}
+
+	var prev=-1;
+	function resync() {
+		do { 
+			var n = Math.round( Math.random() * 4);
+		} while ((n == prev) || (n==0));
+		prev = n;
+		var rect = "rect" + n;
+		post("/ITL/scene/sync", "obj", rect);
+	}
+
+?>
+
+/ITL/scene width $w;
+/ITL/scene height $h;
+
+vlinew = 0.125;
+hlinew = 0.26;
+<?javascript rect(0.6, 0.4); ?>
+/ITL/scene/rect* scale 1.4;
+/ITL/scene/l1 set line wa $vlinew 0;
+/ITL/scene/l1 y -0.4;
+/ITL/scene/l2 set line wa $vlinew 0;
+/ITL/scene/l2 y 0.4;
+/ITL/scene/l3 set line wa $hlinew 90;
+/ITL/scene/l3 x -0.59;
+/ITL/scene/l4 set line wa $hlinew 90;
+/ITL/scene/l4 x 0.6;
+/ITL/scene/l5 set line wa 0.48 -37;
+/ITL/scene/l5 y 0.28;
+/ITL/scene/l* penWidth 4;
+
+/ITL/scene/title set txt "Displaying process activity.";
+/ITL/scene/title scale 2.5;
+/ITL/scene/title y -0.9;
+/ITL/scene/comment set txt "karplus.maxpat should be running.";
+!/ITL/scene/comment scale 2.5;
+/ITL/scene/comment y -0.82;
+
+/ITL/scene/credit set txt "Notation taken from Jason Freeman - Piano Etudes - II - Learning to Dance";
+/ITL/scene/credit y 0.85;
+
+/ITL/scene/rect* watch mouseDown (localhost:8000/bing, localhost:8000/clock 1);
+/ITL/scene/rect* watch mouseEnter (/ITL/scene/$self alpha 180);
+/ITL/scene/rect* watch mouseLeave (/ITL/scene/$self alpha 255);
+
+/ITL/scene/obj watch mouseDown (localhost:8000/clock 0);
+/ITL/scene/obj watch mouseEnter (/ITL/scene/$self red 100);
+/ITL/scene/obj watch mouseLeave (/ITL/scene/$self red 0);
+/ITL/scene/obj z 1.0;
+
+/ITL/scene/obj date 0;
+/ITL/scene/obj alpha 200;
+/ITL/scene/obj scale 0.65;
+/ITL/scene/sync obj rect1;
+
+/ITL/scene/obj watch timeLeave 0 1 (
+	/ITL/scene/sync obj,
+	/ITL/scene/javascript run "resync()",
+	/ITL/scene/obj date 0,
+	localhost:8000/bing
+	); 
+
+
+localhost:8000/clock 1;
+localhost:8000/bing;
+

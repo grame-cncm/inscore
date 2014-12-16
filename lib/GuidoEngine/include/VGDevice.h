@@ -110,7 +110,7 @@ class VGDevice
 		/// Restores the device's context after a set of drawing operations.
 		/// and restore the previous one (like the previous RestoreDC() method).
 		/// This method should be used after every set of drawing operation.
-		virtual void			EndDraw() = 0;
+        virtual void			EndDraw() = 0;
 
 		/// Invalidate a rectangle i.e. indicates the native graphic device
 		/// that the corresponding rectangle needs to be refreshed.
@@ -187,7 +187,7 @@ class VGDevice
 		virtual	const VGFont *	GetTextFont() const = 0;
 
         /// Selects a font (only for SVG device).
-        virtual	void        	selectfont(int font) {};
+        virtual	void        	selectfont(int) {};
 
 
 		// - Pen & brush services --------------------------------------------

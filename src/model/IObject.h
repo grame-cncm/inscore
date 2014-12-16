@@ -210,7 +210,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 				void	newData (bool state)		{ fNewData = state; }
 
 		/// \brief returns the mapping debug flag
-				bool	mapDebug() const;
+				int		mapDebug() const;
 		/// \brief returns the names debug flag
 				bool	nameDebug() const;
 		/// \brief returns the signal debug flag
@@ -400,7 +400,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 			\param o the object to look for in the synchronization set
 			\return a vector of all the slaves or an empty vector when not found
 		*/    
-        virtual std::vector<SIObject> getSlaves(SIObject o) const;
+        virtual std::vector<SIObject> getSlaves(const SIObject o) const;
     
         /// \brief a periodic task to propagate modification state from masters to slaves
 		virtual void ptask ();

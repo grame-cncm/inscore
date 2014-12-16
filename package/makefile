@@ -1,4 +1,4 @@
-version := 1.08
+version := 1.09
 system	:= $(shell uname -s)
 ifeq ($(system), MINGW32_NT-6.1) 
 	win32 = yes
@@ -44,12 +44,10 @@ winapp  := $(viewer)-$(version).exe
 macplug := $(macapp)/Contents/Plugins
 winplug := Plugins
 
-rsrcf   := ../scripts
-rfolders:= $(foreach dir, $(rsrcf), $(shell find $(dir) -type d))
-rfiles  := $(foreach dir, $(rsrcf), $(shell find $(dir) -type f))
-hfiles  := $(foreach dir, $(rsrcf), $(shell find $(dir) -name .DS_Store))
-fperm   := 644  	# files permission
-dperm   := 755		# folders permission
+#########################
+# scripts provided as samples are now stored in a file
+scripts := $(shell cat samples-list.txt)
+
 
 #########################
 # this is for win32 only
@@ -60,8 +58,7 @@ bin    := ../build/win32/release
 .PHONY: doc rsrc
 
 usage:
-	@echo This makefile builds the Interlude prototype package.
-	@echo It should be run on every supported platform.
+	@echo This makefile builds the INScore package.
 	@echo usage:
 	@echo "  make macosx   # on Mac OS X"
 	@echo "  make win32    # on Windows"
@@ -113,6 +110,7 @@ copydoc:
 	rm -f $(docdst)/html/*
 	cp  $(docsrc)/OSCMsg/* $(docdst)/html
 	cp  $(docsrc)/INScore-refcard.pdf $(docdst)
+	cd  $(docdst) && tar czf html.tgz html
 
 interfaces:
 	[ -d $(rsrc)/$(interf) ] || mkdir -p $(rsrc)/$(interf)
@@ -150,19 +148,13 @@ rsrc:
 	cp rsrc/whatsnew.txt $(rsrc)
 	tar czf $(rsrc).tgz $(rsrc)/*[^z]
 
-cleanrsrc:
-	@echo set files permission to $(fperm)
-	@chmod $(fperm) $(rfiles)
-	@echo set folders permission to $(dperm)
-	@chmod $(dperm) $(rfolders)
-	@echo remove .DS_Store
-	@rm -f $(hfiles)
-	rm -rf $(rsrc)/Max/* $(rsrc)/Max/PureData
-
 samples:
-	[ -d $(package)/samples ] || mkdir -p $(package)/samples
+	@[ -d $(package)/samples ] || mkdir -p $(package)/samples
 	rm -rf $(package)/samples/*
-	cp -R ../scripts/S* $(package)/samples
+	@echo ========================
+	@echo " copying sample scripts"
+	@echo ========================
+	$(foreach s,$(scripts), cp -R ../scripts/$(s) $(package)/samples/;)
 	
 src:
 	[ -d $(package)-src/cmake ] || mkdir -p $(package)-src/cmake
@@ -194,7 +186,7 @@ win32:
 	cp 	$(WIN32QTPLUGS) $(package)/plugins/imageformats
 	cp 	$(WIN32QTPLATFORMS) $(package)/plugins/platforms
 	cp ../lib/GestureFollower/win32/GFLib.dll $(package)/$(winplug)
-	cp ../lib/faust/win32/libfaust.dll $(package)/$(winplug)
+	cp ../lib/faust/win32/faust.dll $(package)/$(winplug)
 	cp ../lib/faust/win32/llvm_math.ll $(package)/$(winplug)
 
 linux:

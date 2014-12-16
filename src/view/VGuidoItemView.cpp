@@ -153,6 +153,7 @@ VGuidoItemView::VGuidoItemView(QGraphicsScene * scene, const IGuidoCode* h)
 void VGuidoItemView::updateView( IGuidoCode * guidoCode  )
 {
     guidoCode->cleanupSync();
+    gmnUpdate(guidoCode);
     // 2. Update Score color
 	QColor color(guidoCode->getR(), guidoCode->getG(), guidoCode->getB() , guidoCode->getA());
 	if ( fGuidoItem->getScoreColor() != color )

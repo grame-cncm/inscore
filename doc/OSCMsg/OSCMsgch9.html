@@ -3,33 +3,37 @@
 <html > 
 <head><title>9 Layers</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
-<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="generator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2014-10-24 16:00:00"> 
+<meta name="date" content="2014-12-15 16:26:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 1510--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 1503--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch10.html" >next</a>] [<a 
 href="OSCMsgch8.html" >prev</a>] [<a 
 href="OSCMsgch8.html#tailOSCMsgch8.html" >prev-tail</a>] [<a 
 href="#tailOSCMsgch9.html">tail</a>] [<a 
 href="OSCMsg3.html#OSCMsgch9.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;9</span><br /><a 
- id="x13-500009"></a>Layers</h2>
-<!--l. 1513--><p class="noindent" >Layers may be viewed as containers or as groups. They represent a way to structure both the address space and the
+ id="x13-490009"></a>Layers</h2>
+<!--l. 1506--><p class="noindent" >Layers may be viewed as containers or as groups. They represent a way to structure both the address space and the
 graphic space.
-<!--l. 1515--><p class="noindent" >From graphic viewpoint, a layer is a scene inside a scene. All the properties of &#8217;rect&#8217; components are available to
-layers: position, scale, color, transparency, etc.). By default, a layer is not visible: it has no brush and no
-pen.
-<!--l. 1517--><p class="noindent" >From time viewpoint, a layer has the common time attributes i.e. a date, a duration.
-<!--l. 1519--><p class="noindent" >A layer may be synchronized to other objects, including other layers. It includes a <span 
+<!--l. 1508--><p class="noindent" >From graphic viewpoint, a layer is a scene inside a scene. All the properties of &#8217;rect&#8217; components are
+available to layers: position, scale, color, transparency, etc.). By default, a layer is not visible: it has
+no brush and no pen, but changing the brush style (see section <a 
+href="OSCMsgch6.html#x10-330006.2">6.2<!--tex4ht:ref: brush --></a> p.<a 
+href="OSCMsgch6.html#x10-330006.2">46<!--tex4ht:ref: brush --></a>) - e.g. to <span 
+class="pcrr8tn-">solid </span>- makes it
+visible.
+<!--l. 1510--><p class="noindent" >From time viewpoint, a layer has the common time attributes i.e. a date, a duration.
+<!--l. 1512--><p class="noindent" >A layer may be synchronized to other objects, including other layers. It includes a <span 
 class="pcrr8tn-">sync </span>node and supports
 synhcronization of the enclosed objects. However, synchronization is restricted to objects from the same layer and
 cannot cross the border of a layer.
-<!--l. 1522--><p class="noindent" ><span 
+<!--l. 1515--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -40,7 +44,7 @@ class="small-caps">E</span> </span><br
 class="newline" />Creating a layer and its content:
 <div class="center" 
 >
-<!--l. 1526--><p class="noindent" >
+<!--l. 1519--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox45"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/layer1 set layer;</span><br 
@@ -49,20 +53,20 @@ class="pcrr8tn-x-x-90">/ITL/scene/layer1/score set gmnf &#8217;myscore.gmn&#8217
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/layer1/cursor set rect 0.01 0.1;</span></div></div>
 </div>
-<!--l. 1528--><p class="noindent" >Synchronizing 2 components of a layer :
+<!--l. 1521--><p class="noindent" >Synchronizing 2 components of a layer :
 <div class="center" 
 >
-<!--l. 1531--><p class="noindent" >
+<!--l. 1524--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox46"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">!&#8217;score&#8217; and &#8217;cursor&#8217; must be enclosed in layer1 </span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/layer1/sync cursor score;</span></div></div>
 </div>
-<!--l. 1533--><p class="noindent" >Making a layer visible :
+<!--l. 1526--><p class="noindent" >Making a layer visible :
 <div class="center" 
 >
-<!--l. 1536--><p class="noindent" >
+<!--l. 1529--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox47"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/layer1 brushStyle solid; </span><br 
@@ -70,18 +74,18 @@ class="newline" /><span
 class="pcrr8tn-x-x-90">/ITL/scene/layer1 color 120 120 120;</span></div></div>
 </div>
 <h3 class="sectionHead"><span class="titlemark">9.1    </span> <a 
- id="x13-510009.1"></a>Layers generalization</h3>
-<!--l. 1543--><p class="noindent" >The idea of layer is generalized to all the type of objects: any INScore object can be a container without limitation
+ id="x13-500009.1"></a>Layers generalization</h3>
+<!--l. 1536--><p class="noindent" >The idea of layer is generalized to all the type of objects: any INScore object can be a container without limitation
 on the depth.
                                                                                  
 
                                                                                  
-<!--l. 1608--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 1601--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch10.html" >next</a>] [<a 
 href="OSCMsgch8.html" >prev</a>] [<a 
 href="OSCMsgch8.html#tailOSCMsgch8.html" >prev-tail</a>] [<a 
 href="OSCMsgch9.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch9.html" >up</a>] </p></div>
-<!--l. 1608--><p class="noindent" ><a 
+<!--l. 1601--><p class="noindent" ><a 
  id="tailOSCMsgch9.html"></a>  
 </body></html> 

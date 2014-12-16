@@ -79,7 +79,7 @@ class ISceneSync : public IVNode
 			\param o the object to look for in the synchronization set
 			\return the vector of slaves
 		*/
-		virtual std::vector<SIObject> getSlaves(SIObject o) const;
+		virtual std::vector<SIObject> getSlaves(const SIObject o) const;
 
 		/*! \brief synchronizes two objects
 			\param o a slave object

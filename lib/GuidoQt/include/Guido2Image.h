@@ -19,6 +19,9 @@
 #include <QString>
 #include <QIODevice>
 
+#include "GUIDOEngine.h"
+#include "GUIDOPianoRoll.h"
+
 #ifdef WIN32
 #define warndeprecated __declspec(deprecated("** method is deprecated **"))
 #else
@@ -52,7 +55,13 @@ enum Guido2ImageErrorCodes
 	//! You forgot to call QGuidoPainter::startGuidoEngine.
 	GUIDO_2_IMAGE_GUIDO_ENGINE_NOT_STARTED = 7,
 	//! The image format is not valid (see Guido2ImageImageFormat).
-	GUIDO_2_IMAGE_INVALID_IMAGE_FORMAT = 8
+	GUIDO_2_IMAGE_INVALID_IMAGE_FORMAT = 8,
+	//! The output image is too big to be created
+	GUIDO_2_IMAGE_OUTPUT_FILE_OVERSIZED = 9,
+	//! The output image is too small to be created
+	GUIDO_2_IMAGE_OUTPUT_FILE_UNDERSIZED = 10,
+	//! All unspecified errors
+	GUIDO_2_IMAGE_UNSPECIFIED_ERROR = 11
 };
 
 /*!
@@ -86,6 +95,9 @@ enum Guido2ImageImageFormat
 #define GUIDO_2_IMAGE_XPM_STR "xpm"
 #define GUIDO_2_IMAGE_SVG_STR "svg"
 
+#define GUIDO_2_IMAGE_PIANO_ROLL_STR    "pianoroll"
+#define GUIDO_2_IMAGE_CLASSIC_SCORE_STR "classic"
+
 /**
 *	\brief Offers functions to export GMN code (from a string or a file) to various formats of images, or to PDF.
 */
@@ -98,10 +110,12 @@ class Guido2Image
 			QIODevice*				device;				///< or the output device
 			Guido2ImageImageFormat	format;				///< the output format
 			const GuidoLayoutSettings*	layout;			///< layout setting (see guido doc)
+			const GuidoPageFormat*	pageFormat;			///< layout setting (see guido doc)
 			int						pageIndex;
 			QSize					sizeConstraints;
 			float					zoom;
-			Params () : input(0), output(0), device(0), format(GUIDO_2_IMAGE_PNG), layout(0), pageIndex(1), zoom(1.0) {}
+			bool resizePageToMusic; // do we resize the page to the music?
+			Params () : input(0), output(0), device(0), format(GUIDO_2_IMAGE_PNG), layout(0), pageIndex(1), zoom(1.0), resizePageToMusic(false) {}
 		} Params;
 
 		/*!
@@ -110,23 +124,31 @@ class Guido2Image
 		static const char* getErrorString( Guido2ImageErrorCodes err );
 
 		/*!
-		*	\brief	converts a gmn sdtring to an image
+		*	\brief	converts a gmn string to an image
 		*/
 		static Guido2ImageErrorCodes gmnString2Image( const Params& p);
+
 		/*!
 		*	\brief	converts a gmn file to an image
 		*/
 		static Guido2ImageErrorCodes gmnFile2Image	( const Params& p);
+        
+        /*!
+		*	\brief	converts a gmn file to an image
+		*/
+        static Guido2ImageErrorCodes guidoPianoRoll2Image(const Params& p, PianoRoll *pianoRoll);
 
 	private :
 
 		static Guido2ImageErrorCodes	check( const Params& p );
 		
-		static Guido2ImageErrorCodes	guidoPainterToImage	( QGuidoPainter * guidoPainter, const Params& p );
-		static void						writeImage			( QGuidoPainter * guidoPainter, const Params& p);
-		static void						writePDF			( QGuidoPainter * guidoPainter, int pageIndex, const char * fileName );
+		static Guido2ImageErrorCodes	guidoPainterToImage ( QGuidoPainter * guidoPainter, const Params& p );
+		static Guido2ImageErrorCodes	writeImage			( QGuidoPainter * guidoPainter, const Params& p );
+        static Guido2ImageErrorCodes	writePianoRollImage	( QGuidoPainter * guidoPainter, const Params& p, PianoRoll *pianoRoll);
+		static Guido2ImageErrorCodes	writePDF			( QGuidoPainter * guidoPainter, int pageIndex, const char * fileName );
+		static Guido2ImageErrorCodes	writePianoRollPDF	( QGuidoPainter * guidoPainter, const char * fileName, PianoRoll *pianoRoll, int width, int height );
 		
-//		static QRectF			getPictureRect(QGuidoPainter * guidoPainter, int pageIndex, const QSize& outputSizeConstraint, float zoom );
+		static QRectF			getPictureRect(QGuidoPainter * guidoPainter, int pageIndex, const QSize& outputSizeConstraint, float zoom);
 		static void				save(QPaintDevice * paintDevice, const Params& p);
 		static QSizeF			size2constrainedsize(const QSizeF& size, const QSize& constraint);
 };

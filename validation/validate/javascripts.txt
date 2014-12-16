@@ -1,0 +1,2 @@
+../scripts/S-javascript/javascript.inscore
+../scripts/S-javascript/jsgrid.inscore

@@ -135,16 +135,18 @@ void VGraphicsItemView::drawMapping(IObject* o)
 				mappingSegment->setZValue( ++z );
 				fDebugItems << mappingSegment;
 
-				// Add dates
-				QGraphicsTextItem * textItem = new QGraphicsTextItem( timeString , mappingSegment );
-				textItem->setDefaultTextColor( Qt::black );
-				float scale = 4.0f;
-				textItem->setScale(1.0f/scale);
-				if (colorindex & 1)
-					textItem->setPos( qtRect.x() , qtRect.y() + qtRect.height()); // + textItem->boundingRect().height()/scale );
-				else
-					textItem->setPos( qtRect.x() , qtRect.y() - textItem->boundingRect().height()/scale );
-				textItem->setZValue(z);
+				if (o->mapDebug() > 1 && fTilerItems.empty()) {	// check if dates should be printed
+					// Add dates
+					QGraphicsTextItem * textItem = new QGraphicsTextItem( timeString , mappingSegment );
+					textItem->setDefaultTextColor( Qt::black );
+					float scale = 4.0f;
+					textItem->setScale(1.0f/scale);
+					if (colorindex & 1)
+						textItem->setPos( qtRect.x() , qtRect.y() + qtRect.height()); // + textItem->boundingRect().height()/scale );
+					else
+						textItem->setPos( qtRect.x() , qtRect.y() - textItem->boundingRect().height()/scale );
+					textItem->setZValue(z);
+				}
 			}
 			colorindex++;
 		}
@@ -152,11 +154,31 @@ void VGraphicsItemView::drawMapping(IObject* o)
 }
 
 //------------------------------------------------------------------------------------------------------------
-// Debug graphic feedback : displays the bounding rectangle and the object name
+// Debug graphic feedback : displays the bounding rectangle and the object name for all the items
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::drawNameAndBBox(IObject* o)
 {	
-	//if (fIsStretchOn) return;		// don't know where to draw
+	if(fTilerItems.empty())
+    {
+        drawNameAndBBoxItem(o, item());
+    }
+    else
+    {
+        std::map<SMaster, QStretchTilerItem *>::iterator i;
+        for(i = fTilerItems.begin(); i != fTilerItems.end(); i++)
+        {
+            drawNameAndBBoxItem(o, i->second);
+        }
+    }
+}
+
+
+//------------------------------------------------------------------------------------------------------------
+// Debug graphic feedback : displays the bounding rectangle and the object name for a given item
+//------------------------------------------------------------------------------------------------------------
+void VGraphicsItemView::drawNameAndBBoxItem(IObject* o, QGraphicsItem* item)
+{
+//if (fIsStretchOn) return;		// don't know where to draw
 
 //	TFloatRect boundingRect = o->getBoundingRect();
 //	QRectF boundingRectQt( 
@@ -166,24 +188,24 @@ void VGraphicsItemView::drawNameAndBBox(IObject* o)
 //		relative2SceneHeight( boundingRect.size().height() )
 //	);
 
-	// Add an item for the bounding rect
-	QRectF bboxRectQt = fItem->boundingRect();
+        // Add an item for the bounding rect
+        QRectF bboxRectQt = fItem->boundingRect();
 
-	QGraphicsRectItem * boundingRectItem = new QGraphicsRectItem( bboxRectQt );
-	boundingRectItem->setPen( QPen( QBrush(Qt::red) , 0 , Qt::DashLine) );
-	boundingRectItem->setZValue( item()->zValue() + 0.1f );
-	boundingRectItem->setParentItem(item());
-//	item()->scene()->addItem( boundingRectItem );
-	fDebugItems << boundingRectItem;
+        QGraphicsRectItem * boundingRectItem = new QGraphicsRectDebugItem( bboxRectQt );
+        boundingRectItem->setPen( QPen( QBrush(Qt::red) , 0 , Qt::DashLine) );
+        boundingRectItem->setZValue( item->zValue() + 0.1f );
+        boundingRectItem->setParentItem(item);
+        //	item()->scene()->addItem( boundingRectItem );
+        fDebugItems << boundingRectItem;
 	
-	// Add an item for the name.
-	QGraphicsTextItem * textItem = new QGraphicsTextItem( o->name().c_str() , boundingRectItem );
-	textItem->setDefaultTextColor( Qt::red );
-//	float scale = 1.0f;
-//	textItem->scale(1.0f/scale,1.0f/scale);
-//	if (fIsStretchOn)
-//		textItem->setPos( boundingRectQt.x() , boundingRectQt.y() - textItem->boundingRect().height()/scale );
-//	else
+        // Add an item for the name.
+        QGraphicsTextItem * textItem = new QGraphicsTextDebugItem( o->name().c_str() , boundingRectItem );
+        textItem->setDefaultTextColor( Qt::red );
+        //	float scale = 1.0f;
+        //	textItem->scale(1.0f/scale,1.0f/scale);
+        //	if (fIsStretchOn)
+        //		textItem->setPos( boundingRectQt.x() , boundingRectQt.y() - textItem->boundingRect().height()/scale );
+        //	else
 		textItem->setPos( bboxRectQt.x() , bboxRectQt.y() - textItem->boundingRect().height() );
 }
 
@@ -471,8 +493,6 @@ void VGraphicsItemView::setSlave(SIObject o )
 {
     std::vector<SMaster> masters = o->getParent()? o->getParent()->getMasters(o) : o->getScene()->getMasters(o);
     
-    if(fNbMasters == masters.size()) return; //there is no master-slave relation to add or remove
-    
 	for(int i = 0; i < masters.size(); i++)    // we first look for new masters, in order to add new representation
     {
         SMaster master = masters[i];
@@ -480,6 +500,8 @@ void VGraphicsItemView::setSlave(SIObject o )
     }
     
     findObsoleteSync(masters); // Then we check if some representation could be obsolete (master/slave relation deleted)
+    
+    if(fNbMasters == masters.size()) return; //there is no master-slave relation to add or remove
     
     if(!fNbMasters)    // this is the first master added, so we have to remove the classic fItem and switch to the slaved verison
     {

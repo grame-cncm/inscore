@@ -65,7 +65,7 @@ std::vector<SMaster> ISync::getMasters(SIObject slave) const
 
 
 //--------------------------------------------------------------------------
-std::vector<SIObject> ISync::getSlaves(SIObject master) const
+std::vector<SIObject> ISync::getSlaves(const SIObject master) const
 {
     const_master_iterator it = fMasters2Slaves.find(master);
     if(it != fMasters2Slaves.end())
@@ -89,7 +89,7 @@ ISync::relation ISync::getRelation(SIObject o1, SIObject o2) const
         if(std::find(slaves.begin(), slaves.end(), o2) != slaves.end())
             return kMaster;
     }
-    else if(hasSlave(o2))
+    if(hasSlave(o2))
     {
         std::vector<SIObject> slaves = getSlaves(o2);
         if(std::find(slaves.begin(), slaves.end(), o1) != slaves.end())

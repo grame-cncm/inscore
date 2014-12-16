@@ -52,10 +52,10 @@ void VCurveView::updateView( ICurve * curve )
     QPainterPath myPath;
 	for ( unsigned int i = 0 ; i < curve->getPoints().size() ; i++ )
 	{
-		QPoint startPoint	( relative2SceneX(curve->getPoints()[i].fPointA.first) , relative2SceneY(curve->getPoints()[i].fPointA.second) );
-		QPoint c1			( relative2SceneX(curve->getPoints()[i].fPointB.first) , relative2SceneY(curve->getPoints()[i].fPointB.second) );
-		QPoint c2			( relative2SceneX(curve->getPoints()[i].fPointC.first) , relative2SceneY(curve->getPoints()[i].fPointC.second) );
-		QPoint endPoint		( relative2SceneX(curve->getPoints()[i].fPointD.first) , relative2SceneY(curve->getPoints()[i].fPointD.second) );
+		QPoint startPoint	( relative2SceneWidth(curve->getPoints()[i].fPointA.first) , relative2SceneHeight(curve->getPoints()[i].fPointA.second) );
+		QPoint c1			( relative2SceneWidth(curve->getPoints()[i].fPointB.first) , relative2SceneHeight(curve->getPoints()[i].fPointB.second) );
+		QPoint c2			( relative2SceneWidth(curve->getPoints()[i].fPointC.first) , relative2SceneHeight(curve->getPoints()[i].fPointC.second) );
+		QPoint endPoint		( relative2SceneWidth(curve->getPoints()[i].fPointD.first) , relative2SceneHeight(curve->getPoints()[i].fPointD.second) );
 		myPath.moveTo(startPoint);
 		myPath.cubicTo(c1, c2, endPoint);
 	}
@@ -65,6 +65,16 @@ void VCurveView::updateView( ICurve * curve )
 		itemChanged();
 	}
 	VShapeView::updateView( curve );
+}
+
+
+//----------------------------------------------------------------------
+void VCurveView::updateObjectSize(IObject* o)
+{
+    ICurve * p = dynamic_cast<ICurve*>(o);
+    if(p)
+        updateView(p);
+    VGraphicsItemView::updateObjectSize(o);
 }
 
 

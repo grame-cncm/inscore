@@ -47,7 +47,7 @@ typedef class libmapping::SMARTP<IObjectDebug>			SIObjectDebug;
 class IObjectDebug : public IVNode
 {
 	protected:
-		bool fMap;						///< flag to display the graphic map
+		int	 fMap;						///< flag to display the graphic map
 		bool fName;						///< flag to display names
 //		bool fSignal;					///< flag to emit profiling signal
 		bool fClick;					///< flag to send osc feedback on mouse-click
@@ -62,7 +62,7 @@ class IObjectDebug : public IVNode
 		/// \brief accept an Update visitor
 		virtual void	accept (Updater*);
 
-		virtual bool	getMapDebug () const	{ return fMap; }
+		virtual int		getMapDebug () const	{ return fMap; }
 		virtual bool	getNameDebug () const	{ return fName; }
 //		virtual bool	getSignalDebug () const { return fSignal; }
 		virtual bool	getClickDebug () const	{ return fClick; }
@@ -82,7 +82,7 @@ class IObjectDebug : public IVNode
 		virtual int	execute (const IMessage* msg);
 
 		/// \brief sets the mapping debug flag
-		void		setMapDebug(bool state)				{ fMap = state; }
+		void		setMapDebug(int state);
 		/// \brief sets the mapping debug flag
 		void		setNameDebug(bool state)			{ fName = state; }
 		/// \brief sets the mapping debug flag

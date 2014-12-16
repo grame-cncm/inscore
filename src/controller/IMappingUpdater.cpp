@@ -94,7 +94,7 @@ bool IMappingUpdater::date2point (const rational& date, const SRelativeTime2Grap
 }
 
 //---------------------------------------------------------------------------------------
-GraphicSegment IMappingUpdater::computeSegment(IObject* o, float h, float w, float x, float y)
+GraphicSegment IMappingUpdater::offsetSegment(const IObject* o, float h, float w, float x, float y)
 {
     float x0 = x - (1 + o->getXOrigin()) * w/2;
     float x1 = x + (1 - o->getXOrigin()) * w/2;
@@ -105,14 +105,9 @@ GraphicSegment IMappingUpdater::computeSegment(IObject* o, float h, float w, flo
 }
 
 //---------------------------------------------------------------------------------------
-GraphicSegment IMappingUpdater::computeSegment(IObject* o)
+void IMappingUpdater::rotateSegment(const IObject* o, float& w, float& h)
 {
-    float h = o->getHeight() * o->getScale();
-    float w = o->getWidth() * o->getScale();
-    float x = o->getXPos();
-    float y = o->getYPos();
-
-    if(o->getRotateZ())
+	if(o->getRotateZ())
     {
         float diag = sqrt(pow(h,2) + pow(w,2));
         float alpha = atan(w/h);
@@ -141,24 +136,36 @@ GraphicSegment IMappingUpdater::computeSegment(IObject* o)
     
     h *= cos(o->getRotateX()*M_PI/180);
     w *= cos(o->getRotateY()*M_PI/180);
-    
-    
-    float x0 = x - (1 + o->getXOrigin()) * w/2;
-    float x1 = x + (1 - o->getXOrigin()) * w/2;
-    float y0 = y - (1 + o->getYOrigin()) * h/2;
-    float y1 = y + (1 - o->getYOrigin()) * h/2;
-    GraphicSegment seg(x0, y0, x1, y1);
-    return seg;
+}
+
+//---------------------------------------------------------------------------------------
+/*
+	Actually the method takes the object dimensions and position and takes account of the rotations on the 3 axis.
+	The resulting graphic segment is then translated into the master coordnates.
+
+*/
+GraphicSegment IMappingUpdater::computeSegment(const IObject* o)
+{
+    float h = o->getHeight() * o->getScale();
+    float w = o->getWidth() * o->getScale();
+    float x = o->getXPos();
+    float y = o->getYPos();
+
+	rotateSegment (o, w, h);
+    return offsetSegment(o, h, w, x, y);
 }
 
 
 //---------------------------------------------------------------------------------------
-GraphicSegment IMappingUpdater::computeSegmentWithChildren(IObject* o, GraphicSegment seg)
+GraphicSegment IMappingUpdater::computeSegmentWithChildren (IObject* o, const GraphicSegment seg)
 {
-    GraphicSegment gseg = seg;
-    
-    GraphicSegment refSeg; // this is the square corresponding to our object's "scene" -> the reference square to draw its children.
-    if( o->getHeight() > o->getWidth() )
+    GraphicSegment gseg = seg;	// this is the output segment, initialized with the input segment
+	if (seg.empty()) return gseg;
+		
+    GraphicSegment refSeg;		// this is the square corresponding to our object's "scene" -> the reference square to draw its children.
+	
+	// computes the reference segment i.e. a square, in order to keep objects proportions
+	if( o->getHeight() > o->getWidth() )
     {
         float yCenter = seg.yinterval().first() + seg.yinterval().size()/2;
         float halfHeight = seg.yinterval().size() * (o->getWidth()/o->getHeight()) / 2 ;
@@ -170,24 +177,24 @@ GraphicSegment IMappingUpdater::computeSegmentWithChildren(IObject* o, GraphicSe
         float halfWidth = seg.xinterval().size() * (o->getHeight()/o->getWidth()) / 2 ;
         refSeg = GraphicSegment(xCenter - halfWidth, seg.yinterval().first(), xCenter + halfWidth, seg.yinterval().second());
     }
-    else
-        refSeg = seg;
+    else refSeg = seg;
     
     
-    for(int i = 0; i < o->elements().size(); i++)
+    for(int i = 0; i < o->elements().size(); i++)		// computes recursively the childrens segments and makes the union
     {
         SIObject child = o->elements()[i];
-        GraphicSegment cSeg = computeSegment(child); // in the current object's coordinates
+        GraphicSegment cSeg = computeSegment(child);	// in the current object's coordinates
         float ax = (cSeg.xinterval().first() + 1)/2;
         float bx = (cSeg.xinterval().second() + 1)/2;
         float ay = (cSeg.yinterval().first() + 1)/2;
         float by = (cSeg.yinterval().second() + 1)/2;        
         cSeg = GraphicSegment(refSeg.xinterval().resize(ax, bx), refSeg.yinterval().resize(ay, by)); // relatively to the master's coordinates
-        cSeg = computeSegmentWithChildren(child, cSeg);
+		cSeg = computeSegmentWithChildren(child, cSeg);
         gseg = gseg | cSeg;
     }
+
     std::vector<SIObject> slaves = o->getParent()->getSlaves(o);
-    for(int i = 0; i<slaves.size(); i++)
+    for(int i = 0; i<slaves.size(); i++)				// computes recursively the slaves segments and makes the union
     {
         SIObject slave = slaves[i];
         std::vector<SMaster> masters = slave->getParent()->getMasters(slave);
@@ -196,41 +203,10 @@ GraphicSegment IMappingUpdater::computeSegmentWithChildren(IObject* o, GraphicSe
             if(masters[j]->getMaster() == o)
             {
                 std::string mapName = masters[j]->getMaster()->name() + ":" + masters[j]->getMasterMapName();
-                float w = slave->getSyncWidth(mapName);
-                float h = slave->getSyncHeight(mapName);
+                float w = slave->getSyncWidth(mapName);		// the recursion is by the getSyncWidth method
+                float h = slave->getSyncHeight(mapName);	// the recursion is by the getSyncHeight method
                 
-                if(slave->getRotateZ())
-                {
-            
-                    float diag = sqrt(pow(h,2) + pow(w,2));
-                    float alpha = atan(w/h);
-                    float teta = slave->getRotateZ()*M_PI/180;
-            
-                    if(teta >= 0 && teta < M_PI/2)
-                    {
-                        h = diag * cos(alpha - teta);
-                        w = diag * cos(teta - M_PI/2 + alpha);
-                    }
-                    else if(teta >= M_PI/2 && teta < M_PI)
-                    {
-                        h = - diag * cos(alpha + teta);
-                        w = diag * cos(alpha - teta + M_PI/2);
-                    }
-                    else if(teta >=M_PI && teta < 3*M_PI/2)
-                    {
-                        h = - diag * cos(alpha - teta);
-                        w = diag * cos(teta + M_PI/2 + alpha);
-                    }
-                    else
-                    {
-                        h = diag * cos(alpha + teta);
-                        w = diag * cos(alpha - teta - M_PI/2);
-                    }
-                }
-    
-                h *= cos(slave->getRotateX()*M_PI/180);
-                w *= cos(slave->getRotateY()*M_PI/180);
-                
+				rotateSegment (slave, w, h);
                 
                 float x = slave->getSyncPos(mapName).x();
                 float y = slave->getSyncPos(mapName).y();
@@ -260,7 +236,7 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
     
     if(!master->getWidth() || !master->getHeight())
         master->getView()->updateObjectSize (master);
-    if(slave->getWidth() || !slave->getHeight())
+    if(!slave->getWidth() || !slave->getHeight())
         slave->getView()->updateObjectSize (slave);
     
 
@@ -300,11 +276,14 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
         float h = isVStretch ? masterSeg.yinterval().size() : 2*slave->getHeight()*slave->getScale()/(master->getHeight());
         float w = 2*slave->getWidth()*slave->getScale()/(master->getWidth());
         float y = getYPos (h, masterSeg, align) + m->getDy();
+        // this is the vertical offset corresponding to the slave's mapping :
         y -= slaveSeg.yinterval().center()*slave->getHeight()*slave->getScale()/(master->getHeight());
-        GraphicSegment destSeg = computeSegment(slave, h, w, x, y); // this is the destination segment of the slave alone (in master's coordinate)
+        GraphicSegment destSeg = offsetSegment(slave, h, w, x, y); // this is the destination segment of the slave alone (in master's coordinate)
         
-        GraphicSegment extendedSeg = computeSegmentWithChildren(slave, slaveSeg); //this is the source segment of the slave and its children (in slave's coordinate)
-        TSegmentAXBVariety<float, 2> variety(extendedSeg, slaveSeg); // we define the segment slave as a variety of the segment slave+children
+        GraphicSegment entireSlaveSeg = GraphicSegment(-1,-1,1,1);
+        
+        GraphicSegment extendedSeg = computeSegmentWithChildren(slave, entireSlaveSeg); //this is the source segment of the slave and its children (in slave's coordinate)
+        TSegmentAXBVariety<float, 2> variety(extendedSeg, entireSlaveSeg); // we define the segment slave as a variety of the segment slave+children
         const TAXBFunction<float> * xFunction = variety.xfunction(); // ... so that we can know the functions that bind them
         const TAXBFunction<float> * yFunction = variety.yfunction();
         
@@ -356,6 +335,7 @@ void IMappingUpdater::updateIObject (IObject* object)
         const IObject* mobj = masters[i]->getMaster();
         if (object->localMapModified() || object->getState() || object->dateModified()
             || mobj->localMapModified() || masters[i]->modified() || mobj->dateModified()) {
+            mobj->getView()->refreshSyncCache();
             if (!updateNOHStretch ( object, masters[i]))
                 hstretchUpdate (object, masters[i]);
         }

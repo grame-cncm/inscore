@@ -20,7 +20,14 @@
 #include <vector>
 #include "GUIDOExport.h"
 
-class GuidoFeedback;
+
+#ifdef WIN32
+    #define GUIDOAPI_deprecated
+#else
+    #define GUIDOAPI_deprecated __attribute__((deprecated))
+#endif
+
+
 class VGDevice;
 
 struct NodeAR;
@@ -59,6 +66,22 @@ struct GPaintStruct
 	int		right;
 	int		bottom;
 };
+
+
+/*! @} */
+
+/**
+    A Guido date is expressed as a fractional value where 1/1 represents
+    the whole note.
+*/
+typedef struct
+{
+	//! the date numerator
+    int num;
+	//! the date denominator
+    int denom;
+
+} GuidoDate;
 
 /** \brief Contains all graphic-related information required by GuidoOnDraw()
 
@@ -107,6 +130,13 @@ enum  {	kNoBB, kPageBB,
 };
 
 
+enum GuidoInternalDevice
+{
+  guido_svg_with_font_spec = 0,
+  guido_abstract = 1,
+  guido_binary = 2
+};
+
 /*!
 \addtogroup Errors Error codes
 @{
@@ -143,17 +173,15 @@ enum GuidoErrCode
 };
 /*! @} */
 
-/**
-    A Guido date is expressed as a fractional value where 1/1 represents
-    the whole note.
+
+/** \brief Mapping mode for SVG export
 */
-typedef struct
-{
-	//! the date numerator
-    int num;
-	//! the date denominator
-    int denom;
-} GuidoDate;
+enum {
+    kNoMapping     =  0,
+    kVoiceMapping  =  1,
+    kStaffMapping  =  1<<1,
+    kSystemMapping =  1<<2
+};
 
 
 enum { kAutoDistrib = 1, kAlwaysDistrib = 2, kNeverDistrib = 3 };
@@ -203,6 +231,12 @@ typedef struct GuidoLayoutSettings
 		(default value: 1)
 	*/
 	int resizePage2Music;
+
+    /** float value to tell the engine what is the force multiplicator applied to proportional rendering
+        If value is 0, proportional mode is not enabled, otherwise value corresponds to the force multiplicator value
+		(default value: 0)
+	*/
+	float proportionalRenderingForceMultiplicator;
 	
 } GuidoLayoutSettings;
 
@@ -221,6 +255,7 @@ typedef struct
     float marginright;
     float marginbottom;
 } GuidoPageFormat;
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -247,10 +282,16 @@ representations.
         \return a Guido error code.
 
 	  	WARNING: the caller must ensure desc maintains a constant reference on a
-		valid VGDevice, because Guido keeps it internally (to calculate fonts, etc.)
+        valid VGDevice, because Guido keeps it internally (to calculate fonts, etc.)
     */
     GUIDOAPI(GuidoErrCode)	GuidoInit(GuidoInitDesc * desc);
 
+	/*!
+        Initialises the Guido Engine with an independent SVG device, avoiding
+        the need to pass a description. Useful for contexts (like javascript)
+        where structures cannot be easily manipulated.
+    */
+    GUIDOAPI(GuidoErrCode)      GuidoInitWithIndependentSVG();
 	/*!
         Guido Engine shutdown
 		
@@ -268,8 +309,11 @@ representations.
                 It's the caller responsability to free the handle using GuidoFreeAR.
 		\return a Guido error code.
     */
-    //__declspec(deprecated("Deprecated function (will be erased soon) : use GUIDOAPI(ARHandler) GuidoFile2AR (GuidoParser *parser, const char * file) instead."))
-    GUIDOAPI(GuidoErrCode)	GuidoParseFile(const char * filename, ARHandler* ar);
+
+#ifdef WIN32
+    __declspec(deprecated("Deprecated function (will be erased soon) : use GUIDOAPI(ARHandler) GuidoFile2AR (GuidoParser *parser, const char * file) instead."))
+#endif
+    GUIDOAPI(GuidoErrCode)	GuidoParseFile(const char * filename, ARHandler* ar) GUIDOAPI_deprecated;
 
 	/*!
         Parses a buffer and builds the corresponding abstract representation.
@@ -279,8 +323,10 @@ representations.
                 It's the caller responsability to free the handle using GuidoFreeAR.
 		\return a Guido error code.
     */
-    //__declspec(deprecated("Deprecated function (will be erased soon) : use GUIDOAPI(ARHandler) GuidoString2AR (GuidoParser *parser, const char * str) instead."))
-    GUIDOAPI(GuidoErrCode)	GuidoParseString(const char * str, ARHandler* ar);
+#ifdef WIN32
+    __declspec(deprecated("Deprecated function (will be erased soon) : use GUIDOAPI(ARHandler) GuidoString2AR (GuidoParser *parser, const char * str) instead."))
+#endif
+    GUIDOAPI(GuidoErrCode)	GuidoParseString(const char * str, ARHandler* ar) GUIDOAPI_deprecated;
 
 	/*!
         Transforms a Guido abstract representation into a Guido graphic representation.
@@ -295,7 +341,7 @@ representations.
                 It's the caller responsability to free the handle using GuidoFreeGR.
 		\return a Guido error code.
     */
-    GUIDOAPI(GuidoErrCode)	GuidoAR2GR( ARHandler ar, const GuidoLayoutSettings* settings, GRHandler* gr);
+    GUIDOAPI(GuidoErrCode)	GuidoAR2GR(ARHandler ar, const GuidoLayoutSettings* settings, GRHandler* gr);
 
 	/*!
         Applies new layout settings to an existing Guido graphic representation.
@@ -330,16 +376,18 @@ representations.
         Gives the line of a Guido script where the last parse error has occured.
 		\return a line number.
 	*/
-	//__declspec(deprecated("Deprecated function (will be erased soon) : use GUIDOAPI(GuidoErrCode) GuidoParserGetErrorCode (GuidoParser* p, int& line, int& col) instead."))
-    GUIDOAPI(int)   GuidoGetParseErrorLine();
+
+#ifdef WIN32
+    __declspec(deprecated("Deprecated function (will be erased soon) : use GUIDOAPI(GuidoErrCode) GuidoParserGetErrorCode (GuidoParser* p, int& line, int& col) instead."))
+#endif
+    GUIDOAPI(int)   GuidoGetParseErrorLine() GUIDOAPI_deprecated;
 
 	/*!
         Gives the default values of the layout settings.
 
 		\param settings on output, a pointer to the settings to be filled with default values.
     */
-    GUIDOAPI(void)	GuidoGetDefaultLayoutSettings (GuidoLayoutSettings * settings);
-
+    GUIDOAPI(void)	GuidoGetDefaultLayoutSettings (GuidoLayoutSettings *settings);
 /*! @} */
 
 
@@ -385,7 +433,6 @@ as by date. Page numbers start at 1.
 	*/
 	GUIDOAPI(GuidoErrCode)	GuidoDuration( CGRHandler inHandleGR, GuidoDate * date );
 
-
 	/** \brief Finds the page which has an event (note or rest) at a given date.
 
 		\bug returns page + 1 when input date falls on the last system.
@@ -395,7 +442,6 @@ as by date. Page numbers start at 1.
                 0 if no page found,
 	*/
 	GUIDOAPI(int)	GuidoFindEventPage( CGRHandler inHandleGR, const GuidoDate& date );
-
 
 	/** \brief Finds the page which contain a given date.
 
@@ -407,8 +453,6 @@ as by date. Page numbers start at 1.
 	*/
 	GUIDOAPI(int) GuidoFindPageAt( CGRHandler inHandleGR, const GuidoDate& date );
 
-
-
 	/** \brief Gives the time location of a Page.
 
 		\param inHandleGR a Guido opaque handle to a GR structure.
@@ -417,8 +461,6 @@ as by date. Page numbers start at 1.
 		\return a Guido error code.
 	*/
 	GUIDOAPI(GuidoErrCode) GuidoGetPageDate( CGRHandler inHandleGR, int pageNum, GuidoDate* date);
-
-
 /*! @} */
 
 
@@ -440,12 +482,44 @@ units.
 
 	/** \brief Exports one page of score to SVG.
 
+		\param handle a graphic representation.
 		\param page the page number.
 		\param out the output stream.
 		\param fontfile path of the guido svg font file.
+		\param mappingMode the mapping mode (see mapping mode enum).
 		\return a Guido error code
 	*/
-    GUIDOAPI(GuidoErrCode) 	GuidoSVGExport( const GRHandler handle, int page, std::ostream& out, const char* fontfile );
+	GUIDOAPI(GuidoErrCode) 	GuidoSVGExport( const GRHandler handle, int page, std::ostream& out, const char* fontfile, const int mappingMode = 0 );
+
+    /** \brief Exports one page of score to SVG.
+
+		\param handle a graphic representation.
+        \param page the page number.
+        \param out the output stream.
+        \param fontfile path of the guido svg font file.
+        \param fontspec an actual svg font if there is no font file.
+		\param mappingMode the mapping mode (see mapping mode enum).
+        \return a Guido error code
+    */
+    GUIDOAPI(GuidoErrCode) 	GuidoSVGExportWithFontSpec( const GRHandler handle, int page, std::ostream& out, const char* fontfile, const char* fontspec, const int mappingMode = 0 );
+
+	/** \brief Exports an abstract representation of GUIDO draw commands.
+
+		\param handle a graphic representation.
+		\param page the page number.
+		\param out the output stream.
+		\return a Guido error code
+	*/
+    GUIDOAPI(GuidoErrCode) 	GuidoAbstractExport( const GRHandler handle, int page, std::ostream& out);
+
+	/** \brief Exports an representation of GUIDO draw commands in a data-reduced dsl
+
+		\param handle a graphic representation.
+		\param page the page number.
+		\param out the output stream.
+		\return a Guido error code
+	*/
+    GUIDOAPI(GuidoErrCode) 	GuidoBinaryExport( const GRHandler handle, int page, std::ostream& out);
 
 	/** \brief Control bounding boxes drawing.
 
@@ -592,7 +666,7 @@ The number of version functions is due to historical reasons.
     /**	\brief Makes the correspondance between an ARMusic and a path.
 
 		\param inHandleAR the destination ARHandler.
-		\param inPath the path to associate.
+		\param inPaths the path to associate.
 		\return noErr if the association has been made with success
 		\return otherwise guidoErrActionFailed.
 	*/
@@ -602,17 +676,46 @@ The number of version functions is due to historical reasons.
     /**	\brief Returns the path corresponding to an AR.
 
 		\param inHandleAR the handle given to extract its path.
+		\param inPathVector the vector to be filled
 		\return the returned path.
         \return noErr if the association has been made with success
 		\return otherwise guidoErrActionFailed.
 	*/
     GUIDOAPI(GuidoErrCode) GuidoGetSymbolPath(const ARHandler inHandleAR, std::vector<std::string> &inPathVector);
 
+    /*! @} */
+
+
+/*!
+\addtogroup time Timing measurements
+Includes functions to query the time spent by the main Guido Engine operations.
+@{
+*/
+    /*!
+		\brief Gets parsing time
+		\param ar the ar handler given to extract the parsing time
+		\return the time spent on building the AR representation (in msl) or -1 for invalid handlers
+	*/
+    GUIDOAPI(long)  GuidoGetParsingTime (const ARHandler ar);
+
+    /** \brief Gets AR to GR procedure time
+
+		\param gr the gr handler given to extract the AR2GR time
+		\return the time spent to convert the AR representation to GR (in msl) or -1 for invalid handlers
+	*/
+    GUIDOAPI(long) 	GuidoGetAR2GRTime(const GRHandler gr);
+
+    /** \brief Gets GR drawing procedure time
+
+		\param gr the gr handler given to extract the drawing time
+		\return the time spent on the last OnDraw call (in msl) or -1 if OnDraw has not yet been called or for invalid handlers
+	*/
+    GUIDOAPI(long) 	GuidoGetOnDrawTime(const GRHandler gr);
+
 /*! @} */
 
-void AddGGSOutput(const char *s);
+    void AddGGSOutput(const char *s);
 void AddGuidoOutput(const char *s);
-
 #ifdef __cplusplus
 }
 #endif

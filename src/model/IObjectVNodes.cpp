@@ -25,6 +25,7 @@
 
 #include "IObjectVNodes.h"
 #include "Updater.h"
+#include "VObjectView.h"
 
 using namespace std;
 
@@ -34,14 +35,14 @@ namespace inscore
 //--------------------------------------------------------------------------
 // IObject implementation
 //--------------------------------------------------------------------------
-IObjectDebug::IObjectDebug(IObject * parent) : IVNode("debug", parent), fMap(false), fName(false)
+IObjectDebug::IObjectDebug(IObject * parent) : IVNode("debug", parent), fMap(0), fName(false)
 {
-	fMsgHandlerMap[kmap_GetSetMethod]		= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setMapDebug);
+	fMsgHandlerMap[kmap_GetSetMethod]		= TSetMethodMsgHandler<IObjectDebug, int>::create(this, &IObjectDebug::setMapDebug);
 	fMsgHandlerMap[kname_GetSetMethod]		= TSetMethodMsgHandler<IObjectDebug, bool>::create(this, &IObjectDebug::setNameDebug);
 	fMsgHandlerMap[kwatch_GetSetMethod]		= SMsgHandler(0);
 	fMsgHandlerMap[kwatchplus_SetMethod]	= SMsgHandler(0);
 	
-	fGetMsgHandlerMap[kmap_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fMap);
+	fGetMsgHandlerMap[kmap_GetSetMethod]	= TGetParamMsgHandler<int>::create(fMap);
 	fGetMsgHandlerMap[kname_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fName);
 	fGetMultiMsgHandlerMap[kwatch_GetSetMethod]	= SGetParamMultiMsgHandler(0);
 	fGetMultiMsgHandlerMap[kalias_GetSetMethod]	= SGetParamMultiMsgHandler(0);
@@ -75,6 +76,13 @@ SIMessageList IObjectDebug::getSetMsg () const
 	*msg << getNameDebug();
 	outMsgs->list().push_back (msg);
 	return outMsgs;
+}
+
+//--------------------------------------------------------------------------
+void IObjectDebug::setMapDebug(int state)
+{
+	fMap = state;
+	getParent()->getView()->refreshSyncCache();
 }
 
 //--------------------------------------------------------------------------

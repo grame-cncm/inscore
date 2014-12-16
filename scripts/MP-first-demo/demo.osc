@@ -1349,7 +1349,7 @@
 20 demo /ITL/scene color 20 20 110 255;
 20 demo /ITL/scene color 10 10 110 255;
 1 demo /ITL/scene color 0 0 110 255;
-1 demo /ITL/scene/slave3 set ellipse 0.15 0.15;
+1 demo /ITL/scene/slave3 set ellipse 0.07 0.07;
 1 demo /ITL/scene/slave3 color 255 255 135 255;
 1 demo /ITL/scene/slave3 date 10 1;
 1 demo /ITL/scene/slave3 duration 1 4;
@@ -1369,7 +1369,7 @@
 1 demo /ITL/scene/comment scale 4.2;
 1 demo /ITL/scene/comment duration 1 4;
 1 demo /ITL/scene/comment z 0.5;
-1 demo /ITL/scene/slave set ellipse 0.7 0.7;
+1 demo /ITL/scene/slave set ellipse 0.05 0.05;
 1 demo /ITL/scene/slave z 0.4;
 1 demo /ITL/scene/slave color 0 221 0 120;
 1 demo /ITL/scene/slave date 0 1;
@@ -1382,12 +1382,13 @@
 1 demo /ITL/scene/img scale 1.2;
 1 demo /ITL/scene/img mapf rsrc/parm-oeil.map;
 1 demo /ITL/scene/slavecomment set txtf rsrc/syncomment7.txt;
-1 demo /ITL/scene/slavecomment scale 3.1;
+1 demo /ITL/scene/slavecomment scale 1.;
 1 demo /ITL/scene/slavecomment color 240 0 0 255;
 1 demo /ITL/scene/slavecomment mapf rsrc/syncomment7.map;
 1 demo /ITL/scene/* date 0 1;
 1 demo /ITL/scene/slavecomment show 1;
-1 demo /ITL/scene/sync slavecomment img;
+1 demo /ITL/scene/sync slave ;
+12 demo /ITL/scene/sync slavecomment img;
 1 demo /ITL/scene/sync slave slavecomment absolute;
 3001 demo /ITL/scene/comment1 set txtf rsrc/syncomment8.txt;
 1 demo /ITL/scene/comment1 scale 2.648;

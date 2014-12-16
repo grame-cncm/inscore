@@ -156,7 +156,7 @@ class ISync
 		/*! \brief returns the vector of slaves for a master
 			\param master the master object
 		*/
-        std::vector<SIObject> getSlaves(SIObject master) const;
+        std::vector<SIObject> getSlaves(const SIObject master) const;
     
 		/*! \brief returns the map slaves to masters
 		*/

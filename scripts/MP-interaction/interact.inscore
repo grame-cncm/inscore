@@ -14,6 +14,7 @@
 /ITL/scene/cursor set ellipse 0.1 0.1;
 /ITL/scene/cursor color 255 0 0;
 /ITL/scene/cursor z 0.4;
+/ITL/scene/cursor scale 0.08;
 /ITL/scene/sync cursor score;
 /ITL/scene/rect1 set rect 0.1 1.0;
 /ITL/scene/rect2 set rect 0.1 1.0;
@@ -63,16 +64,23 @@
 /ITL/scene/boule* yorigin 1.0;
 /ITL/scene/boule* x 1.0;
 /ITL/scene/boule* y 1.0;
-/ITL/scene/reload set txt Reload;
-/ITL/scene/reload xorigin -1.0;
-/ITL/scene/reload yorigin 1.0;
-/ITL/scene/reload x -0.99;
-/ITL/scene/reload y 0.98;
-/ITL/scene/reload scale 1.2;
-/ITL/scene/reload effect shadow 0 0 255 255 255 255 1;
+/ITL/scene/_reload set txt Reload;
+/ITL/scene/_reload xorigin -1.0;
+/ITL/scene/_reload yorigin 1.0;
+/ITL/scene/_reload x -0.99;
+/ITL/scene/_reload y 0.98;
+/ITL/scene/_reload scale 1.2;
+/ITL/scene/_reload effect shadow 0 0 255 255 255 255 1;
 /ITL/scene/move set txt "Move me !";
 /ITL/scene/move y -0.58;
 /ITL/scene/move z 1.1;
 /ITL/scene/move scale 3.0;
 /ITL/scene/move color 110 110 110;
+
+/ITL/scene/comment1 set txt "Drop the 'edit.inscore' file on the scene to edit.";
+/ITL/scene/comment1 y 0.88;
+/ITL/scene/comment2 set txt "Click on the score to move the player position.";
+/ITL/scene/comment2 y 0.92;
+
+
 /ITL load "watch.inscore";

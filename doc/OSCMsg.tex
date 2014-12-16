@@ -81,7 +81,7 @@
 
 \begin{document}
 
-\title{INScore \\ OSC Messages Reference \\v.1.08}
+\title{INScore \\ OSC Messages Reference \\v.1.09}
 
 \author{D. Fober\\ GRAME\\ Centre national de cr\'eation musicale\\
 {\small <fober@grame.fr>} \\
@@ -900,7 +900,7 @@ setMsg : 'set' (
 \index{Set type!grid}
 
 \begin{itemize}
-\item \OSC{layer}: a graphic layer, may be viewed as a container (see \fullref{layers}).
+\item \OSC{layer}: a graphic layer, may be viewed as a container (see section \fullref{layers}).
 \item \OSC{grid}: a white transparent object that provides a predefined time to graphic mapping (see section \fullref{grid} for more details and section \fullref{mapping} for time to graphic relations). The parameters are int32 values representing the number of columns and rows.
 \end{itemize}
 
@@ -1043,11 +1043,11 @@ Specific brush messages accepted by the components types \OSC{rect | ellipse | p
 \begin{rail}
 brushMsg : 	  'brushStyle' ('solid' | 'dense1' | 'dense2' | 'dense3' | 'dense4' | 'dense5' | 'dense6' | 'dense7' | 'none' | 'hor' | 'ver' | 'cross' | 'bdiag' | 'fdiag' | 'diagCross')
 \end{rail}
-\index{Specific messages! brushColor}
+\index{Specific messages! brushStyle}
 
 \begin{itemize}
 \item \OSC{brushStyle} controls the brush style.
- \end{itemize}
+\end{itemize}
 
 \index{Specific messages! brushStyle! solid}
 \index{Specific messages! brushStyle! dense}
@@ -1182,13 +1182,6 @@ Creating a 10 x 10 grid organized from top to bottom with a border:
 }
 
 
-%-------------------------------
-\sublevel{The 'layer' object}
-\label{layer}
-
-The \OSC{layer} object provides a container of rectangular shape that is not drawn but creates a node to distinguish a group of objects from the rest. It can however be drawn by using the brush control (default brushStyle is 'none').
-
-
 %===============================
 %:  The debug nodes
 \sublevel{The 'debug' nodes}
@@ -1203,7 +1196,7 @@ debugMsg : 'map' int32
 \index{Common messages!debug!name}
 
 \begin{itemize}
-\item \OSC{map} is used to display the time to graphic mapping. The parameter is a boolean value. Default is 0.
+\item \OSC{map} is used to display the time to graphic mapping. The parameter is a int value: 0 prevents mapping display, 1 displays only the bounding boxes and 2 displays also the dates along with the boxes. Default is 0 (no map).
 \item \OSC{name} is used to display both the object name and bounding box. The parameter is a boolean value. Default is 0.
 \end{itemize}
 
@@ -1488,7 +1481,7 @@ sceneMsg :  'new'
 \item \OSC{fullscreen}: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is \values{0}.
 \item \OSC{frameless}: requests the scene to switch to frameless or normal window.  The parameter is interpreted as a boolean value. Default value is \values{0}.
 \item \OSC{absolutexy}: requests the scene to absolute or relative coordinates. Absolute coordinates are in pixels relative to the top left corner of the screen. Relative coordinates are in the range [-1, 1] where [0,0] is the center of the screen. The message parameter is interpreted as a boolean value. Default value is \values{0}.
-\item \OSC{windowOpacity}: switch the scene window to opaque or transparent mode. When in transparent mode, the scene alpha channel controls the window opacity (from completely opaque to completely transparent). In opaque mode, the scene alpha channel controls the background brush only. Default value is \values{0}.
+\item \OSC{windowOpacity}: switch the scene window to opaque or transparent mode. When in transparent mode, the scene alpha channel controls the window opacity (from completely opaque to completely transparent). In opaque mode, the scene alpha channel controls the background brush only. Default value is \values{0} (transparent).
 \item \OSC{commonMsg}: a scene support the common graphic attributes. See section \fullref{common}.
 \end{itemize}
 
@@ -1512,7 +1505,7 @@ Creating a new score named \OSC{myScore}:
 
 Layers may be viewed as containers or as groups. They represent a way to structure both the address space and the graphic space. 
 
-From graphic viewpoint, a layer is a scene inside a scene. All the properties of 'rect' components are available to layers: position, scale, color, transparency, etc.). By default, a layer is not visible: it has no brush and no pen.
+From graphic viewpoint, a layer is a scene inside a scene. All the properties of 'rect' components are available to layers: position, scale, color, transparency, etc.). By default, a layer is not visible: it has no brush and no pen, but changing the brush style (see section \fullref{brush}) - e.g. to \OSC{solid} - makes it visible.
 
 From time viewpoint, a layer has the common time attributes i.e. a date, a duration.
 
@@ -2592,6 +2585,7 @@ An INScore file is a list of textual expressions. A script expression is:
 \item a message: basically a textual OSC message extended to support URL like addresses and variables as parameters.
 \item a variable declaration.
 \item a foreign language script that may generate messages as output.
+\item an end marker '\OSC{\_\_END\_\_}' to declare a script end. After the marker, the remaining part of the script will be ignored.
 \end{itemize}
 
 \begin{rail}
@@ -2599,6 +2593,7 @@ expression :
 		 	message ";"
 		| 	variabledecl ";"
 		| 	script
+		|   end
 \end{rail}
 \index{Scripting!expressions}
 

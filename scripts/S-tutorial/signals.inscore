@@ -3,31 +3,31 @@
 /ITL/tutorial/* del;
 /ITL/tutorial/signal/* del;
 /ITL/tutorial watch;
-/ITL/scene x -0.510000;
-/ITL/tutorial x 0.510000;
+/ITL/scene x -0.51;
+/ITL/tutorial x 0.51;
 /ITL/scene/* del;
 /ITL/tutorial/* del;
 /ITL/scene/title set html "<h1>Signals</h1>";
-/ITL/scene/title y -0.700000;
-/ITL/scene/title scale 2.00000;
+/ITL/scene/title y -0.7;
+/ITL/scene/title scale 2.;
 /ITL/scene/signals set htmlf "rsrc/signals.html";
-/ITL/scene/signals scale 2.00000;
-/ITL/scene/signals y -0.580000;
-/ITL/scene/signals xorigin -1.00000;
-/ITL/scene/signals yorigin -1.00000;
-/ITL/scene/signals x -0.750000;
+/ITL/scene/signals scale 2.;
+/ITL/scene/signals y -0.58;
+/ITL/scene/signals xorigin -1.;
+/ITL/scene/signals yorigin -1.;
+/ITL/scene/signals x -0.75;
 
 /ITL/scene/c1 set txt "A special address space is used to describe the signals:";
 /ITL/scene/c2 set txt "and to compose them in parallel:";
 /ITL/scene/c3 set txt "Eventually connect to a graphic signal:";
 /ITL/scene/c4 set txt "and send data:";
-/ITL/scene/c? x -0.750000;
-/ITL/scene/c? xorigin -1.00000;
-/ITL/scene/c? scale 1.70000;
-/ITL/scene/c1 y -0.0600000;
-/ITL/scene/c2 y 0.190000;
-/ITL/scene/c3 y 0.430000;
-/ITL/scene/c4 y 0.580000;
+/ITL/scene/c? x -0.75;
+/ITL/scene/c? xorigin -1.;
+/ITL/scene/c? scale 1.7;
+/ITL/scene/c1 y -0.06;
+/ITL/scene/c2 y 0.19;
+/ITL/scene/c3 y 0.43;
+/ITL/scene/c4 y 0.58;
 
 /ITL/scene/m1 set txt "/ITL/tutorial/signal/s1 size 100";
 /ITL/scene/m1 set txt "/ITL/tutorial/signal/s1 size 100";
@@ -39,42 +39,34 @@
 /ITL/scene/m4 set txt "/ITL/tutorial/signal/gs set s1 s2 s2 1. 1. 1.";
 /ITL/scene/m5 set txt "/ITL/tutorial/siggraph set graph gs";
 /ITL/scene/m6 set txt "/ITL/tutorial/signal/s1 -0.49 -0.36 0.25 -0.04 ...";
-/ITL/scene/m1 y 0.0100000;
-/ITL/scene/m2 y 0.0800000;
-/ITL/scene/m3 y 0.240000;
-/ITL/scene/m4 y 0.310000;
-/ITL/scene/m5 y 0.480000;
-/ITL/scene/m6 y 0.620000;
-/ITL/scene/m* xorigin -1.00000;
-/ITL/scene/m* yorigin -1.00000;
-/ITL/scene/m* x -0.700000;
-/ITL/scene/m* scale 1.70000;
+/ITL/scene/m1 y 0.01;
+/ITL/scene/m2 y 0.08;
+/ITL/scene/m3 y 0.24;
+/ITL/scene/m4 y 0.31;
+/ITL/scene/m5 y 0.48;
+/ITL/scene/m6 y 0.62;
+/ITL/scene/m* xorigin -1.;
+/ITL/scene/m* yorigin -1.;
+/ITL/scene/m* x -0.7;
+/ITL/scene/m* scale 1.7;
 /ITL/scene/m* alpha 160;
-/ITL/scene/m* z 1.00000;
+/ITL/scene/m* z 1.;
+
 /ITL/scene/m[3-6] watch mouseEnter (
-	/ITL/$scene/$self alpha 255 );
-/ITL/scene/m[3-6] watch+ mouseEnter (
+	/ITL/$scene/$self alpha 255 ,
 	/ITL/$scene/$self red 200 );
 /ITL/scene/m[3-6] watch mouseLeave (
-	/ITL/$scene/$self alpha 160 );
-/ITL/scene/m[3-6] watch+ mouseLeave (
+	/ITL/$scene/$self alpha 160 ,
 	/ITL/$scene/$self red 0 );
-/ITL/scene/m3 watch mouseDown (
-	/ITL/tutorial/signal/gs set s1 0.0500000 0.00000 1.00000 1.00000 1.00000 );
-/ITL/scene/m4 watch mouseDown (
-	/ITL/tutorial/signal/gs set s1 s2 s2 1.00000 1.00000 1.00000 );
-/ITL/scene/m5 watch mouseDown (
-	/ITL/tutorial/siggraph set graph gs );
-/ITL/scene/m6 watch mouseDown (
-	/ITL/tutorial/signal/s1  -0.499992 -0.368462 0.255605 -0.0413499 0.0327672 -0.281041 );
+
+/ITL/scene/m3 watch mouseDown (/ITL/tutorial/signal/gs set s1 0.05 0. 1. 1. 1. );
+/ITL/scene/m4 watch mouseDown (/ITL/tutorial/signal/gs set s1 s2 s2 1. 1. 1. );
+/ITL/scene/m5 watch mouseDown (/ITL/tutorial/siggraph set graph gs );
+/ITL/scene/m6 watch mouseDown (/ITL/tutorial/signal/s1  -0.499992 -0.368462 0.255605 -0.0413499 0.0327672 -0.281041 );
 !/ITL/scene/m6 watch  "mouseDown" 	"/ITL/tutorial/signal/s*" -0.499992 -0.368462 0.255605 -0.0413499 0.0327672 -0.281041 -0.452955 0.178865 0.179296 0.434693 -0.116498 0.0194164 0.330965 -0.465428 -0.446538 0.0297002 0.171149 -0.492302 -0.116584 -0.433158 -0.082514 0.186773 0.0889766  
 
-
-
 /ITL/scene load "previous.inscore";
-/ITL/scene/previous watch mouseDown (
-	/ITL/scene load "sync4.inscore" );
+/ITL/scene/previous watch mouseDown (/ITL/scene load "sync4.inscore" );
 /ITL/scene load "next.inscore";
-/ITL/scene/next watch mouseDown (
-	/ITL/scene load "sig2.inscore" );
+/ITL/scene/next watch mouseDown 	(/ITL/scene load "sig2.inscore" );
 /ITL/scene load "summary.inscore";

@@ -56,12 +56,61 @@ class IShapeMap;
 */
 class IMappingUpdater : public SlaveMapUpdater
 {
+	/*!
+		\brief converts a date into a graphic segment and an x position using a time to graphic mapping
+		\param date the input date
+		\param map the time to graphic mapping to use for the conversion
+		\param outSeg on output, the graphic segment that contains the date
+		\param x on output, the x position in the segment, corresponding to the date
+		\return a boolean value that indicates the conversion status
+	*/
 	bool	date2point (const libmapping::rational& date, const SRelativeTime2GraphicMapping& map, GraphicSegment& outSeg, float& x) const;
+
+	/*!
+		\brief computes an object y coordinate according to the alignment mode
+		\param height the object height
+		\param masterSeg the segment the object should be aligned to
+		\param align the object alignment mode
+		\return a y coordinate
+	*/
 	float	getYPos (float height, const GraphicSegment& masterSeg, Master::VAlignType align) const;
 
-    GraphicSegment      computeSegmentWithChildren(IObject* o, GraphicSegment seg);
-	GraphicSegment      computeSegment(IObject* o, float h, float w, float x, float y);
-    GraphicSegment      computeSegment(IObject* o);
+	/*!
+		\brief computes a graphic segment expressed in an object's master coordinates
+		
+		Actually the method takes the object dimensions and position and takes account of the rotations on the 3 axis.
+		The resulting graphic segment is then translated into the master coordnates.
+		\param o an object
+		\param seg the object graphic segment
+		\return a graphic segment expressed in the master coordinates space.
+	*/
+    GraphicSegment      computeSegmentWithChildren(IObject* o, const GraphicSegment seg);
+
+	/*!
+		\brief translates a graphic segment expressed in an object's master coordinates
+		\param o an object
+		\param h the segment height
+		\param w the segment width
+		\param x the segment x coordinate
+		\param y the segment y coordinate
+		\return a graphic segment expressed in the master coordinates space.
+	*/
+	GraphicSegment      offsetSegment(const IObject* o, float h, float w, float x, float y);
+
+	/*!
+		\brief computes dimensions according to an object rotation
+		\param o an object
+		\param w a width, on output the modified width
+		\param h the height, on output, the modified height
+	*/
+    void				rotateSegment(const IObject* o, float& w, float& h);
+
+	/*!
+		\brief computes a graphic segment expressed in an object's master coordinates
+		\param o an object
+		\return a graphic segment expressed in the master coordinates space.
+	*/
+    GraphicSegment      computeSegment(const IObject* o);
 
     protected:
 				void			hstretchUpdate (IObject* o, const Master* m);				

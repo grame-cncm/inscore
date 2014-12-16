@@ -78,7 +78,7 @@ extern "C" {
 		\brief Creates a new piano roll from Midi, corresponding to type :
                              simplePianoRoll     -> basic piano roll
                              trajectoryPianoRoll -> every event is graphically linked to the previous one
-		\param PianoRollType the piano roll type
+		\param type the piano roll type
         \param midiFileName a midi file name
 		\return a guido piano roll.
 	*/
@@ -122,7 +122,7 @@ extern "C" {
 	GUIDOAPI(GuidoErrCode)      GuidoPianoRollGetKeyboardWidth(PianoRoll *pr, int height, float &keyboardWidth);
 
     /*!
-		\brief Enables or not the automatic voices coloration (not enabled by default) (not for a midi rendering) // REM: à voir
+		\brief Enables or not the automatic voices coloration (not enabled by default) (not for a midi rendering) // REM: ï¿½ voir
                If a color is manually set with GuidoPianoRollSetColorToVoice, automatic
                color will not be applied for this voice.
 		\param pr a pianoroll previously created with GuidoAR2PianoRoll

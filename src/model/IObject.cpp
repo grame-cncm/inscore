@@ -360,7 +360,7 @@ std::vector<SMaster> IObject::getMasters(SIObject o) const
 }
 
 //--------------------------------------------------------------------------
-std::vector<SIObject> IObject::getSlaves(SIObject o) const
+std::vector<SIObject> IObject::getSlaves(const SIObject o) const
 { 
 	return fSync ? fSync->getSlaves(o) : std::vector<SIObject>();
 }
@@ -539,7 +539,7 @@ int IObject::executeSignal (const std::string method, const std::pair<int,int> r
 }
 
 //--------------------------------------------------------------------------
-bool IObject::mapDebug() const			{ return fDebug->getMapDebug(); }
+int IObject::mapDebug() const			{ return fDebug->getMapDebug(); }
 bool IObject::nameDebug() const			{ return fDebug->getNameDebug(); }
 //bool IObject::signalDebug() const		{ return fDebug->getSignalDebug(); }
 bool IObject::clickDebug() const		{ return fDebug->getClickDebug(); }
@@ -686,7 +686,7 @@ SIMessageList IObject::getParams() const
 	while (j != fGetMultiMsgHandlerMap.end()) {
 		const string& what = j->first;
 		const SGetParamMultiMsgHandler& handler = what.size() ? j->second : 0;
-		if (handler && fMsgHandlerMap.find(what) != fMsgHandlerMap.end())  {
+		if (handler && (fMsgHandlerMap.find(what) != fMsgHandlerMap.end() || what == kstack_GetMethod))  {
 			SIMessageList mlist = IMessageList::create();
 			outMsgs->list().push_back(handler->print(mlist)->list());
 		}

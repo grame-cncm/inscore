@@ -1,0 +1,49 @@
+{
+    [
+        \pageFormat<w=20cm,h=23cm,lm=0.8cm,tm=3cm,bm=1.2cm,rm=1cm> \title<"SINFONIA 3 - Voice 1",pageformat="42",textformat="lc",dx=-2cm,dy=0.2cm>
+         \composer<"BWV 789",dy=1cm,fsize=10pt> \systemFormat<dx=1.05cm> \staff<1>
+         \staffFormat<style="5-line",size=0.9375mm> \barFormat<style="system">
+         \clef<"treble"> \key<"D"> \meter<"C"> \stemsUp \restFormat<posy=-1hs>
+         _/8 \beam( \fingering<text="3",dy=8hs,dx=-0.1hs,fsize=7pt>( f#2*1/16 
+        ) g ) \beam( \stemsUp<5hs> a/8 \fingering<text="2",dx=1hs,dy=11.5hs,fsize=7pt>
+        ( \stemsUp<8hs> c ) ) \beam( \stemsUp h1 e2*1/16 f# ) \beam( \stemsUp<5hs> g/8 
+        \stemsUp<8.5hs> h1 \stemsUp ) 
+        | \beam( a1*1/8 d2*1/16 e ) \beam( f#/8 a1 ) \beam( \stemsUp<12hs> g/16 \stemsUp
+         \fingering<text="4",fsize=7pt,dy=9hs,dx=-0.2hs>( f#2 ) e \stemsUp<8hs>
+         d \stemsUp ) \beam( \stemsUp<12hs> c# \stemsUp \fingering<text="5",fsize=7pt,dy=9hs>
+        ( h ) a \stemsUp<8hs> g \stemsUp ) 
+        | \beam( \stemsUp<5.5hs> f#2*1/16 \stemsUp e \fingering<text="2",fsize=7pt,dy=10hs>
+        ( d ) \stemsUp<5.5hs> e \stemsUp ) \beam( \stemsUp<6hs> f# \stemsUp \fingering<text="1",fsize=7pt,dy=11hs>
+        ( e ) \fingering<text="3",fsize=7pt,dy=11hs>( f# ) \stemsUp<6.5hs> g# \stemsUp
+         ) \stemsUp<4.75hs> a/4 \stemsUp \slurBegin \fingering<text="5",fsize=7pt,dy=6hs>
+        ( \stemsUp<4.5hs> e/4 ) 
+        | \staff<1> e/4 \slurEnd \tie<dy1=2.4hs,dx2=-1hs,dy2=2.4hs,h=1.75hs>
+        ( \fingering<text="4 5",dy=8hs,fsize=7pt>( \stemsUp<5hs> d ) d ) \tieBegin<dy1=2hs,dy2=2hs,dx2=0hs>
+         \fingering<text="4 5",dy=8hs,fsize=7pt>( c# ) \bm( \stemsUp<8hs> c#/16 
+        \stemsUp \tieEnd \fingering<text="5",dy=11hs,fsize=7pt>( e ) d \stemsUp<7.5hs>
+         c# \stemsUp ) \bm( \fingering<text="2",dy=12.5hs,fsize=7pt>( \stemsUp<8hs>
+         h1*1/8 ) \acc( \stemsUp<5hs> g#2 \stemsUp ) ) \slurBegin \fingering<text="5",dy=5hs,fsize=7pt>
+        ( \stemsUp<4hs> a/2 ) \staff<1> \bm( \stemsUp<5.5hs> a/16 \stemsUp \slurEnd
+         \fingering<text="2",dy=13hs,fsize=7pt>( c# ) \fingering<text="1",dy=11.25hs,fsize=7pt>
+        ( d ) \stemsUp<6hs> \fingering<text="3",dy=9.5hs,fsize=7pt>( e ) \stemsUp
+         ) \bm( \stemsUp<7hs> f# \stemsUp g f# \stemsUp<7.5hs> \fingering<text="5",dy=11hs,fsize=7pt>
+        ( e ) \stemsUp ) \bm( \stemsUp<6hs> d# \stemsUp h1 c#2 \stemsUp<6hs> d# \stemsUp
+         ) \bm( \stemsUp<7hs> e \stemsUp \fingering<text="4",dy=9hs,fsize=7pt>
+        ( f# ) \fingering<text="5",dy=9.5hs,fsize=7pt>( e ) \stemsUp<7.5hs> d \stemsUp
+         ) \bm( \stemsUp<6hs> c# \stemsUp a1 \fingering<text="4",dy=10hs,fsize=7pt>
+        ( h ) \stemsUp<6hs> \fingering<text="3",dy=9.25hs,fsize=7pt>( c#2 ) \stemsUp
+         ) \bm( \stemsUp<7hs> \fingering<text="4",fsize=7pt,dy=9.25hs>( d ) \stemsUp
+         e d \stemsUp<7hs> c# \stemsUp ) \stemsUp<5.5hs> \fingering<text="5",fsize=7pt,dy=8hs>
+        ( h1*1/4 ) \tieBegin \stemsUp<4.5hs> e2 \staff<1> \bm( e/8 \tieEnd \stemsUp<6.5hs>
+         \fingering<text="3",fsize=7pt,dy=12hs>( a1 ) \stemsUp ) \dotFormat<dy=1hs>
+         \bm( d2*1/8. e/16 ) \bm( c# h1 a h ) \bm( c#2 h1 c#2 d# ) \bm( e/8 h1 ) \dotFormat<dy=0>
+         \bm( e2*1/8. f#/16 ) \bm( d c# h1 c#2 ) \bm( d c# d e ) \staff<1> \bm( \stemsDown f# 
+        e d e ) \bm( f#/8 \acc( a1 ) ) \bm( g# c#2*1/16 d ) \bm( e/8 \acc( g1 ) ) \bm( \stemsUp
+         f# h/16 c#2 ) \bm( d/8 f#1 ) \bm( \stemsUp<13hs> e/16 \stemsUp d2 c# \stemsUp<9hs>
+         h1 \stemsUp ) \bm( \stemsDown<5.5hs> a# \stemsDown g2 f# \stemsDown<8.5hs>
+         e \stemsDown ) \staff<1> \bm( d/16 c# h1 c#2 ) \bm( d h1 c#2 d ) \bm( \stemsUp<9.5hs>
+         e#1 \stemsUp g# a \stemsUp<6hs> h \stemsUp ) \tieBegin<dy1=3.2hs,dx2=0,dy2=3.2hs>
+         c#2*1/4 \bm( c#/16 \tieEnd f#1 g# a ) \tieBegin<curve="up"> h/4 \bm( h/16 \tieEnd
+         e# f# g# ) \tieBegin a/4 
+    ]
+}

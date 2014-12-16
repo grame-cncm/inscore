@@ -56,6 +56,7 @@ class VLineView: public VMappedShapeView
 		virtual ~VLineView() {}
 		
 		virtual void updateView( ILine * Line );
+        virtual void updateObjectSize(IObject* o);
 };
 
 /*!@} */

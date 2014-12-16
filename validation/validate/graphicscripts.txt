@@ -1,0 +1,12 @@
+../scripts/S-layer/hierarchy/DROP-ME.inscore
+../scripts/S-layer/hierarchy/scale.inscore
+../scripts/S-layer/hierarchy/transparency.inscore
+../scripts/S-layer/hierarchy/x.inscore
+../scripts/S-pencontrol/DROP-ME.inscore
+../scripts/S-pencontrol/1-penwidth-large.inscore
+../scripts/S-pencontrol/3-pencolor-red.inscore
+../scripts/S-pencontrol/5-penstyle-dash.inscore
+../scripts/S-pencontrol/no-pen.inscore
+../regression/S-brushStyles/brushStyles.inscore
+../regression/S-brushStyles/brushStyles2.inscore
+../regression/S-text/accents.inscore

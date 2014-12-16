@@ -26,6 +26,7 @@
 #ifndef __VLogWindow__
 #define __VLogWindow__
 
+#include <QEvent>
 #include <QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -37,24 +38,38 @@ QT_END_NAMESPACE
 namespace inscore
 {
 
+class IApplLog;
 class VLogWindow : public QWidget
 {
     Q_OBJECT
 
 public:
 	typedef QToolButton		TButton;
-			VLogWindow(const char* name);
+			VLogWindow(const char* name, IApplLog * logwindow);
 	
 	void			append (const char* text);
 	const char*		getText () const;
-	virtual void	setVisible(bool visible);
+	virtual void	setVisible	(bool visible);
+	virtual void	imove		(float x, float y);
+	virtual void	istretch	(float w, float h);
+	virtual bool	event(QEvent * e);
+	
+protected:
+	void closeEvent(QCloseEvent * event);
 
 private:
-	TButton *		createToolButton(const QString &toolTip, const QIcon &icon, const char *member);
+	TButton *	createToolButton(const QString &toolTip, const QIcon &icon, const char *member);
+	int			local2screen (float v) const;
+	float		screen2local (int v) const;
+
+	IApplLog *		fLogModel;
 
     QPlainTextEdit* fLogArea;
 	TButton *		fClearButton;
 	TButton *		fWrapButton;
+
+	float	fScreenDim;
+	QPointF	fScreenCenter;
 
 public slots:
     void clear();

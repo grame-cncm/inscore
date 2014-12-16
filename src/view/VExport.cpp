@@ -67,6 +67,8 @@ void VExport::paintChildrenOnDevice( QPainter * painter, QStyleOptionGraphicsIte
     float dy = 0;
     for(it = list.begin(); it != list.end(); it++)
     {
+        const QTransform initMatrix = painter->transform();
+        
         painter->translate((*it)->x(), (*it)->y()); // the painter goes to the center of the child element
         
         QTransform matrix = (*it)->transform();
@@ -76,14 +78,16 @@ void VExport::paintChildrenOnDevice( QPainter * painter, QStyleOptionGraphicsIte
         
         (*it)->paint( painter , &option , 0 );
         
-        dx = (*it)->boundingRect().center().x()-(*it)->x();
-        dy = (*it)->boundingRect().center().y()-(*it)->y();
-        
         QList<QGraphicsItem*> listOfChildren = (*it)->childItems();
         if(!listOfChildren.empty())
             paintChildrenOnDevice(painter, option, listOfChildren);
         
-        painter->translate(dx,dy); // we replace the painter at the "origin" position : top left corner of the parent (item).
+        painter->setTransform(initMatrix);
+        
+        dx = (*it)->boundingRect().center().x()-(*it)->x();
+        dy = (*it)->boundingRect().center().y()-(*it)->y();
+        
+        //painter->translate(dx,dy); // we replace the painter at the "origin" position : top left corner of the parent (item).
         
     }
 }

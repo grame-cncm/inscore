@@ -57,6 +57,7 @@ class VCurveView: public VMappedShapeView
 		virtual ~VCurveView() {}
 		
 		virtual void updateView( ICurve * Curve  );
+        virtual void updateObjectSize( IObject * o );
 };
 
 /*!@} */

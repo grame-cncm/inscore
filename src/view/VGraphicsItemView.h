@@ -51,6 +51,24 @@ namespace inscore
 */
 
 //--------------------------------------------------------------------------
+// the classes below are intended to create a specific type for debug graphic objects
+// these objects should be ignored when computing the bounding rect for the synchronisation
+class QGraphicsRectDebugItem : public QGraphicsRectItem
+{
+	public:
+				 QGraphicsRectDebugItem (const QRectF &rect, QGraphicsItem *parent = 0) : QGraphicsRectItem(rect, parent) {}
+		virtual ~QGraphicsRectDebugItem() {}
+};
+
+class QGraphicsTextDebugItem : public QGraphicsTextItem
+{
+	public:
+				 QGraphicsTextDebugItem (const QString &text, QGraphicsItem *parent = 0) : QGraphicsTextItem(text, parent) {}
+		virtual ~QGraphicsTextDebugItem() {}
+};
+
+
+//--------------------------------------------------------------------------
 /**
 *	\brief a graphic view of a IObject that uses a QGraphicsItem to render.
 */
@@ -90,12 +108,15 @@ class VGraphicsItemView : public VObjectView
 		float scene2RelativeY(float y, QGraphicsItem * item = 0 ) const;
 		
 		static void buildDefaultMapping (IObject* object);
+    
+        void refreshSyncCache() { itemChanged(); }
 		
 	protected:
 		VGraphicsItemView( QGraphicsScene * scene , QGraphicsItem * item );
 		
 		virtual void drawMapping (IObject* o);
 		virtual void drawNameAndBBox (IObject* o);
+        virtual void drawNameAndBBoxItem(IObject* o, QGraphicsItem* item);
 		virtual void updateTransform(IObject * object, QGraphicsItem* item);		// updates the object transform matrix
 		
 		float getIObjectWidth() const { return scene2RelativeWidth( fItem->boundingRect().width() ); }		// Gives the object's width in interlude scene coordinates.

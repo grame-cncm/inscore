@@ -54,7 +54,7 @@ class GuidoMapCollector: public MapCollector
 
 	protected:
 		const QGuidoGraphicsItem *	fItem;
-		GuidoeElementSelector	fSelector;
+		GuidoElementSelector	fSelector;
 		const Filter*			fFilter;
 		Time2GraphicMap*		fOutMap;		
 		QPointF					fCurrentPageOrigin;
@@ -62,7 +62,7 @@ class GuidoMapCollector: public MapCollector
 		void	CopyMap (const ::Time2GraphicMap& map);
 
 	public :
-				 GuidoMapCollector(const QGuidoGraphicsItem* item, GuidoeElementSelector selector, const Filter* filter=0) 
+				 GuidoMapCollector(const QGuidoGraphicsItem* item, GuidoElementSelector selector, const Filter* filter=0) 
 					: fItem(item), fSelector(selector), fFilter(filter), fOutMap(0) {}
 		virtual ~GuidoMapCollector() {}
 

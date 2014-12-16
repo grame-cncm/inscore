@@ -1,0 +1,15 @@
+../scripts/S-signals/DROP-ME.inscore
+../scripts/S-signals/1-sinus-y.inscore
+../regression/S-graphsig-sinus/sinus.inscore
+../regression/S-graphsig-sinus/essai.inscore
+../scripts/S-pencontrol/DROP-ME.inscore
+../scripts/S-pencontrol/1-penwidth-large.inscore
+../regression/S-mouseEvent/testMouse.inscore
+../regression/S-mouseEvent/mouse1.inscore
+../regression/S-mouseEvent/mouse4.inscore
+../regression/S-sync/testSync.inscore
+../regression/S-sync/change1.inscore
+../regression/S-sync/change3.inscore
+../regression/S-guidoStream/DROP-ME.inscore
+../regression/S-guidoStream/1.inscore
+../regression/S-guidoStream/2.inscore
