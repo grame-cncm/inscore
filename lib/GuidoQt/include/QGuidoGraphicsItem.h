@@ -19,6 +19,7 @@
 
 #include "QGuidoPainter.h"
 #include "QPageManager.h"
+#include "GUIDOPianoRoll.h"
 
 /**
 *	\brief A QGraphicsItem displaying a Guido Score.
@@ -81,7 +82,16 @@ class QGuidoGraphicsItem : public QGraphicsObject
 		*/
 		virtual bool setGMNCode(const QString& gmnCode, const QString& path=0);
 		
+		/**	\brief Sets the current Guido stream that will be displayed by the guido item.
+		*	\param gmnStream The Guido Music Notation stream code
+		*	\return true if the GMN code is valid.
+		*/
         bool setGMNStream(GuidoStream * gmnStream);
+    
+		/**	\brief Sets the PianoRoll and the boolean fIsPianoRoll to true
+		*	\param pRoll the PianoRoll object
+		*/
+        void setPianoRoll(PianoRoll * pRoll);
     
 		/**	\brief Returns the current Guido code.
 		*
@@ -127,7 +137,7 @@ class QGuidoGraphicsItem : public QGraphicsObject
 		/// \brief Disable/enable automatic ResizePageToMusic
 		void setResizePageToMusic(bool isOn);
 		/// \brief Returns the state of the automatic ResizePageToMusic mode (enabled or disabled)
-		bool isResizePageToMusic() const;
+		bool isResizePageToMusicOn() const;
 
 		/// \brief Sets the page format used when no page format is specified by the GMN
 		void setGuidoPageFormat(const GuidoPageFormat& pageFormat);
@@ -214,6 +224,9 @@ class QGuidoGraphicsItem : public QGraphicsObject
 	
 		QGuidoPainter * mGuidoPainter;
 		QPageManager * mPageManager;
+    
+        PianoRoll * fPianoRoll;
+        bool fIsPianoRoll;
 };
 
 #endif //QGuidoGraphicsItem_H
