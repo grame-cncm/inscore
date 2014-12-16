@@ -26,6 +26,7 @@
 #include "IGuidoStream.h"
 #include "IScene.h"
 #include "Updater.h"
+#include "VGuidoItemView.h"
 
 using namespace std;
 
@@ -82,6 +83,13 @@ MsgHandler::msgStatus IGuidoStream::set (const IMessage* msg )
 //--------------------------------------------------------------------------
 void IGuidoStream::clear()
 {
+    GuidoResetStream(fGuidoStream);
+    
+    // this is only to reset the view with a valid empty code...
+    GuidoWriteStream(fGuidoStream, "{");
+    VGuidoItemView * gView = dynamic_cast<VGuidoItemView*>(fView);
+    if (gView) gView->updateView(this);
+    
     GuidoResetStream(fGuidoStream);
 }
 
