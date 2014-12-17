@@ -23,59 +23,58 @@
 
 */
 
-#include "IGuidoPianoRoll.h"
-#include "IGuidoStream.h"
-#include "IScene.h"
+#include "IGuidoPianoRollStream.h"
+//#include "IScene.h"
 #include "Updater.h"
-#include "VGuidoItemView.h"
+//#include "VGuidoItemView.h"
 
 using namespace std;
 
 namespace inscore
 {
 //--------------------------------------------------------------------------
-const string IGuidoPianoRoll::kGuidoPianoRollType("pianoroll");
+const string IGuidoPianoRollStream::kGuidoPianoRollStreamType("pianorollstream");
 
 //--------------------------------------------------------------------------
-IGuidoPianoRoll::IGuidoPianoRoll( const std::string& name, IObject * parent )
-	: IGuidoCode (name, parent)
+IGuidoPianoRollStream::IGuidoPianoRollStream( const std::string& name, IObject * parent )
+	: IGuidoCode(name, parent), IGuidoStream (name, parent), IGuidoPianoRoll (name, parent)
 {
-	fTypeString = kGuidoPianoRollType;
-    fType = kSimplePianoRoll;
+    fTypeString = kGuidoPianoRollStreamType;
 }
 
-IGuidoPianoRoll::~IGuidoPianoRoll()
+IGuidoPianoRollStream::~IGuidoPianoRollStream()
 {
-    GuidoDestroyPianoRoll(fPianoRoll);
-}
-
-//--------------------------------------------------------------------------
-void IGuidoPianoRoll::accept (Updater* u)
-{
-	u->updateTo (SIGuidoPianoRoll(this));
+//    GuidoDestroyPianoRoll(fPianoRoll);
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus IGuidoPianoRoll::set (const IMessage* msg )
+void IGuidoPianoRollStream::accept (Updater* u)
 {
-	MsgHandler::msgStatus status = IGuidoCode::set(msg);
+	u->updateTo (SIGuidoPianoRollStream(this));
+}
 
-    updatePianoRoll();
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IGuidoPianoRollStream::set (const IMessage* msg )
+{
+	MsgHandler::msgStatus status = IGuidoStream::set(msg);
+    if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return IGuidoPianoRoll::set(msg);
+    else return status;
+}
+
+//--------------------------------------------------------------------------
+void IGuidoPianoRollStream::clear()
+{
+    IGuidoStream::clear();
+    IGuidoPianoRoll::updatePianoRoll();
+}
+
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IGuidoPianoRollStream::write (const IMessage* msg )
+{
+	MsgHandler::msgStatus status = IGuidoStream::write(msg);
+    IGuidoPianoRoll::updatePianoRoll();
 	return status;
-}
-
-//--------------------------------------------------------------------------
-void IGuidoPianoRoll::updatePianoRoll()
-{
-    GuidoParser * parser = GuidoOpenParser ();
-	ARHandler handler;
-    IGuidoStream * stream = dynamic_cast<IGuidoStream*>(this);
-    if(stream)
-        handler = GuidoStream2AR(parser, stream->getGuidoStream());
-    else
-        handler = GuidoString2AR(parser, fGMN.c_str());
-    fPianoRoll = GuidoAR2PianoRoll(fType, handler);
-    
 }
 
 }

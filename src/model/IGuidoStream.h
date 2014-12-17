@@ -46,7 +46,7 @@ typedef class libmapping::SMARTP<IGuidoStream>	SIGuidoStream;
 /*!
 	\brief a file based guido object
 */
-class IGuidoStream : public IGuidoCode
+class IGuidoStream : public virtual IGuidoCode
 {
 	public:		
 		static const std::string kGuidoStreamType;

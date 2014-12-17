@@ -42,6 +42,7 @@
 #include "IGuidoCode.h"
 #include "IGuidoFile.h"
 #include "IGuidoPianoRoll.h"
+#include "IGuidoPianoRollStream.h"
 #include "IGuidoStream.h"
 #include "IHtml.h"
 #include "IHtmlFile.h"

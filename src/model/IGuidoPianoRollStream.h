@@ -24,12 +24,12 @@
 */
 
 
-#ifndef __IGuidoPianoRoll__
-#define __IGuidoPianoRoll__
+#ifndef __IGuidoPianoRollStream__
+#define __IGuidoPianoRollStream__
 
 #include <string>
-#include "IGuidoCode.h"
-#include "GUIDOPianoRoll.h"
+#include "IGuidoPianoRoll.h"
+#include "IGuidoStream.h"
 
 namespace inscore
 {
@@ -40,34 +40,32 @@ namespace inscore
 */
 
 class Updater;
-class IGuidoPianoRoll;
-typedef class libmapping::SMARTP<IGuidoPianoRoll>	SIGuidoPianoRoll;
+class IGuidoPianoRollStream;
+typedef class libmapping::SMARTP<IGuidoPianoRollStream>	SIGuidoPianoRollStream;
 //--------------------------------------------------------------------------
 /*!
 	\brief a file based guido object
 */
-class IGuidoPianoRoll : public virtual IGuidoCode
+class IGuidoPianoRollStream : public IGuidoStream, public IGuidoPianoRoll
 {
 	public:		
-		static const std::string kGuidoPianoRollType;
-		static SIGuidoPianoRoll create(const std::string& name, IObject * parent)	{ return new IGuidoPianoRoll(name, parent); }
+		static const std::string kGuidoPianoRollStreamType;
+		static SIGuidoPianoRollStream create(const std::string& name, IObject * parent)	{ return new IGuidoPianoRollStream(name, parent); }
 
 		virtual void	accept (Updater*u);
-        void setPianoRollType(PianoRollType type) {fType = type;}
-        PianoRoll * getPianoRoll() {return fPianoRoll;}
     
 	protected:
-				 IGuidoPianoRoll( const std::string& name, IObject * parent);
-		virtual ~IGuidoPianoRoll() ;
+				 IGuidoPianoRollStream( const std::string& name, IObject * parent);
+		virtual ~IGuidoPianoRollStream() ;
 
-        /// \brief updates the Piano Roll representation according to the AR Representation
-        virtual void updatePianoRoll();
+        void clear();
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 
-        PianoRollType fType;
-        PianoRoll * fPianoRoll;
+		/// \brief the \c 'write' message handler
+		virtual MsgHandler::msgStatus write (const IMessage* msg);
+
 };
 
 /*! @} */
@@ -75,4 +73,3 @@ class IGuidoPianoRoll : public virtual IGuidoCode
 } // end namespoace
 
 #endif
-
