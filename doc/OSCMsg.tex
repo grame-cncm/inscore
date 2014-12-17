@@ -913,7 +913,7 @@ setMsg : 'set' (
 \label{setfile}
 \begin{rail}
 setFile : 
-	('file' filePath)
+	('file' (filePath | urlPath))
 \end{rail}
 \index{Set type!file}
 
@@ -951,6 +951,7 @@ will be translated into \\
 /ITL/scene/myObject set img "myImage.png";
 }
 
+\note{} The files accept a local file path, but also a web address (urlPath). In this case, the object is a 1x1 black square, till the data is ready to be drawn.
 
 %===============================
 %:The 'get' message
@@ -2344,6 +2345,34 @@ Each event takes a time interval as parameter, defined by two \OSC{time} specifi
 \example \\
 An object that moves a score to a given page number when it enters its time zone.
 \samplev{/ITL/scene/myObject watch timeEnter 10/1 18/1 (/ITL/scene/score page 2);}
+
+%===============================
+%:       URL Files events
+\subsublevel{URL files related events}
+\label{urlevents}
+
+Some new events have been added, to follow the evolution of the URL based files:
+
+\begin{rail}
+what : 	'success'  
+		| 'error'
+		| 'canceled'
+\end{rail}
+\index{Interaction!Events!urlSuccess}
+\index{Interaction!Events!urlError}
+\index{Interaction!Events!urlCanceled}
+
+\begin{itemize}
+\item \OSC{success} is triggered when the datas have been correctly downloaded,
+\item \OSC{error} is triggered when an error has occurred during the download,
+\item \OSC{canceled} is triggered when the URL has been changed during the download
+\end{itemize}
+
+\example \\
+We wait to see if the score is correctly downloaded to give it its mapping :
+\sample{/ITL/scene/gmn watch success(\\
+/ITL/scene/gmn map "voice1",\\
+/ITL/scene/gmn map "voice2");}
 
 
 %===============================
