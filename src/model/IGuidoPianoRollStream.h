@@ -44,7 +44,7 @@ class IGuidoPianoRollStream;
 typedef class libmapping::SMARTP<IGuidoPianoRollStream>	SIGuidoPianoRollStream;
 //--------------------------------------------------------------------------
 /*!
-	\brief a file based guido object
+	\brief a stream piano roll guido object
 */
 class IGuidoPianoRollStream : public IGuidoStream, public IGuidoPianoRoll
 {

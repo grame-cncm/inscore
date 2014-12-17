@@ -44,7 +44,7 @@ class IGuidoStream;
 typedef class libmapping::SMARTP<IGuidoStream>	SIGuidoStream;
 //--------------------------------------------------------------------------
 /*!
-	\brief a file based guido object
+	\brief a stream guido object
 */
 class IGuidoStream : public virtual IGuidoCode
 {

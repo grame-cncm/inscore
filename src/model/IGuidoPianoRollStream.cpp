@@ -24,9 +24,7 @@
 */
 
 #include "IGuidoPianoRollStream.h"
-//#include "IScene.h"
 #include "Updater.h"
-//#include "VGuidoItemView.h"
 
 using namespace std;
 
