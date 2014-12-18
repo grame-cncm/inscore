@@ -54,7 +54,7 @@
 %type <num> 	number
 %type <real>	FLOAT
 %type <str>		STRING QUOTEDSTRING PATHSEP IDENTIFIER REGEXP LUASCRIPT JSCRIPT
-%type <str>		identifier oscaddress oscpath varname variabledecl hostname
+%type <str>		identifier oscaddress relativeaddress oscpath varname variabledecl hostname
 %type <msg>		message
 %type <msgList>	messagelist script
 %type <p>		param watchmethod
@@ -152,11 +152,15 @@ messagelist : message					{	$$ = new inscore::SIMessageList (inscore::IMessageLi
 //_______________________________________________
 // address specification (extends osc spec.)
 address		: oscaddress				{ $$ = new inscore::ITLparser::address (*$1); delete $1;}
+			| relativeaddress			{ $$ = new inscore::ITLparser::address (*$1); delete $1;}
 			| urlprefix oscaddress		{ $$ = new inscore::ITLparser::address (*$2, *$1); delete $1; delete $2; }
 			;
 
 oscaddress	: oscpath					{ $$ = $1; }
 			| oscaddress oscpath		{ *$1 += *$2; $$ = $1; delete $2; }
+			;
+
+relativeaddress	: POINT oscaddress		{ $$ = new string("." + *$2); delete $2; }
 			;
 
 oscpath		: PATHSEP identifier		{ $$ = new string("/" + *$2); delete $2; }
