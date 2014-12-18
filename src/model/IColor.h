@@ -176,7 +176,8 @@ class IColor
 		};
 };
 
-inline IMessage& operator << (IMessage& out, const IColor& color)	{ color.print(out); return out; }
+inline IMessage& operator << (IMessage& out, const IColor& color)			{ color.print(out); return out; }
+inline std::ostream& operator << (std::ostream& out, const IColor& color)	{ color.print(out); return out; }
 
 
 } // end namespoace
