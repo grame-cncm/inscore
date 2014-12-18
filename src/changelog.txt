@@ -14,7 +14,10 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.09
-
+- the 'clear' message addressed to a 'gmnstream' object clears also the view. The change was not 
+  previously reflected until a new valid string was posted to the object.
+- bug in window color corrected: black color was not correctly set due to an incorrect color 
+  information returned by Qt.
 
 ----------------------------------------------------
 Version 1.08 - 2014-12-15
