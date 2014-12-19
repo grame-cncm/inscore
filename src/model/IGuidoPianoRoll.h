@@ -56,6 +56,14 @@ class IGuidoPianoRoll : public virtual IGuidoCode
         void setPianoRollType(PianoRollType type) {fType = type;}
         PianoRoll * getPianoRoll() {return fPianoRoll;}
     
+        void setLimits(LimitParams lp) { GuidoPianoRollSetLimits(fPianoRoll, lp); }
+        void enableKeyboard(bool enable) { GuidoPianoRollEnableKeyboard(fPianoRoll, enable); }
+        void enableAutoVoicesColoration(bool enable) { GuidoPianoRollEnableAutoVoicesColoration(fPianoRoll, enable); }
+        void setRGBColorToVoice(int voice, int r, int g, int b, int a) { GuidoPianoRollSetRGBColorToVoice(fPianoRoll, voice, r, g, b, a); }
+        void enableMeasureBars() { GuidoPianoRollEnableMeasureBars(fPianoRoll, true); }
+        void setPitchLinesDisplayMode(int mode) { GuidoPianoRollSetPitchLinesDisplayMode(fPianoRoll, mode); }
+    
+    
 	protected:
 				 IGuidoPianoRoll( const std::string& name, IObject * parent);
 		virtual ~IGuidoPianoRoll() ;
