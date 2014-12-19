@@ -907,7 +907,16 @@ setMsg : 'set' (
 
 %===============================
 %:  The file type
-\sublevel{The file type}
+\sublevel{The file based types}
+\label{filebasedtypes}
+
+Most of the types can be either expressed by a direct description, or by a path to a file containing the datas. It can be either declared as a generic \OSC{file} type, or as a specific type with an "f" added at the end : 
+\OSC{txtf}, \OSC{htmlf}, \OSC{gmnf}, \OSC{musicxmlf}, \OSC{svgf}, \OSC{faustf} .\\
+The \OSC{img} and  \OSC{video} types only have a file form. \\
+The path can be a Unix path (relative or absolute), but also a web address (urlPath).
+
+
+\subsublevel{The file type}
 \label{fileset}
 
 \label{setfile}
@@ -951,7 +960,24 @@ will be translated into \\
 /ITL/scene/myObject set img "myImage.png";
 }
 
-\note{} The files accept a local file path, but also a web address (urlPath). In this case, the object is a 1x1 black square, till the data is ready to be drawn.
+\subsublevel{URL File intermediate object}
+\label{urlset}
+
+When the path to the file is an URL (beginning with "\OSC{http://}", "\OSC{https://}" or "\OSC{file://}"), we create an intermediate object, a 1x1 black square, till the data is ready to be drawn.\\
+This object can also be created by declaring directly its type \OSC{url} and the "real" type as first parameter.
+\\
+
+This intermediate object has the same address as the file object, and it will be replaced as soon as the download is done. We can interact with it as with any object, and all the changes applied to it will be passed to the "real" object when created.
+\\
+
+\example \\
+Creating a score using a URL address.
+\sample{/ITL/scene/myScore set gmnf "http://myURL.gmn"; \\
+will be translated into \\
+/ITL/scene/myScore set url gmnf "http://myURL.gmn";
+}
+
+\note{} To this object are associated 3 events : \OSC{success}, \OSC{error} and \OSC{cancel} (see the section \fullref{urlevents}).
 
 %===============================
 %:The 'get' message
@@ -2356,16 +2382,16 @@ Some new events have been added, to follow the evolution of the URL based files:
 \begin{rail}
 what : 	'success'  
 		| 'error'
-		| 'canceled'
+		| 'cancel'
 \end{rail}
 \index{Interaction!Events!urlSuccess}
 \index{Interaction!Events!urlError}
-\index{Interaction!Events!urlCanceled}
+\index{Interaction!Events!urlCancel}
 
 \begin{itemize}
 \item \OSC{success} is triggered when the datas have been correctly downloaded,
 \item \OSC{error} is triggered when an error has occurred during the download,
-\item \OSC{canceled} is triggered when the URL has been changed during the download
+\item \OSC{cancel} is triggered when the object has been changed or deleted during the download
 \end{itemize}
 
 \example \\

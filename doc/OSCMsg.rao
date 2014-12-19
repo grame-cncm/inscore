@@ -1468,7 +1468,7 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {85}{ what : 'success' | 'error' | 'canceled' }
+\rail@i {85}{ what : 'success' | 'error' | 'cancel' }
 \rail@o {85}{
 \rail@begin{3}{what}
 \rail@bar
@@ -1476,7 +1476,7 @@
 \rail@nextbar{1}
 \rail@term{error}[]
 \rail@nextbar{2}
-\rail@term{canceled}[]
+\rail@term{cancel}[]
 \rail@endbar
 \rail@end
 }
