@@ -60,7 +60,7 @@ class IGuidoPianoRoll : public virtual IGuidoCode
         void enableKeyboard(bool enable) { GuidoPianoRollEnableKeyboard(fPianoRoll, enable); }
         void enableAutoVoicesColoration(bool enable) { GuidoPianoRollEnableAutoVoicesColoration(fPianoRoll, enable); }
         void setRGBColorToVoice(int voice, int r, int g, int b, int a) { GuidoPianoRollSetRGBColorToVoice(fPianoRoll, voice, r, g, b, a); }
-        void enableMeasureBars() { GuidoPianoRollEnableMeasureBars(fPianoRoll, true); }
+        void enableMeasureBars(bool enable) { GuidoPianoRollEnableMeasureBars(fPianoRoll, enable); }
         void setPitchLinesDisplayMode(int mode) { GuidoPianoRollSetPitchLinesDisplayMode(fPianoRoll, mode); }
     
     
