@@ -52,7 +52,8 @@ class IFaustDSPFile : public IFaustDSP, public TFile
 		static const std::string kFaustDSPFileType;
 		static SIFaustDSPFile create(const std::string& name, IObject * parent)	{ return new IFaustDSPFile(name, parent); }
 
-        virtual void    print (IMessage& out) const;
+		using TFile::print;
+		virtual void    print (IMessage& out) const;
 		virtual void	accept (Updater* u);
 
 	protected:

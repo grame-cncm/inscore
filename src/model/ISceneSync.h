@@ -100,6 +100,7 @@ class ISceneSync : public IVNode
 		/// \brief makes a topological sort of the scene elements according to their synchronizations set
 		virtual IObject::subnodes	sort (IObject::subnodes& nodes);
 
+		using IObject::invertedSort;
 		/// \brief makes a topological sort of the scene elements according to their synchronizations set (inverted compared to sort())
 		virtual IObject::subnodes	invertedSort (IObject::subnodes& nodes);
 
