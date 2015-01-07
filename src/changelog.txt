@@ -18,6 +18,9 @@ Version 1.09
   previously reflected until a new valid string was posted to the object.
 - bug in window color corrected: black color was not correctly set due to an incorrect color 
   information returned by Qt.
+- bug with 'line' initialization corrected: wrong position and orientation with negative coordinates,
+  (was previously corrected but reintroduced), incorrect initialization in layers.
+  
 
 ----------------------------------------------------
 Version 1.08 - 2014-12-15
