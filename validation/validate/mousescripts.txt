@@ -9,3 +9,4 @@
 ../regression/S-guidoStream/2.inscore
 ../regression/S-guidoStream/3.inscore
 ../regression/S-guidoStream/4.inscore
+../regression/S-guidoStream/clear.inscore
