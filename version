@@ -32,8 +32,6 @@ OSC=$ROOT/doc/OSCMsg.tex
 echo " updating $OSC"
 sed "s/\(title..*v\.*\)[0-9]*\.[0-9]*/\1$VERSION/" $OSC  > TMP$$
 mv -f TMP$$ $OSC
-make -C doc
-make -C doc html
 
 ITL=$ROOT/src/interface/INScore.cpp
 # echo " updating $ITL  (recompile)"
