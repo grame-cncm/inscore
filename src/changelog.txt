@@ -20,7 +20,8 @@ Version 1.09
   information returned by Qt.
 - bug with 'line' initialization corrected: wrong position and orientation with negative coordinates,
   (was previously corrected but reintroduced), incorrect initialization in layers.
-  
+Known issues :
+- colors may be wrong when exporting to pdf format, the bug appeared with the swith to Qt5.4.  
 
 ----------------------------------------------------
 Version 1.08 - 2014-12-15
