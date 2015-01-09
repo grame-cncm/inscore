@@ -63,6 +63,6 @@ mv -f TMP$$ $PKG
 open $ROOT/cmake/INScore.xcodeproj
 
 echo "==> change manually inf.plist and rc files in win32 folder"
-open -t cmake/info.plist win32/INScore.rc win32/Viewer/INScoreViewer.rc $ITL
+open -t build/info.plist win32/INScore.rc win32/Viewer/INScoreViewer.rc $ITL
 
 exit 0
