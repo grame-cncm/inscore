@@ -10,7 +10,7 @@
 				<string>inscore</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
-			<string>application.icns</string>
+			<string>INScoreViewer</string>
 			<key>CFBundleTypeMIMETypes</key>
 			<array>
 				<string>text/inscore</string>

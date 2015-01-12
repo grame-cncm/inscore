@@ -37,7 +37,6 @@ viewer := INScoreViewer
 interf := interfaces
 docsrc := ../doc
 docdst := ./doc
-icns   := ../rsrc/INScoreViewer.icns
 
 macapp  := $(viewer)-$(version).app
 winapp  := $(viewer)-$(version).exe
@@ -79,7 +78,6 @@ macosx:
 	[ -d $(package) ] || mkdir -p $(package)
 	make common
 	make -f makeINScoreBundle
-	cp $(icns) $(viewer).app/Contents/Resources
 	-[ -d $(package)/$(macapp) ] && rm -rf $(package)/$(macapp)
 	mv $(viewer).app $(package)/$(macapp)
 	make cleanperms

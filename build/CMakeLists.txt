@@ -295,16 +295,19 @@ if(MINGW)
 endif()
 
 
+set(INScoreIcon ${CMAKE_CURRENT_SOURCE_DIR}/../rsrc/INScoreViewer.icns)
+set_source_files_properties(${INScoreIcon} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+
 if (NOVIEW)
 	set (APPLTARGET  INScoreNOView)
 	add_executable( ${APPLTARGET}  ${ROOT}/INScoreNoView.cpp )
 else()
-	add_executable( ${APPLTARGET}  MACOSX_BUNDLE ${ROOT}/INScoreAppl.cpp ${APPL_MOC_FILES}  ../win32/Viewer/${APPLTARGET}.rc ${INScoreQRC})
+	add_executable( ${APPLTARGET}  MACOSX_BUNDLE ${INScoreIcon} ${ROOT}/INScoreAppl.cpp ${APPL_MOC_FILES}  ../win32/Viewer/${APPLTARGET}.rc ${INScoreQRC})
 endif()
 
 #target_link_libraries( ${APPLTARGET} ${QTLIBS} ${GUIDO})
 set_target_properties (${APPLTARGET} PROPERTIES VERSION ${INSAPPVERS}
-							MACOSX_BUNDLE_ICON_FILE ${RSRC}/${APPLTARGET}.icns
+							MACOSX_BUNDLE_ICON_FILE INScoreViewer.icns
 							MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist"
 							MACOSX_BUNDLE_SHORT_VERSION_STRING ${INSAPPSTRVERS}
 							MACOSX_BUNDLE_BUNDLE_VERSION ${INSAPPVERS})
