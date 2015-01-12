@@ -16,6 +16,7 @@ set (INSAPPVERS 1.10)
 set (INSAPPSTRVERS "v.1.10")
 set (SOVERS 1)
 
+
 #######################################
 # Options disabled by default
 option ( NOVIEW 	"compiles a viewer with no view (for debug purpose)" off )
@@ -56,6 +57,11 @@ if(APPLE)
 		 else ()
 			message (STATUS "Only the current architecture will be compiled - Use -DDIST=yes to change.")
 		 endif ()
+		 # drag & drop doesn't work with macosx10.10 sdk on yosemite
+		 if (CMAKE_OSX_SYSROOT STREQUAL /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk)
+			 set (CMAKE_OSX_SYSROOT /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk)
+			 message (STATUS "Changing SDK to MacOSX10.9.sdk")
+		 endif()
 		 set (CMAKE_OSX_DEPLOYMENT_TARGET 10.6)
 		 set (MACOSX_DEPLOYMENT_TARGET 10.6)
 		 set (CMAKE_C++_FLAGS -mmacosx-version-min=10.6)
