@@ -162,7 +162,8 @@ void INScoreScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 		SIMessageList msgs = p.parse();
 		if (msgs) {
 			for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
-				INScore::postMessage ((*i)->address().c_str(), *i);
+				string addr = (*i)->extendedAddress() ? string((*i)->url()) + (*i)->address() :  (*i)->address();
+				INScore::postMessage (addr.c_str(), *i);
 			}
 		}
 		event->accept();
