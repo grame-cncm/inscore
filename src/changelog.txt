@@ -14,8 +14,10 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.09
+- support for int values as parameters of the set method of rect shape and polygon objects
 - the 'clear' message addressed to a 'gmnstream' object clears also the view. The change was not 
   previously reflected until a new valid string was posted to the object.
+- bug in extended address support corrected: extended address was ignored for messages dropped to a scene .
 - bug in window color corrected: black color was not correctly set due to an incorrect color 
   information returned by Qt.
 - bug with 'line' initialization corrected: wrong position and orientation with negative coordinates,
