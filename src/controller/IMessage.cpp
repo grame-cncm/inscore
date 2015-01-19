@@ -130,6 +130,20 @@ void IMessage::add( const argslist& params )
 }
 
 //--------------------------------------------------------------------------
+bool IMessage::cast_param(int i, float& val) const
+{
+	if (param(i)->isType<float>()) {
+		val = param(i)->value<float>(val);
+		return true;
+	}
+	if (param(i)->isType<int>()) {
+		int nval = param(i)->value<int>(nval);
+		val = float(nval);
+		return true;
+	}
+	return false;
+}
+//--------------------------------------------------------------------------
 bool IMessage::param(int i, rational& val) const
 { 
 	if (size() < (i+2)) return false;
