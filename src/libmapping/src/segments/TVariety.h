@@ -66,7 +66,7 @@ template<typename T> class TAXBFunction : public TVFunction {
 																				fB = (i.first() - a.first()) / double(a.size());
 																			 }
                  TAXBFunction(const double A, const double B){fA = A; fB = B;}
-                ~TAXBFunction() {} 
+        virtual ~TAXBFunction() {}
 				 
 		virtual float getA() const					{ return float(fA); }		///< gives the \c a coefficient
 		virtual float getB() const					{ return float(fB); }		///< gives the \c b coefficient
@@ -122,15 +122,17 @@ template<typename T> class TIntervalVariety : public TVariety
 */
 template<typename T> class TIntervalAXBVariety : public TVariety
 {
+	bool fDelete;
 	protected :
 		const TAXBFunction<T>*	fFunction;
 		TInterval<T>		fInterval;
         TInterval<T>        fVarietyInterval;
 		
 	public :
-				 TIntervalAXBVariety(const TInterval<T>& i, const TAXBFunction<T>* f=identity()) : fFunction(f), fInterval(i) {}
-				 TIntervalAXBVariety(const TInterval<T>& i, const TInterval<T>& j) : fInterval(i), fVarietyInterval(j) {fFunction = new TAXBFunction<T>(i,j);}
-		virtual ~TIntervalAXBVariety() {}
+				 TIntervalAXBVariety(const TInterval<T>& i, const TAXBFunction<T>* f=identity()) : fDelete(false), fFunction(f), fInterval(i) {}
+				 TIntervalAXBVariety(const TInterval<T>& i, const TInterval<T>& j) : fDelete(true), fInterval(i), fVarietyInterval(j)
+							{ fFunction = new TAXBFunction<T>(i,j); }
+		virtual ~TIntervalAXBVariety() { if (fDelete) delete fFunction; }
 		
 		///< Gives a location from the interval variety.
 		///< According to the variety specification, we must have 0 <= loc <= 1 
