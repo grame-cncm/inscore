@@ -158,7 +158,7 @@ template<typename T> class TIntervalInvertedVariety
 		
 	public :
 				 TIntervalInvertedVariety(const TInterval<T>& i, const TAXBFunction<T>* f) : fFunction(f), fInterval(i){ fInvertedFunction = f->invert();}
-		virtual ~TIntervalInvertedVariety() {}
+		virtual ~TIntervalInvertedVariety() { delete fInvertedFunction; }
 		
 		///< Gives a location from the interval variety.
 		///< According to the variety specification, we must have 0 <= loc <= 1 
