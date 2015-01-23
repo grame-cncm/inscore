@@ -14,11 +14,20 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.09
-
 - Files objects can receive URL as path
 - new intermediate object for the URL (waiting for the data to be downloaded to create the real object)
 - new thread class handling the download
 - new msgs and new events associated : success, error, cancel
+- support for int values as parameters of the set method of rect shape and polygon objects
+- the 'clear' message addressed to a 'gmnstream' object clears also the view. The change was not 
+  previously reflected until a new valid string was posted to the object.
+- bug in extended address support corrected: extended address was ignored for messages dropped to a scene .
+- bug in window color corrected: black color was not correctly set due to an incorrect color 
+  information returned by Qt.
+- bug with 'line' initialization corrected: wrong position and orientation with negative coordinates,
+  (was previously corrected but reintroduced), incorrect initialization in layers.
+Known issues :
+- colors may be wrong when exporting to pdf format, the bug appeared with the swith to Qt5.4.  
 
 ----------------------------------------------------
 Version 1.08 - 2014-12-15

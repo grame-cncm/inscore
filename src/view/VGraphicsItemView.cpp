@@ -493,7 +493,7 @@ void VGraphicsItemView::setSlave(SIObject o )
 {
     std::vector<SMaster> masters = o->getParent()? o->getParent()->getMasters(o) : o->getScene()->getMasters(o);
     
-	for(int i = 0; i < masters.size(); i++)    // we first look for new masters, in order to add new representation
+	for(unsigned int i = 0; i < masters.size(); i++)    // we first look for new masters, in order to add new representation
     {
         SMaster master = masters[i];
         findNewSync(master, o);
@@ -528,13 +528,15 @@ QRectF VGraphicsItemView::referenceRect(QGraphicsItem * specItem) const
         if(fParent)
         {
             float l = std::min(fParent->boundingRect().width(), fParent->boundingRect().height());
-            float left = fParent->boundingRect().center().x() - l/2;
+			float left = fParent->boundingRect().center().x() - l/2;
             float top = fParent->boundingRect().center().y() - l/2;
-            QRectF rect = *new QRectF( left, top, l, l);
+ //           QRectF rect = *new QRectF( left, top, l, l);
+            QRectF rect ( left, top, l, l);
             return rect;
         }
-        else
-            return fScene->sceneRect();
+        else {
+           return fScene->sceneRect();
+		}
     }
 }
 
@@ -542,7 +544,7 @@ QRectF VGraphicsItemView::referenceRect(QGraphicsItem * specItem) const
 float VGraphicsItemView::relative2SceneX(float x, QGraphicsItem * specItem) const
 {
 	const QRectF& refRect = referenceRect(specItem);
-	// + 1 parce que l'espace Qt va de 0->... et interlude de -1 à ...
+	// inscore graphic space is between -1 and 1
 	return (( x + 1 ) * refRect.width()) / 2.0f + refRect.x();
 }
 
@@ -550,6 +552,7 @@ float VGraphicsItemView::relative2SceneX(float x, QGraphicsItem * specItem) cons
 float VGraphicsItemView::relative2SceneY(float y, QGraphicsItem * specItem) const
 {
 	const QRectF& refRect = referenceRect(specItem);
+	// inscore graphic space is between -1 and 1
 	return (( y + 1 ) *  refRect.height()) / 2.0f  + refRect.y();
 }
 
@@ -564,14 +567,6 @@ float VGraphicsItemView::relative2SceneHeight(float height, QGraphicsItem * spec
 {
 	return (referenceRect(specItem).height() * height)/2.0f;
 }
-
-//--------------------------------------------------------------------------
-//QRectF VGraphicsItemView::relative2SceneRect( const TFloatRect& rect  ) const
-//{
-//	QPointF a( relative2SceneX(rect.x()) , relative2SceneY(rect.y()) ); 
-//	QPointF b( relative2SceneX(rect.right()) , relative2SceneY(rect.bottom()) );
-//	return QRectF( a.x() , a.y() , b.x() - a.x() , b.y() - a.y() );
-//}
 
 //--------------------------------------------------------------------------
 float VGraphicsItemView::scene2RelativeWidth(float width, QGraphicsItem * specItem) const
@@ -635,8 +630,6 @@ QRectF VGraphicsItemView::iObject2QGraphicsItem(const GraphicSegment& s) const
 //------------------------------------------------------------------------------------------------------------
 QPointF VGraphicsItemView::iObject2QGraphicsItem(const TFloatPoint& point, const QRectF& qrect) const
 {
-//	double x = ( point.x() + 1 ) * ( qrect.width() / 2.0f ) + qrect.x();
-//	double y = ( point.y() + 1 ) * ( qrect.height() / 2.0f ) + qrect.y();
 	double x = (( point.x() + 1 ) * qrect.width())  / 2.0f + qrect.x();
 	double y = (( point.y() + 1 ) * qrect.height()) / 2.0f + qrect.y();
 	return QPointF( x,y );

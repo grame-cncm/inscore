@@ -186,7 +186,7 @@ bool INScoreAppl::event(QEvent *ev)
 //_______________________________________________________________________
 void INScoreAppl::setupMenu()
 {
-	QMenuBar *fMenuBar = new QMenuBar(0);
+	fMenuBar = new QMenuBar(0);
 
     QAction* aboutAct = new QAction(tr("&About"), this);
     aboutAct->setStatusTip(tr("Show the application's About box"));

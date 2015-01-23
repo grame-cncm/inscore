@@ -105,6 +105,9 @@ VSceneView::VSceneView(const std::string& address, QGraphicsScene * scene)
 		fGraphicsView->setSceneAddress( address.c_str() );
 		fDefaultFlags = fGraphicsView->windowFlags();
 		fEventFilter = new WindowEventFilter( address, fGraphicsView );
+		QColor white(255, 255, 255, 255);
+		fGraphicsView->setBackgroundBrush( QBrush(white));
+		fScene->setBackgroundBrush (white);
 	}
 	else {		// no scene is for offscreen rendering
 		fScene = new QGraphicsScene;

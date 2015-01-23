@@ -1,0 +1,21 @@
+
+/ITL/scene/* del;
+
+/ITL/scene/l1 set line xy 1. 1.;
+/ITL/scene/l2 set line xy -1. 1.;
+/ITL/scene/l3 set line xy 0.5 1.;
+/ITL/scene/l4 set line xy -0.5 1.;
+/ITL/scene/l5 set line xy 0.2 0.5;
+/ITL/scene/l6 set line xy 0.2 -0.5;
+/ITL/scene/l[135] penColor 255 0 0;
+/ITL/scene/l[246] penColor 0 0 255;
+
+
+/ITL/scene/lw1 set line wa 1. 142.;
+/ITL/scene/lw2 set line wa 1. 100.;
+!/ITL/scene/lw* y 0.7;
+
+/ITL/scene/comment set txt "This script illustrates a bug with lines initialization:
+all the lines should be centred on the scene origin.";
+/ITL/scene/comment y 0.7;
+/ITL/scene/comment scale 1.3;

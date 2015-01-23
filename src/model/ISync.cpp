@@ -40,7 +40,7 @@ void ISync::print (ostream& out) const
 {
 	for (const_slave_iterator i = fSlaves2Masters.begin(); i != fSlaves2Masters.end(); i++)
 	{
-        for(int j = 0; j<(*i).second.size(); j++)
+        for(unsigned int j = 0; j<(*i).second.size(); j++)
         {
             out << (*i).first->name() << " -> " << (*i).second[j]->getMaster()->name()
                 << " align: " << Master::syncalign2string(i->second[j]->getAlignment())
@@ -114,7 +114,7 @@ IObject::subnodes ISync::topologicalSort(IObject::subnodes& nodes) const
             if(hasSlave(*it))
             {
                 std::vector<SIObject> slaves = getSlaves(*it);
-                for(int i = 0; i<slaves.size(); i++)
+                for(unsigned int i = 0; i<slaves.size(); i++)
                     if(std::find(out.begin(), out.end(), slaves[i]) == out.end())   // if one of the slaves of the node is not in the "already-sorted-nodes",
                         addToVector = false;                                        // we won't add the node to the final vector yet.
             }
@@ -126,7 +126,7 @@ IObject::subnodes ISync::topologicalSort(IObject::subnodes& nodes) const
             else
                 it++;
         }
-        for(int j = 0; j<sameLevelOfSync.size(); j++)
+        for(unsigned int j = 0; j<sameLevelOfSync.size(); j++)
             out.push_back(sameLevelOfSync[j]);
     }while(!in.empty());
    
@@ -148,7 +148,7 @@ IObject::subnodes ISync::invertedTopologicalSort(IObject::subnodes& nodes) const
             if(hasMaster(*it))
             {
                 std::vector<SMaster> masters = getMasters(*it);
-                for(int i = 0; i<masters.size(); i++)
+                for(unsigned int i = 0; i<masters.size(); i++)
                     if(std::find(out.begin(), out.end(), masters[i]->getMaster()) == out.end()) // if one of the masters is not in the "already-sorted-nodes",
                         addToVector = false;                                                    // we won't add the node to the final vector yet.
             }
@@ -160,7 +160,7 @@ IObject::subnodes ISync::invertedTopologicalSort(IObject::subnodes& nodes) const
             else
                 it++;
         }
-        for(int j = 0; j<sameLevelOfSync.size(); j++)
+        for(unsigned int j = 0; j<sameLevelOfSync.size(); j++)
             out.push_back(sameLevelOfSync[j]);
     }while(!in.empty());
     
@@ -179,7 +179,7 @@ bool ISync::checkLoop(const SIObject slave, SIObject master)
     }
     
     std::vector<SMaster> masters = getMasters(master);
-    for(int i = 0; i<masters.size(); i++)
+    for(unsigned int i = 0; i<masters.size(); i++)
     {
         if(checkLoop(slave, masters[i]->getMaster()))
         {
@@ -253,7 +253,7 @@ void ISync::remove(SIObject slave, SMaster m)
 	else if(hasMaster(slave)){// when the master is not specified, we delete all the possible pairs with the slave
         std::vector<SMaster> masters = getMasters(slave);
         fSlaves2Masters.erase(fSlaves2Masters.find(slave));
-        for(int i=0; i<masters.size(); i++)
+        for(unsigned int i=0; i<masters.size(); i++)
         {
             if(hasSlave(masters[i]->getMaster()))
             {
@@ -286,7 +286,7 @@ void ISync::cleanup()
         {
             slave_iterator d = i;
             i++;
-            for(int j = 0; j<(*d).second.size(); j++)
+            for(unsigned int j = 0; j<(*d).second.size(); j++)
             {
                 if((*d).second[j]->getMaster()->getDeleted())
                     remove((*d).first, (*d).second[j]);
@@ -301,7 +301,7 @@ void ISync::ptask ()
     for(const_master_iterator it = fMasters2Slaves.begin(); it != fMasters2Slaves.end(); it++)
     {
         if(it->first->getState() && IObject::kModified)
-            for(int i = 0; i<it->second.size(); i++)
+            for(unsigned int i = 0; i<it->second.size(); i++)
                 it->second[i]->setState(IObject::kMasterModified);
     }
 }

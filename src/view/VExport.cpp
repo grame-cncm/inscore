@@ -30,6 +30,12 @@
 #include <QFileInfo>
 #include <QDebug>
 
+//#define USING_PD_FWRITER
+#ifdef USING_PD_FWRITER
+#include <QPdfWriter>
+#endif
+
+
 #define PDF_FORMAT				QString(".pdf")
 #define DEFAULT_EXPORT_FORMAT	PDF_FORMAT
 
@@ -120,23 +126,42 @@ void VExport::exportToImage( QGraphicsItem * item , const QString& fileName , fl
 //------------------------------------------------------------------------------------------------------------------------
 void VExport::exportToPdf( QGraphicsItem * item , const QString& fileName , float xScaleFactor , float yScaleFactor, bool drawChildren )
 {
+    QRectF rect = item->boundingRect();
+	// if we export the children with the object, they might be out of its bounds :
+	// we have to take the smallest boundingRect that contains the item AND its children
+	if(drawChildren) {
+        rect |= item->childrenBoundingRect();
+	}
+    float dx = item->boundingRect().x() - rect.x();
+    float dy = item->boundingRect().y() - rect.y();
+
+#ifdef USING_PD_FWRITER
+	QPdfWriter pdf(fileName);
+	pdf.setCreator("INScore");
+	QSize pageSize(rect.width() * xScaleFactor , rect.height() * yScaleFactor );
+	QPageSize size (pageSize);
+	pdf.setPageSize(size);
+	paintOnDevice( &pdf , item , xScaleFactor , xScaleFactor, dx, dy, drawChildren );
+
+//bool	setPageLayout(const QPageLayout & newPageLayout)
+//bool	setPageMargins(const QMarginsF & margins)
+//bool	setPageMargins(const QMarginsF & margins, QPageLayout::Unit units)
+//bool	setPageOrientation(QPageLayout::Orientation orientation)
+//bool	setPageSize(const QPageSize & pageSize)
+//void	setResolution(int resolution)
+
+#else
 	QPrinter printer;
+	printer.setColorMode(QPrinter::Color);
 	printer.setFullPage(true);
 	printer.setOutputFileName( QString(fileName) );
 	printer.setOutputFormat( QPrinter::PdfFormat );
-
-    QRectF rect = item->boundingRect();
-	//if we export the children with the object, they might be out of its bounds : we have to take the smallest boundingRect that contains the item AND its children
-	if(drawChildren)
-    {
-        rect |= item->childrenBoundingRect();
-    }
-    float dx = item->boundingRect().x() - rect.x();
-    float dy = item->boundingRect().y() - rect.y();
 	QSizeF pageSize(rect.width() * xScaleFactor , rect.height() * yScaleFactor );
 	printer.setPaperSize( pageSize , QPrinter::DevicePixel );
 
 	paintOnDevice( &printer , item , xScaleFactor , xScaleFactor, dx, dy, drawChildren );
+#endif
+
 }
 
 //------------------------------------------------------------------------------------------------------------------------

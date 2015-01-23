@@ -32,8 +32,6 @@ OSC=$ROOT/doc/OSCMsg.tex
 echo " updating $OSC"
 sed "s/\(title..*v\.*\)[0-9]*\.[0-9]*/\1$VERSION/" $OSC  > TMP$$
 mv -f TMP$$ $OSC
-make -C doc
-make -C doc html
 
 ITL=$ROOT/src/interface/INScore.cpp
 # echo " updating $ITL  (recompile)"
@@ -65,6 +63,6 @@ mv -f TMP$$ $PKG
 open $ROOT/cmake/INScore.xcodeproj
 
 echo "==> change manually inf.plist and rc files in win32 folder"
-open -t cmake/info.plist win32/INScore.rc win32/Viewer/INScoreViewer.rc $ITL
+open -t build/info.plist win32/INScore.rc win32/Viewer/INScoreViewer.rc $ITL
 
 exit 0

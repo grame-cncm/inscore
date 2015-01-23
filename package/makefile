@@ -1,4 +1,4 @@
-version := 1.09
+version := 1.10
 system	:= $(shell uname -s)
 ifeq ($(system), MINGW32_NT-6.1) 
 	win32 = yes
@@ -37,7 +37,6 @@ viewer := INScoreViewer
 interf := interfaces
 docsrc := ../doc
 docdst := ./doc
-icns   := ../rsrc/INScoreViewer.icns
 
 macapp  := $(viewer)-$(version).app
 winapp  := $(viewer)-$(version).exe
@@ -72,14 +71,16 @@ include makeBundle
 dmg:
 	hdiutil create $(package).dmg -srcfolder $(package) -ov
 
+cleanperms:
+	@chmod -x  $(shell find $(package) -name "*.inscore")
+
 macosx:
 	[ -d $(package) ] || mkdir -p $(package)
 	make common
 	make -f makeINScoreBundle
-	cp $(icns) $(viewer).app/Contents/Resources
 	-[ -d $(package)/$(macapp) ] && rm -rf $(package)/$(macapp)
 	mv $(viewer).app $(package)/$(macapp)
-	@chmod -x  $(shell find $(package) -name "*.inscore")
+	make cleanperms
 	cp -f ../src/guido2.ttf $(package)
 	cd $(package) && ln -sf /Applications .
 	[ -d $(package)/$(macplug) ] || mkdir $(package)/$(macplug)

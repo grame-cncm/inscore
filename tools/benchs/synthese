@@ -1,0 +1,15 @@
+#!/bin/sh
+#
+
+file=$1.txt
+shift
+
+for a in $*
+do
+	result1=$(cut -d' ' -f1 v-0.$a/$file | ./moyenne.py)
+	result2=$(cut -d' ' -f2 v-0.$a/$file | ./moyenne.py)
+	result3=$(cut -d' ' -f3 v-0.$a/$file | ./moyenne.py)
+	result4=$(cut -d' ' -f4 v-0.$a/$file | ./moyenne.py)
+	result5=$(cut -d' ' -f5 v-0.$a/$file | ./moyenne.py)
+	echo $file	v-0.$a	$result1	$result2	$result3	$result4	$result5
+done

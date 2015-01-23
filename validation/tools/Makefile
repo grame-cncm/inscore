@@ -2,7 +2,7 @@
 system := $(shell uname -s)
 
 ifeq ($(system), Darwin)
-LIBINSCORE :=  -F../../build/MacOS/Release -F../../cmake -framework INScore
+LIBINSCORE :=  -F../../build/MacOS/Release -framework INScore
 LIBOSCPACK :=  -L../../lib/oscpack -loscpack
 OPT := -mmacosx-version-min=10.6
 else

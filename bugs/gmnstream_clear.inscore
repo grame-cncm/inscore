@@ -6,10 +6,13 @@
 
 /ITL/scene/msgwrite set txt Write;
 /ITL/scene/msgclear set txt Clear;
+/ITL/scene/msgstart set txt "[ c g f# ";
 /ITL/scene/msg* scale 1.5;
 /ITL/scene/msg* y 0.3;
+/ITL/scene/msgstart y 0.5;
 /ITL/scene/msgwrite x -0.3;
 /ITL/scene/msgclear x 0.3;
+
 
 /ITL/scene/comment set txt "The 'clear' message doesn't work as expected.";
 /ITL/scene/comment y -0.3;
@@ -20,4 +23,5 @@
 
 /ITL/scene/msgwrite watch mouseDown ( /ITL/scene/sc write "e" );
 /ITL/scene/msgclear watch mouseDown ( /ITL/scene/sc clear );
+/ITL/scene/msgstart watch mouseDown ( /ITL/scene/sc write  "[ c g f# " );
 

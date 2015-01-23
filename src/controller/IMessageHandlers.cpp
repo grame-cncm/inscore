@@ -32,8 +32,9 @@ namespace inscore
 MsgHandler::msgStatus TSetMethodMsgHandler<Master, void (Master::*)(float)>::operator ()(const IMessage* msg)
 { 
 	if ( msg->size() != 1 ) return kBadParameters;
-	float val(0);
-	if ( !msg->param(0, val) ) return kBadParameters;
+	float val;
+	if ( !msg->cast_param(0, val) ) return kBadParameters;
+
 	(fObject->*fMethod)( val );
 	fSlave->modify();
 	return kProcessed;

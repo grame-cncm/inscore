@@ -81,7 +81,7 @@ MsgHandler::msgStatus IPolygon::set (const IMessage* msg)
 		std::vector< std::pair<float,float> > points;
 		for (int i = 1 ; i < msg->size() ; i+=2 ) {
 			std::pair<float,float> point;
-			if (!msg->param(i, point.first) || !msg->param(i+1, point.second))
+			if (!msg->cast_param(i, point.first) || !msg->cast_param(i+1, point.second))
 				return MsgHandler::kBadParameters;
 			points.push_back( point );
 		}

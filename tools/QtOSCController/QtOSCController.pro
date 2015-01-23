@@ -2,12 +2,17 @@ SOURCES += main.cpp MainWindow.cpp
 HEADERS += *.h
 FORMS += *.ui
 
+MOC_DIR = ./tmpSrc
+RCC_DIR = ./tmpSrc
+UI_DIR  = ./tmpSrc
+DESTDIR = $$PWD
+
 macx:CONFIG+=x86 x86_64
-macx:LIBS += -L../../lib/oscpack/build/MacOS/Release -loscpack
-ios:LIBS += -L../../lib/oscpack/build/iOS/Release-iphoneos -loscpack
-win32:LIBS += ../../lib/oscpack/cmake/Release/oscpack.lib
-unix:!macx:LIBS += -L../../lib/oscpack/cmake/Release -loscpack
+macx:LIBS += -L$$PWD/../../lib/oscpack/build/MacOS/Release -loscpack
+ios:LIBS += -L$$PWD/../../lib/oscpack/build/iOS/Release-iphoneos -loscpack
+win32:LIBS += $$PWD/../../lib/oscpack/cmake/Release/oscpack.lib
+unix:!macx:LIBS += -L$$PWD/../../lib/oscpack/cmake/Release -loscpack
 QT += widgets 
 QT += network
 
-INCLUDEPATH += ../../lib/oscpack
+INCLUDEPATH += $$PWD/../../lib/oscpack

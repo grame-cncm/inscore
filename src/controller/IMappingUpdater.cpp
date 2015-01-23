@@ -180,7 +180,7 @@ GraphicSegment IMappingUpdater::computeSegmentWithChildren (IObject* o, const Gr
     else refSeg = seg;
     
     
-    for(int i = 0; i < o->elements().size(); i++)		// computes recursively the childrens segments and makes the union
+    for(unsigned int i = 0; i < o->elements().size(); i++)		// computes recursively the childrens segments and makes the union
     {
         SIObject child = o->elements()[i];
         GraphicSegment cSeg = computeSegment(child);	// in the current object's coordinates
@@ -194,11 +194,11 @@ GraphicSegment IMappingUpdater::computeSegmentWithChildren (IObject* o, const Gr
     }
 
     std::vector<SIObject> slaves = o->getParent()->getSlaves(o);
-    for(int i = 0; i<slaves.size(); i++)				// computes recursively the slaves segments and makes the union
+    for(unsigned int i = 0; i<slaves.size(); i++)				// computes recursively the slaves segments and makes the union
     {
         SIObject slave = slaves[i];
         std::vector<SMaster> masters = slave->getParent()->getMasters(slave);
-        for(int j = 0; j<masters.size(); j++)
+        for(unsigned int j = 0; j<masters.size(); j++)
         {
             if(masters[j]->getMaster() == o)
             {
@@ -330,7 +330,7 @@ void IMappingUpdater::updateIObject (IObject* object)
     
 	if (masters.empty()) return;
 	
-    for(int i = 0; i<masters.size(); i++)
+    for(unsigned int i = 0; i<masters.size(); i++)
     {
         const IObject* mobj = masters[i]->getMaster();
         if (object->localMapModified() || object->getState() || object->dateModified()

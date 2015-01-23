@@ -297,7 +297,7 @@ void IColor::hsv2rgb( float h , float s, float v , float& r, float& g, float& b 
 
 void IColor::print (ostream& out) const
 {
-	out << "  color [" << getR() << "," << getG() << "," << getB() << "," << getA() << "]" << endl;
+	out << "  color [" << getR() << "," << getG() << "," << getB() << "," << getA() << "]";
 }
 
 } // end namespoace
