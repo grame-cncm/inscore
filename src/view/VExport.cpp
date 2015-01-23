@@ -120,6 +120,7 @@ void VExport::exportToImage( QGraphicsItem * item , const QString& fileName , fl
 //------------------------------------------------------------------------------------------------------------------------
 void VExport::exportToPdf( QGraphicsItem * item , const QString& fileName , float xScaleFactor , float yScaleFactor, bool drawChildren )
 {
+#ifndef IOS
 	QPrinter printer;
 	printer.setFullPage(true);
 	printer.setOutputFileName( QString(fileName) );
@@ -137,6 +138,7 @@ void VExport::exportToPdf( QGraphicsItem * item , const QString& fileName , floa
 	printer.setPaperSize( pageSize , QPrinter::DevicePixel );
 
 	paintOnDevice( &printer , item , xScaleFactor , xScaleFactor, dx, dy, drawChildren );
+#endif
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -185,7 +187,7 @@ static QString nextFreeName (const QString& filename, const QString& extension)
 //------------------------------------------------------------------------------------------------------------------------
 void VExport::exportScene( QGraphicsView * view , QString fileName )
 {
-//	if ( QFileInfo(fileName).suffix().isEmpty() ) fileName += DEFAULT_EXPORT_FORMAT;
+#ifndef IOS
 	if ( QFileInfo(fileName).suffix().isEmpty() ) fileName = nextFreeName(fileName, DEFAULT_EXPORT_FORMAT);
 
 	QSize size (view->width() , view->height());
@@ -204,6 +206,7 @@ void VExport::exportScene( QGraphicsView * view , QString fileName )
 		paintOnDevice (&image, view);
 		image.save( fileName );			
 	}
+#endif
 }
 
 } // end namespoace
