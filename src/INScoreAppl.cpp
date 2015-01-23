@@ -38,6 +38,7 @@
 #include <QSplashScreen>
 #include <QString>
 #include <QUrl>
+#include <QFontDatabase>
 
 #ifdef WIN32
 #include <windows.h>
@@ -186,7 +187,7 @@ bool INScoreAppl::event(QEvent *ev)
 //_______________________________________________________________________
 void INScoreAppl::setupMenu()
 {
-	QMenuBar *fMenuBar = new QMenuBar(0);
+	fMenuBar = new QMenuBar(0);
 
     QAction* aboutAct = new QAction(tr("&About"), this);
     aboutAct->setStatusTip(tr("Show the application's About box"));
@@ -243,7 +244,6 @@ INScoreAppl::INScoreAppl (int & argc, char ** argv )
 //_______________________________________________________________________
 INScoreAppl::~INScoreAppl() { delete fMenuBar; }
 
-
 #if defined(WIN32) && !defined(_DEBUG)
 # define USEWINMAIN
 #endif
@@ -252,7 +252,11 @@ INScoreAppl::~INScoreAppl() { delete fMenuBar; }
 #include <windows.h>
 int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdParam, int iCmdShow)
 #else
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+extern "C" int qtmn(int argc, char *argv[] )
+#else
 int main( int argc, char **argv )
+#endif
 #endif
 {
 #ifdef USEWINMAIN
@@ -266,11 +270,18 @@ int main( int argc, char **argv )
 	appl.setApplicationName("INScoreViewer");
 	QDir dir(QApplication::applicationDirPath());
 
-	Q_INIT_RESOURCE( inscore );
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+    // Q_INIT_RESOURCE( inscore );
+    // Q_INIT_RESOURCE() and Q_CLEANUP_RESOURCE() is not necessary when the resource is built as part
+    // of the application. (see QT documentation)
+#else
+    // We have to test on all plateform but it seems it's not necessary to call Q_INIT_RESOURCE.
+    Q_INIT_RESOURCE( inscore );
     QPixmap pixmap(":/INScoreViewer.png");
     gAbout = new INScoreAbout(pixmap);
-	gAbout->show();
-	
+    gAbout->show();
+#endif
+
 	appl.setupMenu();
 #ifndef WIN32
 	dir.cdUp();
@@ -299,11 +310,15 @@ int main( int argc, char **argv )
 		else appl.open (arg);
 	}
 #endif
+#if !(TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
 	sleep (2);
     gAbout->hide();
-	disableAppNap();
+    disableAppNap();
+#endif
 	ret = appl.exec();
 	INScore::stop (glue);
-	delete gAbout;
-	return ret;
+#if !(TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
+    delete gAbout;
+#endif
+    return ret;
 }
