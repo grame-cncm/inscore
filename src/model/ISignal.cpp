@@ -172,7 +172,7 @@ bool ISignal::putAt (const IMessage* msg, int index, int step)
 MsgHandler::msgStatus ISignal::set (const IMessage* msg)
 {
 	int msgsize = msg->size();
-	vector<SParallelSignal> signals;
+	vector<SParallelSignal> isignals;
 	for (int i = 0; i < msgsize; i++) {
 
 		float value;
@@ -181,7 +181,7 @@ MsgHandler::msgStatus ISignal::set (const IMessage* msg)
 			SParallelSignal p = ParallelSignal::create();
 			if (p && c) *p << c;
 			else return MsgHandler::kCreateFailure;		// memory allocation failed
-			signals.push_back(p);
+			isignals.push_back(p);
 		}
 		else {								// ------------ a named signal
 			string name;
@@ -189,7 +189,7 @@ MsgHandler::msgStatus ISignal::set (const IMessage* msg)
 				SISignalNode sigs = getSignalNode();
 				subnodes siglist;
 				if (sigs && sigs->find(name, siglist)) {
-					signals.push_back(dynamic_cast<ISignal*>((IObject*)siglist[0]));
+					isignals.push_back(dynamic_cast<ISignal*>((IObject*)siglist[0]));
 				}
 				else {
 					ITLErr << "parallel signal" << this->name() << ": unknown signal" << name << ITLEndl;
@@ -200,8 +200,8 @@ MsgHandler::msgStatus ISignal::set (const IMessage* msg)
 		}
 	}
 	clear();		// clear the previous signals list
-	for (unsigned int n=0; n < signals.size(); n++)
-		*this << signals[n];
+	for (unsigned int n=0; n < isignals.size(); n++)
+		*this << isignals[n];
 	return MsgHandler::kProcessed;
 }
 
