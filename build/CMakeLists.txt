@@ -22,6 +22,7 @@ set (SOVERS 1)
 option ( NOVIEW 	"compiles a viewer with no view (for debug purpose)" off )
 option ( LUA 		"embed a lua engine" off )
 option ( DIST 		"compiles universal binaries (x86_64 i386) - MacOSX only" off )
+option ( QJS 		"use the QJSEngine for javascript support" off )
 
 #######################################
 if(WIN32)
@@ -126,17 +127,23 @@ endif()
 
 #######################################
 # javascript support
-add_definitions(-DV8ENGINE)
-if (WIN32)
-	set(SCRIPTS ${SCRIPTS} "${LOCALLIB}/javascript/v8/win32/v8.lib")
-	set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/javascript/v8/include)
+if(QJS)
+	message (STATUS "Qt Javascript engine will be used. Use -DQJS=off to change")
+	add_definitions(-DQTJSENGINE)
 else()
-	if(APPLE)
+	message (STATUS "V8 Javascript engine will be used. Use -DQJS=on to change to QJSEngine")
+	add_definitions(-DV8ENGINE)
+	if (WIN32)
+		set(SCRIPTS ${SCRIPTS} "${LOCALLIB}/javascript/v8/win32/v8.lib")
 		set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/javascript/v8/include)
-		set(SCRIPTS ${SCRIPTS} -L${LOCALLIB}/javascript/v8/MacOS -lv8)
 	else()
-		set(SCRIPTS ${SCRIPTS} -lv8) # on linux, use of the v8 package
-	endif()
+		if(APPLE)
+			set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/javascript/v8/include)
+			set(SCRIPTS ${SCRIPTS} -L${LOCALLIB}/javascript/v8/MacOS -lv8)
+		else()
+			set(SCRIPTS ${SCRIPTS} -lv8) # on linux, use of the v8 package
+		endif()
+	endif ()
 endif ()
 
 #######################################
@@ -187,13 +194,14 @@ if (QTVERSION EQUAL "5")
 	FIND_PACKAGE(Qt5PrintSupport REQUIRED)
 	FIND_PACKAGE(Qt5Multimedia REQUIRED)
 	FIND_PACKAGE(Qt5MultimediaWidgets REQUIRED)
+	FIND_PACKAGE(Qt5Qml REQUIRED)
 	if(APPLE OR WIN32)
-	  set(QTLIBS ${Qt5Core_LIBRARIES}  ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} ${Qt5Multimedia_LIBRARIES} ${Qt5MultimediaWidgets_LIBRARIES})	
+	  set(QTLIBS ${Qt5Core_LIBRARIES}  ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} ${Qt5Multimedia_LIBRARIES} ${Qt5MultimediaWidgets_LIBRARIES}  ${Qt5Qml_LIBRARIES})	
 	else()
-	  set(QTLIBS "-lQt5Core -lQt5Gui -lQt5Widgets -lQt5Svg -lQt5PrintSupport -lQt5Multimedia -lQt5MultimediaWidgets")	
+	  set(QTLIBS "-lQt5Core -lQt5Gui -lQt5Widgets -lQt5Svg -lQt5PrintSupport -lQt5Multimedia -lQt5MultimediaWidgets  -lQt5Qml")	
 	endif()
 
-	set (QTHEADERS ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS}  ${Qt5PrintSupport_INCLUDE_DIRS}  ${Qt5Multimedia_INCLUDE_DIRS}  ${Qt5MultimediaWidgets_INCLUDE_DIRS})
+	set (QTHEADERS ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS} 	${Qt5PrintSupport_INCLUDE_DIRS}  ${Qt5Multimedia_INCLUDE_DIRS}  ${Qt5MultimediaWidgets_INCLUDE_DIRS} ${Qt5Qml_INCLUDE_DIRS})
 else ()   # assume we're using Qt4
 	add_definitions(-DUSEPHONON)
 
