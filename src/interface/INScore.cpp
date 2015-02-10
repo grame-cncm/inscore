@@ -221,7 +221,10 @@ INScore::MessagePtr INScore::newMessage ()
 //--------------------------------------------------------------------------
 void INScore::delMessage(MessagePtr msg)
 {
-	gMsgMemory[msg] = SIMessage(0);
+	map<INScore::MessagePtr, SIMessage>::iterator i = gMsgMemory.find(msg);
+	if (i != gMsgMemory.end())
+		gMsgMemory.erase (i);
+//	gMsgMemory[msg] = SIMessage(0);
 }
 
 //--------------------------------------------------------------------------
