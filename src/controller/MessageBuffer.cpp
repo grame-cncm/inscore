@@ -39,7 +39,7 @@ MessageBuffer::MessageBuffer()
 //________________________________________________________________________
 MessageBuffer::~MessageBuffer()
 {
-	delete fBuffer;
+	delete[] fBuffer;
 }
 
 //________________________________________________________________________
@@ -70,7 +70,7 @@ bool MessageBuffer::resize (unsigned short size)
 
 	SIMessage** oldBuffer = fBuffer;
 	fBuffer = newBuffer;			// sets the new buffer pointer
-	delete oldBuffer;
+	delete[] oldBuffer;
 	fBuffSize = size;				// sets the new size
 	return true;
 }
