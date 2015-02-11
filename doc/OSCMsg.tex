@@ -907,16 +907,42 @@ setMsg : 'set' (
 
 %===============================
 %:  The file type
-\sublevel{The file based types}
-\label{filebasedtypes}
+\sublevel{File based resources}
+\label{filebasedrsrc}
 
-Most of the types can be either expressed by a direct description, or by a path to a file containing the datas. It can be either declared as a generic \OSC{file} type, or as a specific type with an "f" added at the end : 
-\OSC{txtf}, \OSC{htmlf}, \OSC{gmnf}, \OSC{musicxmlf}, \OSC{svgf}, \OSC{faustf} .\\
-The \OSC{img} and  \OSC{video} types only have a file form. \\
-The path can be a Unix path (relative or absolute), but also a web address (urlPath).
+Most of the types can be either expressed with the corresponding data, or by a path to a file containing the data. For the latter form, the object type is generally suffixed with an 'f' (e.g. \OSC{txtf}, \OSC{htmlf}, \OSC{gmnf}, \OSC{musicxmlf}, \OSC{svgf}, \OSC{faustf}). The \OSC{img} and  \OSC{video} types have only a file form (and no 'f' suffix). \\
+A file path can be expressed as a Unix path (absolute or relative - see the scene or application \OSC{rootPath} message for relative paths handling), but also as an URL.
+
+\begin{rail}
+urlPath : 
+	( http | https | file) path
+\end{rail}
+\index{Set file!filePath}
+\index{Set file!urlPath}
+
+Only the \OSC{http:}, \OSC{https:} and \OSC{file:} protocols are currently supported for URLs.
+
+When the system encounters an URL, it creates an intermediate object that is in charge of retrieving the corresponding data. This object has a specific \OSC{url} type that takes the target type and an url as arguments. It has a graphic appearance (actually a light gray box containing the object name and the target url) that can be controled like for any regular object.
+
+\begin{rail}
+urlType : 
+	'url' targetType  urlPath
+\end{rail}
+\index{Set type!url}
+
+The \OSC{url} intermediate object acts as a proxy for the target object and will transfer all its properties once the data are ready. A client can thus interact transparently with the target adress, whatever the status of the download request.
+
+\example \\
+Creating a score using an URL:
+\sample{/ITL/scene/score set gmnf "http://anyhost.adomain.org/score.gmn"; \\
+\hspace*{4mm} is equivalent to \\
+/ITL/scene/score set url gmnf "http://anyhost.adomain.org/score.gmn";
+}
+
+\note{} The \OSC{url} object handles specific events : \OSC{success}, \OSC{error} and \OSC{cancel} (see the section \fullref{urlevents}).
 
 
-\subsublevel{The file type}
+\sublevel{The file type}
 \label{fileset}
 
 \label{setfile}
@@ -956,28 +982,11 @@ file extension & translated type \\
 \example \\
 Creating an image using the \OSC{file} type.
 \sample{/ITL/scene/myObject set file "myImage.png"; \\
-will be translated into \\
+\hspace*{4mm} is equivalent to \\
 /ITL/scene/myObject set img "myImage.png";
 }
 
-\subsublevel{URL File intermediate object}
-\label{urlset}
 
-When the path to the file is an URL (beginning with "\OSC{http://}", "\OSC{https://}" or "\OSC{file://}"), we create an intermediate object, a 1x1 black square, till the data is ready to be drawn.\\
-This object can also be created by declaring directly its type \OSC{url} and the "real" type as first parameter.
-\\
-
-This intermediate object has the same address as the file object, and it will be replaced as soon as the download is done. We can interact with it as with any object, and all the changes applied to it will be passed to the "real" object when created.
-\\
-
-\example \\
-Creating a score using a URL address.
-\sample{/ITL/scene/myScore set gmnf "http://myURL.gmn"; \\
-will be translated into \\
-/ITL/scene/myScore set url gmnf "http://myURL.gmn";
-}
-
-\note{} To this object are associated 3 events : \OSC{success}, \OSC{error} and \OSC{cancel} (see the section \fullref{urlevents}).
 
 %===============================
 %:The 'get' message
@@ -2373,32 +2382,34 @@ An object that moves a score to a given page number when it enters its time zone
 \samplev{/ITL/scene/myObject watch timeEnter 10/1 18/1 (/ITL/scene/score page 2);}
 
 %===============================
-%:       URL Files events
-\subsublevel{URL files events}
+%:       URL events
+\subsublevel{URL events}
 \label{urlevents}
 
-Some new events have been added, to follow the evolution of the URL based files:
+\OSC{url} objects (i.e. intermediate objects for URL based objects (see section \fullref{filebasedrsrc}) support specific events, intended to reflect the transaction state:
 
 \begin{rail}
 what : 	'success'  
 		| 'error'
 		| 'cancel'
 \end{rail}
-\index{Interaction!Events!urlSuccess}
-\index{Interaction!Events!urlError}
-\index{Interaction!Events!urlCancel}
+\index{Interaction!Events!success}
+\index{Interaction!Events!error}
+\index{Interaction!Events!cancel}
 
 \begin{itemize}
-\item \OSC{success} is triggered when the datas have been correctly downloaded,
+\item \OSC{success} is triggered when the data have been downloaded,
 \item \OSC{error} is triggered when an error has occurred during the download,
-\item \OSC{cancel} is triggered when the object has been changed or deleted during the download
+\item \OSC{cancel} is triggered when the target url or the object type is changed while downloading.
 \end{itemize}
 
 \example \\
-We wait to see if the score is correctly downloaded to give it its mapping :
-\sample{/ITL/scene/gmn watch success(\\
-/ITL/scene/gmn map "voice1",\\
-/ITL/scene/gmn map "voice2");}
+Triggering an error message in case of failure :
+\sample{/ITL/scene/score set gmnf "http://ahost.adomain.org/score.gmn";\\
+/ITL/scene/score watch error(\\
+\hspace*{5mm}/ITL/scene/status set txt "Failed to download file"\\
+);
+}
 
 
 %===============================
