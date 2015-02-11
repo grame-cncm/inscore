@@ -14,10 +14,9 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.10
-- Files objects can receive URL as path
-- new intermediate object for the URL (waiting for the data to be downloaded to create the real object)
-- new thread class handling the download
-- new msgs and new events associated : success, error, cancel
+- Files based objects support URL as path using an intermediate object that acts as a proxy during the download phase
+- new events associated to url objects : success, error, cancel
+
 
 ----------------------------------------------------
 Version 1.09
