@@ -23,6 +23,8 @@
 
 */
 
+#include <iostream>
+
 #include "VUrlIntermediateObjectView.h"
 #include "IUrlIntermediateObject.h"
 
@@ -34,16 +36,26 @@ namespace inscore
 VUrlIntermediateObjectView::VUrlIntermediateObjectView(QGraphicsScene * scene, const IUrlIntermediateObject* h)
 					: VMappedShapeView( scene , new MouseEventAble<QGraphicsRectItem>(h) )
 {
+	fText = new QGraphicsTextItem (h->name().c_str(), item());
+	fUrl  = 0;
 }
+
+VUrlIntermediateObjectView::~VUrlIntermediateObjectView() { delete fText; delete fUrl; }
 
 //----------------------------------------------------------------------
 void VUrlIntermediateObjectView::updateView( IUrlIntermediateObject * obj  )
 {
+	if (!fUrl)	fUrl = new QGraphicsTextItem (obj->getFile().c_str(), item());
+
     obj->cleanupSync();
     QRectF newRect( 0,0,  relative2SceneWidth(obj->getWidth()), relative2SceneHeight(obj->getHeight()) );
 	if ( newRect != item()->rect() )
 	{
 		item()->setRect( newRect );
+		QRectF trect = fText->boundingRect();
+		QRectF urect = fUrl->boundingRect();
+		fText->setPos (newRect.width()/2 - trect.width()/2, newRect.height()/2 - trect.height()/2);
+		fUrl->setPos (newRect.width()/2 - urect.width()/2, newRect.height()/2 + urect.height()/2);
         itemChanged();
 	}
 	VShapeView::updateView( obj );

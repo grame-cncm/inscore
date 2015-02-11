@@ -37,12 +37,14 @@ namespace inscore
 class VUrlIntermediateObjectView: public VMappedShapeView
 {
 	MouseEventAble<QGraphicsRectItem>*  item() const			{ return (MouseEventAble<QGraphicsRectItem>*)fItem; }
+	QGraphicsTextItem * fText;
+	QGraphicsTextItem * fUrl;
 
     public :
 		using VMappedShapeView::updateView;
     
-        VUrlIntermediateObjectView(QGraphicsScene * scene, const IUrlIntermediateObject*);
-		virtual ~VUrlIntermediateObjectView() {}
+				 VUrlIntermediateObjectView(QGraphicsScene * scene, const IUrlIntermediateObject*);
+		virtual ~VUrlIntermediateObjectView();
     
 		virtual void updateView( IUrlIntermediateObject * obj );
 		virtual void updateObjectSize( IObject * object ) {}
