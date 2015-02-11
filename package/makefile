@@ -1,4 +1,4 @@
-version := 1.10
+version := 1.11
 system	:= $(shell uname -s)
 ifeq ($(system), MINGW32_NT-6.1) 
 	win32 = yes
@@ -158,9 +158,11 @@ samples:
 	$(foreach s,$(scripts), cp -R ../scripts/$(s) $(package)/samples/;)
 	
 src:
-	[ -d $(package)-src/cmake ] || mkdir -p $(package)-src/cmake
+	[ -d $(package)-src ] || mkdir -p $(package)-src
 	cp -rf ../src $(package)-src/
-	cp -rf ../cmake/CMakeLists.txt $(package)-src/cmake
+	cp -rf ../build/CMakeLists.txt $(package)-src/cmake
+	cp -rf ../build/Makefile $(package)-src/cmake
+	cp -rf ../build/Info.plist $(package)-src/cmake
 	cp -rf ../lib $(package)-src/
 	cp -rf ../win32 $(package)-src/
 	rm -rf $(package)-src/lib/poppler

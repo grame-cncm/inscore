@@ -45,6 +45,7 @@
 #include "VTextView.h"
 #include "VVideoView.h"
 #include "VLayerView.h"
+#include "VUrlIntermediateObjectView.h"
 
 namespace inscore
 {
@@ -69,6 +70,7 @@ void VQtUpdater::updateTo(ICurve* curve)			{ update<ICurve,	VCurveView>		(curve)
 void VQtUpdater::updateTo(ILine* line)				{ update<ILine,		VLineView>		(line); }
 void VQtUpdater::updateTo (IHtml* html)				{ update<IHtml,		VTextView>		(html); }
 void VQtUpdater::updateTo (IVideo* video )			{ update<IVideo,	VVideoView>		(video); }
+void VQtUpdater::updateTo (IUrlIntermediateObject* url )			{ update<IUrlIntermediateObject,	VUrlIntermediateObjectView>		(url); }
 
 //--------------------------------------------------------------------------
 void VQtUpdater::updateTo(IApplLog * log)

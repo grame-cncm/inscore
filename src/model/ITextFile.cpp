@@ -28,6 +28,7 @@
 #include "TComposition.h"
 #include "IScene.h"
 #include "Updater.h"
+#include "VTextView.h"
 
 using namespace std;
 
@@ -66,12 +67,29 @@ MsgHandler::msgStatus ITextFile::set(const IMessage* msg )
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 	
 	status = TFile::set (msg) ;
+    
 	if (status & MsgHandler::kProcessed) {
-		if (!read(fText))
-			status = MsgHandler::kCreateFailure;
-		else newData(true);
+		if(!fIsUrl)
+        {
+            if (!read(fText))
+                status = MsgHandler::kCreateFailure;
+            else newData(true);
+        }
 	}
 	return status;
 }
+
+//--------------------------------------------------------------------------
+void ITextFile::updateUrl()
+{
+    fIsUrl = true;
+    if(read(fData))
+        fText = fData.data();
+    
+    VTextView * txtView = fView ? dynamic_cast<VTextView*>(fView) : 0;
+    if(txtView)
+        txtView->updateLocalMapping(this);
+}
+
 
 }

@@ -131,8 +131,8 @@ void INScore::stop(IGlue* glue)
 //--------------------------------------------------------------------------
 // versions 
 //--------------------------------------------------------------------------
-float INScore::version	()				{ return 1.10; }
-const char* INScore::versionStr ()		{ return "1.10"; }
+float INScore::version	()				{ return 1.11; }
+const char* INScore::versionStr ()		{ return "1.11"; }
 
 //--------------------------------------------------------------------------
 const char* INScore::guidoversion()
@@ -221,7 +221,10 @@ INScore::MessagePtr INScore::newMessage ()
 //--------------------------------------------------------------------------
 void INScore::delMessage(MessagePtr msg)
 {
-	gMsgMemory[msg] = SIMessage(0);
+	map<INScore::MessagePtr, SIMessage>::iterator i = gMsgMemory.find(msg);
+	if (i != gMsgMemory.end())
+		gMsgMemory.erase (i);
+//	gMsgMemory[msg] = SIMessage(0);
 }
 
 //--------------------------------------------------------------------------

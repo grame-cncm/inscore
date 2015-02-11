@@ -117,10 +117,13 @@ template <typename O, typename T> class TSetMethodMsgHandler : public MsgHandler
 		static SMsgHandler create(O* obj, MsgHandlerMethod method)	{ return new TSetMethodMsgHandler<O,T> (obj, method); }
 		virtual msgStatus operator ()(const IMessage* msg)			{ 
 			if ( msg->size() != 1 ) return kBadParameters;
+
 			T val; float fval; int ival;
-			if ( msg->param(0, fval) ) val = T(fval);
-			if ( msg->param(0, ival) ) val = T(ival);
-			else if ( !msg->param(0, val) ) return kBadParameters;
+			if ( !msg->param(0, val) ) {
+				if ( msg->param(0, ival) ) val = T(ival);
+				else if ( msg->param(0, fval) ) val = T(fval);
+				else return kBadParameters;
+			}
 			(fObject->*fMethod)( val );
 			return kProcessed;
 		}
@@ -192,12 +195,8 @@ template <typename O> class TSetMethodMsgHandler<O, TFloatSize> : public MsgHand
 		virtual msgStatus operator ()(const IMessage* msg)			{ 
 			if ( msg->size() != 2 ) return kBadParameters;
 			float n, d;
-			int ni, di;
-			if ( msg->param(0, n) && msg->param(1, d)) {
+			if ( msg->cast_param(0, n) && msg->cast_param(1, d)) {
                 (fObject->*fMethod)( TFloatSize(n,d) );
-            }
-			else if ( msg->param(0, ni) && msg->param(1, di)) {
-                (fObject->*fMethod)( TFloatSize(ni,di) );
             }
 			else return kBadParameters;
 			return kProcessed;

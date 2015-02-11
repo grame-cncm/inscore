@@ -28,6 +28,7 @@
 #include "TComposition.h"
 #include "IScene.h"
 #include "Updater.h"
+#include "VSVGView.h"
 
 using namespace std;
 
@@ -68,6 +69,17 @@ MsgHandler::msgStatus ISVGFile::set(const IMessage* msg )
 	if (status & MsgHandler::kProcessed)
 		newData(true);
 	return status;
+}
+
+//--------------------------------------------------------------------------
+void ISVGFile::updateUrl()
+{
+    fIsUrl = true;
+    read(fData);
+    changed(true);
+    VSVGView * svgView = fView ? dynamic_cast<VSVGView*>(fView) : 0;
+    if(svgView)
+        svgView->updateLocalMapping(this);
 }
 
 }

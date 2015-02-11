@@ -47,6 +47,7 @@
 #include "ISceneSync.h"
 #include "TMessageEvaluator.h"
 #include "ISignalNode.h"
+#include "INScore.h"
 
 #include "VObjectView.h"
 
@@ -920,6 +921,55 @@ MsgHandler::msgStatus IObject::popMsg(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
+void IObject::transferAttributes(SIObject newobj)
+{
+    //transfer of the attibutes
+    newobj->setXPos (getXPos());
+    newobj->setYPos (getYPos());
+    newobj->setXOrigin (getXOrigin());
+    newobj->setYOrigin (getYOrigin());
+    newobj->setScale (getScale());
+    newobj->setVisible (getVisible());
+    newobj->setZOrder (getZOrder());
+    newobj->setShear (getShear());
+    newobj->setRotateX (getRotateX());
+    newobj->setRotateY (getRotateY());
+    newobj->setRotateZ (getRotateZ());
+    newobj->setR(getR());
+    newobj->setG(getG());
+    newobj->setB(getB());
+    newobj->setA(getA());
+			
+    newobj->setDate (getDate());
+    newobj->setDuration (getDuration());
+
+    *((EventsAble*)newobj) = *((EventsAble*)this);
+    
+    // transfer of the sync informations
+    for(int i = 0; i < fParent->elements().size(); i++)
+    {
+        ISceneSync * sync = dynamic_cast<ISceneSync*>((IObject*)(fParent->elements()[i]));
+        if(sync) // we found the syncnode, to get the informations about the synchronizations
+        {
+            SIMessageList list = sync->getAll();
+            for(int j = 0; j < list->list().size(); j++)
+            {
+                INScore::MessagePtr msg = list->list()[j];
+                std::string slave, master;
+                if(list->list()[j]->size() != 2)
+                    continue;
+                if(!list->list()[j]->param(0, slave) || !list->list()[j]->param(1,master))
+                    continue;
+                if(slave == name())
+                    INScore::postMessage (sync->getOSCAddress().c_str(), msg);
+                else if(master == name())
+                    INScore::delayMessage(sync->getOSCAddress().c_str(), msg);
+            }
+        }
+    }
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::set(const IMessage* msg)	
 {
 	string type;
@@ -930,23 +980,11 @@ MsgHandler::msgStatus IObject::set(const IMessage* msg)
 		IObject* newobj;
 		int status = IProxy::execute (msg, name(), fParent, &newobj);
 		if (status & MsgHandler::kProcessed) {
-			newobj->setXPos (getXPos());
-			newobj->setYPos (getYPos());
-			newobj->setXOrigin (getXOrigin());
-			newobj->setYOrigin (getYOrigin());
-			newobj->setScale (getScale());
-			newobj->setVisible (getVisible());
-			newobj->setZOrder (getZOrder());
-			newobj->setShear (getShear());
-			newobj->setRotateX (getRotateX());
-			newobj->setRotateY (getRotateY());
-			newobj->setRotateZ (getRotateZ());
-			
-			newobj->setDate (getDate());
-			newobj->setDuration (getDuration());
-
-			*((EventsAble*)newobj) = *((EventsAble*)this);
+            SIObject obj = newobj;
+	        transferAttributes(obj);
+            newobj = obj;
 			del();								// and delete the object
+			fParent->cleanupSync();
 			return MsgHandler::kProcessed;		// message has been handled at IObject level
 		}
 	}
@@ -1100,6 +1138,7 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 		case EventsAble::kMouseEnter:
 		case EventsAble::kMouseLeave:
 		case EventsAble::kExport:
+        case EventsAble::kDelete:
 			if (msg->size() > 1) {
 				SIMessageList watchMsg = msg->watchMsg2Msgs (1);
 				if (!watchMsg) return MsgHandler::kBadParameters;
@@ -1156,18 +1195,6 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 			else return MsgHandler::kBadParameters;
 			break;
 
-        case EventsAble::kDelete:
-        	if (msg->size() > 1) {
-				SIMessageList watchMsg = msg->watchMsg2Msgs (1);
-				if (!watchMsg) return MsgHandler::kBadParameters;
-
-				if (add)
-                    eventsHandler()->addMsg (t, watchMsg);
-				else
-                    eventsHandler()->setMsg (t, watchMsg);
-			}
-			else if (!add) eventsHandler()->setMsg (t, 0);
-			break;
 		default:			// unknown event to watch
 			return MsgHandler::kBadParameters;
 	}

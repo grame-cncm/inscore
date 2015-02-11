@@ -158,7 +158,7 @@ bool ISceneSync::name2mapName (const string& str, string& name, string& map) con
 	size_t sepPos = str.find_first_of(MAP_NAME_SEPARATOR);
 	if ( sepPos != string::npos ) {
 		name = str.substr(0, sepPos);
-		map = str.substr( sepPos+1, name.length() + 1);		
+		map = str.substr( sepPos+1, str.length()-name.size());
 		return true;
 	}
 	name = str;

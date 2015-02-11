@@ -493,7 +493,7 @@ void VGraphicsItemView::setSlave(SIObject o )
 {
     std::vector<SMaster> masters = o->getParent()? o->getParent()->getMasters(o) : o->getScene()->getMasters(o);
     
-	for(int i = 0; i < masters.size(); i++)    // we first look for new masters, in order to add new representation
+	for(unsigned int i = 0; i < masters.size(); i++)    // we first look for new masters, in order to add new representation
     {
         SMaster master = masters[i];
         findNewSync(master, o);
@@ -530,7 +530,8 @@ QRectF VGraphicsItemView::referenceRect(QGraphicsItem * specItem) const
             float l = std::min(fParent->boundingRect().width(), fParent->boundingRect().height());
 			float left = fParent->boundingRect().center().x() - l/2;
             float top = fParent->boundingRect().center().y() - l/2;
-            QRectF rect = *new QRectF( left, top, l, l);
+ //           QRectF rect = *new QRectF( left, top, l, l);
+            QRectF rect ( left, top, l, l);
             return rect;
         }
         else {

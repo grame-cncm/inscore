@@ -59,6 +59,9 @@ class ITextFile : public IText, public TFile
 				 ITextFile( const std::string& name, IObject * parent );
 		virtual ~ITextFile() {}
 
+        void updateUrl();
+
+
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 };

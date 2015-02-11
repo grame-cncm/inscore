@@ -10,10 +10,10 @@ set (APPLTARGET	INScoreViewer)
 
 #######################################
 # versions management
-set (INSFWKVERS 1.10)
-set (INSFWKSTRVERS "v.1.10")
-set (INSAPPVERS 1.10)
-set (INSAPPSTRVERS "v.1.10")
+set (INSFWKVERS 1.11)
+set (INSFWKSTRVERS "v.1.11")
+set (INSAPPVERS 1.11)
+set (INSAPPSTRVERS "v.1.11")
 set (SOVERS 1)
 
 
@@ -22,6 +22,7 @@ set (SOVERS 1)
 option ( NOVIEW 	"compiles a viewer with no view (for debug purpose)" off )
 option ( LUA 		"embed a lua engine" off )
 option ( DIST 		"compiles universal binaries (x86_64 i386) - MacOSX only" off )
+option ( QJS 		"use the QJSEngine for javascript support" off )
 
 #######################################
 if(WIN32)
@@ -53,6 +54,7 @@ if(APPLE)
 		set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DIOS -std=c++11")
 		set (CMAKE_XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "1,2")
 		set (CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "7.1")
+		set (QJS "on")
 	else ()
 		 if ( DIST )
 			message (STATUS "All architectures will be compiled - Use -DDIST=no to change.")
@@ -129,20 +131,25 @@ endif()
 
 #######################################
 # javascript support
-if (NOT IOS)
-add_definitions(-DV8ENGINE)
-if (WIN32)
-	set(SCRIPTS ${SCRIPTS} "${LOCALLIB}/javascript/v8/win32/v8.lib")
-	set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/javascript/v8/include)
+if(QJS)
+	message (STATUS "Qt Javascript engine will be used. Use -DQJS=off to change")
+	add_definitions(-DQTJSENGINE)
 else()
-	if(APPLE)
+	message (STATUS "V8 Javascript engine will be used. Use -DQJS=on to change to QJSEngine")
+	add_definitions(-DV8ENGINE)
+	if (WIN32)
+		set(SCRIPTS ${SCRIPTS} "${LOCALLIB}/javascript/v8/win32/v8.lib")
 		set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/javascript/v8/include)
-		set(SCRIPTS ${SCRIPTS} -L${LOCALLIB}/javascript/v8/MacOS -lv8)
 	else()
-		set(SCRIPTS ${SCRIPTS} -lv8) # on linux, use of the v8 package
-	endif()
+		if(APPLE)
+			set(SCRIPTINCL ${SCRIPTINCL} ${LOCALLIB}/javascript/v8/include)
+			set(SCRIPTS ${SCRIPTS} -L${LOCALLIB}/javascript/v8/MacOS -lv8)
+		else()
+			set(SCRIPTS ${SCRIPTS} -lv8) # on linux, use of the v8 package
+		endif()
+	endif ()
 endif ()
-endif()
+
 #######################################
 #
 if(MSVC)
@@ -184,7 +191,7 @@ message (STATUS "Using Qt version ${QTVERSION} - Use -DQTVERSION=vers to change.
 
 set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h  ${ROOT}/view/VLogWindow.h)
 if (QTVERSION EQUAL "5")
-	set (MOC_HEADERS ${MOC_HEADERS} ${ROOT}/view/VVideoView.h)
+	set (MOC_HEADERS ${MOC_HEADERS} ${ROOT}/view/VVideoView.h ${ROOT}/controller/QFileDownloader.h)
 	if(IOS)
 		set( QT_ROOT $(HOME)/Qt/5.3/ios/lib/cmake )
 		set( ENV(CMAKE_PREFIX_PATH) ${QT_ROOT} )
@@ -196,8 +203,9 @@ if (QTVERSION EQUAL "5")
 	FIND_PACKAGE(Qt5PrintSupport REQUIRED)
 	FIND_PACKAGE(Qt5Multimedia REQUIRED)
 	FIND_PACKAGE(Qt5MultimediaWidgets REQUIRED)
+	FIND_PACKAGE(Qt5Qml REQUIRED)
 	if(APPLE OR WIN32)
-	  set(QTLIBS ${Qt5Core_LIBRARIES}  ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} ${Qt5Multimedia_LIBRARIES} ${Qt5MultimediaWidgets_LIBRARIES})	
+	  set(QTLIBS ${Qt5Core_LIBRARIES}  ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} ${Qt5Multimedia_LIBRARIES} ${Qt5MultimediaWidgets_LIBRARIES} ${Qt5Qml_LIBRARIES})	
 	  if(IOS)
 	  	FIND_PACKAGE(Qt5OpenGL REQUIRED)
 	  	# only iphonesimulator seems to be in need of Qt5Network ??!! 
@@ -205,10 +213,10 @@ if (QTVERSION EQUAL "5")
 	  	set(QTLIBS ${QTLIBS} ${Qt5OpenGL_LIBRARIES} ${Qt5Network_LIBRARIES})
 	  endif()
 	else()
-	  set(QTLIBS "-lQt5Core -lQt5Gui -lQt5Widgets -lQt5Svg -lQt5PrintSupport -lQt5Multimedia -lQt5MultimediaWidgets")	
+	  set(QTLIBS "-lQt5Core -lQt5Gui -lQt5Widgets -lQt5Svg -lQt5PrintSupport -lQt5Multimedia -lQt5MultimediaWidgets  -lQt5Qml")	
 	endif()
 
-	set (QTHEADERS ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS}  ${Qt5PrintSupport_INCLUDE_DIRS}  ${Qt5Multimedia_INCLUDE_DIRS}  ${Qt5MultimediaWidgets_INCLUDE_DIRS})
+	set (QTHEADERS ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS} 	${Qt5PrintSupport_INCLUDE_DIRS}  ${Qt5Multimedia_INCLUDE_DIRS}  ${Qt5MultimediaWidgets_INCLUDE_DIRS} ${Qt5Qml_INCLUDE_DIRS})
 else ()   # assume we're using Qt4
 	add_definitions(-DUSEPHONON)
 
@@ -268,7 +276,7 @@ if(APPLE)
 elseif(UNIX)
 	set(OSCPACK  -L${OSC_PATH}/cmake -loscpack)
 	set(GUIDOQT  -L${ROOT}/../lib/GuidoQt/linux -lGuidoQt)
-	set(GUIDO    -lGUIDOEngine)
+        set(GUIDO    -lGUIDOEngine)
 endif()
 
 set(INSLIBS  ${INSLIBS} ${OSCPACK} ${SCRIPTS} ${QTLIBS} ${CORE_FOUNDATION} ${GUIDO} ${GUIDOQT} )

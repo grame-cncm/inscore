@@ -39,6 +39,7 @@
 #include "ISVG.h"
 #include "ISVGFile.h"
 #include "ISync.h"
+#include "IUrlIntermediateObject.h"
 
 namespace inscore
 {
@@ -147,6 +148,7 @@ class IMappingUpdater : public SlaveMapUpdater
 		inline	void updateTo (ILine * o)			{ updateIObject ( (IObject*)o); }
 		inline	void updateTo (IVideo * o)			{ updateIObject ( (IObject*)o); }
 		inline	void updateTo (IImage* o)			{ updateIObject ( (IObject*)o); }
+		inline	void updateTo (IUrlIntermediateObject* o)	{ updateIObject ( (IObject*)o); }
 
 		inline	void updateTo (IHtml* o)			{ updateIObject ( (IObject*)o); }
 		inline	void updateTo (IHtmlFile* o)		{ updateIObject ( (IObject*)o); }

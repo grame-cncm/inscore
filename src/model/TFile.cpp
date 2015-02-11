@@ -27,6 +27,8 @@
 #include "IScene.h"
 #include "ITLError.h"
 #include "TFile.h"
+#include "IUrlIntermediateObject.h"
+#include <QDir>
 
 using namespace std;
 
@@ -35,7 +37,7 @@ namespace inscore
 
 //--------------------------------------------------------------------------
 TFile::TFile(IScene* scene, const std::string& pathname ) 
-	: fFilePath (pathname), fPathChanged (true), fScene(scene)
+	: fFilePath (pathname), fPathChanged (true), fScene(scene), fIsUrl(false)
 {
 }
 
@@ -99,6 +101,27 @@ bool TFile::read (std::string& str) const
 }
 
 //--------------------------------------------------------------------------
+bool TFile::read(QByteArray& out) const
+{
+    if(fIsUrl)
+    {
+        out = fData;
+        return true;
+    }
+    
+    QFile file( fFilePath.c_str() );
+    if(file.open(QIODevice::ReadOnly))
+    {
+        out = file.readAll();
+        file.close();
+        return true;
+    }
+    else ITLErr << "can't open file :" << fFilePath << ITLEndl;
+	
+    return false;
+}
+
+//--------------------------------------------------------------------------
 void TFile::print (ostream& out) const
 {
 	out << "file: \"" << getFile() << "\"" << endl;
@@ -108,11 +131,31 @@ void TFile::print (ostream& out) const
 MsgHandler::msgStatus TFile::set (const IMessage* msg )	
 { 
 	if (msg->size() == 2) {
-		std::string file;
-		if (!msg->param(1, file)) return MsgHandler::kBadParameters;
-		std::string completePath = fScene ? fScene->absolutePath(file) : IAppl::absolutePath(file);
-		if ( file.size())
+		std::string path;
+		if (!msg->param(1, path)) return MsgHandler::kBadParameters;
+        
+        std::string type;
+		if (!msg->param(0, type)) return MsgHandler::kBadParameters;
+        
+        std::string begin;
+        begin.assign(path,0,7);
+        // the creation of a url file should not go through TFile::set.
+        // this means that the current object is not a URLIntermediate, it is a file whose path has been change to an url
+        // we then have to destroy it and re-create the URLIntermediate (we send the message in the form "/urlname set url type path"
+        if(begin == "http://" || begin == "https:/" || begin == "file://")
+        {
+            SIMessage newmsg = IMessage::create(msg->address(), msg->message());
+            newmsg->add(IUrlIntermediateObject::kUrlIntermediateType);
+            newmsg->add(type);
+            newmsg->add(path);
+            newmsg->send();
+            return MsgHandler::kProcessed;
+        }
+        
+		if ( path.size())
 		{
+            fIsUrl = false;
+            std::string completePath = fScene ? fScene->absolutePath(path) : IAppl::absolutePath(path);
 			setFile( completePath );
 			return MsgHandler::kProcessed;
 		}

@@ -27,6 +27,7 @@
 #include "IScene.h"
 #include "Updater.h"
 #include "QGuidoImporter.h"
+#include "VGuidoItemView.h"
 
 using namespace std;
 
@@ -62,22 +63,47 @@ MsgHandler::msgStatus IMusicXMLFile::set (const IMessage* msg )
 
 	status = TFile::set( msg );
 	if (status & MsgHandler::kProcessed) {
-		if (!read(fXML) )
-			status = MsgHandler::kCreateFailure;
-		else {
-			string converted;
-			if ( convert ( fXML, converted) ) {
-				setGMN( converted );
-				status = MsgHandler::kProcessed;
-				newData(true);
-			}
-			else {
-				ITLErr << "Cannot convert MusicXML file" << ITLEndl;
-				status = MsgHandler::kBadParameters;
-			}
+		if(!fIsUrl)
+        {
+            if (!read(fXML))
+                status = MsgHandler::kCreateFailure;
+            else
+            {
+                string converted;
+                if ( convert ( fXML, converted) ) {
+                    setGMN( converted );
+                    status = MsgHandler::kProcessed;
+                    newData(true);
+                }
+                else {
+                    ITLErr << "Cannot convert MusicXML file" << ITLEndl;
+                    status = MsgHandler::kBadParameters;
+                }
+            }
 		}
 	}
 	return status;
 }
 
+//--------------------------------------------------------------------------
+void IMusicXMLFile::updateUrl()
+{
+    fIsUrl = true;
+    
+    if(read(fData))
+    {
+        fXML = fData.data();
+        string converted;
+        if ( convert ( fXML, converted) ) {
+            setGMN( converted );
+            newData(true);
+        }
+        else
+            ITLErr << "updating : Cannot convert MusicXML file" << ITLEndl;
+            
+    }
+    VGuidoItemView * gmnView = fView ? dynamic_cast<VGuidoItemView*>(fView) : 0;
+    if(gmnView)
+        gmnView->updateLocalMapping(this);
+}
 }

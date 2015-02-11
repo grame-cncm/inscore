@@ -177,16 +177,16 @@ MsgHandler::msgStatus IGraphicSignal::set (const IMessage* msg )
 		if (!msg->param(1, signame)) return MsgHandler::kBadParameters;
 		SIObject parent = getParent();
         if (!parent) return MsgHandler::kCreateFailure;
-		SISignalNode signals = parent->signalsNode();
-		if (!signals) return MsgHandler::kCreateFailure;
+		SISignalNode isignals = parent->signalsNode();
+		if (!isignals) return MsgHandler::kCreateFailure;
 
 		subnodes sigs;
-		if (signals->find(signame, sigs)) {
+		if (isignals->find(signame, sigs)) {
 			set(dynamic_cast<ISignal*>((IObject*)sigs[0]));
 			return MsgHandler::kProcessed;
 		}
 
-//		SISignal s =  signals->find(signame);
+//		SISignal s =  isignals->find(signame);
 //		if (s) {
 //			set(s);
 //			return MsgHandler::kProcessed;

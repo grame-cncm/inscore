@@ -133,11 +133,11 @@ void IMessage::add( const argslist& params )
 bool IMessage::cast_param(int i, float& val) const
 {
 	if (param(i)->isType<float>()) {
-		val = param(i)->value<float>(val);
+		val = param(i)->value<float>(0);
 		return true;
 	}
 	if (param(i)->isType<int>()) {
-		int nval = param(i)->value<int>(nval);
+		int nval = param(i)->value<int>(0);
 		val = float(nval);
 		return true;
 	}

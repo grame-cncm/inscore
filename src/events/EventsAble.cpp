@@ -51,6 +51,11 @@ static const char* kGFLeaveStr		= "gfLeave";
 static const char* kGFActiveStr		= "gfActive";
 static const char* kGFIdleStr		= "gfIdle";
 
+// URL specific events
+static const char* kSuccessStr		= "success";
+static const char* kErrorStr		= "error";
+static const char* kCancelStr		= "cancel";
+
 // scene specific events
 static const char* kEndPaintStr		= "endPaint";
 static const char* kNewElementStr	= "newElement";
@@ -263,6 +268,10 @@ const char* EventsAble::type2string (eventype type)
 		case kGFActive:		return kGFActiveStr;
 		case kGFIdle:		return kGFIdleStr;
 		case kDelete:		return kDeleteStr;
+        
+		case kSuccess:		return kSuccessStr;
+		case kError:		return kErrorStr;
+		case kCancel:		return kCancelStr;
 
 		default: return "";
 	}
@@ -290,6 +299,9 @@ void EventsAble::init ()
 		fTypeStr[kGFActiveStr]	= kGFActive;
 		fTypeStr[kGFIdleStr]	= kGFIdle;
 		fTypeStr[kDeleteStr]	= kDelete;
+		fTypeStr[kSuccessStr]	= kSuccess;
+		fTypeStr[kErrorStr]     = kError;
+		fTypeStr[kCancelStr]	= kCancel;
 	}
 }
 

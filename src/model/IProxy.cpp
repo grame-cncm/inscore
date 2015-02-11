@@ -36,6 +36,13 @@
 #include "IFaustDSP.h"
 #include "IFaustDSPFile.h"
 #include "Tools.h"
+#include "IUrlIntermediateObject.h"
+#include "IMusicXMLFile.h"
+#include "IGuidoFile.h"
+#include "IHtmlFile.h"
+#include "ISVGFile.h"
+#include "IImage.h"
+#include "ITextFile.h"
 
 using namespace std;
 
@@ -89,9 +96,31 @@ int IProxy::execute (const IMessage* msg, const std::string& objName, SIObject p
 		objType = msg->param(0)->value<string>("");
 	}
 
-	SIObject obj = IObjectFactory::create(objName, objType, parent);
+
+    SIMessage newmsg;
+    if(objType == ITextFile::kTextFileType || objType == IImage::kImageType || objType == IGuidoFile::kGuidoFileType || objType == IHtmlFile::kHtmlFileType || objType == IMusicXMLFile::kMusicXMLFileType || objType == ISVGFile::kSVGFileType)
+    {
+        std::string path;
+        if (!msg->param(1, path)) return MsgHandler::kBadParameters;
+        std::string begin;
+        begin.assign(path,0,7);
+        if(begin == "http://" || begin == "https:/" || begin == "file://")
+        {
+            newmsg = IMessage::create(msg->address(), msg->message());
+            newmsg->add(IUrlIntermediateObject::kUrlIntermediateType);
+            newmsg->add(objType);
+            newmsg->add(path);
+            objType = IUrlIntermediateObject::kUrlIntermediateType;
+        }
+        else
+            newmsg = IMessage::create(*msg);
+    }
+    else
+        newmsg = IMessage::create(*msg);
+    
+    SIObject obj = IObjectFactory::create(objName, objType, parent);
 	if (obj) {
-		int status = obj->execute(msg);
+		int status = obj->execute(newmsg);
 		if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) {
 			parent->add(obj);
 			obj->setState(IObject::kModified);

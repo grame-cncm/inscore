@@ -44,6 +44,7 @@
 #include "VSVGView.h"
 #include "VTextView.h"
 #include "VVideoView.h"
+#include "VUrlIntermediateObjectView.h"
 
 namespace inscore
 {
@@ -71,6 +72,7 @@ VObjectView*	ViewFactory::create (const IText* object,		QGraphicsScene* scene)		
 VObjectView*	ViewFactory::create (const ITextFile* object,	QGraphicsScene* scene)		{ return new VTextView (scene, object); }
 VObjectView*	ViewFactory::create (const IVideo* object,		QGraphicsScene* scene)		{ return new VVideoView (scene, object); }
 VObjectView*    ViewFactory::create (const ILayer* object,      QGraphicsScene* scene)      { return new VLayerView (scene, object);}
+VObjectView*	ViewFactory::create (const IUrlIntermediateObject* object, QGraphicsScene* scene){return new VUrlIntermediateObjectView (scene, object);}
 
 //--------------------------------------------------------------------------
 VObjectView* ViewFactory::create(const IScene* obj)		{ return new VSceneView (obj->getOSCAddress(), new QGraphicsScene ); }

@@ -21,7 +21,7 @@ function toNum {
 
 echo "moving version number to $VERSION"
 
-CMAKE=$ROOT/cmake/CMakeLists.txt
+CMAKE=$ROOT/build/CMakeLists.txt
 echo " updating $CMAKE"
 sed "s/\(INS[A-Z]*VERS[^0-9]*\)[0-9]*\.[0-9]*/\1$VERSION/" $CMAKE > TMP$$
 mv -f TMP$$ $CMAKE

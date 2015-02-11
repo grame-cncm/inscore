@@ -82,7 +82,6 @@ template<> SIObject _create<IFaustDSPFile>(const std::string& name , IObject* pa
 {
     return IFaustDSPFile::create(name, parent);
 }
-    
 
 #ifndef NOVIEW
 template<> SIObject _create<IScene>(const std::string& name , IObject* parent)
@@ -101,7 +100,7 @@ template<> SIObject _create<IScene>(const std::string& name , IObject* parent)
 #endif
 
 //--------------------------------------------------------------------------
-SIObject IObjectFactory::create(const std::string& name , const std::string& type, IObject* parent)
+SIObject IObjectFactory::create(const std::string& name , const std::string& type, IObject* parent, bool isUrl)
 {
 	SIObject obj;
 	
@@ -123,6 +122,12 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 	else if ( type == IGuidoFile::kGuidoFileType )
 		obj = _create<IGuidoFile> (name, parent);
 
+	else if ( type == IGuidoPianoRoll::kGuidoPianoRollType )
+		obj = _create<IGuidoPianoRoll> (name, parent);
+
+	else if ( type == IGuidoPianoRollStream::kGuidoPianoRollStreamType )
+		obj = _create<IGuidoPianoRollStream> (name, parent);
+    
 	else if ( type == IMusicXMLCode::kMusicXMLCodeType )
 		obj = _create<IMusicXMLCode> (name, parent);
 
@@ -185,6 +190,9 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 
 	else if ( type == ISVG::kSVGType )
 		obj = _create<ISVG> (name, parent);
+    
+    else if ( type == IUrlIntermediateObject::kUrlIntermediateType )
+        obj = _create<IUrlIntermediateObject> (name, parent);
 
 	else if ( type == IScene::kSceneType )
 		obj = _create<IScene> (name, parent);

@@ -73,6 +73,7 @@ class export VQtUpdater : public ViewUpdater
 		virtual void updateTo (ISVG* svg );
 		virtual void updateTo (ISVGFile* svg );
 		virtual void updateTo (IVideo* video );
+		virtual void updateTo (IUrlIntermediateObject* video );
 
 	protected :
 				 VQtUpdater() {}

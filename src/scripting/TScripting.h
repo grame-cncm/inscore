@@ -29,7 +29,11 @@
 
 #include <stack>
 #include <TLua.h>
-# include <TV8Js.h>
+#ifdef V8ENGINE
+#include <TV8Js.h>
+#elif defined QTJSENGINE
+#include <TQtJs.h>
+#endif
 #include "IMessage.h"
 
 #include "smartpointer.h"
@@ -46,8 +50,11 @@ typedef libmapping::SMARTP<baseparam> Sbaseparam;
 
 class TEnv;
 typedef libmapping::SMARTP<TEnv> STEnv;
+#ifdef V8ENGINE
 typedef TV8Js		TJSEngine;
-
+#else
+typedef TQtJs		TJSEngine;
+#endif
 
 //--------------------------------------------------------------------------------------------
 class TScripting 
