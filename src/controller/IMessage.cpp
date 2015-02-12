@@ -168,6 +168,13 @@ bool IMessage::TUrl::parse (const std::string& address)
 }
 
 //----------------------------------------------------------------------
+void IMessage::relative2absoluteAddress(const std::string& prefix)
+{
+	string address = prefix + fAddress.substr(1);
+	fAddress = address;
+}
+
+//----------------------------------------------------------------------
 bool IMessage::decodeAddress (const std::string& address, std::string& oscAddress, IMessage::TUrl& url)
 {
 	size_t startOsc = address.find_first_of('/');

@@ -296,6 +296,12 @@ class IMessage : public Message, public libmapping::smartable
 	void				setAddress(const std::string& addr)	{ fAddress = addr; }
 
 	/*!
+		\brief converts the message address to absolute address
+		\param prefix the address prefix
+	*/
+	void				relative2absoluteAddress(const std::string& prefix);
+
+	/*!
 		\brief sets the message url
 		\param url the address extension
 	*/
@@ -335,6 +341,8 @@ class IMessage : public Message, public libmapping::smartable
 
 	/// \brief gives the message address
 	const std::string&	address() const		{ return fAddress; }
+	/// \brief check for relative address
+	bool				relativeAddress() const		{ return fAddress[0] == '.'; }
 	/// \brief check for extended address
 	bool				extendedAddress() const		{ return fUrl.fPort != 0; }
 	/// \brief gives the address extension

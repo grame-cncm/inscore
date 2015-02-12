@@ -59,11 +59,8 @@ IScene::~IScene()
 {
     for(int i=0; i<size(); i++)
         elements()[i]->del();
-    
     fSync->cleanup();
-    
     elements().clear();		// this is required to avoid orphan QGraphicsItem (and crash after that)
-    
 }
 
 IScene::IScene(const std::string& name, IObject * parent) 
@@ -183,12 +180,13 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 				if (msgs) {
 					for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
 						IMessage * msg = *i;
+						if (msg->relativeAddress())
+							msg->relative2absoluteAddress (getOSCAddress());
 						string address = address2scene (msg->address().c_str());
 						string beg  = OSCAddress::addressFirst(address);
 						string tail = OSCAddress::addressTail(address);
 						int ret = getRoot()->processMsg(beg, tail, *i);
-//						if ( (ret & MsgHandler::kProcessed) == 0)
-							IGlue::trace(*i, ret);
+						IGlue::trace(*i, ret);
 					}
 				}
 				else ITLErr << "while parsing file" << srcfile << ITLEndl;
