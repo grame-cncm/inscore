@@ -1215,10 +1215,13 @@ MsgHandler::msgStatus IObject::evalMsg(const IMessage* msg)
 
 			for (unsigned int i=0; i < n; i++) {
 				SIMessage msg = watchMsg->list()[i];
+				string address;
 				if (msg->relativeAddress())
-					msg->relative2absoluteAddress (getOSCAddress());
-				string beg  = OSCAddress::addressFirst(msg->address());
-				string tail = OSCAddress::addressTail(msg->address());
+					address = msg->relative2absoluteAddress (getOSCAddress());
+				else
+					address = msg->address();
+				string beg  = OSCAddress::addressFirst(address);
+				string tail = OSCAddress::addressTail(address);
 				int ret = getRoot()->processMsg(beg, tail, msg);
 				IGlue::trace(msg, ret);
 			}

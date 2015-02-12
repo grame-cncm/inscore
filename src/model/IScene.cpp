@@ -156,6 +156,9 @@ void IScene::accept (Updater* u)
 }
 
 //--------------------------------------------------------------------------
+// a message addressed to /ITL/scene that is dropped to another scene is converted
+// to the other scene address.
+// in a given way, the address /ITL/scene match any scene address
 string IScene::address2scene (const char* addr) const
 {
 //	CRegexpT<char> regexp("/ITL/[^\\/]*", EXTENDED);
@@ -180,9 +183,12 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 				if (msgs) {
 					for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
 						IMessage * msg = *i;
+						string address;
 						if (msg->relativeAddress())
-							msg->relative2absoluteAddress (getOSCAddress());
-						string address = address2scene (msg->address().c_str());
+							address = msg->relative2absoluteAddress (getOSCAddress());
+						else
+							address = msg->address();
+						address = address2scene (address.c_str());		// possibly converts the address to the local scene address
 						string beg  = OSCAddress::addressFirst(address);
 						string tail = OSCAddress::addressTail(address);
 						int ret = getRoot()->processMsg(beg, tail, *i);
