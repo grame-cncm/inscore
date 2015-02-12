@@ -168,10 +168,9 @@ bool IMessage::TUrl::parse (const std::string& address)
 }
 
 //----------------------------------------------------------------------
-void IMessage::relative2absoluteAddress(const std::string& prefix)
+string IMessage::relative2absoluteAddress(const std::string& prefix) const
 {
-	string address = prefix + fAddress.substr(1);
-	fAddress = address;
+	return prefix + fAddress.substr(1);
 }
 
 //----------------------------------------------------------------------
