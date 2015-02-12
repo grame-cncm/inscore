@@ -49,19 +49,20 @@
      STRING = 265,
      QUOTEDSTRING = 266,
      WATCH = 267,
-     ERR = 268,
-     ENDEXPR = 269,
-     ENDSCRIPT = 270,
-     VARSTART = 271,
-     LEFTPAR = 272,
-     RIGHTPAR = 273,
-     COLON = 274,
-     COMMA = 275,
-     POINT = 276,
-     HOSTNAME = 277,
-     IPNUM = 278,
-     LUASCRIPT = 279,
-     JSCRIPT = 280
+     EVAL = 268,
+     ERR = 269,
+     ENDEXPR = 270,
+     ENDSCRIPT = 271,
+     VARSTART = 272,
+     LEFTPAR = 273,
+     RIGHTPAR = 274,
+     COLON = 275,
+     COMMA = 276,
+     POINT = 277,
+     HOSTNAME = 278,
+     IPNUM = 279,
+     LUASCRIPT = 280,
+     JSCRIPT = 281
    };
 #endif
 /* Tokens.  */
@@ -75,19 +76,20 @@
 #define STRING 265
 #define QUOTEDSTRING 266
 #define WATCH 267
-#define ERR 268
-#define ENDEXPR 269
-#define ENDSCRIPT 270
-#define VARSTART 271
-#define LEFTPAR 272
-#define RIGHTPAR 273
-#define COLON 274
-#define COMMA 275
-#define POINT 276
-#define HOSTNAME 277
-#define IPNUM 278
-#define LUASCRIPT 279
-#define JSCRIPT 280
+#define EVAL 268
+#define ERR 269
+#define ENDEXPR 270
+#define ENDSCRIPT 271
+#define VARSTART 272
+#define LEFTPAR 273
+#define RIGHTPAR 274
+#define COLON 275
+#define COMMA 276
+#define POINT 277
+#define HOSTNAME 278
+#define IPNUM 279
+#define LUASCRIPT 280
+#define JSCRIPT 281
 
 
 
@@ -107,7 +109,7 @@ typedef union YYSTYPE
 	inscore::SIMessageList*			msgList;
 }
 /* Line 1529 of yacc.c.  */
-#line 111 "ITLparse.hpp"
+#line 113 "ITLparse.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
