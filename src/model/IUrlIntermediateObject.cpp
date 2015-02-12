@@ -169,7 +169,7 @@ MsgHandler::msgStatus IUrlIntermediateObject::updateFileFailed(const IMessage* m
 void IUrlIntermediateObject::evalEventMsg(const IMessageList* list)
 {
     MouseLocation mouse (0, 0, 0, 0, 0, 0);
-	EventContext env(mouse, libmapping::rational(0,1), 0);
+	EventContext env(mouse, libmapping::rational(0,1), this);
 	TMessageEvaluator me;
 	SIMessageList outmsgs = me.eval (list, env);
 	if (outmsgs && outmsgs->list().size())
