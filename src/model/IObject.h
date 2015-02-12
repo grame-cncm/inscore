@@ -512,6 +512,9 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		virtual MsgHandler::msgStatus renameMsg(const IMessage* msg);
 
 		/// \brief the \c 'watch' message handler
+		virtual MsgHandler::msgStatus evalMsg(const IMessage* msg);
+
+		/// \brief the \c 'watch' message handler
 		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
 
 		/// \brief the \c 'watch' message handler
