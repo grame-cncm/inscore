@@ -25,9 +25,6 @@
 
 #include "IImage.h"
 #include "IMessage.h"
-#include "ITLError.h"
-#include "TComposition.h"
-#include "IScene.h"
 #include "Updater.h"
 #include "VImageView.h"
 
