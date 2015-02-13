@@ -29,6 +29,7 @@
 
 #include "EventsAble.h"
 #include "IAppl.h"
+#include "IGlue.h"
 #include "IMessage.h"
 #include "IMessageTranslator.h"
 #include "IMessageStream.h"
@@ -99,6 +100,8 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 //	fMsgHandlerMap["rename"]			= TMethodMsgHandler<IObject>::create(this, &IObject::renameMsg);
 	fMsgHandlerMap[ksave_SetMethod]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::saveMsg);
 	fMsgHandlerMap[kwatch_GetSetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsg);
+	fMsgHandlerMap[keval_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::evalMsg);
+	
 	fMsgHandlerMap[kwatchplus_SetMethod]= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsgAdd);
 	fMsgHandlerMap[kevent_SetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::eventMsg);
 
@@ -1199,6 +1202,33 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 			return MsgHandler::kBadParameters;
 	}
 	return MsgHandler::kProcessed;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::evalMsg(const IMessage* msg)
+{ 
+	if (msg->size() == 1) {
+		SIMessageList watchMsg = msg->watchMsg2Msgs (0);
+		if (watchMsg) {
+			unsigned int n = watchMsg->list().size();
+			if (!n) return MsgHandler::kBadParameters;
+
+			for (unsigned int i=0; i < n; i++) {
+				SIMessage msg = watchMsg->list()[i];
+				string address;
+				if (msg->relativeAddress())
+					address = msg->relative2absoluteAddress (getOSCAddress());
+				else
+					address = msg->address();
+				string beg  = OSCAddress::addressFirst(address);
+				string tail = OSCAddress::addressTail(address);
+				int ret = getRoot()->processMsg(beg, tail, msg);
+				IGlue::trace(msg, ret);
+			}
+			return MsgHandler::kProcessed;
+		}
+	}
+	return MsgHandler::kBadParameters;
 }
 
 //--------------------------------------------------------------------------

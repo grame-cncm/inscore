@@ -40,7 +40,7 @@
 %token REGEXP
 %token PATHSEP
 %token STRING QUOTEDSTRING
-%token WATCH
+%token WATCH EVAL
 %token ERR
 %token ENDEXPR ENDSCRIPT
 
@@ -57,8 +57,8 @@
 %type <str>		identifier oscaddress relativeaddress oscpath varname variabledecl hostname
 %type <msg>		message
 %type <msgList>	messagelist script
-%type <p>		param watchmethod
-%type <plist>	params watchparams variable
+%type <p>		param watchmethod 
+%type <plist>	params watchparams variable eval
 %type <url>		urlprefix
 %type <addr>	address
 
@@ -138,6 +138,13 @@ message		: address					{ $$ = new inscore::SIMessage(inscore::IMessage::create($
 										{	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
 											(*$$)->add(*$4);
 											delete $1; delete $2; delete $4; }
+			| address eval LEFTPAR messagelist RIGHTPAR
+										{	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
+											(*$$)->add(*$4); std::cout << "parser eval list" << std::endl;
+											delete $1; delete $2; delete $4; }
+			| address eval variable		{	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
+											(*$$)->add(*$3); std::cout << "parser eval variable" << std::endl;
+											delete $1; delete $2; delete $3; }
 			| address watchparams script {	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
 											if (*$3) (*$$)->add(*$3);
 											delete $1; delete $2; delete $3; }
@@ -183,7 +190,11 @@ identifier	: IDENTIFIER		{ $$ = new string(context->fText); }
 
 //_______________________________________________
 // parameters definitions
-// watchparams need a special case since messages are expected as argument
+// eval and watchparams need a special case since messages are expected as argument
+eval		: EVAL				{ $$ = new inscore::IMessage::argslist; 
+								  inscore::Sbaseparam * p = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText));
+								  $$->push_back(*p); delete p; }
+
 watchparams	: watchmethod		{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
 			| watchmethod params { $$ = new inscore::IMessage::argslist;
 								  $$->push_back(*$1);

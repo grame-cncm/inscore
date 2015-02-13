@@ -2,7 +2,7 @@
 
   INScore Project
 
-  Copyright (C) 2009,2010  Grame
+  Copyright (C) 2009,2015  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -38,11 +38,14 @@ typedef class libmapping::SMARTP<IUrlIntermediateObject>	SIUrlIntermediateObject
 
 class IUrlIntermediateObject : public IShapeMap, public TFile
 {
+	
     public:
+		enum status { kDownloading, kCancelled, kFailed };
 		static const std::string kUrlIntermediateType;
         static SIUrlIntermediateObject create(const std::string& name, IObject * parent)	{ return new IUrlIntermediateObject(name, parent); }
     
 		virtual void	accept (Updater*);
+		status	getStatus()		{ return fStatus; }
 
     
     protected:    
@@ -80,6 +83,7 @@ class IUrlIntermediateObject : public IShapeMap, public TFile
         QFileDownloader *    fDownloaderThread; // the thread called to download the data from the URL. Once done, it sends the appropriate msg
         QByteArray fData; // the data contained in the URL
     
+		status fStatus;
 };
 }
 

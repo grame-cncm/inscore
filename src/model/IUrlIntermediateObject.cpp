@@ -2,7 +2,7 @@
 
   INScore Project
 
-  Copyright (C) 2009,2010  Grame
+  Copyright (C) 2009,2015  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -58,6 +58,7 @@ IUrlIntermediateObject::IUrlIntermediateObject( const std::string& name, IObject
     fTypeString = kUrlIntermediateType;
     fWidth = 1.0;
     fHeight = 1.0;
+	setColor( IColor(220,220,220) );
 }
 
 //--------------------------------------------------------------------------
@@ -168,7 +169,7 @@ MsgHandler::msgStatus IUrlIntermediateObject::updateFileFailed(const IMessage* m
 void IUrlIntermediateObject::evalEventMsg(const IMessageList* list)
 {
     MouseLocation mouse (0, 0, 0, 0, 0, 0);
-	EventContext env(mouse, libmapping::rational(0,1), 0);
+	EventContext env(mouse, libmapping::rational(0,1), this);
 	TMessageEvaluator me;
 	SIMessageList outmsgs = me.eval (list, env);
 	if (outmsgs && outmsgs->list().size())

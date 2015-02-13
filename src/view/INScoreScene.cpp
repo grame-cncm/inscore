@@ -162,7 +162,13 @@ void INScoreScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 		SIMessageList msgs = p.parse();
 		if (msgs) {
 			for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
-				string addr = (*i)->extendedAddress() ? string((*i)->url()) + (*i)->address() :  (*i)->address();
+				string addr;
+				if ((*i)->extendedAddress())
+					addr = string((*i)->url()) + (*i)->address();
+				else if ((*i)->relativeAddress())
+					addr = (*i)->relative2absoluteAddress( fScene->getOSCAddress());
+				else
+					addr = (*i)->address();
 				INScore::postMessage (addr.c_str(), *i);
 			}
 		}

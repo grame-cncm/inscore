@@ -75,6 +75,7 @@ const char* kdz_SetMethod			= "dz";				// Set
 const char* keffect_GetSetMethod	= "effect";			// Get Set
 const char* kerror_SetMethod		= "error";			// Set
 const char* kerrport_GetSetMethod	= "errport";		// Get Set
+const char* keval_SetMethod			= "eval";			// Set
 const char* kevent_SetMethod		= "event";			// Set
 const char* kexport_SetMethod		= "export";			// Set
 const char* kforward_GetSetMethod	= "forward";		// Get Set

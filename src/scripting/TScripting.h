@@ -52,8 +52,10 @@ class TEnv;
 typedef libmapping::SMARTP<TEnv> STEnv;
 #ifdef V8ENGINE
 typedef TV8Js		TJSEngine;
-#else
+#elif defined QTJSENGINE
 typedef TQtJs		TJSEngine;
+#else
+typedef void*		TJSEngine;
 #endif
 
 //--------------------------------------------------------------------------------------------

@@ -487,8 +487,13 @@ MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
 				SIMessageList msgs = p.parse();
 				if (msgs) {
 					for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
-						string beg  = OSCAddress::addressFirst((*i)->address());
-						string tail = OSCAddress::addressTail((*i)->address());
+						string address;
+						if ((*i)->relativeAddress())
+							address = (*i)->relative2absoluteAddress (getOSCAddress());
+						else
+							address = (*i)->address();
+						string beg  = OSCAddress::addressFirst(address);
+						string tail = OSCAddress::addressTail (address);
 						int ret = processMsg(beg, tail, *i);
 						if (oscDebug()) IGlue::trace(*i, ret);
 					}
