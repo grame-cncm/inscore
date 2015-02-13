@@ -142,9 +142,9 @@ OSCMessage : OSCAddress message (parameters |)
 \sample{/ITL/scene/score x 0.5;}
 sends the message \OSC{x} to the object which address is \OSC{/ITL/scene/score} with \OSC{0.5} as parameter.
 
-The address is similar to a Unix path and supports regular expressions as defined by the OSC specification. 
+The address is similar to a Unix path and supports regular expressions as defined by the OSC specification (see at \url{http://opensoundcontrol.org/}). This address scheme is extended to address any host and applications (see section \fullref{interaction}). Relative addresses have also been introduced for the scripting language (see section \fullref{scriptmsgs})
 
-\note{} A valid address always starts with \OSC{/ITL} that is the application address and that is also used as a discriminant for incoming messages.
+\note{} A valid legal OSC address always starts with \OSC{/ITL} that is the application address and that is also used as a discriminant for incoming messages.
 \begin{rail}
 OSCAddress : '/' (identifier | regexp) +
 \end{rail}
@@ -689,6 +689,35 @@ Similar ways to move an object date.
 /ITL/scene/myObject ddate '1/96';
 }
 
+%===============================
+%:Miscellaneous messages
+\toplevel{Miscellaneous messages}
+\label{miscmsgs}
+
+The following messages are supported by all the objects. They are detailled in specialized sections.
+
+\begin{rail}
+miscMsgs :  
+		 	"eval" msgsList
+		|   "watch" (| what ( | msgsList ))
+		| 	"push"
+		| 	"pop"
+		| 	"map" ( | mapName ) (relation | ( del ))
+\end{rail}
+\index{Misc messages!eval}
+\index{Misc messages!watch}
+\index{Misc messages!push}
+\index{Misc messages!pop}
+\index{Misc messages!map}
+
+\begin{itemize}
+\item \OSC{eval}: evaluates a list of messages in the context of the receiver object. See section \fullref{scriptmsgs} for more details.
+\item \OSC{watch}: used to manage the object interaction with various events. See section \fullref{interaction} for more details.
+\item \OSC{push}, \OSC{pop}: saves and restores the object interaction state. See section \fullref{evtstate} for more details.
+\item \OSC{map}: used to describe the relations between graphic and time spaces. See section \fullref{mapping} for more details.
+\end{itemize}
+
+
 
 %===============================
 %:The 'set' message
@@ -870,19 +899,24 @@ Images and video are supported using various formats. See section \fullref{files
 \begin{rail}
 setMsg : 
 	('img' imgPath) |
+	('memimg' objectPath) |
 	('video' videoPath)
 \end{rail}
 \index{Set type!img}
+\index{Set type!memimg}
 \index{Set type!video}
 
 \begin{itemize}
-\item \OSC{img}: animage file. The image format is infered from the file extension.
+\item \OSC{img}: an image file. The image format is infered from the file extension.
+\item \OSC{memimg}: a memory capture of the object given as argument. \OSC{objectPath} indicates the target object that is captured with all its childrens. It may be an object name or a path to an object. Simple object names and relative path are looked for in the receiver layer.
 \item \OSC{video}: a video file. The video format is infered from the file extension. Note that navigation through the video is made using its \OSC{date}.
 \end{itemize}
 
 \example \\
 Creating an image.
 \sample{/ITL/scene/myObject set img "myImage.png";}
+Creating a memory image of a scene.
+\sample{/ITL/scene/myObject set memimg "/ITL/scene";}
 
 
 %===============================
@@ -2669,8 +2703,10 @@ Messages and variables declarations must be followed by a semicolon, used as sta
 %:    Messages
 \sublevel{Messages}\label{scriptmsgs}
 
-Messages are basically OSC messages that support the address extension scheme described in section \fullref{interaction}.
-Thus a script may be designed to initialize an INScore scene and external applications as well, including on remote hosts.
+Messages are basically OSC messages that support the address extension scheme described in section \fullref{interaction} and relative addresses that are described below.
+Messages parameters can be replaced by variables that are evaluated at parsing level. Variables are described in section \ref{scriptvar}.
+
+Using the address extension scheme, a script may be designed to initialize an INScore scene and external applications as well, including on remote hosts.
 
 \example\\
 Initializing a score and an external application listening on port 12000 and running on a remote host named \OSC{host.adomain.net}.
@@ -2678,7 +2714,34 @@ Initializing a score and an external application listening on port 12000 and run
 host.adomain.net:12000/run 1;
 }
 
-Messages parameters can be replaced by variables that are evaluated at parsing level. Variables are described in section \ref{scriptvar}.
+Relative addresses have been introduced to provide more flexibility in the score design process. A relative address starts with '\OSC{./}'. It is evaluated in the context of the message receiver: a legal OSC address is dynamically constructed using the receiver address that is used to prefix the relative address. 
+
+\example
+\sample{the relative address \hspace*{3mm}./score \\
+addressed to \hspace*{15.4mm}/ITL/scene/layer\\
+will be evaluted as \hspace*{4mm}/ITL/scene/layer/score
+}
+
+The receiver context may be:
+\begin{itemize}
+\item the INScore application address (i.e. \OSC{/ITL}) for messages enclosed in a file loaded at application level (using the \OSC{load} message addressed to the application) or for files dropped to the application or given as arguments of the INScoreViewer application.
+\item a scene address for messages enclosed in a file loaded at scene level (using the \OSC{load} message addressed to a scene) or for files or messages dropped to a scene window.
+\item any object address when the messages are passed as arguments of an \OSC{eval} message (see section \fullref{miscmsgs}).
+\end{itemize}
+
+\example\\
+Using a set of messages in different contexts:
+\sample{score = (\\
+\hspace*{5mm}./score set gmn '[a f g]', \\
+\hspace*{5mm}./score scale 2.\\
+);\\
+/ITL/scene/l1 eval \$score;\\
+/ITL/scene/l2 eval \$score;
+}
+
+\note{}\\
+Legal OSC addresses that are given as argument of an \OSC{eval} message are not affected by the evaluation.
+
 
 %===============================
 %:    types
