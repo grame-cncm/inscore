@@ -42,9 +42,9 @@ else()
 	endif()
 endif()
 
-if(APPLE)
 #######################################
-#   iOS support
+if(APPLE)
+        #   iOS support
 	if ( IOS )
 		message (STATUS "Generates project for iOS - Use -DIOS=no to change.")
 		set (CMAKE_XCODE_EFFECTIVE_PLATFORMS "iPhoneOS")
@@ -80,6 +80,8 @@ set (MAP ${ROOT}/libmapping)
 set (INSFOLDERS  controller events lib model view mapping interface graph signal signal/faust ITLParser scripting)
 set (INSFOLDERS  ${INSFOLDERS} plugins/gesturefollower)
 set (INSFOLDERS  ${INSFOLDERS} plugins/faustDSP)
+set (INSFOLDERS  ${INSFOLDERS} plugins/httpserver)
+
 set (LIBMAPFOLDERS libmapping/src/misc libmapping/src/parser libmapping/src/relations libmapping/src/segments)
 set (RSRC  "${ROOT}/../rsrc")
 set (LOCALLIB  "${ROOT}/../lib")

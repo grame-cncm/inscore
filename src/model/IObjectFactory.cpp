@@ -29,6 +29,7 @@
 #include "IObjectFactory.h"
 #include "IModel.h"
 #include "INScoreScene.h"
+#include "IHttpd.h"
 #ifdef NOVIEW
 #include "VoidViewFactory.h"
 #else
@@ -81,6 +82,11 @@ template<> SIObject _create<IFaustDSP>(const std::string& name , IObject* parent
 template<> SIObject _create<IFaustDSPFile>(const std::string& name , IObject* parent)
 {
     return IFaustDSPFile::create(name, parent);
+}
+
+template<> SIObject _create<IHttpd>(const std::string& name , IObject* parent)
+{
+	return IHttpd::create(name, parent);
 }
 
 #ifndef NOVIEW
@@ -175,6 +181,9 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 
 	else if ( type == IGestureFollower::kGestureFollowerType )
 		obj = _create<IGestureFollower> (name, parent);
+
+	else if ( type == IHttpd::kIHttpdType )
+		obj = _create<IHttpd> (name, parent);
 
 	else if ( type == IText::kTextType )
 		obj = _create<IText> (name, parent);
