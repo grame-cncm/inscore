@@ -91,6 +91,9 @@ typedef class libmapping::SMARTP<IHtmlFile>		SIHtmlFile;
 class IImage;
 typedef class libmapping::SMARTP<IImage>		SIImage;
 
+class IMemImage;
+typedef class libmapping::SMARTP<IMemImage>		SIMemImage;
+
 class ILine;
 typedef class libmapping::SMARTP<ILine>		SILine;
 

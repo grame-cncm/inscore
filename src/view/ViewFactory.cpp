@@ -62,6 +62,7 @@ VObjectView*	ViewFactory::create (const IMusicXMLFile* object, QGraphicsScene* s
 VObjectView*	ViewFactory::create (const IHtml* object,		QGraphicsScene* scene)		{ return new VTextView (scene, object); }
 VObjectView*	ViewFactory::create (const IHtmlFile* object,	QGraphicsScene* scene)		{ return new VTextView (scene, object); }
 VObjectView*	ViewFactory::create (const IImage* object,		QGraphicsScene* scene)		{ return new VImageView (scene, object); }
+VObjectView*	ViewFactory::create (const IMemImage* object,	QGraphicsScene* scene)		{ return new VImageView (scene, object); }
 VObjectView*	ViewFactory::create (const ILine* object,		QGraphicsScene* scene)		{ return new VLineView (scene, object); }
 VObjectView*	ViewFactory::create (const IPolygon* object,	QGraphicsScene* scene)		{ return new VPolygonView (scene, object); }
 VObjectView*	ViewFactory::create (const IGrid* object,		QGraphicsScene* scene)		{ return new VGridView (scene, object); }
