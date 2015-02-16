@@ -134,6 +134,7 @@ extern const char* kshow_GetSetMethod;
 extern const char* ksignal_GetMethod;
 extern const char* ksize_GetSetMethod;
 extern const char* kstack_GetMethod;
+extern const char* kstatus_GetMethod;
 extern const char* kstartBench_SetMethod;
 extern const char* kstopBench_SetMethod;
 extern const char* ksuccess_SetMethod;
