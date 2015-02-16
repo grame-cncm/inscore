@@ -24,8 +24,7 @@
 */
 
 #include "IHttpd.h"
-#include <iostream>
-
+#include "ITLError.h"
 
 using namespace std;
 
@@ -37,7 +36,8 @@ IHttpd::IHttpd(const std::string& name, IObject * parent ) : IObject (name, pare
 {
 	fTypeString = kIHttpdType;
 	fHttpServer = 0;
-	cout << "constructor IHttpd" << endl;
+	fMsgHandlerMap[kstatus_GetMethod]	= TMethodMsgHandler<IHttpd>::create(this, &IHttpd::statusMsg);
+
 }
 
 IHttpd::~IHttpd()
@@ -50,14 +50,12 @@ IHttpd::~IHttpd()
 
 SIMessageList IHttpd::getSetMsg () const
 {
-	cout << "getSetMsg IHttpd" << endl;
 	SIMessageList list = IObject::getSetMsg();
 	return list;
 }
 
 MsgHandler::msgStatus IHttpd::set (const IMessage* msg)
 {
-	cout << "set IHttpd" << endl;
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status;
 
@@ -69,17 +67,30 @@ MsgHandler::msgStatus IHttpd::set (const IMessage* msg)
 		// Initialize Http server
 		if(init())
 			return MsgHandler::kProcessed;
-		else return MsgHandler::kCreateFailure;
+		else {
+			ITLErr << "Cannot create http server on port " << fHttpPort << ITLEndl;
+			return MsgHandler::kCreateFailure;
+		}
 	}
 	return MsgHandler::kBadParameters;
 }
 
 bool IHttpd::init ()
 {
-	cout << "IHttpd::init" << endl;
-	fHttpServer = new THttpdPlugin;
-	fHttpServer->start(fHttpPort);
-	return true;
+	fHttpServer = new THttpdPlugin(this);
+	return fHttpServer->start(fHttpPort);
+}
+
+MsgHandler::msgStatus IHttpd::statusMsg (const IMessage* msg)
+{
+	int n = msg->size();
+	// No parameters
+	if(n) return MsgHandler::kBadParameters;
+
+	int result = this->fHttpServer->status();
+	// TODO GGX it's not an error, where is info log ?
+	ITLErr << "Http server " << this->name() << " has status : " << result << ITLEndl;
+	return MsgHandler::kProcessed;
 }
 
 }
