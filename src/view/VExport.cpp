@@ -115,7 +115,7 @@ QImage VExport::itemToImage( QGraphicsItem * item , float& xScaleFactor , float&
 	paintOnDevice( &pic , item , xScaleFactor , yScaleFactor, dx, dy, drawChildren );
     
     return pic;
-};
+}
 
 //------------------------------------------------------------------------------------------------------------------------
 void VExport::exportToImage( QGraphicsItem * item , const QString& fileName , float& xScale , float& yScale, bool drawChildren )
@@ -214,9 +214,9 @@ void VExport::exportScene( QGraphicsView * view , QString fileName )
 #ifndef IOS
 	if ( QFileInfo(fileName).suffix().isEmpty() ) fileName = nextFreeName(fileName, DEFAULT_EXPORT_FORMAT);
 
-	QSize size (view->width() , view->height());
 	if ( fileName.toUpper().endsWith( PDF_FORMAT.toUpper() ) )
 	{
+		QSize size (view->width() , view->height());
 		QPrinter printer (QPrinter::HighResolution);
 		printer.setOutputFileName( QString(fileName) );
 		printer.setOutputFormat( QPrinter::PdfFormat );
@@ -225,12 +225,19 @@ void VExport::exportScene( QGraphicsView * view , QString fileName )
 	}
 	else
 	{
-		QImage image(size, QImage::Format_ARGB32_Premultiplied);
-		image.fill( view->backgroundBrush().color().rgba() );
-		paintOnDevice (&image, view);
+		QImage image = sceneToImage(view, view->width() , view->height());
 		image.save( fileName );			
 	}
 #endif
+}
+
+QImage	VExport::sceneToImage(QGraphicsView * sceneview , int width , int height)
+{
+	QSize size (width , height);
+	QImage image(size, QImage::Format_ARGB32_Premultiplied);
+	image.fill( sceneview->backgroundBrush().color().rgba() );
+	paintOnDevice (&image, sceneview);
+	return image;
 }
 
 } // end namespoace

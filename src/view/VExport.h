@@ -87,6 +87,16 @@ class VExport
 		*	pdf, bmp, gif, jpeg, png, pgm, ppm, tiff, xbm, xpm.
 		*/
 		static void		exportScene( QGraphicsView * sceneview , QString fileName );
+
+		/*!
+		*	\brief  Paints the QGraphicsScene on a QImage and returns the QImage.
+		*
+		*	The image can be streched vertically and horizontally with xScale and yScale.
+		*	\param sceneview the scene to draw to the image
+		*	\param width width of the image
+		*	\param height height of the image.
+		*/
+		static QImage	sceneToImage(QGraphicsView * sceneview , int width , int height);
 										
 		/*!	\brief Paints the QGraphicsItem on a QImage and returns the QImage.
 		*
