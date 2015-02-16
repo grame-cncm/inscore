@@ -6,7 +6,9 @@ set (ROOT  ${CMAKE_CURRENT_SOURCE_DIR}/..)
 
 FILE(GLOB SERVER_CPP_SOURCES ${ROOT}/*.cpp)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/)
+include_directories(${ROOT}/)
+message(status ${ROOT})
+include_directories(${ROOT}/../../src/plugins/httpserver)
 
 # microhttpd
 EXECUTE_PROCESS ( COMMAND "pkg-config" "--libs" "libmicrohttpd"
