@@ -24,9 +24,9 @@
 
 using namespace inscorehttpd;
 
-void * initialize()
+void * initialize(callbackGetData callbackFct, void * object)
 {
-	return new HTTPDServer;
+	return new HTTPDServer(callbackFct, object);
 }
 
 void destroy(void * server)
@@ -56,6 +56,9 @@ bool stop(void * server)
 
 int status(void * server)
 {
-	// TODO
-	return 200;
+	HTTPDServer *aServer  = static_cast<HTTPDServer *>(server);
+	if(aServer) {
+		return aServer->status();
+	}
+	return false;
 }

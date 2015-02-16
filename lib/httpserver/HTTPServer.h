@@ -28,6 +28,7 @@
 #include <string>
 
 #include "Response.h"
+#include "DataExchange.h"
 
 #define IP_VERBOSE 1
 #define HEADER_VERBOSE 2
@@ -63,18 +64,34 @@ class HTTPDServer
 	bool fAccessControlAllowOrigin;
 	int fVerbose;
 	int fLogmode;
+
+	/*!
+	 * \brief fServer libmicrohttpd demon server.
+	 */
 	struct MHD_Daemon *	fServer;
+
+	/*!
+	 * \brief fCallbackFct Callback function to get the data
+	 */
+	callbackGetData fCallbackFct;
+
+	/*!
+	 * \brief fObject INScore object for the server.
+	 */
+	void * fObject;
 
 public:
 
 	/*!
 	 * \brief HTTPDServer. The guido engine has to be initailized to create the HTTPDserver.
+	 * \param callbackFct a pointer on the callback function to get the result data.
+	 * \param object the INScore object for the server.
 	 * \param verbose flags for logging
 	 * \param logmode mode of log (0 for Apache-like log or 1 for XML log file)
 	 * \param g2img
 	 * \param allowOrigin if true, Access-Control-Allow-Origin is set to '*' in http response header to allow cross domain request.
 	 */
-	HTTPDServer(int verbose = 0, int logmode = 0, bool allowOrigin = true);
+	HTTPDServer(callbackGetData callbackFct, void* object, int verbose = 0, int logmode = 0, bool allowOrigin = true);
 	virtual ~HTTPDServer();
 
 	/// \brief starts the httpd server
@@ -99,6 +116,12 @@ public:
 	 */
 	int answer (struct MHD_Connection *connection, const char *url, const char *method, const char *version,
 				const char *upload_data, size_t *upload_data_size, void **con_cls);
+
+	/*!
+	 * \brief status return a non zero value if server is running.
+	 * \return file descriptor number (MHD_DAEMON_INFO_LISTEN_FD of libmicorhttpd) or 0 if server not working.
+	 */
+	int status();
 
 private:
 	/*!

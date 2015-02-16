@@ -24,6 +24,7 @@
 #include <cstring>
 #include <iostream>
 #include <sstream>
+#include <iterator>
 
 using namespace std;
 
@@ -129,8 +130,8 @@ static int _post_params (void *coninfo_cls, enum MHD_ValueKind , const char *key
 //--------------------------------------------------------------------------
 // the http server
 //--------------------------------------------------------------------------
-HTTPDServer::HTTPDServer(int verbose, int logmode, bool alloworigin)
-	: fAccessControlAllowOrigin(alloworigin), fVerbose(verbose), fLogmode(logmode), fServer(0)
+HTTPDServer::HTTPDServer(callbackGetData callbackFct,  void* object, int verbose, int logmode, bool alloworigin)
+	: fCallbackFct(callbackFct), fObject(object), fAccessControlAllowOrigin(alloworigin), fVerbose(verbose), fLogmode(logmode), fServer(0)
 {
 }
 
@@ -159,6 +160,16 @@ void HTTPDServer::stop ()
 		MHD_stop_daemon (fServer);
 	}
 	fServer=0;
+}
+
+//--------------------------------------------------------------------------
+
+int HTTPDServer::status()
+{
+	const union MHD_DaemonInfo *infos = MHD_get_daemon_info(fServer, MHD_DAEMON_INFO_LISTEN_FD);
+	if(infos)
+		return infos->listen_fd;
+	return 0;
 }
 
 //--------------------------------------------------------------------------
@@ -359,7 +370,42 @@ void HTTPDServer::logSend(struct MHD_Connection *connection, const char* url, co
 //--------------------------------------------------------------------------
 int HTTPDServer::sendGetRequest (struct MHD_Connection *connection, const char* url, const TArgs& args, vector<string> &elems)
 {
-	Response resp("Test server", "text/plain");
+
+	TArgs::const_iterator it = args.find("format");
+	string mimetype;
+	string format;
+	if(it != args.end()) {
+		format = it->second;
+		if ("bmp" == format) {
+			format="BMP";
+			mimetype = "image/bmp";
+		} else if ("jpg" == format || "jpeg" == format) {
+			format="JPG";
+			mimetype = "image/jpeg";
+		} else {
+			format="PNG";
+			mimetype = "image/png";
+		}
+	} else {
+		format="PNG";
+		mimetype = "image/png";
+	}
+
+	// Get data from the callback
+	struct requestarguments requestArgs;
+	requestArgs.format = format.c_str();
+	requestArgs.path = url + 1; // remove first '/'
+
+	struct responsedata * data = fCallbackFct(&requestArgs, fObject);
+	if(data) {
+		// Create a response
+		Response resp(data->data, data->size, mimetype);
+		delete[] data->data;
+		delete data;
+		return send (connection, resp);
+	}
+	// Error
+	Response resp = Response::genericFailure("Cannot create image");
 	return send (connection, resp);
 }
 

@@ -23,6 +23,7 @@
 #define __inscoreserver__
 
 #include "HTTPServer.h"
+#include "DataExchange.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,9 +31,11 @@ extern "C" {
 
 	/*!
 	 * \brief initialize Create a new HTTPDServer instance
+	 * \param callbackFct Call back function to get the data
+	 * \param object a pointer on the server object in INScore.
 	 * \return the HTTPDServer instance
 	 */
-	void * initialize();
+	void * initialize(callbackGetData callbackFct, void *object);
 
 	/*!
 	 * \brief destroy Destroy a HTTPDServer instance.
