@@ -23,6 +23,8 @@
 #define THTTPDPLUGIN_H
 
 #include "TPlugin.h"
+#include "IObject.h"
+#include "DataExchange.h"
 
 namespace inscore
 {
@@ -35,17 +37,21 @@ class THttpdPlugin : public TPlugin
 {
 	private:
 		/*!
+		 * \brief fParent Server model object
+		 */
+		IObject * fParent;
+		/*!
 		 * \brief fHttpdServer HttpServer instance.
 		 */
 		void * fHttpdServer;
+
 		// Prototype of function to resolve.
-		typedef void * (* TInitialize) ();
+		typedef void * (* TInitialize) (callbackGetData, void*);
 		typedef void (* TDestroy) (void*);
 		typedef bool (* TStart) (void*, int);
 		typedef bool (* TStop) (void*);
 		typedef int (* TStatus) (void*);
 
-		//
 		static TInitialize fInitialize;
 		static TDestroy fDestroy;
 		static TStart fStart;
@@ -68,7 +74,7 @@ class THttpdPlugin : public TPlugin
 		/*!
 		 * \brief THttpdPlugin Create a new http server.
 		 */
-        THttpdPlugin();
+		THttpdPlugin(IObject *parent);
 
 		/*!
 		 * \brief ~THttpdPlugin Destroy the http server.
