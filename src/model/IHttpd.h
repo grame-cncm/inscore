@@ -54,7 +54,7 @@ class IHttpd : public IObject
 		 */
 		MsgHandler::msgStatus set (const IMessage* msg);
 
-		MsgHandler::msgStatus statusMsg (const IMessage* msg);
+		std::string status() const;
 
 	protected:
 		IHttpd(const std::string &name, IObject *parent);

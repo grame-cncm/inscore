@@ -82,7 +82,7 @@ struct responsedata * getData(struct requestarguments* args, void * aObject)
 
 		QGraphicsView * view = listViews[0];
 		// Export the scene of the object to image.
-		QImage image = VExport::sceneToImage(view, view->width(), view->height());
+		QImage image = VExport::sceneToImage(view);
 
 		// Write image to buffer
 		QByteArray ba;

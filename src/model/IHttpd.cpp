@@ -36,8 +36,8 @@ IHttpd::IHttpd(const std::string& name, IObject * parent ) : IObject (name, pare
 {
 	fTypeString = kIHttpdType;
 	fHttpServer = 0;
-	fMsgHandlerMap[kstatus_GetMethod]	= TMethodMsgHandler<IHttpd>::create(this, &IHttpd::statusMsg);
 
+	fGetMsgHandlerMap[kstatus_GetMethod]	= TGetParamMethodHandler<IHttpd, string (IHttpd::*)() const>::create(this, &IHttpd::status);
 }
 
 IHttpd::~IHttpd()
@@ -81,16 +81,9 @@ bool IHttpd::init ()
 	return fHttpServer->start(fHttpPort);
 }
 
-MsgHandler::msgStatus IHttpd::statusMsg (const IMessage* msg)
+string IHttpd::status () const
 {
-	int n = msg->size();
-	// No parameters
-	if(n) return MsgHandler::kBadParameters;
-
-	int result = this->fHttpServer->status();
-	// TODO GGX it's not an error, where is info log ?
-	ITLErr << "Http server " << this->name() << " has status : " << result << ITLEndl;
-	return MsgHandler::kProcessed;
+	return this->fHttpServer->status() ? "started": "stopped";
 }
 
 }
