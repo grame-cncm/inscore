@@ -483,8 +483,6 @@ const IObject* IObject::findnode(const string& node, const string& pathtail) con
 //--------------------------------------------------------------------------
 const IObject* IObject::findnode(const string& objpath) const
 {
-cout << "IObject::find : " << name() << " search " << objpath << endl;
-
 	if (objpath[0] == '/') {				// absolute addresses are forwarded to the root node
 		std::size_t pos = objpath.find_first_of('/', 1);
 		if (pos != string::npos) {
@@ -493,10 +491,6 @@ cout << "IObject::find : " << name() << " search " << objpath << endl;
 			string nexttail	= objpath.substr(pos+1);
 			if (next == root->name()) {
 				return root->findnode(".", nexttail);
-//				pos = nexttail.find_first_of('/');
-//				next	= nexttail.substr(0, pos);
-//				nexttail= nexttail.substr(pos+1);
-//				return root->findnode(next, nexttail);
 			}
 		}
 		return 0;
