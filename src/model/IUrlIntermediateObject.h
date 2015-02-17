@@ -54,9 +54,6 @@ class IUrlIntermediateObject : public IShapeMap, public TFile
     
         virtual MsgHandler::msgStatus set (const IMessage* msg );
     
-        /// \brief returns the array of data of the file
-		virtual QByteArray  getData() { return fData; }
-    
         /// \brief sets the type of file that this intermediate object momently replace
 		void setType(std::string type) {fType = type; }
     
@@ -81,8 +78,7 @@ class IUrlIntermediateObject : public IShapeMap, public TFile
         std::string fUrlPath;
         std::string fType; // the type of the object to be created once the data is ready
         QFileDownloader *    fDownloaderThread; // the thread called to download the data from the URL. Once done, it sends the appropriate msg
-        QByteArray fData; // the data contained in the URL
-    
+	
 		status fStatus;
 };
 }
