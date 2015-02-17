@@ -14,6 +14,7 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.11
+- new 'memimg' object that capture the image of any object hierarchy including scenes
 - supports relative OSC addresses that are evaluated in the context of the target object 
   (i.e. a scene for drag & drop operations, arbitrary objects with the 'eval' method)
 - new 'eval' method that takes a message list as argument, provided as a context for relative addresses evaluation
