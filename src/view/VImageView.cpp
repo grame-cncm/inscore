@@ -111,13 +111,12 @@ void VImageView::setImage(VObjectView* src)
 		img = VExport::itemToImage( item, xScale, yScale, QColor(255,255,255,0), true, true );
 	}
 	else if (sceneview) {
-		QGraphicsScene *scene = sceneview->scene();
-//		img = VExport::sceneToImage( scene );
+		QGraphicsView *view = sceneview->view();
+		img = VExport::sceneToImage( view );
 	}
 	
 	QByteArray data;
 	QBuffer buffer( &data);
-//	QBuffer buffer( imgo->getDataPtr());
 	buffer.open(QIODevice::WriteOnly);
 	img.save(&buffer, "PNG"); // writes image into ba in PNG format
 	setImage (data);

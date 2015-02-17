@@ -75,6 +75,7 @@ class VSceneView : public VDummyObjectView
 		void				updateView( IScene * scene );
 //		void				foreground();
 		QGraphicsScene *	scene() const;
+		QGraphicsView *		view()			{ return (QGraphicsView*)fGraphicsView; }
 };
 
 
