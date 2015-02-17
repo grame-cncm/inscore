@@ -451,6 +451,54 @@ bool IObject::match(const std::string& regexp) const
 }
 
 //--------------------------------------------------------------------------
+const IObject* IObject::findnode(const string& node, const string& pathtail) const
+{
+	string next, nexttail;
+	std::size_t pos = pathtail.find_first_of('/');
+	if (pos != string::npos) {
+		next		= pathtail.substr(0, pos);
+		nexttail	= pathtail.substr(pos+1);
+	}
+	else {
+		next		= pathtail;
+		nexttail	= "";
+	}
+
+	if (node == ".")
+		return findnode (next, nexttail);
+	if (node == "..")
+		return fParent ? fParent->findnode (next, nexttail) : 0;
+
+	subnodes objs;
+	if (exactfind (node, objs) && objs.size()) {
+		const IObject* obj = objs[0];
+		if (next.empty())
+			return obj;
+
+		return obj->findnode (next, nexttail);
+	}
+	return 0;
+}
+
+//--------------------------------------------------------------------------
+const IObject* IObject::findnode(const string& objpath) const
+{
+	if (objpath[0] == '/') {				// absolute addresses are forwarded to the root node
+		std::size_t pos = objpath.find_first_of('/', 1);
+		if (pos != string::npos) {
+			const IObject* root = getRoot();
+			string next		= objpath.substr(1, pos-1);
+			string nexttail	= objpath.substr(pos+1);
+			if (next == root->name()) {
+				return root->findnode(".", nexttail);
+			}
+		}
+		return 0;
+	}
+	return findnode ("..", objpath);
+}
+
+//--------------------------------------------------------------------------
 bool IObject::find(const std::string& expr, subnodes& outlist) const
 {
 	if (!Tools::regexp(expr)) {

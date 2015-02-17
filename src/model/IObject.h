@@ -108,7 +108,17 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
         bool    fDrawChildren;          ///< the object childexport option flag (if the children should be exported as well)
 
 		bool	fNewData;
-		
+
+
+		/*!
+			\brief find a named object in the application hierarchy
+			\param name the object name
+			\param pathtail the target object path
+			\return a pointer to the object or null if not found
+		*/
+		virtual const IObject* findnode (const std::string& name, const std::string& pathtail) const;
+
+	
 	protected:
 		std::string fTypeString;		///< the type string
 
@@ -241,6 +251,14 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 
 		/// \brief gives the signals node
 		virtual SISignalNode	signalsNode () const;
+
+		/*!
+			\brief find a named object in the application hierarchy
+			\param objpath the object path name
+			\return a pointer to the object or null if not found
+		*/
+		virtual const IObject* findnode(const std::string& objpath) const;
+
 		/*!
 			\brief find a named node within the subnodes (without recursion)
 			\param name the name of the node to look for

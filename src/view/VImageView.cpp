@@ -23,16 +23,17 @@
 
 */
 
-#include "ITLError.h"
-#include "TComposition.h"
-#include "VImageView.h"
-#include "VApplView.h"
 #include "IImage.h"
-#include "VApplView.h"
+#include "ITLError.h"
 
-#include "QFileDownloader.h"
+#include "VApplView.h"
+#include "VImageView.h"
+#include "VSceneView.h"
+#include "VExport.h"
+
 #include <QImageReader>
 #include <QFile>
+#include <QBuffer>
 #include <QDebug>
 
 using namespace std;
@@ -50,14 +51,9 @@ VImageView::VImageView(QGraphicsScene * scene, const IImage* h)
 //----------------------------------------------------------------------
 void VImageView::updateLocalMapping (IImage* img)
 {
-	// 1. Update image
-    
-    setImage(img->getData());
-    
     img->setWidth(scene2RelativeWidth(fImageItem->boundingRect().width()));
     img->setHeight(scene2RelativeHeight(fImageItem->boundingRect().height()));
 
-	// 2. Update mapping
 	VIntPointObjectView::updateLocalMapping( img );
 }
 
@@ -100,6 +96,32 @@ void VImageView::updateView ( IImage * img)
     float alpha = img->getA() / 255.f;
 	fImageItem->setOpacity (alpha);
 	VIntPointObjectView::updateView (img);
+}
+
+//----------------------------------------------------------------------
+void VImageView::setImage(VObjectView* src)
+{
+	QImage img;
+	VGraphicsItemView * itemview = dynamic_cast<VGraphicsItemView*>(src);
+	VSceneView * sceneview = dynamic_cast<VSceneView*>(src);
+	if (itemview) {
+		QGraphicsItem *item = itemview->item();
+		float xScale = 1.;
+		float yScale = 1.;
+		img = VExport::itemToImage( item, xScale, yScale, QColor(255,255,255,0), true, true );
+	}
+	else if (sceneview) {
+		QGraphicsScene *scene = sceneview->scene();
+//		img = VExport::sceneToImage( scene );
+	}
+	
+	QByteArray data;
+	QBuffer buffer( &data);
+//	QBuffer buffer( imgo->getDataPtr());
+	buffer.open(QIODevice::WriteOnly);
+	img.save(&buffer, "PNG"); // writes image into ba in PNG format
+	setImage (data);
+	itemChanged();
 }
 
 //----------------------------------------------------------------------

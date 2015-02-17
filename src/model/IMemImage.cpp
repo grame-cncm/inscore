@@ -23,8 +23,10 @@
 
 */
 
-#include "IImage.h"
+#include "IMemImage.h"
 #include "IMessage.h"
+#include "ITLError.h"
+#include "IScene.h"
 #include "Updater.h"
 #include "VImageView.h"
 
@@ -33,46 +35,54 @@ using namespace std;
 namespace inscore
 {
 //--------------------------------------------------------------------------
-const string IImage::kImageType("img");
+const string IMemImage::kMemImageType("memimg");
 
 //--------------------------------------------------------------------------
-IImage::IImage( const std::string& name, IObject * parent ) 
-	: IGraphicBasedObject (name, parent), TFile (parent->getScene())
+IMemImage::IMemImage( const std::string& name, IObject * parent )
+	: IImage (name, parent)
 {	
-	fTypeString = kImageType;
+	fTypeString = kMemImageType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler<string>::create(getFile());
 }
 
 //--------------------------------------------------------------------------
-void IImage::accept (Updater* u)
+void IMemImage::accept (Updater* u)
 {
-	u->updateTo (SIImage(this));
+	u->updateTo (SIMemImage(this));
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus IImage::set (const IMessage* msg )
+MsgHandler::msgStatus IMemImage::set (const IMessage* msg )
 { 
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
+	
+	if (msg->size() != 2) return MsgHandler::kBadParameters;
+	string opath;
+	if (msg->param(1,opath)) {
+		fObject = opath;
+		const IObject* obj = findnode (opath);
+		if (obj) {
+			VObjectView* view = getView();
+			VObjectView* srcview = obj->getView();
+			if (view && srcview) view->setImage(srcview);
 
-	status = TFile::set( msg );
-    if(!read(fData))
-        status = MsgHandler::kBadParameters;
-	if (status & MsgHandler::kProcessed) newData(true);
-	return status;
+			VImageView * imgView = view ? dynamic_cast<VImageView*>(view) : 0;
+			imgView->updateLocalMapping(this);
+			return MsgHandler::kProcessed;
+		}
+	}
+	return MsgHandler::kBadParameters;
 }
 
 //--------------------------------------------------------------------------
-void IImage::updateUrl()
+SIMessageList IMemImage::getSetMsg () const
 {
-    fIsUrl = true;
-    read(fData);
-    VImageView * imgView = fView ? dynamic_cast<VImageView*>(fView) : 0;
-    if(imgView)
-    {
-        imgView->setImage(fData);
-        imgView->updateLocalMapping(this);
-    }
+	SIMessageList outmsgs = IMessageList::create();
+	SIMessage msg = IMessage::create(getOSCAddress(), kset_SetMethod);
+	*msg << kMemImageType << fObject;
+	outmsgs->list().push_back (msg);
+	return outmsgs;
 }
 
 }

@@ -30,6 +30,7 @@
 #include "IModel.h"
 #include "INScoreScene.h"
 #include "IHttpd.h"
+#include "ITLError.h"
 #ifdef NOVIEW
 #include "VoidViewFactory.h"
 #else
@@ -152,6 +153,9 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 	else if ( type == IImage::kImageType )
 		obj = _create<IImage> (name, parent);
 
+	else if ( type == IMemImage::kMemImageType )
+		obj = _create<IMemImage> (name, parent);
+
 	else if ( type == ILine::kLineType )
 		obj = _create<ILine> (name, parent);
 	
@@ -205,7 +209,10 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 
 	else if ( type == IScene::kSceneType )
 		obj = _create<IScene> (name, parent);
-		
+
+	else
+		ITLErr << "unknown object type: " << type << ITLEndl;
+
 	if (obj) {
 		obj->setHandlers();
 		obj->createVirtualNodes();

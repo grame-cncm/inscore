@@ -101,12 +101,12 @@ MsgHandler::msgStatus IUrlIntermediateObject::set (const IMessage* msg )
 //--------------------------------------------------------------------------
 void IUrlIntermediateObject::updateFileSucceded()
 {
-    fData = fDownloaderThread->downloadedData();
+    setData( fDownloaderThread->downloadedData() );
     
     // creation of the real object
     SIObject obj = IObjectFactory::create(name(), fType, fParent);
 
-    if(obj && fData.count())
+    if(obj && getData().count())
     {
         // We pass all  the informations to the new object
         fParent->add(obj);
@@ -117,9 +117,10 @@ void IUrlIntermediateObject::updateFileSucceded()
         if (file)
         {
             file->setFile(getFile());
-            file->setData(fData);
+            file->setData(getData());
             file->updateUrl();
         }
+		else ITLErr << "Unexpected non file type" << fType << ITLEndl;
         
         // self destruction
         del();

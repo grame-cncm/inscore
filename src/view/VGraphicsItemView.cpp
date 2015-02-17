@@ -178,16 +178,6 @@ void VGraphicsItemView::drawNameAndBBox(IObject* o)
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::drawNameAndBBoxItem(IObject* o, QGraphicsItem* item)
 {
-//if (fIsStretchOn) return;		// don't know where to draw
-
-//	TFloatRect boundingRect = o->getBoundingRect();
-//	QRectF boundingRectQt( 
-//		relative2SceneX(boundingRect.pos().x()) , 
-//		relative2SceneY( boundingRect.pos().y() ) , 
-//		relative2SceneWidth( boundingRect.size().width() ), 
-//		relative2SceneHeight( boundingRect.size().height() )
-//	);
-
         // Add an item for the bounding rect
         QRectF bboxRectQt = fItem->boundingRect();
 
@@ -201,31 +191,8 @@ void VGraphicsItemView::drawNameAndBBoxItem(IObject* o, QGraphicsItem* item)
         // Add an item for the name.
         QGraphicsTextItem * textItem = new QGraphicsTextDebugItem( o->name().c_str() , boundingRectItem );
         textItem->setDefaultTextColor( Qt::red );
-        //	float scale = 1.0f;
-        //	textItem->scale(1.0f/scale,1.0f/scale);
-        //	if (fIsStretchOn)
-        //		textItem->setPos( boundingRectQt.x() , boundingRectQt.y() - textItem->boundingRect().height()/scale );
-        //	else
 		textItem->setPos( bboxRectQt.x() , bboxRectQt.y() - textItem->boundingRect().height() );
 }
-
-//------------------------------------------------------------------------------------------------------------
-/*void VGraphicsItemView::setParentView (IObject * object) // not used ...
-{
-	VObjectView * parentView = 0;
-	if (object) {
-        const SIObject parent = object->getParent();
-        const Master* master = parent ? parent->getMaster(object) : 0;
-    
-//		const SIScene scene = object->getScene();
-//		const Master* master = scene ? scene->getMaster(object) : 0;
-
-		if (master && !master->getMaster()->getDeleted()){
-			parentView = master->getMaster()->getView();
-        }
-	}
-	setParentItem( parentView );
-}*/
 
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateObjectSize(IObject* o)
@@ -515,6 +482,7 @@ void VGraphicsItemView::setSlave(SIObject o )
     }
     fNbMasters = masters.size(); // finally we update the number of masters
 }
+
 
 //------------------------------------------------------------------------------------------------------------
 //											Conversion methods

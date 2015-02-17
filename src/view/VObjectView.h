@@ -86,6 +86,14 @@ class VObjectView
 		/// \brief initialize an object view (do nothing at IObject level)
 		virtual void	initialize (IObject* )							{}
 		
+		/// \brief set the object view image from another view
+
+		/*!
+			\brief set the object view image using another view
+			\param src the src view
+		*/
+		virtual void	setImage (VObjectView* src)						{}
+	
 		/// \brief simulate UI mouse events
 		virtual void handleEvent (const inscore::IObject* obj, float x, float y, EventsAble::eventype type)
 						{ 	_MouseEventAble::handleEvent(obj, QPointF(x, y), type); }

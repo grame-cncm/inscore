@@ -49,6 +49,7 @@
 #include "IImage.h"
 #include "ILayer.h"
 #include "ILine.h"
+#include "IMemImage.h"
 #include "IMusicXMLCode.h"
 #include "IMusicXMLFile.h"
 #include "IObject.h"

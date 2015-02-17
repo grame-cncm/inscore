@@ -83,8 +83,9 @@ class TFile
 
         virtual void        updateUrl(){};
     
-        virtual QByteArray  getData() {return fData; }
-        virtual void        setData(QByteArray data) {fData = data; }
+        virtual const QByteArray&	getData()		 { return fData; }
+        virtual QByteArray*			getDataPtr()	 { return &fData; }
+        virtual void				setData(QByteArray data) { fData = data; }
 
 	protected:
 				 TFile(IScene* scene, const std::string& pathname = "" );
