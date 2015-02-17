@@ -60,13 +60,29 @@ MsgHandler::msgStatus IMemImage::set (const IMessage* msg )
 	if (msg->size() != 2) return MsgHandler::kBadParameters;
 	string opath;
 	if (msg->param(1,opath)) {
+		fObject = opath;
 		const IObject* obj = findnode (opath);
 		if (obj) {
-cout << "IMemImage::set " << obj->name() << endl;
+			VObjectView* view = getView();
+			VObjectView* srcview = obj->getView();
+			if (view && srcview) view->setImage(srcview);
+
+			VImageView * imgView = view ? dynamic_cast<VImageView*>(view) : 0;
+			imgView->updateLocalMapping(this);
 			return MsgHandler::kProcessed;
 		}
 	}
 	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+SIMessageList IMemImage::getSetMsg () const
+{
+	SIMessageList outmsgs = IMessageList::create();
+	SIMessage msg = IMessage::create(getOSCAddress(), kset_SetMethod);
+	*msg << kMemImageType << fObject;
+	outmsgs->list().push_back (msg);
+	return outmsgs;
 }
 
 }

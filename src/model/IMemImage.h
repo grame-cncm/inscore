@@ -46,7 +46,9 @@ typedef class libmapping::SMARTP<IMemImage>	SIMemImage;
 */
 class IMemImage : public IImage
 {
-	public:		
+	std::string	fObject;
+	
+	public:
 		static const std::string kMemImageType;
 		static SIMemImage create(const std::string& name, IObject * parent)	{ return new IMemImage(name, parent); }
 		virtual void	accept (Updater* u);
@@ -57,6 +59,7 @@ class IMemImage : public IImage
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
+		virtual SIMessageList getSetMsg () const;
 };
 
 /*! @} */
