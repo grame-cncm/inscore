@@ -42,15 +42,18 @@ else()
 	endif()
 endif()
 
-if(APPLE)
 #######################################
-#   iOS support
+if(APPLE)
+        #   iOS support
 	if ( IOS )
 		message (STATUS "Generates project for iOS - Use -DIOS=no to change.")
 		set (CMAKE_XCODE_EFFECTIVE_PLATFORMS "iPhoneOS")
-		set (CMAKE_OSX_ARCHITECTURES "armv7 armv7s armv7")
+		set (CMAKE_OSX_ARCHITECTURES "armv7")
 		set (CMAKE_OSX_SYSROOT "iphoneos")
 		set (libtype STATIC)
+		set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DIOS -std=c++11")
+		set (CMAKE_XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "1,2")
+		set (CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "7.1")
 		set (QJS "on")
 	else ()
 		 if ( DIST )
@@ -77,6 +80,8 @@ set (MAP ${ROOT}/libmapping)
 set (INSFOLDERS  controller events lib model view mapping interface graph signal signal/faust ITLParser scripting)
 set (INSFOLDERS  ${INSFOLDERS} plugins/gesturefollower)
 set (INSFOLDERS  ${INSFOLDERS} plugins/faustDSP)
+set (INSFOLDERS  ${INSFOLDERS} plugins/httpserver)
+
 set (LIBMAPFOLDERS libmapping/src/misc libmapping/src/parser libmapping/src/relations libmapping/src/segments)
 set (RSRC  "${ROOT}/../rsrc")
 set (LOCALLIB  "${ROOT}/../lib")
@@ -189,7 +194,12 @@ message (STATUS "Using Qt version ${QTVERSION} - Use -DQTVERSION=vers to change.
 set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h  ${ROOT}/view/VLogWindow.h)
 if (QTVERSION EQUAL "5")
 	set (MOC_HEADERS ${MOC_HEADERS} ${ROOT}/view/VVideoView.h ${ROOT}/controller/QFileDownloader.h)
-	set(DESIRED_QT_VERSION 5.0)
+	if(IOS)
+		set( QT_ROOT $(HOME)/Qt/5.3/ios/lib/cmake )
+		set( ENV(CMAKE_PREFIX_PATH) ${QT_ROOT} )
+	else()
+		set(DESIRED_QT_VERSION 5.0)
+	endif()
 	FIND_PACKAGE(Qt5Widgets REQUIRED)
 	FIND_PACKAGE(Qt5Svg REQUIRED)
 	FIND_PACKAGE(Qt5PrintSupport REQUIRED)
@@ -197,7 +207,13 @@ if (QTVERSION EQUAL "5")
 	FIND_PACKAGE(Qt5MultimediaWidgets REQUIRED)
 	FIND_PACKAGE(Qt5Qml REQUIRED)
 	if(APPLE OR WIN32)
-	  set(QTLIBS ${Qt5Core_LIBRARIES}  ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} ${Qt5Multimedia_LIBRARIES} ${Qt5MultimediaWidgets_LIBRARIES}  ${Qt5Qml_LIBRARIES})	
+	  set(QTLIBS ${Qt5Core_LIBRARIES}  ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} ${Qt5Multimedia_LIBRARIES} ${Qt5MultimediaWidgets_LIBRARIES} ${Qt5Qml_LIBRARIES})	
+	  if(IOS)
+	  	FIND_PACKAGE(Qt5OpenGL REQUIRED)
+	  	# only iphonesimulator seems to be in need of Qt5Network ??!! 
+		FIND_PACKAGE(Qt5Network REQUIRED)
+	  	set(QTLIBS ${QTLIBS} ${Qt5OpenGL_LIBRARIES} ${Qt5Network_LIBRARIES})
+	  endif()
 	else()
 	  set(QTLIBS "-lQt5Core -lQt5Gui -lQt5Widgets -lQt5Svg -lQt5PrintSupport -lQt5Multimedia -lQt5MultimediaWidgets  -lQt5Qml")	
 	endif()
@@ -262,7 +278,7 @@ if(APPLE)
 elseif(UNIX)
 	set(OSCPACK  -L${OSC_PATH}/cmake -loscpack)
 	set(GUIDOQT  -L${ROOT}/../lib/GuidoQt/linux -lGuidoQt)
-	set(GUIDO    -lGUIDOEngine)
+        set(GUIDO    -lGUIDOEngine)
 endif()
 
 set(INSLIBS  ${INSLIBS} ${OSCPACK} ${SCRIPTS} ${QTLIBS} ${CORE_FOUNDATION} ${GUIDO} ${GUIDOQT} )
@@ -285,6 +301,14 @@ include_directories(${INCL} ${OSC_PATH} ${GUIDO_PATH}/include ${GUIDOQT_PATH}/in
 
 if (IOS)
 	add_library( ${TARGET} STATIC ${CORESRC} ${COREH} ${MOC_FILES})
+	target_link_libraries( ${TARGET} ${INSLIBS} )
+	set(CMAKE_EXE_LINKER_FLAGS "-framework Foundation -framework CoreText -framework UIKit -framework CoreGraphics -framework OpenGLES -framework Security -lz -framework QuartzCore")
+	
+	# TODO GGX link with -framework like other qt lib ??
+	target_link_libraries(${TARGET} debug "${CMAKE_PREFIX_PATH}/lib/libQt5PlatformSupport_debug.a")
+	target_link_libraries(${TARGET} optimized "${CMAKE_PREFIX_PATH}/lib/libQt5PlatformSupport.a")
+	target_link_libraries(${TARGET} debug "${CMAKE_PREFIX_PATH}/lib/libqtharfbuzzng_debug.a")
+	target_link_libraries(${TARGET} optimized "${CMAKE_PREFIX_PATH}/lib/libqtharfbuzzng.a")
 else()
 
 	add_library( ${TARGET} SHARED ${CORESRC} ${COREH} ${MOC_FILES})
@@ -303,23 +327,53 @@ if(MINGW)
 	target_link_libraries( ${TARGET} winmm ws2_32 )
 endif()
 
-
-set(INScoreIcon ${CMAKE_CURRENT_SOURCE_DIR}/../rsrc/INScoreViewer.icns)
-set_source_files_properties(${INScoreIcon} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+if(IOS)
+	SET(INScoreIcon
+		${CMAKE_CURRENT_SOURCE_DIR}/../rsrc/ios/Icon.png
+		${CMAKE_CURRENT_SOURCE_DIR}/../rsrc/ios/Icon@2x.png
+		${CMAKE_CURRENT_SOURCE_DIR}/../rsrc/ios/Icon-60@2x.png
+		${CMAKE_CURRENT_SOURCE_DIR}/../rsrc/ios/Icon-72.png
+		${CMAKE_CURRENT_SOURCE_DIR}/../rsrc/ios/Icon-72@2x.png
+		${CMAKE_CURRENT_SOURCE_DIR}/../rsrc/ios/Icon-76.png
+		${CMAKE_CURRENT_SOURCE_DIR}/../rsrc/ios/Icon-76@2x.png
+		${CMAKE_CURRENT_SOURCE_DIR}/../rsrc/ios/Icon-Small@2x.png
+		${CMAKE_CURRENT_SOURCE_DIR}/../rsrc/ios/Icon-Small.png
+		${CMAKE_CURRENT_SOURCE_DIR}/../rsrc/ios/Icon-Small-40.png
+		${CMAKE_CURRENT_SOURCE_DIR}/../rsrc/ios/Icon-Small-40@2x.png
+		${CMAKE_CURRENT_SOURCE_DIR}/../rsrc/ios/Icon-Small-40@3x.png
+		${CMAKE_CURRENT_SOURCE_DIR}/../rsrc/ios/Icon-Small-50.png
+		${CMAKE_CURRENT_SOURCE_DIR}/../rsrc/ios/Icon-Small-50@2x.png	
+		${CMAKE_CURRENT_SOURCE_DIR}/../rsrc/ios/Default.png
+		${CMAKE_CURRENT_SOURCE_DIR}/../rsrc/ios/Default-Landscape.png
+		${CMAKE_CURRENT_SOURCE_DIR}/../rsrc/ios/Default-Portrait.png
+	)
+	
+	set_source_files_properties(${INScoreIcon} PROPERTIES MACOSX_PACKAGE_LOCATION "${APPLTARGET}.app")
+else()
+	SET(INScoreIcon ${CMAKE_CURRENT_SOURCE_DIR}/../rsrc/INScoreViewer.icns)
+	set_source_files_properties(${INScoreIcon} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+endif()
 
 if (NOVIEW)
 	set (APPLTARGET  INScoreNOView)
 	add_executable( ${APPLTARGET}  ${ROOT}/INScoreNoView.cpp )
 else()
-	add_executable( ${APPLTARGET}  MACOSX_BUNDLE ${INScoreIcon} ${ROOT}/INScoreAppl.cpp ${APPL_MOC_FILES}  ../win32/Viewer/${APPLTARGET}.rc ${INScoreQRC})
+	add_executable( ${APPLTARGET} MACOSX_BUNDLE ${INScoreIcon} ${ROOT}/INScoreAppl.cpp ${APPL_MOC_FILES}  ../win32/Viewer/${APPLTARGET}.rc ${INScoreQRC})
 endif()
 
-#target_link_libraries( ${APPLTARGET} ${QTLIBS} ${GUIDO})
-set_target_properties (${APPLTARGET} PROPERTIES VERSION ${INSAPPVERS}
-							MACOSX_BUNDLE_ICON_FILE INScoreViewer.icns
+if(IOS)
+	set_target_properties (${APPLTARGET} PROPERTIES VERSION ${INSAPPVERS}
 							MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist"
 							MACOSX_BUNDLE_SHORT_VERSION_STRING ${INSAPPSTRVERS}
 							MACOSX_BUNDLE_BUNDLE_VERSION ${INSAPPVERS})
+else()
+	set_target_properties (${APPLTARGET} PROPERTIES VERSION ${INSAPPVERS}
+							MACOSX_BUNDLE_ICON_FILE INScoreViewer.icns
+							MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist"
+							MACOSX_BUNDLE_SHORT_VERSION_STRING ${INSAPPSTRVERS}
+							MACOSX_BUNDLE_BUNDLE_VERSION ${INSAPPVERS})							
+endif()
+							
 if(WIN32)
 set_target_properties (${APPLTARGET} PROPERTIES
 	LINK_FLAGS_RELEASE /subsystem:windows
@@ -335,28 +389,76 @@ endif()
 target_link_libraries( ${APPLTARGET} ${TARGET} ${QTLIBS} ${GUIDO})
 add_dependencies(${APPLTARGET} ${TARGET})
 
+if(IOS)
+  set (QT_DIR ${CMAKE_PREFIX_PATH})
+  if(IOS_SIMUL)
+    set(CMAKE_EXE_LINKER_FLAGS_DEBUG
+      "-force_load  ${QT_DIR}/plugins/platforms/libqios_iphonesimulator_debug.a")
+    set(CMAKE_EXE_LINKER_FLAGS_RELEASE
+      "-force_load  ${QT_DIR}/plugins/platforms/libqios_iphonesimulator.a")
+  else()
+    set(CMAKE_EXE_LINKER_FLAGS_DEBUG "-force_load  ${QT_DIR}/plugins/platforms/libqios_debug.a")
+    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "-force_load  ${QT_DIR}/plugins/platforms/libqios.a")
+
+    if (CODE_SIGN_IDENTITY)
+      SET_TARGET_PROPERTIES( ${APPLTARGET} PROPERTIES XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY
+        ${CODE_SIGN_IDENTITY})
+      #SET_TARGET_PROPERTIES( ${APPLTARGET} PROPERTIES XCODE_ATTRIBUTE_OTHER_CODE_SIGN_FLAGS "-gta")
+    endif()
+  endif()
+endif()
+
 #include ( report.cmake )
 
 #######################################
 # install setup
-if (NOT IOS)
-if(APPLE)
-set(FRMWK  FRAMEWORK DESTINATION "/Library/Frameworks" CONFIGURATIONS Release)
-set(APPBUNDLE BUNDLE DESTINATION "/Applications/INScore-${INSAPPVERS}"  CONFIGURATIONS Release)
-endif()
+if (IOS)
+  if (NOT IOS_SIMUL)
+    ### NOTE custom commands are only executed, if the build actually took place!
+    if (IOS_DEVICE_IP)
+      add_custom_command(TARGET ${APPLTARGET} POST_BUILD
+        # COMMAND echo $<CONFIGURATION>
+        # COMMAND echo $<TARGET_FILE:${APPLTARGET}>
+        # COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/signAndCopyAppToDeviceWith_IP.sh ${IOS_DEVICE_IP} ${IOS_DEVICE_PORT}
 
-if (WIN32)
+        ### Only execute script, if release build:
+        ## Cannot get if ... else fi to work here -- why ??
+        # COMMAND if [ ! $<CONFIGURATION> == "Release" ] ; then echo "aba" ; fi
+        # COMMAND if [ ! $<CONFIGURATION> = "Release" ] ; then echo "aba" ; fi ;
+        ## Then do it this way:
+        COMMAND ([ ! $<CONFIGURATION> = "Release" ] && echo "Not a Release build == NOT copying product to device") || [ 0 -eq 0 ]
+        COMMAND ([ $<CONFIGURATION> = "Release" ] && ${CMAKE_CURRENT_SOURCE_DIR}/signAndCopyAppToDeviceWith_IP.sh ${IOS_DEVICE_IP} ${IOS_DEVICE_PORT}) || [ 0 -eq 0 ]
+        
+        # COMMAND env ### YES *** shell get's all the Xcode environment!!!
+        ### Next line only works, if executed by Xcode with its envir vars set:
+        # COMMAND echo $$BUILT_PRODUCTS_DIR/$${WRAPPER_NAME}/$$TARGETNAME
+        # COMMAND echo $<TARGET_FILE_DIR:${APPLTARGET}> ----  $<TARGET_FILE_NAME:${APPLTARGET}>
+        # COMMAND echo "$<$<CONFIG:debug>:${CODE_SIGN_IDENTITY}>$<$<CONFIG:release>:${INSFWKVERS}>"
 
-else (WIN32)
-install ( TARGETS ${TARGET}
+        # COMMAND echo "CUSTOM COMMAND finished"
+        # COMMAND exit 0
+        # COMMENT "NOW running CUSTOM COMMAND"
+        # VERBATIM ## --> will escape all $ even $$ into \$\$ 
+        )
+    endif()
+  endif()
+else()
+	if(APPLE)
+		set(FRMWK  FRAMEWORK DESTINATION "/Library/Frameworks" CONFIGURATIONS Release)
+		set(APPBUNDLE BUNDLE DESTINATION "/Applications/INScore-${INSAPPVERS}"  CONFIGURATIONS Release)
+	endif()
+
+	if (WIN32)
+
+	else (WIN32)
+	install ( TARGETS ${TARGET}
     	LIBRARY DESTINATION /usr/lib
      	PUBLIC_HEADER DESTINATION /usr/local/include
    		${FRMWK}
-)
-install ( TARGETS ${APPLTARGET}
-	RUNTIME DESTINATION /usr/bin
-    ${APPBUNDLE}
-)
+	)
+	install ( TARGETS ${APPLTARGET}
+		RUNTIME DESTINATION /usr/bin
+    	${APPBUNDLE}
+	)
+	endif ()
 endif ()
-endif ()
-
