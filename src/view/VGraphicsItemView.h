@@ -110,7 +110,11 @@ class VGraphicsItemView : public VObjectView
 		static void buildDefaultMapping (IObject* object);
     
         void refreshSyncCache() { itemChanged(); }
-		
+	
+		/// \brief Returns the QGraphicsItem or the QTilerItem, whether the object is slaved or not
+				QGraphicsItem * item(SMaster m = 0)	{return m ? fTilerItems.find(m)->second : fItem;}
+		const	QGraphicsItem * item(SMaster m = 0) const    {return m ? fTilerItems.find(m)->second : fItem;}
+	
 	protected:
 		VGraphicsItemView( QGraphicsScene * scene , QGraphicsItem * item );
 		
@@ -179,11 +183,7 @@ class VGraphicsItemView : public VObjectView
     
         /// \brief handles the fTilerItems to make them fit the model list of slave-master
 		void setSlave(SIObject o);
-        
-		/// \brief Returns the QGraphicsItem or the QTilerItem, whether the object is slaved or not
-				QGraphicsItem * item(SMaster m = 0)	{return m ? fTilerItems.find(m)->second : fItem;}
-		const	QGraphicsItem * item(SMaster m = 0) const    {return m ? fTilerItems.find(m)->second : fItem;}
-		
+	
 		/// \brief Builds the QTilerItem to be used for stretching.
 		virtual QStretchTilerItem* buildTiler(SIObject o);
 		
