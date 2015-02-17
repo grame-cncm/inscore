@@ -93,10 +93,8 @@ class VExport
 		*
 		*	The image can be streched vertically and horizontally with xScale and yScale.
 		*	\param sceneview the scene to draw to the image
-		*	\param width width of the image
-		*	\param height height of the image.
 		*/
-		static QImage	sceneToImage(QGraphicsView * sceneview , int width , int height);
+		static QImage	sceneToImage(QGraphicsView * sceneview);
 										
 		/*!	\brief Paints the QGraphicsItem on a QImage and returns the QImage.
 		*

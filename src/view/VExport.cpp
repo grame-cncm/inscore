@@ -225,15 +225,15 @@ void VExport::exportScene( QGraphicsView * view , QString fileName )
 	}
 	else
 	{
-		QImage image = sceneToImage(view, view->width() , view->height());
+		QImage image = sceneToImage(view);
 		image.save( fileName );			
 	}
 #endif
 }
 
-QImage	VExport::sceneToImage(QGraphicsView * sceneview , int width , int height)
+QImage	VExport::sceneToImage(QGraphicsView * sceneview)
 {
-	QSize size (width , height);
+	QSize size (sceneview->width() , sceneview->height() );
 	QImage image(size, QImage::Format_ARGB32_Premultiplied);
 	image.fill( sceneview->backgroundBrush().color().rgba() );
 	paintOnDevice (&image, sceneview);
