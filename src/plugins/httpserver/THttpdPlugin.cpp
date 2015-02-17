@@ -61,21 +61,15 @@ THttpdPlugin::TStatus THttpdPlugin::fStatus = 0;
  */
 struct responsedata * getData(struct requestarguments* args, void * aObject)
 {
-	const IObject * myObject = static_cast<IObject*>(aObject);
+	const THttpdPlugin * myPlugin = static_cast<THttpdPlugin*>(aObject);
 
-	// Find object for the path
-	/*
-	if (args && args->path) {
-		IObject::subnodes outv;
-		myObject->getRoot()->find(args->path, outv);
-		if(outv.size()) {
-			myObject = outv[0];
-		}
-	}
-	*/
+	return myPlugin->getData(args);
+}
 
+struct responsedata * THttpdPlugin::getData(struct requestarguments* args) const
+{
 	// Get QGraphicsView for the object
-	QList <QGraphicsView *> listViews = myObject->getScene()->getGraphicScene()->views();
+	QList <QGraphicsView *> listViews = fExportedObject->getScene()->getGraphicScene()->views();
 	if (listViews.size()) {
 		// Read arguments : image format.
 		const char * format = args->format;
@@ -103,11 +97,11 @@ struct responsedata * getData(struct requestarguments* args, void * aObject)
 	return 0;
 }
 
-THttpdPlugin::THttpdPlugin(IObject *parent) : fParent(parent)
+THttpdPlugin::THttpdPlugin(IObject *exportedObject) : fExportedObject(exportedObject)
 {
 	// Load library and initialize function.
 	if (load())
-		fHttpdServer = fInitialize(&getData, this->fParent);
+		fHttpdServer = fInitialize(&inscore::getData, this);
 	else
 		ITLErr << "cannot load http server plugin" << ITLEndl;
 }

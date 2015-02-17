@@ -37,9 +37,9 @@ class THttpdPlugin : public TPlugin
 {
 	private:
 		/*!
-		 * \brief fParent Server model object
+		 * \brief fExportedObject base object to export scene
 		 */
-		IObject * fParent;
+		IObject * fExportedObject;
 		/*!
 		 * \brief fHttpdServer HttpServer instance.
 		 */
@@ -74,7 +74,7 @@ class THttpdPlugin : public TPlugin
 		/*!
 		 * \brief THttpdPlugin Create a new http server.
 		 */
-		THttpdPlugin(IObject *parent);
+		THttpdPlugin(IObject *exportedObject);
 
 		/*!
 		 * \brief ~THttpdPlugin Destroy the http server.
@@ -100,6 +100,12 @@ class THttpdPlugin : public TPlugin
 		 */
 		int status();
 
+		/*!
+		 * \brief getData Return new image of the scene from the base object fExportedObject
+		 * \param args Arguments to create the image.
+		 * \return a new image or null.
+		 */
+		struct responsedata * getData(struct requestarguments* args) const;
 };
 
 }
