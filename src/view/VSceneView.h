@@ -61,6 +61,11 @@ class VSceneView : public VDummyObjectView
 	WindowEventFilter * fEventFilter;
 	Qt::WindowFlags		fDefaultFlags;
 
+	QByteArray			fDataScreenShot;
+	int					fDataScreenShotSize;
+	bool				fUpdateScreenShot;
+	bool				fIsObsolete;
+
 	void				updateOnScreen( IScene * scene );
 	void				updateOffScreen( IScene * scene );
 
@@ -75,6 +80,11 @@ class VSceneView : public VDummyObjectView
 		void				updateView( IScene * scene );
 //		void				foreground();
 		QGraphicsScene *	scene() const;
+
+		void				updateSreenShot();
+		const char *		getScreenShot() { return fDataScreenShot.constData(); }
+		int					getScreenShotSize() { return fDataScreenShotSize; }
+		void				setUpdateScreenShot();
 };
 
 

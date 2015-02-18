@@ -28,6 +28,9 @@
 #include "VSceneView.h"
 
 #include <QImage>
+#include <QPixmap>
+#include <QScreen>
+#include <QBuffer>
 #include <QPainter>
 #include <QGraphicsRectItem>
 #include <QGraphicsWidget>
@@ -53,14 +56,14 @@ class ZoomingGraphicsView : public QGraphicsView
 {
 	std::string		fSceneAddress;
 //	VSceneView* fSceneView;
-	const IScene*	fScene;
+	IScene*	fScene;
 
 	public :
 		ZoomingGraphicsView(QGraphicsScene * s) : QGraphicsView(s), fScene(0) {}
 		virtual ~ZoomingGraphicsView() {}
 
 		void setSceneAddress(const std::string& name)	{ fSceneAddress = name; }
-		void setScene		(const IScene* scene)		{ fScene = scene; }
+		void setScene		(IScene* scene)		{ fScene = scene; }
 
 	protected:
 		virtual void	closeEvent	(QCloseEvent *);
@@ -76,7 +79,12 @@ class ZoomingGraphicsView : public QGraphicsView
 void ZoomingGraphicsView::paintEvent (QPaintEvent * event) 
 {
 	QGraphicsView::paintEvent (event);
-	if (fScene) fScene->endPaint();
+	if (fScene)  {
+		fScene->endPaint();
+
+		VSceneView * sceneView = dynamic_cast<VSceneView*>(fScene->getView());
+		sceneView->updateSreenShot();
+	}
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -96,6 +104,9 @@ VSceneView::VSceneView(const std::string& address, QGraphicsScene * scene)
 	fImage = 0;
 	fGraphicsView = 0;
 	fEventFilter = 0;
+	fDataScreenShotSize = 0;
+	fIsObsolete = true;
+	fUpdateScreenShot = false;
 	if (scene) {
 		fScene = scene;
 		fGraphicsView = new ZoomingGraphicsView(scene);
@@ -266,6 +277,33 @@ void VSceneView::updateView( IScene * scene )
 			SIMessageList outmsgs = me.eval (msgs, env);
 			if (outmsgs && outmsgs->list().size()) outmsgs->send();
 		}
+	}
+}
+
+//--------------------------------------------------------------------------
+void VSceneView::updateSreenShot()
+{
+	if(fUpdateScreenShot && fIsObsolete) {
+		QImage image = VExport::sceneToImage(this->fGraphicsView);
+		QBuffer buffer(&fDataScreenShot);
+		buffer.open(QIODevice::WriteOnly);
+		image.save(&buffer, "PNG");
+		this->fDataScreenShotSize = fDataScreenShot.size();
+		fUpdateScreenShot = false;
+		fIsObsolete = false;
+	} else {
+		fIsObsolete = true;
+	}
+}
+
+//--------------------------------------------------------------------------
+void VSceneView::setUpdateScreenShot()
+{
+	if(fIsObsolete) {
+		this->fDataScreenShotSize = 0;
+		fUpdateScreenShot = true;
+		// Force update of the widget
+		fGraphicsView->viewport()->update();
 	}
 }
 
