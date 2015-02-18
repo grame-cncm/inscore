@@ -54,15 +54,16 @@ class IHttpd : public IObject
 		 */
 		MsgHandler::msgStatus set (const IMessage* msg);
 
-		std::string status() const;
 
-	protected:
-		IHttpd(const std::string &name, IObject *parent);
+		std::string status() const;
 
 		/*!
 		 * \brief ~IHttpd Delete plugin instance.
 		 */
 		virtual ~IHttpd();
+
+	protected:
+		IHttpd(const std::string &name, IObject *parent);
 
 	private :
 		/*!
