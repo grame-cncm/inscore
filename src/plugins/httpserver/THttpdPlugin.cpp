@@ -24,6 +24,7 @@
 #include "IObject.h"
 #include "IScene.h"
 #include "VExport.h"
+#include "VSceneView.h"
 
 #include "DataExchange.h"
 
@@ -68,31 +69,23 @@ struct responsedata * getData(struct requestarguments* args, void * aObject)
 
 struct responsedata * THttpdPlugin::getData(struct requestarguments* args) const
 {
-	// Get QGraphicsView for the object
-	QList <QGraphicsView *> listViews = fExportedObject->getScene()->getGraphicScene()->views();
-	if (listViews.size()) {
-		// Read arguments : image format.
-		const char * format = args->format;
+	VSceneView * sceneView = dynamic_cast<VSceneView*>(fExportedObject->getScene()->getView());
 
-		QGraphicsView * view = listViews[0];
-		// Export the scene of the object to image.
-		QImage image = VExport::sceneToImage(view);
+	// Request a screen shot
+	sceneView->setUpdateScreenShot();
 
-		// Write image to buffer
-		QByteArray ba;
-		QBuffer buffer(&ba);
-		buffer.open(QIODevice::WriteOnly);
-		image.save(&buffer, format);
+	// Wait for a new screenshot. TODO GGX not do active wait
+	while(!sceneView->getScreenShotSize());
 
-		// Get data from buffer and return it in the responsedata strcture.
-		const char * data = ba.constData();
-		struct responsedata * resp = new struct responsedata;
-		resp->data = new char[ba.size()];
-		memcpy(resp->data, data, ba.size());
-		resp->size = ba.size();
-		resp->type = format;
-		return resp;
-	}
+	const char * data = sceneView->getScreenShot();
+	int size = sceneView->getScreenShotSize();
+
+	struct responsedata * resp = new struct responsedata;
+	resp->data = new char[size];
+	memcpy(resp->data, data, size);
+	resp->size = size;
+	resp->type = "PNG";
+	return resp;
 
 	return 0;
 }
@@ -108,7 +101,8 @@ THttpdPlugin::THttpdPlugin(IObject *exportedObject) : fExportedObject(exportedOb
 
 THttpdPlugin::~THttpdPlugin()
 {
-	fDestroy(fHttpdServer);
+	if(isResolved())
+		fDestroy(fHttpdServer);
 }
 
 bool THttpdPlugin::start(int port)
