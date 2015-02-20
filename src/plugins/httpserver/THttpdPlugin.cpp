@@ -21,16 +21,11 @@
 
 #include "THttpdPlugin.h"
 #include "ITLError.h"
-#include "IObject.h"
 #include "IScene.h"
 #include "VExport.h"
+#include "VSceneView.h"
 
 #include "DataExchange.h"
-
-#include <QGraphicsView>
-#include <QGraphicsScene>
-#include <QBuffer>
-#include <vector>
 
 using namespace std;
 
@@ -61,60 +56,44 @@ THttpdPlugin::TStatus THttpdPlugin::fStatus = 0;
  */
 struct responsedata * getData(struct requestarguments* args, void * aObject)
 {
-	const IObject * myObject = static_cast<IObject*>(aObject);
-
-	// Find object for the path
-	/*
-	if (args && args->path) {
-		IObject::subnodes outv;
-		myObject->getRoot()->find(args->path, outv);
-		if(outv.size()) {
-			myObject = outv[0];
-		}
-	}
-	*/
-
-	// Get QGraphicsView for the object
-	QList <QGraphicsView *> listViews = myObject->getScene()->getGraphicScene()->views();
-	if (listViews.size()) {
-		// Read arguments : image format.
-		const char * format = args->format;
-
-		QGraphicsView * view = listViews[0];
-		// Export the scene of the object to image.
-		QImage image = VExport::sceneToImage(view);
-
-		// Write image to buffer
-		QByteArray ba;
-		QBuffer buffer(&ba);
-		buffer.open(QIODevice::WriteOnly);
-		image.save(&buffer, format);
-
-		// Get data from buffer and return it in the responsedata strcture.
-		const char * data = ba.constData();
-		struct responsedata * resp = new struct responsedata;
-		resp->data = new char[ba.size()];
-		memcpy(resp->data, data, ba.size());
-		resp->size = ba.size();
-		resp->type = format;
-		return resp;
-	}
-
-	return 0;
+	THttpdPlugin * myPlugin = static_cast<THttpdPlugin*>(aObject);
+	return myPlugin->getData(args);
 }
 
-THttpdPlugin::THttpdPlugin(IObject *parent) : fParent(parent)
+struct responsedata * THttpdPlugin::getData(struct requestarguments* args) const
+{
+	if(fExportedObject->getDeleted())
+		return 0;
+
+	VSceneView * sceneView = static_cast<VSceneView*>(fExportedObject->getView());
+
+	// Get data
+	const char * data = sceneView->getScreenShot(args->format);
+	if(data == 0)
+		return 0;
+	int size = sceneView->getScreenShotSize();
+
+	struct responsedata * resp = new struct responsedata;
+	resp->data = new char[size];
+	memcpy(resp->data, data, size);
+	resp->size = size;
+
+	return resp;
+}
+
+THttpdPlugin::THttpdPlugin(const IScene *exportedObject) : fExportedObject(exportedObject)
 {
 	// Load library and initialize function.
 	if (load())
-		fHttpdServer = fInitialize(&getData, this->fParent);
+		fHttpdServer = fInitialize(&inscore::getData, this);
 	else
 		ITLErr << "cannot load http server plugin" << ITLEndl;
 }
 
 THttpdPlugin::~THttpdPlugin()
 {
-	fDestroy(fHttpdServer);
+	if(isResolved())
+		fDestroy(fHttpdServer);
 }
 
 bool THttpdPlugin::start(int port)

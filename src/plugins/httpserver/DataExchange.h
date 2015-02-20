@@ -27,7 +27,6 @@
 struct responsedata {
 	char * data;
 	unsigned int size;
-	const char * type;
 };
 
 // Parameters for the callback

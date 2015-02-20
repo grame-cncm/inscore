@@ -27,13 +27,14 @@
 #define IHTTPD_H
 
 #include "IObject.h"
-#include "THttpdPlugin.h"
 
 namespace inscore
 {
 
 class IHttpd;
 typedef class libmapping::SMARTP<IHttpd>	SIHttpd;
+
+class THttpdPlugin;
 
 /*!
  * \brief The IHttpd class. a Http server object.
@@ -53,6 +54,7 @@ class IHttpd : public IObject
 		 * \return
 		 */
 		MsgHandler::msgStatus set (const IMessage* msg);
+
 
 		std::string status() const;
 

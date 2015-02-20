@@ -28,6 +28,9 @@
 #include "VSceneView.h"
 
 #include <QImage>
+#include <QPixmap>
+#include <QScreen>
+#include <QBuffer>
 #include <QPainter>
 #include <QGraphicsRectItem>
 #include <QGraphicsWidget>
@@ -35,6 +38,12 @@
 #include <QDesktopWidget>
 #include <QResizeEvent>
 #include <QDebug>
+
+#ifdef WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif // win32
 
 #include "IScene.h"
 #include "IColor.h"
@@ -53,14 +62,14 @@ class ZoomingGraphicsView : public QGraphicsView
 {
 	std::string		fSceneAddress;
 //	VSceneView* fSceneView;
-	const IScene*	fScene;
+	IScene*	fScene;
 
 	public :
 		ZoomingGraphicsView(QGraphicsScene * s) : QGraphicsView(s), fScene(0) {}
 		virtual ~ZoomingGraphicsView() {}
 
 		void setSceneAddress(const std::string& name)	{ fSceneAddress = name; }
-		void setScene		(const IScene* scene)		{ fScene = scene; }
+		void setScene		(IScene* scene)		{ fScene = scene; }
 
 	protected:
 		virtual void	closeEvent	(QCloseEvent *);
@@ -76,7 +85,12 @@ class ZoomingGraphicsView : public QGraphicsView
 void ZoomingGraphicsView::paintEvent (QPaintEvent * event) 
 {
 	QGraphicsView::paintEvent (event);
-	if (fScene) fScene->endPaint();
+	if (fScene)  {
+		fScene->endPaint();
+
+		VSceneView * sceneView = dynamic_cast<VSceneView*>(fScene->getView());
+		sceneView->updateSreenShot();
+	}
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -96,6 +110,8 @@ VSceneView::VSceneView(const std::string& address, QGraphicsScene * scene)
 	fImage = 0;
 	fGraphicsView = 0;
 	fEventFilter = 0;
+	fDataScreenShotSize = 0;
+	fUpdateScreenShot = false;
 	if (scene) {
 		fScene = scene;
 		fGraphicsView = new ZoomingGraphicsView(scene);
@@ -267,6 +283,84 @@ void VSceneView::updateView( IScene * scene )
 			if (outmsgs && outmsgs->list().size()) outmsgs->send();
 		}
 	}
+}
+
+//--------------------------------------------------------------------------
+void VSceneView::updateSreenShot()
+{
+	if(fUpdateScreenShot) {
+		this->fDataScreenShotSize = 0;
+		fUpdateScreenShot = false;
+		// Update the screenshot
+		//QImage image = VExport::sceneToImage(this->fGraphicsView);
+		QSize size (this->fGraphicsView->width() , this->fGraphicsView->height() );
+		QImage image(size, QImage::Format_ARGB32_Premultiplied);
+		QPainter painter(&image);
+		painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+		this->fGraphicsView->render( &painter );
+		painter.end();
+
+		QBuffer buffer(&fDataScreenShot);
+		buffer.open(QIODevice::WriteOnly);
+		image.save(&buffer, fScreenshotFormat.c_str());
+		// Set the image is available
+		this->fDataScreenShotSize = fDataScreenShot.size();
+	} else {
+		// Invalidate previous screenshot
+		this->fDataScreenShotSize = 0;
+	}
+}
+
+//--------------------------------------------------------------------------
+void VSceneView::setUpdateScreenShot(const char *format)
+{
+	// Ask for an update of the image in a format
+	fUpdateScreenShot = true;
+	fScreenshotFormat = format;
+}
+
+const char * VSceneView::getScreenShot(const char * format)
+{
+	// If screenshot is ready we do nothing
+	if(!isScreenShotReady()) {
+
+		// Request a screen shot
+		setUpdateScreenShot(format);
+
+		// Wait for a new screenshot provided by an automatic refresh.
+		int i = 0;
+		do {
+#ifdef WIN32
+			Sleep(5);
+#else
+			usleep(5000);
+#endif // win32
+			i++;
+		} while(!isScreenShotReady() && i != 100);
+
+		// The score have not been automatically refresh, we force refresh it
+		if(!isScreenShotReady()) {
+			// Force update of the widget
+			fGraphicsView->viewport()->update();
+
+			// Wait for the force refresh
+			i = 0;
+			do {
+#ifdef WIN32
+				Sleep(5);
+#else
+				usleep(5000);
+#endif // win32
+				i++;
+			} while(!isScreenShotReady() && i != 100);
+		}
+
+		// We can't have a image of the score
+		if(!isScreenShotReady()) {
+			return 0;
+		}
+	}
+	return fDataScreenShot.constData();
 }
 
 //--------------------------------------------------------------------------
