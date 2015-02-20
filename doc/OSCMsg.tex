@@ -918,6 +918,13 @@ Creating an image.
 Creating a memory image of a scene.
 \sample{/ITL/scene/myObject set memimg "/ITL/scene";}
 
+\note{} \\
+It is necessary to have an object or scene graphically rendered before a capture can be made. Since the actual graphic rendering is made asynchronously to the model update, a sequence of messages like the following:
+\sample{/ITL/scene/myObject set gmn "[a f g]";\\
+/ITL/scene/capture set memimg myObject;
+}
+won't work if the messages are handled by the same time task. A delay is necessary between the two messages. To make sure all the objects have been rendered, you can use the scene \OSC{endPaint} event.
+
 
 %===============================
 %:  Miscellaneous

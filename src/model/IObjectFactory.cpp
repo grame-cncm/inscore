@@ -29,7 +29,6 @@
 #include "IObjectFactory.h"
 #include "IModel.h"
 #include "INScoreScene.h"
-#include "IHttpd.h"
 #include "ITLError.h"
 #ifdef NOVIEW
 #include "VoidViewFactory.h"

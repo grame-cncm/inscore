@@ -46,6 +46,7 @@
 #include "IGuidoStream.h"
 #include "IHtml.h"
 #include "IHtmlFile.h"
+#include "IHttpd.h"
 #include "IImage.h"
 #include "ILayer.h"
 #include "ILine.h"
