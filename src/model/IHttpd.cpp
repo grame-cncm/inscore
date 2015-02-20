@@ -24,6 +24,8 @@
 */
 
 #include "IHttpd.h"
+#include "THttpdPlugin.h"
+#include "IScene.h"
 #include "ITLError.h"
 
 using namespace std;
@@ -77,7 +79,7 @@ MsgHandler::msgStatus IHttpd::set (const IMessage* msg)
 
 bool IHttpd::init ()
 {
-	fHttpServer = new THttpdPlugin(this);
+	fHttpServer = new THttpdPlugin(this->getScene());
 	return fHttpServer->start(fHttpPort);
 }
 

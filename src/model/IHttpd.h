@@ -27,13 +27,14 @@
 #define IHTTPD_H
 
 #include "IObject.h"
-#include "THttpdPlugin.h"
 
 namespace inscore
 {
 
 class IHttpd;
 typedef class libmapping::SMARTP<IHttpd>	SIHttpd;
+
+class THttpdPlugin;
 
 /*!
  * \brief The IHttpd class. a Http server object.
@@ -57,13 +58,13 @@ class IHttpd : public IObject
 
 		std::string status() const;
 
+	protected:
+		IHttpd(const std::string &name, IObject *parent);
+
 		/*!
 		 * \brief ~IHttpd Delete plugin instance.
 		 */
 		virtual ~IHttpd();
-
-	protected:
-		IHttpd(const std::string &name, IObject *parent);
 
 	private :
 		/*!

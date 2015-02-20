@@ -21,17 +21,17 @@
 
 #include "THttpdPlugin.h"
 #include "ITLError.h"
-#include "IObject.h"
 #include "IScene.h"
 #include "VExport.h"
 #include "VSceneView.h"
 
 #include "DataExchange.h"
 
-#include <QGraphicsView>
-#include <QGraphicsScene>
-#include <QBuffer>
-#include <vector>
+#ifdef WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif // win32
 
 using namespace std;
 
@@ -62,20 +62,34 @@ THttpdPlugin::TStatus THttpdPlugin::fStatus = 0;
  */
 struct responsedata * getData(struct requestarguments* args, void * aObject)
 {
-	const THttpdPlugin * myPlugin = static_cast<THttpdPlugin*>(aObject);
-
+	THttpdPlugin * myPlugin = static_cast<THttpdPlugin*>(aObject);
 	return myPlugin->getData(args);
 }
 
 struct responsedata * THttpdPlugin::getData(struct requestarguments* args) const
 {
-	VSceneView * sceneView = dynamic_cast<VSceneView*>(fExportedObject->getScene()->getView());
+	if(fExportedObject->getDeleted())
+		return 0;
+
+	VSceneView * sceneView = static_cast<VSceneView*>(fExportedObject->getView());
 
 	// Request a screen shot
-	sceneView->setUpdateScreenShot();
+	sceneView->setUpdateScreenShot(args->format);
 
-	// Wait for a new screenshot. TODO GGX not do active wait
-	while(!sceneView->getScreenShotSize());
+	// Wait for a new screenshot.
+	int i = 0;
+	do {
+		#ifdef WIN32
+		Sleep(5);
+		#else
+		usleep(5 * 1000);
+		#endif // win32
+		i++;
+	} while(!sceneView->isScreenShotReady() && i != 100);
+
+	if(!sceneView->isScreenShotReady()) {
+		return 0;
+	}
 
 	const char * data = sceneView->getScreenShot();
 	int size = sceneView->getScreenShotSize();
@@ -84,13 +98,11 @@ struct responsedata * THttpdPlugin::getData(struct requestarguments* args) const
 	resp->data = new char[size];
 	memcpy(resp->data, data, size);
 	resp->size = size;
-	resp->type = "PNG";
-	return resp;
 
-	return 0;
+	return resp;
 }
 
-THttpdPlugin::THttpdPlugin(IObject *exportedObject) : fExportedObject(exportedObject)
+THttpdPlugin::THttpdPlugin(const IScene *exportedObject) : fExportedObject(exportedObject)
 {
 	// Load library and initialize function.
 	if (load())

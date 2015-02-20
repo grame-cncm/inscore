@@ -284,24 +284,40 @@ void VSceneView::updateView( IScene * scene )
 void VSceneView::updateSreenShot()
 {
 	if(fUpdateScreenShot && fIsObsolete) {
-		QImage image = VExport::sceneToImage(this->fGraphicsView);
+		fUpdateScreenShot = false;
+		// Update the screenshot
+		//QImage image = VExport::sceneToImage(this->fGraphicsView);
+		QSize size (this->fGraphicsView->width() , this->fGraphicsView->height() );
+		QImage image(size, QImage::Format_ARGB32_Premultiplied);
+		QPainter painter(&image);
+		painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+		this->fGraphicsView->render( &painter );
+		painter.end();
+
+
 		QBuffer buffer(&fDataScreenShot);
 		buffer.open(QIODevice::WriteOnly);
-		image.save(&buffer, "PNG");
+		image.save(&buffer, fScreenshotFormat.c_str());
+		// Set the image is available
 		this->fDataScreenShotSize = fDataScreenShot.size();
-		fUpdateScreenShot = false;
+
+		// The image is up to date.
 		fIsObsolete = false;
 	} else {
+		// Screen update without update of the image.
 		fIsObsolete = true;
 	}
 }
 
 //--------------------------------------------------------------------------
-void VSceneView::setUpdateScreenShot()
+void VSceneView::setUpdateScreenShot(const char *format)
 {
 	if(fIsObsolete) {
+		// Invalidate previous screenshot
 		this->fDataScreenShotSize = 0;
+		// Ask for an update of the image in a format
 		fUpdateScreenShot = true;
+		fScreenshotFormat = format;
 		// Force update of the widget
 		fGraphicsView->viewport()->update();
 	}

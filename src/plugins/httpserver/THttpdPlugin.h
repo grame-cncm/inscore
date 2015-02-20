@@ -23,12 +23,12 @@
 #define THTTPDPLUGIN_H
 
 #include "TPlugin.h"
-#include "IObject.h"
+
 #include "DataExchange.h"
 
 namespace inscore
 {
-
+	class IScene;
 /*!
  * \brief The THttpdPlugin class.
  * This class aims to create a http server to expose webservice using inscorehttpserver library.
@@ -39,7 +39,8 @@ class THttpdPlugin : public TPlugin
 		/*!
 		 * \brief fExportedObject base object to export scene
 		 */
-		IObject * fExportedObject;
+		const IScene * fExportedObject;
+
 		/*!
 		 * \brief fHttpdServer HttpServer instance.
 		 */
@@ -74,7 +75,7 @@ class THttpdPlugin : public TPlugin
 		/*!
 		 * \brief THttpdPlugin Create a new http server.
 		 */
-		THttpdPlugin(IObject *exportedObject);
+		THttpdPlugin(const IScene *exportedObject);
 
 		/*!
 		 * \brief ~THttpdPlugin Destroy the http server.

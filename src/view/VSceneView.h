@@ -61,10 +61,19 @@ class VSceneView : public VDummyObjectView
 	WindowEventFilter * fEventFilter;
 	Qt::WindowFlags		fDefaultFlags;
 
+	// Data of a screenshot
 	QByteArray			fDataScreenShot;
+
+	// Size of the data of the screen shot
 	int					fDataScreenShotSize;
+
+	// Ask for a screenshot
 	bool				fUpdateScreenShot;
+
+	// If the scene has been refreshed and not the screenshot
 	bool				fIsObsolete;
+
+	std::string			fScreenshotFormat;
 
 	void				updateOnScreen( IScene * scene );
 	void				updateOffScreen( IScene * scene );
@@ -84,7 +93,13 @@ class VSceneView : public VDummyObjectView
 		void				updateSreenShot();
 		const char *		getScreenShot() { return fDataScreenShot.constData(); }
 		int					getScreenShotSize() { return fDataScreenShotSize; }
-		void				setUpdateScreenShot();
+		bool				isScreenShotReady() { return fDataScreenShotSize != 0; }
+
+		/*!
+		 * \brief setUpdateScreenShot Ask for a update of the screenshot of the scene.
+		 * \param format Image format of the data. This is the same format as a QT format (see QImage)
+		 */
+		void				setUpdateScreenShot(const char *format);
 };
 
 
