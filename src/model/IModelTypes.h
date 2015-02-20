@@ -88,6 +88,9 @@ typedef class libmapping::SMARTP<IHtml>			SIHtml;
 class IHtmlFile;
 typedef class libmapping::SMARTP<IHtmlFile>		SIHtmlFile;
 
+class IHttpd;
+typedef class libmapping::SMARTP<IHttpd>		SIHttpd;
+
 class IImage;
 typedef class libmapping::SMARTP<IImage>		SIImage;
 
@@ -95,7 +98,7 @@ class IMemImage;
 typedef class libmapping::SMARTP<IMemImage>		SIMemImage;
 
 class ILine;
-typedef class libmapping::SMARTP<ILine>		SILine;
+typedef class libmapping::SMARTP<ILine>			SILine;
 
 class IObject;
 typedef class libmapping::SMARTP<IObject>		SIObject;
