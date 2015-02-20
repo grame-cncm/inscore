@@ -39,6 +39,12 @@
 #include <QResizeEvent>
 #include <QDebug>
 
+#ifdef WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif // win32
+
 #include "IScene.h"
 #include "IColor.h"
 #include "TMessageEvaluator.h"
@@ -105,7 +111,6 @@ VSceneView::VSceneView(const std::string& address, QGraphicsScene * scene)
 	fGraphicsView = 0;
 	fEventFilter = 0;
 	fDataScreenShotSize = 0;
-	fIsObsolete = true;
 	fUpdateScreenShot = false;
 	if (scene) {
 		fScene = scene;
@@ -283,7 +288,8 @@ void VSceneView::updateView( IScene * scene )
 //--------------------------------------------------------------------------
 void VSceneView::updateSreenShot()
 {
-	if(fUpdateScreenShot && fIsObsolete) {
+	if(fUpdateScreenShot) {
+		this->fDataScreenShotSize = 0;
 		fUpdateScreenShot = false;
 		// Update the screenshot
 		//QImage image = VExport::sceneToImage(this->fGraphicsView);
@@ -294,33 +300,67 @@ void VSceneView::updateSreenShot()
 		this->fGraphicsView->render( &painter );
 		painter.end();
 
-
 		QBuffer buffer(&fDataScreenShot);
 		buffer.open(QIODevice::WriteOnly);
 		image.save(&buffer, fScreenshotFormat.c_str());
 		// Set the image is available
 		this->fDataScreenShotSize = fDataScreenShot.size();
-
-		// The image is up to date.
-		fIsObsolete = false;
 	} else {
-		// Screen update without update of the image.
-		fIsObsolete = true;
+		// Invalidate previous screenshot
+		this->fDataScreenShotSize = 0;
 	}
 }
 
 //--------------------------------------------------------------------------
 void VSceneView::setUpdateScreenShot(const char *format)
 {
-	if(fIsObsolete) {
-		// Invalidate previous screenshot
-		this->fDataScreenShotSize = 0;
-		// Ask for an update of the image in a format
-		fUpdateScreenShot = true;
-		fScreenshotFormat = format;
-		// Force update of the widget
-		fGraphicsView->viewport()->update();
+	// Ask for an update of the image in a format
+	fUpdateScreenShot = true;
+	fScreenshotFormat = format;
+}
+
+const char * VSceneView::getScreenShot(const char * format)
+{
+	// If screenshot is ready we do nothing
+	if(!isScreenShotReady()) {
+
+		// Request a screen shot
+		setUpdateScreenShot(format);
+
+		// Wait for a new screenshot provided by an automatic refresh.
+		int i = 0;
+		do {
+#ifdef WIN32
+			Sleep(5);
+#else
+			usleep(5000);
+#endif // win32
+			i++;
+		} while(!isScreenShotReady() && i != 100);
+
+		// The score have not been automatically refresh, we force refresh it
+		if(!isScreenShotReady()) {
+			// Force update of the widget
+			fGraphicsView->viewport()->update();
+
+			// Wait for the force refresh
+			i = 0;
+			do {
+#ifdef WIN32
+				Sleep(5);
+#else
+				usleep(5000);
+#endif // win32
+				i++;
+			} while(!isScreenShotReady() && i != 100);
+		}
+
+		// We can't have a image of the score
+		if(!isScreenShotReady()) {
+			return 0;
+		}
 	}
+	return fDataScreenShot.constData();
 }
 
 //--------------------------------------------------------------------------

@@ -70,13 +70,18 @@ class VSceneView : public VDummyObjectView
 	// Ask for a screenshot
 	bool				fUpdateScreenShot;
 
-	// If the scene has been refreshed and not the screenshot
-	bool				fIsObsolete;
-
 	std::string			fScreenshotFormat;
 
 	void				updateOnScreen( IScene * scene );
 	void				updateOffScreen( IScene * scene );
+
+	bool				isScreenShotReady() { return fDataScreenShotSize != 0; }
+
+	/*!
+	 * \brief setUpdateScreenShot Ask for a update of the screenshot of the scene.
+	 * \param format
+	 */
+	void				setUpdateScreenShot(const char *format);
 
 	public :
 		using VDummyObjectView::updateView;
@@ -91,15 +96,14 @@ class VSceneView : public VDummyObjectView
 		QGraphicsScene *	scene() const;
 
 		void				updateSreenShot();
-		const char *		getScreenShot() { return fDataScreenShot.constData(); }
-		int					getScreenShotSize() { return fDataScreenShotSize; }
-		bool				isScreenShotReady() { return fDataScreenShotSize != 0; }
 
 		/*!
-		 * \brief setUpdateScreenShot Ask for a update of the screenshot of the scene.
+		 * \brief getScreenShot get Screenshot data.
 		 * \param format Image format of the data. This is the same format as a QT format (see QImage)
+		 * \return
 		 */
-		void				setUpdateScreenShot(const char *format);
+		const char *		getScreenShot(const char *format);
+		int					getScreenShotSize() { return fDataScreenShotSize; }
 };
 
 

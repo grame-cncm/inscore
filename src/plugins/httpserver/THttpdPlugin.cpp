@@ -27,12 +27,6 @@
 
 #include "DataExchange.h"
 
-#ifdef WIN32
-#include <windows.h>
-#else
-#include <unistd.h>
-#endif // win32
-
 using namespace std;
 
 namespace inscore
@@ -73,25 +67,10 @@ struct responsedata * THttpdPlugin::getData(struct requestarguments* args) const
 
 	VSceneView * sceneView = static_cast<VSceneView*>(fExportedObject->getView());
 
-	// Request a screen shot
-	sceneView->setUpdateScreenShot(args->format);
-
-	// Wait for a new screenshot.
-	int i = 0;
-	do {
-		#ifdef WIN32
-		Sleep(5);
-		#else
-		usleep(5 * 1000);
-		#endif // win32
-		i++;
-	} while(!sceneView->isScreenShotReady() && i != 100);
-
-	if(!sceneView->isScreenShotReady()) {
+	// Get data
+	const char * data = sceneView->getScreenShot(args->format);
+	if(data == 0)
 		return 0;
-	}
-
-	const char * data = sceneView->getScreenShot();
 	int size = sceneView->getScreenShotSize();
 
 	struct responsedata * resp = new struct responsedata;
