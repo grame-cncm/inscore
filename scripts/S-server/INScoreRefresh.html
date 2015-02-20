@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+	<head>
+		<script>
+			setInterval(function() {
+				var url = document.getElementById("url").value;
+				var myImageElement = document.getElementById("inscoreScreen");
+				myImageElement.src = url + "?rand=" + Math.random();
+				}, 1000);
+		</script>
+	</head>
+	<body>
+		<div>
+			<h1>INScore viewer</h1>
+			<p>Type url of INScore server : <input id="url" type="text" value="http://localhost:8000" /></p>
+		</div>
+		<div>
+			<img style="border : 1px solid black;" src="http://localhost:8000" id="inscoreScreen"/>
+		</div>
+	</body>
+</html>
