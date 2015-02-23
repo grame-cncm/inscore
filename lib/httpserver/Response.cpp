@@ -26,16 +26,17 @@ using namespace std;
 
 namespace inscorehttpd {
 
-Response::Response (const char* data, unsigned int size, string format, int http_status)
+Response::Response (const char* data, unsigned int size, string format, int http_status, bool allowCache)
 {
 	fData = new char[size + 1];
 	memcpy (fData, data, size);
 	fSize = size;
 	fFormat = format;
 	fHttpStatus = http_status;
+	fAllowCache = allowCache;
 }
 
-Response::Response (string data, string format, int http_status)
+Response::Response (string data, string format, int http_status, bool allowCache)
 {
 	int size = data.size();
 	const char *cc = data.c_str();
@@ -44,6 +45,7 @@ Response::Response (string data, string format, int http_status)
 	fSize = size;
 	fFormat = format;
 	fHttpStatus = http_status;
+	fAllowCache = allowCache;
 }
 
 Response::Response ()
@@ -53,6 +55,7 @@ Response::Response ()
 	fSize = 0;
 	fFormat = "text/plain";
 	fHttpStatus = 404;
+	fAllowCache = true;
 }
 
 Response::Response (const Response &copy)
@@ -62,6 +65,7 @@ Response::Response (const Response &copy)
 	memcpy (fData, copy.fData, fSize + 1);
 	fFormat = copy.fFormat;
 	fHttpStatus = copy.fHttpStatus;
+	fAllowCache = copy.fAllowCache;
 }
 
 Response::~Response ()
@@ -69,9 +73,9 @@ Response::~Response ()
   delete[] fData;
 }
 
-Response Response::genericFailure(string errorString, int http_status)
+Response Response::genericFailure(string errorString, int http_status, bool allowCache)
 {
-	return Response (errorString, "text/plain", http_status);
+	return Response (errorString, "text/plain", http_status, allowCache);
 }
 
 }

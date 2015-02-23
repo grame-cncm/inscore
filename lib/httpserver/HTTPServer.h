@@ -182,10 +182,11 @@ private:
 	 * \param length size of the data to send
 	 * \param type type of the data (or format)
 	 * \param status Http status to send
+	 * \param allowCache if false the http directive Cache-Control is set to no-cache to force browser and proxy to reload the content of the response.
 	 * \return #MHD_NO on error (i.e. reply already sent),
 	 *         #MHD_YES on success or if message has been queued
 	 */
-	int send (struct MHD_Connection *connection, const char *data, int length, const char *type, int status=MHD_HTTP_OK);
+	int send (struct MHD_Connection *connection, const char *data, int length, const char *type, int status=MHD_HTTP_OK, bool allowCache=true);
 
 	/*!
 	 * \brief logSend log method used before method send

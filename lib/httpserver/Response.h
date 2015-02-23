@@ -53,6 +53,11 @@ class Response {
 	int fHttpStatus;
 
 	/*!
+	 * \brief allowCache
+	 */
+	bool fAllowCache;
+
+	/*!
 	 * \brief Response. Create an empty response with http status 404 not found.
 	 */
 	Response ();
@@ -63,16 +68,18 @@ class Response {
 	 * \param size Size of data
 	 * \param format Mime type of the response.
 	 * \param http_status http status
+	 * \param allowCache set to false to have a no cache response.
 	 */
-	Response (const char* data, unsigned int size, std::string format, int http_status = 200);
+	Response (const char* data, unsigned int size, std::string format, int http_status = 200, bool allowCache = true);
 
 	/*!
 	 * \brief Response Response object
 	 * \param data data of the response
 	 * \param format mime type of the response.
 	 * \param http_status http status, default to 200
+	 * \param allowCache set to false to have a no cache response.
 	 */
-	Response (std::string data, std::string format, int http_status = 200);
+	Response (std::string data, std::string format, int http_status = 200, bool allowCache = true);
 	Response (const Response &copy);
 	virtual ~Response ();
 
@@ -80,9 +87,10 @@ class Response {
 	 * \brief genericFailure Create a generic failure response with plain text mime type.
 	 * \param errorString The content of the response
 	 * \param http_status Http status, default to 400.
+	 * \param allowCache set to false to have a no cache response.
 	 * \return a Response object
 	 */
-	static Response genericFailure(std::string errorString, int http_status = 400);
+	static Response genericFailure(std::string errorString, int http_status = 400, bool allowCache = true);
 };
 
 }

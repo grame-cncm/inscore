@@ -176,11 +176,11 @@ int HTTPDServer::status()
 int HTTPDServer::send (struct MHD_Connection *connection, Response &response)
 {
 	const char *format =  response.fFormat.c_str();
-	return send (connection, response.fData, response.fSize, format, response.fHttpStatus);
+	return send (connection, response.fData, response.fSize, format, response.fHttpStatus, response.fAllowCache);
 }
 
 //--------------------------------------------------------------------------
-int HTTPDServer::send (struct MHD_Connection *connection, const char *data, int length, const char* type, int status)
+int HTTPDServer::send (struct MHD_Connection *connection, const char *data, int length, const char* type, int status, bool allowCache)
 {
 	/*
 	if (fVerbose > 0) {
@@ -226,6 +226,9 @@ int HTTPDServer::send (struct MHD_Connection *connection, const char *data, int 
 	MHD_add_response_header (response, MHD_HTTP_HEADER_CONTENT_TYPE, type ? type : "text/plain");
 	if (fAccessControlAllowOrigin)
 		MHD_add_response_header (response, MHD_HTTP_HEADER_ACCESS_CONTROL_ALLOW_ORIGIN, "*");
+	if (!allowCache) {
+		MHD_add_response_header (response, MHD_HTTP_HEADER_CACHE_CONTROL, "no-cache");
+	}
 	int ret = MHD_queue_response (connection, status, response);
 	MHD_destroy_response (response);
 	return ret;
@@ -399,13 +402,13 @@ int HTTPDServer::sendGetRequest (struct MHD_Connection *connection, const char* 
 	struct responsedata * data = fCallbackFct(&requestArgs, fObject);
 	if(data) {
 		// Create a response
-		Response resp(data->data, data->size, mimetype);
+		Response resp(data->data, data->size, mimetype, 200, false);
 		delete[] data->data;
 		delete data;
 		return send (connection, resp);
 	}
 	// Error
-	Response resp = Response::genericFailure("Cannot create image");
+	Response resp = Response::genericFailure("Cannot create image", 400, false);
 	return send (connection, resp);
 }
 
