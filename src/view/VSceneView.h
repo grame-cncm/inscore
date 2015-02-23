@@ -70,6 +70,8 @@ class VSceneView : public VDummyObjectView
 	// Ask for a screenshot
 	bool				fUpdateScreenShot;
 
+	bool				fNewVersion;
+
 	std::string			fScreenshotFormat;
 
 	void				updateOnScreen( IScene * scene );
@@ -104,7 +106,13 @@ class VSceneView : public VDummyObjectView
 		 * \return
 		 */
 		const char *		getScreenShot(const char *format);
+		const QByteArray *	getScreenShotByteArray(const char *format);
 		int					getScreenShotSize() { return fDataScreenShotSize; }
+
+		// Used with websocket to know if screen have been updated.
+		bool				isNewVersion() {return fNewVersion; }
+		// Called when a notification have been send to all clients.
+		void				initNewVersion() { fNewVersion = false; }
 };
 
 

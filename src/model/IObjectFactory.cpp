@@ -89,6 +89,11 @@ template<> SIObject _create<IHttpd>(const std::string& name , IObject* parent)
 	return IHttpd::create(name, parent);
 }
 
+template<> SIObject _create<IWebSocket>(const std::string& name , IObject* parent)
+{
+	return IWebSocket::create(name, parent);
+}
+
 #ifndef NOVIEW
 template<> SIObject _create<IScene>(const std::string& name , IObject* parent)
 {
@@ -208,6 +213,9 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 
 	else if ( type == IScene::kSceneType )
 		obj = _create<IScene> (name, parent);
+
+	else if ( type == IWebSocket::kIWebSocketType )
+		obj = _create<IWebSocket> (name, parent);
 
 	else
 		ITLErr << "unknown object type: " << type << ITLEndl;

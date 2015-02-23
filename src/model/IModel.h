@@ -67,4 +67,5 @@
 #include "ITextFile.h"
 #include "IVideo.h"
 #include "IUrlIntermediateObject.h"
+#include "IWebSocket.h"
 #endif

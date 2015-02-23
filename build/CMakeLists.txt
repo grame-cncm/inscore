@@ -193,7 +193,7 @@ message (STATUS "Using Qt version ${QTVERSION} - Use -DQTVERSION=vers to change.
 
 set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h  ${ROOT}/view/VLogWindow.h)
 if (QTVERSION EQUAL "5")
-	set (MOC_HEADERS ${MOC_HEADERS} ${ROOT}/view/VVideoView.h ${ROOT}/controller/QFileDownloader.h)
+        set (MOC_HEADERS ${MOC_HEADERS} ${ROOT}/view/VVideoView.h ${ROOT}/controller/QFileDownloader.h ${ROOT}/model/IWebSocket.h)
 	if(IOS)
 		set( QT_ROOT $(HOME)/Qt/5.3/ios/lib/cmake )
 		set( ENV(CMAKE_PREFIX_PATH) ${QT_ROOT} )
@@ -206,8 +206,9 @@ if (QTVERSION EQUAL "5")
 	FIND_PACKAGE(Qt5Multimedia REQUIRED)
 	FIND_PACKAGE(Qt5MultimediaWidgets REQUIRED)
 	FIND_PACKAGE(Qt5Qml REQUIRED)
+        FIND_PACKAGE(Qt5WebSockets REQUIRED)
 	if(APPLE OR WIN32)
-	  set(QTLIBS ${Qt5Core_LIBRARIES}  ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} ${Qt5Multimedia_LIBRARIES} ${Qt5MultimediaWidgets_LIBRARIES} ${Qt5Qml_LIBRARIES})	
+          set(QTLIBS ${Qt5Core_LIBRARIES}  ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Svg_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} ${Qt5Multimedia_LIBRARIES} ${Qt5MultimediaWidgets_LIBRARIES} ${Qt5Qml_LIBRARIES} ${Qt5WebSockets_LIBRARIES})
 	  if(IOS)
 	  	FIND_PACKAGE(Qt5OpenGL REQUIRED)
 	  	# only iphonesimulator seems to be in need of Qt5Network ??!! 
@@ -215,10 +216,10 @@ if (QTVERSION EQUAL "5")
 	  	set(QTLIBS ${QTLIBS} ${Qt5OpenGL_LIBRARIES} ${Qt5Network_LIBRARIES})
 	  endif()
 	else()
-	  set(QTLIBS "-lQt5Core -lQt5Gui -lQt5Widgets -lQt5Svg -lQt5PrintSupport -lQt5Multimedia -lQt5MultimediaWidgets  -lQt5Qml")	
+          set(QTLIBS "-lQt5Core -lQt5Gui -lQt5Widgets -lQt5Svg -lQt5PrintSupport -lQt5Multimedia -lQt5MultimediaWidgets  -lQt5Qml -lQt5WebSockets")
 	endif()
 
-	set (QTHEADERS ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS} 	${Qt5PrintSupport_INCLUDE_DIRS}  ${Qt5Multimedia_INCLUDE_DIRS}  ${Qt5MultimediaWidgets_INCLUDE_DIRS} ${Qt5Qml_INCLUDE_DIRS})
+        set (QTHEADERS ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS} 	${Qt5PrintSupport_INCLUDE_DIRS}  ${Qt5Multimedia_INCLUDE_DIRS}  ${Qt5MultimediaWidgets_INCLUDE_DIRS} ${Qt5Qml_INCLUDE_DIRS} ${Qt5WebSockets_INCLUDE_DIRS})
 else ()   # assume we're using Qt4
 	add_definitions(-DUSEPHONON)
 

@@ -90,6 +90,7 @@ void ZoomingGraphicsView::paintEvent (QPaintEvent * event)
 
 		VSceneView * sceneView = dynamic_cast<VSceneView*>(fScene->getView());
 		sceneView->updateSreenShot();
+
 	}
 }
 
@@ -288,6 +289,7 @@ void VSceneView::updateView( IScene * scene )
 //--------------------------------------------------------------------------
 void VSceneView::updateSreenShot()
 {
+	fNewVersion = true;
 	if(fUpdateScreenShot) {
 		this->fDataScreenShotSize = 0;
 		fUpdateScreenShot = false;
@@ -319,7 +321,7 @@ void VSceneView::setUpdateScreenShot(const char *format)
 	fScreenshotFormat = format;
 }
 
-const char * VSceneView::getScreenShot(const char * format)
+const QByteArray* VSceneView::getScreenShotByteArray(const char * format)
 {
 	// If screenshot is ready we do nothing
 	if(!isScreenShotReady()) {
@@ -341,7 +343,7 @@ const char * VSceneView::getScreenShot(const char * format)
 		// The score have not been automatically refresh, we force refresh it
 		if(!isScreenShotReady()) {
 			// Force update of the widget
-			fGraphicsView->viewport()->update();
+			fGraphicsView->viewport()->repaint();
 
 			// Wait for the force refresh
 			i = 0;
@@ -360,7 +362,11 @@ const char * VSceneView::getScreenShot(const char * format)
 			return 0;
 		}
 	}
-	return fDataScreenShot.constData();
+	return &fDataScreenShot;
+}
+
+const char * VSceneView::getScreenShot(const char *format) {
+	return getScreenShotByteArray(format)->constData();
 }
 
 //--------------------------------------------------------------------------

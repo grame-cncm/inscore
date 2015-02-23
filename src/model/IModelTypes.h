@@ -145,6 +145,9 @@ typedef class libmapping::SMARTP<IVideo>		SIVideo;
 class IUrlIntermediateObject;
 typedef class libmapping::SMARTP<IUrlIntermediateObject>		SIUrlIntermediateObject;
 
+class IWebSocket;
+typedef class libmapping::SMARTP<IWebSocket>		SIWebSocket;
+
 class Master;
 class ISync;
 
