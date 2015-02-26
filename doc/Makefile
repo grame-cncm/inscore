@@ -56,6 +56,9 @@ OSCMsg.pdf : OSCMsg.rao OSCMsg.ind
 	bibtex $(patsubst %.bib, %, $<)
 	pdflatex $(patsubst %.bib, %.tex, $<) 
 
+%.idx : %.tex
+	latex $< 
+
 %.ind : %.idx
 	makeindex $< 
 
