@@ -39,11 +39,12 @@ Thread::Thread(int port, int frequency, VObjectView *exportedView, QObject * par
 
 Thread::~Thread()
 {
+	delete fServer;
 }
 
 void Thread::run() {
 	// Create a webscocket server and wait for event.
-	fServer = new QtWebSocketServer(fPort, fFrequency, fExportedView, this);
+	fServer = new QtWebSocketServer(fPort, fFrequency, fExportedView);
 	exec();
 }
 
@@ -54,10 +55,9 @@ QtWebSocketController::QtWebSocketController(const std::string &name, IObject *p
 
 QtWebSocketController::~QtWebSocketController()
 {
-	// Wait for end of thread and delete it.
+	// Wait for end of thread.
 	fThreadServer->quit();
 	fThreadServer->wait();
-	delete fThreadServer;
 }
 
 bool QtWebSocketController::init()
