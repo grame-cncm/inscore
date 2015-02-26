@@ -130,7 +130,7 @@ SIMessageList ISceneSync::getMsgs (const IMessage* msg) const
         ISync::const_slave_iterator it = s2m.begin();
         while(it != s2m.end())
         {
-            for (int i = 0; i < it->second.size(); i++) {
+			for (unsigned int i = 0; i < it->second.size(); i++) {
                 SIMessage msg = buildSyncMsg (address, it->first,  it->second[i]);
                 outMsgs->list().push_back (msg);
             }
@@ -176,7 +176,7 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const std::string& slave, const std::
     {
         for (subnodes::iterator i = so.begin(); i != so.end(); i++) {
             std::vector<SMaster> masters = fParent->getMasters((*i));
-            for(int j = 0; j < masters.size(); j++)
+			for(unsigned int j = 0; j < masters.size(); j++)
             {
                 if (masters[j]->getMaster()->name() == master && masters[j]->getMasterMapName() == masterMapName)
                     delsync((*i),masters[j]);

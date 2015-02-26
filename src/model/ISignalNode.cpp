@@ -381,7 +381,7 @@ MsgHandler::msgStatus ISignalNode::disconnect(SParallelSignal signal, std::strin
 std::vector<ISignalConnection* > ISignalNode::getConnectionsOf(std::string objectName)
 {
     std::vector<ISignalConnection*> connections;
-    for (int i = 0; i < fConnections.size(); i++)
+	for (unsigned int i = 0; i < fConnections.size(); i++)
     {
         std::string object = fConnections[i]->getObject();
         if(!object.compare(objectName))
@@ -396,7 +396,7 @@ SIMessageList ISignalNode::getAllConnections() const
     SIMessageList list = IMessageList::create();
     const char* address = getOSCAddress().c_str();
     
-    for (int i = 0; i < fConnections.size(); i++)
+	for (unsigned int i = 0; i < fConnections.size(); i++)
     {
         SIMessage msg = IMessage::create (address, kconnect_GetSetMethod);
         std::string objectMethodWithRange = fConnections[i]->getObjectMethod();

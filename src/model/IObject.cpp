@@ -677,7 +677,7 @@ int IObject::processSig ()
         if(!connections.empty())
         {
             // if found, we call the method executeSignal to link the attribute and the signal.
-            for(int it = 0; it < connections.size(); it++)
+			for(unsigned int it = 0; it < connections.size(); it++)
             {
                 int status = 0;
                 if(connections[it]->getRangeType() == "float")
@@ -1012,13 +1012,13 @@ void IObject::transferAttributes(SIObject newobj)
     *((EventsAble*)newobj) = *((EventsAble*)this);
     
     // transfer of the sync informations
-    for(int i = 0; i < fParent->elements().size(); i++)
+	for(unsigned int i = 0; i < fParent->elements().size(); i++)
     {
         ISceneSync * sync = dynamic_cast<ISceneSync*>((IObject*)(fParent->elements()[i]));
         if(sync) // we found the syncnode, to get the informations about the synchronizations
         {
             SIMessageList list = sync->getAll();
-            for(int j = 0; j < list->list().size(); j++)
+			for(unsigned int j = 0; j < list->list().size(); j++)
             {
                 INScore::MessagePtr msg = list->list()[j];
                 std::string slave, master;
