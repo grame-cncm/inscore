@@ -205,7 +205,8 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		virtual void getAvailableMapNames(std::vector<std::string>& result) const {}
 		
 		/// \brief returns the object size i.e. its subnodes count
-		virtual int		size () const				{ return int(fSubNodes.size()); }
+		virtual int		size (bool recursive = false) const;
+
 		/// \brief returns true when the object has no subnode
 		virtual bool	empty () const				{ return size() == 0; }
 				
@@ -553,11 +554,18 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		/// \brief object \c 'get' message handler.
 		virtual MsgHandler::msgStatus get (const IMessage* msg) const;
 
+		/// \brief object \c 'get count' message handler.
+		int			getSize () const		{ return size(false); }
+
+		/// \brief object \c 'get rcount' message handler.
+		int			getRSize () const		{ return size(true); }
+
 		/// \brief object \c 'save' message handler.
 		virtual MsgHandler::msgStatus saveMsg (const IMessage* msg) const;
 
 		/// \brief object \c 'event' message handler (provided for events simulation).
 		virtual MsgHandler::msgStatus eventMsg (const IMessage* msg);
+
 };
 
 IMessage&		operator << (IMessage&, const SGetParamMsgHandler&);

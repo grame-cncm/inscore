@@ -112,6 +112,9 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fGetMultiMsgHandlerMap[kmap_GetSetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getMaps);
 	fGetMultiMsgHandlerMap[kalias_GetSetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getAliases);
     fGetMultiMsgHandlerMap[kstack_GetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getStack);
+
+	fGetMsgHandlerMap[kcount_GetMethod]		= TGetParamMethodHandler<IObject, int (IObject::*)() const>::create(this, &IObject::getSize);
+	fGetMsgHandlerMap[krcount_GetMethod]	= TGetParamMethodHandler<IObject, int (IObject::*)() const>::create(this, &IObject::getRSize);
 }
 
 
@@ -865,6 +868,20 @@ SIMessageList IObject::getMsgs(const IMessage* msg) const
 	return outMsgs;
 }
 
+
+//--------------------------------------------------------------------------
+int IObject::size (bool recursive) const
+{
+	int n = int(fSubNodes.size());
+	int subn = 0;
+	if (recursive) {
+		for (int i=0; i<n; i++)
+			subn += fSubNodes[i]->size(recursive);
+	}
+	return n + subn;
+}
+
+
 //--------------------------------------------------------------------------
 SIMessageList IObject::getMaps() const		{ return __getMaps(); }
 SIMessageList IObject::__getMaps() const	{ return IMessageList::create(); }
@@ -893,8 +910,7 @@ struct msgMatchPredicat {
 	bool operator() (const pair<string, SMsgHandler>& elt) const { 
 		if (elt.first.empty() ||(elt.first == "*") ) return false;
 		CRegexpT<char> regexp(elt.first.c_str(), EXTENDED);
-		bool ret = regexp.Match(msg);
-		return ret;
+		return regexp.MatchExact(msg);
 	}
 };
 
@@ -904,8 +920,7 @@ struct sigMatchPredicat {
 	bool operator() (const pair<string, SSigHandler>& elt) const {
 		if (elt.first.empty() ||(elt.first == "*") ) return false;
 		CRegexpT<char> regexp(elt.first.c_str(), EXTENDED);
-		bool ret = regexp.Match(method);
-		return ret;
+		return regexp.MatchExact(method);
 	}
 };
 
