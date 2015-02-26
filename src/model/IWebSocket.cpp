@@ -1,3 +1,28 @@
+/*
+
+  INScore Project
+
+  Copyright (C) 2015  Grame
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  research@grame.fr
+
+*/
+
 #include "IWebSocket.h"
 #include "IScene.h"
 #include "VSceneView.h"
@@ -13,10 +38,7 @@ const string IWebSocket::kIWebSocketType("websocket");
 
 const char * IWebSocket::GET_IMAGE = "getImage";
 
-IWebSocket::IWebSocket(const std::string &name, IObject *parent) : QObject(0), IObject (name, parent),
-	fWebSocketServer(new QWebSocketServer(QStringLiteral("Echo Server"),
-	QWebSocketServer::NonSecureMode, this)),
-	fClients()
+IWebSocket::IWebSocket(const std::string &name, IObject *parent) : IObject (name, parent)
 {
 	fTypeString = kIWebSocketType;
 	fGetMsgHandlerMap[kstatus_GetMethod]	= TGetParamMethodHandler<IWebSocket, string (IWebSocket::*)() const>::create(this, &IWebSocket::status);
@@ -24,9 +46,6 @@ IWebSocket::IWebSocket(const std::string &name, IObject *parent) : QObject(0), I
 
 IWebSocket::~IWebSocket()
 {
-	fWebSocketServer->close();
-	qDeleteAll(fClients.begin(), fClients.end());
-	delete fTimer;
 }
 
 MsgHandler::msgStatus IWebSocket::set (const IMessage* msg)
@@ -52,76 +71,6 @@ MsgHandler::msgStatus IWebSocket::set (const IMessage* msg)
 		}
 	}
 	return MsgHandler::kBadParameters;
-}
-
-
-void IWebSocket::onNewConnection()
-{
-	QWebSocket *pSocket = fWebSocketServer->nextPendingConnection();
-	// Connect client to action.
-	connect(pSocket, &QWebSocket::disconnected, this, &IWebSocket::socketDisconnected);
-	connect(pSocket, &QWebSocket::textMessageReceived, this, &IWebSocket::processTextMessage);
-	// Add client in list
-	fClients << pSocket;
-}
-
-void IWebSocket::socketDisconnected()
-{
-	// Retrieve the client
-	QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
-	if (pClient) {
-		// Remove the client in the list
-		fClients.removeAll(pClient);
-		pClient->deleteLater();
-	}
-}
-
-
-void IWebSocket::sendNotification() {
-	VSceneView *scene = static_cast<VSceneView*>(this->getScene()->getView());
-	// The screen have been updated
-	if(scene->isNewVersion()) {
-		// Send to all clients
-		QList<QWebSocket *>::iterator i;
-		for (i = fClients.begin(); i != fClients.end(); ++i)  {
-			(*i)->sendTextMessage("Screen updated");
-		}
-		scene->initNewVersion();
-	}
-}
-
-void IWebSocket::processTextMessage(QString message)
-{
-	VSceneView *scene = static_cast<VSceneView*>(this->getScene()->getView());
-	QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
-	if (pClient) {
-		if(message == IWebSocket::GET_IMAGE) {
-			pClient->sendBinaryMessage(*(scene->getScreenShotByteArray("PNG")));
-		} else {
-			pClient->sendTextMessage("Error : unknown request.");
-		}
-	}
-}
-
-bool IWebSocket::init() {
-	// Start the web socket server.
-	if (fWebSocketServer->listen(QHostAddress::Any, fPort)) {
-		connect(fWebSocketServer, &QWebSocketServer::newConnection,
-				this, &IWebSocket::onNewConnection);
-		connect(fWebSocketServer, &QWebSocketServer::closed, this, &IWebSocket::closed);
-
-		// Fired a possible notification in each end of the timer.
-		fTimer = new QTimer();
-		connect(fTimer, SIGNAL(timeout()),this, SLOT(sendNotification()));
-		fTimer->start(fFrequency);
-		return true;
-	}
-	return false;
-}
-
-string IWebSocket::status () const
-{
-	return fWebSocketServer->isListening() ? "started": "stopped";
 }
 
 }
