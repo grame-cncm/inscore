@@ -1028,6 +1028,73 @@ Creating an image using the \OSC{file} type.
 }
 
 
+%===============================
+%:  The file type
+\sublevel{File based resources}
+\label{filebasedrsrc}
+
+Most of the types can be either expressed with the corresponding data, or by a path to a file containing the data. For the latter form, the object type is generally suffixed with an 'f' (e.g. \OSC{txtf}, \OSC{htmlf}, \OSC{gmnf}, \OSC{musicxmlf}, \OSC{svgf}, \OSC{faustf}). The \OSC{img} and  \OSC{video} types have only a file form (and no 'f' suffix). \\
+A file path can be expressed as a Unix path (absolute or relative - see the scene or application \OSC{rootPath} message for relative paths handling), but also as an URL.
+
+\begin{rail}
+urlPath : 
+	( http | https | file) path
+\end{rail}
+\index{Set file!filePath}
+\index{Set file!urlPath}
+
+Only the \OSC{http:}, \OSC{https:} and \OSC{file:} protocols are currently supported for URLs.
+
+When the system encounters an URL, it creates an intermediate object that is in charge of retrieving the corresponding data. This object has a specific \OSC{url} type that takes the target type and an url as arguments. It has a graphic appearance (actually a light gray box containing the object name and the target url) that can be controled like for any regular object.
+
+\begin{rail}
+urlType : 
+	'url' targetType  urlPath
+\end{rail}
+\index{Set type!url}
+
+The \OSC{url} intermediate object acts as a proxy for the target object and will transfer all its properties once the data are ready. A client can thus interact transparently with the target adress, whatever the status of the download request.
+
+\example \\
+Creating a score using an URL:
+\sample{/ITL/scene/score set gmnf "http://anyhost.adomain.org/score.gmn"; \\
+\hspace*{4mm} is equivalent to \\
+/ITL/scene/score set url gmnf "http://anyhost.adomain.org/score.gmn";
+}
+
+\note{} The \OSC{url} object handles specific events : \OSC{success}, \OSC{error} and \OSC{cancel} (see the section \fullref{urlevents}).
+
+
+%===============================
+%:  The websocket server
+\sublevel{The websocket server}
+\label{websocketserver}
+
+\label{setwebsocket}
+
+The websocket server object is used to have communication between INScore and distant clients. The object push notification to client (a text message "Screen updated") when his scene is updated. Clients can ask the server for an image by sending "getImage" text message to the server. The server respond by a png image of the scene in a Blob type javascript object.
+
+\begin{rail}
+setWebsocket : 
+	'websocket' port frequency
+\end{rail}
+\index{Set type!websocket}
+
+\begin{itemize}
+\item \OSC{port}: a port number for the socket communication.
+\item \OSC{frequency}: a minimum time in millisecond between two notifications "Screen updated".
+\end{itemize}
+
+\seealso the http web server plugin (section \fullref{Httpd}).
+
+\note{} \\
+If the http port is already used, the server can't start. The server status can be verified with the \OSC{get status} message.
+
+\example \\
+Creating an websocket server using the port \OSC{1234} and have not more one notification per 500 milliseconds. 
+\sample{/ITL/scene/myObject set websocket 1234 500;}
+
+
 
 %===============================
 %:The 'get' message
@@ -3233,7 +3300,7 @@ httpdserver: 'set' 'httpd' port
 \sample{/ITL/scene/server set httpd 8000;}
 
 \note{} \\
-If the http port is already used, the server cannot start. \\
+If the http port is already used, the server cannot start.
 
 %===============================
 %:      Specific messages
@@ -3242,7 +3309,7 @@ If the http port is already used, the server cannot start. \\
 The http server status can be delivered with a specific message.
 
 \begin{rail}
-httpdmessage : 'status'
+httpdmessage : 'get' status
 \end{rail}
 
 \index{httpdmessage!status}
@@ -3250,7 +3317,7 @@ httpdmessage : 'status'
 A string corresponding to the server status ("started" or "stopped") is return.
 
 \example \\
-\sample{/ITL/scene/server status;}
+\sample{/ITL/scene/server get status;}
 
 %===============================
 %:Appendix
