@@ -29,6 +29,24 @@
 namespace inscore
 {
 
+Thread::Thread(int port, int frequency, VObjectView *exportedView, QObject * parent) :
+	QThread(parent),
+	fExportedView(exportedView),
+	fPort(port),
+	fFrequency(frequency)
+{
+}
+
+Thread::~Thread()
+{
+}
+
+void Thread::run() {
+	// Create a webscocket server and wait for event.
+	fServer = new QtWebSocketServer(fPort, fFrequency, fExportedView, this);
+	exec();
+}
+
 QtWebSocketController::QtWebSocketController(const std::string &name, IObject *parent) :
 	QObject(0), IWebSocket(name, parent)
 {
@@ -36,24 +54,18 @@ QtWebSocketController::QtWebSocketController(const std::string &name, IObject *p
 
 QtWebSocketController::~QtWebSocketController()
 {
-	workerThread.quit();
-	workerThread.wait();
+	// Wait for end of thread and delete it.
+	fThreadServer->quit();
+	fThreadServer->wait();
+	delete fThreadServer;
 }
 
 bool QtWebSocketController::init()
 {
-	fServer = new QtWebSocketServer(fPort, fFrequency, this->getScene()->getView());
-	fServer->moveToThread(&workerThread);
-
-	workerThread.start();
-	connect(&workerThread, &QThread::finished, fServer, &QObject::deleteLater);
-	if(fServer->start()) {
-
-
-		return true;
-	}
-	delete fServer;
-	return false;
+	// Create and start a new thread
+	fThreadServer = new Thread(fPort, fFrequency, this->getScene()->getView(), this);
+	fThreadServer->start();
+	return true;
 }
 
 }

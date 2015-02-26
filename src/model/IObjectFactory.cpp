@@ -30,6 +30,7 @@
 #include "IModel.h"
 #include "INScoreScene.h"
 #include "ITLError.h"
+#include "QtWebSocketController.h"
 #ifdef NOVIEW
 #include "VoidViewFactory.h"
 #else
@@ -91,7 +92,7 @@ template<> SIObject _create<IHttpd>(const std::string& name , IObject* parent)
 
 template<> SIObject _create<IWebSocket>(const std::string& name , IObject* parent)
 {
-	return IWebSocket::create(name, parent);
+	return QtWebSocketController::create(name, parent);
 }
 
 #ifndef NOVIEW

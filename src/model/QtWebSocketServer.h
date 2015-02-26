@@ -40,10 +40,22 @@ class QtWebSocketServer : public QObject
 {
 		Q_OBJECT
 	public:
+		/*!
+		 * \brief QtWebSocketServer Create and start the websocket server.
+		 * \param port Port used by the server
+		 * \param frequency Max frequency of notification
+		 * \param exportedView The view to export as an image
+		 * \param parent Parent object.
+		 */
 		QtWebSocketServer(int port, int frequency, inscore::VObjectView *exportedView, QObject *parent = 0);
+
 		virtual ~QtWebSocketServer();
+
+		/*!
+		 * \brief isListening Status of the server.
+		 * \return
+		 */
 		inline bool isListening() const { return fWebSocketServer->isListening(); }
-		bool start();
 
 	private:
 		/*!
@@ -55,12 +67,32 @@ class QtWebSocketServer : public QObject
 		 * \brief fClients List of clients.
 		 */
 		QList<QWebSocket *> fClients;
+
+		/*!
+		 * \brief fTimer Timer to send notification if screen has changed.
+		 */
 		QTimer * fTimer;
 
+		/*!
+		 * \brief fScreenVersion Screenversion to compare to the screen version manage by inscore
+		 */
 		unsigned long fScreenVersion;
 
+		/*!
+		 * \brief fExportedView
+		 */
 		VObjectView * fExportedView;
-		int fPort, fFrequency;
+
+		/*!
+		 * \brief fPort
+		 */
+		int fPort;
+
+		/*!
+		 * \brief fFrequency
+		 */
+		int fFrequency;
+
 	Q_SIGNALS:
 		/*!
 		 * \brief closed Close the server.

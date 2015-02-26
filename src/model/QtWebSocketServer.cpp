@@ -43,36 +43,25 @@ QtWebSocketServer::QtWebSocketServer(int port, int frequency, VObjectView *expor
 	fPort(port),
 	fFrequency(frequency)
 {
-
 	fScreenVersion = 0;
-}
-#include <iostream>
-bool QtWebSocketServer::start()
-{
 	fWebSocketServer = new QWebSocketServer(QStringLiteral("WebSocketServer"), QWebSocketServer::NonSecureMode, this);
-
-	fWebSocketServer->moveToThread(this->thread());
-	fWebSocketServer->setParent(this);
-	std::cout << "parent" << fWebSocketServer->parent() << std::endl;
 	// Start the web socket server.
 	if (fWebSocketServer->listen(QHostAddress::Any, fPort)) {
 		connect(fWebSocketServer, &QWebSocketServer::newConnection, this, &QtWebSocketServer::onNewConnection);
 		connect(fWebSocketServer, &QWebSocketServer::closed, this, &QtWebSocketServer::closed);
 
-		// Fired a possible notification in each end of the timer.
+		// Fire a possible notification in each end of the timer.
 		fTimer = new QTimer(this);
 		connect(fTimer, SIGNAL(timeout()),this, SLOT(sendNotification()));
 		fTimer->start(fFrequency);
-		return true;
 	}
-	return false;
 }
 
 QtWebSocketServer::~QtWebSocketServer()
 {
+	// Close server and delete all client.
 	fWebSocketServer->close();
 	qDeleteAll(fClients.begin(), fClients.end());
-	//delete fTimer;
 }
 
 
@@ -99,23 +88,23 @@ void QtWebSocketServer::socketDisconnected()
 
 
 void QtWebSocketServer::sendNotification() {
-	// The screen have been updated
+	// Verify and update screen version
 	if(fExportedView->isNewVersion(fScreenVersion)) {
-		// Send to all clients
+		// The screen have been updated, send to all clients
 		QList<QWebSocket *>::iterator i;
 		for (i = fClients.begin(); i != fClients.end(); ++i)  {
 			(*i)->sendTextMessage("Screen updated");
 		}
 	}
 }
-#include <iostream>
+
 void QtWebSocketServer::processTextMessage(QString message)
 {
 	QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
 	if (pClient) {
+		// Verify message and get back image and send it
 		if(message == IWebSocket::GET_IMAGE) {
 			AbstractData data = fExportedView->getImage("PNG");
-			std::cout << "data.size=" << data.size << std::endl;
 			QByteArray bArray = QByteArray::fromRawData(data.data, data.size);
 			pClient->sendBinaryMessage(bArray);
 		} else {

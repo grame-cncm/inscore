@@ -25,13 +25,9 @@
 #ifndef IWEBSOCKET_H
 #define IWEBSOCKET_H
 
-#include <QObject>
-#include <QTimer>
-
 #include <string>
 
 #include "IObject.h"
-
 
 namespace inscore
 {	

@@ -24,11 +24,6 @@
 */
 
 #include "IWebSocket.h"
-#include "IScene.h"
-#include "VSceneView.h"
-
-#include <QWebSocketServer>
-#include <QWebSocket>
 
 using namespace std;
 
