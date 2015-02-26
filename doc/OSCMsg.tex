@@ -3207,6 +3207,50 @@ A gesture follower object has a graphic appearance and supports all the standard
 
 
 
+%===============================
+%:   Httpd server plugins
+\sublevel{Httpd server plugin}
+\label{Httpd}
+
+INScore can embed Http server to expose real time screenshot image of a scene to the web. This feature is based on libmicrohttpd \footnote{\url{http://www.gnu.org/software/libmicrohttpd/}} and is available as a plugin that is included in the INScore distribution (version 1.11 or greater). The Url to get the image is the base url of the server.
+
+%===============================
+%:      Set messages
+\subsublevel{Set Message}
+
+The http server object is created in a scene like other objects and served image of his scene.
+
+\begin{rail}
+httpdserver: 'set' 'httpd' port
+\end{rail}
+\index{httpdserver!set}
+
+\begin{itemize}
+\item \OSC{port} http port used by the server.
+\end{itemize}
+
+\example \\
+\sample{/ITL/scene/server set httpd 8000;}
+
+\note{} \\
+If the http port is already used, the server cannot start. \\
+
+%===============================
+%:      Specific messages
+\subsublevel{Specific messages}
+\label{httpdmsg}
+The http server status can be delivered with a specific message.
+
+\begin{rail}
+httpdmessage : 'status'
+\end{rail}
+
+\index{httpdmessage!status}
+
+A string corresponding to the server status ("started" or "stopped") is return.
+
+\example \\
+\sample{/ITL/scene/server status;}
 
 %===============================
 %:Appendix
