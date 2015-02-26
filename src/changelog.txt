@@ -14,6 +14,8 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.11
+- new common queries ('get' message) : count and rcount that give the enclosed objects count
+  and a recursive count. The messages are supported at scene and application level as well.
 - new 'memimg' object that capture the image of any object hierarchy including scenes
 - supports relative OSC addresses that are evaluated in the context of the target object 
   (i.e. a scene for drag & drop operations, arbitrary objects with the 'eval' method)
