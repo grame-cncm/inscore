@@ -5,7 +5,10 @@
 			setInterval(function() {
 				var url = document.getElementById("url").value;
 				var myImageElement = document.getElementById("inscoreScreen");
-				myImageElement.src = url;
+				// A Cache-Control : no-cache value is set to http header but it seems
+				// it's not correctly used by all browser with this simple javascript,
+				// so we use a fake parameter rand.
+				myImageElement.src = url + "?rand=" + Math.random();
 				}, 1000);
 		</script>
 	</head>
