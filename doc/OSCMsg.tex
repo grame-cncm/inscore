@@ -1126,8 +1126,7 @@ Querying an object content
 \sample{/ITL/scene/myobject set txt "Hello world!";}
 
 \note{} \\
-The \OSC{get width} and \OSC{get height} messages addressed to components that have no explicit width and height (text, images, etc.) returns 0 as long as the target component has not been drew.
-
+The \OSC{get width} and \OSC{get height} messages addressed to components that have no explicit width and height (text, images, etc.) returns 0 as long as the target component has not been graphically rendered.
 
 
 %===============================
@@ -1592,7 +1591,12 @@ ITLPlugin : 'path'  folder
 %:Scene messages
 \toplevel{Scene messages}
 \label{scene}
-A scene may be viewed as a window on the score elements. Its address is \OSC{/ITL/\textit{sceneIdentifier}} where \OSC{\textit{sceneIdentifier}} is the scene name. It handles the following messages:
+A scene may be viewed as a window on the score elements. Its address is \OSC{/ITL/\textit{sceneIdentifier}} where \OSC{\textit{sceneIdentifier}} is the scene name. 
+
+%===============================
+%:  Scene control
+\sublevel{Scene control}
+The following messages are available at scene level, to control the scene appearance and behaviour:
 \begin{rail}
 sceneMsg :  'new'
 			| 'del'
@@ -1643,6 +1647,34 @@ Creating a new score named \OSC{myScore}:
 
 
 %===============================
+%:  Scene queries
+\sublevel{Scene queries}
+\label{scenequery}
+
+A scene may respond to queries regarding its elements:
+\begin{rail}
+sceneQuery : 'get' ( 'count'
+					| 'rcount')
+\end{rail}
+\index{Scene query}
+\index{Scene query!count}
+\index{Scene query!rcount}
+
+\begin{itemize}
+\item \OSC{count}: count the number of elements in the scene.
+\item \OSC{rcount}: recursively count the number of elements in the scene.
+\end{itemize}
+
+\example \\
+Counting the elements in a scene:
+\sample{/ITL/scene get count;\\
+\hspace*{5mm}will give a message like the following as output: \\
+/ITL/scene count 200;
+}
+
+
+
+%===============================
 %:Layers
 \toplevel{Layers}
 \label{layers}
@@ -1677,7 +1709,10 @@ Making a layer visible :
 \sublevel{Layers generalization}
 \label{layersgen}
 
-The idea of layer is generalized to all the type of objects: any INScore object can be a container without limitation on the depth.
+The idea of layer is generalized to all the type of objects: any INScore object can be a container without depth limitation. 
+
+Layers but also any object respond to the \OSC{count} and \OSC{rcount} queries described in section \fullref{scenequery}.
+
 
 
 %-------------------------------

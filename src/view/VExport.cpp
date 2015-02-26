@@ -157,8 +157,12 @@ void VExport::exportToPdf( QGraphicsItem * item , const QString& fileName , floa
 	printer.setFullPage(true);
 	printer.setOutputFileName( QString(fileName) );
 	printer.setOutputFormat( QPrinter::PdfFormat );
-	QSizeF pageSize(rect.width() * xScaleFactor , rect.height() * yScaleFactor );
-	printer.setPaperSize( pageSize , QPrinter::DevicePixel );
+//	QSizeF pageSize(rect.width() * xScaleFactor , rect.height() * yScaleFactor );
+//	printer.setPaperSize( pageSize , QPrinter::DevicePixel );
+
+	QSize size(rect.width() * xScaleFactor , rect.height() * yScaleFactor );
+	QPageSize ps(size);
+	printer.setPageSize( ps );
 
 	paintOnDevice( &printer , item , xScaleFactor , xScaleFactor, dx, dy, drawChildren );
 #endif

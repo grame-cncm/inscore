@@ -49,7 +49,6 @@ ITLError& operator << (ITLError& err, const SIMessageList& msgs )
 
 ITLError& operator << (ITLError& err, const IMessage* msg )
 {
-	std::cerr << msg;
 	string addr = msg->extendedAddress() ? (string(msg->url()) + msg->address()) : msg->address();
 	err << addr.c_str();
 	if (msg->message().size()) err << msg->message();
