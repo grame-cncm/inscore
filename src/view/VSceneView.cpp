@@ -23,8 +23,6 @@
 
 */
 
-#include <iostream>
-
 #include "VSceneView.h"
 
 #include <QImage>
@@ -113,6 +111,7 @@ VSceneView::VSceneView(const std::string& address, QGraphicsScene * scene)
 	fEventFilter = 0;
 	fDataScreenShotSize = 0;
 	fUpdateScreenShot = false;
+	fNewVersion = 0;
 	if (scene) {
 		fScene = scene;
 		fGraphicsView = new ZoomingGraphicsView(scene);
@@ -289,12 +288,11 @@ void VSceneView::updateView( IScene * scene )
 //--------------------------------------------------------------------------
 void VSceneView::updateSreenShot()
 {
-	fNewVersion = true;
+	fNewVersion++;
 	if(fUpdateScreenShot) {
 		this->fDataScreenShotSize = 0;
 		fUpdateScreenShot = false;
 		// Update the screenshot
-		//QImage image = VExport::sceneToImage(this->fGraphicsView);
 		QSize size (this->fGraphicsView->width() , this->fGraphicsView->height() );
 		QImage image(size, QImage::Format_ARGB32_Premultiplied);
 		QPainter painter(&image);
@@ -321,7 +319,7 @@ void VSceneView::setUpdateScreenShot(const char *format)
 	fScreenshotFormat = format;
 }
 
-const QByteArray* VSceneView::getScreenShotByteArray(const char * format)
+const AbstractData VSceneView::getImage(const char *format)
 {
 	// If screenshot is ready we do nothing
 	if(!isScreenShotReady()) {
@@ -339,11 +337,10 @@ const QByteArray* VSceneView::getScreenShotByteArray(const char * format)
 #endif // win32
 			i++;
 		} while(!isScreenShotReady() && i != 100);
-
 		// The score have not been automatically refresh, we force refresh it
 		if(!isScreenShotReady()) {
 			// Force update of the widget
-			fGraphicsView->viewport()->repaint();
+			fGraphicsView->viewport()->update();
 
 			// Wait for the force refresh
 			i = 0;
@@ -359,14 +356,16 @@ const QByteArray* VSceneView::getScreenShotByteArray(const char * format)
 
 		// We can't have a image of the score
 		if(!isScreenShotReady()) {
-			return 0;
+			AbstractData data;
+			data.data = 0;
+			data.size = 0;
+			return data;
 		}
 	}
-	return &fDataScreenShot;
-}
-
-const char * VSceneView::getScreenShot(const char *format) {
-	return getScreenShotByteArray(format)->constData();
+	AbstractData data;
+	data.data = fDataScreenShot.constData();
+	data.size = fDataScreenShot.size();
+	return data;
 }
 
 //--------------------------------------------------------------------------

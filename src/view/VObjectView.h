@@ -33,6 +33,8 @@
 #include "GraphicEffect.h"
 #include "EventsAble.h"
 #include "MouseEventAble.h"
+#include "abstractdata.h"
+
 #include <QGraphicsItem>
 
 //#include <QRect>
@@ -94,6 +96,25 @@ class VObjectView
 		*/
 		virtual void	setImage (VObjectView* src)						{}
 	
+		/*!
+		 * \brief getImage get image data of the object view at specified format.
+		 * \param format Image format of the data.
+		 * \return data of the image
+		 */
+		virtual const AbstractData		getImage(const char *format) {
+			AbstractData data;
+			data.data = 0;
+			data.size = 0;
+			return data;
+		}
+
+		/**
+		 * @brief isNewVersion Compare and update a version number of an ObjectView
+		 * @param version
+		 * @return
+		 */
+		virtual bool	isNewVersion(unsigned long &version) {return false;}
+
 		/// \brief simulate UI mouse events
 		virtual void handleEvent (const inscore::IObject* obj, float x, float y, EventsAble::eventype type)
 						{ 	_MouseEventAble::handleEvent(obj, QPointF(x, y), type); }

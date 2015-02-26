@@ -65,18 +65,17 @@ struct responsedata * THttpdPlugin::getData(struct requestarguments* args) const
 	if(fExportedObject->getDeleted())
 		return 0;
 
-	VSceneView * sceneView = static_cast<VSceneView*>(fExportedObject->getView());
+	VObjectView * objectView = fExportedObject->getView();
 
 	// Get data
-	const char * data = sceneView->getScreenShot(args->format);
-	if(data == 0)
+	AbstractData data = objectView->getImage(args->format);
+	if(data.data == 0)
 		return 0;
-	int size = sceneView->getScreenShotSize();
 
 	struct responsedata * resp = new struct responsedata;
-	resp->data = new char[size];
-	memcpy(resp->data, data, size);
-	resp->size = size;
+	resp->data = new char[data.size];
+	memcpy(resp->data, data.data, data.size);
+	resp->size = data.size;
 
 	return resp;
 }

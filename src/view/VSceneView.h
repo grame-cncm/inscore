@@ -70,7 +70,8 @@ class VSceneView : public VDummyObjectView
 	// Ask for a screenshot
 	bool				fUpdateScreenShot;
 
-	bool				fNewVersion;
+	// Version of the screen updated on each redraw of the screen.
+	unsigned long		fNewVersion;
 
 	std::string			fScreenshotFormat;
 
@@ -98,6 +99,10 @@ class VSceneView : public VDummyObjectView
 		QGraphicsScene *	scene() const;
 		QGraphicsView *		view()			{ return (QGraphicsView*)fGraphicsView; }
 
+		/*!
+		 * \brief updateSreenShot. Update athe screenshot if a request as been send with setUpdateScreenShot.
+		 * If no request the previous scrrenshot if invalidated.
+		 */
 		void				updateSreenShot();
 
 		/*!
@@ -105,14 +110,18 @@ class VSceneView : public VDummyObjectView
 		 * \param format Image format of the data. This is the same format as a QT format (see QImage)
 		 * \return
 		 */
-		const char *		getScreenShot(const char *format);
-		const QByteArray *	getScreenShotByteArray(const char *format);
-		int					getScreenShotSize() { return fDataScreenShotSize; }
+		const AbstractData		getImage(const char *format);
 
-		// Used with websocket to know if screen have been updated.
-		bool				isNewVersion() {return fNewVersion; }
-		// Called when a notification have been send to all clients.
-		void				initNewVersion() { fNewVersion = false; }
+		/*!
+		 * \brief isNewVersion Compare and update version
+		 * \param version a version number to compare and update.
+		 * \return true if the version is the same.
+		 */
+		bool				isNewVersion(unsigned long &version) {
+			if(version == fNewVersion) return false;
+			version = fNewVersion;
+			return true;
+		}
 };
 
 
