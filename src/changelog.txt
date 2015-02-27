@@ -20,6 +20,10 @@ Version 1.11
 - supports relative OSC addresses that are evaluated in the context of the target object 
   (i.e. a scene for drag & drop operations, arbitrary objects with the 'eval' method)
 - new 'eval' method that takes a message list as argument, provided as a context for relative addresses evaluation
+- Add new object httpd to create a http server to get image of the scene of the server object.
+- Add new object websocket to create a websocket server to notify clients of a scene update and get an image of the scene.
+- Guido font is now embed in INScore application.
+- Partial support on IOS. Main problems are : antialiasing is not working and multi scene scores are not manage correctly.
 
 ----------------------------------------------------
 Version 1.10
