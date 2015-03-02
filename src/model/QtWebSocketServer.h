@@ -57,6 +57,20 @@ class QtWebSocketServer : public QObject
 		 */
 		inline bool isListening() const { return fWebSocketServer->isListening(); }
 
+		/*!
+		 * \brief changeFrequency Change frequency of notification
+		 * \param frequency a time in millisecond.
+		 */
+		void changeFrequency(int frequency);
+
+	public Q_SLOTS:
+		/*!
+		 * \brief changePort Change communication port.
+		 * \param port a new port
+		 * \return
+		 */
+		bool changePort(int port);
+
 	private:
 		/*!
 		 * \brief fWebSocketServer the web socket server.

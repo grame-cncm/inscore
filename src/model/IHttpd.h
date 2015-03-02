@@ -81,7 +81,7 @@ class IHttpd : public IObject
 		 * \brief init Create the plugin instance and start the http server on port fHttpPort
 		 * \return true if server is running.
 		 */
-		bool init();
+		bool init(int port);
 };
 
 } // end namespoace

@@ -56,6 +56,25 @@ class Thread : public QThread
 		 * \return a boolean
 		 */
 		inline bool isListening() const { return fServer->isListening(); }
+
+		/*!
+		 * \brief changeFrequency
+		 * \param frequency
+		 */
+		void changeFrequency(int frequency);
+
+		/*!
+		 * \brief changePort change communication port
+		 * \param port
+		 * \return
+		 */
+		bool changePort(int port);
+	Q_SIGNALS:
+		/*!
+		 * \brief signalPort a signal to change communication port.
+		 * \param port
+		 */
+		void signalPort(int port);
 	protected:
 		/*!
 		 * \brief run Main function.
@@ -107,7 +126,7 @@ class QtWebSocketController : public QObject, public IWebSocket
 		 * \brief init initalize the websocket with the parameters.
 		 * \return true if the initialisation is done.
 		 */
-		bool init();
+		bool init(int port, int frequency);
 
 	private:
 		/*!

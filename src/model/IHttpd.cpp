@@ -38,6 +38,7 @@ IHttpd::IHttpd(const std::string& name, IObject * parent ) : IObject (name, pare
 {
 	fTypeString = kIHttpdType;
 	fHttpServer = 0;
+	fHttpPort = -1;
 
 	fGetMsgHandlerMap[kstatus_GetMethod]	= TGetParamMethodHandler<IHttpd, string (IHttpd::*)() const>::create(this, &IHttpd::status);
 }
@@ -54,7 +55,7 @@ SIMessageList IHttpd::getSetMsg () const
 {
 	SIMessageList outmsgs = IMessageList::create();
 	SIMessage msg = IMessage::create(getOSCAddress(), kset_SetMethod);
-	*msg << fHttpPort;
+	*msg << kIHttpdType << fHttpPort;
 	outmsgs->list().push_back (msg);
 	return outmsgs;
 }
@@ -66,11 +67,12 @@ MsgHandler::msgStatus IHttpd::set (const IMessage* msg)
 
 	int n = msg->size();
 	if (n == 2) {
-		if (!msg->param(1, fHttpPort)) {
+		int port;
+		if (!msg->param(1, port)) {
 			return MsgHandler::kBadParameters;
 		}
 		// Initialize Http server
-		if(init())
+		if(init(port))
 			return MsgHandler::kProcessed;
 		else {
 			ITLErr << "Cannot create http server on port " << fHttpPort << ITLEndl;
@@ -80,9 +82,19 @@ MsgHandler::msgStatus IHttpd::set (const IMessage* msg)
 	return MsgHandler::kBadParameters;
 }
 
-bool IHttpd::init ()
+bool IHttpd::init (int port)
 {
-	fHttpServer = new THttpdPlugin(this->getScene());
+	if(!fHttpServer) {
+		// Create a new object
+		fHttpServer = new THttpdPlugin(this->getScene());
+	} else {
+		// It's the same port, do nothing
+		if(port == fHttpPort)
+			return true;
+		// Stop the server and start it on the new port.
+		fHttpServer->stop();
+	}
+	fHttpPort = port;
 	return fHttpServer->start(fHttpPort);
 }
 
