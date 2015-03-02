@@ -75,6 +75,22 @@ void QtWebSocketServer::onNewConnection()
 	fClients << pSocket;
 }
 
+void QtWebSocketServer::changeFrequency(int frequency)
+{
+	// Change timer frequency
+	fTimer->stop();
+	fFrequency = frequency;
+	fTimer->start(fFrequency);
+}
+
+bool QtWebSocketServer::changePort(int port)
+{
+	// Close server and recreate a new
+	fWebSocketServer->close();
+	fPort = port;
+	return fWebSocketServer->listen(QHostAddress::Any, fPort);
+}
+
 void QtWebSocketServer::socketDisconnected()
 {
 	// Retrieve the client
