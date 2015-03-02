@@ -83,7 +83,7 @@ class IWebSocket : public IObject
 		 * \brief init initalize the websocket with the parameters.
 		 * \return true if the initialisation is done.
 		 */
-		virtual bool init() { return false; }
+		virtual bool init(int port, int frequency) { return false; }
 };
 
 }

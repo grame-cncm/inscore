@@ -51,17 +51,19 @@ MsgHandler::msgStatus IWebSocket::set (const IMessage* msg)
 	// Two parameters are mandatory : port and notification time.
 	int n = msg->size();
 	if (n == 3) {
-		if (!msg->param(1, fPort)) {
+		int port;
+		if (!msg->param(1, port)) {
 			return MsgHandler::kBadParameters;
 		}
-		if (!msg->param(2, fFrequency)) {
+		int frequency;
+		if (!msg->param(2, frequency)) {
 			return MsgHandler::kBadParameters;
 		}
 		// Initialize Http server
-		if(init())
+		if(init(port, frequency))
 			return MsgHandler::kProcessed;
 		else {
-			ITLErr << "Cannot create http server on port " << fPort << ITLEndl;
+			ITLErr << "Cannot create server on port " << fPort << ITLEndl;
 			return MsgHandler::kCreateFailure;
 		}
 	}
@@ -72,7 +74,7 @@ SIMessageList IWebSocket::getSetMsg () const
 {
 	SIMessageList outmsgs = IMessageList::create();
 	SIMessage msg = IMessage::create(getOSCAddress(), kset_SetMethod);
-	*msg << fPort << fFrequency;
+	*msg << kIWebSocketType << fPort << fFrequency;
 	outmsgs->list().push_back (msg);
 	return outmsgs;
 }
