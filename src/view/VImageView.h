@@ -86,6 +86,7 @@ class VImageView:  public VIntPointObjectView
 
 	protected:
 		GraphicSegment getGraphicSegment( const IntPointSegment& intPointSegment , const IGraphicBasedObject * object , bool& mapOk ) const;
+		void setImage(const QString& fileName);
 };
 
 /*!@} */
