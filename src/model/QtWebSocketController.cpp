@@ -60,9 +60,11 @@ QtWebSocketController::~QtWebSocketController()
 	fThreadServer->wait();
 }
 
-bool QtWebSocketController::init()
+bool QtWebSocketController::init(int port, int frequency)
 {
 	// Create and start a new thread
+	fPort = port;
+	fFrequency = frequency;
 	fThreadServer = new Thread(fPort, fFrequency, this->getScene()->getView(), this);
 	fThreadServer->start();
 	return true;
