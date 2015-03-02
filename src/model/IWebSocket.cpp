@@ -68,4 +68,13 @@ MsgHandler::msgStatus IWebSocket::set (const IMessage* msg)
 	return MsgHandler::kBadParameters;
 }
 
+SIMessageList IWebSocket::getSetMsg () const
+{
+	SIMessageList outmsgs = IMessageList::create();
+	SIMessage msg = IMessage::create(getOSCAddress(), kset_SetMethod);
+	*msg << fPort << fFrequency;
+	outmsgs->list().push_back (msg);
+	return outmsgs;
+}
+
 }

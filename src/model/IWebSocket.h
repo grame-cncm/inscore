@@ -64,6 +64,7 @@ class IWebSocket : public IObject
 		 */
 		virtual std::string status () const { return "stopped"; }
 
+		SIMessageList getSetMsg () const;
 	protected:
 		IWebSocket(const std::string &name, IObject *parent);
 		virtual ~IWebSocket();

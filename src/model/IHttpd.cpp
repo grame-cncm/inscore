@@ -52,8 +52,11 @@ IHttpd::~IHttpd()
 
 SIMessageList IHttpd::getSetMsg () const
 {
-	SIMessageList list = IObject::getSetMsg();
-	return list;
+	SIMessageList outmsgs = IMessageList::create();
+	SIMessage msg = IMessage::create(getOSCAddress(), kset_SetMethod);
+	*msg << fHttpPort;
+	outmsgs->list().push_back (msg);
+	return outmsgs;
 }
 
 MsgHandler::msgStatus IHttpd::set (const IMessage* msg)
