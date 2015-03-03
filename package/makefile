@@ -1,4 +1,4 @@
-version := 1.11
+version := 1.12
 system	:= $(shell uname -s)
 ifeq ($(system), MINGW32_NT-6.1) 
 	win32 = yes
@@ -86,6 +86,7 @@ macosx:
 	[ -d $(package)/$(macplug) ] || mkdir $(package)/$(macplug)
 	cp ../lib/GestureFollower/macosx/libGFLib.dylib $(package)/$(macplug)
 	cp ../lib/faust/macosx/libfaust.dylib $(package)/$(macplug)
+	cp ../lib/httpserver/build/Release/libinscorehttpd.dylib $(package)/$(macplug)
 	make dmg
 		
 common: 
