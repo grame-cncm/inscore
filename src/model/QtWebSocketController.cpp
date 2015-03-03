@@ -45,12 +45,26 @@ Thread::~Thread()
 void Thread::run() {
 	// Create a webscocket server and wait for event.
 	fServer = new QtWebSocketServer(fPort, fFrequency, fExportedView);
+	connect(this, &Thread::signalPort, fServer, &QtWebSocketServer::changePort);
 	exec();
+}
+
+bool Thread::changePort(int port)
+{
+	// Use a signal to restart the websocket server in his thread.
+	emit signalPort(port);
+	return true;
+}
+
+void Thread::changeFrequency(int frequency)
+{
+	fServer->changeFrequency(frequency);
 }
 
 QtWebSocketController::QtWebSocketController(const std::string &name, IObject *parent) :
 	QObject(0), IWebSocket(name, parent)
 {
+	fThreadServer = 0;
 }
 
 QtWebSocketController::~QtWebSocketController()
@@ -60,9 +74,22 @@ QtWebSocketController::~QtWebSocketController()
 	fThreadServer->wait();
 }
 
-bool QtWebSocketController::init()
+bool QtWebSocketController::init(int port, int frequency)
 {
+	if(fThreadServer) {
+		if(frequency != fFrequency) {
+			fFrequency = frequency;
+			fThreadServer->changeFrequency(frequency);
+		}
+		if(port != fPort) {
+			fPort = port;
+			return fThreadServer->changePort(port);
+		}
+		return true;
+	}
 	// Create and start a new thread
+	fPort = port;
+	fFrequency = frequency;
 	fThreadServer = new Thread(fPort, fFrequency, this->getScene()->getView(), this);
 	fThreadServer->start();
 	return true;
