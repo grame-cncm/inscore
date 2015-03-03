@@ -1,4 +1,5 @@
-TEMPLATE = lib
+win32 { TEMPLATE = vclib }
+else  { TEMPLATE = lib }
 
 TARGET = INScore
 DESTDIR = ..
@@ -28,11 +29,12 @@ FOLDERS += plugins/httpserver
 
 # Add specific source for windows visual studio
 win32:*-msvc*: {
-    FOLDERS += $$ROOT/../win32/dirent
-    DEFINES += MSVC _USE_MATH_DEFINES
+    FOLDERS += ../win32/dirent
+    DEFINES += MSVC _USE_MATH_DEFINES NOMINMAX INScore_EXPORTS
+    QMAKE_CXXFLAGS_DEBUG += /wd4100 /EHsc
+    QMAKE_CXXFLAGS_RELEASE += /wd4100 /EHsc
 }
 
-# TODO visual studio 10  : CXX_FLAG /EHsc
 win32 {
     contains(QMAKE_HOST.arch, x86_64): {
         DEFINES += __x86_64__
@@ -97,12 +99,13 @@ GUIDO_PATH = $$LOCALLIB/GuidoEngine
 GUIDOQT_PATH = $$LOCALLIB/GuidoQt
 
 ############### Sources
+message($$FOLDERS)
 for(folder, FOLDERS) {
     SOURCES += $$files($$ROOT/$$folder/*.cpp)
     HEADERS += $$files($$ROOT/$$folder/*.h*)
     INCLUDEPATH += $$ROOT/$$folder
 }
-
+message($$INCLUDEPATH)
 ############## Include
 INCLUDEPATH += $$OSC_PATH
 INCLUDEPATH += $$GUIDO_PATH/include
@@ -124,8 +127,7 @@ win32:*-g++*:LIBS += $$OSC_PATH/MinGW/liboscpack.a \
 win32:*-msvc*:LIBS += $$OSC_PATH/cmake/release/oscpack.lib \
 	$$LOCALLIB/GuidoEngine/win32/GUIDOEngine.lib \
         winmm.lib ws2_32.lib
-win32:*-msvc*:DebugBuild:LIBS += $$LOCALLIB/GuidoQt/win32/GuidoQtD.lib
-win32:*-msvc*:!DebugBuild:LIBS += $$LOCALLIB/GuidoQt/win32/GuidoQt.lib
+win32:*-msvc*:LIBS += $$LOCALLIB/GuidoQt/win32/GuidoQt.lib
 
 ios:LIBS += $$OSC_PATH/build/iOS/Release-iphoneos/liboscpack.a \
         $$ROOT/../lib/GuidoQt/ios/libGuidoQt.a \

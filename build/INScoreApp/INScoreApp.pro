@@ -1,4 +1,6 @@
-TEMPLATE = app
+win32 { TEMPLATE = vcapp }
+else  { TEMPLATE = app }
+
 TARGET = inscoreviewer
 DESTDIR = ..
 OBJECTS_DIR = tmp
@@ -23,6 +25,8 @@ INCLUDEPATH += $$ROOT $$ROOT/interface
 unix:LIBS += -L.. -lINScore \
 	-lGUIDOEngine \
 	-L/home/guillaume/Stage/guidolib-code/build
+
+win32:LIBS+= ../INScore1.lib
 
 ############### Resources
 win32 { RC_FILE = $$ROOT/../win32/INScore.rc }
