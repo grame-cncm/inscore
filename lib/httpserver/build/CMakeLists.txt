@@ -1,14 +1,12 @@
 cmake_minimum_required (VERSION 2.6)
-project (inscorehttpserverlib)
-set (target Httpd)
+project (inscorehttpd)
+set (target inscorehttpd)
 
 set (ROOT  ${CMAKE_CURRENT_SOURCE_DIR}/..)
 
 FILE(GLOB SERVER_CPP_SOURCES ${ROOT}/*.cpp)
 
-include_directories(${ROOT}/)
-message(status ${ROOT})
-include_directories(${ROOT}/../../src/plugins/httpserver)
+include_directories(${ROOT}/ ${ROOT}/../../src/plugins/httpserver "/usr/local/include")
 
 # microhttpd
 EXECUTE_PROCESS ( COMMAND "pkg-config" "--libs" "libmicrohttpd"
