@@ -23,16 +23,24 @@
 
 */
 
+#include <iostream>
+
 #include "QtWebSocketController.h"
 #include "IScene.h"
 
+using namespace std;
 namespace inscore
 {
 
+#ifdef WIN32
+# define _uwait(n)	Sleep(n)
+#else
+# define _uwait(n)	usleep(n * 1000);
+#endif
 
 //-------------------------------------------------------------------------------
 QtWebSocketController::QtWebSocketController(const WebSocketInformer* infos)
-	: fInfos(infos), fServer (0), fStatus(-1)
+	: fInfos(infos), fServer (0)
 {}
 
 QtWebSocketController::~QtWebSocketController()
@@ -44,11 +52,13 @@ QtWebSocketController::~QtWebSocketController()
 bool QtWebSocketController::start (int port)
 {
 	stop();
-	fStatus = -1;
 	QThread::start();
-	while (fStatus < 0)
-		;
-	return fStatus;
+	int timeout = 100;   // 100 mls timeout
+	do {
+		_uwait(10);
+		timeout -= 10;
+	} while (!running() || (timeout > 0));
+	return running();
 }
 
 //-------------------------------------------------------------------------------
@@ -69,7 +79,10 @@ void QtWebSocketController::stop()
 }
 
 //-------------------------------------------------------------------------------
-bool QtWebSocketController::running() const		{ return fServer ? fServer->isListening() : false; }
+bool QtWebSocketController::running() const
+{
+	return fServer ? fServer->isListening() : false;
+}
 
 
 //-------------------------------------------------------------------------------
@@ -77,10 +90,9 @@ void QtWebSocketController::run()
 {
 	fServer = new QtWebSocketServer (fInfos->getFrequency(), fInfos->getView());
 	if (fServer) {
-		fStatus = fServer->start(fInfos->getPort());
+		fServer->start(fInfos->getPort());
 		exec();
 	}
-	else fStatus = 0;
 }
 
 }

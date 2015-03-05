@@ -42,7 +42,6 @@ class QtWebSocketController : public QThread, public WebSocketController
 {
 		const WebSocketInformer *	fInfos;
 		QtWebSocketServer*			fServer;
-		int fStatus;		// a flag to propagate the server state
 
 	public:
 				 QtWebSocketController(const WebSocketInformer* infos);

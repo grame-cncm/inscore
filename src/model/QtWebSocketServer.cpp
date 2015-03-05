@@ -85,7 +85,6 @@ void QtWebSocketServer::onNewConnection()
 //-------------------------------------------------------------------------------
 void QtWebSocketServer::setFrequency(int frequency)
 {
-cout << "QtWebSocketServer::setFrequency " << frequency << endl;
 	fFrequency = frequency;
 	fTimer.stop();
 	fTimer.start(fFrequency);
