@@ -61,6 +61,7 @@ class IScene : public IRectShape//, public PeriodicTask
 	bool			fFrameless;
 	bool			fAbsoluteCoordinates;
 	bool			fWindowOpacity;
+	bool			fModelUpdated;
 	SIFileWatcher	fFileWatcher;
 	SIJavascript	fJSObject;
 	std::string		fRootPath;
@@ -103,6 +104,10 @@ class IScene : public IRectShape//, public PeriodicTask
 		
 		/// \brief adds a subnode to the object \param node the subnode
 		virtual void	add (const nodePtr& node);
+
+		void	setState (state s);
+		bool	isModelUpdated() { return fModelUpdated; }
+		void	resetModelUpdated() { fModelUpdated = false; }
 
 		std::string			getRootPath() const;
 		std::string			absolutePath( const std::string& path ) const;

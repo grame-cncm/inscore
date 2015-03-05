@@ -87,8 +87,8 @@ void ZoomingGraphicsView::paintEvent (QPaintEvent * event)
 		fScene->endPaint();
 
 		VSceneView * sceneView = dynamic_cast<VSceneView*>(fScene->getView());
-		sceneView->updateSreenShot();
-
+		sceneView->updateSreenShot(fScene->isModelUpdated());
+		fScene->resetModelUpdated();
 	}
 }
 
@@ -286,9 +286,10 @@ void VSceneView::updateView( IScene * scene )
 }
 
 //--------------------------------------------------------------------------
-void VSceneView::updateSreenShot()
+void VSceneView::updateSreenShot(bool newVersion)
 {
-	fNewVersion++;
+	if(newVersion) fNewVersion++;
+
 	if(fUpdateScreenShot) {
 		this->fDataScreenShotSize = 0;
 		fUpdateScreenShot = false;
