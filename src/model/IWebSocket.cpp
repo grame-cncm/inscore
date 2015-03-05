@@ -103,4 +103,24 @@ SIMessageList IWebSocket::getSetMsg () const
 	return outmsgs;
 }
 
+//--------------------------------------------------------------------------
+SIMessageList IWebSocket::getMsgs(const IMessage* msg) const
+{
+	SIMessageList outMsgs = IMessageList::create();
+	for ( int i = 0 ; i < msg->size() ; i++ )
+	{
+		string param = "-";
+		msg->param(i, param);
+
+		if ( param == "nbClients" )
+		{
+			SIMessage msg = IMessage::create(getOSCAddress(), param);
+			*msg << fWebServer->nbClients();
+			outMsgs->list().push_back (msg);
+		}
+	}
+	outMsgs->list().push_back (IObject::getMsgs(msg)->list());
+	return outMsgs;
+}
+
 }

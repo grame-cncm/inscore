@@ -54,6 +54,7 @@ class QtWebSocketController : public QThread, public WebSocketController
 		virtual void	setFrequency(int frequency);
 		virtual void	stop();
 		virtual bool	running() const;
+		int				nbClients() const;
 
 	protected:
 		void run();			///< main thread function

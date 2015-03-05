@@ -56,6 +56,7 @@ class IWebSocket : public IObject, public WebSocketInformer
 
 		bool			running () const;
 		SIMessageList	getSetMsg () const;
+		SIMessageList	getMsgs(const IMessage* msg) const;
 
 		//------------------------------------------------------------
 		// the WebSocketInformer interface
