@@ -13,11 +13,12 @@ function updateStatus(id, message) {
 function loadWebSocket() {
 	if (window.WebSocket) {
 		var url = "ws://localhost:1234";
-		ws = new WebSocket(url);
- 
+		ws = new WebSocket(url); 
 		updateStatus("wsStatus", "webSocket supported !");
+
 		ws.onopen = function() {
 			updateStatus("wsStatus", "Connected to WebSocket server!");
+			ws.send("getImage");
 		}
 		ws.onmessage = function(e) {
 			if (e.data instanceof Blob) {
