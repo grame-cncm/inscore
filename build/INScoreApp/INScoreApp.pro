@@ -22,9 +22,14 @@ HEADERS += $$ROOT/INScoreAppl.h
 
 INCLUDEPATH += $$ROOT $$ROOT/interface
 
-unix:LIBS += -L.. -lINScore \
-	-lGUIDOEngine \
-	-L/home/guillaume/Stage/guidolib-code/build
+unix:!android:LIBS += -L.. -lINScore \
+        -lGUIDOEngine
+
+android:LIBS += -L.. -lINScore
+android:ANDROID_EXTRA_LIBS = $$ROOT/../lib/GuidoEngine/android/libGUIDOEngine.so \
+    $$ROOT/../lib/GuidoQt/android/libGuidoQt.so \
+    $$ROOT/../lib/oscpack/oscpack/lib/liboscpack.so
+
 
 win32:LIBS+= ../INScore1.lib
 

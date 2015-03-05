@@ -113,7 +113,7 @@ INCLUDEPATH += $$GUIDOQT_PATH/include
 
 ############### libraries
 # Linux
-unix:!ios:LIBS += -L$$OSC_PATH/cmake -loscpack \
+unix:!ios:!android:LIBS += -L$$OSC_PATH/cmake -loscpack \
         -L$$ROOT/../lib/GuidoQt/linux -lGuidoQt \
 	-lGUIDOEngine
 
@@ -132,5 +132,10 @@ win32:*-msvc*:LIBS += $$LOCALLIB/GuidoQt/win32/GuidoQt.lib
 ios:LIBS += $$OSC_PATH/build/iOS/Release-iphoneos/liboscpack.a \
         $$ROOT/../lib/GuidoQt/ios/libGuidoQt.a \
         $$ROOT/../lib/GuidoEngine/ios/libGUIDOEngine.a
+
+android:LIBS += -L$$OSC_PATH/oscpack/lib -loscpack \
+        -L$$ROOT/../lib/GuidoQt/android -lGuidoQt \
+        -L$$ROOT/../lib/GuidoEngine/android -lGUIDOEngine
+
 macx:LIBS += 
 macx:LIBS += -framework CoreFoundation
