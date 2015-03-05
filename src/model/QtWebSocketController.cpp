@@ -29,70 +29,58 @@
 namespace inscore
 {
 
-Thread::Thread(int port, int frequency, VObjectView *exportedView, QObject * parent) :
-	QThread(parent),
-	fExportedView(exportedView),
-	fPort(port),
-	fFrequency(frequency)
-{
-}
 
-Thread::~Thread()
-{
-	delete fServer;
-}
-
-void Thread::run() {
-	// Create a webscocket server and wait for event.
-	fServer = new QtWebSocketServer(fPort, fFrequency, fExportedView);
-	connect(this, &Thread::signalPort, fServer, &QtWebSocketServer::changePort);
-	exec();
-}
-
-bool Thread::changePort(int port)
-{
-	// Use a signal to restart the websocket server in his thread.
-	emit signalPort(port);
-	return true;
-}
-
-void Thread::changeFrequency(int frequency)
-{
-	fServer->changeFrequency(frequency);
-}
-
-QtWebSocketController::QtWebSocketController(const std::string &name, IObject *parent) :
-	QObject(0), IWebSocket(name, parent)
-{
-	fThreadServer = 0;
-}
+//-------------------------------------------------------------------------------
+QtWebSocketController::QtWebSocketController(const WebSocketInformer* infos)
+	: fInfos(infos), fServer (0), fStatus(-1)
+{}
 
 QtWebSocketController::~QtWebSocketController()
 {
-	// Wait for end of thread.
-	fThreadServer->quit();
-	fThreadServer->wait();
+	stop(); 	// Wait for end of thread.
 }
 
-bool QtWebSocketController::init(int port, int frequency)
+//-------------------------------------------------------------------------------
+bool QtWebSocketController::start (int port)
 {
-	if(fThreadServer) {
-		if(frequency != fFrequency) {
-			fFrequency = frequency;
-			fThreadServer->changeFrequency(frequency);
-		}
-		if(port != fPort) {
-			fPort = port;
-			return fThreadServer->changePort(port);
-		}
-		return true;
+	stop();
+	fStatus = -1;
+	QThread::start();
+	while (fStatus < 0)
+		;
+	return fStatus;
+}
+
+//-------------------------------------------------------------------------------
+void QtWebSocketController::setFrequency(int frequency)
+{
+	if (fServer) fServer->setFrequency(frequency);
+}
+
+//-------------------------------------------------------------------------------
+void QtWebSocketController::stop()
+{
+	if (isRunning()) {
+		quit();
+		wait();
+		delete fServer;
+		fServer = 0;
 	}
-	// Create and start a new thread
-	fPort = port;
-	fFrequency = frequency;
-	fThreadServer = new Thread(fPort, fFrequency, this->getScene()->getView(), this);
-	fThreadServer->start();
-	return true;
+}
+
+//-------------------------------------------------------------------------------
+bool QtWebSocketController::running() const		{ return fServer ? fServer->isListening() : false; }
+
+
+//-------------------------------------------------------------------------------
+void QtWebSocketController::run()
+{
+	fServer = new QtWebSocketServer (fInfos->getFrequency(), fInfos->getView());
+	if (fServer) {
+		fStatus = fServer->start(fInfos->getPort());
+		exec();
+	}
+	else fStatus = 0;
 }
 
 }

@@ -26,7 +26,6 @@
 #ifndef QTWEBSOCKETSERVER_H
 #define QTWEBSOCKETSERVER_H
 
-#include <QObject>
 #include <QTimer>
 #include <QWebSocketServer>
 
@@ -34,107 +33,51 @@ QT_FORWARD_DECLARE_CLASS(QWebSocket)
 
 namespace inscore {
 
-	class VObjectView;
-
-class QtWebSocketServer : public QObject
+class VObjectView;
+class QtWebSocketServer : public QWebSocketServer
 {
 		Q_OBJECT
+
+		QList<QWebSocket *> fClients;				///< the clients list
+		QTimer				fTimer;					///< time task to check for notifications
+		unsigned long		fScreenVersion;			///< version number of the screen
+		VObjectView *		fView;					///< the view to be send to clients
+		int					fFrequency;				///< the time task frequency
+
 	public:
 		/*!
 		 * \brief QtWebSocketServer Create and start the websocket server.
 		 * \param port Port used by the server
-		 * \param frequency Max frequency of notification
-		 * \param exportedView The view to export as an image
+		 * \param frequency Max frequency of notifications
+		 * \param view The view to be send to clients
 		 * \param parent Parent object.
 		 */
-		QtWebSocketServer(int port, int frequency, inscore::VObjectView *exportedView, QObject *parent = 0);
-
+				 QtWebSocketServer(int frequency, VObjectView *view);
 		virtual ~QtWebSocketServer();
 
-		/*!
-		 * \brief isListening Status of the server.
-		 * \return
-		 */
-		inline bool isListening() const { return fWebSocketServer->isListening(); }
 
-		/*!
-		 * \brief changeFrequency Change frequency of notification
-		 * \param frequency a time in millisecond.
-		 */
-		void changeFrequency(int frequency);
+		bool start(int port);				///< start listening on port 'port'
+		void stop();						///< stop the web socket server
 
-	public Q_SLOTS:
-		/*!
-		 * \brief changePort Change communication port.
-		 * \param port a new port
-		 * \return
-		 */
-		bool changePort(int port);
+		void setFrequency(int frequency);	///< change the notifiactions rate
+		int  getFrequency() const		{ return fFrequency; }
 
-	private:
-		/*!
-		 * \brief fWebSocketServer the web socket server.
-		 */
-		QWebSocketServer *fWebSocketServer;
-
-		/*!
-		 * \brief fClients List of clients.
-		 */
-		QList<QWebSocket *> fClients;
-
-		/*!
-		 * \brief fTimer Timer to send notification if screen has changed.
-		 */
-		QTimer * fTimer;
-
-		/*!
-		 * \brief fScreenVersion Screenversion to compare to the screen version manage by inscore
-		 */
-		unsigned long fScreenVersion;
-
-		/*!
-		 * \brief fExportedView
-		 */
-		VObjectView * fExportedView;
-
-		/*!
-		 * \brief fPort
-		 */
-		int fPort;
-
-		/*!
-		 * \brief fFrequency
-		 */
-		int fFrequency;
-
-	Q_SIGNALS:
-		/*!
-		 * \brief closed Close the server.
-		 */
-		void closed();
+	private: Q_SIGNALS:
+		void closed();					///< signal emitted when the server closed its connection.
 
 	private Q_SLOTS:
-		/*!
-		 * \brief onNewConnection fired when a new client is connected.
-		 */
-		void onNewConnection();
+		void onNewConnection();			///< slot fired when a new client is connected.
+		void socketDisconnected();		///< slot fired when a client is disconnected.
+		void timeTask();				///< the periodic time task, in charge of sending change notifications to clients
 
 		/*!
-		 * \brief socketDisconnected fired when a new client is disconnected.
-		 */
-		void socketDisconnected();
-
-		/*!
-		 * \brief processTextMessage. Process all text message received by the websocket.
-		 * Only the message "getImage" is allowed and send to the client an image in png format. Otherwise a text message with an error message is send.
+		 * \brief process all text messages received by the websocket.
+		 *
+		 * Only the message "getImage" is allowed. An image in png format is send back to the client on "getImage" request.
+		 * An error message is send for any other message.
 		 * \param message the content of the message.
 		 */
 		void processTextMessage(QString message);
-
-		/*!
-		 * \brief sendNotification. Send a notification (a text message "Screen updated") to all clients when the screen have been updated.
-		 */
-		void sendNotification();
 };
 }
 #endif // QTWEBSOCKETSERVER_H

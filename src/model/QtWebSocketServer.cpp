@@ -23,74 +23,75 @@
 
 */
 
+#include <QWebSocket>
+#include <string>
+#include <iostream>
+
 #include "QtWebSocketServer.h"
 #include "IWebSocket.h"
 #include "VObjectView.h"
 #include "abstractdata.h"
 
-#include <QWebSocketServer>
-#include <QWebSocket>
-
-#include <string>
-
 using namespace std;
 
 namespace inscore {
 
-QtWebSocketServer::QtWebSocketServer(int port, int frequency, VObjectView *exportedView, QObject *parent) : QObject(parent),
-	fClients(),
-	fExportedView(exportedView),
-	fPort(port),
-	fFrequency(frequency)
+//-------------------------------------------------------------------------------
+QtWebSocketServer::QtWebSocketServer(int frequency, VObjectView *view) :
+	QWebSocketServer(QStringLiteral("WebSocketServer"), QWebSocketServer::NonSecureMode),
+	fScreenVersion(0), fView (view), fFrequency(frequency)
 {
-	fScreenVersion = 0;
-	fWebSocketServer = new QWebSocketServer(QStringLiteral("WebSocketServer"), QWebSocketServer::NonSecureMode, this);
-	// Start the web socket server.
-	if (fWebSocketServer->listen(QHostAddress::Any, fPort)) {
-		connect(fWebSocketServer, &QWebSocketServer::newConnection, this, &QtWebSocketServer::onNewConnection);
-		connect(fWebSocketServer, &QWebSocketServer::closed, this, &QtWebSocketServer::closed);
-
-		// Fire a possible notification in each end of the timer.
-		fTimer = new QTimer(this);
-		connect(fTimer, SIGNAL(timeout()),this, SLOT(sendNotification()));
-		fTimer->start(fFrequency);
-	}
+	connect(&fTimer, SIGNAL(timeout()),this, SLOT(timeTask()));
 }
 
+//-------------------------------------------------------------------------------
 QtWebSocketServer::~QtWebSocketServer()
 {
-	// Close server and delete all client.
-	fWebSocketServer->close();
-	qDeleteAll(fClients.begin(), fClients.end());
+	stop();
 }
 
+//-------------------------------------------------------------------------------
+bool QtWebSocketServer::start(int port)
+{
+	stop();										// stop the server, in case it's already running
 
+	if (listen(QHostAddress::Any, port)) {		// and start listening in port 'port'
+		connect(this, &QWebSocketServer::newConnection, this, &QtWebSocketServer::onNewConnection);
+		connect(this, &QWebSocketServer::closed, this, &QtWebSocketServer::closed);
+		fTimer.start(fFrequency);
+		return true;
+	}
+	return false;
+}
+
+//-------------------------------------------------------------------------------
+void QtWebSocketServer::stop()
+{
+	fTimer.stop ();
+	close();										// close the server
+	qDeleteAll(fClients.begin(), fClients.end());	// and delete all the clients.
+}
+
+//-------------------------------------------------------------------------------
 void QtWebSocketServer::onNewConnection()
 {
-	QWebSocket *pSocket = fWebSocketServer->nextPendingConnection();
+	QWebSocket *pSocket = nextPendingConnection();
 	// Connect client to action.
 	connect(pSocket, &QWebSocket::disconnected, this, &QtWebSocketServer::socketDisconnected);
 	connect(pSocket, &QWebSocket::textMessageReceived, this, &QtWebSocketServer::processTextMessage);
-	// Add client in list
-	fClients << pSocket;
+	fClients << pSocket;		// add the client to the clients list
 }
 
-void QtWebSocketServer::changeFrequency(int frequency)
+//-------------------------------------------------------------------------------
+void QtWebSocketServer::setFrequency(int frequency)
 {
-	// Change timer frequency
-	fTimer->stop();
+cout << "QtWebSocketServer::setFrequency " << frequency << endl;
 	fFrequency = frequency;
-	fTimer->start(fFrequency);
+	fTimer.stop();
+	fTimer.start(fFrequency);
 }
 
-bool QtWebSocketServer::changePort(int port)
-{
-	// Close server and recreate a new
-	fWebSocketServer->close();
-	fPort = port;
-	return fWebSocketServer->listen(QHostAddress::Any, fPort);
-}
-
+//-------------------------------------------------------------------------------
 void QtWebSocketServer::socketDisconnected()
 {
 	// Retrieve the client
@@ -102,11 +103,12 @@ void QtWebSocketServer::socketDisconnected()
 	}
 }
 
+//-------------------------------------------------------------------------------
+void QtWebSocketServer::timeTask()
+{
+	if(fView->isNewVersion(fScreenVersion)) {		// check for view updates
 
-void QtWebSocketServer::sendNotification() {
-	// Verify and update screen version
-	if(fExportedView->isNewVersion(fScreenVersion)) {
-		// The screen have been updated, send to all clients
+		// The screen have been updated, send notifications to all the clients
 		QList<QWebSocket *>::iterator i;
 		for (i = fClients.begin(); i != fClients.end(); ++i)  {
 			(*i)->sendTextMessage("Screen updated");
@@ -114,13 +116,14 @@ void QtWebSocketServer::sendNotification() {
 	}
 }
 
+//-------------------------------------------------------------------------------
 void QtWebSocketServer::processTextMessage(QString message)
 {
 	QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
 	if (pClient) {
 		// Verify message and get back image and send it
-		if(message == IWebSocket::GET_IMAGE) {
-			AbstractData data = fExportedView->getImage("PNG");
+		if(message == IWebSocket::kGetImgMsg) {
+			AbstractData data = fView->getImage("PNG");
 			QByteArray bArray = QByteArray::fromRawData(data.data, data.size);
 			pClient->sendBinaryMessage(bArray);
 		} else {

@@ -32,7 +32,7 @@ using namespace std;
 namespace inscore
 {
 	// Library name.
-static const char* httpdlibName = "Httpd";
+static const char* httpdlibName = "inscorehttpd";
 
 // function name.
 static const char* fctInitialize = "initialize";

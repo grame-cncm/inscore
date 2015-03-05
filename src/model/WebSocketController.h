@@ -22,42 +22,49 @@
   research@grame.fr
 
 */
-#ifndef QTWEBSOCKETCONTROLLER_H
-#define QTWEBSOCKETCONTROLLER_H
 
-#include <QThread>
-#include <QObject>
+#ifndef WEBSOCKETCONTROLLER_H
+#define WEBSOCKETCONTROLLER_H
 
-#include "WebSocketController.h"
-#include "QtWebSocketServer.h"
 
 namespace inscore
 {
 
+class VObjectView;
 
 /*!
- * \brief The QtWebSocketController class. A Qt implementation of IWebSocket. It create and start the websocket server in a new thread.
+ * \brief An abstract implementation of a web socket.
  */
-class QtWebSocketController : public QThread, public WebSocketController
+class WebSocketInformer
 {
-		const WebSocketInformer *	fInfos;
-		QtWebSocketServer*			fServer;
-		int fStatus;		// a flag to propagate the server state
-
 	public:
-				 QtWebSocketController(const WebSocketInformer* infos);
-		virtual ~QtWebSocketController();
+				 WebSocketInformer() {}
+		virtual ~WebSocketInformer() {}
 
-		//------------------------------------------------------------
-		// the WebSocketController interface
-		//------------------------------------------------------------
-		virtual bool	start		(int port);
-		virtual void	setFrequency(int frequency);
-		virtual void	stop();
-		virtual bool	running() const;
+		virtual VObjectView*	getView() const			= 0;
+		virtual int				getFrequency() const	= 0;
+		virtual int				getPort() const			= 0;
+};
 
-	protected:
-		void run();			///< main thread function
+/*!
+ * \brief An abstract implementation of a web socket.
+ */
+class WebSocketController
+{
+	public:
+				 WebSocketController() {}
+		virtual ~WebSocketController() {}
+
+		/*!
+		 * \brief initalize and start the websocket.
+		 * \param port the communication port number.
+		 * \param frequency the maximum refreshment rate.
+		 * \return true if the initialisation is done.
+		 */
+		virtual bool	start(int port)					= 0;
+		virtual void	setFrequency(int frequency)		= 0;
+		virtual void	stop()							= 0;
+		virtual bool	running () const				= 0;
 };
 
 }

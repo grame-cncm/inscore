@@ -311,6 +311,12 @@ void VSceneView::updateSreenShot()
 	}
 }
 
+#ifdef WIN32
+# define wait(n)	Sleep(n)
+#else
+# define wait(n)	usleep(n * 1000);
+#endif // win32
+
 //--------------------------------------------------------------------------
 void VSceneView::setUpdateScreenShot(const char *format)
 {
@@ -330,11 +336,7 @@ const AbstractData VSceneView::getImage(const char *format)
 		// Wait for a new screenshot provided by an automatic refresh.
 		int i = 0;
 		do {
-#ifdef WIN32
-			Sleep(5);
-#else
-			usleep(5000);
-#endif // win32
+			wait(5);
 			i++;
 		} while(!isScreenShotReady() && i != 100);
 		// The score have not been automatically refresh, we force refresh it
@@ -345,11 +347,7 @@ const AbstractData VSceneView::getImage(const char *format)
 			// Wait for the force refresh
 			i = 0;
 			do {
-#ifdef WIN32
-				Sleep(5);
-#else
-				usleep(5000);
-#endif // win32
+				wait(5);
 				i++;
 			} while(!isScreenShotReady() && i != 100);
 		}
