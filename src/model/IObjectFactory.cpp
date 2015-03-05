@@ -92,7 +92,11 @@ template<> SIObject _create<IHttpd>(const std::string& name , IObject* parent)
 
 template<> SIObject _create<IWebSocket>(const std::string& name , IObject* parent)
 {
-	return QtWebSocketController::create(name, parent);
+	SIWebSocket obj = IWebSocket::create(name, parent);
+	QtWebSocketController * ctrl = new QtWebSocketController (obj);
+	if (ctrl) obj->setControler(ctrl);
+	else return 0;
+	return obj;
 }
 
 #ifndef NOVIEW
