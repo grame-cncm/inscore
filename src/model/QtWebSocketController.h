@@ -25,114 +25,39 @@
 #ifndef QTWEBSOCKETCONTROLLER_H
 #define QTWEBSOCKETCONTROLLER_H
 
-#include "IWebSocket.h"
-#include "QtWebSocketServer.h"
-
 #include <QThread>
 #include <QObject>
+
+#include "WebSocketController.h"
+#include "QtWebSocketServer.h"
 
 namespace inscore
 {
 
-/*!
- * \brief The Thread class. Specific thread to run the websocket server.
- */
-class Thread : public QThread
-{
-		Q_OBJECT
-	public:
-		/*!
-		 * \brief Thread
-		 * \param port
-		 * \param frequency
-		 * \param exportedView
-		 * \param parent
-		 */
-		Thread(int port, int frequency, VObjectView *exportedView, QObject *parent = 0);
-		virtual ~Thread();
-
-		/*!
-		 * \brief isListening Verify status of server
-		 * \return a boolean
-		 */
-		inline bool isListening() const { return fServer->isListening(); }
-
-		/*!
-		 * \brief changeFrequency
-		 * \param frequency
-		 */
-		void changeFrequency(int frequency);
-
-		/*!
-		 * \brief changePort change communication port
-		 * \param port
-		 * \return
-		 */
-		bool changePort(int port);
-	Q_SIGNALS:
-		/*!
-		 * \brief signalPort a signal to change communication port.
-		 * \param port
-		 */
-		void signalPort(int port);
-	protected:
-		/*!
-		 * \brief run Main function.
-		 */
-		void run();
-
-	private:
-		/*!
-		 * \brief fExportedView the view exported in image
-		 */
-		VObjectView * fExportedView;
-
-		/*!
-		 * \brief fPort Port used by the socket server
-		 */
-		int fPort;
-
-		/*!
-		 * \brief fFrequency
-		 */
-		int fFrequency;
-
-		/*!
-		 * \brief fServer the server
-		 */
-		QtWebSocketServer * fServer;
-};
 
 /*!
  * \brief The QtWebSocketController class. A Qt implementation of IWebSocket. It create and start the websocket server in a new thread.
  */
-class QtWebSocketController : public QObject, public IWebSocket
+class QtWebSocketController : public QThread, public WebSocketController
 {
-		Q_OBJECT
+		const WebSocketInformer *	fInfos;
+		QtWebSocketServer*			fServer;
+		int fStatus;		// a flag to propagate the server state
+
 	public:
-		static QtWebSocketController* create(const std::string& name, IObject * parent)	{ return new QtWebSocketController(name, parent); }
-
-		/*!
-		 * \brief status
-		 * \return a string "started" or "stopped"
-		 */
-		inline std::string status () const { return fThreadServer->isListening() ? "started": "stopped"; }
-
-	protected:
-		explicit QtWebSocketController(const std::string& name, IObject * parent);
+				 QtWebSocketController(const WebSocketInformer* infos);
 		virtual ~QtWebSocketController();
 
-		/*!
-		 * \brief init initalize the websocket with the parameters.
-		 * \return true if the initialisation is done.
-		 */
-		bool init(int port, int frequency);
+		//------------------------------------------------------------
+		// the WebSocketController interface
+		//------------------------------------------------------------
+		virtual bool	start		(int port);
+		virtual void	setFrequency(int frequency);
+		virtual void	stop();
+		virtual bool	running() const;
 
-	private:
-		/*!
-		 * \brief fThreadServer The thread for the server.
-		 */
-		Thread *fThreadServer;
+	protected:
+		void run();			///< main thread function
 };
 
 }

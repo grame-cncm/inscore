@@ -24,16 +24,19 @@
 */
 
 #include "IWebSocket.h"
+#include "WebSocketController.h"
 
 using namespace std;
 
 namespace inscore
 {
+
 const string IWebSocket::kIWebSocketType("websocket");
+const char * IWebSocket::kGetImgMsg = "getImage";
 
-const char * IWebSocket::GET_IMAGE = "getImage";
-
-IWebSocket::IWebSocket(const std::string &name, IObject *parent) : IObject (name, parent)
+//-------------------------------------------------------------------------------
+IWebSocket::IWebSocket(const std::string &name, IObject *parent)
+	: IObject (name, parent), fWebServer(0), fPort(0), fFrequency(0)
 {
 	fTypeString = kIWebSocketType;
 	fGetMsgHandlerMap[kstatus_GetMethod]	= TGetParamMethodHandler<IWebSocket, string (IWebSocket::*)() const>::create(this, &IWebSocket::status);
@@ -41,33 +44,54 @@ IWebSocket::IWebSocket(const std::string &name, IObject *parent) : IObject (name
 
 IWebSocket::~IWebSocket()
 {
+	delete fWebServer;
 }
 
+//-------------------------------------------------------------------------------
+VObjectView* IWebSocket::getView() const
+{
+	const IObject* obj = (const IObject*)getScene();
+	return obj ? obj->getView() : 0;
+}
+
+//-------------------------------------------------------------------------------
+void IWebSocket::setFrequency (int freq)
+{
+	fFrequency = freq;
+	fWebServer->setFrequency(freq);
+}
+
+//-------------------------------------------------------------------------------
+bool IWebSocket::running () const		{ return fWebServer->running(); }
+string IWebSocket::status () const		{ return running() ? "running" : "stopped"; }
+bool IWebSocket::start (int port)		{ return fWebServer->start(port); }
+
+//-------------------------------------------------------------------------------
 MsgHandler::msgStatus IWebSocket::set (const IMessage* msg)
 {
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status;
 
 	// Two parameters are mandatory : port and notification time.
-	int n = msg->size();
-	if (n == 3) {
-		int port;
-		if (!msg->param(1, port)) {
-			return MsgHandler::kBadParameters;
-		}
-		int frequency;
-		if (!msg->param(2, frequency)) {
-			return MsgHandler::kBadParameters;
-		}
-		// Initialize Http server
-		if(init(port, frequency))
-			return MsgHandler::kProcessed;
-		else {
-			ITLErr << "Cannot create server on port " << fPort << ITLEndl;
+	if (msg->size() != 3) return MsgHandler::kBadParameters;
+
+	int port, frequency;
+	if (!msg->param(1, port) || !msg->param(2, frequency))
+		return MsgHandler::kBadParameters;
+	if (!port || !frequency)
+		return MsgHandler::kBadParameters;
+
+	if (frequency != fFrequency)
+		setFrequency(frequency);
+
+	if (port != fPort) {
+		setPort(port);
+		if ( !start(port) ) {
+			ITLErr << "Cannot create web socket server on port " << fPort << ITLEndl;
 			return MsgHandler::kCreateFailure;
 		}
 	}
-	return MsgHandler::kBadParameters;
+	return MsgHandler::kProcessed;
 }
 
 SIMessageList IWebSocket::getSetMsg () const

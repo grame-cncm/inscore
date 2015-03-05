@@ -28,62 +28,54 @@
 #include <string>
 
 #include "IObject.h"
+#include "WebSocketController.h"
 
 namespace inscore
 {	
 
-	class IWebSocket;
-	typedef class libmapping::SMARTP<IWebSocket>	SIWebSocket;
+class IWebSocket;
+typedef class libmapping::SMARTP<IWebSocket>	SIWebSocket;
 
 /*!
  * \brief The IWebSocket class. A web socket object to be informed when his scene is refresh and to upload a new screenshot of the scene.
  * The websocket object is initialized with a port and a minimum time in millisecond between two notifications.
  */
-class IWebSocket : public IObject
+class IWebSocket : public IObject, public WebSocketInformer
 {
-	public:
-		static const std::string kIWebSocketType;
+	WebSocketController * fWebServer;
 
-		/*!
-		 * \brief GET_IMAGE the message to get the image of the scene.
-		 */
-		static const char * GET_IMAGE;
+	public:
+		static const std::string	kIWebSocketType;
+		static const char *			kGetImgMsg;			///< the only message that is handle by the server
 
 		static SIWebSocket create(const std::string& name, IObject * parent)	{ return new IWebSocket(name, parent); }
 
-		/*!
-		 * \brief set
-		 * \param msg Message must contain the webSocket port and a minimum time in millisecond between two notification.
-		 * \return
-		 */
-		MsgHandler::msgStatus set (const IMessage* msg);
+		void	setControler (WebSocketController* ctrl)	{ fWebServer = ctrl; }
+		void	setPort (int port)							{ fPort = port; }
+		void	setFrequency (int freq);
 
-		/*!
-		 * \brief status The websocket server status.
-		 * \return The string "started" or "stopped"
-		 */
-		virtual std::string status () const { return "stopped"; }
+		bool			running () const;
+		SIMessageList	getSetMsg () const;
 
-		SIMessageList getSetMsg () const;
+		//------------------------------------------------------------
+		// the WebSocketInformer interface
+		//------------------------------------------------------------
+		VObjectView*	getView() const;
+		int				getPort () const			{ return fPort; }
+		int				getFrequency () const		{ return fFrequency; }
+
 	protected:
-		IWebSocket(const std::string &name, IObject *parent);
+		int fPort;			///< the web socket communnication port
+		int fFrequency;		///< the notification maximum frequency
+
+				 IWebSocket(const std::string &name, IObject *parent);
 		virtual ~IWebSocket();
 
-		/*!
-		 * \brief fPort port used by the websocket.
-		 */
-		int fPort;
+		bool start (int port);									///< start the web socket on port 'port'
 
-		/*!
-		 * \brief fFrequency minimum time between two notification.
-		 */
-		int fFrequency;
-
-		/*!
-		 * \brief init initalize the websocket with the parameters.
-		 * \return true if the initialisation is done.
-		 */
-		virtual bool init(int port, int frequency) { return false; }
+		// the message handlers
+		MsgHandler::msgStatus set (const IMessage* msg);		///< the 'set' message handler
+		std::string		status () const;						///< gives the server status
 };
 
 }
