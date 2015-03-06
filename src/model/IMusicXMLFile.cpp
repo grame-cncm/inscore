@@ -63,7 +63,7 @@ MsgHandler::msgStatus IMusicXMLFile::set (const IMessage* msg )
 
 	status = TFile::set( msg );
 	if (status & MsgHandler::kProcessed) {
-		if(!fIsUrl)
+		if(!hasData())
         {
             if (!read(fXML))
                 status = MsgHandler::kCreateFailure;
@@ -88,22 +88,16 @@ MsgHandler::msgStatus IMusicXMLFile::set (const IMessage* msg )
 //--------------------------------------------------------------------------
 void IMusicXMLFile::updateUrl()
 {
-    fIsUrl = true;
-    
-    if(read(fData))
-    {
-        fXML = fData.data();
-        string converted;
-        if ( convert ( fXML, converted) ) {
-            setGMN( converted );
-            newData(true);
-        }
-        else
-            ITLErr << "updating : Cannot convert MusicXML file" << ITLEndl;
-            
-    }
-    VGuidoItemView * gmnView = fView ? dynamic_cast<VGuidoItemView*>(fView) : 0;
-    if(gmnView)
-        gmnView->updateLocalMapping(this);
+	fXML = data();
+	string converted;
+	if ( convert ( fXML, converted) ) {
+		setGMN( converted );
+		newData(true);
+	}
+	else
+		ITLErr << "updating : Cannot convert MusicXML file" << ITLEndl;
+
+	this->getView()->updateLocalMapping(this);
 }
+
 }

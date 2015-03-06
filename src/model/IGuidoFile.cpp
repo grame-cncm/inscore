@@ -64,7 +64,7 @@ MsgHandler::msgStatus IGuidoFile::set (const IMessage* msg )
 
 	status = TFile::set( msg );
 	if (status & MsgHandler::kProcessed) {
-		if(!fIsUrl)
+		if(!hasData())
         {
             if (!read(fGMN))
                 status = MsgHandler::kCreateFailure;
@@ -78,13 +78,8 @@ MsgHandler::msgStatus IGuidoFile::set (const IMessage* msg )
 //--------------------------------------------------------------------------
 void IGuidoFile::updateUrl()
 {
-    fIsUrl = true;
-    if(read(fData))
-        fGMN = fData.data();
-    
-    VGuidoItemView * gmnView = fView ? dynamic_cast<VGuidoItemView*>(fView) : 0;
-    if(gmnView)
-        gmnView->updateLocalMapping(this);
+    if (dataSize())	fGMN = data();
+    this->getView()->updateLocalMapping(this);
 }
 
 }
