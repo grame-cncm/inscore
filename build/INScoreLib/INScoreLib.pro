@@ -134,7 +134,7 @@ ios:LIBS += $$OSC_PATH/build/iOS/Release-iphoneos/liboscpack.a \
         $$ROOT/../lib/GuidoEngine/ios/libGUIDOEngine.a
 
 android:LIBS += -L$$OSC_PATH/oscpack/lib -loscpack \
-        -L$$ROOT/../lib/GuidoQt/android -lGuidoQt \
+        -L$$ROOT/../lib/GuidoQt/android -lGuidoQt-android \
         -L$$ROOT/../lib/GuidoEngine/android -lGUIDOEngine
 
 macx:LIBS += 

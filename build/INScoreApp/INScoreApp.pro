@@ -27,9 +27,8 @@ unix:!android:LIBS += -L.. -lINScore \
 
 android:LIBS += -L.. -lINScore
 android:ANDROID_EXTRA_LIBS = $$ROOT/../lib/GuidoEngine/android/libGUIDOEngine.so \
-    $$ROOT/../lib/GuidoQt/android/libGuidoQt.so \
+    $$ROOT/../lib/GuidoQt/android/libGuidoQt-android.so \
     $$ROOT/../lib/oscpack/oscpack/lib/liboscpack.so
-
 
 win32:LIBS+= ../INScore1.lib
 
