@@ -423,6 +423,12 @@ const IObject * IObject::getRoot()	const	{ return fParent ? fParent->getRoot() :
 IObject * IObject::getRoot()				{ return fParent ? fParent->getRoot() : this; }
 
 //--------------------------------------------------------------------------
+void IObject::setState (state s)
+{
+	fState |= s;
+}
+
+//--------------------------------------------------------------------------
 void IObject::cleanup ()
 {
 	IPosition::cleanup();

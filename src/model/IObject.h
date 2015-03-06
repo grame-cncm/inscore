@@ -214,7 +214,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 				int		getState () const			{ return fState; }
 				
 		/// \brief sets the object global modification state \see getState
-		virtual	void	setState (state s)			{ fState |= s; }
+		virtual	void	setState (state s);
 
 		/// \brief returns the object data modification state
 				bool	newData () const			{ return fNewData; }

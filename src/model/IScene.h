@@ -61,7 +61,7 @@ class IScene : public IRectShape//, public PeriodicTask
 	bool			fFrameless;
 	bool			fAbsoluteCoordinates;
 	bool			fWindowOpacity;
-	bool			fModelUpdated;
+	bool			fUpdateVersion;
 	SIFileWatcher	fFileWatcher;
 	SIJavascript	fJSObject;
 	std::string		fRootPath;
@@ -106,8 +106,8 @@ class IScene : public IRectShape//, public PeriodicTask
 		virtual void	add (const nodePtr& node);
 
 		void	setState (state s);
-		bool	isModelUpdated() { return fModelUpdated; }
-		void	resetModelUpdated() { fModelUpdated = false; }
+		bool	isUpdateVersion() { return fUpdateVersion; }
+		inline void	setUpdateVersion(bool isUpdated) { fUpdateVersion = isUpdated; }
 
 		std::string			getRootPath() const;
 		std::string			absolutePath( const std::string& path ) const;

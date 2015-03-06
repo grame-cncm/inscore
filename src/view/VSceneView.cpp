@@ -76,6 +76,9 @@ class ZoomingGraphicsView : public QGraphicsView
 		void resizeEvent ( QResizeEvent * event ) {
 			// scene adaptation to avoid scroll bars
 			fitInView( SCENE_RECT , Qt::KeepAspectRatio );
+			if(fScene) {
+				fScene->setUpdateVersion(true);
+			}
 		}
 };
 
@@ -87,8 +90,9 @@ void ZoomingGraphicsView::paintEvent (QPaintEvent * event)
 		fScene->endPaint();
 
 		VSceneView * sceneView = dynamic_cast<VSceneView*>(fScene->getView());
-		sceneView->updateSreenShot(fScene->isModelUpdated());
-		fScene->resetModelUpdated();
+		sceneView->updateSreenShot(fScene->isUpdateVersion());
+		// Initialisation of updated flag after redrawing the scene
+		fScene->setUpdateVersion(false);
 	}
 }
 
