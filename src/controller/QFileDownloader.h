@@ -30,39 +30,43 @@
 #include <QThread>
 #include <QByteArray>
 #include <QNetworkAccessManager>
-#include <QNetworkRequest>
 #include <QNetworkReply>
-#include "IUrlIntermediateObject.h"
 
 namespace inscore
 {
- 
+
 class QFileDownloader : public QThread
 {
     Q_OBJECT
     
-public:
-    explicit QFileDownloader(QUrl Url, const char* address);
- 
-    virtual ~QFileDownloader();
- 
-    QByteArray downloadedData() const;
-    
-signals:
-    void downloaded();
-    void failed(QNetworkReply* pReply);
- 
-private slots:
- 
-    void fileDownloaded(QNetworkReply* pReply);
-    void updateSucceded();
-    void updateFailed(QNetworkReply* pReply);
-    
-private:
- 
-    QNetworkAccessManager m_WebCtrl;
-    QByteArray m_DownloadedData;
-    std::string fOSCAddress;
+	public:
+				 QFileDownloader();
+		virtual ~QFileDownloader();
+	 
+		/// \brief asynchronous download of an url
+		virtual void				getAsync (const char* url, const char* address);
+
+		/// \brief synchronous download of an url
+		virtual bool				get (const char* url);
+
+		virtual int			dataSize() const	{ return fData.size(); }
+		virtual const char*	data() const		{ return fData.data(); }
+	
+	signals:
+		void downloaded();
+		void failed(QNetworkReply* pReply);
+	 
+	private slots:
+	 
+		void fileDownloaded(QNetworkReply* pReply);
+		void updateSucceded();
+		void updateFailed(QNetworkReply* pReply);
+		
+	private:
+	 
+		QNetworkAccessManager	fNetworkAccess;
+		QByteArray				fData;
+		std::string				fOSCAddress;
 };
  
 }
