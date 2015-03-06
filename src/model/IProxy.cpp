@@ -102,9 +102,8 @@ int IProxy::execute (const IMessage* msg, const std::string& objName, SIObject p
     {
         std::string path;
         if (!msg->param(1, path)) return MsgHandler::kBadParameters;
-        std::string begin;
-        begin.assign(path,0,7);
-        if(begin == "http://" || begin == "https:/" || begin == "file://")
+
+        if (Tools::isurl(path))
         {
             newmsg = IMessage::create(msg->address(), msg->message());
             newmsg->add(IUrlIntermediateObject::kUrlIntermediateType);
