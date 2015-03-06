@@ -31,6 +31,7 @@ namespace inscore
 struct Tools
 {
 	static bool					regexp (const std::string& str);
+	static bool					isurl (const std::string& str);
 	static std::string			ensurefloat (float f, int precision=0);
 	static libmapping::rational	str2rational (const std::string& rationalstr);
 };
