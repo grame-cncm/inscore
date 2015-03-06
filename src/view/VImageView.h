@@ -80,7 +80,7 @@ class VImageView:  public VIntPointObjectView
 		
 		virtual void updateLocalMapping (IImage* img);
 		virtual void updateView ( IImage * img );
-		virtual void setImage (QByteArray data);
+		virtual void setImage (const unsigned char * data, int len);
 
 		virtual void setImage (VObjectView* src);
 
