@@ -62,6 +62,12 @@ IUrlIntermediateObject::IUrlIntermediateObject( const std::string& name, IObject
 }
 
 //--------------------------------------------------------------------------
+IUrlIntermediateObject::~IUrlIntermediateObject()
+{
+	delete fDownloaderThread;
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus IUrlIntermediateObject::set (const IMessage* msg )
 {
 	MsgHandler::msgStatus status = IObject::set(msg);
@@ -79,34 +85,28 @@ MsgHandler::msgStatus IUrlIntermediateObject::set (const IMessage* msg )
         
         std::string path;
 		if (!msg->param(2, path)) return MsgHandler::kBadParameters;
-        fIsUrl = true;
         setFile(path);
         
-        QUrl Url(getFile().c_str());
-        
         // if the fDownloaderThread exists, we are changing the path : we cancel the previous download.
-        if (fDownloaderThread) {
+        if (fDownloaderThread)
             updateFileCanceled();
-        }
-        
-        fDownloaderThread = new QFileDownloader(Url,getOSCAddress().c_str());
-        if (fDownloaderThread) fDownloaderThread->start();
-        
+			
+        fDownloaderThread = new QFileDownloader();
+        if (fDownloaderThread) fDownloaderThread->getAsync (path.c_str(), getOSCAddress().c_str());
+		
         return MsgHandler::kProcessed;
     }
-    
 	return MsgHandler::kBadParameters;
 }
 
 //--------------------------------------------------------------------------
 void IUrlIntermediateObject::updateFileSucceded()
 {
-    setData( fDownloaderThread->downloadedData() );
-    
     // creation of the real object
     SIObject obj = IObjectFactory::create(name(), fType, fParent);
+	int n = fDownloaderThread->dataSize();
 
-    if(obj && getData().count())
+    if(obj && n)
     {
         // We pass all  the informations to the new object
         fParent->add(obj);
@@ -117,7 +117,7 @@ void IUrlIntermediateObject::updateFileSucceded()
         if (file)
         {
             file->setFile(getFile());
-            file->setData(getData());
+            file->setData(fDownloaderThread->data(), fDownloaderThread->dataSize());
             file->updateUrl();
         }
 		else ITLErr << "Unexpected non file type" << fType << ITLEndl;
@@ -139,6 +139,7 @@ void IUrlIntermediateObject::updateFileCanceled()
     if (fDownloaderThread) {
         fDownloaderThread->terminate();
         delete fDownloaderThread;
+		fDownloaderThread = 0;
     }
     
     const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kCancel);

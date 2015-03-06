@@ -33,6 +33,7 @@
 namespace inscore
 {
 
+class QFileDownloader;
 class IUrlIntermediateObject;
 typedef class libmapping::SMARTP<IUrlIntermediateObject>	SIUrlIntermediateObject;
 
@@ -50,7 +51,7 @@ class IUrlIntermediateObject : public IShapeMap, public TFile
     
     protected:    
 				 IUrlIntermediateObject( const std::string& name, IObject* parent );
-		virtual ~IUrlIntermediateObject() {}
+		virtual ~IUrlIntermediateObject();
     
         virtual MsgHandler::msgStatus set (const IMessage* msg );
     
