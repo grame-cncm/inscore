@@ -112,10 +112,10 @@ SIMessageList IWebSocket::getMsgs(const IMessage* msg) const
 		string param = "-";
 		msg->param(i, param);
 
-		if ( param == "nbClients" )
+		if ( param == "clients" )
 		{
 			SIMessage msg = IMessage::create(getOSCAddress(), param);
-			*msg << fWebServer->nbClients();
+			*msg << fWebServer->clients();
 			outMsgs->list().push_back (msg);
 		}
 	}

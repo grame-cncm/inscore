@@ -65,7 +65,7 @@ class WebSocketController
 		virtual void	setFrequency(int frequency)		= 0;
 		virtual void	stop()							= 0;
 		virtual bool	running () const				= 0;
-		virtual int		nbClients () const				= 0;
+		virtual int		clients () const				= 0;
 };
 
 }

@@ -62,7 +62,7 @@ class QtWebSocketServer : public QWebSocketServer
 		void setFrequency(int frequency);	///< change the notifiactions rate
 		int  getFrequency() const		{ return fFrequency; }
 
-		int getNbClients() const { return fClients.size(); }
+		int getClients() const { return fClients.size(); }
 
 	private: Q_SIGNALS:
 		void closed();					///< signal emitted when the server closed its connection.

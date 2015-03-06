@@ -85,9 +85,9 @@ bool QtWebSocketController::running() const
 }
 
 //-------------------------------------------------------------------------------
-int QtWebSocketController::nbClients() const
+int QtWebSocketController::clients() const
 {
-	return fServer ? fServer->getNbClients() : 0;
+	return fServer ? fServer->getClients() : 0;
 }
 
 //-------------------------------------------------------------------------------
