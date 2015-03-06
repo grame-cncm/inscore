@@ -95,6 +95,12 @@ class VObjectView
 			\param src the src view
 		*/
 		virtual void	setImage (VObjectView* src)						{}
+
+		/*!
+			\brief set the object view image using another view
+			\param src the src view
+		*/
+		virtual void	setImage (const unsigned char* data, int len)	{}
 	
 		/*!
 		 * \brief getImage get image data of the object view at specified format.
