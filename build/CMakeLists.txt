@@ -193,7 +193,7 @@ message (STATUS "Using Qt version ${QTVERSION} - Use -DQTVERSION=vers to change.
 
 set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h  ${ROOT}/view/VLogWindow.h)
 if (QTVERSION EQUAL "5")
-        set (MOC_HEADERS ${MOC_HEADERS} ${ROOT}/view/VVideoView.h ${ROOT}/controller/QFileDownloader.h ${ROOT}/model/QtWebSocketServer.h ${ROOT}/model/QtWebSocketController.h)
+        set (MOC_HEADERS ${MOC_HEADERS} ${ROOT}/view/VVideoView.h ${ROOT}/controller/QFileDownloader.h ${ROOT}/model/QtWebSocketServer.h )
 	if(IOS)
 		set( QT_ROOT $(HOME)/Qt/5.3/ios/lib/cmake )
 		set( ENV(CMAKE_PREFIX_PATH) ${QT_ROOT} )

@@ -147,9 +147,9 @@ void VImageView::setImage(const QString& fileName)
 }
 
 //----------------------------------------------------------------------
-void VImageView::setImage(QByteArray data)
+void VImageView::setImage(const unsigned char * data, int len)
 {
-    fImageItem->image().loadFromData(data);
+    fImageItem->image().loadFromData(data, len);
     itemChanged();
 }
 

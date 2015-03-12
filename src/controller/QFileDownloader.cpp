@@ -23,49 +23,62 @@
 
 */
 
+#include <QDebug>
+#include <QNetworkRequest>
+
 #include "QFileDownloader.h"
-#include "VObjectView.h"
 #include "INScore.h"
 
 namespace inscore
 {
 
 //--------------------------------------------------------------------------
-QFileDownloader::QFileDownloader(QUrl Url, const char* address) : QThread()
+QFileDownloader::QFileDownloader()
 {
-    connect(&m_WebCtrl, SIGNAL(finished(QNetworkReply*)), SLOT(fileDownloaded(QNetworkReply*)));
-    connect(this, SIGNAL(downloaded()), SLOT(updateSucceded()));
-    connect(this, SIGNAL(failed(QNetworkReply*)), SLOT(updateFailed(QNetworkReply*)));
-    fOSCAddress = address;
-    QNetworkRequest request(Url);
-    m_WebCtrl.get(request);
+    connect(&fNetworkAccess, SIGNAL(finished(QNetworkReply*)), SLOT(fileDownloaded(QNetworkReply*)));
 }
  
 //--------------------------------------------------------------------------
 QFileDownloader::~QFileDownloader()
 {
-    quit(), wait(50);
+    quit();
+	wait(50);
 }
- 
+
+//--------------------------------------------------------------------------
+void QFileDownloader::getAsync (const char* what, const char* address)
+{
+    fOSCAddress = address;
+	QUrl url (what);
+    QNetworkRequest request(url);
+    fNetworkAccess.get(request);
+	start();
+}
+
+//--------------------------------------------------------------------------
+bool QFileDownloader::get (const char* what)
+{
+	bool ret = true;
+	QUrl url (what);
+	QNetworkRequest request( url );
+    QNetworkReply* reply = fNetworkAccess.get(request);
+	QNetworkReply::NetworkError err = reply->error();
+	if(err)	ret = false;
+    else	fData = reply->readAll();
+	reply->deleteLater();
+	return ret;
+}
+
 //--------------------------------------------------------------------------
 void QFileDownloader::fileDownloaded(QNetworkReply* pReply)
 {
     if(!pReply->error())
     {
-        m_DownloadedData = pReply->readAll();
-        emit downloaded();
+        fData = pReply->readAll();
+		updateSucceded ();
     }
-    else
-    {
-        emit failed(pReply);
-    }
+    else updateFailed (pReply);
     pReply->deleteLater();
-}
- 
-//--------------------------------------------------------------------------
-QByteArray QFileDownloader::downloadedData() const
-{
-    return m_DownloadedData;
 }
 
 //--------------------------------------------------------------------------

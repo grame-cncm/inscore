@@ -23,12 +23,15 @@
 
 */
 
+#include <fstream>
+
+#include <QDir>
+
+#include "TFile.h"
 #include "IAppl.h"
 #include "IScene.h"
 #include "ITLError.h"
-#include "TFile.h"
 #include "IUrlIntermediateObject.h"
-#include <QDir>
 
 using namespace std;
 
@@ -37,7 +40,7 @@ namespace inscore
 
 //--------------------------------------------------------------------------
 TFile::TFile(IScene* scene, const std::string& pathname ) 
-	: fFilePath (pathname), fPathChanged (true), fScene(scene), fIsUrl(false)
+	: fFilePath (pathname), fPathChanged (true), fScene(scene), fData(0), fDataSize(0)
 {
 }
 
@@ -52,7 +55,7 @@ int TFile::getLength (ifstream& f)
 }
 
 //--------------------------------------------------------------------------
-char* TFile::read (const std::string& path)
+char* TFile::readfile (const std::string& path)
 {
 	char * buffer = 0;
 	ifstream file;
@@ -79,10 +82,10 @@ char* TFile::read (const std::string& path)
 //--------------------------------------------------------------------------
 bool TFile::read (ostream& out) const
 {
-	char * content = read(fFilePath);
+	char * content = readfile(fFilePath);
 	if (content) {
 		out << content;
-		delete content;
+		delete [] content;
 		return true;
 	}
 	return false;
@@ -91,34 +94,25 @@ bool TFile::read (ostream& out) const
 //--------------------------------------------------------------------------
 bool TFile::read (std::string& str) const
 {
-	char * content = read(fFilePath);
+	char * content = readfile(fFilePath);
 	if (content) {
 		str = content;
-		delete content;
+		delete [] content;
 		return true;
 	}
 	return false;
 }
 
 //--------------------------------------------------------------------------
-bool TFile::read(QByteArray& out) const
+void TFile::setData(const char* data, int size)
 {
-    if(fIsUrl)
-    {
-        out = fData;
-        return true;
-    }
-    
-    QFile file( fFilePath.c_str() );
-    if(file.open(QIODevice::ReadOnly))
-    {
-        out = file.readAll();
-        file.close();
-        return true;
-    }
-    else ITLErr << "can't open file :" << fFilePath << ITLEndl;
-	
-    return false;
+	if (fData) delete [] fData;
+	fData = new char[size+1];
+	fDataSize = size;
+	if (fData) {
+		memcpy(fData, data, size);
+		fData[size] = 0;			// ensure C string compatibility
+	}
 }
 
 //--------------------------------------------------------------------------
@@ -131,18 +125,13 @@ void TFile::print (ostream& out) const
 MsgHandler::msgStatus TFile::set (const IMessage* msg )	
 { 
 	if (msg->size() == 2) {
-		std::string path;
-		if (!msg->param(1, path)) return MsgHandler::kBadParameters;
-        
-        std::string type;
-		if (!msg->param(0, type)) return MsgHandler::kBadParameters;
-        
-        std::string begin;
-        begin.assign(path,0,7);
+		string type, path;
+		if (!msg->param(0, type) || !msg->param(1, path)) return MsgHandler::kBadParameters;
+		
         // the creation of a url file should not go through TFile::set.
         // this means that the current object is not a URLIntermediate, it is a file whose path has been change to an url
         // we then have to destroy it and re-create the URLIntermediate (we send the message in the form "/urlname set url type path"
-        if(begin == "http://" || begin == "https:/" || begin == "file://")
+        if(Tools::isurl(path))
         {
             SIMessage newmsg = IMessage::create(msg->address(), msg->message());
             newmsg->add(IUrlIntermediateObject::kUrlIntermediateType);
@@ -152,9 +141,8 @@ MsgHandler::msgStatus TFile::set (const IMessage* msg )
             return MsgHandler::kProcessed;
         }
         
-		if ( path.size())
+		else if ( path.size())
 		{
-            fIsUrl = false;
             std::string completePath = fScene ? fScene->absolutePath(path) : IAppl::absolutePath(path);
 			setFile( completePath );
 			return MsgHandler::kProcessed;

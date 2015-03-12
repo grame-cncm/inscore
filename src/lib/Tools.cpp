@@ -35,6 +35,14 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
+bool Tools::isurl (const std::string& path)
+{
+	std::string begin;
+	begin.assign(path, 0, 7);
+	return (begin == "http://") || (begin == "https:/");
+}
+
+//--------------------------------------------------------------------------
 bool Tools::regexp (const string& str)
 {
 	unsigned int n = str.size();

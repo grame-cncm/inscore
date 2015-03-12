@@ -74,12 +74,14 @@ MsgHandler::msgStatus ISVGFile::set(const IMessage* msg )
 //--------------------------------------------------------------------------
 void ISVGFile::updateUrl()
 {
-    fIsUrl = true;
-    read(fData);
+//    fIsUrl = true;
+//    read(fData);
     changed(true);
-    VSVGView * svgView = fView ? dynamic_cast<VSVGView*>(fView) : 0;
-    if(svgView)
-        svgView->updateLocalMapping(this);
+    this->getView()->updateLocalMapping(this);
+
+//    VSVGView * svgView = fView ? dynamic_cast<VSVGView*>(fView) : 0;
+//    if(svgView)
+//        svgView->updateLocalMapping(this);
 }
 
 }

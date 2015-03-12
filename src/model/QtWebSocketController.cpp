@@ -23,10 +23,7 @@
 
 */
 
-#include <iostream>
-
 #include "QtWebSocketController.h"
-#include "IScene.h"
 
 using namespace std;
 namespace inscore
@@ -43,10 +40,7 @@ QtWebSocketController::QtWebSocketController(const WebSocketInformer* infos)
 	: fInfos(infos), fServer (0)
 {}
 
-QtWebSocketController::~QtWebSocketController()
-{
-	stop(); 	// Wait for end of thread.
-}
+QtWebSocketController::~QtWebSocketController()		{ stop(); delete fServer; }
 
 //-------------------------------------------------------------------------------
 bool QtWebSocketController::start (int port)
@@ -62,10 +56,8 @@ bool QtWebSocketController::start (int port)
 }
 
 //-------------------------------------------------------------------------------
-void QtWebSocketController::setFrequency(int frequency)
-{
-	if (fServer) fServer->setFrequency(frequency);
-}
+void QtWebSocketController::setFrequency(int frequency)	{ if (fServer) fServer->setFrequency(frequency); }
+bool QtWebSocketController::running() const				{ return fServer ? fServer->isListening() : false; }
 
 //-------------------------------------------------------------------------------
 void QtWebSocketController::stop()
@@ -76,12 +68,6 @@ void QtWebSocketController::stop()
 		delete fServer;
 		fServer = 0;
 	}
-}
-
-//-------------------------------------------------------------------------------
-bool QtWebSocketController::running() const
-{
-	return fServer ? fServer->isListening() : false;
 }
 
 //-------------------------------------------------------------------------------

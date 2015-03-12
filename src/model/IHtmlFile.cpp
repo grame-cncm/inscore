@@ -67,7 +67,7 @@ MsgHandler::msgStatus IHtmlFile::set (const IMessage* msg )
 
 	status = TFile::set( msg );
 	if (status & MsgHandler::kProcessed) {
-		if(!fIsUrl)
+		if(!hasData())
         {
             if (!read(fText))
                 status = MsgHandler::kCreateFailure;
@@ -80,14 +80,8 @@ MsgHandler::msgStatus IHtmlFile::set (const IMessage* msg )
 //--------------------------------------------------------------------------
 void IHtmlFile::updateUrl()
 {
-    fIsUrl = true;
-    
-    if(read(fData))
-        fText = fData.data();
-    
-    VTextView * txtView = fView ? dynamic_cast<VTextView*>(fView) : 0;
-    if(txtView)
-        txtView->updateLocalMapping(this);
+    if (data())	fText = data();
+    this->getView()->updateLocalMapping(this);
 }
 
 }

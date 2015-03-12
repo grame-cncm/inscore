@@ -56,8 +56,6 @@ MsgHandler::msgStatus IImage::set (const IMessage* msg )
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
 	status = TFile::set( msg );
-    if(!read(fData))
-        status = MsgHandler::kBadParameters;
 	if (status & MsgHandler::kProcessed) newData(true);
 	return status;
 }
@@ -65,14 +63,8 @@ MsgHandler::msgStatus IImage::set (const IMessage* msg )
 //--------------------------------------------------------------------------
 void IImage::updateUrl()
 {
-    fIsUrl = true;
-    read(fData);
-    VImageView * imgView = fView ? dynamic_cast<VImageView*>(fView) : 0;
-    if(imgView)
-    {
-        imgView->setImage(fData);
-        imgView->updateLocalMapping(this);
-    }
+	this->getView()->setImage((const unsigned char*)data(), dataSize());
+	this->getView()->updateLocalMapping(this);
 }
 
 }

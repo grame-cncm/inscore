@@ -29,9 +29,6 @@
 
 #include <string>
 #include <ostream>
-#include <fstream>
-#include <QThread>
-#include <QUrl>
 
 #include "IObject.h"
 #include "IMessage.h"
@@ -44,10 +41,7 @@ namespace inscore
 @{
 */
 
-class QFileDownloader;
 class IScene;
-
-typedef class libmapping::SMARTP<IScene>	SIScene;
 //--------------------------------------------------------------------------
 /*!
 	\brief a base class for file based elements of the model
@@ -57,9 +51,11 @@ class TFile
 	std::string	fFilePath;
 	bool		fPathChanged;
 	IScene*		fScene;
-	
-	public:		
 
+	char *		fData;				// a pointer to the file data, actually used only by url based files
+	int			fDataSize;			// but it should be generalized
+	
+	public:
 		/// \brief returns the path of the object file
 		const std::string&	getFile() const						{ return fFilePath; }
 
@@ -73,33 +69,28 @@ class TFile
 		*/
 		virtual bool		read(std::string& buff) const;
 		virtual bool		read(std::ostream& out) const;
-		virtual bool		read(QByteArray& out) const;
+
+		virtual const char* data() const			{ return fData; }
+		virtual int			dataSize() const		{ return fDataSize; };
 
 		virtual bool		changed() const				{ return fPathChanged; }
 		virtual void		changed(bool state)			{ fPathChanged = state; }
 
 		virtual void		print(std::ostream& out) const;
-        virtual bool        isUrl() const {return fIsUrl;}
+        virtual bool        hasData() const				{return fData != 0;}
 
-        virtual void        updateUrl(){};
-    
-        virtual const QByteArray&	getData()		 { return fData; }
-        virtual QByteArray*			getDataPtr()	 { return &fData; }
-        virtual void				setData(QByteArray data) { fData = data; }
+        virtual void        updateUrl()		{};
+        virtual void		setData(const char* data, int size);
 
 	protected:
 				 TFile(IScene* scene, const std::string& pathname = "" );
-		virtual ~TFile() {}
+		virtual ~TFile() { delete fData; }
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
     
-		static char *	read(const std::string& path);
+		static char *	readfile(const std::string& path);
 		static int		getLength (std::ifstream& f);
-        bool            fIsUrl;
-    
-        QByteArray fData;
-
 };
 
 /*! @} */

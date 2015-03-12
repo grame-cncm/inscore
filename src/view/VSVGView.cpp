@@ -81,8 +81,8 @@ void VSVGView::updateView( ISVGFile * svg  )
 {
     svg->cleanupSync();
     if (svg->changed()) {
-        if(svg->isUrl())
-            item()->setText(svg->getData().data());
+        if(svg->hasData())
+            item()->setText(svg->data());
         else
             item()->setFile (svg->getFile().c_str());
 		svg->changed(false);
@@ -117,8 +117,8 @@ void VSVGView::updateLocalMapping (ISVGFile* svg)
 {
 	if (item()->size().width() <= 0)
     {
-        if(svg->isUrl())
-            item()->setText(svg->getData().data());
+        if(svg->hasData())
+            item()->setText(svg->data());
         else
             item()->setFile (svg->getFile().c_str());
 	}
