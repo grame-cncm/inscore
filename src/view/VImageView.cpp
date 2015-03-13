@@ -135,7 +135,7 @@ void VImageView::setImage(VObjectView* src)
 	QBuffer buffer( &data);
 	buffer.open(QIODevice::WriteOnly);
 	img.save(&buffer, "PNG"); // writes image into ba in PNG format
-	setImage (data);
+	setImage ((const unsigned char *)data.data(), data.size());
 	itemChanged();
 }
 
