@@ -983,7 +983,8 @@ MsgHandler::msgStatus IObject::pushMsg(const IMessage* msg)
 MsgHandler::msgStatus IObject::popMsg(const IMessage* msg)
 {
 	if (msg->size()) return MsgHandler::kBadParameters;
-	return EventsAble::popWatch() ? MsgHandler::kProcessed : MsgHandler::kBadParameters;
+	EventsAble::popWatch();
+	return MsgHandler::kProcessed;
 }
 
 //--------------------------------------------------------------------------
