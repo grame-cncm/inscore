@@ -25,6 +25,10 @@
 #include "HTTPServer.h"
 #include "DataExchange.h"
 
+#ifndef VERSION
+	#define VERSION "";
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -64,6 +68,8 @@ extern "C" {
 	 * \return the server status.
 	 */
 	int status(void * server);
+
+	const char * version() { return VERSION; }
 
 #ifdef __cplusplus
 }

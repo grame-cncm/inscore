@@ -52,12 +52,14 @@ class THttpdPlugin : public TPlugin
 		typedef bool (* TStart) (void*, int);
 		typedef bool (* TStop) (void*);
 		typedef int (* TStatus) (void*);
+		typedef char * (* TVersion) (void);
 
 		static TInitialize fInitialize;
 		static TDestroy fDestroy;
 		static TStart fStart;
 		static TStop fStop;
 		static TStatus fStatus;
+		static TVersion fVersion;
 
 		/*!
 		 * \brief isResolved

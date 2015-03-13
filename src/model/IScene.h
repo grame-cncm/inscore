@@ -62,6 +62,7 @@ class IScene : public IRectShape, public TIloader
 	bool			fFrameless;
 	bool			fAbsoluteCoordinates;
 	bool			fWindowOpacity;
+	bool			fUpdateVersion;
 	SIFileWatcher	fFileWatcher;
 	SIJavascript	fJSObject;
 	std::string		fRootPath;
@@ -104,6 +105,10 @@ class IScene : public IRectShape, public TIloader
 		
 		/// \brief adds a subnode to the object \param node the subnode
 		virtual void	add (const nodePtr& node);
+
+		void	setState (state s);
+		bool	isUpdateVersion() { return fUpdateVersion; }
+		inline void	setUpdateVersion(bool isUpdated) { fUpdateVersion = isUpdated; }
 
 		std::string			getRootPath() const;
 		std::string			absolutePath( const std::string& path ) const;

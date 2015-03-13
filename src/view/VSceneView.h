@@ -103,7 +103,7 @@ class VSceneView : public VDummyObjectView
 		 * \brief updateSreenShot. Update athe screenshot if a request as been send with setUpdateScreenShot.
 		 * If no request the previous scrrenshot if invalidated.
 		 */
-		void				updateSreenShot();
+		void				updateSreenShot(bool newVersion);
 
 		/*!
 		 * \brief getScreenShot get Screenshot data.

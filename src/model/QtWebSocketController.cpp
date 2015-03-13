@@ -71,6 +71,12 @@ void QtWebSocketController::stop()
 }
 
 //-------------------------------------------------------------------------------
+int QtWebSocketController::clients() const
+{
+	return fServer ? fServer->getClients() : 0;
+}
+
+//-------------------------------------------------------------------------------
 void QtWebSocketController::run()
 {
 	fServer = new QtWebSocketServer (fInfos->getFrequency(), fInfos->getView());

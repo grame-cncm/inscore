@@ -29,6 +29,7 @@ Version 1.11
 - Add new object websocket to create a websocket server to notify clients of a scene update and get an image of the scene.
 - Guido font is now embed in INScore application.
 - Partial support on IOS. Main problems are : antialiasing is not working and multi scene scores are not manage correctly.
+- Bug in export item corrected : Child scaling was not apply.
 
 ----------------------------------------------------
 Version 1.10

@@ -64,7 +64,7 @@ IScene::~IScene()
 }
 
 IScene::IScene(const std::string& name, IObject * parent) 
-		: IRectShape(name, parent), fFullScreen(false), fFrameless(false), fAbsoluteCoordinates(false), fWindowOpacity(false)
+		: IRectShape(name, parent), fFullScreen(false), fFrameless(false), fAbsoluteCoordinates(false), fWindowOpacity(false), fUpdateVersion(false)
 {
 	fTypeString = kSceneType;
 	setColor( IColor(255,255,255,255) );
@@ -201,6 +201,14 @@ void IScene::add (const nodePtr& node)
 	TMessageEvaluator me;
 	SIMessageList outmsgs = me.eval (msgs, env);
 	if (outmsgs && outmsgs->list().size()) outmsgs->send();
+}
+
+//--------------------------------------------------------------------------
+void IScene::setState (state s)
+{
+	IObject::setState(s);
+	if (getState() & (IObject::kModified | IObject::kSubModified))
+		setUpdateVersion(true);
 }
 
 //--------------------------------------------------------------------------
