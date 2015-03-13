@@ -32,6 +32,7 @@
 #include "IMessageHandlers.h"
 #include "PeriodicTask.h"
 #include "IObject.h"
+#include "TILoader.h"
 #include "TScripting.h"
 #include "udpinfo.h"
 #include "benchtools.h"
@@ -59,7 +60,7 @@ typedef class libmapping::SMARTP<IApplLog>		SIApplLog;
 /*!
 	\brief the application object of the model
 */
-class IAppl : public IObject//, public PeriodicTask
+class IAppl : public IObject, public TIloader
 {
 	typedef std::map<std::string, std::pair<std::string, std::string> >		TAliasesMap;
 	static TAliasesMap fAliases;
@@ -93,7 +94,6 @@ class IAppl : public IObject//, public PeriodicTask
 			{ return new IAppl(udpport, outport, errport, appl, offscreen); }
 		static std::string		getRootPath()				{ return fRootPath; }	//< returns the application root path
 		static std::string		absolutePath( const std::string& path );		//< returns the absolute path corresponding to 'path',
-		static std::string		makeAbsolutePath( const std::string& path, const std::string& file );
 
 		static void				addAlias( const std::string& alias, const std::string& address, const std::string& msg);
 		static void				delAliases( const std::string& address);
@@ -160,6 +160,9 @@ class IAppl : public IObject//, public PeriodicTask
 		void		setUDPOutAddress(const std::string& a)	{ fUDP.fOutDstAddress = a; }
 		void		setUDPErrAddress(const std::string& a)	{ fUDP.fErrDstAddress = a; }
 		void		setDefaultShow(bool state)				{ fDefaultShow = state; }
+
+		TJSEngine*		getJSEngine()		{ return &fJavascript; }
+		TLua*			getLUAEngine()		{ return &fLua; }
 
 		virtual		SIMessageList getAll () const;
 

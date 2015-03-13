@@ -46,8 +46,8 @@
 #include "Updater.h"
 #include "ip/NetworkingUtils.h"
 #include "TMessageEvaluator.h"
-#include "INScore.h"
 #include "ITLError.h"
+#include "Tools.h"
 
 #include "INScore.h"
 
@@ -477,53 +477,13 @@ MsgHandler::msgStatus IAppl::loadBuffer (const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
 {
-	if (msg->size() == 1) {
-		string srcfile;
-		if (!msg->param(0, srcfile)) return MsgHandler::kBadParameters;
-		if (srcfile.size()) {
-			fstream file (absolutePath(srcfile).c_str(), fstream::in);
-			if (file.is_open()) {
-				ITLparser p (&file, 0, &fJavascript, &fLua);
-				SIMessageList msgs = p.parse();
-				if (msgs) {
-					for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
-						string address;
-						if ((*i)->relativeAddress())
-							address = (*i)->relative2absoluteAddress (getOSCAddress());
-						else
-							address = (*i)->address();
-						string beg  = OSCAddress::addressFirst(address);
-						string tail = OSCAddress::addressTail (address);
-						int ret = processMsg(beg, tail, *i);
-						if (oscDebug()) IGlue::trace(*i, ret);
-					}
-				}
-				else ITLErr << "while parsing file" << srcfile << ITLEndl;
-			}
-			else ITLErr << "IAppl can't open file" << srcfile << ITLEndl;
-			return MsgHandler::kProcessed;
-		}
-	}
-	return MsgHandler::kBadParameters;
-}
-
-//--------------------------------------------------------------------------
-std::string IAppl::makeAbsolutePath( const std::string& path, const std::string& file )
-{
-	char ending = path[path.length()-1];
-#ifdef WIN32
-		const char* sep = (ending == '/') || (ending == '\\') ? "" : "/";
-		return ( file[1] != ':') ? ( path + sep + file ) : file ;
-#else
-		const char* sep = (ending == '/') ? "" : "/";
-		return ( file[0] != '/' ) ? ( path + sep + file ) : file ;
-#endif
+	return load (msg, this, getRootPath());
 }
 
 //--------------------------------------------------------------------------
 std::string IAppl::absolutePath( const std::string& path )
 {
-	return makeAbsolutePath (getRootPath(), path);
+	return TIloader::makeAbsolutePath (getRootPath(), path);
 }
 
 //--------------------------------------------------------------------------
