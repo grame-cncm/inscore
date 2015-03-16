@@ -17,7 +17,7 @@ CONFIG -= $$REMOVECONFIG
 unix:QMAKE_CXXFLAGS += -Wno-unused-parameter
 
 # INScore sources folders
-FOLDERS = controller events lib model view mapping interface graph signal signal/faust ITLParser scripting 
+FOLDERS = controller events lib model view mapping interface graph signal signal/faust ITLParser scripting guidoqt
 LIBMAPFOLDERS = libmapping/src/misc libmapping/src/parser libmapping/src/relations libmapping/src/segments
 
 FOLDERS += $$LIBMAPFOLDERS
@@ -50,12 +50,16 @@ macx {
         message("Only the current architecture will be compiled - Use CONFIG+=DIST to change.")
     }
     QMAKE_CXXFLAGS += -mmacosx-version-min=10.6
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.6
+    # drag & drop doesn't work with macosx10.10 sdk on yosemite
+    QMAKE_MAC_SDK = macosx10.9
 }
 
 ios {
     DEFINES += IOS
     CONFIG += c++11
     CONFIG+= arm64 armv7 armv7s
+    CONFIG += staticlib
 }
 
 # resources
@@ -96,7 +100,6 @@ DEFINES += QTJSENGINE
 LOCALLIB = $$ROOT/../lib
 OSC_PATH = $$LOCALLIB/oscpack
 GUIDO_PATH = $$LOCALLIB/GuidoEngine
-GUIDOQT_PATH = $$LOCALLIB/GuidoQt
 
 ############### Sources
 message($$FOLDERS)
@@ -105,21 +108,18 @@ for(folder, FOLDERS) {
     HEADERS += $$files($$ROOT/$$folder/*.h*)
     INCLUDEPATH += $$ROOT/$$folder
 }
-message($$INCLUDEPATH)
+
 ############## Include
 INCLUDEPATH += $$OSC_PATH
 INCLUDEPATH += $$GUIDO_PATH/include
-INCLUDEPATH += $$GUIDOQT_PATH/include
 
 ############### libraries
 # Linux
 unix:!ios:!android:LIBS += -L$$OSC_PATH/cmake -loscpack \
-        -L$$ROOT/../lib/GuidoQt/linux -lGuidoQt \
-	-lGUIDOEngine
+        -lGUIDOEngine
 
 # Windows MinGw
 win32:*-g++*:LIBS += $$OSC_PATH/MinGW/liboscpack.a \
-	$$LOCALLIB/GuidoQt/win32/libGuidoQt.a \
         $$LOCALLIB/GuidoEngine/win32/libGUIDOEngine.dll.a \
         winmm ws2_32
 
@@ -127,15 +127,14 @@ win32:*-g++*:LIBS += $$OSC_PATH/MinGW/liboscpack.a \
 win32:*-msvc*:LIBS += $$OSC_PATH/cmake/release/oscpack.lib \
 	$$LOCALLIB/GuidoEngine/win32/GUIDOEngine.lib \
         winmm.lib ws2_32.lib
-win32:*-msvc*:LIBS += $$LOCALLIB/GuidoQt/win32/GuidoQt.lib
 
 ios:LIBS += $$OSC_PATH/build/iOS/Release-iphoneos/liboscpack.a \
-        $$ROOT/../lib/GuidoQt/ios/libGuidoQt.a \
         $$ROOT/../lib/GuidoEngine/ios/libGUIDOEngine.a
 
-android:LIBS += -L$$OSC_PATH/oscpack/lib -loscpack \
-        -L$$ROOT/../lib/GuidoQt/android -lGuidoQt-android \
-        -L$$ROOT/../lib/GuidoEngine/android -lGUIDOEngine
+android:LIBS += -L$$ROOT/../lib/GuidoEngine/android -lGUIDOEngine \
+        -L$$OSC_PATH/android/libs/armeabi -loscpack
 
-macx:LIBS += 
-macx:LIBS += -framework CoreFoundation
+macx:QMAKE_LFLAGS += -F$$ROOT/../lib/GuidoEngine/macosx/
+macx:LIBS += $$OSC_PATH/build/MacOS/Release/liboscpack.a \
+        -framework GUIDOEngine \
+        -framework CoreFoundation
