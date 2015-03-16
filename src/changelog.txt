@@ -11,6 +11,10 @@ INScore originates from the Interlude project.
 It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
+----------------------------------------------------
+Version 1.12
+- Remove GuidoQt library dependency and integrate source file.
+- Inscrease size of guido item.
 
 ----------------------------------------------------
 Version 1.11
