@@ -30,8 +30,10 @@ namespace inscore
 {
 
 #ifdef WIN32
+#include <windows.h>
 # define _uwait(n)	Sleep(n)
 #else
+#include <unistd.h>
 # define _uwait(n)	usleep(n * 1000);
 #endif
 
