@@ -191,7 +191,7 @@ endif()
 
 message (STATUS "Using Qt version ${QTVERSION} - Use -DQTVERSION=vers to change.")
 
-set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h  ${ROOT}/view/VLogWindow.h)
+set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h  ${ROOT}/view/VLogWindow.h ${ROOT}/guidoqt/QGuidoGraphicsItem.h)
 if (QTVERSION EQUAL "5")
         set (MOC_HEADERS ${MOC_HEADERS} ${ROOT}/view/VVideoView.h ${ROOT}/controller/QFileDownloader.h ${ROOT}/model/QtWebSocketServer.h )
 	if(IOS)
