@@ -64,6 +64,7 @@ ios {
 
 # resources
 RSRC = $$ROOT/../rsrc
+win32 { RC_FILE = $$ROOT/../win32/INScore.rc }
 
 NOVIEW {
         message ("Compiled with no view - remove CONFIG+=NOVIEW to change.")

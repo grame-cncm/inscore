@@ -32,7 +32,7 @@ android:ANDROID_EXTRA_LIBS = $$ROOT/../lib/GuidoEngine/android/libGUIDOEngine.so
 win32:LIBS+= ../INScore1.lib
 
 ############### Resources
-win32 { RC_FILE = $$ROOT/../win32/INScore.rc }
+win32 { RC_FILE = $$ROOT/../win32/Viewer/INScoreViewer.rc }
 RESOURCES += $$ROOT/../rsrc/inscore.qrc
 
 QMAKE_INFO_PLIST = $$PWD/../Info.plist
