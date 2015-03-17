@@ -31,10 +31,11 @@ if(WIN32)
 		set (X64 -D__x86_64__)
 	endif()
 
-	if(${CMAKE_GENERATOR} STREQUAL "Visual Studio 10")
+	# New version of cmake use "Visual Studio 10 2010"
+	if(${CMAKE_GENERATOR} STREQUAL "Visual Studio 10" OR ${CMAKE_GENERATOR} STREQUAL "Visual Studio 10 2010")
 		set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 	endif()
-	add_definitions(-DMSVC -D_USE_MATH_DEFINES ${X64})
+	add_definitions(-DMSVC -D_USE_MATH_DEFINES -DNOMINMAX ${X64})
 else()
 	add_definitions(-Wall)
 	if (NOT APPLE)
