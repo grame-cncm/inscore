@@ -59,6 +59,22 @@ class VLineView: public VMappedShapeView
         virtual void updateObjectSize(IObject* o);
 };
 
+/**
+ * @brief The ArrowHeadFactory class. A factory to create head arrow for line.
+ */
+class ArrowHeadFactory {
+	public:
+		ArrowHeadFactory();
+		virtual ~ArrowHeadFactory();
+		void addArrowHead(QPainterPath &myPath, enum ILine::ArrowHeadType type, QPointF &p0, QPointF &p1, double arrowSize, bool isLeft);
+
+	private:
+		void addTriangleArrowHead(QPainterPath &myPath, const QPointF &p0, const QPointF &p1, double arrowSize, bool isLeft);
+		void addDiamondArrowHead(QPainterPath &myPath, const QPointF &p0, const QPointF &p1, double arrowSize, bool isLeft);
+		void addDiskArrowHead(QPainterPath &myPath, const QPointF &p0, const QPointF &p1, double arrowSize, bool isLeft);
+		double getAngle(const QPointF &p0, const QPointF &p1, bool isLeft);
+};
+
 /*!@} */
 
 } // end namespoace

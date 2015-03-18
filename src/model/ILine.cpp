@@ -37,7 +37,8 @@ namespace inscore
 
 const string ILine::kLineType("line");
 //--------------------------------------------------------------------------
-ILine::ILine( const std::string& name, IObject* parent ) : IShapeMap(name, parent), fWAMode(false)
+ILine::ILine( const std::string& name, IObject* parent ) : IShapeMap(name, parent), fWAMode(false),
+	fArrowLeft(NONE), fArrowRight(NONE)
 { 
 	fTypeString = kLineType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler< TFloatPoint >::create( getPoint() );
@@ -86,33 +87,106 @@ MsgHandler::msgStatus ILine::set (const IMessage* msg)
 		ITLErr << "set line without mode is deprecated" << ITLEndl;
 	}
 	else if (msg->size() == 4) {
-		string mode; float a, b; int ai, bi;
-		if (!msg->param(1, mode))
-			return MsgHandler::kBadParameters;
-		if (!msg->param(2, a)) {
-			if (msg->param(2, ai)) a = float(ai);
-			else return MsgHandler::kBadParameters;
+		status = setLineParam(msg);
+	} else if (msg->size() == 6) {
+		status = setLineParam(msg);
+		if(MsgHandler::kProcessed == status) {
+			status = setArrowParam(msg);
 		}
-		if (!msg->param(3, b)) {
-			if (msg->param(3, bi)) b = float(bi);
-			else return MsgHandler::kBadParameters;
+	} else if (msg->size() == 8) {
+		status = setLineParam(msg);
+		if(MsgHandler::kProcessed == status) {
+			status = setArrowParam(msg);
 		}
-
-		if (mode == "xy") {
-			setPoint( TFloatPoint(a, b) );
-		}
-		else if (mode == "wa") {
-			fWAMode = true;
-			double x = a * cos(M_PI * b / 180);
-			double y = a * sin(M_PI * b / 180);
-			setPoint( TFloatPoint(x, y) );
-		}
-		else return MsgHandler::kBadParameters;
-		newData(true);
-		status = MsgHandler::kProcessed;
+	} else {
+		status = MsgHandler::kBadParameters;
 	}
-	else status = MsgHandler::kBadParameters;
+	if(MsgHandler::kProcessed == status)
+		newData(true);
 	return status;
+}
+
+MsgHandler::msgStatus ILine::setLineParam(const IMessage* msg)
+{
+	string mode; float a, b; int ai, bi;
+	if (!msg->param(1, mode))
+		return MsgHandler::kBadParameters;
+	if (!msg->param(2, a)) {
+		if (msg->param(2, ai)) a = float(ai);
+		else return MsgHandler::kBadParameters;
+	}
+	if (!msg->param(3, b)) {
+		if (msg->param(3, bi)) b = float(bi);
+		else return MsgHandler::kBadParameters;
+	}
+
+	if (mode == "xy") {
+		setPoint( TFloatPoint(a, b) );
+	}
+	else if (mode == "wa") {
+		fWAMode = true;
+		double x = a * cos(M_PI * b / 180);
+		double y = a * sin(M_PI * b / 180);
+		setPoint( TFloatPoint(x, y) );
+	}
+	else return MsgHandler::kBadParameters;
+	return MsgHandler::kProcessed;
+}
+
+MsgHandler::msgStatus ILine::setArrowParam(const IMessage* msg)
+{
+	string arrow;
+	if (msg->param(4, arrow)) {
+		// Must be arrowLeft or arrowRight
+		if(arrow == "arrowLeft") {
+			string type;
+			if (msg->param(5, type)) {
+				if(!getArrowType(type, fArrowLeft))
+					return MsgHandler::kBadParameters;
+			}
+			if (msg->size() == 8 && msg->param(6, arrow)) {
+				if (arrow == "arrowRight") {
+					string type;
+					if (msg->param(7, type)) {
+						if(!getArrowType(type, fArrowRight))
+							return MsgHandler::kBadParameters;
+					}
+				} else {
+					return MsgHandler::kBadParameters;
+				}
+			}
+		} else if (arrow == "arrowRight") {
+			string type;
+			if (msg->param(5, type)) {
+				if(!getArrowType(type, fArrowRight))
+					return MsgHandler::kBadParameters;
+			}
+		} else {
+			return MsgHandler::kBadParameters;
+		}
+	} else return MsgHandler::kBadParameters;
+	return MsgHandler::kProcessed;
+}
+
+bool ILine::getArrowType(string typeString, enum ArrowHeadType & type)
+{
+	if(typeString == "none") {
+		type = NONE;
+		return true;
+	}
+	if(typeString == "triangle") {
+		type = TRIANGLE;
+		return true;
+	}
+	if(typeString == "diamond") {
+		type = DIAMOND;
+		return true;
+	}
+	if(typeString == "disk") {
+		type = DISK;
+		return true;
+	}
+	return false;
 }
 
 }

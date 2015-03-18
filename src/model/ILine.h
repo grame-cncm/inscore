@@ -46,9 +46,21 @@ typedef class libmapping::SMARTP<ILine>	SILine;
 *	\brief a line, with 2 control points. The 1st control point is (0,0).
 */
 class ILine : public IShapeMap
-{
-	TFloatPoint fPoint;			// a point that describe the line, assuming that the first point is (0, 0)
-	bool		fWAMode;
+{	
+	public:
+		/// Arrow type for end of line
+		enum ArrowHeadType {
+			NONE,
+			TRIANGLE,
+			DIAMOND,
+			DISK
+		};
+
+	private:
+		TFloatPoint fPoint;			// a point that describe the line, assuming that the first point is (0, 0)
+		bool		fWAMode;
+		enum ArrowHeadType fArrowLeft;
+		enum ArrowHeadType fArrowRight;
 
 	public:
 		static const std::string kLineType;
@@ -58,6 +70,8 @@ class ILine : public IShapeMap
 
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*);
+		enum ArrowHeadType getArrowLeft() { return fArrowLeft; }
+		enum ArrowHeadType getArrowRight() { return fArrowRight; }
 
 	protected:
 				 ILine( const std::string& name, IObject* parent );
@@ -69,6 +83,13 @@ class ILine : public IShapeMap
 		void	setPoint(const TFloatPoint& p)		{ fPoint = p; }
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
+
+	private:
+		/// \brief Get arrow enum type from string
+		bool getArrowType(std::string typeString, enum ArrowHeadType &type);
+
+		MsgHandler::msgStatus setLineParam(const IMessage* msg);
+		MsgHandler::msgStatus setArrowParam(const IMessage* msg);
 };
 
 /*! @} */
