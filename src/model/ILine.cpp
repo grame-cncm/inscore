@@ -38,7 +38,7 @@ namespace inscore
 const string ILine::kLineType("line");
 //--------------------------------------------------------------------------
 ILine::ILine( const std::string& name, IObject* parent ) : IShapeMap(name, parent), fWAMode(false),
-	fArrowLeft(NONE), fArrowRight(NONE)
+	fArrowLeft(NONE), fArrowRight(NONE), fArrowSizeLeft(1.0), fArrowSizeRight(1.0)
 { 
 	fTypeString = kLineType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler< TFloatPoint >::create( getPoint() );
@@ -135,36 +135,35 @@ MsgHandler::msgStatus ILine::setLineParam(const IMessage* msg)
 
 MsgHandler::msgStatus ILine::setArrowParam(const IMessage* msg)
 {
-	string arrow;
-	if (msg->param(4, arrow)) {
-		// Must be arrowLeft or arrowRight
-		if(arrow == "arrowLeft") {
-			string type;
-			if (msg->param(5, type)) {
-				if(!getArrowType(type, fArrowLeft))
-					return MsgHandler::kBadParameters;
-			}
-			if (msg->size() == 8 && msg->param(6, arrow)) {
-				if (arrow == "arrowRight") {
-					string type;
-					if (msg->param(7, type)) {
-						if(!getArrowType(type, fArrowRight))
-							return MsgHandler::kBadParameters;
-					}
-				} else {
-					return MsgHandler::kBadParameters;
-				}
-			}
-		} else if (arrow == "arrowRight") {
-			string type;
-			if (msg->param(5, type)) {
-				if(!getArrowType(type, fArrowRight))
-					return MsgHandler::kBadParameters;
-			}
-		} else {
+	string type;
+	enum ArrowHeadType left, right;
+	if (msg->param(4, type)) {
+		if(!getArrowType(type, left))
 			return MsgHandler::kBadParameters;
+	}
+	if (msg->param(5, type)) {
+		if(!getArrowType(type, right))
+			return MsgHandler::kBadParameters;
+	}
+
+	if (msg->size() == 8) {
+		float a;
+		int ai;
+		if (!msg->param(6, a)) {
+			if (msg->param(6, ai)) a = float(ai);
+			else return MsgHandler::kBadParameters;
 		}
-	} else return MsgHandler::kBadParameters;
+		float b;
+		int bi;
+		if (!msg->param(7, b)) {
+			if (msg->param(7, bi)) b = float(bi);
+			else return MsgHandler::kBadParameters;
+		}
+		fArrowSizeLeft = a;
+		fArrowSizeRight = b;
+	}
+	fArrowLeft = left;
+	fArrowRight = right;
 	return MsgHandler::kProcessed;
 }
 

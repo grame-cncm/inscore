@@ -61,6 +61,8 @@ class ILine : public IShapeMap
 		bool		fWAMode;
 		enum ArrowHeadType fArrowLeft;
 		enum ArrowHeadType fArrowRight;
+		double fArrowSizeLeft;
+		double fArrowSizeRight;
 
 	public:
 		static const std::string kLineType;
@@ -70,8 +72,10 @@ class ILine : public IShapeMap
 
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*);
-		enum ArrowHeadType getArrowLeft() { return fArrowLeft; }
-		enum ArrowHeadType getArrowRight() { return fArrowRight; }
+		enum ArrowHeadType getArrowLeft() const { return fArrowLeft; }
+		enum ArrowHeadType getArrowRight() const { return fArrowRight; }
+		double getArrowSizeLeft() const { return fArrowSizeLeft; }
+		double getArrowSizeRight() const { return fArrowSizeRight; }
 
 	protected:
 				 ILine( const std::string& name, IObject* parent );
