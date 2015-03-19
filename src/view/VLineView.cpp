@@ -33,26 +33,7 @@ namespace inscore
 //----------------------------------------------------------------------
 VLineView::VLineView(QGraphicsScene * scene, const ILine* h) 
 	: VMappedShapeView( scene , new IQGraphicsPathItem(h))
-    {}
-
-//----------------------------------------------------------------------
-/*
-void VLineView::updateView( ILine * line )
-{
-    line->cleanupSync();
-    QPainterPath myPath;
-	myPath.moveTo(0,0);
-	myPath.lineTo( relative2SceneWidth(line->getPoint().x()) , relative2SceneHeight(line->getPoint().y()) );
-
-	if ( myPath != item()->path() )
-	{
-		item()->setPath( myPath );
-		itemChanged();
-	}
-	VShapeView::updateView( line );
-}
-*/
-
+	{}
 
 //----------------------------------------------------------------------
 void VLineView::updateView( ILine * line )
@@ -106,6 +87,10 @@ void VLineView::updateView( ILine * line )
 		item()->setPath( myPath );
 		itemChanged();
 	}
+
+	// Copy pen color in color of shape to have plain arrow head with line color.
+	IColor c(line->getPenColor().getR(), line->getPenColor().getG(), line->getPenColor().getB() , line->getPenColor().getA());
+	line->setColor(c);
 	VShapeView::updateView( line );
 }
 

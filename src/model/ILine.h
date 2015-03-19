@@ -59,10 +59,21 @@ class ILine : public IShapeMap
 	private:
 		TFloatPoint fPoint;			// a point that describe the line, assuming that the first point is (0, 0)
 		bool		fWAMode;
+
+		// Arrow head for each side of the line
 		enum ArrowHeadType fArrowLeft;
 		enum ArrowHeadType fArrowRight;
+
+		// Size of arrow head (fixed to 1.0 for the moment)
 		double fArrowSizeLeft;
 		double fArrowSizeRight;
+
+		// Map for enum
+		static std::map<enum ArrowHeadType, std::string> createArrowMap();
+		static std::map<enum ArrowHeadType, std::string> arrowMap;
+
+		/// \brief Get arrow enum type from string
+		bool getArrowType(std::string typeString, enum ArrowHeadType &type);
 
 	public:
 		static const std::string kLineType;
@@ -88,12 +99,8 @@ class ILine : public IShapeMap
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 
-	private:
-		/// \brief Get arrow enum type from string
-		bool getArrowType(std::string typeString, enum ArrowHeadType &type);
-
-		MsgHandler::msgStatus setLineParam(const IMessage* msg);
-		MsgHandler::msgStatus setArrowParam(const IMessage* msg);
+		MsgHandler::msgStatus setArrowsMsg(const IMessage* msg);
+		std::string getArrows() const;
 };
 
 /*! @} */

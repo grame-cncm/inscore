@@ -33,6 +33,7 @@ extern const char* kabsolutexy_GetSetMethod;
 extern const char* kalias_GetSetMethod;
 extern const char* kalpha_GetSetMethod;
 extern const char* kangle_GetSetMethod;
+extern const char* karrows_GetSetMethod;
 extern const char* kblue_GetSetMethod;
 extern const char* kbrightness_GetSetMethod;
 extern const char* kcancel_SetMethod;
