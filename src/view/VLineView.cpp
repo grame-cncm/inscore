@@ -74,11 +74,13 @@ void VLineView::updateView( ILine * line )
 	if ((x < 0) && (y < 0)) {
 		x = -x;
 		y = -y;
+		// Coordinate modification, inverse side of arrow
 		isLeft = !isLeft;
 	} else if (x < 0) {
 		yo = y;
 		x = -x;
 		y = 0;
+		// Coordinate modification, inverse side of arrow
 		isLeft = !isLeft;
 	}
 	else if (y < 0) {
@@ -94,8 +96,10 @@ void VLineView::updateView( ILine * line )
 	QPointF p0(xo, yo);
 	QPointF p1(x, y);
 	ArrowHeadFactory f;
-	f.addArrowHead(myPath, line->getArrowLeft(), p0, p1, 15.0, isLeft);
-	f.addArrowHead(myPath, line->getArrowRight(), p0, p1, 15.0, !isLeft);
+	// Draw left arrow
+	f.addArrowHead(myPath, line->getArrowLeft(), p0, p1, line->getArrowSizeLeft() * 15.0, isLeft);
+	// Draw right arrow
+	f.addArrowHead(myPath, line->getArrowRight(), p0, p1, line->getArrowSizeLeft() * 15.0, !isLeft);
 
 	if ( myPath != item()->path() )
 	{
@@ -116,18 +120,17 @@ void VLineView::updateObjectSize(IObject* o)
 
 ArrowHeadFactory::ArrowHeadFactory()
 {
-
 }
+
 ArrowHeadFactory::~ArrowHeadFactory()
 {
-
 }
 
 //----------------------------------------------------------------------
-void ArrowHeadFactory::addArrowHead(QPainterPath &myPath, enum ILine::ArrowHeadType type, QPointF &p0, QPointF &p1, double arrowSize, bool isLeft)
+void ArrowHeadFactory::addArrowHead(QPainterPath &myPath, enum ILine::ArrowHeadType type, const QPointF &p0, const QPointF &p1, double arrowSize, bool isLeft)
 {
 	switch(type) {
-		case ILine::NONE:
+		case ILine::NONE: // Do nothing
 			break;
 		case ILine::TRIANGLE:
 			addTriangleArrowHead(myPath, p0, p1, arrowSize, isLeft);
