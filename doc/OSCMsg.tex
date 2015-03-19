@@ -828,7 +828,7 @@ setMsg : 'set' (
 	('ellipse' width height) |
 	('polygon' ( (x y) +)) |
 	('curve' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) |
-	('line' ('xy' x y | 'wa' width angle)) |
+	('line' ('xy' x y | 'wa' width angle) (left right ( sizeL sizeR |) |)) |
 )
 \end{rail}
 \index{Set type!svg}
@@ -846,7 +846,7 @@ setMsg : 'set' (
 \item \OSC{ellipse}: an ellipse specified by a width and height.
 \item \OSC{polygon}: a polygon specified by a sequence of points, each point being defined by its (x,y) coordinates. The coordinates are expressed in the \OSC{scene} coordinate space, but only the relative position of the points is taken into account (\emph{i.e} a polygon A = \{ (0,0) ; (1,1) ; (0,1) \} is equivalent to a polygon B = \{ (1,1) ; (2,2) ; (1,2) \}).
 \item \OSC{curve}: a sequence of 4-points bezier cubic curve. If the end-point of a curve doesn't match the start-point of the following one, the curves are linked by a straight line. The first curve follows the last curve. The inner space defined by the sequence of curves is filled, using the object color. The points coordinates are handled like in a \OSC{polygon}.
-\item \OSC{line}: a simple line specified by a point (x,y) expressed in \OSC{scene} coordinate space or by a width and angle. The point form is used to compute a line from (0,0) to (x,y), which is next drawn centered on the scene.
+\item \OSC{line}: a simple line specified by a point (x,y) expressed in \OSC{scene} coordinate space or by a width and angle. The point form is used to compute a line from (0,0) to (x,y), which is next drawn centered on the scene. An arrow head can be added to the line at the beginning and at the end of the line. This optionals parameters \OSC{left} and \OSC{right} can have the value "none", "triangle", "diamond" or "disk" (default value to "none"). The size of arrow heads can be setted by float numbers \OSC{sizeL} and \OSC{sizeR} for each head (default to 1.0).
 \end{itemize}
 
 \example \\
