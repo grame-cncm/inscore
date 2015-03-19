@@ -104,7 +104,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		float	fDispStart, fDispEnd;	///< the object displayed range (0-1 covers the whole range)
 		bool	fDelete;				///< true when an object should be deleted
 		int		fState;					///< the object modification state
-		std::string	fExportFlag;		///< the object export flag
+		std::deque<std::string>	fExportFlag;		///< the object export flag
         bool    fDrawChildren;          ///< the object childexport option flag (if the children should be exported as well)
 
 		bool	fNewData;
@@ -172,7 +172,14 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		virtual float	getDispEnd() const				{ return fDispEnd; }
 
 		/// \brief returns the object export-flag
-		virtual std::string		getExportFlag() const	{ return fExportFlag; }
+		virtual std::string		getNextExportFlag() {
+			if(!fExportFlag.empty()) {
+				std::string flag = fExportFlag.front();
+				fExportFlag.pop_front();
+				return flag;
+			}
+			return "";
+		}
 
 		/// \brief returns the boolean that indicates if children should be exported as well
 		virtual bool		getDrawChildren() const	{ return fDrawChildren; }
@@ -496,7 +503,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		*
 		*	\param s the new export flag
 		*/
-		virtual void	setExportFlag(const std::string& s) { fExportFlag = s; }
+		virtual void	addExportFlag(const std::string& s) { fExportFlag.push_back(s); }
 
 		/*!
 		*	\brief writes the object and subnodes state to a stream

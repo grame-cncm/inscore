@@ -436,7 +436,7 @@ void IObject::cleanup ()
 	IColor::cleanup();
 	fNewData = false;
 	localMapModified (false);
-	fExportFlag = "";
+	fExportFlag.clear();
 	fState= kClean;
 // 	if (getState() & kSubModified) {     todo: could be optimised - to be checked
 		subnodes::iterator i = elements().begin();
@@ -1164,10 +1164,10 @@ MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
 				const char* sep = "/";
 #endif
 				const char* tmp = ( absolutePath[ absolutePath.length() - 1 ] != *sep ) ? sep : "";
-				setExportFlag( absolutePath + tmp + name() );
+				addExportFlag( absolutePath + tmp + name() );
 			}
 			else								//Argument is a file: export to this file.
-				setExportFlag( absolutePath );
+				addExportFlag( absolutePath );
             fDrawChildren = false; //if not specified, we don't export the children with the object
 		}
         if(msg->size() == 2)
@@ -1183,7 +1183,7 @@ MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
         return MsgHandler::kProcessed;
 	}
 	else if (msg->size() == 0) {	//No argument : export to "objectName".
-		setExportFlag( getScene()->absolutePath(name() ) );
+		addExportFlag( getScene()->absolutePath(name() ) );
 		return MsgHandler::kProcessed;
 	}
 	return MsgHandler::kBadParameters;

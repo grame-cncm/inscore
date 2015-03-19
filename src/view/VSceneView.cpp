@@ -276,8 +276,9 @@ void VSceneView::updateView( IScene * scene )
 	fGraphicsView->setScene (scene);
 
 	// Export
-	if ( scene->getExportFlag().length() ) {
-		VExport::exportScene( fGraphicsView , scene->getExportFlag().c_str() );
+	std::string filename = scene->getNextExportFlag();
+	while ( filename.length() ) {
+		VExport::exportScene( fGraphicsView , filename.c_str() );
 		const IMessageList*	msgs = scene->getMessages(EventsAble::kExport);
 		if (msgs) {
 			MouseLocation mouse (0, 0, 0, 0, 0, 0);
@@ -286,6 +287,7 @@ void VSceneView::updateView( IScene * scene )
 			SIMessageList outmsgs = me.eval (msgs, env);
 			if (outmsgs && outmsgs->list().size()) outmsgs->send();
 		}
+		filename = scene->getNextExportFlag();
 	}
 }
 
