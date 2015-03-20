@@ -46,9 +46,34 @@ typedef class libmapping::SMARTP<ILine>	SILine;
 *	\brief a line, with 2 control points. The 1st control point is (0,0).
 */
 class ILine : public IShapeMap
-{
-	TFloatPoint fPoint;			// a point that describe the line, assuming that the first point is (0, 0)
-	bool		fWAMode;
+{	
+	public:
+		/// Arrow type for end of line
+		enum ArrowHeadType {
+			NONE,
+			TRIANGLE,
+			DIAMOND,
+			DISK
+		};
+
+	private:
+		TFloatPoint fPoint;			// a point that describe the line, assuming that the first point is (0, 0)
+		bool		fWAMode;
+
+		// Arrow head for each side of the line
+		enum ArrowHeadType fArrowLeft;
+		enum ArrowHeadType fArrowRight;
+
+		// Size of arrow head (fixed to 1.0 for the moment)
+		double fArrowSizeLeft;
+		double fArrowSizeRight;
+
+		// Map for enum
+		static std::map<enum ArrowHeadType, std::string> createArrowMap();
+		static std::map<enum ArrowHeadType, std::string> arrowMap;
+
+		/// \brief Get arrow enum type from string
+		bool getArrowType(std::string typeString, enum ArrowHeadType &type);
 
 	public:
 		static const std::string kLineType;
@@ -58,6 +83,10 @@ class ILine : public IShapeMap
 
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*);
+		enum ArrowHeadType getArrowLeft() const { return fArrowLeft; }
+		enum ArrowHeadType getArrowRight() const { return fArrowRight; }
+		double getArrowSizeLeft() const { return fArrowSizeLeft; }
+		double getArrowSizeRight() const { return fArrowSizeRight; }
 
 	protected:
 				 ILine( const std::string& name, IObject* parent );
@@ -69,6 +98,9 @@ class ILine : public IShapeMap
 		void	setPoint(const TFloatPoint& p)		{ fPoint = p; }
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
+
+		MsgHandler::msgStatus setArrowsMsg(const IMessage* msg);
+		std::string getArrows() const;
 };
 
 /*! @} */

@@ -31,10 +31,11 @@ if(WIN32)
 		set (X64 -D__x86_64__)
 	endif()
 
-	if(${CMAKE_GENERATOR} STREQUAL "Visual Studio 10")
+	# New version of cmake use "Visual Studio 10 2010"
+	if(${CMAKE_GENERATOR} STREQUAL "Visual Studio 10" OR ${CMAKE_GENERATOR} STREQUAL "Visual Studio 10 2010")
 		set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 	endif()
-	add_definitions(-DMSVC -D_USE_MATH_DEFINES ${X64})
+	add_definitions(-DMSVC -D_USE_MATH_DEFINES -DNOMINMAX ${X64})
 else()
 	add_definitions(-Wall)
 	if (NOT APPLE)
@@ -77,7 +78,7 @@ endif()
 # set directories, src and headers.
 set (ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../src)
 set (MAP ${ROOT}/libmapping)
-set (INSFOLDERS  controller events lib model view mapping interface graph signal signal/faust ITLParser scripting)
+set (INSFOLDERS  controller events lib model view mapping interface graph signal signal/faust ITLParser scripting guidoqt)
 set (INSFOLDERS  ${INSFOLDERS} plugins/gesturefollower)
 set (INSFOLDERS  ${INSFOLDERS} plugins/faustDSP)
 set (INSFOLDERS  ${INSFOLDERS} plugins/httpserver)
@@ -87,7 +88,6 @@ set (RSRC  "${ROOT}/../rsrc")
 set (LOCALLIB  "${ROOT}/../lib")
 set (OSC_PATH  "${LOCALLIB}/oscpack")
 set (GUIDO_PATH  "${LOCALLIB}/GuidoEngine")
-set (GUIDOQT_PATH  "${LOCALLIB}/GuidoQt")
 
 #######################################
 # validation support
@@ -191,7 +191,7 @@ endif()
 
 message (STATUS "Using Qt version ${QTVERSION} - Use -DQTVERSION=vers to change.")
 
-set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h  ${ROOT}/view/VLogWindow.h)
+set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h  ${ROOT}/view/VLogWindow.h ${ROOT}/guidoqt/QGuidoGraphicsItem.h)
 if (QTVERSION EQUAL "5")
         set (MOC_HEADERS ${MOC_HEADERS} ${ROOT}/view/VVideoView.h ${ROOT}/controller/QFileDownloader.h ${ROOT}/model/QtWebSocketServer.h )
 	if(IOS)
@@ -252,11 +252,9 @@ file (GLOB PUBLICHEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${ROOT}/interface/
 if(WIN32)
 	if(MINGW)
 		set(OSCPACK  ${OSC_PATH}/MinGW/liboscpack.a)
-		set(GUIDOQT  ${LOCALLIB}/GuidoQt/win32/libGuidoQt.a)
 		set(GUIDO    ${LOCALLIB}/GuidoEngine/win32/libGUIDOEngine.dll.a)
 	else()
 		set(OSCPACK  ${OSC_PATH}/cmake/release/oscpack.lib)
-		set(GUIDOQT  optimized ${LOCALLIB}/GuidoQt/win32/GuidoQt.lib debug ${LOCALLIB}/GuidoQt/win32/GuidoQtD.lib)
 		set(GUIDO    ${LOCALLIB}/GuidoEngine/win32/GUIDOEngine.lib)
 		set(INSLIBS  winmm.lib ws2_32.lib)
 	endif()
@@ -266,21 +264,18 @@ if(APPLE)
 	if ( IOS )
 		message (STATUS "Generates project for iOS - Use -DIOS=no to change.")
 		set(OSCPACK  ${OSC_PATH}/build/iOS/Release-iphoneos/liboscpack.a)
-		set(GUIDOQT  ${ROOT}/../lib/GuidoQt/ios/libGuidoQt.a)
 		set(GUIDO    ${ROOT}/../lib/GuidoEngine/ios/libGUIDOEngine.a)
 	else()
 		message (STATUS "Generates project for iOS - Use -DIOS=yes to change.")
 		set(OSCPACK  ${OSC_PATH}/build/MacOS/Release/liboscpack.a)
-		set(GUIDOQT  ${ROOT}/../lib/GuidoQt/macosx/libGuidoQt.a)
 		set(GUIDO    ${ROOT}/../lib/GuidoEngine/macosx/GUIDOEngine.framework)
 	endif()
 elseif(UNIX)
 	set(OSCPACK  -L${OSC_PATH}/cmake -loscpack)
-	set(GUIDOQT  -L${ROOT}/../lib/GuidoQt/linux -lGuidoQt)
-        set(GUIDO    -lGUIDOEngine)
+	set(GUIDO    -lGUIDOEngine)
 endif()
 
-set(INSLIBS  ${INSLIBS} ${OSCPACK} ${SCRIPTS} ${QTLIBS} ${CORE_FOUNDATION} ${GUIDO} ${GUIDOQT} )
+set(INSLIBS  ${INSLIBS} ${OSCPACK} ${SCRIPTS} ${QTLIBS} ${CORE_FOUNDATION} ${GUIDO} )
 
 #######################################
 # moc settings
@@ -296,7 +291,7 @@ endif()
 
 #######################################
 # set targets
-include_directories(${INCL} ${OSC_PATH} ${GUIDO_PATH}/include ${GUIDOQT_PATH}/include ${QTHEADERS} )
+include_directories(${INCL} ${OSC_PATH} ${GUIDO_PATH}/include ${QTHEADERS} )
 
 if (IOS)
 	add_library( ${TARGET} STATIC ${CORESRC} ${COREH} ${MOC_FILES})

@@ -101,17 +101,7 @@ class QPageManager
 		*	\brief Returns the current total size of the grid of pages.
 		*/
 		QSizeF totalSize() const;
-		
-		/**
-		*	\brief Returns the height of a line defined by its index.
-		*/
-		float lineHeight(int lineIndex) const;
 
-		/**
-		*	\brief Returns the width of a column defined by its index.
-		*/
-		float columnWidth(int columnIndex) const;
-		
 		/**
 		*	\brief Returns the first visible page (top-left of the grid) index.
 		*/
@@ -122,16 +112,6 @@ class QPageManager
 		*/
 		int lastVisiblePage() const;
 		
-		/**
-		*	\brief Returns the grid's width (<=> number of columns)
-		*/
-		int gridWidth() const { return mGridWidth; }
-
-		/**
-		*	\brief Returns the grid's height (<=> number of lines)
-		*/
-		int gridHeight() const { return mGridHeight; }
-
 	protected:
 	
 		void updateGrid();

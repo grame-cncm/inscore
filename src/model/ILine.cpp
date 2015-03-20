@@ -36,12 +36,21 @@ namespace inscore
 {
 
 const string ILine::kLineType("line");
+
+// Initialize map to convert enum array head to string
+std::map<enum ILine::ArrowHeadType, std::string> ILine::arrowMap = ILine::createArrowMap();
+
 //--------------------------------------------------------------------------
-ILine::ILine( const std::string& name, IObject* parent ) : IShapeMap(name, parent), fWAMode(false)
+ILine::ILine( const std::string& name, IObject* parent ) : IShapeMap(name, parent), fWAMode(false),
+	fArrowLeft(NONE), fArrowRight(NONE), fArrowSizeLeft(1.0), fArrowSizeRight(1.0)
 { 
 	fTypeString = kLineType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler< TFloatPoint >::create( getPoint() );
-	
+
+	// Arrow specific method
+	fGetMsgHandlerMap[karrows_GetSetMethod]	= TGetParamMethodHandler<ILine, string (ILine::*)() const>::create(this, &ILine::getArrows);
+	fMsgHandlerMap[karrows_GetSetMethod]	= TMethodMsgHandler<ILine>::create(this, &ILine::setArrowsMsg);
+
 	fPenWidth = 1.0f;
 }
 
@@ -74,8 +83,7 @@ SIMessageList ILine::getSetMsg() const
 MsgHandler::msgStatus ILine::set (const IMessage* msg)	
 {
 	MsgHandler::msgStatus status = IObject::set(msg);
-	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
-
+	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status;
 	if (msg->size() == 3) {
 		float x, y;
 		if ((!msg->param(1, x)) || (!msg->param(2, y)))
@@ -97,7 +105,6 @@ MsgHandler::msgStatus ILine::set (const IMessage* msg)
 			if (msg->param(3, bi)) b = float(bi);
 			else return MsgHandler::kBadParameters;
 		}
-
 		if (mode == "xy") {
 			setPoint( TFloatPoint(a, b) );
 		}
@@ -113,6 +120,66 @@ MsgHandler::msgStatus ILine::set (const IMessage* msg)
 	}
 	else status = MsgHandler::kBadParameters;
 	return status;
+}
+
+//--------------------------------------------------------------------------
+bool ILine::getArrowType(string typeString, enum ArrowHeadType & type)
+{
+	if(typeString == "none") {
+		type = NONE;
+		return true;
+	}
+	if(typeString == "triangle") {
+		type = TRIANGLE;
+		return true;
+	}
+	if(typeString == "diamond") {
+		type = DIAMOND;
+		return true;
+	}
+	if(typeString == "disk") {
+		type = DISK;
+		return true;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------------------
+map<enum ILine::ArrowHeadType, string> ILine::createArrowMap()
+{
+	map<enum ArrowHeadType, string> myMap;
+	myMap[NONE] = "none";
+	myMap[TRIANGLE] = "triangle";
+	myMap[DIAMOND] = "diamond";
+	myMap[DISK] = "disk";
+	return myMap;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus ILine::setArrowsMsg(const IMessage* msg)
+{
+	if(msg->size() != 2)
+		return MsgHandler::kBadParameters;
+	string type;
+	enum ArrowHeadType left, right;
+	if (msg->param(0, type)) {
+		if(!getArrowType(type, left))
+			return MsgHandler::kBadParameters;
+	}
+	if (msg->param(1, type)) {
+		if(!getArrowType(type, right))
+			return MsgHandler::kBadParameters;
+	}
+	fArrowLeft = left;
+	fArrowRight = right;
+	newData(true);
+	return MsgHandler::kProcessed;
+}
+
+//--------------------------------------------------------------------------
+string ILine::getArrows() const
+{
+	return arrowMap[fArrowLeft] + " " + arrowMap[fArrowRight];
 }
 
 }

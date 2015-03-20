@@ -89,23 +89,25 @@ class QGuidoPainter
 		*
 		*/
 		static bool				isGuidoEngineStarted();
-		
+
+		/** \brief Neck to convert AR to GR and get conversion time
+		*/
+		GuidoErrCode convertAR2GR(ARHandler ar, const GuidoLayoutSettings* settings, GRHandler* gr);
+
+		/**
+		*	\brief Returns the height corresponding to the specified width for the
+		*	specified page, according to the page format.
+		*
+		*	The page format & size are defined in the Guido Score file.
+		*/
+		int heightForWidth ( int w , int page ) const;
+
 		static GSystemQt * mSys;
 		static VGDevice * mDev;
 	
 // ------- Non-Static members -------------------
 	public :
 		enum { kDefaultSystemDistance=75, kMinSystemDistance=1 };
-		
-		/**	\brief Sets the current Guido code to draw with the content of the file.
-		*	\param fileName Full path to the Guido Score Notation file.
-		*	\return true if the file is a valid Guido Score file.
-		*/
-		bool setGMNFile(const QString& fileName);
-		
-		/**	\brief Returns the last file loaded with setFile.
-		*/
-		const QString& fileName() const;
 		
 		/**	\brief Sets the current Guido code to draw.
 		*	\param gmnCode The Guido Music Notation code
@@ -118,10 +120,6 @@ class QGuidoPainter
 		/**	\brief Returns the current Guido code.
 		*/
 		QString gmnCode() const;
-		
-        /** \brief Neck to convert AR to GR and get conversion time
-		*/
-		GuidoErrCode convertAR2GR(ARHandler ar, const GuidoLayoutSettings* settings, GRHandler* gr);
 
 		/** \brief Returns the validity of the last GMN code loaded with setGMNCode or setGMNFile
 		*/
@@ -162,14 +160,6 @@ class QGuidoPainter
 		*	\note drawRectangle is in QPainter's QPaintDevice coordinates.
 		*/
         GuidoErrCode drawPianoRoll(QPainter * painter, const QRect& drawRectangle, PianoRoll *pianoRoll);
-		
-		/**
-		*	\brief Returns the height corresponding to the specified width for the
-		*	specified page, according to the page format.
-		*
-		*	The page format & size are defined in the Guido Score file.
-		*/
-		int heightForWidth ( int w , int page ) const;
 
 		/**
 		*	\brief Returns the size of the specified page, in millimeters.
@@ -182,12 +172,7 @@ class QGuidoPainter
 		*	\brief Returns a description of the last encountered error.
 		*/
 		QString getLastErrorMessage() const;
-		
-		/**
-		*	\brief Gets the parse error line/col.
-		*/
-		void getLastParseErrorLine(int &line, int &col) const;
-		
+
 		/// \brief sets the guido layout settings \see GUIDOEngine interface
 		void setGuidoLayoutSettings(const GuidoLayoutSettings& layoutSettings);
 		/// \brief returns the guido layout settings \see GUIDOEngine interface
@@ -247,7 +232,6 @@ class QGuidoPainter
 		
 		GuidoOnDrawDesc mDesc;
 		ARHandler mARHandler;
-		QString mFileName;
 		QString mGMNCode;
         GuidoStream * mGMNStream;
 		GuidoErrCode mLastErr;

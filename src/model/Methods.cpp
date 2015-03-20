@@ -32,6 +32,7 @@ const char* kabsolutexy_GetSetMethod= "absolutexy";		// Get Set
 const char* kalias_GetSetMethod		= "alias";			// Get Set
 const char* kalpha_GetSetMethod		= "alpha";			// Get Set
 const char* kangle_GetSetMethod		= "angle";			// Get Set
+const char* karrows_GetSetMethod	= "arrows";			// Get Set
 const char* kblue_GetSetMethod		= "blue";			// Get Set
 const char* kbrightness_GetSetMethod= "brightness";		// Get Set
 const char* kcancel_SetMethod		= "cancel";			// Set

@@ -3,27 +3,26 @@
 ----------------------------------------------------------------------
 The INScore project depends on external libraries:
  - the GuidoEngine version 1.40 or greater (see http://guidolib.sourceforge.net)
- - the GuidoQt static library, actually part of the GuidoEngine library
  - oscpack
  - optionaly: the MusicXML library  (see http://libmusicxml.sourceforge.net)
    when you want to support the MusicXMl format.   
-The GuidoEngine, the GuidoQt and oscpack are required to compile INScore.
+The GuidoEngine and oscpack are required to compile INScore.
 
 Mac OS
 ----------------------------
-The GuidoEngine and GuidoQt libraries are included in binary form in the macosx folders.
+The GuidoEngine library is included in binary form in the macosx folders.
 You just need to extract the GUIDOEngine framework from the GUIDOEngine.tgz archive in the GuidoEngine/macosx folder. In case you run in trouble using the library, due to dependency, the 'localise' script should change the library dependency to the appropriate location.
 For oscpack see the 'All platform section'
 
 Windows
 ----------------------------
-The GuidoEngine and GuidoQt libraries are included in binary form in the win32 folders.
-The files are .lib and .dll files compiled with Visual C++. The GuidoQt library is static.
+The GuidoEngine library is included in binary form in the win32 folders.
+The files are .lib and .dll files compiled with Visual C++.
 For oscpack see the 'All platform section'
 
 Linux
 ----------------------------
-You need to compile the Guido Engine and the GuidoQt libraries from the GUIDOLib project
+You need to compile the Guido Enginelibrary from the GUIDOLib project
 (http://sourceforge.net/projects/guidolib). You can get the source code from svn:
 	svn co https://guidolib.svn.sourceforge.net/svnroot/guidolib guidolib
 or from the src distribution:

@@ -64,18 +64,6 @@ class QGuidoGraphicsItem : public QGraphicsObject
 		void paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget=0);
 		QRectF boundingRect() const { return mBoundingRect; }
 
-		/**	\brief Sets the current Guido Score file to draw.
-		*	\param fileName Full path to the Guido Score Notation file.
-		*	\return true if the file is a valid Guido Score file.
-		*
-		*	\note If any GMN code has been previously set, it will be erased.
-		*/
-		virtual bool setGMNFile(const QString& fileName);
-
-		/**	\brief Returns the current Guido Score file.
-		*/
-		QString fileName() const;
-		
 		/**	\brief Sets the current Guido code that will be displayed by the guido item.
 		*	\param gmnCode The Guido Music Notation code
 		*	\return true if the GMN code is valid.
@@ -101,19 +89,10 @@ class QGuidoGraphicsItem : public QGraphicsObject
 		*/
 		QString gmnCode() const;
 
-		/** \brief Returns the validity of the last GMN code loaded with setGMNCode or setGMNFile
-		*/
-		bool isGMNValid() const;
-
 		/**
 		*	\brief Returns a description of the last encountered error.
 		*/
 		QString getLastErrorMessage() const;
-
-		/**
-		*	\brief Gets the parse error line/col.
-		*/
-		void getLastParseErrorLine(int &line, int &col) const;
 
 		/**
 		*	\brief Sets the Guido layout settings used to draw with this QGuidoPainter
@@ -127,13 +106,6 @@ class QGuidoGraphicsItem : public QGraphicsObject
 		*/
 		GuidoLayoutSettings guidoLayoutSettings() const;
 
-		/// \brief sets the minimum systems distance to its default value
-		void  resetSystemsDistance();
-		/// \brief sets the minimum systems distance
-		void  setSystemsDistance(float distance);
-		/// \brief returns the minimum systems distance
-		float getSystemsDistance() const;
-		
 		/// \brief Disable/enable automatic ResizePageToMusic
 		void setResizePageToMusic(bool isOn);
 		/// \brief Returns the state of the automatic ResizePageToMusic mode (enabled or disabled)
@@ -173,16 +145,6 @@ class QGuidoGraphicsItem : public QGraphicsObject
 		*/
 		void setGridWidth( int width );
 
-		/**
-		*	\brief Returns the number of lines in the grid of pages.
-		*/
-		int gridHeight() const;
-
-		/**
-		*	\brief Returns the number of columns in the grid of pages.
-		*/
-		int gridWidth() const;
-		
 		/**
 		*	\brief Returns the first visible page index.
 		*/
