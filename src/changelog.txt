@@ -15,6 +15,9 @@ It has been supported by the ANR (ANR-08-CORD-010)
 Version 1.12
 - Remove GuidoQt library dependency and integrate source file.
 - Inscrease size of guido item.
+- Add arrow head attribute to line object.
+- Bug correction :
+	When ask for multiple exports, all are now treated and not only the last.
 
 ----------------------------------------------------
 Version 1.11
