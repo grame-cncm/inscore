@@ -16,6 +16,7 @@ It has been supported by the ANR (ANR-08-CORD-010)
 Version 1.12
 - incoming messages buffer size increased to 10.000
 - url support for inscore files (load message)
+- Bug in export item corrected : Child scaling was not apply.
 
 ----------------------------------------------------
 Version 1.11
@@ -29,7 +30,6 @@ Version 1.11
 - Add new object websocket to create a websocket server to notify clients of a scene update and get an image of the scene.
 - Guido font is now embed in INScore application.
 - Partial support on IOS. Main problems are : antialiasing is not working and multi scene scores are not manage correctly.
-- Bug in export item corrected : Child scaling was not apply.
 
 ----------------------------------------------------
 Version 1.10
