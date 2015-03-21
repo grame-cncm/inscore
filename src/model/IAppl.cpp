@@ -94,6 +94,8 @@ const string IAppl::kApplType("appl");
 #ifdef WIN32
 #define _CRT_SECURE_NO_DEPRECATE
 std::string IAppl::fRootPath = std::string(getenv("USERPROFILE")) + "\\";
+#elif ANDROID
+std::string IAppl::fRootPath = "/INScore/";
 #else
 std::string IAppl::fRootPath = std::string(getenv("HOME")) + "/";
 #endif

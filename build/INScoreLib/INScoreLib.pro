@@ -62,6 +62,9 @@ ios {
     CONFIG += staticlib
 }
 
+android {
+    DEFINES += ANDROID
+}
 # resources
 RSRC = $$ROOT/../rsrc
 win32 { RC_FILE = $$ROOT/../win32/INScore.rc }
