@@ -106,7 +106,6 @@ OSC_PATH = $$LOCALLIB/oscpack
 GUIDO_PATH = $$LOCALLIB/GuidoEngine
 
 ############### Sources
-message($$FOLDERS)
 for(folder, FOLDERS) {
     SOURCES += $$files($$ROOT/$$folder/*.cpp)
     HEADERS += $$files($$ROOT/$$folder/*.h*)
@@ -136,7 +135,7 @@ ios:LIBS += $$OSC_PATH/build/iOS/Release-iphoneos/liboscpack.a \
         $$ROOT/../lib/GuidoEngine/ios/libGUIDOEngine.a
 
 android:LIBS += -L$$ROOT/../lib/GuidoEngine/android -lGUIDOEngine \
-        -L$$OSC_PATH/android/libs/armeabi -loscpack
+        -L$$OSC_PATH/oscpack/lib -loscpack
 
 macx:QMAKE_LFLAGS += -F$$ROOT/../lib/GuidoEngine/macosx/
 macx:LIBS += $$OSC_PATH/build/MacOS/Release/liboscpack.a \

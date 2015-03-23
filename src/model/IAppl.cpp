@@ -35,6 +35,10 @@
 #include <unistd.h>
 #endif
 
+//#ifdef ANDROID
+//#include <QAndroidJniObject>
+//#endif
+
 #include "IAppl.h"
 #include "IApplVNodes.h"
 #include "IGlue.h"
@@ -95,7 +99,11 @@ const string IAppl::kApplType("appl");
 #define _CRT_SECURE_NO_DEPRECATE
 std::string IAppl::fRootPath = std::string(getenv("USERPROFILE")) + "\\";
 #elif ANDROID
-std::string IAppl::fRootPath = "/INScore/";
+//QAndroidJniObject mediaDir = QAndroidJniObject::callStaticObjectMethod("android/os/Environment", "getDataDirectory", "()Ljava/io/File;");
+//QAndroidJniObject mediaPath = mediaDir.callObjectMethod( "getAbsolutePath", "()Ljava/lang/String;" );
+//std::string IAppl::fRootPath = QString(mediaPath.toString() + "/INScore/").toStdString();
+// TODO find solution to write in a folder on android
+std::string IAppl::fRootPath = "/";
 #else
 std::string IAppl::fRootPath = std::string(getenv("HOME")) + "/";
 #endif
