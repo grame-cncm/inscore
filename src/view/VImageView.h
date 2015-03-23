@@ -58,7 +58,7 @@ class VGraphicsImageItem : public QGraphicsItem
 		
 		QImage& image()					{ return fImage; }
 		QRectF	boundingRect() const	{ return QRectF(0,0,fImage.width(), fImage.height()); }
-		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0)
+		void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 										{ painter->drawImage(QPoint(0,0), fImage); }
 };
 

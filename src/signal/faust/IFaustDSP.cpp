@@ -55,10 +55,10 @@ class INScoreUI : public UI
 	virtual ~INScoreUI() {}
 
     // -- widget's layouts
-    virtual void openFrameBox(const char* label) {}
-    virtual void openTabBox(const char* label) {}
-    virtual void openHorizontalBox(const char* label) {}
-    virtual void openVerticalBox(const char* label) {}
+    virtual void openFrameBox(const char* )			{}
+    virtual void openTabBox(const char* )			{}
+    virtual void openHorizontalBox(const char* )	{}
+    virtual void openVerticalBox(const char* )		{}
     virtual void closeBox() {}
 
     // -- active widgets
@@ -71,21 +71,21 @@ class INScoreUI : public UI
     virtual void addCheckButton(const char* label, float* zone)		{ 
         fFaustProcessor->addMsgHandler(label, zone); 
     }
-    virtual void addVerticalSlider(const char* label, float* zone, float init, float min, float max, float step){
+    virtual void addVerticalSlider(const char* label, float* zone, float init, float min, float max, float ){
         *zone=init; fFaustProcessor->addMsgHandler(label, zone, min, max); 
     }
-    virtual void addHorizontalSlider(const char* label, float* zone, float init, float min, float max, float step){ 
+    virtual void addHorizontalSlider(const char* label, float* zone, float init, float min, float max, float ){
         *zone=init; fFaustProcessor->addMsgHandler(label, zone, min, max); 
     }
-    virtual void addNumEntry(const char* label, float* zone, float init, float min, float max, float step){
+    virtual void addNumEntry(const char* label, float* zone, float init, float min, float max, float ){
         *zone=init; fFaustProcessor->addMsgHandler(label, zone, min, max); 
     }
 
     // -- passive widgets
-    virtual void addNumDisplay(const char* label, float* zone, int precision) {}
-    virtual void addTextDisplay(const char* label, float* zone, const char* names[], float min, float max) {}
-    virtual void addHorizontalBargraph(const char* label, float* zone, float min, float max) {}
-    virtual void addVerticalBargraph(const char* label, float* zone, float min, float max) {}
+    virtual void addNumDisplay(const char* , float* , int ) {}
+    virtual void addTextDisplay(const char* , float* , const char* [], float , float ) {}
+    virtual void addHorizontalBargraph(const char* , float* , float , float ) {}
+    virtual void addVerticalBargraph(const char* , float* , float , float ) {}
 };
 
 

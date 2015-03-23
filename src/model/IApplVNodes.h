@@ -92,7 +92,7 @@ class IApplStat : public IVNode
 		static SIApplStat create(IObject * parent)		{ return new IApplStat(parent); }
 
 		/// \brief print the object state \param out the output stream
-		virtual void	print(std::ostream& out) const	{}
+		virtual void	print(std::ostream& ) const	{}
 
 		/// \brief accept an Update visitor
 		virtual void	accept (Updater*);
@@ -125,7 +125,7 @@ class IApplLog : public IVNode
 		static SIApplLog create(IObject * parent)		{ return new IApplLog(parent); }
 
 		/// \brief print the object state \param out the output stream
-		virtual void	print(std::ostream& out) const	{}
+		virtual void	print(std::ostream& ) const	{}
 
 		/// \brief accept an Update visitor
 		virtual void	accept (Updater*);
@@ -171,7 +171,7 @@ class IApplPlugin : public IVNode
 		static SIApplPlugin create(IObject * parent)		{ return new IApplPlugin(parent); }
 
 		/// \brief print the object state \param out the output stream
-		virtual void	print(std::ostream& out) const	{}
+		virtual void	print(std::ostream& ) const	{}
 
 	protected:	
 				 IApplPlugin(IObject * parent);

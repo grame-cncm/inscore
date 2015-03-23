@@ -45,7 +45,7 @@ namespace libmapping
 class TVFunction { 
 	public :  
 		virtual double operator () (double v) const				{ return v; }
-		virtual bool  operator == (const TVFunction& f) const	{ return true; }
+		virtual bool  operator == (const TVFunction& ) const	{ return true; }
         		~TVFunction() {}
 };
 

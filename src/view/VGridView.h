@@ -56,7 +56,7 @@ class VGridView: public VMappedShapeView
 		virtual ~VGridView() {}
 
 		virtual void	updateView( IGrid * rect );
-		virtual void	updateObjectSize( IObject * object ) {}
+		virtual void	updateObjectSize( IObject * )		{}
 		virtual void	updateLocalMapping (IGrid* object);
 };
 

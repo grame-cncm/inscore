@@ -45,7 +45,7 @@ QtWebSocketController::QtWebSocketController(const WebSocketInformer* infos)
 QtWebSocketController::~QtWebSocketController()		{ stop(); delete fServer; }
 
 //-------------------------------------------------------------------------------
-bool QtWebSocketController::start (int port)
+bool QtWebSocketController::start (int /*port*/)
 {
 	stop();
 	QThread::start();

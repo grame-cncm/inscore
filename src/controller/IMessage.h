@@ -95,9 +95,9 @@ class baseparam : public libmapping::smartable
 		virtual libmapping::SMARTP<baseparam> copy() const = 0;
 
 #ifndef NO_OSCSTREAM
-		virtual void print(ITLError to) const {}
+		virtual void print(ITLError ) const {}
 #endif
-		virtual void print(std::ostream& to) const {}
+		virtual void print(std::ostream& ) const {}
 };
 
 

@@ -72,10 +72,10 @@ class basicmapreader : public mapreader
 								{ if (!fErrorManager) fErrorManager = &fOStreamErrMgr; }
 		virtual ~basicmapreader() {}
 
-		virtual bool map(const TSegment<long,2>& s1, const TSegment<rational,1>& s2)	{ fUnexpected = "long 2D to rational"; return false; }
-		virtual bool map(const TSegment<float,2>& s1, const TSegment<rational,1>& s2)	{ fUnexpected = "float 2D to rational"; return false; }
-		virtual bool map(const TSegment<long,1>& s1, const TSegment<rational,1>& s2)	{ fUnexpected = "long to rational"; return false; }
-		virtual bool map(const TSegment<float,1>& s1, const TSegment<rational,1>& s2)	{ fUnexpected = "float to rational"; return false; }
+		virtual bool map(const TSegment<long,2>& , const TSegment<rational,1>& )	{ fUnexpected = "long 2D to rational"; return false; }
+		virtual bool map(const TSegment<float,2>& , const TSegment<rational,1>& )	{ fUnexpected = "float 2D to rational"; return false; }
+		virtual bool map(const TSegment<long,1>& , const TSegment<rational,1>& )	{ fUnexpected = "long to rational"; return false; }
+		virtual bool map(const TSegment<float,1>& , const TSegment<rational,1>& )	{ fUnexpected = "float to rational"; return false; }
 		
 		virtual void error(const char * msg, int lineno) { 
 			if (lineno)	fErrorManager->error (msg, lineno); 

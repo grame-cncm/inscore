@@ -224,9 +224,9 @@ TLua::TLua()	{}
 TLua::~TLua()	{}
 
 void TLua::Initialize () {}
-void TLua::bindEnv (const STEnv& env) {}
+void TLua::bindEnv (const STEnv& ) {}
 
-bool TLua::eval (const char* script, string& outStr)
+bool TLua::eval (const char* /*script*/, string& /*outStr*/)
 {
 	ITLErr << "lua not available!" << ITLEndl;
 	return false;

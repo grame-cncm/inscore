@@ -105,7 +105,7 @@ SIMessageList TScripting::luaEval (const char* script)
 }
 #else
 bool TScripting::checkLua () const							{ return false; }
-SIMessageList TScripting::luaEval (const char* script)
+SIMessageList TScripting::luaEval (const char* /*script*/)
 {
 	ITLErr << "lua is not available!" << ITLEndl;
 	return 0;

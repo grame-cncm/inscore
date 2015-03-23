@@ -67,7 +67,7 @@ MsgHandler::msgStatus IJavascript::runMsg(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus IJavascript::_watchMsg(const IMessage* msg, bool add)
+MsgHandler::msgStatus IJavascript::_watchMsg(const IMessage* , bool )
 {
     return MsgHandler::kProcessed;
 }

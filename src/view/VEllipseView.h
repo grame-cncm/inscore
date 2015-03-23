@@ -57,7 +57,7 @@ class VEllipseView: public VMappedShapeView
 		virtual ~VEllipseView() {}
 		
 		virtual void updateView( IEllipse * ellipse );
-		virtual void updateObjectSize( IObject * object ) {}
+		virtual void updateObjectSize( IObject * )		{}
 };
 
 /*!@} */

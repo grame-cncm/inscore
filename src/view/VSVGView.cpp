@@ -60,7 +60,7 @@ bool VSVGItem::setText( const char* text)
 	return true;
 }
 
-void VSVGItem::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget )
+void VSVGItem::paint ( QPainter * painter, const QStyleOptionGraphicsItem *, QWidget * )
 {
 	if (fRenderer.isValid()) {
 		fRenderer.render (painter, boundingRect());

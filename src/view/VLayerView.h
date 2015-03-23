@@ -55,7 +55,7 @@ namespace inscore
 		virtual ~VLayerView() {}
         
 		virtual void	updateView( ILayer * rect );
-		virtual void	updateObjectSize( IObject * object ) {}
+		virtual void	updateObjectSize( IObject * ) {}
     };
     
     /*!@} */

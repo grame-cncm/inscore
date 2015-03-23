@@ -366,7 +366,7 @@ void VGraphicsItemView::updateView(IObject* o)
 //------------------------------------------------------------------------------------------------------------
 // check if automatic mapping (build from object duration) needs to be refreshed
 //------------------------------------------------------------------------------------------------------------
-static bool checkAutoRefresh (IObject* object, const RelativeTime2GraphicRelation& rel)
+static bool checkAutoRefresh (IObject* object, const RelativeTime2GraphicRelation& )
 {
 	return object->fAutoMap && object->durationModified();
 }

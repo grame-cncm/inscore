@@ -118,7 +118,7 @@ OSCStream& operator <<(OSCStream& s, const char* val)		{ string str(val); s << s
 OSCStream& operator <<(OSCStream& s, const OSCErr& val)		{ return s.start(val.fAddress); }
 OSCStream& operator <<(OSCStream& s, const OSCWarn& val)	{ return s.start(val.fAddress); }
 OSCStream& operator <<(OSCStream& s, const OSCStart& val)	{ return s.start(val.fAddress); }
-OSCStream& operator <<(OSCStream& s, const OSCEnd val)		{ return s.end(); }
+OSCStream& operator <<(OSCStream& s, const OSCEnd )			{ return s.end(); }
 
 
 
@@ -158,7 +158,7 @@ OSCErrorStream& operator <<(OSCErrorStream& s, const char* val)		{ s.stream() <<
 OSCErrorStream& operator <<(OSCErrorStream& s, const OSCErr& val)	{ return s.start(val.fAddress); }
 OSCErrorStream& operator <<(OSCErrorStream& s, const OSCWarn& val)	{ return s.start(val.fAddress); }
 OSCErrorStream& operator <<(OSCErrorStream& s, const OSCStart& val)	{ return s.start(val.fAddress); }
-OSCErrorStream& operator <<(OSCErrorStream& s, const OSCEnd val)	{ return s.end(); }
+OSCErrorStream& operator <<(OSCErrorStream& s, const OSCEnd )		{ return s.end(); }
 
 
 } // end namespace

@@ -208,8 +208,8 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		}
 		
 		/// \brief gets the list of mappings
-		virtual void getAllMapNames(std::vector<std::string>& result) const {}
-		virtual void getAvailableMapNames(std::vector<std::string>& result) const {}
+		virtual void getAllMapNames(std::vector<std::string>& )			const {}
+		virtual void getAvailableMapNames(std::vector<std::string>& )	const {}
 		
 		/// \brief returns the object size i.e. its subnodes count
 		virtual int		size (bool recursive = false) const;

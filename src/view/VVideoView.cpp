@@ -55,7 +55,7 @@ VVideoView::VVideoView(QGraphicsScene * scene, const IVideo* video)
 
 //----------------------------------------------------------------------
 #ifndef USEPHONON
-void VVideoView::error(QMediaPlayer::Error error)
+void VVideoView::error(QMediaPlayer::Error )
 {
 	ITLErr << (fVideo ? fVideo->getOSCAddress().c_str() : "no video address") << fMediaPlayer.errorString().toStdString() << ITLEndl;
 }
