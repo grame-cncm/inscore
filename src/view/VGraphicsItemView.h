@@ -211,7 +211,7 @@ class VGraphicsItemView : public VObjectView
 		int fBrushColorStartIndex;
 
 		QRectF fLastValidRect;
-        int fNbMasters;
+        unsigned int fNbMasters;
     
         QGraphicsItem* fParent;
         QGraphicsScene* fScene;
