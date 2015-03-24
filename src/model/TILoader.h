@@ -46,11 +46,11 @@ class IObject;
 	\brief a base class for IAppl and IScene to provide inscore files loading service
 	
 */
-class TIloader
+class TILoader
 {
 	protected:
-				 TIloader() {}
-		virtual ~TIloader() {}
+				 TILoader() {}
+		virtual ~TILoader() {}
 
 		virtual MsgHandler::msgStatus	load(const IMessage* msg, IObject* client, const std::string& rootpath);
 		virtual void					process (const SIMessageList& msgs, IObject* root, const std::string& baseaddress);

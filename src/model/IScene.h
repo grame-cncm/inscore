@@ -56,7 +56,7 @@ typedef class libmapping::SMARTP<IJavascript>		SIJavascript;
 //--------------------------------------------------------------------------
 /*! \brief a scene model
 */
-class IScene : public IRectShape, public TIloader
+class IScene : public IRectShape, public TILoader
 {	
 	bool			fFullScreen;
 	bool			fFrameless;

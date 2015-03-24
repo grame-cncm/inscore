@@ -483,7 +483,7 @@ MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
 //--------------------------------------------------------------------------
 std::string IAppl::absolutePath( const std::string& path )
 {
-	return TIloader::makeAbsolutePath (getRootPath(), path);
+	return TILoader::makeAbsolutePath (getRootPath(), path);
 }
 
 //--------------------------------------------------------------------------

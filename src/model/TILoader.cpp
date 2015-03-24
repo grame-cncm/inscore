@@ -27,7 +27,7 @@
 #include <fstream>
 #include <sstream>
 
-#include "TIloader.h"
+#include "TILoader.h"
 #include "ITLparser.h"
 #include "IGlue.h"
 #include "IMessage.h"
@@ -43,7 +43,7 @@ namespace inscore
 
 
 //--------------------------------------------------------------------------
-std::string TIloader::makeAbsolutePath( const std::string& path, const std::string& file )
+std::string TILoader::makeAbsolutePath( const std::string& path, const std::string& file )
 {
 	char ending = path[path.length()-1];
 #ifdef WIN32
@@ -57,7 +57,7 @@ std::string TIloader::makeAbsolutePath( const std::string& path, const std::stri
 
 
 //--------------------------------------------------------------------------
-void TIloader::process (const SIMessageList& msgs, IObject* root, const string& baseaddress)
+void TILoader::process (const SIMessageList& msgs, IObject* root, const string& baseaddress)
 {
 	for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
 		IMessage * msg = *i;
@@ -74,7 +74,7 @@ void TIloader::process (const SIMessageList& msgs, IObject* root, const string& 
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus TIloader::load(const IMessage* msg, IObject* client, const std::string& rootpath)
+MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const std::string& rootpath)
 {
 	if (msg->size() == 1) {
 		string srcfile; 
@@ -86,11 +86,8 @@ MsgHandler::msgStatus TIloader::load(const IMessage* msg, IObject* client, const
 			if (Tools::isurl(srcfile)) {
 				QFileDownloader * downloader = new QFileDownloader();
 				if (!downloader) return MsgHandler::kCreateFailure;
-
-//				QFileDownloader download;
 				if (downloader->get (srcfile.c_str()) && downloader->dataSize()) {
 					buff.write (downloader->data(), downloader->dataSize());
-cout << "TIloader::load " << downloader->dataSize() << " : " << buff.str() << endl;
 				}
 				else return MsgHandler::kBadParameters;
 				delete downloader;
