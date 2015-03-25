@@ -46,6 +46,9 @@
 #include "VVideoView.h"
 #include "VLayerView.h"
 #include "VUrlIntermediateObjectView.h"
+#ifdef ANDROID
+#include "VQtInit.h"
+#endif
 
 namespace inscore
 {
@@ -76,7 +79,22 @@ void VQtUpdater::updateTo (IUrlIntermediateObject* url )			{ update<IUrlIntermed
 void VQtUpdater::updateTo(IApplLog * log)
 {
 	QWidget * w = log->window();
+#ifndef ANDROID
 	w->setVisible (log->getVisible());
+#else
+	// Add and remove log window in a tab
+	QTabWidget * tw = VQtInit::getTabWidget();
+	int index = tw->indexOf(w);
+	if(log->getVisible()) {
+		if(index == -1) {
+			tw->addTab(w, w->windowTitle());
+		}
+	} else {
+		if(index != -1) {
+			tw->removeTab(index);
+		}
+	}
+#endif
 }
 
 } // end namespoace
