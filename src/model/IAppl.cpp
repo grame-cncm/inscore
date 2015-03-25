@@ -131,13 +131,18 @@ bool IAppl::fRunning(true);
 const string IAppl::kName = "ITL";
 map<string, pair<string, string> > IAppl::fAliases;
 
+string	IAppl::fVersion;						// the application version number
+float	IAppl::fVersionNum = 0.;				// the application version number as floating point value
+float	IAppl::fSupportedVersionNum = 0.;		// the supported version number as floating point value
+
 //--------------------------------------------------------------------------
 IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool offscreen) 
 	: IObject(kName, 0), fCurrentTime(0), fCurrentTicks(0), 
 	fOffscreen(offscreen), fUDP(udpport,outport,errport), fRate(10), fAppl(appl)
 {
 	fTypeString = kApplType;
-	fVersion = INScore::versionStr();
+	fVersion	= INScore::versionStr();
+	fVersionNum = INScore::version();
 	fStartTime = getTime() / 1000;
 
 	fMsgHandlerMap[khello_SetMethod]			= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::helloMsg);
@@ -151,6 +156,8 @@ IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool of
 	fMsgHandlerMap[ktime_GetSetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::setTime);
 	fMsgHandlerMap[kticks_GetSetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::setTicks);
 	fMsgHandlerMap[krootPath_GetSetMethod]		= TSetMethodMsgHandler<IAppl, string>::create(this, &IAppl::setRootPath);
+
+	fMsgHandlerMap[kcompatibility_GetSetMethod]		= TSetMethodMsgHandler<IAppl,float>::create(this, &IAppl::setSupportedVersion);
 	fMsgHandlerMap[kport_GetSetMethod]			= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPInPort);
 	fMsgHandlerMap[koutport_GetSetMethod]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPOutPort);
 	fMsgHandlerMap[kerrport_GetSetMethod]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPErrPort);
@@ -162,6 +169,7 @@ IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool of
 	fGetMsgHandlerMap[koutport_GetSetMethod]	= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getUDPOutPort);
 	fGetMsgHandlerMap[kerrport_GetSetMethod]	= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getUDPErrPort);
 	fGetMsgHandlerMap[kdefaultShow_GetSetMethod]= TGetParamMethodHandler<IAppl, bool (IAppl::*)() const>::create(this, &IAppl::defaultShow);
+	fGetMsgHandlerMap[kcompatibility_GetSetMethod]	= TGetParamMsgHandler<float>::create(fSupportedVersionNum);
 	fGetMsgHandlerMap[krate_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getRate);
 	fGetMsgHandlerMap[kforward_GetSetMethod]	= TGetParamMsgHandler<vector<IMessage::TUrl> >::create(fForwardList);
 	fGetMsgHandlerMap[ktime_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::time);

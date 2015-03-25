@@ -67,11 +67,13 @@ class IAppl : public IObject, public TILoader
 
 	static std::string	fRootPath;
 	static bool			fRunning;
-		
+	static std::string	fVersion;					// the application version number
+	static float		fVersionNum;				// the application version number as floating point value
+	static float		fSupportedVersionNum;		// the supported version number as floating point value
+	
 		int			fStartTime;					// the application start time
 		int			fCurrentTime;				// the application current time
 		int			fCurrentTicks;				// the current count of clocks
-		std::string fVersion;					// the application version number
 		SIApplDebug	fApplDebug;					// debug flags
 		SIApplStat	fApplStat;					// statistics
 		SIApplLog	fApplLog;					// log window
@@ -148,6 +150,9 @@ class IAppl : public IObject, public TILoader
 		void		ptask ();
 
 		static std::string checkRootPath (const std::string& path);
+		static float version ()						{ return fVersionNum; }
+		static float supportedVersion ()			{ return fSupportedVersionNum; }
+				void setSupportedVersion (float v)	{ fSupportedVersionNum = v; }
 
 	protected:
 				 IAppl(int udpport, int outport, int errport,  QApplication* appl, bool offscreen);
