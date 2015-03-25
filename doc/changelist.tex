@@ -1,11 +1,37 @@
 
+
 %===============================
-%:    Differences to version 1.08
+%:    Differences to version 1.08  (version 1.12)
 \sublevel{Differences to version 1.08}
 \begin{itemize}
-\item  Files objects can receive URL as path
+\item new \OSC{preserve} method at application level, provided to preserve previous behaviors. See section \fullref{applmgmt}.
+\item default size of guido item is increased.
+\item new \OSC{arrows} attribute for \OSC{line} objects. See section \fullref{arrows}.
+\item incoming messages buffer size increased to 10.000
+\item url support for inscore files (\OSC{load} message)
+
+\item new common queries (\OSC{get} message) : \OSC{count} and \OSC{rcount} that give the enclosed objects count and recursive count. The messages are supported at scene and application level as well. See section \fullref{scenequery}.
+\item new \OSC{memimg} object that capture the image of any object hierarchy including scenes. See section \fullref{imgscore}.
+\item supports relative OSC addresses that are evaluated in the context of the target object 
+  (i.e. a scene for drag and drop operations, arbitrary objects with the \OSC{eval} method). See section \fullref{scriptmsgs}.
+\item new \OSC{eval} method that takes a message list as argument, provided as a context for relative addresses evaluation. See section \fullref{miscmsgs}.
+\item new \OSC{httpd} object that implements an http server providing images of the scene to remote clients. See section \fullref{webobjects} and section \fullref{Httpd}.
+\item new \OSC{websocket} object that implements a websocket server providing images of the scene to remote clients but also changes notifications. See section \fullref{webobjects}.
+
+\item  Files objects can receive URL as path. See section \fullref{filebasedrsrc}.
 \item new intermediate object for the URL (waiting for the data to be downloaded to create the real object)
-\item new msgs and new events associated : success, error, cancel
+\item new events associated to url based objects: success, error, cancel. See section \fullref{urlevents}.
+\item  support for int values as parameters of the set method of rect shape and polygon objects
+\item  the \OSC{clear} message addressed to a \OSC{gmnstream} object clears also the view. The change was not previously reflected until a new valid string was posted to the object.
+
+
+\item bug in export item corrected : child scaling was not applied.
+\item bug correction: for multiple exports, only the last one was done.
+\item bug in extended address support corrected: extended address was ignored for messages dropped to a scene .
+\item bug in window color corrected: black color was not correctly set due to an incorrect color 
+  information returned by Qt.
+\item bug with 'line' initialization corrected: wrong position and orientation with negative coordinates (was previously corrected but reintroduced), incorrect initialization in layers.
+
 \end{itemize}
 
 %===============================
