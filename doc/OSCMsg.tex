@@ -947,21 +947,13 @@ setMsg : 'set' (
 
 
 %===============================
-%:  The file type
+%:  File based resources
 \sublevel{File based resources}
 \label{filebasedrsrc}
 
 Most of the types can be either expressed with the corresponding data, or by a path to a file containing the data. For the latter form, the object type is generally suffixed with an 'f' (e.g. \OSC{txtf}, \OSC{htmlf}, \OSC{gmnf}, \OSC{musicxmlf}, \OSC{svgf}, \OSC{faustf}). The \OSC{img} and  \OSC{video} types have only a file form (and no 'f' suffix). \\
 A file path can be expressed as a Unix path (absolute or relative - see the scene or application \OSC{rootPath} message for relative paths handling), but also as an URL.
-
-\begin{rail}
-urlPath : 
-	( http | https | file) path
-\end{rail}
-\index{Set file!filePath}
-\index{Set file!urlPath}
-
-Only the \OSC{http:}, \OSC{https:} and \OSC{file:} protocols are currently supported for URLs.
+Only the \OSC{http:} protocol is currently supported.
 
 When the system encounters an URL, it creates an intermediate object that is in charge of retrieving the corresponding data. This object has a specific \OSC{url} type that takes the target type and an url as arguments. It has a graphic appearance (actually a light gray box containing the object name and the target url) that can be controled like for any regular object.
 
@@ -983,6 +975,8 @@ Creating a score using an URL:
 \note{} The \OSC{url} object handles specific events : \OSC{success}, \OSC{error} and \OSC{cancel} (see the section \fullref{urlevents}).
 
 
+%===============================
+%:  The file type
 \sublevel{The file type}
 \label{fileset}
 
@@ -1027,72 +1021,37 @@ Creating an image using the \OSC{file} type.
 /ITL/scene/myObject set img "myImage.png";
 }
 
-
 %===============================
-%:  The file type
-\sublevel{File based resources}
-\label{filebasedrsrc}
+%:  Web objects
+\sublevel{Web objects}
+\label{webobjects}
 
-Most of the types can be either expressed with the corresponding data, or by a path to a file containing the data. For the latter form, the object type is generally suffixed with an 'f' (e.g. \OSC{txtf}, \OSC{htmlf}, \OSC{gmnf}, \OSC{musicxmlf}, \OSC{svgf}, \OSC{faustf}). The \OSC{img} and  \OSC{video} types have only a file form (and no 'f' suffix). \\
-A file path can be expressed as a Unix path (absolute or relative - see the scene or application \OSC{rootPath} message for relative paths handling), but also as an URL.
+A score can make its content available to the Internet using specific components that provide an image of the scene over http or websocket protocols.
 
-\begin{rail}
-urlPath : 
-	( http | https | file) path
-\end{rail}
-\index{Set file!filePath}
-\index{Set file!urlPath}
+The \OSC{httpd} server depends on the Httpd server plugin and is described in section \fullref{Httpd}.
 
-Only the \OSC{http:}, \OSC{https:} and \OSC{file:} protocols are currently supported for URLs.
-
-When the system encounters an URL, it creates an intermediate object that is in charge of retrieving the corresponding data. This object has a specific \OSC{url} type that takes the target type and an url as arguments. It has a graphic appearance (actually a light gray box containing the object name and the target url) that can be controled like for any regular object.
+The \OSC{websocket} server provides a two-ways communication between INScore and distant clients. The server sends notifications to client using a \OSC{Screen updated} text message when the scene is updated. Clients can request an image by sending a \OSC{getImage} text message to the server. The server responds with a image of the scene in png format, using a Blob type javascript object.
 
 \begin{rail}
-urlType : 
-	'url' targetType  urlPath
-\end{rail}
-\index{Set type!url}
-
-The \OSC{url} intermediate object acts as a proxy for the target object and will transfer all its properties once the data are ready. A client can thus interact transparently with the target adress, whatever the status of the download request.
-
-\example \\
-Creating a score using an URL:
-\sample{/ITL/scene/score set gmnf "http://anyhost.adomain.org/score.gmn"; \\
-\hspace*{4mm} is equivalent to \\
-/ITL/scene/score set url gmnf "http://anyhost.adomain.org/score.gmn";
-}
-
-\note{} The \OSC{url} object handles specific events : \OSC{success}, \OSC{error} and \OSC{cancel} (see the section \fullref{urlevents}).
-
-
-%===============================
-%:  The websocket server
-\sublevel{The websocket server}
-\label{websocketserver}
-
-\label{setwebsocket}
-
-The websocket server object is used to have communication between INScore and distant clients. The object push notification to client (a text message "Screen updated") when his scene is updated. Clients can ask the server for an image by sending "getImage" text message to the server. The server respond by a png image of the scene in a Blob type javascript object.
-
-\begin{rail}
-setWebsocket : 
-	'websocket' port frequency
+webobject :   'websocket' port frequency
+			| 'httpd' port
 \end{rail}
 \index{Set type!websocket}
+\index{Set type!httpd}
 
 \begin{itemize}
 \item \OSC{port}: a port number for the socket communication.
-\item \OSC{frequency}: a minimum time in millisecond between two notifications "Screen updated".
+\item \OSC{frequency}: a minimum time in millisecond between two \OSC{Screen updated} notifications.
 \end{itemize}
 
-\seealso the http web server plugin (section \fullref{Httpd}).
-
 \note{} \\
-If the http port is already used, the server can't start. The server status can be verified with the \OSC{get status} message.
+A busy port prevents the server to start. The server status can be checked with the \OSC{get status} message.
 
 \example \\
-Creating an websocket server using the port \OSC{1234} and have not more one notification per 500 milliseconds. 
+Creating an websocket server using the port \OSC{1234} and limiting the notifications rate to one per 500 milliseconds.
 \sample{/ITL/scene/myObject set websocket 1234 500;}
+
+\seealso the http web server plugin (section \fullref{Httpd}).
 
 
 
@@ -1385,6 +1344,7 @@ ITLMsg : 'quit'
 		| ('load' filePath)
 		| ('read' buffer)
 		| ('require' float oscMsg)
+		| ('preserve' float)
 		| ('time' int32)
 		| ('ticks' int32)
 		| ('rate' int32)
@@ -1397,6 +1357,7 @@ ITLMsg : 'quit'
 \index{ITL messages!read}
 \index{ITL messages!hello}
 \index{ITL messages!require}
+\index{ITL messages!preserve}
 \index{ITL messages!rate}
 \index{ITL messages!time}
 \index{ITL messages!ticks}
@@ -1416,6 +1377,8 @@ The default \OSC{defaultShow} value is 1.
 \item \OSC{read}: read a buffer that is expected to contain a valid inscore script.
 
 \item \OSC{require}: check that the current INScore version number is equal or greater to the number given as argument. The version number is given as a float value. A message is associated to the \OSC{require} message, which is triggered when the check fails. See section \fullref{interaction} for more details.
+
+\item \OSC{preserve}: preserve INScore previous behavior. The argument corresponds to a version number, INScore will preserve the corresponding behavior (objects scaling, default size, etc.).
 
 \item \OSC{rate}: changes the time task rate. Note that null values are ignored.\\
 The default \OSC{rate} value is 10.
