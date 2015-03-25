@@ -13,17 +13,15 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.12
+- new 'compatibility' method at application level, provided to preserve previous behaviors
 - Remove GuidoQt library dependency and integrate source file.
-- Inscrease size of guido item.
-- Add arrow head attribute to line object.
+- Inscrease default size of guido item.
+- Add 'arrows' attribute to 'line' objects.
 - Bug correction :
 	When ask for multiple exports, all are now treated and not only the last.
-
-----------------------------------------------------
-Version 1.12
 - incoming messages buffer size increased to 10.000
 - url support for inscore files (load message)
-- Bug in export item corrected : Child scaling was not apply.
+- Bug in export item corrected : child scaling was not applied.
 
 ----------------------------------------------------
 Version 1.11
@@ -32,11 +30,14 @@ Version 1.11
 - new 'memimg' object that capture the image of any object hierarchy including scenes
 - supports relative OSC addresses that are evaluated in the context of the target object 
   (i.e. a scene for drag & drop operations, arbitrary objects with the 'eval' method)
-- new 'eval' method that takes a message list as argument, provided as a context for relative addresses evaluation
-- Add new object httpd to create a http server to get image of the scene of the server object.
-- Add new object websocket to create a websocket server to notify clients of a scene update and get an image of the scene.
+- new 'eval' method that takes a message list as argument, provided as a context for relative 
+  addresses evaluation
+- new 'httpd' object that implements an http server providing images of the scene to remote clients.
+- new 'websocket' object that implements a websocket server providing images of the scene to remote 
+  clients but also changes notifications.
 - Guido font is now embed in INScore application.
-- Partial support on IOS. Main problems are : antialiasing is not working and multi scene scores are not manage correctly.
+- Partial support on IOS. Main problems are: antialiasing is not working and multi scene scores 
+  are not correctly handled.
 
 ----------------------------------------------------
 Version 1.10
