@@ -30,6 +30,7 @@
 #include "IRectShape.h"
 #include "PeriodicTask.h"
 #include "TScripting.h"
+#include "VSceneView.h"
 
 class QGraphicsScene;
 
@@ -40,7 +41,6 @@ namespace inscore
 \addtogroup ITLModel
 @{
 */
-
 //typedef TV8Js		TJSEngine;
 
 class Master;
@@ -72,8 +72,11 @@ class IScene : public IRectShape//, public PeriodicTask
 	public:		
 		static const std::string kSceneType;
 		static libmapping::SMARTP<IScene> create(const std::string& name, IObject * parent)	{ return new IScene(name, parent); }
-
+#ifdef ANDROID
+		bool			getFullScreen() const		{ return true; }
+#else
 		bool			getFullScreen() const		{ return fFullScreen; }
+#endif
 		void			setFullScreen(bool state)	{ fFullScreen = state; }
 		bool			getFrameless() const		{ return fFrameless; }
 		void			setFrameless(bool state)	{ fFrameless = state; }
@@ -116,6 +119,7 @@ class IScene : public IRectShape//, public PeriodicTask
 		TJSEngine*		getJSEngine()		{ return &fJavascript; }
 		TLua*			getLUAEngine()		{ return &fLua; }
 
+		virtual VSceneView*	getView() const				{ return static_cast<VSceneView *>(fView); }
 
 	protected:
 				 IScene(const std::string& name, IObject * parent);
@@ -126,7 +130,7 @@ class IScene : public IRectShape//, public PeriodicTask
 
 		void		setRootPath(const std::string& s);
 		MsgHandler::msgStatus loadMsg(const IMessage* msg);
-//		void		foreground ();
+		void		foreground ();
 		void		newScene ();
 		void		del ();
 		std::string address2scene (const char* addr) const;

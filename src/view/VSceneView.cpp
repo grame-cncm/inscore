@@ -37,6 +37,11 @@
 #include <QResizeEvent>
 #include <QDebug>
 
+#ifdef ANDROID
+#include <QTabWidget>
+#include "VQtInit.h"
+#endif
+
 #ifdef WIN32
 #include <windows.h>
 #else
@@ -119,6 +124,9 @@ VSceneView::VSceneView(const std::string& address, QGraphicsScene * scene)
 	if (scene) {
 		fScene = scene;
 		fGraphicsView = new ZoomingGraphicsView(scene);
+#ifdef ANDROID
+		VQtInit::getTabWidget()->addTab(fGraphicsView, address.c_str());
+#endif
 		fGraphicsView->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
 		fGraphicsView->scene()->setSceneRect( SCENE_RECT );
 		fGraphicsView->setWindowTitle( address.c_str() );
@@ -145,7 +153,17 @@ VSceneView::~VSceneView()
 
 //------------------------------------------------------------------------------------------------------------------------
 QGraphicsScene * VSceneView::scene() const		{ return fScene; }
-//void VSceneView::foreground()	{ fGraphicsView->activateWindow(); }
+
+//------------------------------------------------------------------------------------------------------------------------
+void VSceneView::foreground()
+{
+
+#ifdef ANDROID
+	VQtInit::getTabWidget()->setCurrentWidget(fGraphicsView);
+#else
+	fGraphicsView->activateWindow();
+#endif
+}
 
 //------------------------------------------------------------------------------------------------------------------------
 void VSceneView::updateOnScreen( IScene * scene )
