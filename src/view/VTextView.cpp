@@ -49,6 +49,10 @@ VTextView::VTextView(QGraphicsScene * scene, const IText* h)
  :	VIntPointObjectView( scene , new IQGraphicsTextItem(h) )
 {
 	fTextItem = (IQGraphicsTextItem*)(fItem);
+	// Fix font size for initialisation to have approaching render on different platforms.
+	QFont font = fTextItem->font();
+	font.setPointSize(9);
+	fTextItem->setFont(font);
 	fTextItem->document()->setDocumentMargin(0);
 	fHtmlFile = 0;
 }
