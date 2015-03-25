@@ -1344,7 +1344,7 @@ ITLMsg : 'quit'
 		| ('load' filePath)
 		| ('read' buffer)
 		| ('require' float oscMsg)
-		| ('preserve' float)
+		| ('compatibility' float)
 		| ('time' int32)
 		| ('ticks' int32)
 		| ('rate' int32)
@@ -1357,7 +1357,7 @@ ITLMsg : 'quit'
 \index{ITL messages!read}
 \index{ITL messages!hello}
 \index{ITL messages!require}
-\index{ITL messages!preserve}
+\index{ITL messages!compatibility}
 \index{ITL messages!rate}
 \index{ITL messages!time}
 \index{ITL messages!ticks}
@@ -1378,7 +1378,7 @@ The default \OSC{defaultShow} value is 1.
 
 \item \OSC{require}: check that the current INScore version number is equal or greater to the number given as argument. The version number is given as a float value. A message is associated to the \OSC{require} message, which is triggered when the check fails. See section \fullref{interaction} for more details.
 
-\item \OSC{preserve}: preserve INScore previous behavior. The argument corresponds to a version number, INScore will preserve the corresponding behavior (objects scaling, default size, etc.).
+\item \OSC{compatibility}: preserve INScore previous behavior. The argument corresponds to a version number, INScore will preserve the corresponding behavior (objects scaling, default size, etc.).
 
 \item \OSC{rate}: changes the time task rate. Note that null values are ignored.\\
 The default \OSC{rate} value is 10.

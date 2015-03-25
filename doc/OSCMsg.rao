@@ -918,7 +918,7 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {48}{ ITLMsg : 'quit' | ('rootPath' path) | ('mouse' ('show' | 'hide')) | ('defaultShow' int32) | ('load' filePath) | ('read' buffer) | ('require' float oscMsg) | ('preserve' float) | ('time' int32) | ('ticks' int32) | ('rate' int32) | 'hello' }
+\rail@i {48}{ ITLMsg : 'quit' | ('rootPath' path) | ('mouse' ('show' | 'hide')) | ('defaultShow' int32) | ('load' filePath) | ('read' buffer) | ('require' float oscMsg) | ('compatibility' float) | ('time' int32) | ('ticks' int32) | ('rate' int32) | 'hello' }
 \rail@o {48}{
 \rail@index{ITLMsg}
 \rail@begin{13}{ITLMsg}
@@ -948,7 +948,7 @@
 \rail@nont{float}[]
 \rail@nont{oscMsg}[]
 \rail@nextbar{8}
-\rail@term{preserve}[]
+\rail@term{compatibility}[]
 \rail@nont{float}[]
 \rail@nextbar{9}
 \rail@term{time}[]
