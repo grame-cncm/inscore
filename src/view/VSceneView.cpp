@@ -38,7 +38,6 @@
 #include <QDebug>
 
 #ifdef ANDROID
-#include <QTabWidget>
 #include "VQtInit.h"
 #endif
 
@@ -125,6 +124,7 @@ VSceneView::VSceneView(const std::string& address, QGraphicsScene * scene)
 		fScene = scene;
 		fGraphicsView = new ZoomingGraphicsView(scene);
 #ifdef ANDROID
+		// Add scene to tabwidget
 		VQtInit::getTabWidget()->addTab(fGraphicsView, address.c_str());
 #endif
 		fGraphicsView->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
@@ -159,6 +159,7 @@ void VSceneView::foreground()
 {
 
 #ifdef ANDROID
+	// Select tab of the scene as current tab
 	VQtInit::getTabWidget()->setCurrentWidget(fGraphicsView);
 #else
 	fGraphicsView->activateWindow();

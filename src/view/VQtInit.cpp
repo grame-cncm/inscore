@@ -24,7 +24,6 @@
 
 #ifdef ANDROID
 #include <QMainWindow>
-#include <QTabWidget>
 #endif
 
 #include "VQtInit.h"
@@ -44,11 +43,12 @@ void VQtInit::startQt ()
 	installGuidoFont();
 	QGuidoPainter::startGuidoEngine();
 #ifdef ANDROID
+	// Create main window. It contains tab for each scene.
 	sMainWindow = new QMainWindow;
 	sTabWidget = new QTabWidget(sMainWindow);
 	sMainWindow->setCentralWidget(sTabWidget);
 	sMainWindow->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
-	//sMainWindow->showFullScreen();
+	// Man window is full screen.
 	sMainWindow->showMaximized();
 #endif
 }

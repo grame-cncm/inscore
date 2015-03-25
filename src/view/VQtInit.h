@@ -28,8 +28,9 @@
 #include "export.h"
 
 #ifdef ANDROID
+#include <QTabWidget>
+
 class QMainWindow;
-class QTabWidget;
 #endif
 
 namespace inscore
@@ -47,6 +48,10 @@ class export VQtInit
 	static	void		stopQt ();
 
 #ifdef ANDROID
+	/*!
+	 * \brief getTabWidget
+	 * \return the tabWidget of the main window.
+	 */
 	static	QTabWidget*	getTabWidget();
 
 	private:
