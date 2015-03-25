@@ -25,8 +25,6 @@
 
 #include <iostream>
 
-#define newVersion 1
-
 #include "VGraphView.h"
 #include "maptypes.h"
 #include "ITLError.h"
