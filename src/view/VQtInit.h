@@ -27,6 +27,11 @@
 
 #include "export.h"
 
+#ifdef ANDROID
+class QMainWindow;
+class QTabWidget;
+#endif
+
 namespace inscore
 {
 
@@ -40,6 +45,14 @@ class export VQtInit
 	public:
 	static	void		startQt ();
 	static	void		stopQt ();
+
+#ifdef ANDROID
+	static	QTabWidget*	getTabWidget();
+
+	private:
+	static QMainWindow* sMainWindow;
+	static QTabWidget* sTabWidget;
+#endif
 };
 
 /*!@} */

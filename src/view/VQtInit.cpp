@@ -22,6 +22,10 @@
 
 */
 
+#ifdef ANDROID
+#include <QMainWindow>
+#include <QTabWidget>
+#endif
 
 #include "VQtInit.h"
 #include "GuidoFontLoader.h"
@@ -30,15 +34,36 @@
 namespace inscore
 {
 
+#ifdef ANDROID
+QMainWindow* VQtInit::sMainWindow;
+QTabWidget* VQtInit::sTabWidget;
+#endif
+
 void VQtInit::startQt ()
 {
 	installGuidoFont();
 	QGuidoPainter::startGuidoEngine();
+#ifdef ANDROID
+	sMainWindow = new QMainWindow;
+	sTabWidget = new QTabWidget(sMainWindow);
+	sMainWindow->setCentralWidget(sTabWidget);
+	sMainWindow->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
+	//sMainWindow->showFullScreen();
+	sMainWindow->showMaximized();
+#endif
 }
 
 void VQtInit::stopQt ()
 {
 	QGuidoPainter::stopGuidoEngine();
+#ifdef ANDROID
+	delete sMainWindow;
+#endif
 }
-
+#ifdef ANDROID
+QTabWidget*	VQtInit::getTabWidget()
+{
+	return sTabWidget;
+}
+#endif
 } // end namespoace
