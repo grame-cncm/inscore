@@ -1,0 +1,11 @@
+/ITL/log show 1;
+/ITL/scene/signal/stack get in out;
+
+/ITL/scene/signal/sig2  set 'sig/1' 'sig/1' 'sig/2' 1. 1.;
+/ITL/scene/signal/sig3  set 'sig/1';
+
+	__END__
+/ITL/scene/signal/t 0.2 0.3 0.3;
+/ITL/scene/signal/t 0.2 0.3 0.3;
+/ITL/scene/signal/t 0.2 0.3 0.3;
+/ITL/scene/signal/t 0.2 0.3 0.3;
