@@ -83,6 +83,8 @@ MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const
 		if (srcfile.size()) {
 			stringstream buff;
 			ifstream file;
+			if (Tools::isurl(rootpath) && !Tools::isurl(srcfile))
+				srcfile = makeAbsolutePath(rootpath, srcfile);
 			if (Tools::isurl(srcfile)) {
 				QFileDownloader * downloader = new QFileDownloader();
 				if (!downloader) return MsgHandler::kCreateFailure;

@@ -27,6 +27,8 @@
 #ifndef __INScore__QFileDownloader__
 #define __INScore__QFileDownloader__
 
+#include <string>
+
 #include <QThread>
 #include <QByteArray>
 #include <QNetworkAccessManager>
@@ -40,7 +42,7 @@ class QFileDownloader : public QThread
     Q_OBJECT
     
 	public:
-				 QFileDownloader();
+				 QFileDownloader(const char* urlprefix = 0);
 		virtual ~QFileDownloader();
 	 
 		/// \brief asynchronous download of an url
@@ -63,10 +65,12 @@ class QFileDownloader : public QThread
 		void updateFailed(QNetworkReply* pReply);
 		
 	private:
-	 
+		std::string				location(const char * file);
+	
 		QNetworkAccessManager	fNetworkAccess;
 		QByteArray				fData;
 		std::string				fOSCAddress;
+		std::string				fUrlPrefix;
 };
  
 }

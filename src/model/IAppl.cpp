@@ -194,7 +194,7 @@ bool IAppl::oscDebug() const								{ return fApplDebug->getOSCDebug(); }
 //--------------------------------------------------------------------------
 string IAppl::checkRootPath(const std::string& s)
 {
-	if ( !QDir( QString::fromUtf8(s.c_str()) ).exists() )
+	if (!Tools::isurl(s) && !QDir( QString::fromUtf8(s.c_str()) ).exists() )
 		ITLErr << "rootPath is an invalid location:" << s << ITLEndl;
 	string root = s;
 	char end = root[root.length()-1];
