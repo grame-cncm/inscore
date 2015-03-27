@@ -49,6 +49,8 @@ class VLineView: public VMappedShapeView
 	typedef MouseEventAble<QGraphicsPathItem> IQGraphicsPathItem;
 	IQGraphicsPathItem* item() const	{ return (IQGraphicsPathItem*)fItem; }
 
+	static const float		sArrowHeadSize;
+
 	public :
 		using VMappedShapeView::updateView;
 
