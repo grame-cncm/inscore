@@ -11,18 +11,18 @@
 /ITL/scene/line2  set  line wa 0.7 -10;
 /ITL/scene/line2 color 0 0 255;
 
-/ITL/scene/arrows set txt "Click me to draw arrows heads 'disk' and 'triangle' to green line";
-/ITL/scene/arrows scale 1.5;
-/ITL/scene/arrows y 0.5;
+/ITL/scene/arrows1 set txt "Click me to draw arrows heads 'disk' and 'triangle' to green line";
+/ITL/scene/arrows1 scale 1.5;
+/ITL/scene/arrows1 y 0.5;
 
-/ITL/scene/arrows watch mouseEnter (/ITL/scene/arrows red 250);
-/ITL/scene/arrows watch mouseLeave (/ITL/scene/arrows red 0);
-/ITL/scene/arrows watch mouseDown (
-	/ITL/scene/arrows push,
+/ITL/scene/arrows1 watch mouseEnter (/ITL/scene/arrows1 red 250);
+/ITL/scene/arrows1 watch mouseLeave (/ITL/scene/arrows1 red 0);
+/ITL/scene/arrows1 watch mouseDown (
+	/ITL/scene/arrows1 push,
 	/ITL/scene/line1  arrows disk triangle,
-	/ITL/scene/arrows watch mouseDown (
+	/ITL/scene/arrows1 watch mouseDown (
 		/ITL/scene/line1  arrows none none,
-		/ITL/scene/arrows pop
+		/ITL/scene/arrows1 pop
 	)
 );
 
