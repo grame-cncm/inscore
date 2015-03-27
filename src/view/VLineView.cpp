@@ -73,6 +73,9 @@ void VLineView::updateView( ILine * line )
 	myPath.moveTo( xo,yo);
 	myPath.lineTo( x, y );
 
+	// Save bounding rect of path (which has a pen width of 0) before drawing arrow heads.
+	QRectF before = myPath.boundingRect();
+
 	// Create an Arrow
 	QPointF p0(xo, yo);
 	QPointF p1(x, y);
@@ -92,8 +95,16 @@ void VLineView::updateView( ILine * line )
 	IColor c(line->getPenColor().getR(), line->getPenColor().getG(), line->getPenColor().getB() , line->getPenColor().getA());
 	line->setColor(c);
 	VShapeView::updateView( line );
-}
 
+	// Get bouding box and translate line with saved bounding rect because
+	// pen width and arrow head size have not to be include in translation.
+	QRectF after = item()->boundingRect();
+	xo = after.width()  * (line->getXOrigin() + 1) * line->getScale() / 2;
+	yo = after.height() * (line->getYOrigin() + 1) * line->getScale() / 2;
+	x = before.width()  * (line->getXOrigin() + 1) * line->getScale() / 2;
+	y = before.height() * (line->getYOrigin() + 1) * line->getScale() / 2;
+	item()->setTransform(QTransform::fromTranslate(xo - x, yo - y), true);
+}
 
 void VLineView::updateObjectSize(IObject* o)
 {
@@ -138,7 +149,7 @@ double ArrowHeadFactory::getAngle(const QPointF &p0, const QPointF &p1, bool isL
 
 	double angle = ::atan(y / x);
 	if(p1.y() - p0.y() >= 0) {
-		angle = (M_PI * 2) - angle;
+		angle = - angle;
 	}
 	if(!isLeft) {
 		angle += M_PI;
@@ -160,8 +171,13 @@ void ArrowHeadFactory::addTriangleArrowHead(QPainterPath &myPath, const QPointF 
 									cos(angle + M_PI / 3) * arrowSize);
 	QPointF arrowP2 = p + QPointF(sin(angle + M_PI - M_PI / 3) * arrowSize,
 									cos(angle + M_PI - M_PI / 3) * arrowSize);
+
+	// Return point of the triangle.
+	QPointF returnPoint = p - QPointF(cos(angle + M_PI) * arrowSize * 0.6,
+									-sin(angle + M_PI) * arrowSize * 0.6);
+
 	QPolygonF arrowHead;
-	arrowHead << p << arrowP1 << arrowP2;
+	arrowHead << p << arrowP1 << returnPoint << arrowP2;
 	myPath.addPolygon(arrowHead);
 	myPath.closeSubpath();
 }
