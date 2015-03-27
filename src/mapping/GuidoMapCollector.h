@@ -50,7 +50,10 @@ class GuidoMapCollector: public MapCollector
 	public :
 //		typedef std::map<RelativeTimeSegment, GraphicSegment> Time2GraphicMap;
 		typedef std::vector<std::pair<RelativeTimeSegment, GraphicSegment> > Time2GraphicMap;
-		struct Filter { virtual ~Filter() {} virtual bool operator() (const GuidoElementInfos& infos) const { return true; } } ;
+		struct Filter {
+			virtual ~Filter() {}
+			virtual bool operator() (const GuidoElementInfos& ) const { return true; }
+		} ;
 
 	protected:
 		const QGuidoGraphicsItem *	fItem;

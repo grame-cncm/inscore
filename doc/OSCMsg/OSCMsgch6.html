@@ -1,179 +1,57 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
   "http://www.w3.org/TR/html4/loose.dtd">  
 <html > 
-<head><title>6 Type specific messages</title> 
+<head><title>6 The &#8217;get&#8217; messages</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
 <meta name="generator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2015-01-08 11:24:00"> 
+<meta name="date" content="2015-03-25 18:57:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 991--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 1060--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch7.html" >next</a>] [<a 
 href="OSCMsgch5.html" >prev</a>] [<a 
 href="OSCMsgch5.html#tailOSCMsgch5.html" >prev-tail</a>] [<a 
 href="#tailOSCMsgch6.html">tail</a>] [<a 
 href="OSCMsg3.html#OSCMsgch6.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;6</span><br /><a 
- id="x10-310006"></a>Type specific messages</h2>
-<!--l. 993--><p class="noindent" >Some of the messages are specific to the component <span 
-class="pcrr8tn-">type</span>.
-<h3 class="sectionHead"><span class="titlemark">6.1    </span> <a 
- id="x10-320006.1"></a>Pen control</h3>
-<!--l. 999--><p class="noindent" >Specific pen messages accepted by the components types <span 
-class="pcrr8tn-">rect | ellipse | polygon | curve | line |</span>
-<span 
-class="pcrr8tn-">graph | fast graph | grid</span>.
-<a 
- id="dx10-32001"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 1006--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">penMsg</span> <img 
-src="OSCMsg35x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx10-32002"></a>
-<a 
- id="dx10-32003"></a>
-<a 
- id="dx10-32004"></a>
-<a 
- id="dx10-32005"></a>
-<a 
- id="dx10-32006"></a>
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrr8tn-">penColor </span>controls the pen color. The color should be given in the RGBA space. The default value is
-     opaque black (0 0 0 255).
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">penAlpha, pendAlpha </span>controls the pen transparency only. See section <a 
-href="OSCMsgch2.html#x6-120002.3">2.3<!--tex4ht:ref: colormsg --></a> p.<a 
-href="OSCMsgch2.html#x6-120002.3">16<!--tex4ht:ref: colormsg --></a> for the expected
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">penWidth </span>controls the pen width. The default value is 0 (excepted for <span 
-class="pcrr8tn-">line </span>objects, where 1.0 is the
-     default value). It is expressed in arbitrary units (1 is a reasonable value).
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">penStyle </span>controls the pen style.</li></ul>
-<a 
- id="dx10-32007"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-                                                                                 
-
-                                                                                 
-<!--l. 1022--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">penstyle</span> <img 
-src="OSCMsg36x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx10-32008"></a>
-<a 
- id="dx10-32009"></a>
-<a 
- id="dx10-32010"></a>
-<a 
- id="dx10-32011"></a>
-<a 
- id="dx10-32012"></a>
-<!--l. 1029--><p class="noindent" >The pen style default value is <span 
-class="pcrr8tn-">solid</span>.<br 
-class="newline" />
-<!--l. 1031--><p class="noindent" ><span 
-class="ptmbc8t-">E<span 
-class="small-caps">X</span><span 
-class="small-caps">A</span><span 
-class="small-caps">M</span><span 
-class="small-caps">P</span><span 
-class="small-caps">L</span><span 
-class="small-caps">E</span> </span><br 
-class="newline" />Setting a rectangle border width and color:
-<div class="center" 
->
-<!--l. 1036--><p class="noindent" >
-<div 
-class="colorbox" id="colorbox29"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/rect set rect 0.5 0.5 ;</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/rect penWidth 2. ;</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/rect penColor 255 0 0 ;</span></div></div>
-</div>
-<!--l. 1040--><p class="noindent" >
-<h3 class="sectionHead"><span class="titlemark">6.2    </span> <a 
- id="x10-330006.2"></a>Brush control</h3>
-<!--l. 1042--><p class="noindent" >Specific brush messages accepted by the components types <span 
-class="pcrr8tn-">rect | ellipse | polygon | curve |</span>
-<span 
-class="pcrr8tn-">layer</span>.
+ id="x10-330006"></a>The &#8217;get&#8217; messages</h2>
+<!--l. 1065--><p class="noindent" >The <span 
+class="pcrr8tn-">get </span>messages can be sent to any valid OSC address. It is intended to query the system state. It is the
+counterpart of all the messages modifying this state. The result of the query is sent to the OSC output port with the
+exact syntax of the counterpart message. The global form of the message is:
 <a 
  id="dx10-33001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-                                                                                 
-
-                                                                                 
-<!--l. 1045--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">brushMsg</span> <img 
+<!--l. 1069--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">getMsg</span> <img 
 src="OSCMsg37x.png" alt="PICT" >
 </div></dd></dl>
 <a 
  id="dx10-33002"></a>
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrr8tn-">brushStyle </span>controls the brush style.</li></ul>
+<!--l. 1072--><p class="noindent" >The <span 
+class="pcrr8tn-">get </span>message without parameter is the counterpart of the <span 
+class="pcrr8tn-">set </span>message. When addressed to a container (the
+application <span 
+class="pcrr8tn-">/ITL</span>, a scene <span 
+class="pcrr8tn-">/ITL/scene</span>, the signal node <span 
+class="pcrr8tn-">/ITL/scene/signal</span>) is also distributed to all the container
+components.
+<!--l. 1074--><p class="noindent" >Specific <span 
+class="pcrr8tn-">get </span>forms may be available, depending on the component type (see sections <a 
+href="OSCMsgch7.html#x11-380007.4">7.4<!--tex4ht:ref: gmnpage --></a>, <a 
+href="OSCMsgch8.html#x12-460008.4">8.4<!--tex4ht:ref: ITLQuery --></a>, <a 
+href="OSCMsgch8.html#x12-490008.5.2">8.5.2<!--tex4ht:ref: ITLdebug --></a>, <a 
+href="OSCMsgch12.html#x16-6200012">12<!--tex4ht:ref: syncmsg --></a>, <a 
+href="OSCMsgch13.html#x17-7000013.1.2">13.1.2<!--tex4ht:ref: parcomp --></a>,
 <a 
- id="dx10-33003"></a>
-<a 
- id="dx10-33004"></a>
-<a 
- id="dx10-33005"></a>
-<a 
- id="dx10-33006"></a>
-<a 
- id="dx10-33007"></a>
-<a 
- id="dx10-33008"></a>
-<a 
- id="dx10-33009"></a>
-<a 
- id="dx10-33010"></a>
-<a 
- id="dx10-33011"></a>
-<a 
- id="dx10-33012"></a>
-<a 
- id="dx10-33013"></a>
-<a 
- id="dx10-33014"></a>
-<a 
- id="dx10-33015"></a>
-<a 
- id="dx10-33016"></a>
-                                                                                 
-
-                                                                                 
-<a 
- id="dx10-33017"></a>
-<a 
- id="dx10-33018"></a>
-<!--l. 1069--><p class="noindent" >The brush style default value is <span 
-class="pcrr8tn-">solid</span>.<br 
-class="newline" />For the <span 
-class="pcrr8tn-">layer </span>object, the brush style default value is <span 
-class="pcrr8tn-">none</span>.<br 
-class="newline" />
-<!--l. 1072--><p class="noindent" ><span 
+href="OSCMsgch16.html#x22-10100016.1.2">16.1.2<!--tex4ht:ref: faustmsg --></a>).
+<!--l. 1076--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -181,252 +59,65 @@ class="small-caps">M</span><span
 class="small-caps">P</span><span 
 class="small-caps">L</span><span 
 class="small-caps">E</span> </span><br 
-class="newline" />Setting a rectangle style :
+class="newline" />Sending the following request to an object which position is 0.3 0.5
 <div class="center" 
 >
-<!--l. 1076--><p class="noindent" >
+<!--l. 1078--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox29"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myobject get x y;</span>
+</div></div>
+</div>
+<!--l. 1079--><p class="noindent" >&#x00A0;       will give the following messages on outpout port:
+<div class="center" 
+>
+<!--l. 1081--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox30"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/rect set rect 0.5 0.5 ;</span><br 
+class="pcrr8tn-x-x-90">/ITL/scene/myobject x 0.3; </span><br 
 class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/rect brushStyle dense4;</span></div></div>
+class="pcrr8tn-x-x-90">/ITL/scene/myobject y 0.5;</span></div></div>
 </div>
-<!--l. 1080--><p class="noindent" >
-<h3 class="sectionHead"><span class="titlemark">6.3    </span> <a 
- id="x10-340006.3"></a>Width and height control</h3>
-<!--l. 1082--><p class="noindent" >Specific width and height messages accepted by the components types <span 
-class="pcrr8tn-">rect | ellipse | graph | fastgraph</span>
-<span 
-class="pcrr8tn-">| grid</span>.
-<a 
- id="dx10-34001"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 1087--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">widthMsg</span> <img 
-src="OSCMsg38x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx10-34002"></a>
-<a 
- id="dx10-34003"></a>
-<!--l. 1094--><p class="noindent" >
-<h3 class="sectionHead"><span class="titlemark">6.4    </span> <a 
- id="x10-350006.4"></a>Symbolic score management</h3>
-<!--l. 1097--><p class="noindent" >Messages accepted by the components types <span 
-class="pcrr8tn-">gmn | gmnstream | gmnf</span>.
-<a 
- id="dx10-35001"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-                                                                                 
-
-                                                                                 
-<!--l. 1105--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">scoreMsg</span> <img 
-src="OSCMsg39x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx10-35002"></a>
-<a 
- id="dx10-35003"></a>
-<a 
- id="dx10-35004"></a>
-<a 
- id="dx10-35005"></a>
-<a 
- id="dx10-35006"></a>
-<a 
- id="dx10-35007"></a>
-<a 
- id="dx10-35008"></a>
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrr8tn-">page</span>: set the score current page
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">dpage</span>: moves the score current page
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">pageFormat</span>:  set  the  page  format.  The  parameters  are  the  page  width  and  height.  Note  that  the
-     message has no effect when the score already includes a <span class="obeylines-h"><span class="verb"><span 
-class="pcrr8tn-">\</span></span></span>pageformat tag.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">columns</span>: for multi pages display: set the number of columns.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">rows</span>: for multi pages display: set the number of rows.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">pageCount</span>: a read only attribute, gives the score pages count.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">systemCount</span>: a read only attribute, gives the number of systems on each of the score pages. The
-     result is given as a list systems count ordered by page number (index 0 is page 1, etc.).</li></ul>
-<!--l. 1126--><p class="noindent" ><span 
-class="ptmbc8t-">E<span 
-class="small-caps">X</span><span 
-class="small-caps">A</span><span 
-class="small-caps">M</span><span 
-class="small-caps">P</span><span 
-class="small-caps">L</span><span 
-class="small-caps">E</span> </span><br 
-class="newline" />Displaying a multi-pages score on two pages starting at page 3:
+<!--l. 1082--><p class="noindent" >Querying an object content
 <div class="center" 
 >
-<!--l. 1130--><p class="noindent" >
+<!--l. 1083--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox31"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/myScore columns 2 ;</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/myScore page 3 ;</span></div></div>
+class="pcrr8tn-x-x-90">/ITL/scene/myobject get;</span>
+</div></div>
 </div>
+<!--l. 1084--><p class="noindent" >&#x00A0;       will give the corresponding <span 
+class="pcrr8tn-">set </span>message:
+<div class="center" 
+>
                                                                                  
 
                                                                                  
-<a 
- id="dx10-35009"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 1136--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">gmnstreamMsg</span> <img 
-src="OSCMsg40x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx10-35010"></a>
-<a 
- id="dx10-35011"></a>
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrr8tn-">write</span>: add the stream in parameter to the global stream
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">clear</span>: reinitialize the stream</li></ul>
-<!--l. 1146--><p class="noindent" ><span 
-class="ptmbc8t-">E<span 
-class="small-caps">X</span><span 
-class="small-caps">A</span><span 
-class="small-caps">M</span><span 
-class="small-caps">P</span><span 
-class="small-caps">L</span><span 
-class="small-caps">E</span> </span><br 
-class="newline" />Writing a score in 3 steps:
-<div class="center" 
->
-<!--l. 1151--><p class="noindent" >
+<!--l. 1085--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox32"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/myScore set gmnstream "[ c"; </span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/myScore write " d e";</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/myScore write " f]";</span></div></div>
+class="pcrr8tn-x-x-90">/ITL/scene/myobject set txt "Hello world!";</span>
+</div></div>
 </div>
-<!--l. 1155--><p class="noindent" >
-<h3 class="sectionHead"><span class="titlemark">6.5    </span> <a 
- id="x10-360006.5"></a>The &#8217;grid&#8217; object</h3>
-<!--l. 1158--><p class="noindent" >The <span 
-class="pcrr8tn-">grid </span>object provides a pre-defined time to graphic mapping organized in columns and row. By default, it is not
-visible (white, transparent) but supports all the attributes of rectangles (color, pen, effects, etc.). Each
-element of a grid has a duration that is computed as the grid duration divided by the total number
-of elements ( columns x rows) and is placed in the time space from the date 0 to the end of the grid
-duration.
-<a 
- id="dx10-36001"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
+<!--l. 1087--><p class="noindent" ><span 
+class="ptmbc8t-">N<span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span>  </span><br 
+class="newline" />The <span 
+class="pcrr8tn-">get width </span>and <span 
+class="pcrr8tn-">get height </span>messages addressed to components that have no explicit width and height (text,
+images, etc.) returns 0 as long as the target component has not been graphically rendered.
                                                                                  
 
                                                                                  
-<!--l. 1166--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">gridMsg</span> <img 
-src="OSCMsg41x.png" alt="PICT" >
-</div></dd></dl>
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrr8tn-">columns </span>set the number of columns of the grid,
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">rows </span>set the number of rows of the grid,
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">xborder </span>set the horizontal spacing between the elements of the grid (default is 0.),
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">yborder </span>set the vertical spacing between the elements of the grid (default is 0.),
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">order </span>defines the time order of the elements. By default, elements are organized from left to right
-     first and from top to bottom next (<span 
-class="pcrr8tn-">leftright</span>). The <span 
-class="pcrr8tn-">topbottom </span>parameter changes this order from
-     top to bottom first and from left to right next.</li></ul>
-<!--l. 1176--><p class="noindent" ><span 
-class="ptmbc8t-">E<span 
-class="small-caps">X</span><span 
-class="small-caps">A</span><span 
-class="small-caps">M</span><span 
-class="small-caps">P</span><span 
-class="small-caps">L</span><span 
-class="small-caps">E</span> </span><br 
-class="newline" />Creating a 10 x 10 grid organized from top to bottom with a border:
-<div class="center" 
->
-<!--l. 1182--><p class="noindent" >
-<div 
-class="colorbox" id="colorbox33"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/grid set grid 10 10 ;</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/grid xborder 3. ;</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/grid yborder 3. ;</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/grid order topbottom ;</span></div></div>
-</div>
-<!--l. 1187--><p class="noindent" >
-<h3 class="sectionHead"><span class="titlemark">6.6    </span> <a 
- id="x10-370006.6"></a>The &#8217;debug&#8217; nodes</h3>
-<!--l. 1190--><p class="noindent" >Each component includes a static <span 
-class="pcrr8tn-">debug </span>nodes provided to give information about components.
-<a 
- id="dx10-37001"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-                                                                                 
-
-                                                                                 
-<!--l. 1194--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">debugMsg</span> <img 
-src="OSCMsg42x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx10-37002"></a>
-<a 
- id="dx10-37003"></a>
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrr8tn-">map </span>is used to display the time to graphic mapping. The parameter is a int value: 0 prevents mapping
-     display, 1 displays only the bounding boxes and 2 displays also the dates along with the boxes. Default
-     is 0 (no map).
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">name </span>is used to display both the object name and bounding box. The parameter is a boolean value.
-     Default is 0.</li></ul>
-                                                                                 
-
-                                                                                 
-<!--l. 1206--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 1093--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch7.html" >next</a>] [<a 
 href="OSCMsgch5.html" >prev</a>] [<a 
 href="OSCMsgch5.html#tailOSCMsgch5.html" >prev-tail</a>] [<a 
 href="OSCMsgch6.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch6.html" >up</a>] </p></div>
-<!--l. 1206--><p class="noindent" ><a 
+<!--l. 1093--><p class="noindent" ><a 
  id="tailOSCMsgch6.html"></a>  
 </body></html> 

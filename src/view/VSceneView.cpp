@@ -77,7 +77,7 @@ class ZoomingGraphicsView : public QGraphicsView
 		virtual void	closeEvent	(QCloseEvent *);
 		virtual void	paintEvent  (QPaintEvent * );
 
-		void resizeEvent ( QResizeEvent * event ) {
+		void resizeEvent ( QResizeEvent * ) {
 			// scene adaptation to avoid scroll bars
 			fitInView( SCENE_RECT , Qt::KeepAspectRatio );
 			if(fScene) {
@@ -267,7 +267,7 @@ void VSceneView::updateOffScreen( IScene * scene )
 }
 
 //------------------------------------------------------------------------------------------------------------------------
-bool VSceneView::copy(unsigned int* dest, int w, int h, bool smooth )
+bool VSceneView::copy(unsigned int* dest, int w, int h, bool /*smooth*/ )
 {
 	QImage image (w, h, QImage::Format_ARGB32_Premultiplied);
 	QPainter painter(&image);

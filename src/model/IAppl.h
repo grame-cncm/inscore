@@ -32,6 +32,7 @@
 #include "IMessageHandlers.h"
 #include "PeriodicTask.h"
 #include "IObject.h"
+#include "TILoader.h"
 #include "TScripting.h"
 #include "udpinfo.h"
 #include "benchtools.h"
@@ -59,18 +60,20 @@ typedef class libmapping::SMARTP<IApplLog>		SIApplLog;
 /*!
 	\brief the application object of the model
 */
-class IAppl : public IObject//, public PeriodicTask
+class IAppl : public IObject, public TILoader
 {
 	typedef std::map<std::string, std::pair<std::string, std::string> >		TAliasesMap;
 	static TAliasesMap fAliases;
 
 	static std::string	fRootPath;
 	static bool			fRunning;
-		
+	static std::string	fVersion;					// the application version number
+	static float		fVersionNum;				// the application version number as floating point value
+	static float		fCompatibilityVersionNum;		// the supported version number as floating point value
+	
 		int			fStartTime;					// the application start time
 		int			fCurrentTime;				// the application current time
 		int			fCurrentTicks;				// the current count of clocks
-		std::string fVersion;					// the application version number
 		SIApplDebug	fApplDebug;					// debug flags
 		SIApplStat	fApplStat;					// statistics
 		SIApplLog	fApplLog;					// log window
@@ -93,7 +96,6 @@ class IAppl : public IObject//, public PeriodicTask
 			{ return new IAppl(udpport, outport, errport, appl, offscreen); }
 		static std::string		getRootPath()				{ return fRootPath; }	//< returns the application root path
 		static std::string		absolutePath( const std::string& path );		//< returns the absolute path corresponding to 'path',
-		static std::string		makeAbsolutePath( const std::string& path, const std::string& file );
 
 		static void				addAlias( const std::string& alias, const std::string& address, const std::string& msg);
 		static void				delAliases( const std::string& address);
@@ -148,6 +150,9 @@ class IAppl : public IObject//, public PeriodicTask
 		void		ptask ();
 
 		static std::string checkRootPath (const std::string& path);
+		static float version ()							{ return fVersionNum; }
+		static float compatibilityVersion ()			{ return fCompatibilityVersionNum; }
+				void setCompatibilityVersion (float v)	{ fCompatibilityVersionNum = v; }
 
 	protected:
 				 IAppl(int udpport, int outport, int errport,  QApplication* appl, bool offscreen);
@@ -160,6 +165,9 @@ class IAppl : public IObject//, public PeriodicTask
 		void		setUDPOutAddress(const std::string& a)	{ fUDP.fOutDstAddress = a; }
 		void		setUDPErrAddress(const std::string& a)	{ fUDP.fErrDstAddress = a; }
 		void		setDefaultShow(bool state)				{ fDefaultShow = state; }
+
+		TJSEngine*		getJSEngine()		{ return &fJavascript; }
+		TLua*			getLUAEngine()		{ return &fLua; }
 
 		virtual		SIMessageList getAll () const;
 

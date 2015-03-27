@@ -47,7 +47,7 @@ class VUrlIntermediateObjectView: public VMappedShapeView
 		virtual ~VUrlIntermediateObjectView();
     
 		virtual void updateView( IUrlIntermediateObject * obj );
-		virtual void updateObjectSize( IObject * object ) {}
+		virtual void updateObjectSize( IObject *  )		{}
 };
 
 }

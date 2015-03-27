@@ -50,7 +50,7 @@ class IObjectFactory
 		\param type the object type
 		\param parent its parent object
 	*/
-	static SIObject create(const std::string& name , const std::string& type, IObject* parent, bool isUrl = false);
+	static SIObject create(const std::string& name , const std::string& type, IObject* parent);
 };
 
 /*! @} */

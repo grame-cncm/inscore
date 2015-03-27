@@ -94,20 +94,20 @@ class VObjectView
 			\brief set the object view image using another view
 			\param src the src view
 		*/
-		virtual void	setImage (VObjectView* src)						{}
+		virtual void	setImage (VObjectView* )						{}
 
 		/*!
 			\brief set the object view image using another view
 			\param src the src view
 		*/
-		virtual void	setImage (const unsigned char* data, int len)	{}
+		virtual void	setImage (const unsigned char* , int )	{}
 	
 		/*!
 		 * \brief getImage get image data of the object view at specified format.
 		 * \param format Image format of the data.
 		 * \return data of the image
 		 */
-		virtual const AbstractData		getImage(const char *format) {
+		virtual const AbstractData		getImage(const char *) {
 			AbstractData data;
 			data.data = 0;
 			data.size = 0;
@@ -119,7 +119,7 @@ class VObjectView
 		 * @param version
 		 * @return
 		 */
-		virtual bool	isNewVersion(unsigned long &version) {return false;}
+		virtual bool	isNewVersion(unsigned long &)	{return false;}
 
 		/// \brief simulate UI mouse events
 		virtual void handleEvent (const inscore::IObject* obj, float x, float y, EventsAble::eventype type)

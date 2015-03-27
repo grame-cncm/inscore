@@ -23,18 +23,16 @@
 
 */
 
+#include <QUrl>
+
 #include "IUrlIntermediateObject.h"
 #include "VUrlIntermediateObjectView.h"
 #include "TFile.h"
-#include "IObject.h"
 #include "IScene.h"
-#include "QFileDownloader.h"
-#include "IObjectFactory.h"
 #include "Updater.h"
-#include "VObjectView.h"
-#include "ISceneSync.h"
 #include "TMessageEvaluator.h"
-#include <QUrl>
+
+#include "QFileDownloader.h"
 
 #define useiterator 0
 
@@ -91,7 +89,7 @@ MsgHandler::msgStatus IUrlIntermediateObject::set (const IMessage* msg )
         if (fDownloaderThread)
             updateFileCanceled();
 			
-        fDownloaderThread = new QFileDownloader();
+        fDownloaderThread = new QFileDownloader(getScene()->getRootPath().c_str());
         if (fDownloaderThread) fDownloaderThread->getAsync (path.c_str(), getOSCAddress().c_str());
 		
         return MsgHandler::kProcessed;
@@ -212,6 +210,6 @@ MsgHandler::msgStatus IUrlIntermediateObject::_watchMsg(const IMessage* msg, boo
 void IUrlIntermediateObject::accept (Updater* u)
 {
 	u->updateTo (SIUrlIntermediateObject(this));
-}
 
+}
 }

@@ -60,7 +60,7 @@ class VGraphView: public VShapeView
 		virtual ~VGraphView() {}
 		
 		virtual void updateView( IGraphicSignal * graph );
-		virtual void updateObjectSize( IObject * object ) {}
+		virtual void updateObjectSize( IObject *  )			{}
 		virtual void updateLocalMapping (IGraphicSignal*);
 		
 	protected:

@@ -115,6 +115,7 @@ const char* kbrushStyle_GetSetMethod= "brushStyle";		// Get Set
 const char* kpendAlpha_SetMethod	= "pendAlpha";		// Set
 const char* kpop_SetMethod			= "pop";			// Set
 const char* kport_GetSetMethod		= "port";			// Get Set
+const char* kcompatibility_GetSetMethod	= "compatibility";	// Get Set
 const char* kpush_SetMethod			= "push";			// Set
 const char* kquit_SetMethod			= "quit";			// Set
 const char* krate_GetSetMethod		= "rate";			// Get Set

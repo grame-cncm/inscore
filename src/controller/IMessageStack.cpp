@@ -30,7 +30,7 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-IMessageStack::IMessageStack() : fReceivedCount(0)	{ fPendingMsgs.resize(5000); }
+IMessageStack::IMessageStack() : fReceivedCount(0)	{ fPendingMsgs.resize(10000); }
 IMessageStack::~IMessageStack()	
 { 
 	flush(); 

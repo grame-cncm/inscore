@@ -5,5 +5,5 @@ House keeping when releasing a new version
 3) tag the new release with the version number:
    git tag 'vnnn'
 4) push the tag to remote hosts
-   git push remote --tags
+   git push origin --tags
 

@@ -114,6 +114,7 @@ extern const char* kpenWidth_GetSetMethod;
 extern const char* kpendAlpha_SetMethod;
 extern const char* kpop_SetMethod;
 extern const char* kport_GetSetMethod;
+extern const char* kcompatibility_GetSetMethod;
 extern const char* kpush_SetMethod;
 extern const char* kquit_SetMethod;
 extern const char* krate_GetSetMethod;

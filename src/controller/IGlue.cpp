@@ -119,7 +119,7 @@ void IGlue::oscinit (OSCStream& osc, const std::string& address, int port)
 }
 
 //--------------------------------------------------------------------------
-bool IGlue::getSceneView(unsigned int* dest, int w, int h, bool smooth )
+bool IGlue::getSceneView(unsigned int* , int , int , bool )
 { 
 	QMutexLocker locker (&fTimeViewMutex);
 
@@ -180,7 +180,7 @@ void IGlue::initialize (bool offscreen, QApplication* appl)
 }
 
 //--------------------------------------------------------------------------
-bool IGlue::start (int timeInterval, bool offscreen, QApplication* appl)
+bool IGlue::start (int /*timeInterval*/, bool offscreen, QApplication* appl)
 {
 	try {
 		initialize(offscreen, appl);

@@ -133,7 +133,7 @@ void QGraphicsGraphItem::StepDrawer::setPath( QPainterPath& path , const QList<Q
 }
 
 //--------------------------------------------------------------------------
-void QGraphicsGraphItem::CurveDrawer::setPath( QPainterPath& path , const QList<QPointF>& points , int index , int stripeWidth, bool ) const
+void QGraphicsGraphItem::CurveDrawer::setPath( QPainterPath& path , const QList<QPointF>& points , int index , int /*stripeWidth*/, bool ) const
 {
 	path.lineTo( points[index] );
 }

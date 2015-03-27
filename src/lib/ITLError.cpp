@@ -32,7 +32,7 @@ namespace inscore
 ITLError ITLErr;			// static ITL error output stream
 ITLErrEnd ITLEndl;			// static ITL error output stream end
 
-ITLError& operator << (ITLError& err, ITLErrEnd end)
+ITLError& operator << (ITLError& err, ITLErrEnd )
 {
 	std::cerr << std::endl;
 	oscerr <<  OSCEnd();

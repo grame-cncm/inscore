@@ -29,6 +29,7 @@
 
 #include "IRectShape.h"
 #include "PeriodicTask.h"
+#include "TILoader.h"
 #include "TScripting.h"
 #include "VSceneView.h"
 
@@ -55,7 +56,7 @@ typedef class libmapping::SMARTP<IJavascript>		SIJavascript;
 //--------------------------------------------------------------------------
 /*! \brief a scene model
 */
-class IScene : public IRectShape//, public PeriodicTask
+class IScene : public IRectShape, public TILoader
 {	
 	bool			fFullScreen;
 	bool			fFrameless;

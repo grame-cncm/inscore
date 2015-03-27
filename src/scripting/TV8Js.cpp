@@ -373,10 +373,10 @@ void TV8Js::Initialize  ()
 //--------------------------------------------------------------------------------------------
 TV8Js::TV8Js() {}
 TV8Js::~TV8Js() {}
-void TV8Js::bindEnv  (const STEnv& env) {}
+void TV8Js::bindEnv  (const STEnv& ) {}
 void TV8Js::Initialize  () {}
 
-bool TV8Js::eval (int line, const char* script, std::string& outStr)
+bool TV8Js::eval (int /*line*/, const char* /*script*/, std::string& /*outStr*/)
 {
 	ITLErr << "javascript not available!" << ITLEndl;
 	return true;

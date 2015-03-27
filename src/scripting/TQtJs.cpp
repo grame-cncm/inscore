@@ -51,10 +51,10 @@ namespace inscore
 
 
 //--------------------------------------------------------------------------------------------
-static std::string makeAbsolutePath( const char* file )
-{
-	return IAppl::absolutePath (file);
-}
+//static std::string makeAbsolutePath( const char* file )
+//{
+//	return IAppl::absolutePath (file);
+//}
 
 //--------------------------------------------------------------------------------------------
 /* tools for v8 */

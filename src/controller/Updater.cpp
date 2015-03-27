@@ -66,7 +66,7 @@ bool LocalMapUpdater::needupdate (IObject* o)
 }
 
 //--------------------------------------------------------------------------
-bool SlaveMapUpdater::needupdate (IObject* o)
+bool SlaveMapUpdater::needupdate (IObject*)
 {
 	return true;
 

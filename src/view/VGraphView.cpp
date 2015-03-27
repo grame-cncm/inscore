@@ -58,7 +58,7 @@ VGraphView::VGraphView(QGraphicsScene * scene, const IGraphicSignal* h)
 	: VShapeView( scene , new MouseEventAble<QGraphicsGraphItem>(h) )
     {}
 
-VGraphView::VGraphView(QGraphicsScene * scene, const IGraphicSignal* h, QAbstractGraphicsShapeItem * item) 
+VGraphView::VGraphView(QGraphicsScene * scene, const IGraphicSignal* , QAbstractGraphicsShapeItem * item) 
 	: VShapeView( scene , item ) {}
 
 void VGraphView::updateView( IGraphicSignal * graph )

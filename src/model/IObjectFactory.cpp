@@ -116,7 +116,7 @@ template<> SIObject _create<IScene>(const std::string& name , IObject* parent)
 #endif
 
 //--------------------------------------------------------------------------
-SIObject IObjectFactory::create(const std::string& name , const std::string& type, IObject* parent, bool isUrl)
+SIObject IObjectFactory::create(const std::string& name , const std::string& type, IObject* parent)
 {
 	SIObject obj;
 	

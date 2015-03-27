@@ -135,19 +135,15 @@ void VLogWindow::istretch (float ow, float oh)
 		resize( w, h );
 }
 
-void VLogWindow::closeEvent(QCloseEvent * event) {
+void VLogWindow::closeEvent(QCloseEvent * ) {
 	INScore::MessagePtr msg = INScore::newMessage ("show");
 	INScore::add (msg, 0);
 	INScore::postMessage ("/ITL/log", msg);
 }
-
+ 
 void VLogWindow::setVisible(bool visible) {
 	QWidget::setVisible (visible);
-	if (visible) {
-		raise ();
-	}
 }
-
 
 void VLogWindow::clear()
 {

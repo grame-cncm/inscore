@@ -132,11 +132,11 @@ class ConstTSignal : public TSignal
 	public :
 		static SConstTSignal create(float value)			{ return new ConstTSignal(value); }				
 		/// \brief catch buffer size changes for constant signals
-		virtual bool size(unsigned short n)				{ return true; }
+		virtual bool size(unsigned short)				{ return true; }
 		/// \brief changes the signal value
 		virtual TSignal&  operator << (float value)		{ fDefault = value; return *this; }
 		/// \brief gives the signal value
-		virtual float operator[](int n)	const			{ return TSignal::fDefault; }
+		virtual float operator[](int)	const			{ return TSignal::fDefault; }
 };
 
 

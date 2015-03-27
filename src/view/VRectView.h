@@ -55,7 +55,7 @@ class VRectView: public VMappedShapeView
 		virtual ~VRectView() {}
 
 		virtual void updateView( IRect * rect );
-		virtual void updateObjectSize( IObject * object ) {}
+		virtual void updateObjectSize( IObject *  )		{}
 };
 
 /*!@} */

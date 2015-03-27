@@ -84,7 +84,7 @@ template <typename C> class TMethodMsgHandler<C, void (C::*)(void)> : public Msg
 	public: 
 		typedef void (C::*MsgHandlerMethod)(void);
 		static SMsgHandler create(C* obj, MsgHandlerMethod method)	{ return new TMethodMsgHandler<C,MsgHandlerMethod> (obj, method); }
-		virtual msgStatus operator ()(const IMessage* msg)			{ (fObject->*fMethod)(); return kProcessed; }
+		virtual msgStatus operator ()(const IMessage*)			{ (fObject->*fMethod)(); return kProcessed; }
 	protected:
 		C*	fObject;
 		MsgHandlerMethod	fMethod;
@@ -98,7 +98,7 @@ template <typename C> class TMethodMsgHandler<C, void (C::*)(void) const> : publ
 	public: 
 		typedef void (C::*MsgHandlerMethod)(void) const;
 		static SMsgHandler create(C* obj, MsgHandlerMethod method)	{ return new TMethodMsgHandler<C,MsgHandlerMethod> (obj, method); }
-		virtual msgStatus operator ()(const IMessage* msg)			{ (fObject->*fMethod)(); return kProcessedNoChange; }
+		virtual msgStatus operator ()(const IMessage*)			{ (fObject->*fMethod)(); return kProcessedNoChange; }
 	protected:
 		C*	fObject;
 		MsgHandlerMethod	fMethod;

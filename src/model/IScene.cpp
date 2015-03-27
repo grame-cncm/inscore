@@ -169,39 +169,10 @@ string IScene::address2scene (const char* addr) const
 	return sceneAddress;
 }
 
-extern SIMessageStack gMsgStack;
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 {
-	if (msg->size() == 1) {
-		string srcfile = msg->param(0)->value<string>("");
-		if (srcfile.size()) {
-			fstream file (absolutePath(srcfile).c_str(), fstream::in);
-			if (file.is_open()) {
-				ITLparser p (&file, 0, &fJavascript, &fLua);
-				SIMessageList msgs = p.parse();
-				if (msgs) {
-					for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
-						IMessage * msg = *i;
-						string address;
-						if (msg->relativeAddress())
-							address = msg->relative2absoluteAddress (getOSCAddress());
-						else
-							address = msg->address();
-						address = address2scene (address.c_str());		// possibly converts the address to the local scene address
-						string beg  = OSCAddress::addressFirst(address);
-						string tail = OSCAddress::addressTail(address);
-						int ret = getRoot()->processMsg(beg, tail, *i);
-						IGlue::trace(*i, ret);
-					}
-				}
-				else ITLErr << "while parsing file" << srcfile << ITLEndl;
-			}
-			else ITLErr << "IScene can't open file" << srcfile << ITLEndl;
-			return MsgHandler::kProcessed;
-		}
-	}
-	return MsgHandler::kBadParameters;
+	return load (msg, this, getRootPath());
 }
 
 //--------------------------------------------------------------------------

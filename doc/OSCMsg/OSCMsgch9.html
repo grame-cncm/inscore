@@ -1,39 +1,111 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
   "http://www.w3.org/TR/html4/loose.dtd">  
 <html > 
-<head><title>9 Layers</title> 
+<head><title>9 Scene messages</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
 <meta name="generator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2015-01-08 11:24:00"> 
+<meta name="date" content="2015-03-25 18:57:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 1503--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 1576--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch10.html" >next</a>] [<a 
 href="OSCMsgch8.html" >prev</a>] [<a 
 href="OSCMsgch8.html#tailOSCMsgch8.html" >prev-tail</a>] [<a 
 href="#tailOSCMsgch9.html">tail</a>] [<a 
 href="OSCMsg3.html#OSCMsgch9.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;9</span><br /><a 
- id="x13-490009"></a>Layers</h2>
-<!--l. 1506--><p class="noindent" >Layers may be viewed as containers or as groups. They represent a way to structure both the address space and the
-graphic space.
-<!--l. 1508--><p class="noindent" >From graphic viewpoint, a layer is a scene inside a scene. All the properties of &#8217;rect&#8217; components are
-available to layers: position, scale, color, transparency, etc.). By default, a layer is not visible: it has
-no brush and no pen, but changing the brush style (see section <a 
-href="OSCMsgch6.html#x10-330006.2">6.2<!--tex4ht:ref: brush --></a> p.<a 
-href="OSCMsgch6.html#x10-330006.2">46<!--tex4ht:ref: brush --></a>) - e.g. to <span 
-class="pcrr8tn-">solid </span>- makes it
-visible.
-<!--l. 1510--><p class="noindent" >From time viewpoint, a layer has the common time attributes i.e. a date, a duration.
-<!--l. 1512--><p class="noindent" >A layer may be synchronized to other objects, including other layers. It includes a <span 
-class="pcrr8tn-">sync </span>node and supports
-synhcronization of the enclosed objects. However, synchronization is restricted to objects from the same layer and
-cannot cross the border of a layer.
-<!--l. 1515--><p class="noindent" ><span 
+ id="x13-520009"></a>Scene messages</h2>
+<!--l. 1578--><p class="noindent" >A scene may be viewed as a window on the score elements. Its address is <span 
+class="pcrr8tn-">/ITL/</span><span 
+class="pcrro8t-">sceneIdentifier </span>where
+<span 
+class="pcrro8t-">sceneIdentifier </span>is the scene name.
+<h3 class="sectionHead"><span class="titlemark">9.1    </span> <a 
+ id="x13-530009.1"></a>Scene control</h3>
+<!--l. 1583--><p class="noindent" >The following messages are available at scene level, to control the scene appearance and behaviour:
+<a 
+ id="dx13-53001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1595--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">sceneMsg</span> <img 
+src="OSCMsg56x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx13-53002"></a>
+<a 
+ id="dx13-53003"></a>
+<a 
+ id="dx13-53004"></a>
+<a 
+ id="dx13-53005"></a>
+<a 
+ id="dx13-53006"></a>
+<a 
+ id="dx13-53007"></a>
+<a 
+ id="dx13-53008"></a>
+<a 
+ id="dx13-53009"></a>
+<a 
+ id="dx13-53010"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">new</span>: creates a new scene and opens it in a new window.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">del</span>: deletes a scene and closes the corresponding window.
+     </li>
+                                                                                 
+
+                                                                                 
+     <li class="itemize"><span 
+class="pcrr8tn-">reset</span>: clears the scene (i.e. delete all components) and resets the scene to its default state (position,
+     size and color).
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">rootPath</span>: <span 
+class="ptmri8t-">rootPath </span>of a scene is the default path where the scene reads or writes a file when a relative
+     path is used for this file. When no value has been specified, the application <span 
+class="ptmri8t-">rootPath </span>is used.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">load</span>: loads an INScore file to the scene. Note that the OSC addresses are translated to the scene OSC
+     address.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">fullscreen</span>: requests the scene to switch to full screen or normal screen. The parameter is interpreted
+     as a boolean value. Default value is <span 
+class="pcrr8tn-">0</span>.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">frameless</span>: requests the scene to switch to frameless or normal window. The parameter is interpreted
+     as a boolean value. Default value is <span 
+class="pcrr8tn-">0</span>.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">absolutexy</span>: requests the scene to absolute or relative coordinates. Absolute coordinates are in pixels
+     relative to the top left corner of the screen. Relative coordinates are in the range [-1, 1] where [0,0] is
+     the center of the screen. The message parameter is interpreted as a boolean value. Default value is <span 
+class="pcrr8tn-">0</span>.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">windowOpacity</span>:  switch  the  scene  window  to  opaque  or  transparent  mode.  When  in  transparent
+     mode, the scene alpha channel controls the window opacity (from completely opaque to completely
+     transparent). In opaque mode, the scene alpha channel controls the background brush only. Default
+     value is <span 
+class="pcrr8tn-">0 </span>(transparent).
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">commonMsg</span>: a scene support the common graphic attributes. See section <a 
+href="OSCMsgch2.html#x6-60002">2<!--tex4ht:ref: common --></a> p.<a 
+href="OSCMsgch2.html#x6-60002">10<!--tex4ht:ref: common --></a>.</li></ul>
+<!--l. 1620--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -41,51 +113,102 @@ class="small-caps">M</span><span
 class="small-caps">P</span><span 
 class="small-caps">L</span><span 
 class="small-caps">E</span> </span><br 
-class="newline" />Creating a layer and its content:
+class="newline" />Setting a scene current path:
 <div class="center" 
 >
-<!--l. 1519--><p class="noindent" >
+<!--l. 1622--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox45"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/layer1 set layer;</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/layer1/score set gmnf &#8217;myscore.gmn&#8217;;</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/layer1/cursor set rect 0.01 0.1;</span></div></div>
+class="pcrr8tn-x-x-90">/ITL/scene rootPath "/path/to/my/folder";</span>
+</div></div>
 </div>
-<!--l. 1521--><p class="noindent" >Synchronizing 2 components of a layer :
+<!--l. 1623--><p class="noindent" >Loading an INScore file:
 <div class="center" 
 >
-<!--l. 1524--><p class="noindent" >
+<!--l. 1624--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox46"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">!&#8217;score&#8217; and &#8217;cursor&#8217; must be enclosed in layer1 </span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/layer1/sync cursor score;</span></div></div>
+class="pcrr8tn-x-x-90">/ITL/scene load "myscript.inscore";</span>
+</div></div>
 </div>
-<!--l. 1526--><p class="noindent" >Making a layer visible :
+<!--l. 1625--><p class="noindent" >&#x00A0;       will load <span 
+class="pcrr8tn-">/path/to/my/folder/myscript.inscore </span>into the scene.
+<!--l. 1627--><p class="noindent" >Setting a scene to fullscreen:
 <div class="center" 
 >
-<!--l. 1529--><p class="noindent" >
+<!--l. 1628--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox47"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/layer1 brushStyle solid; </span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/layer1 color 120 120 120;</span></div></div>
-</div>
-<h3 class="sectionHead"><span class="titlemark">9.1    </span> <a 
- id="x13-500009.1"></a>Layers generalization</h3>
-<!--l. 1536--><p class="noindent" >The idea of layer is generalized to all the type of objects: any INScore object can be a container without limitation
-on the depth.
+class="pcrr8tn-x-x-90">/ITL/scene fullscreen 1;</span>
+</div></div>
                                                                                  
 
                                                                                  
-<!--l. 1601--><div class="crosslinks"><p class="noindent">[<a 
+</div>
+<!--l. 1629--><p class="noindent" >Creating a new score named <span 
+class="pcrr8tn-">myScore</span>:
+<div class="center" 
+>
+<!--l. 1630--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox48"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/myScore new;</span>
+</div></div>
+</div>
+<!--l. 1635--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">9.2    </span> <a 
+ id="x13-540009.2"></a>Scene queries</h3>
+<!--l. 1638--><p class="noindent" >A scene may respond to queries regarding its elements:
+<a 
+ id="dx13-54001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1642--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">sceneQuery</span> <img 
+src="OSCMsg57x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx13-54002"></a>
+<a 
+ id="dx13-54003"></a>
+<a 
+ id="dx13-54004"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">count</span>: count the number of elements in the scene.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">rcount</span>: recursively count the number of elements in the scene.</li></ul>
+<!--l. 1652--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Counting the elements in a scene:
+<div class="center" 
+>
+<!--l. 1657--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox49"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene get count;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">&#x00A0;   will give a message like the following as output: </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene count 200;</span></div></div>
+</div>
+                                                                                 
+
+                                                                                 
+<!--l. 1663--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch10.html" >next</a>] [<a 
 href="OSCMsgch8.html" >prev</a>] [<a 
 href="OSCMsgch8.html#tailOSCMsgch8.html" >prev-tail</a>] [<a 
 href="OSCMsgch9.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch9.html" >up</a>] </p></div>
-<!--l. 1601--><p class="noindent" ><a 
+<!--l. 1663--><p class="noindent" ><a 
  id="tailOSCMsgch9.html"></a>  
 </body></html> 
