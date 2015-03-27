@@ -13,6 +13,7 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.12
+- 'line' objects: 'color' message is now an alias of 'penColor'
 - new 'compatibility' method at application level, provided to preserve previous behaviors
 - Remove GuidoQt library dependency and integrate source file.
 - Inscrease default size of guido item.
