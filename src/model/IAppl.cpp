@@ -146,6 +146,7 @@ IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool of
 	fTypeString = kApplType;
 	fVersion	= INScore::versionStr();
 	fVersionNum = INScore::version();
+	fCompatibilityVersionNum = fVersionNum;
 	fStartTime = getTime() / 1000;
 
 	fMsgHandlerMap[khello_SetMethod]			= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::helloMsg);
