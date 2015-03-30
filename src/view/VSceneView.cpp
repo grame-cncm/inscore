@@ -79,6 +79,16 @@ class ZoomingGraphicsView : public QGraphicsView
 			if(fScene) {
 				fScene->setUpdateVersion(true);
 			}
+			QSize	s = size();
+			QRect r = QApplication::desktop()->screenGeometry();
+			if (!fScene) return;
+
+			// full screen detection and transmission to the model
+			bool fullscreen = (r.width() == s.width()) && (r.height() == s.height());
+			if (fullscreen) {
+				if (!fScene->getFullScreen()) fScene->setFullScreen(true);
+			}
+			else if (fScene->getFullScreen()) fScene->setFullScreen(false);
 		}
 };
 
