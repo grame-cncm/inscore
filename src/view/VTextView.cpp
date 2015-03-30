@@ -23,8 +23,6 @@
 
 */
 
-#include <iostream>
-
 #include "VTextView.h"
 #include "VApplView.h"
 #include "ITLError.h"
@@ -38,21 +36,24 @@
 #include <QAbstractTextDocumentLayout>
 #include <QTextLayout>
 #include <QGraphicsScene>
-
+#include <iostream>
 //#include "QTextTilerItem.h"
 
 namespace inscore
 {
-
+const float VTextView::VERSION_CHG_STR = 1.12;
 //----------------------------------------------------------------------
 VTextView::VTextView(QGraphicsScene * scene, const IText* h)
  :	VIntPointObjectView( scene , new IQGraphicsTextItem(h) )
 {
 	fTextItem = (IQGraphicsTextItem*)(fItem);
-	// Fix font size for initialisation to have approaching render on different platforms.
-	QFont font = fTextItem->font();
-	font.setPointSize(9);
-	fTextItem->setFont(font);
+	if(IAppl::compatibilityVersion() >= VERSION_CHG_STR) {
+		// Fix font size for initialisation to have same render on different platforms.
+		QFont font = fTextItem->font();
+		font.setPixelSize(13);
+		font.setFamily("Arial");
+		fTextItem->setFont(font);
+	}
 	fTextItem->document()->setDocumentMargin(0);
 	fHtmlFile = 0;
 }
