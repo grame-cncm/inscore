@@ -4,7 +4,15 @@
 # i386 GNU/Linux: OSC_HOST_LITTLE_ENDIAN
 ENDIANESS=OSC_HOST_LITTLE_ENDIAN
 
-CXX = g++
+ifeq ($(MAKECMDGOALS), android)
+ $(info Android)
+ CXX=arm-linux-androideabi-g++
+else
+ $(info $(TARGET))
+ $(info native build)
+ CXX = g++
+endif
+
 INCLUDES = -I./
 COPTS  = -Wall -O3 -fPIC
 CDEBUG = -Wall -g -fPIC
@@ -68,6 +76,9 @@ $(LIBFILENAME): $(LIBOBJECTS)
 	@#$(CXX) -dynamiclib -Wl,-install_name,$(LIBSONAME) -o $(LIBFILENAME) $(LIBOBJECTS) -lc
 	
 lib: $(LIBFILENAME)
+
+.PHONY: android
+android: lib install-local
 
 #Installs the library on a system global location
 install: lib

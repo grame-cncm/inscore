@@ -105,6 +105,9 @@ IGlue* INScore::start(int timeInterval, int udpport, int outport, int errport, Q
 //--------------------------------------------------------------------------
 void INScore::stop(IGlue* glue)
 {
+#ifndef NOVIEW
+	VQtInit::stopQt();
+#endif
 	gGlue = 0;
 	delete glue;
 }

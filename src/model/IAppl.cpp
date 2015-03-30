@@ -94,6 +94,9 @@ const string IAppl::kApplType("appl");
 #ifdef WIN32
 #define _CRT_SECURE_NO_DEPRECATE
 std::string IAppl::fRootPath = std::string(getenv("USERPROFILE")) + "\\";
+#elif ANDROID
+// File are writed in sdcard only
+std::string IAppl::fRootPath = "/sdcard/inscore/";
 #else
 std::string IAppl::fRootPath = std::string(getenv("HOME")) + "/";
 #endif
@@ -143,6 +146,7 @@ IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool of
 	fTypeString = kApplType;
 	fVersion	= INScore::versionStr();
 	fVersionNum = INScore::version();
+	fCompatibilityVersionNum = fVersionNum;
 	fStartTime = getTime() / 1000;
 
 	fMsgHandlerMap[khello_SetMethod]			= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::helloMsg);

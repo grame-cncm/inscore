@@ -19,6 +19,7 @@
 #include <sstream>
 #include <iostream>
 
+#include "IAppl.h"
 #include "QGuidoPainter.h"
 #include "GUIDOEngine.h"
 #include "GUIDOParse.h"
@@ -42,6 +43,10 @@
 
 GSystemQt * QGuidoPainter::mSys = 0;
 VGDevice * QGuidoPainter::mDev  = 0;
+
+const float QGuidoPainter::VERSION_CHG_SIZE = 1.12;
+const float QGuidoPainter::BIG_SIZE = 80.0;
+const float QGuidoPainter::SMALL_SIZE = 10.0;
 
 //-------------------------------------------------------------------------
 //								Static functions						///
@@ -389,8 +394,12 @@ QSizeF QGuidoPainter::pageSizeMM(int page) const
 
 	GuidoPageFormat format;
 	GuidoGetPageFormat( mDesc.handle , page , &format );
-	float widthMM = GuidoUnit2CM( format.width ) * 80.0f;
-	float heightMM = GuidoUnit2CM( format.height ) * 80.0f;
+	float factor = SMALL_SIZE;
+	if(inscore::IAppl::compatibilityVersion() >= VERSION_CHG_SIZE) {
+		factor = BIG_SIZE;
+	}
+	float widthMM = GuidoUnit2CM( format.width ) * factor;
+	float heightMM = GuidoUnit2CM( format.height ) * factor;
 	
 	return QSizeF( widthMM , heightMM );
 }
