@@ -41,13 +41,15 @@
 
 namespace inscore
 {
-const float VTextView::VERSION_CHG_STR = 1.12;
+// behavior changes and key version numbers
+const float kFontSizeChangeVers = 1.12;
+
 //----------------------------------------------------------------------
 VTextView::VTextView(QGraphicsScene * scene, const IText* h)
  :	VIntPointObjectView( scene , new IQGraphicsTextItem(h) )
 {
 	fTextItem = (IQGraphicsTextItem*)(fItem);
-	if(IAppl::compatibilityVersion() >= VERSION_CHG_STR) {
+	if(IAppl::compatibilityVersion() >= kFontSizeChangeVers) {
 		// Fix font size for initialisation to have same render on different platforms.
 		QFont font = fTextItem->font();
 		font.setPixelSize(13);

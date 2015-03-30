@@ -105,8 +105,6 @@ class VTextView: public VIntPointObjectView
 				virtual void			set(const QString& s)	{ fItem->setPlainText( s ); }
 		};
 
-	private:
-		static const float VERSION_CHG_STR;
 };
 typedef class libmapping::SMARTP<VTextView>	SVTextView;
 

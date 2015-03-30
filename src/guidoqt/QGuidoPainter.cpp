@@ -44,9 +44,8 @@
 GSystemQt * QGuidoPainter::mSys = 0;
 VGDevice * QGuidoPainter::mDev  = 0;
 
-const float QGuidoPainter::VERSION_CHG_SIZE = 1.12;
-const float QGuidoPainter::BIG_SIZE = 80.0;
-const float QGuidoPainter::SMALL_SIZE = 10.0;
+// behavior changes and key version numbers
+const float kRenderingFactorChangeVers = 1.12;
 
 //-------------------------------------------------------------------------
 //								Static functions						///
@@ -387,6 +386,12 @@ int QGuidoPainter::heightForWidth ( int w , int page ) const
 }
 
 //-------------------------------------------------------------------------
+float QGuidoPainter::getRenderingFactor () const
+{
+	return (inscore::IAppl::compatibilityVersion() >= kRenderingFactorChangeVers) ? 80.0 : 10.0;
+}
+
+//-------------------------------------------------------------------------
 QSizeF QGuidoPainter::pageSizeMM(int page) const
 {
 	if ( !hasValidGR() )
@@ -394,10 +399,7 @@ QSizeF QGuidoPainter::pageSizeMM(int page) const
 
 	GuidoPageFormat format;
 	GuidoGetPageFormat( mDesc.handle , page , &format );
-	float factor = SMALL_SIZE;
-	if(inscore::IAppl::compatibilityVersion() >= VERSION_CHG_SIZE) {
-		factor = BIG_SIZE;
-	}
+	float factor = getRenderingFactor();
 	float widthMM = GuidoUnit2CM( format.width ) * factor;
 	float heightMM = GuidoUnit2CM( format.height ) * factor;
 	

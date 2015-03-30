@@ -105,11 +105,6 @@ class QGuidoPainter
 		static GSystemQt * mSys;
 		static VGDevice * mDev;
 	
-	private:
-		static const float VERSION_CHG_SIZE;
-		static const float BIG_SIZE;
-		static const float SMALL_SIZE;
-
 // ------- Non-Static members -------------------
 	public :
 		enum { kDefaultSystemDistance=75, kMinSystemDistance=1 };
@@ -234,7 +229,10 @@ class QGuidoPainter
 		bool hasValidGR() const			{ return mDesc.handle != 0; }
 
         void setPathsToARHandler (ARHandler inARHandler, const char* data);
-		
+
+		// functions that depends on the compatibility version
+		float getRenderingFactor () const;
+	
 		GuidoOnDrawDesc mDesc;
 		ARHandler mARHandler;
 		QString mGMNCode;
