@@ -172,6 +172,7 @@ void VSceneView::foreground()
 	// Select tab of the scene as current tab
 	VQtInit::getTabWidget()->setCurrentWidget(fGraphicsView);
 #else
+	fGraphicsView->raise();
 	fGraphicsView->activateWindow();
 #endif
 }

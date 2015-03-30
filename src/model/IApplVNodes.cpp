@@ -155,7 +155,10 @@ IApplLog::~IApplLog()
 void IApplLog::setVisible (bool vis)
 {
 	IObject::setVisible(vis);
-	if (vis) fWindow->raise();
+	if (vis) {
+		fWindow->raise();
+		fWindow->activateWindow();
+	}
 }
 
 //--------------------------------------------------------------------------
