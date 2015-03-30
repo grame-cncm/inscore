@@ -15,8 +15,10 @@ It has been supported by the ANR (ANR-08-CORD-010)
 Version 1.12
 - 'line' objects: 'color' message is now an alias of 'penColor'
 - new 'compatibility' method at application level, provided to preserve previous behaviors
+- new 'foreground' method at scene level to display scene window in foreground.
 - Remove GuidoQt library dependency and integrate source file.
 - Inscrease default size of guido item.
+- Add default size and font to text item to have same rendering on different plateform (default to Arial 13px)
 - Add 'arrows' attribute to 'line' objects.
 - Bug correction :
 	When ask for multiple exports, all are now treated and not only the last.
