@@ -1585,6 +1585,7 @@ The following messages are available at scene level, to control the scene appear
 sceneMsg :  'new'
 			| 'del'
 			| 'reset'
+			| 'foreground'
 			| ('rootPath' path) 
 			| ('load' filePath)
 			| ('fullscreen' int32)
@@ -1596,6 +1597,7 @@ sceneMsg :  'new'
 \index{Scene messages}
 \index{Scene messages!new}
 \index{Scene messages!del}
+\index{Scene messages!foreground}
 \index{Scene messages!rootPath}
 \index{Scene messages!load}
 \index{Scene messages!reset}
@@ -1607,6 +1609,7 @@ sceneMsg :  'new'
 \item \OSC{new}: creates a new scene and opens it in a new window.
 \item \OSC{del}: deletes a scene and closes the corresponding window.
 \item \OSC{reset}: clears the scene (i.e. delete all components) and resets the scene to its default state (position, size and color).
+\item \OSC{foreground}: display scene window in foreground of all other windows in the system windows manager.
 \item \OSC{rootPath}: \emph{rootPath} of a scene is the default path where the scene reads or writes a file when a relative path is used for this file. When no value has been specified, the application  \emph{rootPath} is used.
 \item \OSC{load}: loads an INScore file to the scene. Note that the OSC addresses are translated to the scene OSC address.
 %\item \OSC{foreground}: put the scene to foreground.

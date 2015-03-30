@@ -1065,10 +1065,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {56}{ sceneMsg : 'new' | 'del' | 'reset' | ('rootPath' path) | ('load' filePath) | ('fullscreen' int32) | ('frameless' int32) | ('absolutexy' int32) | ('windowOpacity' int32) | commonMsg }
+\rail@i {56}{ sceneMsg : 'new' | 'del' | 'reset' | 'foreground' | ('rootPath' path) | ('load' filePath) | ('fullscreen' int32) | ('frameless' int32) | ('absolutexy' int32) | ('windowOpacity' int32) | commonMsg }
 \rail@o {56}{
 \rail@index{sceneMsg}
-\rail@begin{10}{sceneMsg}
+\rail@begin{11}{sceneMsg}
 \rail@bar
 \rail@term{new}[]
 \rail@nextbar{1}
@@ -1076,24 +1076,26 @@
 \rail@nextbar{2}
 \rail@term{reset}[]
 \rail@nextbar{3}
+\rail@term{foreground}[]
+\rail@nextbar{4}
 \rail@term{rootPath}[]
 \rail@nont{path}[]
-\rail@nextbar{4}
+\rail@nextbar{5}
 \rail@term{load}[]
 \rail@nont{filePath}[]
-\rail@nextbar{5}
+\rail@nextbar{6}
 \rail@term{fullscreen}[]
 \rail@token{int32}[]
-\rail@nextbar{6}
+\rail@nextbar{7}
 \rail@term{frameless}[]
 \rail@token{int32}[]
-\rail@nextbar{7}
+\rail@nextbar{8}
 \rail@term{absolutexy}[]
 \rail@token{int32}[]
-\rail@nextbar{8}
+\rail@nextbar{9}
 \rail@term{windowOpacity}[]
 \rail@token{int32}[]
-\rail@nextbar{9}
+\rail@nextbar{10}
 \rail@nont{commonMsg}[]
 \rail@endbar
 \rail@end
