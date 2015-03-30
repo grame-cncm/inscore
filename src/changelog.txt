@@ -24,7 +24,9 @@ Version 1.12
 	When ask for multiple exports, all are now treated and not only the last.
 - incoming messages buffer size increased to 10.000
 - url support for inscore files (load message)
-- Bug in export item corrected : child scaling was not applied.
+- bug in export item corrected : child scaling was not applied.
+- bug in fullscreen support corrected : the model was incorrect when switching to fullscreen using 
+  the window controlers. It was resulting in spurious fullscreen mode exit.
 
 ----------------------------------------------------
 Version 1.11
