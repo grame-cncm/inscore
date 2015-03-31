@@ -168,7 +168,7 @@ void VShapeView::updateView( IShape * shape  )
         QBrush brush = QBrush(color);
         setQBrushStyle( shape->getBrushStyle() , brush );
 		fAbstractGraphicsShapeItem->setBrush( brush );
-//		itemChanged();
+		itemChanged();
 //	}
     
     VGraphicsItemView::updateView (shape);
