@@ -22,11 +22,11 @@ by the http server created in INScore.";
 /ITL/scene/clickme y 0.9;
 /ITL/scene/clickme watch mouseDown(
 	/ITL/scene/clickme push,
-	/ITL/scene load "1.inscore",
+	/ITL/scene/score set gmnstream "{[ \meter<\"4/4\"> a",
 	/ITL/scene/clickme watch mouseDown(
-		/ITL/scene load "2.inscore",
+		/ITL/scene/score write "{c",
 		/ITL/scene/clickme watch mouseDown(
-			/ITL/scene load "3.inscore",
+			/ITL/scene/score write ",e",
 			/ITL/scene/clickme pop
 		)
 	)

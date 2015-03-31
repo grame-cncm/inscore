@@ -12,8 +12,10 @@ gmn = "http://guido.grame.fr/gmn/moz581.gmn";
 /ITL/scene/urlimg set img $img;
 /ITL/scene/urlimg scale 0.7;
 /ITL/scene/urlimg alpha 80;
+/ITL/scene/urlimg watch success (/ITL/scene/urlimg alpha 120);
+
 /ITL/scene/urlscore set gmnf $gmn;
-/ITL/scene/urlscore scale 1.3;
+/ITL/scene/urlscore scale 0.165;
 /ITL/scene/urlscore watch success (/ITL/scene/urlscore color 0 0 0);
 
 /ITL/scene/url* watch error (

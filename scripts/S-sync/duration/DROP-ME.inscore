@@ -50,7 +50,7 @@ c5 = 100 200 100 $alpha;
 
 
 /ITL/scene/score set gmnf "score.gmn";
-/ITL/scene/score scale 3.5;
+/ITL/scene/score scale 0.4;
 
 /ITL/scene/score map staff1;
 /ITL/scene/score map staff2;

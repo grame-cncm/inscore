@@ -15,7 +15,7 @@
 
 score = (
 	./score set gmn "[ g a f ]",
-	./score scale 3.5
+	./score scale 0.44
 );
 /ITL/scene eval $score;
 /ITL/scene/rect* eval $score;
@@ -24,7 +24,7 @@ score = (
 "The same score declaration :
   <pre>score = (
       ./score set gmn '[ g a f ]',
-      ./score scale 3.5
+      ./score scale 0.44
   );</pre>
 is used in different contexts.";
 /ITL/scene/comment scale 1.2;
