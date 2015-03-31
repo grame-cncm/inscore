@@ -114,15 +114,14 @@ MsgHandler::msgStatus ISignalNode::connectMsg (const IMessage* msg)
     // We must at least have 2 parameters : the signal and at least one pair "object:method"
     if(n < 2) return MsgHandler::kBadParameters;
     
-    std::string signalStr, objectsParameterStr, objectStr;
+    string signalStr;
     if(!msg->param(0, signalStr)) return MsgHandler::kBadParameters;
     
     // We check if the first parameter is indeed a signal and is on our list
     subnodes signalList;
     if(!find(signalStr, signalList)) return MsgHandler::kBadParameters;
-    IObject* sig = signalList[0];
-    ISignal* signal = dynamic_cast<ISignal*>(sig);
-    
+
+    ISignal* signal = dynamic_cast<ISignal*>((IObject*)signalList[0]);
     if(!signal) return MsgHandler::kBadParameters;
     
     // Then, for each parameter, we separate the first name (the object) and the rest of the string (one or more methods) :
@@ -131,11 +130,13 @@ MsgHandler::msgStatus ISignalNode::connectMsg (const IMessage* msg)
     MsgHandler::msgStatus result;
     for(int i = 1; i<n; i++)
     {
-        if(!msg->param(i, objectsParameterStr)) return MsgHandler::kBadParameters;
-        objectStr = objectsParameterStr.substr(0,objectsParameterStr.find(":"));
-        std::string methods = objectsParameterStr.substr(objectsParameterStr.find(":")+1);
+		string param;
+        if(!msg->param(i, param)) return MsgHandler::kBadParameters;
+
+        string objectStr = param.substr(0,param.find(":"));
+		string methods = param.substr(param.find(":")+1);
         result = connect(signal, objectStr, methods);
-        if(result != MsgHandler::kProcessed) return result;
+        if(result != MsgHandler::kProcessed) break;
     }
     return result;
 }
@@ -184,6 +185,38 @@ MsgHandler::msgStatus ISignalNode::disconnectMsg (const IMessage* msg)
 
 
 //--------------------------------------------------------------------------
+ISignalNode::TCnxPair ISignalNode::string2cnxpair (const std::string& param) const
+{
+	string range, attribute;
+	size_t i = param.find("[");
+	if (i != std::string::npos) {
+		range = param.substr(i);
+		attribute = param.substr(0,i);
+	}
+	else attribute = param;
+	return TCnxPair(attribute, range);
+}
+
+//--------------------------------------------------------------------------
+ISignalNode::TCnxSet ISignalNode::string2cnxset (const std::string& param) const
+{
+	TCnxSet outSet;
+	// the param expected format is "method1[range1]:method2[range2]..."
+    // the method separates 'method' and 'range' in a pair
+	size_t beg = 0;
+	do {
+		size_t i = param.find(":", beg);
+		if (i == std::string::npos) {
+			outSet.push_back( string2cnxpair(param.substr(beg)) );
+			break;
+		}
+		outSet.push_back( string2cnxpair(param.substr(beg, i)) );
+		beg = i+1;
+	} while (true);
+	return outSet;
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus ISignalNode::connect(SParallelSignal signal, std::string object, std::string methods)
 {
     // We check if the object is indeed in the elements of our parent object
@@ -191,12 +224,12 @@ MsgHandler::msgStatus ISignalNode::connect(SParallelSignal signal, std::string o
     if(!getParent()->find(object, objectList)) return MsgHandler::kBadParameters;
     
     SIObject o = objectList[0];
-    std::string allMethodStr = methods;
-    std::string methodStr;
-    std::string range = "";
-    std::string objectMethod;
-    unsigned int i = allMethodStr.find(":");
-    
+    string allMethodStr = methods;
+    string methodStr;
+    string range = "";
+    string objectMethod;
+    int i = allMethodStr.find(":");
+	
     // We separate all the methods of the list, and also distinguish the method and the range, to add to the maps fConnections and fRanges :
     // "method1[range1]:method2[range2]"    --> insert in fConnections <"object:method1", signal> + <"object:method2", signal >
     //                                      --> insert in fRanges <"object:method1", range1> + <"object:method2", range2 >
@@ -339,7 +372,7 @@ MsgHandler::msgStatus ISignalNode::disconnect(SParallelSignal signal, std::strin
         std::string allMethodStr = methods;
         std::string methodStr;
         std::string objectMethod;
-        unsigned int i = allMethodStr.find(":");
+        int i = allMethodStr.find(":");
         while(!allMethodStr.empty())
         {
             methodStr = allMethodStr.substr(0,i);

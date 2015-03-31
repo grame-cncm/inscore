@@ -53,7 +53,8 @@ class ISignalNode : public IVNode
 {	
 	public:
 		using IVNode::find;
-	
+		
+		static const std::string kName;
 		static libmapping::SMARTP<ISignalNode> create(IObject * parent)	{ return new ISignalNode(parent); }
 
 		virtual void	print(std::ostream& out) const;
@@ -70,32 +71,30 @@ class ISignalNode : public IVNode
 		*/
 		virtual bool debug () const			{ return fDebug; }
 		virtual void debug (bool state)		{ fDebug = state; }
-		
-		static const std::string kName;
-    
+	
         std::vector<ISignalConnection* > getConnectionsOf(std::string objectName);
-    
         SIMessageList getAllConnections() const;
 
 	protected:
 		bool fDebug;
+		typedef std::pair<std::string, std::string>	TCnxPair;		// a pair of attribute names and (optional) ranges
+		typedef std::vector<TCnxPair>				TCnxSet;		// a list of connections
 
+		TCnxPair	string2cnxpair (const std::string& param) const;
+		TCnxSet		string2cnxset (const std::string& param) const;
+	
         std::vector<ISignalConnection* > fConnections; // the connections between attributes and signals
     
-        /*! \brief makes the connections between a signal and one ore more methods of an object
-		*/
+        /*! \brief makes the connections between a signal and one ore more methods of an object */
 		MsgHandler::msgStatus connect(SParallelSignal signal, std::string object, std::string methods);
     
-        /*! \brief breaks the connections of a signal (all of them, or only some specified)
-		*/
+        /*! \brief breaks the connections of a signal (all of them, or only some specified) */
 		MsgHandler::msgStatus disconnect(SParallelSignal signal, std::string object = "", std::string methods = "");
     
-        /*! \brief handles the "connect" message
-		*/
+        /*! \brief handles the "connect" message */
 		MsgHandler::msgStatus connectMsg (const IMessage* msg);
     
-        /*! \brief handles the "disconnect" message
-		*/
+        /*! \brief handles the "disconnect" message */
 		MsgHandler::msgStatus disconnectMsg (const IMessage* msg);
     
 				 ISignalNode(IObject * parent);
@@ -109,109 +108,68 @@ class ISignalNode : public IVNode
 class ISignalConnection
 {	
 	public:
-    
-    
-				 ISignalConnection(){}
+				 ISignalConnection() {}
 		virtual ~ISignalConnection() {}
     
-    	/*! \brief returns the object whose attribute has been connected to the signal
-		*/
-        std::string getObject(){return fObject;}
+    	/*! \brief returns the object whose attribute has been connected to the signal */
+        std::string getObject() const					{ return fObject;}
     
-    	/*! \brief sets the object
-		*/
-        void setObject(std::string o) {fObject = o;}
+    	/*! \brief sets the object */
+        void setObject(std::string o)					{ fObject = o;}
     
-        /*! \brief returns the name of the method connected
-		*/
-		std::string getMethod(){return fMethod;}
+        /*! \brief returns the name of the method connected */
+		std::string getMethod() const					{ return fMethod;}
     
-        /*! \brief sets the name of the method connected
-		*/
-		void setMethod(std::string method){fMethod = method;}
+        /*! \brief sets the name of the method connected */
+		void setMethod(std::string method)				{ fMethod = method;}
     
-        /*! \brief returns the 'key' of this connection (string "object:method")
-		*/
-		std::string getObjectMethod(){return fKey;}
+        /*! \brief returns the 'key' of this connection (string "object:method") */
+		std::string getObjectMethod() const				{ return fKey;}
     
-        /*! \brief sets the 'key' of this connection (string "object:method")
-		*/
-		void setObjectMethod(std::string objectmethod){fKey = objectmethod;}
+        /*! \brief sets the 'key' of this connection (string "object:method") */
+		void setObjectMethod(std::string objectmethod)	{ fKey = objectmethod;}
     
-		/*! \brief returns the signal to be connected
-		*/
-        SParallelSignal getSignal(){return fSignal;}
+		/*! \brief returns the signal to be connected */
+        SParallelSignal getSignal() const				{ return fSignal;}
     
-        /*! \brief sets the signal to be connected
-		*/
-        void setSignal(SParallelSignal sig){fSignal = sig;}
+        /*! \brief sets the signal to be connected */
+        void setSignal(SParallelSignal sig)				{ fSignal = sig;}
     
-        /*! \brief returns the float range bounds
-		*/
-		std::pair<float, float> getFloatRange(){return fRangeFloat;}
+        /*! \brief returns the float range bounds */
+		std::pair<float, float> getFloatRange() const	{return fRangeFloat;}
     
-        /*! \brief sets the float range bounds
-		*/
-		void setFloatRange(float f1, float f2){fRangeFloat = std::pair<float, float>(f1, f2);}
+        /*! \brief sets the float range bounds */
+		void setFloatRange(float f1, float f2)			{ fRangeFloat = std::pair<float, float>(f1, f2);}
     
-        /*! \brief returns the int range bounds
-		*/
-		std::pair<int, int> getIntRange() {return fRangeInt;}
+        /*! \brief returns the int range bounds */
+		std::pair<int, int> getIntRange() const			{ return fRangeInt;}
     
-        /*! \brief sets the int range bounds
-		*/
-		void setIntRange(int i1, int i2){fRangeInt = std::pair<int, int>(i1, i2);}
+        /*! \brief sets the int range bounds */
+		void setIntRange(int i1, int i2)				{ fRangeInt = std::pair<int, int>(i1, i2);}
     
-        /*! \brief returns the range type
-		*/
-		std::string getRangeType(){return fRangeType;}
+        /*! \brief returns the range type */
+		std::string getRangeType() const				{ return fRangeType;}
     
-        /*! \brief sets the range type
-		*/
-		void setRangeType(std::string type){fRangeType = type;}
+        /*! \brief sets the range type */
+		void setRangeType(std::string type)				{ fRangeType = type;}
 		
-        /*! \brief returns the range as a string
-		*/
-		std::string getRangeString(){return fRangeString;}
+        /*! \brief returns the range as a string */
+		std::string getRangeString() const				{ return fRangeString;}
     
-        /*! \brief sets the range string
-		*/
-		void setRangeString(std::string range){fRangeString = range;}
+        /*! \brief sets the range string */
+		void setRangeString(std::string range)			{ fRangeString = range;}
     
 	protected:
     
-    	/*! \brief the object whose attribute has been connected to the signal
-		*/
-        std::string fObject;
+        std::string		fObject;		///< the object whose attribute are connected to the signal
+ 		std::string		fMethod;		///< the name of the connected attribute
+        SParallelSignal fSignal;		///< the signal to be connected
+        std::string		fKey;			///< the connection key name : "object:method"
     
-        /*! \brief the name of the method connected
-		*/
-		std::string fMethod;
-    
-		/*! \brief the signal to be connected
-		*/
-        SParallelSignal fSignal;
-    
-        /*! \brief the connection key name : "object:method"
-		*/
-        std::string fKey;
-    
-        /*! \brief the float range bounds
-		*/
-		std::pair<float,float> fRangeFloat;
-    
-        /*! \brief the int range bounds
-		*/
-        std::pair<int,int> fRangeInt;
-    
-        /*! \brief the range type
-		*/
-		std::string fRangeType;
-
-        /*! \brief the range string
-		*/
-		std::string fRangeString;
-    
+		std::pair<float,float>	fRangeFloat;	///< the float range bounds
+        std::pair<int,int>		fRangeInt;		///< the int range bounds
+		std::string				fRangeType;		///< the range type
+		std::string				fRangeString;	///< the range string
 };
 
 
