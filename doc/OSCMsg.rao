@@ -905,10 +905,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {47}{ penMsg : 'fontSize' int32 | 'fontFamily' string | 'fontStyle' styleValue | 'fontWeight' weightValue }
+\rail@i {47}{ fontMsg : 'fontSize' int32 | 'fontFamily' string | 'fontStyle' style | 'fontWeight' weight }
 \rail@o {47}{
-\rail@index{penMsg}
-\rail@begin{4}{penMsg}
+\rail@index{fontMsg}
+\rail@begin{4}{fontMsg}
 \rail@bar
 \rail@term{fontSize}[]
 \rail@token{int32}[]
@@ -917,40 +917,40 @@
 \rail@token{string}[]
 \rail@nextbar{2}
 \rail@term{fontStyle}[]
-\rail@nont{styleValue}[]
+\rail@nont{style}[]
 \rail@nextbar{3}
 \rail@term{fontWeight}[]
-\rail@nont{weightValue}[]
+\rail@nont{weight}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {48}{ fontStyle : 'Normal' | 'Italic' | 'Oblique' }
+\rail@i {48}{ fontStyle : 'normal' | 'italic' | 'oblique' }
 \rail@o {48}{
 \rail@index{fontStyle}
 \rail@begin{3}{fontStyle}
 \rail@bar
-\rail@term{Normal}[]
+\rail@term{normal}[]
 \rail@nextbar{1}
-\rail@term{Italic}[]
+\rail@term{italic}[]
 \rail@nextbar{2}
-\rail@term{Oblique}[]
+\rail@term{oblique}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {49}{ fontWeight : 'Light' | 'DemiBold' | 'Normal' | 'Bold' | 'Black' }
+\rail@i {49}{ fontWeight : 'light' | 'demibold' | 'normal' | 'bold' | 'black' }
 \rail@o {49}{
 \rail@index{fontWeight}
 \rail@begin{5}{fontWeight}
 \rail@bar
-\rail@term{Light}[]
+\rail@term{light}[]
 \rail@nextbar{1}
-\rail@term{DemiBold}[]
+\rail@term{demibold}[]
 \rail@nextbar{2}
-\rail@term{Normal}[]
+\rail@term{normal}[]
 \rail@nextbar{3}
-\rail@term{Bold}[]
+\rail@term{bold}[]
 \rail@nextbar{4}
-\rail@term{Black}[]
+\rail@term{black}[]
 \rail@endbar
 \rail@end
 }
