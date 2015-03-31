@@ -1304,6 +1304,52 @@ arrowStyle : 'none' | 'triangle' | 'diamond' | 'disk'
 \end{rail}
 The arrow style default value is \OSC{none}.
 
+%-------------------------------
+\sublevel{Font control}
+
+Specific font messages accepted by the component type \OSC{txt}.
+\begin{rail}
+penMsg : 	  'fontSize' int32 
+			| 'fontFamily' string
+			| 'fontStyle' styleValue
+			| 'fontWeight' weightValue
+\end{rail}
+\index{Specific messages! fontSize}
+\index{Specific messages! fontFamily}
+\index{Specific messages! fontStyle}
+\index{Specific messages! fontWeight}
+
+\begin{itemize}
+\item \OSC{fontSize} controls the font size in pixel. The default value is 13px.
+\item \OSC{fontFamily} controls the font family. The default value is 'Arial'. If a non existing value is used, system default font is used.
+\item \OSC{fontStyle} controls the pen style.
+	\begin{rail}
+	fontStyle : 'Normal' | 'Italic' | 'Oblique'
+	\end{rail}
+	\index{Specific messages! fontStyle! Normal}
+	\index{Specific messages! fontStyle! Italic}
+	\index{Specific messages! fontStyle! Oblique}
+	The font style default value is \OSC{Normal}.\\
+\item \OSC{weightValue} controls the font weight.
+	\begin{rail}
+	fontWeight : 'Light' | 'DemiBold' | 'Normal' | 'Bold' | 'Black'
+	\end{rail}
+	\index{Specific messages! fontWeight! Light}
+	\index{Specific messages! fontWeight! DemiBold}
+	\index{Specific messages! fontWeight! Normal}
+	\index{Specific messages! fontWeight! Bold}
+	\index{Specific messages! fontWeight! Black}
+
+	The font weight default value is \OSC{Normal}.
+ \end{itemize}
+
+\example \\
+Setting a text object with a font family Times and bold weight:
+\sample{/ITL/scene/text set txt "text sample";\\
+/ITL/scene/text fontFamily "Times";\\
+/ITL/scene/text fontWeight "Bold";  
+}
+
 
 %===============================
 %:  The debug nodes

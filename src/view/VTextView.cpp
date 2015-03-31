@@ -37,25 +37,25 @@
 #include <QTextLayout>
 #include <QGraphicsScene>
 #include <iostream>
+#include <map>
 //#include "QTextTilerItem.h"
+
+using namespace std;
 
 namespace inscore
 {
 // behavior changes and key version numbers
 const float kFontSizeChangeVers = 1.12;
 
+map<string, enum QFont::Style> VTextView::sStyleString2Enum = VTextView::createStyleString2Enum();
+map<string, enum QFont::Weight> VTextView::sWeightString2Enum = VTextView::createWeightString2Enum();
+
 //----------------------------------------------------------------------
 VTextView::VTextView(QGraphicsScene * scene, const IText* h)
  :	VIntPointObjectView( scene , new IQGraphicsTextItem(h) )
 {
 	fTextItem = (IQGraphicsTextItem*)(fItem);
-	if(IAppl::compatibilityVersion() >= kFontSizeChangeVers) {
-		// Fix font size for initialisation to have same render on different platforms.
-		QFont font = fTextItem->font();
-		font.setPixelSize(13);
-		font.setFamily("Arial");
-		fTextItem->setFont(font);
-	}
+	updateFont(h);
 	fTextItem->document()->setDocumentMargin(0);
 	fHtmlFile = 0;
 }
@@ -86,6 +86,9 @@ void VTextView::updateView( IText * text )
 		fTextItem->setDefaultTextColor( color );
 		itemChanged();
 	}
+
+	// 2. Update Font
+	updateFont(text);
 	VGraphicsItemView::updateView( text );
 }
 
@@ -200,6 +203,22 @@ void VTextView::updateQtTextTable()
 */
 }
 
+void VTextView::updateFont(const IText *text)
+{
+	// IF compatibility version, font cannot be changed
+	if(IAppl::compatibilityVersion() >= kFontSizeChangeVers) {
+		// Get font and set the parameters.
+		QFont font = fTextItem->font();
+		font.setPixelSize(text->getFontSize());
+		font.setFamily(text->getFontFamily().c_str());
+		font.setStyle(sStyleString2Enum[text->getFontStyle()]);
+		font.setWeight(sWeightString2Enum[text->getFontWeight()]);
+		fTextItem->setFont(font);
+		if(font != fTextItem->font())
+			itemChanged();
+	}
+}
+
 //----------------------------------------------------------------------
 // converts a segment expressed in text coordinates in a segment expressed in Interlude coordinates
 // using the list of rects list build by updateQtTextTable
@@ -240,6 +259,26 @@ GraphicSegment VTextView::getGraphicSegment( const IntPointSegment& intPointSegm
 		TFloatPoint b = qGraphicsItem2IObject( endPointQt , fTextItem->boundingRect() );
 		return GraphicSegment( a.x(), a.y() , b.x(), b.y() );
 	}
+}
+
+map<string, enum QFont::Style> VTextView::createStyleString2Enum()
+{
+	map<string, enum QFont::Style> myMap;
+	myMap[IText::kStyleNormal] = QFont::StyleNormal;
+	myMap[IText::kStyleItalic] = QFont::StyleItalic;
+	myMap[IText::kStyleOblique] = QFont::StyleOblique;
+	return myMap;
+}
+
+map<string, enum QFont::Weight> VTextView::createWeightString2Enum()
+{
+	map<string, enum QFont::Weight> myMap;
+	myMap[IText::kWeightLight] = QFont::Light;
+	myMap[IText::kWeightNormal] = QFont::Normal;
+	myMap[IText::kWeightDemiBold] = QFont::DemiBold;
+	myMap[IText::kWeightBold] = QFont::Bold;
+	myMap[IText::kWeightBlack] = QFont::Black;
+	return myMap;
 }
 
 

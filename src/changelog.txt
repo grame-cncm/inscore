@@ -16,6 +16,7 @@ Version 1.12
 - 'line' objects: 'color' message is now an alias of 'penColor'
 - new 'compatibility' method at application level, provided to preserve previous behaviors
 - new 'foreground' method at scene level to display scene window in foreground.
+- new methods ('fontSize', 'fontFamily', 'fontStyle' and 'fontWeight') to manage font of txt object.
 - Remove GuidoQt library dependency and integrate source file.
 - Inscrease default size of guido item.
 - Add default size and font to text item to have same rendering on different plateform (default to Arial 13px)
