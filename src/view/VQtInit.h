@@ -27,7 +27,7 @@
 
 #include "export.h"
 
-#ifdef ANDROID
+#if defined(ANDROID) || defined(IOS)
 #include <QTabWidget>
 
 class QMainWindow;
@@ -47,7 +47,7 @@ class export VQtInit
 	static	void		startQt ();
 	static	void		stopQt ();
 
-#ifdef ANDROID
+#if defined(ANDROID) || defined(IOS)
 	/*!
 	 * \brief getTabWidget
 	 * \return the tabWidget of the main window.

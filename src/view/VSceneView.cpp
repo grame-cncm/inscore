@@ -37,7 +37,7 @@
 #include <QResizeEvent>
 #include <QDebug>
 
-#ifdef ANDROID
+#if defined(ANDROID) || defined(IOS)
 #include "VQtInit.h"
 #endif
 
@@ -133,7 +133,7 @@ VSceneView::VSceneView(const std::string& address, QGraphicsScene * scene)
 	if (scene) {
 		fScene = scene;
 		fGraphicsView = new ZoomingGraphicsView(scene);
-#ifdef ANDROID
+#if defined(ANDROID) || defined(IOS)
 		// Add scene to tabwidget
 		VQtInit::getTabWidget()->addTab(fGraphicsView, address.c_str());
 #endif
@@ -167,8 +167,7 @@ QGraphicsScene * VSceneView::scene() const		{ return fScene; }
 //------------------------------------------------------------------------------------------------------------------------
 void VSceneView::foreground()
 {
-
-#ifdef ANDROID
+#if defined(ANDROID) || defined(IOS)
 	// Select tab of the scene as current tab
 	VQtInit::getTabWidget()->setCurrentWidget(fGraphicsView);
 #else
