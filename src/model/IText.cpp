@@ -42,14 +42,15 @@ namespace inscore
 const string IText::kTextType("txt");
 
 // Font style and font weight constants
-const string IText::kStyleNormal("Normal");
-const string IText::kStyleItalic("Italic");
-const string IText::kStyleOblique("Oblique");
-const string IText::kWeightNormal("Normal");
-const string IText::kWeightLight("Light");
-const string IText::kWeightDemiBold("DemiBold");
-const string IText::kWeightBold("Bold");
-const string IText::kWeightBlack("Black");
+const string IText::kStyleNormal("normal");
+const string IText::kStyleItalic("italic");
+const string IText::kStyleOblique("oblique");
+const string IText::kWeightNormal("normal");
+const string IText::kWeightLight("light");
+const string IText::kWeightDemiBold("demibold");
+const string IText::kWeightBold("bold");
+const string IText::kWeightBlack("black");
+
 //--------------------------------------------------------------------------
 IText::IText( const std::string& name, IObject * parent ) : IGraphicBasedObject(name, parent)
 { 
