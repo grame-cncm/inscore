@@ -22,7 +22,7 @@
 
 */
 
-#ifdef ANDROID
+#if defined(ANDROID) || defined(IOS)
 #include <QMainWindow>
 #endif
 
@@ -33,7 +33,7 @@
 namespace inscore
 {
 
-#ifdef ANDROID
+#if defined(ANDROID) || defined(IOS)
 QMainWindow* VQtInit::sMainWindow;
 QTabWidget* VQtInit::sTabWidget;
 #endif
@@ -42,7 +42,7 @@ void VQtInit::startQt ()
 {
 	installGuidoFont();
 	QGuidoPainter::startGuidoEngine();
-#ifdef ANDROID
+#if defined(ANDROID) || defined(IOS)
 	// Create main window. It contains tab for each scene.
 	sMainWindow = new QMainWindow;
 	sTabWidget = new QTabWidget(sMainWindow);
@@ -56,11 +56,11 @@ void VQtInit::startQt ()
 void VQtInit::stopQt ()
 {
 	QGuidoPainter::stopGuidoEngine();
-#ifdef ANDROID
+#if defined(ANDROID) || defined(IOS)
 	delete sMainWindow;
 #endif
 }
-#ifdef ANDROID
+#if defined(ANDROID) || defined(IOS)
 QTabWidget*	VQtInit::getTabWidget()
 {
 	return sTabWidget;

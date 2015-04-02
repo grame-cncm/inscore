@@ -104,11 +104,10 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		float	fDispStart, fDispEnd;	///< the object displayed range (0-1 covers the whole range)
 		bool	fDelete;				///< true when an object should be deleted
 		int		fState;					///< the object modification state
-		std::deque<std::string>	fExportFlag;		///< the object export flag
-        bool    fDrawChildren;          ///< the object childexport option flag (if the children should be exported as well)
+		///< the object export flag and the object childexport option flag (if the children should be exported as well)
+		std::deque<std::pair<std::string, bool> >	fExportFlag;
 
 		bool	fNewData;
-
 
 		/*!
 			\brief find a named object in the application hierarchy
@@ -118,7 +117,14 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		*/
 		virtual const IObject* findnode (const std::string& name, const std::string& pathtail) const;
 
-	
+		/*!
+		 * \brief genericExport Add export flag to the queue object to export the object.
+		 * \param msg export message with one or many file path.
+		 * \param drawChildren draw or not object's children.
+		 * \return MsgHandler::kProcessed or MsgHandler::kBadParameters if failed
+		 */
+		MsgHandler::msgStatus genericExport(const IMessage* msg, bool drawChildren);
+
 	protected:
 		std::string fTypeString;		///< the type string
 
@@ -171,19 +177,20 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		/// \brief returns the object display end lo	cation
 		virtual float	getDispEnd() const				{ return fDispEnd; }
 
-		/// \brief returns the object export-flag
-		virtual std::string		getNextExportFlag() {
+		/*!
+		 * \brief returns the next object export-flag with file path and draw children flag to draw or not object children.
+		 * \return a pair of file path and drawChildren flag. If file path is empty not export are needed.
+		 */
+		virtual std::pair<std::string, bool> getNextExportFlag() {
 			if(!fExportFlag.empty()) {
-				std::string flag = fExportFlag.front();
+				std::pair<std::string, bool> flag = fExportFlag.front();
 				fExportFlag.pop_front();
 				return flag;
 			}
-			return "";
+			std::pair<std::string, bool> flag;
+			return flag;
 		}
 
-		/// \brief returns the boolean that indicates if children should be exported as well
-		virtual bool		getDrawChildren() const	{ return fDrawChildren; }
-    
 		/// \brief access to the graphic view
 		virtual VObjectView*	getView() const				{ return fView; }
 
@@ -495,15 +502,12 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		virtual void	setDispRange (float start, float end)	{ fDispStart = start; fDispEnd = end; }
 
 		/*!
-		*	\brief sets the object export flag 
-		*
-		*	When not empty (<=> the flag is 'on'), the export-flag contains the file path where the object
-		*	must be exported. 
-		*	If empty (<=> the flag is 'off'), no export needed.
+		*	\brief add a object export flag to a queue.
 		*
 		*	\param s the new export flag
+		*	\param drawChildren a boolean to draw children of object
 		*/
-		virtual void	addExportFlag(const std::string& s) { fExportFlag.push_back(s); }
+		virtual void	addExportFlag(const std::string& s, bool drawChildren) { fExportFlag.push_back(std::pair<std::string, bool>(s, drawChildren)); }
 
 		/*!
 		*	\brief writes the object and subnodes state to a stream
@@ -531,8 +535,11 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		/// \brief the \c 'alias' message handler
 		virtual MsgHandler::msgStatus aliasMsg(const IMessage* msg);
 
-		/// \brief the \c 'export' message handler
+		/// \brief the \c 'export' message handler (export object without children)
 		virtual MsgHandler::msgStatus exportMsg(const IMessage* msg);
+
+		/// \brief the \c 'exportAll' message handler (export object with childrens)
+		virtual MsgHandler::msgStatus exportAllMsg(const IMessage* msg);
 
 		/// \brief the \c 'rename' message handler
 		virtual MsgHandler::msgStatus renameMsg(const IMessage* msg);

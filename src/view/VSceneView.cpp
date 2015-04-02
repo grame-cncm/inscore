@@ -37,7 +37,7 @@
 #include <QResizeEvent>
 #include <QDebug>
 
-#ifdef ANDROID
+#if defined(ANDROID) || defined(IOS)
 #include "VQtInit.h"
 #endif
 
@@ -133,7 +133,7 @@ VSceneView::VSceneView(const std::string& address, QGraphicsScene * scene)
 	if (scene) {
 		fScene = scene;
 		fGraphicsView = new ZoomingGraphicsView(scene);
-#ifdef ANDROID
+#if defined(ANDROID) || defined(IOS)
 		// Add scene to tabwidget
 		VQtInit::getTabWidget()->addTab(fGraphicsView, address.c_str());
 #endif
@@ -167,8 +167,7 @@ QGraphicsScene * VSceneView::scene() const		{ return fScene; }
 //------------------------------------------------------------------------------------------------------------------------
 void VSceneView::foreground()
 {
-
-#ifdef ANDROID
+#if defined(ANDROID) || defined(IOS)
 	// Select tab of the scene as current tab
 	VQtInit::getTabWidget()->setCurrentWidget(fGraphicsView);
 #else
@@ -306,9 +305,9 @@ void VSceneView::updateView( IScene * scene )
 	fGraphicsView->setScene (scene);
 
 	// Export
-	std::string filename = scene->getNextExportFlag();
-	while ( filename.length() ) {
-		VExport::exportScene( fGraphicsView , filename.c_str() );
+	std::pair<std::string, bool> myExport = scene->getNextExportFlag();
+	while ( myExport.first.length() ) {
+		VExport::exportScene( fGraphicsView , myExport.first.c_str() );
 		const IMessageList*	msgs = scene->getMessages(EventsAble::kExport);
 		if (msgs) {
 			MouseLocation mouse (0, 0, 0, 0, 0, 0);
@@ -317,7 +316,7 @@ void VSceneView::updateView( IScene * scene )
 			SIMessageList outmsgs = me.eval (msgs, env);
 			if (outmsgs && outmsgs->list().size()) outmsgs->send();
 		}
-		filename = scene->getNextExportFlag();
+		myExport = scene->getNextExportFlag();
 	}
 }
 

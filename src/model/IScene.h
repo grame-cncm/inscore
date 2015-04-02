@@ -73,7 +73,7 @@ class IScene : public IRectShape, public TILoader
 	public:		
 		static const std::string kSceneType;
 		static libmapping::SMARTP<IScene> create(const std::string& name, IObject * parent)	{ return new IScene(name, parent); }
-#ifdef ANDROID
+#if defined(ANDROID) || defined(IOS)
 		bool			getFullScreen() const		{ return true; }
 #else
 		bool			getFullScreen() const		{ return fFullScreen; }

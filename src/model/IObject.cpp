@@ -88,7 +88,7 @@ OSCStream& operator <<(OSCStream& s, const TFloatPoint& val)
 //--------------------------------------------------------------------------
 IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 					fName(name), fDispStart(0), fDispEnd(1),
-					fDelete (false), fState(kNewObject), fDrawChildren(false), fNewData(true), fView(0), fParent(parent)
+					fDelete (false), fState(kNewObject), fNewData(true), fView(0), fParent(parent)
 {
 	fTypeString = "obj";
 
@@ -96,7 +96,8 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fMsgHandlerMap[kset_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::set);
 	fMsgHandlerMap[kget_SetMethod]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const >::create(this, &IObject::get);
 	fMsgHandlerMap[kdel_SetMethod]		= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::del);
-	fMsgHandlerMap[kexport_SetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::exportMsg); 
+	fMsgHandlerMap[kexport_SetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::exportMsg);
+	fMsgHandlerMap[kexportAll_SetMethod]= TMethodMsgHandler<IObject>::create(this, &IObject::exportAllMsg);
 //	fMsgHandlerMap["rename"]			= TMethodMsgHandler<IObject>::create(this, &IObject::renameMsg);
 	fMsgHandlerMap[ksave_SetMethod]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::saveMsg);
 	fMsgHandlerMap[kwatch_GetSetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsg);
@@ -1146,48 +1147,48 @@ MsgHandler::msgStatus IObject::renameMsg(const IMessage* msg)
 	return MsgHandler::kBadParameters;
 }
 
-static const char* kExportChildrenStr		= "children";
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::genericExport(const IMessage* msg, bool drawChildren)
+{
+	if (msg->size() == 0) {	//No argument : export to "objectName".
+			addExportFlag( getScene()->absolutePath(name()), drawChildren);
+			return MsgHandler::kProcessed;
+	} else {
+		for (int i = 0; i < msg->size(); i++) {
+			std::string fileName;
+			if (!msg->param(i, fileName)) return MsgHandler::kBadParameters;
+			if (fileName.length()) {
+				SIScene scene = getScene();
+				std::string absolutePath = scene ? scene->absolutePath(fileName) : IAppl::absolutePath(fileName);
+				if ( isDirectory(absolutePath) )	//Argument is a directory: export to "directory/objectName".
+				{
+#ifdef WIN32
+					const char* sep = "\\";
+#else
+					const char* sep = "/";
+#endif
+					const char* tmp = ( absolutePath[ absolutePath.length() - 1 ] != *sep ) ? sep : "";
+					addExportFlag( absolutePath + tmp + name(), drawChildren);
+				}
+				else								//Argument is a file: export to this file.
+					addExportFlag( absolutePath, drawChildren);
+			}
+		}
+        return MsgHandler::kProcessed;
+	}
+	return MsgHandler::kBadParameters;
+}
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
 {
-	if (msg->size() == 1 || msg->size()== 2) {
-		std::string fileName;
-		if (!msg->param(0, fileName)) return MsgHandler::kBadParameters;
-		if (fileName.length()) {
-			SIScene scene = getScene();
-			std::string absolutePath = scene ? scene->absolutePath(fileName) : IAppl::absolutePath(fileName);
-			if ( isDirectory(absolutePath) )	//Argument is a directory: export to "directory/objectName".
-			{
-#ifdef WIN32
-				const char* sep = "\\";
-#else
-				const char* sep = "/";
-#endif
-				const char* tmp = ( absolutePath[ absolutePath.length() - 1 ] != *sep ) ? sep : "";
-				addExportFlag( absolutePath + tmp + name() );
-			}
-			else								//Argument is a file: export to this file.
-				addExportFlag( absolutePath );
-            fDrawChildren = false; //if not specified, we don't export the children with the object
-		}
-        if(msg->size() == 2)
-        {
-            std::string option;
-            if (!msg->param(1, option)) return MsgHandler::kBadParameters;
-            if(option.length() && option == kExportChildrenStr)
-                fDrawChildren = true;
-            else
-                fDrawChildren = false;
-        }
-            
-        return MsgHandler::kProcessed;
-	}
-	else if (msg->size() == 0) {	//No argument : export to "objectName".
-		addExportFlag( getScene()->absolutePath(name() ) );
-		return MsgHandler::kProcessed;
-	}
-	return MsgHandler::kBadParameters;
+	return genericExport(msg, false);
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::exportAllMsg(const IMessage* msg)
+{
+	return genericExport(msg, true);
 }
 
 //--------------------------------------------------------------------------

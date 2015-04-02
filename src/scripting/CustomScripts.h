@@ -1,7 +1,8 @@
 /*
 
   INScore Project
-  Copyright (C) 2010  Grame
+
+  Copyright (C) 2015  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -17,51 +18,40 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
 
-#ifndef __VQtInit__
-#define __VQtInit__
+#ifndef CUSTOMSCRIPTS_H
+#define CUSTOMSCRIPTS_H
 
-#include "export.h"
-
-#if defined(ANDROID) || defined(IOS)
-#include <QTabWidget>
-
-class QMainWindow;
-#endif
+#include <QObject>
+#include <QJSValueList>
+#include <QString>
 
 namespace inscore
 {
 
 /*!
-\addtogroup ITLView
-@{
-*/
-
-class export VQtInit
+ * \brief The CustomScripts class. Contains custom functions added to javascript engine
+ */
+class CustomScripts : public QObject
 {
-	public:
-	static	void		startQt ();
-	static	void		stopQt ();
+		Q_OBJECT
+    public:
+        CustomScripts(QObject *parent = 0);
+        virtual ~CustomScripts();
 
-#if defined(ANDROID) || defined(IOS)
-	/*!
-	 * \brief getTabWidget
-	 * \return the tabWidget of the main window.
-	 */
-	static	QTabWidget*	getTabWidget();
-
-	private:
-	static QMainWindow* sMainWindow;
-	static QTabWidget* sTabWidget;
-#endif
+        public slots:
+		// All callback method of this object must be slot method.
+        // Their arguments must be of type const QMetaType
+        QString version();
+		QJSValue readfile(const QString &filename);
+		void print(const QVariantList &args);
+		void post(const QVariantList &args);
 };
 
-/*!@} */
+} // namespace
 
-} // end namespoace
-
-#endif
+#endif // CUSTOMSCRIPTS_H
