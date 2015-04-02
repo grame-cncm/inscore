@@ -11,7 +11,8 @@
 /ITL/scene/clickme watch mouseDown(
 	/ITL/scene/clickme push,
 	/ITL/scene/score set gmnstream "{[ \meter<\"4/4\"> a",
-	/ITL/scene/score scale 3,
+	/ITL/scene/score xorigin -1,
+	/ITL/scene/score x -0.75,
 	/ITL/scene/clickme watch mouseDown(
 		/ITL/scene/score write "{c",
 		/ITL/scene/clickme watch mouseDown(
