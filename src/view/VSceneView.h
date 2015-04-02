@@ -86,6 +86,8 @@ class VSceneView : public VDummyObjectView
 	 */
 	void				setUpdateScreenShot(const char *format);
 
+	QPoint				scenePos(const IScene * scene) const;
+
 	public :
 		using VDummyObjectView::updateView;
 
@@ -138,6 +140,7 @@ class WindowEventFilter : public QObject
 	Q_OBJECT
 	bool	fAbsoluteXY;
 	bool	fFrameless;
+	bool	fFullScreen;
 	std::string fOSCAddress;
 	QTimer * fTimer;
 
@@ -147,7 +150,11 @@ class WindowEventFilter : public QObject
 															/// during a move/resize sequence.
 		void setAbsoluteXY(bool state)	{ fAbsoluteXY = state; }
 		void setFrameless(bool state)	{ fFrameless = state; }
-		
+		void setFullScreen(bool state)	{ fFullScreen = state; }
+
+		bool getFrameless()	const	{ return fFrameless; }
+		bool getFullScreen() const	{ return fFullScreen; }
+	
 	protected:
 	
 		bool eventFilter(QObject *obj, QEvent *event);

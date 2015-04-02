@@ -178,6 +178,23 @@ void VSceneView::foreground()
 }
 
 //------------------------------------------------------------------------------------------------------------------------
+QPoint VSceneView::scenePos(const IScene * scene) const
+{
+	QRect r = QApplication::desktop()->screenGeometry();
+	QPoint pos;
+	if (scene->getAbsoluteCoordinates()) {
+		pos= QPoint (scene->getXPos(), scene->getYPos());
+	}
+	else {
+		QPointF screenCenter = r.center();
+		float lowestDimension = qMin( r.width(), r.height() );
+		pos= QPoint (screenCenter.x() + (scene->getXPos() ) * lowestDimension / 2.0f - fGraphicsView->width()/2.0f,
+							screenCenter.y() + (scene->getYPos() ) * lowestDimension / 2.0f - fGraphicsView->height()/2.0f);
+	}
+	return pos;
+}
+
+//------------------------------------------------------------------------------------------------------------------------
 void VSceneView::updateOnScreen( IScene * scene )
 {
 	// Color
@@ -199,12 +216,35 @@ void VSceneView::updateOnScreen( IScene * scene )
 	bool fullscreen = fGraphicsView->windowState() & Qt::WindowFullScreen;
 	if ( (fullscreen && !scene->getFullScreen()) || ( !fullscreen && scene->getFullScreen()))
 	{
+		if (!fullscreen)	fEventFilter->setFullScreen (true);
 		fGraphicsView->setWindowState(fGraphicsView->windowState() ^ Qt::WindowFullScreen);
+		if (fullscreen)		fEventFilter->setFullScreen (false);
 	}
-	// Size
-	if ( !fEventFilter->running() )			// do not update the size/position while the fEventFilter is running.
-	{
 
+	// Visibility
+	if (scene->getVisible()) {
+		bool minimized = fGraphicsView->windowState() & Qt::WindowMinimized;
+		if (minimized) fGraphicsView->setWindowState(fGraphicsView->windowState() ^ Qt::WindowMinimized);
+		fGraphicsView->show();
+	}
+	else fGraphicsView->hide();
+
+	if (scene->getFrameless()) {
+		if ( !fEventFilter->getFrameless() ){
+			fGraphicsView->setWindowFlags (Qt::FramelessWindowHint);
+			fGraphicsView->showNormal ();
+			fEventFilter->setFrameless(true);
+			fGraphicsView->move( scenePos(scene) );
+		}
+	}
+	else if ( fEventFilter->getFrameless() ) {
+		fGraphicsView->setWindowFlags (fDefaultFlags);
+		fGraphicsView->showNormal ();
+		fEventFilter->setFrameless(false);
+	}
+
+	// Size
+	if ( !fEventFilter->running() )	{		// do not update the size/position while the fEventFilter is running.
 		if (!scene->getFullScreen()) {		// don't resize or move in fullscreen mode
 			QRect r = QApplication::desktop()->screenGeometry();
 			float lowestDimension = qMin( r.width(), r.height() );
@@ -222,42 +262,15 @@ void VSceneView::updateOnScreen( IScene * scene )
 			}
 
 			// Position
-			QPoint newPos;
-			if (scene->getAbsoluteCoordinates()) {
-				newPos= QPoint (scene->getXPos(), scene->getYPos());
-			}
-			else {
-				QPointF screenCenter = r.center();
-				newPos= QPoint (screenCenter.x() + (scene->getXPos() ) * lowestDimension / 2.0f - fGraphicsView->width()/2.0f,
-									screenCenter.y() + (scene->getYPos() ) * lowestDimension / 2.0f - fGraphicsView->height()/2.0f);
-			}
 			fEventFilter->setAbsoluteXY (scene->getAbsoluteCoordinates());
+			QPoint newPos = scenePos(scene);
 			bool needMove = (newPos != fGraphicsView->pos());
-
-			if (needMove) {
+			if (needMove ) {
 				// deactivates the events notification to avoid events loop between 'updateModel' and 'updateTo'
 				fGraphicsView->removeEventFilter( fEventFilter );
 				fGraphicsView->move( newPos );
 				fGraphicsView->installEventFilter( fEventFilter );
 			}
-		}
-	}
-
-	// Visibility
-	scene->getVisible() ? fGraphicsView->show() : fGraphicsView->hide();
-	Qt::WindowFlags flags = fGraphicsView->windowFlags();
-	if (scene->getFrameless()) {
-		if (flags != Qt::FramelessWindowHint) {
-			fGraphicsView->setWindowFlags (Qt::FramelessWindowHint);
-			fGraphicsView->showNormal ();
-		}
-		fEventFilter->setFrameless(true);
-	}
-	else {
-		fEventFilter->setFrameless(false);
-		if ((flags != fDefaultFlags) && !scene->getFullScreen()) {
-			fGraphicsView->setWindowFlags (fDefaultFlags);
-			fGraphicsView->showNormal ();
 		}
 	}
 }
@@ -423,7 +436,7 @@ void WindowEventFilter::sendMessage( const char * addr , const char * cmd , floa
 //--------------------------------------------------------------------------
 bool WindowEventFilter::eventFilter(QObject *obj, QEvent *event)
 {
- 	if ( (event->type() == QEvent::Move) || (event->type() == QEvent::Resize) )
+ 	if ( !fFrameless && !fFullScreen && ((event->type() == QEvent::Move) || (event->type() == QEvent::Resize)))
 	{
 		fTimer->stop();
 		fTimer->start(100);
