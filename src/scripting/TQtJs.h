@@ -54,8 +54,6 @@ class TQtJs
 	void bindEnv  (std::stringstream& s, const std::string& name, const IMessage::argslist& values);
 
 	void getResult (const QString& result, std::string& outStr) const;
-
-	std::string makeAbsolutePath (const char* file) const;   // introduced for the readfile function
 #endif
 
 	public:	
