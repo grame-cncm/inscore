@@ -5,13 +5,13 @@
 
 /ITL/scene/score set gmnf "rsrc/bach.gmn" ;
 /ITL/scene/score columns 1 ;
-/ITL/scene/score scale 2.7 ;
+/ITL/scene/score scale 0.33 ;
 /ITL/scene/score map system ;
 
 !-----------------------------------------
 ! building a rect with 2 childrens (r1 & o1)
 !-----------------------------------------
-size = 0.5;
+size = 4;
 transp = 200;
 /ITL/scene/rect set rect $size $size;
 /ITL/scene/rect color 180 180 240 $transp;
@@ -56,8 +56,8 @@ scale = 3;
 !-----------------------------------------
 ! mouse interaction
 !-----------------------------------------
-down = 0.05;
-up = -0.05;
+down = 0.1;
+up = -0.1;
 /ITL/scene/m* watch mouseEnter (/ITL/scene/$self red 200, /ITL/scene/$self scale 4);
 /ITL/scene/m* watch mouseLeave (/ITL/scene/$self red 0, /ITL/scene/$self scale $scale);
 /ITL/scene/mleft watch mouseDown  (

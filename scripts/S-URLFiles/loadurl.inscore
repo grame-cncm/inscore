@@ -1,0 +1,14 @@
+
+/ITL/scene/* del;
+/ITL load "http://inscore.grame.fr/scripts/Turenas/turenas.inscore";
+
+!/ITL load "http://localhost/DROP-ME.inscore";
+
+/ITL load "http://inscore.grame.fr/scripts/mem-image.inscore";
+
+/ITL rootPath "http://inscore.grame.fr/scripts";
+/ITL/log write Appl rootpath is $(/ITL get rootPath);
+
+/ITL load 
+
+/ITL/log write Turenas map $(/ITL/scene/turenas get map);
