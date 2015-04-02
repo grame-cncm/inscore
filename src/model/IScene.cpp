@@ -72,9 +72,8 @@ IScene::IScene(const std::string& name, IObject * parent)
 	setHeight(1.0f);
 	
 	fMsgHandlerMap[knew_SetMethod]				= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::newScene);
-	fMsgHandlerMap[kdel_SetMethod]				= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::del);
 	fMsgHandlerMap[kreset_SetMethod]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::reset);
-	fMsgHandlerMap[kforeground_SetMethod]	= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::foreground);
+	fMsgHandlerMap[kforeground_SetMethod]		= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::foreground);
 	fMsgHandlerMap[kfullscreen_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFullScreen);
 	fMsgHandlerMap[kframeless_GetSetMethod]		= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFrameless);
 	fMsgHandlerMap[kabsolutexy_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setAbsoluteCoordinates);
@@ -104,7 +103,6 @@ void IScene::setHandlers ()
 
 //--------------------------------------------------------------------------
 void IScene::newScene ()	{}
-void IScene::del ()			{ IObject::del(); }
 void IScene::foreground()	{ getView()->foreground(); }
 void IScene::setRootPath(const std::string& s) { fRootPath = IAppl::checkRootPath(s);}
 

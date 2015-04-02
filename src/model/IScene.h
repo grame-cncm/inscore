@@ -133,7 +133,6 @@ class IScene : public IRectShape, public TILoader
 		MsgHandler::msgStatus loadMsg(const IMessage* msg);
 		void		foreground ();
 		void		newScene ();
-		void		del ();
 		std::string address2scene (const char* addr) const;
 };
 
