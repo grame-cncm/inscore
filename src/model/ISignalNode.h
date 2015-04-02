@@ -75,6 +75,9 @@ class ISignalNode : public IVNode
         std::vector<ISignalConnection* > getConnectionsOf(std::string objectName);
         SIMessageList getAllConnections() const;
 
+        void cleanupSignal(const ParallelSignal* signal);	///< removes the connections of a signal
+        void cleanupTarget(const std::string& obj);			///< removes the connections to an object
+
 	protected:
 		bool fDebug;
 		typedef std::pair<std::string, std::string>	TCnxPair;		// a pair of attribute names and (optional) ranges
@@ -130,7 +133,7 @@ class ISignalConnection
 		void setObjectMethod(std::string objectmethod)	{ fKey = objectmethod;}
     
 		/*! \brief returns the signal to be connected */
-        SParallelSignal getSignal() const				{ return fSignal;}
+        const SParallelSignal& getSignal() const		{ return fSignal;}
     
         /*! \brief sets the signal to be connected */
         void setSignal(SParallelSignal sig)				{ fSignal = sig;}
@@ -159,6 +162,8 @@ class ISignalConnection
         /*! \brief sets the range string */
 		void setRangeString(std::string range)			{ fRangeString = range;}
     
+		void print(std::ostream& out) const;
+	
 	protected:
     
         std::string		fObject;		///< the object whose attribute are connected to the signal
@@ -171,6 +176,8 @@ class ISignalConnection
 		std::string				fRangeType;		///< the range type
 		std::string				fRangeString;	///< the range string
 };
+
+inline std::ostream& operator <<(std::ostream& out, const ISignalConnection* cnx)	{ cnx->print(out); return out; }
 
 
 /*!

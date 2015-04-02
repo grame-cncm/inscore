@@ -134,6 +134,7 @@ class IScene : public IRectShape, public TILoader
 		void		foreground ();
 		void		newScene ();
 		std::string address2scene (const char* addr) const;
+		void		del ();
 };
 
 /*!

@@ -95,7 +95,7 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fMsgHandlerMap[kalias_GetSetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::aliasMsg);
 	fMsgHandlerMap[kset_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::set);
 	fMsgHandlerMap[kget_SetMethod]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const >::create(this, &IObject::get);
-	fMsgHandlerMap[kdel_SetMethod]		= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::del);
+	fMsgHandlerMap[kdel_SetMethod]		= TMethodMsgHandler<IObject, void (IObject::*)()>::create(this, &IObject::del);
 	fMsgHandlerMap[kexport_SetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::exportMsg); 
 //	fMsgHandlerMap["rename"]			= TMethodMsgHandler<IObject>::create(this, &IObject::renameMsg);
 	fMsgHandlerMap[ksave_SetMethod]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::saveMsg);
@@ -299,20 +299,26 @@ IObject::~IObject()
     {
 		elements()[i]->fParent = fParent;
     }
-        delete fView;
+	delete fView;
 }
 
-void IObject::del()
+void IObject::del()		{ _del(true); }
+
+void IObject::_del(bool delsigcnx)
 {
     // we set the delte flag to 1
     fDelete = true;
 	IAppl::delAliases (getOSCAddress());
 
+	// cleanup signal connections
+	if (delsigcnx)
+		getParent()->signalsNode()->cleanupTarget(name());
+
     // ... and we send the message that the event "del" occured
     const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kDelete);
 	if (!msgs || msgs->list().empty())
         return;		// nothing to do, no associated message
-    
+
     MouseLocation mouse (0, 0, 0, 0, 0, 0);
 	EventContext env(mouse, libmapping::rational(0,1), 0);
 	TMessageEvaluator me;
@@ -677,7 +683,8 @@ int IObject::processSig ()
 	int result;
     for(int i = 0; i<size(); i++)
     {
-        // looks for the object elements()[i] in all the signal connections
+		 if (elements()[i]->getDeleted()) continue;
+		// looks for the object elements()[i] in all the signal connections
         std::vector<ISignalConnection*> connections;
         if(fSignals) connections = fSignals->getConnectionsOf(elements()[i]->name());
         if(!connections.empty())

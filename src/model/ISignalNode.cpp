@@ -441,4 +441,34 @@ SIMessageList ISignalNode::getAllConnections() const
     return list;
 }
 
+//--------------------------------------------------------------------------
+void ISignalNode::cleanupSignal(const ParallelSignal* signal)
+{
+	vector<ISignalConnection* >::iterator i = fConnections.begin();
+	while (i != fConnections.end()) {
+		if ((*i)->getSignal() == signal) {
+			i = fConnections.erase( i );
+		}
+		else i++;
+	}
+}
+
+//--------------------------------------------------------------------------
+void ISignalNode::cleanupTarget(const std::string& obj)
+{
+	vector<ISignalConnection* >::iterator i = fConnections.begin();
+	while (i != fConnections.end()) {
+		if ((*i)->getObject() == obj) {
+			i = fConnections.erase( i );
+		}
+		else i++;
+	}
+}
+
+
+void ISignalConnection::print (ostream& out) const {
+	out << "signal: " << (void*)fSignal << " -> " << fObject << ":" << fMethod << fRangeString ;
+}
+
+
 }

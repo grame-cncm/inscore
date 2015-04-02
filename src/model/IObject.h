@@ -312,6 +312,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 			actual deletion is in charge of the garbage method.
 		*/
 		virtual void	del ();
+		virtual void	_del (bool delcnx);		// the implementation of del
 
 		/// \brief print the object state \param out the output stream
 		virtual void	print(std::ostream& out) const;
