@@ -33,6 +33,7 @@ javafiles 		= $(shell grep -v '^\#' validate/javascripts.txt)
 signalfiles		= $(shell grep -v '^\#' validate/signalscripts.txt)
 logfiles 		= $(shell grep -v '^\#' validate/logs.txt)
 savefiles 		= $(shell grep -v '^\#' validate/save.txt)
+regressionfiles = $(shell grep -v '^\#' validate/regression.txt)
 
 pdfout  		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(files))
 pdfmouseout 	:= $(patsubst ../%.inscore, $(version)/%.pdf, $(mousefiles))
@@ -40,6 +41,7 @@ pdfgraphicout 	:= $(patsubst ../%.inscore, $(version)/%.pdf, $(graphicfiles))
 pdfsyncout 		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(syncfiles))
 pdfjavaout 		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(javafiles))
 pdfsignalout 	:= $(patsubst ../%.inscore, $(version)/%.pdf, $(signalfiles))
+pdfregressionout:= $(patsubst ../%.inscore, $(version)/%.pdf, $(regressionfiles))
 logout 			:= $(patsubst ../%.inscore, $(version)/%.log, $(logfiles))
 inscoreout 		:= $(patsubst ../%.inscore, $(version)/%.inscore, $(savefiles))
 
@@ -117,13 +119,17 @@ pdfsignal:
 	@echo "----------- Checking signal examples"
 	make filessignal
 	
+pdfregression:
+	@echo "----------- Regression tests"
+	make filesregression
+	
 clean: 
 	make pdfclean
 	make logclean
 	make saveclean
 
 pdfclean: 
-	rm -f $(pdfout) $(pdfmouseout) $(pdfgraphicout) $(pdfsyncout) $(pdfjavaout) $(pdfsignalout)
+	rm -f $(pdfout) $(pdfmouseout) $(pdfgraphicout) $(pdfsyncout) $(pdfjavaout) $(pdfsignalout) $(pdfregressionout)
 
 logclean: 
 	rm -f $(logout)
@@ -173,6 +179,9 @@ filesjava: $(pdfjavaout)
 	
 filessignal: $(pdfsignalout)
 	@./forcepdfdate 20100101120000 $(pdfsignalout)
+	
+filesregression: $(pdfregressionout)
+	@./forcepdfdate 20100101120000 $(pdfregressionout)
 
 	
 $(version)/$(TOOL)/%.leak.txt: %.inscore

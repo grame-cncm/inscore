@@ -66,7 +66,7 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {6}{ commonMsg : ('show' int32) | 'del' | 'export' ([1] ( fullPathFileName) | [2] path | [3])(|'children') | 'save' (| 'message' +) filePath ( | '+') | PositionMsg | ColorMsg | TimeMsg | WatchMsg }
+\rail@i {6}{ commonMsg : ('show' int32) | 'del' | ('export' | 'exportAll') ((([1] filePath )+) | [2]) | 'save' (| 'message' +) filePath ( | '+') | PositionMsg | ColorMsg | TimeMsg | WatchMsg }
 \rail@o {6}{
 \rail@index{commonMsg}
 \rail@begin{12}{commonMsg}
@@ -76,19 +76,19 @@
 \rail@nextbar{1}
 \rail@term{del}[]
 \rail@nextbar{2}
-\rail@term{export}[]
 \rail@bar
-\rail@annote[1]
-\rail@nont{fullPathFileName}[]
+\rail@term{export}[]
 \rail@nextbar{3}
-\rail@annote[2]
-\rail@nont{path}[]
-\rail@nextbar{4}
-\rail@annote[3]
+\rail@term{exportAll}[]
 \rail@endbar
 \rail@bar
-\rail@nextbar{3}
-\rail@term{children}[]
+\rail@plus
+\rail@annote[1]
+\rail@nont{filePath}[]
+\rail@nextplus{3}
+\rail@endplus
+\rail@nextbar{4}
+\rail@annote[2]
 \rail@endbar
 \rail@nextbar{5}
 \rail@term{save}[]

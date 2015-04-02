@@ -335,9 +335,10 @@ void VGraphicsItemView::updateView(IObject* o)
 
 
 	//Exports the item if necessary.
-	std::string filename = o->getNextExportFlag();
-	while ( filename.length() ) {
-		VExport::exportItem( item() , filename.c_str() ,  o->getScale() ,  o->getScale(), o->getDrawChildren() );
+	std::pair<std::string, bool> myExport = o->getNextExportFlag();
+
+	while ( myExport.first.length() ) {
+		VExport::exportItem( item() , myExport.first.c_str() ,  o->getScale() ,  o->getScale(), myExport.second);
 		const IMessageList*	msgs = o->getMessages(EventsAble::kExport);
 		if (msgs) {
 			MouseLocation mouse (0, 0, 0, 0, 0, 0);
@@ -346,7 +347,7 @@ void VGraphicsItemView::updateView(IObject* o)
 			SIMessageList outmsgs = me.eval (msgs, env);
 			if (outmsgs && outmsgs->list().size()) outmsgs->send();
 		}
-		filename = o->getNextExportFlag();
+		myExport = o->getNextExportFlag();
 	}
 
 	//	Debug mapping mode:

@@ -80,6 +80,7 @@ const char* kerrport_GetSetMethod	= "errport";		// Get Set
 const char* keval_SetMethod			= "eval";			// Set
 const char* kevent_SetMethod		= "event";			// Set
 const char* kexport_SetMethod		= "export";			// Set
+const char* kexportAll_SetMethod	= "exportAll";		// Set
 const char* kfontSize_GetSetMethod	= "fontSize";		// Get Set
 const char* kfontFamily_GetSetMethod= "fontFamily";		// Get Set
 const char* kfontStyle_GetSetMethod	= "fontStyle";		// Get Set

@@ -35,6 +35,8 @@
 #include "OSCStream.h"
 #include "INScore.h"
 
+#include "CustomScripts.h"
+
 #ifdef NO_OSCSTREAM
 # define ITLErr		cerr
 # define ITLEndl	endl
@@ -48,170 +50,6 @@ namespace inscore
 {
 
 #ifdef QTJSENGINE
-
-
-//--------------------------------------------------------------------------------------------
-//static std::string makeAbsolutePath( const char* file )
-//{
-//	return IAppl::absolutePath (file);
-//}
-
-//--------------------------------------------------------------------------------------------
-/* tools for v8 */
-/*
-static const char* ToCString(const v8::String::Utf8Value& value) { return *value ? *value : ""; }
-
-// array values are separated by ',' which produces syntax errors
-// ArrayString2IString replace the ',' by ' ' (space)
-static void ArrayString2IString(const char* str, string& out) 
-{
-	bool indquote = false;
-	bool inquote  = false;
-	char prev = 0;
-	while (*str) {
-		char c = *str++;
-		switch (c) {
-			case ',':
-				if (!inquote && !indquote) c = ' ';
-				break;
-			case '\'':	
-				if (prev != '\\') inquote = !inquote;
-				break;
-			case '"':
-				if (prev != '\\') indquote = !indquote;
-				break;
-		}
-		out += c;
-		prev = c;
-	}
-}
-
-// The callback that is invoked by v8 whenever the JavaScript 'readfile'
-// function is called. Read the file and returns its content as a string.
-static v8::Handle<v8::Value> ReadFile(const v8::Arguments& args)
-{
-	if (args.Length() != 1) {
-		ITLErr << "javascript : readfile invoked with incorrect arguments" << ITLEndl;
-		return v8::Undefined();
-	}
-	v8::String::Utf8Value str(args[0]);
-	std::string path = makeAbsolutePath (ToCString(str));
-	ifstream file (path.c_str());
-	if (!file.is_open()) {
-		ITLErr << "javascript : readfile can't open file " << path << ITLEndl;
-		return v8::Undefined();
-	}
-    file.seekg (0, file.end);
-    int length = file.tellg();
-    file.seekg (0, file.beg);
-    char * buffer = new char [length];
-    // read data as a block:
-	file.read (buffer,length);
-	v8::Local<v8::String> content = v8::String::New(buffer);
-	delete[] buffer;
-	return content;
-}
-
-// The callback that is invoked by v8 whenever the JavaScript 'print'
-// function is called.  Prints its arguments on stdout separated by
-// spaces and ending with a newline.
-static v8::Handle<v8::Value> Print(const v8::Arguments& args) 
-{
-	bool first = true;
-	cout << "javascript: ";
-#ifndef NO_OSCSTREAM
-	oscout << OSCStart("javascript:");
-#endif
-	for (int i = 0; i < args.Length(); i++) {
-		v8::HandleScope handle_scope;
-		if (first)
-			first = false;
-		else cout << " ";
-		v8::String::Utf8Value str(args[i]);
-		const char* cstr = ToCString(str);
-		cout << cstr;
-#ifndef NO_OSCSTREAM
-		oscout << cstr;
-#endif
-	}
-	cout << endl;
-#ifndef NO_OSCSTREAM
-	oscout << OSCEnd();
-#endif
-	return v8::Undefined();
-}
-
-// The callback that is invoked by v8 whenever the JavaScript 'send'
-// function is called.  Prints its arguments on stdout separated by
-// spaces and ending with a newline.
-static v8::Handle<v8::Value> PostMsg(const v8::Arguments& args)
-{
-	if (! args.Length()) return v8::Undefined();
-
-	INScore::MessagePtr msg = INScore::newMessage ();
-	std::string address;
-	const char* argErr = "v8::PostMsg: unknown arg type";
-	const char* adrErr = "v8::PostMsg: incorrect OSC address";
-	for (int i = 0; i < args.Length(); i++) {
-		v8::HandleScope handle_scope;
-		if (i==0) {
-			if (args[i]->IsString()) {
-				v8::String::Utf8Value str(args[i]);
-				address = ToCString(str);
-			}
-			else {
-				cerr << adrErr << endl;
-#ifndef NO_OSCSTREAM
-				oscerr << adrErr;
-#endif
-				return v8::Undefined();
-			}
-
-		}
-		else {
-			if (args[i]->IsString()) {
-				v8::String::Utf8Value str(args[i]->ToString());
-				INScore::add(msg, ToCString(str));
-			}
-			else if (args[i]->IsInt32()) {
-				INScore::add(msg, args[i]->Int32Value());
-			}
-			else if (args[i]->IsUint32()) {
-				INScore::add(msg, int(args[i]->Uint32Value()));
-			}
-			else if (args[i]->IsNumber()) {
-				INScore::add(msg, float(args[i]->NumberValue()));
-			}
-			else {
-				cerr << argErr << endl;
-#ifndef NO_OSCSTREAM
-				oscerr << argErr;
-#endif
-			}
-		}
-	}
-	INScore::delayMessage(address.c_str(), msg);	// post the message for delayed processing
-	return v8::Undefined();
-}
-
-static v8::Handle<v8::Value> Version(const v8::Arguments& args) {
-  return v8::String::New(v8::V8::GetVersion());
-}
-*/
-
-//--------------------------------------------------------------------------------------------
-// extern functions support
-//--------------------------------------------------------------------------------------------
-class jsversion : public QObject {
-	public:
-				 jsversion() {}
-		virtual ~jsversion() {}
-	
-	const char* operator ()(void)	{
-		return "1.00";
-	}
-};
-
 
 //--------------------------------------------------------------------------------------------
 void TQtJs::setRootPath	(const char* path)
@@ -229,13 +67,26 @@ void TQtJs::Initialize  ()
 { 
 	delete fEngine;
 	fEngine = new QJSEngine;
-//	fEngine->globalObject().setProperty("function version() { return \"1.00\"}" );
 
-//	jsversion* vers = new jsversion();
-//	QJSValue vObject = fEngine->newQObject(vers);
-//	fEngine->globalObject().setProperty("version", vObject);
-//	string out;
-//	eval(1, "version()", out);
+	// Javascript wrapper for variable argument number functions.
+	QJSValue print = fEngine->evaluate("function() { printCallback(Array.prototype.slice.apply(arguments));}");
+	fEngine->globalObject().setProperty("print", print);
+	QJSValue post = fEngine->evaluate("function() { postCallback(Array.prototype.slice.apply(arguments));}");
+	fEngine->globalObject().setProperty("post", post);
+
+	// create object with method callback
+	CustomScripts * scriptObject = new CustomScripts;
+	QJSValue scriptTest = fEngine->newQObject(scriptObject);
+	QJSValue versionFunc =  scriptTest.property("version");
+	QJSValue readFileFunc =  scriptTest.property("readfile");
+	QJSValue printFunc =  scriptTest.property("print");
+	QJSValue postFunc =  scriptTest.property("post");
+
+	// Expose C++ functions
+	fEngine->globalObject().setProperty("version", versionFunc);
+	fEngine->globalObject().setProperty("readfile", readFileFunc);
+	fEngine->globalObject().setProperty("printCallback", printFunc);
+	fEngine->globalObject().setProperty("postCallback", postFunc);
 }
 
 //--------------------------------------------------------------------------------------------

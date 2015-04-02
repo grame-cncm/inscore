@@ -1,7 +1,6 @@
 /*
-
-  INScore Project
-  Copyright (C) 2010  Grame
+  Interlude Library
+  Copyright (C) 2009  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -22,46 +21,39 @@
 
 */
 
-#ifndef __VQtInit__
-#define __VQtInit__
+#include <iostream>
+#include <fstream>
+#include "ITLparser.h"
+#include "IMessage.h"
+#include "IMessageStream.h"
+#include "TV8Js.h"
 
-#include "export.h"
+using namespace std;
+using namespace inscore;
 
-#if defined(ANDROID) || defined(IOS)
-#include <QTabWidget>
 
-class QMainWindow;
-#endif
-
-namespace inscore
+int main (int argc, char * argv[])
 {
-
-/*!
-\addtogroup ITLView
-@{
-*/
-
-class export VQtInit
-{
-	public:
-	static	void		startQt ();
-	static	void		stopQt ();
-
-#if defined(ANDROID) || defined(IOS)
-	/*!
-	 * \brief getTabWidget
-	 * \return the tabWidget of the main window.
-	 */
-	static	QTabWidget*	getTabWidget();
-
-	private:
-	static QMainWindow* sMainWindow;
-	static QTabWidget* sTabWidget;
+	if (argc > 1) {
+		ifstream in (argv[1]);
+#ifdef V8ENGINE
+		TJSEngine js;
+		ITLparser p(&in, 0, &js, 0);
+#elif defined(LUA)
+		TLua lua;
+		ITLparser p(&in, 0, 0, &lua);
+#else
+		ITLparser p(&in, 0, 0, 0);
 #endif
-};
+		SIMessageList outMsgs;
+		outMsgs = p.parse ();
+		if (outMsgs) {
+			outMsgs->list().set("", "\n");
+			cout << outMsgs->list() << endl;
+		}
+		else
+			cout << "error reading " << argv[1] << endl;
+	}
+ 	return 0;
+}
 
-/*!@} */
-
-} // end namespoace
-
-#endif
