@@ -1,0 +1,48 @@
+
+rversion = 0.96;
+/ITL require $rversion "/ITL/scene/warning" "set" "txt" "WARNING: javascript requires version 0.96 or greater";
+/ITL require $rversion "/ITL/scene/warning" "color" 180 180 180;
+/ITL require $rversion "/ITL/scene/warning" "y" 0.9;
+/ITL require $rversion "/ITL/scene/warning" "scale" 1.5;
+
+huespan=45;		! hue span in degrees
+hue=0;			! initial hue
+
+<? javascript
+	function makemsg (msg, index, w, x, y, hue) {
+		msg = msg.replace(/\?/g, index) ;
+		msg = msg.replace(/width/g, w) ;
+		msg = msg.replace("xpos", x) ;
+		msg = msg.replace("ypos", y) ;
+		return msg.replace("hue", hue) ;
+	}
+
+	function grid (size) {
+		var j=1;
+		var border = 0.005;
+		var w = 1.9 / size - border;
+		var huestep = huespan / (size * size);
+		msg = "/ITL/scene/r_? set rect width width; \
+			/ITL/scene/r_? x xpos; \
+			/ITL/scene/r_? y ypos; \
+			/ITL/scene/r_? hsb hue 100 100;";
+		var out = "";
+		for (i=1; i <= size; i++) {
+			x = (i-(size/2)-0.5) * (w + border);
+			 for (j=1; j <= size; j++) {
+				y = (j-(size/2)-0.5) * (w + border);
+				index = i+"_"+j;
+				out += makemsg (msg, index, w, x, y, Math.round(hue));
+				hue += huestep;
+			}
+		}
+		return out;
+	}
+?>
+
+/ITL/scene/* del;
+/ITL/scene color 0 0 0;
+
+<?javascript grid(20); ?>
+
+/ITL/scene/r_1_1 watch del (/ITL/scene color 255 255 255);

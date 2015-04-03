@@ -7,12 +7,8 @@ gray=220;
 ?>
 
 /ITL/scene/version scale 2.;
-/ITL/scene/engine set txt 'Based on the v8 engine';
+/ITL/scene/engine set txt 'Based on the Qt Javascript engine';
 /ITL/scene/engine y 0.1;
 /ITL/scene/engine scale 1.4;
 
-/ITL/scene/url set txt "http://code.google.com/p/v8/";
-/ITL/scene/url y 0.16;
-/ITL/scene/url scale 1.2;
-
-/ITL/scene/* watch del (/ITL/scene color 255 255 255);
+/ITL/scene/version watch del (/ITL/scene color 255 255 255);

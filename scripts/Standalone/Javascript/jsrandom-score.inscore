@@ -1,4 +1,4 @@
-version = 0.96; ! version required for javascript
+rversion = 0.96; ! version required for javascript
 gray = 100;
 
 /ITL/scene/* del;
@@ -35,7 +35,7 @@ It generates random scores using Guido streams.";
 /ITL/scene/clickme z 2.;
 
 /ITL/scene/score set gmnstream '[ \clef<"g"> \meter<"4/4">  \pageFormat<18cm, 18cm, 5,5,5,5>';
-/ITL/scene/score scale 3;
+/ITL/scene/score scale 0.4;
 /ITL/scene/score xorigin -1;
 /ITL/scene/score yorigin -1;
 /ITL/scene/score x -0.7;
@@ -45,7 +45,7 @@ It generates random scores using Guido streams.";
 /ITL/scene/clickme watch mouseLeave ( /ITL/scene/clickme color 0 0 0 );
 /ITL/scene/clickme watch mouseDown  ( /ITL/scene/javascript run "randomscore()" );
 
-/ITL require $version ( /ITL/scene/warning set txt "WARNING: javascript requires version" $version "or greater" ,
+/ITL require $rversion ( /ITL/scene/warning set txt "WARNING: javascript requires version" $rversion "or greater" ,
 						/ITL/scene/warning color $gray $gray $gray ,
 						/ITL/scene/warning y 0.9 ,
 						/ITL/scene/warning scale 1.5 
