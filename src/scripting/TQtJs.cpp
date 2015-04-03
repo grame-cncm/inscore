@@ -51,6 +51,27 @@ namespace inscore
 
 #ifdef QTJSENGINE
 
+
+static const char* kReserved[] = {
+	"_externals_",
+	"_printCallback_",
+	"_postCallback_",
+	"print",
+	"post",
+	"version",
+	"readfile"
+};
+enum { kExternals, kPrintCallback, kPostCallback, kPrint, kPost, kVersion, kReadfile, kEndExternals };
+
+//--------------------------------------------------------------------------------------------
+// check for  conflicts with reserved tokens
+static bool checkConficts (const string& var)
+{
+	for (int i = 0; i < kEndExternals; i++)
+		if (var == kReserved[i]) return true;
+	return false;
+}
+
 //--------------------------------------------------------------------------------------------
 void TQtJs::setRootPath	(const char* path)
 {
@@ -69,24 +90,27 @@ void TQtJs::Initialize  ()
 	fEngine = new QJSEngine;
 
 	// Javascript wrapper for variable argument number functions.
-	QJSValue print = fEngine->evaluate("function() { printCallback(Array.prototype.slice.apply(arguments));}");
-	fEngine->globalObject().setProperty("print", print);
-	QJSValue post = fEngine->evaluate("function() { postCallback(Array.prototype.slice.apply(arguments));}");
-	fEngine->globalObject().setProperty("post", post);
+	QJSValue print = fEngine->evaluate("function() { _printCallback_(Array.prototype.slice.apply(arguments));}");
+	fEngine->globalObject().setProperty(kReserved[kPrint], print);
+
+	QJSValue post = fEngine->evaluate("function() { _postCallback_(Array.prototype.slice.apply(arguments));}");
+	fEngine->globalObject().setProperty(kReserved[kPost], post);
 
 	// create object with method callback
-	CustomScripts * scriptObject = new CustomScripts;
-	QJSValue scriptTest = fEngine->newQObject(scriptObject);
-	QJSValue versionFunc =  scriptTest.property("version");
-	QJSValue readFileFunc =  scriptTest.property("readfile");
-	QJSValue printFunc =  scriptTest.property("print");
-	QJSValue postFunc =  scriptTest.property("post");
+	CustomScripts * externals = new CustomScripts;
+	QJSValue externalsVal	= fEngine->newQObject(externals);
+	fEngine->globalObject().setProperty(kReserved[kExternals], externalsVal);
+
+	QJSValue versionFunc	= externalsVal.property("version");
+	QJSValue readFileFunc	= externalsVal.property("readfile");
+	QJSValue printFunc		= externalsVal.property("print");
+	QJSValue postFunc		= externalsVal.property("post");
 
 	// Expose C++ functions
-	fEngine->globalObject().setProperty("version", versionFunc);
-	fEngine->globalObject().setProperty("readfile", readFileFunc);
-	fEngine->globalObject().setProperty("printCallback", printFunc);
-	fEngine->globalObject().setProperty("postCallback", postFunc);
+	fEngine->globalObject().setProperty(kReserved[kVersion], versionFunc);
+	fEngine->globalObject().setProperty(kReserved[kReadfile], readFileFunc);
+	fEngine->globalObject().setProperty(kReserved[kPrintCallback], printFunc);
+	fEngine->globalObject().setProperty(kReserved[kPostCallback], postFunc);
 }
 
 //--------------------------------------------------------------------------------------------
@@ -106,23 +130,28 @@ bool TQtJs::bindEnv  (stringstream& s, const string& name, const IMessage::argPt
 void TQtJs::bindEnv  (stringstream& s, const string& name, const IMessage::argslist& values)
 {
 	if (values.size() == 0) return;
-
-	stringstream tmp;
-	tmp << name << "=";
-	unsigned int n = values.size();
-	if (n == 1) {
-		if (!bindEnv (tmp, name, values[0])) return;
+	if (!checkConficts(name)) {
+		stringstream tmp;
+		tmp << name << "=";
+		unsigned int n = values.size();
+		if (n == 1) {
+			if (!bindEnv (tmp, name, values[0])) return;
+		}
+		else {
+			tmp << "[";
+			for (unsigned int i=0; i<n;) {
+				if (!bindEnv (tmp, name, values[i])) return;
+				i++;
+				if (i<n) tmp << ", ";
+			}
+			tmp << "]";
+		}
+		s << tmp.str() << "\n";
 	}
 	else {
-		tmp << "[";
-		for (unsigned int i=0; i<n;) {
-			if (!bindEnv (tmp, name, values[i])) return;
-			i++;
-			if (i<n) tmp << ", ";
-		}
-		tmp << "]";
+		string msg = "javascript: variable '" + name + "' conflicts with reserved token";
+		ITLErr << msg << ITLEndl;
 	}
-	s << tmp.str() << "\n";
 }
 
 //--------------------------------------------------------------------------------------------
@@ -171,8 +200,7 @@ bool TQtJs::eval(int line, const char* jscode, std::string& outStr)
 		}
 	}
 	else if (result.isError()) {
-//		ITLErr <<  "javascript error " << result.toString().toUtf8().constData() << ITLEndl;
-		cerr <<  "javascript error " << result.toString().toUtf8().constData() << endl;
+		ITLErr <<  "javascript error " << result.toString().toUtf8().constData() << ITLEndl;
 		return false;
 	}
 	return true;

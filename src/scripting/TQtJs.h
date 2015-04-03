@@ -47,8 +47,8 @@ class TQtJs
 {
 	std::string fRootPath;
 #ifdef QTJSENGINE
-    QJSEngine*	fEngine;
-	int			fLineOffset;
+    QJSEngine*		fEngine;
+	int				fLineOffset;
 
 	bool bindEnv  (std::stringstream& s, const std::string& name, const IMessage::argPtr& val);
 	void bindEnv  (std::stringstream& s, const std::string& name, const IMessage::argslist& values);
