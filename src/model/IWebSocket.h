@@ -73,6 +73,7 @@ class IWebSocket : public IObject, public WebSocketInformer
 		virtual ~IWebSocket();
 
 		bool start (int port);									///< start the web socket on port 'port'
+		void del();
 
 		// the message handlers
 		MsgHandler::msgStatus set (const IMessage* msg);		///< the 'set' message handler
