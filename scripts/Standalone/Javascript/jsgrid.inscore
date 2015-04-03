@@ -22,7 +22,7 @@ hue=0;			! initial hue
 		var border = 0.005;
 		var w = 1.9 / size - border;
 		var huestep = huespan / (size * size);
-		msg = "/ITL/scene/r_? set rect width width; \
+		var msg = "/ITL/scene/r_? set rect width width; \
 			/ITL/scene/r_? x xpos; \
 			/ITL/scene/r_? y ypos; \
 			/ITL/scene/r_? hsb hue 100 100;";

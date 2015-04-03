@@ -12,7 +12,7 @@ function updateStatus(id, message) {
  
 function loadWebSocket() {
 	if (window.WebSocket) {
-		var url = "ws://localhost:1234";
+		var url = "ws://localhost:7100";
 		ws = new WebSocket(url); 
 		updateStatus("wsStatus", "webSocket supported !");
 

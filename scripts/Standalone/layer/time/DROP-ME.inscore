@@ -15,22 +15,23 @@ duration = 8;
 /ITL/scene/layer duration $duration;
 
 <? javascript
+	function makemsg (msg, index, dur date) {
+		msg = msg.replace(/\?/g, index) ;
+		msg = msg.replace("DUR", dur) ;
+		return msg.replace("DAT", date) ;
+	}
 
 	function rand (max) { return Math.random() * max; }
 	function bars (n, maxdate) {
-		var out = new Array;
+		var msg = "/ITL/scene/r? set rect 0.01 1.; \
+			/ITL/scene/r? duration DUR; \
+			/ITL/scene/r_? date DAT;";
+		var out = "";
 		for (i=0; i<n; i++) {
-			bar (out, out.length, maxdate);
+			out += makemsg (msg, i, rand(0.08), rand(maxdate));
 		}
 		return out;
-	}
-	
-	function bar(out, n, maxdate) {
-		var address = "/ITL/scene/r" + n;
-		out[n+1] = address + " set rect 0.01 1.;" ;
-		out[n+2] = address + " duration " + rand(0.08) + ";" ;
-		out[n+3] = address + " date " + rand(maxdate) + ";" ;
-	}
+	}	
 ?>
 
 <?javascript bars(50, duration); ?>
