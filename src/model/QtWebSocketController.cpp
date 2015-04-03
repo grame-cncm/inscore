@@ -24,18 +24,11 @@
 */
 
 #include "QtWebSocketController.h"
+#include "ITLError.h"
 
 using namespace std;
 namespace inscore
 {
-
-#ifdef WIN32
-#include <windows.h>
-# define _uwait(n)	Sleep(n)
-#else
-#include <unistd.h>
-# define _uwait(n)	usleep(n * 1000);
-#endif
 
 //-------------------------------------------------------------------------------
 QtWebSocketController::QtWebSocketController(const WebSocketInformer* infos)
@@ -49,12 +42,11 @@ bool QtWebSocketController::start (int /*port*/)
 {
 	stop();
 	QThread::start();
-	int timeout = 100;   // 100 mls timeout
-	do {
-		_uwait(10);
-		timeout -= 10;
-	} while (!running() || (timeout > 0));
-	return running();
+	wait (100);				// wait 100 ms for potential thread exit
+	if (running())			// check if the server is running
+		return true;
+	stop();
+	return false;
 }
 
 //-------------------------------------------------------------------------------
@@ -64,9 +56,9 @@ bool QtWebSocketController::running() const				{ return fServer ? fServer->isLis
 //-------------------------------------------------------------------------------
 void QtWebSocketController::stop()
 {
-	if (isRunning()) {
+	if (isRunning()) {			// check if the thread is running
 		quit();
-		wait();
+		wait(100);
 		delete fServer;
 		fServer = 0;
 	}
@@ -83,8 +75,12 @@ void QtWebSocketController::run()
 {
 	fServer = new QtWebSocketServer (fInfos->getFrequency(), fInfos->getView());
 	if (fServer) {
-		fServer->start(fInfos->getPort());
-		exec();
+		if (fServer->start(fInfos->getPort()))
+			exec();
+		else {
+			ITLErr << "Can't start websocket server on port" << fInfos->getPort() << ITLEndl;
+			exit(-1);
+		}
 	}
 }
 
