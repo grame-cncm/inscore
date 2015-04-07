@@ -93,12 +93,6 @@ common:
 	cp -r doc $(package)
 	cp readme.txt $(package)
 	cp ../src/changelog.txt $(package)
-	[ -d $(package)/inscore2inscore90 ] || mkdir $(package)/inscore2inscore90
-	[ -d $(package)/inscore2inscore100 ] || mkdir $(package)/inscore2inscore100
-	cp $(i2i90tool)  $(package)/inscore2inscore90
-	cp $(i2i100tool) $(package)/inscore2inscore100
-	cp $(i2i90)/readme.txt $(package)/inscore2inscore90
-	cp $(i2i100)/readme.txt $(package)/inscore2inscore100
 	make samples
 		
 doc: 
@@ -111,7 +105,7 @@ copydoc:
 	make -C $(docsrc) htmlclean
 	rm -f $(docdst)/html/*
 	cp  $(docsrc)/OSCMsg/* $(docdst)/html
-	cp  $(docsrc)/INScore-refcard.pdf $(docdst)
+	cp  $(docsrc)/refcards/INScore-refcard-1.12.pdf $(docdst)
 	cd  $(docdst) && tar czf html.tgz html
 
 interfaces:
@@ -122,7 +116,7 @@ interfaces:
 
 scripts:
 	[ -d $(rsrc)/scripts ] || mkdir -p $(rsrc)/scripts
-	cp -R ../scripts/S-* $(rsrc)/scripts
+	cp -R ../scripts/Standalone/* $(rsrc)/scripts
 	rm -f $(shell find $(rsrc)/scripts -name "*DS_Store")
 	cd $(rsrc) && tar czf scripts.tgz scripts
 
