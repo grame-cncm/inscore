@@ -21,7 +21,8 @@ Version 1.12
 - Inscrease default size of guido item.
 - Add default size and font to text item to have same rendering on different plateform (default to Arial 13px)
 - Add 'arrows' attribute to 'line' objects.
-- The 'export' method can take multiple file path. 'children' parameter is deleted of the API.
+- The 'export' method can take multiple file path.
+- new 'exportAll' method to export an object with its children.
 - Add support of Qt javascript engine (QJSEngine).
 - Bug correction :
 	When ask for multiple exports, all are now treated and not only the last.

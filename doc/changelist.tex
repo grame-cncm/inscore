@@ -4,9 +4,16 @@
 %:    Differences to version 1.08  (version 1.12)
 \sublevel{Differences to version 1.08}
 \begin{itemize}
+\item \OSC{line} objects: \OSC{color} message is now an alias of \OSC{penColor}. 
+\item \OSC{foreground} method at scene level to put a scene window in foreground. See section \fullref{scene}.
+\item text items support font spec with new \OSC{fontSize}, \OSC{fontFamily}, \OSC{fontStyle} and \OSC{fontWeight} messages. See section \fullref{fontctrl}.
 \item new \OSC{compatibility} method at application level, provided to preserve previous behaviors. See section \fullref{applmgmt}.
-\item default size of guido item is increased.
+\item default size of guido item is increased: the ratio to the previous size is 8.
+\item force default size and font to text items in order to get equivelent rendering on different platforms (default to Arial 13px).
 \item new \OSC{arrows} attribute for \OSC{line} objects. See section \fullref{arrows}.
+\item the \OSC{export} message supports multiple file paths. See section \fullref{common}.
+\item new \OSC{exportAll} message to export an object with its children. See section \fullref{common}.
+
 \item incoming messages buffer size increased to 10.000
 \item url support for inscore files (\OSC{load} message)
 
