@@ -6,7 +6,7 @@
 /ITL/scene/signal/envelope set 0. 't' 'tcolor' 1.0 1.0 'transp' ;
 /ITL/scene/cursor set "graph" "envelope" ;
 /ITL/scene/cursor width 0.5 ;
-/ITL/scene/cursor height 0.15 ;
+/ITL/scene/cursor height 0.5 ;
 
 /ITL/scene/cursor duration -3 8;
 

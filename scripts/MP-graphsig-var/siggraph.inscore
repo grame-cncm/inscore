@@ -20,7 +20,7 @@
 /ITL/scene/myGraph z 0.5;
 /ITL/scene/myGraph duration 2 4;
 
-/ITL/scene/myEllipse set ellipse 0.06 0.06;
+/ITL/scene/myEllipse set ellipse 0.48 0.48;
 /ITL/scene/myEllipse color 255 42 105 148;
 /ITL/scene/myEllipse duration 1 4;
 /ITL/scene/myEllipse scale 0.4;

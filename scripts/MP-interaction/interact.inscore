@@ -7,14 +7,13 @@
 /ITL/scene/back yorigin -1.0;
 /ITL/scene/back y -1.0;
 /ITL/scene/score set gmn "[ c d e f g a b c2]";
-/ITL/scene/score scale 5.0;
+/ITL/scene/score scale 0.625;
 /ITL/scene/score y -0.82;
 /ITL/scene/score z 0.5;
 /ITL/scene/score color 255 255 255;
-/ITL/scene/cursor set ellipse 0.1 0.1;
+/ITL/scene/cursor set ellipse 0.07 0.07;
 /ITL/scene/cursor color 255 0 0;
 /ITL/scene/cursor z 0.4;
-/ITL/scene/cursor scale 0.08;
 /ITL/scene/sync cursor score;
 /ITL/scene/rect1 set rect 0.1 1.0;
 /ITL/scene/rect2 set rect 0.1 1.0;

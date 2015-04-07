@@ -1,6 +1,7 @@
 # cleanup the scene.
 /ITL/scene/* del;
 /ITL/scene/signal/* del;
+/ITL/scene height 1;
 /ITL/scene width 1.3;
 
 !-------------------------------------------------------
