@@ -7,33 +7,65 @@
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2015-03-25 18:57:00"> 
+<meta name="date" content="2015-04-07 14:16:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 3355--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 3406--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch17.html" >prev</a>] [<a 
 href="OSCMsgch17.html#tailOSCMsgch17.html" >prev-tail</a>] [<a 
 href="OSCMsgch16.html#tailOSCMsgch18.html">tail</a>] [<a 
 href="OSCMsg3.html# " >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;18</span><br /><a 
- id="x26-11500018"></a> Changes list</h2>
+ id="x26-11600018"></a> Changes list</h2>
 <h3 class="sectionHead"><span class="titlemark">18.1    </span> <a 
- id="x26-11600018.1"></a>Differences to version 1.08</h3>
+ id="x26-11700018.1"></a>Differences to version 1.08</h3>
      <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">line </span>objects: <span 
+class="pcrr8tn-">color </span>message is now an alias of <span 
+class="pcrr8tn-">penColor</span>.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">foreground </span>method at scene level to put a scene window in foreground. See section <a 
+href="OSCMsgch9.html#x13-530009">9<!--tex4ht:ref: scene --></a> p.<a 
+href="OSCMsgch9.html#x13-530009">69<!--tex4ht:ref: scene --></a>.
+     </li>
+     <li class="itemize">text  items  support  font  spec  with  new  <span 
+class="pcrr8tn-">fontSize</span>,  <span 
+class="pcrr8tn-">fontFamily</span>,  <span 
+class="pcrr8tn-">fontStyle </span>and  <span 
+class="pcrr8tn-">fontWeight</span>
+     messages. See section <a 
+href="OSCMsgch7.html#x11-410007.7">7.7<!--tex4ht:ref: fontctrl --></a> p.<a 
+href="OSCMsgch7.html#x11-410007.7">56<!--tex4ht:ref: fontctrl --></a>.
+     </li>
      <li class="itemize">new  <span 
 class="pcrr8tn-">compatibility </span>method  at  application  level,  provided  to  preserve  previous  behaviors.  See
      section <a 
-href="OSCMsgch8.html#x12-430008.1">8.1<!--tex4ht:ref: applmgmt --></a> p.<a 
-href="OSCMsgch8.html#x12-430008.1">59<!--tex4ht:ref: applmgmt --></a>.
+href="OSCMsgch8.html#x12-440008.1">8.1<!--tex4ht:ref: applmgmt --></a> p.<a 
+href="OSCMsgch8.html#x12-440008.1">60<!--tex4ht:ref: applmgmt --></a>.
      </li>
-     <li class="itemize">default size of guido item is increased.
+     <li class="itemize">default size of guido item is increased: the ratio to the previous size is 8.
+     </li>
+     <li class="itemize">force default size and font to text items in order to get equivelent rendering on different platforms
+     (default to Arial 13px).
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">arrows </span>attribute for <span 
 class="pcrr8tn-">line </span>objects. See section <a 
 href="OSCMsgch7.html#x11-400007.6">7.6<!--tex4ht:ref: arrows --></a> p.<a 
 href="OSCMsgch7.html#x11-400007.6">55<!--tex4ht:ref: arrows --></a>.
+     </li>
+     <li class="itemize">the <span 
+class="pcrr8tn-">export </span>message supports multiple file paths. See section <a 
+href="OSCMsgch2.html#x6-60002">2<!--tex4ht:ref: common --></a> p.<a 
+href="OSCMsgch2.html#x6-60002">10<!--tex4ht:ref: common --></a>.
+     </li>
+     <li class="itemize">new <span 
+class="pcrr8tn-">exportAll </span>message to export an object with its children. See section <a 
+href="OSCMsgch2.html#x6-60002">2<!--tex4ht:ref: common --></a> p.<a 
+href="OSCMsgch2.html#x6-60002">10<!--tex4ht:ref: common --></a>.
      </li>
      <li class="itemize">incoming messages buffer size increased to 10.000
      </li>
@@ -45,9 +77,9 @@ class="pcrr8tn-">get </span>message) : <span
 class="pcrr8tn-">count </span>and <span 
 class="pcrr8tn-">rcount </span>that give the enclosed objects count and
      recursive count. The messages are supported at scene and application level as well. See section <a 
-href="OSCMsgch9.html#x13-540009.2">9.2<!--tex4ht:ref: scenequery --></a>
+href="OSCMsgch9.html#x13-550009.2">9.2<!--tex4ht:ref: scenequery --></a>
      p.<a 
-href="OSCMsgch9.html#x13-540009.2">70<!--tex4ht:ref: scenequery --></a>.
+href="OSCMsgch9.html#x13-550009.2">71<!--tex4ht:ref: scenequery --></a>.
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">memimg </span>object that capture the image of any object hierarchy including scenes. See section <a 
@@ -58,8 +90,8 @@ href="OSCMsgch5.html#x9-280005.5">37<!--tex4ht:ref: imgscore --></a>.
      <li class="itemize">supports relative OSC addresses that are evaluated in the context of the target object (i.e. a scene for
      drag and drop operations, arbitrary objects with the <span 
 class="pcrr8tn-">eval </span>method). See section <a 
-href="OSCMsgch15.html#x19-9200015.2">15.2<!--tex4ht:ref: scriptmsgs --></a> p.<a 
-href="OSCMsgch15.html#x19-9200015.2">124<!--tex4ht:ref: scriptmsgs --></a>.
+href="OSCMsgch15.html#x19-9300015.2">15.2<!--tex4ht:ref: scriptmsgs --></a> p.<a 
+href="OSCMsgch15.html#x19-9300015.2">126<!--tex4ht:ref: scriptmsgs --></a>.
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">eval </span>method that takes a message list as argument, provided as a context for relative addresses
@@ -69,11 +101,14 @@ href="OSCMsgch4.html#x8-220004">30<!--tex4ht:ref: miscmsgs --></a>.
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">httpd </span>object that implements an http server providing images of the scene to remote clients. See
+                                                                                 
+
+                                                                                 
      section <a 
 href="OSCMsgch5.html#x9-320005.9">5.9<!--tex4ht:ref: webobjects --></a> p.<a 
 href="OSCMsgch5.html#x9-320005.9">43<!--tex4ht:ref: webobjects --></a> and section <a 
-href="OSCMsgch16.html#x22-10900016.3">16.3<!--tex4ht:ref: Httpd --></a> p.<a 
-href="OSCMsgch16.html#x22-10900016.3">144<!--tex4ht:ref: Httpd --></a>.
+href="OSCMsgch16.html#x22-11000016.3">16.3<!--tex4ht:ref: Httpd --></a> p.<a 
+href="OSCMsgch16.html#x22-11000016.3">146<!--tex4ht:ref: Httpd --></a>.
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">websocket </span>object that implements a websocket server providing images of the scene to remote
@@ -88,17 +123,14 @@ href="OSCMsgch5.html#x9-300005.7">39<!--tex4ht:ref: filebasedrsrc --></a>.
      <li class="itemize">new intermediate object for the URL (waiting for the data to be downloaded to create the real object)
      </li>
      <li class="itemize">new events associated to url based objects: success, error, cancel. See section <a 
-href="OSCMsgch14.html#x18-8000014.1.3">14.1.3<!--tex4ht:ref: urlevents --></a> p.<a 
-href="OSCMsgch14.html#x18-8000014.1.3">115<!--tex4ht:ref: urlevents --></a>.
+href="OSCMsgch14.html#x18-8100014.1.3">14.1.3<!--tex4ht:ref: urlevents --></a> p.<a 
+href="OSCMsgch14.html#x18-8100014.1.3">117<!--tex4ht:ref: urlevents --></a>.
      </li>
      <li class="itemize">support for int values as parameters of the set method of rect shape and polygon objects
      </li>
      <li class="itemize">the  <span 
 class="pcrr8tn-">clear </span>message  addressed  to  a  <span 
 class="pcrr8tn-">gmnstream </span>object  clears  also  the  view.  The  change  was  not
-                                                                                 
-
-                                                                                 
      previously reflected until a new valid string was posted to the object.
      </li>
      <li class="itemize">bug in export item corrected : child scaling was not applied.
@@ -114,20 +146,20 @@ class="pcrr8tn-">gmnstream </span>object  clears  also  the  view.  The  change 
      <li class="itemize">bug with &#8217;line&#8217; initialization corrected: wrong position and orientation with negative coordinates (was
      previously corrected but reintroduced), incorrect initialization in layers.
      </li></ul>
-<!--l. 39--><p class="noindent" >
+<!--l. 46--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.2    </span> <a 
- id="x26-11700018.2"></a>Differences to version 1.07</h3>
+ id="x26-11800018.2"></a>Differences to version 1.07</h3>
      <ul class="itemize1">
      <li class="itemize">new <span 
 class="pcrr8tn-">__END__ </span>marker supported to end a script parsing at arbitrary location (see section <a 
-href="OSCMsgch15.html#x19-9100015.1">15.1<!--tex4ht:ref: scriptstatement --></a> p.<a 
-href="OSCMsgch15.html#x19-9100015.1">124<!--tex4ht:ref: scriptstatement --></a>).
+href="OSCMsgch15.html#x19-9200015.1">15.1<!--tex4ht:ref: scriptstatement --></a> p.<a 
+href="OSCMsgch15.html#x19-9200015.1">126<!--tex4ht:ref: scriptstatement --></a>).
      </li>
      <li class="itemize">when displaying the mapping, the map dates are not printed any more by default (due to size and
      collisions). The debug map parameter change from boolean to int value: 1 to activate the mapping
      display, 2 to have also the dates displayed (see section <a 
-href="OSCMsgch7.html#x11-410007.7">7.7<!--tex4ht:ref: debugnode --></a> p.<a 
-href="OSCMsgch7.html#x11-410007.7">56<!--tex4ht:ref: debugnode --></a>).
+href="OSCMsgch7.html#x11-420007.8">7.8<!--tex4ht:ref: debugnode --></a> p.<a 
+href="OSCMsgch7.html#x11-420007.8">58<!--tex4ht:ref: debugnode --></a>).
      </li>
      <li class="itemize">the signal node is available at any level of the hierarchy (as well as the sync node)
      </li>
@@ -135,26 +167,26 @@ href="OSCMsgch7.html#x11-410007.7">56<!--tex4ht:ref: debugnode --></a>).
 class="pcrr8tn-">connect </span>and <span 
 class="pcrr8tn-">disconnect </span>messages for the signal node to support signal connection to objects
      graphic attributes (see section <a 
-href="OSCMsgch13.html#x17-7200013.2">13.2<!--tex4ht:ref: signalcnx --></a> p.<a 
-href="OSCMsgch13.html#x17-7200013.2">98<!--tex4ht:ref: signalcnx --></a>).
+href="OSCMsgch13.html#x17-7300013.2">13.2<!--tex4ht:ref: signalcnx --></a> p.<a 
+href="OSCMsgch13.html#x17-7300013.2">100<!--tex4ht:ref: signalcnx --></a>).
      </li>
+                                                                                 
+
+                                                                                 
      <li class="itemize">a slave can have several masters
      </li>
      <li class="itemize">no more side effects for synchronized objects (position change, scaling)</li></ul>
-<!--l. 52--><p class="noindent" >
+<!--l. 59--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.3    </span> <a 
- id="x26-11800018.3"></a>Differences to version 1.06</h3>
+ id="x26-11900018.3"></a>Differences to version 1.06</h3>
      <ul class="itemize1">
      <li class="itemize">bug with &#8217;line&#8217; initialization corrected: wrong position and orientation with negative coordinates.
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">plugins </span>static node at application level to provide a user path to look for pugins (see section
      <a 
-href="OSCMsgch8.html#x12-510008.5.4">8.5.4<!--tex4ht:ref: ITLplugins --></a> p.<a 
-href="OSCMsgch8.html#x12-510008.5.4">66<!--tex4ht:ref: ITLplugins --></a>).
-                                                                                 
-
-                                                                                 
+href="OSCMsgch8.html#x12-520008.5.4">8.5.4<!--tex4ht:ref: ITLplugins --></a> p.<a 
+href="OSCMsgch8.html#x12-520008.5.4">67<!--tex4ht:ref: ITLplugins --></a>).
      </li>
      <li class="itemize">explicit objects for musicxml scores (<span 
 class="pcrr8tn-">musicxml </span>and <span 
@@ -173,20 +205,20 @@ class="pcrr8tn-">get </span>message
      sent to a signal with a large buffer -&#x003E; out of buffer memory
      </li>
      <li class="itemize">new javascript &#8217;post&#8217; function for posting delayed messages (see section <a 
-href="OSCMsgch15.html#x19-9700015.6.1">15.6.1<!--tex4ht:ref: jsobj --></a> p.<a 
-href="OSCMsgch15.html#x19-9700015.6.1">129<!--tex4ht:ref: jsobj --></a>)
+href="OSCMsgch15.html#x19-9800015.6.1">15.6.1<!--tex4ht:ref: jsobj --></a> p.<a 
+href="OSCMsgch15.html#x19-9800015.6.1">131<!--tex4ht:ref: jsobj --></a>)
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">write </span>method supported by the &#8217;log&#8217; window (see section <a 
-href="OSCMsgch8.html#x12-500008.5.3">8.5.3<!--tex4ht:ref: ITLlog --></a> p.<a 
-href="OSCMsgch8.html#x12-500008.5.3">65<!--tex4ht:ref: ITLlog --></a>)
+href="OSCMsgch8.html#x12-510008.5.3">8.5.3<!--tex4ht:ref: ITLlog --></a> p.<a 
+href="OSCMsgch8.html#x12-510008.5.3">66<!--tex4ht:ref: ITLlog --></a>)
      </li>
      <li class="itemize">variable addresses are evaluated in message based variables
      </li>
      <li class="itemize">supports relative rotations on x and y axis</li></ul>
-<!--l. 68--><p class="noindent" >
+<!--l. 75--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.4    </span> <a 
- id="x26-11900018.4"></a>Differences to version 1.05</h3>
+ id="x26-12000018.4"></a>Differences to version 1.05</h3>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">save </span>message can now take an optional list of attributes to be saved (see section <a 
@@ -199,23 +231,23 @@ href="OSCMsgch2.html#x6-60002">10<!--tex4ht:ref: common --></a>)
      <li class="itemize">corrects musicxml-version output
      </li>
      <li class="itemize">log window is put to front when the show menu is recalled
+                                                                                 
+
+                                                                                 
      </li>
      <li class="itemize">object aliases are removed when the object is deleted</li></ul>
-<!--l. 79--><p class="noindent" >
+<!--l. 86--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.5    </span> <a 
- id="x26-12000018.5"></a>Differences to version 1.03</h3>
+ id="x26-12100018.5"></a>Differences to version 1.03</h3>
      <ul class="itemize1">
      <li class="itemize">incorrect error message for watch messages corrected
      </li>
      <li class="itemize">new javascript <span 
 class="pcrr8tn-">readfile </span>function (see section <a 
-href="OSCMsgch15.html#x19-9700015.6.1">15.6.1<!--tex4ht:ref: jsobj --></a> p.<a 
-href="OSCMsgch15.html#x19-9700015.6.1">129<!--tex4ht:ref: jsobj --></a>)
+href="OSCMsgch15.html#x19-9800015.6.1">15.6.1<!--tex4ht:ref: jsobj --></a> p.<a 
+href="OSCMsgch15.html#x19-9800015.6.1">131<!--tex4ht:ref: jsobj --></a>)
      </li>
      <li class="itemize">log window is now available from the application &#8217;Tools&#8217; menu
-                                                                                 
-
-                                                                                 
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">brushStyle </span>attribute (see section <a 
@@ -229,31 +261,31 @@ href="OSCMsgch5.html#x9-290005.6">39<!--tex4ht:ref: miscscore --></a>)
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">save </span>method specific to the log window: saves the window content to a file (see section <a 
-href="OSCMsgch8.html#x12-500008.5.3">8.5.3<!--tex4ht:ref: ITLlog --></a>
+href="OSCMsgch8.html#x12-510008.5.3">8.5.3<!--tex4ht:ref: ITLlog --></a>
      p.<a 
-href="OSCMsgch8.html#x12-500008.5.3">65<!--tex4ht:ref: ITLlog --></a>)
+href="OSCMsgch8.html#x12-510008.5.3">66<!--tex4ht:ref: ITLlog --></a>)
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">event </span>method supported at object level for UI events simulation
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">del </span>watchable event: sent when deleting an object (see section <a 
-href="OSCMsgch14.html#x18-8100014.1.4">14.1.4<!--tex4ht:ref: miscevents --></a> p.<a 
-href="OSCMsgch14.html#x18-8100014.1.4">116<!--tex4ht:ref: miscevents --></a>)
+href="OSCMsgch14.html#x18-8200014.1.4">14.1.4<!--tex4ht:ref: miscevents --></a> p.<a 
+href="OSCMsgch14.html#x18-8200014.1.4">118<!--tex4ht:ref: miscevents --></a>)
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">gmnstream </span>guido stream object (see section <a 
 href="OSCMsgch5.html#x9-240005.1">5.1<!--tex4ht:ref: symscore --></a> p.<a 
 href="OSCMsgch5.html#x9-240005.1">32<!--tex4ht:ref: symscore --></a>)</li></ul>
-<!--l. 94--><p class="noindent" >
+<!--l. 101--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.6    </span> <a 
- id="x26-12100018.6"></a>Differences to version 1.0</h3>
+ id="x26-12200018.6"></a>Differences to version 1.0</h3>
      <ul class="itemize1">
      <li class="itemize">log window utility provided as a new static node at application level (<span 
 class="pcrr8tn-">/ITL/log</span>) (see section <a 
-href="OSCMsgch8.html#x12-500008.5.3">8.5.3<!--tex4ht:ref: ITLlog --></a>
+href="OSCMsgch8.html#x12-510008.5.3">8.5.3<!--tex4ht:ref: ITLlog --></a>
      p.<a 
-href="OSCMsgch8.html#x12-500008.5.3">65<!--tex4ht:ref: ITLlog --></a>).
+href="OSCMsgch8.html#x12-510008.5.3">66<!--tex4ht:ref: ITLlog --></a>).
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">systemCount </span>read only attribute for Guido scores (see section <a 
@@ -261,40 +293,40 @@ href="OSCMsgch7.html#x11-380007.4">7.4<!--tex4ht:ref: gmnpage --></a> p.<a
 href="OSCMsgch7.html#x11-380007.4">52<!--tex4ht:ref: gmnpage --></a>)
      </li>
      <li class="itemize">IRCAM gesture follower support (see section <a 
-href="OSCMsgch16.html#x22-10300016.2">16.2<!--tex4ht:ref: GF --></a> p.<a 
-href="OSCMsgch16.html#x22-10300016.2">135<!--tex4ht:ref: GF --></a>)
+href="OSCMsgch16.html#x22-10400016.2">16.2<!--tex4ht:ref: GF --></a> p.<a 
+href="OSCMsgch16.html#x22-10400016.2">137<!--tex4ht:ref: GF --></a>)
      </li>
      <li class="itemize">javascript engine is available at the static address /ITL/scene/javascript and can be activated using a
      &#8217;run&#8217; method (see section <a 
-href="OSCMsgch15.html#x19-9700015.6.1">15.6.1<!--tex4ht:ref: jsobj --></a> p.<a 
-href="OSCMsgch15.html#x19-9700015.6.1">129<!--tex4ht:ref: jsobj --></a>)
+href="OSCMsgch15.html#x19-9800015.6.1">15.6.1<!--tex4ht:ref: jsobj --></a> p.<a 
+href="OSCMsgch15.html#x19-9800015.6.1">131<!--tex4ht:ref: jsobj --></a>)
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">export </span>event (see section <a 
-href="OSCMsgch14.html#x18-8100014.1.4">14.1.4<!--tex4ht:ref: miscevents --></a> p.<a 
-href="OSCMsgch14.html#x18-8100014.1.4">116<!--tex4ht:ref: miscevents --></a>)
+href="OSCMsgch14.html#x18-8200014.1.4">14.1.4<!--tex4ht:ref: miscevents --></a> p.<a 
+href="OSCMsgch14.html#x18-8200014.1.4">118<!--tex4ht:ref: miscevents --></a>)
+                                                                                 
+
+                                                                                 
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">endPaint </span>event at scene level (see section <a 
-href="OSCMsgch14.html#x18-8100014.1.4">14.1.4<!--tex4ht:ref: miscevents --></a> p.<a 
-href="OSCMsgch14.html#x18-8100014.1.4">116<!--tex4ht:ref: miscevents --></a>)
+href="OSCMsgch14.html#x18-8200014.1.4">14.1.4<!--tex4ht:ref: miscevents --></a> p.<a 
+href="OSCMsgch14.html#x18-8200014.1.4">118<!--tex4ht:ref: miscevents --></a>)
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">windowOpacity </span>method at scene level (see section <a 
-href="OSCMsgch9.html#x13-520009">9<!--tex4ht:ref: scene --></a> p.<a 
-href="OSCMsgch9.html#x13-520009">68<!--tex4ht:ref: scene --></a>)
+href="OSCMsgch9.html#x13-530009">9<!--tex4ht:ref: scene --></a> p.<a 
+href="OSCMsgch9.html#x13-530009">69<!--tex4ht:ref: scene --></a>)
      </li>
      <li class="itemize">bug correction: error messages not generated for dropped files (actually for the scene load method)
      </li>
      <li class="itemize">bug correction: possible infinite loop in QStretchTilerItem::paint method
      </li>
      <li class="itemize">bug correction: incorrect get alias output (all the aliases were dumped out in a single message)</li></ul>
-<!--l. 110--><p class="noindent" >
+<!--l. 117--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.7    </span> <a 
- id="x26-12200018.7"></a>Differences to version 0.98</h3>
-                                                                                 
-
-                                                                                 
+ id="x26-12300018.7"></a>Differences to version 0.98</h3>
      <ul class="itemize1">
      <li class="itemize">bug correction in streching very small objects (due to approximations)
      </li>
@@ -302,21 +334,21 @@ href="OSCMsgch9.html#x13-520009">68<!--tex4ht:ref: scene --></a>)
      </li>
      <li class="itemize">new &#8217;ticks&#8217; message at application level for querying or setting the current count of time tasks (see
      section <a 
-href="OSCMsgch8.html#x12-430008.1">8.1<!--tex4ht:ref: applmgmt --></a> p.<a 
-href="OSCMsgch8.html#x12-430008.1">59<!--tex4ht:ref: applmgmt --></a>)
+href="OSCMsgch8.html#x12-440008.1">8.1<!--tex4ht:ref: applmgmt --></a> p.<a 
+href="OSCMsgch8.html#x12-440008.1">60<!--tex4ht:ref: applmgmt --></a>)
      </li>
      <li class="itemize">new &#8217;time&#8217; message at application level for querying or setting the current time (see section <a 
-href="OSCMsgch8.html#x12-430008.1">8.1<!--tex4ht:ref: applmgmt --></a> p.<a 
-href="OSCMsgch8.html#x12-430008.1">59<!--tex4ht:ref: applmgmt --></a>)
+href="OSCMsgch8.html#x12-440008.1">8.1<!--tex4ht:ref: applmgmt --></a> p.<a 
+href="OSCMsgch8.html#x12-440008.1">60<!--tex4ht:ref: applmgmt --></a>)
      </li>
      <li class="itemize">new &#8217;forward&#8217; message at application level for messages forwarding to remote hosts (see section <a 
-href="OSCMsgch8.html#x12-430008.1">8.1<!--tex4ht:ref: applmgmt --></a>
+href="OSCMsgch8.html#x12-440008.1">8.1<!--tex4ht:ref: applmgmt --></a>
      p.<a 
-href="OSCMsgch8.html#x12-430008.1">59<!--tex4ht:ref: applmgmt --></a>)
+href="OSCMsgch8.html#x12-440008.1">60<!--tex4ht:ref: applmgmt --></a>)
      </li>
      <li class="itemize">new &#8217;relative | absolute&#8217; synchronization mode (see section <a 
-href="OSCMsgch12.html#x16-6300012.1">12.1<!--tex4ht:ref: syncmode --></a> p.<a 
-href="OSCMsgch12.html#x16-6300012.1">85<!--tex4ht:ref: syncmode --></a>)
+href="OSCMsgch12.html#x16-6400012.1">12.1<!--tex4ht:ref: syncmode --></a> p.<a 
+href="OSCMsgch12.html#x16-6400012.1">87<!--tex4ht:ref: syncmode --></a>)
      </li>
      <li class="itemize">&#8217;rename&#8217; message not supported any more
      </li>
@@ -324,48 +356,48 @@ href="OSCMsgch12.html#x16-6300012.1">85<!--tex4ht:ref: syncmode --></a>)
      </li>
      <li class="itemize">significant extension and syntax changes in inscore script files (see Scripting documentation section
      <a 
-href="OSCMsgch15.html#x19-9000015">15<!--tex4ht:ref: scripting --></a> p.<a 
-href="OSCMsgch15.html#x19-9000015">124<!--tex4ht:ref: scripting --></a>)
+href="OSCMsgch15.html#x19-9100015">15<!--tex4ht:ref: scripting --></a> p.<a 
+href="OSCMsgch15.html#x19-9100015">126<!--tex4ht:ref: scripting --></a>)
      </li>
      <li class="itemize">fileWatcher methods renamed and simplified (see section <a 
-href="OSCMsgch14.html#x18-8900014.4">14.4<!--tex4ht:ref: filewatch --></a> p.<a 
-href="OSCMsgch14.html#x18-8900014.4">121<!--tex4ht:ref: filewatch --></a>)
+href="OSCMsgch14.html#x18-9000014.4">14.4<!--tex4ht:ref: filewatch --></a> p.<a 
+href="OSCMsgch14.html#x18-9000014.4">123<!--tex4ht:ref: filewatch --></a>)
      </li>
      <li class="itemize">&#8217;click&#8217; and &#8217;select&#8217; messages are not supported any more.
      </li>
      <li class="itemize">new &#8217;stats&#8217; virtual node at application level (address /ITL/stats), supports &#8217;get&#8217; and &#8217;reset&#8217; messages
      the node gives statistics about the incoming messages (see section <a 
-href="OSCMsgch8.html#x12-490008.5.2">8.5.2<!--tex4ht:ref: ITLdebug --></a> p.<a 
-href="OSCMsgch8.html#x12-490008.5.2">64<!--tex4ht:ref: ITLdebug --></a>)
+href="OSCMsgch8.html#x12-500008.5.2">8.5.2<!--tex4ht:ref: ITLdebug --></a> p.<a 
+href="OSCMsgch8.html#x12-500008.5.2">65<!--tex4ht:ref: ITLdebug --></a>)
      </li>
      <li class="itemize">crash bug in signal creation corrected: a signal size created with an incorrect stream (e.g. a string
      value) was 0 and no buffer was allocated.
+                                                                                 
+
+                                                                                 
      </li>
      <li class="itemize">extension of the time related events to duration: new &#8217;durEnter&#8217; and &#8217;durLeave&#8217; watchable events (see
      section <a 
-href="OSCMsgch14.html#x18-7900014.1.2">14.1.2<!--tex4ht:ref: timeevents --></a> p.<a 
-href="OSCMsgch14.html#x18-7900014.1.2">114<!--tex4ht:ref: timeevents --></a>)
+href="OSCMsgch14.html#x18-8000014.1.2">14.1.2<!--tex4ht:ref: timeevents --></a> p.<a 
+href="OSCMsgch14.html#x18-8000014.1.2">116<!--tex4ht:ref: timeevents --></a>)
      </li>
      <li class="itemize">new &#8217;absolutexy&#8217; message at scene level to switch to absolute coordinates (in pixels) (see section <a 
-href="OSCMsgch9.html#x13-520009">9<!--tex4ht:ref: scene --></a>
+href="OSCMsgch9.html#x13-530009">9<!--tex4ht:ref: scene --></a>
      p.<a 
-href="OSCMsgch9.html#x13-520009">68<!--tex4ht:ref: scene --></a>)
+href="OSCMsgch9.html#x13-530009">69<!--tex4ht:ref: scene --></a>)
      </li>
      <li class="itemize">new &#8217;push&#8217; and &#8217;pop&#8217; messages to store and restore current watched events and associated messages
      (see section <a 
-href="OSCMsgch14.html#x18-8800014.3">14.3<!--tex4ht:ref: evtstate --></a> p.<a 
-href="OSCMsgch14.html#x18-8800014.3">121<!--tex4ht:ref: evtstate --></a>)
+href="OSCMsgch14.html#x18-8900014.3">14.3<!--tex4ht:ref: evtstate --></a> p.<a 
+href="OSCMsgch14.html#x18-8900014.3">123<!--tex4ht:ref: evtstate --></a>)
      </li>
      <li class="itemize">internal  change:  mappings  are  now  implemented  as  a  separable  library  strictly  complying  to  the
      mappings formalism.
      </li>
      <li class="itemize">new %f format for the date variable to request a float value (instead a rational value) (see section
      <a 
-href="OSCMsgch14.html#x18-8400014.2.2">14.2.2<!--tex4ht:ref: timevar --></a> p.<a 
-href="OSCMsgch14.html#x18-8400014.2.2">118<!--tex4ht:ref: timevar --></a>).
-                                                                                 
-
-                                                                                 
+href="OSCMsgch14.html#x18-8500014.2.2">14.2.2<!--tex4ht:ref: timevar --></a> p.<a 
+href="OSCMsgch14.html#x18-8500014.2.2">120<!--tex4ht:ref: timevar --></a>).
      </li>
      <li class="itemize">dates may be specified as rational strings (see section <a 
 href="OSCMsgch3.html#x7-210003">3<!--tex4ht:ref: time --></a> p.<a 
@@ -375,16 +407,16 @@ href="OSCMsgch3.html#x7-210003">27<!--tex4ht:ref: time --></a>).
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">rate </span>message at application level to control the time task rate (see section <a 
-href="OSCMsgch8.html#x12-420008">8<!--tex4ht:ref: ITL --></a> p.<a 
-href="OSCMsgch8.html#x12-420008">59<!--tex4ht:ref: ITL --></a>)
+href="OSCMsgch8.html#x12-430008">8<!--tex4ht:ref: ITL --></a> p.<a 
+href="OSCMsgch8.html#x12-430008">60<!--tex4ht:ref: ITL --></a>)
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">frameless </span>message at scene level to switch to frameless or normal window (see section <a 
-href="OSCMsgch9.html#x13-520009">9<!--tex4ht:ref: scene --></a> p.<a 
-href="OSCMsgch9.html#x13-520009">68<!--tex4ht:ref: scene --></a>)</li></ul>
-<!--l. 141--><p class="noindent" >
+href="OSCMsgch9.html#x13-530009">9<!--tex4ht:ref: scene --></a> p.<a 
+href="OSCMsgch9.html#x13-530009">69<!--tex4ht:ref: scene --></a>)</li></ul>
+<!--l. 148--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.8    </span> <a 
- id="x26-12300018.8"></a>Differences to version 0.97</h3>
+ id="x26-12400018.8"></a>Differences to version 0.97</h3>
      <ul class="itemize1">
      <li class="itemize">new <span 
 class="pcrr8tn-">fastgraph </span>object for graphic signals fast rendering (see section <a 
@@ -402,11 +434,14 @@ href="OSCMsgch5.html#x9-230005">32<!--tex4ht:ref: setsect --></a>)
      </li>
      <li class="itemize">javascript and lua support: a single persistent context is created at application level and for each scene.
      (see section <a 
-href="OSCMsgch15.html#x19-9600015.6">15.6<!--tex4ht:ref: scriptlang --></a> p.<a 
-href="OSCMsgch15.html#x19-9600015.6">128<!--tex4ht:ref: scriptlang --></a>)</li></ul>
-<!--l. 155--><p class="noindent" >
+href="OSCMsgch15.html#x19-9700015.6">15.6<!--tex4ht:ref: scriptlang --></a> p.<a 
+href="OSCMsgch15.html#x19-9700015.6">130<!--tex4ht:ref: scriptlang --></a>)</li></ul>
+<!--l. 162--><p class="noindent" >
+                                                                                 
+
+                                                                                 
 <h3 class="sectionHead"><span class="titlemark">18.9    </span> <a 
- id="x26-12400018.9"></a>Differences to version 0.96</h3>
+ id="x26-12500018.9"></a>Differences to version 0.96</h3>
      <ul class="itemize1">
      <li class="itemize">objects position, date and watched events preserved through type change
      </li>
@@ -420,34 +455,34 @@ class="pcrr8tn-">\</span></span></span> escape only &#8217; and " chars, otherwi
      <li class="itemize">guido score map makes use of the new guidolib extended mapping API for staff and system
      </li>
      <li class="itemize">chords map correction (corrected by guido engine)</li></ul>
-                                                                                 
-
-                                                                                 
-<!--l. 167--><p class="noindent" >
+<!--l. 174--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.10    </span> <a 
- id="x26-12500018.10"></a>Differences to version 0.95</h3>
+ id="x26-12600018.10"></a>Differences to version 0.95</h3>
      <ul class="itemize1">
      <li class="itemize">switch to v8 javascript engine
      </li>
      <li class="itemize">lua not embedded by default</li></ul>
-<!--l. 175--><p class="noindent" >
+<!--l. 182--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.11    </span> <a 
- id="x26-12600018.11"></a>Differences to version 0.92</h3>
+ id="x26-12700018.11"></a>Differences to version 0.92</h3>
      <ul class="itemize1">
      <li class="itemize">new &#8217;mouse&#8217; &#8217;show/hide&#8217; message supported at application level (see section <a 
-href="OSCMsgch8.html#x12-420008">8<!--tex4ht:ref: ITL --></a> p.<a 
-href="OSCMsgch8.html#x12-420008">59<!--tex4ht:ref: ITL --></a>)
+href="OSCMsgch8.html#x12-430008">8<!--tex4ht:ref: ITL --></a> p.<a 
+href="OSCMsgch8.html#x12-430008">60<!--tex4ht:ref: ITL --></a>)
      </li>
      <li class="itemize">graphic signal supports alpha messages at object level
      </li>
      <li class="itemize">javascript and lua embedded and supported in inscore scripts (see section <a 
-href="OSCMsgch15.html#x19-9600015.6">15.6<!--tex4ht:ref: scriptlang --></a> p.<a 
-href="OSCMsgch15.html#x19-9600015.6">128<!--tex4ht:ref: scriptlang --></a>).
+href="OSCMsgch15.html#x19-9700015.6">15.6<!--tex4ht:ref: scriptlang --></a> p.<a 
+href="OSCMsgch15.html#x19-9700015.6">130<!--tex4ht:ref: scriptlang --></a>).
      </li>
      <li class="itemize">bug correction in sync delete (introduced with version 0.90)</li></ul>
-<!--l. 185--><p class="noindent" >
+<!--l. 192--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.12    </span> <a 
- id="x26-12700018.12"></a>Differences to version 0.91</h3>
+ id="x26-12800018.12"></a>Differences to version 0.91</h3>
+                                                                                 
+
+                                                                                 
      <ul class="itemize1">
      <li class="itemize">bug corrected: crash with messages addressed to a signal without argument
      </li>
@@ -455,23 +490,20 @@ href="OSCMsgch15.html#x19-9600015.6">128<!--tex4ht:ref: scriptlang --></a>).
      form accepts float values (see section <a 
 href="OSCMsgch3.html#x7-210003">3<!--tex4ht:ref: time --></a> p.<a 
 href="OSCMsgch3.html#x7-210003">27<!--tex4ht:ref: time --></a>).</li></ul>
-<!--l. 194--><p class="noindent" >
+<!--l. 201--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.13    </span> <a 
- id="x26-12800018.13"></a>Differences to version 0.90</h3>
+ id="x26-12900018.13"></a>Differences to version 0.90</h3>
      <ul class="itemize1">
      <li class="itemize">bug in sync management corrected (introduced with the new sync parsing scheme)</li></ul>
-                                                                                 
-
-                                                                                 
-<!--l. 201--><p class="noindent" >
+<!--l. 208--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.14    </span> <a 
- id="x26-12900018.14"></a>Differences to version 0.82</h3>
+ id="x26-13000018.14"></a>Differences to version 0.82</h3>
      <ul class="itemize1">
      <li class="itemize">at application level: osc debug is now &#8217;on&#8217; by default
      </li>
      <li class="itemize">new scripting features (variables) (see section <a 
-href="OSCMsgch15.html#x19-9400015.4">15.4<!--tex4ht:ref: scriptvar --></a> p.<a 
-href="OSCMsgch15.html#x19-9400015.4">126<!--tex4ht:ref: scriptvar --></a>).
+href="OSCMsgch15.html#x19-9500015.4">15.4<!--tex4ht:ref: scriptvar --></a> p.<a 
+href="OSCMsgch15.html#x19-9500015.4">128<!--tex4ht:ref: scriptvar --></a>).
      </li>
      <li class="itemize">ITL file format change: <br 
 class="newline" />- semicolon added at the end of each message <br 
@@ -482,15 +514,18 @@ class="newline" />- single quote support for strings <br
 class="newline" />- messages addressed to sync node must use the string format
      </li>
      <li class="itemize">new &#8217;grid&#8217; object for automatic segmentation and mapping</li></ul>
-<!--l. 217--><p class="noindent" >
+<!--l. 224--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.15    </span> <a 
- id="x26-13000018.15"></a>Differences to version 0.81</h3>
+ id="x26-13100018.15"></a>Differences to version 0.81</h3>
      <ul class="itemize1">
      <li class="itemize">new Faust plugins for signals processing
      </li>
      <li class="itemize">colors management change: all the color models (RGBA and HSBA) accept now float values that are
      interpreted in the common [-1,1] range. For the hue value, 0 always corresponds to &#8217;red&#8217; whatever the
      scale used.
+                                                                                 
+
+                                                                                 
      </li>
      <li class="itemize">stretch adjustment for video objects (corrects gaps in sync h mode)
      </li>
@@ -499,15 +534,12 @@ class="newline" />- messages addressed to sync node must use the string format
      <li class="itemize">system mapping correction
      </li>
      <li class="itemize">splash screen and about menu implemented by the viewer</li></ul>
-<!--l. 231--><p class="noindent" >
+<!--l. 238--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.16    </span> <a 
- id="x26-13100018.16"></a>Differences to version 0.80</h3>
+ id="x26-13200018.16"></a>Differences to version 0.80</h3>
      <ul class="itemize1">
      <li class="itemize">behavior change with synchronization without stretch: now the system looks also in the slave map
      for a segment corresponding to the master date.
-                                                                                 
-
-                                                                                 
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">$date </span>variable change: the value is now (0,0) when no date is available and <span 
@@ -516,18 +548,18 @@ class="pcrr8tn-">$date </span>is time shifted
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">date </span>message change: the date 0 0 is ignored</li></ul>
-<!--l. 242--><p class="noindent" >
+<!--l. 249--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.17    </span> <a 
- id="x26-13200018.17"></a>Differences to version 0.79</h3>
+ id="x26-13300018.17"></a>Differences to version 0.79</h3>
      <ul class="itemize1">
      <li class="itemize">corrects the map not saved by the <span 
 class="pcrr8tn-">save </span>message issue
      </li>
      <li class="itemize">corrects <span 
 class="pcrr8tn-">get map </span>output: 2D segments were not correctly converted to string</li></ul>
-<!--l. 250--><p class="noindent" >
+<!--l. 257--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.18    </span> <a 
- id="x26-13300018.18"></a>Differences to version 0.78</h3>
+ id="x26-13400018.18"></a>Differences to version 0.78</h3>
      <ul class="itemize1">
      <li class="itemize">crash bug corrected for the &#8217;save&#8217; message addressed to &#8217;/ITL&#8217;
      </li>
@@ -535,17 +567,20 @@ class="pcrr8tn-">get map </span>output: 2D segments were not correctly converted
      </li>
      <li class="itemize">bug in <span 
 class="pcrr8tn-">get watch </span>for time events corrected (incorrect reply)</li></ul>
-<!--l. 256--><p class="noindent" >Known issues:
+                                                                                 
+
+                                                                                 
+<!--l. 263--><p class="noindent" >Known issues:
      <ul class="itemize1">
      <li class="itemize">map not saved by the <span 
 class="pcrr8tn-">save </span>message</li></ul>
-<!--l. 263--><p class="noindent" >
+<!--l. 270--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.19    </span> <a 
- id="x26-13400018.19"></a>Differences to version 0.77</h3>
+ id="x26-13500018.19"></a>Differences to version 0.77</h3>
      <ul class="itemize1">
      <li class="itemize">guido system map extended: supports flat map or subdivided map (see section <a 
-href="OSCMsgch11.html#x15-6100011.4">11.4<!--tex4ht:ref: guidomap --></a> p.<a 
-href="OSCMsgch11.html#x15-6100011.4">80<!--tex4ht:ref: guidomap --></a>).
+href="OSCMsgch11.html#x15-6200011.4">11.4<!--tex4ht:ref: guidomap --></a> p.<a 
+href="OSCMsgch11.html#x15-6200011.4">82<!--tex4ht:ref: guidomap --></a>).
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">shear </span>and <span 
@@ -559,9 +594,6 @@ href="OSCMsgch2.html#x6-60002">2<!--tex4ht:ref: common --></a> p.<a
 href="OSCMsgch2.html#x6-60002">10<!--tex4ht:ref: common --></a>).
      </li>
      <li class="itemize">relaxed bool parameter policy: objects accept float values for bool parameters
-                                                                                 
-
-                                                                                 
      </li>
      <li class="itemize">automatic numbering of exports when destination file is not completely specified i.e. no name, no
      extension. (see section <a 
@@ -569,54 +601,57 @@ href="OSCMsgch2.html#x6-60002">2<!--tex4ht:ref: common --></a> p.<a
 href="OSCMsgch2.html#x6-60002">10<!--tex4ht:ref: common --></a>).
      </li>
      <li class="itemize">quantification introduced to $date variable (see section <a 
-href="OSCMsgch14.html#x18-8200014.2">14.2<!--tex4ht:ref: interactvar --></a> p.<a 
-href="OSCMsgch14.html#x18-8200014.2">116<!--tex4ht:ref: interactvar --></a>).
+href="OSCMsgch14.html#x18-8300014.2">14.2<!--tex4ht:ref: interactvar --></a> p.<a 
+href="OSCMsgch14.html#x18-8300014.2">118<!--tex4ht:ref: interactvar --></a>).
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">reset </span>message addressed to a scene clears the scene rootPath</li></ul>
-<!--l. 277--><p class="noindent" >
+<!--l. 284--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.20    </span> <a 
- id="x26-13500018.20"></a>Differences to version 0.76</h3>
+ id="x26-13600018.20"></a>Differences to version 0.76</h3>
      <ul class="itemize1">
      <li class="itemize">get <span 
 class="pcrr8tn-">guido-version </span>and <span 
 class="pcrr8tn-">musicxml-version </span>messages supported by the application (see section <a 
-href="OSCMsgch8.html#x12-420008">8<!--tex4ht:ref: ITL --></a>
+href="OSCMsgch8.html#x12-430008">8<!--tex4ht:ref: ITL --></a>
      p.<a 
-href="OSCMsgch8.html#x12-420008">59<!--tex4ht:ref: ITL --></a>).
+href="OSCMsgch8.html#x12-430008">60<!--tex4ht:ref: ITL --></a>).
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">save </span>message bug correction - introduced with version 0.70: only partial state of objects was saved
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">rootPath </span>message introduced at scene level (see section <a 
-href="OSCMsgch9.html#x13-520009">9<!--tex4ht:ref: scene --></a> p.<a 
-href="OSCMsgch9.html#x13-520009">68<!--tex4ht:ref: scene --></a>).
+href="OSCMsgch9.html#x13-530009">9<!--tex4ht:ref: scene --></a> p.<a 
+href="OSCMsgch9.html#x13-530009">69<!--tex4ht:ref: scene --></a>).
      </li>
      <li class="itemize">scene name translation strategy change: only the explicit &#8217;scene&#8217; name is translated by the scene load
      message handler into the current scene name, other names are left unchanged.
      </li>
      <li class="itemize">bitmap copy adjustment in sync stretched mode is now only made for images</li></ul>
-<!--l. 291--><p class="noindent" >
+                                                                                 
+
+                                                                                 
+<!--l. 298--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.21    </span> <a 
- id="x26-13600018.21"></a>Differences to version 0.75</h3>
+ id="x26-13700018.21"></a>Differences to version 0.75</h3>
      <ul class="itemize1">
      <li class="itemize">new <span 
 class="pcrr8tn-">require </span>message supported by the <span 
 class="pcrr8tn-">/ITL </span>node (see section <a 
-href="OSCMsgch8.html#x12-420008">8<!--tex4ht:ref: ITL --></a> p.<a 
-href="OSCMsgch8.html#x12-420008">59<!--tex4ht:ref: ITL --></a>).
+href="OSCMsgch8.html#x12-430008">8<!--tex4ht:ref: ITL --></a> p.<a 
+href="OSCMsgch8.html#x12-430008">60<!--tex4ht:ref: ITL --></a>).
      </li>
      <li class="itemize">new event named <span 
 class="pcrr8tn-">newElement </span>supported at scene level (see section <a 
-href="OSCMsgch14.html#x18-7900014.1.2">14.1.2<!--tex4ht:ref: timeevents --></a> p.<a 
-href="OSCMsgch14.html#x18-7900014.1.2">114<!--tex4ht:ref: timeevents --></a>).
+href="OSCMsgch14.html#x18-8000014.1.2">14.1.2<!--tex4ht:ref: timeevents --></a> p.<a 
+href="OSCMsgch14.html#x18-8000014.1.2">116<!--tex4ht:ref: timeevents --></a>).
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">name </span>and <span 
 class="pcrr8tn-">address </span>variables (see section <a 
-href="OSCMsgch14.html#x18-8200014.2">14.2<!--tex4ht:ref: interactvar --></a> p.<a 
-href="OSCMsgch14.html#x18-8200014.2">116<!--tex4ht:ref: interactvar --></a>).
+href="OSCMsgch14.html#x18-8300014.2">14.2<!--tex4ht:ref: interactvar --></a> p.<a 
+href="OSCMsgch14.html#x18-8300014.2">118<!--tex4ht:ref: interactvar --></a>).
      </li>
      <li class="itemize">new system map computation making use of the new slices map provided by the guidolib version
      1.42
@@ -628,31 +663,28 @@ class="pcrr8tn-">newMessage </span>method sets now the message src IP to localho
      </li>
      <li class="itemize">bug  corrected  with  ellipse  and  rect  :  integer  graphic  size  computation  changed  to  float  (prevents
      objects disappearance with small width or height)
-                                                                                 
-
-                                                                                 
      </li>
      <li class="itemize">bug in scene export: left and right borders could be cut, depending on the scene size corrected by
      rendering the QGraphicsView container instead the QGraphicsScene
      </li>
      <li class="itemize">crash bug with $date:name corrected: crashed when there is no mapping named <span 
 class="pcrr8tn-">name</span>.</li></ul>
-<!--l. 309--><p class="noindent" >
+<!--l. 316--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.22    </span> <a 
- id="x26-13700018.22"></a>Differences to version 0.74</h3>
+ id="x26-13800018.22"></a>Differences to version 0.74</h3>
      <ul class="itemize1">
      <li class="itemize">new <span 
 class="pcrr8tn-">map+ </span>message (see section <a 
-href="OSCMsgch11.html#x15-5900011.2">11.2<!--tex4ht:ref: mapAddMsg --></a> p.<a 
-href="OSCMsgch11.html#x15-5900011.2">80<!--tex4ht:ref: mapAddMsg --></a>).
+href="OSCMsgch11.html#x15-6000011.2">11.2<!--tex4ht:ref: mapAddMsg --></a> p.<a 
+href="OSCMsgch11.html#x15-6000011.2">82<!--tex4ht:ref: mapAddMsg --></a>).
      </li>
      <li class="itemize">the <span 
 class="pcrr8tn-">click </span>and <span 
 class="pcrr8tn-">select </span>messages are deprecated (but still supported). They will be removed in a future
      version.</li></ul>
-<!--l. 317--><p class="noindent" >
+<!--l. 324--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.23    </span> <a 
- id="x26-13800018.23"></a>Differences to version 0.63</h3>
+ id="x26-13900018.23"></a>Differences to version 0.63</h3>
      <ul class="itemize1">
      <li class="itemize">new <span 
 class="pcrr8tn-">dpage </span>message accepted by <span 
@@ -661,6 +693,9 @@ href="OSCMsgch7.html#x11-380007.4">7.4<!--tex4ht:ref: gmnpage --></a> p.<a
 href="OSCMsgch7.html#x11-380007.4">52<!--tex4ht:ref: gmnpage --></a>).
      </li>
      <li class="itemize">x and y variables: automatic range type detection (int | float)
+                                                                                 
+
+                                                                                 
      </li>
      <li class="itemize">set <span 
 class="pcrr8tn-">txt </span>message: accepts polymorphic stream like parameters (see section <a 
@@ -673,8 +708,8 @@ href="OSCMsgch5.html#x9-230005">32<!--tex4ht:ref: setsect --></a>).
 class="pcrr8tn-">$sx</span>,  <span 
 class="pcrr8tn-">$sy </span>variables  added  to  support  scene  coordinate  space  (see
      section <a 
-href="OSCMsgch14.html#x18-8200014.2">14.2<!--tex4ht:ref: interactvar --></a> p.<a 
-href="OSCMsgch14.html#x18-8200014.2">116<!--tex4ht:ref: interactvar --></a>).
+href="OSCMsgch14.html#x18-8300014.2">14.2<!--tex4ht:ref: interactvar --></a> p.<a 
+href="OSCMsgch14.html#x18-8300014.2">118<!--tex4ht:ref: interactvar --></a>).
      </li>
      <li class="itemize">automatic range mapping for <span 
 class="pcrr8tn-">$x</span>, <span 
@@ -683,8 +718,8 @@ class="pcrr8tn-">$y </span>variables.
      <li class="itemize">new <span 
 class="pcrr8tn-">$self </span>and <span 
 class="pcrr8tn-">$scene </span>variables in the address field (see section <a 
-href="OSCMsgch14.html#x18-8700014.2.5">14.2.5<!--tex4ht:ref: oscvar --></a> p.<a 
-href="OSCMsgch14.html#x18-8700014.2.5">120<!--tex4ht:ref: oscvar --></a>).
+href="OSCMsgch14.html#x18-8800014.2.5">14.2.5<!--tex4ht:ref: oscvar --></a> p.<a 
+href="OSCMsgch14.html#x18-8800014.2.5">122<!--tex4ht:ref: oscvar --></a>).
      </li>
      <li class="itemize">OSC identifiers characters set extended with &#8217;_&#8217; and &#8217;-&#8217; (see section <a 
 href="OSCMsgch1.html#x5-20001">1<!--tex4ht:ref: genformat --></a> p.<a 
@@ -694,24 +729,21 @@ href="OSCMsgch1.html#x5-20001">3<!--tex4ht:ref: genformat --></a>).
 class="pcrr8tn-">new</span>, <span 
 class="pcrr8tn-">del </span>and <span 
 class="pcrr8tn-">foreground </span>messages (see section <a 
-href="OSCMsgch9.html#x13-520009">9<!--tex4ht:ref: scene --></a> p.<a 
-href="OSCMsgch9.html#x13-520009">68<!--tex4ht:ref: scene --></a>).
+href="OSCMsgch9.html#x13-530009">9<!--tex4ht:ref: scene --></a> p.<a 
+href="OSCMsgch9.html#x13-530009">69<!--tex4ht:ref: scene --></a>).
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">load </span>message supported at scene level (see section <a 
-href="OSCMsgch9.html#x13-520009">9<!--tex4ht:ref: scene --></a> p.<a 
-href="OSCMsgch9.html#x13-520009">68<!--tex4ht:ref: scene --></a>).
+href="OSCMsgch9.html#x13-530009">9<!--tex4ht:ref: scene --></a> p.<a 
+href="OSCMsgch9.html#x13-530009">69<!--tex4ht:ref: scene --></a>).
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">get watch </span>implemented.
-                                                                                 
-
-                                                                                 
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">watch </span>message without argument to clear all the watched events (see section <a 
-href="OSCMsgch14.html#x18-8200014.2">14.2<!--tex4ht:ref: interactvar --></a> p.<a 
-href="OSCMsgch14.html#x18-8200014.2">116<!--tex4ht:ref: interactvar --></a>).
+href="OSCMsgch14.html#x18-8300014.2">14.2<!--tex4ht:ref: interactvar --></a> p.<a 
+href="OSCMsgch14.html#x18-8300014.2">118<!--tex4ht:ref: interactvar --></a>).
      </li>
      <li class="itemize">order of rendering and width, height update corrected (may lead to incorrect rendering)
      </li>
@@ -719,17 +751,17 @@ href="OSCMsgch14.html#x18-8200014.2">116<!--tex4ht:ref: interactvar --></a>).
      </li>
      <li class="itemize">package delivered with the Guido Engine version 1.41 that corrects minimum staves distance and
      incorrect mapping when optimum page fill is off.</li></ul>
-<!--l. 338--><p class="noindent" >
+<!--l. 345--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.24    </span> <a 
- id="x26-13900018.24"></a>Differences to version 0.60</h3>
+ id="x26-14000018.24"></a>Differences to version 0.60</h3>
      <ul class="itemize1">
      <li class="itemize">new &#8217;mousemove&#8217; event (see section <a 
-href="OSCMsgch14.html#x18-7800014.1.1">14.1.1<!--tex4ht:ref: uievents --></a> p.<a 
-href="OSCMsgch14.html#x18-7800014.1.1">112<!--tex4ht:ref: uievents --></a>).
+href="OSCMsgch14.html#x18-7900014.1.1">14.1.1<!--tex4ht:ref: uievents --></a> p.<a 
+href="OSCMsgch14.html#x18-7900014.1.1">114<!--tex4ht:ref: uievents --></a>).
      </li>
      <li class="itemize">interaction messages accept variables ($x, $y, $date...) (see section <a 
-href="OSCMsgch14.html#x18-8200014.2">14.2<!--tex4ht:ref: interactvar --></a> p.<a 
-href="OSCMsgch14.html#x18-8200014.2">116<!--tex4ht:ref: interactvar --></a>).
+href="OSCMsgch14.html#x18-8300014.2">14.2<!--tex4ht:ref: interactvar --></a> p.<a 
+href="OSCMsgch14.html#x18-8300014.2">118<!--tex4ht:ref: interactvar --></a>).
      </li>
      <li class="itemize">SVG code and files support (see section <a 
 href="OSCMsgch5.html#x9-310005.8">5.8<!--tex4ht:ref: setfile --></a> p.<a 
@@ -748,66 +780,69 @@ href="OSCMsgch2.html#x6-170002.4">2.4<!--tex4ht:ref: effectmsg --></a> p.<a
 href="OSCMsgch2.html#x6-170002.4">23<!--tex4ht:ref: effectmsg --></a>).
      </li>
      <li class="itemize">utf8 support on windows corrected
+                                                                                 
+
+                                                                                 
      </li>
      <li class="itemize">transparency support for stretched synchronized objects corrected
      </li>
      <li class="itemize">multiple application instances supported with dynamic udp port number allocation.
      </li>
      <li class="itemize">command line option with &#8211;port portnumber option to set the receive udp port number at startup.</li></ul>
-<!--l. 357--><p class="noindent" >
+<!--l. 364--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.25    </span> <a 
- id="x26-14000018.25"></a>Differences to version 0.55</h3>
+ id="x26-14100018.25"></a>Differences to version 0.55</h3>
      <ul class="itemize1">
      <li class="itemize">new &#8217;xorigin&#8217; and &#8217;yorigin&#8217; messages (section <a 
 href="OSCMsgch2.html#x6-100002.1.3">2.1.3<!--tex4ht:ref: origin --></a> p.<a 
 href="OSCMsgch2.html#x6-100002.1.3">15<!--tex4ht:ref: origin --></a>).
      </li>
      <li class="itemize">new interaction messages set (section <a 
-href="OSCMsgch14.html#x18-7600014">14<!--tex4ht:ref: interaction --></a> p.<a 
-href="OSCMsgch14.html#x18-7600014">111<!--tex4ht:ref: interaction --></a>).
+href="OSCMsgch14.html#x18-7700014">14<!--tex4ht:ref: interaction --></a> p.<a 
+href="OSCMsgch14.html#x18-7700014">113<!--tex4ht:ref: interaction --></a>).
      </li>
      <li class="itemize">alpha channel handled by images and video
-                                                                                 
-
-                                                                                 
      </li>
      <li class="itemize">bug correction in line creation corrected (false incorrect parameter returned)
      </li>
      <li class="itemize">bug correction in line &#8217;get&#8217; message handling
      </li>
      <li class="itemize">memory leak correction (messages not deleted)</li></ul>
-<!--l. 367--><p class="noindent" >Known issues:
+<!--l. 374--><p class="noindent" >Known issues:
      <ul class="itemize1">
      <li class="itemize">incorrect graphic rendering when &#8217;sync a b&#8217; is changed to &#8217;sync b a&#8217; in the same update loop
      </li>
      <li class="itemize">incorrect nested synchronization when master is horizontaly stretched,</li></ul>
-<!--l. 375--><p class="noindent" >
+<!--l. 382--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.26    </span> <a 
- id="x26-14100018.26"></a>Differences to version 0.53</h3>
+ id="x26-14200018.26"></a>Differences to version 0.53</h3>
      <ul class="itemize1">
      <li class="itemize">ITL parser corrected to support regexp in message string (used by messages addressed to sync node)
      </li>
      <li class="itemize">format of mapping files and strings changed (section <a 
-href="OSCMsgch11.html#x15-5800011.1">11.1<!--tex4ht:ref: mapMsg --></a> p.<a 
-href="OSCMsgch11.html#x15-5800011.1">74<!--tex4ht:ref: mapMsg --></a>).
+href="OSCMsgch11.html#x15-5900011.1">11.1<!--tex4ht:ref: mapMsg --></a> p.<a 
+href="OSCMsgch11.html#x15-5900011.1">76<!--tex4ht:ref: mapMsg --></a>).
      </li>
      <li class="itemize">format of sync messages extended to include map name (section <a 
-href="OSCMsgch12.html#x16-6200012">12<!--tex4ht:ref: syncmsg --></a> p.<a 
-href="OSCMsgch12.html#x16-6200012">84<!--tex4ht:ref: syncmsg --></a>).
+href="OSCMsgch12.html#x16-6300012">12<!--tex4ht:ref: syncmsg --></a> p.<a 
+href="OSCMsgch12.html#x16-6300012">86<!--tex4ht:ref: syncmsg --></a>).
      </li>
      <li class="itemize">signal node: &#8217;garbage&#8217; message removed
      </li>
      <li class="itemize">new &#8217;reset&#8217; message for the scene (/ITL/scene) (section <a 
-href="OSCMsgch9.html#x13-520009">9<!--tex4ht:ref: scene --></a> p.<a 
-href="OSCMsgch9.html#x13-520009">68<!--tex4ht:ref: scene --></a>).
+href="OSCMsgch9.html#x13-530009">9<!--tex4ht:ref: scene --></a> p.<a 
+href="OSCMsgch9.html#x13-530009">69<!--tex4ht:ref: scene --></a>).
+                                                                                 
+
+                                                                                 
      </li>
      <li class="itemize">new &#8217;version&#8217; message for the application (/ITL) (section <a 
-href="OSCMsgch8.html#x12-420008">8<!--tex4ht:ref: ITL --></a> p.<a 
-href="OSCMsgch8.html#x12-420008">59<!--tex4ht:ref: ITL --></a>).
+href="OSCMsgch8.html#x12-430008">8<!--tex4ht:ref: ITL --></a> p.<a 
+href="OSCMsgch8.html#x12-430008">60<!--tex4ht:ref: ITL --></a>).
      </li>
      <li class="itemize">new &#8217;reset&#8217; message for signals (section <a 
-href="OSCMsgch13.html#x17-6900013.1.1">13.1.1<!--tex4ht:ref: ssignal --></a> p.<a 
-href="OSCMsgch13.html#x17-6900013.1.1">93<!--tex4ht:ref: ssignal --></a>).
+href="OSCMsgch13.html#x17-7000013.1.1">13.1.1<!--tex4ht:ref: ssignal --></a> p.<a 
+href="OSCMsgch13.html#x17-7000013.1.1">95<!--tex4ht:ref: ssignal --></a>).
      </li>
      <li class="itemize">bug parsing messages without params corrected
      </li>
@@ -816,12 +851,9 @@ href="OSCMsgch13.html#x17-6900013.1.1">93<!--tex4ht:ref: ssignal --></a>).
      <li class="itemize">new H synchronization mode (preserves slave segmentation)
      </li>
      <li class="itemize">crash bug corrected for load message and missing ITL files</li></ul>
-<!--l. 392--><p class="noindent" >
+<!--l. 399--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.27    </span> <a 
- id="x26-14200018.27"></a>Differences to version 0.50</h3>
-                                                                                 
-
-                                                                                 
+ id="x26-14300018.27"></a>Differences to version 0.50</h3>
      <ul class="itemize1">
      <li class="itemize">Graphic signal thickness is now symmetrically drawn around y position.
      </li>
@@ -869,12 +901,15 @@ class="pcrr8tn-">pageCount </span>message for guido scores
      </li>
      <li class="itemize">debug  nodes  modified  state  propagated  to  parent  node  (corrects  the  debug  informations  graphic
      update issue)
+                                                                                 
+
+                                                                                 
      </li>
      <li class="itemize">rational values catch null denominator (to prevents divide by zero exceptions).
      </li></ul>
-<!--l. 413--><p class="noindent" >
+<!--l. 420--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.28    </span> <a 
- id="x26-14300018.28"></a>Differences to version 0.42</h3>
+ id="x26-14400018.28"></a>Differences to version 0.42</h3>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">identifier </span>specification change (section <a 
@@ -884,14 +919,14 @@ href="OSCMsgch1.html#x5-20001">3<!--tex4ht:ref: genformat --></a>).
      <li class="itemize">new application <span 
 class="pcrr8tn-">hello </span>and <span 
 class="pcrr8tn-">defaultShow </span>messages (section <a 
-href="OSCMsgch8.html#x12-420008">8<!--tex4ht:ref: ITL --></a> p.<a 
-href="OSCMsgch8.html#x12-420008">59<!--tex4ht:ref: ITL --></a>).
+href="OSCMsgch8.html#x12-430008">8<!--tex4ht:ref: ITL --></a> p.<a 
+href="OSCMsgch8.html#x12-430008">60<!--tex4ht:ref: ITL --></a>).
      </li>
      <li class="itemize">new <span 
 class="pcrr8tn-">load </span>and <span 
 class="pcrr8tn-">save </span>messages (sections <a 
-href="OSCMsgch8.html#x12-420008">8<!--tex4ht:ref: ITL --></a> p.<a 
-href="OSCMsgch8.html#x12-420008">59<!--tex4ht:ref: ITL --></a> and <a 
+href="OSCMsgch8.html#x12-430008">8<!--tex4ht:ref: ITL --></a> p.<a 
+href="OSCMsgch8.html#x12-430008">60<!--tex4ht:ref: ITL --></a> and <a 
 href="OSCMsgch2.html#x6-60002">2<!--tex4ht:ref: common --></a> p.<a 
 href="OSCMsgch2.html#x6-60002">10<!--tex4ht:ref: common --></a>).
      </li>
@@ -904,9 +939,6 @@ class="pcrr8tn-">rightbottom </span>and <span
 class="pcrr8tn-">leftbottom </span>modes renamed to <span 
 class="pcrr8tn-">bottomright </span>and <span 
 class="pcrr8tn-">bottomleft</span>
-                                                                                 
-
-                                                                                 
          </li>
          <li class="itemize">new <span 
 class="pcrr8tn-">center </span>mode for the <span 
@@ -932,8 +964,8 @@ class="pcrr8tn-">scene</span>.
 class="pcrr8tn-">fileWatcher </span>messages completely redesigned.
      </li>
      <li class="itemize">mappings can be identified by names (section <a 
-href="OSCMsgch11.html#x15-5800011.1">11.1<!--tex4ht:ref: mapMsg --></a> p.<a 
-href="OSCMsgch11.html#x15-5800011.1">74<!--tex4ht:ref: mapMsg --></a>).
+href="OSCMsgch11.html#x15-5900011.1">11.1<!--tex4ht:ref: mapMsg --></a> p.<a 
+href="OSCMsgch11.html#x15-5900011.1">76<!--tex4ht:ref: mapMsg --></a>).
      </li>
      <li class="itemize">rect, ellipse, curve, line and polygon object support graphic to relative-time mapping
      </li>
@@ -943,8 +975,8 @@ href="OSCMsgch11.html#x15-5800011.1">74<!--tex4ht:ref: mapMsg --></a>).
      <li class="itemize">Guido mapping manages repeat bars.
      </li>
      <li class="itemize">Graphic signals messages design (section <a 
-href="OSCMsgch13.html#x17-7300013.3">13.3<!--tex4ht:ref: gsignal --></a> p.<a 
-href="OSCMsgch13.html#x17-7300013.3">100<!--tex4ht:ref: gsignal --></a>).</li></ul>
+href="OSCMsgch13.html#x17-7400013.3">13.3<!--tex4ht:ref: gsignal --></a> p.<a 
+href="OSCMsgch13.html#x17-7400013.3">102<!--tex4ht:ref: gsignal --></a>).</li></ul>
                                                                                  
 
                                                                                  
