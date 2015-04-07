@@ -26,21 +26,17 @@ pwd	  = $(shell pwd)
 TOOL = ./INScoreNOView
 
 files 			= $(shell grep -v '^\#' validate/samplescripts.txt)
-mousefiles 		= $(shell grep -v '^\#' validate/mousescripts.txt)
 graphicfiles 	= $(shell grep -v '^\#' validate/graphicscripts.txt)
 syncfiles 		= $(shell grep -v '^\#' validate/syncscripts.txt)
 javafiles 		= $(shell grep -v '^\#' validate/javascripts.txt)
-signalfiles		= $(shell grep -v '^\#' validate/signalscripts.txt)
 logfiles 		= $(shell grep -v '^\#' validate/logs.txt)
 savefiles 		= $(shell grep -v '^\#' validate/save.txt)
 regressionfiles = $(shell grep -v '^\#' validate/regression.txt)
 
 pdfout  		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(files))
-pdfmouseout 	:= $(patsubst ../%.inscore, $(version)/%.pdf, $(mousefiles))
 pdfgraphicout 	:= $(patsubst ../%.inscore, $(version)/%.pdf, $(graphicfiles))
 pdfsyncout 		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(syncfiles))
 pdfjavaout 		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(javafiles))
-pdfsignalout 	:= $(patsubst ../%.inscore, $(version)/%.pdf, $(signalfiles))
 pdfregressionout:= $(patsubst ../%.inscore, $(version)/%.pdf, $(regressionfiles))
 logout 			:= $(patsubst ../%.inscore, $(version)/%.log, $(logfiles))
 inscoreout 		:= $(patsubst ../%.inscore, $(version)/%.inscore, $(savefiles))
@@ -75,12 +71,11 @@ all:
 	make pdf
 
 pdf:
-	make pdfmouse
 	make pdfgraphic
 	make pdfsync
 	make pdfjava
-	make pdfsignal
 	make basic
+	make pdfregression
 
 log: 
 	@echo "----------- Generating log files"
@@ -99,10 +94,6 @@ basic:
 	@echo "----------- Running basic scripts"
 	make files
 
-pdfmouse:
-	@echo "----------- Running mouse interactions"
-	make filesmouse
-	
 pdfgraphic:
 	@echo "----------- Checking graphical elements"
 	make filesgraphic
@@ -115,10 +106,6 @@ pdfjava:
 	@echo "----------- Checking javascript examples"
 	make filesjava
 	
-pdfsignal:
-	@echo "----------- Checking signal examples"
-	make filessignal
-	
 pdfregression:
 	@echo "----------- Regression tests"
 	make filesregression
@@ -129,7 +116,7 @@ clean:
 	make saveclean
 
 pdfclean: 
-	rm -f $(pdfout) $(pdfmouseout) $(pdfgraphicout) $(pdfsyncout) $(pdfjavaout) $(pdfsignalout) $(pdfregressionout)
+	rm -f $(pdfout) $(pdfgraphicout) $(pdfsyncout) $(pdfjavaout) $(pdfregressionout)
 
 logclean: 
 	rm -f $(logout)
@@ -165,9 +152,6 @@ showleaks: $(leaksfiles)
 files: $(pdfout)
 	@./forcepdfdate 20100101120000 $(pdfout)
 
-filesmouse: $(pdfmouseout)
-	@./forcepdfdate 20100101120000 $(pdfmouseout)
-
 filesgraphic: $(pdfgraphicout)
 	@./forcepdfdate 20100101120000 $(pdfgraphicout)
 
@@ -176,9 +160,6 @@ filessync: $(pdfsyncout)
 
 filesjava: $(pdfjavaout)
 	@./forcepdfdate 20100101120000 $(pdfjavaout)
-	
-filessignal: $(pdfsignalout)
-	@./forcepdfdate 20100101120000 $(pdfsignalout)
 	
 filesregression: $(pdfregressionout)
 	@./forcepdfdate 20100101120000 $(pdfregressionout)

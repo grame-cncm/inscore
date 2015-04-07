@@ -27,6 +27,25 @@
 ../regression/S-signalConnection/change2.inscore
 ../regression/S-signalConnection/change3.inscore
 
+# aliases
+../regression/aliases/aliases.inscore
+../regression/aliases/click1.inscore
+../regression/aliases/click2.inscore
+../regression/aliases/click3.inscore
+
+# mappings
+../regression/scripting/DROP-ME.inscore
+../regression/scripting/edit.inscore
+../regression/scripting/click1.inscore
+../regression/scripting/align.inscore
+../regression/scripting/click2.inscore
+
+# scripting
+../regression/scoremap/scoremap.inscore
+../regression/scoremap/click1.inscore
+../regression/scoremap/click1.inscore
+../regression/scoremap/click1.inscore
+
 # sync scripts
 ../regression/S-sync/testSync.inscore
 ../regression/S-sync/change1.inscore
@@ -36,6 +55,9 @@
 ../regression/S-sync/change5.inscore
 ../regression/S-sync/change6.inscore
 
+# variables
+../regression/variables/DROP-ME.inscore
+../regression/variables/click1.inscore
 
 # mouse scripts
 ../regression/S-mouseEvent/testMouse.inscore
@@ -50,3 +72,14 @@
 ../regression/S-guidoStream/3.inscore
 ../regression/S-guidoStream/4.inscore
 ../regression/S-guidoStream/clear.inscore
+
+# switch
+../regression/switch/switch.inscore
+../regression/switch/click1.inscore
+../regression/switch/click2.inscore
+
+# turenas
+../regression/Turenas/turenas.inscore
+../regression/Turenas/date.inscore
+../regression/Turenas/click2.inscore
+../regression/Turenas/click3.inscore

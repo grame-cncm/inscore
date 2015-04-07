@@ -1,2 +1,2 @@
-../scripts/S-javascript/javascript.inscore
-../scripts/S-javascript/jsgrid.inscore
+../scripts/Standalone/Javascript/javascript.inscore
+../scripts/Standalone/Javascript/jsgrid.inscore
