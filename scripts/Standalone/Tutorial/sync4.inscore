@@ -14,7 +14,6 @@
 /ITL/scene/sync4 xorigin -1.;
 /ITL/scene/sync4 x -0.75;
 /ITL/tutorial/score set gmn "[ g a f/8 d e/2 ]";
-/ITL/tutorial/score scale 8.;
 /ITL/tutorial/score y -0.3;
 /ITL/tutorial/car set img "rsrc/car.gif";
 /ITL/tutorial/car scale 5.;

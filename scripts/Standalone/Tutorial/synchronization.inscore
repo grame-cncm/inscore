@@ -16,8 +16,8 @@
 /ITL/scene/sync1 xorigin -1.;
 /ITL/scene/sync1 x -0.75;
 /ITL/tutorial/score set gmnf "rsrc/fuga.gmn";
-/ITL/tutorial/score scale 2.5;
-/ITL/tutorial/cursor set ellipse 0.05 0.05;
+/ITL/tutorial/score scale 0.32;
+/ITL/tutorial/cursor set ellipse 0.15 0.15;
 /ITL/tutorial/cursor color 255 0 0 180;
 /ITL/scene/m1 set txt "/ITL/tutorial/sync cursor score";
 /ITL/scene/m2 set txt "/ITL/tutorial/sync cursor";

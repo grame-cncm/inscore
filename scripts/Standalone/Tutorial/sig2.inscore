@@ -22,7 +22,7 @@
 /ITL/tutorial/siggraph height 0.3;
 /ITL/tutorial/score set gmn "[a f/8 g/16 e f/2 d/4 c]";
 /ITL/tutorial/siggraph y 0.30;
-/ITL/tutorial/score scale 5.5;
+/ITL/tutorial/score scale 0.69;
 /ITL/tutorial/score y -0.30;
 /ITL/scene/m1 set txt "/ITL/tutorial/sync siggraph score h syncBottom";
 /ITL/scene/m2 set txt "/ITL/tutorial/sync siggraph";
@@ -51,7 +51,7 @@
 
 /ITL/scene/m1 watch mouseDown (
 	/ITL/tutorial/sync siggraph score h syncBottom, 
-	/ITL/tutorial/siggraph scale 0.2 );
+	/ITL/tutorial/siggraph scale 0.5 );
 /ITL/scene/m2 watch mouseDown (
 	/ITL/tutorial/sync siggraph ,
 	/ITL/tutorial/siggraph scale 1.0 );
