@@ -90,9 +90,9 @@ sync slave 3 v";
 ! comments
 !---------------------------------------------
 /ITL/scene/title set txt "Synchronizing on several masters";
-/ITL/scene/title y -0.96;
-/ITL/scene/title scale 2;
+/ITL/scene/title y -0.92;
+/ITL/scene/title scale 2.5;
 
 /ITL/scene/comment set txt "This script illustrates the synchronization of an object (with children) on several masters";
-/ITL/scene/comment y 0.98;
+/ITL/scene/comment y 0.96;
 /ITL/scene/comment scale 1.3;

@@ -1,13 +1,15 @@
 /ITL/scene/* del;
 
-gray = 200;
-/ITL/scene/slave set rect 0.8 0.15;
+gray = 100;
+/ITL/scene/slave set gmn "[ a g e f d c e g]";
 /ITL/scene/slave xorigin -1;
-/ITL/scene/slave color $gray $gray $gray 150;
+/ITL/scene/slave x -0.4;
+/ITL/scene/slave scale 0.8;
+/ITL/scene/slave color $gray $gray $gray;
 /ITL/scene/cursor set rect 0.005 0.2;
 /ITL/scene/cursor color 0 0 255;
-
 /ITL/scene/sync slave cursor;
+/ITL/scene/cursor date 0;
 
 !---------------------------------------------
 ! comments
@@ -17,7 +19,7 @@ gray = 200;
 /ITL/scene/title scale 2;
 
 /ITL/scene/comment1 set txt "This script illustrates how a slave behaves when the master moves in time.";
-/ITL/scene/comment2 set txt "The rectangle is synchronized to the blue cursor.";
+/ITL/scene/comment2 set txt "The score is synchronized to the blue cursor.";
 /ITL/scene/comment3 set txt "Click here to move the cursor in time.";
 /ITL/scene/comment4 set txt "Click here to get the cursor date: ";
 /ITL/scene/comment5 set txt " ";
@@ -32,7 +34,7 @@ gray = 200;
 
 /ITL/scene/comment[34] watch mouseEnter ( /ITL/scene/$self red 230 );
 /ITL/scene/comment[34] watch mouseLeave ( /ITL/scene/$self red 0 );
-/ITL/scene/comment3 watch mouseDown  	( /ITL/scene/cursor ddate 0.05 );
+/ITL/scene/comment3 watch mouseDown  	( /ITL/scene/cursor ddate 0.125 );
 /ITL/scene/comment4 watch mouseDown  	( /ITL/scene/comment5 set txt "$(/ITL/scene/cursor get date)" );
 
 /ITL/scene/cursor watch mouseEnter ( /ITL/scene/$self red 230 );
