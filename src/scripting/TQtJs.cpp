@@ -182,7 +182,7 @@ bool TQtJs::eval(int line, const char* jscode, std::string& outStr)
 	outStr = "";
 
 	QString program (jscode);
-	QJSValue result = fEngine->evaluate(program, "", line);
+	QJSValue result = fEngine->evaluate(program, "", line+1);
 
 	if (result.isString()) {
 		getResult (result.toString(), outStr);
@@ -200,7 +200,7 @@ bool TQtJs::eval(int line, const char* jscode, std::string& outStr)
 		}
 	}
 	else if (result.isError()) {
-		ITLErr <<  "javascript error " << result.toString().toUtf8().constData() << ITLEndl;
+		ITLErr <<  "javascript error line" <<  result.property("lineNumber").toString().toUtf8().constData() << ": " << result.toString().toUtf8().constData() << ITLEndl;
 		return false;
 	}
 	return true;
