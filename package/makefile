@@ -123,6 +123,7 @@ scripts:
 patches:
 	[ -d $(rsrc)/patches ] || mkdir -p $(rsrc)/patches
 	cp -R ../scripts/MP-* $(rsrc)/patches
+	cp -R ../scripts/M-* $(rsrc)/patches
 	rm -f $(shell find $(rsrc)/patches -name "*DS_Store")
 	mv $(rsrc)/patches/MP-Turenas $(rsrc)/Turenas
 	cd $(rsrc) && tar czf patches.tgz patches
@@ -134,10 +135,10 @@ rsrc:
 	make patches
 	cp -R ../scripts/Perception $(rsrc)
 	cd $(rsrc) && tar czf Perception.tgz Perception
-	cp -R ../scripts/M-tools $(rsrc)
-	cd $(rsrc) && tar czf M-tools.tgz M-tools
-	cp -R ../scripts/P-tools $(rsrc)
-	cd $(rsrc) && tar czf P-tools.tgz P-tools
+	cp -R ../scripts/Max-tools $(rsrc)
+	cd $(rsrc) && tar czf Max-tools.tgz Max-tools
+	cp -R ../scripts/PureData-tools $(rsrc)
+	cd $(rsrc) && tar czf PureData-tools.tgz PureData-tools
 	cp -R ../scripts/readme* $(rsrc)
 	cp rsrc/cclicense.pdf $(rsrc)/license.pdf
 	cp rsrc/cclicense.html $(rsrc)/license.html
@@ -161,7 +162,8 @@ src:
 	cp -rf ../lib $(package)-src/
 	cp -rf ../win32 $(package)-src/
 	rm -rf $(package)-src/lib/poppler
-	rm -rf $(package)-src/lib/javascript/MacOS
+	rm -rf $(package)-src/lib/lua
+	rm -rf $(package)-src/lib/javascript
 	cp readme.txt $(package)-src
 	cp ../readme.txt $(package)-src/install
 	cp -r doc $(package)-src

@@ -10,6 +10,15 @@ INScore resources are released under the Creative Common license.
 ------------------------------------------------------------------
 
 -------------------------------
+** April 8 2015
+-------------------------------
+Samples scripts have been reorganized: standalone scripts are now in a 'Standalone' folder.
+Samples making use of symbolic music scores (gmn, gmnf, gmnstream, musicxml, musicxmlf) have 
+been updated to take account of the new default size for music scores (which is 8 times the 
+previous size) .
+
+
+-------------------------------
 ** December 15 2014
 -------------------------------
 Update of all the scripts that are using the synchronization mechanisms in order to adjust the
