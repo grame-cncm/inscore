@@ -27,6 +27,10 @@
 #ifndef __IGuidoPianoRollStream__
 #define __IGuidoPianoRollStream__
 
+#ifdef WIN32
+#pragma warning( disable : 4250 )
+#endif
+
 #include <string>
 #include "IGuidoPianoRoll.h"
 #include "IGuidoStream.h"
@@ -46,7 +50,7 @@ typedef class libmapping::SMARTP<IGuidoPianoRollStream>	SIGuidoPianoRollStream;
 /*!
 	\brief a stream piano roll guido object
 */
-class IGuidoPianoRollStream : public IGuidoStream, public IGuidoPianoRoll
+class IGuidoPianoRollStream : public virtual IGuidoStream, public virtual IGuidoPianoRoll
 {
 	public:		
 		static const std::string kGuidoPianoRollStreamType;

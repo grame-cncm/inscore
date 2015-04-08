@@ -40,6 +40,10 @@
 #define write(s, buf, len) send(s, buf, (int)(len), 0)
 #define read(s, buf, len) recv(s, buf, (int)(len), 0)
 #define herror perror
+#define snprintf _snprintf
+
+#pragma warning ( disable: 4996)
+
 #endif
 #include "sourcefetcher.h"
 
