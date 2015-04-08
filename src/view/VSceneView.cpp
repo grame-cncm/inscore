@@ -417,7 +417,7 @@ const AbstractData VSceneView::getImage(const char *format)
 
 //--------------------------------------------------------------------------
 WindowEventFilter::WindowEventFilter(const std::string& address, QGraphicsView* parent) 
-	: QObject(parent), fAbsoluteXY(false), fFrameless(false), fOSCAddress(address)
+	: QObject(parent), fAbsoluteXY(false), fFrameless(false), fFullScreen(false), fOSCAddress(address)
 {
 	fTimer = new QTimer(this);
 	fTimer->setSingleShot(true);
