@@ -1,9 +1,9 @@
 Package: inscore
-Version: 1.0.8
+Version: 1.1.2
 Section: sound
 Priority: optional
 Architecture: amd64
-Depends: libv8-3.14.5 (>=  3.14.5.8-5ubuntu2), libqt5core5a (>=  5.2.1+dfsg-1ubuntu14.2), libqt5gui5 (>=  5.2.1+dfsg-1ubuntu14.2), libqt5widgets5 (>=  5.2.1+dfsg-1ubuntu14.2), libqt5svg5 (>=  5.2.1-1), libqt5printsupport5 (>=  5.2.1+dfsg-1ubuntu14.2), libqt5multimedia5 (>=  5.2.1-0ubuntu5), libqt5multimediawidgets5 (>=  5.2.1-0ubuntu5), guidoengine-devel (>=  1.5.6), libstdc++6 (>=  4.8.2-19ubuntu1), libc6 (>=  2.19-0ubuntu6), libgcc1 (>=  1:4.9-20140406-0ubuntu1)
+Depends: libqt5core5a (>=  5.2.1+dfsg-1ubuntu14.2), libqt5gui5 (>=  5.2.1+dfsg-1ubuntu14.2), libqt5widgets5 (>=  5.2.1+dfsg-1ubuntu14.2), libqt5svg5 (>=  5.2.1-1), libqt5printsupport5 (>=  5.2.1+dfsg-1ubuntu14.2), libqt5multimedia5 (>=  5.2.1-0ubuntu5), libqt5multimediawidgets5 (>=  5.2.1-0ubuntu5), guidoengine-devel (>=  1.5.7), libstdc++6 (>=  4.8.2-19ubuntu1), libc6 (>=  2.19-0ubuntu6), libgcc1 (>=  1:4.9-20140406-0ubuntu1)
 Installed-Size: 47423
 Maintainer: D. Fober <fober@grame.fr>
 Description: INScore - Interactive, Augmented Music Scores.
