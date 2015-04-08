@@ -34,6 +34,7 @@ namespace inscore
 {
 const string IHttpd::kIHttpdType("httpd");
 
+//--------------------------------------------------------------------------
 IHttpd::IHttpd(const std::string& name, IObject * parent ) : IObject (name, parent)
 {
 	fTypeString = kIHttpdType;
@@ -45,12 +46,27 @@ IHttpd::IHttpd(const std::string& name, IObject * parent ) : IObject (name, pare
 
 IHttpd::~IHttpd()
 {
+	stop();
+}
+
+//--------------------------------------------------------------------------
+void IHttpd::stop()
+{
 	if(fHttpServer) {
 		fHttpServer->stop();
 		delete fHttpServer;
+		fHttpServer = 0;
 	}
 }
 
+//--------------------------------------------------------------------------
+void IHttpd::del()
+{
+	stop();
+	IObject::del();
+}
+
+//--------------------------------------------------------------------------
 SIMessageList IHttpd::getSetMsg () const
 {
 	SIMessageList outmsgs = IMessageList::create();
@@ -60,6 +76,7 @@ SIMessageList IHttpd::getSetMsg () const
 	return outmsgs;
 }
 
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus IHttpd::set (const IMessage* msg)
 {
 	MsgHandler::msgStatus status = IObject::set(msg);
@@ -82,6 +99,7 @@ MsgHandler::msgStatus IHttpd::set (const IMessage* msg)
 	return MsgHandler::kBadParameters;
 }
 
+//--------------------------------------------------------------------------
 bool IHttpd::init (int port)
 {
 	if(!fHttpServer) {
@@ -98,6 +116,7 @@ bool IHttpd::init (int port)
 	return fHttpServer->start(fHttpPort);
 }
 
+//--------------------------------------------------------------------------
 string IHttpd::status () const
 {
 	return this->fHttpServer->status() ? "started": "stopped";
