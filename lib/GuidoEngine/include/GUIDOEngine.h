@@ -257,6 +257,17 @@ typedef struct
 } GuidoPageFormat;
 
 
+/**
+	The Graphic representation parameters.
+
+	This data structure contains a GuidoLayoutSettings and a GuidoPageFormat.
+  */
+typedef struct
+{
+	GuidoLayoutSettings layoutSettings;
+	GuidoPageFormat pageFormat;
+} GuidoGrParameters;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -344,13 +355,32 @@ representations.
     GUIDOAPI(GuidoErrCode)	GuidoAR2GR(ARHandler ar, const GuidoLayoutSettings* settings, GRHandler* gr);
 
 	/*!
-        Applies new layout settings to an existing Guido graphic representation.
+	 * \brief GuidoAR2GRParameterized. Transforms a Guido abstract representation into a Guido graphic representation.
+	 * It use given GuidoGrParameters with a layout settings and a page format. If a page format is used in gmn code,
+	 * it has priority over the GuidoGrParameters's page format.
+	 * \param ar a Abstract representation handler.
+	 * \param gp a GuidoGrParameters structure. If null default layout settings and page format are used.
+	 * \return a Graphic representation handler or null if an error occurs.
+	 */
+	GUIDOAPI(GRHandler) GuidoAR2GRParameterized(ARHandler ar, const GuidoGrParameters* gp);
+
+	/*!
+		Applies new layout settings to an existing Guido graphic representation.
 		\param gr the handler to the graphic representation.
 		\param settings a pointer to the settings for the graphic layout. If null, default
         settings are applied.
 		\return a Guido error code.
     */
     GUIDOAPI(GuidoErrCode)	GuidoUpdateGR( GRHandler gr, const GuidoLayoutSettings* settings);
+
+	/*!
+		Applies new layout settings and page format to an existing Guido graphic representation.
+		\param gr the handler to the graphic representation.
+		\param settings a pointer to the settings for the graphic representation. If null, default
+		settings are applied.
+		\return a Guido error code.
+	*/
+	GUIDOAPI(GuidoErrCode)	GuidoUpdateGRParameterized( GRHandler gr, const GuidoGrParameters* settings);
 
 	/*!
         Releases a Guido abstract representation.
@@ -485,23 +515,43 @@ units.
 		\param handle a graphic representation.
 		\param page the page number.
 		\param out the output stream.
+		\param embedFont if true, it use a embbed guido font and add it to the SVG.
+		\param font path of the guido svg font file or an svg font in text representation. Can be use if embedFont is set to false else it is unnecessary.
+		If the library is compiled with INDEPENDENTSVG option, don't use a font file. The library cannot calculate font metric. You have better to use embedded font.
+		\param mappingMode the mapping mode (see mapping mode enum).
+		\return a Guido error code
+	 */
+	GUIDOAPI(GuidoErrCode) GuidoGR2SVG( const GRHandler handle, int page, std::ostream& out, bool embedFont, const char* font, const int mappingMode = 0 );
+
+	/** \brief Exports one page of score to SVG.
+
+		\param handle a graphic representation.
+		\param page the page number.
+		\param out the output stream.
 		\param fontfile path of the guido svg font file.
 		\param mappingMode the mapping mode (see mapping mode enum).
 		\return a Guido error code
 	*/
-	GUIDOAPI(GuidoErrCode) 	GuidoSVGExport( const GRHandler handle, int page, std::ostream& out, const char* fontfile, const int mappingMode = 0 );
+	#ifdef WIN32
+		__declspec(deprecated("Deprecated function (will be erased soon) : use GUIDOAPI(GuidoErrCode) GuidoGR2SVG( const GRHandler handle, int page, std::ostream& out, bool embedFont, const char* font, const int mappingMode = 0 ) instead."))
+	#endif
+	GUIDOAPI(GuidoErrCode) 	GuidoSVGExport( const GRHandler handle, int page, std::ostream& out, const char* fontfile, const int mappingMode = 0 ) GUIDOAPI_deprecated;
 
     /** \brief Exports one page of score to SVG.
+	 *  If fontfile or fontspec are set, the font is added to svg. The fontfile has priority over the fontspec.
 
 		\param handle a graphic representation.
         \param page the page number.
         \param out the output stream.
         \param fontfile path of the guido svg font file.
-        \param fontspec an actual svg font if there is no font file.
+		\param fontspec an svg font in text representation.
 		\param mappingMode the mapping mode (see mapping mode enum).
         \return a Guido error code
     */
-    GUIDOAPI(GuidoErrCode) 	GuidoSVGExportWithFontSpec( const GRHandler handle, int page, std::ostream& out, const char* fontfile, const char* fontspec, const int mappingMode = 0 );
+	#ifdef WIN32
+		__declspec(deprecated("Deprecated function (will be erased soon) : use GUIDOAPI(GuidoErrCode) GuidoGR2SVG( const GRHandler handle, int page, std::ostream& out, bool embedFont, const char* font, const int mappingMode = 0 ) instead."))
+	#endif
+	GUIDOAPI(GuidoErrCode) 	GuidoSVGExportWithFontSpec( const GRHandler handle, int page, std::ostream& out, const char* fontfile, const char* fontspec, const int mappingMode = 0 ) GUIDOAPI_deprecated;
 
 	/** \brief Exports an abstract representation of GUIDO draw commands.
 
