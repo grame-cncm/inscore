@@ -7,7 +7,7 @@
 /ITL/scene/text y -0.9;
 
 /ITL/scene/text2 set txt "Open the websocket.html file in this example folder  
-and click on 'click me'...";
+and click on 'CLICK ME !";
 /ITL/scene/text2 scale 1.5;
 /ITL/scene/text2 y -0.8;
 
@@ -18,6 +18,8 @@ and click on 'click me'...";
 /ITL/scene/clickme set txt "CLICK ME !";
 /ITL/scene/clickme scale 2;
 /ITL/scene/clickme y 0.9;
+/ITL/scene/clickme watch mouseEnter ( /ITL/scene/clickme red 240 );
+/ITL/scene/clickme watch mouseLeave ( /ITL/scene/clickme red 0 );
 /ITL/scene/clickme watch mouseDown(
 	/ITL/scene/clickme push,
 	/ITL/scene/score set gmnstream "{[ \meter<\"4/4\"> a",
