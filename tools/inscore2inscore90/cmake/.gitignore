@@ -6,3 +6,4 @@ build/
 cmake_install.cmake
 inscore2inscore90.build/
 inscore2inscore90.xcodeproj/
+inscore2inscore90.dir/
