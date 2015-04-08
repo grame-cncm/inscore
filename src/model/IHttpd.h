@@ -36,6 +36,7 @@ typedef class libmapping::SMARTP<IHttpd>	SIHttpd;
 
 class THttpdPlugin;
 
+//--------------------------------------------------------------------------
 /*!
  * \brief The IHttpd class. a Http server object.
  */
@@ -65,6 +66,9 @@ class IHttpd : public IObject
 		 * \brief ~IHttpd Delete plugin instance.
 		 */
 		virtual ~IHttpd();
+	
+		void	del();
+		void	stop();
 
 	private :
 		/*!
