@@ -14,8 +14,8 @@ duration = 8;
 /ITL/scene/layer color 220 220 220;
 /ITL/scene/layer duration $duration;
 
-<? javascript
-	function makemsg (msg, index, dur date) {
+<?javascript
+	function makemsg (msg, index, dur, date) {
 		msg = msg.replace(/\?/g, index) ;
 		msg = msg.replace("DUR", dur) ;
 		return msg.replace("DAT", date) ;
@@ -25,7 +25,7 @@ duration = 8;
 	function bars (n, maxdate) {
 		var msg = "/ITL/scene/r? set rect 0.01 1.; \
 			/ITL/scene/r? duration DUR; \
-			/ITL/scene/r_? date DAT;";
+			/ITL/scene/r? date DAT;";
 		var out = "";
 		for (i=0; i<n; i++) {
 			out += makemsg (msg, i, rand(0.08), rand(maxdate));
@@ -36,7 +36,6 @@ duration = 8;
 
 <?javascript bars(50, duration); ?>
 /ITL/scene/sync r* layer h;
-
 
 d = 0.7;
 alpha = 140;
