@@ -17,9 +17,9 @@ else
 ifdef win32 
   i2i90tool  := $(i2i90)/cmake/Release/inscore2inscore90.exe
   i2i100tool := $(i2i100)/cmake/Release/inscore2inscore100.exe
-  QT5         := /c/Qt/Qt5.1.0
-  WIN32QTPATH := $(QT5)/5.1.0/msvc2010/
-  WIN32QT	  := QT5PRINTSUPPORT.DLL QT5WIDGETS.DLL QT5GUI.DLL QT5CORE.DLL QT5OPENGL.DLL QT5XML.DLL QT5SVG.DLL QT5Multimedia.DLL  QT5MultimediaWidgets.DLL Qt5Network.dll LIBGLESV2.DLL LIBEGL.DLL ICUIN51.DLL ICUUC51.DLL ICUDT51.DLL
+  QT5         := /c/Qt/Qt5.4.0
+  WIN32QTPATH := $(QT5)/5.4/msvc2010_opengl/
+  WIN32QT	  := QT5PRINTSUPPORT.DLL QT5WIDGETS.DLL QT5GUI.DLL QT5CORE.DLL QT5SVG.DLL QT5QML.DLL QT5WebSockets.DLL QT5Multimedia.DLL  QT5MultimediaWidgets.DLL Qt5Network.dll ICUIN53.DLL ICUUC53.DLL ICUDT53.DLL
   WIN32QT	  := $(patsubst %, $(WIN32QTPATH)/bin/%, $(WIN32QT))
   WIN32QTPLUGS     := qgif.dll qtiff.dll qjpeg.dll
   WIN32QTPLATFORMS := qminimal.dll qoffscreen.dll qwindows.dll
@@ -179,7 +179,7 @@ win32:
 	cp -f $(bin)/*.dll $(package)
 	cp -f ../src/guido2.ttf $(package)
 	cp  $(WIN32QT) $(package)
-	cp $(QT5)/vcredist/vcredist_sp1_x86.exe $(package)
+	cp $(QT5)/vcredist/vcredist_x86.exe $(package)
 	cp qt.conf $(package)
 	cp 	$(WIN32QTPLUGS) $(package)/plugins/imageformats
 	cp 	$(WIN32QTPLATFORMS) $(package)/plugins/platforms
