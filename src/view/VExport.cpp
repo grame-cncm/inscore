@@ -30,7 +30,7 @@
 #include <QFileInfo>
 #include <QDebug>
 
-//#define USING_PD_FWRITER
+#define USING_PD_FWRITER
 #ifdef USING_PD_FWRITER
 #include <QPdfWriter>
 #endif
@@ -134,9 +134,11 @@ void VExport::exportToPdf( QGraphicsItem * item , const QString& fileName , floa
 #ifdef USING_PD_FWRITER
 	QPdfWriter pdf(fileName);
 	pdf.setCreator("INScore");
-	QSize pageSize(rect.width() * xScaleFactor , rect.height() * yScaleFactor );
+	QSize pageSize(rect.width() * xScaleFactor, rect.height() * yScaleFactor);
 	QPageSize size (pageSize);
+	pdf.setResolution(96);
 	pdf.setPageSize(size);
+	pdf.setPageMargins(QMarginsF(0,0,0,0));
 	paintOnDevice( &pdf , item , xScaleFactor , xScaleFactor, dx, dy, drawChildren );
 
 //bool	setPageLayout(const QPageLayout & newPageLayout)
@@ -218,11 +220,21 @@ void VExport::exportScene( QGraphicsView * view , QString fileName )
 	if ( fileName.toUpper().endsWith( PDF_FORMAT.toUpper() ) )
 	{
 		QSize size (view->width() , view->height());
+		#ifdef USING_PD_FWRITER
+		QPdfWriter pdf(fileName);
+		pdf.setCreator("INScore");
+		QPageSize pagesize (size);
+		pdf.setResolution(1200);
+		pdf.setPageSize(pagesize);
+		pdf.setPageMargins(QMarginsF(0,0,0,0));
+		paintOnDevice( &pdf, view);
+		#else
 		QPrinter printer (QPrinter::HighResolution);
 		printer.setOutputFileName( QString(fileName) );
 		printer.setOutputFormat( QPrinter::PdfFormat );
 		printer.setPaperSize( size , QPrinter::Point );
 		paintOnDevice (&printer, view);
+		#endif
 	}
 	else
 	{
