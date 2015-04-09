@@ -1,0 +1,63 @@
+
+/ITL/scene/* del ;
+<?javascript 
+    function makemsg (str, index, x, w) {
+        return str.replace(/\?/g, index).replace("XPOS", x).replace("W", w);
+    }
+	function bars(n) {
+		var w = 2. / (n + n + 1);
+		var x = w - 1;
+		var msg = "/ITL/scene/rect? set rect W 0.5; /ITL/scene/rect? x XPOS;"
+		var out = "";
+		for (i=1; i<=n; i++) {
+			out += makemsg (msg, i, x, w);
+			x += (w*2);
+		}
+		return out;
+	}
+?>
+
+<?javascript bars(28) ?>
+
+/ITL/scene/rect* xorigin -1 ;
+
+width  = 0.14;
+height = 0.05;
+/ITL/scene/mov1 set rect $width $height ;
+/ITL/scene/mov1 color 255 230 0 ;
+/ITL/scene/mov2 set rect $width $height ;
+/ITL/scene/mov2 color 90 0 255 ;
+/ITL/scene/mov* xorigin -1;
+/ITL/scene/mov* x -0.98;
+/ITL/scene/mov1 y -0.12;
+/ITL/scene/mov2 y 0.12;
+
+/ITL/scene color 255 255 255 ;
+/ITL/scene/title set txt "Moving phenomena" ;
+/ITL/scene/title scale 2.7 ;
+/ITL/scene/title y -0.84 ;
+
+hide = "Hide bars";
+show = "Show bars";
+/ITL/scene/control set txt $hide ;
+/ITL/scene/control scale 2 ;
+/ITL/scene/control y 0.78;
+/ITL/scene/control2 set txt "Reset" ;
+/ITL/scene/control2 scale 2 ;
+/ITL/scene/control2 y 0.86 ;
+
+/ITL/scene/control* watch mouseEnter ( /ITL/scene/$self red 240 );
+/ITL/scene/control* watch mouseLeave ( /ITL/scene/$self red 0 );
+/ITL/scene/control2 watch mouseDown ( /ITL/scene/mov* x -1 );
+/ITL/scene/control watch mouseDown ( 
+	/ITL/scene/control push,
+	/ITL/scene/rect* show 0,
+	/ITL/scene/control set txt $show,
+	/ITL/scene/control watch mouseDown ( 
+		/ITL/scene/rect* show 1,
+		/ITL/scene/control set txt $hide,
+		/ITL/scene/control pop
+	)
+);
+
+
