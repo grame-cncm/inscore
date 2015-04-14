@@ -6,7 +6,7 @@ DESTDIR = ..
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
 
-VERSION = 1.11
+VERSION = 1.13
 
 QT += core gui widgets svg printsupport multimedia multimediawidgets qml websockets
 
