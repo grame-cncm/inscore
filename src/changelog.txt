@@ -12,6 +12,10 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 1.13
+- add new object 'filter' at application scope to manage forward messaging filter.
+
+----------------------------------------------------
 Version 1.12
 - 'line' objects: 'color' message is now an alias of 'penColor'
 - new 'compatibility' method at application level, provided to preserve previous behaviors
