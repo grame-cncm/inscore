@@ -29,6 +29,7 @@ namespace inscore
 {
 
 const char* kabsolutexy_GetSetMethod= "absolutexy";		// Get Set
+const char* kaccept_GetSetMethod	= "accept";			// Get Set
 const char* kalias_GetSetMethod		= "alias";			// Get Set
 const char* kalpha_GetSetMethod		= "alpha";			// Get Set
 const char* kangle_GetSetMethod		= "angle";			// Get Set
@@ -127,6 +128,7 @@ const char* krate_GetSetMethod		= "rate";			// Get Set
 const char* krcount_GetMethod		= "rcount";			// Get
 const char* kred_GetSetMethod		= "red";			// Get Set
 const char* kread_SetMethod			= "read";			// Set
+const char* kreject_GetSetMethod	= "reject";			// Get Set
 const char* krequire_SetMethod		= "require";		// Set
 const char* kreset_SetMethod		= "reset";			// Set
 const char* kresetBench_SetMethod	= "resetBench";		// Set

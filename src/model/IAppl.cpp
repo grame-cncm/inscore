@@ -37,6 +37,7 @@
 
 #include "IAppl.h"
 #include "IApplVNodes.h"
+#include "IFilterForward.h"
 #include "IGlue.h"
 #include "IMessage.h"
 #include "IObjectFactory.h"
@@ -233,10 +234,12 @@ void IAppl::createVirtualNodes()
 	fApplStat  = IApplStat::create(this);					// statistics
 	fDebug = fApplDebug;
 	fApplLog = IApplLog::create(this);
+	fFilterForward = IFilterForward::create(this);
 	add ( fDebug );
 	add ( fApplStat );
 	add ( fApplLog );
 	add ( IApplPlugin::create(this) );
+	add (fFilterForward);
 }
 
 //--------------------------------------------------------------------------
@@ -276,7 +279,8 @@ SIMessageList IAppl::getAll() const
 bool IAppl::filter (const IMessage* msg)
 {
 	if (msg->message() == kforward_GetSetMethod) return true;
-	return false;
+
+	return fFilterForward->applyFilter(msg);
 }
 
 //--------------------------------------------------------------------------
@@ -290,7 +294,7 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 		OSCStream::sendEvent (imsg, imsg->url().fHostname, imsg->url().fPort);
 		return MsgHandler::kProcessed;
 	}
-	else if (!filter(imsg)) {
+	else if (n && !filter(imsg)) {
 		for (int i = 0; i < n; i++) {
 			IMessage::TUrl url = fForwardList[i];
 			OSCStream::sendEvent (imsg, url.fHostname, url.fPort);
