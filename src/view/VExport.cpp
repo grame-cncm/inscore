@@ -24,24 +24,22 @@
 */
 
 #include "VExport.h"
+#include "IAppl.h"
 
 #include <QStyleOptionGraphicsItem>
 #include <QPrinter>
 #include <QFileInfo>
 #include <QDebug>
-
-//#define USING_PD_FWRITER
-#ifdef USING_PD_FWRITER
 #include <QPdfWriter>
-#endif
-
 
 #define PDF_FORMAT				QString(".pdf")
 #define DEFAULT_EXPORT_FORMAT	PDF_FORMAT
 
 namespace inscore
 {
-
+    // behavior changes and key version numbers
+    const float kExportPdfChangeVers = 1.13;
+    
 //------------------------------------------------------------------------------------------------------------------------
 void VExport::paintOnDevice( QPaintDevice * device , QGraphicsItem * item , float xScaleFactor , float yScaleFactor, float dx, float dy, bool drawChildren )
 {
@@ -121,7 +119,6 @@ void VExport::exportToImage( QGraphicsItem * item , const QString& fileName , fl
 //------------------------------------------------------------------------------------------------------------------------
 void VExport::exportToPdf( QGraphicsItem * item , const QString& fileName , float xScaleFactor , float yScaleFactor, bool drawChildren )
 {
-#ifndef IOS
     QRectF rect = item->boundingRect();
 	// if we export the children with the object, they might be out of its bounds :
 	// we have to take the smallest boundingRect that contains the item AND its children
@@ -131,39 +128,34 @@ void VExport::exportToPdf( QGraphicsItem * item , const QString& fileName , floa
     float dx = item->boundingRect().x() - rect.x();
     float dy = item->boundingRect().y() - rect.y();
 
-#ifdef USING_PD_FWRITER
-	QPdfWriter pdf(fileName);
-	pdf.setCreator("INScore");
-	QSize pageSize(rect.width() * xScaleFactor , rect.height() * yScaleFactor );
-	QPageSize size (pageSize);
-	pdf.setPageSize(size);
-	paintOnDevice( &pdf , item , xScaleFactor , xScaleFactor, dx, dy, drawChildren );
-
-//bool	setPageLayout(const QPageLayout & newPageLayout)
-//bool	setPageMargins(const QMarginsF & margins)
-//bool	setPageMargins(const QMarginsF & margins, QPageLayout::Unit units)
-//bool	setPageOrientation(QPageLayout::Orientation orientation)
-//bool	setPageSize(const QPageSize & pageSize)
-//void	setResolution(int resolution)
-
-#else
-	QPrinter printer;
-	printer.setColorMode(QPrinter::Color);
-	printer.setFullPage(true);
-	printer.setOutputFileName( QString(fileName) );
-	printer.setOutputFormat( QPrinter::PdfFormat );
+    if (IAppl::compatibilityVersion() >= kExportPdfChangeVers) {
+        // Use QPdfWriter to have export on IOS and same rendering on different platform.
+        QPdfWriter pdf(fileName);
+        pdf.setCreator("INScore");
+        QSize pageSize(rect.width() * xScaleFactor, rect.height() * yScaleFactor);
+        QPageSize size (pageSize, "", QPageSize::ExactMatch);
+        pdf.setResolution(96);
+        pdf.setPageSize(size);
+        pdf.setPageMargins(QMarginsF(0,0,0,0));
+        paintOnDevice( &pdf , item , xScaleFactor , xScaleFactor, dx, dy, drawChildren );
+    } else {
+#ifndef IOS
+        QPrinter printer;
+        printer.setColorMode(QPrinter::Color);
+        printer.setFullPage(true);
+        printer.setOutputFileName( QString(fileName) );
+        printer.setOutputFormat( QPrinter::PdfFormat );
 #ifdef USEPAPERSIZE			// QPageSize is not available for QT < 5.3
-	QSizeF pageSize(rect.width() * xScaleFactor , rect.height() * yScaleFactor );
-	printer.setPaperSize( pageSize , QPrinter::DevicePixel );
+        QSizeF pageSize(rect.width() * xScaleFactor , rect.height() * yScaleFactor );
+        printer.setPaperSize( pageSize , QPrinter::DevicePixel );
 #else
-	QSize size(rect.width() * xScaleFactor , rect.height() * yScaleFactor );
-	QPageSize ps(size);
-	printer.setPageSize(ps);
+        QSize size(rect.width() * xScaleFactor , rect.height() * yScaleFactor );
+        QPageSize ps(size);
+        printer.setPageSize(ps);
 #endif
-
-	paintOnDevice( &printer , item , xScaleFactor , xScaleFactor, dx, dy, drawChildren );
+        paintOnDevice( &printer , item , xScaleFactor , xScaleFactor, dx, dy, drawChildren );
 #endif
-#endif
+    }
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -212,24 +204,32 @@ static QString nextFreeName (const QString& filename, const QString& extension)
 //------------------------------------------------------------------------------------------------------------------------
 void VExport::exportScene( QGraphicsView * view , QString fileName )
 {
-#ifndef IOS
 	if ( QFileInfo(fileName).suffix().isEmpty() ) fileName = nextFreeName(fileName, DEFAULT_EXPORT_FORMAT);
 
-	if ( fileName.toUpper().endsWith( PDF_FORMAT.toUpper() ) )
-	{
-		QSize size (view->width() , view->height());
-		QPrinter printer (QPrinter::HighResolution);
-		printer.setOutputFileName( QString(fileName) );
-		printer.setOutputFormat( QPrinter::PdfFormat );
-		printer.setPaperSize( size , QPrinter::Point );
-		paintOnDevice (&printer, view);
-	}
-	else
-	{
+    if ( fileName.toUpper().endsWith( PDF_FORMAT.toUpper() ) )
+    {
+        QSize size (view->width() , view->height());
+        if (IAppl::compatibilityVersion() >= kExportPdfChangeVers) {
+            QPdfWriter pdf(fileName);
+            pdf.setCreator("INScore");
+            QPageSize pagesize (size);
+            pdf.setResolution(1200);
+            pdf.setPageSize(pagesize);
+            pdf.setPageMargins(QMarginsF(0,0,0,0));
+            paintOnDevice( &pdf, view);
+        } else {
+#ifndef IOS
+            QPrinter printer (QPrinter::HighResolution);
+            printer.setOutputFileName( QString(fileName) );
+            printer.setOutputFormat( QPrinter::PdfFormat );
+            printer.setPaperSize( size , QPrinter::Point );
+            paintOnDevice (&printer, view);
+#endif
+        }
+    } else {
 		QImage image = sceneToImage(view);
 		image.save( fileName );			
 	}
-#endif
 }
 
 QImage	VExport::sceneToImage(QGraphicsView * sceneview)

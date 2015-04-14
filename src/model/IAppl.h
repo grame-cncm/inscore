@@ -55,6 +55,8 @@ class IApplStat;
 typedef class libmapping::SMARTP<IApplStat>		SIApplStat;
 class IApplLog;
 typedef class libmapping::SMARTP<IApplLog>		SIApplLog;
+class IFilterForward;
+typedef class libmapping::SMARTP<IFilterForward> SIFilterForward;
 
 //--------------------------------------------------------------------------
 /*!
@@ -77,6 +79,7 @@ class IAppl : public IObject, public TILoader
 		SIApplDebug	fApplDebug;					// debug flags
 		SIApplStat	fApplStat;					// statistics
 		SIApplLog	fApplLog;					// log window
+		SIFilterForward fFilterForward;
 		bool		fOffscreen;
 		udpinfo		fUDP;						// udp port settings
 		int			fRate;						// the time task rate

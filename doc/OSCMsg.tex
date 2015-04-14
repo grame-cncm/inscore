@@ -1499,6 +1499,32 @@ and to \OSC{host2.adomain.org} on port number 5100.
 \warning{forwarding messages to the application host results in an infinite loop with unpredictable results. Thus it is not recommended to use the local network broadcast address for forwarding unless using a different UDP port number.}
 
 
+%===============================
+%:  Filtering messages forwarding
+\sublevel{Filtering messages forwarding}
+\label{ITLFilteringForward}
+
+The messages forwarded to arbitrary remote hosts using the \OSC{forward} message can be filtered to send only wanted messages. The \OSC{filter} node is use manage the filter. The filter can be construct with OSC address and messages. 
+ 
+\begin{rail}
+ITLFilteringForward : [1] ('accept' (|item +)) | [2] ('reject' (|item +))
+\end{rail}
+\index{ITL messages!accept}
+\index{ITL messages!reject}
+
+An \OSC{item} is an OSC address or a message. Items are separated by a ','.
+\begin{itemize}
+\item 1) Remplace the actual accepted list by the new list or by an empty list. Item in accepted list are not filtered by the reject item list.
+\item 2) Remplace the actual accepted list by the new list or by an empty list. Item in reject list are filtered if they not match the accept list.
+\end{itemize}
+
+When a new message is incoming, if they match to an accepted item, filter is not apply.\\ \\
+\example\\
+\sample{/ITL/filter reject "/ITL/scene/line*,/ITL/scene/rect"; \\
+/ITL/filter accept "/ITL/scene/line2,scale,arrows";
+}
+Message with OSC message with address starting with \OSC{/ITL/scene/line} or with address \OSC{/ITL/scene/rect} are filtered only if message address is not \OSC{/ITL/scene/line2} or if the content is not \OSC{scale} or \OSC{arrows}.
+
 
 %===============================
 %:  Application level queries

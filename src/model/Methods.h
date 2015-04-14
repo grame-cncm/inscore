@@ -30,6 +30,7 @@ namespace inscore
 {
 
 extern const char* kabsolutexy_GetSetMethod;
+extern const char* kaccept_GetSetMethod;
 extern const char* kalias_GetSetMethod;
 extern const char* kalpha_GetSetMethod;
 extern const char* kangle_GetSetMethod;
@@ -126,6 +127,7 @@ extern const char* krate_GetSetMethod;
 extern const char* krcount_GetMethod;
 extern const char* kred_GetSetMethod;
 extern const char* kread_SetMethod;
+extern const char* kreject_GetSetMethod;
 extern const char* krequire_SetMethod;
 extern const char* kreset_SetMethod;
 extern const char* kresetBench_SetMethod;
