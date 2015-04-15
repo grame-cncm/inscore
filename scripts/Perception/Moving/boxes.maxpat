@@ -1,9 +1,9 @@
 {
 	"patcher" : 	{
 		"fileversion" : 1,
-		"rect" : [ 52.0, 57.0, 231.0, 130.0 ],
+		"rect" : [ 52.0, 57.0, 256.0, 150.0 ],
 		"bglocked" : 0,
-		"defrect" : [ 52.0, 57.0, 231.0, 130.0 ],
+		"defrect" : [ 52.0, 57.0, 256.0, 150.0 ],
 		"openrect" : [ 52.0, 57.0, 231.0, 130.0 ],
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -41,9 +41,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 226.0, 32.0, 32.5, 18.0 ],
-					"presentation_rect" : [ 355.0, 53.0, 0.0, 0.0 ],
-					"text" : "5"
+					"patching_rect" : [ 227.0, 32.0, 32.5, 18.0 ],
+					"text" : "15"
 				}
 
 			}
@@ -70,7 +69,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 154.0, 89.0, 20.0, 20.0 ],
+					"patching_rect" : [ 170.0, 96.0, 20.0, 20.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 93.0, 47.0, 20.0, 20.0 ]
 				}
@@ -85,9 +84,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 153.0, 132.0, 121.0, 18.0 ],
-					"presentation_rect" : [ 303.0, 243.0, 0.0, 0.0 ],
-					"text" : "/ITL/scene/mov* x -1"
+					"patching_rect" : [ 170.0, 130.0, 134.0, 18.0 ],
+					"text" : "/ITL/scene/mov* date 0"
 				}
 
 			}
@@ -100,9 +98,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 281.0, 195.0, 147.0, 18.0 ],
-					"presentation_rect" : [ 275.0, 219.0, 0.0, 0.0 ],
-					"text" : "/ITL/scene/mov* dx 0.001"
+					"patching_rect" : [ 313.0, 195.0, 164.0, 18.0 ],
+					"text" : "/ITL/scene/mov* ddate 1 250"
 				}
 
 			}
@@ -115,7 +112,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "bang" ],
-					"patching_rect" : [ 313.0, 130.0, 50.0, 20.0 ],
+					"patching_rect" : [ 344.0, 130.0, 50.0, 20.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 164.0, 83.0, 50.0, 20.0 ]
 				}
@@ -251,7 +248,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 281.0, 130.0, 20.0, 20.0 ],
+					"patching_rect" : [ 312.0, 130.0, 20.0, 20.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 90.0, 14.0, 20.0, 20.0 ]
 				}
@@ -262,14 +259,14 @@
 					"floatoutput" : 1,
 					"id" : "obj-29",
 					"maxclass" : "slider",
-					"min" : 1.0,
+					"min" : 20.0,
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 319.0, 53.0, 18.0, 64.0 ],
+					"patching_rect" : [ 351.0, 56.0, 18.0, 64.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 181.0, 13.0, 18.0, 64.0 ],
-					"size" : 50.0
+					"size" : 100.0
 				}
 
 			}
@@ -282,7 +279,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 281.0, 163.0, 51.0, 20.0 ],
+					"patching_rect" : [ 312.0, 163.0, 51.0, 20.0 ],
 					"text" : "metro 5"
 				}
 
@@ -346,7 +343,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
 					"hidden" : 0,
-					"midpoints" : [ 290.5, 164.0, 290.5, 164.0 ],
+					"midpoints" : [ 321.5, 164.0, 321.5, 164.0 ],
 					"source" : [ "obj-30", 0 ]
 				}
 
@@ -391,7 +388,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-29", 0 ],
 					"hidden" : 0,
-					"midpoints" : [ 235.5, 51.0, 328.5, 51.0 ],
+					"midpoints" : [ 236.5, 51.0, 360.5, 51.0 ],
 					"source" : [ "obj-8", 0 ]
 				}
 
