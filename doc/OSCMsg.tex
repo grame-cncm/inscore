@@ -81,7 +81,7 @@
 
 \begin{document}
 
-\title{INScore \\ OSC Messages Reference \\v.1.12}
+\title{INScore \\ OSC Messages Reference \\v.1.13}
 
 \author{D. Fober\\ GRAME\\ Centre national de cr\'eation musicale\\
 {\small <fober@grame.fr>} \\
@@ -235,7 +235,7 @@ They could be sent to any address with the form \OSC{/ITL/\textit{scene}} or \OS
 \begin{rail}
 commonMsg :  ('show' int32)
 			| 'del'
-			| 'export' ([1] ( fullPathFileName) | [2] path | [3])(|'children')
+			| ('export' | 'exportAll') ((([1] filePath )+) | [2])
 			| 'save' (| 'message' +) filePath ( | '+')
 			| PositionMsg
 			| ColorMsg
@@ -245,19 +245,17 @@ commonMsg :  ('show' int32)
 \index{Common messages!show}
 \index{Common messages!del}
 \index{Common messages!export}
+\index{Common messages!exportAll}
 \index{Common messages!save}
 
 \begin{itemize}
 \item \OSC{show}: shows or hides the destination object. The parameter is interpreted as a boolean value. Default value is \values{1}. 
 \item \OSC{del}: deletes the destination object. 
 
-\item \OSC{export}: exports an object to an image file. \\
-1) exports to a full path name. The file extension is used to infer the export format. Supported extensions and formats are: \emph{pdf, bmp, gif, jpeg, png, pgm, ppm, tiff, xbm, xpm}. \\
-2) exports to \OSC{path/\textit{identifier}.pdf}. \\
-When path is a relative path, exports to \OSC{rootPath/path/\textit{identifier}.pdf}. \\
-3) exports to \OSC{rootPath/\textit{identifier}.pdf}.\\
-When the destination file is not completely specified (third form or missing extension), there is an automatic numbering of output names when the destination file already exists. \\ 
-The 'children' option specify that we want to export the children of the object as well.
+\item \OSC{export} and \OSC{exportAll}: exports an object to an image file respectively without or with its childrens. If the exported object is a scene, childrens are always exported.\\
+1) exports to the \OSC{filePath} name. The \OSC{filePath} can be relative or absolute. When the filename is not specified, exports to \OSC{path/\textit{identifier}.pdf}. The file extension is used to infer the export format. Supported extensions and formats are: \emph{pdf, bmp, gif, jpeg, png, pgm, ppm, tiff, xbm, xpm}. \\
+2) exports to \OSC{rootPath/\textit{identifier}.pdf}.\\
+When the destination file is not completely specified (second form or missing extension), there is an automatic numbering of output names when the destination file already exists. \\ 
 
 \item \OSC{save}: recursively saves objects states to a file. When a \OSC{message} list is present, only the specified attributes are saved. The \OSC{filePath} can be relative or absolute. When relative, an absolute path is build using the current \OSC{rootPath} (see application or scene current paths  p.\pageref{applmgmt} and  p.\pageref{scene}). The optional \OSC{+} parameter indicates an append mode for the write operation. The message must be sent to the address \OSC{/ITL} to save the whole application state.\\
 \textbf{Note}: when a list of attributes is specified, unknown attributes are silently ignored. \\
@@ -1096,6 +1094,7 @@ Some of the messages are specific to the component \OSC{type}.
 
 
 %-------------------------------
+%:  Pen control
 \sublevel{Pen control}
 
 Specific pen messages accepted by the components types \OSC{rect | ellipse | polygon | curve | line | graph | fast graph | grid}.
@@ -1139,6 +1138,7 @@ Setting a rectangle border width and color:
 
 
 %-------------------------------
+%:  Brush control
 \sublevel{Brush control}
 \label{brush}
 Specific brush messages accepted by the components types \OSC{rect | ellipse | polygon | curve |  layer}.
@@ -1179,6 +1179,7 @@ Setting a rectangle style :
 
 
 %-------------------------------
+%:  Width and height control
 \sublevel{Width and height control}
 
 Specific width and height messages accepted by the components types \OSC{rect | ellipse | graph | fastgraph | grid}.
@@ -1193,6 +1194,7 @@ widthMsg :  'width' float32
 
 
 %-------------------------------
+%:  Symbolic score management
 \sublevel{Symbolic score management}
 \label{gmnpage}
 
@@ -1303,6 +1305,52 @@ arrowsheadMsg : 'arrows' arrowStyleBegin arrowStyleEnd
 arrowStyle : 'none' | 'triangle' | 'diamond' | 'disk'
 \end{rail}
 The arrow style default value is \OSC{none}.
+
+%-------------------------------
+%:  Font control
+\sublevel{Font control}
+\label{fontctrl}
+Specific font messages are accepted by \OSC{txt} components.
+\begin{rail}
+fontMsg : 	  'fontSize' int32 
+			| 'fontFamily' string
+			| 'fontStyle' style
+			| 'fontWeight' weight
+\end{rail}
+\index{Specific messages! fontSize}
+\index{Specific messages! fontFamily}
+\index{Specific messages! fontStyle}
+\index{Specific messages! fontWeight}
+
+\begin{rail}
+	fontStyle : 'normal' | 'italic' | 'oblique'
+\end{rail}
+\index{Specific messages! fontStyle! normal}
+\index{Specific messages! fontStyle! italic}
+\index{Specific messages! fontStyle! oblique}
+
+\begin{rail}
+	fontWeight : 'light' | 'demibold' | 'normal' | 'bold' | 'black'
+\end{rail}
+\index{Specific messages! fontWeight! light}
+\index{Specific messages! fontWeight! demibold}
+\index{Specific messages! fontWeight! normal}
+\index{Specific messages! fontWeight! bold}
+\index{Specific messages! fontWeight! black}
+
+\begin{itemize}
+\item \OSC{fontSize} controls the font size in pixel. The default value is 13px.
+\item \OSC{fontFamily} controls the font family. The default value is 'Arial'. If a non existing value is used, system default font is used.
+\item \OSC{fontStyle} controls the pen style. The font style default value is \OSC{normal}.\\
+\item \OSC{weightValue} controls the font weight. The font weight default value is \OSC{normal}.
+\end{itemize}
+
+\example \\
+Setting a text object with a font family Times and bold weight:
+\sample{/ITL/scene/text set txt "text sample";\\
+/ITL/scene/text fontFamily Times;\\
+/ITL/scene/text fontWeight bold;  
+}
 
 
 %===============================
@@ -1451,6 +1499,32 @@ and to \OSC{host2.adomain.org} on port number 5100.
 \warning{forwarding messages to the application host results in an infinite loop with unpredictable results. Thus it is not recommended to use the local network broadcast address for forwarding unless using a different UDP port number.}
 
 
+%===============================
+%:  Filtering messages forwarding
+\sublevel{Filtering messages forwarding}
+\label{ITLFilteringForward}
+
+The messages forwarded to arbitrary remote hosts using the \OSC{forward} message can be filtered to send only wanted messages. The \OSC{filter} node is use manage the filter. The filter can be construct with OSC address and messages. 
+ 
+\begin{rail}
+ITLFilteringForward : [1] ('accept' (|item +)) | [2] ('reject' (|item +))
+\end{rail}
+\index{ITL messages!accept}
+\index{ITL messages!reject}
+
+An \OSC{item} is an OSC address or a message. Items are separated by a ','.
+\begin{itemize}
+\item 1) Remplace the actual accepted list by the new list or by an empty list. Item in accepted list are not filtered by the reject item list.
+\item 2) Remplace the actual accepted list by the new list or by an empty list. Item in reject list are filtered if they not match the accept list.
+\end{itemize}
+
+When a new message is incoming, if they match to an accepted item, filter is not apply.\\ \\
+\example\\
+\sample{/ITL/filter reject "/ITL/scene/line*,/ITL/scene/rect"; \\
+/ITL/filter accept "/ITL/scene/line2,scale,arrows";
+}
+Message with OSC message with address starting with \OSC{/ITL/scene/line} or with address \OSC{/ITL/scene/rect} are filtered only if message address is not \OSC{/ITL/scene/line2} or if the content is not \OSC{scale} or \OSC{arrows}.
+
 
 %===============================
 %:  Application level queries
@@ -1585,6 +1659,7 @@ The following messages are available at scene level, to control the scene appear
 sceneMsg :  'new'
 			| 'del'
 			| 'reset'
+			| 'foreground'
 			| ('rootPath' path) 
 			| ('load' filePath)
 			| ('fullscreen' int32)
@@ -1596,6 +1671,7 @@ sceneMsg :  'new'
 \index{Scene messages}
 \index{Scene messages!new}
 \index{Scene messages!del}
+\index{Scene messages!foreground}
 \index{Scene messages!rootPath}
 \index{Scene messages!load}
 \index{Scene messages!reset}
@@ -1607,6 +1683,7 @@ sceneMsg :  'new'
 \item \OSC{new}: creates a new scene and opens it in a new window.
 \item \OSC{del}: deletes a scene and closes the corresponding window.
 \item \OSC{reset}: clears the scene (i.e. delete all components) and resets the scene to its default state (position, size and color).
+\item \OSC{foreground}: display scene window in foreground of all other windows in the system windows manager.
 \item \OSC{rootPath}: \emph{rootPath} of a scene is the default path where the scene reads or writes a file when a relative path is used for this file. When no value has been specified, the application  \emph{rootPath} is used.
 \item \OSC{load}: loads an INScore file to the scene. Note that the OSC addresses are translated to the scene OSC address.
 %\item \OSC{foreground}: put the scene to foreground.

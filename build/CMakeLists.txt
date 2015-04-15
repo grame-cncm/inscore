@@ -10,10 +10,10 @@ set (APPLTARGET	INScoreViewer)
 
 #######################################
 # versions management
-set (INSFWKVERS 1.12)
-set (INSFWKSTRVERS "v.1.12")
-set (INSAPPVERS 1.12)
-set (INSAPPSTRVERS "v.1.12")
+set (INSFWKVERS 1.13)
+set (INSFWKSTRVERS "v.1.13")
+set (INSAPPVERS 1.13)
+set (INSAPPSTRVERS "v.1.13")
 set (SOVERS 1)
 
 
@@ -191,7 +191,7 @@ endif()
 
 message (STATUS "Using Qt version ${QTVERSION} - Use -DQTVERSION=vers to change.")
 
-set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h  ${ROOT}/view/VLogWindow.h ${ROOT}/guidoqt/QGuidoGraphicsItem.h)
+set (MOC_HEADERS ${ROOT}/view/VSceneView.h ${ROOT}/model/QFileWatcher.h  ${ROOT}/view/VLogWindow.h ${ROOT}/guidoqt/QGuidoGraphicsItem.h ${ROOT}/scripting/CustomScripts.h)
 if (QTVERSION EQUAL "5")
         set (MOC_HEADERS ${MOC_HEADERS} ${ROOT}/view/VVideoView.h ${ROOT}/controller/QFileDownloader.h ${ROOT}/model/QtWebSocketServer.h )
 	if(IOS)

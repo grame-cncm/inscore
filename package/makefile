@@ -1,4 +1,4 @@
-version := 1.12
+version := 1.13
 system	:= $(shell uname -s)
 ifeq ($(system), MINGW32_NT-6.1) 
 	win32 = yes
@@ -17,9 +17,9 @@ else
 ifdef win32 
   i2i90tool  := $(i2i90)/cmake/Release/inscore2inscore90.exe
   i2i100tool := $(i2i100)/cmake/Release/inscore2inscore100.exe
-  QT5         := /c/Qt/Qt5.1.0
-  WIN32QTPATH := $(QT5)/5.1.0/msvc2010/
-  WIN32QT	  := QT5PRINTSUPPORT.DLL QT5WIDGETS.DLL QT5GUI.DLL QT5CORE.DLL QT5OPENGL.DLL QT5XML.DLL QT5SVG.DLL QT5Multimedia.DLL  QT5MultimediaWidgets.DLL Qt5Network.dll LIBGLESV2.DLL LIBEGL.DLL ICUIN51.DLL ICUUC51.DLL ICUDT51.DLL
+  QT5         := /c/Qt/Qt5.4.0
+  WIN32QTPATH := $(QT5)/5.4/msvc2010_opengl/
+  WIN32QT	  := QT5PRINTSUPPORT.DLL QT5WIDGETS.DLL QT5GUI.DLL QT5CORE.DLL QT5SVG.DLL QT5QML.DLL QT5WebSockets.DLL QT5Multimedia.DLL  QT5MultimediaWidgets.DLL Qt5Network.dll ICUIN53.DLL ICUUC53.DLL ICUDT53.DLL
   WIN32QT	  := $(patsubst %, $(WIN32QTPATH)/bin/%, $(WIN32QT))
   WIN32QTPLUGS     := qgif.dll qtiff.dll qjpeg.dll
   WIN32QTPLATFORMS := qminimal.dll qoffscreen.dll qwindows.dll
@@ -93,12 +93,6 @@ common:
 	cp -r doc $(package)
 	cp readme.txt $(package)
 	cp ../src/changelog.txt $(package)
-	[ -d $(package)/inscore2inscore90 ] || mkdir $(package)/inscore2inscore90
-	[ -d $(package)/inscore2inscore100 ] || mkdir $(package)/inscore2inscore100
-	cp $(i2i90tool)  $(package)/inscore2inscore90
-	cp $(i2i100tool) $(package)/inscore2inscore100
-	cp $(i2i90)/readme.txt $(package)/inscore2inscore90
-	cp $(i2i100)/readme.txt $(package)/inscore2inscore100
 	make samples
 		
 doc: 
@@ -111,7 +105,7 @@ copydoc:
 	make -C $(docsrc) htmlclean
 	rm -f $(docdst)/html/*
 	cp  $(docsrc)/OSCMsg/* $(docdst)/html
-	cp  $(docsrc)/INScore-refcard.pdf $(docdst)
+	cp  $(docsrc)/refcards/INScore-refcard-1.12.pdf $(docdst)
 	cd  $(docdst) && tar czf html.tgz html
 
 interfaces:
@@ -122,13 +116,14 @@ interfaces:
 
 scripts:
 	[ -d $(rsrc)/scripts ] || mkdir -p $(rsrc)/scripts
-	cp -R ../scripts/S-* $(rsrc)/scripts
+	cp -R ../scripts/Standalone/* $(rsrc)/scripts
 	rm -f $(shell find $(rsrc)/scripts -name "*DS_Store")
 	cd $(rsrc) && tar czf scripts.tgz scripts
 
 patches:
 	[ -d $(rsrc)/patches ] || mkdir -p $(rsrc)/patches
 	cp -R ../scripts/MP-* $(rsrc)/patches
+	cp -R ../scripts/M-* $(rsrc)/patches
 	rm -f $(shell find $(rsrc)/patches -name "*DS_Store")
 	mv $(rsrc)/patches/MP-Turenas $(rsrc)/Turenas
 	cd $(rsrc) && tar czf patches.tgz patches
@@ -140,10 +135,10 @@ rsrc:
 	make patches
 	cp -R ../scripts/Perception $(rsrc)
 	cd $(rsrc) && tar czf Perception.tgz Perception
-	cp -R ../scripts/M-tools $(rsrc)
-	cd $(rsrc) && tar czf M-tools.tgz M-tools
-	cp -R ../scripts/P-tools $(rsrc)
-	cd $(rsrc) && tar czf P-tools.tgz P-tools
+	cp -R ../scripts/Max-tools $(rsrc)
+	cd $(rsrc) && tar czf Max-tools.tgz Max-tools
+	cp -R ../scripts/PureData-tools $(rsrc)
+	cd $(rsrc) && tar czf PureData-tools.tgz PureData-tools
 	cp -R ../scripts/readme* $(rsrc)
 	cp rsrc/cclicense.pdf $(rsrc)/license.pdf
 	cp rsrc/cclicense.html $(rsrc)/license.html
@@ -167,7 +162,8 @@ src:
 	cp -rf ../lib $(package)-src/
 	cp -rf ../win32 $(package)-src/
 	rm -rf $(package)-src/lib/poppler
-	rm -rf $(package)-src/lib/javascript/MacOS
+	rm -rf $(package)-src/lib/lua
+	rm -rf $(package)-src/lib/javascript
 	cp readme.txt $(package)-src
 	cp ../readme.txt $(package)-src/install
 	cp -r doc $(package)-src
@@ -185,7 +181,7 @@ win32:
 	cp -f $(bin)/*.dll $(package)
 	cp -f ../src/guido2.ttf $(package)
 	cp  $(WIN32QT) $(package)
-	cp $(QT5)/vcredist/vcredist_sp1_x86.exe $(package)
+	cp $(QT5)/vcredist/vcredist_x86.exe $(package)
 	cp qt.conf $(package)
 	cp 	$(WIN32QTPLUGS) $(package)/plugins/imageformats
 	cp 	$(WIN32QTPLATFORMS) $(package)/plugins/platforms

@@ -30,6 +30,7 @@ namespace inscore
 {
 
 extern const char* kabsolutexy_GetSetMethod;
+extern const char* kaccept_GetSetMethod;
 extern const char* kalias_GetSetMethod;
 extern const char* kalpha_GetSetMethod;
 extern const char* kangle_GetSetMethod;
@@ -77,8 +78,14 @@ extern const char* keffect_GetSetMethod;
 extern const char* kerror_SetMethod;
 extern const char* kerrport_GetSetMethod;
 extern const char* kexport_SetMethod;
+extern const char* kexportAll_SetMethod;
 extern const char* keval_SetMethod;
 extern const char* kevent_SetMethod;
+extern const char* kfontSize_GetSetMethod;
+extern const char* kfontFamily_GetSetMethod;
+extern const char* kfontStyle_GetSetMethod;
+extern const char* kfontWeight_GetSetMethod;
+extern const char* kforeground_SetMethod;
 extern const char* kforward_GetSetMethod;
 extern const char* kframeless_GetSetMethod;
 extern const char* kfullscreen_GetSetMethod;
@@ -120,6 +127,7 @@ extern const char* krate_GetSetMethod;
 extern const char* krcount_GetMethod;
 extern const char* kred_GetSetMethod;
 extern const char* kread_SetMethod;
+extern const char* kreject_GetSetMethod;
 extern const char* krequire_SetMethod;
 extern const char* kreset_SetMethod;
 extern const char* kresetBench_SetMethod;

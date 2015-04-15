@@ -64,6 +64,20 @@ ISignal::ISignal( const std::string& name, IObject * parent ) : IObject (name, p
 }
 
 //--------------------------------------------------------------------------
+ISignal::~ISignal()
+{
+//	_del(false);
+}
+
+//--------------------------------------------------------------------------
+void ISignal::del ()
+{
+	ISignalNode* snode = getSignalNode();
+	if (snode) snode->cleanupSignal (this);
+	_del(false);
+}
+
+//--------------------------------------------------------------------------
 void ISignal::cleanup ()
 {
 	done();		// notify the parallel signal that it's done with available data

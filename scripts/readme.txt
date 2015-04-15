@@ -8,11 +8,12 @@ fober@grame.fr
 Copyright GRAME (c) 2009-2014
 
 This folder contains various INScore sample scripts and Max/MSP or PureData patches provided as tools or sample of INScore use. The enclosed folders complie to the following naming scheme:
- - folder starting with 'S' contain standalone scripts i.e. INScore scripts that don't require
-   any external application to run. 
  - folder starting with 'M' contain Max/MSP samples or tools. 
  - folder starting with 'P' contain PureData samples or tools. 
  - samples in folders starting with 'MP' support both Max/MSP or PureData
+The Standalone folder contains standalone scripts i.e. INScore scripts that don't require
+any external application to run. 
+
 
 The INScore Viewer supports drag & drop. You can drag & drop any file to a scene window:
  - when the file is a .inscore file, the corresponding messages are sent to 

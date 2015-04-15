@@ -1,9 +1,2 @@
-../regression/S-sync/testSync.inscore
-../regression/S-sync/change1.inscore
-../regression/S-sync/change2.inscore
-../regression/S-sync/change3.inscore
-../regression/S-sync/change4.inscore
-../regression/S-sync/change5.inscore
-../regression/S-sync/change6.inscore
-../scripts/S-grid/DROP-ME.inscore
-../scripts/S-grid/monov.inscore
+../scripts/Standalone/grid/DROP-ME.inscore
+../scripts/Standalone/grid/monov.inscore

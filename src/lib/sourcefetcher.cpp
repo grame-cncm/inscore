@@ -39,8 +39,11 @@
 #define close closesocket
 #define write(s, buf, len) send(s, buf, (int)(len), 0)
 #define read(s, buf, len) recv(s, buf, (int)(len), 0)
-#define rindex strchr
 #define herror perror
+#define snprintf _snprintf
+
+#pragma warning ( disable: 4996)
+
 #endif
 #include "sourcefetcher.h"
 
@@ -603,7 +606,7 @@ int http_parseFilename(const char *url, char **filename)
 		http_errno = HF_NULLURL;
 		return -1;
 	}
-	ptr = (char *)rindex(url, '/');
+	ptr = (char *)strrchr(url, '/');
 	if (ptr == NULL)
 		/* Root level request, apparently */
 		return 1;
@@ -673,8 +676,9 @@ void http_perror(const char *string)
  */
 const char* http_strerror()
 {
+#ifndef ANDROID
 	extern int	errno;
-
+#endif
 	if (errorSource == ERRNO)
 		return strerror(errno);
 	else if (errorSource == H_ERRNO)

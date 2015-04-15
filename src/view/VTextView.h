@@ -59,6 +59,12 @@ class VTextView: public VIntPointObjectView
 //	QList< QGraphicsItem* > fCharItems;
 //	QMap<std::string,int> fMappingVersion;
 
+	// Create static map to use enum of QFont.
+	static std::map<std::string, enum QFont::Style> createStyleString2Enum();
+	static std::map<std::string, enum QFont::Style> sStyleString2Enum;
+	static std::map<std::string, enum QFont::Weight> createWeightString2Enum();
+	static std::map<std::string, enum QFont::Weight> sWeightString2Enum;
+
 	public :
 		using VIntPointObjectView::updateView;
 		using VIntPointObjectView::updateLocalMapping;
@@ -78,6 +84,12 @@ class VTextView: public VIntPointObjectView
 		virtual void updateLocalMapping (IText* text, TextInterface& textInterface);
 	
 		void updateQtTextTable();
+
+		/*!
+		 * \brief updateFont Update the font of the text item from the IText object
+		 * \param text
+		 */
+		void updateFont(const IText* text);
 		GraphicSegment getGraphicSegment( const IntPointSegment& intPointSegment , const IGraphicBasedObject * object , bool& mapOk ) const;
 				
 		class TextInterface
@@ -104,6 +116,7 @@ class VTextView: public VIntPointObjectView
 				virtual QString			get() const				{ return fItem->toPlainText(); }
 				virtual void			set(const QString& s)	{ fItem->setPlainText( s ); }
 		};
+
 };
 typedef class libmapping::SMARTP<VTextView>	SVTextView;
 

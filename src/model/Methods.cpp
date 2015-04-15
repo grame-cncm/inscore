@@ -29,6 +29,7 @@ namespace inscore
 {
 
 const char* kabsolutexy_GetSetMethod= "absolutexy";		// Get Set
+const char* kaccept_GetSetMethod	= "accept";			// Get Set
 const char* kalias_GetSetMethod		= "alias";			// Get Set
 const char* kalpha_GetSetMethod		= "alpha";			// Get Set
 const char* kangle_GetSetMethod		= "angle";			// Get Set
@@ -80,6 +81,12 @@ const char* kerrport_GetSetMethod	= "errport";		// Get Set
 const char* keval_SetMethod			= "eval";			// Set
 const char* kevent_SetMethod		= "event";			// Set
 const char* kexport_SetMethod		= "export";			// Set
+const char* kexportAll_SetMethod	= "exportAll";		// Set
+const char* kfontSize_GetSetMethod	= "fontSize";		// Get Set
+const char* kfontFamily_GetSetMethod= "fontFamily";		// Get Set
+const char* kfontStyle_GetSetMethod	= "fontStyle";		// Get Set
+const char* kfontWeight_GetSetMethod= "fontWeight";		// Get Set
+const char* kforeground_SetMethod	= "foreground";		// Set
 const char* kforward_GetSetMethod	= "forward";		// Get Set
 const char* kframeless_GetSetMethod	= "frameless";		// Get Set
 const char* kfullscreen_GetSetMethod= "fullscreen";		// Get Set
@@ -121,6 +128,7 @@ const char* krate_GetSetMethod		= "rate";			// Get Set
 const char* krcount_GetMethod		= "rcount";			// Get
 const char* kred_GetSetMethod		= "red";			// Get Set
 const char* kread_SetMethod			= "read";			// Set
+const char* kreject_GetSetMethod	= "reject";			// Get Set
 const char* krequire_SetMethod		= "require";		// Set
 const char* kreset_SetMethod		= "reset";			// Set
 const char* kresetBench_SetMethod	= "resetBench";		// Set

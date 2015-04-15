@@ -2,7 +2,9 @@
 
 /ITL/scene/turenas del;
 /ITL/scene/turenas set img "rsrc/schemaSonagram.png";
-/ITL/scene/turenas mapf "rsrc/schemaSonagram.map";
+/ITL/scene/turenas map "( [21, 777[ [25, 207[ )  ( [0/4,225/4[ )
+						( [22, 777[ [238, 419[ ) ( [225/4,450/4[ )
+						( [22, 505[ [451, 629[ ) ( [450/4,594/4[ )";
 /ITL/scene/turenas scale 1.0;
 
 /ITL/scene/cursor color 204 0 48 132;

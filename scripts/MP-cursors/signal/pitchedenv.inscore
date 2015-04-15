@@ -11,7 +11,7 @@
 /ITL/scene/signal/pitchenv set 'envelope' 'pitch';
 /ITL/scene/cursor set "graph" "pitchenv" ;
 /ITL/scene/cursor width 0.5 ;
-/ITL/scene/cursor height 0.20 ;
+/ITL/scene/cursor height 0.5 ;
 
 /ITL/scene/cursor duration -3 8;
 

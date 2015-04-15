@@ -1,7 +1,0 @@
-
-/ITL/scene/* del;
-
-/ITL/log show 1;
-/ITL get musicxml-version;
-/ITL/scene/xml set musicxmlf "file.xml";
-/ITL/scene/xml scale 4;

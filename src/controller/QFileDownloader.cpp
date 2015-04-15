@@ -23,23 +23,28 @@
 
 */
 
+#include <string>
 #include <QDebug>
 #include <QNetworkRequest>
 
 #include "QFileDownloader.h"
 #include "INScore.h"
 #include "ITLError.h"
+#include "Tools.h"
+#include "TILoader.h"
 
 #include "sourcefetcher.h"
 
+using namespace std;
 
 namespace inscore
 {
 
 //--------------------------------------------------------------------------
-QFileDownloader::QFileDownloader()
+QFileDownloader::QFileDownloader(const char* urlprefix)
 {
-    connect(&fNetworkAccess, SIGNAL(finished(QNetworkReply*)), SLOT(fileDownloaded(QNetworkReply*)));
+	if (urlprefix) fUrlPrefix = urlprefix;
+	connect(&fNetworkAccess, SIGNAL(finished(QNetworkReply*)), SLOT(fileDownloaded(QNetworkReply*)));
 }
  
 //--------------------------------------------------------------------------
@@ -50,10 +55,19 @@ QFileDownloader::~QFileDownloader()
 }
 
 //--------------------------------------------------------------------------
+std::string	QFileDownloader::location(const char * file)
+{
+	if (!Tools::isurl(file))
+		return TILoader::makeAbsolutePath( fUrlPrefix, file );
+	else
+		return file;
+}
+
+//--------------------------------------------------------------------------
 void QFileDownloader::getAsync (const char* what, const char* address)
 {
-    fOSCAddress = address;
-	QUrl url (what);
+	fOSCAddress = address;
+	QUrl url (location(what).c_str());
     QNetworkRequest request(url);
     fNetworkAccess.get(request);
 	start();
@@ -63,7 +77,7 @@ void QFileDownloader::getAsync (const char* what, const char* address)
 bool QFileDownloader::get (const char* what)
 {
 	char *buff;
-	int ret = http_fetch(what, &buff);
+	int ret = http_fetch(location(what).c_str(), &buff);
 	if (ret == -1) {			// there is an error
 		ITLErr << "Can't access url \"" << what << "\": " << http_strerror() << ITLEndl;
 		return false;

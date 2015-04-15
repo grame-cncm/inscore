@@ -55,9 +55,24 @@ class IText : public IGraphicBasedObject
 {
 	protected:
 		std::string	fText;
+		int fFontSize;
+		std::string fFontFamily;
+		std::string fFontWeight;
+		std::string fFontStyle;
 
 	public:		
 		static const std::string kTextType;
+
+		// Constants for font style and font weight.
+		static const std::string kStyleNormal;
+		static const std::string kStyleItalic;
+		static const std::string kStyleOblique;
+		static const std::string kWeightNormal;
+		static const std::string kWeightLight;
+		static const std::string kWeightDemiBold;
+		static const std::string kWeightBold;
+		static const std::string kWeightBlack;
+
 		static SIText create(const std::string& name, IObject * parent)	{ return new IText(name, parent); }
 
 		/// \brief returns the text of the object
@@ -68,6 +83,18 @@ class IText : public IGraphicBasedObject
 		virtual void		print(std::ostream& out) const;
 		virtual void		accept (Updater*);
 		
+		int getFontSize() const { return fFontSize; }
+		void setFontSize(int fontSize) {fFontSize = fontSize;}
+
+		std::string getFontFamily() const { return fFontFamily; }
+		void setFontFamily(const std::string & fontFamily) { fFontFamily = fontFamily; }
+
+		std::string getFontStyle() const { return fFontStyle; }
+		MsgHandler::msgStatus setFontStyle(const IMessage* msg);
+
+		std::string getFontWeight() const { return fFontWeight; }
+		MsgHandler::msgStatus setFontWeight(const IMessage* msg);
+
 	protected:
 				 IText( const std::string& name, IObject * parent );
 		virtual ~IText() {}

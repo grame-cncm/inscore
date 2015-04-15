@@ -1,0 +1,61 @@
+/ITL/tutorial new;
+/ITL/scene/* del;
+/ITL/tutorial/* del;
+/ITL/tutorial watch;
+/ITL/scene x -0.51;
+/ITL/tutorial x 0.51;
+
+/ITL/scene/title set html "<h1>Mappings</h1>";
+/ITL/scene/title y -0.7;
+/ITL/scene/title scale 2.;
+/ITL/scene/sync4 set htmlf "rsrc/sync4.html";
+/ITL/scene/sync4 scale 2.;
+/ITL/scene/sync4 y -0.3;
+/ITL/scene/sync4 xorigin -1.;
+/ITL/scene/sync4 x -0.75;
+/ITL/tutorial/score set gmn "[ g a f/8 d e/2 ]";
+/ITL/tutorial/score y -0.3;
+/ITL/tutorial/car set img "rsrc/car.gif";
+/ITL/tutorial/car scale 5.;
+/ITL/tutorial/car y 0.3;
+/ITL/scene/m1 set txt "/ITL/tutorial/car/debug map 2";
+/ITL/scene/m2 set txt "/ITL/tutorial/car/debug map 0";
+
+/ITL/scene/m3 set txt "/ITL/tutorial/car map ([0,51[ [0,16[ ) ([0/1, 3/4[ )";
+/ITL/scene/m4 set txt "/ITL/tutorial/car map ([0,20[ [0,16[ ) ([0/1, 2/4[ )
+                                 ([20,51[ [0,16[ ) ([2/4, 3/4[ )";
+/ITL/scene/m5 set txt "/ITL/tutorial/sync car";
+/ITL/scene/m6 set txt "/ITL/tutorial/sync car score h";
+/ITL/scene/m1 y -0.02;
+/ITL/scene/m2 y 0.05;
+/ITL/scene/m3 y 0.14;
+/ITL/scene/m4 y 0.21;
+/ITL/scene/m5 y 0.36;
+/ITL/scene/m6 y 0.43;
+/ITL/scene/m* xorigin -1.;
+/ITL/scene/m* yorigin -1.;
+/ITL/scene/m* x -0.76;
+/ITL/scene/m* scale 1.7;
+/ITL/scene/m* alpha 160;
+
+/ITL/scene/m* watch mouseEnter (
+	/ITL/$scene/$self alpha 255,
+	/ITL/$scene/$self red 200 );
+/ITL/scene/m* watch mouseLeave (
+	/ITL/$scene/$self alpha 160,
+	/ITL/$scene/$self red 0 );
+
+/ITL/scene/m1 watch mouseDown (/ITL/tutorial/car/debug map 2);
+/ITL/scene/m2 watch mouseDown (/ITL/tutorial/car/debug map 0);
+
+/ITL/scene/m3 watch mouseDown (/ITL/tutorial/car map "([0,51[ [0,16[ ) ([0/1, 3/4[ )");
+/ITL/scene/m4 watch mouseDown (/ITL/tutorial/car map "([0,20[ [0,16[) ([0/1, 2/4[ ) ([20,51[ [0,16[ ) ([2/4, 3/4[ )");
+
+/ITL/scene/m5 watch mouseDown (/ITL/tutorial/sync car );
+/ITL/scene/m6 watch mouseDown (/ITL/tutorial/sync car score hv );
+
+/ITL/scene load "next.inscore";
+/ITL/scene/next watch mouseDown 	(/ITL/scene load "signals.inscore" );
+/ITL/scene load "previous.inscore";
+/ITL/scene/previous watch mouseDown (/ITL/scene load "sync3.inscore" );
+/ITL/scene load "summary.inscore";

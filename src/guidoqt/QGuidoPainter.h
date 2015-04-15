@@ -229,7 +229,10 @@ class QGuidoPainter
 		bool hasValidGR() const			{ return mDesc.handle != 0; }
 
         void setPathsToARHandler (ARHandler inARHandler, const char* data);
-		
+
+		// functions that depends on the compatibility version
+		float getRenderingFactor () const;
+	
 		GuidoOnDrawDesc mDesc;
 		ARHandler mARHandler;
 		QString mGMNCode;

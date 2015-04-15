@@ -110,7 +110,7 @@
 500 demo /ITL/scene/what show 1;
 10 demo /ITL/scene/guido set gmnf rsrc/1voice-846_2f.gmn;
 10 demo /ITL/scene/guido z 8.5;
-10 demo /ITL/scene/guido scale 2.648;
+10 demo /ITL/scene/guido scale 0.33;
 500 demo /ITL/scene/guido show 1;
 10 demo /ITL/scene/title del;
 1000 demo /ITL/scene/what set txt Interaction;
@@ -1302,8 +1302,8 @@
 1 demo /ITL/scene/slave2 set img rsrc/car_red.gif;
 1 demo /ITL/scene/guido set gmnf rsrc/1voice-846_2f.gmn;
 1 demo /ITL/scene/guido y 0.1;
-1 demo /ITL/scene/guido scale 2.5;
-1 demo /ITL/scene/slave* scale 0.6;
+1 demo /ITL/scene/guido scale 0.31;
+1 demo /ITL/scene/slave* scale 4.8;
 1 demo /ITL/scene/slave* z 2.;
 1 demo /ITL/scene/slave* duration 1 4;
 1 demo /ITL/scene/slave1 date 2 1;
@@ -1349,7 +1349,7 @@
 20 demo /ITL/scene color 20 20 110 255;
 20 demo /ITL/scene color 10 10 110 255;
 1 demo /ITL/scene color 0 0 110 255;
-1 demo /ITL/scene/slave3 set ellipse 0.07 0.07;
+1 demo /ITL/scene/slave3 set ellipse 0.7 0.7;
 1 demo /ITL/scene/slave3 color 255 255 135 255;
 1 demo /ITL/scene/slave3 date 10 1;
 1 demo /ITL/scene/slave3 duration 1 4;
@@ -1382,7 +1382,7 @@
 1 demo /ITL/scene/img scale 1.2;
 1 demo /ITL/scene/img mapf rsrc/parm-oeil.map;
 1 demo /ITL/scene/slavecomment set txtf rsrc/syncomment7.txt;
-1 demo /ITL/scene/slavecomment scale 1.;
+1 demo /ITL/scene/slavecomment scale 1.3;
 1 demo /ITL/scene/slavecomment color 240 0 0 255;
 1 demo /ITL/scene/slavecomment mapf rsrc/syncomment7.map;
 1 demo /ITL/scene/* date 0 1;
@@ -1721,8 +1721,8 @@
 1 demo /ITL/scene/anr x 0.44;
 1 demo /ITL/scene/anr y 0.46;
 1 demo /ITL/scene/grame set file rsrc/grame.png;
-1 demo /ITL/scene/grame scale 1.668;
+1 demo /ITL/scene/grame scale 1.6;
 1 demo /ITL/scene/grame show 1;
-1 demo /ITL/scene/grame x -0.38;
+1 demo /ITL/scene/grame x -0.65;
 1 demo /ITL/scene/grame y 0.44;
 1 demo /ITL defaultShow 1;

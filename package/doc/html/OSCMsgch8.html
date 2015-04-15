@@ -1,108 +1,129 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
   "http://www.w3.org/TR/html4/loose.dtd">  
 <html > 
-<head><title>8 Scene messages</title> 
+<head><title>8 Application messages</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
 <meta name="generator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2014-12-08 14:58:00"> 
+<meta name="date" content="2015-04-07 14:16:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 1449--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 1377--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch9.html" >next</a>] [<a 
 href="OSCMsgch7.html" >prev</a>] [<a 
 href="OSCMsgch7.html#tailOSCMsgch7.html" >prev-tail</a>] [<a 
 href="#tailOSCMsgch8.html">tail</a>] [<a 
 href="OSCMsg3.html#OSCMsgch8.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;8</span><br /><a 
- id="x12-480008"></a>Scene messages</h2>
-<!--l. 1451--><p class="noindent" >A scene may be viewed as a window on the score elements. Its address is <span 
-class="pcrr8tn-">/ITL/</span><span 
-class="pcrro8t-">sceneIdentifier </span>where
-<span 
-class="pcrro8t-">sceneIdentifier </span>is the scene name. It handles the following messages:
+ id="x12-430008"></a>Application messages</h2>
+<!--l. 1379--><p class="noindent" >Application messages are accepted by the static OSC address <span 
+class="pcrr8tn-">/ITL</span>.
+<h3 class="sectionHead"><span class="titlemark">8.1    </span> <a 
+ id="x12-440008.1"></a>Application management</h3>
 <a 
- id="dx12-48001"></a>
+ id="dx12-44001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1463--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">sceneMsg</span> <img 
+<!--l. 1400--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">ITLMsg</span> <img 
 src="OSCMsg51x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx12-48002"></a>
+ id="dx12-44002"></a>
 <a 
- id="dx12-48003"></a>
+ id="dx12-44003"></a>
 <a 
- id="dx12-48004"></a>
+ id="dx12-44004"></a>
 <a 
- id="dx12-48005"></a>
+ id="dx12-44005"></a>
 <a 
- id="dx12-48006"></a>
+ id="dx12-44006"></a>
 <a 
- id="dx12-48007"></a>
+ id="dx12-44007"></a>
 <a 
- id="dx12-48008"></a>
+ id="dx12-44008"></a>
 <a 
- id="dx12-48009"></a>
+ id="dx12-44009"></a>
 <a 
- id="dx12-48010"></a>
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrr8tn-">new</span>: creates a new scene and opens it in a new window.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">del</span>: deletes a scene and closes the corresponding window.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">reset</span>: clears the scene (i.e. delete all components) and resets the scene to its default state (position,
-     size and color).
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">rootPath</span>: <span 
-class="ptmri8t-">rootPath </span>of a scene is the default path where the scene reads or writes a file when a relative
-     path is used for this file. When no value has been specified, the application <span 
-class="ptmri8t-">rootPath </span>is used.
-     </li>
+ id="dx12-44010"></a>
+<a 
+ id="dx12-44011"></a>
+<a 
+ id="dx12-44012"></a>
                                                                                  
 
                                                                                  
+     <ul class="itemize1">
      <li class="itemize"><span 
-class="pcrr8tn-">load</span>: loads an INScore file to the scene. Note that the OSC addresses are translated to the scene OSC
-     address.
+class="pcrr8tn-">quit</span>: requests the client application to quit.
      </li>
      <li class="itemize"><span 
-class="pcrr8tn-">fullscreen</span>: requests the scene to switch to full screen or normal screen. The parameter is interpreted
-     as a boolean value. Default value is <span 
-class="pcrr8tn-">0</span>.
+class="pcrr8tn-">rootPath</span>: <span 
+class="ptmri8t-">rootPath </span>of an Interlude application is the default path where the application reads or
+     writes a file when a relative path is used for this file. The default value is the user home directory.
+     Sending the <span 
+class="pcrr8tn-">rootPath </span>message without parameter resets the application path to its default value.
      </li>
      <li class="itemize"><span 
-class="pcrr8tn-">frameless</span>: requests the scene to switch to frameless or normal window. The parameter is interpreted
-     as a boolean value. Default value is <span 
-class="pcrr8tn-">0</span>.
+class="pcrr8tn-">mouse</span>: hide or show the mouse pointer.
      </li>
      <li class="itemize"><span 
-class="pcrr8tn-">absolutexy</span>: requests the scene to absolute or relative coordinates. Absolute coordinates are in pixels
-     relative to the top left corner of the screen. Relative coordinates are in the range [-1, 1] where [0,0] is
-     the center of the screen. The message parameter is interpreted as a boolean value. Default value is <span 
-class="pcrr8tn-">0</span>.
+class="pcrr8tn-">defaultShow</span>: changes the default <span 
+class="pcrr8tn-">show </span>status for new objects. <br 
+class="newline" />The default <span 
+class="pcrr8tn-">defaultShow </span>value is 1.
      </li>
      <li class="itemize"><span 
-class="pcrr8tn-">windowOpacity</span>:  switch  the  scene  window  to  opaque  or  transparent  mode.  When  in  transparent
-     mode, the scene alpha channel controls the window opacity (from completely opaque to completely
-     transparent). In opaque mode, the scene alpha channel controls the background brush only. Default
-     value is <span 
-class="pcrr8tn-">0 </span>(transparent).
+class="pcrr8tn-">load</span>:  loads  a  file  previously  saved  using  the  <span 
+class="pcrr8tn-">save </span>message  (see  section  <a 
+href="OSCMsgch2.html#x6-60002">2<!--tex4ht:ref: common --></a>  p.<a 
+href="OSCMsgch2.html#x6-60002">10<!--tex4ht:ref: common --></a>).  Note  that  the
+     load  operation  appends  the  new  objects  to  the  existing  scene.  When  necessary,  it  is  the  sender
+     responsibility to clear the scene before loading a file. URL are supported for the file path (see section
+     <a 
+href="OSCMsgch5.html#x9-300005.7">5.7<!--tex4ht:ref: filebasedrsrc --></a> p.<a 
+href="OSCMsgch5.html#x9-300005.7">39<!--tex4ht:ref: filebasedrsrc --></a>);
      </li>
      <li class="itemize"><span 
-class="pcrr8tn-">commonMsg</span>: a scene support the common graphic attributes. See section <a 
-href="OSCMsgch2.html#x6-60002">2<!--tex4ht:ref: common --></a> p.<a 
-href="OSCMsgch2.html#x6-60002">10<!--tex4ht:ref: common --></a>.</li></ul>
-<!--l. 1488--><p class="noindent" ><span 
+class="pcrr8tn-">read</span>: read a buffer that is expected to contain a valid inscore script.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">require</span>: check that the current INScore version number is equal or greater to the number given
+     as argument. The version number is given as a float value. A message is associated to the <span 
+class="pcrr8tn-">require</span>
+     message, which is triggered when the check fails. See section <a 
+href="OSCMsgch14.html#x18-7700014">14<!--tex4ht:ref: interaction --></a> p.<a 
+href="OSCMsgch14.html#x18-7700014">113<!--tex4ht:ref: interaction --></a> for more details.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">compatibility</span>:  preserve  INScore  previous  behavior.  The  argument  corresponds  to  a  version
+     number, INScore will preserve the corresponding behavior (objects scaling, default size, etc.).
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">rate</span>: changes the time task rate. Note that null values are ignored.<br 
+class="newline" />The default <span 
+class="pcrr8tn-">rate </span>value is 10.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">time</span>: sets the application current time. The time is expressed in milliseconds.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">ticks</span>: sets the application current ticks count. The ticks count indicates the number of time tasks
+     performed by the application.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">hello</span>: query the host IP number. The message is intended for ITL applications discovery. Answer to
+     the query has the following format: <br 
+class="newline" />&#x00A0;&#x00A0;           <span 
+class="pcrr8tn-">IP inPort outPort errPort </span>where <span 
+class="pcrr8tn-">IP </span>is sent as a string and port numbers as integer
+     values.
+     </li></ul>
+<!--l. 1443--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -110,57 +131,372 @@ class="small-caps">M</span><span
 class="small-caps">P</span><span 
 class="small-caps">L</span><span 
 class="small-caps">E</span> </span><br 
-class="newline" />Setting a scene current path:
+class="newline" />when sending the message:
 <div class="center" 
 >
-<!--l. 1490--><p class="noindent" >
+<!--l. 1445--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox39"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL hello;</span>
+</div></div>
+</div>
+                                                                                 
+
+                                                                                 
+<!--l. 1446--><p class="noindent" >&#x00A0;       the application will answer with the following message:
+<div class="center" 
+>
+<!--l. 1447--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox40"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL 192.168.0.5 7000 7001 7003</span>
+</div></div>
+</div>
+<!--l. 1448--><p class="noindent" >&#x00A0;       when it runs on a host which IP number is <span 
+class="pcrr8tn-">192.168.0.5 </span>using the default port numbers.
+<!--l. 1452--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">8.2    </span> <a 
+ id="x12-450008.2"></a>Ports management</h3>
+<a 
+ id="dx12-45001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1459--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">ITLPortsMsg</span> <img 
+src="OSCMsg52x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx12-45002"></a>
+<a 
+ id="dx12-45003"></a>
+<a 
+ id="dx12-45004"></a>
+<!--l. 1464--><p class="noindent" >Changes the UDP port numbers:
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">port </span>defines the listening port number,
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">outport </span>defines the port used to send replies to queries,
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">errport </span>defines the port used to send error messages.</li></ul>
+<!--l. 1470--><p class="noindent" >The <span 
+class="pcrr8tn-">int32 </span>parameter should be a positive value in the range <span 
+class="pcrr8tn-">[1024-49150]</span>. <br 
+class="newline" />The default <span 
+class="pcrr8tn-">port</span>, <span 
+class="pcrr8tn-">outport </span>and <span 
+class="pcrr8tn-">errport </span>values are 7000, 7001 and 7002.
+<!--l. 1473--><p class="noindent" ><span 
+class="ptmbc8t-">N<span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span>  </span><br 
+class="newline" />Error messages are sent as a single string.
+<!--l. 1478--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">8.3    </span> <a 
+ id="x12-460008.3"></a>Messages forwarding</h3>
+<!--l. 1481--><p class="noindent" >The messages handled by the application can be forwarded to arbitrary remote hosts using the <span 
+class="pcrr8tn-">forward </span>message.
+The <span 
+class="pcrr8tn-">forward </span>message itself can&#8217;t be forwarded.
+                                                                                 
+
+                                                                                 
+<a 
+ id="dx12-46001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1485--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">ITLMsgForward</span> <img 
+src="OSCMsg53x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx12-46002"></a>
+     <ul class="itemize1">
+     <li class="itemize">1) removes the set of forwarded destinations,
+     </li>
+     <li class="itemize">2) set a list of remote hosts for forwarding. Note that <span 
+class="pcrr8tn-">hostname </span>can be any legal host name or IP
+     number, optionally extended with a port number separated by a semi-colon. By default, when no port
+     number is specified, the current application listening port number is used.</li></ul>
+<!--l. 1493--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Forwarding messages to <span 
+class="pcrr8tn-">host1.adomain.org </span>using the current application listening port number and to
+<span 
+class="pcrr8tn-">host2.adomain.org </span>on port number 5100.
+<div class="center" 
+>
+<!--l. 1497--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox41"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene rootPath "/path/to/my/folder";</span>
+class="pcrr8tn-x-x-90">/ITL forward host1.adomain.org host2.adomain.org:5100;</span>
 </div></div>
 </div>
-<!--l. 1491--><p class="noindent" >Loading an INScore file:
+<!--l. 1499--><p class="noindent" ><span 
+class="ptmbc8t-">W<span 
+class="small-caps">A</span><span 
+class="small-caps">R</span><span 
+class="small-caps">N</span><span 
+class="small-caps">I</span><span 
+class="small-caps">N</span><span 
+class="small-caps">G</span>: </span>forwarding messages to the application host results in an infinite loop with unpredictable results. Thus
+it is not recommended to use the local network broadcast address for forwarding unless using a different UDP port
+number.
+<!--l. 1505--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">8.4    </span> <a 
+ id="x12-470008.4"></a>Application level queries</h3>
+<!--l. 1508--><p class="noindent" >The application supports the <span 
+class="pcrr8tn-">get </span>messages for its parameters (see section <a 
+href="OSCMsgch6.html#x10-330006">6<!--tex4ht:ref: getsect --></a> p.<a 
+href="OSCMsgch6.html#x10-330006">46<!--tex4ht:ref: getsect --></a>). In addition, it provides the
+following messages to query version numbers.
+<a 
+ id="dx12-47001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+                                                                                 
+
+                                                                                 
+<!--l. 1512--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">ITLRequest</span> <img 
+src="OSCMsg54x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx12-47002"></a>
+<a 
+ id="dx12-47003"></a>
+<a 
+ id="dx12-47004"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">version</span>: version number request.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">guido-version</span>: Guido engine version number request.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">musicxml-version</span>:  MusicXML  and  Guido  converter  version  numbers  request.  Returns  "not
+     available" when the library is not found.
+     </li></ul>
+<!--l. 1524--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Querying INScore version:
 <div class="center" 
 >
-<!--l. 1492--><p class="noindent" >
+<!--l. 1526--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox42"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene load "myscript.inscore";</span>
+class="pcrr8tn-x-x-90">/ITL get version;</span>
 </div></div>
 </div>
-<!--l. 1493--><p class="noindent" >&#x00A0;       will load <span 
-class="pcrr8tn-">/path/to/my/folder/myscript.inscore </span>into the scene.
-<!--l. 1495--><p class="noindent" >Setting a scene to fullscreen:
+<!--l. 1527--><p class="noindent" >&#x00A0;       will give the following as output:
 <div class="center" 
 >
-<!--l. 1496--><p class="noindent" >
+<!--l. 1528--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox43"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene fullscreen 1;</span>
+class="pcrr8tn-x-x-90">/ITL version 1.00</span>
 </div></div>
 </div>
-<!--l. 1497--><p class="noindent" >Creating a new score named <span 
-class="pcrr8tn-">myScore</span>:
+<!--l. 1532--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">8.5    </span> <a 
+ id="x12-480008.5"></a>Application static nodes</h3>
+<!--l. 1535--><p class="noindent" >The application level provides the static nodes - <span 
+class="pcrr8tn-">stats</span>, <span 
+class="pcrr8tn-">debug </span>and <span 
+class="pcrr8tn-">log</span>, available at <span 
+class="pcrr8tn-">/ITL/stats/ITL/debug </span>and
+<span 
+class="pcrr8tn-">/ITL/log </span>to help debugging communication and INScore scripts design.
+<!--l. 1537--><p class="noindent" >
+                                                                                 
+
+                                                                                 
+<h4 class="subsectionHead"><span class="titlemark">8.5.1    </span> <a 
+ id="x12-490008.5.1"></a>The &#8217;stats&#8217; nodes</h4>
+<a 
+ id="dx12-49001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1542--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">ITLStats</span> <img 
+src="OSCMsg55x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx12-49002"></a>
+<a 
+ id="dx12-49003"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">get </span>gives the count of handled messages at OSC and UDP levels: the UDP count indicates the count
+     of messages received from the network, the OSC count includes the UDP count and the messages
+     received internally.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">reset </span>resets the counters to zero. Note that querying the <span 
+class="pcrr8tn-">stats </span>node increments at least the OSC the
+     counter.</li></ul>
+<!--l. 1551--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Answer to a <span 
+class="pcrr8tn-">get </span>message addressed to <span 
+class="pcrr8tn-">/ITL/stats</span>
 <div class="center" 
 >
-<!--l. 1498--><p class="noindent" >
+<!--l. 1553--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox44"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/myScore new;</span>
+class="colorbox" id="colorbox44"><div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/stats osc 15 udp 10</span>
 </div></div>
-                                                                                 
-
-                                                                                 
 </div>
+<!--l. 1556--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">8.5.2    </span> <a 
+ id="x12-500008.5.2"></a>The &#8217;debug&#8217; nodes</h4>
+<!--l. 1559--><p class="noindent" >The <span 
+class="pcrr8tn-">debug </span>node is used to activate debugging information.
+<a 
+ id="dx12-50001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1562--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">ITLdebug</span> <img 
+src="OSCMsg56x.png" alt="PICT" >
+</div> </dd></dl>
+<a 
+ id="dx12-50002"></a>
                                                                                  
 
                                                                                  
-<!--l. 1503--><div class="crosslinks"><p class="noindent">[<a 
+     <ul class="itemize1">
+     <li class="itemize">switch the debug mode ON or OFF. The parameter is interpreted as a boolean value. When in debug
+     mode, INScore sends verbose messages to the OSC error port for every message that can&#8217;t be correctly
+     handled. Debugging is ON by default.</li></ul>
+<!--l. 1569--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Error messages generated on error port in debug mode:
+<div class="center" 
+>
+<!--l. 1574--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox45"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">error: incorrect OSC address: /ITL/stat</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">error: incorrect parameters: /ITL/scene/foo unknown 0.1</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">error: incorrect parameters: /ITL/scene/foo x "incorrectType"</span></div></div>
+</div>
+<!--l. 1577--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">8.5.3    </span> <a 
+ id="x12-510008.5.3"></a>The &#8217;log&#8217; nodes</h4>
+<!--l. 1580--><p class="noindent" >The <span 
+class="pcrr8tn-">log </span>node controls a console window that display all the messages sent to the OSC error port. Typical content is
+given by the example above.
+<a 
+ id="dx12-51001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1588--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">ITLLog</span> <img 
+src="OSCMsg57x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx12-51002"></a>
+<a 
+ id="dx12-51003"></a>
+<a 
+ id="dx12-51004"></a>
+<a 
+ id="dx12-51005"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">show </span>show or hides the console. The parameter is a boolean value.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">clear </span>clear the console window.
+                                                                                 
+
+                                                                                 
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">wrap </span>control line wrapping of the console. The parameter is a boolean value.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">write </span>write the <span 
+class="pcrr8tn-">arg </span>list formatted as a string to the log window.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">save </span>save the current log content to a file. The parameter is a file name. When expressed as a relative
+     path, the file is saved under the current application root path.</li></ul>
+<!--l. 1604--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">8.5.4    </span> <a 
+ id="x12-520008.5.4"></a>The &#8217;plugins&#8217; nodes</h4>
+<!--l. 1607--><p class="noindent" >The <span 
+class="pcrr8tn-">plugins </span>node controls the search path for plugins. See section <a 
+href="OSCMsgch16.html#x22-9900016">16<!--tex4ht:ref: plugins --></a> p.<a 
+href="OSCMsgch16.html#x22-9900016">134<!--tex4ht:ref: plugins --></a> for more information on plugins and
+search strategies.
+<a 
+ id="dx12-52001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1612--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">ITLPlugin</span> <img 
+src="OSCMsg58x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx12-52002"></a>
+<a 
+ id="dx12-52003"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">path </span>add <span 
+class="pcrr8tn-">folder </span>as a user path. The system will look for plugins in this folder first.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">reset </span>clear the current user path.</li></ul>
+                                                                                 
+
+                                                                                 
+<!--l. 1624--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch9.html" >next</a>] [<a 
 href="OSCMsgch7.html" >prev</a>] [<a 
 href="OSCMsgch7.html#tailOSCMsgch7.html" >prev-tail</a>] [<a 
 href="OSCMsgch8.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch8.html" >up</a>] </p></div>
-<!--l. 1503--><p class="noindent" ><a 
+<!--l. 1624--><p class="noindent" ><a 
  id="tailOSCMsgch8.html"></a>  
 </body></html> 

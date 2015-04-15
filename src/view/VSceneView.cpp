@@ -37,6 +37,10 @@
 #include <QResizeEvent>
 #include <QDebug>
 
+#if defined(ANDROID) || defined(IOS)
+#include "VQtInit.h"
+#endif
+
 #ifdef WIN32
 #include <windows.h>
 #else
@@ -79,6 +83,16 @@ class ZoomingGraphicsView : public QGraphicsView
 			if(fScene) {
 				fScene->setUpdateVersion(true);
 			}
+			QSize	s = size();
+			QRect r = QApplication::desktop()->screenGeometry();
+			if (!fScene) return;
+
+			// full screen detection and transmission to the model
+			bool fullscreen = (r.width() == s.width()) && (r.height() == s.height());
+			if (fullscreen) {
+				if (!fScene->getFullScreen()) fScene->setFullScreen(true);
+			}
+			else if (fScene->getFullScreen()) fScene->setFullScreen(false);
 		}
 };
 
@@ -119,6 +133,10 @@ VSceneView::VSceneView(const std::string& address, QGraphicsScene * scene)
 	if (scene) {
 		fScene = scene;
 		fGraphicsView = new ZoomingGraphicsView(scene);
+#if defined(ANDROID) || defined(IOS)
+		// Add scene to tabwidget
+		VQtInit::getTabWidget()->addTab(fGraphicsView, address.c_str());
+#endif
 		fGraphicsView->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
 		fGraphicsView->scene()->setSceneRect( SCENE_RECT );
 		fGraphicsView->setWindowTitle( address.c_str() );
@@ -145,7 +163,35 @@ VSceneView::~VSceneView()
 
 //------------------------------------------------------------------------------------------------------------------------
 QGraphicsScene * VSceneView::scene() const		{ return fScene; }
-//void VSceneView::foreground()	{ fGraphicsView->activateWindow(); }
+
+//------------------------------------------------------------------------------------------------------------------------
+void VSceneView::foreground()
+{
+#if defined(ANDROID) || defined(IOS)
+	// Select tab of the scene as current tab
+	VQtInit::getTabWidget()->setCurrentWidget(fGraphicsView);
+#else
+	fGraphicsView->raise();
+	fGraphicsView->activateWindow();
+#endif
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+QPoint VSceneView::scenePos(const IScene * scene) const
+{
+	QRect r = QApplication::desktop()->screenGeometry();
+	QPoint pos;
+	if (scene->getAbsoluteCoordinates()) {
+		pos= QPoint (scene->getXPos(), scene->getYPos());
+	}
+	else {
+		QPointF screenCenter = r.center();
+		float lowestDimension = qMin( r.width(), r.height() );
+		pos= QPoint (screenCenter.x() + (scene->getXPos() ) * lowestDimension / 2.0f - fGraphicsView->width()/2.0f,
+							screenCenter.y() + (scene->getYPos() ) * lowestDimension / 2.0f - fGraphicsView->height()/2.0f);
+	}
+	return pos;
+}
 
 //------------------------------------------------------------------------------------------------------------------------
 void VSceneView::updateOnScreen( IScene * scene )
@@ -169,12 +215,35 @@ void VSceneView::updateOnScreen( IScene * scene )
 	bool fullscreen = fGraphicsView->windowState() & Qt::WindowFullScreen;
 	if ( (fullscreen && !scene->getFullScreen()) || ( !fullscreen && scene->getFullScreen()))
 	{
+		if (!fullscreen)	fEventFilter->setFullScreen (true);
 		fGraphicsView->setWindowState(fGraphicsView->windowState() ^ Qt::WindowFullScreen);
+		if (fullscreen)		fEventFilter->setFullScreen (false);
 	}
-	// Size
-	if ( !fEventFilter->running() )			// do not update the size/position while the fEventFilter is running.
-	{
 
+	// Visibility
+	if (scene->getVisible()) {
+		bool minimized = fGraphicsView->windowState() & Qt::WindowMinimized;
+		if (minimized) fGraphicsView->setWindowState(fGraphicsView->windowState() ^ Qt::WindowMinimized);
+		fGraphicsView->show();
+	}
+	else fGraphicsView->hide();
+
+	if (scene->getFrameless()) {
+		if ( !fEventFilter->getFrameless() ){
+			fGraphicsView->setWindowFlags (Qt::FramelessWindowHint);
+			fGraphicsView->showNormal ();
+			fEventFilter->setFrameless(true);
+			fGraphicsView->move( scenePos(scene) );
+		}
+	}
+	else if ( fEventFilter->getFrameless() ) {
+		fGraphicsView->setWindowFlags (fDefaultFlags);
+		fGraphicsView->showNormal ();
+		fEventFilter->setFrameless(false);
+	}
+
+	// Size
+	if ( !fEventFilter->running() )	{		// do not update the size/position while the fEventFilter is running.
 		if (!scene->getFullScreen()) {		// don't resize or move in fullscreen mode
 			QRect r = QApplication::desktop()->screenGeometry();
 			float lowestDimension = qMin( r.width(), r.height() );
@@ -192,42 +261,15 @@ void VSceneView::updateOnScreen( IScene * scene )
 			}
 
 			// Position
-			QPoint newPos;
-			if (scene->getAbsoluteCoordinates()) {
-				newPos= QPoint (scene->getXPos(), scene->getYPos());
-			}
-			else {
-				QPointF screenCenter = r.center();
-				newPos= QPoint (screenCenter.x() + (scene->getXPos() ) * lowestDimension / 2.0f - fGraphicsView->width()/2.0f,
-									screenCenter.y() + (scene->getYPos() ) * lowestDimension / 2.0f - fGraphicsView->height()/2.0f);
-			}
 			fEventFilter->setAbsoluteXY (scene->getAbsoluteCoordinates());
+			QPoint newPos = scenePos(scene);
 			bool needMove = (newPos != fGraphicsView->pos());
-
-			if (needMove) {
+			if (needMove ) {
 				// deactivates the events notification to avoid events loop between 'updateModel' and 'updateTo'
 				fGraphicsView->removeEventFilter( fEventFilter );
 				fGraphicsView->move( newPos );
 				fGraphicsView->installEventFilter( fEventFilter );
 			}
-		}
-	}
-
-	// Visibility
-	scene->getVisible() ? fGraphicsView->show() : fGraphicsView->hide();
-	Qt::WindowFlags flags = fGraphicsView->windowFlags();
-	if (scene->getFrameless()) {
-		if (flags != Qt::FramelessWindowHint) {
-			fGraphicsView->setWindowFlags (Qt::FramelessWindowHint);
-			fGraphicsView->showNormal ();
-		}
-		fEventFilter->setFrameless(true);
-	}
-	else {
-		fEventFilter->setFrameless(false);
-		if ((flags != fDefaultFlags) && !scene->getFullScreen()) {
-			fGraphicsView->setWindowFlags (fDefaultFlags);
-			fGraphicsView->showNormal ();
 		}
 	}
 }
@@ -276,9 +318,9 @@ void VSceneView::updateView( IScene * scene )
 	fGraphicsView->setScene (scene);
 
 	// Export
-	std::string filename = scene->getNextExportFlag();
-	while ( filename.length() ) {
-		VExport::exportScene( fGraphicsView , filename.c_str() );
+	std::pair<std::string, bool> myExport = scene->getNextExportFlag();
+	while ( myExport.first.length() ) {
+		VExport::exportScene( fGraphicsView , myExport.first.c_str() );
 		const IMessageList*	msgs = scene->getMessages(EventsAble::kExport);
 		if (msgs) {
 			MouseLocation mouse (0, 0, 0, 0, 0, 0);
@@ -287,7 +329,7 @@ void VSceneView::updateView( IScene * scene )
 			SIMessageList outmsgs = me.eval (msgs, env);
 			if (outmsgs && outmsgs->list().size()) outmsgs->send();
 		}
-		filename = scene->getNextExportFlag();
+		myExport = scene->getNextExportFlag();
 	}
 }
 
@@ -375,7 +417,7 @@ const AbstractData VSceneView::getImage(const char *format)
 
 //--------------------------------------------------------------------------
 WindowEventFilter::WindowEventFilter(const std::string& address, QGraphicsView* parent) 
-	: QObject(parent), fAbsoluteXY(false), fFrameless(false), fOSCAddress(address)
+	: QObject(parent), fAbsoluteXY(false), fFrameless(false), fFullScreen(false), fOSCAddress(address)
 {
 	fTimer = new QTimer(this);
 	fTimer->setSingleShot(true);
@@ -393,7 +435,7 @@ void WindowEventFilter::sendMessage( const char * addr , const char * cmd , floa
 //--------------------------------------------------------------------------
 bool WindowEventFilter::eventFilter(QObject *obj, QEvent *event)
 {
- 	if ( (event->type() == QEvent::Move) || (event->type() == QEvent::Resize) )
+ 	if ( !fFrameless && !fFullScreen && ((event->type() == QEvent::Move) || (event->type() == QEvent::Resize)))
 	{
 		fTimer->stop();
 		fTimer->start(100);

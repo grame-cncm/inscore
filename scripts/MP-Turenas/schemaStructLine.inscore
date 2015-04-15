@@ -1,11 +1,11 @@
 /ITL/scene/turenas set img "rsrc/schemaStructLine.png";
-/ITL/scene/turenas mapf "rsrc/schemaStructLine.map";
+/ITL/scene/turenas map "( [18, 2251[ [56, 294[ ) ( [0/1, 594/4[ )";
 /ITL/scene/turenas scale 1.;
 
 /ITL/scene/cursor color 0 0 255 180;
 
 /ITL/scene/_smallturenas set img "rsrc/schemaStructLine.png";
-/ITL/scene/_smallturenas mapf "rsrc/schemaStructLine.map";
+/ITL/scene/_smallturenas map "( [18, 2251[ [56, 294[ ) ( [0/1, 594/4[ )";
 /ITL/scene/_smallturenas scale 0.25;
 /ITL/scene/_smallturenas y 0.65;
 

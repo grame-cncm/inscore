@@ -6,7 +6,7 @@ DESTDIR = ..
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
 
-VERSION = 1.11
+VERSION = 1.13
 
 QT += core gui widgets svg printsupport multimedia multimediawidgets qml websockets
 
@@ -27,7 +27,8 @@ unix:!android:LIBS += -L.. -lINScore \
 
 android:LIBS += -L.. -lINScore
 android:ANDROID_EXTRA_LIBS = $$ROOT/../lib/GuidoEngine/android/libGUIDOEngine.so \
-    $$ROOT/../lib/oscpack/android/libs/armeabi/liboscpack.so
+    $$ROOT/../lib/oscpack/oscpack/lib/liboscpack.so \
+    libINScore.so
 
 win32:LIBS+= ../INScore1.lib
 

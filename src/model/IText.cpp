@@ -24,6 +24,7 @@
 */
 
 #include <sstream>
+#include <map>
 
 #include "IAppl.h"
 #include "IText.h"
@@ -39,12 +40,43 @@ namespace inscore
 
 //--------------------------------------------------------------------------
 const string IText::kTextType("txt");
+
+// Font style and font weight constants
+const string IText::kStyleNormal("normal");
+const string IText::kStyleItalic("italic");
+const string IText::kStyleOblique("oblique");
+const string IText::kWeightNormal("normal");
+const string IText::kWeightLight("light");
+const string IText::kWeightDemiBold("demibold");
+const string IText::kWeightBold("bold");
+const string IText::kWeightBlack("black");
+
 //--------------------------------------------------------------------------
 IText::IText( const std::string& name, IObject * parent ) : IGraphicBasedObject(name, parent)
 { 
 	fTypeString = kTextType;
 	setColor( IColor(0,0,0,255) );
+
+	// Default font parameters
+	fFontSize = 13;
+	fFontFamily = "Arial";
+	fFontWeight = kWeightNormal;
+	fFontStyle = kStyleNormal;
+
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler<string>::create(fText);
+
+	// Method to manage font
+	fGetMsgHandlerMap[kfontSize_GetSetMethod]	= TGetParamMethodHandler<IText, int (IText::*)() const>::create(this, &IText::getFontSize);
+	fMsgHandlerMap[kfontSize_GetSetMethod]	= TSetMethodMsgHandler<IText, int>::create(this, &IText::setFontSize);
+
+	fGetMsgHandlerMap[kfontFamily_GetSetMethod]	= TGetParamMethodHandler<IText, string (IText::*)() const>::create(this, &IText::getFontFamily);
+	fMsgHandlerMap[kfontFamily_GetSetMethod]	= TSetMethodMsgHandler<IText, string>::create(this, &IText::setFontFamily);
+
+	fGetMsgHandlerMap[kfontStyle_GetSetMethod]	= TGetParamMethodHandler<IText, string (IText::*)() const>::create(this, &IText::getFontStyle);
+	fMsgHandlerMap[kfontStyle_GetSetMethod]	= TMethodMsgHandler<IText>::create(this, &IText::setFontStyle);
+
+	fGetMsgHandlerMap[kfontWeight_GetSetMethod]	= TGetParamMethodHandler<IText, string (IText::*)() const>::create(this, &IText::getFontWeight);
+	fMsgHandlerMap[kfontWeight_GetSetMethod]	= TMethodMsgHandler<IText>::create(this, &IText::setFontWeight);
 }
 
 //--------------------------------------------------------------------------
@@ -86,6 +118,37 @@ MsgHandler::msgStatus IText::set( const IMessage* msg )
 	}
 	else status = MsgHandler::kBadParameters;
 	return status;
+}
+
+MsgHandler::msgStatus IText::setFontWeight(const IMessage *msg)
+{
+	int n = msg->size();
+	if (n == 1) {
+		string fontWeight;
+		if(msg->param(0, fontWeight)) {
+			if(fontWeight == IText::kWeightNormal || fontWeight == IText::kWeightLight
+					|| fontWeight == IText::kWeightDemiBold || fontWeight == IText::kWeightBold || fontWeight == IText::kWeightBlack) {
+				fFontWeight = fontWeight;
+				return MsgHandler::kProcessed;
+			}
+		}
+	}
+	return MsgHandler::kBadParameters;
+}
+
+MsgHandler::msgStatus IText::setFontStyle(const IMessage *msg)
+{
+	int n = msg->size();
+	if (n == 1) {
+		string fontStyle;
+		if(msg->param(0, fontStyle)) {
+			if(fontStyle == IText::kStyleNormal || fontStyle == IText::kStyleItalic	|| fontStyle == IText::kStyleOblique) {
+				fFontStyle = fontStyle;
+				return MsgHandler::kProcessed;
+			}
+		}
+	}
+	return MsgHandler::kBadParameters;
 }
 
 }

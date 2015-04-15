@@ -92,6 +92,8 @@ class ILine : public IShapeMap
 				 ILine( const std::string& name, IObject* parent );
 		virtual ~ILine() {}
 
+		virtual void setHandlers ();
+
 		/// \brief the 'get' form without parameter
 		virtual SIMessageList getSetMsg() const;
 

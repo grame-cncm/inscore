@@ -1,273 +1,237 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
   "http://www.w3.org/TR/html4/loose.dtd">  
 <html > 
-<head><title>11 Synchronization</title> 
+<head><title>11 Mapping graphic space to time space</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
 <meta name="generator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2014-12-08 14:58:00"> 
+<meta name="date" content="2015-04-07 14:16:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 1774--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 1815--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch12.html" >next</a>] [<a 
 href="OSCMsgch10.html" >prev</a>] [<a 
 href="OSCMsgch10.html#tailOSCMsgch10.html" >prev-tail</a>] [<a 
 href="#tailOSCMsgch11.html">tail</a>] [<a 
 href="OSCMsg3.html#OSCMsgch11.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;11</span><br /><a 
- id="x15-5600011"></a>Synchronization</h2>
-<!--l. 1777--><p class="noindent" >Synchronization between components is in charge of the static <span 
-class="pcrr8tn-">sync </span>node, automatically embedded in each object.
-Its address is <span 
-class="pcrr8tn-">/ITL/.../</span><span 
-class="pcrro8t-">object</span><span 
-class="pcrr8tn-">/sync </span>and it supports messages to add or remove a master / slave relation
-between components or to query the synchronizations state.
-<!--l. 1779--><p class="noindent" ><span 
-class="ptmbc8t-">N<span 
-class="small-caps">O</span><span 
-class="small-caps">T</span><span 
-class="small-caps">E</span>  </span><br 
-class="newline" />A master can naturally have several slaves, but a slave can have several masters as well. In this case, it will be drawn
-several times, corresponding to each master&#8217;s space.
-<a 
- id="dx15-56001"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 1788--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">sync</span> <img 
-src="OSCMsg65x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx15-56002"></a>
-<a 
- id="dx15-56003"></a>
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="ptmb8t-">[1] </span>the <span 
-class="pcrr8tn-">slave master </span>form is followed by an optional synchronization mode (see below). It adds a
-     slave / master relation between the first and the second component.
-     </li>
-     <li class="itemize"><span 
-class="ptmb8t-">[2] </span>the <span 
-class="pcrr8tn-">slavemasterdel </span>form removes the specified slave/master relation.
-     </li>
-     <li class="itemize"><span 
-class="ptmb8t-">[3] </span>the <span 
-class="pcrr8tn-">slave </span>form without <span 
-class="pcrr8tn-">master </span>removes all synchronizations with the slave.
-     </li>
-     <li class="itemize"><span 
-class="ptmb8t-">[4] </span>the <span 
-class="pcrr8tn-">get </span>message is intended to query the synchronization state. The optional parameter is the
-     identifier  of  a  component.  The  <span 
-class="pcrr8tn-">get </span>message  without  parameter  is  equivalent  to  a  <span 
-class="pcrr8tn-">get </span>message
-     addressed to each object declared in the <span 
-class="pcrr8tn-">sync </span>node.</li></ul>
-<a 
- id="dx15-56004"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-                                                                                 
-
-                                                                                 
-<!--l. 1803--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">syncIdentifier</span> <img 
-src="OSCMsg66x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx15-56005"></a>
-<!--l. 1806--><p class="noindent" >Synchronization identifiers indicates 1) the name of an object or 2) the name of an object associated to a mapping
-name. Using the first form (i.e. without explicit mapping name), the system uses the default unnamed mapping (see
-section <a 
-href="OSCMsgch10.html#x14-5200010.1">10.1<!--tex4ht:ref: mapMsg --></a> p.<a 
-href="OSCMsgch10.html#x14-5200010.1">69<!--tex4ht:ref: mapMsg --></a> mappings and named mappings).
-<!--l. 1808--><p class="noindent" >Synchronization between components has no effect if any of the required mapping is missing (see table
-<a 
-href="OSCMsgch10.html#x14-520041">10.1<!--tex4ht:ref: maptable --></a>).
-<!--l. 1810--><p class="noindent" ><span 
-class="ptmbc8t-">E<span 
-class="small-caps">X</span><span 
-class="small-caps">A</span><span 
-class="small-caps">M</span><span 
-class="small-caps">P</span><span 
-class="small-caps">L</span><span 
-class="small-caps">E</span> </span><br 
-class="newline" />Synchronizing an object on several masters:
-<div class="center" 
->
-<!--l. 1813--><p class="noindent" >
-<div 
-class="colorbox" id="colorbox51"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/myParent/sync mySlave myMaster1;</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/myParent/sync mySlave myMaster2;</span></div></div>
-</div>
-<!--l. 1815--><p class="noindent" >Synchronizing two objects using a specific mapping (the second object is assumed to be a symbolic score (<span 
-class="pcrr8tn-">gmn</span>,
-<span 
-class="pcrr8tn-">gmnstream </span>or <span 
-class="pcrr8tn-">gmnf</span>) which <span 
-class="pcrr8tn-">system </span>mapping has been previously requested):
-<div class="center" 
->
-<!--l. 1816--><p class="noindent" >
-<div 
-class="colorbox" id="colorbox52"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/myParent/sync mySlave myMaster:system;</span>
-</div></div>
-</div>
+ id="x15-5800011"></a>Mapping graphic space to time space</h2>
+<!--l. 1818--><p class="noindent" >Time to space mapping refers to the description of relationship between an object local graphic space and its time
+space. A mapping consists in a set of relations between the two spaces. INScore provides specific messages to
+describes mappings and to synchronize arbitrary objects i.e. to display their time relationships in the graphic
+space.
 <h3 class="sectionHead"><span class="titlemark">11.1    </span> <a 
- id="x15-5700011.1"></a>Synchronization modes</h3>
-<!--l. 1822--><p class="noindent" >Synchronizing a slave component <span 
-class="pcrr8tn-">A </span>to a master component <span 
-class="pcrr8tn-">B </span>has the following effect:
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrr8tn-">A </span>position (x) is modified to match the <span 
-class="pcrr8tn-">B </span>time position corresponding to <span 
-class="pcrr8tn-">A </span>date.
-     </li>
-     <li class="itemize">depending  on  the  optional  <span 
-class="pcrr8tn-">syncStretch </span>option,  <span 
-class="pcrr8tn-">A </span>width  and/or  height  is  modified  to  match  the
-     corresponding <span 
-class="pcrr8tn-">B </span>dimension (see below).
-     </li>
-     <li class="itemize">depending on the optional <span 
-class="pcrr8tn-">syncPos </span>option, <span 
-class="pcrr8tn-">A </span>vertical position (y) is modified. Note that the <span 
-class="pcrr8tn-">y </span>position
-     remains free and could always be modified using a <span 
-class="pcrr8tn-">dy </span>message.
-     </li>
-     <li class="itemize">if <span 
-class="pcrr8tn-">A </span>date has no graphic correspondence in <span 
-class="pcrr8tn-">B </span>mapping (the date is not mapped, or out of <span 
-class="pcrr8tn-">B </span>mapping
-     bounds ), <span 
-class="pcrr8tn-">A </span>won&#8217;t be visible.</li></ul>
-<a 
- id="dx15-57001"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-                                                                                 
-
-                                                                                 
-<!--l. 1832--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">syncmode</span> <img 
-src="OSCMsg67x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx15-57002"></a>
-<!--l. 1835--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">11.1.1    </span> <a 
- id="x15-5800011.1.1"></a>Using the master date</h4>
-<a 
- id="dx15-58001"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 1838--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">syncHow</span> <img 
-src="OSCMsg68x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx15-58002"></a>
-<a 
- id="dx15-58003"></a>
-<a 
- id="dx15-58004"></a>
-<!--l. 1843--><p class="noindent" >The synchronization mode makes use of the master time to graphic mapping to compute the slave position. It may
-also use the master current date, depending on the following options:
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrr8tn-">relative</span>: the time position where the slave appears is relative to the mapping and to the master
-     current date (actually, it shifts the mapping from the master current date). The relative mode is used
-     by default.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">absolute</span>: the time position where the slave appears corresponds to the mapping date only.</li></ul>
-<!--l. 1849--><p class="noindent" ><span 
-class="ptmbc8t-">N<span 
-class="small-caps">O</span><span 
-class="small-caps">T</span><span 
-class="small-caps">E</span>  </span><br 
-class="newline" />Use of the <span 
-class="pcrr8tn-">absolute </span>mode may take sense with nested synchronizations: let&#8217;s consider an object <span 
-class="pcrr8tn-">A</span>, slave of <span 
-class="pcrr8tn-">B</span>,
-which is slave of <span 
-class="pcrr8tn-">C</span>. In <span 
-class="pcrr8tn-">relative </span>mode and if <span 
-class="pcrr8tn-">A </span>and <span 
-class="pcrr8tn-">B </span>receive the same <span 
-class="pcrr8tn-">clock </span>messages, <span 
-class="pcrr8tn-">A </span>will remain at a fixed
-position on <span 
-class="pcrr8tn-">B </span>although it is moving in time.
-<!--l. 1853--><p class="noindent" ><span 
-class="ptmbc8t-">E<span 
-class="small-caps">X</span><span 
-class="small-caps">A</span><span 
-class="small-caps">M</span><span 
-class="small-caps">P</span><span 
-class="small-caps">L</span><span 
-class="small-caps">E</span> </span><br 
-class="newline" />Describing nested synchronizations, the first one using the <span 
-class="pcrr8tn-">absolute </span>mode:
-<div class="center" 
->
-<!--l. 1857--><p class="noindent" >
-                                                                                 
-
-                                                                                 
-<div 
-class="colorbox" id="colorbox53"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/sync slave masterSlave absolute ;</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/sync masterSlave master ;</span></div></div>
-</div>
-<!--l. 1859--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">11.1.2    </span> <a 
- id="x15-5900011.1.2"></a>Synchronizing an object duration</h4>
+ id="x15-5900011.1"></a>The &#8217;map&#8217; message</h3>
+<!--l. 1825--><p class="noindent" >The <span 
+class="pcrr8tn-">map </span>messages can be sent to any address with the form <span 
+class="pcrr8tn-">/ITL/</span><span 
+class="pcrro8t-">scene</span><span 
+class="pcrr8tn-">/</span><span 
+class="pcrro8t-">identifier</span>. It is intended to describe
+the target object relation to time and sets a relation between an object segmentation and a time segmentation. The
+global form of the message is:
 <a 
  id="dx15-59001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1863--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">syncStretch</span> <img 
-src="OSCMsg69x.png" alt="PICT" >
+<!--l. 1830--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">mapMsg</span> <img 
+src="OSCMsg61x.png" alt="PICT" >
 </div></dd></dl>
 <a 
  id="dx15-59002"></a>
+<!--l. 1833--><p class="noindent" >The <span 
+class="pcrr8tn-">relation </span>parameter must be sent as a single string which format is described below. It consists in a list of
+associations between the object local space and its time space expressed as segments.
 <a 
  id="dx15-59003"></a>
-<a 
- id="dx15-59004"></a>
-<a 
- id="dx15-59005"></a>
-<!--l. 1869--><p class="noindent" >The synchronization stretch mode has the following effect on the slave dimensions:
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1840--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">relation</span> <img 
+src="OSCMsg62x.png" alt="PICT" >
+</div></dd></dl>
+<!--l. 1842--><p class="noindent" >Segments are expressed as a list of intervals. For a 1 dimension resource, a segment is a made of a single interval.
+For a 2 dimensions resource, a segment is a made of 2 intervals: an interval on the <span 
+class="pcrr8tn-">x</span>-axis and one on the <span 
+class="pcrr8tn-">y</span>-axis for
+graphic based resource, or an interval on columns and one on lines for text based resources. Intervals are
+right-opened.
+                                                                                 
+
+                                                                                 
+<!--l. 1844--><p class="noindent" >The different kind of relations corresponds to:
      <ul class="itemize1">
      <li class="itemize"><span 
-class="pcrr8tn-">h</span>: the slave is horizontally stretched to align its begin and end dates to the corresponding master
-     locations.
+class="ptmb8t-">[1]  </span>a  relation  between  a  2  dimensions  segmentation  expressed  in  float  values  and  a  relative
+     time  segmentation.  These  segmentations  are  used  by  <span 
+class="pcrr8tn-">rect, ellipse, polygon, curve, line</span>
+     components.
      </li>
      <li class="itemize"><span 
-class="pcrr8tn-">v</span>: the slave is vertically stretched to the master map vertical dimension.
+class="ptmb8t-">[2] </span>a relation between a 2 dimensions segmentation expressed in integer values and a relative time
+     segmentation. These segmentations are used by <span 
+class="pcrr8tn-">txt, txtf, img </span>components.
      </li>
      <li class="itemize"><span 
-class="pcrr8tn-">hv</span>: combines the above parameters.</li></ul>
-<!--l. 1875--><p class="noindent" >By default, no stretching is applied.
-<!--l. 1877--><p class="noindent" ><span 
+class="ptmb8t-">[3] </span>a relation between a 1 dimension segmentation expressed in integer values and a relative time
+     segmentation. These segmentations are used by the <span 
+class="pcrr8tn-">graph </span>component and express a relation between
+     a signal space and time.</li></ul>
+<!--l. 1850--><p class="noindent" >Table <a 
+href="#x15-590041">11.1<!--tex4ht:ref: maptable --></a> summarizes the specific local segmentation used by each component type.
+<!--l. 1852--><p class="noindent" >The specified <span 
+class="pcrr8tn-">map </span>can be named with an optional <span 
+class="pcrr8tn-">mapName </span>string; this name can be further reused, during object
+synchronization, to specify the mapping to use. When <span 
+class="pcrr8tn-">mapName </span>is not specified, the mapping has a default <span 
+class="ptmri8t-">empty</span>
+<span 
+class="ptmri8t-">name</span>.
+<!--l. 1854--><p class="noindent" >The <span 
+class="pcrr8tn-">del </span>command deletes the mapping specified with <span 
+class="pcrr8tn-">mapName</span>, or the <span 
+class="ptmri8t-">&#8217;empty name&#8217; </span>mapping if no map name is
+specified.
+<div class="table">
+                                                                                 
+
+                                                                                 
+<!--l. 1857--><p class="noindent" ><a 
+ id="x15-590041"></a><hr class="float"><div class="float" 
+>
+                                                                                 
+
+                                                                                 
+ <div class="caption" 
+><span class="id">Table&#x00A0;11.1: </span><span  
+class="content">Local segmentation type for each component</span></div><!--tex4ht:label?: x15-590041 -->
+<div class="center" 
+>
+<!--l. 1859--><p class="noindent" >
+<div class="tabular"> <table id="TBL-5" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-5-1g"><col 
+id="TBL-5-1"></colgroup><colgroup id="TBL-5-2g"><col 
+id="TBL-5-2"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-1-"><td  style="white-space:nowrap; text-align:right;" id="TBL-5-1-1"  
+class="td11">                component type</td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-1-2"  
+class="td11">segmentation type</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-2-"><td  style="white-space:nowrap; text-align:right;" id="TBL-5-2-1"  
+class="td11">                    <span 
+class="pcrr8tn-">txt, txtf</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-2-2"  
+class="td11">int2DSegments     </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-3-"><td  style="white-space:nowrap; text-align:right;" id="TBL-5-3-1"  
+class="td11">                          <span 
+class="pcrr8tn-">img</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-3-2"  
+class="td11">int2DSegments     </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-4-"><td  style="white-space:nowrap; text-align:right;" id="TBL-5-4-1"  
+class="td11"><span 
+class="pcrr8tn-">rect, ellipse, polygon, curve</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-4-2"  
+class="td11">float2DSegments  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-5-"><td  style="white-space:nowrap; text-align:right;" id="TBL-5-5-1"  
+class="td11">                        <span 
+class="pcrr8tn-">graph</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-5-2"  
+class="td11">int1DSegments     </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-6-"><td  style="white-space:nowrap; text-align:right;" id="TBL-5-6-1"  
+class="td11">                             </td></tr></table></div></div>
+                                                                                 
+
+                                                                                 
+</div><hr class="endfloat" />
+</div>
+<a 
+ id="dx15-59005"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1877--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">relativeTimeSegment</span> <img 
+src="OSCMsg63x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx15-59006"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1880--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">float2DSegment</span> <img 
+src="OSCMsg64x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx15-59007"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1883--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">int2DSegment</span> <img 
+src="OSCMsg65x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx15-59008"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1886--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">int1DSegment</span> <img 
+src="OSCMsg66x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx15-59009"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1891--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">relativeTimeInterval</span> <img 
+src="OSCMsg67x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx15-59010"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1894--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">floatInterval</span> <img 
+src="OSCMsg68x.png" alt="PICT" >
+</div></dd></dl>
+                                                                                 
+
+                                                                                 
+<a 
+ id="dx15-59011"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1897--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">intInterval</span> <img 
+src="OSCMsg69x.png" alt="PICT" >
+</div></dd></dl>
+<!--l. 1899--><p class="noindent" >Relative time is expressed as <span 
+class="pcrr8tn-">rational </span>values where <span 
+class="pcrr8tn-">1 </span>represents a whole note.
+<a 
+ id="dx15-59012"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1903--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">rational</span> <img 
+src="OSCMsg70x.png" alt="PICT" >
+</div></dd></dl>
+<!--l. 1905--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -275,66 +239,170 @@ class="small-caps">M</span><span
 class="small-caps">P</span><span 
 class="small-caps">L</span><span 
 class="small-caps">E</span> </span><br 
-class="newline" />Synchronizing two objects, aligning the slave duration to the corresponding master space and stretching the slave to
-the master map vertical dimension:
+class="newline" />Mapping an image graphic space to time:
 <div class="center" 
 >
-<!--l. 1879--><p class="noindent" >
+<!--l. 1913--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox54"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/sync mySlave myMaster hv ;</span>
-</div></div>
+class="pcrr8tn-x-x-90">/ITL/scene/myImage map </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;      "( [0, 67[ [0, 86[ ) ( [0/2, 1/2[ ) </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;       ( [67, 113[ [0, 86[ ) ( [1/2, 1/1[ ) </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;       ( [113, 153[ [0, 86[ ) ( [1/1, 3/2[ ) </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;       ( [153, 190[ [0, 86[ ) ( [3/2, 2/1[ ) </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;       ( [190, 235[ [0, 86[ ) ( [2/1, 5/2[ )" ;</span></div></div>
 </div>
+<!--l. 1914--><p class="noindent" >the image is horizontally segmented into 5 different graphic segments that express pixel positions. The vertical
+dimension of the segments remains the same and corresponds to the interval <span 
+class="pcrr8tn-">[0, 86[</span>. Each graphic segment is
+associated to a time interval which duration is 1/2 (a half note).
+<!--l. 1916--><p class="noindent" ><span 
+class="ptmbc8t-">N<span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span> <span 
+class="small-caps">A</span><span 
+class="small-caps">B</span><span 
+class="small-caps">O</span><span 
+class="small-caps">U</span><span 
+class="small-caps">T</span> <span 
+class="small-caps">L</span><span 
+class="small-caps">O</span><span 
+class="small-caps">C</span><span 
+class="small-caps">A</span><span 
+class="small-caps">L</span> <span 
+class="small-caps">S</span><span 
+class="small-caps">P</span><span 
+class="small-caps">A</span><span 
+class="small-caps">C</span><span 
+class="small-caps">E</span><span 
+class="small-caps">S</span></span>
+     <ul class="itemize1">
+     <li class="itemize">Text objects (<span 
+class="pcrr8tn-">txt txtf</span>) local space is expressed by intervals on columns and rows.
+     </li>
+     <li class="itemize">Html object (<span 
+class="pcrr8tn-">html, htmlf</span>) do not support mapping because there is not correspondence between
+     the text and the graphic space.
+     </li>
+     <li class="itemize">Vectorial objects (<span 
+class="pcrr8tn-">rect, ellipse, polygon, curve, svg,...</span>) express their local graphic space
+     in internal coordinates system i.e. on the [-1.,1.] interval.
+     </li>
+     <li class="itemize">Bitmap objects (<span 
+class="pcrr8tn-">img</span>) express their local graphic space in pixels.</li></ul>
                                                                                  
 
                                                                                  
-<!--l. 1882--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">11.1.3    </span> <a 
- id="x15-6000011.1.3"></a>Controlling the slave <span 
-class="pcrr8tn-">y </span>position</h4>
+<h3 class="sectionHead"><span class="titlemark">11.2    </span> <a 
+ id="x15-6000011.2"></a>The &#8217;map+&#8217; message</h3>
+<!--l. 1929--><p class="noindent" >The <span 
+class="pcrr8tn-">map+ </span>messages is similar to the <span 
+class="pcrr8tn-">map </span>message but doesn&#8217;t replace the existing mapping data: the specified
+relations are added to the existing one.
 <a 
  id="dx15-60001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1886--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">syncPos</span> <img 
-src="OSCMsg70x.png" alt="PICT" >
-</div></dd></dl>
+<!--l. 1933--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">mapAddMsg</span> <img 
+src="OSCMsg71x.png" alt="PICT" >
+</div> </dd></dl>
 <a 
  id="dx15-60002"></a>
+<!--l. 1939--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">11.3    </span> <a 
+ id="x15-6100011.3"></a>Mapping files</h3>
+<!--l. 1941--><p class="noindent" >The <span 
+class="pcrr8tn-">mapf </span>messages is similar to the <span 
+class="pcrr8tn-">map </span>message but gives the path name of a file containing the mapping data,
+along with the optional map name.
 <a 
- id="dx15-60003"></a>
+ id="dx15-61001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1944--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">mapfMsg</span> <img 
+src="OSCMsg72x.png" alt="PICT" >
+</div> </dd></dl>
 <a 
- id="dx15-60004"></a>
+ id="dx15-61002"></a>
+<!--l. 1951--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">11.4    </span> <a 
+ id="x15-6200011.4"></a>Symbolic score mappings</h3>
+<!--l. 1954--><p class="noindent" >Mapping between the graphic and time space is automatically computed for symbolic score <span 
+class="pcrr8tn-">gmn, gmnstream,</span>
+<span 
+class="pcrr8tn-">gmnf</span>. However and depending on the application, the graphic space may be segmented in different ways, for
+instance: different graphic segments for different staves, a single graphic segment traversing all a system, etc. Thus
+for a symbolic score, the <span 
+class="pcrr8tn-">map </span>message different and is only intended to select one king mapping supported by the
+system.
 <a 
- id="dx15-60005"></a>
-<!--l. 1892--><p class="noindent" >The synchronization position mode has the following effects on the slave <span 
-class="pcrr8tn-">y </span>position:
+ id="dx15-62001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+                                                                                 
+
+                                                                                 
+<!--l. 1958--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">scoreMap</span> <img 
+src="OSCMsg73x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx15-62002"></a>
+<a 
+ id="dx15-62003"></a>
+<a 
+ id="dx15-62004"></a>
+<a 
+ id="dx15-62005"></a>
+<a 
+ id="dx15-62006"></a>
+<a 
+ id="dx15-62007"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
-class="pcrr8tn-">syncOver</span>: the center of the slave is aligned to the master center.
+class="pcrr8tn-">page</span>: a page level mapping
      </li>
      <li class="itemize"><span 
-class="pcrr8tn-">syncTop</span>: the bottom of the slave is aligned to the top of the master.
+class="pcrr8tn-">system</span>: a system level mapping
      </li>
      <li class="itemize"><span 
-class="pcrr8tn-">syncBottom</span>: the top of the slave is aligned to the bottom of the master.</li></ul>
-<!--l. 1898--><p class="noindent" >The default position mode is <span 
-class="pcrr8tn-">syncOver</span>. The <span 
-class="pcrr8tn-">y </span>attribute of the slave remains available to displacement
-(<span 
-class="pcrr8tn-">dy</span>).
-<!--l. 1900--><p class="noindent" ><span 
-class="ptmbc8t-">N<span 
-class="small-caps">O</span><span 
-class="small-caps">T</span><span 
-class="small-caps">E</span>  </span><br 
-class="newline" />The <span 
-class="pcrr8tn-">y </span>position of a synchronized object remains a free attribute. To control this position, you should send <span 
-class="pcrr8tn-">dy</span>
-messages.
-<!--l. 1903--><p class="noindent" ><span 
+class="pcrr8tn-">systemflat</span>: a system level mapping without system subdivision (one graphic segment per system)
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">staff</span><span 
+class="pcrro8t-">n</span>: a staff level mapping: the staff number is indicated by <span 
+class="pcrr8tn-">n</span>, a number between 1 and the score
+     staves count.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">voice</span><span 
+class="pcrro8t-">n</span>: a voice level mapping: the voice number is indicated by <span 
+class="pcrr8tn-">n</span>, a number between 1 and the score
+     voices count.</li></ul>
+<!--l. 1974--><p class="noindent" >The default mapping for a symbolic score is unnamed but equivalent to <span 
+class="pcrr8tn-">staff1</span>.
+<!--l. 1976--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -342,25 +410,42 @@ class="small-caps">M</span><span
 class="small-caps">P</span><span 
 class="small-caps">L</span><span 
 class="small-caps">E</span> </span><br 
-class="newline" />Synchronizing two objects, aligning the slave duration to the corresponding master space, the slave being below the
-master map:
+class="newline" />Requesting the mapping of the third staff of a score:
 <div class="center" 
 >
-<!--l. 1905--><p class="noindent" >
+<!--l. 1978--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox55"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/sync mySlave myMaster h syncBottom;</span>
+class="pcrr8tn-x-x-90">/ITL/scene/myScore map staff3;</span>
+</div></div>
+</div>
+<!--l. 1979--><p class="noindent" >Requesting the system mapping :
+<div class="center" 
+>
+<!--l. 1980--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox56"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myScore map system;</span>
 </div></div>
 </div>
                                                                                  
 
                                                                                  
-<!--l. 1910--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 1982--><p class="noindent" ><span 
+class="ptmbc8t-">N<span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span>  </span><br 
+class="newline" />A voice may be distributed on several staves and thus a staff may contain several voices.
+                                                                                 
+
+                                                                                 
+<!--l. 1988--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch12.html" >next</a>] [<a 
 href="OSCMsgch10.html" >prev</a>] [<a 
 href="OSCMsgch10.html#tailOSCMsgch10.html" >prev-tail</a>] [<a 
 href="OSCMsgch11.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch11.html" >up</a>] </p></div>
-<!--l. 1910--><p class="noindent" ><a 
+<!--l. 1988--><p class="noindent" ><a 
  id="tailOSCMsgch11.html"></a>  
 </body></html> 

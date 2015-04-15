@@ -1,0 +1,98 @@
+/ITL/scene/* del;
+
+!---------------------------------------------
+! all the objects are in a layer in order to
+! facilitate the graphic positionning
+!---------------------------------------------
+/ITL/scene/l set layer;
+/ITL/scene/l y -0.05;
+
+gray = 200;
+/ITL/scene/l/background set rect 1. 0.6;
+/ITL/scene/l/background color $gray $gray $gray;
+/ITL/scene/l/background y 0.15; 
+
+!---------------------------------------------
+! here are the master objects
+!---------------------------------------------
+w = 0.25;
+h = 0.4;
+/ITL/scene/l/master1 set rect $w $h;
+/ITL/scene/l/master2 set rect $w $h;
+/ITL/scene/l/master3 set rect $w $h;
+/ITL/scene/l/master1/n set txt 1;
+/ITL/scene/l/master2/n set txt 2;
+/ITL/scene/l/master3/n set txt 3;
+/ITL/scene/l/master1 x -0.5;
+/ITL/scene/l/master3 x 0.5;
+
+y = -0.5;
+tscale = 1.4;
+/ITL/scene/l/master* color 200 200 240; 
+/ITL/scene/l/master* y $y; 
+
+/ITL/scene/l/mtext set txt "----------------Masters----------------";
+/ITL/scene/l/mtext y -0.25;
+/ITL/scene/l/mtext scale $tscale;
+
+!---------------------------------------------
+! this is the slave: an object with childrens
+!---------------------------------------------
+d = 0.3;
+y = 0.7;
+/ITL/scene/l/slave set ellipse $d $d;
+/ITL/scene/l/slave color 240 200 200;
+/ITL/scene/l/slave y $y;
+d = 0.5;
+/ITL/scene/l/slave/c1 set rect $d $d;
+/ITL/scene/l/slave/c2 set rect $d $d;
+/ITL/scene/l/slave/c3 set rect $d $d;
+/ITL/scene/l/slave/c4 set rect $d $d;
+/ITL/scene/l/slave/c5 set rect $d $d;
+/ITL/scene/l/slave/c* color 120 0 60 130;
+/ITL/scene/l/slave/c1 x -1.3;
+/ITL/scene/l/slave/c3 x 1.3;
+/ITL/scene/l/slave/c4 y -0.9;
+/ITL/scene/l/slave/c5 y 0.9;
+
+/ITL/scene/l/stext set txt "Slave";
+/ITL/scene/l/stext y 0.92;
+/ITL/scene/l/stext scale $tscale;
+
+!---------------------------------------------
+! the sync operations
+!---------------------------------------------
+/ITL/scene/l/background/op1 set txt 
+"sync slave 1
+sync slave 2 h
+sync slave 3 v";
+/ITL/scene/l/background/op1 y -0.4;
+
+/ITL/scene/l/background/op2 set txt "remove sync";
+/ITL/scene/l/background/op2 y 0.1;
+
+/ITL/scene/l/background/op3 set txt "sync slave 2 hv";
+/ITL/scene/l/background/op3 y 0.45;
+
+/ITL/scene/l/background/op* scale 1.5;
+/ITL/scene/l/background/op* watch mouseEnter (/ITL/scene/l/background/$self red 200);
+/ITL/scene/l/background/op* watch mouseLeave (/ITL/scene/l/background/$self red 0);
+/ITL/scene/l/background/op1 watch mouseDown (
+	/ITL/scene/l/sync slave master1,
+	/ITL/scene/l/sync slave master2 h,
+	/ITL/scene/l/sync slave master3 v
+	);
+
+/ITL/scene/l/background/op2 watch mouseDown (/ITL/scene/l/sync slave);
+/ITL/scene/l/background/op3 watch mouseDown (/ITL/scene/l/sync slave master2 hv);
+
+!---------------------------------------------
+! comments
+!---------------------------------------------
+/ITL/scene/title set txt "Synchronizing on several masters";
+/ITL/scene/title y -0.92;
+/ITL/scene/title scale 2.5;
+
+/ITL/scene/comment set txt "This script illustrates the synchronization of an object (with children) on several masters";
+/ITL/scene/comment y 0.96;
+/ITL/scene/comment scale 1.3;

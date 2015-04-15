@@ -140,14 +140,10 @@ void VLogWindow::closeEvent(QCloseEvent * ) {
 	INScore::add (msg, 0);
 	INScore::postMessage ("/ITL/log", msg);
 }
-
+ 
 void VLogWindow::setVisible(bool visible) {
 	QWidget::setVisible (visible);
-	if (visible) {
-		raise ();
-	}
 }
-
 
 void VLogWindow::clear()
 {

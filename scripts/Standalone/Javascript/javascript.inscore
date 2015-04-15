@@ -1,0 +1,45 @@
+
+a		= "Welcome to JavaScript";
+b12 	= -0.3;
+r 		= "r_";
+rversion = 0.96;
+
+<?javascript
+	function list (address, n, fhue)
+	{
+		var j=1;
+		var out = new Array;
+		for (i=1; i <= n; i++) {
+			x = (i-(n/2)-0.5) * (1.8 / n);
+			hue = fhue(i);
+			out[j++]= address+i+" set 'rect' 0.1 0.1;"; 
+			out[j++]= address+i+" x "+x+" ;" ;
+			out[j++]= address+i+" hsb "+hue+" 100 100;";
+		}
+		return out;
+	}
+
+	function shorthue (i, n)	{ return i * 10; }
+	function longhue (i, n)		{ return i * 20; }
+?>
+
+/ITL/scene/* del;
+
+/ITL require $rversion (
+	/ITL/scene/warning set txt "WARNING: javascript requires version" $rversion "or greater",
+	/ITL/scene/warning color 180 180 180,
+	/ITL/scene/warning y 0.9,
+	/ITL/scene/warning scale 1.5
+);
+
+/ITL/scene/title set 'txt' $a;
+/ITL/scene/title y $b12;
+/ITL/scene/title scale 3.;
+
+<?javascript list ("/ITL/scene/"+r, 15, shorthue); ?>
+<?javascript list ("/ITL/scene/rect"+r, 15, longhue); ?>
+
+/ITL/scene/rect* y 0.15 ;
+/ITL/scene color 240 240 240;
+
+/ITL/scene/title watch del (/ITL/scene color 255 255 255);

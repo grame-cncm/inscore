@@ -29,6 +29,8 @@
 #include <QDebug>
 namespace inscore
 {
+// Arbitrary graphic size to draw arrow heads
+const float VLineView::sArrowHeadSize = 12.0;
 
 //----------------------------------------------------------------------
 VLineView::VLineView(QGraphicsScene * scene, const ILine* h) 
@@ -73,14 +75,17 @@ void VLineView::updateView( ILine * line )
 	myPath.moveTo( xo,yo);
 	myPath.lineTo( x, y );
 
+	// Save bounding rect of path (which has a pen width of 0) before drawing arrow heads.
+	QRectF before = myPath.boundingRect();
+
 	// Create an Arrow
 	QPointF p0(xo, yo);
 	QPointF p1(x, y);
 	ArrowHeadFactory f;
 	// Draw left arrow
-	f.addArrowHead(myPath, line->getArrowLeft(), p0, p1, line->getArrowSizeLeft() * 15.0, isLeft);
+	f.addArrowHead(myPath, line->getArrowLeft(), p0, p1, line->getArrowSizeLeft() * sArrowHeadSize, isLeft);
 	// Draw right arrow
-	f.addArrowHead(myPath, line->getArrowRight(), p0, p1, line->getArrowSizeLeft() * 15.0, !isLeft);
+	f.addArrowHead(myPath, line->getArrowRight(), p0, p1, line->getArrowSizeLeft() * sArrowHeadSize, !isLeft);
 
 	if ( myPath != item()->path() )
 	{
@@ -92,8 +97,16 @@ void VLineView::updateView( ILine * line )
 	IColor c(line->getPenColor().getR(), line->getPenColor().getG(), line->getPenColor().getB() , line->getPenColor().getA());
 	line->setColor(c);
 	VShapeView::updateView( line );
-}
 
+	// Get bouding box and translate line with saved bounding rect because
+	// pen width and arrow head size have not to be include in translation.
+	QRectF after = item()->boundingRect();
+	xo = after.width()  * (line->getXOrigin() + 1) * line->getScale() / 2;
+	yo = after.height() * (line->getYOrigin() + 1) * line->getScale() / 2;
+	x = before.width()  * (line->getXOrigin() + 1) * line->getScale() / 2;
+	y = before.height() * (line->getYOrigin() + 1) * line->getScale() / 2;
+	item()->setTransform(QTransform::fromTranslate(xo - x, yo - y), true);
+}
 
 void VLineView::updateObjectSize(IObject* o)
 {
@@ -138,7 +151,7 @@ double ArrowHeadFactory::getAngle(const QPointF &p0, const QPointF &p1, bool isL
 
 	double angle = ::atan(y / x);
 	if(p1.y() - p0.y() >= 0) {
-		angle = (M_PI * 2) - angle;
+		angle = - angle;
 	}
 	if(!isLeft) {
 		angle += M_PI;
@@ -160,8 +173,13 @@ void ArrowHeadFactory::addTriangleArrowHead(QPainterPath &myPath, const QPointF 
 									cos(angle + M_PI / 3) * arrowSize);
 	QPointF arrowP2 = p + QPointF(sin(angle + M_PI - M_PI / 3) * arrowSize,
 									cos(angle + M_PI - M_PI / 3) * arrowSize);
+
+	// Return point of the triangle.
+	QPointF returnPoint = p - QPointF(cos(angle + M_PI) * arrowSize * 0.6,
+									-sin(angle + M_PI) * arrowSize * 0.6);
+
 	QPolygonF arrowHead;
-	arrowHead << p << arrowP1 << arrowP2;
+	arrowHead << p << arrowP1 << returnPoint << arrowP2;
 	myPath.addPolygon(arrowHead);
 	myPath.closeSubpath();
 }
@@ -178,6 +196,7 @@ void ArrowHeadFactory::addDiamondArrowHead(QPainterPath &myPath, const QPointF &
 	double angle = getAngle(p0, p1, isLeft);
 
 	// P2 is opposite to the terminate point of the line.
+	/* losange
 	double sizeP2 = cos(M_PI / 6.0) * arrowSize * 2.0;
 	QPointF arrowP2 = p - QPointF(cos(angle + M_PI) * sizeP2,
 									-sin(angle + M_PI) * sizeP2);
@@ -186,8 +205,9 @@ void ArrowHeadFactory::addDiamondArrowHead(QPainterPath &myPath, const QPointF &
 									cos(angle + M_PI / 3) * arrowSize);
 	QPointF arrowP3 = p + QPointF(sin(angle + M_PI - M_PI / 3) * arrowSize,
 									cos(angle + M_PI - M_PI / 3) * arrowSize);
-
-	/* Square
+	*/
+	// Square
+	arrowSize *= 0.9;
 	double sizeP2 = cos(M_PI / 4.0) * arrowSize * 2.0;
 	QPointF arrowP2 = p - QPointF(cos(angle + M_PI) * sizeP2,
 									-sin(angle + M_PI) * sizeP2);
@@ -196,7 +216,6 @@ void ArrowHeadFactory::addDiamondArrowHead(QPainterPath &myPath, const QPointF &
 									cos(angle + M_PI / 4) * arrowSize);
 	QPointF arrowP3 = p + QPointF(sin(angle + M_PI - M_PI / 4) * arrowSize,
 									cos(angle + M_PI - M_PI / 4) * arrowSize);
-									*/
 
 	QPolygonF arrowHead;
 	arrowHead << p << arrowP1 << arrowP2 << arrowP3;
@@ -216,6 +235,7 @@ void ArrowHeadFactory::addDiskArrowHead(QPainterPath &myPath, const QPointF &p0,
 	double angle = getAngle(p0, p1, isLeft);
 
 	// P2 is the center of the disk
+	arrowSize *= 0.9;
 	double size = cos(M_PI / 3.0) * arrowSize;
 	QPointF center = p - QPointF(cos(angle + M_PI) * size,
 									-sin(angle + M_PI) * size);

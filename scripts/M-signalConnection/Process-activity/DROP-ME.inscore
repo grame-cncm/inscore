@@ -66,7 +66,6 @@ hlinew = 0.26;
 /ITL/scene/l4 set line wa $hlinew 90;
 /ITL/scene/l4 x 0.6;
 /ITL/scene/l5 set line wa 0.48 -37;
-/ITL/scene/l5 y 0.28;
 /ITL/scene/l* penWidth 4;
 
 /ITL/scene/title set txt "Displaying process activity.";

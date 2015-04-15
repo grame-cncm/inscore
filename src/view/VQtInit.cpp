@@ -22,6 +22,9 @@
 
 */
 
+#if defined(ANDROID) || defined(IOS)
+#include <QMainWindow>
+#endif
 
 #include "VQtInit.h"
 #include "GuidoFontLoader.h"
@@ -30,15 +33,37 @@
 namespace inscore
 {
 
+#if defined(ANDROID) || defined(IOS)
+QMainWindow* VQtInit::sMainWindow;
+QTabWidget* VQtInit::sTabWidget;
+#endif
+
 void VQtInit::startQt ()
 {
 	installGuidoFont();
 	QGuidoPainter::startGuidoEngine();
+#if defined(ANDROID) || defined(IOS)
+	// Create main window. It contains tab for each scene.
+	sMainWindow = new QMainWindow;
+	sTabWidget = new QTabWidget(sMainWindow);
+	sMainWindow->setCentralWidget(sTabWidget);
+	sMainWindow->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
+	// Man window is full screen.
+	sMainWindow->showMaximized();
+#endif
 }
 
 void VQtInit::stopQt ()
 {
 	QGuidoPainter::stopGuidoEngine();
+#if defined(ANDROID) || defined(IOS)
+	delete sMainWindow;
+#endif
 }
-
+#if defined(ANDROID) || defined(IOS)
+QTabWidget*	VQtInit::getTabWidget()
+{
+	return sTabWidget;
+}
+#endif
 } // end namespoace

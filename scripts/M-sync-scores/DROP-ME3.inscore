@@ -4,18 +4,16 @@
 
 /ITL/scene/score1 set "gmnf" "rsrc/bachv1.gmn" ;
 /ITL/scene/score2 set "gmnf" "rsrc/bachv3.gmn" ;
-/ITL/scene/score* scale 2.7 ;
+/ITL/scene/score* scale 0.34 ;
 /ITL/scene/score1  x -0.7 ;
 /ITL/scene/score2  x 0.7 ;
 /ITL/scene/score1 map "voice1" ;
 /ITL/scene/score2 map "voice1" ;
 
 
-size = 0.05;
+size = 0.1;
 /ITL/scene/spot1 set "ellipse" $size $size ;
 /ITL/scene/spot1 color 0 0 240 160;
-
-/ITL/scene/spot* scale 0.4;
 /ITL/scene/spot* date 0 ;
 
 /ITL/scene/sync spot1 'score1:voice1';

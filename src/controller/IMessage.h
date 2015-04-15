@@ -356,7 +356,7 @@ class IMessage : public Message, public libmapping::smartable
 	/// \brief gives the message source IP
 	unsigned long		src() const			{ return fSrcIP; }
 	/// \brief gives the message parameters count
-	int					size() const		{ int  n = fArguments.size(); return fHasMessage ? n -1 : n; }
+	int					size() const		{ int  n = int(fArguments.size()); return fHasMessage ? n -1 : n; }
 	
 	bool operator == (const IMessage& other) const;	
 

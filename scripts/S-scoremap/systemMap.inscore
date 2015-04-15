@@ -1,9 +1,0 @@
-/ITL/scene/score map system;		! request the system map
-
-/ITL/scene/score map del;			! delete the default map
-									! NOTE: when you delete the default mapping, 
-									! the system builds one using the score bounding box
-/ITL/scene/score map staff3 del;	! delete the staff3 requested map
-/ITL/scene/score map staff5 del;	! delete the staff5 requested map
-
-/ITL/scene/comment set  txt "The whole system has a mapping.";

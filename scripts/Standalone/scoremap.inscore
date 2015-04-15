@@ -1,0 +1,40 @@
+
+/ITL/scene/*  del;
+/ITL/scene/signal/* del;
+
+
+/ITL/scene/title  set  txt "This script illustrates symbolic score mappings.";
+/ITL/scene/title  y -0.92;
+/ITL/scene/title scale 1.7;
+
+/ITL/scene/score  set  gmnf "scoremap.gmn";
+/ITL/scene/score scale 0.23;
+
+/ITL/scene/score map staff3;
+/ITL/scene/score map staff5;
+/ITL/scene/score/debug map 1;
+
+
+/ITL/scene/comment1 set  txt "Only staves 1 (default), 3 and 5 have a mapping.";
+/ITL/scene/comment2 set  txt "Click here to add system map.";
+/ITL/scene/comment* scale 1.2;
+/ITL/scene/comment1 y 0.88;
+/ITL/scene/comment2 y 0.93;
+
+/ITL/scene/comment2 watch mouseEnter ( /ITL/scene/$self red 240 );
+/ITL/scene/comment2 watch mouseLeave ( /ITL/scene/$self red 0 );
+/ITL/scene/comment2 watch mouseDown ( 
+	/ITL/scene/score map system,
+	/ITL/scene/comment1 set  txt "System and staves 1, 3 and 5 have a mapping.",
+	/ITL/scene/comment2 set  txt "Click here to remove staves map.",
+	/ITL/scene/comment2 watch mouseDown ( 
+		/ITL/scene/score map del,			! delete the default map
+		/ITL/scene/score map staff3 del,
+		/ITL/scene/score map staff5 del,
+		/ITL/scene/comment1 set  txt "System mapping.",
+		/ITL/scene/comment2 set  txt "Click here to restart the sample.",
+		/ITL/scene/comment2 watch mouseDown ( 
+			/ITL/scene load "scoremap.inscore"
+		)
+	)	
+);

@@ -19,6 +19,7 @@
 #include <sstream>
 #include <iostream>
 
+#include "IAppl.h"
 #include "QGuidoPainter.h"
 #include "GUIDOEngine.h"
 #include "GUIDOParse.h"
@@ -42,6 +43,9 @@
 
 GSystemQt * QGuidoPainter::mSys = 0;
 VGDevice * QGuidoPainter::mDev  = 0;
+
+// behavior changes and key version numbers
+const float kRenderingFactorChangeVers = 1.12;
 
 //-------------------------------------------------------------------------
 //								Static functions						///
@@ -382,6 +386,12 @@ int QGuidoPainter::heightForWidth ( int w , int page ) const
 }
 
 //-------------------------------------------------------------------------
+float QGuidoPainter::getRenderingFactor () const
+{
+	return (inscore::IAppl::compatibilityVersion() >= kRenderingFactorChangeVers) ? 80.0 : 10.0;
+}
+
+//-------------------------------------------------------------------------
 QSizeF QGuidoPainter::pageSizeMM(int page) const
 {
 	if ( !hasValidGR() )
@@ -389,8 +399,9 @@ QSizeF QGuidoPainter::pageSizeMM(int page) const
 
 	GuidoPageFormat format;
 	GuidoGetPageFormat( mDesc.handle , page , &format );
-	float widthMM = GuidoUnit2CM( format.width ) * 80.0f;
-	float heightMM = GuidoUnit2CM( format.height ) * 80.0f;
+	float factor = getRenderingFactor();
+	float widthMM = GuidoUnit2CM( format.width ) * factor;
+	float heightMM = GuidoUnit2CM( format.height ) * factor;
 	
 	return QSizeF( widthMM , heightMM );
 }
