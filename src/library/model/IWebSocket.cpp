@@ -48,6 +48,14 @@ IWebSocket::~IWebSocket()
 }
 
 //-------------------------------------------------------------------------------
+void IWebSocket::del()
+{
+	delete fWebServer;
+	fWebServer = 0;
+	IObject::del();
+}
+
+//-------------------------------------------------------------------------------
 VObjectView* IWebSocket::getView() const
 {
 	const IObject* obj = (const IObject*)getScene();

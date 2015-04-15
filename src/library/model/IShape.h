@@ -77,9 +77,9 @@ class IShape : public IObject
 
 	protected:
 		float		fPenWidth;	/// <Width of the pen used to draw the borders of the shape
+		IColor		fPenColor;	/// <Color of the pen used to draw the borders of the shape
 		
 	private:
-		IColor		fPenColor;	/// <Color of the pen used to draw the borders of the shape
         std::string fPenStyle;	/// <Style of the pen used to draw the borders of the shape
         std::string fBrushStyle;	/// <Style of the brush used to fill the shape
 

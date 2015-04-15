@@ -55,6 +55,13 @@ ILine::ILine( const std::string& name, IObject* parent ) : IShapeMap(name, paren
 }
 
 //--------------------------------------------------------------------------
+void ILine::setHandlers ()
+{
+	IObject::setHandlers();
+	fMsgHandlerMap[kcolor_GetSetMethod]		= TMethodMsgHandler<IColor>::create(&fPenColor, &IColor::set);
+}
+
+//--------------------------------------------------------------------------
 void ILine::accept (Updater* u)
 {
 	u->updateTo (SILine(this));

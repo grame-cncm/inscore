@@ -27,6 +27,12 @@
 
 #include "export.h"
 
+#if defined(ANDROID) || defined(IOS)
+#include <QTabWidget>
+
+class QMainWindow;
+#endif
+
 namespace inscore
 {
 
@@ -40,6 +46,18 @@ class export VQtInit
 	public:
 	static	void		startQt ();
 	static	void		stopQt ();
+
+#if defined(ANDROID) || defined(IOS)
+	/*!
+	 * \brief getTabWidget
+	 * \return the tabWidget of the main window.
+	 */
+	static	QTabWidget*	getTabWidget();
+
+	private:
+	static QMainWindow* sMainWindow;
+	static QTabWidget* sTabWidget;
+#endif
 };
 
 /*!@} */

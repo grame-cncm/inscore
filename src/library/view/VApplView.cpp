@@ -42,12 +42,7 @@ void VApplView::updateView( IAppl * appl )
 //----------------------------------------------------
 QString VApplView::toQString(const char* c)
 {
-#ifdef WIN32
-//	return QString(c);
 	return QString::fromUtf8(c);
-#else
-	return QString::fromUtf8(c);
-#endif
 }
 
 //----------------------------------------------------

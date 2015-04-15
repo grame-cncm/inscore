@@ -101,6 +101,8 @@ INScoreAbout::INScoreAbout (const QPixmap & pixmap) : QSplashScreen (pixmap)
 
 #ifdef linux
 	QFont font ("FreeSans", 9);
+#elif defined (WIN32)
+	QFont font ("Helvetica", 7);
 #else
 	QFont font ("Helvetica", 9);
 #endif

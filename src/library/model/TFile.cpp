@@ -32,6 +32,7 @@
 #include "IScene.h"
 #include "ITLError.h"
 #include "IUrlIntermediateObject.h"
+#include "OSCAddress.h"
 
 using namespace std;
 
@@ -131,14 +132,14 @@ MsgHandler::msgStatus TFile::set (const IMessage* msg )
         // the creation of a url file should not go through TFile::set.
         // this means that the current object is not a URLIntermediate, it is a file whose path has been change to an url
         // we then have to destroy it and re-create the URLIntermediate (we send the message in the form "/urlname set url type path"
-        if(Tools::isurl(path))
+        if(Tools::isurl(path) || Tools::isurl(fScene->getRootPath()))
         {
             SIMessage newmsg = IMessage::create(msg->address(), msg->message());
             newmsg->add(IUrlIntermediateObject::kUrlIntermediateType);
             newmsg->add(type);
             newmsg->add(path);
-            newmsg->send();
-            return MsgHandler::kProcessed;
+			newmsg->send();
+			return MsgHandler::kProcessed;
         }
         
 		else if ( path.size())

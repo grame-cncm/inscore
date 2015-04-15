@@ -66,7 +66,7 @@ class ISignal : public IObject, public ParallelSignal
 		using IObject::print;
 
 				 ISignal( const std::string& name, IObject * parent);
-		virtual ~ISignal() {}
+		virtual ~ISignal();
 
 		// overrides get handlers for color, position and time
 		virtual void colorAble ()		{}
@@ -80,6 +80,9 @@ class ISignal : public IObject, public ParallelSignal
 			\return false in case of incorrect \c proj string format
 		*/
 		virtual bool	decodeProjection (const std::string& proj, int& index, int& step) const;
+
+		/// \brief basic method overridden to delete signal connextions
+		virtual void	del ();
 
 		/// \brief signal \c 'get' message handler
 		virtual SIMessageList getSetMsg () const;

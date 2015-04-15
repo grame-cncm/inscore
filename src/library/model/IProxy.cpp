@@ -103,7 +103,7 @@ int IProxy::execute (const IMessage* msg, const std::string& objName, SIObject p
         std::string path;
         if (!msg->param(1, path)) return MsgHandler::kBadParameters;
 
-        if (Tools::isurl(path))
+        if (Tools::isurl(path) || Tools::isurl(parent->getScene()->getRootPath()))
         {
             newmsg = IMessage::create(msg->address(), msg->message());
             newmsg->add(IUrlIntermediateObject::kUrlIntermediateType);
