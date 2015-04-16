@@ -34,8 +34,6 @@ using namespace std;
 namespace inscore
 {
 
-	static const string kdelimiter=",";
-
 //--------------------------------------------------------------------------
 IFilterForward::IFilterForward(IObject *parent) : IVNode("filter", parent)
 {
@@ -66,9 +64,6 @@ MsgHandler::msgStatus IFilterForward::setRejectMsg(const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IFilterForward::setListMsg(std::vector<FilterItem> &aList, const IMessage* msg)
 {
-	if(msg->size() > 1)
-		return MsgHandler::kBadParameters;
-
 	// Reset the list
 	aList.clear();
 
@@ -77,21 +72,13 @@ MsgHandler::msgStatus IFilterForward::setListMsg(std::vector<FilterItem> &aList,
 		return MsgHandler::kProcessed;
 	}
 
-	string filterList;
-	if (!msg->param(0, filterList)) {
-		return MsgHandler::kBadParameters;
+	for(int i = 0; i < msg->size(); i++) {
+		string item;
+		if (!msg->param(i, item)) {
+			return MsgHandler::kBadParameters;
+		}
+		aList.push_back(FilterItem(item));
 	}
-
-	// Find item in the string and add it to the list.
-	size_t start = 0;
-	size_t end = filterList.find(kdelimiter);
-	while (end != std::string::npos)
-	{
-		aList.push_back(FilterItem(filterList.substr(start, end - start)));
-		start = end + kdelimiter.length();
-		end = filterList.find(kdelimiter, start);
-	}
-	aList.push_back(FilterItem(filterList.substr(start, end)));
 	return MsgHandler::kProcessed;
 }
 
@@ -114,7 +101,7 @@ std::string IFilterForward::getListMsg(const std::vector<FilterItem> &aList)
 	bool notfirst = false;
 	for(std::vector<FilterItem>::const_iterator i = aList.begin(); i != aList.end(); i++) {
 		if(notfirst) {
-			stream << kdelimiter;
+			stream << " ";
 		} else {
 			notfirst = true;
 		}
