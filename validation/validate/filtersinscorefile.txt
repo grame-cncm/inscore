@@ -1,0 +1,1 @@
+../scripts/Standalone/forward/input.inscore

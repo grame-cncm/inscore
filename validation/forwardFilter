@@ -1,0 +1,39 @@
+#!/bin/sh
+
+if [ $# -ne 2 ]
+then
+	echo usage $0 inscorefile filterfile
+	exit 1
+fi
+
+path=$(pwd)
+inscorefile=$1
+filterfile=$2
+
+src=$(basename $inscorefile)
+filter=$(basename $filterfile)
+
+# Remove all forward
+./SendOSC 7000 /ITL forward
+
+# start the OSC listener
+./ReceiveOSC -p 7003 2> /dev/null &
+receivePid=$!
+
+sleep 1
+
+./SendOSC 7000 /ITL/scene rootPath $path/$(dirname $inscorefile)
+
+# send inscore file filter
+./SendOSC 7000 /ITL/scene load $filter
+
+# Send forward command to OSC listener
+./SendOSC 7000 /ITL forward "localhost:7003"
+
+# Load command file
+./SendOSC 7000 /ITL/scene load $src
+
+sleep 1
+# Stop the listener
+kill -INT $receivePid
+
