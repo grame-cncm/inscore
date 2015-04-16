@@ -7,9 +7,11 @@
 system	:= $(shell uname -s)
 ifeq ($(system), Darwin)
 	TARGET = macos
+	SPEC = -spec macx-xcode
 else
 ifeq ($(system), MINGW32_NT-6.1)
 	TARGET = win32
+	SPEC = -spec win32-msvc2010
 else
 	TARGET = linux
 endif
@@ -31,8 +33,8 @@ macos : macos/INScore.xcodeproj macos/INScoreViewer.xcodeproj INScoreMac
 
 xcodeproj:
 	[ -d macos ] || mkdir macos
-	cd macos && qmake -spec macx-xcode ../library.pro 
-	cd macos && qmake -spec macx-xcode ../viewer.pro 
+	cd macos && qmake $(SPEC) ../library.pro 
+	cd macos && qmake $(SPEC) ../viewer.pro 
 
 INScoreMac : 
 	xcodebuild -jobs 8 -project macos/INScore.xcodeproj -target INScore -configuration Release
@@ -40,11 +42,11 @@ INScoreMac :
 
 macos/INScore.xcodeproj : library.pro
 	[ -d macos ] || mkdir macos
-	cd macos && qmake -spec macx-xcode ../library.pro 
+	cd macos && qmake $(SPEC) ../library.pro 
 
 macos/INScoreViewer.xcodeproj : viewer.pro
 	[ -d macos ] || mkdir macos
-	cd macos && qmake -spec macx-xcode ../viewer.pro 
+	cd macos && qmake $(SPEC) ../viewer.pro 
 
 #===============================================================
 # building the library on linux
@@ -76,17 +78,28 @@ linuxclean:
 #===============================================================
 # building the library on windows
 #===============================================================
-windows :
-	make win32
+win32 : win32/INScore.vcxproj win32/INScoreViewer.vcxproj INScoreWin32 win32/release/GUIDOEngine.dll
 
-win32 : win32/INScore.sln INScoreWin32 
+win32projects : 
+	[ -d win32 ] || mkdir win32
+	cd win32 && qmake $(SPEC) ../library.pro
+	cd win32 && qmake $(SPEC) ../viewer.pro
 
 INScoreWin32:
-	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild win32/INScore.sln /maxcpucount:4 /p:Configuration=Release"
+	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild win32/INScore.vcxproj /maxcpucount:4 /p:Configuration=Release"
+	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild win32/INScoreViewer.vcxproj /maxcpucount:4 /p:Configuration=Release"
 
-win32/INScore.sln : CMakeLists.txt
-	[ -d win32 ] || mkdir win32
-	cd win32 && cmake .. -G $(WIN32VS)
+win32/INScore.vcxproj : library.pro
+	make win32projects
+
+win32/INScoreViewer.vcxproj : viewer.pro
+	make win32projects
+
+win32/release/GUIDOEngine.dll: ../lib/GUIDOEngine/win32/GUIDOEngine.dll
+	cp ../lib/GUIDOEngine/win32/GUIDOEngine.dll win32/release
+
+win32clean:
+	rm -f win32/tmp
 
 #===============================================================
 clean :
