@@ -41,6 +41,8 @@ win32:SOURCES +=  $$files($$ROOT/win32/dirent/*.h)
 # include directories
 ############################## 
 INCLUDEPATH  =  $$files($$SRC/library/[^.]*)
+INCLUDEPATH +=  $$files($$SRC/library/plugins/*)
+INCLUDEPATH +=  $$files($$SRC/library/signal/faust)
 INCLUDEPATH +=  $$files($$SRC/libmapping/src/[^.]*)
 INCLUDEPATH +=  $$files($$OSC)
 INCLUDEPATH +=  $$GUIDO_PATH/include

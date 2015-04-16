@@ -7,7 +7,7 @@ OBJECTS_DIR = tmp
 MOC_DIR		= tmp
 RCC_DIR		= tmp
 
-VERSION = 1.12
+VERSION = 1.13
 
 QT += core gui widgets svg printsupport multimedia multimediawidgets qml websockets
 
@@ -56,7 +56,7 @@ win32 {
 ############################## 
 # linux support
 ############################## 
-unix:!android:!macx:LIBS += -L.. -lINScore -lGUIDOEngine
+unix:!android:!macx:LIBS += -lINScore -lGUIDOEngine
 
 ############################## 
 # android support

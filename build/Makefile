@@ -47,6 +47,33 @@ macos/INScoreViewer.xcodeproj : viewer.pro
 	cd macos && qmake -spec macx-xcode ../viewer.pro 
 
 #===============================================================
+# building the library on linux
+#===============================================================
+linux : linux/Makefile.lib linux/Makefile.app INScoreLinux
+
+linuxproj:
+	[ -d linux ] || mkdir linux
+	cd linux && qmake ../library.pro && mv Makefile Makefile.lib 
+	cd linux && qmake ../viewer.pro && mv Makefile Makefile.app
+
+linux/Makefile.lib: library.pro
+	[ -d linux ] || mkdir linux
+	cd linux && qmake ../library.pro && mv Makefile Makefile.lib 
+
+linux/Makefile.app: viewer.pro
+	[ -d linux ] || mkdir linux
+	cd linux && qmake ../viewer.pro && mv Makefile Makefile.app
+
+INScoreLinux:
+	make -j 4 -C linux -f Makefile.lib
+	make -j 4 -C linux -f Makefile.app
+
+linuxclean:
+	make -C linux -f Makefile.lib clean
+	make -C linux -f Makefile.app clean
+
+
+#===============================================================
 # building the library on windows
 #===============================================================
 windows :
@@ -64,3 +91,4 @@ win32/INScore.sln : CMakeLists.txt
 #===============================================================
 clean :
 	rm -rf macos win32 linux
+
