@@ -10,12 +10,12 @@ else
  LIBINSCORE :=  -L../../cmake/build/win32/Release -lINScore
  LIBOSCPACK :=  -L../../lib/oscpack/cmake/Release -loscpack
  else
- LIBINSCORE :=  -L../../cmake -lINScore
+ LIBINSCORE :=  -L../../build -lINScore
  LIBOSCPACK :=  -L../../lib/oscpack/cmake -loscpack
 endif
 endif
 
-tools :=  ../forcepdfdate ../SendOSC ../INScoreVersion
+tools :=  ../forcepdfdate ../SendOSC ../INScoreVersion ../ReceiveOSC
 G++   := g++
 
 all : $(tools)
@@ -28,6 +28,9 @@ all : $(tools)
 
 ../SendOSC: SendOSC.cpp
 	$(G++) SendOSC.cpp  $(OPT) -I../../lib/oscpack $(LIBOSCPACK) -o ../SendOSC
+
+../ReceiveOSC: ReceiveOSC.cpp
+	$(G++) ReceiveOSC.cpp  $(OPT) -I../../lib/oscpack $(LIBOSCPACK) -o ../ReceiveOSC
 
 clean:  
 	rm -f $(tools)
