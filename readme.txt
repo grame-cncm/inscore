@@ -3,169 +3,100 @@ Compiling the INScore project
 ----------------------------------------------------------------------
 
 The INScore project depends on external libraries:
- - the Qt framework version 4.6 or later (see http://qt.nokia.com/)
- - the GuidoEngine version 1.40 or greater (see http://guidolib.sourceforge.net)
- - the GuidoQt static library, actually part of the GuidoEngine library
- - the oscpack library
- - the v8 javascript sdk (see "http://code.google.com/p/v8/)
+ - the Qt framework version 5.3 or later (see https://www.qt.io/)
+ - the GuidoEngine version 1.56 or greater (see http://guidolib.sourceforge.net)
+ - the oscpack library (included in the INScore repository)
  - optionaly: 
      - the MusicXML library  (see http://libmusicxml.sourceforge.net)
        when you want to support the MusicXMl format.
      - the programming language lua (see http://www.lua.org/)
-The GuidoEngine, the GuidoQt, oscpack and v8 libraries are required to compile INScore.
+The GuidoEngine SDK is required to compile INScore.
 
 The present document describes how to compile the INScore projects. 
 It starts describing how to resolve the required external dependencies.
 The next section explains how to compile the INScore project.
 The last section describes how to resolve the optional external dependencies.
 
-
 ======================================================================
 1) Resolving the required external dependencies
 ----------------------------------------------------------------------
 
+>>>>>> All platform
+----------------------------
+You should first install Qt version 5.3 or greater.
+Installation depends on your platform. See at https://www.qt.io/
+
 >>>>>> Mac OS
 ----------------------------
-The GuidoEngine and GuidoQt libraries are included in binary form in the macosx folders.
-You just need to extract the GUIDOEngine framework from the GUIDOEngine.tgz archive in the GuidoEngine/macosx folder. In case you run in trouble using the library, due to dependency, the 'localise' script should change the library dependency to the appropriate location.
-For oscpack see the 'All platform section'
+The GuidoEngine library is included in binary form in the lib/GuidoEngine/macosx folders.
+You just need to extract the GUIDOEngine framework from the GUIDOEngine.tgz archive. 
+In case you run in trouble using the library due to dependency, the 'localise' script should 
+change the library dependency to the appropriate location.
 
 >>>>>> Windows
 ----------------------------
-The GuidoEngine and GuidoQt libraries are included in binary form in the win32 folders.
-The files are .lib and .dll files compiled with Visual C++. The GuidoQt library is static.
-For oscpack see the 'All platform section'
+The GuidoEngine library is included in binary form in the lib/GuidoEngine/win32 folders.
+The binaries have been compiled with Visual C++ Version 10.
+You should check your environment compatibility and notably for the potential runtime issues.
 
 >>>>>> Linux
 ----------------------------
-You need to compile the Guido Engine and the GuidoQt libraries from the GUIDOLib project
-(http://sourceforge.net/projects/guidolib). You can get the source code from svn:
-	svn co https://guidolib.svn.sourceforge.net/svnroot/guidolib guidolib
+You need to compile the Guido Engine library from the GUIDOLib project
+(http://sourceforge.net/projects/guidolib). You can get the source code from git:
+	git clone ssh://dfober@git.code.sf.net/p/guidolib/code guidolib-code
 or from the src distribution:
 	http://sourceforge.net/projects/guidolib/files/Guidolib-src/
-Up to version 5 of Qt, you need to install 'libphonon-dev'. With Qt5, multimedia support is 
-included in Qt and phonon is not required any more.
-This project requires the Guido Engine version 1.40 or greater. 
+You can also get binary packages but only for Ubuntu. 
+See at https://sourceforge.net/projects/guidolib/files/DevKits/Ubuntu/
 
 a) Compiling the GUIDO library 
 ----------------------------
 To compile the GUIDO library do the following:
-  > cd /your_path_to_the_guido_project/cmake
-  > cmake -G "Unix Makefiles"
-  > make
-  > sudo make install
-
-b) Compiling the GuidoQt library 
-----------------------------
-The GuidoQt library depends on the Qt framework. You need to have Qt SDK version 4.6 or later 
-installed before compiling the GuidoQt library (see at http://qt.nokia.com/).
-The Qt SDK can be gotten from synaptic (for Ubuntu users).
-To compile the GuidoQt library do the following:
-  > cd /your_path_to_the_guido_project/Qt/GuidoQt
-  > qmake
-  > make
-The resulting binary is expected to be find in the GuidoQt folder under the name 'libGuidoQt.a'
-You have to copy the library to the INScore project:
-  > cp libGuidoQt.a /your_path_to_the_INScore_project/lib/GuidoQt/linux
-
-c) Compiling oscpack 
-----------------------------
-To compile oscpack do the following:
-  > cd /your_path_to_the_INScore_project/lib/oscpack/cmake
-  > cmake -G "Unix Makefiles"
-  > make
-
-d) Installing Qt 
-----------------
-Qt should be installed to compile the GuidoQt library and to compile INScore.
-Installation depends on your platform. See at http://qt-project.org/
-
-d) Installing the V8 javascript SDK 
------------------------------------
-V8 is included in the inscore repository in binary form for Mac OS and Windows and the cmake
-configuration file will automatically use them.
-On Linux, you can find a package for your distribution (named libv8-dev on Debian and Ubuntu).
-
-
->>>>>> All platform
-----------------------------
-You need to compile the oscpack library from the oscpack folder.
-The oscpack library is based on cmake but includes also makefiles from the original distribution. 
-Cmake output files are where the INScore project expects to find them.
-
+  > cd /your_path_to_the_guido_project/build
+  > make linux
+  > sudo make -C linux install
 
 
 ======================================================================
 2) Compiling INScore
 ----------------------------------------------------------------------
-The INScore project relies on CMake, a cross-platform, open-source build system 
-( see http://www.cmake.org/).
-The cmake folder contains the project description and is used to generate native projects. 
-You should resolve the external dependencies prior running cmake.
+The INScore project relies on qmake, a cross-platform, open-source build system provided with Qt.
+The build folder contains the project description and is used to generate native projects. 
+It contains also a makefile that call qmake to generate the native projects (XCode on MacOS, 
+Visual Studio on Windows, Makefiles on linux) and compiles the projects in 'release' mode.
+You should resolve the external dependencies prior running make.
+
+It's always possible to switch to native environment and to compile using native IDE instead of 
+command line (always usefull in dev phase).
 
 To compile:
-	change to cmake directory
-	type:  cmake -G "your target generator" [options]
-	run your project/makefile and compile
-
-	NOTE: that cmake assumes that Qt5 is installed. Due to differences in Qt packages, you have
-	to explicitely ask for Qt4 support when Qt4 is installed. 
-	To do so, use the option -DQTVERSION=4 when running cmake.
-
-[options] allows to embed lua or/and javascript support:
-	for lua: -DLUA=yes 
-Note that MusicXML support makes use of dynamic link: it is available when a library with the required entry point is found.
-
-
-Note for Linux platforms:
---------------------------
-	The procedure to compile can be close to the usual 'configure' 'make' 'make install'
-	steps. Actually, you can simply do the following:
-	> cd /your_path_to_the_project/cmake
-	> cmake -G "Unix Makefiles"
+	change to 'build' directory
+	> cd build
 	> make
-	> sudo make install
+and that's all !!
+
+Note that MusicXML support makes use of dynamic link: it is available when a library with the 
+required entry point is found.
 
 Note for Windows platforms:
 --------------------------
-	The CMake project description is "Visual Studio" oriented. 
-	Using MingW may require some adaptation.
-
+The project description is "Visual Studio 2010" oriented. 
+Calling qmake and make requires to have unix like commands installed, which is provided by the
+MINGW environment.
+However, it should always be possible to compile using QTCreator and the .pro files included 
+in the build  folder.
 
 
 ======================================================================
 3) Resolving the optional external dependencies
 ----------------------------------------------------------------------
 
-lua support
-----------------------------
-You should get the lua source code from the lua web site: http://www.lua.org
-The distribution includes a Makefile, thus you can simply type:
-  > cd /your_path_to_the_lua_distribution/
-  > make
-  > sudo make install
-
-Notes: 
-- on linux/Ubuntu, you can get a binary destribution: install liblua5.1-0-dev from synaptic.
-- for windows, a binary version of the library is included in the INScore distribution
-  along with the corresponding headers. Thus lua is ready to be supported without additional step.
-- a cmake configuration is provided in lib/lua with instructions to use. It should be used to
-  generate universal binaries on Mac OS.
-
-
 MusicXML support
 ----------------------------
-You should get the MusicXML library version 2.0 or later from Google code:
-	https://code.google.com/p/libmusicxml/downloads/list
-or from the src distribution:
-	git clone http://code.google.com/p/libmusicxml/ 
+You should get the MusicXML library version 2.0 or later from GitHub:
+	https://github.com/dfober/libmusicxml
 The library is not required to compile the INScore project, nor to run the INScore viewer. 
 When the library is not present, MusicXML support is not available.
-To compile the MusicXML library do the following:
-  > cd /your_path_to_the_musicxml_project/cmake
-  > cmake -G "Unix Makefiles"
-  > make
-  > sudo make install
 
 
 Faust Compiler support
@@ -178,6 +109,11 @@ To compile libfaust library do the following:
 	> git checkout faust2	
 	> make dynamic
 	> sudo make install-dynamic
+
+lua support
+----------------------------
+lua support starts to be deprecated. If you want to include lua in inscore, contact me.
+
 
 ======================================================
  Note about the Guido Font
@@ -200,7 +136,7 @@ uninstall the previous version before installing the new one.
 ======================================================================
 In case of trouble, contact me: <fober@grame.fr>
 ----------------------------------------------------------------------
-Copyright 2009, 2010, 2011 (c) Grame 
+Copyright 2009-2015 (c) Grame 
 ======================================================================
 
 
