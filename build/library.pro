@@ -28,7 +28,7 @@ DEFINES += QTJSENGINE	# use the Qt Javascript engine
 SOURCES  =  $$files($$SRC/library/*.cpp, true)
 SOURCES +=  $$files($$SRC/libmapping/src/*.cpp, true)		# libmapping source files
 SOURCES +=  $$files($$OSC/ip/*.cpp)							# oscpack files
-SOURCES +=  $$files($$OSC/OSC/*.cpp)						# oscpack files
+SOURCES +=  $$files($$OSC/osc/*.cpp)						# oscpack files
 SOURCES +=  $$files($$OSCIP/*.cpp)							# oscpack files
 
 HEADERS  =  $$files($$SRC/library/*.h, true)
@@ -115,7 +115,10 @@ ios {
 ############################## 
 # linux support
 ############################## 
-unix:!macx:!ios:!android:LIBS += -lGUIDOEngine
+unix:!macx:!ios:!android {
+	DEFINES += OSC_HOST_LITTLE_ENDIAN
+	LIBS += -lGUIDOEngine
+}
 
 ############################## 
 # android support

@@ -56,7 +56,7 @@ win32 {
 ############################## 
 # linux support
 ############################## 
-unix:!android:!macx:LIBS += -lINScore -lGUIDOEngine
+unix:!android:!macx:LIBS += -L. -lINScore -lGUIDOEngine
 
 ############################## 
 # android support
