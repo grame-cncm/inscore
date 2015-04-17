@@ -49,7 +49,9 @@ macx {
 # assumes environment is MSVC
 ############################## 
 win32 {
-	LIBS+= ../INScore1.lib
+	VERSION = ""
+	CONFIG(debug,debug|release) { LIBS   += debug/INScore.lib }
+	else { LIBS   += release/INScore.lib }
 	RC_FILE = $$ROOT/win32/Viewer/INScoreViewer.rc
 }
 
