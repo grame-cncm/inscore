@@ -41,12 +41,10 @@ INScoreMac :
 	xcodebuild -jobs 8 -project macos/INScoreViewer.xcodeproj -target INScoreViewer -configuration Release
 
 macos/INScore.xcodeproj : library.pro
-	[ -d macos ] || mkdir macos
-	cd macos && qmake $(SPEC) ../library.pro 
+	make xcodeproj
 
 macos/INScoreViewer.xcodeproj : viewer.pro
-	[ -d macos ] || mkdir macos
-	cd macos && qmake $(SPEC) ../viewer.pro 
+	make xcodeproj
 
 #===============================================================
 # building the library on linux
