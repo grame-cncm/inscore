@@ -25,6 +25,7 @@
 
 #include "IWebSocket.h"
 #include "WebSocketController.h"
+#include "IScene.h"
 
 using namespace std;
 
@@ -33,6 +34,8 @@ namespace inscore
 
 const string IWebSocket::kIWebSocketType("websocket");
 const char * IWebSocket::kGetImgMsg = "getImage";
+const char * IWebSocket::kPostMsg = "post=";
+const char * IWebSocket::kClickMsg = "click=";
 
 //-------------------------------------------------------------------------------
 IWebSocket::IWebSocket(const std::string &name, IObject *parent)
@@ -129,6 +132,16 @@ SIMessageList IWebSocket::getMsgs(const IMessage* msg) const
 	}
 	outMsgs->list().push_back (IObject::getMsgs(msg)->list());
 	return outMsgs;
+}
+
+TJSEngine* IWebSocket::getJSEngine()
+{
+	return getScene()->getJSEngine();
+}
+
+TLua* IWebSocket::getLUAEngine()
+{
+	return getScene()->getLUAEngine();
 }
 
 }

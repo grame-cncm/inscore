@@ -26,6 +26,8 @@
 #ifndef QTWEBSOCKETSERVER_H
 #define QTWEBSOCKETSERVER_H
 
+#include "TScripting.h"
+
 #include <QTimer>
 #include <QWebSocketServer>
 
@@ -34,6 +36,7 @@ QT_FORWARD_DECLARE_CLASS(QWebSocket)
 namespace inscore {
 
 class VObjectView;
+class TLua;
 class QtWebSocketServer : public QWebSocketServer
 {
 		Q_OBJECT
@@ -43,6 +46,8 @@ class QtWebSocketServer : public QWebSocketServer
 		unsigned long		fScreenVersion;			///< version number of the screen
 		VObjectView *		fView;					///< the view to be send to clients
 		int					fFrequency;				///< the time task frequency
+		TJSEngine*			fJsEngine;
+		TLua*				fLua;
 
 	public:
 		/*!
@@ -52,7 +57,7 @@ class QtWebSocketServer : public QWebSocketServer
 		 * \param view The view to be send to clients
 		 * \param parent Parent object.
 		 */
-				 QtWebSocketServer(int frequency, VObjectView *view);
+				 QtWebSocketServer(int frequency, VObjectView *view, TJSEngine *engine, TLua *lua);
 		virtual ~QtWebSocketServer();
 
 

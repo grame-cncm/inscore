@@ -47,6 +47,8 @@ class IWebSocket : public IObject, public WebSocketInformer
 	public:
 		static const std::string	kIWebSocketType;
 		static const char *			kGetImgMsg;			///< the only message that is handle by the server
+		static const char *			kPostMsg;
+		static const char *			kClickMsg;
 
 		static SIWebSocket create(const std::string& name, IObject * parent)	{ return new IWebSocket(name, parent); }
 
@@ -64,6 +66,8 @@ class IWebSocket : public IObject, public WebSocketInformer
 		VObjectView*	getView() const;
 		int				getPort () const			{ return fPort; }
 		int				getFrequency () const		{ return fFrequency; }
+		TJSEngine*		getJSEngine();
+		TLua*			getLUAEngine();
 
 	protected:
 		int fPort;			///< the web socket communnication port

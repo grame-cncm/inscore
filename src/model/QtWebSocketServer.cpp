@@ -26,20 +26,22 @@
 #include <QWebSocket>
 #include <string>
 #include <iostream>
+#include <sstream>
 
 #include "QtWebSocketServer.h"
 #include "IWebSocket.h"
 #include "VObjectView.h"
 #include "abstractdata.h"
+#include "ITLparser.h"
 
 using namespace std;
 
 namespace inscore {
 
 //-------------------------------------------------------------------------------
-QtWebSocketServer::QtWebSocketServer(int frequency, VObjectView *view) :
+QtWebSocketServer::QtWebSocketServer(int frequency, VObjectView *view, TJSEngine* engine, TLua* lua) :
 	QWebSocketServer(QStringLiteral("WebSocketServer"), QWebSocketServer::NonSecureMode),
-	fScreenVersion(0), fView (view), fFrequency(frequency)
+	fScreenVersion(0), fView (view), fFrequency(frequency), fJsEngine(engine), fLua(lua)
 {
 	connect(&fTimer, SIGNAL(timeout()),this, SLOT(timeTask()));
 }
@@ -125,7 +127,28 @@ void QtWebSocketServer::processTextMessage(QString message)
 			AbstractData data = fView->getImage("PNG");
 			QByteArray bArray = QByteArray::fromRawData(data.data, data.size);
 			pClient->sendBinaryMessage(bArray);
-		} else {
+		} else
+		if(message.startsWith(IWebSocket::kPostMsg)) {
+			// Remove request name (ie "post=")
+			message = message.remove(0, 5);
+			stringstream stream;
+			stream.str(message.toStdString());
+			ITLparser p (&stream, 0, fJsEngine, fLua);
+			SIMessageList msgs = p.parse();
+			msgs->send();
+			//INScore::delayMessage(address.c_str(), msg);
+		} else
+		if(message.startsWith(IWebSocket::kClickMsg)) {
+			// Remove request name (ie "click=")
+			message = message.remove(0, 6);
+			QStringList coord = message.split(",", QString::SkipEmptyParts);
+			if(coord.size() == 2) {
+				int x = coord[0].toInt();
+				int y = coord[1].toInt();
+				cout << "x=" << x << "y=" << y << endl; // TODO GGX
+			}
+		} else
+		{
 			pClient->sendTextMessage("Error : unknown request.");
 		}
 	}

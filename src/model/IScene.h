@@ -118,7 +118,7 @@ class IScene : public IRectShape, public TILoader
 		QGraphicsScene *	getGraphicScene () const;
 
 		TJSEngine*		getJSEngine()		{ return &fJavascript; }
-		TLua*			getLUAEngine()		{ return &fLua; }
+		TLua*			getLUAEngine()	{ return &fLua; }
 
 		virtual VSceneView*	getView() const				{ return static_cast<VSceneView *>(fView); }
 

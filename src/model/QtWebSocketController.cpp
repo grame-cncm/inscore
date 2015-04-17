@@ -31,7 +31,7 @@ namespace inscore
 {
 
 //-------------------------------------------------------------------------------
-QtWebSocketController::QtWebSocketController(const WebSocketInformer* infos)
+QtWebSocketController::QtWebSocketController(WebSocketInformer* infos)
 	: fInfos(infos), fServer (0)
 {}
 
@@ -73,7 +73,7 @@ int QtWebSocketController::clients() const
 //-------------------------------------------------------------------------------
 void QtWebSocketController::run()
 {
-	fServer = new QtWebSocketServer (fInfos->getFrequency(), fInfos->getView());
+	fServer = new QtWebSocketServer (fInfos->getFrequency(), fInfos->getView(), fInfos->getJSEngine(), fInfos->getLUAEngine());
 	if (fServer) {
 		if (fServer->start(fInfos->getPort()))
 			exec();
