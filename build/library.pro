@@ -125,5 +125,7 @@ unix:!macx:!ios:!android {
 ############################## 
 # android support
 ############################## 
-android:LIBS += -L$$ROOT/lib/GuidoEngine/android -lGUIDOEngine 
-
+android {
+    DEFINES += ANDROID
+    LIBS += -L$$ROOT/lib/GuidoEngine/android -lGUIDOEngine
+}
