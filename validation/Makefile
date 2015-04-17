@@ -34,6 +34,7 @@ savefiles 		= $(shell grep -v '^\#' validate/save.txt)
 regressionfiles = $(shell grep -v '^\#' validate/regression.txt)
 filterfiles		= $(shell grep -v '^\#' validate/filters.txt)
 filterinscorefile	= $(shell grep -v '^\#' validate/filtersinscorefile.txt)
+androidfiles		= $(shell grep -v '^\#' validate/android.txt)
 
 pdfout  		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(files))
 pdfgraphicout 	:= $(patsubst ../%.inscore, $(version)/%.pdf, $(graphicfiles))
@@ -45,6 +46,8 @@ inscoreout 		:= $(patsubst ../%.inscore, $(version)/%.inscore, $(savefiles))
 filterout		:= $(patsubst ../%.flt, $(version)/%.out, $(filterfiles))
 filteroutinscore	:= $(patsubst %.flt, %.inscore, $(filterfiles))
 filteroutref		:= $(patsubst %.flt, %_reference.out, $(filterfiles))
+
+androidout 		:= $(patsubst ../%.inscore, $(version)android/%.pdf, $(androidfiles))
 
 leakout 	:= $(patsubst ../%.inscore, $(version)/$(TOOL)/%.leak.txt, $(files))
 leaksfiles  := $(patsubst ../%.inscore, $(version)/%.leaks.out, $(files))
@@ -217,6 +220,11 @@ $(version)/%.leaks.out: $(version)/$(TOOL)/%.leak.txt
 	@grep $(nodlost) $< > /dev/null || echo "$< : definitely lost bytes"
 	@grep $(noilost) $< > /dev/null || echo "$< : indirectly lost bytes"
 	@grep $(noplost) $< > /dev/null || echo "$< : possibly lost bytes"
+
+android: $(androidout)
+
+$(version)android/%.pdf: ../%.inscore
+	@./inscore2pdf_android $< $@
 
 %.outpdf: %.pdf
 	$(eval tmp := $(patsubst $(version)/%, $(VERSION)/%, $<))	
