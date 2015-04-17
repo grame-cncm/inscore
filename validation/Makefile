@@ -100,9 +100,6 @@ _save : $(inscoreout)
 
 filter:
 	make filterref
-	make filterout
-
-filterout:
 	make filterinscore
 	make filteroutput
 
@@ -147,6 +144,9 @@ help:
 	@echo " 'log' 		: generates log files in order to check inscore logs"
 	@echo " 'save' 		: generates inscore files in order to check the save method"
 	@echo " 'filter'	: generates filter files and reference files in order to check the forward filter method"
+	@echo " 'filterref'	: generates filter result reference files"
+	@echo " 'filterinscore'	: generates inscore file filter from .flt file"
+	@echo " 'filteroutput'	: generates inscore output from current running inscore instance"
 	@echo " 'validatefilter': validate filter files with reference files"
 	@echo "  output files are generated under the current INScore version number."
 	@echo " 'validate VERSION=another_version': compares the current version with another one"

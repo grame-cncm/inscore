@@ -32,7 +32,14 @@ This will execute various fonctions that you can also call separately :
     > make basic
   ... for all the rest...
 
-
+  > make filter
+... generates the .inscore filtering files and the reference output file, that can also be generated separately :
+    > make filterref
+  ... to generate filter result reference files
+    > make filterinscore
+  ... to generate inscore file filter from .flt file
+    > make filteroutput
+  ... to generate inscore output from current running inscore instance
 
 ======================================================================
 2) Looking for differences in the files
