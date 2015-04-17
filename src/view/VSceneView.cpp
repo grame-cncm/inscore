@@ -158,7 +158,9 @@ VSceneView::~VSceneView()
 {
 	delete fImage;
 	delete fScene;
+#if !defined(ANDROID) && !defined(IOS)
 	delete fGraphicsView; 
+#endif
 }
 
 //------------------------------------------------------------------------------------------------------------------------
