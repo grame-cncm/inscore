@@ -64,6 +64,8 @@ validinscore 	:= $(patsubst %.inscore, %.outinscore, $(allinscore))
 allfilter 	:= $(shell [ -d $(version) ] && find $(version) -name "*.out" 2>/dev/null)
 validfilter 	:= $(patsubst %.out, %.outfilter, $(allfilter))
 
+validandroid 	:= $(patsubst %.pdf, %.outandroidpdf, $(androidout))
+
 nodlost	= "definitely lost: 0"
 noilost	= "indirectly lost: 0"
 noplost	= "possibly lost: 0"
@@ -151,6 +153,8 @@ help:
 	@echo " 'filterinscore'	: generates inscore file filter from .flt file"
 	@echo " 'filteroutput'	: generates inscore output from current running inscore instance"
 	@echo " 'validatefilter': validate filter files with reference files"
+	@echo " 'android REMOTEIP=XXX LOCALIP=XXX': create pdf file on android device with ip REMOTEIP. LOCALIP must be the IP of this computer. See readme.txt and follow the instruction before run this command."
+	@echo " 'validateandroid : validate android pdf file. See readme.txt and follow the instruction before run this command."
 	@echo "  output files are generated under the current INScore version number."
 	@echo " 'validate VERSION=another_version': compares the current version with another one"
 	@echo " 'checkleaks [TOOL=a_check_tool]': check memory leaks using a given tool (default INScoreNOView)"
@@ -166,6 +170,8 @@ validate: $(validpdf) $(validlog) $(validinscore) $(validfilter)
 	@echo Validating version $(VERSION) with $(version)
 
 validatefilter: $(validfilter)
+
+validateandroid : $(validandroid)
 
 checkleaks: $(leakout)
 	make showleaks
@@ -224,10 +230,17 @@ $(version)/%.leaks.out: $(version)/$(TOOL)/%.leak.txt
 android: $(androidout)
 
 $(version)android/%.pdf: ../%.inscore
-	@./inscore2pdf_android $< $@
+	@./inscore2pdf_android $< $@ $(REMOTEIP) $(LOCALIP)
+
+%.outandroidpdf: %.pdf
+	$(eval tmp := $(patsubst $(version)android/%, $(VERSION)/%, $<))
+	@./forcepdfdate 20100101120000 $< $(tmp)
+	@[ -f  $(tmp) ] || echo $< : new file
+	$(eval ignored := $(shell grep $< $(version)android/ignore.$(VERSION)android.txt 2>/dev/null || echo _none_))
+	@[ -f  $(ignored) ] || (diff $< $(tmp) 2>/dev/null >/dev/null || ([ -f  $(tmp) ] && echo "open $< $(patsubst $(version)android/%, $(VERSION)/%, $<) # to check changes"; true))
 
 %.outpdf: %.pdf
-	$(eval tmp := $(patsubst $(version)/%, $(VERSION)/%, $<))	
+	$(eval tmp := $(patsubst $(version)/%, $(VERSION)/%, $<))
 	@[ -f  $(tmp) ] || echo $< : new file
 	$(eval ignored := $(shell grep $< $(version)/ignore.$(VERSION).txt 2>/dev/null || echo _none_))
 	@[ -f  $(ignored) ] || (diff $< $(tmp) 2>/dev/null >/dev/null || ([ -f  $(tmp) ] && echo "open $< $(patsubst $(version)/%, $(VERSION)/%, $<) # to check changes"; true))

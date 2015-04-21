@@ -71,6 +71,18 @@ These scripts are listed in the manual.txt file.
 It is recommended to test them as well, by simply droping them manually and see 
 if the result fits the expectations.
 
+======================================================================
+4) Validate android version
+----------------------------------------------------------------------
+
+To validate android version you have to :
+ - copy empty tree folder (androidempty folder) on your android device in /sdcard/inscore and rename it (Version)android.
+ - Start INScore on the device and generate the pdf files with :
+	make android REMOTEIP=YOUR_DEVICE_IP LOCALIP=YOUR_COMPUTER_IP
+YOUR_DEVICE_IP is the device IP (example 192.168.1.2) and YOUR_COMPUTER_IP is the IP address of the computer running the makefile.
+ - copy the tree folder with the generated pdf files from your android device to your computer in this folder.
+ - compare with an other version (here 1.12) with :
+	make validateandroid VERSION=1.12android
 
 ======================================================================
 In case of trouble, contact me: <fober@grame.fr>
