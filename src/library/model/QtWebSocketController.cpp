@@ -81,6 +81,8 @@ void QtWebSocketController::run()
 			ITLErr << "Can't start websocket server on port" << fInfos->getPort() << ITLEndl;
 			exit(-1);
 		}
+		// Stop server in the thread where it was created to avoid problem on timer destruction.
+		fServer->stop();
 	}
 }
 
