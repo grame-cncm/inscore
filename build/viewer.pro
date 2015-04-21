@@ -64,9 +64,10 @@ unix:!android:!macx:LIBS += -L. -lINScore -lGUIDOEngine
 # android support
 ############################## 
 android {
-	LIBS += -L.. -lINScore
+        LIBS += -L. -lINScore
 	ANDROID_EXTRA_LIBS = $$ROOT/lib/GuidoEngine/android/libGUIDOEngine.so
-	DISTFILES += ../android/AndroidManifest.xml
-	ANDROID_PACKAGE_SOURCE_DIR = $$PWD/../android
+        DISTFILES += android/AndroidManifest.xml
+        ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+        QT += androidextras
 }
 

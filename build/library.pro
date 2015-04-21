@@ -111,21 +111,24 @@ ios {
     CONFIG += c++11
     CONFIG+= arm64 armv7 armv7s
     CONFIG += staticlib
-	LIBS += $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a
+    LIBS += $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a
 }
 
 ############################## 
 # linux support
 ############################## 
 unix:!macx:!ios:!android {
-	DEFINES += OSC_HOST_LITTLE_ENDIAN
-	LIBS += -lGUIDOEngine
+    DEFINES += OSC_HOST_LITTLE_ENDIAN
+    LIBS += -lGUIDOEngine
+    QMAKE_CXXFLAGS += -Wno-unused-parameter
 }
 
 ############################## 
 # android support
 ############################## 
 android {
-    DEFINES += ANDROID
+    DEFINES += ANDROID OSC_HOST_LITTLE_ENDIAN
     LIBS += -L$$ROOT/lib/GuidoEngine/android -lGUIDOEngine
+    QMAKE_CXXFLAGS += -Wno-unused-parameter
+    QT += androidextras
 }
