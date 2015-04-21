@@ -31,6 +31,7 @@
 #include "QtWebSocketServer.h"
 #include "IWebSocket.h"
 #include "VObjectView.h"
+#include "VSceneView.h"
 #include "abstractdata.h"
 #include "ITLparser.h"
 
@@ -72,6 +73,7 @@ void QtWebSocketServer::stop()
 	fTimer.stop ();
 	close();										// close the server
 	qDeleteAll(fClients.begin(), fClients.end());	// and delete all the clients.
+	fClients.clear();
 }
 
 //-------------------------------------------------------------------------------
@@ -124,34 +126,87 @@ void QtWebSocketServer::processTextMessage(QString message)
 	if (pClient) {
 		// Verify message and get back image and send it
 		if(message == IWebSocket::kGetImgMsg) {
-			AbstractData data = fView->getImage("PNG");
-			QByteArray bArray = QByteArray::fromRawData(data.data, data.size);
-			pClient->sendBinaryMessage(bArray);
+			getImage(pClient);
 		} else
 		if(message.startsWith(IWebSocket::kPostMsg)) {
-			// Remove request name (ie "post=")
-			message = message.remove(0, 5);
-			stringstream stream;
-			stream.str(message.toStdString());
-			ITLparser p (&stream, 0, fJsEngine, fLua);
-			SIMessageList msgs = p.parse();
-			msgs->send();
-			//INScore::delayMessage(address.c_str(), msg);
+			postCommand(message);
 		} else
 		if(message.startsWith(IWebSocket::kClickMsg)) {
-			// Remove request name (ie "click=")
-			message = message.remove(0, 6);
-			QStringList coord = message.split(",", QString::SkipEmptyParts);
-			if(coord.size() == 2) {
-				int x = coord[0].toInt();
-				int y = coord[1].toInt();
-				cout << "x=" << x << "y=" << y << endl; // TODO GGX
-			}
+			mouseClick(message);
 		} else
-		{
 			pClient->sendTextMessage("Error : unknown request.");
+	}
+}
+
+//-------------------------------------------------------------------------------
+void QtWebSocketServer::getImage(QWebSocket *pClient)
+{
+	AbstractData data = fView->getImage("PNG");
+	QByteArray bArray = QByteArray::fromRawData(data.data, data.size);
+	pClient->sendBinaryMessage(bArray);
+}
+
+//-------------------------------------------------------------------------------
+void QtWebSocketServer::postCommand(QString &commands)
+{
+	// Remove request name (ie "post=")
+	commands = commands.remove(0, 5);
+	stringstream stream;
+	stream.str(commands.toStdString());
+	ITLparser p (&stream, 0, fJsEngine, fLua);
+	SIMessageList msgs = p.parse();
+	msgs->send();
+}
+
+//-------------------------------------------------------------------------------
+void QtWebSocketServer::mouseClick(QString &coordinates)
+{
+	// Remove request name (ie "click=")
+	coordinates = coordinates.remove(0, 6);
+	QStringList coord = coordinates.split(",", QString::SkipEmptyParts);
+	if(coord.size() == 2) {
+		int x = coord[0].toInt();
+		int y = coord[1].toInt();
+
+		// Get item from coordinate in pixel.
+		QGraphicsItem * item = getItem(x, y);
+
+		if(item) {
+			// Create and send a mouse event to the item
+			sendEvent(item, QEvent::GraphicsSceneMousePress);
 		}
 	}
 }
 
+//-------------------------------------------------------------------------------.
+QGraphicsItem * QtWebSocketServer::getItem(int x, int y)
+{
+	VSceneView * sceneView = dynamic_cast<VSceneView *>(fView);
+	if(sceneView) {
+		QGraphicsView* view = sceneView->view();
+
+		// get item at position (x and y in pixel coordinate)
+		return view->itemAt(x, y);
+	}
+	return 0;
+}
+
+//-------------------------------------------------------------------------------.
+void QtWebSocketServer::sendEvent(QGraphicsItem * item, QEvent::Type eventType)
+{
+	VSceneView * sceneView = dynamic_cast<VSceneView *>(fView);
+	// Create an event
+	QGraphicsSceneMouseEvent event(eventType);
+	// Coordinate of the click in item coordinate
+	QPointF point(0, 0);
+	event.setPos(point);
+	event.setButton(Qt::LeftButton);
+	event.setButtons(Qt::LeftButton);
+
+	if(!item->isEnabled())
+		item->setEnabled(true);
+
+	QGraphicsScene * scene = sceneView->scene();
+	scene->sendEvent(item, &event);
+}
 }

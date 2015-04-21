@@ -30,8 +30,10 @@
 
 #include <QTimer>
 #include <QWebSocketServer>
+#include <QEvent>
 
 QT_FORWARD_DECLARE_CLASS(QWebSocket)
+QT_FORWARD_DECLARE_CLASS(QGraphicsItem)
 
 namespace inscore {
 
@@ -85,6 +87,40 @@ class QtWebSocketServer : public QWebSocketServer
 		 * \param message the content of the message.
 		 */
 		void processTextMessage(QString message);
+
+	private:
+		/*!
+		 * \brief getImage Process the "getImage" text message to get the image of the scene.
+		 * \param pClient The client to which send the image.
+		 */
+		void getImage(QWebSocket *pClient);
+
+		/*!
+		 * \brief postCommand Process the "post=" text message to send OSC command to execute it on INScore.
+		 * \param commands the text message must start with "post=" and contains after that the commands.
+		 */
+		void postCommand(QString &commands);
+
+		/*!
+		 * \brief mouseClick Process the "click=" text message to create a click event at the coordinate passed in the message.
+		 * \param coordinates the text message must have the form "click=x,y" with x and y the integer coordinate in pixel of the click.
+		 */
+		void mouseClick(QString &coordinates);
+
+		/*!
+		 * \brief getItem Get a item from the coordinate in pixel.
+		 * \param x
+		 * \param y
+		 * \return the QGraphicsItem or null if no item.
+		 */
+		QGraphicsItem * getItem(int x, int y);
+
+		/*!
+		 * \brief sendEvent Send an event to the item
+		 * \param item the QGraphicsItem
+		 * \param eventType the Type of the event.
+		 */
+		void sendEvent(QGraphicsItem * item, QEvent::Type eventType);
 };
 }
 #endif // QTWEBSOCKETSERVER_H
