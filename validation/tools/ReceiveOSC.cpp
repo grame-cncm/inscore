@@ -4,6 +4,9 @@
 #include <cstdlib>
 #include "osc/OscPacketListener.h"
 #include "ip/UdpSocket.h"
+#include <sys/types.h>
+#include <unistd.h>
+#include <signal.h>
 
 using namespace std;
 
@@ -11,25 +14,26 @@ namespace osc {
 
 class OscReceiveTestPacketListener : public OscPacketListener{
 	public:
-
+		OscReceiveTestPacketListener(bool remoteIp, bool closeAfterFirst) : fRemoteIp(remoteIp), fCloseAfterFirst(closeAfterFirst) {}
 	private:
-			string fGeneratedFile;
-			ofstream fOutputFile;
-			// Method from inscore::IMessage
-			static bool needQuotes (const string& str)
-			{
-				bool ret = false;
-				const char *ptr = str.c_str();
-				if (*ptr == '$') return true;
-				while (*ptr) {
-					int c = *ptr++;
-					if (!isdigit(c) && !isalpha(c)					// number and letters
-						&& (c != '-') && (c != '_')					// identifiers chars
-						&& (c != '+') && (c != '*') && (c != '?'))	// regexp chars (note that class description needs quotes)
-						ret = true;
-				}
-				return ret;
+		bool fRemoteIp;
+		bool fCloseAfterFirst;
+
+		// Method from inscore::IMessage
+		static bool needQuotes (const string& str)
+		{
+			bool ret = false;
+			const char *ptr = str.c_str();
+			if (*ptr == '$') return true;
+			while (*ptr) {
+				int c = *ptr++;
+				if (!isdigit(c) && !isalpha(c)					// number and letters
+					&& (c != '-') && (c != '_')					// identifiers chars
+					&& (c != '+') && (c != '*') && (c != '?'))	// regexp chars (note that class description needs quotes)
+					ret = true;
 			}
+			return ret;
+		}
 	protected:
 
 		void ProcessMessage( const osc::ReceivedMessage& m, const IpEndpointName& remoteEndpoint )
@@ -44,6 +48,11 @@ class OscReceiveTestPacketListener : public OscPacketListener{
 				// argument stream, and argument iterator, used in different
 				// examples below.
 				ReceivedMessage::const_iterator arg = m.ArgumentsBegin();
+				if(fRemoteIp) {
+					char address[32];
+					remoteEndpoint.AddressAsString(address);
+					std::cout << address << " ";
+				}
 				std::cout << m.AddressPattern();
 				for (; arg != m.ArgumentsEnd(); arg++) {
 					if (arg->IsBool())
@@ -86,12 +95,15 @@ class OscReceiveTestPacketListener : public OscPacketListener{
 				std::cout << "error while parsing message: "
 							<< m.AddressPattern() << ": " << e.what() << endl;
 			}
+			if(fCloseAfterFirst) {
+				kill(getpid(), SIGINT);
+			}
 		}
 	};
 
-void RunReceiveOSC( int port)
+void RunReceiveOSC(int port, bool remoteIp, bool closeAfterFirst)
 {
-	osc::OscReceiveTestPacketListener listener;
+	osc::OscReceiveTestPacketListener listener(remoteIp, closeAfterFirst);
 	UdpListeningReceiveSocket s(
 			IpEndpointName( IpEndpointName::ANY_ADDRESS, port ),
 			&listener );
@@ -110,14 +122,23 @@ void RunReceiveOSC( int port)
 int main(int argc, char* argv[])
 {
 	bool help = false;
+	bool remoteIp = false;
+	bool closeAfterFirst  = false;
 	int port = 7000;
 	if(argc <= 3 ) {
-		for (int i = 1; i < argc ; i+=2) {
+		for (int i = 1; i < argc ; i+=1) {
 			if(strcmp( argv[i], "-p") == 0) {
-				if(argc >= i+1) {
-					port = atoi( argv[i+1] );
+				if(argc >= ++i) {
+					port = atoi( argv[i] );
 				}
-			} else {
+			} else
+			if(strcmp( argv[i], "-ip") == 0)	{
+				remoteIp = true;
+			} else
+			if(strcmp( argv[i], "-c") == 0)	{
+				closeAfterFirst = true;
+			} else
+			{
 				help = true;
 			}
 		}
@@ -126,12 +147,14 @@ int main(int argc, char* argv[])
 	}
 
 	if(help || (argc >= 2 && strcmp( argv[1], "-h" ) == 0 )){
-		std::cout << "usage: ReceiveOSC -p [port]" << endl;
+		std::cout << "usage: ReceiveOSC -p [port] [-ip] [-c]" << endl;
 		std::cout << "Default port : 7000" << endl;
+		std::cout << "-ip : print remote address of received message" << endl;
+		std::cout << "-c : close after first received message" << endl;
 		return 0;
 	}
 
-	osc::RunReceiveOSC(port);
+	osc::RunReceiveOSC(port, remoteIp, closeAfterFirst);
 
 	return 0;
 }

@@ -24,7 +24,7 @@ all : $(tools)
 	$(G++) forcepdfdate.cpp -o ../forcepdfdate
 
 ../INScoreVersion: INScoreVersion.cpp
-	$(G++) INScoreVersion.cpp -I../../src/interface $(LIBINSCORE) -o ../INScoreVersion
+	$(G++) INScoreVersion.cpp -I../../src/library/interface $(LIBINSCORE) -o ../INScoreVersion
 
 ../SendOSC: SendOSC.cpp
 	$(G++) SendOSC.cpp  $(OPT) -I../../lib/oscpack $(LIBOSCPACK) -o ../SendOSC
