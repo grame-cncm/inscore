@@ -91,7 +91,7 @@
 
 \maketitle
 
-\vspace*{17cm}
+\vspace*{17.5cm}
  
 {\small INScore makes use of the following technologies:}
 \begin{table}[h]
@@ -99,8 +99,7 @@
 {\small The GUIDOEngine}  					& {\small \url{http://guidolib.sf.net}} \\
 {\small The IRCAM Gesture Follower} 		& {\small \url{http://imtr.ircam.fr/imtr/Gesture_Follower}} \\
 {\small The GRAME Faust Compiler} 		& {\small \url{http://faust.grame.fr}} \\
-{\small The Qt5 cross-platform application and UI framework} & {\small \url{http://qt-project.org/qt5}} \\
-{\small The V8 JavaScript Engine} 				& {\small \url{https://code.google.com/p/v8/}}
+{\small The Qt5 cross-platform application and UI framework} & {\small \url{http://qt-project.org/qt5}}
 \end{tabular}
 \end{table}%
 
@@ -3001,7 +3000,7 @@ x position of \OSC{/ITL/scene/foo} will be set to x position of \OSC{/ITL/scene/
 \index{Scripting!javascript}
 \index{Scripting!lua}
 
-INScore supports Javascript and Lua as scripting languages. Javascript is embedded by default (using the v8 engine\footnote{\url{http://code.google.com/p/v8/}}). INScore needs to be recompiled to embed the Lua engine\footnote{\url{http://www.lua.org/}}. A script section is indicated similarly to a Javascript section in html i.e. enclosed in an opening \OSC{<?} and a closing \OSC{?>}.
+INScore supports Javascript and Lua as scripting languages. Javascript is embedded by default (using the Qt Javascript engine). INScore needs to be recompiled to embed the Lua engine\footnote{\url{http://www.lua.org/}}. A script section is indicated similarly to a Javascript section in html i.e. enclosed in an opening \OSC{<?} and a closing \OSC{?>}.
 \begin{rail} 
 script : '<?' ('javascript' | 'lua') script '?>'
 \end{rail}
@@ -3039,7 +3038,7 @@ javascript :  'run' 'code'
 The \OSC{run} method evaluates the code. Similarly to javascript sections in scripts, the output of the evaluation is expected to be a string containing valid INScore messages that are next executed. 
 Actually, including a javascript section in a script is equivalent to send the \OSC{run} message with the same code as parameter to the javascript object.
 
-The Javascript engine is based on V8 that implements ECMAScript as specified in ECMA-262, 5th edition, extended with additional functions:
+The Javascript engine is based on the Qt5 Javascrip engine, extended with additional functions:
 \begin{itemize}
 \item \textbf{\OSC{version()}} : gives the javascript engine version number as a string.
 \item \textbf{\OSC{print(val1 [, val2 [, ...]])}} : print the arguments to the OSC standard output. The arguments list is prefixed by 'javascript:'. The function is provided for debug purpose.
