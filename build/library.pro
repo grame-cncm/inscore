@@ -33,9 +33,9 @@ SOURCES +=  $$files($$OSCIP/*.cpp)							# oscpack files
 
 HEADERS  =  $$files($$SRC/library/*.h, true)
 HEADERS +=  $$files($$SRC/libmapping/src/*.h, true)
-SOURCES +=  $$files($$OSC/ip/*.h)
-SOURCES +=  $$files($$OSC/OSC/*.h)
-win32:SOURCES +=  $$files($$ROOT/win32/dirent/*.h)
+HEADERS +=  $$files($$OSC/ip/*.h)
+HEADERS +=  $$files($$OSC/OSC/*.h)
+win32:HEADERS +=  $$files($$ROOT/win32/dirent/*.h)
 
 ############################## 
 # include directories
