@@ -26,16 +26,14 @@
 #include "VSceneView.h"
 
 #include <QImage>
-#include <QPixmap>
 #include <QScreen>
 #include <QBuffer>
 #include <QPainter>
 #include <QGraphicsRectItem>
-#include <QGraphicsWidget>
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QResizeEvent>
-#include <QDebug>
+#include <QPinchGesture>
 
 #if defined(ANDROID) || defined(IOS)
 #include "VQtInit.h"
@@ -53,48 +51,101 @@
 #include "VExport.h"
 #include "INScore.h"
 #include "ISignalProfiler.h"
+#include "WindowEventFilter.h"
 
-#define SCENE_RECT QRect(-400,-400,800,800)
+QRect SCENE_RECT(-400,-400,800,800);
 
 
 namespace inscore
 {
 
-class ZoomingGraphicsView : public QGraphicsView
+//------------------------------------------------------------------------------------------------------------------------
+void ZoomingGraphicsView::doTranslation() {
+	if(fScene) {
+		horizontalOffset = fScene->getXOrigin() * -400;
+		verticalOffset = fScene->getYOrigin() * -400;
+		translate(horizontalOffset, verticalOffset);
+	}
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+void ZoomingGraphicsView::doZoom() {
+	if(fScene) {
+		fTotalScaleFactor = fScene->getScale();
+		fScaleFactor = fTotalScaleFactor;
+		SCENE_RECT = QRect(QPoint(-400 / fTotalScaleFactor, -400 / fTotalScaleFactor), QPoint(400 / fTotalScaleFactor, 400 / fTotalScaleFactor));
+		fitInView( SCENE_RECT , Qt::KeepAspectRatio );
+	}
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+void ZoomingGraphicsView::resizeEvent ( QResizeEvent * ) {
+	// scene adaptation to avoid scroll bars
+	fitInView( SCENE_RECT , Qt::KeepAspectRatio );
+	if(fScene) {
+		fScene->setUpdateVersion(true);
+	}
+	QSize	s = size();
+	QRect r = QApplication::desktop()->screenGeometry();
+	if (!fScene) return;
+
+	// full screen detection and transmission to the model
+	bool fullscreen = (r.width() == s.width()) && (r.height() == s.height());
+	if (fullscreen) {
+		if (!fScene->getFullScreen()) fScene->setFullScreen(true);
+	}
+	else if (fScene->getFullScreen()) fScene->setFullScreen(false);
+	doTranslation();
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+bool ZoomingGraphicsView::viewportEvent(QEvent *event)
 {
-	std::string		fSceneAddress;
-//	VSceneView* fSceneView;
-	IScene*	fScene;
+	if (event->type() == QEvent::Gesture)
+		return gestureEvent(static_cast<QGestureEvent*>(event));
+	return QGraphicsView::viewportEvent(event);
+}
 
-	public :
-		ZoomingGraphicsView(QGraphicsScene * s) : QGraphicsView(s), fScene(0) {}
-		virtual ~ZoomingGraphicsView() {}
+bool ZoomingGraphicsView::gestureEvent(QGestureEvent *event)
+{
+	if (QGesture *pinch = event->gesture(Qt::PinchGesture))
+		pinchTriggered(static_cast<QPinchGesture *>(pinch));
+	return true;
+}
 
-		void setSceneAddress(const std::string& name)	{ fSceneAddress = name; }
-		void setScene		(IScene* scene)		{ fScene = scene; }
+void ZoomingGraphicsView::pinchTriggered(QPinchGesture *event)
+{
+	// New Zoom factor
+	fScaleFactor = event->totalScaleFactor() * fTotalScaleFactor;
 
-	protected:
-		virtual void	closeEvent	(QCloseEvent *);
-		virtual void	paintEvent  (QPaintEvent * );
+	QPointF p0 = event->lastCenterPoint();
+	QPointF p1 = event->centerPoint();
+	// Verify horizontal limits to avoid scrolling when no scale factor.
+	qreal h = horizontalOffset + (p1.x() - p0.x()) / fScaleFactor;
+	if(fScaleFactor * 400 - 400 > abs(h))
+		horizontalOffset = h;
 
-		void resizeEvent ( QResizeEvent * ) {
-			// scene adaptation to avoid scroll bars
-			fitInView( SCENE_RECT , Qt::KeepAspectRatio );
-			if(fScene) {
-				fScene->setUpdateVersion(true);
-			}
-			QSize	s = size();
-			QRect r = QApplication::desktop()->screenGeometry();
-			if (!fScene) return;
+	// Verify vertical limits to avoid scrolling when no scale factor.
+	qreal v = verticalOffset + (p1.y() - p0.y()) / fScaleFactor;
+	if(fScaleFactor * 400 - 400 > abs(v))
+		verticalOffset = v;
 
-			// full screen detection and transmission to the model
-			bool fullscreen = (r.width() == s.width()) && (r.height() == s.height());
-			if (fullscreen) {
-				if (!fScene->getFullScreen()) fScene->setFullScreen(true);
-			}
-			else if (fScene->getFullScreen()) fScene->setFullScreen(false);
-		}
-};
+	// Zomm
+	SCENE_RECT = QRect(QPoint(-400 / fScaleFactor, -400 / fScaleFactor), QPoint(400 / fScaleFactor, 400 / fScaleFactor));
+	fitInView( SCENE_RECT , Qt::KeepAspectRatio );
+
+	// Translation
+	translate(horizontalOffset, verticalOffset);
+}
+
+qreal ZoomingGraphicsView::getXOrigin()
+{
+	return horizontalOffset / -400;
+}
+qreal ZoomingGraphicsView::getYOrigin()
+{
+	return verticalOffset / -400;
+}
 
 //------------------------------------------------------------------------------------------------------------------------
 void ZoomingGraphicsView::paintEvent (QPaintEvent * event) 
@@ -126,7 +177,7 @@ VSceneView::VSceneView(const std::string& address, QGraphicsScene * scene)
 {
 	fImage = 0;
 	fGraphicsView = 0;
-	fEventFilter = 0;
+	fResizeMoveEventFilter = 0;
 	fDataScreenShotSize = 0;
 	fUpdateScreenShot = false;
 	fNewVersion = 0;
@@ -138,11 +189,21 @@ VSceneView::VSceneView(const std::string& address, QGraphicsScene * scene)
 		VQtInit::getTabWidget()->addTab(fGraphicsView, address.c_str());
 #endif
 		fGraphicsView->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+		fGraphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // Default to Qt::ScrollBarAsNeeded
+		fGraphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // Default to Qt::ScrollBarAsNeeded
+		fGraphicsView->viewport()->setAttribute(Qt::WA_AcceptTouchEvents);
+		fGraphicsView->viewport()->grabGesture(Qt::PinchGesture);
+		fGraphicsView->setTransformationAnchor(QGraphicsView::NoAnchor);
+		fGraphicsView->setResizeAnchor(QGraphicsView::NoAnchor);
+
 		fGraphicsView->scene()->setSceneRect( SCENE_RECT );
 		fGraphicsView->setWindowTitle( address.c_str() );
 		fGraphicsView->setSceneAddress( address.c_str() );
 		fDefaultFlags = fGraphicsView->windowFlags();
-		fEventFilter = new WindowEventFilter( address, fGraphicsView );
+		fResizeMoveEventFilter = new ResizeMoveEventFilter( address, fGraphicsView );
+		fTouchEventFilter = new TouchEventFilter( address, fGraphicsView );
+		fGraphicsView->viewport()->installEventFilter(fTouchEventFilter);
+
 		QColor white(255, 255, 255, 255);
 		fGraphicsView->setBackgroundBrush( QBrush(white));
 		fScene->setBackgroundBrush (white);
@@ -217,9 +278,9 @@ void VSceneView::updateOnScreen( IScene * scene )
 	bool fullscreen = fGraphicsView->windowState() & Qt::WindowFullScreen;
 	if ( (fullscreen && !scene->getFullScreen()) || ( !fullscreen && scene->getFullScreen()))
 	{
-		if (!fullscreen)	fEventFilter->setFullScreen (true);
+		if (!fullscreen)	fResizeMoveEventFilter->setFullScreen (true);
 		fGraphicsView->setWindowState(fGraphicsView->windowState() ^ Qt::WindowFullScreen);
-		if (fullscreen)		fEventFilter->setFullScreen (false);
+		if (fullscreen)		fResizeMoveEventFilter->setFullScreen (false);
 	}
 
 	// Visibility
@@ -231,21 +292,21 @@ void VSceneView::updateOnScreen( IScene * scene )
 	else fGraphicsView->hide();
 
 	if (scene->getFrameless()) {
-		if ( !fEventFilter->getFrameless() ){
+		if ( !fResizeMoveEventFilter->getFrameless() ){
 			fGraphicsView->setWindowFlags (Qt::FramelessWindowHint);
 			fGraphicsView->showNormal ();
-			fEventFilter->setFrameless(true);
+			fResizeMoveEventFilter->setFrameless(true);
 			fGraphicsView->move( scenePos(scene) );
 		}
 	}
-	else if ( fEventFilter->getFrameless() ) {
+	else if ( fResizeMoveEventFilter->getFrameless() ) {
 		fGraphicsView->setWindowFlags (fDefaultFlags);
 		fGraphicsView->showNormal ();
-		fEventFilter->setFrameless(false);
+		fResizeMoveEventFilter->setFrameless(false);
 	}
 
 	// Size
-	if ( !fEventFilter->running() )	{		// do not update the size/position while the fEventFilter is running.
+	if ( !fResizeMoveEventFilter->running() )	{		// do not update the size/position while the fEventFilter is running.
 		if (!scene->getFullScreen()) {		// don't resize or move in fullscreen mode
 			QRect r = QApplication::desktop()->screenGeometry();
 			float lowestDimension = qMin( r.width(), r.height() );
@@ -257,23 +318,27 @@ void VSceneView::updateOnScreen( IScene * scene )
 			bool needResize = (w != fGraphicsView->width()) || (h != fGraphicsView->height());
 			if (needResize) {
 				// deactivates the events notification to avoid events loop between 'updateModel' and 'updateTo'
-				fGraphicsView->removeEventFilter( fEventFilter );
+				fGraphicsView->removeEventFilter( fResizeMoveEventFilter );
 				fGraphicsView->resize( w, h );
-				fGraphicsView->installEventFilter( fEventFilter );
+				fGraphicsView->installEventFilter( fResizeMoveEventFilter );
 			}
 
 			// Position
-			fEventFilter->setAbsoluteXY (scene->getAbsoluteCoordinates());
+			fResizeMoveEventFilter->setAbsoluteXY (scene->getAbsoluteCoordinates());
 			QPoint newPos = scenePos(scene);
 			bool needMove = (newPos != fGraphicsView->pos());
 			if (needMove ) {
 				// deactivates the events notification to avoid events loop between 'updateModel' and 'updateTo'
-				fGraphicsView->removeEventFilter( fEventFilter );
+				fGraphicsView->removeEventFilter( fResizeMoveEventFilter );
 				fGraphicsView->move( newPos );
-				fGraphicsView->installEventFilter( fEventFilter );
+				fGraphicsView->installEventFilter( fResizeMoveEventFilter );
 			}
 		}
 	}
+	// Zoom of the scene
+	fGraphicsView->doZoom();
+	// Position of the scene
+	fGraphicsView->doTranslation();
 }
 
 
@@ -415,70 +480,6 @@ const AbstractData VSceneView::getImage(const char *format)
 	data.data = fDataScreenShot.constData();
 	data.size = fDataScreenShot.size();
 	return data;
-}
-
-//--------------------------------------------------------------------------
-WindowEventFilter::WindowEventFilter(const std::string& address, QGraphicsView* parent) 
-	: QObject(parent), fAbsoluteXY(false), fFrameless(false), fFullScreen(false), fOSCAddress(address)
-{
-	fTimer = new QTimer(this);
-	fTimer->setSingleShot(true);
-	connect(fTimer, SIGNAL(timeout()), this, SLOT(updateModel()));
-}
-
-//--------------------------------------------------------------------------
-void WindowEventFilter::sendMessage( const char * addr , const char * cmd , float f )
-{
-	INScore::MessagePtr msg = INScore::newMessage( cmd );
-	INScore::add(msg, f);
-	INScore::postMessage( addr , msg );
-}
-
-//--------------------------------------------------------------------------
-bool WindowEventFilter::eventFilter(QObject *obj, QEvent *event)
-{
- 	if ( !fFrameless && !fFullScreen && ((event->type() == QEvent::Move) || (event->type() == QEvent::Resize)))
-	{
-		fTimer->stop();
-		fTimer->start(100);
-		return false;
-	}
-	else
-		// standard event processing
-        return QObject::eventFilter(obj, event);
-}
-
-//--------------------------------------------------------------------------
-void WindowEventFilter::updateModel()
-{
-	if (fFrameless) return;
-
-	QWidget * view = dynamic_cast<QWidget *>(parent());
-	if ( !view ) {
-		qFatal("WindowEventFilter::update(): WindowEventFilter parent must be a QWidget");
-		return;
-	}
-
-	float x, y;
-	QRect r = QApplication::desktop()->screenGeometry();
-	float lowestDimension = qMin( r.width(), r.height() );
-	if (fAbsoluteXY) {
-		x = view->pos().x();
-		y = view->pos().y();
-	}
-	else {
-		QPointF screenCenter = r.center();
-
-		x = (view->pos().x() + view->width()/2.0f - screenCenter.x()) / (lowestDimension/2.0f);
-		y = (view->pos().y() + view->height()/2.0f - screenCenter.y()) / (lowestDimension/2.0f);
-	}
-	sendMessage( fOSCAddress.c_str() , kx_GetSetMethod , x );
-	sendMessage( fOSCAddress.c_str() , ky_GetSetMethod , y );
-
-	float width = view->width() / (lowestDimension/2.0f);
-	float height = view->height() / (lowestDimension/2.0f);
-	sendMessage( fOSCAddress.c_str() , kwidth_GetSetMethod , width );
-	sendMessage( fOSCAddress.c_str() , kheight_GetSetMethod , height );
 }
 
 } // end namespoace
