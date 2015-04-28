@@ -85,8 +85,7 @@ class OSCStream
 	static void stop();
 	static void sendEvent(const IMessage* msg, const std::string& dst, int port);
 
-				 OSCStream(UdpSocket* socket) 
-					: fState(kIdle), fPort(1024), fAddress(kLocalhost), fOutStream(fBuffer, kOutBufferSize), fSocket(socket) {} 
+				 OSCStream(UdpSocket* socket);
 		virtual ~OSCStream() {}
 		
 		osc::OutboundPacketStream& stream()				{ return fOutStream; }

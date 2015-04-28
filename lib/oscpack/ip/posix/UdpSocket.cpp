@@ -161,6 +161,12 @@ public:
 		return IpEndpointNameFromSockaddr( sockAddr );
 	}
 
+	void allowBroadcast()
+	{
+		int val = 1;
+		setsockopt (socket_, SOL_SOCKET, SO_BROADCAST, &val, sizeof(int));
+	}
+
 	void Connect( const IpEndpointName& remoteEndpoint )
 	{
 		SockaddrFromIpEndpointName( connectedAddr_, remoteEndpoint );
@@ -230,6 +236,11 @@ UdpSocket::UdpSocket()
 UdpSocket::~UdpSocket()
 {
 	delete impl_;
+}
+
+void UdpSocket::allowBroadcast()
+{
+	impl_->allowBroadcast();
 }
 
 IpEndpointName UdpSocket::LocalEndpointFor( const IpEndpointName& remoteEndpoint ) const

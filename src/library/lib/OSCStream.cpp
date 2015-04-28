@@ -38,6 +38,13 @@ static UdpSocket  _evtSocket;
 OSCStream gEventsStream (&_evtSocket);
 
 //--------------------------------------------------------------------------
+OSCStream::OSCStream(UdpSocket* socket)
+	: fState(kIdle), fPort(1024), fAddress(kLocalhost), fOutStream(fBuffer, kOutBufferSize), fSocket(socket)
+{
+	fSocket->allowBroadcast();
+}
+
+//--------------------------------------------------------------------------
 void OSCStream::sendEvent(const IMessage* msg, const string& dst, int port)
 {
 	gEventsStream.setAddress (dst);
