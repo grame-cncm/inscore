@@ -164,7 +164,8 @@ public:
 	void allowBroadcast()
 	{
 		int val = 1;
-		setsockopt (socket_, SOL_SOCKET, SO_BROADCAST, &val, sizeof(int));
+		setsockopt (socket_, SOL_SOCKET, SO_BROADCAST, &val, sizeof(val));
+//		setsockopt (socket_, IPPROTO_IP, IP_PKTINFO, &val, sizeof(val));
 	}
 
 	void Connect( const IpEndpointName& remoteEndpoint )
