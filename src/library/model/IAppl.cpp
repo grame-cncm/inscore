@@ -45,7 +45,6 @@
 #include "ITLparser.h"
 #include "OSCAddress.h"
 #include "Updater.h"
-#include "ip/NetworkingUtils.h"
 #include "TMessageEvaluator.h"
 #include "ITLError.h"
 #include "Tools.h"
@@ -63,31 +62,6 @@ using namespace std;
 
 namespace inscore
 {
-
-//--------------------------------------------------------------------------
-// ip address utility
-//--------------------------------------------------------------------------
-static string getHostName()
-{
-	char name[512];
-	int ret = gethostname(name, 512);
-	if (ret == -1) return "";
-	return name;
-}
-
-string getIP()
-{
-	string name = getHostName();
-	stringstream ipStr;
-	if (name.size()) {
-		unsigned long ip = GetHostByName(name.c_str());
-		ipStr	<< ((ip >> 24) & 0xff) << '.'
-				<< ((ip >> 16) & 0xff) << '.'
-				<< ((ip >> 8) & 0xff) << '.'
-				<< (ip & 0xff);
-	}
-	return ipStr.str();
-}
 
 //--------------------------------------------------------------------------
 const string IAppl::kApplType("appl");
@@ -331,7 +305,7 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 SIMessage IAppl::hello()	const
 {
 	SIMessage msg = IMessage::create (getOSCAddress());
-	*msg << getIP() << getUDPInPort() << getUDPOutPort() << getUDPErrPort();
+	*msg << Tools::getIP() << getUDPInPort() << getUDPOutPort() << getUDPErrPort();
 	return msg;
 }
 
