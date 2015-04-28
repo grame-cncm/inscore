@@ -51,6 +51,7 @@ class IOSCListener : public osc::OscPacketListener, public libmapping::smartable
 {
 	UdpListeningReceiveSocket fSocket;	///< the udp socket listener
 	SIMessageStack	fMsgStack;			///< the messages stack
+	unsigned long	fMyAddress;
 	bool	fRunning;
 
 	public:
