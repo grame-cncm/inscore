@@ -44,6 +44,17 @@ macx {
 	ICON 		= $$ROOT/rsrc/INScoreViewer.icns
 }
 
+##############################
+# ios support
+##############################
+ios {
+        LIBS += -L. -lINScore $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a
+        QMAKE_INFO_PLIST = $$PWD/Info.plist
+        ios_icon.files = $$files($$ROOT/rsrc/ios/*.png)
+        QMAKE_BUNDLE_DATA += ios_icon
+        ICON 		= $$ROOT/rsrc/INScoreViewer.icns
+}
+
 ############################## 
 # windows support
 # assumes environment is MSVC
