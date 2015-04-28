@@ -71,9 +71,10 @@ QTabWidget*	VQtInit::getTabWidget()
 	return sTabWidget;
 }
 #endif
-#ifdef ANDROID
+#if defined(ANDROID) || defined(IOS)
 void VQtInit::keepScreenOn()
 {
+#ifdef ANDROID
 	QAndroidJniObject activity = QtAndroid::androidActivity();
 	if (activity.isValid()) {
 		QAndroidJniObject window = activity.callObjectMethod("getWindow", "()Landroid/view/Window;");
@@ -83,6 +84,8 @@ void VQtInit::keepScreenOn()
 			window.callObjectMethod("addFlags", "(I)V", FLAG_KEEP_SCREEN_ON);
 		}
 	}
+#else
+#endif
 }
 #endif
 } // end namespoace
