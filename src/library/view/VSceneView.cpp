@@ -60,28 +60,26 @@ namespace inscore
 {
 
 //------------------------------------------------------------------------------------------------------------------------
-void ZoomingGraphicsView::doTranslation() {
+void ZoomingGraphicsView::doZoomTranslate()
+{
 	if(fScene) {
-		horizontalOffset = fScene->getXOrigin() * -400;
-		verticalOffset = fScene->getYOrigin() * -400;
-		translate(horizontalOffset, verticalOffset);
-	}
-}
-
-//------------------------------------------------------------------------------------------------------------------------
-void ZoomingGraphicsView::doZoom() {
-	if(fScene) {
-		fTotalScaleFactor = fScene->getScale();
-		fScaleFactor = fTotalScaleFactor;
-		SCENE_RECT = QRect(QPoint(-400 / fTotalScaleFactor, -400 / fTotalScaleFactor), QPoint(400 / fTotalScaleFactor, 400 / fTotalScaleFactor));
-		fitInView( SCENE_RECT , Qt::KeepAspectRatio );
-	}
+        qreal h = fScene->getXOrigin() * -400;
+        qreal v = fScene->getYOrigin() * -400;
+        if (fTotalScaleFactor != fScene->getScale() || h != horizontalOffset || v != verticalOffset) {
+            horizontalOffset = h;
+            verticalOffset = v;
+            fTotalScaleFactor = fScene->getScale();
+            fScaleFactor = fTotalScaleFactor;
+            SCENE_RECT = QRect(QPoint((-400 + horizontalOffset) / fTotalScaleFactor, (-400 + verticalOffset) / fTotalScaleFactor), QPoint((400+ horizontalOffset) / fTotalScaleFactor, (400 + verticalOffset) / fTotalScaleFactor));
+            fitInView( SCENE_RECT , Qt::KeepAspectRatio );
+        }
+    }
 }
 
 //------------------------------------------------------------------------------------------------------------------------
 void ZoomingGraphicsView::resizeEvent ( QResizeEvent * ) {
 	// scene adaptation to avoid scroll bars
-	fitInView( SCENE_RECT , Qt::KeepAspectRatio );
+    fitInView( SCENE_RECT , Qt::KeepAspectRatio );
 	if(fScene) {
 		fScene->setUpdateVersion(true);
 	}
@@ -95,7 +93,6 @@ void ZoomingGraphicsView::resizeEvent ( QResizeEvent * ) {
 		if (!fScene->getFullScreen()) fScene->setFullScreen(true);
 	}
 	else if (fScene->getFullScreen()) fScene->setFullScreen(false);
-	doTranslation();
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -121,36 +118,46 @@ void ZoomingGraphicsView::pinchTriggered(QPinchGesture *event)
 	QPointF p0 = event->lastCenterPoint();
 	QPointF p1 = event->centerPoint();
 	// Verify horizontal limits to avoid scrolling when no scale factor.
-	qreal h = horizontalOffset + (p1.x() - p0.x()) / fScaleFactor;
-	if(fScaleFactor * 400 - 400 > abs(h))
+    qreal h = horizontalOffset - (p1.x() - p0.x());
+
+    // limit translation gesture if the zoom is too small
+    qreal max = fScaleFactor * 400 - 400;
+    if(max > abs(h))
 		horizontalOffset = h;
+    else {
+        if(h > 0)
+            horizontalOffset = max;
+        else horizontalOffset = -max;
+    }
 
-	// Verify vertical limits to avoid scrolling when no scale factor.
-	qreal v = verticalOffset + (p1.y() - p0.y()) / fScaleFactor;
-	if(fScaleFactor * 400 - 400 > abs(v))
+    // Verify vertical limits to avoid scrolling when no scale factor.
+    qreal v = verticalOffset - (p1.y() - p0.y());
+    if(max > abs(v))
 		verticalOffset = v;
+    else {
+        if(v > 0)
+            verticalOffset = max;
+        else verticalOffset = -max;
+    }
 
-	// Zomm
-	SCENE_RECT = QRect(QPoint(-400 / fScaleFactor, -400 / fScaleFactor), QPoint(400 / fScaleFactor, 400 / fScaleFactor));
-	fitInView( SCENE_RECT , Qt::KeepAspectRatio );
-
-	// Translation
-	translate(horizontalOffset, verticalOffset);
+    // Zoom and translate
+    SCENE_RECT = QRect(QPoint((-400 + horizontalOffset) / fScaleFactor, (-400 + verticalOffset) / fScaleFactor), QPoint((400+ horizontalOffset) / fScaleFactor, (400 + verticalOffset) / fScaleFactor));
+    fitInView( SCENE_RECT , Qt::KeepAspectRatio );
 }
 
 qreal ZoomingGraphicsView::getXOrigin()
 {
-	return horizontalOffset / -400;
+    return horizontalOffset / -400;
 }
 qreal ZoomingGraphicsView::getYOrigin()
 {
-	return verticalOffset / -400;
+    return verticalOffset / -400;
 }
 
 //------------------------------------------------------------------------------------------------------------------------
 void ZoomingGraphicsView::paintEvent (QPaintEvent * event) 
 {
-	QGraphicsView::paintEvent (event);
+    QGraphicsView::paintEvent (event);
 	if (fScene)  {
 		fScene->endPaint();
 
@@ -202,7 +209,7 @@ VSceneView::VSceneView(const std::string& address, QGraphicsScene * scene)
 		fDefaultFlags = fGraphicsView->windowFlags();
 		fResizeMoveEventFilter = new ResizeMoveEventFilter( address, fGraphicsView );
 		fTouchEventFilter = new TouchEventFilter( address, fGraphicsView );
-		fGraphicsView->viewport()->installEventFilter(fTouchEventFilter);
+        fGraphicsView->viewport()->installEventFilter(fTouchEventFilter);
 
 		QColor white(255, 255, 255, 255);
 		fGraphicsView->setBackgroundBrush( QBrush(white));
@@ -334,11 +341,12 @@ void VSceneView::updateOnScreen( IScene * scene )
 				fGraphicsView->installEventFilter( fResizeMoveEventFilter );
 			}
 		}
-	}
-	// Zoom of the scene
-	fGraphicsView->doZoom();
-	// Position of the scene
-	fGraphicsView->doTranslation();
+    }
+    // If user is doing a gesture, don't update zoom and translation.
+    if (!fTouchEventFilter->running()) {
+        // Zoom and position of the scene
+        fGraphicsView->doZoomTranslate();
+    }
 }
 
 
@@ -378,18 +386,18 @@ bool VSceneView::copy(unsigned int* dest, int w, int h, bool /*smooth*/ )
 //------------------------------------------------------------------------------------------------------------------------
 void VSceneView::updateView( IScene * scene )
 {
-	if (scene->getDeleted()) return;
+    if (scene->getDeleted()) return;
 
 	if (fGraphicsView) updateOnScreen (scene);
 	else updateOffScreen (scene);
 	fGraphicsView->setScene (scene);
 
-	// Export
+    // Export
 	std::pair<std::string, bool> myExport = scene->getNextExportFlag();
-	while ( myExport.first.length() ) {
-		VExport::exportScene( fGraphicsView , myExport.first.c_str() );
+    while ( myExport.first.length() ) {
+        VExport::exportScene( fGraphicsView , myExport.first.c_str() );
 		const IMessageList*	msgs = scene->getMessages(EventsAble::kExport);
-		if (msgs) {
+        if (msgs) {
 			MouseLocation mouse (0, 0, 0, 0, 0, 0);
 			EventContext env(mouse, scene->getDate(), scene);
 			TMessageEvaluator me;

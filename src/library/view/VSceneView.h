@@ -137,10 +137,10 @@ class ZoomingGraphicsView : public QGraphicsView
 //	VSceneView* fSceneView;
 	IScene*	fScene;
 
-	// Scale factor used during a zoom
+    // Scale factor used during a zoom gesture
 	qreal fScaleFactor;
 
-	// Scale factor used as reference during a zoom.
+    // Scale factor used as reference during a zoom. It's the model scale factor.
 	qreal fTotalScaleFactor;
 
 	// Offset to translate the scene in the view.
@@ -156,14 +156,9 @@ class ZoomingGraphicsView : public QGraphicsView
 		void setScene		(IScene* scene)		{ fScene = scene; }
 
 		/*!
-		 * \brief doTranslation Translate the scene in the view.
+         * \brief doZoom zoom on the scene and translate the scene in the view. It use scene scale as zoom factor and xorigin / yorigin to translate the scene.
 		 */
-		void doTranslation();
-
-		/*!
-		 * \brief doZoom zoom on the scene. It use scene scale as zoom factor.
-		 */
-		void doZoom();
+        void doZoomTranslate();
 
 		/*!
 		 * \brief getScaleFactor Get the scale factor of the scene. This value is updated after a zoom with touch gesture.
