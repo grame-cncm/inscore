@@ -73,41 +73,57 @@ bool ResizeMoveEventFilter::isStartTimer(const QEvent *event)
 //--------------------------------------------------------------------------
 void ResizeMoveEventFilter::updateModel()
 {
-        if (fFrameless || Qt::NoButton != QApplication::mouseButtons())
-                return;
+    if (fFrameless)
+        return;
 
-        QWidget * view = dynamic_cast<QWidget *>(parent());
-        if ( !view ) {
-                qFatal("WindowEventFilter::update(): WindowEventFilter parent must be a QWidget");
-                return;
-        }
+    QWidget * view = dynamic_cast<QWidget *>(parent());
+    if ( !view ) {
+        qFatal("WindowEventFilter::update(): WindowEventFilter parent must be a QWidget");
+        return;
+    }
 
-        float x, y;
-        QRect r = QApplication::desktop()->screenGeometry();
-        float lowestDimension = qMin( r.width(), r.height() );
-        if (fAbsoluteXY) {
-                x = view->pos().x();
-                y = view->pos().y();
-        }
-        else {
-                QPointF screenCenter = r.center();
+    float x, y;
+    QRect r = QApplication::desktop()->screenGeometry();
+    float lowestDimension = qMin( r.width(), r.height() );
+    if (fAbsoluteXY) {
+        x = view->pos().x();
+        y = view->pos().y();
+    }
+    else {
+        QPointF screenCenter = r.center();
 
-                x = (view->pos().x() + view->width()/2.0f - screenCenter.x()) / (lowestDimension/2.0f);
-                y = (view->pos().y() + view->height()/2.0f - screenCenter.y()) / (lowestDimension/2.0f);
-        }
-        sendMessage( fOSCAddress.c_str() , kx_GetSetMethod , x );
-        sendMessage( fOSCAddress.c_str() , ky_GetSetMethod , y );
+        x = (view->pos().x() + view->width()/2.0f - screenCenter.x()) / (lowestDimension/2.0f);
+        y = (view->pos().y() + view->height()/2.0f - screenCenter.y()) / (lowestDimension/2.0f);
+    }
+    sendMessage( fOSCAddress.c_str() , kx_GetSetMethod , x );
+    sendMessage( fOSCAddress.c_str() , ky_GetSetMethod , y );
 
-        float width = view->width() / (lowestDimension/2.0f);
-        float height = view->height() / (lowestDimension/2.0f);
-        sendMessage( fOSCAddress.c_str() , kwidth_GetSetMethod , width );
-        sendMessage( fOSCAddress.c_str() , kheight_GetSetMethod , height );
+    float width = view->width() / (lowestDimension/2.0f);
+    float height = view->height() / (lowestDimension/2.0f);
+    sendMessage( fOSCAddress.c_str() , kwidth_GetSetMethod , width );
+    sendMessage( fOSCAddress.c_str() , kheight_GetSetMethod , height );
+}
+
+TouchEventFilter::TouchEventFilter(const std::string& address, ZoomingGraphicsView* parent)
+    : WindowEventFilter(address, parent), fIsRunning(false) {}
+
+bool TouchEventFilter::eventFilter(QObject *obj, QEvent *event)
+{
+    fIsRunning = isStartTimer(event);
+    if(event->type() == QEvent::TouchEnd){
+        // At end of a gesture, send messages and update model
+        updateModel();
+        fIsRunning = false;
+        return false;
+    }
+    return QObject::eventFilter(obj, event);
 }
 
 //--------------------------------------------------------------------------
 bool TouchEventFilter::isStartTimer(const QEvent *event)
 {
-	return event->type() == QEvent::TouchEnd;
+    // Filter is running from TouchBegin to TouchEnd
+    return fIsRunning || event->type() == QEvent::TouchBegin || event->type() == QEvent::TouchUpdate || event->type() == QEvent::TouchEnd;
 }
 
 //--------------------------------------------------------------------------
@@ -115,8 +131,8 @@ void TouchEventFilter::updateModel()
 {
     // Send Message for scene zoom (scale) and position (xorigin and yorigin)
     sendMessage(fOSCAddress.c_str(), kscale_GetSetMethod, fGraphicsView->getScaleFactor());
-	sendMessage(fOSCAddress.c_str(), kxorigin_GetSetMethod, fGraphicsView->getXOrigin());
-	sendMessage(fOSCAddress.c_str(), kyorigin_GetSetMethod, fGraphicsView->getYOrigin());
+    sendMessage(fOSCAddress.c_str(), kxorigin_GetSetMethod, fGraphicsView->getXOrigin());
+    sendMessage(fOSCAddress.c_str(), kyorigin_GetSetMethod, fGraphicsView->getYOrigin());
 }
 
 

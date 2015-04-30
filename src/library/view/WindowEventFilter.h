@@ -56,7 +56,7 @@ class WindowEventFilter : public QObject
 
     public:
         WindowEventFilter(const std::string& address, ZoomingGraphicsView* parent=0 );
-		bool running() const { return fTimer->isActive(); }	/// < Returns the status of timer
+        virtual bool running() const { return fTimer->isActive(); }	/// < Returns the status of timer
     protected:
 
         bool eventFilter(QObject *obj, QEvent *event);
@@ -103,13 +103,17 @@ class TouchEventFilter : public WindowEventFilter
 {
 		Q_OBJECT
 	public:
-		TouchEventFilter(const std::string& address, ZoomingGraphicsView* parent=0 ) : WindowEventFilter(address, parent) {}
-
+        TouchEventFilter(const std::string& address, ZoomingGraphicsView* parent=0 );
+        bool running() const { return fIsRunning; }
+    protected:
+        bool eventFilter(QObject *obj, QEvent *event);
 	protected slots:
 		virtual void updateModel();
 
 	private:
 		virtual bool isStartTimer(const QEvent *event);
+
+        bool fIsRunning;
 };
 /*!@} */
 
