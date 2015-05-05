@@ -103,6 +103,7 @@ bool ZoomingGraphicsView::viewportEvent(QEvent *event)
 	return QGraphicsView::viewportEvent(event);
 }
 
+//------------------------------------------------------------------------------------------------------------------------
 bool ZoomingGraphicsView::gestureEvent(QGestureEvent *event)
 {
 	if (QGesture *pinch = event->gesture(Qt::PinchGesture))
@@ -110,6 +111,7 @@ bool ZoomingGraphicsView::gestureEvent(QGestureEvent *event)
 	return true;
 }
 
+//------------------------------------------------------------------------------------------------------------------------
 void ZoomingGraphicsView::pinchTriggered(QPinchGesture *event)
 {
 	// New Zoom factor
@@ -145,10 +147,13 @@ void ZoomingGraphicsView::pinchTriggered(QPinchGesture *event)
     fitInView( SCENE_RECT , Qt::KeepAspectRatio );
 }
 
+//------------------------------------------------------------------------------------------------------------------------
 qreal ZoomingGraphicsView::getXOrigin()
 {
     return horizontalOffset / -400;
 }
+
+//------------------------------------------------------------------------------------------------------------------------
 qreal ZoomingGraphicsView::getYOrigin()
 {
     return verticalOffset / -400;
