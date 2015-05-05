@@ -26,6 +26,8 @@
 #include <stdio.h>
 #include <iostream>
 #include <sstream>
+
+#include "ip/NetworkingUtils.h"
 #include "Tools.h"
 
 using namespace std;
@@ -33,6 +35,41 @@ using namespace libmapping;
 
 namespace inscore
 {
+
+//--------------------------------------------------------------------------
+string Tools::getHostName()
+{
+	char name[1024];
+	int ret = gethostname(name, 1024);
+	if (ret == -1) return "";
+	return name;
+}
+
+unsigned long Tools::getIP( const string& hostname)
+{
+	string name;
+	if (!hostname.size())
+		name = getHostName();
+	else
+		name = hostname;
+	return GetHostByName(name.c_str());
+}
+
+string	Tools::ip2string (unsigned long ip)
+{
+	stringstream ipStr;
+	ipStr	<< ((ip >> 24) & 0xff) << '.'
+			<< ((ip >> 16) & 0xff) << '.'
+			<< ((ip >> 8) & 0xff) << '.'
+			<< (ip & 0xff);
+	return ipStr.str();
+}
+
+//--------------------------------------------------------------------------
+string Tools::getIP()
+{
+	return ip2string (getIP(""));
+}
 
 //--------------------------------------------------------------------------
 bool Tools::isurl (const std::string& path)

@@ -28,6 +28,7 @@
 #include "IOSCListener.h"
 #include "IMessageStack.h"
 #include "IMessage.h"
+#include "Tools.h"
 
 #include "osc/OscReceivedElements.h"
 #include "ip/IpEndpointName.h"
@@ -40,7 +41,11 @@ namespace inscore
 
 //--------------------------------------------------------------------------
 IOSCListener::IOSCListener(SIMessageStack& stack, int port) 
-		: fSocket(IpEndpointName( IpEndpointName::ANY_ADDRESS, port ), this), fMsgStack(stack), fRunning(false) {}
+		: fSocket(IpEndpointName( IpEndpointName::ANY_ADDRESS, port ), this), fMsgStack(stack), fRunning(false)
+{
+	fMyAddress = Tools::getIP("");
+}
+
 IOSCListener::~IOSCListener()	{ stop(); }
 
 //--------------------------------------------------------------------------
@@ -67,6 +72,8 @@ void IOSCListener::stop()
 //--------------------------------------------------------------------------
 void IOSCListener::ProcessMessage( const osc::ReceivedMessage& m, const IpEndpointName& src )
 {
+	if (src.address == fMyAddress) return;	// reject messages that come from the local address
+	
 	SIMessage msg = IMessage::create(m.AddressPattern());
 	msg->setSrcIP (src.address);
 	ReceivedMessageArgumentIterator i = m.ArgumentsBegin();

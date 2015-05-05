@@ -4,7 +4,7 @@ INScore project
 GRAME - Centre national de creation musicale
 http://www.grame.fr
 ======================================================
-Copyright GRAME (c) 2009-2013
+Copyright GRAME (c) 2009-2015
 
 
 ======================================================
@@ -49,9 +49,9 @@ For more information, see at:
 
 INScore makes use of the following technologies:
   - the GUIDOEngine                           http://guidolib.sf.net
+  - the GRAME Faust compiler                  http://faust.grame.fr
   - the IRCAM Gesture Follower                http://imtr.ircam.fr/imtr/Gesture_Follower
   - the Qt5 cross-platform application and UI framework    http://qt-project.org/qt5
-  - the V8 JavaScript Engine                  https://code.google.com/p/v8/
 Optionnal dependency:
   - the libMusicXML library                   http://libmusicxml.sf.net
 
