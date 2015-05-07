@@ -53,6 +53,7 @@
 #include "IMemImage.h"
 #include "IMusicXMLCode.h"
 #include "IMusicXMLFile.h"
+#include "IMobileMenu.h"
 #include "IObject.h"
 #include "IObjectFactory.h"
 #include "IObjectVNodes.h"
