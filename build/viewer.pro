@@ -53,6 +53,7 @@ ios {
         ios_icon.files = $$files($$ROOT/rsrc/ios/*.png)
         QMAKE_BUNDLE_DATA += ios_icon
         ICON 		= $$ROOT/rsrc/INScoreViewer.icns
+        RESOURCES += $$ROOT/rsrc/inscoremobile.qrc
 }
 
 ############################## 
@@ -80,5 +81,6 @@ android {
         DISTFILES += android/AndroidManifest.xml
         ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
         QT += androidextras
+        RESOURCES += $$ROOT/rsrc/inscoremobile.qrc
 }
 

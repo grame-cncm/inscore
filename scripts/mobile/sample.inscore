@@ -1,0 +1,45 @@
+/ITL/sample new;
+
+/ITL/sample/title  set  txt "This script illustrates line drawing messages.";
+/ITL/sample/title  y -0.8;
+/ITL/sample/title scale 1.7;
+
+/ITL/sample/center set ellipse 0.05 0.05;
+/ITL/sample/center alpha 100;
+
+/ITL/sample/line1 set line xy 0.5 0.4;
+/ITL/sample/line1 penWidth 2;
+/ITL/sample/line2  set  line wa 0.7 -10;
+/ITL/sample/line1 color 0 0 255;
+/ITL/sample/line1  arrows disk triangle;
+
+/ITL/sample/arrows1 set txt "Click me to draw or remove 'disk' and 'triangle' arrows to blue line";
+/ITL/sample/arrows1 scale 1.5;
+/ITL/sample/arrows1 y 0.5;
+
+/ITL/sample/arrows1 watch mouseEnter (/ITL/sample/arrows1 red 250);
+/ITL/sample/arrows1 watch mouseLeave (/ITL/sample/arrows1 red 0);
+/ITL/sample/arrows1 watch mouseDown (
+	/ITL/sample/arrows1 push,
+	/ITL/sample/line1  arrows none none,
+	/ITL/sample/arrows1 watch mouseDown (
+		/ITL/sample/line1  arrows disk triangle,
+		/ITL/sample/arrows1 pop
+	)
+);
+
+/ITL/sample/arrows2 set txt "Click me to draw or remove diamond arrows to black line";
+/ITL/sample/arrows2 scale 1.5;
+/ITL/sample/arrows2 y 0.6;
+
+/ITL/sample/arrows2 watch mouseEnter (/ITL/sample/arrows2 red 250);
+/ITL/sample/arrows2 watch mouseLeave (/ITL/sample/arrows2 red 0);
+/ITL/sample/arrows2 watch mouseDown (
+	/ITL/sample/arrows2 push,
+	/ITL/sample/line2  arrows diamond diamond,
+	/ITL/sample/arrows2 watch mouseDown (
+		/ITL/sample/line2  arrows none none,
+		/ITL/sample/arrows2 pop
+	)
+);
+
