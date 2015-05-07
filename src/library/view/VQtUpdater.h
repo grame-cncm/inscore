@@ -55,6 +55,7 @@ class export VQtUpdater : public ViewUpdater
 
 		void updateTo (IAppl* appl);
 		void updateTo (IApplLog* appl);
+		void updateTo (IMobileMenu* menu);
 		void updateTo (IScene*);
 
 		virtual void updateTo (ICurve * curve);
