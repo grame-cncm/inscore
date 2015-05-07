@@ -39,6 +39,7 @@
 #include <QString>
 #include <QUrl>
 #include <QFontDatabase>
+#include <QSettings>
 
 #ifdef WIN32
 #include <windows.h>
@@ -208,6 +209,20 @@ void INScoreAppl::setupMenu()
 }
 
 //_______________________________________________________________________
+void INScoreAppl::showMobileMenu()
+{
+	QSettings settings("Grame", "INScore");
+
+	settings.beginGroup("Mobile");
+	bool show = settings.value("showMenu", true).toBool();
+	if(show) {
+		INScore::MessagePtr msg = INScore::newMessage ("show");
+		INScore::add (msg, 1);
+		INScore::postMessage ("/ITL/menu", msg);
+	}
+}
+
+//_______________________________________________________________________
 void INScoreAppl::started()
 {
 	fStarted = true;
@@ -283,7 +298,6 @@ int main( int argc, char **argv )
     gAbout = new INScoreAbout(pixmap);
     gAbout->show();
 #endif
-
 	appl.setupMenu();
 #ifndef WIN32
 	dir.cdUp();
@@ -317,6 +331,7 @@ int main( int argc, char **argv )
     gAbout->hide();
     disableAppNap();
 #endif
+	appl.showMobileMenu();
 	ret = appl.exec();
 	INScore::stop (glue);
 #if !(TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)

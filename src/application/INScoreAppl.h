@@ -45,6 +45,7 @@ class INScoreAppl : public QApplication
 		virtual ~INScoreAppl();
 
 		void	setupMenu();
+		void	showMobileMenu();
 		bool	event(QEvent *ev);
 		void	started();
 
