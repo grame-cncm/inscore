@@ -63,33 +63,33 @@ VMobileMenu::VMobileMenu(const char * name, QWidget* parent) : QWidget(parent)
 	version += INScore::versionStr();
 	text = new QLabel(version, this);
 	text->setFont(font);
-	text->move(50, 80);
+	text->move(50, 70);
 
 	QString qt("Using Qt v.");
 	qt += qVersion();
 	text = new QLabel(qt, this);
 	text->setFont(font);
-	text->move(50, 120);
+	text->move(50, 105);
 
 	QString guido("Using Guido Engine v.");
 	guido += INScore::guidoversion();
 	text = new QLabel(guido, this);
 	text->setFont(font);
-	text->move(50, 160);
+	text->move(50, 140);
 
 	// Add controls
 	loadSample = new QCheckBox(tr("Load sample file next time"), this);
-	loadSample->move(20, 200);
+	loadSample->move(20, 165);
 
 	showNextTime = new QCheckBox(tr("Show this dialog next time"), this);
-	showNextTime->move(20, 280);
+	showNextTime->move(20, 230);
 
 	QPushButton * openFile = new QPushButton("Open file", this);
-	openFile->move(20, 400);
+	openFile->move(20, 320);
 	connect(openFile, SIGNAL(clicked()), this, SLOT(showFileDialog()));
 
 	QPushButton * close = new QPushButton("Close Menu", this);
-	close->move(this->width() - 120, 400);
+	close->move(this->width() - 350, 320);
 	connect(close, SIGNAL(clicked()), this, SLOT(closeMenu()));
 
 	// Read the settings
@@ -116,7 +116,7 @@ void VMobileMenu::showFileDialog()
 
 	if(!fileNames.isEmpty()) {
 		std::string filename = fileNames[0].toStdString();
-		sendLoadMsg(filename);
+		sendLoadMsg(filename.c_str());
 	}
 }
 
@@ -155,7 +155,7 @@ void VMobileMenu::loadSampleFile() {
 }
 
 //--------------------------------------------------------------------------
-void VMobileMenu::sendLoadMsg(std::string& file)
+void VMobileMenu::sendLoadMsg(const char * file)
 {
 	// Create a message to load file.
 	SIMessage msg = IMessage::create("/ITL", kload_SetMethod);

@@ -92,7 +92,7 @@ class VMobileMenu : public QWidget
 		 * \brief sendLoadMsg send a load message with the file name file.
 		 * \param file the filename.
 		 */
-		void sendLoadMsg(std::string& file);
+		void sendLoadMsg(const char *file);
 };
 /*! @} */
 } // end namespoace
