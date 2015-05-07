@@ -31,10 +31,6 @@
 #include <fstream>
 #include <sstream>
 
-#ifndef WIN32
-#include <unistd.h>
-#endif
-
 #include "IAppl.h"
 #include "IApplVNodes.h"
 #include "IFilterForward.h"
@@ -44,6 +40,7 @@
 #include "IScene.h"
 #include "ITLparser.h"
 #include "OSCAddress.h"
+#include "IMobileMenu.h"
 #include "Updater.h"
 #include "TMessageEvaluator.h"
 #include "ITLError.h"
@@ -54,10 +51,6 @@
 #include <QDir>
 #include <QApplication>
 #include <QStandardPaths>
-
-#ifdef WIN32
-#include <Winsock2.h>
-#endif
 
 using namespace std;
 
@@ -222,6 +215,7 @@ void IAppl::createVirtualNodes()
 	fDebug = fApplDebug;
 	fApplLog = IApplLog::create(this);
 	fFilterForward = IFilterForward::create(this);
+	add(IMobileMenu::create(this));
 	add ( fDebug );
 	add ( fApplStat );
 	add ( fApplLog );
