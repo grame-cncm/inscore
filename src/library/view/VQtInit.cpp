@@ -65,13 +65,13 @@ void VQtInit::stopQt ()
 	delete sMainWindow;
 #endif
 }
+
 #if defined(ANDROID) || defined(IOS)
 QTabWidget*	VQtInit::getTabWidget()
 {
 	return sTabWidget;
 }
-#endif
-#if defined(ANDROID) || defined(IOS)
+
 void VQtInit::keepScreenOn()
 {
 #ifdef ANDROID
@@ -87,5 +87,6 @@ void VQtInit::keepScreenOn()
 #else
 #endif
 }
+
 #endif
 } // end namespoace

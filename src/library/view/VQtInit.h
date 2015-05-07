@@ -57,13 +57,13 @@ class export VQtInit
 	private:
 	static QMainWindow* sMainWindow;
 	static QTabWidget* sTabWidget;
-#if defined(ANDROID) || defined(IOS)
+
 	/*!
 	 * \brief keepScreenOn Keep the the screen on when inscore is running (no sleep)
 	 * This function have to be called after the creation of a QMainWindow
 	 */
 	static void keepScreenOn();
-#endif
+
 #endif
 };
 
