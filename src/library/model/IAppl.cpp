@@ -64,8 +64,19 @@ const string IAppl::kApplType("appl");
 #define _CRT_SECURE_NO_DEPRECATE
 std::string IAppl::fRootPath = std::string(getenv("USERPROFILE")) + "\\";
 #elif ANDROID
+static std::string getFilePath() {
+	// Use standard location as root path (/sdcard/documents/inscore on most device)
+	QString path = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).value(0);
+	if (!path.isEmpty() && !path.endsWith("/"))
+		path += "/";
+	path += "inscore/";
+	QDir dir(path);
+	if (!dir.exists())
+		dir.mkpath(path);
+	return path.toStdString();
+}
 // Files are writed in sdcard only
-std::string IAppl::fRootPath = "/sdcard/inscore/";
+std::string IAppl::fRootPath = getFilePath();
 #elif IOS
 // Files are writed in ios application sandbox only
 static std::string getFilePath() {
@@ -278,7 +289,9 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 	else if (n && !filter(imsg)) {
 		for (int i = 0; i < n; i++) {
 			IMessage::TUrl url = fForwardList[i];
-			OSCStream::sendEvent (imsg, url.fHostname, url.fPort);
+			// Forward message only if the destination is not the source of the message.
+			if(Tools::ip2string(imsg->src()) != url.fHostname)
+				OSCStream::sendEvent (imsg, url.fHostname, url.fPort);
 		}
 	}
 
@@ -383,6 +396,8 @@ MsgHandler::msgStatus IAppl::forward(const IMessage* msg)
 		if (msg->param(i, address)) {
 			IMessage::TUrl url;
 			url.parse (address);
+			// Transform hostname in Ip in string format
+			url.fHostname = Tools::ip2string(Tools::getIP(url.fHostname));
 			if (!url.fPort) url.fPort = getUDPInPort();
 			fForwardList.push_back (url);
 		}
