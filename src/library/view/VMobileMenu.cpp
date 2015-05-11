@@ -30,6 +30,9 @@
 #include <QPushButton>
 #include <QFileDialog>
 #include <QCheckBox>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QGridLayout>
 
 #include "IAppl.h"
 #include "IMessage.h"
@@ -49,48 +52,72 @@ VMobileMenu::VMobileMenu(const char * name, QWidget* parent) : QWidget(parent)
 {
 	setWindowTitle( tr(name) );
 
+	// Create the main layout
+	QVBoxLayout *verticalLayout = new QVBoxLayout(this);
+	verticalLayout->setSpacing(6);
+	verticalLayout->setContentsMargins(0, 0, 0, 0);
+
 	// Create main title
 	QFont font ("FreeSans", 20);
 	font.setBold(true);
-	QLabel * text = new QLabel("INScore for mobile", this);
+	QLabel * text = new QLabel("INScore for mobile");
 	text->setFont(font);
-	text->move(20, 20);
+	verticalLayout->addWidget(text);
+
+	// Layout for tree text label with left indentation
+	QGridLayout * gridLayout = new QGridLayout();
+	gridLayout->setSpacing(6);
+	QSpacerItem * labelHSpacer = new QSpacerItem(20, 5, QSizePolicy::Maximum, QSizePolicy::Minimum);
+	gridLayout->addItem(labelHSpacer, 0, 0, 3, 1);
 
 	// Create inscore version text
 	font.setPointSize(16);
 	font.setBold(false);
 	QString version("INScore v.");
 	version += INScore::versionStr();
-	text = new QLabel(version, this);
+	text = new QLabel(version);
 	text->setFont(font);
-	text->move(50, 70);
+	gridLayout->addWidget(text, 0, 1, 1, 1);
 
 	QString qt("Using Qt v.");
 	qt += qVersion();
-	text = new QLabel(qt, this);
+	text = new QLabel(qt);
 	text->setFont(font);
-	text->move(50, 105);
+	gridLayout->addWidget(text, 1, 1, 1, 1);
 
 	QString guido("Using Guido Engine v.");
 	guido += INScore::guidoversion();
-	text = new QLabel(guido, this);
+	text = new QLabel(guido);
 	text->setFont(font);
-	text->move(50, 140);
+	gridLayout->addWidget(text, 2, 1, 1, 1);
+
+	verticalLayout->addLayout(gridLayout);
 
 	// Add controls
-	loadSample = new QCheckBox(tr("Load sample file next time"), this);
-	loadSample->move(20, 165);
+	loadSample = new QCheckBox(tr("Load sample file next time"));
+	verticalLayout->addWidget(loadSample);
 
-	showNextTime = new QCheckBox(tr("Show this dialog next time"), this);
-	showNextTime->move(20, 230);
+	showNextTime = new QCheckBox(tr("Show this dialog next time"));
+	verticalLayout->addWidget(showNextTime);
 
-	QPushButton * openFile = new QPushButton("Open file", this);
-	openFile->move(20, 320);
+	// Layout for buttons
+	QHBoxLayout * horizontalLayout = new QHBoxLayout();
+	horizontalLayout->setSpacing(6);
+
+	QPushButton * openFile = new QPushButton("Open file");
 	connect(openFile, SIGNAL(clicked()), this, SLOT(showFileDialog()));
+	horizontalLayout->addWidget(openFile);
 
-	QPushButton * close = new QPushButton("Close Menu", this);
-	close->move(this->width() - 350, 320);
+	QSpacerItem * buttonHSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+	horizontalLayout->addItem(buttonHSpacer);
+
+	QPushButton * close = new QPushButton("Close Menu");
 	connect(close, SIGNAL(clicked()), this, SLOT(closeMenu()));
+	horizontalLayout->addWidget(close);
+	verticalLayout->addLayout(horizontalLayout);
+
+	QSpacerItem *verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+	verticalLayout->addItem(verticalSpacer);
 
 	// Read the settings
 	readSettings();
@@ -109,6 +136,7 @@ void VMobileMenu::showFileDialog()
 	dialog.setFileMode(QFileDialog::ExistingFile);
 	dialog.setNameFilter(tr("Script Files (*.inscore)"));
 	dialog.setViewMode(QFileDialog::List);
+	dialog.setDirectory(IAppl::getRootPath().c_str());
 	dialog.showMaximized();
 	QStringList fileNames;
 	if (dialog.exec())
