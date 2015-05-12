@@ -26,11 +26,13 @@
 #ifndef WEBSOCKETCONTROLLER_H
 #define WEBSOCKETCONTROLLER_H
 
+#include "TScripting.h"
 
 namespace inscore
 {
 
 class VObjectView;
+class TLua;
 
 /*!
  * \brief An abstract implementation of a web socket.
@@ -44,6 +46,8 @@ class WebSocketInformer
 		virtual VObjectView*	getView() const			= 0;
 		virtual int				getFrequency() const	= 0;
 		virtual int				getPort() const			= 0;
+		virtual TJSEngine*		getJSEngine()			= 0;
+		virtual TLua*			getLUAEngine()			= 0;
 };
 
 /*!

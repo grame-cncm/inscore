@@ -32,6 +32,9 @@ javafiles 		= $(shell grep -v '^\#' validate/javascripts.txt)
 logfiles 		= $(shell grep -v '^\#' validate/logs.txt)
 savefiles 		= $(shell grep -v '^\#' validate/save.txt)
 regressionfiles = $(shell grep -v '^\#' validate/regression.txt)
+filterfiles		= $(shell grep -v '^\#' validate/filters.txt)
+filterinscorefile	= $(shell grep -v '^\#' validate/filtersinscorefile.txt)
+mobilefiles		= $(shell grep -v '^\#' validate/mobile.txt)
 
 pdfout  		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(files))
 pdfgraphicout 	:= $(patsubst ../%.inscore, $(version)/%.pdf, $(graphicfiles))
@@ -40,6 +43,11 @@ pdfjavaout 		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(javafiles))
 pdfregressionout:= $(patsubst ../%.inscore, $(version)/%.pdf, $(regressionfiles))
 logout 			:= $(patsubst ../%.inscore, $(version)/%.log, $(logfiles))
 inscoreout 		:= $(patsubst ../%.inscore, $(version)/%.inscore, $(savefiles))
+filterout		:= $(patsubst ../%.flt, $(version)/%.out, $(filterfiles))
+filteroutinscore	:= $(patsubst %.flt, %.inscore, $(filterfiles))
+filteroutref		:= $(patsubst %.flt, %_reference.out, $(filterfiles))
+
+mobileout 		:= $(patsubst ../%.inscore, $(version)mobile/%.pdf, $(mobilefiles))
 
 leakout 	:= $(patsubst ../%.inscore, $(version)/$(TOOL)/%.leak.txt, $(files))
 leaksfiles  := $(patsubst ../%.inscore, $(version)/%.leaks.out, $(files))
@@ -53,6 +61,10 @@ validlog 	:= $(patsubst %.log, %.outlog, $(allLog))
 allinscore 		:= $(shell [ -d $(version) ] && find $(version) -name "*.inscore" 2>/dev/null)
 validinscore 	:= $(patsubst %.inscore, %.outinscore, $(allinscore))
 
+allfilter 	:= $(shell [ -d $(version) ] && find $(version) -name "*.out" 2>/dev/null)
+validfilter 	:= $(patsubst %.out, %.outfilter, $(allfilter))
+
+validmobile 	:= $(patsubst %.pdf, %.outmobilepdf, $(mobileout))
 
 nodlost	= "definitely lost: 0"
 noilost	= "indirectly lost: 0"
@@ -69,6 +81,7 @@ all:
 	make log
 	make save
 	make pdf
+	make filter
 
 pdf:
 	make pdfgraphic
@@ -89,6 +102,11 @@ save :
 _log: $(logout)
 
 _save : $(inscoreout)
+
+filter:
+	make filterref
+	make filterinscore
+	make filteroutput
 
 basic:
 	@echo "----------- Running basic scripts"
@@ -126,10 +144,17 @@ saveclean:
 
 help:
 	@echo "Makefile for testing the INScore engine output. Available targets are:"
-	@echo " 'all' 		: generates pdf output files, inscore output files and log files"
+	@echo " 'all' 		: generates pdf output files, inscore output files, log files and filter file"
 	@echo " 'pdf' 		: generates pdf files for inscore files recursively enclosed in this folder"
 	@echo " 'log' 		: generates log files in order to check inscore logs"
 	@echo " 'save' 		: generates inscore files in order to check the save method"
+	@echo " 'filter'	: generates filter files and reference files in order to check the forward filter method"
+	@echo " 'filterref'	: generates filter result reference files"
+	@echo " 'filterinscore'	: generates inscore file filter from .flt file"
+	@echo " 'filteroutput'	: generates inscore output from current running inscore instance"
+	@echo " 'validatefilter': validate filter files with reference files"
+	@echo " 'mobile REMOTEIP=XXX LOCALIP=XXX DEVICE=XXX': create pdf file on mobile device with ip REMOTEIP. LOCALIP must be the IP of this computer, DEVICE must be 'android' or 'ios'. See readme.txt and follow the instruction before run this command."
+	@echo " 'validatemobile : validate mobile pdf file. See readme.txt and follow the instruction before run this command."
 	@echo "  output files are generated under the current INScore version number."
 	@echo " 'validate VERSION=another_version': compares the current version with another one"
 	@echo " 'checkleaks [TOOL=a_check_tool]': check memory leaks using a given tool (default INScoreNOView)"
@@ -141,8 +166,12 @@ tools:
 INScoreVersion:
 	make -C tools
 
-validate: $(validpdf) $(validlog) $(validinscore)
+validate: $(validpdf) $(validlog) $(validinscore) $(validfilter)
 	@echo Validating version $(VERSION) with $(version)
+
+validatefilter: $(validfilter)
+
+validatemobile : $(validmobile)
 
 checkleaks: $(leakout)
 	make showleaks
@@ -164,7 +193,19 @@ filesjava: $(pdfjavaout)
 filesregression: $(pdfregressionout)
 	@./forcepdfdate 20100101120000 $(pdfregressionout)
 
-	
+filterinscore: $(filteroutinscore)
+
+%.inscore: %.flt
+	awk -f filtercreateinscore.awk $< > $@
+
+filteroutput: $(filterout)
+
+filterref: $(filteroutref)
+
+%_reference.out: %.flt
+	awk -f filtercreatescript.awk $< > $<.awk 2> /dev/null
+	awk -f $<.awk $(filterinscorefile) > $@ 2> /dev/null
+
 $(version)/$(TOOL)/%.leak.txt: %.inscore
 	@[ -d $(@D) ] || mkdir -p $(@D)
 	valgrind --leak-check=full --suppressions=valgrindignored.txt --log-file=$@ $(TOOL) $(pwd)/$<
@@ -177,20 +218,29 @@ $(version)/%.log: ../%.inscore
 	@[ -d $(@D) ] || mkdir -p $(@D)
 	@./inscore2log $< $@
 
-$(version)/%.inscore: ../%.inscore
+$(version)/%.out: ../%.inscore
 	@[ -d $(@D) ] || mkdir -p $(@D)
-	@./inscore2inscore $< $@
-	
+	./forwardFilter $(filterinscorefile) $< > $@
 
 $(version)/%.leaks.out: $(version)/$(TOOL)/%.leak.txt	
 	@grep $(nodlost) $< > /dev/null || echo "$< : definitely lost bytes"
 	@grep $(noilost) $< > /dev/null || echo "$< : indirectly lost bytes"
 	@grep $(noplost) $< > /dev/null || echo "$< : possibly lost bytes"
 
+mobile: $(mobileout)
 
+$(version)mobile/%.pdf: ../%.inscore
+	@./inscore2pdf_mobile $< $@ $(REMOTEIP) $(LOCALIP) $(DEVICE)
+
+%.outmobilepdf: %.pdf
+	$(eval tmp := $(patsubst $(version)mobile/%, $(VERSION)/%, $<))
+	@./forcepdfdate 20100101120000 $< $(tmp)
+	@[ -f  $(tmp) ] || echo $< : new file
+	$(eval ignored := $(shell grep $< $(version)mobile/ignore.$(VERSION)mobile.txt 2>/dev/null || echo _none_))
+	@[ -f  $(ignored) ] || (diff $< $(tmp) 2>/dev/null >/dev/null || ([ -f  $(tmp) ] && echo "open $< $(patsubst $(version)mobile/%, $(VERSION)/%, $<) # to check changes"; true))
 
 %.outpdf: %.pdf
-	$(eval tmp := $(patsubst $(version)/%, $(VERSION)/%, $<))	
+	$(eval tmp := $(patsubst $(version)/%, $(VERSION)/%, $<))
 	@[ -f  $(tmp) ] || echo $< : new file
 	$(eval ignored := $(shell grep $< $(version)/ignore.$(VERSION).txt 2>/dev/null || echo _none_))
 	@[ -f  $(ignored) ] || (diff $< $(tmp) 2>/dev/null >/dev/null || ([ -f  $(tmp) ] && echo "open $< $(patsubst $(version)/%, $(VERSION)/%, $<) # to check changes"; true))
@@ -206,3 +256,7 @@ $(version)/%.leaks.out: $(version)/$(TOOL)/%.leak.txt
 	@[ -f  $(tmp) ] || echo $< : new file
 	$(eval ignored := $(shell grep $< $(version)/ignore.$(VERSION).txt 2>/dev/null || echo _none_))
 	@[ -f  $(ignored) ] || (diff $< $(tmp) 2>/dev/null >/dev/null || ([ -f  $(tmp) ] && echo "open -t $< $(patsubst $(version)/%, $(VERSION)/%, $<) # to check changes"; true))
+
+%.outfilter: %.out
+	$(eval tmp := $(patsubst $(version)/%.out,../%_reference.out,$<))
+	@(diff $< $(tmp) 2>/dev/null >/dev/null || echo "open -t $< $(tmp) # to check changes"; true)

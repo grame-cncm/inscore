@@ -12,6 +12,7 @@
 #include <unistd.h>
 #endif
 #include <stdlib.h>
+#include <string.h>
 
 #include <iostream>
 #include <stdexcept>
@@ -20,14 +21,14 @@
 #include "ip/UdpSocket.h"
 
 
-#define ADDRESS "127.0.0.1"
+#define LOCALHOST "127.0.0.1"
 #define OUTPUT_BUFFER_SIZE 4096
 
 using namespace std;
 
 static void usage (char* name)
 {
-	cout << "usage: " << basename(name) << " port <args list>>" << endl;
+	cout << "usage: " << basename(name) << " [IP_ADDRESS:]port <args list>>" << endl;
 	exit (1);
 }
 
@@ -58,9 +59,20 @@ int main(int argc, char* argv[])
 	if (argc < 3) usage (argv[0]);
 
     char buffer[OUTPUT_BUFFER_SIZE];
-	int port = atoi(argv[1]);
+
+	const char * ip = LOCALHOST;
+	char * portStr = argv[1];
+	portStr = strtok(argv[1], ":");
+	char * token = strtok(NULL, ":");
+	if(token) {
+		// IP and address
+		ip = portStr;
+		portStr = token;
+	}
+	int port = atoi(portStr);
+
     try {
-		UdpTransmitSocket transmitSocket( IpEndpointName( ADDRESS, port ) );
+		UdpTransmitSocket transmitSocket( IpEndpointName( ip, port ) );
 		osc::OutboundPacketStream p( buffer, OUTPUT_BUFFER_SIZE );
 		string address = argv[2];
 		size_t pos = address.find("/ITL");

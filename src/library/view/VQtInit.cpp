@@ -30,6 +30,10 @@
 #include "GuidoFontLoader.h"
 #include "QGuidoPainter.h"
 
+#ifdef ANDROID
+#include <QtAndroidExtras>
+#endif
+
 namespace inscore
 {
 
@@ -50,6 +54,7 @@ void VQtInit::startQt ()
 	sMainWindow->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
 	// Man window is full screen.
 	sMainWindow->showMaximized();
+	VQtInit::keepScreenOn();
 #endif
 }
 
@@ -64,6 +69,23 @@ void VQtInit::stopQt ()
 QTabWidget*	VQtInit::getTabWidget()
 {
 	return sTabWidget;
+}
+#endif
+#if defined(ANDROID) || defined(IOS)
+void VQtInit::keepScreenOn()
+{
+#ifdef ANDROID
+	QAndroidJniObject activity = QtAndroid::androidActivity();
+	if (activity.isValid()) {
+		QAndroidJniObject window = activity.callObjectMethod("getWindow", "()Landroid/view/Window;");
+
+		if (window.isValid()) {
+			const int FLAG_KEEP_SCREEN_ON = 128;
+			window.callObjectMethod("addFlags", "(I)V", FLAG_KEEP_SCREEN_ON);
+		}
+	}
+#else
+#endif
 }
 #endif
 } // end namespoace

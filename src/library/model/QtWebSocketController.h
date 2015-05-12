@@ -40,11 +40,11 @@ namespace inscore
  */
 class QtWebSocketController : public QThread, public WebSocketController
 {
-		const WebSocketInformer *	fInfos;
+		WebSocketInformer *	fInfos;
 		QtWebSocketServer*			fServer;
 
 	public:
-				 QtWebSocketController(const WebSocketInformer* infos);
+				 QtWebSocketController(WebSocketInformer* infos);
 		virtual ~QtWebSocketController();
 
 		//------------------------------------------------------------

@@ -681,7 +681,7 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 //--------------------------------------------------------------------------
 int IObject::processSig ()
 {
-	int result;
+	int result = 0;
     for(int i = 0; i<size(); i++)
     {
 		 if (elements()[i]->getDeleted()) continue;

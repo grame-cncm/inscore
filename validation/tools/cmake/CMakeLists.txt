@@ -28,8 +28,7 @@ set (OSC_PATH  "${ROOT}/../../lib/oscpack")
 set (INSC_PATH "${ROOT}/../../src")
 
 # add source files
-set(SRC "${ROOT}/*.cpp" "${ROOT}/parser/*.cpp" "${INSCORE}/scripting/TScripting.cpp" "${INSCORE}/lib/Tools.cpp")
-set(SRC "${SRC}" "${INSCORE}/libmapping/src/misc/rational.cpp" "${INSCORE}/controller/IMessage.cpp")
+set(SRC "${ROOT}/*.cpp" "${INSC_PATH}/library/interface/*.cpp")
 
 file (GLOB CORESRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${SRC})
 
@@ -42,7 +41,7 @@ elseif(APPLE)
  	find_library (INSCORE INScore PATHS ${ROOT}/../../build/MacOS/Release NO_DEFAULT_PATH)
 elseif(UNIX)
 	set(OSCPACK  -L${OSC_PATH}/cmake -loscpack)
- 	find_library (INSCORE INScore PATHS ${ROOT}/../../cmake NO_DEFAULT_PATH)
+        find_library (INSCORE INScore PATHS ${ROOT}/../../build NO_DEFAULT_PATH)
 endif()
 
 
@@ -52,11 +51,15 @@ endif()
 add_executable( forcepdfdate ${ROOT}/forcepdfdate.cpp )
 
 file (GLOB VSRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${ROOT}/INScoreVersion.cpp)
-include_directories(${INSC_PATH}/interface ${OSC_PATH})
+include_directories(${INSC_PATH}/library/interface ${OSC_PATH})
 add_executable( INScoreVersion ${ROOT}/INScoreVersion.cpp )
 target_link_libraries( INScoreVersion ${INSCORE} ${INSLIBS})
 
 include_directories(${OSC_PATH})
 add_executable( SendOSC ${ROOT}/SendOSC.cpp )
 target_link_libraries( SendOSC ${OSCPACK} ${INSLIBS})
+
+include_directories(${OSC_PATH})
+add_executable( ReceiveOSC ${ROOT}/ReceiveOSC.cpp )
+target_link_libraries( ReceiveOSC ${OSCPACK})
 

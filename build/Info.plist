@@ -51,7 +51,10 @@
 	<true/>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright 2009-2015 Grame</string>
-
+        <key>UIFileSharingEnabled</key>
+        <string>TRUE</string>
+        <key>CFBundleDisplayName</key>
+        <string>INScoreViewer</string>
 <key>CFBundleIcons</key>
 <dict>
     <key>CFBundlePrimaryIcon</key>

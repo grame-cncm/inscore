@@ -53,6 +53,7 @@
 
 #include <QDir>
 #include <QApplication>
+#include <QStandardPaths>
 
 #ifdef WIN32
 #include <Winsock2.h>
@@ -70,8 +71,20 @@ const string IAppl::kApplType("appl");
 #define _CRT_SECURE_NO_DEPRECATE
 std::string IAppl::fRootPath = std::string(getenv("USERPROFILE")) + "\\";
 #elif ANDROID
-// File are writed in sdcard only
+// Files are writed in sdcard only
 std::string IAppl::fRootPath = "/sdcard/inscore/";
+#elif IOS
+// Files are writed in ios application sandbox only
+static std::string getFilePath() {
+    QString path = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).value(0);
+    QDir dir(path);
+    if (!dir.exists())
+        dir.mkpath(path);
+    if (!path.isEmpty() && !path.endsWith("/"))
+        path += "/";
+    return path.toStdString();
+}
+std::string IAppl::fRootPath = getFilePath();
 #else
 std::string IAppl::fRootPath = std::string(getenv("HOME")) + "/";
 #endif

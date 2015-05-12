@@ -28,14 +28,15 @@
 #define __VSceneView__
 
 #include <QGraphicsView>
-#include <QObject>
-#include <QTimer>
 
 #include <string>
 #include "VDummyObjectView.h"
 
 class QGraphicsScene;
 class QImage;
+class QGestureEvent;
+class QPinchGesture;
+class QPanGesture;
 
 namespace inscore
 {
@@ -46,7 +47,8 @@ namespace inscore
 */
 class IScene;
 class Master;
-class WindowEventFilter;
+class ResizeMoveEventFilter;
+class TouchEventFilter;
 class ZoomingGraphicsView;
 
 //--------------------------------------------------------------------------
@@ -58,7 +60,8 @@ class VSceneView : public VDummyObjectView
 	ZoomingGraphicsView * fGraphicsView;
 	QGraphicsScene *	fScene;
 	QImage *			fImage;
-	WindowEventFilter * fEventFilter;
+	ResizeMoveEventFilter * fResizeMoveEventFilter;
+	TouchEventFilter * fTouchEventFilter;
 	Qt::WindowFlags		fDefaultFlags;
 
 	// Data of a screenshot
@@ -126,46 +129,64 @@ class VSceneView : public VDummyObjectView
 		}
 };
 
-
-/**
-*	The WindowEventFilter will detect any move or resize event
-*	on its parent QGraphicsView and will send an OSC message
-*	to update the model.
-*	
-*	The OSC message won't be sent at each move or resize event, but
-*	only 100ms after the end of a resize or move sequence.
-*/
-class WindowEventFilter : public QObject
-{
-	Q_OBJECT
-	bool	fAbsoluteXY;
-	bool	fFrameless;
-	bool	fFullScreen;
-	std::string fOSCAddress;
-	QTimer * fTimer;
-
-	public:
-		WindowEventFilter(const std::string& address, QGraphicsView* parent=0 );
-		bool running() const { return fTimer->isActive(); }	/// < Returns the status of timer: the timer is only running
-															/// during a move/resize sequence.
-		void setAbsoluteXY(bool state)	{ fAbsoluteXY = state; }
-		void setFrameless(bool state)	{ fFrameless = state; }
-		void setFullScreen(bool state)	{ fFullScreen = state; }
-
-		bool getFrameless()	const	{ return fFrameless; }
-		bool getFullScreen() const	{ return fFullScreen; }
-	
-	protected:
-	
-		bool eventFilter(QObject *obj, QEvent *event);
-		void sendMessage( const char * addr , const char * cmd , float f );
-		
-	protected slots:
-		void updateModel();
-};
-
-
 /*!@} */
+
+class ZoomingGraphicsView : public QGraphicsView
+{
+	std::string		fSceneAddress;
+//	VSceneView* fSceneView;
+	IScene*	fScene;
+
+    // Scale factor used during a zoom gesture
+	qreal fScaleFactor;
+
+    // Scale factor used as reference during a zoom. It's the model scale factor.
+	qreal fTotalScaleFactor;
+
+	// Offset to translate the scene in the view.
+	qreal horizontalOffset;
+	qreal verticalOffset;
+
+	public :
+		ZoomingGraphicsView(QGraphicsScene * s) : QGraphicsView(s), fScene(0), fScaleFactor(1), fTotalScaleFactor(1),
+			horizontalOffset(0), verticalOffset(0) {}
+		virtual ~ZoomingGraphicsView() {}
+
+		void setSceneAddress(const std::string& name)	{ fSceneAddress = name; }
+		void setScene		(IScene* scene)		{ fScene = scene; }
+
+		/*!
+         * \brief doZoom zoom on the scene and translate the scene in the view. It use scene scale as zoom factor and xorigin / yorigin to translate the scene.
+		 */
+        void doZoomTranslate();
+
+		/*!
+		 * \brief getScaleFactor Get the scale factor of the scene. This value is updated after a zoom with touch gesture.
+		 * \return
+		 */
+		qreal getScaleFactor() { return fScaleFactor; }
+
+		/*!
+		 * \brief getXOrigin Get the XOrigin of the scene. This value is updated after a zoom with touch gesture.
+		 * \return
+		 */
+		qreal getXOrigin();
+
+		/*!
+		 * \brief getYOrigin Get the YOrigin of the scene. This value is updated after a zoom with touch gesture.
+		 * \return
+		 */
+		qreal getYOrigin();
+
+	protected:
+		virtual void	closeEvent	(QCloseEvent *);
+		virtual void	paintEvent  (QPaintEvent * );
+
+		void resizeEvent ( QResizeEvent * );
+		bool viewportEvent(QEvent *event);
+		bool gestureEvent(QGestureEvent *event);
+		void pinchTriggered(QPinchGesture *event);
+};
 
 } // end namespoace
 
