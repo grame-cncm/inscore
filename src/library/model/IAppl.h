@@ -36,6 +36,7 @@
 #include "TScripting.h"
 #include "udpinfo.h"
 #include "benchtools.h"
+#include "Forwarder.h"
 
 class QApplication;
 namespace inscore
@@ -79,7 +80,8 @@ class IAppl : public IObject, public TILoader
 		SIApplDebug	fApplDebug;					// debug flags
 		SIApplStat	fApplStat;					// statistics
 		SIApplLog	fApplLog;					// log window
-		SIFilterForward fFilterForward;
+		SIFilterForward fFilterForward;			// A virtual node to manage filter for message forwarding
+		Forwarder	fForwarder;					// A forwarder class to manage message forwarding
 		bool		fOffscreen;
 		udpinfo		fUDP;						// udp port settings
 		int			fRate;						// the time task rate
@@ -88,8 +90,6 @@ class IAppl : public IObject, public TILoader
 
 		TJSEngine		fJavascript;
 		TLua			fLua;
-		
-		std::vector<IMessage::TUrl>	fForwardList;	// list of hosts to forward incoming messages
 
 	public:
 		static bool fDefaultShow;
@@ -120,7 +120,11 @@ class IAppl : public IObject, public TILoader
 		IApplLog*			getLogWindow()	{ return fApplLog; }
 		
 		int		getRate() const				{ return fRate; }
-
+		/*!
+		 * \brief getForwardList Get the list of host to which forward message.
+		 * \return
+		 */
+		const std::vector<IMessage::TUrl> getForwardList() const { return fForwarder.getForwardList(); }
 		virtual void		accept (Updater*);
 		virtual void		print(std::ostream& out) const;
 
@@ -160,9 +164,6 @@ class IAppl : public IObject, public TILoader
 	protected:
 				 IAppl(int udpport, int outport, int errport,  QApplication* appl, bool offscreen);
 		virtual ~IAppl();
-
-		/// \brief forwarding messages filtering.
-		virtual bool filter (const IMessage* msg);
 		
 		void		setRootPath(const std::string& s);
 		void		setUDPOutAddress(const std::string& a)	{ fUDP.fOutDstAddress = a; }

@@ -33,6 +33,7 @@
 
 #include "IAppl.h"
 #include "IApplVNodes.h"
+#include "Forwarder.h"
 #include "IFilterForward.h"
 #include "IGlue.h"
 #include "IMessage.h"
@@ -167,7 +168,7 @@ IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool of
 	fGetMsgHandlerMap[kdefaultShow_GetSetMethod]= TGetParamMethodHandler<IAppl, bool (IAppl::*)() const>::create(this, &IAppl::defaultShow);
 	fGetMsgHandlerMap[kcompatibility_GetSetMethod]	= TGetParamMsgHandler<float>::create(fCompatibilityVersionNum);
 	fGetMsgHandlerMap[krate_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getRate);
-	fGetMsgHandlerMap[kforward_GetSetMethod]	= TGetParamMsgHandler<vector<IMessage::TUrl> >::create(fForwardList);
+	fGetMsgHandlerMap[kforward_GetSetMethod]	= TGetParamMethodHandler<IAppl, const vector<IMessage::TUrl> (IAppl::*)() const>::create(this, &IAppl::getForwardList);
 	fGetMsgHandlerMap[ktime_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::time);
 	fGetMsgHandlerMap[kticks_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::ticks);
 
@@ -232,6 +233,7 @@ void IAppl::createVirtualNodes()
 	add ( fApplLog );
 	add ( IApplPlugin::create(this) );
 	add (fFilterForward);
+	fForwarder.setFilter(fFilterForward);
 }
 
 //--------------------------------------------------------------------------
@@ -266,33 +268,15 @@ SIMessageList IAppl::getAll() const
 }
 
 //--------------------------------------------------------------------------
-// messages processing
-//--------------------------------------------------------------------------
-bool IAppl::filter (const IMessage* msg)
-{
-	if (msg->message() == kforward_GetSetMethod) return true;
-
-	return fFilterForward->applyFilter(msg);
-}
-
-//--------------------------------------------------------------------------
 int IAppl::processMsg (const std::string& address, const std::string& addressTail, const IMessage* imsg)
 {
 	setReceivedOSC (1);
 
-	int n = fForwardList.size();
-
 	if (imsg->extendedAddress()) {
 		OSCStream::sendEvent (imsg, imsg->url().fHostname, imsg->url().fPort);
 		return MsgHandler::kProcessed;
-	}
-	else if (n && !filter(imsg)) {
-		for (int i = 0; i < n; i++) {
-			IMessage::TUrl url = fForwardList[i];
-			// Forward message only if the destination is not the source of the message.
-			if(Tools::ip2string(imsg->src()) != url.fHostname)
-				OSCStream::sendEvent (imsg, url.fHostname, url.fPort);
-		}
+	} else {
+		fForwarder.forward(imsg);
 	}
 
 	string head = address;
@@ -387,23 +371,7 @@ MsgHandler::msgStatus IAppl::requireMsg(const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IAppl::forward(const IMessage* msg)
 {
-	fForwardList.clear();						// clear the forward list first
-	if (msg->size() == 0)						// no other param
-		return MsgHandler::kProcessed;			// that's done
-
-	for (int i=0; i<msg->size(); i++) {
-		string address;
-		if (msg->param(i, address)) {
-			IMessage::TUrl url;
-			url.parse (address);
-			// Transform hostname in Ip in string format
-			url.fHostname = Tools::ip2string(Tools::getIP(url.fHostname));
-			if (!url.fPort) url.fPort = getUDPInPort();
-			fForwardList.push_back (url);
-		}
-		else return MsgHandler::kBadParameters;
-	}
-	return MsgHandler::kProcessed;
+	return fForwarder.processForwardMsg(msg);
 }
 
 //--------------------------------------------------------------------------
