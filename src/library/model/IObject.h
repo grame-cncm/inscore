@@ -298,6 +298,13 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 		virtual bool	match(const std::string& regexp) const;
 
 		/*!
+		 * \brief accept Check if the message is for the object or one of this child. (Use match method)
+		 * \param regexp a regular expression
+		 * \return true when the object name matches
+		 */
+		virtual bool	accept(const std::string& regexp, const IMessage *);
+
+		/*!
 			\brief cleanup the object tree.
 			
 			The cleanup operation sets the objects modification state to kClean and
