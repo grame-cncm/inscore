@@ -25,13 +25,12 @@
 #include "Forwarder.h"
 #include "IFilterForward.h"
 #include "Tools.h"
+#include "IAppl.h"
 
 #include <string>
 
 namespace inscore
 {
-// Default forwarding port
-unsigned long kUPDPort = 7000;
 
 //--------------------------------------------------------------------------
 void Forwarder::forward(const IMessage * imsg)
@@ -61,7 +60,7 @@ MsgHandler::msgStatus Forwarder::processForwardMsg(const IMessage* msg)
             url.parse (address);
             // Transform hostname in Ip in string format
             url.fHostname = Tools::ip2string(Tools::getIP(url.fHostname));
-            if (!url.fPort) url.fPort = kUPDPort;
+			if (!url.fPort) url.fPort = IAppl::kUPDPort;
 			// Add in host list.
             fForwardList.push_back(url);
         }
