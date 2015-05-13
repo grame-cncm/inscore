@@ -34,7 +34,7 @@ namespace inscore {
 IMobileMenu::IMobileMenu(IObject * parent) : IVNode("menu", parent), fMobileMenu(0)
 {
 #if defined(ANDROID) || defined(IOS)
-	fMobileMenu = new VMobileMenu("Menu");
+	fMobileMenu = new VMobileMenu("About"); // Name of tab
 #endif
     fMsgHandlerMap[kshow_GetSetMethod]		= TSetMethodMsgHandler<IObject,bool>::create(this, &IObject::setVisible);
     fGetMsgHandlerMap[kshow_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fVisible);
