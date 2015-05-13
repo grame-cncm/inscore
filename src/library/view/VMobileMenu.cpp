@@ -33,6 +33,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QGridLayout>
+#include <QLineEdit>
 
 #include "IAppl.h"
 #include "IMessage.h"
@@ -93,25 +94,45 @@ VMobileMenu::VMobileMenu(const char * name, QWidget* parent) : QWidget(parent)
 
 	verticalLayout->addLayout(gridLayout);
 
-	// Add controls
+	// Add change port button
+	QPushButton * changePort = new QPushButton(tr("Change application port number"));
+	connect(changePort, SIGNAL(clicked()), this, SLOT(showChangePortNumber()));
+	verticalLayout->addWidget(changePort);
+
+	// Add checkboxes
 	loadSample = new QCheckBox(tr("Load sample file next time"));
+	loadSample->setStyleSheet("margin-top : 40px; margin-bottom : 0px;");
 	verticalLayout->addWidget(loadSample);
 
 	showNextTime = new QCheckBox(tr("Show this dialog next time"));
+	showNextTime->setStyleSheet("margin-top : 0px; margin-bottom : 40px;");
 	verticalLayout->addWidget(showNextTime);
 
-	// Layout for buttons
+	// Add Url file loader
+	verticalLayout->addWidget(new QLabel(tr("Url for external resources : ")));
 	QHBoxLayout * horizontalLayout = new QHBoxLayout();
+	fUrlFile = new QLineEdit();
+	horizontalLayout->addWidget(fUrlFile);
+	QPushButton * loadUrl = new QPushButton;
+	loadUrl->setIcon(QIcon(":/images/load.png"));
+	loadUrl->iconSize();
+	loadUrl->setIconSize(QSize(60, 60));
+	connect(loadUrl, SIGNAL(clicked()), this, SLOT(loadUrlFile()));
+	horizontalLayout->addWidget(loadUrl);
+	verticalLayout->addLayout(horizontalLayout);
+
+	// Layout for buttons
+	horizontalLayout = new QHBoxLayout();
 	horizontalLayout->setSpacing(6);
 
-	QPushButton * openFile = new QPushButton("Open file");
+	QPushButton * openFile = new QPushButton("Open local file");
 	connect(openFile, SIGNAL(clicked()), this, SLOT(showFileDialog()));
 	horizontalLayout->addWidget(openFile);
 
 	QSpacerItem * buttonHSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 	horizontalLayout->addItem(buttonHSpacer);
 
-	QPushButton * close = new QPushButton("Close Menu");
+	QPushButton * close = new QPushButton("Close");
 	connect(close, SIGNAL(clicked()), this, SLOT(closeMenu()));
 	horizontalLayout->addWidget(close);
 	verticalLayout->addLayout(horizontalLayout);
@@ -139,7 +160,7 @@ void VMobileMenu::showFileDialog()
 	dialog.setDirectory(IAppl::getRootPath().c_str());
 	dialog.showMaximized();
 	QStringList fileNames;
-	if (dialog.exec())
+	if (dialog.exec()) // modal mode
 		fileNames = dialog.selectedFiles();
 
 	if(!fileNames.isEmpty()) {
@@ -197,6 +218,97 @@ void VMobileMenu::closeMenu()
 	SIMessage msg = IMessage::create("/ITL/menu", kshow_GetSetMethod);
 	msg->add(0);
 	msg->send();
+}
+
+//--------------------------------------------------------------------------
+void VMobileMenu::loadUrlFile()
+{
+	// Get the url and send a message to load the file.
+	QString url = fUrlFile->text().trimmed();
+	if(!url.isEmpty()) {
+		sendLoadMsg(url.toStdString().c_str());
+	}
+}
+
+//--------------------------------------------------------------------------
+void VMobileMenu::showChangePortNumber()
+{
+	// Create a modal window to change the port number
+	QDialog popup(this, Qt::Window);
+	QLineEdit *inport = new QLineEdit(&popup);
+	QLineEdit *outport = new QLineEdit(&popup);
+	QLineEdit *errport = new QLineEdit(&popup);
+
+	// Push button OK and cancel
+	QPushButton * ok = new QPushButton("OK", &popup);
+	connect(ok, SIGNAL(clicked()), &popup, SLOT(accept()));
+	QPushButton * cancel = new QPushButton("Cancel", &popup);
+	connect(cancel, SIGNAL(clicked()), &popup, SLOT(reject()));
+
+	// Main layout with spacer at left right and bottom.
+	QGridLayout * gridLayout = new QGridLayout(&popup);
+	QSpacerItem * horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+	gridLayout->addItem(horizontalSpacer, 0, 0, 2, 1);
+	horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+	gridLayout->addItem(horizontalSpacer, 0, 3, 2, 1);
+	gridLayout->addWidget(new QLabel(tr("Listening port :")), 0, 1);
+	gridLayout->addWidget(inport, 0, 2);
+	gridLayout->addWidget(new QLabel(tr("Out port :")), 1, 1);
+	gridLayout->addWidget(outport, 1, 2);
+	gridLayout->addWidget(new QLabel(tr("Error port :")), 2, 1);
+	gridLayout->addWidget(errport, 2, 2);
+
+	// Layout for buttons
+	QHBoxLayout * horizontalLayout = new QHBoxLayout();
+	horizontalLayout->addWidget(ok);
+	horizontalLayout->addWidget(cancel);
+	gridLayout->addLayout(horizontalLayout, 3, 1, 1, 2);
+
+	// Spacer at end of window
+	QSpacerItem *verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+	gridLayout->addItem(verticalSpacer, 4, 0, 1, 4);
+
+	// Initialize port numbers with actual port numbers
+	int originalIn = IAppl::getUDPInPort();
+	inport->setText(QString::number(originalIn));
+	inport->setFocus();
+	int originalOut = IAppl::getUDPOutPort();
+	outport->setText(QString::number(originalOut));
+	int originalErr = IAppl::getUDPErrPort();
+	errport->setText(QString::number(originalErr));
+
+	if(QDialog::Accepted == popup.exec()) { // Modal mode
+		// User cick "OK", send messages
+
+		// Listening port
+		QString text = inport->text();
+		bool ok;
+		int newPort = text.toInt(&ok);
+		if(ok && originalIn != newPort) {
+			// Send message to change listening port number.
+			SIMessage msg = IMessage::create("/ITL", kport_GetSetMethod);
+			msg->add(newPort);
+			msg->send();
+		}
+		// Out port
+		text = outport->text();
+		newPort = text.toInt(&ok);
+		if(ok && originalOut != newPort) {
+			// Send message to change listening port number.
+			SIMessage msg = IMessage::create("/ITL", koutport_GetSetMethod);
+			msg->add(newPort);
+			msg->send();
+		}
+		// Error port
+		text = errport->text();
+		newPort = text.toInt(&ok);
+		if(ok && originalErr != newPort) {
+			// Send message to change listening port number.
+			SIMessage msg = IMessage::create("/ITL", kerrport_GetSetMethod);
+			msg->add(newPort);
+			msg->send();
+		}
+	}
 }
 
 } // end namespoace
