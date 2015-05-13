@@ -71,8 +71,6 @@ SIMessageStack				gMsgStack;			// the messages stack
 SIMessageStack				gDelayStack;		// the delayed messages stack
 map<INScore::MessagePtr, SIMessage>	gMsgMemory;		// allocated messages are stored in a map for refcounting
 
-#define kUPDPort 7000
-
 //--------------------------------------------------------------------------
 static IMessage* Message2IMessage (INScore::MessagePtr p)
 {
