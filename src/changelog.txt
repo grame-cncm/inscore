@@ -14,9 +14,13 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ----------------------------------------------------
 Version 1.13
 - add new object 'filter' at application scope to manage forward messaging filter.
-- sending to broadcast adress enabled
+- sending to broadcast address enabled
 - messages received from my address are discarded to avoid loops. 
   Internal communication must make use of the local loopback (127.0.0.1).
+- add filter to not forward message to the sender to avoid loop.
+- default port to forward messages is now 7000.
+- add new optional tab at startup with a menu for ios and android.
+- add zoom and move on a scene with methods scale, xorigin and yorigin. This value can be change with two fingers gesture on mobile device.
 
 ----------------------------------------------------
 Version 1.12
