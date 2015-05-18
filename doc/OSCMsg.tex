@@ -1478,6 +1478,7 @@ Error messages are sent as a single string.
 \label{ITLForward}
 
 The messages handled by the application can be forwarded to arbitrary remote hosts using the \OSC{forward} message. The \OSC{forward} message itself can't be forwarded. 
+A message from a host cannot be forwarded to him to avoid direct loop.
  
 \begin{rail}
 ITLMsgForward : ('forward' ( [1] | [2] hostname +))
@@ -1487,7 +1488,7 @@ ITLMsgForward : ('forward' ( [1] | [2] hostname +))
 \begin{itemize}
 
 \item 1) removes the set of forwarded destinations,
-\item 2) set a list of remote hosts for forwarding. Note that \OSC{hostname} can be any legal host name or IP number, optionally extended with a port number separated by a semi-colon. By default, when no port number is specified, the current application listening port number is used.
+\item 2) set a list of remote hosts for forwarding. Note that \OSC{hostname} can be any legal host name or IP number, optionally extended with a port number separated by a semi-colon. By default, when no port number is specified, the default application listening port number is used (7000).
 \end{itemize}
 \example\\
 Forwarding messages to \OSC{host1.adomain.org} using the current application listening port number
