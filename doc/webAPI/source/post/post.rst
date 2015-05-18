@@ -4,14 +4,14 @@
 Post INScore script
 ===================
 
-This method is used to post script to server to update the score. The score may be modified and its current version number is increased.
+This method is used to post script to the server to update the score. The score may be modified and its current version number is increased.
 
 Request
 ##################
 
 **With http server**
 
-Send a request to server with post method. The content of the INScore script is in the field ``data``. 
+The POST method is used to send the content of the INScore script. The request must have a entity-body with the entity ``data`` which contains the INScore script.
 
 Example::
 
@@ -26,21 +26,35 @@ Example::
 
 **With websocket server**
 
-Send a JSON object with two key ``method`` and ``data`` : 
-		| ``{ method : "post", data : "/ITL/scene/rect set 1 1;"}``
-		| example : ``exampleSocket.send(JSON.stringify({ method : "post", data : "/ITL/scene/rect set 1 1;"}));``
+A JSON object is used to send the INScore script. The object has three fields :
+	* ``id`` : an arbitrary id for the request
+	* ``method`` : the method is "post". This field is used to identified the type of the request
+	* ``data`` : The INScore script.
+
+Example:: 
+
+   var postJsonObject = { id: "45612", method : "post", data : "/ITL/scene/rect set 1 1;"};
+   exampleSocket.send(JSON.stringify(postJsonObject));
 
 Response
 #######################
 
-The server answers with a status
-message which is between OK or ERROR. In case of
-error, details on the failure reason are provided.	
-return log ?
+The server answers with a status message which is between OK or ERROR. In case of
+error, details on the failure reason are provided. When errors occur, The score can be modified : all INScore orders without errors are executed.
 
 **With http server**
-	* 200 ("Success")
+	* In case of success : a response with a code 200 ("Success") and no response body.
+	* In case of error : a response with a code 400 ("Bad request") and the error message in a JSON object.
+		| Example: ``{ "Error" : "error: incorrect OSC address: /ITL/scene/text" }``
 
 **With websocket server**
-	No answer
+
+The response is a JSON object with three fields :
+	* ``id`` : the id of the request
+	* ``status`` : OK in case of success or ERROR in case of error.
+	* ``Error`` : An error message in case of error.
+
+Example: ``{ id: "45612", status: "ERROR", "Error" : "error: incorrect OSC address: /ITL/scene/text" }``
+
+The response is asynchronous, other messages can be received before the response.
 

@@ -11,7 +11,8 @@ Request
 
 **With http server**
 
-Send a request to server at the url *serverUrl/hover* with post method. Mouse coordinates are in field ``x`` and ``y``. 
+The POST method is used to send mouse hover event. The request must have a entity-body with the entities ``x`` and ``y`` which contains the mouse coordinates.
+The path of the request is *serverUrl*/``hover``.
 
 Example::
 
@@ -19,7 +20,7 @@ Example::
      <body>
        <form action="serverUrl/hover" method="post">
          <input type="text" name="x" value="152" />
-	 <input type="text" name="x" value="354" />
+	 <input type="text" name="y" value="354" />
          <input type="submit" value="Submit" />
        </form>
      </body>
@@ -27,17 +28,33 @@ Example::
 
 **With websocket server**
 
-Send a JSON object with three key ``method``, ``x`` and ``y``: 
-		| ``{ method : "hover", x : 152, y : 354 }``
-		| example : ``exampleSocket.send(JSON.stringify({ method : "hover", x : 152, y : 354 }));``
+A JSON object with four fields is used to send the mouse coordinate :
+	* ``id`` : an arbitrary id for the request
+	* ``method`` : the method is "hover". This field is used to identified the type of the request.
+	* ``x`` : the X axis mouse coordinate.
+	* ``y`` : the Y axis mouse coordinate.
+
+Example::
+
+   var hoverJsonObject = { id : 8954, method : "hover", x : 152, y : 354 };
+   exampleSocket.send(JSON.stringify(hoverJsonObject));
 
 Response
 #######################
 
 **With http server**
-	* 200 ("Success")
+	* In case of success : a response with a code 200 ("Success") and no response body.
+	* In case of error : a response with a code 400 ("Bad request") and in the response body, the error message in a JSON object.
+		| Example: ``{ "Error" : "unknown object type: xxxx" }``
 
 **With websocket server**
-	No answer
 
+The response is a JSON object with three fields :
+	* ``id`` : the id of the request
+	* ``status`` : OK in case of success or ERROR in case of error.
+	* ``Error`` : An error message in case of error.
+
+Example: ``{ id: "45612", status: "ERROR", "Error" : "unknown object type: xxxx" }``
+
+The response is asynchronous, other messages can be received before the response.
 
