@@ -18,6 +18,7 @@ Version 1.13
 - messages received from my address are discarded to avoid loops. 
   Internal communication must make use of the local loopback (127.0.0.1).
 - add filter to not forward message to the sender to avoid loop.
+- add forward and filter messages to the scene object to manage forwarding at scene scope.
 - default port to forward messages is now 7000.
 - add new optional tab at startup with a menu for ios and android.
 - add zoom and move on a scene with methods scale, xorigin and yorigin. This value can be change with two fingers gesture on mobile device.
