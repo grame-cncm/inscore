@@ -86,7 +86,7 @@ IMessage::IMessage(const IMessage& msg)
 
 //--------------------------------------------------------------------------
 IMessage::IMessage(const std::string& address, const std::string& msg)
-				: fSrcIP(kLocalHost), fAddress(address)
+				: fSrcIP(kLocalHost), fDestIP(kLocalHost), fAddress(address)
 {
 	fArguments.push_back (new IMsgParam<string>(msg));
 	fHasMessage = true;
@@ -94,7 +94,7 @@ IMessage::IMessage(const std::string& address, const std::string& msg)
 
 //--------------------------------------------------------------------------
 IMessage::IMessage(const std::string& address, const argslist& args, const TUrl& url)
-				: fSrcIP(kLocalHost), fAddress(address), fHasMessage(false), fUrl(url.fHostname.c_str(), url.fPort)
+				: fSrcIP(kLocalHost), fDestIP(kLocalHost), fAddress(address), fHasMessage(false), fUrl(url.fHostname.c_str(), url.fPort)
 {
 	fArguments = args;
 	if (fArguments.size()) {
