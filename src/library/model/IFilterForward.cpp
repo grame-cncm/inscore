@@ -113,8 +113,8 @@ std::string IFilterForward::getListMsg(const std::vector<FilterItem> &aList)
 
 bool IFilterForward::applyFilter(const IMessage* msg) const
 {
-	// Filter forward message itself.
-	if (msg->message() == kforward_GetSetMethod) return true;
+	// Filter forward message itself and message on the broadcast address.
+	if (msg->message() == kforward_GetSetMethod || ((msg->dest() & 255) == 255)) return true;
 
 	// Apply accept pattern first
 	for(std::vector<FilterItem>::const_iterator i = fAcceptList.begin(); i != fAcceptList.end(); i++) {
