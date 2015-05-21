@@ -1,0 +1,7 @@
+
+/ITL/scene/* del;
+
+/ITL/scene/rect set rect 0.6 1.0;
+/ITL/scene/rect color 240 240 240;
+/ITL/scene/rect/arrow set line wa 0.2 0.0;
+/ITL/scene/rect/arrow penWidth 2.0;

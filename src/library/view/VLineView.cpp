@@ -43,7 +43,10 @@ void VLineView::updateView( ILine * line )
     line->cleanupSync();
 
 	double x = relative2SceneX(line->getPoint().x());
-	double y = relative2SceneY(line->getPoint().y());
+
+	// y position is computed relative to the x dimension otherwise for non square parent
+	// it may result in an angle when the width is smaller than the height
+	double y = relative2SceneX(line->getPoint().y());
 	double xo = 0;
 	double yo = 0;
 
