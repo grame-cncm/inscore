@@ -43,6 +43,7 @@
 #include "TMessageEvaluator.h"
 #include "Updater.h"
 #include "IJavascript.h"
+#include "IFilterForward.h"
 
 #include "VSceneView.h"
 
@@ -80,12 +81,14 @@ IScene::IScene(const std::string& name, IObject * parent)
 	fMsgHandlerMap[kwindowOpacity_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setWindowOpacity);
 	fMsgHandlerMap[kload_SetMethod]				= TMethodMsgHandler<IScene>::create(this, &IScene::loadMsg);
 	fMsgHandlerMap[krootPath_GetSetMethod]		= TSetMethodMsgHandler<IScene, string>::create(this, &IScene::setRootPath);
+	fMsgHandlerMap[kforward_GetSetMethod]		= TMethodMsgHandler<IScene>::create(this, &IScene::forward);
 
 	fGetMsgHandlerMap[kfullscreen_GetSetMethod] = TGetParamMsgHandler<bool>::create(fFullScreen);
 	fGetMsgHandlerMap[kframeless_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fFrameless);
 	fGetMsgHandlerMap[kabsolutexy_GetSetMethod] = TGetParamMsgHandler<bool>::create(fAbsoluteCoordinates);
 	fGetMsgHandlerMap[kwindowOpacity_GetSetMethod] = TGetParamMsgHandler<bool>::create(fWindowOpacity);
 	fGetMsgHandlerMap[krootPath_GetSetMethod]	= TGetParamMsgHandler<string>::create(fRootPath);
+	fGetMsgHandlerMap[kforward_GetSetMethod]	= TGetParamMethodHandler<IScene, const vector<IMessage::TUrl> (IScene::*)() const>::create(this, &IScene::getForwardList);
 }
 
 //--------------------------------------------------------------------------
@@ -132,8 +135,11 @@ void IScene::createVirtualNodes()
 
 	fFileWatcher = QFileWatcher::create(this);
 	fJSObject = IJavascript::create(this, &fJavascript);
+	fFilterForward = IFilterForward::create(this);
+	fForwarder.setFilter(fFilterForward);
 	add ( fFileWatcher );
 	add ( fJSObject );
+	add ( fFilterForward );
 }
 
 //--------------------------------------------------------------------------
@@ -152,6 +158,15 @@ string IScene::absolutePath(const std::string& path) const
 void IScene::accept (Updater* u)
 {
 	u->updateTo (SIScene(this));
+}
+
+//--------------------------------------------------------------------------
+bool IScene::accept(const std::string& regexp, const IMessage *msg)
+{
+	bool result = IObject::match(regexp);
+	if (result)
+		fForwarder.forward(msg);
+	return result;
 }
 
 //--------------------------------------------------------------------------
@@ -244,5 +259,10 @@ void IScene::print (ostream& out) const
 	fFileWatcher->print(out);
 }
 
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IScene::forward(const IMessage* msg)
+{
+	return fForwarder.processForwardMsg(msg);
+}
 
 }

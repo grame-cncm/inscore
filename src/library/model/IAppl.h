@@ -36,6 +36,7 @@
 #include "TScripting.h"
 #include "udpinfo.h"
 #include "benchtools.h"
+#include "Forwarder.h"
 
 class QApplication;
 namespace inscore
@@ -72,31 +73,36 @@ class IAppl : public IObject, public TILoader
 	static std::string	fVersion;					// the application version number
 	static float		fVersionNum;				// the application version number as floating point value
 	static float		fCompatibilityVersionNum;		// the supported version number as floating point value
-	
+	static udpinfo		fUDP;						// udp port settings
+
 		int			fStartTime;					// the application start time
 		int			fCurrentTime;				// the application current time
 		int			fCurrentTicks;				// the current count of clocks
 		SIApplDebug	fApplDebug;					// debug flags
 		SIApplStat	fApplStat;					// statistics
 		SIApplLog	fApplLog;					// log window
-		SIFilterForward fFilterForward;
+		SIFilterForward fFilterForward;			// A virtual node to manage filter for message forwarding
+		Forwarder	fForwarder;					// A forwarder class to manage message forwarding
 		bool		fOffscreen;
-		udpinfo		fUDP;						// udp port settings
 		int			fRate;						// the time task rate
 		QApplication*	fAppl;					// the Qt application
 		QMutex		fTimeMutex;
 
 		TJSEngine		fJavascript;
 		TLua			fLua;
-		
-		std::vector<IMessage::TUrl>	fForwardList;	// list of hosts to forward incoming messages
 
 	public:
+		static unsigned long kUPDPort;	// Default listening port
 		static bool fDefaultShow;
 		static const std::string kApplType;
 		static const std::string kName;
 		static SIAppl			create(int udpport, int outport, int errport,  QApplication* appl, bool offscreen=false)		
-			{ return new IAppl(udpport, outport, errport, appl, offscreen); }
+			{
+				IAppl::setUDPInPort(udpport);
+				IAppl::setUDPOutPort(outport);
+				IAppl::setUDPErrPort(errport);
+				return new IAppl(appl, offscreen);
+			}
 		static std::string		getRootPath()				{ return fRootPath; }	//< returns the application root path
 		static std::string		absolutePath( const std::string& path );		//< returns the absolute path corresponding to 'path',
 
@@ -111,16 +117,20 @@ class IAppl : public IObject, public TILoader
 		int		time() const				{ return fCurrentTime; }
 		int		ticks() const				{ return fCurrentTicks; }
 		void	quit()						{ fRunning = false; }
-		int		getUDPInPort() const		{ return fUDP.fInPort; }
-		int		getUDPOutPort() const		{ return fUDP.fOutPort; }
-		int		getUDPErrPort() const		{ return fUDP.fErrPort; }
+		static int		getUDPInPort() 		{ return fUDP.fInPort; }
+		static int		getUDPOutPort() 	{ return fUDP.fOutPort; }
+		static int		getUDPErrPort() 	{ return fUDP.fErrPort; }
 		bool	defaultShow() const			{ return fDefaultShow; }
-		const std::string&	getUDPOutAddress() const		{ return fUDP.fOutDstAddress; }
-		const std::string&	getUDPErrAddress() const		{ return fUDP.fErrDstAddress; }
+		static const std::string&	getUDPOutAddress()		{ return fUDP.fOutDstAddress; }
+		static const std::string&	getUDPErrAddress()		{ return fUDP.fErrDstAddress; }
 		IApplLog*			getLogWindow()	{ return fApplLog; }
 		
 		int		getRate() const				{ return fRate; }
-
+		/*!
+		 * \brief getForwardList Get the list of host to which forward message.
+		 * \return
+		 */
+		const std::vector<IMessage::TUrl> getForwardList() const { return fForwarder.getForwardList(); }
 		virtual void		accept (Updater*);
 		virtual void		print(std::ostream& out) const;
 
@@ -142,9 +152,12 @@ class IAppl : public IObject, public TILoader
 		*/
 		virtual int processMsg (const std::string& address, const std::string& addressTail, const IMessage* msg);
 		
-		void		setUDPInPort(int p)			{ fUDP.fInPort = p; }
-		void		setUDPOutPort(int p)		{ fUDP.fOutPort = p; }
-		void		setUDPErrPort(int p)		{ fUDP.fErrPort = p; }
+		static void		setUDPInPort(int p)			{ fUDP.fInPort = p; }
+		static void		setUDPOutPort(int p)		{ fUDP.fOutPort = p; }
+		static void		setUDPErrPort(int p)		{ fUDP.fErrPort = p; }
+		void		setUDPInPortHandler(int p)		{ IAppl::setUDPInPort(p); }
+		void		setUDPOutPortHandler(int p)		{ IAppl::setUDPOutPort(p); }
+		void		setUDPErrPortHandler(int p)		{ IAppl::setUDPErrPort(p); }
 		void		setRate(int rate)			{ fRate = rate; }
 		void		setReceivedOSC(int n);
 
@@ -158,15 +171,12 @@ class IAppl : public IObject, public TILoader
 				void setCompatibilityVersion (float v)	{ fCompatibilityVersionNum = v; }
 
 	protected:
-				 IAppl(int udpport, int outport, int errport,  QApplication* appl, bool offscreen);
+				 IAppl(QApplication* appl, bool offscreen);
 		virtual ~IAppl();
-
-		/// \brief forwarding messages filtering.
-		virtual bool filter (const IMessage* msg);
 		
 		void		setRootPath(const std::string& s);
-		void		setUDPOutAddress(const std::string& a)	{ fUDP.fOutDstAddress = a; }
-		void		setUDPErrAddress(const std::string& a)	{ fUDP.fErrDstAddress = a; }
+		static void		setUDPOutAddress(const std::string& a)	{ fUDP.fOutDstAddress = a; }
+		static void		setUDPErrAddress(const std::string& a)	{ fUDP.fErrDstAddress = a; }
 		void		setDefaultShow(bool state)				{ fDefaultShow = state; }
 
 		TJSEngine*		getJSEngine()		{ return &fJavascript; }

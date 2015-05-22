@@ -247,12 +247,12 @@ void IGlue::setOSCErr (const std::string& a) { oscerr.setAddress(a); fUDP.fErrDs
 //--------------------------------------------------------------------------
 void IGlue::checkUDPChange()
 {
-	if (fModel->getUDPInPort() != fUDP.fInPort)					// check for udp port number changes
-		oscinit (fModel->getUDPInPort());
-	if (fModel->getUDPOutPort() != fUDP.fOutPort)				// check for udp out port number changes
-		setOSCOut(fModel->getUDPOutPort());
-	if (fModel->getUDPErrPort() != fUDP.fErrPort)				// check for udp err port number changes
-		setOSCErr(fModel->getUDPErrPort());
+	if (IAppl::getUDPInPort() != fUDP.fInPort)					// check for udp port number changes
+		oscinit (IAppl::getUDPInPort());
+	if (IAppl::getUDPOutPort() != fUDP.fOutPort)				// check for udp out port number changes
+		setOSCOut(IAppl::getUDPOutPort());
+	if (IAppl::getUDPErrPort() != fUDP.fErrPort)				// check for udp err port number changes
+		setOSCErr(IAppl::getUDPErrPort());
 }
 
 //--------------------------------------------------------------------------

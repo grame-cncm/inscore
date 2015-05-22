@@ -37,6 +37,7 @@
 #include "VImageView.h"
 #include "VLineView.h"
 #include "VLogWindow.h"
+#include "VMobileMenu.h"
 #include "VPolygonView.h"
 #include "VRectView.h"
 #include "VGridView.h"
@@ -86,6 +87,7 @@ void VQtUpdater::updateTo(IApplLog * log)
 	if(log->getVisible()) {
 		if(index == -1) {
 			tw->addTab(w, w->windowTitle());
+			tw->setCurrentWidget(w);
 		}
 	} else {
 		if(index != -1) {
@@ -96,5 +98,27 @@ void VQtUpdater::updateTo(IApplLog * log)
     w->setVisible (log->getVisible());
 #endif
 }
+
+//--------------------------------------------------------------------------
+void VQtUpdater::updateTo(IMobileMenu* menu)
+{
+#if defined(ANDROID) || defined(IOS)
+	QWidget * w = menu->window();
+	// Add and remove log window in a tab
+	QTabWidget * tw = VQtInit::getTabWidget();
+	int index = tw->indexOf(w);
+	if(menu->getVisible()) {
+		if(index == -1) {
+			tw->addTab(w, w->windowTitle());
+			tw->setCurrentWidget(w);
+		}
+	} else {
+		if(index != -1) {
+			tw->removeTab(index);
+		}
+	}
+#endif
+}
+
 
 } // end namespoace

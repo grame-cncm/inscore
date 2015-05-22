@@ -1,0 +1,7 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+<qresource>
+   <file alias="sample.inscore">../scripts/mobile/sample.inscore</file>
+   <file>images/load.png</file>
+</qresource> 
+</RCC>

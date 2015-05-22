@@ -231,9 +231,12 @@ VSceneView::~VSceneView()
 {
 	delete fImage;
 	delete fScene;
-#if !defined(ANDROID) && !defined(IOS)
-	delete fGraphicsView; 
+#if defined(ANDROID) || defined(IOS)
+	QTabWidget * tw = VQtInit::getTabWidget();
+	int index = tw->indexOf(fGraphicsView);
+	tw->removeTab(index);
 #endif
+	delete fGraphicsView;
 }
 
 //------------------------------------------------------------------------------------------------------------------------

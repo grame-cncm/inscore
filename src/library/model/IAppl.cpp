@@ -31,12 +31,9 @@
 #include <fstream>
 #include <sstream>
 
-#ifndef WIN32
-#include <unistd.h>
-#endif
-
 #include "IAppl.h"
 #include "IApplVNodes.h"
+#include "Forwarder.h"
 #include "IFilterForward.h"
 #include "IGlue.h"
 #include "IMessage.h"
@@ -44,6 +41,7 @@
 #include "IScene.h"
 #include "ITLparser.h"
 #include "OSCAddress.h"
+#include "IMobileMenu.h"
 #include "Updater.h"
 #include "TMessageEvaluator.h"
 #include "ITLError.h"
@@ -54,10 +52,6 @@
 #include <QDir>
 #include <QApplication>
 #include <QStandardPaths>
-
-#ifdef WIN32
-#include <Winsock2.h>
-#endif
 
 using namespace std;
 
@@ -71,8 +65,19 @@ const string IAppl::kApplType("appl");
 #define _CRT_SECURE_NO_DEPRECATE
 std::string IAppl::fRootPath = std::string(getenv("USERPROFILE")) + "\\";
 #elif ANDROID
+static std::string getFilePath() {
+	// Use standard location as root path (/sdcard/documents/inscore on most device)
+	QString path = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).value(0);
+	if (!path.isEmpty() && !path.endsWith("/"))
+		path += "/";
+	path += "inscore/";
+	QDir dir(path);
+	if (!dir.exists())
+		dir.mkpath(path);
+	return path.toStdString();
+}
 // Files are writed in sdcard only
-std::string IAppl::fRootPath = "/sdcard/inscore/";
+std::string IAppl::fRootPath = getFilePath();
 #elif IOS
 // Files are writed in ios application sandbox only
 static std::string getFilePath() {
@@ -124,12 +129,14 @@ map<string, pair<string, string> > IAppl::fAliases;
 
 string	IAppl::fVersion;						// the application version number
 float	IAppl::fVersionNum = 0.;				// the application version number as floating point value
-float	IAppl::fCompatibilityVersionNum = 0.;		// the supported version number as floating point value
+float	IAppl::fCompatibilityVersionNum = 0.;	// the supported version number as floating point value
+unsigned long IAppl::kUPDPort = 7000;			//Default listening port
+udpinfo IAppl::fUDP(IAppl::kUPDPort);
 
 //--------------------------------------------------------------------------
-IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool offscreen) 
+IAppl::IAppl(QApplication* appl, bool offscreen)
 	: IObject(kName, 0), fCurrentTime(0), fCurrentTicks(0), 
-	fOffscreen(offscreen), fUDP(udpport,outport,errport), fRate(10), fAppl(appl)
+	fOffscreen(offscreen), fRate(10), fAppl(appl)
 {
 	fTypeString = kApplType;
 	fVersion	= INScore::versionStr();
@@ -150,20 +157,20 @@ IAppl::IAppl(int udpport, int outport, int errport,  QApplication* appl, bool of
 	fMsgHandlerMap[krootPath_GetSetMethod]		= TSetMethodMsgHandler<IAppl, string>::create(this, &IAppl::setRootPath);
 
 	fMsgHandlerMap[kcompatibility_GetSetMethod]		= TSetMethodMsgHandler<IAppl,float>::create(this, &IAppl::setCompatibilityVersion);
-	fMsgHandlerMap[kport_GetSetMethod]			= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPInPort);
-	fMsgHandlerMap[koutport_GetSetMethod]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPOutPort);
-	fMsgHandlerMap[kerrport_GetSetMethod]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPErrPort);
+	fMsgHandlerMap[kport_GetSetMethod]			= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPInPortHandler);
+	fMsgHandlerMap[koutport_GetSetMethod]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPOutPortHandler);
+	fMsgHandlerMap[kerrport_GetSetMethod]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPErrPortHandler);
 	fMsgHandlerMap[kdefaultShow_GetSetMethod]	= TSetMethodMsgHandler<IAppl,bool>::create(this, &IAppl::setDefaultShow);
 	fMsgHandlerMap[krate_GetSetMethod]			= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setRate);
 
 	fGetMsgHandlerMap[krootPath_GetSetMethod]	= TGetParamMsgHandler<string>::create(fRootPath);
-	fGetMsgHandlerMap[kport_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getUDPInPort);
-	fGetMsgHandlerMap[koutport_GetSetMethod]	= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getUDPOutPort);
-	fGetMsgHandlerMap[kerrport_GetSetMethod]	= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getUDPErrPort);
+	fGetMsgHandlerMap[kport_GetSetMethod]		= TGetParamMsgHandler<int>::create(fUDP.fInPort);
+	fGetMsgHandlerMap[koutport_GetSetMethod]	= TGetParamMsgHandler<int>::create(fUDP.fOutPort);
+	fGetMsgHandlerMap[kerrport_GetSetMethod]	= TGetParamMsgHandler<int>::create(fUDP.fErrPort);
 	fGetMsgHandlerMap[kdefaultShow_GetSetMethod]= TGetParamMethodHandler<IAppl, bool (IAppl::*)() const>::create(this, &IAppl::defaultShow);
 	fGetMsgHandlerMap[kcompatibility_GetSetMethod]	= TGetParamMsgHandler<float>::create(fCompatibilityVersionNum);
 	fGetMsgHandlerMap[krate_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getRate);
-	fGetMsgHandlerMap[kforward_GetSetMethod]	= TGetParamMsgHandler<vector<IMessage::TUrl> >::create(fForwardList);
+	fGetMsgHandlerMap[kforward_GetSetMethod]	= TGetParamMethodHandler<IAppl, const vector<IMessage::TUrl> (IAppl::*)() const>::create(this, &IAppl::getForwardList);
 	fGetMsgHandlerMap[ktime_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::time);
 	fGetMsgHandlerMap[kticks_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::ticks);
 
@@ -222,11 +229,13 @@ void IAppl::createVirtualNodes()
 	fDebug = fApplDebug;
 	fApplLog = IApplLog::create(this);
 	fFilterForward = IFilterForward::create(this);
+	add(IMobileMenu::create(this));
 	add ( fDebug );
 	add ( fApplStat );
 	add ( fApplLog );
 	add ( IApplPlugin::create(this) );
 	add (fFilterForward);
+	fForwarder.setFilter(fFilterForward);
 }
 
 //--------------------------------------------------------------------------
@@ -261,31 +270,15 @@ SIMessageList IAppl::getAll() const
 }
 
 //--------------------------------------------------------------------------
-// messages processing
-//--------------------------------------------------------------------------
-bool IAppl::filter (const IMessage* msg)
-{
-	if (msg->message() == kforward_GetSetMethod) return true;
-
-	return fFilterForward->applyFilter(msg);
-}
-
-//--------------------------------------------------------------------------
 int IAppl::processMsg (const std::string& address, const std::string& addressTail, const IMessage* imsg)
 {
 	setReceivedOSC (1);
 
-	int n = fForwardList.size();
-
 	if (imsg->extendedAddress()) {
 		OSCStream::sendEvent (imsg, imsg->url().fHostname, imsg->url().fPort);
 		return MsgHandler::kProcessed;
-	}
-	else if (n && !filter(imsg)) {
-		for (int i = 0; i < n; i++) {
-			IMessage::TUrl url = fForwardList[i];
-			OSCStream::sendEvent (imsg, url.fHostname, url.fPort);
-		}
+	} else {
+		fForwarder.forward(imsg);
 	}
 
 	string head = address;
@@ -380,21 +373,7 @@ MsgHandler::msgStatus IAppl::requireMsg(const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IAppl::forward(const IMessage* msg)
 {
-	fForwardList.clear();						// clear the forward list first
-	if (msg->size() == 0)						// no other param
-		return MsgHandler::kProcessed;			// that's done
-
-	for (int i=0; i<msg->size(); i++) {
-		string address;
-		if (msg->param(i, address)) {
-			IMessage::TUrl url;
-			url.parse (address);
-			if (!url.fPort) url.fPort = getUDPInPort();
-			fForwardList.push_back (url);
-		}
-		else return MsgHandler::kBadParameters;
-	}
-	return MsgHandler::kProcessed;
+	return fForwarder.processForwardMsg(msg);
 }
 
 //--------------------------------------------------------------------------

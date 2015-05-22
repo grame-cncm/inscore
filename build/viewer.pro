@@ -53,6 +53,7 @@ ios {
         ios_icon.files = $$files($$ROOT/rsrc/ios/*.png)
         QMAKE_BUNDLE_DATA += ios_icon
         ICON 		= $$ROOT/rsrc/INScoreViewer.icns
+        RESOURCES += $$ROOT/rsrc/inscoremobile.qrc
 }
 
 ############################## 
@@ -76,9 +77,10 @@ unix:!android:!macx:LIBS += -L. -lINScore -lGUIDOEngine
 ############################## 
 android {
         LIBS += -L. -lINScore
-	ANDROID_EXTRA_LIBS = $$ROOT/lib/GuidoEngine/android/libGUIDOEngine.so
-        DISTFILES += android/AndroidManifest.xml
+        ANDROID_EXTRA_LIBS = $$ROOT/lib/GuidoEngine/android/libGUIDOEngine.so libINScore.so
+        DISTFILES += $$PWD/android/AndroidManifest.xml
         ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
         QT += androidextras
+        RESOURCES += $$ROOT/rsrc/inscoremobile.qrc
 }
 

@@ -11,4 +11,4 @@ Two types of objects are available :
 This objects can :doc:`get` (like score version and screen image) or :doc:`post` to update the score.
 With it's bidirectional communication, the websocket server sends notifications with the screen version number when the score change.
 
-Note that websocket responses are asynchronous.
+Note that websocket responses are asynchronous that's why an id is introduct in JSON object for the request and retreived in the response.

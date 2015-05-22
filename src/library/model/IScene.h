@@ -32,6 +32,9 @@
 #include "TILoader.h"
 #include "TScripting.h"
 #include "VSceneView.h"
+#include "Forwarder.h"
+
+#include <vector>
 
 class QGraphicsScene;
 
@@ -52,6 +55,8 @@ class IFileWatcher;
 typedef class libmapping::SMARTP<IFileWatcher>		SIFileWatcher;
 class IJavascript;
 typedef class libmapping::SMARTP<IJavascript>		SIJavascript;
+class IFilterForward;
+typedef class libmapping::SMARTP<IFilterForward>		SIFilterForward;
 
 //--------------------------------------------------------------------------
 /*! \brief a scene model
@@ -69,7 +74,9 @@ class IScene : public IRectShape, public TILoader
 
 	TJSEngine		fJavascript;
 	TLua			fLua;
-	
+	SIFilterForward	fFilterForward;
+	Forwarder		fForwarder;
+
 	public:		
 		static const std::string kSceneType;
 		static libmapping::SMARTP<IScene> create(const std::string& name, IObject * parent)	{ return new IScene(name, parent); }
@@ -122,6 +129,16 @@ class IScene : public IRectShape, public TILoader
 
 		virtual VSceneView*	getView() const				{ return static_cast<VSceneView *>(fView); }
 
+		/*!
+		 * \brief accept Check if the message is for the scene or his child and if true, do the forward.
+		 * \param regexp a regular expression.
+		 * \param msg a message
+		 * \return true if the message is for the scene
+		 */
+		virtual bool	accept(const std::string& regexp, const IMessage *msg);
+
+		const std::vector<IMessage::TUrl> getForwardList() const { return fForwarder.getForwardList(); }
+
 	protected:
 				 IScene(const std::string& name, IObject * parent);
 		virtual ~IScene();
@@ -135,6 +152,13 @@ class IScene : public IRectShape, public TILoader
 		void		newScene ();
 		std::string address2scene (const char* addr) const;
 		void		del ();
+
+		/*!
+		 * \brief forward The scene accept forward message.
+		 * \param msg a message
+		 * \return
+		 */
+		MsgHandler::msgStatus forward(const IMessage* msg);
 };
 
 /*!

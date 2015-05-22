@@ -9,5 +9,5 @@ When using a websocket server, notification are received when the score change. 
 Notification content
 ####################
 
-A notification is the same JSON object as the object received after :doc:`get/version`.
+A notification is a JSON object with an unique field version, the internal score version of INScore.
 	``{version : 456}``

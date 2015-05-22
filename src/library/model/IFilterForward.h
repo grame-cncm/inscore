@@ -37,6 +37,10 @@ namespace inscore
 	class IFilterForward;
 	typedef class libmapping::SMARTP<IFilterForward>		SIFilterForward;
 
+/*!
+	\addtogroup ITLModel Data Model
+	@{
+*/
 
 class FilterItem {
 	public:
@@ -110,6 +114,7 @@ class IFilterForward : public IVNode
 
 		/*!
 		 * \brief applyFilter The accepted items are parsed and if the message not correspond to an accepted item, the rejected items are parsed.
+		 * The forward message itself is always rejected.
 		 * \param msg The message
 		 * \return true if the message must be filter, else return false.
 		 */
@@ -139,6 +144,10 @@ class IFilterForward : public IVNode
         /// \brief get the rejected address and message list.
 		std::string getRejectMsg() const;
 };
+
+/*!
+@}
+*/
 
 }
 

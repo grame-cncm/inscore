@@ -467,6 +467,12 @@ bool IObject::match(const std::string& regexp) const
 }
 
 //--------------------------------------------------------------------------
+bool IObject::accept(const std::string& regexp, const IMessage *)
+{
+	return match(regexp);
+}
+
+//--------------------------------------------------------------------------
 const IObject* IObject::findnode(const string& node, const string& pathtail) const
 {
 	string next, nexttail;
@@ -634,7 +640,7 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 {
 //	bool result = false;
 	int result = MsgHandler::kBadAddress;
-	if (match(address)) {				// first make sure that the object is part of the address
+	if (accept(address, msg)) {				// first make sure that the object is part of the address
 		string beg  = OSCAddress::addressFirst(addressTail);	// next takes the next destination object
 		string tail = OSCAddress::addressTail(addressTail);		// and possible remaining address part
 		

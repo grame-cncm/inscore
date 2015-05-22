@@ -30,6 +30,12 @@
 #include "ip/NetworkingUtils.h"
 #include "Tools.h"
 
+#ifndef WIN32
+#include <unistd.h>
+#else
+#include <Winsock2.h>
+#endif
+
 using namespace std;
 using namespace libmapping;
 
