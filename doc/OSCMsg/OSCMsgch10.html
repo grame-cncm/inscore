@@ -1,39 +1,54 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
   "http://www.w3.org/TR/html4/loose.dtd">  
 <html > 
-<head><title>10 Layers</title> 
+<head><title>10 Messages forwarding</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
 <meta name="generator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2015-04-07 14:16:00"> 
+<meta name="date" content="2015-05-22 14:21:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 1714--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 1688--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch11.html" >next</a>] [<a 
 href="OSCMsgch9.html" >prev</a>] [<a 
 href="OSCMsgch9.html#tailOSCMsgch9.html" >prev-tail</a>] [<a 
 href="#tailOSCMsgch10.html">tail</a>] [<a 
 href="OSCMsg3.html#OSCMsgch10.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;10</span><br /><a 
- id="x14-5600010"></a>Layers</h2>
-<!--l. 1717--><p class="noindent" >Layers may be viewed as containers or as groups. They represent a way to structure both the address space and the
-graphic space.
-<!--l. 1719--><p class="noindent" >From graphic viewpoint, a layer is a scene inside a scene. All the properties of &#8217;rect&#8217; components are
-available to layers: position, scale, color, transparency, etc.). By default, a layer is not visible: it has
-no brush and no pen, but changing the brush style (see section <a 
-href="OSCMsgch7.html#x11-360007.2">7.2<!--tex4ht:ref: brush --></a> p.<a 
-href="OSCMsgch7.html#x11-360007.2">50<!--tex4ht:ref: brush --></a>) - e.g. to <span 
-class="pcrr8tn-">solid </span>- makes it
-visible.
-<!--l. 1721--><p class="noindent" >From time viewpoint, a layer has the common time attributes i.e. a date, a duration.
-<!--l. 1723--><p class="noindent" >A layer may be synchronized to other objects, including other layers. It includes a <span 
-class="pcrr8tn-">sync </span>node and supports
-synhcronization of the enclosed objects. However, synchronization is restricted to objects from the same layer and
-cannot cross the border of a layer.
-<!--l. 1726--><p class="noindent" ><span 
+ id="x14-5500010"></a>Messages forwarding</h2>
+<!--l. 1690--><p class="noindent" >The messages handled by the application or by a scene can be forwarded to arbitrary remote hosts. A filtering
+mecanism can be used to have a fine control of forwarded messages.
+<h3 class="sectionHead"><span class="titlemark">10.1    </span> <a 
+ id="x14-5600010.1"></a>Remote hosts list</h3>
+<!--l. 1697--><p class="noindent" >Remote hosts lists can be set using the <span 
+class="pcrr8tn-">forward </span>message at scene or application level. Hosts lists
+of the application and of each scene are independent. At scene level, only messages handle by the
+scene are forwarded (ie message for the scene itself or for one of his children object). The <span 
+class="pcrr8tn-">forward</span>
+message itself can&#8217;t be forwarded. A message from a host cannot be forwarded to him to avoid direct
+loop.
+<a 
+ id="dx14-56001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1704--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">ITLMsgForward</span> <img 
+src="OSCMsg60x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx14-56002"></a>
+     <ul class="itemize1">
+     <li class="itemize">1) removes the set of forwarded destinations,
+     </li>
+     <li class="itemize">2) set a list of remote hosts for forwarding. Note that <span 
+class="pcrr8tn-">hostname </span>can be any legal host name or IP
+     number, optionally extended with a port number separated by a semi-colon. By default, when no port
+     number is specified, the default application listening port number is used (7000).</li></ul>
+<!--l. 1712--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -41,56 +56,114 @@ class="small-caps">M</span><span
 class="small-caps">P</span><span 
 class="small-caps">L</span><span 
 class="small-caps">E</span> </span><br 
-class="newline" />Creating a layer and its content:
+class="newline" />Forwarding messages handle by application to <span 
+class="pcrr8tn-">host1.adomain.org </span>using the default application listening port
+number (7000) and to <span 
+class="pcrr8tn-">host2.adomain.org </span>on port number 5100.
 <div class="center" 
 >
-<!--l. 1730--><p class="noindent" >
+<!--l. 1716--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox51"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/layer1 set layer;</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/layer1/score set gmnf &#8217;myscore.gmn&#8217;;</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/layer1/cursor set rect 0.01 0.1;</span></div></div>
+class="colorbox" id="colorbox50"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL forward host1.adomain.org host2.adomain.org:5100;</span>
+</div></div>
 </div>
-<!--l. 1732--><p class="noindent" >Synchronizing 2 components of a layer :
-<div class="center" 
->
-<!--l. 1735--><p class="noindent" >
-<div 
-class="colorbox" id="colorbox52"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">!&#8217;score&#8217; and &#8217;cursor&#8217; must be enclosed in layer1 </span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/layer1/sync cursor score;</span></div></div>
-</div>
-<!--l. 1737--><p class="noindent" >Making a layer visible :
-<div class="center" 
->
-<!--l. 1740--><p class="noindent" >
-<div 
-class="colorbox" id="colorbox53"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/layer1 brushStyle solid; </span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/layer1 color 120 120 120;</span></div></div>
-</div>
-<h3 class="sectionHead"><span class="titlemark">10.1    </span> <a 
- id="x14-5700010.1"></a>Layers generalization</h3>
-<!--l. 1747--><p class="noindent" >The idea of layer is generalized to all the type of objects: any INScore object can be a container without depth
-limitation.
-<!--l. 1749--><p class="noindent" >Layers but also any object respond to the <span 
-class="pcrr8tn-">count </span>and <span 
-class="pcrr8tn-">rcount </span>queries described in section <a 
-href="OSCMsgch9.html#x13-550009.2">9.2<!--tex4ht:ref: scenequery --></a> p.<a 
-href="OSCMsgch9.html#x13-550009.2">71<!--tex4ht:ref: scenequery --></a>.
+<!--l. 1719--><p class="noindent" >Forwarding messages handle by the scene <span 
+class="pcrr8tn-">scene1 </span>to <span 
+class="pcrr8tn-">host3.adomain.org </span>using the default application listening
+port number (7000) and to <span 
+class="pcrr8tn-">host4.adomain.org </span>on port number 5100.
                                                                                  
 
                                                                                  
-<!--l. 1815--><div class="crosslinks"><p class="noindent">[<a 
+<div class="center" 
+>
+<!--l. 1722--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox51"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene1 forward host1.adomain.org host2.adomain.org:5100;</span>
+</div></div>
+</div>
+<!--l. 1726--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">10.2    </span> <a 
+ id="x14-5700010.2"></a>Filtering messages forwarding</h3>
+<!--l. 1729--><p class="noindent" >The messages forwarded to arbitrary remote hosts using the <span 
+class="pcrr8tn-">forward </span>message can be filtered to send only wanted
+messages. The static <span 
+class="pcrr8tn-">filter </span>node is use manage the filter. A static <span 
+class="pcrr8tn-">filter </span>node is created for each scene and one
+at application level. The filter can be construct with OSC address and messages.
+<a 
+ id="dx14-57001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1733--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">ITLFilteringForward</span> <img 
+src="OSCMsg61x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx14-57002"></a>
+<a 
+ id="dx14-57003"></a>
+     <ul class="itemize1">
+     <li class="itemize">1) Remplace the actual accepted list by the new list or by an empty list. Item in accepted list are not
+     filtered by the reject item list.
+     </li>
+     <li class="itemize">2) Remplace the actual accepted list by the new list or by an empty list. Item in reject list are filtered
+     if they not match the accept list.</li></ul>
+<!--l. 1742--><p class="noindent" >When a new message is incoming, if they match to an accepted item, filter is not apply.<br 
+class="newline" /><br 
+class="newline" /><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Filter at application level :
+<div class="center" 
+>
+                                                                                 
+
+                                                                                 
+<!--l. 1747--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox52"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/filter reject /ITL/scene/line* /ITL/scene/rect; </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/filter accept /ITL/scene/line2 scale arrows;</span></div></div>
+</div>
+<!--l. 1748--><p class="noindent" >Message with OSC message with address starting with <span 
+class="pcrr8tn-">/ITL/scene/line </span>or with address <span 
+class="pcrr8tn-">/ITL/scene/rect </span>are
+filtered only if message address is not <span 
+class="pcrr8tn-">/ITL/scene/line2 </span>or if the content is not <span 
+class="pcrr8tn-">scale </span>or <span 
+class="pcrr8tn-">arrows</span>.<br 
+class="newline" /><br 
+class="newline" />Filter at scene level :
+<div class="center" 
+>
+<!--l. 1752--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox53"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene1/filter reject fontWeight /ITL/scene1/rect;</span>
+</div></div>
+</div>
+<!--l. 1753--><p class="noindent" >The <span 
+class="pcrr8tn-">fontWeight </span>message and message for <span 
+class="pcrr8tn-">/ITL/scene1/rect </span>are rejected.
+                                                                                 
+
+                                                                                 
+<!--l. 1758--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch11.html" >next</a>] [<a 
 href="OSCMsgch9.html" >prev</a>] [<a 
 href="OSCMsgch9.html#tailOSCMsgch9.html" >prev-tail</a>] [<a 
 href="OSCMsgch10.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch10.html" >up</a>] </p></div>
-<!--l. 1815--><p class="noindent" ><a 
+<!--l. 1758--><p class="noindent" ><a 
  id="tailOSCMsgch10.html"></a>  
 </body></html> 
