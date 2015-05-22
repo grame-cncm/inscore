@@ -967,10 +967,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {51}{ ITLMsg : 'quit' | ('rootPath' path) | ('mouse' ('show' | 'hide')) | ('defaultShow' int32) | ('load' filePath) | ('read' buffer) | ('require' float oscMsg) | ('compatibility' float) | ('time' int32) | ('ticks' int32) | ('rate' int32) | 'hello' }
+\rail@i {51}{ ITLMsg : 'quit' | ('rootPath' path) | ('mouse' ('show' | 'hide')) | ('defaultShow' int32) | ('load' filePath) | ('read' buffer) | ('require' float oscMsg) | ('compatibility' float) | ('time' int32) | ('ticks' int32) | ('rate' int32) | 'hello' | forwardingMsg }
 \rail@o {51}{
 \rail@index{ITLMsg}
-\rail@begin{13}{ITLMsg}
+\rail@begin{14}{ITLMsg}
 \rail@bar
 \rail@term{quit}[]
 \rail@nextbar{1}
@@ -1010,6 +1010,8 @@
 \rail@token{int32}[]
 \rail@nextbar{12}
 \rail@term{hello}[]
+\rail@nextbar{13}
+\rail@nont{forwardingMsg}[]
 \rail@endbar
 \rail@end
 }
@@ -1029,51 +1031,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {53}{ ITLMsgForward : ('forward' ( [1] | [2] hostname +)) }
+\rail@i {53}{ ITLRequest : 'get' ('version' | 'guido-version' | 'musicxml-version') }
 \rail@o {53}{
-\rail@index{ITLMsgForward}
-\rail@begin{3}{ITLMsgForward}
-\rail@term{forward}[]
-\rail@bar
-\rail@annote[1]
-\rail@nextbar{1}
-\rail@annote[2]
-\rail@plus
-\rail@nont{hostname}[]
-\rail@nextplus{2}
-\rail@endplus
-\rail@endbar
-\rail@end
-}
-\rail@i {54}{ ITLFilteringForward : [1] ('accept' (|item +)) | [2] ('reject' (|item +)) }
-\rail@o {54}{
-\rail@index{ITLFilteringForward}
-\rail@begin{6}{ITLFilteringForward}
-\rail@bar
-\rail@annote[1]
-\rail@term{accept}[]
-\rail@bar
-\rail@nextbar{1}
-\rail@plus
-\rail@nont{item}[]
-\rail@nextplus{2}
-\rail@endplus
-\rail@endbar
-\rail@nextbar{3}
-\rail@annote[2]
-\rail@term{reject}[]
-\rail@bar
-\rail@nextbar{4}
-\rail@plus
-\rail@nont{item}[]
-\rail@nextplus{5}
-\rail@endplus
-\rail@endbar
-\rail@endbar
-\rail@end
-}
-\rail@i {55}{ ITLRequest : 'get' ('version' | 'guido-version' | 'musicxml-version') }
-\rail@o {55}{
 \rail@index{ITLRequest}
 \rail@begin{3}{ITLRequest}
 \rail@term{get}[]
@@ -1086,8 +1045,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {56}{ ITLStats : 'get' | 'reset' }
-\rail@o {56}{
+\rail@i {54}{ ITLStats : 'get' | 'reset' }
+\rail@o {54}{
 \rail@index{ITLStats}
 \rail@begin{2}{ITLStats}
 \rail@bar
@@ -1097,16 +1056,16 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {57}{ ITLdebug : 'osc' int23 }
-\rail@o {57}{
+\rail@i {55}{ ITLdebug : 'osc' int23 }
+\rail@o {55}{
 \rail@index{ITLdebug}
 \rail@begin{1}{ITLdebug}
 \rail@term{osc}[]
 \rail@nont{int23}[]
 \rail@end
 }
-\rail@i {58}{ ITLLog : 'show' int32 | 'clear' | 'wrap' int32 | 'write' (arg +) | 'save' string }
-\rail@o {58}{
+\rail@i {56}{ ITLLog : 'show' int32 | 'clear' | 'wrap' int32 | 'write' (arg +) | 'save' string }
+\rail@o {56}{
 \rail@index{ITLLog}
 \rail@begin{6}{ITLLog}
 \rail@bar
@@ -1129,8 +1088,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {59}{ ITLPlugin : 'path' folder | 'reset' }
-\rail@o {59}{
+\rail@i {57}{ ITLPlugin : 'path' folder | 'reset' }
+\rail@o {57}{
 \rail@index{ITLPlugin}
 \rail@begin{2}{ITLPlugin}
 \rail@bar
@@ -1141,10 +1100,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {60}{ sceneMsg : 'new' | 'del' | 'reset' | 'foreground' | ('rootPath' path) | ('load' filePath) | ('fullscreen' int32) | ('frameless' int32) | ('absolutexy' int32) | ('windowOpacity' int32) | commonMsg }
-\rail@o {60}{
+\rail@i {58}{ sceneMsg : 'new' | 'del' | 'reset' | 'foreground' | ('rootPath' path) | ('load' filePath) | ('fullscreen' int32) | ('frameless' int32) | ('absolutexy' int32) | ('windowOpacity' int32) | commonMsg | forwardingMsg }
+\rail@o {58}{
 \rail@index{sceneMsg}
-\rail@begin{11}{sceneMsg}
+\rail@begin{12}{sceneMsg}
 \rail@bar
 \rail@term{new}[]
 \rail@nextbar{1}
@@ -1173,11 +1132,13 @@
 \rail@token{int32}[]
 \rail@nextbar{10}
 \rail@nont{commonMsg}[]
+\rail@nextbar{11}
+\rail@nont{forwardingMsg}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {61}{ sceneQuery : 'get' ( 'count' | 'rcount') }
-\rail@o {61}{
+\rail@i {59}{ sceneQuery : 'get' ( 'count' | 'rcount') }
+\rail@o {59}{
 \rail@index{sceneQuery}
 \rail@begin{2}{sceneQuery}
 \rail@term{get}[]
@@ -1185,6 +1146,49 @@
 \rail@term{count}[]
 \rail@nextbar{1}
 \rail@term{rcount}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {60}{ ITLMsgForward : ('forward' ( [1] | [2] hostname +)) }
+\rail@o {60}{
+\rail@index{ITLMsgForward}
+\rail@begin{3}{ITLMsgForward}
+\rail@term{forward}[]
+\rail@bar
+\rail@annote[1]
+\rail@nextbar{1}
+\rail@annote[2]
+\rail@plus
+\rail@nont{hostname}[]
+\rail@nextplus{2}
+\rail@endplus
+\rail@endbar
+\rail@end
+}
+\rail@i {61}{ ITLFilteringForward : [1] ('accept' (|item +)) | [2] ('reject' (|item +)) }
+\rail@o {61}{
+\rail@index{ITLFilteringForward}
+\rail@begin{6}{ITLFilteringForward}
+\rail@bar
+\rail@annote[1]
+\rail@term{accept}[]
+\rail@bar
+\rail@nextbar{1}
+\rail@plus
+\rail@nont{item}[]
+\rail@nextplus{2}
+\rail@endplus
+\rail@endbar
+\rail@nextbar{3}
+\rail@annote[2]
+\rail@term{reject}[]
+\rail@bar
+\rail@nextbar{4}
+\rail@plus
+\rail@nont{item}[]
+\rail@nextplus{5}
+\rail@endplus
+\rail@endbar
 \rail@endbar
 \rail@end
 }
