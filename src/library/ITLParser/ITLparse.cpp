@@ -539,11 +539,11 @@ static const yytype_int8 yyrhs[] =
 static const yytype_uint8 yyrline[] =
 {
        0,   101,   101,   102,   108,   109,   110,   116,   122,   125,
-     134,   135,   136,   137,   141,   145,   148,   153,   156,   161,
-     162,   163,   166,   167,   170,   173,   174,   175,   178,   179,
-     182,   183,   186,   187,   188,   194,   198,   199,   205,   206,
-     207,   208,   211,   214,   219,   225,   226,   227,   228,   234,
-     235,   238,   239,   244,   245
+     134,   135,   136,   137,   141,   144,   146,   151,   154,   159,
+     160,   161,   164,   165,   168,   171,   172,   173,   176,   177,
+     180,   181,   184,   185,   186,   192,   196,   197,   203,   204,
+     205,   206,   209,   212,   217,   223,   224,   225,   226,   232,
+     233,   236,   237,   242,   243
 };
 #endif
 
@@ -1597,130 +1597,128 @@ yyreduce:
   case 14:
 #line 142 "ITL.y"
     {	(yyval.msg) = new inscore::SIMessage(inscore::IMessage::create((yyvsp[(1) - (5)].addr)->fOsc, *(yyvsp[(2) - (5)].plist), (yyvsp[(1) - (5)].addr)->fUrl));
-											(*(yyval.msg))->add(*(yyvsp[(4) - (5)].msgList)); std::cout << "parser eval list" << std::endl;
-											delete (yyvsp[(1) - (5)].addr); delete (yyvsp[(2) - (5)].plist); delete (yyvsp[(4) - (5)].msgList); ;}
+											(*(yyval.msg))->add(*(yyvsp[(4) - (5)].msgList)); delete (yyvsp[(1) - (5)].addr); delete (yyvsp[(2) - (5)].plist); delete (yyvsp[(4) - (5)].msgList); ;}
     break;
 
   case 15:
-#line 145 "ITL.y"
+#line 144 "ITL.y"
     {	(yyval.msg) = new inscore::SIMessage(inscore::IMessage::create((yyvsp[(1) - (3)].addr)->fOsc, *(yyvsp[(2) - (3)].plist), (yyvsp[(1) - (3)].addr)->fUrl));
-											(*(yyval.msg))->add(*(yyvsp[(3) - (3)].plist)); std::cout << "parser eval variable" << std::endl;
-											delete (yyvsp[(1) - (3)].addr); delete (yyvsp[(2) - (3)].plist); delete (yyvsp[(3) - (3)].plist); ;}
+											(*(yyval.msg))->add(*(yyvsp[(3) - (3)].plist)); delete (yyvsp[(1) - (3)].addr); delete (yyvsp[(2) - (3)].plist); delete (yyvsp[(3) - (3)].plist); ;}
     break;
 
   case 16:
-#line 148 "ITL.y"
+#line 146 "ITL.y"
     {	(yyval.msg) = new inscore::SIMessage(inscore::IMessage::create((yyvsp[(1) - (3)].addr)->fOsc, *(yyvsp[(2) - (3)].plist), (yyvsp[(1) - (3)].addr)->fUrl));
 											if (*(yyvsp[(3) - (3)].msgList)) (*(yyval.msg))->add(*(yyvsp[(3) - (3)].msgList));
 											delete (yyvsp[(1) - (3)].addr); delete (yyvsp[(2) - (3)].plist); delete (yyvsp[(3) - (3)].msgList); ;}
     break;
 
   case 17:
-#line 153 "ITL.y"
+#line 151 "ITL.y"
     {	(yyval.msgList) = new inscore::SIMessageList (inscore::IMessageList::create());
 											(*(yyval.msgList))->list().push_back(*(yyvsp[(1) - (1)].msg));
 											delete (yyvsp[(1) - (1)].msg) ;}
     break;
 
   case 18:
-#line 156 "ITL.y"
+#line 154 "ITL.y"
     {	(yyval.msgList) = (yyvsp[(1) - (3)].msgList); (*(yyval.msgList))->list().push_back(*(yyvsp[(3) - (3)].msg)); delete (yyvsp[(3) - (3)].msg); ;}
     break;
 
   case 19:
-#line 161 "ITL.y"
+#line 159 "ITL.y"
     { (yyval.addr) = new inscore::ITLparser::address (*(yyvsp[(1) - (1)].str)); delete (yyvsp[(1) - (1)].str);;}
     break;
 
   case 20:
-#line 162 "ITL.y"
+#line 160 "ITL.y"
     { (yyval.addr) = new inscore::ITLparser::address (*(yyvsp[(1) - (1)].str)); delete (yyvsp[(1) - (1)].str);;}
     break;
 
   case 21:
-#line 163 "ITL.y"
+#line 161 "ITL.y"
     { (yyval.addr) = new inscore::ITLparser::address (*(yyvsp[(2) - (2)].str), *(yyvsp[(1) - (2)].url)); delete (yyvsp[(1) - (2)].url); delete (yyvsp[(2) - (2)].str); ;}
     break;
 
   case 22:
-#line 166 "ITL.y"
+#line 164 "ITL.y"
     { (yyval.str) = (yyvsp[(1) - (1)].str); ;}
     break;
 
   case 23:
-#line 167 "ITL.y"
+#line 165 "ITL.y"
     { *(yyvsp[(1) - (2)].str) += *(yyvsp[(2) - (2)].str); (yyval.str) = (yyvsp[(1) - (2)].str); delete (yyvsp[(2) - (2)].str); ;}
     break;
 
   case 24:
-#line 170 "ITL.y"
+#line 168 "ITL.y"
     { (yyval.str) = new string("." + *(yyvsp[(2) - (2)].str)); delete (yyvsp[(2) - (2)].str); ;}
     break;
 
   case 25:
-#line 173 "ITL.y"
+#line 171 "ITL.y"
     { (yyval.str) = new string("/" + *(yyvsp[(2) - (2)].str)); delete (yyvsp[(2) - (2)].str); ;}
     break;
 
   case 26:
-#line 174 "ITL.y"
+#line 172 "ITL.y"
     { (yyval.str) = new string("/" + context->fText); ;}
     break;
 
   case 27:
-#line 175 "ITL.y"
+#line 173 "ITL.y"
     { (yyval.str) = new string("/$" + *(yyvsp[(3) - (3)].str)); delete (yyvsp[(3) - (3)].str); ;}
     break;
 
   case 28:
-#line 178 "ITL.y"
+#line 176 "ITL.y"
     { (yyval.url) = new inscore::IMessage::TUrl((yyvsp[(1) - (3)].str)->c_str(), context->fInt); delete (yyvsp[(1) - (3)].str); ;}
     break;
 
   case 29:
-#line 179 "ITL.y"
+#line 177 "ITL.y"
     { (yyval.url) = new inscore::IMessage::TUrl(context->fText.c_str(), context->fInt); ;}
     break;
 
   case 30:
-#line 182 "ITL.y"
+#line 180 "ITL.y"
     { (yyval.str) = new string(context->fText); ;}
     break;
 
   case 31:
-#line 183 "ITL.y"
+#line 181 "ITL.y"
     { *(yyvsp[(1) - (3)].str) += '.' + context->fText; (yyval.str)=(yyvsp[(1) - (3)].str); ;}
     break;
 
   case 32:
-#line 186 "ITL.y"
+#line 184 "ITL.y"
     { (yyval.str) = new string(context->fText); ;}
     break;
 
   case 33:
-#line 187 "ITL.y"
+#line 185 "ITL.y"
     { (yyval.str) = new string(context->fText); ;}
     break;
 
   case 34:
-#line 188 "ITL.y"
+#line 186 "ITL.y"
     { (yyval.str) = new string(context->fText); ;}
     break;
 
   case 35:
-#line 194 "ITL.y"
+#line 192 "ITL.y"
     { (yyval.plist) = new inscore::IMessage::argslist; 
 								  inscore::Sbaseparam * p = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText));
 								  (yyval.plist)->push_back(*p); delete p; ;}
     break;
 
   case 36:
-#line 198 "ITL.y"
+#line 196 "ITL.y"
     { (yyval.plist) = new inscore::IMessage::argslist; (yyval.plist)->push_back(*(yyvsp[(1) - (1)].p)); delete (yyvsp[(1) - (1)].p); ;}
     break;
 
   case 37:
-#line 199 "ITL.y"
+#line 197 "ITL.y"
     { (yyval.plist) = new inscore::IMessage::argslist;
 								  (yyval.plist)->push_back(*(yyvsp[(1) - (2)].p));
 								  (yyval.plist)->push_back((yyvsp[(2) - (2)].plist));
@@ -1729,32 +1727,32 @@ yyreduce:
     break;
 
   case 38:
-#line 205 "ITL.y"
+#line 203 "ITL.y"
     { (yyval.plist) = new inscore::IMessage::argslist; (yyval.plist)->push_back(*(yyvsp[(1) - (1)].p)); delete (yyvsp[(1) - (1)].p); ;}
     break;
 
   case 39:
-#line 206 "ITL.y"
+#line 204 "ITL.y"
     { (yyval.plist) = (yyvsp[(1) - (1)].plist); ;}
     break;
 
   case 40:
-#line 207 "ITL.y"
+#line 205 "ITL.y"
     { (yyvsp[(1) - (2)].plist)->push_back((yyvsp[(2) - (2)].plist));  (yyval.plist) = (yyvsp[(1) - (2)].plist); delete (yyvsp[(2) - (2)].plist); ;}
     break;
 
   case 41:
-#line 208 "ITL.y"
+#line 206 "ITL.y"
     { (yyvsp[(1) - (2)].plist)->push_back(*(yyvsp[(2) - (2)].p)); (yyval.plist) = (yyvsp[(1) - (2)].plist); delete (yyvsp[(2) - (2)].p); ;}
     break;
 
   case 42:
-#line 211 "ITL.y"
+#line 209 "ITL.y"
     { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); ;}
     break;
 
   case 43:
-#line 214 "ITL.y"
+#line 212 "ITL.y"
     { (yyval.plist) = new inscore::IMessage::argslist;
 								  std::string var = "$" + *(yyvsp[(2) - (2)].str);
 								  (yyval.plist)->push_back (context->fReader.resolve((yyvsp[(2) - (2)].str)->c_str(), var.c_str()));
@@ -1763,7 +1761,7 @@ yyreduce:
     break;
 
   case 44:
-#line 219 "ITL.y"
+#line 217 "ITL.y"
     { (yyval.plist) = new inscore::IMessage::argslist;
 								  (yyval.plist)->push_back (context->fReader.resolve(*(yyvsp[(3) - (4)].msg)));
 								  delete (yyvsp[(3) - (4)].msg);
@@ -1771,58 +1769,58 @@ yyreduce:
     break;
 
   case 45:
-#line 225 "ITL.y"
+#line 223 "ITL.y"
     { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<int>((yyvsp[(1) - (1)].num))); ;}
     break;
 
   case 46:
-#line 226 "ITL.y"
+#line 224 "ITL.y"
     { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); ;}
     break;
 
   case 47:
-#line 227 "ITL.y"
+#line 225 "ITL.y"
     { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); delete (yyvsp[(1) - (1)].str); ;}
     break;
 
   case 48:
-#line 228 "ITL.y"
+#line 226 "ITL.y"
     { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); ;}
     break;
 
   case 49:
-#line 234 "ITL.y"
+#line 232 "ITL.y"
     { (yyval.str)=(yyvsp[(1) - (3)].str); context->fReader.variable((yyvsp[(1) - (3)].str)->c_str(), (yyvsp[(3) - (3)].plist)); delete (yyvsp[(3) - (3)].plist);;}
     break;
 
   case 50:
-#line 235 "ITL.y"
+#line 233 "ITL.y"
     { (yyval.str)=(yyvsp[(1) - (5)].str); context->fReader.variable((yyvsp[(1) - (5)].str)->c_str(), (yyvsp[(4) - (5)].msgList)); delete (yyvsp[(4) - (5)].msgList);;}
     break;
 
   case 51:
-#line 238 "ITL.y"
+#line 236 "ITL.y"
     { (yyval.str) = new string(context->fText); ;}
     break;
 
   case 52:
-#line 239 "ITL.y"
+#line 237 "ITL.y"
     { (yyval.str) = new string(context->fText); ;}
     break;
 
   case 53:
-#line 244 "ITL.y"
+#line 242 "ITL.y"
     { (yyval.num) = context->fInt; ;}
     break;
 
   case 54:
-#line 245 "ITL.y"
+#line 243 "ITL.y"
     { (yyval.num) = context->fInt; ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1826 "ITLparse.cpp"
+#line 1824 "ITLparse.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2042,7 +2040,7 @@ yyreturn:
 }
 
 
-#line 248 "ITL.y"
+#line 246 "ITL.y"
 
 
 //} // end namespace

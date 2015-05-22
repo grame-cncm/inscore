@@ -140,11 +140,9 @@ message		: address					{ $$ = new inscore::SIMessage(inscore::IMessage::create($
 											delete $1; delete $2; delete $4; }
 			| address eval LEFTPAR messagelist RIGHTPAR
 										{	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
-											(*$$)->add(*$4); std::cout << "parser eval list" << std::endl;
-											delete $1; delete $2; delete $4; }
+											(*$$)->add(*$4); delete $1; delete $2; delete $4; }
 			| address eval variable		{	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
-											(*$$)->add(*$3); std::cout << "parser eval variable" << std::endl;
-											delete $1; delete $2; delete $3; }
+											(*$$)->add(*$3); delete $1; delete $2; delete $3; }
 			| address watchparams script {	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
 											if (*$3) (*$$)->add(*$3);
 											delete $1; delete $2; delete $3; }
