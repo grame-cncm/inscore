@@ -1285,26 +1285,28 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::evalMsg(const IMessage* msg)
 { 
-	if (msg->size() == 1) {
-		SIMessageList watchMsg = msg->watchMsg2Msgs (0);
-		if (watchMsg) {
-			unsigned int n = watchMsg->list().size();
-			if (!n) return MsgHandler::kBadParameters;
+	int n =msg->size();
+	if (!n) return MsgHandler::kBadParameters;
 
-			for (unsigned int i=0; i < n; i++) {
-				SIMessage msg = watchMsg->list()[i];
-				string address;
-				if (msg->relativeAddress())
-					address = msg->relative2absoluteAddress (getOSCAddress());
-				else
-					address = msg->address();
-				string beg  = OSCAddress::addressFirst(address);
-				string tail = OSCAddress::addressTail(address);
-				int ret = getRoot()->processMsg(beg, tail, msg);
-				IGlue::trace(msg, ret);
-			}
-			return MsgHandler::kProcessed;
+	SIMessageList watchMsg = msg->watchMsg2Msgs (0);
+	if (watchMsg) {
+		unsigned int n = watchMsg->list().size();
+		if (!n) return MsgHandler::kBadParameters;
+
+
+		for (unsigned int i=0; i < n; i++) {
+			SIMessage msg = watchMsg->list()[i];
+			string address;
+			if (msg->relativeAddress())
+				address = msg->relative2absoluteAddress (getOSCAddress());
+			else
+				address = msg->address();
+			string beg  = OSCAddress::addressFirst(address);
+			string tail = OSCAddress::addressTail(address);
+			int ret = getRoot()->processMsg(beg, tail, msg);
+			IGlue::trace(msg, ret);
 		}
+		return MsgHandler::kProcessed;
 	}
 	return MsgHandler::kBadParameters;
 }
