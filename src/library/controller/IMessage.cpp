@@ -178,7 +178,8 @@ bool IMessage::decodeAddress (const std::string& address, std::string& oscAddres
 {
 	size_t startOsc = address.find_first_of('/');
 	if (startOsc == string::npos) return false;		// incorrect osc address (no '/')
-	oscAddress = address.substr (startOsc);			// stores the osc address
+	// check addresses that start with a dot to support relative addresses
+	oscAddress = address.substr ((address[0] == '.') ? 0 : startOsc);	// stores the osc address
 
 	url.fPort = 0;									// first disable address extension
 	if (startOsc > 0) {								// and check for the extension
