@@ -116,6 +116,9 @@ void IScene::reset ()
 	setColor( IColor(255,255,255,255) );
 	setXPos(0.f);
 	setYPos(0.f);
+	setScale(1.0f);
+	setXOrigin(0.0f);
+	setYOrigin(0.0f);
 	setWidth(1.0f);
 	setHeight(1.0f);
 	signalsNode()->delsubnodes();

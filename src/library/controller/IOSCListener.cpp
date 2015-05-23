@@ -76,6 +76,7 @@ void IOSCListener::ProcessMessage( const osc::ReceivedMessage& m, const IpEndpoi
 	
 	SIMessage msg = IMessage::create(m.AddressPattern());
 	msg->setSrcIP (src.address);
+	msg->setDestIP (src.destAddress);
 	ReceivedMessageArgumentIterator i = m.ArgumentsBegin();
 	bool first = true;		// used to handle the message string
 	while (i != m.ArgumentsEnd()) {
