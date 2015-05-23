@@ -19,7 +19,6 @@
 ../scripts/Perception/S-proximity/proximity.inscore
 ../scripts/Standalone/layer/complex-cursor/DROP-ME.inscore
 ../scripts/Standalone/musicxml/xmlcode.inscore
-../scripts/Standalone/musicxml/xmlfile.inscore
 ../scripts/Standalone/queries/DROP-ME.inscore
 ../scripts/Standalone/queries/rate.inscore
 ../scripts/Standalone/queries/widthheight.inscore
