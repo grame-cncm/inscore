@@ -173,6 +173,13 @@ bool IScene::accept(const std::string& regexp, const IMessage *msg)
 }
 
 //--------------------------------------------------------------------------
+int	IScene::execute (const IMessage* msg)
+{
+	fForwarder.forward(msg);
+	return IObject::execute(msg);
+}
+
+//--------------------------------------------------------------------------
 // a message addressed to /ITL/scene that is dropped to another scene is converted
 // to the other scene address.
 // in a given way, the address /ITL/scene match any scene address
