@@ -137,6 +137,13 @@ class IScene : public IRectShape, public TILoader
 		 */
 		virtual bool	accept(const std::string& regexp, const IMessage *msg);
 
+		/*!
+		 * \brief execute Forward scene message (accept method is not called if scene is the terminal node of the message) and execute message function.
+		 * \param msg Message to execute.
+		 * \return the message processing status
+		 */
+		int	execute (const IMessage* msg);
+
 		const std::vector<IMessage::TUrl> getForwardList() const { return fForwarder.getForwardList(); }
 
 	protected:
