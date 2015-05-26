@@ -13,6 +13,7 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.14
+- bug corrected with sync without stretch: object origin was not taken into account
 
 ----------------------------------------------------
 Version 1.13
