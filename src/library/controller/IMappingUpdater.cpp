@@ -259,7 +259,19 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
 	slave->UseGraphic2GraphicMapping (false, masterMapName);		// don't use the object graphic segmentation and mapping
 	float x, xs; bool found = false;
 	GraphicSegment slaveSeg;
-
+#if 1
+	if (date2point (date, map, masterSeg, x)) {						// do the slave date exists in the master map ?
+		if (date2point (date, slavemap, slaveSeg, xs))				// yes but retrieve the corresponding location in the slave map too
+			x -= slave->getWidth() * (1+xs) / 2;					// converts the corresponding amount in displacement n the master space
+		found = true;
+	}
+	else if (date2point (mdate, slavemap, slaveSeg, xs)) {			// look for the master date in the slave map
+		if (date2point (mdate, map, masterSeg, x)) {				// this is mainly to retrieve the master segment
+			x -= slave->getWidth()*slave->getScale()/(master->getWidth()) * (xs-slave->getXOrigin());
+			found = true;
+		}
+	}
+#else		// todo: check why the reverse script doesn't initialize correctly
 	if (date2point (mdate, slavemap, slaveSeg, xs)) {				// look for the master date in the slave map
 		if (date2point (mdate, map, masterSeg, x)) {				// this is mainly to retrieve the master segment
 			x -= slave->getWidth()*slave->getScale()/(master->getWidth()) * (xs-slave->getXOrigin());
@@ -271,7 +283,8 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
 			x -= slave->getWidth() * (1+xs) / 2;					// converts the corresponding amount in displacement n the master space
 		found = true;
 	}
-	
+#endif
+
 	if (found) {
         float h = isVStretch ? masterSeg.yinterval().size() : 2*slave->getHeight()*slave->getScale()/(master->getHeight());
         float w = 2*slave->getWidth()*slave->getScale()/(master->getWidth());
