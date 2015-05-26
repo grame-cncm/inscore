@@ -28,6 +28,16 @@ mv -f TMP$$ $CMAKE
 cmake  $ROOT/build/MacOS
 cmake  $ROOT/build/iOS
 
+LPRO=$ROOT/build/library.pro
+echo " updating $LPRO"
+sed "s/^VERSION = ..*/VERSION = $VERSION/" $LPRO > TMP$$
+mv -f TMP$$ $LPRO
+
+IPRO=$ROOT/build/viewer.pro
+echo " updating $IPRO"
+sed "s/^VERSION = ..*/VERSION = $VERSION/" $IPRO > TMP$$
+mv -f TMP$$ $IPRO
+
 OSC=$ROOT/doc/OSCMsg.tex
 echo " updating $OSC"
 sed "s/\(title..*v\.*\)[0-9]*\.[0-9]*/\1$VERSION/" $OSC  > TMP$$
