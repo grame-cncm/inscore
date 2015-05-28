@@ -72,7 +72,7 @@ void IOSCListener::stop()
 //--------------------------------------------------------------------------
 void IOSCListener::ProcessMessage( const osc::ReceivedMessage& m, const IpEndpointName& src )
 {
-	if (src.address == fMyAddress) return;	// reject messages that come from the local address
+    //if (src.address == fMyAddress) return;	// reject messages that come from the local address
 	
 	SIMessage msg = IMessage::create(m.AddressPattern());
 	msg->setSrcIP (src.address);
