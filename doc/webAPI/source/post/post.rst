@@ -45,16 +45,16 @@ error, details on the failure reason are provided. When errors occur, The score 
 **With http server**
 	* In case of success : a response with a code 200 ("Success") and no response body.
 	* In case of error : a response with a code 400 ("Bad request") and the error message in a JSON object.
-		| Example: ``{ "Error" : "error: incorrect OSC address: /ITL/scene/text" }``
+		| Example: ``{ "error" : "error: incorrect OSC address: /ITL/scene/text" }``
 
 **With websocket server**
 
 The response is a JSON object with three fields :
 	* ``id`` : the id of the request
 	* ``status`` : OK in case of success or ERROR in case of error.
-	* ``Error`` : An error message in case of error.
+	* ``error`` : An error message in case of error.
 
-Example: ``{ id: "45612", status: "ERROR", "Error" : "error: incorrect OSC address: /ITL/scene/text" }``
+Example: ``{ id: "45612", status: "ERROR", "error" : "error: incorrect OSC address: /ITL/scene/text" }``
 
 The response is asynchronous, other messages can be received before the response.
 

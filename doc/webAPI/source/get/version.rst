@@ -33,6 +33,6 @@ A JSON object with a field ``version``.
 
 **With websocket server**
 
-A JSON object with a field id for the request identifier and a field ``version``.
-   | Example : ``{id : "4894", version : 1542}``
+A JSON object with a field id for the request identifier, the response status and a field ``version``.
+   | Example : ``{id : "4894", status : "OK", version : 1542}``
 

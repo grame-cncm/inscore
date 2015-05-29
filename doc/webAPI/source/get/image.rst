@@ -17,11 +17,11 @@ A http GET request at root of the server is used to get the image. The message-b
 
 A JSON object with two fields is used to get the image :
 	* ``id`` : an arbitrary id for the request
-	* ``method`` : the method is get. This field is used to identified the request
+	* ``method`` : the method is ``image``. This field is used to identified the request
 
 Example:: 
 
-   var getJsonObject = { id : "145678", method : "get"};
+   var getJsonObject = { id : "145678", method : "image"};
    exampleSocket.send(JSON.stringify(getJsonObject));
 
 Response
@@ -41,13 +41,14 @@ In other case, a normal GET response is return :
 
 **With websocket server**
 
-A JSON object with four keys :
+A JSON object with five keys :
 	* ``id`` : the id of the request
+	* ``status`` : OK in case of success or ERROR in case of error.
 	* ``version`` : the score version.
-	* ``mime-type`` : the mime-type of the image.
+	* ``mimeType`` : the mime-type of the image.
 	* ``image`` : an ``ArrayBuffer`` which contains the image.
 
-The only image format retuned is the png format (mime-type "image/png")
+The only image format returned is the png format (mimeType "image/png")
 
-	| Example : ``{id : "145678", version : 1542, mime-type : "image/png", image : [xxx]}``
+	| Example : ``{id : "145678", status : "OK", version : 1542, mimeType : "image/png", image : [xxx]}``
 

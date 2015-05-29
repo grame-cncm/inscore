@@ -45,16 +45,16 @@ Response
 **With http server**
 	* In case of success : a response with a code 200 ("Success") and no response body.
 	* In case of error : a response with a code 400 ("Bad request") and in the response body, the error message in a JSON object.
-		| Example: ``{ "Error" : "unknown object type: xxxx" }``
+		| Example: ``{ "error" : "unknown object type: xxxx" }``
 
 **With websocket server**
 
 The response is a JSON object with three fields :
 	* ``id`` : the id of the request
 	* ``status`` : OK in case of success or ERROR in case of error.
-	* ``Error`` : An error message in case of error.
+	* ``error`` : An error message in case of error.
 
-Example: ``{ id: "45612", status: "ERROR", "Error" : "unknown object type: xxxx" }``
+Example: ``{ id: "45612", status: "ERROR", "error" : "unknown object type: xxxx" }``
 
 The response is asynchronous, other messages can be received before the response.
 
