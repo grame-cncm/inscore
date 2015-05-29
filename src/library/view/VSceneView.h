@@ -127,6 +127,10 @@ class VSceneView : public VDummyObjectView
 			version = fNewVersion;
 			return true;
 		}
+
+		unsigned long		getVersion() {
+			return fNewVersion;
+		}
 };
 
 /*!@} */

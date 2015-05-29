@@ -121,6 +121,8 @@ class VObjectView
 		 */
 		virtual bool	isNewVersion(unsigned long &)	{return false;}
 
+		virtual unsigned long	getVersion() { return 0; }
+
 		/// \brief simulate UI mouse events
 		virtual void handleEvent (const inscore::IObject* obj, float x, float y, EventsAble::eventype type)
 						{ 	_MouseEventAble::handleEvent(obj, QPointF(x, y), type); }

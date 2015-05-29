@@ -7,6 +7,7 @@
 typedef struct abstractdata {
 		const char * data;
 		int size;
+		unsigned long version;
 } AbstractData;
 
 #endif // ABSTRACTDATA
