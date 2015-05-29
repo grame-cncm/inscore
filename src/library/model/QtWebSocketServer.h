@@ -27,18 +27,23 @@
 #define QTWEBSOCKETSERVER_H
 
 #include "TScripting.h"
-
 #include <QTimer>
 #include <QWebSocketServer>
 #include <QEvent>
+#include <QMutex>
 
 QT_FORWARD_DECLARE_CLASS(QWebSocket)
 QT_FORWARD_DECLARE_CLASS(QGraphicsItem)
+
+namespace json {
+class json_object;
+}
 
 namespace inscore {
 
 class VObjectView;
 class TLua;
+
 class QtWebSocketServer : public QWebSocketServer
 {
 		Q_OBJECT
@@ -50,6 +55,7 @@ class QtWebSocketServer : public QWebSocketServer
 		int					fFrequency;				///< the time task frequency
 		TJSEngine*			fJsEngine;
 		TLua*				fLua;
+		QMutex				fPostCommandMutex;
 
 	public:
 		/*!
@@ -89,23 +95,31 @@ class QtWebSocketServer : public QWebSocketServer
 		void processTextMessage(QString message);
 
 	private:
+		const std::string getId(json::json_object * request);
+		const std::string getMethod(json::json_object * request);
+		json::json_object * getSuccesObject(const std::string &id);
+		json::json_object * getErrorObject(const std::string& id, const std::string& message);
+		json::json_object * getRequestJsonObject(std::string request);
+
+		json::json_object *getVersion(json::json_object * request);
+
 		/*!
 		 * \brief getImage Process the "getImage" text message to get the image of the scene.
 		 * \param pClient The client to which send the image.
 		 */
-		void getImage(QWebSocket *pClient);
+		json::json_object *getImage(json::json_object * request);
 
 		/*!
 		 * \brief postCommand Process the "post=" text message to send OSC command to execute it on INScore.
 		 * \param commands the text message must start with "post=" and contains after that the commands.
 		 */
-		void postCommand(QString &commands);
+		json::json_object *postCommand(json::json_object * request);
 
 		/*!
 		 * \brief mouseClick Process the "click=" text message to create a click event at the coordinate passed in the message.
 		 * \param coordinates the text message must have the form "click=x,y" with x and y the integer coordinate in pixel of the click.
 		 */
-		void mouseClick(QString &coordinates);
+		json::json_object *mouseClick(json::json_object * request);
 
 		/*!
 		 * \brief getItem Get a item from the coordinate in pixel.
