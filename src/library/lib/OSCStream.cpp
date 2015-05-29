@@ -136,8 +136,25 @@ OSCErrorStream&	OSCErrorStream::end()
 		fAddress+=fSStream.str();
 		fLogWindow->print(fAddress.c_str());
 	}
+	if(fConcat) {
+		fSStreamConcat << fSStream.str() << ";";
+	}
 	OSCStream::stream() << fSStream.str().c_str(); OSCStream::end();
 	return *this;
+}
+
+//--------------------------------------------------------------------------
+stringstream& OSCErrorStream::streamConcat()
+{
+	return fSStreamConcat;
+}
+
+//--------------------------------------------------------------------------
+void OSCErrorStream::activeConcatError(bool activate)
+{
+	fConcat = activate;
+	if (activate)
+		fSStreamConcat.str("");
 }
 
 //--------------------------------------------------------------------------
