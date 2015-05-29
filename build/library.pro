@@ -15,12 +15,14 @@ ROOT 		= $$PWD/..
 SRC 		= $$ROOT/src
 LOCALLIB 	= $$ROOT/lib
 GUIDO_PATH	= $$LOCALLIB/GuidoEngine
-OSC		 	= $$LOCALLIB/oscpack
+OSC             = $$LOCALLIB/oscpack
+JSON            = $$LOCALLIB/json
 win32 { OSCIP = $$OSC/ip/win32 }
 else  { OSCIP = $$OSC/ip/posix }
 
 QT += core gui widgets svg printsupport multimedia multimediawidgets qml websockets
 DEFINES += QTJSENGINE	# use the Qt Javascript engine
+DEFINES += JSON_ONLY    # json library doesn't use osc stream.
 
 ############################## 
 # source and headers
@@ -30,11 +32,13 @@ SOURCES +=  $$files($$SRC/libmapping/src/*.cpp, true)		# libmapping source files
 SOURCES +=  $$files($$OSC/ip/*.cpp)							# oscpack files
 SOURCES +=  $$files($$OSC/osc/*.cpp)						# oscpack files
 SOURCES +=  $$files($$OSCIP/*.cpp)							# oscpack files
+SOURCES +=  $$files($$JSON/*.cpp)
 
 HEADERS  =  $$files($$SRC/library/*.h, true)
 HEADERS +=  $$files($$SRC/libmapping/src/*.h, true)
 HEADERS +=  $$files($$OSC/ip/*.h)
 HEADERS +=  $$files($$OSC/OSC/*.h)
+HEADERS +=  $$files($$JSON/*.h)
 win32:HEADERS +=  $$files($$ROOT/win32/dirent/*.h)
 
 ############################## 
@@ -45,6 +49,7 @@ INCLUDEPATH +=  $$files($$SRC/library/plugins/*)
 INCLUDEPATH +=  $$files($$SRC/library/signal/faust)
 INCLUDEPATH +=  $$files($$SRC/libmapping/src/[^.]*)
 INCLUDEPATH +=  $$files($$OSC)
+INCLUDEPATH +=  $$files($$JSON)
 INCLUDEPATH +=  $$GUIDO_PATH/include
 
 ############################## 
