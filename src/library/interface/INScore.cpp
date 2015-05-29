@@ -30,6 +30,7 @@
 #include <QDir>
 #include <QThread>
 #include <QDebug>
+#include <QWaitCondition>
 
 #include <iostream>
 #include <map>
@@ -69,8 +70,9 @@ class JavaThread : public QThread
 
 SIMessageStack				gMsgStack;			// the messages stack
 SIMessageStack				gDelayStack;		// the delayed messages stack
+SIMessageStack				gWebMsgStack;		// the messages stack for messages from the web
 map<INScore::MessagePtr, SIMessage>	gMsgMemory;		// allocated messages are stored in a map for refcounting
-
+QWaitCondition				gModelUpdateWaitCondition; // A wait condition on th  model update.
 //--------------------------------------------------------------------------
 static IMessage* Message2IMessage (INScore::MessagePtr p)
 {

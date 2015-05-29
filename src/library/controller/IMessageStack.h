@@ -47,6 +47,7 @@ typedef libmapping::SMARTP<IMessage>		SIMessage;
 class IMessageStack;
 typedef libmapping::SMARTP<IMessageStack>	SIMessageStack;
 extern SIMessageStack gMsgStack;
+extern SIMessageStack gWebMsgStack;
 
 //--------------------------------------------------------------------------
 /*!
