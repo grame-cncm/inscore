@@ -51,7 +51,6 @@ class QtWebSocketController : public QThread, public WebSocketController
 		// the WebSocketController interface
 		//------------------------------------------------------------
 		virtual bool	start		(int port);
-		virtual void	setFrequency(int frequency);
 		virtual void	stop();
 		virtual bool	running() const;
 		int				clients() const;

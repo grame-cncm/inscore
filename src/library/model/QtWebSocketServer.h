@@ -55,7 +55,7 @@ class QtWebSocketServer : public QWebSocketServer
 		int					fFrequency;				///< the time task frequency
 		TJSEngine*			fJsEngine;
 		TLua*				fLua;
-		QMutex				fPostCommandMutex;
+		static QMutex		fPostCommandMutex;		// Mutex for all web client using different websocket servers.
 
 	public:
 		/*!
@@ -71,10 +71,6 @@ class QtWebSocketServer : public QWebSocketServer
 
 		bool start(int port);				///< start listening on port 'port'
 		void stop();						///< stop the web socket server
-
-		void setFrequency(int frequency);	///< change the notifiactions rate
-		int  getFrequency() const		{ return fFrequency; }
-
 		int getClients() const { return fClients.size(); }
 
 	private: Q_SIGNALS:

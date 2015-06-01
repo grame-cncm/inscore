@@ -66,7 +66,6 @@ class WebSocketController
 		 * \return true if the initialisation is done.
 		 */
 		virtual bool	start(int port)					= 0;
-		virtual void	setFrequency(int frequency)		= 0;
 		virtual void	stop()							= 0;
 		virtual bool	running () const				= 0;
 		virtual int		clients () const				= 0;

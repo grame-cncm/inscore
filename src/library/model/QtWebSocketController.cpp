@@ -50,7 +50,6 @@ bool QtWebSocketController::start (int /*port*/)
 }
 
 //-------------------------------------------------------------------------------
-void QtWebSocketController::setFrequency(int frequency)	{ if (fServer) fServer->setFrequency(frequency); }
 bool QtWebSocketController::running() const				{ return fServer ? fServer->isListening() : false; }
 
 //-------------------------------------------------------------------------------

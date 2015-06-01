@@ -60,8 +60,6 @@ class IWebSocket : public IObject, public WebSocketInformer
 		static SIWebSocket create(const std::string& name, IObject * parent)	{ return new IWebSocket(name, parent); }
 
 		void	setControler (WebSocketController* ctrl)	{ fWebServer = ctrl; }
-		void	setPort (int port)							{ fPort = port; }
-		void	setFrequency (int freq);
 
 		bool			running () const;
 		SIMessageList	getSetMsg () const;

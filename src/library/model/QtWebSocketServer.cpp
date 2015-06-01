@@ -46,6 +46,7 @@ using namespace json;
 namespace inscore {
 
 	extern QWaitCondition gModelUpdateWaitCondition;
+	QMutex QtWebSocketServer::fPostCommandMutex;
 
 //-------------------------------------------------------------------------------
 QtWebSocketServer::QtWebSocketServer(int frequency, VObjectView *view, TJSEngine* engine, TLua* lua) :
@@ -92,14 +93,6 @@ void QtWebSocketServer::onNewConnection()
 	connect(pSocket, &QWebSocket::disconnected, this, &QtWebSocketServer::socketDisconnected);
 	connect(pSocket, &QWebSocket::textMessageReceived, this, &QtWebSocketServer::processTextMessage);
 	fClients << pSocket;		// add the client to the clients list
-}
-
-//-------------------------------------------------------------------------------
-void QtWebSocketServer::setFrequency(int frequency)
-{
-	fFrequency = frequency;
-	fTimer.stop();
-	fTimer.start(fFrequency);
 }
 
 //-------------------------------------------------------------------------------
@@ -262,13 +255,13 @@ json_object * QtWebSocketServer::getImage(json_object * request)
 	if (!id.empty()) {
 		AbstractData data = fView->getImage("PNG");
 		QByteArray bArray = QByteArray::fromRawData(data.data, data.size);
+		QByteArray b64 = bArray.toBase64();
 
 		json_object *response = getSuccesObject(id);
 		json_element* elem  = new json_element(IWebSocket::kVersionKey, new json_int_value(data.version));
 		response->add(elem);
 		elem = new json_element("mimeType", new json_string_value("image/png"));
 		response->add(elem);
-		QByteArray b64 = bArray.toBase64();
 		elem = new json_element("image", new json_string_value(b64.data()));
 		response->add(elem);
 		return response;
@@ -339,8 +332,9 @@ json_object * QtWebSocketServer::mouseClick(json_object * request)
 			if(item) {
 				// Create and send a mouse event to the item
 				sendEvent(item, QEvent::GraphicsSceneMousePress);
-				json_object *response = new json_object; // TODO GGX create a response with log
-				return response;
+				return getSuccesObject(id);
+			} else {
+				getErrorObject(id, "Unknown object");
 			}
 		}
 	}
