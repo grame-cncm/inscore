@@ -26,9 +26,9 @@
 #include <map>
 #include <vector>
 #include <string>
+ #include <time.h>
 
 #include "Response.h"
-#include "DataExchange.h"
 
 #define IP_VERBOSE 1
 #define HEADER_VERBOSE 2
@@ -43,6 +43,10 @@
 #define DELETE 2
 #define POST 1
 #define GET 0
+
+namespace inscore {
+	class WebApi;
+}
 
 namespace inscorehttpd
 {
@@ -71,14 +75,11 @@ class HTTPDServer
 	struct MHD_Daemon *	fServer;
 
 	/*!
-	 * \brief fCallbackFct Callback function to get the data
+	 * \brief fApi instance of WebApi class to execute request action on inscore.
 	 */
-	callbackGetData fCallbackFct;
+	inscore::WebApi * fApi;
 
-	/*!
-	 * \brief fObject INScore object for the server.
-	 */
-	void * fObject;
+	std::pair<unsigned int, time_t> fVersionTime;
 
 public:
 
@@ -91,7 +92,7 @@ public:
 	 * \param g2img
 	 * \param allowOrigin if true, Access-Control-Allow-Origin is set to '*' in http response header to allow cross domain request.
 	 */
-	HTTPDServer(callbackGetData callbackFct, void* object, int verbose = 0, int logmode = 0, bool allowOrigin = true);
+	HTTPDServer(void * api, int verbose = 0, int logmode = 0, bool allowOrigin = true);
 	virtual ~HTTPDServer();
 
 	/// \brief starts the httpd server
@@ -99,8 +100,6 @@ public:
 
 	/// \brief stop the httpd server
 	void stop ();
-
-	// Pour le status utiliser const union MHD_DaemonInfo * MHD_get_daemon_info (struct MHD_Daemon *daemon, enum MHD_DaemonInfoType infoType, ...)
 
 	/*!
 	 * \brief answer : Main method to respond to a request.
@@ -135,7 +134,7 @@ private:
 	int sendGetRequest (struct MHD_Connection *connection, const char* url, const TArgs& args, std::vector<std::string> &elems);
 
 	/*!
-	 * \brief sendHeadRequest. Perform a request with method head.
+	 * \brief sendHeadRequest. No head request are handle by server. A 400 error is returned
 	 * \param connection
 	 * \param url
 	 * \param args
@@ -154,13 +153,12 @@ private:
 	int sendPostRequest (struct MHD_Connection *connection, const TArgs& args, std::vector<std::string> &elems);
 
 	/*!
-	 * \brief sendDeleteRequest. Delete a session on server.
-	 * If the server use cache, the session is deleted in cache too.
+	 * \brief sendDeleteRequest. No delete request are handle by server. A 400 error is returned
 	 * \param connection
 	 * \param args
 	 * \return
 	 */
-	int sendDeleteRequest (struct MHD_Connection *connection, const TArgs& args);
+	int sendDeleteRequest (struct MHD_Connection *connection, const TArgs&);
 
 	/*!
 	 * \brief send Send reponse with the connection connection.
@@ -174,28 +172,24 @@ private:
 	int send (struct MHD_Connection *connection, Response &response);
 
 	/*!
-	 * \brief send send the response.
-	 * Make a MHD_Response.
-	 *
-	 * \param connection
-	 * \param data data to send
-	 * \param length size of the data to send
-	 * \param type type of the data (or format)
-	 * \param status Http status to send
-	 * \param allowCache if false the http directive Cache-Control is set to no-cache to force browser and proxy to reload the content of the response.
-	 * \return #MHD_NO on error (i.e. reply already sent),
-	 *         #MHD_YES on success or if message has been queued
+	 * \brief updateTime Update time and version referenced in the server to serve score image or 304 unmodified response.
+	 * \param version
 	 */
-	int send (struct MHD_Connection *connection, const char *data, int length, const char *type, int status=MHD_HTTP_OK, bool allowCache=true);
+	void updateTime(unsigned int version);
 
 	/*!
-	 * \brief logSend log method used before method send
-	 * \param connection
-	 * \param url
-	 * \param args
-	 * \param type
+	 * \brief parsedate Parse a string date from http request.
+	 * \param date the date can have all three standard format (RFC1123, RFC850 and ansi)
+	 * \return a time stamp.
 	 */
-	void logSend(struct MHD_Connection *connection, const char* url, const TArgs& args, const char * type);
+	unsigned long parsedate(std::string &date);
+
+	/*!
+	 * \brief formatDate Create a string date from a timestamp
+	 * \param time the timestamp.
+	 * \return a string date in RFC1123 format.
+	 */
+	std::string formatDate(time_t time);
 };
 
 } // end namespoace

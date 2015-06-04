@@ -24,9 +24,9 @@
 
 using namespace inscorehttpd;
 
-void * initialize(callbackGetData callbackFct, void * object)
+void * initialize(void *api)
 {
-	return new HTTPDServer(callbackFct, object);
+	return new HTTPDServer(api);
 }
 
 void destroy(void * server)

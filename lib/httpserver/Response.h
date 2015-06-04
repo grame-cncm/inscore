@@ -23,6 +23,7 @@
 #define __response__
 
 #include <string>
+#include <map>
 
 namespace inscorehttpd {
 
@@ -58,6 +59,16 @@ class Response {
 	bool fAllowCache;
 
 	/*!
+	 * \brief fLastModifiedDate a Last modified date to add to the reponse header.
+	 */
+	std::string fLastModifiedDate;
+
+	/*!
+	 * \brief fEntitiesHeader Custom entities header to add to the response.
+	 */
+	std::map<std::string, std::string> fEntitiesHeader;
+
+	/*!
 	 * \brief Response. Create an empty response with http status 404 not found.
 	 */
 	Response ();
@@ -84,6 +95,14 @@ class Response {
 	virtual ~Response ();
 
 	/*!
+	 * \brief genericSuccess Create a generic succes response without response body.
+	 * \param http_status a http status, default to 200 (success)
+	 * \param allowCache cache allowed or not
+	 * \return
+	 */
+	static Response genericSuccess(int http_status = 200, bool allowCache = true);
+
+	/*!
 	 * \brief genericFailure Create a generic failure response with plain text mime type.
 	 * \param errorString The content of the response
 	 * \param http_status Http status, default to 400.
@@ -91,6 +110,19 @@ class Response {
 	 * \return a Response object
 	 */
 	static Response genericFailure(std::string errorString, int http_status = 400, bool allowCache = true);
+
+	/*!
+	 * \brief setLastModifiedDate Set the Last modified date.
+	 * \param date
+	 */
+	void setLastModifiedDate(std::string &date) { fLastModifiedDate = date;	}
+
+	/*!
+	 * \brief addEntityHeader Add new entity header.
+	 * \param key the name of the entity header.
+	 * \param value the value of the entity header.
+	 */
+	void addEntityHeader(std::string key, std::string value) { fEntitiesHeader[key] = value; }
 };
 
 }
