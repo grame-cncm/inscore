@@ -33,7 +33,7 @@ The server send the image with the ``Cache-Control`` directive set to ``no-cache
 In other case, a normal GET response is return :
 
 	The format of the image is defined by the Mime type in the Content-type header of the response. The only value return is "image/png".
-	A custom header ``X-Inscore-version`` is added, it contains the internal INScore version of the score.
+	A custom header ``X-Inscore-Version`` is added, it contains the internal INScore version of the score.
 
 	*Response code :* 200("success")
 
