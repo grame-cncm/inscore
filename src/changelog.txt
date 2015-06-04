@@ -12,6 +12,9 @@ It has been supported by the ANR (ANR-08-CORD-010)
 ====================================================
 
 ----------------------------------------------------
+Version 1.14
+
+----------------------------------------------------
 Version 1.13
 - add new object 'filter' at application scope to manage forward messaging filter.
 - sending to broadcast address enabled
@@ -21,14 +24,15 @@ Version 1.13
 - add forward and filter messages to the scene object to manage forwarding at scene scope.
 - default port to forward messages is now 7000.
 - add new optional tab at startup with a menu for ios and android.
-- add zoom and move on a scene with methods scale, xorigin and yorigin. This value can be change with two fingers gesture on mobile device.
+- add zoom and move on a scene with methods scale, xorigin and yorigin. This value can be change 
+  with two fingers gesture on mobile device.
 - bug with lines corrected: a line in non-square parent was rotated when the parent's width 
   was smaller than its height.
 - bug with 'eval' forwarding corrected: forwarded messages were triggering a syntax error due to 
   a misinterpreted incorrect args count 
 
 ----------------------------------------------------
-Version 1.12
+Version 1.12 - 2015-04-09
 - 'line' objects: 'color' message is now an alias of 'penColor'
 - new 'compatibility' method at application level, provided to preserve previous behaviors
 - new 'foreground' method at scene level to display scene window in foreground.

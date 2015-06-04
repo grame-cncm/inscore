@@ -1,4 +1,4 @@
-version := 1.13
+version := 1.14
 system	:= $(shell uname -s)
 ifeq ($(system), MINGW32_NT-6.1) 
 	win32 = yes
@@ -19,7 +19,7 @@ ifdef win32
   i2i100tool := $(i2i100)/cmake/Release/inscore2inscore100.exe
   QT5         := /c/Qt/Qt5.4.0
   WIN32QTPATH := $(QT5)/5.4/msvc2010_opengl/
-  WIN32QT	  := QT5PRINTSUPPORT.DLL QT5WIDGETS.DLL QT5GUI.DLL QT5CORE.DLL QT5SVG.DLL QT5QML.DLL QT5WebSockets.DLL QT5Multimedia.DLL  QT5MultimediaWidgets.DLL Qt5Network.dll ICUIN53.DLL ICUUC53.DLL ICUDT53.DLL
+  WIN32QT	  := QT5PRINTSUPPORT.DLL QT5WIDGETS.DLL QT5OPENGL.DLL QT5GUI.DLL QT5CORE.DLL QT5SVG.DLL QT5QML.DLL QT5WebSockets.DLL QT5Multimedia.DLL  QT5MultimediaWidgets.DLL Qt5Network.dll ICUIN53.DLL ICUUC53.DLL ICUDT53.DLL
   WIN32QT	  := $(patsubst %, $(WIN32QTPATH)/bin/%, $(WIN32QT))
   WIN32QTPLUGS     := qgif.dll qtiff.dll qjpeg.dll
   WIN32QTPLATFORMS := qminimal.dll qoffscreen.dll qwindows.dll
