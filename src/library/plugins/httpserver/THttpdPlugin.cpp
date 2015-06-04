@@ -24,8 +24,7 @@
 #include "IScene.h"
 #include "VExport.h"
 #include "VSceneView.h"
-
-#include "DataExchange.h"
+#include "WebApi.h"
 
 using namespace std;
 
@@ -50,45 +49,17 @@ THttpdPlugin::TStop THttpdPlugin::fStop = 0;
 THttpdPlugin::TStatus THttpdPlugin::fStatus = 0;
 THttpdPlugin::TVersion THttpdPlugin::fVersion = 0;
 
-/*!
- * \brief getData callback method used by the server.
- * \param args
- * \param aObject the Inscore server model object
- * \return
- */
-struct responsedata * getData(struct requestarguments* args, void * aObject)
-{
-	THttpdPlugin * myPlugin = static_cast<THttpdPlugin*>(aObject);
-	return myPlugin->getData(args);
-}
-
-struct responsedata * THttpdPlugin::getData(struct requestarguments* args) const
-{
-	if(fExportedObject->getDeleted())
-		return 0;
-
-	VObjectView * objectView = fExportedObject->getView();
-
-	// Get data
-	AbstractData data = objectView->getImage(args->format);
-	if(data.data == 0)
-		return 0;
-
-	struct responsedata * resp = new struct responsedata;
-	resp->data = new char[data.size];
-	memcpy(resp->data, data.data, data.size);
-	resp->size = data.size;
-
-	return resp;
-}
-
-THttpdPlugin::THttpdPlugin(const IScene *exportedObject) : fExportedObject(exportedObject)
+THttpdPlugin::THttpdPlugin(IScene *exportedObject) : fExportedObject(exportedObject)
 {
 	// Load library and initialize function.
-	if (load())
-		fHttpdServer = fInitialize(&inscore::getData, this);
-	else
+	if (load()) {
+		// Create Api object
+		fApi = new WebApi(fExportedObject->getView(), fExportedObject->getJSEngine(), fExportedObject->getLUAEngine());
+		// Initialize server
+		fHttpdServer = fInitialize(fApi);
+	} else {
 		ITLErr << "cannot load http server plugin" << ITLEndl;
+	}
 }
 
 THttpdPlugin::~THttpdPlugin()
