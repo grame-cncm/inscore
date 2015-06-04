@@ -494,7 +494,7 @@ const AbstractData VSceneView::getImage(const char *format)
 		}
 	}
 	AbstractData data;
-	data.data = fDataScreenShot.constData();
+	data.data = fDataScreenShot.data();
 	data.size = fDataScreenShot.size();
 	data.version = fNewVersion;
 	return data;

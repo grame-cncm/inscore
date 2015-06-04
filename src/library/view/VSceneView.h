@@ -118,17 +118,10 @@ class VSceneView : public VDummyObjectView
 		const AbstractData		getImage(const char *format);
 
 		/*!
-		 * \brief isNewVersion Compare and update version
-		 * \param version a version number to compare and update.
-		 * \return true if the version is the same.
+		 * \brief getVersion get the score version
+		 * \return
 		 */
-		bool				isNewVersion(unsigned long &version) {
-			if(version == fNewVersion) return false;
-			version = fNewVersion;
-			return true;
-		}
-
-		unsigned long		getVersion() {
+		unsigned long		getVersion() const {
 			return fNewVersion;
 		}
 };
