@@ -24,7 +24,6 @@
 */
 
 #include <QWebSocket>
-#include <QWaitCondition>
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -34,7 +33,7 @@
 #include "VObjectView.h"
 #include "VSceneView.h"
 #include "abstractdata.h"
-#include "ITLparser.h"
+#include "WebApi.h"
 
 #include "json_object.h"
 #include "json_element.h"
@@ -45,13 +44,10 @@ using namespace json;
 
 namespace inscore {
 
-	extern QWaitCondition gModelUpdateWaitCondition;
-	QMutex QtWebSocketServer::fPostCommandMutex;
-
 //-------------------------------------------------------------------------------
-QtWebSocketServer::QtWebSocketServer(int frequency, VObjectView *view, TJSEngine* engine, TLua* lua) :
+QtWebSocketServer::QtWebSocketServer(int frequency, WebApi * api) :
 	QWebSocketServer(QStringLiteral("WebSocketServer"), QWebSocketServer::NonSecureMode),
-	fScreenVersion(0), fView (view), fFrequency(frequency), fJsEngine(engine), fLua(lua)
+	fScreenVersion(0), fFrequency(frequency), fWebApi(api)
 {
 	connect(&fTimer, SIGNAL(timeout()),this, SLOT(timeTask()));
 }
@@ -60,6 +56,7 @@ QtWebSocketServer::QtWebSocketServer(int frequency, VObjectView *view, TJSEngine
 QtWebSocketServer::~QtWebSocketServer()
 {
 	stop();
+	delete fWebApi;
 }
 
 //-------------------------------------------------------------------------------
@@ -110,7 +107,9 @@ void QtWebSocketServer::socketDisconnected()
 //-------------------------------------------------------------------------------
 void QtWebSocketServer::timeTask()
 {
-	if(fView->isNewVersion(fScreenVersion)) {		// check for view updates
+	unsigned int version = fWebApi->getVersion();
+	if(version != fScreenVersion) {		// check for view updates
+		fScreenVersion = version;
 		json_object *response = new json_object;
 		json_element *elem = new json_element("notification", new json_true_value);
 		response->add(elem);
@@ -141,16 +140,16 @@ void QtWebSocketServer::processTextMessage(QString message)
 		// Verify message and get back image and send it
 
 		json_object * response;
-		if(method == IWebSocket::kVersionMsg) {
+		if(method == WebApi::kVersionMsg) {
 			response = getVersion(request);
 		} else
-		if(method == IWebSocket::kGetImgMsg) {
+		if(method == WebApi::kGetImgMsg) {
 			response = getImage(request);
 		} else
-		if(method == IWebSocket::kPostMsg) {
+		if(method == WebApi::kPostCmdMsg) {
 			response = postCommand(request);
 		} else
-		if(method == IWebSocket::kClickMsg) {
+		if(method == WebApi::kClickMsg) {
 			response = mouseClick(request);
 		} else {
 			response = getErrorObject(getId(request), "Bad request");
@@ -238,7 +237,7 @@ json_object * QtWebSocketServer::getVersion(json_object * request)
 {
 	string id = getId(request);
 	if (!id.empty()) {
-		unsigned long version = fView->getVersion();
+		unsigned long version = fWebApi->getVersion();
 		json_object *response = getSuccesObject(id);
 		json_element* elem  = new json_element(IWebSocket::kVersionKey, new json_int_value(version));
 		response->add(elem);
@@ -253,17 +252,19 @@ json_object * QtWebSocketServer::getImage(json_object * request)
 {
 	string id = getId(request);
 	if (!id.empty()) {
-		AbstractData data = fView->getImage("PNG");
-		QByteArray bArray = QByteArray::fromRawData(data.data, data.size);
-		QByteArray b64 = bArray.toBase64();
+		AbstractData data = fWebApi->getImage(true);
 
+		if(data.size == 0) {
+			return getErrorObject(id, "Cannot create score image");
+		}
 		json_object *response = getSuccesObject(id);
 		json_element* elem  = new json_element(IWebSocket::kVersionKey, new json_int_value(data.version));
 		response->add(elem);
 		elem = new json_element("mimeType", new json_string_value("image/png"));
 		response->add(elem);
-		elem = new json_element("image", new json_string_value(b64.data()));
+		elem = new json_element("image", new json_string_value(data.data));
 		response->add(elem);
+		delete[] data.data;
 		return response;
 	} else {
 		return getErrorObject(id, "Bad request");
@@ -279,21 +280,7 @@ json_object * QtWebSocketServer::postCommand(json_object * request)
 		if(element) {
 			const json_string_value * value = dynamic_cast<const json_string_value *>(element->value());
 			if(value) {
-				string commands = value->getValue();
-				stringstream stream;
-				stream.str(commands);
-				ITLparser p (&stream, 0, fJsEngine, fLua);
-				SIMessageList msgs = p.parse();
-
-				// wait for other network users
-				fPostCommandMutex.lock();
-				// Add messages to network stack
-				msgs->sendWebMsg();
-				// Wait for a model update from time task
-				gModelUpdateWaitCondition.wait(&fPostCommandMutex);
-				// Get back log and unlock
-				string log = oscerr.streamConcat().str();
-				fPostCommandMutex.unlock();
+				string log = fWebApi->postScript(value->getValue());
 
 				if(log.empty()) {
 					return getSuccesObject(id);
@@ -326,50 +313,15 @@ json_object * QtWebSocketServer::mouseClick(json_object * request)
 				y = value->getValue();
 		}
 		if (x != -1 && y != -1) {
-			// Get item from coordinate in pixel.
-			QGraphicsItem * item = getItem(x, y);
-
-			if(item) {
-				// Create and send a mouse event to the item
-				sendEvent(item, QEvent::GraphicsSceneMousePress);
+			string log = fWebApi->postMouseClick(x, y);
+			if(log.empty()) {
 				return getSuccesObject(id);
 			} else {
-				getErrorObject(id, "Unknown object");
+				getErrorObject(id, log);
 			}
 		}
 	}
 	return getErrorObject(id, "Bad request");
 }
 
-//-------------------------------------------------------------------------------.
-QGraphicsItem * QtWebSocketServer::getItem(int x, int y)
-{
-	VSceneView * sceneView = dynamic_cast<VSceneView *>(fView);
-	if(sceneView) {
-		QGraphicsView* view = sceneView->view();
-
-		// get item at position (x and y in pixel coordinate)
-		return view->itemAt(x, y);
-	}
-	return 0;
-}
-
-//-------------------------------------------------------------------------------.
-void QtWebSocketServer::sendEvent(QGraphicsItem * item, QEvent::Type eventType)
-{
-	VSceneView * sceneView = dynamic_cast<VSceneView *>(fView);
-	// Create an event
-	QGraphicsSceneMouseEvent event(eventType);
-	// Coordinate of the click in item coordinate
-	QPointF point(0, 0);
-	event.setPos(point);
-	event.setButton(Qt::LeftButton);
-	event.setButtons(Qt::LeftButton);
-
-	if(!item->isEnabled())
-		item->setEnabled(true);
-
-	QGraphicsScene * scene = sceneView->scene();
-	scene->sendEvent(item, &event);
-}
 }

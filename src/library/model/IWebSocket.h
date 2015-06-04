@@ -47,15 +47,10 @@ class IWebSocket : public IObject, public WebSocketInformer
 	public:
 		static const std::string	kIWebSocketType;
 
-		static const char *			kMethodKey;
-		static const char *			kIdKey;
-		static const char *			kStatusKey;
-		static const char *			kVersionKey;
-
-		static const char *			kVersionMsg;
-		static const char *			kGetImgMsg;			///< the only message that is handle by the server
-		static const char *			kPostMsg;
-		static const char *			kClickMsg;
+		static const char *			kMethodKey;		///< the method key in json object request
+		static const char *			kIdKey;			///< the id key in json object request
+		static const char *			kStatusKey;		///< the status key in json object response
+		static const char *			kVersionKey;	///< the status key in json object request
 
 		static SIWebSocket create(const std::string& name, IObject * parent)	{ return new IWebSocket(name, parent); }
 

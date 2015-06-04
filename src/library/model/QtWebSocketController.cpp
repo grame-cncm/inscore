@@ -72,7 +72,8 @@ int QtWebSocketController::clients() const
 //-------------------------------------------------------------------------------
 void QtWebSocketController::run()
 {
-	fServer = new QtWebSocketServer (fInfos->getFrequency(), fInfos->getView(), fInfos->getJSEngine(), fInfos->getLUAEngine());
+	WebApi api(fInfos->getView(), fInfos->getJSEngine(), fInfos->getLUAEngine());
+	fServer = new QtWebSocketServer (fInfos->getFrequency(), &api);
 	if (fServer) {
 		if (fServer->start(fInfos->getPort()))
 			exec();

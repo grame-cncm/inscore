@@ -39,11 +39,6 @@ const char * IWebSocket::kIdKey = "id";
 const char * IWebSocket::kStatusKey = "status";
 const char * IWebSocket::kVersionKey = "version";
 
-const char * IWebSocket::kVersionMsg = "version";
-const char * IWebSocket::kGetImgMsg = "image";
-const char * IWebSocket::kPostMsg = "post";
-const char * IWebSocket::kClickMsg = "click";
-
 //-------------------------------------------------------------------------------
 IWebSocket::IWebSocket(const std::string &name, IObject *parent)
 	: IObject (name, parent), fWebServer(0), fPort(0), fFrequency(0)
