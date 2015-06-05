@@ -144,11 +144,11 @@ class QtWebSocketServer : public QWebSocketServer
 		json::json_object *postCommand(json::json_object * request);
 
 		/*!
-		 * \brief mouseClick Process the post inscore script request.
+		 * \brief mouseEvent Process the mouse event request.
 		 * \param request the request json object
 		 * \return the response json object.
 		 */
-		json::json_object *mouseClick(json::json_object * request);		
+		json::json_object *mouseEvent(json::json_object * request, bool isClick);
 };
 }
 #endif // QTWEBSOCKETSERVER_H

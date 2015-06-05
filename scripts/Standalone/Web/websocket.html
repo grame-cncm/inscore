@@ -64,13 +64,23 @@ function loadWebSocket() {
 			updateStatus("wsStatus", "WebSocket error : " + e.data);
 		}
 
-		// Add listener for mouse click to post mouse click position
+		// Add listener on left mouse click to post mouse click event position
 		document.getElementById('image').onclick = function(e) {
 			var X = e.pageX - document.getElementById('image').offsetLeft;
 			var Y = e.pageY - document.getElementById('image').offsetTop;
 
 			var clickJsonObject = { id : requestId++, method : "click", x : X, y : Y };
 			ws.send(JSON.stringify(clickJsonObject));
+		}
+
+		// Add listener on right mouse click to send mouve hover event position.
+		document.getElementById('image').oncontextmenu = function(e) {
+			var X = e.pageX - document.getElementById('image').offsetLeft;
+			var Y = e.pageY - document.getElementById('image').offsetTop;
+
+			var clickJsonObject = { id : requestId++, method : "hover", x : X, y : Y };
+			ws.send(JSON.stringify(clickJsonObject));
+			return false;	// No context menu is shown
 		}
 	} else {
 		updateStatus("wsStatus", "Your browser does NOT support webSocket.");

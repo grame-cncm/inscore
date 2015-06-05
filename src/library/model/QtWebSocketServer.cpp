@@ -150,7 +150,10 @@ void QtWebSocketServer::processTextMessage(QString message)
 			response = postCommand(request);
 		} else
 		if(method == WebApi::kClickMsg) {
-			response = mouseClick(request);
+			response = mouseEvent(request, true);
+		} else
+		if(method == WebApi::kHoverMsg) {
+			response = mouseEvent(request, false);
 		} else {
 			response = getErrorObject(getId(request), "Bad request");
 		}
@@ -294,7 +297,7 @@ json_object * QtWebSocketServer::postCommand(json_object * request)
 }
 
 //-------------------------------------------------------------------------------
-json_object * QtWebSocketServer::mouseClick(json_object * request)
+json_object * QtWebSocketServer::mouseEvent(json_object * request, bool isClick)
 {
 	string id = getId(request);
 	if (!id.empty()) {
@@ -313,7 +316,11 @@ json_object * QtWebSocketServer::mouseClick(json_object * request)
 				y = value->getValue();
 		}
 		if (x != -1 && y != -1) {
-			string log = fWebApi->postMouseClick(x, y);
+			string log;
+			if(isClick)
+				log = fWebApi->postMouseClick(x, y);
+			else
+				log = fWebApi->postMouseHover(x, y);
 			if(log.empty()) {
 				return getSuccesObject(id);
 			} else {
