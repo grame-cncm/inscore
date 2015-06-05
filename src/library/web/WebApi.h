@@ -56,8 +56,9 @@ class WebApi
 		static const char *	kGetImgMsg;		///< the get image message
 		static const char *	kPostCmdMsg;	///< the post inscore script message
 		static const char *	kClickMsg;		///< the mouse click message
+		static const char *	kHoverMsg;		///< the mouse hover message
 
-        WebApi(VObjectView *view, TJSEngine* engine, TLua* lua) : fView(view), fJsEngine(engine), fLua(lua) {}
+		WebApi(VObjectView *view, TJSEngine* engine, TLua* lua) : fView(view), fJsEngine(engine), fLua(lua), fPreviousX(-1), fPreviousY(-1) {}
 
         virtual ~WebApi() {}
 
@@ -89,6 +90,17 @@ class WebApi
 		 */
         std::string postMouseClick(int x, int y);
 
+		/*!
+		 * \brief postMouseClick post a mouse hover event to inscore.
+		 *
+		 * A mouse hover leave (GraphicsSceneHoverLeave) is send to the previous item on previous x and y coordinates
+		 * and a mouse hover enter (GraphicsSceneHoverEnter) is send to the item on (x, y) coordinates.
+		 * \param x the x coordinate
+		 * \param y the y coordinate
+		 * \return an error string or an empty string if no error
+		 */
+		std::string postMouseHover(int x, int y);
+
     private:
 		/*!
 		 * \brief fView the object view of the scene
@@ -97,6 +109,10 @@ class WebApi
 
         TJSEngine*		fJsEngine;
         TLua*			fLua;
+
+		int				fPreviousX;		///< Previous x coordinate of a mouse hover item
+		int				fPreviousY;		///< Previous y coordinate of a mouse hover item
+
 		/*!
 		 * \brief fPostCommandMutex A mutex for script post
 		 */

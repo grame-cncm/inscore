@@ -44,11 +44,12 @@ namespace inscore
     const char * WebApi::kGetImgMsg = "image";
     const char * WebApi::kPostCmdMsg = "post";
     const char * WebApi::kClickMsg = "click";
+	const char * WebApi::kHoverMsg = "hover";
 
 	extern QWaitCondition gModelUpdateWaitCondition;	///< a wait condition to wait for model update.
     QMutex WebApi::fPostCommandMutex;
 
-//-------------------------------------------------------------------------------.
+//------------------------------------kHoverMsg-------------------------------------------.
 unsigned long WebApi::getVersion()
 {
     return fView->getVersion();
@@ -61,7 +62,7 @@ AbstractData WebApi::getImage(bool base64)
     if(base64) {
         QByteArray bArray = QByteArray::fromRawData(data.data, data.size);
         bArray = bArray.toBase64();
-        data.size = bArray.size() + 1;
+		data.size = bArray.size() + 1;
         data.data = new char[data.size];
         strcpy(data.data, bArray.data());
     }
@@ -100,6 +101,30 @@ std::string WebApi::postMouseClick(int x, int y)
         return "";
     }
     return "Unknown object";
+}
+
+//-------------------------------------------------------------------------------.
+std::string WebApi::postMouseHover(int x, int y)
+{
+	// Leave previous item
+	if(fPreviousX != -1 && fPreviousY != -1) {
+		QGraphicsItem * item = getItem(fPreviousX, fPreviousY);
+		if(item) {
+			// Create and send a mouse event to the item
+			sendEvent(item, QEvent::GraphicsSceneHoverLeave);
+		}
+	}
+	// Get current item from coordinate in pixel.
+	QGraphicsItem * item = getItem(x, y);
+
+	if(item) {
+		// Create and send a mouse event to the item
+		sendEvent(item, QEvent::GraphicsSceneHoverEnter);
+		fPreviousX = x;
+		fPreviousY = y;
+		return "";
+	}
+	return "Unknown object";
 }
 
 //-------------------------------------------------------------------------------.
