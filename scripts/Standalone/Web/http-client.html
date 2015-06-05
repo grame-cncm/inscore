@@ -81,6 +81,28 @@ function init() {
 		}
 		xhr.send(data);
 	}
+	// Add listener for mouse click to post mouse click position
+	document.getElementById('image').oncontextmenu = function(e) {
+		var X = e.pageX - document.getElementById('image').offsetLeft;
+		var Y = e.pageY - document.getElementById('image').offsetTop;
+		var data = "x=" + X + "&y=" + Y;
+
+		var url = document.getElementById("url").value;
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", url + "/hover");
+		xhr.responseType = "json";
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.setRequestHeader("Content-length", data.length);
+		xhr.onreadystatechange = function() {
+			// Response is 200 if success or 400 if error
+			if (xhr.readyState == xhr.DONE && xhr.status == 400) {
+				// In case of error, write log.
+				updateLog(xhr.response.error);
+			}
+		}
+		xhr.send(data);
+		return false;	// No context menu is shown
+	}
 }
 
 // Update the log div

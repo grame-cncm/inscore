@@ -232,6 +232,16 @@ int HTTPDServer::sendPostRequest(struct MHD_Connection *connection, const TArgs&
 		 istringstream ( yStr ) >> y;
 
 		 log = fApi->postMouseClick(x, y);
+	} else
+	 // Mouse click request
+	 if(elems.size() == 1 && elems[0] == inscore::WebApi::kHoverMsg && args.find("x") != args.end() && args.find("y") != args.end()) {
+		  string xStr = args.find("x")->second;
+		  string yStr = args.find("y")->second;
+		  int x, y;
+		  istringstream ( xStr ) >> x;
+		  istringstream ( yStr ) >> y;
+
+		  log = fApi->postMouseHover(x, y);
 	} else {
 		// Error
 		Response resp = Response::genericFailure("Unidentified POST request.", 404, false);
