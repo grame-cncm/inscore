@@ -1,6 +1,3 @@
-.. index::
-   single: log
-
 Getting the INScore log
 ==========================
 
