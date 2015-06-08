@@ -36,7 +36,9 @@ class QGraphicsScene;
 class QImage;
 class QGestureEvent;
 class QPinchGesture;
+class QSwipeGesture;
 class QPanGesture;
+class QParallelAnimationGroup;
 
 namespace inscore
 {
@@ -130,6 +132,7 @@ class VSceneView : public VDummyObjectView
 
 class ZoomingGraphicsView : public QGraphicsView
 {
+				Q_OBJECT
 	std::string		fSceneAddress;
 //	VSceneView* fSceneView;
 	IScene*	fScene;
@@ -141,12 +144,12 @@ class ZoomingGraphicsView : public QGraphicsView
 	qreal fTotalScaleFactor;
 
 	// Offset to translate the scene in the view.
-	qreal horizontalOffset;
-	qreal verticalOffset;
+	qreal fHorizontalOffset;
+	qreal fVerticalOffset;
 
 	public :
 		ZoomingGraphicsView(QGraphicsScene * s) : QGraphicsView(s), fScene(0), fScaleFactor(1), fTotalScaleFactor(1),
-			horizontalOffset(0), verticalOffset(0) {}
+			fHorizontalOffset(0), fVerticalOffset(0), fAnimationActive(false) {}
 		virtual ~ZoomingGraphicsView() {}
 
 		void setSceneAddress(const std::string& name)	{ fSceneAddress = name; }
@@ -175,6 +178,10 @@ class ZoomingGraphicsView : public QGraphicsView
 		 */
 		qreal getYOrigin();
 
+	signals:
+			//! this is used for internal purposes in the class engine
+			void animationFinished(void);
+
 	protected:
 		virtual void	closeEvent	(QCloseEvent *);
 		virtual void	paintEvent  (QPaintEvent * );
@@ -183,6 +190,16 @@ class ZoomingGraphicsView : public QGraphicsView
 		bool viewportEvent(QEvent *event);
 		bool gestureEvent(QGestureEvent *event);
 		void pinchTriggered(QPinchGesture *event);
+		void swipeTriggered(QSwipeGesture *event);
+
+		int fIndexCurrentTab;
+		int fIndexNextTab;
+		QPoint fInitialPos;
+		bool fAnimationActive;
+		QParallelAnimationGroup *fAnimgroup;
+	protected slots:
+		void animationDoneSlot(void);
+
 };
 
 } // end namespoace

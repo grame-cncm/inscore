@@ -34,6 +34,9 @@
 #include <QDesktopWidget>
 #include <QResizeEvent>
 #include <QPinchGesture>
+#include <QSwipeGesture>
+#include <QParallelAnimationGroup>
+#include <QPropertyAnimation>
 
 #if defined(ANDROID) || defined(IOS)
 #include "VQtInit.h"
@@ -65,12 +68,12 @@ void ZoomingGraphicsView::doZoomTranslate()
 	if(fScene) {
         qreal h = fScene->getXOrigin() * -400;
         qreal v = fScene->getYOrigin() * -400;
-        if (fTotalScaleFactor != fScene->getScale() || h != horizontalOffset || v != verticalOffset) {
-            horizontalOffset = h;
-            verticalOffset = v;
+		if (fTotalScaleFactor != fScene->getScale() || h != fHorizontalOffset || v != fVerticalOffset) {
+			fHorizontalOffset = h;
+			fVerticalOffset = v;
             fTotalScaleFactor = fScene->getScale();
             fScaleFactor = fTotalScaleFactor;
-            SCENE_RECT = QRect(QPoint((-400 + horizontalOffset) / fTotalScaleFactor, (-400 + verticalOffset) / fTotalScaleFactor), QPoint((400+ horizontalOffset) / fTotalScaleFactor, (400 + verticalOffset) / fTotalScaleFactor));
+			SCENE_RECT = QRect(QPoint((-400 + fHorizontalOffset) / fTotalScaleFactor, (-400 + fVerticalOffset) / fTotalScaleFactor), QPoint((400+ fHorizontalOffset) / fTotalScaleFactor, (400 + fVerticalOffset) / fTotalScaleFactor));
             fitInView( SCENE_RECT , Qt::KeepAspectRatio );
         }
     }
@@ -106,7 +109,9 @@ bool ZoomingGraphicsView::viewportEvent(QEvent *event)
 //------------------------------------------------------------------------------------------------------------------------
 bool ZoomingGraphicsView::gestureEvent(QGestureEvent *event)
 {
-	if (QGesture *pinch = event->gesture(Qt::PinchGesture))
+	if (QGesture *pinch = event->gesture(Qt::SwipeGesture))
+		swipeTriggered(static_cast<QSwipeGesture *>(pinch));
+	else if (QGesture *pinch = event->gesture(Qt::PinchGesture))
 		pinchTriggered(static_cast<QPinchGesture *>(pinch));
 	return true;
 }
@@ -120,43 +125,122 @@ void ZoomingGraphicsView::pinchTriggered(QPinchGesture *event)
 	QPointF p0 = event->lastCenterPoint();
 	QPointF p1 = event->centerPoint();
 	// Verify horizontal limits to avoid scrolling when no scale factor.
-    qreal h = horizontalOffset - (p1.x() - p0.x());
+	qreal h = fHorizontalOffset - (p1.x() - p0.x());
 
     // limit translation gesture if the zoom is too small
     qreal max = fScaleFactor * 400 - 400;
     if(max > abs(h))
-		horizontalOffset = h;
+		fHorizontalOffset = h;
     else {
         if(h > 0)
-            horizontalOffset = max;
-        else horizontalOffset = -max;
+			fHorizontalOffset = max;
+		else fHorizontalOffset = -max;
     }
 
     // Verify vertical limits to avoid scrolling when no scale factor.
-    qreal v = verticalOffset - (p1.y() - p0.y());
+	qreal v = fVerticalOffset - (p1.y() - p0.y());
     if(max > abs(v))
-		verticalOffset = v;
+		fVerticalOffset = v;
     else {
         if(v > 0)
-            verticalOffset = max;
-        else verticalOffset = -max;
+			fVerticalOffset = max;
+		else fVerticalOffset = -max;
     }
 
     // Zoom and translate
-    SCENE_RECT = QRect(QPoint((-400 + horizontalOffset) / fScaleFactor, (-400 + verticalOffset) / fScaleFactor), QPoint((400+ horizontalOffset) / fScaleFactor, (400 + verticalOffset) / fScaleFactor));
+	SCENE_RECT = QRect(QPoint((-400 + fHorizontalOffset) / fScaleFactor, (-400 + fVerticalOffset) / fScaleFactor), QPoint((400+ fHorizontalOffset) / fScaleFactor, (400 + fVerticalOffset) / fScaleFactor));
     fitInView( SCENE_RECT , Qt::KeepAspectRatio );
+}
+
+
+void ZoomingGraphicsView::swipeTriggered(QSwipeGesture *event) {
+#if defined(ANDROID) || defined(IOS)
+	if(fAnimationActive)
+		return;
+	QSwipeGesture::SwipeDirection direction = event->horizontalDirection();
+
+	QTabWidget* tw = VQtInit::getTabWidget();
+	int currentIndex = tw->currentIndex();
+	int offsetx = tw->width();
+	int nextIndex;
+	if(direction == QSwipeGesture::Right) {
+		//offsetx=offsetx;
+		nextIndex = currentIndex - 1;
+	} else if(direction == QSwipeGesture::Left) {
+		offsetx=-offsetx;
+		nextIndex = currentIndex + 1;
+	} else return;
+
+	int nbTab = tw->count();
+	if(nextIndex >= nbTab || nextIndex < 0)
+		return;
+	tw->widget(nextIndex)->setGeometry ( 0,  0, tw->widget(currentIndex)->width(), tw->widget(currentIndex)->height() );
+
+	//re-position the next widget outside/aside of the display area
+	QPoint pnext = tw->widget(nextIndex)->pos();
+	QPoint pnow = tw->widget(currentIndex)->pos();
+	fInitialPos = pnow;
+
+	tw->widget(nextIndex)->move(pnext.x()-offsetx,pnext.y());
+	//make it visible/show
+	tw->widget(nextIndex)->show();
+	tw->widget(nextIndex)->raise();
+
+	//animate both, the now and next widget to the side, using animation framework
+	QPropertyAnimation *animnow = new QPropertyAnimation(tw->widget(currentIndex), "pos");
+	animnow->setDuration(1500);
+	animnow->setEasingCurve(QEasingCurve::OutBack);
+	animnow->setStartValue(QPoint(pnow.x(), pnow.y()));
+	animnow->setEndValue(QPoint(offsetx+pnow.x(), pnow.y()));
+	QPropertyAnimation *animnext = new QPropertyAnimation(tw->widget(nextIndex), "pos");
+	animnext->setDuration(1500);
+	animnext->setEasingCurve(QEasingCurve::OutBack);
+	animnext->setStartValue(QPoint(-offsetx+pnext.x(), pnext.y()));
+	animnext->setEndValue(QPoint(pnext.x(), pnext.y()));
+
+	fAnimgroup = new QParallelAnimationGroup;
+
+	fAnimgroup->addAnimation(animnow);
+	fAnimgroup->addAnimation(animnext);
+
+	QObject::connect(fAnimgroup, SIGNAL(finished()),this,SLOT(animationDoneSlot()));
+	fIndexNextTab=nextIndex;
+	fIndexCurrentTab=currentIndex;
+	fAnimationActive=true;
+	fAnimgroup->start();
+
+#endif
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+void ZoomingGraphicsView::animationDoneSlot(void) {
+#if defined(ANDROID) || defined(IOS)
+	QTabWidget* tw = VQtInit::getTabWidget();
+	//when ready, call the QStackedWidget slot setCurrentIndex(int)
+	tw->setCurrentIndex(fIndexNextTab);  //this function is inherit from QStackedWidget
+	//then hide the outshifted widget now, and  (may be done already implicitely by QStackedWidget)
+	tw->widget(fIndexCurrentTab)->hide();
+	//then set the position of the outshifted widget now back to its original
+	tw->widget(fIndexCurrentTab)->move(fInitialPos);
+	//so that the application could also still call the QStackedWidget original functions/slots for changings
+	//widget(m_now)->update();
+	//setCurrentIndex(m_next);  //this function is inherit from QStackedWidget
+	fAnimationActive=false;
+	delete fAnimgroup;
+	emit animationFinished();
+#endif
 }
 
 //------------------------------------------------------------------------------------------------------------------------
 qreal ZoomingGraphicsView::getXOrigin()
 {
-    return horizontalOffset / -400;
+	return fHorizontalOffset / -400;
 }
 
 //------------------------------------------------------------------------------------------------------------------------
 qreal ZoomingGraphicsView::getYOrigin()
 {
-    return verticalOffset / -400;
+	return fVerticalOffset / -400;
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -205,6 +289,7 @@ VSceneView::VSceneView(const std::string& address, QGraphicsScene * scene)
 		fGraphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // Default to Qt::ScrollBarAsNeeded
 		fGraphicsView->viewport()->setAttribute(Qt::WA_AcceptTouchEvents);
 		fGraphicsView->viewport()->grabGesture(Qt::PinchGesture);
+		fGraphicsView->viewport()->grabGesture(Qt::SwipeGesture);
 		fGraphicsView->setTransformationAnchor(QGraphicsView::NoAnchor);
 		fGraphicsView->setResizeAnchor(QGraphicsView::NoAnchor);
 
