@@ -4,7 +4,7 @@
 Post mouse hover
 ===================
 
-A mouse hover event and its position can be send to interact with the score. The coordinates of the mouse are in pixels, with top left corner of coordinate (0, 0). The data should be a position in an image previously retrieved with a get message. The score may be modified and its current version number is increased.
+A mouse hover event and its position can be send to interact with the score. The coordinates of the mouse are in pixels, with top left corner of coordinate (0, 0). The data should be a position in an image previously retrieved with a get message. The score may be modified and its current version number is increased. When a request is sent, a event to leave the previous mouse hover position and a event to enter the new mouse hover position are created. 
 
 Request
 ##################
