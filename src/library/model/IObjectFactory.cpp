@@ -33,6 +33,9 @@
 #include "QtWebSocketController.h"
 #ifdef NOVIEW
 #include "VoidViewFactory.h"
+#elif defined(__MOBILE__)
+#include "ViewFactory.h"
+#include "VMobileSceneView.h"
 #else
 #include "ViewFactory.h"
 #include "VSceneView.h"
@@ -45,7 +48,7 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-template<typename T> SIObject _create(const std::string& name , IObject* parent) 
+template<typename T> SIObject _create(const std::string& name , IObject* parent)
 {
 	SMARTP<T> obj = T::create(name, parent);
 	if (obj) {
@@ -65,12 +68,12 @@ template<typename T> SIObject _create(const std::string& name , IObject* parent)
 	return obj->getView() ? obj : 0;
 }
 
-template<> SIObject _create<ISignal>(const std::string& name , IObject* parent) 
+template<> SIObject _create<ISignal>(const std::string& name , IObject* parent)
 {
 	return ISignal::create(name, parent);
 }
 
-template<> SIObject _create<IFaustProcessor>(const std::string& name , IObject* parent) 
+template<> SIObject _create<IFaustProcessor>(const std::string& name , IObject* parent)
 {
 	return IFaustProcessor::create(name, parent);
 }
@@ -109,7 +112,14 @@ template<> SIObject _create<IScene>(const std::string& name , IObject* parent)
 		oscaddress += name;
 		QGraphicsScene * gscene = 0;
 		if (!parent->offscreen()) gscene = new INScoreScene(oscaddress, obj);
-		obj->setView (new VSceneView (oscaddress, gscene));	
+#ifdef __MOBILE__
+		// Mobile scene view use touch gesture
+		VSceneView *sceneView = new VMobileSceneView ();
+#else
+		VSceneView *sceneView = new VSceneView ();
+#endif
+		sceneView->initialize(oscaddress, gscene);
+		obj->setView (sceneView);
 	}
 	return obj->getView() ? obj : 0;
 }
@@ -178,7 +188,7 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 		obj = _create<IGrid> (name, parent);
     
     else if (type == ILayer::kLayerType)
-        obj = _create<ILayer> (name, parent);
+		obj = _create<ILayer> (name, parent);
         
 	else if ( type == ISignal::kSignalType )
 		obj = _create<ISignal> (name, parent);
@@ -214,7 +224,7 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 		obj = _create<ISVG> (name, parent);
     
     else if ( type == IUrlIntermediateObject::kUrlIntermediateType )
-        obj = _create<IUrlIntermediateObject> (name, parent);
+		obj = _create<IUrlIntermediateObject> (name, parent);
 
 	else if ( type == IScene::kSceneType )
 		obj = _create<IScene> (name, parent);

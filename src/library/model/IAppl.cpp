@@ -41,13 +41,18 @@
 #include "IScene.h"
 #include "ITLparser.h"
 #include "OSCAddress.h"
-#include "IMobileMenu.h"
 #include "Updater.h"
 #include "TMessageEvaluator.h"
 #include "ITLError.h"
 #include "Tools.h"
 
 #include "INScore.h"
+
+#ifdef __MOBILE__
+#include "IMobileMenu.h"
+#else
+#include "IMenu.h"
+#endif
 
 #include <QDir>
 #include <QApplication>
@@ -94,6 +99,13 @@ std::string IAppl::fRootPath = getFilePath();
 std::string IAppl::fRootPath = std::string(getenv("HOME")) + "/";
 #endif
 
+inscore::SIMenu getMenuNode(inscore::IObject * parent) {
+#ifdef __MOBILE__
+	return inscore::IMobileMenu::create(parent);
+#else
+	return inscore::IMenu::create(parent);
+#endif
+}
 
 #ifdef RUNBENCH
 //--------------------------------------------------------------------------
@@ -229,7 +241,7 @@ void IAppl::createVirtualNodes()
 	fDebug = fApplDebug;
 	fApplLog = IApplLog::create(this);
 	fFilterForward = IFilterForward::create(this);
-	add(IMobileMenu::create(this));
+	add(getMenuNode(this));
 	add ( fDebug );
 	add ( fApplStat );
 	add ( fApplLog );

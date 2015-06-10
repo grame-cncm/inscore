@@ -40,11 +40,15 @@
 #include "IGlue.h"
 #ifdef NOVIEW
 #include "VoidUpdater.h"
+#elif defined(__MOBILE__)
+#include "VMobileQtInit.h"
+#include "VMobileQtUpdater.h"
+#include "VQtLocalMappingUpdater.h"
 #else
+#include "VQtInit.h"
 #include "VQtLocalMappingUpdater.h"
 #include "VQtUpdater.h"
 #endif
-#include "VQtInit.h"
 #include "VSceneView.h"
 #include "QGuidoImporter.h"
 
@@ -89,6 +93,11 @@ IGlue* INScore::start(int timeInterval, int udpport, int outport, int errport, Q
 #ifdef NOVIEW
 		glue->setLocalMapUpdater(VoidLocalMapUpdater::create() );
 		glue->setViewUpdater	(VoidViewUpdater::create() );
+#elif defined(__MOBILE__)
+		VMobileQtInit::startQt();
+		glue->setLocalMapUpdater(VQtLocalMappingUpdater::create() );
+		// Initialize a view updater for mobile with a tab container
+		glue->setViewUpdater	(VMobileQtUpdater::create() );
 #else
 		VQtInit::startQt();
 		glue->setLocalMapUpdater(VQtLocalMappingUpdater::create() );
