@@ -113,7 +113,10 @@ macx {
 # ios x support
 ############################## 
 ios {
-    DEFINES += IOS
+    SOURCES  +=  $$files($$SRC/mobile/*.cpp)
+    HEADERS  +=  $$files($$SRC/mobile/*.h)
+    INCLUDEPATH  +=  $$files($$SRC/mobile)
+    DEFINES += IOS __MOBILE__
     CONFIG += c++11
     CONFIG+= arm64 armv7 armv7s
     CONFIG += staticlib
@@ -133,7 +136,10 @@ unix:!macx:!ios:!android {
 # android support
 ############################## 
 android {
-    DEFINES += ANDROID OSC_HOST_LITTLE_ENDIAN
+    SOURCES  +=  $$files($$SRC/mobile/*.cpp)
+    HEADERS  +=  $$files($$SRC/mobile/*.h)
+    INCLUDEPATH  +=  $$files($$SRC/mobile)
+    DEFINES += ANDROID __MOBILE__ OSC_HOST_LITTLE_ENDIAN
     LIBS += -L$$ROOT/lib/GuidoEngine/android -lGUIDOEngine
     QMAKE_CXXFLAGS += -Wno-unused-parameter
     QT += androidextras
