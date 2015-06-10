@@ -54,8 +54,8 @@ class export VQtUpdater : public ViewUpdater
 		static libmapping::SMARTP<VQtUpdater> create()	{ return new VQtUpdater(); }
 
 		void updateTo (IAppl* appl);
-		void updateTo (IApplLog* appl);
-		void updateTo (IMobileMenu* menu);
+		virtual void updateTo (IApplLog* appl);
+		virtual void updateTo (IMenu*) {}
 		void updateTo (IScene*);
 
 		virtual void updateTo (ICurve * curve);
