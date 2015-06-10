@@ -23,19 +23,15 @@
 
 */
 
-#include "IMobileMenu.h"
-#include "VMobileMenu.h"
+#include "IMenu.h"
 #include "Updater.h"
 #include "VQtInit.h"
 
 namespace inscore {
 
 //--------------------------------------------------------------------------
-IMobileMenu::IMobileMenu(IObject * parent) : IVNode("menu", parent), fMobileMenu(0)
+IMenu::IMenu(IObject * parent) : IVNode("menu", parent)
 {
-#if defined(ANDROID) || defined(IOS)
-	fMobileMenu = new VMobileMenu("About"); // Name of tab
-#endif
     fMsgHandlerMap[kshow_GetSetMethod]		= TSetMethodMsgHandler<IObject,bool>::create(this, &IObject::setVisible);
     fGetMsgHandlerMap[kshow_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fVisible);
 
@@ -43,21 +39,15 @@ IMobileMenu::IMobileMenu(IObject * parent) : IVNode("menu", parent), fMobileMenu
 }
 
 //--------------------------------------------------------------------------
-IMobileMenu::~IMobileMenu()
-{
-    delete fMobileMenu;
-}
-
-//--------------------------------------------------------------------------
-void IMobileMenu::setVisible (bool vis)
+void IMenu::setVisible (bool vis)
 {
 	IObject::setVisible(vis);
 }
 
 //--------------------------------------------------------------------------
-void IMobileMenu::accept (Updater* u)
+void IMenu::accept (Updater* u)
 {
 	u->updateTo(this);
 }
 
-}
+} // end namespoace

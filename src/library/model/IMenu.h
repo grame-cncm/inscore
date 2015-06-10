@@ -23,45 +23,43 @@
 
 */
 
-#ifndef IMOBILEMENU_H
-#define IMOBILEMENU_H
+#ifndef IMENU_H
+#define IMENU_H
 
 #include "IVNode.h"
-#include "VMobileMenu.h"
+
+class QWidget;
 
 namespace inscore {
-
-class VMobileMenu;
 
 /*!
 \addtogroup ITLModel Data Model
 @{
 */
 
-class IMobileMenu;
-typedef class libmapping::SMARTP<IMobileMenu>		SIMobileMenu;
+class IMenu;
+typedef class libmapping::SMARTP<IMenu>		SIMenu;
 
 /*!
- * \brief The IMobileMenu class. A model class for the menu for mobile device.
+ * \brief The IMenu class. A model class for a inscore menu.
+ * It's an empty menu object without view.
  */
-class IMobileMenu : public IVNode
+class IMenu : public IVNode
 {
-    VMobileMenu * fMobileMenu;
-
     public:
-        /// \brief creates a new IApplLog
-        static SIMobileMenu create(IObject * parent)		{ return new IMobileMenu(parent); }
+		/// \brief creates a new IMenu
+		static SIMenu create(IObject * parent)		{ return new IMenu(parent); }
 
 		/*!
 		 * \brief window get the view of the class
 		 * \return a VMobileMenu pointer
 		 */
-		VMobileMenu* window()				{ return fMobileMenu; }
+		virtual QWidget* window()				{ return 0; }
 		void accept (Updater* u);
 
     protected:
-        IMobileMenu(IObject * parent);
-        virtual ~IMobileMenu();
+		IMenu(IObject * parent);
+		virtual ~IMenu() {}
 
 		/*!
 		 * \brief setVisible To show the menu
@@ -73,4 +71,4 @@ class IMobileMenu : public IVNode
 
 } // end namespoace
 
-#endif // IMOBILEMENU_H
+#endif // IMENU_H

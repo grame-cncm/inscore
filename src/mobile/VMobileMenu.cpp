@@ -38,7 +38,6 @@
 #include "IAppl.h"
 #include "IMessage.h"
 #include "Methods.h"
-#include "VQtInit.h"
 #include "INScore.h"
 
 #include <QDebug>
