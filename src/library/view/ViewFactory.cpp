@@ -79,7 +79,7 @@ VObjectView*	ViewFactory::create (const IUrlIntermediateObject* object, QGraphic
 VObjectView* ViewFactory::create(const IScene* obj)
 {
 	VSceneView * scene = new VSceneView ();
-	scene->initialize(obj->getOSCAddress(), new QGraphicsScene);
+    scene->initializeView(obj->getOSCAddress(), new QGraphicsScene);
 	return scene;
 }
 

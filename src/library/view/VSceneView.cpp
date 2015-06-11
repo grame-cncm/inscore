@@ -141,7 +141,7 @@ VSceneView::VSceneView()
 }
 
 //------------------------------------------------------------------------------------------------------------------------
-void VSceneView::initialize(const std::string& address, QGraphicsScene * scene)
+void VSceneView::initializeView(const std::string& address, QGraphicsScene * scene)
 {
 	if (scene) {
 		fScene = scene;

@@ -103,7 +103,7 @@ class VSceneView : public VDummyObjectView
 		 * \param address the scene OSC address
 		 * \param scene the QGraphicsScene or null for offscreen rendering.
 		 */
-		void				initialize(const std::string& address, QGraphicsScene * scene);
+        void				initializeView(const std::string& address, QGraphicsScene * scene);
 
 		bool				copy(unsigned int* dest, int w, int h, bool smooth=false );
 		void				setSceneRect(int w, int h)	{ fScene->setSceneRect(0, 0, w, h); }

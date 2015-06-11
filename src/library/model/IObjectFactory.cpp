@@ -118,7 +118,7 @@ template<> SIObject _create<IScene>(const std::string& name , IObject* parent)
 #else
 		VSceneView *sceneView = new VSceneView ();
 #endif
-		sceneView->initialize(oscaddress, gscene);
+        sceneView->initializeView(oscaddress, gscene);
 		obj->setView (sceneView);
 	}
 	return obj->getView() ? obj : 0;
