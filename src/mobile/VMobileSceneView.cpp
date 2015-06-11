@@ -32,6 +32,7 @@
 #include <QPropertyAnimation>
 
 namespace inscore {
+bool MobileZoomingGraphicsView::sAnimationActive = false;
 
 //------------------------------------------------------------------------------------------------------------------------
 bool MobileZoomingGraphicsView::viewportEvent(QEvent *event)
@@ -90,9 +91,9 @@ void MobileZoomingGraphicsView::pinchTriggered(QPinchGesture *event)
 //------------------------------------------------------------------------------------------------------------------------
 void MobileZoomingGraphicsView::swipeTriggered(QSwipeGesture *event) {
 	// Only one animation at same time.
-	if(fAnimationActive)
+    if(sAnimationActive)
 		return;
-
+    sAnimationActive=true;
 	// Get gesture direction to change for next or previous tab.
 	QSwipeGesture::SwipeDirection direction = event->horizontalDirection();
 
@@ -128,12 +129,12 @@ void MobileZoomingGraphicsView::swipeTriggered(QSwipeGesture *event) {
 
 	// Animate both, the now and next widget to the side, using animation framework
 	QPropertyAnimation *animnow = new QPropertyAnimation(currentWidget, "pos");
-	animnow->setDuration(1500);
+    animnow->setDuration(1000);
 	animnow->setEasingCurve(QEasingCurve::OutBack); // Change this to change animation mouvement
 	animnow->setStartValue(QPoint(pnow.x(), pnow.y()));
 	animnow->setEndValue(QPoint(offsetx + pnow.x(), pnow.y()));
 	QPropertyAnimation *animnext = new QPropertyAnimation(nextWidget, "pos");
-	animnext->setDuration(1500);
+    animnext->setDuration(1000);
 	animnext->setEasingCurve(QEasingCurve::OutBack);
 	animnext->setStartValue(QPoint(-offsetx + pnext.x(), pnext.y()));
 	animnext->setEndValue(QPoint(pnext.x(), pnext.y()));
@@ -142,11 +143,9 @@ void MobileZoomingGraphicsView::swipeTriggered(QSwipeGesture *event) {
 	fAnimgroup = new QParallelAnimationGroup;
 	fAnimgroup->addAnimation(animnow);
 	fAnimgroup->addAnimation(animnext);
-
 	QObject::connect(fAnimgroup, SIGNAL(finished()),this,SLOT(animationDoneSlot()));
 	fIndexNextTab=nextIndex;
 	fIndexCurrentTab=currentIndex;
-	fAnimationActive=true;
 	fAnimgroup->start();
 }
 
@@ -161,7 +160,7 @@ void MobileZoomingGraphicsView::animationDoneSlot(void) {
 	tw->widget(fIndexCurrentTab)->move(fInitialPos);
 
 	// No animation is running
-	fAnimationActive=false;
+    sAnimationActive=false;
 	delete fAnimgroup;
 	emit animationFinished();
 }

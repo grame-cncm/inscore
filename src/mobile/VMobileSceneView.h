@@ -70,11 +70,11 @@ class MobileZoomingGraphicsView : public ZoomingGraphicsView {
 		int fIndexCurrentTab;					///< current tab index used for animation
 		int fIndexNextTab;						///< next tab index used for animation
 		QPoint fInitialPos;						///< initial position of the current tab.
-		bool fAnimationActive;					///< only one tab change animation can be fired at same time
+        static bool sAnimationActive;			///< only one tab change animation can be fired at same time
 		QParallelAnimationGroup *fAnimgroup;	///< An animation group used for change tab
 
 	public:
-		MobileZoomingGraphicsView(QGraphicsScene * s) : ZoomingGraphicsView(s), fAnimationActive(false) {}
+        MobileZoomingGraphicsView(QGraphicsScene * s) : ZoomingGraphicsView(s) {}
 
 	signals:
 		//! this is used for internal purposes in the class engine at the end of an animation
