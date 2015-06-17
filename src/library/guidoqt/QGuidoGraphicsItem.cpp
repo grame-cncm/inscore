@@ -55,8 +55,8 @@ void QGuidoGraphicsItem::paint( QPainter * painter, const QStyleOptionGraphicsIt
 		pageRect.moveTo( mPageManager->pagePos(i) );
 		pageRect.setSize( mPageManager->pageSize(i) );
         if(fIsPianoRoll)
-        {
-			mGuidoPainter->drawPianoRoll(painter, option->exposedRect.toAlignedRect(), fPianoRoll);
+		{
+			mGuidoPainter->drawPianoRoll(painter, pageRect.toRect(), fPianoRoll);
         }
         else
 			mGuidoPainter->draw( painter , i , pageRect.toRect() , option->exposedRect.toRect() );
