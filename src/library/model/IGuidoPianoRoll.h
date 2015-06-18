@@ -23,7 +23,6 @@
 
 */
 
-
 #ifndef __IGuidoPianoRoll__
 #define __IGuidoPianoRoll__
 
@@ -44,38 +43,111 @@ class IGuidoPianoRoll;
 typedef class libmapping::SMARTP<IGuidoPianoRoll>	SIGuidoPianoRoll;
 //--------------------------------------------------------------------------
 /*!
-	\brief a file based guido object
-*/
+ * \brief The IGuidoPianoRoll class. A model object to display gmn score in pianoroll format.
+ */
 class IGuidoPianoRoll : public virtual IGuidoCode
 {
 	public:		
 		static const std::string kGuidoPianoRollType;
+
 		static SIGuidoPianoRoll create(const std::string& name, IObject * parent)	{ return new IGuidoPianoRoll(name, parent); }
 
 		virtual void	accept (Updater*u);
-        void setPianoRollType(PianoRollType type) {fType = type;}
-        PianoRoll * getPianoRoll() {return fPianoRoll;}
+		PianoRoll * getPianoRoll() {return fPianoRoll;}
     
-        void setLimits(LimitParams lp) { GuidoPianoRollSetLimits(fPianoRoll, lp); }
-        void enableKeyboard(bool enable) { GuidoPianoRollEnableKeyboard(fPianoRoll, enable); }
-        void enableAutoVoicesColoration(bool enable) { GuidoPianoRollEnableAutoVoicesColoration(fPianoRoll, enable); }
-        void setRGBColorToVoice(int voice, int r, int g, int b, int a) { GuidoPianoRollSetRGBColorToVoice(fPianoRoll, voice, r, g, b, a); }
-        void enableMeasureBars(bool enable) { GuidoPianoRollEnableMeasureBars(fPianoRoll, enable); }
-        void setPitchLinesDisplayMode(int mode) { GuidoPianoRollSetPitchLinesDisplayMode(fPianoRoll, mode); }
-    
-    
+		/*!
+		 * \brief setPianoRollType set the pianoroll type.
+		 * \param msg a message with a unique string parameter ("simple" or "trajectory").
+		 * \return the message status
+		 */
+		MsgHandler::msgStatus setPianoRollType(const IMessage *msg);
+
+		/*!
+		 * \brief getPianoRollType get the pianoroll type in string format
+		 * \return "simple" or "trajectory"
+		 */
+		std::string getPianoRollType() const;
+
+		/*!
+		 * \brief setLimits
+		 * \param lp
+		 */
+		void setLimits(LimitParams lp);
+
+		/*!
+		 * \brief enableKeyboard Enable keyboard display.
+		 * \param enable
+		 */
+		void enableKeyboard(bool enable);
+
+		/*!
+		 * \brief enableAutoVoicesColoration. Enable automatic color voice.
+		 * \param enable
+		 */
+		void enableAutoVoicesColoration(bool enable);
+
+		/*!
+		 * \brief setRGBColorToVoice Add a color to a voice
+		 * \param voice voice number (start to 1)
+		 * \param r red
+		 * \param g green
+		 * \param b blue
+		 * \param a transparency.
+		 */
+		MsgHandler::msgStatus setRGBColorToVoice(const IMessage *msg);
+
+		/*!
+		 * \brief getRGBColorToVoice get rgb color of voices.
+		 * \return a message corresponding to set messages.
+		 */
+		SIMessageList getRGBColorToVoice() const;
+
+		/*!
+		 * \brief enableMeasureBars Enable measure bars.
+		 * \param enable
+		 */
+		void enableMeasureBars(bool enable);
+
+		/*!
+		 * \brief setPitchLinesDisplayMode Set the pitch lines display.
+		 * \param msg a message with a list of string parameter of all displayed lines.
+		 * \return the message status.
+		 */
+		MsgHandler::msgStatus setPitchLinesDisplayMode(const IMessage *msg);
+
+		/*!
+		 * \brief getPitchLinesDisplayMode get the pitch lines in string format
+		 * \return
+		 */
+		std::string getPitchLinesDisplayMode() const;
+
 	protected:
 				 IGuidoPianoRoll( const std::string& name, IObject * parent);
 		virtual ~IGuidoPianoRoll() ;
 
-        /// \brief updates the Piano Roll representation according to the AR Representation
-        virtual void updatePianoRoll();
+		/// \brief updates the Piano Roll representation according to the AR Representation
+		virtual void updatePianoRoll();
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 
-        PianoRollType fType;
-        PianoRoll * fPianoRoll;
+	private:
+		/*!
+		 * \brief applyAllSettings update pianoroll with the display settings
+		 */
+		void applyAllSettings();
+
+		ARHandler fArHandler;
+		PianoRoll * fPianoRoll;
+
+		// Pianoroll display settings
+		PianoRollType fType;
+		LimitParams fLimits;
+		bool fKeyboard;
+		bool fAutoVoiceColor;
+		std::map<int, IColor> fVoicesColor;
+		bool fMeasureBars;
+		int fPitchLines;
 };
 
 /*! @} */
