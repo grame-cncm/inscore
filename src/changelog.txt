@@ -13,6 +13,10 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.14
+- Bug correction : pianoroll was not display at right place on score.
+- Add new methods to use pianoroll parameters.
+- Add web Api to expose inscore on the web with websocket or rest webservice.
+- Add change tab on mobile with three digits gesture.
 
 ----------------------------------------------------
 Version 1.13

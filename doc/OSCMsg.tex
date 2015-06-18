@@ -777,6 +777,36 @@ Creating the same music score as a stream.
 \note{} Conversion from MusicXML to GMN could be achieved manually using a command line tool that is distributed with the MusicXML library (see at \url{http://code.google.com/p/libmusicxml/}). It allows to improve the output GMN code afterhand.
 
 %===============================
+%:  Piano roll music notation
+\sublevel{Piano roll music notation}
+\label{pianorollscore}
+Piano roll music notation is based on the Guido Music Notation format [GMN].
+
+\begin{rail}
+setMsg : 'set' (
+	('pianoroll' gmnString) |
+	('pianorollstream' gmnStream)
+)
+\end{rail}
+\index{Common messages!set}
+\index{Set type!pianoroll}
+\index{Set type!pianorollstream}
+
+\begin{itemize}
+\item \OSC{pianoroll}: a piano roll defined by a GMN string.
+\item \OSC{gmnstream}: a piano roll defined by a GMN stream (a GMN string that can be written in several times).
+\end{itemize}
+
+\example \\
+Creating a pianoroll using a Guido Music Notation language string.
+\sample{/ITL/scene/myObject set pianoroll "[ a b g ]";}
+Creating the same piano roll as a stream.
+\sample{/ITL/scene/myObject set pianorollstream "[ a";\\
+/ITL/scene/myObject write "b";\\
+/ITL/scene/myObject write "g";
+}
+
+%===============================
 %:  Textual components
 \sublevel{Textual components}
 \label{textscore}
@@ -1251,6 +1281,67 @@ Writing a score in 3 steps:
 \sample{/ITL/scene/myScore set gmnstream "[ c"; \\
 /ITL/scene/myScore write " d e";\\
 /ITL/scene/myScore write " f]";
+}
+
+
+%-------------------------------
+%:  piano roll management
+\sublevel{Piano roll management}
+\label{pianoroll}
+
+Messages accepted by the components types \OSC{pianoroll | pianorollstream}.
+
+\begin{rail}
+pianorollMsg :      'type' ('simple' | 'trajectory')
+			| 'keyboard' int32
+			| 'autoVoicesColoration' int32
+			| 'measureBars' int32
+			| 'voiceColor' int32 int32 int32 int32 int32
+			| 'pitchLines' ( 'Notes' |)
+\end{rail}
+\index{Specific messages! pianoroll! type}
+\index{Specific messages! pianoroll! keyboard}
+\index{Specific messages! pianoroll! autoVoicesColoration}
+\index{Specific messages! pianoroll! measureBars}
+\index{Specific messages! pianoroll! voiceColor}
+\index{Specific messages! pianoroll! pitchLines}
+
+
+\begin{itemize}
+\item \OSC{type}: set the piano roll display type as 'simple' or 'trajectory'.
+\item \OSC{keyboard}: display the keyboard on left of piano roll.
+\item \OSC{autoVoicesColoration}: enable voices automatic coloration. If voiceColor is used for a voice, automatic voices coloration do nothing for it.
+\item \OSC{measureBars}: Display measure bars on piano roll.
+\item \OSC{voiceColor}: set a color for a voice. The parameters are voice number (start to 1), and RGBA color.
+\item \OSC{pitchLines}:  Display pitch lines on pianoroll. Parameters are a note list in english notation (A A\# B ...).
+\end{itemize}
+
+
+\example \\
+Set a color on voice 2 with transparency and display C and F pitch lines : 
+\sample{/ITL/scene/myPianoroll voiceColor 2 154 234 45 100;\\
+/ITL/scene/myPianoroll pitchLines 'C' 'F';
+}
+
+
+\begin{rail}
+pianorollstreamMsg :      'write' gmnStream
+				| 'clear' 
+\end{rail}
+\index{Specific messages! pianoroll! write}
+\index{Specific messages! pianoroll! clear}
+
+\begin{itemize}
+\item \OSC{write}: add the stream in parameter to the global stream
+\item \OSC{clear}: reinitialize the stream
+\end{itemize}
+
+
+\example \\
+Writing a pianoroll in 3 steps:
+\sample{/ITL/scene/myPianoroll set pianorollstream "[ c"; \\
+/ITL/scene/myPianoroll write " d e";\\
+/ITL/scene/myPianoroll write " f]";
 }
 
 
