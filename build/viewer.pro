@@ -54,6 +54,9 @@ ios {
         QMAKE_BUNDLE_DATA += ios_icon
         ICON 		= $$ROOT/rsrc/INScoreViewer.icns
         RESOURCES += $$ROOT/rsrc/inscoremobile.qrc
+        OBJECTIVE_SOURCES += $$SRC/mobile/ios/QtAppDelegate.mm
+        INCLUDEPATH += $$SRC/mobile/ios
+        HEADERS += $$files($$SRC/mobile/ios/*.h)
 }
 
 ############################## 

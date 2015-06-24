@@ -270,6 +270,7 @@ INScoreAppl::~INScoreAppl() { delete fMenuBar; }
 int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdParam, int iCmdShow)
 #else
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+#include "QtAppDelegate-C-Interface.h"
 extern "C" int qtmn(int argc, char *argv[] )
 #else
 int main( int argc, char **argv )
@@ -288,7 +289,8 @@ int main( int argc, char **argv )
 	QDir dir(QApplication::applicationDirPath());
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-    // Q_INIT_RESOURCE( inscore );
+    // Initialize application delegate to manage external application event (close tablet, open new application...)
+    QtAppDelegateInitialize();
     // Q_INIT_RESOURCE() and Q_CLEANUP_RESOURCE() is not necessary when the resource is built as part
     // of the application. (see QT documentation)
 #else
