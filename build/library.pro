@@ -16,7 +16,7 @@ SRC 		= $$ROOT/src
 LOCALLIB 	= $$ROOT/lib
 GUIDO_PATH	= $$LOCALLIB/GuidoEngine
 OSC             = $$LOCALLIB/oscpack
-JSON            = $$LOCALLIB/json
+JSON            = $$SRC/json
 win32 { OSCIP = $$OSC/ip/win32 }
 else  { OSCIP = $$OSC/ip/posix }
 
