@@ -76,7 +76,7 @@ class Master : public libmapping::smartable
 
 		void			setDy (float dy) 		{ fDy = dy; fModified = true; }
 		bool			modified() const 		{ return fModified; }
-		void			modified(bool state) 	{ fModified = false; }
+        void			modified(bool) 	{ fModified = false; }
 
 	static std::string	syncalign2string(int syncmode);
 	static std::string	synctype2string(int sync);

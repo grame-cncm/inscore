@@ -24,11 +24,10 @@
 
 #include "TPlugin.h"
 
-#include "DataExchange.h"
-
 namespace inscore
 {
 	class IScene;
+	class WebApi;
 /*!
  * \brief The THttpdPlugin class.
  * This class aims to create a http server to expose webservice using inscorehttpserver library.
@@ -39,15 +38,20 @@ class THttpdPlugin : public TPlugin
 		/*!
 		 * \brief fExportedObject base object to export scene
 		 */
-		const IScene * fExportedObject;
+		IScene * fExportedObject;
 
 		/*!
 		 * \brief fHttpdServer HttpServer instance.
 		 */
 		void * fHttpdServer;
 
+		/*!
+		 * \brief fApi Web api object to execute action from server
+		 */
+		WebApi * fApi;
+
 		// Prototype of function to resolve.
-		typedef void * (* TInitialize) (callbackGetData, void*);
+		typedef void * (* TInitialize) (WebApi*);
 		typedef void (* TDestroy) (void*);
 		typedef bool (* TStart) (void*, int);
 		typedef bool (* TStop) (void*);
@@ -77,7 +81,7 @@ class THttpdPlugin : public TPlugin
 		/*!
 		 * \brief THttpdPlugin Create a new http server.
 		 */
-		THttpdPlugin(const IScene *exportedObject);
+		THttpdPlugin(IScene *exportedObject);
 
 		/*!
 		 * \brief ~THttpdPlugin Destroy the http server.
@@ -102,13 +106,6 @@ class THttpdPlugin : public TPlugin
 		 * \return
 		 */
 		int status();
-
-		/*!
-		 * \brief getData Return new image of the scene from the base object fExportedObject
-		 * \param args Arguments to create the image.
-		 * \return a new image or null.
-		 */
-		struct responsedata * getData(struct requestarguments* args) const;
 };
 
 }

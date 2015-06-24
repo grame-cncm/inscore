@@ -27,12 +27,6 @@
 
 #include "export.h"
 
-#if defined(ANDROID) || defined(IOS)
-#include <QTabWidget>
-
-class QMainWindow;
-#endif
-
 namespace inscore
 {
 
@@ -47,24 +41,6 @@ class export VQtInit
 	static	void		startQt ();
 	static	void		stopQt ();
 
-#if defined(ANDROID) || defined(IOS)
-	/*!
-	 * \brief getTabWidget
-	 * \return the tabWidget of the main window.
-	 */
-	static	QTabWidget*	getTabWidget();
-
-	private:
-	static QMainWindow* sMainWindow;
-	static QTabWidget* sTabWidget;
-
-	/*!
-	 * \brief keepScreenOn Keep the the screen on when inscore is running (no sleep)
-	 * This function have to be called after the creation of a QMainWindow
-	 */
-	static void keepScreenOn();
-
-#endif
 };
 
 /*!@} */

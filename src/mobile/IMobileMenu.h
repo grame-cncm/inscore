@@ -18,56 +18,47 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
-
 #ifndef IMOBILEMENU_H
 #define IMOBILEMENU_H
 
-#include "IVNode.h"
-#include "VMobileMenu.h"
+#include "IMenu.h"
 
 namespace inscore {
 
-class VMobileMenu;
-
 /*!
-\addtogroup ITLModel Data Model
-@{
+	\addtogroup ITLModel Data Model
+	@{
 */
 
 class IMobileMenu;
 typedef class libmapping::SMARTP<IMobileMenu>		SIMobileMenu;
 
 /*!
- * \brief The IMobileMenu class. A model class for the menu for mobile device.
+ * \brief The IMobileMenu class. A menu model object for mobile. It take a QWdiget as view.
  */
-class IMobileMenu : public IVNode
+class IMobileMenu : public IMenu
 {
-    VMobileMenu * fMobileMenu;
+	QWidget * fMobileMenu;
 
-    public:
-        /// \brief creates a new IApplLog
-        static SIMobileMenu create(IObject * parent)		{ return new IMobileMenu(parent); }
+	public:
+		/// \brief creates a new IApplLog
+		static SIMenu create(IObject * parent);
 
 		/*!
 		 * \brief window get the view of the class
 		 * \return a VMobileMenu pointer
 		 */
-		VMobileMenu* window()				{ return fMobileMenu; }
-		void accept (Updater* u);
+		QWidget* window();
 
-    protected:
-        IMobileMenu(IObject * parent);
-        virtual ~IMobileMenu();
+	protected:
+		IMobileMenu(IObject * parent) : IMenu(parent) {}
+		virtual ~IMobileMenu();
 
-		/*!
-		 * \brief setVisible To show the menu
-		 * \param vis true to show the menu, false to hide the menu.
-		 */
-        virtual void	setVisible (bool vis);
+		void setWindow(QWidget * menu) { this->fMobileMenu = menu; }
 };
 /*! @} */
 

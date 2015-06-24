@@ -23,8 +23,8 @@
 
 */
 
-#ifndef MOBILEMENUWIDGET_H
-#define MOBILEMENUWIDGET_H
+#ifndef VMOBILEMENUWIDGET_H
+#define VMOBILEMENUWIDGET_H
 
 #include <QWidget>
 #include <string>
@@ -36,7 +36,7 @@ namespace inscore
 {
 
 /*!
-\addtogroup ITLView
+\addtogroup ITLMobileView
 @{
 */
 
@@ -111,6 +111,7 @@ class VMobileMenu : public QWidget
 		void sendLoadMsg(const char *file);
 };
 /*! @} */
+
 } // end namespoace
 
-#endif // MOBILEMENUWIDGET_H
+#endif // VMOBILEMENUWIDGET_H

@@ -23,7 +23,7 @@
 #define __inscoreserver__
 
 #include "HTTPServer.h"
-#include "DataExchange.h"
+#include "WebApi.h"
 
 #ifndef VERSION
 	#define VERSION "";
@@ -39,7 +39,7 @@ extern "C" {
 	 * \param object a pointer on the server object in INScore.
 	 * \return the HTTPDServer instance
 	 */
-	void * initialize(callbackGetData callbackFct, void *object);
+	void * initialize(void * api);
 
 	/*!
 	 * \brief destroy Destroy a HTTPDServer instance.

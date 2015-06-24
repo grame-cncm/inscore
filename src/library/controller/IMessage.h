@@ -524,7 +524,12 @@ class IMessageList : public libmapping::smartable
 				extvector<SIMessage>& list()		{ return fList; }
 				
 		/// \brief sends all the messages
-		void	send () const;				
+		void	send () const;
+
+		/*!
+		 * \brief sendWebMsg Add messages to a specific stack for message from web
+		 */
+		void sendWebMsg() const;
 };
 
 inline std::ostream& operator << (std::ostream& os, const SIMessage& m)			{ if (m) m->print(os); else os << "null msg"; return os; }

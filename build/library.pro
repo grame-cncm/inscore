@@ -15,12 +15,15 @@ ROOT 		= $$PWD/..
 SRC 		= $$ROOT/src
 LOCALLIB 	= $$ROOT/lib
 GUIDO_PATH	= $$LOCALLIB/GuidoEngine
-OSC		 	= $$LOCALLIB/oscpack
+OSC             = $$LOCALLIB/oscpack
+JSON            = $$SRC/json
 win32 { OSCIP = $$OSC/ip/win32 }
 else  { OSCIP = $$OSC/ip/posix }
 
 QT += core gui widgets svg printsupport multimedia multimediawidgets qml websockets
+DEFINES += INScore_EXPORTS
 DEFINES += QTJSENGINE	# use the Qt Javascript engine
+DEFINES += JSON_ONLY    # json library doesn't use osc stream.
 
 ############################## 
 # source and headers
@@ -30,11 +33,13 @@ SOURCES +=  $$files($$SRC/libmapping/src/*.cpp, true)		# libmapping source files
 SOURCES +=  $$files($$OSC/ip/*.cpp)							# oscpack files
 SOURCES +=  $$files($$OSC/osc/*.cpp)						# oscpack files
 SOURCES +=  $$files($$OSCIP/*.cpp)							# oscpack files
+SOURCES +=  $$files($$JSON/*.cpp)
 
 HEADERS  =  $$files($$SRC/library/*.h, true)
 HEADERS +=  $$files($$SRC/libmapping/src/*.h, true)
 HEADERS +=  $$files($$OSC/ip/*.h)
 HEADERS +=  $$files($$OSC/OSC/*.h)
+HEADERS +=  $$files($$JSON/*.h)
 win32:HEADERS +=  $$files($$ROOT/win32/dirent/*.h)
 
 ############################## 
@@ -45,6 +50,7 @@ INCLUDEPATH +=  $$files($$SRC/library/plugins/*)
 INCLUDEPATH +=  $$files($$SRC/library/signal/faust)
 INCLUDEPATH +=  $$files($$SRC/libmapping/src/[^.]*)
 INCLUDEPATH +=  $$files($$OSC)
+INCLUDEPATH +=  $$files($$JSON)
 INCLUDEPATH +=  $$GUIDO_PATH/include
 
 ############################## 
@@ -108,7 +114,10 @@ macx {
 # ios x support
 ############################## 
 ios {
-    DEFINES += IOS
+    SOURCES  +=  $$files($$SRC/mobile/*.cpp)
+    HEADERS  +=  $$files($$SRC/mobile/*.h)
+    INCLUDEPATH  +=  $$files($$SRC/mobile)
+    DEFINES += IOS __MOBILE__
     CONFIG += c++11
     CONFIG+= arm64 armv7 armv7s
     CONFIG += staticlib
@@ -128,7 +137,10 @@ unix:!macx:!ios:!android {
 # android support
 ############################## 
 android {
-    DEFINES += ANDROID OSC_HOST_LITTLE_ENDIAN
+    SOURCES  +=  $$files($$SRC/mobile/*.cpp)
+    HEADERS  +=  $$files($$SRC/mobile/*.h)
+    INCLUDEPATH  +=  $$files($$SRC/mobile)
+    DEFINES += ANDROID __MOBILE__ OSC_HOST_LITTLE_ENDIAN
     LIBS += -L$$ROOT/lib/GuidoEngine/android -lGUIDOEngine
     QMAKE_CXXFLAGS += -Wno-unused-parameter
     QT += androidextras

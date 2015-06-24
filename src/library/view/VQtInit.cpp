@@ -22,71 +22,22 @@
 
 */
 
-#if defined(ANDROID) || defined(IOS)
-#include <QMainWindow>
-#endif
-
 #include "VQtInit.h"
 #include "GuidoFontLoader.h"
 #include "QGuidoPainter.h"
 
-#ifdef ANDROID
-#include <QtAndroidExtras>
-#endif
-
 namespace inscore
 {
-
-#if defined(ANDROID) || defined(IOS)
-QMainWindow* VQtInit::sMainWindow;
-QTabWidget* VQtInit::sTabWidget;
-#endif
 
 void VQtInit::startQt ()
 {
 	installGuidoFont();
 	QGuidoPainter::startGuidoEngine();
-#if defined(ANDROID) || defined(IOS)
-	// Create main window. It contains tab for each scene.
-	sMainWindow = new QMainWindow;
-	sTabWidget = new QTabWidget(sMainWindow);
-	sMainWindow->setCentralWidget(sTabWidget);
-	sMainWindow->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
-	// Man window is full screen.
-	sMainWindow->showMaximized();
-	VQtInit::keepScreenOn();
-#endif
 }
 
 void VQtInit::stopQt ()
 {
 	QGuidoPainter::stopGuidoEngine();
-#if defined(ANDROID) || defined(IOS)
-	delete sMainWindow;
-#endif
 }
 
-#if defined(ANDROID) || defined(IOS)
-QTabWidget*	VQtInit::getTabWidget()
-{
-	return sTabWidget;
-}
-
-void VQtInit::keepScreenOn()
-{
-#ifdef ANDROID
-	QAndroidJniObject activity = QtAndroid::androidActivity();
-	if (activity.isValid()) {
-		QAndroidJniObject window = activity.callObjectMethod("getWindow", "()Landroid/view/Window;");
-
-		if (window.isValid()) {
-			const int FLAG_KEEP_SCREEN_ON = 128;
-			window.callObjectMethod("addFlags", "(I)V", FLAG_KEEP_SCREEN_ON);
-		}
-	}
-#else
-#endif
-}
-
-#endif
 } // end namespoace

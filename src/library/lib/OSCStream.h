@@ -135,14 +135,30 @@ class OSCErrorStream : public OSCStream
 	std::stringstream	fSStream;
 	std::string			fAddress;
 	IApplLog*			fLogWindow;
+	// Streamstring to concat error.
+	std::stringstream	fSStreamConcat;
+	bool fConcat;
+
 	public:
-				 OSCErrorStream(UdpSocket* socket) : OSCStream(socket), fLogWindow(0) {}
+				 OSCErrorStream(UdpSocket* socket) : OSCStream(socket), fLogWindow(0), fConcat(false) {}
 		virtual ~OSCErrorStream() {}
 		
 		void	setLogWindow (IApplLog* w)						{ fLogWindow = w; }
 		std::stringstream& stream()								{ return fSStream; }
 		virtual OSCErrorStream&		start(const char * address) { fSStream.str(""); fAddress = address; OSCStream::start(address); return *this; }
 		virtual OSCErrorStream&		end();
+		/*!
+		 * \brief activeConcatError concat all error in a streamstring while it is reactivated.
+		 * \param activate if true reset the error streamstring and active concat error.
+		 * If false new errors are not added.
+		 */
+		void activeConcatError(bool activate);
+
+		/*!
+		 * \brief streamConcat get the concat streamstring
+		 * \return
+		 */
+		std::stringstream& streamConcat();
 };
 
 

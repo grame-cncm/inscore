@@ -38,7 +38,6 @@
 #include "IAppl.h"
 #include "IMessage.h"
 #include "Methods.h"
-#include "VQtInit.h"
 #include "INScore.h"
 
 #include <QDebug>
@@ -52,6 +51,8 @@ static const char * sampleFileName = "sample.inscore";
 VMobileMenu::VMobileMenu(const char * name, QWidget* parent) : QWidget(parent)
 {
 	setWindowTitle( tr(name) );
+    // For ios, avoid transparent background
+    setAutoFillBackground(true);
 
 	// Create the main layout
 	QVBoxLayout *verticalLayout = new QVBoxLayout(this);

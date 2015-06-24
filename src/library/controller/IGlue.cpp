@@ -31,6 +31,7 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QMutexLocker>
+#include <QWaitCondition>
 
 #include "GUIDOEngine.h"
 
@@ -55,6 +56,8 @@ namespace inscore
 
 extern SIMessageStack gMsgStack;
 extern SIMessageStack gDelayStack;
+extern SIMessageStack gWebMsgStack;
+extern QWaitCondition gModelUpdateWaitCondition;
 
 //--------------------------------------------------------------------------
 IGlue::IGlue(int udpport, int outport, int errport) 
@@ -73,7 +76,38 @@ void IGlue::clean()
 	}
 	QTimer::stop ();
 	delete fOscThread;
+    fOscThread = 0;
 	OSCStream::stop();
+}
+
+//--------------------------------------------------------------------------
+void IGlue::restart()
+{
+    try {
+        if (!OSCStream::start())
+            throw("Cannot initialize output udp streams");
+        oscinit (fModel, fUDP);
+        if (!fMsgStack || !fController || !fModel || !fOscThread)
+            throw("Memory allocation failed!");
+#ifndef NOVIEW
+        fCurrentRate = fModel->getRate();
+        if (fCurrentRate) {
+            QTimer::start(fCurrentRate);
+        }
+#endif
+    }
+    catch (std::runtime_error e) {
+        clean();
+        cerr << "Unexpected error: " << e.what() << endl;
+        QMessageBox alert (QMessageBox::Critical, "Fatal error", e.what(), QMessageBox::Ok, 0);
+        alert.exec();
+    }
+    catch (const char* e) {
+        clean();
+        cerr << "Unexpected error: " << e << endl;
+        QMessageBox alert (QMessageBox::Critical, "Fatal error", e, QMessageBox::Ok, 0);
+        alert.exec();
+    }
 }
 
 //--------------------------------------------------------------------------
@@ -142,6 +176,8 @@ void IGlue::initialize (bool offscreen, QApplication* appl)
 	gMsgStack = fMsgStack;
 	fDelayStack = IMessageStack::create();
 	gDelayStack = fDelayStack;
+	fWebMsgStack = IMessageStack::create();
+	gWebMsgStack = fWebMsgStack;
 	fController = IController::create();
 
 	fModel = IAppl::create(fUDP.fInPort, fUDP.fOutPort, fUDP.fErrPort, appl, offscreen);
@@ -260,7 +296,15 @@ void IGlue::modelUpdate()
 {
 	SIObject model(fModel);
 	fController->processOn(fMsgStack, model);
-    fModel->processSig();
+
+	// Process web message stack
+	oscerr.activeConcatError(true);
+	fController->processOn(fWebMsgStack, model);
+	oscerr.activeConcatError(false);
+
+	fModel->processSig();
+	// Wake up thread wating for a model update.
+	gModelUpdateWaitCondition.wakeAll();
 }
 
 //--------------------------------------------------------------------------
@@ -279,7 +323,7 @@ void IGlue::timerEvent ( QTimerEvent *)
 #endif
 
 	fModel->clock();
-	if (fMsgStack->size()) {
+	if (fMsgStack->size() || fWebMsgStack->size()) {
 //		QMutexLocker locker (&fTimeViewMutex);
 
 		timebench ("model", modelUpdate());

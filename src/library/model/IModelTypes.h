@@ -97,8 +97,8 @@ typedef class libmapping::SMARTP<IImage>		SIImage;
 class IMemImage;
 typedef class libmapping::SMARTP<IMemImage>		SIMemImage;
 
-class IMobileMenu;
-typedef class libmapping::SMARTP<IMobileMenu>	SIMobileMenu;
+class IMenu;
+typedef class libmapping::SMARTP<IMenu>			SIMenu;
 
 class ILine;
 typedef class libmapping::SMARTP<ILine>			SILine;

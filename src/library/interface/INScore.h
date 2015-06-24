@@ -91,6 +91,16 @@ class export INScore
 	*/
 	static void stop (IGlue* glue);
 
+    /*!
+     * \brief restartNetwork Restart network services after a stop.
+     */
+    static void restartNetwork();
+
+    /*!
+     * \brief stopNetwork Stop network services of inscore.
+     */
+    static void stopNetwork();
+
 //	/* \brief sets a listener for the graphic update
 //
 //		\param glue the system glue as returned by init()

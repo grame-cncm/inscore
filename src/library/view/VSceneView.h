@@ -36,7 +36,10 @@ class QGraphicsScene;
 class QImage;
 class QGestureEvent;
 class QPinchGesture;
+class QSwipeGesture;
 class QPanGesture;
+class QParallelAnimationGroup;
+class QRect;
 
 namespace inscore
 {
@@ -57,11 +60,10 @@ class ZoomingGraphicsView;
 */
 class VSceneView : public VDummyObjectView
 {
-	ZoomingGraphicsView * fGraphicsView;
 	QGraphicsScene *	fScene;
 	QImage *			fImage;
 	ResizeMoveEventFilter * fResizeMoveEventFilter;
-	TouchEventFilter * fTouchEventFilter;
+	TouchEventFilter *	fTouchEventFilter;
 	Qt::WindowFlags		fDefaultFlags;
 
 	// Data of a screenshot
@@ -94,13 +96,23 @@ class VSceneView : public VDummyObjectView
 	public :
 		using VDummyObjectView::updateView;
 
-				 VSceneView(const std::string& address, QGraphicsScene * scene);
+				 VSceneView();
 		virtual ~VSceneView();
+		/*!
+		 * \brief initialize Initialize scene view  with an address and a scene
+		 * \param address the scene OSC address
+		 * \param scene the QGraphicsScene or null for offscreen rendering.
+		 */
+        void				initializeView(const std::string& address, QGraphicsScene * scene);
 
 		bool				copy(unsigned int* dest, int w, int h, bool smooth=false );
 		void				setSceneRect(int w, int h)	{ fScene->setSceneRect(0, 0, w, h); }
 		void				updateView( IScene * scene );
-		void				foreground();
+
+		/*!
+		 * \brief foreground Set the scene in front of other window.
+		 */
+		virtual void				foreground();
 		QGraphicsScene *	scene() const;
 		QGraphicsView *		view()			{ return (QGraphicsView*)fGraphicsView; }
 
@@ -118,15 +130,23 @@ class VSceneView : public VDummyObjectView
 		const AbstractData		getImage(const char *format);
 
 		/*!
-		 * \brief isNewVersion Compare and update version
-		 * \param version a version number to compare and update.
-		 * \return true if the version is the same.
+		 * \brief getVersion get the score version
+		 * \return
 		 */
-		bool				isNewVersion(unsigned long &version) {
-			if(version == fNewVersion) return false;
-			version = fNewVersion;
-			return true;
+		unsigned long		getVersion() const {
+			return fNewVersion;
 		}
+
+	protected:
+		ZoomingGraphicsView * fGraphicsView;
+
+		/*!
+		 * \brief createGraphicsView  create a QGraphicsView object for the GraphicsScene. The method is used in intialize method.
+		 * \param scene
+		 * \param address
+		 * \return
+		 */
+		virtual ZoomingGraphicsView* createGraphicsView(QGraphicsScene * scene, const char * address);
 };
 
 /*!@} */
@@ -134,22 +154,10 @@ class VSceneView : public VDummyObjectView
 class ZoomingGraphicsView : public QGraphicsView
 {
 	std::string		fSceneAddress;
-//	VSceneView* fSceneView;
 	IScene*	fScene;
 
-    // Scale factor used during a zoom gesture
-	qreal fScaleFactor;
-
-    // Scale factor used as reference during a zoom. It's the model scale factor.
-	qreal fTotalScaleFactor;
-
-	// Offset to translate the scene in the view.
-	qreal horizontalOffset;
-	qreal verticalOffset;
-
 	public :
-		ZoomingGraphicsView(QGraphicsScene * s) : QGraphicsView(s), fScene(0), fScaleFactor(1), fTotalScaleFactor(1),
-			horizontalOffset(0), verticalOffset(0) {}
+		ZoomingGraphicsView(QGraphicsScene * s);
 		virtual ~ZoomingGraphicsView() {}
 
 		void setSceneAddress(const std::string& name)	{ fSceneAddress = name; }
@@ -179,13 +187,21 @@ class ZoomingGraphicsView : public QGraphicsView
 		qreal getYOrigin();
 
 	protected:
+		// Scale factor used during a zoom
+		qreal fScaleFactor;
+		// Scale factor used as reference during a zoom. It's the model scale factor.
+		qreal fTotalScaleFactor;
+
+		// Offset to translate the scene in the view.
+		qreal fHorizontalOffset;
+		qreal fVerticalOffset;
+
+		QRect fSceneRect;
+
 		virtual void	closeEvent	(QCloseEvent *);
 		virtual void	paintEvent  (QPaintEvent * );
 
 		void resizeEvent ( QResizeEvent * );
-		bool viewportEvent(QEvent *event);
-		bool gestureEvent(QGestureEvent *event);
-		void pinchTriggered(QPinchGesture *event);
 };
 
 } // end namespoace

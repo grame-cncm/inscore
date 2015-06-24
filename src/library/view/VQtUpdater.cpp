@@ -37,7 +37,6 @@
 #include "VImageView.h"
 #include "VLineView.h"
 #include "VLogWindow.h"
-#include "VMobileMenu.h"
 #include "VPolygonView.h"
 #include "VRectView.h"
 #include "VGridView.h"
@@ -47,9 +46,6 @@
 #include "VVideoView.h"
 #include "VLayerView.h"
 #include "VUrlIntermediateObjectView.h"
-#if defined(ANDROID) || defined(IOS)
-#include "VQtInit.h"
-#endif
 
 namespace inscore
 {
@@ -80,45 +76,6 @@ void VQtUpdater::updateTo (IUrlIntermediateObject* url )			{ update<IUrlIntermed
 void VQtUpdater::updateTo(IApplLog * log)
 {
 	QWidget * w = log->window();
-#if defined(ANDROID) || defined(IOS)
-	// Add and remove log window in a tab
-	QTabWidget * tw = VQtInit::getTabWidget();
-	int index = tw->indexOf(w);
-	if(log->getVisible()) {
-		if(index == -1) {
-			tw->addTab(w, w->windowTitle());
-			tw->setCurrentWidget(w);
-		}
-	} else {
-		if(index != -1) {
-			tw->removeTab(index);
-		}
-	}
-#else
     w->setVisible (log->getVisible());
-#endif
 }
-
-//--------------------------------------------------------------------------
-void VQtUpdater::updateTo(IMobileMenu* menu)
-{
-#if defined(ANDROID) || defined(IOS)
-	QWidget * w = menu->window();
-	// Add and remove log window in a tab
-	QTabWidget * tw = VQtInit::getTabWidget();
-	int index = tw->indexOf(w);
-	if(menu->getVisible()) {
-		if(index == -1) {
-			tw->addTab(w, w->windowTitle());
-			tw->setCurrentWidget(w);
-		}
-	} else {
-		if(index != -1) {
-			tw->removeTab(index);
-		}
-	}
-#endif
-}
-
-
 } // end namespoace

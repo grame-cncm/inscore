@@ -114,12 +114,11 @@ class VObjectView
 			return data;
 		}
 
-		/**
-		 * @brief isNewVersion Compare and update a version number of an ObjectView
-		 * @param version
-		 * @return
+		/*!
+		 * \brief getVersion get the score version.
+		 * \return
 		 */
-		virtual bool	isNewVersion(unsigned long &)	{return false;}
+		virtual unsigned long	getVersion() const { return 0; }
 
 		/// \brief simulate UI mouse events
 		virtual void handleEvent (const inscore::IObject* obj, float x, float y, EventsAble::eventype type)

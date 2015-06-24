@@ -18,46 +18,32 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
-
 #include "IMobileMenu.h"
 #include "VMobileMenu.h"
-#include "Updater.h"
-#include "VQtInit.h"
 
 namespace inscore {
 
 //--------------------------------------------------------------------------
-IMobileMenu::IMobileMenu(IObject * parent) : IVNode("menu", parent), fMobileMenu(0)
-{
-#if defined(ANDROID) || defined(IOS)
-	fMobileMenu = new VMobileMenu("About"); // Name of tab
-#endif
-    fMsgHandlerMap[kshow_GetSetMethod]		= TSetMethodMsgHandler<IObject,bool>::create(this, &IObject::setVisible);
-    fGetMsgHandlerMap[kshow_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fVisible);
-
-    setVisible(false);
-}
-
-//--------------------------------------------------------------------------
 IMobileMenu::~IMobileMenu()
 {
-    delete fMobileMenu;
+	delete fMobileMenu;
 }
 
-//--------------------------------------------------------------------------
-void IMobileMenu::setVisible (bool vis)
+QWidget* IMobileMenu::window()
 {
-	IObject::setVisible(vis);
+	return fMobileMenu;
 }
 
-//--------------------------------------------------------------------------
-void IMobileMenu::accept (Updater* u)
+SIMenu IMobileMenu::create(IObject * parent)
 {
-	u->updateTo(this);
+	IMobileMenu * menu = new IMobileMenu(parent);
+	// Create the view of the menu object
+	menu->setWindow(new VMobileMenu("About"));
+	return menu;
 }
 
 }

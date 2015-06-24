@@ -26,19 +26,25 @@
 #ifndef QTWEBSOCKETSERVER_H
 #define QTWEBSOCKETSERVER_H
 
-#include "TScripting.h"
-
 #include <QTimer>
 #include <QWebSocketServer>
-#include <QEvent>
+#include "WebApi.h"
 
 QT_FORWARD_DECLARE_CLASS(QWebSocket)
 QT_FORWARD_DECLARE_CLASS(QGraphicsItem)
+
+namespace json {
+class json_object;
+}
 
 namespace inscore {
 
 class VObjectView;
 class TLua;
+
+/*!
+ * \brief The QtWebSocketServer class. A Qt websocket server implementation.
+ */
 class QtWebSocketServer : public QWebSocketServer
 {
 		Q_OBJECT
@@ -46,10 +52,8 @@ class QtWebSocketServer : public QWebSocketServer
 		QList<QWebSocket *> fClients;				///< the clients list
 		QTimer				fTimer;					///< time task to check for notifications
 		unsigned long		fScreenVersion;			///< version number of the screen
-		VObjectView *		fView;					///< the view to be send to clients
 		int					fFrequency;				///< the time task frequency
-		TJSEngine*			fJsEngine;
-		TLua*				fLua;
+		WebApi *			fWebApi;				///< the WebApi object to execute reqeuest
 
 	public:
 		/*!
@@ -59,17 +63,13 @@ class QtWebSocketServer : public QWebSocketServer
 		 * \param view The view to be send to clients
 		 * \param parent Parent object.
 		 */
-				 QtWebSocketServer(int frequency, VObjectView *view, TJSEngine *engine, TLua *lua);
+				 QtWebSocketServer(int frequency, WebApi * api);
 		virtual ~QtWebSocketServer();
 
 
 		bool start(int port);				///< start listening on port 'port'
 		void stop();						///< stop the web socket server
-
-		void setFrequency(int frequency);	///< change the notifiactions rate
-		int  getFrequency() const		{ return fFrequency; }
-
-		int getClients() const { return fClients.size(); }
+		int getClients() const { return fClients.size(); }	///< get the number of clients
 
 	private: Q_SIGNALS:
 		void closed();					///< signal emitted when the server closed its connection.
@@ -81,46 +81,74 @@ class QtWebSocketServer : public QWebSocketServer
 
 		/*!
 		 * \brief process all text messages received by the websocket.
-		 *
-		 * Only the message "getImage" is allowed. An image in png format is send back to the client on "getImage" request.
-		 * An error message is send for any other message.
 		 * \param message the content of the message.
 		 */
 		void processTextMessage(QString message);
 
 	private:
 		/*!
-		 * \brief getImage Process the "getImage" text message to get the image of the scene.
-		 * \param pClient The client to which send the image.
+		 * \brief getId Get the request id. Id in json object can be a integer value or a string value.
+		 * \param request a request json object
+		 * \return a string id
 		 */
-		void getImage(QWebSocket *pClient);
+		const std::string getId(json::json_object * request);
 
 		/*!
-		 * \brief postCommand Process the "post=" text message to send OSC command to execute it on INScore.
-		 * \param commands the text message must start with "post=" and contains after that the commands.
+		 * \brief getMethod Get the method of the request
+		 * \param request a request json object
+		 * \return the method.
 		 */
-		void postCommand(QString &commands);
+		const std::string getMethod(json::json_object * request);
 
 		/*!
-		 * \brief mouseClick Process the "click=" text message to create a click event at the coordinate passed in the message.
-		 * \param coordinates the text message must have the form "click=x,y" with x and y the integer coordinate in pixel of the click.
+		 * \brief getSuccesObject Create a default success object.
+		 * \param id the request id to respond to.
+		 * \return
 		 */
-		void mouseClick(QString &coordinates);
+		json::json_object * getSuccesObject(const std::string &id);
 
 		/*!
-		 * \brief getItem Get a item from the coordinate in pixel.
-		 * \param x
-		 * \param y
-		 * \return the QGraphicsItem or null if no item.
+		 * \brief getErrorObject Get default error object
+		 * \param id the request id to respond to.
+		 * \param message an error message to add to the response
+		 * \return
 		 */
-		QGraphicsItem * getItem(int x, int y);
+		json::json_object * getErrorObject(const std::string& id, const std::string& message);
 
 		/*!
-		 * \brief sendEvent Send an event to the item
-		 * \param item the QGraphicsItem
-		 * \param eventType the Type of the event.
+		 * \brief getRequestJsonObject Get a json object from the received string.
+		 * \param request
+		 * \return
 		 */
-		void sendEvent(QGraphicsItem * item, QEvent::Type eventType);
+		json::json_object * getRequestJsonObject(std::string request);
+
+		/*!
+		 * \brief getVersion Execute get version request.
+		 * \param request the request json object
+		 * \return the response json object.
+		 */
+		json::json_object *getVersion(json::json_object * request);
+
+		/*!
+		 * \brief getImage Process the get image request.
+		 * \param request the request json object
+		 * \return the response json object.
+		 */
+		json::json_object *getImage(json::json_object * request);
+
+		/*!
+		 * \brief postCommand Process the post inscore script request.
+		 * \param request the request json object
+		 * \return the response json object.
+		 */
+		json::json_object *postCommand(json::json_object * request);
+
+		/*!
+		 * \brief mouseEvent Process the mouse event request.
+		 * \param request the request json object
+		 * \return the response json object.
+		 */
+		json::json_object *mouseEvent(json::json_object * request, bool isClick);
 };
 }
 #endif // QTWEBSOCKETSERVER_H

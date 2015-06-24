@@ -4,9 +4,11 @@ set (target inscorehttpd)
 
 set (ROOT  ${CMAKE_CURRENT_SOURCE_DIR}/..)
 
-FILE(GLOB SERVER_CPP_SOURCES ${ROOT}/*.cpp)
+FILE(GLOB SERVER_CPP_SOURCES ${ROOT}/*.cpp ${ROOT}/../../lib/json/*.cpp)
 
-include_directories(${ROOT}/ ${ROOT}/../../src/library/plugins/httpserver "/usr/local/include")
+include_directories(${ROOT}/ ${ROOT}/../../src/library/plugins/httpserver ${ROOT}/../../lib/json ${ROOT}/../../src/library/web "/usr/local/include")
+
+add_definitions(-DJSON_ONLY)
 
 # microhttpd
 EXECUTE_PROCESS ( COMMAND "pkg-config" "--libs" "libmicrohttpd"
@@ -19,7 +21,7 @@ set(LINK ${LINK} ${microhttpd_LIBRARIES})
 add_library(${target} SHARED ${SERVER_CPP_SOURCES} ${SERVER_C_SOURCES})
 
 set(TARGET_VERSION_MAJOR 1)
-set(TARGET_VERSION_MINOR 0)
+set(TARGET_VERSION_MINOR 1)
 set(TARGET_VERSION_PATCH 0)
 set(TARGET_VERSION_STRING ${TARGET_VERSION_MAJOR}.${TARGET_VERSION_MINOR}.${TARGET_VERSION_PATCH})
 

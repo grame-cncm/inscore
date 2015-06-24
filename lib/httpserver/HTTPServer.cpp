@@ -25,13 +25,27 @@
 #include <iostream>
 #include <sstream>
 #include <iterator>
+#include <time.h>
+#include <clocale>
+
+#include "WebApi.h"
+#include "abstractdata.h"
+#include "json_object.h"
+#include "json_element.h"
 
 using namespace std;
+using namespace json;
 
 #define kInetAddrLen	128
 
 namespace inscorehttpd
 {
+
+	const char * kRFC822_1123DateFormat = "%a, %d %b %Y %H:%M:%S %Z";	// RFC1123 date format
+	const char * kRFC850DateFormat = "%A, %d-%b-%y %H:%M:%S %Z";		// RFC850 date format
+	const char * kAnsiDateFormat = "%a %b %e %H:%M:%S %Y %Z";			// Ansi date format
+
+	const char * kInscoreVersionHttpHeader = "X-Inscore-Version";		// Custom http header to send score version.
 
 //--------------------------------------------------------------------------
 // static functions
@@ -130,8 +144,8 @@ static int _post_params (void *coninfo_cls, enum MHD_ValueKind , const char *key
 //--------------------------------------------------------------------------
 // the http server
 //--------------------------------------------------------------------------
-HTTPDServer::HTTPDServer(callbackGetData callbackFct,  void* object, int verbose, int logmode, bool alloworigin)
-	: fCallbackFct(callbackFct), fObject(object), fAccessControlAllowOrigin(alloworigin), fVerbose(verbose), fLogmode(logmode), fServer(0)
+HTTPDServer::HTTPDServer(void *api, int verbose, int logmode, bool alloworigin)
+	: fApi(static_cast<inscore::WebApi *>(api)), fAccessControlAllowOrigin(alloworigin), fVerbose(verbose), fLogmode(logmode), fServer(0)
 {
 }
 
@@ -175,241 +189,157 @@ int HTTPDServer::status()
 //--------------------------------------------------------------------------
 int HTTPDServer::send (struct MHD_Connection *connection, Response &response)
 {
-	const char *format =  response.fFormat.c_str();
-	return send (connection, response.fData, response.fSize, format, response.fHttpStatus, response.fAllowCache);
-}
-
-//--------------------------------------------------------------------------
-int HTTPDServer::send (struct MHD_Connection *connection, const char *data, int length, const char* type, int status, bool allowCache)
-{
-	/*
-	if (fVerbose > 0) {
-	  if (fLogmode == 0) {
-		const char *sep = " ; ";
-		if (fVerbose & CODE_VERBOSE) {
-		  log << status << sep;
-		}
-		if (fVerbose & MIME_VERBOSE) {
-		  log << type << sep;
-		}
-		if (fVerbose & LENGTH_VERBOSE) {
-		  log << length << sep;
-		}
-		log << logend;
-	  }
-	  else if (fLogmode == 1) {
-		const char *tab = "  ";
-		if (fVerbose & CODE_VERBOSE) {
-		  log << tab << "<code>" << logend;
-		  log << tab << tab << status << logend;
-		  log << tab << "</code>" << logend;
-		}
-		if (fVerbose & MIME_VERBOSE) {
-		  log << tab << "<mime>" << logend;
-		  log << tab << tab << type << logend;
-		  log << tab << "</mime>" << logend;
-		}
-		if (fVerbose & LENGTH_VERBOSE) {
-		  log << tab << "<length>" << logend;
-		  log << tab << tab << length << logend;
-		  log << tab << "</length>" << logend;
-		}
-		log << "</entry>" << logend;
-	  }
-	}
-	*/
-	struct MHD_Response *response = MHD_create_response_from_buffer (length, (void *) data, MHD_RESPMEM_MUST_COPY);
-	if (!response) {
+	struct MHD_Response *mhdResponse = MHD_create_response_from_buffer ( response.fSize, (void *) response.fData, MHD_RESPMEM_MUST_COPY);
+	if (!mhdResponse) {
 		cerr << "MHD_create_response_from_buffer error: null response\n";
 		return MHD_NO;
 	}
-	MHD_add_response_header (response, MHD_HTTP_HEADER_CONTENT_TYPE, type ? type : "text/plain");
+	if(!response.fFormat.empty())
+		MHD_add_response_header (mhdResponse, MHD_HTTP_HEADER_CONTENT_TYPE, response.fFormat.c_str());
 	if (fAccessControlAllowOrigin)
-		MHD_add_response_header (response, MHD_HTTP_HEADER_ACCESS_CONTROL_ALLOW_ORIGIN, "*");
-	if (!allowCache) {
-		MHD_add_response_header (response, MHD_HTTP_HEADER_CACHE_CONTROL, "no-cache");
+		MHD_add_response_header (mhdResponse, MHD_HTTP_HEADER_ACCESS_CONTROL_ALLOW_ORIGIN, "*");
+	if (!response.fAllowCache) {
+		MHD_add_response_header (mhdResponse, MHD_HTTP_HEADER_CACHE_CONTROL, "no-cache");
+		// Http 1.0 compliance
+		MHD_add_response_header (mhdResponse, MHD_HTTP_HEADER_PRAGMA, "no-cache");
 	}
-	int ret = MHD_queue_response (connection, status, response);
-	MHD_destroy_response (response);
+	for(map<string, string>::iterator it = response.fEntitiesHeader.begin(); it != response.fEntitiesHeader.end(); it++) {
+		MHD_add_response_header (mhdResponse, it->first.c_str(), it->second.c_str());
+	}
+
+	if(!response.fLastModifiedDate.empty()) {
+		MHD_add_response_header (mhdResponse, MHD_HTTP_HEADER_LAST_MODIFIED, response.fLastModifiedDate.c_str());
+	}
+	int ret = MHD_queue_response (connection, response.fHttpStatus, mhdResponse);
+	MHD_destroy_response (mhdResponse);
 	return ret;
 }
 
+//--------------------------------------------------------------------------
 int HTTPDServer::sendPostRequest(struct MHD_Connection *connection, const TArgs& args, vector<string> &elems)
 {
-	Response resp = Response::genericFailure("POST request not supported by the server");
-	return send (connection, resp);
+	string log;
+	// execute script
+	if(elems.empty() && args.size() == 1 && args.begin()->first == "data") {
+		log = fApi->postScript(args.begin()->second);
+	} else
+	// Mouse click request
+	if(elems.size() == 1 && elems[0] == inscore::WebApi::kClickMsg && args.find("x") != args.end() && args.find("y") != args.end()) {
+		 string xStr = args.find("x")->second;
+		 string yStr = args.find("y")->second;
+		 int x, y;
+		 istringstream ( xStr ) >> x;
+		 istringstream ( yStr ) >> y;
+
+		 log = fApi->postMouseClick(x, y);
+	} else
+	 // Mouse click request
+	 if(elems.size() == 1 && elems[0] == inscore::WebApi::kHoverMsg && args.find("x") != args.end() && args.find("y") != args.end()) {
+		  string xStr = args.find("x")->second;
+		  string yStr = args.find("y")->second;
+		  int x, y;
+		  istringstream ( xStr ) >> x;
+		  istringstream ( yStr ) >> y;
+
+		  log = fApi->postMouseHover(x, y);
+	} else {
+		// Error
+		Response resp = Response::genericFailure("Unidentified POST request.", 404, false);
+		return send(connection, resp);
+	}
+
+	// Create a response if request has be processed
+	if(log.empty()) {
+		Response resp = Response::genericSuccess(200, false);
+		return send (connection, resp);
+	} else {
+		// Error : create json response with log
+		json_object *jsonresp = new json_object;
+		json_element* elem  = new json_element("error", new json_string_value(log.c_str()));
+		jsonresp->add(elem);
+		std::ostringstream mystream;
+		json_stream jstream(mystream);
+		jsonresp->print(jstream);
+		Response resp = Response::genericFailure(mystream.str(), 400, false);
+		return send (connection, resp);
+	}
 }
 
-int HTTPDServer::sendDeleteRequest(struct MHD_Connection *connection, const TArgs& args)
+//--------------------------------------------------------------------------
+int HTTPDServer::sendDeleteRequest(struct MHD_Connection *connection, const TArgs&)
 {
 	Response resp = Response::genericFailure("DELETE request not supported by the server");
 	return send (connection, resp);
 }
 
-void HTTPDServer::logSend(struct MHD_Connection *connection, const char* url, const TArgs& args, const char * type)
-{
-	/*
-	// LOGFILE.
-	if (fVerbose > 0) {
-	  if (fLogmode == 0) {
-		const char *sep = " ; ";
-		log << log.date() << sep;
-		if (fVerbose & IP_VERBOSE) {
-		  struct sockaddr *so;
-		  char buf[kInetAddrLen];
-		  so = MHD_get_connection_info (connection,
-										MHD_CONNECTION_INFO_CLIENT_ADDRESS)->client_addr;
-		  log << inet_ntop(so->sa_family,
-						   so->sa_data + 2, buf, kInetAddrLen) << sep;
-		}
-		if (fVerbose & HEADER_VERBOSE) {
-		  TArgs headerArgs;
-		  MHD_get_connection_values (connection, MHD_HEADER_KIND, _get_params, &headerArgs);
-		  if (headerArgs.size()) {
-			bool ampersand = false;
-			for(TArgs::const_iterator it = headerArgs.begin(); it != headerArgs.end(); it++) {
-			  if (!ampersand)
-				ampersand = true;
-			  else
-				log << "&";
-			  log << it->first;
-			  log << "=";
-			  log << it->second;
-			}
-		  }
-		  log << sep;
-		}
-		if (fVerbose & REQUEST_VERBOSE) {
-		  log << type << sep;
-		}
-		if (fVerbose & URL_VERBOSE) {
-		  log << url << sep;
-		}
-		if (fVerbose & QUERY_VERBOSE) {
-		  if (args.size()) {
-			bool ampersand = false;
-			for(TArgs::const_iterator it = args.begin(); it != args.end(); it++) {
-			  if (!ampersand)
-				ampersand = true;
-			  else
-				log << "&";
-			  log << it->first;
-			  log << "=";
-			  log << it->second.c_str();
-			}
-		  }
-		  log << sep;
-		}
-		// we close the entry when we send
-	  }
-	  else if (fLogmode == 1) {
-		const char *tab = "  ";
-		log << "<entry>" << logend;
-		log << tab << "<date>" << logend;
-		log << tab << tab << log.date() << logend;
-		log << tab << "</date>" << logend;
-		if (fVerbose & IP_VERBOSE) {
-		  struct sockaddr *so;
-		  char buf[kInetAddrLen];
-		  so = MHD_get_connection_info (connection,
-										MHD_CONNECTION_INFO_CLIENT_ADDRESS)->client_addr;
-		  log << tab << "<ip>" << logend;
-		  log << tab << tab << inet_ntop(so->sa_family,
-						   so->sa_data + 2, buf, kInetAddrLen)
-			  << logend;
-		  log << tab << "</ip>" << logend;
-		}
-		if (fVerbose & HEADER_VERBOSE) {
-		  TArgs headerArgs;
-		  MHD_get_connection_values (connection, MHD_HEADER_KIND, _get_params, &headerArgs);
-		  if (headerArgs.size()) {
-			log << tab << "<header>" << logend;
-			for(TArgs::const_iterator it = headerArgs.begin(); it != headerArgs.end(); it++) {
-			  log << tab << tab << "<pair>" << logend;
-			  log << tab << tab << tab << "<name>" << logend;
-			  log << tab << tab << tab << tab << it->first << logend;
-			  log << tab << tab << tab << "</name>" << logend;
-			  log << tab << tab << tab << "<value>" << logend;
-			  log << tab << tab << tab << tab << it->second << logend;
-			  log << tab << tab << tab << "</value>" << logend;
-			  log << tab << tab << "</pair>" << logend;
-			}
-			log << tab << "</header>" << logend;
-		  }
-		}
-		if (fVerbose & REQUEST_VERBOSE) {
-		  log << tab << "<method>" << logend;
-		  log << tab << tab << type << logend;
-		  log << tab << "</method>" << logend;
-		}
-		if (fVerbose & URL_VERBOSE) {
-		  log << tab << "<url>" << logend;
-		  log << tab << tab << url << logend;
-		  log << tab << "</url>" << logend;
-		}
-		if (fVerbose & QUERY_VERBOSE) {
-		  if (args.size()) {
-			log << tab << "<query>" << logend;
-			for(TArgs::const_iterator it = args.begin(); it != args.end(); it++) {
-			  log << tab << tab << "<pair>" << logend;
-			  log << tab << tab << tab << "<name>" << logend;
-			  log << tab << tab << tab << tab << it->first << logend;
-			  log << tab << tab << tab << "</name>" << logend;
-			  log << tab << tab << tab << "<value>" << logend;
-			  log << tab << tab << tab << tab << curl_escape(it->second.c_str (), 0) << logend;
-			  log << tab << tab << tab << "</value>" << logend;
-			  log << tab << tab << "</pair>" << logend;
-			}
-			log << tab << "</query>" << logend;
-		  }
-		}
-		// we close the entry when we send
-		//log << "</entry>" << logend;
-	  }
-	}
-	*/
-}
-
 //--------------------------------------------------------------------------
 int HTTPDServer::sendGetRequest (struct MHD_Connection *connection, const char* url, const TArgs& args, vector<string> &elems)
 {
+	if(elems.size() == 0) {
+		// No element in url, serve score image.
+		time_t since = 0;
 
-	TArgs::const_iterator it = args.find("format");
-	string mimetype;
-	string format;
-	if(it != args.end()) {
-		format = it->second;
-		if ("bmp" == format) {
-			format="BMP";
-			mimetype = "image/bmp";
-		} else if ("jpg" == format || "jpeg" == format) {
-			format="JPG";
-			mimetype = "image/jpeg";
-		} else {
-			format="PNG";
-			mimetype = "image/png";
+		// Get If_Modified-Since header
+		TArgs headerArgs;
+		MHD_get_connection_values (connection, MHD_HEADER_KIND, _get_params, &headerArgs);
+		if (headerArgs.size()) {
+			TArgs::const_iterator it = headerArgs.find(MHD_HTTP_HEADER_IF_MODIFIED_SINCE);
+			if(it != headerArgs.end()) {
+				string date = it->second;
+				since = parsedate(date);
+			}
 		}
-	} else {
-		format="PNG";
-		mimetype = "image/png";
-	}
 
-	// Get data from the callback
-	struct requestarguments requestArgs;
-	requestArgs.format = format.c_str();
-	requestArgs.path = url + 1; // remove first '/'
+		if(since >= fVersionTime.second) {
+			// fVersionTime is updated each time a version or an image is served. It can be not up to date so we check the version number.
+			unsigned int version = fApi->getVersion();
+			if(fVersionTime.first == version) {
+				Response resp = Response::genericSuccess(304, false);
+				string date = formatDate(fVersionTime.second);
+				resp.setLastModifiedDate(date);
+				return send (connection, resp);
+			}
+		}
+		// Get image data from api
+		AbstractData data = fApi->getImage();
+		if(data.data) {
+			if(data.version != fVersionTime.first)
+				updateTime(data.version);
 
-	struct responsedata * data = fCallbackFct(&requestArgs, fObject);
-	if(data) {
-		// Create a response
-		Response resp(data->data, data->size, mimetype, 200, false);
-		delete[] data->data;
-		delete data;
+			// Create a response
+			string mimetype = "image/png";
+			Response resp(data.data, data.size, mimetype, 200, false);
+			// Add Last modified date in the response
+			string date = formatDate(fVersionTime.second);
+			resp.setLastModifiedDate(date);
+			// Add custom header for inscore version
+			stringstream ss;
+			ss << data.version;
+			resp.addEntityHeader(kInscoreVersionHttpHeader, ss.str());
+			return send (connection, resp);
+		}
+		// Error
+		Response resp = Response::genericFailure("Cannot create image", 400, false);
 		return send (connection, resp);
+	} else
+	// Serve score version.
+	if(elems.size() == 1 && elems[0] == inscore::WebApi::kVersionMsg) {
+		unsigned int version = fApi->getVersion();
+
+		// Create json response.
+		json_object *jsonresp = new json_object;
+		json_element* elem  = new json_element("version", new json_int_value(version));
+		jsonresp->add(elem);
+		std::ostringstream mystream;
+		json_stream jstream(mystream);
+		jsonresp->print(jstream);
+		Response resp (mystream.str(), "application/json", 200, false);
+		return send(connection, resp);
 	}
-	// Error
-	Response resp = Response::genericFailure("Cannot create image", 400, false);
-	return send (connection, resp);
+	else {
+		Response resp = Response::genericFailure("Unidentified GET request.", 404, false);
+		return send(connection, resp);
+	}
 }
 
 //--------------------------------------------------------------------------
@@ -419,6 +349,7 @@ int HTTPDServer::sendHeadRequest (struct MHD_Connection *connection, const char*
 	return send (connection, resp);
 }
 
+//--------------------------------------------------------------------------
 int HTTPDServer::answer (struct MHD_Connection *connection, const char *url, const char *method, const char *version, const char *upload_data, size_t *upload_data_size, void **con_cls)
 {
 	(void) version;
@@ -461,8 +392,6 @@ int HTTPDServer::answer (struct MHD_Connection *connection, const char *url, con
 		}
 	}
 
-	logSend(connection, url, myArgs, method);
-
 	if (0 == strcmp (method, "POST")) {
 		struct connection_info_struct *con_info = (connection_info_struct *)*con_cls;
 
@@ -502,6 +431,49 @@ int HTTPDServer::answer (struct MHD_Connection *connection, const char *url, con
 
 	// should never get here
 	return MHD_NO;
+}
+
+//--------------------------------------------------------------------------
+void HTTPDServer::updateTime(unsigned int version)
+{
+	fVersionTime.first = version;
+	fVersionTime.second = time(0);
+}
+
+//--------------------------------------------------------------------------
+unsigned long HTTPDServer::parsedate(string &date)
+{
+	setlocale(LC_ALL, "C");
+	// A server must accpet all three date format. (RFC2616 3.3.1)
+	struct tm tm;
+	// Return pointer is the end of parse string
+	const char * cdate = date.c_str();
+	const char * dateEnd = cdate + date.length();
+	char * pointer = strptime(cdate, kRFC822_1123DateFormat, &tm);
+	if(pointer != dateEnd) {
+		pointer = strptime(cdate, kRFC850DateFormat, &tm);
+		if(pointer != dateEnd) {
+			pointer = strptime(cdate, kAnsiDateFormat, &tm);
+			if(pointer != dateEnd) {
+				return 0;
+			}
+		}
+	}
+	setlocale(LC_ALL, "");
+	return timegm(&tm);
+}
+
+//--------------------------------------------------------------------------
+string HTTPDServer::formatDate(time_t time)
+{
+	setlocale(LC_ALL, "C");
+	char buffer[100];
+	struct tm tm;
+	gmtime_r(&time, &tm);
+	// Generated dates must be in RFC 1123 format
+	strftime(buffer, sizeof(buffer), kRFC822_1123DateFormat, &tm);
+	setlocale(LC_ALL, "");
+	return string(buffer);
 }
 
 } // end namespoace

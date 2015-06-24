@@ -686,9 +686,10 @@ float GDeviceQt::GetYOrigin()const
 }
 
 //-------------------------------------------------------------
-void GDeviceQt::NotifySize( int inWidth, int inHeight )
+void GDeviceQt::NotifySize( int, int )
 {
-	mQPainter->setViewport(GetXOrigin(), GetYOrigin(), inWidth, inHeight);
+	// remove setViewport, painter is allready at right place to draw item in inscore
+	//mQPainter->setViewport(GetXOrigin(), GetYOrigin(), inWidth, inHeight);
 }
 
 //-------------------------------------------------------------

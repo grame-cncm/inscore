@@ -33,9 +33,11 @@ namespace inscore
 {
 
 const string IWebSocket::kIWebSocketType("websocket");
-const char * IWebSocket::kGetImgMsg = "getImage";
-const char * IWebSocket::kPostMsg = "post=";
-const char * IWebSocket::kClickMsg = "click=";
+
+const char * IWebSocket::kMethodKey = "method";
+const char * IWebSocket::kIdKey = "id";
+const char * IWebSocket::kStatusKey = "status";
+const char * IWebSocket::kVersionKey = "version";
 
 //-------------------------------------------------------------------------------
 IWebSocket::IWebSocket(const std::string &name, IObject *parent)
@@ -66,13 +68,6 @@ VObjectView* IWebSocket::getView() const
 }
 
 //-------------------------------------------------------------------------------
-void IWebSocket::setFrequency (int freq)
-{
-	fFrequency = freq;
-	fWebServer->setFrequency(freq);
-}
-
-//-------------------------------------------------------------------------------
 bool IWebSocket::running () const		{ return fWebServer->running(); }
 string IWebSocket::status () const		{ return running() ? "running" : "stopped"; }
 bool IWebSocket::start (int port)		{ return fWebServer->start(port); }
@@ -86,17 +81,26 @@ MsgHandler::msgStatus IWebSocket::set (const IMessage* msg)
 	// Two parameters are mandatory : port and notification time.
 	if (msg->size() != 3) return MsgHandler::kBadParameters;
 
-	int port, frequency;
+	int port = -1;
+	int frequency = -1;
+
 	if (!msg->param(1, port) || !msg->param(2, frequency))
 		return MsgHandler::kBadParameters;
 	if (!port || !frequency)
 		return MsgHandler::kBadParameters;
 
-	if (frequency != fFrequency)
-		setFrequency(frequency);
+	bool restart = false;
+	if (frequency != fFrequency) {
+		fFrequency = frequency;
+		restart = true;
+	}
 
 	if (port != fPort) {
-		setPort(port);
+		fPort = port;
+		restart = true;
+	}
+
+	if(restart) {
 		if ( !start(port) ) {
 			ITLErr << "Cannot create web socket server on port " << fPort << ITLEndl;
 			return MsgHandler::kCreateFailure;

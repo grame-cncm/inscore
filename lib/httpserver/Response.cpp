@@ -28,9 +28,14 @@ namespace inscorehttpd {
 
 Response::Response (const char* data, unsigned int size, string format, int http_status, bool allowCache)
 {
-	fData = new char[size + 1];
-	memcpy (fData, data, size);
-	fSize = size;
+	if(data != 0 && size != 0) {
+		fData = new char[size + 1];
+		memcpy (fData, data, size);
+		fSize = size;
+	} else {
+		fData = 0;
+		fSize = 0;
+	}
 	fFormat = format;
 	fHttpStatus = http_status;
 	fAllowCache = allowCache;
@@ -50,10 +55,9 @@ Response::Response (string data, string format, int http_status, bool allowCache
 
 Response::Response ()
 {
-	fData = new char[1];
-	strcpy(fData, "");
+	fData = 0;
 	fSize = 0;
-	fFormat = "text/plain";
+	fFormat = "";
 	fHttpStatus = 404;
 	fAllowCache = true;
 }
@@ -72,6 +76,12 @@ Response::~Response ()
 {
   delete[] fData;
 }
+
+Response Response::genericSuccess(int http_status, bool allowCache)
+{
+	return Response (0, 0, "", http_status, allowCache);
+}
+
 
 Response Response::genericFailure(string errorString, int http_status, bool allowCache)
 {

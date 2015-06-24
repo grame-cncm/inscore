@@ -33,11 +33,6 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QResizeEvent>
-#include <QPinchGesture>
-
-#if defined(ANDROID) || defined(IOS)
-#include "VQtInit.h"
-#endif
 
 #ifdef WIN32
 #include <windows.h>
@@ -53,11 +48,16 @@
 #include "ISignalProfiler.h"
 #include "WindowEventFilter.h"
 
-QRect SCENE_RECT(-400,-400,800,800);
-
 
 namespace inscore
 {
+	QRect defaultRect(-400,-400,800,800);
+
+//------------------------------------------------------------------------------------------------------------------------
+ZoomingGraphicsView::ZoomingGraphicsView(QGraphicsScene * s) : QGraphicsView(s), fScene(0), fScaleFactor(1),
+		fTotalScaleFactor(1), fHorizontalOffset(0), fVerticalOffset(0), fSceneRect(defaultRect)
+{
+}
 
 //------------------------------------------------------------------------------------------------------------------------
 void ZoomingGraphicsView::doZoomTranslate()
@@ -65,13 +65,13 @@ void ZoomingGraphicsView::doZoomTranslate()
 	if(fScene) {
         qreal h = fScene->getXOrigin() * -400;
         qreal v = fScene->getYOrigin() * -400;
-        if (fTotalScaleFactor != fScene->getScale() || h != horizontalOffset || v != verticalOffset) {
-            horizontalOffset = h;
-            verticalOffset = v;
+		if (fTotalScaleFactor != fScene->getScale() || h != fHorizontalOffset || v != fVerticalOffset) {
+			fHorizontalOffset = h;
+			fVerticalOffset = v;
             fTotalScaleFactor = fScene->getScale();
             fScaleFactor = fTotalScaleFactor;
-            SCENE_RECT = QRect(QPoint((-400 + horizontalOffset) / fTotalScaleFactor, (-400 + verticalOffset) / fTotalScaleFactor), QPoint((400+ horizontalOffset) / fTotalScaleFactor, (400 + verticalOffset) / fTotalScaleFactor));
-            fitInView( SCENE_RECT , Qt::KeepAspectRatio );
+			fSceneRect = QRect(QPoint((-400 + fHorizontalOffset) / fTotalScaleFactor, (-400 + fVerticalOffset) / fTotalScaleFactor), QPoint((400+ fHorizontalOffset) / fTotalScaleFactor, (400 + fVerticalOffset) / fTotalScaleFactor));
+			fitInView( fSceneRect , Qt::KeepAspectRatio );
         }
     }
 }
@@ -79,7 +79,7 @@ void ZoomingGraphicsView::doZoomTranslate()
 //------------------------------------------------------------------------------------------------------------------------
 void ZoomingGraphicsView::resizeEvent ( QResizeEvent * ) {
 	// scene adaptation to avoid scroll bars
-    fitInView( SCENE_RECT , Qt::KeepAspectRatio );
+	fitInView( fSceneRect , Qt::KeepAspectRatio );
 	if(fScene) {
 		fScene->setUpdateVersion(true);
 	}
@@ -96,67 +96,15 @@ void ZoomingGraphicsView::resizeEvent ( QResizeEvent * ) {
 }
 
 //------------------------------------------------------------------------------------------------------------------------
-bool ZoomingGraphicsView::viewportEvent(QEvent *event)
-{
-	if (event->type() == QEvent::Gesture)
-		return gestureEvent(static_cast<QGestureEvent*>(event));
-	return QGraphicsView::viewportEvent(event);
-}
-
-//------------------------------------------------------------------------------------------------------------------------
-bool ZoomingGraphicsView::gestureEvent(QGestureEvent *event)
-{
-	if (QGesture *pinch = event->gesture(Qt::PinchGesture))
-		pinchTriggered(static_cast<QPinchGesture *>(pinch));
-	return true;
-}
-
-//------------------------------------------------------------------------------------------------------------------------
-void ZoomingGraphicsView::pinchTriggered(QPinchGesture *event)
-{
-	// New Zoom factor
-	fScaleFactor = event->totalScaleFactor() * fTotalScaleFactor;
-
-	QPointF p0 = event->lastCenterPoint();
-	QPointF p1 = event->centerPoint();
-	// Verify horizontal limits to avoid scrolling when no scale factor.
-    qreal h = horizontalOffset - (p1.x() - p0.x());
-
-    // limit translation gesture if the zoom is too small
-    qreal max = fScaleFactor * 400 - 400;
-    if(max > abs(h))
-		horizontalOffset = h;
-    else {
-        if(h > 0)
-            horizontalOffset = max;
-        else horizontalOffset = -max;
-    }
-
-    // Verify vertical limits to avoid scrolling when no scale factor.
-    qreal v = verticalOffset - (p1.y() - p0.y());
-    if(max > abs(v))
-		verticalOffset = v;
-    else {
-        if(v > 0)
-            verticalOffset = max;
-        else verticalOffset = -max;
-    }
-
-    // Zoom and translate
-    SCENE_RECT = QRect(QPoint((-400 + horizontalOffset) / fScaleFactor, (-400 + verticalOffset) / fScaleFactor), QPoint((400+ horizontalOffset) / fScaleFactor, (400 + verticalOffset) / fScaleFactor));
-    fitInView( SCENE_RECT , Qt::KeepAspectRatio );
-}
-
-//------------------------------------------------------------------------------------------------------------------------
 qreal ZoomingGraphicsView::getXOrigin()
 {
-    return horizontalOffset / -400;
+	return fHorizontalOffset / -400;
 }
 
 //------------------------------------------------------------------------------------------------------------------------
 qreal ZoomingGraphicsView::getYOrigin()
 {
-    return verticalOffset / -400;
+	return fVerticalOffset / -400;
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -181,11 +129,8 @@ void ZoomingGraphicsView::closeEvent (QCloseEvent * event)
 	event->accept();
 }
 
-
-#define PRECISION 100.0f
-
 //------------------------------------------------------------------------------------------------------------------------
-VSceneView::VSceneView(const std::string& address, QGraphicsScene * scene)
+VSceneView::VSceneView()
 {
 	fImage = 0;
 	fGraphicsView = 0;
@@ -193,28 +138,27 @@ VSceneView::VSceneView(const std::string& address, QGraphicsScene * scene)
 	fDataScreenShotSize = 0;
 	fUpdateScreenShot = false;
 	fNewVersion = 0;
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+void VSceneView::initializeView(const std::string& address, QGraphicsScene * scene)
+{
 	if (scene) {
 		fScene = scene;
-		fGraphicsView = new ZoomingGraphicsView(scene);
-#if defined(ANDROID) || defined(IOS)
-		// Add scene to tabwidget
-		VQtInit::getTabWidget()->addTab(fGraphicsView, address.c_str());
-#endif
+		fGraphicsView = createGraphicsView(scene, address.c_str());
 		fGraphicsView->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
 		fGraphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // Default to Qt::ScrollBarAsNeeded
 		fGraphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // Default to Qt::ScrollBarAsNeeded
-		fGraphicsView->viewport()->setAttribute(Qt::WA_AcceptTouchEvents);
-		fGraphicsView->viewport()->grabGesture(Qt::PinchGesture);
 		fGraphicsView->setTransformationAnchor(QGraphicsView::NoAnchor);
 		fGraphicsView->setResizeAnchor(QGraphicsView::NoAnchor);
 
-		fGraphicsView->scene()->setSceneRect( SCENE_RECT );
+		fGraphicsView->scene()->setSceneRect( defaultRect );
 		fGraphicsView->setWindowTitle( address.c_str() );
 		fGraphicsView->setSceneAddress( address.c_str() );
 		fDefaultFlags = fGraphicsView->windowFlags();
 		fResizeMoveEventFilter = new ResizeMoveEventFilter( address, fGraphicsView );
 		fTouchEventFilter = new TouchEventFilter( address, fGraphicsView );
-        fGraphicsView->viewport()->installEventFilter(fTouchEventFilter);
+		fGraphicsView->viewport()->installEventFilter(fTouchEventFilter);
 
 		QColor white(255, 255, 255, 255);
 		fGraphicsView->setBackgroundBrush( QBrush(white));
@@ -231,11 +175,6 @@ VSceneView::~VSceneView()
 {
 	delete fImage;
 	delete fScene;
-#if defined(ANDROID) || defined(IOS)
-	QTabWidget * tw = VQtInit::getTabWidget();
-	int index = tw->indexOf(fGraphicsView);
-	tw->removeTab(index);
-#endif
 	delete fGraphicsView;
 }
 
@@ -245,13 +184,8 @@ QGraphicsScene * VSceneView::scene() const		{ return fScene; }
 //------------------------------------------------------------------------------------------------------------------------
 void VSceneView::foreground()
 {
-#if defined(ANDROID) || defined(IOS)
-	// Select tab of the scene as current tab
-	VQtInit::getTabWidget()->setCurrentWidget(fGraphicsView);
-#else
 	fGraphicsView->raise();
 	fGraphicsView->activateWindow();
-#endif
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -416,7 +350,7 @@ void VSceneView::updateView( IScene * scene )
 	}
 }
 
-//--------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------
 void VSceneView::updateSreenShot(bool newVersion)
 {
 	if(newVersion) fNewVersion++;
@@ -449,7 +383,7 @@ void VSceneView::updateSreenShot(bool newVersion)
 # define wait(n)	usleep(n * 1000);
 #endif // win32
 
-//--------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------
 void VSceneView::setUpdateScreenShot(const char *format)
 {
 	// Ask for an update of the image in a format
@@ -457,6 +391,7 @@ void VSceneView::setUpdateScreenShot(const char *format)
 	fScreenshotFormat = format;
 }
 
+//------------------------------------------------------------------------------------------------------------------------
 const AbstractData VSceneView::getImage(const char *format)
 {
 	// If screenshot is ready we do nothing
@@ -489,13 +424,21 @@ const AbstractData VSceneView::getImage(const char *format)
 			AbstractData data;
 			data.data = 0;
 			data.size = 0;
+			data.version = 0;
 			return data;
 		}
 	}
 	AbstractData data;
-	data.data = fDataScreenShot.constData();
+	data.data = fDataScreenShot.data();
 	data.size = fDataScreenShot.size();
+	data.version = fNewVersion;
 	return data;
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+ZoomingGraphicsView *VSceneView::createGraphicsView(QGraphicsScene * scene, const char *)
+{
+	return new ZoomingGraphicsView(scene);
 }
 
 } // end namespoace

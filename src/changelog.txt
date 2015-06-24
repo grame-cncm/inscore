@@ -13,7 +13,11 @@ It has been supported by the ANR (ANR-08-CORD-010)
 
 ----------------------------------------------------
 Version 1.14
-- bug corrected with sync without stretch: object origin was not taken into account
+- Add new methods to use pianoroll parameters.
+- Add web Api to expose inscore on the web with websocket or rest webservice.
+- Add change tab on mobile with three digits gesture.
+- Bug corrected with sync without stretch: object origin was not taken into account
+- Bug correction : pianoroll was not display at right place on score.
 
 ----------------------------------------------------
 Version 1.13

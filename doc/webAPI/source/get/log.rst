@@ -1,6 +1,3 @@
-.. index::
-   single: log
-
 Getting the INScore log
 ==========================
 
@@ -31,6 +28,6 @@ A JSON object with a field ``log``.
 
 **With websocket server**
 
-A JSON object with a field id for the request identifier and a field ``log``.
-   | Example : ``{id : "4894", log : "xxxx"}``
+A JSON object with a field id for the request identifier, the response status and a field ``log``.
+   | Example : ``{id : "4894", status : "OK", log : "xxxx"}``
 

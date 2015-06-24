@@ -33,16 +33,21 @@
 #include "VObjectView.h"
 #include "VSceneView.h"
 #include "abstractdata.h"
-#include "ITLparser.h"
+#include "WebApi.h"
+
+#include "json_object.h"
+#include "json_element.h"
+#include "json_parser.h"
 
 using namespace std;
+using namespace json;
 
 namespace inscore {
 
 //-------------------------------------------------------------------------------
-QtWebSocketServer::QtWebSocketServer(int frequency, VObjectView *view, TJSEngine* engine, TLua* lua) :
+QtWebSocketServer::QtWebSocketServer(int frequency, WebApi * api) :
 	QWebSocketServer(QStringLiteral("WebSocketServer"), QWebSocketServer::NonSecureMode),
-	fScreenVersion(0), fView (view), fFrequency(frequency), fJsEngine(engine), fLua(lua)
+	fScreenVersion(0), fFrequency(frequency), fWebApi(api)
 {
 	connect(&fTimer, SIGNAL(timeout()),this, SLOT(timeTask()));
 }
@@ -51,6 +56,7 @@ QtWebSocketServer::QtWebSocketServer(int frequency, VObjectView *view, TJSEngine
 QtWebSocketServer::~QtWebSocketServer()
 {
 	stop();
+	delete fWebApi;
 }
 
 //-------------------------------------------------------------------------------
@@ -87,14 +93,6 @@ void QtWebSocketServer::onNewConnection()
 }
 
 //-------------------------------------------------------------------------------
-void QtWebSocketServer::setFrequency(int frequency)
-{
-	fFrequency = frequency;
-	fTimer.stop();
-	fTimer.start(fFrequency);
-}
-
-//-------------------------------------------------------------------------------
 void QtWebSocketServer::socketDisconnected()
 {
 	// Retrieve the client
@@ -109,12 +107,23 @@ void QtWebSocketServer::socketDisconnected()
 //-------------------------------------------------------------------------------
 void QtWebSocketServer::timeTask()
 {
-	if(fView->isNewVersion(fScreenVersion)) {		// check for view updates
-
+	unsigned int version = fWebApi->getVersion();
+	if(version != fScreenVersion) {		// check for view updates
+		fScreenVersion = version;
+		json_object *response = new json_object;
+		json_element *elem = new json_element("notification", new json_true_value);
+		response->add(elem);
+		elem = new json_element(IWebSocket::kVersionKey, new json_int_value(fScreenVersion));
+		response->add(elem);
+		std::ostringstream mystream;
+		json_stream jstream(mystream);
+		response->print(jstream);
+		const char * message = mystream.str().c_str();
+		delete response;
 		// The screen have been updated, send notifications to all the clients
 		QList<QWebSocket *>::iterator i;
 		for (i = fClients.begin(); i != fClients.end(); ++i)  {
-			(*i)->sendTextMessage("Screen updated");
+			(*i)->sendTextMessage(message);
 		}
 	}
 }
@@ -124,89 +133,202 @@ void QtWebSocketServer::processTextMessage(QString message)
 {
 	QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
 	if (pClient) {
+		// Transform request in json object.
+		json_object * request = getRequestJsonObject(message.toStdString());
+
+		const string & method = getMethod(request);
 		// Verify message and get back image and send it
-		if(message == IWebSocket::kGetImgMsg) {
-			getImage(pClient);
+
+		json_object * response;
+		if(method == WebApi::kVersionMsg) {
+			response = getVersion(request);
 		} else
-		if(message.startsWith(IWebSocket::kPostMsg)) {
-			postCommand(message);
+		if(method == WebApi::kGetImgMsg) {
+			response = getImage(request);
 		} else
-		if(message.startsWith(IWebSocket::kClickMsg)) {
-			mouseClick(message);
+		if(method == WebApi::kPostCmdMsg) {
+			response = postCommand(request);
 		} else
-			pClient->sendTextMessage("Error : unknown request.");
+		if(method == WebApi::kClickMsg) {
+			response = mouseEvent(request, true);
+		} else
+		if(method == WebApi::kHoverMsg) {
+			response = mouseEvent(request, false);
+		} else {
+			response = getErrorObject(getId(request), "Bad request");
+		}
+		std::ostringstream mystream;
+		json_stream jstream(mystream);
+		response->print(jstream);
+		pClient->sendTextMessage(mystream.str().c_str());
+		delete response;
 	}
 }
 
 //-------------------------------------------------------------------------------
-void QtWebSocketServer::getImage(QWebSocket *pClient)
+json_object * QtWebSocketServer::getRequestJsonObject(string request)
 {
-	AbstractData data = fView->getImage("PNG");
-	QByteArray bArray = QByteArray::fromRawData(data.data, data.size);
-	pClient->sendBinaryMessage(bArray);
+	// Create a stream
+	istringstream stream(request);
+	// Initialise parser
+	json_parser parser(&stream);
+	// Parse the string
+	return parser.parse();
 }
 
 //-------------------------------------------------------------------------------
-void QtWebSocketServer::postCommand(QString &commands)
+json_object * QtWebSocketServer::getSuccesObject(const string &id)
 {
-	// Remove request name (ie "post=")
-	commands = commands.remove(0, 5);
-	stringstream stream;
-	stream.str(commands.toStdString());
-	ITLparser p (&stream, 0, fJsEngine, fLua);
-	SIMessageList msgs = p.parse();
-	msgs->send();
+	json_object *success = new json_object;
+	json_element* elem = new json_element(IWebSocket::kIdKey, new json_string_value(id.c_str()));
+	success->add(elem);
+	elem = new json_element(IWebSocket::kStatusKey, new json_string_value("OK"));
+	success->add(elem);
+	return success;
 }
 
 //-------------------------------------------------------------------------------
-void QtWebSocketServer::mouseClick(QString &coordinates)
+json_object * QtWebSocketServer:: getErrorObject(const string &id, const string &message)
 {
-	// Remove request name (ie "click=")
-	coordinates = coordinates.remove(0, 6);
-	QStringList coord = coordinates.split(",", QString::SkipEmptyParts);
-	if(coord.size() == 2) {
-		int x = coord[0].toInt();
-		int y = coord[1].toInt();
+	json_object *error = new json_object;
+	json_element* elem = new json_element(IWebSocket::kIdKey, new json_string_value(id.c_str()));
+	error->add(elem);
+	elem = new json_element(IWebSocket::kStatusKey, new json_string_value("ERROR"));
+	error->add(elem);
+	elem = new json_element("error", new json_string_value(message.c_str()));
+	error->add(elem);
+	return error;
+}
 
-		// Get item from coordinate in pixel.
-		QGraphicsItem * item = getItem(x, y);
-
-		if(item) {
-			// Create and send a mouse event to the item
-			sendEvent(item, QEvent::GraphicsSceneMousePress);
+//-------------------------------------------------------------------------------
+const string QtWebSocketServer::getId(json_object * request)
+{
+	if(request) {
+		const json_element* idelem = request->getKey(IWebSocket::kIdKey);
+		if(idelem) {
+			// Try with a string id and an integer id
+			const json_string_value * valueString = dynamic_cast<const json_string_value *>(idelem->value());
+			if(valueString)
+				return valueString->getValue();
+			const json_int_value * valueInt = dynamic_cast<const json_int_value *>(idelem->value());
+			if(valueInt) {
+				ostringstream temp;
+				temp << valueInt->getValue();
+				return temp.str();
+			}
 		}
 	}
+	return "";
 }
 
-//-------------------------------------------------------------------------------.
-QGraphicsItem * QtWebSocketServer::getItem(int x, int y)
+//-------------------------------------------------------------------------------
+const string QtWebSocketServer::getMethod(json_object * request)
 {
-	VSceneView * sceneView = dynamic_cast<VSceneView *>(fView);
-	if(sceneView) {
-		QGraphicsView* view = sceneView->view();
-
-		// get item at position (x and y in pixel coordinate)
-		return view->itemAt(x, y);
+	if(request) {
+		const json_element* element = request->getKey(IWebSocket::kMethodKey);
+		if(element) {
+			const json_string_value * value = dynamic_cast<const json_string_value *>(element->value());
+			if(value)
+				return value->getValue();
+		}
 	}
-	return 0;
+	return "";
 }
 
-//-------------------------------------------------------------------------------.
-void QtWebSocketServer::sendEvent(QGraphicsItem * item, QEvent::Type eventType)
+//-------------------------------------------------------------------------------
+json_object * QtWebSocketServer::getVersion(json_object * request)
 {
-	VSceneView * sceneView = dynamic_cast<VSceneView *>(fView);
-	// Create an event
-	QGraphicsSceneMouseEvent event(eventType);
-	// Coordinate of the click in item coordinate
-	QPointF point(0, 0);
-	event.setPos(point);
-	event.setButton(Qt::LeftButton);
-	event.setButtons(Qt::LeftButton);
-
-	if(!item->isEnabled())
-		item->setEnabled(true);
-
-	QGraphicsScene * scene = sceneView->scene();
-	scene->sendEvent(item, &event);
+	string id = getId(request);
+	if (!id.empty()) {
+		unsigned long version = fWebApi->getVersion();
+		json_object *response = getSuccesObject(id);
+		json_element* elem  = new json_element(IWebSocket::kVersionKey, new json_int_value(version));
+		response->add(elem);
+		return response;
+	} else {
+		return getErrorObject(id, "Bad request");
+	}
 }
+
+//-------------------------------------------------------------------------------
+json_object * QtWebSocketServer::getImage(json_object * request)
+{
+	string id = getId(request);
+	if (!id.empty()) {
+		AbstractData data = fWebApi->getImage(true);
+
+		if(data.size == 0) {
+			return getErrorObject(id, "Cannot create score image");
+		}
+		json_object *response = getSuccesObject(id);
+		json_element* elem  = new json_element(IWebSocket::kVersionKey, new json_int_value(data.version));
+		response->add(elem);
+		elem = new json_element("mimeType", new json_string_value("image/png"));
+		response->add(elem);
+		elem = new json_element("image", new json_string_value(data.data));
+		response->add(elem);
+		delete[] data.data;
+		return response;
+	} else {
+		return getErrorObject(id, "Bad request");
+	}
+}
+
+//-------------------------------------------------------------------------------
+json_object * QtWebSocketServer::postCommand(json_object * request)
+{
+	string id = getId(request);
+	if (!id.empty()) {
+		const json_element* element = request->getKey("data");
+		if(element) {
+			const json_string_value * value = dynamic_cast<const json_string_value *>(element->value());
+			if(value) {
+				string log = fWebApi->postScript(value->getValue());
+
+				if(log.empty()) {
+					return getSuccesObject(id);
+				} else {
+					return getErrorObject(id, log);
+				}
+			}
+		}
+	}
+	return getErrorObject(id, "Bad request");
+}
+
+//-------------------------------------------------------------------------------
+json_object * QtWebSocketServer::mouseEvent(json_object * request, bool isClick)
+{
+	string id = getId(request);
+	if (!id.empty()) {
+		int x = -1;
+		int y = -1;
+		const json_element* element = request->getKey("x");
+		if(element) {
+			const json_int_value * value = dynamic_cast<const json_int_value *>(element->value());
+			if(value)
+				x = value->getValue();
+		}
+		element = request->getKey("y");
+		if(element) {
+			const json_int_value * value = dynamic_cast<const json_int_value *>(element->value());
+			if(value)
+				y = value->getValue();
+		}
+		if (x != -1 && y != -1) {
+			string log;
+			if(isClick)
+				log = fWebApi->postMouseClick(x, y);
+			else
+				log = fWebApi->postMouseHover(x, y);
+			if(log.empty()) {
+				return getSuccesObject(id);
+			} else {
+				getErrorObject(id, log);
+			}
+		}
+	}
+	return getErrorObject(id, "Bad request");
+}
+
 }

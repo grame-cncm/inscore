@@ -302,6 +302,16 @@ void IMessageList::send() const
 }
 
 //--------------------------------------------------------------------------
+void IMessageList::sendWebMsg() const
+{
+	for (unsigned int i=0; i < list().size(); i++) {
+		const IMessage * msg = list()[i];
+		SIMessage copy = IMessage::create(*msg);
+		gWebMsgStack->push(new SIMessage(copy));
+	}
+}
+
+//--------------------------------------------------------------------------
 // print a single parameter
 //--------------------------------------------------------------------------
 void IMessage::print(std::ostream& out, int i, int nested) const
