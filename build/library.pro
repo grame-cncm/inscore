@@ -21,6 +21,7 @@ win32 { OSCIP = $$OSC/ip/win32 }
 else  { OSCIP = $$OSC/ip/posix }
 
 QT += core gui widgets svg printsupport multimedia multimediawidgets qml websockets
+DEFINES += INScore_EXPORTS
 DEFINES += QTJSENGINE	# use the Qt Javascript engine
 DEFINES += JSON_ONLY    # json library doesn't use osc stream.
 
