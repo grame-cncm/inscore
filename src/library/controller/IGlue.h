@@ -108,6 +108,16 @@ class export IGlue : public MsgListener, public QTimer
 				*/
 				bool start(int timerInterval, bool offscreen, QApplication* appl);
 
+                /*!
+                 * \brief clean Stop the glue.
+                 */
+                virtual	void clean ();
+
+                /*!
+                 * \brief restart Restart the glue after a stop with clean method.
+                 */
+                virtual void restart();
+
 				void setViewUpdater(SUpdater updater);
 				void setLocalMapUpdater(SUpdater updater);
 				void setSlaveMapUpdater(SUpdater updater);
@@ -127,7 +137,6 @@ class export IGlue : public MsgListener, public QTimer
 
 	protected:
 		virtual void initialize (bool offscreen,  QApplication* appl);
-		virtual	void clean ();
 		
 		void modelUpdate();
 		void localMapUpdate();

@@ -122,6 +122,18 @@ void INScore::stop(IGlue* glue)
 }
 
 //--------------------------------------------------------------------------
+void INScore::restartNetwork()
+{
+    gGlue->restart();
+}
+
+//--------------------------------------------------------------------------
+void INScore::stopNetwork()
+{
+    gGlue->clean();
+}
+
+//--------------------------------------------------------------------------
 //bool INScore::getGraphicScore (IGlue* glue, unsigned int* bitmap, int w, int h)
 //{
 //	if (!glue || !bitmap) return false;

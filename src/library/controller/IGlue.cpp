@@ -76,7 +76,38 @@ void IGlue::clean()
 	}
 	QTimer::stop ();
 	delete fOscThread;
+    fOscThread = 0;
 	OSCStream::stop();
+}
+
+//--------------------------------------------------------------------------
+void IGlue::restart()
+{
+    try {
+        if (!OSCStream::start())
+            throw("Cannot initialize output udp streams");
+        oscinit (fModel, fUDP);
+        if (!fMsgStack || !fController || !fModel || !fOscThread)
+            throw("Memory allocation failed!");
+#ifndef NOVIEW
+        fCurrentRate = fModel->getRate();
+        if (fCurrentRate) {
+            QTimer::start(fCurrentRate);
+        }
+#endif
+    }
+    catch (std::runtime_error e) {
+        clean();
+        cerr << "Unexpected error: " << e.what() << endl;
+        QMessageBox alert (QMessageBox::Critical, "Fatal error", e.what(), QMessageBox::Ok, 0);
+        alert.exec();
+    }
+    catch (const char* e) {
+        clean();
+        cerr << "Unexpected error: " << e << endl;
+        QMessageBox alert (QMessageBox::Critical, "Fatal error", e, QMessageBox::Ok, 0);
+        alert.exec();
+    }
 }
 
 //--------------------------------------------------------------------------
