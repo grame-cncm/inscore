@@ -22,7 +22,7 @@
 #ifndef JSON_ONLY
 #include "osc_stream.h"
 #endif
-#include "export.h"
+#include "jsonexport.h"
 
 namespace json
 {

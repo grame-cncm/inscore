@@ -18,7 +18,7 @@
 #include <vector>
 #include "json_element.h"
 #include "json_printable.h"
-#include "export.h"
+#include "jsonexport.h"
 
 namespace json
 {

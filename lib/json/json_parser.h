@@ -16,7 +16,7 @@
 
 #include <iostream>
 #include <string>
-#include "export.h"
+#include "jsonexport.h"
 
 namespace json
 {

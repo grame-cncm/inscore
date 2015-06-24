@@ -18,7 +18,7 @@
 #include <string>
 #include "json_value.h"
 #include "json_stream.h"
-#include "export.h"
+#include "jsonexport.h"
 
 namespace json
 {

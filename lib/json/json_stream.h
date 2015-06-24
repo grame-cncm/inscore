@@ -16,7 +16,7 @@
 #define json_stream__
 
 #include <ostream>
-#include "export.h"
+#include "jsonexport.h"
 
 namespace json
 {

@@ -16,7 +16,7 @@
 #define json_array__
 
 #include <vector>
-#include "export.h"
+#include "jsonexport.h"
 #include "json_printable.h"
 
 namespace json
