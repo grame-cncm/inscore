@@ -8,6 +8,7 @@ system	:= $(shell uname -s)
 ifeq ($(system), Darwin)
 	TARGET = macos
 	SPEC = -spec macx-xcode
+	QMAKEIOS = /Users/guillaume/Qt/5.4/ios/bin/qmake
 else
 ifeq ($(system), MINGW32_NT-6.1)
 	TARGET = win32
@@ -45,6 +46,26 @@ macos/INScore.xcodeproj : library.pro
 
 macos/INScoreViewer.xcodeproj : viewer.pro
 	make xcodeproj
+
+#===============================================================
+# building INScore for iOS 
+#===============================================================
+ios : ios/INScore.xcodeproj ios/INScoreViewer.xcodeproj INScoreIos
+
+xcodeprojios:
+	[ -d ios ] || mkdir ios
+	cd ios && $(QMAKEIOS) $(SPEC) ../library.pro 
+	cd ios && $(QMAKEIOS) $(SPEC) ../viewer.pro 
+
+INScoreIos : 
+	xcodebuild -jobs 8 -project ios/INScore.xcodeproj -target INScore -configuration Release
+	xcodebuild -jobs 8 -project ios/INScoreViewer.xcodeproj -target INScoreViewer -configuration Release
+
+ios/INScore.xcodeproj : library.pro
+	make xcodeprojios
+
+ios/INScoreViewer.xcodeproj : viewer.pro
+	make xcodeprojios
 
 #===============================================================
 # building the library on linux
