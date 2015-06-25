@@ -24,14 +24,15 @@
 #include <cstring>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <iterator>
 #include <time.h>
 #include <clocale>
 
 #include "WebApi.h"
-#include "abstractdata.h"
 #include "json_object.h"
 #include "json_element.h"
+#include "abstractdata.h"
 
 using namespace std;
 using namespace json;
@@ -335,11 +336,19 @@ int HTTPDServer::sendGetRequest (struct MHD_Connection *connection, const char* 
 		jsonresp->print(jstream);
 		Response resp (mystream.str(), "application/json", 200, false);
 		return send(connection, resp);
+	} else {
+		// Get absolute file path without leading '/'
+		AbstractData data = fApi->readFile(url + 1, false);
+		if(data.data) {
+			// Create a response
+			string mimetype = fApi->getMimetype(url + 1);
+			Response resp(data.data, data.size, mimetype, 200, false);
+			delete data.data;
+			return send (connection, resp);
+		}
 	}
-	else {
-		Response resp = Response::genericFailure("Unidentified GET request.", 404, false);
-		return send(connection, resp);
-	}
+	Response resp = Response::genericFailure("404 Page Not Found", 404, false);
+	return send(connection, resp);
 }
 
 //--------------------------------------------------------------------------
@@ -475,5 +484,6 @@ string HTTPDServer::formatDate(time_t time)
 	setlocale(LC_ALL, "");
 	return string(buffer);
 }
+
 
 } // end namespoace
