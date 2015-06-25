@@ -1,6 +1,8 @@
 <!doctype html>
 <html>
 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="rsc/stylesheet.css" type="text/css" charset="utf-8" />
 		<script>
 // Automatic refresh of the image.
 setInterval(function() {
@@ -112,7 +114,7 @@ function updateLog(message) {
 }
 
 
-/******* functions to add possibility to drag and drop file on INScore scene image **********/
+/******* Drag and Drop : functions to add possibility to drag and drop file on INScore scene image *******/
 function Init() {
 	var filedrag = document.getElementById("image");
 	filedrag.addEventListener("dragover", FileDragHover, false);
@@ -143,30 +145,65 @@ function UploadFile(e) {
 		}
 	}
 }
-
+/******* End Drag and Drop *******/
 		</script>
 	</head>
 	<body onload="init()">
-		<div>
-			<h1>INScore viewer</h1>
-			<p>Type url of INScore server : <input id="url" type="text" value="http://localhost:8000" /></p>
+		<div id="content">
+		<header><iframe src="rsc/header.html"></iframe></header>
+		
+		<div><h1>This example use a http server.</h1></div>
+		
+		<section>
+			<h2>Http server URL : </h2>
+			<p>You can change the http server url (initialized with sample script URL :
+			<span class="inputelement">
+				<input id="url" type="text" value="http://localhost:8000" />
+			</span>
+			</p>
+		</section>
+	
+		<form name="myform">
+		<section>
+			<h2>Get INScore screen version : </h2>
+			<p>By clicking the submit button, the INScore screen version is displayed in the log section of this page.
+			<span class="inputelement">
+				<input name="versionSubmit" type="button" value="submit" onclick="javascript:sendGetVersion();return false;"/>
+			</span>
+			</p>
+		</section>
+		<section>
+			<h2>Get file from INScore rootPath folder : </h2>
 			<p>
-			<form name="myform">
-				Send get version message : <input name="versionSubmit" type="button" value="submit" onclick="javascript:sendGetVersion();return false;"/>
-				<br/>
-				Text messagee to submit to the server :
+				Enter a relative path to INScore application rootPath and click submit button. A new tab is open to view the downloaded file if a browser viewer is present or the file is downloaded.
+				<span class="inputelement">
+				<input id="relativefile" name="file" type="text" />
+				<input type="button" value="submit" onclick="javascript:window.open(document.getElementById('url').value + '/' + document.getElementById('relativefile').value , '_blank');return false;"/>
+				</span>
+			</p>
+		</section>
+		<section>
+			<h2>Send OSC messages : </h2>
+			<p>
+			Type an OSC message script to submit to the websocket server :
+			<span class="inputelement">
 <textarea id="cmd" rows="5" cols="50">
 /ITL/scene/text set txt "Test text message";
 /ITL/scene/text fontStyle "italic";
 /ITL/scene/text fontSize 25;
 </textarea>
-				<input name="submit2" type="button" value="submit" onclick="javascript:sendCommands(document.forms['myform'].cmd.value);return false;"/>
-			</form>
+			<input name="submit2" type="button" value="submit" onclick="javascript:sendCommands(document.forms['myform'].cmd.value);return false;"/>
+			</span>
 			</p>
+		</section>
+		</form>
+		<section>
+			<h2>Screenshot of the scene : </h2>
+			<p>The screenshot is served by the websocket server. You can drag and drop inscore file on the scene and interact with the score by clicking the image.</p>
+			<img id="image" src="http://localhost:8000"/>
+		</section>
+		
+		<div><h2>INScore log : <h2><span id="log"></span></div>
 		</div>
-		<div>
-			<img style="border : 1px solid black;" src="http://localhost:8000" id="image"/>
-		</div>
-		<div>Log : <span id="log"></span></div>
 	</body>
 </html>
