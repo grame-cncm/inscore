@@ -1,6 +1,8 @@
 <!doctype html>
 <html>
 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="rsc/stylesheet.css" type="text/css" charset="utf-8" />
 		<script>
 
 // Id for the request.
@@ -53,6 +55,9 @@ function loadWebSocket() {
 			} else if ("version" in response) {
 				// Response to an get version request
 				updateLog("Score image version : " + response.version);
+			} else if ("file" in response) {
+				// download file from application rootPath
+				downloadFile(response);
 			}
 		}
 
@@ -92,10 +97,39 @@ function renderImg(response) {
 	var img = document.getElementById("image");
 	img.src = "data:" + response.mimeType + ";base64," + response.image;
  }
- 
+
+// download file from websocket server and display a link to download it
+function downloadFile(response) {
+	// Get link to download file
+	var afile = document.getElementById("afile");
+
+	// Decode data and create an object Url
+	var byteArray = base64DecToArr(response.file);
+	var file = new Blob([byteArray], {type: response.mimeType});
+	afile.href = URL.createObjectURL(file);
+
+	// get file name
+	var filename = document.forms['myform'].file.value;
+	var pos = filename. lastIndexOf("/");
+	if(pos == -1) {
+		afile.download = filename;
+	} else {
+		afile.download = filename.substring(pos + 1);
+	}
+	// display the link
+	afile.style.visibility = "visible";
+}
+
+// Send a get version object to get inscore screenshot version
 function sendGetVersion() {
-	var versionJsonObject = { id : requestId, method : "version"};
+	var versionJsonObject = { id : requestId++, method : "version"};
 	ws.send(JSON.stringify(versionJsonObject));
+}
+
+// Send a get file object to download a file from rootPath folder
+function sendGetFile(filepath) {
+	var fileJsonObject = { id : requestId++, method : "file", path : filepath};
+	ws.send(JSON.stringify(fileJsonObject));
 }
 
 // Send a message to the web socket
@@ -105,7 +139,7 @@ function sendCommands(inscoreScript) {
 	if (commands) {
 		if (ws.readyState == 1) {
 			// Send the commands
-			var postJsonObject = { id : requestId, method : "post", data : commands};
+			var postJsonObject = { id : requestId++, method : "post", data : commands};
 			ws.send(JSON.stringify(postJsonObject));
 		} else {
 			alert("The websocket is not open! try refreshing your browser");
@@ -113,21 +147,24 @@ function sendCommands(inscoreScript) {
 	}
 }
 
-/******* functions to add possibility to drag and drop file on INScore scene image **********/
-function Init() {
+/******* Drag and Drop : functions to add possibility to drag and drop file on INScore scene image *******/
+function Init()
+{
 	var filedrag = document.getElementById("image");
 	filedrag.addEventListener("dragover", FileDragHover, false);
 	filedrag.addEventListener("dragleave", FileDragHover, false);
 	filedrag.addEventListener("drop", UploadFile, false);
 }
 
-function FileDragHover(e) {
+function FileDragHover(e)
+{
 	e.stopPropagation();
 	e.preventDefault();
 	e.target.className = (e.type == "dragover" ? "hover" : "");
 }
 
-function UploadFile(e) {
+function UploadFile(e)
+{
 	FileDragHover(e);
 	var files = e.target.files || e.dataTransfer.files;
 	var file = files[0];
@@ -144,30 +181,100 @@ function UploadFile(e) {
 		}
 	}
 }
+/******* End Drag and Drop *******/
+
+/******* Base64 utilities : functions to decode base64 string in Array *******/
+function b64ToUint6 (nChr) {
+
+  return nChr > 64 && nChr < 91 ?
+      nChr - 65
+    : nChr > 96 && nChr < 123 ?
+      nChr - 71
+    : nChr > 47 && nChr < 58 ?
+      nChr + 4
+    : nChr === 43 ?
+      62
+    : nChr === 47 ?
+      63
+    :
+      0;
+
+}
+
+function base64DecToArr (sBase64, nBlocksSize) {
+
+  var
+    sB64Enc = sBase64.replace(/[^A-Za-z0-9\+\/]/g, ""), nInLen = sB64Enc.length,
+    nOutLen = nBlocksSize ? Math.ceil((nInLen * 3 + 1 >> 2) / nBlocksSize) * nBlocksSize : nInLen * 3 + 1 >> 2, taBytes = new Uint8Array(nOutLen);
+
+  for (var nMod3, nMod4, nUint24 = 0, nOutIdx = 0, nInIdx = 0; nInIdx < nInLen; nInIdx++) {
+    nMod4 = nInIdx & 3;
+    nUint24 |= b64ToUint6(sB64Enc.charCodeAt(nInIdx)) << 18 - 6 * nMod4;
+    if (nMod4 === 3 || nInLen - nInIdx === 1) {
+      for (nMod3 = 0; nMod3 < 3 && nOutIdx < nOutLen; nMod3++, nOutIdx++) {
+        taBytes[nOutIdx] = nUint24 >>> (16 >>> nMod3 & 24) & 255;
+      }
+      nUint24 = 0;
+
+    }
+  }
+  return taBytes;
+}
+/******* End Base64 utilities *******/
 
 </script>
 	</head>
 	<body onload="loadWebSocket(); Init();">
+		<div id="content">
+	<header><iframe src="rsc/header.html"></iframe></header>
+
+		<div><h1>This example use a websocket server started on port 7100.</h1></div>
 		<div>
 			<form name="myform">
-				Send get version message : <input name="versionSubmit" type="button" value="submit" onclick="javascript:sendGetVersion();return false;"/>
-				<br/>
-				A text message to submit to the websocket server :
+				<section>
+				<h2>Get INScore screen version : </h2>
+				<p>
+				By clicking the submit button, the INScore screen version is displayed in the log section of this page.
+				<span class="inputelement">
+				<input name="versionSubmit" type="button" value="submit" onclick="javascript:sendGetVersion();return false;"/>
+				</span>
+				</p>
+				</section>
+				<section>
+				<h2>Get file from INScore rootPath folder : </h2>
+				<p>
+				Enter a relative path to INScore application rootPath and click submit button. A link appears to download the file.
+				<span class="inputelement">
+				<input name="file" type="text" />
+				<input name="getFileSubmit" type="button" value="submit" onclick="javascript:sendGetFile(document.forms['myform'].file.value);return false;"/>
+				<a href="" id="afile" style="visibility : hidden">click here to download your file</a>
+				</span>
+				</p>
+				</section>
+				<section>
+				<h2>Send OSC messages : </h2>
+				<p>
+				Type an OSC message script to submit to the websocket server :
+				<span class="inputelement">
 <textarea id="cmd" rows="5" cols="50">
 /ITL/scene/text set txt "Test text message";
 /ITL/scene/text fontStyle "italic";
 /ITL/scene/text fontSize 25;
 </textarea>
 				<input name="submit2" type="button" value="submit" onclick="javascript:sendCommands(document.forms['myform'].cmd.value);return false;"/>
+				</span>
+				</p>
+				</section>
 			</form>
-			<div>Screenshot of the scene served by a websocket server.</div>
-			<div><span id="message"></span></div>
-			<p></p>
-			<img style="border : 1px solid black;" id="image" src=""/>
+				<section>
+			<h2>Screenshot of the scene : </h2>
+			<p>The screenshot is served by the websocket server. You can drag and drop inscore file on the scene and interact with the score by clicking the image.</p>
+			<img id="image" src=""/>
 		</div>
-		<div>Status : <span id="wsStatus"></span></div>
-		<div>Log : <span id="log"></span></div>
-
+				</section>
+		<div><h2>webSocket Status : </h2><span id="wsStatus"></span></div>
+		<div><h2>INScore log : <h2><span id="log"></span></div>
+		</div>
 	</body>
 </html>
 

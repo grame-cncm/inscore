@@ -1,0 +1,54 @@
+iframe {
+	border : none;
+	margin : 0px;
+	padding : 0px;
+	width : 100%;
+	height : 10em;
+}
+html, body {
+	margin-top : 0px;
+	padding-top : 0px;
+}
+#content {
+	padding-left : 1em;
+	padding-right : 1em;
+	max-width : 60em;
+	margin : auto;
+}
+.inputelement {
+	display: table;
+	margin-left : 4em;
+	
+}
+
+.inputelement *{
+	display : table;
+	margin: auto;
+	margin-top : 0.5em;
+	padding : 0;
+}
+
+h1 {
+	font-size : 1.3em;
+}
+
+h2 {
+	font-size : 1.2em;
+	margin-left : 1em;
+}
+
+section {
+	border : 1px dashed black;
+	margin-bottom : 1em;
+	padding : 0;
+	padding-left : 0.5em;
+	padding-right : 0.5em;
+	border-radius : 0.5em;
+}
+
+img {
+	border : 1px solid black;
+	display : table;
+	margin : auto;
+	margin-bottom : 1em;
+}

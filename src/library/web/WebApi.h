@@ -26,6 +26,7 @@
 #define WEBAPI_H
 
 #include <string>
+#include "abstractdata.h"
 
 class QGraphicsItem;
 class QMutex;
@@ -57,6 +58,7 @@ class WebApi
 		static const char *	kPostCmdMsg;	///< the post inscore script message
 		static const char *	kClickMsg;		///< the mouse click message
 		static const char *	kHoverMsg;		///< the mouse hover message
+		static const char * kFileMsg;		///< get file message
 
 		WebApi(VObjectView *view, TJSEngine* engine, TLua* lua) : fView(view), fJsEngine(engine), fLua(lua), fPreviousX(-1), fPreviousY(-1) {}
 
@@ -101,6 +103,21 @@ class WebApi
 		 */
 		std::string postMouseHover(int x, int y);
 
+		/*!
+		 * \brief readFile Read a file in application rootPath folder.
+		 * \param relativePath a relative path for the file. the "../" expression is not authorized.
+		 * \param base64 to true, data is string base64 encoded. To false it binary data of the file.
+		 * \return an abstract data structure with a data buffer to delete and a size. Version is not used.
+		 */
+		AbstractData readFile (const std::string& relativePath, bool base64);
+
+		/*!
+		 * \brief getMimetype Get mime type from the filename.
+		 * \param filepath a filename
+		 * \return a mimetype. If extension is not know, binary mime type is returned.
+		 */
+		const char * getMimetype(const std::string &filepath);
+
     private:
 		/*!
 		 * \brief fView the object view of the scene
@@ -132,6 +149,14 @@ class WebApi
          * \param eventType the Type of the event.
          */
         void sendEvent(QGraphicsItem * item, int eventType);
+
+		/*!
+		 * \brief getAbsoluteFilePath Get an absolute file path from a relative with the application rootPath.
+		 * \param relativePath a relative path
+		 * \return the absolute path or an empty string if the file is not in the application rootPath or if "../" is used.
+		 */
+		std::string getAbsoluteFilePath(const std::string &relativePath);
+
 };
 }
 #endif // WEBAPI_H

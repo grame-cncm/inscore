@@ -56,7 +56,6 @@ QtWebSocketServer::QtWebSocketServer(int frequency, WebApi * api) :
 QtWebSocketServer::~QtWebSocketServer()
 {
 	stop();
-	delete fWebApi;
 }
 
 //-------------------------------------------------------------------------------
@@ -154,6 +153,9 @@ void QtWebSocketServer::processTextMessage(QString message)
 		} else
 		if(method == WebApi::kHoverMsg) {
 			response = mouseEvent(request, false);
+		} else
+		if(method == WebApi::kFileMsg) {
+			response = getFile(request);
 		} else {
 			response = getErrorObject(getId(request), "Bad request");
 		}
@@ -269,9 +271,8 @@ json_object * QtWebSocketServer::getImage(json_object * request)
 		response->add(elem);
 		delete[] data.data;
 		return response;
-	} else {
-		return getErrorObject(id, "Bad request");
 	}
+	return getErrorObject(id, "Bad request");
 }
 
 //-------------------------------------------------------------------------------
@@ -325,6 +326,36 @@ json_object * QtWebSocketServer::mouseEvent(json_object * request, bool isClick)
 				return getSuccesObject(id);
 			} else {
 				getErrorObject(id, log);
+			}
+		}
+	}
+	return getErrorObject(id, "Bad request");
+}
+
+//-------------------------------------------------------------------------------
+json_object * QtWebSocketServer::getFile(json_object * request)
+{
+	string id = getId(request);
+	if (!id.empty()) {
+		const json_element* element = request->getKey("path");
+		if(element) {
+			const json_string_value * value = dynamic_cast<const json_string_value *>(element->value());
+			string file = value->getValue();
+			if(value) {
+				AbstractData data = fWebApi->readFile(file, true);
+
+				if(data.size == 0) {
+					return getErrorObject(id, "File not found");
+				}
+
+				json_object *response = getSuccesObject(id);
+				const json_element* elem = new json_element("mimeType", new json_string_value(fWebApi->getMimetype(file)));
+				response->add(elem);
+
+				elem = new json_element("file", new json_string_value(data.data));
+				response->add(elem);
+				delete[] data.data;
+				return response;
 			}
 		}
 	}

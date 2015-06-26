@@ -71,7 +71,7 @@ class TFile
 		virtual bool		read(std::ostream& out) const;
 
 		virtual const char* data() const			{ return fData; }
-		virtual int			dataSize() const		{ return fDataSize; };
+		virtual int			dataSize() const		{ return fDataSize; }
 
 		virtual bool		changed() const				{ return fPathChanged; }
 		virtual void		changed(bool state)			{ fPathChanged = state; }
@@ -79,7 +79,7 @@ class TFile
 		virtual void		print(std::ostream& out) const;
         virtual bool        hasData() const				{return fData != 0;}
 
-        virtual void        updateUrl()		{};
+		virtual void        updateUrl()		{}
         virtual void		setData(const char* data, int size);
 
 	protected:

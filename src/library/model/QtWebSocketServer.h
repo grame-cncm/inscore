@@ -149,6 +149,13 @@ class QtWebSocketServer : public QWebSocketServer
 		 * \return the response json object.
 		 */
 		json::json_object *mouseEvent(json::json_object * request, bool isClick);
+
+		/*!
+		 * \brief getFile Process a get file message
+		 * \param request the request json object
+		 * \return the response json object.
+		 */
+		json::json_object *getFile(json::json_object * request);
 };
 }
 #endif // QTWEBSOCKETSERVER_H
