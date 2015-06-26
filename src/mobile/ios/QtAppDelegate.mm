@@ -96,6 +96,7 @@ void QtAppDelegateInitialize ()
     //want this function to get the current UIApplication, and set itself as the new app delegate.
     QtAppDelegate *appDelegate = (QtAppDelegate *)[[UIApplication sharedApplication] delegate];
     [[UIApplication sharedApplication] setDelegate:[QtAppDelegate sharedQtAppDelegate]]; 
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     //NSLog(@"Created a new appdelegate");
 }
 
