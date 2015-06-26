@@ -8,3 +8,4 @@ Get data from the server
 
    get/version
    get/image
+   get/file
