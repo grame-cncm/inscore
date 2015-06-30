@@ -304,6 +304,7 @@ void IGuidoPianoRoll::updatePianoRoll()
 {
     GuidoParser * parser = GuidoOpenParser ();
     IGuidoStream * stream = dynamic_cast<IGuidoStream*>(this);
+	GuidoDestroyPianoRoll(fPianoRoll);
 	GuidoFreeAR(fArHandler);
     if(stream)
 		fArHandler = GuidoStream2AR(parser, stream->getGuidoStream());
