@@ -3,7 +3,7 @@
 gray = 200;
 /ITL/scene/slave set gmn "[ g a f g a f g ]";
 /ITL/scene/slave xorigin -1;
-/ITL/scene/slave scale 3.5;
+/ITL/scene/slave scale 0.5;
 /ITL/scene/cursor set rect 0.005 0.2;
 /ITL/scene/cursor color 0 0 255;
 

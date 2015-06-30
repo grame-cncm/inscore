@@ -7,65 +7,65 @@
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2015-05-26 11:21:00"> 
+<meta name="date" content="2015-06-29 14:55:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 1376--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 1467--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch9.html" >next</a>] [<a 
 href="OSCMsgch7.html" >prev</a>] [<a 
 href="OSCMsgch7.html#tailOSCMsgch7.html" >prev-tail</a>] [<a 
 href="#tailOSCMsgch8.html">tail</a>] [<a 
 href="OSCMsg3.html#OSCMsgch8.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;8</span><br /><a 
- id="x12-430008"></a>Application messages</h2>
-<!--l. 1378--><p class="noindent" >Application messages are accepted by the static OSC address <span 
+ id="x12-450008"></a>Application messages</h2>
+<!--l. 1469--><p class="noindent" >Application messages are accepted by the static OSC address <span 
 class="pcrr8tn-">/ITL</span>.
 <h3 class="sectionHead"><span class="titlemark">8.1    </span> <a 
- id="x12-440008.1"></a>Application management</h3>
+ id="x12-460008.1"></a>Application management</h3>
 <a 
- id="dx12-44001"></a>
+ id="dx12-46001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1400--><p class="noindent" ><div class="minipage"><span 
+<!--l. 1491--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">ITLMsg</span> <img 
-src="OSCMsg51x.png" alt="PICT" >
+src="OSCMsg54x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx12-44002"></a>
+ id="dx12-46002"></a>
 <a 
- id="dx12-44003"></a>
+ id="dx12-46003"></a>
 <a 
- id="dx12-44004"></a>
+ id="dx12-46004"></a>
 <a 
- id="dx12-44005"></a>
+ id="dx12-46005"></a>
 <a 
- id="dx12-44006"></a>
+ id="dx12-46006"></a>
 <a 
- id="dx12-44007"></a>
+ id="dx12-46007"></a>
 <a 
- id="dx12-44008"></a>
+ id="dx12-46008"></a>
 <a 
- id="dx12-44009"></a>
+ id="dx12-46009"></a>
 <a 
- id="dx12-44010"></a>
+ id="dx12-46010"></a>
                                                                                  
 
                                                                                  
 <a 
- id="dx12-44011"></a>
+ id="dx12-46011"></a>
 <a 
- id="dx12-44012"></a>
+ id="dx12-46012"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">quit</span>: requests the client application to quit.
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">rootPath</span>: <span 
-class="ptmri8t-">rootPath </span>of an Interlude application is the default path where the application reads or
-     writes a file when a relative path is used for this file. The default value is the user home directory.
-     Sending the <span 
+class="ptmri8t-">rootPath </span>of an INScore application is the default path where the application reads or writes
+     a file when a relative path is used for this file. The default value is the user home directory. Sending
+     the <span 
 class="pcrr8tn-">rootPath </span>message without parameter resets the application path to its default value.
      </li>
      <li class="itemize"><span 
@@ -85,8 +85,8 @@ href="OSCMsgch2.html#x6-60002">10<!--tex4ht:ref: common --></a>).  Note  that  t
      load  operation  appends  the  new  objects  to  the  existing  scene.  When  necessary,  it  is  the  sender
      responsibility to clear the scene before loading a file. URL are supported for the file path (see section
      <a 
-href="OSCMsgch5.html#x9-300005.7">5.7<!--tex4ht:ref: filebasedrsrc --></a> p.<a 
-href="OSCMsgch5.html#x9-300005.7">39<!--tex4ht:ref: filebasedrsrc --></a>);
+href="OSCMsgch5.html#x9-310005.8">5.8<!--tex4ht:ref: filebasedrsrc --></a> p.<a 
+href="OSCMsgch5.html#x9-310005.8">40<!--tex4ht:ref: filebasedrsrc --></a>);
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">read</span>: read a buffer that is expected to contain a valid inscore script.
@@ -96,8 +96,8 @@ class="pcrr8tn-">require</span>: check that the current INScore version number i
      as argument. The version number is given as a float value. A message is associated to the <span 
 class="pcrr8tn-">require</span>
      message, which is triggered when the check fails. See section <a 
-href="OSCMsgch15.html#x19-7900015">15<!--tex4ht:ref: interaction --></a> p.<a 
-href="OSCMsgch15.html#x19-7900015">116<!--tex4ht:ref: interaction --></a> for more details.
+href="OSCMsgch15.html#x19-8100015">15<!--tex4ht:ref: interaction --></a> p.<a 
+href="OSCMsgch15.html#x19-8100015">119<!--tex4ht:ref: interaction --></a> for more details.
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">compatibility</span>:  preserve  INScore  previous  behavior.  The  argument  corresponds  to  a  version
@@ -125,9 +125,9 @@ class="pcrr8tn-">IP </span>is sent as a string and port numbers as integer
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">forwardingMsg</span>: application support message forwading and filtering. See section <a 
-href="OSCMsgch10.html#x14-5500010">10<!--tex4ht:ref: forwarding --></a> p.<a 
-href="OSCMsgch10.html#x14-5500010">73<!--tex4ht:ref: forwarding --></a>.</li></ul>
-<!--l. 1444--><p class="noindent" ><span 
+href="OSCMsgch10.html#x14-5700010">10<!--tex4ht:ref: forwarding --></a> p.<a 
+href="OSCMsgch10.html#x14-5700010">76<!--tex4ht:ref: forwarding --></a>.</li></ul>
+<!--l. 1535--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -138,45 +138,45 @@ class="small-caps">E</span> </span><br
 class="newline" />when sending the message:
 <div class="center" 
 >
-<!--l. 1446--><p class="noindent" >
+<!--l. 1537--><p class="noindent" >
                                                                                  
 
                                                                                  
 <div 
-class="colorbox" id="colorbox39"> <div class="minipage"><span 
+class="colorbox" id="colorbox43"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL hello;</span>
 </div></div>
 </div>
-<!--l. 1447--><p class="noindent" >&#x00A0;       the application will answer with the following message:
+<!--l. 1538--><p class="noindent" >&#x00A0;       the application will answer with the following message:
 <div class="center" 
 >
-<!--l. 1448--><p class="noindent" >
+<!--l. 1539--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox40"> <div class="minipage"><span 
+class="colorbox" id="colorbox44"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL 192.168.0.5 7000 7001 7003</span>
 </div></div>
 </div>
-<!--l. 1449--><p class="noindent" >&#x00A0;       when it runs on a host which IP number is <span 
+<!--l. 1540--><p class="noindent" >&#x00A0;       when it runs on a host which IP number is <span 
 class="pcrr8tn-">192.168.0.5 </span>using the default port numbers.
-<!--l. 1453--><p class="noindent" >
+<!--l. 1544--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">8.2    </span> <a 
- id="x12-450008.2"></a>Ports management</h3>
+ id="x12-470008.2"></a>Ports management</h3>
 <a 
- id="dx12-45001"></a>
+ id="dx12-47001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1460--><p class="noindent" ><div class="minipage"><span 
+<!--l. 1551--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">ITLPortsMsg</span> <img 
-src="OSCMsg52x.png" alt="PICT" >
+src="OSCMsg55x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx12-45002"></a>
+ id="dx12-47002"></a>
 <a 
- id="dx12-45003"></a>
+ id="dx12-47003"></a>
 <a 
- id="dx12-45004"></a>
-<!--l. 1465--><p class="noindent" >Changes the UDP port numbers:
+ id="dx12-47004"></a>
+<!--l. 1556--><p class="noindent" >Changes the UDP port numbers:
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">port </span>defines the listening port number,
@@ -186,14 +186,14 @@ class="pcrr8tn-">outport </span>defines the port used to send replies to queries
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">errport </span>defines the port used to send error messages.</li></ul>
-<!--l. 1471--><p class="noindent" >The <span 
+<!--l. 1562--><p class="noindent" >The <span 
 class="pcrr8tn-">int32 </span>parameter should be a positive value in the range <span 
 class="pcrr8tn-">[1024-49150]</span>. <br 
 class="newline" />The default <span 
 class="pcrr8tn-">port</span>, <span 
 class="pcrr8tn-">outport </span>and <span 
 class="pcrr8tn-">errport </span>values are 7000, 7001 and 7002.
-<!--l. 1474--><p class="noindent" ><span 
+<!--l. 1565--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -202,29 +202,29 @@ class="newline" />Error messages are sent as a single string.
                                                                                  
 
                                                                                  
-<!--l. 1479--><p class="noindent" >
+<!--l. 1570--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">8.3    </span> <a 
- id="x12-460008.3"></a>Application level queries</h3>
-<!--l. 1482--><p class="noindent" >The application supports the <span 
+ id="x12-480008.3"></a>Application level queries</h3>
+<!--l. 1573--><p class="noindent" >The application supports the <span 
 class="pcrr8tn-">get </span>messages for its parameters (see section <a 
-href="OSCMsgch6.html#x10-330006">6<!--tex4ht:ref: getsect --></a> p.<a 
-href="OSCMsgch6.html#x10-330006">46<!--tex4ht:ref: getsect --></a>). In addition, it provides the
+href="OSCMsgch6.html#x10-340006">6<!--tex4ht:ref: getsect --></a> p.<a 
+href="OSCMsgch6.html#x10-340006">47<!--tex4ht:ref: getsect --></a>). In addition, it provides the
 following messages to query version numbers.
 <a 
- id="dx12-46001"></a>
+ id="dx12-48001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1486--><p class="noindent" ><div class="minipage"><span 
+<!--l. 1577--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">ITLRequest</span> <img 
-src="OSCMsg53x.png" alt="PICT" >
+src="OSCMsg56x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx12-46002"></a>
+ id="dx12-48002"></a>
 <a 
- id="dx12-46003"></a>
+ id="dx12-48003"></a>
 <a 
- id="dx12-46004"></a>
+ id="dx12-48004"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">version</span>: version number request.
@@ -236,7 +236,7 @@ class="pcrr8tn-">guido-version</span>: Guido engine version number request.
 class="pcrr8tn-">musicxml-version</span>:  MusicXML  and  Guido  converter  version  numbers  request.  Returns  "not
      available" when the library is not found.
      </li></ul>
-<!--l. 1498--><p class="noindent" ><span 
+<!--l. 1589--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -247,50 +247,50 @@ class="small-caps">E</span> </span><br
 class="newline" />Querying INScore version:
 <div class="center" 
 >
-<!--l. 1500--><p class="noindent" >
+<!--l. 1591--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox41"> <div class="minipage"><span 
+class="colorbox" id="colorbox45"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL get version;</span>
 </div></div>
 </div>
-<!--l. 1501--><p class="noindent" >&#x00A0;       will give the following as output:
+<!--l. 1592--><p class="noindent" >&#x00A0;       will give the following as output:
 <div class="center" 
 >
-<!--l. 1502--><p class="noindent" >
+<!--l. 1593--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox42"> <div class="minipage"><span 
+class="colorbox" id="colorbox46"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL version 1.00</span>
 </div></div>
 </div>
                                                                                  
 
                                                                                  
-<!--l. 1506--><p class="noindent" >
+<!--l. 1597--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">8.4    </span> <a 
- id="x12-470008.4"></a>Application static nodes</h3>
-<!--l. 1509--><p class="noindent" >The application level provides the static nodes - <span 
+ id="x12-490008.4"></a>Application static nodes</h3>
+<!--l. 1600--><p class="noindent" >The application level provides the static nodes - <span 
 class="pcrr8tn-">stats</span>, <span 
 class="pcrr8tn-">debug </span>and <span 
 class="pcrr8tn-">log</span>, available at <span 
 class="pcrr8tn-">/ITL/stats/ITL/debug </span>and
 <span 
 class="pcrr8tn-">/ITL/log </span>to help debugging communication and INScore scripts design.
-<!--l. 1511--><p class="noindent" >
+<!--l. 1602--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">8.4.1    </span> <a 
- id="x12-480008.4.1"></a>The &#8217;stats&#8217; nodes</h4>
+ id="x12-500008.4.1"></a>The &#8217;stats&#8217; nodes</h4>
 <a 
- id="dx12-48001"></a>
+ id="dx12-50001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1516--><p class="noindent" ><div class="minipage"><span 
+<!--l. 1607--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">ITLStats</span> <img 
-src="OSCMsg54x.png" alt="PICT" >
+src="OSCMsg57x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx12-48002"></a>
+ id="dx12-50002"></a>
 <a 
- id="dx12-48003"></a>
+ id="dx12-50003"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">get </span>gives the count of handled messages at OSC and UDP levels: the UDP count indicates the count
@@ -301,7 +301,7 @@ class="pcrr8tn-">get </span>gives the count of handled messages at OSC and UDP l
 class="pcrr8tn-">reset </span>resets the counters to zero. Note that querying the <span 
 class="pcrr8tn-">stats </span>node increments at least the OSC the
      counter.</li></ul>
-<!--l. 1525--><p class="noindent" ><span 
+<!--l. 1616--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -314,36 +314,36 @@ class="pcrr8tn-">get </span>message addressed to <span
 class="pcrr8tn-">/ITL/stats</span>
 <div class="center" 
 >
-<!--l. 1527--><p class="noindent" >
+<!--l. 1618--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox43"><div class="minipage"><span 
+class="colorbox" id="colorbox47"><div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/stats osc 15 udp 10</span>
 </div></div>
 </div>
-<!--l. 1530--><p class="noindent" >
+<!--l. 1621--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">8.4.2    </span> <a 
- id="x12-490008.4.2"></a>The &#8217;debug&#8217; nodes</h4>
-<!--l. 1533--><p class="noindent" >The <span 
+ id="x12-510008.4.2"></a>The &#8217;debug&#8217; nodes</h4>
+<!--l. 1624--><p class="noindent" >The <span 
 class="pcrr8tn-">debug </span>node is used to activate debugging information.
 <a 
- id="dx12-49001"></a>
+ id="dx12-51001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
                                                                                  
 
                                                                                  
-<!--l. 1536--><p class="noindent" ><div class="minipage"><span 
+<!--l. 1627--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">ITLdebug</span> <img 
-src="OSCMsg55x.png" alt="PICT" >
+src="OSCMsg58x.png" alt="PICT" >
 </div> </dd></dl>
 <a 
- id="dx12-49002"></a>
+ id="dx12-51002"></a>
      <ul class="itemize1">
      <li class="itemize">switch the debug mode ON or OFF. The parameter is interpreted as a boolean value. When in debug
      mode, INScore sends verbose messages to the OSC error port for every message that can&#8217;t be correctly
      handled. Debugging is ON by default.</li></ul>
-<!--l. 1543--><p class="noindent" ><span 
+<!--l. 1634--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -354,41 +354,41 @@ class="small-caps">E</span> </span><br
 class="newline" />Error messages generated on error port in debug mode:
 <div class="center" 
 >
-<!--l. 1548--><p class="noindent" >
+<!--l. 1639--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox44"> <div class="minipage"><span 
+class="colorbox" id="colorbox48"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">error: incorrect OSC address: /ITL/stat</span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">error: incorrect parameters: /ITL/scene/foo unknown 0.1</span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">error: incorrect parameters: /ITL/scene/foo x "incorrectType"</span></div></div>
 </div>
-<!--l. 1551--><p class="noindent" >
+<!--l. 1642--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">8.4.3    </span> <a 
- id="x12-500008.4.3"></a>The &#8217;log&#8217; nodes</h4>
-<!--l. 1554--><p class="noindent" >The <span 
+ id="x12-520008.4.3"></a>The &#8217;log&#8217; nodes</h4>
+<!--l. 1645--><p class="noindent" >The <span 
 class="pcrr8tn-">log </span>node controls a console window that display all the messages sent to the OSC error port. Typical content is
 given by the example above.
 <a 
- id="dx12-50001"></a>
+ id="dx12-52001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1562--><p class="noindent" ><div class="minipage"><span 
+<!--l. 1653--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">ITLLog</span> <img 
-src="OSCMsg56x.png" alt="PICT" >
+src="OSCMsg59x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx12-50002"></a>
+ id="dx12-52002"></a>
 <a 
- id="dx12-50003"></a>
+ id="dx12-52003"></a>
                                                                                  
 
                                                                                  
 <a 
- id="dx12-50004"></a>
+ id="dx12-52004"></a>
 <a 
- id="dx12-50005"></a>
+ id="dx12-52005"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">show </span>show or hides the console. The parameter is a boolean value.
@@ -406,27 +406,27 @@ class="pcrr8tn-">arg </span>list formatted as a string to the log window.
      <li class="itemize"><span 
 class="pcrr8tn-">save </span>save the current log content to a file. The parameter is a file name. When expressed as a relative
      path, the file is saved under the current application root path.</li></ul>
-<!--l. 1578--><p class="noindent" >
+<!--l. 1669--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">8.4.4    </span> <a 
- id="x12-510008.4.4"></a>The &#8217;plugins&#8217; nodes</h4>
-<!--l. 1581--><p class="noindent" >The <span 
+ id="x12-530008.4.4"></a>The &#8217;plugins&#8217; nodes</h4>
+<!--l. 1672--><p class="noindent" >The <span 
 class="pcrr8tn-">plugins </span>node controls the search path for plugins. See section <a 
-href="OSCMsgch17.html#x22-10100017">17<!--tex4ht:ref: plugins --></a> p.<a 
-href="OSCMsgch17.html#x22-10100017">137<!--tex4ht:ref: plugins --></a> for more information on plugins and
+href="OSCMsgch17.html#x22-10300017">17<!--tex4ht:ref: plugins --></a> p.<a 
+href="OSCMsgch17.html#x22-10300017">140<!--tex4ht:ref: plugins --></a> for more information on plugins and
 search strategies.
 <a 
- id="dx12-51001"></a>
+ id="dx12-53001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1586--><p class="noindent" ><div class="minipage"><span 
+<!--l. 1677--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">ITLPlugin</span> <img 
-src="OSCMsg57x.png" alt="PICT" >
+src="OSCMsg60x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx12-51002"></a>
+ id="dx12-53002"></a>
 <a 
- id="dx12-51003"></a>
+ id="dx12-53003"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">path </span>add <span 
@@ -437,12 +437,12 @@ class="pcrr8tn-">reset </span>clear the current user path.</li></ul>
                                                                                  
 
                                                                                  
-<!--l. 1598--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 1689--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch9.html" >next</a>] [<a 
 href="OSCMsgch7.html" >prev</a>] [<a 
 href="OSCMsgch7.html#tailOSCMsgch7.html" >prev-tail</a>] [<a 
 href="OSCMsgch8.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch8.html" >up</a>] </p></div>
-<!--l. 1598--><p class="noindent" ><a 
+<!--l. 1689--><p class="noindent" ><a 
  id="tailOSCMsgch8.html"></a>  
 </body></html> 

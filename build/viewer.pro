@@ -7,7 +7,7 @@ OBJECTS_DIR = tmp
 MOC_DIR		= tmp
 RCC_DIR		= tmp
 
-VERSION = 1.14
+VERSION = 1.15
 
 QT += core gui widgets svg printsupport multimedia multimediawidgets qml websockets
 
