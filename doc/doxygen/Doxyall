@@ -564,15 +564,7 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT                  = ../../src/controller \
-                         ../../src/events \
-                         ../../src/interface \
-                         ../../src/ITLParser \
-                         ../../src/lib \
-                         ../../src/mapping \
-                         ../../src/model \
-                         ../../src/signal \
-                         ../../src/view
+INPUT                  = ../../src/library 
 
 # This tag can be used to specify the character encoding of the source files 
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is 
@@ -596,7 +588,7 @@ FILE_PATTERNS          = *.h \
 # should be searched for input files as well. Possible values are YES and NO. 
 # If left blank NO is used.
 
-RECURSIVE              = NO
+RECURSIVE              = YES
 
 # The EXCLUDE tag can be used to specify files and/or directories that should 
 # excluded from the INPUT source files. This way you can easily exclude a 
