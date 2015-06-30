@@ -131,14 +131,14 @@ class IGuidoPianoRoll : public virtual IGuidoCode
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 
+		ARHandler fArHandler;
+		PianoRoll * fPianoRoll;
+
 	private:
 		/*!
 		 * \brief applyAllSettings update pianoroll with the display settings
 		 */
 		void applyAllSettings();
-
-		ARHandler fArHandler;
-		PianoRoll * fPianoRoll;
 
 		// Pianoroll display settings
 		PianoRollType fType;

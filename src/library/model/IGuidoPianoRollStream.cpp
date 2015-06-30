@@ -54,9 +54,15 @@ void IGuidoPianoRollStream::accept (Updater* u)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IGuidoPianoRollStream::set (const IMessage* msg )
 {
-	MsgHandler::msgStatus status = IGuidoStream::set(msg);
-    if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return IGuidoPianoRoll::set(msg);
-    else return status;
+    // Delete handler if objet pianorollstream object already exist
+    GuidoDestroyPianoRoll(fPianoRoll);
+    GuidoFreeAR(fArHandler);
+    fPianoRoll = 0;
+    fArHandler = 0;
+
+    MsgHandler::msgStatus status = IGuidoStream::set(msg);
+    updatePianoRoll();
+    return status;
 }
 
 //--------------------------------------------------------------------------
