@@ -51,11 +51,13 @@ class VShapeView: public VGraphicsItemView
 		using VGraphicsItemView::updateView;
 
 		virtual ~VShapeView() {}
-		virtual void updateView( IShape * shape );
+		virtual void updateView( IObject * shape );
 
 	protected:
 				VShapeView(QGraphicsScene * scene , QAbstractGraphicsShapeItem * abstractGraphicsShapeItem);
 		
+		virtual void drawBoundingBox (IObject* o) {}
+
 		void	setQPenStyle(const std::string& penStyle , QPen& pen) const;
         void	setQBrushStyle(const std::string& brushStyle , QBrush& brush) const;
 };
