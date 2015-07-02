@@ -28,6 +28,7 @@
 #include "IScene.h"
 #include "Updater.h"
 #include "VGuidoItemView.h"
+#include "rational.h"
 
 using namespace std;
 
@@ -43,16 +44,16 @@ IGuidoPianoRoll::IGuidoPianoRoll( const std::string& name, IObject * parent )
 	fTypeString = kGuidoPianoRollType;
 
 	// Default parameters value
-    fType = kSimplePianoRoll;
 	fKeyboard = false;
 	fAutoVoiceColor = false;
 	fMeasureBars = false;
 	fPitchLines = kAutoLines;
 
-	fGetMsgHandlerMap[ktype_GetSetMethod]	= TGetParamMethodHandler<IGuidoPianoRoll, string (IGuidoPianoRoll::*)() const>::create(this, &IGuidoPianoRoll::getPianoRollType);
-	fMsgHandlerMap[ktype_GetSetMethod]		= TMethodMsgHandler<IGuidoPianoRoll>::create(this, &IGuidoPianoRoll::setPianoRollType);
+	fGetMsgHandlerMap[kcliptime_GetSetMethod]	= TGetParamMethodHandler<IGuidoPianoRoll, string (IGuidoPianoRoll::*)() const>::create(this, &IGuidoPianoRoll::getClipTime);
+	fMsgHandlerMap[kcliptime_GetSetMethod]	= TMethodMsgHandler<IGuidoPianoRoll>::create(this, &IGuidoPianoRoll::setClipTime);
 
-	//setLimits
+	fGetMultiMsgHandlerMap[kclippitch_GetSetMethod]	= TGetParamMultiMethodHandler<IGuidoPianoRoll, SIMessageList (IGuidoPianoRoll::*)() const>::create(this, &IGuidoPianoRoll::getClipPitch);
+	fMsgHandlerMap[kclippitch_GetSetMethod]	= TMethodMsgHandler<IGuidoPianoRoll>::create(this, &IGuidoPianoRoll::setClipPitch);
 
 	fGetMsgHandlerMap[kkeyboard_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fKeyboard);
 	fMsgHandlerMap[kkeyboard_GetSetMethod]		= TSetMethodMsgHandler<IGuidoPianoRoll, bool>::create(this, &IGuidoPianoRoll::enableKeyboard);
@@ -92,40 +93,81 @@ MsgHandler::msgStatus IGuidoPianoRoll::set (const IMessage* msg )
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus IGuidoPianoRoll::setPianoRollType(const IMessage* msg)
+string IGuidoPianoRoll::getClipTime() const
 {
-	if(msg->size() != 1)
-		return MsgHandler::kBadParameters;
+	libmapping::rational start(fLimits.startDate.num, fLimits.startDate.denom);
+	libmapping::rational end(fLimits.endDate.num, fLimits.endDate.denom);
+	return string(start) + " " + string(end);
+}
 
-	string type;
-	if (msg->param(0, type)) {
-		if(type == "simple")
-			fType = kSimplePianoRoll;
-		else if(type == "trajectory")
-			fType = kTrajectoryPianoRoll;
-		else return MsgHandler::kBadParameters;
-	} else {
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IGuidoPianoRoll::setClipTime(const IMessage *msg)
+{
+	const int size = msg->size();
+	RationalInterval interval;
+	if(size == 0) {
+		// reset time limits
+		GuidoDate init;
+		init.num = 0;
+		init.denom = 0;
+		fLimits.startDate = init;
+		fLimits.endDate = init;
+		GuidoPianoRollSetLimits(fPianoRoll, fLimits);
+		return MsgHandler::kProcessed;
+	} else if(size == 2) {
+		interval = Tools::readRationalInterval(msg, false);
+	} else if(size == 4) {
+		interval = Tools::readRationalInterval(msg, true);
+	} else return MsgHandler::kBadParameters;
+
+	if(interval.first().getDenominator() == 0 || interval.second().getDenominator() == 0 ) {
 		return MsgHandler::kBadParameters;
 	}
-	GuidoDestroyPianoRoll(fPianoRoll);
-	fPianoRoll = GuidoAR2PianoRoll(fType, fArHandler);
-	applyAllSettings();
+
+	GuidoDate guidoDate;
+	guidoDate.num = interval.first().getNumerator();
+	guidoDate.denom = interval.first().getDenominator();
+	fLimits.startDate = guidoDate;
+
+	guidoDate.num = interval.second().getNumerator();
+	guidoDate.denom = interval.second().getDenominator();
+	fLimits.endDate = guidoDate;
+
+	GuidoPianoRollSetLimits(fPianoRoll, fLimits);
 	return MsgHandler::kProcessed;
 }
 
 //--------------------------------------------------------------------------
-string IGuidoPianoRoll::getPianoRollType() const
+SIMessageList IGuidoPianoRoll::getClipPitch() const
 {
-	if(fType == kTrajectoryPianoRoll)
-		return "trajectory";
-	return "simple";
+	SIMessageList list = IMessageList::create();
+	SIMessage msg = IMessage::create (getOSCAddress(), kclippitch_GetSetMethod);
+	IMessage::argslist values;
+	values.push_back(new IMsgParam<int>(fLimits.lowPitch));
+	values.push_back(new IMsgParam<int>(fLimits.highPitch));
+	msg->add (values);
+	list->list().push_back(msg);
+	return list;
 }
 
 //--------------------------------------------------------------------------
-void IGuidoPianoRoll::setLimits(LimitParams lp)
+MsgHandler::msgStatus IGuidoPianoRoll::setClipPitch(const IMessage *msg)
 {
-	fLimits = lp;
-	GuidoPianoRollSetLimits(fPianoRoll, fLimits);
+	const int size = msg->size();
+	if(size == 0) {
+		// reset pitch limit
+		fLimits.lowPitch = -1;
+		fLimits.highPitch = -1;
+		GuidoPianoRollSetLimits(fPianoRoll, fLimits);
+	} else if(size == 2) {
+		int low, high;
+		if(!msg->param(0, low)) return MsgHandler::kBadParameters;
+		if(!msg->param(1, high)) return MsgHandler::kBadParameters;
+		fLimits.lowPitch = low;
+		fLimits.highPitch = high;
+		GuidoPianoRollSetLimits(fPianoRoll, fLimits);
+	} else return MsgHandler::kBadParameters;
+	return MsgHandler::kProcessed;
 }
 
 //--------------------------------------------------------------------------
@@ -305,7 +347,7 @@ void IGuidoPianoRoll::updatePianoRoll()
 		fArHandler = GuidoString2AR(parser, fGMN.c_str());
 	GuidoCloseParser(parser);
 
-	fPianoRoll = GuidoAR2PianoRoll(fType, fArHandler);
+	fPianoRoll = GuidoAR2PianoRoll(kSimplePianoRoll, fArHandler);
 	applyAllSettings();
 }
 
@@ -321,6 +363,7 @@ void IGuidoPianoRoll::applyAllSettings()
 	GuidoPianoRollEnableAutoVoicesColoration(fPianoRoll, fAutoVoiceColor);
 	GuidoPianoRollEnableMeasureBars(fPianoRoll, fMeasureBars);
 	GuidoPianoRollSetPitchLinesDisplayMode(fPianoRoll, fPitchLines);
+	GuidoPianoRollSetLimits(fPianoRoll, fLimits);
 }
 
 }
