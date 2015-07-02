@@ -293,8 +293,9 @@ void VGraphicsItemView::drawBoundingBox(IObject* o, QGraphicsItem* item)
 {
 	float w = o->getPenWidth();
 	if (w) {
+		w /= 2;
 		QRectF bboxRectQt = fItem->boundingRect();
-		bboxRectQt += QMargins(1,1,1,1);
+		bboxRectQt += QMarginsF(w,w,w,w);
 		if (!fBoundingBox) fBoundingBox = new QGraphicsRectItem( bboxRectQt, item);
 		QPen pen( QColor(o->getPenColor().getR(), o->getPenColor().getG(), o->getPenColor().getB() , o->getPenColor().getA()) , o->getPenWidth() );
 		setQPenStyle( o->getPenStyle() , pen );
