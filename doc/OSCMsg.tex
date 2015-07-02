@@ -1292,28 +1292,31 @@ Writing a score in 3 steps:
 Messages accepted by the components types \OSC{pianoroll | pianorollstream}.
 
 \begin{rail}
-pianorollMsg :      'type' ('simple' | 'trajectory')
-			| 'keyboard' int32
+pianorollMsg :		'keyboard' int32
 			| 'autoVoicesColoration' int32
 			| 'measureBars' int32
-			| 'voiceColor' int32 int32 int32 int32 int32
+			| 'voiceColor' int32 (color |)
 			| 'pitchLines' ( 'Notes' |)
+			| 'cliptime' (time time |)
+			| 'clippitch' (int32 int32 |)
 \end{rail}
-\index{Specific messages! pianoroll! type}
 \index{Specific messages! pianoroll! keyboard}
 \index{Specific messages! pianoroll! autoVoicesColoration}
 \index{Specific messages! pianoroll! measureBars}
 \index{Specific messages! pianoroll! voiceColor}
 \index{Specific messages! pianoroll! pitchLines}
+\index{Specific messages! pianoroll! cliptime}
+\index{Specific messages! pianoroll! clippitch}
 
 
 \begin{itemize}
-\item \OSC{type}: set the piano roll display type as 'simple' or 'trajectory'.
-\item \OSC{keyboard}: display the keyboard on left of piano roll.
-\item \OSC{autoVoicesColoration}: enable voices automatic coloration. If voiceColor is used for a voice, automatic voices coloration do nothing for it.
-\item \OSC{measureBars}: Display measure bars on piano roll.
-\item \OSC{voiceColor}: set a color for a voice. The parameters are voice number (start to 1), and RGBA color.
+\item \OSC{keyboard}: display the keyboard on left of piano roll. Default value to 0.
+\item \OSC{autoVoicesColoration}: enable voices automatic coloration. If voiceColor is used for a voice, automatic voices coloration do nothing for it. Default value to 0.
+\item \OSC{measureBars}: Display measure bars on piano roll. Default value to 0.
+\item \OSC{voiceColor}: set a color for a voice. The parameters are voice number (start to 1), and RGBA color (See section \fullref{colormsg}). If not color is present, voice color is reset to default color.
 \item \OSC{pitchLines}:  Display pitch lines on pianoroll. Parameters are a note list in english notation (A A\# B ...).
+\item \OSC{cliptime}: set time limits for piano roll (See section \fullref{time} to set a time). The two times have to be wrote in the same format. If no time is present, time limits are reset to default.
+\item \OSC{clippitch}:  Set pitch limits to piano roll. The pitch is in midi format. If no value is present, pitch limits are reset to default.
 \end{itemize}
 
 
