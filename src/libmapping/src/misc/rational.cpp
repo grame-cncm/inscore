@@ -37,13 +37,16 @@ namespace libmapping
 // ------------------------------------------------------------------------------
 rational::rational(const string &str) : fNumerator(0), fDenominator(1)
 {
-    const char *cstr	= str.c_str();
-    const char *denom	= strstr(cstr,"/");
-    if (denom) {
-		++denom;
-		fNumerator = atol(cstr);
-		long int d = atol(denom);
-		fDenominator = d ? d : 1;
+	istringstream buffer(str);
+	buffer >> fNumerator;
+	if (!buffer.fail()) {
+		char slash;
+		buffer >> slash;
+		buffer >> fDenominator;
+	}
+	if (buffer.fail()) {
+		fNumerator  = 0;
+		fDenominator = 0;
 	}
 }
 

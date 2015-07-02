@@ -145,22 +145,16 @@ template <typename O> class TSetMethodMsgHandler<O, libmapping::rational> : publ
 
 	public:		
 		static SMsgHandler create(O* obj, MsgHandlerMethod method)	{ return new TSetMethodMsgHandler<O,libmapping::rational> (obj, method); }
-		virtual msgStatus operator ()(const IMessage* msg)			{ 
+		virtual msgStatus operator ()(const IMessage* msg)			{
+			libmapping::rational date;
 			if ( msg->size() == 1 ) {
-				int n; float nf; std::string datestr;
-				if (msg->param(0, n)) (fObject->*fMethod)( libmapping::rational(n,1) );
-				else if (msg->param(0, nf)) (fObject->*fMethod)( libmapping::rational(int(nf*10000),10000) );
-				else if (msg->param(0, datestr)) {
-					libmapping::rational date = Tools::str2rational(datestr);
-					if (date.getDenominator()) (fObject->*fMethod)( date );
-				}
-				else return kBadParameters;
-			}
-			else if ( msg->size() == 2 ) {
-				int n, d;
-				if ( !msg->param(0, n) || !msg->param(1, d)) return kBadParameters;
-				(fObject->*fMethod)( libmapping::rational(n,d) );
-			}
+				date = Tools::readRational(msg, false, 0);
+			} else if ( msg->size() == 2 ) {
+				date = Tools::readRational(msg, true, 0);
+			} else return kBadParameters;
+
+			if (date.getDenominator())
+				(fObject->*fMethod)( date );
 			else return kBadParameters;
 			return kProcessed;
 		}

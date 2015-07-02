@@ -23,22 +23,30 @@
 #define __tools__
 
 #include <string>
-#include "rational.h"
+#include "maptypes.h"
+
+namespace libmapping {
+	class rational;
+}
 
 namespace inscore
 {
+// Forward declaration
+class IMessage;
 
 struct Tools
 {
 	static bool					regexp (const std::string& str);
 	static bool					isurl (const std::string& str);
 	static std::string			ensurefloat (float f, int precision=0);
-	static libmapping::rational	str2rational (const std::string& rationalstr);
 
 	static std::string		getHostName();							///< gives the local host name
 	static unsigned long	getIP( const std::string& hostname);	///< resolves hostname to ip number, uses local host name if \c hostname is empty
 	static std::string		ip2string (unsigned long ip);
 	static std::string		getIP();								///< gives the local host IP address as a string
+
+	static libmapping::rational readRational(const IMessage *msg, bool twoPart, int startIndex = 0);
+	static RationalInterval readRationalInterval(const IMessage *msg, bool twoPart, int startIndex = 0);
 };
 
 
