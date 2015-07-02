@@ -13,7 +13,8 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.15
--
+- pen messages are now accepted by all the components. Thie extension is provided to display
+  any object bounding box. Note that for rects, ellipses etc. the previous behavior is preserved.
 
 ----------------------------------------------------
 Version 1.14

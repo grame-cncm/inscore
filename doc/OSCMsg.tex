@@ -562,6 +562,55 @@ Moving a color in the RGBA space:
 
 
 %-------------------------------
+%:  Pen control
+\sublevel{Pen control}
+
+Pen messages accepted by all the components and result in 2 different behaviors:
+\begin{itemize}
+\item for components types \OSC{rect | ellipse | polygon | curve | line | graph | fast graph | grid}, it makes the object border visible using the pen attributes;
+\item for the other components and when the pen width is greater than 0, it makes the object bounding box visible.
+\end{itemize}
+
+\begin{rail}
+penMsg : 	  'penWidth' float32
+			| 'penColor' color 
+			| 'penStyle' penstyle
+			| 'penAlpha' alphavalue
+			| 'pendAlpha' alphavalue
+\end{rail}
+\index{Specific messages! penColor}
+\index{Specific messages! penAlpha}
+\index{Specific messages! pendAlpha}
+\index{Specific messages! penWidth}
+\index{Specific messages! penStyle}
+
+\begin{itemize}
+\item \OSC{penWidth} controls the pen width. The default value is 0 (excepted for \OSC{line} objects, where 1.0 is the default value). It is expressed in arbitrary units (1 is a reasonable value).
+\item \OSC{penColor} controls the pen color. The color should be given in the RGBA space. The default value is opaque black (0 0 0 255).
+\item \OSC{penStyle} controls the pen style.
+\item \OSC{penAlpha, pendAlpha} controls the pen transparency only. See section \fullref{colormsg} for the expected 
+ \end{itemize}
+
+
+\begin{rail}
+penstyle : 'solid' | 'dash' | 'dot' | 'dashDot' | 'dashDotDot'
+\end{rail}
+\index{Specific messages! penStyle! solid}
+\index{Specific messages! penStyle! dash}
+\index{Specific messages! penStyle! dot}
+\index{Specific messages! penStyle! dashDot}
+\index{Specific messages! penStyle! dashDotDot}
+
+The pen style default value is \OSC{solid}.\\
+
+\example \\
+Setting a rectangle border width and color:
+\sample{/ITL/scene/rect set rect 0.5 0.5 ;\\
+/ITL/scene/rect penWidth 2. ;\\
+/ITL/scene/rect penColor 255 0 0 ;  
+}
+
+%-------------------------------
 %:'effect' messages
 \sublevel{The 'effect' messages}
 \label{effectmsg}
@@ -1120,50 +1169,6 @@ The \OSC{get width} and \OSC{get height} messages addressed to components that h
 \toplevel{Type specific messages}
 \label{specificMsg}
 Some of the messages are specific to the component \OSC{type}.
-
-
-%-------------------------------
-%:  Pen control
-\sublevel{Pen control}
-
-Specific pen messages accepted by the components types \OSC{rect | ellipse | polygon | curve | line | graph | fast graph | grid}.
-\begin{rail}
-penMsg : 	  'penColor' color 
-			| 'penAlpha' colorvalue
-			| 'pendAlpha' colorvalue
-			| 'penWidth' float32
-			| 'penStyle' penstyle
-\end{rail}
-\index{Specific messages! penColor}
-\index{Specific messages! penAlpha}
-\index{Specific messages! pendAlpha}
-\index{Specific messages! penWidth}
-\index{Specific messages! penStyle}
-
-\begin{itemize}
-\item \OSC{penColor} controls the pen color. The color should be given in the RGBA space. The default value is opaque black (0 0 0 255).
-\item \OSC{penAlpha, pendAlpha} controls the pen transparency only. See section \fullref{colormsg} for the expected \item \OSC{penWidth} controls the pen width. The default value is 0 (excepted for \OSC{line} objects, where 1.0 is the default value). It is expressed in arbitrary units (1 is a reasonable value).
-\item \OSC{penStyle} controls the pen style.
- \end{itemize}
-
-
-\begin{rail}
-penstyle : 'solid' | 'dash' | 'dot' | 'dashDot' | 'dashDotDot'
-\end{rail}
-\index{Specific messages! penStyle! solid}
-\index{Specific messages! penStyle! dash}
-\index{Specific messages! penStyle! dot}
-\index{Specific messages! penStyle! dashDot}
-\index{Specific messages! penStyle! dashDotDot}
-
-The pen style default value is \OSC{solid}.\\
-
-\example \\
-Setting a rectangle border width and color:
-\sample{/ITL/scene/rect set rect 0.5 0.5 ;\\
-/ITL/scene/rect penWidth 2. ;\\
-/ITL/scene/rect penColor 255 0 0 ;  
-}
 
 
 %-------------------------------

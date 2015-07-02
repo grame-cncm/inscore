@@ -344,8 +344,47 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {18}{ effectMsg : 'effect' ( 'none' | ('blur' | 'colorize' | 'shadow') (| params)) }
+\rail@i {18}{ penMsg : 'penWidth' float32 | 'penColor' color | 'penStyle' penstyle | 'penAlpha' alphavalue | 'pendAlpha' alphavalue }
 \rail@o {18}{
+\rail@index{penMsg}
+\rail@begin{5}{penMsg}
+\rail@bar
+\rail@term{penWidth}[]
+\rail@token{float32}[]
+\rail@nextbar{1}
+\rail@term{penColor}[]
+\rail@nont{color}[]
+\rail@nextbar{2}
+\rail@term{penStyle}[]
+\rail@nont{penstyle}[]
+\rail@nextbar{3}
+\rail@term{penAlpha}[]
+\rail@nont{alphavalue}[]
+\rail@nextbar{4}
+\rail@term{pendAlpha}[]
+\rail@nont{alphavalue}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {19}{ penstyle : 'solid' | 'dash' | 'dot' | 'dashDot' | 'dashDotDot' }
+\rail@o {19}{
+\rail@index{penstyle}
+\rail@begin{5}{penstyle}
+\rail@bar
+\rail@term{solid}[]
+\rail@nextbar{1}
+\rail@term{dash}[]
+\rail@nextbar{2}
+\rail@term{dot}[]
+\rail@nextbar{3}
+\rail@term{dashDot}[]
+\rail@nextbar{4}
+\rail@term{dashDotDot}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {20}{ effectMsg : 'effect' ( 'none' | ('blur' | 'colorize' | 'shadow') (| params)) }
+\rail@o {20}{
 \rail@index{effectMsg}
 \rail@begin{4}{effectMsg}
 \rail@term{effect}[]
@@ -366,8 +405,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {19}{ blurParams : int32 (| blurHint) }
-\rail@o {19}{
+\rail@i {21}{ blurParams : int32 (| blurHint) }
+\rail@o {21}{
 \rail@index{blurParams}
 \rail@begin{2}{blurParams}
 \rail@token{int32}[]
@@ -377,8 +416,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {20}{ blurHint : 'performance' | 'quality' | 'animation' }
-\rail@o {20}{
+\rail@i {22}{ blurHint : 'performance' | 'quality' | 'animation' }
+\rail@o {22}{
 \rail@index{blurHint}
 \rail@begin{3}{blurHint}
 \rail@bar
@@ -390,8 +429,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {21}{ colorizeParams : float32 (| color) }
-\rail@o {21}{
+\rail@i {23}{ colorizeParams : float32 (| color) }
+\rail@o {23}{
 \rail@index{colorizeParams}
 \rail@begin{2}{colorizeParams}
 \rail@token{float32}[]
@@ -401,8 +440,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {22}{ shadowParams : xoffset yoffset (| color (| blur)) }
-\rail@o {22}{
+\rail@i {24}{ shadowParams : xoffset yoffset (| color (| blur)) }
+\rail@o {24}{
 \rail@index{shadowParams}
 \rail@begin{3}{shadowParams}
 \rail@nont{xoffset}[]
@@ -417,8 +456,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {23}{ timeMsg : 'clock' | 'durClock' | ('date' time) | ('duration' time) | ('ddate' time) | ('dduration' time) }
-\rail@o {23}{
+\rail@i {25}{ timeMsg : 'clock' | 'durClock' | ('date' time) | ('duration' time) | ('ddate' time) | ('dduration' time) }
+\rail@o {25}{
 \rail@index{timeMsg}
 \rail@begin{6}{timeMsg}
 \rail@bar
@@ -440,8 +479,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {24}{ time : (([1] int32 int32) | [2] int32 | [3] float32 | [4] 'n/d') }
-\rail@o {24}{
+\rail@i {26}{ time : (([1] int32 int32) | [2] int32 | [3] float32 | [4] 'n/d') }
+\rail@o {26}{
 \rail@index{time}
 \rail@begin{4}{time}
 \rail@bar
@@ -460,8 +499,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {25}{ miscMsgs : "eval" msgsList | "watch" (| what ( | msgsList )) | "push" | "pop" | "map" ( | mapName ) (relation | ( del )) }
-\rail@o {25}{
+\rail@i {27}{ miscMsgs : "eval" msgsList | "watch" (| what ( | msgsList )) | "push" | "pop" | "map" ( | mapName ) (relation | ( del )) }
+\rail@o {27}{
 \rail@index{miscMsgs}
 \rail@begin{8}{miscMsgs}
 \rail@bar
@@ -495,8 +534,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {26}{ setMsg : 'set' type data }
-\rail@o {26}{
+\rail@i {28}{ setMsg : 'set' type data }
+\rail@o {28}{
 \rail@index{setMsg}
 \rail@begin{1}{setMsg}
 \rail@term{set}[]
@@ -504,8 +543,8 @@
 \rail@nont{data}[]
 \rail@end
 }
-\rail@i {27}{ setMsg : 'set' ( ('gmn' gmnString) | ('gmnf' gmnFilePath) | ('gmnstream' gmnStream) | ('musicxml' xmlString) | ('musicxmlf' xmlFilePath) ) }
-\rail@o {27}{
+\rail@i {29}{ setMsg : 'set' ( ('gmn' gmnString) | ('gmnf' gmnFilePath) | ('gmnstream' gmnStream) | ('musicxml' xmlString) | ('musicxmlf' xmlFilePath) ) }
+\rail@o {29}{
 \rail@index{setMsg}
 \rail@begin{5}{setMsg}
 \rail@term{set}[]
@@ -527,8 +566,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {28}{ setMsg : 'set' ( ('pianoroll' gmnString) | ('pianorollstream' gmnStream) ) }
-\rail@o {28}{
+\rail@i {30}{ setMsg : 'set' ( ('pianoroll' gmnString) | ('pianorollstream' gmnStream) ) }
+\rail@o {30}{
 \rail@index{setMsg}
 \rail@begin{2}{setMsg}
 \rail@term{set}[]
@@ -541,8 +580,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {29}{ setMsg : 'set' ( ('txt' (string | txtStream)) | ('txtf' textFilePath) | ('html' string) | ('htmlf' htmlFilePath) ) }
-\rail@o {29}{
+\rail@i {31}{ setMsg : 'set' ( ('txt' (string | txtStream)) | ('txtf' textFilePath) | ('html' string) | ('htmlf' htmlFilePath) ) }
+\rail@o {31}{
 \rail@index{setMsg}
 \rail@begin{5}{setMsg}
 \rail@term{set}[]
@@ -565,8 +604,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {30}{ txtStream : (string | int32 | float32) + }
-\rail@o {30}{
+\rail@i {32}{ txtStream : (string | int32 | float32) + }
+\rail@o {32}{
 \rail@index{txtStream}
 \rail@begin{4}{txtStream}
 \rail@plus
@@ -581,8 +620,8 @@
 \rail@endplus
 \rail@end
 }
-\rail@i {31}{ setMsg : 'set' ( ('svg' svgString) | ('svgf' svgFilePath) | ('rect' width height) | ('ellipse' width height) | ('polygon' ( (x y) +)) | ('curve' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) | ('line' ('xy' x y | 'wa' width angle)) | ) }
-\rail@o {31}{
+\rail@i {33}{ setMsg : 'set' ( ('svg' svgString) | ('svgf' svgFilePath) | ('rect' width height) | ('ellipse' width height) | ('polygon' ( (x y) +)) | ('curve' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) | ('line' ('xy' x y | 'wa' width angle)) | ) }
+\rail@o {33}{
 \rail@index{setMsg}
 \rail@begin{11}{setMsg}
 \rail@term{set}[]
@@ -635,8 +674,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {32}{ setMsg : 'set' ( ('graph' signals ) | ('fastgraph' signals ) | ('faust' 'pluginname' ) | ('faustdsp' faustcode ) | ('faustdspf' faustfile) ) }
-\rail@o {32}{
+\rail@i {34}{ setMsg : 'set' ( ('graph' signals ) | ('fastgraph' signals ) | ('faust' 'pluginname' ) | ('faustdsp' faustcode ) | ('faustdspf' faustfile) ) }
+\rail@o {34}{
 \rail@index{setMsg}
 \rail@begin{5}{setMsg}
 \rail@term{set}[]
@@ -658,8 +697,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {33}{ setMsg : ('img' imgPath) | ('memimg' objectPath) | ('video' videoPath) }
-\rail@o {33}{
+\rail@i {35}{ setMsg : ('img' imgPath) | ('memimg' objectPath) | ('video' videoPath) }
+\rail@o {35}{
 \rail@index{setMsg}
 \rail@begin{3}{setMsg}
 \rail@bar
@@ -674,8 +713,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {34}{ setMsg : 'set' ( 'layer' | ('grid' int32 int32) ) }
-\rail@o {34}{
+\rail@i {36}{ setMsg : 'set' ( 'layer' | ('grid' int32 int32) ) }
+\rail@o {36}{
 \rail@index{setMsg}
 \rail@begin{2}{setMsg}
 \rail@term{set}[]
@@ -688,8 +727,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {35}{ urlType : 'url' targetType urlPath }
-\rail@o {35}{
+\rail@i {37}{ urlType : 'url' targetType urlPath }
+\rail@o {37}{
 \rail@index{urlType}
 \rail@begin{1}{urlType}
 \rail@term{url}[]
@@ -697,8 +736,8 @@
 \rail@nont{urlPath}[]
 \rail@end
 }
-\rail@i {36}{ setFile : ('file' (filePath | urlPath)) }
-\rail@o {36}{
+\rail@i {38}{ setFile : ('file' (filePath | urlPath)) }
+\rail@o {38}{
 \rail@index{setFile}
 \rail@begin{2}{setFile}
 \rail@term{file}[]
@@ -709,8 +748,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {37}{ webobject : 'websocket' port frequency | 'httpd' port }
-\rail@o {37}{
+\rail@i {39}{ webobject : 'websocket' port frequency | 'httpd' port }
+\rail@o {39}{
 \rail@index{webobject}
 \rail@begin{2}{webobject}
 \rail@bar
@@ -723,8 +762,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {38}{ getMsg : 'get' ( | getParam +) }
-\rail@o {38}{
+\rail@i {40}{ getMsg : 'get' ( | getParam +) }
+\rail@o {40}{
 \rail@index{getMsg}
 \rail@begin{3}{getMsg}
 \rail@term{get}[]
@@ -734,45 +773,6 @@
 \rail@nont{getParam}[]
 \rail@nextplus{2}
 \rail@endplus
-\rail@endbar
-\rail@end
-}
-\rail@i {39}{ penMsg : 'penColor' color | 'penAlpha' colorvalue | 'pendAlpha' colorvalue | 'penWidth' float32 | 'penStyle' penstyle }
-\rail@o {39}{
-\rail@index{penMsg}
-\rail@begin{5}{penMsg}
-\rail@bar
-\rail@term{penColor}[]
-\rail@nont{color}[]
-\rail@nextbar{1}
-\rail@term{penAlpha}[]
-\rail@nont{colorvalue}[]
-\rail@nextbar{2}
-\rail@term{pendAlpha}[]
-\rail@nont{colorvalue}[]
-\rail@nextbar{3}
-\rail@term{penWidth}[]
-\rail@token{float32}[]
-\rail@nextbar{4}
-\rail@term{penStyle}[]
-\rail@nont{penstyle}[]
-\rail@endbar
-\rail@end
-}
-\rail@i {40}{ penstyle : 'solid' | 'dash' | 'dot' | 'dashDot' | 'dashDotDot' }
-\rail@o {40}{
-\rail@index{penstyle}
-\rail@begin{5}{penstyle}
-\rail@bar
-\rail@term{solid}[]
-\rail@nextbar{1}
-\rail@term{dash}[]
-\rail@nextbar{2}
-\rail@term{dot}[]
-\rail@nextbar{3}
-\rail@term{dashDot}[]
-\rail@nextbar{4}
-\rail@term{dashDotDot}[]
 \rail@endbar
 \rail@end
 }
