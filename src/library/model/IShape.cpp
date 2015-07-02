@@ -24,10 +24,6 @@
 */
 
 #include "IShape.h"
-#include "IMessage.h"
-#include "IAppl.h"
-#include "Updater.h"
-//#include "segment2relativetimereader.h"
 
 using namespace std;
 
@@ -58,41 +54,17 @@ const std::string IShape::kDiagCrossBrushStyle = DIAG_CROSS_BRUSH_STYLE;
 
     
 //--------------------------------------------------------------------------
-IShape::IShape( const std::string& name, IObject* parent ) : IObject(name, parent)
+IShape::IShape()
 { 
 	fPenWidth = 0;
 	fPenColor = IColor(0,0,0,255);
 	fPenStyle = kSolidStyle;
     fBrushStyle = kSolidStyle;
-
-	fMsgHandlerMap[kpenColor_GetSetMethod]	= TMethodMsgHandler<IColor>::create(&fPenColor, &IColor::set);
-	fMsgHandlerMap[kpenAlpha_GetSetMethod]	= IColor::SetColorMsgHandler::create(&fPenColor, &IColor::setA, &IColor::setA);
-	fMsgHandlerMap[kpendAlpha_SetMethod]	= IColor::SetColorMsgHandler::create(&fPenColor, &IColor::dA, &IColor::dA);
-	fMsgHandlerMap[kpenWidth_GetSetMethod]	= TSetMethodMsgHandler<IShape, float>::create(this, &IShape::setPenWidth);
-	fMsgHandlerMap[kpenStyle_GetSetMethod]  = TSetMethodMsgHandler<IShape, string>::create(this, &IShape::setPenStyle);
-    fMsgHandlerMap[kbrushStyle_GetSetMethod]  = TSetMethodMsgHandler<IShape, string>::create(this, &IShape::setBrushStyle);
-	
-	fGetMsgHandlerMap[kpenWidth_GetSetMethod]	= TGetParamMsgHandler<float>::create(fPenWidth);
-	fGetMsgHandlerMap[kpenColor_GetSetMethod]	= TGetParamMsgHandler<IColor>::create(fPenColor);
-	fGetMsgHandlerMap[kpenAlpha_GetSetMethod]	= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(&fPenColor, &IColor::getA);
-	fGetMsgHandlerMap[kpenStyle_GetSetMethod]	= TGetParamMsgHandler<std::string>::create(fPenStyle);
-	fGetMsgHandlerMap[kbrushStyle_GetSetMethod]	= TGetParamMsgHandler<std::string>::create(fBrushStyle);
-
-    fSigHandlerMap[kpenAlpha_GetSetMethod]	= IColor::SetColorSigHandler::create(&fPenColor, &IColor::setA, &IColor::setA);
-	fSigHandlerMap[kpendAlpha_SetMethod]	= IColor::SetColorSigHandler::create(&fPenColor, &IColor::dA, &IColor::dA);
-	fSigHandlerMap[kpenWidth_GetSetMethod]	= TSetMethodSigHandler<IShape, float>::create(this, &IShape::setPenWidth);
-}
-
-//--------------------------------------------------------------------------
-void IShape::accept (Updater* u)
-{
-	u->updateTo (SIShape(this));
 }
 
 //--------------------------------------------------------------------------
 void IShape::print (ostream& out) const
 {
-	IObject::print (out);
 	out << "  penWidth: " << fPenWidth << endl;
 	out << "  penStyle: " << fPenStyle << endl;
 	out << "  brushStyle: " << fBrushStyle << endl;

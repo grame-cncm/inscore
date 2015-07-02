@@ -28,7 +28,7 @@
 #define __IShapeMap__
 
 #include "TLocalMapping.h"
-#include "IShape.h"
+#include "IObject.h"
 
 namespace inscore
 {
@@ -42,7 +42,7 @@ namespace inscore
 /*!
 	\brief local maps of a basic geometric shape.
 */
-class IShapeMap: public IShape
+class IShapeMap: public IObject
 {
 	protected:
 		typedef libmapping::SMARTP<TLocalMapping<float,2> >	SLocalMapping;

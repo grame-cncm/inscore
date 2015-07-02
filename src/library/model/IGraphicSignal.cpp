@@ -53,7 +53,7 @@ const std::string IGraphicSignal::kThicknessDown = THICKNESS_DOWN;
 const string IGraphicSignal::kGraphicType("graph");
 const string ISGraphicSignal::kSGraphicType("fastgraph");
 
-IGraphicSignal::IGraphicSignal( const std::string& name, IObject* parent ) : IShape(name, parent),
+IGraphicSignal::IGraphicSignal( const std::string& name, IObject* parent ) : IObject(name, parent),
 	fCurveType(kRoundCurveType), fDrawLine(kDrawLineBoth), fThicknessMode(kThicknessCentered),
 	fIgnoreSignalColor(false),fPenIgnoreSignalColor(false)
 {
@@ -67,7 +67,7 @@ IGraphicSignal::IGraphicSignal( const std::string& name, IObject* parent ) : ISh
 //--------------------------------------------------------------------------
 void IGraphicSignal::setHandlers ()
 {
-	IShape::setHandlers();
+	IObject::setHandlers();
 	fGetMsgHandlerMap[""]					= TGetParamMsgHandler<SISignal>::create(fSignal);
 	fGetMsgHandlerMap[kdimension_GetMethod]	= getDimParamMsgHandler::create(this);
 	
@@ -169,7 +169,7 @@ void IGraphicSignal::set(const SISignal& s)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IGraphicSignal::set (const IMessage* msg )	
 {
-	MsgHandler::msgStatus status = IShape::set(msg);
+	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
 	if (msg->size() == 2) {

@@ -37,6 +37,7 @@
 #include "GraphicEffect.h"
 #include "IDate.h"
 #include "IMessageHandlers.h"
+#include "IShape.h"
 #include "ISignalHandlers.h"
 #include "IColor.h"
 #include "IPosition.h"
@@ -88,7 +89,7 @@ typedef class libmapping::SMARTP<ISignalNode>		SISignalNode;
 	synchronization, objects carry a flag to denote pending deletion. Real deletion is in charge
 	of the \c cleanup method.
 */
-class IObject : public IPosition, public IDate, public IColor, public EventsAble,
+class IObject : public IPosition, public IShape, public IDate, public IColor, public EventsAble,
 				public browsable, public TMapable, virtual public libmapping::smartable , public PeriodicTask
 {
 	public:
@@ -463,6 +464,7 @@ class IObject : public IPosition, public IDate, public IColor, public EventsAble
 
 		virtual void colorAble ();				///< \brief set the color message handlers 
 		virtual void positionAble ();			///< \brief set the position message handlers
+		virtual void shapeAble ();				///< \brief set the shape message handlers
 		virtual void timeAble ();				///< \brief set the time message handlers
 
 

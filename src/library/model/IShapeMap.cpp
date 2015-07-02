@@ -30,7 +30,7 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-IShapeMap::IShapeMap( const std::string& name, IObject* parent ) : IShape(name,parent)
+IShapeMap::IShapeMap( const std::string& name, IObject* parent ) : IObject(name,parent)
 {
 	fLocalMappings = TLocalMapping<float,2>::create();
 
