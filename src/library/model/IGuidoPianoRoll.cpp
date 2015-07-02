@@ -152,7 +152,7 @@ MsgHandler::msgStatus IGuidoPianoRoll::setRGBColorToVoice(const IMessage* msg)
 		fVoicesColor.clear();
 		const int voices = GuidoCountVoices(fArHandler);
 		for(int i = 1; i <= voices; i++) {
-			GuidoPianoRollSetRGBColorToVoice(fPianoRoll, i, 0, 0, 0, 255);
+			GuidoPianoRollRemoveColorToVoice(fPianoRoll, i);
 		}
 		return MsgHandler::kProcessed;
 	}
@@ -162,22 +162,15 @@ MsgHandler::msgStatus IGuidoPianoRoll::setRGBColorToVoice(const IMessage* msg)
 		int voice;
 		if (!msg->param(0, voice)) return MsgHandler::kBadParameters;
 		fVoicesColor.erase(voice);
-		GuidoPianoRollSetRGBColorToVoice(fPianoRoll, voice, 0, 0, 0, 255);
+		GuidoPianoRollRemoveColorToVoice(fPianoRoll, voice);
 		return MsgHandler::kProcessed;
 	}
 
-	if(size % 5 != 0)
-		return MsgHandler::kBadParameters;
 	int voice;
 	if (!msg->param(0, voice)) return MsgHandler::kBadParameters;
-	int r;
-	if (!msg->param(1, r)) return MsgHandler::kBadParameters;
-	int g;
-	if (!msg->param(2, g)) return MsgHandler::kBadParameters;
-	int b;
-	if (!msg->param(3, b)) return MsgHandler::kBadParameters;
-	int a;
-	if (!msg->param(4, a)) return MsgHandler::kBadParameters;
+
+	int r, g, b, a;
+	if(!IColor::getRGBA(msg, r, g, b, a, 1)) return MsgHandler::kBadParameters;
 
 	fVoicesColor[voice] = IColor(r, g, b, a);
 	GuidoPianoRollSetRGBColorToVoice(fPianoRoll, voice, r, g, b, a);
