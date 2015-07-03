@@ -67,7 +67,7 @@ typedef class libmapping::SMARTP<ISGraphicSignal>	SISGraphicSignal;
 /*!
 	\brief a data graphic representation  
 */
-class IGraphicSignal : public IShape
+class IGraphicSignal : public IObject
 {
 	SISignal		fSignal;
 	

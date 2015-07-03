@@ -30,8 +30,6 @@
 #include "VMappedShapeView.h"
 #include "MouseEventAble.h"
 
-#include <QGraphicsRectItem>
-
 namespace inscore
 {
 

@@ -143,7 +143,7 @@ VShapeView::VShapeView(QGraphicsScene * scene , QAbstractGraphicsShapeItem * abs
 }
 
 //----------------------------------------------------------------------
-void VShapeView::updateView( IShape * shape  )
+void VShapeView::updateView( IObject * shape  )
 {
 	QColor color(shape->getR(), shape->getG(), shape->getB() , shape->getA());
 	QPen pen = Qt::NoPen;

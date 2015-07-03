@@ -124,6 +124,7 @@ void IObject::setHandlers()
 {
 	colorAble();
 	positionAble();
+	shapeAble();
 	timeAble();
 }
 
@@ -241,6 +242,27 @@ void IObject::positionAble()
 	fMsgHandlerMap[kdrotatey_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYAngle);
 	fMsgHandlerMap[kdrotatez_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addAngle);
 
+}
+
+//--------------------------------------------------------------------------
+void IObject::shapeAble()
+{
+	fMsgHandlerMap[kpenColor_GetSetMethod]	= TMethodMsgHandler<IColor>::create(&fPenColor, &IColor::set);
+	fMsgHandlerMap[kpenAlpha_GetSetMethod]	= IColor::SetColorMsgHandler::create(&fPenColor, &IColor::setA, &IColor::setA);
+	fMsgHandlerMap[kpendAlpha_SetMethod]	= IColor::SetColorMsgHandler::create(&fPenColor, &IColor::dA, &IColor::dA);
+	fMsgHandlerMap[kpenWidth_GetSetMethod]	= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setPenWidth);
+	fMsgHandlerMap[kpenStyle_GetSetMethod]  = TSetMethodMsgHandler<IObject, string>::create(this, &IObject::setPenStyle);
+    fMsgHandlerMap[kbrushStyle_GetSetMethod]  = TSetMethodMsgHandler<IObject, string>::create(this, &IObject::setBrushStyle);
+	
+	fGetMsgHandlerMap[kpenWidth_GetSetMethod]	= TGetParamMsgHandler<float>::create(fPenWidth);
+	fGetMsgHandlerMap[kpenColor_GetSetMethod]	= TGetParamMsgHandler<IColor>::create(fPenColor);
+	fGetMsgHandlerMap[kpenAlpha_GetSetMethod]	= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(&fPenColor, &IColor::getA);
+	fGetMsgHandlerMap[kpenStyle_GetSetMethod]	= TGetParamMsgHandler<std::string>::create(fPenStyle);
+	fGetMsgHandlerMap[kbrushStyle_GetSetMethod]	= TGetParamMsgHandler<std::string>::create(fBrushStyle);
+
+    fSigHandlerMap[kpenAlpha_GetSetMethod]	= IColor::SetColorSigHandler::create(&fPenColor, &IColor::setA, &IColor::setA);
+	fSigHandlerMap[kpendAlpha_SetMethod]	= IColor::SetColorSigHandler::create(&fPenColor, &IColor::dA, &IColor::dA);
+	fSigHandlerMap[kpenWidth_GetSetMethod]	= TSetMethodSigHandler<IObject, float>::create(this, &IObject::setPenWidth);
 }
 
 //--------------------------------------------------------------------------
@@ -1008,29 +1030,35 @@ MsgHandler::msgStatus IObject::popMsg(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
-void IObject::transferAttributes(SIObject newobj)
+void IObject::transferAttributes(SIObject dest)
 {
-    //transfer of the attibutes
-    newobj->setXPos (getXPos());
-    newobj->setYPos (getYPos());
-    newobj->setXOrigin (getXOrigin());
-    newobj->setYOrigin (getYOrigin());
-    newobj->setScale (getScale());
-    newobj->setVisible (getVisible());
-    newobj->setZOrder (getZOrder());
-    newobj->setShear (getShear());
-    newobj->setRotateX (getRotateX());
-    newobj->setRotateY (getRotateY());
-    newobj->setRotateZ (getRotateZ());
-    newobj->setR(getR());
-    newobj->setG(getG());
-    newobj->setB(getB());
-    newobj->setA(getA());
-			
-    newobj->setDate (getDate());
-    newobj->setDuration (getDuration());
+    //transfer of the attributes of the current object to another object
+    dest->setXPos (getXPos());
+    dest->setYPos (getYPos());
+    dest->setXOrigin (getXOrigin());
+    dest->setYOrigin (getYOrigin());
+    dest->setScale (getScale());
+    dest->setVisible (getVisible());
+    dest->setZOrder (getZOrder());
+    dest->setShear (getShear());
 
-    *((EventsAble*)newobj) = *((EventsAble*)this);
+    dest->setRotateX (getRotateX());
+    dest->setRotateY (getRotateY());
+    dest->setRotateZ (getRotateZ());
+
+    dest->setR(getR());
+    dest->setG(getG());
+    dest->setB(getB());
+    dest->setA(getA());
+
+    dest->setPenWidth(getPenWidth());
+    dest->setPenColor(getPenColor());
+    dest->setPenStyle(getPenStyle());
+	
+    dest->setDate (getDate());
+    dest->setDuration (getDuration());
+
+    *((EventsAble*)dest) = *((EventsAble*)this);
     
     // transfer of the sync informations
 	for(unsigned int i = 0; i < fParent->elements().size(); i++)
@@ -1408,6 +1436,7 @@ void IObject::print (ostream& out) const
 	out << endl;
 	IPosition::print(out);
 	IColor::print(out);
+	IShape::print(out);
 	IDate::print(out);
 	out << " - display range [" << getDispStart() << "," << getDispEnd() << "]" << endl;
 	out << "  elements count: " << size() << endl;

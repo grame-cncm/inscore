@@ -1,8 +1,8 @@
 
-# fetch the version number directly in the cmake conf file
-VERSION = $(shell grep 'set .INSFWKVERS' ../../cmake/CMakeLists.txt | sed -e 's/[^0-9.]//g')
+# fetch the version number directly in the .pro file
+VERSION := $(shell grep '^VERSION' ../../build/library.pro | sed -e 's/[^0-9.]*//g')
 ALL = ALL-$(VERSION)
-LIB = IASL-$(VERSION)
+LIB = INScore-$(VERSION)
 	
 doc: lib all
 
@@ -10,13 +10,13 @@ lib:
 	doxygen Doxylib
 	-[ -d  $(LIB) ] && rm -rf $(LIB)
 	mkdir $(LIB)
-	cp -R libhtml $(LIB)/html
+	mv libhtml $(LIB)/html
 
 all:
 	doxygen Doxyall
 	-[ -d  $(ALL) ] && rm -rf $(ALL)
 	mkdir $(ALL)
-	cp -R allhtml $(ALL)/html
+	mv allhtml $(ALL)/html
 
 pdf:
 	make -C liblatex

@@ -27,9 +27,8 @@
 #ifndef __IShape__
 #define __IShape__
 
-#include "IObject.h"
-#include "maptypes.h"
-//#include "mapbuilder.h"
+#include "IColor.h"
+
 
 #define SOLID_STYLE			"solid"
 #define DASH_STYLE			"dash"
@@ -63,12 +62,12 @@ namespace inscore
 
 class Updater;
 class IShape;
-typedef class libmapping::SMARTP<IShape>	SIShape;
+
 //--------------------------------------------------------------------------
 /*!
 	\brief a basic geometric shape.
 */
-class IShape : public IObject
+class IShape
 {
 	public:
 		static const std::string kSolidStyle, kDashStyle, kDotStyle, kDashDotStyle, kDashDotDotStyle;	/// < Pen style supported values.
@@ -76,11 +75,10 @@ class IShape : public IObject
 
 
 	protected:
-		float		fPenWidth;	/// <Width of the pen used to draw the borders of the shape
-		IColor		fPenColor;	/// <Color of the pen used to draw the borders of the shape
+		float		fPenWidth;		/// <Width of the pen used to draw the borders of the shape
+		IColor		fPenColor;		/// <Color of the pen used to draw the borders of the shape
 		
-	private:
-        std::string fPenStyle;	/// <Style of the pen used to draw the borders of the shape
+        std::string fPenStyle;		/// <Style of the pen used to draw the borders of the shape
         std::string fBrushStyle;	/// <Style of the brush used to fill the shape
 
 	public:
@@ -95,10 +93,9 @@ class IShape : public IObject
         const std::string&	getBrushStyle() const		{ return fBrushStyle; }
 
 		virtual void	print(std::ostream& out) const;
-		virtual void	accept (Updater*);
 
 	protected:
-				 IShape( const std::string& name, IObject* parent );
+				 IShape();
 		virtual ~IShape() {}
 
 		/// \brief Sets the pen width

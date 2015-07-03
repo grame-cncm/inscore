@@ -63,12 +63,14 @@ VGraphicsItemView::VGraphicsItemView( QGraphicsScene * scene , QGraphicsItem * i
     fParent = 0;
     fNbMasters = 0;
 	fBrushColorStartIndex = 0;
+	fBoundingBox = 0;
 }
 
 //------------------------------------------------------------------------------------------------------------
 VGraphicsItemView::~VGraphicsItemView()
 {
 	deleteDebugItems();
+	delete fBoundingBox;
 
 	QList<QGraphicsItem*> children = fItem->childItems();	// Break all links with children
 	for (int i = 0 ; i < children.size() ; i++ )
@@ -87,7 +89,7 @@ VGraphicsItemView::~VGraphicsItemView()
     
     if(fItem->scene())
         fItem->scene()->removeItem( fItem );					// Remove the QGraphicsItem from the scene.
-	delete fItem;	
+	delete fItem;
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -154,44 +156,159 @@ void VGraphicsItemView::drawMapping(IObject* o)
 }
 
 //------------------------------------------------------------------------------------------------------------
+// pen style and brush control
+//------------------------------------------------------------------------------------------------------------
+#define DOT_LENGTH		0.5f
+#define DASH_LENGTH		3.0f
+#define SPACE_LENGTH	3.0f
+
+//----------------------------------------------------------------------
+void VGraphicsItemView::setQPenStyle(const std::string& penStyle , QPen& pen) const
+{
+	if ( penStyle == IShape::kSolidStyle )
+		pen.setStyle( Qt::SolidLine );
+	else if ( penStyle == IShape::kDotStyle ) {
+		pen.setStyle( Qt::CustomDashLine );
+		pen.setDashPattern(  QVector<qreal>() << DOT_LENGTH << SPACE_LENGTH );
+	}
+	else if ( penStyle == IShape::kDashStyle ) {
+		pen.setStyle( Qt::CustomDashLine );
+		pen.setDashPattern(  QVector<qreal>() << DASH_LENGTH << SPACE_LENGTH );
+	}
+	else if ( penStyle == IShape::kDashDotStyle ) {
+		pen.setStyle( Qt::CustomDashLine );
+		pen.setDashPattern(  QVector<qreal>() << DASH_LENGTH << SPACE_LENGTH << DOT_LENGTH << SPACE_LENGTH );
+	}
+	else if ( penStyle == IShape::kDashDotDotStyle ) {
+		pen.setStyle( Qt::CustomDashLine );
+		pen.setDashPattern(  QVector<qreal>() << DASH_LENGTH << SPACE_LENGTH << DOT_LENGTH << SPACE_LENGTH << DOT_LENGTH << SPACE_LENGTH );
+	}
+	else
+		pen.setStyle( Qt::SolidLine );
+}
+
+void VGraphicsItemView::setQBrushStyle(const std::string& brushStyle , QBrush& brush) const
+{
+    if ( brushStyle == IShape::kSolidBrushStyle )
+        brush.setStyle( Qt::SolidPattern );
+    else if ( brushStyle == IShape::kDense1BrushStyle )
+        brush.setStyle( Qt::Dense1Pattern );
+    else if ( brushStyle == IShape::kDense2BrushStyle )
+        brush.setStyle( Qt::Dense2Pattern );
+    else if ( brushStyle == IShape::kDense3BrushStyle )
+        brush.setStyle( Qt::Dense3Pattern );
+    else if ( brushStyle == IShape::kDense4BrushStyle )
+        brush.setStyle( Qt::Dense4Pattern );
+    else if ( brushStyle == IShape::kDense5BrushStyle )
+        brush.setStyle( Qt::Dense5Pattern );
+    else if ( brushStyle == IShape::kDense6BrushStyle )
+        brush.setStyle( Qt::Dense6Pattern );
+    else if ( brushStyle == IShape::kDense7BrushStyle )
+        brush.setStyle( Qt::Dense7Pattern );
+    else if ( brushStyle == IShape::kNoBrushStyle )
+        brush.setStyle( Qt::NoBrush );
+    else if ( brushStyle == IShape::kHorBrushStyle )
+        brush.setStyle( Qt::HorPattern );
+    else if ( brushStyle == IShape::kVerBrushStyle )
+        brush.setStyle( Qt::VerPattern );
+    else if ( brushStyle == IShape::kCrossBrushStyle )
+        brush.setStyle( Qt::CrossPattern );
+    else if ( brushStyle == IShape::kBDiagBrushStyle )
+        brush.setStyle( Qt::BDiagPattern );
+    else if ( brushStyle == IShape::kFDiagBrushStyle )
+        brush.setStyle( Qt::FDiagPattern );
+    else if ( brushStyle == IShape::kDiagCrossBrushStyle )
+        brush.setStyle( Qt::DiagCrossPattern );
+    else
+        brush.setStyle( Qt::SolidPattern );
+}
+
+//----------------------------------------------------------------------
+//void VGraphicsItemView::updateBoundingBox( IObject * object  )
+//{
+//	QColor color(object->getR(), object->getG(), object->getB() , object->getA());
+//	QPen pen = Qt::NoPen;
+//	if ( object->getPenWidth() > 0 )
+//	{
+//		pen = QPen( QColor(object->getPenColor().getR(), object->getPenColor().getG(), object->getPenColor().getB() , object->getPenColor().getA()) , object->getPenWidth() );
+//		setQPenStyle( object->getPenStyle() , pen );
+//        pen.setCapStyle( Qt::RoundCap );
+//		pen.setJoinStyle( Qt::RoundJoin );
+//	}
+//    
+//    
+//	if ( pen != fItem->pen() )
+//		fItem->setPen( pen );
+//	
+//	QBrush brush = QBrush(color);
+//	setQBrushStyle( object->getBrushStyle() , brush );
+//	fItem->setBrush( brush );
+//	itemChanged();
+//}
+
+//------------------------------------------------------------------------------------------------------------
 // Debug graphic feedback : displays the bounding rectangle and the object name for all the items
 //------------------------------------------------------------------------------------------------------------
-void VGraphicsItemView::drawNameAndBBox(IObject* o)
+void VGraphicsItemView::drawName(IObject* o)
 {	
 	if(fTilerItems.empty())
-    {
-        drawNameAndBBoxItem(o, item());
-    }
-    else
-    {
+        drawName(o, item());
+    else {
         std::map<SMaster, QStretchTilerItem *>::iterator i;
         for(i = fTilerItems.begin(); i != fTilerItems.end(); i++)
-        {
-            drawNameAndBBoxItem(o, i->second);
-        }
+            drawName(o, i->second);
     }
+}
+
+void VGraphicsItemView::drawBoundingBox(IObject* o)
+{	
+	if(fTilerItems.empty())
+        drawBoundingBox(o, item());
+    else {
+        std::map<SMaster, QStretchTilerItem *>::iterator i;
+        for(i = fTilerItems.begin(); i != fTilerItems.end(); i++)
+            drawBoundingBox(o, i->second);
+    }
+}
+
+//------------------------------------------------------------------------------------------------------------
+// Debug graphic feedback : displays the bounding rectangle and the object name for a given item
+//------------------------------------------------------------------------------------------------------------
+void VGraphicsItemView::drawName(IObject* o, QGraphicsItem* item)
+{
+        // Add an item for the bounding rect
+        QRectF bboxRectQt = fItem->boundingRect();
+
+        // Add an item for the name.
+        QGraphicsTextItem * textItem = new QGraphicsTextDebugItem( o->name().c_str() , item );
+        textItem->setDefaultTextColor( Qt::red );
+		textItem->setPos( bboxRectQt.x() , bboxRectQt.y() - textItem->boundingRect().height() );
 }
 
 
 //------------------------------------------------------------------------------------------------------------
 // Debug graphic feedback : displays the bounding rectangle and the object name for a given item
 //------------------------------------------------------------------------------------------------------------
-void VGraphicsItemView::drawNameAndBBoxItem(IObject* o, QGraphicsItem* item)
+void VGraphicsItemView::drawBoundingBox(IObject* o, QGraphicsItem* item)
 {
-        // Add an item for the bounding rect
-        QRectF bboxRectQt = fItem->boundingRect();
+	float w = o->getPenWidth();
+	if (w) {
+		w /= 2;
+		QRectF bboxRectQt = fItem->boundingRect();
+		bboxRectQt += QMarginsF(w,w,w,w);
+		if (!fBoundingBox) fBoundingBox = new QGraphicsRectItem( bboxRectQt, item);
+		QPen pen( QColor(o->getPenColor().getR(), o->getPenColor().getG(), o->getPenColor().getB() , o->getPenColor().getA()) , o->getPenWidth() );
+		setQPenStyle( o->getPenStyle() , pen );
+        pen.setCapStyle( Qt::RoundCap );
+		pen.setJoinStyle( Qt::RoundJoin );
 
-        QGraphicsRectItem * boundingRectItem = new QGraphicsRectDebugItem( bboxRectQt );
-        boundingRectItem->setPen( QPen( QBrush(Qt::red) , 0 , Qt::DashLine) );
-        boundingRectItem->setZValue( item->zValue() + 0.1f );
-        boundingRectItem->setParentItem(item);
-        //	item()->scene()->addItem( boundingRectItem );
-        fDebugItems << boundingRectItem;
-	
-        // Add an item for the name.
-        QGraphicsTextItem * textItem = new QGraphicsTextDebugItem( o->name().c_str() , boundingRectItem );
-        textItem->setDefaultTextColor( Qt::red );
-		textItem->setPos( bboxRectQt.x() , bboxRectQt.y() - textItem->boundingRect().height() );
+		fBoundingBox->setPen( pen );
+		fBoundingBox->setBrush( QBrush(Qt::NoBrush) );
+	}
+	else if (fBoundingBox) {
+		delete fBoundingBox;
+		fBoundingBox = 0;
+	}
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -302,6 +419,8 @@ void VGraphicsItemView::updateView(IObject* o)
 {
     setSlave(o);
 
+	// firt update the object shape
+	drawBoundingBox (o);
 	// slave mode: setup and use of fTilerItem
     for(std::map<SMaster, QStretchTilerItem*>::iterator i = fTilerItems.begin(); i != fTilerItems.end(); i++)
     {
@@ -360,7 +479,7 @@ void VGraphicsItemView::updateView(IObject* o)
 	if ( o->mapDebug() ) drawMapping (o);
 	// ----------------------------------------------------------------------------------------------
 	// Debug graphic feedback : displays the bounding rectangle and the object name
-	if ( o->nameDebug() ) drawNameAndBBox (o);
+	if ( o->nameDebug() ) drawName (o);
     
 }
 

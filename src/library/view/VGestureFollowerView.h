@@ -27,7 +27,7 @@
 #ifndef __VGestureFollowerView__
 #define __VGestureFollowerView__
 
-#include <QGraphicsRectItem>
+//#include <QGraphicsRectItem>
 
 #include "VMappedShapeView.h"
 #include "MouseEventAble.h"

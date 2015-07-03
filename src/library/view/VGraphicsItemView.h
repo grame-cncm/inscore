@@ -78,6 +78,7 @@ class VGraphicsItemView : public VObjectView
 		virtual ~VGraphicsItemView();
 
 		virtual void updateView(IObject * object);			// updates the object view
+//		virtual void updateBoundingBox( IObject * object  );// updates the object bounding box
 		virtual void updateObjectSize( IObject * object );	// updates the object size
 		//virtual void setParentView (IObject * object);		// updates the object parent view
 		virtual void setParentItem( VObjectView* parent )		{ setParentItem((VGraphicsItemView*)parent); }
@@ -119,9 +120,11 @@ class VGraphicsItemView : public VObjectView
 		VGraphicsItemView( QGraphicsScene * scene , QGraphicsItem * item );
 		
 		virtual void drawMapping (IObject* o);
-		virtual void drawNameAndBBox (IObject* o);
-        virtual void drawNameAndBBoxItem(IObject* o, QGraphicsItem* item);
-		virtual void updateTransform(IObject * object, QGraphicsItem* item);		// updates the object transform matrix
+		virtual void drawName (IObject* o);
+		virtual void drawName (IObject* o, QGraphicsItem* item);
+		virtual void drawBoundingBox (IObject* o);
+        virtual void drawBoundingBox (IObject* o, QGraphicsItem* item);
+		virtual void updateTransform (IObject * object, QGraphicsItem* item);		// updates the object transform matrix
 		
 		float getIObjectWidth() const { return scene2RelativeWidth( fItem->boundingRect().width() ); }		// Gives the object's width in interlude scene coordinates.
 		float getIObjectHeight() const { return scene2RelativeHeight( fItem->boundingRect().height() ); }	// Gives the object's height in interlude scene coordinates.
@@ -205,7 +208,13 @@ class VGraphicsItemView : public VObjectView
         /// \brief updates the attributes of the QItem
         void updateItem(QGraphicsItem* item, IObject* o);
 
-		QGraphicsItem * fItem;			/// \brief The QGraphicsItem used to render the IObject.
+		
+		// the methods below have been first implemented in VShapeView
+		// they moved here in order to support bounding boxes for all objects
+		void	setQPenStyle(const std::string& penStyle , QPen& pen) const;
+        void	setQBrushStyle(const std::string& brushStyle , QBrush& brush) const;
+
+		QGraphicsItem * fItem;								/// \brief The QGraphicsItem used to render the IObject.
 		std::map<SMaster, QStretchTilerItem *> fTilerItems; /// \brief The QTilerItem used when the object is a synchronized
         QList<QGraphicsItem*> fDebugItems;
 		int fBrushColorStartIndex;
@@ -215,6 +224,7 @@ class VGraphicsItemView : public VObjectView
     
         QGraphicsItem* fParent;
         QGraphicsScene* fScene;
+		QGraphicsRectItem * fBoundingBox;
 };
 typedef class libmapping::SMARTP<VGraphicsItemView>	SVGraphicsItemView;
 
