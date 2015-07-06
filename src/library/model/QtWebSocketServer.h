@@ -28,6 +28,7 @@
 
 #include <QTimer>
 #include <QWebSocketServer>
+#include <QReadWriteLock>
 #include "WebApi.h"
 
 QT_FORWARD_DECLARE_CLASS(QWebSocket)
@@ -54,6 +55,7 @@ class QtWebSocketServer : public QWebSocketServer
 		unsigned long		fScreenVersion;			///< version number of the screen
 		int					fFrequency;				///< the time task frequency
 		WebApi *			fWebApi;				///< the WebApi object to execute reqeuest
+		QReadWriteLock		fLock;					///< mutex used to stop server correctly.
 
 	public:
 		/*!

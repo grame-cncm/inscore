@@ -55,8 +55,6 @@ IWebSocket::~IWebSocket()
 //-------------------------------------------------------------------------------
 void IWebSocket::del()
 {
-	delete fWebServer;
-	fWebServer = 0;
 	IObject::del();
 }
 

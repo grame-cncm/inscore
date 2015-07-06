@@ -76,9 +76,12 @@ bool QtWebSocketServer::start(int port)
 void QtWebSocketServer::stop()
 {
 	fTimer.stop ();
+	// Wait for the end of all client responses
+	fLock.lockForWrite();
 	close();										// close the server
 	qDeleteAll(fClients.begin(), fClients.end());	// and delete all the clients.
 	fClients.clear();
+	fLock.unlock();
 }
 
 //-------------------------------------------------------------------------------
@@ -106,6 +109,8 @@ void QtWebSocketServer::socketDisconnected()
 //-------------------------------------------------------------------------------
 void QtWebSocketServer::timeTask()
 {
+	// lock for read to not close server before end of this method
+	fLock.lockForRead();
 	unsigned int version = fWebApi->getVersion();
 	if(version != fScreenVersion) {		// check for view updates
 		fScreenVersion = version;
@@ -125,11 +130,14 @@ void QtWebSocketServer::timeTask()
 			(*i)->sendTextMessage(message);
 		}
 	}
+	fLock.unlock();
 }
 
 //-------------------------------------------------------------------------------
 void QtWebSocketServer::processTextMessage(QString message)
 {
+	// lock for read to not close server before end of this method
+	fLock.lockForRead();
 	QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
 	if (pClient) {
 		// Transform request in json object.
@@ -162,9 +170,11 @@ void QtWebSocketServer::processTextMessage(QString message)
 		std::ostringstream mystream;
 		json_stream jstream(mystream);
 		response->print(jstream);
+		qDebug() << "pClient->sendTextMessage(mystream.str().c_str())";
 		pClient->sendTextMessage(mystream.str().c_str());
 		delete response;
 	}
+	fLock.unlock();
 }
 
 //-------------------------------------------------------------------------------
