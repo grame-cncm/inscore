@@ -43,8 +43,8 @@ Response
 **With websocket server**
 	* In case of success :
 
-A JSON object with an 'id' containing the request identifier, the response status and a field ``file`` with the file data encoded in a base64 string.
-   | Example : ``{id : "4894", status : "OK", file : "A5Nh63dsB..."}``
+A JSON object with an 'id' containing the request identifier, the response status, the mime type of the file and a field ``file`` with the file data encoded in a base64 string.
+   | Example : ``{id : "4894", status : "OK", mimeType : "application/pdf", file : "A5Nh63dsB..."}``
 
 	* In case of error :
 

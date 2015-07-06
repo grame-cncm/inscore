@@ -10,6 +10,18 @@ Two types of objects are available :
 
 This objects can :doc:`get` (like score version and screen image) or :doc:`post` to update the score.
 
+This is a RESTful web service with HTTP server. Each service is identified by a path and a http method. The GET HTTP method is used to retrieve data and the POST method is used to send data. 
+
+As websockets don't use path, a JSON object construct the request and is send to the server. The `method` field identify the service (like http path). Websocket responses are asychronous, a request id must be provided in the request. He is added in the response of the server.
+
+`Comparison of the request to get score image between http and websocket:`
+
+======================  ===============================================
+ HTTP		          websocket
+======================  ===============================================
+serverURL/``image``	  { id="1", method="``image``" }
+======================  ===============================================
+
 **Websocket specificities:**
 
 With it's bidirectional communication, the websocket server sends notifications with the screen version number when the score changes. Note that websocket responses are asynchronous, that's why an 'id' is introduced in JSON objects, that is send back with the response.
