@@ -40,6 +40,7 @@
 #include "VRectView.h"
 #include "VGridView.h"
 #include "VLayerView.h"
+#include "VPianoRollView.h"
 #include "VSceneView.h"
 #include "VSVGView.h"
 #include "VTextView.h"
@@ -56,6 +57,8 @@ VObjectView*	ViewFactory::create (const IGestureFollower* object,  QGraphicsScen
 VObjectView*	ViewFactory::create (const IGraphicSignal* object,  QGraphicsScene* scene)	{ return new VGraphView (scene, object); }
 VObjectView*	ViewFactory::create (const ISGraphicSignal* object, QGraphicsScene* scene)	{ return new VSGraphView (scene, object); }
 VObjectView*	ViewFactory::create (const IGuidoCode* object,	QGraphicsScene* scene)		{ return new VGuidoItemView (scene, object); }
+VObjectView*	ViewFactory::create (const IGuidoPianoRoll* object,	QGraphicsScene* scene)	{ return new VPianoRollView (scene, object); }
+VObjectView*	ViewFactory::create (const IGuidoPianoRollStream* object, QGraphicsScene* scene) { return new VPianoRollView (scene, object); }
 VObjectView*	ViewFactory::create (const IGuidoFile* object,	QGraphicsScene* scene)		{ return new VGuidoItemView (scene, object); }
 VObjectView*	ViewFactory::create (const IMusicXMLCode* object, QGraphicsScene* scene)	{ return new VGuidoItemView (scene, object); }
 VObjectView*	ViewFactory::create (const IMusicXMLFile* object, QGraphicsScene* scene)	{ return new VGuidoItemView (scene, object); }
