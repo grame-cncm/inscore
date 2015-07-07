@@ -151,7 +151,15 @@ extern "C" {
         \return a Guido error code
 	*/
 	GUIDOAPI(GuidoErrCode)      GuidoPianoRollSetHtmlColorToVoice(PianoRoll *pr, int voiceNum, long color);
-    
+
+	/*!
+		\brief remove a color to a voice (first voice is number 1) (black by default)
+		\param pr a pianoroll previously created with GuidoAR2PianoRoll or GuidoMidi2PianoRoll
+		\param voiceNum the voice number (first voice is number 1)
+		\return a Guido error code
+	*/
+	GUIDOAPI(GuidoErrCode)      GuidoPianoRollRemoveColorToVoice(PianoRoll *pr, int voiceNum);
+
     /*!
 		\brief Enables or not measure bars (false by default)
 		\param pr a pianoroll previously created with GuidoAR2PianoRoll or GuidoMidi2PianoRoll
@@ -178,7 +186,7 @@ extern "C" {
         \param height the height of the canvas (-1 to set the default height : 512)
         \return a Guido error code (returns guidoErrBadParameter if keyboard width is higher than width param)
 	*/
-    GUIDOAPI(GuidoErrCode)      GuidoPianoRollGetMap(PianoRoll *pr, int width, int height, Time2GraphicMap &outmap);
+    GUIDOAPI(GuidoErrCode)      GuidoPianoRollGetMap(const PianoRoll *pr, int width, int height, Time2GraphicMap &outmap);
 
 	/*!
 		\brief Draw the piano roll on a VGDevice
