@@ -167,13 +167,7 @@ void VGuidoItemView::updateView( IGuidoCode * guidoCode  )
 //----------------------------------------------------------------------
 bool VGuidoItemView::gmnUpdate (IGuidoCode* guidoCode)
 {
-    IGuidoStream * guidoStream = dynamic_cast<IGuidoStream *>(guidoCode);
-    IGuidoPianoRoll * guidoPRoll = dynamic_cast<IGuidoPianoRoll*>(guidoCode);
-    if(guidoPRoll)
-    {
-        fGuidoItem->setPianoRoll(guidoPRoll->getPianoRoll());
-    }
-    
+    IGuidoStream * guidoStream = dynamic_cast<IGuidoStream *>(guidoCode);    
     
     if(guidoStream)
     {

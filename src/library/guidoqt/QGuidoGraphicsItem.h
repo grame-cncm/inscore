@@ -76,10 +76,6 @@ class QGuidoGraphicsItem : public QGraphicsObject
 		*/
         bool setGMNStream(GuidoStream * gmnStream);
     
-		/**	\brief Sets the PianoRoll and the boolean fIsPianoRoll to true
-		*	\param pRoll the PianoRoll object
-		*/
-        void setPianoRoll(PianoRoll * pRoll);
     
 		/**	\brief Returns the current Guido code.
 		*
@@ -186,9 +182,6 @@ class QGuidoGraphicsItem : public QGraphicsObject
 	
 		QGuidoPainter * mGuidoPainter;
 		QPageManager * mPageManager;
-    
-        PianoRoll * fPianoRoll;
-        bool fIsPianoRoll;
 };
 
 #endif //QGuidoGraphicsItem_H
