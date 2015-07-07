@@ -48,6 +48,9 @@ IGuidoPianoRoll::IGuidoPianoRoll( const std::string& name, IObject * parent )
 	fAutoVoiceColor = false;
 	fMeasureBars = false;
 	fPitchLines = kAutoLines;
+	setWidth(1);
+	setHeight(0.5);
+	setColor(IColor(0,0,0,255));
 
 	fGetMsgHandlerMap[ktype_GetSetMethod]	= TGetParamMethodHandler<IGuidoPianoRoll, string (IGuidoPianoRoll::*)() const>::create(this, &IGuidoPianoRoll::getPianoRollType);
 	fMsgHandlerMap[ktype_GetSetMethod]		= TMethodMsgHandler<IGuidoPianoRoll>::create(this, &IGuidoPianoRoll::setPianoRollType);
@@ -143,17 +146,23 @@ void IGuidoPianoRoll::enableAutoVoicesColoration(bool enable)
 }
 
 //--------------------------------------------------------------------------
+void IGuidoPianoRoll::resetVoicesColor()
+{
+	fVoicesColor.clear();
+	const int voices = GuidoCountVoices(fArHandler);
+	for(int i = 1; i <= voices; i++) {
+		GuidoPianoRollSetRGBColorToVoice(fPianoRoll, i, getR(), getG(), getB(), getA());
+	}
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus IGuidoPianoRoll::setRGBColorToVoice(const IMessage* msg)
 {
 	const int size = msg->size();
 
 	if(size == 0) {
-		// reset color of all voice to black
-		fVoicesColor.clear();
-		const int voices = GuidoCountVoices(fArHandler);
-		for(int i = 1; i <= voices; i++) {
-			GuidoPianoRollSetRGBColorToVoice(fPianoRoll, i, 0, 0, 0, 255);
-		}
+		// reset color of all voice to the object color
+		resetVoicesColor ();
 		return MsgHandler::kProcessed;
 	}
 

@@ -27,6 +27,7 @@
 #define __IGuidoPianoRoll__
 
 #include <string>
+
 #include "IGuidoCode.h"
 #include "GUIDOPianoRoll.h"
 
@@ -130,6 +131,8 @@ class IGuidoPianoRoll : public virtual IGuidoCode
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
+	
+		virtual void resetVoicesColor();
 
 	private:
 		/*!
@@ -143,11 +146,11 @@ class IGuidoPianoRoll : public virtual IGuidoCode
 		// Pianoroll display settings
 		PianoRollType fType;
 		LimitParams fLimits;
-		bool fKeyboard;
-		bool fAutoVoiceColor;
+		bool		fKeyboard;
+		bool		fAutoVoiceColor;
 		std::map<int, IColor> fVoicesColor;
-		bool fMeasureBars;
-		int fPitchLines;
+		bool		fMeasureBars;
+		int			fPitchLines;
 };
 
 /*! @} */
