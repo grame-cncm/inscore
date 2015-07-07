@@ -69,6 +69,7 @@ class export Updater : public libmapping::smartable
 		virtual void updateTo (ISVG*) {}
 		virtual void updateTo (ISVGFile*) {}
 		virtual void updateTo (IGuidoCode*) {}
+		virtual void updateTo (IGuidoPianoRoll*) {}
 		virtual void updateTo (IImage*) {}
 		virtual void updateTo (IGestureFollower*) {}
 		virtual void updateTo (IGraphicSignal*) {}

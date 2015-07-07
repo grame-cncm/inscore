@@ -40,6 +40,7 @@
 #include "ISVGFile.h"
 #include "ISync.h"
 #include "IUrlIntermediateObject.h"
+#include "IGuidoPianoRoll.h"
 
 namespace inscore
 {
@@ -138,6 +139,7 @@ class IMappingUpdater : public SlaveMapUpdater
 		inline  void updateTo (ISVG* o)				{ updateIObject ( (IObject*)o); }
 		inline  void updateTo (ISVGFile* o)			{ updateIObject ( (IObject*)o); }
 		inline	void updateTo (IGuidoCode* o)		{ updateIObject ( (IObject*)o); }
+		inline	void updateTo (IGuidoPianoRoll* o)	{ updateIObject ( (IObject*)o); }
 		inline  void updateTo (IGuidoFile* o)		{ updateIObject ( (IObject*)o); }
 		inline	void updateTo (IGraphicSignal* o)	{ updateIObject ( (IObject*)o); }
         inline	void updateTo (IRect * o)			{ updateIObject ( (IObject*)o); }
