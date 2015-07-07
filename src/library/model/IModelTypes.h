@@ -72,6 +72,12 @@ typedef class libmapping::SMARTP<ILayer> SILayer;
     
 class IGuidoCode;
 typedef class libmapping::SMARTP<IGuidoCode>	SIGuidoCode;
+    
+class IGuidoPianoRoll;
+typedef class libmapping::SMARTP<IGuidoPianoRoll> SIGuidoPianoRoll;
+
+class IGuidoPianoRollStream;
+typedef class libmapping::SMARTP<IGuidoPianoRollStream> SIGuidoPianoRollSream;
 
 class IGuidoFile;
 typedef class libmapping::SMARTP<IGuidoFile>	SIGuidoFile;
