@@ -140,8 +140,6 @@ class IGuidoPianoRoll : public virtual IGuidoCode
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 	
-		virtual void resetVoicesColor();
-
 		ARHandler fArHandler;
 		PianoRoll * fPianoRoll;
 
