@@ -52,26 +52,24 @@ IGuidoPianoRoll::IGuidoPianoRoll( const std::string& name, IObject * parent )
 	setHeight(0.5);
 	setColor(IColor(0,0,0,255));
 
-	fGetMsgHandlerMap[kcliptime_GetSetMethod]	= TGetParamMethodHandler<IGuidoPianoRoll, string (IGuidoPianoRoll::*)() const>::create(this, &IGuidoPianoRoll::getClipTime);
+	fMsgHandlerMap[kwidth_GetSetMethod]		= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setWidth);
+	fMsgHandlerMap[kheight_GetSetMethod]	= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setHeight);
 	fMsgHandlerMap[kcliptime_GetSetMethod]	= TMethodMsgHandler<IGuidoPianoRoll>::create(this, &IGuidoPianoRoll::setClipTime);
-
-	fGetMultiMsgHandlerMap[kclippitch_GetSetMethod]	= TGetParamMultiMethodHandler<IGuidoPianoRoll, SIMessageList (IGuidoPianoRoll::*)() const>::create(this, &IGuidoPianoRoll::getClipPitch);
 	fMsgHandlerMap[kclippitch_GetSetMethod]	= TMethodMsgHandler<IGuidoPianoRoll>::create(this, &IGuidoPianoRoll::setClipPitch);
+	fMsgHandlerMap[kclippitch_GetSetMethod]	= TMethodMsgHandler<IGuidoPianoRoll>::create(this, &IGuidoPianoRoll::setClipPitch);
+	fMsgHandlerMap[kkeyboard_GetSetMethod]	= TSetMethodMsgHandler<IGuidoPianoRoll, bool>::create(this, &IGuidoPianoRoll::enableKeyboard);
+	fMsgHandlerMap[kmeasureBars_GetSetMethod]= TSetMethodMsgHandler<IGuidoPianoRoll, bool>::create(this, &IGuidoPianoRoll::enableMeasureBars);
+	fMsgHandlerMap[kvoiceColor_GetSetMethod] = TMethodMsgHandler<IGuidoPianoRoll>::create(this, &IGuidoPianoRoll::setRGBColorToVoice);
+	fMsgHandlerMap[kpitchLines_GetSetMethod] = TMethodMsgHandler<IGuidoPianoRoll>::create(this, &IGuidoPianoRoll::setPitchLinesDisplayMode);
+	fMsgHandlerMap[kautoVoicesColoration_GetSetMethod]	= TSetMethodMsgHandler<IGuidoPianoRoll, bool>::create(this, &IGuidoPianoRoll::enableAutoVoicesColoration);
 
+	fGetMsgHandlerMap[kcliptime_GetSetMethod] = TGetParamMethodHandler<IGuidoPianoRoll, string (IGuidoPianoRoll::*)() const>::create(this, &IGuidoPianoRoll::getClipTime);
+	fGetMultiMsgHandlerMap[kclippitch_GetSetMethod]	= TGetParamMultiMethodHandler<IGuidoPianoRoll, SIMessageList (IGuidoPianoRoll::*)() const>::create(this, &IGuidoPianoRoll::getClipPitch);
 	fGetMsgHandlerMap[kkeyboard_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fKeyboard);
-	fMsgHandlerMap[kkeyboard_GetSetMethod]		= TSetMethodMsgHandler<IGuidoPianoRoll, bool>::create(this, &IGuidoPianoRoll::enableKeyboard);
-
 	fGetMsgHandlerMap[kautoVoicesColoration_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fAutoVoiceColor);
-	fMsgHandlerMap[kautoVoicesColoration_GetSetMethod]		= TSetMethodMsgHandler<IGuidoPianoRoll, bool>::create(this, &IGuidoPianoRoll::enableAutoVoicesColoration);
-
 	fGetMsgHandlerMap[kmeasureBars_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fMeasureBars);
-	fMsgHandlerMap[kmeasureBars_GetSetMethod]		= TSetMethodMsgHandler<IGuidoPianoRoll, bool>::create(this, &IGuidoPianoRoll::enableMeasureBars);
-
 	fGetMultiMsgHandlerMap[kvoiceColor_GetSetMethod]	= TGetParamMultiMethodHandler<IGuidoPianoRoll, SIMessageList (IGuidoPianoRoll::*)() const>::create(this, &IGuidoPianoRoll::getRGBColorToVoice);
-	fMsgHandlerMap[kvoiceColor_GetSetMethod]	= TMethodMsgHandler<IGuidoPianoRoll>::create(this, &IGuidoPianoRoll::setRGBColorToVoice);
-
 	fGetMsgHandlerMap[kpitchLines_GetSetMethod]	= TGetParamMethodHandler<IGuidoPianoRoll, string (IGuidoPianoRoll::*)() const>::create(this, &IGuidoPianoRoll::getPitchLinesDisplayMode);
-	fMsgHandlerMap[kpitchLines_GetSetMethod]	= TMethodMsgHandler<IGuidoPianoRoll>::create(this, &IGuidoPianoRoll::setPitchLinesDisplayMode);
 }
 
 IGuidoPianoRoll::~IGuidoPianoRoll()
