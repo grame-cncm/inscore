@@ -57,23 +57,31 @@ class IGuidoPianoRoll : public virtual IGuidoCode
 		PianoRoll * getPianoRoll() {return fPianoRoll;}
     
 		/*!
-		 * \brief setPianoRollType set the pianoroll type.
-		 * \param msg a message with a unique string parameter ("simple" or "trajectory").
-		 * \return the message status
+		 * \brief getClipTime get the current time limits.
+		 * \return
 		 */
-		MsgHandler::msgStatus setPianoRollType(const IMessage *msg);
+		std::string getClipTime() const;
 
 		/*!
-		 * \brief getPianoRollType get the pianoroll type in string format
-		 * \return "simple" or "trajectory"
+		 * \brief setClipTime Set limits in time to pianoroll.
+		 * \param msg a message with two date or an empty message to go back to default value.
+		 * \return
 		 */
-		std::string getPianoRollType() const;
+		MsgHandler::msgStatus setClipTime(const IMessage *msg);
 
 		/*!
-		 * \brief setLimits
-		 * \param lp
+		 * \brief getClipPitch get the current pitch limits.
+		 * \return
 		 */
-		void setLimits(LimitParams lp);
+		SIMessageList getClipPitch() const;
+
+		/*!
+		 * \brief setClipPitch Set limits to pianoroll pitch
+		 * \param msg a message with 2 int parameters, the pitch limits in midi value.
+		 * If message has no value, default value are set (-1);
+		 * \return
+		 */
+		MsgHandler::msgStatus setClipPitch(const IMessage *msg);
 
 		/*!
 		 * \brief enableKeyboard Enable keyboard display.
@@ -134,17 +142,16 @@ class IGuidoPianoRoll : public virtual IGuidoCode
 	
 		virtual void resetVoicesColor();
 
+		ARHandler fArHandler;
+		PianoRoll * fPianoRoll;
+
 	private:
 		/*!
 		 * \brief applyAllSettings update pianoroll with the display settings
 		 */
 		void applyAllSettings();
 
-		ARHandler fArHandler;
-		PianoRoll * fPianoRoll;
-
 		// Pianoroll display settings
-		PianoRollType fType;
 		LimitParams fLimits;
 		bool		fKeyboard;
 		bool		fAutoVoiceColor;

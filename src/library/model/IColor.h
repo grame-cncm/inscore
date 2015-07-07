@@ -51,12 +51,10 @@ class IColor
 	bool fModified;				///< the modification state
 
 	void setParam( int& param , int value , int min , int max , bool isHSV );
-	bool getRGBA( const IMessage* msg, int& r, int& g, int& b, int& a);
-	bool getHSBA( const IMessage* msg, int& h, int& s, int& b, int& a);
 
-	inline int floatRGB2int (float a)	{ return int((a+1)*255/2); }
-	inline int floatH2int (float h)		{ h*=180; return int(h >=0 ? h : 360+h); }
-	inline int floatSV2int (float v)	{ return int((v+1)*50); }
+	static inline int floatRGB2int (float a)	{ return int((a+1)*255/2); }
+	static inline int floatH2int (float h)		{ h*=180; return int(h >=0 ? h : 360+h); }
+	static inline int floatSV2int (float v)	{ return int((v+1)*50); }
 
 	public:		
 				 IColor() : fR(0), fG(0), fB(0), fA(255), fModified(true) { updateHSV(); }
@@ -138,7 +136,20 @@ class IColor
 		void updateRGB();
 
 		void print (std::ostream& out) const;
-	
+
+		/*!
+		 * \brief getRGBA get RGBA values from a message.
+		 * \param msg a message
+		 * \param r output value for red
+		 * \param g output value for green
+		 * \param b output value for blue
+		 * \param a output value for alpha.
+		 * \param startIndex index of the first variable of the color in message.
+		 * \return true if message is correct or false.
+		 */
+		static bool getRGBA(const IMessage* msg, int& r, int& g, int& b, int& a, int startIndex = 0);
+		static bool getHSBA( const IMessage* msg, int& h, int& s, int& b, int& a, int startIndex = 0);
+
 		// R,G,B in [0,255], H in [0,360] and SV in [0,255]
 		static void rgb2hsv(int ir , int ig , int ib , int* H, int* S, int* V);
 		static void hsv2rgb( int  *r, int *g,int *b, int h, int s, int v );

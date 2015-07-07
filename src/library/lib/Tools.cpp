@@ -23,12 +23,13 @@
 #pragma warning (disable : 4996)
 #endif
 
-#include <stdio.h>
 #include <iostream>
 #include <sstream>
 
 #include "ip/NetworkingUtils.h"
 #include "Tools.h"
+#include "IMessage.h"
+#include "rational.h"
 
 #ifndef WIN32
 #include <unistd.h>
@@ -98,17 +99,6 @@ bool Tools::regexp (const string& str)
 
 //--------------------------------------------------------------------------
 /**
- *	Convert a string to a rational value.
- */
-rational Tools::str2rational (const std::string& rationalstr)
-{
-	int num, d;
-	int n = sscanf (rationalstr.c_str(), "%d/%d", &num, &d);
-	return (n == 2) ? rational (num, d) : rational (0,0);
-}
-
-//--------------------------------------------------------------------------
-/**
  *	Convert a float into a string.
  *	Ensure a float representation for integer values.
  */
@@ -127,5 +117,38 @@ string Tools::ensurefloat (float f, int precision)
 	return stream.str();
 }
 
+//--------------------------------------------------------------------------
+libmapping::rational Tools::readRational(const IMessage *msg, bool twoPart, int startIndex)
+{
+	libmapping::rational out(0, 0);
+	if ( !twoPart ) {
+		int n; float nf; std::string datestr;
+		if (msg->param(startIndex, n)) out = libmapping::rational(n,1);
+		else if (msg->param(startIndex, nf)) out = libmapping::rational(int(nf*10000),10000);
+		else if (msg->param(startIndex, datestr)) {
+			libmapping::rational date(datestr);
+			if (date.getDenominator()) out = date;
+		}
+		else return out;
+	} else {
+		int n, d;
+		if ( !msg->param(startIndex, n) || !msg->param(startIndex + 1, d)) return out;
+		out = libmapping::rational(n,d);
+	}
+	return out;
+}
+
+RationalInterval Tools::readRationalInterval(const IMessage *msg, bool twoPart, int startIndex)
+{
+	libmapping::rational start, end;
+	if(twoPart) {
+		start = readRational(msg, twoPart, startIndex);
+		end = readRational(msg, twoPart, startIndex + 2);
+	} else {
+		start = readRational(msg, twoPart, startIndex);
+		end = readRational(msg, twoPart, startIndex + 1);
+	}
+	return RationalInterval(start, end);
+}
 
 } // end namespace

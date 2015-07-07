@@ -36,43 +36,43 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------------
-bool IColor::getRGBA( const IMessage* msg, int& r, int& g, int& b, int& a)
+bool IColor::getRGBA( const IMessage* msg, int& r, int& g, int& b, int& a, int startIndex)
 {
 	int n = msg->size();
-	if ((n < 3) || (n > 4)) return false;
+	if ((n < 3 + startIndex) || (n > 4 + startIndex)) return false;
 	float fr, fg, fb, fa = 1.;
 	a = 255;
-	if (msg->param(0, fr) && msg->param(1, fg) && msg->param(2, fb)) {
-		if ((n == 4) && !msg->param(3, fa)) return false;
+	if (msg->param(startIndex, fr) && msg->param(1 + startIndex, fg) && msg->param(2 + startIndex, fb)) {
+		if ((n == 4 + startIndex) && !msg->param(3 + startIndex, fa)) return false;
 		r = floatRGB2int(fr);
 		g = floatRGB2int(fg);
 		b = floatRGB2int(fb);
 		a = floatRGB2int(fa);
 	}
 	else {
-		if (!msg->param(0, r) || !msg->param(1, g) || !msg->param(2, b)) return false;
-		if ((n == 4) && !msg->param(3, a)) return false;
+		if (!msg->param(startIndex, r) || !msg->param(1 + startIndex, g) || !msg->param(2 + startIndex, b)) return false;
+		if ((n == 4 + startIndex) && !msg->param(3 + startIndex, a)) return false;
 	}
 	return true;
 }
 
 //--------------------------------------------------------------------------------
-bool IColor::getHSBA( const IMessage* msg, int& h, int& s, int& b, int& a)
+bool IColor::getHSBA( const IMessage* msg, int& h, int& s, int& b, int& a, int startIndex)
 {
 	int n = msg->size();
-	if ((n < 3) || (n > 4)) return false;
+	if ((n < 3 + startIndex) || (n > 4 + startIndex)) return false;
 	float fh, fs, fb, fa = 1.;
 	a = 255;
-	if (msg->param(0, fh) && msg->param(1, fs) && msg->param(2, fb)) {
-		if ((n == 4) && !msg->param(3, fa)) return false;
+	if (msg->param(startIndex, fh) && msg->param(1 + startIndex, fs) && msg->param(2 + startIndex, fb)) {
+		if ((n == 4 + startIndex) && !msg->param(3 + startIndex, fa)) return false;
 		h = floatH2int(fh);
 		s = floatSV2int(fs);
 		b = floatSV2int(fb);
 		a = floatRGB2int(fa);
 	}
 	else {
-		if (!msg->param(0, h) || !msg->param(1, s) || !msg->param(2, b)) return false;
-		if ((n == 4) && !msg->param(3, a)) return false;
+		if (!msg->param(0 + startIndex, h) || !msg->param(1 + startIndex, s) || !msg->param(2 + startIndex, b)) return false;
+		if ((n == 4 + startIndex) && !msg->param(3 + startIndex, a)) return false;
 	}
 	return true;
 }

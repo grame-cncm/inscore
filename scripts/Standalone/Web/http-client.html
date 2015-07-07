@@ -140,7 +140,6 @@ function UploadFile(e) {
 	if (ext == "inscore"){
 		reader.readAsText(file);
 		reader.onloadend = function(e) {
-			alert(reader.result);
 			sendCommands(reader.result);
 		}
 	}
@@ -188,9 +187,9 @@ function UploadFile(e) {
 			Type an OSC message script to submit to the websocket server :
 			<span class="inputelement">
 <textarea id="cmd" rows="5" cols="50">
-/ITL/scene/text set txt "Test text message";
-/ITL/scene/text fontStyle "italic";
-/ITL/scene/text fontSize 25;
+/ITL/scene/newtext set txt "Test text message";
+/ITL/scene/newtext fontStyle "italic";
+/ITL/scene/newtext fontSize 25;
 </textarea>
 			<input name="submit2" type="button" value="submit" onclick="javascript:sendCommands(document.forms['myform'].cmd.value);return false;"/>
 			</span>
