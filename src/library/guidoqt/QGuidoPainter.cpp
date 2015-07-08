@@ -364,7 +364,8 @@ GuidoErrCode QGuidoPainter::drawPianoRoll(QPainter *painter, const QRect& drawRe
 
 	//Actual draw of the Guido Score.
 	VGColor color(fCurrentColor.red(), fCurrentColor.green(), fCurrentColor.blue(), fCurrentColor.alpha());
-	dev->SelectPenColor (color);
+	VGColor pcolor(fCurrentPenColor.red(), fCurrentPenColor.green(), fCurrentPenColor.blue(), fCurrentPenColor.alpha());
+	dev->SelectPenColor (pcolor);
 	dev->SelectFillColor(color);
 	dev->SetFontColor	(color);
     GuidoErrCode result = GuidoPianoRollOnDraw(pianoRoll, drawRectangle.width(), drawRectangle.height(), dev);
@@ -514,4 +515,6 @@ void QGuidoPainter::setPathsToARHandler(ARHandler inARHandler, const char* path)
 //-------------------------------------------------------------------------
 void QGuidoPainter::setScoreColor(const QColor& color)	{ fCurrentColor = color; }
 const QColor& QGuidoPainter::getScoreColor() const		{ return fCurrentColor; }
+void QGuidoPainter::setPenColor(const QColor& color)	{ fCurrentPenColor = color; }
+const QColor& QGuidoPainter::getPenColor() const		{ return fCurrentPenColor; }
 

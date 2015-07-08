@@ -182,7 +182,11 @@ class QGuidoPainter
 		void setScoreColor(const QColor& color);
 		/// \brief returns the color used to draw the score
 		const QColor& getScoreColor() const;
-		
+		/// \brief sets the color used to draw the lines
+		void setPenColor(const QColor& color);
+		/// \brief returns the color used to draw the lines
+		const QColor& getPenColor() const;
+	
 		/// \brief sets the minimum systems distance to its default value
 		void  resetSystemsDistance()	{ setSystemsDistance(kDefaultSystemDistance); }
 		/// \brief sets the minimum systems distance
@@ -243,7 +247,8 @@ class QGuidoPainter
 		GuidoPageFormat mPageFormat;
 
 		QColor fCurrentColor;		// the color for drawing the score
-        
+		QColor fCurrentPenColor;	// the color for drawing lines
+	
         GuidoParser *fParser;
 };
 
