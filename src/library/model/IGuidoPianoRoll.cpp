@@ -48,6 +48,13 @@ IGuidoPianoRoll::IGuidoPianoRoll( const std::string& name, IObject * parent )
 	fAutoVoiceColor = false;
 	fMeasureBars = false;
 	fPitchLines = kAutoLines;
+	fLimits.lowPitch = -1;
+	fLimits.highPitch = -1;
+	GuidoDate init;
+	init.num = 0;
+	init.denom = 0;
+	fLimits.startDate = init;
+	fLimits.endDate = init;
 	setWidth(1);
 	setHeight(0.5);
 	setColor(IColor(0,0,0,255));
@@ -254,7 +261,7 @@ MsgHandler::msgStatus IGuidoPianoRoll::setPitchLinesDisplayMode(const IMessage* 
 {
 	const int size = msg->size();
 	if(!size) {
-		fPitchLines = kNoLine;
+		fPitchLines = kAutoLines;
 	} else {
 		int allLines = 0;
 		int line;
@@ -262,33 +269,33 @@ MsgHandler::msgStatus IGuidoPianoRoll::setPitchLinesDisplayMode(const IMessage* 
 
 		for (int i = 0; i < size; i++) {
 			if (msg->param(i, str)) {
-				if(str== "auto") {
-					allLines = kAutoLines;
+				if(str== "empty") {
+					allLines = kNoLine;
 					break;
 				}
-				if(str == "C")
+				if(str == "C" || str == "c")
 					line = kCLine;
-				else if(str == "C#")
+				else if(str == "C#" || str == "c#")
 					line = kCSharpLine;
-				else if(str == "D")
+				else if(str == "D" || str == "d")
 					line = kDLine;
-				else if(str == "D#")
+				else if(str == "D#" || str == "d#")
 					line = kDSharpLine;
-				else if(str == "E")
+				else if(str == "E" || str == "e")
 					line = kELine;
-				else if(str == "F")
+				else if(str == "F" || str == "f")
 					line = kFLine;
-				else if(str == "F#")
+				else if(str == "F#" || str == "f#")
 					line = kFSharpLine;
-				else if(str == "G")
+				else if(str == "G" || str == "g")
 					line = kGLine;
-				else if(str == "G#")
+				else if(str == "G#" || str == "g#")
 					line = kGSharpLine;
-				else if(str == "A")
+				else if(str == "A" || str == "a")
 					line = kALine;
-				else if(str == "A#")
+				else if(str == "A#" || str == "a#")
 					line = kASharpLine;
-				else if(str == "B")
+				else if(str == "B" || str == "b")
 					line = kBLine;
 				else return MsgHandler::kBadParameters;
 			}
@@ -305,34 +312,34 @@ string IGuidoPianoRoll::getPitchLinesDisplayMode() const
 {
 	stringstream sstr;
 	if(fPitchLines == kNoLine)
-		return "";
+		return "empty";
 	if(fPitchLines == kAutoLines)
-		return "auto";
+		return "";
 
 	if(fPitchLines & kCLine)
-		sstr << "C";
+		sstr << "c";
 	if(fPitchLines & kCSharpLine)
-		sstr << " " << "C#";
+		sstr << " " << "c#";
 	if(fPitchLines & kDLine)
-		sstr << " " << "D";
+		sstr << " " << "d";
 	if(fPitchLines & kDSharpLine)
-		sstr << " " << "D#";
+		sstr << " " << "d#";
 	if(fPitchLines & kELine)
-		sstr << " " << "E";
+		sstr << " " << "e";
 	if(fPitchLines & kFLine)
-		sstr << " " << "F";
+		sstr << " " << "f";
 	if(fPitchLines & kFSharpLine)
-		sstr << " " << "F#";
+		sstr << " " << "f#";
 	if(fPitchLines & kGLine)
-		sstr << " " << "G";
+		sstr << " " << "g";
 	if(fPitchLines & kGSharpLine)
-		sstr << " " << "G#";
+		sstr << " " << "g#";
 	if(fPitchLines & kALine)
-		sstr << " " << "A";
+		sstr << " " << "a";
 	if(fPitchLines & kASharpLine)
-		sstr << " " << "A#";
+		sstr << " " << "a#";
 	if(fPitchLines & kBLine)
-		sstr << " " << "B";
+		sstr << " " << "b";
 
 	return sstr.str();
 }
@@ -357,7 +364,6 @@ void IGuidoPianoRoll::updatePianoRoll()
 //--------------------------------------------------------------------------
 void IGuidoPianoRoll::applyAllSettings()
 {
-	//GuidoPianoRollSetLimits(fPianoRoll, fLimits);
 	GuidoPianoRollEnableKeyboard(fPianoRoll, fKeyboard);
 
 	for (map<int, IColor>::const_iterator i = fVoicesColor.begin(); i != fVoicesColor.end(); i++) {
