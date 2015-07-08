@@ -7,24 +7,24 @@
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2015-06-29 14:55:00"> 
+<meta name="date" content="2015-07-08 09:41:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 2954--><div class="crosslinks"><p class="noindent">[<a 
-href="OSCMsgch18.html" >next</a>] [<a 
+<!--l. 2962--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch17.html" >next</a>] [<a 
 href="OSCMsgch15.html" >prev</a>] [<a 
 href="OSCMsgch15.html#tailOSCMsgch15.html" >prev-tail</a>] [<a 
 href="#tailOSCMsgch16.html">tail</a>] [<a 
 href="OSCMsg3.html#OSCMsgch16.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;16</span><br /><a 
  id="x20-9500016"></a>Scripting</h2>
-<!--l. 2957--><p class="noindent" >INScore saves its state to files containing textual OSC messages. These files can be edited or created from scratch
+<!--l. 2965--><p class="noindent" >INScore saves its state to files containing textual OSC messages. These files can be edited or created from scratch
 using any text editor. In order to provide users with a scripting language, the OSC syntax has been extended at
 textual level.
 <h3 class="sectionHead"><span class="titlemark">16.1    </span> <a 
  id="x20-9600016.1"></a>Statements</h3>
-<!--l. 2962--><p class="noindent" >An INScore file is a list of textual expressions. A script expression is:
+<!--l. 2970--><p class="noindent" >An INScore file is a list of textual expressions. A script expression is:
      <ul class="itemize1">
      <li class="itemize">a message: basically a textual OSC message extended to support URL like addresses and variables as
      parameters.
@@ -41,28 +41,28 @@ class="pcrr8tn-">__END__</span>&#8217; to declare a script end. After the marker
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2976--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2984--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">expression</span> <img 
 src="OSCMsg111x.png" alt="PICT" >
 </div></dd></dl>
 <a 
  id="dx20-96002"></a>
-<!--l. 2979--><p class="noindent" >Messages and variables declarations must be followed by a semicolon, used as statements separator.
-<!--l. 2983--><p class="noindent" >
+<!--l. 2987--><p class="noindent" >Messages and variables declarations must be followed by a semicolon, used as statements separator.
+<!--l. 2991--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">16.2    </span> <a 
  id="x20-9700016.2"></a>Messages</h3>
-<!--l. 2985--><p class="noindent" >Messages are basically OSC messages that support the address extension scheme described in section <a 
+<!--l. 2993--><p class="noindent" >Messages are basically OSC messages that support the address extension scheme described in section <a 
 href="OSCMsgch15.html#x19-8100015">15<!--tex4ht:ref: interaction --></a> p.<a 
 href="OSCMsgch15.html#x19-8100015">119<!--tex4ht:ref: interaction --></a> and
 relative addresses that are described below. Messages parameters can be replaced by variables that are evaluated at
 parsing level. Variables are described in section <a 
 href="#x20-9900016.4">16.4<!--tex4ht:ref: scriptvar --></a>.
-<!--l. 2988--><p class="noindent" >Using the address extension scheme, a script may be designed to initialize an INScore scene and external
+<!--l. 2996--><p class="noindent" >Using the address extension scheme, a script may be designed to initialize an INScore scene and external
 applications as well, including on remote hosts.
                                                                                  
 
                                                                                  
-<!--l. 2990--><p class="noindent" ><span 
+<!--l. 2998--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -75,18 +75,18 @@ class="newline" />Initializing a score and an external application listening on 
 class="pcrr8tn-">host.adomain.net</span>.
 <div class="center" 
 >
-<!--l. 2994--><p class="noindent" >
+<!--l. 3002--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox99"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/score set gmnf &#8217;myscore.gmn&#8217;;</span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">host.adomain.net:12000/run 1;</span></div></div>
 </div>
-<!--l. 2996--><p class="noindent" >Relative addresses have been introduced to provide more flexibility in the score design process. A relative address
+<!--l. 3004--><p class="noindent" >Relative addresses have been introduced to provide more flexibility in the score design process. A relative address
 starts with &#8217;<span 
 class="pcrr8tn-">./</span>&#8217;. It is evaluated in the context of the message receiver: a legal OSC address is dynamically
 constructed using the receiver address that is used to prefix the relative address.
-<!--l. 2998--><p class="noindent" ><span 
+<!--l. 3006--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -96,7 +96,7 @@ class="small-caps">L</span><span
 class="small-caps">E</span></span>
 <div class="center" 
 >
-<!--l. 3002--><p class="noindent" >
+<!--l. 3010--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox100"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">the relative address   ./score </span><br 
@@ -110,7 +110,7 @@ class="newline" /><span
 class="pcrr8tn-x-x-90">will be evaluted as </span><span 
 class="pcrr8tn-x-x-90">&#x00A0;  /ITL/scene/layer/score</span></div></div>
 </div>
-<!--l. 3004--><p class="noindent" >The receiver context may be:
+<!--l. 3012--><p class="noindent" >The receiver context may be:
      <ul class="itemize1">
      <li class="itemize">the INScore application address (i.e. <span 
 class="pcrr8tn-">/ITL</span>) for messages enclosed in a file loaded at application level
@@ -124,10 +124,10 @@ class="pcrr8tn-">load </span>message
      </li>
      <li class="itemize">any object address when the messages are passed as arguments of an <span 
 class="pcrr8tn-">eval </span>message (see section <a 
-href="OSCMsgch4.html#x8-220004">4<!--tex4ht:ref: miscmsgs --></a>
+href="OSCMsgch4.html#x8-230004">4<!--tex4ht:ref: miscmsgs --></a>
      p.<a 
-href="OSCMsgch4.html#x8-220004">30<!--tex4ht:ref: miscmsgs --></a>).</li></ul>
-<!--l. 3011--><p class="noindent" ><span 
+href="OSCMsgch4.html#x8-230004">32<!--tex4ht:ref: miscmsgs --></a>).</li></ul>
+<!--l. 3019--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -138,7 +138,7 @@ class="small-caps">E</span> </span><br
 class="newline" />Using a set of messages in different contexts:
 <div class="center" 
 >
-<!--l. 3019--><p class="noindent" >
+<!--l. 3027--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox101"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">score = (</span><br 
@@ -153,7 +153,7 @@ class="pcrr8tn-x-x-90">/ITL/scene/l1 eval $score;</span><br
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/l2 eval $score;</span></div></div>
 </div>
-<!--l. 3021--><p class="noindent" ><span 
+<!--l. 3029--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -163,10 +163,10 @@ class="pcrr8tn-">eval </span>message are not affected by the evaluation.
                                                                                  
 
                                                                                  
-<!--l. 3027--><p class="noindent" >
+<!--l. 3035--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">16.3    </span> <a 
  id="x20-9800016.3"></a>Types</h3>
-<!--l. 3029--><p class="noindent" >Using OSC, the message parameters are typed by the OSC protocol. With their textual version, any parameter
+<!--l. 3037--><p class="noindent" >Using OSC, the message parameters are typed by the OSC protocol. With their textual version, any parameter
 is converted to an OSC type (i.e. int32, float or string) at parsing level. A special attention must be
 given to strings in order to discriminate addresses and parameters. Strings intended as parameters
 must:
@@ -178,7 +178,7 @@ class="pcrr8tn-">\</span></span></span>&#8217;.
      <li class="itemize">or make use of the following characters set: <span 
 class="pcrr8tn-">[-a-zA-Z0-9]+ </span>or <span 
 class="pcrr8tn-">[_a-zA-Z][_a-zA-Z0-9]*</span>.</li></ul>
-<!--l. 3037--><p class="noindent" ><span 
+<!--l. 3045--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -189,7 +189,7 @@ class="small-caps">E</span> </span><br
 class="newline" />Different string parameter
 <div class="center" 
 >
-<!--l. 3042--><p class="noindent" >
+<!--l. 3050--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox102"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/text set txt "Hello world"; ! string including a space must be quoted </span><br 
@@ -198,10 +198,10 @@ class="pcrr8tn-x-x-90">/ITL/scene/img set file &#8217;anImage.png&#8217;; ! dots
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/foo set txt no_quotes_needed;</span></div></div>
 </div>
-<!--l. 3047--><p class="noindent" >
+<!--l. 3055--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">16.4    </span> <a 
  id="x20-9900016.4"></a>Variables</h3>
-<!--l. 3049--><p class="noindent" >A variable declaration associates a name with a list of parameters or a list of messages. Parameters must follow the
+<!--l. 3057--><p class="noindent" >A variable declaration associates a name with a list of parameters or a list of messages. Parameters must follow the
 rules given in section <a 
 href="#x20-9800016.3">16.3<!--tex4ht:ref: scripttypes --></a>. They may include previously declared variables. A message list must be enclosed in
 parenthesis and a comma must be used as messages separator.
@@ -210,13 +210,13 @@ parenthesis and a comma must be used as messages separator.
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 3054--><p class="noindent" ><div class="minipage"><span 
+<!--l. 3062--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">variabledecl</span> <img 
 src="OSCMsg112x.png" alt="PICT" >
 </div></dd></dl>
 <a 
  id="dx20-99002"></a>
-<!--l. 3057--><p class="noindent" ><span 
+<!--l. 3065--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -230,7 +230,7 @@ class="newline" />Variables declarations
                                                                                  
 <div class="center" 
 >
-<!--l. 3064--><p class="noindent" >
+<!--l. 3072--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox103"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">color = 200 200 200; </span><br 
@@ -252,12 +252,12 @@ class="pcrr8tn-x-x-90">&#x00A0;</span><span
 class="pcrr8tn-x-x-90">&#x00A0;</span><span 
 class="pcrr8tn-x-x-90">&#x00A0;       localhost:7001/world "how are you ?" );</span></div></div>
 </div>
-<!--l. 3067--><p class="noindent" >A variable may be used in place of any message parameter. A reference to a variable must have the form <span 
+<!--l. 3075--><p class="noindent" >A variable may be used in place of any message parameter. A reference to a variable must have the form <span 
 class="pcrr8tn-">$ident</span>
 where <span 
 class="pcrr8tn-">ident </span>is a previously declared variable. A variable is evaluated at parsing level and replaced by its
 content.
-<!--l. 3069--><p class="noindent" ><span 
+<!--l. 3077--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -268,7 +268,7 @@ class="small-caps">E</span> </span><br
 class="newline" />Using a variable to share a common position:
 <div class="center" 
 >
-<!--l. 3074--><p class="noindent" >
+<!--l. 3082--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox104"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">x = 0.5;</span><br 
@@ -277,14 +277,14 @@ class="pcrr8tn-x-x-90">/ITL/scene/a x $x;</span><br
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/b x $x;</span></div></div>
 </div>
-<!--l. 3076--><p class="noindent" >Variables can be used in interaction messages as well, which may also use the variables available in the interaction
+<!--l. 3084--><p class="noindent" >Variables can be used in interaction messages as well, which may also use the variables available in the interaction
 context (see section <a 
 href="OSCMsgch15.html#x19-8700015.2">15.2<!--tex4ht:ref: interactvar --></a> p.<a 
 href="OSCMsgch15.html#x19-8700015.2">124<!--tex4ht:ref: interactvar --></a>). To differentiate between a <span 
 class="ptmri8t-">script </span>and an <span 
 class="ptmri8t-">interaction </span>variable, the latter must be
 quoted to be passed as strings and to prevent their evaluation by the parser.
-<!--l. 3078--><p class="noindent" ><span 
+<!--l. 3086--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -295,17 +295,17 @@ class="small-caps">E</span> </span><br
 class="newline" />Using variables in interaction messages: $sx is evaluated at event occurrence and $y is evaluated at parsing level.
 <div class="center" 
 >
-<!--l. 3082--><p class="noindent" >
+<!--l. 3090--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox105"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">y = 0.5;</span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/foo watch mouseDown (/ITL/scene/foo "$sx" $y);</span></div></div>
 </div>
-<!--l. 3087--><p class="noindent" >
+<!--l. 3095--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">16.5    </span> <a 
  id="x20-10000016.5"></a>Message based parameters</h3>
-<!--l. 3089--><p class="noindent" >Similarly to message based variables (see section <a 
+<!--l. 3097--><p class="noindent" >Similarly to message based variables (see section <a 
 href="OSCMsgch15.html#x19-9100015.2.4">15.2.4<!--tex4ht:ref: msgvar --></a> p.<a 
 href="OSCMsgch15.html#x19-9100015.2.4">128<!--tex4ht:ref: msgvar --></a>), a message parameter may also use the result of a
 <span 
@@ -316,7 +316,7 @@ with a leading $ sign.
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 3093--><p class="noindent" ><div class="minipage"><span 
+<!--l. 3101--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">msgparam</span> <img 
 src="OSCMsg113x.png" alt="PICT" >
                                                                                  
@@ -325,7 +325,7 @@ src="OSCMsg113x.png" alt="PICT" >
 </div></dd></dl>
 <a 
  id="dx20-100002"></a>
-<!--l. 3096--><p class="noindent" ><span 
+<!--l. 3104--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -336,13 +336,13 @@ class="small-caps">E</span> </span><br
 class="newline" />Displaying INScore version using a message parameter:
 <div class="center" 
 >
-<!--l. 3098--><p class="noindent" >
+<!--l. 3106--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox106"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/version set txt "INScore version is" $(/ITL get version);</span>
 </div></div>
 </div>
-<!--l. 3100--><p class="noindent" ><span 
+<!--l. 3108--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -353,25 +353,25 @@ messages will be processed by the next time task. For example:<br
 class="newline" />
 <div class="center" 
 >
-<!--l. 3103--><p class="noindent" >
+<!--l. 3111--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox107"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/obj x 0.1;</span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/foo x $(/ITL/scene/foo get x);</span></div></div>
 </div>
-<!--l. 3104--><p class="noindent" >x position of <span 
+<!--l. 3112--><p class="noindent" >x position of <span 
 class="pcrr8tn-">/ITL/scene/foo </span>will be set to x position of <span 
 class="pcrr8tn-">/ITL/scene/obj </span>at the time of the script evaluation (that
 may be different to 0.1).
-<!--l. 3108--><p class="noindent" >
+<!--l. 3116--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">16.6    </span> <a 
  id="x20-10100016.6"></a>Languages</h3>
 <a 
  id="dx20-101001"></a>
 <a 
  id="dx20-101002"></a>
-<!--l. 3113--><p class="noindent" >INScore supports Javascript and Lua as scripting languages. Javascript is embedded by
+<!--l. 3121--><p class="noindent" >INScore supports Javascript and Lua as scripting languages. Javascript is embedded by
 default (using the Qt Javascript engine). INScore needs to be recompiled to embed the Lua
 engine<span class="footnote-mark"><a 
 href="OSCMsg21.html#fn1x223"><sup class="textsuperscript">1</sup></a></span><a 
@@ -385,7 +385,7 @@ class="pcrr8tn-">?&#x003E;</span>.
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 3116--><p class="noindent" ><div class="minipage"><span 
+<!--l. 3124--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">script</span> <img 
 src="OSCMsg114x.png" alt="PICT" >
 </div></dd></dl>
@@ -396,13 +396,13 @@ src="OSCMsg114x.png" alt="PICT" >
  id="dx20-101005"></a>
 <a 
  id="dx20-101006"></a>
-<!--l. 3120--><p class="noindent" >The principle of using an embedded programming language in script files is the following: <span 
+<!--l. 3128--><p class="noindent" >The principle of using an embedded programming language in script files is the following: <span 
 class="ptmri8t-">javascript </span>or <span 
 class="ptmri8t-">lua </span>sections
 are given to the corresponding engine and are expected to produce INScore messages on output. These messages
 are then parsed as if replacing the corresponding script section.
-<!--l. 3123--><p class="noindent" >Note that INScore variables are exported to the current language environment.
-<!--l. 3125--><p class="noindent" ><span 
+<!--l. 3131--><p class="noindent" >Note that INScore variables are exported to the current language environment.
+<!--l. 3133--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -412,7 +412,7 @@ class="small-caps">L</span><span
 class="small-caps">E</span></span>
 <div class="center" 
 >
-<!--l. 3130--><p class="noindent" >
+<!--l. 3138--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox108"> <div class="minipage">  <span 
 class="pcrr8tn-x-x-90">&#x003C;?javascript </span><br 
@@ -421,11 +421,11 @@ class="pcrr8tn-x-x-90">"/ITL/scene/version set &#8217;txt&#8217; &#8217;Javascri
 class="newline" />  <span 
 class="pcrr8tn-x-x-90">?&#x003E;</span></div></div>
 </div>
-<!--l. 3133--><p class="noindent" >A single persistent context is created at application level and for each scene. It allows scripts to reuse previously
+<!--l. 3141--><p class="noindent" >A single persistent context is created at application level and for each scene. It allows scripts to reuse previously
 defined functions and thus to design more structured scripts.
 <h4 class="subsectionHead"><span class="titlemark">16.6.1    </span> <a 
  id="x20-10200016.6.1"></a>The Javascript object</h4>
-<!--l. 3141--><p class="noindent" >The Javascript engine is available at runtime at the address <span 
+<!--l. 3149--><p class="noindent" >The Javascript engine is available at runtime at the address <span 
 class="pcrr8tn-">/ITL/</span><span 
 class="pcrro8t-">scene</span><span 
 class="pcrr8tn-">/javascript</span>. It has a <span 
@@ -436,19 +436,19 @@ takes a javascript string as parameter.
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 3145--><p class="noindent" ><div class="minipage"><span 
+<!--l. 3153--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">javascript</span> <img 
 src="OSCMsg115x.png" alt="PICT" >
 </div></dd></dl>
 <a 
  id="dx20-102002"></a>
-<!--l. 3148--><p class="noindent" >The <span 
+<!--l. 3156--><p class="noindent" >The <span 
 class="pcrr8tn-">run </span>method evaluates the code. Similarly to javascript sections in scripts, the output of the evaluation is
 expected to be a string containing valid INScore messages that are next executed. Actually, including a javascript
 section in a script is equivalent to send the <span 
 class="pcrr8tn-">run </span>message with the same code as parameter to the javascript
 object.
-<!--l. 3151--><p class="noindent" >The Javascript engine is based on the Qt5 Javascrip engine, extended with additional functions:
+<!--l. 3159--><p class="noindent" >The Javascript engine is based on the Qt5 Javascrip engine, extended with additional functions:
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrb8t-">version() </span>: gives the javascript engine version number as a string.
@@ -473,7 +473,7 @@ class="pcrb8t-">post(address [,...]) </span>: build an OSC message and post it f
      processed by the next time task. <span 
 class="pcrr8tn-">address </span>is an OSC or an extended OSC address. Optional arguments
      are the message parameters.</li></ul>
-<!--l. 3160--><p class="noindent" ><span 
+<!--l. 3168--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -483,7 +483,7 @@ class="small-caps">L</span><span
 class="small-caps">E</span></span>
 <div class="center" 
 >
-<!--l. 3167--><p class="noindent" >
+<!--l. 3175--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox109"> <div class="minipage">  <span 
 class="pcrr8tn-x-x-90">&#x003C;?javascript </span><br 
@@ -499,12 +499,12 @@ class="pcrr8tn-x-x-90">?&#x003E;</span></div></div>
                                                                                  
 
                                                                                  
-<!--l. 3184--><div class="crosslinks"><p class="noindent">[<a 
-href="OSCMsgch18.html" >next</a>] [<a 
+<!--l. 3192--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch17.html" >next</a>] [<a 
 href="OSCMsgch15.html" >prev</a>] [<a 
 href="OSCMsgch15.html#tailOSCMsgch15.html" >prev-tail</a>] [<a 
 href="OSCMsgch16.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch16.html" >up</a>] </p></div>
-<!--l. 3184--><p class="noindent" ><a 
+<!--l. 3192--><p class="noindent" ><a 
  id="tailOSCMsgch16.html"></a>  
 </body></html> 

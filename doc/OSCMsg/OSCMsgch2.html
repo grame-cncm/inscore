@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2015-06-29 14:55:00"> 
+<meta name="date" content="2015-07-08 09:41:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
@@ -108,8 +108,8 @@ href="OSCMsgch16.html#x20-9500016">132<!--tex4ht:ref: scripting --></a>).
      <li class="itemize">&#8217;ColorMsg&#8217; are absolute and relative color control messages.
      </li>
      <li class="itemize">&#8217;TimeMsg&#8217; are time management messages. They are described in section <a 
-href="OSCMsgch3.html#x7-210003">3<!--tex4ht:ref: time --></a> p.<a 
-href="OSCMsgch3.html#x7-210003">27<!--tex4ht:ref: time --></a>.
+href="OSCMsgch3.html#x7-220003">3<!--tex4ht:ref: time --></a> p.<a 
+href="OSCMsgch3.html#x7-220003">29<!--tex4ht:ref: time --></a>.
      </li>
      <li class="itemize">&#8217;WatchMsg&#8217; are described in section <a 
 href="OSCMsgch15.html#x19-8100015">15<!--tex4ht:ref: interaction --></a> p.<a 
@@ -749,16 +749,23 @@ class="small-caps">E</span>  </span>Objects that are carrying color information 
 transparency changes.
 <!--l. 566--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">2.4    </span> <a 
- id="x6-170002.4"></a>The &#8217;effect&#8217; messages</h3>
-<!--l. 569--><p class="noindent" >The <span 
-class="pcrr8tn-">effect </span>message sets a graphic effect on the target object.
+ id="x6-170002.4"></a>Pen control</h3>
+<!--l. 568--><p class="noindent" >Pen messages accepted by all the components and result in 2 different behaviors:
+     <ul class="itemize1">
+     <li class="itemize">for  components  types  <span 
+class="pcrr8tn-">rect | ellipse | polygon | curve | line | graph | fast graph</span>
+     <span 
+class="pcrr8tn-">| grid</span>, it makes the object border visible using the pen attributes;
+     </li>
+     <li class="itemize">for the other components and when the pen width is greater than 0, it makes the object bounding box
+     visible.</li></ul>
 <a 
  id="dx6-17001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 576--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">effectMsg</span> <img 
+<!--l. 580--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">penMsg</span> <img 
 src="OSCMsg18x.png" alt="PICT" >
 </div></dd></dl>
 <a 
@@ -769,6 +776,95 @@ src="OSCMsg18x.png" alt="PICT" >
  id="dx6-17004"></a>
 <a 
  id="dx6-17005"></a>
+<a 
+ id="dx6-17006"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">penWidth </span>controls the pen width. The default value is 0 (excepted for <span 
+class="pcrr8tn-">line </span>objects, where 1.0 is the
+     default value). It is expressed in arbitrary units (1 is a reasonable value).
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">penColor </span>controls the pen color. The color should be given in the RGBA space. The default value is
+     opaque black (0 0 0 255).
+                                                                                 
+
+                                                                                 
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">penStyle </span>controls the pen style.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">penAlpha, pendAlpha </span>controls the pen transparency only. See section <a 
+href="#x6-120002.3">2.3<!--tex4ht:ref: colormsg --></a> p.<a 
+href="#x6-120002.3">16<!--tex4ht:ref: colormsg --></a> for the expected</li></ul>
+<a 
+ id="dx6-17007"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 597--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">penstyle</span> <img 
+src="OSCMsg19x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx6-17008"></a>
+<a 
+ id="dx6-17009"></a>
+<a 
+ id="dx6-17010"></a>
+<a 
+ id="dx6-17011"></a>
+<a 
+ id="dx6-17012"></a>
+<!--l. 604--><p class="noindent" >The pen style default value is <span 
+class="pcrr8tn-">solid</span>.<br 
+class="newline" />
+<!--l. 606--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Setting a rectangle border width and color:
+<div class="center" 
+>
+<!--l. 611--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox12"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/rect set rect 0.5 0.5 ;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/rect penWidth 2. ;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/rect penColor 255 0 0 ;</span></div></div>
+</div>
+<!--l. 615--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">2.5    </span> <a 
+ id="x6-180002.5"></a>The &#8217;effect&#8217; messages</h3>
+<!--l. 618--><p class="noindent" >The <span 
+class="pcrr8tn-">effect </span>message sets a graphic effect on the target object.
+<a 
+ id="dx6-18001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+                                                                                 
+
+                                                                                 
+<!--l. 625--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">effectMsg</span> <img 
+src="OSCMsg20x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx6-18002"></a>
+<a 
+ id="dx6-18003"></a>
+<a 
+ id="dx6-18004"></a>
+<a 
+ id="dx6-18005"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">none</span>: removes any effect set on the target object.
@@ -776,45 +872,45 @@ class="pcrr8tn-">none</span>: removes any effect set on the target object.
      <li class="itemize"><span 
 class="pcrr8tn-">blur, colorize, shadow</span>: sets the corresponding effect. An effect always replaces any previous
      effect. The effect name is followed by optional specific effects parameters.</li></ul>
-<!--l. 587--><p class="noindent" ><span 
+<!--l. 636--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
 class="small-caps">E</span>  </span>An effect affects the target object but also all the target slaves.
-<!--l. 589--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">2.4.1    </span> <a 
- id="x6-180002.4.1"></a>The blur effect</h4>
+<!--l. 638--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">2.5.1    </span> <a 
+ id="x6-190002.5.1"></a>The blur effect</h4>
 <a 
- id="dx6-18001"></a>
+ id="dx6-19001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 642--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">blurParams</span> <img 
+src="OSCMsg21x.png" alt="PICT" >
+</div></dd></dl>
+<!--l. 644--><p class="noindent" >Blur parameters are the blur radius and a rendering hint. The radius is an int32 value. By default, it is 5 pixels. The
+radius is given in device coordinates, meaning it is unaffected by scale.
+<a 
+ id="dx6-19002"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
                                                                                  
 
                                                                                  
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 593--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">blurParams</span> <img 
-src="OSCMsg19x.png" alt="PICT" >
-</div></dd></dl>
-<!--l. 595--><p class="noindent" >Blur parameters are the blur radius and a rendering hint. The radius is an int32 value. By default, it is 5 pixels. The
-radius is given in device coordinates, meaning it is unaffected by scale.
-<a 
- id="dx6-18002"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 599--><p class="noindent" ><div class="minipage"><span 
+<!--l. 648--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">blurHint</span> <img 
-src="OSCMsg20x.png" alt="PICT" >
+src="OSCMsg22x.png" alt="PICT" >
 </div></dd></dl>
-<!--l. 600--><p class="noindent" >Use the <span 
+<!--l. 649--><p class="noindent" >Use the <span 
 class="pcrr8tn-">performance </span>hint to say that you want a faster blur, the <span 
 class="pcrr8tn-">quality </span>hint to say that you prefer a higher
 quality blur, or the <span 
 class="pcrr8tn-">animation </span>when you want to animate the blur radius. The default hint value is
 <span 
 class="pcrr8tn-">performance</span>.
-<!--l. 602--><p class="noindent" ><span 
+<!--l. 651--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -826,34 +922,31 @@ class="newline" />Setting a 8 pixels effect on <span
 class="pcrr8tn-">myObject</span>
 <div class="center" 
 >
-<!--l. 604--><p class="noindent" >
+<!--l. 653--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox12"><div class="minipage"><span 
+class="colorbox" id="colorbox13"><div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject effect blur 8;</span>
 </div></div>
 </div>
-<!--l. 606--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">2.4.2    </span> <a 
- id="x6-190002.4.2"></a>The colorize effect</h4>
+<!--l. 655--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">2.5.2    </span> <a 
+ id="x6-200002.5.2"></a>The colorize effect</h4>
 <a 
- id="dx6-19001"></a>
+ id="dx6-20001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 610--><p class="noindent" ><div class="minipage"><span 
+<!--l. 659--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">colorizeParams</span> <img 
-src="OSCMsg21x.png" alt="PICT" >
+src="OSCMsg23x.png" alt="PICT" >
 </div></dd></dl>
-                                                                                 
-
-                                                                                 
-<!--l. 612--><p class="noindent" >Colorize parameters are a strength and a tint color. The strength is a float value. By default, it is 1.0. A strength 0.0
+<!--l. 661--><p class="noindent" >Colorize parameters are a strength and a tint color. The strength is a float value. By default, it is 1.0. A strength 0.0
 equals to no effect, while 1.0 means full colorization. <br 
 class="newline" />The color is given as a RGB triplet (see section <a 
 href="#x6-120002.3">2.3<!--tex4ht:ref: colormsg --></a> p.<a 
 href="#x6-120002.3">16<!--tex4ht:ref: colormsg --></a>) by default, the color value is light blue (0, 0,
 192).
-<!--l. 615--><p class="noindent" ><span 
+<!--l. 664--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -865,25 +958,28 @@ class="newline" />Setting a red colorize effect on <span
 class="pcrr8tn-">myObject </span>with a 0.5 strength.
 <div class="center" 
 >
-<!--l. 617--><p class="noindent" >
+<!--l. 666--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox13"> <div class="minipage"><span 
+class="colorbox" id="colorbox14"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject effect colorize 0.5 200 0 0;</span>
 </div></div>
 </div>
-<!--l. 620--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">2.4.3    </span> <a 
- id="x6-200002.4.3"></a>The shadow effect</h4>
+                                                                                 
+
+                                                                                 
+<!--l. 669--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">2.5.3    </span> <a 
+ id="x6-210002.5.3"></a>The shadow effect</h4>
 <a 
- id="dx6-20001"></a>
+ id="dx6-21001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 624--><p class="noindent" ><div class="minipage"><span 
+<!--l. 673--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">shadowParams</span> <img 
-src="OSCMsg22x.png" alt="PICT" >
+src="OSCMsg24x.png" alt="PICT" >
 </div></dd></dl>
-<!--l. 626--><p class="noindent" ><span 
+<!--l. 675--><p class="noindent" ><span 
 class="pcrr8tn-">xoffset </span>and <span 
 class="pcrr8tn-">yoffset </span>are the shadow offset and should be given as int32 values. The default value is 8 pixels. The
 offset is given in device coordinates, which means it is unaffected by scale. <br 
@@ -892,7 +988,7 @@ href="#x6-120002.3">2.3<!--tex4ht:ref: colormsg --></a> p.<a
 href="#x6-120002.3">16<!--tex4ht:ref: colormsg --></a>) by default, the color value is a semi-transparent dark gray
 (63, 63, 63, 180) <br 
 class="newline" />The blur radius should be given as an int32 value. By default, the blur radius is 1 pixel.
-<!--l. 630--><p class="noindent" ><span 
+<!--l. 679--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -905,21 +1001,21 @@ class="pcrr8tn-">myObject</span>. <br
 class="newline" />The shadow offset is (10,10) pixels, the color is a transparent grey (100,100,100, 50) and the blur is 8 pixels.
 <div class="center" 
 >
-<!--l. 633--><p class="noindent" >
+<!--l. 682--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox14"> <div class="minipage"><span 
+class="colorbox" id="colorbox15"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject effect shadow 10 10 100 100 100 50 8;</span>
 </div></div>
 </div>
                                                                                  
 
                                                                                  
-<!--l. 638--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 687--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch3.html" >next</a>] [<a 
 href="OSCMsgch1.html" >prev</a>] [<a 
 href="OSCMsgch1.html#tailOSCMsgch1.html" >prev-tail</a>] [<a 
 href="OSCMsgch2.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch2.html" >up</a>] </p></div>
-<!--l. 638--><p class="noindent" ><a 
+<!--l. 687--><p class="noindent" ><a 
  id="tailOSCMsgch2.html"></a>  
 </body></html> 

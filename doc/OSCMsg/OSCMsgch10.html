@@ -7,11 +7,11 @@
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2015-06-29 14:55:00"> 
+<meta name="date" content="2015-07-08 09:41:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 1779--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 1787--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch11.html" >next</a>] [<a 
 href="OSCMsgch9.html" >prev</a>] [<a 
 href="OSCMsgch9.html#tailOSCMsgch9.html" >prev-tail</a>] [<a 
@@ -19,11 +19,11 @@ href="#tailOSCMsgch10.html">tail</a>] [<a
 href="OSCMsg3.html#OSCMsgch10.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;10</span><br /><a 
  id="x14-5700010"></a>Messages forwarding</h2>
-<!--l. 1781--><p class="noindent" >The messages handled by the application or by a scene can be forwarded to arbitrary remote hosts. A filtering
+<!--l. 1789--><p class="noindent" >The messages handled by the application or by a scene can be forwarded to arbitrary remote hosts. A filtering
 mecanism can be used to have a fine control of forwarded messages.
 <h3 class="sectionHead"><span class="titlemark">10.1    </span> <a 
  id="x14-5800010.1"></a>Remote hosts list</h3>
-<!--l. 1788--><p class="noindent" >Remote hosts lists can be set using the <span 
+<!--l. 1796--><p class="noindent" >Remote hosts lists can be set using the <span 
 class="pcrr8tn-">forward </span>message at scene or application level. Hosts lists
 of the application and of each scene are independent. At scene level, only messages handle by the
 scene are forwarded (ie message for the scene itself or for one of his children object). The <span 
@@ -35,7 +35,7 @@ loop.
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1795--><p class="noindent" ><div class="minipage"><span 
+<!--l. 1803--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">ITLMsgForward</span> <img 
 src="OSCMsg63x.png" alt="PICT" >
 </div></dd></dl>
@@ -48,7 +48,7 @@ src="OSCMsg63x.png" alt="PICT" >
 class="pcrr8tn-">hostname </span>can be any legal host name or IP
      number, optionally extended with a port number separated by a semi-colon. By default, when no port
      number is specified, the default application listening port number is used (7000).</li></ul>
-<!--l. 1803--><p class="noindent" ><span 
+<!--l. 1811--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -62,13 +62,13 @@ number (7000) and to <span
 class="pcrr8tn-">host2.adomain.org </span>on port number 5100.
 <div class="center" 
 >
-<!--l. 1807--><p class="noindent" >
+<!--l. 1815--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox54"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL forward host1.adomain.org host2.adomain.org:5100;</span>
 </div></div>
 </div>
-<!--l. 1810--><p class="noindent" >Forwarding messages handle by the scene <span 
+<!--l. 1818--><p class="noindent" >Forwarding messages handle by the scene <span 
 class="pcrr8tn-">scene1 </span>to <span 
 class="pcrr8tn-">host3.adomain.org </span>using the default application listening
 port number (7000) and to <span 
@@ -78,16 +78,16 @@ class="pcrr8tn-">host4.adomain.org </span>on port number 5100.
                                                                                  
 <div class="center" 
 >
-<!--l. 1813--><p class="noindent" >
+<!--l. 1821--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox55"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene1 forward host1.adomain.org host2.adomain.org:5100;</span>
 </div></div>
 </div>
-<!--l. 1817--><p class="noindent" >
+<!--l. 1825--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">10.2    </span> <a 
  id="x14-5900010.2"></a>Filtering messages forwarding</h3>
-<!--l. 1820--><p class="noindent" >The messages forwarded to arbitrary remote hosts using the <span 
+<!--l. 1828--><p class="noindent" >The messages forwarded to arbitrary remote hosts using the <span 
 class="pcrr8tn-">forward </span>message can be filtered to send only wanted
 messages. The static <span 
 class="pcrr8tn-">filter </span>node is use manage the filter. A static <span 
@@ -98,7 +98,7 @@ at application level. The filter can be construct with OSC address and messages.
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1824--><p class="noindent" ><div class="minipage"><span 
+<!--l. 1832--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">ITLFilteringForward</span> <img 
 src="OSCMsg64x.png" alt="PICT" >
 </div></dd></dl>
@@ -112,7 +112,7 @@ src="OSCMsg64x.png" alt="PICT" >
      </li>
      <li class="itemize">2) Remplace the actual accepted list by the new list or by an empty list. Item in reject list are filtered
      if they not match the accept list.</li></ul>
-<!--l. 1833--><p class="noindent" >When a new message is incoming, if they match to an accepted item, filter is not apply.<br 
+<!--l. 1841--><p class="noindent" >When a new message is incoming, if they match to an accepted item, filter is not apply.<br 
 class="newline" /><br 
 class="newline" /><span 
 class="ptmbc8t-">E<span 
@@ -128,14 +128,14 @@ class="newline" />Filter at application level :
                                                                                  
 
                                                                                  
-<!--l. 1838--><p class="noindent" >
+<!--l. 1846--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox56"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/filter reject /ITL/scene/line* /ITL/scene/rect; </span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/filter accept /ITL/scene/line2 scale arrows;</span></div></div>
 </div>
-<!--l. 1839--><p class="noindent" >Message with OSC message with address starting with <span 
+<!--l. 1847--><p class="noindent" >Message with OSC message with address starting with <span 
 class="pcrr8tn-">/ITL/scene/line </span>or with address <span 
 class="pcrr8tn-">/ITL/scene/rect </span>are
 filtered only if message address is not <span 
@@ -146,24 +146,24 @@ class="newline" /><br
 class="newline" />Filter at scene level :
 <div class="center" 
 >
-<!--l. 1843--><p class="noindent" >
+<!--l. 1851--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox57"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene1/filter reject fontWeight /ITL/scene1/rect;</span>
 </div></div>
 </div>
-<!--l. 1844--><p class="noindent" >The <span 
+<!--l. 1852--><p class="noindent" >The <span 
 class="pcrr8tn-">fontWeight </span>message and message for <span 
 class="pcrr8tn-">/ITL/scene1/rect </span>are rejected.
                                                                                  
 
                                                                                  
-<!--l. 1849--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 1857--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch11.html" >next</a>] [<a 
 href="OSCMsgch9.html" >prev</a>] [<a 
 href="OSCMsgch9.html#tailOSCMsgch9.html" >prev-tail</a>] [<a 
 href="OSCMsgch10.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch10.html" >up</a>] </p></div>
-<!--l. 1849--><p class="noindent" ><a 
+<!--l. 1857--><p class="noindent" ><a 
  id="tailOSCMsgch10.html"></a>  
 </body></html> 

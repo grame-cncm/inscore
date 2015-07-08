@@ -7,18 +7,19 @@
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2015-06-29 14:55:00"> 
+<meta name="date" content="2015-07-08 09:41:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 3184--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 3192--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch18.html" >next</a>] [<a 
 href="OSCMsgch16.html" >prev</a>] [<a 
 href="OSCMsgch16.html#tailOSCMsgch16.html" >prev-tail</a>] [<a 
 href="#tailOSCMsgch17.html">tail</a>] [<a 
-href="OSCMsg3.html#OSCMsgch18.html" >up</a>] </p></div>
+href="OSCMsg3.html#OSCMsgch17.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;17</span><br /><a 
  id="x22-10300017"></a>Plugins</h2>
-<!--l. 3187--><p class="noindent" >A plugin is an external library that is dynamically loaded when an object that need it is created. The system looks
+<!--l. 3195--><p class="noindent" >A plugin is an external library that is dynamically loaded when an object that need it is created. The system looks
 for plugins in the following locations:
      <ul class="itemize1">
      <li class="itemize">in the current folder first
@@ -27,16 +28,16 @@ for plugins in the following locations:
      systems
      </li>
      <li class="itemize">in the system default locations for shared libraries</li></ul>
-<!--l. 3194--><p class="noindent" >Additionaly, a user path can be set, where the system will look for plugins in first position. See section <a 
+<!--l. 3202--><p class="noindent" >Additionaly, a user path can be set, where the system will look for plugins in first position. See section <a 
 href="OSCMsgch8.html#x12-530008.4.4">8.4.4<!--tex4ht:ref: ITLplugins --></a>
 p.<a 
 href="OSCMsgch8.html#x12-530008.4.4">69<!--tex4ht:ref: ITLplugins --></a>.
-<!--l. 3196--><p class="noindent" >The plugins are shared libraries which extension is platform dependent. The plugin name should not
+<!--l. 3204--><p class="noindent" >The plugins are shared libraries which extension is platform dependent. The plugin name should not
 include the extension. The expected extensions are the following: .dylib on MacOS and Linux, .dll on
 Windows.
 <h3 class="sectionHead"><span class="titlemark">17.1    </span> <a 
  id="x22-10400017.1"></a>FAUST plugins</h3>
-<!--l. 3205--><p class="noindent" >FAUST [Functional Audio Stream]<span class="footnote-mark"><a 
+<!--l. 3213--><p class="noindent" >FAUST [Functional Audio Stream]<span class="footnote-mark"><a 
 href="OSCMsg23.html#fn1x240"><sup class="textsuperscript">1</sup></a></span><a 
  id="x22-104001f1"></a> 
 is a functional programming language specifically designed for real-time signal processing and synthesis. A
@@ -52,7 +53,7 @@ class="pcrro8t-">name </span>is a
 user defined name.
 <h4 class="subsectionHead"><span class="titlemark">17.1.1    </span> <a 
  id="x22-10500017.1.1"></a>Set Message</h4>
-<!--l. 3209--><p class="noindent" >There are two ways to create a FAUST Processor :
+<!--l. 3217--><p class="noindent" >There are two ways to create a FAUST Processor :
      <ul class="itemize1">
      <li class="itemize">- By charging a DSP as a plugin already compiled <br 
 class="newline" />
@@ -61,13 +62,13 @@ class="newline" />
      <dl class="list2"><dt class="list">
      </dt><dd 
 class="list">
-     <!--l. 3215--><p class="noindent" ><div class="minipage"><span 
+     <!--l. 3223--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">faustprocessor</span> <img 
 src="OSCMsg116x.png" alt="PICT" >
      </div> </dd></dl>
 <a 
  id="dx22-105002"></a>
-     <!--l. 3218--><p class="noindent" ><span 
+     <!--l. 3226--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -81,13 +82,13 @@ class="newline" />
                                                                                  
 
                                                                                  
-<!--l. 3219--><p class="noindent" >
+<!--l. 3227--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox110"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust set faust aFaustPlugin;</span>
 </div></div>
 </div>
-     <!--l. 3221--><p class="noindent" ><span 
+     <!--l. 3229--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -103,7 +104,7 @@ class="newline" />
      <dl class="list2"><dt class="list">
      </dt><dd 
 class="list">
-     <!--l. 3227--><p class="noindent" ><div class="minipage"><span 
+     <!--l. 3235--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">faustdsp</span> <img 
 src="OSCMsg117x.png" alt="PICT" >
      </div> </dd></dl>
@@ -114,13 +115,13 @@ src="OSCMsg117x.png" alt="PICT" >
      <dl class="list2"><dt class="list">
      </dt><dd 
 class="list">
-     <!--l. 3234--><p class="noindent" ><div class="minipage"><span 
+     <!--l. 3242--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">faustdspfile</span> <img 
 src="OSCMsg118x.png" alt="PICT" >
      </div> </dd></dl>
 <a 
  id="dx22-105006"></a>
-     <!--l. 3237--><p class="noindent" ><span 
+     <!--l. 3245--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -131,7 +132,7 @@ class="small-caps">E</span> </span><br
 class="newline" />
      <div class="center" 
 >
-<!--l. 3240--><p class="noindent" >
+<!--l. 3248--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox111"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/plus set faustdsp "process=+;"; </span><br 
@@ -139,10 +140,10 @@ class="newline" /><span
 class="pcrr8tn-x-x-90">/ITL/scene/signal/mydsp set faustdspf "mydsp.dsp";</span></div></div>
 </div>
      </li></ul>
-<!--l. 3246--><p class="noindent" >
+<!--l. 3254--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">17.1.2    </span> <a 
  id="x22-10600017.1.2"></a>Specific messages</h4>
-<!--l. 3248--><p class="noindent" >A FAUST processor is characterized by the numbers of input and output channels and by a set of parameters. Each
+<!--l. 3256--><p class="noindent" >A FAUST processor is characterized by the numbers of input and output channels and by a set of parameters. Each
 parameter carries a name defined by the FAUST processor. The set of messages supported by a FAUST
 processor is the set of signals messages extended with the parameters names and with specific query
 messages.
@@ -154,7 +155,7 @@ messages.
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 3254--><p class="noindent" ><div class="minipage"><span 
+<!--l. 3262--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">faustmessage</span> <img 
 src="OSCMsg119x.png" alt="PICT" >
 </div></dd></dl>
@@ -175,7 +176,7 @@ class="pcrr8tn-">get </span>message is extended to query the FAUST processor: <s
 class="pcrr8tn-">in </span>and <span 
 class="pcrr8tn-">out </span>give the number of input and
      output channels.</li></ul>
-<!--l. 3266--><p class="noindent" ><span 
+<!--l. 3274--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -186,27 +187,27 @@ class="small-caps">E</span> </span><br
 class="newline" />Querying a FAUST processor input and output count:
 <div class="center" 
 >
-<!--l. 3268--><p class="noindent" >
+<!--l. 3276--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox112"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust get in out;</span>
 </div></div>
 </div>
-<!--l. 3269--><p class="noindent" >&#x00A0;       gives as output:
+<!--l. 3277--><p class="noindent" >&#x00A0;       gives as output:
 <div class="center" 
 >
-<!--l. 3272--><p class="noindent" >
+<!--l. 3280--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox113"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust in 2; </span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust out 4;</span></div></div>
 </div>
-<!--l. 3273--><p class="noindent" >Modifying the value of a FAUST processor parameter named <span 
+<!--l. 3281--><p class="noindent" >Modifying the value of a FAUST processor parameter named <span 
 class="pcrr8tn-">volume</span>:
 <div class="center" 
 >
-<!--l. 3274--><p class="noindent" >
+<!--l. 3282--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox114"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust volume 0.8</span>
@@ -215,12 +216,12 @@ class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust volume 0.8</span>
                                                                                  
 
                                                                                  
-<!--l. 3278--><p class="noindent" >
+<!--l. 3286--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">17.1.3    </span> <a 
  id="x22-10700017.1.3"></a>Feeding and composing FAUST processors</h4>
-<!--l. 3281--><p class="noindent" >A FAUST processor accepts float values as input, which are taken as interleaved data and distributed to the input
+<!--l. 3289--><p class="noindent" >A FAUST processor accepts float values as input, which are taken as interleaved data and distributed to the input
 channels.
-<!--l. 3283--><p class="noindent" >From composition viewpoint, a FAUST processor is a parallel signal which dimension is the number of
+<!--l. 3291--><p class="noindent" >From composition viewpoint, a FAUST processor is a parallel signal which dimension is the number of
 output channels. Thus, a FAUST processor can be used like any parallel signal. However, the signal
 identifier defined in <a 
 href="OSCMsgch14.html#x18-7500014.1.2">14.1.2<!--tex4ht:ref: parcomp --></a> is extended to support adressing single components of parallel signal as
@@ -230,13 +231,13 @@ follows:
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 3289--><p class="noindent" ><div class="minipage"><span 
+<!--l. 3297--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">signal</span> <img 
 src="OSCMsg120x.png" alt="PICT" >
 </div></dd></dl>
-<!--l. 3290--><p class="noindent" >where <span 
+<!--l. 3298--><p class="noindent" >where <span 
 class="pcrr8tn-">n </span>selects the signal #n of a parallel signal. Note that indexes start at 0.
-<!--l. 3292--><p class="noindent" ><span 
+<!--l. 3300--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -248,7 +249,7 @@ class="newline" />Creating 3 parallel signals using the 3 output channels of a F
 class="pcrr8tn-">myFaust</span>:
 <div class="center" 
 >
-<!--l. 3297--><p class="noindent" >
+<!--l. 3305--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox115"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/y1 set &#8217;myFaust/0&#8217; 0.01 0. 1. 1. 1. ;</span><br 
@@ -257,44 +258,44 @@ class="pcrr8tn-x-x-90">/ITL/scene/signal/y2 set &#8217;myFaust/1&#8217; 0.01 0.5
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/y3 set &#8217;myFaust/2&#8217; 0.01 -0.5 1. 1. 1. ;</span></div></div>
 </div>
-<!--l. 3302--><p class="noindent" >
+<!--l. 3310--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">17.2    </span> <a 
  id="x22-10800017.2"></a>Gesture Follower</h3>
-<!--l. 3305--><p class="noindent" >INScore supports gesture following using the technology developed by the IRCAM IMTR team. These features are
+<!--l. 3313--><p class="noindent" >INScore supports gesture following using the technology developed by the IRCAM IMTR team. These features are
 available as a plugin that is included in the INScore distribution (version 1.03 or greater) or available from the
 IRCAM.
-<!--l. 3310--><p class="noindent" >
+<!--l. 3318--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">17.2.1    </span> <a 
  id="x22-10900017.2.1"></a>Basic principle</h4>
-<!--l. 3311--><p class="noindent" >Gesture following is provided as a mean to interact with a score. From input viewpoint, the gesture follower is
+<!--l. 3319--><p class="noindent" >Gesture following is provided as a mean to interact with a score. From input viewpoint, the gesture follower is
 similar to signals (see section <a 
 href="OSCMsgch14.html#x18-7400014.1.1">14.1.1<!--tex4ht:ref: ssignal --></a> p.<a 
 href="OSCMsgch14.html#x18-7400014.1.1">101<!--tex4ht:ref: ssignal --></a>): it accepts data stream as input both in learning and following modes. It
 implements a specific set of events related to gesture following and can generate message streams parametrized
 with the gesture follower current state.
-<!--l. 3313--><p class="noindent" >A gesture follower is setup to handle a given count of gestures, which are actually denoted by streams of float
+<!--l. 3321--><p class="noindent" >A gesture follower is setup to handle a given count of gestures, which are actually denoted by streams of float
                                                                                  
 
                                                                                  
 vectors. We&#8217;ll refer to the size of the float vector as the <span 
 class="ptmri8t-">gesture dimension</span>. For example, the dimension of a gesture
 captured from x, y and z accelerometers is 3.
-<!--l. 3315--><p class="noindent" >A gesture follower operates in two distinct phases: a <span 
+<!--l. 3323--><p class="noindent" >A gesture follower operates in two distinct phases: a <span 
 class="ptmri8t-">learning phase </span>where it actually stores the gestures data, and a
 <span 
 class="ptmri8t-">following phase </span>where it tries to match incoming data to the stored gestures data. When not learning nor following,
 we&#8217;ll talk of an idle phase.
-<!--l. 3317--><p class="noindent" >In the <span 
+<!--l. 3325--><p class="noindent" >In the <span 
 class="ptmri8t-">following phase</span>, the system maintains a list of likelihood for the learned gestures, a list of positions in the
 gestures and a list of speeds representing how fast the gestures are made. Of course, the higher the
 likelihood, the more these data are meaningfull. It&#8217;s the user responsability to decide on the meaningfull
 likelihood threshold value. Interaction events are triggered only in the <span 
 class="ptmri8t-">following phase </span>and for meaningfull
 likelihoods.
-<!--l. 3321--><p class="noindent" >
+<!--l. 3329--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">17.2.2    </span> <a 
  id="x22-11000017.2.2"></a>Messages</h4>
-<!--l. 3322--><p class="noindent" >A gesture follower is created in a scene using the <span 
+<!--l. 3330--><p class="noindent" >A gesture follower is created in a scene using the <span 
 class="pcrr8tn-">imtrgf </span>type. It has a graphic appearance that may be used for
 debug purpose but it is hidden by default.
 <a 
@@ -302,13 +303,13 @@ debug purpose but it is hidden by default.
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 3326--><p class="noindent" ><div class="minipage"><span 
+<!--l. 3334--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">gesturefollower</span> <img 
 src="OSCMsg121x.png" alt="PICT" >
 </div></dd></dl>
 <a 
  id="dx22-110002"></a>
-<!--l. 3329--><p class="noindent" >The parameters are:
+<!--l. 3337--><p class="noindent" >The parameters are:
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">gesturedimension</span>: the size of the gestures data vector.
@@ -318,7 +319,7 @@ class="pcrr8tn-">bufsize</span>: the size of the gesture data storage.
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">name</span>: a list of names to be used to refer to the learned gestures.</li></ul>
-<!--l. 3336--><p class="noindent" ><span 
+<!--l. 3344--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -341,7 +342,7 @@ class="list">
                                                                                  
 
                                                                                  
-<!--l. 3349--><p class="noindent" ><div class="minipage"><span 
+<!--l. 3357--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">gesturefollower</span> <img 
 src="OSCMsg122x.png" alt="PICT" >
 </div></dd></dl>
@@ -380,7 +381,7 @@ class="ptmb8t-">[6] </span>sets the size of the window that contains the history
      </li>
      <li class="itemize"><span 
 class="ptmb8t-">[7] </span>sets the follower tolerance.</li></ul>
-<!--l. 3366--><p class="noindent" ><span 
+<!--l. 3374--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -391,7 +392,7 @@ class="small-caps">E</span> </span><br
 class="newline" />Creating a gesture follower for 3 dimensional data and a typical learning sequence:
 <div class="center" 
 >
-<!--l. 3372--><p class="noindent" >
+<!--l. 3380--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox116"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/gf set imtrgf 3 1000 gestureA gestureB gestureC gestureD ;</span><br 
@@ -406,10 +407,10 @@ class="pcrr8tn-x-x-90">/ITL/scene/gf stop;</span>
                                                                                  
 </div></div>
 </div>
-<!--l. 3376--><p class="noindent" >
+<!--l. 3384--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">17.2.3    </span> <a 
  id="x22-11100017.2.3"></a>Gestures management</h4>
-<!--l. 3378--><p class="noindent" >Messages can also be sent to gestures i.e. to addresses in the form <span 
+<!--l. 3386--><p class="noindent" >Messages can also be sent to gestures i.e. to addresses in the form <span 
 class="pcrr8tn-">/ITL/</span><span 
 class="pcrro8t-">scene</span><span 
 class="pcrr8tn-">/</span><span 
@@ -418,7 +419,7 @@ class="pcrr8tn-">/</span><span
 class="pcrro8t-">gesturename</span>
 where <span 
 class="pcrr8tn-">myfollower </span>is a gesture follower.
-<!--l. 3380--><p class="noindent" >A gesture could be in two states:
+<!--l. 3388--><p class="noindent" >A gesture could be in two states:
      <ul class="itemize1">
      <li class="itemize">an active state: when its likelihood is greater or equal to the likelihood threshold.
      </li>
@@ -428,7 +429,7 @@ class="pcrr8tn-">myfollower </span>is a gesture follower.
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 3391--><p class="noindent" ><div class="minipage"><span 
+<!--l. 3399--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">gesture</span> <img 
 src="OSCMsg123x.png" alt="PICT" >
 </div></dd></dl>
@@ -462,13 +463,13 @@ class="pcrr8tn-">0.5</span>.</li></ul>
                                                                                  
 
                                                                                  
-<!--l. 3405--><p class="noindent" >Gestures supports also specific queries :
+<!--l. 3413--><p class="noindent" >Gestures supports also specific queries :
 <a 
  id="dx22-111006"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 3408--><p class="noindent" ><div class="minipage"><span 
+<!--l. 3416--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">gestureget</span> <img 
 src="OSCMsg124x.png" alt="PICT" >
 </div></dd></dl>
@@ -482,16 +483,16 @@ class="pcrr8tn-">get</span>: without parameter, returns a set message when the g
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">size</span>: gives the current size of the gesture, actually the number of recorded frames.</li></ul>
-<!--l. 3420--><p class="noindent" >
+<!--l. 3428--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">17.2.4    </span> <a 
  id="x22-11200017.2.4"></a>Events and interaction</h4>
-<!--l. 3422--><p class="noindent" >Events are defined at gesture level and events management messages should be addressed to gestures.
+<!--l. 3430--><p class="noindent" >Events are defined at gesture level and events management messages should be addressed to gestures.
 <a 
  id="dx22-112001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 3427--><p class="noindent" ><div class="minipage"><span 
+<!--l. 3435--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">gestureevents</span> <img 
 src="OSCMsg125x.png" alt="PICT" >
 </div></dd></dl>
@@ -520,13 +521,13 @@ class="pcrr8tn-">gfActive </span>triggered in active state each time the gesture
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">gfIdle </span>triggered in idle state each time the gesture likelihood is refreshed.</li></ul>
-<!--l. 3441--><p class="noindent" >A message associated to a gesture supports the following specific variables:
+<!--l. 3449--><p class="noindent" >A message associated to a gesture supports the following specific variables:
 <a 
  id="dx22-112007"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 3447--><p class="noindent" ><div class="minipage"><span 
+<!--l. 3455--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">gesturevariable</span> <img 
 src="OSCMsg126x.png" alt="PICT" >
 </div></dd></dl>
@@ -536,7 +537,7 @@ src="OSCMsg126x.png" alt="PICT" >
  id="dx22-112009"></a>
 <a 
  id="dx22-112010"></a>
-<!--l. 3451--><p class="noindent" >These variables support the scaling feature associated to position variables and described in section <a 
+<!--l. 3459--><p class="noindent" >These variables support the scaling feature associated to position variables and described in section <a 
 href="OSCMsgch15.html#x19-8800015.2.1">15.2.1<!--tex4ht:ref: posvar --></a>
 p.<a 
 href="OSCMsgch15.html#x19-8800015.2.1">125<!--tex4ht:ref: posvar --></a>.
@@ -549,7 +550,7 @@ class="pcrr8tn-">gfpos </span>indicates the current position in the gesture
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">gfspeed </span>indicates the current gesture execution speed</li></ul>
-<!--l. 3458--><p class="noindent" ><span 
+<!--l. 3466--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -558,10 +559,10 @@ class="newline" />Variables described in section <a
 href="OSCMsgch15.html#x19-8700015.2">15.2<!--tex4ht:ref: interactvar --></a> p.<a 
 href="OSCMsgch15.html#x19-8700015.2">124<!--tex4ht:ref: interactvar --></a> may also be used but they are meaningless and contains default
 values.
-<!--l. 3464--><p class="noindent" >
+<!--l. 3472--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">17.2.5    </span> <a 
  id="x22-11300017.2.5"></a>Gesture Follower Appearance</h4>
-<!--l. 3466--><p class="noindent" >A gesture follower object has a graphic appearance and supports all the standard objects properties, including
+<!--l. 3474--><p class="noindent" >A gesture follower object has a graphic appearance and supports all the standard objects properties, including
 mapping and synchronization. This graphic appearance is provided mainly for debug purpose and
 by default, the object is hidden. Figure <a 
 href="#x22-1130011">17.1<!--tex4ht:ref: fig:gfgraph --></a> shows the gesture follower appearance in its different
@@ -578,7 +579,7 @@ phases:
      </li>
      <li class="itemize">when following, the upper part indicates each gesture current likelihood and the lower part indicates
      the current estimated positions.</li></ul>
-<!--l. 3474--><p class="noindent" ><hr class="figure"><div class="figure" 
+<!--l. 3482--><p class="noindent" ><hr class="figure"><div class="figure" 
 >
                                                                                  
 
@@ -588,7 +589,7 @@ phases:
                                                                                  
 
                                                                                  
-<!--l. 3475--><p class="noindent" ><img 
+<!--l. 3483--><p class="noindent" ><img 
 src="OSCMsg127x.png" alt="PIC" class="graphics" width="405.45045pt" height="120.19774pt" ><!--tex4ht:graphics  
 name="OSCMsg127x.png" src="imgs/gesture-follower.ps"  
 -->
@@ -598,10 +599,10 @@ class="content">The gesture follower appearance in its different phases.</span><
                                                                                  
 
                                                                                  
-<!--l. 3478--><p class="noindent" ></div><hr class="endfigure">
+<!--l. 3486--><p class="noindent" ></div><hr class="endfigure">
 <h3 class="sectionHead"><span class="titlemark">17.3    </span> <a 
  id="x22-11400017.3"></a>Httpd server plugin</h3>
-<!--l. 3487--><p class="noindent" >INScore can embed Http server to expose real time screenshot image of a scene to the web. This feature is based on
+<!--l. 3495--><p class="noindent" >INScore can embed Http server to expose real time screenshot image of a scene to the web. This feature is based on
 libmicrohttpd <span class="footnote-mark"><a 
 href="OSCMsg24.html#fn2x240"><sup class="textsuperscript">2</sup></a></span><a 
  id="x22-114001f2"></a> 
@@ -609,13 +610,13 @@ and is available as a plugin that is included in the INScore distribution (versi
 image is the base url of the server.
 <h4 class="subsectionHead"><span class="titlemark">17.3.1    </span> <a 
  id="x22-11500017.3.1"></a>Set Message</h4>
-<!--l. 3493--><p class="noindent" >The http server object is created in a scene like other objects and served image of his scene.
+<!--l. 3501--><p class="noindent" >The http server object is created in a scene like other objects and served image of his scene.
 <a 
  id="dx22-115001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 3497--><p class="noindent" ><div class="minipage"><span 
+<!--l. 3505--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">httpdserver</span> <img 
 src="OSCMsg128x.png" alt="PICT" >
 </div> </dd></dl>
@@ -624,7 +625,7 @@ src="OSCMsg128x.png" alt="PICT" >
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">port </span>http port used by the server.</li></ul>
-<!--l. 3504--><p class="noindent" ><span 
+<!--l. 3512--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -635,22 +636,22 @@ class="small-caps">E</span> </span><br
 class="newline" />
 <div class="center" 
 >
-<!--l. 3505--><p class="noindent" >
+<!--l. 3513--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox117"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/server set httpd 8000;</span>
 </div></div>
 </div>
-<!--l. 3507--><p class="noindent" ><span 
+<!--l. 3515--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
 class="small-caps">E</span>  </span><br 
 class="newline" />If the http port is already used, the server cannot start.
-<!--l. 3512--><p class="noindent" >
+<!--l. 3520--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">17.3.2    </span> <a 
  id="x22-11600017.3.2"></a>Specific messages</h4>
-<!--l. 3514--><p class="noindent" >The http server status can be delivered with a specific message.
+<!--l. 3522--><p class="noindent" >The http server status can be delivered with a specific message.
 <a 
  id="dx22-116001"></a>
                                                                                  
@@ -659,14 +660,14 @@ class="newline" />If the http port is already used, the server cannot start.
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 3518--><p class="noindent" ><div class="minipage"><span 
+<!--l. 3526--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">httpdmessage</span> <img 
 src="OSCMsg129x.png" alt="PICT" >
 </div> </dd></dl>
 <a 
  id="dx22-116002"></a>
-<!--l. 3522--><p class="noindent" >A string corresponding to the server status ("started" or "stopped") is return.
-<!--l. 3524--><p class="noindent" ><span 
+<!--l. 3530--><p class="noindent" >A string corresponding to the server status ("started" or "stopped") is return.
+<!--l. 3532--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -677,7 +678,7 @@ class="small-caps">E</span> </span><br
 class="newline" />
 <div class="center" 
 >
-<!--l. 3525--><p class="noindent" >
+<!--l. 3533--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox118"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/server get status;</span>
@@ -686,11 +687,12 @@ class="pcrr8tn-x-x-90">/ITL/scene/server get status;</span>
                                                                                  
 
                                                                                  
-<!--l. 3529--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 3537--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch18.html" >next</a>] [<a 
 href="OSCMsgch16.html" >prev</a>] [<a 
 href="OSCMsgch16.html#tailOSCMsgch16.html" >prev-tail</a>] [<a 
 href="OSCMsgch17.html" >front</a>] [<a 
-href="OSCMsg3.html#OSCMsgch18.html" >up</a>] </p></div>
-<!--l. 3529--><p class="noindent" ><a 
+href="OSCMsg3.html#OSCMsgch17.html" >up</a>] </p></div>
+<!--l. 3537--><p class="noindent" ><a 
  id="tailOSCMsgch17.html"></a>  
 </body></html> 
