@@ -47,6 +47,12 @@ bool QPRollGraphicsItem::setGMNCode(const QString& gmnCode)
 }
 
 //-------------------------------------------------------------------------
+bool QPRollGraphicsItem::setGMNStream(GuidoStream * gmnStream)
+{
+    return fGuidoPainter->setGMNStream( gmnStream);
+}
+
+//-------------------------------------------------------------------------
 QString QPRollGraphicsItem::getLastErrorMessage() const
 {
 	return fGuidoPainter->getLastErrorMessage();

@@ -64,6 +64,7 @@ void VQtUpdater::updateTo(IPolygon * p)				{ update<IPolygon,	VPolygonView>	(p);
 void VQtUpdater::updateTo(IGestureFollower * gf)	{ update<IGestureFollower,VGestureFollowerView>	(gf); }
 void VQtUpdater::updateTo(IGuidoCode * guido)		{ update<IGuidoCode,VGuidoItemView>	(guido); }
 void VQtUpdater::updateTo(IGuidoPianoRoll * proll)	{ update<IGuidoPianoRoll,VPianoRollView> (proll); }
+void VQtUpdater::updateTo(IGuidoPianoRollStream * proll) { update<IGuidoPianoRollStream,VPianoRollView> (proll); }
 void VQtUpdater::updateTo(IText* text)				{ update<IText,		VTextView>		(text); }
 void VQtUpdater::updateTo(ISVG* svg)				{ update<ISVG,		VSVGView>		(svg); }
 void VQtUpdater::updateTo(ISVGFile* svg)			{ update<ISVGFile,	VSVGView>		(svg); }

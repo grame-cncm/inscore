@@ -37,6 +37,7 @@ class QPRollGraphicsItem : public QGraphicsRectItem
         const PianoRoll*	getPianoRoll() const { return fPianoRoll; }
 				QString		gmnCode() const;
 				bool		setGMNCode(const QString& gmnCode);
+				bool		setGMNStream(GuidoStream * gmnStream);
 				QString		getLastErrorMessage() const;
 
 	protected:

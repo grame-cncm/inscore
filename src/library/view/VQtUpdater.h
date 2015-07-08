@@ -64,6 +64,7 @@ class export VQtUpdater : public ViewUpdater
 		virtual void updateTo (IGraphicSignal* graph);
 		virtual void updateTo (IGuidoCode* guidoCode);
 		virtual void updateTo (IGuidoPianoRoll * proll);
+		virtual void updateTo (IGuidoPianoRollStream * proll);
 		virtual void updateTo (IHtml* html);
 		virtual void updateTo (IImage* img);
 		virtual void updateTo (ILine * line);
