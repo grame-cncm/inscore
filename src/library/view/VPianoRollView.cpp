@@ -56,6 +56,12 @@ void VPianoRollView::updateView( IGuidoPianoRoll * proll  )
     proll->cleanupSync();
 	item()->setRect (0, 0, relative2SceneWidth(proll->getWidth()), relative2SceneHeight(proll->getHeight()));
 	item()->setPianoRoll(proll->getPianoRoll());
+
+	QColor color (proll->getR(), proll->getG(), proll->getB(), proll->getA());
+	const IColor& c = proll->getPenColor();
+	QColor pencolor (c.getR(), c.getG(), c.getB(), c.getA());
+	item()->setBrush(color);
+	item()->setPen(QPen(pencolor));
     gmnUpdate(proll);
 	VGraphicsItemView::updateView (proll);
 }
