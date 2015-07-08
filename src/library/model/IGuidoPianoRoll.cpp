@@ -174,8 +174,10 @@ MsgHandler::msgStatus IGuidoPianoRoll::setClipPitch(const IMessage *msg)
 //--------------------------------------------------------------------------
 void IGuidoPianoRoll::enableKeyboard(bool enable)
 {
+	if (fKeyboard == enable) return;
 	fKeyboard = enable;
 	GuidoPianoRollEnableKeyboard(fPianoRoll, fKeyboard);
+	localMapModified (true);
 }
 
 //--------------------------------------------------------------------------
