@@ -16,14 +16,16 @@
 
 #include <QGraphicsRectItem>
 
-//#include "QGuidoGraphicsItem.h"
 #include "QGuidoPainter.h"
 #include "GUIDOPianoRoll.h"
+
+namespace inscore
+{
 
 /**
 *	\brief A QGraphicsItem displaying a Guido piano roll.
 */
-class QPRollGraphicsItem : public QGraphicsRectItem // public QGuidoGraphicsItem
+class QPRollGraphicsItem : public QGraphicsRectItem
 {
 	public:
 				 QPRollGraphicsItem(QGraphicsItem * parent = 0);
@@ -38,9 +40,9 @@ class QPRollGraphicsItem : public QGraphicsRectItem // public QGuidoGraphicsItem
 				QString		getLastErrorMessage() const;
 
 	protected:
- 
 		PianoRoll *		fPianoRoll;
 		QGuidoPainter * fGuidoPainter;
 };
+}
 
 #endif

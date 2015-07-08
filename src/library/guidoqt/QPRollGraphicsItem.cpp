@@ -12,12 +12,14 @@
  * research@grame.fr
  */
 
-//#include <QPainter>
 #include <QStyleOptionGraphicsItem>
 
 #include "QGuidoPainter.h"
 #include "QPRollGraphicsItem.h"
 #include "QGuidoPainter.h"
+
+namespace inscore
+{
 
 //-------------------------------------------------------------------------
 QPRollGraphicsItem::QPRollGraphicsItem(QGraphicsItem * parent)
@@ -55,22 +57,16 @@ void QPRollGraphicsItem::paint( QPainter * painter, const QStyleOptionGraphicsIt
 {
 	if (!fPianoRoll) return;
 
-	painter->setBrush(QBrush(QColor(0,0,0)));
-	painter->setPen(QColor(255,0,0));
+	fGuidoPainter->setScoreColor(brush().color());
+	fGuidoPainter->setPenColor(pen().color());
 	QRect rect = boundingRect().toRect();
 	fGuidoPainter->drawPianoRoll(painter, rect, fPianoRoll);
-
-//	for ( int i = mPageManager->firstVisiblePage() ; i <= mPageManager->lastVisiblePage() ; i++ )
-//    {
-//        QRectF pageRect;
-//		pageRect.moveTo( mPageManager->pagePos(i) );
-//		pageRect.setSize( mPageManager->pageSize(i) );
-//		fGuidoPainter->drawPianoRoll(painter, pageRect.toRect(), fPianoRoll);
-//    }
 }
 
 //-------------------------------------------------------------------------
 void QPRollGraphicsItem::setPianoRoll(PianoRoll * pRoll)
 {
 	fPianoRoll = pRoll;
+}
+
 }
