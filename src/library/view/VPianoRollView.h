@@ -59,6 +59,7 @@ class VPianoRollView: public VGraphicsItemView
 
 	public :
 		using VGraphicsItemView::updateLocalMapping;
+		using VGraphicsItemView::updateView;
 
 				 VPianoRollView(QGraphicsScene * scene, const IGuidoPianoRoll*);
 		virtual ~VPianoRollView() {}
