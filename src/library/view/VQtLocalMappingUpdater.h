@@ -52,6 +52,7 @@ class export VQtLocalMappingUpdater : public LocalMapUpdater
 		void updateTo (IGraphicSignal* graph);
 		void updateTo (IGuidoCode* guidoCode);
 		void updateTo (IGuidoPianoRoll* guidoCode);
+		void updateTo (IGuidoPianoRollStream* guidoCode);
 		void updateTo (IImage* img);
 		void updateTo (IText* text);
 		void updateTo (ISVG* svg);
