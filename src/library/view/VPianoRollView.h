@@ -55,7 +55,8 @@ class VPianoRollView: public VGraphicsItemView
 {
 	typedef MouseEventAble<QPRollGraphicsItem>	IQPRollGraphicsItem;
 	
-	IQPRollGraphicsItem* item()	{ return (IQPRollGraphicsItem *)fItem; }
+	IQPRollGraphicsItem*	item()	{ return (IQPRollGraphicsItem *)fItem; }
+	void					updateCommon( IGuidoPianoRoll * proll );
 
 	public :
 		using VGraphicsItemView::updateLocalMapping;
@@ -64,12 +65,16 @@ class VPianoRollView: public VGraphicsItemView
 				 VPianoRollView(QGraphicsScene * scene, const IGuidoPianoRoll*);
 		virtual ~VPianoRollView() {}
 
-		virtual void updateView( IGuidoPianoRoll * guidoCode );
-		virtual void updateLocalMapping (IGuidoPianoRoll* guidoCode);
+		virtual void updateView( IGuidoPianoRoll * proll );
+		virtual void updateView( IGuidoPianoRollStream * prollstream );
+		virtual void updateLocalMapping (IGuidoPianoRoll* proll);
+		virtual void updateLocalMapping (IGuidoPianoRollStream* proll);
 
 	protected:
 		/// update to guido code i.e. update ar and gr handlers
 		virtual bool gmnUpdate (IGuidoPianoRoll* guidoCode);
+		virtual bool gmnUpdate (IGuidoPianoRollStream* guidoCode);
+		virtual void updateMappingCommon (IGuidoPianoRoll* proll);
 };
 
 /*!@} */

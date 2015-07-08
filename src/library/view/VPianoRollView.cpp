@@ -33,6 +33,7 @@
 #include "VApplView.h"
 
 #include "IGuidoPianoRoll.h"
+#include "IGuidoPianoRollStream.h"
 #include "QPRollGraphicsItem.h"
 #include "QGuidoImporter.h"
 
@@ -51,7 +52,7 @@ VPianoRollView::VPianoRollView(QGraphicsScene * scene, const IGuidoPianoRoll* h)
 }
 
 //----------------------------------------------------------------------
-void VPianoRollView::updateView( IGuidoPianoRoll * proll  )
+void VPianoRollView::updateCommon( IGuidoPianoRoll * proll )
 {
     proll->cleanupSync();
 	item()->setRect (0, 0, relative2SceneWidth(proll->getWidth()), relative2SceneHeight(proll->getHeight()));
@@ -62,8 +63,30 @@ void VPianoRollView::updateView( IGuidoPianoRoll * proll  )
 	QColor pencolor (c.getR(), c.getG(), c.getB(), c.getA());
 	item()->setBrush(color);
 	item()->setPen(QPen(pencolor));
+}
+
+//----------------------------------------------------------------------
+void VPianoRollView::updateView( IGuidoPianoRollStream * proll  )
+{
+    updateCommon(proll);
     gmnUpdate(proll);
 	VGraphicsItemView::updateView (proll);
+}
+
+//----------------------------------------------------------------------
+void VPianoRollView::updateView( IGuidoPianoRoll * proll  )
+{
+    updateCommon(proll);
+    gmnUpdate(proll);
+	VGraphicsItemView::updateView (proll);
+}
+
+//----------------------------------------------------------------------
+bool VPianoRollView::gmnUpdate (IGuidoPianoRollStream* proll)
+{
+	if(item()->setGMNStream(proll->getGuidoStream())) return true;
+	ITLErr << proll->getOSCAddress() << "invalid gmn code:" << item()->getLastErrorMessage().toUtf8().data() << ITLEndl;
+	return false;
 }
 
 //----------------------------------------------------------------------
@@ -78,15 +101,14 @@ bool VPianoRollView::gmnUpdate (IGuidoPianoRoll* proll)
 }
 
 //----------------------------------------------------------------------
-void VPianoRollView::updateLocalMapping (IGuidoPianoRoll* proll)
+void VPianoRollView::updateMappingCommon (IGuidoPianoRoll* proll)
 {
-	if (!gmnUpdate (proll) ) return;
+	float itemWidth  = relative2SceneWidth(proll->getWidth());
+	float itemHeight = relative2SceneHeight(proll->getHeight());
 
-	float itemWidth  = item()->boundingRect().width();
-	float itemHeight = item()->boundingRect().height();
-
-// typedef std::vector<std::pair<TimeSegment, FloatRect> >	Time2GraphicMap;
 	Time2GraphicMap map;
+	item()->setRect (0, 0, relative2SceneWidth(proll->getWidth()), relative2SceneHeight(proll->getHeight()));
+
     GuidoErrCode err = GuidoPianoRollGetMap(proll->getPianoRoll(), itemWidth, itemHeight, map);
 	if (err != guidoNoErr) {
 		ITLErr << proll->getOSCAddress() << "can't get piano roll map:" <<  GuidoGetErrorString(err) << ITLEndl;
@@ -103,11 +125,57 @@ void VPianoRollView::updateLocalMapping (IGuidoPianoRoll* proll)
 		const TimeSegment t = i->first;
 		RelativeTimeSegment timesegm( rational(t.first.num, t.first.denom) , rational(t.second.num, t.second.denom) );
 		const FloatRect& r = i->second;
-		GraphicSegment		graphsegm( scene2RelativeX(r.left) , scene2RelativeY(r.top) , scene2RelativeX(r.right) , scene2RelativeY(r.bottom) );
+//		GraphicSegment		graphsegm( (r.left * 2) / itemWidth - 1 , r.top/itemHeight -1 , r.right/itemWidth, r.bottom/itemHeight );
+		// optimized version
+		GraphicSegment		graphsegm( (r.left * 2) / itemWidth - 1, -1 , 1, 1 );
 		t2g_mapping->add (timesegm , graphsegm );
 	}
 	proll->setMapping( "" , t2g_mapping);
 	proll->localMapModified(true);
+}
+
+//----------------------------------------------------------------------
+void VPianoRollView::updateLocalMapping (IGuidoPianoRollStream* proll)
+{
+	if (!gmnUpdate (proll) ) return;
+	updateMappingCommon (proll);
+}
+
+//----------------------------------------------------------------------
+void VPianoRollView::updateLocalMapping (IGuidoPianoRoll* proll)
+{
+	if (!gmnUpdate (proll) ) return;
+	updateMappingCommon (proll);
+//
+//	float itemWidth  = relative2SceneWidth(proll->getWidth());
+//	float itemHeight = relative2SceneHeight(proll->getHeight());
+//
+//	Time2GraphicMap map;
+//	item()->setRect (0, 0, relative2SceneWidth(proll->getWidth()), relative2SceneHeight(proll->getHeight()));
+//
+//    GuidoErrCode err = GuidoPianoRollGetMap(proll->getPianoRoll(), itemWidth, itemHeight, map);
+//	if (err != guidoNoErr) {
+//		ITLErr << proll->getOSCAddress() << "can't get piano roll map:" <<  GuidoGetErrorString(err) << ITLEndl;
+//		VGraphicsItemView::buildDefaultMapping (proll);
+//		return;
+//	}
+//	if (map.empty()) {
+//		ITLErr << proll->getOSCAddress() << "unexpected empty piano roll map" << ITLEndl;
+//		VGraphicsItemView::buildDefaultMapping (proll);
+//		return;
+//	}
+//	SRelativeTime2GraphicMapping t2g_mapping = TMapping<rational,1,float,2>::create();
+//	for (Time2GraphicMap::const_iterator i = map.begin(); i != map.end(); i++) {
+//		const TimeSegment t = i->first;
+//		RelativeTimeSegment timesegm( rational(t.first.num, t.first.denom) , rational(t.second.num, t.second.denom) );
+//		const FloatRect& r = i->second;
+////		GraphicSegment		graphsegm( (r.left * 2) / itemWidth - 1 , r.top/itemHeight -1 , r.right/itemWidth, r.bottom/itemHeight );
+//		// optimized version
+//		GraphicSegment		graphsegm( (r.left * 2) / itemWidth - 1, -1 , 1, 1 );
+//		t2g_mapping->add (timesegm , graphsegm );
+//	}
+//	proll->setMapping( "" , t2g_mapping);
+//	proll->localMapModified(true);
 }
 
 } // end namespoace
