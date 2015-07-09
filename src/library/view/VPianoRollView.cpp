@@ -125,36 +125,6 @@ void VPianoRollView::updateLocalMapping (IGuidoPianoRoll* proll)
 {
 	if (proll->getPianoRoll() == 0) return;
 	updateMappingCommon (proll);
-//
-//	float itemWidth  = relative2SceneWidth(proll->getWidth());
-//	float itemHeight = relative2SceneHeight(proll->getHeight());
-//
-//	Time2GraphicMap map;
-//	item()->setRect (0, 0, relative2SceneWidth(proll->getWidth()), relative2SceneHeight(proll->getHeight()));
-//
-//    GuidoErrCode err = GuidoPianoRollGetMap(proll->getPianoRoll(), itemWidth, itemHeight, map);
-//	if (err != guidoNoErr) {
-//		ITLErr << proll->getOSCAddress() << "can't get piano roll map:" <<  GuidoGetErrorString(err) << ITLEndl;
-//		VGraphicsItemView::buildDefaultMapping (proll);
-//		return;
-//	}
-//	if (map.empty()) {
-//		ITLErr << proll->getOSCAddress() << "unexpected empty piano roll map" << ITLEndl;
-//		VGraphicsItemView::buildDefaultMapping (proll);
-//		return;
-//	}
-//	SRelativeTime2GraphicMapping t2g_mapping = TMapping<rational,1,float,2>::create();
-//	for (Time2GraphicMap::const_iterator i = map.begin(); i != map.end(); i++) {
-//		const TimeSegment t = i->first;
-//		RelativeTimeSegment timesegm( rational(t.first.num, t.first.denom) , rational(t.second.num, t.second.denom) );
-//		const FloatRect& r = i->second;
-////		GraphicSegment		graphsegm( (r.left * 2) / itemWidth - 1 , r.top/itemHeight -1 , r.right/itemWidth, r.bottom/itemHeight );
-//		// optimized version
-//		GraphicSegment		graphsegm( (r.left * 2) / itemWidth - 1, -1 , 1, 1 );
-//		t2g_mapping->add (timesegm , graphsegm );
-//	}
-//	proll->setMapping( "" , t2g_mapping);
-//	proll->localMapModified(true);
 }
 
 } // end namespoace
