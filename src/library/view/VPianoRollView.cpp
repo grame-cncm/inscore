@@ -69,7 +69,6 @@ void VPianoRollView::updateCommon( IGuidoPianoRoll * proll )
 void VPianoRollView::updateView( IGuidoPianoRollStream * proll  )
 {
     updateCommon(proll);
-    gmnUpdate(proll);
 	VGraphicsItemView::updateView (proll);
 }
 
@@ -77,27 +76,7 @@ void VPianoRollView::updateView( IGuidoPianoRollStream * proll  )
 void VPianoRollView::updateView( IGuidoPianoRoll * proll  )
 {
     updateCommon(proll);
-    gmnUpdate(proll);
 	VGraphicsItemView::updateView (proll);
-}
-
-//----------------------------------------------------------------------
-bool VPianoRollView::gmnUpdate (IGuidoPianoRollStream* proll)
-{
-	if(item()->setGMNStream(proll->getGuidoStream())) return true;
-	ITLErr << proll->getOSCAddress() << "invalid gmn code:" << item()->getLastErrorMessage().toUtf8().data() << ITLEndl;
-	return false;
-}
-
-//----------------------------------------------------------------------
-bool VPianoRollView::gmnUpdate (IGuidoPianoRoll* proll)
-{
-	QString gmnCode = VApplView::toQString( proll->getGMN().c_str() );
-	if ( item()->gmnCode() == gmnCode ) return true;		// no gmn code change, nothing to do
-
-	if (item()->setGMNCode( gmnCode ) ) return true;		// gmn code update done
-	ITLErr << proll->getOSCAddress() << "invalid gmn code:" << item()->getLastErrorMessage().toUtf8().data() << ITLEndl;
-	return false;
 }
 
 //----------------------------------------------------------------------
@@ -137,14 +116,14 @@ void VPianoRollView::updateMappingCommon (IGuidoPianoRoll* proll)
 //----------------------------------------------------------------------
 void VPianoRollView::updateLocalMapping (IGuidoPianoRollStream* proll)
 {
-	if (!gmnUpdate (proll) ) return;
+	if (proll->getPianoRoll() == 0) return;
 	updateMappingCommon (proll);
 }
 
 //----------------------------------------------------------------------
 void VPianoRollView::updateLocalMapping (IGuidoPianoRoll* proll)
 {
-	if (!gmnUpdate (proll) ) return;
+	if (proll->getPianoRoll() == 0) return;
 	updateMappingCommon (proll);
 //
 //	float itemWidth  = relative2SceneWidth(proll->getWidth());

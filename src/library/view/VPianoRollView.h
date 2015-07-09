@@ -72,8 +72,6 @@ class VPianoRollView: public VGraphicsItemView
 
 	protected:
 		/// update to guido code i.e. update ar and gr handlers
-		virtual bool gmnUpdate (IGuidoPianoRoll* guidoCode);
-		virtual bool gmnUpdate (IGuidoPianoRollStream* guidoCode);
 		virtual void updateMappingCommon (IGuidoPianoRoll* proll);
 };
 
