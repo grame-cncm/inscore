@@ -60,6 +60,7 @@ VObjectView*	ViewFactory::create (const IGuidoCode* object,	QGraphicsScene* scen
 VObjectView*	ViewFactory::create (const IGuidoPianoRoll* object,	QGraphicsScene* scene)	{ return new VPianoRollView (scene, object); }
 VObjectView*	ViewFactory::create (const IGuidoPianoRollStream* object, QGraphicsScene* scene) { return new VPianoRollView (scene, object); }
 VObjectView*	ViewFactory::create (const IGuidoFile* object,	QGraphicsScene* scene)		{ return new VGuidoItemView (scene, object); }
+VObjectView*	ViewFactory::create (const IGuidoPianoRollFile* object,	QGraphicsScene* scene) { return new VPianoRollView (scene, object); }
 VObjectView*	ViewFactory::create (const IMusicXMLCode* object, QGraphicsScene* scene)	{ return new VGuidoItemView (scene, object); }
 VObjectView*	ViewFactory::create (const IMusicXMLFile* object, QGraphicsScene* scene)	{ return new VGuidoItemView (scene, object); }
 VObjectView*	ViewFactory::create (const IHtml* object,		QGraphicsScene* scene)		{ return new VTextView (scene, object); }

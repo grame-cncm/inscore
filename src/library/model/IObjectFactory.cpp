@@ -153,7 +153,10 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 
 	else if ( type == IGuidoPianoRollStream::kGuidoPianoRollStreamType )
 		obj = _create<IGuidoPianoRollStream> (name, parent);
-    
+
+	else if ( type == IGuidoPianoRollFile::kGuidoPianoRollFileType)
+		obj = _create<IGuidoPianoRollFile> (name, parent);
+
 	else if ( type == IMusicXMLCode::kMusicXMLCodeType )
 		obj = _create<IMusicXMLCode> (name, parent);
 

@@ -137,6 +137,12 @@ class IGuidoPianoRoll : public virtual IGuidoCode
 		/// \brief updates the Piano Roll representation according to the AR Representation
 		virtual void updatePianoRoll();
 
+		/*!
+		 * \brief updatePianoRoll Update or create a piano roll from a midi file
+		 * \param midiFile the midi file path.
+		 */
+		void updatePianoRoll(std::string &midiFile);
+
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 	

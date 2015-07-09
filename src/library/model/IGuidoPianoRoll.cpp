@@ -362,6 +362,15 @@ void IGuidoPianoRoll::updatePianoRoll()
 }
 
 //--------------------------------------------------------------------------
+void IGuidoPianoRoll::updatePianoRoll(string &midiFile)
+{
+	GuidoDestroyPianoRoll(fPianoRoll);
+	GuidoFreeAR(fArHandler);
+	fPianoRoll = GuidoMidi2PianoRoll(kSimplePianoRoll, midiFile.c_str());
+	applyAllSettings();
+}
+
+//--------------------------------------------------------------------------
 void IGuidoPianoRoll::applyAllSettings()
 {
 	GuidoPianoRollEnableKeyboard(fPianoRoll, fKeyboard);

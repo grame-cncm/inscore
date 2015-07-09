@@ -81,7 +81,10 @@ typedef class libmapping::SMARTP<IGuidoPianoRollStream> SIGuidoPianoRollSream;
 
 class IGuidoFile;
 typedef class libmapping::SMARTP<IGuidoFile>	SIGuidoFile;
-    
+
+class IGuidoPianoRollFile;
+typedef class libmapping::SMARTP<IGuidoPianoRollFile>	SIGuidoPianoRollFile;
+
 class IMusicXMLCode;
 typedef class libmapping::SMARTP<IMusicXMLCode>	SIMusicXMLCode;
 
