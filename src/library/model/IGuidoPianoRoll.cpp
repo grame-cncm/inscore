@@ -30,6 +30,8 @@
 #include "VGuidoItemView.h"
 #include "rational.h"
 
+#include <sstream>
+
 using namespace std;
 
 namespace inscore
@@ -70,13 +72,13 @@ IGuidoPianoRoll::IGuidoPianoRoll( const std::string& name, IObject * parent )
 	fMsgHandlerMap[kpitchLines_GetSetMethod] = TMethodMsgHandler<IGuidoPianoRoll>::create(this, &IGuidoPianoRoll::setPitchLinesDisplayMode);
 	fMsgHandlerMap[kautoVoicesColoration_GetSetMethod]	= TSetMethodMsgHandler<IGuidoPianoRoll, bool>::create(this, &IGuidoPianoRoll::enableAutoVoicesColoration);
 
-	fGetMsgHandlerMap[kcliptime_GetSetMethod] = TGetParamMethodHandler<IGuidoPianoRoll, string (IGuidoPianoRoll::*)() const>::create(this, &IGuidoPianoRoll::getClipTime);
-	fGetMultiMsgHandlerMap[kclippitch_GetSetMethod]	= TGetParamMultiMethodHandler<IGuidoPianoRoll, SIMessageList (IGuidoPianoRoll::*)() const>::create(this, &IGuidoPianoRoll::getClipPitch);
+	fGetMsgHandlerMap[kcliptime_GetSetMethod] = TGetParamMethodHandler<IGuidoPianoRoll, vector<int> (IGuidoPianoRoll::*)() const>::create(this, &IGuidoPianoRoll::getClipTime);
+	fGetMsgHandlerMap[kclippitch_GetSetMethod]	= TGetParamMethodHandler<IGuidoPianoRoll, vector<int> (IGuidoPianoRoll::*)() const>::create(this, &IGuidoPianoRoll::getClipPitch);
 	fGetMsgHandlerMap[kkeyboard_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fKeyboard);
 	fGetMsgHandlerMap[kautoVoicesColoration_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fAutoVoiceColor);
 	fGetMsgHandlerMap[kmeasureBars_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fMeasureBars);
 	fGetMultiMsgHandlerMap[kvoiceColor_GetSetMethod]	= TGetParamMultiMethodHandler<IGuidoPianoRoll, SIMessageList (IGuidoPianoRoll::*)() const>::create(this, &IGuidoPianoRoll::getRGBColorToVoice);
-	fGetMsgHandlerMap[kpitchLines_GetSetMethod]	= TGetParamMethodHandler<IGuidoPianoRoll, string (IGuidoPianoRoll::*)() const>::create(this, &IGuidoPianoRoll::getPitchLinesDisplayMode);
+	fGetMsgHandlerMap[kpitchLines_GetSetMethod]	= TGetParamMethodHandler<IGuidoPianoRoll, vector<string> (IGuidoPianoRoll::*)() const>::create(this, &IGuidoPianoRoll::getPitchLinesDisplayMode);
 }
 
 IGuidoPianoRoll::~IGuidoPianoRoll()
@@ -101,11 +103,16 @@ MsgHandler::msgStatus IGuidoPianoRoll::set (const IMessage* msg )
 }
 
 //--------------------------------------------------------------------------
-string IGuidoPianoRoll::getClipTime() const
+vector<int> IGuidoPianoRoll::getClipTime() const
 {
-	libmapping::rational start(fLimits.startDate.num, fLimits.startDate.denom);
-	libmapping::rational end(fLimits.endDate.num, fLimits.endDate.denom);
-	return string(start) + " " + string(end);
+	vector<int> limits;
+	if(fLimits.startDate.num != 0 || fLimits.startDate.denom != 0 || fLimits.endDate.num != 0 || fLimits.endDate.denom != 0) {
+		limits.push_back(fLimits.startDate.num);
+		limits.push_back(fLimits.startDate.denom);
+		limits.push_back(fLimits.endDate.num);
+		limits.push_back(fLimits.endDate.denom);
+	}
+	return limits;
 }
 
 //--------------------------------------------------------------------------
@@ -146,16 +153,14 @@ MsgHandler::msgStatus IGuidoPianoRoll::setClipTime(const IMessage *msg)
 }
 
 //--------------------------------------------------------------------------
-SIMessageList IGuidoPianoRoll::getClipPitch() const
+vector<int> IGuidoPianoRoll::getClipPitch() const
 {
-	SIMessageList list = IMessageList::create();
-	SIMessage msg = IMessage::create (getOSCAddress(), kclippitch_GetSetMethod);
-	IMessage::argslist values;
-	values.push_back(new IMsgParam<int>(fLimits.lowPitch));
-	values.push_back(new IMsgParam<int>(fLimits.highPitch));
-	msg->add (values);
-	list->list().push_back(msg);
-	return list;
+	vector<int> pitch;
+	if(fLimits.lowPitch != fLimits.highPitch) {
+		pitch.push_back(fLimits.lowPitch);
+		pitch.push_back(fLimits.highPitch);
+	}
+	return pitch;
 }
 
 //--------------------------------------------------------------------------
@@ -237,13 +242,11 @@ SIMessageList IGuidoPianoRoll::getRGBColorToVoice() const
 
 	for (map<int, IColor>::const_iterator i = fVoicesColor.begin(); i != fVoicesColor.end(); i++) {
 		SIMessage msg = IMessage::create (getOSCAddress(), kvoiceColor_GetSetMethod);
-		IMessage::argslist values;
-		values.push_back(new IMsgParam<int>(i->first));
-		values.push_back(new IMsgParam<int>(i->second.getR()));
-		values.push_back(new IMsgParam<int>(i->second.getG()));
-		values.push_back(new IMsgParam<int>(i->second.getB()));
-		values.push_back(new IMsgParam<int>(i->second.getA()));
-		msg->add (values);
+		msg->add (i->first);
+		msg->add (i->second.getR());
+		msg->add (i->second.getG());
+		msg->add (i->second.getB());
+		msg->add (i->second.getA());
 		list->list().push_back(msg);
 	}
 	return list;
@@ -308,40 +311,44 @@ MsgHandler::msgStatus IGuidoPianoRoll::setPitchLinesDisplayMode(const IMessage* 
 }
 
 //--------------------------------------------------------------------------
-string IGuidoPianoRoll::getPitchLinesDisplayMode() const
+vector<string> IGuidoPianoRoll::getPitchLinesDisplayMode() const
 {
-	stringstream sstr;
-	if(fPitchLines == kNoLine)
-		return "empty";
-	if(fPitchLines == kAutoLines)
-		return "";
+	vector<string> pitchs;
+
+	if(fPitchLines == kNoLine) {
+		pitchs.push_back("empty");
+		return pitchs;
+	}
+	if(fPitchLines == kAutoLines) {
+		return pitchs;
+	}
 
 	if(fPitchLines & kCLine)
-		sstr << "c";
+		pitchs.push_back("c");
 	if(fPitchLines & kCSharpLine)
-		sstr << " " << "c#";
+		pitchs.push_back("c#");
 	if(fPitchLines & kDLine)
-		sstr << " " << "d";
+		pitchs.push_back("d");
 	if(fPitchLines & kDSharpLine)
-		sstr << " " << "d#";
+		pitchs.push_back("d#");
 	if(fPitchLines & kELine)
-		sstr << " " << "e";
+		pitchs.push_back("e");
 	if(fPitchLines & kFLine)
-		sstr << " " << "f";
+		pitchs.push_back("f");
 	if(fPitchLines & kFSharpLine)
-		sstr << " " << "f#";
+		pitchs.push_back("f#");
 	if(fPitchLines & kGLine)
-		sstr << " " << "g";
+		pitchs.push_back("g");
 	if(fPitchLines & kGSharpLine)
-		sstr << " " << "g#";
+		pitchs.push_back("g#");
 	if(fPitchLines & kALine)
-		sstr << " " << "a";
+		pitchs.push_back("a");
 	if(fPitchLines & kASharpLine)
-		sstr << " " << "a#";
+		pitchs.push_back("a#");
 	if(fPitchLines & kBLine)
-		sstr << " " << "b";
+		pitchs.push_back("b");
 
-	return sstr.str();
+	return pitchs;
 }
 
 //--------------------------------------------------------------------------
@@ -355,6 +362,16 @@ void IGuidoPianoRoll::updatePianoRoll()
 		fArHandler = GuidoStream2AR(parser, stream->getGuidoStream());
     else
 		fArHandler = GuidoString2AR(parser, fGMN.c_str());
+
+	if(!fArHandler){
+		int line;
+		int col;
+		GuidoParserGetErrorCode(parser, line, col, 0);
+		stringstream sstr;
+		sstr << " (line " << line << ", col " << col << ")";
+		ITLErr << getOSCAddress() << "invalid gmn code:" << sstr.str() << ITLEndl;
+		return ;
+	}
 	GuidoCloseParser(parser);
 
 	fPianoRoll = GuidoAR2PianoRoll(kSimplePianoRoll, fArHandler);
