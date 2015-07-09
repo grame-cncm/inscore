@@ -69,12 +69,6 @@ void IObjectDebug::accept (Updater* u)
 SIMessageList IObjectDebug::getSetMsg () const
 {
 	SIMessageList outMsgs = IMessageList::create();
-	SIMessage msg = IMessage::create(getOSCAddress(), kmap_GetSetMethod);
-	*msg << getMapDebug();
-	outMsgs->list().push_back (msg);
-	msg = IMessage::create(getOSCAddress(), kname_GetSetMethod);
-	*msg << getNameDebug();
-	outMsgs->list().push_back (msg);
 	return outMsgs;
 }
 
