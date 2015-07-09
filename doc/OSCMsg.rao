@@ -566,10 +566,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {30}{ setMsg : 'set' ( ('pianoroll' gmnString) | ('pianorollstream' gmnStream) ) }
+\rail@i {30}{ setMsg : 'set' ( ('pianoroll' gmnString) | ('pianorollstream' gmnStream) | ('pianorollf' filePath) ) }
 \rail@o {30}{
 \rail@index{setMsg}
-\rail@begin{2}{setMsg}
+\rail@begin{3}{setMsg}
 \rail@term{set}[]
 \rail@bar
 \rail@term{pianoroll}[]
@@ -577,6 +577,9 @@
 \rail@nextbar{1}
 \rail@term{pianorollstream}[]
 \rail@nont{gmnStream}[]
+\rail@nextbar{2}
+\rail@term{pianorollf}[]
+\rail@nont{filePath}[]
 \rail@endbar
 \rail@end
 }
@@ -869,10 +872,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {45}{ pianorollMsg : 'keyboard' int32 | 'autoVoicesColoration' int32 | 'measureBars' int32 | 'voiceColor' int32 (color |) | 'pitchLines' ( 'Notes' |) | 'cliptime' (time time |) | 'clippitch' (int32 int32 |) }
+\rail@i {45}{ pianorollMsg : 'keyboard' int32 | 'autoVoicesColoration' int32 | 'measureBars' int32 | 'voiceColor' (int32 (color |) |) | 'pitchLines' ( 'Notes' |) | 'clipTime' (time time |) | 'clipPitch' (int32 int32 |) }
 \rail@o {45}{
 \rail@index{pianorollMsg}
-\rail@begin{11}{pianorollMsg}
+\rail@begin{12}{pianorollMsg}
 \rail@bar
 \rail@term{keyboard}[]
 \rail@token{int32}[]
@@ -884,30 +887,33 @@
 \rail@token{int32}[]
 \rail@nextbar{3}
 \rail@term{voiceColor}[]
+\rail@bar
 \rail@token{int32}[]
 \rail@bar
 \rail@nont{color}[]
 \rail@nextbar{4}
 \rail@endbar
 \rail@nextbar{5}
+\rail@endbar
+\rail@nextbar{6}
 \rail@term{pitchLines}[]
 \rail@bar
 \rail@term{Notes}[]
-\rail@nextbar{6}
-\rail@endbar
 \rail@nextbar{7}
-\rail@term{cliptime}[]
-\rail@bar
-\rail@nont{time}[]
-\rail@nont{time}[]
-\rail@nextbar{8}
 \rail@endbar
+\rail@nextbar{8}
+\rail@term{clipTime}[]
+\rail@bar
+\rail@nont{time}[]
+\rail@nont{time}[]
 \rail@nextbar{9}
-\rail@term{clippitch}[]
+\rail@endbar
+\rail@nextbar{10}
+\rail@term{clipPitch}[]
 \rail@bar
 \rail@token{int32}[]
 \rail@token{int32}[]
-\rail@nextbar{10}
+\rail@nextbar{11}
 \rail@endbar
 \rail@endbar
 \rail@end

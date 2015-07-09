@@ -834,16 +834,19 @@ Piano roll music notation is based on the Guido Music Notation format [GMN].
 \begin{rail}
 setMsg : 'set' (
 	('pianoroll' gmnString) |
-	('pianorollstream' gmnStream)
+	('pianorollstream' gmnStream) |
+	('pianorollf' filePath)
 )
 \end{rail}
 \index{Common messages!set}
 \index{Set type!pianoroll}
 \index{Set type!pianorollstream}
+\index{Set type!pianorollf}
 
 \begin{itemize}
 \item \OSC{pianoroll}: a piano roll defined by a GMN string.
-\item \OSC{gmnstream}: a piano roll defined by a GMN stream (a GMN string that can be written in several times).
+\item \OSC{pianorollstream}: a piano roll defined by a GMN stream (a GMN string that can be written in several times).
+\item \OSC{pianorollf}: a piano roll defined by a guido file (with ".gmn" extension) or by a midi file (with ".mid" extension). If file is a midi file, network file cannot be used.
 \end{itemize}
 
 \example \\
@@ -1216,7 +1219,7 @@ Setting a rectangle style :
 %:  Width and height control
 \sublevel{Width and height control}
 
-Specific width and height messages accepted by the components types \OSC{rect | ellipse | graph | fastgraph | grid}.
+Specific width and height messages accepted by the components types \OSC{rect | ellipse | graph | fastgraph | grid | pianoroll | pianorollf}.
 
 \begin{rail}
 widthMsg :  'width' float32
@@ -1294,34 +1297,34 @@ Writing a score in 3 steps:
 \sublevel{Piano roll management}
 \label{pianoroll}
 
-Messages accepted by the components types \OSC{pianoroll | pianorollstream}.
+Messages accepted by the components types \OSC{pianoroll | pianorollstream | pianorollf}.
 
 \begin{rail}
 pianorollMsg :		'keyboard' int32
 			| 'autoVoicesColoration' int32
 			| 'measureBars' int32
-			| 'voiceColor' int32 (color |)
+			| 'voiceColor' (int32 (color |) |)
 			| 'pitchLines' ( 'Notes' |)
-			| 'cliptime' (time time |)
-			| 'clippitch' (int32 int32 |)
+			| 'clipTime' (time time |)
+			| 'clipPitch' (int32 int32 |)
 \end{rail}
 \index{Specific messages! pianoroll! keyboard}
 \index{Specific messages! pianoroll! autoVoicesColoration}
 \index{Specific messages! pianoroll! measureBars}
 \index{Specific messages! pianoroll! voiceColor}
 \index{Specific messages! pianoroll! pitchLines}
-\index{Specific messages! pianoroll! cliptime}
-\index{Specific messages! pianoroll! clippitch}
+\index{Specific messages! pianoroll! clipTime}
+\index{Specific messages! pianoroll! clipPitch}
 
 
 \begin{itemize}
 \item \OSC{keyboard}: display the keyboard on left of piano roll. Default value to 0.
 \item \OSC{autoVoicesColoration}: enable voices automatic coloration. If voiceColor is used for a voice, automatic voices coloration do nothing for it. Default value to 0.
 \item \OSC{measureBars}: Display measure bars on piano roll. Default value to 0.
-\item \OSC{voiceColor}: set a color for a voice. The parameters are voice number (start to 1), and RGBA color (See section \fullref{colormsg}). If not color is present, voice color is reset to default color.
-\item \OSC{pitchLines}:  Display pitch lines on pianoroll. Parameters are a note list in english notation (A A\# B ...).
-\item \OSC{cliptime}: set time limits for piano roll (See section \fullref{time} to set a time). The two times have to be wrote in the same format. If no time is present, time limits are reset to default.
-\item \OSC{clippitch}:  Set pitch limits to piano roll. The pitch is in midi format. If no value is present, pitch limits are reset to default.
+\item \OSC{voiceColor}: set a color to a voice. The parameters are voice number (start to 1), and RGBA color (See section \fullref{colormsg}). If not color is present, voice color is reset to default color. If voice number and color are not present, reset all voices to default color.
+\item \OSC{pitchLines}:  Display pitch lines on pianoroll. Parameters are a note list in english notation (A A\# B ...) with case insensitive. Default to all lines. An "empty" note can be used to not display any line.
+\item \OSC{clipTime}: set time limits for piano roll (See section \fullref{time} to set a time). The two times have to be wrote in the same format. If no time is present, time limits are reset to default.
+\item \OSC{clipPitch}:  Set pitch limits to piano roll. The pitch is in midi format. If no value is present, pitch limits are reset to default.
 \end{itemize}
 
 
