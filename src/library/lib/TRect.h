@@ -71,6 +71,7 @@ template<typename T> class TPoint
 		TPoint<T> operator == ( const TPoint<T>& p ) const	{ return ( (fX == p.fX ) && ( fY == p.fY )); }
 		
 		void	  operator += ( const TPoint<T>& p)			{ (*this) = (*this) + p; }
+		void	  operator -= ( const TPoint<T>& p)			{ (*this) = (*this) - p; }
 
  		/// check for 0,0 TPoint
 		operator bool () const	{ return (fX != 0) || (fY != 0); }
@@ -140,7 +141,7 @@ template<typename T> class TRect
 		void setPos(const TPoint<T>& p)	{
 			TPoint<T> shift = fTopLeft - p;
 			fTopLeft = p;
-			fBottomRight += shift;
+			fBottomRight -= shift;
 		}
 
 		void setWidth(T width)			{ fBottomRight = TPoint<T>(fTopLeft.x() + width, fBottomRight.y()); }
