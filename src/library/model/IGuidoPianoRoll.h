@@ -27,6 +27,7 @@
 #define __IGuidoPianoRoll__
 
 #include <string>
+#include <vector>
 
 #include "IGuidoCode.h"
 #include "GUIDOPianoRoll.h"
@@ -60,7 +61,7 @@ class IGuidoPianoRoll : public virtual IGuidoCode
 		 * \brief getClipTime get the current time limits.
 		 * \return
 		 */
-		std::string getClipTime() const;
+		std::vector<int> getClipTime() const;
 
 		/*!
 		 * \brief setClipTime Set limits in time to pianoroll.
@@ -73,7 +74,7 @@ class IGuidoPianoRoll : public virtual IGuidoCode
 		 * \brief getClipPitch get the current pitch limits.
 		 * \return
 		 */
-		SIMessageList getClipPitch() const;
+		std::vector<int> getClipPitch() const;
 
 		/*!
 		 * \brief setClipPitch Set limits to pianoroll pitch
@@ -128,7 +129,7 @@ class IGuidoPianoRoll : public virtual IGuidoCode
 		 * \brief getPitchLinesDisplayMode get the pitch lines in string format
 		 * \return
 		 */
-		std::string getPitchLinesDisplayMode() const;
+		std::vector<std::string> getPitchLinesDisplayMode() const;
 
 	protected:
 				 IGuidoPianoRoll( const std::string& name, IObject * parent);

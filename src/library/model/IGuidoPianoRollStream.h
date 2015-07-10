@@ -60,7 +60,7 @@ class IGuidoPianoRollStream : public virtual IGuidoStream, public virtual IGuido
     
 	protected:
 				 IGuidoPianoRollStream( const std::string& name, IObject * parent);
-		virtual ~IGuidoPianoRollStream() ;
+		virtual ~IGuidoPianoRollStream() {}
 
         void clear();
 

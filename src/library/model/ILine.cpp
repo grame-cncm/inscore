@@ -48,7 +48,7 @@ ILine::ILine( const std::string& name, IObject* parent ) : IShapeMap(name, paren
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler< TFloatPoint >::create( getPoint() );
 
 	// Arrow specific method
-	fGetMsgHandlerMap[karrows_GetSetMethod]	= TGetParamMethodHandler<ILine, string (ILine::*)() const>::create(this, &ILine::getArrows);
+	fGetMsgHandlerMap[karrows_GetSetMethod]	= TGetParamMethodHandler<ILine, pair<string, string> (ILine::*)() const>::create(this, &ILine::getArrows);
 	fMsgHandlerMap[karrows_GetSetMethod]	= TMethodMsgHandler<ILine>::create(this, &ILine::setArrowsMsg);
 
 	fPenWidth = 1.0f;
@@ -184,9 +184,13 @@ MsgHandler::msgStatus ILine::setArrowsMsg(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
-string ILine::getArrows() const
+pair<string, string> ILine::getArrows() const
 {
-	return arrowMap[fArrowLeft] + " " + arrowMap[fArrowRight];
+	pair<string, string> heads;
+	heads.first = arrowMap[fArrowLeft];
+	heads.second = arrowMap[fArrowRight];
+
+	return heads;
 }
 
 }

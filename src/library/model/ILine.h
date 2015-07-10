@@ -29,6 +29,8 @@
 
 #include "IShapeMap.h"
 
+#include <utility>
+
 namespace inscore
 {
 
@@ -102,7 +104,7 @@ class ILine : public IShapeMap
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 
 		MsgHandler::msgStatus setArrowsMsg(const IMessage* msg);
-		std::string getArrows() const;
+		std::pair<std::string, std::string> getArrows() const;
 };
 
 /*! @} */

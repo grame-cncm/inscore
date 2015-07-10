@@ -40,11 +40,6 @@ IGuidoPianoRollStream::IGuidoPianoRollStream( const std::string& name, IObject *
     fTypeString = kGuidoPianoRollStreamType;
 }
 
-IGuidoPianoRollStream::~IGuidoPianoRollStream()
-{
-//    GuidoDestroyPianoRoll(fPianoRoll);
-}
-
 //--------------------------------------------------------------------------
 void IGuidoPianoRollStream::accept (Updater* u)
 {

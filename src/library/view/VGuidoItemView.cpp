@@ -153,7 +153,7 @@ VGuidoItemView::VGuidoItemView(QGraphicsScene * scene, const IGuidoCode* h)
 void VGuidoItemView::updateView( IGuidoCode * guidoCode  )
 {
     guidoCode->cleanupSync();
-    gmnUpdate(guidoCode);
+	gmnUpdate(guidoCode);
     // 2. Update Score color
 	QColor color(guidoCode->getR(), guidoCode->getG(), guidoCode->getB() , guidoCode->getA());
 	if ( fGuidoItem->getScoreColor() != color )
@@ -172,6 +172,7 @@ bool VGuidoItemView::gmnUpdate (IGuidoCode* guidoCode)
     if(guidoStream)
     {
         if(fGuidoItem->setGMNStream(guidoStream->getGuidoStream())) return true;
+		ITLErr << guidoCode->getOSCAddress() << "invalid gmn code:" << fGuidoItem->getLastErrorMessage().toUtf8().data() << ITLEndl;
         return false;
     }
     else
@@ -275,6 +276,7 @@ void VGuidoItemView::graphMapUpdate (IGuidoCode* guidoCode, SRelativeTime2Relati
 void VGuidoItemView::updateLocalMapping (IGuidoCode* guidoCode)
 {
 	if (!gmnUpdate (guidoCode) ) return;
+
 	pageFormatUpdate (guidoCode);
     
 	// Build the Rolled->Unrolled mapping

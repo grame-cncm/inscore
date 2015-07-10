@@ -176,9 +176,10 @@ bool QGuidoPainter::setGMNDataStream (GuidoStream * guidoStream)
 
     arh = GuidoStream2AR(fParser, guidoStream);
 
-    if (!arh)
-        return false;
-    
+	if (!arh) {
+		mLastErr = guidoErrParse;
+		return false;
+	}
 	// Build a new score Graphic Representation according the score's Abstract Representation.
 	GuidoPageFormat currentFormat;
 	GuidoGetDefaultPageFormat ( &currentFormat );
@@ -211,9 +212,10 @@ bool QGuidoPainter::setGMNData( const QString& gmncode, const char* dataPath)
 
     arh = GuidoString2AR(fParser, gmncode.toUtf8().data());
 
-    if (!arh)
-        return false;
-
+	if (!arh) {
+		mLastErr = guidoErrParse;
+		return false;
+	}
 	setPathsToARHandler(arh, dataPath);
 
 	// Build a new score Graphic Representation according the score's Abstract Representation.
