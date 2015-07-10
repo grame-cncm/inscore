@@ -541,6 +541,7 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual SIMessageList  getWatch () const;
 		virtual SIMessageList  getStack () const;
 		virtual SIMessageList  getAliases () const;
+		virtual std::vector<float> getFrame () const;
 
 		/// \brief the \c 'alias' message handler
 		virtual MsgHandler::msgStatus aliasMsg(const IMessage* msg);

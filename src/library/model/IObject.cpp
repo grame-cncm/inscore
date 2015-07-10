@@ -197,6 +197,7 @@ void IObject::positionAble()
 	fGetMsgHandlerMap[krotatey_GetSetMethod]= TGetParamMsgHandler<float>::create(fYAngle);
 	fGetMsgHandlerMap[krotatez_GetSetMethod]= TGetParamMsgHandler<float>::create(fZAngle);
 	fGetMsgHandlerMap[keffect_GetSetMethod]	= TGetParamMethodHandler<IObject, GraphicEffect (IObject::*)() const>::create(this, &IObject::getEffect);
+	fGetMsgHandlerMap[kframe_GetMethod]		= TGetParamMethodHandler<IObject, vector<float> (IObject::*)() const>::create(this, &IObject::getFrame);
 
 	fMsgHandlerMap[kx_GetSetMethod]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setXPos);
 	fMsgHandlerMap[ky_GetSetMethod]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setYPos);
@@ -1116,6 +1117,55 @@ MsgHandler::msgStatus IObject::effectMsg(const IMessage* msg)
 		if (view) view->setEffect (effect);
 	}
 	return status;
+}
+
+#if 0
+//--------------------------------------------------------------------------
+static void showpoint (int i, float x, float y)
+{
+	stringstream address("/ITL/scene/p");
+	address << "/ITL/scene/p" << i;
+	
+	INScore::MessagePtr msg = INScore::newMessage ("set");
+	INScore::add (msg, "ellipse");
+	INScore::add (msg, 0.03f);
+	INScore::add (msg, 0.03f);
+	INScore::postMessage (address.str().c_str(), msg);
+
+	msg = INScore::newMessage ("x");
+	INScore::add (msg, x);
+	INScore::postMessage (address.str().c_str(), msg);
+	
+	msg = INScore::newMessage ("y");
+	INScore::add (msg, y);
+	INScore::postMessage (address.str().c_str(), msg);
+	
+	msg = INScore::newMessage ("color");
+	INScore::add (msg, 250);
+	INScore::add (msg, 100);
+	INScore::add (msg, 100);
+	INScore::add (msg, 150);
+	INScore::postMessage (address.str().c_str(), msg);
+	
+}
+
+//--------------------------------------------------------------------------
+static void showframe (const vector<float>& p)
+{
+	for (size_t i=0; i < p.size(); i+=2) {
+		showpoint (i, p[i], p[i+1]);
+	}
+}
+#endif
+
+//--------------------------------------------------------------------------
+// gives the object frame under the form of 4 points (top-left, top-right, bottom-right, bottom-left)
+vector<float> IObject::getFrame ()	const
+{ 
+	vector<float> frame;
+	getView()->getFrame(this, frame);
+//	showframe (frame);
+	return frame;
 }
 
 //--------------------------------------------------------------------------
