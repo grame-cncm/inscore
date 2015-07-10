@@ -107,7 +107,9 @@ class VGraphicsItemView : public VObjectView
 		float scene2RelativeX(float x, QGraphicsItem * item = 0 ) const;
 		/// \brief Maps the referenceRect() y value to the corresponding [-1,1] value.
 		float scene2RelativeY(float y, QGraphicsItem * item = 0 ) const;
-		
+
+		void	getFrame (const IObject* , std::vector<float>&);
+	
 		static void buildDefaultMapping (IObject* object);
     
         void refreshSyncCache() { itemChanged(); }

@@ -28,6 +28,7 @@
 #define __VObjectView__
 
 #include <iostream>
+#include <vector>
 
 #include "IObject.h"
 #include "GraphicEffect.h"
@@ -88,7 +89,8 @@ class VObjectView
 		/// \brief initialize an object view (do nothing at IObject level)
 		virtual void	initialize (IObject* )							{}
 		
-		/// \brief set the object view image from another view
+		/// \brief apply the current transform matrix to an object rect
+		virtual void	getFrame (const IObject* , std::vector<float>&)	{}
 
 		/*!
 			\brief set the object view image using another view

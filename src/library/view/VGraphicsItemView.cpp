@@ -368,6 +368,20 @@ void VGraphicsItemView::updateItemHStretch(QStretchTilerItem * item, const SGrap
 }
 
 //------------------------------------------------------------------------------------------------------------
+void VGraphicsItemView::getFrame (const IObject* o, std::vector<float>& out)
+{
+	QRectF r = item()->boundingRect();
+	QTransform m = item()->transform();
+	m.scale(o->getScale(), o->getScale());
+	QPolygon po = m.mapToPolygon(r.toRect());
+	for (int i=0; i < po.size(); i++) {
+		QPoint p = po[i];
+		out.push_back(scene2RelativeX(p.x()) + o->getXPos());
+		out.push_back(scene2RelativeY(p.y()) + o->getYPos());
+	}
+}
+
+//------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateItemNoStretch(QStretchTilerItem* item, IObject* o, SMaster master)
 {
     item->setStretch(false);
