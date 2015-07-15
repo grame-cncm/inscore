@@ -218,6 +218,10 @@ $(version)/%.log: ../%.inscore
 	@[ -d $(@D) ] || mkdir -p $(@D)
 	@./inscore2log $< $@
 
+$(version)/%.inscore: ../%.inscore
+	@[ -d $(@D) ] || mkdir -p $(@D)
+	@./inscore2inscore $< $@
+
 $(version)/%.out: ../%.inscore
 	@[ -d $(@D) ] || mkdir -p $(@D)
 	./forwardFilter $(filterinscorefile) $< > $@
