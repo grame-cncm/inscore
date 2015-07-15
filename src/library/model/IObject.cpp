@@ -1320,14 +1320,30 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 		case EventsAble::kTimeLeave:
 		case EventsAble::kDurEnter:
 		case EventsAble::kDurLeave:
+		// time events messages can have the following forms :
+		// a) watch timevent
+		// b) watch timevent timeInterval
+		// c) watch timevent timeInterval msg
+		// with the form a), all the messages related to timevent are cleared
+		// with the form b), all the messages related to timevent and timeInterval are cleared
+		// with the form c), sets the associated messages related to timevent and timeInterval
+		// note also that timeInterval can be expressed as
+		//		- 4 integer values (actually 2 rationals)
+		//		- 2 integer values (i.e. 2 rationals with an implicit 1 denominator)
+		//		- 2 float values 
+		//		- 2 strings in the form 'n/d'
+		// thus the number of expected parameters are:
+		// a) 1 param: the time event
+		// b) 3 or 5 params depending on how the time interval is expressed
+		// b) >3 or >5 params depending on how the time interval is expressed
 		{
 			if (msg->size() == 1) {
 				if (!add) {
 					clearList(t);
 					eventsHandler()->clearTimeMsg(t);
 				}
+				else return MsgHandler::kBadParameters;
 			}
-			else return MsgHandler::kBadParameters;
 
 			RationalInterval time(0, 0);
 			int msgindex;
