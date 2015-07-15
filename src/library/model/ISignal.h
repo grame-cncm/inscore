@@ -72,6 +72,7 @@ class ISignal : public IObject, public ParallelSignal
 		virtual void colorAble ()		{}
 		virtual void positionAble ()	{}
 		virtual void timeAble ()		{}
+		virtual void shapeAble ()		{}
 
 		/*! \brief decode a projection string
 			\param proj the projection string
