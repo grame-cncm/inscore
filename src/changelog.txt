@@ -24,23 +24,23 @@ Version 1.15
 ----------------------------------------------------
 Version 1.14
 - Add new methods to use pianoroll parameters.
-- Add web Api to expose inscore on the web with websocket or rest webservice.
+- Add web Api to expose inscore on the web with websocket or http.
 - Add change tab on mobile with three digits gesture.
 - Bug corrected with sync without stretch: object origin was not taken into account
 - Bug correction : pianoroll was not display at right place on score.
 
 ----------------------------------------------------
 Version 1.13
-- add new object 'filter' at application scope to manage forward messaging filter.
+- add new object 'filter' at application and scene level to filter forwarded messages.
 - sending to broadcast address enabled
 - messages received from my address are discarded to avoid loops. 
   Internal communication must make use of the local loopback (127.0.0.1).
 - add filter to not forward message to the sender to avoid loop.
-- add forward and filter messages to the scene object to manage forwarding at scene scope.
+- add forward and filter messages to the scene to handle messages forwarding at scene level.
 - default port to forward messages is now 7000.
 - add new optional tab at startup with a menu for ios and android.
-- add zoom and move on a scene with methods scale, xorigin and yorigin. This value can be change 
-  with two fingers gesture on mobile device.
+- add zoom and move capabilities at scene level using scale, xorigin and yorigin. 
+  This is intended to support two fingers gesture on mobile device.
 - bug with lines corrected: a line in non-square parent was rotated when the parent's width 
   was smaller than its height.
 - bug with 'eval' forwarding corrected: forwarded messages were triggering a syntax error due to 
