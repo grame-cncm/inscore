@@ -42,7 +42,7 @@
 /ITL/scene/m5 scale 0.375;
 /ITL/scene/m5/text set txt "/ITL/scene/sync slave m5 hv";
 /ITL/scene/m5/text y 0.5;
-/ITL/scene/m5/text scale 0.33;
+/ITL/scene/m5/text scale 2.5;
 
 ! slave
 
