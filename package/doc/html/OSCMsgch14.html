@@ -7,21 +7,21 @@
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2015-05-26 11:21:00"> 
+<meta name="date" content="2015-07-15 13:39:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 2168--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 2286--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch15.html" >next</a>] [<a 
 href="OSCMsgch13.html" >prev</a>] [<a 
 href="OSCMsgch13.html#tailOSCMsgch13.html" >prev-tail</a>] [<a 
 href="#tailOSCMsgch14.html">tail</a>] [<a 
 href="OSCMsg3.html#OSCMsgch14.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;14</span><br /><a 
- id="x18-7000014"></a>Signals and graphic signals</h2>
-<!--l. 2171--><p class="noindent" >The graphic representation of a signal is approached with <span 
+ id="x18-7200014"></a>Signals and graphic signals</h2>
+<!--l. 2289--><p class="noindent" >The graphic representation of a signal is approached with <span 
 class="ptmri8t-">graphic signals</span>. As illustrated in figure <a 
-href="#x18-700011">14.1<!--tex4ht:ref: graphimg --></a>, the graphic
+href="#x18-720011">14.1<!--tex4ht:ref: graphimg --></a>, the graphic
 representation of a signal could be viewed as a stream of a limited set of parameters : the <span 
 class="pcrr8tn-">y </span>coordinate at a time <span 
 class="pcrr8tn-">t</span>, a
@@ -33,42 +33,42 @@ these parameters. Thus the INScore library provides messages to create signals a
 class="ptmri8t-">graphic</span>
 <span 
 class="ptmri8t-">signals</span>.
-<!--l. 2174--><p class="noindent" ><hr class="figure"><div class="figure" 
+<!--l. 2292--><p class="noindent" ><hr class="figure"><div class="figure" 
 >
                                                                                  
 
                                                                                  
 <a 
- id="x18-700011"></a>
+ id="x18-720011"></a>
                                                                                  
 
                                                                                  
-<!--l. 2175--><p class="noindent" ><img 
-src="OSCMsg81x.png" alt="PIC" class="graphics" width="256.0748pt" height="102.83865pt" ><!--tex4ht:graphics  
-name="OSCMsg81x.png" src="imgs/graph.ps"  
+<!--l. 2293--><p class="noindent" ><img 
+src="OSCMsg84x.png" alt="PIC" class="graphics" width="256.0748pt" height="102.83865pt" ><!--tex4ht:graphics  
+name="OSCMsg84x.png" src="imgs/graph.ps"  
 -->
 <br /> <div class="caption" 
 ><span class="id">Figure&#x00A0;14.1: </span><span  
-class="content">A simple graphic signal, defined at time t by a coordinate y, a thickness h and a color c</span></div><!--tex4ht:label?: x18-700011 -->
+class="content">A simple graphic signal, defined at time t by a coordinate y, a thickness h and a color c</span></div><!--tex4ht:label?: x18-720011 -->
                                                                                  
 
                                                                                  
-<!--l. 2178--><p class="noindent" ></div><hr class="endfigure">
+<!--l. 2296--><p class="noindent" ></div><hr class="endfigure">
 <h3 class="sectionHead"><span class="titlemark">14.1    </span> <a 
- id="x18-7100014.1"></a>The &#8217;signal&#8217; static node.</h3>
-<!--l. 2183--><p class="noindent" >A <span 
+ id="x18-7300014.1"></a>The &#8217;signal&#8217; static node.</h3>
+<!--l. 2301--><p class="noindent" >A <span 
 class="pcrr8tn-">scene </span>includes a static signal node, which OSC address is <span 
 class="pcrr8tn-">/ITL/</span><span 
 class="pcrro8t-">scene</span><span 
 class="pcrr8tn-">/signal </span>which may be viewed as a
 container for signals. It is also used for <span 
 class="ptmri8t-">composing signals in parallel</span>.
-<!--l. 2185--><p class="noindent" >The <span 
+<!--l. 2303--><p class="noindent" >The <span 
 class="pcrr8tn-">signal </span>node supports the <span 
 class="pcrr8tn-">get </span>message that gives the list of the defined signals and also the <span 
 class="pcrr8tn-">get connect</span>
 message that gives a list of all connections, but doesn&#8217;t take any argument.
-<!--l. 2187--><p class="noindent" ><span 
+<!--l. 2305--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -79,45 +79,45 @@ class="small-caps">E</span> </span><br
 class="newline" />Querying the signal node:
 <div class="center" 
 >
-<!--l. 2189--><p class="noindent" >
+<!--l. 2307--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox65"> <div class="minipage"><span 
+class="colorbox" id="colorbox71"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal get;</span>
 </div></div>
 </div>
-<!--l. 2190--><p class="noindent" >&#x00A0;       will give the enclosed signals definitions:
+<!--l. 2308--><p class="noindent" >&#x00A0;       will give the enclosed signals definitions:
 <div class="center" 
 >
-<!--l. 2193--><p class="noindent" >
+<!--l. 2311--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox66"> <div class="minipage"><span 
+class="colorbox" id="colorbox72"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/y size 200 ;</span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/h size 200 ;</span></div></div>
 </div>
-<!--l. 2195--><p class="noindent" >And :
+<!--l. 2313--><p class="noindent" >And :
 <div class="center" 
 >
-<!--l. 2196--><p class="noindent" >
+<!--l. 2314--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox67"> <div class="minipage"><span 
+class="colorbox" id="colorbox73"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal get connect;</span>
 </div></div>
 </div>
-<!--l. 2197--><p class="noindent" >&#x00A0;       will give the signal connections :
+<!--l. 2315--><p class="noindent" >&#x00A0;       will give the signal connections :
 <div class="center" 
 >
-<!--l. 2200--><p class="noindent" >
+<!--l. 2318--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox68"> <div class="minipage"><span 
+class="colorbox" id="colorbox74"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal connect cos object1:method1 ;</span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal connect sin object2:method2 ;</span></div></div>
 </div>
-<!--l. 2203--><p class="noindent" >
+<!--l. 2321--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">14.1.1    </span> <a 
- id="x18-7200014.1.1"></a>Signal messages.</h4>
-<!--l. 2205--><p class="noindent" >Signal messages can be sent to any address with the form <span 
+ id="x18-7400014.1.1"></a>Signal messages.</h4>
+<!--l. 2323--><p class="noindent" >Signal messages can be sent to any address with the form <span 
 class="pcrr8tn-">/ITL/</span><span 
 class="pcrro8t-">scene</span><span 
 class="pcrr8tn-">/signal/</span><span 
@@ -126,29 +126,29 @@ where <span
 class="pcrro8t-">identifier </span>is a unique signal identifier. The set of messages supported by a signal is the
 following:
 <a 
- id="dx18-72001"></a>
+ id="dx18-74001"></a>
                                                                                  
 
                                                                                  
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2214--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2332--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">simpleSignal</span> <img 
-src="OSCMsg82x.png" alt="PICT" >
+src="OSCMsg85x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx18-72002"></a>
+ id="dx18-74002"></a>
 <a 
- id="dx18-72003"></a>
+ id="dx18-74003"></a>
 <a 
- id="dx18-72004"></a>
+ id="dx18-74004"></a>
 <a 
- id="dx18-72005"></a>
+ id="dx18-74005"></a>
 <a 
- id="dx18-72006"></a>
+ id="dx18-74006"></a>
 <a 
- id="dx18-72007"></a>
+ id="dx18-74007"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="ptmb8t-">[1] </span>push an arbitrary data count into the signal buffer. The expected data range is <span 
@@ -184,7 +184,7 @@ class="ptmb8t-">[6] </span>the <span
 class="pcrr8tn-">del </span>message deletes the signal from the <span 
 class="pcrr8tn-">signal </span>space. Note that it is safe to delete a signal
      even when used by a graphic signal.</li></ul>
-<!--l. 2231--><p class="noindent" ><span 
+<!--l. 2349--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -198,18 +198,18 @@ class="newline" />Creating a signal with a given buffer size:
                                                                                  
 <div class="center" 
 >
-<!--l. 2233--><p class="noindent" >
+<!--l. 2351--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox69"> <div class="minipage"><span 
+class="colorbox" id="colorbox75"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/mySig size 200;</span>
 </div></div>
 </div>
-<!--l. 2234--><p class="noindent" >Creating a signal with a given set of data (the buffer size will be the data size):
+<!--l. 2352--><p class="noindent" >Creating a signal with a given set of data (the buffer size will be the data size):
 <div class="center" 
 >
-<!--l. 2235--><p class="noindent" >
+<!--l. 2353--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox70"> <div class="minipage"><span 
+class="colorbox" id="colorbox76"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/mySig 0.</span><span 
 class="pcrr8tn-x-x-90">&#x00A0;0.1</span><span 
 class="pcrr8tn-x-x-90">&#x00A0;0.2</span><span 
@@ -225,38 +225,38 @@ class="pcrr8tn-x-x-90">&#x00A0;-0.1</span><span
 class="pcrr8tn-x-x-90">&#x00A0;-0.2 ;</span>
 </div></div>
 </div>
-<!--l. 2240--><p class="noindent" >
+<!--l. 2358--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">14.1.2    </span> <a 
- id="x18-7300014.1.2"></a>Composing signals in parallel.</h4>
-<!--l. 2241--><p class="noindent" >Composing signals in parallel produces a signal which value at a time <span 
+ id="x18-7500014.1.2"></a>Composing signals in parallel.</h4>
+<!--l. 2359--><p class="noindent" >Composing signals in parallel produces a signal which value at a time <span 
 class="pcrr8tn-">t </span>is a vector of the composed signals values.
 Thus an additional read-only attribute is defined on <span 
 class="ptmri8t-">parallel signals </span>: the signal <span 
 class="ptmri8t-">dimension </span>which is size of the
 signals vector. Note that the dimension property holds also for simple signals.
-<!--l. 2243--><p class="noindent" >The format of the messages for parallel signals is the following:
+<!--l. 2361--><p class="noindent" >The format of the messages for parallel signals is the following:
 <a 
- id="dx18-73001"></a>
+ id="dx18-75001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2249--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2367--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">parallelSignal</span> <img 
-src="OSCMsg83x.png" alt="PICT" >
+src="OSCMsg86x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx18-73002"></a>
+ id="dx18-75002"></a>
 <a 
- id="dx18-73003"></a>
-<!--l. 2252--><p class="noindent" >where
+ id="dx18-75003"></a>
+<!--l. 2370--><p class="noindent" >where
 <a 
- id="dx18-73004"></a>
+ id="dx18-75004"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2257--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2375--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">signal</span> <img 
-src="OSCMsg84x.png" alt="PICT" >
+src="OSCMsg87x.png" alt="PICT" >
                                                                                  
 
                                                                                  
@@ -277,8 +277,8 @@ class="ptmb8t-">[5] </span>or as a float value. This form is equivalent to an an
      </li>
      <li class="itemize"><span 
 class="ptmb8t-">[2] </span>sets the values of the signals using a projection string. See section <a 
-href="#x18-7400014.1.3">14.1.3<!--tex4ht:ref: sigproj --></a> p.<a 
-href="#x18-7400014.1.3">102<!--tex4ht:ref: sigproj --></a>.
+href="#x18-7600014.1.3">14.1.3<!--tex4ht:ref: sigproj --></a> p.<a 
+href="#x18-7600014.1.3">109<!--tex4ht:ref: sigproj --></a>.
      </li>
      <li class="itemize"><span 
 class="ptmb8t-">[3] </span>in addition to the <span 
@@ -286,7 +286,7 @@ class="pcrr8tn-">get </span>format defined for signals, a parallel signal suppor
 class="pcrr8tn-">get dimension</span>
      message, that gives the number of simple signals in parallel. The dimension of a simple signal is
      1.</li></ul>
-<!--l. 2271--><p class="noindent" ><span 
+<!--l. 2389--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -298,25 +298,25 @@ class="newline" />Putting a signal <span
 class="pcrr8tn-">y </span>and constant signals 0.01 0. 1. 1. 1. in parallel:
 <div class="center" 
 >
-<!--l. 2273--><p class="noindent" >
+<!--l. 2391--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox71"> <div class="minipage"><span 
+class="colorbox" id="colorbox77"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/mySig set y 0.01 0. 1. 1. 1. ;</span>
 </div></div>
 </div>
-<!--l. 2274--><p class="noindent" >Querying the previously defined parallel signal:
+<!--l. 2392--><p class="noindent" >Querying the previously defined parallel signal:
 <div class="center" 
 >
-<!--l. 2278--><p class="noindent" >
+<!--l. 2396--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox72"> <div class="minipage"><span 
+class="colorbox" id="colorbox78"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/mySig get ;</span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">will give the following output: </span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/mySig set y 0.01 0. 1. 1. 1.</span></div></div>
 </div>
-<!--l. 2280--><p class="noindent" ><span 
+<!--l. 2398--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -328,13 +328,13 @@ class="pcrr8tn-">get size </span>message gives the maximum of the components siz
      </li>
      <li class="itemize">the <span 
 class="pcrr8tn-">get default </span>message gives the default value of the first signal.</li></ul>
-<!--l. 2289--><p class="noindent" >
+<!--l. 2407--><p class="noindent" >
                                                                                  
 
                                                                                  
 <h4 class="subsectionHead"><span class="titlemark">14.1.3    </span> <a 
- id="x18-7400014.1.3"></a>Distributing data to signals in parallel</h4>
-<!--l. 2292--><p class="noindent" >When signals are in parallel, a <span 
+ id="x18-7600014.1.3"></a>Distributing data to signals in parallel</h4>
+<!--l. 2410--><p class="noindent" >When signals are in parallel, a <span 
 class="ptmri8t-">projection string </span>may be used to distribute data over each signal. Individual
 components of a parallel signal may be addressed using a <span 
 class="ptmri8t-">projection string </span>that is defined as
@@ -342,23 +342,23 @@ follows:
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2296--><p class="noindent" ><div class="minipage"><!--l. 2296--><p class="center" ><img 
-src="OSCMsg85x.png" alt="PICT" >
+<!--l. 2414--><p class="noindent" ><div class="minipage"><!--l. 2414--><p class="center" ><img 
+src="OSCMsg88x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx18-74001"></a>
-<!--l. 2299--><p class="noindent" >The projection string is made of a <span 
+ id="dx18-76001"></a>
+<!--l. 2417--><p class="noindent" >The projection string is made of a <span 
 class="ptmri8t-">index value</span>, followed by an optional <span 
 class="ptmri8t-">parallel marker </span>(<span 
 class="pcrr8tn-">&#x02DC;</span>), followed by an optional
 <span 
 class="ptmri8t-">step value</span>, all enclosed in brackets.
-<!--l. 2301--><p class="noindent" >The <span 
+<!--l. 2419--><p class="noindent" >The <span 
 class="ptmri8t-">index value </span><span 
 class="pcrr8tn-">n </span>is the index of a target signal. When the <span 
 class="ptmri8t-">parallel marker </span>option is not present, the values are
 directed to the target signal. Indexes start at 0.
-<!--l. 2303--><p class="noindent" ><span 
+<!--l. 2421--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -369,9 +369,9 @@ class="small-caps">E</span> </span><br
 class="newline" />Sending data to the second component of a parallel signal:
 <div class="center" 
 >
-<!--l. 2305--><p class="noindent" >
+<!--l. 2423--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox73"> <div class="minipage"><span 
+class="colorbox" id="colorbox79"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/sig &#8217;[1]&#8217; 0.</span><span 
 class="pcrr8tn-x-x-90">&#x00A0;0.1</span><span 
 class="pcrr8tn-x-x-90">&#x00A0;0.2</span><span 
@@ -385,12 +385,12 @@ class="pcrr8tn-x-x-90">&#x00A0;0.1</span><span
 class="pcrr8tn-x-x-90">&#x00A0;0. ;</span>
 </div></div>
 </div>
-<!--l. 2306--><p class="noindent" >&#x00A0;       is equivalent to the following message (assuming that the second signal name is &#8217;s2&#8217;):
+<!--l. 2424--><p class="noindent" >&#x00A0;       is equivalent to the following message (assuming that the second signal name is &#8217;s2&#8217;):
 <div class="center" 
 >
-<!--l. 2307--><p class="noindent" >
+<!--l. 2425--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox74"> <div class="minipage"><span 
+class="colorbox" id="colorbox80"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/s2 0.</span><span 
 class="pcrr8tn-x-x-90">&#x00A0;0.1</span><span 
 class="pcrr8tn-x-x-90">&#x00A0;0.2</span><span 
@@ -404,7 +404,7 @@ class="pcrr8tn-x-x-90">&#x00A0;0.1</span><span
 class="pcrr8tn-x-x-90">&#x00A0;0. ;</span>
 </div></div>
 </div>
-<!--l. 2309--><p class="noindent" >Note that:
+<!--l. 2427--><p class="noindent" >Note that:
      <ul class="itemize1">
      <li class="itemize">the message is ignored when <span 
 class="pcrr8tn-">n </span>is greater than the number of signals in parallel. Default <span 
@@ -412,7 +412,7 @@ class="pcrr8tn-">n </span>value is <span
 class="pcrr8tn-">0</span>.
      </li>
      <li class="itemize">setting directly the values of a simple signal or as the projection of a parallel signal are equivalent.</li></ul>
-<!--l. 2315--><p class="noindent" >The <span 
+<!--l. 2433--><p class="noindent" >The <span 
 class="ptmri8t-">parallel marker </span>(<span 
 class="pcrr8tn-">&#x02DC;</span>) and the <span 
 class="ptmri8t-">step value </span><span 
@@ -427,7 +427,7 @@ class="pcrr8tn-">n+(w.i) </span>that is less than the signal dimension. The defa
 class="ptmri8t-">step value </span>is
 <span 
 class="pcrr8tn-">1</span>.
-<!--l. 2317--><p class="noindent" ><span 
+<!--l. 2435--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -438,39 +438,39 @@ class="small-caps">E</span> </span><br
 class="newline" />Sending data to the second and third components of a set of 3 parallel signals:
 <div class="center" 
 >
-<!--l. 2319--><p class="noindent" >
+<!--l. 2437--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox75"> <div class="minipage"><span 
+class="colorbox" id="colorbox81"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/sig [1&#x02DC;] 0.1 0.2 ;</span>
 </div></div>
 </div>
                                                                                  
 
                                                                                  
-<!--l. 2320--><p class="noindent" >&#x00A0;       is equivalent to the following messages (assuming that the signal dimension is 3):
+<!--l. 2438--><p class="noindent" >&#x00A0;       is equivalent to the following messages (assuming that the signal dimension is 3):
 <div class="center" 
 >
-<!--l. 2323--><p class="noindent" >
+<!--l. 2441--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox76"> <div class="minipage"><span 
+class="colorbox" id="colorbox82"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/sig [1] 0.1 ;</span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/sig [2] 0.2 ;</span></div></div>
 </div>
-<!--l. 2324--><p class="noindent" >&#x00A0;       or to the following (assuming that the target signal names are &#8217;s2&#8217; and &#8217;s3&#8217;):
+<!--l. 2442--><p class="noindent" >&#x00A0;       or to the following (assuming that the target signal names are &#8217;s2&#8217; and &#8217;s3&#8217;):
 <div class="center" 
 >
-<!--l. 2327--><p class="noindent" >
+<!--l. 2445--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox77"> <div class="minipage"><span 
+class="colorbox" id="colorbox83"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/s2 0.1;</span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/s3 0.2;</span></div></div>
 </div>
-<!--l. 2332--><p class="noindent" >
+<!--l. 2450--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">14.2    </span> <a 
- id="x18-7500014.2"></a>Connecting signals to graphic attributes.</h3>
-<!--l. 2335--><p class="noindent" >A signal may be connected to one or several graphic attributes of an object. Only the common attributes (see section
+ id="x18-7700014.2"></a>Connecting signals to graphic attributes.</h3>
+<!--l. 2453--><p class="noindent" >A signal may be connected to one or several graphic attributes of an object. Only the common attributes (see section
 <a 
 href="OSCMsgch2.html#x6-60002">2<!--tex4ht:ref: common --></a> p.<a 
 href="OSCMsgch2.html#x6-60002">10<!--tex4ht:ref: common --></a>) support this mechanism. When a connection between a signal and an object attribute is set, sending values
@@ -478,18 +478,18 @@ to the signal is equivalent to send the values to the connected object attribute
 by sending the equivalent messages, however the connection mechanism is provided for efficiency reasons and in
 addition, it supports values scaling.
 <a 
- id="dx18-75001"></a>
+ id="dx18-77001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2341--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2459--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">signalcnx</span> <img 
-src="OSCMsg86x.png" alt="PICT" >
+src="OSCMsg89x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx18-75002"></a>
+ id="dx18-77002"></a>
 <a 
- id="dx18-75003"></a>
+ id="dx18-77003"></a>
      <ul class="itemize1">
      <li class="itemize">the <span 
 class="pcrr8tn-">connect </span>message makes a connection between a signal and one or several attributes of one or
@@ -505,28 +505,28 @@ class="ptmb8t-">[3]</span>.</li></ul>
 
                                                                                  
 <a 
- id="dx18-75004"></a>
+ id="dx18-77004"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2352--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2470--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">connection</span> <img 
-src="OSCMsg87x.png" alt="PICT" >
+src="OSCMsg90x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx18-75005"></a>
+ id="dx18-77005"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">signal </span>is a name referring to an existing component of the <span 
 class="pcrr8tn-">signal </span>node.</li></ul>
 <a 
- id="dx18-75006"></a>
+ id="dx18-77006"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2360--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2478--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">target</span> <img 
-src="OSCMsg88x.png" alt="PICT" >
+src="OSCMsg91x.png" alt="PICT" >
 </div></dd></dl>
      <ul class="itemize1">
      <li class="itemize"><span 
@@ -544,7 +544,7 @@ class="pcrr8tn-">[low,high] </span>suffix: signal values are expected to be
      between -1 and 1, the scaling suffix re-scale the input values between <span 
 class="pcrr8tn-">low </span>and <span 
 class="pcrr8tn-">high</span>.</li></ul>
-<!--l. 2367--><p class="noindent" ><span 
+<!--l. 2485--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -555,14 +555,14 @@ class="pcrr8tn-">color</span>) is always available as a
 single attribute (e.g. <span 
 class="pcrr8tn-">red </span>or <span 
 class="pcrr8tn-">blue</span>).
-<!--l. 2370--><p class="noindent" ><span 
+<!--l. 2488--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
 class="small-caps">E</span>  </span><br 
 class="newline" />A connection can&#8217;t cross the borders of a component i.e. the target object and the signal node should have the same
 parent.
-<!--l. 2373--><p class="noindent" ><span 
+<!--l. 2491--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -576,9 +576,9 @@ class="newline" />Connecting signals to attributes:
                                                                                  
 
                                                                                  
-<!--l. 2378--><p class="noindent" >
+<!--l. 2496--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox78"> <div class="minipage"><span 
+class="colorbox" id="colorbox84"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">! connects the values of sig1 to the red attribute of the &#8217;rect&#8217; object </span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal connect sig1 "rect:red"; </span><br 
@@ -587,63 +587,63 @@ class="pcrr8tn-x-x-90">! connects the values of sig2 to several objects and attr
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal connect sig2 "rect:blue:x:rotatey[0,360]" "cursor:date[0,15]";</span></div></div>
 </div>
-<!--l. 2379--><p class="noindent" >Disconnecting some of the previous connections :
+<!--l. 2497--><p class="noindent" >Disconnecting some of the previous connections :
 <div class="center" 
 >
-<!--l. 2380--><p class="noindent" >
+<!--l. 2498--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox79"> <div class="minipage"><span 
+class="colorbox" id="colorbox85"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal disconnect sig2 "cursor:date" "rect:rotatey:blue";</span>
 </div></div>
 </div>
-<!--l. 2384--><p class="noindent" >
+<!--l. 2502--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">14.3    </span> <a 
- id="x18-7600014.3"></a>Graphic signals.</h3>
-<!--l. 2387--><p class="noindent" >A graphic signal is the graphic representation of a set of parallel signals. It is created in the standard scene address
+ id="x18-7800014.3"></a>Graphic signals.</h3>
+<!--l. 2505--><p class="noindent" >A graphic signal is the graphic representation of a set of parallel signals. It is created in the standard scene address
 space. A simple graphic signal is defined by a parallel signal controling the <span 
 class="pcrr8tn-">y </span>deviation value, the thickness and
 the color at each time position. The color is encoded as HSBA colors (Hue, Saturation, Brightness,
 Transparency). The mapping of a signal value (<span 
 class="pcrr8tn-">[-1,1]</span>) to the HSBA color space is given by the table
 <a 
-href="#x18-760021">14.1<!--tex4ht:ref: hsbamap --></a>.
-<!--l. 2389--><p class="noindent" ><hr class="figure"><div class="figure" 
+href="#x18-780021">14.1<!--tex4ht:ref: hsbamap --></a>.
+<!--l. 2507--><p class="noindent" ><hr class="figure"><div class="figure" 
 >
                                                                                  
 
                                                                                  
 <a 
- id="x18-760012"></a>
+ id="x18-780012"></a>
                                                                                  
 
                                                                                  
-<!--l. 2390--><p class="noindent" ><img 
-src="OSCMsg89x.png" alt="PIC" class="graphics" width="184.9429pt" height="181.3068pt" ><!--tex4ht:graphics  
-name="OSCMsg89x.png" src="imgs/hsb.ps"  
+<!--l. 2508--><p class="noindent" ><img 
+src="OSCMsg92x.png" alt="PIC" class="graphics" width="184.9429pt" height="181.3068pt" ><!--tex4ht:graphics  
+name="OSCMsg92x.png" src="imgs/hsb.ps"  
 -->
 <br /> <div class="caption" 
 ><span class="id">Figure&#x00A0;14.2: </span><span  
-class="content">The HSB color space</span></div><!--tex4ht:label?: x18-760012 -->
+class="content">The HSB color space</span></div><!--tex4ht:label?: x18-780012 -->
                                                                                  
 
                                                                                  
-<!--l. 2393--><p class="noindent" ></div><hr class="endfigure">
+<!--l. 2511--><p class="noindent" ></div><hr class="endfigure">
 <div class="table">
                                                                                  
 
                                                                                  
-<!--l. 2396--><p class="noindent" ><a 
- id="x18-760021"></a><hr class="float"><div class="float" 
+<!--l. 2514--><p class="noindent" ><a 
+ id="x18-780021"></a><hr class="float"><div class="float" 
 >
                                                                                  
 
                                                                                  
  <div class="caption" 
 ><span class="id">Table&#x00A0;14.1: </span><span  
-class="content">HSBA color values.</span></div><!--tex4ht:label?: x18-760021 -->
+class="content">HSBA color values.</span></div><!--tex4ht:label?: x18-780021 -->
 <div class="center" 
 >
-<!--l. 2398--><p class="noindent" >
+<!--l. 2516--><p class="noindent" >
 <div class="tabular"> <table id="TBL-6" class="tabular" 
 cellspacing="0" cellpadding="0" rules="groups" 
 ><colgroup id="TBL-6-1g"><col 
@@ -701,23 +701,23 @@ class="td11">            </td></tr></table></div></div>
                                                                                  
 </div><hr class="endfloat" />
 </div>
-<!--l. 2415--><p class="noindent" >A graphic signal responds to common component messages (section <a 
+<!--l. 2533--><p class="noindent" >A graphic signal responds to common component messages (section <a 
 href="OSCMsgch2.html#x6-60002">2<!--tex4ht:ref: common --></a> p.<a 
 href="OSCMsgch2.html#x6-60002">10<!--tex4ht:ref: common --></a>). Its specific messages are the
 following:
 <a 
- id="dx18-76003"></a>
+ id="dx18-78003"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2419--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2537--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">graphicSignal</span> <img 
-src="OSCMsg90x.png" alt="PICT" >
+src="OSCMsg93x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx18-76004"></a>
+ id="dx18-78004"></a>
 <a 
- id="dx18-76005"></a>
+ id="dx18-78005"></a>
      <ul class="itemize1">
      <li class="itemize">the   <span 
 class="pcrr8tn-">set </span>message   is   followed   by   the   <span 
@@ -733,10 +733,10 @@ class="pcrr8tn-">signalIdentifier </span>address
      </li>
      <li class="itemize">the  <span 
 class="pcrr8tn-">get dimension </span>message  gives  the  number  of  graphic  signals  in  parallel  (see  section  <a 
-href="#x18-7800014.3.2">14.3.2<!--tex4ht:ref: pgsignal --></a>
+href="#x18-8000014.3.2">14.3.2<!--tex4ht:ref: pgsignal --></a>
      p.<a 
-href="#x18-7800014.3.2">114<!--tex4ht:ref: pgsignal --></a>).</li></ul>
-<!--l. 2428--><p class="noindent" ><span 
+href="#x18-8000014.3.2">121<!--tex4ht:ref: pgsignal --></a>).</li></ul>
+<!--l. 2546--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -747,9 +747,9 @@ class="small-caps">E</span> </span><br
 class="newline" />Creating a signal and its graphic representation:
 <div class="center" 
 >
-<!--l. 2434--><p class="noindent" >
+<!--l. 2552--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox80"> <div class="minipage"><span 
+class="colorbox" id="colorbox86"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/y size 200 ; </span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">! use of constant anonymous signals for thickness and color</span><br 
@@ -759,30 +759,30 @@ class="newline" /><span
 class="pcrr8tn-x-x-90">/ITL/scene/siggraph set graph sig ;</span></div></div>
 </div>
 <h4 class="subsectionHead"><span class="titlemark">14.3.1    </span> <a 
- id="x18-7700014.3.1"></a>Graphic signal default values.</h4>
-<!--l. 2439--><p class="noindent" >As mentionned above, a graphic signal expects to be connected to parallel signals having at least an <span 
+ id="x18-7900014.3.1"></a>Graphic signal default values.</h4>
+<!--l. 2557--><p class="noindent" >As mentionned above, a graphic signal expects to be connected to parallel signals having at least an <span 
 class="pcrr8tn-">y </span>component, a
 graphic thickness component and HSBA components. Thus, from graphic signal viewpoint, the expected dimension
 of a signal should be equal or greater than 6. In case the <span 
 class="pcrr8tn-">signalIdentifier </span>dimension is less than 6, the graphic
 signal will use the default values defined in table <a 
-href="#x18-770012">14.2<!--tex4ht:ref: gsigdefault --></a>.
+href="#x18-790012">14.2<!--tex4ht:ref: gsigdefault --></a>.
 <div class="table">
                                                                                  
 
                                                                                  
-<!--l. 2441--><p class="noindent" ><a 
- id="x18-770012"></a><hr class="float"><div class="float" 
+<!--l. 2559--><p class="noindent" ><a 
+ id="x18-790012"></a><hr class="float"><div class="float" 
 >
                                                                                  
 
                                                                                  
  <div class="caption" 
 ><span class="id">Table&#x00A0;14.2: </span><span  
-class="content">Graphic signal default values.</span></div><!--tex4ht:label?: x18-770012 -->
+class="content">Graphic signal default values.</span></div><!--tex4ht:label?: x18-790012 -->
 <div class="center" 
 >
-<!--l. 2443--><p class="noindent" >
+<!--l. 2561--><p class="noindent" >
 <div class="tabular"> <table id="TBL-7" class="tabular" 
 cellspacing="0" cellpadding="0" rules="groups" 
 ><colgroup id="TBL-7-1g"><col 
@@ -846,21 +846,21 @@ class="td11">            </td></tr></table></div></div>
 </div><hr class="endfloat" />
 </div>
 <h4 class="subsectionHead"><span class="titlemark">14.3.2    </span> <a 
- id="x18-7800014.3.2"></a>Parallel graphic signals.</h4>
-<!--l. 2464--><p class="noindent" >When the dimension <span 
+ id="x18-8000014.3.2"></a>Parallel graphic signals.</h4>
+<!--l. 2582--><p class="noindent" >When the dimension <span 
 class="ptmri8t-">d </span>of a signal connected to a graphic signal is greater than 6, then the input signal is interpreted
 like parallel graphic signals. More generally, the dimension <span 
 class="ptmri8t-">n </span>of a graphic signal is:
 <center class="math-display" >
 <img 
-src="OSCMsg91x.png" alt="n|n &#x2208; &#x2115; &#x2227; 6.(n- 1)&#x003C; d &#x2264; 6.n
+src="OSCMsg94x.png" alt="n|n &#x2208; &#x2115; &#x2227; 6.(n- 1)&#x003C; d &#x2264; 6.n
 " class="math-display" ></center>
-<!--l. 2467--><p class="nopar" > where <span 
+<!--l. 2585--><p class="nopar" > where <span 
 class="ptmri8t-">d </span>is the dimension of the input signal.
-<!--l. 2470--><p class="noindent" >When <span 
+<!--l. 2588--><p class="noindent" >When <span 
 class="ptmri8t-">d </span>is not a mutiple of 6, then the last graphic signal makes use of the default values mentionned
 above.
-<!--l. 2473--><p class="noindent" ><span 
+<!--l. 2591--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -871,9 +871,9 @@ class="small-caps">E</span> </span><br
 class="newline" />Creating parallel graphic signals:
 <div class="center" 
 >
-<!--l. 2484--><p class="noindent" >
+<!--l. 2602--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox81"> <div class="minipage"><span 
+class="colorbox" id="colorbox87"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/y1 size 200 ; </span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/y2 size 200 ; </span><br 
@@ -895,7 +895,7 @@ class="pcrr8tn-x-x-90">&#x00A0;      ! &#8217;sig&#8217; dimension is 12</span><
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/siggraph set graph sig;</span></div></div>
 </div>
-<!--l. 2486--><p class="noindent" ><span 
+<!--l. 2604--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -908,12 +908,12 @@ index of the graphic signal target component.
                                                                                  
 
                                                                                  
-<!--l. 2492--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 2610--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch15.html" >next</a>] [<a 
 href="OSCMsgch13.html" >prev</a>] [<a 
 href="OSCMsgch13.html#tailOSCMsgch13.html" >prev-tail</a>] [<a 
 href="OSCMsgch14.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch14.html" >up</a>] </p></div>
-<!--l. 2492--><p class="noindent" ><a 
+<!--l. 2610--><p class="noindent" ><a 
  id="tailOSCMsgch14.html"></a>  
 </body></html> 

@@ -3,7 +3,7 @@ DOC 	= OSCMsg.pdf
 HTMLOPT = -show_section_numbers \
 		  --image_type png \
 		  -local_icons \
-		  -address '<br /><a href="http://www.grame.fr/Recherche/Programmes/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>'
+		  -address '<br /><a href="http://www.grame.fr/logiciels/">Grame</a> - <a href="http://inscore.sf.net/">INScore project</a>'
 TMP := tmpl2h.tex
 
 all: $(DOC)

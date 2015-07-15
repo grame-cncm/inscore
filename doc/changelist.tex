@@ -1,6 +1,31 @@
 
 
 %===============================
+%:    Differences to version 1.12  (version 1.15)
+\sublevel{Differences to version 1.12}
+\begin{itemize}
+\item new \OSC{frame} query method: \OSC{get frame} gives the coordinates of 4 points that represent the 
+  object frame, expressed in the scene local coordinates system and including all the graphic 
+  transformations (scaling, rotations on the 3 axis, shear etc.)
+\item pen messages are now accepted by all the components. Thie extension is provided to display
+  any object bounding box. Note that for rects, ellipses etc. the previous behavior is preserved.
+\item \OSC{pianoroll} support. See section \fullref{pianorollscore} and \fullref{pianoroll}.
+\item Add web Api to expose inscore on the web with websocket or http.
+\item Add change tab on mobile with three digits gesture.
+\item add new object \OSC{filter} at application and scene level to filter forwarded messages.
+\item sending to broadcast address is enabled
+\item add \OSC{forward} and \OSC{filter} messages to the scene to handle messages forwarding at scene level. See section \fullref{forwarding}.
+\item default port to forward messages is now 7000.
+\item add new optional tab at startup with a menu for ios and android.
+\item add zoom and move capabilities at scene level using \OSC{scale}, OSC{xorigin} and OSC{yorigin}. This is intended to support two fingers gesture on mobile device.
+\item bug with lines corrected: a line in non-square parent was rotated when the parent's width 
+  was smaller than its height.
+\item bug with \OSC{eval} forwarding corrected: forwarded messages were triggering a syntax error due to 
+  a misinterpreted incorrect args count 
+\end{itemize}
+
+
+%===============================
 %:    Differences to version 1.08  (version 1.12)
 \sublevel{Differences to version 1.08}
 \begin{itemize}
