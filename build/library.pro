@@ -6,7 +6,7 @@ TARGET = INScore
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
 
-VERSION = 1.15
+VERSION = 1.16
 
 ############################## 
 # locations

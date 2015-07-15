@@ -12,7 +12,11 @@ It has been supported by the ANR
 ====================================================
 
 ----------------------------------------------------
-Version 1.15
+Version 1.16
+
+
+----------------------------------------------------
+Version 1.15 - tagged on July 15 2015
 - new frame query method: get 'frame' gives the coordinates of 4 points that represent the 
   object frame, expressed in the scene local coordinates system and including all the graphic 
   transformations (scaling, rotations on the 3 axis, shear etc.)
