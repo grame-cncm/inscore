@@ -65,6 +65,7 @@ class VPianoRollView: public VGraphicsItemView
 				 VPianoRollView(QGraphicsScene * scene, const IGuidoPianoRoll*);
 		virtual ~VPianoRollView() {}
 
+		virtual void updateObjectSize(IObject* o)	{}
 		virtual void updateView( IGuidoPianoRoll * proll );
 		virtual void updateView( IGuidoPianoRollStream * prollstream );
 		virtual void updateLocalMapping (IGuidoPianoRoll* proll);
