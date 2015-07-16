@@ -1251,7 +1251,7 @@ Querying the \OSC{width} and \OSC{height} of any object is always supported, pro
 \sublevel{Symbolic score management}
 \label{gmnpage}
 
-Messages accepted by the components types \OSC{gmn | gmnstream | gmnf}. 
+The following messages are accepted by the components types \OSC{gmn | gmnstream | gmnf}. 
 \begin{rail}
 scoreMsg :      'page' int32
 			| 'dpage' int32
@@ -1288,14 +1288,14 @@ Displaying a multi-pages score on two pages starting at page 3:
 
 
 \begin{rail}
-gmnstreamMsg :      'write' gmnStream
+gmnstreamMsg :      'write' gmnCode
 				| 'clear' 
 \end{rail}
 \index{Specific messages! score! write}
 \index{Specific messages! score! clear}
 
 \begin{itemize}
-\item \OSC{write}: add the stream in parameter to the global stream
+\item \OSC{write}: add the gmn code to the current gmn stream
 \item \OSC{clear}: reinitialize the stream
 \end{itemize}
 
@@ -1313,7 +1313,7 @@ Writing a score in 3 steps:
 \sublevel{Piano roll management}
 \label{pianoroll}
 
-Messages accepted by the components types \OSC{pianoroll | pianorollstream | pianorollf}.
+The following messages are accepted by the components types \OSC{pianoroll | pianorollstream | pianorollf}.
 
 \begin{rail}
 pianorollMsg :		'keyboard' int32
@@ -1338,28 +1338,31 @@ pianorollMsg :		'keyboard' int32
 \item \OSC{autoVoicesColoration}: enable voices automatic coloration. If voiceColor is used for a voice, automatic voices coloration do nothing for it. Default value to 0.
 \item \OSC{measureBars}: Display measure bars on piano roll. Default value to 0.
 \item \OSC{voiceColor}: set a color to a voice. The parameters are voice number (start to 1), and RGBA color (See section \fullref{colormsg}). If not color is present, voice color is reset to default color. If voice number and color are not present, reset all voices to default color.
-\item \OSC{pitchLines}:  Display pitch lines on pianoroll. Parameters are a note list in english notation (A A\# B ...) with case insensitive. Default to all lines. An "empty" note can be used to not display any line.
+\item \OSC{pitchLines}:  Display pitch lines on pianoroll. Parameters are a note list in english notation (A A\# B ...) with case insensitive. Default to all lines. An '\OSC{empty}' note (i.e. the litteral '\OSC{empty}' string)  can be used to not display any line.
 \item \OSC{clipTime}: set time limits for piano roll (See section \fullref{time} to set a time). The two times have to be wrote in the same format. If no time is present, time limits are reset to default.
 \item \OSC{clipPitch}:  Set pitch limits to piano roll. The pitch is in midi format. If no value is present, pitch limits are reset to default.
 \end{itemize}
 
 
 \example \\
-Set a color on voice 2 with transparency and display C and F pitch lines : 
+Set a color on voice 2 with transparency and display C and F pitch lines: 
 \sample{/ITL/scene/myPianoroll voiceColor 2 154 234 45 100;\\
 /ITL/scene/myPianoroll pitchLines 'C' 'F';
 }
+Removes the pitch lines: 
+\sample{/ITL/scene/myPianoroll pitchLines empty;
+}
 
-
+Piano roll streams support the same messages than Guido streams:
 \begin{rail}
-pianorollstreamMsg :      'write' gmnStream
+pianorollstreamMsg :      'write' gmnCode
 				| 'clear' 
 \end{rail}
 \index{Specific messages! pianoroll! write}
 \index{Specific messages! pianoroll! clear}
 
 \begin{itemize}
-\item \OSC{write}: add the stream in parameter to the global stream
+\item \OSC{write}: add the gmn code to the current gmn stream
 \item \OSC{clear}: reinitialize the stream
 \end{itemize}
 

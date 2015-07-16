@@ -860,13 +860,13 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {44}{ gmnstreamMsg : 'write' gmnStream | 'clear' }
+\rail@i {44}{ gmnstreamMsg : 'write' gmnCode | 'clear' }
 \rail@o {44}{
 \rail@index{gmnstreamMsg}
 \rail@begin{2}{gmnstreamMsg}
 \rail@bar
 \rail@term{write}[]
-\rail@nont{gmnStream}[]
+\rail@nont{gmnCode}[]
 \rail@nextbar{1}
 \rail@term{clear}[]
 \rail@endbar
@@ -918,13 +918,13 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {46}{ pianorollstreamMsg : 'write' gmnStream | 'clear' }
+\rail@i {46}{ pianorollstreamMsg : 'write' gmnCode | 'clear' }
 \rail@o {46}{
 \rail@index{pianorollstreamMsg}
 \rail@begin{2}{pianorollstreamMsg}
 \rail@bar
 \rail@term{write}[]
-\rail@nont{gmnStream}[]
+\rail@nont{gmnCode}[]
 \rail@nextbar{1}
 \rail@term{clear}[]
 \rail@endbar
