@@ -8,7 +8,7 @@ system	:= $(shell uname -s)
 ifeq ($(system), Darwin)
 	TARGET = macos
 	SPEC = -spec macx-xcode
-	QMAKEIOS = /Users/guillaume/Qt/5.4/ios/bin/qmake
+	QMAKEIOS = qmake-ios
 else
 ifeq ($(system), MINGW32_NT-6.1)
 	TARGET = win32
