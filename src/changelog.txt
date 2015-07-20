@@ -13,6 +13,8 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.16
+- frameless and fullscreen mode are now exclusive at model level
+- frameless and fullscreen modes management revised at view level
 
 
 ----------------------------------------------------
