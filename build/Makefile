@@ -2,7 +2,7 @@
 # 
 #
 
-.PHONY : macos ios win32 win64 linux
+.PHONY : macos ios win32 win64 linux android installAndroid help
 
 system	:= $(shell uname -s)
 ifeq ($(system), Darwin)
@@ -18,7 +18,6 @@ else
 endif
 endif
 
-
 OUT  := INScore.framework
 WIN32VS := "Visual Studio 10"
 WIN64VS := "Visual Studio 10 Win64"
@@ -26,6 +25,19 @@ MSVC := C:\Program Files (x86)\Microsoft Visual Studio 10.0
 
 all :
 	make $(TARGET)
+
+help :
+	@echo "This makefile is intended to build INScore for differents platforms."
+	@echo "Available targets are : "
+	@echo "  macos : to build for Mac OS"
+	@echo "  ios : to build for iOS"
+	@echo "  win32 : to build for Windows"
+	@echo "  linux : to build for Linux"
+	@echo "  android : to build for android"
+	@echo "    You can add the two variables KEYSTOREPATH=XXX CERTIFICATEALIAS=YYY"
+	@echo "    respectively the keystore path and the certificat alias to sign the application"
+	@echo "  androidInstall DEVICE=XXX : to install application on Android device"
+	@echo "    with XXX the device serial number"
 
 #===============================================================
 # building INScore on Mac OS X
@@ -66,6 +78,34 @@ ios/INScore.xcodeproj : library.pro
 
 ios/INScoreViewer.xcodeproj : viewer.pro
 	make xcodeprojios
+
+#===============================================================
+# building INScore for Android
+#===============================================================
+SPECANDROID = -spec android-g++
+
+# To sign Android application add the following variables :
+#$(KEYSTOREPATH)	the keystore file path.
+#$(CERTIFICATEALIAS)		the certificate alias.
+ifdef KEYSTOREPATH
+SIGN=--sign $(KEYSTOREPATH) $(CERTIFICATEALIAS)
+endif
+
+android : androidbuild/Makefile INScoreAndroid
+
+androidbuild/Makefile:
+	[ -d androidbuild ] || mkdir androidbuild
+	cd androidbuild && qmake-android $(SPECANDROID) ../INScore.pro
+
+INScoreAndroid :
+	make -j 4 -C androidbuild -f Makefile
+	[ -d androidbuild/android-build ] || mkdir androidbuild/android-build
+	cd androidbuild && make INSTALL_ROOT=android-build install
+	cd androidbuild && androiddeployqt --input android-libINScoreViewer.so-deployment-settings.json --output android-build --deployment bundled --gradle $(SIGN)
+
+# To install INScore on your android device add DEVICE variable with device serial number. It can be retreived with 'adb get-serialno'
+installAndroid :
+	adb -s $(DEVICE) install -r androidbuild/android-build/build/outputs/apk/android-build-release-signed.apk
 
 #===============================================================
 # building the library on linux
@@ -122,5 +162,5 @@ win32clean:
 
 #===============================================================
 clean :
-	rm -rf macos win32 linux
+	rm -rf macos win32 linux androidbuild ios
 

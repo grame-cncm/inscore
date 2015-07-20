@@ -84,8 +84,47 @@ The project description is "Visual Studio 2010" oriented.
 Calling qmake and make requires to have unix like commands installed, which is provided by the
 MINGW environment.
 However, it should always be possible to compile using QTCreator and the .pro files included 
-in the build  folder.
+in the build folder.
 
+Note for Android platform:
+--------------------------
+You need to have Qt for android and the Android SDK and NDK installed on your computer.
+You need to have the three following environnement variables :
+ANDROID_NDK_ROOT = root path of android NDK
+ANDROID_SDK_ROOT = root path of android SDK
+ANDROID_HOME = root path of android SDK
+
+You can add these varaibles with this command and Linux and MacOS : 
+	> export ANDROID_NDK_ROOT=/myPath/To/NDK
+
+You need to have two alias of qt android binary file :
+	- an alias to qmake for android called qmake-android 
+	- an alias to androiddeployqt called androiddeployqt
+
+To compile:
+	change to 'build' directory
+	> cd build
+	> make android [KEYSTOREPATH=XXX CERTIFICATEALIAS=YYY]
+The two variables KEYSTOREPATH and CERTIFICATEALIAS are optional to sign android application.
+	KEYSTOREPATH is the path of your keystorefile.
+	CERTIFICATEALIAS is the alias of the certificate.
+
+To install application on your device use :
+	> make androidInstall DEVICE=XXX
+where DEVICE variable is the serial number of your android device. You can get it with "adb get-serialno".
+
+The folder of the build apk can change with your Qt version and your system. You may have to change the install script folder.
+
+You can also use qtcreator with the INScore.pro project to build and deploy INScore on android.
+
+Note for iOS platform:
+--------------------------
+You can compile INScore for iOS with 
+	> make ios
+
+Use XCode to deploy the application on your device.
+
+You can also use qtcreator with the INScore.pro project to build and deploy INScore on iOS.
 
 ======================================================================
 3) Resolving the optional external dependencies
@@ -114,6 +153,18 @@ lua support
 ----------------------------
 lua support starts to be deprecated. If you want to include lua in inscore, contact me.
 
+
+Http server support
+----------------------------
+You should install libmicrohttpd library (a GNU project) on your computer.
+Then, you can build the http server in lib/httpserver folder : 
+	> cd lib/httpserver/build
+	> cmake -G "Your environnement"
+	> make
+
+The server can be added in your INScore folder to enabled http server plugin.
+
+Note that the http server library work only on Linux and Mac OS.
 
 ======================================================
  Note about the Guido Font
