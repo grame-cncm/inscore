@@ -81,9 +81,9 @@ class IScene : public IRectShape, public TILoader
 		static const std::string kSceneType;
 		static libmapping::SMARTP<IScene> create(const std::string& name, IObject * parent)	{ return new IScene(name, parent); }
 		bool			getFullScreen() const		{ return fFullScreen; }
-		void			setFullScreen(bool state)	{ fFullScreen = state; }
+		void			setFullScreen(bool state)	{ if (!fFrameless) fFullScreen = state; }
 		bool			getFrameless() const		{ return fFrameless; }
-		void			setFrameless(bool state)	{ fFrameless = state; }
+		void			setFrameless(bool state)	{ if (!fFullScreen) fFrameless = state; }
 		bool			getAbsoluteCoordinates() const		{ return fAbsoluteCoordinates; }
 		void			setAbsoluteCoordinates(bool state)	{ fAbsoluteCoordinates = state; }
 		bool			getWindowOpacity() const			{ return fWindowOpacity; }
