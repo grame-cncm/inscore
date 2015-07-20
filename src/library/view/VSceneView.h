@@ -164,6 +164,11 @@ class ZoomingGraphicsView : public QGraphicsView
 		void setScene		(IScene* scene)		{ fScene = scene; }
 
 		/*!
+         * \brief should be called on fullscreen change triggered by the UI.
+		 */
+		void stateChange( bool fullscreen );
+
+		/*!
          * \brief doZoom zoom on the scene and translate the scene in the view. It use scene scale as zoom factor and xorigin / yorigin to translate the scene.
 		 */
         void doZoomTranslate();

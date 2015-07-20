@@ -26,6 +26,7 @@
 #include "VSceneView.h"
 
 #include <QImage>
+#include <QDebug>
 #include <QScreen>
 #include <QBuffer>
 #include <QPainter>
@@ -77,22 +78,21 @@ void ZoomingGraphicsView::doZoomTranslate()
 }
 
 //------------------------------------------------------------------------------------------------------------------------
-void ZoomingGraphicsView::resizeEvent ( QResizeEvent * ) {
+void ZoomingGraphicsView::stateChange ( bool fullscreen )
+{
+	if (fullscreen != fScene->getFullScreen()) {
+		fScene->setFullScreen(fullscreen);
+	}
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+void ZoomingGraphicsView::resizeEvent ( QResizeEvent * )
+{
 	// scene adaptation to avoid scroll bars
 	fitInView( fSceneRect , Qt::KeepAspectRatio );
 	if(fScene) {
 		fScene->setUpdateVersion(true);
 	}
-	QSize	s = size();
-	QRect r = QApplication::desktop()->screenGeometry();
-	if (!fScene) return;
-
-	// full screen detection and transmission to the model
-	bool fullscreen = (r.width() == s.width()) && (r.height() == s.height());
-	if (fullscreen) {
-		if (!fScene->getFullScreen()) fScene->setFullScreen(true);
-	}
-	else if (fScene->getFullScreen()) fScene->setFullScreen(false);
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -225,12 +225,8 @@ void VSceneView::updateOnScreen( IScene * scene )
 	// Fullscreen/Normalscreen
 	// switch screen mode before resizing in order to get the correct size and position
 	bool fullscreen = fGraphicsView->windowState() & Qt::WindowFullScreen;
-	if ( (fullscreen && !scene->getFullScreen()) || ( !fullscreen && scene->getFullScreen()))
-	{
-		if (!fullscreen)	fResizeMoveEventFilter->setFullScreen (true);
+	if (fullscreen != scene->getFullScreen())
 		fGraphicsView->setWindowState(fGraphicsView->windowState() ^ Qt::WindowFullScreen);
-		if (fullscreen)		fResizeMoveEventFilter->setFullScreen (false);
-	}
 
 	// Visibility
 	if (scene->getVisible()) {
@@ -240,18 +236,10 @@ void VSceneView::updateOnScreen( IScene * scene )
 	}
 	else fGraphicsView->hide();
 
-	if (scene->getFrameless()) {
-		if ( !fResizeMoveEventFilter->getFrameless() ){
-			fGraphicsView->setWindowFlags (Qt::FramelessWindowHint);
+	bool frameless = fGraphicsView->windowFlags () & Qt::FramelessWindowHint;
+	if (scene->getFrameless() != frameless) {
+			fGraphicsView->setWindowFlags (frameless ? fDefaultFlags : Qt::FramelessWindowHint);
 			fGraphicsView->showNormal ();
-			fResizeMoveEventFilter->setFrameless(true);
-			fGraphicsView->move( scenePos(scene) );
-		}
-	}
-	else if ( fResizeMoveEventFilter->getFrameless() ) {
-		fGraphicsView->setWindowFlags (fDefaultFlags);
-		fGraphicsView->showNormal ();
-		fResizeMoveEventFilter->setFrameless(false);
 	}
 
 	// Size

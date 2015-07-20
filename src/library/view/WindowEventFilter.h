@@ -76,18 +76,11 @@ class ResizeMoveEventFilter : public WindowEventFilter
 {
 		Q_OBJECT
 	bool	fAbsoluteXY;
-	bool	fFrameless;
-	bool	fFullScreen;
 
     public:
 		ResizeMoveEventFilter(const std::string& address, ZoomingGraphicsView* parent=0 ) : WindowEventFilter(address, parent),
-		  fAbsoluteXY(false), fFrameless(false), fFullScreen(false) {}
+		  fAbsoluteXY(false) {}
 		void setAbsoluteXY(bool state)	{ fAbsoluteXY = state; }
-		void setFrameless(bool state)	{ fFrameless = state; }
-		void setFullScreen(bool state)	{ fFullScreen = state; }
-
-		bool getFrameless()	const	{ return fFrameless; }
-		bool getFullScreen() const	{ return fFullScreen; }
 
     protected slots:
         virtual void updateModel();

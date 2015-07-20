@@ -37,43 +37,50 @@ namespace inscore
 WindowEventFilter::WindowEventFilter(const std::string& address, ZoomingGraphicsView *parent)
 		: QObject(parent), fOSCAddress(address), fGraphicsView(parent)
 {
-        fTimer = new QTimer(this);
-        fTimer->setSingleShot(true);
-        connect(fTimer, SIGNAL(timeout()), this, SLOT(updateModel()));
+	fTimer = new QTimer(this);
+	fTimer->setSingleShot(true);
+	connect(fTimer, SIGNAL(timeout()), this, SLOT(updateModel()));
 }
 
 //--------------------------------------------------------------------------
 void WindowEventFilter::sendMessage( const char * addr , const char * cmd , float f )
 {
-        INScore::MessagePtr msg = INScore::newMessage( cmd );
-        INScore::add(msg, f);
-        INScore::postMessage( addr , msg );
+	INScore::MessagePtr msg = INScore::newMessage( cmd );
+	INScore::add(msg, f);
+	INScore::postMessage( addr , msg );
 }
 
 //--------------------------------------------------------------------------
 bool WindowEventFilter::eventFilter(QObject *obj, QEvent *event)
 {
-		if (isStartTimer(event))
-		{
-                fTimer->stop();
-                fTimer->start(100);
-                return false;
-        }
-        else
-                // standard event processing
-        return QObject::eventFilter(obj, event);
+	// this is to update the model in case of UI switch to full screen on/off
+	if (event->type() == QEvent::WindowStateChange)
+		fGraphicsView->stateChange(fGraphicsView->windowState() & Qt::WindowFullScreen);
+
+	if (isStartTimer(event))
+	{
+			fTimer->stop();
+			fTimer->start(100);
+			return false;
+	}
+	else
+		// standard event processing
+	return QObject::eventFilter(obj, event);
 }
 
 //--------------------------------------------------------------------------
 bool ResizeMoveEventFilter::isStartTimer(const QEvent *event)
 {
-    return !fFrameless && !fFullScreen && ((event->type() == QEvent::Move) || (event->type() == QEvent::Resize));
+    bool frameless = fGraphicsView->windowFlags() & Qt::FramelessWindowHint;
+	bool fullscreen = fGraphicsView->windowState() & Qt::WindowFullScreen;
+
+    return !frameless && !fullscreen && ((event->type() == QEvent::Move) || (event->type() == QEvent::Resize));
 }
 
 //--------------------------------------------------------------------------
 void ResizeMoveEventFilter::updateModel()
 {
-    if (fFrameless)
+    if ((fGraphicsView->windowFlags() & Qt::FramelessWindowHint) || (fGraphicsView->windowState() & Qt::WindowFullScreen))
         return;
 
     QWidget * view = dynamic_cast<QWidget *>(parent());
@@ -104,6 +111,8 @@ void ResizeMoveEventFilter::updateModel()
     sendMessage( fOSCAddress.c_str() , kheight_GetSetMethod , height );
 }
 
+
+//--------------------------------------------------------------------------
 TouchEventFilter::TouchEventFilter(const std::string& address, ZoomingGraphicsView* parent)
     : WindowEventFilter(address, parent), fIsRunning(false) {}
 
