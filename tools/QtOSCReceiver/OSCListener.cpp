@@ -43,25 +43,29 @@ void OSCListener::ProcessMessage( const osc::ReceivedMessage& m, const IpEndpoin
 {
 	osc::ReceivedMessageArgumentIterator i = m.ArgumentsBegin();
 	if (i != m.ArgumentsEnd()) {
-		if(i->IsString()) {
+		if(i->IsInt32()) {
+			fCurrentMessageNumber = i->AsInt32();
+			if(fCurrentMessageNumber != fPreviousMessageNumber + 1) {
+				cerr << "osc error: message number is not previous number  + 1" << endl;
+				fErrorCounter += fCurrentMessageNumber - fPreviousMessageNumber;
+			}
+			fPreviousMessageNumber = fCurrentMessageNumber;
+		}
+		else if(i->IsString()) {
 			QString str(i->AsStringUnchecked());
 			fCurrentMessageNumber = str.toULong();
 			//fCurrentMessageNumber = i->AsInt32Unchecked();
 			if(fCurrentMessageNumber != fPreviousMessageNumber + 1) {
 				cerr << "osc error: message number is not previous number  + 1" << endl;
 				// Increment error
-				fErrorCounter++;
+				fErrorCounter += fCurrentMessageNumber - fPreviousMessageNumber;
 			}
 			fPreviousMessageNumber = fCurrentMessageNumber;
 		} else {
 			cerr << "osc error: message argument is not a number" << endl;
-			// Increment error
-			fErrorCounter++;
 		}
 	} else {
 		cerr << "osc error: message with no argument" << endl;
-		// Increment error
-		fErrorCounter++;
 	}
 }
 

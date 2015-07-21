@@ -15,7 +15,7 @@
 //#define DEFAULT_ADDRESS "marcopolo.grame.fr"
 #define DEFAULT_PORT 7000
 
-#define OUTPUT_BUFFER_SIZE 2048
+#define OUTPUT_BUFFER_SIZE 16384
 
 #define DEBUG
 
@@ -79,15 +79,26 @@ void OSCMessage::send( const std::string& str , int port ) const
 
 }
 
+
 void SendThread::run()
 {
+	QString address = fController->destination();
+	int port = fController->port();
+	UdpTransmitSocket transmitSocket( IpEndpointName( address.toStdString().c_str() , port ) );
+    
+    char buffer[OUTPUT_BUFFER_SIZE];
 	fRun = true;
 	while(fRun) {
-		int waitTime = fController->getWait();
 		for (int i = 0 ; i < fController->getMessageSize(); i++) {
-			fController->send( OSCMessage( "/test" ).setCommand(QString::number(fController->nextMessage()).toStdString() ) );
+			osc::OutboundPacketStream p( buffer, OUTPUT_BUFFER_SIZE );
+			p << osc::BeginMessage( "/test" ) << fController->nextMessage();
+			p << osc::EndMessage;
+			transmitSocket.Send( p.Data(), p.Size() );
+ 
+//			fController->send( OSCMessage( "/test" ).setCommand(QString::number(fController->nextMessage()).toStdString() ) );
 		}
-		msleep(waitTime);
+
+		msleep(fController->getWait());
 	}
 }
 
@@ -180,6 +191,21 @@ void ControllerWidget::send( const OSCMessage& msg ) const
 }
 
 //------------------------------------------------------------------------
+QString ControllerWidget::destination () const
+{
+	QString address = mAddressLineEdit->text();
+	if( address.isEmpty())
+		address = DEFAULT_ADDRESS;
+	return address;
+}
+
+//------------------------------------------------------------------------
+int ControllerWidget::port () const
+{
+	return mPortLineEdit->value();
+}
+
+//------------------------------------------------------------------------
 void ControllerWidget::start()
 {
 	mSender = new SendThread(this);
@@ -203,7 +229,7 @@ void ControllerWidget::initNumber()
 }
 
 //------------------------------------------------------------------------
-unsigned long ControllerWidget::nextMessage()
+int ControllerWidget::nextMessage()
 {
 	return fMessageNumber++;
 }

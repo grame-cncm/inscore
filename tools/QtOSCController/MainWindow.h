@@ -41,10 +41,12 @@ class ControllerWidget : public QWidget, private Ui::ControllerWidget
 
 	public:
 		ControllerWidget(QWidget *parent = 0);
-		unsigned long nextMessage();
+		int nextMessage();
 		int getMessageSize();
 		int getWait();
 		void send( const OSCMessage& msg ) const;
+		int port () const;
+		QString destination () const;
 
 	protected slots:
 		
