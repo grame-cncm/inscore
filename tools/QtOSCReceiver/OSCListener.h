@@ -18,9 +18,10 @@ class OSCListener : public QObject, public osc::OscPacketListener
 	UdpListeningReceiveSocket fSocket;	///< the udp socket listener
 	unsigned long	fMyAddress;
 	bool	fRunning;
-	unsigned long fCurrentMessageNumber;
-	unsigned long fPreviousMessageNumber;
-	unsigned long fErrorCounter;
+	int fReceived;
+	int fCurrentMessageNumber;
+	int fPreviousMessageNumber;
+	int fErrorCounter;
 	ControllerWidget * fController;
 
 	QTimer refresh;

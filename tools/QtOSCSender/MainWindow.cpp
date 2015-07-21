@@ -1,3 +1,4 @@
+
 #include "MainWindow.h"
 
 #include "osc/OscOutboundPacketStream.h"
@@ -12,12 +13,9 @@
 #include <iostream>
 
 #define DEFAULT_ADDRESS "127.0.0.1"
-//#define DEFAULT_ADDRESS "marcopolo.grame.fr"
 #define DEFAULT_PORT 7000
 
 #define OUTPUT_BUFFER_SIZE 16384
-
-#define DEBUG
 
 //------------------------------------------------------------------------
 void OSCMessage::send( const std::string& str , int port ) const
@@ -28,6 +26,7 @@ void OSCMessage::send( const std::string& str , int port ) const
     osc::OutboundPacketStream p( buffer, OUTPUT_BUFFER_SIZE );
 
 	p << osc::BeginMessage( mAddress.c_str() ) << mCommand.c_str();
+
 	for ( int i = 0 ; i < mValues.size() ; i++ )
 	{
 		QVariant::Type t = mValues[i].type();
@@ -40,91 +39,99 @@ void OSCMessage::send( const std::string& str , int port ) const
 	}
 	p << osc::EndMessage;
     transmitSocket.Send( p.Data(), p.Size() );
+}
 
+//------------------------------------------------------------------------
+void SendThread::run()
+{
+	QString address = fController->destination();
+	int port = fController->port();
+	UdpTransmitSocket transmitSocket( IpEndpointName( address.toStdString().c_str() , port ) );
+    
+    char buffer[OUTPUT_BUFFER_SIZE];
+	fRun = true;
+	while(fRun) {
+		for (int i = 0 ; i < fController->getMessageSize(); i++) {
+			osc::OutboundPacketStream p( buffer, OUTPUT_BUFFER_SIZE );
+			p << osc::BeginMessage( "/test" ) << fController->nextMessage();
+			p << osc::EndMessage;
+			transmitSocket.Send( p.Data(), p.Size() );
+		}
+		msleep(fController->getWait());
+	}
 }
 
 //------------------------------------------------------------------------
 ControllerWidget::ControllerWidget(QWidget *parent)
-	 : QWidget(parent)
+	 : QWidget(parent), mSender(0), fMessageNumber(0)
 {
 	setupUi(this);
-	
-	mRotateAllTimer = new QTimer(this);
-	mRotateAllTimer->setInterval( 20 );
-    connect(mRotateAllTimer, SIGNAL(timeout()), this, SLOT(rotateAll()));
-	connect( mRotateAll , SIGNAL(toggled(bool)) , this , SLOT(rotateAllToggled(bool)) );
-	
-	connect( mQuit , SIGNAL(clicked()) , this , SLOT(ITLQuit()) );
-	connect( mReset , SIGNAL(clicked()) , this , SLOT(ITLReset()) );
-	connect( mScene1 , SIGNAL(clicked()) , this , SLOT(scene1()) );
+	connect( mStart, SIGNAL(clicked()) , this , SLOT(start()) );
+	connect( mStop, SIGNAL(clicked()) , this , SLOT(stop()) );
+	connect( mInit, SIGNAL(clicked()) , this , SLOT(initNumber()) );
+	mAddressLineEdit->setText(DEFAULT_ADDRESS);
+	mPortLineEdit->setValue(DEFAULT_PORT);
 }
 
 //------------------------------------------------------------------------
 void ControllerWidget::send( const OSCMessage& msg ) const
 {
-	msg.send( DEFAULT_ADDRESS, DEFAULT_PORT );
+	QString address = mAddressLineEdit->text();
+	if( address.isEmpty())
+		address = DEFAULT_ADDRESS;
+
+	msg.send( address.toStdString() , mPortLineEdit->value() );
 }
 
 //------------------------------------------------------------------------
-void ControllerWidget::ITLQuit()
+QString ControllerWidget::destination () const
 {
-	send( OSCMessage("/ITL").setCommand("quit") );
+	QString address = mAddressLineEdit->text();
+	if( address.isEmpty())
+		address = DEFAULT_ADDRESS;
+	return address;
 }
 
 //------------------------------------------------------------------------
-void ControllerWidget::ITLReset()
+int ControllerWidget::port () const
 {
-	send( OSCMessage("/ITL/scene").setCommand("reset") );
+	return mPortLineEdit->value();
 }
 
 //------------------------------------------------------------------------
-void ControllerWidget::scene1()
+void ControllerWidget::start()
 {
-	int size = mScene1Int->value();
-	if (!size) return;
-
-	float fsize = float(size);
-	const float base = 1.5;
-	float rsize = base / fsize;
-	float step = rsize + 0.5/fsize;
-	float x = 0 - (step * (size-1))/2;
-	float x0 =x, y = x;
-	for ( int i = 0 ; i < size ; i++ )
-	{
-		for ( int j = 0 ; j < size ; j++ )
-		{
-			std::string rectName = QString( "/ITL/scene/rect" + QVariant( i*size + j ).toString() ).toStdString();
-			send( OSCMessage( rectName ).setCommand("set").addString("rect").addFloat(rsize).addFloat(rsize) );
-			send( OSCMessage( rectName ).setCommand("x").addFloat( x ) );
-			send( OSCMessage( rectName ).setCommand("y").addFloat( y ) );
-			x += step;
-		}
-		x = x0;
-		y += step;
-	}	
+	mSender = new SendThread(this);
+	mSender->start();
 }
 
 //------------------------------------------------------------------------
-void ControllerWidget::rotateAll()
+void ControllerWidget::stop()
 {
-	send( OSCMessage( QString("/ITL/scene/" + fRotateEdit->text()).toUtf8().data()  ).setCommand("dangle").addFloat( 1 ) );
+	if(mSender) {
+		mSender->stop();
+		delete mSender;
+		mSender = 0;
+	}
 }
 
 //------------------------------------------------------------------------
-void ControllerWidget::rotateAllToggled(bool toggled)
+void ControllerWidget::initNumber()
 {
-	if ( toggled )
-		mRotateAllTimer->start();
-	else
-		mRotateAllTimer->stop();
+	fMessageNumber = 0;
 }
+
+//------------------------------------------------------------------------
+int ControllerWidget::nextMessage()		{ return fMessageNumber++; }
+int ControllerWidget::getWait()			{ return mWait->value(); }
+int ControllerWidget::getMessageSize()	{ return mMessageSize->value(); }
 
 //------------------------------------------------------------------------
 MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags ) 
 	:	QMainWindow ( parent , flags )
 {
 	QCoreApplication::setOrganizationName("GRAME");
-    QCoreApplication::setOrganizationDomain("QtController");
+    QCoreApplication::setOrganizationDomain("QtOSCSender");
 	
 	QSettings settings;
 	resize(settings.value("size", QSize(100, 100)).toSize());

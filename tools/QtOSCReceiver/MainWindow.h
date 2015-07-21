@@ -16,9 +16,8 @@ class ControllerWidget : public QWidget, private Ui::ControllerWidget
 	public:
 		ControllerWidget(QWidget *parent = 0);
 		int getPort();
-		void setError(unsigned long number);
-		void setLastMessage(unsigned long number);
-
+		void report(int rcv, int errs, float ratio);
+		
 	protected slots:
 		void restart();
 	protected:

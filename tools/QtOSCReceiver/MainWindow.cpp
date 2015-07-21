@@ -6,6 +6,7 @@
 #include <QSettings>
 #include <QCoreApplication>
 #include <QVBoxLayout>
+#include <QDebug>
 #include <QTimer>
 
 #include <iostream>
@@ -17,12 +18,7 @@
 #endif // win32
 
 #define DEFAULT_ADDRESS "127.0.0.1"
-//#define DEFAULT_ADDRESS "marcopolo.grame.fr"
 #define DEFAULT_PORT 7000
-
-#define OUTPUT_BUFFER_SIZE 2048
-
-#define DEBUG
 
 using namespace std;
 
@@ -39,8 +35,9 @@ ControllerWidget::ControllerWidget(QWidget *parent)
 //------------------------------------------------------------------------
 void ControllerWidget::restart()
 {
-	mLostMessages->setValue(0);
-	mLastMessage->setValue(0);
+//	mReceived->setText("0");
+//	mLost->setText("0");
+//	mRatio->setText("0 %");
 	fOscThread->stop();
 	delete fOscThread;
 	fOscThread = new OscThread(getPort(), this);
@@ -54,22 +51,24 @@ int ControllerWidget::getPort()
 }
 
 //------------------------------------------------------------------------
-void ControllerWidget::setError(unsigned long number)
+void ControllerWidget::report(int rcv, int errs, float ratio)
 {
-	mLostMessages->setValue(number);
+	QString str;
+	str.setNum(rcv);
+	mReceived->setText(str);
+	str.setNum(errs);
+	mLost->setText(str);
+	str.setNum(ratio);
+	str += " %";
+	mRatio->setText(str);
 }
 
-//------------------------------------------------------------------------
-void ControllerWidget::setLastMessage(unsigned long number)
-{
-	mLastMessage->setValue(number);
-}
 //------------------------------------------------------------------------
 MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags ) 
 	:	QMainWindow ( parent , flags )
 {
 	QCoreApplication::setOrganizationName("GRAME");
-    QCoreApplication::setOrganizationDomain("QtController");
+    QCoreApplication::setOrganizationDomain("QtOSCReceiver");
 	
 	QSettings settings;
 	resize(settings.value("size", QSize(100, 100)).toSize());
