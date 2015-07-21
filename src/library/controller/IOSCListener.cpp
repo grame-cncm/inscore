@@ -43,7 +43,7 @@ namespace inscore
 IOSCListener::IOSCListener(SIMessageStack& stack, int port) 
 		: fSocket(IpEndpointName( IpEndpointName::ANY_ADDRESS, port ), this), fMsgStack(stack), fRunning(false)
 {
-	fMyAddress = Tools::getIP("");
+//	fMyAddress = Tools::getIP("");
 }
 
 IOSCListener::~IOSCListener()	{ stop(); }

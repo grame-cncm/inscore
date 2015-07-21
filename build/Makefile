@@ -83,29 +83,31 @@ ios/INScoreViewer.xcodeproj : viewer.pro
 # building INScore for Android
 #===============================================================
 SPECANDROID = -spec android-g++
+SIGN=--sign ../../rsrc/inscore.keystore grame-inscore  # passwd 'grameinscore'
 
-# To sign Android application add the following variables :
-#$(KEYSTOREPATH)	the keystore file path.
-#$(CERTIFICATEALIAS)		the certificate alias.
-ifdef KEYSTOREPATH
-SIGN=--sign $(KEYSTOREPATH) $(CERTIFICATEALIAS)
-endif
+android : android/Makefile INScoreAndroid
 
-android : androidbuild/Makefile INScoreAndroid
-
-androidbuild/Makefile:
-	[ -d androidbuild ] || mkdir androidbuild
-	cd androidbuild && qmake-android $(SPECANDROID) ../INScore.pro
+android/Makefile:
+	[ -d android ] || mkdir android
+	cd android && qmake-android $(SPECANDROID) ../INScore.pro
 
 INScoreAndroid :
-	make -j 4 -C androidbuild -f Makefile
-	[ -d androidbuild/android-build ] || mkdir androidbuild/android-build
-	cd androidbuild && make INSTALL_ROOT=android-build install
-	cd androidbuild && androiddeployqt --input android-libINScoreViewer.so-deployment-settings.json --output android-build --deployment bundled --gradle $(SIGN)
+	make -j 4 -C android -f Makefile
+	[ -d android/android-build ] || mkdir android/android-build
+	cd android && make INSTALL_ROOT=android-build install
+	cd android && androiddeployqt --input android-libINScoreViewer.so-deployment-settings.json --output android-build --deployment bundled --gradle $(SIGN)
+	cp android/android-build//build/outputs/apk/android-build-release-signed.apk INScoreViewer.apk
+
+akey: ../rsrc/inscore.keystore
+../rsrc/inscore.keystore :
+	keytool -genkey -v -keystore ../inscore.keystore -alias grame-inscore -keyalg RSA -keysize 2048 -validity 10000
+
+devandroid:
+	adb get-serialno
 
 # To install INScore on your android device add DEVICE variable with device serial number. It can be retreived with 'adb get-serialno'
 installAndroid :
-	adb -s $(DEVICE) install -r androidbuild/android-build/build/outputs/apk/android-build-release-signed.apk
+	adb -s $(DEVICE) install -r android/android-build/build/outputs/apk/android-build-release-signed.apk
 
 #===============================================================
 # building the library on linux
@@ -162,5 +164,5 @@ win32clean:
 
 #===============================================================
 clean :
-	rm -rf macos win32 linux androidbuild ios
+	rm -rf macos win32 linux android ios
 
