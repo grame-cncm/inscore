@@ -83,7 +83,7 @@ ios/INScoreViewer.xcodeproj : viewer.pro
 # building INScore for Android
 #===============================================================
 SPECANDROID = -spec android-g++
-SIGN=--sign ../../rsrc/inscore.keystore grame-inscore
+SIGN=--sign ../../rsrc/inscore.keystore grame-inscore  # passwd 'grameinscore'
 
 android : android/Makefile INScoreAndroid
 
@@ -97,6 +97,10 @@ INScoreAndroid :
 	cd android && make INSTALL_ROOT=android-build install
 	cd android && androiddeployqt --input android-libINScoreViewer.so-deployment-settings.json --output android-build --deployment bundled --gradle $(SIGN)
 	cp android/android-build//build/outputs/apk/android-build-release-signed.apk INScoreViewer.apk
+
+akey: ../rsrc/inscore.keystore
+../rsrc/inscore.keystore :
+	keytool -genkey -v -keystore ../inscore.keystore -alias grame-inscore -keyalg RSA -keysize 2048 -validity 10000
 
 devandroid:
 	adb get-serialno
