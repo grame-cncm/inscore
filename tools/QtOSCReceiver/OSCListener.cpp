@@ -66,7 +66,7 @@ void OSCListener::ProcessMessage( const osc::ReceivedMessage& m, const IpEndpoin
 void OSCListener::refreshController()
 {
 	if (fReceived) {
-		int iratio = fReceived ? fErrorCounter*100 / fReceived : 0;
+        int iratio = fReceived ? fErrorCounter*10000 / fReceived : 0;
 		float ratio = iratio / 100.f;
 		fController->report (fReceived, fErrorCounter, ratio);
 	}
