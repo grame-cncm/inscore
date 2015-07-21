@@ -36,7 +36,7 @@ void OSCMessage::send( const std::string& str , int port ) const
 	{
 		QVariant::Type t = mValues[i].type();
 		if ( t == QVariant::Int )
-			p << mValues[i].toInt();
+			p << int(mValues[i].toInt());
 		else if ( t == QVariant::Double )
 			p << float(mValues[i].toDouble());
 		else
@@ -79,9 +79,21 @@ void OSCMessage::send( const std::string& str , int port ) const
 
 }
 
+void SendThread::run()
+{
+	fRun = true;
+	while(fRun) {
+		int waitTime = fController->getWait();
+		for (int i = 0 ; i < fController->getMessageSize(); i++) {
+			fController->send( OSCMessage( "/test" ).setCommand(QString::number(fController->nextMessage()).toStdString() ) );
+		}
+		msleep(waitTime);
+	}
+}
+
 //------------------------------------------------------------------------
 ControllerWidget::ControllerWidget(QWidget *parent)
-     : QWidget(parent), mAddress(DEFAULT_ADDRESS), mPort(DEFAULT_PORT)
+	 : QWidget(parent), mSender(0), fMessageNumber(0)
 {
 	setupUi(this);
 	
@@ -93,6 +105,11 @@ ControllerWidget::ControllerWidget(QWidget *parent)
 	connect( mQuit , SIGNAL(clicked()) , this , SLOT(ITLQuit()) );
 	connect( mReset , SIGNAL(clicked()) , this , SLOT(ITLReset()) );
 	connect( mScene1 , SIGNAL(clicked()) , this , SLOT(scene1()) );
+	connect( mStart, SIGNAL(clicked()) , this , SLOT(start()) );
+	connect( mStop, SIGNAL(clicked()) , this , SLOT(stop()) );
+	connect( mInit, SIGNAL(clicked()) , this , SLOT(initNumber()) );
+	mAddressLineEdit->setText(DEFAULT_ADDRESS);
+	mPortLineEdit->setValue(DEFAULT_PORT);
 }
 
 //------------------------------------------------------------------------
@@ -150,6 +167,57 @@ void ControllerWidget::rotateAllToggled(bool toggled)
 		mRotateAllTimer->start();
 	else
 		mRotateAllTimer->stop();
+}
+
+//------------------------------------------------------------------------
+void ControllerWidget::send( const OSCMessage& msg ) const
+{
+	QString address = mAddressLineEdit->text();
+	if( address.isEmpty())
+		address = DEFAULT_ADDRESS;
+
+	msg.send( address.toStdString() , mPortLineEdit->value() );
+}
+
+//------------------------------------------------------------------------
+void ControllerWidget::start()
+{
+	mSender = new SendThread(this);
+	mSender->start();
+}
+
+//------------------------------------------------------------------------
+void ControllerWidget::stop()
+{
+	if(mSender) {
+		mSender->stop();
+		delete mSender;
+		mSender = 0;
+	}
+}
+
+//------------------------------------------------------------------------
+void ControllerWidget::initNumber()
+{
+	fMessageNumber = 0;
+}
+
+//------------------------------------------------------------------------
+unsigned long ControllerWidget::nextMessage()
+{
+	return fMessageNumber++;
+}
+
+//------------------------------------------------------------------------
+int ControllerWidget::getWait()
+{
+	return mWait->value();
+}
+
+//------------------------------------------------------------------------
+int ControllerWidget::getMessageSize()
+{
+	return mMessageSize->value();
 }
 
 //------------------------------------------------------------------------

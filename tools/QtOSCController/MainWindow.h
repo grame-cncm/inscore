@@ -5,8 +5,12 @@
 
 #include <QList>
 #include <QVariant>
+#include <QThread>
 
 #include "ui_controllerWidget.h"
+
+class ControllerWidget;
+class SendThread;
 
 //------------------------------------------------------------------------
 class OSCMessage
@@ -31,12 +35,16 @@ class ControllerWidget : public QWidget, private Ui::ControllerWidget
 {
      Q_OBJECT
 
-	std::string mAddress;
-	int			mPort;
 	QTimer*		mRotateAllTimer;
+	SendThread * mSender;
+	unsigned long fMessageNumber;
 
 	public:
 		ControllerWidget(QWidget *parent = 0);
+		unsigned long nextMessage();
+		int getMessageSize();
+		int getWait();
+		void send( const OSCMessage& msg ) const;
 
 	protected slots:
 		
@@ -44,12 +52,27 @@ class ControllerWidget : public QWidget, private Ui::ControllerWidget
 		void ITLReset();
 		void scene1();
 		void rotateAll();
+		void start();
+		void stop();
+		void initNumber();
 		
 		void rotateAllToggled(bool toggled);
-		
-	protected:
-	
-		void send( const OSCMessage& msg ) const { msg.send( mAddress , mPort ); }
+};
+
+//------------------------------------------------------------------------
+class SendThread : public QThread
+{
+		bool fRun;
+		ControllerWidget * fController;
+	public:
+
+		SendThread(ControllerWidget * controller) : fController(controller) {}
+		virtual ~SendThread() { stop(); }
+
+		void stop() { fRun = false; wait(50); }
+
+		/// \brief starts the osc listener
+		void run();
 };
 
 //------------------------------------------------------------------------
