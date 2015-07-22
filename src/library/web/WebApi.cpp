@@ -77,18 +77,26 @@ std::string WebApi::postScript(const std::string &inscoreScript)
     stringstream stream;
     stream.str(inscoreScript);
     ITLparser p (&stream, 0, fJsEngine, fLua);
-    SIMessageList msgs = p.parse();
 
     // wait for other network users
-//    fPostCommandMutex.lock();
-    // Add messages to network stack
-    msgs->sendWebMsg();
-    // Wait for a model update from time task
-//    gModelUpdateWaitCondition.wait(&fPostCommandMutex);
+	fPostCommandMutex.lock();
+
+	oscerr.activeConcatError(true);
+	SIMessageList msgs = p.parse();
+	oscerr.activeConcatError(false);
+
+	string logParse = oscerr.streamConcat().str();
+
+	if(msgs->list().size()) {
+		// Add messages to network stack
+		msgs->sendWebMsg();
+		// Wait for a model update from time task
+		gModelUpdateWaitCondition.wait(&fPostCommandMutex);
+	}
     // Get back log and unlock
-    string log = oscerr.streamConcat().str();
-//    fPostCommandMutex.unlock();
-	return log;
+	string logExec = oscerr.streamConcat().str();
+	fPostCommandMutex.unlock();
+	return logParse + logExec;
 }
 
 //-------------------------------------------------------------------------------.
