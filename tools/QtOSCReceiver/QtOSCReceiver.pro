@@ -24,3 +24,4 @@ QT += network
 INCLUDEPATH += $$OSC
 
 android { DEFINES += OSC_HOST_LITTLE_ENDIAN }
+unix:!macx:!ios:!android { DEFINES += OSC_HOST_LITTLE_ENDIAN }
