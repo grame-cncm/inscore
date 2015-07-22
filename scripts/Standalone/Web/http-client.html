@@ -115,7 +115,7 @@ function updateLog(message) {
 
 
 /******* Drag and Drop : functions to add possibility to drag and drop file on INScore scene image *******/
-function Init() {
+function initDragAndDrop() {
 	var filedrag = document.getElementById("image");
 	filedrag.addEventListener("dragover", FileDragHover, false);
 	filedrag.addEventListener("dragleave", FileDragHover, false);
@@ -147,7 +147,7 @@ function UploadFile(e) {
 /******* End Drag and Drop *******/
 		</script>
 	</head>
-	<body onload="init()">
+	<body onload="init(); initDragAndDrop();">
 		<div id="content">
 		<header><iframe src="rsc/header.html"></iframe></header>
 		
