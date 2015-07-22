@@ -20,6 +20,7 @@
 */
 
 #include "THttpdPlugin.h"
+#include "HTTPServer.h"
 #include "ITLError.h"
 #include "IScene.h"
 #include "VExport.h"
@@ -51,41 +52,52 @@ THttpdPlugin::TVersion THttpdPlugin::fVersion = 0;
 
 THttpdPlugin::THttpdPlugin(IScene *exportedObject) : fExportedObject(exportedObject)
 {
+	
 	// Load library and initialize function.
-	if (load()) {
-		// Create Api object
-		fApi = new WebApi(fExportedObject->getView(), fExportedObject->getJSEngine(), fExportedObject->getLUAEngine());
-		// Initialize server
-		fHttpdServer = fInitialize(fApi);
-	} else {
-		ITLErr << "cannot load http server plugin" << ITLEndl;
-	}
+	
+	fApi = new WebApi(fExportedObject->getView(), fExportedObject->getJSEngine(), fExportedObject->getLUAEngine());
+	fHttpdServer = new HTTPDServer(fApi, 0, 0);
+
+//	if (load()) {
+//		// Create Api object
+//		fApi = new WebApi(fExportedObject->getView(), fExportedObject->getJSEngine(), fExportedObject->getLUAEngine());
+//		// Initialize server
+//		fHttpdServer = fInitialize(fApi);
+//	} else {
+//		ITLErr << "cannot load http server plugin" << ITLEndl;
+//	}
 }
 
 THttpdPlugin::~THttpdPlugin()
 {
-	if(isResolved())
-		fDestroy(fHttpdServer);
+	delete fHttpdServer;
+//	if(isResolved())
+//		fDestroy(fHttpdServer);
 }
 
 bool THttpdPlugin::start(int port)
 {
-	if(isResolved())
-		return fStart(fHttpdServer, port);
-	return false;
+	return fHttpdServer->start(port);
+//	if(isResolved())
+//		return fStart(fHttpdServer, port);
+//	return false;
 }
 
 bool THttpdPlugin::stop()
 {
-	if(isResolved())
-		return fStop(fHttpdServer);
-	return false;
+	fHttpdServer->stop();
+	return true;
+
+//	if(isResolved())
+//		return fStop(fHttpdServer);
+//	return false;
 }
 
 int THttpdPlugin::status()
 {
-	if(isResolved())
-		return fStatus(fHttpdServer);
+	return fHttpdServer->status();
+//	if(isResolved())
+//		return fStatus(fHttpdServer);
 	return 0;
 }
 
@@ -98,6 +110,8 @@ bool THttpdPlugin::isResolved ()
 //----------------------------------------------------------------------------
 bool THttpdPlugin::load ()
 {
+	return true;
+	
 	if (isLoaded()) return isResolved();
 
 	if (TPlugin::load(httpdlibName)) {

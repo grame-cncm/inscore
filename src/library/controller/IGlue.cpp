@@ -304,7 +304,7 @@ void IGlue::modelUpdate()
 
 	fModel->processSig();
 	// Wake up thread wating for a model update.
-	gModelUpdateWaitCondition.wakeAll();
+//	gModelUpdateWaitCondition.wakeAll();
 }
 
 //--------------------------------------------------------------------------

@@ -80,14 +80,14 @@ std::string WebApi::postScript(const std::string &inscoreScript)
     SIMessageList msgs = p.parse();
 
     // wait for other network users
-    fPostCommandMutex.lock();
+//    fPostCommandMutex.lock();
     // Add messages to network stack
     msgs->sendWebMsg();
     // Wait for a model update from time task
-    gModelUpdateWaitCondition.wait(&fPostCommandMutex);
+//    gModelUpdateWaitCondition.wait(&fPostCommandMutex);
     // Get back log and unlock
     string log = oscerr.streamConcat().str();
-    fPostCommandMutex.unlock();
+//    fPostCommandMutex.unlock();
 	return log;
 }
 

@@ -28,6 +28,7 @@ namespace inscore
 {
 	class IScene;
 	class WebApi;
+	class HTTPDServer;
 /*!
  * \brief The THttpdPlugin class.
  * This class aims to create a http server to expose webservice using inscorehttpserver library.
@@ -43,7 +44,7 @@ class THttpdPlugin : public TPlugin
 		/*!
 		 * \brief fHttpdServer HttpServer instance.
 		 */
-		void * fHttpdServer;
+		HTTPDServer * fHttpdServer;
 
 		/*!
 		 * \brief fApi Web api object to execute action from server

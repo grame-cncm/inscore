@@ -99,6 +99,8 @@ macx {
 	QMAKE_LFLAGS += -F$$ROOT/lib/GuidoEngine/macosx/
 	QMAKE_LFLAGS += -F$$ROOT/lib/GuidoEngine/macosx/
 	LIBS += -framework GUIDOEngine -framework CoreFoundation
+	INCLUDEPATH += /usr/local/include
+	LIBS += -L/usr/local/lib -lmicrohttpd
     QMAKE_FRAMEWORK_VERSION = $${VERSION}
     QMAKE_FRAMEWORK_BUNDLE_NAME = $$PWD/macos/Release/INScore
 
