@@ -49,7 +49,7 @@ class OscThread : public QThread
 	public:
 		OSCListener fListener;
 
-		OscThread(int port, ControllerWidget * controller) : fListener(port, controller) {}
+		OscThread(int port, ControllerWidget * controller) : fListener(port, controller) { setPriority(QThread::HighestPriority); }
 		virtual ~OscThread() { stop(); }
 
 		void stop() { fListener.stop(); quit() , wait(50);}

@@ -39,7 +39,9 @@ class ControllerWidget : public QWidget, private Ui::ControllerWidget
 	unsigned long fMessageNumber;
 
 	public:
-		ControllerWidget(QWidget *parent = 0);
+				 ControllerWidget(QWidget *parent = 0);
+		virtual ~ControllerWidget();
+
 		int nextMessage();
 		int getMessageSize();
 		int getWait();

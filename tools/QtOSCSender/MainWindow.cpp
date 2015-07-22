@@ -15,7 +15,7 @@
 #define DEFAULT_ADDRESS "127.0.0.1"
 #define DEFAULT_PORT 7000
 
-#define OUTPUT_BUFFER_SIZE 16384
+#define OUTPUT_BUFFER_SIZE 32000
 
 //------------------------------------------------------------------------
 void OSCMessage::send( const std::string& str , int port ) const
@@ -69,8 +69,23 @@ ControllerWidget::ControllerWidget(QWidget *parent)
 	connect( mStart, SIGNAL(clicked()) , this , SLOT(start()) );
 	connect( mStop, SIGNAL(clicked()) , this , SLOT(stop()) );
 	connect( mInit, SIGNAL(clicked()) , this , SLOT(initNumber()) );
-	mAddressLineEdit->setText(DEFAULT_ADDRESS);
-	mPortLineEdit->setValue(DEFAULT_PORT);
+	mStop->setEnabled (false);
+
+	QSettings settings;
+	mPortLineEdit->setValue(settings.value("port", DEFAULT_PORT).toInt());
+	mAddressLineEdit->setText(settings.value("address", DEFAULT_ADDRESS).toString());
+	mWait->setValue(settings.value("wait", 5).toInt());
+	mMessageSize->setValue(settings.value("count", 10).toInt());
+}
+
+//------------------------------------------------------------------------
+ControllerWidget::~ControllerWidget()
+{
+	QSettings settings;
+    settings.setValue("port", mPortLineEdit->value());
+    settings.setValue("address", destination());
+    settings.setValue("wait", getWait());
+    settings.setValue("count", getMessageSize());
 }
 
 //------------------------------------------------------------------------
@@ -103,6 +118,8 @@ void ControllerWidget::start()
 {
 	mSender = new SendThread(this);
 	mSender->start();
+	mStart->setEnabled (false);
+	mStop->setEnabled (true);
 }
 
 //------------------------------------------------------------------------
@@ -112,16 +129,13 @@ void ControllerWidget::stop()
 		mSender->stop();
 		delete mSender;
 		mSender = 0;
+		mStart->setEnabled (true);
+		mStop->setEnabled (false);
 	}
 }
 
 //------------------------------------------------------------------------
-void ControllerWidget::initNumber()
-{
-	fMessageNumber = 0;
-}
-
-//------------------------------------------------------------------------
+void ControllerWidget::initNumber()		{ fMessageNumber = 0; }
 int ControllerWidget::nextMessage()		{ return fMessageNumber++; }
 int ControllerWidget::getWait()			{ return mWait->value(); }
 int ControllerWidget::getMessageSize()	{ return mMessageSize->value(); }
@@ -136,9 +150,9 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags )
 	QSettings settings;
 	resize(settings.value("size", QSize(100, 100)).toSize());
 	move(settings.value("pos", QPoint(200, 200)).toPoint());
-	 
-	ControllerWidget * centralW = new ControllerWidget(this);
-	setCentralWidget(centralW);
+	
+	ControllerWidget* widget = new ControllerWidget(this);
+	setCentralWidget(widget);
 }
 
 //------------------------------------------------------------------------
