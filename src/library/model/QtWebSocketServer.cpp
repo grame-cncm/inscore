@@ -170,7 +170,6 @@ void QtWebSocketServer::processTextMessage(QString message)
 		std::ostringstream mystream;
 		json_stream jstream(mystream);
 		response->print(jstream);
-		qDebug() << "pClient->sendTextMessage(mystream.str().c_str())";
 		pClient->sendTextMessage(mystream.str().c_str());
 		delete response;
 	}
