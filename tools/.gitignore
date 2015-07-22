@@ -1,0 +1,13 @@
+moc_MainWindow.cpp
+*.xcodeproj
+build
+Info.plist
+QtOSCController.app
+ui_controllerWidget.h
+tmpSrc
+.qmake.stash
+*.build
+Debug
+Release
+*.user
+build-QtOSC*

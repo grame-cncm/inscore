@@ -1,6 +1,0 @@
-moc_MainWindow.cpp
-*.xcodeproj
-build
-Info.plist
-QtOSCController.app
-ui_controllerWidget.h
