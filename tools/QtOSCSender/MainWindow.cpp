@@ -18,30 +18,6 @@
 #define OUTPUT_BUFFER_SIZE 32000
 
 //------------------------------------------------------------------------
-void OSCMessage::send( const std::string& str , int port ) const
-{
-	UdpTransmitSocket transmitSocket( IpEndpointName( str.c_str() , port ) );
-    
-    char buffer[OUTPUT_BUFFER_SIZE];
-    osc::OutboundPacketStream p( buffer, OUTPUT_BUFFER_SIZE );
-
-	p << osc::BeginMessage( mAddress.c_str() ) << mCommand.c_str();
-
-	for ( int i = 0 ; i < mValues.size() ; i++ )
-	{
-		QVariant::Type t = mValues[i].type();
-		if ( t == QVariant::Int )
-			p << int(mValues[i].toInt());
-		else if ( t == QVariant::Double )
-			p << float(mValues[i].toDouble());
-		else
-			p << mValues[i].toString().toUtf8().data();
-	}
-	p << osc::EndMessage;
-    transmitSocket.Send( p.Data(), p.Size() );
-}
-
-//------------------------------------------------------------------------
 void SendThread::run()
 {
 	QString address = fController->destination();
@@ -86,16 +62,6 @@ ControllerWidget::~ControllerWidget()
     settings.setValue("address", destination());
     settings.setValue("wait", getWait());
     settings.setValue("count", getMessageSize());
-}
-
-//------------------------------------------------------------------------
-void ControllerWidget::send( const OSCMessage& msg ) const
-{
-	QString address = mAddressLineEdit->text();
-	if( address.isEmpty())
-		address = DEFAULT_ADDRESS;
-
-	msg.send( address.toStdString() , mPortLineEdit->value() );
 }
 
 //------------------------------------------------------------------------
