@@ -186,10 +186,11 @@ function UploadFile(e) {
 			<p>
 			Type an OSC message script to submit to the websocket server :
 			<span class="inputelement">
-<textarea id="cmd" rows="5" cols="50">
-/ITL/scene/newtext set txt "Test text message";
+<textarea id="cmd" rows="5" cols="80">
+/ITL/scene/newtext set txt "This message has been posted by a browser !";
 /ITL/scene/newtext fontStyle "italic";
 /ITL/scene/newtext fontSize 25;
+/ITL/scene/newtext y 0.5;
 </textarea>
 			<input name="submit2" type="button" value="submit" onclick="javascript:sendCommands(document.forms['myform'].cmd.value);return false;"/>
 			</span>
