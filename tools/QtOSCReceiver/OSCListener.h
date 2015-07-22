@@ -22,6 +22,8 @@ class OSCListener : public QObject, public osc::OscPacketListener
 	int fCurrentMessageNumber;
 	int fPreviousMessageNumber;
 	int fErrorCounter;
+	int fLastRefresh;
+	int fMsgPerSec;
 	ControllerWidget * fController;
 
 	QTimer refresh;

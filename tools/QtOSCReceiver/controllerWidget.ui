@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>248</width>
-    <height>180</height>
+    <width>249</width>
+    <height>206</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -93,6 +93,24 @@
      </item>
      <item>
       <widget class="QLabel" name="mRatio">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Msgs/sec</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="mMsgPerSec">
        <property name="text">
         <string>0</string>
        </property>

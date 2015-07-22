@@ -16,7 +16,7 @@ class ControllerWidget : public QWidget, private Ui::ControllerWidget
 	public:
 		ControllerWidget(QWidget *parent = 0);
 		int getPort();
-		void report(int rcv, int errs, float ratio);
+		void report(int rcv, int errs, float ratio, int msgspersec);
 		
 	protected slots:
 		void restart();

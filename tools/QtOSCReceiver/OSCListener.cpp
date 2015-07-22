@@ -5,14 +5,15 @@
 
 using namespace std;
 
+#define kTimeInterval	250
 //--------------------------------------------------------------------------
 OSCListener::OSCListener(int port, ControllerWidget * controller)
 		: QObject(0),
 		  fSocket(IpEndpointName( IpEndpointName::ANY_ADDRESS, port ), this), fRunning(false), fReceived(0),
-		  fCurrentMessageNumber(0), fPreviousMessageNumber(-1), fErrorCounter(0),
+		  fCurrentMessageNumber(0), fPreviousMessageNumber(-1), fErrorCounter(0), fLastRefresh(0),
 		  fController(controller)
 {
-	refresh.setInterval(333);
+	refresh.setInterval(kTimeInterval);
 	connect(&refresh, SIGNAL(timeout()), this, SLOT(refreshController()));
 	refresh.start();
 }
@@ -66,8 +67,14 @@ void OSCListener::ProcessMessage( const osc::ReceivedMessage& m, const IpEndpoin
 void OSCListener::refreshController()
 {
 	if (fReceived) {
+		const float k = 0.7;
+		if (fLastRefresh) {
+			int flow = (fReceived - fLastRefresh) * (1000 / kTimeInterval);
+			fMsgPerSec = fMsgPerSec ? int(k*flow + (1-k)*fMsgPerSec) : flow;
+		}
+		fLastRefresh = fReceived;
         int iratio = fReceived ? fErrorCounter*10000 / fReceived : 0;
 		float ratio = iratio / 100.f;
-		fController->report (fReceived, fErrorCounter, ratio);
+		fController->report (fReceived, fErrorCounter, ratio, fMsgPerSec);
 	}
 }

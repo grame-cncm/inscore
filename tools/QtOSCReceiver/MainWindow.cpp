@@ -35,13 +35,11 @@ ControllerWidget::ControllerWidget(QWidget *parent)
 //------------------------------------------------------------------------
 void ControllerWidget::restart()
 {
-//	mReceived->setText("0");
-//	mLost->setText("0");
-//	mRatio->setText("0 %");
 	fOscThread->stop();
 	delete fOscThread;
 	fOscThread = new OscThread(getPort(), this);
 	fOscThread->start();
+	report(0,0,0,0);
 }
 
 //------------------------------------------------------------------------
@@ -51,7 +49,7 @@ int ControllerWidget::getPort()
 }
 
 //------------------------------------------------------------------------
-void ControllerWidget::report(int rcv, int errs, float ratio)
+void ControllerWidget::report(int rcv, int errs, float ratio, int msgspersec)
 {
 	QString str;
 	str.setNum(rcv);
@@ -61,6 +59,8 @@ void ControllerWidget::report(int rcv, int errs, float ratio)
 	str.setNum(ratio);
 	str += " %";
 	mRatio->setText(str);
+	str.setNum(msgspersec);
+	mMsgPerSec->setText(str);
 }
 
 //------------------------------------------------------------------------
