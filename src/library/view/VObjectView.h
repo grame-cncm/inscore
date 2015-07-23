@@ -123,7 +123,7 @@ class VObjectView
 		virtual unsigned long	getVersion() const { return 0; }
 
 		/// \brief simulate UI mouse events
-		virtual void handleEvent (const inscore::IObject* obj, float x, float y, EventsAble::eventype type)
+		virtual void handleEvent (const IObject* obj, float x, float y, EventsAble::eventype type)
 						{ 	_MouseEventAble::handleEvent(obj, QPointF(x, y), type); }
         virtual void refreshSyncCache(){}
 };
