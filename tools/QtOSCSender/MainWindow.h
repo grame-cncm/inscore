@@ -13,24 +13,6 @@ class ControllerWidget;
 class SendThread;
 
 //------------------------------------------------------------------------
-class OSCMessage
-{
-	QList<QVariant>	mValues;
-	std::string		mAddress, mCommand;
-
-	public:
-	
-		OSCMessage(const std::string& address) : mAddress(address) , mCommand("") {}
-		
-		OSCMessage setCommand( const std::string& command )	{ mCommand = command; return *this; }
-		OSCMessage addFloat(double f)							{ mValues << f; return *this; }
-		OSCMessage addString(const std::string& str)			{ mValues << QString(str.c_str()); return *this; }
-		OSCMessage addInt(int i)								{ mValues << i; return *this; }
-		
-		void send( const std::string& str , int port ) const;
-};
-
-//------------------------------------------------------------------------
 class ControllerWidget : public QWidget, private Ui::ControllerWidget
 {
      Q_OBJECT
@@ -45,7 +27,6 @@ class ControllerWidget : public QWidget, private Ui::ControllerWidget
 		int nextMessage();
 		int getMessageSize();
 		int getWait();
-		void send( const OSCMessage& msg ) const;
 		int port () const;
 		QString destination () const;
 

@@ -19,6 +19,8 @@
 
 */
 
+#if defined(__LINUX__) || defined(TARGET_OS_MAC)
+
 #include "HTTPServer.h"
 #include "Response.h"
 #include <cstring>
@@ -487,3 +489,4 @@ string HTTPDServer::formatDate(time_t time)
 
 
 } // end namespoace
+#endif

@@ -21,6 +21,7 @@
 
 #ifndef __httpdserver__
 #define __httpdserver__
+#if defined(__LINUX__) || defined(TARGET_OS_MAC)
 
 #include <microhttpd.h>
 #include <map>
@@ -190,5 +191,5 @@ private:
 };
 
 } // end namespoace
-
+#endif
 #endif
