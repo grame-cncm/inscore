@@ -130,7 +130,7 @@ ios {
 # linux support
 ############################## 
 unix:!macx:!ios:!android {
-    DEFINES += OSC_HOST_LITTLE_ENDIAN
+    DEFINES += OSC_HOST_LITTLE_ENDIAN __LINUX__
     LIBS += -lGUIDOEngine
     QMAKE_CXXFLAGS += -Wno-unused-parameter
 }
