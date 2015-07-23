@@ -34,7 +34,8 @@ namespace inscore
 class IHttpd;
 typedef class libmapping::SMARTP<IHttpd>	SIHttpd;
 
-class THttpdPlugin;
+class WebApi;
+class HTTPDServer;
 
 //--------------------------------------------------------------------------
 /*!
@@ -43,9 +44,14 @@ class THttpdPlugin;
 class IHttpd : public IObject
 {
 	public:
-		static SIHttpd create(const std::string& name, IObject * parent)	{ return new IHttpd(name, parent); }
-
 		static const std::string kIHttpdType;
+
+#if defined(__LINUX__) || defined(TARGET_OS_MAC)
+	protected:
+		IHttpd(const std::string &name, IObject *parent);
+
+	public:
+		static SIHttpd create(const std::string& name, IObject * parent)	{ return new IHttpd(name, parent); }
 
 		SIMessageList getSetMsg () const;
 
@@ -59,9 +65,6 @@ class IHttpd : public IObject
 
 		std::string status() const;
 
-	protected:
-		IHttpd(const std::string &name, IObject *parent);
-
 		/*!
 		 * \brief ~IHttpd Delete plugin instance.
 		 */
@@ -72,9 +75,14 @@ class IHttpd : public IObject
 
 	private :
 		/*!
-		 * \brief fHttpServer Http server plugin instance.
+		 * \brief fHttpdServer HttpServer instance.
 		 */
-		THttpdPlugin * fHttpServer;
+		HTTPDServer * fHttpdServer;
+
+		/*!
+		 * \brief fApi Web api object to execute action from server
+		 */
+		WebApi * fApi;
 
 		/*!
 		 * \brief fHttpPort Http port used by the server.
@@ -86,6 +94,8 @@ class IHttpd : public IObject
 		 * \return true if server is running.
 		 */
 		bool init(int port);
+
+#endif // __LINUX__ || TARGET_OS_MAC
 };
 
 } // end namespoace

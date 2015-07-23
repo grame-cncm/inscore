@@ -208,9 +208,12 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 	else if ( type == IGestureFollower::kGestureFollowerType )
 		obj = _create<IGestureFollower> (name, parent);
 
-	else if ( type == IHttpd::kIHttpdType )
+	else if ( type == IHttpd::kIHttpdType )		
+#if defined(__LINUX__) || defined(TARGET_OS_MAC)
 		obj = _create<IHttpd> (name, parent);
-
+#else
+		ITLErr << "object type: " << type << " is only available on Mac OS and Linux"<< ITLEndl;
+#endif
 	else if ( type == IText::kTextType )
 		obj = _create<IText> (name, parent);
 

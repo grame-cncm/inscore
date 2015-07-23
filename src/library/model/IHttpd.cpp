@@ -24,21 +24,23 @@
 */
 
 #include "IHttpd.h"
-#include "THttpdPlugin.h"
+#include "WebApi.h"
+#if defined(__LINUX__) || defined(TARGET_OS_MAC)
+#include "HTTPServer.h"
 #include "IScene.h"
 #include "ITLError.h"
-
+#endif
 using namespace std;
 
 namespace inscore
 {
 const string IHttpd::kIHttpdType("httpd");
-
+#if defined(__LINUX__) || defined(TARGET_OS_MAC)
 //--------------------------------------------------------------------------
 IHttpd::IHttpd(const std::string& name, IObject * parent ) : IObject (name, parent)
 {
 	fTypeString = kIHttpdType;
-	fHttpServer = 0;
+	fHttpdServer = 0;
 	fHttpPort = -1;
 
 	fGetMsgHandlerMap[kstatus_GetMethod]	= TGetParamMethodHandler<IHttpd, string (IHttpd::*)() const>::create(this, &IHttpd::status);
@@ -52,10 +54,11 @@ IHttpd::~IHttpd()
 //--------------------------------------------------------------------------
 void IHttpd::stop()
 {
-	if(fHttpServer) {
-		fHttpServer->stop();
-		delete fHttpServer;
-		fHttpServer = 0;
+	if(fHttpdServer) {
+		fHttpdServer->stop();
+		delete fHttpdServer;
+		delete fApi;
+		fHttpdServer = 0;
 	}
 }
 
@@ -102,24 +105,26 @@ MsgHandler::msgStatus IHttpd::set (const IMessage* msg)
 //--------------------------------------------------------------------------
 bool IHttpd::init (int port)
 {
-	if(!fHttpServer) {
-		// Create a new object
-		fHttpServer = new THttpdPlugin(this->getScene());
+	if(!fHttpdServer) {
+		// Create a new server
+		fApi = new WebApi(getScene()->getView(), getScene()->getJSEngine(), getScene()->getLUAEngine());
+		fHttpdServer = new HTTPDServer(fApi, 0, 0);
 	} else {
 		// It's the same port, do nothing
 		if(port == fHttpPort)
 			return true;
 		// Stop the server and start it on the new port.
-		fHttpServer->stop();
+		fHttpdServer->stop();
 	}
 	fHttpPort = port;
-	return fHttpServer->start(fHttpPort);
+	return fHttpdServer->start(fHttpPort);
 }
 
 //--------------------------------------------------------------------------
 string IHttpd::status () const
 {
-	return this->fHttpServer->status() ? "started": "stopped";
+	return fHttpdServer->status() ? "started": "stopped";
+}
+#endif // __LINUX__ || TARGET_OS_MAC
 }
 
-}
