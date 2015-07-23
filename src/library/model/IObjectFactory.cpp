@@ -209,7 +209,7 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 		obj = _create<IGestureFollower> (name, parent);
 
 	else if ( type == IHttpd::kIHttpdType )		
-#if defined(__LINUX__) || defined(TARGET_OS_MAC)
+#if defined(__LINUX__) || defined(MACOS)
 		obj = _create<IHttpd> (name, parent);
 #else
 		ITLErr << "object type: " << type << " is only available on Mac OS and Linux"<< ITLEndl;

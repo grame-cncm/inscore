@@ -26,6 +26,7 @@
 #ifndef IHTTPD_H
 #define IHTTPD_H
 
+#include <string>
 #include "IObject.h"
 
 namespace inscore
@@ -46,7 +47,6 @@ class IHttpd : public IObject
 	public:
 		static const std::string kIHttpdType;
 
-#if defined(__LINUX__) || defined(TARGET_OS_MAC)
 	protected:
 		IHttpd(const std::string &name, IObject *parent);
 
@@ -95,7 +95,6 @@ class IHttpd : public IObject
 		 */
 		bool init(int port);
 
-#endif // __LINUX__ || TARGET_OS_MAC
 };
 
 } // end namespoace

@@ -19,10 +19,7 @@
 
 */
 
-#if defined(__LINUX__) || defined(TARGET_OS_MAC)
 
-#include "HTTPServer.h"
-#include "Response.h"
 #include <cstring>
 #include <iostream>
 #include <sstream>
@@ -35,6 +32,8 @@
 #include "json_object.h"
 #include "json_element.h"
 #include "abstractdata.h"
+#include "Response.h"
+#include "HTTPServer.h"
 
 using namespace std;
 using namespace json;
@@ -43,6 +42,13 @@ using namespace json;
 
 namespace inscore
 {
+
+#if defined(__LINUX__) || defined(MACOS)
+
+#define DELETE 2
+#define POST 1
+#define GET 0
+
 
 	const char * kRFC822_1123DateFormat = "%a, %d %b %Y %H:%M:%S %Z";	// RFC1123 date format
 	const char * kRFC850DateFormat = "%A, %d-%b-%y %H:%M:%S %Z";		// RFC850 date format
@@ -148,7 +154,7 @@ static int _post_params (void *coninfo_cls, enum MHD_ValueKind , const char *key
 // the http server
 //--------------------------------------------------------------------------
 HTTPDServer::HTTPDServer(WebApi *api, int verbose, int logmode, bool alloworigin)
-	: fAccessControlAllowOrigin(alloworigin), fVerbose(verbose), fLogmode(logmode), fServer(0), fApi(api)
+	: fAccessControlAllowOrigin(alloworigin), fServer(0), fApi(api)
 {
 }
 

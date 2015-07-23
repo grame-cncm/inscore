@@ -25,19 +25,17 @@
 
 #include "IHttpd.h"
 #include "WebApi.h"
-#if defined(__LINUX__) || defined(TARGET_OS_MAC)
 #include "HTTPServer.h"
 #include "IScene.h"
 #include "ITLError.h"
-#endif
+
 using namespace std;
 
 namespace inscore
 {
 const string IHttpd::kIHttpdType("httpd");
-#if defined(__LINUX__) || defined(TARGET_OS_MAC)
 //--------------------------------------------------------------------------
-IHttpd::IHttpd(const std::string& name, IObject * parent ) : IObject (name, parent)
+IHttpd::IHttpd(const string& name, IObject * parent ) : IObject (name, parent)
 {
 	fTypeString = kIHttpdType;
 	fHttpdServer = 0;
@@ -125,6 +123,6 @@ string IHttpd::status () const
 {
 	return fHttpdServer->status() ? "started": "stopped";
 }
-#endif // __LINUX__ || TARGET_OS_MAC
+
 }
 

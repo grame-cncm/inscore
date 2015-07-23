@@ -21,36 +21,24 @@
 
 #ifndef __httpdserver__
 #define __httpdserver__
-#if defined(__LINUX__) || defined(TARGET_OS_MAC)
+
+// HTTPD server is available on Mac OS and Lnux only (for the moment)
+#if defined(__LINUX__) || defined(MACOS)
 
 #include <microhttpd.h>
 #include <map>
 #include <vector>
 #include <string>
- #include <time.h>
+#include <time.h>
 
 #include "Response.h"
 
-#define IP_VERBOSE 1
-#define HEADER_VERBOSE 2
-#define REQUEST_VERBOSE 4
-#define URL_VERBOSE 8
-#define QUERY_VERBOSE 16
-#define CODE_VERBOSE 32
-#define MIME_VERBOSE 64
-#define LENGTH_VERBOSE 128
-
-#define HEAD 3
-#define DELETE 2
-#define POST 1
-#define GET 0
-
 namespace inscore {
-	class WebApi;
 
-	// Type def for request argument
-	typedef std::map<std::string, std::string> TArgs;
-	typedef std::pair<std::string, std::string> TArg;
+
+// Type def for request argument
+typedef std::map<std::string, std::string> TArgs;
+typedef std::pair<std::string, std::string> TArg;
 
 /*!
  \brief a specific thread to listen incoming packets
@@ -61,11 +49,11 @@ struct connection_info_struct {
 	struct MHD_PostProcessor *postprocessor;
 };
 
+class WebApi;
+
 class HTTPDServer
 {
 	bool fAccessControlAllowOrigin;
-	int fVerbose;
-	int fLogmode;
 
 	/*!
 	 * \brief fServer libmicrohttpd demon server.
@@ -190,6 +178,27 @@ private:
 	std::string formatDate(time_t time);
 };
 
-} // end namespoace
+} // end namespace
+
+
+#else		// dummy implementation for other platforms
+
+namespace inscore {
+
+class WebApi;
+class HTTPDServer
+{
+public:
+			 HTTPDServer(WebApi * api, int verbose = 0, int logmode = 0, bool allowOrigin = true) {}
+	virtual ~HTTPDServer() {}
+
+	bool start (int port)	{ return false; }
+	void stop ()			{}
+	int status()			{ return 0; }
+};
+
+} // end namespace
+
 #endif
+
 #endif
