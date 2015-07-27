@@ -36,7 +36,7 @@ help :
 	@echo "  android : to build for android"
 	@echo "    You can add the two variables KEYSTOREPATH=XXX CERTIFICATEALIAS=YYY"
 	@echo "    respectively the keystore path and the certificat alias to sign the application"
-	@echo "  androidInstall DEVICE=XXX : to install application on Android device"
+	@echo "  installAndroid DEVICE=XXX : to install application on Android device"
 	@echo "    with XXX the device serial number"
 
 #===============================================================
