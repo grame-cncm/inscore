@@ -14,28 +14,5 @@
 #ifndef export__
 #define export__
 
-
-#if __MINGW32__
-#  define jsonexport
-
-#elif defined(WIN32) && !defined(GCC)
-
-# ifdef JSONExport
-#  define jsonexport		_declspec (dllexport)
-# else
-#  define jsonexport		_declspec (dllimport)
-# endif
-
-#else
-
-# ifdef JSONExport
-#  define jsonexport		__attribute__ ((visibility("default")))
-
-# else
-#  define jsonexport
-# endif
-
-#endif
-
-
+#define jsonexport
 #endif

@@ -492,7 +492,6 @@ string HTTPDServer::formatDate(time_t time)
 	setlocale(LC_ALL, "");
 	return string(buffer);
 }
-
+#endif
 
 } // end namespoace
-#endif

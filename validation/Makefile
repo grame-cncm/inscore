@@ -24,6 +24,7 @@
 version	= $(shell ./INScoreVersion)
 pwd	  = $(shell pwd)
 TOOL = ./INScoreNOView
+AWK = gawk		# gawk is required for strings manipulation
 
 files 			= $(shell grep -v '^\#' validate/samplescripts.txt)
 graphicfiles 	= $(shell grep -v '^\#' validate/graphicscripts.txt)
@@ -196,15 +197,15 @@ filesregression: $(pdfregressionout)
 filterinscore: $(filteroutinscore)
 
 %.inscore: %.flt
-	awk -f filtercreateinscore.awk $< > $@
+	$(AWK) -f filtercreateinscore.awk $< > $@
 
 filteroutput: $(filterout)
 
 filterref: $(filteroutref)
 
 %_reference.out: %.flt
-	awk -f filtercreatescript.awk $< > $<.awk 2> /dev/null
-	awk -f $<.awk $(filterinscorefile) > $@ 2> /dev/null
+	$(AWK) -f filtercreatescript.awk $< > $<.awk 2> /dev/null
+	$(AWK) -f $<.awk $(filterinscorefile) > $@ 2> /dev/null
 
 $(version)/$(TOOL)/%.leak.txt: %.inscore
 	@[ -d $(@D) ] || mkdir -p $(@D)
