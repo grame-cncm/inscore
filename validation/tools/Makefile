@@ -10,7 +10,7 @@ else
  LIBINSCORE :=  -L../../cmake/build/win32/Release -lINScore
  LIBOSCPACK :=  -L../../lib/oscpack/cmake/Release -loscpack
  else
- LIBINSCORE :=  -L../../build -lINScore
+ LIBINSCORE :=  -L../../build -lINScore -lmicrohttpd
  LIBOSCPACK :=  -L../../lib/oscpack/cmake -loscpack
 endif
 endif
