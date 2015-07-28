@@ -12,6 +12,8 @@ filterfile=$2
 
 src=$(basename $inscorefile)
 filter=$(basename $filterfile)
+# use an ip address instead of localhost because forward on the same address as the sender is not allowed.
+ip=$(ifconfig | perl -nle 's/dr:(\S+)/print $1/e' | head -n 1)
 
 # Remove all forward
 ./SendOSC 7000 /ITL forward
@@ -28,7 +30,7 @@ sleep 1
 ./SendOSC 7000 /ITL/scene load $filter
 
 # Send forward command to OSC listener
-./SendOSC 7000 /ITL forward "localhost:7003"
+./SendOSC 7000 /ITL forward "$ip:7003"
 
 # Load command file
 ./SendOSC 7000 /ITL/scene load $src
