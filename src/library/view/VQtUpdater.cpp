@@ -33,6 +33,7 @@
 #include "VEllipseView.h"
 #include "VGraphView.h"
 #include "VGestureFollowerView.h"
+#include "VHttpdView.h"
 #include "VGuidoItemView.h"
 #include "VPianoRollView.h"
 #include "VImageView.h"
@@ -58,10 +59,11 @@ void VQtUpdater::updateTo(IScene * scene)		{ ((VSceneView*)scene->getView())->up
 void VQtUpdater::updateTo(IImage * img)				{ update<IImage,	VImageView>		(img); }
 void VQtUpdater::updateTo(IRect * rect)				{ update<IRect,		VRectView>		(rect); }
 void VQtUpdater::updateTo(IGrid * grid)				{ update<IGrid,		VGridView>		(grid); }
-void VQtUpdater::updateTo(ILayer * layer)			{ update<ILayer,		VLayerView>		(layer); }
+void VQtUpdater::updateTo(ILayer * layer)			{ update<ILayer,	VLayerView>		(layer); }
 void VQtUpdater::updateTo(IEllipse * e)				{ update<IEllipse,	VEllipseView>	(e); }
 void VQtUpdater::updateTo(IPolygon * p)				{ update<IPolygon,	VPolygonView>	(p); }
 void VQtUpdater::updateTo(IGestureFollower * gf)	{ update<IGestureFollower,VGestureFollowerView>	(gf); }
+void VQtUpdater::updateTo(IHttpd * h)				{ update<IHttpd,	VHttpdView>	(h); }
 void VQtUpdater::updateTo(IGuidoCode * guido)		{ update<IGuidoCode,VGuidoItemView>	(guido); }
 void VQtUpdater::updateTo(IGuidoPianoRoll * proll)	{ update<IGuidoPianoRoll,VPianoRollView> (proll); }
 void VQtUpdater::updateTo(IGuidoPianoRollStream * proll) { update<IGuidoPianoRollStream,VPianoRollView> (proll); }

@@ -27,11 +27,12 @@
 #define IHTTPD_H
 
 #include <string>
-#include "IObject.h"
+#include "IRectShape.h"
 
 namespace inscore
 {
 
+class Updater;
 class IHttpd;
 typedef class libmapping::SMARTP<IHttpd>	SIHttpd;
 
@@ -42,13 +43,14 @@ class HTTPDServer;
 /*!
  * \brief The IHttpd class. a Http server object.
  */
-class IHttpd : public IObject
+class IHttpd : public IRectShape
 {
 	public:
 		static const std::string kIHttpdType;
 
 	protected:
-		IHttpd(const std::string &name, IObject *parent);
+				 IHttpd(const std::string &name, IObject *parent);
+		virtual ~IHttpd();
 
 	public:
 		static SIHttpd create(const std::string& name, IObject * parent)	{ return new IHttpd(name, parent); }
@@ -62,39 +64,24 @@ class IHttpd : public IObject
 		 */
 		MsgHandler::msgStatus set (const IMessage* msg);
 
-
 		std::string status() const;
+		void		del();
+		void		stop();
+		int			getPort() const { return fHttpPort; }
 
-		/*!
-		 * \brief ~IHttpd Delete plugin instance.
-		 */
-		virtual ~IHttpd();
-	
-		void	del();
-		void	stop();
+		virtual void accept (Updater*);
 
 	private :
-		/*!
-		 * \brief fHttpdServer HttpServer instance.
-		 */
-		HTTPDServer * fHttpdServer;
-
-		/*!
-		 * \brief fApi Web api object to execute action from server
-		 */
-		WebApi * fApi;
-
-		/*!
-		 * \brief fHttpPort Http port used by the server.
-		 */
-		int fHttpPort;
+		HTTPDServer *	fHttpdServer;		///< \brief HttpServer instance.
+		WebApi *		fApi;				///< \brief  Web api object to execute action from server
+		int				fHttpPort;			///< \brief port number used by the server
 
 		/*!
 		 * \brief init Create the plugin instance and start the http server on port fHttpPort
+		 * \param port the server port number.
 		 * \return true if server is running.
 		 */
 		bool init(int port);
-
 };
 
 } // end namespoace

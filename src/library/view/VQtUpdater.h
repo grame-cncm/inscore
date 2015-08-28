@@ -61,6 +61,7 @@ class export VQtUpdater : public ViewUpdater
 		virtual void updateTo (ICurve * curve);
 		virtual void updateTo (IEllipse * ellipse);
 		virtual void updateTo (IGestureFollower* graph);
+		virtual void updateTo (IHttpd * h);
 		virtual void updateTo (IGraphicSignal* graph);
 		virtual void updateTo (IGuidoCode* guidoCode);
 		virtual void updateTo (IGuidoPianoRoll * proll);

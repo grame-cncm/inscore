@@ -57,6 +57,7 @@ class ViewFactory
 	static VObjectView*		create (const IMusicXMLFile* object,QGraphicsScene* scene);
 	static VObjectView*		create (const IHtml* object,		QGraphicsScene* scene);
 	static VObjectView*		create (const IHtmlFile* object,	QGraphicsScene* scene);
+	static VObjectView*		create (const IHttpd* object,		QGraphicsScene* scene);
 	static VObjectView*		create (const IImage* object,		QGraphicsScene* scene);
 	static VObjectView*		create (const IMemImage* object,	QGraphicsScene* scene);
 	static VObjectView*		create (const ILine* object,		QGraphicsScene* scene);

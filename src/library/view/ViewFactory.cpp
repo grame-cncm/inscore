@@ -44,6 +44,7 @@
 #include "VSceneView.h"
 #include "VSVGView.h"
 #include "VTextView.h"
+#include "VHttpdView.h"
 #include "VVideoView.h"
 #include "VUrlIntermediateObjectView.h"
 
@@ -65,6 +66,7 @@ VObjectView*	ViewFactory::create (const IMusicXMLCode* object, QGraphicsScene* s
 VObjectView*	ViewFactory::create (const IMusicXMLFile* object, QGraphicsScene* scene)	{ return new VGuidoItemView (scene, object); }
 VObjectView*	ViewFactory::create (const IHtml* object,		QGraphicsScene* scene)		{ return new VTextView (scene, object); }
 VObjectView*	ViewFactory::create (const IHtmlFile* object,	QGraphicsScene* scene)		{ return new VTextView (scene, object); }
+VObjectView*	ViewFactory::create (const IHttpd* object,		QGraphicsScene* scene)		{ return new VHttpdView (scene, object); }
 VObjectView*	ViewFactory::create (const IImage* object,		QGraphicsScene* scene)		{ return new VImageView (scene, object); }
 VObjectView*	ViewFactory::create (const IMemImage* object,	QGraphicsScene* scene)		{ return new VImageView (scene, object); }
 VObjectView*	ViewFactory::create (const ILine* object,		QGraphicsScene* scene)		{ return new VLineView (scene, object); }

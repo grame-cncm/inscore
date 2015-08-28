@@ -28,6 +28,7 @@
 #include "HTTPServer.h"
 #include "IScene.h"
 #include "ITLError.h"
+#include "Updater.h"
 
 using namespace std;
 
@@ -35,11 +36,13 @@ namespace inscore
 {
 const string IHttpd::kIHttpdType("httpd");
 //--------------------------------------------------------------------------
-IHttpd::IHttpd(const string& name, IObject * parent ) : IObject (name, parent)
+IHttpd::IHttpd(const string& name, IObject * parent ) : IRectShape (name, parent)
 {
 	fTypeString = kIHttpdType;
 	fHttpdServer = 0;
 	fHttpPort = -1;
+	setWidth(0.5);
+	setHeight(0.5);
 
 	fGetMsgHandlerMap[kstatus_GetMethod]	= TGetParamMethodHandler<IHttpd, string (IHttpd::*)() const>::create(this, &IHttpd::status);
 }
@@ -47,6 +50,13 @@ IHttpd::IHttpd(const string& name, IObject * parent ) : IObject (name, parent)
 IHttpd::~IHttpd()
 {
 	stop();
+}
+
+
+//--------------------------------------------------------------------------
+void IHttpd::accept (Updater* u)
+{
+	u->updateTo (this);
 }
 
 //--------------------------------------------------------------------------

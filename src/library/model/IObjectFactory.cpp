@@ -88,11 +88,6 @@ template<> SIObject _create<IFaustDSPFile>(const std::string& name , IObject* pa
     return IFaustDSPFile::create(name, parent);
 }
 
-template<> SIObject _create<IHttpd>(const std::string& name , IObject* parent)
-{
-	return IHttpd::create(name, parent);
-}
-
 template<> SIObject _create<IWebSocket>(const std::string& name , IObject* parent)
 {
 	SIWebSocket obj = IWebSocket::create(name, parent);

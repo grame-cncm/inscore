@@ -73,6 +73,7 @@ class export Updater : public libmapping::smartable
 		virtual void updateTo (IGuidoPianoRollStream *) {};
 		virtual void updateTo (IImage*) {}
 		virtual void updateTo (IGestureFollower*) {}
+		virtual void updateTo (IHttpd*) {}
 		virtual void updateTo (IGraphicSignal*) {}
 		virtual void updateTo (IShape *) {}
 		virtual void updateTo (IShapeMap *) {}
