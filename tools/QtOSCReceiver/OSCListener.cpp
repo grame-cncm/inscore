@@ -73,7 +73,9 @@ void OSCListener::refreshController()
 			fMsgPerSec = fMsgPerSec ? int(k*flow + (1-k)*fMsgPerSec) : flow;
 		}
 		fLastRefresh = fReceived;
-        int iratio = fReceived ? fErrorCounter*10000 / fReceived : 0;
+		long err = fErrorCounter*10000;
+		long tot = fReceived + fErrorCounter;
+        int iratio = fReceived ? err / tot : 0;
 		float ratio = iratio / 100.f;
 		fController->report (fReceived, fErrorCounter, ratio, fMsgPerSec);
 	}
