@@ -15,13 +15,15 @@ ROOT 		= $$PWD/..
 SRC 		= $$ROOT/src
 LOCALLIB 	= $$ROOT/lib
 GUIDO_PATH	= $$LOCALLIB/GuidoEngine
-OSC             = $$LOCALLIB/oscpack
-JSON            = $$SRC/json
+OSC         = $$LOCALLIB/oscpack
+QRENCODE    = $$LOCALLIB/qrencode
+JSON        = $$SRC/json
 win32 { OSCIP = $$OSC/ip/win32 }
 else  { OSCIP = $$OSC/ip/posix }
 
 QT += core gui widgets svg printsupport multimedia multimediawidgets qml websockets
 DEFINES += INScore_EXPORTS
+DEFINES += HAVE_CONFIG_H  # defined for the qrencode library
 DEFINES += QTJSENGINE	# use the Qt Javascript engine
 DEFINES += JSON_ONLY    # json library doesn't use osc stream.
 
@@ -33,6 +35,7 @@ SOURCES +=  $$files($$SRC/libmapping/src/*.cpp, true)		# libmapping source files
 SOURCES +=  $$files($$OSC/ip/*.cpp)							# oscpack files
 SOURCES +=  $$files($$OSC/osc/*.cpp)						# oscpack files
 SOURCES +=  $$files($$OSCIP/*.cpp)							# oscpack files
+SOURCES +=  $$files($$QRENCODE/*.c)							# qrencode files
 SOURCES +=  $$files($$JSON/*.cpp)
 
 HEADERS  =  $$files($$SRC/library/*.h, true)
@@ -50,6 +53,7 @@ INCLUDEPATH +=  $$files($$SRC/library/plugins/*)
 INCLUDEPATH +=  $$files($$SRC/library/signal/faust)
 INCLUDEPATH +=  $$files($$SRC/libmapping/src/[^.]*)
 INCLUDEPATH +=  $$files($$OSC)
+INCLUDEPATH +=  $$files($$QRENCODE)
 INCLUDEPATH +=  $$files($$JSON)
 INCLUDEPATH +=  $$GUIDO_PATH/include
 
