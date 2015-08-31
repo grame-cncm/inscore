@@ -121,7 +121,7 @@ static QString getIPNum()
 	QTcpSocket  sock;
 	
 	sock.connectToHost("8.8.8.8", 53); // google DNS, or somethingelse reliable
-	if (sock.waitForConnected(600)) {		// short timeout
+	if (sock.waitForConnected(800)) {		// short timeout
 		QHostAddress IP = sock.localAddress();
 		result = IP.toString(); 
 	}
@@ -133,6 +133,7 @@ static QString getIPNum()
 VHttpdView::VHttpdView(QGraphicsScene * scene, const IHttpd* server)
 	: VMappedShapeView( scene , new MouseEventAble<GQRCode>(server) )
 {
+	fQRCode = 0;
 	item()->setObject (server);
 }
 
@@ -154,6 +155,8 @@ void VHttpdView::updateView( IHttpd * server  )
 		if (ip.size()) {
 			url = "http://" + ip + ":" + QString::number(server->getPort()) + "/";
 			fQRCode = QRcode_encodeString(url.toStdString().c_str(), 0, QR_ECLEVEL_H, QR_MODE_8, 1);
+			if (!fQRCode)
+				ITLErr << server->name() << ": can't create qr code" << ITLEndl;
 			item()->setQRCode (fQRCode);
 		}
 		else {
