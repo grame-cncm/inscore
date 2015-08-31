@@ -13,6 +13,7 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.16
+- httpd object is visible as a qrcode giving the server url
 - httpd object is now part of the library (not a plugin any more)
 - frameless and fullscreen mode are now exclusive at model level
 - frameless and fullscreen modes management revised at view level
