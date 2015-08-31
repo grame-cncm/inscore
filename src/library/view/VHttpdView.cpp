@@ -25,13 +25,13 @@
 
 #include <QDebug>
 #include <QPainter>
-//#include <algorithm>
 #include <QGraphicsRectItem>
 #include <QHostAddress>
 #include <QTcpSocket>
 
 #include "VHttpdView.h"
 #include "IHttpd.h"
+#include "ITLError.h"
 
 using namespace std;
 using namespace libmapping;
@@ -45,7 +45,7 @@ class GQRCode : public QGraphicsRectItem
 	const IObject* fObject;
 	const QRcode*  fQrcode;
 	public:
-				 GQRCode (QGraphicsItem * parent = 0): fObject(0), fQrcode(0) {}
+				 GQRCode (): fObject(0), fQrcode(0) {}
 		virtual ~GQRCode() {}
 		
 	void setObject (const IObject* o)		{ fObject = o; }
@@ -54,18 +54,31 @@ class GQRCode : public QGraphicsRectItem
 };
 
 //----------------------------------------------------------------------
+static void frameRect(QPainter * painter, double x, double y, double w, double h)
+{
+	QRectF r1(x, y, w, h/8);
+    painter->drawRect(r1);
+	r1.moveTo(x, y+(h*7/8));
+    painter->drawRect(r1);
+
+	QRectF r2(x, y, w/8, h);
+    painter->drawRect(r2);
+	r2.moveTo(x+(w*7/8), y);
+    painter->drawRect(r2);
+}
+
+//----------------------------------------------------------------------
 void GQRCode::paint(QPainter * painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
 	QRectF rect = boundingRect();
+	QColor color(fObject->getR(), fObject->getG(), fObject->getB() , fObject->getA());
+	painter->setPen(Qt::NoPen);
+	painter->setBrush (color);
 
+	const double w = rect.width();
+	const double h = rect.height();
 	if(fQrcode){
-		QColor color(fObject->getR(), fObject->getG(), fObject->getB() , fObject->getA());
-
-        painter->setPen(Qt::NoPen);
-        painter->setBrush (color);
         const int s = fQrcode->width > 0 ? fQrcode->width : 1;
-        const double w = rect.width();
-        const double h = rect.height();
         const double scalex = w / s;
         const double scaley = h / s;
         for(int y=0; y<s; y++){
@@ -76,10 +89,26 @@ void GQRCode::paint(QPainter * painter, const QStyleOptionGraphicsItem *, QWidge
                 if(b & 0x01){
                     const double rx1 = x*scalex, ry1 = y*scaley;
                     QRectF r(rx1, ry1, scalex, scaley);
-                    painter->drawRects(&r,1);
+                    painter->drawRect(r);
                 }
             }
         }
+	}
+	else {
+        const double ww = w / 4;
+        const double hh = h / 4;
+		const double xd = ww/4, yd = hh / 4;
+		QRectF r(xd, yd, ww/2, hh/2);
+		painter->drawRect(r);
+		frameRect (painter, 0, 0, ww, hh);
+
+		r.moveTo(xd+(w*3/4), yd);
+		painter->drawRect(r);
+		frameRect (painter, w*3/4, 0, ww, hh);
+
+		r.moveTo(xd, yd+(h*3/4));
+		painter->drawRect(r);
+		frameRect (painter, 0, h*3/4, ww, hh);
 	}
 }
 
@@ -92,7 +121,7 @@ static QString getIPNum()
 	QTcpSocket  sock;
 	
 	sock.connectToHost("8.8.8.8", 53); // google DNS, or somethingelse reliable
-	if (sock.waitForConnected()) {
+	if (sock.waitForConnected(600)) {		// short timeout
 		QHostAddress IP = sock.localAddress();
 		result = IP.toString(); 
 	}
@@ -118,6 +147,7 @@ VHttpdView::~VHttpdView()
 //----------------------------------------------------------------------
 void VHttpdView::updateView( IHttpd * server  )
 {
+	static bool notified = false;
 	if (!fQRCode) {
 		QString ip = getIPNum();
 		QString url;
@@ -126,7 +156,12 @@ void VHttpdView::updateView( IHttpd * server  )
 			fQRCode = QRcode_encodeString(url.toStdString().c_str(), 0, QR_ECLEVEL_H, QR_MODE_8, 1);
 			item()->setQRCode (fQRCode);
 		}
-		else fQRCode = 0;
+		else {
+			if (!notified)
+				ITLErr << server->name() << ": can't resolve IP address" << ITLEndl;
+			notified = true;
+			fQRCode = 0;
+		}
 	}
 
 	server->cleanupSync();
