@@ -1,6 +1,11 @@
 /ITL/scene/* del;
 
 /ITL/scene/server set httpd 8000;
+/ITL/scene/server x 0.85;
+/ITL/scene/server y 0.85;
+/ITL/scene/server width 0.25;
+/ITL/scene/server height 0.25;
+
 
 /ITL/scene/text set txt "This script illustrates the use of the httpd object";
 /ITL/scene/text scale 2;
