@@ -36,17 +36,12 @@
 
 #include "TSignal.h"
 #include "GraphicSignal.h"
-
-#define MAX(a,b)		( (a)>(b) ? (a) : (b) )
-#define MIN(a,b)		( (a)<(b) ? (a) : (b) )
+#include "QColorTool.h"
 
 using namespace std;
 
 namespace inscore
 {
-
-#define minVal	-1.f
-#define maxVal	1.f
 
 //--------------------------------------------------------------------------
 QGraphicsGraphItemNew::QGraphicsGraphItemNew (QGraphicsItem * parent) 
@@ -54,24 +49,6 @@ QGraphicsGraphItemNew::QGraphicsGraphItemNew (QGraphicsItem * parent)
 
 //--------------------------------------------------------------------------
 QGraphicsGraphItemNew::~QGraphicsGraphItemNew()		{}
-
-#define TO_0_1(a) ((a/2.0f)+0.5f)
-//--------------------------------------------------------------------------
-static QColor HSBA2QColor( const HSBAColor& color )
-{
-//cout << "buildColor : " << color << endl;
-	float hue = color.getHue();
-	if ( hue < 0 ) hue += 2;
-	float clippedH = hue / 2.0f;
-	float clippedS = TO_0_1(color.getSaturation());
-	float clippedB = TO_0_1(color.getBrightness());
-	float clippedA = TO_0_1(color.getTransparency());
-	clippedH = MAX( MIN( clippedH , 1 ) , 0 );
-	clippedS = MAX( MIN( clippedS , 1 ) , 0 );
-	clippedB = MAX( MIN( clippedB , 1 ) , 0 );
-	clippedA = MAX( MIN( clippedA , 1 ) , 0 );
-	return QColor::fromHsvF( clippedH , clippedS , clippedB , clippedA );
-}
 
 
 //--------------------------------------------------------------------------
