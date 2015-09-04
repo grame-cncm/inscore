@@ -153,7 +153,7 @@ static int _post_params (void *coninfo_cls, enum MHD_ValueKind , const char *key
 //--------------------------------------------------------------------------
 // the http server
 //--------------------------------------------------------------------------
-HTTPDServer::HTTPDServer(WebApi *api, int verbose, int logmode, bool alloworigin)
+HTTPDServer::HTTPDServer(WebApi *api, int /*verbose*/, int /*logmode*/, bool alloworigin)
 	: fAccessControlAllowOrigin(alloworigin), fServer(0), fApi(api)
 {
 }
@@ -282,7 +282,7 @@ int HTTPDServer::sendDeleteRequest(struct MHD_Connection *connection, const TArg
 }
 
 //--------------------------------------------------------------------------
-int HTTPDServer::sendGetRequest (struct MHD_Connection *connection, const char* url, const TArgs& args, vector<string> &elems)
+int HTTPDServer::sendGetRequest (struct MHD_Connection *connection, const char* url, const TArgs& /*args*/, vector<string> &elems)
 {
 	if(elems.size() == 0) {
 		// No element in url, serve score image.
@@ -360,7 +360,7 @@ int HTTPDServer::sendGetRequest (struct MHD_Connection *connection, const char* 
 }
 
 //--------------------------------------------------------------------------
-int HTTPDServer::sendHeadRequest (struct MHD_Connection *connection, const char* url, const TArgs& args, vector<string> &elems)
+int HTTPDServer::sendHeadRequest (struct MHD_Connection *connection, const char* /*url*/, const TArgs& /*args*/, vector<string>& /*elems*/)
 {
 	Response resp = Response::genericFailure("HEAD request not supported by the server");
 	return send (connection, resp);
