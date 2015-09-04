@@ -48,6 +48,7 @@ class ViewFactory
 	static VObjectView*		create (const IGestureFollower* object,QGraphicsScene* scene);
 	static VObjectView*		create (const IGraphicSignal* object,  QGraphicsScene* scene);
 	static VObjectView*		create (const ISGraphicSignal* object, QGraphicsScene* scene);
+	static VObjectView*		create (const IRGraphicSignal* object, QGraphicsScene* scene);
 	static VObjectView*		create (const IGuidoCode* object,	QGraphicsScene* scene);
 	static VObjectView*		create (const IGuidoPianoRoll* object, QGraphicsScene* scene);
 	static VObjectView*		create (const IGuidoPianoRollStream* object, QGraphicsScene* scene);

@@ -31,6 +31,7 @@
 #include "MouseEventAble.h"
 
 #include "QGraphicsGraphItemNew.h"
+#include "QGraphicsGraphItemRadial.h"
 #include "QGraphicsGraphItem.h"
 
 namespace inscore
@@ -59,6 +60,7 @@ class VGraphView: public VShapeView
 				 VGraphView(QGraphicsScene * scene, const IGraphicSignal*, QAbstractGraphicsShapeItem *);
 		virtual ~VGraphView() {}
 		
+		virtual void drawBoundingBox (IObject* o);
 		virtual void updateView( IGraphicSignal * graph );
 		virtual void updateObjectSize( IObject *  )			{}
 		virtual void updateLocalMapping (IGraphicSignal*);
@@ -77,6 +79,19 @@ class VSGraphView: public VGraphView
 	public :
 				 VSGraphView(QGraphicsScene * scene, const IGraphicSignal*);
 		virtual ~VSGraphView() {}
+		virtual void updateView( IGraphicSignal * graph );
+};
+
+//--------------------------------------------------------------------------
+/**
+*	\brief a radial rendering view of a IGraphic.
+*/
+class VRGraphView: public VGraphView
+{
+	MouseEventAble<QGraphicsGraphItemRadial>* item() const	{ return (MouseEventAble<QGraphicsGraphItemRadial>*)fItem; }
+	public :
+				 VRGraphView(QGraphicsScene * scene, const IGraphicSignal*);
+		virtual ~VRGraphView() {}
 		virtual void updateView( IGraphicSignal * graph );
 };
 

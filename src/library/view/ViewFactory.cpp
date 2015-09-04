@@ -57,6 +57,7 @@ VObjectView*	ViewFactory::create (const IEllipse* object,	QGraphicsScene* scene)
 VObjectView*	ViewFactory::create (const IGestureFollower* object,  QGraphicsScene* scene){ return new VGestureFollowerView (scene, object); }
 VObjectView*	ViewFactory::create (const IGraphicSignal* object,  QGraphicsScene* scene)	{ return new VGraphView (scene, object); }
 VObjectView*	ViewFactory::create (const ISGraphicSignal* object, QGraphicsScene* scene)	{ return new VSGraphView (scene, object); }
+VObjectView*	ViewFactory::create (const IRGraphicSignal* object, QGraphicsScene* scene)	{ return new VRGraphView (scene, object); }
 VObjectView*	ViewFactory::create (const IGuidoCode* object,	QGraphicsScene* scene)		{ return new VGuidoItemView (scene, object); }
 VObjectView*	ViewFactory::create (const IGuidoPianoRoll* object,	QGraphicsScene* scene)	{ return new VPianoRollView (scene, object); }
 VObjectView*	ViewFactory::create (const IGuidoPianoRollStream* object, QGraphicsScene* scene) { return new VPianoRollView (scene, object); }

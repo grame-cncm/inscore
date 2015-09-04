@@ -61,6 +61,9 @@ typedef class libmapping::SMARTP<IGraphicSignal> SIGraphicSignal;
 class ISGraphicSignal;
 typedef class libmapping::SMARTP<ISGraphicSignal> SISGraphicSignal;
 
+class IRGraphicSignal;
+typedef class libmapping::SMARTP<IRGraphicSignal> SIRGraphicSignal;
+
 class IGraphicBasedObject;
 typedef class libmapping::SMARTP<IGraphicBasedObject> SIGraphicBasedObject;
 

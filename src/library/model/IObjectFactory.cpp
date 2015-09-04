@@ -137,6 +137,9 @@ SIObject IObjectFactory::create(const std::string& name , const std::string& typ
 	else if ( type == ISGraphicSignal::kSGraphicType )
 		obj = _create<ISGraphicSignal> (name, parent);
 
+	else if ( type == IRGraphicSignal::kRGraphicType )
+		obj = _create<IRGraphicSignal> (name, parent);
+
 	else if ( type == IGuidoCode::kGuidoCodeType )
 		obj = _create<IGuidoCode> (name, parent);
 

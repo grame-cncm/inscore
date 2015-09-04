@@ -62,6 +62,8 @@ class IGraphicSignal;
 typedef class libmapping::SMARTP<IGraphicSignal>	SIGraphicSignal;
 class ISGraphicSignal;
 typedef class libmapping::SMARTP<ISGraphicSignal>	SISGraphicSignal;
+class IRGraphicSignal;
+typedef class libmapping::SMARTP<IRGraphicSignal>	SIRGraphicSignal;
 
 //--------------------------------------------------------------------------
 /*!
@@ -159,6 +161,22 @@ class ISGraphicSignal : public IGraphicSignal
 	protected:
 				 ISGraphicSignal( const std::string& name, IObject* parent ) : IGraphicSignal (name, parent) { fTypeString = kSGraphicType; }
 		virtual ~ISGraphicSignal() {}
+};
+
+//--------------------------------------------------------------------------
+/*!
+	\brief a data graphic representation that makes use of a radial representation
+*/
+class IRGraphicSignal : public IGraphicSignal
+{
+
+	public:	
+		static const std::string kRGraphicType;
+		static SIRGraphicSignal create(const std::string& name, IObject* parent)	{ return new IRGraphicSignal(name, parent); }
+		
+	protected:
+				 IRGraphicSignal( const std::string& name, IObject* parent ) : IGraphicSignal (name, parent) { fTypeString = kRGraphicType; }
+		virtual ~IRGraphicSignal() {}
 };
 
 

@@ -52,6 +52,7 @@ const std::string IGraphicSignal::kThicknessDown = THICKNESS_DOWN;
 //--------------------------------------------------------------------------
 const string IGraphicSignal::kGraphicType("graph");
 const string ISGraphicSignal::kSGraphicType("fastgraph");
+const string IRGraphicSignal::kRGraphicType("radialgraph");
 
 IGraphicSignal::IGraphicSignal( const std::string& name, IObject* parent ) : IObject(name, parent),
 	fCurveType(kRoundCurveType), fDrawLine(kDrawLineBoth), fThicknessMode(kThicknessCentered),
