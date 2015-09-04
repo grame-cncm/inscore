@@ -228,7 +228,7 @@ MsgHandler::msgStatus ISignalNode::connect(SParallelSignal signal, std::string o
     string methodStr;
     string range = "";
     string objectMethod;
-    int i = allMethodStr.find(":");
+    unsigned long i = allMethodStr.find(":");
 	
     // We separate all the methods of the list, and also distinguish the method and the range, to add to the maps fConnections and fRanges :
     // "method1[range1]:method2[range2]"    --> insert in fConnections <"object:method1", signal> + <"object:method2", signal >
@@ -372,7 +372,7 @@ MsgHandler::msgStatus ISignalNode::disconnect(SParallelSignal signal, std::strin
         std::string allMethodStr = methods;
         std::string methodStr;
         std::string objectMethod;
-        int i = allMethodStr.find(":");
+        unsigned long i = allMethodStr.find(":");
         while(!allMethodStr.empty())
         {
             methodStr = allMethodStr.substr(0,i);
