@@ -58,8 +58,16 @@ class QGraphicsGraphItemRadial : public QGraphicsRectItem
 		void					setSignal (const ParallelSignal* sig)		{ fSignals = sig; }
 		const ParallelSignal*	signal() const								{ return fSignals; }
 
+		/*!
+			\brief draws the signals as radial graphs
+			\param sig a set of parrallel signals
+			\param painter a qt painter
+			\param size the signals size
+			\param step angular step of each graphic frame
+			\param xr the drawing area x center
+			\param yr the drawing area y center
+		*/
 		void	drawSignal( ParallelSignal * sig, QPainter * painter, unsigned short size, double step, double xr, double yr);
-//		void	drawFrame( ParallelSignal * sig, QPainter * painter, unsigned short index, float xo, float yo, float xe, float ye) const;
 		void	paint( QPainter * painter, const QStyleOptionGraphicsItem *, QWidget * );
 
 	protected :
