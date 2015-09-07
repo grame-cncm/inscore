@@ -23,19 +23,18 @@
 
 */
 
-#include "QGraphicsGraphItem.h"
-
-#define GRAPHICS_GRAPH_ITEM_SIZE QRect(0,0,200,100)
-
 #include <QPainter>
-//#include <QPixmap>
 #include <QImage>
 #include <QtDebug>
 #include <QPair>
+
 #include <math.h>
 
-#define MAX(a,b)		( (a)>(b) ? (a) : (b) )
-#define MIN(a,b)		( (a)<(b) ? (a) : (b) )
+#include "QGraphicsGraphItem.h"
+#include "QColorTool.h"
+
+#define GRAPHICS_GRAPH_ITEM_SIZE QRect(0,0,200,100)
+
 
 namespace inscore
 {
@@ -116,10 +115,6 @@ QPointF QGraphicsGraphItem::getPoint( float value , int index ) const
 //--------------------------------------------------------------------------
 void QGraphicsGraphItem::StepDrawer::setPath( QPainterPath& path , const QList<QPointF>& points , int index , int stripeWidth, bool backWard ) const
 {
-//	QPointF current = path.currentPosition();
-//	path.lineTo( ( points[index].x() + current.x() )/2.0f , current.y() );
-//	path.lineTo( ( points[index].x() + current.x() )/2.0f , points[index].y() );
-//	path.lineTo( points[index] );
 	if ( backWard )
 	{
 		path.lineTo( points[index].x() + stripeWidth , points[index].y() );
@@ -138,42 +133,6 @@ void QGraphicsGraphItem::CurveDrawer::setPath( QPainterPath& path , const QList<
 	path.lineTo( points[index] );
 }
 
-
-/*
-QPointF QGraphicsGraphItem::drawPathElement( QPainter& painter , const QPainterPath& path , const QPointF& startPoint , int style , int index ) const
-{
-	switch ( style )
-	{
-		case kStepLine:
-		{
-			painter.drawLine( startPoint , QPointF(path.elementAt(index*2)) );
-			painter.drawLine( QPointF(path.elementAt(index*2)) , path.elementAt(index*2+1) );
-			return path.elementAt(index*2+1);
-		}
-		case kCurveLine:
-		default:
-			painter.drawLine( startPoint , path.elementAt(index) );
-			return path.elementAt(index);
-	}
-	return QPointF();
-}
-*/
-
-#define TO_0_1(a) ((a/2.0f)+0.5f)
-//--------------------------------------------------------------------------
-QColor buildColor( float h , float s , float b , float a )
-{
-	if ( h<0 ) h+=2;
-	float clippedH = h/2.0f;
-	float clippedS = TO_0_1(s);
-	float clippedB = TO_0_1(b);
-	float clippedA = TO_0_1(a);
-	clippedH = MAX( MIN( clippedH , 1 ) , 0 );
-	clippedS = MAX( MIN( clippedS , 1 ) , 0 );
-	clippedB = MAX( MIN( clippedB , 1 ) , 0 );
-	clippedA = MAX( MIN( clippedA , 1 ) , 0 );
-	return QColor::fromHsvF( clippedH , clippedS , clippedB , clippedA );
-}
 
 //--------------------------------------------------------------------------
 void QGraphicsGraphItem::setSize( int bufferSize )
@@ -261,24 +220,19 @@ void QGraphicsGraphItem::paint( QPainter * painter , int startIndex , int endInd
 		// -----------------------------------------------------------------------------------
 		// C. Use the curve-path to draw the graph.
 		// -----------------------------------------------------------------------------------
-		if ( (	fConstSignals[parallelIndex][2]				// If the signal has a constant color.
+		if ( 	fConstSignals[parallelIndex][2]				// If the signal has a constant color.
 			&&	fConstSignals[parallelIndex][3]
 			&&	fConstSignals[parallelIndex][4]
-			&&	fConstSignals[parallelIndex][5]
-			)
-//			|| ( fIgnoreSignalColor && fPenIgnoreSignalColor )	// If the color signal is ignored.
-//			|| ( fIgnoreSignalColor && ( pen() == Qt::NoPen ) )	// If the color signal is ignored for filling and there's no pen.
-			)
+			&&	fConstSignals[parallelIndex][5] )
 		{
 
 
 			// ------------------------------------------------------------
 			// C.1 Constant color case.
 			GraphicFrame frame(fFrames[startIndex][parallelIndex]);
-			QColor color = buildColor(frame.getHue(), frame.getSaturation(), frame.getBrightness(), frame.getTransparency());
+			QColor color = HSBA2QColor(frame.getColor());
 			
 			// Fill the inside of the graph with its color
-//			painter->setBrush( QBrush( fIgnoreSignalColor ? fDefaultFillColor : color ) );
 			painter->setBrush( QBrush( color ) );
 			painter->setPen( Qt::NoPen );
 			painter->setClipPath( path );		// First, set the clip path with the shape of the graph.
@@ -289,7 +243,6 @@ void QGraphicsGraphItem::paint( QPainter * painter , int startIndex , int endInd
 			if ( pen() != Qt::NoPen )	// If there's a valid pen defined, draw the border
 			{
 				QPen graphPen( pen() );
-//				graphPen.setColor( fPenIgnoreSignalColor ? fDefaultPenColor : color );
 				graphPen.setColor( color );
 
 				painter->setPen( graphPen );
@@ -318,10 +271,9 @@ void QGraphicsGraphItem::paint( QPainter * painter , int startIndex , int endInd
 			for ( i = startIndex ; i <= endIndex ; i++ )		// draw all stripes one by one
 			{
 				GraphicFrame frame(fFrames[i][parallelIndex]);
-				QColor stripeColor = buildColor(frame.getHue(), frame.getSaturation(), frame.getBrightness(), frame.getTransparency());
+				QColor frameColor = HSBA2QColor(frame.getColor());
 
-//				painter->setBrush( QBrush( fIgnoreSignalColor ? fDefaultFillColor : stripeColor ) );
-				painter->setBrush( QBrush( stripeColor ) );
+				painter->setBrush( QBrush( frameColor ) );
 				painter->drawRect( currentX , 0 , stripeWidth() , cacheHeight() );
 
 				// paints the graph border using the current pen if any
@@ -329,17 +281,11 @@ void QGraphicsGraphItem::paint( QPainter * painter , int startIndex , int endInd
 				if ( pen() != Qt::NoPen )
 				{
 					QPen graphPen( pen() );
-//					graphPen.setColor( fPenIgnoreSignalColor ? fDefaultPenColor : stripeColor );
-					graphPen.setColor( stripeColor );
+					graphPen.setColor( frameColor );
 					
 					// set a clipping for each stripe (very expensive !)
 					painter->setClipRect( currentX , 0 , stripeWidth() , cacheHeight() );
 					painter->setPen( graphPen );
-//					painter->setBrush( Qt::NoBrush );
-//					painter->drawRect( currentX , 0 , w , cacheHeight() );
-
-//					currentPos = drawPathElement(*painter , path , currentPos , fLineStyle , i - startIndex );
-
 					if ( fDrawPath == kBottom || fDrawPath == kBoth )
 						painter->drawPath( bottomLine );
 
@@ -359,12 +305,6 @@ void QGraphicsGraphItem::paint( QPainter * painter , int startIndex , int endInd
 		}
 	}
 }
-
-//--------------------------------------------------------------------------
-//void QGraphicsGraphItem::clear()
-//{
-//	fFrames.clear();
-//}
 
 //--------------------------------------------------------------------------
 void QGraphicsGraphItem::updateDrawer()	// Update the current Drawer (indirection object ).
@@ -406,21 +346,7 @@ void QGraphicsGraphItem::paint( QPainter * painter, const QStyleOptionGraphicsIt
 {
 	fStripeWidth = computeStripeWidth();
 	fCacheHeight = computeCacheHeight();
-//	fBandWidth = computeBandWidth();
 	fCacheWidth = computeCacheWidth();
-
-	// Update all
-//	if ( fCache )
-//		delete fCache;
-//	fCache = new QPixmap( cacheWidth() , cacheHeight() );
-//	fCache->fill( QColor(255,255,255,0) );
-
-//	QPixmap cache( cacheWidth() , cacheHeight() );
-//	cache.fill( QColor(255,255,255,0) );
-//	QPainter pixmapPainter(&cache);
-//	paint( &pixmapPainter , 0 , fBufferSize-1 );
-//	painter->setRenderHints( QPainter::Antialiasing | QPainter::SmoothPixmapTransform );
-//	painter->drawPixmap( rect() , cache , QRect( 0 , 0 , cache.width() , cache.height() ) );
 
 	QImage cache( cacheWidth() , cacheHeight(), QImage::Format_ARGB32_Premultiplied );
 	cache.fill( 0 );

@@ -85,7 +85,6 @@ void QGraphicsGraphItemNew::paint( QPainter * painter, const QStyleOptionGraphic
 	
 	painter->setClipRect( bb );
 	QPen pen( QBrush(Qt::SolidPattern), stepWidth, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin );
-//	QPen pen( QBrush(Qt::SolidPattern), stepWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
 	painter->setPen(pen);
 	int n = signal()->dimension();
 	for (int i=0; i < n; i += GraphicFrame::FrameSize()) {
