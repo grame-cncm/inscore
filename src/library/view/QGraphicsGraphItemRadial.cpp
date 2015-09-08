@@ -70,7 +70,6 @@ void QGraphicsGraphItemRadial::drawSignal( ParallelSignal * sig, QPainter * pain
 	double prevx = -1000;
 	double prevy = -1000;
 	double prevtx, prevty;
-	double ew = 0.7;
 	QBrush brush (Qt::SolidPattern);
 	for (unsigned int i=0; i < size; i++) {
 		double t = tsig->get(i)/4;				// thickness of the graphic signal (in [-1, 1])
@@ -88,7 +87,6 @@ void QGraphicsGraphItemRadial::drawSignal( ParallelSignal * sig, QPainter * pain
 		painter->setPen (pen);
 #if 1
 		if (prevx >=0) {
-//			QLineF line(xr, yr, x, y);
 			QLineF line(prevx, prevy, x, y);
 			painter->drawLine(line);
 			
@@ -110,7 +108,6 @@ void QGraphicsGraphItemRadial::drawSignal( ParallelSignal * sig, QPainter * pain
 		prevy = y;
 		prevtx = tx;
 		prevty = ty;
-//		painter->drawEllipse(QPointF(ex+xr, ey+yr), ew*(a-kPI), ew*(a-kPI));
 		a += step;
 	}
 }
