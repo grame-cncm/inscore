@@ -2535,17 +2535,33 @@ parameter & mapping & \\
 
 A graphic signal responds to common component messages (section \fullref{common}). Its specific messages are the following:
 \begin{rail}
-graphicSignal : 'set' 'graph' signalIdentifier 
+graphicSignal : 'set' graphtype signalIdentifier 
 			| 'get' 'dimension'
 \end{rail}
 \index{Graphic signal!set}
 \index{Graphic signal! dimension}
 
 \begin{itemize}
-\item the \OSC{set} message is followed by the \OSC{graph} type and a \OSC{\textit{signalIdentifier}}, where \OSC{signalIdentifier} must correspond to an existing signal from the \OSC{signal} address space. In case \OSC{signalIdentifier} doesn't exist, then a new signal is created at the \OSC{signalIdentifier} address with default values. 
+\item the \OSC{set} message is followed by the graph type and a \OSC{\textit{signalIdentifier}}, where \OSC{signalIdentifier} must correspond to an existing signal from the \OSC{signal} address space. In case \OSC{signalIdentifier} doesn't exist, then a new signal is created at the \OSC{signalIdentifier} address with default values. 
 \item the \OSC{get dimension} message gives the number of graphic signals in parallel (see section \fullref{pgsignal}). 
  \end{itemize}
  
+\begin{rail}
+graphtype : graph
+			| fastgraph
+			| radialgraph
+\end{rail}
+\index{Graphic signal!graph}
+\index{Graphic signal!fastgraph}
+\index{Graphic signal!radialgraph}
+
+The signal representation type is among:
+\begin{itemize}
+\item \OSC{graph}: a classical signal representation as illustrated in figure \ref{graphimg}, where time is mapped to the x coordinate. 
+\item \OSC{fastgraph}: a representation similar to the \OSC{graph} type, using a more efficient drawing strategy, but at the expense of a degraded graphic rendering. 
+\item \OSC{radialgraph}: a signal representation where time is mapped to the polar coordinates. The rendering takes place in the ellipse enclosed in the object dimensions.
+\end{itemize}
+
 \example \\
 Creating a signal and its graphic representation:
 \sample{/ITL/scene/signal/y size 200 ; \\
