@@ -27,7 +27,8 @@
 #define __TInterval__
 
 #include <algorithm>
-#include <ostream>
+#include <iostream>
+#include <sstream>
 #include <string>
 
 #include "lmtools.h"
