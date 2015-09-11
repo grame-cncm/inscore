@@ -19,9 +19,10 @@
 
 */
 
+#include <fstream>
+
 #include "benchtools.h"
 #include "TSignal.h"
-#include <fstream>
 
 #ifdef WIN32
 # include <windows.h>
@@ -43,11 +44,11 @@ static bool					gRunning = false;
 // Returns the number of clock cycles elapsed since the last reset of the processor
 //_________________________________________________________________________________
 //#if !defined(WIN32) || defined(__MINGW32__)
-//__uint64  rdtsc(void)
+//__is_uint64  rdtsc(void)
 //{
 //	union {
-//		__uint32 i32[2];
-//		__uint64 i64;
+//		__is_uint32 i32[2];
+//		__is_uint64 i64;
 //	} count;
 //
 //	__asm__ __volatile__("rdtsc" : "=a" (count.i32[0]), "=d" (count.i32[1]));
@@ -55,7 +56,7 @@ static bool					gRunning = false;
 //     return count.i64;
 //}
 //#else
-//__uint64 __cdecl rdtsc(void)
+//__is_uint64 __cdecl rdtsc(void)
 //{
 //   __asm {
 //		XOR eax, eax
@@ -72,9 +73,9 @@ static bool					gRunning = false;
 // (absolute time not exactly known but could be computed from time offset)
 //_________________________________________________________________________________
 #ifdef WIN32
-__uint64  getTime (void)	{ return GetTickCount() * 1000; }
+__is_uint64  getTime(void)	{ return GetTickCount() * 1000; }
 #else
-__uint64  getTime(void)
+__is_uint64  getTime(void)
 {
 	struct timeval time;
 	if (gettimeofday(&time, 0) == 0)
@@ -91,11 +92,11 @@ float  bench::usec2ticks(void)
 //	static float gUSec2ticks = 0;
 //
 //	if (!gUSec2ticks) {
-//		__uint64 start = rdtsc();
-//		__uint64 t1 = getTime();
+//		__is_uint64 start = rdtsc();
+//		__is_uint64 t1 = getTime();
 //		while ( (getTime() - t1) < 400000)
 //			;
-//		__uint64 ticks = rdtsc() - start;
+//		__is_uint64 ticks = rdtsc() - start;
 //		gUSec2ticks= ticks / 400000.f;
 //	}
 //	return gUSec2ticks;

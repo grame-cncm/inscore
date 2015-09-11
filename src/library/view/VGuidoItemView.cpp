@@ -105,7 +105,7 @@ class RolledUnrolledCollector: public TimeMapCollector
 //----------------------------------------------------------------------
 void QCachedGuidoGraphicsItem::paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
-	__uint64 time = getTime();
+	__is_uint64 time = getTime();
 	QRectF rect = boundingRect();
 	QSize size (rect.width(), rect.height());
 //qDebug() << "QCachedGuidoGraphicsItem::paint rect" << rect;

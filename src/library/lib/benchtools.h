@@ -29,38 +29,23 @@
 namespace inscore
 {
 
+#define __is_uint32	unsigned int
+#define __is_int32	int
+
 #ifdef __x86_64__
-#define __uint32	unsigned int
-#define __uint64	unsigned long int
-
-#define __int32	int
-#define __int64	long int
-
+#define __is_uint64	unsigned long int
+#define __is_int64	long int
 #else
-
-#ifndef __uint32
-#define __uint32	unsigned int
-#endif
-
-#ifndef __uint64
-#define __uint64	unsigned long long int
-#endif
-
-#ifndef __int32
-#define __int32		int
-#endif
-
-#ifndef __int64
-#define __int64		long long int
-#endif
+#define __is_uint64	unsigned long long int
+#define __is_int64		long long int
 #endif
 
 #ifndef WIN32
-__uint64  rdtsc(void);
+__is_uint64  rdtsc(void);
 #else
-__uint64 __cdecl rdtsc(void);
+__is_uint64 __cdecl rdtsc(void);
 #endif
-__uint64  getTime (void);
+__is_uint64  getTime(void);
 
 //_________________________________________________________________________________
 class bench
@@ -81,9 +66,9 @@ class bench
 #ifdef RUNBENCH
 #define  timebench(name,f)				\
 {										\
-	__uint64 start = getTime();			\
+	__is_uint64 start = getTime();			\
 	f;									\
-	__uint64 elapsed = getTime() - start;	\
+	__is_uint64 elapsed = getTime() - start;	\
 	bench::put (name, elapsed);			\
 }
 #else

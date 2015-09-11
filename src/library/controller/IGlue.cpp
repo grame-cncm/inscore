@@ -316,8 +316,8 @@ void IGlue::viewUpdate()		{ if (fViewUpdater) fViewUpdater->update (fModel); }
 void IGlue::timerEvent ( QTimerEvent *)
 {
 #ifdef RUNBENCH
-	static __uint64 prevtime = 0;
-	__uint64 time = getTime();
+	static __is_uint64 prevtime = 0;
+	__is_uint64 time = getTime();
 	bench::put ("time", prevtime ? (time - prevtime)/1000 : 0);
 	prevtime = time;
 #endif
