@@ -45,7 +45,7 @@ using namespace std;
 namespace inscore
 {
 // behavior changes and key version numbers
-const float kFontSizeChangeVers = 1.12;
+const float kFontSizeChangeVers = 1.12f;
 
 map<string, enum QFont::Style> VTextView::sStyleString2Enum = VTextView::createStyleString2Enum();
 map<string, enum QFont::Weight> VTextView::sWeightString2Enum = VTextView::createWeightString2Enum();

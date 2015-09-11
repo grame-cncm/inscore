@@ -38,7 +38,7 @@
 namespace inscore
 {
     // behavior changes and key version numbers
-    const float kExportPdfChangeVers = 1.13;
+    const float kExportPdfChangeVers = 1.13f;
     
 //------------------------------------------------------------------------------------------------------------------------
 void VExport::paintOnDevice( QPaintDevice * device , QGraphicsItem * item , float xScaleFactor , float yScaleFactor, float dx, float dy, bool drawChildren )

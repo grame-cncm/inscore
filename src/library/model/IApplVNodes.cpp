@@ -141,8 +141,8 @@ IApplLog::IApplLog(IObject * parent) : IVNode("log", parent)
 	setXPos (-0.9f);
 	setYPos (-0.8f);
 #endif
-	setWidth (1.);
-	setHeight (0.3);
+	setWidth (1.f);
+	setHeight (0.3f);
 }
 
 IApplLog::~IApplLog()

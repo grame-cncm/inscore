@@ -52,7 +52,7 @@ QGraphicsGraphItemRadial::QGraphicsGraphItemRadial (QGraphicsItem * parent)
 QGraphicsGraphItemRadial::~QGraphicsGraphItemRadial()		{}
 
 
-#define kPI	3.14159265359
+#define kPI	3.14159265359f
 //--------------------------------------------------------------------------
 void QGraphicsGraphItemRadial::drawSignal( ParallelSignal * sig, QPainter * painter, unsigned short size, double step, double xr, double yr)
 {

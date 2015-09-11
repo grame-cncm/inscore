@@ -45,7 +45,7 @@ GSystemQt * QGuidoPainter::mSys = 0;
 VGDevice * QGuidoPainter::mDev  = 0;
 
 // behavior changes and key version numbers
-const float kRenderingFactorChangeVers = 1.12;
+const float kRenderingFactorChangeVers = 1.12f;
 
 //-------------------------------------------------------------------------
 //								Static functions						///
