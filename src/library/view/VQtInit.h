@@ -35,7 +35,7 @@ namespace inscore
 @{
 */
 
-class export VQtInit
+class inscore_export VQtInit
 {
 	public:
 	static	void		startQt ();

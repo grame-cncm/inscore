@@ -47,7 +47,7 @@ typedef class libmapping::SMARTP<IObject>	SIObject;
 
 //--------------------------------------------------------------------------
 /// \brief a textual view of the model state
-class export VTextUpdater : public ViewUpdater
+class inscore_export VTextUpdater : public ViewUpdater
 {
 	std::ostream&	fOutStream;
 	

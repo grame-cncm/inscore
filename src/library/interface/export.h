@@ -25,9 +25,9 @@
 #if defined(WIN32) && defined(MSVC)
 
 # ifdef INScore_EXPORTS
-#  define export		 _declspec (dllexport)
+#  define inscore_export		 _declspec (dllexport)
 # else
-#  define export		 _declspec (dllimport)
+#  define inscore_export		 _declspec (dllimport)
 # endif
 
 # pragma warning ( disable : 4275 4251 )
@@ -35,9 +35,9 @@
 #else
 
 # ifdef INScore_EXPORTS
-#  define export		 __attribute__ ((visibility("default")))
+#  define inscore_export		 __attribute__ ((visibility("default")))
 # else
-#  define export		
+#  define inscore_export		
 # endif
 
 #endif

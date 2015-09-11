@@ -75,7 +75,7 @@ typedef class libmapping::SMARTP<IAppl>	SIAppl;
 
 	IGlue inherits from QObject for timer capabilities.
 */
-class export IGlue : public MsgListener, public QTimer 
+class inscore_export IGlue : public MsgListener, public QTimer 
 {
 	OscThread *		fOscThread;
 	SUpdater 		fViewUpdater;

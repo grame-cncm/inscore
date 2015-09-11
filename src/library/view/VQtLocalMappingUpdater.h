@@ -44,7 +44,7 @@ namespace inscore
 *
 *	Uses Qt's QGraphicsScene/QGraphicsView framework.
 */
-class export VQtLocalMappingUpdater : public LocalMapUpdater
+class inscore_export VQtLocalMappingUpdater : public LocalMapUpdater
 {
 	public :
 		static libmapping::SMARTP<VQtLocalMappingUpdater> create()		{ return new VQtLocalMappingUpdater(); }

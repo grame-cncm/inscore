@@ -39,7 +39,7 @@ namespace inscore
 
 /*! \brief the messages public API
 */
-class export Message
+class inscore_export Message
 {
 	public:
 

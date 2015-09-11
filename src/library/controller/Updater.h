@@ -47,7 +47,7 @@ class Master;
 	Updater implements the \e visitor design pattern. It is intended to
 	resolve the type of the objects of the model.
 */
-class export Updater : public libmapping::smartable
+class inscore_export Updater : public libmapping::smartable
 {
 	protected:
 				 Updater() {}
@@ -89,15 +89,15 @@ class export Updater : public libmapping::smartable
 };
 typedef class libmapping::SMARTP<Updater>	SUpdater;
 
-class export ViewUpdater : public Updater {
+class inscore_export ViewUpdater : public Updater {
 	public:	virtual bool needupdate (IObject*);
 };
 
-class export LocalMapUpdater : public Updater {
+class inscore_export LocalMapUpdater : public Updater {
 	public:	virtual bool needupdate (IObject*);
 };
 
-class export SlaveMapUpdater : public Updater {
+class inscore_export SlaveMapUpdater : public Updater {
 	public:	virtual bool needupdate (IObject*);
 };
 class SigModified : public Updater

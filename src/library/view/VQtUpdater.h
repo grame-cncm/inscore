@@ -48,7 +48,7 @@ class IRectShape;
 *
 *	Uses Qt's QGraphicsScene/QGraphicsView framework.
 */
-class export VQtUpdater : public ViewUpdater
+class inscore_export VQtUpdater : public ViewUpdater
 {
 	public :
 		static libmapping::SMARTP<VQtUpdater> create()	{ return new VQtUpdater(); }
