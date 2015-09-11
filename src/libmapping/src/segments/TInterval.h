@@ -27,15 +27,20 @@
 #define __TInterval__
 
 #include <algorithm>
-#include <iostream>
-#include <sstream>
+#include <ostream>
 #include <string>
-#include <utility>
 
 #include "lmtools.h"
 
+#ifdef WIN32
+#ifdef near
+#undef near
+#endif
+#endif
+
 namespace libmapping
 {
+
 
 /*!
 \addtogroup SEGMENTS Segmentations
@@ -67,7 +72,7 @@ template<typename T> class TInterval
 		inline bool operator == (const TInterval<T>& s) const { return (fFirst == s.first()) && (fSecond == s.second()); }
         /// approximate equality (for float intervals)
 		inline bool eq (const TInterval<T>& s) const		  { return (fFirst == s.first()) && (fSecond == s.second()); }
-		inline bool near (const TInterval<T>& s) const		  { return near::check(fFirst, s.first()) && near::check(fSecond, s.second()); }
+		inline bool near(const TInterval<T>& s) const		  { return near::check(fFirst, s.first()) && near::check(fSecond, s.second()); }
 		inline bool operator != (const TInterval<T>& s) const { return !( (*this)==s ); }
 		inline TInterval<T> operator + (T val) const		  { return TInterval<T>(fFirst+val, fSecond+val); }
 
