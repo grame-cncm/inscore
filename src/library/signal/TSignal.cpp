@@ -70,7 +70,7 @@ void ParallelSignal::put(const std::vector<float>& values)
 	int d = dimension();
 	if (d) {
 		int i = 0;
-		int size = values.size();
+		int size = int(values.size());
 		while (true) {
 			for (int s=0; s < d; s++) {
 				if (i < size) *signal(s) << values[i++];

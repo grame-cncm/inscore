@@ -59,7 +59,7 @@ void IPolygon::accept (Updater* u)
 void IPolygon::print (ostream& out) const
 {
 	IShapeMap::print (out);
-	unsigned int i, n = fPoints.size();
+	size_t i, n = fPoints.size();
 	std::string sep = "";
 	for ( i = 0 ; i < n ; i++ ) {
 		out << "(" << fPoints[i].first << ";" << fPoints[i].second << ")" << sep;

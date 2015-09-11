@@ -59,7 +59,7 @@ void ICurve::accept (Updater* u)
 void ICurve::print (ostream& out) const
 {
 	IShapeMap::print (out);
-	unsigned int i, n = fPoints.size();
+	size_t i, n = fPoints.size();
 	std::string sep = "";
 	for ( i = 0 ; i < n ; i++ ) {
 		out << "Curve n°" << (i+1) << ": [ ("	<< fPoints[i].fPointA.first << "," << fPoints[i].fPointA.second << ");(" 

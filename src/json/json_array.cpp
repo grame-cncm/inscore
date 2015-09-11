@@ -23,8 +23,8 @@ namespace json
 // --------------------------------------------------------------
 json_array::~json_array()
 {
-	unsigned int n = fValues.size();
-	for (unsigned int i=0; i < n; i++) {
+	size_t n = fValues.size();
+	for (size_t i = 0; i < n; i++) {
 		delete fValues[i];
 	}
 }
@@ -45,8 +45,8 @@ void json_array::print(json_stream& out) const
 {
 	out << "[" << out.nl()++;
 	if (fValues.size() > 0) {
-		unsigned int n = fValues.size() - 1;
-		for (unsigned int i=0; i < n; i++) {
+		size_t n = fValues.size() - 1;
+		for (size_t i = 0; i < n; i++) {
 			out << *fValues[i] << ',' << out.nl();
 		}
 		out << *fValues[n] << out.nl()--;

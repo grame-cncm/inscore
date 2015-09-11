@@ -24,7 +24,7 @@
 */
 
 #ifdef WIN32
-#pragma warning (disable : 4996)
+#pragma warning (disable : 4996 4267)
 #endif
 
 #include <stdlib.h>
@@ -210,7 +210,7 @@ bool TMessageEvaluator::dateVariable (const string& var, bool& relative)
 //----------------------------------------------------------------------
 bool TMessageEvaluator::messageVariable (const string& var)
 {
-	int n = var.size();
+	size_t n = var.size();
 	return (n > 4) && (var[1] == '(') && (var[n-1] == ')');
 }
 
@@ -259,7 +259,7 @@ IMessage::argslist TMessageEvaluator::evalMessage (const IMessage* msg, const Ev
 	const IObject * root = env.object ? env.object->getRoot() : gGlue->root();
 	root->getObjects( evalAddress(msg->address(), env.object), targets);
 
-	unsigned int n = targets.size();
+	size_t n = targets.size();
 	if (!n) return outval;					// no target: exit
 	
 	SIMessageList msgs = IMessageList::create();			// prepare for getting messages from the targets

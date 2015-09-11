@@ -25,8 +25,8 @@ namespace json
 // --------------------------------------------------------------
 json_object::~json_object()
 {
-	unsigned int n = fElements.size();
-	for (unsigned int i=0; i < n; i++) {
+	size_t n = fElements.size();
+	for (size_t i = 0; i < n; i++) {
 		delete fElements[i];
 	}
 }
@@ -34,8 +34,8 @@ json_object::~json_object()
 // --------------------------------------------------------------
 const json_element* json_object::getKey (const char* key) const
 {
-	unsigned int n = fElements.size();
-	for (unsigned int i=0; i < n; i++) {
+	size_t n = fElements.size();
+	for (size_t i = 0; i < n; i++) {
 		if (fElements[i]->name() == key) return fElements[i];
 	}
 	return 0;
@@ -53,8 +53,8 @@ void json_object::print(json_stream& out) const
 {
 	out << "{" << out.nl()++;
 	if (fElements.size() > 0) {
-		unsigned int n = fElements.size() - 1;
-		for (unsigned int i=0; i < n; i++) {
+		size_t n = fElements.size() - 1;
+		for (size_t i = 0; i < n; i++) {
 			out << *fElements[i] << ',' << out.nl();
 		}
 		out << *fElements[n] << out.nl()--;

@@ -89,8 +89,8 @@ bool Tools::isurl (const std::string& path)
 //--------------------------------------------------------------------------
 bool Tools::regexp (const string& str)
 {
-	unsigned int n = str.size();
-	for (unsigned int i = 0; i < n; i++) {
+	size_t n = str.size();
+	for (size_t i = 0; i < n; i++) {
 		if ((str[i] == '*') || (str[i] == '?') || (str[i] == '['))
 			return true;
 	}

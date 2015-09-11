@@ -23,6 +23,12 @@
 
 */
 
+
+#include <stdio.h>
+#include <sys/types.h>
+#include <dirent.h>
+#include <math.h>
+
 #include <algorithm>
 #include <iostream>
 #include <fstream>
@@ -51,11 +57,6 @@
 #include "INScore.h"
 
 #include "VObjectView.h"
-
-#include <stdio.h>
-#include <sys/types.h>
-#include <dirent.h>
-#include <math.h>
 
 
 #define useiterator 0
@@ -550,7 +551,7 @@ bool IObject::find(const std::string& expr, subnodes& outlist) const
 		return exactfind(expr, outlist);
 	}
 	else {
-		unsigned int size = outlist.size();
+		size_t size = outlist.size();
 
 	#if useiterator
 		subnodes::const_iterator i = elements().begin();
@@ -560,8 +561,8 @@ bool IObject::find(const std::string& expr, subnodes& outlist) const
 			i++;
 		}
 	#else
-		unsigned int n = elements().size();
-		for (unsigned int i = 0; i < n; i++) {
+		size_t n = elements().size();
+		for (size_t i = 0; i < n; i++) {
 			IObject * elt = elements()[i];
 			if (elt->match(expr) && !elt->getDeleted())
 				outlist.push_back(elt);
@@ -574,9 +575,9 @@ bool IObject::find(const std::string& expr, subnodes& outlist) const
 //--------------------------------------------------------------------------
 bool IObject::exactfind(const std::string& name, subnodes& outlist) const
 {
-	unsigned int n = elements().size();
+	size_t n = elements().size();
 	bool ret = false;
-	for (unsigned int i = 0; i < n; i++) {
+	for (size_t i = 0; i < n; i++) {
 		IObject * elt = elements()[i];
 		if ((!elt->getDeleted()) && (elt->name() == name)) {
 			outlist.push_back(elt);
@@ -647,8 +648,8 @@ void IObject::getObjects(const string& address, vector<const IObject*>& outv) co
 	string tail = OSCAddress::addressTail(address);
 	if (match(beg)) {				// first make sure that the object is part of the address
 		if (tail.size()) {
-			unsigned int n = elements().size();
-			for (unsigned int i = 0; i < n; i++)
+			size_t n = elements().size();
+			for (size_t i = 0; i < n; i++)
 				elements()[i]->getObjects(tail, outv);
 		}
 		else outv.push_back(this);
@@ -668,8 +669,8 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 		string tail = OSCAddress::addressTail(addressTail);		// and possible remaining address part
 		
 		if (tail.size()) {			// we're not processing the end of the address, process the address one step down
-			unsigned int n = elements().size();
-			for (unsigned int i = 0; i < n; i++) {
+			size_t n = elements().size();
+			for (size_t i = 0; i < n; i++) {
 				result |= elements()[i]->processMsg (beg, tail, msg);
 			}
 		}
@@ -678,8 +679,8 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 			SIMessage translated = translator.translate(msg);
 			subnodes targets;
 			if (find (beg, targets)) {				// looks for subnodes matching addressTail
-				unsigned int n = targets.size();
-				for (unsigned int i = 0; i< n; i++) {
+				size_t n = targets.size();
+				for (size_t i = 0; i< n; i++) {
 					IObject * target = targets[i];
 					result |= target->execute(translated ? translated : msg);	// asks the subnode to execute the message
 					if (result & MsgHandler::kProcessed) {
@@ -695,8 +696,8 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 	}
 	if (result & MsgHandler::kProcessed)
     {
-        unsigned int n = elements().size();
-        for (unsigned int i = 0; i < n; i++)
+		size_t n = elements().size();
+		for (size_t i = 0; i < n; i++)
         {
             elements()[i]->setState(kModified);
         }
@@ -728,7 +729,7 @@ int IObject::processSig ()
                 else if(connections[it]->getRangeType() == "int")
                     status = elements()[i]->executeSignal(connections[it]->getMethod(), connections[it]->getIntRange(), connections[it]->getSignal());
                 else
-                    status = elements()[i]->executeSignal(connections[it]->getMethod(), std::pair<float, float>(-1.,1.), connections[it]->getSignal());
+                    status = elements()[i]->executeSignal(connections[it]->getMethod(), std::pair<float, float>(-1.f,1.f), connections[it]->getSignal());
                 result |= status;
             }
         }
@@ -1192,8 +1193,8 @@ SIMessageList IObject::getAliases() const
 	SIMessageList list = IMessageList::create();
 	vector<pair<string, string> > aliases;
 	IAppl::getAliases (getOSCAddress(), aliases);
-	unsigned int n = aliases.size();
-	for (unsigned i = 0; i < n; i++) {
+	size_t n = aliases.size();
+	for (size_t i = 0; i < n; i++) {
 		SIMessage msg = IMessage::create (getOSCAddress(), kalias_GetSetMethod);
 		msg->add (aliases[i].first);
 		if (aliases[i].second.size()) msg->add (aliases[i].second);
@@ -1385,7 +1386,7 @@ MsgHandler::msgStatus IObject::evalMsg(const IMessage* msg)
 
 	SIMessageList watchMsg = msg->watchMsg2Msgs (0);
 	if (watchMsg) {
-		unsigned int n = watchMsg->list().size();
+		size_t n = watchMsg->list().size();
 		if (!n) return MsgHandler::kBadParameters;
 
 

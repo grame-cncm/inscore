@@ -133,7 +133,7 @@ void TQtJs::bindEnv  (stringstream& s, const string& name, const IMessage::argsl
 	if (!checkConficts(name)) {
 		stringstream tmp;
 		tmp << name << "=";
-		unsigned int n = values.size();
+		size_t n = values.size();
 		if (n == 1) {
 			if (!bindEnv (tmp, name, values[0])) return;
 		}

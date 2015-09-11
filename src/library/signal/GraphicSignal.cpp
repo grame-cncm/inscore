@@ -45,7 +45,7 @@ void HSBAColor::print (ostream& out) const
 HSBAColor::HSBAColor(const vector<float>& value)
 	: Frame (value)
 {
-	for (int i=value.size(); i < kDataCount;  i++)
+	for (size_t i=value.size(); i < kDataCount;  i++)
 		fData.push_back(0.f);
 }
 
@@ -55,7 +55,7 @@ HSBAColor::HSBAColor(const vector<float>& value)
 GraphicFrame::GraphicFrame(const vector<float>& value)
 	: Frame (value)
 {
-	for (int i=value.size(); i < kDataCount;  i++)
+	for (size_t i = value.size(); i < kDataCount; i++)
 		fData.push_back(0.f);
 }
 
@@ -86,7 +86,7 @@ GraphicFrames::GraphicFrames(const vector<float>& value)
 {
 	fSize = int(ceil (float(value.size()) / GraphicFrame::FrameSize()));
 	int fill = fSize * GraphicFrame::FrameSize();
-	for (int i=value.size(); i < fill;  i++)
+	for (size_t i = value.size(); i < fill; i++)
 		fData.push_back(0.f);
 }
 
