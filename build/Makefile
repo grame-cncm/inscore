@@ -11,17 +11,26 @@ ifeq ($(system), Darwin)
 	QMAKEIOS = qmake-ios
 else
 ifeq ($(system), MINGW32_NT-6.1)
-	TARGET = win32
+	TARGET = windows
+	WDEST = win32
 	SPEC = -spec win32-msvc2010
+	GUIDOLIB = GUIDOEngine.dll
+else
+ifeq ($(system), MINGW32_NT-6.2)
+	TARGET = windows
+	WDEST = win64
+	SPEC = -spec win32-msvc2013
+	GUIDOLIB = GUIDOEngine64.dll
 else
 	TARGET = linux
 endif
 endif
+endif
 
+WINARCH = $(shell ./qt-arch)
 OUT  := INScore.framework
-WIN32VS := "Visual Studio 10"
-WIN64VS := "Visual Studio 10 Win64"
-MSVC := C:\Program Files (x86)\Microsoft Visual Studio 10.0
+MSVC := $(shell ./vs-path)
+WINOPTS := /maxcpucount:4 /p:Configuration=Release /p:Platform=$(WINARCH)
 
 all :
 	make $(TARGET)
@@ -139,30 +148,30 @@ linuxclean:
 #===============================================================
 # building the library on windows
 #===============================================================
-win32 : win32/INScore.vcxproj win32/INScoreViewer.vcxproj INScoreWin32 win32/release/GUIDOEngine.dll
+windows : $(WDEST)/INScore.vcxproj $(WDEST)/INScoreViewer.vcxproj INScoreWin $(WDEST)/release/$(GUIDOLIB)
 
-win32projects : 
-	[ -d win32 ] || mkdir win32
-	cd win32 && qmake $(SPEC) ../library.pro
-	cd win32 && qmake $(SPEC) ../viewer.pro
+winprojects : 
+	[ -d $(WDEST) ] || mkdir $(WDEST)
+	cd $(WDEST) && qmake $(SPEC) ../library.pro
+	cd $(WDEST) && qmake $(SPEC) ../viewer.pro
 
-INScoreWin32:
-	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild win32/INScore.vcxproj /maxcpucount:4 /p:Configuration=Release"
-	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild win32/INScoreViewer.vcxproj /maxcpucount:4 /p:Configuration=Release"
+INScoreWin:
+	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(WDEST)/INScore.vcxproj $(WINOPTS)"
+	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(WDEST)/INScoreViewer.vcxproj $(WINOPTS)"
 
-win32/INScore.vcxproj : library.pro
-	make win32projects
+$(WDEST)/INScore.vcxproj : library.pro
+	make winprojects
 
-win32/INScoreViewer.vcxproj : viewer.pro
-	make win32projects
+$(WDEST)/INScoreViewer.vcxproj : viewer.pro
+	make winprojects
 
-win32/release/GUIDOEngine.dll: ../lib/GUIDOEngine/win32/GUIDOEngine.dll
-	cp ../lib/GUIDOEngine/win32/GUIDOEngine.dll win32/release
+$(WDEST)/release/$(GUIDOLIB): ../lib/GUIDOEngine/$(WDEST)/$(GUIDOLIB)
+	cp ../lib/GUIDOEngine/$(WDEST)/$(GUIDOLIB) $(WDEST)/release
 
-win32clean:
-	rm -f win32/tmp
+winclean:
+	rm -f $(WDEST)/tmp
 
 #===============================================================
 clean :
-	rm -rf macos win32 linux android ios
+	rm -rf macos $(WDEST) linux android ios
 

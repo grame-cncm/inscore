@@ -82,13 +82,16 @@ win32 {
 	# Variable to add to DEFINES to avoid execution errors when debbuging on windows "_ITERATOR_DEBUG_LEVEL=0"
     QMAKE_CXXFLAGS_DEBUG += /wd4100 /EHsc
     QMAKE_CXXFLAGS_RELEASE += /wd4100 /EHsc
-    LIBS += $$LOCALLIB/GuidoEngine/win32/GUIDOEngine.lib winmm.lib ws2_32.lib
+    LIBS += winmm.lib ws2_32.lib
     RC_FILE = $$ROOT/win32/INScore.rc
     INCLUDEPATH += $$ROOT/win32/dirent
 	contains(QMAKE_HOST.arch, x86_64): {
         DEFINES += __x86_64__
-        TARGET = INScore64
-    }
+		LIBS += $$LOCALLIB/GuidoEngine/win64/GUIDOEngine64.lib 
+   }
+	else {
+		LIBS += $$LOCALLIB/GuidoEngine/win32/GUIDOEngine.lib
+	}
 }
 
 ############################## 
