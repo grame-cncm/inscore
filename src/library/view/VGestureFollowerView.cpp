@@ -60,7 +60,7 @@ class GFRect : public QGraphicsRectItem
 {
 	const IGestureFollower* fGF;
 	public:
-			GFRect (QGraphicsItem * parent = 0): fGF(0) {}
+			GFRect (): fGF(0) {}
 		virtual ~GFRect() {}
 		
 	void setGF (const IGestureFollower* gf)		{ fGF = gf; }
