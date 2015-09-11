@@ -413,8 +413,9 @@ void IMessage::printArgs(OSCStream& osc) const
 		else if (param(i, iv))		osc << iv;		// param is an int32 value
 		else if (param(i, str))		osc << str;		// param is a string
 		else if (param(i, msgs)) {					// param is a list of messages
-			size_t n = msgs->list().size() - 1;
-			if (n < 0) continue;					// empty message list
+			size_t n = msgs->list().size();
+			if (n == 0) continue;					// empty message list
+			else n -= 1;
 			osc << "(";
 			for (int i=0; i < n; i++) {
 				const IMessage* msg = msgs->list()[i];
