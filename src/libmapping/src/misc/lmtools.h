@@ -26,6 +26,8 @@
 #include "rational.h"
 
 #ifdef WIN32
+#pragma warning (disable : 4094)
+
 inline long lround(double x) { return long(floor(x + 0.5)); }
 #endif
 

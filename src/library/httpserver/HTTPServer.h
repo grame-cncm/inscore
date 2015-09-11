@@ -22,6 +22,10 @@
 #ifndef __httpdserver__
 #define __httpdserver__
 
+#ifdef WIN32
+#pragma warning (disable : 4100)
+#endif
+
 // HTTPD server is available on Mac OS and Lnux only (for the moment)
 #if defined(__LINUX__) || defined(MACOS)
 
