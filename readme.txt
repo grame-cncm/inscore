@@ -80,7 +80,14 @@ required entry point is found.
 
 Note for Windows platforms:
 --------------------------
-The project description is "Visual Studio 2010" oriented. 
+The project description is "Visual Studio xxx" oriented. Two scripts are describing the version of 
+Visual Studio that you use: 
+- vs-vers : that gives the full name of your Visual Studio version
+- vs-path : that gives the full path of your VisualStudio installation
+Another script named 'qt-arch' gives the architecture of the Qt version that you use. Values should 
+be in 'Win32' or 'x64'
+These scripts are located in the build folder; You should customize these scripts accordingly.
+Note that these scripts are used by the Makefile only. You can skip them if you run qmake manually.
 Calling qmake and make requires to have unix like commands installed, which is provided by the
 MINGW environment.
 However, it should always be possible to compile using QTCreator and the .pro files included 
