@@ -8,6 +8,10 @@
 
 %{
 
+#ifdef WIN32
+#pragma warning (disable : 4267 4100)
+#endif
+
 //#include <stdio.h>
 #include <iostream>
 #include "IMessage.h"
