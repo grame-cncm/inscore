@@ -10,6 +10,10 @@
 
 %{
 
+#ifdef WIN32
+#pragma warning (disable : 4267 4100)
+#endif
+
 #define YY_NO_UNISTD_H
 
 #include "TInterval.h"
