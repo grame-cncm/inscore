@@ -19,7 +19,6 @@ todo
 [ok] paramétrages des événements (x, y, date...)
 - tutorial pour les mappings
 - implémentation du format xml
-- supprimer le champ message des messages
 
 - voir updateObjectSize résiduel dans IMappingUpdater::VStretch  (inséré pour gestion des boucles 
   de synchronization et actuellement commenté) + réimplémenter les méthodes getWidth et getHeight pour les objets concernés
@@ -55,7 +54,6 @@ todo
 - revoir le design des nodes debug
 - verif shift/reduce dans ITL parser
 - ajouter des objet bpf
-- changer le numéro de port OSC
 - calcul des mappings sur score.xml (?)
 
 [ok] écriture des flotants: forme -3.81878e-24
@@ -120,7 +118,6 @@ implémentation:
 [ok] implémentation des interactions
 
 divers:
-- retravailler le mapping guido
 [ok] definir api librairie
 	 note: à faire pour les fonctions d'interrogation
 - impl. blob external
