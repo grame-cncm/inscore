@@ -67,7 +67,7 @@ class IGestureFollower : public IRectShape
 		static SIGestureFollower create(const std::string& name, IObject* parent)	{ return new IGestureFollower(name, parent); }
 
 		virtual void	accept (Updater*);
-				int		gesturesCount () const		{ return elements().size() - fGesturesOffset; }
+				int		gesturesCount () const		{ return int(elements().size() - fGesturesOffset); }
 
 		const float*	where() const				{ return fGFLib->where(); }
 		const float*	likelihood() const			{ return fGFLib->likelihood(); }

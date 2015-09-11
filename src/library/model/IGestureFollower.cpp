@@ -141,9 +141,9 @@ bool IGestureFollower::createGestureFollower (int sigDimension, int buffsize, ve
 	elements().clear();
 	fGesturesOffset = 0;
 	createVirtualNodes();
-	fGFLib = new TGestureFollowerPlugin (gestures.size(), sigDimension, buffsize);
+	fGFLib = new TGestureFollowerPlugin (int(gestures.size()), sigDimension, buffsize);
 	if (fGFLib && fGFLib->isAvailable()) {
-		fGesturesOffset = elements().size();
+		fGesturesOffset = int(elements().size());
 		for (unsigned int i = 0; i < gestures.size(); i++) {
 			SIGesture g = IGesture::create (gestures[i], this, i, fGFLib);
 			add (g);

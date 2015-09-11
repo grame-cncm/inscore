@@ -212,7 +212,7 @@ class ParallelSignal : virtual public libmapping::smartable
 			The dimension of a parallel signal represents the number of parallelized signals i.e.
 			the signals vector size.
 		*/
-		virtual int	dimension() const						{ return fSignals.size(); }
+		virtual int	dimension() const						{ return int(fSignals.size()); }
 
 		/*! \brief write data to enclosed signals			
 			\param values a vector of float values

@@ -615,7 +615,7 @@ void VGraphicsItemView::setSlave(SIObject o )
         fScene->addItem(fItem);
         fItem->setParentItem(fParent);
     }
-    fNbMasters = masters.size(); // finally we update the number of masters
+    fNbMasters = (unsigned int)masters.size(); // finally we update the number of masters
 }
 
 

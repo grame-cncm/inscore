@@ -168,7 +168,7 @@ bool ISignal::putAt (const IMessage* msg, int index, int step)
 	}
 	if (!values.size()) return false;
 
-	if (!dimension()) *this << TSignal::create(name(), values.size());
+	if (!dimension()) *this << TSignal::create(name(), (unsigned short)values.size());
 	SParallelSignal s = getProjection(index, step);
 	if (!s) return false;
 	s->put(values);

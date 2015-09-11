@@ -43,7 +43,7 @@ Response::Response (const char* data, unsigned int size, string format, int http
 
 Response::Response (string data, string format, int http_status, bool allowCache)
 {
-	int size = data.size();
+	int size = int(data.size());
 	const char *cc = data.c_str();
 	fData = new char[size + 1];
 	memcpy (fData, cc, size + 1);
