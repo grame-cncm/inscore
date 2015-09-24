@@ -307,7 +307,9 @@ void IMessageList::sendWebMsg() const
 	for (unsigned int i=0; i < list().size(); i++) {
 		const IMessage * msg = list()[i];
 		SIMessage copy = IMessage::create(*msg);
+#ifndef PARSERTEST
 		gWebMsgStack->push(new SIMessage(copy));
+#endif
 	}
 }
 
