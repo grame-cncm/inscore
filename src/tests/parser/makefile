@@ -1,7 +1,7 @@
 
 ARCH = -arch x86_64
 
-LIB := ../../library
+LIB := ../../inscore
 MAP := ../../libmapping
 PARSER := $(LIB)/ITLParser
 
