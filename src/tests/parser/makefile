@@ -1,12 +1,15 @@
 
 ARCH = -arch x86_64
 
+LIB := ../../library
+MAP := ../../libmapping
+PARSER := $(LIB)/ITLParser
 
 ###################
 # no script options
-CXXFLAGS :=  -g -DNO_OSCSTREAM -I.. -I../../controller -I../../lib -I../../interface -I../../mapping -I../../model -I../../events -I../../view -I../../atomic -I../../scripting -I../../libmapping/src/misc -I../../libmapping/src/parser -I../../libmapping/src/relations -I../../libmapping/src/segments -I../../../lib/oscpack $(ARCH) -DPARSERTEST
+CXXFLAGS :=  -g -DNO_OSCSTREAM -I$(PARSER) -I$(LIB)/controller -I$(LIB)/lib -I$(LIB)/interface -I$(LIB)/mapping -I$(LIB)/model -I$(LIB)/events -I$(LIB)/view -I$(LIB)/atomic -I$(LIB)/scripting -I$(MAP)/src/misc -I$(MAP)/src/parser -I$(MAP)/src/relations -I$(MAP)/src/segments -I../../../lib/oscpack $(ARCH) -DPARSERTEST
 
-OBJ := ../ITLparser.o ../ITLparse.o ../ITLlex.o  ../../libmapping/src/misc/rational.o ../../controller/IMessage.o  ../../scripting/TScripting.o ../../lib/Tools.o testparser.o 
+OBJ := $(PARSER)/ITLparser.o $(PARSER)/ITLparse.o $(PARSER)/ITLlex.o  $(MAP)/src/misc/rational.o $(LIB)/controller/IMessage.o  $(LIB)/scripting/TScripting.o $(LIB)/lib/Tools.o testparser.o 
 
 ###################
 # lua options
@@ -40,4 +43,4 @@ check: testparser
 clean:
 	rm -f $(OBJJS)  $(OBJLUA) testparser
 
-../ITLparser.o : ../ITL.l ../ITL.y
+$(PARSER)/ITLparser.o : $(PARSER)/ITL.l $(PARSER)/ITL.y

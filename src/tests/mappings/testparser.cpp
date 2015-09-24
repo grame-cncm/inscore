@@ -28,7 +28,8 @@
 #include "TRect.h"
 
 using namespace std;
-using namespace interlude;
+using namespace inscore;
+
 
 class testreader : public interlude::mapreader
 { 
