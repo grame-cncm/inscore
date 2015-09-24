@@ -419,7 +419,7 @@ void IMessage::printArgs(OSCStream& osc) const
 			if (n == 0) continue;					// empty message list
 			else n -= 1;
 			osc << "(";
-			for (int i=0; i < n; i++) {
+			for (size_t i=0; i < n; i++) {
 				const IMessage* msg = msgs->list()[i];
 				msg->linearize(osc);
 				osc << ":";

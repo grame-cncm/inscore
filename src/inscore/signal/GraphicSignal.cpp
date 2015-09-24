@@ -85,7 +85,7 @@ GraphicFrames::GraphicFrames(const vector<float>& value)
 	: Frame (value)
 {
 	fSize = int(ceil (float(value.size()) / GraphicFrame::FrameSize()));
-	int fill = fSize * GraphicFrame::FrameSize();
+	size_t fill = fSize * GraphicFrame::FrameSize();
 	for (size_t i = value.size(); i < fill; i++)
 		fData.push_back(0.f);
 }
