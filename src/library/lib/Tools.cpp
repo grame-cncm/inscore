@@ -59,7 +59,11 @@ unsigned long Tools::getIP( const string& hostname)
 		name = getHostName();
 	else
 		name = hostname;
+#ifndef PARSERTEST
 	return GetHostByName(name.c_str());
+#else
+	return 0;
+#endif
 }
 
 string	Tools::ip2string (unsigned long ip)
