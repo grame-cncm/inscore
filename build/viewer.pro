@@ -16,8 +16,8 @@ QT += core gui widgets svg printsupport multimedia multimediawidgets qml websock
 ############################## 
 ROOT = $$PWD/..
 SRC  = $$ROOT/src
-APPL = $$SRC/application
-LIB  = $$SRC/library
+APPL = $$SRC/inscoreviewer
+LIB  = $$SRC/inscore
 
 ############################## 
 # source and headers
