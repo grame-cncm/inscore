@@ -43,10 +43,9 @@ help :
 	@echo "  win32 : to build for Windows"
 	@echo "  linux : to build for Linux"
 	@echo "  android : to build for android"
-	@echo "    You can add the two variables KEYSTOREPATH=XXX CERTIFICATEALIAS=YYY"
-	@echo "    respectively the keystore path and the certificat alias to sign the application"
 	@echo "  installAndroid DEVICE=XXX : to install application on Android device"
-	@echo "    with XXX the device serial number"
+	@echo "    with XXX the device serial number (can be retrieved using 'make devandroid')"
+	@echo "  devandroid : to get the serial number of the connected device"
 
 #===============================================================
 # building INScore on Mac OS X
