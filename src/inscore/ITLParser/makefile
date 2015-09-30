@@ -7,8 +7,6 @@ PREFIX := ITL
 code : $(OUT)
 
 ITLparse.cpp : ITL.y
-	$(YACC) -d -o ITLparse.cpp  -p $(PREFIX) ITL.y
-
 ITLparse.hpp : ITL.y
 	$(YACC) -d -o ITLparse.cpp  -p $(PREFIX) ITL.y
 
