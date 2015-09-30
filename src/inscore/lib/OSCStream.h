@@ -135,7 +135,7 @@ class OSCErrorStream : public OSCStream
 	std::stringstream	fSStream;
 	std::string			fAddress;
 	IApplLog*			fLogWindow;
-	// Streamstring to concat error.
+	// Streamstring to concat error. Introduced for scripts posted from the web.
 	std::stringstream	fSStreamConcat;
 	bool fConcat;
 
