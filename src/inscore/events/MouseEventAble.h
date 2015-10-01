@@ -28,6 +28,7 @@
 #define __MouseEventAble__
 
 #include <QGraphicsSceneMouseEvent>
+#include <QTouchEvent>
 #include "EventsAble.h"
 
 namespace inscore
@@ -53,19 +54,47 @@ class _MouseEventAble
 template <typename T> class MouseEventAble : public T
 {
 	public:
-			MouseEventAble(const IObject* h) : fEventsHandler(h)	{ T::setAcceptHoverEvents(true); }
+			MouseEventAble(const IObject* h) : fEventsHandler(h)
+					{ T::setAcceptHoverEvents(true); T::setAcceptTouchEvents(true); }
 
 	protected:
 		const IObject * fEventsHandler;
 		
 		void handleEvent (QPointF pos,  EventsAble::eventype type) const	{ _MouseEventAble::handleEvent(fEventsHandler, pos, type); }
 
+		bool sceneEvent			(QEvent * event) {
+			switch (event->type()) {
+				case QEvent::TouchBegin:
+				case QEvent::TouchEnd:
+				case QEvent::TouchUpdate: {
+						QTouchEvent *touchEvent = static_cast<QTouchEvent *>(event);
+						QList<QTouchEvent::TouchPoint> touchPoints = touchEvent->touchPoints();
+						if (touchPoints.count()) {
+							handleEvent (touchPoints[0].pos(), touch2inscore(event->type()));
+						}
+					}
+					return true;
+				default:
+					return T::sceneEvent(event);
+			}
+
+			return true;
+		}
 		void mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event )		{ handleEvent (event->pos(), EventsAble::kMouseDoubleClick); }
 		void mouseMoveEvent		( QGraphicsSceneMouseEvent * event )		{ handleEvent (event->pos(), EventsAble::kMouseMove); }
 		void mousePressEvent	( QGraphicsSceneMouseEvent * event)			{ handleEvent (event->pos(), EventsAble::kMouseDown); }
 		void mouseReleaseEvent	( QGraphicsSceneMouseEvent * event)			{ handleEvent (event->pos(), EventsAble::kMouseUp); }
 		void hoverEnterEvent	( QGraphicsSceneHoverEvent * event )		{ handleEvent (event->pos(), EventsAble::kMouseEnter); }
 		void hoverLeaveEvent	( QGraphicsSceneHoverEvent * event )		{ handleEvent (event->pos(), EventsAble::kMouseLeave); }
+		EventsAble::eventype touch2inscore	( int type )	{
+			switch (type) {
+				case QEvent::TouchBegin:	return EventsAble::kMouseDown;
+				case QEvent::TouchEnd:		return EventsAble::kMouseUp;
+				case QEvent::TouchUpdate:	return EventsAble::kMouseMove;
+				default :					return EventsAble::kUnknownEvent;
+			}
+			return EventsAble::kUnknownEvent;
+		}
 };
 
 } // end namespoace
