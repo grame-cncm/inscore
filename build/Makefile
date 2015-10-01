@@ -91,7 +91,7 @@ ios/INScoreViewer.xcodeproj : viewer.pro
 # building INScore for Android
 #===============================================================
 SPECANDROID = -spec android-g++
-SIGN=--sign ../../rsrc/inscore.keystore grame-inscore  # passwd 'grameinscore'
+SIGN=--sign ../../rsrc/inscore.keystore grame-inscore  --storepass grameinscore
 
 android : android/Makefile INScoreAndroid
 
