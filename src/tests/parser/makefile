@@ -1,5 +1,5 @@
 
-ARCH = -arch x86_64
+#ARCH = -arch x86_64
 
 LIB := ../../library
 MAP := ../../libmapping
@@ -7,11 +7,11 @@ PARSER := $(LIB)/ITLParser
 
 ###################
 # no script options
-CXXFLAGS :=  -g -DNO_OSCSTREAM -I$(PARSER) -I$(LIB)/controller -I$(LIB)/lib -I$(LIB)/interface -I$(LIB)/mapping -I$(LIB)/model -I$(LIB)/events -I$(LIB)/view -I$(LIB)/scripting -I$(MAP)/src/misc -I$(MAP)/src/parser -I$(MAP)/src/relations -I$(MAP)/src/segments -I../../../lib/oscpack $(ARCH) -DPARSERTEST
+CXXFLAGS :=  -g -DNO_OSCSTREAM -I$(PARSER) -I$(LIB)/controller -I$(LIB)/lib -I$(LIB)/interface -I$(LIB)/mapping -I$(LIB)/model -I$(LIB)/events -I$(LIB)/view -I$(LIB)/scripting -I$(MAP)/src/misc -I$(MAP)/src/parser -I$(MAP)/src/relations -I$(MAP)/src/segments -I../../../lib/oscpack $(ARCH) -I../expression -DPARSERTEST -std=c++11
 
 #CXXFLAGS :=  -g -DNO_OSCSTREAM -I$(PARSER) -I$(LIB)/controller -I$(LIB)/lib -I$(LIB)/interface -I$(LIB)/mapping -I$(LIB)/model -I$(LIB)/events -I$(LIB)/view -I$(LIB)/atomic -I$(LIB)/scripting -I$(MAP)/src/misc -I$(MAP)/src/parser -I$(MAP)/src/relations -I$(MAP)/src/segments -I../../../lib/oscpack $(ARCH) -DPARSERTEST
 
-OBJ := $(PARSER)/ITLparser.o $(PARSER)/ITLparse.o $(PARSER)/ITLlex.o  $(MAP)/src/misc/rational.o $(LIB)/controller/IMessage.o  $(LIB)/scripting/TScripting.o $(LIB)/lib/Tools.o testparser.o 
+OBJ := $(PARSER)/ITLparser.o $(PARSER)/ITLparse.o $(PARSER)/ITLlex.o  $(MAP)/src/misc/rational.o $(LIB)/controller/IMessage.o  $(LIB)/scripting/TScripting.o $(LIB)/lib/Tools.o ../expression/IExpression.o ../expression/IExpressionFactory.o  testparser.o
 
 testparser: $(OBJ) 
 	g++  -g $(CXXFLAGS)  $(OBJ) -o testparser

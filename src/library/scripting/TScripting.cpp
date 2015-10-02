@@ -46,10 +46,15 @@ class TEnv;
 
 //--------------------------------------------------------------------------------------------
 TScripting::TScripting(TJSEngine* js, TLua* lua)
-	: 	fJavascript(js), fLua(lua)
+    : 	fJavascript(js), fLua(lua)
+#ifdef EXPRESSIONTEST
+     ,fExprFactory(ExprFactory::create())
+#endif
 {
 	fMessages = IMessageList::create();
 	fEnv = TEnv::create();
+
+
 }
 
 TScripting::~TScripting()	{}
@@ -183,4 +188,60 @@ IMessage::argslist TScripting::resolve (const char* var, const char * defaultVal
 	return val;
 }
 
+
+//--------------------------------------------------------------------------------------------
+//#ifdef EXPRESSIONTEST
+
+Sbaseparam* TScripting::createExpr(std::string operatorName, Sbaseparam* param1, Sbaseparam* param2){
+    SIExprArgbase arg1 = argFromParam(param1);
+    SIExprArgbase arg2 = argFromParam(param2);
+
+    SIExpression expr;
+    if(fExprFactory->createExpr(operatorName, arg1, arg2,expr)){
+        IMsgParam<SIExpression>* param = new IMsgParam<SIExpression>(expr);
+        return new Sbaseparam(param);
+    }
+
+    ITLErr<<"ExpressionFactory: error operator \""<< operatorName <<"\" unknown"<<ITLEndl;
+    return emptyArg();
+}
+
+Sbaseparam* TScripting::createArgFromExpr(Sbaseparam* param){
+
+    //----- extract SIExpression from the base param;  ------
+    SIExpression expr = exprFromParam(param);
+
+    //----- encapsulate expression into an ExprArg  -----
+    return createArg<SIExpression>(expr);
+}
+
+SIExprArgbase TScripting::argFromParam(Sbaseparam *param)
+{
+    SIExprArgbase defaut;
+
+    SIExprArgbase arg((*param)->value<SIExprArgbase>(defaut));
+
+    if(arg == defaut){
+        ITLErr<<"expression parameter is not a valid argument, check parser to fix the bug...";
+    return defaut;
+    }
+
+    return arg;
+}
+
+
+SIExpression TScripting::exprFromParam(const Sbaseparam *param)
+{
+    SIExpression defaut;
+
+    SIExpression expr((*param)->value<SIExpression>(defaut));
+
+    if(expr == defaut){
+        ITLErr<<"expression parameter is not a valid expression";
+        return defaut;
+    }
+
+    return expr;
+}
+//#endif
 } // namespace

@@ -23,7 +23,6 @@
 
 */
 
-
 #ifndef __TScripting__
 #define __TScripting__
 
@@ -35,8 +34,11 @@
 #include <TQtJs.h>
 #endif
 #include "IMessage.h"
-
 #include "smartpointer.h"
+
+//#ifdef EXPRESSIONTEST
+#include "IExpressionFactory.h"
+//#endif
 
 typedef void* yyscan_t;
 
@@ -85,7 +87,76 @@ class TScripting
 		IMessage::argslist		resolve	(const char* var, const char * defaultVal=0);
 		IMessage::argslist		resolve	(const IMessage* var);
 		const SIMessageList&	messages() const { return fMessages; }
+
+//#ifdef EXPRESSIONTEST
+
+private:
+        ExprFactory* fExprFactory;
+public:
+		/*!
+		 * \brief create a message param that encapsulate a smart pointer on an argument IExprArg with the corresponding type artT
+		 * \param argument to encapsulate
+		 * \return a simple message param
+		 */
+		template<typename argT> Sbaseparam* createArg(argT arg){
+            SIExprArgbase argB = fExprFactory->createArg<argT>(arg);
+		    IMsgParam<SIExprArgbase>* param = new IMsgParam<SIExprArgbase>(argB);
+		    return new Sbaseparam(param);
+		}
+
+        /*!
+        * \brief surcharge createArg to accept parser object
+        * \param pointer on the arg string
+        * \return a simple message param
+        */
+        template<typename argT> Sbaseparam* createArg(std::string* arg){
+            argT param(*arg);
+            return createArg<argT>(param);
+        }
+
+
+        /*!
+         * \brief encapsulate an expression into a valid expression argument
+         * \return a simple Sbaseparam
+         */
+        Sbaseparam* createArgFromExpr(Sbaseparam* param);
+
+		/*!
+		 * \brief create a message param that contains an Expression Operator
+		 * \param operatorName: the name of the operator
+		 * \param arg1: first argument passed to the operator
+		 * \param arg2: second argument passed to the operator
+		 * \return a simple message param
+		 */
+        Sbaseparam* createExpr(std::string operatorName, Sbaseparam* param1, Sbaseparam* param2);
+        Sbaseparam* createExpr(std::string* operatorName, Sbaseparam* param1, Sbaseparam* param2){return createExpr(*operatorName, param1, param2);}
+
+
+        /*!
+         * \brief dig into a Sbaseparam to extract the smart pointer on IExprArgbase
+         * \param the base param containing the argument
+         * \return the arguments
+		 */
+        static SIExprArgbase argFromParam(Sbaseparam* param);
+
+        /*!
+         * \brief dig into a Sbaseparam to extract the smart pointer on IExpression (for testing purpose)
+         * \param the base param containing the expression
+         * \return the IExpression
+         */
+        static SIExpression exprFromParam(const Sbaseparam* param);
+
+        /*!
+         * \brief construct an empty arg, used when syntax  errors are found
+         * \return an empty arg: <std::string> ""
+         */
+        inline Sbaseparam* emptyArg(){
+            return createArg<std::string>("");
+        }
+
+//#endif
 };
+
 
 } // namespace
 

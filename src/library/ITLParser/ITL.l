@@ -15,6 +15,7 @@
 //#include <stdio.h>
 #include <iostream>
 #include "IMessage.h"
+#include "IExpression.h"
 #include "ITLparser.h"
 #include "ITLparse.hpp"
 
@@ -36,6 +37,7 @@ using namespace std;
    }
 
 static int nested;
+static int expressionNested=0;
 
 #define YY_NO_UNISTD_H
 // ----------------------------------------------------------------------------------------
@@ -69,6 +71,9 @@ static  char* unescape (char * str) {
 %x LUASECTION
 		/* javascript section */
 %x JSECTION
+		/* evaluable expression section */
+%s EXPRSECTION
+
 
 DIGIT	[0-9]
 LETTER  [a-zA-Z]
@@ -120,11 +125,12 @@ EOL		[\x0a\x0d]
 {SPACE}*"#"			BEGIN CMNTLN;
 {SPACE}*"!"			BEGIN CMNTLN;
 <CMNTLN>.*	
-<CMNTLN>{EOL}+		BEGIN INITIAL;
+<CMNTLN>{EOL}+		if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
 
 <COMMENT>.|{EOL}*
 <COMMENT>"(*"		nested++; 
-<COMMENT>"*)"		if (--nested==0) BEGIN INITIAL;
+ /* check the current context (EXPRSECTION or INITIAL) to close comment */
+<COMMENT>"*)"		if (--nested==0) {if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;}
 {SPACE}*"(*"		nested=1; BEGIN COMMENT;
 
  /* ----------------------------------------- */
@@ -150,19 +156,25 @@ EOL		[\x0a\x0d]
 "'"							BEGIN QSTR;
 <DQSTR>([^\"]|"\\\"")*		yyextra->fText = unescape(yytext); return QUOTEDSTRING;
 <QSTR>([^']|"\\'")*			yyextra->fText = unescape(yytext); return QUOTEDSTRING;
-<DQSTR>\"					BEGIN INITIAL;
-<QSTR>'						BEGIN INITIAL;
+<DQSTR>\"					if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
+<QSTR>'						if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
 
+
+ /* ----------------------------------------- */
+ /*	file path */
+ /* ----------------------------------------- */
+
+ /*.?.?{PATHSEP{HOSTCHAR}+}+.{HOSTCHAR}+		return FILEPATH*/
 
  /* ----------------------------------------- */
  /*	lang sections */
  /* ----------------------------------------- */
 "<?"{SPACE}*"lua"			BEGIN LUASECTION;
-<LUASECTION>"?>"			BEGIN INITIAL;
+<LUASECTION>"?>"			if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
 <LUASECTION>({EOL}|"?"[^>]|[^?])*	yyextra->fText = unescape(yytext); return LUASCRIPT;
 
 "<?"{SPACE}*"javascript"	BEGIN JSECTION;
-<JSECTION>"?>"				BEGIN INITIAL;
+<JSECTION>"?>"				if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
 <JSECTION>({EOL}|"?"[^>]|[^?])*		yyextra->fText = unescape(yytext); return JSCRIPT;
 
  /* ----------------------------------------- */
@@ -171,6 +183,18 @@ EOL		[\x0a\x0d]
 {RECHAR}+								yyextra->fText = yytext; return REGEXP;			/* regular expression */
 {RECHAR}*"["{RECLASS}+"]"{RECHAR}*		yyextra->fText = yytext; return REGEXP;			/* regular expression */
 {RECHAR}*"{"[_a-zA-Z0-9,]+"}"{RECHAR}*	yyextra->fText = yytext; return REGEXP;			/* regular expression */
+
+
+ /* ----------------------------------------- */
+ /*	evaluable expression section */
+ /* ----------------------------------------- */
+
+ /*"expr("					expressionNested = 1; BEGIN EXPRSECTION; return EXPRESSIONSTART;*/
+<EXPRSECTION>"("				expressionNested++; return EXPRESSIONSTART;
+<EXPRSECTION>"expr("				expressionNested++; return EXPRESSIONSTART;
+<EXPRSECTION>")"				 return EXPRESSIONEND;
+ /*")e"						return EXPRESSIONEND;*/
+"expr("						expressionNested = 1; BEGIN EXPRSECTION; return EXPRESSIONSTART;
 
  /* ----------------------------------------- */
  /*	basic delimiters and markers */

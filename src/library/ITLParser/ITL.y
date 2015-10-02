@@ -7,8 +7,10 @@
 
 #include "ITLparser.h"
 #include "IMessage.h"
+#include "IExpression.h"
 #include "IMessageStream.h"
 #include "ITLparse.hpp"
+
 
 %}
 
@@ -31,7 +33,7 @@
 	inscore::IMessage::argslist*	plist;
 	inscore::IMessage::TUrl*		url;
 	inscore::SIMessage*				msg;
-	inscore::SIMessageList*			msgList;
+    inscore::SIMessageList*			msgList;
 }
 
 %token INT UINT FLOAT
@@ -39,6 +41,7 @@
 %token EQUAL
 %token REGEXP
 %token PATHSEP
+%token FILEPATH
 %token STRING QUOTEDSTRING
 %token WATCH EVAL
 %token ERR
@@ -47,17 +50,19 @@
 %token VARSTART LEFTPAR RIGHTPAR
 %token COLON COMMA POINT HOSTNAME IPNUM
 
+%token EXPRESSIONSTART EXPRESSIONEND
+
 %token LUASCRIPT
 %token JSCRIPT
 
 /*------------------------------   types  ------------------------------*/
 %type <num> 	number
 %type <real>	FLOAT
-%type <str>		STRING QUOTEDSTRING PATHSEP IDENTIFIER REGEXP LUASCRIPT JSCRIPT
-%type <str>		identifier oscaddress relativeaddress oscpath varname variabledecl hostname
+%type <str>		STRING QUOTEDSTRING FILEPATH PATHSEP IDENTIFIER REGEXP LUASCRIPT JSCRIPT
+%type <str>		identifier oscaddress relativeaddress oscpath varname variabledecl hostname operatorid
 %type <msg>		message
 %type <msgList>	messagelist script
-%type <p>		param watchmethod 
+%type <p>		param watchmethod expArg expression
 %type <plist>	params watchparams variable eval
 %type <url>		urlprefix
 %type <addr>	address
@@ -129,7 +134,7 @@ script		: LUASCRIPT			{	$$ = new inscore::SIMessageList (inscore::IMessageList::
 
 //_______________________________________________
 // messages specification (extends osc spec.)
-//_______________________________________________
+//____________________________________expArg expression___________
 
 message		: address					{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc)); (*$$)->setUrl($1->fUrl); delete $1; }
 			| address params			{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl)); delete $1; delete $2; }
@@ -150,7 +155,7 @@ message		: address					{ $$ = new inscore::SIMessage(inscore::IMessage::create($
 
 messagelist : message					{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
 											(*$$)->list().push_back(*$1);
-											delete $1 }
+											delete $1; }
 			| messagelist COMMA message {	$$ = $1; (*$$)->list().push_back(*$3); delete $3; }
 			;
 
@@ -224,6 +229,7 @@ param		: number			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1)
 			| FLOAT				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); }
 			| identifier		{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); delete $1; }
 			| QUOTEDSTRING		{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
+            | expression		{ $$ = $1;}
 			;
 
 
@@ -241,6 +247,22 @@ varname		: IDENTIFIER			{ $$ = new string(context->fText); }
 // misc
 number		: UINT					{ $$ = context->fInt; }
 			| INT					{ $$ = context->fInt; }
+			;
+
+//_______________________________________________
+// expression declaration
+
+expression		: EXPRESSIONSTART operatorid expArg expArg EXPRESSIONEND	{ $$ = context->fReader.createExpr( $2, $3, $4); delete $2; delete $3; delete $4;}
+			;
+
+operatorid		: identifier
+			;
+
+expArg			: QUOTEDSTRING		{ $$ = context->fReader.createArg<std::string>(context->fText); }
+            | FILEPATH		{ $$ = context->fReader.createArg<inscore::filepath>(context->fText); }
+            | identifier		{ $$ = context->fReader.createArg<inscore::identifier>(context->fText); delete $1;}
+            | oscaddress		{ $$ = context->fReader.createArg<inscore::oscaddress>(context->fText); delete $1;}
+            | expression		{ $$ = context->fReader.createArgFromExpr($1); delete $1;}
 			;
 
 %%

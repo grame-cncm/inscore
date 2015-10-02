@@ -1,0 +1,1 @@
+/ITL/scene set gmn expr( _plus "[a b " expr(_plus (*dans une expression, expr peut être implicite*) ( _plus "c d " "e f ") "g]") );
