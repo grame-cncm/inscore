@@ -33,12 +33,11 @@
 #elif defined QTJSENGINE
 #include <TQtJs.h>
 #endif
+#include "IExpressionFactory.h"
+
 #include "IMessage.h"
 #include "smartpointer.h"
 
-#ifdef EXPRESSIONTEST
-#include "IExpressionFactory.h"
-#endif
 
 typedef void* yyscan_t;
 
@@ -65,6 +64,7 @@ class TScripting
 {
 	TJSEngine*			fJavascript;
 	TLua*				fLua;
+    ExprFactory*        fExprFactory;
 	SIMessageList		fMessages;
 	STEnv				fEnv;
 
@@ -88,11 +88,7 @@ class TScripting
 		IMessage::argslist		resolve	(const IMessage* var);
 		const SIMessageList&	messages() const { return fMessages; }
 
-#ifdef EXPRESSIONTEST
 
-private:
-        ExprFactory* fExprFactory;
-public:
 		/*!
 		 * \brief create a message param that encapsulate a smart pointer on an argument IExprArg with the corresponding type artT
 		 * \param argument to encapsulate
@@ -154,7 +150,6 @@ public:
             return createArg<std::string>("");
         }
 
-#endif
 };
 
 

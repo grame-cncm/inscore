@@ -4,8 +4,6 @@
 #include "ITLparser.h"
 #include "IMessage.h"
 #include "IMessageStream.h"
-#include "ExprEvaluator.h"
-#include "ExprReader.h"
 
 using namespace inscore;
 using namespace std;
@@ -13,9 +11,9 @@ using namespace std;
 int main(int argc, char * argv[])
 {
 
-    //*
+    /*
     TScripting reader(0);
-    Sbaseparam* e = reader.createExpr("plus", reader.createArg<filepath>(new std::string("hello.txt")), reader.createArg<std::string>("World!"));
+    Sbaseparam* e = reader.createExpr("pitch", reader.createArg<filepath>(new std::string("score.gmn")), reader.createArg<std::string>("[e f g]"));
 
     if(e == NULL)
         return -1;

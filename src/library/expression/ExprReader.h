@@ -1,8 +1,7 @@
 #ifndef EXPRREADER_H
 #define EXPRREADER_H
 
-#include "ExprEvaluator.h"
-
+#include "evaluator.h"
 
 namespace inscore {
 
@@ -10,18 +9,21 @@ namespace inscore {
 /*!
  * \brief Special evaluator: read the instruction without process them, return the original expression
  */
-class ExprReader: public ExprEvaluator{
+class ExprReader: public evaluator{
 public:
+    ExprReader();
+
+    virtual bool evalExpression(const IExpression* expr, std::string &result);
+
     std::string eval(std::string arg);
-    std::string eval(IExpression* arg);
+    std::string eval(const IExpression* arg);
     std::string eval(filepath arg);
     std::string eval(identifier arg);
     std::string eval(oscaddress arg);
 
-    static ExprReader* create(){return new ExprReader();}
-
 protected:
-    ExprReader();
+
+    bool evalSucceed;
 };
 
 }

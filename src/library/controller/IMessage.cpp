@@ -79,7 +79,7 @@ static bool needQuotes (const string& str)
 //--------------------------------------------------------------------------
 // IMessage implementation
 //--------------------------------------------------------------------------
-IMessage::IMessage(const IMessage& msg)
+IMessage::IMessage(const IMessage& msg): smartable()
 {
 	*this = msg;
 }
@@ -318,8 +318,8 @@ void IMessageList::sendWebMsg() const
 //--------------------------------------------------------------------------
 void IMessage::print(std::ostream& out, int i, int nested) const
 {
-	string str; int val; float fval;
-	SIMessageList msgs; TJavaScript js; TLuaScript lua;
+    string str; int val; float fval;
+    SIMessageList msgs; TJavaScript js; TLuaScript lua; SIExpression expr;
 
 	if (param(i, str)) {
 		const char * q = needQuotes (str) ? "\"" : "";
@@ -339,6 +339,8 @@ void IMessage::print(std::ostream& out, int i, int nested) const
 		out << "<? javascript " << js << " ?>";
 	else if (param(i, lua))
 		out << "<? lua " << js << " ?>";
+    else if(param(i, expr))
+        out << expr;
 }
 
 //--------------------------------------------------------------------------
@@ -409,11 +411,12 @@ void IMessage::print(OSCErrorStream& osc) const
 void IMessage::printArgs(OSCStream& osc) const
 {
 	for (int i=0; i < size(); i++) {
-		std::string str; float fv; int iv;
+        std::string str; float fv; int iv; SIExpression expr;
 		SIMessageList msgs;
 		if (param(i, fv))			osc << fv;		// param is a float value
 		else if (param(i, iv))		osc << iv;		// param is an int32 value
 		else if (param(i, str))		osc << str;		// param is a string
+        else if (param(i, expr))		osc << expr;// param is an expression
 		else if (param(i, msgs)) {					// param is a list of messages
 			size_t n = msgs->list().size();
 			if (n == 0) continue;					// empty message list
@@ -503,10 +506,10 @@ IMessage& operator << (IMessage& out, const IMessage* m)
 //	out << addr << m->message();
 	out << m->address() << m->message();
 	for (int i = 0; i < m->size(); i++) {
-		string strv; int iv; float fv;
+        string strv; int iv; float fv;
 		if (m->param(i, iv))	out << iv;
 		else if (m->param(i, fv))	out << fv;
-		else if (m->param(i, strv))	out << strv;
+        else if (m->param(i, strv))	out << strv;
 	}
 	return out;
 }

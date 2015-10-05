@@ -28,20 +28,20 @@ typedef libmapping::SMARTP<IExprArgbase> SIExprArgbase;
  */
 class IExpression: public libmapping::smartable{
 private:
-    OperatorPrototype* fOperatorPrototype;
-    SIExprArgbase fArg1, fArg2;
+    const OperatorPrototype* fOperatorPrototype;
+    const SIExprArgbase fArg1, fArg2;
 
 public:
     IExpression(OperatorPrototype* operatorPrototype, SIExprArgbase arg1, SIExprArgbase arg2);
 
 
 
-    SIExprArgbase getArg1(){return fArg1;}
-    SIExprArgbase getArg2(){return fArg2;}
+    SIExprArgbase getArg1() const {return fArg1;}
+    SIExprArgbase getArg2() const {return fArg2;}
 
-    OperatorPrototype* getOperatorPrototype(){return fOperatorPrototype;}
+    const OperatorPrototype* getOperatorPrototype() const {return fOperatorPrototype;}
 
-    std::string getName();
+    std::string getName() const;
 };
 
 
@@ -50,8 +50,9 @@ public:
  */
 class OperatorPrototype{
     private:
-	OperatorCb fCallback;
-	std::string fName;
+    const std::string fName;
+    const OperatorCb fCallback;
+
 
     public:
 	/*!
@@ -79,7 +80,7 @@ class OperatorPrototype{
  */
 class IExprArgbase: public libmapping::smartable, public evaluable{
 public:
-    virtual std::string accept(evaluator *e)=0;
+    virtual std::string accept(evaluator* e) const =0;
 
 protected:
     IExprArgbase():libmapping::smartable(){}
@@ -106,13 +107,17 @@ public:
      * \param e the evaluator
      * \return the evaluated string
      */
-    std::string accept(evaluator *e){
+    std::string accept(evaluator* e) const {
         return e->eval(fArg);
     }
 
 };
 
-}
+std::ostream&	operator << (std::ostream& out, const SIExpression& expr);
+std::ostream&	operator << (std::ostream& out, const SIExprArgbase& exprArg);
+
+} //end namespace
+
 
 
 

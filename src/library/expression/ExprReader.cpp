@@ -1,6 +1,14 @@
 #include "ExprReader.h"
+#include "IExpression.h"
 
-using namespace inscore;
+namespace inscore{
+
+bool ExprReader::evalExpression(const IExpression *expr, std::string &result)
+{
+    evalSucceed = true;
+    result = eval(expr);
+    return evalSucceed;
+}
 
 std::string ExprReader::eval(std::string arg)
 {
@@ -8,7 +16,7 @@ std::string ExprReader::eval(std::string arg)
 }
 
 
-std::string inscore::ExprReader::eval(IExpression *arg)
+std::string inscore::ExprReader::eval(const IExpression *arg)
 {
     return "expr( "
             + arg->getName() + " "
@@ -38,7 +46,9 @@ std::string ExprReader::eval(oscaddress arg)
 
 //_________________________________
 ExprReader::ExprReader():
-    ExprEvaluator()
+    evaluator()
 {
-
+    evalSucceed = true;
 }
+
+} //end namespace

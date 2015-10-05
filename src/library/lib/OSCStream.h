@@ -55,6 +55,8 @@ typedef struct OSCEnd {} OSCEnd;
 
 class IMessage;
 class IMessageList;
+class IExprArgbase;
+class IExpression;
 class IColor;
 
 //--------------------------------------------------------------------------
@@ -108,6 +110,8 @@ class OSCStream
 						OSCStream& operator <<(OSCStream& s, const OSCWarn& val);
 						OSCStream& operator <<(OSCStream& s, const char* val);
 						OSCStream& operator <<(OSCStream& s, const std::string& val);
+                        OSCStream& operator <<(OSCStream& s, const IExprArgbase* val);
+                        OSCStream& operator <<(OSCStream& s, const IExpression* val);
 				inline	OSCStream& operator <<(OSCStream& s, int val)		{ s.stream() << val; return s; }
 				inline	OSCStream& operator <<(OSCStream& s, long val)		{ s.stream() << (int)val; return s; }
 				inline	OSCStream& operator <<(OSCStream& s, float val)		{ s.stream() << val; return s; }
@@ -168,6 +172,8 @@ class OSCErrorStream : public OSCStream
 						OSCErrorStream& operator <<(OSCErrorStream& s, const OSCWarn& val);
 						OSCErrorStream& operator <<(OSCErrorStream& s, const char* val);
 						OSCErrorStream& operator <<(OSCErrorStream& s, const std::string& val);
+                        OSCErrorStream& operator <<(OSCErrorStream& s, const IExprArgbase* val);
+                        OSCErrorStream& operator <<(OSCErrorStream& s, const IExpression* val);
 				inline	OSCErrorStream& operator <<(OSCErrorStream& s, int val)			{ s.stream() << " " << val; return s; }
 				inline	OSCErrorStream& operator <<(OSCErrorStream& s, long val)		{ s.stream() << " " << (int)val; return s; }
 				inline	OSCErrorStream& operator <<(OSCErrorStream& s, float val)		{ s.stream() << " " << val; return s; }

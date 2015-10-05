@@ -46,10 +46,8 @@ class TEnv;
 
 //--------------------------------------------------------------------------------------------
 TScripting::TScripting(TJSEngine* js, TLua* lua)
-    : 	fJavascript(js), fLua(lua)
-#ifdef EXPRESSIONTEST
-     ,fExprFactory(ExprFactory::create())
-#endif
+    : 	fJavascript(js), fLua(lua),
+        fExprFactory(ExprFactory::create())
 {
 	fMessages = IMessageList::create();
 	fEnv = TEnv::create();
@@ -189,8 +187,10 @@ IMessage::argslist TScripting::resolve (const char* var, const char * defaultVal
 }
 
 
+
 //--------------------------------------------------------------------------------------------
-#ifdef EXPRESSIONTEST
+//          Expression support
+//--------------------------------------------------------------------------------------------
 
 Sbaseparam* TScripting::createExpr(std::string operatorName, Sbaseparam* param1, Sbaseparam* param2){
     SIExprArgbase arg1 = argFromParam(param1);
@@ -243,5 +243,4 @@ SIExpression TScripting::exprFromParam(const Sbaseparam *param)
 
     return expr;
 }
-#endif
 } // namespace

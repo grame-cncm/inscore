@@ -28,6 +28,7 @@
 #include "IMessage.h"
 #include "IMessageHandlers.h"
 #include "GUIDOEngine.h"
+#include "GmnEvaluator.h"
 
 using namespace std;
 using namespace libmapping;
@@ -152,12 +153,15 @@ MsgHandler::msgStatus IGuidoCode::set ( const IMessage* msg )
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status;
 
-	string t;
-	if ((msg->size() == 2) && msg->param(1, t)) {
-		if ( t != getGMN() ) {
-			setGMN( t );
-			status = MsgHandler::kProcessed;
-			newData(true);
+    string t; SIExpression expr;
+    if ((msg->size() == 2) && (msg->param(1, t)||msg->param(1, expr) )) {
+        if(expr!=NULL)
+            GmnEvaluator::create(this)->evalExpression(expr, t);
+
+        if ( t != getGMN() ) {
+            setGMN( t );
+            status = MsgHandler::kProcessed;
+            newData(true);
 		}
 		else status = MsgHandler::kProcessedNoChange;
 

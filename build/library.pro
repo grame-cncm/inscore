@@ -7,6 +7,7 @@ OBJECTS_DIR = tmp
 MOC_DIR = tmp
 
 VERSION = 1.16
+CONFIG += c++11
 
 ############################## 
 # locations
@@ -139,7 +140,7 @@ ios {
 ############################## 
 unix:!macx:!ios:!android {
     DEFINES += OSC_HOST_LITTLE_ENDIAN __LINUX__
-    LIBS += -lGUIDOEngine
+    LIBS += -lGUIDOEngine -lguidoar
     QMAKE_CXXFLAGS += -Wno-unused-parameter
 }
 

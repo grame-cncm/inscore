@@ -29,7 +29,7 @@ class IExpression;
 class evaluator{
 public:
 
-    virtual std::string eval(IExpression* arg)=0;
+    virtual std::string eval(const IExpression* arg)=0;
     virtual std::string eval(std::string arg)=0;
     virtual std::string eval(filepath arg)=0;
     virtual std::string eval(identifier arg)=0;
@@ -42,7 +42,7 @@ public:
      * \param result: if the evaluation succeed, store the evaluated string
      * \return true if the evaluation succeed, false otherwise
      */
-    virtual bool evalExpression(IExpression *expr, std::string& result)=0;
+    virtual bool evalExpression(const IExpression *expr, std::string& result)=0;
 
 };
 
@@ -51,7 +51,8 @@ public:
  */
 class evaluable{
 public:
-    virtual std::string accept(evaluator* e)=0;
+    std::string accept(evaluator& e){return accept(&e);}
+    virtual std::string accept(evaluator* e) const =0;
 };
 
 }

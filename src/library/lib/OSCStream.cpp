@@ -22,6 +22,8 @@
 #include <iostream>
 #include "OSCStream.h"
 #include "IMessage.h"
+#include "IExpression.h"
+#include "ExprReader.h"
 #include "IColor.h"
 #include "IApplVNodes.h"
 
@@ -106,6 +108,21 @@ OSCStream& operator <<(OSCStream& s, const string& val)
 	s.stream() << val.c_str();
 	return s; 
 }
+//--------------------------------------------------------------------------
+OSCStream &operator <<(OSCStream &s, const IExprArgbase *val){
+    ExprReader reader;
+    s.stream() << " " << val->accept(&reader).c_str();
+    return s;
+}
+//--------------------------------------------------------------------------
+OSCStream &operator <<(OSCStream &s, const IExpression *val){
+    string r;
+    ExprReader reader;
+    if(reader.evalExpression(val, r))
+        s.stream() << " " << r.c_str();
+
+    return s;
+}
 
 //--------------------------------------------------------------------------
 OSCStream& operator <<(OSCStream& s, const IMessageList* list)	
@@ -165,6 +182,22 @@ OSCErrorStream& operator <<(OSCErrorStream& s, const string& val)
 }
 
 //--------------------------------------------------------------------------
+OSCErrorStream &operator <<(OSCErrorStream &s, const IExprArgbase *val){
+    ExprReader reader;
+    s.stream() << " " << val->accept(&reader);
+    return s;
+}
+//--------------------------------------------------------------------------
+OSCErrorStream &operator <<(OSCErrorStream &s, const IExpression *val){
+    string r;
+    ExprReader reader;
+    if(reader.evalExpression(val, r))
+        s.stream() << " " << r;
+
+    return s;
+}
+
+//--------------------------------------------------------------------------
 OSCErrorStream& operator <<(OSCErrorStream& s, const IMessageList* list)	
 { 
 	for (unsigned int i =0; i < list->list().size(); i++) {
@@ -183,6 +216,8 @@ OSCErrorStream& operator <<(OSCErrorStream& s, const OSCErr& val)	{ return s.sta
 OSCErrorStream& operator <<(OSCErrorStream& s, const OSCWarn& val)	{ return s.start(val.fAddress); }
 OSCErrorStream& operator <<(OSCErrorStream& s, const OSCStart& val)	{ return s.start(val.fAddress); }
 OSCErrorStream& operator <<(OSCErrorStream& s, const OSCEnd )		{ return s.end(); }
+
+
 
 
 } // end namespace

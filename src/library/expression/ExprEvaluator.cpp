@@ -2,17 +2,21 @@
 #include <fstream>
 #include "ITLError.h"
 
-using namespace inscore;
+#include "IObject.h"
+
+
 using namespace std;
 
-bool ExprEvaluator::evalExpression(IExpression *expr, std::string& result){
-    evalSucceed = true;
+namespace inscore{
+
+bool ExprEvaluator::evalExpression(const IExpression *expr, std::string& result){
+    fEvalStatus.init();
     result = eval(expr);
-    return evalSucceed;
+    return fEvalStatus.hasEvalSucceed();
 }
 
 //_____________________________________________________________
-std::string ExprEvaluator::eval(IExpression* arg)
+std::string ExprEvaluator::eval(const IExpression* arg)
 {
     std::string arg1 = arg->getArg1()->accept(this);
     std::string arg2 = arg->getArg2()->accept(this);
@@ -37,7 +41,7 @@ std::string ExprEvaluator::eval(filepath arg)
 
     if(!ifs.is_open()){
         ITLErr<<"ExprEvaluator: can't find \""<<(string)arg<<"\""<<ITLEndl;
-        evalSucceed = false;
+        fEvalStatus.fail();
         return "";
     }
 
@@ -55,33 +59,57 @@ std::string ExprEvaluator::eval(filepath arg)
 //_____________________________________________________________
 std::string ExprEvaluator::eval(identifier arg)
 {
-    oscaddress address;
-    //= fContextObject.getOSCAddress() + "/" + arg;
+    oscaddress address = fContextObject->getParent()->getOSCAddress() + "/" + (string)arg;
 
-    return eval(address);
+    std::string r = eval(address);
+
+    if(fEvalStatus.hasEvalSucceed())
+        return r;
+
+     ITLErr<<"ExprEvaluator: "<<(string)arg<<" not known identifier"<<ITLEndl;
+    return "";
 }
 
 
 //_____________________________________________________________
 std::string ExprEvaluator::eval(oscaddress arg)
 {
-    IObject* o;
-    //fContextObject.findnode(arg);
+    const IObject* o = fContextObject->findnode(arg);
 
+    if(o==NULL){
+        ITLErr<<"ExprEvaluator: "<<(string)arg<<" not known at this address..."<<ITLEndl;
+        fEvalStatus.fail();
+        return "";
+    }
     return eval(o);
 }
 
 //_____________________________________________________________
-std::string ExprEvaluator::eval(IObject *arg)
+std::string ExprEvaluator::eval(const IObject *arg)
 {
-    return "IObject";
+    return "IObject: "+arg->name();
 }
 
 
 
 //_____________________________________________________________
-ExprEvaluator::ExprEvaluator():
+ExprEvaluator::ExprEvaluator(const IObject* contextObject):
     evaluator()
 {
-    evalSucceed = true;
+    fContextObject = contextObject;
 }
+
+
+
+//_____________________________________________________________
+void EvaluationStatus::init()
+{
+    fEvalSucceed = true;
+}
+
+EvaluationStatus::EvaluationStatus():fEvalSucceed(true)
+{
+
+}
+
+} //end namespace

@@ -38,6 +38,7 @@
 #include "extvector.h"
 #include "smartpointer.h"
 
+#include "IExpression.h"
 
 namespace inscore
 {
@@ -132,6 +133,7 @@ class IMessage;
 typedef libmapping::SMARTP<IMessage>		SIMessage;
 class IMessageList;
 typedef libmapping::SMARTP<IMessageList>	SIMessageList;
+
 
 /// a javascript type definition to handle javascript as message argument
 class TJavaScript : public std::string	{
@@ -442,6 +444,14 @@ class IMessage : public Message, public libmapping::smartable
 		\return false when types don't match
 	*/
 	bool	param(int i, TLuaScript& val) const { val = param(i)->value<TLuaScript>(val); return param(i)->isType<TLuaScript>(); }
+
+    /*!
+        \brief gives a message messages parameters
+        \param i the parameters start index (0 <= i < size()-1)
+        \param val on output: the parameter value when the parameter type matches
+        \return false when types don't match
+    */
+    bool	param(int i, SIExpression& val) const { val = param(i)->value<SIExpression>(val); return param(i)->isType<SIExpression>(); }
 
 
 	// ----------------------- utilities ----------------------

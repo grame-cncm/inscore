@@ -73,7 +73,7 @@ win32 {
 ############################## 
 # linux support
 ############################## 
-unix:!android:!macx:!ios:LIBS += -L. -lINScore -lGUIDOEngine -lmicrohttpd
+unix:!android:!macx:!ios:LIBS += -L. -lINScore -lGUIDOEngine -lguidoar -lmicrohttpd
 
 ############################## 
 # android support
