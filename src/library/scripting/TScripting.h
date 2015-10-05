@@ -36,9 +36,9 @@
 #include "IMessage.h"
 #include "smartpointer.h"
 
-//#ifdef EXPRESSIONTEST
+#ifdef EXPRESSIONTEST
 #include "IExpressionFactory.h"
-//#endif
+#endif
 
 typedef void* yyscan_t;
 
@@ -88,7 +88,7 @@ class TScripting
 		IMessage::argslist		resolve	(const IMessage* var);
 		const SIMessageList&	messages() const { return fMessages; }
 
-//#ifdef EXPRESSIONTEST
+#ifdef EXPRESSIONTEST
 
 private:
         ExprFactory* fExprFactory;
@@ -154,7 +154,7 @@ public:
             return createArg<std::string>("");
         }
 
-//#endif
+#endif
 };
 
 

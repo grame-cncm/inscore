@@ -2,10 +2,12 @@
 #define EXPRESSIONNODE_H
 
 #include <string>
-#include "smartpointer.h"
-#include "IMessage.h"
-#include "evaluator.h"
 #include <iostream>
+
+#include "smartpointer.h"
+
+#include "evaluator.h"
+
 
 namespace inscore{
 
@@ -14,10 +16,11 @@ typedef std::string (*OperatorCb)(std::string,std::string);
 class IExpression;
 typedef libmapping::SMARTP<IExpression> SIExpression;
 
+class OperatorPrototype;
+
 class IExprArgbase;
 typedef libmapping::SMARTP<IExprArgbase> SIExprArgbase;
 
-class OperatorPrototype;
 
 //____________________________________________________________
 /*!
@@ -76,11 +79,8 @@ class OperatorPrototype{
  */
 class IExprArgbase: public libmapping::smartable, public evaluable{
 public:
-    static IExprArgbase* invalid(){ return new IExprArgbase();}
-    virtual std::string accept(evaluator *e){
-        std::cout<<"Invalid param..."<<std::endl;
-        return "";
-    }
+    virtual std::string accept(evaluator *e)=0;
+
 protected:
     IExprArgbase():libmapping::smartable(){}
 };

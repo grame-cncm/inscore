@@ -1,10 +1,14 @@
 #include "ExprEvaluator.h"
+#include <fstream>
+#include "ITLError.h"
 
 using namespace inscore;
+using namespace std;
 
 bool ExprEvaluator::evalExpression(IExpression *expr, std::string& result){
+    evalSucceed = true;
     result = eval(expr);
-    return true;
+    return evalSucceed;
 }
 
 //_____________________________________________________________
@@ -27,8 +31,23 @@ std::string ExprEvaluator::eval(std::string arg)
 std::string ExprEvaluator::eval(filepath arg)
 {
     std::string fileData="";
+    std::ifstream ifs;
 
-    ///TODO: acquire file
+    ifs.open(arg, std::ifstream::in);
+
+    if(!ifs.is_open()){
+        ITLErr<<"ExprEvaluator: can't find \""<<(string)arg<<"\""<<ITLEndl;
+        evalSucceed = false;
+        return "";
+    }
+
+    char c = ifs.get();
+    while (ifs.good()) {
+        fileData += c;
+        c = ifs.get();
+      }
+
+    ifs.close();
 
     return eval(fileData);
 }
@@ -60,12 +79,9 @@ std::string ExprEvaluator::eval(IObject *arg)
 
 
 
-
-
-
 //_____________________________________________________________
 ExprEvaluator::ExprEvaluator():
     evaluator()
 {
-
+    evalSucceed = true;
 }

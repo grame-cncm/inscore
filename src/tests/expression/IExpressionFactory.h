@@ -4,9 +4,6 @@
 #include <string>
 #include <unordered_map>
 
-#include "smartpointer.h"
-#include "ITLError.h"
-
 #include "IExpression.h"
 
 namespace inscore{

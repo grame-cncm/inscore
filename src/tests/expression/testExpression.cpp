@@ -15,7 +15,7 @@ int main(int argc, char * argv[])
 
     //*
     TScripting reader(0);
-    Sbaseparam* e = reader.createExpr("plus", reader.createArg<std::string>("Hello "), reader.createArg<std::string>("World!"));
+    Sbaseparam* e = reader.createExpr("plus", reader.createArg<filepath>(new std::string("hello.txt")), reader.createArg<std::string>("World!"));
 
     if(e == NULL)
         return -1;
@@ -26,13 +26,19 @@ int main(int argc, char * argv[])
 
     std::string r;
 
+    std::cout<<"ExprEvaluator::eval():"<<endl;
     ExprEvaluator* evalutator = ExprEvaluator::create();
-    evalutator->evalExpression(expr, r);
-    std::cout<<r<<std::endl;
+    if(evalutator->evalExpression(expr, r))
+        std::cout<<r<<std::endl;
 
+
+    std::cout<<"__________________________________"<<endl;
+
+    std::cout<<"ExprReader::eval():"<<endl;
     evalutator = ExprReader::create();
-    evalutator->evalExpression(expr, r);
-    std::cout<<r<<std::endl;
+    if(evalutator->evalExpression(expr, r))
+        std::cout<<r<<std::endl;
+
 
     /*/
 

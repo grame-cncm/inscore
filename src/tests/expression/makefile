@@ -14,13 +14,13 @@ CXXFLAGS :=  -g -DNO_OSCSTREAM -I$(PARSER) -I$(LIB)/controller -I$(LIB)/lib -I$(
 OBJ := $(PARSER)/ITLparser.o $(PARSER)/ITLparse.o $(PARSER)/ITLlex.o $(MAP)/src/misc/rational.o $(LIB)/controller/IMessage.o  $(LIB)/lib/Tools.o $(LIB)/scripting/TScripting.o IExpression.o IExpressionFactory.o ExprEvaluator.o ExprReader.o testExpression.o
 
 testExpressionFactory: $(OBJ)
-	g++  -g $(CXXFLAGS)  $(OBJ) -o testExpressionFactory
+	g++  -g $(CXXFLAGS)  $(OBJ) -o testExpression
 
 check: testparser
-	valgrind -v --dsymutil=yes --leak-check=full --show-reachable=yes ./testExpressionFactory $(FILE) 2> memcheck.txt
+	valgrind -v --dsymutil=yes --leak-check=full --show-reachable=yes ./testExpression $(FILE) 2> memcheck.txt
 	open memcheck.txt
 
 clean:
-	rm -f $(OBJ)  testExpressionFactory
+	rm -f $(OBJ)
 
 $(PARSER)/ITLparser.o : $(PARSER)/ITL.l $(PARSER)/ITL.y

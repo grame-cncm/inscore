@@ -190,7 +190,7 @@ IMessage::argslist TScripting::resolve (const char* var, const char * defaultVal
 
 
 //--------------------------------------------------------------------------------------------
-//#ifdef EXPRESSIONTEST
+#ifdef EXPRESSIONTEST
 
 Sbaseparam* TScripting::createExpr(std::string operatorName, Sbaseparam* param1, Sbaseparam* param2){
     SIExprArgbase arg1 = argFromParam(param1);
@@ -243,5 +243,5 @@ SIExpression TScripting::exprFromParam(const Sbaseparam *param)
 
     return expr;
 }
-//#endif
+#endif
 } // namespace

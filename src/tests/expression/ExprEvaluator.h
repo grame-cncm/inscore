@@ -4,9 +4,7 @@
 #include <string>
 
 #include "smartpointer.h"
-
 //#include "IObject.h"
-#include "ITLError.h"
 
 #include "evaluator.h"
 #include "IExpression.h"
@@ -22,7 +20,7 @@ class IObject;
 class ExprEvaluator: public evaluator{
 public:
 
-    bool evalExpression(IExpression* expr, std::string &result);
+    virtual bool evalExpression(IExpression* expr, std::string &result);
 
     virtual std::string eval(IExpression* arg);
     virtual std::string eval(std::string arg);
@@ -38,6 +36,7 @@ public:
 protected:
     ExprEvaluator();
 
+    bool evalSucceed;
    // IObject fContextObject;
 
 };
