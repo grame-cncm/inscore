@@ -222,7 +222,7 @@ SIExprArgbase TScripting::argFromParam(Sbaseparam *param)
     SIExprArgbase arg((*param)->value<SIExprArgbase>(defaut));
 
     if(arg == defaut){
-        ITLErr<<"expression parameter is not a valid argument, check parser to fix the bug...";
+        ITLErr<<"expression parameter is not a valid argument, check parser to fix the bug..."<<ITLEndl;
     return defaut;
     }
 
@@ -237,7 +237,7 @@ SIExpression TScripting::exprFromParam(const Sbaseparam *param)
     SIExpression expr((*param)->value<SIExpression>(defaut));
 
     if(expr == defaut){
-        ITLErr<<"expression parameter is not a valid expression";
+        ITLErr<<"expression parameter is not a valid expression"<<ITLEndl;
         return defaut;
     }
 

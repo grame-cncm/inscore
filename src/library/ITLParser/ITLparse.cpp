@@ -1844,7 +1844,7 @@ yyreduce:
 
   case 61:
 #line 264 "ITL.y" /* yacc.c:1646  */
-    { (yyval.p) = context->fReader.createArg<inscore::oscaddress>(context->fText); delete (yyvsp[0].str);}
+    { (yyval.p) = context->fReader.createArg<inscore::oscaddress>((yyvsp[0].str));}
 #line 1849 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
