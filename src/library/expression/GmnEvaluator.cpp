@@ -8,13 +8,13 @@ using namespace std;
 
 namespace inscore{
 
-#define GUIDOAR_OPERATOR(guidoOperator) [](std::string str1, std::string str2) -> std::string						\
+#define GUIDOAR_OPERATOR(guidoOperator) [](const std::string& str1, const std::string& str2) -> const std::string						\
 											{																		\
 											std::ostringstream oss;													\
 											guido::garErr err = guidoOperator( str1.c_str(), str2.c_str(), oss );	\
-											if ( err == guido::kNoErr )												\
+											if ( err == guido::kNoErr ){												\
 												return oss.str();													\
-											return "";																\
+											}return "";																\
 											}
 
 
@@ -31,7 +31,7 @@ GmnEvaluator::GmnEvaluator(const IObject *contextObject): ExprEvaluator("GmnEval
 	registerOperator(opGuidoTop,	GUIDOAR_OPERATOR(guido::guidoGTop));
 	registerOperator(opGuidoBottom,	GUIDOAR_OPERATOR(guido::guidoGBottom));
 
-	registerOperator(opGuidoRythm, [](std::string str1, std::string str2) -> std::string
+	registerOperator(opGuidoRythm, [](const std::string& str1, const std::string& str2) -> const std::string
 								{
 									std::ostringstream oss;
 									guido::garErr err = guido::guidoApplyRythm( str1.c_str(), str2.c_str(), guido::kApplyForwardLoop, oss );
@@ -40,7 +40,7 @@ GmnEvaluator::GmnEvaluator(const IObject *contextObject): ExprEvaluator("GmnEval
 									else
 										return "GuidoAR Error!";
 								});
-	registerOperator(opGuidoPitch, [] (std::string str1, std::string str2) -> std::string
+	registerOperator(opGuidoPitch, [] (const std::string& str1, const std::string& str2) -> const std::string
 								{
 									std::ostringstream oss;
 									guido::garErr err = guido::guidoApplyPitch( str1.c_str(), str2.c_str(), guido::kApplyForwardLoop, guido::kUseLowest, oss );
@@ -52,7 +52,7 @@ GmnEvaluator::GmnEvaluator(const IObject *contextObject): ExprEvaluator("GmnEval
 }
 
 //_____________________________________________________
-std::string GmnEvaluator::eval(const IObject *arg)
+const std::string GmnEvaluator::eval(const IObject *arg)
 {
     const IGuidoCode* guido = dynamic_cast<const IGuidoCode*>(arg);
     if(!guido){
@@ -61,7 +61,7 @@ std::string GmnEvaluator::eval(const IObject *arg)
         return "";
     }
 
-    return guido->getGMN();
+	return guido->getCleanGMN();
 }
 
 } //end namespace

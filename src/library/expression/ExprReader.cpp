@@ -10,13 +10,14 @@ bool ExprReader::evalExpression(const IExpression *expr, std::string &result)
     return evalSucceed;
 }
 
-std::string ExprReader::eval(std::string arg)
+//_________________________________
+const std::string ExprReader::eval(std::string arg)
 {
     return "\""+arg+"\"";
 }
 
-
-std::string inscore::ExprReader::eval(const IExpression *arg)
+//_________________________________
+const std::string ExprReader::eval(const IExpression *arg)
 {
     return "expr( "
             + arg->getName() + " "
@@ -26,19 +27,19 @@ std::string inscore::ExprReader::eval(const IExpression *arg)
 }
 
 //_________________________________
-std::string ExprReader::eval(filepath arg)
+const std::string ExprReader::eval(filepath arg)
+{
+	return arg;
+}
+
+//_________________________________
+const std::string ExprReader::eval(identifier arg)
 {
     return arg;
 }
 
 //_________________________________
-std::string ExprReader::eval(identifier arg)
-{
-    return arg;
-}
-
-//_________________________________
-std::string ExprReader::eval(oscaddress arg)
+const std::string ExprReader::eval(oscaddress arg)
 {
     return arg;
 }

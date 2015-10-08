@@ -10,7 +10,7 @@ class GmnEvaluator : public ExprEvaluator
 public:
     static GmnEvaluator* create(IObject* contextObject){return new GmnEvaluator(contextObject);}
 
-    std::string eval(const IObject *arg);
+	const std::string eval(const IObject *arg);
 
 protected:
         GmnEvaluator(const IObject* contextObject);

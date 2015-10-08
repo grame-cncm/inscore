@@ -56,6 +56,7 @@ class IGuidoStream : public virtual IGuidoCode
 		virtual void	accept (Updater*u);
     
         GuidoStream * getGuidoStream() {return fGuidoStream;}
+		const std::string getCleanGMN() const;
     
 	protected:
 				 IGuidoStream( const std::string& name, IObject * parent);

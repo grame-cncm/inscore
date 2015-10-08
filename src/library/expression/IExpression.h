@@ -77,7 +77,7 @@ public:
      * \param e the evaluator
      * \return the evaluated string
      */
-    std::string accept(evaluator* e) const {
+	std::string accept(evaluator* e) const {
         return e->eval(fArg);
     }
 

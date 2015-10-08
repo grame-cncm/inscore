@@ -88,6 +88,7 @@ class IGuidoCode : public IObject
 		void	print (std::ostream& out) const;
 
 		const std::string&	getGMN() const			{ return fGMN; }
+		virtual const std::string getCleanGMN() const {return fGMN; }
 		int			getPage() const					{ return fPage; }
 		TFloatSize	getPageFormat() const			{ return fPageFormat; }
 		int			getNbOfPageColumns() const		{ return fNbOfPageColumns; }

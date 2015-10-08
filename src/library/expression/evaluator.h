@@ -29,11 +29,11 @@ class IExpression;
 class evaluator{
 public:
 
-    virtual std::string eval(const IExpression* arg)=0;
-    virtual std::string eval(std::string arg)=0;
-    virtual std::string eval(filepath arg)=0;
-    virtual std::string eval(identifier arg)=0;
-    virtual std::string eval(oscaddress arg)=0;
+	virtual const std::string eval(const IExpression* arg)=0;
+	virtual const std::string eval(std::string arg)=0;
+	virtual const std::string eval(filepath arg)=0;
+	virtual const std::string eval(identifier arg)=0;
+	virtual const std::string eval(oscaddress arg)=0;
 
 
     /*!

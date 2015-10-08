@@ -27,6 +27,7 @@
 #include "IScene.h"
 #include "Updater.h"
 #include "VGuidoItemView.h"
+#include "GUIDOParse.h"
 
 using namespace std;
 
@@ -48,7 +49,13 @@ IGuidoStream::IGuidoStream( const std::string& name, IObject * parent )
 
 IGuidoStream::~IGuidoStream()
 {
-    GuidoCloseStream(fGuidoStream);
+	GuidoCloseStream(fGuidoStream);
+}
+
+//--------------------------------------------------------------------------
+const string IGuidoStream::getCleanGMN() const
+{
+	return GuidoStream2GuidoString(fGuidoStream);
 }
 
 //--------------------------------------------------------------------------

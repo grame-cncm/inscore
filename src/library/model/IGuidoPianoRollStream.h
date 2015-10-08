@@ -57,6 +57,8 @@ class IGuidoPianoRollStream : public virtual IGuidoStream, public virtual IGuido
 		static SIGuidoPianoRollStream create(const std::string& name, IObject * parent)	{ return new IGuidoPianoRollStream(name, parent); }
 
 		virtual void	accept (Updater*u);
+
+		const std::string getCleanGMN() const;
     
 	protected:
 				 IGuidoPianoRollStream( const std::string& name, IObject * parent);
@@ -69,6 +71,7 @@ class IGuidoPianoRollStream : public virtual IGuidoStream, public virtual IGuido
 
 		/// \brief the \c 'write' message handler
 		virtual MsgHandler::msgStatus write (const IMessage* msg);
+
 
 };
 

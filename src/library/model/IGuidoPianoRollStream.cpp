@@ -47,6 +47,12 @@ void IGuidoPianoRollStream::accept (Updater* u)
 }
 
 //--------------------------------------------------------------------------
+const string IGuidoPianoRollStream::getCleanGMN() const
+{
+	return GuidoStream2GuidoString(fGuidoStream);
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus IGuidoPianoRollStream::set (const IMessage* msg )
 {
     // Delete handler if objet pianorollstream object already exist

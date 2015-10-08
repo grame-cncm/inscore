@@ -16,11 +16,11 @@ public:
 
     virtual bool evalExpression(const IExpression* expr, std::string &result);
 
-    std::string eval(std::string arg);
-    std::string eval(const IExpression* arg);
-    std::string eval(filepath arg);
-    std::string eval(identifier arg);
-    std::string eval(oscaddress arg);
+	const std::string eval(std::string arg);
+	const std::string eval(const IExpression* arg);
+	const std::string eval(filepath arg);
+	const std::string eval(identifier arg);
+	const std::string eval(oscaddress arg);
 
 protected:
 

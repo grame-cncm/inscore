@@ -28,7 +28,7 @@ public:
     bool hasEvalSucceed(){return fEvalSucceed;}
 };
 
-typedef std::string (*OperatorCb)(std::string,std::string);
+typedef const std::string (*OperatorCb)(const std::string&,const std::string&);
 
 /*!
  * \brief IEvaluableExpr evaluator mother class. Handle context for the evaluation, error...
@@ -38,13 +38,13 @@ public:
 
     virtual bool evalExpression(const IExpression* expr, std::string &result);
 
-    virtual std::string eval(const IExpression* arg);
-    virtual std::string eval(std::string arg);
-    virtual std::string eval(filepath arg);
-    virtual std::string eval(identifier arg);
-    virtual std::string eval(oscaddress arg);
+	virtual const std::string eval(const IExpression* arg);
+	virtual const std::string eval(std::string arg);
+	virtual const std::string eval(filepath arg);
+	virtual const std::string eval(identifier arg);
+	virtual const std::string eval(oscaddress arg);
 
-    virtual std::string eval(const IObject *arg);
+	virtual const std::string eval(const IObject *arg);
 
 
 	static ExprEvaluator* create(const IObject* contextObject){return new ExprEvaluator("ExprEvaluator", contextObject);}

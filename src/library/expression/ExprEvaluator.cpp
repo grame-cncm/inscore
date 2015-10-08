@@ -16,7 +16,7 @@ bool ExprEvaluator::evalExpression(const IExpression *expr, std::string& result)
 }
 
 //_____________________________________________________________
-std::string ExprEvaluator::eval(const IExpression* arg)
+const string ExprEvaluator::eval(const IExpression* arg)
 {
 	OperatorCb cb;
 
@@ -39,13 +39,13 @@ std::string ExprEvaluator::eval(const IExpression* arg)
 }
 
 //_____________________________________________________________
-std::string ExprEvaluator::eval(std::string arg)
+const string ExprEvaluator::eval(std::string arg)
 {
     return arg;
 }
 
 //_____________________________________________________________
-std::string ExprEvaluator::eval(filepath arg)
+const string ExprEvaluator::eval(filepath arg)
 {
     std::string fileData="";
     std::ifstream ifs;
@@ -70,7 +70,7 @@ std::string ExprEvaluator::eval(filepath arg)
 }
 
 //_____________________________________________________________
-std::string ExprEvaluator::eval(identifier arg)
+const string ExprEvaluator::eval(identifier arg)
 {
     oscaddress address = fContextObject->getParent()->getOSCAddress() + "/" + (string)arg;
 
@@ -84,7 +84,7 @@ std::string ExprEvaluator::eval(identifier arg)
 
 
 //_____________________________________________________________
-std::string ExprEvaluator::eval(oscaddress arg)
+const string ExprEvaluator::eval(oscaddress arg)
 {
     const IObject* o = fContextObject->findnode(arg);
 
@@ -97,7 +97,7 @@ std::string ExprEvaluator::eval(oscaddress arg)
 }
 
 //_____________________________________________________________
-std::string ExprEvaluator::eval(const IObject *arg)
+const string ExprEvaluator::eval(const IObject *arg)
 {
     return "IObject: "+arg->name();
 }
