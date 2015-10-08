@@ -1104,6 +1104,7 @@ MsgHandler::msgStatus IObject::set(const IMessage* msg)
 			fParent->cleanupSync();
 			return MsgHandler::kProcessed;		// message has been handled at IObject level
 		}
+		return MsgHandler::kProcessedNoChange;
 	}
 	return MsgHandler::kBadParameters;
 }
