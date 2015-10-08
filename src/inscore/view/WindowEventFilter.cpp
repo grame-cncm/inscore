@@ -28,6 +28,7 @@
 
 #include "WindowEventFilter.h"
 #include "VSceneView.h"
+#include "Methods.h"
 #include "INScore.h"
 
 namespace inscore
