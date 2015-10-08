@@ -13,6 +13,7 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.16
+- support for touch events (scene zoom is desactived due to a conflict with touch events)
 - new radial signal representation
 - httpd object is visible as a qrcode giving the server url
 - httpd object is now part of the library (not a plugin any more)
