@@ -52,7 +52,7 @@ help :
 #===============================================================
 macos : macos/INScore.xcodeproj macos/INScoreViewer.xcodeproj INScoreMac
 
-xcodeproj:
+xcodeproj: library.pro viewer.pro
 	[ -d macos ] || mkdir macos
 	cd macos && qmake $(SPEC) ../library.pro 
 	cd macos && qmake $(SPEC) ../viewer.pro 
@@ -95,7 +95,7 @@ SIGN=--sign ../../rsrc/inscore.keystore grame-inscore  --storepass grameinscore
 
 android : android/Makefile INScoreAndroid
 
-android/Makefile:
+android/Makefile: library.pro INScore.pro
 	[ -d android ] || mkdir android
 	cd android && qmake-android $(SPECANDROID) ../INScore.pro
 
