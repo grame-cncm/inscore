@@ -1,7 +1,9 @@
 #include "ExprFactory.h"
 
 
-#include <sstream>
+//#include <sstream>
+#include <string>
+#include <regex>
 
 
 
@@ -62,7 +64,17 @@ std::unordered_map<std::string, OperatorPrototype*> ExprFactory::operatorList = 
 
 //_______________________________________________________
 ExprFactory* ExprFactory::create(){
-    return new ExprFactory();
+	return new ExprFactory();
+}
+
+//_______________________________________________________
+SIExprArgbase ExprFactory::createArg(std::string string)
+{
+	std::regex fileRegex("/?(\\.\\.?/)*([^/\\?:*<>|']+/?)+\\.[^/\\?:*<>|']+");
+	if(std::regex_match(string, fileRegex))
+		return createArg<filepath>(string);
+
+	return createArg<std::string>(string);
 }
 
 

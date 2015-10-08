@@ -90,18 +90,18 @@ class TScripting
 
 
 		/*!
-		 * \brief create a message param that encapsulate a smart pointer on an argument IExprArg with the corresponding type artT
+		 * \brief create a message param that encapsulate a smart pointer on an argument IExprArg with the corresponding type artT (if artT is std::string, che)
 		 * \param argument to encapsulate
 		 * \return a simple message param
 		 */
 		template<typename argT> Sbaseparam* createArg(argT arg){
-            SIExprArgbase argB = fExprFactory->createArg<argT>(arg);
+			SIExprArgbase argB = fExprFactory->createArg(arg);
 		    IMsgParam<SIExprArgbase>* param = new IMsgParam<SIExprArgbase>(argB);
 		    return new Sbaseparam(param);
 		}
 
         /*!
-        * \brief surcharge createArg to accept parser object
+		* \brief surcharge createArg to accept parser string pointer
         * \param pointer on the arg string
         * \return a simple message param
         */

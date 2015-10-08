@@ -88,6 +88,9 @@ IDCHAR  [_a-zA-Z0-9]
  */
 HOSTCHAR [-a-zA-Z0-9]
 
+ /* allowed character for filename and path as defined for windows 7*/
+FILECHAR [^\\/?:*><|"' ]
+
  /* regular expression characters
     as defined by the OSC specification */
 RECHAR  [-_a-zA-Z0-9?+*]
@@ -154,6 +157,7 @@ EOL		[\x0a\x0d]
  /* ----------------------------------------- */
 "\""						BEGIN DQSTR;
 "'"							BEGIN QSTR;
+
 <DQSTR>([^\"]|"\\\"")*		yyextra->fText = unescape(yytext); return QUOTEDSTRING;
 <QSTR>([^']|"\\'")*			yyextra->fText = unescape(yytext); return QUOTEDSTRING;
 <DQSTR>\"					if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
@@ -163,7 +167,7 @@ EOL		[\x0a\x0d]
  /* ----------------------------------------- */
  /*	file path */
  /* ----------------------------------------- */
-(".""."?"/")*({HOSTCHAR}+"/"?)+"."{HOSTCHAR}+		yyextra->fText = yytext; return FILEPATH;
+"/"?(".""."?"/")*({FILECHAR}+"/"?)+"."{FILECHAR}+			yyextra->fText = unescape(yytext); return FILEPATH;	/*file path without space*/
 
  /* ----------------------------------------- */
  /*	lang sections */
@@ -192,7 +196,6 @@ EOL		[\x0a\x0d]
 <EXPRSECTION>"("				expressionNested++; return EXPRESSIONSTART;
 <EXPRSECTION>"expr("				expressionNested++; return EXPRESSIONSTART;
 <EXPRSECTION>")"				 return EXPRESSIONEND;
- /*")e"						return EXPRESSIONEND;*/
 "expr("						expressionNested = 1; BEGIN EXPRSECTION; return EXPRESSIONSTART;
 
  /* ----------------------------------------- */

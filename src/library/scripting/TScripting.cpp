@@ -202,7 +202,7 @@ Sbaseparam* TScripting::createExpr(std::string operatorName, Sbaseparam* param1,
         return new Sbaseparam(param);
     }
 
-    ITLErr<<"ExpressionFactory: error operator \""<< operatorName <<"\" unknown"<<ITLEndl;
+	ITLErr<<"ExpressionFactory error: operator \""<< operatorName <<"\" unknown"<<ITLEndl;
     return emptyArg();
 }
 
@@ -212,7 +212,7 @@ Sbaseparam* TScripting::createArgFromExpr(Sbaseparam* param){
     SIExpression expr = exprFromParam(param);
 
     //----- encapsulate expression into an ExprArg  -----
-    return createArg<SIExpression>(expr);
+	return createArg<SIExpression>(expr);
 }
 
 SIExprArgbase TScripting::argFromParam(Sbaseparam *param)

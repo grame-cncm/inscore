@@ -12,7 +12,7 @@ CXXFLAGS :=  -g -DNO_OSCSTREAM -I$(PARSER) -I$(LIB)/controller -I$(LIB)/lib -I$(
 
 
 
-OBJ := $(PARSER)/ITLparser.o $(PARSER)/ITLparse.o $(PARSER)/ITLlex.o $(MAP)/src/misc/rational.o $(LIB)/controller/IMessage.o  $(LIB)/lib/Tools.o $(LIB)/scripting/TScripting.o $(EXPR)/IExpression.o $(EXPR)/IExpressionFactory.o  $(EXPR)/ExprReader.o testExpression.o
+OBJ := $(PARSER)/ITLparser.o $(PARSER)/ITLparse.o $(PARSER)/ITLlex.o $(MAP)/src/misc/rational.o $(LIB)/controller/IMessage.o  $(LIB)/lib/Tools.o $(LIB)/scripting/TScripting.o $(EXPR)/IExpression.o $(EXPR)/ExprFactory.o  $(EXPR)/ExprReader.o $(EXPR)/Operators.o testExpression.o
 
 testExpressionFactory: $(OBJ)
 	g++  -g $(CXXFLAGS)  $(OBJ) -o testExpression

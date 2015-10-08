@@ -3,6 +3,7 @@
 #include "ITLError.h"
 
 #include "IObject.h"
+#include "IScene.h"
 
 
 using namespace std;
@@ -47,6 +48,9 @@ const string ExprEvaluator::eval(std::string arg)
 //_____________________________________________________________
 const string ExprEvaluator::eval(filepath arg)
 {
+
+	arg = fContextObject->getScene()->absolutePath(arg);
+
     std::string fileData="";
     std::ifstream ifs;
 

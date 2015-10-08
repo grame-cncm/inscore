@@ -36,6 +36,8 @@ public:
         return SIExprArgbase(argB);
     }
 
+	SIExprArgbase createArg(std::string string);
+
     /*!
      * \brief create a message param that contains an Expression Operator
      * \param operatorName: the name of the operator
