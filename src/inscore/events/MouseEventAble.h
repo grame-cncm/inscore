@@ -48,13 +48,16 @@ class _MouseEventAble
 		static void handleEvent (const IObject * obj, QPointF pos,  EventsAble::eventype type);
 		// converts a point to a date in the context of an object and a given map
 		static libmapping::rational point2date (const IObject * obj, float x, float y, const std::string& mapname, int n);
+		// retrieves a touch event coordinates
+		static QPointF touchPos	( QTouchEvent* event );
 };
 
 //----------------------------------------------------------------------
 template <typename T> class MouseEventAble : public T
 {
+	bool fClicked;
 	public:
-			MouseEventAble(const IObject* h) : fEventsHandler(h)
+			MouseEventAble(const IObject* h) : fClicked(false), fEventsHandler(h)
 					{ T::setAcceptHoverEvents(true); T::setAcceptTouchEvents(true); }
 
 	protected:
@@ -65,36 +68,28 @@ template <typename T> class MouseEventAble : public T
 		bool sceneEvent			(QEvent * event) {
 			switch (event->type()) {
 				case QEvent::TouchBegin:
+					touchBegin (static_cast<QTouchEvent *>(event));
+					return true;
 				case QEvent::TouchEnd:
-				case QEvent::TouchUpdate: {
-						QTouchEvent *touchEvent = static_cast<QTouchEvent *>(event);
-						QList<QTouchEvent::TouchPoint> touchPoints = touchEvent->touchPoints();
-						if (touchPoints.count()) {
-							handleEvent (touchPoints[0].pos(), touch2inscore(event->type()));
-						}
-					}
+					touchEnd (static_cast<QTouchEvent *>(event));
+					return true;
+				case QEvent::TouchUpdate:
+					touchUpdate (static_cast<QTouchEvent *>(event));
 					return true;
 				default:
 					return T::sceneEvent(event);
 			}
-
-			return true;
 		}
+		void touchBegin		( QTouchEvent * event )		{ handleEvent (_MouseEventAble::touchPos(event), EventsAble::kTouchBegin); }
+		void touchEnd		( QTouchEvent * event )		{ handleEvent (_MouseEventAble::touchPos(event), EventsAble::kTouchEnd); }
+		void touchUpdate	( QTouchEvent * event )		{ handleEvent (_MouseEventAble::touchPos(event), EventsAble::kTouchUpdate); }
+
 		void mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event )		{ handleEvent (event->pos(), EventsAble::kMouseDoubleClick); }
 		void mouseMoveEvent		( QGraphicsSceneMouseEvent * event )		{ handleEvent (event->pos(), EventsAble::kMouseMove); }
 		void mousePressEvent	( QGraphicsSceneMouseEvent * event)			{ handleEvent (event->pos(), EventsAble::kMouseDown); }
 		void mouseReleaseEvent	( QGraphicsSceneMouseEvent * event)			{ handleEvent (event->pos(), EventsAble::kMouseUp); }
 		void hoverEnterEvent	( QGraphicsSceneHoverEvent * event )		{ handleEvent (event->pos(), EventsAble::kMouseEnter); }
 		void hoverLeaveEvent	( QGraphicsSceneHoverEvent * event )		{ handleEvent (event->pos(), EventsAble::kMouseLeave); }
-		EventsAble::eventype touch2inscore	( int type )	{
-			switch (type) {
-				case QEvent::TouchBegin:	return EventsAble::kMouseDown;
-				case QEvent::TouchEnd:		return EventsAble::kMouseUp;
-				case QEvent::TouchUpdate:	return EventsAble::kMouseMove;
-				default :					return EventsAble::kUnknownEvent;
-			}
-			return EventsAble::kUnknownEvent;
-		}
 };
 
 } // end namespoace

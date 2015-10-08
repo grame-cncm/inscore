@@ -24,6 +24,7 @@
 */
 
 #include <QDebug>
+#include <QPointF>
 #include <set>
 
 #include "MouseEventAble.h"
@@ -102,6 +103,14 @@ SIMessageList _MouseEventAble::eval (const IMessageList* msgs, float x, float y,
 	}
 	return outmsgs;
 }
+
+//----------------------------------------------------------------------
+QPointF _MouseEventAble::touchPos	( QTouchEvent* event )	{
+			QList<QTouchEvent::TouchPoint> touchPoints = event->touchPoints();
+			if (touchPoints.count())
+				return touchPoints[0].pos();
+			return QPointF (0., 0.);
+		}
 
 //----------------------------------------------------------------------
 void _MouseEventAble::handleEvent (const IObject * obj, QPointF pos,  EventsAble::eventype type)
