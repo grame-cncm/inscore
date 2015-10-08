@@ -3,7 +3,8 @@ else { TEMPLATE = subdirs }
 
 # For visual studio project generation use : qmake main.pro -tp vc -r
 
-CONFIG += ordered c++11
+CONFIG += ordered c++11 debug
 SUBDIRS = library.pro viewer.pro
+
 
 #viewer.depends = library

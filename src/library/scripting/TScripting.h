@@ -33,7 +33,7 @@
 #elif defined QTJSENGINE
 #include <TQtJs.h>
 #endif
-#include "IExpressionFactory.h"
+#include "ExprFactory.h"
 
 #include "IMessage.h"
 #include "smartpointer.h"

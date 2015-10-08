@@ -7,7 +7,7 @@ OBJECTS_DIR = tmp
 MOC_DIR = tmp
 
 VERSION = 1.16
-CONFIG += c++11
+CONFIG += c++11 debug
 
 ############################## 
 # locations
@@ -57,6 +57,7 @@ INCLUDEPATH +=  $$files($$OSC)
 INCLUDEPATH +=  $$files($$QRENCODE)
 INCLUDEPATH +=  $$files($$JSON)
 INCLUDEPATH +=  $$GUIDO_PATH/include
+
 
 ############################## 
 # No view support, intended

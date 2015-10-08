@@ -9,15 +9,14 @@ namespace inscore
 //_________________________________________________
 IExpression::IExpression(OperatorPrototype *operatorPrototype, SIExprArgbase arg1, SIExprArgbase arg2):
     libmapping::smartable(),
-    fArg1(&(*arg1)), fArg2(&(*arg2))
+	fOperatorPrototype(operatorPrototype), fArg1(&(*arg1)), fArg2(&(*arg2))
 {
-    fOperatorPrototype = operatorPrototype;
 }
 
 //_________________________________________________
 std::string IExpression::getName() const
 {
-    return fOperatorPrototype->getName();
+	return fOperatorPrototype->getName();
 }
 
 

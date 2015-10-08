@@ -1,2 +1,2 @@
 /ITL/scene/score1 set gmn expr( par "[a1 b1 c1 d1]" "[a2 b2 c2 d2]");
-/ITL/scene/score2 set gmn expr(top /ITL/scene/score1 "[a]");
+/ITL/scene/score2 set gmn expr(top score.gmn "[a]");

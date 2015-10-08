@@ -5,6 +5,7 @@
 #include <unordered_map>
 
 #include "IExpression.h"
+#include "Operators.h"
 
 namespace inscore{
 
@@ -13,7 +14,7 @@ namespace inscore{
  */
 class ExprFactory{
 private:
-    std::unordered_map<std::string, OperatorPrototype*> fOperatorList;
+	static std::unordered_map<std::string, OperatorPrototype*> operatorList;
 
 public:
     /*!
@@ -45,11 +46,19 @@ public:
      */
     bool createExpr(std::string operatorName, SIExprArgbase param1, SIExprArgbase param2, SIExpression& expr);
 
+	/*!
+	 * \brief search for an operator prototype by name
+	 * \param name
+	 * \param op store the operator at this address
+	 * \return true if an operator was found, false otherwise
+	 */
+	static bool operatorByName(std::string name, OperatorPrototype *&op);
+
+	static void registerOperator(OperatorPrototype *op);
 private:
     ExprFactory();
 
-    void registerOperator(OperatorPrototype* op);
-    inline void registerOperator(std::string name, OperatorCb callback){registerOperator(new OperatorPrototype(name, callback));}
+
 
 };
 

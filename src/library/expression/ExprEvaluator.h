@@ -2,17 +2,21 @@
 #define EXPREVALUATOR_H
 
 #include <string>
+#include <unordered_map>
 
 #include "smartpointer.h"
 
 #include "evaluator.h"
 #include "IExpression.h"
-
+#include "Operators.h"
 
 namespace inscore{
 
 class IObject;
 
+/*!
+ * \brief Handle the status of the evaluator during the processing of the evaluation (failing...)
+ */
 class EvaluationStatus{
     bool fEvalSucceed;
 
@@ -23,6 +27,8 @@ public:
     void fail(){fEvalSucceed = false;}
     bool hasEvalSucceed(){return fEvalSucceed;}
 };
+
+typedef std::string (*OperatorCb)(std::string,std::string);
 
 /*!
  * \brief IEvaluableExpr evaluator mother class. Handle context for the evaluation, error...
@@ -41,13 +47,18 @@ public:
     virtual std::string eval(const IObject *arg);
 
 
-    static ExprEvaluator* create(const IObject* contextObject){return new ExprEvaluator(contextObject);}
+	static ExprEvaluator* create(const IObject* contextObject){return new ExprEvaluator("ExprEvaluator", contextObject);}
 
 protected:
-    ExprEvaluator(const IObject* contextObject);
+	ExprEvaluator(const char* name, const IObject* contextObject);
 
+	const char* fEvalName;
     EvaluationStatus fEvalStatus;
     const IObject* fContextObject;
+
+	std::unordered_map<const OperatorPrototype*, OperatorCb> fCallbackList;
+	void registerOperator(const OperatorPrototype &op, OperatorCb cb);
+	bool callbackByOperator(const OperatorPrototype* op, OperatorCb &cb) const ;
 
 };
 

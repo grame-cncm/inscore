@@ -155,10 +155,12 @@ MsgHandler::msgStatus IGuidoCode::set ( const IMessage* msg )
 
     string t; SIExpression expr;
     if ((msg->size() == 2) && (msg->param(1, t)||msg->param(1, expr) )) {
-        if(expr!=NULL)
-            GmnEvaluator::create(this)->evalExpression(expr, t);
 
-        if ( t != getGMN() ) {
+        if(expr!=NULL)
+            if(!GmnEvaluator::create(this)->evalExpression(expr, t))
+                return MsgHandler::kBadParameters;
+
+        if (t != getGMN()) {
             setGMN( t );
             status = MsgHandler::kProcessed;
             newData(true);

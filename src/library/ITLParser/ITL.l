@@ -163,8 +163,7 @@ EOL		[\x0a\x0d]
  /* ----------------------------------------- */
  /*	file path */
  /* ----------------------------------------- */
-
- /*.?.?{PATHSEP{HOSTCHAR}+}+.{HOSTCHAR}+		return FILEPATH*/
+(".""."?"/")*({HOSTCHAR}+"/"?)+"."{HOSTCHAR}+		yyextra->fText = yytext; return FILEPATH;
 
  /* ----------------------------------------- */
  /*	lang sections */

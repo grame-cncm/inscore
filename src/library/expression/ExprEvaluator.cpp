@@ -18,10 +18,23 @@ bool ExprEvaluator::evalExpression(const IExpression *expr, std::string& result)
 //_____________________________________________________________
 std::string ExprEvaluator::eval(const IExpression* arg)
 {
+	OperatorCb cb;
+
+	if( !callbackByOperator(arg->getOperatorPrototype(), cb) ){
+		ITLErr<<fEvalName	<<": operator \""
+							<<arg->getOperatorPrototype()->getName()
+							<<"\" has no definition in this evaluator";
+		fEvalStatus.fail();
+		return "";
+	}
+
     std::string arg1 = arg->getArg1()->accept(this);
+
+    if(!fEvalStatus.hasEvalSucceed())
+        return "";
+
     std::string arg2 = arg->getArg2()->accept(this);
 
-    OperatorCb cb = arg->getOperatorPrototype()->getCallback();
     return cb(arg1, arg2);
 }
 
@@ -40,7 +53,7 @@ std::string ExprEvaluator::eval(filepath arg)
     ifs.open(arg, std::ifstream::in);
 
     if(!ifs.is_open()){
-        ITLErr<<"ExprEvaluator: can't find \""<<(string)arg<<"\""<<ITLEndl;
+		ITLErr<<fEvalName<<": can't find \""<<(string)arg<<"\""<<ITLEndl;
         fEvalStatus.fail();
         return "";
     }
@@ -66,7 +79,6 @@ std::string ExprEvaluator::eval(identifier arg)
     if(fEvalStatus.hasEvalSucceed())
         return r;
 
-     ITLErr<<"ExprEvaluator: "<<(string)arg<<" not known identifier"<<ITLEndl;
     return "";
 }
 
@@ -76,8 +88,8 @@ std::string ExprEvaluator::eval(oscaddress arg)
 {
     const IObject* o = fContextObject->findnode(arg);
 
-    if(o==NULL){
-        ITLErr<<"ExprEvaluator: "<<(string)arg<<" not known at this address..."<<ITLEndl;
+    if(!o){
+		ITLErr<<fEvalName<<": "<<(string)arg<<" not known at this address..."<<ITLEndl;
         fEvalStatus.fail();
         return "";
     }
@@ -93,10 +105,28 @@ std::string ExprEvaluator::eval(const IObject *arg)
 
 
 //_____________________________________________________________
-ExprEvaluator::ExprEvaluator(const IObject* contextObject):
-    evaluator()
+ExprEvaluator::ExprEvaluator(const char *name, const IObject* contextObject):
+	evaluator(), fEvalName(name)
 {
-    fContextObject = contextObject;
+	fContextObject = contextObject;
+}
+
+//_____________________________________________________________
+void ExprEvaluator::registerOperator(const OperatorPrototype& op, OperatorCb cb)
+{
+	fCallbackList.insert({&op, cb});
+}
+
+//_____________________________________________________________
+bool ExprEvaluator::callbackByOperator(const OperatorPrototype* op, OperatorCb &cb) const
+{
+	try{
+		cb = fCallbackList.at(op);
+	}catch(std::out_of_range){
+		return false;
+	}
+
+	return true;
 }
 
 

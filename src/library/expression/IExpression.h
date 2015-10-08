@@ -6,12 +6,11 @@
 
 #include "smartpointer.h"
 
+#include "Operators.h"
 #include "evaluator.h"
 
 
 namespace inscore{
-
-typedef std::string (*OperatorCb)(std::string,std::string);
 
 class IExpression;
 typedef libmapping::SMARTP<IExpression> SIExpression;
@@ -28,49 +27,20 @@ typedef libmapping::SMARTP<IExprArgbase> SIExprArgbase;
  */
 class IExpression: public libmapping::smartable{
 private:
-    const OperatorPrototype* fOperatorPrototype;
+	const OperatorPrototype* fOperatorPrototype;
     const SIExprArgbase fArg1, fArg2;
 
 public:
-    IExpression(OperatorPrototype* operatorPrototype, SIExprArgbase arg1, SIExprArgbase arg2);
+	IExpression(OperatorPrototype* operatorPrototype, SIExprArgbase arg1, SIExprArgbase arg2);
 
 
 
     SIExprArgbase getArg1() const {return fArg1;}
     SIExprArgbase getArg2() const {return fArg2;}
 
-    const OperatorPrototype* getOperatorPrototype() const {return fOperatorPrototype;}
+	const OperatorPrototype* getOperatorPrototype() const {return fOperatorPrototype;}
 
     std::string getName() const;
-};
-
-
-/*!
- * \brief A container class storing all informations needed to construct an Operator
- */
-class OperatorPrototype{
-    private:
-    const std::string fName;
-    const OperatorCb fCallback;
-
-
-    public:
-	/*!
-	 * \brief Construct an operator prototype
-	 * \param name: the name which will be used to refer to the operator
-	 * \param callback: the method called when the operator is used
-	 */
-	OperatorPrototype(std::string name, OperatorCb callback):fName(name),fCallback(callback){}
-	/*!
-	 * \brief getName
-	 * \return the name of the operator
-	 */
-	std::string getName() const {return fName;}
-	/*!
-	 * \brief getCallback
-	 * \return the callback method used when the operator is triggered
-	 */
-	OperatorCb getCallback() const {return fCallback;}
 };
 
 
