@@ -258,10 +258,11 @@ expression		: EXPRESSIONSTART operatorid expArg expArg EXPRESSIONEND	{ $$ = cont
 operatorid		: identifier
 			;
 
-expArg	    : QUOTEDSTRING		{ $$ = context->fReader.createArg<std::string>(context->fText); }
-	    | FILEPATH			{ $$ = context->fReader.createArg<inscore::filepath>(context->fText); }
+expArg	    : QUOTEDSTRING		{ $$ = context->fReader.createArg<std::string>((context->fText)); }
+			| FILEPATH			{ $$ = context->fReader.createArg<inscore::filepath>(context->fText); }
             | identifier		{ $$ = context->fReader.createArg<inscore::identifier>(context->fText); delete $1;}
             | oscaddress		{ $$ = context->fReader.createArg<inscore::oscaddress>($1);}
+			| variable			{ $$ = context->fReader.createArgFromVar($1);}
             | expression		{ $$ = context->fReader.createArgFromExpr($1); delete $1;}
 			;
 

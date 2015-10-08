@@ -117,6 +117,14 @@ class TScripting
          */
         Sbaseparam* createArgFromExpr(Sbaseparam* param);
 
+
+		/*!
+		 * \brief try to encapsulate the content from a variable into a valid expression argument
+		 * \return a simple Sbaseparam
+		 * \warning the variable must be a single string
+		 */
+		Sbaseparam* createArgFromVar(IMessage::argslist* var);
+
 		/*!
 		 * \brief create a message param that contains an Expression Operator
 		 * \param operatorName: the name of the operator

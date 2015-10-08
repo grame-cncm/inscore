@@ -215,6 +215,25 @@ Sbaseparam* TScripting::createArgFromExpr(Sbaseparam* param){
 	return createArg<SIExpression>(expr);
 }
 
+
+Sbaseparam *TScripting::createArgFromVar(IMessage::argslist *var)
+{
+	if(var->size()!=1){
+		ITLErr<<"ExpressionFactory error: wrong argument number in variable."<<ITLEndl;
+		return emptyArg();
+	}
+
+	IMessage::argPtr arg = var->at(0);
+	std::string s = arg->value<std::string>("");
+
+	if(s==""){
+		ITLErr<<"ExpressionFactory error: variable is not a string or empty."<<ITLEndl;
+		return emptyArg();
+	}
+
+	return createArg(s);
+}
+
 SIExprArgbase TScripting::argFromParam(Sbaseparam *param)
 {
     SIExprArgbase defaut;
