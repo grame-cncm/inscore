@@ -22,20 +22,21 @@
   research@grame.fr
 
 */
-#include "WebApi.h"
-#include "VObjectView.h"
-#include "VSceneView.h"
-#include "ITLparser.h"
-#include "IAppl.h"
+
+#include <sstream>
+#include <fstream>
+#include <cstring>
 
 #include <QByteArray>
 #include <QWaitCondition>
 #include <QMutex>
 #include <QEvent>
+#include <QGraphicsSceneMouseEvent>
 
-#include <sstream>
-#include <fstream>
-#include <cstring>
+#include "WebApi.h"
+#include "VSceneView.h"
+#include "ITLparser.h"
+#include "IAppl.h"
 
 using namespace std;
 
