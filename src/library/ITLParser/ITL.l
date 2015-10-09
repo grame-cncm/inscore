@@ -195,7 +195,7 @@ EOL		[\x0a\x0d]
  /*"expr("					expressionNested = 1; BEGIN EXPRSECTION; return EXPRESSIONSTART;*/
 <EXPRSECTION>"("				expressionNested++; return EXPRESSIONSTART;
 <EXPRSECTION>"expr("				expressionNested++; return EXPRESSIONSTART;
-<EXPRSECTION>")"				 return EXPRESSIONEND;
+<EXPRSECTION>")"				if(!--expressionNested){ BEGIN INITIAL;} return EXPRESSIONEND;
 "expr("						expressionNested = 1; BEGIN EXPRSECTION; return EXPRESSIONSTART;
 
  /* ----------------------------------------- */
