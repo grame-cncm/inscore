@@ -1468,7 +1468,7 @@ expressionNested++; return EXPRESSIONSTART;
 case 41:
 YY_RULE_SETUP
 #line 198 "ITL.l"
-return EXPRESSIONEND;
+if(!--expressionNested){ BEGIN INITIAL;} return EXPRESSIONEND;
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
