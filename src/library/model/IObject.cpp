@@ -1305,6 +1305,7 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 		case EventsAble::kMouseEnter:
 		case EventsAble::kMouseLeave:
 		case EventsAble::kExport:
+		case EventsAble::kNewData:
         case EventsAble::kDelete:
 			if (msg->size() > 1) {
 				SIMessageList watchMsg = msg->watchMsg2Msgs (1);

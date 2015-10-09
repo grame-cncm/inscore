@@ -46,7 +46,7 @@ class EventsAble
 		enum eventype { kUnknownEvent=0, 
 			kMouseDown, kMouseUp, kMouseDoubleClick, kMouseEnter, kMouseLeave, kMouseMove,
 			kTimeEnter, kTimeLeave, kDurEnter, kDurLeave, kNewElement, kExport, kEndPaint,
-			kGFEnter, kGFLeave, kGFActive, kGFIdle, kDelete, kSuccess, kError, kCancel };
+			kGFEnter, kGFLeave, kGFActive, kGFIdle, kDelete, kNewData, kSuccess, kError, kCancel };
 			
 				 EventsAble();
 		virtual ~EventsAble();
@@ -69,6 +69,8 @@ class EventsAble
 		const IMessageList*	getMessages (eventype t) const			{ return fMsgMap.get(t); }
 		const IMessageList*	getMouseMsgs (eventype t) const			{ return fMsgMap.get(t); }
 		const IMessageList*	getTimeMsgs (eventype t, const RationalInterval& time) const;
+
+		void triggerEvent(eventype t, const bool& delay=false) const {fMsgMap.trigger(t,delay);}
 
 		SIMessageList	getWatch (const char* address) const;	///< returns a list of 'watch' messages
         SIMessageList	getStack (const char* address) const;	///< returns a list of the states in the fWatchStack

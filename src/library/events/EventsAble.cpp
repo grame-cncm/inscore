@@ -44,6 +44,7 @@ static const char* kDurEnterStr		= "durEnter";
 static const char* kDurLeaveStr		= "durLeave";
 static const char* kExportStr		= "export";
 static const char* kDeleteStr		= "del";
+static const char* kNewDataStr		= "newData";
 
 // gesture specific events
 static const char* kGFEnterStr		= "gfEnter";
@@ -102,6 +103,7 @@ bool EventsAble::popWatch ()
 		fTimeEnterMsgMap= m.fTimeEnterMsg;
 		fTimeLeaveMsgMap= m.fTimeLeaveMsg;
 		fDurEnterMsgMap	= m.fDurEnterMsg;
+
 		fDurLeaveMsgMap	= m.fDurLeaveMsg;
 		fWatchStack.pop();
 		return true;
@@ -268,6 +270,7 @@ const char* EventsAble::type2string (eventype type)
 		case kGFActive:		return kGFActiveStr;
 		case kGFIdle:		return kGFIdleStr;
 		case kDelete:		return kDeleteStr;
+		case kNewData:		return kNewDataStr;
         
 		case kSuccess:		return kSuccessStr;
 		case kError:		return kErrorStr;
@@ -299,6 +302,7 @@ void EventsAble::init ()
 		fTypeStr[kGFActiveStr]	= kGFActive;
 		fTypeStr[kGFIdleStr]	= kGFIdle;
 		fTypeStr[kDeleteStr]	= kDelete;
+		fTypeStr[kNewDataStr]	= kNewData;
 		fTypeStr[kSuccessStr]	= kSuccess;
 		fTypeStr[kErrorStr]     = kError;
 		fTypeStr[kCancelStr]	= kCancel;

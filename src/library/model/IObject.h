@@ -233,7 +233,7 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 		/// \brief returns the object data modification state
 				bool	newData () const			{ return fNewData; }
-				void	newData (bool state)		{ fNewData = state; }
+				void	newData (bool state)		{ fNewData = state; triggerEvent(kNewData, true); }
 
 		/// \brief returns the mapping debug flag
 				int		mapDebug() const;
