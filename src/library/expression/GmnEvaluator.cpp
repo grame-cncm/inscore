@@ -38,7 +38,7 @@ GmnEvaluator::GmnEvaluator(const IObject *contextObject): ExprEvaluator("GmnEval
 									if ( err == guido::kNoErr )
 										return oss.str();
 									else
-										return "GuidoAR Error!";
+										return "";
 								});
 	registerOperator(opGuidoPitch, [] (const std::string& str1, const std::string& str2) -> const std::string
 								{
@@ -47,7 +47,7 @@ GmnEvaluator::GmnEvaluator(const IObject *contextObject): ExprEvaluator("GmnEval
 									if ( err == guido::kNoErr )
 										return oss.str();
 									else
-										return "GuidoAR Error!";
+										return "";
 								});
 }
 

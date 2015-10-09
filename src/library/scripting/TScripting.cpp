@@ -47,12 +47,11 @@ class TEnv;
 //--------------------------------------------------------------------------------------------
 TScripting::TScripting(TJSEngine* js, TLua* lua)
     : 	fJavascript(js), fLua(lua),
+		fParsingFailed(false),
         fExprFactory(ExprFactory::create())
 {
 	fMessages = IMessageList::create();
 	fEnv = TEnv::create();
-
-
 }
 
 TScripting::~TScripting()	{}
@@ -201,7 +200,6 @@ Sbaseparam* TScripting::createExpr(std::string operatorName, Sbaseparam* param1,
         IMsgParam<SIExpression>* param = new IMsgParam<SIExpression>(expr);
         return new Sbaseparam(param);
     }
-
 	ITLErr<<"ExpressionFactory error: operator \""<< operatorName <<"\" unknown"<<ITLEndl;
     return emptyArg();
 }
@@ -219,7 +217,7 @@ Sbaseparam* TScripting::createArgFromExpr(Sbaseparam* param){
 Sbaseparam *TScripting::createArgFromVar(IMessage::argslist *var)
 {
 	if(var->size()!=1){
-		ITLErr<<"ExpressionFactory error: wrong argument number in variable."<<ITLEndl;
+		fail("wrong argument number in variable");
 		return emptyArg();
 	}
 
@@ -227,7 +225,7 @@ Sbaseparam *TScripting::createArgFromVar(IMessage::argslist *var)
 	std::string s = arg->value<std::string>("");
 
 	if(s==""){
-		ITLErr<<"ExpressionFactory error: variable is not a string or empty."<<ITLEndl;
+		fail("variable is not a string or is empty.");
 		return emptyArg();
 	}
 
@@ -241,7 +239,7 @@ SIExprArgbase TScripting::argFromParam(Sbaseparam *param)
     SIExprArgbase arg((*param)->value<SIExprArgbase>(defaut));
 
     if(arg == defaut){
-        ITLErr<<"expression parameter is not a valid argument, check parser to fix the bug..."<<ITLEndl;
+		ITLErr<<"expression parameter is not a valid argument, check parser to fix the bug..."<<ITLEndl;
     return defaut;
     }
 
@@ -260,6 +258,16 @@ SIExpression TScripting::exprFromParam(const Sbaseparam *param)
         return defaut;
     }
 
-    return expr;
+	return expr;
+}
+
+//--------------------------------------------------------------------------------------------
+//          Error Handling
+//--------------------------------------------------------------------------------------------
+
+void TScripting::fail(std::string log)
+{
+	fParsingFailed = true;
+	fErrorLog = " "+log;
 }
 } // namespace

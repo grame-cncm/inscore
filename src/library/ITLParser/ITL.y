@@ -82,10 +82,13 @@
 
 #define VARERROR(str, var)	{ VARerror(&yyloc, context, str, var); YYABORT; }
 
+//#define ERROR_CB() [&yyloc, &context](const char *s) -> void {yyerror(&yyloc, context, s);}
+#define HANDLE_SCRIPT_ERROR() if(context->fReader.hasFailed()){ yyerror(&yyloc, context, context->fReader.errorlog().c_str()); YYABORT; }
+
 typedef void * yyscan_t;
 
 int VARerror(YYLTYPE* locp, inscore::ITLparser* context, const char*s, const char* var);
-int yyerror (YYLTYPE* locp, inscore::ITLparser* context, const char*s);
+int yyerror (const YYLTYPE* locp, inscore::ITLparser* context, const char*s);
 int yylex(YYSTYPE* lvalp, YYLTYPE* llocp, void* scanner);
 int lineno(inscore::ITLparser* context);
 
@@ -262,8 +265,8 @@ expArg	    : QUOTEDSTRING		{ $$ = context->fReader.createArg<std::string>((conte
 			| FILEPATH			{ $$ = context->fReader.createArg<inscore::filepath>(context->fText); }
             | identifier		{ $$ = context->fReader.createArg<inscore::identifier>(context->fText); delete $1;}
             | oscaddress		{ $$ = context->fReader.createArg<inscore::oscaddress>($1);}
-			| variable			{ $$ = context->fReader.createArgFromVar($1);}
-            | expression		{ $$ = context->fReader.createArgFromExpr($1); delete $1;}
+			| variable			{ $$ = context->fReader.createArgFromVar($1); HANDLE_SCRIPT_ERROR()}
+			| expression		{ $$ = context->fReader.createArgFromExpr($1); delete $1; HANDLE_SCRIPT_ERROR()}
 			;
 
 %%
@@ -288,7 +291,7 @@ int lineno (ITLparser* context)
 	return loc->last_line + context->fLine; 
 }
 
-int yyerror(YYLTYPE* loc, ITLparser* context, const char*s) {
+int yyerror(const YYLTYPE* loc, ITLparser* context, const char*s) {
 #ifdef NO_OSCSTREAM
 	cerr << "error line: " << loc->last_line + context->fLine << " col: " << loc->first_column << ": " << s << endl;
 #else

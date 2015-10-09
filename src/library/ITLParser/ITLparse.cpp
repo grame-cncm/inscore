@@ -208,10 +208,13 @@ int ITLparse (inscore::ITLparser* context);
 
 #define VARERROR(str, var)	{ VARerror(&yyloc, context, str, var); YYABORT; }
 
+//#define ERROR_CB() [&yyloc, &context](const char *s) -> void {yyerror(&yyloc, context, s);}
+#define HANDLE_SCRIPT_ERROR() if(context->fReader.hasFailed()){ yyerror(&yyloc, context, context->fReader.errorlog().c_str()); YYABORT; }
+
 typedef void * yyscan_t;
 
 int VARerror(YYLTYPE* locp, inscore::ITLparser* context, const char*s, const char* var);
-int yyerror (YYLTYPE* locp, inscore::ITLparser* context, const char*s);
+int yyerror (const YYLTYPE* locp, inscore::ITLparser* context, const char*s);
 int yylex(YYSTYPE* lvalp, YYLTYPE* llocp, void* scanner);
 int lineno(inscore::ITLparser* context);
 
@@ -223,7 +226,7 @@ using namespace std;
 //{
 
 
-#line 227 "ITLparse.cpp" /* yacc.c:358  */
+#line 230 "ITLparse.cpp" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -525,13 +528,13 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   106,   106,   107,   113,   114,   115,   121,   127,   130,
-     139,   140,   141,   142,   146,   149,   151,   156,   159,   164,
-     165,   166,   169,   170,   173,   176,   177,   178,   181,   182,
-     185,   186,   189,   190,   191,   197,   201,   202,   208,   209,
-     210,   211,   214,   217,   222,   228,   229,   230,   231,   232,
-     238,   239,   242,   243,   248,   249,   255,   258,   261,   262,
-     263,   264,   265,   266
+       0,   109,   109,   110,   116,   117,   118,   124,   130,   133,
+     142,   143,   144,   145,   149,   152,   154,   159,   162,   167,
+     168,   169,   172,   173,   176,   179,   180,   181,   184,   185,
+     188,   189,   192,   193,   194,   200,   204,   205,   211,   212,
+     213,   214,   217,   220,   225,   231,   232,   233,   234,   235,
+     241,   242,   245,   246,   251,   252,   258,   261,   264,   265,
+     266,   267,   268,   269
 };
 #endif
 
@@ -1479,391 +1482,391 @@ yyreduce:
   switch (yyn)
     {
         case 4:
-#line 113 "ITL.y" /* yacc.c:1646  */
+#line 116 "ITL.y" /* yacc.c:1646  */
     { context->fReader.add(*(yyvsp[-1].msg)); delete (yyvsp[-1].msg); }
-#line 1485 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1488 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 114 "ITL.y" /* yacc.c:1646  */
+#line 117 "ITL.y" /* yacc.c:1646  */
     { delete (yyvsp[-1].str); }
-#line 1491 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1494 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 115 "ITL.y" /* yacc.c:1646  */
+#line 118 "ITL.y" /* yacc.c:1646  */
     {	if (*(yyvsp[0].msgList)) {
 										for (unsigned int i=0; i < (*(yyvsp[0].msgList))->list().size(); i++)
 											context->fReader.add((*(yyvsp[0].msgList))->list()[i]);
 									}
 									delete (yyvsp[0].msgList);
 								}
-#line 1502 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1505 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 121 "ITL.y" /* yacc.c:1646  */
+#line 124 "ITL.y" /* yacc.c:1646  */
     { YYACCEPT; }
-#line 1508 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1511 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 127 "ITL.y" /* yacc.c:1646  */
+#line 130 "ITL.y" /* yacc.c:1646  */
     {	(yyval.msgList) = new inscore::SIMessageList (inscore::IMessageList::create());
 									*(yyval.msgList) = context->fReader.luaEval(context->fText.c_str());
 								}
-#line 1516 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1519 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 130 "ITL.y" /* yacc.c:1646  */
+#line 133 "ITL.y" /* yacc.c:1646  */
     {	(yyval.msgList) = new inscore::SIMessageList (inscore::IMessageList::create());
 									*(yyval.msgList) = context->fReader.jsEval(context->fText.c_str(), yylloc.last_line);
 								}
-#line 1524 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1527 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 139 "ITL.y" /* yacc.c:1646  */
+#line 142 "ITL.y" /* yacc.c:1646  */
     { (yyval.msg) = new inscore::SIMessage(inscore::IMessage::create((yyvsp[0].addr)->fOsc)); (*(yyval.msg))->setUrl((yyvsp[0].addr)->fUrl); delete (yyvsp[0].addr); }
-#line 1530 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1533 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 140 "ITL.y" /* yacc.c:1646  */
+#line 143 "ITL.y" /* yacc.c:1646  */
     { (yyval.msg) = new inscore::SIMessage(inscore::IMessage::create((yyvsp[-1].addr)->fOsc, *(yyvsp[0].plist), (yyvsp[-1].addr)->fUrl)); delete (yyvsp[-1].addr); delete (yyvsp[0].plist); }
-#line 1536 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1539 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 141 "ITL.y" /* yacc.c:1646  */
+#line 144 "ITL.y" /* yacc.c:1646  */
     { (yyval.msg) = new inscore::SIMessage(inscore::IMessage::create((yyvsp[-1].addr)->fOsc, *(yyvsp[0].plist), (yyvsp[-1].addr)->fUrl)); delete (yyvsp[-1].addr); delete (yyvsp[0].plist); }
-#line 1542 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1545 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 143 "ITL.y" /* yacc.c:1646  */
+#line 146 "ITL.y" /* yacc.c:1646  */
     {	(yyval.msg) = new inscore::SIMessage(inscore::IMessage::create((yyvsp[-4].addr)->fOsc, *(yyvsp[-3].plist), (yyvsp[-4].addr)->fUrl));
 											(*(yyval.msg))->add(*(yyvsp[-1].msgList));
 											delete (yyvsp[-4].addr); delete (yyvsp[-3].plist); delete (yyvsp[-1].msgList); }
-#line 1550 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1553 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 147 "ITL.y" /* yacc.c:1646  */
+#line 150 "ITL.y" /* yacc.c:1646  */
     {	(yyval.msg) = new inscore::SIMessage(inscore::IMessage::create((yyvsp[-4].addr)->fOsc, *(yyvsp[-3].plist), (yyvsp[-4].addr)->fUrl));
 											(*(yyval.msg))->add(*(yyvsp[-1].msgList)); delete (yyvsp[-4].addr); delete (yyvsp[-3].plist); delete (yyvsp[-1].msgList); }
-#line 1557 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1560 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 149 "ITL.y" /* yacc.c:1646  */
+#line 152 "ITL.y" /* yacc.c:1646  */
     {	(yyval.msg) = new inscore::SIMessage(inscore::IMessage::create((yyvsp[-2].addr)->fOsc, *(yyvsp[-1].plist), (yyvsp[-2].addr)->fUrl));
 											(*(yyval.msg))->add(*(yyvsp[0].plist)); delete (yyvsp[-2].addr); delete (yyvsp[-1].plist); delete (yyvsp[0].plist); }
-#line 1564 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1567 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 151 "ITL.y" /* yacc.c:1646  */
+#line 154 "ITL.y" /* yacc.c:1646  */
     {	(yyval.msg) = new inscore::SIMessage(inscore::IMessage::create((yyvsp[-2].addr)->fOsc, *(yyvsp[-1].plist), (yyvsp[-2].addr)->fUrl));
 											if (*(yyvsp[0].msgList)) (*(yyval.msg))->add(*(yyvsp[0].msgList));
 											delete (yyvsp[-2].addr); delete (yyvsp[-1].plist); delete (yyvsp[0].msgList); }
-#line 1572 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1575 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 156 "ITL.y" /* yacc.c:1646  */
+#line 159 "ITL.y" /* yacc.c:1646  */
     {	(yyval.msgList) = new inscore::SIMessageList (inscore::IMessageList::create());
 											(*(yyval.msgList))->list().push_back(*(yyvsp[0].msg));
 											delete (yyvsp[0].msg); }
-#line 1580 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1583 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 159 "ITL.y" /* yacc.c:1646  */
+#line 162 "ITL.y" /* yacc.c:1646  */
     {	(yyval.msgList) = (yyvsp[-2].msgList); (*(yyval.msgList))->list().push_back(*(yyvsp[0].msg)); delete (yyvsp[0].msg); }
-#line 1586 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1589 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 164 "ITL.y" /* yacc.c:1646  */
+#line 167 "ITL.y" /* yacc.c:1646  */
     { (yyval.addr) = new inscore::ITLparser::address (*(yyvsp[0].str)); delete (yyvsp[0].str);}
-#line 1592 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1595 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 165 "ITL.y" /* yacc.c:1646  */
+#line 168 "ITL.y" /* yacc.c:1646  */
     { (yyval.addr) = new inscore::ITLparser::address (*(yyvsp[0].str)); delete (yyvsp[0].str);}
-#line 1598 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1601 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 166 "ITL.y" /* yacc.c:1646  */
+#line 169 "ITL.y" /* yacc.c:1646  */
     { (yyval.addr) = new inscore::ITLparser::address (*(yyvsp[0].str), *(yyvsp[-1].url)); delete (yyvsp[-1].url); delete (yyvsp[0].str); }
-#line 1604 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1607 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 169 "ITL.y" /* yacc.c:1646  */
+#line 172 "ITL.y" /* yacc.c:1646  */
     { (yyval.str) = (yyvsp[0].str); }
-#line 1610 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1613 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 170 "ITL.y" /* yacc.c:1646  */
+#line 173 "ITL.y" /* yacc.c:1646  */
     { *(yyvsp[-1].str) += *(yyvsp[0].str); (yyval.str) = (yyvsp[-1].str); delete (yyvsp[0].str); }
-#line 1616 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1619 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 173 "ITL.y" /* yacc.c:1646  */
+#line 176 "ITL.y" /* yacc.c:1646  */
     { (yyval.str) = new string("." + *(yyvsp[0].str)); delete (yyvsp[0].str); }
-#line 1622 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1625 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 176 "ITL.y" /* yacc.c:1646  */
+#line 179 "ITL.y" /* yacc.c:1646  */
     { (yyval.str) = new string("/" + *(yyvsp[0].str)); delete (yyvsp[0].str); }
-#line 1628 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1631 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 177 "ITL.y" /* yacc.c:1646  */
+#line 180 "ITL.y" /* yacc.c:1646  */
     { (yyval.str) = new string("/" + context->fText); }
-#line 1634 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1637 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 178 "ITL.y" /* yacc.c:1646  */
+#line 181 "ITL.y" /* yacc.c:1646  */
     { (yyval.str) = new string("/$" + *(yyvsp[0].str)); delete (yyvsp[0].str); }
-#line 1640 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1643 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 181 "ITL.y" /* yacc.c:1646  */
+#line 184 "ITL.y" /* yacc.c:1646  */
     { (yyval.url) = new inscore::IMessage::TUrl((yyvsp[-2].str)->c_str(), context->fInt); delete (yyvsp[-2].str); }
-#line 1646 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1649 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 182 "ITL.y" /* yacc.c:1646  */
+#line 185 "ITL.y" /* yacc.c:1646  */
     { (yyval.url) = new inscore::IMessage::TUrl(context->fText.c_str(), context->fInt); }
-#line 1652 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1655 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 185 "ITL.y" /* yacc.c:1646  */
+#line 188 "ITL.y" /* yacc.c:1646  */
     { (yyval.str) = new string(context->fText); }
-#line 1658 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1661 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 186 "ITL.y" /* yacc.c:1646  */
+#line 189 "ITL.y" /* yacc.c:1646  */
     { *(yyvsp[-2].str) += '.' + context->fText; (yyval.str)=(yyvsp[-2].str); }
-#line 1664 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1667 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 189 "ITL.y" /* yacc.c:1646  */
+#line 192 "ITL.y" /* yacc.c:1646  */
     { (yyval.str) = new string(context->fText); }
-#line 1670 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1673 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 190 "ITL.y" /* yacc.c:1646  */
+#line 193 "ITL.y" /* yacc.c:1646  */
     { (yyval.str) = new string(context->fText); }
-#line 1676 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1679 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 191 "ITL.y" /* yacc.c:1646  */
+#line 194 "ITL.y" /* yacc.c:1646  */
     { (yyval.str) = new string(context->fText); }
-#line 1682 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1685 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 197 "ITL.y" /* yacc.c:1646  */
+#line 200 "ITL.y" /* yacc.c:1646  */
     { (yyval.plist) = new inscore::IMessage::argslist; 
 								  inscore::Sbaseparam * p = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText));
 								  (yyval.plist)->push_back(*p); delete p; }
-#line 1690 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1693 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 201 "ITL.y" /* yacc.c:1646  */
+#line 204 "ITL.y" /* yacc.c:1646  */
     { (yyval.plist) = new inscore::IMessage::argslist; (yyval.plist)->push_back(*(yyvsp[0].p)); delete (yyvsp[0].p); }
-#line 1696 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1699 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 202 "ITL.y" /* yacc.c:1646  */
+#line 205 "ITL.y" /* yacc.c:1646  */
     { (yyval.plist) = new inscore::IMessage::argslist;
 								  (yyval.plist)->push_back(*(yyvsp[-1].p));
 								  (yyval.plist)->push_back((yyvsp[0].plist));
 								  delete (yyvsp[-1].p); delete (yyvsp[0].plist);
 								}
-#line 1706 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1709 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 208 "ITL.y" /* yacc.c:1646  */
+#line 211 "ITL.y" /* yacc.c:1646  */
     { (yyval.plist) = new inscore::IMessage::argslist; (yyval.plist)->push_back(*(yyvsp[0].p)); delete (yyvsp[0].p); }
-#line 1712 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1715 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 209 "ITL.y" /* yacc.c:1646  */
+#line 212 "ITL.y" /* yacc.c:1646  */
     { (yyval.plist) = (yyvsp[0].plist); }
-#line 1718 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1721 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 210 "ITL.y" /* yacc.c:1646  */
+#line 213 "ITL.y" /* yacc.c:1646  */
     { (yyvsp[-1].plist)->push_back((yyvsp[0].plist));  (yyval.plist) = (yyvsp[-1].plist); delete (yyvsp[0].plist); }
-#line 1724 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1727 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 211 "ITL.y" /* yacc.c:1646  */
+#line 214 "ITL.y" /* yacc.c:1646  */
     { (yyvsp[-1].plist)->push_back(*(yyvsp[0].p)); (yyval.plist) = (yyvsp[-1].plist); delete (yyvsp[0].p); }
-#line 1730 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1733 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 214 "ITL.y" /* yacc.c:1646  */
+#line 217 "ITL.y" /* yacc.c:1646  */
     { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
-#line 1736 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1739 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 217 "ITL.y" /* yacc.c:1646  */
+#line 220 "ITL.y" /* yacc.c:1646  */
     { (yyval.plist) = new inscore::IMessage::argslist;
 								  std::string var = "$" + *(yyvsp[0].str);
 								  (yyval.plist)->push_back (context->fReader.resolve((yyvsp[0].str)->c_str(), var.c_str()));
 								  delete (yyvsp[0].str);
 								}
-#line 1746 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1749 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 222 "ITL.y" /* yacc.c:1646  */
+#line 225 "ITL.y" /* yacc.c:1646  */
     { (yyval.plist) = new inscore::IMessage::argslist;
 								  (yyval.plist)->push_back (context->fReader.resolve(*(yyvsp[-1].msg)));
 								  delete (yyvsp[-1].msg);
 								}
-#line 1755 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1758 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 228 "ITL.y" /* yacc.c:1646  */
+#line 231 "ITL.y" /* yacc.c:1646  */
     { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<int>((yyvsp[0].num))); }
-#line 1761 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1764 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 229 "ITL.y" /* yacc.c:1646  */
+#line 232 "ITL.y" /* yacc.c:1646  */
     { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); }
-#line 1767 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1770 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 230 "ITL.y" /* yacc.c:1646  */
+#line 233 "ITL.y" /* yacc.c:1646  */
     { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); delete (yyvsp[0].str); }
-#line 1773 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1776 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 231 "ITL.y" /* yacc.c:1646  */
+#line 234 "ITL.y" /* yacc.c:1646  */
     { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
-#line 1779 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1782 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 232 "ITL.y" /* yacc.c:1646  */
+#line 235 "ITL.y" /* yacc.c:1646  */
     { (yyval.p) = (yyvsp[0].p);}
-#line 1785 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1788 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 238 "ITL.y" /* yacc.c:1646  */
+#line 241 "ITL.y" /* yacc.c:1646  */
     { (yyval.str)=(yyvsp[-2].str); context->fReader.variable((yyvsp[-2].str)->c_str(), (yyvsp[0].plist)); delete (yyvsp[0].plist);}
-#line 1791 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1794 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 239 "ITL.y" /* yacc.c:1646  */
+#line 242 "ITL.y" /* yacc.c:1646  */
     { (yyval.str)=(yyvsp[-4].str); context->fReader.variable((yyvsp[-4].str)->c_str(), (yyvsp[-1].msgList)); delete (yyvsp[-1].msgList);}
-#line 1797 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1800 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 242 "ITL.y" /* yacc.c:1646  */
+#line 245 "ITL.y" /* yacc.c:1646  */
     { (yyval.str) = new string(context->fText); }
-#line 1803 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1806 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 243 "ITL.y" /* yacc.c:1646  */
+#line 246 "ITL.y" /* yacc.c:1646  */
     { (yyval.str) = new string(context->fText); }
-#line 1809 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1812 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 248 "ITL.y" /* yacc.c:1646  */
+#line 251 "ITL.y" /* yacc.c:1646  */
     { (yyval.num) = context->fInt; }
-#line 1815 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1818 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 249 "ITL.y" /* yacc.c:1646  */
+#line 252 "ITL.y" /* yacc.c:1646  */
     { (yyval.num) = context->fInt; }
-#line 1821 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1824 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 255 "ITL.y" /* yacc.c:1646  */
+#line 258 "ITL.y" /* yacc.c:1646  */
     { (yyval.p) = context->fReader.createExpr( (yyvsp[-3].str), (yyvsp[-2].p), (yyvsp[-1].p)); delete (yyvsp[-3].str); delete (yyvsp[-2].p); delete (yyvsp[-1].p);}
-#line 1827 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1830 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 261 "ITL.y" /* yacc.c:1646  */
+#line 264 "ITL.y" /* yacc.c:1646  */
     { (yyval.p) = context->fReader.createArg<std::string>((context->fText)); }
-#line 1833 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1836 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 262 "ITL.y" /* yacc.c:1646  */
+#line 265 "ITL.y" /* yacc.c:1646  */
     { (yyval.p) = context->fReader.createArg<inscore::filepath>(context->fText); }
-#line 1839 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1842 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 263 "ITL.y" /* yacc.c:1646  */
+#line 266 "ITL.y" /* yacc.c:1646  */
     { (yyval.p) = context->fReader.createArg<inscore::identifier>(context->fText); delete (yyvsp[0].str);}
-#line 1845 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1848 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 264 "ITL.y" /* yacc.c:1646  */
+#line 267 "ITL.y" /* yacc.c:1646  */
     { (yyval.p) = context->fReader.createArg<inscore::oscaddress>((yyvsp[0].str));}
-#line 1851 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1854 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 265 "ITL.y" /* yacc.c:1646  */
-    { (yyval.p) = context->fReader.createArgFromVar((yyvsp[0].plist));}
-#line 1857 "ITLparse.cpp" /* yacc.c:1646  */
+#line 268 "ITL.y" /* yacc.c:1646  */
+    { (yyval.p) = context->fReader.createArgFromVar((yyvsp[0].plist)); HANDLE_SCRIPT_ERROR()}
+#line 1860 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 266 "ITL.y" /* yacc.c:1646  */
-    { (yyval.p) = context->fReader.createArgFromExpr((yyvsp[0].p)); delete (yyvsp[0].p);}
-#line 1863 "ITLparse.cpp" /* yacc.c:1646  */
+#line 269 "ITL.y" /* yacc.c:1646  */
+    { (yyval.p) = context->fReader.createArgFromExpr((yyvsp[0].p)); delete (yyvsp[0].p); HANDLE_SCRIPT_ERROR()}
+#line 1866 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 1867 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1870 "ITLparse.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2098,7 +2101,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 269 "ITL.y" /* yacc.c:1906  */
+#line 272 "ITL.y" /* yacc.c:1906  */
 
 
 //} // end namespace
@@ -2121,7 +2124,7 @@ int lineno (ITLparser* context)
 	return loc->last_line + context->fLine; 
 }
 
-int yyerror(YYLTYPE* loc, ITLparser* context, const char*s) {
+int yyerror(const YYLTYPE* loc, ITLparser* context, const char*s) {
 #ifdef NO_OSCSTREAM
 	cerr << "error line: " << loc->last_line + context->fLine << " col: " << loc->first_column << ": " << s << endl;
 #else

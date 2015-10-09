@@ -27,6 +27,7 @@
 #define __TScripting__
 
 #include <stack>
+#include <functional>
 #include <TLua.h>
 #ifdef V8ENGINE
 #include <TV8Js.h>
@@ -88,9 +89,8 @@ class TScripting
 		IMessage::argslist		resolve	(const IMessage* var);
 		const SIMessageList&	messages() const { return fMessages; }
 
-
 		/*!
-		 * \brief create a message param that encapsulate a smart pointer on an argument IExprArg with the corresponding type artT (if artT is std::string, che)
+		 * \brief creates a message param that encapsulate a smart pointer on an argument IExprArg with the corresponding type artT (if artT is std::string also checks if arg is a filepath)
 		 * \param argument to encapsulate
 		 * \return a simple message param
 		 */
@@ -101,7 +101,7 @@ class TScripting
 		}
 
         /*!
-		* \brief surcharge createArg to accept parser string pointer
+		* \brief surcharges createArg to accept parser string pointer
         * \param pointer on the arg string
         * \return a simple message param
         */
@@ -112,21 +112,21 @@ class TScripting
 
 
         /*!
-         * \brief encapsulate an expression into a valid expression argument
+		 * \brief encapsulates an expression into a valid expression argument
          * \return a simple Sbaseparam
          */
         Sbaseparam* createArgFromExpr(Sbaseparam* param);
 
 
 		/*!
-		 * \brief try to encapsulate the content from a variable into a valid expression argument
+		 * \brief tries to encapsulate the content from a variable into a valid expression argument
 		 * \return a simple Sbaseparam
 		 * \warning the variable must be a single string
 		 */
 		Sbaseparam* createArgFromVar(IMessage::argslist* var);
 
 		/*!
-		 * \brief create a message param that contains an Expression Operator
+		 * \brief creates a message param that contains an Expression Operator
 		 * \param operatorName: the name of the operator
 		 * \param arg1: first argument passed to the operator
 		 * \param arg2: second argument passed to the operator
@@ -137,26 +137,35 @@ class TScripting
 
 
         /*!
-         * \brief dig into a Sbaseparam to extract the smart pointer on IExprArgbase
+		 * \brief digs into a Sbaseparam to extract the smart pointer on IExprArgbase
          * \param the base param containing the argument
          * \return the arguments
 		 */
         static SIExprArgbase argFromParam(Sbaseparam* param);
 
         /*!
-         * \brief dig into a Sbaseparam to extract the smart pointer on IExpression (for testing purpose)
+		 * \brief digs into a Sbaseparam to extract the smart pointer on IExpression (for testing purpose)
          * \param the base param containing the expression
          * \return the IExpression
          */
         static SIExpression exprFromParam(const Sbaseparam* param);
 
         /*!
-         * \brief construct an empty arg, used when syntax  errors are found
+		 * \brief constructs an empty arg, used when syntax  errors are found
          * \return an empty arg: <std::string> ""
          */
         inline Sbaseparam* emptyArg(){
             return createArg<std::string>("");
         }
+
+		bool hasFailed(){return fParsingFailed;}
+		const std::string& errorlog(){return fErrorLog;}
+
+protected:
+		std::string fErrorLog;
+		bool fParsingFailed;
+
+		void fail(const std::string log);
 
 };
 
