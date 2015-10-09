@@ -10,7 +10,8 @@ else
  LIBINSCORE :=  -L../../cmake/build/win32/Release -lINScore
  LIBOSCPACK :=  -L../../lib/oscpack/cmake/Release -loscpack
  else
- LIBINSCORE :=  -L../../build -lINScore -lmicrohttpd
+ DEPLINUX := ../libINScore.so.1
+ LIBINSCORE :=  -L../../build/linux -lINScore -lmicrohttpd
  LIBOSCPACK :=  -L../../lib/oscpack/cmake -loscpack
 endif
 endif
@@ -23,7 +24,7 @@ all : $(tools)
 ../forcepdfdate: forcepdfdate.cpp
 	$(G++) forcepdfdate.cpp -o ../forcepdfdate
 
-../INScoreVersion: INScoreVersion.cpp
+../INScoreVersion: INScoreVersion.cpp $(DEPLINUX)
 	$(G++) INScoreVersion.cpp -I../../src/library/interface $(LIBINSCORE) -o ../INScoreVersion
 
 ../SendOSC: SendOSC.cpp
@@ -31,6 +32,9 @@ all : $(tools)
 
 ../ReceiveOSC: ReceiveOSC.cpp
 	$(G++) ReceiveOSC.cpp  $(OPT) -I../../lib/oscpack $(LIBOSCPACK) -o ../ReceiveOSC
+
+../libINScore.so.1 : 
+	cd ../ && ln ../build/linux/libINScore.so.1.16.0 libINScore.so.1
 
 clean:  
 	rm -f $(tools)

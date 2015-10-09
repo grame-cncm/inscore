@@ -45,7 +45,7 @@ template <typename T> class TWatcher
 		typedef typename std::map<T, SIMessageList>::iterator	iterator;
 
 		///	\brief send a list of messages
-		void send (const IMessageList* l) const					{ if (l) l->send(); }
+		void send (const IMessageList* l, const bool& delay = false) const					{ if (l) l->send(delay); }
 
 	public:
 		typedef typename std::map<T, SIMessageList>	TWatchList;
@@ -90,8 +90,8 @@ template <typename T> class TWatcher
 		///	\brief Clear the map and the associated events.
 		virtual void clear()								{	fWatchList.clear(); }
 		///	\brief send the messages associated to the key 'key'.
-		virtual void trigger (const T& key) const			{	typename TWatchList::const_iterator i = fWatchList.find (key);
-																if (i != fWatchList.end()) send (i->second);
+		virtual void trigger (const T& key, const bool& delay = false) const			{	typename TWatchList::const_iterator i = fWatchList.find (key);
+																if (i != fWatchList.end()) send (i->second, delay);
 															}
 };
 

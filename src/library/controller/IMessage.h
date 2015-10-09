@@ -493,7 +493,7 @@ public:
 		The message is locally distributed (i.e. put on the message stack) when its address is not extended.
 		Otherwise, the message is send over the network to the extended address destination.
 	*/
-	void	send () const;
+	void	send (const bool &delay = false) const;
 
 	/*!
 		\brief transforms a 'watch' message with inline associated messages into a message with enclosed messages
@@ -534,7 +534,7 @@ class IMessageList : public libmapping::smartable
 				extvector<SIMessage>& list()		{ return fList; }
 				
 		/// \brief sends all the messages
-		void	send () const;
+		void	send (const bool &delay = false) const;
 
 		/*!
 		 * \brief sendWebMsg Add messages to a specific stack for message from web

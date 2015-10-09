@@ -277,7 +277,7 @@ SIMessageList IMessage::_watchMsg2Msgs(int& startIndex) const
 //--------------------------------------------------------------------------
 // sending messages
 //--------------------------------------------------------------------------
-void IMessage::send() const
+void IMessage::send(const bool& delay) const
 {
 	if (extendedAddress()) {
 #ifndef NO_OSCSTREAM
@@ -287,17 +287,22 @@ void IMessage::send() const
 	else {
 #ifndef PARSERTEST
 		SIMessage copy = IMessage::create(*this);
-		if (copy) gMsgStack->push(new SIMessage(copy));
+		if (copy){
+			if(!delay)
+				gMsgStack->push(new SIMessage(copy));
+			else
+				gDelayStack->push(new SIMessage(copy));
+		}
 #endif
 	}
 }
 
 //--------------------------------------------------------------------------
-void IMessageList::send() const
+void IMessageList::send(const bool& delay) const
 {
 	for (unsigned int i=0; i < list().size(); i++) {
 		const IMessage * msg = list()[i];
-		if (msg) msg->send();
+		if (msg) msg->send(delay);
 	}
 }
 
