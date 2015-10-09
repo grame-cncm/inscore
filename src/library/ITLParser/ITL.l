@@ -89,7 +89,7 @@ IDCHAR  [_a-zA-Z0-9]
 HOSTCHAR [-a-zA-Z0-9]
 
  /* allowed character for filename and path as defined for windows 7*/
-FILECHAR [^\\/?:*><|"' ]
+FILECHAR [^ \\/?:*><|"';]
 
  /* regular expression characters
     as defined by the OSC specification */
@@ -167,7 +167,7 @@ EOL		[\x0a\x0d]
  /* ----------------------------------------- */
  /*	file path */
  /* ----------------------------------------- */
-"/"?(".""."?"/")*({FILECHAR}+"/"?)+"."{FILECHAR}+			yyextra->fText = unescape(yytext); return FILEPATH;	/*file path without space*/
+<EXPRSECTION>"/"?(".""."?"/")*({FILECHAR}+"/"?)+"."{IDCHAR}+			yyextra->fText = unescape(yytext); return FILEPATH;	/*file path without space*/
 
  /* ----------------------------------------- */
  /*	lang sections */
