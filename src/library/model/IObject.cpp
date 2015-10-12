@@ -858,7 +858,7 @@ SIMessageList IObject::getSetMsg() const
 	if (handler) {
 		SIMessage msg = IMessage::create(address, kset_SetMethod);
 		*msg << getTypeString();
-		handler->print(msg);	
+		handler->print(msg);
 		outMsgs->list().push_back (msg);
 	}
 
