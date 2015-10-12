@@ -210,6 +210,7 @@ EOL		[\x0a\x0d]
 "."					return POINT;
 "("					return LEFTPAR;
 ")"					return RIGHTPAR;
+"&"					return AMPERSAND;
  /*"["					return LEFTBRACKET; */
  /*"]"					return RIGHTBRACKET; */
 
