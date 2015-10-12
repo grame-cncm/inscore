@@ -316,6 +316,7 @@ void EventsAble::init ()
 
 		fTypeNum[kExport]		= kExportStr;
 		fTypeNum[kNewElement]	= kNewElementStr;
+		fTypeStr[kNewData]		= kNewDataStr;
 		fTypeNum[kEndPaint]		= kEndPaintStr;
 
 		fTypeNum[kGFEnter]		= kGFEnterStr;
