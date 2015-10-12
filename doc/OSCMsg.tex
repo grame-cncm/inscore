@@ -2678,7 +2678,7 @@ An extended address to send messages to \OSC{localhost} on port \OSC{12000}:
 
 %===============================
 %:       UI events
-\subsublevel{UI events}
+\subsublevel{Mouse events}
 \label{uievents}
 
 User interface events are typical mouse events:
@@ -2713,6 +2713,17 @@ where \OSC{mouseEvent} is one of the events described above, \OSC{x} and \OSC{y}
 Simulating a mouse down at position 10, 10 :
 \sample{/ITL/scene/myObject event mouseDown 10 10;}
 
+\subsublevel{Touch events}
+\label{touchevents}
+Depending on the display device, multi-touch events are supported by INScore :
+\begin{rail}
+touch : 'touchBegin' | 'touchEnd' | 'touchUpdate' 
+\end{rail}
+\index{Interaction!Events!touchBegin}
+\index{Interaction!Events!touchEnd}
+\index{Interaction!Events!touchUpdate}
+
+A typical sequence of generated events consists in a \OSC{touchBegin} event, followed by \OSC{touchUpdate} events and closed by a \OSC{touchEnd}.
 
 %===============================
 %:       Time events
@@ -2809,7 +2820,7 @@ Variables are values computed when an event is triggered. These values are send 
 \subsublevel{Position variables}
 \label{posvar}
 
-Position variables reflects the current mouse position for mouse events. They are set to \values{0} for the other events. 
+Position variables reflects the current mouse position for mouse events or the current touch position for touch events. They are set to \values{0} for the other events. 
 
 \begin{rail} 
 posVar : xy | 'absx' | 'absy' | 'sx' | 'sy' 

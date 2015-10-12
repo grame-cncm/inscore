@@ -21,3 +21,4 @@ tools/QtOSCController/qtosccontroller_plugin_import.cpp
 validation/__tmp.inscore
 *~
 cmake/
+/.directory

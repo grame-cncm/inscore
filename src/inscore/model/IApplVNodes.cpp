@@ -183,7 +183,7 @@ MsgHandler::msgStatus IApplLog::writeMsg (const IMessage* msg) const
 		stringstream sstr;
 		
 		for (int i=0; i < msg->size(); i++) {
-			msg->param(i)->print(sstr);
+			msg->print (sstr, i, 1);
 			sstr << " ";
 		}
 		fWindow->append (sstr.str().c_str());

@@ -286,6 +286,7 @@ int main( int argc, char **argv )
 	int udpPort = intopt (kPortOption, kUPDPort, argc, argv);
 	INScoreAppl appl(argc, argv);
 	appl.setApplicationName("INScoreViewer");
+	appl.setAttribute(Qt::AA_SynthesizeTouchForUnhandledMouseEvents, false);
 	QDir dir(QApplication::applicationDirPath());
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR

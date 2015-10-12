@@ -45,6 +45,7 @@ class EventsAble
 	public:
 		enum eventype { kUnknownEvent=0, 
 			kMouseDown, kMouseUp, kMouseDoubleClick, kMouseEnter, kMouseLeave, kMouseMove,
+			kTouchBegin, kTouchEnd, kTouchUpdate,
 			kTimeEnter, kTimeLeave, kDurEnter, kDurLeave, kNewElement, kExport, kEndPaint,
 			kGFEnter, kGFLeave, kGFActive, kGFIdle, kDelete, kNewData, kSuccess, kError, kCancel };
 			
@@ -102,6 +103,7 @@ class EventsAble
 		SIMessage	buildGetMsg (const char * address, const std::string& type, const RationalInterval&, const IMessageList*) const;
 
 	static std::map<std::string, eventype>	fTypeStr;
+	static std::map<eventype, const char*>	fTypeNum;
 };
 
 } // end namespoace

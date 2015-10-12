@@ -1304,6 +1304,9 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 		case EventsAble::kMouseDoubleClick:
 		case EventsAble::kMouseEnter:
 		case EventsAble::kMouseLeave:
+		case EventsAble::kTouchBegin:
+		case EventsAble::kTouchEnd:
+		case EventsAble::kTouchUpdate:
 		case EventsAble::kExport:
 		case EventsAble::kNewData:
         case EventsAble::kDelete:

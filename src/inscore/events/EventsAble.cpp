@@ -38,6 +38,11 @@ static const char* kMouseUpStr		= "mouseUp";
 static const char* kMouseEnterStr	= "mouseEnter";
 static const char* kMouseLeaveStr	= "mouseLeave";
 static const char* kMouseDoubleClickStr = "doubleClick";
+
+static const char* kTouchBeginStr	= "touchBegin";
+static const char* kTouchEndStr		= "touchEnd";
+static const char* kTouchUpdateStr	= "touchUpdate";
+
 static const char* kTimeEnterStr	= "timeEnter";
 static const char* kTimeLeaveStr	= "timeLeave";
 static const char* kDurEnterStr		= "durEnter";
@@ -64,7 +69,9 @@ static const char* kNewElementStr	= "newElement";
 namespace inscore
 {
 
-map<string, EventsAble::eventype>	EventsAble::fTypeStr;
+map<string, EventsAble::eventype>		EventsAble::fTypeStr;
+map<EventsAble::eventype, const char*>	EventsAble::fTypeNum;
+
 //----------------------------------------------------------------------
 EventsAble::EventsAble ()	{}
 EventsAble::~EventsAble ()	{}
@@ -250,34 +257,8 @@ SIMessageList EventsAble::getStack (const char* address) const
 //----------------------------------------------------------------------
 const char* EventsAble::type2string (eventype type)
 {
-	switch (type) {
-		case kMouseMove:	return kMouseMoveStr;
-		case kMouseDown:	return kMouseDownStr;
-		case kMouseUp:		return kMouseUpStr;
-		case kMouseEnter:	return kMouseEnterStr;
-		case kMouseLeave:	return kMouseLeaveStr;
-		case kMouseDoubleClick: return kMouseDoubleClickStr;
-		case kTimeEnter:	return kTimeEnterStr;
-		case kTimeLeave: 	return kTimeLeaveStr;
-		case kDurEnter:		return kDurEnterStr;
-		case kDurLeave: 	return kDurLeaveStr;
-		case kNewElement: 	return kNewElementStr;
-		case kExport:		return kExportStr;
-		case kEndPaint:		return kEndPaintStr;
-
-		case kGFEnter:		return kGFEnterStr;
-		case kGFLeave:		return kGFLeaveStr;
-		case kGFActive:		return kGFActiveStr;
-		case kGFIdle:		return kGFIdleStr;
-		case kDelete:		return kDeleteStr;
-		case kNewData:		return kNewDataStr;
-        
-		case kSuccess:		return kSuccessStr;
-		case kError:		return kErrorStr;
-		case kCancel:		return kCancelStr;
-
-		default: return "";
-	}
+	const char* typestr = fTypeNum[type];
+	return typestr ? typestr : "";
 }
 
 //----------------------------------------------------------------------
@@ -290,22 +271,63 @@ void EventsAble::init ()
 		fTypeStr[kMouseEnterStr]= kMouseEnter;
 		fTypeStr[kMouseLeaveStr]= kMouseLeave;
 		fTypeStr[kMouseDoubleClickStr]	= kMouseDoubleClick;
+
+		fTypeStr[kTouchBeginStr]= kTouchBegin;
+		fTypeStr[kTouchEndStr]	= kTouchEnd;
+		fTypeStr[kTouchUpdateStr]= kTouchUpdate;
+
 		fTypeStr[kTimeEnterStr]	= kTimeEnter;
 		fTypeStr[kTimeLeaveStr]	= kTimeLeave;
 		fTypeStr[kDurEnterStr]	= kDurEnter;
 		fTypeStr[kDurLeaveStr]	= kDurLeave;
+
 		fTypeStr[kExportStr]	= kExport;
 		fTypeStr[kNewElementStr]= kNewElement;
 		fTypeStr[kEndPaintStr]	= kEndPaint;
+
 		fTypeStr[kGFEnterStr]	= kGFEnter;
 		fTypeStr[kGFLeaveStr]	= kGFLeave;
 		fTypeStr[kGFActiveStr]	= kGFActive;
 		fTypeStr[kGFIdleStr]	= kGFIdle;
+
 		fTypeStr[kDeleteStr]	= kDelete;
 		fTypeStr[kNewDataStr]	= kNewData;
 		fTypeStr[kSuccessStr]	= kSuccess;
 		fTypeStr[kErrorStr]     = kError;
 		fTypeStr[kCancelStr]	= kCancel;
+	}
+	
+	if (!fTypeNum.size()) {
+		fTypeNum[kMouseMove]	= kMouseMoveStr;
+		fTypeNum[kMouseDown]	= kMouseDownStr;
+		fTypeNum[kMouseUp]		= kMouseUpStr;
+		fTypeNum[kMouseEnter]	= kMouseEnterStr;
+		fTypeNum[kMouseLeave]	= kMouseLeaveStr;
+		fTypeNum[kMouseDoubleClick]	= kMouseDoubleClickStr;
+
+		fTypeNum[kTouchBegin]	= kTouchBeginStr;
+		fTypeNum[kTouchEnd]		= kTouchEndStr;
+		fTypeNum[kTouchUpdate]	= kTouchUpdateStr;
+
+		fTypeNum[kTimeEnter]	= kTimeEnterStr;
+		fTypeNum[kTimeLeave]	= kTimeLeaveStr;
+		fTypeNum[kDurEnter]		= kDurEnterStr;
+		fTypeNum[kDurLeave]		= kDurLeaveStr;
+
+		fTypeNum[kExport]		= kExportStr;
+		fTypeNum[kNewElement]	= kNewElementStr;
+		fTypeNum[kEndPaint]		= kEndPaintStr;
+
+		fTypeNum[kGFEnter]		= kGFEnterStr;
+		fTypeNum[kGFLeave]		= kGFLeaveStr;
+		fTypeNum[kGFActive]		= kGFActiveStr;
+		fTypeNum[kGFIdle]		= kGFIdleStr;
+
+		fTypeNum[kDelete]		= kDeleteStr;
+
+		fTypeNum[kSuccess]		= kSuccessStr;
+		fTypeNum[kError]		= kErrorStr;
+		fTypeNum[kCancel]		= kCancelStr;
 	}
 }
 

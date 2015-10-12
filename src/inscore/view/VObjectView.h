@@ -29,16 +29,12 @@
 
 #include <iostream>
 #include <vector>
-
-#include "IObject.h"
-#include "GraphicEffect.h"
-#include "EventsAble.h"
-#include "MouseEventAble.h"
-#include "abstractdata.h"
-
 #include <QGraphicsItem>
 
-//#include <QRect>
+#include "GraphicEffect.h"
+#include "EventsAble.h"
+#include "abstractdata.h"
+
 
 namespace inscore
 {
@@ -47,6 +43,8 @@ namespace inscore
 \addtogroup ITLView 
 @{
 */
+
+class IObject;
 
 //--------------------------------------------------------------------------
 /**
@@ -109,12 +107,7 @@ class VObjectView
 		 * \param format Image format of the data.
 		 * \return data of the image
 		 */
-		virtual const AbstractData		getImage(const char *) {
-			AbstractData data;
-			data.data = 0;
-			data.size = 0;
-			return data;
-		}
+		virtual const AbstractData		getImage(const char *);
 
 		/*!
 		 * \brief getVersion get the score version.
@@ -123,8 +116,7 @@ class VObjectView
 		virtual unsigned long	getVersion() const { return 0; }
 
 		/// \brief simulate UI mouse events
-		virtual void handleEvent (const IObject* obj, float x, float y, EventsAble::eventype type)
-						{ 	_MouseEventAble::handleEvent(obj, QPointF(x, y), type); }
+		virtual void handleEvent (const IObject* obj, float x, float y, EventsAble::eventype type);
         virtual void refreshSyncCache(){}
 };
 

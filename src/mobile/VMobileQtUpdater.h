@@ -39,7 +39,7 @@ namespace inscore
 /*!
  * \brief Extend the VQtUpdater to add log window and mobile menu in tab widget.
  */
-class export VMobileQtUpdater : public VQtUpdater
+class inscore_export VMobileQtUpdater : public VQtUpdater
 {
     public:
 		static libmapping::SMARTP<VQtUpdater> create()	{ return new VMobileQtUpdater(); }

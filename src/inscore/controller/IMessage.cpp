@@ -335,10 +335,21 @@ void IMessage::print(std::ostream& out, int i, int nested) const
 	else if (param(i, fval))
 		out << Tools::ensurefloat (fval);
 	else if (param(i, msgs)) {
-		string prefix;
-		while (nested--) { prefix += "	"; }
-		msgs->list().set(prefix.c_str(), ",\n");
-		out << "(\n" << msgs->list() << " )";
+		string prefix, suffix;
+		int n  = nested;
+		while (n--) { prefix += "	"; }
+		suffix = "";
+//		msgs->list().set(prefix.c_str(), ",\n");
+		out << "(\n" ;
+		for (size_t j = 0 ; j < msgs->list().size(); j++) {
+			SIMessage msg = msgs->list()[j];
+			out << suffix;
+			out << prefix;
+			msg->print(out, nested);
+			suffix = ",\n";
+		}
+//		out << "(\n" << msgs->list() << " )";
+		out << " )";
 	}
 	else if (param(i, js))
 		out << "<? javascript " << js << " ?>";
@@ -349,9 +360,8 @@ void IMessage::print(std::ostream& out, int i, int nested) const
 }
 
 //--------------------------------------------------------------------------
-void IMessage::print(std::ostream& out) const
+void IMessage::print(std::ostream& out, int nested) const
 {
-	static int nested = 0;
 	nested++;
 	if (extendedAddress()) out << string(fUrl);
 	out << address() << " ";
@@ -427,7 +437,7 @@ void IMessage::printArgs(OSCStream& osc) const
 			if (n == 0) continue;					// empty message list
 			else n -= 1;
 			osc << "(";
-			for (int i=0; i < n; i++) {
+			for (size_t i=0; i < n; i++) {
 				const IMessage* msg = msgs->list()[i];
 				msg->linearize(osc);
 				osc << ":";

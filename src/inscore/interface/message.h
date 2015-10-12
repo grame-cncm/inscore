@@ -73,7 +73,7 @@ class inscore_export Message
 		\brief print the message
 		\param out the output stream
 	*/
-	virtual void	print(std::ostream& out) const = 0;
+	virtual void	print(std::ostream& out, int nested=0) const = 0;
 
 
 	/// \brief gives the message address

@@ -190,7 +190,6 @@ class IMessage : public Message, public libmapping::smartable
 		TUrl		fUrl;
 		
 		inline int index (int i) const	{ return fHasMessage ? i+1 : i; }
-		void		print(std::ostream& out, int param, int nested) const;	///< print a single param
 		/*!
 			\brief adds a parameter to the message
 			\param val the parameter
@@ -324,7 +323,14 @@ class IMessage : public Message, public libmapping::smartable
 		\brief print the message
 		\param out the output stream
 	*/
-	void				print(std::ostream& out) const;
+	void				print(std::ostream& out, int nested=0) const;
+	/*!
+		\brief print a message parameter
+		\param out the output stream
+		\param param the param index
+		\param nested a flag used for indentation
+	*/
+	void		print(std::ostream& out, int param, int nested) const;
 
 #ifndef NO_OSCSTREAM
 	/*!

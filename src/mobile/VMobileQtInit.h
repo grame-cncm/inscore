@@ -46,7 +46,7 @@ namespace inscore
  * It extend VQtInit by creating a main window with a tab widget to add all scene in tab.
  * Auto screen off is desactivated on Android.
  */
-class export VMobileQtInit : public VQtInit
+class inscore_export VMobileQtInit : public VQtInit
 {
     public:
         static	void		startQt ();

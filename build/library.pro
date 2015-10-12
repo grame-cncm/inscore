@@ -31,7 +31,7 @@ DEFINES += JSON_ONLY    # json library doesn't use osc stream.
 ############################## 
 # source and headers
 ############################## 
-SOURCES  =  $$files($$SRC/library/*.cpp, true)
+SOURCES  =  $$files($$SRC/inscore/*.cpp, true)
 SOURCES +=  $$files($$SRC/libmapping/src/*.cpp, true)		# libmapping source files
 SOURCES +=  $$files($$OSC/ip/*.cpp)							# oscpack files
 SOURCES +=  $$files($$OSC/osc/*.cpp)						# oscpack files
@@ -39,7 +39,7 @@ SOURCES +=  $$files($$OSCIP/*.cpp)							# oscpack files
 SOURCES +=  $$files($$QRENCODE/*.c)							# qrencode files
 SOURCES +=  $$files($$JSON/*.cpp)
 
-HEADERS  =  $$files($$SRC/library/*.h, true)
+HEADERS  =  $$files($$SRC/inscore/*.h, true)
 HEADERS +=  $$files($$SRC/libmapping/src/*.h, true)
 HEADERS +=  $$files($$OSC/ip/*.h)
 HEADERS +=  $$files($$OSC/OSC/*.h)
@@ -49,9 +49,9 @@ win32:HEADERS +=  $$files($$ROOT/win32/dirent/*.h)
 ############################## 
 # include directories
 ############################## 
-INCLUDEPATH  =  $$files($$SRC/library/[^.]*)
-INCLUDEPATH +=  $$files($$SRC/library/plugins/*)
-INCLUDEPATH +=  $$files($$SRC/library/signal/faust)
+INCLUDEPATH  =  $$files($$SRC/inscore/[^.]*)
+INCLUDEPATH +=  $$files($$SRC/inscore/plugins/*)
+INCLUDEPATH +=  $$files($$SRC/inscore/signal/faust)
 INCLUDEPATH +=  $$files($$SRC/libmapping/src/[^.]*)
 INCLUDEPATH +=  $$files($$OSC)
 INCLUDEPATH +=  $$files($$QRENCODE)
@@ -117,7 +117,7 @@ macx {
 	############################## 
 	# public headers
 	FRAMEWORK_HEADERS.version = Versions
-	FRAMEWORK_HEADERS.files = $$files($$SRC/library/interface/*.h)
+	FRAMEWORK_HEADERS.files = $$files($$SRC/inscore/interface/*.h)
 	FRAMEWORK_HEADERS.path = Headers
 	QMAKE_BUNDLE_DATA += FRAMEWORK_HEADERS
 }
