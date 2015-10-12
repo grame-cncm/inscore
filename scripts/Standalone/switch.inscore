@@ -25,14 +25,14 @@
 
 
 /ITL/scene/obj1 watch mouseDown (
-	/ITL/scene/obj1 show "$(/ITL/scene/obj2 get show;)",
-	/ITL/scene/obj2 show "$(/ITL/scene/obj1 get show;)" );
+	/ITL/scene/obj1 show "$(/ITL/scene/obj2 get show)",
+	/ITL/scene/obj2 show "$(/ITL/scene/obj1 get show)" );
 /ITL/scene/obj2 watch mouseDown (
-	/ITL/scene/obj1 show "$(/ITL/scene/obj2 get show;)",
-	/ITL/scene/obj2 show "$(/ITL/scene/obj1 get show;)" );
+	/ITL/scene/obj1 show "$(/ITL/scene/obj2 get show)",
+	/ITL/scene/obj2 show "$(/ITL/scene/obj1 get show)" );
 /ITL/scene/obj3 watch mouseDown (
-	/ITL/scene/obj3 color "$(/ITL/scene/obj4 get color;)",
-	/ITL/scene/obj4 color "$(/ITL/scene/obj3 get color;)" );
+	/ITL/scene/obj3 color "$(/ITL/scene/obj4 get color)",
+	/ITL/scene/obj4 color "$(/ITL/scene/obj3 get color)" );
 /ITL/scene/obj4 watch mouseDown (
-	/ITL/scene/obj4 color "$(/ITL/scene/obj3 get color;)",
-	/ITL/scene/obj3 color "$(/ITL/scene/obj4 get color;)" );
+	/ITL/scene/obj4 color "$(/ITL/scene/obj3 get color)",
+	/ITL/scene/obj3 color "$(/ITL/scene/obj4 get color)" );
