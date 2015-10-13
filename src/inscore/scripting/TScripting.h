@@ -90,17 +90,6 @@ class TScripting
 		const SIMessageList&	messages() const { return fMessages; }
 
 		/*!
-		 * \brief creates a message param
-		 * \param argument to encapsulate
-		 * \return a simple Sbaseparam
-		 */
-		template<typename paramT> Sbaseparam* createParam(paramT param){
-			IMsgParam<paramT>* msgParam = new IMsgParam<paramT>(param);
-			return new Sbaseparam(msgParam);
-		}
-
-
-		/*!
 		 * \brief creates a message param that encapsulate a smart pointer on an argument IExprArg with the corresponding type artT (if artT is std::string also checks if arg is a filepath)
 		 * \param argument to encapsulate
 		 * \return a simple message param

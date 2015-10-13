@@ -47,8 +47,8 @@ class TEnv;
 //--------------------------------------------------------------------------------------------
 TScripting::TScripting(TJSEngine* js, TLua* lua)
     : 	fJavascript(js), fLua(lua),
-		fParsingFailed(false),
-        fExprFactory(ExprFactory::create())
+		fExprFactory(ExprFactory::create()),
+		fParsingFailed(false)
 {
 	fMessages = IMessageList::create();
 	fEnv = TEnv::create();

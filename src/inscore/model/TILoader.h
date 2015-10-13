@@ -48,12 +48,14 @@ class IObject;
 */
 class TILoader
 {
+		virtual bool process(const SIMessageList& msgs, IObject* root, const std::string& baseaddress);
+
 	protected:
 				 TILoader() {}
 		virtual ~TILoader() {}
 
 		virtual MsgHandler::msgStatus	load(const IMessage* msg, IObject* client, const std::string& rootpath);
-		virtual void					process (const SIMessageList& msgs, IObject* root, const std::string& baseaddress);
+
 
 		virtual TJSEngine*		getJSEngine()	= 0;
 		virtual TLua*			getLUAEngine()	= 0;

@@ -63,8 +63,8 @@
 %type <str>		identifier oscaddress relativeaddress oscpath varname variabledecl hostname operatorid
 %type <msg>		message
 %type <msgList>	messagelist script
-%type <p>		param watchmethod expArg expression
-%type <plist>	params watchparams variable eval
+%type <p>		param expArg expression
+%type <plist>	params variable eval
 %type <url>		urlprefix
 %type <addr>	address
 
@@ -142,19 +142,11 @@ script		: LUASCRIPT			{	$$ = new inscore::SIMessageList (inscore::IMessageList::
 
 message		: address					{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc)); (*$$)->setUrl($1->fUrl); delete $1; }
 			| address params			{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl)); delete $1; delete $2; }
-			| address watchparams		{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl)); delete $1; delete $2; }
-			| address watchparams LEFTPAR messagelist RIGHTPAR
-										{	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
-											(*$$)->add(*$4);
-											delete $1; delete $2; delete $4; }
 			| address eval LEFTPAR messagelist RIGHTPAR
 										{	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
 											(*$$)->add(*$4); delete $1; delete $2; delete $4; }
 			| address eval variable		{	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
 											(*$$)->add(*$3); delete $1; delete $2; delete $3; }
-			| address watchparams script {	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
-											if (*$3) (*$$)->add(*$3);
-											delete $1; delete $2; delete $3; }
 			;
 
 messagelist : message					{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
@@ -197,25 +189,15 @@ identifier	: IDENTIFIER		{ $$ = new string(context->fText); }
 
 //_______________________________________________
 // parameters definitions
-// eval and watchparams need a special case since messages are expected as argument
+// eval need a special case since messages are expected as argument
 eval		: EVAL				{ $$ = new inscore::IMessage::argslist; 
 								  inscore::Sbaseparam * p = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText));
 								  $$->push_back(*p); delete p; }
-
-watchparams	: watchmethod		{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
-			| watchmethod params { $$ = new inscore::IMessage::argslist;
-								  $$->push_back(*$1);
-								  $$->push_back($2);
-								  delete $1; delete $2;
-								}
 
 params		: param							{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
 			| variable				{ $$ = $1; }
 			| params variable				{ $1->push_back($2);  $$ = $1; delete $2; }
 			| params param					{ $1->push_back(*$2); $$ = $1; delete $2; }
-			;
-
-watchmethod	: WATCH				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
 			;
 
 variable	: VARSTART varname	{ $$ = new inscore::IMessage::argslist;
@@ -234,15 +216,14 @@ param		: number			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1)
 		| identifier			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); delete $1; }
 		| QUOTEDSTRING			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
 		| expression			{ $$ = $1;}
-		| LEFTPAR messagelist RIGHTPAR	{ $$ = context->fReader.createParam(*$2); delete $2; }
-		| script			{ $$ = context->fReader.createParam(*$1); delete $1; }
+		| LEFTPAR messagelist RIGHTPAR	{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<inscore::SIMessageList>(*$2)); delete $2; }
+		| script			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<inscore::SIMessageList>(*$1)); delete $1; }
 		;
 
 
 //_______________________________________________
 // variable declaration
 variabledecl : varname EQUAL params	{ $$=$1; context->fReader.variable($1->c_str(), $3); delete $3;}
-			| varname EQUAL LEFTPAR messagelist RIGHTPAR { $$=$1; context->fReader.variable($1->c_str(), $4); delete $4;}
 			;
 
 varname		: IDENTIFIER			{ $$ = new string(context->fText); }

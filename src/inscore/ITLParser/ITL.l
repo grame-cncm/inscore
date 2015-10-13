@@ -118,9 +118,8 @@ EOL		[\x0a\x0d]
  /*	method requiring messages as argument */
  /* ----------------------------------------- */
 "eval"			yyextra->fText = yytext; return EVAL;
- /*"watch"			yyextra->fText = yytext; return WATCH;*/
- /*"watch+"		yyextra->fText = yytext; return WATCH;*/
- /*"require"		yyextra->fText = yytext; return WATCH;*/
+
+
  /* ----------------------------------------- */
  /*	comments */
  /* ----------------------------------------- */

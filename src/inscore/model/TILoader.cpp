@@ -57,8 +57,9 @@ std::string TILoader::makeAbsolutePath( const std::string& path, const std::stri
 
 
 //--------------------------------------------------------------------------
-void TILoader::process (const SIMessageList& msgs, IObject* root, const string& baseaddress)
+bool TILoader::process (const SIMessageList& msgs, IObject* root, const string& baseaddress)
 {
+	bool error = false;
 	for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
 		IMessage * msg = *i;
 		string address;
@@ -70,7 +71,9 @@ void TILoader::process (const SIMessageList& msgs, IObject* root, const string& 
 		string tail = OSCAddress::addressTail(address);
 		int ret = root->processMsg(beg, tail, *i);
 		IGlue::trace(*i, ret);
+		error |= ret==MsgHandler::kBadAddress||ret==MsgHandler::kBadParameters;
 	}
+	return !error;
 }
 
 //--------------------------------------------------------------------------
@@ -103,11 +106,12 @@ MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const
 			else stream = &buff;
 			ITLparser p (stream, 0, getJSEngine(), getLUAEngine());
 			SIMessageList msgs = p.parse();
-			if (msgs) {
-				process (msgs, client->getRoot(), client->getOSCAddress());
-				return MsgHandler::kProcessed;
-			}
-			else ITLErr << "while parsing file" << srcfile << ITLEndl;
+			bool error = false;
+			if (msgs)
+				error = !process (msgs, client->getRoot(), client->getOSCAddress());
+			if(error) ITLErr << "while parsing file" << srcfile << ITLEndl;
+
+			if(msgs) return MsgHandler::kProcessed;
 		}
 	}
 	return MsgHandler::kBadParameters;
