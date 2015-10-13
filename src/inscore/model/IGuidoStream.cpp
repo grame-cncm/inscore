@@ -76,11 +76,13 @@ MsgHandler::msgStatus IGuidoStream::set (const IMessage* msg )
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
-    clear();
     string t;
 	if ((msg->size() == 2) && msg->param(1, t)) {
-        status = MsgHandler::kProcessed;
-        writeStream(t);
+		if(t!=fGMN){
+			GuidoResetStream(fGuidoStream);
+			writeStream(t);
+			status = MsgHandler::kProcessed;
+		}else status = MsgHandler::kProcessedNoChange;
 	}
 	else status = MsgHandler::kBadParameters;
 
@@ -90,14 +92,11 @@ MsgHandler::msgStatus IGuidoStream::set (const IMessage* msg )
 //--------------------------------------------------------------------------
 void IGuidoStream::clear()
 {
-    GuidoResetStream(fGuidoStream);
-    
-    // this is only to reset the view with a valid empty code...
-    GuidoWriteStream(fGuidoStream, "{");
-    VGuidoItemView * gView = dynamic_cast<VGuidoItemView*>(fView);
-    if (gView) gView->updateView(this);
-    
-    GuidoResetStream(fGuidoStream);
+	if(fGMN=="") return;
+
+	GuidoResetStream(fGuidoStream);
+	setGMN("");
+	newData(true);
 }
 
 
