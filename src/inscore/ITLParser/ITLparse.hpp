@@ -70,8 +70,9 @@ extern int ITLdebug;
     IPNUM = 280,
     EXPRESSIONSTART = 281,
     EXPRESSIONEND = 282,
-    LUASCRIPT = 283,
-    JSCRIPT = 284
+    AMPERSAND = 283,
+    LUASCRIPT = 284,
+    JSCRIPT = 285
   };
 #endif
 
@@ -92,7 +93,7 @@ union YYSTYPE
 	inscore::SIMessage*				msg;
     inscore::SIMessageList*			msgList;
 
-#line 96 "ITLparse.hpp" /* yacc.c:1909  */
+#line 97 "ITLparse.hpp" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

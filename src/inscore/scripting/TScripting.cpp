@@ -192,8 +192,8 @@ IMessage::argslist TScripting::resolve (const char* var, const char * defaultVal
 //--------------------------------------------------------------------------------------------
 
 Sbaseparam* TScripting::createExpr(std::string operatorName, Sbaseparam* param1, Sbaseparam* param2){
-    SIExprArgbase arg1 = argFromParam(param1);
-    SIExprArgbase arg2 = argFromParam(param2);
+	SIExprArgbase arg1 = exprArgFromParam(param1);
+	SIExprArgbase arg2 = exprArgFromParam(param2);
 
     SIExpression expr;
     if(fExprFactory->createExpr(operatorName, arg1, arg2,expr)){
@@ -201,24 +201,24 @@ Sbaseparam* TScripting::createExpr(std::string operatorName, Sbaseparam* param1,
         return new Sbaseparam(param);
     }
 	ITLErr<<"ExpressionFactory error: operator \""<< operatorName <<"\" unknown"<<ITLEndl;
-    return emptyArg();
+	return emptyExprArg();
 }
 
-Sbaseparam* TScripting::createArgFromExpr(Sbaseparam* param){
+Sbaseparam* TScripting::createExprArgFromExpr(Sbaseparam* param){
 
     //----- extract SIExpression from the base param;  ------
     SIExpression expr = exprFromParam(param);
 
     //----- encapsulate expression into an ExprArg  -----
-	return createArg<SIExpression>(expr);
+	return createExprArg<SIExpression>(expr);
 }
 
 
-Sbaseparam *TScripting::createArgFromVar(IMessage::argslist *var)
+Sbaseparam *TScripting::createExprArgFromVar(IMessage::argslist *var)
 {
 	if(var->size()!=1){
 		fail("wrong argument number in variable");
-		return emptyArg();
+		return emptyExprArg();
 	}
 
 	IMessage::argPtr arg = var->at(0);
@@ -226,13 +226,13 @@ Sbaseparam *TScripting::createArgFromVar(IMessage::argslist *var)
 
 	if(s==""){
 		fail("variable is not a string or is empty.");
-		return emptyArg();
+		return emptyExprArg();
 	}
 
-	return createArg(s);
+	return createExprArg(s);
 }
 
-SIExprArgbase TScripting::argFromParam(Sbaseparam *param)
+SIExprArgbase TScripting::exprArgFromParam(Sbaseparam *param)
 {
     SIExprArgbase defaut;
 

@@ -90,11 +90,22 @@ class TScripting
 		const SIMessageList&	messages() const { return fMessages; }
 
 		/*!
+		 * \brief creates a message param
+		 * \param argument to encapsulate
+		 * \return a simple Sbaseparam
+		 */
+		template<typename paramT> Sbaseparam* createParam(paramT param){
+			IMsgParam<paramT>* msgParam = new IMsgParam<paramT>(param);
+			return new Sbaseparam(msgParam);
+		}
+
+
+		/*!
 		 * \brief creates a message param that encapsulate a smart pointer on an argument IExprArg with the corresponding type artT (if artT is std::string also checks if arg is a filepath)
 		 * \param argument to encapsulate
 		 * \return a simple message param
 		 */
-		template<typename argT> Sbaseparam* createArg(argT arg){
+		template<typename argT> Sbaseparam* createExprArg(argT arg){
 			SIExprArgbase argB = fExprFactory->createArg(arg);
 		    IMsgParam<SIExprArgbase>* param = new IMsgParam<SIExprArgbase>(argB);
 		    return new Sbaseparam(param);
@@ -105,9 +116,9 @@ class TScripting
         * \param pointer on the arg string
         * \return a simple message param
         */
-        template<typename argT> Sbaseparam* createArg(std::string* arg){
+		template<typename argT> Sbaseparam* createExprArg(std::string* arg){
             argT param(*arg);
-            return createArg<argT>(param);
+			return createExprArg<argT>(param);
         }
 
 
@@ -115,7 +126,7 @@ class TScripting
 		 * \brief encapsulates an expression into a valid expression argument
          * \return a simple Sbaseparam
          */
-        Sbaseparam* createArgFromExpr(Sbaseparam* param);
+		Sbaseparam* createExprArgFromExpr(Sbaseparam* param);
 
 
 		/*!
@@ -123,7 +134,7 @@ class TScripting
 		 * \return a simple Sbaseparam
 		 * \warning the variable must be a single string
 		 */
-		Sbaseparam* createArgFromVar(IMessage::argslist* var);
+		Sbaseparam* createExprArgFromVar(IMessage::argslist* var);
 
 		/*!
 		 * \brief creates a message param that contains an Expression Operator
@@ -141,7 +152,7 @@ class TScripting
          * \param the base param containing the argument
          * \return the arguments
 		 */
-        static SIExprArgbase argFromParam(Sbaseparam* param);
+		static SIExprArgbase exprArgFromParam(Sbaseparam* param);
 
         /*!
 		 * \brief digs into a Sbaseparam to extract the smart pointer on IExpression (for testing purpose)
@@ -154,8 +165,8 @@ class TScripting
 		 * \brief constructs an empty arg, used when syntax  errors are found
          * \return an empty arg: <std::string> ""
          */
-        inline Sbaseparam* emptyArg(){
-            return createArg<std::string>("");
+		inline Sbaseparam* emptyExprArg(){
+			return createExprArg<std::string>("");
         }
 
 		bool hasFailed(){return fParsingFailed;}

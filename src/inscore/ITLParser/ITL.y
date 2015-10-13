@@ -51,6 +51,7 @@
 %token COLON COMMA POINT HOSTNAME IPNUM
 
 %token EXPRESSIONSTART EXPRESSIONEND
+%token AMPERSAND
 
 %token LUASCRIPT
 %token JSCRIPT
@@ -83,7 +84,7 @@
 #define VARERROR(str, var)	{ VARerror(&yyloc, context, str, var); YYABORT; }
 
 //#define ERROR_CB() [&yyloc, &context](const char *s) -> void {yyerror(&yyloc, context, s);}
-#define HANDLE_SCRIPT_ERROR() if(context->fReader.hasFailed()){ yyerror(&yyloc, context, context->fReader.errorlog().c_str()); YYABORT; }
+#define HANDLE_READER_ERROR() if(context->fReader.hasFailed()){ yyerror(&yyloc, context, context->fReader.errorlog().c_str()); YYABORT; }
 
 typedef void * yyscan_t;
 
@@ -208,10 +209,10 @@ watchparams	: watchmethod		{ $$ = new inscore::IMessage::argslist; $$->push_back
 								  delete $1; delete $2;
 								}
 
-params		: param				{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
-			| variable			{ $$ = $1; }
-			| params variable	{ $1->push_back($2);  $$ = $1; delete $2; }
-			| params param		{ $1->push_back(*$2); $$ = $1; delete $2; }
+params		: param							{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
+			| variable				{ $$ = $1; }
+			| params variable				{ $1->push_back($2);  $$ = $1; delete $2; }
+			| params param					{ $1->push_back(*$2); $$ = $1; delete $2; }
 			;
 
 watchmethod	: WATCH				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
@@ -229,11 +230,13 @@ variable	: VARSTART varname	{ $$ = new inscore::IMessage::argslist;
 			;
 
 param		: number			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1)); }
-			| FLOAT				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); }
-			| identifier		{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); delete $1; }
-			| QUOTEDSTRING		{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
-            | expression		{ $$ = $1;}
-			;
+		| FLOAT				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); }
+		| identifier			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); delete $1; }
+		| QUOTEDSTRING			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
+		| expression			{ $$ = $1;}
+		| LEFTPAR messagelist RIGHTPAR	{ $$ = context->fReader.createParam(*$2); delete $2; }
+		| script			{ $$ = context->fReader.createParam(*$1); delete $1; }
+		;
 
 
 //_______________________________________________
@@ -261,12 +264,12 @@ expression		: EXPRESSIONSTART operatorid expArg expArg EXPRESSIONEND	{ $$ = cont
 operatorid		: identifier
 			;
 
-expArg		: QUOTEDSTRING		{ $$ = context->fReader.createArg<std::string>((context->fText)); }
-		| FILEPATH		{ $$ = context->fReader.createArg<inscore::filepath>(context->fText); }
-		| identifier		{ $$ = context->fReader.createArg<inscore::identifier>(context->fText); delete $1;}
-		| oscaddress		{ $$ = context->fReader.createArg<inscore::oscaddress>($1);}
-		| variable		{ $$ = context->fReader.createArgFromVar($1); HANDLE_SCRIPT_ERROR()}
-		| expression		{ $$ = context->fReader.createArgFromExpr($1); delete $1; HANDLE_SCRIPT_ERROR()}
+expArg		: QUOTEDSTRING		{ $$ = context->fReader.createExprArg<std::string>((context->fText)); }
+		| FILEPATH		{ $$ = context->fReader.createExprArg<inscore::filepath>(context->fText); }
+		| identifier		{ $$ = context->fReader.createExprArg<inscore::identifier>(context->fText); delete $1;}
+		| oscaddress		{ $$ = context->fReader.createExprArg<inscore::oscaddress>($1);}
+		| variable		{ $$ = context->fReader.createExprArgFromVar($1); HANDLE_READER_ERROR()}
+		| expression		{ $$ = context->fReader.createExprArgFromExpr($1); delete $1; HANDLE_READER_ERROR()}
 		;
 
 %%
