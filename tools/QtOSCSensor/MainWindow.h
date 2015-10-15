@@ -39,37 +39,28 @@
 #define OUTPUT_BUFFER_SIZE 1024
 
 class SensorWidget;
+
 //------------------------------------------------------------------------
-class SensorWatcher : public QTimer
+class OSCStream : public osc::OutboundPacketStream
 {
-	SensorWidget* fSensors;
-//	int		flastOrientation, fLastALight;
-//	float	fLastLight;
-//	float	fLastAx, fLastAy, fLastAz;
-
-	protected:
-		virtual void	timerEvent(QTimerEvent * e);
+	char fBuffer[OUTPUT_BUFFER_SIZE];
+	
 	public:
-				 SensorWatcher(SensorWidget* s) : fSensors(s) {}
-		virtual ~SensorWatcher() {}
+				 OSCStream() : osc::OutboundPacketStream(fBuffer, OUTPUT_BUFFER_SIZE) {}
+		virtual ~OSCStream() {}
+	
+		void start(const char * addr)	{ *this << osc::BeginMessage( addr ); }
+		void end()						{ *this << osc::EndMessage; }
 };
-
 
 //------------------------------------------------------------------------
 class SensorWidget : public QFrame, private Ui::Frame
 {
-     Q_OBJECT
+	Q_OBJECT
 
-	typedef struct {
-		Sensor*		sensor;
-		QCheckBox*	controler;
-	} TSensorUI;
-	typedef std::vector<TSensorUI> TSensors;
-
-	SensorWatcher*	fWatcher;
-	TSensors		fSensors;
-	
+//	SensorWatcher*	fWatcher;
 	UdpTransmitSocket* fSocket;
+
 	void initSensors ();
 	void destchge ();
 	void appendValue (osc::OutboundPacketStream& p, const char* value) const;
@@ -77,23 +68,11 @@ class SensorWidget : public QFrame, private Ui::Frame
 	void appendValue (osc::OutboundPacketStream& p, float value) const;
 	
 	public:
-//		QAccelerometer*		fAccel;
-//		QAltimeter *		fAltimeter;
-//		QAmbientLightSensor* fAmbientLight;
-//		QAmbientTemperatureSensor* fAmbientTemp;
-//		QCompass *			fCompass;
-//		QDistanceSensor*	fDistance;
-//		QGyroscope*			fGyro;
-//		QHolsterSensor*		fHolster;
-//		QIRProximitySensor*	fIRProx;
-//		QLightSensor*		fLight;
-//		QMagnetometer*		fMagnet;
-//		QOrientationSensor*	fOrient;
-//		QPressureSensor*	fPressure;
-//		QProximitySensor*	fProximity;
-//		QRotationSensor*	fRotate;
-//		QTapSensor *		fTap;
-//		QTiltSensor *		fTilt;
+		typedef struct {
+			Sensor*		sensor;
+			QCheckBox*	controler;
+		} TSensorUI;
+		typedef std::vector<TSensorUI> TSensors;
 
 				 SensorWidget(QWidget *parent = 0);
 		virtual ~SensorWidget();
@@ -104,51 +83,22 @@ class SensorWidget : public QFrame, private Ui::Frame
 
 	template <typename T>	void send (const char * addr, T value)
 	{
-		char buffer[OUTPUT_BUFFER_SIZE];
-		osc::OutboundPacketStream p( buffer, OUTPUT_BUFFER_SIZE );
-		p << osc::BeginMessage( addr );
-		appendValue (p, value);
-		p << osc::EndMessage;
+		OSCStream p;
+		p.start( addr );
+		p << value;
+		p.end();
 		fSocket->Send( p.Data(), p.Size() );
 	}
 
-	template <typename T>	void send (const char * addr, const char * msg, T value)
-	{
-		char buffer[OUTPUT_BUFFER_SIZE];
-		osc::OutboundPacketStream p( buffer, OUTPUT_BUFFER_SIZE );
-		p << osc::BeginMessage( addr ) << msg;
-		appendValue (p, value);
-		p << osc::EndMessage;
-		fSocket->Send( p.Data(), p.Size() );
-	}
-
-	template <typename T>	void activate (T* sensor, const char * address, bool state) {
-		if (state) {
-			sensor->setActive(true);
-			send(address, "on");
-//			send(address, (int)sensor->connectToBackend());
-			send(address, sensor->description().toStdString().c_str());
-//			send(address, "range", sensor->outputRange());
-		}
-		else {
-			sensor->setActive(false);
-			send(address, "off");
-		}
-	}
+	private:
+		TSensors fSensors;
+		int		 fTimerID;
 	
 	protected slots:
-//		void distance();
-//		void accel();
-//		void gyro();
-//		void magneto();
-//		void orient();
-//		void rotate();
-//		void light();
-//		void alight();
 		void addressChge();
 		void portChge(int i);
+		void timerEvent(QTimerEvent * e);
 };
-
 
 //------------------------------------------------------------------------
 class MainWindow: public QMainWindow
