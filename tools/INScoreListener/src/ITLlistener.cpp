@@ -4,12 +4,14 @@
 #include "ITLlistener.h"
 #include "Parser/filterparser.h"
 
+#define DEFAULT_PORT 7001
+
 using namespace std;
 namespace inscorelistener {
 
 
 ITLlistener::ITLlistener()
-	: _port(7001),
+	: _port(DEFAULT_PORT),
 	   _socket(0),
 	  _verbose(false),
 	  _outputFormat("%addr %args"),
@@ -76,14 +78,23 @@ void ITLlistener::ProcessMessage(const osc::ReceivedMessage &m, const IpEndpoint
 
 }
 
-void ITLlistener::start(){
+int ITLlistener::start(){
+
+	try{
+		_socket = new UdpListeningReceiveSocket( IpEndpointName( IpEndpointName::ANY_ADDRESS, _port ), this );
+	}catch(std::runtime_error &e){
+		cerr<<"Unable to connect to port: "<<_port<<"..."<<endl;
+		cerr<<"   std::runtime_error: "<<e.what();
+		if(_port==DEFAULT_PORT)
+			cerr<<"Try another port using INScoreViewer -p PORT"<<endl;
+		return -1;
+	}
 
 	if(_verbose)
 		cout<<"INScoreListener listening on port: "<<_port<<endl;
 
-
-	_socket = new UdpListeningReceiveSocket( IpEndpointName( IpEndpointName::ANY_ADDRESS, _port ), this );
 	_socket->RunUntilSigInt();
+	return 0;
 }
 
 //_______________________________________________________________

@@ -86,12 +86,12 @@ filterExprCore	: ADDR EQUAL oscaddress		{ $$ = new inscorelistener::OSCFilterAdd
 				| LEFTPAR filter RIGHTPAR	{ $$ = $2; }
 				;
 
-filterOp		: EQUAL						{ $$ = inscorelistener::OSCFilterExpr::EQUAL;}
-				| NOTEQUAL					{ $$ = inscorelistener::OSCFilterExpr::NOTEQUAL;}
-				| GREATER					{ $$ = inscorelistener::OSCFilterExpr::GREATER;}
-				| GREATEREQUAL				{ $$ = inscorelistener::OSCFilterExpr::GREATEREQUAL;}
-				| LOWER						{ $$ = inscorelistener::OSCFilterExpr::LOWER;}
-				| LOWEREQUAL				{ $$ = inscorelistener::OSCFilterExpr::LOWEREQUAL;}
+filterOp		: EQUAL						{ $$ = inscorelistener::OSCFilterExpr::kEQUAL;}
+				| NOTEQUAL					{ $$ = inscorelistener::OSCFilterExpr::kNOTEQUAL;}
+				| GREATER					{ $$ = inscorelistener::OSCFilterExpr::kGREATER;}
+				| GREATEREQUAL				{ $$ = inscorelistener::OSCFilterExpr::kGREATEREQUAL;}
+				| LOWER						{ $$ = inscorelistener::OSCFilterExpr::kLOWER;}
+				| LOWEREQUAL				{ $$ = inscorelistener::OSCFilterExpr::kLOWEREQUAL;}
 				;
 
 //_______________________________________________

@@ -77,8 +77,9 @@ private:
 class OSCFilterAddress: public OSCFilterNode{
 private:
 	inscore::OSCRegexp _addressRegExp;
+	const char* _address;
 public:
-	OSCFilterAddress(std::string addressRegExp):_addressRegExp(addressRegExp.c_str()){}
+	OSCFilterAddress(std::string addressRegExp):_addressRegExp(addressRegExp.c_str()), _address(addressRegExp.c_str()){}
 	virtual ~OSCFilterAddress(){}
 protected:
 	bool eval(OSCFilterContext &filter);

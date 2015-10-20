@@ -1447,37 +1447,37 @@ yyreduce:
 
   case 12:
 #line 89 "filter.y" /* yacc.c:1646  */
-    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::EQUAL;}
+    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::kEQUAL;}
 #line 1452 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 13:
 #line 90 "filter.y" /* yacc.c:1646  */
-    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::NOTEQUAL;}
+    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::kNOTEQUAL;}
 #line 1458 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 14:
 #line 91 "filter.y" /* yacc.c:1646  */
-    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::GREATER;}
+    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::kGREATER;}
 #line 1464 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 15:
 #line 92 "filter.y" /* yacc.c:1646  */
-    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::GREATEREQUAL;}
+    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::kGREATEREQUAL;}
 #line 1470 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 16:
 #line 93 "filter.y" /* yacc.c:1646  */
-    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::LOWER;}
+    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::kLOWER;}
 #line 1476 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 17:
 #line 94 "filter.y" /* yacc.c:1646  */
-    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::LOWEREQUAL;}
+    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::kLOWEREQUAL;}
 #line 1482 "filterparse.cpp" /* yacc.c:1646  */
     break;
 

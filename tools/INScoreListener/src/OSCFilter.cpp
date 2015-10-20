@@ -148,7 +148,11 @@ bool OSCFilterExpr::eval(OSCFilterContext &filter)
 
 bool OSCFilterAddress::eval(OSCFilterContext &filter)
 {
-	return _addressRegExp.match(filter.address());
+	bool r =_addressRegExp.match(filter.address());
+	if(!r)	//Si l'addresse du message ne match pas on vérifie que ce n'est pas une regex
+		r = inscore::OSCRegexp(filter.address()).match(_address);
+
+	return r;
 }
 
 /********************************************************

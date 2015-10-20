@@ -25,7 +25,7 @@ public:
 	ITLlistener();
 	~ITLlistener();
 
-	void start();
+	int start();
 	void setVerbose(bool verbose= true){_verbose=verbose;}
 	void setPort(int port){_port = port;}
 	void setOutputFormat(std::string outputFormat){_outputFormat = outputFormat;}
