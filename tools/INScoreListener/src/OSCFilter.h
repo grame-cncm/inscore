@@ -29,7 +29,7 @@ private:
 	const osc::ReceivedMessage& _message;
 public:
 	OSCFilterContext(const osc::ReceivedMessage& m);
-	const osc::ReceivedMessageArgument* arg(int i) const;
+	const osc::ReceivedMessageArgument* arg(size_t i) const;
 	const char* address() const {return _message.AddressPattern();}
 };
 

@@ -29,7 +29,7 @@ OSCFilterContext::OSCFilterContext(const osc::ReceivedMessage &m)
 	_args.push_back(*(arg++));
 }
 
-const osc::ReceivedMessageArgument *OSCFilterContext::arg(int i) const
+const osc::ReceivedMessageArgument *OSCFilterContext::arg(size_t i) const
 {
 	if(_args.size()<=i)
 		return 0;
@@ -75,7 +75,7 @@ bool OSCFilterExpr::eval(OSCFilterContext &filter)
 			return false;	//Wrong Type
 		return arg->AsInt32Unchecked()==_float;
 		}else if(arg->IsString())	//Empty string
-		return arg->AsStringUnchecked() == "";
+		return std::string(arg->AsStringUnchecked()).empty();
 		else			//Wrong Type
 		return false;
 	}else if(arg->IsString())
@@ -91,7 +91,7 @@ bool OSCFilterExpr::eval(OSCFilterContext &filter)
 			return true;	//Wrong Type
 		return arg->AsInt32Unchecked()!=_float;
 		}else if(arg->IsString())	//Empty string
-		return arg->AsStringUnchecked() != "";
+		return !std::string(arg->AsStringUnchecked()).empty();
 		else			//Wrong Type
 		return true;
 	}else if(arg->IsString())
