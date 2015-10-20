@@ -53,7 +53,7 @@ a) Compiling the GUIDO library
 ----------------------------
 To compile the GUIDO library do the following:
   > cd /your_path_to_the_guido_project/build
-  > make linux
+  > make
   > sudo make -C linux install
 
 
