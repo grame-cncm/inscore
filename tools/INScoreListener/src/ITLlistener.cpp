@@ -1,8 +1,6 @@
 #include <iostream>
 #include <sstream>
 
-#include <argp.h>
-
 #include "ITLlistener.h"
 #include "Parser/filterparser.h"
 
@@ -34,7 +32,7 @@ ITLlistener::~ITLlistener()
 }
 
 //_______________________________________________________________
-void ITLlistener::ProcessMessage(const osc::ReceivedMessage &m, const IpEndpointName &remoteEndpoint)
+void ITLlistener::ProcessMessage(const osc::ReceivedMessage &m, const IpEndpointName & /*remoteEndpoint*/)
 {
 	try{
 
