@@ -47,7 +47,7 @@ OSCFilterNode *OSCFilterExpr::filterArg(OSCFilterExpr::Operator op, unsigned int
 
 OSCFilterNode *OSCFilterExpr::filterArg(OSCFilterExpr::Operator op, unsigned int argIndex, std::string stringValue)
 {
-	if(op==EQUAL || op==NOTEQUAL)
+	if(op==kEQUAL || op==kNOTEQUAL)
 		return new OSCFilterExpr(op, argIndex, 0, stringValue);
 
 	return 0;
@@ -66,7 +66,7 @@ bool OSCFilterExpr::eval(OSCFilterContext &filter)
 	return false;
 
 	switch(_operator){
-	case OSCFilterExpr::EQUAL:
+	case OSCFilterExpr::kEQUAL:
 	if(_string.empty()){
 		if(arg->IsFloat())		//float
 		return arg->AsFloatUnchecked()==_float;
@@ -82,7 +82,7 @@ bool OSCFilterExpr::eval(OSCFilterContext &filter)
 		return !_string.compare(arg->AsStringUnchecked());
 	return false;			//Arg is not a string
 
-	case OSCFilterExpr::NOTEQUAL:
+	case OSCFilterExpr::kNOTEQUAL:
 	if(_string.empty()){
 		if(arg->IsFloat())		//float
 		return arg->AsFloatUnchecked()!=_float;
@@ -98,7 +98,7 @@ bool OSCFilterExpr::eval(OSCFilterContext &filter)
 		return _string.compare(arg->AsStringUnchecked());
 	return true;			//Arg is not a string
 
-	case OSCFilterExpr::GREATER:
+	case OSCFilterExpr::kGREATER:
 	if(arg->IsFloat())		//float
 		return arg->AsFloatUnchecked() >_float;
 	else if(arg->IsInt32()){	//int32
@@ -108,7 +108,7 @@ bool OSCFilterExpr::eval(OSCFilterContext &filter)
 	}				//Wrong Type
 	return false;
 
-	case OSCFilterExpr::GREATEREQUAL:
+	case OSCFilterExpr::kGREATEREQUAL:
 	if(arg->IsFloat())		//float
 		return arg->AsFloatUnchecked()>=_float;
 	else if(arg->IsInt32()){	//int32
@@ -118,7 +118,7 @@ bool OSCFilterExpr::eval(OSCFilterContext &filter)
 	}				//Wrong Type
 	return false;
 
-	case OSCFilterExpr::LOWER:
+	case OSCFilterExpr::kLOWER:
 	if(arg->IsFloat())		//float
 		return arg->AsFloatUnchecked()<_float;
 	else if(arg->IsInt32()){	//int32
@@ -128,7 +128,7 @@ bool OSCFilterExpr::eval(OSCFilterContext &filter)
 	}				//Wrong Type
 	return false;
 
-	case OSCFilterExpr::LOWEREQUAL:
+	case OSCFilterExpr::kLOWEREQUAL:
 	if(arg->IsFloat())		//float
 		return arg->AsFloatUnchecked()<=_float;
 	else if(arg->IsInt32()){	//int32

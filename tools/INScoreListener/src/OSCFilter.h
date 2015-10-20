@@ -49,12 +49,12 @@ protected:
 class OSCFilterExpr: public OSCFilterNode{
 public:
 	enum Operator{
-	EQUAL,
-	NOTEQUAL,
-	GREATER,
-	GREATEREQUAL,
-	LOWER,
-	LOWEREQUAL
+	kEQUAL,
+	kNOTEQUAL,
+	kGREATER,
+	kGREATEREQUAL,
+	kLOWER,
+	kLOWEREQUAL
 	};
 
 
