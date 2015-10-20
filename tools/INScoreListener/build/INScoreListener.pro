@@ -40,15 +40,17 @@ HEADERS += $$files($$OSCLIB/ip/*.h)
 ##############################
 # include directories
 ##############################
-
 INCLUDEPATH +=	$$REGEXPLIB
 INCLUDEPATH += $$OSCLIB
 
 ############################## 
-# linux support
+# osc support
 ############################## 
-
 unix:!macx:!ios:!android {
+    DEFINES += OSC_HOST_LITTLE_ENDIAN __LINUX__
+    SOURCES += $$files($$OSCLIB/ip/posix/*.cpp)
+}
+macx {
     DEFINES += OSC_HOST_LITTLE_ENDIAN __LINUX__
     SOURCES += $$files($$OSCLIB/ip/posix/*.cpp)
 }
