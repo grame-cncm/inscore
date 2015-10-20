@@ -16,6 +16,7 @@ ROOT 		= $$PWD/..
 SRC 		= $$ROOT/src
 LOCALLIB 	= $$ROOT/lib
 GUIDO_PATH	= $$LOCALLIB/GuidoEngine
+GUIDOAR_PATH= $$LOCALLIB/GuidoAR
 OSC         = $$LOCALLIB/oscpack
 QRENCODE    = $$LOCALLIB/qrencode
 JSON        = $$SRC/json
@@ -57,6 +58,7 @@ INCLUDEPATH +=  $$files($$OSC)
 INCLUDEPATH +=  $$files($$QRENCODE)
 INCLUDEPATH +=  $$files($$JSON)
 INCLUDEPATH +=  $$GUIDO_PATH/include
+INCLUDEPATH +=  $$GUIDOAR_PATH/include
 
 
 ############################## 
@@ -100,14 +102,14 @@ win32 {
 # macos x support
 ############################## 
 macx {
-    QMAKE_CXXFLAGS += -mmacosx-version-min=10.6
-    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.6 
+    QMAKE_CXXFLAGS += -mmacosx-version-min=10.7
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7 
     QMAKE_MAC_SDK = macosx10.9		# drag & drop doesn't work with macosx10.10 sdk on yosemite
 	CONFIG += lib_bundle explicitlib
 	QMAKE_INFO_PLIST = $$PWD/libInfo.plist
 	QMAKE_LFLAGS += -F$$ROOT/lib/GuidoEngine/macosx/
-	QMAKE_LFLAGS += -F$$ROOT/lib/GuidoEngine/macosx/
-	LIBS += -framework GUIDOEngine -framework CoreFoundation
+	QMAKE_LFLAGS += -F$$ROOT/lib/GuidoAR/macosx/
+	LIBS += -framework GUIDOEngine -framework GuidoAR -framework CoreFoundation
 	INCLUDEPATH += /usr/local/include
 	LIBS += -L/usr/local/lib -lmicrohttpd
     QMAKE_FRAMEWORK_VERSION = $${VERSION}
@@ -130,7 +132,6 @@ ios {
     HEADERS  +=  $$files($$SRC/mobile/*.h)
     INCLUDEPATH  +=  $$files($$SRC/mobile)
     DEFINES += IOS __MOBILE__
-    CONFIG += c++11
     CONFIG+= arm64 armv7 armv7s
     CONFIG += staticlib
     LIBS += $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a

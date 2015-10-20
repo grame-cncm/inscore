@@ -19,6 +19,8 @@ SRC  = $$ROOT/src
 APPL = $$SRC/inscoreviewer
 LIB  = $$SRC/inscore
 
+CONFIG += c++11
+
 ############################## 
 # source and headers
 ############################## 
