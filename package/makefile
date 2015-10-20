@@ -1,4 +1,4 @@
-version := 1.16
+version := 1.17
 system	:= $(shell uname -s)
 ifeq ($(system), MINGW32_NT-6.1) 
 	win32 = yes
