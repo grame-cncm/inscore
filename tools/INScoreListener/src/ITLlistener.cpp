@@ -10,15 +10,20 @@ namespace inscorelistener {
 
 ITLlistener::ITLlistener()
 	: _port(7001),
+	   _socket(0),
 	  _verbose(false),
-	  _outputFormat("%addr %args")
+	  _outputFormat("%addr %args"),
+	  _filter(0)
+
 {
 }
 
 void ITLlistener::setFilter(string filterFormat)
 {
 	filterparser parser(filterFormat);
+	//cout<<"start parsing... ";
 	_filter = parser.parse();
+	//cout<<"OK"<<endl;
 }
 
 
@@ -75,6 +80,7 @@ void ITLlistener::start(){
 
 	if(_verbose)
 		cout<<"INScoreListener listening on port: "<<_port<<endl;
+
 
 	_socket = new UdpListeningReceiveSocket( IpEndpointName( IpEndpointName::ANY_ADDRESS, _port ), this );
 	_socket->RunUntilSigInt();
