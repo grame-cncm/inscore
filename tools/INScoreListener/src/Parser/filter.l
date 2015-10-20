@@ -139,9 +139,10 @@ EOL		[\x0a\x0d]
  /* ----------------------------------------- */
  /*	address and param id token */
  /* ----------------------------------------- */
-
 "%"{DIGIT}+			yyextra->fInt = stoi(string(yytext).erase(0,1)); return ARGID;
 "%addr"				return ADDR;
+
+{SPACE}+			;   /* eat up space */
 
 %%
 
