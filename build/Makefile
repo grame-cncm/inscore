@@ -60,7 +60,9 @@ macos : macos/INScore.xcodeproj macos/INScoreViewer.xcodeproj INScoreMac
 xcodeproj: library.pro viewer.pro
 	[ -d macos ] || mkdir macos
 	cd macos && qmake $(SPEC) ../library.pro 
+	touch macos/INScore.xcodeproj
 	cd macos && qmake $(SPEC) ../viewer.pro 
+	touch macos/INScoreViewer.xcodeproj
 
 INScoreMac : 
 	xcodebuild -jobs 8 -project macos/INScore.xcodeproj -target INScore -configuration Release
@@ -81,6 +83,8 @@ xcodeprojios:
 	[ -d ios ] || mkdir ios
 	cd ios && $(QMAKEIOS) $(SPEC) ../library.pro 
 	cd ios && $(QMAKEIOS) $(SPEC) ../viewer.pro 
+	touch ios/INScore.xcodeproj
+	touch ios/INScoreViewer.xcodeproj
 
 INScoreIos : 
 	xcodebuild -jobs 8 -project ios/INScore.xcodeproj -target INScore -configuration Release

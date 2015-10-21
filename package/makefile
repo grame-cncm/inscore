@@ -1,4 +1,4 @@
-version := 1.16
+version := 1.17
 system	:= $(shell uname -s)
 ifeq ($(system), MINGW32_NT-6.1) 
 	win32 = yes
@@ -64,7 +64,7 @@ bin64   := ../build/win64/release
 
 .PHONY: doc rsrc
 
-usage:
+help:
 	@echo This makefile builds the INScore package.
 	@echo usage:
 	@echo "  make macosx   # on Mac OS X"
@@ -164,10 +164,17 @@ samples:
 	
 src:
 	[ -d $(package)-src ] || mkdir -p $(package)-src
+	[ -d $(package)-src/build || mkdir -p $(package)-src/build ]
+	[ -d $(package)-src/rsrc/images || mkdir -p $(package)-src/rsrc/images ]
 	cp -rf ../src $(package)-src/
-	cp -rf ../build/CMakeLists.txt $(package)-src/cmake
-	cp -rf ../build/Makefile $(package)-src/cmake
-	cp -rf ../build/Info.plist $(package)-src/cmake
+	cp -rf ../build/*.pro $(package)-src/build
+	cp -rf ../build/Makefile $(package)-src/build
+	cp -rf ../build/Info.plist $(package)-src/build
+	cp -rf ../build/qt-arch $(package)-src/build
+	cp -rf ../build/vs-* $(package)-src/build
+	cp -rf ../rsrc/*.qrc $(package)-src/rsrc
+	cp -rf ../rsrc/INScoreViewer.* $(package)-src/rsrc
+	cp -rf ../rsrc/images/*.png $(package)-src/rsrc/images
 	cp -rf ../lib $(package)-src/
 	cp -rf ../win32 $(package)-src/
 	rm -rf $(package)-src/lib/poppler
