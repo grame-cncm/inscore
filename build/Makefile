@@ -12,15 +12,9 @@ ifeq ($(system), Darwin)
 else
 ifeq ($(system), MINGW32_NT-6.1)
 	TARGET = windows
-	WDEST = win32
-	SPEC = -spec win32-msvc2010
-	GUIDOLIB = GUIDOEngine.dll
 else
 ifeq ($(system), MINGW32_NT-6.2)
 	TARGET = windows
-	WDEST = win64
-	SPEC = -spec win32-msvc2013
-	GUIDOLIB = GUIDOEngine64.dll
 else
 	TARGET = linux
 endif
@@ -28,9 +22,22 @@ endif
 endif
 
 WINARCH = $(shell ./qt-arch)
+ifeq ($(TARGET), windows)
+	MSVC := $(shell ./vs-path)
+	WINOPTS := /maxcpucount:4 /p:Configuration=Release /p:Platform=$(WINARCH)
+	ifeq ($(WINARCH), x64)
+	 WDEST = win64
+	 SPEC ?= -spec win32-msvc2013
+	 GUIDOLIB = GUIDOEngine64.dll
+	else
+ 	 WDEST = win32
+	 SPEC ?= -spec win32-msvc2010
+	 GUIDOLIB = GUIDOEngine.dll
+	endif
+endif
+
+
 OUT  := INScore.framework
-MSVC := $(shell ./vs-path)
-WINOPTS := /maxcpucount:4 /p:Configuration=Release /p:Platform=$(WINARCH)
 
 all :
 	make $(TARGET)
@@ -147,7 +154,7 @@ linuxclean:
 #===============================================================
 # building the library on windows
 #===============================================================
-windows : $(WDEST)/INScore.vcxproj $(WDEST)/INScoreViewer.vcxproj INScoreWin $(WDEST)/release/$(GUIDOLIB)
+windows : $(WDEST)/INScore.vcxproj $(WDEST)/INScoreViewer.vcxproj INScoreWin $(WDEST)/release/$(GUIDOLIB) $(WDEST)/release/guidoar.dll
 
 winprojects : 
 	[ -d $(WDEST) ] || mkdir $(WDEST)
@@ -166,6 +173,9 @@ $(WDEST)/INScoreViewer.vcxproj : viewer.pro
 
 $(WDEST)/release/$(GUIDOLIB): ../lib/GUIDOEngine/$(WDEST)/$(GUIDOLIB)
 	cp ../lib/GUIDOEngine/$(WDEST)/$(GUIDOLIB) $(WDEST)/release
+
+$(WDEST)/release/guidoar.dll: ../lib/GuidoAR/$(WDEST)/guidoar.dll
+	cp ../lib/GuidoAR/$(WDEST)/guidoar.dll $(WDEST)/release
 
 winclean:
 	rm -f $(WDEST)/tmp

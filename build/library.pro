@@ -91,10 +91,12 @@ win32 {
     INCLUDEPATH += $$ROOT/win32/dirent
 	contains(QMAKE_HOST.arch, x86_64): {
         DEFINES += __x86_64__
-		LIBS += $$LOCALLIB/GuidoEngine/win64/GUIDOEngine64.lib 
+		LIBS += $$LOCALLIB/GuidoEngine/win64/GUIDOEngine64.lib
+		LIBS += $$LOCALLIB/GuidoAR/win64/guidoar.lib
    }
 	else {
 		LIBS += $$LOCALLIB/GuidoEngine/win32/GUIDOEngine.lib
+		LIBS += $$LOCALLIB/GuidoAR/win32/guidoar.lib
 	}
 }
 
