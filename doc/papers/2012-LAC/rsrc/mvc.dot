@@ -1,0 +1,71 @@
+digraph impl { 
+	margin=0.05;
+	
+	// ------------------------------------------------------
+	// transformations sheme: from OSC messages to rendering
+	// ------------------------------------------------------
+	node [shape=none];
+	oscmsg	[label="OSC Message"];
+	
+	itlmsg	[label="Messages Stack"];
+	itlobj	[label="Model State"];
+	itlview	[label="View"];
+	itlapi	[label="Library\nAPI"];
+
+	edge [style=dashed];
+	oscmsg -> itlmsg;
+	itlmsg -> itlobj;
+	itlobj -> itlview;
+
+	// ------------------------------------------------------
+	// comments nodes
+	// ------------------------------------------------------
+	node [shape=none];
+	sync	[label="Synchronous"];
+	async	[label="Asynchronous"];
+	syncend [shape=point];
+	asyncend[shape=point];
+
+	node [style=filled, color=ivory2];
+	scheme	[label="Processing scheme"];
+	impl	[label="Implementation"];
+
+	// ------------------------------------------------------
+	// implementation
+	// ------------------------------------------------------
+	node [shape=record, style=solid, color=black];
+	edge [style=solid, arrowhead=onormal];
+	oscrcv		[label="OSC Listener\n(OSCPack)"];
+	msgstack	[label="Message Stack"];
+	controler	[label="Controler"];
+	model		[label="Score components hierarchy"];
+	updater		[label="Updater"];
+	view		[label="Qt View"];
+	
+	oscrcv 		-> msgstack; 
+	controler	-> model;
+	model		-> updater [style=dotted, arrowtail=odiamond, arrowhead=none label=" uses", fontsize=10];
+	updater		-> view;
+	oscmsg	 	-> oscrcv;
+	msgstack	-> itlapi [arrowhead=none, arrowtail=onormal];
+	msgstack 	-> controler [style=dotted, arrowtail=odiamond, arrowhead=none label=" uses", fontsize=10];
+	
+	edge [style=invis];
+	scheme 	-> oscmsg;
+	impl  	-> oscrcv;
+
+	edge [style=dotted, arrowhead=none];
+	sync  	-> syncend;
+	async  	-> asyncend;
+	syncend	-> async [style=invis]
+
+	{ rank = same; scheme; impl; } 	
+	{ rank = same; oscmsg; oscrcv; } 	
+	{ rank = same; itlmsg; msgstack; itlapi; } 	
+	{ rank = same; itlobj; model; } 	
+	{ rank = same; itlview; view; } 	
+	{ rank = same; oscrcv; sync; } 	
+	{ rank = same; msgstack; syncend; } 	
+	{ rank = same; controler; async; } 	
+	{ rank = same; view; asyncend; } 	
+}

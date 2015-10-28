@@ -1,0 +1,105 @@
+
+
+\documentclass{nime-workshop}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{verbatim}
+\usepackage{layout}
+
+\usepackage{color}
+\usepackage{hyperref}
+\definecolor{mycolor}{rgb}{0.384,0.0,0.145}
+\hypersetup{
+	colorlinks=true,
+	linkcolor= mycolor,
+	citecolor= mycolor
+}
+
+
+\hyphenation{ba-sed gra-phic}
+
+% -------------------- my commands -----------------
+\newcommand{\emptyseg}		{\ensuremath{\oslash}}
+\newcommand{\seg}[1]			{Seg(#1)}
+\newcommand{\lra}				{$\leftrightarrow$}
+\newcommand{\rshift}			{\hspace*{9mm}}
+\newcommand{\sshift}			{\hspace*{4mm}}
+\newcommand{\osc}[1]			{{\small \texttt{#1}}}
+
+
+\makeatother
+
+
+\begin{document}
+\title{INScore \\
+{\Large \textbf{An Environment for the Design of Live Music Scores}}
+}
+
+\author{
+D. Fober, Y. Orlarey, S. Letz\\
+\affaddr{Grame, Centre National de Création Musicale}\\
+\email{\{fober, orlarey, letz\}@grame.fr} \\
+}
+\date{}
+
+\maketitle
+
+
+
+\begin{abstract}
+INScore is an open source framework for the design of interactive, augmented, live music score. An augmented score is a graphic space providing representation, composition and manipulation of heterogeneous and arbitrary music objects (music scores but also images, text, signals...), both in the graphic and time domains. 
+INScore provides a dynamic system for the representation of the music performance, considered as a specific sound or gesture instance of the score, and viewed as \emph{signals}. 
+It integrates an \emph{event based} interaction mechanism that opens the door to original uses and designs, transforming a score as a user interface or allowing a score self modification based on temporal events.
+\end{abstract}
+%
+
+%------------------------------------------------------------
+\section{A message based framework}\label{sec:msg}
+%------------------------------------------------------------
+INScore is an open source framework\footnote{\url{http://inscore.sf.net}} available for the main operating systems (Linux, Mac OS X, Windows). The graphic layer makes use of the Qt framework\footnote{\url{http://qt.nokia.com/}} that provides platform independence. It relies on the GUIDO Engine and the MusicXML library for symbolic music notation rendering. It provides a C++ API, but it is basically controlled by an OSC messages API, which makes it usable with any language or program supporting OSC (typically Max/MSP or Pure Data). 
+
+%------------------------------------------------------------
+\section{Augmented music scores}\label{sec:ams}
+%------------------------------------------------------------
+INScore extends the traditional music score to arbitrary heterogeneous graphic objects: it supports symbolic music notation (Guido or MusicXML format), text (utf8 encoded or html format), images (jpeg, tiff, gif, png, bmp), vectorial graphics (custom basic shapes or SVG), video files\footnote{video support based on QT - Phonon plugin} and performance representation (see section \ref{sec:perf}).
+
+Each component of an augmented score has a graphic and temporal dimension and can be addressed in both the graphic and temporal space. A simple formalism, is used to draw relations between the graphic and time space and to represent the time relations of any score components in the graphic space. This formalism is based on the graphic and time space segmentation, it relies on simple mathematical relations between segments and on relations compositions. We talk of \emph{time synchronization in the graphic domain}\cite{fober:10b} to refer to this specific augmented score feature.
+
+
+%------------------------------------------------------------
+\section{Performance representation}\label{sec:perf}
+%------------------------------------------------------------
+INScore provides signal based performance representation. The performance could be viewed as audio or gestural signal. The representation system is based on a viewpoint reversal: the graphic of a signal is viewed as a \emph{graphic signal}, which is a composite signal made of:
+\begin{itemize}
+\item a $y$ signal: the graphic $y$ coordinates,
+\item a $h$ signal: the graphic thickness at the y position
+\item a $c$ signal: the graphic color (actually a 4 components signal based on the HSBA model)
+\end{itemize}
+
+The system provides arbitrary composition of simple signals in parallel. This composite signal is connected to a graphic signal in a final step. The resulting performance representation object is a \emph{first order} music score component: it has graphic and temporal dimensions and can be graphically \emph{synchronized} to any other component \cite{Fober:10c}.
+
+
+%------------------------------------------------------------
+\section{Interaction}
+%------------------------------------------------------------
+Interaction is supported at individual component level by the way of \emph{watchable events}. Events are typical events available in a graphic environment (mouse down/up, enter/leave, move, double click) extended in the temporal domain (time enter/leave). They are associated to arbitrary messages. 
+
+A score component can be asked to watch one or several events and when an event occurs, it sends the corresponding message. Messages can include variables which values are computed in the context of the event and of the target component. Typical variables are $\$x$ or $\$y$, to refer to clicked positions, but it supports also a $\$date$ variable indicating the date of the clicked position.
+
+In order to extend INScore interoperability with other applications, the messages OSC address has been extended to an \emph{url} like specification, where host and UDP port specifications can be used to prefix the OSC destination address. Thus a score component accepts any INScore legal message as event associated message, but any arbitrary message as well, designed to address external programs.
+
+
+%=============================================================
+\vspace{4mm}
+\textbf{Acknowledgments} \\
+INScore is one of the outcomes of \emph{Interlude}, a project funded by the french Agence Nationale pour la Recherche [ANR-08-CORD-010].
+
+
+\bibliographystyle{abbrv}
+\bibliography{../interlude}
+
+\end{document}
