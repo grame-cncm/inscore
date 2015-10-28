@@ -12,15 +12,9 @@ ifeq ($(system), Darwin)
 else
 ifeq ($(system), MINGW32_NT-6.1)
 	TARGET = windows
-	WDEST = win32
-	SPEC = -spec win32-msvc2010
-	GUIDOLIB = GUIDOEngine.dll
 else
 ifeq ($(system), MINGW32_NT-6.2)
 	TARGET = windows
-	WDEST = win64
-	SPEC = -spec win32-msvc2013
-	GUIDOLIB = GUIDOEngine64.dll
 else
 	TARGET = linux
 endif
@@ -28,10 +22,20 @@ endif
 endif
 
 ifeq ($(TARGET), windows)
- WINARCH = $(shell ./qt-arch)
- MSVC := $(shell ./vs-path)
+ WINARCH ?= $(shell ./qt-arch)
+ MSVC ?= $(shell ./vs-path)
  WINOPTS := /maxcpucount:4 /p:Configuration=Release /p:Platform=$(WINARCH)
+ SPEC ?= -spec win32-msvc2013
+ifeq ($(WINARCH), x64)
+	WDEST = win64
+	GUIDOLIB = GUIDOEngine64.dll
+ else
+	WDEST = win32
+	GUIDOLIB = GUIDOEngine.dll
+ endif
 endif
+
+OUT  := INScore.framework
 
 all :
 	make $(TARGET)
@@ -41,7 +45,7 @@ help :
 	@echo "Available targets are : "
 	@echo "  macos : to build for Mac OS"
 	@echo "  ios : to build for iOS"
-	@echo "  win32 : to build for Windows"
+	@echo "  windows : to build for Windows"
 	@echo "  linux : to build for Linux"
 	@echo "  android : to build for android"
 	@echo "  installAndroid DEVICE=XXX : to install application on Android device"
