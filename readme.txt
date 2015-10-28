@@ -5,6 +5,7 @@ Compiling the INScore project
 The INScore project depends on external libraries:
  - the Qt framework version 5.3 or later (see https://www.qt.io/)
  - the GuidoEngine version 1.56 or greater (see http://guidolib.sourceforge.net)
+ - the libmicrohttpd library (see https://www.gnu.org/software/libmicrohttpd/)
  - the oscpack library (included in the INScore repository)
  - optionaly: 
      - the MusicXML library  (see http://libmusicxml.sourceforge.net)
@@ -38,6 +39,7 @@ change the library dependency to the appropriate location.
 The GuidoEngine library is included in binary form in the lib/GuidoEngine/win32 folders.
 The binaries have been compiled with Visual C++ Version 10.
 You should check your environment compatibility and notably for the potential runtime issues.
+libmicrohttpd is (not yet) required for windows (yet unsupported httpd object) 
 
 >>>>>> Linux
 ----------------------------
