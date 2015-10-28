@@ -164,7 +164,7 @@ samples:
 	
 src:
 	[ -d $(package)-src ] || mkdir -p $(package)-src
-	[ -d $(package)-src/build || mkdir -p $(package)-src/build ]
+	[ -d $(package)-src/build || mkdir -p $(package)-src/build
 	[ -d $(package)-src/rsrc/images || mkdir -p $(package)-src/rsrc/images ]
 	cp -rf ../src $(package)-src/
 	cp -rf ../build/*.pro $(package)-src/build
