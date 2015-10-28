@@ -13,9 +13,9 @@
 
 using namespace std;
 
-//#define DEFAULT_ADDRESS "192.168.1.21"
-#define DEFAULT_ADDRESS "192.168.43.88"
-#define DEFAULT_PORT 7001
+#define DEFAULT_ADDRESS "192.168.1.21"
+//#define DEFAULT_ADDRESS "192.168.43.88"
+#define DEFAULT_PORT 8000
 
 
 //------------------------------------------------------------------------
@@ -24,15 +24,17 @@ void SensorWidget::timerEvent(QTimerEvent * )
 	for (TSensors::const_iterator i = fSensors.begin(); i != fSensors.end(); i++) {
 		Sensor* sensor = i->sensor;
 		QCheckBox * ctrl = i->controler;
-		if (ctrl && ctrl->isChecked()) {
+         if (ctrl && ctrl->isChecked()) {
 			if (!sensor->active() ) sensor->activate(true);
-			OSCStream osc;
-			osc.start( sensor->address());
-			int count = sensor->count();
-			for (int i=0; i<count; i++)
-				osc << sensor->value(i);
-			osc.end();
-			fSocket->Send(osc.Data(), osc.Size());
+            int count = sensor->count();
+            if (count) {
+              OSCStream osc;
+                osc.start( sensor->address());
+                for (int i=0; i<count; i++)
+                    osc << sensor->value(i);
+                osc.end();
+                fSocket->Send(osc.Data(), osc.Size());
+            }
 		}
 		else if (sensor->active() ) sensor->activate(false);
 	}
@@ -53,6 +55,7 @@ void SensorWidget::initSensors()
 			sizePolicy.setVerticalStretch(0);
 			sizePolicy.setHeightForWidth(ctrl->sizePolicy().hasHeightForWidth());
 			ctrl->setSizePolicy(sizePolicy);
+			ctrl->setMinimumSize(QSize(100, 24));
 			verticalLayout->addWidget(ctrl, 0, Qt::AlignVCenter);
 			ctrl->setText(ui.sensor->name());
 			ui.controler = ctrl;
@@ -74,7 +77,8 @@ SensorWidget::SensorWidget(QWidget *parent) : QFrame(parent)
 	initSensors();
 	
 	connect( mAddressLineEdit,	SIGNAL(editingFinished()) , this , SLOT(addressChge()) );
-	connect( mPortLineEdit,	SIGNAL(valueChanged(int)) , this , SLOT(portChge(int)) );
+    connect( mPortLineEdit,	SIGNAL(valueChanged(int)) , this , SLOT(portChge(int)) );
+    connect( mSkip,	SIGNAL(stateChanged(int)) , this , SLOT(skipChge(int)) );
 
 	fSocket = new UdpTransmitSocket( IpEndpointName( destination().toStdString().c_str() , port() ) );
 	QSettings settings;
@@ -120,11 +124,21 @@ void SensorWidget::destchge()
 	UdpTransmitSocket* tmp = fSocket;
 	fSocket = socket;
 	delete tmp;
+
+    QSettings settings;
+    settings.setValue("port", mPortLineEdit->value());
+    settings.setValue("address", destination());
 }
 
 //------------------------------------------------------------------------
 void SensorWidget::addressChge()	{ destchge(); }
 void SensorWidget::portChge(int)	{ destchge(); }
+void SensorWidget::skipChge(int state)
+{
+    for (TSensors::const_iterator i = fSensors.begin(); i != fSensors.end(); i++) {
+        i->sensor->skipDuplicates (state);
+    }
+}
 
 //------------------------------------------------------------------------
 int SensorWidget::port () const

@@ -96,8 +96,9 @@ class SensorWidget : public QFrame, private Ui::Frame
 	
 	protected slots:
 		void addressChge();
-		void portChge(int i);
-		void timerEvent(QTimerEvent * e);
+        void skipChge(int i);
+        void portChge(int i);
+        void timerEvent(QTimerEvent * e);
 };
 
 //------------------------------------------------------------------------

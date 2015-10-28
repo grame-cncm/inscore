@@ -10,17 +10,24 @@ SOURCES +=  $$files($$OSCIP/*.cpp)							# oscpack files
 HEADERS += *.h
 FORMS += *.ui
 
+ANDROID_PACKAGE_SOURCE_DIR = $$PWD/rsrc
+
 MOC_DIR = ./tmpSrc
 RCC_DIR = ./tmpSrc
 UI_DIR  = ./tmpSrc
 DESTDIR = $$PWD
 
 macx:CONFIG+=x86_64
-QT += widgets 
-QT += network
-QT += sensors
+QT += widgets network sensors
 
 INCLUDEPATH += $$OSC
 
-android { DEFINES += OSC_HOST_LITTLE_ENDIAN }
+android { 
+	OTHER_FILES += content rsrc AndroidManifest.xml
+
+	DEFINES += OSC_HOST_LITTLE_ENDIAN 
+    DISTFILES +=  AndroidManifest.xml
+}
 unix:!macx:!ios:!android { DEFINES += OSC_HOST_LITTLE_ENDIAN }
+
+RESOURCES += QtOSCSensor.qrc

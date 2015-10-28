@@ -14,6 +14,8 @@ class Sensor
 		QSensor*		fSensor;
 		int				fType;
 		QSensorReading*	fReader;
+		bool			fSkipDuplicates;
+		std::vector<float> fLastRead;
 
 		void			init();
 		QSensor*		create(int type) const;
@@ -33,9 +35,9 @@ class Sensor
 		bool			available() const	{ return fSensor->isConnectedToBackend(); }
 		bool			active() const		{ return fSensor->isActive(); }
 		void			activate(bool state);
-		int				count() const		{ return fReader ? fReader->valueCount() : 0; }
+		int				count();
 		float			value(int i) const	{ return fReader->value(i).value<float>(); }
-		void			skipDuplicates(bool state)	{ fSensor->setSkipDuplicates(state); }
+		void			skipDuplicates(bool state);
 };
 
 

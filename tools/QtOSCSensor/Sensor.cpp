@@ -64,7 +64,7 @@ map<int, const char*>	Sensor::fNames;
 
 
 //------------------------------------------------------------------------
-Sensor::Sensor (int type) : fType(type)
+Sensor::Sensor (int type) : fSensor(0), fType(type), fReader(0), fSkipDuplicates(true)
 {
 	init();
 	fSensor = create (type);
@@ -82,10 +82,39 @@ Sensor::~Sensor ()
 //------------------------------------------------------------------------
 void Sensor::activate(bool state)
 {
-	skipDuplicates (true);
 	fSensor->setActive(state);
 	fReader = fSensor->reading();
 }
+
+//------------------------------------------------------------------------
+void Sensor::skipDuplicates(bool state)
+{
+	fSkipDuplicates = state;
+	if (!state) fLastRead.clear();
+}
+
+//------------------------------------------------------------------------
+int	Sensor::count()
+{
+	int n = fReader ? fReader->valueCount() : 0;
+	if (n && fSkipDuplicates) {
+		bool newval = false;
+		if (int(fLastRead.size()) == n) {
+			for (int i=0; (i < n) && !newval; i++) {
+				newval = fLastRead[i] != value(i);
+			}
+		}
+		else newval = true;
+		if (newval) {
+			fLastRead.clear();
+			for (int i=0; i < n; i++)
+				fLastRead.push_back (value(i));
+		}
+		else n = 0;
+	}
+	return n;
+}
+
 
 //------------------------------------------------------------------------
 void Sensor::init ()
