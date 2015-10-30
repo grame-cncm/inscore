@@ -8,7 +8,7 @@ namespace inscore{
 class GmnEvaluator : public ExprEvaluator
 {
 public:
-    static GmnEvaluator* create(IObject* contextObject){return new GmnEvaluator(contextObject);}
+	static GmnEvaluator* create(const IObject* contextObject){return new GmnEvaluator(contextObject);}
 
 	const std::string eval(const IObject *arg);
 

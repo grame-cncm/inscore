@@ -11,7 +11,7 @@
 #include "ip/UdpSocket.h"
 
 
-#define PORT 7000
+#define PORT 7003
 
 class ExamplePacketListener : public osc::OscPacketListener {
 protected:

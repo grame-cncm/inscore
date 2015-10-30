@@ -37,6 +37,9 @@
 #include "TLocalMapping.h"
 
 
+#include "IExpressionHandler.h"
+#include "GmnEvaluator.h"
+
 struct NodeGR;
 typedef const struct NodeGR *  CGRHandler;
 
@@ -49,6 +52,7 @@ namespace inscore
 */
 
 class Updater;
+class SIExprHandlerbase;
 class IGuidoCode;
 typedef class libmapping::SMARTP<IGuidoCode>	SIGuidoCode;
 //--------------------------------------------------------------------------
@@ -79,6 +83,8 @@ class IGuidoCode : public IObject
 														/// The 'map' msg just expects a map-name, and then the Guido view
 														/// is in charge of building the mappings just from 
 														/// the fRequestedMappings list.
+		IExprHandler<GmnEvaluator> fExprHandler;
+
 
 	public:
 		static const std::string kGuidoCodeType;
@@ -97,6 +103,8 @@ class IGuidoCode : public IObject
 //		void		setPagesCount(int pageCount)	{ fPageCount = pageCount; }
 		void		setGRHandler(CGRHandler gr)		{ fGRHandler = gr; }
 		libmapping::rational	getPageDate(int pagenum) const;
+
+		const IExprHandlerbase*	getExprHandler() const	{return &fExprHandler;}
 
 		/// \brief requests that the IGuidoCode build a mapping named 'mapName'. The IGuidoCode stores the number of requests.
 		virtual void requestMapping(const std::string& mapName);
@@ -126,6 +134,8 @@ class IGuidoCode : public IObject
 		
 		/// \brief Overrides IObject to handle 'get map' msg.
 		SIMessageList getMsgs(const IMessage* msg) const;
+
+		MsgHandler::msgStatus exprMsg(const IMessage* msg);
 };
 
 /*! @} */

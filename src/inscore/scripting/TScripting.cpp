@@ -47,7 +47,6 @@ class TEnv;
 //--------------------------------------------------------------------------------------------
 TScripting::TScripting(TJSEngine* js, TLua* lua)
     : 	fJavascript(js), fLua(lua),
-		fExprFactory(ExprFactory::create()),
 		fParsingFailed(false)
 {
 	fMessages = IMessageList::create();
@@ -192,27 +191,16 @@ IMessage::argslist TScripting::resolve (const char* var, const char * defaultVal
 //--------------------------------------------------------------------------------------------
 
 Sbaseparam* TScripting::createExpr(std::string operatorName, Sbaseparam* param1, Sbaseparam* param2){
-	SIExprArgbase arg1 = exprArgFromParam(param1);
-	SIExprArgbase arg2 = exprArgFromParam(param2);
+	SIExpression arg1 = exprArgFromParam(param1);
+	SIExpression arg2 = exprArgFromParam(param2);
 
-    SIExpression expr;
-    if(fExprFactory->createExpr(operatorName, arg1, arg2,expr)){
-        IMsgParam<SIExpression>* param = new IMsgParam<SIExpression>(expr);
-        return new Sbaseparam(param);
-    }
+    SIExprOperator expr;
+	if(ExprFactory::createExpr(operatorName, arg1, arg2,expr))
+		return createExprArg<SIExprOperator>(expr);
+
 	ITLErr<<"ExpressionFactory error: operator \""<< operatorName <<"\" unknown"<<ITLEndl;
 	return emptyExprArg();
 }
-
-Sbaseparam* TScripting::createExprArgFromExpr(Sbaseparam* param){
-
-    //----- extract SIExpression from the base param;  ------
-    SIExpression expr = exprFromParam(param);
-
-    //----- encapsulate expression into an ExprArg  -----
-	return createExprArg<SIExpression>(expr);
-}
-
 
 Sbaseparam *TScripting::createExprArgFromVar(IMessage::argslist *var)
 {
@@ -232,11 +220,22 @@ Sbaseparam *TScripting::createExprArgFromVar(IMessage::argslist *var)
 	return createExprArg(s);
 }
 
-SIExprArgbase TScripting::exprArgFromParam(Sbaseparam *param)
-{
-    SIExprArgbase defaut;
 
-    SIExprArgbase arg((*param)->value<SIExprArgbase>(defaut));
+void TScripting::setExprArgDynamic(Sbaseparam *param)
+{
+	exprArgFromParam(param)->switchToDynamic();
+}
+
+void TScripting::setExprArgCopy(Sbaseparam *param)
+{
+	exprArgFromParam(param)->switchToCopy();
+}
+
+SIExpression TScripting::exprArgFromParam(Sbaseparam *param)
+{
+    SIExpression defaut;
+
+    SIExpression arg((*param)->value<SIExpression>(defaut));
 
     if(arg == defaut){
 		ITLErr<<"expression parameter is not a valid argument, check parser to fix the bug..."<<ITLEndl;
@@ -247,11 +246,11 @@ SIExprArgbase TScripting::exprArgFromParam(Sbaseparam *param)
 }
 
 
-SIExpression TScripting::exprFromParam(const Sbaseparam *param)
+SIExprOperator TScripting::exprFromParam(const Sbaseparam *param)
 {
-    SIExpression defaut;
+    SIExprOperator defaut;
 
-    SIExpression expr((*param)->value<SIExpression>(defaut));
+    SIExprOperator expr((*param)->value<SIExprOperator>(defaut));
 
     if(expr == defaut){
         ITLErr<<"expression parameter is not a valid expression"<<ITLEndl;

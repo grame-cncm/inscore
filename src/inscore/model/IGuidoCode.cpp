@@ -29,6 +29,7 @@
 #include "IMessageHandlers.h"
 #include "GUIDOEngine.h"
 #include "GmnEvaluator.h"
+#include "IExpressionHandler.h"
 
 using namespace std;
 using namespace libmapping;
@@ -42,11 +43,14 @@ const string IGuidoCode::kGuidoCodeType("gmn");
 //--------------------------------------------------------------------------
 IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 	IObject (name, parent) , fGRHandler(0), fPage(1), fPageFormat( 21.0f, 29.7f ),
-	fNbOfPageColumns(2), fNbOfPageRows(1)
+	fNbOfPageColumns(2), fNbOfPageRows(1), fExprHandler(this)
 {
+
 	fLocalMappings = TLocalMapping<rational,1>::create();
 
 	fTypeString = kGuidoCodeType;
+
+	fMsgHandlerMap[kexpression_GetMethod]		= TMethodMsgHandler<IGuidoCode>::create(this, &IGuidoCode::exprMsg);
 
 	fMsgHandlerMap[kpage_GetSetMethod]			= TSetMethodMsgHandler<IGuidoCode,int>::create(this, &IGuidoCode::setPage);
 	fMsgHandlerMap[kdpage_SetMethod]			= TSetMethodMsgHandler<IGuidoCode,int>::create(this, &IGuidoCode::setdPage);
@@ -153,12 +157,14 @@ MsgHandler::msgStatus IGuidoCode::set ( const IMessage* msg )
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status;
 
-    string t; SIExpression expr;
+	string t; SIExpression expr;
     if ((msg->size() == 2) && (msg->param(1, t)||msg->param(1, expr) )) {
 
-        if(expr!=NULL)
-            if(!GmnEvaluator::create(this)->evalExpression(expr, t))
+		if(expr){
+			if(!fExprHandler.composeExpr(expr, t))
                 return MsgHandler::kBadParameters;
+		}else
+				fExprHandler.clearExpr();
 
         if (t != getGMN()) {
             setGMN( t );
@@ -244,9 +250,62 @@ SIMessageList IGuidoCode::getMsgs(const IMessage* msg) const
 				outMsgs->list().push_back (msg);
 			}
 		}
+		else if( param == kexpression_GetMethod && fExprHandler.hasExpression())
+		{
+			SIMessage msg = IMessage::create(getOSCAddress(), kexpression_GetMethod);
+			std::string r = fExprHandler.printExpression();
+			*msg << r;
+			outMsgs->list().push_back(msg);
+			///TODO return the reel expression
+		}
 	}
 	outMsgs->list().push_back (IObject::getMsgs(msg)->list());
 	return outMsgs;
+}
+
+//-------------------------------------------------------------------------
+MsgHandler::msgStatus IGuidoCode::exprMsg(const IMessage* msg)
+{
+	if(msg->size()!=1)
+		return MsgHandler::kBadParameters;
+
+	std::string p;
+	if(!msg->param(0,p))
+			return MsgHandler::kBadParameters;
+
+	string r = "";
+	bool processed = true;
+
+	if(p==kclear_SetMethod){
+		fExprHandler.clearExpr();
+	}else if(p=="autowatch"){
+		fExprHandler.setAutoWatch();
+	}else if(p=="manwatch"){
+		fExprHandler.setAutoWatch(false);
+	}else{
+
+		//some operations need an expression
+		if(!fExprHandler.hasExpression())	{
+			ITLErr<<name()<<": no expression"<<ITLEndl;
+			return MsgHandler::kBadParameters;
+		}
+
+		if(p=="renew")
+			processed = fExprHandler.forceEvalExpr(r);
+		else if(p=="reeval")
+			processed = fExprHandler.evalExpression(r);
+		else
+			return MsgHandler::kBadParameters;
+
+	}
+
+
+	if(!processed || r == getGMN())
+		return MsgHandler::kProcessedNoChange;
+
+	setGMN(r);
+	newData(true);
+	return MsgHandler::kProcessed;
 }
 
 }

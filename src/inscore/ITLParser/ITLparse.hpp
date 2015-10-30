@@ -52,27 +52,29 @@ extern int ITLdebug;
     EQUAL = 262,
     REGEXP = 263,
     PATHSEP = 264,
-    FILEPATH = 265,
-    STRING = 266,
-    QUOTEDSTRING = 267,
-    WATCH = 268,
-    EVAL = 269,
-    ERR = 270,
-    ENDEXPR = 271,
-    ENDSCRIPT = 272,
-    VARSTART = 273,
-    LEFTPAR = 274,
-    RIGHTPAR = 275,
-    COLON = 276,
-    COMMA = 277,
-    POINT = 278,
-    HOSTNAME = 279,
-    IPNUM = 280,
-    EXPRESSIONSTART = 281,
-    EXPRESSIONEND = 282,
-    AMPERSAND = 283,
-    LUASCRIPT = 284,
-    JSCRIPT = 285
+    BACKPATH = 265,
+    FILEPATH = 266,
+    STRING = 267,
+    QUOTEDSTRING = 268,
+    WATCH = 269,
+    EVAL = 270,
+    ERR = 271,
+    ENDEXPR = 272,
+    ENDSCRIPT = 273,
+    VARSTART = 274,
+    LEFTPAR = 275,
+    RIGHTPAR = 276,
+    COLON = 277,
+    COMMA = 278,
+    POINT = 279,
+    HOSTNAME = 280,
+    IPNUM = 281,
+    EXPRESSIONSTART = 282,
+    EXPRESSIONEND = 283,
+    AMPERSAND = 284,
+    APPROX = 285,
+    LUASCRIPT = 286,
+    JSCRIPT = 287
   };
 #endif
 
@@ -81,7 +83,7 @@ extern int ITLdebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 27 "ITL.y" /* yacc.c:1909  */
+#line 26 "ITL.y" /* yacc.c:1909  */
 
 	int		num;
 	float	real;
@@ -93,7 +95,7 @@ union YYSTYPE
 	inscore::SIMessage*				msg;
     inscore::SIMessageList*			msgList;
 
-#line 97 "ITLparse.hpp" /* yacc.c:1909  */
+#line 99 "ITLparse.hpp" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

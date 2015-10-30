@@ -109,18 +109,19 @@ OSCStream& operator <<(OSCStream& s, const string& val)
 	return s; 
 }
 //--------------------------------------------------------------------------
-OSCStream &operator <<(OSCStream &s, const IExprArgbase *val){
-    ExprReader reader;
-    s.stream() << " " << val->accept(&reader).c_str();
+OSCStream &operator <<(OSCStream &s, IExpression *val){
+    string r;
+	if(ExprReader::read(val, r))
+        s.stream() << " " << r.c_str();
+
     return s;
 }
 //--------------------------------------------------------------------------
-OSCStream &operator <<(OSCStream &s, const IExpression *val){
-    string r;
-    ExprReader reader;
-    if(reader.evalExpression(val, r))
-        s.stream() << " " << r.c_str();
-
+OSCStream &operator <<(OSCStream &s, IExprOperator *val)
+{
+    string arg1, arg2;
+    if(ExprReader::read(val->arg1(), arg1) && ExprReader::read(val->arg2(), arg2))
+        s.stream() << "expr( " << arg1.c_str() << " " << arg2.c_str() << ") (how did you get here by the way?)";
     return s;
 }
 
@@ -182,20 +183,15 @@ OSCErrorStream& operator <<(OSCErrorStream& s, const string& val)
 }
 
 //--------------------------------------------------------------------------
-OSCErrorStream &operator <<(OSCErrorStream &s, const IExprArgbase *val){
-    ExprReader reader;
-    s.stream() << " " << val->accept(&reader);
-    return s;
-}
-//--------------------------------------------------------------------------
-OSCErrorStream &operator <<(OSCErrorStream &s, const IExpression *val){
+OSCErrorStream &operator <<(OSCErrorStream &s, IExpression *val){
     string r;
-    ExprReader reader;
-    if(reader.evalExpression(val, r))
+	if(ExprReader::read(val, r))
         s.stream() << " " << r;
 
     return s;
 }
+
+
 
 //--------------------------------------------------------------------------
 OSCErrorStream& operator <<(OSCErrorStream& s, const IMessageList* list)	

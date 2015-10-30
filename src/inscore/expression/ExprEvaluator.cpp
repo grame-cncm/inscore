@@ -1,65 +1,95 @@
-#include "ExprEvaluator.h"
 #include <fstream>
 #include "ITLError.h"
 
+#include "ExprEvaluator.h"
+
 #include "IObject.h"
 #include "IScene.h"
+#include "IExpressionHandler.h"
 
 
 using namespace std;
 
 namespace inscore{
 
-bool ExprEvaluator::evalExpression(const IExpression *expr, std::string& result){
-    fEvalStatus.init();
-    result = eval(expr);
-    return fEvalStatus.hasEvalSucceed();
+bool ExprEvaluator::evalExpression(const IExpression* expr, std::string& result){
+	fEvalStatus.init();
+	string r;
+	smartEval(expr, r);
+	if(fEvalStatus.hasEvalSucceed())
+		result = r;
+	return fEvalStatus.hasEvalSucceed();
 }
 
 //_____________________________________________________________
-const string ExprEvaluator::eval(const IExpression* arg)
+bool ExprEvaluator::smartEval(const IExpression *expr, string& result)
+{
+	result = expr->getEvaluated();					//Storing the previously evaluated value in result ("" if no value)
+
+	if(!expr->dynamicEval() && !result.empty())	//If expr is static and already evaluated
+		return false;							//result = previously evaluated value
+
+	string e = expr->accept(this);				//We evaluate
+
+	if(e==result)								//If the result is the same
+		return false;							//result = previously evaluated value
+
+	result = e;									//result = new value
+	expr->evaluated()->clear();						//updating evaluated value
+	expr->evaluated()->append(e);
+
+	return true;
+}
+
+
+//_____________________________________________________________
+const string ExprEvaluator::eval(const IExprOperator* arg, const IExpression *exprArg)
 {
 	OperatorCb cb;
 
-	if( !callbackByOperator(arg->getOperatorPrototype(), cb) ){
+	if( !callbackByOperator(arg->operatorPrototype(), cb) ){
 		ITLErr<<fEvalName	<<": operator \""
-							<<arg->getOperatorPrototype()->getName()
+							<<arg->operatorPrototype()->getName()
 							<<"\" has no definition in this evaluator";
 		fEvalStatus.fail();
 		return "";
 	}
 
-    std::string arg1 = arg->getArg1()->accept(this);
+	string arg1, arg2;
+	bool changed = exprArg->getEvaluated().empty();	//If the operator had never been evaluated we need to force the evaluation
+													//even if arg1 and arg2 didn't change (happening when tree are composed together
+	changed |= smartEval(arg->constArg1(), arg1);
+	changed |= smartEval(arg->constArg2(), arg2);
 
-    if(!fEvalStatus.hasEvalSucceed())
-        return "";
+	if(!changed)									//If arg1 and arg2 didn't change
+		return exprArg->getEvaluated();				//Return the previously evaluated value
 
-    std::string arg2 = arg->getArg2()->accept(this);
+	if(!fEvalStatus.hasEvalSucceed())
+		return "";
 
-    return cb(arg1, arg2);
+	return cb(arg1, arg2);
+
+
 }
 
 //_____________________________________________________________
-const string ExprEvaluator::eval(std::string arg)
+const string ExprEvaluator::eval(const std::string &arg, const IExpression *exprArg)
 {
     return arg;
 }
 
 //_____________________________________________________________
-const string ExprEvaluator::eval(filepath arg)
+const string ExprEvaluator::eval(const filepath& arg, const IExpression *exprArg)
 {
-
-	arg = fContextObject->getScene()->absolutePath(arg);
 
     std::string fileData="";
     std::ifstream ifs;
 
-    ifs.open(arg, std::ifstream::in);
+	ifs.open(fContextObject->getScene()->absolutePath(arg), std::ifstream::in);
 
     if(!ifs.is_open()){
 		ITLErr<<fEvalName<<": can't find \""<<(string)arg<<"\""<<ITLEndl;
-        fEvalStatus.fail();
-        return "";
+		return fEvalStatus.fail(exprArg->getEvaluated());
     }
 
     char c = ifs.get();
@@ -74,28 +104,13 @@ const string ExprEvaluator::eval(filepath arg)
 }
 
 //_____________________________________________________________
-const string ExprEvaluator::eval(identifier arg)
+const string ExprEvaluator::eval(const itladdress &arg, const IExpression *exprArg)
 {
-    oscaddress address = fContextObject->getParent()->getOSCAddress() + "/" + (string)arg;
+	const IObject* o = objectFromAddress(arg, fContextObject);
 
-    std::string r = eval(address);
-
-    if(fEvalStatus.hasEvalSucceed())
-        return r;
-
-    return "";
-}
-
-
-//_____________________________________________________________
-const string ExprEvaluator::eval(oscaddress arg)
-{
-    const IObject* o = fContextObject->findnode(arg);
-
-    if(!o){
+	if(!o){
 		ITLErr<<fEvalName<<": "<<(string)arg<<" not known at this address..."<<ITLEndl;
-        fEvalStatus.fail();
-        return "";
+		return fEvalStatus.fail(exprArg->getEvaluated());
     }
     return eval(o);
 }
@@ -103,14 +118,15 @@ const string ExprEvaluator::eval(oscaddress arg)
 //_____________________________________________________________
 const string ExprEvaluator::eval(const IObject *arg)
 {
-    return "IObject: "+arg->name();
+	return "IObject: "+arg->name();
 }
 
 
 
 //_____________________________________________________________
+//_____________________________________________________________
 ExprEvaluator::ExprEvaluator(const char *name, const IObject* contextObject):
-	evaluator(), fEvalName(name)
+	fEvalName(name)
 {
 	fContextObject = contextObject;
 }
@@ -134,6 +150,12 @@ bool ExprEvaluator::callbackByOperator(const OperatorPrototype* op, OperatorCb &
 }
 
 
+//_____________________________________________________________
+const IObject* ExprEvaluator::objectFromAddress(itladdress address, const IObject* contextObject)
+{
+	return contextObject->findnode(address);
+}
+
 
 //_____________________________________________________________
 void EvaluationStatus::init()
@@ -141,9 +163,9 @@ void EvaluationStatus::init()
     fEvalSucceed = true;
 }
 
-EvaluationStatus::EvaluationStatus():fEvalSucceed(true)
+EvaluationStatus::EvaluationStatus():
+	fEvalSucceed(true)
 {
-
 }
 
 } //end namespace

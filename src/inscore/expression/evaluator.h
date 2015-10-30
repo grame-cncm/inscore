@@ -16,12 +16,11 @@ struct specializedString{
 #define STRING_TYPE(typeName) struct typeName: specializedString{ typeName(std::string s=""):specializedString(s){} };
 
 STRING_TYPE(filepath)
-STRING_TYPE(identifier)
-STRING_TYPE(oscaddress)
+STRING_TYPE(itladdress)
 
 
 class IExpression;
-
+class IExprOperator;
 
 /*!
  * \brief Interface defining an evaluator: it can evaluate specific arguments or an entire expression
@@ -29,20 +28,25 @@ class IExpression;
 class evaluator{
 public:
 
-	virtual const std::string eval(const IExpression* arg)=0;
-	virtual const std::string eval(std::string arg)=0;
-	virtual const std::string eval(filepath arg)=0;
-	virtual const std::string eval(identifier arg)=0;
-	virtual const std::string eval(oscaddress arg)=0;
+	virtual const std::string eval(IExprOperator* arg, IExpression* exprArg=0)=0;
+	virtual const std::string eval(const std::string& arg, IExpression* exprArg=0)=0;
+	virtual const std::string eval(const filepath& arg, IExpression* exprArg=0)=0;
+	virtual const std::string eval(const itladdress& arg, IExpression* exprArg=0)=0;
 
+};
 
-    /*!
-     * \brief evaluate an entire expression
-     * \param expr: the expression to evaluate
-     * \param result: if the evaluation succeed, store the evaluated string
-     * \return true if the evaluation succeed, false otherwise
-     */
-    virtual bool evalExpression(const IExpression *expr, std::string& result)=0;
+class constEvaluator: public evaluator{
+public:
+
+	virtual const std::string eval(const IExprOperator* arg, const IExpression* exprArg=0)=0;
+	virtual const std::string eval(const std::string& arg, const IExpression* exprArg=0)=0;
+	virtual const std::string eval(const filepath& arg, const IExpression* exprArg=0)=0;
+	virtual const std::string eval(const itladdress& arg, const IExpression* exprArg=0)=0;
+
+	const std::string eval(IExprOperator* arg, IExpression* exprArg=0)		{return eval(arg, (const IExpression*)exprArg);}
+	const std::string eval(const std::string& arg, IExpression* exprArg=0)	{return eval(arg, (const IExpression*)exprArg);}
+	const std::string eval(const filepath& arg, IExpression* exprArg=0)		{return eval(arg, (const IExpression*)exprArg);}
+	const std::string eval(const itladdress& arg, IExpression* exprArg=0)	{return eval(arg, (const IExpression*)exprArg);}
 
 };
 
@@ -51,8 +55,9 @@ public:
  */
 class evaluable{
 public:
-    std::string accept(evaluator& e){return accept(&e);}
-    virtual std::string accept(evaluator* e) const =0;
+	//std::string accept(evaluator& e){return accept(&e);}
+	virtual std::string accept(evaluator* e)=0;
+	virtual std::string accept(constEvaluator* e) const {return "";}
 };
 
 }

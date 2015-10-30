@@ -58,6 +58,7 @@ ITLError& operator << (ITLError& err, ITLErrEnd end);
 ITLError& operator << (ITLError& err, const IMessage* msg );
 ITLError& operator << (ITLError& err, const SIMessageList& msg );
 
+
 template <typename T>	ITLError& operator << (ITLError& err, const T& arg)
 {
 	std::cerr << arg << " ";

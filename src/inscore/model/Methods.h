@@ -82,6 +82,7 @@ extern const char* kerror_SetMethod;
 extern const char* kerrport_GetSetMethod;
 extern const char* kexport_SetMethod;
 extern const char* kexportAll_SetMethod;
+extern const char* kexpression_GetMethod;
 extern const char* keval_SetMethod;
 extern const char* kevent_SetMethod;
 extern const char* kfontSize_GetSetMethod;

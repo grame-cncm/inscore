@@ -7,7 +7,6 @@
 
 #include "ITLparser.h"
 #include "IMessage.h"
-#include "IExpression.h"
 #include "IMessageStream.h"
 #include "ITLparse.hpp"
 
@@ -40,7 +39,7 @@
 %token IDENTIFIER
 %token EQUAL
 %token REGEXP
-%token PATHSEP
+%token PATHSEP BACKPATH
 %token FILEPATH
 %token STRING QUOTEDSTRING
 %token WATCH EVAL
@@ -51,7 +50,7 @@
 %token COLON COMMA POINT HOSTNAME IPNUM
 
 %token EXPRESSIONSTART EXPRESSIONEND
-%token AMPERSAND
+%token AMPERSAND APPROX
 
 %token LUASCRIPT
 %token JSCRIPT
@@ -60,10 +59,10 @@
 %type <num> 	number
 %type <real>	FLOAT
 %type <str>		STRING QUOTEDSTRING FILEPATH PATHSEP IDENTIFIER REGEXP LUASCRIPT JSCRIPT
-%type <str>		identifier oscaddress relativeaddress oscpath varname variabledecl hostname operatorid
+%type <str>		identifier oscaddress relativeaddress oscpath varname variabledecl hostname operatorid itladdress itlpath itlidentifier
 %type <msg>		message
 %type <msgList>	messagelist script
-%type <p>		param expArg expression
+%type <p>		param expArg expression expToken operatorArg
 %type <plist>	params variable eval
 %type <url>		urlprefix
 %type <addr>	address
@@ -182,10 +181,24 @@ hostname	: HOSTNAME					{ $$ = new string(context->fText); }
 			| hostname POINT HOSTNAME	{ *$1 += '.' + context->fText; $$=$1; }
 			;
 
-identifier	: IDENTIFIER		{ $$ = new string(context->fText); }
-			| HOSTNAME			{ $$ = new string(context->fText); }
+identifier		: itlidentifier
 			| REGEXP			{ $$ = new string(context->fText); }
 			;
+
+//_______________________________________________
+// simple ITL address for evaluable expression
+itladdress	: itlpath
+		| PATHSEP itlpath	{ *$2 = "/"+*$2; $$=$2; }
+		;
+
+itlpath		: itlidentifier
+		| itlidentifier PATHSEP itlpath	{ *$3 = *$1 + "/" + *$3; delete $1; $$=$3; }
+		| BACKPATH itlpath		{ *$2 = "../"+*$2; $$=$2; }
+		;
+
+itlidentifier	: IDENTIFIER		{ $$ = new string(context->fText); }
+		| HOSTNAME		{ $$ = new string(context->fText); }
+		;
 
 //_______________________________________________
 // parameters definitions
@@ -239,18 +252,26 @@ number		: UINT					{ $$ = context->fInt; }
 //_______________________________________________
 // expression declaration
 
-expression		: EXPRESSIONSTART operatorid expArg expArg EXPRESSIONEND	{ $$ = context->fReader.createExpr( $2, $3, $4); delete $2; delete $3; delete $4;}
+expression		: EXPRESSIONSTART operatorid operatorArg operatorArg EXPRESSIONEND	{ $$ = context->fReader.createExpr( $2, $3, $4); delete $2; delete $3; delete $4;}
+			| EXPRESSIONSTART expArg EXPRESSIONEND				{ $$ = $2; }
 			;
 
-operatorid		: identifier
+operatorid		: itlidentifier
 			;
 
-expArg		: QUOTEDSTRING		{ $$ = context->fReader.createExprArg<std::string>((context->fText)); }
-		| FILEPATH		{ $$ = context->fReader.createExprArg<inscore::filepath>(context->fText); }
-		| identifier		{ $$ = context->fReader.createExprArg<inscore::identifier>(context->fText); delete $1;}
-		| oscaddress		{ $$ = context->fReader.createExprArg<inscore::oscaddress>($1);}
+operatorArg	: expression
+		| expArg
+		;
+
+expArg		: expToken
+		| AMPERSAND expToken	{ $$ = $2; context->fReader.setExprArgDynamic($$);}
 		| variable		{ $$ = context->fReader.createExprArgFromVar($1); HANDLE_READER_ERROR()}
-		| expression		{ $$ = context->fReader.createExprArgFromExpr($1); delete $1; HANDLE_READER_ERROR()}
+		| APPROX itladdress	{ $$ = context->fReader.createExprArg<inscore::itladdress>(*$2); delete $2; context->fReader.setExprArgCopy($$);}
+		;
+
+expToken	: QUOTEDSTRING		{ $$ = context->fReader.createExprArg<std::string>((context->fText)); }
+		| FILEPATH		{ $$ = context->fReader.createExprArg<inscore::filepath>(context->fText); }
+		| itladdress		{ $$ = context->fReader.createExprArg<inscore::itladdress>(*$1); delete $1;}
 		;
 
 %%

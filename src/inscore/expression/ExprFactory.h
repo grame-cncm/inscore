@@ -18,25 +18,20 @@ private:
 
 public:
     /*!
-     * \brief create an expression factory and initialise all operator prototype associated with the factory
-     */
-    static ExprFactory *create();
-
-
-
-    /*!
      * \brief create a message param that encapsulate a smart pointer on an argument IExprArg with the corresponding type artT
      * \param argument to encapsulate
      * \return a simple message param
      */
 
-    template<typename argT> SIExprArgbase createArg(argT arg){
-        IExprArg<argT>* argB = new IExprArg<argT>(arg);
-        SIExprArgbase argBase(argB);
-        return SIExprArgbase(argB);
+	template<typename argT>
+	static SIExpression createArg(argT arg, bool dynamicEval=false, bool staticEval=false){
+		IExprArg<argT>* argB = new IExprArg<argT>(arg, dynamicEval, staticEval);
+        SIExpression argBase(argB);
+        return SIExpression(argB);
     }
 
-	SIExprArgbase createArg(std::string string);
+	static SIExpression createArg(std::string string);
+	static SIExpression createArg(SIExprOperator expression);
 
     /*!
      * \brief create a message param that contains an Expression Operator
@@ -46,7 +41,7 @@ public:
      * \param expr: if the operator exists, store the constructed expression
      * \return true if the operator exists, false otherwise
      */
-    bool createExpr(std::string operatorName, SIExprArgbase param1, SIExprArgbase param2, SIExpression& expr);
+	static bool createExpr(std::string operatorName, SIExpression param1, SIExpression param2, SIExprOperator& expr);
 
 	/*!
 	 * \brief search for an operator prototype by name
@@ -57,9 +52,6 @@ public:
 	static bool operatorByName(std::string name, OperatorPrototype *&op);
 
 	static void registerOperator(OperatorPrototype *op);
-private:
-    ExprFactory();
-
 
 
 };

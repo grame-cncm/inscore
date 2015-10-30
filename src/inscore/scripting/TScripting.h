@@ -65,7 +65,6 @@ class TScripting
 {
 	TJSEngine*			fJavascript;
 	TLua*				fLua;
-    ExprFactory*        fExprFactory;
 	SIMessageList		fMessages;
 	STEnv				fEnv;
 
@@ -78,7 +77,7 @@ class TScripting
 		void	add			(SIMessage& msg);
 		void	add			(SIMessageList& msg);
 		void	variable	(const char* ident, const IMessage::argslist* values);
-		void	variable	(const char* ident, const SIMessageList* msgs);
+		void	variable	(const char* ident, const SIMessageList* resolvemsgs);
 
 		SIMessageList	luaEval		(const char* script);
 		SIMessageList	jsEval		(const char* script, int lineno);
@@ -95,8 +94,8 @@ class TScripting
 		 * \return a simple message param
 		 */
 		template<typename argT> Sbaseparam* createExprArg(argT arg){
-			SIExprArgbase argB = fExprFactory->createArg(arg);
-		    IMsgParam<SIExprArgbase>* param = new IMsgParam<SIExprArgbase>(argB);
+			SIExpression argB = ExprFactory::createArg(arg);
+		    IMsgParam<SIExpression>* param = new IMsgParam<SIExpression>(argB);
 		    return new Sbaseparam(param);
 		}
 
@@ -105,18 +104,13 @@ class TScripting
         * \param pointer on the arg string
         * \return a simple message param
         */
-		template<typename argT> Sbaseparam* createExprArg(std::string* arg){
-            argT param(*arg);
-			return createExprArg<argT>(param);
-        }
+//		template<typename argT> Sbaseparam* createExprArg(std::string* arg){
+//            argT param(*arg);
+//			return createExprArg<argT>(param);
+//        }
 
-
-        /*!
-		 * \brief encapsulates an expression into a valid expression argument
-         * \return a simple Sbaseparam
-         */
-		Sbaseparam* createExprArgFromExpr(Sbaseparam* param);
-
+		void setExprArgDynamic(Sbaseparam* param);
+		void setExprArgCopy(Sbaseparam* param);
 
 		/*!
 		 * \brief tries to encapsulate the content from a variable into a valid expression argument
@@ -141,14 +135,14 @@ class TScripting
          * \param the base param containing the argument
          * \return the arguments
 		 */
-		static SIExprArgbase exprArgFromParam(Sbaseparam* param);
+		static SIExpression exprArgFromParam(Sbaseparam* param);
 
         /*!
 		 * \brief digs into a Sbaseparam to extract the smart pointer on IExpression (for testing purpose)
          * \param the base param containing the expression
          * \return the IExpression
          */
-        static SIExpression exprFromParam(const Sbaseparam* param);
+        static SIExprOperator exprFromParam(const Sbaseparam* param);
 
         /*!
 		 * \brief constructs an empty arg, used when syntax  errors are found

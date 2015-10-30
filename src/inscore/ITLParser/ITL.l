@@ -15,7 +15,6 @@
 //#include <stdio.h>
 #include <iostream>
 #include "IMessage.h"
-#include "IExpression.h"
 #include "ITLparser.h"
 #include "ITLparse.hpp"
 
@@ -200,6 +199,7 @@ EOL		[\x0a\x0d]
  /*	basic delimiters and markers */
  /* ----------------------------------------- */
 "="					return EQUAL;
+"../"					return BACKPATH;
 "/"					return PATHSEP;			/* OSC address and path separator */
 ";"					return ENDEXPR;			/* end of expression */
 "$"					return VARSTART;
@@ -209,6 +209,8 @@ EOL		[\x0a\x0d]
 "("					return LEFTPAR;
 ")"					return RIGHTPAR;
 "&"					return AMPERSAND;
+"~"					return APPROX;
+
  /*"["					return LEFTBRACKET; */
  /*"]"					return RIGHTBRACKET; */
 
