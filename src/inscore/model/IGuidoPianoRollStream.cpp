@@ -62,7 +62,7 @@ MsgHandler::msgStatus IGuidoPianoRollStream::set (const IMessage* msg )
     fArHandler = 0;
 
     MsgHandler::msgStatus status = IGuidoStream::set(msg);
-    updatePianoRoll();
+	//updatePianoRoll(); //Already called by new data
     return status;
 }
 
@@ -70,7 +70,8 @@ MsgHandler::msgStatus IGuidoPianoRollStream::set (const IMessage* msg )
 void IGuidoPianoRollStream::clear()
 {
     IGuidoStream::clear();
-    IGuidoPianoRoll::updatePianoRoll();
+	//IGuidoPianoRoll::updatePianoRoll();
+	newData(true);
 }
 
 
@@ -78,7 +79,8 @@ void IGuidoPianoRollStream::clear()
 MsgHandler::msgStatus IGuidoPianoRollStream::write (const IMessage* msg )
 {
 	MsgHandler::msgStatus status = IGuidoStream::write(msg);
-    IGuidoPianoRoll::updatePianoRoll();
+	//IGuidoPianoRoll::updatePianoRoll();
+	newData(true);
 	return status;
 }
 

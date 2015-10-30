@@ -131,6 +131,8 @@ class IGuidoPianoRoll : public virtual IGuidoCode
 		 */
 		std::vector<std::string> getPitchLinesDisplayMode() const;
 
+		virtual void newData(bool state){ if(state){updatePianoRoll();} IGuidoCode::newData(state);}
+
 	protected:
 				 IGuidoPianoRoll( const std::string& name, IObject * parent);
 		virtual ~IGuidoPianoRoll() ;

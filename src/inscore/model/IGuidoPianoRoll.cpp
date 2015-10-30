@@ -98,7 +98,7 @@ MsgHandler::msgStatus IGuidoPianoRoll::set (const IMessage* msg )
 {
 	MsgHandler::msgStatus status = IGuidoCode::set(msg);
 
-    updatePianoRoll();
+	//updatePianoRoll();		//already called by newData
 	return status;
 }
 
