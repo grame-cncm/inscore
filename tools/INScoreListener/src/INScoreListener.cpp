@@ -1,6 +1,7 @@
 
 
 #include <iostream>
+#include <cstdlib>
 
 #include "ITLlistener.h"
 
@@ -30,7 +31,7 @@ int main(int argc, char* argv[])
 
 
 		if(arg == "--port" || arg == "-p")
-			listener.setPort(std::stoi(param));
+			listener.setPort(std::atoi(param.c_str()));
 
 		else if(arg == "-v" || arg == "--verbose")
 			listener.setVerbose();

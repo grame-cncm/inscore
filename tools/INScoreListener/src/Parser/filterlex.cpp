@@ -510,6 +510,7 @@ static yyconst flex_int16_t yy_chk[217] =
 
 //#include <stdio.h>
 #include <iostream>
+#include <cstdlib>
 #include "filterparser.h"
 #include "filterparse.hpp"
 
@@ -557,7 +558,7 @@ see RFC952 and RFC1123
 /* allowed character for filename and path as defined for windows 7*/
 /* regular expression characters
 as defined by the OSC specification */
-#line 561 "filterlex.cpp"
+#line 562 "filterlex.cpp"
 
 #define INITIAL 0
 #define DQSTR 1
@@ -804,10 +805,10 @@ YY_DECL
 	register int yy_act;
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
-#line 78 "filter.l"
+#line 79 "filter.l"
 
 
-#line 811 "filterlex.cpp"
+#line 812 "filterlex.cpp"
 
     yylval = yylval_param;
 
@@ -896,32 +897,32 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 80 "filter.l"
+#line 81 "filter.l"
 yyextra->fInt = atoi(yytext); return UINT;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 81 "filter.l"
+#line 82 "filter.l"
 yyextra->fInt = atoi(yytext); return UINT;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 82 "filter.l"
+#line 83 "filter.l"
 yyextra->fInt = atoi(yytext); return INT;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 84 "filter.l"
+#line 85 "filter.l"
 yyextra->fFloat = atof(yytext); return FLOAT;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 85 "filter.l"
+#line 86 "filter.l"
 yyextra->fFloat = atof(yytext); return FLOAT;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 86 "filter.l"
+#line 87 "filter.l"
 yyextra->fFloat = atof(yytext); return FLOAT;
 	YY_BREAK
 /* ----------------------------------------- */
@@ -929,34 +930,34 @@ yyextra->fFloat = atof(yytext); return FLOAT;
 /* ----------------------------------------- */
 case 7:
 YY_RULE_SETUP
-#line 92 "filter.l"
+#line 93 "filter.l"
 BEGIN DQSTR;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 93 "filter.l"
+#line 94 "filter.l"
 BEGIN QSTR;
 	YY_BREAK
 case 9:
 /* rule 9 can match eol */
 YY_RULE_SETUP
-#line 95 "filter.l"
+#line 96 "filter.l"
 yyextra->fText = unescape(yytext); return QUOTEDSTRING;
 	YY_BREAK
 case 10:
 /* rule 10 can match eol */
 YY_RULE_SETUP
-#line 96 "filter.l"
+#line 97 "filter.l"
 yyextra->fText = unescape(yytext); return QUOTEDSTRING;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 97 "filter.l"
+#line 98 "filter.l"
 BEGIN INITIAL;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 98 "filter.l"
+#line 99 "filter.l"
 BEGIN INITIAL;
 	YY_BREAK
 /* ----------------------------------------- */
@@ -964,82 +965,82 @@ BEGIN INITIAL;
 /* ----------------------------------------- */
 case 13:
 YY_RULE_SETUP
-#line 104 "filter.l"
+#line 105 "filter.l"
 return PATHSEP;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 105 "filter.l"
+#line 106 "filter.l"
 return LEFTPAR;
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 106 "filter.l"
+#line 107 "filter.l"
 return RIGHTPAR;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 108 "filter.l"
+#line 109 "filter.l"
 return EQUAL;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 109 "filter.l"
+#line 110 "filter.l"
 return EQUAL;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 110 "filter.l"
+#line 111 "filter.l"
 return NOTEQUAL;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 111 "filter.l"
+#line 112 "filter.l"
 return GREATER;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 112 "filter.l"
+#line 113 "filter.l"
 return GREATEREQUAL;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 113 "filter.l"
+#line 114 "filter.l"
 return LOWER;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 114 "filter.l"
+#line 115 "filter.l"
 return LOWEREQUAL;
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 116 "filter.l"
+#line 117 "filter.l"
 return LAND;
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 117 "filter.l"
+#line 118 "filter.l"
 return LAND;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 118 "filter.l"
+#line 119 "filter.l"
 return LOR;
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 119 "filter.l"
+#line 120 "filter.l"
 return LOR;
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 121 "filter.l"
+#line 122 "filter.l"
 return LNOT;
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 122 "filter.l"
+#line 123 "filter.l"
 return LNOT;
 	YY_BREAK
 /* ----------------------------------------- */
@@ -1047,7 +1048,7 @@ return LNOT;
 /* ----------------------------------------- */
 case 29:
 YY_RULE_SETUP
-#line 127 "filter.l"
+#line 128 "filter.l"
 yyextra->fText = yytext; return IDENTIFIER;
 	YY_BREAK
 /* ----------------------------------------- */
@@ -1055,17 +1056,17 @@ yyextra->fText = yytext; return IDENTIFIER;
 /* ----------------------------------------- */
 case 30:
 YY_RULE_SETUP
-#line 134 "filter.l"
+#line 135 "filter.l"
 yyextra->fText = yytext; return REGEXP;			/* regular expression */
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 135 "filter.l"
+#line 136 "filter.l"
 yyextra->fText = yytext; return REGEXP;			/* regular expression */
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 136 "filter.l"
+#line 137 "filter.l"
 yyextra->fText = yytext; return REGEXP;			/* regular expression */
 	YY_BREAK
 /* ----------------------------------------- */
@@ -1073,25 +1074,25 @@ yyextra->fText = yytext; return REGEXP;			/* regular expression */
 /* ----------------------------------------- */
 case 33:
 YY_RULE_SETUP
-#line 142 "filter.l"
-yyextra->fInt = stoi(string(yytext).erase(0,1)); return ARGID;
+#line 143 "filter.l"
+yyextra->fInt = atoi(string(yytext).erase(0,1).c_str()); return ARGID;
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 143 "filter.l"
+#line 144 "filter.l"
 return ADDR;
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 145 "filter.l"
+#line 146 "filter.l"
 ;   /* eat up space */
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 147 "filter.l"
+#line 148 "filter.l"
 ECHO;
 	YY_BREAK
-#line 1095 "filterlex.cpp"
+#line 1096 "filterlex.cpp"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(DQSTR):
 case YY_STATE_EOF(QSTR):
@@ -2269,7 +2270,7 @@ void yyfree (void * ptr , yyscan_t yyscanner)
 
 #define YYTABLES_NAME "yytables"
 
-#line 147 "filter.l"
+#line 148 "filter.l"
 
 
 

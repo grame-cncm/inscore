@@ -7,6 +7,7 @@
 
 //#include <stdio.h>
 #include <iostream>
+#include <cstdlib>
 #include "filterparser.h"
 #include "filterparse.hpp"
 
@@ -139,7 +140,7 @@ EOL		[\x0a\x0d]
  /* ----------------------------------------- */
  /*	address and param id token */
  /* ----------------------------------------- */
-"%"{DIGIT}+			yyextra->fInt = stoi(string(yytext).erase(0,1)); return ARGID;
+"%"{DIGIT}+			yyextra->fInt = atoi(string(yytext).erase(0,1).c_str()); return ARGID;
 "%addr"				return ADDR;
 
 {SPACE}+			;   /* eat up space */
