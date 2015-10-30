@@ -121,7 +121,7 @@ IObject::subnodes ISync::topologicalSort(IObject::subnodes& nodes) const
             if(addToVector)
             {
                 sameLevelOfSync.push_back(*it);
-                in.erase(it);
+				it = in.erase(it);
             }
             else
                 it++;
