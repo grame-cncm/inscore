@@ -84,7 +84,8 @@ cleanperms:
 	@chmod -x  $(shell find $(package) -name "*.inscore")
 
 macosx:
-	[ -d $(package) ] || mkdir -p $(package)
+	@[ -d $(package) ] || mkdir -p $(package)
+	@[ -h ../build/macos/lib ] || {cd ../build/macos; ln -s Release lib}
 	make common
 	make -f makeINScoreBundle
 	-[ -d $(package)/$(macapp) ] && rm -rf $(package)/$(macapp)
@@ -92,10 +93,9 @@ macosx:
 	make cleanperms
 	cp -f ../src/guido2.ttf $(package)
 	cd $(package) && ln -sf /Applications .
-	[ -d $(package)/$(macplug) ] || mkdir $(package)/$(macplug)
+	@[ -d $(package)/$(macplug) ] || mkdir $(package)/$(macplug)
 	cp ../lib/GestureFollower/macosx/libGFLib.dylib $(package)/$(macplug)
 	cp ../lib/faust/macosx/libfaust.dylib $(package)/$(macplug)
-	cp ../lib/httpserver/build/Release/libinscorehttpd.dylib $(package)/$(macplug)
 	make dmg
 		
 common: 
@@ -109,7 +109,7 @@ doc:
 	make copydoc
 		
 copydoc: 
-	[ -d $(docdst)/html ] || mkdir -p $(docdst)/html
+	@[ -d $(docdst)/html ] || mkdir -p $(docdst)/html
 	cp -f $(docsrc)/OSCMsg.pdf $(docdst)
 	make -C $(docsrc) htmlclean
 	rm -f $(docdst)/html/*
@@ -118,19 +118,19 @@ copydoc:
 	cd  $(docdst) && tar czf html.tgz html
 
 interfaces:
-	[ -d $(rsrc)/$(interf) ] || mkdir -p $(rsrc)/$(interf)
+	@[ -d $(rsrc)/$(interf) ] || mkdir -p $(rsrc)/$(interf)
 	tar czf $(rsrc)/$(interf)/python.tgz ../$(interf)/python
 	tar czf $(rsrc)/$(interf)/lisp.tgz ../$(interf)/lisp
 	tar czf $(rsrc)/$(interf)/csound.tgz ../$(interf)/csound	
 
 scripts:
-	[ -d $(rsrc)/scripts ] || mkdir -p $(rsrc)/scripts
+	@[ -d $(rsrc)/scripts ] || mkdir -p $(rsrc)/scripts
 	cp -R ../scripts/Standalone/* $(rsrc)/scripts
 	rm -f $(shell find $(rsrc)/scripts -name "*DS_Store")
 	cd $(rsrc) && tar czf scripts.tgz scripts
 
 patches:
-	[ -d $(rsrc)/patches ] || mkdir -p $(rsrc)/patches
+	@[ -d $(rsrc)/patches ] || mkdir -p $(rsrc)/patches
 	cp -R ../scripts/MP-* $(rsrc)/patches
 	cp -R ../scripts/M-* $(rsrc)/patches
 	rm -f $(shell find $(rsrc)/patches -name "*DS_Store")
@@ -163,9 +163,9 @@ samples:
 	$(foreach s,$(scripts), cp -R ../scripts/$(s) $(package)/samples/;)
 	
 src:
-	[ -d $(package)-src ] || mkdir -p $(package)-src
-	[ -d $(package)-src/build || mkdir -p $(package)-src/build
-	[ -d $(package)-src/rsrc/images || mkdir -p $(package)-src/rsrc/images ]
+	@[ -d $(package)-src ] || mkdir -p $(package)-src
+	@[ -d $(package)-src/build || mkdir -p $(package)-src/build
+	@[ -d $(package)-src/rsrc/images || mkdir -p $(package)-src/rsrc/images ]
 	cp -rf ../src $(package)-src/
 	cp -rf ../build/*.pro $(package)-src/build
 	cp -rf ../build/Makefile $(package)-src/build
