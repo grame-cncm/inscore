@@ -4,6 +4,8 @@
 
 .PHONY : macos ios win32 win64 linux android installAndroid help
 
+QMAKE ?= qmake
+
 system	:= $(shell uname -s)
 ifeq ($(system), Darwin)
 	TARGET = macos
@@ -21,21 +23,19 @@ endif
 endif
 endif
 
-WINARCH = $(shell ./qt-arch)
 ifeq ($(TARGET), windows)
-	MSVC := $(shell ./vs-path)
-	WINOPTS := /maxcpucount:4 /p:Configuration=Release /p:Platform=$(WINARCH)
-	ifeq ($(WINARCH), x64)
-	 WDEST = win64
-	 SPEC ?= -spec win32-msvc2013
-	 GUIDOLIB = GUIDOEngine64.dll
-	else
- 	 WDEST = win32
-	 SPEC ?= -spec win32-msvc2010
-	 GUIDOLIB = GUIDOEngine.dll
-	endif
+ WINARCH ?= $(shell ./qt-arch)
+ MSVC ?= $(shell ./vs-path)
+ WINOPTS := /maxcpucount:4 /p:Configuration=Release /p:Platform=$(WINARCH)
+ SPEC ?= -spec win32-msvc2013
+ifeq ($(WINARCH), x64)
+	WDEST = win64
+	GUIDOLIB = GUIDOEngine64.dll
+ else
+	WDEST = win32
+	GUIDOLIB = GUIDOEngine.dll
+ endif
 endif
-
 
 OUT  := INScore.framework
 
@@ -47,7 +47,7 @@ help :
 	@echo "Available targets are : "
 	@echo "  macos : to build for Mac OS"
 	@echo "  ios : to build for iOS"
-	@echo "  win32 : to build for Windows"
+	@echo "  windows : to build for Windows"
 	@echo "  linux : to build for Linux"
 	@echo "  android : to build for android"
 	@echo "  installAndroid DEVICE=XXX : to install application on Android device"
@@ -61,8 +61,10 @@ macos : macos/INScore.xcodeproj macos/INScoreViewer.xcodeproj INScoreMac
 
 xcodeproj: library.pro viewer.pro
 	[ -d macos ] || mkdir macos
-	cd macos && qmake $(SPEC) ../library.pro 
-	cd macos && qmake $(SPEC) ../viewer.pro 
+	cd macos && $(QMAKE) $(SPEC) ../library.pro 
+	touch macos/INScore.xcodeproj
+	cd macos && $(QMAKE) $(SPEC) ../viewer.pro 
+	touch macos/INScoreViewer.xcodeproj
 
 INScoreMac : 
 	xcodebuild -jobs 8 -project macos/INScore.xcodeproj -target INScore -configuration Release
@@ -83,6 +85,8 @@ xcodeprojios:
 	[ -d ios ] || mkdir ios
 	cd ios && $(QMAKEIOS) $(SPEC) ../library.pro 
 	cd ios && $(QMAKEIOS) $(SPEC) ../viewer.pro 
+	touch ios/INScore.xcodeproj
+	touch ios/INScoreViewer.xcodeproj
 
 INScoreIos : 
 	xcodebuild -jobs 8 -project ios/INScore.xcodeproj -target INScore -configuration Release
@@ -131,16 +135,16 @@ linux : linux/Makefile.lib linux/Makefile.app INScoreLinux
 
 linuxproj:
 	[ -d linux ] || mkdir linux
-	cd linux && qmake ../library.pro && mv Makefile Makefile.lib 
-	cd linux && qmake ../viewer.pro && mv Makefile Makefile.app
+	cd linux && $(QMAKE) ../library.pro && mv Makefile Makefile.lib 
+	cd linux && $(QMAKE) ../viewer.pro && mv Makefile Makefile.app
 
 linux/Makefile.lib: library.pro
 	[ -d linux ] || mkdir linux
-	cd linux && qmake ../library.pro && mv Makefile Makefile.lib 
+	cd linux && $(QMAKE) ../library.pro && mv Makefile Makefile.lib 
 
 linux/Makefile.app: viewer.pro
 	[ -d linux ] || mkdir linux
-	cd linux && qmake ../viewer.pro && mv Makefile Makefile.app
+	cd linux && $(QMAKE) ../viewer.pro && mv Makefile Makefile.app
 
 INScoreLinux:
 	make -j 4 -C linux -f Makefile.lib
@@ -158,8 +162,8 @@ windows : $(WDEST)/INScore.vcxproj $(WDEST)/INScoreViewer.vcxproj INScoreWin $(W
 
 winprojects : 
 	[ -d $(WDEST) ] || mkdir $(WDEST)
-	cd $(WDEST) && qmake $(SPEC) ../library.pro
-	cd $(WDEST) && qmake $(SPEC) ../viewer.pro
+	cd $(WDEST) && $(QMAKE) $(SPEC) ../library.pro
+	cd $(WDEST) && $(QMAKE) $(SPEC) ../viewer.pro
 
 INScoreWin:
 	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(WDEST)/INScore.vcxproj $(WINOPTS)"

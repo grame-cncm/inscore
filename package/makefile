@@ -1,10 +1,14 @@
-version := 1.16
+version := 1.17
 system	:= $(shell uname -s)
 ifeq ($(system), MINGW32_NT-6.1) 
 	win32 = yes
 else
+ifeq ($(system), MINGW32_NT-6.2) 
+	win32 = yes
+else
 ifeq ($(system), CYGWIN_NT-6.1) 
 	win32 = yes
+endif
 endif
 endif
 
@@ -17,9 +21,12 @@ else
 ifdef win32 
   i2i90tool  := $(i2i90)/cmake/Release/inscore2inscore90.exe
   i2i100tool := $(i2i100)/cmake/Release/inscore2inscore100.exe
-  QT5         := /c/Qt/Qt5.4.0
-  WIN32QTPATH := $(QT5)/5.4/msvc2010_opengl/
-  WIN32QT	  := QT5PRINTSUPPORT.DLL QT5WIDGETS.DLL QT5OPENGL.DLL QT5GUI.DLL QT5CORE.DLL QT5SVG.DLL QT5QML.DLL QT5WebSockets.DLL QT5Multimedia.DLL  QT5MultimediaWidgets.DLL Qt5Network.dll ICUIN53.DLL ICUUC53.DLL ICUDT53.DLL
+  WIN32QTPATH ?= $(shell qmake --version | grep Using | sed -e 's/..*\([A-Za-z]:[^ ]*\)lib/\1/')
+  QT5         ?= $(shell echo $(WIN32QTPATH) | sed -e 's/\/[5-9]\.[0-9]\/..*//')
+  WIN32QT	  := QT5PRINTSUPPORT.DLL QT5WIDGETS.DLL QT5OPENGL.DLL QT5GUI.DLL QT5CORE.DLL QT5SVG.DLL QT5QML.DLL QT5WebSockets.DLL QT5Multimedia.DLL QT5MultimediaWidgets.DLL Qt5Network.dll
+  ifeq ($(QT5), /c/Qt/Qt5.4.0)
+   WIN32QT	  := $(WIN32QT) ICUIN53.DLL ICUUC53.DLL ICUDT53.DLL
+  endif
   WIN32QT	  := $(patsubst %, $(WIN32QTPATH)/bin/%, $(WIN32QT))
   WIN32QTPLUGS     := qgif.dll qtiff.dll qjpeg.dll
   WIN32QTPLATFORMS := qminimal.dll qoffscreen.dll qwindows.dll
@@ -51,16 +58,18 @@ scripts := $(shell cat samples-list.txt)
 #########################
 # this is for win32 only
 bin    := ../build/win32/release
+bin64   := ../build/win64/release
 
 #########################
 
 .PHONY: doc rsrc
 
-usage:
+help:
 	@echo This makefile builds the INScore package.
 	@echo usage:
 	@echo "  make macosx   # on Mac OS X"
 	@echo "  make win32    # on Windows"
+	@echo "  make win64    # on Windows 64 bits"
 	@echo "  make linux    # on Linux (only build the rsrc)"
 	@echo "  make src      # makes src package"
 	@echo "  make rsrc     # makes rsrc for SF FRS"
@@ -155,10 +164,17 @@ samples:
 	
 src:
 	[ -d $(package)-src ] || mkdir -p $(package)-src
+	[ -d $(package)-src/build || mkdir -p $(package)-src/build
+	[ -d $(package)-src/rsrc/images || mkdir -p $(package)-src/rsrc/images ]
 	cp -rf ../src $(package)-src/
-	cp -rf ../build/CMakeLists.txt $(package)-src/cmake
-	cp -rf ../build/Makefile $(package)-src/cmake
-	cp -rf ../build/Info.plist $(package)-src/cmake
+	cp -rf ../build/*.pro $(package)-src/build
+	cp -rf ../build/Makefile $(package)-src/build
+	cp -rf ../build/Info.plist $(package)-src/build
+	cp -rf ../build/qt-arch $(package)-src/build
+	cp -rf ../build/vs-* $(package)-src/build
+	cp -rf ../rsrc/*.qrc $(package)-src/rsrc
+	cp -rf ../rsrc/INScoreViewer.* $(package)-src/rsrc
+	cp -rf ../rsrc/images/*.png $(package)-src/rsrc/images
 	cp -rf ../lib $(package)-src/
 	cp -rf ../win32 $(package)-src/
 	rm -rf $(package)-src/lib/poppler
@@ -173,21 +189,30 @@ src:
 	tar czf $(package)-src.tgz $(package)-src
 
 win32:
+	make wincommon
+	cp -f $(bin)/$(viewer).exe $(package)/$(viewer).exe
+	cp -f $(bin)/*.dll $(package)
+	cp $(QT5)/vcredist/vcredist_x86.exe $(package)
+	cp ../lib/GestureFollower/win32/GFLib.dll $(package)/$(winplug)
+	cp ../lib/faust/win32/faust.dll $(package)/$(winplug)
+	cp ../lib/faust/win32/llvm_math.ll $(package)/$(winplug)
+
+win64:
+	make wincommon
+	cp -f $(bin64)/$(viewer).exe $(package)/$(viewer).exe
+	cp -f $(bin64)/*.dll $(package)
+	cp $(QT5)/vcredist/vcredist_msvc2013_x86.exe $(package)
+
+wincommon:
 	[ -d $(package) ] || mkdir -p $(package)
 	[ -d $(package)/plugins/imageformats ] || mkdir -p $(package)/plugins/imageformats
 	[ -d $(package)/plugins/platforms ] || mkdir -p $(package)/plugins/platforms
 	make common
-	cp -f $(bin)/$(viewer).exe $(package)/$(viewer).exe
-	cp -f $(bin)/*.dll $(package)
+	cp qt.conf $(package)
 	cp -f ../src/guido2.ttf $(package)
 	cp  $(WIN32QT) $(package)
-	cp $(QT5)/vcredist/vcredist_x86.exe $(package)
-	cp qt.conf $(package)
 	cp 	$(WIN32QTPLUGS) $(package)/plugins/imageformats
 	cp 	$(WIN32QTPLATFORMS) $(package)/plugins/platforms
-	cp ../lib/GestureFollower/win32/GFLib.dll $(package)/$(winplug)
-	cp ../lib/faust/win32/faust.dll $(package)/$(winplug)
-	cp ../lib/faust/win32/llvm_math.ll $(package)/$(winplug)
 
 linux:
 	[ -d $(package) ] || mkdir -p $(package)
