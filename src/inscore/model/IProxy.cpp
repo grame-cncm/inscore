@@ -71,7 +71,7 @@ int IProxy::signal (const IMessage* msg, const std::string& objName, SIObject pa
 }
 
 //--------------------------------------------------------------------------
-int IProxy::execute (const IMessage* msg, const std::string& objName, SIObject parent, IObject** newobj)
+int IProxy::execute (const IMessage* msg, const std::string& objName, SIObject parent, IObject** newobj, IObject* previousObj)
 {
 	if (parent && (parent->name() == ISignalNode::kName))
 		return signal (msg, objName, parent);
@@ -119,6 +119,7 @@ int IProxy::execute (const IMessage* msg, const std::string& objName, SIObject p
     
     SIObject obj = IObjectFactory::create(objName, objType, parent);
 	if (obj) {
+		if(previousObj) previousObj->transferAttributes(obj);
 		int status = obj->execute(newmsg);
 		if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) {
 			parent->add(obj);

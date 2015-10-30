@@ -67,9 +67,10 @@ class IProxy
 		\param msg the message
 		\param objName the new object name
 		\param parent the new object parent
+		\param previousObj the object from which the new one should be constructed (when changing the type of an existing object)
 		\return the message processing status
 		*/
-		static int execute (const IMessage* msg, const std::string& objName, SIObject parent, IObject** newobj=0);
+		static int execute (const IMessage* msg, const std::string& objName, SIObject parent, IObject** newobj=0, IObject *previousObj=0);
 };
 
 /*!

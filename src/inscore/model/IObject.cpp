@@ -1095,10 +1095,9 @@ MsgHandler::msgStatus IObject::set(const IMessage* msg)
 		// types don't match
 		// try to re-create the object with the new type
 		IObject* newobj;
-		int status = IProxy::execute (msg, name(), fParent, &newobj);
+		int status = IProxy::execute (msg, name(), fParent, &newobj, this);
 		if (status & MsgHandler::kProcessed) {
             SIObject obj = newobj;
-	        transferAttributes(obj);
             newobj = obj;
 			del();								// and delete the object
 			fParent->cleanupSync();

@@ -232,8 +232,8 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual	void	setState (state s);
 
 		/// \brief returns the object data modification state
-				bool	newData () const			{ return fNewData; }
-				void	newData (bool state)		{ fNewData = state; triggerEvent(kNewData, true); }
+				bool			newData () const			{ return fNewData; }
+				virtual void	newData (bool state)		{ fNewData = state; triggerEvent(kNewData, true); }
 
 		/// \brief returns the mapping debug flag
 				int		mapDebug() const;
@@ -328,6 +328,12 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		*/
 		virtual void	del ();
 		virtual void	_del (bool delcnx);		// the implementation of del
+
+		/*!
+		*	\brief transfers the attributes of the current object to a new one (recently created)
+		*	\param the new object
+		*/
+		virtual void transferAttributes(SIObject newobj);
 
 		/// \brief print the object state \param out the output stream
 		virtual void	print(std::ostream& out) const;
@@ -525,12 +531,6 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		*	\param attributes a list of attributes to be saved, saves all the attributes when the list is empty
 		*/
 		virtual void	save(std::ostream& out, const std::vector<std::string>& attributes) const;
-
-        /*!
-		*	\brief transfers the attributes of the current object to a new one (recently created)
-		*	\param the new object
-		*/
-		virtual void transferAttributes(SIObject newobj);
 
 	//--------------------------------------------------------------------------
 	// the message handlers
