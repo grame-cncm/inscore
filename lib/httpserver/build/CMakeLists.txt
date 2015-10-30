@@ -6,7 +6,7 @@ set (ROOT  ${CMAKE_CURRENT_SOURCE_DIR}/..)
 
 FILE(GLOB SERVER_CPP_SOURCES ${ROOT}/*.cpp ${ROOT}/../../src/json/*.cpp)
 
-include_directories(${ROOT}/ ${ROOT}/../../src/library/plugins/httpserver ${ROOT}/../../src/json ${ROOT}/../../src/library/web "/usr/local/include")
+include_directories(${ROOT}/ ${ROOT}/../../src/library/plugins/httpserver ${ROOT}/../../src/json ${ROOT}/../../src/inscore/web "/usr/local/include")
 
 add_definitions(-DJSON_ONLY)
 
