@@ -73,7 +73,7 @@ const string ExprEvaluator::eval(const IExprOperator* arg, const IExpression *ex
 }
 
 //_____________________________________________________________
-const string ExprEvaluator::eval(const std::string &arg, const IExpression *exprArg)
+const string ExprEvaluator::eval(const std::string &arg, const IExpression *)
 {
     return arg;
 }

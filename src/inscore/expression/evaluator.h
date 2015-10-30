@@ -57,7 +57,7 @@ class evaluable{
 public:
 	//std::string accept(evaluator& e){return accept(&e);}
 	virtual std::string accept(evaluator* e)=0;
-	virtual std::string accept(constEvaluator* e) const {return "";}
+	virtual std::string accept(constEvaluator*) const {return "";}
 };
 
 }

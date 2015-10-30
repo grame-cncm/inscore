@@ -34,10 +34,10 @@ public:
 	bool apply(SIExpression& expr){ WatchersList w; return apply(expr, w); }
 
 	virtual const std::string eval(IExprOperator *arg, IExpression *exprArg);
-	virtual const std::string eval(const std::string& arg, IExpression *exprArg){return "";}
-	virtual const std::string eval(const filepath& arg, IExpression *exprArg){return "";}
+	virtual const std::string eval(const std::string&, IExpression*){return "";}
+	virtual const std::string eval(const filepath&, IExpression*){return "";}
 	virtual const std::string eval(const itladdress &arg, IExpression *exprArg);
-	virtual const std::string eval(const IObject* arg, IExpression *exprArg){return "";}
+	virtual const std::string eval(const IObject*, IExpression*){return "";}
 
 protected:
 	ExprManipulator(const IObject* contextObject, const char* manipulatorName="ExprManipulator");

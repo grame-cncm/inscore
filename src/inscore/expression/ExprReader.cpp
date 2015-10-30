@@ -29,13 +29,13 @@ bool ExprReader::read(const IExpression *expr, std::string prefix, std::string &
 }
 
 //_________________________________
-const std::string ExprReader::eval(const std::string& arg, const IExpression *exprArg)
+const std::string ExprReader::eval(const std::string& arg, const IExpression *)
 {
 	return prefix(arg);
 }
 
 //_________________________________
-const std::string ExprReader::eval(const IExprOperator *arg, const IExpression *exprArg)
+const std::string ExprReader::eval(const IExprOperator *arg, const IExpression *)
 {
 	fTab++;
 	std::string arg1 = ((const IExpression*)arg->constArg1())->accept(this);
