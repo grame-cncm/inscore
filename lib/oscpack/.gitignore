@@ -10,3 +10,4 @@ cmake/cmake_install.cmake
 cmake/oscpack.*
 cmake/*.vcproj*
 liboscpack.a
+liboscpack.so.1.0.2

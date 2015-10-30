@@ -10,3 +10,4 @@ tools/cmake/CMakeScripts/
 tools/cmake/cmake_install.cmake
 tools/cmake/inscore-tools.*
 *.so.1
+ReceiveOSC
