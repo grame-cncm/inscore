@@ -31,8 +31,6 @@ VERSION
 "     with:  ID     the index of the tested parameters\n"
 "            LOGIC  the logical operator: !=, ==, =,  number only: >, >=, <, <=\n"
 "            VALUE  the tested value, can be float int or string\n"
-"If the type of the parameters and the values'one doesn't match,\n"
-" conditions are considered false (exept with != operator).\n"
 "See INScoreListener --help filter for precise lexical definition\n"
 "\n"
 " -- EXAMPLES --\n"
@@ -52,8 +50,6 @@ VERSION
 "    but couldn't print:\n"
 "(z) = 1.2            (%0!=x && %0!=y)\n"
 "(x) = 0              (%1 == 0)\n"
-"(x) = y              (%1 is not a number)\n"
-"this last message would have accepted if '! %1==0' has been replaced by '%1!=0'\n"
 ;
 
 const char* FILTER_DOC=
@@ -65,6 +61,7 @@ const char* FILTER_DOC=
 "\n"
 "filterExpr     : filterExprCore\n"
 "               | LNOT filterExprCore\n"
+"               ;\n"
 "\n"
 "LAND           : '&&' | 'AND' ;\n"
 "LOR            : '||' | 'OR'  ;\n"

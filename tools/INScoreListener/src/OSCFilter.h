@@ -19,18 +19,19 @@ public:
 	OSCFilter(OSCFilterNode* root);
 	~OSCFilter();
 
-	bool match(const osc::ReceivedMessage& m) const;
-
+	bool match(const osc::ReceivedMessage& m, bool verbose = false) const;
 };
 
 class OSCFilterContext{
 private:
 	std::vector<osc::ReceivedMessageArgument> _args;
 	const osc::ReceivedMessage& _message;
+	const bool _verbose;
 public:
-	OSCFilterContext(const osc::ReceivedMessage& m);
+	OSCFilterContext(const osc::ReceivedMessage& m, bool verbose=false);
 	const osc::ReceivedMessageArgument* arg(size_t i) const;
 	const char* address() const {return _message.AddressPattern();}
+	bool verbose() const {return _verbose;}
 };
 
 class OSCFilterNode{
@@ -65,6 +66,7 @@ public:
 protected:
 	OSCFilterExpr(Operator op, unsigned int argIndex, float floatValue, std::string stringValue);
 	bool eval(OSCFilterContext &filter);
+	void inequalStringError(OSCFilterContext &filter);
 private:
 	Operator _operator;
 	unsigned int _argIndex;

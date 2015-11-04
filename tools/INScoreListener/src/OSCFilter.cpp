@@ -1,5 +1,5 @@
 #include "OSCFilter.h"
-
+#include <iostream>
 
 namespace inscorelistener{
 
@@ -11,9 +11,9 @@ OSCFilter::OSCFilter(OSCFilterNode *root)
 
 OSCFilter::~OSCFilter(){delete _root;}
 
-bool OSCFilter::match(const osc::ReceivedMessage &m) const
+bool OSCFilter::match(const osc::ReceivedMessage &m, bool verbose) const
 {
-	OSCFilterContext c(m);
+	OSCFilterContext c(m, verbose);
 	return _root->match(c);
 }
 
@@ -21,8 +21,8 @@ bool OSCFilter::match(const osc::ReceivedMessage &m) const
  *		    OSCFilterContext			*
  * *****************************************************/
 
-OSCFilterContext::OSCFilterContext(const osc::ReceivedMessage &m)
-	:_message(m)
+OSCFilterContext::OSCFilterContext(const osc::ReceivedMessage &m, bool verbose)
+	:_message(m), _verbose(verbose)
 {
 	osc::ReceivedMessage::const_iterator arg = m.ArgumentsBegin();
 	while(arg!=m.ArgumentsEnd())
@@ -101,45 +101,45 @@ bool OSCFilterExpr::eval(OSCFilterContext &filter)
 	case OSCFilterExpr::kGREATER:
 	if(arg->IsFloat())		//float
 		return arg->AsFloatUnchecked() >_float;
-	else if(arg->IsInt32()){	//int32
-		if(_float!=(float)(int)_float)
-		return false;		//Wrong Type
+	else if(arg->IsInt32())	//int32
 		return arg->AsInt32Unchecked()>_float;
-	}				//Wrong Type
+	inequalStringError(filter);	//Wrong Type
 	return false;
 
 	case OSCFilterExpr::kGREATEREQUAL:
 	if(arg->IsFloat())		//float
 		return arg->AsFloatUnchecked()>=_float;
-	else if(arg->IsInt32()){	//int32
-		if(_float!=(float)(int)_float)
-		return false;		//Wrong Type
+	else if(arg->IsInt32())	//int32
 		return arg->AsInt32Unchecked()>=_float;
-	}				//Wrong Type
+	inequalStringError(filter);	//Wrong Type
 	return false;
 
 	case OSCFilterExpr::kLOWER:
 	if(arg->IsFloat())		//float
 		return arg->AsFloatUnchecked()<_float;
-	else if(arg->IsInt32()){	//int32
-		if(_float!=(float)(int)_float)
-		return false;		//Wrong Type
+	else if(arg->IsInt32())
 		return arg->AsInt32Unchecked()<_float;
-	}				//Wrong Type
+	inequalStringError(filter);	//Wrong Type
 	return false;
 
 	case OSCFilterExpr::kLOWEREQUAL:
 	if(arg->IsFloat())		//float
 		return arg->AsFloatUnchecked()<=_float;
-	else if(arg->IsInt32()){	//int32
-		if(_float!=(float)(int)_float)
-		return false;		//Wrong Type
+	else if(arg->IsInt32())
 		return arg->AsInt32Unchecked()<=_float;
-	}				//Wrong Type
+	inequalStringError(filter); 	//Wrong Type
 	return false;
 	}
 
 	return false;
+}
+
+void OSCFilterExpr::inequalStringError(OSCFilterContext &filter)
+{
+    if(!filter.verbose())
+	return;
+
+    std::cerr<<"Inequality only support numbers as arguments, %"<<_argIndex<<" is a string...";
 }
 
 /********************************************************

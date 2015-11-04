@@ -45,7 +45,7 @@ void ITLlistener::ProcessMessage(const osc::ReceivedMessage &m, const IpEndpoint
 	try{
 
 		if(_filter)
-			if(!_filter->match(m))
+			if(!_filter->match(m,_verbose))
 				return;
 
 		string out = string(_outputFormat);
@@ -73,7 +73,7 @@ void ITLlistener::ProcessMessage(const osc::ReceivedMessage &m, const IpEndpoint
 		// any parsing errors such as unexpected argument types, or
 		// missing arguments get thrown as exceptions.
 		if(_verbose)
-			std::cout << "error while parsing message: "
+			std::cerr << "error while parsing message: "
 				<< m.AddressPattern() << ": " << e.what() << "\n";
 	}
 
