@@ -14,7 +14,7 @@ ITLlistener::ITLlistener()
 	: _port(DEFAULT_PORT),
 	   _socket(0),
 	  _verbose(false),
-	  _outputFormat("%addr %args"),
+	  _outputFormat("%addr %quotedArgs;"),
 	  _filter(0)
 
 {
@@ -52,20 +52,25 @@ void ITLlistener::ProcessMessage(const osc::ReceivedMessage &m, const IpEndpoint
 
 		replaceAll(out, "%addr", m.AddressPattern());
 
-		string args = "";
+		string args = "", quotedArgs = "";
 		osc::ReceivedMessage::const_iterator arg = m.ArgumentsBegin();
 		int argI=0;
 		string argStr="";
 
 		while(readArg(arg,m,argStr)){
-			ostringstream argName;
+			ostringstream argName, quotedArgName;
 			argName<<"%"<<argI;
+			quotedArgName<<"%Q"<<argI;
+
 			replaceAll(out, argName.str(), argStr);
+			replaceAll(out, quotedArgName.str(), autoQuotes(argStr));
 			args += argStr+" ";
+			quotedArgs += autoQuotes(argStr)+" ";
 			argI++;
 		}
 
 		replaceAll(out, "%args", args);
+		replaceAll(out, "%quotedArgs", quotedArgs);
 
 		cout<<out<<endl;
 	}catch( osc::Exception& e ){
@@ -133,6 +138,24 @@ int ITLlistener::replaceAll(std::string &replaceIn, std::string search, std::str
 	return count;
 }
 
+//_______________________________________________________________
+string ITLlistener::autoQuotes (const string& str)
+{
+	bool ret = false;
+	string r = str;
+	const char *ptr = str.c_str();
+	if (*ptr == '$') ret = true;
+	while (*ptr) {
+		char c = *ptr++;
+		if (!isdigit(c) && !isalpha(c)					// number and letters
+			&& (c != '-') && (c != '_')					// identifiers chars
+			&& (c != '+') && (c != '*') && (c != '?'))	// regexp chars (note that class description needs quotes)
+			ret = true;
+	}
+	if(ret)
+		r = '"'+r+'"';
+	return r;
+}
 
 
 }//End namespace
