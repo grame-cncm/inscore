@@ -12,9 +12,13 @@ bool ExprReader::evalExpression(const IExpression *expr, std::string &result)
     evalSucceed = true;
 
 	result = prefix();
-
 	fPrefix = "    ";
-	result += "expr"+expr->accept(this);
+
+	std::string evaluated = expr->accept(this);
+	if(evaluated.find('(')!=0)
+		evaluated = "( "+evaluated+" )";
+
+	result += "expr"+evaluated;
 
 	if(fTab!=0)
 		return false;

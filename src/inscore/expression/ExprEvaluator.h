@@ -59,7 +59,7 @@ public:
 
 	static ExprEvaluator* create(const IObject* contextObject){return new ExprEvaluator("ExprEvaluator", contextObject);}
 
-	const char* evalName() const {return fEvalName;}
+	const char* evaluatorName() const {return fEvalName;}
 
 
 	static const IObject* objectFromAddress(itladdress address, const IObject *contextObject);

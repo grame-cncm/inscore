@@ -28,6 +28,7 @@
 
 #include "GmnEvaluator.h"
 #include "IGuidoCode.h"
+#include "IGuidoPianoRollFile.h"
 #include "libguidoar.h"
 
 using namespace std;
@@ -82,10 +83,17 @@ const std::string GmnEvaluator::eval(const IObject *arg)
 {
     const IGuidoCode* guido = dynamic_cast<const IGuidoCode*>(arg);
     if(!guido){
-		ITLErr << evalName() <<": the object "<<arg->name()<<" is not a guido object"<<ITLEndl;
-        fEvalStatus.fail();
-        return "";
+		ITLErr << evaluatorName() <<": the object "<<arg->name()<<" is not a guido object"<<ITLEndl;
+		return fEvalStatus.fail();
     }
+
+	const IGuidoPianoRollFile* pianoRollFile = dynamic_cast<const IGuidoPianoRollFile*>(arg);
+	if(pianoRollFile)
+		if(pianoRollFile->isMidiFile()){
+			ITLErr << evaluatorName() <<": a guido file was expected but the pianoroll "<<arg->name()<<" is a  midi file."<<ITLEndl;
+			return fEvalStatus.fail();
+		}
+
 
 	return guido->getCleanGMN();
 }
