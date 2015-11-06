@@ -189,7 +189,6 @@ EOL		[\x0a\x0d]
  /*	evaluable expression section */
  /* ----------------------------------------- */
 
- /*"expr("					expressionNested = 1; BEGIN EXPRSECTION; return EXPRESSIONSTART;*/
 <EXPRSECTION>"("				expressionNested++; return EXPRESSIONSTART;
 <EXPRSECTION>"expr("				expressionNested++; return EXPRESSIONSTART;
 <EXPRSECTION>")"				if(!--expressionNested){ BEGIN INITIAL;} return EXPRESSIONEND;
