@@ -35,11 +35,12 @@ using namespace std;
 
 namespace inscore{
 
-#define GUIDOAR_OPERATOR(guidoOperator) [](const std::string& str1, const std::string& str2) -> const std::string						\
+#define GUIDOAR_OPERATOR(guidoOperator) [](const std::string& str1, const std::string& str2, bool &success) -> const std::string						\
 											{																		\
 											std::ostringstream oss;													\
 											guido::garErr err = guidoOperator( str1.c_str(), str2.c_str(), oss );	\
-											if ( err == guido::kNoErr ){												\
+											success = err == guido::kNoErr;											\
+											if ( success ){															\
 												return oss.str();													\
 											}return "";																\
 											}
@@ -58,20 +59,22 @@ GmnEvaluator::GmnEvaluator(const IObject *contextObject): ExprEvaluator("GmnEval
 	registerOperator(opGuidoTop,	GUIDOAR_OPERATOR(guido::guidoGTop));
 	registerOperator(opGuidoBottom,	GUIDOAR_OPERATOR(guido::guidoGBottom));
 
-	registerOperator(opGuidoRythm, [](const std::string& str1, const std::string& str2) -> const std::string
+	registerOperator(opGuidoRythm, [](const std::string& str1, const std::string& str2, bool &success) -> const std::string
 								{
 									std::ostringstream oss;
 									guido::garErr err = guido::guidoApplyRythm( str1.c_str(), str2.c_str(), guido::kApplyForwardLoop, oss );
-									if ( err == guido::kNoErr )
+									success = err == guido::kNoErr;
+									if ( success )
 										return oss.str();
 									else
 										return "";
 								});
-	registerOperator(opGuidoPitch, [] (const std::string& str1, const std::string& str2) -> const std::string
+	registerOperator(opGuidoPitch, [] (const std::string& str1, const std::string& str2, bool &success) -> const std::string
 								{
 									std::ostringstream oss;
 									guido::garErr err = guido::guidoApplyPitch( str1.c_str(), str2.c_str(), guido::kApplyForwardLoop, guido::kUseLowest, oss );
-									if ( err == guido::kNoErr )
+									success = err == guido::kNoErr;
+									if ( success )
 										return oss.str();
 									else
 										return "";
@@ -90,12 +93,13 @@ const std::string GmnEvaluator::eval(const IObject *arg)
 	const IGuidoPianoRollFile* pianoRollFile = dynamic_cast<const IGuidoPianoRollFile*>(arg);
 	if(pianoRollFile)
 		if(pianoRollFile->isMidiFile()){
-			ITLErr << evaluatorName() <<": a guido file was expected but the pianoroll "<<arg->name()<<" is a  midi file."<<ITLEndl;
+			ITLErr << evaluatorName() <<": a guido file was expected but the pianoroll \""<<arg->name()<<"\" is a  midi file."<<ITLEndl;
 			return fEvalStatus.fail();
 		}
 
 
 	return guido->getCleanGMN();
 }
+
 
 } //end namespace
