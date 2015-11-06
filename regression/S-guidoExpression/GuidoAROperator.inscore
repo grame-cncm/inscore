@@ -1,0 +1,16 @@
+/ITL/scene/* del;
+
+/ITL/scene/score set gmn "[a/1]";
+/ITL/scene/score set gmn expr(tail
+    &score
+    "[a/8]"
+    );
+
+/ITL/scene/score expr reeval;
+/ITL/scene/score expr reeval;
+
+#second reeval fails...
+
+#### ####  tail or head shouldn't duplicate the 'tie' tag,
+## this can't obviously compute:
+#/ITL/scene/score2 set gmn expr(tail "[\tie( \tie( a*3/4 ) ) ]" "[a]");

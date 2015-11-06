@@ -6,7 +6,9 @@
 /ITL/scene/score3 set gmn "[a]";
 
 /ITL/scene/score1 y -0.7;
+/ITL/scene/score1 scale 0.8;
 /ITL/scene/score3 y 0.7;
+/ITL/scene/score3 scale 0.8;
 
 
 /ITL/scene/score1 watch newData (/ITL/scene/score2 set pianoroll expr(seq (tail score1 "[a]") (head score1 "[a]")));

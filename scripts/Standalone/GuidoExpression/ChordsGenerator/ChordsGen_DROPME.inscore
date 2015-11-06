@@ -1,0 +1,56 @@
+path = "/home/gaby/Programmation/C++/inscore-code/scripts/Standalone/GuidoExpression/ChordsGenerator";
+
+/ITL/scene/* del;
+/ITL/scene rootPath $path;
+/ITL/scene load "ChordsGen_selector.inscore";
+
+/ITL/scene/sel* dy -0.5;
+
+
+
+
+
+/ITL/scene/updated_melody set gmn "[_/1]";
+/ITL/scene/updated_melody y -0.2;
+
+/ITL/scene/updated_melody set gmn expr(head
+				(seq
+				    &selector/selected
+				    &updated_melody
+				)
+				&updated_melody
+			    );
+
+/ITL/scene/updated_melody get expr;
+/ITL/scene/updated_melody y +0.2;
+
+/ITL/scene/chords set gmn "[]";
+/ITL/scene/chords y +0.7;
+
+
+/ITL/scene/chords set pianoroll expr(&updated_melody);
+/ITL/scene/chords set pianoroll expr(par
+				&updated_melody
+				(tail
+				    (transpose
+					(seq "[c]" &updated_melody)
+					"[e]"
+				    )
+				    "[c]"
+				)
+			    );
+/ITL/scene/chords set pianoroll expr(par
+				~chords
+				(tail
+				    (transpose
+					(seq "[c]" &updated_melody)
+					"[g]"
+				    )
+				    "[c]"
+				)
+			    );
+/ITL/scene/updated_melody watch newData
+	(/ITL/scene/chords expr reeval);
+/ITL/scene/chords width 2;
+
+/ITL/scene/chords get expr;
