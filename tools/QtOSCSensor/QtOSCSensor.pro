@@ -3,12 +3,12 @@ OSC     = $$ROOT/lib/oscpack
 win32 { OSCIP = $$OSC/ip/win32 }
 else  { OSCIP = $$OSC/ip/posix }
 
-SOURCES += main.cpp MainWindow.cpp Sensor.cpp
+SOURCES += main.cpp Sensors.cpp Sensor.cpp
 SOURCES +=  $$files($$OSC/osc/*.cpp)						# oscpack files
 SOURCES +=  $$files($$OSC/ip/*.cpp)						# oscpack files
 SOURCES +=  $$files($$OSCIP/*.cpp)							# oscpack files
 HEADERS += *.h
-FORMS += *.ui
+#FORMS += *.ui
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/rsrc
 
@@ -18,7 +18,7 @@ UI_DIR  = ./tmpSrc
 DESTDIR = $$PWD
 
 macx:CONFIG+=x86_64
-QT += widgets network sensors
+QT += qml quick widgets network sensors
 
 INCLUDEPATH += $$OSC
 

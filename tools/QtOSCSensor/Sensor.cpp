@@ -121,40 +121,40 @@ void Sensor::init ()
 {
 	if (fOSC.empty()) {
 		fOSC[kAccelerometer]		= kAccelAddress;
-		fOSC[kAltimeter]			= kAltiAddress;
+//		fOSC[kAltimeter]			= kAltiAddress;
 		fOSC[kAmbientLight]			= kALightAddress;
-		fOSC[kAmbientTemperature]	= kATempAddress;
+//		fOSC[kAmbientTemperature]	= kATempAddress;
 		fOSC[kCompass]				= kCompassAddress;
-		fOSC[kDistance]				= kDistAddress;
+//		fOSC[kDistance]				= kDistAddress;
 		fOSC[kGyroscope]			= kGyroAddress;
-		fOSC[kHolster]				= kHolsterAddress;
-		fOSC[kIRProximity]			= kIRProxAddress;
+//		fOSC[kHolster]				= kHolsterAddress;
+//		fOSC[kIRProximity]			= kIRProxAddress;
 		fOSC[kLight]				= kLightAddress;
 		fOSC[kMagnetometer]			= kMagnetAddress;
 		fOSC[kOrientation]			= kOrientAddress;
-		fOSC[kPressure]				= kPressAddress;
-		fOSC[kProximity]			= kProxAddress;
+//		fOSC[kPressure]				= kPressAddress;
+//		fOSC[kProximity]			= kProxAddress;
 		fOSC[kRotation]				= kRotateAddress;
-		fOSC[kTap]					= kTapAddress;
+//		fOSC[kTap]					= kTapAddress;
 		fOSC[kTilt]					= kTiltAddress;
 	}
 	if (fNames.empty()) {
 		fNames[kAccelerometer]		= "Accelerometer";
-		fNames[kAltimeter]			= "Atlimeter";
+//		fNames[kAltimeter]			= "Atlimeter";
 		fNames[kAmbientLight]		= "Ambient Light";
-		fNames[kAmbientTemperature]	= "Ambient temp.";
+//		fNames[kAmbientTemperature]	= "Ambient temp.";
 		fNames[kCompass]			= "Compass";
-		fNames[kDistance]			= "Distance";
+//		fNames[kDistance]			= "Distance";
 		fNames[kGyroscope]			= "Gyroscope";
-		fNames[kHolster]			= "Holster";
-		fNames[kIRProximity]		= "IR Proximity";
+//		fNames[kHolster]			= "Holster";
+//		fNames[kIRProximity]		= "IR Proximity";
 		fNames[kLight]				= "Light";
 		fNames[kMagnetometer]		= "Magnetometer";
 		fNames[kOrientation]		= "Orientation";
-		fNames[kPressure]			= "Pressure";
-		fNames[kProximity]			= "Proximity";
+//		fNames[kPressure]			= "Pressure";
+//		fNames[kProximity]			= "Proximity";
 		fNames[kRotation]			= "Rotation";
-		fNames[kTap]				= "Tap";
+//		fNames[kTap]				= "Tap";
 		fNames[kTilt]				= "Tilt";
 	}
 }
@@ -165,21 +165,21 @@ QSensor* Sensor::create (int type) const
 {
 	switch (type) {
 		case kAccelerometer:			return new QAccelerometer();
-		case kAltimeter:				return new QAltimeter();
+//		case kAltimeter:				return new QAltimeter();
 		case kAmbientLight:				return new QAmbientLightSensor();
-		case kAmbientTemperature:		return new QAmbientTemperatureSensor();
+//		case kAmbientTemperature:		return new QAmbientTemperatureSensor();
 		case kCompass:					return new QCompass();
-		case kDistance:					return new QDistanceSensor();
+//		case kDistance:					return new QDistanceSensor();
 		case kGyroscope:				return new QGyroscope();
-		case kHolster:					return new QHolsterSensor();
-		case kIRProximity:				return new QIRProximitySensor();
+//		case kHolster:					return new QHolsterSensor();
+//		case kIRProximity:				return new QIRProximitySensor();
 		case kLight:					return new QLightSensor();
 		case kMagnetometer: 			return new QMagnetometer();
 		case kOrientation:				return new QOrientationSensor();
-		case kPressure:					return new QPressureSensor();
-		case kProximity:				return new QProximitySensor();
+//		case kPressure:					return new QPressureSensor();
+//		case kProximity:				return new QProximitySensor();
 		case kRotation:					return new QRotationSensor();
-		case kTap:						return new QTapSensor();
+//		case kTap:						return new QTapSensor();
 		case kTilt:						return new QTiltSensor();
 		default:
 			cerr << "unknown sensor type " << type << endl;

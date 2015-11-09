@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+		<file>qml/wait.qml</file>
+		<file>qml/SensorUI.qml</file>
+		<file>qml/SensorsList.qml</file>
+    </qresource>
+</RCC>

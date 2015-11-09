@@ -1,21 +1,47 @@
+
 #include <QApplication>
-#include <QSplashScreen>
-#include <QPixmap>
+#include <QQuickView>
+#include <QQuickView>
+#include <QQmlContext>
+#include <QObject>
 #include <QDebug>
 
-#include "MainWindow.h"
+#include "Sensors.h"
+
+class SensorAppl : public QApplication
+{
+	QQuickView	fView;
+	int			fTimerID;
+	Sensors		fSensors;
+	public:
+				 SensorAppl(int& argc, char** argv) : QApplication(argc, argv) {}
+		virtual ~SensorAppl() {}
+	
+		void start();
+	
+	protected:
+        void timerEvent(QTimerEvent * e);
+};
+
+void SensorAppl::start()
+{
+    fView.setSource(QUrl("qrc:/qml/wait.qml"));
+    fView.show();
+    fView.rootContext()->setContextProperty("sensors", &fSensors);
+	connect((QObject*)fView.engine(), SIGNAL(quit()), this, SLOT(quit()));
+	fTimerID = startTimer(2000);
+}
+
+void SensorAppl::timerEvent(QTimerEvent*)
+{
+    fView.setSource(QUrl("qrc:/qml/SensorUI.qml"));
+	killTimer(fTimerID);
+}
+
 
 int main(int argc, char* argv[])
 {
-	QApplication app( argc , argv );
-    QPixmap pixmap(":/splash.png");
-    QSplashScreen splash(pixmap);
-    splash.show();
-qDebug() << "splash show";
-	MainWindow mainWindow;
-	mainWindow.show();
-	
-    splash.finish(&mainWindow);
-
+	SensorAppl app( argc , argv );
+	app.start();
 	return app.exec();
 }

@@ -24,7 +24,7 @@ class Sensor
 		static std::map<int, const char*>	fNames;
 	
 	public:
-		enum  { kSensorStart, kAccelerometer=0, kAltimeter, kAmbientLight, kAmbientTemperature, kCompass, kDistance, kGyroscope, kHolster, kIRProximity, kLight, kMagnetometer, kOrientation, kPressure, kProximity, kRotation, kTap, kTilt, kSensorMax };
+		enum  { kSensorStart=1, kAccelerometer=1, kAmbientLight, kCompass, kGyroscope, kLight, kMagnetometer, kOrientation, kRotation, kTilt, kSensorMax };
 
 				 Sensor(int type);
 		virtual ~Sensor();
