@@ -55,7 +55,10 @@ IGuidoStream::~IGuidoStream()
 //--------------------------------------------------------------------------
 const string IGuidoStream::getCleanGMN() const
 {
-	return GuidoStream2GuidoString(fGuidoStream);
+	const char* str = GuidoStream2GuidoString(fGuidoStream);
+	const string r(str);
+	GuidoFreeStreamString(str);
+	return r;
 }
 
 //--------------------------------------------------------------------------

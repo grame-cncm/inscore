@@ -49,7 +49,10 @@ void IGuidoPianoRollStream::accept (Updater* u)
 //--------------------------------------------------------------------------
 const string IGuidoPianoRollStream::getCleanGMN() const
 {
-	return GuidoStream2GuidoString(fGuidoStream);
+	const char* str = GuidoStream2GuidoString(fGuidoStream);
+	const string r(str);
+	GuidoFreeStreamString(str);
+	return r;
 }
 
 //--------------------------------------------------------------------------
