@@ -1,11 +1,9 @@
-#ifndef __MainWindow__
-#define __MainWindow__
+#ifndef __Sensors__
+#define __Sensors__
 
 #include <QMainWindow>
 
-#include <QList>
 #include <QVariant>
-#include <QCheckBox>
 #include <QTimer>
 
 #include <QAccelerometer>
@@ -27,9 +25,9 @@
 #include <QTiltSensor>
 
 #include <map>
+#include <string>
 
 
-#include "ui_sensorsWidget.h"
 #include "osc/OscOutboundPacketStream.h"
 #include "ip/UdpSocket.h"
 
@@ -37,8 +35,6 @@
 
 
 #define OUTPUT_BUFFER_SIZE 1024
-
-class SensorWidget;
 
 //------------------------------------------------------------------------
 class OSCStream : public osc::OutboundPacketStream
@@ -54,32 +50,28 @@ class OSCStream : public osc::OutboundPacketStream
 };
 
 //------------------------------------------------------------------------
-class SensorWidget : public QFrame, private Ui::Frame
+class Sensors : public QObject
 {
 	Q_OBJECT
-
-//	SensorWatcher*	fWatcher;
 	UdpTransmitSocket* fSocket;
 
 	void initSensors ();
 	void destchge ();
-	void appendValue (osc::OutboundPacketStream& p, const char* value) const;
-	void appendValue (osc::OutboundPacketStream& p, int value) const;
-	void appendValue (osc::OutboundPacketStream& p, float value) const;
 	
 	public:
-		typedef struct {
-			Sensor*		sensor;
-			QCheckBox*	controler;
-		} TSensorUI;
-		typedef std::vector<TSensorUI> TSensors;
+		typedef std::map<int, Sensor*> TSensors;
 
-				 SensorWidget(QWidget *parent = 0);
-		virtual ~SensorWidget();
+		Q_INVOKABLE void activate(int index, bool state);
+		Q_INVOKABLE bool available(int index);
+		Q_INVOKABLE void destination(QString dest);
+		Q_INVOKABLE void port(QString port);
 
-		int port () const;
-		QString destination () const;
-		void	sendAvailable ();
+				 Sensors();
+		virtual ~Sensors();
+
+		int port () const				{ return fPort; }
+		QString destination () const	{ return fDestination; }
+		void skipChge(int state);
 
 	template <typename T>	void send (const char * addr, T value)
 	{
@@ -90,24 +82,15 @@ class SensorWidget : public QFrame, private Ui::Frame
 		fSocket->Send( p.Data(), p.Size() );
 	}
 
+	protected:
+		void timerEvent(QTimerEvent * );
+
 	private:
 		TSensors fSensors;
 		int		 fTimerID;
-	
-	protected slots:
-		void addressChge();
-        void skipChge(int i);
-        void portChge(int i);
-        void timerEvent(QTimerEvent * e);
+		QString	 fDestination;
+		int		 fPort;
 };
 
-//------------------------------------------------------------------------
-class MainWindow: public QMainWindow
-{
-	public:
-		MainWindow ( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
-		~MainWindow();
-
-};
 
 #endif
