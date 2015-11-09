@@ -1,5 +1,5 @@
 /ITL/scene/* del;
-rversion = 0.96; ! version required for javascript
+rversion = 1.17; ! version required for javascript
 
 #### score definition #####
 
@@ -23,7 +23,7 @@ rversion = 0.96; ! version required for javascript
 		return score + '";';
 	}
 ?>
-/ITL require $rversion ( /ITL/scene/warning set txt "WARNING: javascript requires version" $rversion "or greater" ,
+/ITL require $rversion ( /ITL/scene/warning set txt "WARNING: score expressions require version" $rversion "or greater" ,
 						/ITL/scene/warning color 100 100 100 ,
 						/ITL/scene/warning y 0.9 ,
 						/ITL/scene/warning scale 1.5
