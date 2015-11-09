@@ -66,8 +66,15 @@ const string ExprEvaluator::eval(const IExprOperator* arg, const IExpression *ex
 
 	if(!fEvalStatus.hasEvalSucceed())
 		return "";
+	bool success = false;
+	string r = cb(arg1, arg2, success);
 
-	return cb(arg1, arg2);
+	if(!success){
+		ITLErr<<fEvalName<<": operator "<<arg->operatorPrototype()->getName()<<"("<<arg1<<", "<<arg2<<") failed to compute.";
+		return fEvalStatus.fail();
+	}
+
+	return r;
 
 
 }

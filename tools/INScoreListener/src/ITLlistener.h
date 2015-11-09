@@ -37,6 +37,7 @@ protected:
 
 	bool readArg(osc::ReceivedMessage::const_iterator &arg, const osc::ReceivedMessage &message, std::string& result);
 	static int replaceAll(std::string& replaceIn, std::string search, std::string replaceBy);
+	static std::string autoQuotes(const std::string &str);
 };
 
 }

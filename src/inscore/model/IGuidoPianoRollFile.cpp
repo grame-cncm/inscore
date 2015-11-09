@@ -76,11 +76,11 @@ MsgHandler::msgStatus IGuidoPianoRollFile::set (const IMessage* msg )
 				if(extension == "gmn") {
 					if (!read(fGMN))
 						return MsgHandler::kCreateFailure;
-					updatePianoRoll();
+					//updatePianoRoll();	//Useless called by newData
 				} else
 				if(extension == "mid") {
 					fMidiFile = file;
-					updatePianoRoll(fMidiFile);
+					//updatePianoRoll(fMidiFile);	//Useless called by newData
 				} else
 					return MsgHandler::kCreateFailure;
 				newData(true);
@@ -95,6 +95,17 @@ void IGuidoPianoRollFile::updateUrl()
 {
 	if (dataSize())	fGMN = data();
 	this->getView()->updateLocalMapping(this);
+}
+
+void IGuidoPianoRollFile::newData(bool state)
+{
+	if(isMidiFile()){
+		if(state)
+			updatePianoRoll(fMidiFile);
+		IGuidoCode::newData(true);
+	}else{
+		IGuidoPianoRoll::newData(true); //auto call updatePianoRoll() which fail in case of midi file
+	}
 }
 
 }

@@ -369,7 +369,7 @@ void IGuidoPianoRoll::updatePianoRoll()
 		GuidoParserGetErrorCode(parser, line, col, 0);
 		stringstream sstr;
 		sstr << " (line " << line << ", col " << col << ")";
-		ITLErr << getOSCAddress() << "invalid gmn code:" << sstr.str() << ITLEndl;
+		ITLErr << getOSCAddress() << "invalid gmn code at" << sstr.str()<< ": \""<< fGMN <<'"'<< ITLEndl;
 		return ;
 	}
 	GuidoCloseParser(parser);

@@ -67,6 +67,7 @@ xcodeproj: library.pro viewer.pro
 	touch macos/INScoreViewer.xcodeproj
 
 INScoreMac : 
+	make -C ../lib/GuidoEngine/macosx
 	xcodebuild -jobs 8 -project macos/INScore.xcodeproj -target INScore -configuration Release
 	xcodebuild -jobs 8 -project macos/INScoreViewer.xcodeproj -target INScoreViewer -configuration Release
 

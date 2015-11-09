@@ -55,6 +55,8 @@ class IGuidoPianoRollFile : public IGuidoPianoRoll, public TFile
         virtual void	print(std::ostream& out) const;
         virtual void	accept (Updater*u);
 
+		inline bool		isMidiFile() const {return !fMidiFile.empty();}
+
     protected:
         IGuidoPianoRollFile( const std::string& name, IObject * parent);
         virtual ~IGuidoPianoRollFile() {}
@@ -65,6 +67,8 @@ class IGuidoPianoRollFile : public IGuidoPianoRoll, public TFile
 
 	private:
 		std::string fMidiFile;
+
+		virtual void newData(bool state);
 };
 
 /*! @} */

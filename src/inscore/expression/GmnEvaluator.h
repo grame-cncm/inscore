@@ -11,10 +11,8 @@ public:
 	static GmnEvaluator* create(const IObject* contextObject){return new GmnEvaluator(contextObject);}
 
 	const std::string eval(const IObject *arg);
-
 protected:
         GmnEvaluator(const IObject* contextObject);
-
 };
 
 }

@@ -29,7 +29,7 @@ public:
     bool hasEvalSucceed(){return fEvalSucceed;}
 };
 
-typedef const std::string (*OperatorCb)(const std::string&,const std::string&);
+typedef const std::string (*OperatorCb)(const std::string&,const std::string&, bool &success);
 
 /*!
  * \brief IEvaluableExpr evaluator mother class. Handle context for the evaluation, error...
@@ -59,7 +59,7 @@ public:
 
 	static ExprEvaluator* create(const IObject* contextObject){return new ExprEvaluator("ExprEvaluator", contextObject);}
 
-	const char* evalName() const {return fEvalName;}
+	const char* evaluatorName() const {return fEvalName;}
 
 
 	static const IObject* objectFromAddress(itladdress address, const IObject *contextObject);
