@@ -18,8 +18,8 @@
 /ITL/scene/navbar duration 227 4;
 
 # Add rectangles as cursors
-/ITL/scene/cursor set rect 0.001 0.2;
-/ITL/scene/cursornav set rect 0.00075 0.2;
+/ITL/scene/cursor set rect 0.01 0.2;
+/ITL/scene/cursornav set rect 0.005 0.2;
 /ITL/scene/cursor* date 1000 1;
 /ITL/scene/cursor* duration 1 64;
 /ITL/scene/cursor* color 255 0 48 200;
