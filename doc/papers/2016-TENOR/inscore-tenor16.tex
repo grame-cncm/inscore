@@ -26,10 +26,13 @@
 
 
 %user defined variables
-\def\papertitle{Symbolic scores as dynamic expressions}
-\def\firstauthor{Gabriel Lepetit-Aimon}
+\def\papertitle{INScore expressions to compose symbolic scores}
+%\def\firstauthor{Gabriel Lepetit-Aimon}
+\def\authors{G. Lepetit-Aimon \qquad D. Fober \qquad Y. Orlarey \qquad S. Letz}
+\def\firstauthor{G. Lepetit-Aimon}
 \def\secondauthor{Dominique Fober}
-\def\thirdauthor{Third author}
+\def\thirdauthor{Yann Orlarey}
+\def\fourthauthor{Stéphane Letz}
 
 % adds the automatic
 % Saves a lot of ouptut space in PDF... after conversion with the distiller
@@ -99,17 +102,19 @@
 % Single address
 % To use with only one author or several with the same address
 % ---------------
-%\oneauthor
-%   {\firstauthor} {Affiliation1 \\ %
-%     {\tt \href{mailto:author1@adomain.org}{author1@adomain.org}}}
+\oneauthor
+   {\authors} {Grame \\ %
+  Centre nationale de création musicale \\
+  Lyon - France \\
+     {\tt \href{mailto:gabriel.lepetit.aimon@grame.fr}{gabriel.lepetit.aimon@grame.fr}}}
 
 %Two addresses
 %--------------
- \twoauthors
-   {\firstauthor} {Grame \\ %
-     {\tt \href{mailto:gabriel.lepetit.aimon@grame.fr}{gabriel.lepetit.aimon@grame.fr}}}
-   {\secondauthor} {Grame \\ %
-     {\tt \href{mailto:fober@grame.fr}{fober@grame.fr}}}
+% \twoauthors
+%   {\firstauthor} {Grame \\ %
+%     {\tt \href{mailto:gabriel.lepetit.aimon@grame.fr}{gabriel.lepetit.aimon@grame.fr}}}
+%   {\secondauthor} {Grame \\ %
+%     {\tt \href{mailto:fober@grame.fr}{fober@grame.fr}}}
 
 % Three addresses
 % --------------
@@ -130,35 +135,15 @@
 \capstarttrue
 %
 \begin{abstract}
-Place your abstract at the top left column on the first page.
-Please write about 150-200 words that specifically highlight the purpose of your work,
-its context, and provide a brief synopsis of your results.
-Avoid equations in this part.
+INScore is an environment for the design of augmented interactive music scores turned to non-conventional use of music notation. The environment allows arbitrary graphic resources to be used and composed for the music representation. It supports symbolic music notation, described using Guido Music Notation or MusicXML formats. The environment has been extended to provided score level composition using a set of operators that consistently take scores as arguments to compute new scores as output. INScore API supports now \emph{scores expressions} both at OSC and at scripting levels. The work is based on a previous research that solved the issues of the notation consistency accross scores composition. This paper focuses on the language level and explains the different strategies to evaluate score expressions.
 \end{abstract}
 %
 
 \section{Introduction}\label{sec:introduction}
 
+%Contemporary music creation poses numerous challenges to the music notation. How to write space? \cite{Ellberger_tenor2015}, how to write for new instruments? \cite{aref}, how to write gestures? mixed music? how to take advantage of the web sharing capabilities? All these issues have been tackled but in general,  
 
 
-\section{Page size and format}\label{sec:page_size}
-Your paper must not exceed {\bf 12 pages},
-no matter if you are presenting orally or posterly.
-We \underline{strongly encourage}
-a paper length of {\bf 6 pages}.
-We will format the proceedings as
- \underline{portrait A4-size paper} \underline{(21.0~cm x 29.7~cm)}.
-All material on each page should fit within a rectangle of 17.2~cm x 25.2~cm,
-centered on the page, beginning 2.0~cm from the top of the page and ending 
-with 2.5cm from the bottom.
-The left and right margins should be 1.9~cm.
-The text should be in two 8.2~cm columns with a 0.8~cm gutter.
-All text must be in a two-column format, and justified.
-If you prepare your document by cutting and pasting into this one,
-then you should not have to worry, 
-unless there is something strange with your \LaTeX{} interpreter.
-So double check.
-If you have any questions, please contact the TENOR 2016 Organizers.
 
 \section{Typeset Text}\label{sec:typeset_text}
 
@@ -325,6 +310,6 @@ which can be included after the second-level heading
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %bibliography here
-\bibliography{tenor2016template}
+\bibliography{../interlude}
 
 \end{document}
