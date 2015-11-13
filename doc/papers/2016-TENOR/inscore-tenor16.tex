@@ -27,9 +27,8 @@
 
 %user defined variables
 \def\papertitle{INScore expressions to compose symbolic scores}
-%\def\firstauthor{Gabriel Lepetit-Aimon}
 \def\authors{G. Lepetit-Aimon \qquad D. Fober \qquad Y. Orlarey \qquad S. Letz}
-\def\firstauthor{G. Lepetit-Aimon}
+\def\firstauthor{Gabriel Lepetit-Aimon}
 \def\secondauthor{Dominique Fober}
 \def\thirdauthor{Yann Orlarey}
 \def\fourthauthor{Stéphane Letz}
@@ -141,36 +140,26 @@ INScore is an environment for the design of augmented interactive music scores t
 
 \section{Introduction}\label{sec:introduction}
 
-%Contemporary music creation poses numerous challenges to the music notation. How to write space? \cite{Ellberger_tenor2015}, how to write for new instruments? \cite{aref}, how to write gestures? mixed music? how to take advantage of the web sharing capabilities? All these issues have been tackled but in general,  
+Contemporary music creation poses numerous challenges to the music notation. Spatialized music, new instruments, gesture based interactions, real-time and interactive scores, are among the new domains that are now commonly explored by artists. 
+Classical music notation doesn't cover the needs of these new musical forms and numerous research and approaches have recently emerged, testifying to the maturity of the music notation domain, in the light of computer tools for music notation and representation.
+Issues like writing spatialized music \cite{Ellberger_tenor2015}, addressing new instruments \cite{tmays:2014} or new interfaces \cite{kschlei:2015} (to cite just a few), are now subject of active research and proposals.
+
+Interactive music and real-time scores are also representative of an expanding domain in the music creation field. The advent of the digital score and the maturation of the computer tools for music notation and representation constitute the basement for the development of this musical form, which is often grounded on non-traditional music representation \cite{RSmith_tenor2015} \cite{Hope_tenor2015} but may also use the common music notation \cite{Hoadley12,hoadley14}. 
+
+In order to address the notations challenges mentionned above, INScore \cite{Fober:12a,fober14c} has been designed as an environment opened to non-conventional music representation (although it supports symbolic notation), and turned to real-time and interactive use \cite{Fober:13b, Fober:14b}. It is clearly focused on music representation only and in this way, differs from tools integrated into programming environments like Bach \cite{agostini12b} or MaxScore \cite{didko08}. 
+
+INScore has been extended with \emph{score expressions} that provide symbolic scores composition features (e.g., putting scores in sequence or in parallel). Building new scores from existing scores at symbolic  level is not new. Haskell is providing such features with the \texttt{music-xxx} package... (???). Freeman and Lee proposed score composition operations in a real-time and interactive notation context \cite{Lee:2013}. Regarding the score operations used by INScore, they are imported from a previous work \cite{fober12b} that was focusing on the music notation consistency through arbitrary composition. 
+
+The novelty of the proposed approach relies on the dynamic aspects of the scores composition operations, as well as on the persistence of the score expressions. A score may be composed as an arbitrary graph of score expressions and equipped with a fine control over the changes propagation.
+
+The paper introduces first the score composition expressions. Next, the different evaluations strategies are explained and illustrated with examples. The articulation with the INScore environment is presented in detail and followed by concrete use cases. A generalization of this approach is finally proposed in the concluding section.  
+
 
 
 
 \section{Typeset Text}\label{sec:typeset_text}
 
-\subsection{Normal or Body Text}\label{subsec:body}
-Please use a 10pt (point) Times font. 
-Use sans-serif or non-proportional fonts
-only for special purposes, 
-such as distinguishing source code.
-The first paragraph in each section should not be indented, 
-but all other paragraphs should be.
 
-\subsection{Title and Authors}
-As you can see above, the title is 16pt Times, bold, upper case, and centered.
-The names of the authors are also centered.
-The lead author's name is to be listed first (left-most), and the co-authors' 
-names after. If the addresses for all authors are the same, include the 
-address only once, centered. If the authors have different addresses, put the 
-addresses, evenly spaced, under each authors' name.
-
-\subsection{First Page Copyright Notice}
-Please leave the copyright notice exactly as it appears in the lower 
-left-hand corner of the first page. It is set in 8pt Times, if you are wondering.
-
-\subsection{Page Numbering, Headers and Footers}
-Do not include headers, footers or page numbers in your submission.
-We add these electronically when we assemble the publications
-into the proceedings.
 
 \section{Headings}
 First level headings are in Times 12pt bold,
@@ -183,16 +172,6 @@ Second level headings are in Times 10pt bold, flush left,
 with 1 line of space above the section head, and 1/2 space below it.
 The first letter of each significant word is capitalized.
 
-\subsubsection{Third Level Headings}
-Third level headings are in Times 10pt italic, flush left,
-with 1/2 line of space above the section head, and 1/2 space below it.
-The first letter of significant words is capitalized.
-
-\subsubsection{Level Headings Beyond the Third}
-We strongly discourage any use of
-more than three levels of headings.
-Also, if you have only one subsection in a section,\footnote{Just like this section.}
-then you should reorganize it into one section.
 
 \section{Floats and equations}
 
@@ -210,7 +189,7 @@ As (\ref{eq:Emc2}) shows,
 I do not completely trust Special Relativity.
 
 \subsection{Figures, Tables and Captions}
-\begin{table}[t]
+\begin{table}[h]
  \begin{center}
  \begin{tabular}{|l|l|}
   \hline
@@ -276,24 +255,6 @@ the resolution is high enough for print quality.
 %\caption{Here's an example using the subfig package.\label{fig:subfigex} }
 %\end{figure}
 
-\subsection{Footnotes}
-You can indicate footnotes with a number in the text,\footnote{This is a footnote.}
-but try to work the content into the main text.
-Use 8pt font-size for footnotes. 
-Place the footnotes at the bottom of the page 
-on which they appear. 
-Precede the footnote with a 0.5pt horizontal rule.
-
-\section{Citations}
-List all bibliographical references at the end of your paper,
-inside a section named ``REFERENCES''.
-Order and number the references in order of appearance. 
-Do not list references that do not appear in the text.
-Reference numbers in the text should appear within square brackets, such as 
-in~\cite{Someone:13} or~\cite{Someone:13,Someone:04,Someone:09}.
-The reference format is the standard IEEE one. 
-We highly recommend you use BibTeX 
-to generate the reference list.
 
 \section{Conclusions}
 To finish your full-length paper, end it with a conclusion;
