@@ -4,6 +4,7 @@ GFONT    = ../src/guido2.ttf
 APP_PATH = $(BUILD)/macos/Release
 APP      = INScoreViewer
 INSCORE_BUNDLE_VERSION = $(shell grep 'INSFWKVERS' $(BUILD)/CMakeLists.txt  | sed 's/[^0-9.]//g')
+GUIDOAR_VERSION = A
 GUIDO_VERSION = C
 MAC_DEPLOY_TOOL = macdeployqt
 
@@ -16,6 +17,7 @@ bundle:
 
 
 	# Copy and link the application to its frameworks
+	make installFramework APP=$(APP) FWORK=guidoar    FWORK_PATH=../lib/GuidoAR/macosx FWORK_VERSION=$(GUIDOAR_VERSION)
 	make installFramework APP=$(APP) FWORK=GUIDOEngine    FWORK_PATH=../lib/GuidoEngine/macosx FWORK_VERSION=$(GUIDO_VERSION)
 	make installFramework APP=$(APP) FWORK=INScore      FWORK_PATH=$(BUILD)/Release           FWORK_VERSION=$(INSCORE_BUNDLE_VERSION)
 
