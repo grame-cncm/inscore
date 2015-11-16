@@ -34,7 +34,10 @@ void SensorAppl::start()
 
 void SensorAppl::timerEvent(QTimerEvent*)
 {
-    fView.setSource(QUrl("qrc:/qml/SensorUI.qml"));
+	if (fSensors.network())
+		fView.setSource(QUrl("qrc:/qml/SensorUI.qml"));
+	else
+		fView.setSource(QUrl("qrc:/qml/error.qml"));
 	killTimer(fTimerID);
 }
 

@@ -69,8 +69,10 @@ class Sensors : public QObject
 				 Sensors();
 		virtual ~Sensors();
 
-		int port () const				{ return fPort; }
-		QString destination () const	{ return fDestination; }
+		int		port () const				{ return fPort; }
+		QString destination () const		{ return fDestination; }
+		bool	network() const				{ return fSocket != 0; }
+
 		void skipChge(int state);
 
 	template <typename T>	void send (const char * addr, T value)

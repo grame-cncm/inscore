@@ -1,5 +1,7 @@
 
 #include <vector>
+#include <exception>
+#include <iostream>
 
 #include <QPushButton>
 #include <QSettings>
@@ -46,19 +48,24 @@ void Sensors::initSensors()
 }
 
 //------------------------------------------------------------------------
-Sensors::Sensors()
+Sensors::Sensors() : fTimerID(0)
 {
 	initSensors();
 	fDestination = DEFAULT_ADDRESS;
 	fPort = DEFAULT_PORT;
-	fSocket = new UdpTransmitSocket( IpEndpointName( destination().toStdString().c_str() , port() ) );
-	fTimerID = startTimer(10);
+	try {
+		fSocket = new UdpTransmitSocket( IpEndpointName( destination().toStdString().c_str() , port() ) );
+		fTimerID = startTimer(10);
+	}
+	catch(std::exception e) {
+		fSocket = 0;
+	}
 }
 
 //------------------------------------------------------------------------
 Sensors::~Sensors()
 {
-	killTimer(fTimerID);
+	if (fTimerID) killTimer(fTimerID);
  	for (int i = Sensor::kSensorStart; i < Sensor::kSensorMax; i++) {
 		delete fSensors[i];
 	}

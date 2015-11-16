@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+		<file>qml/error.qml</file>
 		<file>qml/wait.qml</file>
 		<file>qml/SensorUI.qml</file>
 		<file>qml/SensorsList.qml</file>
