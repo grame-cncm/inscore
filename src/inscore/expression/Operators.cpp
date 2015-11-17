@@ -3,16 +3,19 @@
 
 namespace inscore {
 
-const OperatorPrototype opGuidoTail		("tail")		;
-const OperatorPrototype opGuidoHead		("head")		;
+
 const OperatorPrototype opGuidoSeq		("seq")			;
 const OperatorPrototype opGuidoPar		("par")			;
-const OperatorPrototype opGuidoParR		("parRight")	;
+const OperatorPrototype opGuidoParR		("rpar")		;
+const OperatorPrototype opGuidoHead		("head")		;
+const OperatorPrototype opGuidoEvHead	("evhead")		;
+const OperatorPrototype opGuidoTail		("tail")		;
+const OperatorPrototype opGuidoEvTail	("evtail")		;
 const OperatorPrototype opGuidoDur		("duration")	;
 const OperatorPrototype opGuidoTrans	("transpose")	;
 const OperatorPrototype opGuidoTop		("top")			;
 const OperatorPrototype opGuidoBottom	("bottom")		;
-const OperatorPrototype opGuidoRythm	("rythm")		;
+const OperatorPrototype opGuidoRythm	("rhythm")		;
 const OperatorPrototype opGuidoPitch	("pitch")		;
 
 

@@ -22,11 +22,14 @@ public:
  ********************************************/
 
 
-extern const OperatorPrototype opGuidoTail	;
-extern const OperatorPrototype opGuidoHead	;
+
 extern const OperatorPrototype opGuidoSeq	;
 extern const OperatorPrototype opGuidoPar	;
 extern const OperatorPrototype opGuidoParR	;
+extern const OperatorPrototype opGuidoHead	;
+extern const OperatorPrototype opGuidoEvHead;
+extern const OperatorPrototype opGuidoTail	;
+extern const OperatorPrototype opGuidoEvTail;
 extern const OperatorPrototype opGuidoDur	;
 extern const OperatorPrototype opGuidoTrans	;
 extern const OperatorPrototype opGuidoTop	;

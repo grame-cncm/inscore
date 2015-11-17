@@ -55,7 +55,9 @@ GmnEvaluator::GmnEvaluator(const IObject *contextObject): ExprEvaluator("GmnEval
 	registerOperator(opGuidoDur,	GUIDOAR_OPERATOR(guido::guidoGSetDuration));
 	registerOperator(opGuidoTrans,	GUIDOAR_OPERATOR(guido::guidoGTranpose));
 	registerOperator(opGuidoHead,	GUIDOAR_OPERATOR(guido::guidoGHead));
+	registerOperator(opGuidoEvHead,	GUIDOAR_OPERATOR(guido::guidoGEHead));
 	registerOperator(opGuidoTail,	GUIDOAR_OPERATOR(guido::guidoGTail));
+	registerOperator(opGuidoEvHead,	GUIDOAR_OPERATOR(guido::guidoGEHead));
 	registerOperator(opGuidoTop,	GUIDOAR_OPERATOR(guido::guidoGTop));
 	registerOperator(opGuidoBottom,	GUIDOAR_OPERATOR(guido::guidoGBottom));
 
