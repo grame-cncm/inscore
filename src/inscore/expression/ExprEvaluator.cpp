@@ -35,8 +35,7 @@ bool ExprEvaluator::smartEval(const IExpression *expr, string& result)
 		return false;							//result = previously evaluated value
 
 	result = e;									//result = new value
-	expr->evaluated()->clear();						//updating evaluated value
-	expr->evaluated()->append(e);
+	*expr->evaluated() = e;						//updating evaluated value
 
 	return true;
 }
@@ -57,15 +56,16 @@ const string ExprEvaluator::eval(const IExprOperator* arg, const IExpression *ex
 
 	string arg1, arg2;
 	bool changed = exprArg->getEvaluated().empty();	//If the operator had never been evaluated we need to force the evaluation
-													//even if arg1 and arg2 didn't change (happening when tree are composed together
+													//even if arg1 and arg2 didn't change (happening when tree are composed together)
 	changed |= smartEval(arg->constArg1(), arg1);
 	changed |= smartEval(arg->constArg2(), arg2);
+
+	if(!fEvalStatus.hasEvalSucceed())				//If the evaluation failed during evaluation of arg1 or arg2
+		return "";									//Return empty string (anyway the value shouldn't be read in afterward...)
 
 	if(!changed)									//If arg1 and arg2 didn't change
 		return exprArg->getEvaluated();				//Return the previously evaluated value
 
-	if(!fEvalStatus.hasEvalSucceed())
-		return "";
 	bool success = false;
 	string r = cb(arg1, arg2, success);
 

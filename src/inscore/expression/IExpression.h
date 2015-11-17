@@ -61,8 +61,8 @@ public:
 	virtual std::string accept(evaluator* e) =0;
 	virtual std::string accept(constEvaluator* e) const = 0;
 
-	void switchToDynamic(){fDynamicEval = true;}
-	void switchToCopy(){fCopyEval = true;}
+	void switchToDynamic(bool dynamicEval = true){fDynamicEval = dynamicEval;}
+	void switchToCopy(bool copyEval = true){fCopyEval = copyEval;}
 	inline bool copyEval() const {return fCopyEval;}
 	inline bool dynamicEval() const {return fDynamicEval;}
 	inline bool pureStaticEval() const {return !fCopyEval && !fDynamicEval;}
