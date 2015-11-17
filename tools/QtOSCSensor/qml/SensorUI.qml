@@ -5,6 +5,8 @@ import QtQuick.Controls 1.4
 
 Rectangle {
 	property real scale;
+	property alias address: ip.text
+	property alias port: port.text
 	
     width: Screen.desktopAvailableWidth; height: Screen.desktopAvailableHeight;
     color: "black"
@@ -25,15 +27,18 @@ Rectangle {
 		TextInput {
 			id: ip
 			text: "192.168.1.21"
-			font.pointSize: 14
+			font.pointSize: 15
 			color: "white"
 			selectByMouse : true
 			mouseSelectionMode: TextInput.SelectWords
 			selectedTextColor: "red"
+			Keys.onPressed: {
+				remove(selectionStart(), selectionEnd());
+			}
 			onEditingFinished: {
 				if (length == 0) text = "192.168.1.21";
 				focus: false;
-				sensors.port (text);
+				sensors.destination (text);
 			}
 		}
 		Text {
@@ -44,15 +49,18 @@ Rectangle {
 		TextInput {
 			id: port
 			text: "7001"
-			font.pointSize: 14
+			font.pointSize: 15
 			color: "white"
 			selectByMouse : true
 			mouseSelectionMode: TextInput.SelectWords
 			selectedTextColor: "red"
+			Keys.onPressed: {
+				remove(selectionStart(), selectionEnd());
+			}
 			onEditingFinished: {
 				if (length == 0) text = "7001";
 				focus: false;
-				sensors.destination (text);
+				sensors.port (text);
 			}
 		}
 

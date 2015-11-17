@@ -1,10 +1,10 @@
 
 #include <QApplication>
 #include <QQuickView>
-#include <QQuickView>
 #include <QQmlContext>
 #include <QObject>
 #include <QDebug>
+
 
 #include "Sensors.h"
 
@@ -36,6 +36,7 @@ void SensorAppl::timerEvent(QTimerEvent*)
 {
     fView.setSource(QUrl("qrc:/qml/SensorUI.qml"));
 	killTimer(fTimerID);
+	fSensors.start((QObject*)fView.rootObject());
 }
 
 
