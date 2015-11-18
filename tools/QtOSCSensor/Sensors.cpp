@@ -9,6 +9,7 @@
 #include <QVBoxLayout>
 #include <QTimer>
 #include <QMessageBox>
+#include <QSettings>
 
 #include "Sensors.h"
 
@@ -50,6 +51,7 @@ void Sensors::initSensors()
 //------------------------------------------------------------------------
 Sensors::Sensors() : fTimerID(0)
 {
+	fUIRoot = 0;
 	initSensors();
 	fDestination = DEFAULT_ADDRESS;
 	fPort = DEFAULT_PORT;
@@ -65,10 +67,25 @@ Sensors::Sensors() : fTimerID(0)
 //------------------------------------------------------------------------
 Sensors::~Sensors()
 {
-	if (fTimerID) killTimer(fTimerID);
+	QSettings settings;
+
+    settings.setValue("port", port());
+    settings.setValue("dest", destination());
+
+	killTimer(fTimerID);
  	for (int i = Sensor::kSensorStart; i < Sensor::kSensorMax; i++) {
 		delete fSensors[i];
 	}
+}
+
+//------------------------------------------------------------------------
+void Sensors::start(QObject* o)
+{
+	fUIRoot = o;
+
+	QSettings settings;
+	port(settings.value("port", DEFAULT_PORT).toString());
+	destination (settings.value("dest", DEFAULT_ADDRESS).toString());
 }
 
 //------------------------------------------------------------------------
@@ -91,14 +108,20 @@ bool Sensors::available(int index)
 
 void Sensors::destination(QString dest)
 {
-	if (dest.length()) fDestination = dest;
+	if (dest.length()) {
+		fDestination = dest;
+		destchge();
+	}
 }
 
 void Sensors::port(QString port)
 {
 	bool converted = false;
 	unsigned int p = port.toUInt (&converted);
-	if (converted) fPort = p;
+	if (converted) {
+		fPort = p;
+		destchge();
+	}
 }
 
 //------------------------------------------------------------------------
@@ -117,4 +140,8 @@ void Sensors::destchge()
 	UdpTransmitSocket* tmp = fSocket;
 	fSocket = socket;
 	delete tmp;
+	if (fUIRoot) {
+		fUIRoot->setProperty("port", port());
+		fUIRoot->setProperty("address", destination());
+	}
 }

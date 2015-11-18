@@ -53,7 +53,8 @@ class OSCStream : public osc::OutboundPacketStream
 class Sensors : public QObject
 {
 	Q_OBJECT
-	UdpTransmitSocket* fSocket;
+	UdpTransmitSocket*  fSocket;
+	QObject*	fUIRoot;
 
 	void initSensors ();
 	void destchge ();
@@ -74,6 +75,7 @@ class Sensors : public QObject
 		bool	network() const				{ return fSocket != 0; }
 
 		void skipChge(int state);
+		void start(QObject * o);
 
 	template <typename T>	void send (const char * addr, T value)
 	{
