@@ -44,17 +44,34 @@ using namespace std;
 namespace inscore
 {
 
+#define kPI	3.14159265359f
+
 //--------------------------------------------------------------------------
 QGraphicsGraphItemRadial::QGraphicsGraphItemRadial (QGraphicsItem * parent)
-	: QGraphicsRectItem(GRAPHICS_GRAPH_ITEM_SIZE , parent), fSignals (0) {}
+	: QGraphicsRectItem(GRAPHICS_GRAPH_ITEM_SIZE , parent), fSignals (0)
+{
+	
+}
 
 //--------------------------------------------------------------------------
 QGraphicsGraphItemRadial::~QGraphicsGraphItemRadial()		{}
 
 
-#define kPI	3.14159265359f
 //--------------------------------------------------------------------------
-void QGraphicsGraphItemRadial::drawSignal( ParallelSignal * sig, QPainter * painter, unsigned short size, double step, double xr, double yr)
+void QGraphicsGraphItemRadial::setSignal (const ParallelSignal* sig)
+{
+	fSignals = sig;
+	if (sig) {
+		// initialize the initial drawing angle
+		int dim = sig->dimension();
+		for (int i=0; i < dim; i+= GraphicFrame::FrameSize()) {
+			fAngles[i] = kPI;
+		}
+	}
+}
+
+//--------------------------------------------------------------------------
+double QGraphicsGraphItemRadial::drawSignal( ParallelSignal * sig, QPainter * painter, unsigned short size, double step, double xr, double yr, double angle)
 {
 	const int n = sig->dimension();
 
@@ -66,7 +83,6 @@ void QGraphicsGraphItemRadial::drawSignal( ParallelSignal * sig, QPainter * pain
 	for (int i=2; i < n; i++) *colorSig << sig->signal(i);
 	
 	QPen pen( painter->pen() );
-	double a = kPI;
 	double prevx = -1000;
 	double prevy = -1000;
 	double prevtx, prevty;
@@ -74,8 +90,8 @@ void QGraphicsGraphItemRadial::drawSignal( ParallelSignal * sig, QPainter * pain
 	for (unsigned int i=0; i < size; i++) {
 		double t = tsig->get(i)/4;				// thickness of the graphic signal (in [-1, 1])
 		double s = (ysig->get(i) + 1) / 2;		// the current signal y value (scaled to 0 1)
-		double ex = xr * cos(a);				// x coordinate of the current ellipse border
-		double ey = yr * sin(a);				// y coordinate of the current ellipse border
+		double ex = xr * cos(angle);				// x coordinate of the current ellipse border
+		double ey = yr * sin(angle);				// y coordinate of the current ellipse border
 
 		double x = xr + s * ex;			// the y deviation x coordinate
 		double y = yr + s * ey; 		// the y deviation y coordinate
@@ -85,7 +101,6 @@ void QGraphicsGraphItemRadial::drawSignal( ParallelSignal * sig, QPainter * pain
 		
 		pen.setColor( HSBA2QColor(colorSig->get(i)) );
 		painter->setPen (pen);
-#if 1
 		if (prevx >=0) {
 			QLineF line(prevx, prevy, x, y);
 			painter->drawLine(line);
@@ -100,16 +115,13 @@ void QGraphicsGraphItemRadial::drawSignal( ParallelSignal * sig, QPainter * pain
 			painter->fillPath(path, brush);
 			painter->drawPath(path);
 		}
-#else
-		QLineF line(xr, yr, tx, ty);
-		painter->drawLine(line);
-#endif
 		prevx = x;
 		prevy = y;
 		prevtx = tx;
 		prevty = ty;
-		a += step;
+		angle += step;
 	}
+	return angle;
 }
 
 //--------------------------------------------------------------------------
@@ -120,22 +132,19 @@ void QGraphicsGraphItemRadial::paint( QPainter * painter, const QStyleOptionGrap
 	const float k = 2*kPI;
 	const float border = 4;
 
-//qDebug() << "QGraphicsGraphItemRadial::paint" << bb << "size:" << size;
 	double re = bb.width()/2 - border;
 	double ri = bb.height()/2 - border;
 	double step = k / (size - 1);
 
 	painter->setClipRect( bb );
-//	QPen pen( QBrush(Qt::SolidPattern), 1, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin );
-//	painter->setPen(pen);
 	int n = signal()->dimension();
 	for (int i=0; i < n; i += GraphicFrame::FrameSize()) {
 		SParallelSignal	sig = signal()->getProjection (i, 1, i + GraphicFrame::FrameSize());
-		if (sig) drawSignal (sig, painter, size, step, re, ri);
+		if (sig) {
+			double angle = drawSignal (sig, painter, size, step, re, ri, fAngles[i]);
+			if (sig->count() >= (unsigned long)sig->size()) fAngles[i] = angle;
+		}
 	}
-//	QPen pen( QBrush(Qt::SolidPattern), 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin );
-//	painter->setPen(pen);
-//	painter->drawEllipse(re, ri, 3, 3);
 }
 
 } // end namespoace

@@ -28,6 +28,7 @@
 #define __QGraphicsGraphItemRadial__
 
 #include <QGraphicsRectItem>
+#include <map>
 
 namespace inscore
 {
@@ -50,12 +51,13 @@ class QGraphicsGraphItemRadial : public QGraphicsRectItem
 {
 	private:
 		const ParallelSignal*	fSignals;
+		std::map<int, double>	fAngles;		// the list of drawing angles
 
 	public :
 				 QGraphicsGraphItemRadial(QGraphicsItem * parent = 0);
 		virtual ~QGraphicsGraphItemRadial();
 
-		void					setSignal (const ParallelSignal* sig)		{ fSignals = sig; }
+		void					setSignal (const ParallelSignal* sig);
 		const ParallelSignal*	signal() const								{ return fSignals; }
 
 		/*!
@@ -66,8 +68,9 @@ class QGraphicsGraphItemRadial : public QGraphicsRectItem
 			\param step angular step of each graphic frame
 			\param xr the drawing area x center
 			\param yr the drawing area y center
+			\param angle the drawing initial angle
 		*/
-		void	drawSignal( ParallelSignal * sig, QPainter * painter, unsigned short size, double step, double xr, double yr);
+		double	drawSignal( ParallelSignal * sig, QPainter * painter, unsigned short size, double step, double xr, double yr, double angle);
 		void	paint( QPainter * painter, const QStyleOptionGraphicsItem *, QWidget * );
 
 	protected :
