@@ -257,10 +257,12 @@ When encountering an \sExpr, INScore parser will first try to create a tree repr
 \label{fig:example}}
 \end{figure}
 
-Because one expression can be evaluated in many different ways (in general the result of the evaluation is the corresponding guido code, but it can also be a transcription of the expression in its textual form...), the informations stored in the tree are the exact copy of those contained in the expression string. Type specification of arguments is the only difference, whereas type are implicit in \sExpr, arguments are explicitly stored as Guido code or file or identifier... in the tree form. Once the internal representation has been constructed by the parser, it is stored with the newly-defined object, ready for evaluation.
+Because one expression can be evaluated in many different ways (in general the result of the evaluation is the corresponding guido code, but it can also be a transcription of the expression in its textual form...), the informations stored in the tree are the exact copy of those contained in the expression string. Type specification of arguments is the only difference, whereas type are implicit in \sExpr, arguments are explicitly stored as Guido code or file or identifier... in the tree form. 
+
+Once the internal representation has been constructed by the parser, it is stored with the newly-defined object, ready for evaluation.
 
 \subsection{Standard evaluation of \sExpr}
-During the process of standard evaluation, the evaluator go through every node of the expression tree (starting by the leaves), reducing all of them into guido code.
+During the process of standard evaluation, the evaluator go through every nodes of the expression tree (starting by the leaves), reducing all of them into guido code.
 
 Each argument is interpreted using an algorithm specific to its type. Thus, when it encounters file paths the evaluator shall read the file and return its content, when it evaluates objects identifiers it shall return their guido codes (cleaning the code in case of guido stream), and of course, Guido or MusicXML string are not processed and are returned as they are. Finally operator nodes are computed calling the corresponding GuidoAR operator functions, using the previously evaluated guido codes as parameters.
 
@@ -276,11 +278,11 @@ Each argument is interpreted using an algorithm specific to its type. Thus, when
 
 \subsection{Dynamic evaluation of \sExpr}
 
-Each INScore object definable using \sExpr (gmn or pianoroll) contains a \sExpr handler that can store and evaluate  its expression tree. The user can then, whenever he wants, asks the handler to evaluate the expression again, updating the evaluated value if any objects or file changed since the previous evaluation. This process is not automatic, in order to avoid any recursive definition problems as explained in the previous section.
+Each INScore object definable using \sExpr contains a \sExpr handler that can store and evaluate  its expression tree. The user can then, whenever he wants, asks the handler to evaluate the expression again, updating the evaluated value if any objects or file changed since the previous evaluation. This process is not automatic, in order to avoid any recursive definition problems as explained in the previous section.
 
-However, as re-evaluating an entire expression can take quite some times, and because, in a context of a real-time score viewer we don't have that time, only branches that are likely to change are re-evaluated. Indeed, guido string arguments have no reason to change through time, thus their values should only be evaluated once and kept as they are: these arguments shall be evaluated \emph{statically}. For the same reason, an operators applied on two \emph{statically evaluated} node is considered \emph{statically evaluated} too. After evaluating these nodes, their values are stored together with the expression tree so it can be retrieved afterwards.
+However, as re-evaluating an entire expression can take quite some times, and because, in a context of a real-time score viewer we don't have that time, only branches that are likely to change are re-evaluated. Indeed, guido string arguments have no reason to change through time, thus their values should only be evaluated once and kept as they are: these arguments shall be evaluated \emph{statically}. For the same reason, an operators applied on two \emph{statically evaluated} node is considered \emph{statically evaluated} too. After evaluating these nodes, their values are stored together with the expression tree so they can be retrieved afterwards.
 
-By default all arguments are \emph{statically evaluated}. Prefixing object identifier or filepath by the '\&' token switch them into a \emph{dynamically evaluated} mode. When triggering a re-evaluation, the evaluator checks the actual values of these arguments and re-computes their branch if they have changed.
+By default all arguments are \emph{statically evaluated}. Prefixing object identifier or file path by the '\&' token switches them into a \emph{dynamically evaluated} mode. When triggering a re-evaluation, the evaluator checks the actual values of these arguments and re-computes their branch if they have changed.
 
 
 \begin{figure}[th]

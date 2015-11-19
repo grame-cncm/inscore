@@ -9,9 +9,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="222.45134mm"
-   height="346.94614mm"
-   viewBox="0 0 788.21341 1229.3367"
+   width="223.78018mm"
+   height="290.74591mm"
+   viewBox="0 0 792.92191 1030.202"
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
@@ -41,9 +41,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.7"
-     inkscape:cx="17.900147"
-     inkscape:cy="544.87595"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="137.65441"
+     inkscape:cy="708.33575"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -72,110 +72,40 @@
      inkscape:label="Calque 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-5.3999235,-36.412169)">
-    <rect
-       style="fill:#000000;fill-opacity:0.11464969;stroke:none;stroke-width:6.60699987;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect6176"
-       width="378.87686"
-       height="34.324158"
-       x="268.4187"
-       y="51.271561"
-       ry="0" />
+     transform="translate(-3.9713507,-275.99171)">
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="272.5914"
-       y="76.715179"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;opacity:0.881;"
+       x="312.75385"
+       y="319.15182"
        id="text4136"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4138"
-         x="272.5914"
-         y="76.715179"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono'">expr( <tspan
-   style="fill:#800000"
+         x="312.75385"
+         y="319.15182"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';">expr( <tspan
+   style="fill:#800000;"
    id="tspan4140">seq</tspan><tspan
-   style="fill:#d45500"
+   style="fill:#d45500;"
    id="tspan4146"> &quot;[a]&quot; <tspan
-   style="fill:#0088aa"
+   style="fill:#0088aa;"
    id="tspan4885">&amp;</tspan>sample</tspan> )</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="128.14069"
-       y="77.15905"
+       x="94.303131"
+       y="319.5957"
        id="text4136-5"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4138-9"
-         x="128.14069"
-         y="77.15905"
+         x="94.303131"
+         y="319.5957"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#333333">fragment:</tspan></text>
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 263.92669,207.02333 155.71428,84.28571"
-       id="path5284-6-5"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 264.09257,206.85745 419.80686,122.57174"
-       id="path5284-1"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="212.54985"
-       y="212.93105"
-       id="text5331-6"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan5333-8"
-         x="212.54985"
-         y="212.93105"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#800000">seq</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="432.57339"
-       y="131.19278"
-       id="text5331-6-0-4-6-2"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan5333-8-5-4-0-9"
-         x="432.57339"
-         y="131.19278"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#d45500">&quot;[a]&quot;</tspan></text>
-    <path
-       style="fill:#d45500;fill-rule:evenodd;stroke:#d45500;stroke-width:0.69785452px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 419.9594,113.038 0,25.0892"
-       id="path5407-4"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="424.4426"
-       y="298.77652"
-       id="text5331-6-0-4-6-2-1"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan5333-8-5-4-0-9-0"
-         x="424.4426"
-         y="298.77652"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#d45500"><tspan
-   style="fill:#0088aa"
-   id="tspan4844">&amp;</tspan>sample</tspan></text>
-    <path
-       style="fill:#d45500;fill-rule:evenodd;stroke:#d45500;stroke-width:0.71744728px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 419.82859,276.19311 0,26.51778"
-       id="path5407-4-6"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:#b3b3b3;fill-rule:evenodd;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 117.14286,337.79078 538.57143,0"
+       style="fill:#b3b3b3;fill-rule:evenodd;stroke:#b3b3b3;stroke-width:1.07415092px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 80.777368,337.79078 621.403942,0"
        id="path4850"
        inkscape:connector-curvature="0" />
     <rect
@@ -244,12 +174,6 @@
          x="19.136618"
          y="615.34155"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#800000">par</tspan></text>
-    <path
-       style="fill:#d45500;fill-rule:evenodd;stroke:#d45500;stroke-width:0.69785452px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 227.66037,492.19862 0,25.08921"
-       id="path5407-4-7"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -264,12 +188,6 @@
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#d45500"><tspan
    style="fill:#0088aa"
    id="tspan4844-5">~</tspan>fragment</tspan></text>
-    <path
-       style="fill:#d45500;fill-rule:evenodd;stroke:#d45500;stroke-width:0.71744728px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 227.02448,702.07333 0,26.51778"
-       id="path5407-4-6-6"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0" />
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 282.74953,503.35144 155.7143,84.28573"
@@ -294,12 +212,6 @@
          x="230.2585"
          y="509.27557"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#800000">seq</tspan></text>
-    <path
-       style="fill:#d45500;fill-rule:evenodd;stroke:#d45500;stroke-width:0.69785452px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 438.78226,409.3661 0,25.08921"
-       id="path5407-4-7-8"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -312,12 +224,6 @@
          x="452.15125"
          y="595.12097"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#d45500">&quot;[b]&quot;</tspan></text>
-    <path
-       style="fill:#d45500;fill-rule:evenodd;stroke:#d45500;stroke-width:0.71744728px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 438.65145,572.52124 0,26.51778"
-       id="path5407-4-6-6-0"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -356,20 +262,20 @@
    style="font-size:25.61962318px;fill:#1a1a1a;stroke:none"
    id="tspan5294">VALUATION</tspan></tspan></text>
     <path
-       style="opacity:0.71499999;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.12600052px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="opacity:1;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.12600052px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 78.529298,1080.8756 234.16207,1187.7955"
        id="path5284-6-5-8-2"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0" />
     <path
-       style="opacity:0.71499999;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.12600052px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="opacity:1;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.12600052px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 78.695088,1080.6652 234.32787,973.74526"
        id="path5284-1-0-0"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.71499999;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="25.997477"
        y="1087.2825"
        id="text5331-6-8-7"
@@ -380,32 +286,20 @@
          y="1087.2825"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#800000">par</tspan></text>
     <path
-       style="opacity:0.71499999;fill:#d45500;fill-rule:evenodd;stroke:#d45500;stroke-width:0.69785452px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 234.52122,964.13955 0,25.08919"
-       id="path5407-4-7-1"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0" />
-    <path
-       style="opacity:0.71499999;fill:#d45500;fill-rule:evenodd;stroke:#d45500;stroke-width:0.71744728px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 233.88533,1174.0142 0,26.5178"
-       id="path5407-4-6-6-9"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0" />
-    <path
-       style="opacity:0.71499999;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="opacity:1;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 289.61038,975.29237 155.7143,84.28573"
        id="path5284-6-5-8-5-6"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0" />
     <path
-       style="opacity:0.71499999;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="opacity:1;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 289.77626,975.12649 445.49057,890.84077"
        id="path5284-1-0-9-6"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.71499999;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="237.11935"
        y="981.21643"
        id="text5331-6-8-6-3"
@@ -415,15 +309,9 @@
          x="237.11935"
          y="981.21643"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#800000">seq</tspan></text>
-    <path
-       style="fill:#d45500;fill-rule:evenodd;stroke:#d45500;stroke-width:0.69785452px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 445.64311,881.30703 0,25.0892"
-       id="path5407-4-7-8-9"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.71499999;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="459.01208"
        y="1067.0619"
        id="text5331-6-0-4-6-2-1-1-1-1"
@@ -433,12 +321,6 @@
          x="459.01208"
          y="1067.0619"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#d45500">&quot;[b]&quot;</tspan></text>
-    <path
-       style="opacity:0.71499999;fill:#d45500;fill-rule:evenodd;stroke:#d45500;stroke-width:0.71744728px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 445.5123,1044.4622 0,26.5177"
-       id="path5407-4-6-6-0-7"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0" />
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 500.87706,895.54261 155.71429,84.28572"
@@ -475,12 +357,6 @@
          x="668.40955"
          y="819.72845"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#d45500">&quot;[a]&quot;</tspan></text>
-    <path
-       style="fill:#d45500;fill-rule:evenodd;stroke:#d45500;stroke-width:0.69785452px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 656.90978,801.55727 0,25.0892"
-       id="path5407-4-1"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -495,12 +371,6 @@
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#d45500"><tspan
    style="fill:#0088aa"
    id="tspan4844-4">&amp;</tspan>sample</tspan></text>
-    <path
-       style="fill:#d45500;fill-rule:evenodd;stroke:#d45500;stroke-width:0.71744728px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 657.13612,967.92668 0,26.51778"
-       id="path5407-4-6-1"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0" />
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 289.44847,1188.3998 155.71429,84.2858"
@@ -537,12 +407,6 @@
          x="456.98096"
          y="1112.5856"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#d45500">&quot;[a]&quot;</tspan></text>
-    <path
-       style="fill:#d45500;fill-rule:evenodd;stroke:#d45500;stroke-width:0.69785452px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 445.48119,1094.4144 0,25.0892"
-       id="path5407-4-3"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -557,11 +421,43 @@
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#d45500"><tspan
    style="fill:#0088aa"
    id="tspan4844-55">&amp;</tspan>sample</tspan></text>
-    <path
-       style="fill:#d45500;fill-rule:evenodd;stroke:#d45500;stroke-width:0.71744728px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 445.35038,1257.5697 0,26.5177"
-       id="path5407-4-6-7"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0" />
+    <rect
+       style="opacity:1;fill:#0044aa;fill-opacity:0.11464969;stroke:none;stroke-width:4.65199995;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect8609"
+       width="336.3808"
+       height="201.02034"
+       x="442.79599"
+       y="795.01764" />
+    <rect
+       style="opacity:1;fill:#0044aa;fill-opacity:0.11464969;stroke:none;stroke-width:4.65199995;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect8609-7"
+       width="334.36053"
+       height="203.04068"
+       x="234.19949"
+       y="1085.4366" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="438.38672"
+       y="989.42755"
+       id="text5331-6-0-4-6-2-1-1-14"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5333-8-5-4-0-9-0-4-4"
+         x="438.38672"
+         y="989.42755"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#87aade">fragment</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="231.78748"
+       y="1282.3718"
+       id="text5331-6-0-4-6-2-1-1-14-3"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5333-8-5-4-0-9-0-4-4-8"
+         x="231.78748"
+         y="1282.3718"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#87aade">fragment</tspan></text>
   </g>
 </svg>
