@@ -165,7 +165,7 @@ The paper introduces first the score composition expressions. Next, the differen
 
 The main idea behind the project is designing a relevant language that provides easy to use tools to compose and to manipulate scores. Indeed, as all the operators have already been defined by the GuidoAR library, the point is to imagine a handy way to use them from INScore's scripts.
 
-\subsubsection{The GuidoAR operators}
+\subsection{The GuidoAR operators}
 GuidoAR operators have already been presented in previous papers, thus we will only remind here the aspects that are relevant to the language conception.
 
 \begin{table*}[htdp]
@@ -200,14 +200,14 @@ All GuidoAR operators have in common their structures: regardless to their actua
 
 See Table~\ref{operations} for a definition of all the GuidoAR operators.
 
-\subsubsection{Designing a creative language}
+\subsection{Designing a creative language}
 In the context of software used for artistic creation like INScore, designing a language is not trivial. Like any other creative tools,  the \sExpr language shall inevitably frame the creation process through which the artist must go. To that extent, conceiving a language is actually designing a creative "work-flow" that the users shall then adopt.
 
 The continuity between inputs and outputs through GuidoAR operators allows to compose a music by successively transform and aggregate scores fragments. This process (applying transformations on various materials and combining them into a whole creation) is similar to electro-acoustic creative processes where, after choosing samples, the composer apply effects, equalizer... and mix them together until the raw musical materials become unrecognisable.
 
 Adapting this approach to traditional music notation would not only make the language easy to learn for composer (used to the audio pipelines design) but could offer a great tools for composition: carving and assembling score samples using structural operators, placing the musical architecture in the center of the creative process. In some ways, the art wouldn't emerge from the quality of the raw score fragments but from the process that transform, shape, and link them together. Unlike traditional music composition, the structure shouldn't only be a classic expected frame any more, but could be the place where the aesthetic lies.
 
-\subsubsection{\SExpr syntax}
+\subsection{\SExpr syntax}
 
 Thus, it's with this perspective of audio pipelines and emphasis of the structure that the \sExpr syntax has been defined. In particular, these expression should make use of various heterogeneous materials including music notation objects. This last point can introduce some evaluation problems which will be exposed later... For now, let's take a look at the \sExpr syntax.
 
@@ -246,7 +246,7 @@ where score is defined like an operator argument (Guido or MusicXML string or fi
 
 %The variety of materials usable with \sExpr, of course is one of their strengths, but is also a great challenge to implement. Indeed, to be able to interpret in the same way, a string of music notation code (which can be in both Guido or MusicXml), or a filepath to a music notation file (which, by the way, is also a string), an identifier refering to an existing object with the only restriction it should be a traditional music notation object (score or piano roll) give quite some work to the INScore's expression parser. Not mentioning the possibility to define \sExpr inside \sExpr indefinitely...
 
-\subsubsection{Internal representation of \sExpr}
+\subsection{Internal representation of \sExpr}
 
 When encountering an \sExpr, INScore parser will first try to create a tree representation of it: arguments are stored as leaves and operators as nodes.
 
@@ -259,7 +259,7 @@ When encountering an \sExpr, INScore parser will first try to create a tree repr
 
 Because one expression can be evaluated in many different ways (in general the result of the evaluation is the corresponding guido code, but it can also be a transcription of the expression in its textual form...), the informations stored in the tree are the exact copy of those contained in the expression string. Type specification of arguments is the only difference, whereas type are implicit in \sExpr, arguments are explicitly stored as Guido code or file or identifier... in the tree form. Once the internal representation has been constructed by the parser, it is stored with the newly-defined object, ready for evaluation.
 
-\subsubsection{Standard evaluation of \sExpr}
+\subsection{Standard evaluation of \sExpr}
 During the process of standard evaluation, the evaluator go through every node of the expression tree (starting by the leaves), reducing all of them into guido code.
 
 Each argument is interpreted using an algorithm specific to its type. Thus, when it encounters file paths the evaluator shall read the file and return its content, when it evaluates objects identifiers it shall return their guido codes (cleaning the code in case of guido stream), and of course, Guido or MusicXML string are not processed and are returned as they are. Finally operator nodes are computed calling the corresponding GuidoAR operator functions, using the previously evaluated guido codes as parameters.
@@ -274,7 +274,7 @@ Each argument is interpreted using an algorithm specific to its type. Thus, when
 
 
 
-\subsubsection{Dynamic evaluation of \sExpr}
+\subsection{Dynamic evaluation of \sExpr}
 
 Each INScore object definable using \sExpr (gmn or pianoroll) contains a \sExpr handler that can store and evaluate  its expression tree. The user can then, whenever he wants, asks the handler to evaluate the expression again, updating the evaluated value if any objects or file changed since the previous evaluation. This process is not automatic, in order to avoid any recursive definition problems as explained in the previous section.
 
@@ -291,7 +291,7 @@ By default all arguments are \emph{statically evaluated}. Prefixing object ident
 \end{figure}
 
 
-\subsubsection{Expanding \sExpr}
+\subsection{Expanding \sExpr}
 
 Static and dynamic evaluation are not the only ways to refer to existing score objects. While this two evaluations mode are focusing on the object value, the second prefix \lowTilde allows to refer directly to the expression from objects defined using \sExpr. On the first evaluation, arguments referring to score objects and prefixed with a \lowTilde, shall be replaced by a copy of the expression tree from these objects.
 
@@ -302,16 +302,16 @@ Static and dynamic evaluation are not the only ways to refer to existing score o
 \label{fig:example}}
 \end{figure}
 
-This tool allows to easily make use of previously defined \sExpr to create more complex ones.
+This tool allows to easily make use of previously defined \sExpr	 to create more complex ones.
 
 
 \section{Using score expressions in INScore}
-\subsubsection{Declaring \sExpr}
+\subsection{Declaring \sExpr}
 - set \\
 - OSC compatible
-\subsubsection{New INScore events}
+\subsection{New INScore events}
 
-\subsubsection{New INScore commands}
+\subsection{New INScore commands}
 
 \section{Examples}
 
