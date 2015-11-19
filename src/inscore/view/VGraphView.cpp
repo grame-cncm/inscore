@@ -41,13 +41,13 @@ namespace inscore
 
 //----------------------------------------------------------------------
 VRGraphView::VRGraphView(QGraphicsScene * scene, const IGraphicSignal* h)
-	: VGraphView( scene , h, new MouseEventAble<QGraphicsGraphItemRadial>(h) )
-    {}
+	: VGraphView( scene , h, new MouseEventAble<QGraphicsGraphItemRadial>(h) ) {}
 
 void VRGraphView::updateView( IGraphicSignal * graph )
 {
     graph->cleanupSync();
-    item()->setSignal( graph->getSignal() );
+	if (!item()->signal())
+		item()->setSignal( graph->getSignal() );
 	item()->setRect( QRect( 0,0,  relative2SceneWidth(graph->getWidth()),relative2SceneHeight(graph->getHeight()) ) );
 	VShapeView::updateView( graph );
 	itemChanged();
@@ -61,7 +61,7 @@ VSGraphView::VSGraphView(QGraphicsScene * scene, const IGraphicSignal* h)
 void VSGraphView::updateView( IGraphicSignal * graph )
 {
     graph->cleanupSync();
-    item()->setSignal( graph->getSignal() );
+	item()->setSignal( graph->getSignal() );
 	item()->setRect( QRect( 0,0,  relative2SceneWidth(graph->getWidth()),relative2SceneHeight(graph->getHeight()) ) );
 	VShapeView::updateView( graph );
 	itemChanged();
