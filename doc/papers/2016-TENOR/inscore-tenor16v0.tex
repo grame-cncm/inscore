@@ -25,11 +25,22 @@
 %\usepackage[font=footnotesize]{subfig}
 
 \usepackage{verbatim}
-\newenvironment{INScode}		{\vspace{-2mm}\small\verbatim}{\endverbatim\vspace{-2mm}}
+\usepackage{color}
+
+\newenvironment{ExprCode}		{\vspace{-2mm} \small\verbatim}{\endverbatim\vspace{-2mm}}
+\newcommand{\OSC}[1]{\texttt{#1}}
 
 \newcommand{\sExpr}{\emph{score expressions} }
 \newcommand{\SExpr}{\emph{Score expressions} }
 \newcommand{\lowTilde} 		{\textasciitilde}
+
+\let\olditemize\itemize
+\let\oldenditemize\enditemize
+\renewenvironment{itemize} 	{\olditemize \setlength{\itemsep}{1mm}}{\oldenditemize}
+
+\definecolor{mygrey}{gray}{0.93}
+\newcommand{\sample}	[1]			{\vspace{-1.8em}\begin{center}\colorbox{mygrey}{\begin{minipage}[t]{1\columnwidth} {\small \texttt{#1}}\end{minipage}}\end{center}}
+
 
 %user defined variables
 \def\papertitle{INScore expressions to compose symbolic scores}
@@ -207,39 +218,41 @@ The continuity between inputs and outputs through GuidoAR operators allows to co
 
 Adapting this approach to traditional music notation would not only make the language easy to learn for composer (used to the audio pipelines design) but could offer a great tools for composition: carving and assembling score samples using structural operators, placing the musical architecture in the center of the creative process. In some ways, the art wouldn't emerge from the quality of the raw score fragments but from the process that transform, shape, and link them together. Unlike traditional music composition, the structure shouldn't only be a classic expected frame any more, but could be the place where the aesthetic lies.
 
+It's with this perspective of audio pipelines and emphasis of the structure that the \sExpr syntax has been defined. In particular, these expression should make use of various heterogeneous materials including \sExpr or existing score objects.
+
 \subsection{\SExpr syntax}
-
-Thus, it's with this perspective of audio pipelines and emphasis of the structure that the \sExpr syntax has been defined. In particular, these expression should make use of various heterogeneous materials including music notation objects. This last point can introduce some evaluation problems which will be exposed later... For now, let's take a look at the \sExpr syntax.
-
-\smallbreak
-\SExpr definition are always placed in a score expressions context delimited by the tokens:
-\begin{INScode}
-expr(      )
-\end{INScode}
-
-Then the score expressions syntax reflects the way Guido operators actually work: two scores are combine in one according to a operator specified by its name.
-\begin{INScode}
-expr( operator score score )
-\end{INScode}
-where operator is one of the GuidoAR operators defined above, and score the input scores. 
-
-\SExpr are quite permissive regarding to the type of input scores. Guido and MusicXML are both supported and can be passed to operators as literal string or through a file path, existing score's object in INScore (Guido Object or piano roll object) can also be input to operators simply using their names. And last but not least, as \sExpr are evaluated as a valid guido code, one can use an expression as a Guido operator argument too, opening up the fields of possibilities by combining existing operators into new ones. Thus, the structures constructed with \sExpr can be almost infinitely complex (almost, because pure recursive definition is not handled...). For instance, the following example will return the result of putting the 3 scores s1, s2 and s3 in sequence (s1, s2 and s3 should have been previously defined as score objects):
-\begin{INScode}
-expr( seq s1 expr( seq s2 s3 ) )
-\end{INScode}
-To lighten the syntax, the "expr" token can be omitted inside the \sExpr context:
-\begin{INScode}
-expr( seq s1 (seq s2 s3) )
-\end{INScode}
-
-Constructing expressions using existing objects could have caused problems (recursion definition for example), there for some choices had to be made to prevent any undefined behaviour. The first important choice was that declaring an expression referring to existing object should neither delete them nor modify them but shall only read their informations to define an other brand new object. Also, to avoid any recursive definition problem, \sExpr shouldn't be automatically updated. After evaluating an expression, the resulting object is independent from the objects used for its construction and thus may not match its definition if the user changes these objects afterwards.
+%This last point can introduce some evaluation problems which will be exposed later... For now, let's take a look at the \sExpr syntax.
 
 \smallbreak
-Finally, because one could simply want to duplicate an existing object without applying any operators to it, \sExpr can also be defined using a simple score argument:
-\begin{INScode}
-expr( score )
-\end{INScode}
-where score is defined like an operator argument (Guido or MusicXML string or filepath, or the identifier of an INScore object).
+\SExpr can be defined using two syntaxes:
+\begin{center}
+\includegraphics[width=0.9\columnwidth]{imgs/syntax1}
+\end{center}
+
+\begin{enumerate}
+\item The classic syntax reflects the way Guido operators actually work: two scores are combine into one according to a Guido AR operator.
+\item The alternate syntax defines an expression using a single score, which can be useful to duplicates objects.
+\end{enumerate}
+
+\smallbreak
+
+Both of the syntax make use of \OSC{score} arguments. \SExpr are quite permissive regarding to the type of these scores:
+\begin{center}
+\includegraphics[width=0.7\columnwidth]{imgs/syntax2}
+\end{center}
+
+\begin{enumerate}
+\item \OSC{score string}: \emph{Guido} or \emph{MusicXML} string (MusicXML is supported through a Guido plugin).
+\item \OSC{score file}:  Importing  the content of a \emph{Guido} or \emph{MusicXML} file is allowed using absolute or relative path. Url are also accepted
+\item \OSC{score object}:  Referring to existing \emph{score objects} is possible through relative or absolute OSC address. \emph{Score objects} regroup guido, music xml or piano-roll objects as well as guido and piano-roll stream objects.
+\item \OSC{score expression}:  Defining \sExpr inside \sExpr is handled (in this case the \OSC{expr} token is optional).
+\end{enumerate}
+
+%Guido and MusicXML are both supported and can be passed to operators as literal string or through a file path, existing score's object in INScore (Guido Object or piano roll object) can also be input to operators simply using their names. And last but not least, as \sExpr are evaluated as a valid guido code, one can use an expression as a Guido operator argument too, opening up the fields of possibilities by combining existing operators into new ones. Thus, the structures constructed with \sExpr can be almost infinitely complex (almost, because pure recursive definition is not handled...). For instance, the following example will return the result of putting the 3 scores s1, s2 and s3 in sequence (s1, s2 and s3 should have been previously defined as score objects):
+
+%Constructing expressions using existing objects could have caused problems (recursion definition for example), there for some choices had to be made to prevent any undefined behaviour. The first important choice was that declaring an expression referring to existing object should neither delete them nor modify them but shall only read their informations to define an other brand new object. Also, to avoid any recursive definition problem, \sExpr shouldn't be automatically updated. After evaluating an expression, the resulting object is independent from the objects used for its construction and thus may not match its definition if the user changes these objects afterwards.
+
+
 
 
 \section{Evaluation Specification}
@@ -254,7 +267,7 @@ When encountering an \sExpr, INScore parser will first try to create a tree repr
 \centering
 \includegraphics[width=0.9\columnwidth]{imgs/exprParse}
 \caption{Parsing \sExpr into its tree form.
-\label{fig:example}}
+\label{fig:parsing}}
 \end{figure}
 
 Because one expression can be evaluated in many different ways (in general the result of the evaluation is the corresponding guido code, but it can also be a transcription of the expression in its textual form...), the informations stored in the tree are the exact copy of those contained in the expression string. Type specification of arguments is the only difference, whereas type are implicit in \sExpr, arguments are explicitly stored as Guido code or file or identifier... in the tree form. 
@@ -270,7 +283,7 @@ Each argument is interpreted using an algorithm specific to its type. Thus, when
 \centering
 \includegraphics[width=1\columnwidth]{imgs/classicEval}
 \caption{Simple evaluation of an expression tree
-\label{fig:example}}
+\label{fig:classicEval}}
 \end{figure}
 
 
@@ -280,40 +293,74 @@ Each argument is interpreted using an algorithm specific to its type. Thus, when
 
 Each INScore object definable using \sExpr contains a \sExpr handler that can store and evaluate  its expression tree. The user can then, whenever he wants, asks the handler to evaluate the expression again, updating the evaluated value if any objects or file changed since the previous evaluation. This process is not automatic, in order to avoid any recursive definition problems as explained in the previous section.
 
-However, as re-evaluating an entire expression can take quite some times, and because, in a context of a real-time score viewer we don't have that time, only branches that are likely to change are re-evaluated. Indeed, guido string arguments have no reason to change through time, thus their values should only be evaluated once and kept as they are: these arguments shall be evaluated \emph{statically}. For the same reason, an operators applied on two \emph{statically evaluated} node is considered \emph{statically evaluated} too. After evaluating these nodes, their values are stored together with the expression tree so they can be retrieved afterwards.
+However, as re-evaluating an entire expression can take quite some times, and because, in a context of a real-time score viewer we don't haves that time, only branches that are likely to change are re-evaluated. Indeed, guido string arguments have no reason to change through time, thus their values should only be evaluated once and kept as they are: these arguments shall be evaluated \emph{statically}. For the same reason, an operators applied on two \emph{statically evaluated} node is considered \emph{statically evaluated} too. After evaluating these nodes, their values are stored together with the expression tree so they can be retrieved afterwards.
 
-By default all arguments are \emph{statically evaluated}. Prefixing object identifier or file path by the '\&' token switches them into a \emph{dynamically evaluated} mode. When triggering a re-evaluation, the evaluator checks the actual values of these arguments and re-computes their branch if they have changed.
+By default all arguments are \emph{statically evaluated}. Prefixing object identifier or file path by the \OSC{\&} token switches them into a \emph{dynamically evaluated} mode. When triggering a re-evaluation, the evaluator checks the actual values of these arguments and re-computes their branch if they have changed.
 
 
 \begin{figure}[th]
 \centering
 \includegraphics[width=1\columnwidth]{imgs/dynamicEval}
 \caption{Propagation of the dynamically evaluated mode.
-\label{fig:example}}
+\label{fig:dynamicEval}}
 \end{figure}
 
 
 \subsection{Expanding \sExpr}
 
-Static and dynamic evaluation are not the only ways to refer to existing score objects. While this two evaluations mode are focusing on the object value, the second prefix \lowTilde allows to refer directly to the expression from objects defined using \sExpr. On the first evaluation, arguments referring to score objects and prefixed with a \lowTilde, shall be replaced by a copy of the expression tree from these objects.
+Static and dynamic evaluation are not the only ways to refer to existing score objects. While this two evaluations mode are focusing on the object value, the second prefix \OSC{\lowTilde} allows to refer directly to the expression from objects defined using \sExpr. On the first evaluation, arguments referring to score objects and prefixed with a \OSC{\lowTilde}, shall be replaced by a copy of the expression tree from these objects.
 
 \begin{figure}[th]
 \centering
 \includegraphics[width=0.9\columnwidth]{imgs/expandingTree}
 \caption{Expanding \sExpr trees
-\label{fig:example}}
+\label{fig:expandingTree}}
 \end{figure}
 
 This tool allows to easily make use of previously defined \sExpr	 to create more complex ones.
 
 
 \section{Using score expressions in INScore}
+
+In order to fully integrate GuidoAR operators, the implementation process relied, as much as possible on INScore existing functionalities. As a result, \sExpr are strongly linked to mechanisms well-known by INScore users.
+
 \subsection{Declaring \sExpr}
-- set \\
-- OSC compatible
-\subsection{New INScore events}
+Both \OSC{gmn} and \OSC{pianoroll} object can be defined with \sExpr using the standard \OSC{set} message:
+\sample{/ITL/scene/score set gmn expr(score.gmn);
+/ITL/scene/pr set pianoroll expr(\&score);
+}
+
+The previous example shall create two objects. \OSC{score} is a score representation of the music stored in \OSC{score.gmn}, while \OSC{pr} is a piano roll representation of \OSC{score} (here dynamically evaluated due to the \OSC{\&} prefix).
+
+\SExpr objects declaration are, like any other INScore objects, compatible with the OSC message, thus they can be created remotely through networks. 
 
 \subsection{New INScore commands}
+Score objects that had been defined using \sExpr are augmented with new commands.
+
+\begin{itemize}
+\item \OSC{reeval}: Trigger the re-evaluation of the expression tree (check if any of the dynamically evaluated arguments should be updated).
+\item \OSC{renew}: Clear all the stored evaluated value, and re-evaluate the expression. Statically and Dynamically evaluated arguments shall be updated and all the operators are computed again.
+\item \OSC{clear}: Delete the \sExpr, its value is reset to the default empty gmn code: \OSC{"[]"}.
+\end{itemize}
+
+All these commands are triggered using the \OSC{expr} method:\sample{/ITL/scene/score expr reeval;
+/ITL/scene/score expr clear;
+}
+
+Finally, one can retrieve the \emph{score expression} used to define an object by sending the \OSC{get expr} message to it. 
+
+\subsection{New INScore event}
+
+Even if re-evaluation of dynamically evaluated arguments is not automatic, one can still send a \OSC{reeval} message to a \sExpr object when an object change thankfully to the new event: \OSC{newData}.
+This event is triggered by any INScore object when its value changed (either because of a \OSC{set} or \OSC{reeval} message, or because data has been writen in a stream object). Of course, like any other INScore event, \OSC{newData} can be watched:
+\sample{ITL/scene/score set gmn "[a]";\\
+/ITL/scene/copy set gmn expr(\&score);\\
+/ITL/scene/score watch newData\\   
+\hspace*{8mm}(/ITL/scene/copy expr reeval);
+}
+In the previous example, changing the value of \OSC{score} will automatically change the value of \OSC{copy}.
+
+To avoid any recursion definition problem, \OSC{newData} signal handling is postponed to the next event loop, there for, updating the all scene after changing the value of an object can take several event loop (if one object is refering to another, itself refering to another...). During the process, the INScore's scene will certainly go through ephemeral states. Also, if objects are defined recursively and are auto-updated using this mechanisms, INScore should still be able to update its graphics (even if scores are changing indefinitely).
 
 \section{Examples}
 
@@ -334,7 +381,7 @@ which can be included after the second-level heading
 %bibliography here
 \bibliography{../interlude}
 
-%\begin{INScode}
+%\begin{ExprCode}
 %scoreExpression: 
 %		"expr(" operator score score ")"
 %      | "expr(" simpleScore ")"
@@ -354,7 +401,7 @@ which can be included after the second-level heading
 %           | "&" objectIdentifier
 %           | "~" objectIdentifier
 %           ;
-%\end{INScode}
+%\end{ExprCode}
 
 \end{document}
 
