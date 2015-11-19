@@ -71,6 +71,9 @@ class TSignal : virtual public libmapping::smartable
 		//!   fix potential overrun issue
 		void	fix()											{ fData.fix(); }
 				
+		/// \brief the signal count of data received
+		virtual unsigned long count() const						{ return fData.wpos(); }
+				
 		/// \brief the signal buffer size
 		virtual unsigned short size() const						{ return fData.size(); }
 
@@ -173,16 +176,19 @@ class ParallelSignal : virtual public libmapping::smartable
 		*/
 		virtual int	size() const;
 
-		/*! \brief sets the signal default value
+		/*! \brief the signal count of data received
+			
+			The count is the largest count of the enclosed signals.
 		*/
+		virtual unsigned long count() const;
+
+		//// \brief sets the signal default value
 		virtual void setDefaultValue(const std::vector<float>& val);
 
-		/*! \brief gets the signal default value
-		*/
+		/// \brief gets the signal default value
 		virtual void defaultValue(std::vector<float>& outVal) const;
 
-		/*! \brief sets the signals buffer size
-		*/
+		/// \brief sets the signals buffer size
 		virtual bool size(unsigned short n);
 
 		/*! \brief gives the signal available data count

@@ -106,6 +106,17 @@ void ParallelSignal::defaultValue(std::vector<float>& outVal) const
 }
 
 //--------------------------------------------------------------------------
+unsigned long ParallelSignal::count() const
+{
+	unsigned long count = 0;
+	for (int i = 0; i < dimension(); i++) {
+		unsigned long c = signal(i)->count();
+		if (c > count) count = c;
+	}
+	return count;
+}
+
+//--------------------------------------------------------------------------
 int	ParallelSignal::size() const
 {
 	int result = 0;
