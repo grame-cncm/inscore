@@ -209,7 +209,7 @@ Adapting this approach to traditional music notation would not only make the lan
 
 \subsubsection{\SExpr syntax}
 
-Thus, it's with this perspective of audio pipelines and emphasis of the structure that the \sExpr syntax has been defined. In particular, these expression should make use of various heterogeneous materials including INScore score objects (guido object or piano roll objects). This last point can introduce some evaluation problems which will be exposed later... For now, let's take a look at the \sExpr syntax.
+Thus, it's with this perspective of audio pipelines and emphasis of the structure that the \sExpr syntax has been defined. In particular, these expression should make use of various heterogeneous materials including music notation objects. This last point can introduce some evaluation problems which will be exposed later... For now, let's take a look at the \sExpr syntax.
 
 \smallbreak
 \SExpr definition are always placed in a score expressions context delimited by the tokens:
@@ -244,11 +244,11 @@ where score is defined like an operator argument (Guido or MusicXML string or fi
 
 \section{Evaluation Specification}
 
-The variety of materials usable with \sExpr, of course is one of their strengths, but is also a great challenge to implement. Indeed, to be able to interpret in the same way, a string of music notation code (which can be in both Guido or MusicXml), or a filepath to a music notation file (which, by the way, is also a string), an identifier refering to an existing object with the only restriction it should be a traditional music notation object (score or piano roll) give quite some work to the INScore's expression parser. Not mentioning the possibility to define \sExpr inside \sExpr indefinitely...
+%The variety of materials usable with \sExpr, of course is one of their strengths, but is also a great challenge to implement. Indeed, to be able to interpret in the same way, a string of music notation code (which can be in both Guido or MusicXml), or a filepath to a music notation file (which, by the way, is also a string), an identifier refering to an existing object with the only restriction it should be a traditional music notation object (score or piano roll) give quite some work to the INScore's expression parser. Not mentioning the possibility to define \sExpr inside \sExpr indefinitely...
 
-\subsubsection{Standard evaluation of \sExpr}
+\subsubsection{Internal representation of \sExpr}
 
-When encountering an \sExpr, INScore will first try to create a tree representation of it. It will only "try" because of course, parsing an incorrect expression can't possibly end well... In case of failing at this stage, a lexical error message is send to the  not-careful user, pointing out where in the script (line and column) the error occurs. It's the only stage where error's locations can be traced, indeed once the expression has been parsed and transform into an expression tree these informations are inaccessible.
+When encountering an \sExpr, INScore parser will first try to create a tree representation of it: arguments are stored as leaves and operators as nodes.
 
 \begin{figure}[th]
 \centering
@@ -257,20 +257,50 @@ When encountering an \sExpr, INScore will first try to create a tree representat
 \label{fig:example}}
 \end{figure}
 
-It's in this tree form that expression are stored, manipulated, assembled and evaluated by INScore. Of course, each node of the tree is an operator and each leather is one argument. Through the process of standard evaluation, each of the leather are interpreted and reduced to guido code which can then be used as arguments for GuidoAR operators. Because one expression can be evaluated in many different ways (in general the result of the evaluation is the corresponding guido code, but it can also be a transcription of the expression in its textual form...), the informations stored in the tree are the exact copy of those contained in the expression string. Type specification of arguments is the only difference, whereas type are implicit in \sExpr, arguments are explicitly stored as Guido code or file or identifier... in the tree form.
+Because one expression can be evaluated in many different ways (in general the result of the evaluation is the corresponding guido code, but it can also be a transcription of the expression in its textual form...), the informations stored in the tree are the exact copy of those contained in the expression string. Type specification of arguments is the only difference, whereas type are implicit in \sExpr, arguments are explicitly stored as Guido code or file or identifier... in the tree form. Once the internal representation has been constructed by the parser, it is stored with the newly-defined object, ready for evaluation.
+
+\subsubsection{Standard evaluation of \sExpr}
+During the process of standard evaluation, the evaluator go through every node of the expression tree (starting by the leaves), reducing all of them into guido code.
+
+Each argument is interpreted using an algorithm specific to its type. Thus, when it encounters file paths the evaluator shall read the file and return its content, when it evaluates objects identifiers it shall return their guido codes (cleaning the code in case of guido stream), and of course, Guido or MusicXML string are not processed and are returned as they are. Finally operator nodes are computed calling the corresponding GuidoAR operator functions, using the previously evaluated guido codes as parameters.
+
+\begin{figure}[th]
+\centering
+\includegraphics[width=0.9\columnwidth]{imgs/classicEval}
+\caption{Simple evaluation of an expression tree
+\label{fig:example}}
+\end{figure}
+
+
 
 
 \subsubsection{Dynamic evaluation of \sExpr}
 
-In the earlier development of the project the \sExpr used to define an INScore object was parsed, evaluated and the tree was immediately deleted, leaving the newly born object orphan of its history. It was, then, impossible to retrieve its initial definition, and the only way to update its value was to create it again, using the same expression. To solve this performance and ergonomic issue a dynamic evaluation mechanism was introduced.
+Each INScore object definable using \sExpr (gmn or pianoroll) contains a \sExpr handler that can store and evaluate  its expression tree. The user can then, whenever he wants, asks the handler to evaluate the expression again, updating the evaluated value if any objects or file changed since the previous evaluation. This process is not automatic, in order to avoid any recursive definition problems as explained in the previous section.
 
-Each INScore object definable using \sExpr (score or piano roll) had been extended with a \sExpr handler that can store and evaluate  its expression tree. The user can then, whenever he wants, asks the handler to evaluate the expression again, updating the evaluated value if any objects or file changed since the previous evaluation. This process is not automatic, in order to avoid any recursive definition problems as explained in the previous section.
+However, as re-evaluating an entire expression can take quite some times, and because, in a context of a real-time score viewer we don't have that time, only branches that are likely to change are re-evaluated. Indeed, guido or music xml code have no reason to change through time, thus their values should only be evaluated once and kept as they are, these arguments shall be evaluated statically. For the same reason, an operators applied on two statically evaluated node is considered statically evaluated too. After evaluating these nodes, their values are stored together with the expression tree so it can be retrieved afterwards.
 
-However, as re-evaluate a entire expression can take quite some times, and because, in a context of a real-time score viewer we don't have that time, only the branch that are likely to change are re-evaluated. Indeed, guido or music xml code have no reason to change through time, thus their values should only be evaluated once and kept as they are, these arguments shall be evaluated statically. For the same reason, an operators applied on two statically evaluated node is considered statically evaluated too. After evaluating these nodes, their value is stored together with the expression tree so it can be retrieved afterwards.
+By default all arguments are statically evaluated. Prefixing object identifier or filepath by the '\&' token switch them into a dynamically evaluated state. When triggering a re-evaluation, the evaluator checks the actual values of these arguments and re-computes their branch if they have changed.
 
-Actually, by default all arguments are considered statically evaluated, to state to INScore that a reference to an object or to a file should be evaluated dynamically, one should prefix the argument with the '\&' token. When triggering a re-evaluation, the evaluator shall check if these arguments had changed and re-compute their branch if so.
+
+\begin{figure}[th]
+\centering
+\includegraphics[width=1\columnwidth]{imgs/dynamicEval}
+\caption{Propagation of the dynamically evaluated mode.
+\label{fig:example}}
+\end{figure}
+
 
 \subsubsection{Expanding \sExpr}
+
+Static and dynamic evaluation are not the only ways to refer to existing score objects. While this two evaluations mode are focusing of the object value, the second prefix \lowTilde allows to refer directly to the expression of objects defined using \sExpr. On the first evaluation, arguments referring to score objects and prefixed with a \lowTilde, shall be replaced by a copy of the expression tree from these objects.
+
+\begin{figure}[th]
+\centering
+\includegraphics[width=0.9\columnwidth]{imgs/expandingTree}
+\caption{Expanding \sExpr trees
+\label{fig:example}}
+\end{figure}
 
 \section{Using score expressions in INScore}
 \subsubsection{Declaring \sExpr}
