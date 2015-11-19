@@ -266,7 +266,7 @@ Each argument is interpreted using an algorithm specific to its type. Thus, when
 
 \begin{figure}[th]
 \centering
-\includegraphics[width=0.9\columnwidth]{imgs/classicEval}
+\includegraphics[width=1\columnwidth]{imgs/classicEval}
 \caption{Simple evaluation of an expression tree
 \label{fig:example}}
 \end{figure}
@@ -278,9 +278,9 @@ Each argument is interpreted using an algorithm specific to its type. Thus, when
 
 Each INScore object definable using \sExpr (gmn or pianoroll) contains a \sExpr handler that can store and evaluate  its expression tree. The user can then, whenever he wants, asks the handler to evaluate the expression again, updating the evaluated value if any objects or file changed since the previous evaluation. This process is not automatic, in order to avoid any recursive definition problems as explained in the previous section.
 
-However, as re-evaluating an entire expression can take quite some times, and because, in a context of a real-time score viewer we don't have that time, only branches that are likely to change are re-evaluated. Indeed, guido or music xml code have no reason to change through time, thus their values should only be evaluated once and kept as they are, these arguments shall be evaluated statically. For the same reason, an operators applied on two statically evaluated node is considered statically evaluated too. After evaluating these nodes, their values are stored together with the expression tree so it can be retrieved afterwards.
+However, as re-evaluating an entire expression can take quite some times, and because, in a context of a real-time score viewer we don't have that time, only branches that are likely to change are re-evaluated. Indeed, guido string arguments have no reason to change through time, thus their values should only be evaluated once and kept as they are: these arguments shall be evaluated \emph{statically}. For the same reason, an operators applied on two \emph{statically evaluated} node is considered \emph{statically evaluated} too. After evaluating these nodes, their values are stored together with the expression tree so it can be retrieved afterwards.
 
-By default all arguments are statically evaluated. Prefixing object identifier or filepath by the '\&' token switch them into a dynamically evaluated state. When triggering a re-evaluation, the evaluator checks the actual values of these arguments and re-computes their branch if they have changed.
+By default all arguments are \emph{statically evaluated}. Prefixing object identifier or filepath by the '\&' token switch them into a \emph{dynamically evaluated} mode. When triggering a re-evaluation, the evaluator checks the actual values of these arguments and re-computes their branch if they have changed.
 
 
 \begin{figure}[th]
@@ -293,7 +293,7 @@ By default all arguments are statically evaluated. Prefixing object identifier o
 
 \subsubsection{Expanding \sExpr}
 
-Static and dynamic evaluation are not the only ways to refer to existing score objects. While this two evaluations mode are focusing of the object value, the second prefix \lowTilde allows to refer directly to the expression of objects defined using \sExpr. On the first evaluation, arguments referring to score objects and prefixed with a \lowTilde, shall be replaced by a copy of the expression tree from these objects.
+Static and dynamic evaluation are not the only ways to refer to existing score objects. While this two evaluations mode are focusing on the object value, the second prefix \lowTilde allows to refer directly to the expression from objects defined using \sExpr. On the first evaluation, arguments referring to score objects and prefixed with a \lowTilde, shall be replaced by a copy of the expression tree from these objects.
 
 \begin{figure}[th]
 \centering
@@ -301,6 +301,9 @@ Static and dynamic evaluation are not the only ways to refer to existing score o
 \caption{Expanding \sExpr trees
 \label{fig:example}}
 \end{figure}
+
+This tool allows to easily make use of previously defined \sExpr to create more complex ones.
+
 
 \section{Using score expressions in INScore}
 \subsubsection{Declaring \sExpr}

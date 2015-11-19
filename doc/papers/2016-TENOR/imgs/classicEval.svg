@@ -106,39 +106,39 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="197.55083"
-       y="59.567703"
+       x="505.68799"
+       y="55.547398"
        id="text4136"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4138"
-         x="197.55083"
-         y="59.567703"
+         x="505.68799"
+         y="55.547398"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono'"><tspan
            style="fill:#d45500"
            id="tspan4146">&quot;[a]&quot;</tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="100.29556"
-       y="60.981117"
+       x="408.43271"
+       y="56.960812"
        id="text4136-5"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4138-9"
-         x="100.29556"
-         y="60.981117"
+         x="408.43271"
+         y="56.960812"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#333333">score:</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="818.53674"
+       x="828.53674"
        y="55.660667"
        id="text4136-6"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4138-8"
-         x="818.53674"
+         x="828.53674"
          y="55.660667"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono'"><tspan
            style="fill:#d45500"
@@ -146,13 +146,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="663.70282"
+       x="673.70282"
        y="56.063931"
        id="text4136-5-2"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4138-9-9"
-         x="663.70282"
+         x="673.70282"
          y="56.063931"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#333333">score.gmn:</tspan></text>
     <path
@@ -467,5 +467,21 @@
          x="395.41125"
          y="526.99554"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#d45500">&quot;{ [b] , [c a] }&quot;</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="78.891441"
+       y="56.015457"
+       id="text4136-5-5"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4138-9-1"
+         x="78.891441"
+         y="56.015457"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#333333">P<tspan
+   style="font-size:20px"
+   id="tspan8603">REVIOUSLY</tspan> D<tspan
+   style="font-size:20px"
+   id="tspan8607">EFINED</tspan></tspan></text>
   </g>
 </svg>
