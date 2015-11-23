@@ -221,8 +221,6 @@ Adapting this approach to the traditional music notation would not only make the
 It's with this perspective of audio pipelines and emphasis of the structure that the \sExpr syntax has been defined. In particular, these expressions should make use of various heterogeneous materials including \sExpr or existing score objects.
 
 \subsection{\SExpr syntax}
-%This last point can introduce some evaluation problems which will be exposed later... For now, let's take a look at the \sExpr syntax.
-
 \smallbreak
 \SExpr can be defined using two syntaxes:
 \begin{center}
@@ -290,26 +288,24 @@ Each argument is interpreted using an algorithm specific to its type. Thus, when
 \caption{Simple evaluation of an expression tree
 \label{fig:classicEval}}
 \end{figure}
-
-
-
+To avoid any recursion definition problems and other sides effects, the result of a \emph{score expression} evaluation should be absolutely independent from the arguments used for its definition. Which means that, if the value of one of them was to be modified after the expression evaluation, no automatic update would be triggered. 
 
 \subsection{Smart evaluation of \sExpr}
+For optimisation and usability reasons, every object defined using a \emph{score expression} store a copy of its tree, so the user can retrieve it later or ask for a re-evaluation when ever he wants. 
+ 
+The logic of result's independence 		implies to \emph{statically} evaluate arguments by default. In practice, after the first evaluation, their evaluated values are stored together with the tree. This way, if some argument's sources change, the result of the \sExpr won't be affected.
+However, pure \emph{static evaluation} is not sufficient. Indeed, if one want to update the value of an expression, he would have to go through the whole evaluation process again. Re-evaluating an entire expression can take quite some times, which we can't afford in a context of a real-time score viewer.
 
-Each INScore object definable using \sExpr contains a \sExpr handler that can store and evaluate  its expression tree. The user can then, whenever he wants, asks the handler to evaluate the expression again, updating the evaluated value if any objects or file changed since the previous evaluation. This process is not automatic, in order to avoid any recursive definition problems as explained in the previous section.
+To solve this problem, \emph{dynamic evaluation} mechanism was introduced. Arguments subjects to changes (\OSC{score object} or \OSC{score file}) can be prefixed with the \OSC{\&} token, switching them to \emph{dynamic evaluation}. When the user trigger a re-evaluation, INScore evaluates \emph{dynamically evaluated} arguments again, compares their new values to their previous ones and recomputes guido operators only if they have changed.
 
-However, as re-evaluating an entire expression can take quite some times, and because, in a context of a real-time score viewer we don't haves that time, only branches that are likely to change are re-evaluated. Indeed, guido string arguments have no reason to change through time, thus their values should only be evaluated once and kept as they are: these arguments shall be evaluated \emph{statically}. For the same reason, an operator applied on two \emph{statically evaluated} nodes is considered \emph{statically evaluated} too. After evaluating these nodes, their values are stored together with the expression tree so they can be retrieved afterwards.
-
-By default all arguments are \emph{statically evaluated}. Prefixing object identifier or file path by the \OSC{\&} token switches them into a \emph{dynamically evaluated} mode. When triggering a re-evaluation, the evaluator checks the actual values of these arguments and re-computes their branch if they have changed.
-
+In fact, only branches that are likely to change are re-evaluated. Indeed, operators node are by default considered \emph{static} (they should never be re-evaluated), unless at least one of their arguments is \emph{dynamically evaluated}, in which case they are considered \emph{dynamic}.
 
 \begin{figure}[th]
 \centering
 \includegraphics[width=1\columnwidth]{imgs/dynamicEval}
-\caption{Propagation of the dynamically evaluated mode.
+\caption{Propagation of dynamic evaluation.
 \label{fig:dynamicEval}}
 \end{figure}
-
 
 \subsection{Expanding \sExpr}
 
