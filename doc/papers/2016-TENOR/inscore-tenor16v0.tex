@@ -32,7 +32,8 @@
 
 \newcommand{\sExpr}{\emph{score expressions} }
 \newcommand{\SExpr}{\emph{Score expressions} }
-\newcommand{\lowTilde} 		{\textasciitilde}
+\newcommand{\lowTilde}{\textasciitilde}
+\newcommand{\tab}{\hspace*{4mm}}
 
 \let\olditemize\itemize
 \let\oldenditemize\enditemize
@@ -339,16 +340,17 @@ The declaration of \SExpr objects is, like for any other INScore objects, compat
 Score objects that had been defined using \sExpr are augmented with new commands.
 
 \begin{itemize}
-\item \OSC{reeval}: Trigger the re-evaluation of the expression tree (check if any of the dynamically evaluated arguments should be updated).
-\item \OSC{renew}: Clear all the stored evaluated value, and re-evaluate the expression. Statically and Dynamically evaluated arguments shall be updated and all the operators are computed again.
-\item \OSC{clear}: Delete the \sExpr, its value is reset to the default empty gmn code: \OSC{"[]"}.
+\item \OSC{reeval}: Triggers the re-evaluation of the expression tree (check if any of the dynamically evaluated arguments should be updated).
+\item \OSC{renew}: Clears all the stored evaluated values, and re-evaluates the expression. Statically and Dynamically evaluated arguments shall be updated and all the operators are computed again.
+\item \OSC{clear}: Deletes the \emph{score expression}, its value is reset to the default empty gmn code: \OSC{"[]"}.
 \end{itemize}
 
 All these commands are accessible through the \OSC{expr} method:\sample{/ITL/scene/score expr reeval;
 /ITL/scene/score expr clear;
 }
 
-Finally, one can retrieve the \emph{score expression} used to define an object with a \OSC{get expr} message. 
+Finally, one can retrieve the \emph{score expression} used to define an object with a \OSC{get expr} message:
+\sample{/ITL/scene/score get expr;}
 
 \subsection{New INScore event}
 
@@ -361,16 +363,44 @@ This event is triggered by any INScore object when its value changes (either bec
 }
 In the previous example, changing the value of \OSC{score} will automatically change the value of \OSC{copy}.
 
-To avoid any recursion definition problem, \OSC{newData} event handling is postponed to the next event loop. As a result, updating the all scene after changing the value of an object can take several event loop (if one object is referring to another object, itself referring to another one...) and during the process the INScore's scene will certainly go through ephemeral states. However, if objects are defined recursively and are auto-updated using this mechanisms, INScore should still be able to update its graphics in time (even if scores are continually changing).
+To avoid any recursion problem, \OSC{newData} event handling is postponed to the next event loop. As a result, updating the all scene after changing the value of an object can take several event loop (if one object is referring to another object, itself referring to another one...) and during the process the INScore's graphic scene will certainly go through ephemeral states. However, if objects are defined recursively and are auto-updated using this mechanisms, INScore should still be able to update its graphics in time (even if scores are continually changing).
 
 \section{Examples}
 
+\subsection{Canon structure}
+
+\subsection{Multiform but still synced scores}
+\SExpr is a great tools to duplicate and dynamically transform scores, keeping every copies synced to the original.
+
+\sample{/ITL/scene/origin set gmnf score.gmn;\\
+/ITL/saxo/score set gmn \\
+\tab expr( evtail\\
+\tab \tab (transpose\\
+\tab \tab \tab (seq\\
+\tab \tab \tab \tab "[e\&1]"\\
+\tab \tab \tab \tab \&/ITL/scene/origin )\\
+\tab \tab \tab "[c2]" )\\
+\tab \tab "[a]"\\
+\tab );\\
+\\
+/ITL/audience/score set pianoroll \\
+\tab expr( \&/ITL/scene/origin);
+}
+
+The previous example create 2 copies of the same score \OSC{origin}, one transposed for saxophones and the other show a piano roll version of \OSC{origin} used as a visual support for the audience.
+
+Because transposing according to a specific interval is not a basic guido operator, one should combine \OSC{transpose} with \OSC{seq} and \OSC{evtail} to prepend the score with a note, transpose the whole score using this note and remove it at the end.
+
+\begin{figure}[th]
+\centering
+\includegraphics[width=0.9\columnwidth]{imgs/example1}
+\caption{Multiform scores result
+\label{fig:expandingTree}}
+\end{figure}
+
 \section{Conclusions}
-To finish your full-length paper, end it with a conclusion;
-and after careful editing and a final spell-cheek,
-submit it through the \href{https://easychair.org/conferences/?conf=tenor2016}{\textcolor {magenta} {\underline {EasyChair Submission System}}}. 
-\underline{Do not} send papers directly by e-mail.
-%
+
+
 \begin{acknowledgments}
 You may acknowledge people, projects, 
 funding agencies, etc. 
