@@ -222,7 +222,7 @@ rhythm 	&	$s1\ s2$	& applies the rhythm of $s1$ to $s2$ in a loop \\
 \label{operations}
 \end{table*}
 
-All the operators have a common interface: regardless their actual definition, they always combine two scores into one. A few low-level score manipulation operations are defined (which apply perfectly to INScore language's philosophy) with a deterministic behaviour (none of the operators implement random operations). However, the limited number of operators can't be a limitation, as the uniformity between their inputs and output make them easy to combine into pipelines designs, creating more high-level operators.
+All the operators have a common interface: regardless their actual definition, they always take two scores as input to produce a score as output. The scores are expressed using the Guido Music Notation format [GMN]\cite{hoos98}. A few low-level score manipulation operations are defined (which apply perfectly to INScore language's philosophy) with a deterministic behaviour (none of the operators implement random operations). However, the limited number of operators can't be a limitation, as the uniformity between their inputs and output make them easy to combine into pipelines designs, creating more high-level operators.
 
 See Table~\ref{operations} for a definition of all the operators.
 
@@ -290,14 +290,15 @@ Once the internal representation has been constructed by the parser, it is store
 
 \subsection{\SExpr\ evaluation process}
 During the evaluation process, the evaluator goes through every nodes of the expression tree using a depth first post-order traversal, reducing all of them into GMN code.
-A node evaluation is type dependent:  
+A node evaluation is type dependent (Figure \ref{fig:classicEval}). \\
+Evaluation of:  
 \begin{itemize}
-\item a GMN file evaluation returns its content,
-\item a MusicXML file evaluation returns its content,
-\item an object identifier evaluation gives its GMN code,
-\item a GMN string evaluation returns the string,
-\item a MusicXML string evaluation converts the string to GMN code,
-\item an operator node is evaluated by calling the corresponding operator with evaluated GMN code as parameters
+\item a GMN file gives its content,
+\item a GMN string returns the string,
+\item a MusicXML file returns its content converted to GMN code,
+\item a MusicXML string returns the string converted to GMN code,
+\item an object identifier gives its GMN code,
+\item an operator node returns the application of the operator to the GMN code given as parameters.
 \end{itemize}
 
 \begin{figure}[th]
@@ -309,10 +310,10 @@ and \OSC{score.gmn} contains \OSC{[b]}.
 \label{fig:classicEval} }
 \end{figure}
 
-This evaluation scheme avoid recusion issues (e.g. a score that modifies itself using an expression based on its content)
-To avoid any recursion definition problems and other sides effects, the result of a \emph{score expression} evaluation should be absolutely independent from the arguments used for its definition. Which means that, if the value of one of them was to be modified after the expression evaluation, no automatic update would be triggered. 
+This evaluation scheme avoid recursion issues (e.g. a score that modifies itself using an expression based on its content) since the caller object is modified only at the end of the evaluation process. 
+%To avoid any recursion definition problems and other sides effects, the result of a \emph{score expression} evaluation should be absolutely independent from the arguments used for its definition. Which means that, if the value of one of them was to be modified after the expression evaluation, no automatic update would be triggered. 
 
-\subsection{Smart evaluation of \sExpr}
+\subsection{Dynamic evaluation of \sExpr}
 %For optimisation and usability reasons, every object defined using a \emph{score expression} store a copy of its tree, so the user can retrieve it later or ask for a re-evaluation when ever he wants. 
 
 To ensure that the result is independent, its value is cached after the evaluation so we can retrieve it later without evaluating all the arguments again (which may have changed since). As a result, in the lifetime of an \emph{score expression}, its arguments should only be evaluated once: they are evaluated \emph{statically}.
@@ -329,7 +330,7 @@ To optimize the process, all values (arguments and operators) computed during th
 \centering
 \OSC{ expr( \oper{par} (\oper{seq} \prefix{\&}\param{score} \prefix{\&}\param{score.gmn}) \\
  \tab\tab\tab\tab (\oper{seq} \param{"[a]" score}) )}
-\includegraphics[width=1\columnwidth]{imgs/dynamicEval}
+\includegraphics[width=0.9\columnwidth]{imgs/dynamicEval}
 \caption{Propagation of dynamic evaluation.
 \label{fig:dynamicEval}}
 \end{figure}
