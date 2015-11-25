@@ -7,6 +7,7 @@
 \documentclass{article}
 \usepackage{tenor2016}
 %\usepackage{times}
+\usepackage[utf8]{inputenc}
 \usepackage{ifpdf}
 \usepackage[english]{babel}
 %\usepackage{cite}
@@ -31,6 +32,7 @@
 \definecolor{mygrey}{gray}{0.93}
 \definecolor{figOrange}{RGB}{212,85,0}
 \definecolor{figRed}{RGB}{128,0,0}
+\definecolor{red}{RGB}{250,0,0}
 \definecolor{figBlue}{RGB}{0,136,170}
 
 \newenvironment{ExprCode}		{\vspace{-2mm} \small\verbatim}{\endverbatim\vspace{-2mm}}
@@ -39,6 +41,7 @@
 \newcommand{\param}[1]{\textcolor{figOrange}{#1}}
 \newcommand{\prefix}[1]{\textcolor{figBlue}{#1}}
 
+\newcommand{\note}[1]{\textcolor{red}{(#1)}}
 
 
 \newcommand{\sExpr}{\emph{score expressions}}
@@ -50,7 +53,7 @@
 \let\oldenditemize\enditemize
 \renewenvironment{itemize} 	{\olditemize \setlength{\itemsep}{1mm}}{\oldenditemize}
 
-\newcommand{\sample}	[1]			{\vspace{-1.8em}\begin{center}\colorbox{mygrey}{\begin{minipage}[t]{1\columnwidth} {\small \texttt{#1}}\end{minipage}}\end{center}}
+\newcommand{\sample}	[1]			{\vspace{-0.2em}\begin{center}\colorbox{mygrey}{\begin{minipage}[t]{0.95\columnwidth} {\small \texttt{#1}}\end{minipage}}\end{center}}
 
 
 %user defined variables
@@ -176,7 +179,7 @@ Interactive music and real-time scores are also representative of an expanding d
 
 In order to address the notations challenges mentionned above, INScore \cite{Fober:12a,fober14c} has been designed as an environment opened to non-conventional music representation (although it supports symbolic notation), and turned to real-time and interactive use \cite{Fober:13b, Fober:14b}. It is clearly focused on music representation only and in this way, differs from tools integrated into programming environments like Bach \cite{agostini12b} or MaxScore \cite{didko08}. 
 
-INScore has been extended with \sExpr\ that provide symbolic scores composition features (e.g., putting scores in sequence or in parallel). Building new scores from existing scores at symbolic  level is not new. Haskell is providing such features with the \texttt{music-xxx} package... (???). Freeman and Lee proposed score composition operations in a real-time and interactive notation context \cite{Lee:2013}. Regarding the score operations used by INScore, they are imported from a previous work \cite{fober12b} that was focusing on the music notation consistency through arbitrary composition. 
+INScore has been extended with \sExpr\ that provide symbolic scores composition features (e.g., putting scores in sequence or in parallel). Building new scores from existing scores at symbolic  level is not new. Haskell is providing such features \cite{Quick:2013:GAM:2505341.2505345}. Freeman and Lee proposed score composition operations in a real-time and interactive notation context \cite{Lee:2013}. Regarding the score operations used by INScore, they are imported from a previous work \cite{fober12b} that was focusing on the music notation consistency through arbitrary composition. 
 
 The novelty of the proposed approach relies on the dynamic aspects of the scores composition operations, as well as on the persistence of the score expressions. A score may be composed as an arbitrary graph of score expressions and equipped with a fine control over the changes propagation.
 
@@ -185,10 +188,9 @@ The paper introduces first the score composition expressions. Next, the differen
 
 \section{Language Specification}\label{language}
 \label{languageSpec}
-The main idea behind the project is designing a relevant language that provides easy to use tools to compose and to manipulate scores. Indeed, as all the operators have already been defined by the GuidoAR library, the point is to imagine a handy way to use them from INScore's scripts.
+The main idea behind the project is designing a relevant language that provides easy to use tools to compose and to manipulate scores. Indeed, as all the operators have already been defined by the GuidoAR library \cite{fober12b}, the point is to imagine a handy way to use them from INScore's scripts.
 
-\subsection{The GuidoAR operators}
-GuidoAR operators have already been presented in previous papers, thus we will only remind here the aspects that are relevant to the language conception.
+\subsection{The operators}
 
 \begin{table*}[htdp]
 \begin{center}
@@ -214,18 +216,18 @@ rhythm 	&	$s1\ s2$	& applies the rhythm of $s1$ to $s2$ in a loop \\
 \end{tabular}
 \end{center}
 
-\caption{GuidoAR operators}
+\caption{INScore operators}
 \label{operations}
 \end{table*}
 
-All GuidoAR operators have in common their structures: regardless to their actual definition, they shall always combine two scores into one. The GuidoAR library only defines few low-level score manipulation operations  (which apply perfectly to INScore language's philosophy) with a deterministic behaviour (none of the operators implement random operations). However, the limited number of operators can't be a limitation, as the uniformity between their inputs and output make them easy to combine into pipelines designs, creating more high-level operators.
+All the operators have a common interface: regardless their actual definition, they always combine two scores into one. A few low-level score manipulation operations are defined (which apply perfectly to INScore language's philosophy) with a deterministic behaviour (none of the operators implement random operations). However, the limited number of operators can't be a limitation, as the uniformity between their inputs and output make them easy to combine into pipelines designs, creating more high-level operators.
 
-See Table~\ref{operations} for a definition of all the GuidoAR operators.
+See Table~\ref{operations} for a definition of all the operators.
 
 \subsection{Designing a creative language}
 In the context of software used for artistic creation like INScore, designing a language is not trivial. Like any other creative tools,  the \sExpr\ language shall inevitably frame the creation process through which the artist must go. To that extent, conceiving a language is actually designing a creative "work-flow" that the users shall then adopt.
 
-The continuity between inputs and outputs through guido operators allows to compose a music by successively transform and aggregate scores fragments. This process (applying transformations on various materials and combining them into a whole creation) is similar to electro-acoustic creative processes where, after choosing samples, the composer applies effects, equalizer... and mixes them together until the raw musical materials become unrecognisable.
+The continuity between inputs and outputs through guido operators allows to compose a music by successively transform and aggregate scores fragments. This process (applying transformations on various materials and combining them into a whole creation) is similar to electro-acoustic creative processes where, after choosing samples, the composer applies effects, equalizer... and mixes them together until the raw musical materials become unrecognisable \note{il faudrait une référence}.
 
 Adapting this approach to the traditional music notation would not only make the language easy to learn for composer (used to the audio pipelines design) but could offer great tools for composition: carving and assembling score samples using structural operators, placing the musical structure
 %architecture
@@ -241,7 +243,7 @@ It's with this perspective of audio pipelines and emphasis of the structure that
 \end{center}
 
 \begin{enumerate}
-\item The classic syntax reflects the way Guido operators actually work: two scores are combined into one, according to a Guido AR operator.
+\item The classic syntax reflects the way Guido operators actually work: two scores are combined into one, according to the operator.
 \item The alternate syntax defines an expression using a single score, which can be useful to duplicates objects.
 \end{enumerate}
 
@@ -253,46 +255,53 @@ Both of the syntaxes make use of \OSC{score} arguments. \SExpr\ are quite permis
 \end{center}
 
 \begin{enumerate}
-\item \OSC{score string}: \emph{Guido} or \emph{MusicXML} string (MusicXML is supported through a Guido plugin).
-\item \OSC{score file}:  The content of a \emph{Guido} or \emph{MusicXML} file can be imported using absolute or relative path.
-\item \OSC{score object}:  Referring to existing \emph{score objects} is possible through relative or absolute OSC addresses. \emph{Score objects} regroup guido, music xml or piano-roll objects as well as guido and piano-roll stream objects.
+\item \OSC{score string}: \emph{Guido} or \emph{MusicXML} string.
+\item \OSC{score file}:  the content of a \emph{Guido} or \emph{MusicXML} file can be imported using absolute or relative path.
+\item \OSC{score object}:  refers to an existing \emph{score object} using a relative or absolute OSC address. \emph{Score object} should be a guido, musicxml or piano-roll object, as well as guido and piano-roll stream object.
 \item \OSC{score expression}:  \SExpr\ can be used as arguments inside \sExpr\ (in this case the \OSC{expr} token is optional).
 \end{enumerate}
 
-Here is an example of a valid \emph{score expression}:
+Here is an example of a \emph{score expression} that puts a score in parallel with 2 scores in sequence:
 \sample{expr( par score.gmn (seq "[c]" score) )}
 
 
+%--------------------------------------------
 \section{Evaluation Specification}
 \label{evaluationSpec}
-Designing the language of \sExpr\ is, of course, only the first step towards GuidoAR operators integration into INScore. Then come the real implementation, in order to interpret these formal expressions and evaluate valid guido strings from them.
+The \sExpr\ language is first transformed into an internal memory representation. In a second step, this representation is evaluated to produce Guido Music Notation [GMN] \cite{hoos98} strings as output, that are finally passed to the INScore object as specific data.
 
 \subsection{Internal representation of \sExpr}
 
-When encountering an \sExpr, INScore parser will create a tree representation of it: arguments are stored as leaves and operators as nodes. This tree form allows to easily  store, manipulate, assemble and evaluate \sExpr.
+When encountering an \sExpr, the INScore parser creates a tree representation of it: arguments are stored as leaves and operators as nodes (Figure \ref{fig:parsing}). This tree form allows to easily  store, manipulate, assemble and evaluate \sExpr.
 
 \begin{figure}[th]
 \centering
 \OSC{ expr( \oper{par} \param{score.gmn}  (\oper{seq} \param{"[c]" score})}
 \includegraphics[width=0.9\columnwidth]{imgs/exprParse}
-\caption{Parsing \sExpr\ into its tree form.
+\caption{Parsing \sExpr\ into tree form.
 \label{fig:parsing}}
 \end{figure}
 
-Because the parsing step is separated from the evaluation step, the informations stored in the tree are the exact copy of those contained in the expression string. Type specification of arguments is the only difference, whereas type are implicit in \sExpr, arguments are explicitly stored as Guido code or file or identifier... in the tree form. 
+The tree representation is strictly matching the expression string. Type specification of arguments is the only difference, whereas types are implicit in \sExpr, arguments are explicitly stored as Guido code or file or identifier... in the tree form. 
 
 Once the internal representation has been constructed by the parser, it is stored with the newly-defined object, ready for evaluation.
 
 \subsection{\SExpr\ evaluation process}
-During the evaluation process, the evaluator goes through every nodes of the expression tree (using a depth first post-order traversal), reducing all of them into guido code.
-
-Each argument is interpreted using an algorithm specific to its type. Thus, when the evaluator encounters file paths it shall read the file and return its content, when it evaluates objects identifiers it shall return their guido codes (cleaning the code in case of guido stream), and of course, Guido or MusicXML string are not processed and are returned as they are. Finally operator nodes are computed calling the corresponding GuidoAR operators, using the previously evaluated guido codes as parameters.
+During the evaluation process, the evaluator goes through every nodes of the expression tree using a depth first post-order traversal, reducing all of them into GMN code.
+A node evaluation is type dependent:  
+\begin{itemize}
+\item a file evaluation returns its content,
+\item an object identifier evaluation gives its GMN code,
+\item a GMN string evaluation returns the string,
+\item a MusicXML strings evaluation converts the string to GMN code,
+\item an operator node is evaluated by calling the corresponding operator with evaluated GMN code as parameters
+\end{itemize}
 
 \begin{figure}[th]
 \centering
 \includegraphics[width=1\columnwidth]{imgs/classicEval}
 \caption{Simple evaluation of an expression tree,
-where \OSC{score} was defined as \OSC{[a]}
+where \OSC{score} is defined as \OSC{[a]}
 and \OSC{score.gmn} contains \OSC{[b]}.
 \label{fig:classicEval} }
 \end{figure}
