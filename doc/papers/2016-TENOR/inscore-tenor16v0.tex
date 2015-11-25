@@ -287,7 +287,7 @@ The tree representation is strictly matching the expression string. Type specifi
 Once the internal representation has been constructed by the parser, it is stored with the newly-defined object, ready for evaluation.
 
 \subsection{\SExpr\ evaluation process}
-During the evaluation process, the evaluator goes through every nodes of the expression tree using a depth first post-order traversal, reducing all of them into GMN code.
+During the evaluation process, the evaluator goes through every nodes of the expression tree using a depth first post-order traversal, reducing all of them into GMN code. Figure~\ref{fig:classicEval} illustrate this process.
 A node evaluation is type dependent:  
 \begin{itemize}
 \item a file evaluation returns its content,
@@ -305,9 +305,11 @@ where \OSC{score} is defined as \OSC{[a]}
 and \OSC{score.gmn} contains \OSC{[b]}.
 \label{fig:classicEval} }
 \end{figure}
-To avoid any recursion definition problems and other sides effects, the result of a \emph{score expression} evaluation should be absolutely independent from the arguments used for its definition. Which means that, if the value of one of them was to be modified after the expression evaluation, no automatic update would be triggered. 
+%To avoid any recursion definition problems and other sides effects, the result of a \emph{score expression} evaluation should be absolutely independent from the arguments used for its definition. Which means that, if the value of one of them was to be modified after the expression evaluation, no automatic update would be triggered. 
+Because \sExpr\ are designed for users not used to functional programming, the language should be conceptually safe meaning that it shouldn't be possible to write conceptually wrong expression (infinite recursion definition for example). For that reason, all arguments are referential transparent by default: each arguments are evaluated once and their values are then considered definitive. 
+%In particular if an argument refers to the object \OSC{score}, once it have been evaluated its value won't change, even if \OSC{score} is modified.
 
-\subsection{Smart evaluation of \sExpr}
+\subsection{Dynamic evaluation of \sExpr}
 %For optimisation and usability reasons, every object defined using a \emph{score expression} store a copy of its tree, so the user can retrieve it later or ask for a re-evaluation when ever he wants. 
 
 To ensure that the result is independent, its value is cached after the evaluation so we can retrieve it later without evaluating all the arguments again (which may have changed since). As a result, in the lifetime of an \emph{score expression}, its arguments should only be evaluated once: they are evaluated \emph{statically}.
