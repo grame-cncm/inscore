@@ -10,6 +10,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage{ifpdf}
 \usepackage[english]{babel}
+\usepackage{balance}
+
 %\usepackage{cite}
 
 %%%%%%%%%%%%%%%%%%%%%%%% Some useful packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -277,7 +279,7 @@ When encountering an \sExpr, the INScore parser creates a tree representation of
 \begin{figure}[th]
 \centering
 \OSC{ expr( \oper{par} \param{score.gmn}  (\oper{seq} \param{"[c]" score})}
-\includegraphics[width=0.9\columnwidth]{imgs/exprParse}
+\includegraphics[width=0.8\columnwidth]{imgs/exprParse}
 \caption{Parsing \sExpr\ into tree form.
 \label{fig:parsing}}
 \end{figure}
@@ -290,10 +292,11 @@ Once the internal representation has been constructed by the parser, it is store
 During the evaluation process, the evaluator goes through every nodes of the expression tree using a depth first post-order traversal, reducing all of them into GMN code.
 A node evaluation is type dependent:  
 \begin{itemize}
-\item a file evaluation returns its content,
+\item a GMN file evaluation returns its content,
+\item a MusicXML file evaluation returns its content,
 \item an object identifier evaluation gives its GMN code,
 \item a GMN string evaluation returns the string,
-\item a MusicXML strings evaluation converts the string to GMN code,
+\item a MusicXML string evaluation converts the string to GMN code,
 \item an operator node is evaluated by calling the corresponding operator with evaluated GMN code as parameters
 \end{itemize}
 
@@ -305,6 +308,8 @@ where \OSC{score} is defined as \OSC{[a]}
 and \OSC{score.gmn} contains \OSC{[b]}.
 \label{fig:classicEval} }
 \end{figure}
+
+This evaluation scheme avoid recusion issues (e.g. a score that modifies itself using an expression based on its content)
 To avoid any recursion definition problems and other sides effects, the result of a \emph{score expression} evaluation should be absolutely independent from the arguments used for its definition. Which means that, if the value of one of them was to be modified after the expression evaluation, no automatic update would be triggered. 
 
 \subsection{Smart evaluation of \sExpr}
@@ -446,6 +451,7 @@ which can be included after the second-level heading
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %bibliography here
+\balance
 \bibliography{../interlude}
 
 %\begin{ExprCode}
@@ -472,37 +478,3 @@ which can be included after the second-level heading
 
 \end{document}
 
-%\begin{figure}[t]
-%\centering
-%\includegraphics[width=0.9\columnwidth]{figure}
-%\caption{Figure captions should be placed below the figure, 
-%exactly like this.
-%\label{fig:example}}
-%\end{figure}
-
-%\begin{figure}[t]
-%\figbox{
-%\subfloat[][]{\includegraphics[width=60mm]{figure}\label{fig:subfigex_a}}\\
-%\subfloat[][]{\includegraphics[width=80mm]{figure}\label{fig:subfigex_b}}
-%}
-%\caption{Here's an example using the subfig package.\label{fig:subfigex} }
-%\end{figure}
-
-%\subsection{Footnotes}
-%You can indicate footnotes with a number in the text,\footnote{This is a footnote.}
-%but try to work the content into the main text.
-%Use 8pt font-size for footnotes. 
-%Place the footnotes at the bottom of the page 
-%on which they appear. 
-%Precede the footnote with a 0.5pt horizontal rule.
-
-%\section{Citations}
-%List all bibliographical references at the end of your paper,
-%inside a section named ``REFERENCES''.
-%Order and number the references in order of appearance. 
-%Do not list references that do not appear in the text.
-%Reference numbers in the text should appear within square brackets, such as 
-%in~\cite{Someone:13} or~\cite{Someone:13,Someone:04,Someone:09}.
-%The reference format is the standard IEEE one. 
-%We highly recommend you use BibTeX 
-%to generate the reference list.
