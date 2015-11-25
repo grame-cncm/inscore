@@ -57,7 +57,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="343.65904"
+     inkscape:cx="539.25921"
      inkscape:cy="171.10701"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -137,13 +137,13 @@
          y="451.34131"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#800000">seq</tspan></text>
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#37abc8;stroke-width:0.7317397px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:#37abc8;fill-rule:evenodd;stroke:#37abc8;stroke-width:0.7317397px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
        d="M 408.59759,245.55191 564.4778,290.63407"
        id="path5284-6-5-6"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0" />
     <path
-       style="fill:#37abc8;fill-rule:evenodd;stroke:#37abc8;stroke-width:0.7317397px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:#000000;fill-rule:evenodd;stroke:#000000;stroke-width:0.7317397px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 408.76364,245.46318 564.64386,200.38102"
        id="path5284-1-9"
        inkscape:connector-type="polyline"
@@ -164,13 +164,13 @@
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="577.15326"
-       y="206.39436"
+       y="301.39438"
        id="text5331-6-0-4-6"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan5333-8-5-4-0"
          x="577.15326"
-         y="206.39436"
+         y="301.39438"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#d45500"><tspan
            style="fill:#37abc8"
            id="tspan5639">&amp;</tspan><tspan
@@ -180,14 +180,14 @@
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="576.21484"
-       y="299.02664"
+       y="205.45522"
        id="text5331-6-0-4-6-0"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan5333-8-5-4-0-9"
          x="576.21484"
-         y="299.02664"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#37abc8;fill-opacity:1">&amp;score.gmn</tspan></text>
+         y="205.45522"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#d45500;fill-opacity:1">score.gmn</tspan></text>
     <ellipse
        style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:6.60699987;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
        id="path5672-4-5-2"
@@ -201,7 +201,7 @@
        cy="245.61835"
        r="4.1990576" />
     <circle
-       style="fill:#37abc8;fill-opacity:1;stroke:none;stroke-width:6.60699987;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:6.60699987;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
        id="path5672-4-5-2-0-1"
        cx="565.68542"
        cy="199.62668"
