@@ -315,22 +315,27 @@ This evaluation scheme avoid recursion issues (e.g. a score that modifies itself
 \subsection{Dynamic evaluation of \sExpr}
 %For optimisation and usability reasons, every object defined using a \emph{score expression} store a copy of its tree, so the user can retrieve it later or ask for a re-evaluation when ever he wants. 
 
-Referential transparency (i.e. static evaluation) can be a huge limitation. For example, working with guido stream, one could want to maintain the result of a \emph{score expression} up to date to the stream's actual state and not keep its initial value (most of the times an empty GMN string).
-Thus, part of an expression tree can be specified to be evaluated dynamically by prefixing the variable arguments with an \OSC{\&}. When a re-evaluation is triggered (see \ref{exprMsgs}), INScore should check if they have changed, and recompute the expression if so. Only arguments subject to changes (\OSC{score object} or \OSC{score file})  can be declared dynamic.
-
-To optimize the process, all values (arguments and operators) computed during the evaluation process are cached, this way static branches don't have to be evaluated again and dynamic branches are computed again only if needed (if the cached value of a dynamic argument doesn't match the current one). To be sure that only branches that are likely to change are re-evaluated, the operators nodes are also marked as \emph{dynamically} or \emph{statically} evaluated, according to their arguments. They are considered \emph{static} by default 
-%(they should never be re-evaluated)
-, unless at least one of their arguments is \emph{dynamically evaluated}, in which case they are considered \emph{dynamic}.
+Referential transparency (i.e. static evaluation) can be a huge limitation. For example, working with guido stream, one could want to maintain the result of a \emph{score expression} up to date to the stream's actual state.
+Thus \emph{variable arguments} have been introduced using a \OSC{\&} prefix: a variable argument is always evaluated regardless of previous values (Figure \ref{fig:dynamicEval}). Only arguments subject to changes (\OSC{score object} or \OSC{score file}) can be declared \emph{variable}.
 
 \begin{figure}[th]
 \centering
 \OSC{ expr( \oper{par} (\oper{seq} \param{score.gmn} \prefix{\&}\param{score}) \\
  \tab\tab\tab\tab (\oper{seq} \param{"[a]" score}) )}
 \includegraphics[width=0.9\columnwidth]{imgs/dynamicEval}
-\caption{Propagation of dynamic evaluation. \OSC{\prefix{\&}\param{score}} should be updated to the actual value of \OSC{score} when re-evaluating, while \OSC{\param{score}} should keep the value computed on the first evaluation. Thus, on re-evaluation the second \OSC{\oper{seq}} should not be computed again. 
+\caption{Propagation of dynamic evaluation. \OSC{\prefix{\&}\param{score}} is updated to the actual value of \OSC{score} when re-evaluating, while \OSC{\param{score}} keeps the value computed on the first evaluation. Thus, on re-evaluation the second \OSC{\oper{seq}} should not be computed again. 
 \label{fig:dynamicEval}}
 \end{figure}
 
+A tree that contains a variable argument is a \emph{dynamic tree}. When a variable argument is encountered on a tree branch, the dynamic tree attribute is propagated up to the tree root. During the evaluation process, only the dynamic parts of a tree is recomputed. For optimization, INScore checks if a variable argument value has changed and recomputes the corresponding operator only when needed.
+
+%Thus, part of an expression tree can be specified to be evaluated dynamically by prefixing the variable arguments with an \OSC{\&}. When a re-evaluation is triggered (see \ref{exprMsgs}), INScore checks if they have changed, and recomputes the expression if so. Only arguments subject to changes (\OSC{score object} or \OSC{score file}) can be declared dynamic.
+
+%To optimize the process, all values (arguments and operators) computed during the evaluation process are cached, this way static branches don't have to be evaluated again and dynamic branches are computed again only if needed (if the cached value of a dynamic argument doesn't match the current one). To be sure that only branches that are likely to change are re-evaluated, the operators nodes are also marked as \emph{dynamically} or \emph{statically} evaluated, according to their arguments. They are considered \emph{static} by default 
+%(they should never be re-evaluated)
+%, unless at least one of their arguments is \emph{dynamically evaluated}, in which case they are considered \emph{dynamic}.
+
+Using variable arguments, expression trees with arbitrary variable parts can be described: that may be viewed as building a symbolic score with arbitrary aggregation of static and variable parts.
 
 
 %--------------------------------------------
