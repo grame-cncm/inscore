@@ -365,10 +365,10 @@ Finally, one can retrieve the \emph{score expression} used to define an object w
 \subsection{Events typology extension}
 \label{exprEvents}
 
-The events mechanism of INScore, which allow to automatically send OSC messages when events are triggered \cite{Fober:13b} has  been extended with a new event: \OSC{newData}. It is emitted when the value of any object changes (either because of a \OSC{set} or \OSC{reeval} message, or because data has been written in a stream object...).
+The events mechanism of INScore, which allow to automatically send OSC messages when events are triggered \cite{Fober:13b} has  been extended with a new event: \OSC{newData}. It is emitted when the value of any object changes (either because of a \OSC{set} or \OSC{reeval} message, or because data has been written in a stream object).
 
 Used together with the \OSC{expr reeval} message, it makes possible the automation of an expression's re-evaluation when an object changes:
-\sample{ITL/scene/score set gmn "[a]";\\
+\sample{/ITL/scene/score set gmn "[a]";\\
 /ITL/scene/copy set gmn expr(\&score);\\
 /ITL/scene/score watch newData\\   
 \hspace*{8mm}(/ITL/scene/copy expr reeval);
@@ -401,6 +401,40 @@ This tool allows to easily make use of previously defined \sExpr\ to create more
 
 \subsection{Canon structure}
 
+A simple but still well-known music structure is of course the canon. Creating such structure from a \OSC{score} is quite easy using the \sExpr\ formalism.
+
+\sample{/ITL/scene/score set gmn score.gmn;\\
+\\
+\# Transposing score\\
+/ITL/scene/canon set gmn\\
+\tab expr(evtail\\
+\tab\tab(transpose\\
+\tab\tab\tab(seq "[c]" \&score)\\
+\tab\tab\tab"[g]")\\
+\tab\tab"[a]"\\
+\tab);\\
+\\
+\# Putting score in sequence with it
+/ITL/scene/canon set gmn\\
+\tab expr(seq \&score \lowTilde canon);\\
+\\
+\# Adding a second voice delayed\\
+/ITL/scene/canon set gmn\\
+\tab expr(par\\
+\tab\tab \lowTilde canon\\
+\tab\tab (seq "[\_/2]" \lowTilde canon)\\
+\tab);
+}
+The first line import a score into \OSC{score}. Then we transpose it to a fifth and adding a second voice delayed of half a measure. Because transposing according to a specific interval is not a basic guido operator, one should combine \OSC{transpose} with \OSC{seq} and \OSC{evtail} to prepend the score with a note, transpose the whole score using this note and finally remove it.
+
+The result is a simple canon:
+\begin{figure}[th]
+\centering
+\includegraphics[width=1\columnwidth]{imgs/exampleCanon}
+\caption{Canon result
+\label{fig:canonFig}}
+\end{figure}
+
 \subsection{Multiform but still synced scores}
 \SExpr\ is a great tools to duplicate and dynamically transform scores, keeping every copies synced to the original.
 
@@ -421,13 +455,11 @@ This tool allows to easily make use of previously defined \sExpr\ to create more
 
 The previous example create 2 copies of the same score \OSC{origin}, one transposed for saxophones and the other show a piano roll version of \OSC{origin} used as a visual support for the audience.
 
-Because transposing according to a specific interval is not a basic guido operator, one should combine \OSC{transpose} with \OSC{seq} and \OSC{evtail} to prepend the score with a note, transpose the whole score using this note and finally remove it.
-
 \begin{figure}[th]
 \centering
-\includegraphics[width=0.9\columnwidth]{imgs/example1}
+\includegraphics[width=0.8\columnwidth]{imgs/example1}
 \caption{Multiform scores result
-\label{fig:expandingTree}}
+\label{fig:mutliscoreFig}}
 \end{figure}
 
 \section{Conclusions}
