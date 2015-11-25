@@ -31,7 +31,7 @@ bool ExprEvaluator::smartEval(const IExpression *expr, string& result)
 
 	string e = expr->accept(this);				//We evaluate
 
-	if(e==result)								//If the result is the same
+	if(e==result && !e.empty())					//If the result is the same and not null
 		return false;							//result = previously evaluated value
 
 	result = e;									//result = new value
@@ -50,8 +50,7 @@ const string ExprEvaluator::eval(const IExprOperator* arg, const IExpression *ex
 		ITLErr<<fEvalName	<<": operator \""
 							<<arg->operatorPrototype()->getName()
 							<<"\" has no definition in this evaluator";
-		fEvalStatus.fail();
-		return "";
+		return fEvalStatus.fail();
 	}
 
 	string arg1, arg2;
@@ -66,12 +65,17 @@ const string ExprEvaluator::eval(const IExprOperator* arg, const IExpression *ex
 	if(!changed)									//If arg1 and arg2 didn't change
 		return exprArg->getEvaluated();				//Return the previously evaluated value
 
+	if(arg1.empty())
+		arg1 = emptyValue();
+	if(arg2.empty())
+		arg2 = emptyValue();
+
 	bool success = false;
 	string r = cb(arg1, arg2, success);
 
 	if(!success){
 		ITLErr<<fEvalName<<": operator "<<arg->operatorPrototype()->getName()<<"("<<arg1<<", "<<arg2<<") failed to compute.";
-		return fEvalStatus.fail();
+		return fEvalStatus.fail(exprArg);
 	}
 
 	return r;
@@ -96,7 +100,7 @@ const string ExprEvaluator::eval(const filepath& arg, const IExpression *exprArg
 
     if(!ifs.is_open()){
 		ITLErr<<fEvalName<<": can't find \""<<(string)arg<<"\""<<ITLEndl;
-		return fEvalStatus.fail(exprArg->getEvaluated());
+		return fEvalStatus.fail(exprArg);
     }
 
     char c = ifs.get();
@@ -117,7 +121,7 @@ const string ExprEvaluator::eval(const itladdress &arg, const IExpression *exprA
 
 	if(!o){
 		ITLErr<<fEvalName<<": "<<(string)arg<<" not known at this address..."<<ITLEndl;
-		return fEvalStatus.fail(exprArg->getEvaluated());
+		return fEvalStatus.fail(exprArg);
     }
     return eval(o);
 }

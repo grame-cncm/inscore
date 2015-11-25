@@ -24,6 +24,7 @@ public:
     EvaluationStatus();
     void init();
 
+	inline std::string fail(const IExpression* arg){return fail(arg->getEvaluated());}
 	inline std::string fail(const std::string defaultValue){if(defaultValue.empty()){return fail();} return defaultValue;}
 	inline std::string fail(){fEvalSucceed = false; return "";}
     bool hasEvalSucceed(){return fEvalSucceed;}
@@ -60,6 +61,7 @@ public:
 	static ExprEvaluator* create(const IObject* contextObject){return new ExprEvaluator("ExprEvaluator", contextObject);}
 
 	const char* evaluatorName() const {return fEvalName;}
+	virtual const char* emptyValue() const {return "";}
 
 
 	static const IObject* objectFromAddress(itladdress address, const IObject *contextObject);
