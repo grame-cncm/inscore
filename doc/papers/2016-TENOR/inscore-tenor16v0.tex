@@ -310,16 +310,13 @@ and \OSC{score.gmn} contains \OSC{[b]}.
 \label{fig:classicEval} }
 \end{figure}
 
-This evaluation scheme avoid recursion issues (e.g. a score that modifies itself using an expression based on its content) since the caller object is modified only at the end of the evaluation process. For that reason, all arguments are referential transparent by default: each argument is evaluated once and its value is then considered constant.
+This evaluation scheme avoid recursion issues (e.g. a score that modifies itself using an expression based on its content) since the caller object is modified only at the end of the evaluation process. All arguments are referential transparent by default: each argument is evaluated once and its value is then considered constant.
 
 \subsection{Dynamic evaluation of \sExpr}
 %For optimisation and usability reasons, every object defined using a \emph{score expression} store a copy of its tree, so the user can retrieve it later or ask for a re-evaluation when ever he wants. 
 
-To ensure that the result is independent, its value is cached after the evaluation so we can retrieve it later without evaluating all the arguments again (which may have changed since). As a result, in the lifetime of an \emph{score expression}, its arguments should only be evaluated once: they are evaluated \emph{statically}.
-%The logic of result's independence 		implies to \emph{statically} evaluate arguments by default. In practice, after the first evaluation, their evaluated values are stored together with the tree. This way, if some argument's sources change, the result of the \sExpr\ won't be affected.
-However, pure \emph{static evaluation} is not sufficient. Indeed, if one want to update the value of an expression, he would have to go through the whole evaluation process again. This process can take quite some times which we can't afford in a context of a real-time score viewer.
-
-The \emph{dynamic evaluation} mechanism was introduced to solve this problem. Arguments subject to changes (\OSC{score object} or \OSC{score file}) can be prefixed with the \OSC{\&} token, switching them to \emph{dynamic evaluation}. When a re-evaluation is triggered (see \ref{exprMsgs}), INScore should check if they have changed, and recompute the expression if so.
+Referential transparency (i.e. static evaluation) can be a huge limitation. For example, working with guido stream, one could want to maintain the result of a \emph{score expression} up to date to the stream's actual state and not keep its initial value (most of the times an empty GMN string).
+Thus, part of an expression tree can be specified to be evaluated dynamically by prefixing the variable arguments with an \OSC{\&}. When a re-evaluation is triggered (see \ref{exprMsgs}), INScore should check if they have changed, and recompute the expression if so. Only arguments subject to changes (\OSC{score object} or \OSC{score file})  can be declared dynamic.
 
 To optimize the process, all values (arguments and operators) computed during the evaluation process are cached, this way static branches don't have to be evaluated again and dynamic branches are computed again only if needed (if the cached value of a dynamic argument doesn't match the current one). To be sure that only branches that are likely to change are re-evaluated, the operators nodes are also marked as \emph{dynamically} or \emph{statically} evaluated, according to their arguments. They are considered \emph{static} by default 
 %(they should never be re-evaluated)
@@ -327,10 +324,10 @@ To optimize the process, all values (arguments and operators) computed during th
 
 \begin{figure}[th]
 \centering
-\OSC{ expr( \oper{par} (\oper{seq} \prefix{\&}\param{score} \prefix{\&}\param{score.gmn}) \\
+\OSC{ expr( \oper{par} (\oper{seq} \param{score.gmn} \prefix{\&}\param{score}) \\
  \tab\tab\tab\tab (\oper{seq} \param{"[a]" score}) )}
 \includegraphics[width=0.9\columnwidth]{imgs/dynamicEval}
-\caption{Propagation of dynamic evaluation.
+\caption{Propagation of dynamic evaluation. \OSC{\prefix{\&}\param{score}} should be updated to the actual value of \OSC{score} when re-evaluating, while \OSC{\param{score}} should keep the value computed on the first evaluation. Thus, on re-evaluation the second \OSC{\oper{seq}} should not be computed again. 
 \label{fig:dynamicEval}}
 \end{figure}
 
@@ -458,10 +455,14 @@ The result is a simple canon:
 \tab );\\
 \\
 /ITL/audience/score set pianoroll \\
-\tab expr( \&/ITL/scene/origin);
+\tab expr( \&/ITL/scene/origin);\\
+\\
+/ITL/scene/origin watch newData\\
+\tab(/ITL/*/score expr reeval);
 }
 
 The previous example create 2 copies of the same score \OSC{origin}, one transposed for saxophones and the other show a piano roll version of \OSC{origin} used as a visual support for the audience.
+The last line ensure the update of the copies when \OSC{origin} is modified.
 
 \begin{figure}[th]
 \centering
