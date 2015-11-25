@@ -336,43 +336,46 @@ To optimize the process, all values (arguments and operators) computed during th
 
 
 
+%--------------------------------------------
 \section{Score expressions API in INScore}
 \label{exprAPI}
-In order to fully integrate score operators, the implementation relies as much as possible on INScore existing functionalities. As a result, \sExpr\ are fully compatible with INScore's mechanisms, like URL support for arguments, interactive and event support,  web support... Of course, some of these features have been enhanced during the implementation process.
+In order to fully integrate score operators, the implementation relies on INScore existing features. As a result, \sExpr\ support URLs as file arguments, interaction events and benefit of web features. Interaction events have been extended notably for the purpose of dynamic evaluation (see section \ref{exprEvents}).
 
 \subsection{Declaring \sExpr}
 \label{declaringExpr}
-Both \OSC{gmn} and \OSC{pianoroll} object can be defined with \sExpr\ using the standard \OSC{set} message. The evaluation of the expression is actually triggered by the new object when the \OSC{set} message is processed.
+Both \OSC{gmn} and \OSC{pianoroll} objects can be defined with \sExpr\ using an extension of the \OSC{set} message. The evaluation of the expression is actually triggered by the target object when the \OSC{set} message is processed.
+
 \sample{/ITL/scene/score set gmn expr(score.gmn);
 /ITL/scene/pr set pianoroll expr(\&score);
 }
 
-The previous example shall create two objects: \OSC{score} is a score representation of the music stored in \OSC{score.gmn}, while \OSC{pr} is a piano roll representation of \OSC{score} (here dynamically evaluated due to the \OSC{\&} prefix).
+The previous example creates two objects: \OSC{score} is a symbolic representation of the GMN file \OSC{score.gmn}, and \OSC{pr} is a piano roll representation of \OSC{score} (here dynamically evaluated due to the \OSC{\&} prefix).
 
-The declaration of \SExpr\ objects is, like for any other INScore objects, compatible with OSC messages, thus they can also be created remotely through networks. 
 
 \subsection{\SExpr\ specific messages}
 \label{exprMsgs}
-Score objects that had been defined using \sExpr\ are augmented with new commands.
+Objects that that are based on \sExpr\ support additional messages:
 
 \begin{itemize}
-\item \OSC{reeval}: Triggers the re-evaluation of the expression tree (check if any of the dynamically evaluated arguments should be updated).
-\item \OSC{renew}: Clears all the stored evaluated values, and re-evaluates the expression. Statically and Dynamically evaluated arguments shall be updated and all the operators are computed again.
+\item \OSC{reeval}: triggers the re-evaluation of the expression tree (check if any of the dynamically evaluated arguments should be updated).
+\item \OSC{renew}: triggers the re-evaluation of the expression tree regardless of existing constant values. 
 \end{itemize}
 
-All these commands are accessible through the \OSC{expr} method:\sample{/ITL/scene/score expr reeval;
+All these messages are available through the \OSC{expr} message:
+\sample{/ITL/scene/score expr reeval;
 /ITL/scene/score expr renew;
 }
 
-Finally, one can retrieve the \emph{score expression} used to define an object with a \OSC{get expr} message:
+Finally, an object \emph{score expression} can be retrieved with the \OSC{get expr} message:
 \sample{/ITL/scene/score get expr;}
 
 \subsection{Events typology extension}
 \label{exprEvents}
 
-The events mechanism of INScore, which allow to automatically send OSC messages when events are triggered \cite{Fober:13b} has  been extended with a new event: \OSC{newData}. It is emitted when the value of any object changes (either because of a \OSC{set} or \OSC{reeval} message, or because data has been written in a stream object).
+INScore interaction features are based on the association between an event and arbitrary set of OSC messages \cite{Fober:13b}. These messages are triggered when the event occurs (e.g. a mouse down).
+The events typology has been extended with a new event: \OSC{newData}, which is triggered when the value of the target object changes (either due to a \OSC{set} or \OSC{reeval} message, or because data has been written in a stream object).
 
-Used together with the \OSC{expr reeval} message, it makes possible the automation of an expression's re-evaluation when an object changes:
+Associating the \OSC{expr reeval} message to the \OSC{newData} event, produces the automatic reevaluation of an expression when the target object changes:
 \sample{/ITL/scene/score set gmn "[a]";\\
 /ITL/scene/copy set gmn expr(\&score);\\
 /ITL/scene/score watch newData\\   
@@ -380,11 +383,11 @@ Used together with the \OSC{expr reeval} message, it makes possible the automati
 }
 In the previous example, changing the value of \OSC{score} will automatically change the value of \OSC{copy}.
 
-To avoid any recursion problem, \OSC{newData} event handling is postponed to the next event loop. As a result, updating the whole scene after changing the value of an object can take several event loop (if one object is referring to another object, itself referring to another one...) and during the process the INScore's graphic scene will certainly go through ephemeral states. However, if objects are defined recursively and are auto-updated using this mechanism, INScore should still be able to update its graphics in time (even if scores are continually changing).
+To catch with infinite loop issues, \OSC{newData} event handling is postponed to the next INScore time slot. As a result, updating the whole scene after changing the value of an object can take several event loop (if one object is referring to another object, itself referring to another one...) and during this process the INScore's graphic scene could go through transitory states. However, if objects are defined with recursive references and are auto-updated using this mechanism, INScore will still be able to update the score (without freezing).
 
 \section{Composing Score Expressions}
 \label{composingExpr}
- While the tools already presented allow to compose scores together (including score objects), it is also possible to compose \sExpr\ which are stored in these objects using the prefix \OSC{\prefix{\lowTilde}}. Indeed, whereas \OSC{\param{score}} and \OSC{\prefix{\&}\param{score}} refer to the object's value, \OSC{\prefix{\lowTilde}\param{score}} refer to the \emph{score expression} used to define \OSC{score}. In practical, before the first evaluation, all arguments prefixed by \OSC{\prefix{\lowTilde}} are replaced by a copy of the expression tree from the corresponding objects.
+ While the tools already presented allow to compose symbolic scores, it is also possible to compose \sExpr\ which are stored in the referred objects using the prefix \OSC{\prefix{\lowTilde}}. Indeed, whereas \OSC{\param{score}} and \OSC{\prefix{\&}\param{score}} refer to the object's value, \OSC{\prefix{\lowTilde}\param{score}} refer to the \emph{score expression} used to define \OSC{score}. In practical, before the first evaluation, all arguments prefixed by \OSC{\prefix{\lowTilde}} are replaced by a copy of the expression tree from the corresponding objects.
 
 \begin{figure}[th]
 
