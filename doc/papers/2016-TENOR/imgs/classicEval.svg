@@ -72,10 +72,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="530.29099"
+     inkscape:cx="506.04733"
      inkscape:cy="55.594789"
      inkscape:document-units="px"
-     inkscape:current-layer="g7964-2-5"
+     inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1600"
      inkscape:window-height="1163"
@@ -314,23 +314,23 @@
        inkscape:connector-curvature="0" />
     <path
        style="display:inline;fill:#1a1a1a;fill-rule:evenodd;stroke:#1a1a1a;stroke-width:4.52890396;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-7-3)"
-       d="m 748.34963,385.77341 -27.19807,27.19804"
+       d="m 828.68936,308.7226 -2e-5,38.46386"
        id="path4154-3-6"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0"
-       inkscape:transform-center-x="-10.820525"
-       inkscape:transform-center-y="7.331455" />
+       inkscape:transform-center-x="-12.83539"
+       inkscape:transform-center-y="-2.4671454" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="395.41125"
-       y="451.2341"
+       x="690.37579"
+       y="443.15289"
        id="text4136-7-2-7-9"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4138-2-0-5-8"
-         x="395.41125"
-         y="451.2341"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#d45500">&quot;{ [b] , [c a] }&quot;</tspan></text>
+         x="690.37579"
+         y="443.15289"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';fill:#d45500">&quot;{ [b] , [c a] }&quot;</tspan></text>
   </g>
 </svg>
