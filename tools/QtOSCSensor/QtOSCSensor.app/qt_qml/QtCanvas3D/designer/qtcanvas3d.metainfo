@@ -1,0 +1,16 @@
+MetaInfo {
+    Type {
+        name: "QtCanvas3D.Canvas3D"
+        icon: "images/canvas3d-icon16.png"
+
+        ItemLibraryEntry {
+            name: "Canvas3D"
+            category: "Qt Canvas 3D"
+            libraryIcon: "images/canvas3d-icon.png"
+            version: "1.0"
+            requiredImport: "QtCanvas3D"
+
+            QmlSource { source: "default/Canvas3D.qml" }
+        }
+    }
+}

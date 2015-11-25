@@ -310,8 +310,7 @@ and \OSC{score.gmn} contains \OSC{[b]}.
 \label{fig:classicEval} }
 \end{figure}
 
-This evaluation scheme avoid recursion issues (e.g. a score that modifies itself using an expression based on its content) since the caller object is modified only at the end of the evaluation process. 
-%To avoid any recursion definition problems and other sides effects, the result of a \emph{score expression} evaluation should be absolutely independent from the arguments used for its definition. Which means that, if the value of one of them was to be modified after the expression evaluation, no automatic update would be triggered. 
+This evaluation scheme avoid recursion issues (e.g. a score that modifies itself using an expression based on its content) since the caller object is modified only at the end of the evaluation process. All arguments are referential transparent by default: each argument is evaluated once and its value is then considered constant.
 
 \subsection{Dynamic evaluation of \sExpr}
 %For optimisation and usability reasons, every object defined using a \emph{score expression} store a copy of its tree, so the user can retrieve it later or ask for a re-evaluation when ever he wants. 

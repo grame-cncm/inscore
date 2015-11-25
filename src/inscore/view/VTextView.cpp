@@ -23,11 +23,8 @@
 
 */
 
-#include "VTextView.h"
-#include "VApplView.h"
-#include "ITLError.h"
-#include "IText.h"
-#include "IHtmlFile.h"
+#include <iostream>
+#include <map>
 
 #include <QTextDocument>
 #include <QTextBlock>
@@ -36,9 +33,12 @@
 #include <QAbstractTextDocumentLayout>
 #include <QTextLayout>
 #include <QGraphicsScene>
-#include <iostream>
-#include <map>
-//#include "QTextTilerItem.h"
+
+#include "VTextView.h"
+#include "VApplView.h"
+#include "ITLError.h"
+#include "IText.h"
+#include "IHtmlFile.h"
 
 using namespace std;
 
@@ -209,12 +209,12 @@ void VTextView::updateFont(const IText *text)
 	if(IAppl::compatibilityVersion() >= kFontSizeChangeVers) {
 		// Get font and set the parameters.
 		QFont font = fTextItem->font();
-		font.setPixelSize(text->getFontSize());
 		font.setFamily(text->getFontFamily().c_str());
+		font.setPointSize (text->getFontSize());
 		font.setStyle(sStyleString2Enum[text->getFontStyle()]);
 		font.setWeight(sWeightString2Enum[text->getFontWeight()]);
 		fTextItem->setFont(font);
-		if(font != fTextItem->font())
+//		if(font != fTextItem->font())
 			itemChanged();
 	}
 }

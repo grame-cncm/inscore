@@ -29,6 +29,7 @@
 */
 #include "ip/UdpSocket.h"
 
+#include <iostream>
 #include <vector>
 #include <algorithm>
 #include <stdexcept>
@@ -162,8 +163,17 @@ public:
 
 	void allowBroadcast()
 	{
+		const int buffsize = 4096*4;
 		int val = 1;
 		setsockopt (socket_, SOL_SOCKET, SO_BROADCAST, &val, sizeof(val));
+		int ret = buffsize;
+		ret = setsockopt (socket_, SOL_SOCKET, SO_SNDBUF, &ret, sizeof(ret));
+		if (ret == -1)
+			std::cerr << "setsockopt SO_SNDBUF failed" << std::endl;
+		ret = buffsize;
+		ret = setsockopt (socket_, SOL_SOCKET, SO_RCVBUF, &ret, sizeof(ret));
+		if (ret == -1)
+			std::cerr << "setsockopt SO_RCVBUF failed" << std::endl;
 	}
 
 	void Connect( const IpEndpointName& remoteEndpoint )
@@ -210,52 +220,16 @@ public:
 	{
 		assert( isBound_ );
 
-		// Main structure to read the message
-		struct msghdr mh;
-		memset(&mh, 0, sizeof(mh));
-
-		// Structure to write remote/source sockaddr
-		struct sockaddr_in peeraddr;
-		mh.msg_name = &peeraddr;
-		mh.msg_namelen = sizeof(peeraddr);
-
-		// Structure for control data, the control data is dumped here
-		char cmbuf[0x100];memset(&cmbuf, 0, sizeof(cmbuf));
-		mh.msg_control = cmbuf;
-		mh.msg_controllen = sizeof(cmbuf);
-
-		// Structure to access the message data.
-		struct iovec    iov;
-		iov.iov_base = data;
-		iov.iov_len = size;
-		mh.msg_iov = &iov;
-		mh.msg_iovlen = 1;
-
-		// Set socket option
-		int val = 1;
-		setsockopt (socket_, IPPROTO_IP, IP_PKTINFO, &val, sizeof(val));
-		int result = recvmsg(socket_, &mh, 0);
+		struct sockaddr_in fromAddr;
+        socklen_t fromAddrLen = sizeof(fromAddr);
+             	 
+        int result = recvfrom(socket_, data, size, 0,
+                    (struct sockaddr *) &fromAddr, (socklen_t*)&fromAddrLen);
 		if( result < 0 )
 			return 0;
 
-		for ( // iterate through all the control headers
-			struct cmsghdr *cmsg = CMSG_FIRSTHDR(&mh);
-			cmsg != NULL;
-			cmsg = CMSG_NXTHDR(&mh, cmsg))
-		{
-			// ignore the control headers that don't match what we want
-			if (cmsg->cmsg_level != IPPROTO_IP ||
-				cmsg->cmsg_type != IP_PKTINFO)
-			{
-				continue;
-			}
-			// Get the destination address
-			struct in_pktinfo *pi = (struct in_pktinfo *)CMSG_DATA(cmsg);
-			// pi->ipi_addr is the destination in_addr
-			remoteEndpoint.destAddress = ntohl(pi->ipi_addr.s_addr);
-		}
-		remoteEndpoint.address = ntohl(peeraddr.sin_addr.s_addr);
-		remoteEndpoint.port = ntohs(peeraddr.sin_port);
+		remoteEndpoint.address = ntohl(fromAddr.sin_addr.s_addr);
+		remoteEndpoint.port = ntohs(fromAddr.sin_port);
 
 		return result;
 	}

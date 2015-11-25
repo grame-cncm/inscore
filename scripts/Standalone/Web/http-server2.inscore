@@ -1,0 +1,34 @@
+/ITL/scene/* del;
+
+/ITL/scene/server set httpd 8000;
+
+/ITL/scene/text set txt "This script illustrates the use of the httpd object";
+/ITL/scene/text scale 2;
+/ITL/scene/text y -0.9;
+
+/ITL/scene/text2 set txt "Hello world";
+/ITL/scene/text2 scale 1.5;
+/ITL/scene/text2 y -0.8;
+
+/ITL/scene/text3 set txt "The client web page displays the score image
+available from the server embedded in this score.";
+/ITL/scene/text3 scale 1.5;
+/ITL/scene/text3 y -0.6;
+
+
+/ITL/scene/clickme set txt "CLICK ME !";
+/ITL/scene/clickme scale 2;
+/ITL/scene/clickme y 0.9;
+/ITL/scene/clickme watch mouseEnter ( /ITL/scene/clickme red 240 );
+/ITL/scene/clickme watch mouseLeave ( /ITL/scene/clickme red 0 );
+/ITL/scene/clickme watch mouseDown (
+	/ITL/scene/clickme push,
+	/ITL/scene/score set gmnstream "{[ \meter<\"4/4\"> a",
+	/ITL/scene/clickme watch mouseDown(
+		/ITL/scene/score write "{c",
+		/ITL/scene/clickme watch mouseDown(
+			/ITL/scene/score write ",e",
+			/ITL/scene/clickme pop
+		)
+	)
+);
