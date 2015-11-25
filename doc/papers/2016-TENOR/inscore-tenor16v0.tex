@@ -387,7 +387,8 @@ To catch with infinite loop issues, \OSC{newData} event handling is postponed to
 
 \section{Composing Score Expressions}
 \label{composingExpr}
- While the tools already presented allow to compose symbolic scores, it is also possible to compose \sExpr\ which are stored in the referred objects using the prefix \OSC{\prefix{\lowTilde}}. Indeed, whereas \OSC{\param{score}} and \OSC{\prefix{\&}\param{score}} refer to the object's value, \OSC{\prefix{\lowTilde}\param{score}} refer to the \emph{score expression} used to define \OSC{score}. In practical, before the first evaluation, all arguments prefixed by \OSC{\prefix{\lowTilde}} are replaced by a copy of the expression tree from the corresponding objects.
+ While the tools already presented allow to compose symbolic scores, it is also possible to compose \sExpr\ which are stored in the referred objects using the prefix \OSC{\prefix{\lowTilde}}. Indeed, whereas \OSC{\param{score}} and \OSC{\prefix{\&}\param{score}} refer to the object's value, \OSC{\prefix{\lowTilde}\param{score}} refers to the \emph{score expression} used to define \OSC{score}. In practical, before the first evaluation, all arguments prefixed by \OSC{\prefix{\lowTilde}} are replaced by a copy of the expression tree from the corresponding objects (Figure \ref{fig:expandingTree}).
+It allows to easily make use of previously defined \sExpr\ to create more complex ones.
 
 \begin{figure}[th]
 
@@ -403,7 +404,8 @@ To catch with infinite loop issues, \OSC{newData} event handling is postponed to
 \label{fig:expandingTree}}
 \end{figure}
 
-This tool allows to easily make use of previously defined \sExpr\ to create more complex ones.
+
+%------------------------------------------
 \section{Examples}
 \label{examples}
 
