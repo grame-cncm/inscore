@@ -41,16 +41,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.49497475"
-     inkscape:cx="137.65441"
-     inkscape:cy="708.33575"
+     inkscape:zoom="0.7"
+     inkscape:cx="222.13905"
+     inkscape:cy="595.60529"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1043"
-     inkscape:window-x="0"
-     inkscape:window-y="1200"
+     inkscape:window-width="1600"
+     inkscape:window-height="1163"
+     inkscape:window-x="160"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      fit-margin-top="5"
      fit-margin-left="5"
@@ -64,7 +64,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -73,73 +73,20 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-3.9713507,-275.99171)">
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;opacity:0.881;"
-       x="312.75385"
-       y="319.15182"
-       id="text4136"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4138"
-         x="312.75385"
-         y="319.15182"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';">expr( <tspan
-   style="fill:#800000;"
-   id="tspan4140">seq</tspan><tspan
-   style="fill:#d45500;"
-   id="tspan4146"> &quot;[a]&quot; <tspan
-   style="fill:#0088aa;"
-   id="tspan4885">&amp;</tspan>sample</tspan> )</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="94.303131"
-       y="319.5957"
-       id="text4136-5"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4138-9"
-         x="94.303131"
-         y="319.5957"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#333333">fragment:</tspan></text>
-    <path
-       style="fill:#b3b3b3;fill-rule:evenodd;stroke:#b3b3b3;stroke-width:1.07415092px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 80.777368,337.79078 621.403942,0"
-       id="path4850"
-       inkscape:connector-curvature="0" />
     <rect
-       style="fill:#000000;fill-opacity:0.11464969;stroke:none;stroke-width:6.60699987;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect6176-0"
-       width="653.60706"
-       height="34.324158"
-       x="84.99231"
-       y="355.48584"
-       ry="0" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="89.877136"
-       y="380.92944"
-       id="text4136-6"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4138-0"
-         x="89.877136"
-         y="380.92944"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono'">expr( <tspan
-   style="fill:#800000"
-   id="tspan4140-7">par <tspan
-   style="fill:#000000"
-   id="tspan4879">(</tspan>seq</tspan><tspan
-   id="tspan4899"
-   style="fill:#0088aa"> ~</tspan><tspan
-   id="tspan5183"
-   style="fill:#d45500">fragment &quot;[b]&quot;</tspan>) <tspan
-   id="tspan4901"
-   style="fill:#0088aa">~</tspan><tspan
-   style="fill:#d45500"
-   id="tspan4881">fragment </tspan>)</tspan></text>
+       style="opacity:1;fill:#e8eef8;fill-opacity:1;stroke:none;stroke-width:4.65199995;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect8609-7"
+       width="334.36053"
+       height="203.04068"
+       x="234.19949"
+       y="1085.4366" />
+    <rect
+       style="opacity:1;fill:#e8eef8;fill-opacity:1;stroke:none;stroke-width:4.65199995;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect8609"
+       width="336.3808"
+       height="201.02034"
+       x="442.79599"
+       y="795.01764" />
     <flowRoot
        xml:space="preserve"
        id="flowRoot4903"
@@ -150,7 +97,7 @@
            height="210.71428"
            x="106.42857"
            y="96.647919" /></flowRegion><flowPara
-         id="flowPara4909"></flowPara></flowRoot>    <path
+         id="flowPara4909" /></flowRoot>    <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.12600052px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 71.668449,608.93467 227.30122,715.8546"
        id="path5284-6-5-8"
@@ -187,7 +134,7 @@
          y="724.6731"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#d45500"><tspan
    style="fill:#0088aa"
-   id="tspan4844-5">~</tspan>fragment</tspan></text>
+   id="tspan4844-5">~</tspan>score</tspan></text>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 282.74953,503.35144 155.7143,84.28573"
@@ -237,30 +184,28 @@
          y="429.72635"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#d45500"><tspan
    style="fill:#0088aa"
-   id="tspan4844-5-3">~</tspan>fragment</tspan></text>
+   id="tspan4844-5-3">~</tspan>score</tspan></text>
     <path
        style="display:inline;fill:#1a1a1a;fill-rule:evenodd;stroke:#1a1a1a;stroke-width:4.52890396;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend)"
-       d="m 392.79421,755.41985 -2e-5,38.46386"
+       d="m 360.79421,777.41985 -2e-5,38.46386"
        id="path4154"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:45.54600143px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#1a1a1a;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="144.36815"
-       y="744.73871"
+       x="175.65196"
+       y="759.38684"
        id="text5331-5"
        sodipodi:linespacing="125%"
-       transform="scale(0.94069671,1.0630419)"><tspan
+       transform="scale(0.9406967,1.0630419)"><tspan
          sodipodi:role="line"
          id="tspan5333-9"
-         x="144.36815"
-         y="744.73871"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:31.31287384px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#1a1a1a;stroke:none">F<tspan
-   style="font-size:25.61962318px;fill:#1a1a1a;stroke:none"
-   id="tspan5292">IRST</tspan> E<tspan
-   style="font-size:25.61962318px;fill:#1a1a1a;stroke:none"
-   id="tspan5294">VALUATION</tspan></tspan></text>
+         x="175.65196"
+         y="759.38684"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:31.31287384px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#1a1a1a;stroke:none">C<tspan
+   style="font-size:27.50000191px"
+   id="tspan4200">OMPOSITION</tspan></tspan></text>
     <path
        style="opacity:1;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.12600052px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 78.529298,1080.8756 234.16207,1187.7955"
@@ -421,20 +366,6 @@
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#d45500"><tspan
    style="fill:#0088aa"
    id="tspan4844-55">&amp;</tspan>sample</tspan></text>
-    <rect
-       style="opacity:1;fill:#0044aa;fill-opacity:0.11464969;stroke:none;stroke-width:4.65199995;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect8609"
-       width="336.3808"
-       height="201.02034"
-       x="442.79599"
-       y="795.01764" />
-    <rect
-       style="opacity:1;fill:#0044aa;fill-opacity:0.11464969;stroke:none;stroke-width:4.65199995;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect8609-7"
-       width="334.36053"
-       height="203.04068"
-       x="234.19949"
-       y="1085.4366" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -446,7 +377,7 @@
          id="tspan5333-8-5-4-0-9-0-4-4"
          x="438.38672"
          y="989.42755"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#87aade">fragment</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#87aade">score</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -458,6 +389,6 @@
          id="tspan5333-8-5-4-0-9-0-4-4-8"
          x="231.78748"
          y="1282.3718"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#87aade">fragment</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#87aade">score</tspan></text>
   </g>
 </svg>

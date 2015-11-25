@@ -57,7 +57,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7722743"
-     inkscape:cx="177.79578"
+     inkscape:cx="401.45734"
      inkscape:cy="86.803649"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -79,7 +79,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -88,34 +88,6 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-62.682177,-61.059214)">
-    <rect
-       style="fill:#000000;fill-opacity:0.11464969;stroke:none;stroke-width:6.60699987;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect6176"
-       width="613.1626"
-       height="46.467014"
-       x="80.398712"
-       y="78.775734"
-       ry="0" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="88.571426"
-       y="110.64793"
-       id="text4136"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4138"
-         x="88.571426"
-         y="110.64793"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono'">expr( <tspan
-   style="fill:#800000"
-   id="tspan7191">par</tspan><tspan
-   style="fill:#d45500"
-   id="tspan4146"> score.gmn</tspan> (<tspan
-   style="fill:#800000"
-   id="tspan4144">seq </tspan><tspan
-   style="fill:#d45500"
-   id="tspan4150">&quot;[c]&quot; score</tspan>) )</tspan></text>
     <path
        style="display:inline;fill:none;fill-rule:evenodd;stroke:#4d4d4d;stroke-width:4.52890396;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend)"
        d="m 399.68416,133.12168 -2e-5,38.46386"
