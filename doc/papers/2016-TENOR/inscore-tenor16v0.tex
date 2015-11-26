@@ -188,6 +188,7 @@ The novelty of the proposed approach relies on the dynamic aspects of the scores
 The paper introduces first the score composition expressions. Next, the different evaluations strategies are explained and illustrated with examples. The articulation with the INScore environment is presented in detail and followed by concrete use cases. A generalization of this approach is finally proposed in the concluding section.  
 
 
+%-----------------------------------------------
 \section{Language Specification}\label{language}
 \label{languageSpec}
 The main idea behind the project is designing a relevant language that provides easy to use tools to compose and to manipulate scores. Indeed, as all the operators have already been defined by the GuidoAR library \cite{fober12b}, the point is to imagine a handy way to use them from INScore's scripts.
@@ -224,7 +225,7 @@ rhythm 	&	$s1\ s2$	& applies the rhythm of $s1$ to $s2$ in a loop \\
 
 All the operators have a common interface: regardless their actual definition, they always take two scores as input to produce a score as output. The scores are expressed using the Guido Music Notation format [GMN]\cite{hoos98}. A few low-level score manipulation operations are defined (which apply perfectly to INScore language's philosophy) with a deterministic behaviour (none of the operators implement random operations). However, the limited number of operators can't be a limitation, as the uniformity between their inputs and output make them easy to combine into pipelines designs, creating more high-level operators.
 
-See Table~\ref{operations} for a definition of all the operators.
+See Table~\ref{operations} for the definition of the operators.
 
 \subsection{Designing a creative language}
 In the context of software used for artistic creation like INScore, designing a language is not trivial. Like any other creative tools,  the \sExpr\ language shall inevitably frame the creation process through which the artist must go. To that extent, conceiving a language is actually designing a creative "work-flow" that the users shall then adopt.
@@ -246,10 +247,10 @@ It's with this perspective of audio pipelines and emphasis of the structure that
 
 \begin{enumerate}
 \item The classic syntax reflects the way Guido operators actually work: two scores are combined into one, according to the operator.
-\item The alternate syntax defines an expression using a single score, which can be useful to duplicates objects.
+\item The alternate syntax defines an expression using a single score, which can be useful to duplicates objects e.g. to provide different views (see section \ref{sample2}).
 \end{enumerate}
 
-\smallbreak
+Note that the leading \OSC{expr} token is present to disambiguate parenthesis that are already used in INScore scripts with messags lists.
 
 Both of the syntaxes make use of \OSC{score} arguments. \SExpr\ are quite permissive regarding to their types:
 \begin{center}
@@ -257,9 +258,9 @@ Both of the syntaxes make use of \OSC{score} arguments. \SExpr\ are quite permis
 \end{center}
 
 \begin{enumerate}
-\item \OSC{score string}: \emph{Guido} or \emph{MusicXML} string.
-\item \OSC{score file}:  the content of a \emph{Guido} or \emph{MusicXML} file can be imported using absolute or relative path.
-\item \OSC{score object}:  refers to an existing \emph{score object} using a relative or absolute OSC address. \emph{Score object} should be a guido, musicxml or piano-roll object, as well as guido and piano-roll stream object.
+\item \OSC{score string}: are GMN or MusicXML strings.
+\item \OSC{score file}:  refers to a score file that should contain GMN or MusicXML data. File path complies to INScore file handling and could indicate an absolute, a relative path or an URL.
+\item \OSC{score object}:  refers to an existing INScore object using a relative or absolute OSC address. The object must be a guido, musicxml or piano-roll object, as well as guido and piano-roll streams.
 \item \OSC{score expression}:  \SExpr\ can be used as arguments inside \sExpr\ (in this case the \OSC{expr} token is optional).
 \end{enumerate}
 
@@ -284,12 +285,12 @@ When encountering an \sExpr, the INScore parser creates a tree representation of
 \label{fig:parsing}}
 \end{figure}
 
-The tree representation is strictly matching the expression string. Type specification of arguments is the only difference, whereas types are implicit in \sExpr, arguments are explicitly stored as Guido code or file or identifier... in the tree form. 
+The tree representation is strictly matching the expression string. Type specification of arguments is the only difference, whereas types are implicit in \sExpr, arguments are explicitly stored as GMN code or file or identifier... in the tree form. 
 
 Once the internal representation has been constructed by the parser, it is stored with the newly-defined object, ready for evaluation.
 
 \subsection{\SExpr\ evaluation process}
-During the evaluation process, the evaluator goes through every nodes of the expression tree using a depth first post-order traversal, reducing all of them into GMN code.
+The evaluation process goes through every nodes of the expression tree using a depth first post-order traversal, reducing all of them into GMN code.
 A node evaluation is type dependent (Figure \ref{fig:classicEval}). \\
 Evaluation of:  
 \begin{itemize}
@@ -310,7 +311,7 @@ and \OSC{score.gmn} contains \OSC{[b]}.
 \label{fig:classicEval} }
 \end{figure}
 
-This evaluation scheme avoid recursion issues (e.g. a score that modifies itself using an expression based on its content) since the caller object is modified only at the end of the evaluation process. All arguments are referential transparent by default: each argument is evaluated once and its value is then considered constant.
+This evaluation scheme avoid recursion issues (e.g. a score that modifies itself using an expression based on its own content) since the caller object is modified only at the end of the evaluation process. All arguments are referential transparent by default: each argument is evaluated once and its value is then considered constant.
 
 \subsection{Dynamic evaluation of \sExpr}
 %For optimisation and usability reasons, every object defined using a \emph{score expression} store a copy of its tree, so the user can retrieve it later or ask for a re-evaluation when ever he wants. 
@@ -323,7 +324,7 @@ Thus \emph{variable arguments} have been introduced using a \OSC{\&} prefix: a v
 \OSC{ expr( \oper{par} (\oper{seq} \param{score.gmn} \prefix{\&}\param{score}) \\
  \tab\tab\tab\tab (\oper{seq} \param{"[a]" score}) )}
 \includegraphics[width=0.9\columnwidth]{imgs/dynamicEval}
-\caption{Propagation of dynamic evaluation. \OSC{\prefix{\&}\param{score}} is updated to the actual value of \OSC{score} when re-evaluating, while \OSC{\param{score}} keeps the value computed on the first evaluation. Thus, on re-evaluation the second \OSC{\oper{seq}} should not be computed again. 
+\caption{Propagation of dynamic evaluation. \OSC{\prefix{\&}\param{score}} is updated to the actual value of \OSC{score} when re-evaluating, while \OSC{\param{score}} keeps the value computed on the first evaluation. Thus, on re-evaluation the lower \OSC{\oper{seq}} operation will not be computed again. 
 \label{fig:dynamicEval}}
 \end{figure}
 
@@ -335,7 +336,7 @@ A tree that contains a variable argument is a \emph{dynamic tree}. When a variab
 %(they should never be re-evaluated)
 %, unless at least one of their arguments is \emph{dynamically evaluated}, in which case they are considered \emph{dynamic}.
 
-Using variable arguments, expression trees with arbitrary variable parts can be described: that may be viewed as building a symbolic score with arbitrary aggregation of static and variable parts.
+Using variable arguments, an expression tree with arbitrary variable parts can be described: that may be viewed as building a symbolic score with arbitrary aggregation of static and variable parts.
 
 
 %--------------------------------------------
@@ -356,10 +357,10 @@ The previous example creates two objects: \OSC{score} is a symbolic representati
 
 \subsection{\SExpr\ specific messages}
 \label{exprMsgs}
-Objects that that are based on \sExpr\ support additional messages:
+Objects that are based on \sExpr\ support additional messages:
 
 \begin{itemize}
-\item \OSC{reeval}: triggers the re-evaluation of the expression tree (check if any of the dynamically evaluated arguments should be updated).
+\item \OSC{reeval}: triggers the re-evaluation of the expression tree taking account of the static and dynamic parts.
 \item \OSC{renew}: triggers the re-evaluation of the expression tree regardless of existing constant values. 
 \end{itemize}
 
@@ -368,14 +369,14 @@ All these messages are available through the \OSC{expr} message:
 /ITL/scene/score expr renew;
 }
 
-Finally, an object \emph{score expression} can be retrieved with the \OSC{get expr} message:
+Finally, the  \emph{score expression} of an object can be retrieved with the \OSC{get expr} message:
 \sample{/ITL/scene/score get expr;}
 
 \subsection{Events typology extension}
 \label{exprEvents}
 
 INScore interaction features are based on the association between an event and arbitrary set of OSC messages \cite{Fober:13b}. These messages are triggered when the event occurs (e.g. a mouse down).
-The events typology has been extended with a new event: \OSC{newData}, which is triggered when the value of the target object changes (either due to a \OSC{set} or \OSC{reeval} message, or because data has been written in a stream object).
+The events typology has been extended with a new event: \OSC{newData}, which is triggered when the value of the target object changes, either due to a \OSC{set} or \OSC{reeval} message, or because data has been written in a stream object.
 
 Associating the \OSC{expr reeval} message to the \OSC{newData} event, produces the automatic reevaluation of an expression when the target object changes:
 \sample{/ITL/scene/score set gmn "[a]";\\
@@ -389,10 +390,10 @@ To catch with infinite loop issues, \OSC{newData} event handling is postponed to
 
 \section{Composing Score Expressions}
 \label{composingExpr}
- While the tools already presented allow to compose symbolic scores, it is also possible to compose \sExpr\ which are stored in the referred objects using the prefix \OSC{\prefix{\lowTilde}}. Indeed, whereas \OSC{\param{score}} and \OSC{\prefix{\&}\param{score}} refer to the object's value, \OSC{\prefix{\lowTilde}\param{score}} refers to the \emph{score expression} used to define \OSC{score}. In practical, before the first evaluation, all arguments prefixed by \OSC{\prefix{\lowTilde}} are replaced by a copy of the expression tree from the corresponding objects (Figure \ref{fig:expandingTree}).
-It allows to easily make use of previously defined \sExpr\ to create more complex ones.
+While the expressions already presented allow to compose symbolic scores, it is also possible to compose \sExpr\ which are stored in the referred objects using the prefix \OSC{\prefix{\lowTilde}}. Indeed, whereas \OSC{\param{score}} and \OSC{\prefix{\&}\param{score}} refer to the object's value, \OSC{\prefix{\lowTilde}\param{score}} refers to the \emph{score expression} used to define \OSC{score}. In practical, before the first evaluation, all arguments prefixed by \OSC{\prefix{\lowTilde}} are replaced by a copy of the expression tree from the corresponding objects.
+It allows to easily make use of previously defined \sExpr\ to create more complex ones. 
 
-\begin{figure}[th]
+Figure \ref{fig:expandingTree} illustrates how the expression tree is expanded with the example below.
 
 \sample{/ITL/scene/score set gmn\\
 \tab expr(\oper{seq} \param{"[a]"} \prefix{\&}\param{sample});\\
@@ -400,12 +401,12 @@ It allows to easily make use of previously defined \sExpr\ to create more comple
 \tab expr(\oper{seq} (\oper{seq} \prefix{\lowTilde}\param{score} \param{"[b]"}) \prefix{\lowTilde}\param{score});
 }
 
+\begin{figure}[th]
 \centering
 \includegraphics[width=0.9\columnwidth]{imgs/expandingTree}
-\caption{Expanding \sExpr\ trees
+\caption{Composing \sExpr
 \label{fig:expandingTree}}
 \end{figure}
-
 
 %------------------------------------------
 \section{Examples}
@@ -413,63 +414,61 @@ It allows to easily make use of previously defined \sExpr\ to create more comple
 
 \subsection{Canon structure}
 
-A simple but still well-known music structure is of course the canon. Creating such structure from a \OSC{score} is quite easy using the \sExpr\ formalism.
+A simple but still well-known music structure is of course the canon. Creating such structure from a \OSC{score} is quite easy using \sExpr.
 
-\sample{/ITL/scene/score set gmn score.gmn;\\
+With the example below, the first line creates a \OSC{score} object based on a GMN file. It is then transposed to a fifth and a second voice is added, delayed of a half note. Because transposing according to a specific interval is not a basic guido operator (the transposition interval is computed from the 2 scores arguments), one should combine \OSC{transpose} with \OSC{seq} and \OSC{evtail} to prepend the score with a note, transpose the whole score using this note and finally remove it.
+
+\sample{/ITL/scene/score set gmnf score.gmn;\\
 \\
 \# Transposing score\\
 /ITL/scene/canon set gmn\\
 \tab expr(evtail\\
-\tab\tab(transpose\\
-\tab\tab\tab(seq "[c]" \&score)\\
-\tab\tab\tab"[g]")\\
+\tab\tab(transpose (seq "[c]" score) "[g]")\\
 \tab\tab"[a]"\\
 \tab);\\
 \\
 \# Putting score in sequence with it
 /ITL/scene/canon set gmn\\
-\tab expr(seq \&score \lowTilde canon);\\
+\tab expr(seq score canon);\\
 \\
 \# Adding a second voice delayed\\
 /ITL/scene/canon set gmn\\
-\tab expr(par\\
-\tab\tab \lowTilde canon\\
-\tab\tab (seq "[\_/2]" \lowTilde canon)\\
-\tab);
+\tab expr(par canon (seq "[\_/2]" canon));
 }
-The first line import a score into \OSC{score}. Then we transpose it to a fifth and adding a second voice delayed of half a measure. Because transposing according to a specific interval is not a basic guido operator, one should combine \OSC{transpose} with \OSC{seq} and \OSC{evtail} to prepend the score with a note, transpose the whole score using this note and finally remove it.
 
 The result is a simple canon:
 \begin{figure}[th]
 \centering
-\includegraphics[width=1\columnwidth]{imgs/exampleCanon}
+\includegraphics[width=1.\columnwidth]{imgs/exampleCanon}
 \caption{Canon result
 \label{fig:canonFig}}
 \end{figure}
 
-\subsection{Multiform but still synced scores}
+\subsection{Multiform but still synced scores}\label{sample2}
 \SExpr\ is a great tools to duplicate and dynamically transform scores, keeping every copies synced to the original.
 
-\sample{/ITL/scene/origin set gmnf score.gmn;\\
+\sample{/ITL/scene/stream set gmnstream \\
+\tab '[$\backslash$meter<"4/4">]';\\
+\\
 /ITL/saxo/score set gmn \\
 \tab expr( evtail\\
 \tab \tab (transpose\\
 \tab \tab \tab (seq\\
 \tab \tab \tab \tab "[e\&1]"\\
-\tab \tab \tab \tab \&/ITL/scene/origin )\\
+\tab \tab \tab \tab \&/ITL/scene/stream )\\
 \tab \tab \tab "[c2]" )\\
 \tab \tab "[a]"\\
 \tab );\\
 \\
 /ITL/audience/score set pianoroll \\
-\tab expr( \&/ITL/scene/origin);\\
+\tab expr( \&/ITL/scene/stream);\\
 \\
-/ITL/scene/origin watch newData\\
+/ITL/scene/stream watch newData\\
 \tab(/ITL/*/score expr reeval);
 }
 
-The previous example create 2 copies of the same score \OSC{origin}, one transposed for saxophones and the other show a piano roll version of \OSC{origin} used as a visual support for the audience.
-The last line ensure the update of the copies when \OSC{origin} is modified.
+The previous example creates 2 copies of the GMN stream object \OSC{stream}, one transposed for the saxophone and one displayed as a piano roll of \OSC{stream}, intended as a visual support for the audience. Both are displayed in different scenes.
+The last line ensure the update of the copies when \OSC{stream} is modified. The \OSC{/ITL/scene/stream} argument is re-evaluated due to the \& prefix. The result is illustrated in figure \ref{fig:mutliscoreFig}.
 
 \begin{figure}[th]
 \centering
