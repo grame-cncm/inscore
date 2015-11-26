@@ -444,7 +444,7 @@ The result is a simple canon:
 \label{fig:canonFig}}
 \end{figure}
 
-\subsection{Multiform but still synced scores}\label{sample2}
+\subsection{Multiform synced scores}\label{sample2}
 \SExpr\ is a great tools to duplicate and dynamically transform scores, keeping every copies synced to the original.
 
 \sample{/ITL/scene/stream set gmnstream \\
@@ -467,21 +467,23 @@ The result is a simple canon:
 \tab(/ITL/*/score expr reeval);
 }
 
-The previous example creates 2 copies of the GMN stream object \OSC{stream}, one transposed for the saxophone and one displayed as a piano roll of \OSC{stream}, intended as a visual support for the audience. Both are displayed in different scenes.
+The previous example creates 2 copies of the GMN stream object \OSC{stream}, one transposed for the saxophone and one displayed as a piano roll, intended as a visual support for the audience. Both are displayed in different scenes.
 The last line ensure the update of the copies when \OSC{stream} is modified. The \OSC{/ITL/scene/stream} argument is re-evaluated due to the \& prefix. The result is illustrated in figure \ref{fig:mutliscoreFig}.
 
 \begin{figure}[th]
 \centering
-\includegraphics[width=0.8\columnwidth]{imgs/example1}
+\includegraphics[width=0.9\columnwidth]{imgs/example1}
 \caption{Multiform scores result
 \label{fig:mutliscoreFig}}
 \end{figure}
 
 \section{Conclusions}
 
-Combining the simplicity of GuidoAR operators with the powerful features of INScore (like URL support, full OSC compatibility, interaction support...), \sExpr\ fully integrate score composition into the interactive and augmented music score software. They suggest a creative process based upon musical structures and scores aggregation by giving the possibility to compose various score materials including score objects and even themselves. Above all, \sExpr\ provides a handy tool to manipulate scores regardless to their origins (files, URL, streams...) or their representations (traditional music notation or piano roll).
+Combining the simplicity of GuidoAR operators with the powerful features of INScore (like URL support, full OSC compatibility, interaction support...), \sExpr\ fully integrate symbolic score composition into an interactive and augmented music score environment. They suggest a creative process based upon musical structures and scores aggregation by giving the possibility to compose various score materials including score objects. Above all, \sExpr\ provide a handy way to manipulate scores regardless to their origin (files, URL, streams...) or their representation (traditional music notation or piano roll) and to design dynamic scores based on arbitrary score composition.
 
-Still, the implementation process is not over yet, venturing to the traditional music representation's frontiers. Because traditional notation and piano roll representation is not the only ways to write music, because non-conventional music notation make use of a wider variety of shapes or graphics, the \sExpr\ logic should be extended to manipulate any graphical objects of INScore.
+In future work, we're considering extending the \sExpr\ to all the INScore objects. Such an approach - composing arbitrary graphic resources using a musical semantic - raises issues that are non-trivial to solve. Indeed, if the operations on the time domain could be applied to any object due to their common time dimension, tranformations in the pitch domain or based on structured time (like rhythm) implies to extend the musical semantic of the graphics space.
+
+%Still, the implementation process is not over yet, venturing to the traditional music representation's frontiers. Because traditional notation and piano roll representation is not the only ways to write music, because non-conventional music notation make use of a wider variety of shapes or graphics, the \sExpr\ logic should be extended to manipulate any graphical objects of INScore.
 
 
 \begin{acknowledgments}
