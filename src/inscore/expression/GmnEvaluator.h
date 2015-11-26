@@ -18,7 +18,7 @@ public:
 
 protected:
         GmnEvaluator(const IObject* contextObject);
-		bool isMusicXml(const std::string &score) const;
+		bool isXml(const std::string &score) const;
 };
 
 }

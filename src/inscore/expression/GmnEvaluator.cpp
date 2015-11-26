@@ -109,9 +109,9 @@ const std::string GmnEvaluator::eval(const IObject *arg)
 const string GmnEvaluator::eval(const string &arg, const IExpression *)
 {
 	std::string gmn = arg;
-	if(isMusicXml(arg)){
+	if(isXml(arg)){
 		if(!QGuidoImporter::musicxmlSupported()){
-			ITLErr<< evaluatorName() << ": MusicXML import is not availalbe"<<ITLEndl;
+			ITLErr<< evaluatorName() << ": MusicXML import is not available"<<ITLEndl;
 			return fEvalStatus.fail();
 		}
 
@@ -129,7 +129,7 @@ const string GmnEvaluator::eval(const string &arg, const IExpression *)
 	return gmn;
 }
 
-bool GmnEvaluator::isMusicXml(const string &score) const
+bool GmnEvaluator::isXml(const string &score) const
 {
 	auto it = score.begin();
 	while(it!=score.end()){
