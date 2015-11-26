@@ -25,16 +25,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="7.4248672"
-     inkscape:cy="292.27883"
+     inkscape:zoom="2"
+     inkscape:cx="337.40586"
+     inkscape:cy="137.50613"
      inkscape:document-units="px"
-     inkscape:current-layer="g9593"
+     inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1600"
-     inkscape:window-height="1163"
-     inkscape:window-x="160"
-     inkscape:window-y="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1043"
+     inkscape:window-x="0"
+     inkscape:window-y="1200"
      inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -70,7 +70,7 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccccc" />
     <g
-       transform="translate(32.677283,48.75018)"
+       transform="translate(33.38439,48.75018)"
        id="g9331">
       <rect
          y="345.88892"
@@ -83,12 +83,12 @@
          sodipodi:linespacing="125%"
          id="text9335"
          y="369.71936"
-         x="254.91376"
+         x="253.146"
          style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:FreeMono;-inkscape-font-specification:FreeMono"
            y="369.71936"
-           x="254.91376"
+           x="253.146"
            id="tspan9337"
            sodipodi:role="line">score file</tspan></text>
     </g>
@@ -143,13 +143,13 @@
       <text
          xml:space="preserve"
          style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         x="250.91376"
+         x="253.03508"
          y="369.71936"
          id="text9548"
          sodipodi:linespacing="125%"><tspan
            sodipodi:role="line"
            id="tspan9550"
-           x="250.91376"
+           x="253.03508"
            y="369.71936"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:FreeMono;-inkscape-font-specification:FreeMono">score string</tspan></text>
     </g>
@@ -174,7 +174,7 @@
          sodipodi:role="line">3</tspan></text>
     <g
        id="g9579"
-       transform="translate(42.677283,100.42101)">
+       transform="translate(44.44505,100.42101)">
       <rect
          style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.07700002;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
          id="rect9581"
@@ -185,13 +185,13 @@
       <text
          xml:space="preserve"
          style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         x="240.91376"
+         x="242.68152"
          y="369.71936"
          id="text9583"
          sodipodi:linespacing="125%"><tspan
            sodipodi:role="line"
            id="tspan9585"
-           x="240.91376"
+           x="242.68152"
            y="369.71936"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:FreeMono;-inkscape-font-specification:FreeMono">score object</tspan></text>
     </g>
@@ -219,7 +219,7 @@
        id="g9593">
       <rect
          y="346.03525"
-         x="237.05118"
+         x="238.46539"
          height="33.725262"
          width="267.63962"
          id="rect9595"
@@ -228,12 +228,12 @@
          sodipodi:linespacing="125%"
          id="text9597"
          y="369.71936"
-         x="248.91376"
+         x="243.23546"
          style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:FreeMono;-inkscape-font-specification:FreeMono"
            y="369.71936"
-           x="248.91376"
+           x="243.23546"
            id="tspan9599"
            sodipodi:role="line">score expression</tspan></text>
     </g>

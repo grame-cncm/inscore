@@ -251,16 +251,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="642.79069"
-     inkscape:cy="757.36201"
+     inkscape:zoom="1.979899"
+     inkscape:cx="333.13634"
+     inkscape:cy="272.62272"
      inkscape:document-units="px"
      inkscape:current-layer="g4165"
      showgrid="false"
-     inkscape:window-width="1600"
-     inkscape:window-height="1163"
-     inkscape:window-x="160"
-     inkscape:window-y="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1043"
+     inkscape:window-x="0"
+     inkscape:window-y="1200"
      inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -274,7 +274,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -290,20 +290,6 @@
       <g
          transform="matrix(0.06,0,0,-0.06,0,557)"
          id="g4165">
-        <rect
-           y="2560.4341"
-           x="744.091"
-           height="2484.3545"
-           width="11366.885"
-           id="rect5515-0"
-           style="fill:#f2f3f3;fill-opacity:1;stroke:#000000;stroke-width:13.33333302;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-        <rect
-           y="236.59364"
-           x="4035.5784"
-           height="1006.0193"
-           width="4554.9438"
-           id="rect5515"
-           style="fill:#f2f3f3;fill-opacity:1;stroke:#000000;stroke-width:13.33333302;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
         <g
            id="g4167">
           <g
@@ -9142,7 +9128,7 @@
                height="725.71429"
                x="-322.85715"
                y="160.21713" /></flowRegion><flowPara
-             id="flowPara6544"></flowPara></flowRoot>      </g>
+             id="flowPara6544" /></flowRoot>      </g>
     </g>
   </g>
 </svg>
