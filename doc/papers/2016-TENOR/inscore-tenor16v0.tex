@@ -165,6 +165,7 @@
 \capstartfalse
 \maketitle
 \capstarttrue
+
 %
 \begin{abstract}
 INScore is an environment for the design of augmented interactive music scores turned to non-conventional use of music notation. The environment allows arbitrary graphic resources to be used and composed for the music representation. It supports symbolic music notation, described using Guido Music Notation or MusicXML formats. The environment has been extended to provided score level composition using a set of operators that consistently take scores as arguments to compute new scores as output. INScore API supports now \sExpr\ both at OSC and at scripting levels. The work is based on a previous research that solved the issues of the notation consistency across scores composition. This paper focuses on the language level and explains the different strategies to evaluate score expressions.
@@ -179,19 +180,19 @@ Issues like writing spatialized music \cite{Ellberger_tenor2015}, addressing new
 
 Interactive music and real-time scores are also representative of an expanding domain in the music creation field. The advent of the digital score and the maturation of the computer tools for music notation and representation constitute the basement for the development of this musical form, which is often grounded on non-traditional music representation \cite{RSmith_tenor2015} \cite{Hope_tenor2015} but may also use the common music notation \cite{Hoadley12,hoadley14}. 
 
-In order to address the notations challenges mentionned above, INScore \cite{Fober:12a,fober14c} has been designed as an environment opened to non-conventional music representation (although it supports symbolic notation), and turned to real-time and interactive use \cite{Fober:13b, Fober:14b}. It is clearly focused on music representation only and in this way, differs from tools integrated into programming environments like Bach \cite{agostini12b} or MaxScore \cite{didko08}. 
+In order to address the notation challenges mentionned above, INScore \cite{Fober:12a,fober14c} has been designed as an environment opened to non-conventional music representation (although it supports symbolic notation), and turned to real-time and interactive use \cite{Fober:13b, Fober:14b}. It is clearly focused on music representation only and in this way, differs from tools integrated into programming environments like Bach \cite{agostini12b} or MaxScore \cite{didko08}. 
 
 INScore has been extended with \sExpr\ that provide symbolic scores composition features (e.g., putting scores in sequence or in parallel). Building new scores from existing scores at symbolic  level is not new. Haskell is providing such features \cite{Quick:2013:GAM:2505341.2505345}. Freeman and Lee proposed score composition operations in a real-time and interactive notation context \cite{Lee:2013}. Regarding the score operations used by INScore, they are imported from a previous work \cite{fober12b} that was focusing on the music notation consistency through arbitrary composition. 
 
 The novelty of the proposed approach relies on the dynamic aspects of the scores composition operations, as well as on the persistence of the score expressions. A score may be composed as an arbitrary graph of score expressions and equipped with a fine control over the changes propagation.
 
-The paper introduces first the score composition expressions. Next, the different evaluations strategies are explained and illustrated with examples. The articulation with the INScore environment is presented in detail and followed by concrete use cases. A generalization of this approach is finally proposed in the concluding section.  
+The paper introduces first the score composition expressions. Next, the different evaluation strategies are explained and illustrated with examples. The articulation with the INScore environment is presented in detail and followed by concrete use cases. An extension of the primary scores composition design to \sExpr\ composition is next introduced. A generalization of this approach to the whole set of INScore graphic objects is finally considered in the concluding section.  
 
 
 %-----------------------------------------------
 \section{Language Specification}\label{language}
 \label{languageSpec}
-The main idea behind the project is designing a relevant language that provides easy to use tools to compose and to manipulate scores. Indeed, as all the operators have already been defined by the GuidoAR library \cite{fober12b}, the point is to imagine a handy way to use them from INScore's scripts.
+The main idea behind the project is to design a relevant language that provides easy to use tools to compose and to manipulate scores. Indeed, as all the operators have already been defined by the GuidoAR library \cite{fober12b}, the point is to imagine a handy way to use them from INScore but above all, to benefit of the dynamic aspects of the INScore environment.
 
 \subsection{The operators}
 
@@ -223,20 +224,22 @@ rhythm 	&	$s1\ s2$	& applies the rhythm of $s1$ to $s2$ in a loop \\
 \label{operations}
 \end{table*}
 
-All the operators have a common interface: regardless their actual definition, they always take two scores as input to produce a score as output. The scores are expressed using the Guido Music Notation format [GMN]\cite{hoos98}. A few low-level score manipulation operations are defined (which apply perfectly to INScore language's philosophy) with a deterministic behaviour (none of the operators implement random operations). However, the limited number of operators can't be a limitation, as the uniformity between their inputs and output make them easy to combine into pipelines designs, creating more high-level operators.
+
+All the operators have a common interface: regardless their actual definition, they always take two scores as input to produce a score as output. The scores are expressed using the Guido Music Notation format [GMN]\cite{hoos98}. A few low-level score manipulation operations are defined (which apply perfectly to INScore language's philosophy) with a deterministic behaviour (none of the operators implement random operations). However, the limited number of operators is not a limitation, as the uniformity between their inputs and output make them easy to combine into pipeline designs, creating more high-level operations.
 
 See Table~\ref{operations} for the definition of the operators.
 
 \subsection{Designing a creative language}
 In the context of software used for artistic creation like INScore, designing a language is not trivial. Like any other creative tools,  the \sExpr\ language shall inevitably frame the creation process through which the artist must go. To that extent, conceiving a language is actually designing a creative "work-flow" that the users shall then adopt.
 
-The continuity between inputs and outputs through guido operators allows to compose a music by successively transform and aggregate scores fragments. This process (applying transformations on various materials and combining them into a whole creation) is similar to electro-acoustic creative processes where, after choosing samples, the composer applies effects, equalizer... and mixes them together until the raw musical materials become unrecognisable \note{il faudrait une référence}.
+The continuity between inputs and outputs through Guido operators allows to compose a music by successively transform and aggregate scores fragments. This process (applying transformations on various materials and combining them into a whole creation) is similar to electro-acoustic creative processes where, after choosing sound material, the composer applies effects... and mixes them until this raw musical materials become unrecognisable.
 
-Adapting this approach to the traditional music notation would not only make the language easy to learn for composer (used to the audio pipelines design) but could offer great tools for composition: carving and assembling score samples using structural operators, placing the musical structure
-%architecture
- in the center of the creative process. In some ways, the art wouldn't emerge from the quality of the raw score fragments but from the process that transforms, shapes, and links them together. Unlike traditional music composition, the structure couldn't only be a classic expected frame any more, but could be the place where the aesthetic lies.
+Adapting this approach to the symbolic music notation would not only make the language easy to learn for composer but could offer great tools for composition: carving and assembling score samples using structural operators, placing the musical structure in the center of the creative process. In some ways, the art wouldn't emerge from the quality of the raw score fragments but from the process that transforms, shapes, and links them together. 
+%Unlike traditional music composition, the structure couldn't only be a classic expected frame any more, but could be the place where the aesthetic lies.
 
-It's with this perspective of audio pipelines and emphasis of the structure that the \sExpr\ syntax has been defined. In particular, these expressions should make use of various heterogeneous materials including \sExpr\ or existing score objects.
+It's with this perspective 
+%of audio pipelines 
+and emphasis of the structure that the \sExpr\ syntax has been defined. In particular, these expressions should make use of various heterogeneous materials including \sExpr\ or existing score objects.
 
 \subsection{\SExpr\ syntax}
 \smallbreak
@@ -252,7 +255,7 @@ It's with this perspective of audio pipelines and emphasis of the structure that
 
 Note that the leading \OSC{expr} token is present to disambiguate parenthesis that are already used in INScore scripts with messags lists.
 
-Both of the syntaxes make use of \OSC{score} arguments. \SExpr\ are quite permissive regarding to their types:
+Both of the syntaxes make use of \OSC{score} arguments. \SExpr\ are quite permissive regarding to their type:
 \begin{center}
 \includegraphics[width=0.7\columnwidth]{imgs/syntax2}
 \end{center}
@@ -261,7 +264,7 @@ Both of the syntaxes make use of \OSC{score} arguments. \SExpr\ are quite permis
 \item \OSC{score string}: are GMN or MusicXML strings.
 \item \OSC{score file}:  refers to a score file that should contain GMN or MusicXML data. File path complies to INScore file handling and could indicate an absolute, a relative path or an URL.
 \item \OSC{score object}:  refers to an existing INScore object using a relative or absolute OSC address. The object must be a guido, musicxml or piano-roll object, as well as guido and piano-roll streams.
-\item \OSC{score expression}:  \SExpr\ can be used as arguments inside \sExpr\ (in this case the \OSC{expr} token is optional).
+\item \OSC{score expression}:  \sExpr\ can be used as arguments of \sExpr\ (in this case the \OSC{expr} token is optional).
 \end{enumerate}
 
 Here is an example of a \emph{score expression} that puts a score in parallel with 2 scores in sequence:
@@ -486,12 +489,12 @@ In future work, we're considering extending the \sExpr\ to all the INScore objec
 %Still, the implementation process is not over yet, venturing to the traditional music representation's frontiers. Because traditional notation and piano roll representation is not the only ways to write music, because non-conventional music notation make use of a wider variety of shapes or graphics, the \sExpr\ logic should be extended to manipulate any graphical objects of INScore.
 
 
-\begin{acknowledgments}
-You may acknowledge people, projects, 
-funding agencies, etc. 
-which can be included after the second-level heading
-``Acknowledgments'' (with no numbering).
-\end{acknowledgments} 
+%\begin{acknowledgments}
+%You may acknowledge people, projects, 
+%funding agencies, etc. 
+%which can be included after the second-level heading
+%``Acknowledgments'' (with no numbering).
+%\end{acknowledgments} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %bibliography here
