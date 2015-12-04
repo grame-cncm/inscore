@@ -57,6 +57,30 @@ private:
 
 //____________________________________________________________________
 // ------------------------------------------------------------------
+class ExprSimplificator: public evaluator{
+
+	SIExprArg fSimplifiedNode;
+
+public:
+	static void simplify(SIExpression &expression);
+	static void simplify(SIExprArg &rootNode);
+
+	virtual const std::string eval(IExprOperator *arg,	IExprArgBase *exprArg);
+	virtual const std::string eval(const std::string &arg,		IExprArgBase *exprArg){return "";}
+	virtual const std::string eval(const filepath &arg,			IExprArgBase *exprArg){return "";}
+	virtual const std::string eval(const itladdress &arg,		IExprArgBase *exprArg){return "";}
+	virtual const std::string eval(const iexpression &argarg,	IExprArgBase *exprArg){return "";}
+
+protected:
+	ExprSimplificator(): evaluator() {}
+
+	bool simplifyNode(SIExprArg &node);
+
+};
+
+
+//____________________________________________________________________
+// ------------------------------------------------------------------
 class ExprSmartCopy: public constEvaluator{
 
 	std::map<const IExprArgBase*, SIExprArg> fCopyMap;

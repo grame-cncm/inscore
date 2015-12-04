@@ -56,7 +56,10 @@ bool IExprHandlerbase::composeExpr(SIExpression newExpr, std::string &result){
 
     bool r = evalExpression(result);
     if(!r)
-	clearExpr();
+		clearExpr();
+	else
+		ExprSimplificator::simplify(fExpression);
+
 	return r;
 }
 

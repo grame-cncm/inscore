@@ -37,7 +37,7 @@ bool ExprReader::read(const IExprArgBase *expr, std::string prefix, std::string 
 //_________________________________
 const std::string ExprReader::eval(const std::string& arg, const IExprArgBase *)
 {
-	return prefix(arg);
+	return prefix('"'+arg+'"');
 }
 
 //_________________________________
@@ -66,7 +66,7 @@ const std::string ExprReader::eval(const IExprOperator *arg, const IExprArgBase 
 //_________________________________
 const std::string ExprReader::eval(const filepath& arg, const IExprArgBase *exprArg)
 {
-	return argPrefix(exprArg) + prefix(arg);
+	return argPrefix(exprArg) + prefix('"'+(std::string)arg+'"');
 }
 
 //_________________________________
