@@ -256,7 +256,11 @@ SIMessageList IGuidoCode::getMsgs(const IMessage* msg) const
 			std::string r = fExprHandler.printExpression();
 			*msg << r;
 			outMsgs->list().push_back(msg);
-			///TODO return the reel expression
+		}else if( param == "exprTree" && fExprHandler.hasExpression()){
+			SIMessage msg = IMessage::create(getOSCAddress(), kexpression_GetMethod);
+			std::string r = fExprHandler.printTree();
+			*msg << r;
+			outMsgs->list().push_back(msg);
 		}
 	}
 	outMsgs->list().push_back (IObject::getMsgs(msg)->list());
@@ -287,9 +291,11 @@ MsgHandler::msgStatus IGuidoCode::exprMsg(const IMessage* msg)
 		}
 
 		if(p=="renew")
-			processed = fExprHandler.forceEvalExpr(r);
+			processed = fExprHandler.renewExpression(r);
 		else if(p=="reeval")
 			processed = fExprHandler.evalExpression(r);
+		else if(p=="reset")
+			processed = fExprHandler.forceEvalExpr(r);
 		else
 			return MsgHandler::kBadParameters;
 

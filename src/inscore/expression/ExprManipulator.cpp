@@ -149,6 +149,7 @@ const string ExprSimplificator::eval(IExprOperator *arg, IExprArgBase *exprArg)
 		std::string nodeDef;
 		if(ExprReader::read(exprArg, "", nodeDef)){
 			nodeDef = nodeDef.substr(4);		//Removing the "expr" token at the start of the definition
+			std::cerr<<"Simplified expr: "<<nodeDef<<std::endl;
 			fSimplifiedNode = new IExprArg<iexpression>(nodeDef);
 			*fSimplifiedNode->evaluated() = exprArg->getEvaluated();
 		}

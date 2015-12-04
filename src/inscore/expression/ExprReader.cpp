@@ -90,7 +90,7 @@ std::string ExprReader::argPrefix(const IExprArgBase *exprArg)
 
 
 	std::string evaluated = exprArg->getEvaluated();
-	if(!evaluated.empty()){
+	if(fPrintData&&!evaluated.empty()){
 		if(evaluated.find('\n') == std::string::npos)
 			r+="[\""+evaluated+"\"]";	//Single line
 		else{

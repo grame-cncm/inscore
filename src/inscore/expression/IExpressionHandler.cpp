@@ -5,6 +5,7 @@
 #include "IObject.h"
 
 #include "ExprReader.h"
+#include "IExprParser.h"
 #include "ExprEvaluator.h"
 
 namespace inscore{
@@ -23,6 +24,18 @@ bool IExprHandlerbase::forceEvalExpr(std::string &result){
 
 	fExpression->rootNode()->recursiveClearEvaluated();
 	return evaluator()->evalExpression(fExpression, result);
+}
+
+bool IExprHandlerbase::renewExpression(std::string &result)
+{
+	if(!checkExpression())
+		return false;
+
+	SIExpression expr;
+	if(!IExprParser::parseExpression(fExpression->definition(), expr))
+		return false;
+
+	return composeExpr(expr, result);
 }
 
 std::string IExprHandlerbase::printExpression() const{
