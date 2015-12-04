@@ -6,23 +6,24 @@
 #include "IObject.h"
 #include "IScene.h"
 #include "IExpressionHandler.h"
+#include "IExprParser.h"
 
 
 using namespace std;
 
 namespace inscore{
 
-bool ExprEvaluator::evalExpression(const IExpression* expr, std::string& result){
+bool ExprEvaluator::evalExpression(const IExpression *expr, std::string& result){
 	fEvalStatus.init();
 	string r;
-	smartEval(expr, r);
+	smartEval(expr->rootNode(), r);
 	if(fEvalStatus.hasEvalSucceed())
 		result = r;
 	return fEvalStatus.hasEvalSucceed();
 }
 
 //_____________________________________________________________
-bool ExprEvaluator::smartEval(const IExpression *expr, string& result)
+bool ExprEvaluator::smartEval(const IExprArgBase *expr, string& result)
 {
 	result = expr->getEvaluated();					//Storing the previously evaluated value in result ("" if no value)
 
@@ -42,7 +43,7 @@ bool ExprEvaluator::smartEval(const IExpression *expr, string& result)
 
 
 //_____________________________________________________________
-const string ExprEvaluator::eval(const IExprOperator* arg, const IExpression *exprArg)
+const string ExprEvaluator::eval(const IExprOperator* arg, const IExprArgBase *exprArg)
 {
 	OperatorCb cb;
 
@@ -84,13 +85,13 @@ const string ExprEvaluator::eval(const IExprOperator* arg, const IExpression *ex
 }
 
 //_____________________________________________________________
-const string ExprEvaluator::eval(const std::string &arg, const IExpression *)
+const string ExprEvaluator::eval(const std::string &arg, const IExprArgBase *)
 {
     return arg;
 }
 
 //_____________________________________________________________
-const string ExprEvaluator::eval(const filepath& arg, const IExpression *exprArg)
+const string ExprEvaluator::eval(const filepath& arg, const IExprArgBase *exprArg)
 {
 
     std::string fileData="";
@@ -115,7 +116,7 @@ const string ExprEvaluator::eval(const filepath& arg, const IExpression *exprArg
 }
 
 //_____________________________________________________________
-const string ExprEvaluator::eval(const itladdress &arg, const IExpression *exprArg)
+const string ExprEvaluator::eval(const itladdress &arg, const IExprArgBase *exprArg)
 {
 	const IObject* o = objectFromAddress(arg, fContextObject);
 
@@ -123,7 +124,20 @@ const string ExprEvaluator::eval(const itladdress &arg, const IExpression *exprA
 		ITLErr<<fEvalName<<": "<<(string)arg<<" not known at this address..."<<ITLEndl;
 		return fEvalStatus.fail(exprArg);
     }
-    return eval(o);
+	return eval(o);
+}
+
+//_____________________________________________________________
+const string ExprEvaluator::eval(const iexpression &arg, const IExprArgBase *exprArg)
+{
+	SIExpression expr;
+	if(IExprParser::parseExpression(arg, expr)){
+		const IExprArgBase* exprTree= expr->rootNode();
+		return exprTree->accept(this);
+	}
+
+	ITLErr<<fEvalName<<": error incorrect IExpression"<<ITLEndl;
+	return fEvalStatus.fail(exprArg);
 }
 
 //_____________________________________________________________

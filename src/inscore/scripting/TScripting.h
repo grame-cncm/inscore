@@ -84,82 +84,12 @@ class TScripting
 		bool			checkLua () const;
 		bool			checkJavascript () const;
 
-		IMessage::argslist		resolve	(const char* var, const char * defaultVal=0);
-		IMessage::argslist		resolve	(const IMessage* var);
+		IMessage::argslist		resolve	(const char* var, const char * defaultVal=0) const;
+		IMessage::argslist		resolve	(const IMessage* var) const;
 		const SIMessageList&	messages() const { return fMessages; }
 
-		/*!
-		 * \brief creates a message param that encapsulate a smart pointer on an argument IExprArg with the corresponding type artT (if artT is std::string also checks if arg is a filepath)
-		 * \param argument to encapsulate
-		 * \return a simple message param
-		 */
-		template<typename argT> Sbaseparam* createExprArg(argT arg){
-			SIExpression argB = ExprFactory::createArg(arg);
-		    IMsgParam<SIExpression>* param = new IMsgParam<SIExpression>(argB);
-		    return new Sbaseparam(param);
-		}
 
-        /*!
-		* \brief surcharges createArg to accept parser string pointer
-        * \param pointer on the arg string
-        * \return a simple message param
-        */
-//		template<typename argT> Sbaseparam* createExprArg(std::string* arg){
-//            argT param(*arg);
-//			return createExprArg<argT>(param);
-//        }
-
-		void setExprArgDynamic(Sbaseparam* param);
-		void setExprArgCopy(Sbaseparam* param);
-
-		/*!
-		 * \brief tries to encapsulate the content from a variable into a valid expression argument
-		 * \return a simple Sbaseparam
-		 * \warning the variable must be a single string
-		 */
-		Sbaseparam* createExprArgFromVar(IMessage::argslist* var);
-
-		/*!
-		 * \brief creates a message param that contains an Expression Operator
-		 * \param operatorName: the name of the operator
-		 * \param arg1: first argument passed to the operator
-		 * \param arg2: second argument passed to the operator
-		 * \return a simple message param
-		 */
-        Sbaseparam* createExpr(std::string operatorName, Sbaseparam* param1, Sbaseparam* param2);
-        Sbaseparam* createExpr(std::string* operatorName, Sbaseparam* param1, Sbaseparam* param2){return createExpr(*operatorName, param1, param2);}
-
-
-        /*!
-		 * \brief digs into a Sbaseparam to extract the smart pointer on IExprArgbase
-         * \param the base param containing the argument
-         * \return the arguments
-		 */
-		static SIExpression exprArgFromParam(Sbaseparam* param);
-
-        /*!
-		 * \brief digs into a Sbaseparam to extract the smart pointer on IExpression (for testing purpose)
-         * \param the base param containing the expression
-         * \return the IExpression
-         */
-        static SIExprOperator exprFromParam(const Sbaseparam* param);
-
-        /*!
-		 * \brief constructs an empty arg, used when syntax  errors are found
-         * \return an empty arg: <std::string> ""
-         */
-		inline Sbaseparam* emptyExprArg(){
-			return createExprArg<std::string>("");
-        }
-
-		bool hasFailed(){return fParsingFailed;}
-		const std::string& errorlog(){return fErrorLog;}
-
-protected:
-		std::string fErrorLog;
-		bool fParsingFailed;
-
-		void fail(const std::string log);
+		Sbaseparam* parseExpr(std::string definition) const;
 
 };
 

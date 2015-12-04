@@ -17,10 +17,8 @@ class ExprEvaluator;
 
 class IExprHandlerbase{
 
-	SIExpression fExprRoot;
+	SIExpression fExpression;
 	IObject* fContextObject;
-	WatchersList fWatchers;
-	bool fAutoWatch;
 
 public:
 	bool evalExpression(std::string& result) const;
@@ -31,11 +29,9 @@ public:
 
 	SIExpression getExpression() const;
 	bool hasExpression() const;
-	std::string printExpression(bool& succeed) const;
 	std::string printExpression() const;
-
-	void setAutoWatch(bool autoWatch=true){fAutoWatch = autoWatch;}
-	bool autoWatch() const {return fAutoWatch;}
+	std::string printTree(bool& succeed) const;
+	std::string printTree() const;
 
 	 virtual ~IExprHandlerbase();
 
@@ -45,7 +41,6 @@ protected:
 	inline const IObject* contextObject() const {return fContextObject;}
 
 	bool checkExpression() const;
-	void updateWatchers(WatchersList newWatchers);
 };
 
 

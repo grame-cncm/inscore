@@ -106,7 +106,7 @@ const std::string GmnEvaluator::eval(const IObject *arg)
 
 
 //_____________________________________________________
-const string GmnEvaluator::eval(const string &arg, const IExpression *)
+const string GmnEvaluator::eval(const string &arg, const IExprArgBase *)
 {
 	std::string gmn = arg;
 	if(isXml(arg)){

@@ -1,15 +1,17 @@
 #include "ExprReader.h"
 
 #include "IExpression.h"
+#include "IExprParser.h"
 
 #define TAB "   "
 
 namespace inscore{
 
-bool ExprReader::evalExpression(const IExpression *expr, std::string &result)
+bool ExprReader::evalExpression(const IExprArgBase *expr, std::string &result, bool printData)
 {
 	fTab = 0;
     evalSucceed = true;
+	fPrintData = printData;
 
 	result = prefix();
 	fPrefix = "    ";
@@ -25,25 +27,25 @@ bool ExprReader::evalExpression(const IExpression *expr, std::string &result)
     return evalSucceed;
 }
 
-bool ExprReader::read(const IExpression *expr, std::string prefix, std::string &result)
+bool ExprReader::read(const IExprArgBase *expr, std::string prefix, std::string &result, bool printData)
 {
 	ExprReader r;
 	r.fPrefix = prefix;
-	return r.evalExpression(expr, result);
+	return r.evalExpression(expr, result, printData);
 }
 
 //_________________________________
-const std::string ExprReader::eval(const std::string& arg, const IExpression *)
+const std::string ExprReader::eval(const std::string& arg, const IExprArgBase *)
 {
 	return prefix(arg);
 }
 
 //_________________________________
-const std::string ExprReader::eval(const IExprOperator *arg, const IExpression *)
+const std::string ExprReader::eval(const IExprOperator *arg, const IExprArgBase *)
 {
 	fTab++;
-	std::string arg1 = ((const IExpression*)arg->constArg1())->accept(this);
-	std::string arg2 = ((const IExpression*)arg->constArg2())->accept(this);
+	std::string arg1 = ((const IExprArgBase*)arg->constArg1())->accept(this);
+	std::string arg2 = ((const IExprArgBase*)arg->constArg2())->accept(this);
 	fTab--;
 
 	std::string r= "( "+arg->getName();
@@ -62,18 +64,24 @@ const std::string ExprReader::eval(const IExprOperator *arg, const IExpression *
 }
 
 //_________________________________
-const std::string ExprReader::eval(const filepath& arg, const IExpression *exprArg)
+const std::string ExprReader::eval(const filepath& arg, const IExprArgBase *exprArg)
 {
 	return argPrefix(exprArg) + prefix(arg);
 }
 
 //_________________________________
-const std::string ExprReader::eval(const itladdress &arg, const IExpression *exprArg)
+const std::string ExprReader::eval(const itladdress &arg, const IExprArgBase *exprArg)
 {
 	return argPrefix(exprArg) + prefix(arg);
 }
 
-std::string ExprReader::argPrefix(const IExpression *exprArg)
+//_________________________________
+const std::string ExprReader::eval(const iexpression &arg, const IExprArgBase *exprArg)
+{
+	return argPrefix(exprArg) + prefix(arg);
+}
+
+std::string ExprReader::argPrefix(const IExprArgBase *exprArg)
 {
 	if(!exprArg)
 		return "";

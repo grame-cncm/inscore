@@ -1,27 +1,25 @@
 
 #ARCH = -arch x86_64
 
-LIB := ../../library
+ITL := ../../inscore
 MAP := ../../libmapping
-PARSER := $(LIB)/ITLParser
-EXPR := $(LIB)/expression
+PARSER := $(ITL)/expression/parser
+EXPR := $(ITL)/expression
 
 ###################
 # no script options
-CXXFLAGS :=  -g -DNO_OSCSTREAM -I$(PARSER) -I$(LIB)/controller -I$(LIB)/lib -I$(LIB)/interface -I$(LIB)/mapping -I$(LIB)/model -I$(LIB)/events -I$(LIB)/view -I$(LIB)/scripting -I$(LIB)/signal -I$(LIB)/expression -I$(MAP)/src/misc -I$(MAP)/src/parser -I$(MAP)/src/relations -I$(MAP)/src/segments -I../../../lib/oscpack -I./ $(ARCH) -lguidoar -DPARSERTEST -std=c++11
+CXXFLAGS :=  -g -DNO_OSCSTREAM -I$(PARSER) -I$(EXPR) -I$(ITL)/controller -I$(ITL)/lib -I$(ITL)/interface -I$(ITL)/mapping -I$(ITL)/model -I$(ITL)/events -I$(ITL)/view -I$(ITL)/scripting -I$(ITL)/signal -I$(MAP)/src/misc -I$(MAP)/src/parser -I$(MAP)/src/relations -I$(MAP)/src/segments -I../../../lib/oscpack -I./ $(ARCH) -lguidoar -std=c++11 -DNO_EXPR_VAR_SUPPORT
 
 
 
-OBJ := $(PARSER)/ITLparser.o $(PARSER)/ITLparse.o $(PARSER)/ITLlex.o $(MAP)/src/misc/rational.o $(LIB)/controller/IMessage.o  $(LIB)/lib/Tools.o $(LIB)/scripting/TScripting.o $(EXPR)/IExpression.o $(EXPR)/ExprFactory.o  $(EXPR)/ExprReader.o $(EXPR)/Operators.o testExpression.o
+#OBJ := $(PARSER)/IExprParser.o $(PARSER)/IExprParse.o $(PARSER)/IExprLex.o $(MAP)/src/misc/rational.o $(LIB)/controller/IMessage.o  $(LIB)/lib/Tools.o $(LIB)/scripting/TScripting.o $(EXPR)/IExpression.o $(EXPR)/ExprFactory.o  $(EXPR)/ExprReader.o $(EXPR)/Operators.o testExpression.o
 
-testExpressionFactory: $(OBJ)
+OBJ := $(PARSER)/IExprParser.o $(PARSER)/IExprParse.o $(PARSER)/IExprlex.o $(EXPR)/IExpression.o $(EXPR)/ExprFactory.o  $(EXPR)/ExprReader.o $(EXPR)/Operators.o testparser.o
+
+testExpression: $(OBJ)
 	g++  -g $(CXXFLAGS)  $(OBJ) -o testExpression
-
-check: testparser
-	valgrind -v --dsymutil=yes --leak-check=full --show-reachable=yes ./testExpression $(FILE) 2> memcheck.txt
-	open memcheck.txt
 
 clean:
 	rm -f $(OBJ)
 
-$(PARSER)/ITLparser.o : $(PARSER)/ITL.l $(PARSER)/ITL.y
+$(PARSER)/IExprParse.o : $(PARSER)/IExpr.l $(PARSER)/IExpr.y

@@ -17,34 +17,38 @@ namespace inscore {
  *				ExprManipulator						*
  * *************************************************/
 
-ExprManipulator::ExprManipulator(const IObject *contextObject, const char *manipulatorName)
+ExprCompositor::ExprCompositor(const IObject *contextObject, const char *manipulatorName)
 	: evaluator(),
 	  fContextObject(contextObject), fManipulatorName(manipulatorName)
 {
 
 }
 
+bool ExprCompositor::compose(SIExprArg &expr, const IObject *contextObject)
+{
+	ExprCompositor compositor(contextObject);
+	return compositor.apply(expr);
+}
 
-bool ExprManipulator::apply(SIExpression &expr, WatchersList &watchers)
+bool ExprCompositor::apply(SIExprArg &exprTree)
 {
 	succeed = true;
 
-	std::string newNode = expr->accept(this);
+
+	std::string newNode = exprTree->accept(this);
 	if(!newNode.empty())
-		replaceNode(expr, newNode);
-
-
-	watchers = fWatchers;
+		replaceNode(exprTree, newNode);
 
 	return succeed;
 }
 
-const string ExprManipulator::eval(IExprOperator *arg, IExpression *exprArg)
+const string ExprCompositor::eval(IExprOperator *arg, IExprArgBase *exprArg)
 {
-	return continueExploration(arg, exprArg);
+	continueExploration(arg, exprArg);
+	return "";
 }
 
-const std::string ExprManipulator::eval(const itladdress& arg, IExpression *exprArg)
+const std::string ExprCompositor::eval(const itladdress& arg, IExprArgBase *exprArg)
 {
 	const IObject* o = ExprEvaluator::objectFromAddress(arg, fContextObject);
 
@@ -52,69 +56,14 @@ const std::string ExprManipulator::eval(const itladdress& arg, IExpression *expr
 		ITLErr<<fManipulatorName<<": "<<(string)arg<<" not known at this address..."<<ITLEndl;
 		manipulationFailed();
 	}else{
-		if(!exprArg->pureStaticEval()){
-			//If static eval, manipulator doesn't change anything
-			if(exprArg->copyEval())
-				return eval(o, exprArg);
-
-			//If dynamic eval, add object to watchers
-			const IGuidoCode* guido = dynamic_cast<const IGuidoCode*>(o);
-			if(!guido)
-				return "";
-
-			fWatchers.insert(o);
-		}
+		if(exprArg->copyEval())
+			return eval(o, exprArg);
 	}
 
 	return "";
 }
 
-string ExprManipulator::replaceBy(SIExpression newNode, std::string key)
-{
-	if(key.empty()){			//generate a key if none
-		stringstream ss;
-		ss<<"!"<<fReplacedNodes.size();
-		key = ss.str();
-	}else{
-		if(fReplacedNodes.find(key) != fReplacedNodes.end())
-			return key;			//Don't change the node in the list if already added
-	}
-
-	fReplacedNodes.insert(pair<string,SIExpression>(key, newNode->copy()));
-	newNode->accept(this);	//explore new branch, searching for watchers
-
-	return key;
-}
-
-string ExprManipulator::continueExploration(IExprOperator *arg, IExpression* exprArg)
-{
-	std::string newNode;
-
-	newNode = arg->constArg1()->accept(this);
-	if(!newNode.empty())
-		replaceNode(arg->arg1(), newNode);
-
-
-	newNode = arg->constArg2()->accept(this);
-	if(!newNode.empty())
-		replaceNode(arg->arg2(), newNode);
-
-	if(arg->arg1()->dynamicEval() || arg->arg2()->dynamicEval())
-		exprArg->switchToDynamic();
-
-	return "";
-}
-
-void ExprManipulator::replaceNode(SIExpression &node, SIExpression newExpr)
-{
-	node = newExpr;
-}
-
-/****************************************************
- *				ExprCompositor						*
- * *************************************************/
-
-const string ExprCompositor::eval(const IObject *arg, IExpression *exprArg)
+const string ExprCompositor::eval(const IObject *arg, IExprArgBase *exprArg)
 {
 	const IGuidoCode* guido = dynamic_cast<const IGuidoCode*>(arg);
 	if(!guido){
@@ -124,7 +73,7 @@ const string ExprCompositor::eval(const IObject *arg, IExpression *exprArg)
 	}
 
 	if(exprArg->copyEval()){
-		SIExpression newNode = guido->getExprHandler()->getExpression();
+		SIExprArg newNode = guido->getExprHandler()->getExpression()->rootNode();
 		if(newNode)
 			return  replaceBy(newNode, guido->name());
 
@@ -135,18 +84,117 @@ const string ExprCompositor::eval(const IObject *arg, IExpression *exprArg)
 }
 
 
-
-ExprCompositor::ExprCompositor(const IObject *contextObject)
-	:ExprManipulator(contextObject, "ExprCompositor")
+//___________________________________________________________________
+string ExprCompositor::replaceBy(SIExprArg newNode, std::string key)
 {
+	if(key.empty()){			//generate a key if none
+		stringstream ss;
+		ss<<"!"<<fReplacedNodes.size();
+		key = ss.str();
+	}else{
+		if(fReplacedNodes.find(key) != fReplacedNodes.end())
+			return key;			//Don't change the node in the list if already added
+	}
+
+	fReplacedNodes.insert(pair<string,SIExprArg>(key, ExprSmartCopy::copy(newNode)));
+
+	return key;
+}
+
+void ExprCompositor::continueExploration(IExprOperator *arg, IExprArgBase* exprArg)
+{
+
+	std::string arg1 = arg->constArg1()->accept(this);
+	std::string arg2 = arg->constArg2()->accept(this);
+
+	if(!arg1.empty())
+		replaceNode(arg->arg1(), arg1);
+
+	if(!arg2.empty())
+		replaceNode(arg->arg2(), arg2);
+
+	if(arg->arg1()->dynamicEval() || arg->arg2()->dynamicEval())
+		exprArg->switchToDynamic();
 
 }
 
-bool ExprCompositor::compose(SIExpression &expr, const IObject *contextObject, WatchersList &watchers)
+void ExprCompositor::replaceNode(SIExprArg &node, SIExprArg newExpr)
 {
-	ExprCompositor compositor(contextObject);
-	return compositor.apply(expr, watchers);
+	node = newExpr;
 }
+
+
+
+
+/****************************************************
+ *				ExprCompositor						*
+ * *************************************************/
+
+
+SIExpression ExprSmartCopy::copy(const SIExpression expression)
+{
+	return IExpression::create(expression->definition(), copy(expression->rootNode()));
+}
+
+SIExprArg ExprSmartCopy::copy(const SIExprArg rootNode)
+{
+	ExprSmartCopy d;
+	return SIExprArg(d.smartCopy(rootNode));
+}
+
+const string ExprSmartCopy::eval(const IExprOperator *arg, const IExprArgBase *exprArg)
+{
+	SIExprArg arg1 = smartCopy(arg->constArg1());
+	SIExprArg arg2 = smartCopy(arg->constArg2());
+
+	IExprOperator* argCopy = new IExprOperator(arg->operatorPrototype(), arg1, arg2);
+
+	fCurrentNode = SIExprArg(new IExprArg<SIExprOperator>(argCopy));
+
+	if(arg1->dynamicEval() || arg2->dynamicEval())
+		fCurrentNode->switchToDynamic();
+
+	return "";
+}
+
+const string ExprSmartCopy::eval(const string &arg, const IExprArgBase *exprArg)
+{
+	fCurrentNode = exprArg->copy();
+	return "";
+}
+
+const string ExprSmartCopy::eval(const filepath &arg, const IExprArgBase *exprArg)
+{
+	fCurrentNode = exprArg->copy();
+	return "";
+}
+
+const string ExprSmartCopy::eval(const itladdress &arg, const IExprArgBase *exprArg)
+{
+	fCurrentNode = exprArg->copy();
+	return "";
+}
+
+
+const string ExprSmartCopy::eval(const iexpression &arg, const IExprArgBase *exprArg)
+{
+	fCurrentNode = exprArg->copy();
+	return "";
+}
+
+SIExprArg ExprSmartCopy::smartCopy(const SIExprArg node)
+{
+
+	auto iter = fCopyMap.find(node);
+	if(iter!=fCopyMap.end())
+		return SIExprArg(iter->second);
+
+	((const IExprArgBase*)node)->accept(this);
+	fCopyMap.insert({node, SIExprArg(fCurrentNode)});
+	return fCurrentNode;
+}
+
+
 
 
 

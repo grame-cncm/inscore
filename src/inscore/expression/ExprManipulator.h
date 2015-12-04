@@ -14,54 +14,70 @@ namespace inscore {
 
 class IObject;
 typedef std::unordered_set<const IObject*> WatchersList;
-typedef std::map<std::string, SIExpression> ReplaceMap;
+typedef std::map<std::string, SIExprArg> ReplaceMap;
 
 
 //____________________________________________________________________
 // ------------------------------------------------------------------
 
-class ExprManipulator: public evaluator{
+class ExprCompositor: public evaluator{
 	const IObject* fContextObject;
 	ReplaceMap fReplacedNodes;
-	WatchersList fWatchers;
-	const char* fManipulatorName;
 
 	bool succeed;
 
 public:
 
-	bool apply(SIExpression& expr, WatchersList& watchers);
-	bool apply(SIExpression& expr){ WatchersList w; return apply(expr, w); }
+	static bool compose(SIExprArg& expr, const IObject* contextObject);
 
-	virtual const std::string eval(IExprOperator *arg, IExpression *exprArg);
-	virtual const std::string eval(const std::string&, IExpression*){return "";}
-	virtual const std::string eval(const filepath&, IExpression*){return "";}
-	virtual const std::string eval(const itladdress &arg, IExpression *exprArg);
-	virtual const std::string eval(const IObject*, IExpression*){return "";}
+
+	bool apply(SIExprArg& exprTree);
+
+	virtual const std::string eval(IExprOperator *arg, IExprArgBase *exprArg);
+	virtual const std::string eval(const std::string&, IExprArgBase*){return "";}
+	virtual const std::string eval(const filepath&, IExprArgBase*){return "";}
+	virtual const std::string eval(const itladdress &arg, IExprArgBase *exprArg);
+	virtual const std::string eval(const IObject*, IExprArgBase*);
+	virtual const std::string eval(const iexpression &arg, IExprArgBase *exprArg){return "";}
 
 protected:
-	ExprManipulator(const IObject* contextObject, const char* manipulatorName="ExprManipulator");
-	std::string replaceBy(SIExpression newNode, std::string key="");
-	std::string continueExploration(IExprOperator* arg, IExpression *exprArg);
+	ExprCompositor(const IObject* contextObject, const char* manipulatorName="ExprManipulator");
+	std::string replaceBy(SIExprArg newNode, std::string key="");
+	void continueExploration(IExprOperator* arg, IExprArgBase *exprArg);
 
 	inline void manipulationFailed(){succeed = false;}
+
+	const char* fManipulatorName;
 private:
-	void replaceNode(SIExpression& node, SIExpression newExpr);
-	inline void replaceNode(SIExpression &node, std::string key){replaceNode(node, fReplacedNodes.at(key));}
+	void replaceNode(SIExprArg& node, SIExprArg newExpr);
+	inline void replaceNode(SIExprArg &node, std::string key){replaceNode(node, fReplacedNodes.at(key));}
 
 };
 
 
 //____________________________________________________________________
 // ------------------------------------------------------------------
-class ExprCompositor: public ExprManipulator{
+class ExprSmartCopy: public constEvaluator{
+
+	std::map<const IExprArgBase*, SIExprArg> fCopyMap;
+	SIExprArg fCurrentNode;
 
 public:
-	static bool compose(SIExpression& expr, const IObject* contextObject, WatchersList &watchers);
+	static SIExpression copy(const SIExpression expression);
+	static SIExprArg copy(const SIExprArg rootNode);
 
-	const std::string eval(const IObject* arg, IExpression *exprArg);
+	virtual const std::string eval(const IExprOperator *arg,	const IExprArgBase *exprArg);
+	virtual const std::string eval(const std::string &arg,		const IExprArgBase *exprArg);
+	virtual const std::string eval(const filepath &arg,			const IExprArgBase *exprArg);
+	virtual const std::string eval(const itladdress &arg,		const IExprArgBase *exprArg);
+	virtual const std::string eval(const iexpression &argarg,	const IExprArgBase *exprArg);
+
 protected:
-	ExprCompositor(const IObject* contextObject);
+	ExprSmartCopy(): constEvaluator() {}
+	SIExprArg fCopyTree;
+
+	SIExprArg smartCopy(const SIExprArg node);
+
 };
 
 

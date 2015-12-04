@@ -71,7 +71,7 @@ static  char* unescape (char * str) {
 		/* javascript section */
 %x JSECTION
 		/* evaluable expression section */
-%s EXPRSECTION
+%x EXPRSECTION
 
 
 DIGIT	[0-9]
@@ -141,7 +141,7 @@ EOL		[\x0a\x0d]
  /* ----------------------------------------- */
  /*	hostname part */
  /* ----------------------------------------- */
- {HOSTCHAR}+									yyextra->fText = yytext; return HOSTNAME;
+ {HOSTCHAR}+						yyextra->fText = yytext; return HOSTNAME;
  {DIGIT}+"."{DIGIT}+"."{DIGIT}+"."{DIGIT}+		yyextra->fText = yytext; return IPNUM;
 
  /* ----------------------------------------- */
@@ -155,16 +155,16 @@ EOL		[\x0a\x0d]
 "\""						BEGIN DQSTR;
 "'"							BEGIN QSTR;
 
-<DQSTR>([^\"]|"\\\"")*		yyextra->fText = unescape(yytext); return QUOTEDSTRING;
-<QSTR>([^']|"\\'")*			yyextra->fText = unescape(yytext); return QUOTEDSTRING;
+<DQSTR>([^\"]|"\\\"")*		if(!expressionNested) yyextra->fText = ""; yyextra->fText += unescape(yytext); return STRING;
+<QSTR>([^']|"\\'")*			if(!expressionNested) yyextra->fText = "";  yyextra->fText += unescape(yytext); return STRING;
 <DQSTR>\"					if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
 <QSTR>'						if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
 
 
  /* ----------------------------------------- */
- /*	file path */
+ /*	non quoted file path */
  /* ----------------------------------------- */
-<EXPRSECTION>"/"?(".""."?"/")*({FILECHAR}+"/"?)+"."{IDCHAR}+			yyextra->fText = unescape(yytext); return FILEPATH;	/*file path without space*/
+("/"|(".""."?"/")*)({FILECHAR}+"/"?)+"."{IDCHAR}+			yyextra->fText = yytext; return STRING;	/*file path without space*/
 
  /* ----------------------------------------- */
  /*	lang sections */
@@ -189,10 +189,12 @@ EOL		[\x0a\x0d]
  /*	evaluable expression section */
  /* ----------------------------------------- */
 
-<EXPRSECTION>"("				expressionNested++; return EXPRESSIONSTART;
-<EXPRSECTION>"expr("				expressionNested++; return EXPRESSIONSTART;
-<EXPRSECTION>")"				if(!--expressionNested){ BEGIN INITIAL;} return EXPRESSIONEND;
-"expr("						expressionNested = 1; BEGIN EXPRSECTION; return EXPRESSIONSTART;
+<EXPRSECTION>"("				expressionNested++; yyextra->fText += yytext;
+<EXPRSECTION>")"				yyextra->fText += yytext; if(!--expressionNested){ BEGIN INITIAL; return EXPRESSION;}
+<EXPRSECTION>"\""				BEGIN DQSTR;
+<EXPRSECTION>"'"				BEGIN QSTR;
+<EXPRSECTION>[^()"']*				yyextra->fText += yytext;
+"expr("						expressionNested = 1; BEGIN EXPRSECTION; yyextra->fText = yytext;
 
  /* ----------------------------------------- */
  /*	basic delimiters and markers */
@@ -207,8 +209,7 @@ EOL		[\x0a\x0d]
 "."					return POINT;
 "("					return LEFTPAR;
 ")"					return RIGHTPAR;
-"&"					return AMPERSAND;
-"~"					return APPROX;
+
 
  /*"["					return LEFTBRACKET; */
  /*"]"					return RIGHTBRACKET; */

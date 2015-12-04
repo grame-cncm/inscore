@@ -41,7 +41,7 @@
 %token REGEXP
 %token PATHSEP BACKPATH
 %token FILEPATH
-%token STRING QUOTEDSTRING
+%token STRING
 %token WATCH EVAL
 %token ERR
 %token ENDEXPR ENDSCRIPT
@@ -49,8 +49,7 @@
 %token VARSTART LEFTPAR RIGHTPAR
 %token COLON COMMA POINT HOSTNAME IPNUM
 
-%token EXPRESSIONSTART EXPRESSIONEND
-%token AMPERSAND APPROX
+%token EXPRESSION
 
 %token LUASCRIPT
 %token JSCRIPT
@@ -58,11 +57,11 @@
 /*------------------------------   types  ------------------------------*/
 %type <num> 	number
 %type <real>	FLOAT
-%type <str>		STRING QUOTEDSTRING FILEPATH PATHSEP IDENTIFIER REGEXP LUASCRIPT JSCRIPT
-%type <str>		identifier oscaddress relativeaddress oscpath varname variabledecl hostname operatorid itladdress itlpath itlidentifier
+%type <str>		STRING FILEPATH PATHSEP IDENTIFIER REGEXP LUASCRIPT JSCRIPT
+%type <str>		identifier oscaddress relativeaddress oscpath varname variabledecl hostname
 %type <msg>		message
 %type <msgList>	messagelist script
-%type <p>		param expArg expression expToken operatorArg
+%type <p>		param expression
 %type <plist>	params variable eval
 %type <url>		urlprefix
 %type <addr>	address
@@ -83,7 +82,7 @@
 #define VARERROR(str, var)	{ VARerror(&yyloc, context, str, var); YYABORT; }
 
 //#define ERROR_CB() [&yyloc, &context](const char *s) -> void {yyerror(&yyloc, context, s);}
-#define HANDLE_READER_ERROR() if(context->fReader.hasFailed()){ yyerror(&yyloc, context, context->fReader.errorlog().c_str()); YYABORT; }
+//#define HANDLE_READER_ERROR() if(context->fReader.hasFailed()){ yyerror(&yyloc, context, context->fReader.errorlog().c_str()); YYABORT; }
 
 typedef void * yyscan_t;
 
@@ -181,24 +180,10 @@ hostname	: HOSTNAME					{ $$ = new string(context->fText); }
 			| hostname POINT HOSTNAME	{ *$1 += '.' + context->fText; $$=$1; }
 			;
 
-identifier		: itlidentifier
-			| REGEXP			{ $$ = new string(context->fText); }
+identifier		: IDENTIFIER		{ $$ = new string(context->fText); }
+			| HOSTNAME		{ $$ = new string(context->fText); }
+			| REGEXP		{ $$ = new string(context->fText); }
 			;
-
-//_______________________________________________
-// simple ITL address for evaluable expression
-itladdress	: itlpath
-		| PATHSEP itlpath	{ *$2 = "/"+*$2; $$=$2; }
-		;
-
-itlpath		: itlidentifier
-		| itlidentifier PATHSEP itlpath	{ *$3 = *$1 + "/" + *$3; delete $1; $$=$3; }
-		| BACKPATH itlpath		{ *$2 = "../"+*$2; $$=$2; }
-		;
-
-itlidentifier	: IDENTIFIER		{ $$ = new string(context->fText); }
-		| HOSTNAME		{ $$ = new string(context->fText); }
-		;
 
 //_______________________________________________
 // parameters definitions
@@ -227,7 +212,7 @@ variable	: VARSTART varname	{ $$ = new inscore::IMessage::argslist;
 param		: number			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1)); }
 		| FLOAT				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); }
 		| identifier			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); delete $1; }
-		| QUOTEDSTRING			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
+		| STRING			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
 		| expression			{ $$ = $1;}
 		| LEFTPAR messagelist RIGHTPAR	{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<inscore::SIMessageList>(*$2)); delete $2; }
 		| script			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<inscore::SIMessageList>(*$1)); delete $1; }
@@ -252,27 +237,8 @@ number		: UINT					{ $$ = context->fInt; }
 //_______________________________________________
 // expression declaration
 
-expression		: EXPRESSIONSTART operatorid operatorArg operatorArg EXPRESSIONEND	{ $$ = context->fReader.createExpr( $2, $3, $4); delete $2; delete $3; delete $4;}
-			| EXPRESSIONSTART expArg EXPRESSIONEND				{ $$ = $2; }
+expression		: EXPRESSION	{ $$ = context->fReader.parseExpr(context->fText);}
 			;
-
-operatorid		: itlidentifier
-			;
-
-operatorArg	: expression
-		| expArg
-		;
-
-expArg		: expToken
-		| AMPERSAND expToken	{ $$ = $2; context->fReader.setExprArgDynamic($$);}
-		| variable		{ $$ = context->fReader.createExprArgFromVar($1); HANDLE_READER_ERROR()}
-		| APPROX itladdress	{ $$ = context->fReader.createExprArg<inscore::itladdress>(*$2); delete $2; context->fReader.setExprArgCopy($$);}
-		;
-
-expToken	: QUOTEDSTRING		{ $$ = context->fReader.createExprArg<std::string>((context->fText)); }
-		| FILEPATH		{ $$ = context->fReader.createExprArg<inscore::filepath>(context->fText); }
-		| itladdress		{ $$ = context->fReader.createExprArg<inscore::itladdress>(*$1); delete $1;}
-		;
 
 %%
 

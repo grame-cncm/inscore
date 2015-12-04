@@ -19,7 +19,7 @@ Version 1.16
 - httpd object is now part of the library (not a plugin any more)
 - frameless and fullscreen mode are now exclusive at model level
 - frameless and fullscreen modes management revised at view level
-
+- String without spaces no longer need to be quoted
 
 ----------------------------------------------------
 Version 1.15 - tagged on July 15 2015

@@ -11,7 +11,7 @@ public:
 	static GmnEvaluator* create(const IObject* contextObject){return new GmnEvaluator(contextObject);}
 
 	const std::string eval(const IObject *arg);
-	const std::string eval(const std::string& arg, const IExpression* exprArg=0);
+	const std::string eval(const std::string& arg, const IExprArgBase* exprArg=0);
 
 	const char* emptyValue() const {return "[]";}
 

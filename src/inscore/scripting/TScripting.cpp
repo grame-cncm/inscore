@@ -28,6 +28,7 @@
 
 #include "TScripting.h"
 #include "TMessageEvaluator.h"
+#include "IExprParser.h"
 
 #include "TEnv.h"
 #include "ITLparser.h"
@@ -46,8 +47,7 @@ class TEnv;
 
 //--------------------------------------------------------------------------------------------
 TScripting::TScripting(TJSEngine* js, TLua* lua)
-    : 	fJavascript(js), fLua(lua),
-		fParsingFailed(false)
+	: 	fJavascript(js), fLua(lua)
 {
 	fMessages = IMessageList::create();
 	fEnv = TEnv::create();
@@ -160,7 +160,7 @@ SIMessageList TScripting::jsEval (const char* script, int lineno)
 #endif
 
 //--------------------------------------------------------------------------------------------
-IMessage::argslist TScripting::resolve (const IMessage* msg)
+IMessage::argslist TScripting::resolve (const IMessage* msg) const
 {
 #ifdef PARSERTEST
 	IMessage::argslist out;
@@ -175,8 +175,10 @@ IMessage::argslist TScripting::resolve (const IMessage* msg)
 #endif
 }
 
+
+
 //--------------------------------------------------------------------------------------------
-IMessage::argslist TScripting::resolve (const char* var, const char * defaultVal)
+IMessage::argslist TScripting::resolve (const char* var, const char * defaultVal) const
 {
 	IMessage::argslist val = fEnv->value (var);
 	if (val.empty() && defaultVal)
@@ -190,83 +192,17 @@ IMessage::argslist TScripting::resolve (const char* var, const char * defaultVal
 //          Expression support
 //--------------------------------------------------------------------------------------------
 
-Sbaseparam* TScripting::createExpr(std::string operatorName, Sbaseparam* param1, Sbaseparam* param2){
-	SIExpression arg1 = exprArgFromParam(param1);
-	SIExpression arg2 = exprArgFromParam(param2);
+Sbaseparam* TScripting::parseExpr(std::string definition) const {
 
-    SIExprOperator expr;
-	if(ExprFactory::createExpr(operatorName, arg1, arg2,expr))
-		return createExprArg<SIExprOperator>(expr);
+	SIExpression expr;
 
-	ITLErr<<"ExpressionFactory error: operator \""<< operatorName <<"\" unknown"<<ITLEndl;
-	return emptyExprArg();
-}
-
-Sbaseparam *TScripting::createExprArgFromVar(IMessage::argslist *var)
-{
-	if(var->size()!=1){
-		fail("wrong argument number in variable");
-		return emptyExprArg();
+	if(!IExprParser::parseExpression(definition, expr, this)){
+		ITLErr<<"Error while parsing expression: "<<definition<<ITLEndl;
+		expr = IExpression::createEmpty();
 	}
 
-	IMessage::argPtr arg = var->at(0);
-	std::string s = arg->value<std::string>("");
-
-	if(s==""){
-		fail("variable is not a string or is empty.");
-		return emptyExprArg();
-	}
-
-	return createExprArg(s);
+	IMsgParam<SIExpression>* param = new IMsgParam<SIExpression>(expr);
+	return new Sbaseparam(param);
 }
 
-
-void TScripting::setExprArgDynamic(Sbaseparam *param)
-{
-	exprArgFromParam(param)->switchToDynamic();
-}
-
-void TScripting::setExprArgCopy(Sbaseparam *param)
-{
-	exprArgFromParam(param)->switchToCopy();
-}
-
-SIExpression TScripting::exprArgFromParam(Sbaseparam *param)
-{
-    SIExpression defaut;
-
-    SIExpression arg((*param)->value<SIExpression>(defaut));
-
-    if(arg == defaut){
-		ITLErr<<"expression parameter is not a valid argument, check parser to fix the bug..."<<ITLEndl;
-    return defaut;
-    }
-
-    return arg;
-}
-
-
-SIExprOperator TScripting::exprFromParam(const Sbaseparam *param)
-{
-    SIExprOperator defaut;
-
-    SIExprOperator expr((*param)->value<SIExprOperator>(defaut));
-
-    if(expr == defaut){
-        ITLErr<<"expression parameter is not a valid expression"<<ITLEndl;
-        return defaut;
-    }
-
-	return expr;
-}
-
-//--------------------------------------------------------------------------------------------
-//          Error Handling
-//--------------------------------------------------------------------------------------------
-
-void TScripting::fail(std::string log)
-{
-	fParsingFailed = true;
-	fErrorLog = " "+log;
-}
 } // namespace

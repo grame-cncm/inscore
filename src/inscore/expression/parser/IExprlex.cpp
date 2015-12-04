@@ -1,6 +1,6 @@
-#line 2 "ITLlex.cpp"
+#line 2 "IExprlex.cpp"
 
-#line 4 "ITLlex.cpp"
+#line 4 "IExprlex.cpp"
 
 #define  YY_INT_ALIGNED short int
 
@@ -153,7 +153,7 @@ typedef void* yyscan_t;
 #define YY_STATE_EOF(state) (YY_END_OF_BUFFER + state + 1)
 
 /* Special action meaning "start processing a new file". */
-#define YY_NEW_FILE ITLrestart(yyin ,yyscanner )
+#define YY_NEW_FILE IExprrestart(yyin ,yyscanner )
 
 #define YY_END_OF_BUFFER_CHAR 0
 
@@ -182,7 +182,7 @@ typedef size_t yy_size_t;
 
     /* Note: We specifically omit the test for yy_rule_can_match_eol because it requires
      *       access to the local variable yy_act. Since yyless() is a macro, it would break
-     *       existing scanners that call yyless() from OUTSIDE ITLlex. 
+     *       existing scanners that call yyless() from OUTSIDE IExprlex. 
      *       One obvious solution it to make yy_act a global. I tried that, and saw
      *       a 5% performance hit in a non-yylineno scanner, because yy_act is
      *       normally declared as a register variable-- so it is not worth it.
@@ -275,7 +275,7 @@ struct yy_buffer_state
 	 * possible backing-up.
 	 *
 	 * When we actually see the EOF, we change the status to "new"
-	 * (via ITLrestart()), so that the user can continue scanning by
+	 * (via IExprrestart()), so that the user can continue scanning by
 	 * just pointing yyin at a new input file.
 	 */
 #define YY_BUFFER_EOF_PENDING 2
@@ -298,36 +298,36 @@ struct yy_buffer_state
  */
 #define YY_CURRENT_BUFFER_LVALUE yyg->yy_buffer_stack[yyg->yy_buffer_stack_top]
 
-void ITLrestart (FILE *input_file ,yyscan_t yyscanner );
-void ITL_switch_to_buffer (YY_BUFFER_STATE new_buffer ,yyscan_t yyscanner );
-YY_BUFFER_STATE ITL_create_buffer (FILE *file,int size ,yyscan_t yyscanner );
-void ITL_delete_buffer (YY_BUFFER_STATE b ,yyscan_t yyscanner );
-void ITL_flush_buffer (YY_BUFFER_STATE b ,yyscan_t yyscanner );
-void ITLpush_buffer_state (YY_BUFFER_STATE new_buffer ,yyscan_t yyscanner );
-void ITLpop_buffer_state (yyscan_t yyscanner );
+void IExprrestart (FILE *input_file ,yyscan_t yyscanner );
+void IExpr_switch_to_buffer (YY_BUFFER_STATE new_buffer ,yyscan_t yyscanner );
+YY_BUFFER_STATE IExpr_create_buffer (FILE *file,int size ,yyscan_t yyscanner );
+void IExpr_delete_buffer (YY_BUFFER_STATE b ,yyscan_t yyscanner );
+void IExpr_flush_buffer (YY_BUFFER_STATE b ,yyscan_t yyscanner );
+void IExprpush_buffer_state (YY_BUFFER_STATE new_buffer ,yyscan_t yyscanner );
+void IExprpop_buffer_state (yyscan_t yyscanner );
 
-static void ITLensure_buffer_stack (yyscan_t yyscanner );
-static void ITL_load_buffer_state (yyscan_t yyscanner );
-static void ITL_init_buffer (YY_BUFFER_STATE b,FILE *file ,yyscan_t yyscanner );
+static void IExprensure_buffer_stack (yyscan_t yyscanner );
+static void IExpr_load_buffer_state (yyscan_t yyscanner );
+static void IExpr_init_buffer (YY_BUFFER_STATE b,FILE *file ,yyscan_t yyscanner );
 
-#define YY_FLUSH_BUFFER ITL_flush_buffer(YY_CURRENT_BUFFER ,yyscanner)
+#define YY_FLUSH_BUFFER IExpr_flush_buffer(YY_CURRENT_BUFFER ,yyscanner)
 
-YY_BUFFER_STATE ITL_scan_buffer (char *base,yy_size_t size ,yyscan_t yyscanner );
-YY_BUFFER_STATE ITL_scan_string (yyconst char *yy_str ,yyscan_t yyscanner );
-YY_BUFFER_STATE ITL_scan_bytes (yyconst char *bytes,yy_size_t len ,yyscan_t yyscanner );
+YY_BUFFER_STATE IExpr_scan_buffer (char *base,yy_size_t size ,yyscan_t yyscanner );
+YY_BUFFER_STATE IExpr_scan_string (yyconst char *yy_str ,yyscan_t yyscanner );
+YY_BUFFER_STATE IExpr_scan_bytes (yyconst char *bytes,yy_size_t len ,yyscan_t yyscanner );
 
-void *ITLalloc (yy_size_t ,yyscan_t yyscanner );
-void *ITLrealloc (void *,yy_size_t ,yyscan_t yyscanner );
-void ITLfree (void * ,yyscan_t yyscanner );
+void *IExpralloc (yy_size_t ,yyscan_t yyscanner );
+void *IExprrealloc (void *,yy_size_t ,yyscan_t yyscanner );
+void IExprfree (void * ,yyscan_t yyscanner );
 
-#define yy_new_buffer ITL_create_buffer
+#define yy_new_buffer IExpr_create_buffer
 
 #define yy_set_interactive(is_interactive) \
 	{ \
 	if ( ! YY_CURRENT_BUFFER ){ \
-        ITLensure_buffer_stack (yyscanner); \
+        IExprensure_buffer_stack (yyscanner); \
 		YY_CURRENT_BUFFER_LVALUE =    \
-            ITL_create_buffer(yyin,YY_BUF_SIZE ,yyscanner); \
+            IExpr_create_buffer(yyin,YY_BUF_SIZE ,yyscanner); \
 	} \
 	YY_CURRENT_BUFFER_LVALUE->yy_is_interactive = is_interactive; \
 	}
@@ -335,9 +335,9 @@ void ITLfree (void * ,yyscan_t yyscanner );
 #define yy_set_bol(at_bol) \
 	{ \
 	if ( ! YY_CURRENT_BUFFER ){\
-        ITLensure_buffer_stack (yyscanner); \
+        IExprensure_buffer_stack (yyscanner); \
 		YY_CURRENT_BUFFER_LVALUE =    \
-            ITL_create_buffer(yyin,YY_BUF_SIZE ,yyscanner); \
+            IExpr_create_buffer(yyin,YY_BUF_SIZE ,yyscanner); \
 	} \
 	YY_CURRENT_BUFFER_LVALUE->yy_at_bol = at_bol; \
 	}
@@ -346,7 +346,7 @@ void ITLfree (void * ,yyscan_t yyscanner );
 
 /* Begin user sect3 */
 
-#define ITLwrap(yyscanner) 1
+#define IExprwrap(yyscanner) 1
 #define YY_SKIP_YYWRAP
 
 typedef unsigned char YY_CHAR;
@@ -371,8 +371,8 @@ static void yy_fatal_error (yyconst char msg[] ,yyscan_t yyscanner );
 	*yy_cp = '\0'; \
 	yyg->yy_c_buf_p = yy_cp;
 
-#define YY_NUM_RULES 55
-#define YY_END_OF_BUFFER 56
+#define YY_NUM_RULES 16
+#define YY_END_OF_BUFFER 17
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -380,46 +380,30 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static yyconst flex_int16_t yy_accept[183] =
+static yyconst flex_int16_t yy_accept[39] =
     {   0,
-        0,    0,   10,   10,   12,   12,   22,   22,   23,   23,
-       29,   29,   32,   32,   40,   40,   56,   54,   52,   53,
-       53,   52,    9,   20,    8,   46,   21,   50,   51,   33,
-       33,   48,   17,   49,   44,    1,   47,   45,   54,   42,
-       54,   17,   54,   19,   17,   54,   10,   11,   10,   12,
-       12,   12,   12,   22,   24,   22,   23,   25,   23,   29,
-       29,   55,   32,   32,   55,   40,   38,   39,   36,   37,
-        0,    0,    0,   52,   52,    9,    8,    0,    9,    8,
-        0,   15,   33,    0,    0,   33,    2,   33,    0,    0,
-       17,    3,   17,    0,    0,    4,    1,   17,    0,   17,
-
-       19,    0,   19,   17,   17,    0,   10,   11,   10,   12,
-       13,   14,   22,   22,   23,   23,   29,   29,    0,   28,
-       32,   32,    0,   31,   40,   26,    0,    0,   33,    4,
-       33,   17,   43,    0,    4,   33,   17,    6,    0,    0,
-        0,   34,   19,   17,   17,   35,   34,   35,    4,    6,
-        0,    0,   26,    0,    0,   34,   34,   19,    7,   17,
-       35,   35,   26,    0,    5,    0,   27,   19,   41,    0,
-        5,    0,   19,   18,    0,   16,    0,    0,    0,    0,
-       30,    0
+       10,   10,    6,    6,    7,    7,   17,   11,   15,   16,
+        4,   14,   12,    5,    2,    3,   10,   10,   13,    6,
+        8,    6,    7,    9,    7,   11,   11,   15,   10,   10,
+        6,    6,    7,    7,   10,   10,    1,    0
     } ;
 
 static yyconst flex_int32_t yy_ec[256] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
-        1,    1,    4,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    3,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    5,    6,    7,    8,    9,    1,    1,   10,   11,
-       12,   13,   14,   15,   16,   17,   18,   19,   19,   19,
-       19,   19,   19,   19,   19,   19,   19,   20,   21,   22,
-       23,   24,   25,    1,   26,   26,   26,   27,   28,   26,
-       26,   26,   26,   26,   26,   26,   26,   29,   26,   26,
-       26,   26,   26,   26,   26,   26,   26,   26,   26,   26,
-       30,   31,   32,   33,   34,    1,   35,   26,   36,   26,
+        1,    2,    1,    4,    1,    5,    1,    6,    7,    8,
+        9,    3,    3,    1,   10,    1,    1,   10,   10,   10,
+       10,   10,   10,   10,   10,   10,   10,    1,    1,    1,
+        1,    1,    3,    1,   10,   10,   10,   10,   10,   10,
+       10,   10,   10,   10,   10,   10,   10,   10,   10,   10,
+       10,   10,   10,   10,   10,   10,   10,   10,   10,   10,
+        1,   11,    1,    1,   10,    1,   10,   10,   10,   10,
 
-       37,   26,   26,   26,   38,   39,   26,   40,   26,   26,
-       26,   41,   26,   42,   43,   44,   45,   46,   26,   47,
-       26,   26,   48,   49,   50,    1,    1,    1,    1,    1,
+       12,   10,   10,   10,   10,   10,   10,   10,   10,   10,
+       10,   13,   10,   14,   10,   10,   10,   10,   10,   15,
+       10,   10,    1,    1,    1,   16,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -436,287 +420,64 @@ static yyconst flex_int32_t yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static yyconst flex_int32_t yy_meta[51] =
+static yyconst flex_int32_t yy_meta[17] =
     {   0,
-        1,    1,    2,    1,    3,    1,    4,    1,    1,    5,
-        6,    6,    7,    8,    9,   10,    1,    1,   11,    3,
-        3,    3,    1,    3,    7,   11,   11,   11,   11,   12,
-        3,    1,   13,   11,   11,   11,   11,   11,   11,   11,
-       11,   11,   11,   11,   11,   11,   11,   12,    3,    1
+        1,    2,    2,    3,    1,    1,    4,    2,    2,    1,
+        1,    1,    1,    1,    1,    1
     } ;
 
-static yyconst flex_int16_t yy_base[202] =
+static yyconst flex_int16_t yy_base[44] =
     {   0,
-        0,    0,   48,   50,   52,   55,   50,   53,   51,   52,
-       66,   68,   70,   72,   78,   89,  579,   60,  100,   62,
-       69,  108,   86,  878,  103,  105,  878,  111,  108,   64,
-      129,  132,  164,  164,  559,  198,  878,  878,  545,  167,
-      878,  235,  285,  320,  140,  367,    0,  185,  191,  878,
-      193,  556,  556,  536,  878,  108,  535,  878,  188,  217,
-      220,  541,  230,  347,  540,    0,  878,  878,  878,  878,
-      208,  417,  210,  464,  332,  212,  214,  292,  878,  878,
-      550,  878,   79,    0,    0,  543,  457,  276,    0,    0,
-      542,  462,  373,  542,  239,  540,  469,  408,  475,    0,
-
-      524,  525,   64,  521,  514,  504,    0,  303,  338,  341,
-      878,  878,  512,  129,  491,  343,  486,  488,  484,  878,
-      492,  494,  480,  878,    0,    0,  469,  443,  486,  468,
-      423,  493,  503,  507,  499,  512,  513,  519,  532,  449,
-      423,  572,  184,  408,  399,  622,    0,    0,  203,  525,
-      420,  411,  526,  370,  363,    0,    0,  232,    0,  380,
-        0,    0,  134,  529,  369,  345,  878,  343,  532,  333,
-      534,  273,  264,  265,  180,  144,   92,   69,   26,   20,
-      878,  878,  672,  685,  698,  711,  724,  737,  750,  763,
-      770,  782,  795,  808,  821,  834,  847,  851,  856,  861,
-
-      866
+        0,    0,   13,   14,   12,   15,   77,   26,   74,   78,
+       78,   78,   78,   78,   78,   78,   33,   60,   78,   63,
+       78,   17,   60,   78,   42,    0,    0,   63,    0,   39,
+       24,   40,   23,   43,   15,   12,   78,   78,   54,   58,
+       62,   66,   69
     } ;
 
-static yyconst flex_int16_t yy_def[202] =
+static yyconst flex_int16_t yy_def[44] =
     {   0,
-      182,    1,  183,  183,  184,  184,  185,  185,  186,  186,
-      187,  187,  188,  188,  189,  189,  182,  190,  190,  190,
-      190,  182,  190,  182,  190,  190,  182,  190,  190,  191,
-      182,  190,   31,  190,  190,   33,  182,  182,  182,  190,
-      182,  182,  182,   42,   42,  182,  192,  182,  192,  182,
-      182,  182,  182,  193,  182,  193,  194,  182,  194,  195,
-      195,  195,  196,  196,  196,  197,  182,  182,  182,  182,
-      190,  182,  190,  190,  182,  190,  190,  190,  182,  182,
-      182,  182,  191,  198,  199,   31,   31,   31,   43,   46,
-       33,   33,   33,   72,  190,   72,   33,   33,  182,   42,
-
-       44,   43,   44,   42,   42,   46,  192,  182,  192,  182,
-      182,  182,  193,  193,  194,  194,  195,  195,  195,  182,
-      196,  196,  196,  182,  197,   72,  198,  199,   31,   72,
-       31,   33,  190,   72,   72,   31,   33,   33,  182,  182,
-      182,  182,   44,   42,   42,  182,  200,  201,   72,   31,
-       72,   72,   72,  182,  182,  200,  142,   44,   42,   42,
-      201,  146,   72,  190,   72,  182,  182,   44,  190,   72,
-      190,  182,   44,   72,  182,   44,  182,  182,  182,  182,
-      182,    0,  182,  182,  182,  182,  182,  182,  182,  182,
-      182,  182,  182,  182,  182,  182,  182,  182,  182,  182,
-
-      182
+       38,    1,   39,   39,   40,   40,   38,   38,   38,   38,
+       38,   38,   38,   38,   38,   38,    8,   17,   38,   41,
+       38,   41,   42,   38,   42,    8,   43,   38,   17,   17,
+       41,   41,   42,   42,   17,   17,   38,    0,   38,   38,
+       38,   38,   38
     } ;
 
-static yyconst flex_int16_t yy_nxt[929] =
+static yyconst flex_int16_t yy_nxt[95] =
     {   0,
-       18,   19,   20,   21,   22,   23,   24,   25,   26,   27,
-       28,   29,   30,   31,   32,   33,   34,   35,   36,   37,
-       38,   39,   40,   41,   30,   42,   42,   42,   42,   43,
-       41,   18,   18,   44,   42,   42,   45,   42,   42,   42,
-       42,   42,   42,   42,   42,   42,   42,   46,   41,   18,
-       48,   49,   48,   49,   51,   51,   55,   51,   51,   55,
-       58,   58,   52,  181,   53,   52,  180,   53,   61,   61,
-       61,   61,   64,   64,   64,   64,   72,   73,   72,   73,
-       56,   59,   59,   56,   67,   72,   73,   68,   69,   70,
-       62,  143,   62,   84,   65,   67,   65,  101,   68,   69,
+        8,    9,   10,   11,   12,   13,   14,   15,   16,   17,
+        8,   18,   17,   17,   17,   19,   21,   21,   24,   37,
+       31,   24,   25,   22,   22,   25,   26,   32,   36,   27,
+       27,   27,   27,   34,   32,   26,   26,   26,   26,   26,
+       26,   27,   29,   31,   29,   29,   29,   29,   33,   33,
+       32,   35,   34,   34,   20,   20,   20,   20,   23,   23,
+       23,   23,   31,   31,   28,   31,   33,   33,   33,   27,
+       34,   27,   27,   32,   30,   28,   38,    7,   38,   38,
+       38,   38,   38,   38,   38,   38,   38,   38,   38,   38,
+       38,   38,   38,   38
 
-       70,   74,   72,   73,   75,   76,  179,   77,   84,   75,
-       78,   85,   75,   79,  113,   80,   72,   73,   81,   72,
-       73,   72,   73,   82,   72,   73,   85,   72,   73,   71,
-       71,   71,   71,  178,   71,  113,   71,   71,  114,   71,
-       71,   83,   86,   71,   86,   72,   73,   87,   72,   73,
-      170,   71,  163,   83,   88,   88,   88,   88,   89,  114,
-       71,   71,   88,   88,   88,   88,   88,   88,   88,   88,
-       88,   88,   88,   88,   88,   88,   90,  101,   71,   91,
-       94,   95,   92,   72,   73,  104,  105,  108,  108,   93,
-       93,   93,   93,  108,  109,  110,  110,  115,   93,   93,
-
-       93,   93,   93,   93,   93,   93,   93,   93,   93,   93,
-       93,   88,  158,   93,   96,  177,   97,  101,  116,  118,
-      118,  149,  118,  118,   72,   73,   72,  182,   72,   73,
-       72,   73,  122,  122,   98,   71,   71,   71,   71,  153,
-       71,  119,   71,   71,  119,   71,   71,   83,   88,   71,
-       93,   72,   73,  100,  123,  134,  182,   71,  168,   83,
-      100,  100,  100,  100,   89,  101,   71,   71,  101,  100,
-      100,  100,  100,  100,  100,  100,  100,  100,  100,  100,
-      100,  100,   90,  174,   71,   71,   71,   71,   71,   88,
-       71,   88,   71,   71,   88,   71,   71,  176,   71,   71,
-
-      102,   72,   73,  102,   82,  108,  108,   71,   72,   73,
-      102,  102,  102,  102,   71,  175,   71,  102,  102,  102,
-      102,  102,  102,  102,  102,  102,  102,  102,  102,  102,
-      102,  102,   71,   75,   71,   88,   75,   79,  101,   80,
-      108,  109,   81,  110,  110,  101,  101,  101,  101,  122,
-      122,  174,  115,  103,  101,  101,  101,  101,  101,  101,
-      101,  101,  101,  101,  101,  101,  101,   71,   71,   71,
-       71,  123,   71,  116,   71,   71,  173,   71,   71,  172,
-       71,  106,   71,   72,   73,  106,   88,  165,   93,   71,
-      169,   93,  106,  106,  106,  106,   71,  167,   71,   71,
-
-      106,  106,  106,  106,  106,  106,  106,  106,  106,  106,
-      106,  106,  106,  106,   71,  166,   71,   71,   71,   71,
-       71,  136,   71,  137,   71,   71,  138,   71,   71,  163,
-       71,   71,   71,   72,   73,  126,  136,   95,  136,   71,
-      160,  150,  126,  126,  126,  126,   71,  159,   71,   71,
-      126,  126,  126,  126,  126,  126,  126,  126,  126,  126,
-      126,  126,  126,  126,   71,   74,   71,  155,   75,   76,
-       88,   77,   88,  130,   78,   88,  139,   93,  130,  139,
-       72,   73,   88,  154,   93,   96,  149,   97,  118,  118,
-      118,  118,  148,  131,  122,  122,  122,  122,   98,   88,
-
-      147,   88,  130,  182,  129,   98,   88,  182,   93,  130,
-      119,  132,  119,  140,  141,  152,  123,  135,  123,  134,
-      182,  116,  131,  151,   95,   88,   88,   88,   93,   98,
-      150,  138,   88,  139,   93,  153,  139,  138,   88,  164,
-       88,  164,  114,  150,  165,   72,   73,  171,   72,   73,
-       72,   73,  171,  146,  145,  144,  142,  101,  135,  133,
-      132,  129,   82,  124,  120,  116,  114,  112,  111,   99,
-      140,  141,   71,   71,   71,   71,  182,   71,  182,   71,
-       71,  182,   71,   71,  156,  157,   71,  157,   72,   73,
-      157,  182,  182,  182,   71,  182,  156,  157,  157,  157,
-
-      157,   71,  182,   71,   71,  157,  157,  157,  157,  157,
-      157,  157,  157,  157,  157,  157,  157,  157,  157,   71,
-      182,   71,   71,   71,   71,   71,  182,   71,  182,   71,
-       71,  182,   71,   71,  161,  162,   71,  162,   72,   73,
-      162,  182,  182,  182,   71,  182,  161,  162,  162,  162,
-      162,   71,  182,   71,   71,  162,  162,  162,  162,  162,
-      162,  162,  162,  162,  162,  162,  162,  162,  162,   71,
-      182,   71,   47,   47,   47,   47,   47,   47,   47,   47,
-       47,   47,   47,   47,   47,   50,   50,   50,   50,   50,
-       50,   50,   50,   50,   50,   50,   50,   50,   54,   54,
-
-       54,   54,   54,   54,   54,   54,   54,   54,   54,   54,
-       54,   57,   57,   57,   57,   57,   57,   57,   57,   57,
-       57,   57,   57,   57,   60,   60,   60,   60,   60,   60,
-       60,   60,   60,   60,   60,   60,   60,   63,   63,   63,
-       63,   63,   63,   63,   63,   63,   63,   63,   63,   63,
-       66,   66,   66,   66,   66,   66,   66,   66,   66,   66,
-       66,   66,   66,   71,   71,  182,  182,  182,   71,  182,
-       71,   71,   71,   71,   71,   71,   83,   83,  182,   83,
-       83,   83,  107,  182,  107,  107,  107,  107,  107,  107,
-      107,  107,  107,  107,  107,  113,  113,  113,  182,  113,
-
-      113,  113,  113,  113,  113,  113,  113,  113,  115,  115,
-      115,  115,  182,  115,  115,  115,  115,  115,  115,  115,
-      115,  117,  117,  117,  117,  117,  117,  117,  117,  117,
-      117,  117,  117,  117,  121,  121,  121,  121,  121,  121,
-      121,  121,  121,  121,  121,  121,  121,  125,  125,  125,
-      182,  182,  182,  125,  125,  125,  125,  125,  125,  125,
-      127,  127,  182,  127,  128,  182,  128,  156,  156,  182,
-      156,  156,  161,  161,  182,  161,  161,   17,  182,  182,
-      182,  182,  182,  182,  182,  182,  182,  182,  182,  182,
-      182,  182,  182,  182,  182,  182,  182,  182,  182,  182,
-
-      182,  182,  182,  182,  182,  182,  182,  182,  182,  182,
-      182,  182,  182,  182,  182,  182,  182,  182,  182,  182,
-      182,  182,  182,  182,  182,  182,  182,  182
     } ;
 
-static yyconst flex_int16_t yy_chk[929] =
+static yyconst flex_int16_t yy_chk[95] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        3,    3,    4,    4,    5,    5,    7,    6,    6,    8,
-        9,   10,    5,  180,    5,    6,  179,    6,   11,   11,
-       12,   12,   13,   13,   14,   14,   18,   18,   20,   20,
-        7,    9,   10,    8,   15,   21,   21,   15,   15,   15,
-       11,  103,   12,   30,   13,   16,   14,  103,   16,   16,
+        1,    1,    1,    1,    1,    1,    3,    4,    5,   36,
+       22,    6,    5,    3,    4,    6,    8,   22,   35,    8,
+        8,    8,    8,   33,   31,    8,    8,    8,    8,    8,
+        8,    8,   17,   32,   17,   17,   17,   17,   25,   34,
+       32,   30,   25,   34,   39,   39,   39,   39,   40,   40,
+       40,   40,   41,   41,   28,   41,   42,   42,   42,   43,
+       23,   43,   43,   20,   18,    9,    7,   38,   38,   38,
+       38,   38,   38,   38,   38,   38,   38,   38,   38,   38,
+       38,   38,   38,   38
 
-       16,   19,   23,   23,   19,   19,  178,   19,   83,   22,
-       19,   30,   22,   22,   56,   22,   19,   19,   22,   25,
-       25,   26,   26,   28,   29,   29,   83,   28,   28,   31,
-       31,   31,   31,  177,   31,  114,   31,   31,   56,   31,
-       31,   31,   31,   31,   31,   31,   31,   31,   32,   32,
-      163,   31,  163,   31,   31,   31,   31,   31,   31,  114,
-       31,   31,   31,   31,   31,   31,   31,   31,   31,   31,
-       31,   31,   31,   31,   31,   31,   31,  176,   31,   33,
-       34,   34,   33,   40,   40,   45,   45,   48,   48,   33,
-       33,   33,   33,   49,   49,   51,   51,   59,   33,   33,
-
-       33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
-       33,   36,  143,   36,   36,  175,   36,  143,   59,   60,
-       60,  149,   61,   61,   71,   71,   73,   73,   76,   76,
-       77,   77,   63,   63,   36,   42,   42,   42,   42,  149,
-       42,   60,   42,   42,   61,   42,   42,   42,   42,   42,
-       42,   42,   42,   42,   63,   95,   95,   42,  158,   42,
-       42,   42,   42,   42,   42,  158,   42,   42,   42,   42,
-       42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
-       42,   42,   42,  174,   42,   43,   43,   43,   43,   88,
-       43,   88,   43,   43,   88,   43,   43,  173,   43,   43,
-
-       43,   43,   43,   43,   78,  108,  108,   43,   78,   78,
-       43,   43,   43,   43,   43,  172,   43,   43,   43,   43,
-       43,   43,   43,   43,   43,   43,   43,   43,   43,   43,
-       43,   43,   43,   75,   43,   44,   75,   75,   44,   75,
-      109,  109,   75,  110,  110,   44,   44,   44,   44,   64,
-       64,  170,  116,   44,   44,   44,   44,   44,   44,   44,
-       44,   44,   44,   44,   44,   44,   44,   46,   46,   46,
-       46,   64,   46,  116,   46,   46,  168,   46,   46,  166,
-       46,   46,   46,   46,   46,   46,   93,  165,   93,   46,
-      160,   93,   46,   46,   46,   46,   46,  155,   46,   46,
-
-       46,   46,   46,   46,   46,   46,   46,   46,   46,   46,
-       46,   46,   46,   46,   46,  154,   46,   72,   72,   72,
-       72,   98,   72,   98,   72,   72,   98,   72,   72,  152,
-       72,   72,   72,   72,   72,   72,  131,  151,  131,   72,
-      145,  131,   72,   72,   72,   72,   72,  144,   72,   72,
-       72,   72,   72,   72,   72,   72,   72,   72,   72,   72,
-       72,   72,   72,   72,   72,   74,   72,  141,   74,   74,
-       87,   74,   87,   87,   74,   92,   99,   92,   92,   99,
-       74,   74,   97,  140,   97,   97,  130,   97,  117,  117,
-      118,  118,  128,   87,  121,  121,  122,  122,   92,  129,
-
-      127,  129,  129,  123,  129,   97,  132,  119,  132,  132,
-      117,  132,  118,   99,   99,  135,  121,  135,  122,  133,
-      133,  115,  129,  134,  134,  136,  137,  136,  137,  132,
-      136,  137,  138,  139,  138,  135,  139,  138,  150,  153,
-      150,  153,  113,  150,  153,  164,  164,  164,  169,  169,
-      171,  171,  171,  106,  105,  104,  102,  101,   96,   94,
-       91,   86,   81,   65,   62,   57,   54,   53,   52,   39,
-      139,  139,  142,  142,  142,  142,   35,  142,   17,  142,
-      142,    0,  142,  142,  142,  142,  142,  142,  142,  142,
-      142,    0,    0,    0,  142,    0,  142,  142,  142,  142,
-
-      142,  142,    0,  142,  142,  142,  142,  142,  142,  142,
-      142,  142,  142,  142,  142,  142,  142,  142,  142,  142,
-        0,  142,  146,  146,  146,  146,    0,  146,    0,  146,
-      146,    0,  146,  146,  146,  146,  146,  146,  146,  146,
-      146,    0,    0,    0,  146,    0,  146,  146,  146,  146,
-      146,  146,    0,  146,  146,  146,  146,  146,  146,  146,
-      146,  146,  146,  146,  146,  146,  146,  146,  146,  146,
-        0,  146,  183,  183,  183,  183,  183,  183,  183,  183,
-      183,  183,  183,  183,  183,  184,  184,  184,  184,  184,
-      184,  184,  184,  184,  184,  184,  184,  184,  185,  185,
-
-      185,  185,  185,  185,  185,  185,  185,  185,  185,  185,
-      185,  186,  186,  186,  186,  186,  186,  186,  186,  186,
-      186,  186,  186,  186,  187,  187,  187,  187,  187,  187,
-      187,  187,  187,  187,  187,  187,  187,  188,  188,  188,
-      188,  188,  188,  188,  188,  188,  188,  188,  188,  188,
-      189,  189,  189,  189,  189,  189,  189,  189,  189,  189,
-      189,  189,  189,  190,  190,    0,    0,    0,  190,    0,
-      190,  190,  190,  190,  190,  190,  191,  191,    0,  191,
-      191,  191,  192,    0,  192,  192,  192,  192,  192,  192,
-      192,  192,  192,  192,  192,  193,  193,  193,    0,  193,
-
-      193,  193,  193,  193,  193,  193,  193,  193,  194,  194,
-      194,  194,    0,  194,  194,  194,  194,  194,  194,  194,
-      194,  195,  195,  195,  195,  195,  195,  195,  195,  195,
-      195,  195,  195,  195,  196,  196,  196,  196,  196,  196,
-      196,  196,  196,  196,  196,  196,  196,  197,  197,  197,
-        0,    0,    0,  197,  197,  197,  197,  197,  197,  197,
-      198,  198,    0,  198,  199,    0,  199,  200,  200,    0,
-      200,  200,  201,  201,    0,  201,  201,  182,  182,  182,
-      182,  182,  182,  182,  182,  182,  182,  182,  182,  182,
-      182,  182,  182,  182,  182,  182,  182,  182,  182,  182,
-
-      182,  182,  182,  182,  182,  182,  182,  182,  182,  182,
-      182,  182,  182,  182,  182,  182,  182,  182,  182,  182,
-      182,  182,  182,  182,  182,  182,  182,  182
     } ;
 
 /* Table of booleans, true if rule could match eol. */
-static yyconst flex_int32_t yy_rule_can_match_eol[56] =
+static yyconst flex_int32_t yy_rule_can_match_eol[17] =
     {   0,
-0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,     };
+0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,     };
 
 /* The intent behind this definition is that it'll catch
  * any uses of REJECT which flex missed.
@@ -725,8 +486,8 @@ static yyconst flex_int32_t yy_rule_can_match_eol[56] =
 #define yymore() (yyg->yy_more_flag = 1)
 #define YY_MORE_ADJ yyg->yy_more_len
 #define YY_RESTORE_YY_MORE_OFFSET
-#line 1 "ITL.l"
-#line 10 "ITL.l"
+#line 1 "IExpr.l"
+#line 11 "IExpr.l"
 
 #ifdef WIN32
 #pragma warning (disable : 4267 4100)
@@ -734,13 +495,12 @@ static yyconst flex_int32_t yy_rule_can_match_eol[56] =
 
 //#include <stdio.h>
 #include <iostream>
-#include "IMessage.h"
-#include "ITLparser.h"
-#include "ITLparse.hpp"
+#include "IExprParser.h"
+#include "IExprParse.hpp"
 
 using namespace std;
 
-#define YY_EXTRA_TYPE inscore::ITLparser*
+#define YY_EXTRA_TYPE inscore::IExprParser*
 #define YY_USER_ACTION yylloc->last_line = yylineno; yylloc->first_column += strlen(yytext);
 
 #define YY_INPUT(buf,result,max_size)   \
@@ -754,9 +514,6 @@ using namespace std;
          result = 1;                       \
       }                                    \
    }
-
-static int nested;
-static int expressionNested=0;
 
 #define YY_NO_UNISTD_H
 // ----------------------------------------------------------------------------------------
@@ -778,36 +535,19 @@ static  char* unescape (char * str) {
 
 // ----------------------------------------------------------------------------------------
 
-
-
 /* for double quoted strings */
 
 /* for quoted strings */
 
-/* lua section */
-
-/* javascript section */
-
-/* evaluable expression section */
-
-/* allowed character set for first identifier char */
-/* allowed character set for first identifier char */
-/* allowed character set for host names
-see RFC952 and RFC1123
-*/
-/* allowed character for filename and path as defined for windows 7*/
-/* regular expression characters
-as defined by the OSC specification */
-#line 802 "ITLlex.cpp"
+/* allowed character in operator*/
+/* allowed character for args */
+/* A string can't begin with " or ' (conflict with QUOTEDSTRING), ( or ) (conflict with expression definition)*/
+/*  neither with & nor ~ (conflict with prefix) and finnaly not $ (conflict with variable)*/
+#line 547 "IExprlex.cpp"
 
 #define INITIAL 0
-#define CMNTLN 1
-#define COMMENT 2
-#define DQSTR 3
-#define QSTR 4
-#define LUASECTION 5
-#define JSECTION 6
-#define EXPRSECTION 7
+#define DQSTR 1
+#define QSTR 2
 
 #ifndef YY_NO_UNISTD_H
 /* Special case for "unistd.h", since it is non-ANSI. We include it way
@@ -867,50 +607,50 @@ static int yy_init_globals (yyscan_t yyscanner );
     
     #    define yylloc yyg->yylloc_r
     
-int ITLlex_init (yyscan_t* scanner);
+int IExprlex_init (yyscan_t* scanner);
 
-int ITLlex_init_extra (YY_EXTRA_TYPE user_defined,yyscan_t* scanner);
+int IExprlex_init_extra (YY_EXTRA_TYPE user_defined,yyscan_t* scanner);
 
 /* Accessor methods to globals.
    These are made visible to non-reentrant scanners for convenience. */
 
-int ITLlex_destroy (yyscan_t yyscanner );
+int IExprlex_destroy (yyscan_t yyscanner );
 
-int ITLget_debug (yyscan_t yyscanner );
+int IExprget_debug (yyscan_t yyscanner );
 
-void ITLset_debug (int debug_flag ,yyscan_t yyscanner );
+void IExprset_debug (int debug_flag ,yyscan_t yyscanner );
 
-YY_EXTRA_TYPE ITLget_extra (yyscan_t yyscanner );
+YY_EXTRA_TYPE IExprget_extra (yyscan_t yyscanner );
 
-void ITLset_extra (YY_EXTRA_TYPE user_defined ,yyscan_t yyscanner );
+void IExprset_extra (YY_EXTRA_TYPE user_defined ,yyscan_t yyscanner );
 
-FILE *ITLget_in (yyscan_t yyscanner );
+FILE *IExprget_in (yyscan_t yyscanner );
 
-void ITLset_in  (FILE * in_str ,yyscan_t yyscanner );
+void IExprset_in  (FILE * in_str ,yyscan_t yyscanner );
 
-FILE *ITLget_out (yyscan_t yyscanner );
+FILE *IExprget_out (yyscan_t yyscanner );
 
-void ITLset_out  (FILE * out_str ,yyscan_t yyscanner );
+void IExprset_out  (FILE * out_str ,yyscan_t yyscanner );
 
-yy_size_t ITLget_leng (yyscan_t yyscanner );
+yy_size_t IExprget_leng (yyscan_t yyscanner );
 
-char *ITLget_text (yyscan_t yyscanner );
+char *IExprget_text (yyscan_t yyscanner );
 
-int ITLget_lineno (yyscan_t yyscanner );
+int IExprget_lineno (yyscan_t yyscanner );
 
-void ITLset_lineno (int line_number ,yyscan_t yyscanner );
+void IExprset_lineno (int line_number ,yyscan_t yyscanner );
 
-int ITLget_column  (yyscan_t yyscanner );
+int IExprget_column  (yyscan_t yyscanner );
 
-void ITLset_column (int column_no ,yyscan_t yyscanner );
+void IExprset_column (int column_no ,yyscan_t yyscanner );
 
-YYSTYPE * ITLget_lval (yyscan_t yyscanner );
+YYSTYPE * IExprget_lval (yyscan_t yyscanner );
 
-void ITLset_lval (YYSTYPE * yylval_param ,yyscan_t yyscanner );
+void IExprset_lval (YYSTYPE * yylval_param ,yyscan_t yyscanner );
 
-       YYLTYPE *ITLget_lloc (yyscan_t yyscanner );
+       YYLTYPE *IExprget_lloc (yyscan_t yyscanner );
     
-        void ITLset_lloc (YYLTYPE * yylloc_param ,yyscan_t yyscanner );
+        void IExprset_lloc (YYLTYPE * yylloc_param ,yyscan_t yyscanner );
     
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -918,9 +658,9 @@ void ITLset_lval (YYSTYPE * yylval_param ,yyscan_t yyscanner );
 
 #ifndef YY_SKIP_YYWRAP
 #ifdef __cplusplus
-extern "C" int ITLwrap (yyscan_t yyscanner );
+extern "C" int IExprwrap (yyscan_t yyscanner );
 #else
-extern int ITLwrap (yyscan_t yyscanner );
+extern int IExprwrap (yyscan_t yyscanner );
 #endif
 #endif
 
@@ -1017,10 +757,10 @@ static int input (yyscan_t yyscanner );
 #ifndef YY_DECL
 #define YY_DECL_IS_OURS 1
 
-extern int ITLlex \
+extern int IExprlex \
                (YYSTYPE * yylval_param,YYLTYPE * yylloc_param ,yyscan_t yyscanner);
 
-#define YY_DECL int ITLlex \
+#define YY_DECL int IExprlex \
                (YYSTYPE * yylval_param, YYLTYPE * yylloc_param , yyscan_t yyscanner)
 #endif /* !YY_DECL */
 
@@ -1070,22 +810,22 @@ YY_DECL
 			yyout = stdout;
 
 		if ( ! YY_CURRENT_BUFFER ) {
-			ITLensure_buffer_stack (yyscanner);
+			IExprensure_buffer_stack (yyscanner);
 			YY_CURRENT_BUFFER_LVALUE =
-				ITL_create_buffer(yyin,YY_BUF_SIZE ,yyscanner);
+				IExpr_create_buffer(yyin,YY_BUF_SIZE ,yyscanner);
 		}
 
-		ITL_load_buffer_state(yyscanner );
+		IExpr_load_buffer_state(yyscanner );
 		}
 
 	{
-#line 103 "ITL.l"
-
+#line 82 "IExpr.l"
 
  /* ----------------------------------------- */
- /*	digits */
+ /*	evaluable expression section */
  /* ----------------------------------------- */
-#line 1089 "ITLlex.cpp"
+
+#line 829 "IExprlex.cpp"
 
 	while ( 1 )		/* loops until end-of-file is reached */
 		{
@@ -1118,13 +858,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 183 )
+				if ( yy_current_state >= 39 )
 					yy_c = yy_meta[(unsigned int) yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 			++yy_cp;
 			}
-		while ( yy_current_state != 182 );
+		while ( yy_current_state != 38 );
 		yy_cp = yyg->yy_last_accepting_cpos;
 		yy_current_state = yyg->yy_last_accepting_state;
 
@@ -1158,333 +898,96 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 108 "ITL.l"
-yyextra->fInt = atoi(yytext); return UINT;
+#line 87 "IExpr.l"
+return EXPR_START;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 109 "ITL.l"
-yyextra->fInt = atoi(yytext); return UINT;
+#line 88 "IExpr.l"
+return EXPR_START;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 110 "ITL.l"
-yyextra->fInt = atoi(yytext); return INT;
-	YY_BREAK
-case 4:
-YY_RULE_SETUP
-#line 112 "ITL.l"
-yyextra->fFloat = atof(yytext); return FLOAT;
-	YY_BREAK
-case 5:
-YY_RULE_SETUP
-#line 113 "ITL.l"
-yyextra->fFloat = atof(yytext); return FLOAT;
-	YY_BREAK
-case 6:
-YY_RULE_SETUP
-#line 114 "ITL.l"
-yyextra->fFloat = atof(yytext); return FLOAT;
-	YY_BREAK
-/* ----------------------------------------- */
-/*	method requiring messages as argument */
-/* ----------------------------------------- */
-case 7:
-YY_RULE_SETUP
-#line 119 "ITL.l"
-yyextra->fText = yytext; return EVAL;
-	YY_BREAK
-/* ----------------------------------------- */
-/*	comments */
-/* ----------------------------------------- */
-case 8:
-YY_RULE_SETUP
-#line 125 "ITL.l"
-BEGIN CMNTLN;
-	YY_BREAK
-case 9:
-YY_RULE_SETUP
-#line 126 "ITL.l"
-BEGIN CMNTLN;
-	YY_BREAK
-case 10:
-YY_RULE_SETUP
-#line 127 "ITL.l"
-
-	YY_BREAK
-case 11:
-/* rule 11 can match eol */
-YY_RULE_SETUP
-#line 128 "ITL.l"
-if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
-	YY_BREAK
-case 12:
-/* rule 12 can match eol */
-YY_RULE_SETUP
-#line 130 "ITL.l"
-
-	YY_BREAK
-case 13:
-YY_RULE_SETUP
-#line 131 "ITL.l"
-nested++; 
-	YY_BREAK
-/* check the current context (EXPRSECTION or INITIAL) to close comment */
-case 14:
-YY_RULE_SETUP
-#line 133 "ITL.l"
-if (--nested==0) {if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;}
-	YY_BREAK
-case 15:
-YY_RULE_SETUP
-#line 134 "ITL.l"
-nested=1; BEGIN COMMENT;
-	YY_BREAK
-/* ----------------------------------------- */
-/*	comments */
-/* ----------------------------------------- */
-case 16:
-YY_RULE_SETUP
-#line 139 "ITL.l"
-return ENDSCRIPT;
-	YY_BREAK
-/* ----------------------------------------- */
-/*	hostname part */
-/* ----------------------------------------- */
-case 17:
-YY_RULE_SETUP
-#line 144 "ITL.l"
-yyextra->fText = yytext; return HOSTNAME;
-	YY_BREAK
-case 18:
-YY_RULE_SETUP
-#line 145 "ITL.l"
-yyextra->fText = yytext; return IPNUM;
-	YY_BREAK
-/* ----------------------------------------- */
-/*	identifiers */
-/* ----------------------------------------- */
-case 19:
-YY_RULE_SETUP
-#line 150 "ITL.l"
-yyextra->fText = yytext; return IDENTIFIER;
+#line 89 "IExpr.l"
+return EXPR_END;
 	YY_BREAK
 /* ----------------------------------------- */
 /*	quoted strings */
 /* ----------------------------------------- */
-case 20:
+case 4:
 YY_RULE_SETUP
-#line 155 "ITL.l"
+#line 96 "IExpr.l"
 BEGIN DQSTR;
 	YY_BREAK
-case 21:
+case 5:
 YY_RULE_SETUP
-#line 156 "ITL.l"
+#line 97 "IExpr.l"
 BEGIN QSTR;
 	YY_BREAK
-case 22:
-/* rule 22 can match eol */
+case 6:
+/* rule 6 can match eol */
 YY_RULE_SETUP
-#line 158 "ITL.l"
-if(!expressionNested) yyextra->fText = ""; yyextra->fText += unescape(yytext); return STRING;
+#line 99 "IExpr.l"
+yyextra->fText = unescape(yytext); return QUOTEDSTRING;
 	YY_BREAK
-case 23:
-/* rule 23 can match eol */
+case 7:
+/* rule 7 can match eol */
 YY_RULE_SETUP
-#line 159 "ITL.l"
-if(!expressionNested) yyextra->fText = "";  yyextra->fText += unescape(yytext); return STRING;
+#line 100 "IExpr.l"
+yyextra->fText = unescape(yytext); return QUOTEDSTRING;
 	YY_BREAK
-case 24:
+case 8:
 YY_RULE_SETUP
-#line 160 "ITL.l"
-if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
+#line 101 "IExpr.l"
+BEGIN INITIAL;
 	YY_BREAK
-case 25:
+case 9:
 YY_RULE_SETUP
-#line 161 "ITL.l"
-if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
-	YY_BREAK
-/* ----------------------------------------- */
-/*	non quoted file path */
-/* ----------------------------------------- */
-case 26:
-/* rule 26 can match eol */
-YY_RULE_SETUP
-#line 167 "ITL.l"
-yyextra->fText = yytext; return STRING;	/*file path without space*/
+#line 102 "IExpr.l"
+BEGIN INITIAL;
 	YY_BREAK
 /* ----------------------------------------- */
-/*	lang sections */
+/*	non quoted identifier */
 /* ----------------------------------------- */
-case 27:
+case 10:
 YY_RULE_SETUP
-#line 172 "ITL.l"
-BEGIN LUASECTION;
+#line 108 "IExpr.l"
+yyextra->fText = yytext; return IDENTIFIER;
 	YY_BREAK
-case 28:
+case 11:
 YY_RULE_SETUP
-#line 173 "ITL.l"
-if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
+#line 109 "IExpr.l"
+yyextra->fText = yytext; return STRING;
 	YY_BREAK
-case 29:
-/* rule 29 can match eol */
+case 12:
 YY_RULE_SETUP
-#line 174 "ITL.l"
-yyextra->fText = unescape(yytext); return LUASCRIPT;
+#line 111 "IExpr.l"
+return AMPERSAND;
 	YY_BREAK
-case 30:
+case 13:
 YY_RULE_SETUP
-#line 176 "ITL.l"
-BEGIN JSECTION;
+#line 112 "IExpr.l"
+return TILDE;
 	YY_BREAK
-case 31:
+case 14:
 YY_RULE_SETUP
-#line 177 "ITL.l"
-if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
-	YY_BREAK
-case 32:
-/* rule 32 can match eol */
-YY_RULE_SETUP
-#line 178 "ITL.l"
-yyextra->fText = unescape(yytext); return JSCRIPT;
-	YY_BREAK
-/* ----------------------------------------- */
-/*	regular expressions */
-/* ----------------------------------------- */
-case 33:
-YY_RULE_SETUP
-#line 183 "ITL.l"
-yyextra->fText = yytext; return REGEXP;			/* regular expression */
-	YY_BREAK
-case 34:
-YY_RULE_SETUP
-#line 184 "ITL.l"
-yyextra->fText = yytext; return REGEXP;			/* regular expression */
-	YY_BREAK
-case 35:
-YY_RULE_SETUP
-#line 185 "ITL.l"
-yyextra->fText = yytext; return REGEXP;			/* regular expression */
-	YY_BREAK
-/* ----------------------------------------- */
-/*	evaluable expression section */
-/* ----------------------------------------- */
-case 36:
-YY_RULE_SETUP
-#line 192 "ITL.l"
-expressionNested++; yyextra->fText += yytext;
-	YY_BREAK
-case 37:
-YY_RULE_SETUP
-#line 193 "ITL.l"
-yyextra->fText += yytext; if(!--expressionNested){ BEGIN INITIAL; return EXPRESSION;}
-	YY_BREAK
-case 38:
-YY_RULE_SETUP
-#line 194 "ITL.l"
-BEGIN DQSTR;
-	YY_BREAK
-case 39:
-YY_RULE_SETUP
-#line 195 "ITL.l"
-BEGIN QSTR;
-	YY_BREAK
-case 40:
-/* rule 40 can match eol */
-YY_RULE_SETUP
-#line 196 "ITL.l"
-yyextra->fText += yytext;
-	YY_BREAK
-case 41:
-YY_RULE_SETUP
-#line 197 "ITL.l"
-expressionNested = 1; BEGIN EXPRSECTION; yyextra->fText = yytext;
-	YY_BREAK
-/* ----------------------------------------- */
-/*	basic delimiters and markers */
-/* ----------------------------------------- */
-case 42:
-YY_RULE_SETUP
-#line 202 "ITL.l"
-return EQUAL;
-	YY_BREAK
-case 43:
-YY_RULE_SETUP
-#line 203 "ITL.l"
-return BACKPATH;
-	YY_BREAK
-case 44:
-YY_RULE_SETUP
-#line 204 "ITL.l"
-return PATHSEP;			/* OSC address and path separator */
-	YY_BREAK
-case 45:
-YY_RULE_SETUP
-#line 205 "ITL.l"
-return ENDEXPR;			/* end of expression */
-	YY_BREAK
-case 46:
-YY_RULE_SETUP
-#line 206 "ITL.l"
+#line 113 "IExpr.l"
 return VARSTART;
 	YY_BREAK
-case 47:
+case 15:
 YY_RULE_SETUP
-#line 207 "ITL.l"
-return COLON;
-	YY_BREAK
-case 48:
-YY_RULE_SETUP
-#line 208 "ITL.l"
-return COMMA;
-	YY_BREAK
-case 49:
-YY_RULE_SETUP
-#line 209 "ITL.l"
-return POINT;
-	YY_BREAK
-case 50:
-YY_RULE_SETUP
-#line 210 "ITL.l"
-return LEFTPAR;
-	YY_BREAK
-case 51:
-YY_RULE_SETUP
-#line 211 "ITL.l"
-return RIGHTPAR;
-	YY_BREAK
-/*"["					return LEFTBRACKET; */
-/*"]"					return RIGHTBRACKET; */
-case 52:
-YY_RULE_SETUP
-#line 217 "ITL.l"
+#line 115 "IExpr.l"
 ;   /* eat up space */
 	YY_BREAK
-case 53:
-/* rule 53 can match eol */
+case 16:
 YY_RULE_SETUP
-#line 219 "ITL.l"
-yylloc->first_column=0; /* ignore */
-	YY_BREAK
-case 54:
-YY_RULE_SETUP
-#line 221 "ITL.l"
-yyextra->fText = yytext; return ERR;
-	YY_BREAK
-case 55:
-YY_RULE_SETUP
-#line 223 "ITL.l"
+#line 118 "IExpr.l"
 ECHO;
 	YY_BREAK
-#line 1480 "ITLlex.cpp"
+#line 988 "IExprlex.cpp"
 case YY_STATE_EOF(INITIAL):
-case YY_STATE_EOF(CMNTLN):
-case YY_STATE_EOF(COMMENT):
 case YY_STATE_EOF(DQSTR):
 case YY_STATE_EOF(QSTR):
-case YY_STATE_EOF(LUASECTION):
-case YY_STATE_EOF(JSECTION):
-case YY_STATE_EOF(EXPRSECTION):
 	yyterminate();
 
 	case YY_END_OF_BUFFER:
@@ -1501,7 +1004,7 @@ case YY_STATE_EOF(EXPRSECTION):
 			/* We're scanning a new file or input source.  It's
 			 * possible that this happened because the user
 			 * just pointed yyin at a new source and called
-			 * ITLlex().  If so, then we have to assure
+			 * IExprlex().  If so, then we have to assure
 			 * consistency between YY_CURRENT_BUFFER and our
 			 * globals.  Here is the right place to do so, because
 			 * this is the first action (other than possibly a
@@ -1562,7 +1065,7 @@ case YY_STATE_EOF(EXPRSECTION):
 				{
 				yyg->yy_did_buffer_switch_on_eof = 0;
 
-				if ( ITLwrap(yyscanner ) )
+				if ( IExprwrap(yyscanner ) )
 					{
 					/* Note: because we've taken care in
 					 * yy_get_next_buffer() to have set up
@@ -1616,7 +1119,7 @@ case YY_STATE_EOF(EXPRSECTION):
 	} /* end of action switch */
 		} /* end of scanning one token */
 	} /* end of user's declarations */
-} /* end of ITLlex */
+} /* end of IExprlex */
 
 /* yy_get_next_buffer - try to read in a new buffer
  *
@@ -1695,7 +1198,7 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 
 				b->yy_ch_buf = (char *)
 					/* Include room in for 2 EOB chars. */
-					ITLrealloc((void *) b->yy_ch_buf,b->yy_buf_size + 2 ,yyscanner );
+					IExprrealloc((void *) b->yy_ch_buf,b->yy_buf_size + 2 ,yyscanner );
 				}
 			else
 				/* Can't grow it, we don't own it. */
@@ -1727,7 +1230,7 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 		if ( number_to_move == YY_MORE_ADJ )
 			{
 			ret_val = EOB_ACT_END_OF_FILE;
-			ITLrestart(yyin  ,yyscanner);
+			IExprrestart(yyin  ,yyscanner);
 			}
 
 		else
@@ -1744,7 +1247,7 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 	if ((yy_size_t) (yyg->yy_n_chars + number_to_move) > YY_CURRENT_BUFFER_LVALUE->yy_buf_size) {
 		/* Extend the array by 50%, plus the number we really need. */
 		yy_size_t new_size = yyg->yy_n_chars + number_to_move + (yyg->yy_n_chars >> 1);
-		YY_CURRENT_BUFFER_LVALUE->yy_ch_buf = (char *) ITLrealloc((void *) YY_CURRENT_BUFFER_LVALUE->yy_ch_buf,new_size ,yyscanner );
+		YY_CURRENT_BUFFER_LVALUE->yy_ch_buf = (char *) IExprrealloc((void *) YY_CURRENT_BUFFER_LVALUE->yy_ch_buf,new_size ,yyscanner );
 		if ( ! YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
 			YY_FATAL_ERROR( "out of dynamic memory in yy_get_next_buffer()" );
 	}
@@ -1779,7 +1282,7 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 183 )
+			if ( yy_current_state >= 39 )
 				yy_c = yy_meta[(unsigned int) yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
@@ -1808,11 +1311,11 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 183 )
+		if ( yy_current_state >= 39 )
 			yy_c = yy_meta[(unsigned int) yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
-	yy_is_jam = (yy_current_state == 182);
+	yy_is_jam = (yy_current_state == 38);
 
 	(void)yyg;
 	return yy_is_jam ? 0 : yy_current_state;
@@ -1860,13 +1363,13 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 					 */
 
 					/* Reset buffer status. */
-					ITLrestart(yyin ,yyscanner);
+					IExprrestart(yyin ,yyscanner);
 
 					/*FALLTHROUGH*/
 
 				case EOB_ACT_END_OF_FILE:
 					{
-					if ( ITLwrap(yyscanner ) )
+					if ( IExprwrap(yyscanner ) )
 						return EOF;
 
 					if ( ! yyg->yy_did_buffer_switch_on_eof )
@@ -1905,34 +1408,34 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
  * @param yyscanner The scanner object.
  * @note This function does not reset the start condition to @c INITIAL .
  */
-    void ITLrestart  (FILE * input_file , yyscan_t yyscanner)
+    void IExprrestart  (FILE * input_file , yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
 	if ( ! YY_CURRENT_BUFFER ){
-        ITLensure_buffer_stack (yyscanner);
+        IExprensure_buffer_stack (yyscanner);
 		YY_CURRENT_BUFFER_LVALUE =
-            ITL_create_buffer(yyin,YY_BUF_SIZE ,yyscanner);
+            IExpr_create_buffer(yyin,YY_BUF_SIZE ,yyscanner);
 	}
 
-	ITL_init_buffer(YY_CURRENT_BUFFER,input_file ,yyscanner);
-	ITL_load_buffer_state(yyscanner );
+	IExpr_init_buffer(YY_CURRENT_BUFFER,input_file ,yyscanner);
+	IExpr_load_buffer_state(yyscanner );
 }
 
 /** Switch to a different input buffer.
  * @param new_buffer The new input buffer.
  * @param yyscanner The scanner object.
  */
-    void ITL_switch_to_buffer  (YY_BUFFER_STATE  new_buffer , yyscan_t yyscanner)
+    void IExpr_switch_to_buffer  (YY_BUFFER_STATE  new_buffer , yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
 	/* TODO. We should be able to replace this entire function body
 	 * with
-	 *		ITLpop_buffer_state();
-	 *		ITLpush_buffer_state(new_buffer);
+	 *		IExprpop_buffer_state();
+	 *		IExprpush_buffer_state(new_buffer);
      */
-	ITLensure_buffer_stack (yyscanner);
+	IExprensure_buffer_stack (yyscanner);
 	if ( YY_CURRENT_BUFFER == new_buffer )
 		return;
 
@@ -1945,17 +1448,17 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 		}
 
 	YY_CURRENT_BUFFER_LVALUE = new_buffer;
-	ITL_load_buffer_state(yyscanner );
+	IExpr_load_buffer_state(yyscanner );
 
 	/* We don't actually know whether we did this switch during
-	 * EOF (ITLwrap()) processing, but the only time this flag
-	 * is looked at is after ITLwrap() is called, so it's safe
+	 * EOF (IExprwrap()) processing, but the only time this flag
+	 * is looked at is after IExprwrap() is called, so it's safe
 	 * to go ahead and always set it.
 	 */
 	yyg->yy_did_buffer_switch_on_eof = 1;
 }
 
-static void ITL_load_buffer_state  (yyscan_t yyscanner)
+static void IExpr_load_buffer_state  (yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 	yyg->yy_n_chars = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
@@ -1970,35 +1473,35 @@ static void ITL_load_buffer_state  (yyscan_t yyscanner)
  * @param yyscanner The scanner object.
  * @return the allocated buffer state.
  */
-    YY_BUFFER_STATE ITL_create_buffer  (FILE * file, int  size , yyscan_t yyscanner)
+    YY_BUFFER_STATE IExpr_create_buffer  (FILE * file, int  size , yyscan_t yyscanner)
 {
 	YY_BUFFER_STATE b;
     
-	b = (YY_BUFFER_STATE) ITLalloc(sizeof( struct yy_buffer_state ) ,yyscanner );
+	b = (YY_BUFFER_STATE) IExpralloc(sizeof( struct yy_buffer_state ) ,yyscanner );
 	if ( ! b )
-		YY_FATAL_ERROR( "out of dynamic memory in ITL_create_buffer()" );
+		YY_FATAL_ERROR( "out of dynamic memory in IExpr_create_buffer()" );
 
 	b->yy_buf_size = size;
 
 	/* yy_ch_buf has to be 2 characters longer than the size given because
 	 * we need to put in 2 end-of-buffer characters.
 	 */
-	b->yy_ch_buf = (char *) ITLalloc(b->yy_buf_size + 2 ,yyscanner );
+	b->yy_ch_buf = (char *) IExpralloc(b->yy_buf_size + 2 ,yyscanner );
 	if ( ! b->yy_ch_buf )
-		YY_FATAL_ERROR( "out of dynamic memory in ITL_create_buffer()" );
+		YY_FATAL_ERROR( "out of dynamic memory in IExpr_create_buffer()" );
 
 	b->yy_is_our_buffer = 1;
 
-	ITL_init_buffer(b,file ,yyscanner);
+	IExpr_init_buffer(b,file ,yyscanner);
 
 	return b;
 }
 
 /** Destroy the buffer.
- * @param b a buffer created with ITL_create_buffer()
+ * @param b a buffer created with IExpr_create_buffer()
  * @param yyscanner The scanner object.
  */
-    void ITL_delete_buffer (YY_BUFFER_STATE  b , yyscan_t yyscanner)
+    void IExpr_delete_buffer (YY_BUFFER_STATE  b , yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
@@ -2009,28 +1512,28 @@ static void ITL_load_buffer_state  (yyscan_t yyscanner)
 		YY_CURRENT_BUFFER_LVALUE = (YY_BUFFER_STATE) 0;
 
 	if ( b->yy_is_our_buffer )
-		ITLfree((void *) b->yy_ch_buf ,yyscanner );
+		IExprfree((void *) b->yy_ch_buf ,yyscanner );
 
-	ITLfree((void *) b ,yyscanner );
+	IExprfree((void *) b ,yyscanner );
 }
 
 /* Initializes or reinitializes a buffer.
  * This function is sometimes called more than once on the same buffer,
- * such as during a ITLrestart() or at EOF.
+ * such as during a IExprrestart() or at EOF.
  */
-    static void ITL_init_buffer  (YY_BUFFER_STATE  b, FILE * file , yyscan_t yyscanner)
+    static void IExpr_init_buffer  (YY_BUFFER_STATE  b, FILE * file , yyscan_t yyscanner)
 
 {
 	int oerrno = errno;
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
-	ITL_flush_buffer(b ,yyscanner);
+	IExpr_flush_buffer(b ,yyscanner);
 
 	b->yy_input_file = file;
 	b->yy_fill_buffer = 1;
 
-    /* If b is the current buffer, then ITL_init_buffer was _probably_
-     * called from ITLrestart() or through yy_get_next_buffer.
+    /* If b is the current buffer, then IExpr_init_buffer was _probably_
+     * called from IExprrestart() or through yy_get_next_buffer.
      * In that case, we don't want to reset the lineno or column.
      */
     if (b != YY_CURRENT_BUFFER){
@@ -2047,7 +1550,7 @@ static void ITL_load_buffer_state  (yyscan_t yyscanner)
  * @param b the buffer state to be flushed, usually @c YY_CURRENT_BUFFER.
  * @param yyscanner The scanner object.
  */
-    void ITL_flush_buffer (YY_BUFFER_STATE  b , yyscan_t yyscanner)
+    void IExpr_flush_buffer (YY_BUFFER_STATE  b , yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 	if ( ! b )
@@ -2068,7 +1571,7 @@ static void ITL_load_buffer_state  (yyscan_t yyscanner)
 	b->yy_buffer_status = YY_BUFFER_NEW;
 
 	if ( b == YY_CURRENT_BUFFER )
-		ITL_load_buffer_state(yyscanner );
+		IExpr_load_buffer_state(yyscanner );
 }
 
 /** Pushes the new state onto the stack. The new state becomes
@@ -2077,15 +1580,15 @@ static void ITL_load_buffer_state  (yyscan_t yyscanner)
  *  @param new_buffer The new state.
  *  @param yyscanner The scanner object.
  */
-void ITLpush_buffer_state (YY_BUFFER_STATE new_buffer , yyscan_t yyscanner)
+void IExprpush_buffer_state (YY_BUFFER_STATE new_buffer , yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 	if (new_buffer == NULL)
 		return;
 
-	ITLensure_buffer_stack(yyscanner);
+	IExprensure_buffer_stack(yyscanner);
 
-	/* This block is copied from ITL_switch_to_buffer. */
+	/* This block is copied from IExpr_switch_to_buffer. */
 	if ( YY_CURRENT_BUFFER )
 		{
 		/* Flush out information for old buffer. */
@@ -2099,8 +1602,8 @@ void ITLpush_buffer_state (YY_BUFFER_STATE new_buffer , yyscan_t yyscanner)
 		yyg->yy_buffer_stack_top++;
 	YY_CURRENT_BUFFER_LVALUE = new_buffer;
 
-	/* copied from ITL_switch_to_buffer. */
-	ITL_load_buffer_state(yyscanner );
+	/* copied from IExpr_switch_to_buffer. */
+	IExpr_load_buffer_state(yyscanner );
 	yyg->yy_did_buffer_switch_on_eof = 1;
 }
 
@@ -2108,19 +1611,19 @@ void ITLpush_buffer_state (YY_BUFFER_STATE new_buffer , yyscan_t yyscanner)
  *  The next element becomes the new top.
  *  @param yyscanner The scanner object.
  */
-void ITLpop_buffer_state (yyscan_t yyscanner)
+void IExprpop_buffer_state (yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 	if (!YY_CURRENT_BUFFER)
 		return;
 
-	ITL_delete_buffer(YY_CURRENT_BUFFER ,yyscanner);
+	IExpr_delete_buffer(YY_CURRENT_BUFFER ,yyscanner);
 	YY_CURRENT_BUFFER_LVALUE = NULL;
 	if (yyg->yy_buffer_stack_top > 0)
 		--yyg->yy_buffer_stack_top;
 
 	if (YY_CURRENT_BUFFER) {
-		ITL_load_buffer_state(yyscanner );
+		IExpr_load_buffer_state(yyscanner );
 		yyg->yy_did_buffer_switch_on_eof = 1;
 	}
 }
@@ -2128,7 +1631,7 @@ void ITLpop_buffer_state (yyscan_t yyscanner)
 /* Allocates the stack if it does not exist.
  *  Guarantees space for at least one push.
  */
-static void ITLensure_buffer_stack (yyscan_t yyscanner)
+static void IExprensure_buffer_stack (yyscan_t yyscanner)
 {
 	yy_size_t num_to_alloc;
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
@@ -2140,11 +1643,11 @@ static void ITLensure_buffer_stack (yyscan_t yyscanner)
 		 * immediate realloc on the next call.
          */
 		num_to_alloc = 1;
-		yyg->yy_buffer_stack = (struct yy_buffer_state**)ITLalloc
+		yyg->yy_buffer_stack = (struct yy_buffer_state**)IExpralloc
 								(num_to_alloc * sizeof(struct yy_buffer_state*)
 								, yyscanner);
 		if ( ! yyg->yy_buffer_stack )
-			YY_FATAL_ERROR( "out of dynamic memory in ITLensure_buffer_stack()" );
+			YY_FATAL_ERROR( "out of dynamic memory in IExprensure_buffer_stack()" );
 								  
 		memset(yyg->yy_buffer_stack, 0, num_to_alloc * sizeof(struct yy_buffer_state*));
 				
@@ -2159,12 +1662,12 @@ static void ITLensure_buffer_stack (yyscan_t yyscanner)
 		int grow_size = 8 /* arbitrary grow size */;
 
 		num_to_alloc = yyg->yy_buffer_stack_max + grow_size;
-		yyg->yy_buffer_stack = (struct yy_buffer_state**)ITLrealloc
+		yyg->yy_buffer_stack = (struct yy_buffer_state**)IExprrealloc
 								(yyg->yy_buffer_stack,
 								num_to_alloc * sizeof(struct yy_buffer_state*)
 								, yyscanner);
 		if ( ! yyg->yy_buffer_stack )
-			YY_FATAL_ERROR( "out of dynamic memory in ITLensure_buffer_stack()" );
+			YY_FATAL_ERROR( "out of dynamic memory in IExprensure_buffer_stack()" );
 
 		/* zero only the new slots.*/
 		memset(yyg->yy_buffer_stack + yyg->yy_buffer_stack_max, 0, grow_size * sizeof(struct yy_buffer_state*));
@@ -2178,7 +1681,7 @@ static void ITLensure_buffer_stack (yyscan_t yyscanner)
  * @param yyscanner The scanner object.
  * @return the newly allocated buffer state object. 
  */
-YY_BUFFER_STATE ITL_scan_buffer  (char * base, yy_size_t  size , yyscan_t yyscanner)
+YY_BUFFER_STATE IExpr_scan_buffer  (char * base, yy_size_t  size , yyscan_t yyscanner)
 {
 	YY_BUFFER_STATE b;
     
@@ -2188,9 +1691,9 @@ YY_BUFFER_STATE ITL_scan_buffer  (char * base, yy_size_t  size , yyscan_t yyscan
 		/* They forgot to leave room for the EOB's. */
 		return 0;
 
-	b = (YY_BUFFER_STATE) ITLalloc(sizeof( struct yy_buffer_state ) ,yyscanner );
+	b = (YY_BUFFER_STATE) IExpralloc(sizeof( struct yy_buffer_state ) ,yyscanner );
 	if ( ! b )
-		YY_FATAL_ERROR( "out of dynamic memory in ITL_scan_buffer()" );
+		YY_FATAL_ERROR( "out of dynamic memory in IExpr_scan_buffer()" );
 
 	b->yy_buf_size = size - 2;	/* "- 2" to take care of EOB's */
 	b->yy_buf_pos = b->yy_ch_buf = base;
@@ -2202,33 +1705,33 @@ YY_BUFFER_STATE ITL_scan_buffer  (char * base, yy_size_t  size , yyscan_t yyscan
 	b->yy_fill_buffer = 0;
 	b->yy_buffer_status = YY_BUFFER_NEW;
 
-	ITL_switch_to_buffer(b ,yyscanner );
+	IExpr_switch_to_buffer(b ,yyscanner );
 
 	return b;
 }
 
-/** Setup the input buffer state to scan a string. The next call to ITLlex() will
+/** Setup the input buffer state to scan a string. The next call to IExprlex() will
  * scan from a @e copy of @a str.
  * @param yystr a NUL-terminated string to scan
  * @param yyscanner The scanner object.
  * @return the newly allocated buffer state object.
  * @note If you want to scan bytes that may contain NUL values, then use
- *       ITL_scan_bytes() instead.
+ *       IExpr_scan_bytes() instead.
  */
-YY_BUFFER_STATE ITL_scan_string (yyconst char * yystr , yyscan_t yyscanner)
+YY_BUFFER_STATE IExpr_scan_string (yyconst char * yystr , yyscan_t yyscanner)
 {
     
-	return ITL_scan_bytes(yystr,strlen(yystr) ,yyscanner);
+	return IExpr_scan_bytes(yystr,strlen(yystr) ,yyscanner);
 }
 
-/** Setup the input buffer state to scan the given bytes. The next call to ITLlex() will
+/** Setup the input buffer state to scan the given bytes. The next call to IExprlex() will
  * scan from a @e copy of @a bytes.
  * @param yybytes the byte buffer to scan
  * @param _yybytes_len the number of bytes in the buffer pointed to by @a bytes.
  * @param yyscanner The scanner object.
  * @return the newly allocated buffer state object.
  */
-YY_BUFFER_STATE ITL_scan_bytes  (yyconst char * yybytes, yy_size_t  _yybytes_len , yyscan_t yyscanner)
+YY_BUFFER_STATE IExpr_scan_bytes  (yyconst char * yybytes, yy_size_t  _yybytes_len , yyscan_t yyscanner)
 {
 	YY_BUFFER_STATE b;
 	char *buf;
@@ -2237,18 +1740,18 @@ YY_BUFFER_STATE ITL_scan_bytes  (yyconst char * yybytes, yy_size_t  _yybytes_len
     
 	/* Get memory for full buffer, including space for trailing EOB's. */
 	n = _yybytes_len + 2;
-	buf = (char *) ITLalloc(n ,yyscanner );
+	buf = (char *) IExpralloc(n ,yyscanner );
 	if ( ! buf )
-		YY_FATAL_ERROR( "out of dynamic memory in ITL_scan_bytes()" );
+		YY_FATAL_ERROR( "out of dynamic memory in IExpr_scan_bytes()" );
 
 	for ( i = 0; i < _yybytes_len; ++i )
 		buf[i] = yybytes[i];
 
 	buf[_yybytes_len] = buf[_yybytes_len+1] = YY_END_OF_BUFFER_CHAR;
 
-	b = ITL_scan_buffer(buf,n ,yyscanner);
+	b = IExpr_scan_buffer(buf,n ,yyscanner);
 	if ( ! b )
-		YY_FATAL_ERROR( "bad buffer in ITL_scan_bytes()" );
+		YY_FATAL_ERROR( "bad buffer in IExpr_scan_bytes()" );
 
 	/* It's okay to grow etc. this buffer, and we should throw it
 	 * away when we're done.
@@ -2290,7 +1793,7 @@ static void yy_fatal_error (yyconst char* msg , yyscan_t yyscanner)
 /** Get the user-defined data for this scanner.
  * @param yyscanner The scanner object.
  */
-YY_EXTRA_TYPE ITLget_extra  (yyscan_t yyscanner)
+YY_EXTRA_TYPE IExprget_extra  (yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
     return yyextra;
@@ -2299,7 +1802,7 @@ YY_EXTRA_TYPE ITLget_extra  (yyscan_t yyscanner)
 /** Get the current line number.
  * @param yyscanner The scanner object.
  */
-int ITLget_lineno  (yyscan_t yyscanner)
+int IExprget_lineno  (yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
     
@@ -2312,7 +1815,7 @@ int ITLget_lineno  (yyscan_t yyscanner)
 /** Get the current column number.
  * @param yyscanner The scanner object.
  */
-int ITLget_column  (yyscan_t yyscanner)
+int IExprget_column  (yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
     
@@ -2325,7 +1828,7 @@ int ITLget_column  (yyscan_t yyscanner)
 /** Get the input stream.
  * @param yyscanner The scanner object.
  */
-FILE *ITLget_in  (yyscan_t yyscanner)
+FILE *IExprget_in  (yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
     return yyin;
@@ -2334,7 +1837,7 @@ FILE *ITLget_in  (yyscan_t yyscanner)
 /** Get the output stream.
  * @param yyscanner The scanner object.
  */
-FILE *ITLget_out  (yyscan_t yyscanner)
+FILE *IExprget_out  (yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
     return yyout;
@@ -2343,7 +1846,7 @@ FILE *ITLget_out  (yyscan_t yyscanner)
 /** Get the length of the current token.
  * @param yyscanner The scanner object.
  */
-yy_size_t ITLget_leng  (yyscan_t yyscanner)
+yy_size_t IExprget_leng  (yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
     return yyleng;
@@ -2353,7 +1856,7 @@ yy_size_t ITLget_leng  (yyscan_t yyscanner)
  * @param yyscanner The scanner object.
  */
 
-char *ITLget_text  (yyscan_t yyscanner)
+char *IExprget_text  (yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
     return yytext;
@@ -2363,7 +1866,7 @@ char *ITLget_text  (yyscan_t yyscanner)
  * @param user_defined The data to be associated with this scanner.
  * @param yyscanner The scanner object.
  */
-void ITLset_extra (YY_EXTRA_TYPE  user_defined , yyscan_t yyscanner)
+void IExprset_extra (YY_EXTRA_TYPE  user_defined , yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
     yyextra = user_defined ;
@@ -2373,13 +1876,13 @@ void ITLset_extra (YY_EXTRA_TYPE  user_defined , yyscan_t yyscanner)
  * @param line_number
  * @param yyscanner The scanner object.
  */
-void ITLset_lineno (int  line_number , yyscan_t yyscanner)
+void IExprset_lineno (int  line_number , yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
         /* lineno is only valid if an input buffer exists. */
         if (! YY_CURRENT_BUFFER )
-           YY_FATAL_ERROR( "ITLset_lineno called with no buffer" );
+           YY_FATAL_ERROR( "IExprset_lineno called with no buffer" );
     
     yylineno = line_number;
 }
@@ -2388,13 +1891,13 @@ void ITLset_lineno (int  line_number , yyscan_t yyscanner)
  * @param line_number
  * @param yyscanner The scanner object.
  */
-void ITLset_column (int  column_no , yyscan_t yyscanner)
+void IExprset_column (int  column_no , yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
         /* column is only valid if an input buffer exists. */
         if (! YY_CURRENT_BUFFER )
-           YY_FATAL_ERROR( "ITLset_column called with no buffer" );
+           YY_FATAL_ERROR( "IExprset_column called with no buffer" );
     
     yycolumn = column_no;
 }
@@ -2403,27 +1906,27 @@ void ITLset_column (int  column_no , yyscan_t yyscanner)
  * input buffer.
  * @param in_str A readable stream.
  * @param yyscanner The scanner object.
- * @see ITL_switch_to_buffer
+ * @see IExpr_switch_to_buffer
  */
-void ITLset_in (FILE *  in_str , yyscan_t yyscanner)
+void IExprset_in (FILE *  in_str , yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
     yyin = in_str ;
 }
 
-void ITLset_out (FILE *  out_str , yyscan_t yyscanner)
+void IExprset_out (FILE *  out_str , yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
     yyout = out_str ;
 }
 
-int ITLget_debug  (yyscan_t yyscanner)
+int IExprget_debug  (yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
     return yy_flex_debug;
 }
 
-void ITLset_debug (int  bdebug , yyscan_t yyscanner)
+void IExprset_debug (int  bdebug , yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
     yy_flex_debug = bdebug ;
@@ -2431,25 +1934,25 @@ void ITLset_debug (int  bdebug , yyscan_t yyscanner)
 
 /* Accessor methods for yylval and yylloc */
 
-YYSTYPE * ITLget_lval  (yyscan_t yyscanner)
+YYSTYPE * IExprget_lval  (yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
     return yylval;
 }
 
-void ITLset_lval (YYSTYPE *  yylval_param , yyscan_t yyscanner)
+void IExprset_lval (YYSTYPE *  yylval_param , yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
     yylval = yylval_param;
 }
 
-YYLTYPE *ITLget_lloc  (yyscan_t yyscanner)
+YYLTYPE *IExprget_lloc  (yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
     return yylloc;
 }
     
-void ITLset_lloc (YYLTYPE *  yylloc_param , yyscan_t yyscanner)
+void IExprset_lloc (YYLTYPE *  yylloc_param , yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
     yylloc = yylloc_param;
@@ -2457,12 +1960,12 @@ void ITLset_lloc (YYLTYPE *  yylloc_param , yyscan_t yyscanner)
     
 /* User-visible API */
 
-/* ITLlex_init is special because it creates the scanner itself, so it is
+/* IExprlex_init is special because it creates the scanner itself, so it is
  * the ONLY reentrant function that doesn't take the scanner as the last argument.
  * That's why we explicitly handle the declaration, instead of using our macros.
  */
 
-int ITLlex_init(yyscan_t* ptr_yy_globals)
+int IExprlex_init(yyscan_t* ptr_yy_globals)
 
 {
     if (ptr_yy_globals == NULL){
@@ -2470,7 +1973,7 @@ int ITLlex_init(yyscan_t* ptr_yy_globals)
         return 1;
     }
 
-    *ptr_yy_globals = (yyscan_t) ITLalloc ( sizeof( struct yyguts_t ), NULL );
+    *ptr_yy_globals = (yyscan_t) IExpralloc ( sizeof( struct yyguts_t ), NULL );
 
     if (*ptr_yy_globals == NULL){
         errno = ENOMEM;
@@ -2483,27 +1986,27 @@ int ITLlex_init(yyscan_t* ptr_yy_globals)
     return yy_init_globals ( *ptr_yy_globals );
 }
 
-/* ITLlex_init_extra has the same functionality as ITLlex_init, but follows the
+/* IExprlex_init_extra has the same functionality as IExprlex_init, but follows the
  * convention of taking the scanner as the last argument. Note however, that
  * this is a *pointer* to a scanner, as it will be allocated by this call (and
  * is the reason, too, why this function also must handle its own declaration).
- * The user defined value in the first argument will be available to ITLalloc in
+ * The user defined value in the first argument will be available to IExpralloc in
  * the yyextra field.
  */
 
-int ITLlex_init_extra(YY_EXTRA_TYPE yy_user_defined,yyscan_t* ptr_yy_globals )
+int IExprlex_init_extra(YY_EXTRA_TYPE yy_user_defined,yyscan_t* ptr_yy_globals )
 
 {
     struct yyguts_t dummy_yyguts;
 
-    ITLset_extra (yy_user_defined, &dummy_yyguts);
+    IExprset_extra (yy_user_defined, &dummy_yyguts);
 
     if (ptr_yy_globals == NULL){
         errno = EINVAL;
         return 1;
     }
 	
-    *ptr_yy_globals = (yyscan_t) ITLalloc ( sizeof( struct yyguts_t ), &dummy_yyguts );
+    *ptr_yy_globals = (yyscan_t) IExpralloc ( sizeof( struct yyguts_t ), &dummy_yyguts );
 	
     if (*ptr_yy_globals == NULL){
         errno = ENOMEM;
@@ -2514,7 +2017,7 @@ int ITLlex_init_extra(YY_EXTRA_TYPE yy_user_defined,yyscan_t* ptr_yy_globals )
     yy_init_globals. Leave at 0x00 for releases. */
     memset(*ptr_yy_globals,0x00,sizeof(struct yyguts_t));
     
-    ITLset_extra (yy_user_defined, *ptr_yy_globals);
+    IExprset_extra (yy_user_defined, *ptr_yy_globals);
     
     return yy_init_globals ( *ptr_yy_globals );
 }
@@ -2523,7 +2026,7 @@ static int yy_init_globals (yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
     /* Initialization is the same as for the non-reentrant scanner.
-     * This function is called from ITLlex_destroy(), so don't allocate here.
+     * This function is called from IExprlex_destroy(), so don't allocate here.
      */
 
     yyg->yy_buffer_stack = 0;
@@ -2547,37 +2050,37 @@ static int yy_init_globals (yyscan_t yyscanner)
 #endif
 
     /* For future reference: Set errno on error, since we are called by
-     * ITLlex_init()
+     * IExprlex_init()
      */
     return 0;
 }
 
-/* ITLlex_destroy is for both reentrant and non-reentrant scanners. */
-int ITLlex_destroy  (yyscan_t yyscanner)
+/* IExprlex_destroy is for both reentrant and non-reentrant scanners. */
+int IExprlex_destroy  (yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
     /* Pop the buffer stack, destroying each element. */
 	while(YY_CURRENT_BUFFER){
-		ITL_delete_buffer(YY_CURRENT_BUFFER ,yyscanner );
+		IExpr_delete_buffer(YY_CURRENT_BUFFER ,yyscanner );
 		YY_CURRENT_BUFFER_LVALUE = NULL;
-		ITLpop_buffer_state(yyscanner);
+		IExprpop_buffer_state(yyscanner);
 	}
 
 	/* Destroy the stack itself. */
-	ITLfree(yyg->yy_buffer_stack ,yyscanner);
+	IExprfree(yyg->yy_buffer_stack ,yyscanner);
 	yyg->yy_buffer_stack = NULL;
 
     /* Destroy the start condition stack. */
-        ITLfree(yyg->yy_start_stack ,yyscanner );
+        IExprfree(yyg->yy_start_stack ,yyscanner );
         yyg->yy_start_stack = NULL;
 
     /* Reset the globals. This is important in a non-reentrant scanner so the next time
-     * ITLlex() is called, initialization will occur. */
+     * IExprlex() is called, initialization will occur. */
     yy_init_globals( yyscanner);
 
     /* Destroy the main struct (reentrant only). */
-    ITLfree ( yyscanner , yyscanner );
+    IExprfree ( yyscanner , yyscanner );
     yyscanner = NULL;
     return 0;
 }
@@ -2606,12 +2109,12 @@ static int yy_flex_strlen (yyconst char * s , yyscan_t yyscanner)
 }
 #endif
 
-void *ITLalloc (yy_size_t  size , yyscan_t yyscanner)
+void *IExpralloc (yy_size_t  size , yyscan_t yyscanner)
 {
 	return (void *) malloc( size );
 }
 
-void *ITLrealloc  (void * ptr, yy_size_t  size , yyscan_t yyscanner)
+void *IExprrealloc  (void * ptr, yy_size_t  size , yyscan_t yyscanner)
 {
 	/* The cast to (char *) in the following accommodates both
 	 * implementations that use char* generic pointers, and those
@@ -2623,29 +2126,29 @@ void *ITLrealloc  (void * ptr, yy_size_t  size , yyscan_t yyscanner)
 	return (void *) realloc( (char *) ptr, size );
 }
 
-void ITLfree (void * ptr , yyscan_t yyscanner)
+void IExprfree (void * ptr , yyscan_t yyscanner)
 {
-	free( (char *) ptr );	/* see ITLrealloc() for (char *) cast */
+	free( (char *) ptr );	/* see IExprrealloc() for (char *) cast */
 }
 
 #define YYTABLES_NAME "yytables"
 
-#line 223 "ITL.l"
+#line 118 "IExpr.l"
 
 
 
 namespace inscore 
 {
 
-void ITLparser::initScanner()
+void IExprParser::initScanner()
 {
-	ITLlex_init(&fScanner);
-	ITLset_extra(this,fScanner);
+	IExprlex_init(&fScanner);
+	IExprset_extra(this,fScanner);
 }
 
-void ITLparser::destroyScanner()
+void IExprParser::destroyScanner()
 {
-	ITLlex_destroy(fScanner);
+	IExprlex_destroy(fScanner);
 }
 
 } // end namespace

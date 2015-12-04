@@ -72,6 +72,8 @@ class IOSCListener : public osc::OscPacketListener, public libmapping::smartable
 				 IOSCListener(SIMessageStack& stack, int port = 7000);
 		virtual ~IOSCListener();
 
+				 bool isExpression(std::string arg);
+
 };
 typedef class libmapping::SMARTP<IOSCListener>	SIOSCListener;
 

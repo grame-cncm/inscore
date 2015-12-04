@@ -21,47 +21,48 @@
 
 */
 
-#ifndef __ITLparser__
-#define __ITLparser__
+#ifndef __IExprParser__
+#define __IExprParser__
 
 #include <iostream>
 #include <string>
+#include <vector>
 #include <locale.h>
-
-#include "TScripting.h"
+#include "IExpression.h"
 
 namespace inscore 
 {
 
-/* \brief a class for reading ITL streams
+class TScripting;
+
+/* \brief a class for reading IExpression
 */
-class ITLparser {	
+class IExprParser {
 		
 	void initScanner();
 	void destroyScanner();
-
+	
 	public:
-		class address {
-			public:
-				std::string				fOsc;		// the osc address
-				inscore::IMessage::TUrl	fUrl;		// the address extension (if any)
-				 address (const std::string& osc) : fOsc(osc) {}
-				 address (const std::string& osc, const inscore::IMessage::TUrl& url) : fOsc(osc), fUrl(url.fHostname.c_str(), url.fPort) {}
-				~address () {}
-		};
-
-		TScripting		fReader;
 		void*			fScanner;	// the flex scanner
 		std::istream*	fStream;    // input stream
 		std::string		fText;		// the current text
 		int				fInt;		// the current int
 		float			fFloat;		// the current float
-		int				fLine;		// line offset
+		SIExprArg*		fRootNode;	// the current highest
 
-				 ITLparser(std::istream* stream, int line, TJSEngine* js, TLua* lua);
-		virtual ~ITLparser();
+		int fColumnOffset, fLineOffset;
+
+#ifndef NO_EXPR_VAR_SUPPORT
+		const TScripting* fReader;
+#endif
+		std::vector<std::string>* readVar(std::string* varName);
+
+		IExprParser(std::istream* stream, const TScripting *reader = 0);
+		virtual ~IExprParser();
 		
-		SIMessageList parse();
+		SIExprArg parse();
+
+		static bool parseExpression(std::string definition, SIExpression &expr, const TScripting* reader = 0);
 };
 
 } // end namespace

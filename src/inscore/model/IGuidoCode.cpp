@@ -278,10 +278,6 @@ MsgHandler::msgStatus IGuidoCode::exprMsg(const IMessage* msg)
 
 	if(p==kclear_SetMethod){
 		fExprHandler.clearExpr();
-	}else if(p=="autowatch"){
-		fExprHandler.setAutoWatch();
-	}else if(p=="manwatch"){
-		fExprHandler.setAutoWatch(false);
 	}else{
 
 		//some operations need an expression

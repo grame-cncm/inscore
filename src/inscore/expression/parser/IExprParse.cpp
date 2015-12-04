@@ -60,29 +60,29 @@
 
 
 /* Substitute the variable and function names.  */
-#define yyparse         ITLparse
-#define yylex           ITLlex
-#define yyerror         ITLerror
-#define yydebug         ITLdebug
-#define yynerrs         ITLnerrs
+#define yyparse         IExprparse
+#define yylex           IExprlex
+#define yyerror         IExprerror
+#define yydebug         IExprdebug
+#define yynerrs         IExprnerrs
 
 
 /* Copy the first part of user declarations.  */
-#line 2 "ITL.y" /* yacc.c:339  */
+#line 2 "IExpr.y" /* yacc.c:339  */
 
 
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <vector>
 
-#include "ITLparser.h"
-#include "IMessage.h"
-#include "IMessageStream.h"
-#include "ITLparse.hpp"
+#include "IExprParser.h"
+#include "IExprParse.hpp"
+#include "ExprFactory.h"
 
 
 
-#line 86 "ITLparse.cpp" /* yacc.c:339  */
+#line 86 "IExprParse.cpp" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -101,15 +101,15 @@
 #endif
 
 /* In a future release of Bison, this section will be replaced
-   by #include "ITLparse.hpp".  */
-#ifndef YY_ITL_ITLPARSE_HPP_INCLUDED
-# define YY_ITL_ITLPARSE_HPP_INCLUDED
+   by #include "IExprParse.hpp".  */
+#ifndef YY_IEXPR_IEXPRPARSE_HPP_INCLUDED
+# define YY_IEXPR_IEXPRPARSE_HPP_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
 #endif
 #if YYDEBUG
-extern int ITLdebug;
+extern int IExprdebug;
 #endif
 
 /* Token type.  */
@@ -117,32 +117,14 @@ extern int ITLdebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    INT = 258,
-    UINT = 259,
-    FLOAT = 260,
-    IDENTIFIER = 261,
-    EQUAL = 262,
-    REGEXP = 263,
-    PATHSEP = 264,
-    BACKPATH = 265,
-    FILEPATH = 266,
-    STRING = 267,
-    WATCH = 268,
-    EVAL = 269,
-    ERR = 270,
-    ENDEXPR = 271,
-    ENDSCRIPT = 272,
-    VARSTART = 273,
-    LEFTPAR = 274,
-    RIGHTPAR = 275,
-    COLON = 276,
-    COMMA = 277,
-    POINT = 278,
-    HOSTNAME = 279,
-    IPNUM = 280,
-    EXPRESSION = 281,
-    LUASCRIPT = 282,
-    JSCRIPT = 283
+    EXPR_START = 258,
+    EXPR_END = 259,
+    VARSTART = 260,
+    AMPERSAND = 261,
+    TILDE = 262,
+    QUOTEDSTRING = 263,
+    STRING = 264,
+    IDENTIFIER = 265
   };
 #endif
 
@@ -151,19 +133,15 @@ extern int ITLdebug;
 
 union YYSTYPE
 {
-#line 26 "ITL.y" /* yacc.c:355  */
+#line 26 "IExpr.y" /* yacc.c:355  */
 
-	int		num;
+	int	num;
 	float	real;
 	std::string* str;
-	inscore::ITLparser::address*	addr;
-	inscore::Sbaseparam *			p;
-	inscore::IMessage::argslist*	plist;
-	inscore::IMessage::TUrl*		url;
-	inscore::SIMessage*				msg;
-    inscore::SIMessageList*			msgList;
+	std::vector<std::string>* strList;
+	inscore::SIExprArg* argbase;
 
-#line 167 "ITLparse.cpp" /* yacc.c:355  */
+#line 145 "IExprParse.cpp" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -187,36 +165,33 @@ struct YYLTYPE
 
 
 
-int ITLparse (inscore::ITLparser* context);
+int IExprparse (inscore::IExprParser* context);
 
-#endif /* !YY_ITL_ITLPARSE_HPP_INCLUDED  */
+#endif /* !YY_IEXPR_IEXPRPARSE_HPP_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
-#line 69 "ITL.y" /* yacc.c:358  */
+#line 49 "IExpr.y" /* yacc.c:358  */
 
 
 #include <iostream>
 #include <sstream>
 #include <string>
 
-#include "ITLparser.h"
-#include "ITLparse.hpp"
+#include "IExprParser.h"
+#include "IExprParse.hpp"
 
 #ifndef NO_OSCSTREAM
 #include "ITLError.h"
 #endif
 
-#define VARERROR(str, var)	{ VARerror(&yyloc, context, str, var); YYABORT; }
-
-//#define ERROR_CB() [&yyloc, &context](const char *s) -> void {yyerror(&yyloc, context, s);}
-//#define HANDLE_READER_ERROR() if(context->fReader.hasFailed()){ yyerror(&yyloc, context, context->fReader.errorlog().c_str()); YYABORT; }
-
 typedef void * yyscan_t;
 
-int VARerror(YYLTYPE* locp, inscore::ITLparser* context, const char*s, const char* var);
-int yyerror (const YYLTYPE* locp, inscore::ITLparser* context, const char*s);
+int yyerror (const YYLTYPE* locp, inscore::IExprParser *context, const char*s);
 int yylex(YYSTYPE* lvalp, YYLTYPE* llocp, void* scanner);
-int lineno(inscore::ITLparser* context);
+int lineno(inscore::IExprParser* context);
+
+
+#define CHECKVAR(VAR, SIZE) if(VAR ->size() != SIZE){yyerror(&yyloc, context, "wrong variable content"); YYABORT;}
 
 #define scanner context->fScanner
 
@@ -226,7 +201,7 @@ using namespace std;
 //{
 
 
-#line 230 "ITLparse.cpp" /* yacc.c:358  */
+#line 205 "IExprParse.cpp" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -468,23 +443,23 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  29
+#define YYFINAL  17
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   106
+#define YYLAST   27
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  29
+#define YYNTOKENS  11
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  21
+#define YYNNTS  9
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  51
+#define YYNRULES  18
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  76
+#define YYNSTATES  29
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   283
+#define YYMAXUTOK   265
 
 #define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -519,21 +494,15 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    28
+       5,     6,     7,     8,     9,    10
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   108,   108,   109,   115,   116,   117,   123,   129,   132,
-     141,   142,   143,   146,   150,   153,   158,   159,   160,   163,
-     164,   167,   170,   171,   172,   175,   176,   179,   180,   183,
-     184,   185,   191,   195,   196,   197,   198,   201,   206,   212,
-     213,   214,   215,   216,   217,   218,   224,   227,   228,   233,
-     234,   240
+       0,    85,    85,    91,    94,    95,    96,    99,   108,   109,
+     110,   117,   118,   121,   122,   123,   124,   128,   129
 };
 #endif
 
@@ -542,14 +511,10 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "INT", "UINT", "FLOAT", "IDENTIFIER",
-  "EQUAL", "REGEXP", "PATHSEP", "BACKPATH", "FILEPATH", "STRING", "WATCH",
-  "EVAL", "ERR", "ENDEXPR", "ENDSCRIPT", "VARSTART", "LEFTPAR", "RIGHTPAR",
-  "COLON", "COMMA", "POINT", "HOSTNAME", "IPNUM", "EXPRESSION",
-  "LUASCRIPT", "JSCRIPT", "$accept", "start", "expr", "script", "message",
-  "messagelist", "address", "oscaddress", "relativeaddress", "oscpath",
-  "urlprefix", "hostname", "identifier", "eval", "params", "variable",
-  "param", "variabledecl", "varname", "number", "expression", YY_NULLPTR
+  "$end", "error", "$undefined", "EXPR_START", "EXPR_END", "VARSTART",
+  "AMPERSAND", "TILDE", "QUOTEDSTRING", "STRING", "IDENTIFIER", "$accept",
+  "start", "identifier", "string", "variable", "expression", "operator",
+  "exprArg", "arg", YY_NULLPTR
 };
 #endif
 
@@ -559,17 +524,16 @@ static const char *const yytname[] =
 static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
-     275,   276,   277,   278,   279,   280,   281,   282,   283
+     265
 };
 # endif
 
-#define YYPACT_NINF -42
+#define YYPACT_NINF -14
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-42)))
+  (!!((Yystate) == (-14)))
 
-#define YYTABLE_NINF -49
+#define YYTABLE_NINF -19
 
 #define yytable_value_is_error(Yytable_value) \
   0
@@ -578,14 +542,9 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      59,   -42,    82,   -42,     3,    19,    10,   -42,   -42,     5,
-     -42,   -42,    20,    34,     3,   -42,   -42,     3,    22,    28,
-      43,   -42,   -42,   -42,    -3,   -42,   -42,     3,    47,   -42,
-     -42,   -42,   -42,   -42,   -42,   -42,   -42,     0,    80,   -42,
-     -42,   -42,   -11,    51,   -42,   -42,   -42,   -42,   -42,     3,
-      63,    48,   -42,    51,   -42,   -42,   -42,    80,   -42,   -42,
-     -42,    27,    80,   -42,   -42,   -42,   -42,   -42,    51,    53,
-     -42,    80,    44,   -42,   -42,   -42
+       1,     0,     2,   -14,     4,     7,     7,   -14,   -14,   -14,
+      18,   -14,    19,   -14,     0,    20,   -14,   -14,   -14,   -14,
+     -14,   -14,   -14,    21,     0,   -14,   -14,    22,   -14
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -593,30 +552,21 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,    47,     0,     7,     0,    27,     0,     8,     9,     0,
-       2,     6,     0,    10,    16,    17,    19,     0,     0,     0,
-       0,    29,    31,    23,     0,    30,    22,    21,     0,     1,
-       3,     4,    50,    49,    40,    42,    32,     0,     0,    51,
-      45,    41,     0,    11,    34,    33,    39,    43,    20,    18,
-       0,     0,     5,     0,    48,    24,    26,     0,    37,    27,
-      14,     0,     0,    13,    35,    36,    25,    28,    46,     0,
-      44,     0,     0,    38,    15,    12
+       0,     0,     0,     2,     0,     0,     0,     6,     5,     3,
+      11,    17,    12,    16,     0,     0,    13,     1,     7,     4,
+      18,    14,    15,    18,     0,     9,    10,     0,     8
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -42,   -42,    62,     9,   -37,    12,   -42,     6,   -42,   -14,
-     -42,   -42,    78,   -42,    32,   -27,   -41,   -42,   -20,   -42,
-     -42
+     -14,   -14,    17,   -14,    -1,    27,   -14,   -13,    14
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     9,    10,    40,    12,    61,    13,    14,    15,    16,
-      17,    18,    41,    42,    43,    44,    45,    19,    20,    46,
-      47
+      -1,     2,    19,    11,    20,    13,    14,    15,    16
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -624,68 +574,39 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      48,    60,    65,     1,    55,    29,     1,    37,    62,    11,
-      27,     1,     2,    48,     2,    63,    64,    58,    11,    57,
-      69,    54,     3,    49,    54,    60,   -48,    65,     4,     5,
-       6,    28,     7,     8,    74,    48,    31,    32,    33,    34,
-      21,    64,    22,    50,    52,    51,    35,    70,    36,    71,
-      53,    56,    37,    38,    32,    33,    34,    21,    25,    22,
-      39,     7,     8,    35,    75,     1,    71,    66,     2,    37,
-      38,    30,    67,    73,    72,    25,     3,    39,     7,     8,
-      26,     0,     4,     5,     6,    68,     7,     8,    21,     2,
-      22,     0,     0,     0,     0,    23,     0,     0,     0,     0,
-      24,     0,     0,     4,    59,     6,    25
+      12,    24,    17,     1,     1,     4,     5,     6,     7,     8,
+       9,    27,     4,    23,     9,     7,     8,     9,    10,    21,
+      22,    18,    -4,   -18,    25,    26,    28,     3
 };
 
-static const yytype_int8 yycheck[] =
+static const yytype_uint8 yycheck[] =
 {
-      14,    38,    43,     6,    24,     0,     6,    18,    19,     0,
-       4,     6,     9,    27,     9,    42,    43,    37,     9,    19,
-      57,    24,    17,    17,    24,    62,     7,    68,    23,    24,
-      25,    21,    27,    28,    71,    49,    16,     3,     4,     5,
-       6,    68,     8,    21,    16,    23,    12,    20,    14,    22,
-       7,     4,    18,    19,     3,     4,     5,     6,    24,     8,
-      26,    27,    28,    12,    20,     6,    22,     4,     9,    18,
-      19,     9,    24,    20,    62,    24,    17,    26,    27,    28,
-       2,    -1,    23,    24,    25,    53,    27,    28,     6,     9,
-       8,    -1,    -1,    -1,    -1,    13,    -1,    -1,    -1,    -1,
-      18,    -1,    -1,    23,    24,    25,    24
+       1,    14,     0,     3,     3,     5,     6,     7,     8,     9,
+      10,    24,     5,    14,    10,     8,     9,    10,     1,     5,
+       6,     4,     4,     4,     4,     4,     4,     0
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     6,     9,    17,    23,    24,    25,    27,    28,    30,
-      31,    32,    33,    35,    36,    37,    38,    39,    40,    46,
-      47,     6,     8,    13,    18,    24,    41,    36,    21,     0,
-      31,    16,     3,     4,     5,    12,    14,    18,    19,    26,
-      32,    41,    42,    43,    44,    45,    48,    49,    38,    36,
-      21,    23,    16,     7,    24,    47,     4,    19,    47,    24,
-      33,    34,    19,    44,    44,    45,     4,    24,    43,    33,
-      20,    22,    34,    20,    33,    20
+       0,     3,    12,    16,     5,     6,     7,     8,     9,    10,
+      13,    14,    15,    16,    17,    18,    19,     0,    13,    13,
+      15,    19,    19,    15,    18,     4,     4,    18,     4
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    29,    30,    30,    31,    31,    31,    31,    32,    32,
-      33,    33,    33,    33,    34,    34,    35,    35,    35,    36,
-      36,    37,    38,    38,    38,    39,    39,    40,    40,    41,
-      41,    41,    42,    43,    43,    43,    43,    44,    44,    45,
-      45,    45,    45,    45,    45,    45,    46,    47,    47,    48,
-      48,    49
+       0,    11,    12,    13,    14,    14,    14,    15,    16,    16,
+      16,    17,    17,    18,    18,    18,    18,    19,    19
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     1,     2,     2,     2,     1,     1,     1,     1,
-       1,     2,     5,     3,     1,     3,     1,     1,     2,     1,
-       2,     2,     2,     2,     3,     3,     3,     1,     3,     1,
-       1,     1,     1,     1,     1,     2,     2,     2,     4,     1,
-       1,     1,     1,     1,     3,     1,     3,     1,     1,     1,
-       1,     1
+       0,     2,     1,     1,     1,     1,     1,     2,     5,     3,
+       4,     1,     1,     1,     2,     2,     1,     1,     1
 };
 
 
@@ -826,7 +747,7 @@ do {                                                                      \
 `----------------------------------------*/
 
 static void
-yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, YYLTYPE const * const yylocationp, inscore::ITLparser* context)
+yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, YYLTYPE const * const yylocationp, inscore::IExprParser* context)
 {
   FILE *yyo = yyoutput;
   YYUSE (yyo);
@@ -847,7 +768,7 @@ yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvalue
 `--------------------------------*/
 
 static void
-yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, YYLTYPE const * const yylocationp, inscore::ITLparser* context)
+yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, YYLTYPE const * const yylocationp, inscore::IExprParser* context)
 {
   YYFPRINTF (yyoutput, "%s %s (",
              yytype < YYNTOKENS ? "token" : "nterm", yytname[yytype]);
@@ -887,7 +808,7 @@ do {                                                            \
 `------------------------------------------------*/
 
 static void
-yy_reduce_print (yytype_int16 *yyssp, YYSTYPE *yyvsp, YYLTYPE *yylsp, int yyrule, inscore::ITLparser* context)
+yy_reduce_print (yytype_int16 *yyssp, YYSTYPE *yyvsp, YYLTYPE *yylsp, int yyrule, inscore::IExprParser* context)
 {
   unsigned long int yylno = yyrline[yyrule];
   int yynrhs = yyr2[yyrule];
@@ -1167,7 +1088,7 @@ yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
 `-----------------------------------------------*/
 
 static void
-yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, YYLTYPE *yylocationp, inscore::ITLparser* context)
+yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, YYLTYPE *yylocationp, inscore::IExprParser* context)
 {
   YYUSE (yyvaluep);
   YYUSE (yylocationp);
@@ -1189,7 +1110,7 @@ yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, YYLTYPE *yylocatio
 `----------*/
 
 int
-yyparse (inscore::ITLparser* context)
+yyparse (inscore::IExprParser* context)
 {
 /* The lookahead symbol.  */
 int yychar;
@@ -1462,318 +1383,89 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 4:
-#line 115 "ITL.y" /* yacc.c:1646  */
-    { context->fReader.add(*(yyvsp[-1].msg)); delete (yyvsp[-1].msg); }
-#line 1469 "ITLparse.cpp" /* yacc.c:1646  */
+        case 2:
+#line 85 "IExpr.y" /* yacc.c:1646  */
+    {context->fRootNode = (yyvsp[0].argbase);}
+#line 1390 "IExprParse.cpp" /* yacc.c:1646  */
+    break;
+
+  case 3:
+#line 91 "IExpr.y" /* yacc.c:1646  */
+    { (yyval.str) = new string(context->fText); }
+#line 1396 "IExprParse.cpp" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 116 "ITL.y" /* yacc.c:1646  */
-    { delete (yyvsp[-1].str); }
-#line 1475 "ITLparse.cpp" /* yacc.c:1646  */
+#line 95 "IExpr.y" /* yacc.c:1646  */
+    { (yyval.str) = new string(context->fText);}
+#line 1402 "IExprParse.cpp" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 117 "ITL.y" /* yacc.c:1646  */
-    {	if (*(yyvsp[0].msgList)) {
-										for (unsigned int i=0; i < (*(yyvsp[0].msgList))->list().size(); i++)
-											context->fReader.add((*(yyvsp[0].msgList))->list()[i]);
-									}
-									delete (yyvsp[0].msgList);
-								}
-#line 1486 "ITLparse.cpp" /* yacc.c:1646  */
+#line 96 "IExpr.y" /* yacc.c:1646  */
+    { (yyval.str) = new string(context->fText);}
+#line 1408 "IExprParse.cpp" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 123 "ITL.y" /* yacc.c:1646  */
-    { YYACCEPT; }
-#line 1492 "ITLparse.cpp" /* yacc.c:1646  */
+#line 99 "IExpr.y" /* yacc.c:1646  */
+    { (yyval.strList) = context->readVar((yyvsp[0].str));}
+#line 1414 "IExprParse.cpp" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 129 "ITL.y" /* yacc.c:1646  */
-    {	(yyval.msgList) = new inscore::SIMessageList (inscore::IMessageList::create());
-									*(yyval.msgList) = context->fReader.luaEval(context->fText.c_str());
-								}
-#line 1500 "ITLparse.cpp" /* yacc.c:1646  */
+#line 108 "IExpr.y" /* yacc.c:1646  */
+    { (yyval.argbase) = new inscore::SIExprArg( inscore::ExprFactory::createExpr(*(yyvsp[-3].str),*(yyvsp[-2].argbase),*(yyvsp[-1].argbase))); delete (yyvsp[-3].str); delete (yyvsp[-2].argbase); delete (yyvsp[-1].argbase);}
+#line 1420 "IExprParse.cpp" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 132 "ITL.y" /* yacc.c:1646  */
-    {	(yyval.msgList) = new inscore::SIMessageList (inscore::IMessageList::create());
-									*(yyval.msgList) = context->fReader.jsEval(context->fText.c_str(), yylloc.last_line);
-								}
-#line 1508 "ITLparse.cpp" /* yacc.c:1646  */
+#line 109 "IExpr.y" /* yacc.c:1646  */
+    { (yyval.argbase) = (yyvsp[-1].argbase); }
+#line 1426 "IExprParse.cpp" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 141 "ITL.y" /* yacc.c:1646  */
-    { (yyval.msg) = new inscore::SIMessage(inscore::IMessage::create((yyvsp[0].addr)->fOsc)); (*(yyval.msg))->setUrl((yyvsp[0].addr)->fUrl); delete (yyvsp[0].addr); }
-#line 1514 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 11:
-#line 142 "ITL.y" /* yacc.c:1646  */
-    { (yyval.msg) = new inscore::SIMessage(inscore::IMessage::create((yyvsp[-1].addr)->fOsc, *(yyvsp[0].plist), (yyvsp[-1].addr)->fUrl)); delete (yyvsp[-1].addr); delete (yyvsp[0].plist); }
-#line 1520 "ITLparse.cpp" /* yacc.c:1646  */
+#line 110 "IExpr.y" /* yacc.c:1646  */
+    { CHECKVAR((yyvsp[-1].strList), 2) (yyval.argbase) = new inscore::SIExprArg( inscore::ExprFactory::createExpr(*(yyvsp[-2].str),
+																																			 inscore::ExprFactory::createArg((yyvsp[-1].strList)->at(0)) ,
+																																			 inscore::ExprFactory::createArg((yyvsp[-1].strList)->at(1))
+																										   )); delete (yyvsp[-2].str); delete (yyvsp[-1].strList);}
+#line 1435 "IExprParse.cpp" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 144 "ITL.y" /* yacc.c:1646  */
-    {	(yyval.msg) = new inscore::SIMessage(inscore::IMessage::create((yyvsp[-4].addr)->fOsc, *(yyvsp[-3].plist), (yyvsp[-4].addr)->fUrl));
-											(*(yyval.msg))->add(*(yyvsp[-1].msgList)); delete (yyvsp[-4].addr); delete (yyvsp[-3].plist); delete (yyvsp[-1].msgList); }
-#line 1527 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 13:
-#line 146 "ITL.y" /* yacc.c:1646  */
-    {	(yyval.msg) = new inscore::SIMessage(inscore::IMessage::create((yyvsp[-2].addr)->fOsc, *(yyvsp[-1].plist), (yyvsp[-2].addr)->fUrl));
-											(*(yyval.msg))->add(*(yyvsp[0].plist)); delete (yyvsp[-2].addr); delete (yyvsp[-1].plist); delete (yyvsp[0].plist); }
-#line 1534 "ITLparse.cpp" /* yacc.c:1646  */
+#line 118 "IExpr.y" /* yacc.c:1646  */
+    { CHECKVAR((yyvsp[0].strList), 1) (yyval.str) = new string((yyvsp[0].strList)->at(0)); delete (yyvsp[0].strList); }
+#line 1441 "IExprParse.cpp" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 150 "ITL.y" /* yacc.c:1646  */
-    {	(yyval.msgList) = new inscore::SIMessageList (inscore::IMessageList::create());
-											(*(yyval.msgList))->list().push_back(*(yyvsp[0].msg));
-											delete (yyvsp[0].msg); }
-#line 1542 "ITLparse.cpp" /* yacc.c:1646  */
+#line 122 "IExpr.y" /* yacc.c:1646  */
+    { (yyval.argbase) = (yyvsp[0].argbase); (*(yyval.argbase))->switchToDynamic(); }
+#line 1447 "IExprParse.cpp" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 153 "ITL.y" /* yacc.c:1646  */
-    {	(yyval.msgList) = (yyvsp[-2].msgList); (*(yyval.msgList))->list().push_back(*(yyvsp[0].msg)); delete (yyvsp[0].msg); }
-#line 1548 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 16:
-#line 158 "ITL.y" /* yacc.c:1646  */
-    { (yyval.addr) = new inscore::ITLparser::address (*(yyvsp[0].str)); delete (yyvsp[0].str);}
-#line 1554 "ITLparse.cpp" /* yacc.c:1646  */
+#line 123 "IExpr.y" /* yacc.c:1646  */
+    { (yyval.argbase) = (yyvsp[0].argbase); (*(yyval.argbase))->switchToCopy(); }
+#line 1453 "IExprParse.cpp" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 159 "ITL.y" /* yacc.c:1646  */
-    { (yyval.addr) = new inscore::ITLparser::address (*(yyvsp[0].str)); delete (yyvsp[0].str);}
-#line 1560 "ITLparse.cpp" /* yacc.c:1646  */
+#line 128 "IExpr.y" /* yacc.c:1646  */
+    { (yyval.argbase) = new inscore::SIExprArg( inscore::ExprFactory::createArg(*(yyvsp[0].str)) ); delete (yyvsp[0].str); }
+#line 1459 "IExprParse.cpp" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 160 "ITL.y" /* yacc.c:1646  */
-    { (yyval.addr) = new inscore::ITLparser::address (*(yyvsp[0].str), *(yyvsp[-1].url)); delete (yyvsp[-1].url); delete (yyvsp[0].str); }
-#line 1566 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 19:
-#line 163 "ITL.y" /* yacc.c:1646  */
-    { (yyval.str) = (yyvsp[0].str); }
-#line 1572 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 20:
-#line 164 "ITL.y" /* yacc.c:1646  */
-    { *(yyvsp[-1].str) += *(yyvsp[0].str); (yyval.str) = (yyvsp[-1].str); delete (yyvsp[0].str); }
-#line 1578 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 21:
-#line 167 "ITL.y" /* yacc.c:1646  */
-    { (yyval.str) = new string("." + *(yyvsp[0].str)); delete (yyvsp[0].str); }
-#line 1584 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 22:
-#line 170 "ITL.y" /* yacc.c:1646  */
-    { (yyval.str) = new string("/" + *(yyvsp[0].str)); delete (yyvsp[0].str); }
-#line 1590 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 23:
-#line 171 "ITL.y" /* yacc.c:1646  */
-    { (yyval.str) = new string("/" + context->fText); }
-#line 1596 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 24:
-#line 172 "ITL.y" /* yacc.c:1646  */
-    { (yyval.str) = new string("/$" + *(yyvsp[0].str)); delete (yyvsp[0].str); }
-#line 1602 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 25:
-#line 175 "ITL.y" /* yacc.c:1646  */
-    { (yyval.url) = new inscore::IMessage::TUrl((yyvsp[-2].str)->c_str(), context->fInt); delete (yyvsp[-2].str); }
-#line 1608 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 26:
-#line 176 "ITL.y" /* yacc.c:1646  */
-    { (yyval.url) = new inscore::IMessage::TUrl(context->fText.c_str(), context->fInt); }
-#line 1614 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 27:
-#line 179 "ITL.y" /* yacc.c:1646  */
-    { (yyval.str) = new string(context->fText); }
-#line 1620 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 28:
-#line 180 "ITL.y" /* yacc.c:1646  */
-    { *(yyvsp[-2].str) += '.' + context->fText; (yyval.str)=(yyvsp[-2].str); }
-#line 1626 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 29:
-#line 183 "ITL.y" /* yacc.c:1646  */
-    { (yyval.str) = new string(context->fText); }
-#line 1632 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 30:
-#line 184 "ITL.y" /* yacc.c:1646  */
-    { (yyval.str) = new string(context->fText); }
-#line 1638 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 31:
-#line 185 "ITL.y" /* yacc.c:1646  */
-    { (yyval.str) = new string(context->fText); }
-#line 1644 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 32:
-#line 191 "ITL.y" /* yacc.c:1646  */
-    { (yyval.plist) = new inscore::IMessage::argslist; 
-								  inscore::Sbaseparam * p = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText));
-								  (yyval.plist)->push_back(*p); delete p; }
-#line 1652 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 33:
-#line 195 "ITL.y" /* yacc.c:1646  */
-    { (yyval.plist) = new inscore::IMessage::argslist; (yyval.plist)->push_back(*(yyvsp[0].p)); delete (yyvsp[0].p); }
-#line 1658 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 34:
-#line 196 "ITL.y" /* yacc.c:1646  */
-    { (yyval.plist) = (yyvsp[0].plist); }
-#line 1664 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 35:
-#line 197 "ITL.y" /* yacc.c:1646  */
-    { (yyvsp[-1].plist)->push_back((yyvsp[0].plist));  (yyval.plist) = (yyvsp[-1].plist); delete (yyvsp[0].plist); }
-#line 1670 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 36:
-#line 198 "ITL.y" /* yacc.c:1646  */
-    { (yyvsp[-1].plist)->push_back(*(yyvsp[0].p)); (yyval.plist) = (yyvsp[-1].plist); delete (yyvsp[0].p); }
-#line 1676 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 37:
-#line 201 "ITL.y" /* yacc.c:1646  */
-    { (yyval.plist) = new inscore::IMessage::argslist;
-								  std::string var = "$" + *(yyvsp[0].str);
-								  (yyval.plist)->push_back (context->fReader.resolve((yyvsp[0].str)->c_str(), var.c_str()));
-								  delete (yyvsp[0].str);
-								}
-#line 1686 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 38:
-#line 206 "ITL.y" /* yacc.c:1646  */
-    { (yyval.plist) = new inscore::IMessage::argslist;
-								  (yyval.plist)->push_back (context->fReader.resolve(*(yyvsp[-1].msg)));
-								  delete (yyvsp[-1].msg);
-								}
-#line 1695 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 39:
-#line 212 "ITL.y" /* yacc.c:1646  */
-    { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<int>((yyvsp[0].num))); }
-#line 1701 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 40:
-#line 213 "ITL.y" /* yacc.c:1646  */
-    { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); }
-#line 1707 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 41:
-#line 214 "ITL.y" /* yacc.c:1646  */
-    { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); delete (yyvsp[0].str); }
-#line 1713 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 42:
-#line 215 "ITL.y" /* yacc.c:1646  */
-    { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
-#line 1719 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 43:
-#line 216 "ITL.y" /* yacc.c:1646  */
-    { (yyval.p) = (yyvsp[0].p);}
-#line 1725 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 44:
-#line 217 "ITL.y" /* yacc.c:1646  */
-    { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<inscore::SIMessageList>(*(yyvsp[-1].msgList))); delete (yyvsp[-1].msgList); }
-#line 1731 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 45:
-#line 218 "ITL.y" /* yacc.c:1646  */
-    { (yyval.p) = new inscore::Sbaseparam(new inscore::IMsgParam<inscore::SIMessageList>(*(yyvsp[0].msgList))); delete (yyvsp[0].msgList); }
-#line 1737 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 46:
-#line 224 "ITL.y" /* yacc.c:1646  */
-    { (yyval.str)=(yyvsp[-2].str); context->fReader.variable((yyvsp[-2].str)->c_str(), (yyvsp[0].plist)); delete (yyvsp[0].plist);}
-#line 1743 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 47:
-#line 227 "ITL.y" /* yacc.c:1646  */
-    { (yyval.str) = new string(context->fText); }
-#line 1749 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 48:
-#line 228 "ITL.y" /* yacc.c:1646  */
-    { (yyval.str) = new string(context->fText); }
-#line 1755 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 49:
-#line 233 "ITL.y" /* yacc.c:1646  */
-    { (yyval.num) = context->fInt; }
-#line 1761 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 50:
-#line 234 "ITL.y" /* yacc.c:1646  */
-    { (yyval.num) = context->fInt; }
-#line 1767 "ITLparse.cpp" /* yacc.c:1646  */
-    break;
-
-  case 51:
-#line 240 "ITL.y" /* yacc.c:1646  */
-    { (yyval.p) = context->fReader.parseExpr(context->fText);}
-#line 1773 "ITLparse.cpp" /* yacc.c:1646  */
+#line 129 "IExpr.y" /* yacc.c:1646  */
+    { CHECKVAR((yyvsp[0].strList), 1) (yyval.argbase) = new inscore::SIExprArg( inscore::ExprFactory::createArg((yyvsp[0].strList)->at(0)) ); delete (yyvsp[0].strList); }
+#line 1465 "IExprParse.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 1777 "ITLparse.cpp" /* yacc.c:1646  */
+#line 1469 "IExprParse.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2008,7 +1700,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 243 "ITL.y" /* yacc.c:1906  */
+#line 133 "IExpr.y" /* yacc.c:1906  */
 
 
 //} // end namespace
@@ -2016,35 +1708,28 @@ yyreturn:
 namespace inscore 
 {
 
-SIMessageList ITLparser::parse()
+
+
+SIExprArg IExprParser::parse()
 {
 	yyparse (this);
-	return fReader.messages();
+	return inscore::SIExprArg(*fRootNode);
 }
 }
 
 using namespace inscore;
 
-int lineno (ITLparser* context)	
-{ 
+int lineno (IExprParser* context)
+{
 	YYLTYPE* loc = (YYLTYPE*)context->fScanner;
-	return loc->last_line + context->fLine; 
+	return loc->last_line + context->fLineOffset;
 }
 
-int yyerror(const YYLTYPE* loc, ITLparser* context, const char*s) {
+int yyerror(const YYLTYPE* loc, IExprParser* context, const char*s) {
 #ifdef NO_OSCSTREAM
-	cerr << "error line: " << loc->last_line + context->fLine << " col: " << loc->first_column << ": " << s << endl;
+	cerr << "error line: " << loc->last_line + context->fLineOffset << " col: " << loc->first_column + (loc->last_line ? context->fLineOffset : 0)<< ": " << s << endl;
 #else
-	ITLErr << "error line: " << loc->last_line + context->fLine << " col: " << loc->first_column << ": " << s << ITLEndl;
-#endif
-	return 0;
-}
-
-int VARerror(YYLTYPE* loc, ITLparser* context, const char*s, const char* var) {
-#ifdef NO_OSCSTREAM
-	cerr << "error line " << loc->last_line + context->fLine << ": " << s << var << endl;
-#else
-	ITLErr << "error line " << loc->last_line + context->fLine << ": " << s << var << ITLEndl;
+	ITLErr << "error line: " << loc->last_line + context->fLineOffset << " col: " << loc->first_column + (loc->last_line ? context->fLineOffset : 0) << ": " << s << ITLEndl;
 #endif
 	return 0;
 }

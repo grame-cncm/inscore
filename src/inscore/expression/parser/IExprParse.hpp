@@ -30,14 +30,14 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_ITL_ITLPARSE_HPP_INCLUDED
-# define YY_ITL_ITLPARSE_HPP_INCLUDED
+#ifndef YY_IEXPR_IEXPRPARSE_HPP_INCLUDED
+# define YY_IEXPR_IEXPRPARSE_HPP_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
 #endif
 #if YYDEBUG
-extern int ITLdebug;
+extern int IExprdebug;
 #endif
 
 /* Token type.  */
@@ -45,32 +45,14 @@ extern int ITLdebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    INT = 258,
-    UINT = 259,
-    FLOAT = 260,
-    IDENTIFIER = 261,
-    EQUAL = 262,
-    REGEXP = 263,
-    PATHSEP = 264,
-    BACKPATH = 265,
-    FILEPATH = 266,
-    STRING = 267,
-    WATCH = 268,
-    EVAL = 269,
-    ERR = 270,
-    ENDEXPR = 271,
-    ENDSCRIPT = 272,
-    VARSTART = 273,
-    LEFTPAR = 274,
-    RIGHTPAR = 275,
-    COLON = 276,
-    COMMA = 277,
-    POINT = 278,
-    HOSTNAME = 279,
-    IPNUM = 280,
-    EXPRESSION = 281,
-    LUASCRIPT = 282,
-    JSCRIPT = 283
+    EXPR_START = 258,
+    EXPR_END = 259,
+    VARSTART = 260,
+    AMPERSAND = 261,
+    TILDE = 262,
+    QUOTEDSTRING = 263,
+    STRING = 264,
+    IDENTIFIER = 265
   };
 #endif
 
@@ -79,19 +61,15 @@ extern int ITLdebug;
 
 union YYSTYPE
 {
-#line 26 "ITL.y" /* yacc.c:1909  */
+#line 26 "IExpr.y" /* yacc.c:1909  */
 
-	int		num;
+	int	num;
 	float	real;
 	std::string* str;
-	inscore::ITLparser::address*	addr;
-	inscore::Sbaseparam *			p;
-	inscore::IMessage::argslist*	plist;
-	inscore::IMessage::TUrl*		url;
-	inscore::SIMessage*				msg;
-    inscore::SIMessageList*			msgList;
+	std::vector<std::string>* strList;
+	inscore::SIExprArg* argbase;
 
-#line 95 "ITLparse.hpp" /* yacc.c:1909  */
+#line 73 "IExprParse.hpp" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -115,6 +93,6 @@ struct YYLTYPE
 
 
 
-int ITLparse (inscore::ITLparser* context);
+int IExprparse (inscore::IExprParser* context);
 
-#endif /* !YY_ITL_ITLPARSE_HPP_INCLUDED  */
+#endif /* !YY_IEXPR_IEXPRPARSE_HPP_INCLUDED  */

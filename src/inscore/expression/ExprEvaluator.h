@@ -24,7 +24,7 @@ public:
     EvaluationStatus();
     void init();
 
-	inline std::string fail(const IExpression* arg){return fail(arg->getEvaluated());}
+	inline std::string fail(const IExprArgBase* arg){return fail(arg->getEvaluated());}
 	inline std::string fail(const std::string defaultValue){if(defaultValue.empty()){return fail();} return defaultValue;}
 	inline std::string fail(){fEvalSucceed = false; return "";}
     bool hasEvalSucceed(){return fEvalSucceed;}
@@ -50,11 +50,11 @@ public:
 	 */
 	bool evalExpression(const IExpression *expr, std::string &result);
 
-	virtual const std::string eval(const IExprOperator* arg, const IExpression* exprArg=0);
-	virtual const std::string eval(const std::string& arg, const IExpression* exprArg=0);
-	virtual const std::string eval(const filepath& arg, const IExpression* exprArg=0);
-	virtual const std::string eval(const itladdress& arg, const IExpression* exprArg=0);
-
+	virtual const std::string eval(const IExprOperator* arg, const IExprArgBase* exprArg=0);
+	virtual const std::string eval(const std::string& arg, const IExprArgBase* exprArg=0);
+	virtual const std::string eval(const filepath& arg, const IExprArgBase* exprArg=0);
+	virtual const std::string eval(const itladdress& arg, const IExprArgBase* exprArg=0);
+	virtual const std::string eval(const iexpression& arg, const IExprArgBase* exprArg=0);
 	virtual const std::string eval(const IObject *arg);
 
 
@@ -72,7 +72,7 @@ protected:
 	EvaluationStatus fEvalStatus;
 
 	inline const IObject* contextObject(){return fContextObject;}
-	bool smartEval(const IExpression *expr, std::string &result);
+	bool smartEval(const IExprArgBase *expr, std::string &result);
 
 
 	std::unordered_map<const OperatorPrototype*, OperatorCb> fCallbackList;

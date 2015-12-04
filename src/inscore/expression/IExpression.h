@@ -18,9 +18,28 @@ typedef libmapping::SMARTP<IExprOperator> SIExprOperator;
 
 class OperatorPrototype;
 
+class IExprArgBase;
+typedef libmapping::SMARTP<IExprArgBase> SIExprArg;
+
 class IExpression;
 typedef libmapping::SMARTP<IExpression> SIExpression;
 
+class IExpression: public libmapping::smartable{
+private:
+	SIExprArg fRootNode;
+	std::string fDefinition;
+
+public:
+	static SIExpression create(const std::string &definition, const SIExprArg &fRootNode);
+	static SIExpression createEmpty();
+
+	std::string definition() const {return fDefinition;}
+	const SIExprArg& rootNode() const {return fRootNode;}
+	void setRootNode(SIExprArg rootNode){fRootNode = SIExprArg(rootNode);}
+
+protected:
+	IExpression(const std::string &definition, const SIExprArg &rootNode);
+};
 
 //____________________________________________________________
 /*!
@@ -29,16 +48,16 @@ typedef libmapping::SMARTP<IExpression> SIExpression;
 class IExprOperator: public libmapping::smartable{
 private:
 	const OperatorPrototype* fOperatorPrototype;
-	SIExpression fArg1, fArg2;
+	SIExprArg fArg1, fArg2;
 
 public:
-	IExprOperator(const OperatorPrototype* operatorPrototype, SIExpression arg1, SIExpression arg2);
+	IExprOperator(const OperatorPrototype* operatorPrototype, SIExprArg arg1, SIExprArg arg2);
 
-	SIExpression& arg1() {return fArg1;}
-	SIExpression& arg2() {return fArg2;}
+	SIExprArg& arg1() {return fArg1;}
+	SIExprArg& arg2() {return fArg2;}
 
-	const SIExpression constArg1() const {return fArg1;}
-	const SIExpression constArg2() const {return fArg2;}
+	const SIExprArg constArg1() const {return fArg1;}
+	const SIExprArg constArg2() const {return fArg2;}
 
 	bool dynamicEval() const;
 
@@ -50,9 +69,9 @@ public:
 
 //____________________________________________________________________________________________
 /*!
- * \brief base classes for all the arguments passed to an operator, it hide the template of IExprArg<T>
+ * \brief base classes for all IExpression arguments , it hide the template of IExprArg<T>
  */
-class IExpression: public libmapping::smartable, public evaluable{
+class IExprArgBase: public libmapping::smartable, public evaluable{
 protected:
 	bool fCopyEval, fDynamicEval;
 	std::string* fEvaluated;
@@ -67,7 +86,7 @@ public:
 	inline bool dynamicEval() const {return fDynamicEval;}
 	inline bool pureStaticEval() const {return !fCopyEval && !fDynamicEval;}
 
-	virtual SIExpression copy()=0;
+	virtual SIExprArg copy() const =0;
 
 	inline std::string getEvaluated() const {return *fEvaluated;}
 	inline void setEvaluated(std::string evaluated){*fEvaluated = evaluated;}
@@ -75,10 +94,10 @@ public:
 																//the pointer isn't const so evaluated can be change even in a const IExpression
 	virtual void recursiveClearEvaluated()=0;
 
-	virtual ~IExpression(){delete fEvaluated;}
+	virtual ~IExprArgBase(){delete fEvaluated;}
 
 protected:
-	IExpression(bool dynamicEval = false, bool copyEval = false);
+	IExprArgBase();
 };
 
 
@@ -89,16 +108,20 @@ template <typename argType>
 /*!
  * \brief Containers class used to store any arguments of any type passed to an operator.
  */
-class IExprArg: public IExpression{
+class IExprArg: public IExprArgBase{
 private:
     argType fArg;
 
 public:
-	IExprArg(argType arg, bool dynamicEval = false, bool copyEval = false): IExpression(dynamicEval, copyEval), fArg(arg){}
+	IExprArg(argType arg): IExprArgBase(), fArg(arg){}
 	argType getArg(){return fArg;}
 
-	SIExpression copy(){
-		IExpression* r = new IExprArg<argType>(fArg, fDynamicEval, fCopyEval);
+	SIExprArg copy() const {
+		IExprArgBase* r = new IExprArg<argType>(fArg);
+		if(fDynamicEval)
+			r->switchToDynamic();
+		if(fCopyEval)
+			r->switchToCopy();
 		r->setEvaluated(getEvaluated());
 		return r;
 	}
@@ -120,6 +143,7 @@ public:
 };
 
 std::ostream&	operator << (std::ostream& out, const SIExpression& exprArg);
+std::ostream&	operator << (std::ostream& out, const SIExprArg& exprArg);
 std::ostream&	operator << (std::ostream& out, const SIExprOperator& exprArg);
 
 } //end namespace

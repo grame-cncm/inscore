@@ -109,7 +109,13 @@ OSCStream& operator <<(OSCStream& s, const string& val)
 	return s; 
 }
 //--------------------------------------------------------------------------
-OSCStream &operator <<(OSCStream &s, IExpression *val){
+OSCStream &operator <<(OSCStream &s, const IExpression *val){
+	if(val)
+		s.stream() << val->definition().c_str();
+	return s;
+}
+//--------------------------------------------------------------------------
+OSCStream &operator <<(OSCStream &s, IExprArgBase *val){
     string r;
 	if(ExprReader::read(val, r))
         s.stream() << " " << r.c_str();
@@ -181,9 +187,14 @@ OSCErrorStream& operator <<(OSCErrorStream& s, const string& val)
 	s.stream() << " " << val.c_str();
 	return s; 
 }
-
 //--------------------------------------------------------------------------
-OSCErrorStream &operator <<(OSCErrorStream &s, IExpression *val){
+OSCErrorStream& operator <<(OSCErrorStream& s, const IExpression *val){
+	if(val)
+		s.stream() << val->definition().c_str();
+	return s;
+}
+//--------------------------------------------------------------------------
+OSCErrorStream &operator <<(OSCErrorStream &s, const IExprArgBase *val){
     string r;
 	if(ExprReader::read(val, r))
         s.stream() << " " << r;

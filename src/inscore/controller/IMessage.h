@@ -457,7 +457,7 @@ class IMessage : public Message, public libmapping::smartable
         \param val on output: the parameter value when the parameter type matches
         \return false when types don't match
     */
-    bool	param(int i, SIExpression& val) const { val = param(i)->value<SIExpression>(val); return param(i)->isType<SIExpression>(); }
+	bool	param(int i, SIExpression& val) const { val = param(i)->value<SIExpression>(val); return param(i)->isType<SIExpression>(); }
 
 
 	// ----------------------- utilities ----------------------

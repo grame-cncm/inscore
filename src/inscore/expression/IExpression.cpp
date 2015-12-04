@@ -1,12 +1,38 @@
+#include <sstream>
+
 #include "IExpression.h"
 
 #include "evaluator.h"
 #include "ExprReader.h"
+#include "IExprParser.h"
+#include "ExprFactory.h"
 
 namespace inscore
 {
 
-IExprOperator::IExprOperator(const OperatorPrototype *operatorPrototype, SIExpression arg1, SIExpression arg2):
+//_________________________________________________
+SIExpression IExpression::create(const std::string &definition, const SIExprArg &fRootNode)
+{
+	return new IExpression(definition, fRootNode);
+}
+
+SIExpression IExpression::createEmpty()
+{
+	return create("expr(\"\")", ExprFactory::createEmptyArg());
+}
+
+//_________________________________________________
+IExpression::IExpression(const std::string &definition, const SIExprArg &rootNode):
+	libmapping::smartable(),
+	fRootNode(rootNode), fDefinition(definition)
+{
+}
+
+
+
+//_________________________________________________
+// -----------------------------------------------
+IExprOperator::IExprOperator(const OperatorPrototype *operatorPrototype, SIExprArg arg1, SIExprArg arg2):
     libmapping::smartable(),
 	fOperatorPrototype(operatorPrototype), fArg1(&(*arg1)), fArg2(&(*arg2))
 {
@@ -27,9 +53,9 @@ std::string IExprOperator::getName() const
 
 //_________________________________________________
 // -----------------------------------------------
-IExpression::IExpression(bool dynamicEval, bool copyEval)
+IExprArgBase::IExprArgBase()
 	: libmapping::smartable(),
-	  fCopyEval(copyEval), fDynamicEval(dynamicEval),
+	  fCopyEval(false), fDynamicEval(false),
 	  fEvaluated(new std::string())
 {
 
@@ -39,10 +65,12 @@ IExpression::IExpression(bool dynamicEval, bool copyEval)
 //_________________________________________________
 // -----------------------------------------------
 template<>
-SIExpression IExprArg<SIExprOperator>::copy()
+SIExprArg IExprArg<SIExprOperator>::copy() const
 {
 	IExprOperator* op = new IExprOperator(fArg->operatorPrototype(), fArg->arg1()->copy(), fArg->arg2()->copy());
-	IExpression* r = new IExprArg<SIExprOperator>(op, fDynamicEval, fCopyEval);
+	IExprArgBase* r = new IExprArg<SIExprOperator>(op);
+	if(fDynamicEval)
+		r->switchToDynamic();
 	r->setEvaluated(getEvaluated());
 	return r;
 }
@@ -56,8 +84,16 @@ void IExprArg<SIExprOperator>::recursiveClearEvaluated()
 	fEvaluated->clear();
 }
 
+
 //_________________________________________________
 std::ostream& operator <<(std::ostream &out, const SIExpression &exprArg)
+{
+	out << exprArg->definition();
+	return out;
+}
+
+//_________________________________________________
+std::ostream& operator <<(std::ostream &out, const SIExprArg &exprArg)
 {
 	std::string r;
 	ExprReader::read(exprArg, r);
@@ -71,7 +107,7 @@ std::ostream& operator <<(std::ostream &out, const SIExprOperator& exprArg)
     std::string arg1, arg2;
     if(ExprReader::read(exprArg->constArg1(), arg1) && ExprReader::read(exprArg->constArg2(), arg2))
         out << "expr( " << arg1.c_str() << " " << arg2.c_str() << ") (how did you get here by the way?)";
-    return out;
+	return out;
 }
 
 

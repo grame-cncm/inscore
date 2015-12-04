@@ -18,22 +18,28 @@ private:
 
 public:
     /*!
-     * \brief create a message param that encapsulate a smart pointer on an argument IExprArg with the corresponding type artT
+	 * \brief create an expression argument with the corresponding type inferred by analysing arg
      * \param argument to encapsulate
-     * \return a simple message param
+	 * \return the constructed expression argument
      */
+	static SIExprArg createArg(const std::__cxx11::string &arg);
 
-	template<typename argT>
-	static SIExpression createArg(argT arg, bool dynamicEval=false, bool staticEval=false){
-		IExprArg<argT>* argB = new IExprArg<argT>(arg, dynamicEval, staticEval);
-        SIExpression argBase(argB);
-        return SIExpression(argB);
-    }
+	/*!
+	 * \brief generate a default, empty expression argument containing an empty string: ""
+	 * \return a smart pointer to an empty but still valid expression argument.
+	 */
+	inline static SIExprArg createEmptyArg(){return new IExprArg<std::string>("");}
 
-	static SIExpression createArg(std::string string);
-	static SIExpression createArg(SIExprOperator expression);
+	/*!
+	 * \brief create an expression arguments that contains an Expression Operator
+	 * \param operatorName: the name of the operator
+	 * \param arg1: first argument passed to the operator
+	 * \param arg2: second argument passed to the operator
+	 * \return a smart pointer to the constructed IExprArg if succeed, if not the smart pointer is empty
+	 */
+	static SIExprArg createExpr(std::string operatorName, SIExprArg param1, SIExprArg param2);
 
-    /*!
+	/*!
      * \brief create a message param that contains an Expression Operator
      * \param operatorName: the name of the operator
      * \param arg1: first argument passed to the operator
@@ -41,7 +47,7 @@ public:
      * \param expr: if the operator exists, store the constructed expression
      * \return true if the operator exists, false otherwise
      */
-	static bool createExpr(std::string operatorName, SIExpression param1, SIExpression param2, SIExprOperator& expr);
+	static bool createExpr(std::string operatorName, SIExprArg param1, SIExprArg param2, SIExprOperator& expr);
 
 	/*!
 	 * \brief search for an operator prototype by name
@@ -51,6 +57,12 @@ public:
 	 */
 	static bool operatorByName(std::string name, OperatorPrototype *&op);
 
+
+	/*!
+	 * \brief register an operator into the operator list
+	 * \warning this method shouldn't be called manually (OperatorPrototype constructor automatically calls it)
+	 * \param op the operator to register
+	 */
 	static void registerOperator(OperatorPrototype *op);
 
 
