@@ -33,12 +33,13 @@ public:
 
 	bool apply(SIExprArg& exprTree);
 
-	virtual const std::string eval(IExprOperator *arg, IExprArgBase *exprArg);
-	virtual const std::string eval(const std::string&, IExprArgBase*){return "";}
-	virtual const std::string eval(const filepath&, IExprArgBase*){return "";}
-	virtual const std::string eval(const itladdress &arg, IExprArgBase *exprArg);
-	virtual const std::string eval(const IObject*, IExprArgBase*);
-	virtual const std::string eval(const iexpression &arg, IExprArgBase *exprArg){return "";}
+	virtual const std::string eval(IExprOperator *arg,		IExprArgBase *exprArg);
+	virtual const std::string eval(const std::string&,		IExprArgBase*){return "";}
+	virtual const std::string eval(const filepath&,			IExprArgBase*){return "";}
+	virtual const std::string eval(const urlpath&,			IExprArgBase*){return "";}
+	virtual const std::string eval(const itladdress &arg,	IExprArgBase *exprArg);
+	virtual const std::string eval(const IObject* arg,		IExprArgBase *exprArg);
+	virtual const std::string eval(const iexpression &,		IExprArgBase *){return "";}
 
 protected:
 	ExprCompositor(const IObject* contextObject, const char* manipulatorName="ExprManipulator");
@@ -66,10 +67,11 @@ public:
 	static void simplify(SIExprArg &rootNode);
 
 	virtual const std::string eval(IExprOperator *arg,	IExprArgBase *exprArg);
-	virtual const std::string eval(const std::string &arg,		IExprArgBase *exprArg){return "";}
-	virtual const std::string eval(const filepath &arg,			IExprArgBase *exprArg){return "";}
-	virtual const std::string eval(const itladdress &arg,		IExprArgBase *exprArg){return "";}
-	virtual const std::string eval(const iexpression &argarg,	IExprArgBase *exprArg){return "";}
+	virtual const std::string eval(const std::string &,	IExprArgBase *){return "";}
+	virtual const std::string eval(const filepath &,	IExprArgBase *){return "";}
+	virtual const std::string eval(const urlpath &,		IExprArgBase *){return "";}
+	virtual const std::string eval(const itladdress &,	IExprArgBase *){return "";}
+	virtual const std::string eval(const iexpression &,	IExprArgBase *){return "";}
 
 protected:
 	ExprSimplificator(): evaluator() {}
@@ -90,11 +92,12 @@ public:
 	static SIExpression copy(const SIExpression expression);
 	static SIExprArg copy(const SIExprArg rootNode);
 
-	virtual const std::string eval(const IExprOperator *arg,	const IExprArgBase *exprArg);
-	virtual const std::string eval(const std::string &arg,		const IExprArgBase *exprArg);
-	virtual const std::string eval(const filepath &arg,			const IExprArgBase *exprArg);
-	virtual const std::string eval(const itladdress &arg,		const IExprArgBase *exprArg);
-	virtual const std::string eval(const iexpression &argarg,	const IExprArgBase *exprArg);
+	virtual const std::string eval(const IExprOperator *,	const IExprArgBase *exprArg);
+	virtual const std::string eval(const std::string &,		const IExprArgBase *exprArg);
+	virtual const std::string eval(const filepath &,		const IExprArgBase *exprArg);
+	virtual const std::string eval(const urlpath &,			const IExprArgBase *exprArg);
+	virtual const std::string eval(const itladdress &,		const IExprArgBase *exprArg);
+	virtual const std::string eval(const iexpression &,		const IExprArgBase *exprArg);
 
 protected:
 	ExprSmartCopy(): constEvaluator() {}

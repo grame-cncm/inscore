@@ -16,6 +16,7 @@ struct specializedString{
 
 // Custom String-like type definition
 STRING_TYPE(filepath)
+STRING_TYPE(urlpath)
 STRING_TYPE(itladdress)
 STRING_TYPE(iexpression)
 
@@ -38,6 +39,7 @@ public:
 	virtual const std::string eval(IExprOperator* arg, IExprArgBase* exprArg=0)=0;
 	virtual const std::string eval(const std::string& arg, IExprArgBase* exprArg=0)=0;
 	virtual const std::string eval(const filepath& arg, IExprArgBase* exprArg=0)=0;
+	virtual const std::string eval(const urlpath& arg, IExprArgBase* exprArg=0)=0;
 	virtual const std::string eval(const itladdress& arg, IExprArgBase* exprArg=0)=0;
 	virtual const std::string eval(const iexpression& arg, IExprArgBase* exprArg=0)=0;
 
@@ -52,12 +54,14 @@ public:
 	virtual const std::string eval(const IExprOperator* arg, const IExprArgBase* exprArg=0)=0;
 	virtual const std::string eval(const std::string& arg, const IExprArgBase* exprArg=0)=0;
 	virtual const std::string eval(const filepath& arg, const IExprArgBase* exprArg=0)=0;
+	virtual const std::string eval(const urlpath& arg, const IExprArgBase* exprArg=0)=0;
 	virtual const std::string eval(const itladdress& arg, const IExprArgBase* exprArg=0)=0;
 	virtual const std::string eval(const iexpression& arg, const IExprArgBase* exprArg=0)=0;
 
 	const std::string eval(IExprOperator* arg, IExprArgBase* exprArg=0)		{return eval(arg, (const IExprArgBase*)exprArg);}
 	const std::string eval(const std::string& arg, IExprArgBase* exprArg=0)	{return eval(arg, (const IExprArgBase*)exprArg);}
 	const std::string eval(const filepath& arg, IExprArgBase* exprArg=0)	{return eval(arg, (const IExprArgBase*)exprArg);}
+	const std::string eval(const urlpath& arg, IExprArgBase* exprArg=0)		{return eval(arg, (const IExprArgBase*)exprArg);}
 	const std::string eval(const itladdress& arg, IExprArgBase* exprArg=0)	{return eval(arg, (const IExprArgBase*)exprArg);}
 	const std::string eval(const iexpression& arg, IExprArgBase* exprArg=0)	{return eval(arg, (const IExprArgBase*)exprArg);}
 

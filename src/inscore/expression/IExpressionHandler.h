@@ -23,7 +23,7 @@ class IExprHandlerbase{
 public:
 	bool evalExpression(std::string& result) const;
 	bool forceEvalExpr(std::string& result);
-	bool renewExpression(std::__cxx11::string &result);
+	bool renewExpression(std::string &result);
 
 	bool composeExpr(SIExpression newExpr, std::string &result);
 	void clearExpr();

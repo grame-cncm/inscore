@@ -7,6 +7,7 @@
 #include "IScene.h"
 #include "IExpressionHandler.h"
 #include "IExprParser.h"
+#include "QFileDownloader.h"
 
 
 using namespace std;
@@ -112,7 +113,38 @@ const string ExprEvaluator::eval(const filepath& arg, const IExprArgBase *exprAr
 
     ifs.close();
 
-    return eval(fileData);
+	return eval(fileData);
+}
+
+
+//_____________________________________________________________
+const string ExprEvaluator::eval(const urlpath &arg, const IExprArgBase *exprArg)
+{
+	QFileDownloader* downloader = new QFileDownloader(fContextObject->getScene()->getRootPath().c_str());
+
+	if(!downloader){
+		ITLErr<<fEvalName<<": QFileDownloader not available..."<<ITLEndl;
+		return fEvalStatus.fail(exprArg);
+	}
+
+//	QObject::connect(downloader, &QFileDownloader::failed, [ arg, this, downloader]
+//		{
+//			//sITLErr<<this->fEvalName<<": "<<(std::string)arg<<" failed to download."<<ITLEndl;
+//			downloader->deleteLater();
+//		});
+
+
+//	QObject::connect(downloader, &QFileDownloader::downloaded, [ exprArg, downloader]
+//		{
+//			*exprArg->evaluated() = std::string(downloader->data());
+//			ITLErr<<"url retreived: "<<downloader->data();
+
+//			downloader->deleteLater();
+//		});
+
+//	downloader->getAsync( ((std::string)arg).c_str(), fContextObject->getOSCAddress().c_str() );
+
+	return exprArg->getEvaluated().empty()?emptyValue():exprArg->getEvaluated();
 }
 
 //_____________________________________________________________

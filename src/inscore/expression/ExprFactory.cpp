@@ -1,5 +1,6 @@
 #include <string>
 #include <regex>
+#include <QUrl>
 
 #include "ExprFactory.h"
 
@@ -32,6 +33,9 @@ SIExprArg ExprFactory::createArg(const std::string &arg)
 	}else if(std::regex_match(arg, identifierRegex)){
 			//Then if is INScore objects
 		argResult = new IExprArg<itladdress>(arg);
+	}else if(QUrl(QString::fromStdString(arg)).isValid()){
+			//Check for url
+		argResult = new IExprArg<urlpath>(arg);
 	}
 
 			//If nothing was found encapsulate the string as it is...

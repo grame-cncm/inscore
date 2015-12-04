@@ -215,26 +215,32 @@ const string ExprSmartCopy::eval(const IExprOperator *arg, const IExprArgBase *e
 }
 
 
-const string ExprSmartCopy::eval(const string &arg, const IExprArgBase *exprArg)
+const string ExprSmartCopy::eval(const string &, const IExprArgBase *exprArg)
 {
 	fCurrentNode = exprArg->copy();
 	return "";
 }
 
-const string ExprSmartCopy::eval(const filepath &arg, const IExprArgBase *exprArg)
+const string ExprSmartCopy::eval(const filepath &, const IExprArgBase *exprArg)
 {
 	fCurrentNode = exprArg->copy();
 	return "";
 }
 
-const string ExprSmartCopy::eval(const itladdress &arg, const IExprArgBase *exprArg)
+const string ExprSmartCopy::eval(const urlpath &, const IExprArgBase *exprArg)
+{
+	fCurrentNode = exprArg->copy();
+	return "";
+}
+
+const string ExprSmartCopy::eval(const itladdress &, const IExprArgBase *exprArg)
 {
 	fCurrentNode = exprArg->copy();
 	return "";
 }
 
 
-const string ExprSmartCopy::eval(const iexpression &arg, const IExprArgBase *exprArg)
+const string ExprSmartCopy::eval(const iexpression &, const IExprArgBase *exprArg)
 {
 	fCurrentNode = exprArg->copy();
 	return "";

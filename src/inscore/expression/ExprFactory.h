@@ -22,7 +22,7 @@ public:
      * \param argument to encapsulate
 	 * \return the constructed expression argument
      */
-	static SIExprArg createArg(const std::__cxx11::string &arg);
+	static SIExprArg createArg(const std::string &arg);
 
 	/*!
 	 * \brief generate a default, empty expression argument containing an empty string: ""
