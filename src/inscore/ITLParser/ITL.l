@@ -155,8 +155,8 @@ EOL		[\x0a\x0d]
 "\""						BEGIN DQSTR;
 "'"							BEGIN QSTR;
 
-<DQSTR>([^\"]|"\\\"")*		if(!expressionNested) yyextra->fText = ""; yyextra->fText += unescape(yytext); return STRING;
-<QSTR>([^']|"\\'")*			if(!expressionNested) yyextra->fText = "";  yyextra->fText += unescape(yytext); return STRING;
+<DQSTR>([^\"]|"\\\"")*		if(!expressionNested){ yyextra->fText = unescape(yytext); return STRING;} else yyextra->fText += unescape(yytext);
+<QSTR>([^']|"\\'")*			if(!expressionNested){ yyextra->fText = unescape(yytext); return STRING;} else yyextra->fText += unescape(yytext);
 <DQSTR>\"					if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
 <QSTR>'						if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
 

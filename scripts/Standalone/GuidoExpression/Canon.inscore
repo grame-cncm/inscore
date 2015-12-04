@@ -2,9 +2,6 @@
 
 /ITL/scene/score set gmn '[\meter<"4/4"> c/2 e/16 d c/8 e/16 a g/8]';
 
-/ITL/scene/score set gmn expr(score.xml);
-/ITL/scene/score set gmn expr("[a]");
-
 #Transposing score
 /ITL/scene/canon set gmn expr(evtail
     (transpose
@@ -34,5 +31,3 @@
 /ITL/scene/canon scale 0.7;
 
 /ITL/scene/canon get expr;
- 
-/ITL/scene export canon;
