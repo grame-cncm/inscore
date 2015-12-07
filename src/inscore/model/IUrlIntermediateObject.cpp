@@ -135,7 +135,7 @@ void IUrlIntermediateObject::updateFileSucceded()
 void IUrlIntermediateObject::updateFileCanceled()
 {
     if (fDownloaderThread) {
-        fDownloaderThread->terminate();
+		//fDownloaderThread->terminate();
         delete fDownloaderThread;
 		fDownloaderThread = 0;
     }
