@@ -87,8 +87,8 @@ IDCHAR  [_a-zA-Z0-9]
  */
 HOSTCHAR [-a-zA-Z0-9]
 
- /* allowed character for filename and path as defined for windows 7*/
-FILECHAR [^ \\/?:*><|"';]
+ /* allowed character for filename and path as defined for windows 7 with some specification for INScore compatibility: no = ; */
+FILECHAR [^ \\/?:*><|"';=]
 
  /* regular expression characters
     as defined by the OSC specification */
