@@ -26,6 +26,8 @@
 #include <string>
 #include <QDebug>
 #include <QNetworkRequest>
+#include <QNetworkDiskCache>
+#include <QDir>
 
 #include "QFileDownloader.h"
 #include "INScore.h"
@@ -44,14 +46,13 @@ namespace inscore
 QFileDownloader::QFileDownloader(const char* urlprefix)
 {
 	if (urlprefix) fUrlPrefix = urlprefix;
-	connect(&fNetworkAccess, SIGNAL(finished(QNetworkReply*)), SLOT(fileDownloaded(QNetworkReply*)));
 }
  
 //--------------------------------------------------------------------------
 QFileDownloader::~QFileDownloader()
 {
-    quit();
-	wait(50);
+	if(fReply)
+		fReply->deleteLater();
 }
 
 //--------------------------------------------------------------------------
@@ -69,8 +70,8 @@ void QFileDownloader::getAsync (const char* what, const char* address)
 	fOSCAddress = address;
 	QUrl url (location(what).c_str());
     QNetworkRequest request(url);
-    fNetworkAccess.get(request);
-	start();
+	fReply = NetworkAccess::instance()->qNetAccess().get(request);
+	QObject::connect(fReply, &QNetworkReply::finished, [this](){this->fileDownloaded();});
 }
 
 //--------------------------------------------------------------------------
@@ -88,34 +89,84 @@ bool QFileDownloader::get (const char* what)
 }
 
 //--------------------------------------------------------------------------
-void QFileDownloader::fileDownloaded(QNetworkReply* reply)
+void QFileDownloader::fileDownloaded()
 {
-    if(!reply->error())
+	if(!fReply->error())
     {
-        fData = reply->readAll();
+		fData = fReply->readAll();
 		updateSucceded ();
     }
     else {
-		ITLErr << "Can't access url: " << reply->errorString().toStdString() << ITLEndl;
-		updateFailed (reply);
+		ITLErr << "Can't access url: " << fReply->errorString().toStdString() << ITLEndl;
+		updateFailed ();
 	}
-    reply->deleteLater();
+	fReply->deleteLater();
+	fReply = 0;
+
 }
 
 //--------------------------------------------------------------------------
 void QFileDownloader::updateSucceded()
 {
-    INScore::MessagePtr msg = INScore::newMessage ("success");
+//	emit downloaded();
+	INScore::MessagePtr msg = INScore::newMessage ("success");
 	INScore::postMessage (fOSCAddress.c_str(), msg);
 }
 
 //--------------------------------------------------------------------------
-void QFileDownloader::updateFailed(QNetworkReply* reply)
+void QFileDownloader::updateFailed()
 {
+//	emit failed(reply);
     INScore::MessagePtr msg = INScore::newMessage ("error");
- 	INScore::add (msg, reply->errorString().toStdString().c_str());
+	INScore::add (msg, fReply->errorString().toStdString().c_str());
 	INScore::postMessage (fOSCAddress.c_str(), msg);
 }
 
 
-};
+
+/***********************************************************
+ *                    NetworkAccess                        *
+ **********************************************************/
+
+NetworkAccess* NetworkAccess::gNetworkAccess = 0;
+
+NetworkAccess *NetworkAccess::instance()
+{
+	if(!gNetworkAccess)
+		gNetworkAccess = new NetworkAccess();
+
+	return gNetworkAccess;
+}
+
+
+//__________________________________________________
+
+NetworkAccess::NetworkAccess()
+{
+	QNetworkDiskCache *cache = new QNetworkDiskCache(&fNetworkAccessManager);
+
+	//Create temporary folders
+	bool tmpCreated = true;
+	QDir tmp = QDir::temp();
+	if(!tmp.exists("INScore"))
+		if(!tmp.mkdir("INScore")){
+			//Impossible to create temporary folder
+			ITLErr<<"Creation of temporary folder is impossible, URL cache won't be available."<<ITLEndl;
+			tmpCreated = false;
+		}
+	if(tmpCreated){
+		tmp.cd("INScore");
+		cache->setCacheDirectory(tmp.absolutePath());
+		fNetworkAccessManager.setCache(cache);
+	}
+}
+
+void NetworkAccess::clearCache()
+{
+	fNetworkAccessManager.cache()->clear();
+}
+
+
+
+
+};  //end namespace

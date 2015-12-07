@@ -45,6 +45,7 @@
 #include "TMessageEvaluator.h"
 #include "ITLError.h"
 #include "Tools.h"
+#include "QFileDownloader.h"
 
 #include "INScore.h"
 
@@ -167,6 +168,7 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 	fMsgHandlerMap[ktime_GetSetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::setTime);
 	fMsgHandlerMap[kticks_GetSetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::setTicks);
 	fMsgHandlerMap[krootPath_GetSetMethod]		= TSetMethodMsgHandler<IAppl, string>::create(this, &IAppl::setRootPath);
+	fMsgHandlerMap["urlCache"]					= TMethodMsgHandler<IAppl>::create(this, &IAppl::urlCache);
 
 	fMsgHandlerMap[kcompatibility_GetSetMethod]		= TSetMethodMsgHandler<IAppl,float>::create(this, &IAppl::setCompatibilityVersion);
 	fMsgHandlerMap[kport_GetSetMethod]			= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPInPortHandler);
@@ -419,6 +421,21 @@ MsgHandler::msgStatus IAppl::setTicks(const IMessage* msg)
 			QMutexLocker locker (&fTimeMutex);
 			fCurrentTicks = ticks;
 			return MsgHandler::kProcessed;
+		}
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IAppl::urlCache(const IMessage *msg)
+{
+	if (msg->size() == 1) {
+		std::string t;
+		if (msg->param(0, t)) {
+			if(t==kclear_SetMethod){
+				NetworkAccess::instance()->clearCache();
+				return MsgHandler::kProcessed;
+			}
 		}
 	}
 	return MsgHandler::kBadParameters;

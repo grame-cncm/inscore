@@ -211,6 +211,9 @@ class IAppl : public IObject, public TILoader
 		/// \brief application \c 'ticks' message handler.
 		virtual MsgHandler::msgStatus setTicks (const IMessage* msg);
 
+		/// \brief application \c 'clear' message handler.
+		virtual MsgHandler::msgStatus urlCache (const IMessage* msg);
+
 #ifdef RUNBENCH
 		void	startBench()			{ bench::start(); }
 		void	stopBench()				{ bench::stop(); }

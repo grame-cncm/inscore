@@ -29,7 +29,7 @@
 
 #include <string>
 
-#include <QThread>
+#include <QObject>
 #include <QByteArray>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -37,10 +37,8 @@
 namespace inscore
 {
 
-class QFileDownloader : public QThread
+class QFileDownloader
 {
-    Q_OBJECT
-    
 	public:
 				 QFileDownloader(const char* urlprefix = 0);
 		virtual ~QFileDownloader();
@@ -53,26 +51,40 @@ class QFileDownloader : public QThread
 
 		virtual int			dataSize() const	{ return fData.size(); }
 		virtual const char*	data() const		{ return fData.data(); }
-	
-	signals:
-		void downloaded();
-		void failed(QNetworkReply* pReply);
 	 
-	private slots:
+	private:
 	 
-		void fileDownloaded(QNetworkReply* pReply);
+		void fileDownloaded();
 		void updateSucceded();
-		void updateFailed(QNetworkReply* pReply);
+		void updateFailed();
 		
 	private:
 		std::string				location(const char * file);
 	
-		QNetworkAccessManager	fNetworkAccess;
+
+		QNetworkReply*			fReply;
 		QByteArray				fData;
 		std::string				fOSCAddress;
 		std::string				fUrlPrefix;
 };
  
-}
 
+class NetworkAccess{
+	static NetworkAccess* gNetworkAccess;
+
+public:
+	static NetworkAccess* instance();
+
+	QNetworkAccessManager& qNetAccess(){return fNetworkAccessManager;}
+	void clearCache();
+
+protected:
+	NetworkAccess();
+
+	QNetworkAccessManager fNetworkAccessManager;
+};
+
+
+
+} // end namespace
 #endif
