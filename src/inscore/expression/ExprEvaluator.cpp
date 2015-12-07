@@ -120,31 +120,25 @@ const string ExprEvaluator::eval(const filepath& arg, const IExprArgBase *exprAr
 //_____________________________________________________________
 const string ExprEvaluator::eval(const urlpath &arg, const IExprArgBase *exprArg)
 {
-	QFileDownloader* downloader = new QFileDownloader(fContextObject->getScene()->getRootPath().c_str());
+	const char* url = arg.string.c_str();
 
-	if(!downloader){
-		ITLErr<<fEvalName<<": QFileDownloader not available..."<<ITLEndl;
-		return fEvalStatus.fail(exprArg);
+	SIMessage updateMsg = IMessage::create();
+	updateMsg->setAddress(fContextObject->getOSCAddress());
+	updateMsg->setMessage("expr");
+
+	if(exprArg->dynamicEval())
+		updateMsg->add("reeval");
+	else
+		updateMsg->add("reset");
+
+	const char* data = QFileDownloader::getCachedAsync(url,  [updateMsg] (){ updateMsg->send(); }  );
+	string s = emptyValue();
+
+	if(data){
+		s = string(data);
+		delete[] data;
 	}
-
-//	QObject::connect(downloader, &QFileDownloader::failed, [ arg, this, downloader]
-//		{
-//			//sITLErr<<this->fEvalName<<": "<<(std::string)arg<<" failed to download."<<ITLEndl;
-//			downloader->deleteLater();
-//		});
-
-
-//	QObject::connect(downloader, &QFileDownloader::downloaded, [ exprArg, downloader]
-//		{
-//			*exprArg->evaluated() = std::string(downloader->data());
-//			ITLErr<<"url retreived: "<<downloader->data();
-
-//			downloader->deleteLater();
-//		});
-
-//	downloader->getAsync( ((std::string)arg).c_str(), fContextObject->getOSCAddress().c_str() );
-
-	return exprArg->getEvaluated().empty()?emptyValue():exprArg->getEvaluated();
+	return s;
 }
 
 //_____________________________________________________________

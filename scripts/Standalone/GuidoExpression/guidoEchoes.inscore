@@ -78,7 +78,7 @@ rversion = 1.17; ! version required for javascript
 /ITL/scene/label_transposed scale 1.35;
 
 #### stretched echo ####
-/ITL/scene/echo_stretch set gmn expr(duration &score "[a/1]");
+/ITL/scene/echo_stretch set gmn expr(duration &score [a/1]);
 /ITL/scene/echo_stretch x -0.7;
 /ITL/scene/echo_stretch y +0.7;
 /ITL/scene/echo_stretch scale 0.55;

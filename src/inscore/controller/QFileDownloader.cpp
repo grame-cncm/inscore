@@ -89,6 +89,45 @@ bool QFileDownloader::get (const char* what)
 	return true;
 }
 
+const char* QFileDownloader::getCachedAsync(const char *urlString, std::function<void ()> cbUpdate, std::function<void ()> cbFail)
+{
+	//Asynchronously update the cache
+	QUrl url(urlString);
+	QNetworkRequest request(url);
+	QNetworkReply* reply = NetworkAccess::instance()->qNetAccess().get(request);
+
+	//Sending an error message if download failed or callback cbUpdate if the cache was updated
+	QObject::connect(reply, &QNetworkReply::finished,
+					 [reply, cbUpdate, cbFail, urlString]()
+					{
+						if(reply->error() || !reply->bytesAvailable()){
+							//URL download failed
+							ITLErr << "Can't access url \"" << urlString << "\": " << reply->errorString().toStdString() << ITLEndl;
+							cbFail();
+						}else
+							if(!reply->attribute(QNetworkRequest::SourceIsFromCacheAttribute).toBool()){
+								//Cache wasn't up to date
+								cbUpdate();
+							}
+						reply->deleteLater();
+					});
+
+	//Retreiving the actual value stored in the cache (before the asynchronous update)
+	QNetworkDiskCache* cache = NetworkAccess::instance()->cache();
+
+	QIODevice* data = cache->data(url);
+
+	if(data){
+		char* d = new char[data->bytesAvailable()];
+		strcpy(d, data->readAll().data());
+		data->deleteLater();
+
+		return d;
+	}
+	return 0;
+}
+
+
 //--------------------------------------------------------------------------
 void QFileDownloader::fileDownloaded()
 {
@@ -157,7 +196,7 @@ NetworkAccess *NetworkAccess::instance()
 
 NetworkAccess::NetworkAccess()
 {
-	QNetworkDiskCache *cache = new QNetworkDiskCache(&fNetworkAccessManager);
+	fCache = new QNetworkDiskCache(&fNetworkAccessManager);
 
 	//Create temporary folders
 	bool tmpCreated = true;
@@ -170,14 +209,19 @@ NetworkAccess::NetworkAccess()
 		}
 	if(tmpCreated){
 		tmp.cd("INScore");
-		cache->setCacheDirectory(tmp.absolutePath());
-		fNetworkAccessManager.setCache(cache);
+		fCache->setCacheDirectory(tmp.absolutePath());
+		fNetworkAccessManager.setCache(fCache);
 	}
+}
+
+NetworkAccess::~NetworkAccess()
+{
+	delete fCache;
 }
 
 void NetworkAccess::clearCache()
 {
-	fNetworkAccessManager.cache()->clear();
+	fCache->clear();
 }
 
 

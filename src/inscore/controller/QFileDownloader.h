@@ -28,10 +28,12 @@
 #define __INScore__QFileDownloader__
 
 #include <string>
+#include <functional>
 
 #include <QObject>
 #include <QByteArray>
 #include <QNetworkAccessManager>
+#include <QNetworkDiskCache>
 #include <QNetworkReply>
 
 namespace inscore
@@ -48,6 +50,15 @@ class QFileDownloader
 
 		/// \brief synchronous download of an url
 		virtual bool				get (const char* url);
+
+		/*!
+		 * \brief synchronously return the cached value of an url, while asynchronously update the cache and triggering a callback if it changed
+		 * \param url url from which the value is read
+		 * \param cbUpdate callback function triggered asynchronously if the cache is updated
+		 * \param cbFail callback function triggered asynchronously if the download fails
+		 * \return the actual data stored in the cache
+		 */
+				 static const char* getCachedAsync(const char *url, std::function<void()> cbUpdate, std::function<void()> cbFail = []{});
 
 		virtual int			dataSize() const	{ return fData.size(); }
 		virtual const char*	data() const		{ return fData.data(); }
@@ -78,9 +89,13 @@ public:
 	QNetworkAccessManager& qNetAccess(){return fNetworkAccessManager;}
 	void clearCache();
 
+	QNetworkDiskCache* cache() const {return fCache;}
+
 protected:
 	NetworkAccess();
+	virtual ~NetworkAccess();
 
+	QNetworkDiskCache* fCache;
 	QNetworkAccessManager fNetworkAccessManager;
 };
 

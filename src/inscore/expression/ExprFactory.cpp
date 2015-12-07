@@ -1,10 +1,10 @@
 #include <string>
 #include <regex>
-#include <QUrl>
 
 #include "ExprFactory.h"
 
 #include "ITLError.h"
+#include "TFile.h"
 
 
 
@@ -34,10 +34,10 @@ SIExprArg ExprFactory::createArg(const std::string &arg)
 			//Then if is INScore objects
 		argResult = new IExprArg<itladdress>(arg);
 	}
-//	else if(QUrl(QString::fromStdString(arg)).isValid()){
-//			//Check for url
-//		argResult = new IExprArg<urlpath>(arg);
-//	}
+	else if(Tools::isurl(arg)){
+			//Check for url
+		argResult = new IExprArg<urlpath>(arg);
+	}
 
 			//If nothing was found encapsulate the string as it is...
 	if(!argResult)
