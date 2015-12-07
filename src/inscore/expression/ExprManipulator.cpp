@@ -106,8 +106,8 @@ string ExprCompositor::replaceBy(SIExprArg newNode, std::string key)
 void ExprCompositor::continueExploration(IExprOperator *arg, IExprArgBase* exprArg)
 {
 
-	std::string arg1 = arg->constArg1()->accept(this);
-	std::string arg2 = arg->constArg2()->accept(this);
+	std::string arg1 = arg->arg1()->accept(this);
+	std::string arg2 = arg->arg2()->accept(this);
 
 	if(!arg1.empty())
 		replaceNode(arg->arg1(), arg1);
