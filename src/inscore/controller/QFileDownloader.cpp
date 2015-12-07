@@ -70,6 +70,7 @@ void QFileDownloader::getAsync (const char* what, const char* address)
 	fOSCAddress = address;
 	QUrl url (location(what).c_str());
     QNetworkRequest request(url);
+	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferNetwork);
 	fReply = NetworkAccess::instance()->qNetAccess().get(request);
 	QObject::connect(fReply, &QNetworkReply::finished, [this](){this->fileDownloaded();});
 }
@@ -97,6 +98,19 @@ void QFileDownloader::fileDownloaded()
 		updateSucceded ();
     }
     else {
+
+		///TODO better implementation of force loading from cache if error
+		if(fReply->request().attribute(QNetworkRequest::CacheLoadControlAttribute) != QNetworkRequest::AlwaysCache){
+			QNetworkRequest request = fReply->request();
+			request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysCache);
+			fReply->deleteLater();
+
+			fReply = NetworkAccess::instance()->qNetAccess().get(request);
+			QObject::connect(fReply, &QNetworkReply::finished, [this](){this->fileDownloaded();});
+			ITLErr << "Url not accessible, trying to load ressource from cache..." << ITLEndl;
+			return;
+		}
+
 		ITLErr << "Can't access url: " << fReply->errorString().toStdString() << ITLEndl;
 		updateFailed ();
 	}
