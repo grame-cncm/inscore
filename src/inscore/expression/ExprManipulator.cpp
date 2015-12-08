@@ -75,11 +75,14 @@ const string ExprCompositor::eval(const IObject *arg, IExprArgBase *exprArg)
 	}
 
 	if(exprArg->copyEval()){
-		SIExprArg newNode = guido->getExprHandler()->getExpression()->rootNode();
-		if(newNode)
-			return  replaceBy(newNode, guido->name());
+		SIExprArg newNode;
+		if(guido->getExprHandler()->hasExpression())
+			newNode = guido->getExprHandler()->getExpression()->rootNode();
 
-		exprArg->setEvaluated(guido->getCleanGMN());
+		if(!newNode)
+			newNode = ExprFactory::createArg(guido->getCleanGMN());
+
+		return  replaceBy(newNode, guido->name());
 	}
 
 	return "";
