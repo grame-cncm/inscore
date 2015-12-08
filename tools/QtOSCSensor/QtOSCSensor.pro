@@ -23,7 +23,7 @@ QT += qml quick widgets network sensors
 INCLUDEPATH += $$OSC
 
 android { 
-	OTHER_FILES += content rsrc AndroidManifest.xml
+	OTHER_FILES += rsrc AndroidManifest.xml
 
 	DEFINES += OSC_HOST_LITTLE_ENDIAN 
     DISTFILES +=  AndroidManifest.xml
