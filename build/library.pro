@@ -7,7 +7,7 @@ OBJECTS_DIR = tmp
 MOC_DIR = tmp
 
 VERSION = 1.17
-CONFIG += c++11 debug
+CONFIG += c++11
 
 ############################## 
 # locations
