@@ -1280,13 +1280,13 @@ case 22:
 /* rule 22 can match eol */
 YY_RULE_SETUP
 #line 158 "ITL.l"
-if(!expressionNested){ yyextra->fText = unescape(yytext); return STRING;} else yyextra->fText += unescape(yytext);
+if(!expressionNested){ yyextra->fText = unescape(yytext); return STRING;} else yyextra->fText += string("\"") + unescape(yytext) + "\"";
 	YY_BREAK
 case 23:
 /* rule 23 can match eol */
 YY_RULE_SETUP
 #line 159 "ITL.l"
-if(!expressionNested){ yyextra->fText = unescape(yytext); return STRING;} else yyextra->fText += unescape(yytext);
+if(!expressionNested){ yyextra->fText = unescape(yytext); return STRING;} else yyextra->fText += string("'") + unescape(yytext) + "'";
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
