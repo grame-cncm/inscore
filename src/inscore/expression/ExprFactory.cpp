@@ -1,5 +1,5 @@
 #include <string>
-#include <regex>
+#include <deelx.h>
 
 #include "ExprFactory.h"
 
@@ -20,17 +20,17 @@ SIExprArg ExprFactory::createArg(const std::string &arg)
 
 
 	//  /?(. .? /)*([^/?:*<>|']+/?)+.[^/\?:*<>|']+
-	std::regex fileRegex("/?(\\.\\.?/)*([^/\\?:*<>|']+/?)+\\.[^/\\?:*<>|']+");
+	CRegexpT<char> fileRegex("/?(\\.\\.?/)*([^/\\?:*<>|']+/?)+\\.[^/\\?:*<>|']+");
 
 	//  (../)*([_a-zA-Z0-9]+/)*[_a-zA-Z0-9]+
-	std::regex identifierRegex("(\\.\\./)*([_a-zA-Z0-9]+/)*[_a-zA-Z0-9]+");
+	CRegexpT<char> identifierRegex("(\\.\\./)*([_a-zA-Z0-9]+/)*[_a-zA-Z0-9]+");
 
 
-	if(std::regex_match(arg, fileRegex)){
+	if(fileRegex.MatchExact(arg.c_str()).IsMatched()){
 			//First check if is filepath
 		argResult = new IExprArg<filepath>(arg);
 
-	}else if(std::regex_match(arg, identifierRegex)){
+	}else if(identifierRegex.MatchExact(arg.c_str()).IsMatched()){
 			//Then if is INScore objects
 		argResult = new IExprArg<itladdress>(arg);
 	}
