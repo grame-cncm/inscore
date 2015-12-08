@@ -5,7 +5,6 @@
 #include <unordered_map>
 
 #include "IExpression.h"
-#include "Operators.h"
 
 namespace inscore{
 

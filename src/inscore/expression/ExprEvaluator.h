@@ -8,7 +8,6 @@
 
 #include "evaluator.h"
 #include "IExpression.h"
-#include "Operators.h"
 
 namespace inscore{
 
