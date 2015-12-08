@@ -138,6 +138,9 @@ public:
 
 };
 
+//SIExprArg specification for SIExprOperator
+template<> SIExprArg IExprArg<SIExprOperator>::copy() const;
+template<> void IExprArg<SIExprOperator>::recursiveClearEvaluated();
 
 
 std::ostream&	operator << (std::ostream& out, const SIExpression& exprArg);
