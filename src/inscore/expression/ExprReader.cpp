@@ -48,7 +48,7 @@ const std::string ExprReader::eval(const IExprOperator *arg, const IExprArgBase 
 	std::string arg2 = ((const IExprArgBase*)arg->constArg2())->accept(this);
 	fTab--;
 
-	std::string r= "( "+arg->getName();
+	std::string r= "( "+arg->operatorName();
 
 	if(	arg1.length() > 20 || arg1.find('\n') != std::string::npos
 	 ||	arg2.length() > 20 || arg2.find('\n') != std::string::npos ){

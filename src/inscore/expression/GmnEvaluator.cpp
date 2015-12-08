@@ -48,41 +48,49 @@ namespace inscore{
 
 
 
-GmnEvaluator::GmnEvaluator(const IObject *contextObject): ExprEvaluator("GmnEvaluator",contextObject)
+GmnEvaluator::GmnEvaluator(const IObject *contextObject): ExprEvaluator("GmnEvaluator",contextObject, gmnOperators())
 {
-	registerOperator(opGuidoSeq,	GUIDOAR_OPERATOR(guido::guidoGSeq));
-	registerOperator(opGuidoPar,	GUIDOAR_OPERATOR(guido::guidoGPar));
-	registerOperator(opGuidoParR,	GUIDOAR_OPERATOR(guido::guidoGRPar));
-	registerOperator(opGuidoDur,	GUIDOAR_OPERATOR(guido::guidoGSetDuration));
-	registerOperator(opGuidoTrans,	GUIDOAR_OPERATOR(guido::guidoGTranpose));
-	registerOperator(opGuidoHead,	GUIDOAR_OPERATOR(guido::guidoGHead));
-	registerOperator(opGuidoEvHead,	GUIDOAR_OPERATOR(guido::guidoGEHead));
-	registerOperator(opGuidoTail,	GUIDOAR_OPERATOR(guido::guidoGTail));
-	registerOperator(opGuidoEvTail,	GUIDOAR_OPERATOR(guido::guidoGETail));
-	registerOperator(opGuidoTop,	GUIDOAR_OPERATOR(guido::guidoGTop));
-	registerOperator(opGuidoBottom,	GUIDOAR_OPERATOR(guido::guidoGBottom));
-
-	registerOperator(opGuidoRythm, [](const std::string& str1, const std::string& str2, bool &success) -> const std::string
-								{
-									std::ostringstream oss;
-									guido::garErr err = guido::guidoApplyRythm( str1.c_str(), str2.c_str(), guido::kApplyForwardLoop, oss );
-									success = err == guido::kNoErr;
-									if ( success )
-										return oss.str();
-									else
-										return "";
-								});
-	registerOperator(opGuidoPitch, [] (const std::string& str1, const std::string& str2, bool &success) -> const std::string
-								{
-									std::ostringstream oss;
-									guido::garErr err = guido::guidoApplyPitch( str1.c_str(), str2.c_str(), guido::kApplyForwardLoop, guido::kUseLowest, oss );
-									success = err == guido::kNoErr;
-									if ( success )
-										return oss.str();
-									else
-										return "";
-	});
 }
+
+
+//_____________________________________________________
+const OperatorList GmnEvaluator::gmnOperators() const
+{
+	std::unordered_map<std::string, OperatorCb> operatorMap;
+	operatorMap.insert({"seq",		GUIDOAR_OPERATOR(guido::guidoGSeq)});
+	operatorMap.insert({"par",		GUIDOAR_OPERATOR(guido::guidoGPar)});
+	operatorMap.insert({"rpar",		GUIDOAR_OPERATOR(guido::guidoGRPar)});
+	operatorMap.insert({"head",		GUIDOAR_OPERATOR(guido::guidoGHead)});
+	operatorMap.insert({"evhead",	GUIDOAR_OPERATOR(guido::guidoGEHead)});
+	operatorMap.insert({"tail",		GUIDOAR_OPERATOR(guido::guidoGTail)});
+	operatorMap.insert({"evtail",	GUIDOAR_OPERATOR(guido::guidoGETail)});
+	operatorMap.insert({"duration",	GUIDOAR_OPERATOR(guido::guidoGSetDuration)});
+	operatorMap.insert({"transpose",GUIDOAR_OPERATOR(guido::guidoGTranpose)});
+	operatorMap.insert({"top",		GUIDOAR_OPERATOR(guido::guidoGTop)});
+	operatorMap.insert({"bottom",	GUIDOAR_OPERATOR(guido::guidoGBottom)});
+	operatorMap.insert({"rhythm",	[](const std::string& str1, const std::string& str2, bool &success) -> const std::string
+						{
+							std::ostringstream oss;
+							guido::garErr err = guido::guidoApplyRythm( str1.c_str(), str2.c_str(), guido::kApplyForwardLoop, oss );
+							success = err == guido::kNoErr;
+							if ( success )
+								return oss.str();
+							else
+								return "";
+						} });
+	operatorMap.insert({"pitch",	[] (const std::string& str1, const std::string& str2, bool &success) -> const std::string
+						{
+							std::ostringstream oss;
+							guido::garErr err = guido::guidoApplyPitch( str1.c_str(), str2.c_str(), guido::kApplyForwardLoop, guido::kUseLowest, oss );
+							success = err == guido::kNoErr;
+							if ( success )
+								return oss.str();
+							else
+								return "";
+						} });
+	return operatorMap;
+}
+
 
 //_____________________________________________________
 const std::string GmnEvaluator::eval(const IObject *arg)
@@ -129,6 +137,7 @@ const string GmnEvaluator::eval(const string &arg, const IExprArgBase *)
 	return gmn;
 }
 
+//_____________________________________________________
 bool GmnEvaluator::isXml(const string &score) const
 {
 	auto it = score.begin();

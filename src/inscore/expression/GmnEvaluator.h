@@ -19,6 +19,9 @@ public:
 protected:
         GmnEvaluator(const IObject* contextObject);
 		bool isXml(const std::string &score) const;
+
+private:
+		const OperatorList gmnOperators() const;
 };
 
 }

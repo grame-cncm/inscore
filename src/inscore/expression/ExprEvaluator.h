@@ -8,7 +8,6 @@
 
 #include "evaluator.h"
 #include "IExpression.h"
-#include "Operators.h"
 
 namespace inscore{
 
@@ -31,6 +30,7 @@ public:
 };
 
 typedef const std::string (*OperatorCb)(const std::string&,const std::string&, bool &success);
+typedef std::unordered_map<std::string, OperatorCb> OperatorList;
 
 /*!
  * \brief IEvaluableExpr evaluator mother class. Handle context for the evaluation, error...
@@ -38,6 +38,8 @@ typedef const std::string (*OperatorCb)(const std::string&,const std::string&, b
 class ExprEvaluator: public constEvaluator{
 	const char* fEvalName;
 	const IObject* fContextObject;
+	const OperatorList fCallbackList;
+
 public:
 	/*!
 	 * \brief evaluate an expression according to previously evaluated values
@@ -59,7 +61,7 @@ public:
 	virtual const std::string eval(const IObject *arg);
 
 
-	static ExprEvaluator* create(const IObject* contextObject){return new ExprEvaluator("ExprEvaluator", contextObject);}
+//	static ExprEvaluator* create(const IObject* contextObject){return new ExprEvaluator("ExprEvaluator", contextObject);}
 
 	const char* evaluatorName() const {return fEvalName;}
 	virtual const char* emptyValue() const {return "";}
@@ -68,17 +70,14 @@ public:
 	static const IObject* objectFromAddress(itladdress address, const IObject *contextObject);
 
 protected:
-	ExprEvaluator(const char* name, const IObject* contextObject);
+	ExprEvaluator(const char* name, const IObject* contextObject, const OperatorList operatorList);
 
 	EvaluationStatus fEvalStatus;
 
 	inline const IObject* contextObject(){return fContextObject;}
 	bool smartEval(const IExprArgBase *expr, std::string &result);
 
-
-	std::unordered_map<const OperatorPrototype*, OperatorCb> fCallbackList;
-	void registerOperator(const OperatorPrototype &op, OperatorCb cb);
-	bool callbackByOperator(const OperatorPrototype* op, OperatorCb &cb) const ;
+	bool callbackByOperator(const std::string op, OperatorCb &cb) const ;
 };
 
 }

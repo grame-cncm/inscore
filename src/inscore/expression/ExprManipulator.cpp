@@ -75,11 +75,14 @@ const string ExprCompositor::eval(const IObject *arg, IExprArgBase *exprArg)
 	}
 
 	if(exprArg->copyEval()){
-		SIExprArg newNode = guido->getExprHandler()->getExpression()->rootNode();
-		if(newNode)
-			return  replaceBy(newNode, guido->name());
+		SIExprArg newNode;
+		if(guido->getExprHandler()->hasExpression())
+			newNode = guido->getExprHandler()->getExpression()->rootNode();
 
-		exprArg->setEvaluated(guido->getCleanGMN());
+		if(!newNode)
+			newNode = ExprFactory::createArg(guido->getCleanGMN());
+
+		return  replaceBy(newNode, guido->name());
 	}
 
 	return "";
@@ -199,12 +202,12 @@ SIExprArg ExprSmartCopy::copy(const SIExprArg rootNode)
 }
 
 //___________________________________________________________________
-const string ExprSmartCopy::eval(const IExprOperator *arg, const IExprArgBase *exprArg)
+const string ExprSmartCopy::eval(const IExprOperator *arg, const IExprArgBase *)
 {
 	SIExprArg arg1 = smartCopy(arg->constArg1());
 	SIExprArg arg2 = smartCopy(arg->constArg2());
 
-	IExprOperator* argCopy = new IExprOperator(arg->operatorPrototype(), arg1, arg2);
+	IExprOperator* argCopy = new IExprOperator(arg->operatorName(), arg1, arg2);
 
 	fCurrentNode = SIExprArg(new IExprArg<SIExprOperator>(argCopy));
 
