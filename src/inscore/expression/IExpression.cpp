@@ -63,29 +63,6 @@ IExprArgBase::IExprArgBase()
 
 
 //_________________________________________________
-// -----------------------------------------------
-template<>
-SIExprArg IExprArg<SIExprOperator>::copy() const
-{
-	IExprOperator* op = new IExprOperator(fArg->operatorPrototype(), fArg->arg1()->copy(), fArg->arg2()->copy());
-	IExprArgBase* r = new IExprArg<SIExprOperator>(op);
-	if(fDynamicEval)
-		r->switchToDynamic();
-	r->setEvaluated(getEvaluated());
-	return r;
-}
-
-//_________________________________________________
-template<>
-void IExprArg<SIExprOperator>::recursiveClearEvaluated()
-{
-	fArg->arg1()->recursiveClearEvaluated();
-	fArg->arg2()->recursiveClearEvaluated();
-	fEvaluated->clear();
-}
-
-
-//_________________________________________________
 std::ostream& operator <<(std::ostream &out, const SIExpression &exprArg)
 {
 	out << exprArg->definition();

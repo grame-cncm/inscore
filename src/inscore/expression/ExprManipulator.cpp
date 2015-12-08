@@ -202,7 +202,7 @@ SIExprArg ExprSmartCopy::copy(const SIExprArg rootNode)
 }
 
 //___________________________________________________________________
-const string ExprSmartCopy::eval(const IExprOperator *arg, const IExprArgBase *exprArg)
+const string ExprSmartCopy::eval(const IExprOperator *arg, const IExprArgBase *)
 {
 	SIExprArg arg1 = smartCopy(arg->constArg1());
 	SIExprArg arg2 = smartCopy(arg->constArg2());

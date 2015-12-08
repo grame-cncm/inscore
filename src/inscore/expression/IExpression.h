@@ -128,6 +128,7 @@ public:
 
 	void recursiveClearEvaluated(){fEvaluated->clear();}
 
+
     /*!
      * \brief accept the visit from an evaluator
      * \param e the evaluator
@@ -141,6 +142,29 @@ public:
 	}
 
 };
+
+//_________________________________________________
+// -----------------------------------------------
+template<>
+SIExprArg IExprArg<SIExprOperator>::copy() const
+{
+        IExprOperator* op = new IExprOperator(fArg->operatorPrototype(), fArg->arg1()->copy(), fArg->arg2()->copy());
+        IExprArgBase* r = new IExprArg<SIExprOperator>(op);
+        if(fDynamicEval)
+                r->switchToDynamic();
+        r->setEvaluated(getEvaluated());
+        return r;
+}
+
+//_________________________________________________
+template<>
+void IExprArg<SIExprOperator>::recursiveClearEvaluated()
+{
+        fArg->arg1()->recursiveClearEvaluated();
+        fArg->arg2()->recursiveClearEvaluated();
+        fEvaluated->clear();
+}
+
 
 std::ostream&	operator << (std::ostream& out, const SIExpression& exprArg);
 std::ostream&	operator << (std::ostream& out, const SIExprArg& exprArg);
