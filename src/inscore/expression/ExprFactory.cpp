@@ -12,8 +12,6 @@ using namespace std;
 
 namespace inscore{
 
-std::unordered_map<std::string, OperatorPrototype*> ExprFactory::operatorList = std::unordered_map<std::string, OperatorPrototype*>();
-
 SIExprArg ExprFactory::createArg(const std::string &arg)
 {
 	SIExprArg argResult;
@@ -62,34 +60,7 @@ SIExprArg ExprFactory::createExpr(string operatorName, SIExprArg param1, SIExprA
 bool inscore::ExprFactory::createExpr(std::string operatorName, SIExprArg param1, SIExprArg param2, SIExprOperator &expr)
 {
 
-    OperatorPrototype* op;
-
-	if(!operatorByName(operatorName, op)){
-		return false;
-		expr = SIExprOperator();
-	}
-
-	expr = new IExprOperator(op, param1, param2);
-
-	return true;
-}
-
-
-
-//_______________________________________________________
-void ExprFactory::registerOperator(OperatorPrototype* op)
-{
-	ExprFactory::operatorList.insert({op->getName(), op});
-}
-
-bool ExprFactory::operatorByName(string name, OperatorPrototype*& op)
-{
-	auto iter = operatorList.find(name);
-
-	if(iter == operatorList.end())
-		return false;
-
-	op = iter->second;
+	expr = new IExprOperator(operatorName, param1, param2);
 
 	return true;
 }

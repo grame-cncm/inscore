@@ -32,7 +32,7 @@ IExpression::IExpression(const std::string &definition, const SIExprArg &rootNod
 
 //_________________________________________________
 // -----------------------------------------------
-IExprOperator::IExprOperator(const OperatorPrototype *operatorPrototype, SIExprArg arg1, SIExprArg arg2):
+IExprOperator::IExprOperator(const std::string operatorPrototype, SIExprArg arg1, SIExprArg arg2):
     libmapping::smartable(),
 	fOperatorPrototype(operatorPrototype), fArg1(&(*arg1)), fArg2(&(*arg2))
 {
@@ -44,12 +44,6 @@ bool IExprOperator::dynamicEval() const
 	return (fArg1->dynamicEval()) || fArg2->dynamicEval();
 }
 
-//_________________________________________________
-std::string IExprOperator::getName() const
-{
-	return fOperatorPrototype->getName();
-}
-
 
 //_________________________________________________
 // -----------------------------------------------
@@ -59,6 +53,29 @@ IExprArgBase::IExprArgBase()
 	  fEvaluated(new std::string())
 {
 
+}
+
+
+//_________________________________________________
+// -----------------------------------------------
+template<>
+SIExprArg IExprArg<SIExprOperator>::copy() const
+{
+	IExprOperator* op = new IExprOperator(fArg->operatorName(), fArg->arg1()->copy(), fArg->arg2()->copy());
+	IExprArgBase* r = new IExprArg<SIExprOperator>(op);
+	if(fDynamicEval)
+		r->switchToDynamic();
+	r->setEvaluated(getEvaluated());
+	return r;
+}
+
+//_________________________________________________
+template<>
+void IExprArg<SIExprOperator>::recursiveClearEvaluated()
+{
+	fArg->arg1()->recursiveClearEvaluated();
+	fArg->arg2()->recursiveClearEvaluated();
+	fEvaluated->clear();
 }
 
 

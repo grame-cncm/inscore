@@ -16,8 +16,6 @@ namespace inscore{
 class IExprOperator;
 typedef libmapping::SMARTP<IExprOperator> SIExprOperator;
 
-class OperatorPrototype;
-
 class IExprArgBase;
 typedef libmapping::SMARTP<IExprArgBase> SIExprArg;
 
@@ -47,11 +45,11 @@ protected:
  */
 class IExprOperator: public libmapping::smartable{
 private:
-	const OperatorPrototype* fOperatorPrototype;
+	const std::string fOperatorPrototype;
 	SIExprArg fArg1, fArg2;
 
 public:
-	IExprOperator(const OperatorPrototype* operatorPrototype, SIExprArg arg1, SIExprArg arg2);
+	IExprOperator(const std::string operatorName, SIExprArg arg1, SIExprArg arg2);
 
 	SIExprArg& arg1() {return fArg1;}
 	SIExprArg& arg2() {return fArg2;}
@@ -61,9 +59,7 @@ public:
 
 	bool dynamicEval() const;
 
-	const OperatorPrototype* operatorPrototype() const {return fOperatorPrototype;}
-
-    std::string getName() const;
+	const std::string operatorName() const {return fOperatorPrototype;}
 };
 
 

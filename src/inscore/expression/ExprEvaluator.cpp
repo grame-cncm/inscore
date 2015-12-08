@@ -48,9 +48,9 @@ const string ExprEvaluator::eval(const IExprOperator* arg, const IExprArgBase *e
 {
 	OperatorCb cb;
 
-	if( !callbackByOperator(arg->operatorPrototype(), cb) ){
+	if( !callbackByOperator(arg->operatorName(), cb) ){
 		ITLErr<<fEvalName	<<": operator \""
-							<<arg->operatorPrototype()->getName()
+							<<arg->operatorName()
 							<<"\" has no definition in this evaluator";
 		return fEvalStatus.fail();
 	}
@@ -76,7 +76,7 @@ const string ExprEvaluator::eval(const IExprOperator* arg, const IExprArgBase *e
 	string r = cb(arg1, arg2, success);
 
 	if(!success){
-		ITLErr<<fEvalName<<": operator "<<arg->operatorPrototype()->getName()<<"("<<arg1<<", "<<arg2<<") failed to compute.";
+		ITLErr<<fEvalName<<": operator "<<arg->operatorName()<<"("<<arg1<<", "<<arg2<<") failed to compute.";
 		return fEvalStatus.fail(exprArg);
 	}
 
@@ -176,20 +176,16 @@ const string ExprEvaluator::eval(const IObject *arg)
 
 //_____________________________________________________________
 //_____________________________________________________________
-ExprEvaluator::ExprEvaluator(const char *name, const IObject* contextObject):
-	fEvalName(name)
+ExprEvaluator::ExprEvaluator(const char *name, const IObject* contextObject, const OperatorList operatorList):
+	fEvalName(name), fCallbackList(operatorList)
 {
 	fContextObject = contextObject;
 }
 
-//_____________________________________________________________
-void ExprEvaluator::registerOperator(const OperatorPrototype& op, OperatorCb cb)
-{
-	fCallbackList.insert({&op, cb});
-}
+
 
 //_____________________________________________________________
-bool ExprEvaluator::callbackByOperator(const OperatorPrototype* op, OperatorCb &cb) const
+bool ExprEvaluator::callbackByOperator(const string op, OperatorCb &cb) const
 {
 	try{
 		cb = fCallbackList.at(op);
