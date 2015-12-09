@@ -81,13 +81,13 @@ public:
 	inline bool dynamicEval() const {return fDynamicEval;}
 	inline bool pureStaticEval() const {return !fCopyEval && !fDynamicEval;}
 
-	virtual SIExprArg copy() const =0;
+	inline virtual SIExprArg copy() const {return SIExprArg(0);}
 
 	inline std::string getEvaluated() const {return *fEvaluated;}
 	inline void setEvaluated(std::string evaluated){*fEvaluated = evaluated;}
 	inline std::string* evaluated() const {return fEvaluated;}	//as evaluated is more a buffer than a real attribute
 																//the pointer isn't const so evaluated can be change even in a const IExpression
-	virtual void recursiveClearEvaluated()=0;
+	inline virtual void recursiveClearEvaluated(){fEvaluated->clear();}
 
 	virtual ~IExprArgBase(){delete fEvaluated;}
 
@@ -111,7 +111,7 @@ public:
 	IExprArg(argType arg): IExprArgBase(), fArg(arg){}
 	argType getArg(){return fArg;}
 
-	SIExprArg copy() const {
+	inline SIExprArg copy() const{
 		IExprArgBase* r = new IExprArg<argType>(fArg);
 		if(fDynamicEval)
 			r->switchToDynamic();
@@ -121,7 +121,7 @@ public:
 		return r;
 	}
 
-	void recursiveClearEvaluated(){fEvaluated->clear();}
+	inline void recursiveClearEvaluated(){fEvaluated->clear();}
 
 
     /*!
@@ -138,9 +138,31 @@ public:
 
 };
 
+
+
 //SIExprArg specification for SIExprOperator
-template<> SIExprArg IExprArg<SIExprOperator>::copy() const;
-template<> void IExprArg<SIExprOperator>::recursiveClearEvaluated();
+//template<> SIExprArg IExprArg<SIExprOperator>::copy() const;
+//template<> void IExprArg<SIExprOperator>::recursiveClearEvaluated();
+
+template<>
+inline SIExprArg IExprArg<SIExprOperator>::copy() const
+{
+	IExprOperator* op = new IExprOperator(fArg->operatorName(), fArg->arg1()->copy(), fArg->arg2()->copy());
+	IExprArgBase* r = new IExprArg<SIExprOperator>(op);
+	if(fDynamicEval)
+		r->switchToDynamic();
+	r->setEvaluated(getEvaluated());
+	return r;
+}
+
+//_________________________________________________
+template<>
+inline void IExprArg<SIExprOperator>::recursiveClearEvaluated()
+{
+	fArg->arg1()->recursiveClearEvaluated();
+	fArg->arg2()->recursiveClearEvaluated();
+	fEvaluated->clear();
+}
 
 
 std::ostream&	operator << (std::ostream& out, const SIExpression& exprArg);
