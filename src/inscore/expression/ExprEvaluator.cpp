@@ -131,7 +131,8 @@ const string ExprEvaluator::eval(const urlpath &arg, const IExprArgBase *exprArg
 	else
 		updateMsg->add("reset");
 
-	const char* data = QFileDownloader::getCachedAsync(url,  [updateMsg] (){ updateMsg->send(); }  );
+	QFileDownloader* fDownloader = new QFileDownloader();
+	const char* data = fDownloader->getCachedAsync(url,  [updateMsg, fDownloader] (){ updateMsg->send(); delete fDownloader;}, [fDownloader](){delete fDownloader;}  );
 	string s = emptyValue();
 
 	if(data){

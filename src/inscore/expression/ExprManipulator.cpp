@@ -52,15 +52,16 @@ const string ExprCompositor::eval(IExprOperator *arg, IExprArgBase *exprArg)
 
 const std::string ExprCompositor::eval(const itladdress& arg, IExprArgBase *exprArg)
 {
+	if(!exprArg->copyEval())
+		return "";
+
 	const IObject* o = ExprEvaluator::objectFromAddress(arg, fContextObject);
 
 	if(!o){
 		ITLErr<<fManipulatorName<<": "<<(string)arg<<" not known at this address..."<<ITLEndl;
 		manipulationFailed();
-	}else{
-		if(exprArg->copyEval())
-			return eval(o, exprArg);
-	}
+	}else
+		return eval(o, exprArg);
 
 	return "";
 }
