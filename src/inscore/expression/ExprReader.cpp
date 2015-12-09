@@ -70,12 +70,6 @@ const std::string ExprReader::eval(const filepath &arg, const IExprArgBase *expr
 }
 
 //_________________________________
-const std::string ExprReader::eval(const urlpath &arg, const IExprArgBase *exprArg)
-{
-	return argPrefix(exprArg) + prefix('"'+(std::string)arg+'"');
-}
-
-//_________________________________
 const std::string ExprReader::eval(const itladdress &arg, const IExprArgBase *exprArg)
 {
 	return argPrefix(exprArg) + prefix(arg);

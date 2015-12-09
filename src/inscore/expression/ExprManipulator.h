@@ -36,7 +36,6 @@ public:
 	virtual const std::string eval(IExprOperator *arg,		IExprArgBase *exprArg);
 	virtual const std::string eval(const std::string&,		IExprArgBase*){return "";}
 	virtual const std::string eval(const filepath&,			IExprArgBase*){return "";}
-	virtual const std::string eval(const urlpath&,			IExprArgBase*){return "";}
 	virtual const std::string eval(const itladdress &arg,	IExprArgBase *exprArg);
 	virtual const std::string eval(const IObject* arg,		IExprArgBase *exprArg);
 	virtual const std::string eval(const iexpression &,		IExprArgBase *){return "";}
@@ -69,7 +68,6 @@ public:
 	virtual const std::string eval(IExprOperator *arg,	IExprArgBase *exprArg);
 	virtual const std::string eval(const std::string &,	IExprArgBase *){return "";}
 	virtual const std::string eval(const filepath &,	IExprArgBase *){return "";}
-	virtual const std::string eval(const urlpath &,		IExprArgBase *){return "";}
 	virtual const std::string eval(const itladdress &,	IExprArgBase *){return "";}
 	virtual const std::string eval(const iexpression &,	IExprArgBase *){return "";}
 
@@ -95,7 +93,6 @@ public:
 	virtual const std::string eval(const IExprOperator *,	const IExprArgBase *exprArg);
 	virtual const std::string eval(const std::string &,		const IExprArgBase *exprArg);
 	virtual const std::string eval(const filepath &,		const IExprArgBase *exprArg);
-	virtual const std::string eval(const urlpath &,			const IExprArgBase *exprArg);
 	virtual const std::string eval(const itladdress &,		const IExprArgBase *exprArg);
 	virtual const std::string eval(const iexpression &,		const IExprArgBase *exprArg);
 

@@ -94,52 +94,52 @@ const string ExprEvaluator::eval(const std::string &arg, const IExprArgBase *)
 //_____________________________________________________________
 const string ExprEvaluator::eval(const filepath& arg, const IExprArgBase *exprArg)
 {
+	std::string extendedPath = arg;
+	std::string fileData="";
 
-    std::string fileData="";
-    std::ifstream ifs;
+	if(!Tools::isurl(extendedPath))
+		extendedPath = fContextObject->getScene()->absolutePath(extendedPath);
 
-	ifs.open(fContextObject->getScene()->absolutePath(arg), std::ifstream::in);
+	if(Tools::isurl(extendedPath)){
+		const char* url = extendedPath.c_str();
 
-    if(!ifs.is_open()){
-		ITLErr<<fEvalName<<": can't find \""<<(string)arg<<"\""<<ITLEndl;
-		return fEvalStatus.fail(exprArg);
-    }
+		SIMessage updateMsg = IMessage::create();
+		updateMsg->setAddress(fContextObject->getOSCAddress());
+		updateMsg->setMessage("expr");
 
-    char c = ifs.get();
-    while (ifs.good()) {
-        fileData += c;
-        c = ifs.get();
-      }
+		if(exprArg->dynamicEval())
+			updateMsg->add("reeval");
+		else
+			updateMsg->add("reset");
 
-    ifs.close();
+		QFileDownloader* fDownloader = new QFileDownloader();
+		const char* data = fDownloader->getCachedAsync(url,  [updateMsg, fDownloader] (){ updateMsg->send(); delete fDownloader;}, [fDownloader](){delete fDownloader;}  );
+		string s = emptyValue();
+
+		if(data){
+			fileData = string(data);
+			delete[] data;
+		}
+	}else{
+		std::ifstream ifs;
+
+		ifs.open(fContextObject->getScene()->absolutePath(arg), std::ifstream::in);
+
+		if(!ifs.is_open()){
+			ITLErr<<fEvalName<<": can't find \""<<(string)arg<<"\""<<ITLEndl;
+			return fEvalStatus.fail(exprArg);
+		}
+
+		char c = ifs.get();
+		while (ifs.good()) {
+			fileData += c;
+			c = ifs.get();
+		  }
+
+		ifs.close();
+	}
 
 	return eval(fileData);
-}
-
-
-//_____________________________________________________________
-const string ExprEvaluator::eval(const urlpath &arg, const IExprArgBase *exprArg)
-{
-	const char* url = arg.string.c_str();
-
-	SIMessage updateMsg = IMessage::create();
-	updateMsg->setAddress(fContextObject->getOSCAddress());
-	updateMsg->setMessage("expr");
-
-	if(exprArg->dynamicEval())
-		updateMsg->add("reeval");
-	else
-		updateMsg->add("reset");
-
-	QFileDownloader* fDownloader = new QFileDownloader();
-	const char* data = fDownloader->getCachedAsync(url,  [updateMsg, fDownloader] (){ updateMsg->send(); delete fDownloader;}, [fDownloader](){delete fDownloader;}  );
-	string s = emptyValue();
-
-	if(data){
-		s = string(data);
-		delete[] data;
-	}
-	return s;
 }
 
 //_____________________________________________________________

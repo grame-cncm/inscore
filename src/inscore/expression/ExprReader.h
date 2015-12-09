@@ -24,7 +24,6 @@ public:
 	const std::string eval(const std::string& arg, const IExprArgBase* exprArg=0);
 	const std::string eval(const IExprOperator* arg, const IExprArgBase* exprArg=0);
 	const std::string eval(const filepath& arg, const IExprArgBase* exprArg=0);
-	const std::string eval(const urlpath& arg, const IExprArgBase* exprArg=0);
 	const std::string eval(const itladdress &arg, const IExprArgBase* exprArg=0);
 	const std::string eval(const iexpression &arg, const IExprArgBase* exprArg=0);
 

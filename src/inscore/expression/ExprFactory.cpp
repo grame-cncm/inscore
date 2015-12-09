@@ -24,17 +24,13 @@ SIExprArg ExprFactory::createArg(const std::string &arg)
 	CRegexpT<char> identifierRegex("(\\.\\./)*([_a-zA-Z0-9]+/)*[_a-zA-Z0-9]+");
 
 
-	if(fileRegex.MatchExact(arg.c_str()).IsMatched()){
-			//First check if is filepath
+	if(fileRegex.MatchExact(arg.c_str()).IsMatched() || Tools::isurl(arg)){
+			//First check if is filepath or an url
 		argResult = new IExprArg<filepath>(arg);
 
 	}else if(identifierRegex.MatchExact(arg.c_str()).IsMatched()){
 			//Then if is INScore objects
 		argResult = new IExprArg<itladdress>(arg);
-	}
-	else if(Tools::isurl(arg)){
-			//Check for url
-		argResult = new IExprArg<urlpath>(arg);
 	}
 
 			//If nothing was found encapsulate the string as it is...

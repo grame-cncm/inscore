@@ -70,6 +70,10 @@ class QFileDownloader
 
 		void updateSucceded();
 		void updateFailed();
+
+		void cbCachedASync(std::function<void()> cbUpdate, std::function<void()> cbFail);
+
+		void printErrors() const;
 		
 	private:
 		std::string				location(const char * file);
