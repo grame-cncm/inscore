@@ -148,7 +148,7 @@ const string ExprEvaluator::eval(const itladdress &arg, const IExprArgBase *expr
 	const IObject* o = objectFromAddress(arg, fContextObject);
 
 	if(!o){
-		ITLErr<<fEvalName<<": "<<(string)arg<<" not known at this address..."<<ITLEndl;
+		ITLErr<<fEvalName<<": object \""<<(string)arg<<"\" unknown..."<<ITLEndl;
 		return fEvalStatus.fail(exprArg);
     }
 	return eval(o);

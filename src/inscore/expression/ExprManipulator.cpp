@@ -58,7 +58,7 @@ const std::string ExprCompositor::eval(const itladdress& arg, IExprArgBase *expr
 	const IObject* o = ExprEvaluator::objectFromAddress(arg, fContextObject);
 
 	if(!o){
-		ITLErr<<fManipulatorName<<": "<<(string)arg<<" not known at this address..."<<ITLEndl;
+		ITLErr<<fManipulatorName<<": object \""<<(string)arg<<"\" unknown..."<<ITLEndl;
 		manipulationFailed();
 	}else
 		return eval(o, exprArg);
