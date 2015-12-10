@@ -177,7 +177,7 @@ const string ExprEvaluator::eval(const IObject *arg)
 
 //_____________________________________________________________
 //_____________________________________________________________
-ExprEvaluator::ExprEvaluator(const char *name, const IObject* contextObject, const OperatorList operatorList):
+ExprEvaluator::ExprEvaluator(std::string name, const IObject* contextObject, const OperatorList &operatorList):
 	fEvalName(name), fCallbackList(operatorList)
 {
 	fContextObject = contextObject;
@@ -202,6 +202,12 @@ bool ExprEvaluator::callbackByOperator(const string op, OperatorCb &cb) const
 const IObject* ExprEvaluator::objectFromAddress(itladdress address, const IObject* contextObject)
 {
 	return contextObject->findnode(address);
+}
+
+//_____________________________________________________________
+ExprEvaluator::~ExprEvaluator()
+{
+
 }
 
 

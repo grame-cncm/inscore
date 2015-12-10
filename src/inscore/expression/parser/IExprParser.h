@@ -62,7 +62,7 @@ class IExprParser {
 		
 		SIExprArg parse();
 
-		static bool parseExpression(std::string definition, SIExpression &expr, const TScripting* reader = 0);
+		static bool parseExpression(std::string definition, SIExpression &expr, const TScripting* reader = 0, int lineOffset = 0, int columnOffset = 0);
 };
 
 } // end namespace

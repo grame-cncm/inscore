@@ -36,7 +36,7 @@ typedef std::unordered_map<std::string, OperatorCb> OperatorList;
  * \brief IEvaluableExpr evaluator mother class. Handle context for the evaluation, error...
  */
 class ExprEvaluator: public constEvaluator{
-	const char* fEvalName;
+	std::string fEvalName;
 	const IObject* fContextObject;
 	const OperatorList fCallbackList;
 
@@ -62,14 +62,16 @@ public:
 
 //	static ExprEvaluator* create(const IObject* contextObject){return new ExprEvaluator("ExprEvaluator", contextObject);}
 
-	const char* evaluatorName() const {return fEvalName;}
-	virtual const char* emptyValue() const {return "";}
+	std::string evaluatorName() const {return fEvalName;}
+	virtual std::string emptyValue() const {return "";}
 
 
 	static const IObject* objectFromAddress(itladdress address, const IObject *contextObject);
 
+	virtual ~ExprEvaluator();
+
 protected:
-	ExprEvaluator(const char* name, const IObject* contextObject, const OperatorList operatorList);
+	ExprEvaluator(std::__cxx11::string name, const IObject* contextObject, const OperatorList &operatorList);
 
 	EvaluationStatus fEvalStatus;
 

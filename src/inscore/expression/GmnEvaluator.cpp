@@ -48,13 +48,13 @@ namespace inscore{
 
 
 
-GmnEvaluator::GmnEvaluator(const IObject *contextObject): ExprEvaluator("GmnEvaluator",contextObject, gmnOperators())
+GmnEvaluator::GmnEvaluator(const IObject *contextObject): ExprEvaluator("GmnEvaluator",contextObject, gOperators)
 {
 }
 
 
 //_____________________________________________________
-const OperatorList GmnEvaluator::gmnOperators() const
+const OperatorList GmnEvaluator::gmnOperators()
 {
 	std::unordered_map<std::string, OperatorCb> operatorMap;
 	operatorMap.insert({"seq",		GUIDOAR_OPERATOR(guido::guidoGSeq)});
@@ -90,6 +90,7 @@ const OperatorList GmnEvaluator::gmnOperators() const
 						} });
 	return operatorMap;
 }
+const OperatorList GmnEvaluator::gOperators = GmnEvaluator::gmnOperators();
 
 
 //_____________________________________________________

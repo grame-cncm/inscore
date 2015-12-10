@@ -277,29 +277,24 @@ MsgHandler::msgStatus IGuidoCode::exprMsg(const IMessage* msg)
 	if(!msg->param(0,p))
 			return MsgHandler::kBadParameters;
 
+	//operations need an expression
+	if(!fExprHandler.hasExpression())	{
+		ITLErr<<name()<<": no expression"<<ITLEndl;
+		return MsgHandler::kBadParameters;
+	}
+
 	string r = "";
 	bool processed = true;
 
-	if(p==kclear_SetMethod){
-		fExprHandler.clearExpr();
-	}else{
+	if(p=="renew")
+		processed = fExprHandler.renewExpression(r);
+	else if(p=="reeval")
+		processed = fExprHandler.evalExpression(r);
+	else if(p=="reset")
+		processed = fExprHandler.forceEvalExpr(r);
+	else
+		return MsgHandler::kBadParameters;
 
-		//some operations need an expression
-		if(!fExprHandler.hasExpression())	{
-			ITLErr<<name()<<": no expression"<<ITLEndl;
-			return MsgHandler::kBadParameters;
-		}
-
-		if(p=="renew")
-			processed = fExprHandler.renewExpression(r);
-		else if(p=="reeval")
-			processed = fExprHandler.evalExpression(r);
-		else if(p=="reset")
-			processed = fExprHandler.forceEvalExpr(r);
-		else
-			return MsgHandler::kBadParameters;
-
-	}
 
 
 	if(!processed || r == getGMN())

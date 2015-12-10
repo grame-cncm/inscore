@@ -13,15 +13,17 @@ public:
 	const std::string eval(const IObject *arg);
 	const std::string eval(const std::string& arg, const IExprArgBase* exprArg=0);
 
-	const char* emptyValue() const {return "[]";}
+	std::string emptyValue() const {return "[]";}
 
+	virtual ~GmnEvaluator(){}
 
 protected:
         GmnEvaluator(const IObject* contextObject);
 		bool isXml(const std::string &score) const;
 
 private:
-		const OperatorList gmnOperators() const;
+		static const OperatorList gmnOperators();
+		static const OperatorList gOperators;
 };
 
 }
