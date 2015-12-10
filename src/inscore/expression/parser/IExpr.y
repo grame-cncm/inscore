@@ -82,7 +82,7 @@ using namespace std;
 //_______________________________________________
 // relaxed simple IExpression format specification
 //_______________________________________________
-start		: expression			{context->fRootNode = $1;}
+start		: expression			{context->fRootNode = *$1;}
 			;
 
 //_______________________________________________
@@ -142,7 +142,7 @@ namespace inscore
 SIExprArg IExprParser::parse()
 {
 	yyparse (this);
-	return inscore::SIExprArg(*fRootNode);
+	return fRootNode;
 }
 }
 
@@ -156,9 +156,9 @@ int lineno (IExprParser* context)
 
 int yyerror(const YYLTYPE* loc, IExprParser* context, const char*s) {
 #ifdef NO_OSCSTREAM
-	cerr << "error line: " << loc->last_line + context->fLineOffset << " col: " << loc->first_column + (loc->last_line ? context->fLineOffset : 0)<< ": " << s << endl;
+	cerr << "error line: " << loc->last_line + context->fLineOffset << " col: " << loc->first_column + (loc->last_line==1 ? context->fColumnOffset : 1) << ": " << s << endl;
 #else
-	ITLErr << "error line: " << loc->last_line + context->fLineOffset << " col: " << loc->first_column + (loc->last_line ? context->fLineOffset : 0) << ": " << s << ITLEndl;
 #endif
+	ITLErr << "error line: " << loc->last_line + context->fLineOffset << " col: " << loc->first_column + (loc->last_line==1 ? context->fColumnOffset : 1) <<  ": " << s << ITLEndl;
 	return 0;
 }

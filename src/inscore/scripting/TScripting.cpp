@@ -196,9 +196,8 @@ Sbaseparam* TScripting::parseExpr(std::string definition, int lineOffset, int co
 
 	SIExpression expr;
 
-	if(!IExprParser::parseExpression(definition, expr, this, lineOffset, columnOffset)){
-		ITLErr<<"Error while parsing expression: "<<definition<<ITLEndl;
-		expr = IExpression::createEmpty();
+	if(!IExprParser::parseExpression(definition, expr, this, lineOffset-1, columnOffset-1)){
+		expr = IExpression::create(definition, 0);		//define an invalid expression containing its definition
 	}
 
 	IMsgParam<SIExpression>* param = new IMsgParam<SIExpression>(expr);

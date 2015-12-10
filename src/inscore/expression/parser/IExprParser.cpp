@@ -45,6 +45,7 @@ IExprParser::IExprParser(std::istream* stream, const TScripting* reader)
 	, fReader(reader)
 #endif
 {
+	fRootNode = 0;
 	fColumnOffset = 0;
 	fLineOffset = 0;
 	setlocale(LC_NUMERIC, "C");

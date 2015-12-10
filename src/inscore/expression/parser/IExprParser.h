@@ -48,7 +48,7 @@ class IExprParser {
 		std::string		fText;		// the current text
 		int				fInt;		// the current int
 		float			fFloat;		// the current float
-		SIExprArg*		fRootNode;	// the current highest
+		SIExprArg		fRootNode;	// the current highest
 
 		int fColumnOffset, fLineOffset;
 

@@ -30,9 +30,12 @@ public:
 	static SIExpression create(const std::string &definition, const SIExprArg &fRootNode);
 	static SIExpression createEmpty();
 
-	std::string definition() const {return fDefinition;}
-	const SIExprArg& rootNode() const {return fRootNode;}
-	void setRootNode(SIExprArg rootNode){fRootNode = SIExprArg(rootNode);}
+	inline std::string definition() const {return fDefinition;}
+	inline const SIExprArg& rootNode() const {return fRootNode;}
+	void setRootNode(SIExprArg rootNode);
+
+	inline bool isValid(){return fRootNode!=0;}
+
 
 protected:
 	IExpression(const std::string &definition, const SIExprArg &rootNode);

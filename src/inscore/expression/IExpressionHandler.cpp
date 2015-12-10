@@ -70,6 +70,10 @@ IExprHandlerbase::~IExprHandlerbase()
 
 //_________________________________________________________
 bool IExprHandlerbase::composeExpr(SIExpression newExpr, std::string &result){
+
+	if(!newExpr->isValid())
+		return false;
+
 	SIExprArg rootNode = newExpr->rootNode()->copy();
 	if(!ExprCompositor::compose( rootNode, fContextObject))
 		return false;

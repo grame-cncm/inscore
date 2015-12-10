@@ -16,9 +16,15 @@ SIExpression IExpression::create(const std::string &definition, const SIExprArg 
 	return new IExpression(definition, fRootNode);
 }
 
+
 SIExpression IExpression::createEmpty()
 {
 	return create("expr(\"\")", ExprFactory::createEmptyArg());
+}
+
+void IExpression::setRootNode(SIExprArg rootNode)
+{
+	fRootNode = SIExprArg(rootNode);
 }
 
 //_________________________________________________
