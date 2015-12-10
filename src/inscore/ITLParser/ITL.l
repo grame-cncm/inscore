@@ -194,7 +194,7 @@ EOL		[\x0a\x0d]
 <EXPRSECTION>"\""				BEGIN DQSTR;
 <EXPRSECTION>"'"				BEGIN QSTR;
 <EXPRSECTION>[^()"']*				yyextra->fText += yytext;
-"expr("						expressionNested = 1; BEGIN EXPRSECTION; yyextra->fText = yytext;
+"expr("						expressionNested = 1; BEGIN EXPRSECTION; yyextra->fText = yytext; yyextra->fExprStartLine = yylloc->last_line;
 
  /* ----------------------------------------- */
  /*	basic delimiters and markers */

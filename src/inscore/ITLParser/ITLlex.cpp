@@ -1392,7 +1392,7 @@ yyextra->fText += yytext;
 case 41:
 YY_RULE_SETUP
 #line 197 "ITL.l"
-expressionNested = 1; BEGIN EXPRSECTION; yyextra->fText = yytext;
+expressionNested = 1; BEGIN EXPRSECTION; yyextra->fText = yytext; yyextra->fExprStartLine = yylloc->last_line;
 	YY_BREAK
 /* ----------------------------------------- */
 /*	basic delimiters and markers */

@@ -57,6 +57,7 @@ class ITLparser {
 		int				fInt;		// the current int
 		float			fFloat;		// the current float
 		int				fLine;		// line offset
+		int				fExprStartLine;
 
 				 ITLparser(std::istream* stream, int line, TJSEngine* js, TLua* lua);
 		virtual ~ITLparser();
