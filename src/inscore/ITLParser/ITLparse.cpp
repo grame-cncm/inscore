@@ -1768,7 +1768,7 @@ yyreduce:
 
   case 51:
 #line 240 "ITL.y" /* yacc.c:1646  */
-    { (yyval.p) = context->fReader.parseExpr(context->fText);}
+    { (yyval.p) = context->fReader.parseExpr(context->fText, yyloc.first_line, yyloc.first_column);}
 #line 1773 "ITLparse.cpp" /* yacc.c:1646  */
     break;
 

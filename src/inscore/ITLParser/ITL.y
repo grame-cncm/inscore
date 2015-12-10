@@ -237,7 +237,7 @@ number		: UINT					{ $$ = context->fInt; }
 //_______________________________________________
 // expression declaration
 
-expression		: EXPRESSION	{ $$ = context->fReader.parseExpr(context->fText);}
+expression		: EXPRESSION	{ $$ = context->fReader.parseExpr(context->fText, yyloc.first_line, yyloc.first_column);}
 			;
 
 %%

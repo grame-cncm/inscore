@@ -89,7 +89,7 @@ class TScripting
 		const SIMessageList&	messages() const { return fMessages; }
 
 
-		Sbaseparam* parseExpr(std::string definition) const;
+		Sbaseparam* parseExpr(std::string definition, int lineOffset = 0, int columnOffset = 0) const;
 
 };
 

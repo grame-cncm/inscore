@@ -192,11 +192,11 @@ IMessage::argslist TScripting::resolve (const char* var, const char * defaultVal
 //          Expression support
 //--------------------------------------------------------------------------------------------
 
-Sbaseparam* TScripting::parseExpr(std::string definition) const {
+Sbaseparam* TScripting::parseExpr(std::string definition, int lineOffset, int columnOffset) const {
 
 	SIExpression expr;
 
-	if(!IExprParser::parseExpression(definition, expr, this)){
+	if(!IExprParser::parseExpression(definition, expr, this, lineOffset, columnOffset)){
 		ITLErr<<"Error while parsing expression: "<<definition<<ITLEndl;
 		expr = IExpression::createEmpty();
 	}
