@@ -55,6 +55,10 @@ SIExprArg ExprFactory::createExpr(string operatorName, SIExprArg param1, SIExprA
 //_______________________________________________________
 bool inscore::ExprFactory::createExpr(std::string operatorName, SIExprArg param1, SIExprArg param2, SIExprOperator &expr)
 {
+	if(!param1)
+		param1 = createEmptyArg();
+	if(!param2)
+		param2 = createEmptyArg();
 
 	expr = new IExprOperator(operatorName, param1, param2);
 
