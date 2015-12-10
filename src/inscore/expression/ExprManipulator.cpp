@@ -55,7 +55,7 @@ const std::string ExprCompositor::eval(const itladdress& arg, IExprArgBase *expr
 	if(!exprArg->copyEval())
 		return "";
 
-	const IObject* o = ExprEvaluator::objectFromAddress(arg, fContextObject);
+	const IObject* o = fContextObject->findnode(arg);
 
 	if(!o){
 		ITLErr<<fManipulatorName<<": object \""<<(string)arg<<"\" unknown..."<<ITLEndl;
@@ -124,10 +124,13 @@ void ExprCompositor::continueExploration(IExprOperator *arg, IExprArgBase* exprA
 
 }
 
-void ExprCompositor::replaceNode(SIExprArg &node, SIExprArg newExpr)
+void ExprCompositor::replaceNode(SIExprArg &node, std::string key)
 {
-	node = newExpr;
+	node = fReplacedNodes.at(key);
 }
+
+
+
 
 /****************************************************
  *				ExprSimplificator						*
@@ -181,9 +184,6 @@ bool ExprSimplificator::simplifyNode(SIExprArg &node)
 	return true;
 }
 
-
-
-//___________________________________________________________________
 
 
 /****************************************************
@@ -256,14 +256,6 @@ SIExprArg ExprSmartCopy::smartCopy(const SIExprArg node)
 	fCopyMap.insert({node, SIExprArg(fCurrentNode)});
 	return fCurrentNode;
 }
-
-
-
-
-
-
-
-
 
 
 } //End namespace

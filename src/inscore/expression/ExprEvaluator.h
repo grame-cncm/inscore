@@ -42,13 +42,10 @@ class ExprEvaluator: public constEvaluator{
 
 public:
 	/*!
-	 * \brief evaluate an expression according to previously evaluated values
-	 * \param expr expression to evaluate
-	 * \param result result of the evaluation
-	 * \param newEvaluatedMap previously evaluated values
-	 * \return true if the evaluation succeed, false otherwise
-	 *
-	 * \warning evalExpression is not reentrant
+	 * \brief evalExpression Evaluate an IExpression
+	 * \param expr The expression to evaluate
+	 * \param result Store the result of the evaluation
+	 * \return True if the evaluation succeed, false otherwise
 	 */
 	bool evalExpression(const IExpression *expr, std::string &result);
 
@@ -57,27 +54,57 @@ public:
 	virtual const std::string eval(const filepath& arg, const IExprArgBase* exprArg=0);
 	virtual const std::string eval(const itladdress& arg, const IExprArgBase* exprArg=0);
 	virtual const std::string eval(const iexpression& arg, const IExprArgBase* exprArg=0);
+
+	/*!
+	 * \brief eval Evaluate an IObject as a string. This function is called by the default implementation of eval(const itladdress& arg, const IExprArgBase* exprArg).
+	 * \param arg A pointer towards the IObject to evaluate
+	 * \return
+	 */
 	virtual const std::string eval(const IObject *arg);
 
+	/*!
+	 * \brief create Create an instance of this evaluator.
+	 * \param contextObject The object will be used to deduce relative path.
+	 * \warning Any evaluator compatible with IExprHandler should implements such method.
+	 * \return A valid evaluator.
+	 */
+	static ExprEvaluator* create(const IObject* contextObject){return new ExprEvaluator("ExprEvaluator", contextObject, OperatorList());}
 
-//	static ExprEvaluator* create(const IObject* contextObject){return new ExprEvaluator("ExprEvaluator", contextObject);}
 
+	/*!
+	 * \brief evaluatorName Each evaluator implementation (subclassing) have a different name (default is ExprEvaluator).
+	 */
 	std::string evaluatorName() const {return fEvalName;}
+
+	/*!
+	 * \brief emptyValue This value shall replace any invalid or empty string with a valid empty value that won't cause the operators processing to fail (default is "")
+	 */
 	virtual std::string emptyValue() const {return "";}
-
-
-	static const IObject* objectFromAddress(itladdress address, const IObject *contextObject);
 
 	virtual ~ExprEvaluator();
 
 protected:
-	ExprEvaluator(std::__cxx11::string name, const IObject* contextObject, const OperatorList &operatorList);
+	/*!
+	 * \brief ExprEvaluator Constructor for subclassing ExprEvaluator
+	 * \param name the evaluator name (set the value return by evaluatorName()).
+	 * \param contextObject the context object (transfer the context object from the static create method)
+	 * \param operatorList The list of operator (a hash map linking operators name to callback method).
+	 * \warning To be compatible with IExprHandler an evaluator shoud implement a static create(const IObject* contextObject()) method.
+	 */
+	ExprEvaluator(std::string name, const IObject* contextObject, const OperatorList &operatorList);
 
 	EvaluationStatus fEvalStatus;
 
 	inline const IObject* contextObject(){return fContextObject;}
-	bool smartEval(const IExprArgBase *expr, std::string &result);
 
+
+	/*!
+	 * \brief smartEval this method handle the lazy evaluation of expression trees (check if the arguments is dynamically evaluated or if the branch value changed)
+	 * \param expr the node to evaluate
+	 * \param result The result of the evaluation is stored in this reference.
+	 * \return true if a new value was evaluated
+	 */
+	bool smartEval(const IExprArgBase *expr, std::string &result);
 	bool callbackByOperator(const std::string op, OperatorCb &cb) const ;
 };
 

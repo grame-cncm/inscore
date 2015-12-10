@@ -5,6 +5,9 @@
 
 namespace inscore{
 
+/*!
+ * \brief Evaluator used to evaluate score expressions
+ */
 class GmnEvaluator : public ExprEvaluator
 {
 public:

@@ -101,8 +101,10 @@ const string ExprEvaluator::eval(const filepath& arg, const IExprArgBase *exprAr
 		extendedPath = fContextObject->getScene()->absolutePath(extendedPath);
 
 	if(Tools::isurl(extendedPath)){
+			// Evaluate an url file
 		const char* url = extendedPath.c_str();
 
+			// Setup the callback message that shall be sent when the URL cache has been updated
 		SIMessage updateMsg = IMessage::create();
 		updateMsg->setAddress(fContextObject->getOSCAddress());
 		updateMsg->setMessage("expr");
@@ -112,6 +114,7 @@ const string ExprEvaluator::eval(const filepath& arg, const IExprArgBase *exprAr
 		else
 			updateMsg->add("reset");
 
+			// Request the current value stored in the patch and ask for updates
 		QFileDownloader* fDownloader = new QFileDownloader();
 		const char* data = fDownloader->getCachedAsync(url,  [updateMsg, fDownloader] (){ updateMsg->send(); delete fDownloader;}, [fDownloader](){delete fDownloader;}  );
 		string s = emptyValue();
@@ -121,6 +124,8 @@ const string ExprEvaluator::eval(const filepath& arg, const IExprArgBase *exprAr
 			delete[] data;
 		}
 	}else{
+			// Evaluate a filepath
+
 		std::ifstream ifs;
 
 		ifs.open(fContextObject->getScene()->absolutePath(arg), std::ifstream::in);
@@ -139,13 +144,14 @@ const string ExprEvaluator::eval(const filepath& arg, const IExprArgBase *exprAr
 		ifs.close();
 	}
 
+		//Process the data contains in the file through the evaluation of string
 	return eval(fileData);
 }
 
 //_____________________________________________________________
 const string ExprEvaluator::eval(const itladdress &arg, const IExprArgBase *exprArg)
 {
-	const IObject* o = objectFromAddress(arg, fContextObject);
+	const IObject* o = fContextObject->findnode(arg);
 
 	if(!o){
 		ITLErr<<fEvalName<<": object \""<<(string)arg<<"\" unknown..."<<ITLEndl;
@@ -174,7 +180,6 @@ const string ExprEvaluator::eval(const IObject *arg)
 }
 
 
-
 //_____________________________________________________________
 //_____________________________________________________________
 ExprEvaluator::ExprEvaluator(std::string name, const IObject* contextObject, const OperatorList &operatorList):
@@ -182,7 +187,6 @@ ExprEvaluator::ExprEvaluator(std::string name, const IObject* contextObject, con
 {
 	fContextObject = contextObject;
 }
-
 
 
 //_____________________________________________________________
@@ -195,13 +199,6 @@ bool ExprEvaluator::callbackByOperator(const string op, OperatorCb &cb) const
 	}
 
 	return true;
-}
-
-
-//_____________________________________________________________
-const IObject* ExprEvaluator::objectFromAddress(itladdress address, const IObject* contextObject)
-{
-	return contextObject->findnode(address);
 }
 
 //_____________________________________________________________

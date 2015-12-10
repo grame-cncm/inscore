@@ -21,20 +21,39 @@ typedef libmapping::SMARTP<IExprArgBase> SIExprArg;
 class IExpression;
 typedef libmapping::SMARTP<IExpression> SIExpression;
 
+/*!
+ * \brief An IExpression encapsulate an expression tree with its definition string
+ */
 class IExpression: public libmapping::smartable{
 private:
 	SIExprArg fRootNode;
 	std::string fDefinition;
 
 public:
+
+	/*!
+	 * \brief Generate an IExpression using a definition and an expression tree.
+	 * \param definition
+	 * \param fRootNode the root node of the expression tree
+	 * \return A smart pointer on the generated IExpression
+	 */
 	static SIExpression create(const std::string &definition, const SIExprArg &fRootNode);
+
+	/*!
+	 * \brief Generate an empty IExpression defined by 'expr ("")' and with a root node containing an empty string.
+	 * \return A smart pointer on the generated IExpression
+	 */
 	static SIExpression createEmpty();
 
 	inline std::string definition() const {return fDefinition;}
 	inline const SIExprArg& rootNode() const {return fRootNode;}
 	void setRootNode(SIExprArg rootNode);
 
-	inline bool isValid(){return fRootNode!=0;}
+	/*!
+	 * \brief isValid Test if the IExpression is valid
+	 * \return True if the expression contains a not empty defition and expression tree.
+	 */
+	inline bool isValid(){return fRootNode!=0 && !fDefinition.empty();}
 
 
 protected:
@@ -43,7 +62,7 @@ protected:
 
 //____________________________________________________________
 /*!
- * \brief Evaluable expression made of an operator prototype and two arguments.
+ * \brief Expression operator made of an operator name and its two arguments.
  */
 class IExprOperator: public libmapping::smartable{
 private:
@@ -59,6 +78,10 @@ public:
 	const SIExprArg constArg1() const {return fArg1;}
 	const SIExprArg constArg2() const {return fArg2;}
 
+	/*!
+	 * \brief dynamicEval Get the dynamic state of the node
+	 * \return False if both arg1 and arg2 are NOT dynamically evaluated, True otherwise.
+	 */
 	bool dynamicEval() const;
 
 	const std::string operatorName() const {return fOperatorPrototype;}
@@ -67,7 +90,7 @@ public:
 
 //____________________________________________________________________________________________
 /*!
- * \brief base classes for all IExpression arguments , it hide the template of IExprArg<T>
+ * \brief base classes for all IExpression nodes , it hide the template of IExprArg<T>
  */
 class IExprArgBase: public libmapping::smartable, public evaluable{
 protected:
@@ -102,10 +125,10 @@ protected:
 
 
 //____________________________________________________________________________________________
-template <typename argType>
 /*!
- * \brief Containers class used to store any arguments of any type passed to an operator.
+ * \brief Containers class used to store any arguments of any type passed to an operator, including operators (through IExprOperator).
  */
+template <typename argType>
 class IExprArg: public IExprArgBase{
 private:
     argType fArg;
@@ -144,9 +167,6 @@ public:
 
 
 //SIExprArg specification for SIExprOperator
-//template<> SIExprArg IExprArg<SIExprOperator>::copy() const;
-//template<> void IExprArg<SIExprOperator>::recursiveClearEvaluated();
-
 template<>
 inline SIExprArg IExprArg<SIExprOperator>::copy() const
 {

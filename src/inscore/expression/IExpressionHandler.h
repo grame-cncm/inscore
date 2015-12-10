@@ -14,7 +14,9 @@ namespace inscore {
 class IObject;
 class ExprEvaluator;
 
-
+/*!
+ * \brief IExprHandler is the interface between objects definable by IExpression and their IExpressions, IExprHandlerbase hide the template of IExprHandler<evaluatorT>.
+ */
 class IExprHandlerbase{
 
 	SIExpression fExpression;
@@ -46,7 +48,9 @@ protected:
 
 
 
-
+/*!
+ * \brief IExprHandler<typename evaluatorT> define an IExpression handler specifying it with an ExprEvaluator that shall be used to evaluate a value from expressions.
+ */
 template <typename evaluatorT>
 class IExprHandler: public IExprHandlerbase
 {

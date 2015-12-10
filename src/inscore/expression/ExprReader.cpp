@@ -27,11 +27,11 @@ bool ExprReader::evalExpression(const IExprArgBase *expr, std::string &result, b
     return evalSucceed;
 }
 
-bool ExprReader::read(const IExprArgBase *expr, std::string prefix, std::string &result, bool printData)
+bool ExprReader::read(const IExprArgBase *expr, std::string prefix, std::string &result, bool printInternalData)
 {
 	ExprReader r;
 	r.fPrefix = prefix;
-	return r.evalExpression(expr, result, printData);
+	return r.evalExpression(expr, result, printInternalData);
 }
 
 //_________________________________

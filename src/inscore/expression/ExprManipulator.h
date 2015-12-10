@@ -19,7 +19,9 @@ typedef std::map<std::string, SIExprArg> ReplaceMap;
 
 //____________________________________________________________________
 // ------------------------------------------------------------------
-
+/*!
+ * \brief ExprCompositor are in charge of expression's expansion before the first evaluation (every arguments prefixed with ~ shall be expanded)
+ */
 class ExprCompositor: public evaluator{
 	const IObject* fContextObject;
 	ReplaceMap fReplacedNodes;
@@ -49,14 +51,17 @@ protected:
 
 	const char* fManipulatorName;
 private:
-	void replaceNode(SIExprArg& node, SIExprArg newExpr);
-	inline void replaceNode(SIExprArg &node, std::string key){replaceNode(node, fReplacedNodes.at(key));}
+	inline void replaceNode(SIExprArg &node, std::string key);
 
 };
 
 
 //____________________________________________________________________
 // ------------------------------------------------------------------
+/*!
+ * \brief ExprSimplificator are in charge of expression's simplification after the first evaluation
+ * (every static branch are simplified into IExprArg<iexpression> containing the value computed during the first evaluation and a string definition of the branch)
+ */
 class ExprSimplificator: public evaluator{
 
 	SIExprArg fSimplifiedNode;
@@ -81,6 +86,10 @@ protected:
 
 //____________________________________________________________________
 // ------------------------------------------------------------------
+/*!
+ * \brief ExprSmartCopy allows to make a copy of an expression tree keeping any memory-shared link between similar branches
+ * (when an expression is expanded using an object defintion more than once the expanded branch are memory-shared).
+ */
 class ExprSmartCopy: public constEvaluator{
 
 	std::map<const IExprArgBase*, SIExprArg> fCopyMap;
