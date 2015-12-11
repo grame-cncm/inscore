@@ -66,7 +66,7 @@ class QFileDownloader
 	private:
 	 
 		void fileDownloaded();
-		bool handleError(std::function<void()> cbFinished);
+		bool handleError(bool &success, std::function<void()> cbFinished);
 
 		void updateSucceded();
 		void updateFailed();
