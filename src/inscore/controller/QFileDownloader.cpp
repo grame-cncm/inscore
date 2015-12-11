@@ -96,6 +96,7 @@ const char* QFileDownloader::getCachedAsync(const char *urlString, std::function
 	QUrl url(urlString);
 	QNetworkRequest request(url);
 	fReply = NetworkAccess::instance()->get(request);
+	fInitialURL = url.toString();
 
 	//Sending an error message if download failed or callback cbUpdate if the cache was updated
 	QObject::connect(fReply, &QNetworkReply::finished, [this, cbUpdate, cbFail](){cbCachedASync(cbUpdate, cbFail);});
@@ -218,8 +219,18 @@ void QFileDownloader::cbCachedASync(std::function<void()> cbUpdate, std::functio
 		fReply = 0;
 		cbFail();
 	}else
-		if(!fReply->attribute(QNetworkRequest::SourceIsFromCacheAttribute).toBool()){
+		if(!fReply->attribute(QNetworkRequest::SourceIsFromCacheAttribute).toBool() || fReply->url().toString() != fInitialURL){
 			//Cache wasn't up to date
+
+			if(fReply->url().toString() != fInitialURL){
+				//In case of redirection we cheat with the cache to put the redirected data inside the initial url
+				QNetworkCacheMetaData meta = NetworkAccess::instance()->cache()->metaData(fReply->url());
+				meta.setUrl(QUrl(fInitialURL));
+				QIODevice* data = NetworkAccess::instance()->cache()->prepare(meta);
+				data->write(fReply->readAll());
+				NetworkAccess::instance()->cache()->insert(data);
+			}
+
 			fReply->deleteLater();
 			fReply = 0;
 			cbUpdate();
