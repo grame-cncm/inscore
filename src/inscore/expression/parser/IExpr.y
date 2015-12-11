@@ -82,7 +82,7 @@ using namespace std;
 //_______________________________________________
 // relaxed simple IExpression format specification
 //_______________________________________________
-start		: expression			{context->fRootNode = *$1;}
+start		: expression			{context->fRootNode = inscore::SIExprArg(*$1); delete $1;}
 			;
 
 //_______________________________________________

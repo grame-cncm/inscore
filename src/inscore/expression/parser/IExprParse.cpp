@@ -1385,7 +1385,7 @@ yyreduce:
     {
         case 2:
 #line 85 "IExpr.y" /* yacc.c:1646  */
-    {context->fRootNode = *(yyvsp[0].argbase);}
+    {context->fRootNode = inscore::SIExprArg(*(yyvsp[0].argbase)); delete (yyvsp[0].argbase);}
 #line 1390 "IExprParse.cpp" /* yacc.c:1646  */
     break;
 
