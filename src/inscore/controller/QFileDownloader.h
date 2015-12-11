@@ -79,6 +79,7 @@ class QFileDownloader
 		std::string				location(const char * file);
 	
 
+		QString					fInitialURL;
 		QNetworkReply*			fReply;
 		QByteArray				fData;
 		std::string				fOSCAddress;
