@@ -1,8 +1,9 @@
 /ITL/scene/* del;
+/ITL/scene width 1.5;
+
 rversion = 1.17; ! version required for javascript
 
 #### score definition #####
-
 <? javascript
 	function randomdur () {
 		return Math.pow(2, Math.floor( Math.random() * 5) );
@@ -23,6 +24,7 @@ rversion = 1.17; ! version required for javascript
 		return score + '";';
 	}
 ?>
+
 /ITL require $rversion ( /ITL/scene/warning set txt "WARNING: score expressions require version" $rversion "or greater" ,
 						/ITL/scene/warning color 100 100 100 ,
 						/ITL/scene/warning y 0.9 ,
