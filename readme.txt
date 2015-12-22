@@ -128,6 +128,9 @@ You can also use qtcreator with the INScore.pro project to build and deploy INSc
 
 Note for iOS platform:
 --------------------------
+You need to have an alias of qt ios binary file :
+	- an alias to qmake for ios called qmake-ios 
+
 You can compile INScore for iOS with 
 	> make ios
 
