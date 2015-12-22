@@ -2,43 +2,43 @@
 \rail@t {int32}
 \rail@t {float32}
 \rail@t {string}
-\rail@i {1}{ EvaluableExpression: ('expr') '(' ( ([1] operator leftArgument rightArgument) |[2] singleArgument ) ')' }
+\rail@i {1}{ EvaluableExpression: ('expr') '(' ( ([1] operator score score) |[2] score ) ')' }
 \rail@o {1}{
+\rail@index{EvaluableExpression}
 \rail@begin{2}{EvaluableExpression}
 \rail@term{expr}[]
 \rail@term{(}[]
 \rail@bar
 \rail@annote[1]
 \rail@nont{operator}[]
-\rail@nont{leftArgument}[]
-\rail@nont{rightArgument}[]
+\rail@nont{score}[]
+\rail@nont{score}[]
 \rail@nextbar{1}
 \rail@annote[2]
-\rail@nont{singleArgument}[]
+\rail@nont{score}[]
 \rail@endbar
 \rail@term{)}[]
 \rail@end
 }
-\rail@i {2}{ Argument: String | ( |'\&') filepath | ( | '\&' | '$\sim $' ) ITLObject | EvaluableExpression }
+\rail@i {2}{ Argument: GmnCode |( ( | '\&' | '$\sim $' ) ( filepath |ScoreObject ) ) | EvaluableExpression }
 \rail@o {2}{
-\rail@begin{7}{Argument}
+\rail@index{Argument}
+\rail@begin{5}{Argument}
 \rail@bar
-\rail@nont{String}[]
+\rail@nont{GmnCode}[]
 \rail@nextbar{1}
 \rail@bar
 \rail@nextbar{2}
 \rail@term{\&}[]
-\rail@endbar
-\rail@nont{filepath}[]
 \rail@nextbar{3}
-\rail@bar
-\rail@nextbar{4}
-\rail@term{\&}[]
-\rail@nextbar{5}
 \rail@term{$\sim $}[]
 \rail@endbar
-\rail@nont{ITLObject}[]
-\rail@nextbar{6}
+\rail@bar
+\rail@nont{filepath}[]
+\rail@nextbar{2}
+\rail@nont{ScoreObject}[]
+\rail@endbar
+\rail@nextbar{4}
 \rail@nont{EvaluableExpression}[]
 \rail@endbar
 \rail@end
