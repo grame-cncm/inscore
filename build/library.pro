@@ -139,7 +139,8 @@ ios {
     DEFINES += IOS __MOBILE__
     CONFIG+= arm64 armv7 armv7s
     CONFIG += staticlib
-    LIBS += $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a  $$ROOT/lib/GuidoAR/ios/libguidoar.a
+    LIBS += $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a
+    LIBS += $$ROOT/lib/GuidoAR/ios/libguidoar.a
 }
 
 ############################## 

@@ -50,7 +50,7 @@ macx {
 # ios support
 ##############################
 ios {
-        LIBS += -L. -lINScore $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a
+        LIBS += -L. -lINScore $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a $$ROOT/lib/GuidoAR/ios/libguidoar.a
         QMAKE_INFO_PLIST = $$PWD/Info.plist
         ios_icon.files = $$files($$ROOT/rsrc/ios/*.png)
         QMAKE_BUNDLE_DATA += ios_icon
