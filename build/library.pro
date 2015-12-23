@@ -139,7 +139,7 @@ ios {
     DEFINES += IOS __MOBILE__
     CONFIG+= arm64 armv7 armv7s
     CONFIG += staticlib
-    LIBS += $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a
+    LIBS += $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a  $$ROOT/lib/GuidoAR/ios/libguidoar.a
 }
 
 ############################## 
@@ -160,6 +160,7 @@ android {
     INCLUDEPATH  +=  $$files($$SRC/mobile)
     DEFINES += ANDROID __MOBILE__ OSC_HOST_LITTLE_ENDIAN
     LIBS += -L$$ROOT/lib/GuidoEngine/android -lGUIDOEngine
+    LIBS += -L$$ROOT/lib/GuidoAR/android -lguidoar
     QMAKE_CXXFLAGS += -Wno-unused-parameter
     QT += androidextras
 }

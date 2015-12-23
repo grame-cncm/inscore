@@ -82,7 +82,7 @@ unix:!android:!macx:!ios:LIBS += -L. -lINScore -lGUIDOEngine -lguidoar -lmicroht
 ############################## 
 android {
         LIBS += -L. -lINScore
-        ANDROID_EXTRA_LIBS = $$ROOT/lib/GuidoEngine/android/libGUIDOEngine.so libINScore.so
+        ANDROID_EXTRA_LIBS = $$ROOT/lib/GuidoEngine/android/libGUIDOEngine.so $$ROOT/lib/GuidoAR/android/libguidoar.so libINScore.so
         DISTFILES +=  $$ROOT/rsrc/android/AndroidManifest.xml
         ANDROID_PACKAGE_SOURCE_DIR = $$ROOT/rsrc/android
         QT += androidextras
