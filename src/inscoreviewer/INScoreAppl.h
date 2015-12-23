@@ -44,10 +44,12 @@ class INScoreAppl : public QApplication
 	INScoreAppl (int & argc, char ** argv );
 		virtual ~INScoreAppl();
 
+		void	init ();
 		void	setupMenu();
 		void	showMobileMenu();
 		bool	event(QEvent *ev);
 		void	started();
+		void	readArgs(int argc, char ** argv);
 
 	static void open(const std::string& file);
 	static void read(const std::string& buffer);
