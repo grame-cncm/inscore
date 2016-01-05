@@ -111,7 +111,7 @@ bool SwipePanel::removePanel(QString name, bool deleteWidget)
 		else if(!isLastPanel())
 			setPanel(fCurrentPanelID+1);
 		else
-			return false;
+			setPanel(-1);
 	}
 
 	if(deleteWidget)
@@ -153,8 +153,6 @@ bool SwipePanel::setPanel(QString name)
 
 void SwipePanel::setPanel(int panelID)
 {
-	if(panelID >= fPanelList.size() || panelID < 0)
-		return;
 
 	if(fNextPanelID!=-1){
 		fAnim.stop();
@@ -171,13 +169,16 @@ void SwipePanel::setPanel(int panelID)
 
 		fCurrentPanelID = panelID;
 
-		currentWidget()->show();
-		currentWidget()->installEventFilter(fSwipeFilter);
-
+		if(fCurrentPanelID >= fPanelList.size() || fCurrentPanelID < 0){
+			fCurrentPanelID = -1;
+		}else{
+			currentWidget()->show();
+			currentWidget()->installEventFilter(fSwipeFilter);
+			currentWidget()->setGeometry(0,0,width(),height());
+		}
 		emitCurrentPanelChanged();
 	}
 
-	currentWidget()->setGeometry(0,0,width(),height());
 }
 
 //__________________________________________________
@@ -188,7 +189,7 @@ bool SwipePanel::isFirstPanel()
 
 bool SwipePanel::isLastPanel()
 {
-	return fPanelList.size() == fCurrentPanelID+1;
+	return fPanelList.size() <= fCurrentPanelID+1;
 }
 
 QStringList SwipePanel::panelList()
@@ -312,8 +313,10 @@ void SwipePanel::emitCurrentPanelChanged()
 {
 	if(fNextPanelID!=-1)
 		emit currentPanelChanged(fPanelList.at(fNextPanelID).first, !fNextPanelID, fNextPanelID == fPanelList.size()-1);
-	else
+	else if(fCurrentPanelID!=-1)
 		emit currentPanelChanged(fPanelList.at(fCurrentPanelID).first, !fCurrentPanelID, fCurrentPanelID == fPanelList.size()-1);
+	else
+		emit currentPanelChanged("", true, true);
 }
 
 void SwipePanel::emitPanelListChanged()
