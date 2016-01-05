@@ -41,6 +41,10 @@
 #include <unistd.h>
 #endif // win32
 
+#ifdef __MOBILE__
+#include "VMobileQtInit.h"
+#endif
+
 #include "IScene.h"
 #include "IColor.h"
 #include "TMessageEvaluator.h"
@@ -227,6 +231,13 @@ void VSceneView::updateOnScreen( IScene * scene )
 	if (!scene->getWindowOpacity())
 		fGraphicsView->setWindowOpacity(sc.getA()/255.0f);
 
+
+#ifdef __MOBILE__
+	//On Mobile only fullscreen command works
+
+	VMobileQtInit::getMainPanel()->setFullScreen(QString::fromStdString(fGraphicsView->getSceneAddress()), scene->getFullScreen());
+
+#else
 	// Fullscreen/Normalscreen
 	// switch screen mode before resizing in order to get the correct size and position
 	bool fullscreen = fGraphicsView->windowState() & Qt::WindowFullScreen;
@@ -277,6 +288,7 @@ void VSceneView::updateOnScreen( IScene * scene )
 			}
 		}
     }
+#endif
     // If user is doing a gesture, don't update zoom and translation.
     if (!fTouchEventFilter->running()) {
         // Zoom and position of the scene

@@ -22,6 +22,7 @@ class SwipePanel : public QWidget
 	SwipeEventFilter* fSwipeFilter;
 
 	int fCurrentPanelID;
+	int fFullScreenPanel;
 	int fNextPanelID;
 
 public:
@@ -70,6 +71,13 @@ public:
 	 * \return true if the panel exists, false if not
 	 */
 	bool setPanel(QString name);
+
+	/*!
+	 * \brief setFullScreen Raise a panel to full screen
+	 * \param name of the panel
+	 * \param fullscreen weither the panel should be fullscreen or not
+	 */
+	void setFullScreen(QString name, bool fullscreen);
 
 	/*!
 	 * \brief removePanel from the list

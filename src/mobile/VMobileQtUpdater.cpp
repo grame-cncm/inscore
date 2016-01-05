@@ -37,8 +37,6 @@ namespace inscore {
 //--------------------------------------------------------------------------
 void VMobileQtUpdater::updateTo(IScene * scene)
 {
-	// Force scene to fullscreen to use all space of tab widget
-	scene->setFullScreen(true);
 	((VSceneView*)scene->getView())->updateView(scene);
 }
 

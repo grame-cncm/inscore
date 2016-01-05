@@ -7,6 +7,7 @@ SwipePanel::SwipePanel(QWidget *parent) : QWidget(parent)
 {
 	fCurrentPanelID = -1;
 	fNextPanelID = -1;
+	fFullScreenPanel = -1;
 	fSceneCount = 0;
 
 	fSwipeFilter = new SwipeEventFilter(this);
@@ -177,6 +178,49 @@ void SwipePanel::setPanel(int panelID)
 			currentWidget()->setGeometry(0,0,width(),height());
 		}
 		emitCurrentPanelChanged();
+	}
+
+}
+
+void SwipePanel::setFullScreen(QString name, bool fullscreen)
+{
+	int id = panelID(name);
+	if(id==-1)
+		return;
+	//ensure the fullscreen state of the panel changed
+	if( fullscreen == (fFullScreenPanel == id))
+		return;
+
+	if(fNextPanelID!=-1){
+		fAnim.stop();
+		fAnim.clear();
+		fNextPanelID = -1;
+	}
+
+
+	if(fFullScreenPanel!=-1){
+		//remove the previous full screen panel
+
+		QWidget* previousPanel = fPanelList.at(fFullScreenPanel).second;
+		previousPanel->hide();
+		previousPanel->setParent(this);
+		fFullScreenPanel = -1;
+	}else if(fullscreen){
+		//setup the Swipe panel for fullscreen
+		window()->hide();
+		setPanel(-1);
+	}
+
+	if(fullscreen){
+		//setup the new fullscreen panel
+		fFullScreenPanel = id;
+		QWidget* newPanel = fPanelList.at(fFullScreenPanel).second;
+		newPanel->setParent(0);
+		newPanel->showFullScreen();
+	}else{
+		//setup the swipe panel back from fullscreen
+		window()->showMaximized();
+		setPanel(id);
 	}
 
 }
@@ -355,7 +399,7 @@ bool SwipeEventFilter::eventFilter(QObject *o, QEvent *event)
 		//initiate a swipe detection
 		startX = e->touchPoints().at(0).pos().x();
 		startY = e->touchPoints().at(0).pos().y();
-		e->accept();
+		event->accept();
 		time.start(maxT);
 		swipePossible = true;
 		return false;
