@@ -118,9 +118,12 @@ void IOSCListener::ProcessMessage( const osc::ReceivedMessage& m, const IpEndpoi
 //--------------------------------------------------------------------------
 bool IOSCListener::isExpression(std::string arg)
 {
+	if(arg.empty())
+		return false;
+
 	auto it = arg.begin();
 	int i = 0;
-	while(it++ != arg.end()){
+	do{
 		if(i){
 			switch(i){
 			case 1: if(*it!='x') return false; i++; break;
@@ -133,7 +136,7 @@ bool IOSCListener::isExpression(std::string arg)
 			i++;
 		else if(*it != ' ' && *it != '\t' && *it != '\n')
 			return false;
-	}
+	}while(it++ != arg.end());
 
 	return false;
 }
