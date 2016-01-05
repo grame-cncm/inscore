@@ -17,7 +17,7 @@ class SlideMenu : public QFrame
 	Q_PROPERTY(QVariant panelList READ panelList NOTIFY panelListChanged)
 
 	QParallelAnimationGroup fAnimIn, fAnimOut;
-	QPropertyAnimation* posOut;
+	QPropertyAnimation* fPosOut;
 	float fOpacity;
 
 	QQuickWidget* fMenu;

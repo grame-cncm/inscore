@@ -25,18 +25,18 @@ SlideMenu::SlideMenu(QWidget *parent) : QFrame(parent)
 	opacityOut->setDuration(250);
 
 	QPropertyAnimation *posIn  = new QPropertyAnimation(fMenu, "pos", this);
-	posOut = new QPropertyAnimation(fMenu, "pos", this);
+	fPosOut = new QPropertyAnimation(fMenu, "pos", this);
 	posIn ->setEndValue(QPoint(0,0));
-	posOut->setEndValue(QPoint(-fMenu->width(),0));
+	fPosOut->setEndValue(QPoint(-fMenu->width(),0));
 	posIn ->setDuration(500);
-	posOut->setDuration(500);
+	fPosOut->setDuration(500);
 	posIn ->setEasingCurve(QEasingCurve::OutQuad);
-	posOut->setEasingCurve(QEasingCurve::InQuad);
+	fPosOut->setEasingCurve(QEasingCurve::InQuad);
 
 	fAnimIn.addAnimation(opacityIn);
 	fAnimIn.addAnimation(posIn);
 	fAnimOut.addAnimation(opacityOut);
-	fAnimOut.addAnimation(posOut);
+	fAnimOut.addAnimation(fPosOut);
 
 	connect(&fAnimOut, &QAbstractAnimation::finished, [this]{hide();});
 	setAutoFillBackground(true);
@@ -64,7 +64,7 @@ void SlideMenu::resizeEvent(QResizeEvent *)
 	if(!isVisible())
 		fMenu->move(-menuWidth, 0);
 
-	posOut->setEndValue(QPoint(-menuWidth,0));
+	fPosOut->setEndValue(QPoint(-menuWidth,0));
 }
 
 //_________________________________________________
