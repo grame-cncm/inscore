@@ -9,7 +9,7 @@ RCC_DIR		= tmp
 
 VERSION = 1.17
 
-QT += core gui widgets svg printsupport multimedia multimediawidgets qml websockets
+QT += core gui qml quick quickwidgets widgets svg printsupport multimedia multimediawidgets websockets
 
 ############################## 
 # locations
@@ -86,6 +86,6 @@ android {
         DISTFILES +=  $$ROOT/rsrc/android/AndroidManifest.xml
         ANDROID_PACKAGE_SOURCE_DIR = $$ROOT/rsrc/android
         QT += androidextras
-        RESOURCES += $$ROOT/rsrc/inscoremobile.qrc
+	RESOURCES += android-rsc/inscoremobile.qrc ../rsrc/inscorescriptmobile.qrc
 }
 

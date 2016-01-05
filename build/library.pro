@@ -23,7 +23,7 @@ JSON        = $$SRC/json
 win32 { OSCIP = $$OSC/ip/win32 }
 else  { OSCIP = $$OSC/ip/posix }
 
-QT += core gui widgets svg printsupport multimedia multimediawidgets qml websockets
+QT += core gui quick qml quickwidgets widgets svg printsupport multimedia multimediawidgets websockets
 DEFINES += INScore_EXPORTS
 DEFINES += HAVE_CONFIG_H  # defined for the qrencode library
 DEFINES += QTJSENGINE	# use the Qt Javascript engine
