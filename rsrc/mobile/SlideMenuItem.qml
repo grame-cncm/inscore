@@ -3,7 +3,7 @@ import QtQuick.Window 2.0
 
 Item {
     id: root
-    height: Screen.pixelDensity * 10;
+    height: Screen.pixelDensity * 7;
     anchors.left: parent.left
     anchors.right: parent.right
 
@@ -38,7 +38,7 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: Screen.pixelDensity*7;
             color: "#3a3a3a"
-            font.pixelSize: parent.height*0.6;
+            font.pixelSize:  Screen.pixelDensity * 4;
             font.capitalization: Font.SmallCaps
             text: "";
         }
@@ -47,6 +47,10 @@ Item {
             onPressed: {
                 button.state = "pressed"
             }
+            onCanceled: {
+                button.state = ""
+            }
+
             onReleased: {
                 button.state = ""
             }

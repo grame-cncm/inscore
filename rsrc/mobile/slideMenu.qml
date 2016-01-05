@@ -33,7 +33,7 @@ Item {
 
             Image{
                 id: headerLogo
-                source: "qrc:///img/Inscore.png"
+                source: "qrc:///INScoreViewer.png"
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
@@ -96,6 +96,7 @@ Item {
 
                     SectionSeparator{
                         title: "Scenes"
+                        visible: contextObject.sceneList.length
                     }
                     Repeater{
                         model: contextObject.sceneList
@@ -108,6 +109,7 @@ Item {
 
                     SectionSeparator{
                         title: "Tools"
+                        visible: contextObject.panelList.length
                     }
                     Repeater{
                         model: contextObject.panelList

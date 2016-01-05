@@ -5,10 +5,11 @@ import QtQuick.Window 2.0
 Item {
 
     property alias title: label.text
+    property int textMargin: 6
 
     anchors.left: parent.left
     anchors.right: parent.right
-    height: Screen.pixelDensity * 7
+    height: Screen.pixelDensity * 5
 
     Rectangle{
         id: line1
@@ -25,7 +26,7 @@ Item {
         id: label
         text: ""
         verticalAlignment: Text.AlignVCenter
-        font.pixelSize: Screen.pixelDensity* 4
+        font.pixelSize: Screen.pixelDensity* 3
         font.letterSpacing: Screen.pixelDensity/2
         font.capitalization: Font.SmallCaps
         font.bold: true;
@@ -34,7 +35,7 @@ Item {
         anchors.verticalCenterOffset: -font.pixelSize/6
 
         anchors.left: line1.right
-        anchors.leftMargin: text!=""? 2 : 0
+        anchors.leftMargin: text!=""? textMargin : 0
     }
 
     Rectangle{
@@ -43,7 +44,7 @@ Item {
         opacity: 0.5
         anchors.verticalCenter: parent.verticalCenter;
         anchors.left: label.right;
-        anchors.leftMargin: label.text!=""? 2 : 0
+        anchors.leftMargin: label.text!=""? textMargin : 0
         anchors.right: parent.right;
         anchors.rightMargin: 4
     }

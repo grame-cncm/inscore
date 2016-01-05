@@ -53,7 +53,7 @@ Item{
         anchors.bottom: parent.bottom
         anchors.margins: 5
         width: height
-        source: "qrc:///img/Inscore.png"
+        source: "qrc:///INScoreViewer.png"
 
         MouseArea{
             anchors.fill: parent
