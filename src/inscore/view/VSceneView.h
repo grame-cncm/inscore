@@ -191,6 +191,12 @@ class ZoomingGraphicsView : public QGraphicsView
 		 */
 		qreal getYOrigin();
 
+		/*!
+		 * \brief getSceneAddress Get the address or name of the scene.
+		 * \return
+		 */
+		std::string getSceneAddress() const;
+
 	protected:
 		// Scale factor used during a zoom
 		qreal fScaleFactor;

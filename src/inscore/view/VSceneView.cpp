@@ -107,6 +107,11 @@ qreal ZoomingGraphicsView::getYOrigin()
 	return fVerticalOffset / -400;
 }
 
+std::string ZoomingGraphicsView::getSceneAddress() const
+{
+	return fSceneAddress;
+}
+
 //------------------------------------------------------------------------------------------------------------------------
 void ZoomingGraphicsView::paintEvent (QPaintEvent * event) 
 {

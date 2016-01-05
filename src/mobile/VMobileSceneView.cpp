@@ -170,16 +170,14 @@ namespace inscore {
 //------------------------------------------------------------------------------------------------------------------------
 VMobileSceneView::~VMobileSceneView()
 {
-	QTabWidget * tw = VMobileQtInit::getTabWidget();
-	int index = tw->indexOf(fGraphicsView);
-	tw->removeTab(index);
+	VMobileQtInit::getMainPanel()->removePanel(fGraphicsView->getSceneAddress());
 }
 
 //------------------------------------------------------------------------------------------------------------------------
 void VMobileSceneView::foreground()
 {
 	// Select tab of the scene as current tab
-	VMobileQtInit::getTabWidget()->setCurrentWidget(fGraphicsView);
+	VMobileQtInit::getMainPanel()->switchToPanel(fGraphicsView->getSceneAddress());
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -189,7 +187,7 @@ ZoomingGraphicsView * VMobileSceneView::createGraphicsView(QGraphicsScene * scen
 	ZoomingGraphicsView *view =  VSceneView::createGraphicsView(scene, address);
 
 	// Add scene to tabwidget
-	VMobileQtInit::getTabWidget()->addTab(view, address);
+	VMobileQtInit::getMainPanel()->addScene(QString(address), view);
 
 	// Add gesture event support.
 	view->viewport()->setAttribute(Qt::WA_AcceptTouchEvents);

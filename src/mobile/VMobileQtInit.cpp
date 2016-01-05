@@ -24,7 +24,7 @@
 */
 #include "VMobileQtInit.h"
 
-#include <QMainWindow>
+#include "mainwindow.h"
 
 #ifdef ANDROID
 #include <QtAndroidExtras>
@@ -33,20 +33,17 @@
 namespace inscore
 {
 
-QMainWindow* VMobileQtInit::sMainWindow;
-QTabWidget* VMobileQtInit::sTabWidget;
+MainWindow* VMobileQtInit::gMainWindow;
 
 //--------------------------------------------------------------------------
 void VMobileQtInit::startQt ()
 {
     VQtInit::startQt();
     // Create main window. It contains tab for each scene.
-    sMainWindow = new QMainWindow;
-    sTabWidget = new QTabWidget(sMainWindow);
-    sMainWindow->setCentralWidget(sTabWidget);
-    sMainWindow->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
+	gMainWindow = new MainWindow();
+	gMainWindow->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
     // Man window is full screen.
-    sMainWindow->showMaximized();
+	gMainWindow->showMaximized();
 // makes INScore crash on android 5
 //    VMobileQtInit::keepScreenOn();
 }
@@ -55,14 +52,15 @@ void VMobileQtInit::startQt ()
 void VMobileQtInit::stopQt ()
 {
     VQtInit::stopQt();
-    delete sMainWindow;
+	delete gMainWindow;
 }
 
 //--------------------------------------------------------------------------
-QTabWidget* VMobileQtInit::getTabWidget()
+SwipePanel *VMobileQtInit::getMainPanel()
 {
-    return sTabWidget;
+	return gMainWindow->swipePanel();
 }
+
 
 //--------------------------------------------------------------------------
 void VMobileQtInit::keepScreenOn()
