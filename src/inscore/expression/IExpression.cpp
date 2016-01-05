@@ -80,9 +80,10 @@ std::ostream& operator <<(std::ostream &out, const SIExprArg &exprArg)
 //_________________________________________________
 std::ostream& operator <<(std::ostream &out, const SIExprOperator& exprArg)
 {
+	//This method is normally useless (its only purpose is to keep Visual Studio quite)
     std::string arg1, arg2;
     if(ExprReader::read(exprArg->constArg1(), arg1) && ExprReader::read(exprArg->constArg2(), arg2))
-        out << "expr( " << arg1.c_str() << " " << arg2.c_str() << ") (how did you get here by the way?)";
+		out << "expr( " << arg1.c_str() << " " << arg2.c_str() << ")";
 	return out;
 }
 

@@ -125,9 +125,10 @@ OSCStream &operator <<(OSCStream &s, IExprArgBase *val){
 //--------------------------------------------------------------------------
 OSCStream &operator <<(OSCStream &s, IExprOperator *val)
 {
+	//This method is normally useless (its only purpose is to keep Visual studio quite)
     string arg1, arg2;
     if(ExprReader::read(val->arg1(), arg1) && ExprReader::read(val->arg2(), arg2))
-        s.stream() << "expr( " << arg1.c_str() << " " << arg2.c_str() << ") (how did you get here by the way?)";
+		s.stream() << "expr( " << arg1.c_str() << " " << arg2.c_str() << ")";
     return s;
 }
 
