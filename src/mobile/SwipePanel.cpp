@@ -116,9 +116,11 @@ bool SwipePanel::removePanel(QString name, bool deleteWidget)
 
 	if(deleteWidget)
 		fPanelList.at(id).second->deleteLater();
+	else
+		fPanelList.at(id).second->setParent(0);
 	fPanelList.removeAt(id);
 
-	if(fCurrentPanelID<fSceneCount){
+	if(id<fSceneCount){
 		fSceneCount--;
 		if(receivers(SIGNAL(sceneListChanged(QStringList))))
 			emit sceneListChanged(sceneList());

@@ -34,13 +34,11 @@ SwipePanel* MainWindow::swipePanel(){
 
 void MainWindow::resizeEvent(QResizeEvent *e)
 {
-	int h = e->size().height();
-	int w = e->size().width();
-	qDebug()<<w<<", "<<h;
+	int h = height();
+	int w = width();
 	fHeader->setFixedHeight(qMin(h,w) * 0.1);
 	fMenu->setGeometry(0,0, w, h);
 	QWidget::resizeEvent(e);
-	e->accept();
 }
 
 }//end namespace

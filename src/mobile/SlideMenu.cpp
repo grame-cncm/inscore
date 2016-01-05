@@ -6,8 +6,6 @@ namespace inscore {
 SlideMenu::SlideMenu(QWidget *parent) : QFrame(parent)
 {
 	fMenu = new QQuickWidget(this);
-	QStringList l;
-	l<<"test"<<"test20";
 	fMenu->rootContext()->setContextProperty("contextObject", this);
 	fMenu->setSource(QUrl("qrc:///qml/slideMenu.qml"));
 	fMenu->rootObject()->setProperty("version", QVariant::fromValue( QString::fromStdString(INScore::versionStr()) ));
