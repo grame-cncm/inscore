@@ -4,7 +4,7 @@ import QtQuick.Controls 1.4
 Item{
     id: root;
 
-    property string title: "Header"
+    property string title: ""
     property var titles;
     property bool isLast: true
     property bool isFirst: true
@@ -39,11 +39,6 @@ Item{
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         font.pixelSize: root.height*.7
-
-        MouseArea{
-            anchors.fill: parent
-            onClicked: panelList.popup()
-        }
     }
 
     Image{

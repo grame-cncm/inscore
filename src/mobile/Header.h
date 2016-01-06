@@ -22,6 +22,11 @@ public slots:
 	void panelNameListChanged(QStringList nameList);
 
 protected:
+
+	///Workaround a QQmlWidget bug where the qml item is resize with a wrong height
+	///when showing the header without triggering a resizeEvent() (for exemple when exiting fullscreen mode)
+	///This subclass of showEvent can be removed if the qt bug is fixed...
+	void showEvent(QShowEvent *e);
 };
 
 }//end namespace
