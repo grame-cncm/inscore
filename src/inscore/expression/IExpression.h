@@ -189,8 +189,6 @@ inline void IExprArg<SIExprOperator>::recursiveClearEvaluated()
 
 
 std::ostream&	operator << (std::ostream& out, const SIExpression& exprArg);
-std::ostream&	operator << (std::ostream& out, const SIExprArg& exprArg);
-std::ostream&	operator << (std::ostream& out, const SIExprOperator& exprArg);
 
 } //end namespace
 

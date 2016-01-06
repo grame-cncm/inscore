@@ -4,7 +4,6 @@
 #include "ExprFactory.h"
 
 #include "ITLError.h"
-#include "TFile.h"
 
 
 
@@ -24,7 +23,7 @@ SIExprArg ExprFactory::createArg(const std::string &arg)
 	CRegexpT<char> identifierRegex("(\\.\\./)*([_a-zA-Z0-9]+/)*[_a-zA-Z0-9]+");
 
 
-	if(fileRegex.MatchExact(arg.c_str()).IsMatched() || Tools::isurl(arg)){
+	if(fileRegex.MatchExact(arg.c_str()).IsMatched() || isurl(arg)){
 			//First check if is filepath or an url
 		argResult = new IExprArg<filepath>(arg);
 
@@ -53,7 +52,7 @@ SIExprArg ExprFactory::createExpr(string operatorName, SIExprArg param1, SIExprA
 
 
 //_______________________________________________________
-bool inscore::ExprFactory::createExpr(std::string operatorName, SIExprArg param1, SIExprArg param2, SIExprOperator &expr)
+bool ExprFactory::createExpr(std::string operatorName, SIExprArg param1, SIExprArg param2, SIExprOperator &expr)
 {
 	if(!param1)
 		param1 = createEmptyArg();
@@ -65,4 +64,11 @@ bool inscore::ExprFactory::createExpr(std::string operatorName, SIExprArg param1
 	return true;
 }
 
+//_______________________________________________________
+bool ExprFactory::isurl (const std::string& path)
+{
+	std::string begin;
+	begin.assign(path, 0, 7);
+	return (begin == "http://") || (begin == "https:/");
+}
 } //end namespace

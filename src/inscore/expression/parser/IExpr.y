@@ -158,7 +158,7 @@ int yyerror(const YYLTYPE* loc, IExprParser* context, const char*s) {
 #ifdef NO_OSCSTREAM
 	cerr << "error line: " << loc->last_line + context->fLineOffset << " col: " << loc->first_column + (loc->last_line==1 ? context->fColumnOffset : 1) << ": " << s << endl;
 #else
-#endif
 	ITLErr << "error line: " << loc->last_line + context->fLineOffset << " col: " << loc->first_column + (loc->last_line==1 ? context->fColumnOffset : 1) <<  ": " << s << ITLEndl;
+#endif
 	return 0;
 }
