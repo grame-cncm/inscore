@@ -218,6 +218,8 @@ EOL		[\x0a\x0d]
 
 {EOL}					yylloc->first_column=0; /* ignore */
 
+<<EOF>>					return ENDSCRIPT;
+
 .						yyextra->fText = yytext; return ERR;
 
 %%
