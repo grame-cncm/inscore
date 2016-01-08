@@ -39,7 +39,7 @@
 /ITL/scene/m1 watch mouseDown (
 	/ITL/tutorial/myobject set rect 0.20 0.20 );
 /ITL/scene/m2 watch+ mouseDown (
-	/ITL/tutorial rootPath "$(/ITL/scene get rootPath;)",
+	/ITL/tutorial rootPath $(/ITL/scene get rootPath;),
 	/ITL/tutorial/myobject set img "rsrc/INScore.png" );
 /ITL/scene/m3 watch mouseDown (
 	/ITL/tutorial/myobject set txt "Hello world!" );
