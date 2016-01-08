@@ -109,7 +109,7 @@ SIGN=--sign ../../rsrc/inscore.keystore grame-inscore  --storepass grameinscore
 android : android-rsc android/Makefile INScoreAndroid
 
 android-rsc :
-	cp ../rsrc/ android-rsc
+	cp -r ../rsrc/ android-rsc
 
 android/Makefile: library.pro INScore.pro
 	@which qmake-android || (echo "### you must create an alias named 'qmake-android' that point to qmake inside your qt/android distribution and that is available from your PATH."; false;)
