@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 
 using namespace std;
 #include "doc.h"
@@ -36,17 +37,26 @@ int main(int argc, char* argv[])
 			argI++;
 		}
 
-		if(arg == "-v" || arg == "--verbose")
+		if(arg == "-v" || arg == "--verbose"){
 			bCreator.setVerbose();
-		else if(arg == "-o" || arg == "--output"){
+			if(param=="hierarchy ")
+				bCreator.setShowHierarchy();
+
+		}else if(arg == "-o" || arg == "--output"){
 			bCreator.setOutputPath(param);
 		}else if(arg == "-h" || arg=="--help"){
 				std::cout<<DOC;
 			return 0;
+		}else if(arg == "-l" || arg == "--local"){
+			char* buffer = getcwd(NULL, 0);
+			bCreator.setDefaultRootPath(std::string(buffer));
+			delete[] buffer;
 		}
 
 	}
-
+	char* buffer = getcwd(NULL, 0);
+	inputFile = std::string(buffer)+"/"+inputFile;
+	delete[] buffer;
 	return bCreator.bundle(inputFile);
 }
 

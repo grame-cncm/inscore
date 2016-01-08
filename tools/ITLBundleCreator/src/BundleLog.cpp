@@ -26,6 +26,7 @@ void BundleLog::section(std::string sectionName)
 	fTab = 1;
 }
 
+
 void BundleLog::exitSection()
 {
 	fTab=0;
@@ -44,21 +45,25 @@ void BundleLog::exitSubSection()
 		fTab--;
 }
 
+
 void BundleLog::printLog(std::string msg)
 {
 	if(fActive){
 		size_t pos=0;
-		while(pos < msg.length()-1){
+		while(pos < msg.size()){
 			pos = msg.find('\n', pos);
+			if(pos+1 >= msg.size() || pos+1==0)
+				break;
+
 			for (int i = 0; i < fTab; ++i)
-				msg.insert(pos+1, "\t");
-			pos += fTab;
+				msg.insert(pos+1, "  ");
+			pos += fTab+1;
 		}
 
 		if(fNewLine)
 			for (int i = 0; i < fTab; ++i)
-				msg.insert(0, "\t");
-		fNewLine = *(msg.end()) == '\n';
+				msg.insert(0, "  ");
+		fNewLine = msg.at(msg.length()-1) == '\n';
 
 		printLog<std::string>(msg);
 	}
