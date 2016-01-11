@@ -136,6 +136,7 @@ private:
 public:
 	IExprArg(argType arg): IExprArgBase(), fArg(arg){}
 	argType getArg(){return fArg;}
+	void setArg(argType arg){fArg = arg;}
 
 	inline SIExprArg copy() const{
 		IExprArgBase* r = new IExprArg<argType>(fArg);
