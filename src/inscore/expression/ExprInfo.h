@@ -23,7 +23,7 @@ class ExprFileDependency: public constEvaluator{
 
 public:
 
-	static std::set<std::__cxx11::string> fileDependency(const IExpression* expr);
+	static std::set<std::string> fileDependency(const IExpression* expr);
 
 	const std::string eval(const std::string& , const IExprArgBase* =0){return "";}
 	const std::string eval(const IExprOperator* arg , const IExprArgBase* =0);
