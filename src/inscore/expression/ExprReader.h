@@ -13,7 +13,6 @@ class IExprEvaluatedMap;
  * \brief Special evaluator: read an expression, return the expression definition as a string
  */
 class ExprReader: public constEvaluator{
-	IExprEvaluatedMap* fEvaluatedMap;
 	std::string fPrefix;
 	unsigned short fTab;
 public:

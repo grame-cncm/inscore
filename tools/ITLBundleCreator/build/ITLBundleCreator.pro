@@ -21,12 +21,14 @@ ITLSRC		= $$ITLROOT/src/inscore/
 ############################## 
 SOURCES +=	$$SRC/ITLBundleCreator.cpp \
                 $$SRC/BundleCreator.cpp \
-                $$SRC/BundleLog.cpp
+		$$SRC/BundleLog.cpp\
+		$$ITLROOT/src/inscore/expression/ExprInfo.cpp
 
 
 
 HEADERS +=	$$SRC/BundleCreator.h \
-                $$SRC/BundleLog.h
+		$$SRC/BundleLog.h\
+		$$ITLROOT/src/inscore/expression/ExprInfo.h
 
 
 

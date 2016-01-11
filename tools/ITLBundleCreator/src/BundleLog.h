@@ -25,17 +25,16 @@ public:
 	void exitSubSection();
 
 	template <typename T>
-	const BundleLog& operator << (T msg) {printLog(msg); return *this;}
+	void printLog(T msg){if(fActive) std::cout<<msg;}
 
 	void printLog(std::string msg);
-	void printLog(char* msg){printLog(std::string(msg));}
-
-	template <typename T>
-	void printLog(T msg){if(fActive) std::cout<<msg;}
+	void printLog(const char* msg){printLog(std::string(msg));}
 
 	void error(std::string msg) const;
 };
 
+template <typename T>
+BundleLog& operator << (BundleLog& out, T msg) {out.printLog(msg); return out;}
 
 } // end namespace
 #endif // BUNDLELOG_H
