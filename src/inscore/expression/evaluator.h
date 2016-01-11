@@ -10,6 +10,7 @@ struct specializedString{
         std::string string;
         specializedString(std::string s=""){string = s;}
         operator std::string() const {return string;}
+		bool operator== ( const specializedString& other) const {return string == other.string;}
 };
 #define STRING_TYPE(typeName) struct typeName: specializedString{ typeName(std::string s=""):specializedString(s){} };
 
