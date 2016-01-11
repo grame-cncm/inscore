@@ -20,27 +20,30 @@ BundleCreator::BundleCreator()
 	fDefaultRootPath = std::string(getenv("HOME")) + "/";
 }
 //____________________________________________
-int BundleCreator::bundle(std::string inputFile)
+int BundleCreator::bundle(std::string inputFile, std::string outputFile)
 {
-	fLog.section("Parsing \""+inputFile+"\"");
-	fImportedScripts.clear();
-	fImportedRessources.clear();
-	fImportedScripts.insert(inputFile);
+	ReadingContext readingResult;
+	std::string absoluteFile = absolutePath(inputFile, "/", readingResult);
+	if(!absoluteFile.empty())
+		inputFile = absoluteFile;
 
-	if(!readScript(inputFile))
+	fLog.section("Parsing \""+inputFile+"\"");
+	readingResult.currentScript = inputFile;
+
+	if(!readScript(readingResult))
 		return -1;
 
-	simplifyPath();
+	simplifyPath(readingResult);
 
 	fLog.section("Discovered Files");
 
 	fLog<<"Ressources:\n";
-	for(auto it = fImportedRessources.begin(); it != fImportedRessources.end(); it++)
+	for(auto it = readingResult.ressources.begin(); it != readingResult.ressources.end(); it++)
 		fLog<<"  "<<*it<<"\n";
 
 	fLog<<"Script:\n";
-	for(auto it = fImportedScripts.begin(); it != fImportedScripts.end(); it++)
-		fLog<<"  "<<*it<<"\n";
+	for(auto it = readingResult.scripts.begin(); it != readingResult.scripts.end(); it++)
+		fLog<<"  "<<(*it).first<<"\n";
 
 
 	return 0;
@@ -48,54 +51,58 @@ int BundleCreator::bundle(std::string inputFile)
 
 //__________________________________________________________
 //----------------------------------------------------------
-bool BundleCreator::readScript(std::string inputFile)
+bool BundleCreator::readScript( ReadingContext& context)
 {
 	//Check script validity
 
 	SIMessageList msgs;
+	std::string inputFile = context.currentScript;
 
 	if(!parseScript(inputFile, msgs))
 		return false;
+
+	context.scripts.insert({inputFile,msgs});
 
 	if(!msgs || !msgs->list().size())
 		return true;
 
 	//Analyse messages
-	std::set<std::string> ressourcesList;
-	std::set<std::string> importedScripts;
-	std::map<std::string,std::string> rootPaths;
-
-	for (int idMsg = 0; idMsg < msgs->list().size(); ++idMsg) {
+	ReadingContext r(inputFile);
+	for (int idMsg = 0; idMsg < (int)msgs->list().size(); ++idMsg) {
 		SIMessage msg = msgs->list().at(idMsg);
-		analyseMsg(msg, ressourcesList, importedScripts, rootPaths);
+		analyseMsg(msg, r);
 	}
 
 
 	if(fShowHierarchy) fLog<<"Ressources:"<<"\n";
-	for(auto it = ressourcesList.begin(); it != ressourcesList.end(); it++){
+	for(auto it = r.ressources.begin(); it != r.ressources.end(); it++){
 		if(fShowHierarchy) fLog<<" - "<<(*it)<<"\n";
-		fImportedRessources.insert(*it);
+		context.ressources.insert(*it);
 	}
 
 	if(fShowHierarchy) fLog<<"Imported scripts:"<<"\n";
 
-	for(auto it = importedScripts.begin(); it != importedScripts.end(); it++){
-		std::string script = *it;
+	for(auto it = r.scripts.begin(); it != r.scripts.end(); it++){
+		std::string script = (*it).first;
 
 		if(fShowHierarchy) fLog<<" - "<<script<<"\n";
 
-		if(!fImportedScripts.count(script)){
-			fImportedScripts.insert(script);
+		if(!context.scripts.count(*it)){
 			if(fShowHierarchy) fLog.subSection(script);
-			readScript(script);
+			context.currentScript = script;
+			bool scriptValid = readScript(context);
 			if(fShowHierarchy) fLog.exitSubSection();
+			context.currentScript = inputFile;
+
+			if(!scriptValid)
+				return false;
 		}
 	}
 
 	return true;
 }
 
-void BundleCreator::analyseMsg(const SIMessage &msg, std::set<std::string> &importedRessources, std::set<std::string> &importedScripts, std::map<std::string, std::string> &rootPaths)
+void BundleCreator::analyseMsg(const SIMessage &msg, ReadingContext &context)
 {
 	if(!msg->size())
 		return;
@@ -107,33 +114,45 @@ void BundleCreator::analyseMsg(const SIMessage &msg, std::set<std::string> &impo
 		if(msg->message()=="load"){
 			if(msg->size()==1){
 				std::string script;
-				if(msg->param(0,script) && !isurl(script) ){
-					script = absolutePath(script, address, rootPaths);
+				if(msg->param(0,script) ){
+					script = absolutePath(script, address, context);
 					if(!script.empty())
-						importedScripts.insert(script);
+						context.scripts.insert({script,0});
 				}
 				return;
 			}
 		}else if(msg->message()=="rootPath"){
 			if(msg->size()==1){
 				std::string rootPath;
+
 				if(msg->param(0,rootPath)){
-					rootPath = absolutePath(rootPath, address, rootPaths);
+					if(!context.acceptRootPathMsg){
+						fLog.warn("In \""+context.currentScript+"\"\n         "+msg->address()+" rootpath "+rootPath+";");
+						fLog.warn("changing rootPath inside parameters message is not handled!");
+						return;
+					}
+
+					rootPath = absolutePath(rootPath, address, context);
+
 					if(!rootPath.empty())
-						rootPaths.insert({address, rootPath});
+						context.rootPaths.insert({address, rootPath});
 				}
 				return;
 			}
 		}else if(msg->message()=="save" || msg->message()=="export"){
 			/// TODO: Warn about root path change...
+
 		}else if("set"){
 			if(msg->size()==2){
 				std::string cmd;
 				if(msg->param(0, cmd) && isFileObject(cmd)){
 					std::string path;
 					if(msg->param(1, path)){
-						if(isLocalPath(path))
-							importedRessources.insert(absolutePath(path, address, rootPaths));
+						if(isPath(path)){
+							path = absolutePath(path, address, context);
+							if(!path.empty())
+								context.ressources.insert(path);
+						}
 					}
 				}
 			}
@@ -146,14 +165,20 @@ void BundleCreator::analyseMsg(const SIMessage &msg, std::set<std::string> &impo
 		SIMessageList msgList; SIExpression expr;
 		if(msg->param(i, msgList)){
 			//Search in message list arguments
-			for (int i = 0; i < msgList->list().size(); ++i) {
+			bool acceptRootPathMsg = context.acceptRootPathMsg;
+			context.acceptRootPathMsg = false;
+			for (int i = 0; i < (int)msgList->list().size(); ++i) {
 				SIMessage msg = msgList->list().at(i);
-				analyseMsg(msg, importedRessources, importedScripts, rootPaths);
+				analyseMsg(msg, context);
 			}
+			context.acceptRootPathMsg = acceptRootPathMsg;
 		}else if(msg->param(i, expr)){
 			std::set<std::string> exprDependencies = inscore::ExprInfo::fileDependency(expr);
-			for(auto it = exprDependencies.begin(); it != exprDependencies.end(); it++)
-				importedRessources.insert(absolutePath(*it,address,rootPaths));
+			for(auto it = exprDependencies.begin(); it != exprDependencies.end(); it++){
+				std::string path = absolutePath(*it,address,context);
+				if(!path.empty())
+					context.ressources.insert(path);
+			}
 		}
 	}
 }
@@ -198,20 +223,20 @@ bool BundleCreator::parseScript(std::string inputScript, SIMessageList &msgs)
 
 
 //____________________________________________
-void BundleCreator::simplifyPath()
+void BundleCreator::simplifyPath(ReadingContext &context)
 {
-	if(fImportedRessources.empty()&&fImportedScripts.empty())
+	if(context.ressources.empty()&&context.scripts.empty())
 		return;
 
 	//  -- search for common path trunk --
-	std::vector<std::string> trunk = splitPath(fImportedRessources.empty()? *(fImportedScripts.begin()) : *(fImportedRessources.begin()));
+	std::vector<std::string> trunk = splitPath(context.ressources.empty()? (*context.scripts.begin()).first : *(context.ressources.begin()));
 	int commonPath = trunk.size()-1;
 
-	for(auto it = fImportedRessources.begin(); it != fImportedRessources.end(); it++){
+	for(auto it = context.ressources.begin(); it != context.ressources.end(); it++){
 		std::vector<std::string> path = splitPath(*it);
 
 		int i=0;
-		while ( i < commonPath && i < path.size() ) {
+		while ( i < commonPath && i < (int)path.size() ) {
 			if(path.at(i)!=trunk.at(i)){
 				break;
 			}
@@ -220,11 +245,11 @@ void BundleCreator::simplifyPath()
 		commonPath = i;
 	}
 
-	for(auto it = fImportedScripts.begin(); it != fImportedScripts.end(); it++){
-		std::vector<std::string> path = splitPath(*it);
+	for(auto it = context.scripts.begin(); it != context.scripts.end(); it++){
+		std::vector<std::string> path = splitPath((*it).first);
 
 		int i=0;
-		while ( i < commonPath && i < path.size() ) {
+		while ( i < commonPath && i < (int)path.size() ) {
 			if(path.at(i)!=trunk.at(i))
 				break;
 			i++;
@@ -242,17 +267,19 @@ void BundleCreator::simplifyPath()
 
 	size_t removable = trunkPath.size();
 
-	std::set<std::string> simplifiedImportedScript;
-	std::set<std::string> simplifiedImportedRessources;
+	scriptSet simplifiedScripts;
+	std::set<std::string> simplifiedRessources;
 
-	for(auto it = fImportedRessources.begin(); it != fImportedRessources.end(); it++)
-		simplifiedImportedRessources.insert((*it).substr(removable));
+	for(auto it = context.ressources.begin(); it != context.ressources.end(); it++)
+		simplifiedRessources.insert((*it).substr(removable));
 
-	for(auto it = fImportedScripts.begin(); it != fImportedScripts.end(); it++)
-		simplifiedImportedScript.insert((*it).substr(removable));
+	for(auto it = context.scripts.begin(); it != context.scripts.end(); it++){
+		std::pair<std::string, inscore::SIMessageList> simplified((*it).first.substr(removable),(*it).second);
+		simplifiedScripts.insert(simplified);
+	}
 
-	fImportedRessources = simplifiedImportedRessources;
-	fImportedScripts = simplifiedImportedScript;
+	context.ressources = simplifiedRessources;
+	context.scripts = simplifiedScripts;
 }
 
 //____________________________________________
@@ -286,19 +313,22 @@ bool BundleCreator::isurl(std::string path)
 	return start=="http://" || start=="https:/";
 }
 
-bool BundleCreator::isLocalPath(std::string string)
+bool BundleCreator::isPath(std::string string)
 {
 	//  /?(. .? /)*([^/?:*<>|']+/?)+.[^/\?:*<>|']+
 	CRegexpT<char> fileRegex("/?(\\.\\.?/)*([^/\\?:*<>|']+/?)+\\.[^/\\?:*<>|']+");
 
-	return fileRegex.MatchExact(string.c_str()).IsMatched() && !isurl(string);
+	return fileRegex.MatchExact(string.c_str()).IsMatched();
 }
 
-std::string BundleCreator::absolutePath(std::string path, std::string address, const std::map<std::string, std::string> &rootPaths)
+std::string BundleCreator::absolutePath(std::string path, std::string address, const ReadingContext& context)
 {
 	//_________CHECK IF ABSOLUTE____________
 	if(*(path.begin())=='/')
 		return path;
+	//_________CHECK IF URL_________________
+	if(isurl(path))
+		return "";
 
 	//_________COMPUTING ROOTPATH____________
 	std::string rootPath= fDefaultRootPath;
@@ -306,8 +336,8 @@ std::string BundleCreator::absolutePath(std::string path, std::string address, c
 	//only keep /ITL/scene from the address
 	while(!address.empty()){
 		//check if the scene has a specific rootPath for the current address
-		auto rootPathIt= rootPaths.find(address);
-		if(rootPathIt != rootPaths.end()){
+		auto rootPathIt= context.rootPaths.find(address);
+		if(rootPathIt != context.rootPaths.end()){
 			rootPath = rootPathIt->second;
 			break;
 		}
@@ -317,6 +347,14 @@ std::string BundleCreator::absolutePath(std::string path, std::string address, c
 		address = address.substr(0, id);
 	}
 	//_________APPLYING ROOTPATH____________
+
+	//if rootPath is url return nothing
+	if(isurl(rootPath)){
+		return "";
+	}
+
+
+	//else generate absolute path
 	std::string currentFile;
 	std::string result = rootPath;
 
@@ -358,11 +396,6 @@ std::string BundleCreator::absolutePath(std::string path, std::string address, c
 void BundleCreator::setVerbose(bool verbose)
 {
 	fLog.setActive(verbose);
-}
-
-void BundleCreator::setOutputPath(std::string outputPath)
-{
-	fOutputPath = outputPath;
 }
 
 void BundleCreator::setDefaultRootPath(std::string rootPath)

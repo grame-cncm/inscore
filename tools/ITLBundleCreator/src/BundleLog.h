@@ -31,6 +31,7 @@ public:
 	void printLog(const char* msg){printLog(std::string(msg));}
 
 	void error(std::string msg) const;
+	void warn(std::string msg) const;
 };
 
 template <typename T>
