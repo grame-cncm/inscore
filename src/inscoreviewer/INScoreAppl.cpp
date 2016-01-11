@@ -69,7 +69,7 @@ static const char* kPortOption = "--port";
 //_______________________________________________________________________
 static void disableAppNap ()
 {
-	#if __APPLE__
+	#if __APPLE__ && !defined(IOS)
 	QProcess process;
 	process.start("defaults write fr.grame.INScore NSAppSleepDisabled -bool YES");
 	#endif
@@ -302,17 +302,17 @@ void INScoreAppl::init()
 #if defined(WIN32) && !defined(_DEBUG)
 # define USEWINMAIN
 #endif
+
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+#include "QtAppDelegate-C-Interface.h"
+#endif
+
 //_______________________________________________________________________
 #ifdef USEWINMAIN
 #include <windows.h>
 int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdParam, int iCmdShow)
 #else
-#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-#include "QtAppDelegate-C-Interface.h"
-extern "C" int qtmn(int argc, char *argv[] )
-#else
 int main( int argc, char **argv )
-#endif
 #endif
 {
 #ifdef USEWINMAIN
@@ -320,7 +320,7 @@ int main( int argc, char **argv )
 	char **argv = __argv;
 #endif
 
-	int ret = 1;
+    int ret = 1;
 	int udpPort = intopt (kPortOption, kUPDPort, argc, argv);
 	INScoreAppl appl(argc, argv);
 	appl.init();
@@ -338,17 +338,17 @@ int main( int argc, char **argv )
     gAbout->show();
 #endif
 
-	IGlue * glue = INScore::start (kTimeInterval, udpPort, kUPDPort+1, kUPDPort+2, &appl);
-	appl.started();
-	appl.readArgs(argc, argv);
+    IGlue * glue = INScore::start (kTimeInterval, udpPort, kUPDPort+1, kUPDPort+2, &appl);
+    appl.started();
+    appl.readArgs(argc, argv);
 
 #if !(TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
-	sleep (2);
+    sleep (2);
     gAbout->hide();
     disableAppNap();
 #endif
-	appl.showMobileMenu();
-	ret = appl.exec();
+    appl.showMobileMenu();
+    ret = appl.exec();
 	INScore::stop (glue);
 #if !(TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
     delete gAbout;
