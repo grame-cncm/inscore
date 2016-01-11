@@ -38,6 +38,7 @@
 #include "json_object.h"
 #include "json_element.h"
 #include "json_parser.h"
+#include "json_stream.h"
 
 using namespace std;
 using namespace json;
@@ -115,20 +116,16 @@ void QtWebSocketServer::timeTask()
 	if(version != fScreenVersion) {		// check for view updates
 		fScreenVersion = version;
 		json_object *response = new json_object;
-		json_element *elem = new json_element("notification", new json_true_value);
-		response->add(elem);
-		elem = new json_element(IWebSocket::kVersionKey, new json_int_value(fScreenVersion));
-		response->add(elem);
+		response->add (new json_element("notification", new json_true_value));
+		response->add (new json_element(IWebSocket::kVersionKey, new json_int_value(fScreenVersion)));
 		std::ostringstream mystream;
-		json_stream jstream(mystream);
-		response->print(jstream);
-		const char * message = mystream.str().c_str();
-		delete response;
+		response->print(mystream);
 		// The screen have been updated, send notifications to all the clients
 		QList<QWebSocket *>::iterator i;
 		for (i = fClients.begin(); i != fClients.end(); ++i)  {
-			(*i)->sendTextMessage(message);
+			(*i)->sendTextMessage(mystream.str().c_str());
 		}
+		delete response;
 	}
 	fLock.unlock();
 }

@@ -88,7 +88,7 @@ IDCHAR  [_a-zA-Z0-9]
 HOSTCHAR [-a-zA-Z0-9]
 
  /* allowed character for filename and path as defined for windows 7 with some specification for INScore compatibility: no = ; */
-FILECHAR [^ \\/?:*><|"';=]
+FILECHAR [^ \t\\/?:*><|"';=]
 
  /* regular expression characters
     as defined by the OSC specification */
@@ -155,8 +155,8 @@ EOL		[\x0a\x0d]
 "\""						BEGIN DQSTR;
 "'"							BEGIN QSTR;
 
-<DQSTR>([^\"]|"\\\"")*		if(!expressionNested){ yyextra->fText = unescape(yytext); return STRING;} else yyextra->fText += unescape(yytext);
-<QSTR>([^']|"\\'")*			if(!expressionNested){ yyextra->fText = unescape(yytext); return STRING;} else yyextra->fText += unescape(yytext);
+<DQSTR>([^\"]|"\\\"")*		if(!expressionNested){ yyextra->fText = unescape(yytext); return STRING;} else yyextra->fText += string("\"") + unescape(yytext) + "\"";
+<QSTR>([^']|"\\'")*			if(!expressionNested){ yyextra->fText = unescape(yytext); return STRING;} else yyextra->fText += string("'") + unescape(yytext) + "'";
 <DQSTR>\"					if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
 <QSTR>'						if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
 
@@ -194,7 +194,7 @@ EOL		[\x0a\x0d]
 <EXPRSECTION>"\""				BEGIN DQSTR;
 <EXPRSECTION>"'"				BEGIN QSTR;
 <EXPRSECTION>[^()"']*				yyextra->fText += yytext;
-"expr("						expressionNested = 1; BEGIN EXPRSECTION; yyextra->fText = yytext;
+"expr("						expressionNested = 1; BEGIN EXPRSECTION; yyextra->fText = yytext; yyextra->fExprStartLine = yylloc->last_line;
 
  /* ----------------------------------------- */
  /*	basic delimiters and markers */
@@ -217,6 +217,8 @@ EOL		[\x0a\x0d]
 {SPACE}+			;   /* eat up space */
 
 {EOL}					yylloc->first_column=0; /* ignore */
+
+<<EOF>>					return ENDSCRIPT;
 
 .						yyextra->fText = yytext; return ERR;
 

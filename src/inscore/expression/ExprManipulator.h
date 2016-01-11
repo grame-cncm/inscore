@@ -19,7 +19,9 @@ typedef std::map<std::string, SIExprArg> ReplaceMap;
 
 //____________________________________________________________________
 // ------------------------------------------------------------------
-
+/*!
+ * \brief ExprCompositor are in charge of expression's expansion before the first evaluation (every arguments prefixed with ~ shall be expanded)
+ */
 class ExprCompositor: public evaluator{
 	const IObject* fContextObject;
 	ReplaceMap fReplacedNodes;
@@ -36,7 +38,6 @@ public:
 	virtual const std::string eval(IExprOperator *arg,		IExprArgBase *exprArg);
 	virtual const std::string eval(const std::string&,		IExprArgBase*){return "";}
 	virtual const std::string eval(const filepath&,			IExprArgBase*){return "";}
-	virtual const std::string eval(const urlpath&,			IExprArgBase*){return "";}
 	virtual const std::string eval(const itladdress &arg,	IExprArgBase *exprArg);
 	virtual const std::string eval(const IObject* arg,		IExprArgBase *exprArg);
 	virtual const std::string eval(const iexpression &,		IExprArgBase *){return "";}
@@ -50,14 +51,17 @@ protected:
 
 	const char* fManipulatorName;
 private:
-	void replaceNode(SIExprArg& node, SIExprArg newExpr);
-	inline void replaceNode(SIExprArg &node, std::string key){replaceNode(node, fReplacedNodes.at(key));}
+	inline void replaceNode(SIExprArg &node, std::string key);
 
 };
 
 
 //____________________________________________________________________
 // ------------------------------------------------------------------
+/*!
+ * \brief ExprSimplificator are in charge of expression's simplification after the first evaluation
+ * (every static branch are simplified into IExprArg<iexpression> containing the value computed during the first evaluation and a string definition of the branch)
+ */
 class ExprSimplificator: public evaluator{
 
 	SIExprArg fSimplifiedNode;
@@ -69,7 +73,6 @@ public:
 	virtual const std::string eval(IExprOperator *arg,	IExprArgBase *exprArg);
 	virtual const std::string eval(const std::string &,	IExprArgBase *){return "";}
 	virtual const std::string eval(const filepath &,	IExprArgBase *){return "";}
-	virtual const std::string eval(const urlpath &,		IExprArgBase *){return "";}
 	virtual const std::string eval(const itladdress &,	IExprArgBase *){return "";}
 	virtual const std::string eval(const iexpression &,	IExprArgBase *){return "";}
 
@@ -83,6 +86,10 @@ protected:
 
 //____________________________________________________________________
 // ------------------------------------------------------------------
+/*!
+ * \brief ExprSmartCopy allows to make a copy of an expression tree keeping any memory-shared link between similar branches
+ * (when an expression is expanded using an object defintion more than once the expanded branch are memory-shared).
+ */
 class ExprSmartCopy: public constEvaluator{
 
 	std::map<const IExprArgBase*, SIExprArg> fCopyMap;
@@ -95,7 +102,6 @@ public:
 	virtual const std::string eval(const IExprOperator *,	const IExprArgBase *exprArg);
 	virtual const std::string eval(const std::string &,		const IExprArgBase *exprArg);
 	virtual const std::string eval(const filepath &,		const IExprArgBase *exprArg);
-	virtual const std::string eval(const urlpath &,			const IExprArgBase *exprArg);
 	virtual const std::string eval(const itladdress &,		const IExprArgBase *exprArg);
 	virtual const std::string eval(const iexpression &,		const IExprArgBase *exprArg);
 

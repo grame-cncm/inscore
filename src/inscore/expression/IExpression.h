@@ -7,7 +7,6 @@
 
 #include "smartpointer.h"
 
-#include "Operators.h"
 #include "evaluator.h"
 
 
@@ -16,26 +15,46 @@ namespace inscore{
 class IExprOperator;
 typedef libmapping::SMARTP<IExprOperator> SIExprOperator;
 
-class OperatorPrototype;
-
 class IExprArgBase;
 typedef libmapping::SMARTP<IExprArgBase> SIExprArg;
 
 class IExpression;
 typedef libmapping::SMARTP<IExpression> SIExpression;
 
+/*!
+ * \brief An IExpression encapsulate an expression tree with its definition string
+ */
 class IExpression: public libmapping::smartable{
 private:
 	SIExprArg fRootNode;
 	std::string fDefinition;
 
 public:
+
+	/*!
+	 * \brief Generate an IExpression using a definition and an expression tree.
+	 * \param definition
+	 * \param fRootNode the root node of the expression tree
+	 * \return A smart pointer on the generated IExpression
+	 */
 	static SIExpression create(const std::string &definition, const SIExprArg &fRootNode);
+
+	/*!
+	 * \brief Generate an empty IExpression defined by 'expr ("")' and with a root node containing an empty string.
+	 * \return A smart pointer on the generated IExpression
+	 */
 	static SIExpression createEmpty();
 
-	std::string definition() const {return fDefinition;}
-	const SIExprArg& rootNode() const {return fRootNode;}
-	void setRootNode(SIExprArg rootNode){fRootNode = SIExprArg(rootNode);}
+	inline std::string definition() const {return fDefinition;}
+	inline const SIExprArg& rootNode() const {return fRootNode;}
+	void setRootNode(SIExprArg rootNode);
+
+	/*!
+	 * \brief isValid Test if the IExpression is valid
+	 * \return True if the expression contains a not empty defition and expression tree.
+	 */
+	inline bool isValid(){return fRootNode!=0 && !fDefinition.empty();}
+
 
 protected:
 	IExpression(const std::string &definition, const SIExprArg &rootNode);
@@ -43,15 +62,15 @@ protected:
 
 //____________________________________________________________
 /*!
- * \brief Evaluable expression made of an operator prototype and two arguments.
+ * \brief Expression operator made of an operator name and its two arguments.
  */
 class IExprOperator: public libmapping::smartable{
 private:
-	const OperatorPrototype* fOperatorPrototype;
+	const std::string fOperatorPrototype;
 	SIExprArg fArg1, fArg2;
 
 public:
-	IExprOperator(const OperatorPrototype* operatorPrototype, SIExprArg arg1, SIExprArg arg2);
+	IExprOperator(const std::string operatorName, SIExprArg arg1, SIExprArg arg2);
 
 	SIExprArg& arg1() {return fArg1;}
 	SIExprArg& arg2() {return fArg2;}
@@ -59,17 +78,19 @@ public:
 	const SIExprArg constArg1() const {return fArg1;}
 	const SIExprArg constArg2() const {return fArg2;}
 
+	/*!
+	 * \brief dynamicEval Get the dynamic state of the node
+	 * \return False if both arg1 and arg2 are NOT dynamically evaluated, True otherwise.
+	 */
 	bool dynamicEval() const;
 
-	const OperatorPrototype* operatorPrototype() const {return fOperatorPrototype;}
-
-    std::string getName() const;
+	const std::string operatorName() const {return fOperatorPrototype;}
 };
 
 
 //____________________________________________________________________________________________
 /*!
- * \brief base classes for all IExpression arguments , it hide the template of IExprArg<T>
+ * \brief base classes for all IExpression nodes , it hide the template of IExprArg<T>
  */
 class IExprArgBase: public libmapping::smartable, public evaluable{
 protected:
@@ -86,13 +107,13 @@ public:
 	inline bool dynamicEval() const {return fDynamicEval;}
 	inline bool pureStaticEval() const {return !fCopyEval && !fDynamicEval;}
 
-	virtual SIExprArg copy() const =0;
+	inline virtual SIExprArg copy() const {return SIExprArg(0);}
 
 	inline std::string getEvaluated() const {return *fEvaluated;}
 	inline void setEvaluated(std::string evaluated){*fEvaluated = evaluated;}
 	inline std::string* evaluated() const {return fEvaluated;}	//as evaluated is more a buffer than a real attribute
 																//the pointer isn't const so evaluated can be change even in a const IExpression
-	virtual void recursiveClearEvaluated()=0;
+	inline virtual void recursiveClearEvaluated(){fEvaluated->clear();}
 
 	virtual ~IExprArgBase(){delete fEvaluated;}
 
@@ -104,10 +125,10 @@ protected:
 
 
 //____________________________________________________________________________________________
-template <typename argType>
 /*!
- * \brief Containers class used to store any arguments of any type passed to an operator.
+ * \brief Containers class used to store any arguments of any type passed to an operator, including operators (through IExprOperator).
  */
+template <typename argType>
 class IExprArg: public IExprArgBase{
 private:
     argType fArg;
@@ -116,7 +137,7 @@ public:
 	IExprArg(argType arg): IExprArgBase(), fArg(arg){}
 	argType getArg(){return fArg;}
 
-	SIExprArg copy() const {
+	inline SIExprArg copy() const{
 		IExprArgBase* r = new IExprArg<argType>(fArg);
 		if(fDynamicEval)
 			r->switchToDynamic();
@@ -126,7 +147,8 @@ public:
 		return r;
 	}
 
-	void recursiveClearEvaluated(){fEvaluated->clear();}
+	inline void recursiveClearEvaluated(){fEvaluated->clear();}
+
 
     /*!
      * \brief accept the visit from an evaluator
@@ -142,9 +164,31 @@ public:
 
 };
 
+
+
+//SIExprArg specification for SIExprOperator
+template<>
+inline SIExprArg IExprArg<SIExprOperator>::copy() const
+{
+	IExprOperator* op = new IExprOperator(fArg->operatorName(), fArg->arg1()->copy(), fArg->arg2()->copy());
+	IExprArgBase* r = new IExprArg<SIExprOperator>(op);
+	if(fDynamicEval)
+		r->switchToDynamic();
+	r->setEvaluated(getEvaluated());
+	return r;
+}
+
+//_________________________________________________
+template<>
+inline void IExprArg<SIExprOperator>::recursiveClearEvaluated()
+{
+	fArg->arg1()->recursiveClearEvaluated();
+	fArg->arg2()->recursiveClearEvaluated();
+	fEvaluated->clear();
+}
+
+
 std::ostream&	operator << (std::ostream& out, const SIExpression& exprArg);
-std::ostream&	operator << (std::ostream& out, const SIExprArg& exprArg);
-std::ostream&	operator << (std::ostream& out, const SIExprOperator& exprArg);
 
 } //end namespace
 

@@ -52,15 +52,16 @@ const string ExprCompositor::eval(IExprOperator *arg, IExprArgBase *exprArg)
 
 const std::string ExprCompositor::eval(const itladdress& arg, IExprArgBase *exprArg)
 {
-	const IObject* o = ExprEvaluator::objectFromAddress(arg, fContextObject);
+	if(!exprArg->copyEval())
+		return "";
+
+	const IObject* o = fContextObject->findnode(arg);
 
 	if(!o){
-		ITLErr<<fManipulatorName<<": "<<(string)arg<<" not known at this address..."<<ITLEndl;
+		ITLErr<<fManipulatorName<<": object \""<<(string)arg<<"\" unknown..."<<ITLEndl;
 		manipulationFailed();
-	}else{
-		if(exprArg->copyEval())
-			return eval(o, exprArg);
-	}
+	}else
+		return eval(o, exprArg);
 
 	return "";
 }
@@ -75,11 +76,14 @@ const string ExprCompositor::eval(const IObject *arg, IExprArgBase *exprArg)
 	}
 
 	if(exprArg->copyEval()){
-		SIExprArg newNode = guido->getExprHandler()->getExpression()->rootNode();
-		if(newNode)
-			return  replaceBy(newNode, guido->name());
+		SIExprArg newNode;
+		if(guido->getExprHandler()->hasExpression())
+			newNode = guido->getExprHandler()->getExpression()->rootNode();
 
-		exprArg->setEvaluated(guido->getCleanGMN());
+		if(!newNode)
+			newNode = ExprFactory::createArg(guido->getCleanGMN());
+
+		return  replaceBy(newNode, guido->name());
 	}
 
 	return "";
@@ -120,10 +124,13 @@ void ExprCompositor::continueExploration(IExprOperator *arg, IExprArgBase* exprA
 
 }
 
-void ExprCompositor::replaceNode(SIExprArg &node, SIExprArg newExpr)
+void ExprCompositor::replaceNode(SIExprArg &node, std::string key)
 {
-	node = newExpr;
+	node = fReplacedNodes.at(key);
 }
+
+
+
 
 /****************************************************
  *				ExprSimplificator						*
@@ -179,9 +186,6 @@ bool ExprSimplificator::simplifyNode(SIExprArg &node)
 
 
 
-//___________________________________________________________________
-
-
 /****************************************************
  *				ExprSmartCopy						*
  * *************************************************/
@@ -199,12 +203,12 @@ SIExprArg ExprSmartCopy::copy(const SIExprArg rootNode)
 }
 
 //___________________________________________________________________
-const string ExprSmartCopy::eval(const IExprOperator *arg, const IExprArgBase *exprArg)
+const string ExprSmartCopy::eval(const IExprOperator *arg, const IExprArgBase *)
 {
 	SIExprArg arg1 = smartCopy(arg->constArg1());
 	SIExprArg arg2 = smartCopy(arg->constArg2());
 
-	IExprOperator* argCopy = new IExprOperator(arg->operatorPrototype(), arg1, arg2);
+	IExprOperator* argCopy = new IExprOperator(arg->operatorName(), arg1, arg2);
 
 	fCurrentNode = SIExprArg(new IExprArg<SIExprOperator>(argCopy));
 
@@ -222,12 +226,6 @@ const string ExprSmartCopy::eval(const string &, const IExprArgBase *exprArg)
 }
 
 const string ExprSmartCopy::eval(const filepath &, const IExprArgBase *exprArg)
-{
-	fCurrentNode = exprArg->copy();
-	return "";
-}
-
-const string ExprSmartCopy::eval(const urlpath &, const IExprArgBase *exprArg)
 {
 	fCurrentNode = exprArg->copy();
 	return "";
@@ -258,14 +256,6 @@ SIExprArg ExprSmartCopy::smartCopy(const SIExprArg node)
 	fCopyMap.insert({node, SIExprArg(fCurrentNode)});
 	return fCurrentNode;
 }
-
-
-
-
-
-
-
-
 
 
 } //End namespace

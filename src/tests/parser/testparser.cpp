@@ -38,9 +38,6 @@ int main (int argc, char * argv[])
 	if (argc > 1) {
 		ifstream in (argv[1]);
 
-	IOperatorENode::registerOperator("_plus", [](std::string a, std::string b){return a+b;});
-	IOperatorENode::registerOperator("_cut", [](std::string a, std::string b){ if(a.size()>b.size()){ return a.erase(b.size(), a.size()-b.size());} return a;} );
-
 #ifdef V8ENGINE
 		TJSEngine js;
 		ITLparser p(&in, 0, &js, 0);

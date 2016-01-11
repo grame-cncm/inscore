@@ -97,8 +97,6 @@ void IGuidoPianoRoll::accept (Updater* u)
 MsgHandler::msgStatus IGuidoPianoRoll::set (const IMessage* msg )
 {
 	MsgHandler::msgStatus status = IGuidoCode::set(msg);
-
-	//updatePianoRoll();		//already called by newData
 	return status;
 }
 
@@ -357,6 +355,7 @@ void IGuidoPianoRoll::updatePianoRoll()
     GuidoParser * parser = GuidoOpenParser ();
     IGuidoStream * stream = dynamic_cast<IGuidoStream*>(this);
 	GuidoDestroyPianoRoll(fPianoRoll);
+	fPianoRoll = 0;
 	GuidoFreeAR(fArHandler);
     if(stream)
 		fArHandler = GuidoStream2AR(parser, stream->getGuidoStream());
@@ -383,6 +382,7 @@ void IGuidoPianoRoll::updatePianoRoll(string &midiFile)
 {
 	GuidoDestroyPianoRoll(fPianoRoll);
 	GuidoFreeAR(fArHandler);
+	fArHandler = 0;
 	fPianoRoll = GuidoMidi2PianoRoll(kSimplePianoRoll, midiFile.c_str());
 	applyAllSettings();
 }

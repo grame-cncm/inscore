@@ -7,7 +7,7 @@ OBJECTS_DIR = tmp
 MOC_DIR = tmp
 
 VERSION = 1.17
-CONFIG += c++11 debug
+CONFIG += c++11
 
 ############################## 
 # locations
@@ -23,7 +23,7 @@ JSON        = $$SRC/json
 win32 { OSCIP = $$OSC/ip/win32 }
 else  { OSCIP = $$OSC/ip/posix }
 
-QT += core gui widgets svg printsupport multimedia multimediawidgets qml websockets
+QT += core gui quick qml quickwidgets widgets svg printsupport multimedia multimediawidgets websockets
 DEFINES += INScore_EXPORTS
 DEFINES += HAVE_CONFIG_H  # defined for the qrencode library
 DEFINES += QTJSENGINE	# use the Qt Javascript engine
@@ -140,6 +140,7 @@ ios {
     CONFIG+= arm64 armv7 armv7s
     CONFIG += staticlib
     LIBS += $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a
+    LIBS += $$ROOT/lib/GuidoAR/ios/libguidoar.a
 }
 
 ############################## 
@@ -160,6 +161,7 @@ android {
     INCLUDEPATH  +=  $$files($$SRC/mobile)
     DEFINES += ANDROID __MOBILE__ OSC_HOST_LITTLE_ENDIAN
     LIBS += -L$$ROOT/lib/GuidoEngine/android -lGUIDOEngine
+    LIBS += -L$$ROOT/lib/GuidoAR/android -lguidoar
     QMAKE_CXXFLAGS += -Wno-unused-parameter
     QT += androidextras
 }

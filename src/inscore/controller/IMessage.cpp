@@ -29,6 +29,7 @@
 #include "IMessage.h"
 #include "IMessageStream.h"
 #include "IMessageStack.h"
+#include "IExpression.h"
 #include "Methods.h"
 #include "Tools.h"
 #include "rational.h"
@@ -152,6 +153,13 @@ bool IMessage::param(int i, rational& val) const
 	if (!param(i+1, denum)) return false;
 	val = rational(num, denum);
 	return true;
+}
+
+//----------------------------------------------------------------------
+bool IMessage::param(int i, SIExpression& val) const
+{
+	val = param(i)->value<SIExpression>(val);
+	return param(i)->isType<SIExpression>();
 }
 
 //----------------------------------------------------------------------

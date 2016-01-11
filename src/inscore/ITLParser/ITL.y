@@ -237,7 +237,7 @@ number		: UINT					{ $$ = context->fInt; }
 //_______________________________________________
 // expression declaration
 
-expression		: EXPRESSION	{ $$ = context->fReader.parseExpr(context->fText);}
+expression		: EXPRESSION	{ $$ = context->fReader.parseExpr(context->fText, context->fExprStartLine, yyloc.first_column + 1 - context->fText.length());}
 			;
 
 %%
@@ -249,7 +249,7 @@ namespace inscore
 
 SIMessageList ITLparser::parse()
 {
-	yyparse (this);
+	fParseSucceed = !yyparse (this);
 	return fReader.messages();
 }
 }

@@ -9,7 +9,7 @@ RCC_DIR		= tmp
 
 VERSION = 1.17
 
-QT += core gui widgets svg printsupport multimedia multimediawidgets qml websockets
+QT += core gui qml quick quickwidgets widgets svg printsupport multimedia multimediawidgets websockets
 
 ############################## 
 # locations
@@ -50,7 +50,7 @@ macx {
 # ios support
 ##############################
 ios {
-        LIBS += -L. -lINScore $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a
+        LIBS += -L. -lINScore $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a $$ROOT/lib/GuidoAR/ios/libguidoar.a
         QMAKE_INFO_PLIST = $$PWD/Info.plist
         ios_icon.files = $$files($$ROOT/rsrc/ios/*.png)
         QMAKE_BUNDLE_DATA += ios_icon
@@ -82,10 +82,10 @@ unix:!android:!macx:!ios:LIBS += -L. -lINScore -lGUIDOEngine -lguidoar -lmicroht
 ############################## 
 android {
         LIBS += -L. -lINScore
-        ANDROID_EXTRA_LIBS = $$ROOT/lib/GuidoEngine/android/libGUIDOEngine.so libINScore.so
+        ANDROID_EXTRA_LIBS = $$ROOT/lib/GuidoEngine/android/libGUIDOEngine.so $$ROOT/lib/GuidoAR/android/libguidoar.so libINScore.so
         DISTFILES +=  $$ROOT/rsrc/android/AndroidManifest.xml
         ANDROID_PACKAGE_SOURCE_DIR = $$ROOT/rsrc/android
         QT += androidextras
-        RESOURCES += $$ROOT/rsrc/inscoremobile.qrc
+	RESOURCES += android-rsc/inscoremobile.qrc ../rsrc/inscorescriptmobile.qrc
 }
 

@@ -23,6 +23,7 @@ void SendThread::run()
 	QString address = fController->destination();
 	int port = fController->port();
 	UdpTransmitSocket transmitSocket( IpEndpointName( address.toStdString().c_str() , port ) );
+	transmitSocket.allowBroadcast();
     
     char buffer[OUTPUT_BUFFER_SIZE];
 	fRun = true;

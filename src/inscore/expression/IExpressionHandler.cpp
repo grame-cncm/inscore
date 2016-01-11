@@ -15,7 +15,11 @@ bool IExprHandlerbase::evalExpression(std::string &result) const{
     if(!checkExpression())
 		return false;
 
-	return evaluator()->evalExpression(fExpression, result);
+	ExprEvaluator* e = evaluator();
+	bool r = e->evalExpression(fExpression, result);
+	delete e;
+
+	return r;
 }
 
 bool IExprHandlerbase::forceEvalExpr(std::string &result){
@@ -23,7 +27,12 @@ bool IExprHandlerbase::forceEvalExpr(std::string &result){
 		return false;
 
 	fExpression->rootNode()->recursiveClearEvaluated();
-	return evaluator()->evalExpression(fExpression, result);
+
+	ExprEvaluator* e = evaluator();
+	bool r = e->evalExpression(fExpression, result);
+	delete e;
+
+	return r;
 }
 
 bool IExprHandlerbase::renewExpression(std::string &result)
@@ -61,6 +70,10 @@ IExprHandlerbase::~IExprHandlerbase()
 
 //_________________________________________________________
 bool IExprHandlerbase::composeExpr(SIExpression newExpr, std::string &result){
+
+	if(!newExpr->isValid())
+		return false;
+
 	SIExprArg rootNode = newExpr->rootNode()->copy();
 	if(!ExprCompositor::compose( rootNode, fContextObject))
 		return false;
@@ -89,7 +102,7 @@ SIExpression IExprHandlerbase::getExpression() const
 
 bool IExprHandlerbase::hasExpression() const
 {
-	return fExpression;
+	return fExpression!=0;
 }
 
 

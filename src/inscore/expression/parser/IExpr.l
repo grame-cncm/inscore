@@ -113,6 +113,7 @@ EOL		[\x0a\x0d]
 "$"				return VARSTART;
 
 {SPACE}+			;   /* eat up space */
+{EOL}					yylloc->first_column=0; /* ignore */
 
 
 %%

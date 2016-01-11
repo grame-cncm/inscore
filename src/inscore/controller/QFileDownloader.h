@@ -58,7 +58,7 @@ class QFileDownloader
 		 * \param cbFail callback function triggered asynchronously if the download fails
 		 * \return the actual data stored in the cache
 		 */
-				 static const char* getCachedAsync(const char *url, std::function<void()> cbUpdate, std::function<void()> cbFail = []{});
+		 const char* getCachedAsync(const char *url, std::function<void()> cbUpdate, std::function<void()> cbFail = []{});
 
 		virtual int			dataSize() const	{ return fData.size(); }
 		virtual const char*	data() const		{ return fData.data(); }
@@ -66,13 +66,20 @@ class QFileDownloader
 	private:
 	 
 		void fileDownloaded();
+		bool handleError(bool &success, std::function<void()> cbFinished);
+
 		void updateSucceded();
 		void updateFailed();
+
+		void cbCachedASync(std::function<void()> cbUpdate, std::function<void()> cbFail);
+
+		void printErrors() const;
 		
 	private:
 		std::string				location(const char * file);
 	
 
+		QString					fInitialURL;
 		QNetworkReply*			fReply;
 		QByteArray				fData;
 		std::string				fOSCAddress;
@@ -87,8 +94,10 @@ public:
 	static NetworkAccess* instance();
 
 	QNetworkAccessManager& qNetAccess(){return fNetworkAccessManager;}
-	void clearCache();
 
+	QNetworkReply* get(const QNetworkRequest &request);
+
+	void clearCache();
 	QNetworkDiskCache* cache() const {return fCache;}
 
 protected:

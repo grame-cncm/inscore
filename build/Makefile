@@ -83,6 +83,7 @@ macos/INScoreViewer.xcodeproj : viewer.pro
 ios : ios/INScore.xcodeproj ios/INScoreViewer.xcodeproj INScoreIos
 
 xcodeprojios:
+	@which $(QMAKEIOS) || (echo "### you must create an alias named '$(QMAKEIOS)' that point to qmake inside your qt/ios distribution and that is available from your PATH."; false;)
 	[ -d ios ] || mkdir ios
 	cd ios && $(QMAKEIOS) $(SPEC) ../library.pro 
 	cd ios && $(QMAKEIOS) $(SPEC) ../viewer.pro 
@@ -105,9 +106,13 @@ ios/INScoreViewer.xcodeproj : viewer.pro
 SPECANDROID = -spec android-g++
 SIGN=--sign ../../rsrc/inscore.keystore grame-inscore  --storepass grameinscore
 
-android : android/Makefile INScoreAndroid
+android : android-rsc android/Makefile INScoreAndroid
+
+android-rsc :
+	cp -r ../rsrc/ android-rsc
 
 android/Makefile: library.pro INScore.pro
+	@which qmake-android || (echo "### you must create an alias named 'qmake-android' that point to qmake inside your qt/android distribution and that is available from your PATH."; false;)
 	[ -d android ] || mkdir android
 	cd android && qmake-android $(SPECANDROID) ../INScore.pro
 

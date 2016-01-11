@@ -5,7 +5,6 @@
 #include <unordered_map>
 
 #include "IExpression.h"
-#include "Operators.h"
 
 namespace inscore{
 
@@ -13,9 +12,6 @@ namespace inscore{
  * @brief An EvaluableExpr factory: it can generate ExprArg and EvaluableExpr for the parser
  */
 class ExprFactory{
-private:
-	static std::unordered_map<std::string, OperatorPrototype*> operatorList;
-
 public:
     /*!
 	 * \brief create an expression argument with the corresponding type inferred by analysing arg
@@ -49,23 +45,7 @@ public:
      */
 	static bool createExpr(std::string operatorName, SIExprArg param1, SIExprArg param2, SIExprOperator& expr);
 
-	/*!
-	 * \brief search for an operator prototype by name
-	 * \param name
-	 * \param op store the operator at this address
-	 * \return true if an operator was found, false otherwise
-	 */
-	static bool operatorByName(std::string name, OperatorPrototype *&op);
-
-
-	/*!
-	 * \brief register an operator into the operator list
-	 * \warning this method shouldn't be called manually (OperatorPrototype constructor automatically calls it)
-	 * \param op the operator to register
-	 */
-	static void registerOperator(OperatorPrototype *op);
-
-
+	static bool isurl(const std::string& path);
 };
 
 

@@ -328,7 +328,6 @@ IObject::~IObject()
 }
 
 void IObject::del()		{ _del(true); }
-
 void IObject::_del(bool delsigcnx)
 {
     // we set the delte flag to 1
@@ -350,6 +349,12 @@ void IObject::_del(bool delsigcnx)
 	SIMessageList outmsgs = me.eval (msgs, env);
 	if (outmsgs && outmsgs->list().size())
         outmsgs->send();
+}
+
+//--------------------------------------------------------------------------
+void IObject::newData (bool state) {
+	fNewData = state;
+	triggerEvent(kNewData, true);
 }
 
 //--------------------------------------------------------------------------

@@ -48,7 +48,7 @@ class IExprParser {
 		std::string		fText;		// the current text
 		int				fInt;		// the current int
 		float			fFloat;		// the current float
-		SIExprArg*		fRootNode;	// the current highest
+		SIExprArg		fRootNode;	// the current highest
 
 		int fColumnOffset, fLineOffset;
 
@@ -62,7 +62,7 @@ class IExprParser {
 		
 		SIExprArg parse();
 
-		static bool parseExpression(std::string definition, SIExpression &expr, const TScripting* reader = 0);
+		static bool parseExpression(std::string definition, SIExpression &expr, const TScripting* reader = 0, int lineOffset = 0, int columnOffset = 0);
 };
 
 } // end namespace

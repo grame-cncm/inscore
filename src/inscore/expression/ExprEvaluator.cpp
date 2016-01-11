@@ -48,9 +48,9 @@ const string ExprEvaluator::eval(const IExprOperator* arg, const IExprArgBase *e
 {
 	OperatorCb cb;
 
-	if( !callbackByOperator(arg->operatorPrototype(), cb) ){
+	if( !callbackByOperator(arg->operatorName(), cb) ){
 		ITLErr<<fEvalName	<<": operator \""
-							<<arg->operatorPrototype()->getName()
+							<<arg->operatorName()
 							<<"\" has no definition in this evaluator";
 		return fEvalStatus.fail();
 	}
@@ -76,7 +76,7 @@ const string ExprEvaluator::eval(const IExprOperator* arg, const IExprArgBase *e
 	string r = cb(arg1, arg2, success);
 
 	if(!success){
-		ITLErr<<fEvalName<<": operator "<<arg->operatorPrototype()->getName()<<"("<<arg1<<", "<<arg2<<") failed to compute.";
+		ITLErr<<fEvalName<<": operator "<<arg->operatorName()<<"("<<arg1<<", "<<arg2<<") failed to compute.";
 		return fEvalStatus.fail(exprArg);
 	}
 
@@ -94,60 +94,67 @@ const string ExprEvaluator::eval(const std::string &arg, const IExprArgBase *)
 //_____________________________________________________________
 const string ExprEvaluator::eval(const filepath& arg, const IExprArgBase *exprArg)
 {
+	std::string extendedPath = arg;
+	std::string fileData="";
 
-    std::string fileData="";
-    std::ifstream ifs;
+	if(!Tools::isurl(extendedPath))
+		extendedPath = fContextObject->getScene()->absolutePath(extendedPath);
 
-	ifs.open(fContextObject->getScene()->absolutePath(arg), std::ifstream::in);
+	if(Tools::isurl(extendedPath)){
+			// Evaluate an url file
+		const char* url = extendedPath.c_str();
 
-    if(!ifs.is_open()){
-		ITLErr<<fEvalName<<": can't find \""<<(string)arg<<"\""<<ITLEndl;
-		return fEvalStatus.fail(exprArg);
-    }
+			// Setup the callback message that shall be sent when the URL cache has been updated
+		SIMessage updateMsg = IMessage::create();
+		updateMsg->setAddress(fContextObject->getOSCAddress());
+		updateMsg->setMessage("expr");
 
-    char c = ifs.get();
-    while (ifs.good()) {
-        fileData += c;
-        c = ifs.get();
-      }
+		if(exprArg->dynamicEval())
+			updateMsg->add("reeval");
+		else
+			updateMsg->add("reset");
 
-    ifs.close();
+			// Request the current value stored in the patch and ask for updates
+		QFileDownloader* fDownloader = new QFileDownloader();
+		const char* data = fDownloader->getCachedAsync(url,  [updateMsg, fDownloader] (){ updateMsg->send(); delete fDownloader;}, [fDownloader](){delete fDownloader;}  );
+		string s = emptyValue();
 
-	return eval(fileData);
-}
+		if(data){
+			fileData = string(data);
+			delete[] data;
+		}
+	}else{
+			// Evaluate a filepath
 
+		std::ifstream ifs;
 
-//_____________________________________________________________
-const string ExprEvaluator::eval(const urlpath &arg, const IExprArgBase *exprArg)
-{
-	const char* url = arg.string.c_str();
+		ifs.open(fContextObject->getScene()->absolutePath(arg), std::ifstream::in);
 
-	SIMessage updateMsg = IMessage::create();
-	updateMsg->setAddress(fContextObject->getOSCAddress());
-	updateMsg->setMessage("expr");
+		if(!ifs.is_open()){
+			ITLErr<<fEvalName<<": can't find \""<<(string)arg<<"\""<<ITLEndl;
+			return fEvalStatus.fail(exprArg);
+		}
 
-	if(exprArg->dynamicEval())
-		updateMsg->add("reeval");
-	else
-		updateMsg->add("reset");
+		char c = ifs.get();
+		while (ifs.good()) {
+			fileData += c;
+			c = ifs.get();
+		  }
 
-	const char* data = QFileDownloader::getCachedAsync(url,  [updateMsg] (){ updateMsg->send(); }  );
-	string s = emptyValue();
-
-	if(data){
-		s = string(data);
-		delete[] data;
+		ifs.close();
 	}
-	return s;
+
+		//Process the data contains in the file through the evaluation of string
+	return eval(fileData);
 }
 
 //_____________________________________________________________
 const string ExprEvaluator::eval(const itladdress &arg, const IExprArgBase *exprArg)
 {
-	const IObject* o = objectFromAddress(arg, fContextObject);
+	const IObject* o = fContextObject->findnode(arg);
 
 	if(!o){
-		ITLErr<<fEvalName<<": "<<(string)arg<<" not known at this address..."<<ITLEndl;
+		ITLErr<<fEvalName<<": object \""<<(string)arg<<"\" unknown..."<<ITLEndl;
 		return fEvalStatus.fail(exprArg);
     }
 	return eval(o);
@@ -173,23 +180,17 @@ const string ExprEvaluator::eval(const IObject *arg)
 }
 
 
-
 //_____________________________________________________________
 //_____________________________________________________________
-ExprEvaluator::ExprEvaluator(const char *name, const IObject* contextObject):
-	fEvalName(name)
+ExprEvaluator::ExprEvaluator(std::string name, const IObject* contextObject, const OperatorList &operatorList):
+	fEvalName(name), fCallbackList(operatorList)
 {
 	fContextObject = contextObject;
 }
 
-//_____________________________________________________________
-void ExprEvaluator::registerOperator(const OperatorPrototype& op, OperatorCb cb)
-{
-	fCallbackList.insert({&op, cb});
-}
 
 //_____________________________________________________________
-bool ExprEvaluator::callbackByOperator(const OperatorPrototype* op, OperatorCb &cb) const
+bool ExprEvaluator::callbackByOperator(const string op, OperatorCb &cb) const
 {
 	try{
 		cb = fCallbackList.at(op);
@@ -200,11 +201,10 @@ bool ExprEvaluator::callbackByOperator(const OperatorPrototype* op, OperatorCb &
 	return true;
 }
 
-
 //_____________________________________________________________
-const IObject* ExprEvaluator::objectFromAddress(itladdress address, const IObject* contextObject)
+ExprEvaluator::~ExprEvaluator()
 {
-	return contextObject->findnode(address);
+
 }
 
 

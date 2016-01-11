@@ -46,6 +46,7 @@ namespace inscore
 QFileDownloader::QFileDownloader(const char* urlprefix)
 {
 	if (urlprefix) fUrlPrefix = urlprefix;
+	fReply = 0;
 }
  
 //--------------------------------------------------------------------------
@@ -71,7 +72,7 @@ void QFileDownloader::getAsync (const char* what, const char* address)
 	QUrl url (location(what).c_str());
     QNetworkRequest request(url);
 	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferNetwork);
-	fReply = NetworkAccess::instance()->qNetAccess().get(request);
+	fReply = NetworkAccess::instance()->get(request);
 	QObject::connect(fReply, &QNetworkReply::finished, [this](){this->fileDownloaded();});
 }
 
@@ -94,23 +95,11 @@ const char* QFileDownloader::getCachedAsync(const char *urlString, std::function
 	//Asynchronously update the cache
 	QUrl url(urlString);
 	QNetworkRequest request(url);
-	QNetworkReply* reply = NetworkAccess::instance()->qNetAccess().get(request);
+	fReply = NetworkAccess::instance()->get(request);
+	fInitialURL = url.toString();
 
 	//Sending an error message if download failed or callback cbUpdate if the cache was updated
-	QObject::connect(reply, &QNetworkReply::finished,
-					 [reply, cbUpdate, cbFail, urlString]()
-					{
-						if(reply->error() || !reply->bytesAvailable()){
-							//URL download failed
-							ITLErr << "Can't access url \"" << urlString << "\": " << reply->errorString().toStdString() << ITLEndl;
-							cbFail();
-						}else
-							if(!reply->attribute(QNetworkRequest::SourceIsFromCacheAttribute).toBool()){
-								//Cache wasn't up to date
-								cbUpdate();
-							}
-						reply->deleteLater();
-					});
+	QObject::connect(fReply, &QNetworkReply::finished, [this, cbUpdate, cbFail](){cbCachedASync(cbUpdate, cbFail);});
 
 	//Retreiving the actual value stored in the cache (before the asynchronous update)
 	QNetworkDiskCache* cache = NetworkAccess::instance()->cache();
@@ -131,31 +120,67 @@ const char* QFileDownloader::getCachedAsync(const char *urlString, std::function
 //--------------------------------------------------------------------------
 void QFileDownloader::fileDownloaded()
 {
-	if(!fReply->error())
+	bool downloadSucceed;
+	if(handleError(downloadSucceed, [this]{fileDownloaded();}))
+		return;
+
+	if(downloadSucceed)
     {
-		fData = fReply->readAll();
+		QByteArray data = fReply->readAll();
+		fData = data;
 		updateSucceded ();
     }
     else {
+		printErrors();
+		updateFailed ();
+	}
 
-		///TODO better implementation of force loading from cache if error
+}
+
+//--------------------------------------------------------------------------
+bool QFileDownloader::handleError( bool &success, std::function<void ()> cbFinished)
+{
+
+	success = true;
+
+	//  -----   Redirection handling    -------
+	QUrl newUrl = fReply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+	if(!newUrl.isEmpty() && fReply->rawHeaderList().contains("Location"))
+		newUrl = QUrl(fReply->header(QNetworkRequest::LocationHeader).toString());
+
+	if(!newUrl.isEmpty()){
+			//Redirection needed
+		if(newUrl == fReply->url()){
+			ITLErr<< "URL redirection failed: "<<newUrl.toString().toStdString()<<ITLEndl;
+			return false;
+		}
+
+		fReply->deleteLater();
+
+		fReply = NetworkAccess::instance()->get(QNetworkRequest(newUrl));
+		QObject::connect(fReply, &QNetworkReply::finished, [cbFinished]{cbFinished();});
+		return true;
+	}
+
+	//  -----   Error handling   -----
+	if(fReply->error()){
+		//If network error try to load from cache
 		if(fReply->request().attribute(QNetworkRequest::CacheLoadControlAttribute) != QNetworkRequest::AlwaysCache){
 			QNetworkRequest request = fReply->request();
 			request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysCache);
 			fReply->deleteLater();
 
-			fReply = NetworkAccess::instance()->qNetAccess().get(request);
-			QObject::connect(fReply, &QNetworkReply::finished, [this](){this->fileDownloaded();});
+			fReply = NetworkAccess::instance()->get(request);
+			QObject::connect(fReply, &QNetworkReply::finished, [cbFinished]{cbFinished();});
 			ITLErr << "Url not accessible, trying to load ressource from cache..." << ITLEndl;
-			return;
+			return true;
 		}
 
-		ITLErr << "Can't access url: " << fReply->errorString().toStdString() << ITLEndl;
-		updateFailed ();
+		// error could not be handled
+		success = false;
 	}
-	fReply->deleteLater();
-	fReply = 0;
 
+	return false;
 }
 
 //--------------------------------------------------------------------------
@@ -164,6 +189,8 @@ void QFileDownloader::updateSucceded()
 //	emit downloaded();
 	INScore::MessagePtr msg = INScore::newMessage ("success");
 	INScore::postMessage (fOSCAddress.c_str(), msg);
+	fReply->deleteLater();
+	fReply = 0;
 }
 
 //--------------------------------------------------------------------------
@@ -173,7 +200,55 @@ void QFileDownloader::updateFailed()
     INScore::MessagePtr msg = INScore::newMessage ("error");
 	INScore::add (msg, fReply->errorString().toStdString().c_str());
 	INScore::postMessage (fOSCAddress.c_str(), msg);
+	fReply->deleteLater();
+	fReply = 0;
 }
+
+//--------------------------------------------------------------------------
+void QFileDownloader::cbCachedASync(std::function<void()> cbUpdate, std::function<void()> cbFail)
+{
+	bool downloadSucceed;
+
+	if(handleError( downloadSucceed, [this, cbUpdate, cbFail](){cbCachedASync(cbUpdate, cbFail);} ))
+		return;
+
+	if(!downloadSucceed){
+		//URL download failed
+		printErrors();
+		fReply->deleteLater();
+		fReply = 0;
+		cbFail();
+	}else
+		if(!fReply->attribute(QNetworkRequest::SourceIsFromCacheAttribute).toBool() || fReply->url().toString() != fInitialURL){
+			//Cache wasn't up to date
+
+			if(fReply->url().toString() != fInitialURL){
+				//In case of redirection we cheat with the cache to put the redirected data inside the initial url
+				QNetworkCacheMetaData meta = NetworkAccess::instance()->cache()->metaData(fReply->url());
+				meta.setUrl(QUrl(fInitialURL));
+				QIODevice* data = NetworkAccess::instance()->cache()->prepare(meta);
+				data->write(fReply->readAll());
+				NetworkAccess::instance()->cache()->insert(data);
+			}
+
+			fReply->deleteLater();
+			fReply = 0;
+			cbUpdate();
+		}
+
+	fReply->deleteLater();
+	fReply = 0;
+}
+
+void QFileDownloader::printErrors() const
+{
+	ITLErr << "Can't access url: " << fReply->errorString().toStdString();
+	if(fReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt())
+		ITLErr << "[Error " << fReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << "]";
+	ITLErr << ITLEndl;
+}
+
+
 
 
 
@@ -189,6 +264,13 @@ NetworkAccess *NetworkAccess::instance()
 		gNetworkAccess = new NetworkAccess();
 
 	return gNetworkAccess;
+}
+
+QNetworkReply *NetworkAccess::get(const QNetworkRequest &request)
+{
+	QNetworkRequest r = request;
+	r.setRawHeader("User-Agent", "INScore");
+	return fNetworkAccessManager.get(r);
 }
 
 

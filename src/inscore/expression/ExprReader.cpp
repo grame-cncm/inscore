@@ -27,11 +27,11 @@ bool ExprReader::evalExpression(const IExprArgBase *expr, std::string &result, b
     return evalSucceed;
 }
 
-bool ExprReader::read(const IExprArgBase *expr, std::string prefix, std::string &result, bool printData)
+bool ExprReader::read(const IExprArgBase *expr, std::string prefix, std::string &result, bool printInternalData)
 {
 	ExprReader r;
 	r.fPrefix = prefix;
-	return r.evalExpression(expr, result, printData);
+	return r.evalExpression(expr, result, printInternalData);
 }
 
 //_________________________________
@@ -48,7 +48,7 @@ const std::string ExprReader::eval(const IExprOperator *arg, const IExprArgBase 
 	std::string arg2 = ((const IExprArgBase*)arg->constArg2())->accept(this);
 	fTab--;
 
-	std::string r= "( "+arg->getName();
+	std::string r= "( "+arg->operatorName();
 
 	if(	arg1.length() > 20 || arg1.find('\n') != std::string::npos
 	 ||	arg2.length() > 20 || arg2.find('\n') != std::string::npos ){
@@ -65,12 +65,6 @@ const std::string ExprReader::eval(const IExprOperator *arg, const IExprArgBase 
 
 //_________________________________
 const std::string ExprReader::eval(const filepath &arg, const IExprArgBase *exprArg)
-{
-	return argPrefix(exprArg) + prefix('"'+(std::string)arg+'"');
-}
-
-//_________________________________
-const std::string ExprReader::eval(const urlpath &arg, const IExprArgBase *exprArg)
 {
 	return argPrefix(exprArg) + prefix('"'+(std::string)arg+'"');
 }

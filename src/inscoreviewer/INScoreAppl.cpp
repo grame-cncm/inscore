@@ -238,21 +238,6 @@ void INScoreAppl::started()
 INScoreAppl::INScoreAppl (int & argc, char ** argv )
 	: QApplication (argc, argv), fMenuBar(0), fStarted(false)
 {
-	setApplicationName("INScoreViewer");
-	setAttribute(Qt::AA_SynthesizeTouchForUnhandledMouseEvents, false);
-
-	QDir dir(QApplication::applicationDirPath());
-#ifdef WIN32
-	dir.cd("PlugIns");
-	addLibraryPath ( dir.absolutePath());
-#else
-	dir.cdUp();
-	dir.cd("PlugIns");
-	addLibraryPath ( dir.absolutePath());
-	dir.cdUp();
-	dir.cdUp();
-#endif
-
 	for (int i = 1; i < argc; i++) {
 		string stdinopt ("-");
 		if (stdinopt == argv[i]) {
@@ -275,6 +260,44 @@ INScoreAppl::INScoreAppl (int & argc, char ** argv )
 
 //_______________________________________________________________________
 INScoreAppl::~INScoreAppl() { delete fMenuBar; }
+
+//_______________________________________________________________________
+void INScoreAppl::readArgs(int argc, char ** argv)
+{
+#ifdef WIN32
+	for (int i = 1; i < arguments().size(); i++) {
+		const QString& arg = arguments().at(i);
+		open (arg.toUtf8().constData());
+	}
+#else
+	for (int i = 1; i < argc; i++) {
+		const string arg = argv[i];
+		if (arg[0] == '-') {
+			if (arg == kPortOption) i++;
+		}	
+		else open (arg);
+	}
+#endif
+}
+
+//_______________________________________________________________________
+void INScoreAppl::init()
+{
+	setApplicationName("INScoreViewer");
+	setAttribute(Qt::AA_SynthesizeTouchForUnhandledMouseEvents, false);
+	setupMenu();
+
+	QDir dir(QApplication::applicationDirPath());
+#ifndef WIN32
+	dir.cdUp();
+#endif
+	dir.cd("PlugIns");
+	addLibraryPath ( dir.absolutePath());
+#ifndef WIN32
+	dir.cdUp();
+	dir.cdUp();
+#endif
+}
 
 #if defined(WIN32) && !defined(_DEBUG)
 # define USEWINMAIN
@@ -300,6 +323,7 @@ int main( int argc, char **argv )
 	int ret = 1;
 	int udpPort = intopt (kPortOption, kUPDPort, argc, argv);
 	INScoreAppl appl(argc, argv);
+	appl.init();
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
     // Initialize application delegate to manage external application event (close tablet, open new application...)
@@ -313,29 +337,15 @@ int main( int argc, char **argv )
     gAbout = new INScoreAbout(pixmap);
     gAbout->show();
 #endif
-	appl.setupMenu();
 
 	IGlue * glue = INScore::start (kTimeInterval, udpPort, kUPDPort+1, kUPDPort+2, &appl);
 	appl.started();
+	appl.readArgs(argc, argv);
 
-#ifdef WIN32
-	for (int i = 1; i < appl.arguments().size(); i++) {
-		const QString& arg = appl.arguments().at(i);
-		appl.open (arg.toUtf8().constData());
-	}
-#else
-	for (int i = 1; i < argc; i++) {
-		const string arg = argv[i];
-		if (arg[0] == '-') {
-			if (arg == kPortOption) i++;
-		}	
-		else appl.open (arg);
-	}
-#endif
 #if !(TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
-    disableAppNap();
 	sleep (2);
     gAbout->hide();
+    disableAppNap();
 #endif
 	appl.showMobileMenu();
 	ret = appl.exec();
@@ -345,37 +355,3 @@ int main( int argc, char **argv )
 #endif
     return ret;
 }
-
-
-//_______________________________________________________________________
-#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-#include "QtAppDelegate-C-Interface.h"
-extern "C" int qtmn(int argc, char *argv[] )
-{
-	int ret = 1;
-	int udpPort = intopt (kPortOption, kUPDPort, argc, argv);
-	INScoreAppl appl(argc, argv);
-
-    // Initialize application delegate to manage external application event (close tablet, open new application...)
-    QtAppDelegateInitialize();
-    // Q_INIT_RESOURCE() and Q_CLEANUP_RESOURCE() is not necessary when the resource is built as part of the application. (see QT documentation)
-	appl.setupMenu();
-
-	IGlue * glue = INScore::start (kTimeInterval, udpPort, kUPDPort+1, kUPDPort+2, &appl);
-	appl.started();
-
-	for (int i = 1; i < argc; i++) {
-		const string arg = argv[i];
-		if (arg[0] == '-') {
-			if (arg == kPortOption) i++;
-		}	
-		else appl.open (arg);
-	}
-	appl.showMobileMenu();
-	ret = appl.exec();
-	INScore::stop (glue);
-    return ret;
-}
-
-#endif
-

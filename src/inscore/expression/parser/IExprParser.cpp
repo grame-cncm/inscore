@@ -45,6 +45,7 @@ IExprParser::IExprParser(std::istream* stream, const TScripting* reader)
 	, fReader(reader)
 #endif
 {
+	fRootNode = SIExprArg(0);
 	fColumnOffset = 0;
 	fLineOffset = 0;
 	setlocale(LC_NUMERIC, "C");
@@ -59,10 +60,18 @@ IExprParser::~IExprParser()
 }
 
 //--------------------------------------------------------------------------
-bool IExprParser::parseExpression(std::string definition, SIExpression &expr, const TScripting* reader)
+bool IExprParser::parseExpression(std::string definition, SIExpression &expr, const TScripting* reader, int lineOffset, int columnOffset)
 {
-	IExprParser p(new std::istringstream(definition), reader);
+	std::istringstream* ss = new std::istringstream(definition);
+
+	IExprParser p( ss, reader);
+
+	p.fColumnOffset = columnOffset;
+	p.fLineOffset = lineOffset;
 	SIExprArg rootNode = p.parse();
+
+	delete ss;
+
 	if(!rootNode)
 		return false;
 

@@ -1385,7 +1385,7 @@ yyreduce:
     {
         case 2:
 #line 85 "IExpr.y" /* yacc.c:1646  */
-    {context->fRootNode = (yyvsp[0].argbase);}
+    {context->fRootNode = inscore::SIExprArg(*(yyvsp[0].argbase)); delete (yyvsp[0].argbase);}
 #line 1390 "IExprParse.cpp" /* yacc.c:1646  */
     break;
 
@@ -1713,7 +1713,7 @@ namespace inscore
 SIExprArg IExprParser::parse()
 {
 	yyparse (this);
-	return inscore::SIExprArg(*fRootNode);
+	return fRootNode;
 }
 }
 
@@ -1727,9 +1727,9 @@ int lineno (IExprParser* context)
 
 int yyerror(const YYLTYPE* loc, IExprParser* context, const char*s) {
 #ifdef NO_OSCSTREAM
-	cerr << "error line: " << loc->last_line + context->fLineOffset << " col: " << loc->first_column + (loc->last_line ? context->fLineOffset : 0)<< ": " << s << endl;
+	cerr << "error line: " << loc->last_line + context->fLineOffset << " col: " << loc->first_column + (loc->last_line==1 ? context->fColumnOffset : 1) << ": " << s << endl;
 #else
-	ITLErr << "error line: " << loc->last_line + context->fLineOffset << " col: " << loc->first_column + (loc->last_line ? context->fLineOffset : 0) << ": " << s << ITLEndl;
+	ITLErr << "error line: " << loc->last_line + context->fLineOffset << " col: " << loc->first_column + (loc->last_line==1 ? context->fColumnOffset : 1) <<  ": " << s << ITLEndl;
 #endif
 	return 0;
 }

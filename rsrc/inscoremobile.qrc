@@ -1,7 +1,12 @@
-<!DOCTYPE RCC>
-<RCC version="1.0">
-<qresource>
-   <file alias="sample.inscore">../scripts/mobile/sample.inscore</file>
-   <file>images/load.png</file>
-</qresource> 
+<RCC>
+    <qresource prefix="/">
+        <file>images/load.png</file>
+    </qresource>
+    <qresource prefix="/qml">
+        <file alias="header.qml">mobile/header.qml</file>
+        <file alias="qmlPanel.qml">mobile/qmlPanel.qml</file>
+        <file alias="SectionSeparator.qml">mobile/SectionSeparator.qml</file>
+        <file alias="slideMenu.qml">mobile/slideMenu.qml</file>
+        <file alias="SlideMenuItem.qml">mobile/SlideMenuItem.qml</file>
+    </qresource>
 </RCC>

@@ -3,7 +3,6 @@
 #include "IExpression.h"
 
 #include "evaluator.h"
-#include "ExprReader.h"
 #include "IExprParser.h"
 #include "ExprFactory.h"
 
@@ -16,9 +15,15 @@ SIExpression IExpression::create(const std::string &definition, const SIExprArg 
 	return new IExpression(definition, fRootNode);
 }
 
+
 SIExpression IExpression::createEmpty()
 {
 	return create("expr(\"\")", ExprFactory::createEmptyArg());
+}
+
+void IExpression::setRootNode(SIExprArg rootNode)
+{
+	fRootNode = SIExprArg(rootNode);
 }
 
 //_________________________________________________
@@ -32,7 +37,7 @@ IExpression::IExpression(const std::string &definition, const SIExprArg &rootNod
 
 //_________________________________________________
 // -----------------------------------------------
-IExprOperator::IExprOperator(const OperatorPrototype *operatorPrototype, SIExprArg arg1, SIExprArg arg2):
+IExprOperator::IExprOperator(const std::string operatorPrototype, SIExprArg arg1, SIExprArg arg2):
     libmapping::smartable(),
 	fOperatorPrototype(operatorPrototype), fArg1(&(*arg1)), fArg2(&(*arg2))
 {
@@ -42,12 +47,6 @@ IExprOperator::IExprOperator(const OperatorPrototype *operatorPrototype, SIExprA
 bool IExprOperator::dynamicEval() const
 {
 	return (fArg1->dynamicEval()) || fArg2->dynamicEval();
-}
-
-//_________________________________________________
-std::string IExprOperator::getName() const
-{
-	return fOperatorPrototype->getName();
 }
 
 
@@ -61,30 +60,6 @@ IExprArgBase::IExprArgBase()
 
 }
 
-
-//_________________________________________________
-// -----------------------------------------------
-template<>
-SIExprArg IExprArg<SIExprOperator>::copy() const
-{
-	IExprOperator* op = new IExprOperator(fArg->operatorPrototype(), fArg->arg1()->copy(), fArg->arg2()->copy());
-	IExprArgBase* r = new IExprArg<SIExprOperator>(op);
-	if(fDynamicEval)
-		r->switchToDynamic();
-	r->setEvaluated(getEvaluated());
-	return r;
-}
-
-//_________________________________________________
-template<>
-void IExprArg<SIExprOperator>::recursiveClearEvaluated()
-{
-	fArg->arg1()->recursiveClearEvaluated();
-	fArg->arg2()->recursiveClearEvaluated();
-	fEvaluated->clear();
-}
-
-
 //_________________________________________________
 std::ostream& operator <<(std::ostream &out, const SIExpression &exprArg)
 {
@@ -92,23 +67,6 @@ std::ostream& operator <<(std::ostream &out, const SIExpression &exprArg)
 	return out;
 }
 
-//_________________________________________________
-std::ostream& operator <<(std::ostream &out, const SIExprArg &exprArg)
-{
-	std::string r;
-	ExprReader::read(exprArg, r);
-	out << r;
-	return out;
-}
-
-//_________________________________________________
-std::ostream& operator <<(std::ostream &out, const SIExprOperator& exprArg)
-{
-    std::string arg1, arg2;
-    if(ExprReader::read(exprArg->constArg1(), arg1) && ExprReader::read(exprArg->constArg2(), arg2))
-        out << "expr( " << arg1.c_str() << " " << arg2.c_str() << ") (how did you get here by the way?)";
-	return out;
-}
 
 
 } //end namespace
