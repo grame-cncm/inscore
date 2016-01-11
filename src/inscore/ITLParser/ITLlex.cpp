@@ -1459,17 +1459,6 @@ YY_RULE_SETUP
 #line 219 "ITL.l"
 yylloc->first_column=0; /* ignore */
 	YY_BREAK
-case 54:
-YY_RULE_SETUP
-#line 221 "ITL.l"
-yyextra->fText = yytext; return ERR;
-	YY_BREAK
-case 55:
-YY_RULE_SETUP
-#line 223 "ITL.l"
-ECHO;
-	YY_BREAK
-#line 1473 "ITLlex.cpp"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(CMNTLN):
 case YY_STATE_EOF(COMMENT):
@@ -1478,7 +1467,20 @@ case YY_STATE_EOF(QSTR):
 case YY_STATE_EOF(LUASECTION):
 case YY_STATE_EOF(JSECTION):
 case YY_STATE_EOF(EXPRSECTION):
-	yyterminate();
+#line 221 "ITL.l"
+return ENDSCRIPT;
+	YY_BREAK
+case 54:
+YY_RULE_SETUP
+#line 223 "ITL.l"
+yyextra->fText = yytext; return ERR;
+	YY_BREAK
+case 55:
+YY_RULE_SETUP
+#line 225 "ITL.l"
+ECHO;
+	YY_BREAK
+#line 1484 "ITLlex.cpp"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -2623,7 +2625,7 @@ void ITLfree (void * ptr , yyscan_t yyscanner)
 
 #define YYTABLES_NAME "yytables"
 
-#line 223 "ITL.l"
+#line 225 "ITL.l"
 
 
 

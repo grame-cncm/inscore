@@ -33,7 +33,7 @@ namespace inscore
 
 //--------------------------------------------------------------------------
 ITLparser::ITLparser(std::istream* stream, int line, TJSEngine* js, TLua* lua)
-	: fReader(js, lua), fStream(stream), fLine(line)
+	: fReader(js, lua), fStream(stream), fLine(line), fParseSucceed(false)
 {
 	setlocale(LC_NUMERIC, "C");
 	initScanner();

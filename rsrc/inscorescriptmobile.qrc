@@ -1,0 +1,6 @@
+ 
+<RCC>
+    <qresource prefix="/scripts">
+        <file alias="sample.inscore">../scripts/mobile/sample.inscore</file>
+    </qresource>
+</RCC>

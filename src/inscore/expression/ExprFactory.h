@@ -45,6 +45,7 @@ public:
      */
 	static bool createExpr(std::string operatorName, SIExprArg param1, SIExprArg param2, SIExprOperator& expr);
 
+	static bool isurl(const std::string& path);
 };
 
 

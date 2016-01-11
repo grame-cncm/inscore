@@ -3,7 +3,6 @@
 #include "IExpression.h"
 
 #include "evaluator.h"
-#include "ExprReader.h"
 #include "IExprParser.h"
 #include "ExprFactory.h"
 
@@ -68,23 +67,6 @@ std::ostream& operator <<(std::ostream &out, const SIExpression &exprArg)
 	return out;
 }
 
-//_________________________________________________
-std::ostream& operator <<(std::ostream &out, const SIExprArg &exprArg)
-{
-	std::string r;
-	ExprReader::read(exprArg, r);
-	out << r;
-	return out;
-}
-
-//_________________________________________________
-std::ostream& operator <<(std::ostream &out, const SIExprOperator& exprArg)
-{
-    std::string arg1, arg2;
-    if(ExprReader::read(exprArg->constArg1(), arg1) && ExprReader::read(exprArg->constArg2(), arg2))
-        out << "expr( " << arg1.c_str() << " " << arg2.c_str() << ") (how did you get here by the way?)";
-	return out;
-}
 
 
 } //end namespace

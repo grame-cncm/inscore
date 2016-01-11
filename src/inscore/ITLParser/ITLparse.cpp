@@ -2018,7 +2018,7 @@ namespace inscore
 
 SIMessageList ITLparser::parse()
 {
-	yyparse (this);
+	fParseSucceed = !yyparse (this);
 	return fReader.messages();
 }
 }

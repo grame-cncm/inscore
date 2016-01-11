@@ -27,13 +27,15 @@
 
 #include "export.h"
 #include "VQtInit.h"
+#include "SwipePanel.h"
 
-#include <QTabWidget>
 
-class QMainWindow;
 
 namespace inscore
 {
+
+class MainWindow;
+class SwipePanel;
 
 /*!
 \addtogroup ITLMobileView
@@ -55,11 +57,10 @@ class inscore_export VMobileQtInit : public VQtInit
          * \brief getTabWidget
          * \return the tabWidget of the main window.
          */
-        static	QTabWidget*	getTabWidget();
+		static	SwipePanel* getMainPanel();
 
     private:
-        static QMainWindow* sMainWindow;    ///< Main window of the application. Contains the tab widget
-        static QTabWidget* sTabWidget;      ///< Contains all tabs.
+		static MainWindow* gMainWindow;    ///< Main window of the application. Contains the tab widget
 
         /*!
          * \brief keepScreenOn Keep the the screen on when inscore is running (no sleep)

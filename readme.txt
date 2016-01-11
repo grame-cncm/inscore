@@ -4,7 +4,8 @@ Compiling the INScore project
 
 The INScore project depends on external libraries:
  - the Qt framework version 5.3 or later (see https://www.qt.io/)
- - the GuidoEngine version 1.56 or greater (see http://guidolib.sourceforge.net)
+ - the GuidoEngine version 1.60 or greater (see http://guidolib.sourceforge.net)
+ - the GuidoAR version 1.00 or greater (see http://guidolib.sourceforge.net)
  - the libmicrohttpd library (see https://www.gnu.org/software/libmicrohttpd/)
  - the oscpack library (included in the INScore repository)
  - optionaly: 
@@ -31,13 +32,17 @@ Installation depends on your platform. See at https://www.qt.io/
 ----------------------------
 The GuidoEngine library is included in binary form in the lib/GuidoEngine/macosx folders.
 You just need to extract the GUIDOEngine framework from the GUIDOEngine.tgz archive. 
+The GuidoAR library is included in binary form in the lib/GuidoAR/macosx folders.
+You just need to extract the guidoar framework from the guidoar.tgz archive.
 In case you run in trouble using the library due to dependency, the 'localise' script should 
 change the library dependency to the appropriate location.
+Note that when running 'make' the build folder, extraction and localisation is automatically done.
 
 >>>>>> Windows
 ----------------------------
-The GuidoEngine library is included in binary form in the lib/GuidoEngine/win32 folders.
-The binaries have been compiled with Visual C++ Version 10.
+The GuidoEngine library is included in binary form in the lib/GuidoEngine/win32 and win64 folders.
+The GuidoAR library is included in binary form in the lib/GuidoAR/win32 and win64 folders.
+The binaries have been compiled with Visual C++ Version 12.
 You should check your environment compatibility and notably for the potential runtime issues.
 libmicrohttpd is (not yet) required for windows (yet unsupported httpd object) 
 
@@ -45,16 +50,27 @@ libmicrohttpd is (not yet) required for windows (yet unsupported httpd object)
 ----------------------------
 You need to compile the Guido Engine library from the GUIDOLib project
 (http://sourceforge.net/projects/guidolib). You can get the source code from git:
-	git clone ssh://dfober@git.code.sf.net/p/guidolib/code guidolib-code
+	git clone git://git.code.sf.net/p/guidolib/code guidolib-code
 or from the src distribution:
 	http://sourceforge.net/projects/guidolib/files/Guidolib-src/
 You can also get binary packages but only for Ubuntu. 
 See at https://sourceforge.net/projects/guidolib/files/DevKits/Ubuntu/
 
+You need to compile the GuidoAR library from the GUIDOLib project
+(http://sourceforge.net/projects/guidolib). You can get the source code from git:
+	git clone git://git.code.sf.net/p/guidolib/guidoar guidolib-guidoar
+
 a) Compiling the GUIDO library 
 ----------------------------
 To compile the GUIDO library do the following:
   > cd /your_path_to_the_guido_project/build
+  > make
+  > sudo make -C linux install
+
+a) Compiling the GuidoAR library 
+----------------------------
+To compile the GUIDO library do the following:
+  > cd /your_path_to_the_guidoar_project/build
   > make
   > sudo make -C linux install
 

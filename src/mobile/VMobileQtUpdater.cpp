@@ -37,8 +37,6 @@ namespace inscore {
 //--------------------------------------------------------------------------
 void VMobileQtUpdater::updateTo(IScene * scene)
 {
-	// Force scene to fullscreen to use all space of tab widget
-	scene->setFullScreen(true);
 	((VSceneView*)scene->getView())->updateView(scene);
 }
 
@@ -46,38 +44,24 @@ void VMobileQtUpdater::updateTo(IScene * scene)
 void VMobileQtUpdater::updateTo(IApplLog * log)
 {
     QWidget * w = log->window();
-    // Add and remove log window in a tab
-	QTabWidget * tw = VMobileQtInit::getTabWidget();
-    int index = tw->indexOf(w);
-    if(log->getVisible()) {
-        if(index == -1) {
-            tw->addTab(w, w->windowTitle());
-            tw->setCurrentWidget(w);
-        }
-    } else {
-        if(index != -1) {
-            tw->removeTab(index);
-        }
-    }
+	// Add and remove log window
+	if(log->getVisible()){
+		if(!w->parentWidget())
+			VMobileQtInit::getMainPanel()->addPanel(w->windowTitle(), w);
+	}else if(w->parentWidget())
+		VMobileQtInit::getMainPanel()->removePanel(w->windowTitle(), false);
 }
 
 //--------------------------------------------------------------------------
 void VMobileQtUpdater::updateTo(IMenu* menu)
 {
-    QWidget * w = menu->window();
-    // Add and remove log window in a tab
-	QTabWidget * tw = VMobileQtInit::getTabWidget();
-    int index = tw->indexOf(w);
-    if(menu->getVisible()) {
-        if(index == -1) {
-            tw->addTab(w, w->windowTitle());
-            tw->setCurrentWidget(w);
-        }
-    } else {
-        if(index != -1) {
-            tw->removeTab(index);
-        }
-    }
+	QWidget * w = menu->window();
+	if(menu->getVisible()){
+		if(!w->parentWidget())
+			VMobileQtInit::getMainPanel()->addPanel(w->windowTitle(), w);
+	}else
+		if(w->parentWidget())
+			VMobileQtInit::getMainPanel()->removePanel(w->windowTitle(), false);
 }
 
 } // end namespoace
