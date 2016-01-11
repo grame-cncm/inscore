@@ -305,8 +305,8 @@ void SwipePanel::resizeEvent(QResizeEvent *e)
 		animIn->setEndValue(QRect(0,0,w,h));
 	}
 
-	fSwipeFilter->minX = qMin(w, h) / 2;
-	fSwipeFilter->maxY = qMin(w, h) * 1/3;
+    fSwipeFilter->minX = qMin(w, h) / 4;
+    fSwipeFilter->maxY = qMin(w, h) / 4;
 }
 
 
