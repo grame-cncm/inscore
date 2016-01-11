@@ -74,4 +74,9 @@ void BundleLog::error(std::string msg) const
 	std::cerr<<"Error: "<<msg<<std::endl;
 }
 
+void BundleLog::warn(std::string msg) const
+{
+	std::cerr<<"Warning: "<<msg<<std::endl;
+}
+
 } // end namespace

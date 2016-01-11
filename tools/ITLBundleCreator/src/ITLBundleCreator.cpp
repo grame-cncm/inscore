@@ -13,6 +13,7 @@ int main(int argc, char* argv[])
 	}
 
 	string inputFile = argv[1];
+	string outputFile = "";
 
 	if(inputFile == "-h" || inputFile == "--help"){
 		std::cout<<DOC;
@@ -43,7 +44,13 @@ int main(int argc, char* argv[])
 				bCreator.setShowHierarchy();
 
 		}else if(arg == "-o" || arg == "--output"){
-			bCreator.setOutputPath(param);
+			if(param.at(0)!='/'){
+				char* buffer = getcwd(NULL, 0);
+				outputFile = std::string(buffer) + param;
+				delete[] buffer;
+			}else
+				outputFile = param;
+
 		}else if(arg == "-h" || arg=="--help"){
 				std::cout<<DOC;
 			return 0;
@@ -57,7 +64,7 @@ int main(int argc, char* argv[])
 	char* buffer = getcwd(NULL, 0);
 	inputFile = std::string(buffer)+"/"+inputFile;
 	delete[] buffer;
-	return bCreator.bundle(inputFile);
+	return bCreator.bundle(inputFile, outputFile);
 }
 
 
