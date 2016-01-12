@@ -33,6 +33,8 @@
 #include <TV8Js.h>
 #elif defined QTJSENGINE
 #include <TQtJs.h>
+#elif defined ITLBUNDLE
+#include "TDummyJs.h"
 #endif
 #include "ExprFactory.h"
 
@@ -53,9 +55,11 @@ typedef libmapping::SMARTP<baseparam> Sbaseparam;
 class TEnv;
 typedef libmapping::SMARTP<TEnv> STEnv;
 #ifdef V8ENGINE
-typedef TV8Js		TJSEngine;
+typedef TV8Js				TJSEngine;
 #elif defined QTJSENGINE
-typedef TQtJs		TJSEngine;
+typedef TQtJs				TJSEngine;
+#elif defined ITLBUNDLE
+typedef itlbundle::TDummyJs	TJSEngine;
 #else
 typedef void*		TJSEngine;
 #endif
