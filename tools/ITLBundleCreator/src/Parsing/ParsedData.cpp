@@ -20,6 +20,29 @@ inscore::extvector<std::string> ParsedData::ressourceNames() const
 	return vector;
 }
 
+void ParsedData::simplifyPaths(int charToDelete)
+{
+	TScripts simplifiedScripts;
+	RessourceMap simplifiedRessources;
+	RessourceMap simplifiedRscScripts;
+
+	for(auto it = scripts.begin(); it != scripts.end(); it++)
+		simplifiedScripts[it->first.substr(charToDelete)] = it->second;
+
+	for(auto it = ressources.begin(); it != ressources.end(); it++)
+		simplifiedRessources[it->first.substr(charToDelete)] = it->second;
+
+	for(auto it = scriptsRessources.begin(); it != scriptsRessources.end(); it++)
+		simplifiedRscScripts[it->first.substr(charToDelete)] = it->second;
+
+
+	scripts = simplifiedScripts;
+	ressources = simplifiedRessources;
+	scriptsRessources = simplifiedRscScripts;
+
+	fMainScript = fMainScript.substr(charToDelete);
+}
+
 
 //__________________________________________________________
 //----------------------------------------------------------
@@ -57,6 +80,18 @@ void RessourceMap::insert(const RessourceMap &ressources)
 {
 	for(auto it = ressources.begin(); it!=ressources.end(); it++)
 		insert(it->first, it->second);
+}
+
+void RessourceMap::renameRsc(std::string search, std::string replace)
+{
+	auto itSearch = find(search);
+	if(itSearch==end())
+		return;
+
+	std::list<SMsgParam> list = itSearch->second;
+
+	for(auto it = list.begin(); it!=list.end(); it++)
+		(*it)->setValue(replace);
 }
 
 

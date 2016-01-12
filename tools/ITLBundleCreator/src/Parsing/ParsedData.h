@@ -21,6 +21,8 @@ public:
 	void insert(std::string name, std::list<SMsgParam> params);
 	void insert(std::pair<std::string, std::list<SMsgParam> > ressource){insert(ressource.first, ressource.second);}
 	void insert(const RessourceMap& ressources);
+
+	void renameRsc(std::string search, std::string replace);
 };
 
 //_____________________________________________________
@@ -33,6 +35,14 @@ public:
 
 	inscore::extvector<std::string> scriptNames() const;
 	inscore::extvector<std::string> ressourceNames() const;
+
+	bool isMainScript(std::string scriptName){return fMainScript==scriptName;}
+	void setMainScript(std::string name){fMainScript = name;}
+
+	void simplifyPaths(int charToDelete);
+
+protected:
+	std::string fMainScript;
 
 };
 

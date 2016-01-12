@@ -21,6 +21,8 @@ bool ScriptsParser::read(std::string inputFile, ParsedData &result, const std::s
 	if(!absoluteFile.empty())
 		inputFile = absoluteFile;
 
+	result.setMainScript(inputFile);
+
 	if(!p.readScript(inputFile))
 		return false;
 
@@ -254,24 +256,7 @@ void ScriptsParser::simplifyPath()
 		trunkPath += trunk.at(i)+"/";
 
 	size_t removable = trunkPath.size();
-
-	TScripts simplifiedScripts;
-	RessourceMap simplifiedRessources;
-	RessourceMap simplifiedRscScripts;
-
-	for(auto it = fData.scripts.begin(); it != fData.scripts.end(); it++)
-		simplifiedScripts[it->first.substr(removable)] = it->second;
-
-	for(auto it = fData.ressources.begin(); it != fData.ressources.end(); it++)
-		simplifiedRessources[it->first.substr(removable)] = it->second;
-
-	for(auto it = fData.scriptsRessources.begin(); it != fData.scriptsRessources.end(); it++)
-		simplifiedRscScripts[it->first.substr(removable)] = it->second;
-
-
-	fData.scripts = simplifiedScripts;
-	fData.ressources = simplifiedRessources;
-	fData.scriptsRessources = simplifiedRscScripts;
+	fData.simplifyPaths(removable);
 }
 
 //__________________________________________________________

@@ -1,5 +1,6 @@
 #include "ScriptsParser.h"
 #include "ParsedData.h"
+#include "BundlePackager.h"
 
 #include "BundleCreator.h"
 
@@ -38,6 +39,8 @@ int BundleCreator::bundle(std::string inputFile, std::string outputFile)
 	for(size_t i = 0; i<scriptNames.size(); i++)
 		fLog<<"  "<<scriptNames.at(i)<<"\n";
 
+	fLog<<"Script Regeneration:\n";
+	BundlePackager::bundle(parsedData, outputFile);
 
 	return 0;
 }
