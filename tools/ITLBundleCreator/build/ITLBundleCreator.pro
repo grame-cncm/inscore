@@ -22,8 +22,8 @@ ITLSRC		= $$ITLROOT/src/inscore/
 SOURCES +=	$$SRC/ITLBundleCreator.cpp \
                 $$SRC/BundleCreator.cpp \
 		$$SRC/BundleLog.cpp\
-		$$SRC/ParsedData.cpp \
-		$$SRC/ScriptsParser.cpp \
+		$$SRC/Parsing/ParsedData.cpp \
+		$$SRC/Parsing/ScriptsParser.cpp \
 		$$ITLROOT/src/inscore/expression/ExprInfo.cpp
 
 
@@ -31,9 +31,12 @@ SOURCES +=	$$SRC/ITLBundleCreator.cpp \
 
 HEADERS +=	$$SRC/BundleCreator.h \
 		$$SRC/BundleLog.h\
-		$$SRC/ParsedData.h \
-		$$SRC/ScriptsParser.h \
+		$$SRC/Parsing/ParsedData.h \
+		$$SRC/Parsing/ScriptsParser.h \
 		$$ITLROOT/src/inscore/expression/ExprInfo.h
+
+INCLUDEPATH +=	$$SRC/\
+		$$SRC/Parsing/
 
 
 
@@ -43,7 +46,3 @@ HEADERS +=	$$SRC/BundleCreator.h \
 ############################## 
 
 include ($$ITLROOT/src/inscore/ITLParser/ITLParser.pri)
-
-# javascript
-#HEADERS += $$ITLSRC/scripting/TQtJs.h
-#SOURCES += $$ITLSRC/scripting/TQtJs.cpp
