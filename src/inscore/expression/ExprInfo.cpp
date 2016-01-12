@@ -1,4 +1,5 @@
 #include "ExprInfo.h"
+#include <sstream>
 
 namespace inscore{
 
@@ -41,6 +42,20 @@ void ExprSearchReplace<T>::searchReplace(SIExpression &expression, T search, T r
 {
 	ExprSearchReplace e(search, replace);
 	expression->rootNode()->accept(&e);
+
+	std::string s = (std::string)search;
+	std::string r = (std::string)replace;
+	std::string def = expression->definition();
+
+	size_t it= def.find(s);
+
+	while(it<def.size()){
+		def.replace(it, s.size(), r);
+		it += r.size() - s.size();
+		it= def.find(s, it);
+	}
+
+	expression->setDefinition(def);
 }
 
 template <typename T>

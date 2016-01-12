@@ -46,6 +46,7 @@ public:
 	static SIExpression createEmpty();
 
 	inline std::string definition() const {return fDefinition;}
+	inline void setDefinition(std::string definition){fDefinition = definition;}
 	inline const SIExprArg& rootNode() const {return fRootNode;}
 	void setRootNode(SIExprArg rootNode);
 
