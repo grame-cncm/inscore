@@ -22,12 +22,17 @@ ITLSRC		= $$ITLROOT/src/inscore/
 SOURCES +=	$$SRC/ITLBundleCreator.cpp \
                 $$SRC/BundleCreator.cpp \
 		$$SRC/BundleLog.cpp\
+		$$SRC/ParsedData.cpp \
+		$$SRC/ScriptsParser.cpp \
 		$$ITLROOT/src/inscore/expression/ExprInfo.cpp
+
 
 
 
 HEADERS +=	$$SRC/BundleCreator.h \
 		$$SRC/BundleLog.h\
+		$$SRC/ParsedData.h \
+		$$SRC/ScriptsParser.h \
 		$$ITLROOT/src/inscore/expression/ExprInfo.h
 
 
