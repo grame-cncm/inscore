@@ -44,7 +44,7 @@ bool QArchiveHeader::readHeader(QIODevice *input)
 					QSubIODevice *file = new QSubIODevice(input, 0, size);
 					files.push_back(file);
 					fArchive->addFile(QString::fromUtf8(name), file, size);
-
+					fArchive->fFiles.last().setCompressed(true);
 				}else if(fieldID == H_UPDIR){
 					fArchive->fTree.upDir();
 				}else{

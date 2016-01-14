@@ -68,6 +68,7 @@ protected:
 class QArchiveData{
 	quint32 fSize=0;
 	QIODevice* fData;
+	bool fCompressed = false;
 public:
 	QArchiveData(QIODevice* data):fData(data){}
 
@@ -75,6 +76,8 @@ public:
 
 	void setCompressedSize(quint32 size){fSize = size;}
 	quint32 compressedSize() const {return fSize;}
+	void setCompressed(bool isCompressed){fCompressed = isCompressed;}
+	bool isCompressed() const{return fCompressed;}
 };
 
 

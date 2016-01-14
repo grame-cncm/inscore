@@ -174,8 +174,12 @@ bool QArchive::readFile(int fileID, QByteArray &data)
 
 	if(!file->open(QIODevice::ReadOnly))
 		return false;
-	data = qUncompress(file->readAll());
-	//data = file->readAll();
+
+	if(!fFiles.at(fileID).isCompressed())
+		data = file->readAll();
+	else
+		data = qUncompress(file->readAll());
+
 	file->close();
 
 	return true;
