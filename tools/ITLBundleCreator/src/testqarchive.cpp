@@ -17,7 +17,12 @@ int main(int argc, char* argv[]){
 
 	a->compress("zip.bundle");
 
+
 	SQArchive b = QArchive::readArchive("zip.bundle");
+	b->addFile("/Smiley.png", "TuxGaby.png");
+	b->compress("zip2.bundle");
+
+	SQArchive c = QArchive::readArchive("zip2.bundle");
 	b->extract("bundle");
 
 	return 0;

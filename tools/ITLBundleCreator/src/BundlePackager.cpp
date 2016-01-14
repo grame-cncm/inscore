@@ -13,11 +13,6 @@ bool BundlePackager::bundle(ParsedData &scripts, const std::string &outputPath)
 	std::map<std::string, std::string> namesMap;
 	b.mapNames(namesMap);
 
-	for(auto it=scripts.scripts.begin(); it!=scripts.scripts.end(); it++){
-		std::cout << " ******* "<<it->first<<" ******* \n";
-		std::cout << b.generateScript(it->first);
-	}
-
 	return true;
 }
 

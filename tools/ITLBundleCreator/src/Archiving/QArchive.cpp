@@ -23,12 +23,9 @@ SQArchive QArchive::readArchive(QString path)
 bool QArchive::compress(QString outputArchive)
 {
 
-	if(fArchiveFile)
-		delete fArchiveFile;
+	QFile output(outputArchive);
 
-	fArchiveFile = new QFile(outputArchive);
-
-	if(!fArchiveFile->open(QIODevice::WriteOnly))
+	if(!output.open(QIODevice::WriteOnly))
 		return false;
 
 	QByteArray b;
@@ -39,17 +36,20 @@ bool QArchive::compress(QString outputArchive)
 		if(d->isOpen())
 			return false;
 		d->open(QIODevice::ReadOnly);
-		b.append(qCompress(fFiles.at(i).data()->readAll(), 9));
-		//b.append(fFiles.at(i).data()->readAll());
-		fFiles.at(i).data()->close();
+		if(fFiles.at(i).isCompressed())
+			b.append(fFiles.at(i).data()->readAll());
+		else
+			b.append(qCompress(fFiles.at(i).data()->readAll(), 9));
+
+		d->close();
 		fFiles[i].setCompressedSize(b.size()-bSize);
 		bSize=b.size();
 	}
 
-	fArchiveFile->write(fHeader.generateHeader());
-	fArchiveFile->write(b);
+	output.write(fHeader.generateHeader());
+	output.write(b);
 
-	fArchiveFile->close();
+	output.close();
 
 	return true;
 }

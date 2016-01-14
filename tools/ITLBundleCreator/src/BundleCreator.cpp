@@ -39,7 +39,7 @@ int BundleCreator::bundle(std::string inputFile, std::string outputFile)
 	for(size_t i = 0; i<scriptNames.size(); i++)
 		fLog<<"  "<<scriptNames.at(i)<<"\n";
 
-	fLog<<"Script Regeneration:\n";
+	fLog.section("Bundle Generation:\n");
 	BundlePackager::bundle(parsedData, outputFile);
 
 	return 0;
