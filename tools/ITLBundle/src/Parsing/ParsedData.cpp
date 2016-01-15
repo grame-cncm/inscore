@@ -40,6 +40,7 @@ void ParsedData::simplifyPaths(int charToDelete)
 	ressources = simplifiedRessources;
 	scriptsRessources = simplifiedRscScripts;
 
+	mainPath += fMainScript.substr(0,charToDelete);
 	fMainScript = fMainScript.substr(charToDelete);
 }
 

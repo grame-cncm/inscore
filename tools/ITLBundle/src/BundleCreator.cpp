@@ -39,8 +39,8 @@ int BundleCreator::bundle(std::string inputFile, std::string outputFile)
 	for(size_t i = 0; i<scriptNames.size(); i++)
 		fLog<<"  "<<scriptNames.at(i)<<"\n";
 
-	fLog.section("Bundle Generation:\n");
-	BundlePackager::bundle(parsedData, outputFile);
+	fLog.section("Bundle Creation");
+	BundlePackager::bundle(parsedData, outputFile, fForceOverwrite);
 
 	return 0;
 }
@@ -62,6 +62,11 @@ void BundleCreator::setDefaultRootPath(std::string rootPath)
 void BundleCreator::setShowHierarchy(bool showHierarchy)
 {
 	fShowHierarchy = showHierarchy;
+}
+
+void BundleCreator::setForceOverwrite(bool forceOverwrite)
+{
+	fForceOverwrite= forceOverwrite;
 }
 
 

@@ -1,19 +1,17 @@
- 
-TEMPLATE = app
+win32 { TEMPLATE = vcapp }
+else  { TEMPLATE = app }
 CONFIG += console
 CONFIG -= app_bundle
+
+TARGET = ITLBundleCreator
+OBJECTS_DIR	= tmp
+MOC_DIR		= tmp
 
 QT -= gui;
 
 VERSION = 1.0
-
 DEFINES += ITLBUNDLE
 
-
-testqarchive{
-    SOURCES += $$SRC/testqarchive.cpp
-    TARGET QArchive
-}
 
 
 
@@ -34,32 +32,28 @@ SOURCES +=	$$SRC/ITLBundleCreator.cpp\
 		$$SRC/BundleLog.cpp\
 		$$SRC/Parsing/ParsedData.cpp \
 		$$SRC/Parsing/ScriptsParser.cpp \
-		$$ITLROOT/src/inscore/expression/ExprInfo.cpp \
-    ../src/Parsing/TDummyJs.cpp \
-    ../src/BundlePackager.cpp \
-    ../src/Archiving/QArchive.cpp \
-    ../src/Archiving/QSubIODevice.cpp \
-    ../src/Archiving/QArchiveHeader.cpp
+		$$SRC/Parsing/TDummyJs.cpp \
+		$$SRC/BundlePackager.cpp \
+		$$ITLROOT/src/inscore/expression/ExprInfo.cpp
+
 
 
 
 
 HEADERS +=	$$SRC/BundleCreator.h \
-		$$SRC/BundleLog.h\
+		$$SRC/doc.h \
+		$$SRC/BundleLog.h \
 		$$SRC/Parsing/ParsedData.h \
 		$$SRC/Parsing/ScriptsParser.h \
-		$$ITLROOT/src/inscore/expression/ExprInfo.h \
-    ../src/Parsing/TDummyJs.h \
-    ../src/BundlePackager.h \
-    ../src/Archiving/QArchive.h \
-    ../src/Archiving/QSubIODevice.h \
-    ../src/Archiving/Tree.h \
-    ../src/Archiving/Tree.tpp \
-    ../src/Archiving/QArchiveHeader.h
+		$$SRC/Parsing/TDummyJs.h \
+		$$SRC/BundlePackager.h \
+		$$ITLROOT/src/inscore/expression/ExprInfo.h
+
 
 INCLUDEPATH +=	$$SRC/\
 		$$SRC/Parsing/
 
+include($$ITLROOT/src/QArchive/qarchive.pri)
 
 
 

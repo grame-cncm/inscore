@@ -13,6 +13,7 @@ class BundleCreator
 {
 	BundleLog fLog;
 	bool fShowHierarchy;
+	bool fForceOverwrite=false;
 	std::string fDefaultRootPath;
 
 public:
@@ -30,6 +31,7 @@ public:
 	void setVerbose(bool verbose = true);
 	void setDefaultRootPath(std::string rootPath);
 	void setShowHierarchy(bool showHierarchy = true);
+	void setForceOverwrite(bool forceOverwrite = true);
 
 };
 

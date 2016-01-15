@@ -32,6 +32,7 @@ public:
 	TScripts scripts;
 	RessourceMap scriptsRessources;
 	RessourceMap ressources;
+	std::string mainPath="";
 
 	inscore::extvector<std::string> scriptNames() const;
 	inscore::extvector<std::string> ressourceNames() const;
