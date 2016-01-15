@@ -28,6 +28,7 @@
 #include <sstream>
 
 #include "TILoader.h"
+#include "INScore.h"
 #include "ITLparser.h"
 #include "IGlue.h"
 #include "IMessage.h"
@@ -35,6 +36,7 @@
 
 #include "OSCAddress.h"
 #include "QFileDownloader.h"
+#include "../QArchive/QArchive.h"
 
 using namespace std;
 
@@ -82,36 +84,82 @@ MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const
 	if (msg->size() == 1) {
 		string srcfile; 
 		if (!msg->param(0, srcfile)) return MsgHandler::kBadParameters;
-
 		if (srcfile.size()) {
-			stringstream buff;
-			ifstream file;
+
 			if (Tools::isurl(rootpath) && !Tools::isurl(srcfile))
 				srcfile = makeAbsolutePath(rootpath, srcfile);
-			if (Tools::isurl(srcfile)) {
-				QFileDownloader * downloader = new QFileDownloader();
-				if (!downloader) return MsgHandler::kCreateFailure;
-				if (downloader->get (srcfile.c_str()) && downloader->dataSize()) {
-					buff.write (downloader->data(), downloader->dataSize());
+
+			if(srcfile.size()<11 || srcfile.substr(srcfile.size()-11,11) != ".inscorezip"){
+				stringstream buff;
+				ifstream file;
+				if (Tools::isurl(srcfile)) {
+					QFileDownloader * downloader = new QFileDownloader();
+					if (!downloader) return MsgHandler::kCreateFailure;
+					if (downloader->get (srcfile.c_str()) && downloader->dataSize()) {
+						buff.write (downloader->data(), downloader->dataSize());
+					}
+					else return MsgHandler::kBadParameters;
+					delete downloader;
 				}
-				else return MsgHandler::kBadParameters;
+				else {
+					file.open(makeAbsolutePath(rootpath, srcfile).c_str(), fstream::in);
+				}
+
+				istream * stream;
+				if (file.is_open()) stream = &file;
+				else stream = &buff;
+				ITLparser p (stream, 0, getJSEngine(), getLUAEngine());
+				SIMessageList msgs = p.parse();
+				bool error = false;
+				if (msgs)
+					error = !process (msgs, client->getRoot(), client->getOSCAddress());
+				if(error) ITLErr << "while parsing file" << srcfile << ITLEndl;
+
+				if(msgs) return MsgHandler::kProcessed;
+			}else{
+
+				qarchive::SQArchive a;
+				QFileDownloader * downloader = new QFileDownloader();
+				qarchive::QArchiveError error;
+				if (Tools::isurl(srcfile)) {
+					if (!downloader) return MsgHandler::kCreateFailure;
+					if (downloader->get (srcfile.c_str()) && downloader->dataSize()) {
+						a = qarchive::QArchive::readArchive(downloader->byteArray(), error);
+					}
+					else return MsgHandler::kBadParameters;
+				}
+				else {
+					a = qarchive::QArchive::readArchive(makeAbsolutePath(rootpath, srcfile).c_str(), error);
+				}
+
+				if(!error){
+					size_t id = srcfile.rfind("/");
+					if(id==string::npos)
+						id=0;
+					else
+						id++;
+					std::string bundleName =  srcfile.substr(id, srcfile.size()-id-11);
+					QString bundleRootPath = QDir::temp().absolutePath()+QDir::separator()+"INScore"+QDir::separator()+QString::fromStdString(bundleName);
+					error = a->extract(bundleRootPath, true);
+					if(!error){
+						bundleName = "/ITL/"+bundleName;
+						INScore::postMessage(bundleName.c_str(), "new");
+						INScore::postMessage(bundleName.c_str(), "rootPath",bundleRootPath.toStdString().c_str());
+						INScore::postMessage(bundleName.c_str(), "load", "main.inscore");
+					}
+				}
+
+
 				delete downloader;
+				if(!error)
+					return MsgHandler::kProcessed;
+				else if(error==qarchive::FILE_NOT_FOUND)
+					ITLErr<<"The file \""<<srcfile<<"\" is not reachable."<<ITLEndl;
+				else if(error==qarchive::FILE_CORRUPTED)
+					ITLErr<<"The bundle \""<<srcfile<<"\" is currupted."<<ITLEndl;
+				else if(error==qarchive::WRONG_PERMISSIONS)
+					ITLErr<<"Impossible to write in the temporary folder."<<ITLEndl;
 			}
-			else {
-				file.open(makeAbsolutePath(rootpath, srcfile).c_str(), fstream::in);
-			}
-
-			istream * stream;
-			if (file.is_open()) stream = &file;
-			else stream = &buff;
-			ITLparser p (stream, 0, getJSEngine(), getLUAEngine());
-			SIMessageList msgs = p.parse();
-			bool error = false;
-			if (msgs)
-				error = !process (msgs, client->getRoot(), client->getOSCAddress());
-			if(error) ITLErr << "while parsing file" << srcfile << ITLEndl;
-
-			if(msgs) return MsgHandler::kProcessed;
 		}
 	}
 	return MsgHandler::kBadParameters;
