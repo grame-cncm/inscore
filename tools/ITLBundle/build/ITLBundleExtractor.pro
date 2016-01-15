@@ -38,4 +38,4 @@ HEADERS +=	$$SRC/BundleExtractor.h \
 
 INCLUDEPATH +=	$$SRC/
 
-include($$SRC/QArchive/qarchive.pri)
+include($$ITLROOT/src/QArchive/qarchive.pri)

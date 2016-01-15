@@ -22,10 +22,9 @@ public:
 	/*!
 	 * \brief bundle a INScore script with all its dependency
 	 * \param inputFile the path to the input file
-	 * \return	0 if succeed
-	 *			-1 if inputFile is unreachable
+	 * \return	true if succeed, false otherwise
 	 */
-	int bundle(std::string inputFile, std::string outputFile);
+	bool bundle(std::string inputFile, std::string outputFile);
 
 
 	void setVerbose(bool verbose = true);

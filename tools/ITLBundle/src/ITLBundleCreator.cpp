@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 	}
 
 	string inputFile = argv[1];
-	string outputFile = "bundle.itlbundle";
+	string outputFile = "bundle.inscorezip";
 
 	if(inputFile == "-h" || inputFile == "--help"){
 		std::cout<<DOC_CREATOR;
@@ -38,17 +38,14 @@ int main(int argc, char* argv[])
 			argI++;
 		}
 
+		param = param.substr(0,param.size()-1);
+
 		if(arg == "-v" || arg == "--verbose"){
 			bCreator.setVerbose();
-			if(param=="hierarchy ")
+			if(param=="hierarchy")
 				bCreator.setShowHierarchy();
 
 		}else if(arg == "-o" || arg == "--output"){
-			if(param.at(0)!='/'){
-				char* buffer = getcwd(NULL, 0);
-				outputFile = std::string(buffer) + param;
-				delete[] buffer;
-			}else
 				outputFile = param;
 
 		}else if(arg == "-h" || arg=="--help"){
