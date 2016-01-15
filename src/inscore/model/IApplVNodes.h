@@ -149,6 +149,7 @@ class IApplLog : public IVNode
 		virtual void	setWidth	(float w);
 		virtual void	setHeight	(float h);
 		virtual void	setVisible (bool vis);
+		virtual void	foreground ();
 
 
 		/// \brief object \c 'write' message handler.

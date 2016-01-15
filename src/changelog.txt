@@ -12,6 +12,10 @@ It has been supported by the ANR
 ====================================================
 
 ----------------------------------------------------
+Version 1.17
+- log window supports the 'foreground' message
+
+----------------------------------------------------
 Version 1.16
 - support for touch events (scene zoom is desactived due to a conflict with touch events)
 - new radial signal representation

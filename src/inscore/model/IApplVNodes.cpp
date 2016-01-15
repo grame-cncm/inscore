@@ -136,6 +136,8 @@ IApplLog::IApplLog(IObject * parent) : IVNode("log", parent)
 	fGetMsgHandlerMap[kheight_GetSetMethod] = TGetParamMsgHandler<float>::create(fHeight);
 	fGetMsgHandlerMap[kshow_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fVisible);
 
+	fMsgHandlerMap[kforeground_SetMethod]		= TMethodMsgHandler<IApplLog, void (IApplLog::*)(void)>::create(this, &IApplLog::foreground);
+
 	setVisible(false);
 #ifndef WIN32
 	setXPos (-0.9f);
@@ -152,13 +154,19 @@ IApplLog::~IApplLog()
 }
 
 //--------------------------------------------------------------------------
-void IApplLog::setVisible (bool vis)
+void IApplLog::foreground ()
 {
-	IObject::setVisible(vis);
-	if (vis) {
+	if (getVisible()) {
 		fWindow->raise();
 		fWindow->activateWindow();
 	}
+}
+
+//--------------------------------------------------------------------------
+void IApplLog::setVisible (bool vis)
+{
+	IObject::setVisible(vis);
+	foreground();
 }
 
 //--------------------------------------------------------------------------

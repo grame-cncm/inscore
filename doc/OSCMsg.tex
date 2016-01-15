@@ -1677,6 +1677,7 @@ The \OSC{log} node controls a console window that display all the messages sent 
 \begin{rail}
 ITLLog : 'show'  int32
 		| 'clear'
+		| 'foreground'
 		| 'wrap' int32
 		| 'write' (arg +)
 		| 'save' string
@@ -1689,6 +1690,7 @@ ITLLog : 'show'  int32
 \begin{itemize}
 \item \OSC{show} show or hides the console. The parameter is a boolean value.
 \item \OSC{clear} clear the console window.
+\item \OSC{foreground} put the console window to front.
 \item \OSC{wrap} control line wrapping of the console. The parameter is a boolean value.
 \item \OSC{write} write the \OSC{arg} list formatted as a string to the log window.
 \item \OSC{save} save the current log content to a file. The parameter is a file name. When expressed as a relative path, the file is saved under the current application root path.
