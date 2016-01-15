@@ -1,12 +1,58 @@
+/*
+
+  INScore Project
+
+  Copyright (C) 2015  Grame
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  research@grame.fr
+
+*/
+
 #include "SlideMenu.h"
 #include "INScore.h"
 
 namespace inscore {
 
+//--------------------------------------------------------------------------
+// Q_INVOKABLE methods
+//--------------------------------------------------------------------------
+void MsgSender::postMessage	 (const QString& address, const QString& msg)
+	{ INScore::postMessage(address.toStdString().c_str(), msg.toStdString().c_str()); }
+
+void MsgSender::postMessage (const QString& address, const QString& msg, int val)
+	{ INScore::postMessage(address.toStdString().c_str(), msg.toStdString().c_str(), val); }
+
+void MsgSender::postMessage (const QString& address, const QString& msg, bool val)
+	{ INScore::postMessage(address.toStdString().c_str(), msg.toStdString().c_str(), int(val)); }
+
+void MsgSender::postMessage (const QString& address, const QString& msg, float val)
+	{ INScore::postMessage(address.toStdString().c_str(), msg.toStdString().c_str(), val); }
+
+void MsgSender::postMessage (const QString& address, const QString& msg, const QString& val)
+	{ INScore::postMessage(address.toStdString().c_str(), msg.toStdString().c_str(), val.toStdString().c_str()); }
+
+
+//--------------------------------------------------------------------------
 SlideMenu::SlideMenu(QWidget *parent) : QFrame(parent)
 {
 	fMenu = new QQuickWidget(this);
 	fMenu->rootContext()->setContextProperty("contextObject", this);
+	fMenu->rootContext()->setContextProperty("inscore", &fSender);
 	fMenu->setSource(QUrl("qrc:///qml/slideMenu.qml"));
 	fMenu->rootObject()->setProperty("version", QVariant::fromValue( QString::fromStdString(INScore::versionStr()) ));
 
