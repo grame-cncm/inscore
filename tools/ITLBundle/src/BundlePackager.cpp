@@ -2,6 +2,7 @@
 
 #include "BundlePackager.h"
 
+
 using namespace inscore;
 
 namespace itlbundle {
@@ -10,30 +11,33 @@ bool BundlePackager::bundle(ParsedData &scripts, const std::string &outputPath)
 {
 	BundlePackager b(scripts);
 
-	std::map<std::string, std::string> namesMap;
-	b.mapNames(namesMap);
+	b.mapNames();
+
+	qarchive::SQArchive a = qarchive::QArchive::emptyArchive();
+	b.setupArchive(a);
+	a->compressStd(outputPath);
 
 	return true;
 }
 
 //__________________________________________________________
 //----------------------------------------------------------
-void BundlePackager::mapNames(std::map<std::string, std::string>& namesMap)
+void BundlePackager::mapNames()
 {
 	int id=1;
 
 	for(auto it=fInputData.scripts.begin(); it!=fInputData.scripts.end(); it++){
 		if(fInputData.isMainScript(it->first))
-			namesMap["main.inscore"] = it->first;
+			fNamesMap["main.inscore"] = it->first;
 		else{
 			std::stringstream name;
 			name << id <<".inscore";
-			namesMap[name.str()] = it->first;
+			fNamesMap[name.str()] = it->first;
 			id++;
 		}
 	}
 
-	for(auto it=namesMap.begin(); it!=namesMap.end(); it++)
+	for(auto it=fNamesMap.begin(); it!=fNamesMap.end(); it++)
 		fInputData.scriptsRessources.renameRsc(it->second, it->first);
 
 	id=0;
@@ -41,9 +45,9 @@ void BundlePackager::mapNames(std::map<std::string, std::string>& namesMap)
 		//Compute the new name with the extension
 		int idExtSuffix = it->first.rfind('.');
 		std::stringstream ss;
-		ss << id <<"."<<it->first.substr(idExtSuffix+1);
+		ss << "Ressources/" << id <<"."<<it->first.substr(idExtSuffix+1);
 		std::string name = ss.str();
-		namesMap[name] = it->first;
+		fNamesMap[name] = it->first;
 
 		//Rename ressources
 		std::list<SMsgParam> list = it->second;
@@ -51,6 +55,26 @@ void BundlePackager::mapNames(std::map<std::string, std::string>& namesMap)
 			(*itList)->setValue(name);
 		id++;
 	}
+}
+
+void BundlePackager::setupArchive(qarchive::SQArchive &archive)
+{
+	//Create hierarchy
+	archive->addDir("Export");
+	archive->addDir("Ressources");
+
+	std::string fileNames = "";
+	//Add ressources and scripts
+	for(auto it=fNamesMap.begin(); it!=fNamesMap.end(); it++){
+		if(it->first.substr(0,11) != "Ressources/")
+			archive->addTextFileStd(it->first, generateScript(it->second));
+		else
+			archive->addFileStd(it->first, fInputData.mainPath+it->second);
+		fileNames +=  it->first + "\t" + it->second+"\n";
+	}
+
+	//Add fileNames.map
+	archive->addTextFileStd("fileNames.map", fileNames);
 }
 
 std::string BundlePackager::generateScript(std::string scriptName)

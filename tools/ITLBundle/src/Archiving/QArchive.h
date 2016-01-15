@@ -34,26 +34,33 @@ class QArchive: public libmapping::smartable
 public:
 	static SQArchive emptyArchive();
 	static SQArchive readArchive(QString path);
+	static SQArchive readArchiveStd(std::string path){return readArchive(QString::fromStdString(path));}
 
-	bool compress(QString outputArchive);
-	bool extract(QString path);
+	bool compress(QString outputArchive, bool overwrite = true);
+	bool compressStd(std::string outputArchive, bool overwrite = true){return compress(QString::fromStdString(outputArchive), overwrite);}
+	bool extract(QString path, bool overwrite = true);
+	bool extractStd(std::string path, bool overwrite = true){return extract(QString::fromStdString(path), overwrite);}
 
 	bool addDir(QString name);
-	//bool addDir(std::string name){return addDir(QString::fromStdString(name));}
+	bool addDirStd(const std::string& name){return addDir(QString::fromStdString(name));}
 
-	bool	changeDir(QString dir);
-	bool	upDir();
-	QString currentDir();
+	bool		changeDir(QString dir);
+	bool		changeDirStd(const std::string& dir){return changeDir(QString::fromStdString(dir));}
+	bool		upDir();
+	QString		currentDir()	const;
+	std::string	currentDirStd()	const {return currentDir().toStdString();}
 
 	bool addFile(QString name, const QString &path);
-	//bool addFile(std::string name, std::string path){return addFile(QString::fromStdString(name),QString::fromStdString(path));}
+	bool addFileStd(const std::string& name, const std::string& path){return addFile(QString::fromStdString(name),QString::fromStdString(path));}
 
 	bool addBufferedFile(QString name, const QByteArray& data);
-	//bool addFile(std::string name, const QByteArray& data){return addFile(QString::fromStdString(name), data);}
+	bool addBufferedFileStd(const std::string& name, const QByteArray& data){return addFile(QString::fromStdString(name), data);}
 
 	bool addTextFile(QString name, const QString& data);
+	bool addTextFileStd(const std::string& name, const std::string& data){return addTextFile(QString::fromStdString(name), QString::fromStdString(data));}
 
 	bool readFile(QString name, QByteArray &data);
+	bool readFileStd(const std::string& name, QByteArray &data){return readFile(QString::fromStdString(name), data);}
 
 	virtual ~QArchive();
 
@@ -78,6 +85,9 @@ public:
 	quint32 compressedSize() const {return fSize;}
 	void setCompressed(bool isCompressed){fCompressed = isCompressed;}
 	bool isCompressed() const{return fCompressed;}
+
+	bool compressedData(QByteArray& data);
+	bool uncompressedData(QByteArray& data);
 };
 
 

@@ -20,10 +20,17 @@ SQArchive QArchive::readArchive(QString path)
 }
 
 
-bool QArchive::compress(QString outputArchive)
+bool QArchive::compress(QString outputArchive, bool overwrite)
 {
 
 	QFile output(outputArchive);
+
+	if(output.exists()){
+		if(overwrite)
+			output.remove();
+		else
+			return false;
+	}
 
 	if(!output.open(QIODevice::WriteOnly))
 		return false;
@@ -31,19 +38,16 @@ bool QArchive::compress(QString outputArchive)
 	QByteArray b;
 
 	qint64 bSize=0;
-	for (int i = 0; i < fFiles.size(); ++i) {
-		QIODevice* d = fFiles.at(i).data();
-		if(d->isOpen())
-			return false;
-		d->open(QIODevice::ReadOnly);
-		if(fFiles.at(i).isCompressed())
-			b.append(fFiles.at(i).data()->readAll());
-		else
-			b.append(qCompress(fFiles.at(i).data()->readAll(), 9));
 
-		d->close();
-		fFiles[i].setCompressedSize(b.size()-bSize);
-		bSize=b.size();
+	treeConstIterator<int> it = fTree.globalIterator();
+	while(it.next()){
+		int i;
+		if(it.item(i)){
+			if(!fFiles[i].compressedData(b))
+				return false;
+			fFiles[i].setCompressedSize(b.size()-bSize);
+			bSize=b.size();
+		}
 	}
 
 	output.write(fHeader.generateHeader());
@@ -54,7 +58,7 @@ bool QArchive::compress(QString outputArchive)
 	return true;
 }
 
-bool QArchive::extract(QString path)
+bool QArchive::extract(QString path, bool overwrite)
 {
 	QDir dir;
 	dir.mkpath(path);
@@ -66,7 +70,7 @@ bool QArchive::extract(QString path)
 		case TreeEnd:
 			return true;
 		case Branch:
-			if(!dir.mkdir(it.name()))
+			if(!dir.mkpath(it.name()))
 					return false;
 			dir.cd(it.name());
 			break;
@@ -76,6 +80,12 @@ bool QArchive::extract(QString path)
 			break;
 		case Item:
 			QFile f(dir.absolutePath()+QDir::separator()+it.name());
+			if(f.exists()){
+				if(overwrite)
+					f.remove();
+				else
+					continue;
+			}
 			if(!f.open(QIODevice::WriteOnly))
 				return false;
 			QByteArray data;
@@ -112,7 +122,7 @@ bool QArchive::upDir()
 	return fTree.upDir();
 }
 
-QString QArchive::currentDir()
+QString QArchive::currentDir() const
 {
 	return fTree.currentDir();
 }
@@ -170,17 +180,9 @@ bool QArchive::readFile(QString name, QByteArray& data)
 bool QArchive::readFile(int fileID, QByteArray &data)
 {
 
-	QIODevice* file = fFiles.at(fileID).data();
-
-	if(!file->open(QIODevice::ReadOnly))
+	data.clear();
+	if(!fFiles[fileID].uncompressedData(data))
 		return false;
-
-	if(!fFiles.at(fileID).isCompressed())
-		data = file->readAll();
-	else
-		data = qUncompress(file->readAll());
-
-	file->close();
 
 	return true;
 }
@@ -192,6 +194,40 @@ QArchive::~QArchive()
 	delete fArchiveFile;
 	for (int i = 0; i < fFiles.size(); ++i)
 		delete fFiles.at(i).data();
+}
+
+bool QArchiveData::compressedData(QByteArray& data)
+{
+	if(!fData->open(QIODevice::ReadOnly))
+		return false;
+//*
+	if(fCompressed)
+		data.append(fData->readAll());
+	else
+		data.append(qCompress(fData->readAll(), 9));
+/*/
+	data.append(fData->readAll());
+//*/
+
+	fData->close();
+	return true;
+}
+
+bool QArchiveData::uncompressedData(QByteArray &data)
+{if(!fData->open(QIODevice::ReadOnly))
+		return false;
+//*
+	if(fCompressed)
+		data.append(qUncompress(fData->readAll()));
+	else
+		data.append(fData->readAll());
+
+/*/
+	data.append(fData->readAll());
+//*/
+	fData->close();
+	return true;
+
 }
 
 } // End namespace

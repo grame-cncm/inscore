@@ -63,7 +63,7 @@ TreeNode<Type> *Tree<Type>::searchDir(QString path)
 }
 
 template <typename Type>
-QString Tree<Type>::currentDir()
+QString Tree<Type>::currentDir() const
 {
 	return fCurrentNode->path();
 }
@@ -235,12 +235,14 @@ QString TreeNode<Type>::path() const
 template <typename Type>
 bool treeConstIterator<Type>::item(Type &item) const
 {
-	if(!fNode)
+	if(!fNode || fPos==-1)
 		return false;
 
 	if(fReadingItem){
-		if(fPos < fNode->itemCount())
+		if(fPos < fNode->itemCount()){
 			item = itemValue();
+			return true;
+		}
 	}
 
 	return false;

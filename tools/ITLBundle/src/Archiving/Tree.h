@@ -23,7 +23,7 @@ public:
 
 	TreeNode<Type>* changeDir(QString path, bool &dirFound);
 	TreeNode<Type>* changeDir(QString path){bool b; return changeDir(path,b);}
-	QString			currentDir();
+	QString			currentDir() const;
 	TreeNode<Type>* upDir();
 	bool			setCurrentNode(TreeNode<Type>* node);
 

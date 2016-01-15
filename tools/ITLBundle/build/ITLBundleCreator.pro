@@ -1,7 +1,11 @@
- 
-TEMPLATE = app
+win32 { TEMPLATE = vcapp }
+else  { TEMPLATE = app }
 CONFIG += console
 CONFIG -= app_bundle
+
+TARGET = ITLBundleCreator
+OBJECTS_DIR	= tmp
+MOC_DIR		= tmp
 
 QT -= gui;
 
@@ -9,11 +13,6 @@ VERSION = 1.0
 
 DEFINES += ITLBUNDLE
 
-
-testqarchive{
-    SOURCES += $$SRC/testqarchive.cpp
-    TARGET QArchive
-}
 
 
 
@@ -58,7 +57,8 @@ HEADERS +=	$$SRC/BundleCreator.h \
     ../src/Archiving/QArchiveHeader.h
 
 INCLUDEPATH +=	$$SRC/\
-		$$SRC/Parsing/
+		$$SRC/Parsing/ \
+		$$SRC/Archiving/
 
 
 
