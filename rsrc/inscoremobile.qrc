@@ -3,10 +3,12 @@
         <file>images/load.png</file>
     </qresource>
     <qresource prefix="/qml">
+        <file alias="about.qml">mobile/about.qml</file>
         <file alias="header.qml">mobile/header.qml</file>
         <file alias="qmlPanel.qml">mobile/qmlPanel.qml</file>
         <file alias="SectionSeparator.qml">mobile/SectionSeparator.qml</file>
         <file alias="slideMenu.qml">mobile/slideMenu.qml</file>
         <file alias="SlideMenuItem.qml">mobile/SlideMenuItem.qml</file>
+        <file alias="SlideMenuHeader.qml">mobile/SlideMenuHeader.qml</file>
     </qresource>
 </RCC>

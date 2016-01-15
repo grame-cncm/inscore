@@ -3,7 +3,8 @@ import QtQuick.Window 2.0
 
 Item {
     id: root
-    height: Screen.pixelDensity * 7;
+//    height: Screen.pixelDensity * 7;
+    height: 40;
     anchors.left: parent.left
     anchors.right: parent.right
 
@@ -13,7 +14,8 @@ Item {
 
     Rectangle{
         id: separator
-        visible: !first;
+        visible: false;
+//        visible: !first;
         anchors.left: parent.left;
         anchors.right: parent.right;
         anchors.rightMargin: 4;
@@ -38,7 +40,8 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: Screen.pixelDensity*7;
             color: "#3a3a3a"
-            font.pixelSize:  Screen.pixelDensity * 4;
+//            font.pixelSize:  Screen.pixelDensity * 4;
+            font.pointSize:  14;
             font.capitalization: Font.SmallCaps
             text: "";
         }
@@ -65,7 +68,5 @@ Item {
                 PropertyChanges { target: button; color: "#c0c0c0" }
             }
         ]
-
     }
-
 }

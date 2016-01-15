@@ -21,7 +21,7 @@ Rectangle {
 		id: i
 		property real dir;
 		dir : -0.005;
-		width: parent.width/2
+		width: parent.width/4
 		fillMode: Image.PreserveAspectFit
 		anchors.horizontalCenter: parent.horizontalCenter
 		anchors.verticalCenter: parent.verticalCenter

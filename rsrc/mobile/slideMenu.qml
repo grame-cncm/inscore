@@ -2,61 +2,33 @@ import QtQuick 2.0
 import QtGraphicalEffects 1.0
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.4
-import "./"
+import QtQuick.Window 2.2
+//import "./"
 
 Item {
     id: root
 
+	function menuwidth(w, h) {
+		return ((w > h) ? h : w) / 2;
+	}
+	
     property string version: ""
     signal switchToPanel(string name)
 
-    width: 720
-    height: 1280
-
+    width: menuwidth(Screen.desktopAvailableWidth, Screen.desktopAvailableHeight);
+	height: Screen.desktopAvailableHeight;
 
     Rectangle{
         id: slidePanel
 
         anchors.fill: parent
-
         color: "white"
 
         // --------------- HEADER  ----------------
-        Rectangle{
-            id: header
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            height: Math.min(root.height, root.width)/6
-
-            color: "#ffffff"
-
-            Image{
-                id: headerLogo
-                source: "qrc:///INScoreViewer.png"
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                width: height
-            }
-
-            Text{
-                id: labelINScore
-                text: "INScore"
-                font.family: "Verdana"
-                color: "#464646"
-                anchors.left: headerLogo.right
-                anchors.leftMargin: 40
-                font.pixelSize: parent.height*.6
-            }
-            Text{
-                text: "Version " + root.version
-                color: labelINScore.color
-                anchors.left: labelINScore.left
-                anchors.top: labelINScore.bottom
-                font.pixelSize: labelINScore.font.pixelSize*.3
-            }
-        }
+		SlideMenuHeader {
+			version: root.version
+			id : header
+		}
 
         // ------------  MENU  --------------------
 
@@ -103,6 +75,7 @@ Item {
                         SlideMenuItem{
                             text: modelData
                             onClicked: root.switchToPanel(modelData)
+//                            onClicked: contextObject.send("/ITL/"+modelData, "foreground")
                             first: !index
                         }
                     }
@@ -119,14 +92,28 @@ Item {
                             first: !index
                         }
                     }
+                    SlideMenuItem{
+                    	property bool log: false;
+						text: "Show log"
+						onClicked: {
+							log = !log;
+							if (log) 	text = "Hide log"
+							else 		text = "Show log"
+							inscore.postMessage("/ITL/log", "show", log)
+						}
+						first: false
+                    }
+                    SlideMenuItem{
+						text: "Quit"
+						onClicked: inscore.postMessage("/ITL", "quit")
+						first: false
+                    }
 
                     move: Transition {
-                              NumberAnimation { properties: "x,y"; duration: 1000 }
+						NumberAnimation { properties: "x,y"; duration: 300 }
                     }
                 }
             }
-
         }
     }
-
 }
