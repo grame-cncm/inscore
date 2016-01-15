@@ -91,6 +91,7 @@ xcodeprojios:
 	touch ios/INScoreViewer.xcodeproj
 
 INScoreIos : 
+	cp -rf ../rsrc/ android-rsc
 	xcodebuild -jobs 8 -project ios/INScore.xcodeproj -target INScore -configuration Release
 	xcodebuild -jobs 8 -project ios/INScoreViewer.xcodeproj -target INScoreViewer -configuration Release
 
@@ -106,10 +107,7 @@ ios/INScoreViewer.xcodeproj : viewer.pro
 SPECANDROID = -spec android-g++
 SIGN=--sign ../../rsrc/inscore.keystore grame-inscore  --storepass grameinscore
 
-android : android-rsc android/Makefile INScoreAndroid
-
-android-rsc :
-	cp -r ../rsrc/ android-rsc
+android : android/Makefile INScoreAndroid
 
 android/Makefile: library.pro INScore.pro
 	@which qmake-android || (echo "### you must create an alias named 'qmake-android' that point to qmake inside your qt/android distribution and that is available from your PATH."; false;)
@@ -117,6 +115,7 @@ android/Makefile: library.pro INScore.pro
 	cd android && qmake-android $(SPECANDROID) ../INScore.pro
 
 INScoreAndroid :
+	cp -rf ../rsrc/ android-rsc
 	make -j 4 -C android -f Makefile
 	[ -d android/android-build ] || mkdir android/android-build
 	cd android && make INSTALL_ROOT=android-build install
