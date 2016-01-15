@@ -38,14 +38,10 @@ int main(int argc, char* argv[])
 				break;
 			argI++;
 		}
+		param = param.substr(0,param.size()-1);
 
 		if(arg == "-o" || arg == "--output"){
-			if(param.at(0)!='/'){
-				char* buffer = getcwd(NULL, 0);
-				outputFolder = std::string(buffer) + param;
-				delete[] buffer;
-			}else
-				outputFolder = param;
+			outputFolder = param;
 
 		}else if(arg == "-h" || arg=="--help"){
 				std::cout<<DOC_EXTRACTOR;

@@ -94,7 +94,7 @@ bool ScriptsParser::parseScript(std::string inputFile, SIMessageList &msgs)
 	//open file
 	std::ifstream ifs(inputFile);
 	if(!ifs.is_open()){
-		if(fLog)fLog->error("\""+inputFile+"\" is not readable.");
+		if(fLog)fLog->error("\""+inputFile+"\" is not reachable.");
 		return false;
 	}
 

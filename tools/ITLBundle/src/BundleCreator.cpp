@@ -17,14 +17,14 @@ BundleCreator::BundleCreator()
 	fDefaultRootPath = std::string(getenv("HOME")) + "/";
 }
 //____________________________________________
-int BundleCreator::bundle(std::string inputFile, std::string outputFile)
+bool BundleCreator::bundle(std::string inputFile, std::string outputFile)
 {
 
 	fLog.section("Parsing \""+inputFile+"\"");
 
 	ParsedData parsedData;
 	if(!ScriptsParser::read(inputFile, parsedData, fDefaultRootPath, &fLog, fShowHierarchy))
-		return -1;
+		return false;
 
 	fLog.section("Discovered Files");
 
@@ -42,7 +42,7 @@ int BundleCreator::bundle(std::string inputFile, std::string outputFile)
 	fLog.section("Bundle Creation");
 	BundlePackager::bundle(parsedData, outputFile, fForceOverwrite);
 
-	return 0;
+	return true;
 }
 
 

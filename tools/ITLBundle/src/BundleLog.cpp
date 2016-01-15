@@ -33,7 +33,7 @@ void BundleLog::exitSection()
 	printLog("\n                -- -- -- -- -- \n\n");
 }
 
-void BundleLog::subSection(std::__cxx11::string subSectionName)
+void BundleLog::subSection(std::string subSectionName)
 {
 	printLog("\n ⏤ "+subSectionName+" ⏤ \n");
 	fTab++;

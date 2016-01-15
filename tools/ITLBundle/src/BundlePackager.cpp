@@ -106,7 +106,7 @@ std::string BundlePackager::generateScript(std::string scriptName)
 	return script.str();
 }
 
-bool BundlePackager::writeArchive(SQArchive &archive, const std::__cxx11::string &outputPath, bool overwrite)
+bool BundlePackager::writeArchive(SQArchive &archive, const std::string &outputPath, bool overwrite)
 {
 	QArchiveError e = archive->compressStd(outputPath, overwrite);
 
