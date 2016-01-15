@@ -102,7 +102,7 @@ INScoreAbout::INScoreAbout (const QPixmap & pixmap) : QSplashScreen (pixmap)
 
 #ifdef linux
 	QFont font ("FreeSans", 9);
-#elif defined (WIN32)
+#elif defined (WIN32) || defined (ANDROID)
 	QFont font ("Helvetica", 7);
 #else
 	QFont font ("Helvetica", 9);
@@ -333,20 +333,20 @@ int main( int argc, char **argv )
 #else
     // We have to test on all plateform but it seems it's not necessary to call Q_INIT_RESOURCE.
     Q_INIT_RESOURCE( inscore );
+#endif
     QPixmap pixmap(":/INScoreViewer.png");
     gAbout = new INScoreAbout(pixmap);
     gAbout->show();
-#endif
 
     IGlue * glue = INScore::start (kTimeInterval, udpPort, kUPDPort+1, kUPDPort+2, &appl);
     appl.started();
     appl.readArgs(argc, argv);
 
-#if !(TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
-    sleep (2);
+//#if !(TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
+    sleep (1);
     gAbout->hide();
     disableAppNap();
-#endif
+//#endif
     appl.showMobileMenu();
     ret = appl.exec();
 	INScore::stop (glue);
