@@ -47,7 +47,7 @@ void VMobileQtUpdater::updateTo(IApplLog * log)
 	// Add and remove log window
 	if(log->getVisible()){
 		if(!w->parentWidget())
-			VMobileQtInit::getMainPanel()->addPanel(w->windowTitle(), w);
+			VMobileQtInit::getMainPanel()->addPanel(w->windowTitle(), w, true);
 	}else if(w->parentWidget())
 		VMobileQtInit::getMainPanel()->removePanel(w->windowTitle(), false);
 }
