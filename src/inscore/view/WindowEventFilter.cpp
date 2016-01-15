@@ -46,9 +46,7 @@ WindowEventFilter::WindowEventFilter(const std::string& address, ZoomingGraphics
 //--------------------------------------------------------------------------
 void WindowEventFilter::sendMessage( const char * addr , const char * cmd , float f )
 {
-	INScore::MessagePtr msg = INScore::newMessage( cmd );
-	INScore::add(msg, f);
-	INScore::postMessage( addr , msg );
+	INScore::postMessage( addr , cmd, f);
 }
 
 //--------------------------------------------------------------------------

@@ -136,9 +136,7 @@ void VLogWindow::istretch (float ow, float oh)
 }
 
 void VLogWindow::closeEvent(QCloseEvent * ) {
-	INScore::MessagePtr msg = INScore::newMessage ("show");
-	INScore::add (msg, 0);
-	INScore::postMessage ("/ITL/log", msg);
+	INScore::postMessage ("/ITL/log", kshow_GetSetMethod, 0);
 }
  
 void VLogWindow::setVisible(bool visible) {

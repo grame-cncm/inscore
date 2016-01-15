@@ -133,8 +133,7 @@ void ZoomingGraphicsView::paintEvent (QPaintEvent * event)
 //------------------------------------------------------------------------------------------------------------------------
 void ZoomingGraphicsView::closeEvent (QCloseEvent * event) 
 {
-	INScore::MessagePtr msg = INScore::newMessage (kdel_SetMethod);
-	INScore::postMessage (fSceneAddress.c_str(), msg);
+	INScore::postMessage (fSceneAddress.c_str(), kdel_SetMethod);
 	event->accept();
 }
 
