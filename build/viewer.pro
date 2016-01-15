@@ -89,6 +89,7 @@ android {
 	DISTFILES +=  $$ROOT/rsrc/android/AndroidManifest.xml
 	ANDROID_PACKAGE_SOURCE_DIR = $$ROOT/rsrc/android
 	QT += androidextras
+	DEFINES += ANDROID
 	RESOURCES += android-rsc/inscoremobile.qrc ../rsrc/inscorescriptmobile.qrc
 }
 
