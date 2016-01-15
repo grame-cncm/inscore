@@ -6,13 +6,9 @@ Item{
     id: root;
 
     property string title: ""
-    property var titles;
     property bool isLast: true
     property bool isFirst: true
 
-    signal nextPanel();
-    signal previousPanel();
-    signal switchToPanel(string newPanelName);
     signal popupMenu();
 
 	width: Screen.desktopAvailableWidth;
@@ -42,7 +38,6 @@ Item{
         font.bold: true
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-//        font.pixelSize: root.height*.7
         font.pointSize: 18
     }
 
