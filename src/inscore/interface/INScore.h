@@ -132,6 +132,37 @@ class inscore_export INScore
 	*/
 	static void postMessage	(const char* address, MessagePtr msg);
 
+	/*! \brief high level method to post a message
+
+		\param address the OSC destination address of the message
+		\param msg a message string
+	*/
+	static void postMessage	(const char* address, const char* msg);
+
+	/*! \brief high level method to post a message
+
+		\param address the OSC destination address of the message
+		\param msg a message string
+		\param int a value
+	*/
+	static void postMessage	(const char* address, const char* msg, int val);
+
+	/*! \brief high level method to post a message
+
+		\param address the OSC destination address of the message
+		\param msg a message string
+		\param int a value
+	*/
+	static void postMessage	(const char* address, const char* msg, float val);
+
+	/*! \brief high level method to post a message
+
+		\param address the OSC destination address of the message
+		\param msg a message string
+		\param int a value
+	*/
+	static void postMessage	(const char* address, const char* msg, const char* val);
+
 	/*! \brief post a message for delayed processing i.e. its processing is delayed by one time task
 
 		\param address the OSC destination address of the message
@@ -182,6 +213,7 @@ class inscore_export INScore
 
 	static const char* guidoversion();		///< gives the guido library version number as a string
 	static const char* musicxmlversion();	///< gives the musicxml library version number as a string
+	static const char* qtversion();			///< gives the Qt library version number as a string
 };
 
 /*! @} */

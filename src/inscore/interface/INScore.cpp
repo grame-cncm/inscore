@@ -186,6 +186,14 @@ const char* INScore::musicxmlversion()
 	return "not available";
 }
 
+//--------------------------------------------------------------------------
+const char* INScore::qtversion()
+{
+	QString vers(qVersion());
+	static string version = vers.toStdString();
+	return version.c_str();
+}
+
 
 const unsigned long localhost = (127 << 24) + 1;
 
@@ -207,6 +215,38 @@ void INScore::postMessage	(const char* address, MessagePtr msg)
 		gMsgMemory[msg] = SIMessage(0);
 	}
 }
+
+//--------------------------------------------------------------------------
+void INScore::postMessage	(const char* address, const char* method)
+{
+	MessagePtr msg = newMessage (method);
+	postMessage (address, msg);
+}
+
+//--------------------------------------------------------------------------
+void INScore::postMessage	(const char* address, const char* method, int val)
+{
+	MessagePtr msg = newMessage (method);
+	add (msg, val);
+	postMessage (address, msg);
+}
+
+//--------------------------------------------------------------------------
+void INScore::postMessage	(const char* address, const char* method, float val)
+{
+	MessagePtr msg = newMessage (method);
+	add (msg, val);
+	postMessage (address, msg);
+}
+
+//--------------------------------------------------------------------------
+void INScore::postMessage	(const char* address, const char* method, const char* val)
+{
+	MessagePtr msg = newMessage (method);
+	add (msg, val);
+	postMessage (address, msg);
+}
+
 //--------------------------------------------------------------------------
 void INScore::delayMessage	(const char* address, MessagePtr msg)
 {
