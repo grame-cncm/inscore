@@ -31,6 +31,9 @@
 #include "IMessageStack.h"
 #include "TPlugin.h"
 #include "Updater.h"
+#ifdef __MOBILE__
+#include "VMobileQtInit.h"
+#endif
 
 #include "VLogWindow.h"
 
@@ -119,7 +122,7 @@ IApplStat::IApplStat(IObject * parent) : IVNode("stats", parent), fMsgCount(0)
 //--------------------------------------------------------------------------
 IApplLog::IApplLog(IObject * parent) : IVNode("log", parent)
 {
-	fWindow = new VLogWindow ("INScore log", this);
+	fWindow = new VLogWindow ("/ITL/log", this);
 	fMsgHandlerMap[kclear_SetMethod]	= TMethodMsgHandler<IApplLog, void (IApplLog::*)(void)>::create(this, &IApplLog::clear);
 	fMsgHandlerMap[kwrap_GetSetMethod]	= TSetMethodMsgHandler<IApplLog,bool>::create(this, &IApplLog::setWrap);
 	fMsgHandlerMap[ksave_SetMethod]		= TMethodMsgHandler<IApplLog, MsgHandler::msgStatus (IApplLog::*)(const IMessage*) const>::create(this, &IApplLog::saveMsg);
@@ -157,8 +160,12 @@ IApplLog::~IApplLog()
 void IApplLog::foreground ()
 {
 	if (getVisible()) {
+#ifdef __MOBILE__
+		VMobileQtInit::getMainPanel()->switchToPanel(fWindow->windowTitle());
+#else
 		fWindow->raise();
 		fWindow->activateWindow();
+#endif
 	}
 }
 
