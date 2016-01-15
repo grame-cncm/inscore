@@ -10,6 +10,7 @@ class BundleExtractor
 {
 
 	bool fForceOverwrite = false;
+	bool fKeepOriginalPath = true;
 
 public:
 	BundleExtractor(){}

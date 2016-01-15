@@ -53,7 +53,7 @@ HEADERS +=	$$SRC/BundleCreator.h \
 INCLUDEPATH +=	$$SRC/\
 		$$SRC/Parsing/
 
-include ($$SRC/QArchive/qarchive.pri)
+include($$ITLROOT/src/QArchive/qarchive.pri)
 
 
 

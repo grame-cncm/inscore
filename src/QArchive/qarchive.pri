@@ -11,4 +11,4 @@ HEADERS +=  $$QARCHIVE/QArchive.h \
 	    $$QARCHIVE/Tree.tpp
             
 INCLUDEPATH +=  $$PWD \
-		$$QARCHIVE/../../../../src/libmapping/src/misc/
+		$$QARCHIVE/../libmapping/src/misc/

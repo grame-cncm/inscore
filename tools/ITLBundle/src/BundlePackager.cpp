@@ -74,7 +74,7 @@ void BundlePackager::setupArchive(qarchive::SQArchive &archive)
 	}
 
 	//Add fileNames.map
-	archive->addTextFileStd("fileNames.map", fileNames);
+	archive->addTextFileStd("bundleMap.txt", fileNames);
 }
 
 std::string BundlePackager::generateScript(std::string scriptName)

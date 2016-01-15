@@ -55,7 +55,9 @@ int main(int argc, char* argv[])
 		}
 	}
 
+	b.extract(inputFile, outputFolder);
 
+	return 0;
 }
 
 
