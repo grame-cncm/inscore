@@ -9,20 +9,19 @@ SQArchive QArchive::emptyArchive()
 	return new QArchive();
 }
 
-SQArchive QArchive::readArchive(QString path, QArchiveError &error)
+
+SQArchive QArchive::readArchive(QIODevice *d, QArchiveError &error)
 {
 	QArchive* a = new QArchive();
-	a->fArchiveFile = new QFile(path);
-
-	error = a->fHeader.readHeader(a->fArchiveFile);
-
+	a->fArchiveData = d;
+	error = a->fHeader.readHeader(a->fArchiveData);
 	return a;
 }
 
 
+
 QArchiveError QArchive::compress(QString outputArchive, bool overwrite)
 {
-
 	QFile output(outputArchive);
 
 	if(output.exists()){
@@ -196,7 +195,7 @@ bool QArchive::readFile(int fileID, QByteArray &data)
 //------------------------------------------------------
 QArchive::~QArchive()
 {
-	delete fArchiveFile;
+	delete fArchiveData;
 	for (int i = 0; i < fFiles.size(); ++i)
 		delete fFiles.at(i).data();
 }

@@ -5,8 +5,10 @@
 #include <QFile>
 #include <QDir>
 #include <QIODevice>
+#include <QBuffer>
 #include <QDataStream>
 #include <string>
+#include <istream>
 
 #include <smartpointer.h>
 
@@ -27,16 +29,21 @@ class QArchive: public libmapping::smartable
 	QList<QArchiveData> fFiles;
 	Tree<int> fTree;
 
-	QFile* fArchiveFile;
+	QIODevice* fArchiveData;
 	QArchiveHeader fHeader;
 
 
 public:
 	static SQArchive emptyArchive();
-	static SQArchive readArchive(QString path, QArchiveError& error);
+
+	static SQArchive readArchive(QString path, QArchiveError& error){return readArchive(new QFile(path), error);}
 	static SQArchive readArchive(QString path){QArchiveError e; return readArchive(path, e);}
 	static SQArchive readArchiveStd(std::string path, QArchiveError& error){return readArchive(QString::fromStdString(path), error);}
 	static SQArchive readArchiveStd(std::string path){QArchiveError e; return readArchiveStd(path, e);}
+
+	static SQArchive readArchive(QByteArray* data, QArchiveError& error){return readArchive(new QBuffer(data), error);}
+
+	static SQArchive readArchive(QIODevice* device, QArchiveError& error);
 
 	QArchiveError compress(QString outputArchive, bool overwrite = true);
 	QArchiveError compressStd(std::string outputArchive, bool overwrite = true){return compress(QString::fromStdString(outputArchive), overwrite);}
