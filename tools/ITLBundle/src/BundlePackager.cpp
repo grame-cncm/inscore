@@ -1,23 +1,22 @@
 #include <sstream>
-
+#include <iostream>
 #include "BundlePackager.h"
 
 
-using namespace inscore;
+using namespace qarchive;
 
 namespace itlbundle {
 
-bool BundlePackager::bundle(ParsedData &scripts, const std::string &outputPath)
+bool BundlePackager::bundle(ParsedData &scripts, const std::string &outputPath, bool overwrite)
 {
 	BundlePackager b(scripts);
 
 	b.mapNames();
 
-	qarchive::SQArchive a = qarchive::QArchive::emptyArchive();
+	SQArchive a = qarchive::QArchive::emptyArchive();
 	b.setupArchive(a);
-	a->compressStd(outputPath);
 
-	return true;
+	return b.writeArchive(a,outputPath, overwrite);
 }
 
 //__________________________________________________________
@@ -68,8 +67,9 @@ void BundlePackager::setupArchive(qarchive::SQArchive &archive)
 	for(auto it=fNamesMap.begin(); it!=fNamesMap.end(); it++){
 		if(it->first.substr(0,11) != "Ressources/")
 			archive->addTextFileStd(it->first, generateScript(it->second));
-		else
-			archive->addFileStd(it->first, fInputData.mainPath+it->second);
+		else if(!archive->addFileStd(it->first, fInputData.mainPath+it->second))
+			std::cerr<<"Ressource: \""<<fInputData.mainPath+it->second<<"\" does not exist!"<<std::endl;
+
 		fileNames +=  it->first + "\t" + it->second+"\n";
 	}
 
@@ -84,7 +84,7 @@ std::string BundlePackager::generateScript(std::string scriptName)
 	inscore::SIMessageList msgs = fInputData.scripts.at(scriptName);
 
 	for(int i=0; i<msgs->list().size(); i++){
-		SIMessage msg = msgs->list().at(i);
+		inscore::SIMessage msg = msgs->list().at(i);
 
 		if(msg->address()=="/ITL/bundle"){
 			if(msg->message()=="js"&&msg->size()){
@@ -104,6 +104,32 @@ std::string BundlePackager::generateScript(std::string scriptName)
 	}
 
 	return script.str();
+}
+
+bool BundlePackager::writeArchive(SQArchive &archive, const std::__cxx11::string &outputPath, bool overwrite)
+{
+	QArchiveError e = archive->compressStd(outputPath, overwrite);
+
+	std::string r;
+	switch(e){
+	case NO_ERROR:
+		return true;
+	case FILE_EXIST:
+		std::cout<<"File already exist, do you want to overwrite? [O/n]   ";
+		std::cin>>r;
+		if(r!="n")
+			return false;
+		else
+			return writeArchive(archive, outputPath, true);
+		break;
+	case WRONG_PERMISSIONS:
+		std::cerr<<"Impossible to write in "<<outputPath<<std::endl;
+		break;
+	default:
+		std::cerr<<"An error occurs during the bundle preparation..."<<std::endl;
+		break;
+	}
+	return true;
 }
 
 bool BundlePackager::ignoreCmd(std::string itlCmd)

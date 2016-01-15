@@ -10,7 +10,6 @@ MOC_DIR		= tmp
 QT -= gui;
 
 VERSION = 1.0
-
 DEFINES += ITLBUNDLE
 
 
@@ -29,19 +28,14 @@ ITLSRC		= $$ITLROOT/src/inscore/
 # source and headers
 ##############################
 SOURCES +=	$$SRC/ITLBundleExtractor.cpp\
-    ../src/Archiving/QArchive.cpp \
-    ../src/Archiving/QSubIODevice.cpp \
-    ../src/Archiving/QArchiveHeader.cpp
+		$$SRC/BundleExtractor.cpp
 
 
 
 
-HEADERS +=../src/Archiving/QArchive.h \
-    ../src/Archiving/QSubIODevice.h \
-    ../src/Archiving/Tree.h \
-    ../src/Archiving/Tree.tpp \
-    ../src/Archiving/QArchiveHeader.h
+HEADERS +=	$$SRC/BundleExtractor.h \
+		$$SRC/doc.h
 
-INCLUDEPATH +=	$$SRC/\
-		$$SRC/Archiving/ \
-		$$ITLROOT/src/libmapping/src/misc/
+INCLUDEPATH +=	$$SRC/
+
+include($$SRC/QArchive/qarchive.pri)

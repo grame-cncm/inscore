@@ -9,10 +9,10 @@
 
 namespace qarchive{
 
-bool QArchiveHeader::readHeader(QIODevice *input)
+QArchiveError QArchiveHeader::readHeader(QIODevice *input)
 {
 	if(!input->open(QIODevice::ReadOnly))
-		return false;
+		return FILE_NOT_FOUND;
 	QDataStream d(input);
 	d.setVersion(QDataStream::Qt_5_5);
 
@@ -48,7 +48,7 @@ bool QArchiveHeader::readHeader(QIODevice *input)
 				}else if(fieldID == H_UPDIR){
 					fArchive->fTree.upDir();
 				}else{
-					return false;
+					return FILE_CORRUPTED;
 				}
 			}
 
@@ -63,12 +63,12 @@ bool QArchiveHeader::readHeader(QIODevice *input)
 				else if(fieldID == H_ITL_VERSION)
 					d >> itlVersion;
 				else if(fieldID == HEADER_END)		//H_PROP_END has not been detected -> invalid file
-					return false;
+					return FILE_CORRUPTED;
 				else
 					continue;
 			}
 		}else{
-			return false;
+			return FILE_CORRUPTED;
 		}
 	}
 
@@ -81,7 +81,7 @@ bool QArchiveHeader::readHeader(QIODevice *input)
 		headerSize += fArchive->fFiles.at(i).compressedSize();
 	}
 
-	return true;
+	return NO_ERROR;
 }
 
 QByteArray QArchiveHeader::generateHeader()

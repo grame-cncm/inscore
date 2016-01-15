@@ -8,7 +8,7 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 	if(argc<2){
-		std::cout<<USAGE;
+		std::cout<<USAGE_CREATOR;
 		return 0;
 	}
 
@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
 	string outputFile = "bundle.itlbundle";
 
 	if(inputFile == "-h" || inputFile == "--help"){
-		std::cout<<DOC;
+		std::cout<<DOC_CREATOR;
 		return 0;
 	}
 
@@ -52,12 +52,14 @@ int main(int argc, char* argv[])
 				outputFile = param;
 
 		}else if(arg == "-h" || arg=="--help"){
-				std::cout<<DOC;
+				std::cout<<DOC_CREATOR;
 			return 0;
 		}else if(arg == "-l" || arg == "--local"){
 			char* buffer = getcwd(NULL, 0);
 			bCreator.setDefaultRootPath(std::string(buffer));
 			delete[] buffer;
+		}else if(arg== "-f" || arg == "--force-overwrite"){
+			bCreator.setForceOverwrite();
 		}
 
 	}

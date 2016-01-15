@@ -9,18 +9,18 @@ SQArchive QArchive::emptyArchive()
 	return new QArchive();
 }
 
-SQArchive QArchive::readArchive(QString path)
+SQArchive QArchive::readArchive(QString path, QArchiveError &error)
 {
 	QArchive* a = new QArchive();
 	a->fArchiveFile = new QFile(path);
 
-	a->fHeader.readHeader(a->fArchiveFile);
+	error = a->fHeader.readHeader(a->fArchiveFile);
 
 	return a;
 }
 
 
-bool QArchive::compress(QString outputArchive, bool overwrite)
+QArchiveError QArchive::compress(QString outputArchive, bool overwrite)
 {
 
 	QFile output(outputArchive);
@@ -29,11 +29,11 @@ bool QArchive::compress(QString outputArchive, bool overwrite)
 		if(overwrite)
 			output.remove();
 		else
-			return false;
+			return FILE_EXIST;
 	}
 
 	if(!output.open(QIODevice::WriteOnly))
-		return false;
+		return WRONG_PERMISSIONS;
 
 	QByteArray b;
 
@@ -44,7 +44,7 @@ bool QArchive::compress(QString outputArchive, bool overwrite)
 		int i;
 		if(it.item(i)){
 			if(!fFiles[i].compressedData(b))
-				return false;
+				return FILE_CORRUPTED;
 			fFiles[i].setCompressedSize(b.size()-bSize);
 			bSize=b.size();
 		}
@@ -55,10 +55,10 @@ bool QArchive::compress(QString outputArchive, bool overwrite)
 
 	output.close();
 
-	return true;
+	return NO_ERROR;
 }
 
-bool QArchive::extract(QString path, bool overwrite)
+QArchiveError QArchive::extract(QString path, bool overwrite)
 {
 	QDir dir;
 	dir.mkpath(path);
@@ -68,15 +68,15 @@ bool QArchive::extract(QString path, bool overwrite)
 	while( (m=it.next()) ){
 		switch(m){
 		case TreeEnd:
-			return true;
+			return NO_ERROR;
 		case Branch:
 			if(!dir.mkpath(it.name()))
-					return false;
+					return WRONG_PERMISSIONS;
 			dir.cd(it.name());
 			break;
 		case LeavingBranch:
 			if(!dir.cdUp())
-					return false;
+					return FILE_CORRUPTED;
 			break;
 		case Item:
 			QFile f(dir.absolutePath()+QDir::separator()+it.name());
@@ -87,10 +87,10 @@ bool QArchive::extract(QString path, bool overwrite)
 					continue;
 			}
 			if(!f.open(QIODevice::WriteOnly))
-				return false;
+				return WRONG_PERMISSIONS;
 			QByteArray data;
 			if(!readFile(it.itemValue(), data))
-				return false;
+				return FILE_CORRUPTED;
 			f.write(data);
 			f.close();
 			break;
@@ -98,7 +98,7 @@ bool QArchive::extract(QString path, bool overwrite)
 		}
 	}
 
-	return true;
+	return NO_ERROR;
 }
 
 //______________________________________________________
@@ -140,6 +140,11 @@ bool QArchive::addFile(QString name, QIODevice *device, quint32 compressedSize)
 
 bool QArchive::addFile(QString name, const QString& path)
 {
+	QFile* file = new QFile(path);
+	if(!file->exists()){
+		delete file;
+		return false;
+	}
 	return addFile(name, new QFile(path));
 }
 

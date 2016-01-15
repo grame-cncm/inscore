@@ -20,6 +20,15 @@ enum HEADER_FIELDS{
 		H_ITL_VERSION		= 0xA2,		// 1010 0010
 
 };
+
+enum QArchiveError{
+	NO_ERROR	=	0,
+	FILE_EXIST,
+	FILE_NOT_FOUND,
+	FILE_CORRUPTED,
+	WRONG_PERMISSIONS
+};
+
 class QArchive;
 typedef libmapping::SMARTP<QArchive> SQArchive;
 
@@ -29,7 +38,7 @@ class QArchiveHeader
 public:
 	QArchiveHeader(SQArchive archive):fArchive(archive){}
 
-	bool readHeader(QIODevice *input);
+	QArchiveError readHeader(QIODevice *input);
 	QByteArray generateHeader();
 
 	float bundleVersion=1, itlVersion=1.17;

@@ -15,7 +15,7 @@ class BundlePackager
 	ParsedData& fInputData;
 
 public:
-	static bool bundle(ParsedData& scripts, const std::string& outputPath);
+	static bool bundle(ParsedData& scripts, const std::string& outputPath, bool overwrite=false);
 protected:
 
 	BundlePackager(ParsedData& inputData):fInputData(inputData){}
@@ -23,6 +23,8 @@ protected:
 	void mapNames();
 	void setupArchive(qarchive::SQArchive& archive);
 	std::string generateScript(std::string scriptName);
+
+	bool writeArchive(qarchive::SQArchive& archive, const std::string& outputPath, bool overwrite = false);
 
 private:
 	static inline bool ignoreCmd(std::string itlCmd);

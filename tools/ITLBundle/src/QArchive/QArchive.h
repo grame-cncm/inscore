@@ -33,13 +33,15 @@ class QArchive: public libmapping::smartable
 
 public:
 	static SQArchive emptyArchive();
-	static SQArchive readArchive(QString path);
-	static SQArchive readArchiveStd(std::string path){return readArchive(QString::fromStdString(path));}
+	static SQArchive readArchive(QString path, QArchiveError& error);
+	static SQArchive readArchive(QString path){QArchiveError e; return readArchive(path, e);}
+	static SQArchive readArchiveStd(std::string path, QArchiveError& error){return readArchive(QString::fromStdString(path), error);}
+	static SQArchive readArchiveStd(std::string path){QArchiveError e; return readArchiveStd(path, e);}
 
-	bool compress(QString outputArchive, bool overwrite = true);
-	bool compressStd(std::string outputArchive, bool overwrite = true){return compress(QString::fromStdString(outputArchive), overwrite);}
-	bool extract(QString path, bool overwrite = true);
-	bool extractStd(std::string path, bool overwrite = true){return extract(QString::fromStdString(path), overwrite);}
+	QArchiveError compress(QString outputArchive, bool overwrite = true);
+	QArchiveError compressStd(std::string outputArchive, bool overwrite = true){return compress(QString::fromStdString(outputArchive), overwrite);}
+	QArchiveError extract(QString path, bool overwrite = true);
+	QArchiveError extractStd(std::string path, bool overwrite = true){return extract(QString::fromStdString(path), overwrite);}
 
 	bool addDir(QString name);
 	bool addDirStd(const std::string& name){return addDir(QString::fromStdString(name));}
