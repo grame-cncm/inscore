@@ -1,3 +1,28 @@
+/*
+
+  INScore Project
+
+  Copyright (C) 2015  Grame
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  research@grame.fr
+
+*/
+
 #ifndef CENTRALPANEL_H
 #define CENTRALPANEL_H
 
@@ -33,14 +58,7 @@ public:
 	 * \param name name of the panel
 	 * \param panel the panel widget, the central panel own this object
 	 */
-	void addPanel(QString name, QWidget* panel);
-
-	/*!
-	 * \brief addPanel Add a panel to the list
-	 * \param name name of the panel
-	 * \param panel the panel widget, the central panel own this object
-	 */
-	void addPanel(std::string name, QWidget* panel) {addPanel(QString::fromStdString(name), panel);}
+	void addPanel(QString name, QWidget* panel, bool asScene=false);
 
 	/*!
 	 * \brief addScene Overload addPanel to add scenes before other panels
@@ -48,13 +66,6 @@ public:
 	 * \param panel scene view
 	 */
 	void addScene(QString name, QWidget* panel);
-
-	/*!
-	 * \brief addScene Overload addPanel to add scenes before other panels
-	 * \param name scene name
-	 * \param panel scene view
-	 */
-	void addScene(std::string name, QWidget* panel) {addScene(QString::fromStdString(name), panel);}
 
 	/*!
 	 * \brief Overload addPanel to handle qmlFiles
