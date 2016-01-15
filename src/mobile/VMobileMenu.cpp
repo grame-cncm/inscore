@@ -34,6 +34,7 @@
 #include <QVBoxLayout>
 #include <QGridLayout>
 #include <QLineEdit>
+#include <QtQuick>
 
 #include "IAppl.h"
 #include "IMessage.h"
@@ -48,107 +49,119 @@ namespace inscore
 static const char * sampleFileName = "sample.inscore";
 
 //--------------------------------------------------------------------------
-VMobileMenu::VMobileMenu(const char * name, QWidget* parent) : QWidget(parent)
+VMobileMenu::VMobileMenu(const char * name, QWidget* parent) : QQuickWidget(parent)
 {
+	setResizeMode(QQuickWidget::SizeViewToRootObject);
+	setSource(QUrl("qrc:///qml/about.qml"));
+
+
 	setWindowTitle( tr(name) );
-    // For ios, avoid transparent background
-    setAutoFillBackground(true);
+	QQuickItem *root = rootObject();
+	root->setProperty("version", QVariant(INScore::versionStr()));
+	root->setProperty("qtversion", QVariant(INScore::qtversion()));
+	root->setProperty("guidoversion", QVariant(INScore::guidoversion()));
 
-	// Create the main layout
-	QVBoxLayout *verticalLayout = new QVBoxLayout(this);
-	verticalLayout->setSpacing(6);
-	verticalLayout->setContentsMargins(0, 0, 0, 0);
+	loadSampleFile();
 
-	// Create main title
-	QFont font ("FreeSans", 20);
-	font.setBold(true);
-	QLabel * text = new QLabel("INScore for mobile");
-	text->setFont(font);
-	verticalLayout->addWidget(text);
-
-	// Layout for tree text label with left indentation
-	QGridLayout * gridLayout = new QGridLayout();
-	gridLayout->setSpacing(6);
-	QSpacerItem * labelHSpacer = new QSpacerItem(20, 5, QSizePolicy::Maximum, QSizePolicy::Minimum);
-	gridLayout->addItem(labelHSpacer, 0, 0, 3, 1);
-
-	// Create inscore version text
-	font.setPointSize(16);
-	font.setBold(false);
-	QString version("INScore v.");
-	version += INScore::versionStr();
-	text = new QLabel(version);
-	text->setFont(font);
-	gridLayout->addWidget(text, 0, 1, 1, 1);
-
-	QString qt("Using Qt v.");
-	qt += qVersion();
-	text = new QLabel(qt);
-	text->setFont(font);
-	gridLayout->addWidget(text, 1, 1, 1, 1);
-
-	QString guido("Using Guido Engine v.");
-	guido += INScore::guidoversion();
-	text = new QLabel(guido);
-	text->setFont(font);
-	gridLayout->addWidget(text, 2, 1, 1, 1);
-
-	verticalLayout->addLayout(gridLayout);
-
-	// Add change port button
-	QPushButton * changePort = new QPushButton(tr("Change application port number"));
-	connect(changePort, SIGNAL(clicked()), this, SLOT(showChangePortNumber()));
-	verticalLayout->addWidget(changePort);
-
-	// Add checkboxes
-	loadSample = new QCheckBox(tr("Load sample file next time"));
-	loadSample->setStyleSheet("margin-top : 40px; margin-bottom : 0px;");
-	verticalLayout->addWidget(loadSample);
-
-	showNextTime = new QCheckBox(tr("Show this dialog next time"));
-	showNextTime->setStyleSheet("margin-top : 0px; margin-bottom : 40px;");
-	verticalLayout->addWidget(showNextTime);
-
-	// Add Url file loader
-	verticalLayout->addWidget(new QLabel(tr("Url for external resources : ")));
-	QHBoxLayout * horizontalLayout = new QHBoxLayout();
-	fUrlFile = new QLineEdit();
-	horizontalLayout->addWidget(fUrlFile);
-	QPushButton * loadUrl = new QPushButton;
-	loadUrl->setIcon(QIcon(":/images/load.png"));
-	loadUrl->iconSize();
-	loadUrl->setIconSize(QSize(60, 60));
-	connect(loadUrl, SIGNAL(clicked()), this, SLOT(loadUrlFile()));
-	horizontalLayout->addWidget(loadUrl);
-	verticalLayout->addLayout(horizontalLayout);
-
-	// Layout for buttons
-	horizontalLayout = new QHBoxLayout();
-	horizontalLayout->setSpacing(6);
-
-	QPushButton * openFile = new QPushButton("Open local file");
-	connect(openFile, SIGNAL(clicked()), this, SLOT(showFileDialog()));
-	horizontalLayout->addWidget(openFile);
-
-	QSpacerItem * buttonHSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-	horizontalLayout->addItem(buttonHSpacer);
-
-	QPushButton * close = new QPushButton("Close");
-	connect(close, SIGNAL(clicked()), this, SLOT(closeMenu()));
-	horizontalLayout->addWidget(close);
-	verticalLayout->addLayout(horizontalLayout);
-
-	QSpacerItem *verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-	verticalLayout->addItem(verticalSpacer);
-
-	// Read the settings
-	readSettings();
-	connect(showNextTime, SIGNAL(stateChanged(int)), this, SLOT(writeSettings()));
-	connect(loadSample, SIGNAL(stateChanged(int)), this, SLOT(writeSettings()));
-
-	if (loadSample->isChecked()) {
-		loadSampleFile();
-	}
+//	setWindowTitle( tr(name) );
+//    // For ios, avoid transparent background
+//    setAutoFillBackground(true);
+//
+//	// Create the main layout
+//	QVBoxLayout *verticalLayout = new QVBoxLayout(this);
+//	verticalLayout->setSpacing(6);
+//	verticalLayout->setContentsMargins(0, 0, 0, 0);
+//
+//	// Create main title
+//	QFont font ("FreeSans", 20);
+//	font.setBold(true);
+//	QLabel * text = new QLabel("INScore for mobile");
+//	text->setFont(font);
+//	verticalLayout->addWidget(text);
+//
+//	// Layout for tree text label with left indentation
+//	QGridLayout * gridLayout = new QGridLayout();
+//	gridLayout->setSpacing(6);
+//	QSpacerItem * labelHSpacer = new QSpacerItem(20, 5, QSizePolicy::Maximum, QSizePolicy::Minimum);
+//	gridLayout->addItem(labelHSpacer, 0, 0, 3, 1);
+//
+//	// Create inscore version text
+//	font.setPointSize(16);
+//	font.setBold(false);
+//	QString version("INScore v.");
+//	version += INScore::versionStr();
+//	text = new QLabel(version);
+//	text->setFont(font);
+//	gridLayout->addWidget(text, 0, 1, 1, 1);
+//
+//	QString qt("Using Qt v.");
+//	qt += qVersion();
+//	text = new QLabel(qt);
+//	text->setFont(font);
+//	gridLayout->addWidget(text, 1, 1, 1, 1);
+//
+//	QString guido("Using Guido Engine v.");
+//	guido += INScore::guidoversion();
+//	text = new QLabel(guido);
+//	text->setFont(font);
+//	gridLayout->addWidget(text, 2, 1, 1, 1);
+//
+//	verticalLayout->addLayout(gridLayout);
+//
+//	// Add change port button
+//	QPushButton * changePort = new QPushButton(tr("Change application port number"));
+//	connect(changePort, SIGNAL(clicked()), this, SLOT(showChangePortNumber()));
+//	verticalLayout->addWidget(changePort);
+//
+//	// Add checkboxes
+//	loadSample = new QCheckBox(tr("Load sample file next time"));
+//	loadSample->setStyleSheet("margin-top : 40px; margin-bottom : 0px;");
+//	verticalLayout->addWidget(loadSample);
+//
+//	showNextTime = new QCheckBox(tr("Show this dialog next time"));
+//	showNextTime->setStyleSheet("margin-top : 0px; margin-bottom : 40px;");
+//	verticalLayout->addWidget(showNextTime);
+//
+//	// Add Url file loader
+//	verticalLayout->addWidget(new QLabel(tr("Url for external resources : ")));
+//	QHBoxLayout * horizontalLayout = new QHBoxLayout();
+//	fUrlFile = new QLineEdit();
+//	horizontalLayout->addWidget(fUrlFile);
+//	QPushButton * loadUrl = new QPushButton;
+//	loadUrl->setIcon(QIcon(":/images/load.png"));
+//	loadUrl->iconSize();
+//	loadUrl->setIconSize(QSize(60, 60));
+//	connect(loadUrl, SIGNAL(clicked()), this, SLOT(loadUrlFile()));
+//	horizontalLayout->addWidget(loadUrl);
+//	verticalLayout->addLayout(horizontalLayout);
+//
+//	// Layout for buttons
+//	horizontalLayout = new QHBoxLayout();
+//	horizontalLayout->setSpacing(6);
+//
+//	QPushButton * openFile = new QPushButton("Open local file");
+//	connect(openFile, SIGNAL(clicked()), this, SLOT(showFileDialog()));
+//	horizontalLayout->addWidget(openFile);
+//
+//	QSpacerItem * buttonHSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+//	horizontalLayout->addItem(buttonHSpacer);
+//
+//	QPushButton * close = new QPushButton("Close");
+//	connect(close, SIGNAL(clicked()), this, SLOT(closeMenu()));
+//	horizontalLayout->addWidget(close);
+//	verticalLayout->addLayout(horizontalLayout);
+//
+//	QSpacerItem *verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+//	verticalLayout->addItem(verticalSpacer);
+//
+//	// Read the settings
+//	readSettings();
+//	connect(showNextTime, SIGNAL(stateChanged(int)), this, SLOT(writeSettings()));
+//	connect(loadSample, SIGNAL(stateChanged(int)), this, SLOT(writeSettings()));
+//
+//	if (loadSample->isChecked()) {
+//		loadSampleFile();
+//	}
 }
 
 //--------------------------------------------------------------------------
