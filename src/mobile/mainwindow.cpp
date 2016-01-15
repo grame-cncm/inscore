@@ -8,13 +8,15 @@ namespace inscore{
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
 	fHeader = new Header(this);
+	fHeader->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
 	fPanel = new SwipePanel(this);
 
 	QVBoxLayout* l= new QVBoxLayout(this);
-		l->addWidget(fHeader);
-		l->addWidget(fPanel);
-		l->setMargin(0);
-		setLayout(l);
+	l->setSizeConstraint(QLayout::SetFixedSize);
+	l->addWidget(fHeader);
+	l->addWidget(fPanel);
+	l->setMargin(0);
+	setLayout(l);
 
 	fMenu = new SlideMenu(this);
 
@@ -36,7 +38,7 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 {
 	int h = height();
 	int w = width();
-	fHeader->setFixedHeight(qMin(h,w) * 0.1);
+//	fHeader->setFixedHeight(qMin(h,w) * 0.1);
 	fMenu->setGeometry(0,0, w, h);
 	QWidget::resizeEvent(e);
 }
