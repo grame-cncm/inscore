@@ -74,8 +74,10 @@ Item {
                         model: contextObject.sceneList
                         SlideMenuItem{
                             text: modelData
-                            onClicked: root.switchToPanel(modelData)
-//                            onClicked: contextObject.send("/ITL/"+modelData, "foreground")
+                            onClicked: { 
+                            	contextObject.hideMenu();
+                            	inscore.postMessage(modelData, "foreground");
+                            }
                             first: !index
                         }
                     }
