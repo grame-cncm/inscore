@@ -117,7 +117,7 @@ SIMessageList TScripting::luaEval (const char* /*script*/)
 //--------------------------------------------------------------------------------------------
 // javascript support
 //--------------------------------------------------------------------------------------------
-#if defined V8ENGINE || defined QTJSENGINE
+#if defined V8ENGINE || defined QTJSENGINE || ITLBUNDLE
 bool TScripting::checkJavascript () const						{ return fJavascript != 0; }
 
 static int countlines (const char* script)

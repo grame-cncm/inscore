@@ -46,6 +46,7 @@ public:
 	static SIExpression createEmpty();
 
 	inline std::string definition() const {return fDefinition;}
+	inline void setDefinition(std::string definition){fDefinition = definition;}
 	inline const SIExprArg& rootNode() const {return fRootNode;}
 	void setRootNode(SIExprArg rootNode);
 
@@ -136,6 +137,7 @@ private:
 public:
 	IExprArg(argType arg): IExprArgBase(), fArg(arg){}
 	argType getArg(){return fArg;}
+	void setArg(argType arg){fArg = arg;}
 
 	inline SIExprArg copy() const{
 		IExprArgBase* r = new IExprArg<argType>(fArg);

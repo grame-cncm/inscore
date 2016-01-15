@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 	}
 
 	string inputFile = argv[1];
-	string outputFile = "";
+	string outputFile = "bundle.itlbundle";
 
 	if(inputFile == "-h" || inputFile == "--help"){
 		std::cout<<DOC;

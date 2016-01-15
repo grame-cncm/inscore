@@ -12,7 +12,7 @@ BundleLog::BundleLog()
 
 void BundleLog::setActive(bool active)
 {
-	fActive = true;
+	fActive = active;
 }
 
 void BundleLog::section(std::string sectionName)
