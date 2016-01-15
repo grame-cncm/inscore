@@ -37,9 +37,6 @@ public:
 	explicit Header(QWidget *parent = 0);
 
 signals:
-	void nextPanel();
-	void previousPanel();
-	void switchToPanel(QString name);
 	void popupMenu();
 
 public slots:
