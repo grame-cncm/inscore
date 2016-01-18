@@ -14,6 +14,8 @@ It has been supported by the ANR
 ----------------------------------------------------
 Version 1.17
 - log window supports the 'foreground' message
+- user actions on windows are generating 'foreground' messages
+- application quit when the last scene is closed (even when the log window is opened) 
 
 ----------------------------------------------------
 Version 1.16
@@ -30,7 +32,7 @@ Version 1.15 - tagged on July 15 2015
 - new frame query method: get 'frame' gives the coordinates of 4 points that represent the 
   object frame, expressed in the scene local coordinates system and including all the graphic 
   transformations (scaling, rotations on the 3 axis, shear etc.)
-- pen messages are now accepted by all the components. Thie extension is provided to display
+- pen messages are now accepted by all the components. This extension is provided to display
   any object bounding box. Note that for rects, ellipses etc. the previous behavior is preserved.
 - Bug correction : get message for line arrow heads was not correct.
 - Add pianorollf object to create piano roll from gmn or midi file.
