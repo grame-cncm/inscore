@@ -29,6 +29,7 @@
 #include "VMobileQtInit.h"
 #include "IMobileMenu.h"
 #include "IScene.h"
+#include "VSceneView.h"
 
 #include <QWidget>
 
