@@ -256,6 +256,7 @@ INScoreAppl::INScoreAppl (int & argc, char ** argv )
 				fPendingOpen.push_back(argv[i]);
 		}
 	}
+	setQuitOnLastWindowClosed(false);
 }
 
 //_______________________________________________________________________

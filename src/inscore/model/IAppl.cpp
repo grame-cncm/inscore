@@ -236,6 +236,29 @@ void IAppl::print (ostream& out) const
 }
 
 //--------------------------------------------------------------------------
+void IAppl::cleanup()
+{
+	//If all the scene have been deleted, the application should quit
+
+	bool quit = false;
+	for (unsigned int i = 0; i < elements().size(); i++) {
+		nodePtr elt = elements()[i];
+		if ( dynamic_cast<IScene*>((IObject*)elt) ){
+			if(elt->getDeleted())
+				quit = true;
+			else{
+				quit = false;
+				break;
+			}
+		}
+	}
+
+	IObject::cleanup();
+
+	if(quit) INScore::postMessage("/ITL","quit");
+}
+
+//--------------------------------------------------------------------------
 void IAppl::createVirtualNodes()
 {
 	fApplDebug = IApplDebug::create(this);
@@ -396,6 +419,14 @@ void IAppl::clock()
 	QMutexLocker locker (&fTimeMutex);
 	fCurrentTime = getTime() / 1000 - fStartTime;
 	fCurrentTicks++;
+}
+
+//--------------------------------------------------------------------------
+void IAppl::quit()
+{
+	fRunning = false;
+	QString bundleTempFolder = QDir::temp().absolutePath()+QDir::separator()+"INScore";
+	QDir(bundleTempFolder).removeRecursively();
 }
 
 //--------------------------------------------------------------------------

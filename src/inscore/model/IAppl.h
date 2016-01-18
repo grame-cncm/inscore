@@ -116,7 +116,7 @@ class IAppl : public IObject, public TILoader
 		void	clock();
 		int		time() const				{ return fCurrentTime; }
 		int		ticks() const				{ return fCurrentTicks; }
-		void	quit()						{ fRunning = false; }
+		void	quit();
 		static int		getUDPInPort() 		{ return fUDP.fInPort; }
 		static int		getUDPOutPort() 	{ return fUDP.fOutPort; }
 		static int		getUDPErrPort() 	{ return fUDP.fErrPort; }
@@ -133,6 +133,8 @@ class IAppl : public IObject, public TILoader
 		const std::vector<IMessage::TUrl> getForwardList() const { return fForwarder.getForwardList(); }
 		virtual void		accept (Updater*);
 		virtual void		print(std::ostream& out) const;
+
+		virtual void		cleanup ();
 
 		/*!
 			\brief creates the object virtual nodes
