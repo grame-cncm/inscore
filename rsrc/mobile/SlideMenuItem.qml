@@ -40,7 +40,6 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: Screen.pixelDensity*7;
             color: "#3a3a3a"
-//            font.pixelSize:  Screen.pixelDensity * 4;
             font.pointSize:  14;
             font.capitalization: Font.SmallCaps
             text: "";
