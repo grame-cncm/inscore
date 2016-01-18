@@ -104,7 +104,7 @@ void INScoreScene::open (const char* fullpath)
 	const char* ptr = extension(fullpath);
 	string ext;
 	if (ptr) ext = ptr;
-	if (tolower(ext) == "inscore")
+	if (tolower(ext) == "inscore" || tolower(ext) == "inscorezip")
 		openscene (fullpath);
 	else
 		openfile (fullpath);

@@ -139,13 +139,13 @@ MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const
 					else
 						id++;
 					std::string bundleName =  srcfile.substr(id, srcfile.size()-id-11);
-					QString bundleRootPath = QDir::temp().absolutePath()+QDir::separator()+"INScore"+QDir::separator()+QString::fromStdString(bundleName);
+					QString bundleRootPath = QDir::temp().absolutePath()+QDir::separator()+"INScore"+QDir::separator();
+					bundleRootPath += QString("bundle")+QDir::separator()+QString::fromStdString(bundleName);
 					error = a->extract(bundleRootPath, true);
 					if(!error){
-						bundleName = "/ITL/"+bundleName;
-						INScore::postMessage(bundleName.c_str(), "new");
-						INScore::postMessage(bundleName.c_str(), "rootPath",bundleRootPath.toStdString().c_str());
-						INScore::postMessage(bundleName.c_str(), "load", "main.inscore");
+						INScore::postMessage("/ITL", "rootPath",bundleRootPath.toStdString().c_str());
+						INScore::postMessage("/ITL/scene", "rootPath",bundleRootPath.toStdString().c_str());
+						INScore::postMessage("/ITL", "load", "main.inscore");
 					}
 				}
 
@@ -165,5 +165,5 @@ MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const
 	return MsgHandler::kBadParameters;
 }
 
-} // end namespoace
+} // end namespace
 
