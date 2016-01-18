@@ -29,7 +29,7 @@
 #include <QtQuickWidgets>
 #include <QtWidgets>
 
-#define WIDTH 0.8
+#define WIDTH 0.7
 namespace inscore {
 
 //--------------------------------------------------------------------------
