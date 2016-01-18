@@ -92,23 +92,19 @@ Item {
                             text: modelData
                             onClicked: root.switchToPanel(modelData)
                             first: !index
+
                         }
                     }
                     SlideMenuItem{
-                    	property bool log: false;
-						text: "Show log"
-						onClicked: {
-							log = !log;
-							if (log) 	text = "Hide log"
-							else 		text = "Show log"
-							inscore.postMessage("/ITL/log", "show", log)
-						}
-						first: false
+                        property bool log: contextObject.sceneList.indexOf("/ITL/log")!==-1;
+                        text: log?"Hide log":"Show log";
+                        onClicked: {
+                            inscore.postMessage("/ITL/log", "show", !log)
+                        }
                     }
                     SlideMenuItem{
 						text: "Quit"
-						onClicked: inscore.postMessage("/ITL", "quit")
-						first: false
+                        onClicked: inscore.postMessage("/ITL", "quit")
                     }
 
                     move: Transition {
