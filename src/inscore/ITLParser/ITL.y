@@ -150,8 +150,11 @@ message		: address					{ $$ = new inscore::SIMessage(inscore::IMessage::create($
 messagelist : message					{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
 											(*$$)->list().push_back(*$1);
 											delete $1; }
-			| messagelist COMMA message {	$$ = $1; (*$$)->list().push_back(*$3); delete $3; }
+			| messagelist messagelistseparator message {	$$ = $1; (*$$)->list().push_back(*$3); delete $3; }
 			;
+messagelistseparator	: COMMA
+						| COLON
+						;
 
 //_______________________________________________
 // address specification (extends osc spec.)
