@@ -16,7 +16,8 @@ ITLlistener::ITLlistener()
 	   _socket(0),
 	  _verbose(false),
 	  _outputFormat("%addr %quotedArgs;"),
-	  _filter(0)
+	  _filter(0),
+	  fPossibleOSCAddress(false)
 
 {
 }
@@ -57,17 +58,21 @@ void ITLlistener::ProcessMessage(const osc::ReceivedMessage &m, const IpEndpoint
 		osc::ReceivedMessage::const_iterator arg = m.ArgumentsBegin();
 		int argI=0;
 		string argStr="";
+		bool number;
 
-		while(readArg(arg,m,argStr)){
+		while(readArg(arg,m,argStr,number)){
 			ostringstream argName, quotedArgName;
 			argName<<"%"<<argI;
 			quotedArgName<<"%Q"<<argI;
 
+			std::string quotedArg = number?argStr:autoQuotes(argStr);
+
 			replaceAll(out, argName.str(), argStr);
-			replaceAll(out, quotedArgName.str(), autoQuotes(argStr));
+			replaceAll(out, quotedArgName.str(), quotedArg);
 			args += argStr+" ";
-			quotedArgs += autoQuotes(argStr)+" ";
+			quotedArgs += quotedArg+" ";
 			argI++;
+			arg++;
 		}
 
 		replaceAll(out, "%args", args);
@@ -105,23 +110,23 @@ int ITLlistener::start(){
 
 //_______________________________________________________________
 
-bool ITLlistener::readArg(osc::ReceivedMessage::const_iterator& arg, const osc::ReceivedMessage& message, std::string &result)
+bool ITLlistener::readArg(osc::ReceivedMessage::const_iterator& arg, const osc::ReceivedMessage& message, std::string &result, bool& number)
 {
 	if(arg == message.ArgumentsEnd())
 		return false;
 
 	if(arg->IsString()){
 			result = arg->AsStringUnchecked();
+			number = false;
 	}else{
 		std::ostringstream outS;
 		if(arg->IsInt32())
-			outS<<arg->AsInt32Unchecked();
+			outS<<(signed int)arg->AsInt32Unchecked();
 		else if(arg->IsFloat())
 			outS<<arg->AsFloatUnchecked();
 		result = outS.str();
+		number = true;
 	}
-
-	arg++;
 	return true;
 }
 
@@ -142,19 +147,31 @@ int ITLlistener::replaceAll(std::string &replaceIn, std::string search, std::str
 //_______________________________________________________________
 string ITLlistener::autoQuotes (const string& str)
 {
+	if(!str.size())
+		return "";
+
 	bool ret = false;
 	string r = str;
+
 	const char *ptr = str.c_str();
+	if(str == "(" || str == ")" || str=="," || str==";"){
+		fPossibleOSCAddress = true;
+		return r;
+	}
 	if (*ptr == '$') ret = true;
 	while (*ptr) {
 		char c = *ptr++;
-		if (!isdigit(c) && !isalpha(c)					// number and letters
-			&& (c != '-') && (c != '_')					// identifiers chars
-			&& (c != '+') && (c != '*') && (c != '?'))	// regexp chars (note that class description needs quotes)
+		if (! (isdigit(c) || isalpha(c)					// number and letters
+			|| c == '-' || c == '_'					// identifiers chars
+			|| (fPossibleOSCAddress && c == '/')
+			|| (fPossibleOSCAddress && c == '$')  ) )	// regexp chars (note that class description needs quotes)
 			ret = true;
 	}
+
 	if(ret)
 		r = '"'+r+'"';
+
+	fPossibleOSCAddress = false;
 	return r;
 }
 

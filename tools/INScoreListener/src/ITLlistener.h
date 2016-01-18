@@ -18,6 +18,7 @@ class ITLlistener: public osc::OscPacketListener{
 	std::string _outputFormat;
 
 	OSCFilter* _filter;
+	bool fPossibleOSCAddress;
 
 
 public:
@@ -35,9 +36,9 @@ public:
 protected:
 	void ProcessMessage(const osc::ReceivedMessage &m, const IpEndpointName &remoteEndpoint);
 
-	bool readArg(osc::ReceivedMessage::const_iterator &arg, const osc::ReceivedMessage &message, std::string& result);
+	bool readArg(osc::ReceivedMessage::const_iterator &arg, const osc::ReceivedMessage &message, std::string& result, bool &number);
 	static int replaceAll(std::string& replaceIn, std::string search, std::string replaceBy);
-	static std::string autoQuotes(const std::string &str);
+	std::string autoQuotes(const std::string &str);
 };
 
 }
