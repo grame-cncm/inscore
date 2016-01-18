@@ -31,7 +31,6 @@
 #include "PeriodicTask.h"
 #include "TILoader.h"
 #include "TScripting.h"
-#include "VSceneView.h"
 #include "Forwarder.h"
 
 #include <vector>
@@ -41,6 +40,7 @@ class QGraphicsScene;
 namespace inscore
 {
 
+class VSceneView;
 /*!
 \addtogroup ITLModel
 @{
@@ -123,7 +123,7 @@ class IScene : public IRectShape, public TILoader
 		TJSEngine*		getJSEngine()		{ return &fJavascript; }
 		TLua*			getLUAEngine()	{ return &fLua; }
 
-		virtual VSceneView*	getView() const				{ return static_cast<VSceneView *>(fView); }
+		virtual VSceneView*	getSceneView() const;
 
 		/*!
 		 * \brief accept Check if the message is for the scene or his child and if true, do the forward.

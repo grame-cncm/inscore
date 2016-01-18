@@ -105,10 +105,11 @@ void IScene::setHandlers ()
 }
 
 //--------------------------------------------------------------------------
-void IScene::newScene ()	{}
-void IScene::foreground()	{ getView()->foreground(); }
-void IScene::setRootPath(const std::string& s) { fRootPath = IAppl::checkRootPath(s);}
-void IScene::del()			{ _del(false); }
+void IScene::newScene ()						{}
+void IScene::foreground()						{ getSceneView()->foreground(); }
+void IScene::setRootPath(const std::string& s)  { fRootPath = IAppl::checkRootPath(s);}
+void IScene::del()								{ _del(false); }
+VSceneView*	IScene::getSceneView() const		{ return static_cast<VSceneView *>(fView); }
 
 //--------------------------------------------------------------------------
 void IScene::reset ()
