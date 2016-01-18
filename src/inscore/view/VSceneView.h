@@ -213,6 +213,10 @@ class ZoomingGraphicsView : public QGraphicsView
 		virtual void	paintEvent  (QPaintEvent * );
 
 		void resizeEvent ( QResizeEvent * );
+
+#ifndef __MOBILE__
+		virtual void changeEvent(QEvent *e);
+#endif
 };
 
 } // end namespoace
