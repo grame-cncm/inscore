@@ -70,6 +70,7 @@ const string IAppl::kApplType("appl");
 #ifdef WIN32
 #define _CRT_SECURE_NO_DEPRECATE
 std::string IAppl::fRootPath = std::string(getenv("USERPROFILE")) + "\\";
+
 #elif ANDROID
 static std::string getFilePath() {
 	// Use standard location as root path (/sdcard/documents/inscore on most device)
@@ -84,6 +85,7 @@ static std::string getFilePath() {
 }
 // Files are writed in sdcard only
 std::string IAppl::fRootPath = getFilePath();
+
 #elif IOS
 // Files are writed in ios application sandbox only
 static std::string getFilePath() {
@@ -96,6 +98,7 @@ static std::string getFilePath() {
     return path.toStdString();
 }
 std::string IAppl::fRootPath = getFilePath();
+
 #else
 std::string IAppl::fRootPath = std::string(getenv("HOME")) + "/";
 #endif
