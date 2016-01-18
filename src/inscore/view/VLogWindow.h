@@ -57,6 +57,10 @@ public:
 protected:
 	void closeEvent(QCloseEvent * event);
 
+#ifndef __MOBILE__
+	void changeEvent(QEvent* e);
+#endif
+
 private:
 	TButton *	createToolButton(const QString &toolTip, const QIcon &icon, const char *member);
 	int			local2screen (float v) const;

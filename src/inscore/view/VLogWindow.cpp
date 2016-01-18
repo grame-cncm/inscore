@@ -138,6 +138,21 @@ void VLogWindow::istretch (float ow, float oh)
 void VLogWindow::closeEvent(QCloseEvent * ) {
 	INScore::postMessage ("/ITL/log", kshow_GetSetMethod, 0);
 }
+
+#ifndef __MOBILE__
+void VLogWindow::changeEvent(QEvent *e){
+
+	if(e->type() == QEvent::ActivationChange){
+		if(isActiveWindow()&&e->spontaneous()){
+			INScore::postMessage("/ITL/log", "foreground");
+			e->accept();
+			return;
+		}
+	}
+	return QWidget::changeEvent(e);
+}
+#endif
+
  
 void VLogWindow::setVisible(bool visible) {
 	QWidget::setVisible (visible);
