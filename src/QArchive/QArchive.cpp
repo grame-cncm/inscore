@@ -9,7 +9,6 @@ SQArchive QArchive::emptyArchive()
 	return new QArchive();
 }
 
-
 SQArchive QArchive::readArchive(QIODevice *d, QArchiveError &error)
 {
 	QArchive* a = new QArchive();
@@ -18,7 +17,15 @@ SQArchive QArchive::readArchive(QIODevice *d, QArchiveError &error)
 	return a;
 }
 
+SQArchive QArchive::readArchiveFromData(const QByteArray &data, QArchiveError &error)
+{
+	QBuffer *b = new QBuffer();
+	b->setData(data);
+	return readArchive(b,error);
+}
 
+//______________________________________________________
+//------------------------------------------------------
 
 QArchiveError QArchive::compress(QString outputArchive, bool overwrite)
 {

@@ -85,7 +85,8 @@ bool QFileDownloader::get (const char* what)
 		ITLErr << "Can't access url \"" << what << "\": " << http_strerror() << ITLEndl;
 		return false;
 	}
-	fData = buff;
+	fData.clear();
+	fData.append(buff, ret);
 	free (buff);
 	return true;
 }

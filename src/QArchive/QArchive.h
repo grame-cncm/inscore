@@ -36,12 +36,13 @@ class QArchive: public libmapping::smartable
 public:
 	static SQArchive emptyArchive();
 
-	static SQArchive readArchive(QString path, QArchiveError& error){return readArchive(new QFile(path), error);}
-	static SQArchive readArchive(QString path){QArchiveError e; return readArchive(path, e);}
-	static SQArchive readArchiveStd(std::string path, QArchiveError& error){return readArchive(QString::fromStdString(path), error);}
-	static SQArchive readArchiveStd(std::string path){QArchiveError e; return readArchiveStd(path, e);}
+	static SQArchive readArchiveFromFile(QString path, QArchiveError& error){return readArchive(new QFile(path), error);}
+	static SQArchive readArchiveFromFile(QString path){QArchiveError e; return readArchiveFromFile(path, e);}
+	static SQArchive readArchiveFromFileStd(std::string path, QArchiveError& error){return readArchiveFromFile(QString::fromStdString(path), error);}
+	static SQArchive readArchiveFromFileStd(std::string path){QArchiveError e; return readArchiveFromFileStd(path, e);}
 
-	static SQArchive readArchive(QByteArray* data, QArchiveError& error){return readArchive(new QBuffer(data), error);}
+	static SQArchive readArchiveFromData(const QByteArray& data, QArchiveError& error);
+	static SQArchive readArchiveFromData(QByteArray* data, QArchiveError& error) {return readArchive(new QBuffer(data),error);}
 
 	static SQArchive readArchive(QIODevice* device, QArchiveError& error);
 

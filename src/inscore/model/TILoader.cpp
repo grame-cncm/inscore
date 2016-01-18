@@ -124,12 +124,12 @@ MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const
 				if (Tools::isurl(srcfile)) {
 					if (!downloader) return MsgHandler::kCreateFailure;
 					if (downloader->get (srcfile.c_str()) && downloader->dataSize()) {
-						a = qarchive::QArchive::readArchive(downloader->byteArray(), error);
+						a = qarchive::QArchive::readArchiveFromData(& (downloader->byteArray()), error);
 					}
 					else return MsgHandler::kBadParameters;
 				}
 				else {
-					a = qarchive::QArchive::readArchive(makeAbsolutePath(rootpath, srcfile).c_str(), error);
+					a = qarchive::QArchive::readArchiveFromFile(makeAbsolutePath(rootpath, srcfile).c_str(), error);
 				}
 
 				if(!error){
@@ -149,14 +149,14 @@ MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const
 					}
 				}
 
-
+				a = 0;
 				delete downloader;
 				if(!error)
 					return MsgHandler::kProcessed;
 				else if(error==qarchive::FILE_NOT_FOUND)
 					ITLErr<<"The file \""<<srcfile<<"\" is not reachable."<<ITLEndl;
 				else if(error==qarchive::FILE_CORRUPTED)
-					ITLErr<<"The bundle \""<<srcfile<<"\" is currupted."<<ITLEndl;
+					ITLErr<<"The bundle \""<<srcfile<<"\" is corrupted."<<ITLEndl;
 				else if(error==qarchive::WRONG_PERMISSIONS)
 					ITLErr<<"Impossible to write in the temporary folder."<<ITLEndl;
 			}

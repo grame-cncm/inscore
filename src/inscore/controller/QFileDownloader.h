@@ -62,7 +62,7 @@ class	QFileDownloader
 
 		virtual int			dataSize() const	{ return fData.size(); }
 		virtual const char*	data() const		{ return fData.data(); }
-		const QByteArray&	byteArray() const	{ return fData; }
+		QByteArray&			byteArray()			{ return fData; }
 	 
 	private:
 	 
