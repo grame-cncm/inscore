@@ -149,7 +149,7 @@ MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const
 					}
 				}
 
-				a = 0;
+				a = (qarchive::QArchive*)0;
 				delete downloader;
 				if(!error)
 					return MsgHandler::kProcessed;
