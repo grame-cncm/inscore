@@ -15,10 +15,38 @@
 %\usepackage{pxfonts}
 \usepackage{graphicx}
 \usepackage{balance}
+\usepackage{ifpdf}
 
 \usepackage{verbatim}
 \usepackage{color}
 \usepackage{textcomp}
+
+\definecolor{mygrey}{gray}{0.93}
+\definecolor{figOrange}{RGB}{212,85,0}
+\definecolor{figRed}{RGB}{128,0,0}
+\definecolor{red}{RGB}{250,0,0}
+\definecolor{figBlue}{RGB}{0,136,170}
+
+\newenvironment{ExprCode}		{\vspace{-2mm} \small\verbatim}{\endverbatim\vspace{-2mm}}
+\newcommand{\OSC}[1]{\texttt{#1}}
+\newcommand{\oper}[1]{\textcolor{figRed}{#1}}
+\newcommand{\param}[1]{\textcolor{figOrange}{#1}}
+\newcommand{\prefix}[1]{\textcolor{figBlue}{#1}}
+
+\newcommand{\note}[1]{\textcolor{red}{(#1)}}
+
+
+\newcommand{\sExpr}{\emph{score expressions}}
+\newcommand{\SExpr}{\emph{Score expressions}}
+\newcommand{\lowTilde}{\texttildelow}
+\newcommand{\tab}{\hspace*{4mm}}
+
+\let\olditemize\itemize
+\let\oldenditemize\enditemize
+\renewenvironment{itemize} 	{\olditemize \setlength{\itemsep}{1mm}}{\oldenditemize}
+
+\newcommand{\sample}	[1]			{\vspace{-0.2em}\begin{center}\colorbox{mygrey}{\begin{minipage}[t]{0.95\columnwidth} {\small \texttt{#1}}\end{minipage}}\end{center}}
+
 
 % Title.
 % ------
@@ -27,8 +55,11 @@
 % Single \textsc{address}
 % To use with only one author or several with the same address
 % ---------------
-%\oneauthor
-%  {Author} {School \\ Department}
+\oneauthor
+  {G. Lepetit-Aimon \qquad D. Fober \qquad Y. Orlarey \qquad S. Letz} {Grame \\
+  Centre nationale de création musicale \\
+  Lyon - France \\
+     {\tt {\small \{gabriel.lepetit.aimon,fober,orlarey,letz\}@grame.fr}}}
 
 % Two addresses
 % --------------
@@ -38,26 +69,40 @@
 
 % Three addresses
 % --------------
-\threeauthors
-  {Auteur 1} {Organisme \\ Adresse électronique}
-  {Auteur 2} {Organisme \\ Adresse électronique}
-  {Auteur 3} {Organisme \\ Adresse électronique}
+%\threeauthors
+%  {Auteur 1} {Organisme \\ Adresse électronique}
+%  {Auteur 2} {Organisme \\ Adresse électronique}
+%  {Auteur 3} {Organisme \\ Adresse électronique}
 
 \begin{document}
 %
 \maketitle
 %
 \begin{abstract}
-Le résumé doit être placé en haut de la colonne gauche et doit contenir entre 150 et 200 mots.
+INScore est un environnement pour le design de partition interactives augmentées, tourné vers des usages non conventionnels de la notation musicale. L'environnement permet d'utiliser et de composer des ressources graphiques arbitraires pour la représentation de la musique aussi bien que de la notation symbolique aux formats GMN (Guido Music Notation) ou MusicXML. INScore a été étendu pour fournir des opérations de composition de partitions en notation symbolique avec un jeu d'opérateurs qui de manière consistante, prennent des partitions en entrée pour produire une partition en sortie. L'API d'INScore inclus des \sExpr , aussi bien au niveau OSC que dans son langage de script. 
+Le travail présenté est basé sur une recherche précédente qui a porté sur les problèmes de consistance de la notation musicale à travers des opérations de composition de partitions. Ce sont les aspects langage et stratégies d'évaluation des \SExpr\ qui sont abordés ici.
 \end{abstract}
-%
+
+%==============================================================
 \section{Introduction}\label{sec:introduction}
 
-Ce modèle précise les règles pour une bonne présentation des communications à proposer aux JIM 2012. Il s'inspire du modèle proposé par l'ICMC 2005.
+Contemporary music creation poses numerous challenges to the music notation. Spatialized music, new instruments, gesture based interactions, real-time and interactive scores, are among the new domains that are now commonly explored by artists. 
+Classical music notation doesn't cover the needs of these new musical forms and numerous research and approaches have recently emerged, testifying to the maturity of the music notation domain, in the light of computer tools for music notation and representation.
+Issues like writing spatialized music \cite{Ellberger_tenor2015}, addressing new instruments \cite{tmays:2014} or new interfaces \cite{kschlei:2015} (to cite just a few), are now subject of active research and proposals.
 
-Merci de le suivre afin de permettre une présentation unifiée des actes. 
+Interactive music and real-time scores are also representative of an expanding domain in the music creation field. The advent of the digital score and the maturation of the computer tools for music notation and representation constitute the basement for the development of this musical form, which is often grounded on non-traditional music representation \cite{RSmith_tenor2015} \cite{Hope_tenor2015} but may also use the common music notation \cite{Hoadley12,hoadley14}. 
+
+In order to address the notation challenges mentionned above, INScore \cite{Fober:12a,fober14c} has been designed as an environment opened to non-conventional music representation (although it supports symbolic notation), and turned to real-time and interactive use \cite{Fober:13b, Fober:14b}. It is clearly focused on music representation only and in this way, differs from tools integrated into programming environments like Bach \cite{agostini12b} or MaxScore \cite{didko08}. 
+
+INScore has been extended with \sExpr\ that provide symbolic scores composition features (e.g., putting scores in sequence or in parallel). Building new scores from existing scores at symbolic  level is not new. Haskell is providing such features \cite{Quick:2013:GAM:2505341.2505345}. Freeman and Lee proposed score composition operations in a real-time and interactive notation context \cite{Lee:2013}. Regarding the score operations used by INScore, they are imported from a previous work \cite{fober12b} that was focusing on the music notation consistency through arbitrary composition. 
+
+The novelty of the proposed approach relies on the dynamic aspects of the scores composition operations, as well as on the persistence of the score expressions. A score may be composed as an arbitrary graph of score expressions and equipped with a fine control over the changes propagation.
+
+The paper introduces first the score composition expressions. Next, the different evaluation strategies are explained and illustrated with examples. The articulation with the INScore environment is presented in detail and followed by concrete use cases. An extension of the primary scores composition design to \sExpr\ composition is next introduced. A generalization of this approach to the whole set of INScore graphic objects is finally considered in the concluding section.  
 
 
+
+%==============================================================
 \section{Taille de la page}\label{sec:page_size}
 
 Les actes seront imprimés au format A4 (21 x 29.7 cm). Le contenu de chaque page doit pouvoir tenir dans un rectangle de (17 x 24.7 cm) centré sur la page, commençant à 2 cm du haut de la page et s'arrêtant à  3 cm du bas de la page. Les marges gauche et droite doivent être de 2 cm. Le texte est présenté sur deux colonnes (8,1cm) avec une gouttière  de 0,8 cm. Le texte doit être justifié à gauche et à droite.
