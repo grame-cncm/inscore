@@ -278,7 +278,7 @@ template <typename Type>
 QString treeConstIterator<Type>::currentPath() const
 {
 	if(!fNode)
-		return false;
+		return "";
 	return fNode->path();
 }
 
