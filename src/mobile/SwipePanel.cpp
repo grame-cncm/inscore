@@ -25,6 +25,8 @@
 
 #include <QtQuickWidgets>
 
+#include "INScore.h"
+
 #include "SwipePanel.h"
 
 namespace inscore{
@@ -44,8 +46,8 @@ SwipePanel::SwipePanel(QWidget *parent) : QWidget(parent)
 	setAttribute(Qt::WA_AcceptTouchEvents);
 
 	connect(&fAnim, SIGNAL(finished()), this, SLOT(animationEnded()));
-	connect(fSwipeFilter, SIGNAL(swipeLeft()), this, SLOT(nextPanel()));
-	connect(fSwipeFilter, SIGNAL(swipeRight()), this, SLOT(previousPanel()));
+	connect(fSwipeFilter, SIGNAL(swipeLeft()), this, SLOT(swipeLeft()));
+	connect(fSwipeFilter, SIGNAL(swipeRight()), this, SLOT(swipeRight()));
 }
 
 void SwipePanel::addPanel(QString name, QWidget *panel, bool asScene)
@@ -270,15 +272,28 @@ QStringList SwipePanel::sceneList()
 }
 
 //__________________________________________________
-bool SwipePanel::nextPanel()
+bool SwipePanel::swipeLeft()
 {
-
-	return switchToPanel(fCurrentPanelID+1);
+	if(isLastPanel())
+		return false;
+	QString name = fPanelList.at(fCurrentPanelID+1).first;
+	if(name.startsWith("/ITL/") && name.count(' ')==0)
+		INScore::postMessage(name.toStdString().c_str(), "foreground");
+	else
+		switchToPanel(fCurrentPanelID+1);
+	return true;
 }
 
-bool SwipePanel::previousPanel()
+bool SwipePanel::swipeRight()
 {
-	return switchToPanel(fCurrentPanelID-1);
+	if(isFirstPanel())
+		return false;
+	QString name = fPanelList.at(fCurrentPanelID-1).first;
+	if(name.startsWith("/ITL/") && name.count(' ')==0)
+		INScore::postMessage(name.toStdString().c_str(), "foreground");
+	else
+		switchToPanel(fCurrentPanelID-1);
+	return true;
 }
 
 bool SwipePanel::switchToPanel(QString name)

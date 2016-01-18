@@ -163,13 +163,13 @@ public slots:
 	 * \brief slide to the next panel
 	 * \return true the animation is possible, false otherwise
 	 */
-	bool nextPanel();
+	bool swipeRight();
 
 	/*!
 	 * \brief slide to the previous panel
 	 * \return true the animation is possible, false otherwise
 	 */
-	bool previousPanel();
+	bool swipeLeft();
 
 	/*!
 	 * \brief slide to a specific panel
