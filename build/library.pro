@@ -49,6 +49,9 @@ HEADERS +=  $$files($$OSC/OSC/*.h)
 HEADERS +=  $$files($$JSON/*.h)
 win32:HEADERS +=  $$files($$ROOT/win32/dirent/*.h)
 
+#QArchive
+include($$SRC/QArchive/qarchive.pri)
+
 ############################## 
 # include directories
 ############################## 
