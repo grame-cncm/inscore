@@ -4,6 +4,7 @@
 #include <set>
 
 #include "ParsedData.h"
+#include "QArchive.h"
 
 
 namespace itlbundle {
@@ -16,22 +17,25 @@ class ScriptsParser{
 	ParsedData &fData;
 	std::map<std::string, std::string> fRootPaths;
 	std::string fDefaultRootPath;
+	qarchive::SQArchive fArchive;
 	BundleLog *fLog = 0;
 
 	bool fVerbose = false;
 
 public:
 	static bool read(std::string inputFile, ParsedData &result, const std::string &defaultRootPath, BundleLog* log = 0, const bool &verbose=false);
+	static bool readArchive(ParsedData &result, qarchive::SQArchive archive);
 
 	static bool ignoreCmd(std::string ITLCmd);
 
 protected:
-	ScriptsParser(ParsedData &data, std::string defaultRootPath):fData(data), fDefaultRootPath(defaultRootPath){}
+	ScriptsParser(ParsedData &data, std::string defaultRootPath):fData(data), fDefaultRootPath(defaultRootPath), fArchive(0){}
+	ScriptsParser(ParsedData &data, qarchive::SQArchive archive):fData(data), fDefaultRootPath(""), fArchive(archive){}
 
 	bool readScript(std::string script);
 
 	bool parseScript(std::string inputFile, inscore::SIMessageList &msgs);
-	void analyseMsg(const inscore::SIMessage &msg, AnalyseResult& result, bool acceptRootPathMsg=true);
+	bool analyseMsg(const inscore::SIMessage &msg, AnalyseResult& result, bool acceptRootPathMsg=true);
 	void simplifyPath();
 	/*!
 	 * \brief	absolutePath return the absolute path of path according to the rootPath matching an address

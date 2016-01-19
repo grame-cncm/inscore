@@ -27,13 +27,13 @@ ITLSRC		= $$ITLROOT/src/inscore/
 ############################## 
 # source and headers
 ############################## 
-SOURCES +=	$$SRC/ITLBundleCreator.cpp\
+SOURCES +=	$$SRC/ITLBundleCreator.cpp \
 		$$SRC/BundleCreator.cpp \
-		$$SRC/BundleLog.cpp\
+		$$SRC/BundlePackager.cpp \
+		$$SRC/BundleLog.cpp \
 		$$SRC/Parsing/ParsedData.cpp \
 		$$SRC/Parsing/ScriptsParser.cpp \
 		$$SRC/Parsing/TDummyJs.cpp \
-		$$SRC/BundlePackager.cpp \
 		$$ITLROOT/src/inscore/expression/ExprInfo.cpp
 
 
@@ -42,11 +42,11 @@ SOURCES +=	$$SRC/ITLBundleCreator.cpp\
 
 HEADERS +=	$$SRC/BundleCreator.h \
 		$$SRC/doc.h \
+		$$SRC/BundlePackager.h \
 		$$SRC/BundleLog.h \
 		$$SRC/Parsing/ParsedData.h \
 		$$SRC/Parsing/ScriptsParser.h \
 		$$SRC/Parsing/TDummyJs.h \
-		$$SRC/BundlePackager.h \
 		$$ITLROOT/src/inscore/expression/ExprInfo.h
 
 

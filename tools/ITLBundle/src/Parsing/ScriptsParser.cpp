@@ -31,6 +31,18 @@ bool ScriptsParser::read(std::string inputFile, ParsedData &result, const std::s
 	return true;
 }
 
+bool ScriptsParser::readArchive(ParsedData &result, qarchive::SQArchive archive)
+{
+	ScriptsParser p(result, archive);
+
+	result.setMainScript("main.inscore");
+
+	if(!p.readScript("main.inscore"))
+		return false;
+
+	return true;
+}
+
 
 //__________________________________________________________
 //----------------------------------------------------------
@@ -55,8 +67,13 @@ bool ScriptsParser::readScript(std::string script)
 
 	//Analyse messages
 	AnalyseResult r(script);
-	for (auto msg = msgs->list().begin(); msg != msgs->list().end(); msg++)
-		analyseMsg(*msg, r);
+	auto msg = msgs->list().begin();
+	while(msg!=msgs->list().end()){
+		if(analyseMsg(*msg, r, false))
+			msg++;
+		else
+			msg = msgs->list().erase(msg);
+	}
 
 
 	//Print log
@@ -91,21 +108,31 @@ bool ScriptsParser::readScript(std::string script)
 bool ScriptsParser::parseScript(std::string inputFile, SIMessageList &msgs)
 {
 	//open file
-	std::ifstream ifs(inputFile);
-	if(!ifs.is_open()){
-		if(fLog)fLog->error("\""+inputFile+"\" is not reachable.");
-		return false;
+	std::istream* ifs=0;
+
+	if(fArchive){
+		QByteArray data;
+		if(!fArchive->readFileStd(inputFile,data)){
+			if(fLog)fLog->error("\""+inputFile+"\" is not reachable.");
+			return false;
+		}
+		std::stringstream* ss = new std::stringstream;
+		*ss<<data.toStdString();
+		ifs = ss;
+	}else{
+		std::ifstream* fileStream = new std::ifstream(inputFile);
+		if(!fileStream->is_open()){
+			if(fLog)fLog->error("\""+inputFile+"\" is not reachable.");
+			return false;
+		}
+		ifs= fileStream;
 	}
 
-	//parse with INScore parser to check validity
 
 	inscore::TJSEngine javascriptEngine;
-#if defined V8ENGINE || defined QTJSENGINE
 	javascriptEngine.Initialize();
-#endif
 
-
-	inscore::ITLparser p(&ifs, 0, &javascriptEngine,0);
+	inscore::ITLparser p(ifs, 0, &javascriptEngine,0);
 	msgs = p.parse();
 
 	if(!p.fParseSucceed){
@@ -117,10 +144,10 @@ bool ScriptsParser::parseScript(std::string inputFile, SIMessageList &msgs)
 }
 
 //______________________________________________
-void ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool acceptRootPathMsg)
+bool ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool acceptRootPathMsg)
 {
 	if(!msg->size())
-		return;
+		return true;
 
 	std::string address = msg->address();
 
@@ -136,7 +163,7 @@ void ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool
 						fData.scriptsRessources.insert(script, new MsgParam(msg, 0));
 					}
 				}
-				return;
+				return true;
 			}
 		}else if(msg->message()=="rootPath"){
 			if(msg->size()==1){
@@ -148,7 +175,7 @@ void ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool
 							fLog->warn("In \""+result.currentScript+"\"\n         "+msg->address()+" rootPath "+rootPath+";");
 							fLog->warn("changing rootPath inside parameters message is not handled!");
 						}
-						return;
+						return false;
 					}
 
 					rootPath = absolutePath(rootPath, address);
@@ -156,7 +183,7 @@ void ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool
 					if(!rootPath.empty())
 						fRootPaths[address] = rootPath;
 				}
-				return;
+				return false;
 			}
 		}else if(msg->message()=="save" || msg->message()=="export"){
 			if(fLog){
@@ -189,9 +216,12 @@ void ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool
 		SIMessageList msgList; SIExpression expr;
 		if(msg->param(i, msgList)){
 			//Search in message list arguments
-			for (int i = 0; i < (int)msgList->list().size(); ++i) {
-				SIMessage msg = msgList->list().at(i);
-				analyseMsg(msg, result, false);
+			auto msg = msgList->list().begin();
+			while(msg!=msgList->list().end()){
+				if(analyseMsg(*msg, result, false))
+					msg++;
+				else
+					msg = msgList->list().erase(msg);
 			}
 		}else if(msg->param(i, expr)){
 			std::set<std::string> exprDependencies = inscore::ExprInfo::fileDependency(expr);
@@ -205,7 +235,7 @@ void ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool
 		}
 	}
 
-	return;
+	return true;
 }
 
 //______________________________________________
@@ -263,6 +293,9 @@ void ScriptsParser::simplifyPath()
 //----------------------------------------------------------
 std::string ScriptsParser::absolutePath(std::string path, std::string address)
 {
+	if(fArchive)
+		return path;
+
 	//_________CHECK IF ABSOLUTE____________
 	if(*(path.begin())=='/')
 		return path;

@@ -27,15 +27,32 @@ ITLSRC		= $$ITLROOT/src/inscore/
 ##############################
 # source and headers
 ##############################
-SOURCES +=	$$SRC/ITLBundleExtractor.cpp\
-		$$SRC/BundleExtractor.cpp
+SOURCES +=	$$SRC/ITLBundleExtractor.cpp \
+		$$SRC/BundleExtractor.cpp \
+		$$SRC/BundleLog.cpp \
+		$$SRC/Parsing/ParsedData.cpp \
+		$$SRC/Parsing/ScriptsParser.cpp \
+		$$SRC/Parsing/TDummyJs.cpp \
+		$$ITLROOT/src/inscore/expression/ExprInfo.cpp
 
 
 
 
 HEADERS +=	$$SRC/BundleExtractor.h \
-		$$SRC/doc.h
+		$$SRC/doc.h \
+		$$SRC/BundleLog.h \
+		$$SRC/Parsing/ParsedData.h \
+		$$SRC/Parsing/ScriptsParser.h \
+		$$SRC/Parsing/TDummyJs.h \
+		$$ITLROOT/src/inscore/expression/ExprInfo.h
 
-INCLUDEPATH +=	$$SRC/
+INCLUDEPATH +=	$$SRC/ \
+		$$SRC/Parsing/
 
 include($$ITLROOT/src/QArchive/qarchive.pri)
+
+##############################
+# import inscore parser
+##############################
+
+include ($$ITLROOT/src/inscore/ITLParser/ITLParser.pri)

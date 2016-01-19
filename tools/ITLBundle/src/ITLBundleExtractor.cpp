@@ -48,6 +48,8 @@ int main(int argc, char* argv[])
 			return 0;
 		}else if(arg == "-f" || arg=="--force-overwrite"){
 			b.setForceOverwrite();
+		}else if(arg == "-k" || arg=="--keepOriginalPath"){
+			b.setKeepOriginalPath();
 		}
 	}
 
