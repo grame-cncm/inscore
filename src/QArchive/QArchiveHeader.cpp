@@ -58,9 +58,11 @@ QArchiveError QArchiveHeader::readHeader(QIODevice *input)
 				d >> fieldID;
 				if(fieldID == H_PROP_END)
 					break;
-				if(fieldID == H_BUNDLE_VERSION)
+				if(fieldID == H_BUNDLE_VERSION){
 					d >> bundleVersion;
-				else if(fieldID == H_ITL_VERSION)
+					if(bundleVersion > BUNDLE_VERSION)	//Bundle version is higher than the library version
+						return HIGHER_BUNDLE_VERSION;
+				}else if(fieldID == H_ITL_VERSION)
 					d >> itlVersion;
 				else if(fieldID == HEADER_END)		//H_PROP_END has not been detected -> invalid file
 					return FILE_CORRUPTED;
@@ -94,7 +96,7 @@ QByteArray QArchiveHeader::generateHeader()
 	//Writing PROPERTIES
 	out << (quint8) HEADER_PROPERTIES;
 	out << (quint8) H_BUNDLE_VERSION;
-	out << bundleVersion;
+	out << BUNDLE_VERSION;
 	out << (quint8) H_ITL_VERSION;
 	out << itlVersion;
 	out << (quint8) H_PROP_END;

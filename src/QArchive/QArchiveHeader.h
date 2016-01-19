@@ -5,6 +5,9 @@
 #include <QByteArray>
 #include <smartpointer.h>
 
+
+#define BUNDLE_VERSION 1.0
+
 namespace qarchive {
 
 enum HEADER_FIELDS{
@@ -26,7 +29,8 @@ enum QArchiveError{
 	FILE_EXIST,
 	FILE_NOT_FOUND,
 	FILE_CORRUPTED,
-	WRONG_PERMISSIONS
+	WRONG_PERMISSIONS,
+	HIGHER_BUNDLE_VERSION
 };
 
 class QArchive;
@@ -41,7 +45,7 @@ public:
 	QArchiveError readHeader(QIODevice *input);
 	QByteArray generateHeader();
 
-	float bundleVersion=1, itlVersion=1.17;
+	float bundleVersion=BUNDLE_VERSION, itlVersion=1.17;
 };
 
 } // End namespace

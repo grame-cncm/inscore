@@ -32,8 +32,8 @@ public:
 	bool			addItem(QString path, const Type& item);
 	bool			addDir(QString path);
 
-	treeConstIterator<Type> localIterator() {return fCurrentNode->iterator();}
-	treeConstIterator<Type> globalIterator(){return fRoot.iterator();}
+	treeConstIterator<Type> localIterator() const {return fCurrentNode->iterator();}
+	treeConstIterator<Type> globalIterator() const {return fRoot.iterator();}
 
 private:
 	TreeNode<Type>* extractPath(QString path, QString &name);
@@ -58,13 +58,14 @@ public:
 	TreeNode<Type>*  parent()  const {return fParent;}
 
 	const Type&	at(int i)	const {return fItems.at(i).second;}
+	QString		nameAt(int i) const {return fItems.at(i).first;}
 	int			itemCount()	const {return fItems.size();}
 	bool		searchItem(QString name, Type& item) const;
 	QStringList itemsNames() const;
 	int			addItem(QString name, const Type& item);
 	QList<QPair<QString, Type>>& items() {return fItems;}
 
-	const TreeNode<Type>&	nodeAt(int i) {return fChildrenNodes.at(i);}
+	const TreeNode<Type>&	nodeAt(int i) const {return fChildrenNodes.at(i);}
 	int					nodeCount()		const {return fChildrenNodes.size();}
 	TreeNode<Type>*		searchChildren(QString name);
 	QStringList			childrenNames()	const;
@@ -75,7 +76,7 @@ public:
 	bool contains(QString name);
 	QString path() const;
 
-	treeConstIterator<Type> iterator(){return treeConstIterator<Type>(this);}
+	treeConstIterator<Type> iterator() const {return treeConstIterator<Type>(this);}
 };
 
 enum Movement{
@@ -88,13 +89,13 @@ enum Movement{
 template <typename Type>
 class treeConstIterator{
 
-	TreeNode<Type>* fNode;
+	const TreeNode<Type>* fNode;
 	int fPos=-1;
 	bool fReadingItem=true;
 
 public:
 
-	treeConstIterator(TreeNode<Type>* node):fNode(node){}
+	treeConstIterator(const TreeNode<Type>* node):fNode(node){}
 
 	Movement next();
 	bool item(Type& item) const;

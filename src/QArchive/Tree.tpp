@@ -218,10 +218,10 @@ bool TreeNode<Type>::contains(QString name)
 template<typename Type>
 QString TreeNode<Type>::path() const
 {
-	QString r="/"+getName();
+	QString r=getName();
 	const TreeNode<Type> *n = this;
 	while(n->parent()){
-		r = "/"+n->parent()->getName()+r;
+		r = n->parent()->getName()+"/"+r;
 		n = n->parent();
 	}
 	return r;
@@ -265,7 +265,7 @@ QString treeConstIterator<Type>::name() const
 
 	if(fReadingItem){
 		if(fPos < fNode->itemCount())
-			return fNode->items().at(fPos).first;
+			return fNode->nameAt(fPos);
 	}else{
 		if(fPos < fNode->nodeCount())
 			return fNode->nodeAt(fPos).getName();
@@ -279,7 +279,8 @@ QString treeConstIterator<Type>::currentPath() const
 {
 	if(!fNode)
 		return "";
-	return fNode->path();
+	QString r = fNode->path();
+	return r;
 }
 
 
@@ -298,7 +299,7 @@ Movement treeConstIterator<Type>::next(){
 	}
 
 	if(fPos < fNode->nodeCount()){
-		fNode = &(fNode->childrenList()[fPos]);
+		fNode = &(fNode->nodeAt(fPos));
 		fReadingItem = true;
 		fPos = -1;
 		return Branch;

@@ -72,6 +72,8 @@ public:
 	bool readFile(QString name, QByteArray &data);
 	bool readFileStd(const std::string& name, QByteArray &data){return readFile(QString::fromStdString(name), data);}
 
+	const Tree<int>& tree() const {return fTree;}
+
 	virtual ~QArchive();
 
 protected:
