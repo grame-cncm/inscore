@@ -10,7 +10,7 @@ namespace itlbundle {
 bool BundleExtractor::extract(std::string bundleFile, std::string outputFolder)
 {
 	QArchiveError e;
-	SQArchive a = qarchive::QArchive::readArchiveStd(bundleFile, e);
+	SQArchive a = qarchive::QArchive::readArchiveFromFileStd(bundleFile, e);
 
 	switch (e) {
 	case qarchive::NO_ERROR:

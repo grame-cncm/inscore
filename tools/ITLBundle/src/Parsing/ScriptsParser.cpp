@@ -55,10 +55,9 @@ bool ScriptsParser::readScript(std::string script)
 
 	//Analyse messages
 	AnalyseResult r(script);
-	for (int idMsg = 0; idMsg < (int)msgs->list().size(); ++idMsg) {
-		SIMessage msg = msgs->list().at(idMsg);
-		analyseMsg(msg, r);
-	}
+	for (auto msg = msgs->list().begin(); msg != msgs->list().end(); msg++)
+		analyseMsg(*msg, r);
+
 
 	//Print log
 
@@ -146,7 +145,7 @@ void ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool
 				if(msg->param(0,rootPath)){
 					if(!acceptRootPathMsg){
 						if(fLog){
-							fLog->warn("In \""+result.currentScript+"\"\n         "+msg->address()+" rootpath "+rootPath+";");
+							fLog->warn("In \""+result.currentScript+"\"\n         "+msg->address()+" rootPath "+rootPath+";");
 							fLog->warn("changing rootPath inside parameters message is not handled!");
 						}
 						return;
@@ -206,6 +205,7 @@ void ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool
 		}
 	}
 
+	return;
 }
 
 //______________________________________________
@@ -362,6 +362,12 @@ bool ScriptsParser::isFileObject(std::string ITLCmd)
 			|| ITLCmd == "svgf" || ITLCmd == "file" || ITLCmd == "faustdspf"
 			|| ITLCmd == "gmn" //to support score expression
 			;
+}
+
+//______________________________________________
+bool ScriptsParser::ignoreCmd(std::string ITLCmd)
+{
+	return ITLCmd=="rootPath";
 }
 
 //______________________________________________

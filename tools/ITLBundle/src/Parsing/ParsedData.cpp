@@ -1,5 +1,7 @@
 #include "ExprInfo.h"
 
+#include "ScriptsParser.h"
+
 #include "ParsedData.h"
 
 namespace itlbundle {
@@ -18,6 +20,44 @@ inscore::extvector<std::string> ParsedData::ressourceNames() const
 	for(auto it=ressources.begin(); it!=ressources.end(); it++)
 		vector.push_back(it->first);
 	return vector;
+}
+
+//__________________________________________________________
+//----------------------------------------------------------
+void ParsedData::applyNameMap(std::map<std::string, std::string> nameMap)
+{
+	for(auto it=nameMap.begin(); it!=nameMap.end(); it++){
+		scriptsRessources.renameRsc(it->first, it->second);
+		ressources.renameRsc(it->first, it->second);
+	}
+}
+
+std::string ParsedData::generateScript(std::string name)
+{
+	std::stringstream script;
+	inscore::SIMessageList msgs = scripts.at(name);
+
+	for(size_t i=0; i<msgs->list().size(); i++){
+		inscore::SIMessage msg = msgs->list().at(i);
+
+		if(msg->address()=="/ITL/bundle"){
+			if(msg->message()=="js"&&msg->size()){
+				std::string js;
+				if(msg->param(0, js)){
+					if(js.find("\n")<js.size()){
+						script<<"\n<?javascript\n"<<js<<"\n?>\n";
+					}else
+						script<<"<?javascript"<<js<<"?>";
+				}
+			}
+		} else if(!ScriptsParser::ignoreCmd(msg->message())){
+			msg->print(script);
+			script<<std::endl;
+		}
+
+	}
+
+	return script.str();
 }
 
 void ParsedData::simplifyPaths(int charToDelete)

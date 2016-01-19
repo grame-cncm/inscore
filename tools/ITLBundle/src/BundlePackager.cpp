@@ -12,6 +12,7 @@ bool BundlePackager::bundle(ParsedData &scripts, const std::string &outputPath, 
 	BundlePackager b(scripts);
 
 	b.mapNames();
+	scripts.applyNameMap(b.fNamesMap);
 
 	SQArchive a = qarchive::QArchive::emptyArchive();
 	b.setupArchive(a);
@@ -27,31 +28,22 @@ void BundlePackager::mapNames()
 
 	for(auto it=fInputData.scripts.begin(); it!=fInputData.scripts.end(); it++){
 		if(fInputData.isMainScript(it->first))
-			fNamesMap["main.inscore"] = it->first;
+			fNamesMap[it->first] = "main.inscore";
 		else{
 			std::stringstream name;
 			name << id <<".inscore";
-			fNamesMap[name.str()] = it->first;
+			fNamesMap[it->first] = name.str();
 			id++;
 		}
 	}
-
-	for(auto it=fNamesMap.begin(); it!=fNamesMap.end(); it++)
-		fInputData.scriptsRessources.renameRsc(it->second, it->first);
 
 	id=0;
 	for(auto it=fInputData.ressources.begin(); it!=fInputData.ressources.end(); it++){
 		//Compute the new name with the extension
 		int idExtSuffix = it->first.rfind('.');
-		std::stringstream ss;
-		ss << "Ressources/" << id <<"."<<it->first.substr(idExtSuffix+1);
-		std::string name = ss.str();
-		fNamesMap[name] = it->first;
-
-		//Rename ressources
-		std::list<SMsgParam> list = it->second;
-		for(auto itList = list.begin(); itList!=list.end(); itList++)
-			(*itList)->setValue(name);
+		std::stringstream name;
+		name << "Ressources/" << id <<"."<<it->first.substr(idExtSuffix+1);
+		fNamesMap[it->first] = name.str();
 		id++;
 	}
 }
@@ -65,45 +57,16 @@ void BundlePackager::setupArchive(qarchive::SQArchive &archive)
 	std::string fileNames = "";
 	//Add ressources and scripts
 	for(auto it=fNamesMap.begin(); it!=fNamesMap.end(); it++){
-		if(it->first.substr(0,11) != "Ressources/")
-			archive->addTextFileStd(it->first, generateScript(it->second));
-		else if(!archive->addFileStd(it->first, fInputData.mainPath+it->second))
-			std::cerr<<"Ressource: \""<<fInputData.mainPath+it->second<<"\" does not exist!"<<std::endl;
+		if(it->second.substr(0,11) != "Ressources/")
+			archive->addTextFileStd(it->second, fInputData.generateScript(it->first));
+		else if(!archive->addFileStd(it->second, fInputData.mainPath+it->first))
+			std::cerr<<"Ressource: \""<<fInputData.mainPath+it->first<<"\" does not exist!"<<std::endl;
 
-		fileNames +=  it->first + "\t" + it->second+"\n";
+		fileNames +=  it->second + "\t" + it->first+"\n";
 	}
 
 	//Add fileNames.map
 	archive->addTextFileStd("bundleMap.txt", fileNames);
-}
-
-std::string BundlePackager::generateScript(std::string scriptName)
-{
-
-	std::stringstream script;
-	inscore::SIMessageList msgs = fInputData.scripts.at(scriptName);
-
-	for(int i=0; i<msgs->list().size(); i++){
-		inscore::SIMessage msg = msgs->list().at(i);
-
-		if(msg->address()=="/ITL/bundle"){
-			if(msg->message()=="js"&&msg->size()){
-				std::string js;
-				if(msg->param(0, js)){
-					if(js.find("\n")<js.size()){
-						script<<"\n<?javascript\n"<<js<<"\n?>\n";
-					}else
-						script<<"<?javascript"<<js<<"?>";
-				}
-			}
-		}else if(!ignoreCmd(msg->message())){
-			msg->print(script);
-			script<<std::endl;
-		}
-
-	}
-
-	return script.str();
 }
 
 bool BundlePackager::writeArchive(SQArchive &archive, const std::string &outputPath, bool overwrite)
@@ -130,11 +93,6 @@ bool BundlePackager::writeArchive(SQArchive &archive, const std::string &outputP
 		break;
 	}
 	return true;
-}
-
-bool BundlePackager::ignoreCmd(std::string itlCmd)
-{
-	return itlCmd == "rootPath";
 }
 
 

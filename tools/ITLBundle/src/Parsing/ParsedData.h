@@ -40,6 +40,9 @@ public:
 	bool isMainScript(std::string scriptName){return fMainScript==scriptName;}
 	void setMainScript(std::string name){fMainScript = name;}
 
+	void applyNameMap(std::map<std::string, std::string> nameMap);
+	std::string generateScript(std::string name);
+
 	void simplifyPaths(int charToDelete);
 
 protected:

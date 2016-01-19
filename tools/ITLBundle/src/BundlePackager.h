@@ -22,12 +22,8 @@ protected:
 
 	void mapNames();
 	void setupArchive(qarchive::SQArchive& archive);
-	std::string generateScript(std::string scriptName);
 
 	bool writeArchive(qarchive::SQArchive& archive, const std::string& outputPath, bool overwrite = false);
-
-private:
-	static inline bool ignoreCmd(std::string itlCmd);
 
 };
 

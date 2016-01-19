@@ -23,6 +23,7 @@ class ScriptsParser{
 public:
 	static bool read(std::string inputFile, ParsedData &result, const std::string &defaultRootPath, BundleLog* log = 0, const bool &verbose=false);
 
+	static bool ignoreCmd(std::string ITLCmd);
 
 protected:
 	ScriptsParser(ParsedData &data, std::string defaultRootPath):fData(data), fDefaultRootPath(defaultRootPath){}
