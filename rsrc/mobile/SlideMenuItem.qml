@@ -14,15 +14,15 @@ Item {
 
     Rectangle{
         id: separator
-        visible: false;
-//        visible: !first;
+//        visible: false;
+        visible: !first;
         anchors.left: parent.left;
         anchors.right: parent.right;
         anchors.rightMargin: 4;
         anchors.leftMargin: 4;
         anchors.top: parent.top;
         height: 1
-        color: "#999999"
+        color: "#eeeeee"
     }
 
     Rectangle{
