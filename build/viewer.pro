@@ -93,3 +93,8 @@ android {
 	RESOURCES += android-rsc/inscoremobile.qrc ../rsrc/inscorescriptmobile.qrc
 }
 
+mobile_ui{
+    DEFINES += __MOBILE__
+    RESOURCES += android-rsc/inscoremobile.qrc ../rsrc/inscorescriptmobile.qrc
+}
+

@@ -3,20 +3,17 @@ import QtGraphicalEffects 1.0
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.4
 import QtQuick.Window 2.2
+import Qt.labs.folderlistmodel 2.1
 //import "./"
 
 Item {
     id: root
-
-	function menuwidth(w, h) {
-		return ((w > h) ? h : w) / 2;
-	}
 	
     property string version: ""
     signal switchToPanel(string name)
 
-    width: menuwidth(Screen.desktopAvailableWidth, Screen.desktopAvailableHeight);
-	height: Screen.desktopAvailableHeight;
+    width: 400
+    height: 1000
 
     Rectangle{
         id: slidePanel
@@ -28,18 +25,163 @@ Item {
 		SlideMenuHeader {
 			version: root.version
 			id : header
+            onClicked: {
+                if(root.state == "exploreMenu")
+                    root.state = "mainMenu";
+                else
+                    contextObject.hideMenu();
+            }
 		}
 
         // ------------  MENU  --------------------
 
         Rectangle{
             id: menuPanel
+            color: "#00000000"
 
             anchors.top: header.bottom
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
 
+
+            // --------  EXPLORE MENU -------------
+
+            Rectangle{
+                id: exploreMenu
+                anchors.fill: parent;
+
+                ExploreView{
+                    id: exploreView;
+                    anchors.fill: parent
+                    anchors.topMargin: 16
+                }
+
+                //Shadow:
+
+                Image{
+                    id: exploreMenu_shadow
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.right: parent.right
+                    width: 2.5*Screen.pixelDensity
+                    source: "shadow.png"
+                    fillMode: Image.TileVertically
+                    mirror: true;
+                    smooth: true;
+                    opacity: 0.6;
+                }
+            }
+
+
+            // --------  MAIN MENU ----------------
+            Item{
+                id: mainMenu
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                width: parent.width + mainMenu_shadow.width
+                x: 0
+                Image{
+                    //shadow
+                    id: mainMenu_shadow
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.right: parent.right
+                    width: 2.5*Screen.pixelDensity
+                    source: "shadow.png"
+                    fillMode: Image.TileVertically
+                    opacity: 0.6;
+                }
+
+                Rectangle{
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.bottom: parent.bottom
+                    anchors.right: mainMenu_shadow.left;
+                    ScrollView{
+                        anchors.fill: parent
+                        horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+
+                        Column{
+                            spacing: 2
+                            width: menuPanel.width
+
+                            move: Transition {
+                                NumberAnimation { properties: "x,y"; duration: 300 }
+                            }
+
+                            Item{height: 20; width:parent.width}
+
+                            ////////////////////////////////////
+                            //       Main menu definition     //
+                            ////////////////////////////////////
+
+                            // -- SCENES --
+                            SectionSeparator{
+                                title: "Scenes"
+                                visible: contextObject.sceneList.length
+                            }
+                            Repeater{
+                                model: contextObject.sceneList
+                                SlideMenuItem{
+                                    text: modelData
+                                    onClicked: {
+                                        contextObject.hideMenu();
+                                        inscore.postMessage(modelData, "foreground");
+                                    }
+                                    first: !index
+                                }
+                            }
+
+                            // -- LOAD --
+                            SectionSeparator{
+                                title: "Load Script"
+                            }
+
+                            SlideMenuItem{
+                                text: "Exemples"
+                                first: true
+                                onClicked: {
+                                    root.state = "exploreMenu";
+                                    exploreView.setRootPath("Exemples", "qrc:///scripts");
+                                }
+                            }
+                            SlideMenuItem{
+                                text: "from File"
+                                onClicked: {
+                                    root.state = "exploreMenu";
+                                    exploreView.setRootPath("HOME", "file:///home/gaby");
+                                }
+                            }
+
+                            // -- TOOLS --
+                            SectionSeparator{
+                                title: "Tools"
+                            }
+                            Repeater{
+                                model: contextObject.panelList
+                                SlideMenuItem{
+                                    text: modelData
+                                    onClicked: root.switchToPanel(modelData)
+                                    first: !index
+
+                                }
+                            }
+                            SlideMenuItem{
+                                property bool log: contextObject.sceneList.indexOf("/ITL/log")!==-1;
+                                text: log?"Hide log":"Show log";
+                                onClicked: {
+                                    inscore.postMessage("/ITL/log", "show", !log)
+                                }
+                            }
+                            SlideMenuItem{
+                                text: "Quit"
+                                onClicked: inscore.postMessage("/ITL", "quit")
+                            }
+                        }
+                    }
+                }
+            }
 
             Rectangle{
                 id: headerShadow
@@ -56,62 +198,29 @@ Item {
                 anchors.right: parent.right
             }
 
-            ScrollView{
-                horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-                anchors.fill: parent
-
-                Column{
-                    spacing: 2
-                    width: menuPanel.width
-
-                    Item{height: 20; width:parent.width}
-
-                    SectionSeparator{
-                        title: "Scenes"
-                        visible: contextObject.sceneList.length
-                    }
-                    Repeater{
-                        model: contextObject.sceneList
-                        SlideMenuItem{
-                            text: modelData
-                            onClicked: { 
-                            	contextObject.hideMenu();
-                            	inscore.postMessage(modelData, "foreground");
-                            }
-                            first: !index
-                        }
-                    }
-
-                    SectionSeparator{
-                        title: "Tools"
-                        visible: contextObject.panelList.length
-                    }
-                    Repeater{
-                        model: contextObject.panelList
-                        SlideMenuItem{
-                            text: modelData
-                            onClicked: root.switchToPanel(modelData)
-                            first: !index
-
-                        }
-                    }
-                    SlideMenuItem{
-                        property bool log: contextObject.sceneList.indexOf("/ITL/log")!==-1;
-                        text: log?"Hide log":"Show log";
-                        onClicked: {
-                            inscore.postMessage("/ITL/log", "show", !log)
-                        }
-                    }
-                    SlideMenuItem{
-						text: "Quit"
-                        onClicked: inscore.postMessage("/ITL", "quit")
-                    }
-
-                    move: Transition {
-						NumberAnimation { properties: "x,y"; duration: 300 }
-                    }
-                }
-            }
         }
     }
+
+    state: "mainMenu"
+
+    states: [
+        State {
+            name: "exploreMenu"
+            PropertyChanges { target: mainMenu; x: -menuPanel.width;}
+        },
+        State {
+            name: "mainMenu"
+            PropertyChanges { target: mainMenu; x: 0;}
+        }
+    ]
+    transitions: [
+        Transition {
+            to: "exploreMenu"
+            NumberAnimation{ target: mainMenu; easing.type: Easing.InCubic; properties: "x"; duration: 750; }
+        },
+        Transition {
+            to: "mainMenu"
+            NumberAnimation{ target: mainMenu; easing.type: Easing.OutCubic; properties: "x"; duration: 750; }
+        }
+    ]
 }

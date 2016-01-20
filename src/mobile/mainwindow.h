@@ -29,6 +29,7 @@ public slots:
 
 protected:
 	void resizeEvent(QResizeEvent *);
+	void closeEvent(QCloseEvent*);
 };
 
 }//end namespace

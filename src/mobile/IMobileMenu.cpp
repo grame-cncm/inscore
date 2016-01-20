@@ -24,12 +24,15 @@
 */
 #include "IMobileMenu.h"
 #include "VMobileMenu.h"
+#include "VMobileQtInit.h"
+
 
 namespace inscore {
 
 //--------------------------------------------------------------------------
 IMobileMenu::~IMobileMenu()
 {
+	VMobileQtInit::getMainPanel()->removePanel(fMobileMenu->windowTitle(),false);
 	delete fMobileMenu;
 }
 

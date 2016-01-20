@@ -2,13 +2,15 @@
 # 
 #
 
-.PHONY : macos ios win32 win64 linux android installAndroid help
+.PHONY : macos ios win32 win64 linux android installAndroid help mobileUI
 
 QMAKE ?= qmake
+
 
 system	:= $(shell uname -s)
 ifeq ($(system), Darwin)
 	TARGET = macos
+	BUILDF ?= macos
 	SPEC = -spec macx-xcode
 	QMAKEIOS = qmake-ios
 else
@@ -19,6 +21,7 @@ ifeq ($(system), MINGW32_NT-6.2)
 	TARGET = windows
 else
 	TARGET = linux
+	BUILDF ?= linux
 endif
 endif
 endif
@@ -29,10 +32,10 @@ ifeq ($(TARGET), windows)
  WINOPTS := /maxcpucount:4 /p:Configuration=Release /p:Platform=$(WINARCH)
  SPEC ?= -spec win32-msvc2013
 ifeq ($(WINARCH), x64)
-	WDEST = win64
+	BUILDF ?= win64
 	GUIDOLIB = GUIDOEngine64.dll
  else
-	WDEST = win32
+	BUILDF ?= win32
 	GUIDOLIB = GUIDOEngine.dll
  endif
 endif
@@ -57,24 +60,24 @@ help :
 #===============================================================
 # building INScore on Mac OS X
 #===============================================================
-macos : macos/INScore.xcodeproj macos/INScoreViewer.xcodeproj INScoreMac
+macos : $(BUILDF)/INScore.xcodeproj $(BUILDF)/INScoreViewer.xcodeproj INScoreMac
 
 xcodeproj: library.pro viewer.pro
-	[ -d macos ] || mkdir macos
-	cd macos && $(QMAKE) $(SPEC) ../library.pro 
-	touch macos/INScore.xcodeproj
-	cd macos && $(QMAKE) $(SPEC) ../viewer.pro 
-	touch macos/INScoreViewer.xcodeproj
+	[ -d $(BUILDF) ] || mkdir $(BUILDF)
+	cd $(BUILDF) && $(QMAKE) $(SPEC) ../library.pro 
+	touch $(BUILDF)/INScore.xcodeproj
+	cd $(BUILDF) && $(QMAKE) $(SPEC) ../viewer.pro 
+	touch $(BUILDF)/INScoreViewer.xcodeproj
 
 INScoreMac : 
 	make -C ../lib/GuidoEngine/macosx
-	xcodebuild -jobs 8 -project macos/INScore.xcodeproj -target INScore -configuration Release
-	xcodebuild -jobs 8 -project macos/INScoreViewer.xcodeproj -target INScoreViewer -configuration Release
+	xcodebuild -jobs 8 -project $(BUILDF)/INScore.xcodeproj -target INScore -configuration Release
+	xcodebuild -jobs 8 -project $(BUILDF)/INScoreViewer.xcodeproj -target INScoreViewer -configuration Release
 
-macos/INScore.xcodeproj : library.pro
+$(BUILDF)/INScore.xcodeproj : library.pro
 	make xcodeproj
 
-macos/INScoreViewer.xcodeproj : viewer.pro
+$(BUILDF)/INScoreViewer.xcodeproj : viewer.pro
 	make xcodeproj
 
 #===============================================================
@@ -136,60 +139,67 @@ installAndroid :
 #===============================================================
 # building the library on linux
 #===============================================================
-linux : linux/Makefile.lib linux/Makefile.app INScoreLinux
+linux : $(BUILDF)/Makefile.lib $(BUILDF)/Makefile.app INScoreLinux
 
 linuxproj:
-	[ -d linux ] || mkdir linux
-	cd linux && $(QMAKE) ../library.pro && mv Makefile Makefile.lib 
-	cd linux && $(QMAKE) ../viewer.pro && mv Makefile Makefile.app
+	[ -d $(BUILDF) ] || mkdir $(BUILDF)
+	cd $(BUILDF) && $(QMAKE) ../library.pro && mv Makefile Makefile.lib 
+	cd $(BUILDF) && $(QMAKE) ../viewer.pro && mv Makefile Makefile.app
 
-linux/Makefile.lib: library.pro
-	[ -d linux ] || mkdir linux
-	cd linux && $(QMAKE) ../library.pro && mv Makefile Makefile.lib 
+$(BUILDF)/Makefile.lib: library.pro
+	[ -d $(BUILDF) ] || mkdir $(BUILDF)
+	cd $(BUILDF) && $(QMAKE) ../library.pro && mv Makefile Makefile.lib 
 
-linux/Makefile.app: viewer.pro
-	[ -d linux ] || mkdir linux
-	cd linux && $(QMAKE) ../viewer.pro && mv Makefile Makefile.app
+$(BUILDF)/Makefile.app: viewer.pro
+	[ -d $(BUILDF) ] || mkdir $(BUILDF)
+	cd $(BUILDF) && $(QMAKE) ../viewer.pro && mv Makefile Makefile.app
 
 INScoreLinux:
-	make -j 4 -C linux -f Makefile.lib
-	make -j 4 -C linux -f Makefile.app
+	make -j 4 -C $(BUILDF) -f Makefile.lib
+	make -j 4 -C $(BUILDF) -f Makefile.app
 
 linuxclean:
-	make -C linux -f Makefile.lib clean
-	make -C linux -f Makefile.app clean
+	make -C $(BUILDF) -f Makefile.lib clean
+	make -C $(BUILDF) -f Makefile.app clean
+	
+	
+#===============================================================
+# building the library with mobileUI
+#===============================================================
+mobileUI: 
+	make QMAKE="$(QMAKE) CONFIG+=mobile_ui" BUILDF="mobileUI"
 
 
 #===============================================================
 # building the library on windows
 #===============================================================
-windows : $(WDEST)/INScore.vcxproj $(WDEST)/INScoreViewer.vcxproj INScoreWin $(WDEST)/release/$(GUIDOLIB) $(WDEST)/release/guidoar.dll
+windows : $(BUILDF)/INScore.vcxproj $(BUILDF)/INScoreViewer.vcxproj INScoreWin $(BUILDF)/release/$(GUIDOLIB) $(BUILDF)/release/guidoar.dll
 
 winprojects : 
-	[ -d $(WDEST) ] || mkdir $(WDEST)
-	cd $(WDEST) && $(QMAKE) $(SPEC) ../library.pro
-	cd $(WDEST) && $(QMAKE) $(SPEC) ../viewer.pro
+	[ -d $(BUILDF) ] || mkdir $(BUILDF)
+	cd $(BUILDF) && $(QMAKE) $(SPEC) ../library.pro
+	cd $(BUILDF) && $(QMAKE) $(SPEC) ../viewer.pro
 
 INScoreWin:
-	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(WDEST)/INScore.vcxproj $(WINOPTS)"
-	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(WDEST)/INScoreViewer.vcxproj $(WINOPTS)"
+	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(BUILDF)/INScore.vcxproj $(WINOPTS)"
+	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(BUILDF)/INScoreViewer.vcxproj $(WINOPTS)"
 
-$(WDEST)/INScore.vcxproj : library.pro
+$(BUILDF)/INScore.vcxproj : library.pro
 	make winprojects
 
-$(WDEST)/INScoreViewer.vcxproj : viewer.pro
+$(BUILDF)/INScoreViewer.vcxproj : viewer.pro
 	make winprojects
 
-$(WDEST)/release/$(GUIDOLIB): ../lib/GUIDOEngine/$(WDEST)/$(GUIDOLIB)
-	cp ../lib/GUIDOEngine/$(WDEST)/$(GUIDOLIB) $(WDEST)/release
+$(BUILDF)/release/$(GUIDOLIB): ../lib/GUIDOEngine/$(BUILDF)/$(GUIDOLIB)
+	cp ../lib/GUIDOEngine/$(BUILDF)/$(GUIDOLIB) $(BUILDF)/release
 
-$(WDEST)/release/guidoar.dll: ../lib/GuidoAR/$(WDEST)/guidoar.dll
-	cp ../lib/GuidoAR/$(WDEST)/guidoar.dll $(WDEST)/release
+$(BUILDF)/release/guidoar.dll: ../lib/GuidoAR/$(BUILDF)/guidoar.dll
+	cp ../lib/GuidoAR/$(BUILDF)/guidoar.dll $(BUILDF)/release
 
 winclean:
-	rm -f $(WDEST)/tmp
+	rm -f $(BUILDF)/tmp
 
 #===============================================================
 clean :
-	rm -rf macos $(WDEST) linux android ios
+	rm -rf $(BUILDF)
 
