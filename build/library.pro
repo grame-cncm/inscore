@@ -168,3 +168,14 @@ android {
     QMAKE_CXXFLAGS += -Wno-unused-parameter
     QT += androidextras
 }
+
+##############################
+# mobile test
+##############################
+
+mobile_ui{
+    DEFINES += __MOBILE__ MOBILE_TEST
+    SOURCES  +=  $$files($$SRC/mobile/*.cpp)
+    HEADERS  +=  $$files($$SRC/mobile/*.h)
+    INCLUDEPATH  +=  $$files($$SRC/mobile)
+}

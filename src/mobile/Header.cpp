@@ -36,6 +36,10 @@ Header::Header(QWidget *parent) : QQuickWidget(parent)
 	setResizeMode(QQuickWidget::SizeViewToRootObject);
 	setSource(QUrl("qrc:///qml/header.qml"));
 	connect(rootObject(), SIGNAL(popupMenu()), this, SIGNAL(popupMenu()));
+
+#ifdef MOBILE_TEST
+	rootObject()->setWidth(600);
+#endif
 }
 
 void Header::headerNameChanged(QString newTitle, bool isFirst, bool isLast)

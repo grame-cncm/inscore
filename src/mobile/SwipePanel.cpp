@@ -250,7 +250,7 @@ bool SwipePanel::isFirstPanel()
 
 bool SwipePanel::isLastPanel()
 {
-	return fPanelList.size() <= fCurrentPanelID+1;
+	return fPanelList.size()-1 <= fCurrentPanelID;
 }
 
 QStringList SwipePanel::panelList()

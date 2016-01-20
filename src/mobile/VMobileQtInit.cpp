@@ -41,9 +41,13 @@ void VMobileQtInit::startQt ()
     VQtInit::startQt();
     // Create main window. It contains tab for each scene.
 	gMainWindow = new MainWindow();
-	gMainWindow->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
     // Man window is full screen.
+#ifdef MOBILE_TEST
+	gMainWindow->show();
+#else
+	gMainWindow->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
 	gMainWindow->showMaximized();
+#endif
 // makes INScore crash on android 5
 //    VMobileQtInit::keepScreenOn();
 }
