@@ -2,7 +2,9 @@ import QtQuick 2.0
 
 // --------------- HEADER  ----------------
 Rectangle{
+    id: root
     property string version: ""
+    signal clicked;
 
 	anchors.left: parent.left
 	anchors.right: parent.right
@@ -39,4 +41,11 @@ Rectangle{
 		anchors.top: labelINScore.bottom
 		font.pointSize: 10
 	}
+
+    MouseArea{
+        anchors.fill: parent
+        onClicked: {
+            root.clicked();
+        }
+    }
 }

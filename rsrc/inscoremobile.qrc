@@ -10,5 +10,7 @@
         <file alias="slideMenu.qml">mobile/slideMenu.qml</file>
         <file alias="SlideMenuItem.qml">mobile/SlideMenuItem.qml</file>
         <file alias="SlideMenuHeader.qml">mobile/SlideMenuHeader.qml</file>
+        <file alias="shadow.png">mobile/shadow.png</file>
+        <file alias="ExploreView.qml">mobile/ExploreView.qml</file>
     </qresource>
 </RCC>
