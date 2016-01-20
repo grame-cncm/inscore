@@ -27,6 +27,7 @@
 #include <QVBoxLayout>
 
 #include "mainwindow.h"
+#include "INScore.h"
 
 namespace inscore{
 
@@ -61,6 +62,11 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 	int w = width();
 	fMenu->setGeometry(0,0, w, h);
 	QWidget::resizeEvent(e);
+}
+
+void MainWindow::closeEvent(QCloseEvent *)
+{
+	INScore::postMessage("/ITL", "quit");
 }
 
 }//end namespace
