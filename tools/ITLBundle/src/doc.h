@@ -40,6 +40,7 @@ VERSION
 " -- OPTIONS --\n"
 "  -o --output  OUTPUT_FILE  Specify the output folder\n"
 "  -f --force-overwrite      If the folder exist, overwrites it without asking\n"
+"  -k --keepOriginalPath     Recreate the original hierarchy of the bundle\n"
 "  -h  --help                Print this message and quit\n"
 "\n"
 ;
