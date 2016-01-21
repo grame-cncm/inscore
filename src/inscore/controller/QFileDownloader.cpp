@@ -79,15 +79,28 @@ void QFileDownloader::getAsync (const char* what, const char* address)
 //--------------------------------------------------------------------------
 bool QFileDownloader::get (const char* what)
 {
-	char *buff;
-	int ret = http_fetch(location(what).c_str(), &buff);
-	if (ret == -1) {			// there is an error
-		ITLErr << "Can't access url \"" << what << "\": " << http_strerror() << ITLEndl;
-		return false;
+	std::string string(what);
+	std::string begin;
+	begin.assign(string, 0,5);
+	if(begin!="qrc:/"){
+		char *buff;
+		int ret = http_fetch(location(what).c_str(), &buff);
+		if (ret == -1) {			// there is an error
+			ITLErr << "Can't access url \"" << what << "\": " << http_strerror() << ITLEndl;
+			return false;
+		}
+		fData.clear();
+		fData.append(buff, ret);
+		free (buff);
+		return true;
 	}
-	fData.clear();
-	fData.append(buff, ret);
-	free (buff);
+
+	//Return ressource file
+	QString url(what);
+	QFile qrc(url.mid(3));
+	if(!qrc.open(QIODevice::ReadOnly))
+		return false;
+	fData = qrc.readAll();
 	return true;
 }
 

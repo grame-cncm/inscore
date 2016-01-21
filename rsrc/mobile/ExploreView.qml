@@ -142,7 +142,7 @@ Item {
                                 root.openPath(fileName, fileURL);
                             else{
                                 if(isQrcPath)
-                                    inscore.postMessage("/ITL", "load", "qrc://"+filePath);
+                                    inscore.postMessage("/ITL", "load", "qrc"+filePath);
                                 else
                                     inscore.postMessage("/ITL", "load", filePath);
                             }

@@ -87,7 +87,10 @@ bool Tools::isurl (const std::string& path)
 {
 	std::string begin;
 	begin.assign(path, 0, 7);
-	return (begin == "http://") || (begin == "https:/");
+	if ( (begin == "http://") || (begin == "https:/"))
+		return true;
+	begin.assign(path, 0,5);
+	return begin == "qrc:/";
 }
 
 //--------------------------------------------------------------------------
