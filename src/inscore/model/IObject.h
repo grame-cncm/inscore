@@ -104,6 +104,7 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 		float	fDispStart, fDispEnd;	///< the object displayed range (0-1 covers the whole range)
 		bool	fDelete;				///< true when an object should be deleted
+		bool	fLock;					///< if true the object can't be deleted
 		int		fState;					///< the object modification state
 		///< the object export flag and the object childexport option flag (if the children should be exported as well)
 		std::deque<std::pair<std::string, bool> >	fExportFlag;
@@ -537,7 +538,8 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 	//--------------------------------------------------------------------------
 		/// \brief the \c 'effect' message handler
 		virtual MsgHandler::msgStatus effectMsg(const IMessage* msg);
-		virtual GraphicEffect getEffect () const;
+		virtual bool           getLocked () const {return fLock;}
+		virtual GraphicEffect  getEffect () const;
 		virtual SIMessageList  getWatch () const;
 		virtual SIMessageList  getStack () const;
 		virtual SIMessageList  getAliases () const;
@@ -554,6 +556,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 		/// \brief the \c 'rename' message handler
 		virtual MsgHandler::msgStatus renameMsg(const IMessage* msg);
+
+		/// \brief the \c 'lock' message handler
+		virtual MsgHandler::msgStatus lockMsg(const IMessage* msg);
 
 		/// \brief the \c 'watch' message handler
 		virtual MsgHandler::msgStatus evalMsg(const IMessage* msg);
