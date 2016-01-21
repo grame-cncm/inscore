@@ -98,13 +98,13 @@ INScore a été étendu avec des \sExprs\ qui fournissent des opérations de com
 
 La nouveauté de l'approche proposée repose sur les aspects dynamiques des opérations de composition ainsi que sur la persistence des expressions de composition. Une partition peut être composée comme un graphe arbitraire d'expressions et équipée d'un control fin sur la propagation des changements qui affectent les composants de ces expressions.
 
-Cet article présente tout d'abord les expressions de composition de partitions. Les différentes stratégies d'évalutation sont ensuite présentées et illustrées d'exemples. Puis, l'articulation avec l'environnement d'INScore est décrite en détail et suivie de cas d'usages concrets. L'article introduit ensuite l'extension du design initial de composition de partitions à la composition d'expressions. La généralisation de cette approche à l'ensemble des objets graphiques d'INScore est finalement abordée en conclusion.
+Cet article présente tout d'abord les expressions de composition de partitions. Les différentes stratégies d'évalutation sont ensuite exposée et illustrées d'exemples. Puis, l'articulation avec l'environnement d'INScore est décrite en détail et suivie de cas d'usages concrets. L'article introduit ensuite l'extension du design initial de composition de partitions à la composition d'expressions. La généralisation de cette approche à l'ensemble des objets graphiques d'INScore est finalement abordée en conclusion.
 
 
 %==============================================================
 \section{Spécification du langage}\label{language}
 
-L'idée directrice de ce travail est de concevoir un langage simple pour composer et manipuler des partitions en notation symbolique. Les opérateurs ayant été définis précédement \cite{fober12b}, l'enjeu est ici de fournir une interface maniable pour les utiliser dans INScore, et surtout d'exploiter les aspects dynamique de l'environnement.
+L'idée directrice de ce travail est de concevoir un langage simple pour composer et manipuler des partitions en notation symbolique. Les opérateurs ayant été définis précédement \cite{fober12b}, l'enjeu est ici de fournir une interface maniable pour les utiliser dans INScore, et surtout d'exploiter pleinement les aspects dynamique de l'environnement.
 
 %==============================================================
 \subsection{Les opérateurs}
@@ -137,7 +137,7 @@ rhythm 	&	$s1\ s2$	& applique le rythme de $s2$ à $s1$ en boucle \\
 \label{operations}
 \end{table*}
 
-Tous les opérateurs du langage ont une interface commune : ils prennent deux partitions en entrée pour produire une partition en sortie. L'uniformité de cette interface permet de combiner toutes ces opérateurs pour créer des opérateurs de plus haut niveau, ce qui permet d'étendre le jeu d'opérations initiales. La table \ref{operations} donne la liste des opérateurs.
+Tous les opérateurs du langage ont une interface commune : ils prennent deux partitions en entrée pour produire une partition en sortie. L'uniformité de cette interface permet de combiner ces opérateurs pour créer des opérateurs de plus haut niveau, ce qui permet d'étendre le jeu d'opérations initiales. La table \ref{operations} donne la liste des opérateurs.
 Les partitions sont exprimées au format Guido Music Notation [GMN]\cite{hoos98}. 
 
 
@@ -165,15 +165,16 @@ Une \sExpr\ peut être définie de la manière suivante :
 
 A noter que le mot clé \OSC{expr} est présent pour lever l'ambiguité des parenthèses qui sont également utilisées dans les scripts INScore pour définir des listes de messages.
 
-Les deux formes utilisent des \OSC{score} comme arguments. Le système st permissif pour leur type :
+Les deux formes prennent des \OSC{score} comme arguments. Le système st permissif pour leur type :
 \begin{center}
 \includegraphics[width=0.7\columnwidth]{imgs/syntax2}
 \end{center}
 
 \begin{enumerate}
 \item \OSC{score string}: une partition au format GMN ou MusicXML, définit de manière littérale.
-\item \OSC{score file}:  fait référence à un fichier au format GMN ou MusicXML. Les chemins d'accès doivent suivre les règles définies par INScore et peuvent indiquer des chemins absolus, relatifs ou encore une URL.
-\item \OSC{score object}:  fait référence à un objet existant d'INScore en utilisant une adresse OSC relative ou absolue. Cet objet doit être un objet guido (\OSC{gmn}, ou \OSC{gmnf}), musicxml (\OSC{musicxml}, ou \OSC{musicxmlf}) ou piano-roll (\OSC{pianoroll}, ou \OSC{pianorollf}). Les streams sont également supportés (\OSC{gmnstream}, ou \OSC{pianorollstream}).
+\item \OSC{score file}:  fait référence à un fichier au format GMN ou MusicXML. Les chemins d'accès doi-vent suivre les règles définies par INScore et peuvent indiquer des chemins absolus, relatifs ou encore une URL.
+\item \OSC{score object}:  fait référence à un objet existant d'INScore en utilisant une adresse OSC relative ou absolue.\\ Cet objet doit être un objet guido (\OSC{gmn}, ou \OSC{gmnf}), musicxml (\OSC{musicxml}, ou \OSC{musicxmlf}) ou piano-roll (\OSC{pianoroll}, ou \OSC{pianorollf}). \\
+Les streams sont également supportés (\OSC{gmnstream}, ou \OSC{pianorollstream}).
 \item \OSC{score expression}:  une \sExpr\ peut être utilisée comme argument d'une \sExpr\ (dans ce cas, le mot clé \OSC{expr} est optionnel).
 \end{enumerate}
 
@@ -183,7 +184,7 @@ Voici un exemple de \emph{score expression} qui met 2 partitions en parallèle a
 %==============================================================
 \section{Evaluation d'une epxression}
 \label{evaluationSpec}
-Une expression du langage est tout d'abord transformée en une représentation interne en mémoire. Dan un second temps,cette représentation est évaluée pour produire du code au format GMN en sortie, qui est finalement passée à l'objet INScore comme données spécifiques.
+Une expression du langage est tout d'abord transformée en une représentation interne en mémoire. Dan un second temps, cette représentation est évaluée pour produire du code au format GMN en sortie, qui est finalement passée à l'objet INScore comme données spécifiques.
 
 %==============================================================
 \subsection{Représentation interne d'un expression}
@@ -204,16 +205,15 @@ La représentation sous forme d'arbre est stockée avec l'objet correspondant, p
 
 %==============================================================
 \subsection{Le processus d'évaluation}
-Le processus d'évaluation traverse l'arbre d'une expression en utilisant un algorithme de \textit{depth first post-order traversal}, en réduisant chaque noeud à du code GMN.
-L'évaluation d'un noeud dépend de sont type (Figure \ref{fig:classicEval}). \\
-L'évaluation de :
+Le processus d'évaluation traverse l'arbre d'une expression en utilisant un algorithme de \textit{depth first post-order traversal}, en réduisant chaque noeud à du code GMN (Figure \ref{fig:classicEval}).
+L'évaluation d'un noeud dépend de sont type:
 \begin{itemize}
 \item un fichier GMN renvoie son contenu,
 \item une chaine GMN renvoie la chaine,
 \item un fichier MusicXML renvoie son contenu converti au format GMN,
 \item une chaine MusicXML renvoie la chaine convertie au format GMN,
 \item l'identifiant d'object renvoie son code GMN,
-\item un operateur renvoie l'application de l'opérateur au codes GMN données en paramètres.
+\item un operateur renvoie l'application de l'opérateur à ses arguments.
 \end{itemize}
 
 \begin{figure}[th]
@@ -225,7 +225,7 @@ et \OSC{score.gmn} contient \OSC{[b]}.
 \label{fig:classicEval} }
 \end{figure}
 
-Ce schéma d'évaluation permet d'éviter les problèmes de récursion (e.g. un objet qui se modifie lui même en utilisant une epxression basée sur son contenu) puisque l'objet appelant n'est modifié qu'à la fin du processus d'évaluation. 
+Ce schéma d'évaluation permet d'éviter les problèmes de récursion (e.g. un objet qui se modifie lui même en utilisant une epxression basée sur son propre contenu) puisque l'objet appelant n'est modifié qu'à la fin du processus d'évaluation. 
 Une expression est référentiellement transparente : par défaut, chaque argument n'est évalué qu'une fois et sa valeur est alors considérée comme constante.
 
 
@@ -252,7 +252,7 @@ L'usage d'arguments variables permet de décrire des expression comportant des p
 \section{L'API des expressions dans INScore}
 \label{exprAPI}
 
-Pour une intégration complète des \sExprs, l'implémentation s'appuie sur les fonctionnalités existantes de INScore. De ce fait, les \sExprs\ supportent les URLs comme arguments pour les fichiers, les événements d'interaction et bénéficient des fonctionnalités Web. La typologie des événements d'interaction a été étendue notamment pour servir les besoins de l'évaluation dynamique (voir section \ref{exprEvents}).
+Pour une intégration complète des \sExprs, l'implémentation s'appuie sur les fonctionnalités existantes de INScore. De ce fait, les \sExprs\ supportent des URLs comme arguments pour les fichiers, ainsi que les événements d'interaction. La typologie des événements d'interaction a été étendue notamment pour servir les besoins de l'évaluation dynamique (voir section \ref{exprEvents}).
 
 %==============================================================
 \subsection{Déclaration d'une expression}
@@ -264,13 +264,13 @@ L'évaluation de l'expression est déclenchée lorsque l'objet cible traite le m
 /ITL/scene/pr set pianoroll expr(\&score);
 }
 
-L'exemple précédent crée 2 objets : \OSC{score} qui est une représentation symbolique du fichier GMN \OSC{score.gmn}, et \OSC{pr} qui est une représentation en piano roll de \OSC{score} (qui est évaluée dynamiquement en raison du préfixe  \OSC{\&}).
+L'exemple précédent crée 2 objets : \OSC{score} qui est une représentation symbolique du fichier GMN \OSC{score.gmn}, et \OSC{pr} qui est une représentation en piano roll de \OSC{score} (évaluée dynamiquement en raison du préfixe  \OSC{\&}).
 
 
 %==============================================================
 \subsection{Messages specifiques des expressions}
 \label{exprMsgs}
-Les objets définis par des \sExprs\ supportent des messages spécifiques :
+Les objets définis par des \sExprs\ acceptent des messages spécifiques :
 \begin{itemize}
 \item \OSC{reeval}: déclenche la re-évaluation de l'expression. Seules les parties dynamiques sont calculées.
 \item \OSC{renew}: déclenche la re-évaluation complète de l'expression, y compris les parties statiques. 
@@ -297,15 +297,16 @@ L'association du message \OSC{expr reeval} à l'événement \OSC{newData} permet
 /ITL/scene/score watch newData\\   
 \hspace*{8mm}(/ITL/scene/copy expr reeval);
 }
+
 Dans l'exemple ci-dessus, le changement de valeur de \OSC{score} changera automatiquement la valeur de \OSC{copy}.
 
-Pour gérer les problèmes de boucle infinies, les messages associés à \OSC{newData} sont postés pour la prochaine tâche du temps d'INScore. De ce fait, l'update complet d'une partition après changement de la valeur d'un de ses composants peut s'étendre sur plusieurs tâches du temps (si un objet fait référence à un autre objet, lui-même faisant référence à un autre...) et durant ce processus, la partition pourrait passer par des états transitoires. Cependant, les objets faisant référence à eux-même et qui un mécanisme de reévaluation automatique ne seront pas bloquant pour le système.
+Pour gérer les problèmes de boucle infinies, les messages associés à \OSC{newData} sont postés pour la prochaine tâche du temps d'INScore. De ce fait, la mise à jour complète d'une partition après changement de la valeur d'un de ses composants peut s'étendre sur plusieurs tâches du temps (si un objet fait référence à un autre objet, lui-même faisant référence à un autre...) et durant ce processus, la partition peut passer par des états transitoires. De cette manière, les objets faisant référence à eux-même et qui installent un mécanisme de reévaluation automatique ne seront pas bloquant pour le système.
 
 
 %==============================================================
 \section{Composion d'expressions}
 \label{composingExpr}
-Alors qu le langage des expression permet de composer des partitions symboliques, il permet également de composer les expressions avec le préfixe  \OSC{\prefix{\lowTilde}}. En effet, alors que les arguments \OSC{\param{score}} et \OSC{\prefix{\&}\param{score}} font référence à la valeur de l'objet \OSC{score}, \OSC{\prefix{\lowTilde}\param{score}} fait référence à l'expression qui définit l'objet \OSC{score}. Dans la pratique, et avant la première évaluation, tous les arguments préfixés par \OSC{\prefix{\lowTilde}} sont remplacés par une copie de l'arbre d'expression de l'objet correspondant. Il est ainsi possible de réutiliser des \sExprs\ déjà définies pour construire des expressions plus complexes.
+Alors que le langage des expression permet de composer des partitions symboliques, il permet également de composer les expressions avec le préfixe  \OSC{\prefix{\lowTilde}}. En effet, alors que les arguments \OSC{\param{score}} et \OSC{\prefix{\&}\param{score}} font référence à la valeur de l'objet \OSC{score}, \OSC{\prefix{\lowTilde}\param{score}} fait référence à l'expression qui définit l'objet \OSC{score}. Dans la pratique, et avant la première évaluation, tous les arguments préfixés par \OSC{\prefix{\lowTilde}} sont remplacés par une copie de l'arbre d'expression de l'objet correspondant. Il est ainsi possible de réutiliser des \sExprs\ déjà définies pour construire des expressions plus complexes.
 
 La figure \ref{fig:expandingTree} illustre l'expansion de l'arbre d'expression pour l'exemple ci-dessous.
 
@@ -322,8 +323,86 @@ La figure \ref{fig:expandingTree} illustre l'expansion de l'arbre d'expression p
 \label{fig:expandingTree}}
 \end{figure}
 
+%==============================================================
+\section{Exemples}
+\label{examples}
 
+%==============================================================
+\subsection{Canon}
 
+La forme \emph{canon} constitue une structure musicale simple qui peut être facilement décrite par des \sExprs.
+
+Dans l'exemple ci-dessous, la première ligne crée un objet \OSC{score} basé sur un fichier GMN. Il est ensuite transposé à la quinte et une seconde voix est ajoutée avec un délai d'une blanche. Du fait que la transposition à un intervalle spécifique n'est pas une opération de base des opérateurs (l'intervalle de transposition est calculé à partir des 2 partitions), nous combinons \OSC{transpose} avec \OSC{seq} et \OSC{evtail} pour préfixer la partition avec une note qui détermine l'intervalle de transposition, et qui est ensuite supprimée.
+
+\sample{/ITL/scene/score set gmnf score.gmn;\\
+\\
+\# Transposition de la partition\\
+/ITL/scene/canon set gmn\\
+\tab expr(evtail\\
+\tab\tab(transpose (seq "[c]" score) "[g]")\\
+\tab\tab"[a]"\\
+\tab);\\
+\\
+\# Mise en séquence
+/ITL/scene/canon set gmn\\
+\tab expr(seq score canon);\\
+\\
+\# Ajout de la second voix décalée d'une blanche\\
+/ITL/scene/canon set gmn\\
+\tab expr(par canon (seq "[\_/2]" canon));
+}
+Le résultat est un illustré par la figure \ref{fig:canonFig}
+\begin{figure}[th]
+\centering
+\includegraphics[width=1.\columnwidth]{imgs/exampleCanon}
+\caption{Canon
+\label{fig:canonFig}}
+\end{figure}
+
+%==============================================================
+\subsection{Partitions multiformes synchronisées}
+\label{sample2}
+
+Les \sExprs\ permettent de dupliquer et de tranformer dynamiquement des partitions en les maintenant synchronisées avec l'original.
+
+\sample{/ITL/scene/stream set gmnstream \\
+\tab '[$\backslash$meter<"4/4">]';\\
+\\
+/ITL/saxo/score set gmn \\
+\tab expr( evtail\\
+\tab \tab (transpose\\
+\tab \tab \tab (seq\\
+\tab \tab \tab \tab "[e\&1]"\\
+\tab \tab \tab \tab \&/ITL/scene/stream )\\
+\tab \tab \tab "[c2]" )\\
+\tab \tab "[a]"\\
+\tab );\\
+\\
+/ITL/audience/score set pianoroll \\
+\tab expr( \&/ITL/scene/stream);\\
+\\
+/ITL/scene/stream watch newData\\
+\tab(/ITL/*/score expr reeval);
+}
+L'exemple ci-dessus crée 2 copies d'un objet GMN stream. La première est transposée pour le saxophone et la seconde est affichée sous forme de piano roll, en tant que support visuel pour le public. Chaque partition est crée dans des scenes distinctes. La dernière ligne assure la mise à jour des copies lorsque l'objet \OSC{stream} est modifié. Le résultat est présenté par la figure \ref{fig:mutliscoreFig}.
+
+\begin{figure}[th]
+\centering
+\includegraphics[width=0.9\columnwidth]{imgs/example1}
+\caption{Des partitions multi-formes
+\label{fig:mutliscoreFig}}
+\end{figure}
+
+%==============================================================
+\section{Conclusions}
+
+En combinant les opérateurs Guido avec les fonctionnalités d'INScore (API OSC, dimension Web, interactivité...), les \sExprs\ intègrent pleinement la composition de partitions symboliques dans l'environnement interactif des partitions augmentées. Elles étendent le processus d'écriture à la structure musicale et à l'aggrégation de partitions par la combinaison de différents matériaux symbolique, incluant d'autres objets de la partition. Elles constituent un jeu d'outils simple pour manipuler des partitions quelle que soit leur origine (fichiers, URLs, streams...) ou quelle que soit leur représentation (symbolique, piano roll), et pour concevoir des partitions dynamiques basées sur des compositions arbitraires.
+
+%Combining the simplicity of GuidoAR operators with the powerful features of INScore (like URL support, full OSC compatibility, interaction support...), \sExpr\ fully integrate symbolic score composition into an interactive and augmented music score environment. They suggest a creative process based upon musical structures and scores aggregation by giving the possibility to compose various score materials including score objects. Above all, \sExpr\ provide a handy way to manipulate scores regardless to their origin (files, URL, streams...) or their representation (traditional music notation or piano roll) and to design dynamic scores based on arbitrary score composition.
+
+Dans le futur, nous allons étudier l'extension des \sExprs\ à tous les objets d'INScore. Une telle approche - la composition de ressources graphiques arbitraires avec une sémantique musicale - pose des problèmes non triviaux à résoudre. En effet, si les opérations dans le domaine temporel peuvent s'appliquer à n'importe quel objet en raison de leur dimension temporelle commune, les tranformations dans le domaine des hauteurs ou dans le domaine du temps structuré (tel que le rythme) impliquent l'extension de la sémantique de l'espace graphique.
+
+%In future work, we're considering extending the \sExpr\ to all the INScore objects. Such an approach - composing arbitrary graphic resources using a musical semantic - raises issues that are non-trivial to solve. Indeed, if the operations on the time domain could be applied to any object due to their common time dimension, tranformations in the pitch domain or based on structured time (like rhythm) implies to extend the musical semantic of the graphics space.
 
 \balance
 \bibliographystyle{ieeetr}
