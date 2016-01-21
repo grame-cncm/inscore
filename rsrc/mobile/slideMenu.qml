@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.4
 import QtQuick.Window 2.2
 import Qt.labs.folderlistmodel 2.1
+import "global.js" as Size;
 //import "./"
 
 Item {
@@ -55,7 +56,7 @@ Item {
                 ExploreView{
                     id: exploreView;
                     anchors.fill: parent
-                    anchors.topMargin: 16
+                    anchors.topMargin: Size.toPixel(1)
                 }
 
                 //Shadow:
@@ -65,7 +66,8 @@ Item {
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     anchors.right: parent.right
-                    width: 2.5*Screen.pixelDensity
+                    //width: 2.5*Screen.pixelDensity
+                    width: Size.toPixel(1.5)
                     source: "shadow.png"
                     fillMode: Image.TileVertically
                     mirror: true;
@@ -88,7 +90,8 @@ Item {
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     anchors.right: parent.right
-                    width: 2.5*Screen.pixelDensity
+                    //width: 2.5*Screen.pixelDensity
+                    width: Size.toPixel(1.5)
                     source: "shadow.png"
                     fillMode: Image.TileVertically
                     opacity: 0.6;
@@ -104,14 +107,13 @@ Item {
                         horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
                         Column{
-                            spacing: 2
                             width: menuPanel.width
 
                             move: Transition {
                                 NumberAnimation { properties: "x,y"; duration: 300 }
                             }
 
-                            Item{height: 20; width:parent.width}
+                            Item{height: Size.toPixel(2); width:parent.width}
 
                             ////////////////////////////////////
                             //       Main menu definition     //
@@ -187,8 +189,8 @@ Item {
 
             Rectangle{
                 id: headerShadow
-                height: 40
-
+                height: Size.toPixel(7)//40
+                opacity: 0.9;
                 gradient: Gradient {
                     GradientStop {position: 0.00; color: "#66363636"}
                     GradientStop {position: 0.33; color: "#33363636"}

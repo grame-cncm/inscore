@@ -1,6 +1,7 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.4
 import QtQuick.Window 2.2
+import "global.js" as Size
 
 Item{
     id: root;
@@ -12,7 +13,7 @@ Item{
     signal popupMenu();
 
 	width: Screen.desktopAvailableWidth;
-	height: 54
+    height: Size.toPixel(Size.headerPointHeight)
 
     Rectangle{
         anchors.fill: parent
@@ -38,7 +39,7 @@ Item{
         font.bold: true
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        font.pointSize: 18
+        font.pixelSize: root.height * 0.6
     }
 
     Image{
@@ -49,10 +50,10 @@ Item{
         anchors.margins: 5
         width: height
         source: "qrc:///INScoreViewer.png"
+    }
 
-        MouseArea{
-            anchors.fill: parent
-            onClicked: root.popupMenu()
-        }
+    MouseArea{
+        anchors.fill: parent
+        onClicked: root.popupMenu()
     }
 }

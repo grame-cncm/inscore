@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import "global.js" as Size
 
 // --------------- HEADER  ----------------
 Rectangle{
@@ -9,7 +10,7 @@ Rectangle{
 	anchors.left: parent.left
 	anchors.right: parent.right
 	anchors.top: parent.top
-	height: 54
+    height: Size.toPixel(Size.headerPointHeight)
 	color: "#ffffff"
 
 	Image{
@@ -28,18 +29,18 @@ Rectangle{
 		font.family: "Verdana"
 		color: "#464646"
 		anchors.left: headerLogo.right
-		anchors.leftMargin: 40
+        anchors.leftMargin: Size.toPixel(3)
 		anchors.top: parent.top
-		anchors.topMargin: 4
+        anchors.topMargin: Size.headerPointHeight/5
 		font.weight: Font.Bold
-		font.pointSize: 18
+        font.pixelSize: Size.toPixel(Size.headerPointHeight/2);
 	}
 	Text{
 		text: "Version " + version
 		color: labelINScore.color
 		anchors.left: labelINScore.left
 		anchors.top: labelINScore.bottom
-		font.pointSize: 10
+        font.pixelSize:  Size.toPixel(Size.headerPointHeight/4);
 	}
 
     MouseArea{

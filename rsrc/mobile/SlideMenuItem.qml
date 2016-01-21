@@ -1,9 +1,11 @@
 import QtQuick 2.0
 import QtQuick.Window 2.0
+import "global.js" as Size
+
 
 Item {
     id: root
-    height: Screen.pixelDensity * 5;
+    height:  Size.toPixel(5.8)//Screen.pixelDensity * 5;
 //    height: 40;
     anchors.left: parent.left
     anchors.right: parent.right
@@ -38,11 +40,11 @@ Item {
         Image{
             id: iconImage
             anchors.left: parent.left;
-            anchors.leftMargin: Screen.pixelDensity*4.5;
+            anchors.leftMargin: root.height*0.9;
             anchors.verticalCenter: parent.verticalCenter
 
-            width:  Screen.pixelDensity*4;
-            height: Screen.pixelDensity*4;
+            width:  root.height*0.7;
+            height: root.height*0.7;
 
             source: ""
             visible: source!="";
@@ -52,10 +54,10 @@ Item {
             id: label
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
-            anchors.leftMargin: Screen.pixelDensity*11;
+            anchors.leftMargin: root.height*1.8;
             color: "#3a3a3a"
 //            font.pointSize:  14;
-            font.pixelSize: Screen.pixelDensity*2.5;
+            font.pixelSize: root.height*0.5;
             font.capitalization: Font.SmallCaps
             text: "";
         }

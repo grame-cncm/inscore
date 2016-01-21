@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Window 2.0
 import QtQuick.Controls 1.4
 import Qt.labs.folderlistmodel 2.1
+import "global.js" as Size
 
 Item {
     id: root;
@@ -68,11 +69,12 @@ Item {
         anchors.top: parent.top;
         anchors.left: parent.left;
         anchors.right: parent.right;
-        height: 4*Screen.pixelDensity;
+        height: Size.toPixel(4);
         model: path;
+        spacing: 0;
 
-        header: Item{height: 1; width: 4*Screen.pixelDensity;}
-        footer: Item{height: 1; width: 4*Screen.pixelDensity;}
+        header: Item{height: 1; width: Size.toPixel(4);}
+        footer: Item{height: 1; width: Size.toPixel(4);}
         delegate: pathView_delegate
 
         Component{ id: pathView_delegate
@@ -81,10 +83,10 @@ Item {
                 width: pathView_delegate_text.width;
                 Text{
                     id: pathView_delegate_text
-                    text: " "+ name + (index+1==path.count?"":" /")
+                    text: name + (index+1==path.count?"":" / ")
                     verticalAlignment:   Text.AlignVCenter;
                     color: "#3a3a3a"
-                    font.pixelSize:  3*Screen.pixelDensity;
+                    font.pixelSize:  pathView.height*3/4;
                     font.bold: true;
                     font.capitalization: Font.SmallCaps
                 }
@@ -93,9 +95,6 @@ Item {
                     onClicked:{
                         root.repeatBack(path.count-index-1);
                     }
-                }
-                Behavior on x{
-                    NumberAnimation{ duration: 500; easing.type: Easing.InOutQuad;}
                 }
 
                 Component.onCompleted: pathView.positionViewAtEnd();
@@ -225,6 +224,7 @@ Item {
                     ScriptAction{script: folderView.endAnimation();}
                 }
             }
+
         ]
 
     }
