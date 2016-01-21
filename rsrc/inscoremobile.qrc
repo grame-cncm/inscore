@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file>images/load.png</file>
         <file>images/folder.png</file>
+        <file>images/close.png</file>
     </qresource>
     <qresource prefix="/qml">
         <file alias="about.qml">mobile/about.qml</file>

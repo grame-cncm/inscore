@@ -49,7 +49,6 @@ void MsgSender::postMessage (const QString& address, const QString& msg, const Q
 
 QString MsgSender::rootPath()
 {
-	qDebug()<<QString::fromStdString(IAppl::getRootPath());
 	return QString::fromStdString(IAppl::getRootPath());
 }
 
@@ -91,7 +90,7 @@ SlideMenu::SlideMenu(QWidget *parent) : QFrame(parent)
 	fAnimOut.addAnimation(opacityOut);
 	fAnimOut.addAnimation(fPosOut);
 
-	connect(&fAnimOut, &QAbstractAnimation::finished, [this]{hide();});
+	connect(&fAnimOut, &QAbstractAnimation::finished, [this]{hide(); fMenu->rootObject()->setProperty("state","mainMenu");});
 	setAutoFillBackground(true);
 	hide();
 }
@@ -124,6 +123,7 @@ void SlideMenu::resizeEvent(QResizeEvent *)
 void SlideMenu::popupMenu()
 {
 	show();
+	fMenu->rootObject()->setProperty("state","mainMenu");
 	fAnimIn.start();
 }
 

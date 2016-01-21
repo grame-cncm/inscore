@@ -12,6 +12,8 @@ Item {
     property ListModel path: ListModel{}
     property bool isQrcPath: false
 
+    signal fileClicked(string file);
+
     function setRootPath(rootName, rootPath){
         path.clear();
         folderView.currentView.visible = false;
@@ -142,9 +144,9 @@ Item {
                                 root.openPath(fileName, fileURL);
                             else{
                                 if(isQrcPath)
-                                    inscore.postMessage("/ITL", "load", "qrc"+filePath);
+                                    root.fileClicked("qrc"+filePath);
                                 else
-                                    inscore.postMessage("/ITL", "load", filePath);
+                                    root.fileClicked(filePath);
                             }
                         }
                     }
