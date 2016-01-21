@@ -16,6 +16,7 @@ Version 1.17
 - log window supports the 'foreground' message
 - user actions on windows are generating 'foreground' messages
 - application quit when the last scene is closed (even when the log window is opened) 
+- All objects have a 'lock' boolean property that will prevent them to be deleted when set to 1.
 
 ----------------------------------------------------
 Version 1.16

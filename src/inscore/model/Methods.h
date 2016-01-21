@@ -103,6 +103,7 @@ extern const char* khue_GetSetMethod;
 extern const char* kin_GetMethod;
 extern const char* kkeyboard_GetSetMethod;
 extern const char* kload_SetMethod;
+extern const char* klock_GetSetMethod;
 extern const char* kmap_GetSetMethod;
 extern const char* kmapf_SetMethod;
 extern const char* kmapplus_SetMethod;

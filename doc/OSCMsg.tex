@@ -234,6 +234,7 @@ They could be sent to any address with the form \OSC{/ITL/\textit{scene}} or \OS
 \begin{rail}
 commonMsg :  ('show' int32)
 			| 'del'
+			| 'lock' int32
 			| ('export' | 'exportAll') ((([1] filePath )+) | [2])
 			| 'save' (| 'message' +) filePath ( | '+')
 			| PositionMsg
@@ -243,6 +244,7 @@ commonMsg :  ('show' int32)
 \end{rail}
 \index{Common messages!show}
 \index{Common messages!del}
+\index{Common messages!lock}
 \index{Common messages!export}
 \index{Common messages!exportAll}
 \index{Common messages!save}
@@ -250,6 +252,8 @@ commonMsg :  ('show' int32)
 \begin{itemize}
 \item \OSC{show}: shows or hides the destination object. The parameter is interpreted as a boolean value. Default value is \values{1}. 
 \item \OSC{del}: deletes the destination object. 
+
+\item \OSC{lock}: if not null, cancel any \OSC{del} message sent to this object. The object will still be deleted if its ancestors receive a \OSC{del} message. The parameter is interpreted as a boolean value. Default value is \values{0}. 
 
 \item \OSC{export} and \OSC{exportAll}: exports an object to an image file respectively without or with its childrens. If the exported object is a scene, childrens are always exported.\\
 1) exports to the \OSC{filePath} name. The \OSC{filePath} can be relative or absolute. When the filename is not specified, exports to \OSC{path/\textit{identifier}.pdf}. The file extension is used to infer the export format. Supported extensions and formats are: \emph{pdf, bmp, gif, jpeg, png, pgm, ppm, tiff, xbm, xpm}. \\

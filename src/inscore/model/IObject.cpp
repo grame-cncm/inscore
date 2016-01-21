@@ -89,7 +89,7 @@ OSCStream& operator <<(OSCStream& s, const TFloatPoint& val)
 //--------------------------------------------------------------------------
 IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 					fName(name), fDispStart(0), fDispEnd(1),
-					fDelete (false), fState(kNewObject), fNewData(true), fView(0), fParent(parent)
+					fDelete (false), fLock(false), fState(kNewObject), fNewData(true), fView(0), fParent(parent)
 {
 	fTypeString = "obj";
 
@@ -101,6 +101,7 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fMsgHandlerMap[kexportAll_SetMethod]= TMethodMsgHandler<IObject>::create(this, &IObject::exportAllMsg);
 //	fMsgHandlerMap["rename"]			= TMethodMsgHandler<IObject>::create(this, &IObject::renameMsg);
 	fMsgHandlerMap[ksave_SetMethod]		= TMethodMsgHandler<IObject, MsgHandler::msgStatus (IObject::*)(const IMessage*) const>::create(this, &IObject::saveMsg);
+	fMsgHandlerMap[klock_GetSetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::lockMsg);
 	fMsgHandlerMap[kwatch_GetSetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsg);
 	fMsgHandlerMap[keval_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::evalMsg);
 	
@@ -115,6 +116,8 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fGetMultiMsgHandlerMap[kalias_GetSetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getAliases);
     fGetMultiMsgHandlerMap[kstack_GetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getStack);
 
+
+	fGetMsgHandlerMap[klock_GetSetMethod]	= TGetParamMethodHandler<IObject, bool(IObject::*)() const>::create(this, &IObject::getLocked);
 	fGetMsgHandlerMap[kcount_GetMethod]		= TGetParamMethodHandler<IObject, int (IObject::*)() const>::create(this, &IObject::getSize);
 	fGetMsgHandlerMap[krcount_GetMethod]	= TGetParamMethodHandler<IObject, int (IObject::*)() const>::create(this, &IObject::getRSize);
 }
@@ -330,6 +333,10 @@ IObject::~IObject()
 void IObject::del()		{ _del(true); }
 void IObject::_del(bool delsigcnx)
 {
+	if(fLock){
+		ITLErr<<"Impossible to delete "<<getOSCAddress()<<", the object is locked."<<ITLEndl;
+		return;
+	}
     // we set the delte flag to 1
     fDelete = true;
 	IAppl::delAliases (getOSCAddress());
@@ -1384,6 +1391,18 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 		default:			// unknown event to watch
 			return MsgHandler::kBadParameters;
 	}
+	return MsgHandler::kProcessed;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::lockMsg(const IMessage *msg)
+{
+	if (!msg->size()) return MsgHandler::kBadParameters;
+	int lock;
+	if(!msg->param(0,lock))
+		return MsgHandler::kBadParameters;
+
+	fLock = lock;
 	return MsgHandler::kProcessed;
 }
 

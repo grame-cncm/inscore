@@ -104,6 +104,7 @@ const char* khue_GetSetMethod		= "hue";			// Get Set
 const char* kin_GetMethod			= "in";				// Get
 const char* kkeyboard_GetSetMethod	= "keyboard";		// Get Set
 const char* kload_SetMethod			= "load";			// Set
+const char* klock_GetSetMethod		= "lock";			// Get Set
 const char* kmap_GetSetMethod		= "map";			// Get Set
 const char* kmapplus_SetMethod		= "map+";			// Set
 const char* kmapf_SetMethod			= "mapf";			// Set
