@@ -16,6 +16,7 @@
 \usepackage{graphicx}
 \usepackage{balance}
 \usepackage{ifpdf}
+\usepackage{hyperref}
 
 \usepackage{verbatim}
 \usepackage{color}
@@ -80,25 +81,25 @@
 \maketitle
 %
 \begin{abstract}
-INScore est un environnement pour le design de partition interactives augmentées, tourné vers des usages non conventionnels de la notation musicale. L'environnement permet d'utiliser et de composer des ressources graphiques arbitraires pour la représentation de la musique aussi bien que de la notation symbolique aux formats GMN (Guido Music Notation) ou MusicXML. INScore a été étendu pour fournir des opérations de composition de partitions en notation symbolique avec un jeu d'opérateurs qui de manière consistante, prennent des partitions en entrée pour produire une partition en sortie. L'API d'INScore inclus des \sExprs , aussi bien au niveau OSC que dans son langage de script. 
+INScore est un environnement pour le design de partition interactives augmentées, tourné vers des usages non conventionnels de la notation musicale. L'environnement permet d'utiliser et de composer des ressources graphiques arbitraires pour la représentation de la musique aussi bien que de la notation symbolique aux formats GMN (Guido Music Notation) ou MusicXML. INScore a été étendu pour fournir des opérations de composition de partitions en notation symbolique avec un jeu d'opérateurs qui de manière consistante, prennent des partitions en entrée pour produire une partition en sortie. L'API d'INScore inclut des \sExprs , aussi bien au niveau OSC que dans son langage de script. 
 Le travail présenté est basé sur une recherche précédente qui a porté sur les problèmes de consistance de la notation musicale à travers des opérations de composition de partitions. Ce sont les aspects langage et stratégies d'évaluation des \sExprs\ qui sont abordés ici.
 \end{abstract}
 
 %==============================================================
 \section{Introduction}\label{sec:introduction}
 
-La notation musicale fait face à nombreux défis posés par la création contemporaine. Les musiques spatialisée, les nouveaux instruments, les partitions interactives et temps-réel, sont parmi les nouveaux domaines couramment explorés par les artistes. 
-La notation musicale conventionnelle ne couvrez pas les besoins de ces nouvelles formes musicales et de nombreuses recherches et approches ont récemment émergé, témoignant d'une certaine maturité des outils informatiques pour la notation et la représentation de la musique. Les problèmes posés par la spatialisation de la musique \cite{Ellberger_tenor2015}, par l'écriture pour de nouveaux instruments \cite{tmays:2014} ou de nouvelles interfaces  \cite{kschlei:2015} (pour n'en citer que quelques uns), sont maintenant le sujets de recherches actives et de propositions originales.
+La notation musicale fait face à nombreux défis posés par la création contemporaine. Les musiques spatialisées, les nouveaux instruments, les partitions interactives et temps-réel, sont parmi les nouveaux domaines couramment explorés par les artistes. 
+La notation musicale conventionnelle ne couvre pas les besoins de ces nouvelles formes musicales et de nombreuses recherches et approches ont récemment émergé, témoignant d'une certaine maturité des outils informatiques pour la notation et la représentation de la musique. Les problèmes posés par la spatialisation de la musique \cite{Ellberger_tenor2015}, par l'écriture pour de nouveaux instruments \cite{tmays:2014} ou de nouvelles interfaces  \cite{kschlei:2015} (pour n'en citer que quelques uns), sont maintenant le sujet de recherches actives et de propositions originales.
 
 Les musiques interactives et les partitions temps-réel représentent également un domaine en pleine expansion dans le champ de la création musicale. Les partitions numériques et la maturation des outils informatiques pour la notation et la représentation de la musique constituent les fondements du développement de ces formes musicales, souvent basées sur des représentations non traditionnelles de la musique \cite{RSmith_tenor2015, Hope_tenor2015} sans toutefois occulter son usage \cite{Hoadley12,hoadley14}. 
 
 Afin de répondre aux besoins évoqués ci-dessus, INScore \cite{Fober:12a,fober14c} a été conçu comme un environnement ouvert aux représentations non conventionnelles de la musique (tout en supportant la notation symbolique), et tourné vers l'interactivité et les usages temps-réel \cite{Fober:13b, Fober:14b}. INScore est spécialisé sur la représentation de la musique uniquement et diffère en celà des outils intégrés dans des environnements de programmation tels que Bach \cite{agostini12b} ou MaxScore \cite{didko08}. 
 
-INScore a été étendu avec des \sExprs\ qui fournissent des opérations de composition de partitions (e.g. composer des partitions en séquence ou en parallèle). La création de partitions par composition de partitions existantes en notation symbolique n'est pas à proprement parler une innovation. Haskell permet ce genre d'opérations  \cite{Quick:2013:GAM:2505341.2505345}. Freeman et Lee ont également proposé des opérations de composition de partition en temps-réel dans un contexte de notation interactive \cite{Lee:2013}. En ce qui concerne les opérateurs de composition de partitions d'INScore, elles proviennent d'un travail de recherche précédent \cite{fober12b} qui portait sur la consistence de la notation musicale à travers des opérations de composition arbitraires.
+INScore a été étendu avec des \sExprs\ qui fournissent des opérations de composition de partitions (e.g. composer des partitions en séquence ou en parallèle). La création de partitions par composition de partitions existantes en notation symbolique n'est pas à proprement parler une innovation. La module Haskore de Haskell permet ce genre d'opérations  \cite{haskore}. Freeman et Lee ont également proposé des opérations de composition de partition en temps-réel dans un contexte de notation interactive \cite{Lee:2013}. En ce qui concerne les opérateurs de composition de partitions d'INScore, elles proviennent d'un travail de recherche précédent \cite{fober12b} qui portait sur la consistence de la notation musicale à travers des opérations de composition arbitraires.
 
 La nouveauté de l'approche proposée repose sur les aspects dynamiques des opérations de composition ainsi que sur la persistence des expressions de composition. Une partition peut être composée comme un graphe arbitraire d'expressions et équipée d'un control fin sur la propagation des changements qui affectent les composants de ces expressions.
 
-Cet article présente tout d'abord les expressions de composition de partitions. Les différentes stratégies d'évalutation sont ensuite exposée et illustrées d'exemples. Puis, l'articulation avec l'environnement d'INScore est décrite en détail et suivie de cas d'usages concrets. L'article introduit ensuite l'extension du design initial de composition de partitions à la composition d'expressions. La généralisation de cette approche à l'ensemble des objets graphiques d'INScore est finalement abordée en conclusion.
+Cet article présente tout d'abord les expressions de composition de partitions. Les différentes stratégies d'évaluation sont ensuite exposées et illustrées d'exemples. Puis, l'articulation avec l'environnement d'INScore est décrite en détail et suivie de cas d'usages concrets. L'article introduit ensuite l'extension du design initial de composition de partitions à la composition d'expressions. La généralisation de cette approche à l'ensemble des objets graphiques d'INScore est finalement abordée en conclusion.
 
 
 %==============================================================
@@ -145,7 +146,7 @@ Les partitions sont exprimées au format Guido Music Notation [GMN]\cite{hoos98}
 \subsection{Le langage}
 
 Dans le contexte des outils informatiques pour la création musicale, la conception d'un langage délimite un cadre pour le processus de création, auquel les artistes ne pourront échapper. Dans cette mesure, la définition d'un langage définit également un \textit{workflow} que l'utilisateur devra adopter. 
-L'uniformité des entrées et des sorties des opérateurs permet de composer par transformation et aggregation successive de partitions ou de fragments de partitions. Dans une certaine mesure, ce processus (appliquer des tranformations sur divers matériaux et les combiner en un tout) est similaire au processus de création en électro-acoustique où, après avoir choisit ses matériaux sonores, le compositeur les transforme, applique des effets, les mixe... jusqu'au résultat final où le matériau d'origine n'est souvent plus reconnaissable.
+L'uniformité des entrées et des sorties des opérateurs permet de composer par transformation et aggregation successive de partitions ou de fragments de partitions. Dans une certaine mesure, ce processus (appliquer des tranformations sur divers matériaux et les combiner en un tout) est similaire au processus de création en électro-acoustique où, après avoir choisi ses matériaux sonores, le compositeur les transforme, applique des effets, les mixe... jusqu'au résultat final où le matériau d'origine n'est souvent plus reconnaissable.
 
 L'adaptation de cette approche à la notation symbolique la situe dans une même métaphore, plaçant la structure musicale au centre du processus de création où la qualité artistique émerge des processus qui tranforment et lient des fragments musicaux ensemble.
 C'est dans cette perspective que la syntaxe des expressions du langage a été définie. En particulier ces expressions peuvent utiliser divers matériaux hétérogènes, y compris d'autres expressions ou des objets existants de la partition.
@@ -160,12 +161,12 @@ Une \sExpr\ peut être définie de la manière suivante :
 
 \begin{enumerate}
 \item la première forme [1], reflète l'interface des opérateurs : deux partitions sont combinées pour en produire une nouvelle.
-\item la deuxième forme [2] définit une expression comme une simple partition, ce qui trouve son utilité pour la duplication d'objets, par exemple pour en fournir des vues différentes (voir section \ref{sample2})
+\item la deuxième forme [2] défini une expression comme une simple partition, ce qui trouve son utilité pour la duplication d'objets, par exemple pour en fournir des vues différentes (voir section \ref{sample2})
 \end{enumerate}
 
 A noter que le mot clé \OSC{expr} est présent pour lever l'ambiguité des parenthèses qui sont également utilisées dans les scripts INScore pour définir des listes de messages.
 
-Les deux formes prennent des \OSC{score} comme arguments. Le système st permissif pour leur type :
+Les deux formes prennent des \OSC{score} comme arguments. Le système est permissif pour leur type :
 \begin{center}
 \includegraphics[width=0.7\columnwidth]{imgs/syntax2}
 \end{center}
@@ -182,9 +183,9 @@ Voici un exemple de \emph{score expression} qui met 2 partitions en parallèle a
 \sample{expr( par score.gmn (seq "[c]" score) )}
 
 %==============================================================
-\section{Evaluation d'une epxression}
+\section{Evaluation d'une expression}
 \label{evaluationSpec}
-Une expression du langage est tout d'abord transformée en une représentation interne en mémoire. Dan un second temps, cette représentation est évaluée pour produire du code au format GMN en sortie, qui est finalement passée à l'objet INScore comme données spécifiques.
+Une expression du langage est tout d'abord transformée en une représentation interne en mémoire. Dans un second temps, cette représentation est évaluée pour produire du code au format GMN en sortie, qui est finalement passée à l'objet INScore comme données spécifiques.
 
 %==============================================================
 \subsection{Représentation interne d'un expression}
@@ -199,14 +200,14 @@ Quand il rencontre une  \sExpr, le parser INScore en crée une représentation m
 \label{fig:parsing}}
 \end{figure}
 
-La représentation sous forme d'arbre est strictement similaire à la version textuelle d'une expression. Le typage des arguments constitue la seule différence : alors que le type des arguments (GMN code, fichier, identifer ou expression) est implicite dans l'expression textuelle, celui-ci devient explicite dans la représentation mémoire. 
+La représentation sous forme d'arbre est strictement similaire à la version textuelle d'une expression. Le typage des arguments constitue la seule différence : alors que le type des arguments (GMN code, fichier, identificateur ou expression) est implicite dans l'expression textuelle, celui-ci devient explicite dans la représentation mémoire. 
 
 La représentation sous forme d'arbre est stockée avec l'objet correspondant, prête à être évaluée.
 
 %==============================================================
 \subsection{Le processus d'évaluation}
 Le processus d'évaluation traverse l'arbre d'une expression en utilisant un algorithme de \textit{depth first post-order traversal}, en réduisant chaque noeud à du code GMN (Figure \ref{fig:classicEval}).
-L'évaluation d'un noeud dépend de sont type:
+L'évaluation d'un noeud dépend de son type:
 \begin{itemize}
 \item un fichier GMN renvoie son contenu,
 \item une chaine GMN renvoie la chaine,
@@ -220,12 +221,12 @@ L'évaluation d'un noeud dépend de sont type:
 \centering
 \includegraphics[width=1\columnwidth]{imgs/classicEval}
 \caption{Evaluation d'une expression,
-où \OSC{score} est définit comme \OSC{[a]}
+où \OSC{score} est défini comme \OSC{[a]}
 et \OSC{score.gmn} contient \OSC{[b]}.
 \label{fig:classicEval} }
 \end{figure}
 
-Ce schéma d'évaluation permet d'éviter les problèmes de récursion (e.g. un objet qui se modifie lui même en utilisant une epxression basée sur son propre contenu) puisque l'objet appelant n'est modifié qu'à la fin du processus d'évaluation. 
+Ce schéma d'évaluation permet d'éviter les problèmes de récursion (e.g. un objet qui se modifie lui même en utilisant une expression basée sur son propre contenu) puisque l'objet appelant n'est modifié qu'à la fin du processus d'évaluation. 
 Une expression est référentiellement transparente : par défaut, chaque argument n'est évalué qu'une fois et sa valeur est alors considérée comme constante.
 
 
@@ -239,14 +240,14 @@ Dans notre cas, la transparence référentielle (qui permet la mémoïsation) pe
 \OSC{ expr( \oper{par} (\oper{seq} \param{score.gmn} \prefix{\&}\param{score}) \\
  \tab\tab\tab\tab (\oper{seq} \param{"[a]" score}) )}
 \includegraphics[width=0.9\columnwidth]{imgs/dynamicEval}
-\caption{Propagation d'une evaluation dynamique. \OSC{\prefix{\&}\param{score}} est mis à jour avec la valeur courante de \OSC{score} à chaque évaluation, tandis que \OSC{\param{score}} conserve la valeur calculée à la première évaluation. Ainsi, lorsqu'on re-évalue l'expression, la deuxième opération \OSC{\oper{seq}} ne sera pas recalculée. 
+\caption{Propagation d'une évaluation dynamique. \OSC{\prefix{\&}\param{score}} est mis à jour avec la valeur courante de \OSC{score} à chaque évaluation, tandis que \OSC{\param{score}} conserve la valeur calculée à la première évaluation. Ainsi, lorsqu'on re-évalue l'expression, la deuxième opération \OSC{\oper{seq}} ne sera pas recalculée. 
 }
 \label{fig:dynamicEval}
 \end{figure}
 
-Un arbre qui contient un argument variable est un \emph{arbre dynamique}. Quand un argument variable est rencontré sur une branche, l'attribut \emph{dynamique} est propagé jusqu'à la racine de l'arbre. Après la première évaluation, seules les parties dynamique d'un arbre sont recalculées. Pour des raisons d'optimisation, le système vérifie que la valeur d'un argument à changé et ne recalcule la branche correspondant que si nécessaire.
+Un arbre qui contient un argument variable est un \emph{arbre dynamique}. Quand un argument variable est rencontré sur une branche, l'attribut \emph{dynamique} est propagé jusqu'à la racine de l'arbre. Après la première évaluation, seules les parties dynamique d'un arbre sont recalculées. Pour des raisons d'optimisation, le système vérifie que la valeur d'un argument a changé et ne recalcule la branche correspondant que si nécessaire.
 
-L'usage d'arguments variables permet de décrire des expression comportant des parties variables arbitraires : on peut le voir comme la composition d'une partition symbolique par aggrégation de parties statiques et variables.
+L'usage d'arguments variables permet de décrire des expressions comportant des parties variables arbitraires : on peut le voir comme la composition d'une partition symbolique par aggrégation de parties statiques et variables.
 
 %==============================================================
 \section{L'API des expressions dans INScore}
@@ -304,7 +305,7 @@ Pour gérer les problèmes de boucle infinies, les messages associés à \OSC{ne
 
 
 %==============================================================
-\section{Composion d'expressions}
+\section{Composition d'expressions}
 \label{composingExpr}
 Alors que le langage des expression permet de composer des partitions symboliques, il permet également de composer les expressions avec le préfixe  \OSC{\prefix{\lowTilde}}. En effet, alors que les arguments \OSC{\param{score}} et \OSC{\prefix{\&}\param{score}} font référence à la valeur de l'objet \OSC{score}, \OSC{\prefix{\lowTilde}\param{score}} fait référence à l'expression qui définit l'objet \OSC{score}. Dans la pratique, et avant la première évaluation, tous les arguments préfixés par \OSC{\prefix{\lowTilde}} sont remplacés par une copie de l'arbre d'expression de l'objet correspondant. Il est ainsi possible de réutiliser des \sExprs\ déjà définies pour construire des expressions plus complexes.
 
@@ -384,7 +385,7 @@ Les \sExprs\ permettent de dupliquer et de tranformer dynamiquement des partitio
 /ITL/scene/stream watch newData\\
 \tab(/ITL/*/score expr reeval);
 }
-L'exemple ci-dessus crée 2 copies d'un objet GMN stream. La première est transposée pour le saxophone et la seconde est affichée sous forme de piano roll, en tant que support visuel pour le public. Chaque partition est crée dans des scenes distinctes. La dernière ligne assure la mise à jour des copies lorsque l'objet \OSC{stream} est modifié. Le résultat est présenté par la figure \ref{fig:mutliscoreFig}.
+L'exemple ci-dessus crée 2 copies d'un objet GMN stream. La première est transposée pour le saxophone et la seconde est affichée sous forme de piano roll, en tant que support visuel pour le public. Chaque partition est crée dans des scènes distinctes. La dernière ligne assure la mise à jour des copies lorsque l'objet \OSC{stream} est modifié. Le résultat est présenté par la figure \ref{fig:mutliscoreFig}.
 
 \begin{figure}[th]
 \centering
@@ -396,13 +397,9 @@ L'exemple ci-dessus crée 2 copies d'un objet GMN stream. La première est trans
 %==============================================================
 \section{Conclusions}
 
-En combinant les opérateurs Guido avec les fonctionnalités d'INScore (API OSC, dimension Web, interactivité...), les \sExprs\ intègrent pleinement la composition de partitions symboliques dans l'environnement interactif des partitions augmentées. Elles étendent le processus d'écriture à la structure musicale et à l'aggrégation de partitions par la combinaison de différents matériaux symbolique, incluant d'autres objets de la partition. Elles constituent un jeu d'outils simple pour manipuler des partitions quelle que soit leur origine (fichiers, URLs, streams...) ou quelle que soit leur représentation (symbolique, piano roll), et pour concevoir des partitions dynamiques basées sur des compositions arbitraires.
-
-%Combining the simplicity of GuidoAR operators with the powerful features of INScore (like URL support, full OSC compatibility, interaction support...), \sExpr\ fully integrate symbolic score composition into an interactive and augmented music score environment. They suggest a creative process based upon musical structures and scores aggregation by giving the possibility to compose various score materials including score objects. Above all, \sExpr\ provide a handy way to manipulate scores regardless to their origin (files, URL, streams...) or their representation (traditional music notation or piano roll) and to design dynamic scores based on arbitrary score composition.
+En combinant les opérateurs Guido avec les fonctionnalités d'INScore (API OSC, dimension Web, interactivité...), les \sExprs\ intègrent pleinement la composition de partitions symboliques dans l'environnement interactif des partitions augmentées. Elles étendent le processus d'écriture à la structure musicale et à l'aggrégation de partitions par la combinaison de différents matériaux symbolique, incluant d'autres objets de la partition. Elles constituent un jeu d'outils simples pour manipuler des partitions quelle que soit leur origine (fichiers, URLs, streams...) ou quelle que soit leur représentation (symbolique, piano roll), et pour concevoir des partitions dynamiques basées sur des compositions arbitraires.
 
 Dans le futur, nous allons étudier l'extension des \sExprs\ à tous les objets d'INScore. Une telle approche - la composition de ressources graphiques arbitraires avec une sémantique musicale - pose des problèmes non triviaux à résoudre. En effet, si les opérations dans le domaine temporel peuvent s'appliquer à n'importe quel objet en raison de leur dimension temporelle commune, les tranformations dans le domaine des hauteurs ou dans le domaine du temps structuré (tel que le rythme) impliquent l'extension de la sémantique de l'espace graphique.
-
-%In future work, we're considering extending the \sExpr\ to all the INScore objects. Such an approach - composing arbitrary graphic resources using a musical semantic - raises issues that are non-trivial to solve. Indeed, if the operations on the time domain could be applied to any object due to their common time dimension, tranformations in the pitch domain or based on structured time (like rhythm) implies to extend the musical semantic of the graphics space.
 
 \balance
 \bibliographystyle{ieeetr}
