@@ -25,6 +25,7 @@
 
 #include "SlideMenu.h"
 #include "INScore.h"
+#include "IAppl.h"
 
 namespace inscore {
 
@@ -44,7 +45,13 @@ void MsgSender::postMessage (const QString& address, const QString& msg, float v
 	{ INScore::postMessage(address.toStdString().c_str(), msg.toStdString().c_str(), val); }
 
 void MsgSender::postMessage (const QString& address, const QString& msg, const QString& val)
-	{ INScore::postMessage(address.toStdString().c_str(), msg.toStdString().c_str(), val.toStdString().c_str()); }
+{ INScore::postMessage(address.toStdString().c_str(), msg.toStdString().c_str(), val.toStdString().c_str()); }
+
+QString MsgSender::rootPath()
+{
+	qDebug()<<QString::fromStdString(IAppl::getRootPath());
+	return QString::fromStdString(IAppl::getRootPath());
+}
 
 
 //--------------------------------------------------------------------------

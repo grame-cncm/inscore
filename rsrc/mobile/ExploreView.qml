@@ -9,12 +9,16 @@ Item {
     anchors.fill: parent;
 
     property ListModel path: ListModel{}
+    property bool isQrcPath: false
 
     function setRootPath(rootName, rootPath){
         path.clear();
         folderView.currentView.visible = false;
 
         root.openPath(rootName, rootPath);
+
+        var regexp = /^qrc:/
+        isQrcPath = regexp.test(rootPath);
     }
 
     function openPath(folderName, folderPath){
@@ -30,10 +34,10 @@ Item {
     function open(folderName, folderModel){
         path.append({"name": folderName, "model":folderModel});
         if(folderView.currentView.visible){
-            folderView.hiddenView.model = folderModel;
+            folderView.hiddenView.modelList = folderModel;
             folderView.state = "open";
         }else{
-            folderView.currentView.model = folderModel;
+            folderView.currentView.modelList = folderModel;
             folderView.currentView.visible = true;
         }
     }
@@ -41,13 +45,13 @@ Item {
     function back(){
         if(path.count>1){
             path.remove(path.count-1);
-            folderView.hiddenView.model = path.get(path.count-1).model;
+            folderView.hiddenView.modelList = path.get(path.count-1).model;
             folderView.state = "back";
         }
     }
     function repeatBack(repeat){
         if(path.count-repeat>0 && repeat>0){
-            folderView.hiddenView.model = path.get(path.count-repeat-1).model;
+            folderView.hiddenView.modelList = path.get(path.count-repeat-1).model;
             while(repeat !== 0){
                 path.remove(path.count-1);
                 repeat = repeat-1;
@@ -64,10 +68,11 @@ Item {
         anchors.top: parent.top;
         anchors.left: parent.left;
         anchors.right: parent.right;
-        height: 5*Screen.pixelDensity;
+        height: 4*Screen.pixelDensity;
         model: path;
 
-        header: Item{height: 1; width: 5*Screen.pixelDensity;}
+        header: Item{height: 1; width: 4*Screen.pixelDensity;}
+        footer: Item{height: 1; width: 4*Screen.pixelDensity;}
         delegate: pathView_delegate
 
         Component{ id: pathView_delegate
@@ -79,7 +84,7 @@ Item {
                     text: " "+ name + (index+1==path.count?"":" /")
                     verticalAlignment:   Text.AlignVCenter;
                     color: "#3a3a3a"
-                    font.pixelSize:  4*Screen.pixelDensity;
+                    font.pixelSize:  3*Screen.pixelDensity;
                     font.bold: true;
                     font.capitalization: Font.SmallCaps
                 }
@@ -89,10 +94,15 @@ Item {
                         root.repeatBack(path.count-index-1);
                     }
                 }
+                Behavior on x{
+                    NumberAnimation{ duration: 500; easing.type: Easing.InOutQuad;}
+                }
+
+                Component.onCompleted: pathView.positionViewAtEnd();
             }
+
         }
     }
-
     Rectangle{
         id: separator;
         anchors.top: pathView.bottom
@@ -111,46 +121,68 @@ Item {
         anchors.right: parent.right;
         clip: true;
 
-        property ListView currentView: list1
-        property ListView hiddenView: list2
+        property Item currentView: list1
+        property Item hiddenView: list2
+        property bool animBack: false;
 
-        ListView{
-            id: list1
-            width: parent.width;
-            height: parent.height;
-            visible: false;
-            x: 0;
-            delegate: SlideMenuItem{
-                text: fileName;
-                first: !index;
-                onClicked: {
-                    if(fileIsDir)
-                        root.openPath(fileName, fileURL);
-                    else{
-                        inscore.postMessage("/ITL", "load", filePath);
-                         console.log("open ",filePath);
+        Component{
+            id: folderViewComponent
+            ListView{
+                id: list
+                width:  folderView.width;
+                height: folderView.height;
+                model: modelList;
+
+                delegate:
+                    SlideMenuItem{
+                        text: fileName;
+                        icon: fileIsDir?"qrc:///images/folder.png":"qrc:///INScoreViewer.png";
+                        first: !index;
+                        onClicked: {
+                            if(fileIsDir)
+                                root.openPath(fileName, fileURL);
+                            else{
+                                if(isQrcPath)
+                                    inscore.postMessage("/ITL", "load", "qrc://"+filePath);
+                                else
+                                    inscore.postMessage("/ITL", "load", filePath);
+                            }
+                        }
                     }
-                }
             }
         }
-        ListView{
-            id: list2;
-            width: parent.width;
-            height: parent.height;
-            visible: false;
+
+        Loader{
+            id: list1;
+            property FolderListModel modelList;
+            sourceComponent: folderViewComponent;
             x: 0;
-            delegate: SlideMenuItem{
-                text: fileName;
-                first: !index;
-                onClicked: {
-                    if(fileIsDir)
-                        root.openPath(fileName, fileURL);
-                    else{
-                        inscore.postMessage("/ITL", "load", filePath);
-                        console.log("open ",filePath);
-                    }
-                }
+            visible:false;
+        }
+        Loader{
+            id: list2;
+            property FolderListModel modelList;
+            sourceComponent: folderViewComponent;
+            x: 0;
+            visible:false;
+        }
+
+        function prepareAnimation(){
+            hiddenView.visible = true;
+            hiddenView.x = folderView.hiddenView.width * (animBack?-1:1);
+        }
+
+        function endAnimation(){
+            currentView.visible = false;
+            //switchView
+            if(currentView === list1){
+                currentView = list2;
+                hiddenView  = list1;
+            }else{
+                currentView = list1;
+                hiddenView  = list2;
             }
+            folderView.state = "";
         }
 
         states: [
@@ -158,20 +190,23 @@ Item {
                 name: "back"
                 PropertyChanges {target: folderView; currentView.x:currentView.width; }
                 PropertyChanges {target: folderView; hiddenView.x:0; }
+                PropertyChanges {target: folderView; animBack: true; }
             },
             State {
                 name: "open"
                 PropertyChanges {target: folderView; currentView.x:-currentView.width; }
                 PropertyChanges {target: folderView; hiddenView.x:0; }
+                PropertyChanges {target: folderView; animBack: false; }
             }
         ]
 
         transitions:[
             Transition{
-                to: "back";
+                id: transition
+                from: "";
                 SequentialAnimation{
-                    PropertyAction {target: folderView; property: "hiddenView.x"; value:-folderView.currentView.width;}
-                    PropertyAction {target: folderView; property: "hiddenView.visible"; value: true;}
+                    PropertyAction{target: folderView; property: "animBack";}
+                    ScriptAction{script: folderView.prepareAnimation();}
                     ParallelAnimation{
                         PropertyAnimation{
                             targets: folderView
@@ -186,40 +221,10 @@ Item {
                             easing.type: Easing.InOutQuad;
                         }
                     }
-                    PropertyAction{target: folderView; property: "currentView.visible"; value: false;}
                     //Switch view
-                    PropertyAction{target: folderView; property: "currentView"; value: folderView.currentView==list1?list2:list1;}
-                    PropertyAction{target: folderView; property: "hiddenView";  value: folderView.hiddenView ==list1?list2:list1;}
-                    PropertyAction{target: folderView; property: "state"; value: "";}
-                }
-            },
-            Transition{
-                to: "open";
-                SequentialAnimation{
-                    PropertyAction {target: folderView; property: "hiddenView.x"; value:folderView.currentView.width;}
-                    PropertyAction {target: folderView; property: "hiddenView.visible"; value: true;}
-                    ParallelAnimation{
-                        PropertyAnimation{
-                            targets: folderView
-                            properties: "currentView.x";
-                            duration: 500;
-                            easing.type: Easing.InOutQuad;
-                        }
-                        PropertyAnimation{
-                            targets: folderView
-                            properties: "hiddenView.x";
-                            duration: 500;
-                            easing.type: Easing.InOutQuad;
-                        }
-                    }
-                    PropertyAction{target: folderView; property: "currentView.visible"; value: false;}
-                    //Switch view
-                    PropertyAction{target: folderView; property: "currentView"; value: folderView.currentView==list1?list2:list1;}
-                    PropertyAction{target: folderView; property: "hiddenView";  value: folderView.hiddenView ==list1?list2:list1;}
-                    PropertyAction{target: folderView; property: "state"; value: "";}
+                    ScriptAction{script: folderView.endAnimation();}
                 }
             }
-
         ]
 
     }

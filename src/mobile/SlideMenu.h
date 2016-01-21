@@ -45,6 +45,7 @@ class MsgSender : public QObject {
 		Q_INVOKABLE void postMessage	(const QString& address, const QString& msg, bool val);
 		Q_INVOKABLE void postMessage	(const QString& address, const QString& msg, float val);
 		Q_INVOKABLE void postMessage	(const QString& address, const QString& msg, const QString& val);
+		Q_INVOKABLE QString rootPath	();
 };
 
 //--------------------------------------------------------------------------

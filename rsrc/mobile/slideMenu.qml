@@ -10,6 +10,7 @@ Item {
     id: root
 	
     property string version: ""
+    property string initialRootPath: inscore.rootPath();
     signal switchToPanel(string name)
 
     width: 400
@@ -150,7 +151,8 @@ Item {
                                 text: "from File"
                                 onClicked: {
                                     root.state = "exploreMenu";
-                                    exploreView.setRootPath("HOME", "file:///home/gaby");
+                                    exploreView.setRootPath("HOME", "file://"+initialRootPath);
+                                    console.log("file://"+initialRootPath);
                                 }
                             }
 

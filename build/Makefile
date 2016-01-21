@@ -167,6 +167,7 @@ linuxclean:
 # building the library with mobileUI
 #===============================================================
 mobileUI: 
+	cp -rf ../rsrc/ android-rsc
 	make QMAKE="$(QMAKE) CONFIG+=mobile_ui" BUILDF="mobileUI"
 
 

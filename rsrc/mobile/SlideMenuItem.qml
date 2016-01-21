@@ -3,12 +3,13 @@ import QtQuick.Window 2.0
 
 Item {
     id: root
-//    height: Screen.pixelDensity * 7;
-    height: 40;
+    height: Screen.pixelDensity * 5;
+//    height: 40;
     anchors.left: parent.left
     anchors.right: parent.right
 
     property alias text: label.text
+    property alias icon: iconImage.source
     property bool first: false;
     signal clicked;
 
@@ -34,13 +35,27 @@ Item {
         anchors.topMargin: first?0:2;
         anchors.bottom: parent.bottom;
 
+        Image{
+            id: iconImage
+            anchors.left: parent.left;
+            anchors.leftMargin: Screen.pixelDensity*4.5;
+            anchors.verticalCenter: parent.verticalCenter
+
+            width:  Screen.pixelDensity*4;
+            height: Screen.pixelDensity*4;
+
+            source: ""
+            visible: source!="";
+        }
+
         Text{
             id: label
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
-            anchors.leftMargin: Screen.pixelDensity*7;
+            anchors.leftMargin: Screen.pixelDensity*11;
             color: "#3a3a3a"
-            font.pointSize:  14;
+//            font.pointSize:  14;
+            font.pixelSize: Screen.pixelDensity*2.5;
             font.capitalization: Font.SmallCaps
             text: "";
         }
