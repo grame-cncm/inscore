@@ -13,7 +13,9 @@ Item {
     property alias text: label.text
     property alias icon: iconImage.source
     property bool first: false;
+    property bool closable: false;
     signal clicked;
+    signal close;
 
     Rectangle{
         id: separator
@@ -75,6 +77,28 @@ Item {
             }
             onClicked: {
                 root.clicked();
+            }
+        }
+
+        Image{
+            id: closeIcon
+            anchors.right: parent.right;
+            anchors.rightMargin: root.height*0.9;
+            anchors.verticalCenter: parent.verticalCenter
+
+            width:  root.height*0.4;
+            height: root.height*0.4;
+            opacity: 0.5;
+
+            source: "qrc:///images/close.png"
+            visible: closable;
+            MouseArea{
+                anchors.fill: parent;
+                anchors.margins: -root.height*0.15 -root.height*0.15 -root.height*0.15-root.height*0.15;
+                onClicked: root.close();
+                onPressed: closeIcon.opacity = 0.8;
+                onCanceled: closeIcon.opacity = 0.5;
+                onReleased: closeIcon.opacity = 0.5;
             }
         }
 

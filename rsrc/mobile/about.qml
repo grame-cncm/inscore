@@ -11,6 +11,7 @@ Item {
     property string qtversion: ""
     property string guidoversion: ""
     property string src: "../"
+    property string ip: ""
 //    property string src: "qrc:///"
     property int vsize: 14
 
@@ -42,6 +43,7 @@ Item {
                 text: "INScore v." + root.version
                 + "\nUsing Qt v." + root.qtversion 
                 + "\nUsing Guido Engine v." + root.guidoversion
+                +  "\nIP: " + ip
                 color: "#464646"
                 anchors.left: icon.left
                 anchors.leftMargin: 18

@@ -188,6 +188,10 @@ void IGlue::initialize (bool offscreen, QApplication* appl)
 	address += "/scene";
 	INScore::postMessage (address.c_str(), knew_SetMethod);
 
+#ifdef __MOBILE__
+	INScore::postMessage(address.c_str(), klock_GetSetMethod, 1);
+#endif
+
 	fTimeTask = fModel;
 	if (!OSCStream::start())
 		throw("Cannot initialize output udp streams");

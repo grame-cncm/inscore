@@ -57,6 +57,11 @@ Item {
                     id: exploreView;
                     anchors.fill: parent
                     anchors.topMargin: Size.toPixel(1)
+                    onFileClicked: {
+                        inscore.postMessage("/ITL/scene", "load", file);
+                        inscore.postMessage("/ITL/scene", "foreground");
+                        contextObject.hideMenu();
+                    }
                 }
 
                 //Shadow:
@@ -132,7 +137,12 @@ Item {
                                         contextObject.hideMenu();
                                         inscore.postMessage(modelData, "foreground");
                                     }
+                                    onClose: {
+                                        inscore.postMessage(modelData, "del");
+                                    }
+
                                     first: !index
+                                    closable: true;
                                 }
                             }
 
@@ -154,7 +164,6 @@ Item {
                                 onClicked: {
                                     root.state = "exploreMenu";
                                     exploreView.setRootPath("HOME", "file://"+initialRootPath);
-                                    console.log("file://"+initialRootPath);
                                 }
                             }
 

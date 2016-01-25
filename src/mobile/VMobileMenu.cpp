@@ -40,6 +40,7 @@
 #include "IMessage.h"
 #include "Methods.h"
 #include "INScore.h"
+#include "Tools.h"
 
 #include <QDebug>
 
@@ -60,6 +61,7 @@ VMobileMenu::VMobileMenu(const char * name, QWidget* parent) : QQuickWidget(pare
 	root->setProperty("version", QVariant(INScore::versionStr()));
 	root->setProperty("qtversion", QVariant(INScore::qtversion()));
 	root->setProperty("guidoversion", QVariant(INScore::guidoversion()));
+	root->setProperty("ip", QString::fromStdString(Tools::getIP()));
 
 	loadSampleFile();
 

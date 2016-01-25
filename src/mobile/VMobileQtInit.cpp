@@ -28,6 +28,7 @@
 
 #ifdef ANDROID
 #include <QtAndroidExtras>
+
 #endif
 
 namespace inscore
@@ -64,6 +65,7 @@ SwipePanel *VMobileQtInit::getMainPanel()
 {
 	return gMainWindow->swipePanel();
 }
+
 
 
 //--------------------------------------------------------------------------
