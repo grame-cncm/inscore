@@ -11,6 +11,7 @@ Item {
     property string qtversion: ""
     property string guidoversion: ""
     property string src: "../"
+    property string ip: ""
 //    property string src: "qrc:///"
     property int vsize: 14
 
@@ -20,6 +21,16 @@ Item {
     Rectangle{
         anchors.fill: parent
         color: "snow"
+
+            Text{
+                id: ipLabel
+                text: "IP: <b>" + ip + "</b>"
+                color: "#464646"
+                anchors.horizontalCenter: icon.horizontalCenter
+                anchors.bottom: icon.top
+                anchors.bottomMargin: 25
+                font.pointSize: root.vsize*0.8
+            }
 
             Image{
                 id: icon

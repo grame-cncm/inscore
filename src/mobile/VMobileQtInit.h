@@ -59,6 +59,9 @@ class inscore_export VMobileQtInit : public VQtInit
          */
 		static	SwipePanel* getMainPanel();
 
+		static unsigned long getIP();
+		static QString getIPString();
+
     private:
 		static MainWindow* gMainWindow;    ///< Main window of the application. Contains the tab widget
 
