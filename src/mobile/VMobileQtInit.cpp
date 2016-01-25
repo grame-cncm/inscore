@@ -28,7 +28,7 @@
 
 #ifdef ANDROID
 #include <QtAndroidExtras>
-#include <QNetworkInterface>
+
 #endif
 
 namespace inscore
@@ -66,38 +66,6 @@ SwipePanel *VMobileQtInit::getMainPanel()
 	return gMainWindow->swipePanel();
 }
 
-
-//--------------------------------------------------------------------------
-unsigned long VMobileQtInit::getIP()
-{
-	QNetworkInterface ni;
-	QList<QHostAddress>	hl = ni.allAddresses();
-	for (int i=0; i < hl.size(); i++) {
-		unsigned long ip = hl[i].toIPv4Address();
-		if (ip) {
-			unsigned long classe = ip >> 24;
-			if ((classe >= 192) && (classe <= 223))		// look for a classe C network
-				return ip;
-		}
-	}
-	return 0x7F000001;
-}
-
-//--------------------------------------------------------------------------
-QString VMobileQtInit::getIPString()
-{
-	QNetworkInterface ni;
-	QList<QHostAddress>	hl = ni.allAddresses();
-	for (int i=0; i < hl.size(); i++) {
-		unsigned long ip = hl[i].toIPv4Address();
-		if (ip) {
-			unsigned long classe = ip >> 24;
-			if ((classe >= 192) && (classe <= 223))		// look for a classe C network
-				return hl[i].toString();
-		}
-	}
-	return "";
-}
 
 
 //--------------------------------------------------------------------------

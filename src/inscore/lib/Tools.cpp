@@ -31,6 +31,8 @@
 #include "IMessage.h"
 #include "rational.h"
 
+#include <QNetworkInterface>
+
 #ifndef WIN32
 #include <unistd.h>
 #else
@@ -79,7 +81,17 @@ string	Tools::ip2string (unsigned long ip)
 //--------------------------------------------------------------------------
 string Tools::getIP()
 {
-	return ip2string (getIP(""));
+	QNetworkInterface ni;
+	QList<QHostAddress>	hl = ni.allAddresses();
+	for (int i=0; i < hl.size(); i++) {
+		unsigned long ip = hl[i].toIPv4Address();
+		if (ip) {
+			unsigned long classe = ip >> 24;
+			if ((classe >= 192) && (classe <= 223))		// look for a classe C network
+				return hl[i].toString().toStdString();
+		}
+	}
+	return "";
 }
 
 //--------------------------------------------------------------------------

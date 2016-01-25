@@ -22,16 +22,6 @@ Item {
         anchors.fill: parent
         color: "snow"
 
-            Text{
-                id: ipLabel
-                text: "IP: <b>" + ip + "</b>"
-                color: "#464646"
-                anchors.horizontalCenter: icon.horizontalCenter
-                anchors.bottom: icon.top
-                anchors.bottomMargin: 25
-                font.pointSize: root.vsize*0.8
-            }
-
             Image{
                 id: icon
                 source: root.src + "INScoreViewer.png"
@@ -53,6 +43,7 @@ Item {
                 text: "INScore v." + root.version
                 + "\nUsing Qt v." + root.qtversion 
                 + "\nUsing Guido Engine v." + root.guidoversion
+                +  "\nIP: " + ip
                 color: "#464646"
                 anchors.left: icon.left
                 anchors.leftMargin: 18
