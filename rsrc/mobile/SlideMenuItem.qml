@@ -7,8 +7,8 @@ Item {
     id: root
     height:  Size.toPixel(5.8)//Screen.pixelDensity * 5;
 //    height: 40;
-    anchors.left: parent.left
-    anchors.right: parent.right
+    anchors.left:  parent!=null?parent.left : undefined
+    anchors.right: parent!=null?parent.right: undefined
 
     property alias text: label.text
     property alias icon: iconImage.source

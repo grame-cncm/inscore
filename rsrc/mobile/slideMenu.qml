@@ -115,6 +115,7 @@ Item {
                         horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
                         Column{
+                            id: menuColumn
                             width: menuPanel.width
 
                             move: Transition {
@@ -148,7 +149,9 @@ Item {
                                     }
 
                                     first: !index
-                                    closable: true;
+                                    closable: true
+                                    anchors.right: menuColumn.right
+                                    anchors.left:  menuColumn.left
                                 }
                             }
 
