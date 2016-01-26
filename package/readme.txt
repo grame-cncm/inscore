@@ -4,7 +4,7 @@ INScore project
 GRAME - Centre national de creation musicale
 http://www.grame.fr
 ======================================================
-Copyright GRAME (c) 2009-2015
+Copyright GRAME (c) 2009-2016
 
 
 ======================================================
@@ -51,9 +51,9 @@ INScore makes use of the following technologies:
   - the GUIDOEngine                           http://guidolib.sf.net
   - the GRAME Faust compiler                  http://faust.grame.fr
   - the IRCAM Gesture Follower                http://imtr.ircam.fr/imtr/Gesture_Follower
-  - the Qt5 cross-platform application and UI framework    http://qt-project.org/qt5
+  - the Qt5 cross-platform application and UI framework    http://www.qt.io/
 Optionnal dependency:
-  - the libMusicXML library                   http://libmusicxml.sf.net
+  - the libMusicXML library                   https://github.com/dfober/libmusicxml
 
 ======================================================
  Acknowledgments
@@ -62,7 +62,7 @@ INScore was initiated in the Interlude project (http://interlude.ircam.fr),
 funded by the French National Research Agency [ANR- 08-CORD-010].
 I would like to thank all the people who have been contributing 
 to INScore design and development, and especially Christophe Daudin, 
-Martin Carlé, Guillaume Gouilloux, Eric Ravel, Camille Le Roi.
+Martin Carlé, Guillaume Gouilloux, Gabriel Lepetit-Aimon, Eric Ravel, Camille Le Roi.
 Many thanks also to the Interlude team - Frédéric Bevilacqua, Norbert Schnell, 
 Nicolas Rasamimanana, Emmanuel Fléty, Fabrice Guédy, Jean-Louis Frechin, 
 Uros Petrevski, Bernard Garabédian, Rémi Dury, Bruno Verbrugghe - who contributed
