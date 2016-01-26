@@ -1,45 +1,49 @@
 
-/ITL/scene/*  del;
+/ITL/Welcome  new;
 
 shadow = shadow 5 5 0 0 0 75 20;
 color = 20 0 150;
 
-/ITL/scene/welcome set txt "Welcome to INScore";
-/ITL/scene/welcome color $color;
-/ITL/scene/welcome fontSize 32;
-/ITL/scene/welcome fontWeight bold;
-/ITL/scene/welcome effect $shadow;
-/ITL/scene/welcome y -0.5;
+/ITL/Welcome/welcome set txt "Welcome to INScore";
+/ITL/Welcome/welcome color $color;
+/ITL/Welcome/welcome fontSize 32;
+/ITL/Welcome/welcome fontWeight bold;
+/ITL/Welcome/welcome effect $shadow;
+/ITL/Welcome/welcome y -0.5;
 
-/ITL/scene/version set txt "Version" $(/ITL get version);
-/ITL/scene/version fontSize 14;
-/ITL/scene/version y -0.41;
+/ITL/Welcome/version set txt "Version" $(/ITL get version);
+/ITL/Welcome/version fontSize 14;
+/ITL/Welcome/version y -0.41;
 
-/ITL/scene/what1 set txt "An environment for the design of";
-/ITL/scene/what2 set txt "interactive, augmented music scores.";
-/ITL/scene/what1 y -0.34;
-/ITL/scene/what2 y -0.28;
-/ITL/scene/what* fontSize 18;
+/ITL/Welcome/version set txt "Version" $(/ITL get version);
+/ITL/Welcome/version fontSize 14;
+/ITL/Welcome/version y -0.41;
 
-/ITL/scene/score set gmn "[ a f# g ]";
-/ITL/scene/score effect $shadow;
+/ITL/Welcome/what1 set txt "An environment for the design of";
+/ITL/Welcome/what2 set txt "interactive, augmented music scores.";
+/ITL/Welcome/what1 y -0.34;
+/ITL/Welcome/what2 y -0.28;
+/ITL/Welcome/what* fontSize 18;
+
+/ITL/Welcome/score set gmn "[ a f# g ]";
+/ITL/Welcome/score effect $shadow;
 
 dy = 0.045;
-/ITL/scene/c1 set txt "INScore is an open source project";
-/ITL/scene/c2 set txt "developed by GRAME.";
-/ITL/scene/c3 set txt "More information on";
-/ITL/scene/c4 set txt "inscore.sf.net";
-/ITL/scene/c* y 0.28;
-/ITL/scene/c[2-4] dy $dy;
-/ITL/scene/c[3-4] dy $dy;
-/ITL/scene/c4 dy $dy;
-/ITL/scene/c4 dy 0.01;
-/ITL/scene/c4 fontWeight bold;
-/ITL/scene/c4 fontSize 18;
-/ITL/scene/c4 color $color;
-/ITL/scene/c4 effect $shadow;
+/ITL/Welcome/c1 set txt "INScore is an open source project";
+/ITL/Welcome/c2 set txt "developed by GRAME.";
+/ITL/Welcome/c3 set txt "More information on";
+/ITL/Welcome/c4 set txt "inscore.sf.net";
+/ITL/Welcome/c* y 0.28;
+/ITL/Welcome/c[2-4] dy $dy;
+/ITL/Welcome/c[3-4] dy $dy;
+/ITL/Welcome/c4 dy $dy;
+/ITL/Welcome/c4 dy 0.01;
+/ITL/Welcome/c4 fontWeight bold;
+/ITL/Welcome/c4 fontSize 18;
+/ITL/Welcome/c4 color $color;
+/ITL/Welcome/c4 effect $shadow;
 
-/ITL/scene/logo set svg '<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+/ITL/Welcome/logo set svg '<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
 "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg x="0" y="0" width="102" height="98" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -90,7 +94,7 @@ stroke-linejoin: miter;
 <path d="M75.3,41.7c-0.1,0.3,-0.2,0.5,-0.4,0.8c0.2,-0.3,0.3,-0.5,0.4,-0.8Z" class="g1_1" />
 <path d="M66.2,61.2C66.1,61.5,66,61.7,65.8,62c0.2,-0.3,0.3,-0.5,0.4,-0.8Z" class="g1_1" />
 </svg>';
-/ITL/scene/logo y 0.7;
-/ITL/scene/logo effect $shadow;
+/ITL/Welcome/logo y 0.7;
+/ITL/Welcome/logo effect $shadow;
 
-/ITL/scene/* dy -0.12;
+/ITL/Welcome/* dy -0.12;

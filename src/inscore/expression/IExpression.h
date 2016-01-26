@@ -114,7 +114,7 @@ public:
 	inline void setEvaluated(std::string evaluated){*fEvaluated = evaluated;}
 	inline std::string* evaluated() const {return fEvaluated;}	//as evaluated is more a buffer than a real attribute
 																//the pointer isn't const so evaluated can be change even in a const IExpression
-	inline virtual void recursiveClearEvaluated(){fEvaluated->clear();}
+	inline virtual void recursiveClearEvaluated() const {fEvaluated->clear();}
 
 	virtual ~IExprArgBase(){delete fEvaluated;}
 
@@ -149,7 +149,7 @@ public:
 		return r;
 	}
 
-	inline void recursiveClearEvaluated(){fEvaluated->clear();}
+	inline void recursiveClearEvaluated() const {fEvaluated->clear();}
 
 
     /*!
@@ -182,7 +182,7 @@ inline SIExprArg IExprArg<SIExprOperator>::copy() const
 
 //_________________________________________________
 template<>
-inline void IExprArg<SIExprOperator>::recursiveClearEvaluated()
+inline void IExprArg<SIExprOperator>::recursiveClearEvaluated()  const
 {
 	fArg->arg1()->recursiveClearEvaluated();
 	fArg->arg2()->recursiveClearEvaluated();

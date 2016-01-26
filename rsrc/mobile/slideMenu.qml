@@ -58,7 +58,10 @@ Item {
                     anchors.fill: parent
                     anchors.topMargin: Size.toPixel(1)
                     onFileClicked: {
-                        inscore.postMessage("/ITL/scene", "load", file);
+
+                         inscore.postMessage("/ITL", "rootPath", file.slice(0, file.lastIndexOf("/")));
+                         inscore.postMessage("/ITL/scene", "load", file.slice(file.lastIndexOf("/")+1));
+
                         inscore.postMessage("/ITL/scene", "foreground");
                         contextObject.hideMenu();
                     }
@@ -138,7 +141,10 @@ Item {
                                         inscore.postMessage(modelData, "foreground");
                                     }
                                     onClose: {
-                                        inscore.postMessage(modelData, "del");
+                                        if(modelData=="/ITL/log")
+                                            inscore.postMessage(modelData, "show", 0);
+                                        else
+                                            inscore.postMessage(modelData, "del");
                                     }
 
                                     first: !index

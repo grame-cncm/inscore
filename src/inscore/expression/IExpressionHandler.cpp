@@ -22,7 +22,7 @@ bool IExprHandlerbase::evalExpression(std::string &result) const{
 	return r;
 }
 
-bool IExprHandlerbase::forceEvalExpr(std::string &result){
+bool IExprHandlerbase::forceEvalExpr(std::string &result) const{
     if(!checkExpression())
 		return false;
 
