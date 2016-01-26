@@ -75,65 +75,6 @@ class VMobileMenu : public QQuickWidget
 		Q_OBJECT
 	public:
 		VMobileMenu(const char *name, QWidget *parent = 0);
-		
-//	public slots:
-//		/*!
-//		 * \brief showFileDialog Display a file dialog to choose a file to load.
-//		 */
-//		void showFileDialog();
-
-//		/*!
-//		 * \brief writeSettings Write settings on the device.
-//		 */
-//		void writeSettings();
-
-//		/*!
-//		 * \brief closeMenu Send a message to close the menu.
-//		 */
-//		void closeMenu();
-
-//		/*!
-//		 * \brief loadUrlFile Action triggerd by the load button.
-//		 * The url read is taken from fUrlFile.
-//		 */
-//		void loadUrlFile();
-
-//		/*!
-//		 * \brief showChangePortNumber Show the dialog to change port number of the application.
-//		 */
-//		void showChangePortNumber();
-
-//	private:
-//		/*!
-//		 * \brief showNextTime Checkbox to show or not the menu at next startup.
-//		 */
-//		QCheckBox * showNextTime;
-
-//		/*!
-//		 * \brief showNextTime Checkbox to load or not the demo scene at next startup.
-//		 */
-//		QCheckBox * loadSample;
-
-//		/*!
-//		 * \brief fUrlFile line editor to type the url of an inscore file.
-//		 */
-//		QLineEdit * fUrlFile;
-
-//		/*!
-//		 * \brief readSettings Read settings if it exist.
-//		 */
-//		void readSettings();
-
-//		/*!
-//		 * \brief loadSampleFile Load the sample file.
-//		 */
-//		void loadSampleFile();
-
-//		/*!
-//		 * \brief sendLoadMsg send a load message with the file name file.
-//		 * \param file the filename.
-//		 */
-//		void sendLoadMsg(const char *file);
 };
 /*! @} */
 
