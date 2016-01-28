@@ -14,6 +14,7 @@ Item {
     property alias icon: iconImage.source
     property bool first: false;
     property bool closable: false;
+    property bool clickable: true;
     signal clicked;
     signal close;
 
@@ -78,6 +79,7 @@ Item {
             onClicked: {
                 root.clicked();
             }
+            visible: root.clickable;
         }
 
         Image{

@@ -146,6 +146,7 @@ Item {
                         visible: path.count>0 && modelList !== path.get(0).model;
                         onClicked: root.back();
                         first: true;
+                        clickable: enabled;
                     }
 
                     Repeater{
@@ -155,10 +156,11 @@ Item {
                             text: fileName;
                             visible: fileIsDir
                             icon: "qrc:///images/folder.png";
-                            //first: x<height;
+                            first: true;
                             onClicked: root.openPath(fileName, fileURL);
                             anchors.left: folderView_Layout.left
                             anchors.right: folderView_Layout.right
+                            clickable: enabled;
                         }
                     }
                     Repeater{
@@ -174,7 +176,8 @@ Item {
                                 else
                                     root.fileClicked(filePath);
                             }
-                            //first: x<height;
+                            first: true;
+                            clickable: enabled;
                             anchors.left: folderView_Layout.left
                             anchors.right: folderView_Layout.right
                         }
@@ -190,6 +193,7 @@ Item {
         Loader{
             id: list1;
             property FolderListModel modelList;
+            property bool enable;
             sourceComponent: folderViewComponent;
             x: 0;
             visible:false;
@@ -197,6 +201,7 @@ Item {
         Loader{
             id: list2;
             property FolderListModel modelList;
+            property bool enable;
             sourceComponent: folderViewComponent;
             x: 0;
             visible:false;
@@ -205,6 +210,7 @@ Item {
         function prepareAnimation(){
             hiddenView.visible = true;
             hiddenView.x = folderView.hiddenView.width * (animBack?-1:1);
+            currentView.enabled = false;
         }
 
         function endAnimation(){
@@ -218,6 +224,7 @@ Item {
                 hiddenView  = list2;
             }
             folderView.state = "";
+            currentView.enabled = true;
         }
 
         states: [
