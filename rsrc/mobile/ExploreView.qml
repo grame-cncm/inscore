@@ -16,17 +16,15 @@ Item {
 
     function setRootPath(rootName, rootPath){
         path.clear();
-        folderView.currentView.visible = false;
 
-        root.openPath(rootName, rootPath);
+        folderView.currentView.folderModel.rootFolder = rootPath;
+        folderView.hiddenView.folderModel.rootFolder = rootPath;
+        folderView.currentView.folderModel.folder = rootPath;
+        path.append({"name": rootName})
+        folderView.currentView.visible = true;
 
         var regexp = /^qrc:/
         isQrcPath = regexp.test(rootPath);
-    }
-
-    function openPath(folderName, folderPath){
-
-        open(folderName, folderModelFromPath(folderPath));
     }
 
     function folderModelFromPath(path){
@@ -34,29 +32,27 @@ Item {
     }
 
 
-    function open(folderName, folderModel){
-        path.append({"name": folderName, "model":folderModel});
+    function open(folderName, folderPath){
+        path.append({"name": folderName});
         if(folderView.currentView.visible){
-            folderView.hiddenView.modelList = folderModel;
+            folderView.hiddenView.folderModel.folder = folderPath;
             folderView.state = "open";
-        }else{
-            folderView.currentView.modelList = folderModel;
-            folderView.currentView.visible = true;
         }
     }
 
     function back(){
         if(path.count>1){
             path.remove(path.count-1);
-            folderView.hiddenView.modelList = path.get(path.count-1).model;
+            folderView.hiddenView.folderModel.folder = folderView.currentView.folderModel.parentFolder;
             folderView.state = "back";
         }
     }
     function repeatBack(repeat){
         if(path.count-repeat>0 && repeat>0){
-            folderView.hiddenView.modelList = path.get(path.count-repeat-1).model;
+            folderView.hiddenView.folderModel.folder = folderView.currentView.folderModel.folder;
             while(repeat !== 0){
                 path.remove(path.count-1);
+                folderView.hiddenView.folderModel.folder = folderView.hiddenView.folderModel.parentFolder;
                 repeat = repeat-1;
             }
             folderView.state = "back";
@@ -143,7 +139,7 @@ Item {
                     SlideMenuItem{
                         text: ".."
                         icon: "qrc:///images/folderUp.png"
-                        visible: path.count>0 && modelList !== path.get(0).model;
+                        visible: folderModel.folder!=folderModel.rootFolder;
                         onClicked: root.back();
                         first: true;
                         clickable: enabled;
@@ -151,38 +147,27 @@ Item {
 
                     Repeater{
                         //Folders
-                        model: modelList;
+                        model: folderModel;
                         SlideMenuItem{
                             text: fileName;
-                            visible: fileIsDir
-                            icon: "qrc:///images/folder.png";
+                            icon: fileIsDir?"qrc:///images/folder.png":"qrc:///INScoreViewer.png";
                             first: true;
-                            onClicked: root.openPath(fileName, fileURL);
                             anchors.left: folderView_Layout.left
                             anchors.right: folderView_Layout.right
-                            clickable: enabled;
-                        }
-                    }
-                    Repeater{
-                        //Files
-                        model: modelList;
-                        SlideMenuItem{
-                            text: fileName;
-                            visible: !fileIsDir;
-                            icon: "qrc:///INScoreViewer.png";
-                            onClicked: {
-                                if(isQrcPath)
-                                    root.fileClicked("qrc"+filePath);
-                                else
-                                    root.fileClicked(filePath);
-                            }
-                            first: true;
-                            clickable: enabled;
-                            anchors.left: folderView_Layout.left
-                            anchors.right: folderView_Layout.right
-                        }
-                    }
 
+                            clickable: enabled;
+                            onClicked: {
+                                if(fileIsDir)
+                                    root.open(fileName, fileURL)
+                                else{
+                                    if(isQrcPath)
+                                        root.fileClicked("qrc"+filePath);
+                                    else
+                                        root.fileClicked(filePath);
+                                }
+                            }
+                        }
+                    }
 
                 }
 
@@ -192,7 +177,7 @@ Item {
 
         Loader{
             id: list1;
-            property FolderListModel modelList;
+            property FolderListModel folderModel: FolderListModel{nameFilters: ["*.inscore","*.inscorezip"]; showDirsFirst: true;}
             property bool enable;
             sourceComponent: folderViewComponent;
             x: 0;
@@ -200,7 +185,7 @@ Item {
         }
         Loader{
             id: list2;
-            property FolderListModel modelList;
+            property FolderListModel folderModel: FolderListModel{nameFilters: ["*.inscore","*.inscorezip"]; showDirsFirst: true;}
             property bool enable;
             sourceComponent: folderViewComponent;
             x: 0;
