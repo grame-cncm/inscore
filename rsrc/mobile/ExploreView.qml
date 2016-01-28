@@ -128,34 +128,72 @@ Item {
 
         Component{
             id: folderViewComponent
-            ListView{
-                id: list
+            Rectangle{
                 width:  folderView.width;
                 height: folderView.height;
-                model: modelList;
 
-                delegate:
+            Flickable{
+                id: folderView_scrollView
+                anchors.fill: parent;
+                contentHeight: folderView_Layout.height
+                Column{
+                    id: folderView_Layout
+                    width: parent.width
+
                     SlideMenuItem{
-                        text: fileName;
-                        icon: fileIsDir?"qrc:///images/folder.png":"qrc:///INScoreViewer.png";
-                        first: !index;
-                        onClicked: {
-                            if(fileIsDir)
-                                root.openPath(fileName, fileURL);
-                            else{
+                        text: ".."
+                        icon: "qrc:///images/folderUp.png"
+                        visible: path.count>0 && modelList !== path.get(0).model;
+                        onClicked: root.back();
+                        first: true;
+                        clickable: enabled;
+                    }
+
+                    Repeater{
+                        //Folders
+                        model: modelList;
+                        SlideMenuItem{
+                            text: fileName;
+                            visible: fileIsDir
+                            icon: "qrc:///images/folder.png";
+                            first: true;
+                            onClicked: root.openPath(fileName, fileURL);
+                            anchors.left: folderView_Layout.left
+                            anchors.right: folderView_Layout.right
+                            clickable: enabled;
+                        }
+                    }
+                    Repeater{
+                        //Files
+                        model: modelList;
+                        SlideMenuItem{
+                            text: fileName;
+                            visible: !fileIsDir;
+                            icon: "qrc:///INScoreViewer.png";
+                            onClicked: {
                                 if(isQrcPath)
                                     root.fileClicked("qrc"+filePath);
                                 else
                                     root.fileClicked(filePath);
                             }
+                            first: true;
+                            clickable: enabled;
+                            anchors.left: folderView_Layout.left
+                            anchors.right: folderView_Layout.right
                         }
                     }
+
+
+                }
+
+            }
             }
         }
 
         Loader{
             id: list1;
             property FolderListModel modelList;
+            property bool enable;
             sourceComponent: folderViewComponent;
             x: 0;
             visible:false;
@@ -163,6 +201,7 @@ Item {
         Loader{
             id: list2;
             property FolderListModel modelList;
+            property bool enable;
             sourceComponent: folderViewComponent;
             x: 0;
             visible:false;
@@ -171,6 +210,7 @@ Item {
         function prepareAnimation(){
             hiddenView.visible = true;
             hiddenView.x = folderView.hiddenView.width * (animBack?-1:1);
+            currentView.enabled = false;
         }
 
         function endAnimation(){
@@ -184,6 +224,7 @@ Item {
                 hiddenView  = list2;
             }
             folderView.state = "";
+            currentView.enabled = true;
         }
 
         states: [

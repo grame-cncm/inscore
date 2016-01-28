@@ -110,10 +110,10 @@ Item {
                     anchors.left: parent.left
                     anchors.bottom: parent.bottom
                     anchors.right: mainMenu_shadow.left;
-                    ScrollView{
+                    clip: true;
+                    Flickable{
                         anchors.fill: parent
-                        horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-
+                        contentHeight: menuColumn.height;
                         Column{
                             id: menuColumn
                             width: menuPanel.width
