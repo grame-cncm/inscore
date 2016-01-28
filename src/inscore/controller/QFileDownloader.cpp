@@ -113,7 +113,9 @@ const char* QFileDownloader::getCachedAsync(const char *urlString, std::function
 	fInitialURL = url.toString();
 
 	//Sending an error message if download failed or callback cbUpdate if the cache was updated
-	QObject::connect(fReply, &QNetworkReply::finished, [this, cbUpdate, cbFail](){cbCachedASync(cbUpdate, cbFail);});
+	QObject::connect(fReply, &QNetworkReply::finished, [this, cbUpdate, cbFail](){
+		cbCachedASync(cbUpdate, cbFail);
+	});
 
 	//Retreiving the actual value stored in the cache (before the asynchronous update)
 	QNetworkDiskCache* cache = NetworkAccess::instance()->cache();
@@ -152,7 +154,7 @@ void QFileDownloader::fileDownloaded()
 }
 
 //--------------------------------------------------------------------------
-bool QFileDownloader::handleError( bool &success, std::function<void ()> cbFinished)
+bool QFileDownloader::handleError( bool &success, const std::function<void ()>& cbFinished)
 {
 
 	success = true;
@@ -220,7 +222,7 @@ void QFileDownloader::updateFailed()
 }
 
 //--------------------------------------------------------------------------
-void QFileDownloader::cbCachedASync(std::function<void()> cbUpdate, std::function<void()> cbFail)
+void QFileDownloader::cbCachedASync(const std::function<void()>& cbUpdate, const std::function<void()>& cbFail)
 {
 	bool downloadSucceed;
 
@@ -230,11 +232,8 @@ void QFileDownloader::cbCachedASync(std::function<void()> cbUpdate, std::functio
 	if(!downloadSucceed){
 		//URL download failed
 		printErrors();
-		fReply->deleteLater();
-		fReply = 0;
 		cbFail();
-	}else
-		if(!fReply->attribute(QNetworkRequest::SourceIsFromCacheAttribute).toBool() || fReply->url().toString() != fInitialURL){
+	}else if(!fReply->attribute(QNetworkRequest::SourceIsFromCacheAttribute).toBool() || fReply->url().toString() != fInitialURL){
 			//The cache have been updated
 
 			if(fReply->url().toString() != fInitialURL){
@@ -245,11 +244,8 @@ void QFileDownloader::cbCachedASync(std::function<void()> cbUpdate, std::functio
 				data->write(fReply->readAll());
 				NetworkAccess::instance()->cache()->insert(data);
 			}
-
-			fReply->deleteLater();
-			fReply = 0;
 			cbUpdate();
-		}
+	}
 
 	fReply->deleteLater();
 	fReply = 0;

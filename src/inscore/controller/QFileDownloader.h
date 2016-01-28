@@ -67,12 +67,12 @@ class	QFileDownloader
 	private:
 	 
 		void fileDownloaded();
-		bool handleError(bool &success, std::function<void()> cbFinished);
+		bool handleError(bool &success, const std::function<void ()> &cbFinished);
 
 		void updateSucceded();
 		void updateFailed();
 
-		void cbCachedASync(std::function<void()> cbUpdate, std::function<void()> cbFail);
+		void cbCachedASync(const std::function<void ()> &cbUpdate, const std::function<void ()> &cbFail);
 
 		void printErrors() const;
 		
