@@ -5,8 +5,7 @@ import "global.js" as Size
 
 Item {
     id: root
-    height:  Size.toPixel(5.8)//Screen.pixelDensity * 5;
-//    height: 40;
+    height:  Size.toPixel(5.8)
     anchors.left:  parent!=null?parent.left : undefined
     anchors.right: parent!=null?parent.right: undefined
 
@@ -20,7 +19,6 @@ Item {
 
     Rectangle{
         id: separator
-//        visible: false;
         visible: !first;
         anchors.left: parent.left;
         anchors.right: parent.right;
@@ -59,7 +57,6 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: root.height*1.8;
             color: "#3a3a3a"
-//            font.pointSize:  14;
             font.pixelSize: root.height*0.5;
             font.capitalization: Font.SmallCaps
             text: "";
