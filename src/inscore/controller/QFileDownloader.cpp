@@ -179,12 +179,13 @@ bool QFileDownloader::handleError( bool &success, std::function<void ()> cbFinis
 	//  -----   Error handling   -----
 	if(fReply->error()){
 		//If network error try to load from cache
-		if(fReply->request().attribute(QNetworkRequest::CacheLoadControlAttribute) != QNetworkRequest::AlwaysCache){
+		if(!fReply->property("loadedFromCache").isValid() || !fReply->property("loadedFromCache").toBool() ){
 			QNetworkRequest request = fReply->request();
-			request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysCache);
 			fReply->deleteLater();
+			request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysCache);
 
 			fReply = NetworkAccess::instance()->get(request);
+			fReply->setProperty("loadedFromCache", QVariant::fromValue(true));
 			QObject::connect(fReply, &QNetworkReply::finished, [cbFinished]{cbFinished();});
 			ITLErr << "Url not accessible, trying to load ressource from cache..." << ITLEndl;
 			return true;
@@ -234,10 +235,10 @@ void QFileDownloader::cbCachedASync(std::function<void()> cbUpdate, std::functio
 		cbFail();
 	}else
 		if(!fReply->attribute(QNetworkRequest::SourceIsFromCacheAttribute).toBool() || fReply->url().toString() != fInitialURL){
-			//Cache wasn't up to date
+			//The cache have been updated
 
 			if(fReply->url().toString() != fInitialURL){
-				//In case of redirection we cheat with the cache to put the redirected data inside the initial url
+				//In case of redirection we cheat: we put the redirected data inside the initial url
 				QNetworkCacheMetaData meta = NetworkAccess::instance()->cache()->metaData(fReply->url());
 				meta.setUrl(QUrl(fInitialURL));
 				QIODevice* data = NetworkAccess::instance()->cache()->prepare(meta);
