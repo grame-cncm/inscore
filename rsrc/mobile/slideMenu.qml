@@ -5,7 +5,6 @@ import QtQuick.Controls 1.4
 import QtQuick.Window 2.2
 import Qt.labs.folderlistmodel 2.1
 import "global.js" as Size;
-//import "./"
 
 Item {
     id: root
@@ -87,7 +86,6 @@ Item {
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     anchors.right: parent.right
-                    //width: 2.5*Screen.pixelDensity
                     width: Size.toPixel(1.5)
                     source: "shadow.png"
                     fillMode: Image.TileVertically
@@ -111,7 +109,6 @@ Item {
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     anchors.right: parent.right
-                    //width: 2.5*Screen.pixelDensity
                     width: Size.toPixel(1.5)
                     source: "shadow.png"
                     fillMode: Image.TileVertically

@@ -26,7 +26,6 @@ Item {
         id: label
         text: ""
         verticalAlignment: Text.AlignVCenter
-//        font.pixelSize: Screen.pixelDensity* 3
         font.pointSize: 16
         font.letterSpacing: Screen.pixelDensity/2
         font.capitalization: Font.SmallCaps
