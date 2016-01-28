@@ -80,7 +80,8 @@ IScene::IScene(const std::string& name, IObject * parent)
 	fMsgHandlerMap[kabsolutexy_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setAbsoluteCoordinates);
 	fMsgHandlerMap[kwindowOpacity_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setWindowOpacity);
 	fMsgHandlerMap[kload_SetMethod]				= TMethodMsgHandler<IScene>::create(this, &IScene::loadMsg);
-	fMsgHandlerMap[krootPath_GetSetMethod]		= TSetMethodMsgHandler<IScene, string>::create(this, &IScene::setRootPath);
+//	fMsgHandlerMap[krootPath_GetSetMethod]		= TSetMethodMsgHandler<IScene, string>::create(this, &IScene::setRootPath);
+	fMsgHandlerMap[krootPath_GetSetMethod]		= TMethodMsgHandler<IScene>::create(this, &IScene::setRootPath);
 	fMsgHandlerMap[kforward_GetSetMethod]		= TMethodMsgHandler<IScene>::create(this, &IScene::forward);
 
 	fGetMsgHandlerMap[kfullscreen_GetSetMethod] = TGetParamMsgHandler<bool>::create(fFullScreen);
@@ -268,6 +269,25 @@ void IScene::print (ostream& out) const
 	out << "  nodes synchronization :" << endl << fSync->getSync();
 	out << "  file watcher :" << endl;
 	fFileWatcher->print(out);
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IScene::setRootPath(const IMessage* msg)
+{
+	MsgHandler::msgStatus status = MsgHandler::kProcessedNoChange;
+	size_t n = msg->size();
+	if (!n) {
+		fRootPath.clear();
+	}
+	else if (n == 1) {
+		string path;
+		if (msg->param(0, path)) {
+			fRootPath = IAppl::checkRootPath(path);
+		}
+		else status = MsgHandler::kBadParameters;
+	}
+	else status = MsgHandler::kBadParameters;
+	return status;
 }
 
 //--------------------------------------------------------------------------

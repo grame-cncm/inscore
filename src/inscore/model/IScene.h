@@ -150,6 +150,7 @@ class IScene : public IRectShape, public TILoader
 		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
 
 		void		setRootPath(const std::string& s);
+		MsgHandler::msgStatus setRootPath(const IMessage* msg);
 		MsgHandler::msgStatus loadMsg(const IMessage* msg);
 		void		foreground ();
 		void		newScene ();
