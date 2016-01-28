@@ -21,7 +21,7 @@ protected:
 	BundlePackager(ParsedData& inputData):fInputData(inputData){}
 
 	void mapNames();
-	void setupArchive(qarchive::SQArchive& archive);
+	bool setupArchive(qarchive::SQArchive& archive);
 
 	bool writeArchive(qarchive::SQArchive& archive, const std::string& outputPath, bool overwrite = false);
 

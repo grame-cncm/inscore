@@ -244,19 +244,15 @@ void ScriptsParser::simplifyPath()
 	if(fData.ressources.empty()&&fData.scripts.empty())
 		return;
 
-
-	inscore::extvector<std::string> rscNames = fData.ressourceNames();
-	inscore::extvector<std::string> scriptNames = fData.scriptNames();
-
 	//  -- search for common path trunk --
-	std::vector<std::string> trunk = splitPath(rscNames.size()? rscNames.at(0): scriptNames.at(0));
+	std::vector<std::string> trunk = splitPath(fData.ressources.size()? fData.ressources.begin()->first: fData.scripts.begin()->first);
 	int commonPath = trunk.size()-1;
 
-	for(size_t iRsc = 1; iRsc < rscNames.size(); iRsc++){
-		std::vector<std::string> path = splitPath(rscNames.at(iRsc));
+	for(auto it = fData.ressources.begin()++; it != fData.ressources.end(); it++){
+		std::vector<std::string> path = splitPath(it->first);
 
 		int i=0;
-		while ( i < commonPath && i < (int)path.size() ) {
+		while ( i < commonPath && i < (int)path.size()-1 ) {
 			if(path.at(i)!=trunk.at(i)){
 				break;
 			}
@@ -265,11 +261,11 @@ void ScriptsParser::simplifyPath()
 		commonPath = i;
 	}
 
-	for(size_t iScript = 1; iScript < scriptNames.size(); iScript++){
-		std::vector<std::string> path = splitPath(scriptNames.at(iScript));
+	for(auto it = fData.scripts.begin(); it != fData.scripts.end(); it++){
+		std::vector<std::string> path = splitPath(it->first);
 
 		int i=0;
-		while ( i < commonPath && i < (int)path.size() ) {
+		while ( i < commonPath && i < (int)path.size()-1 ) {
 			if(path.at(i)!=trunk.at(i))
 				break;
 			i++;

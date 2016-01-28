@@ -15,7 +15,8 @@ bool BundlePackager::bundle(ParsedData &scripts, const std::string &outputPath, 
 	scripts.applyNameMap(b.fNamesMap);
 
 	SQArchive a = qarchive::QArchive::emptyArchive();
-	b.setupArchive(a);
+	if(!b.setupArchive(a))
+		return false;
 
 	return b.writeArchive(a,outputPath, overwrite);
 }
@@ -48,7 +49,7 @@ void BundlePackager::mapNames()
 	}
 }
 
-void BundlePackager::setupArchive(qarchive::SQArchive &archive)
+bool BundlePackager::setupArchive(qarchive::SQArchive &archive)
 {
 	//Create hierarchy
 	archive->addDir("Export");
@@ -59,14 +60,17 @@ void BundlePackager::setupArchive(qarchive::SQArchive &archive)
 	for(auto it=fNamesMap.begin(); it!=fNamesMap.end(); it++){
 		if(it->second.substr(0,11) != "Ressources/")
 			archive->addTextFileStd(it->second, fInputData.generateScript(it->first));
-		else if(!archive->addFileStd(it->second, fInputData.mainPath+it->first))
+		else if(!archive->addFileStd(it->second, fInputData.mainPath+it->first)){
 			std::cerr<<"Ressource: \""<<fInputData.mainPath+it->first<<"\" does not exist!"<<std::endl;
+			return false;
+		}
 
 		fileNames +=  it->second + "\t" + it->first+"\n";
 	}
 
 	//Add fileNames.map
 	archive->addTextFileStd("bundleMap.txt", fileNames);
+	return true;
 }
 
 bool BundlePackager::writeArchive(SQArchive &archive, const std::string &outputPath, bool overwrite)
@@ -92,7 +96,7 @@ bool BundlePackager::writeArchive(SQArchive &archive, const std::string &outputP
 		std::cerr<<"An error occurs during the bundle preparation..."<<std::endl;
 		break;
 	}
-	return true;
+	return false;
 }
 
 
