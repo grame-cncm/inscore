@@ -117,9 +117,10 @@ class IAppl : public IObject, public TILoader
 		int		time() const				{ return fCurrentTime; }
 		int		ticks() const				{ return fCurrentTicks; }
 		void	quit();
-		static int		getUDPInPort() 		{ return fUDP.fInPort; }
-		static int		getUDPOutPort() 	{ return fUDP.fOutPort; }
-		static int		getUDPErrPort() 	{ return fUDP.fErrPort; }
+		static int			getUDPInPort() 		{ return fUDP.fInPort; }
+		static int			getUDPOutPort() 	{ return fUDP.fOutPort; }
+		static int			getUDPErrPort() 	{ return fUDP.fErrPort; }
+		static std::string	getIP();
 		bool	defaultShow() const			{ return fDefaultShow; }
 		static const std::string&	getUDPOutAddress()		{ return fUDP.fOutDstAddress; }
 		static const std::string&	getUDPErrAddress()		{ return fUDP.fErrDstAddress; }

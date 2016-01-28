@@ -58,6 +58,7 @@
 #include <QDir>
 #include <QApplication>
 #include <QStandardPaths>
+#include <QNetworkInterface>
 
 using namespace std;
 
@@ -351,7 +352,7 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 SIMessage IAppl::hello()	const
 {
 	SIMessage msg = IMessage::create (getOSCAddress());
-	*msg << Tools::getIP() << getUDPInPort() << getUDPOutPort() << getUDPErrPort();
+	*msg << getIP() << getUDPInPort() << getUDPOutPort() << getUDPErrPort();
 	return msg;
 }
 
@@ -430,6 +431,22 @@ void IAppl::quit()
 	fRunning = false;
 	QString bundleTempFolder = QDir::temp().absolutePath()+QDir::separator()+"INScore";
 	QDir(bundleTempFolder).removeRecursively();
+}
+
+//--------------------------------------------------------------------------
+string IAppl::getIP()
+{
+	QNetworkInterface ni;
+	QList<QHostAddress>	hl = ni.allAddresses();
+	for (int i=0; i < hl.size(); i++) {
+		unsigned long ip = hl[i].toIPv4Address();
+		if (ip) {
+			unsigned long classe = ip >> 24;
+			if ((classe >= 192) && (classe <= 223))		// look for a classe C network
+				return hl[i].toString().toStdString();
+		}
+	}
+	return "";
 }
 
 //--------------------------------------------------------------------------
