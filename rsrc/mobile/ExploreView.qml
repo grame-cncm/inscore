@@ -10,9 +10,11 @@ Item {
     anchors.fill: parent;
 
     property ListModel path: ListModel{}
+    property bool fileDeletable: false;
     property bool isQrcPath: false
 
     signal fileClicked(string file);
+    signal fileDeleted(string file);
 
     function setRootPath(rootName, rootPath){
         path.clear();
@@ -166,6 +168,9 @@ Item {
                                         root.fileClicked(filePath);
                                 }
                             }
+
+                            closable: !fileIsDir && root.fileDeletable
+                            onClose: root.fileDeleted(filePath)
                         }
                     }
 

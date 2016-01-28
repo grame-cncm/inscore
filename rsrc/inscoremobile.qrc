@@ -4,6 +4,7 @@
         <file>images/folder.png</file>
         <file>images/close.png</file>
         <file>images/folderUp.png</file>
+        <file>images/go.png</file>
     </qresource>
     <qresource prefix="/qml">
         <file alias="about.qml">mobile/about.qml</file>
@@ -17,5 +18,6 @@
         <file alias="ExploreView.qml">mobile/ExploreView.qml</file>
         <file alias="global.js">mobile/global.js</file>
         <file alias="global.qml">mobile/global.qml</file>
+        <file alias="UrlBar.qml">mobile/UrlBar.qml</file>
     </qresource>
 </RCC>

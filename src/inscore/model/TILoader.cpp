@@ -26,6 +26,7 @@
 
 #include <fstream>
 #include <sstream>
+#include <QStandardPaths>
 
 #include "TILoader.h"
 #include "INScore.h"
@@ -90,6 +91,8 @@ MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const
 				srcfile = makeAbsolutePath(rootpath, srcfile);
 
 			if(srcfile.size()<11 || srcfile.substr(srcfile.size()-11,11) != ".inscorezip"){
+				// ---- Load a script ----
+
 				stringstream buff;
 				ifstream file;
 				if (Tools::isurl(srcfile)) {
@@ -117,13 +120,24 @@ MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const
 
 				if(msgs) return MsgHandler::kProcessed;
 			}else{
-
+				// ---- Load a bundle ----
 				qarchive::SQArchive a;
 				QFileDownloader * downloader = new QFileDownloader();
 				qarchive::QArchiveError error;
 				if (Tools::isurl(srcfile)) {
 					if (!downloader) return MsgHandler::kCreateFailure;
 					if (downloader->get (srcfile.c_str()) && downloader->dataSize()) {
+#ifdef __MOBILE__
+						//On mobile devices bundle should be stored
+						QString path = QStandardPaths::standardLocations(QStandardPaths::DownloadLocation).last();
+						path += QString("/bundles") + srcfile.substr(srcfile.find_last_of('/')).c_str();
+						QFile f(path);
+						if(f.open(QIODevice::WriteOnly)){
+							f.write(downloader->byteArray());
+							f.close();
+						}
+
+#endif
 						a = qarchive::QArchive::readArchiveFromData(& (downloader->byteArray()), error);
 					}
 					else return MsgHandler::kBadParameters;

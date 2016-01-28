@@ -76,6 +76,7 @@ signals:
 	void panelListChanged();
 	void switchToPanel(QString panelName);
 
+
 public slots:
 	void popupMenu();
 	void hideMenu();
@@ -84,6 +85,8 @@ public slots:
 	void setOpacity(float alpha);
 
 	void panelListChanged(QStringList panelList, int sceneCount);
+
+	void deleteDownloadedFile(QString fileName);
 
 protected:
 	void keyPressEvent(QKeyEvent *e);

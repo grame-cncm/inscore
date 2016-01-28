@@ -24,6 +24,9 @@
 */
 
 #include "SlideMenu.h"
+
+#include <QStandardPaths>
+
 #include "INScore.h"
 #include "IAppl.h"
 
@@ -59,6 +62,7 @@ SlideMenu::SlideMenu(QWidget *parent) : QFrame(parent)
 	fMenu = new QQuickWidget(this);
 	fMenu->rootContext()->setContextProperty("contextObject", this);
 	fMenu->rootContext()->setContextProperty("inscore", &fSender);
+	fMenu->rootContext()->setContextProperty("downloadPath", QStandardPaths::standardLocations(QStandardPaths::DownloadLocation).last()+"/bundles");
 	fMenu->setSource(QUrl("qrc:///qml/slideMenu.qml"));
 	fMenu->rootObject()->setProperty("version", QVariant::fromValue( QString::fromStdString(INScore::versionStr()) ));
 
@@ -151,6 +155,14 @@ void SlideMenu::panelListChanged(QStringList panelList, int sceneCount)
 	fPanelList = panelList.mid(sceneCount);
 	emit sceneListChanged();
 	emit panelListChanged();
+}
+
+//_________________________________________________
+void SlideMenu::deleteDownloadedFile(QString fileName)
+{
+	QString path = QStandardPaths::standardLocations(QStandardPaths::DownloadLocation).last();
+	QDir d(path+"/bundles");
+	d.remove(fileName);
 }
 
 

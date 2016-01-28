@@ -55,16 +55,33 @@ Item {
 
                 ExploreView{
                     id: exploreView;
-                    anchors.fill: parent
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: urlField.top;
                     anchors.topMargin: Size.toPixel(1)
                     onFileClicked: {
 
                          inscore.postMessage("/ITL", "rootPath", file.slice(0, file.lastIndexOf("/")));
-                         inscore.postMessage("/ITL/scene", "load", file.slice(file.lastIndexOf("/")+1));
+                         inscore.postMessage("/ITL", "load", file.slice(file.lastIndexOf("/")+1));
 
                         inscore.postMessage("/ITL/scene", "foreground");
                         contextObject.hideMenu();
                     }
+
+                    fileDeletable: urlField.visible
+                    onFileDeleted: {
+                        if(urlField.visible)
+                            contextObject.deleteDownloadedFile(file);
+                    }
+                }
+
+                UrlBar{
+                    id: urlField
+                    visible: false;
+                    anchors.left: parent.left;
+                    anchors.right: parent.right;
+                    anchors.bottom: parent.bottom;
                 }
 
                 //Shadow:
@@ -166,6 +183,7 @@ Item {
                                 onClicked: {
                                     root.state = "exploreMenu";
                                     exploreView.setRootPath("Exemples", "qrc:///scripts");
+                                    urlField.visible = false;
                                 }
                             }
                             SlideMenuItem{
@@ -173,6 +191,16 @@ Item {
                                 onClicked: {
                                     root.state = "exploreMenu";
                                     exploreView.setRootPath("HOME", "file://"+initialRootPath);
+                                    urlField.visible = false;
+                                }
+                            }
+                            SlideMenuItem{
+                                text: "from URL"
+                                onClicked: {
+                                    root.state = "exploreMenu";
+                                    exploreView.setRootPath("Recently downloaded", "file://"+downloadPath);
+                                    urlField.clear();
+                                    urlField.visible = true;
                                 }
                             }
 

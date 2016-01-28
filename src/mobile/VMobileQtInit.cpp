@@ -43,6 +43,11 @@ void VMobileQtInit::startQt ()
     // Create main window. It contains tab for each scene.
 	gMainWindow = new MainWindow();
     // Man window is full screen.
+
+	//Create url download folder if not exists
+	QString path = QStandardPaths::standardLocations(QStandardPaths::DownloadLocation).last();
+	QDir(path).mkpath("bundles");
+
 #ifdef MOBILE_TEST
 	gMainWindow->show();
 #else
