@@ -13,6 +13,7 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.17
+- 'rootPath' message can be called without parameter to clear a scene rootPath
 - log window supports the 'foreground' message
 - user actions on windows are generating 'foreground' messages
 - application quit when the last scene is closed (even when the log window is opened) 
