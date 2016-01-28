@@ -61,12 +61,9 @@ Item {
                     anchors.bottom: urlField.top;
                     anchors.topMargin: Size.toPixel(1)
                     onFileClicked: {
-
-                         inscore.postMessage("/ITL", "rootPath", file.slice(0, file.lastIndexOf("/")));
-                         inscore.postMessage("/ITL", "load", file.slice(file.lastIndexOf("/")+1));
-
+                        inscore.postMessage("/ITL", "rootPath", file.slice(0, file.lastIndexOf("/")));
+                        inscore.postMessage("/ITL", "load", file.slice(file.lastIndexOf("/")+1));
                         inscore.postMessage("/ITL/scene", "foreground");
-                        contextObject.hideMenu();
                     }
 
                     fileDeletable: urlField.visible
@@ -85,7 +82,6 @@ Item {
                 }
 
                 //Shadow:
-
                 Image{
                     id: exploreMenu_shadow
                     anchors.top: parent.top
@@ -155,7 +151,6 @@ Item {
                                 SlideMenuItem{
                                     text: modelData
                                     onClicked: {
-                                        contextObject.hideMenu();
                                         inscore.postMessage(modelData, "foreground");
                                     }
                                     onClose: {

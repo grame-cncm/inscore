@@ -52,10 +52,6 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 	connect(fHeader, SIGNAL(popupMenu()), fMenu, SLOT(popupMenu()));
 }
 
-SwipePanel* MainWindow::swipePanel(){
-    return fPanel;
-}
-
 void MainWindow::resizeEvent(QResizeEvent *e)
 {
 	int h = height();

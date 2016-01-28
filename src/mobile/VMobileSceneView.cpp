@@ -178,6 +178,7 @@ void VMobileSceneView::foreground()
 {
 	// Select tab of the scene as current tab
 	VMobileQtInit::getMainPanel()->switchToPanel(fGraphicsView->getSceneAddress());
+	VMobileQtInit::hideMenu();
 }
 
 //------------------------------------------------------------------------------------------------------------------------

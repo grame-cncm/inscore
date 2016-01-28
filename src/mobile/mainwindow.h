@@ -21,7 +21,9 @@ class MainWindow : public QWidget
 public:
 	explicit MainWindow(QWidget *parent = 0);
 
-	SwipePanel* swipePanel();
+	SwipePanel* swipePanel()	{return fPanel ;}
+	SlideMenu*	menu()			{return fMenu  ;}
+	Header*		header()		{return fHeader;}
 
 signals:
 

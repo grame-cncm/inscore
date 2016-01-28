@@ -71,6 +71,11 @@ SwipePanel *VMobileQtInit::getMainPanel()
 	return gMainWindow->swipePanel();
 }
 
+void VMobileQtInit::hideMenu()
+{
+	gMainWindow->menu()->hideMenu();
+}
+
 
 
 //--------------------------------------------------------------------------

@@ -57,7 +57,8 @@ class inscore_export VMobileQtInit : public VQtInit
          * \brief getTabWidget
          * \return the tabWidget of the main window.
          */
-		static	SwipePanel* getMainPanel();
+		static	SwipePanel*		getMainPanel();
+		static void				hideMenu();
 
     private:
 		static MainWindow* gMainWindow;    ///< Main window of the application. Contains the tab widget
