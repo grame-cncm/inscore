@@ -1,7 +1,6 @@
  
 <RCC>
     <qresource prefix="/scripts">
-        <file alias="sample.inscore">../scripts/mobile/sample.inscore</file>
-	<file alias="Welcome.inscore">../scripts/Standalone/Welcome.inscore</file>
+	<file alias="Welcome.inscore">../scripts/mobile/Welcome.inscore</file>
     </qresource>
 </RCC>

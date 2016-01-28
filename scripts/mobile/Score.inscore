@@ -1,0 +1,86 @@
+
+/ITL/scene/* del;
+
+<? javascript
+	function makemsg (msg, target, attribute, imgon, imgoff) {
+		msg = msg.replace(/TARGET/g, target) ;
+		msg = msg.replace(/ATTRIBUTE/g, attribute) ;
+		msg = msg.replace("ON", imgon) ;
+		msg = msg.replace("OFF", imgoff) ;
+		return msg;
+	}
+
+	function toggle (target, attribute, imgon, imgoff) {
+		var onstr = "1";
+		var offstr = "0";
+		if (attribute == "pitchLines") {
+			onstr = "empty";
+			offstr = "";
+		}
+		var template = "/ITL/scene/TARGET watch touchBegin (" +
+			"/ITL/scene/TARGET push," +
+			"/ITL/scene/score ATTRIBUTE " + onstr + "," +
+			"/ITL/scene/TARGET set img 'OFF'," +
+			"/ITL/scene/TARGET watch touchBegin (" +
+				"/ITL/scene/TARGET set img 'ON'," +
+				"/ITL/scene/score ATTRIBUTE " + offstr + "," +
+				"/ITL/scene/TARGET pop));"
+		return makemsg (template, target, attribute, imgon, imgoff);
+	}
+?>
+
+/ITL/scene/title  set  txt "Different score representations.";
+/ITL/scene/title  y -0.92;
+/ITL/scene/title scale 1.7;
+
+pwidth	= 1.2;
+pheight	= 1.;
+/ITL/scene/score set pianorollf "rsrc/score.gmn";
+/ITL/scene/score width $pwidth;
+/ITL/scene/score height $pheight;
+
+/ITL/scene/b1keyboard 	set img "rsrc/pkon.png";
+/ITL/scene/b2bars 		set img "rsrc/pbon.png";
+/ITL/scene/b3autocolor 	set img "rsrc/pcon.png";
+/ITL/scene/b4pitchlines set img "rsrc/plon.png";
+/ITL/scene/b5proll 		set img "rsrc/sproll.png";
+/ITL/scene/b6score 		set img "rsrc/sscore.png";
+
+rshift = 0.2;
+/ITL/scene/b* y 0.87;
+/ITL/scene/b* x -0.420;
+/ITL/scene/b[2-6]* 	dx $rshift;
+/ITL/scene/b[3-6]* 	dx $rshift;
+/ITL/scene/b[4-6]* 	dx $rshift;
+/ITL/scene/b[5-6]* 	dx $rshift;
+/ITL/scene/b5proll 	show 0;
+
+!/ITL/scene/b* watch mouseEnter (/ITL/scene/$self penWidth 1);
+!/ITL/scene/b* watch mouseLeave (/ITL/scene/$self penWidth 0);
+
+switch2score = (
+	/ITL/scene/score set gmnf "rsrc/score.gmn",
+	/ITL/scene/score scale 0.22,
+	/ITL/scene/b5proll show 1,
+	/ITL/scene/b[12346]* show 0
+);
+
+switch2proll = (
+	/ITL/scene/score set pianorollf "rsrc/score.gmn",
+	/ITL/scene/score scale 1.0,
+	/ITL/scene/score width $pwidth,
+	/ITL/scene/score height $pheight,
+	/ITL/scene/b5proll show 0,
+	/ITL/scene/b[12346]* show 1
+);
+
+/ITL/scene/b6score watch touchBegin $switch2score;
+/ITL/scene/b5proll watch touchBegin $switch2proll;
+
+!/ITL/scene/b6score watch mouseDown $switch2score;
+!/ITL/scene/b5proll watch mouseDown $switch2proll;
+
+<? javascript toggle("b1keyboard", "keyboard", "rsrc/pkon.png", "rsrc/pkoff.png") ?>
+<? javascript toggle("b2bars", "measureBars", "rsrc/pbon.png", "rsrc/pboff.png") ?>
+<? javascript toggle("b3autocolor", "autoVoicesColoration", "rsrc/pcon.png", "rsrc/pcoff.png") ?>
+<? javascript toggle("b4pitchlines", "pitchLines", "rsrc/plon.png", "rsrc/ploff.png") ?>

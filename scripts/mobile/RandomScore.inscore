@@ -1,0 +1,55 @@
+
+/ITL/scene/* del;
+
+<? javascript
+	function randomdur () { 
+		return Math.pow(2, Math.floor( Math.random() * 5) );
+	}
+
+	function randomnote () { 
+		return String.fromCharCode("a".charCodeAt(0) + Math.floor((Math.random() * 8))) + "/" + randomdur();
+	}
+	
+	var scorelength = 0;
+	function randomscore () {
+		var n = Math.round( Math.random() * 3) + 1;
+		scorelength += n;
+		var score = "/ITL/scene/score write '";
+		for (i=0; i <= n; i++) {
+			score =  score + " " + randomnote();
+		}
+		return score + "';";
+	}
+?>
+
+
+gray = 100;
+
+/ITL/scene/comment1 set txt "This script shows the use of the 
+/ITL/scene/javascript static object
+to generate random scores 
+using Guido streams.";
+/ITL/scene/comment1 y -0.85;
+/ITL/scene/comment1 color $gray $gray $gray ;
+/ITL/scene/clickme set txt "TOUCH ME";
+/ITL/scene/clickme y 0.88;
+/ITL/scene/comment1 fontSize 20;
+/ITL/scene/clickme fontSize 24;
+/ITL/scene/clickme z 2.;
+
+/ITL/scene/score set gmnstream '[ \clef<"g"> \meter<"4/4">  \pageFormat<18cm, 18cm, 5,5,5,5>';
+/ITL/scene/score scale 0.4;
+/ITL/scene/score xorigin -1;
+/ITL/scene/score yorigin -1;
+/ITL/scene/score x -0.7;
+/ITL/scene/score y -0.68;
+
+down 	= ( /ITL/scene/clickme color 255 0 0, /ITL/scene/javascript run "randomscore()" );
+up 		= ( /ITL/scene/clickme color 0 0 0 );
+/ITL/scene/clickme watch touchBegin  $down;
+/ITL/scene/clickme watch touchEnd  $up;
+
+!/ITL/scene/clickme watch mouseDown  $down;
+!/ITL/scene/clickme watch mouseUp  $up;
+
+
