@@ -17,10 +17,6 @@ aboutsize = 24;
 
 /ITL/Welcome/version set txt "Version" $(/ITL get version);
 /ITL/Welcome/version fontSize $textsize;
-/ITL/Welcome/version y -0.41;
-
-/ITL/Welcome/version set txt "Version" $(/ITL get version);
-/ITL/Welcome/version fontSize $textsize;
 /ITL/Welcome/version y -0.42;
 
 /ITL/Welcome/what1 set txt "An environment for the design of";
@@ -34,8 +30,6 @@ aboutsize = 24;
 
 /ITL/Welcome/score set gmn "[ a f# g ]";
 /ITL/Welcome/score effect $shadow;
-/ITL/Welcome/score watch mouseDown (/ITL/Welcome/b width 0.1, /ITL/Welcome/b height 0.1 );
-/ITL/Welcome/score watch mouseUp ( /ITL/Welcome/b width 0, /ITL/Welcome/b height 0 );
 
 dy = 0.060;
 /ITL/Welcome/c1 set txt "INScore is an open source project";

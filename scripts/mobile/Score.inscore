@@ -1,6 +1,8 @@
 
 /ITL/scene/* del;
 
+down = mouseDown;
+
 <? javascript
 	function makemsg (msg, target, attribute, imgon, imgoff) {
 		msg = msg.replace(/TARGET/g, target) ;
@@ -17,11 +19,11 @@
 			onstr = "empty";
 			offstr = "";
 		}
-		var template = "/ITL/scene/TARGET watch touchBegin (" +
+		var template = "/ITL/scene/TARGET watch " + down + " (" +
 			"/ITL/scene/TARGET push," +
 			"/ITL/scene/score ATTRIBUTE " + onstr + "," +
 			"/ITL/scene/TARGET set img 'OFF'," +
-			"/ITL/scene/TARGET watch touchBegin (" +
+			"/ITL/scene/TARGET watch " + down + " (" +
 				"/ITL/scene/TARGET set img 'ON'," +
 				"/ITL/scene/score ATTRIBUTE " + offstr + "," +
 				"/ITL/scene/TARGET pop));"
@@ -43,6 +45,15 @@ pheight	= 1.;
 /ITL/scene/b2bars 		set img "rsrc/pbon.png";
 /ITL/scene/b3autocolor 	set img "rsrc/pcon.png";
 /ITL/scene/b4pitchlines set img "rsrc/plon.png";
+
+buttons = (
+	./b1keyboard 	set img "rsrc/pkon.png",
+	./b2bars 		set img "rsrc/pbon.png",
+	./b3autocolor 	set img "rsrc/pcon.png",
+	./b4pitchlines 	set img "rsrc/plon.png"
+);
+
+/ITL/scene eval $buttons;
 /ITL/scene/b5proll 		set img "rsrc/sproll.png";
 /ITL/scene/b6score 		set img "rsrc/sscore.png";
 
@@ -55,14 +66,12 @@ rshift = 0.28;
 /ITL/scene/b[5-6]* 	dx $rshift;
 /ITL/scene/b5proll 	show 0;
 
-!/ITL/scene/b* watch mouseEnter (/ITL/scene/$self penWidth 1);
-!/ITL/scene/b* watch mouseLeave (/ITL/scene/$self penWidth 0);
-
 switch2score = (
 	/ITL/scene/score set gmnf "rsrc/score.gmn",
 	/ITL/scene/score scale 0.22,
 	/ITL/scene/b5proll show 1,
 	/ITL/scene/b[12346]* show 0
+!	/ITL/scene eval $save
 );
 
 switch2proll = (
@@ -71,14 +80,12 @@ switch2proll = (
 	/ITL/scene/score width $pwidth,
 	/ITL/scene/score height $pheight,
 	/ITL/scene/b5proll show 0,
-	/ITL/scene/b[12346]* show 1
+	/ITL/scene/b[12346]* show 1,
+	/ITL/scene eval $buttons
 );
 
-/ITL/scene/b6score watch touchBegin $switch2score;
-/ITL/scene/b5proll watch touchBegin $switch2proll;
-
-/ITL/scene/b6score watch mouseDown $switch2score;
-/ITL/scene/b5proll watch mouseDown $switch2proll;
+/ITL/scene/b6score watch $down $switch2score;
+/ITL/scene/b5proll watch $down $switch2proll;
 
 <? javascript toggle("b1keyboard", "keyboard", "rsrc/pkon.png", "rsrc/pkoff.png") ?>
 <? javascript toggle("b2bars", "measureBars", "rsrc/pbon.png", "rsrc/pboff.png") ?>
