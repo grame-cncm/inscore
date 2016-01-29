@@ -261,7 +261,7 @@ void ScriptsParser::simplifyPath()
 		commonPath = i;
 	}
 
-	for(auto it = fData.scripts.begin(); it != fData.scripts.end(); it++){
+	for(auto it = fData.ressources.size()?fData.scripts.begin():fData.scripts.begin()++; it != fData.scripts.end(); it++){
 		std::vector<std::string> path = splitPath(it->first);
 
 		int i=0;
