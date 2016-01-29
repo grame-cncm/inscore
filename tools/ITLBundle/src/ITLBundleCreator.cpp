@@ -20,11 +20,15 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
+	char* buffer = getcwd(NULL, 0);
+	if(inputFile.at(0)!="/")
+		inputFile = std::string(buffer)+"/"+inputFile;
+	delete[] buffer;
+
 	//OPTION
 	int argI=2;
 	itlbundle::BundleCreator bCreator;
-	char* buffer = getcwd(NULL, 0);
-	bCreator.setDefaultRootPath(std::string(buffer));
+	bCreator.setDefaultRootPath(inputFile.substr(0, inputFile.rfind('/')));
 
 	while(argI<argc){
 		string arg = argv[argI];
@@ -61,8 +65,7 @@ int main(int argc, char* argv[])
 		}
 
 	}
-	inputFile = std::string(buffer)+"/"+inputFile;
-	delete[] buffer;
+
 	return bCreator.bundle(inputFile, outputFile) ? 0 : 1;
 }
 
