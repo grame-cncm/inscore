@@ -47,6 +47,7 @@ class CustomScripts : public QObject
 		// All callback method of this object must be slot method.
         // Their arguments must be of type const QMetaType
         QString version();
+        QString osname();
 		QJSValue readfile(const QString &filename);
 		void print(const QVariantList &args);
 		void post(const QVariantList &args);

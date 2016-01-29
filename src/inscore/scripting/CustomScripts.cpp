@@ -51,6 +51,26 @@ QString CustomScripts::version()
 	return QT_VERSION_STR;
 }
 
+QString CustomScripts::osname()
+{
+#ifdef MACOS
+	return "MacOS";
+#endif
+#ifdef WINDOWS
+	return "Windows";
+#endif
+#ifdef __LINUX__
+	return "Linux";
+#endif
+#ifdef ANDROID
+	return "Android";
+#endif
+#ifdef IOS
+	return "iOS";
+#endif
+
+}
+
 QJSValue CustomScripts::readfile(const QString &filename)
 {
 	if (filename.isEmpty()) {

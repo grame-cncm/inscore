@@ -59,9 +59,10 @@ static const char* kReserved[] = {
 	"print",
 	"post",
 	"version",
-	"readfile"
+	"readfile",
+	"osname"
 };
-enum { kExternals, kPrintCallback, kPostCallback, kPrint, kPost, kVersion, kReadfile, kEndExternals };
+enum { kExternals, kPrintCallback, kPostCallback, kPrint, kPost, kVersion, kReadfile, kOSName, kEndExternals };
 
 //--------------------------------------------------------------------------------------------
 // check for  conflicts with reserved tokens
@@ -102,12 +103,14 @@ void TQtJs::Initialize  ()
 	fEngine->globalObject().setProperty(kReserved[kExternals], externalsVal);
 
 	QJSValue versionFunc	= externalsVal.property("version");
+	QJSValue osFunc			= externalsVal.property("osname");
 	QJSValue readFileFunc	= externalsVal.property("readfile");
 	QJSValue printFunc		= externalsVal.property("print");
 	QJSValue postFunc		= externalsVal.property("post");
 
 	// Expose C++ functions
 	fEngine->globalObject().setProperty(kReserved[kVersion], versionFunc);
+	fEngine->globalObject().setProperty(kReserved[kOSName], osFunc);
 	fEngine->globalObject().setProperty(kReserved[kReadfile], readFileFunc);
 	fEngine->globalObject().setProperty(kReserved[kPrintCallback], printFunc);
 	fEngine->globalObject().setProperty(kReserved[kPostCallback], postFunc);
