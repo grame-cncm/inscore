@@ -8,6 +8,7 @@
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>inscore</string>
+				<string>ibundle</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>INScoreViewer</string>
