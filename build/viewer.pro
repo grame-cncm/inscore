@@ -59,7 +59,7 @@ ios {
 	OBJECTIVE_SOURCES += $$SRC/mobile/ios/QtAppDelegate.mm
 	INCLUDEPATH += $$SRC/mobile/ios
 	HEADERS += $$files($$SRC/mobile/ios/*.h)
-	RESOURCES += android-rsc/inscoremobile.qrc ../rsrc/inscorescriptmobile.qrc
+	RESOURCES += $$PWD/android-rsc/inscoremobile.qrc $$ROOT/rsrc/inscorescriptmobile.qrc
 	DEFINES += IOS __MOBILE__
     CONFIG+= arm64 armv7 armv7s
 }
@@ -90,11 +90,11 @@ android {
 	ANDROID_PACKAGE_SOURCE_DIR = $$ROOT/rsrc/android
 	QT += androidextras
 	DEFINES += ANDROID
-	RESOURCES += android-rsc/inscoremobile.qrc ../rsrc/inscorescriptmobile.qrc
+	RESOURCES += $$PWD/android-rsc/inscoremobile.qrc $$ROOT/rsrc/inscorescriptmobile.qrc
 }
 
 mobile_ui{
     DEFINES += __MOBILE__
-    RESOURCES += android-rsc/inscoremobile.qrc ../rsrc/inscorescriptmobile.qrc
+    RESOURCES += $$PWD/android-rsc/inscoremobile.qrc $$ROOT/rsrc/inscorescriptmobile.qrc
 }
 
