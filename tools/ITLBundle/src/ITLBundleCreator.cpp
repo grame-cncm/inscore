@@ -23,6 +23,9 @@ int main(int argc, char* argv[])
 	//OPTION
 	int argI=2;
 	itlbundle::BundleCreator bCreator;
+	char* buffer = getcwd(NULL, 0);
+	bCreator.setDefaultRootPath(std::string(buffer));
+	delete[] buffer;
 
 	while(argI<argc){
 		string arg = argv[argI];
@@ -51,10 +54,9 @@ int main(int argc, char* argv[])
 		}else if(arg == "-h" || arg=="--help"){
 				std::cout<<DOC_CREATOR;
 			return 0;
-		}else if(arg == "-l" || arg == "--local"){
-			char* buffer = getcwd(NULL, 0);
-			bCreator.setDefaultRootPath(std::string(buffer));
-			delete[] buffer;
+		}else if(arg == "-l" || arg == "--rootpath"){
+			if(!param.empty())
+				bCreator.setDefaultRootPath(param);
 		}else if(arg== "-f" || arg == "--force-overwrite"){
 			bCreator.setForceOverwrite();
 		}else if(arg== "-js" || arg == "--parse-javascript"){
