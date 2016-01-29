@@ -70,7 +70,7 @@ class OSCStream
 	enum state	{ kIdle, kInProgress };
 	
 	private:
-	enum		{ kOutBufferSize = 16384 };
+	enum		{ kOutBufferSize = 32768 };
 	
 	state		fState;
 	int			fPort;				// the destination UDP port
@@ -114,10 +114,10 @@ class OSCStream
 						OSCStream& operator <<(OSCStream& s, const IExpression* val);
 						OSCStream& operator <<(OSCStream& s, const IExprArgBase* val);
                         OSCStream& operator <<(OSCStream& s, IExprOperator* val);
-				inline	OSCStream& operator <<(OSCStream& s, int val)		{ s.stream() << val; return s; }
-				inline	OSCStream& operator <<(OSCStream& s, long val)		{ s.stream() << (int)val; return s; }
-				inline	OSCStream& operator <<(OSCStream& s, float val)		{ s.stream() << val; return s; }
-				inline	OSCStream& operator <<(OSCStream& s, double val)	{ s.stream() << float(val); return s; }
+						OSCStream& operator <<(OSCStream& s, int val);
+						OSCStream& operator <<(OSCStream& s, long val);
+						OSCStream& operator <<(OSCStream& s, float val);
+						OSCStream& operator <<(OSCStream& s, double val);
 
 template <typename T> 	OSCStream& operator <<(OSCStream& s, const TSize<T>& size)	{ s << size.width() << size.height(); return s; }
 

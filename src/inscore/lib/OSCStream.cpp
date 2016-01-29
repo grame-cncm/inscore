@@ -26,6 +26,7 @@
 #include "ExprReader.h"
 #include "IColor.h"
 #include "IApplVNodes.h"
+#include "ITLError.h"
 
 using namespace std;
 
@@ -102,24 +103,32 @@ OSCStream& OSCStream::end()
 	return *this;
 }
 
+#define CATCHOSC	catch (osc::Exception e) { ITLErr<< "error while sending OSC message: " << e.what() <<ITLEndl; }
+
+
+OSCStream& operator <<(OSCStream& s, int val)		{ try { s.stream() << val; } CATCHOSC return s; }
+OSCStream& operator <<(OSCStream& s, long val)		{ try { s.stream() << (int)val; } CATCHOSC return s; }
+OSCStream& operator <<(OSCStream& s, float val)		{ try { s.stream() << val; } CATCHOSC return s; }
+OSCStream& operator <<(OSCStream& s, double val)	{ try { s.stream() << float(val); } CATCHOSC return s; }
+
 //--------------------------------------------------------------------------
 OSCStream& operator <<(OSCStream& s, const string& val)	
 { 
-	s.stream() << val.c_str();
-	return s; 
+	try { s.stream() << val.c_str(); } CATCHOSC
+	return s;
 }
 //--------------------------------------------------------------------------
 OSCStream &operator <<(OSCStream &s, const IExpression *val){
-	if(val)
-		s.stream() << val->definition().c_str();
+	if(val) {
+		try { s.stream() << val->definition().c_str(); } CATCHOSC
+	}
 	return s;
 }
 //--------------------------------------------------------------------------
 OSCStream &operator <<(OSCStream &s, IExprArgBase *val){
     string r;
 	if(ExprReader::read(val, r))
-        s.stream() << " " << r.c_str();
-
+		try { s.stream() << " " << r.c_str(); } CATCHOSC
     return s;
 }
 //--------------------------------------------------------------------------
@@ -128,7 +137,7 @@ OSCStream &operator <<(OSCStream &s, IExprOperator *val)
 	//This method is normally useless (its only purpose is to keep Visual studio quite)
     string arg1, arg2;
     if(ExprReader::read(val->arg1(), arg1) && ExprReader::read(val->arg2(), arg2))
-		s.stream() << "expr( " << arg1.c_str() << " " << arg2.c_str() << ")";
+		try {  s.stream() << "expr( " << arg1.c_str() << " " << arg2.c_str() << ")"; } CATCHOSC
     return s;
 }
 
