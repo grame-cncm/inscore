@@ -93,7 +93,7 @@ Item {
                     font.bold: true;
                     font.capitalization: Font.SmallCaps
                 }
-                MouseArea{
+                SimpleTouchArea{
                     anchors.fill: parent
                     onClicked:{
                         root.repeatBack(path.count-index-1);

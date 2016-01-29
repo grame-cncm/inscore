@@ -61,7 +61,7 @@ Item {
             font.capitalization: Font.SmallCaps
             text: "";
         }
-        MouseArea{
+        SimpleTouchArea{
             anchors.fill: parent;
             onPressed: {
                 button.state = "pressed"
@@ -91,7 +91,7 @@ Item {
 
             source: "qrc:///images/close.png"
             visible: closable;
-            MouseArea{
+            SimpleTouchArea{
                 anchors.fill: parent;
                 anchors.margins: -root.height*0.15 -root.height*0.15 -root.height*0.15-root.height*0.15;
                 onClicked: root.close();

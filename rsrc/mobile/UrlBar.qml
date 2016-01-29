@@ -74,7 +74,7 @@ Item {
                 source: "qrc:///images/go.png"
                 fillMode: Image.PreserveAspectFit
 
-                MouseArea{
+                SimpleTouchArea{
                     anchors.fill: parent;
                     onClicked: root.accept();
                     onPressed: urlField.state = "pressed";

@@ -43,7 +43,7 @@ Rectangle{
         font.pixelSize:  Size.toPixel(Size.headerPointHeight/4);
 	}
 
-    MouseArea{
+    SimpleTouchArea{
         anchors.fill: parent
         onClicked: {
             root.clicked();
