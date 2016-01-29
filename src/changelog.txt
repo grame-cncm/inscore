@@ -17,7 +17,7 @@ Version 1.17
 - log window supports the 'foreground' message
 - user actions on windows are generating 'foreground' messages
 - application quit when the last scene is closed (even when the log window is opened) 
-- All objects have a 'lock' boolean property that will prevent them to be deleted when set to 1.
+- new 'lock' message supported by all objects to prevent an object deletion
 - osc output buffer has been enlarged to 32768
 - crash bug corrected: outgoing OSC messages are now handling buffer overflow exceptions
 
