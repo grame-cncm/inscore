@@ -69,7 +69,6 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
 	if(e->key() == Qt::Key_Back){
 		e->accept();
 	}else if(e->key() == Qt::Key_Menu){
-		qDebug()<<"Menu Key";
 		if(fMenu->isMenuVisible())
 			fMenu->hideMenu();
 		else

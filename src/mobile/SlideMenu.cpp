@@ -59,12 +59,15 @@ QString MsgSender::rootPath()
 //--------------------------------------------------------------------------
 SlideMenu::SlideMenu(QWidget *parent) : QFrame(parent)
 {
+	setAttribute(Qt::WA_AcceptTouchEvents);
+
 	fMenu = new QQuickWidget(this);
 	fMenu->rootContext()->setContextProperty("contextObject", this);
 	fMenu->rootContext()->setContextProperty("inscore", &fSender);
 	fMenu->rootContext()->setContextProperty("downloadPath", QStandardPaths::standardLocations(QStandardPaths::DownloadLocation).last()+"/bundles");
 	fMenu->setSource(QUrl("qrc:///qml/slideMenu.qml"));
 	fMenu->rootObject()->setProperty("version", QVariant::fromValue( QString::fromStdString(INScore::versionStr()) ));
+	fMenu->setAttribute(Qt::WA_AcceptTouchEvents);
 
 	fMenu->setResizeMode(QQuickWidget::SizeRootObjectToView);
 	connect(fMenu->rootObject(), SIGNAL(switchToPanel(QString)), this, SIGNAL(switchToPanel(QString)));
@@ -178,12 +181,26 @@ void SlideMenu::deleteDownloadedFile(QString fileName)
 	d.remove(fileName);
 }
 
-void SlideMenu::mousePressEvent(QMouseEvent *e)
+bool SlideMenu::event(QEvent *e)
 {
-	if(e->pos().x() > width()*WIDTH){
-		e->accept();
-		hideMenu();
+	if(e->type()==QEvent::TouchBegin){
+		QTouchEvent *event = static_cast<QTouchEvent*>(e);
+		foreach(QTouchEvent::TouchPoint p, event->touchPoints()){
+			if(p.pos().x() > width()*WIDTH){
+				e->accept();
+				hideMenu();
+			}
+		}
+		return true;
+	}else if(e->type()==QEvent::MouseButtonPress){
+		QMouseEvent *event = static_cast<QMouseEvent*>(e);
+		if(event->pos().x() > width()*WIDTH){
+			e->accept();
+			hideMenu();
+		}
 	}
+
+	return QFrame::event(e);
 }
 
 }//end namespace

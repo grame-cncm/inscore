@@ -33,6 +33,7 @@ namespace inscore {
 
 Header::Header(QWidget *parent) : QQuickWidget(parent)
 {
+	setAttribute(Qt::WA_AcceptTouchEvents);
 	setResizeMode(QQuickWidget::SizeViewToRootObject);
 	setSource(QUrl("qrc:///qml/header.qml"));
 	connect(rootObject(), SIGNAL(popupMenu()), this, SIGNAL(popupMenu()));

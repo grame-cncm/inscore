@@ -52,7 +52,7 @@ Item{
         source: "qrc:///INScoreViewer.png"
     }
 
-    MouseArea{
+    SimpleTouchArea{
         anchors.fill: parent
         onClicked: root.popupMenu()
     }

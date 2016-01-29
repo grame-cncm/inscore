@@ -93,10 +93,7 @@ public slots:
 	void deleteDownloadedFile(QString fileName);
 
 protected:
-
-	void mousePressEvent(QMouseEvent *e);
-	void mouseReleaseEvent(QMouseEvent *){}
-	void mouseMoveEvent(QMouseEvent *){}
+	bool event(QEvent *e);
 
 	void resizeEvent(QResizeEvent *);
 };

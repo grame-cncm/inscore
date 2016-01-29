@@ -19,5 +19,6 @@
         <file alias="global.js">mobile/global.js</file>
         <file alias="global.qml">mobile/global.qml</file>
         <file alias="UrlBar.qml">mobile/UrlBar.qml</file>
+        <file alias="SimpleTouchArea.qml">mobile/SimpleTouchArea.qml</file>
     </qresource>
 </RCC>
