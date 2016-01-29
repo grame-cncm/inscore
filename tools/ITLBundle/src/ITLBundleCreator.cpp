@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 	}
 
 	char* buffer = getcwd(NULL, 0);
-	if(inputFile.at(0)!="/")
+	if(inputFile.at(0) != '/')
 		inputFile = std::string(buffer)+"/"+inputFile;
 	delete[] buffer;
 
