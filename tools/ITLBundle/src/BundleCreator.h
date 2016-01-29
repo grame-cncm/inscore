@@ -13,6 +13,7 @@ class BundleCreator
 {
 	BundleLog fLog;
 	bool fShowHierarchy;
+	bool fParseJS;
 	bool fForceOverwrite=false;
 	std::string fDefaultRootPath;
 
@@ -31,6 +32,7 @@ public:
 	void setDefaultRootPath(std::string rootPath);
 	void setShowHierarchy(bool showHierarchy = true);
 	void setForceOverwrite(bool forceOverwrite = true);
+	void setParseJS(bool parseJS = true);
 
 };
 

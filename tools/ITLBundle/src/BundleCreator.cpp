@@ -14,6 +14,7 @@ using namespace inscore;
 BundleCreator::BundleCreator()
 {
 	fShowHierarchy = false;
+	fParseJS = false;
 	fDefaultRootPath = std::string(getenv("HOME")) + "/";
 }
 //____________________________________________
@@ -23,7 +24,7 @@ bool BundleCreator::bundle(std::string inputFile, std::string outputFile)
 	fLog.section("Parsing \""+inputFile+"\"");
 
 	ParsedData parsedData;
-	if(!ScriptsParser::read(inputFile, parsedData, fDefaultRootPath, &fLog, fShowHierarchy))
+	if(!ScriptsParser::read(inputFile, parsedData, fDefaultRootPath, fParseJS, &fLog, fShowHierarchy))
 		return false;
 
 	fLog.section("Discovered Files");
@@ -67,6 +68,11 @@ void BundleCreator::setShowHierarchy(bool showHierarchy)
 void BundleCreator::setForceOverwrite(bool forceOverwrite)
 {
 	fForceOverwrite= forceOverwrite;
+}
+
+void BundleCreator::setParseJS(bool parseJS)
+{
+	fParseJS = parseJS;
 }
 
 

@@ -1,8 +1,10 @@
-#include "ExprInfo.h"
+#include "ParsedData.h"
 
+#include <deelx.h>
+
+#include "ExprInfo.h"
 #include "ScriptsParser.h"
 
-#include "ParsedData.h"
 
 namespace itlbundle {
 
@@ -20,6 +22,53 @@ inscore::extvector<std::string> ParsedData::ressourceNames() const
 	for(auto it=ressources.begin(); it!=ressources.end(); it++)
 		vector.push_back(it->first);
 	return vector;
+}
+
+//__________________________________________________________
+//----------------------------------------------------------
+
+size_t ParsedData::findFileInJS(const std::string &js, std::string &filePath, size_t startID)
+{
+	while(startID < js.size()){
+		size_t beginDQuoteID = js.find('"', startID);
+		size_t beginSQuoteID = js.find('\'', startID);
+		size_t beginQuoteID = std::min(beginDQuoteID, beginSQuoteID);
+		if(beginQuoteID == std::string::npos)
+			return std::string::npos;
+
+		beginQuoteID++;
+		bool dQuote = beginDQuoteID < beginSQuoteID;
+
+		size_t endQuoteID = beginQuoteID;
+		while(endQuoteID < js.size()){
+			endQuoteID = js.find(dQuote?'"':'\'', endQuoteID);
+			if(endQuoteID == std::string::npos)
+				return std::string::npos;
+			if(js.at(endQuoteID-1)!='\\')
+				break;
+			endQuoteID++;
+		}
+		endQuoteID--;
+
+		if(dQuote){
+			std::string quoted = js.substr(beginQuoteID, endQuoteID-beginDQuoteID);
+			if(isFilePath(quoted)){
+				filePath = quoted;
+				return beginQuoteID;
+			}
+		}
+
+		startID = endQuoteID+2;
+	}
+	return std::string::npos;
+}
+
+bool ParsedData::isFilePath(std::string string)
+{
+	//  ^/?(. .? /)*([^/?:*<>|']+/?)+.[^/\?:*<>|']+$
+	CRegexpT<char> fileRegex("^/?(\\.\\.?/)*([^/\\?:*<>|']+/?)+\\.[^/\\?:*<>|']+$");
+
+	return fileRegex.MatchExact(string.c_str()).IsMatched();
 }
 
 //__________________________________________________________
@@ -84,7 +133,6 @@ void ParsedData::simplifyPaths(int charToDelete)
 	fMainScript = fMainScript.substr(charToDelete);
 }
 
-
 //__________________________________________________________
 //----------------------------------------------------------
 bool RessourceMap::insert(std::string name, SMsgParam param)
@@ -135,14 +183,13 @@ void RessourceMap::renameRsc(std::string search, std::string replace)
 		(*it)->setValue(replace);
 }
 
-
 //__________________________________________________________
 //----------------------------------------------------------
 MsgParam::MsgParam(inscore::SIMessage msg, int paramID)
 	:fMsg(msg), fParamID(paramID)
 {}
 
-void MsgParam::setValue(std::string value)
+void MsgParam::setValue(const std::string& value)
 {
 	fMsg->setparam<std::string>(fParamID, value);
 }
@@ -162,7 +209,7 @@ ExprParam::ExprParam(inscore::SIMessage msg, int paramID, std::string initialVal
 	: MsgParam(msg,paramID), fInitialValue(initialValue)
 {}
 
-void ExprParam::setValue(std::string value){
+void ExprParam::setValue(const std::string& value){
 	inscore::SIExpression expr;
 	if(!fMsg->param(fParamID,expr))
 		return;
@@ -173,6 +220,36 @@ void ExprParam::setValue(std::string value){
 std::string ExprParam::getValue() const
 {
 	return fInitialValue;
+}
+
+//__________________________________________________________
+//----------------------------------------------------------
+JsParam::JsParam(inscore::SIMessage msg, std::string path)
+	: MsgParam(msg, 0), fPath(path)
+{}
+
+void JsParam::setValue(const std::string& value)
+{
+	std::string js;
+	if(!fMsg->param(0, js))
+		return;
+	std::string path;
+	size_t id = ParsedData::findFileInJS(js, path);
+	while(id != std::string::npos){
+		if(path==fPath){
+			js.replace(id,path.size(), value);
+			id = ParsedData::findFileInJS(js, path, id + value.size()+ 1);
+		}else
+			id = ParsedData::findFileInJS(js, path, id + path.size() + 1);
+	}
+
+	fMsg->setparam<std::string>(0, js);
+	fPath = value;
+}
+
+std::string JsParam::getValue() const
+{
+	return fPath;
 }
 
 

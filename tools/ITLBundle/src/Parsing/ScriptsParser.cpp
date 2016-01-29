@@ -11,11 +11,12 @@
 
 namespace itlbundle{
 
-bool ScriptsParser::read(std::string inputFile, ParsedData &result, const std::string& defaultRootPath, BundleLog* log, const bool& verbose)
+bool ScriptsParser::read(std::string inputFile, ParsedData &result, const std::string& defaultRootPath, bool parseJS, BundleLog* log, const bool& verbose)
 {
 	ScriptsParser p(result, defaultRootPath);
 	p.fLog = log;
 	p.fVerbose = verbose;
+	p.fParseJS = parseJS;
 
 	std::string absoluteFile = p.absolutePath(inputFile, "/");
 	if(!absoluteFile.empty())
@@ -191,13 +192,13 @@ bool ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool
 				fLog->warn("Save and export message have undefined behaviour in bundles...");
 			}
 
-		}else if("set"){
+		}else if(msg->message()=="set"){
 			if(msg->size()==2){
 				std::string cmd;
 				if(msg->param(0, cmd) && isFileObject(cmd)){
 					std::string path;
 					if(msg->param(1, path)){
-						if(isPath(path)){
+						if(ParsedData::isFilePath(path)){
 							path = absolutePath(path, address);
 							if(!path.empty()){
 								fData.ressources.insert(path, new MsgParam(msg, 1));
@@ -207,6 +208,25 @@ bool ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool
 					}
 				}
 			}
+		}else if(msg->message()=="js" && address=="/ITL/bundle"){
+			if(fParseJS){
+				//Parse javascript
+				std::string js;
+				if(!msg->param(0,js))
+					return false;
+				std::string jsPath;
+				size_t id = ParsedData::findFileInJS(js, jsPath);
+				while(id!=std::string::npos){
+					std::string path = absolutePath(jsPath, "/ITL");
+					if(!path.empty()){
+						fData.ressources.insert(path, new JsParam(msg, jsPath));
+						result.ressources.insert(path);
+					}
+					id = ParsedData::findFileInJS(js, jsPath, id+jsPath.size()+1);
+				}
+				return true;
+			}else
+				fLog->warn("A javascript section was found but will not be parsed.\n     Use -js to parse javascript sections.");
 		}
 
 	}
@@ -405,13 +425,6 @@ bool ScriptsParser::isurl(std::string path)
 	std::string start = path.substr(0, 7);
 	return start=="http://" || start=="https:/";
 }
-//______________________________________________
-bool ScriptsParser::isPath(std::string string)
-{
-	//  /?(. .? /)*([^/?:*<>|']+/?)+.[^/\?:*<>|']+
-	CRegexpT<char> fileRegex("/?(\\.\\.?/)*([^/\\?:*<>|']+/?)+\\.[^/\\?:*<>|']+");
 
-	return fileRegex.MatchExact(string.c_str()).IsMatched();
-}
 
 } // End namespace

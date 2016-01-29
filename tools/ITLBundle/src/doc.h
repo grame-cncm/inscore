@@ -17,6 +17,7 @@ VERSION
 "               hierarchy    Details dependencies for each scripts\n"
 "  -l --local                Set INScore root path to the current folder\n"
 "  -f --force-overwrite      If the file exist, overwrites it without asking\n"
+"  -js --parse-javascript    Javascript sections are parsed to detect ressources\n"
 "  -h  --help                Print this message and quit\n"
 "\n"
 " -- EXAMPLES --\n"

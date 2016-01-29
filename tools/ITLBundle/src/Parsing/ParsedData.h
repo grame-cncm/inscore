@@ -45,6 +45,9 @@ public:
 
 	void simplifyPaths(int charToDelete);
 
+	static size_t findFileInJS(const std::string& js, std::string& filePath, size_t startID = 0);
+	static bool isFilePath(std::string string);
+
 protected:
 	std::string fMainScript;
 
@@ -60,7 +63,7 @@ protected:
 
 public:
 	MsgParam(inscore::SIMessage msg, int paramID);
-	virtual void setValue(std::string value);
+	virtual void setValue(const std::string &value);
 	virtual std::string getValue() const;
 };
 
@@ -70,7 +73,17 @@ class ExprParam: public MsgParam{
 
 public:
 	ExprParam(inscore::SIMessage msg, int paramID, std::string initialValue);
-	virtual void setValue(std::string value);
+	virtual void setValue(const std::string &value);
+	virtual std::string getValue() const;
+};
+
+//_____________________________________________________
+class JsParam: public MsgParam{
+	std::string fPath;
+
+public:
+	JsParam(inscore::SIMessage msg, std::string path);
+	virtual void setValue(const std::string &value);
 	virtual std::string getValue() const;
 };
 

@@ -17,13 +17,14 @@ class ScriptsParser{
 	ParsedData &fData;
 	std::map<std::string, std::string> fRootPaths;
 	std::string fDefaultRootPath;
+	bool		fParseJS;
 	qarchive::SQArchive fArchive;
 	BundleLog *fLog = 0;
 
 	bool fVerbose = false;
 
 public:
-	static bool read(std::string inputFile, ParsedData &result, const std::string &defaultRootPath, BundleLog* log = 0, const bool &verbose=false);
+	static bool read(std::string inputFile, ParsedData &result, const std::string &defaultRootPath, bool parseJS, BundleLog* log = 0, const bool &verbose=false);
 	static bool readArchive(ParsedData &result, qarchive::SQArchive archive);
 
 	static bool ignoreCmd(std::string ITLCmd);
@@ -51,7 +52,6 @@ protected:
 
 	inline bool isFileObject(std::string ITLCmd);
 	bool isurl(std::string path);
-	bool isPath(std::string string);
 
 
 };

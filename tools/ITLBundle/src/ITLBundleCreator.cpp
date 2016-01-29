@@ -57,6 +57,8 @@ int main(int argc, char* argv[])
 			delete[] buffer;
 		}else if(arg== "-f" || arg == "--force-overwrite"){
 			bCreator.setForceOverwrite();
+		}else if(arg== "-js" || arg == "--parse-javascript"){
+			bCreator.setParseJS();
 		}
 
 	}
