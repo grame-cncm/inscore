@@ -15,9 +15,10 @@ aboutsize = 24;
 /ITL/Welcome/welcome effect $shadow;
 /ITL/Welcome/welcome y -0.54;
 
-/ITL/Welcome/version set txt "Version" $(/ITL get version);
+/ITL/Welcome/version set txt "Version";
 /ITL/Welcome/version fontSize $textsize;
 /ITL/Welcome/version y -0.42;
+/ITL/Welcome/version watch mouseDown (/ITL/Welcome/version set txt "Version" "$(/ITL get version)");
 
 /ITL/Welcome/what1 set txt "An environment for the design of";
 /ITL/Welcome/what2 set txt "interactive, augmented music scores.";
@@ -54,4 +55,5 @@ dy = 0.060;
 
 /ITL/Welcome/* dy -0.13;
 /ITL/Welcome foreground 1;
-
+/ITL/Welcome/version event mouseDown 0 0;
+/ITL/Welcome/version watch;
