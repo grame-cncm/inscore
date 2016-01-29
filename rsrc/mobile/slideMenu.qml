@@ -57,7 +57,7 @@ Item {
                     anchors.top: parent.top
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    anchors.bottom: urlField.top;
+//                    anchors.bottom: urlField.top;
                     anchors.topMargin: Size.toPixel(1)
                     onFileClicked: {
                         inscore.postMessage("/ITL", "rootPath", file.slice(0, file.lastIndexOf("/")));
@@ -65,20 +65,20 @@ Item {
                         inscore.postMessage("/ITL/scene", "foreground");
                     }
 
-                    fileDeletable: urlField.visible
+//                    fileDeletable: urlField.visible
                     onFileDeleted: {
                         if(urlField.visible)
                             contextObject.deleteDownloadedFile(file);
                     }
                 }
 
-                UrlBar{
-                    id: urlField
-                    visible: false;
-                    anchors.left: parent.left;
-                    anchors.right: parent.right;
-                    anchors.bottom: parent.bottom;
-                }
+//                UrlBar{
+//                    id: urlField
+//                    visible: false;
+//                    anchors.left: parent.left;
+//                    anchors.right: parent.right;
+//                    anchors.bottom: parent.bottom;
+//                }
 
                 //Shadow:
                 Image{
@@ -175,7 +175,7 @@ Item {
                                 onClicked: {
                                     root.state = "exploreMenu";
                                     exploreView.setRootPath("Exemples", "qrc:///scripts");
-                                    urlField.visible = false;
+//                                    urlField.visible = false;
                                 }
                             }
                             SlideMenuItem{
@@ -183,7 +183,7 @@ Item {
                                 onClicked: {
                                     root.state = "exploreMenu";
                                     exploreView.setRootPath("HOME", "file://"+initialRootPath);
-                                    urlField.visible = false;
+//                                    urlField.visible = false;
                                 }
                             }
                             SlideMenuItem{
@@ -191,8 +191,8 @@ Item {
                                 onClicked: {
                                     root.state = "exploreMenu";
                                     exploreView.setRootPath("Recently downloaded", "file://"+downloadPath);
-                                    urlField.clear();
-                                    urlField.visible = true;
+//                                    urlField.clear();
+//                                    urlField.visible = true;
                                 }
                             }
 
@@ -265,4 +265,27 @@ Item {
             NumberAnimation{ target: mainMenu; easing.type: Easing.OutCubic; properties: "x"; duration: 750; }
         }
     ]
+
+    Component.onCompleted: {
+        contextObject.back.connect(backButton);
+    }
+
+    function backButton(){
+        if(state=="exploreMenu")
+            state = "mainMenu";
+        else
+            contextObject.hideMenu();
+    }
+
+//    focus: true;
+//    Keys.onReleased: {
+//        if (event.key == Qt.Key_Back) {
+//            if(state=="exploreMenu")
+//                state = "mainMenu";
+//            else
+//                contextObject.hideMenu();
+//            console.log("Back key catched");
+//            event.accepted = true
+//        }
+//    }
 }

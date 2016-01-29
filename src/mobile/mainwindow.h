@@ -31,7 +31,10 @@ public slots:
 
 protected:
 	void resizeEvent(QResizeEvent *);
-	void closeEvent(QCloseEvent*);
+
+
+	virtual void keyPressEvent(QKeyEvent *e);
+	virtual void keyReleaseEvent(QKeyEvent *e);
 };
 
 }//end namespace

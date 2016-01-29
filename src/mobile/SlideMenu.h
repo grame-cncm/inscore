@@ -71,10 +71,14 @@ public:
 	QStringList sceneList() const;
 	QStringList panelList() const;
 
+	bool isMenuVisible() const;
+	void handleBackButton();
+
 signals:
 	void sceneListChanged();
 	void panelListChanged();
 	void switchToPanel(QString panelName);
+	void back();
 
 
 public slots:
@@ -89,8 +93,6 @@ public slots:
 	void deleteDownloadedFile(QString fileName);
 
 protected:
-	void keyPressEvent(QKeyEvent *e);
-	void keyReleaseEvent(QKeyEvent *);
 
 	void mousePressEvent(QMouseEvent *e);
 	void mouseReleaseEvent(QMouseEvent *){}

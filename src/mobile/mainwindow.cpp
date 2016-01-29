@@ -50,6 +50,9 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 	connect(fPanel, SIGNAL(panelListChanged(QStringList,int)), fMenu, SLOT(panelListChanged(QStringList,int)));
 	connect(fMenu, SIGNAL(switchToPanel(QString)), fPanel, SLOT(switchToPanel(QString)));
 	connect(fHeader, SIGNAL(popupMenu()), fMenu, SLOT(popupMenu()));
+
+	setFocus();
+	grabKeyboard();
 }
 
 void MainWindow::resizeEvent(QResizeEvent *e)
@@ -60,9 +63,39 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 	QWidget::resizeEvent(e);
 }
 
-void MainWindow::closeEvent(QCloseEvent *)
+
+void MainWindow::keyPressEvent(QKeyEvent *e)
 {
-	INScore::postMessage("/ITL", "quit");
+	if(e->key() == Qt::Key_Back){
+		e->accept();
+	}else if(e->key() == Qt::Key_Menu){
+		qDebug()<<"Menu Key";
+		if(fMenu->isMenuVisible())
+			fMenu->hideMenu();
+		else
+			fMenu->popupMenu();
+
+		e->accept();
+	}else
+		QWidget::keyPressEvent(e);
+
 }
+
+void MainWindow::keyReleaseEvent(QKeyEvent *e)
+{
+	if(e->key() == Qt::Key_Back){
+		if(!fMenu->isVisible())
+			INScore::postMessage("/ITL", "quit");
+		else
+			fMenu->handleBackButton();
+		e->accept();
+	}else if(e->key() == Qt::Key_Menu){
+		e->accept();
+	}else
+		QWidget::keyPressEvent(e);
+
+}
+
+
 
 }//end namespace

@@ -110,6 +110,16 @@ QStringList SlideMenu::panelList() const
 	return fPanelList;
 }
 
+bool SlideMenu::isMenuVisible() const
+{
+	return isVisible() && fAnimOut.state()!=QAbstractAnimation::Running;
+}
+
+void SlideMenu::handleBackButton()
+{
+	emit back();
+}
+
 //_________________________________________________
 void SlideMenu::resizeEvent(QResizeEvent *)
 {
@@ -128,14 +138,17 @@ void SlideMenu::popupMenu()
 {
 	show();
 	fMenu->rootObject()->setProperty("state","mainMenu");
+	if(fAnimOut.state()==QAbstractAnimation::Running)
+		fAnimOut.stop();
 	fAnimIn.start();
 }
 
 void SlideMenu::hideMenu()
 {
+	if(fAnimIn.state() == QAbstractAnimation::Running)
+		fAnimIn.stop();
 	fAnimOut.start();
 }
-
 void SlideMenu::setOpacity(float alpha)
 {
 	if(qAbs(alpha-fOpacity) < 0.05)
@@ -163,29 +176,6 @@ void SlideMenu::deleteDownloadedFile(QString fileName)
 	QString path = QStandardPaths::standardLocations(QStandardPaths::DownloadLocation).last();
 	QDir d(path+"/bundles");
 	d.remove(fileName);
-}
-
-
-//_________________________________________________
-void SlideMenu::keyPressEvent(QKeyEvent *e)
-{
-	if(e->key() == Qt::Key_Back) {
-		hideMenu();
-		e->accept();
-		return;
-	}
-
-	QWidget::keyPressEvent(e);
-}
-
-void SlideMenu::keyReleaseEvent(QKeyEvent *e)
-{
-	if(e->key() == Qt::Key_Back){
-		e->accept();
-		return;
-	}
-
-	QWidget::keyReleaseEvent(e);
 }
 
 void SlideMenu::mousePressEvent(QMouseEvent *e)
