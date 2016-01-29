@@ -286,6 +286,7 @@ void INScoreAppl::init()
 {
 	setApplicationName("INScoreViewer");
 	setAttribute(Qt::AA_SynthesizeTouchForUnhandledMouseEvents, false);
+	setAttribute(Qt::AA_SynthesizeMouseForUnhandledTouchEvents, false);
 	setupMenu();
 
 	QDir dir(QApplication::applicationDirPath());

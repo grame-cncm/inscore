@@ -15,9 +15,23 @@ Item {
 
         property bool pressing: false;
 
+        Timer{
+            id: unPress;
+            repeat: false;
+            interval: 1000
+            onTriggered: {
+                if(parent.pressing){
+                    root.canceled();
+                    parent.pressing = false;
+                }
+            }
+
+        }
+
         onPressed: {
             pressing = true;
             root.pressed(touchPoints[0].x,touchPoints[0].y);
+            unPress.restart();
         }
         onReleased: {
             root.released(touchPoints[0].x,touchPoints[0].y);
@@ -25,12 +39,14 @@ Item {
                 root.clicked();
             pressing = false;
         }
-        onUpdated: {
-            if(touchPoints.length)
+        onUpdated:{
                 root.mouseMove(touchPoints[0].x,touchPoints[0].y);
+                unPress.restart();
         }
+
         onCanceled: {
             root.canceled();
+            pressing = false;
         }
     }
 }
