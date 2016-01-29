@@ -204,9 +204,9 @@ void IGlue::initialize (bool offscreen, QApplication* appl)
 	cout << "INScore v " << INScore::versionStr() << listen <<  fUDP.fInPort << endl;
 
 	// check Guido version
-	if (GuidoCheckVersionNums(1, 4, 9) != guidoNoErr) {
-		oscerr << OSCStart("Warning:") << "GUIDOEngine version >= 1.49 is required." << OSCEnd();
-		cerr << "Warning: GUIDOEngine version >= 1.49 is required." << endl;
+	if (GuidoCheckVersionNums(1, 6, 0) != guidoNoErr) {
+		oscerr << OSCStart("Warning:") << "GUIDOEngine version >= 1.60 is required." << OSCEnd();
+		cerr << "Warning: GUIDOEngine version >= 1.60 is required." << endl;
 	}
 	
 	// creates a mapping updater - note that it may send error messages and thus should not be
