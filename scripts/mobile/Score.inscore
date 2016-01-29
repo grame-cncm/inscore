@@ -46,9 +46,9 @@ pheight	= 1.;
 /ITL/scene/b5proll 		set img "rsrc/sproll.png";
 /ITL/scene/b6score 		set img "rsrc/sscore.png";
 
-rshift = 0.2;
+rshift = 0.28;
 /ITL/scene/b* y 0.87;
-/ITL/scene/b* x -0.420;
+/ITL/scene/b* x -0.565;
 /ITL/scene/b[2-6]* 	dx $rshift;
 /ITL/scene/b[3-6]* 	dx $rshift;
 /ITL/scene/b[4-6]* 	dx $rshift;
@@ -77,8 +77,8 @@ switch2proll = (
 /ITL/scene/b6score watch touchBegin $switch2score;
 /ITL/scene/b5proll watch touchBegin $switch2proll;
 
-!/ITL/scene/b6score watch mouseDown $switch2score;
-!/ITL/scene/b5proll watch mouseDown $switch2proll;
+/ITL/scene/b6score watch mouseDown $switch2score;
+/ITL/scene/b5proll watch mouseDown $switch2proll;
 
 <? javascript toggle("b1keyboard", "keyboard", "rsrc/pkon.png", "rsrc/pkoff.png") ?>
 <? javascript toggle("b2bars", "measureBars", "rsrc/pbon.png", "rsrc/pboff.png") ?>

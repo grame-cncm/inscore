@@ -1,6 +1,9 @@
  
 <RCC>
     <qresource prefix="/scripts">
-	<file alias="Welcome.inscore">../scripts/mobile/Welcome.inscore</file>
+	<file alias="Welcome.inscore">../scripts/mobile/Welcome.ibundle</file>
+	<file alias="Multi-touch.inscore">../scripts/mobile/Multi-touch.inscore</file>
+	<file alias="Random-Score.inscore">../scripts/mobile/RandomScore.inscore</file>
+	<file alias="Score.ibundle">../scripts/mobile/Score.ibundle</file>
     </qresource>
 </RCC>

@@ -4,7 +4,7 @@
 
 
 /ITL/scene/* del;
-/ITL/scene/title  set  txt "This script makes use of multi-touch events.";
+/ITL/scene/title  set  txt "Multi-touch events.";
 /ITL/scene/title  y -0.92;
 /ITL/scene/title scale 1.7;
 /ITL/scene/comment1  y -0.85;
