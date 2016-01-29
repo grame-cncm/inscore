@@ -88,7 +88,7 @@ NOVIEW {
 ############################## 
 win32 {
     VERSION = ""
-	DEFINES += MSVC _USE_MATH_DEFINES NOMINMAX _CRT_SECURE_NO_WARNINGS  
+	DEFINES += MSVC _USE_MATH_DEFINES NOMINMAX _CRT_SECURE_NO_WARNINGS WINDOWS 
 	# Variable to add to DEFINES to avoid execution errors when debbuging on windows "_ITERATOR_DEBUG_LEVEL=0"
     QMAKE_CXXFLAGS_DEBUG += /wd4100 /EHsc
     QMAKE_CXXFLAGS_RELEASE += /wd4100 /EHsc
