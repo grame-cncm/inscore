@@ -119,6 +119,8 @@ bool TQtJs::bindEnv  (stringstream& s, const string& name, const IMessage::argPt
 	if (val->isType<int>())			s << val->value<int>(0);
 	else if (val->isType<float>())	s << val->value<float>(0.);
 	else if (val->isType<string>())	s << '"' <<  val->value(string("")) << '"';
+	else if (val->isType<SIMessageList>())
+		return false;
 	else {
 		ITLErr << name << ": unknown variable type" << ITLEndl;
 		return false;
