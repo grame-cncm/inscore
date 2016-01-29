@@ -387,7 +387,7 @@ std::vector<std::string> ScriptsParser::splitPath(std::string path)
 bool ScriptsParser::isFileObject(std::string ITLCmd)
 {
 	return ITLCmd == "txtf" || ITLCmd == "htmlf" || ITLCmd=="video"
-			|| ITLCmd=="img" || ITLCmd == "gmnf" || ITLCmd == "musicxmlf"
+			|| ITLCmd=="img" || ITLCmd == "gmnf" || ITLCmd == "musicxmlf" || ITLCmd == "pianorollf"
 			|| ITLCmd == "svgf" || ITLCmd == "file" || ITLCmd == "faustdspf"
 			|| ITLCmd == "gmn" //to support score expression
 			;
