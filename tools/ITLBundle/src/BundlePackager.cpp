@@ -85,9 +85,9 @@ bool BundlePackager::writeArchive(SQArchive &archive, const std::string &outputP
 		std::cout<<"File already exist, do you want to overwrite? [O/n]   ";
 		std::cin>>r;
 		if(r!="n")
-			return false;
-		else
 			return writeArchive(archive, outputPath, true);
+		else
+			return false;
 		break;
 	case WRONG_PERMISSIONS:
 		std::cerr<<"Impossible to write in "<<outputPath<<std::endl;

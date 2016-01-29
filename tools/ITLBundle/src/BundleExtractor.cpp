@@ -132,9 +132,9 @@ bool BundleExtractor::writeMappedArchive(SQArchive archive, ParsedData& script, 
 					std::string r;
 					std::cin>>r;
 					if(r!="n")
-						return false;
-					else
 						overwrite = true;
+					else
+						return false;
 				}
 				f.remove();
 			}
