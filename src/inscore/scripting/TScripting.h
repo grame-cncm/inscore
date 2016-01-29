@@ -70,9 +70,13 @@ class TScripting
 	TJSEngine*			fJavascript;
 	TLua*				fLua;
 	SIMessageList		fMessages;
-	STEnv				fEnv;
 
-	public:	
+	protected:
+		STEnv			fEnv;
+		// add the 'env' environment to the object
+		void	addEnv (const TScripting& env);
+
+	public:
 		yyscan_t fScanner;
 
 				 TScripting(TJSEngine* js, TLua* lua = 0);

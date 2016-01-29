@@ -83,6 +83,17 @@ void TScripting::add (SIMessageList& msgs)
 }
 
 //--------------------------------------------------------------------------------------------
+// add the 'env' environment to the object
+void TScripting::addEnv (const TScripting& sc)
+{
+	for (TEnv::TEnvList::const_iterator i = sc.fEnv->begin(); i != sc.fEnv->end(); i++) {
+		variable ( i->first.c_str(), &(i->second));
+	}
+}
+
+
+
+//--------------------------------------------------------------------------------------------
 // lua support
 //--------------------------------------------------------------------------------------------
 #ifdef LUA
@@ -143,7 +154,9 @@ SIMessageList TScripting::jsEval (const char* script, int lineno)
 			if (jsout.size()) {
 				istringstream stream(jsout);
 				ITLparser p (&stream, 0, fJavascript, fLua);
-				return p.parse();
+				SIMessageList msgs = p.parse();
+				addEnv( p.fReader );
+				return msgs;
 			}
 		}
 	}
