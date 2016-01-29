@@ -41,6 +41,8 @@ ifeq ($(WINARCH), x64)
 endif
 
 OUT  := INScore.framework
+MOBILESCRIPTS := ../scripts/mobile
+
 
 all :
 	make $(TARGET)
@@ -94,7 +96,8 @@ xcodeprojios:
 	touch ios/INScoreViewer.xcodeproj
 
 INScoreIos : 
-	cp -rf ../rsrc/ android-rsc
+	cp -rf ../rsrc/ tmp-rsc
+	make -C $(MOBILESCRIPTS)
 	xcodebuild -jobs 8 -project ios/INScore.xcodeproj -target INScore -configuration Release
 	xcodebuild -jobs 8 -project ios/INScoreViewer.xcodeproj -target INScoreViewer -configuration Release
 
@@ -118,7 +121,8 @@ android/Makefile: library.pro INScore.pro
 	cd android && qmake-android $(SPECANDROID) ../INScore.pro
 
 INScoreAndroid :
-	cp -rf ../rsrc/ android-rsc
+	cp -rf ../rsrc/ tmp-rsc
+	make -C $(MOBILESCRIPTS)
 	make -j 4 -C android -f Makefile
 	[ -d android/android-build ] || mkdir android/android-build
 	cd android && make INSTALL_ROOT=android-build install
@@ -171,7 +175,7 @@ linuxclean:
 # building the library with mobileUI
 #===============================================================
 mobileUI: 
-	cp -rf ../rsrc/ android-rsc
+	cp -rf ../rsrc/ tmp-rsc
 	make QMAKE="$(QMAKE) CONFIG+=mobile_ui" BUILDF="mobileUI"
 
 

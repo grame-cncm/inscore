@@ -7,4 +7,4 @@ clean:
 	rm -f $(BUNDLES)
 
 %.ibundle: %.inscore
-	ITLBundleCreator $< -o $@ -js
+	ITLBundleCreator $< -o $@ -js -f
