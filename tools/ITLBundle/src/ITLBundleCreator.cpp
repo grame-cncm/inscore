@@ -46,12 +46,10 @@ int main(int argc, char* argv[])
 			bCreator.setVerbose();
 			if(param=="hierarchy")
 				bCreator.setShowHierarchy();
-
 		}else if(arg == "-o" || arg == "--output"){
 				outputFile = param;
-
 		}else if(arg == "-h" || arg=="--help"){
-				std::cout<<DOC_CREATOR;
+			std::cout<<DOC_CREATOR;
 			return 0;
 		}else if(arg == "-l" || arg == "--rootpath"){
 			if(!param.empty())

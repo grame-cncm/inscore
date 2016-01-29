@@ -145,15 +145,18 @@ bool ScriptsParser::parseScript(std::string inputFile, SIMessageList &msgs)
 }
 
 //______________________________________________
-bool ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool acceptRootPathMsg)
+bool ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool acceptRootPathMsg, std::string contextObject)
 {
 	if(!msg->size())
 		return true;
 
 	std::string address = msg->address();
+	if(address.at(0)=='.')
+		address = contextObject + address.substr(1);
 
 	// --- File and Path specific commands ---
 	if(!msg->message().empty()){
+
 		if(msg->message()=="load"){
 			if(msg->size()==1){
 				std::string script;
@@ -166,10 +169,10 @@ bool ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool
 				}
 				return true;
 			}
+
 		}else if(msg->message()=="rootPath"){
 			if(msg->size()==1){
 				std::string rootPath;
-
 				if(msg->param(0,rootPath)){
 					if(!acceptRootPathMsg){
 						if(fLog){
@@ -186,6 +189,7 @@ bool ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool
 				}
 				return false;
 			}
+
 		}else if(msg->message()=="save" || msg->message()=="export"){
 			if(fLog){
 				fLog->warn("In \""+result.currentScript+"\"\n         "+msg->address()+" "+msg->message()+" ...");
@@ -208,6 +212,7 @@ bool ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool
 					}
 				}
 			}
+
 		}else if(msg->message()=="js" && address=="/ITL/bundle"){
 			if(fParseJS){
 				//Parse javascript
@@ -227,6 +232,7 @@ bool ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool
 				return true;
 			}else
 				fLog->warn("A javascript section was found but will not be parsed.\n     Use -js to parse javascript sections.");
+
 		}
 
 	}
@@ -236,12 +242,12 @@ bool ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool
 		SIMessageList msgList; SIExpression expr;
 		if(msg->param(i, msgList)){
 			//Search in message list arguments
-			auto msg = msgList->list().begin();
-			while(msg!=msgList->list().end()){
-				if(analyseMsg(*msg, result, false))
-					msg++;
+			auto itMsg = msgList->list().begin();
+			while(itMsg!=msgList->list().end()){
+				if(analyseMsg(*itMsg, result, false, address))
+					itMsg++;
 				else
-					msg = msgList->list().erase(msg);
+					itMsg = msgList->list().erase(itMsg);
 			}
 		}else if(msg->param(i, expr)){
 			std::set<std::string> exprDependencies = inscore::ExprInfo::fileDependency(expr);
@@ -268,7 +274,7 @@ void ScriptsParser::simplifyPath()
 	std::vector<std::string> trunk = splitPath(fData.ressources.size()? fData.ressources.begin()->first: fData.scripts.begin()->first);
 	int commonPath = trunk.size()-1;
 
-	for(auto it = fData.ressources.begin()++; it != fData.ressources.end(); it++){
+	for(auto it = fData.ressources.cbegin(); it != fData.ressources.cend(); it++){
 		std::vector<std::string> path = splitPath(it->first);
 
 		int i=0;
@@ -281,7 +287,7 @@ void ScriptsParser::simplifyPath()
 		commonPath = i;
 	}
 
-	for(auto it = fData.ressources.size()?fData.scripts.begin():fData.scripts.begin()++; it != fData.scripts.end(); it++){
+	for(auto it = fData.scripts.cbegin(); it != fData.scripts.cend(); it++){
 		std::vector<std::string> path = splitPath(it->first);
 
 		int i=0;
