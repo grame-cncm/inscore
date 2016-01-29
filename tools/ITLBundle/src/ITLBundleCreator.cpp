@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
 	}
 	inputFile = std::string(buffer)+"/"+inputFile;
 	delete[] buffer;
-	return bCreator.bundle(inputFile, outputFile);
+	return bCreator.bundle(inputFile, outputFile) ? 0 : 1;
 }
 
 
