@@ -25,7 +25,6 @@ int main(int argc, char* argv[])
 	itlbundle::BundleCreator bCreator;
 	char* buffer = getcwd(NULL, 0);
 	bCreator.setDefaultRootPath(std::string(buffer));
-	delete[] buffer;
 
 	while(argI<argc){
 		string arg = argv[argI];
@@ -64,7 +63,6 @@ int main(int argc, char* argv[])
 		}
 
 	}
-	char* buffer = getcwd(NULL, 0);
 	inputFile = std::string(buffer)+"/"+inputFile;
 	delete[] buffer;
 	return bCreator.bundle(inputFile, outputFile);
