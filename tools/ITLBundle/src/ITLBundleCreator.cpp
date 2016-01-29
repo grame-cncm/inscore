@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 	}
 
 	string inputFile = argv[1];
-	string outputFile = "bundle.inscorezip";
+	string outputFile = "bundle.ibundle";
 
 	if(inputFile == "-h" || inputFile == "--help"){
 		std::cout<<DOC_CREATOR;

@@ -83,14 +83,17 @@ bool TILoader::process (const SIMessageList& msgs, IObject* root, const string& 
 MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const std::string& rootpath)
 {
 	if (msg->size() == 1) {
-		string srcfile; 
+		const string bundleExtension = ".ibundle";
+		size_t elen = bundleExtension.size();
+
+		string srcfile;
 		if (!msg->param(0, srcfile)) return MsgHandler::kBadParameters;
 		if (srcfile.size()) {
 
 			if (Tools::isurl(rootpath) && !Tools::isurl(srcfile))
 				srcfile = makeAbsolutePath(rootpath, srcfile);
 
-			if(srcfile.size()<11 || srcfile.substr(srcfile.size()-11,11) != ".inscorezip"){
+			if(srcfile.size() < elen || srcfile.substr(srcfile.size()-elen,elen) != bundleExtension){
 				// ---- Load a script ----
 
 				stringstream buff;
