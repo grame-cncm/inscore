@@ -19,6 +19,9 @@ Item {
     function setRootPath(rootName, rootPath){
         path.clear();
 
+        if(rootPath.charAt(rootPath.length-1)==="/")
+            rootPath = rootPath.substr(0, rootPath.length-1);
+
         folderView.currentView.folderModel.rootFolder = rootPath;
         folderView.hiddenView.folderModel.rootFolder = rootPath;
         folderView.currentView.folderModel.folder = rootPath;
@@ -141,7 +144,7 @@ Item {
                     SlideMenuItem{
                         text: ".."
                         icon: "qrc:///images/folderUp.png"
-                        visible: folderModel.folder!=folderModel.rootFolder;
+                        visible: folderModel.folder!==folderModel.rootFolder;
                         onClicked: root.back();
                         first: true;
                         clickable: enabled;
