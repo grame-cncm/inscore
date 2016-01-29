@@ -33,7 +33,7 @@ Item {
     }
 
     function folderModelFromPath(path){
-        return Qt.createQmlObject('import Qt.labs.folderlistmodel 2.1; FolderListModel{folder: "'+path+'"; nameFilters: ["*.inscore","*.inscorezip"];}', root);
+        return Qt.createQmlObject('import Qt.labs.folderlistmodel 2.1; FolderListModel{folder: "'+path+'"; nameFilters: ["*.inscore","*.ibundle"];}', root);
     }
 
 
@@ -185,7 +185,7 @@ Item {
 
         Loader{
             id: list1;
-            property FolderListModel folderModel: FolderListModel{nameFilters: ["*.inscore","*.inscorezip"]; showDirsFirst: true;}
+            property FolderListModel folderModel: FolderListModel{nameFilters: ["*.inscore","*.ibundle"]; showDirsFirst: true;}
             property bool enable;
             sourceComponent: folderViewComponent;
             x: 0;
@@ -193,7 +193,7 @@ Item {
         }
         Loader{
             id: list2;
-            property FolderListModel folderModel: FolderListModel{nameFilters: ["*.inscore","*.inscorezip"]; showDirsFirst: true;}
+            property FolderListModel folderModel: FolderListModel{nameFilters: ["*.inscore","*.ibundle"]; showDirsFirst: true;}
             property bool enable;
             sourceComponent: folderViewComponent;
             x: 0;
