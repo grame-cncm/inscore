@@ -27,6 +27,7 @@
 	float	real;
 	std::string* str;
 	inscorelistener::OSCFilterNode* filterNode;
+	inscorelistener::OSCFilterExprArg* filterArg;
 	inscorelistener::OSCFilterExpr::Operator filterOperator;
 
 }
@@ -41,12 +42,12 @@
 %token ARGID ADDR
 
 /*------------------------------   types  ------------------------------*/
-%type <num> 	number argID
-%type <real>	FLOAT
+%type <real>	number FLOAT
 %type <str>	STRING QUOTEDSTRING IDENTIFIER REGEXP PATHSEP
 %type <str>	oscaddress oscpath identifier string
 %type <filterNode> filterExpr filterExprCore filter
 %type <filterOperator> filterOp
+%type <filterArg> arg
 
 %{
 
@@ -80,9 +81,7 @@ filterExpr		: filterExprCore
 				| LNOT filterExprCore		{ $$ = $2; $$->setNot(); }
 
 filterExprCore	: ADDR EQUAL oscaddress		{ $$ = new inscorelistener::OSCFilterAddress(*$3); delete $3; }
-				| argID filterOp string		{ $$ = inscorelistener::OSCFilterExpr::filterArg($2, $1, *$3); delete $3;}
-				| argID filterOp number		{ $$ = inscorelistener::OSCFilterExpr::filterArg($2, $1, $3);  }
-				| argID filterOp FLOAT		{ $$ = inscorelistener::OSCFilterExpr::filterArg($2, $1, context->fFloat);  }
+				| arg filterOp arg			{ $$ = new inscorelistener::OSCFilterExpr($2, *$1, *$3); delete $1; delete $3;}
 				| LEFTPAR filter RIGHTPAR	{ $$ = $2; }
 				;
 
@@ -93,6 +92,15 @@ filterOp		: EQUAL						{ $$ = inscorelistener::OSCFilterExpr::kEQUAL;}
 				| LOWER						{ $$ = inscorelistener::OSCFilterExpr::kLOWER;}
 				| LOWEREQUAL				{ $$ = inscorelistener::OSCFilterExpr::kLOWEREQUAL;}
 				;
+
+
+//_______________________________________________
+// Args specification
+
+arg		: ARGID				{ $$ = inscorelistener::OSCFilterExprArg::fromArg(context->fInt); }
+		| string			{ $$ = inscorelistener::OSCFilterExprArg::fromString(*$1); delete $1;}
+		| number			{ $$ = inscorelistener::OSCFilterExprArg::fromNbr($1); }
+		;
 
 //_______________________________________________
 // address specification (extends osc spec.)
@@ -110,15 +118,13 @@ identifier	: IDENTIFIER			{ $$ = new std::string(context->fText); }
 
 //_______________________________________________
 // misc
-number		: UINT				{ $$ = context->fInt; }
-			| INT				{ $$ = context->fInt; }
+number		: UINT				{ $$ = (float)context->fInt; }
+			| INT				{ $$ = (float)context->fInt; }
+			| FLOAT				{ $$ = context->fFloat;}
 			;
 
 string	: QUOTEDSTRING		{$$ = new std::string(context->fText);}
 		| IDENTIFIER		{$$ = new std::string(context->fText);}
-		;
-
-argID		: ARGID				{ $$ = context->fInt; }
 		;
 
 %%
