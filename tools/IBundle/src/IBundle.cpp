@@ -30,6 +30,7 @@ int main(int argc, char* argv[])
 	ibundle::BundleCreator bCreator;
 	bCreator.setDefaultRootPath(inputFile.substr(0, inputFile.rfind('/')));
 	bool createBundle = true;
+	bool failSafe = false;
 
 
 	string output = "";
@@ -71,6 +72,8 @@ int main(int argc, char* argv[])
 				bCreator.setDefaultRootPath(param);
 		}else if(arg== "-js" || arg == "--parse-javascript"){
 			bCreator.setParseJS();
+		}else if(arg== "--fail-safe"){
+				failSafe = true;
 		}else
 		    // Options Specific Extractor
 		    if(arg == "-k" || arg=="--keepOriginalPath"){
@@ -95,8 +98,11 @@ int main(int argc, char* argv[])
 	}
 
 	//Start bundle creation or extraction
-	if(createBundle)
-	    return bCreator.bundle(inputFile, output)?0:1;
+	if(createBundle){
+		if(failSafe)
+			return bCreator.failSafeBundle(inputFile, output)?0:1;
+		return bCreator.bundle(inputFile, output)?0:1;
+	}
 
 	return bExt.extract(inputFile, output)?0:1;
 }

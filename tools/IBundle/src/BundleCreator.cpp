@@ -27,6 +27,8 @@ bool BundleCreator::bundle(std::string inputFile, std::string outputFile)
 	if(!ScriptsParser::read(inputFile, parsedData, fDefaultRootPath, fParseJS, &fLog, fShowHierarchy))
 		return false;
 
+	parsedData.simplifyPaths();
+
 	fLog.section("Discovered Files");
 
 	fLog<<"Ressources:\n";
@@ -41,9 +43,64 @@ bool BundleCreator::bundle(std::string inputFile, std::string outputFile)
 		fLog<<"  "<<scriptNames.at(i)<<"\n";
 
 	fLog.section("Bundle Creation");
-	BundlePackager::bundle(parsedData, outputFile, fForceOverwrite);
+	qarchive::SQArchive a = BundlePackager::bundle(parsedData);
+	if(!a)
+		return false;
+	return writeArchive(a, outputFile, fForceOverwrite);
+}
 
-	return true;
+bool BundleCreator::failSafeBundle(std::string inputFile, std::string outputFile)
+{
+	ParsedData parsedData;
+	QFile f(inputFile.c_str());
+	if(!f.open(QIODevice::ReadOnly | QIODevice::Text)){
+		fLog.error(inputFile+ " is not accessible.");
+		return false;
+	}
+
+	QStringList files = QString::fromUtf8(f.readAll()).split("\n", QString::SkipEmptyParts);
+	if(files.empty()){
+		fLog.error(inputFile+ " is empty, check if the text codec is utf8.");
+		return false;
+	}
+
+	QFileInfo fInfo(f);
+	fInfo.setFile(files.first());
+	parsedData.setMainScript(fInfo.canonicalFilePath().toStdString());
+	foreach (QString file, files){
+		fInfo = QFileInfo(f);
+		fInfo.setFile(file);
+		parsedData.ressources.insert(fInfo.canonicalFilePath().toStdString());
+	}
+
+	parsedData.simplifyPaths();
+
+	inscore::extvector<std::string> names = parsedData.ressourceNames();
+	qarchive::SQArchive a = qarchive::QArchive::emptyArchive();
+
+	for(size_t i=0; i<names.size(); i++)
+		if( !a->addFileStd(names.at(i), parsedData.mainPath()+names.at(i)) ){
+			fLog.error(parsedData.mainPath()+names.at(i)+" not found.");
+			return false;
+		}
+
+	std::string mainScriptPath = parsedData.mainScript();
+	std::string rootPath = "";
+	size_t idPath = mainScriptPath.rfind('/');
+	if(idPath != std::string::npos){
+		rootPath = mainScriptPath.substr(0, idPath);
+		mainScriptPath.substr(idPath);
+	}
+	std::string main;
+	if(!rootPath.empty())
+		main += "/ITL rootPath "+rootPath+";\n";
+	main+="/ITL load "+mainScriptPath+";";
+	if(!a->addTextFileStd("/main.inscore", main)){
+		fLog.error(parsedData.mainPath()+"main.inscore must be rename or not included in the bundle.");
+		return false;
+	}
+
+	return writeArchive(a, outputFile, fForceOverwrite);
 }
 
 
@@ -75,6 +132,30 @@ void BundleCreator::setParseJS(bool parseJS)
 	fParseJS = parseJS;
 }
 
+bool BundleCreator::writeArchive(qarchive::SQArchive &archive, const std::string &outputPath, bool overwrite)
+{
+	qarchive::QArchiveError e = archive->compressStd(outputPath, overwrite);
 
+	std::string r;
+	switch(e){
+	case qarchive::NO_ERROR:
+		return true;
+	case qarchive::FILE_EXIST:
+		std::cout<<"File already exist, do you want to overwrite? [O/n]   ";
+		std::cin>>r;
+		if(r!="n")
+			return writeArchive(archive, outputPath, true);
+		else
+			return false;
+		break;
+	case qarchive::WRONG_PERMISSIONS:
+		std::cerr<<"Impossible to write in "<<outputPath<<std::endl;
+		break;
+	default:
+		std::cerr<<"An error occurs during the bundle preparation..."<<std::endl;
+		break;
+	}
+	return false;
+}
 
 } // end namespace

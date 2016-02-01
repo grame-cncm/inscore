@@ -17,7 +17,8 @@ typedef libmapping::SMARTP<MsgParam> SMsgParam;
 
 class RessourceMap: public std::map<std::string, std::list<SMsgParam>>{
 public:
-	bool insert(std::string name, SMsgParam param);
+	std::list<SMsgParam> &insert(std::string name);
+	void insert(std::string name, SMsgParam param);
 	void insert(std::string name, std::list<SMsgParam> params);
 	void insert(std::pair<std::string, std::list<SMsgParam> > ressource){insert(ressource.first, ressource.second);}
 	void insert(const RessourceMap& ressources);
@@ -32,24 +33,28 @@ public:
 	TScripts scripts;
 	RessourceMap scriptsRessources;
 	RessourceMap ressources;
-	std::string mainPath="";
 
 	inscore::extvector<std::string> scriptNames() const;
 	inscore::extvector<std::string> ressourceNames() const;
 
 	bool isMainScript(std::string scriptName){return fMainScript==scriptName;}
 	void setMainScript(std::string name){fMainScript = name;}
+	const std::string& mainPath()  {return fMainPath;}
+	const std::string& mainScript(){return fMainScript;}
 
 	void applyNameMap(std::map<std::string, std::string> nameMap);
 	std::string generateScript(std::string name);
 
 	void simplifyPaths(int charToDelete);
+	void simplifyPaths();
 
+	static std::vector<std::string> splitPath(std::string path);
 	static size_t findFileInJS(const std::string& js, std::string& filePath, size_t startID = 0);
 	static bool isFilePath(std::string string);
 
 protected:
 	std::string fMainScript;
+	std::string fMainPath="";
 
 };
 

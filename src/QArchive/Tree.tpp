@@ -88,29 +88,41 @@ bool Tree<Type>::searchItem(QString path, Type &item)
 	return n->searchItem(name, item);
 }
 
+
 template <typename Type>
-bool Tree<Type>::addItem(QString path, const Type &item)
+bool Tree<Type>::addItem(QString path, const Type &item, bool currentDir)
 {
 	QString name="";
-	TreeNode<Type>* n = extractPath(path, name);
-	if(!n)
+
+	if(currentDir){
+		TreeNode<Type>* n = extractPath(path, name);
+		if(!n)
+			return false;
+		return n->addItem(name,item)!=-1;
+	}
+
+	if( (path = absolutePath(path)).isEmpty() )
 		return false;
-	return n->addItem(name,item)!=-1;
+	name = path.mid(path.lastIndexOf('/')+1);
+	path = path.left(path.lastIndexOf('/'));
+
+	return fRoot.createPath(path)->addItem(name,item)!=-1;
 }
 
 template <typename Type>
 bool Tree<Type>::addDir(QString path)
 {
-	QString name="";
-	TreeNode<Type>* n = extractPath(path, name);
-	if(!n)
+	if( (path = absolutePath(path)).isEmpty() )
 		return false;
-	return n->addChildren(name)!=-1;
+	fRoot.createPath(path);
+	return true;
 }
 
 template <typename Type>
 TreeNode<Type>* Tree<Type>::extractPath(QString path, QString& name)
 {
+	if(path.isEmpty())
+		return 0;
 	QString p = "";
 	if(path.at(0)=='/')
 		p="/";
@@ -119,6 +131,36 @@ TreeNode<Type>* Tree<Type>::extractPath(QString path, QString& name)
 	pathList.removeLast();
 	p += pathList.join("/");
 	return searchDir(p);
+}
+
+template <typename Type>
+QString Tree<Type>::absolutePath(QString path)
+{
+	if(path.isEmpty())
+		return "";
+	if(path.at(0)=='/')
+		return path;
+
+	QStringList pathList;
+	TreeNode<Type>* n = fCurrentNode;
+	while(n->parent()){
+		pathList.prepend(n->getName());
+		n = n->parent();
+	}
+
+	int i = pathList.size();
+	pathList.append(path.split("/", QString::SkipEmptyParts));
+	while(i<pathList.size()){
+		if(pathList.at(i)==".")
+			pathList.removeAt(i);
+		else if(pathList.at(i)==".."){
+			if(i<=0)
+				return "";
+			pathList.removeAt(--i);
+		}else
+			i++;
+	}
+	return "/"+pathList.join("/");
 }
 
 
@@ -141,9 +183,9 @@ bool TreeNode<Type>::searchItem(QString name, Type &item) const
 template<typename Type>
 TreeNode<Type>* TreeNode<Type>::searchChildren(QString name)
 {
-	for(int i=0; i<fChildrenNodes.size();i++)
-		if(fChildrenNodes.at(i).getName()==name){
-			return &fChildrenNodes[i];
+	for(int i=0; i<fChildren.size();i++)
+		if(fChildren.at(i).getName()==name){
+			return &fChildren[i];
 		}
 
 	return 0;
@@ -164,7 +206,7 @@ template<typename Type>
 QStringList TreeNode<Type>::childrenNames() const
 {
 	QStringList r;
-	foreach (TreeNode<Type> p, fChildrenNodes)
+	foreach (TreeNode<Type> p, fChildren)
 		r.push_back(p.getName());
 
 	return r;
@@ -173,8 +215,8 @@ QStringList TreeNode<Type>::childrenNames() const
 template<typename Type>
 int TreeNode<Type>::childID(QString name) const
 {
-	for(int i=0; i<fChildrenNodes.size();i++)
-		if(fChildrenNodes.at(i).getName()==name){
+	for(int i=0; i<fChildren.size();i++)
+		if(fChildren.at(i).getName()==name){
 			return i;
 		}
 
@@ -196,10 +238,38 @@ int TreeNode<Type>::addChildren(QString name)
 {
 	if(contains(name))
 		return -1;
-	fChildrenNodes.append(TreeNode<Type>(name));
-	fChildrenNodes.last().fParent = this;
-	fChildrenNodes.last().fTree = fTree;
-	return fChildrenNodes.size()-1;
+	fChildren.append(TreeNode<Type>(name));
+	fChildren.last().fParent = this;
+	fChildren.last().fTree = fTree;
+	return fChildren.size()-1;
+}
+
+
+template<typename Type>
+TreeNode<Type>* TreeNode<Type>::createPath(QString path)
+{
+	if(path.isEmpty())
+		return this;
+	if(path.at(0)=='/')
+		path.remove(0,1);
+	QString childName = "";
+	int idSep = path.indexOf('/');
+	if(idSep>-1 && idSep < path.size()-1){
+		childName = path.left(idSep);
+		path = path.mid(idSep+1);
+	}else{
+		childName = path;
+		path = "";
+	}
+
+	TreeNode<Type>* r = searchChildren(childName);
+	if(!r)
+		r = &fChildren[addChildren(childName)];
+
+	if(path.isEmpty())
+		return r;
+
+	return r->createPath(path);
 }
 
 
@@ -209,8 +279,8 @@ bool TreeNode<Type>::contains(QString name)
 	for(int i=0; i<fItems.size();i++)
 		if(fItems.at(i).first==name)
 			return true;
-	for(int i=0; i<fChildrenNodes.size();i++)
-		if(fChildrenNodes.at(i).getName()==name)
+	for(int i=0; i<fChildren.size();i++)
+		if(fChildren.at(i).getName()==name)
 			return true;
 	return false;
 }

@@ -7,7 +7,7 @@ using namespace qarchive;
 
 namespace ibundle {
 
-bool BundlePackager::bundle(ParsedData &scripts, const std::string &outputPath, bool overwrite)
+SQArchive BundlePackager::bundle(ParsedData &scripts)
 {
 	BundlePackager b(scripts);
 
@@ -16,9 +16,9 @@ bool BundlePackager::bundle(ParsedData &scripts, const std::string &outputPath, 
 
 	SQArchive a = qarchive::QArchive::emptyArchive();
 	if(!b.setupArchive(a))
-		return false;
+		return 0;
 
-	return b.writeArchive(a,outputPath, overwrite);
+	return a;
 }
 
 //__________________________________________________________
@@ -52,16 +52,17 @@ void BundlePackager::mapNames()
 bool BundlePackager::setupArchive(qarchive::SQArchive &archive)
 {
 	//Create hierarchy
+	archive->changeDir("/");
 	archive->addDir("Export");
 	archive->addDir("Ressources");
 
 	std::string fileNames = "";
 	//Add ressources and scripts
 	for(auto it=fNamesMap.begin(); it!=fNamesMap.end(); it++){
-		if(it->second.substr(0,11) != "Ressources/")
-			archive->addTextFileStd(it->second, fInputData.generateScript(it->first));
-		else if(!archive->addFileStd(it->second, fInputData.mainPath+it->first)){
-			std::cerr<<"Ressource: \""<<fInputData.mainPath+it->first<<"\" does not exist!"<<std::endl;
+		if(it->second.size()<12 || it->second.substr(0,11) != "Ressources/")
+			archive->addTextFileStd(it->second, fInputData.generateScript(it->first), true);
+		else if(!archive->addFileStd(it->second, fInputData.mainPath()+it->first, true)){
+			std::cerr<<"Ressource: \""<<fInputData.mainPath()+it->first<<"\" does not exist!"<<std::endl;
 			return false;
 		}
 
@@ -73,31 +74,7 @@ bool BundlePackager::setupArchive(qarchive::SQArchive &archive)
 	return true;
 }
 
-bool BundlePackager::writeArchive(SQArchive &archive, const std::string &outputPath, bool overwrite)
-{
-	QArchiveError e = archive->compressStd(outputPath, overwrite);
 
-	std::string r;
-	switch(e){
-	case NO_ERROR:
-		return true;
-	case FILE_EXIST:
-		std::cout<<"File already exist, do you want to overwrite? [O/n]   ";
-		std::cin>>r;
-		if(r!="n")
-			return writeArchive(archive, outputPath, true);
-		else
-			return false;
-		break;
-	case WRONG_PERMISSIONS:
-		std::cerr<<"Impossible to write in "<<outputPath<<std::endl;
-		break;
-	default:
-		std::cerr<<"An error occurs during the bundle preparation..."<<std::endl;
-		break;
-	}
-	return false;
-}
 
 
 } // End namespace
