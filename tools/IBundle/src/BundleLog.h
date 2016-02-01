@@ -4,7 +4,7 @@
 #include <string>
 #include <iostream>
 
-namespace itlbundle {
+namespace ibundle {
 
 class BundleLog
 {

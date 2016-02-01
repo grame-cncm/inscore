@@ -3,7 +3,7 @@
 
 #include "BundleLog.h"
 
-namespace itlbundle {
+namespace ibundle {
 
 class ReadingContext;
 

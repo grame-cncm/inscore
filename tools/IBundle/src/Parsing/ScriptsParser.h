@@ -7,7 +7,7 @@
 #include "QArchive.h"
 
 
-namespace itlbundle {
+namespace ibundle {
 
 class AnalyseResult;
 class BundleLog;

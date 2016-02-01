@@ -3,7 +3,7 @@
 
 using namespace std;
 
-namespace itlbundle{
+namespace ibundle{
 
 static const char* kReserved[] = {
 	"_externals_",

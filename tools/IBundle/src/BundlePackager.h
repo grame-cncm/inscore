@@ -6,7 +6,7 @@
 #include "ParsedData.h"
 #include "QArchive.h"
 
-namespace itlbundle{
+namespace ibundle{
 
 class BundlePackager
 {

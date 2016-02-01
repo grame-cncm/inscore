@@ -7,7 +7,7 @@
 
 
 
-namespace itlbundle{
+namespace ibundle{
 
 using namespace inscore;
 

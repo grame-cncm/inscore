@@ -9,7 +9,7 @@
 
 #include "ScriptsParser.h"
 
-namespace itlbundle{
+namespace ibundle{
 
 bool ScriptsParser::read(std::string inputFile, ParsedData &result, const std::string& defaultRootPath, bool parseJS, BundleLog* log, const bool& verbose)
 {

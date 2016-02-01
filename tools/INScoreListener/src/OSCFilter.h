@@ -38,13 +38,13 @@ class OSCFilterNode{
 	bool _not;
 public:
 	void setNot(bool isNot = true){_not = isNot;}
-	bool match(OSCFilterContext& filter){return _not != eval(filter);}
+	bool match(const OSCFilterContext& filter) const {return _not != eval(filter);}
 
 	virtual ~OSCFilterNode(){}
 
 protected:
 	OSCFilterNode():_not(false){}
-	virtual bool eval(OSCFilterContext& filter)=0;
+	virtual bool eval(const OSCFilterContext& filter) const =0;
 };
 
 class OSCFilterExprArg{
@@ -74,48 +74,49 @@ public:
 class OSCFilterExpr: public OSCFilterNode{
 public:
 	enum Operator{
-	kEQUAL,
-	kNOTEQUAL,
-	kGREATER,
-	kGREATEREQUAL,
-	kLOWER,
-	kLOWEREQUAL
+		kEQUAL,
+		kNOTEQUAL,
+		kGREATER,
+		kGREATEREQUAL,
+		kLOWER,
+		kLOWEREQUAL
 	};
 
-	OSCFilterExpr(Operator op, const OSCFilterExprArg& argL, const OSCFilterExprArg& argR);
-	virtual ~OSCFilterExpr(){}
-protected:
-	bool eval(OSCFilterContext &filter);
 private:
 	Operator _operator;
 	const OSCFilterExprArg _argL, _argR;
+public:
+	OSCFilterExpr(Operator op, const OSCFilterExprArg& argL, const OSCFilterExprArg& argR);
+	virtual ~OSCFilterExpr(){}
+protected:
+	bool eval(const OSCFilterContext &filter) const ;
 };
 
 class OSCFilterAddress: public OSCFilterNode{
 private:
-	inscore::OSCRegexp _addressRegExp;
+	const inscore::OSCRegexp _addressRegExp;
 	const char* _address;
 public:
 	OSCFilterAddress(std::string addressRegExp):_addressRegExp(addressRegExp.c_str()), _address(addressRegExp.c_str()){}
 	virtual ~OSCFilterAddress(){}
 protected:
-	bool eval(OSCFilterContext &filter);
+	bool eval(const OSCFilterContext &filter) const ;
 };
 
 class OSCFilterLogical: public OSCFilterNode{
 private:
-	bool _and;
-	OSCFilterNode *_lNode, *_rNode;
+	const bool _and;
+	const OSCFilterNode *_lNode, *_rNode;
 
 public:
 	static OSCFilterNode* andFilter(OSCFilterNode* lNode, OSCFilterNode* rNode){return new OSCFilterLogical(true, lNode, rNode);}
 	static OSCFilterNode* orFilter(OSCFilterNode* lNode, OSCFilterNode* rNode){return new OSCFilterLogical(false, lNode, rNode);}
 
-	 bool eval(OSCFilterContext &filter);	 
+	 bool eval(const OSCFilterContext &filter) const ;
 	 virtual ~OSCFilterLogical(){delete _lNode; delete _rNode;}
 
 protected:
-	OSCFilterLogical(bool isAnd, OSCFilterNode* lNode, OSCFilterNode* rNode){_and = isAnd;_lNode=lNode;_rNode=rNode;}
+	OSCFilterLogical(const bool& isAnd, OSCFilterNode* lNode, OSCFilterNode* rNode):_and(isAnd), _lNode(lNode), _rNode(rNode){}
 };
 
 }//End namespace

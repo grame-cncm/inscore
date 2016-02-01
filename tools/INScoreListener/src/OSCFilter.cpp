@@ -46,7 +46,7 @@ OSCFilterExpr::OSCFilterExpr(OSCFilterExpr::Operator op, const OSCFilterExprArg 
 {}
 
 
-bool OSCFilterExpr::eval(OSCFilterContext &filter)
+bool OSCFilterExpr::eval(const OSCFilterContext &filter) const
 {
 
 	float nbrL=0, nbrR=0;
@@ -59,13 +59,13 @@ bool OSCFilterExpr::eval(OSCFilterContext &filter)
 		if( _operator!=OSCFilterExpr::kNOTEQUAL && _operator!=OSCFilterExpr::kEQUAL ){
 			if(filter.verbose()){
 				std::cerr<<"Inequality only support numbers as arguments, ";
-				if(_argL.argIndex()!=-1){
+				if(_argL.argIndex()!=(unsigned int)-1){
 					std::cerr<<"%"<<_argL.argIndex();
-					if(_argR.argIndex()!=-1)
+					if(_argR.argIndex()!=(unsigned int)-1)
 						std::cerr<<" and %"<<_argR.argIndex()<<" are strings."<<std::endl;
 					else
 						std::cerr<<" is a string"<<std::endl;
-				}else if(_argR.argIndex()!=-1)
+				}else if(_argR.argIndex()!=(unsigned int)-1)
 					std::cerr<<"%"<<_argR.argIndex()<<" is a string"<<std::endl;
 			}
 			return false;
@@ -105,7 +105,7 @@ bool OSCFilterExpr::eval(OSCFilterContext &filter)
  *		    OSCFilterAddress			*
  * *****************************************************/
 
-bool OSCFilterAddress::eval(OSCFilterContext &filter)
+bool OSCFilterAddress::eval(const OSCFilterContext &filter) const
 {
 	bool r =_addressRegExp.match(filter.address());
 	if(!r)	//Si l'addresse du message ne match pas on vérifie que ce n'est pas une regex
@@ -117,7 +117,7 @@ bool OSCFilterAddress::eval(OSCFilterContext &filter)
 /********************************************************
  *		    OSCFilterLogical			*
  * *****************************************************/
-bool OSCFilterLogical::eval(OSCFilterContext &filter)
+bool OSCFilterLogical::eval(const OSCFilterContext &filter) const
 {
 	bool lNodeValue = _lNode->match(filter);
 	if(!lNodeValue && _and)
@@ -164,7 +164,7 @@ OSCFilterExprArg *OSCFilterExprArg::fromNbr(float nbr)
 
 bool OSCFilterExprArg::toString(std::string &s, const OSCFilterContext &filter) const
 {
-	if(_argIndex != -1){
+	if(_argIndex != (unsigned int)-1){
 		const osc::ReceivedMessageArgument* arg = filter.arg(_argIndex);
 		if(!arg)
 			return false;
@@ -182,7 +182,7 @@ bool OSCFilterExprArg::toString(std::string &s, const OSCFilterContext &filter) 
 
 bool OSCFilterExprArg::toNbr(float &nbr, const OSCFilterContext &filter) const
 {
-	if(_argIndex != -1){
+	if(_argIndex != (unsigned int)-1){
 		const osc::ReceivedMessageArgument* arg = filter.arg(_argIndex);
 		if(!arg)
 			return false;

@@ -2,7 +2,7 @@
 
 #include "BundleLog.h"
 
-namespace itlbundle{
+namespace ibundle{
 
 BundleLog::BundleLog()
 	: fActive(false)
