@@ -6,7 +6,7 @@
 #include "ScriptsParser.h"
 
 
-namespace itlbundle {
+namespace ibundle {
 
 inscore::extvector<std::string> ParsedData::scriptNames() const
 {

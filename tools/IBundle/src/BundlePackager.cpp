@@ -5,7 +5,7 @@
 
 using namespace qarchive;
 
-namespace itlbundle {
+namespace ibundle {
 
 bool BundlePackager::bundle(ParsedData &scripts, const std::string &outputPath, bool overwrite)
 {

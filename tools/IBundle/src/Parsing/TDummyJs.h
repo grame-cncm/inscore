@@ -11,7 +11,7 @@ class TEnv;
 typedef libmapping::SMARTP<TEnv> STEnv;
 }
 
-namespace itlbundle {
+namespace ibundle {
 
 class TDummyJs
 {

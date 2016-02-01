@@ -5,7 +5,7 @@
 
 using namespace qarchive;
 
-namespace itlbundle {
+namespace ibundle {
 
 
 bool BundleExtractor::extract(std::string bundleFile, std::string outputFolder)

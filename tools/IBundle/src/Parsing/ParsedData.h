@@ -8,7 +8,7 @@
 #include "extvector.h"
 #include "IMessage.h"
 
-namespace itlbundle{
+namespace ibundle{
 
 typedef std::map<std::string,inscore::SIMessageList> TScripts;
 class MsgParam;

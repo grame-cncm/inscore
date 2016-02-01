@@ -6,7 +6,7 @@
 #include "ScriptsParser.h"
 #include "ParsedData.h"
 
-namespace itlbundle {
+namespace ibundle {
 
 class BundleExtractor
 {
