@@ -110,7 +110,7 @@ win32 {
 # macos x support
 ############################## 
 macx {
-    QMAKE_CXXFLAGS += -mmacosx-version-min=10.7
+    QMAKE_CXXFLAGS += -mmacosx-version-min=10.7 -Wno-deprecated-register
     QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7 
     QMAKE_MAC_SDK = macosx10.9		# drag & drop doesn't work with macosx10.10 sdk on yosemite
 	CONFIG += lib_bundle explicitlib
@@ -136,6 +136,7 @@ macx {
 # ios x support
 ############################## 
 ios {
+    QMAKE_CXXFLAGS += -Wno-deprecated-register
     SOURCES  +=  $$files($$SRC/mobile/*.cpp)
     HEADERS  +=  $$files($$SRC/mobile/*.h)
     INCLUDEPATH  +=  $$files($$SRC/mobile)
