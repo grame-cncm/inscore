@@ -20,6 +20,7 @@
 
 using namespace std;
 
+#define YY_NO_INPUT
 #define YY_EXTRA_TYPE inscore::ITLparser*
 #define YY_USER_ACTION yylloc->last_line = yylineno; yylloc->first_column += strlen(yytext);
 
