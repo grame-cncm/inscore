@@ -58,7 +58,7 @@
 			<array>
 				<dict>
 					<key>Bounds</key>
-					<string>{{257.40407175896888, 285.95669555664062}, {22.095928241031125, 7.086613655090332}}</string>
+					<string>{{260.58764904433247, 288.40718668211383}, {24.10133105820665, 7.7297871318109239}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -100,7 +100,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{230.90123077892844, 289.95669555664062}, {15.46714986164487, 7.086613655090332}}</string>
+					<string>{{231.67943855979507, 292.77022240440613}, {16.870931842101339, 7.7297871318109239}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -142,7 +142,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{248.82962320660278, 272.95669555664062}, {15.46714986164487, 7.086613655090332}}</string>
+					<string>{{251.23499271109964, 274.22732058466374}, {16.870931842101339, 7.7297871318109239}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -184,7 +184,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{222.3267822265625, 258.95669555664062}, {15.46714986164487, 7.086613655090332}}</string>
+					<string>{{222.3267822265625, 258.95669555664062}, {16.870931842101339, 7.7297871318109239}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -230,7 +230,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{301, 253}, {61, 50}}</string>
+			<string>{{301, 253}, {62.362197875976562, 51.116555636046371}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
@@ -267,7 +267,7 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>77</integer>
+					<integer>124</integer>
 					<key>OrthogonalBarAutomatic</key>
 					<true/>
 					<key>OrthogonalBarPoint</key>
@@ -276,8 +276,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{470.68503570556641, 194}</string>
-						<string>{431, 194}</string>
+						<string>{474.33552582867776, 198.69131482355115}</string>
+						<string>{431, 198.69131482355115}</string>
 					</array>
 					<key>Rotation</key>
 					<real>90</real>
@@ -311,7 +311,7 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>78</integer>
+					<integer>125</integer>
 					<key>OrthogonalBarAutomatic</key>
 					<true/>
 					<key>OrthogonalBarPoint</key>
@@ -320,8 +320,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{470.68503570556641, 185.5714282989502}</string>
-						<string>{431, 185.5714282989502}</string>
+						<string>{474.33552582867776, 189.79942394492215}</string>
+						<string>{431, 189.79942394492215}</string>
 					</array>
 					<key>Rotation</key>
 					<real>90</real>
@@ -355,7 +355,7 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>79</integer>
+					<integer>126</integer>
 					<key>OrthogonalBarAutomatic</key>
 					<true/>
 					<key>OrthogonalBarPoint</key>
@@ -364,8 +364,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{470.68503570556641, 178.5714282989502}</string>
-						<string>{431, 178.5714282989502}</string>
+						<string>{474.33552582867776, 182.15551798874847}</string>
+						<string>{431, 182.15551798874847}</string>
 					</array>
 					<key>Rotation</key>
 					<real>90</real>
@@ -399,7 +399,7 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>80</integer>
+					<integer>127</integer>
 					<key>OrthogonalBarAutomatic</key>
 					<true/>
 					<key>OrthogonalBarPoint</key>
@@ -408,8 +408,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{470.68503570556641, 171.5714282989502}</string>
-						<string>{431, 171.5714282989502}</string>
+						<string>{474.33552582867776, 174.51161203257476}</string>
+						<string>{431, 174.51161203257476}</string>
 					</array>
 					<key>Rotation</key>
 					<real>90</real>
@@ -443,7 +443,7 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>81</integer>
+					<integer>128</integer>
 					<key>OrthogonalBarAutomatic</key>
 					<true/>
 					<key>OrthogonalBarPoint</key>
@@ -452,8 +452,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{470.68503570556641, 164.5714282989502}</string>
-						<string>{431, 164.5714282989502}</string>
+						<string>{474.33552582867776, 166.86770607640108}</string>
+						<string>{431, 166.86770607640108}</string>
 					</array>
 					<key>Rotation</key>
 					<real>90</real>
@@ -487,7 +487,7 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>82</integer>
+					<integer>129</integer>
 					<key>OrthogonalBarAutomatic</key>
 					<true/>
 					<key>OrthogonalBarPoint</key>
@@ -496,8 +496,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{470.68503570556641, 157.5714282989502}</string>
-						<string>{431, 157.5714282989502}</string>
+						<string>{474.33552582867776, 158.91180410752224}</string>
+						<string>{431, 158.91180410752224}</string>
 					</array>
 					<key>Rotation</key>
 					<real>90</real>
@@ -531,7 +531,7 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>83</integer>
+					<integer>130</integer>
 					<key>OrthogonalBarAutomatic</key>
 					<true/>
 					<key>OrthogonalBarPoint</key>
@@ -540,8 +540,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{470.68503570556641, 150.2857141494751}</string>
-						<string>{431, 150.2857141494751}</string>
+						<string>{474.33552582867776, 150.95590213864344}</string>
+						<string>{431, 150.95590213864344}</string>
 					</array>
 					<key>Rotation</key>
 					<real>90</real>
@@ -575,7 +575,7 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>84</integer>
+					<integer>131</integer>
 					<key>OrthogonalBarAutomatic</key>
 					<true/>
 					<key>OrthogonalBarPoint</key>
@@ -584,7 +584,7 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{470.68503570556641, 143}</string>
+						<string>{474.33552582867776, 143}</string>
 						<string>{431, 143}</string>
 					</array>
 					<key>Rotation</key>
@@ -617,7 +617,7 @@
 				</dict>
 			</array>
 			<key>ID</key>
-			<integer>76</integer>
+			<integer>123</integer>
 		</dict>
 		<dict>
 			<key>Class</key>
@@ -628,7 +628,7 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>68</integer>
+					<integer>133</integer>
 					<key>OrthogonalBarAutomatic</key>
 					<true/>
 					<key>OrthogonalBarPoint</key>
@@ -637,8 +637,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{415.68503570556641, 194}</string>
-						<string>{376, 194}</string>
+						<string>{419.7193995774241, 198.68244252313963}</string>
+						<string>{375.99999999999989, 198.68244252313963}</string>
 					</array>
 					<key>Rotation</key>
 					<real>90</real>
@@ -663,7 +663,7 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>69</integer>
+					<integer>134</integer>
 					<key>OrthogonalBarAutomatic</key>
 					<true/>
 					<key>OrthogonalBarPoint</key>
@@ -672,8 +672,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{415.68503570556641, 185.5714282989502}</string>
-						<string>{376, 185.5714282989502}</string>
+						<string>{419.7193995774241, 190.97082549669852}</string>
+						<string>{375.99999999999989, 190.97082549669852}</string>
 					</array>
 					<key>Rotation</key>
 					<real>90</real>
@@ -698,7 +698,7 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>70</integer>
+					<integer>135</integer>
 					<key>OrthogonalBarAutomatic</key>
 					<true/>
 					<key>OrthogonalBarPoint</key>
@@ -707,8 +707,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{415.68503570556641, 178.5714282989502}</string>
-						<string>{376, 178.5714282989502}</string>
+						<string>{419.7193995774241, 183.25920847025742}</string>
+						<string>{375.99999999999989, 183.25920847025742}</string>
 					</array>
 					<key>Rotation</key>
 					<real>90</real>
@@ -733,7 +733,7 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>71</integer>
+					<integer>136</integer>
 					<key>OrthogonalBarAutomatic</key>
 					<true/>
 					<key>OrthogonalBarPoint</key>
@@ -742,8 +742,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{415.68503570556641, 171.5714282989502}</string>
-						<string>{376, 171.5714282989502}</string>
+						<string>{419.7193995774241, 175.54759144381629}</string>
+						<string>{375.99999999999989, 175.54759144381629}</string>
 					</array>
 					<key>Rotation</key>
 					<real>90</real>
@@ -768,7 +768,7 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>72</integer>
+					<integer>137</integer>
 					<key>OrthogonalBarAutomatic</key>
 					<true/>
 					<key>OrthogonalBarPoint</key>
@@ -777,8 +777,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{415.68503570556641, 164.5714282989502}</string>
-						<string>{376, 164.5714282989502}</string>
+						<string>{419.7193995774241, 166.82550769979215}</string>
+						<string>{375.99999999999989, 166.82550769979215}</string>
 					</array>
 					<key>Rotation</key>
 					<real>90</real>
@@ -803,7 +803,7 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>73</integer>
+					<integer>138</integer>
 					<key>OrthogonalBarAutomatic</key>
 					<true/>
 					<key>OrthogonalBarPoint</key>
@@ -812,8 +812,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{415.68503570556641, 157.5714282989502}</string>
-						<string>{376, 157.5714282989502}</string>
+						<string>{419.7193995774241, 158.79913094481}</string>
+						<string>{375.99999999999989, 158.79913094481}</string>
 					</array>
 					<key>Rotation</key>
 					<real>90</real>
@@ -838,7 +838,7 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>74</integer>
+					<integer>139</integer>
 					<key>OrthogonalBarAutomatic</key>
 					<true/>
 					<key>OrthogonalBarPoint</key>
@@ -847,8 +847,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{415.68503570556641, 150.2857141494751}</string>
-						<string>{376, 150.2857141494751}</string>
+						<string>{419.7193995774241, 150.77275418982785}</string>
+						<string>{375.99999999999989, 150.77275418982785}</string>
 					</array>
 					<key>Rotation</key>
 					<real>90</real>
@@ -873,7 +873,7 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>75</integer>
+					<integer>140</integer>
 					<key>OrthogonalBarAutomatic</key>
 					<true/>
 					<key>OrthogonalBarPoint</key>
@@ -882,8 +882,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{415.68503570556641, 143}</string>
-						<string>{376, 143}</string>
+						<string>{419.7193995774241, 143}</string>
+						<string>{375.99999999999989, 143}</string>
 					</array>
 					<key>Rotation</key>
 					<real>90</real>
@@ -906,7 +906,7 @@
 				</dict>
 			</array>
 			<key>ID</key>
-			<integer>67</integer>
+			<integer>132</integer>
 		</dict>
 		<dict>
 			<key>Class</key>
@@ -926,8 +926,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{286.31658619847786, 138}</string>
-						<string>{286.31658619847786, 190}</string>
+						<string>{289.77459122624293, 138}</string>
+						<string>{289.77459122624293, 194.69290924072266}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -968,8 +968,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{267.1582930992389, 138}</string>
-						<string>{267.1582930992389, 190}</string>
+						<string>{268.88729561312147, 138}</string>
+						<string>{268.88729561312147, 194.69290924072266}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -1010,8 +1010,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{247.99999999999997, 138}</string>
-						<string>{247.99999999999997, 190}</string>
+						<string>{248, 138}</string>
+						<string>{248, 194.69290924072266}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -1061,8 +1061,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{200.31658619847792, 138}</string>
-						<string>{200.31658619847792, 190}</string>
+						<string>{203.77459122624299, 138}</string>
+						<string>{203.77459122624299, 194.69290924072266}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -1094,8 +1094,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{181.15829309923896, 138}</string>
-						<string>{181.15829309923896, 190}</string>
+						<string>{182.88729561312149, 138}</string>
+						<string>{182.88729561312149, 194.69290924072266}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -1127,8 +1127,8 @@
 					<real>-1</real>
 					<key>Points</key>
 					<array>
-						<string>{162, 138}</string>
-						<string>{162, 190}</string>
+						<string>{161.99999999999997, 138}</string>
+						<string>{161.99999999999997, 194.69290924072266}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -1158,7 +1158,7 @@
 			<array>
 				<dict>
 					<key>Bounds</key>
-					<string>{{265, 82}, {39.685035705566406, 10}}</string>
+					<string>{{265, 85.790426694429854}, {43.266540912894499, 10.902482546292818}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -1202,7 +1202,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{265, 61}, {39.685035705566406, 10}}</string>
+					<string>{{265, 62.89521334721492}, {43.266540912894499, 10.902482546292818}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -1246,7 +1246,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{265, 40}, {39.685035705566406, 10}}</string>
+					<string>{{265, 40}, {43.266540912894499, 10.902482546292818}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -1299,7 +1299,7 @@
 			<array>
 				<dict>
 					<key>Bounds</key>
-					<string>{{196.5, 82}, {39.685035705566406, 10}}</string>
+					<string>{{196.5, 85.790426694429854}, {43.266540912894499, 10.902482546292818}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -1341,7 +1341,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{196.5, 61}, {39.685035705566406, 10}}</string>
+					<string>{{196.5, 62.89521334721492}, {43.266540912894499, 10.902482546292818}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -1383,7 +1383,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{196.5, 40}, {39.685035705566406, 10}}</string>
+					<string>{{196.5, 40}, {43.266540912894499, 10.902482546292818}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -1429,7 +1429,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{128.5, 40}, {43, 52}}</string>
+			<string>{{128.5, 40}, {46.88067494905912, 56.692909240722656}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
@@ -1459,7 +1459,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{60.5, 40}, {43, 52}}</string>
+			<string>{{60.5, 40}, {46.88067494905912, 56.692909240722656}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
@@ -1547,7 +1547,7 @@
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2016-01-29 14:01:30 +0000</string>
+	<string>2016-02-01 15:25:50 +0000</string>
 	<key>Modifier</key>
 	<string>Dominique Fober</string>
 	<key>NotesVisible</key>
@@ -1613,7 +1613,7 @@
 	<key>RowAlign</key>
 	<integer>1</integer>
 	<key>RowSpacing</key>
-	<real>36</real>
+	<real>35.999996185302734</real>
 	<key>SheetTitle</key>
 	<string>Canevas 1</string>
 	<key>SmartAlignmentGuidesActive</key>

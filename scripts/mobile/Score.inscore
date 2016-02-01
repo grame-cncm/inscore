@@ -1,9 +1,13 @@
 
 /ITL/scene/* del;
 
-down = mouseDown;
-
 <? javascript
+	// evaluate first the best event for interaction
+	var os = osname();
+	var down = "mouseDown";
+	if (os == "Android" || os == "iOS")
+		down = "touchBegin";
+
 	function makemsg (msg, target, attribute, imgon, imgoff) {
 		msg = msg.replace(/TARGET/g, target) ;
 		msg = msg.replace(/ATTRIBUTE/g, attribute) ;
@@ -29,6 +33,9 @@ down = mouseDown;
 				"/ITL/scene/TARGET pop));"
 		return makemsg (template, target, attribute, imgon, imgoff);
 	}
+
+	// déclare the interaction event as an inscore variable
+	"down = " + down + ";"
 ?>
 
 /ITL/scene/title  set  txt "Different score representations.";
@@ -44,16 +51,8 @@ pheight	= 1.;
 /ITL/scene/b1keyboard 	set img "rsrc/pkon.png";
 /ITL/scene/b2bars 		set img "rsrc/pbon.png";
 /ITL/scene/b3autocolor 	set img "rsrc/pcon.png";
-/ITL/scene/b4pitchlines set img "rsrc/plon.png";
+/ITL/scene/b4pitchlines set img "rsrc/ploff.png";
 
-buttons = (
-	./b1keyboard 	set img "rsrc/pkon.png",
-	./b2bars 		set img "rsrc/pbon.png",
-	./b3autocolor 	set img "rsrc/pcon.png",
-	./b4pitchlines 	set img "rsrc/plon.png"
-);
-
-/ITL/scene eval $buttons;
 /ITL/scene/b5proll 		set img "rsrc/sproll.png";
 /ITL/scene/b6score 		set img "rsrc/sscore.png";
 
@@ -80,14 +79,17 @@ switch2proll = (
 	/ITL/scene/score width $pwidth,
 	/ITL/scene/score height $pheight,
 	/ITL/scene/b5proll show 0,
-	/ITL/scene/b[12346]* show 1,
-	/ITL/scene eval $buttons
+	/ITL/scene/b[12346]* show 1
 );
 
-/ITL/scene/b6score watch $down $switch2score;
-/ITL/scene/b5proll watch $down $switch2proll;
+/ITL/scene/score watch mouseDown (
+	/ITL/scene/b6score watch $down $switch2score,
+	/ITL/scene/b5proll watch $down $switch2proll
+);
+/ITL/scene/score event mouseDown 0 0;
+/ITL/scene/score watch ;
 
 <? javascript toggle("b1keyboard", "keyboard", "rsrc/pkon.png", "rsrc/pkoff.png") ?>
 <? javascript toggle("b2bars", "measureBars", "rsrc/pbon.png", "rsrc/pboff.png") ?>
 <? javascript toggle("b3autocolor", "autoVoicesColoration", "rsrc/pcon.png", "rsrc/pcoff.png") ?>
-<? javascript toggle("b4pitchlines", "pitchLines", "rsrc/plon.png", "rsrc/ploff.png") ?>
+<? javascript toggle("b4pitchlines", "pitchLines", "rsrc/ploff.png", "rsrc/plon.png") ?>

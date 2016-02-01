@@ -2,6 +2,20 @@
 /ITL/scene/* del;
 
 <? javascript
+	var os = osname();
+	var eventdown = "mouseDown";
+	var eventup = "mouseUp";
+	if (os == "Android" || os == "iOS") {
+		eventdown = "touchBegin";
+		eventup = "touchEnd";
+	}
+	"eventdown = " + eventdown + "; eventup = " + eventup +";";
+?>
+
+!eventdown 	= touchBegin;
+!eventup 	= touchEnd;
+
+<? javascript
 	function randomdur () { 
 		return Math.pow(2, Math.floor( Math.random() * 5) );
 	}
@@ -25,10 +39,9 @@
 
 gray = 100;
 
-/ITL/scene/comment1 set txt "This script shows the use of the 
-/ITL/scene/javascript static object
-to generate random scores 
-using Guido streams.";
+/ITL/scene/comment1 set txt "Use of the /ITL/scene/javascript 
+static object to generate random 
+scores using Guido streams.";
 /ITL/scene/comment1 y -0.85;
 /ITL/scene/comment1 color $gray $gray $gray ;
 /ITL/scene/clickme set txt "TOUCH ME";
@@ -44,12 +57,6 @@ using Guido streams.";
 /ITL/scene/score x -0.7;
 /ITL/scene/score y -0.68;
 
-down 	= ( /ITL/scene/clickme color 255 0 0, /ITL/scene/javascript run "randomscore()" );
-up 		= ( /ITL/scene/clickme color 0 0 0 );
-/ITL/scene/clickme watch touchBegin  $down;
-/ITL/scene/clickme watch touchEnd  $up;
-
-!/ITL/scene/clickme watch mouseDown  $down;
-!/ITL/scene/clickme watch mouseUp  $up;
-
+/ITL/scene/clickme watch $eventdown  ( /ITL/scene/clickme color 255 0 0, /ITL/scene/javascript run "randomscore()" );
+/ITL/scene/clickme watch $eventup  ( /ITL/scene/clickme color 0 0 0 );
 
