@@ -47,6 +47,30 @@ protected:
 	virtual bool eval(OSCFilterContext& filter)=0;
 };
 
+class OSCFilterExprArg{
+protected:
+	unsigned int _argIndex;
+	float _float;
+	std::string _string;
+	bool _isNbr;
+
+	OSCFilterExprArg();
+
+public:
+
+	static OSCFilterExprArg* fromArg(unsigned int argIndex);
+	static OSCFilterExprArg* fromString(std::string string);
+	static OSCFilterExprArg* fromNbr(float nbr);
+
+	bool toString(std::string &s, const OSCFilterContext& filter) const;
+	bool toNbr   (float &nbr, const OSCFilterContext& filter)       const;
+	bool isNbr   (const OSCFilterContext& filter) const;
+
+	unsigned int	argIndex()	const {return _argIndex;}
+	float			nbr()		const {return _float;}
+	std::string		string()	const {return _string;}
+};
+
 class OSCFilterExpr: public OSCFilterNode{
 public:
 	enum Operator{
@@ -58,22 +82,13 @@ public:
 	kLOWEREQUAL
 	};
 
-
-	static OSCFilterNode* filterArg(Operator op, unsigned int argIndex, float floatValue);
-	static OSCFilterNode* filterArg(Operator op, unsigned int argIndex, std::string stringValue);
-
+	OSCFilterExpr(Operator op, const OSCFilterExprArg& argL, const OSCFilterExprArg& argR);
 	virtual ~OSCFilterExpr(){}
 protected:
-	OSCFilterExpr(Operator op, unsigned int argIndex, float floatValue, std::string stringValue);
 	bool eval(OSCFilterContext &filter);
-	void inequalStringError(OSCFilterContext &filter);
 private:
 	Operator _operator;
-	unsigned int _argIndex;
-	float _float;
-	std::string _string;
-
-
+	const OSCFilterExprArg _argL, _argR;
 };
 
 class OSCFilterAddress: public OSCFilterNode{

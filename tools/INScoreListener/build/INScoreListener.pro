@@ -24,7 +24,8 @@ SOURCES +=	$$files($$SRC/Parser/*.cpp)
 
 HEADERS +=	$$SRC/ITLlistener.h \
     ../src/Parser/filter.l \
-    ../src/Parser/filter.y
+    ../src/Parser/filter.y \
+    ../src/doc.h
 HEADERS +=	$$SRC/OSCFilter.h
 HEADERS +=	$$files($$SRC/Parser/*.h)
 HEADERS +=	$$files($$SRC/Parser/*.hpp)

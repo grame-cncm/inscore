@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.0.2.  */
+/* A Bison parser, made by GNU Bison 3.0.4.  */
 
 /* Bison implementation for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "3.0.2"
+#define YYBISON_VERSION "3.0.4"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -137,7 +137,7 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE YYSTYPE;
+
 union YYSTYPE
 {
 #line 25 "filter.y" /* yacc.c:355  */
@@ -146,11 +146,14 @@ union YYSTYPE
 	float	real;
 	std::string* str;
 	inscorelistener::OSCFilterNode* filterNode;
+	inscorelistener::OSCFilterExprArg* filterArg;
 	inscorelistener::OSCFilterExpr::Operator filterOperator;
 
 
-#line 153 "filterparse.cpp" /* yacc.c:355  */
+#line 154 "filterparse.cpp" /* yacc.c:355  */
 };
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
@@ -176,7 +179,7 @@ int yyparse (inscorelistener::filterparser* context);
 #endif /* !YY_YY_FILTERPARSE_HPP_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
-#line 51 "filter.y" /* yacc.c:358  */
+#line 52 "filter.y" /* yacc.c:358  */
 
 
 #include <iostream>
@@ -195,7 +198,7 @@ int yyerror(const YYLTYPE* loc, inscorelistener::filterparser* context, const ch
 
 
 
-#line 199 "filterparse.cpp" /* yacc.c:358  */
+#line 202 "filterparse.cpp" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -437,18 +440,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  12
+#define YYFINAL  19
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   31
+#define YYLAST   43
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  25
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  11
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  27
+#define YYNRULES  28
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  39
+#define YYNSTATES  40
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
@@ -496,9 +499,9 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    74,    74,    75,    76,    79,    80,    82,    83,    84,
-      85,    86,    89,    90,    91,    92,    93,    94,   100,   101,
-     104,   107,   108,   113,   114,   117,   118,   121
+       0,    75,    75,    76,    77,    80,    81,    83,    84,    85,
+      88,    89,    90,    91,    92,    93,   100,   101,   102,   108,
+     109,   112,   115,   116,   121,   122,   123,   126,   127
 };
 #endif
 
@@ -511,8 +514,8 @@ static const char *const yytname[] =
   "REGEXP", "PATHSEP", "LEFTPAR", "RIGHTPAR", "EQUAL", "NOTEQUAL", "NOT",
   "GREATER", "GREATEREQUAL", "LOWER", "LOWEREQUAL", "LAND", "LOR", "LNOT",
   "STRING", "QUOTEDSTRING", "ARGID", "ADDR", "$accept", "filter",
-  "filterExpr", "filterExprCore", "filterOp", "oscaddress", "oscpath",
-  "identifier", "number", "string", "argID", YY_NULLPTR
+  "filterExpr", "filterExprCore", "filterOp", "arg", "oscaddress",
+  "oscpath", "identifier", "number", "string", YY_NULLPTR
 };
 #endif
 
@@ -527,10 +530,10 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF -14
+#define YYPACT_NINF -15
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-14)))
+  (!!((Yystate) == (-15)))
 
 #define YYTABLE_NINF -1
 
@@ -541,10 +544,10 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -2,    -2,     0,   -14,     1,     8,   -13,   -14,    14,     5,
-     -14,     6,   -14,    -2,    -2,   -14,   -14,   -14,   -14,   -14,
-     -14,    -3,   -14,     4,     6,   -14,   -14,   -14,   -14,   -14,
-     -14,   -14,   -14,   -14,   -14,   -14,   -14,   -14,   -14
+      -3,   -15,   -15,   -15,   -15,    -3,     4,   -15,   -15,     7,
+      15,   -14,   -15,    20,   -15,   -15,     6,   -15,    25,   -15,
+      -3,    -3,   -15,   -15,   -15,   -15,   -15,   -15,    19,   -15,
+       5,    25,   -15,   -15,   -15,   -15,   -15,   -15,   -15,   -15
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -552,24 +555,24 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     0,     0,    27,     0,     0,     2,     5,     0,     0,
-       6,     0,     1,     0,     0,    12,    13,    14,    15,    16,
-      17,     0,    11,     0,     7,    18,     3,     4,    24,    23,
-      10,    26,    25,     9,     8,    21,    22,    20,    19
+       0,    25,    24,    26,    28,     0,     0,    27,    16,     0,
+       0,     2,     5,     0,    18,    17,     0,     6,     0,     1,
+       0,     0,    10,    11,    12,    13,    14,    15,     0,     9,
+       0,     7,    19,     3,     4,     8,    22,    23,    21,    20
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -14,     3,   -14,    11,   -14,   -14,    -4,   -14,   -14,   -14,
-     -14
+     -15,     9,   -15,    32,   -15,    11,   -15,    12,   -15,   -15,
+     -15
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     5,     6,     7,    21,    24,    25,    37,    33,    34,
-       8
+      -1,    10,    11,    12,    28,    13,    31,    32,    38,    14,
+      15
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -577,44 +580,46 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      28,    29,    30,    31,     9,    13,    14,     1,    12,     1,
-      35,    36,    11,    10,    23,    22,    26,    27,     2,    32,
-      38,     3,     4,     3,     4,    15,    16,     0,    17,    18,
-      19,    20
+       1,     2,     3,     4,    20,    21,     5,     1,     2,     3,
+       4,    36,    37,     5,    16,    19,    29,     6,    18,     7,
+       8,     9,     1,     2,     3,     4,     7,     8,     9,    33,
+      34,    22,    23,    30,    24,    25,    26,    27,    17,    35,
+       0,     7,     8,    39
 };
 
 static const yytype_int8 yycheck[] =
 {
-       3,     4,     5,     6,     1,    18,    19,     9,     0,     9,
-       6,     7,    11,     2,     8,    10,    13,    14,    20,    22,
-      24,    23,    24,    23,    24,    11,    12,    -1,    14,    15,
-      16,    17
+       3,     4,     5,     6,    18,    19,     9,     3,     4,     5,
+       6,     6,     7,     9,     5,     0,    10,    20,    11,    22,
+      23,    24,     3,     4,     5,     6,    22,    23,    24,    20,
+      21,    11,    12,     8,    14,    15,    16,    17,     6,    28,
+      -1,    22,    23,    31
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     9,    20,    23,    24,    26,    27,    28,    35,    26,
-      28,    11,     0,    18,    19,    11,    12,    14,    15,    16,
-      17,    29,    10,     8,    30,    31,    26,    26,     3,     4,
-       5,     6,    22,    33,    34,     6,     7,    32,    31
+       0,     3,     4,     5,     6,     9,    20,    22,    23,    24,
+      26,    27,    28,    30,    34,    35,    26,    28,    11,     0,
+      18,    19,    11,    12,    14,    15,    16,    17,    29,    10,
+       8,    31,    32,    26,    26,    30,     6,     7,    33,    32
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
        0,    25,    26,    26,    26,    27,    27,    28,    28,    28,
-      28,    28,    29,    29,    29,    29,    29,    29,    30,    30,
-      31,    32,    32,    33,    33,    34,    34,    35
+      29,    29,    29,    29,    29,    29,    30,    30,    30,    31,
+      31,    32,    33,    33,    34,    34,    34,    35,    35
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     1,     3,     3,     1,     2,     3,     3,     3,
-       3,     3,     1,     1,     1,     1,     1,     1,     1,     2,
-       2,     1,     1,     1,     1,     1,     1,     1
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       2,     2,     1,     1,     1,     1,     1,     1,     1
 };
 
 
@@ -1392,151 +1397,157 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 74 "filter.y" /* yacc.c:1646  */
+#line 75 "filter.y" /* yacc.c:1646  */
     { (yyval.filterNode) = (yyvsp[0].filterNode); context->fFilterRoot = (yyval.filterNode); }
-#line 1398 "filterparse.cpp" /* yacc.c:1646  */
+#line 1403 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 75 "filter.y" /* yacc.c:1646  */
+#line 76 "filter.y" /* yacc.c:1646  */
     { (yyval.filterNode) = inscorelistener::OSCFilterLogical::andFilter( (yyvsp[-2].filterNode), (yyvsp[0].filterNode)); context->fFilterRoot = (yyval.filterNode); }
-#line 1404 "filterparse.cpp" /* yacc.c:1646  */
+#line 1409 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 76 "filter.y" /* yacc.c:1646  */
+#line 77 "filter.y" /* yacc.c:1646  */
     { (yyval.filterNode) = inscorelistener::OSCFilterLogical::orFilter( (yyvsp[-2].filterNode), (yyvsp[0].filterNode)); context->fFilterRoot = (yyval.filterNode); }
-#line 1410 "filterparse.cpp" /* yacc.c:1646  */
+#line 1415 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 80 "filter.y" /* yacc.c:1646  */
+#line 81 "filter.y" /* yacc.c:1646  */
     { (yyval.filterNode) = (yyvsp[0].filterNode); (yyval.filterNode)->setNot(); }
-#line 1416 "filterparse.cpp" /* yacc.c:1646  */
+#line 1421 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 82 "filter.y" /* yacc.c:1646  */
+#line 83 "filter.y" /* yacc.c:1646  */
     { (yyval.filterNode) = new inscorelistener::OSCFilterAddress(*(yyvsp[0].str)); delete (yyvsp[0].str); }
-#line 1422 "filterparse.cpp" /* yacc.c:1646  */
+#line 1427 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 83 "filter.y" /* yacc.c:1646  */
-    { (yyval.filterNode) = inscorelistener::OSCFilterExpr::filterArg((yyvsp[-1].filterOperator), (yyvsp[-2].num), *(yyvsp[0].str)); delete (yyvsp[0].str);}
-#line 1428 "filterparse.cpp" /* yacc.c:1646  */
+#line 84 "filter.y" /* yacc.c:1646  */
+    { (yyval.filterNode) = new inscorelistener::OSCFilterExpr((yyvsp[-1].filterOperator), *(yyvsp[-2].filterArg), *(yyvsp[0].filterArg)); delete (yyvsp[-2].filterArg); delete (yyvsp[0].filterArg);}
+#line 1433 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 84 "filter.y" /* yacc.c:1646  */
-    { (yyval.filterNode) = inscorelistener::OSCFilterExpr::filterArg((yyvsp[-1].filterOperator), (yyvsp[-2].num), (yyvsp[0].num));  }
-#line 1434 "filterparse.cpp" /* yacc.c:1646  */
+#line 85 "filter.y" /* yacc.c:1646  */
+    { (yyval.filterNode) = (yyvsp[-1].filterNode); }
+#line 1439 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 85 "filter.y" /* yacc.c:1646  */
-    { (yyval.filterNode) = inscorelistener::OSCFilterExpr::filterArg((yyvsp[-1].filterOperator), (yyvsp[-2].num), context->fFloat);  }
-#line 1440 "filterparse.cpp" /* yacc.c:1646  */
+#line 88 "filter.y" /* yacc.c:1646  */
+    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::kEQUAL;}
+#line 1445 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 86 "filter.y" /* yacc.c:1646  */
-    { (yyval.filterNode) = (yyvsp[-1].filterNode); }
-#line 1446 "filterparse.cpp" /* yacc.c:1646  */
+#line 89 "filter.y" /* yacc.c:1646  */
+    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::kNOTEQUAL;}
+#line 1451 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 89 "filter.y" /* yacc.c:1646  */
-    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::kEQUAL;}
-#line 1452 "filterparse.cpp" /* yacc.c:1646  */
+#line 90 "filter.y" /* yacc.c:1646  */
+    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::kGREATER;}
+#line 1457 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 90 "filter.y" /* yacc.c:1646  */
-    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::kNOTEQUAL;}
-#line 1458 "filterparse.cpp" /* yacc.c:1646  */
+#line 91 "filter.y" /* yacc.c:1646  */
+    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::kGREATEREQUAL;}
+#line 1463 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 91 "filter.y" /* yacc.c:1646  */
-    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::kGREATER;}
-#line 1464 "filterparse.cpp" /* yacc.c:1646  */
+#line 92 "filter.y" /* yacc.c:1646  */
+    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::kLOWER;}
+#line 1469 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 92 "filter.y" /* yacc.c:1646  */
-    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::kGREATEREQUAL;}
-#line 1470 "filterparse.cpp" /* yacc.c:1646  */
+#line 93 "filter.y" /* yacc.c:1646  */
+    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::kLOWEREQUAL;}
+#line 1475 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 93 "filter.y" /* yacc.c:1646  */
-    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::kLOWER;}
-#line 1476 "filterparse.cpp" /* yacc.c:1646  */
+#line 100 "filter.y" /* yacc.c:1646  */
+    { (yyval.filterArg) = inscorelistener::OSCFilterExprArg::fromArg(context->fInt); }
+#line 1481 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 94 "filter.y" /* yacc.c:1646  */
-    { (yyval.filterOperator) = inscorelistener::OSCFilterExpr::kLOWEREQUAL;}
-#line 1482 "filterparse.cpp" /* yacc.c:1646  */
+#line 101 "filter.y" /* yacc.c:1646  */
+    { (yyval.filterArg) = inscorelistener::OSCFilterExprArg::fromString(*(yyvsp[0].str)); delete (yyvsp[0].str);}
+#line 1487 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
-  case 19:
-#line 101 "filter.y" /* yacc.c:1646  */
-    { *(yyvsp[-1].str) += *(yyvsp[0].str); (yyval.str) = (yyvsp[-1].str); delete (yyvsp[0].str); }
-#line 1488 "filterparse.cpp" /* yacc.c:1646  */
+  case 18:
+#line 102 "filter.y" /* yacc.c:1646  */
+    { (yyval.filterArg) = inscorelistener::OSCFilterExprArg::fromNbr((yyvsp[0].real)); }
+#line 1493 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 104 "filter.y" /* yacc.c:1646  */
-    { (yyval.str) = new std::string("/" + *(yyvsp[0].str)); delete (yyvsp[0].str); }
-#line 1494 "filterparse.cpp" /* yacc.c:1646  */
+#line 109 "filter.y" /* yacc.c:1646  */
+    { *(yyvsp[-1].str) += *(yyvsp[0].str); (yyval.str) = (yyvsp[-1].str); delete (yyvsp[0].str); }
+#line 1499 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 107 "filter.y" /* yacc.c:1646  */
-    { (yyval.str) = new std::string(context->fText); }
-#line 1500 "filterparse.cpp" /* yacc.c:1646  */
+#line 112 "filter.y" /* yacc.c:1646  */
+    { (yyval.str) = new std::string("/" + *(yyvsp[0].str)); delete (yyvsp[0].str); }
+#line 1505 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 108 "filter.y" /* yacc.c:1646  */
+#line 115 "filter.y" /* yacc.c:1646  */
     { (yyval.str) = new std::string(context->fText); }
-#line 1506 "filterparse.cpp" /* yacc.c:1646  */
+#line 1511 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 113 "filter.y" /* yacc.c:1646  */
-    { (yyval.num) = context->fInt; }
-#line 1512 "filterparse.cpp" /* yacc.c:1646  */
+#line 116 "filter.y" /* yacc.c:1646  */
+    { (yyval.str) = new std::string(context->fText); }
+#line 1517 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 114 "filter.y" /* yacc.c:1646  */
-    { (yyval.num) = context->fInt; }
-#line 1518 "filterparse.cpp" /* yacc.c:1646  */
+#line 121 "filter.y" /* yacc.c:1646  */
+    { (yyval.real) = (float)context->fInt; }
+#line 1523 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 117 "filter.y" /* yacc.c:1646  */
-    {(yyval.str) = new std::string(context->fText);}
-#line 1524 "filterparse.cpp" /* yacc.c:1646  */
+#line 122 "filter.y" /* yacc.c:1646  */
+    { (yyval.real) = (float)context->fInt; }
+#line 1529 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 118 "filter.y" /* yacc.c:1646  */
-    {(yyval.str) = new std::string(context->fText);}
-#line 1530 "filterparse.cpp" /* yacc.c:1646  */
+#line 123 "filter.y" /* yacc.c:1646  */
+    { (yyval.real) = context->fFloat;}
+#line 1535 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 121 "filter.y" /* yacc.c:1646  */
-    { (yyval.num) = context->fInt; }
-#line 1536 "filterparse.cpp" /* yacc.c:1646  */
+#line 126 "filter.y" /* yacc.c:1646  */
+    {(yyval.str) = new std::string(context->fText);}
+#line 1541 "filterparse.cpp" /* yacc.c:1646  */
+    break;
+
+  case 28:
+#line 127 "filter.y" /* yacc.c:1646  */
+    {(yyval.str) = new std::string(context->fText);}
+#line 1547 "filterparse.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 1540 "filterparse.cpp" /* yacc.c:1646  */
+#line 1551 "filterparse.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1771,7 +1782,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 124 "filter.y" /* yacc.c:1906  */
+#line 130 "filter.y" /* yacc.c:1906  */
 
 
 namespace inscorelistener

@@ -40,106 +40,65 @@ const osc::ReceivedMessageArgument *OSCFilterContext::arg(size_t i) const
  *		    OSCFilterExpr			*
  * *****************************************************/
 
-OSCFilterNode *OSCFilterExpr::filterArg(OSCFilterExpr::Operator op, unsigned int argIndex, float floatValue)
-{
-	return new OSCFilterExpr(op, argIndex, floatValue, "");
-}
 
-OSCFilterNode *OSCFilterExpr::filterArg(OSCFilterExpr::Operator op, unsigned int argIndex, std::string stringValue)
-{
-	if(op==kEQUAL || op==kNOTEQUAL)
-		return new OSCFilterExpr(op, argIndex, 0, stringValue);
+OSCFilterExpr::OSCFilterExpr(OSCFilterExpr::Operator op, const OSCFilterExprArg &argL, const OSCFilterExprArg &argR)
+	:_operator(op), _argL(argL), _argR(argR)
+{}
 
-	return 0;
-}
-
-OSCFilterExpr::OSCFilterExpr(OSCFilterExpr::Operator op, unsigned int argIndex, float floatValue, std::string stringValue)
-	:_operator(op), _argIndex(argIndex), _float(floatValue), _string(stringValue)
-{
-}
 
 bool OSCFilterExpr::eval(OSCFilterContext &filter)
 {
 
-	const osc::ReceivedMessageArgument* arg = filter.arg(_argIndex);
-	if(!arg)
-	return false;
+	float nbrL=0, nbrR=0;
+	bool isNbr = _argL.toNbr(nbrL,filter);
+	if(isNbr != _argR.toNbr(nbrR, filter))	//Type mismatch
+		return _operator == OSCFilterExpr::kNOTEQUAL;
+
+	std::string sL="", sR="";
+	if(!isNbr){
+		if( _operator!=OSCFilterExpr::kNOTEQUAL && _operator!=OSCFilterExpr::kEQUAL ){
+			if(filter.verbose()){
+				std::cerr<<"Inequality only support numbers as arguments, ";
+				if(_argL.argIndex()!=-1){
+					std::cerr<<"%"<<_argL.argIndex();
+					if(_argR.argIndex()!=-1)
+						std::cerr<<" and %"<<_argR.argIndex()<<" are strings."<<std::endl;
+					else
+						std::cerr<<" is a string"<<std::endl;
+				}else if(_argR.argIndex()!=-1)
+					std::cerr<<"%"<<_argR.argIndex()<<" is a string"<<std::endl;
+			}
+			return false;
+		}
+		if( !_argL.toString(sL, filter) || !_argR.toString(sR, filter))
+			return false;
+	}
 
 	switch(_operator){
 	case OSCFilterExpr::kEQUAL:
-	if(_string.empty()){
-		if(arg->IsFloat())		//float
-		return arg->AsFloatUnchecked()==_float;
-		else if(arg->IsInt32()){	//int32
-		if(_float!=(float)(int)_float)
-			return false;	//Wrong Type
-		return arg->AsInt32Unchecked()==_float;
-		}else if(arg->IsString())	//Empty string
-		return std::string(arg->AsStringUnchecked()).empty();
-		else			//Wrong Type
-		return false;
-	}else if(arg->IsString())
-		return !_string.compare(arg->AsStringUnchecked());
-	return false;			//Arg is not a string
+	if(isNbr)
+		return nbrL == nbrR;
+	return sL == sR;
 
 	case OSCFilterExpr::kNOTEQUAL:
-	if(_string.empty()){
-		if(arg->IsFloat())		//float
-		return arg->AsFloatUnchecked()!=_float;
-		else if(arg->IsInt32()){	//int32
-		if(_float!=(float)(int)_float)
-			return true;	//Wrong Type
-		return arg->AsInt32Unchecked()!=_float;
-		}else if(arg->IsString())	//Empty string
-		return !std::string(arg->AsStringUnchecked()).empty();
-		else			//Wrong Type
-		return true;
-	}else if(arg->IsString())
-		return _string.compare(arg->AsStringUnchecked());
-	return true;			//Arg is not a string
+		if(isNbr)
+			return nbrL != nbrR;
+		return sL != sR;
 
 	case OSCFilterExpr::kGREATER:
-	if(arg->IsFloat())		//float
-		return arg->AsFloatUnchecked() >_float;
-	else if(arg->IsInt32())	//int32
-		return arg->AsInt32Unchecked()>_float;
-	inequalStringError(filter);	//Wrong Type
-	return false;
+		return nbrL > nbrR;
 
 	case OSCFilterExpr::kGREATEREQUAL:
-	if(arg->IsFloat())		//float
-		return arg->AsFloatUnchecked()>=_float;
-	else if(arg->IsInt32())	//int32
-		return arg->AsInt32Unchecked()>=_float;
-	inequalStringError(filter);	//Wrong Type
-	return false;
+		return nbrL >= nbrR;
 
 	case OSCFilterExpr::kLOWER:
-	if(arg->IsFloat())		//float
-		return arg->AsFloatUnchecked()<_float;
-	else if(arg->IsInt32())
-		return arg->AsInt32Unchecked()<_float;
-	inequalStringError(filter);	//Wrong Type
-	return false;
+		return nbrL < nbrR;
 
 	case OSCFilterExpr::kLOWEREQUAL:
-	if(arg->IsFloat())		//float
-		return arg->AsFloatUnchecked()<=_float;
-	else if(arg->IsInt32())
-		return arg->AsInt32Unchecked()<=_float;
-	inequalStringError(filter); 	//Wrong Type
-	return false;
+		return nbrL <= nbrR;
 	}
 
 	return false;
-}
-
-void OSCFilterExpr::inequalStringError(OSCFilterContext &filter)
-{
-    if(!filter.verbose())
-	return;
-
-    std::cerr<<"Inequality only support numbers as arguments, %"<<_argIndex<<" is a string...";
 }
 
 /********************************************************
@@ -168,5 +127,79 @@ bool OSCFilterLogical::eval(OSCFilterContext &filter)
 
 	return _rNode->match(filter);
 }
+
+/********************************************************
+ *		    OSCFilterExprArg							*
+ * *****************************************************/
+OSCFilterExprArg::OSCFilterExprArg()
+{
+	_argIndex = -1;
+	_string = "";
+	_float = 0;
+	_isNbr = false;
+}
+
+OSCFilterExprArg *OSCFilterExprArg::fromArg(unsigned int argIndex)
+{
+	OSCFilterExprArg* arg = new OSCFilterExprArg();
+	arg->_argIndex = argIndex;
+	return arg;
+}
+
+OSCFilterExprArg *OSCFilterExprArg::fromString(std::string string)
+{
+	OSCFilterExprArg* arg = new OSCFilterExprArg();
+	arg->_string = string;
+	return arg;
+}
+
+OSCFilterExprArg *OSCFilterExprArg::fromNbr(float nbr)
+{
+	OSCFilterExprArg* arg = new OSCFilterExprArg();
+	arg->_isNbr = true;
+	arg->_float = nbr;
+	return arg;
+}
+
+
+bool OSCFilterExprArg::toString(std::string &s, const OSCFilterContext &filter) const
+{
+	if(_argIndex != -1){
+		const osc::ReceivedMessageArgument* arg = filter.arg(_argIndex);
+		if(!arg)
+			return false;
+
+		if(!arg->IsString())
+			return false;
+		s = std::string(arg->AsStringUnchecked());
+	}else{
+		if(_isNbr)
+			return false;
+		s = _string;
+	}
+	return true;
+}
+
+bool OSCFilterExprArg::toNbr(float &nbr, const OSCFilterContext &filter) const
+{
+	if(_argIndex != -1){
+		const osc::ReceivedMessageArgument* arg = filter.arg(_argIndex);
+		if(!arg)
+			return false;
+
+		if(arg->IsFloat())
+			nbr = arg->AsFloatUnchecked();
+		else if(arg->IsInt32())
+			nbr = (float)arg->AsInt32Unchecked();
+		else
+			return false;
+	}else{
+		if(!_isNbr)
+			return false;
+		nbr = _float;
+	}
+	return true;
+}
+
 
 }//End namespace
