@@ -72,7 +72,7 @@ class IScene : public IRectShape, public TILoader
 	SIJavascript	fJSObject;
 	std::string		fRootPath;
 
-	TJSEngine		fJavascript;
+	TJSEngine*		fJavascript;
 	TLua			fLua;
 	SIFilterForward	fFilterForward;
 	Forwarder		fForwarder;
@@ -120,8 +120,8 @@ class IScene : public IRectShape, public TILoader
 		std::string			absolutePath( const std::string& path ) const;
 		QGraphicsScene *	getGraphicScene () const;
 
-		TJSEngine*		getJSEngine()		{ return &fJavascript; }
-		TLua*			getLUAEngine()	{ return &fLua; }
+		TJSEngine*		getJSEngine()		{ return fJavascript; }
+		TLua*			getLUAEngine()		{ return &fLua; }
 
 		virtual VSceneView*	getSceneView() const;
 

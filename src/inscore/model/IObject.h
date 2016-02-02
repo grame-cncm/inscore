@@ -76,6 +76,8 @@ typedef class libmapping::SMARTP<ISceneSync>		SISceneSync;
 class ISignalNode;
 typedef class libmapping::SMARTP<ISignalNode>		SISignalNode;
 
+class TQtJs;
+
 //--------------------------------------------------------------------------
 /*!
 	\brief the base class of the data model
@@ -461,7 +463,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 			\return the corresponding handler if any
 		*/
 		virtual SSigHandler			signalHandler(const std::string& method, bool match=false) const;
-    
+ 
+		virtual TQtJs*	getJSEngine()		{ return 0; }	///< gives the associated javascript engine, defaults to 0
+	
 	protected:	
 		VObjectView* fView;		///< the object view
 		IObject*	fParent;	///< the parent node

@@ -47,8 +47,9 @@ class TQtJs
 {
 	std::string fRootPath;
 #ifdef QTJSENGINE
-    QJSEngine*		fEngine;
+    QJSEngine*		fEngine;			///< the javascript engine, actually owned by the application
 	int				fLineOffset;
+	bool			fDeleteEngine;
 
 	bool bindEnv  (std::stringstream& s, const std::string& name, const IMessage::argPtr& val);
 	void bindEnv  (std::stringstream& s, const std::string& name, const IMessage::argslist& values);
@@ -56,8 +57,12 @@ class TQtJs
 	void getResult (const QString& result, std::string& outStr) const;
 #endif
 
+	protected:
+		QJSEngine* engine()		{ return fEngine; }
+
 	public:	
 				 TQtJs();
+				 TQtJs(TQtJs* engine);
 		virtual ~TQtJs();
 
 		void	Initialize	();

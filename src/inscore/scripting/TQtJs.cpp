@@ -80,8 +80,9 @@ void TQtJs::setRootPath	(const char* path)
 }
 
 //--------------------------------------------------------------------------------------------
-TQtJs::TQtJs()	: fEngine(0) { Initialize(); }
-TQtJs::~TQtJs()	{ delete fEngine; }
+TQtJs::TQtJs()	: fEngine(0), fDeleteEngine(true) { Initialize(); }
+TQtJs::TQtJs(TQtJs* js)	: fEngine(js->engine()), fDeleteEngine(false) { }
+TQtJs::~TQtJs()	{ if (fDeleteEngine) delete fEngine; }
 
 //--------------------------------------------------------------------------------------------
 // Reset the current javascript engine (actually allocate a new one)
@@ -189,6 +190,11 @@ bool TQtJs::eval(int line, const char* jscode, std::string& outStr)
 	QString program (jscode);
 	QJSValue result = fEngine->evaluate(program, "", line+1);
 
+	if (result.isError()) {
+		ITLErr <<  "javascript error line" <<  result.property("lineNumber").toString().toUtf8().constData() << ": " << result.toString().toUtf8().constData() << ITLEndl;
+		return false;
+	}
+
 	if (result.isString()) {
 		getResult (result.toString(), outStr);
 	}
@@ -203,10 +209,6 @@ bool TQtJs::eval(int line, const char* jscode, std::string& outStr)
 				}
 			}
 		}
-	}
-	else if (result.isError()) {
-		ITLErr <<  "javascript error line" <<  result.property("lineNumber").toString().toUtf8().constData() << ": " << result.toString().toUtf8().constData() << ITLEndl;
-		return false;
 	}
 	return true;
 }

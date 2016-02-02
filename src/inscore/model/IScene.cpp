@@ -64,8 +64,9 @@ IScene::~IScene()
     elements().clear();		// this is required to avoid orphan QGraphicsItem (and crash after that)
 }
 
-IScene::IScene(const std::string& name, IObject * parent) 
-		: IRectShape(name, parent), fFullScreen(false), fFrameless(false), fAbsoluteCoordinates(false), fWindowOpacity(false), fUpdateVersion(false)
+IScene::IScene(const std::string& name, IObject * parent)
+		: IRectShape(name, parent), fFullScreen(false), fFrameless(false), fAbsoluteCoordinates(false),
+		fWindowOpacity(false), fUpdateVersion(false), fJavascript(parent->getJSEngine())
 {
 	fTypeString = kSceneType;
 	setColor( IColor(255,255,255,255) );
@@ -129,7 +130,7 @@ void IScene::reset ()
 	fRootPath.clear();
 	fFullScreen = false; 
 	fFrameless = false;
-	fJavascript.Initialize();
+//	fJavascript.Initialize();
 	fLua.Initialize();
 }
 
@@ -139,7 +140,7 @@ void IScene::createVirtualNodes()
 	IRectShape::createVirtualNodes();
 
 	fFileWatcher = QFileWatcher::create(this);
-	fJSObject = IJavascript::create(this, &fJavascript);
+	fJSObject = IJavascript::create(this, fJavascript);
 	fFilterForward = IFilterForward::create(this);
 	fForwarder.setFilter(fFilterForward);
 	add ( fFileWatcher );

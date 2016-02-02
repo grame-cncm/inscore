@@ -13,6 +13,10 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.17
+- javascript engine is shared between the application and the different scenes.
+  Note that it may change a script behavior when exploiting the previous independance
+  of the javascript engine environments.
+- new javascript 'osname' function that gives the current operating system name
 - 'rootPath' message can be called without parameter to clear a scene rootPath
 - log window supports the 'foreground' message
 - user actions on windows are generating 'foreground' messages
