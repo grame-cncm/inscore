@@ -86,6 +86,10 @@ switch2proll = (
 	/ITL/scene/b6score watch $down $switch2score,
 	/ITL/scene/b5proll watch $down $switch2proll
 );
+###################################
+# this is intended to trigger the $down variable evaluation
+# in a valid context i.e. with a real javascript engine
+# when building a bundle, the javascript code is not evaluated
 /ITL/scene/score event mouseDown 0 0;
 /ITL/scene/score watch ;
 
