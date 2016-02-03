@@ -27,6 +27,27 @@ inscore::extvector<std::string> ParsedData::ressourceNames() const
 //__________________________________________________________
 //----------------------------------------------------------
 
+std::vector<std::string> ParsedData::splitPath(std::string path)
+{
+	std::vector<std::string> result;
+
+	size_t id;
+	path = path.substr(1); //removing the first /
+	while(!path.empty()){
+		id = path.find('/');
+
+		if(id==std::string::npos){
+			result.push_back(path);
+			return result;
+		}
+
+		result.push_back(path.substr(0,id));
+		path = path.substr(id+1);
+	}
+
+	return result;
+}
+
 size_t ParsedData::findFileInJS(const std::string &js, std::string &filePath, size_t startID)
 {
 	while(startID < js.size()){
@@ -129,24 +150,78 @@ void ParsedData::simplifyPaths(int charToDelete)
 	ressources = simplifiedRessources;
 	scriptsRessources = simplifiedRscScripts;
 
-	mainPath += fMainScript.substr(0,charToDelete);
+	if(fMainScript.empty())
+		fMainScript = scripts.begin()->first;
+
+	fMainPath += fMainScript.substr(0,charToDelete);
 	fMainScript = fMainScript.substr(charToDelete);
 }
 
+void ParsedData::simplifyPaths()
+{
+	if(ressources.empty()&&scripts.empty())
+		return;
+
+	//  -- search for common path trunk --
+	std::vector<std::string> trunk = splitPath(ressources.size()? ressources.begin()->first: scripts.begin()->first);
+	int commonPath = trunk.size()-1;
+
+	for(auto it = ressources.cbegin(); it != ressources.cend(); it++){
+		std::vector<std::string> path = splitPath(it->first);
+
+		int i=0;
+		while ( i < commonPath && i < (int)path.size()-1 ) {
+			if(path.at(i)!=trunk.at(i)){
+				break;
+			}
+			i++;
+		}
+		commonPath = i;
+	}
+
+	for(auto it = scripts.cbegin(); it != scripts.cend(); it++){
+		std::vector<std::string> path = splitPath(it->first);
+
+		int i=0;
+		while ( i < commonPath && i < (int)path.size()-1 ) {
+			if(path.at(i)!=trunk.at(i))
+				break;
+			i++;
+		}
+		commonPath = i;
+	}
+
+	if(trunk.empty())
+		return;
+
+	std::string trunkPath = "/";
+
+	for (int i = 0; i < commonPath; ++i)
+		trunkPath += trunk.at(i)+"/";
+
+	size_t removable = trunkPath.size();
+	simplifyPaths(removable);
+}
+
+
+
 //__________________________________________________________
 //----------------------------------------------------------
-bool RessourceMap::insert(std::string name, SMsgParam param)
+std::list<SMsgParam>& RessourceMap::insert(std::string name)
 {
 	auto it = find(name);
 	if(it==end()){
 		std::list<SMsgParam> l;
-		l.push_back(param);
 		(*this)[name] = l;
-		return true;
+		return (*this)[name];
 	}
 
-	it->second.push_back(param);
-	return false;
+	return it->second;
+}
+
+void RessourceMap::insert(std::string name, SMsgParam param)
+{
+	insert(name).push_back(param);
 }
 
 void RessourceMap::insert(std::string name, std::list<SMsgParam> params)

@@ -2,6 +2,7 @@
 #define BUNDLECREATOR_H
 
 #include "BundleLog.h"
+#include "QArchive.h"
 
 namespace ibundle {
 
@@ -26,7 +27,7 @@ public:
 	 * \return	true if succeed, false otherwise
 	 */
 	bool bundle(std::string inputFile, std::string outputFile);
-
+	bool failSafeBundle(std::string inputFile, std::string outputFile);
 
 	void setVerbose(bool verbose = true);
 	void setDefaultRootPath(std::string rootPath);
@@ -34,6 +35,8 @@ public:
 	void setForceOverwrite(bool forceOverwrite = true);
 	void setParseJS(bool parseJS = true);
 
+protected:
+	bool writeArchive(qarchive::SQArchive& archive, const std::string& outputPath, bool overwrite);
 };
 
 } //end namespace

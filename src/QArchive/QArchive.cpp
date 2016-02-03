@@ -133,9 +133,9 @@ QString QArchive::currentDir() const
 	return fTree.currentDir();
 }
 
-bool QArchive::addFile(QString name, QIODevice *device, quint32 compressedSize)
+bool QArchive::addFile(QString name, QIODevice *device, bool currentDir, quint32 compressedSize)
 {
-	if(!fTree.addItem(name, fFiles.size()))
+	if(!fTree.addItem(name, fFiles.size(), currentDir))
 		return false;
 
 	fFiles.append(device);
@@ -144,19 +144,19 @@ bool QArchive::addFile(QString name, QIODevice *device, quint32 compressedSize)
 	return true;
 }
 
-bool QArchive::addFile(QString name, const QString& path)
+bool QArchive::addFile(QString name, const QString& path, bool currentDir)
 {
 	QFile* file = new QFile(path);
 	if(!file->exists()){
 		delete file;
 		return false;
 	}
-	return addFile(name, new QFile(path));
+	return addFile(name, new QFile(path), currentDir);
 }
 
-bool QArchive::addBufferedFile(QString name, const QByteArray &data)
+bool QArchive::addBufferedFile(QString name, const QByteArray &data, bool currentDir)
 {
-	if(!fTree.addItem(name, fFiles.size()))
+	if(!fTree.addItem(name, fFiles.size(), currentDir))
 		return false;
 	QBuffer *b = new QBuffer();
 	b->open(QIODevice::WriteOnly);
@@ -166,9 +166,9 @@ bool QArchive::addBufferedFile(QString name, const QByteArray &data)
 	return true;
 }
 
-bool QArchive::addTextFile(QString name, const QString &data)
+bool QArchive::addTextFile(QString name, const QString &data, bool currentDir)
 {
-	if(!fTree.addItem(name, fFiles.size()))
+	if(!fTree.addItem(name, fFiles.size(), currentDir))
 		return false;
 	QByteArray a = data.toUtf8();
 	QBuffer *b = new QBuffer();

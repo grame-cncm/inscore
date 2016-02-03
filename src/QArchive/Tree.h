@@ -29,7 +29,7 @@ public:
 
 	TreeNode<Type>* searchDir(QString path);
 	bool			searchItem(QString path, Type& item);
-	bool			addItem(QString path, const Type& item);
+	bool			addItem(QString name, const Type& item, bool currentDir = false);
 	bool			addDir(QString path);
 
 	treeConstIterator<Type> localIterator() const {return fCurrentNode->iterator();}
@@ -37,6 +37,7 @@ public:
 
 private:
 	TreeNode<Type>* extractPath(QString path, QString &name);
+	QString absolutePath(QString path);
 };
 
 template <typename Type>
@@ -46,7 +47,7 @@ class TreeNode
 
 
 	QString fName;
-	QList< TreeNode<Type> > fChildrenNodes;
+	QList< TreeNode<Type> > fChildren;
 	QList<QPair<QString,Type> > fItems;
 	TreeNode<Type>* fParent=0;
 	Tree<Type>* fTree;
@@ -65,13 +66,14 @@ public:
 	int			addItem(QString name, const Type& item);
 	QList<QPair<QString, Type>>& items() {return fItems;}
 
-	const TreeNode<Type>&	nodeAt(int i) const {return fChildrenNodes.at(i);}
-	int					nodeCount()		const {return fChildrenNodes.size();}
+	const TreeNode<Type>&	nodeAt(int i) const {return fChildren.at(i);}
+	int					nodeCount()		const {return fChildren.size();}
 	TreeNode<Type>*		searchChildren(QString name);
 	QStringList			childrenNames()	const;
 	int					childID(QString name) const;
 	int					addChildren(QString name);
-	QList< TreeNode<Type> >& childrenList() {return fChildrenNodes;}
+	TreeNode<Type>*		createPath(QString name);
+	QList< TreeNode<Type> >& childrenList() {return fChildren;}
 
 	bool contains(QString name);
 	QString path() const;

@@ -37,7 +37,6 @@ protected:
 
 	bool parseScript(std::string inputFile, inscore::SIMessageList &msgs);
 	bool analyseMsg(const inscore::SIMessage &msg, AnalyseResult& result, bool acceptRootPathMsg=true, std::string contextObject="");
-	void simplifyPath();
 	/*!
 	 * \brief	absolutePath return the absolute path of path according to the rootPath matching an address
 	 *			if path or rootPath is an url, return an empty string.
@@ -47,8 +46,6 @@ protected:
 	 * \return the absolute path of path or empty string if url
 	 */
 	std::string absolutePath(std::string path, std::string address);
-
-	std::vector<std::string> splitPath(std::string path);
 
 	inline bool isFileObject(std::string ITLCmd);
 	bool isurl(std::string path);

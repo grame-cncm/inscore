@@ -60,14 +60,14 @@ public:
 	QString		currentDir()	const;
 	std::string	currentDirStd()	const {return currentDir().toStdString();}
 
-	bool addFile(QString name, const QString &path);
-	bool addFileStd(const std::string& name, const std::string& path){return addFile(QString::fromStdString(name),QString::fromStdString(path));}
+	bool addFile(QString name, const QString &path, bool currentDir=false);
+	bool addFileStd(const std::string& name, const std::string& path, bool currentDir=false){return addFile(QString::fromStdString(name),QString::fromStdString(path), currentDir);}
 
-	bool addBufferedFile(QString name, const QByteArray& data);
-	bool addBufferedFileStd(const std::string& name, const QByteArray& data){return addFile(QString::fromStdString(name), data);}
+	bool addBufferedFile(QString name, const QByteArray& data, bool currentDir=false);
+	bool addBufferedFileStd(const std::string& name, const QByteArray& data, bool currentDir=false){return addFile(QString::fromStdString(name), data, currentDir);}
 
-	bool addTextFile(QString name, const QString& data);
-	bool addTextFileStd(const std::string& name, const std::string& data){return addTextFile(QString::fromStdString(name), QString::fromStdString(data));}
+	bool addTextFile(QString name, const QString& data, bool currentDir=false);
+	bool addTextFileStd(const std::string& name, const std::string& data, bool currentDir=false){return addTextFile(QString::fromStdString(name), QString::fromStdString(data), currentDir);}
 
 	bool readFile(QString name, QByteArray &data);
 	bool readFileStd(const std::string& name, QByteArray &data){return readFile(QString::fromStdString(name), data);}
@@ -79,7 +79,7 @@ public:
 protected:
 	QArchive():fHeader(this){}
 
-	bool addFile(QString name, QIODevice* device, quint32 compressedSize=0);
+	bool addFile(QString name, QIODevice* device, bool currentDir, quint32 compressedSize=0);
 
 	bool readFile(int fileID, QByteArray &data);
 };

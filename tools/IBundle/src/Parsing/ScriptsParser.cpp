@@ -27,8 +27,6 @@ bool ScriptsParser::read(std::string inputFile, ParsedData &result, const std::s
 	if(!p.readScript(inputFile))
 		return false;
 
-	p.simplifyPath();
-
 	return true;
 }
 
@@ -264,53 +262,6 @@ bool ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool
 	return true;
 }
 
-//______________________________________________
-void ScriptsParser::simplifyPath()
-{
-	if(fData.ressources.empty()&&fData.scripts.empty())
-		return;
-
-	//  -- search for common path trunk --
-	std::vector<std::string> trunk = splitPath(fData.ressources.size()? fData.ressources.begin()->first: fData.scripts.begin()->first);
-	int commonPath = trunk.size()-1;
-
-	for(auto it = fData.ressources.cbegin(); it != fData.ressources.cend(); it++){
-		std::vector<std::string> path = splitPath(it->first);
-
-		int i=0;
-		while ( i < commonPath && i < (int)path.size()-1 ) {
-			if(path.at(i)!=trunk.at(i)){
-				break;
-			}
-			i++;
-		}
-		commonPath = i;
-	}
-
-	for(auto it = fData.scripts.cbegin(); it != fData.scripts.cend(); it++){
-		std::vector<std::string> path = splitPath(it->first);
-
-		int i=0;
-		while ( i < commonPath && i < (int)path.size()-1 ) {
-			if(path.at(i)!=trunk.at(i))
-				break;
-			i++;
-		}
-		commonPath = i;
-	}
-
-	if(trunk.empty())
-		return;
-
-	std::string trunkPath = "/";
-
-	for (int i = 0; i < commonPath; ++i)
-		trunkPath += trunk.at(i)+"/";
-
-	size_t removable = trunkPath.size();
-	fData.simplifyPaths(removable);
-}
-
 //__________________________________________________________
 //----------------------------------------------------------
 std::string ScriptsParser::absolutePath(std::string path, std::string address)
@@ -383,29 +334,6 @@ std::string ScriptsParser::absolutePath(std::string path, std::string address)
 
 	return result;
 }
-
-//______________________________________________
-std::vector<std::string> ScriptsParser::splitPath(std::string path)
-{
-	std::vector<std::string> result;
-
-	size_t id;
-	path = path.substr(1); //removing the first /
-	while(!path.empty()){
-		id = path.find('/');
-
-		if(id==std::string::npos){
-			result.push_back(path);
-			return result;
-		}
-
-		result.push_back(path.substr(0,id));
-		path = path.substr(id+1);
-	}
-
-	return result;
-}
-
 
 
 //__________________________________________________________

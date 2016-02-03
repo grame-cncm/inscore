@@ -15,15 +15,13 @@ class BundlePackager
 	ParsedData& fInputData;
 
 public:
-	static bool bundle(ParsedData& scripts, const std::string& outputPath, bool overwrite=false);
+	static qarchive::SQArchive bundle(ParsedData& scripts);
 protected:
 
 	BundlePackager(ParsedData& inputData):fInputData(inputData){}
 
 	void mapNames();
 	bool setupArchive(qarchive::SQArchive& archive);
-
-	bool writeArchive(qarchive::SQArchive& archive, const std::string& outputPath, bool overwrite = false);
 
 };
 
