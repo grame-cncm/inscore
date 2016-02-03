@@ -161,7 +161,8 @@ void IApplLog::foreground ()
 {
 	if (getVisible()) {
 #ifdef __MOBILE__
-		VMobileQtInit::getMainPanel()->switchToPanel(fWindow->windowTitle());
+		if(VMobileQtInit::getMainPanel()->switchToPanel(fWindow->windowTitle()))
+			VMobileQtInit::hideMenu();
 #else
 		fWindow->raise();
 		fWindow->activateWindow();
