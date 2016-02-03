@@ -22,3 +22,7 @@ validation/__tmp.inscore
 *~
 cmake/
 /.directory
+scripts/mobile/*.ibundle
+*.so
+*.app
+*.apk
