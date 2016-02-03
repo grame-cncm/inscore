@@ -154,7 +154,7 @@ Item {
                         //Folders
                         model: folderModel;
                         SlideMenuItem{
-                            text: fileName.slice(0, fileName.lastIndexOf("."));
+                            text: fileIsDir?fileName:fileName.slice(0, fileName.lastIndexOf("."));
                             icon: fileIsDir?"qrc:///images/folder.png":"qrc:///INScoreViewer.png";
                             first: true;
                             anchors.left: folderView_Layout.left
