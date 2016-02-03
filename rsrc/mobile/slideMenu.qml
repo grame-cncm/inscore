@@ -194,7 +194,7 @@ Item {
                                 text: "Recent"
                                 onClicked: {
                                     root.state = "exploreMenu";
-                                    exploreView.setRootPath("Recently downloaded", "file://"+downloadPath);
+                                    exploreView.setRootPath("Recently loaded", "file://"+downloadPath);
 //                                    urlField.clear();
                                     exploreMenu.exploreRecent = true;
                                 }
