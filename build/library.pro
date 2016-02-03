@@ -23,7 +23,8 @@ JSON        = $$SRC/json
 win32 { OSCIP = $$OSC/ip/win32 }
 else  { OSCIP = $$OSC/ip/posix }
 
-QT += core gui quick qml quickwidgets widgets svg printsupport multimedia multimediawidgets websockets
+QT += core gui widgets svg printsupport multimedia multimediawidgets websockets 
+QT += quick qml quickwidgets 
 DEFINES += INScore_EXPORTS
 DEFINES += HAVE_CONFIG_H  # defined for the qrencode library
 DEFINES += QTJSENGINE	# use the Qt Javascript engine
@@ -105,12 +106,15 @@ win32 {
 		LIBS += $$LOCALLIB/GuidoAR/win32/guidoar.lib
 	}
 }
+!win32 {
+    QMAKE_CXXFLAGS += -Wno-deprecated-register -Wno-unused-parameter
+}
 
 ############################## 
 # macos x support
 ############################## 
 macx {
-    QMAKE_CXXFLAGS += -mmacosx-version-min=10.7 -Wno-deprecated-register
+    QMAKE_CXXFLAGS += -mmacosx-version-min=10.7
     QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7 
     QMAKE_MAC_SDK = macosx10.9		# drag & drop doesn't work with macosx10.10 sdk on yosemite
 	CONFIG += lib_bundle explicitlib
@@ -136,7 +140,7 @@ macx {
 # ios x support
 ############################## 
 ios {
-    QMAKE_CXXFLAGS += -Wno-deprecated-register
+    QMAKE_IOS_DEPLOYMENT_TARGET = 7.0
     SOURCES  +=  $$files($$SRC/mobile/*.cpp)
     HEADERS  +=  $$files($$SRC/mobile/*.h)
     INCLUDEPATH  +=  $$files($$SRC/mobile)
@@ -153,7 +157,6 @@ ios {
 unix:!macx:!ios:!android {
     DEFINES += OSC_HOST_LITTLE_ENDIAN __LINUX__
     LIBS += -lGUIDOEngine -lguidoar
-    QMAKE_CXXFLAGS += -Wno-unused-parameter
 }
 
 ############################## 
@@ -166,14 +169,12 @@ android {
     DEFINES += ANDROID __MOBILE__ OSC_HOST_LITTLE_ENDIAN
     LIBS += -L$$ROOT/lib/GuidoEngine/android -lGUIDOEngine
     LIBS += -L$$ROOT/lib/GuidoAR/android -lguidoar
-    QMAKE_CXXFLAGS += -Wno-unused-parameter
     QT += androidextras
 }
 
 ##############################
 # mobile test
 ##############################
-
 mobile_ui{
     DEFINES += __MOBILE__ MOBILE_TEST
     SOURCES  +=  $$files($$SRC/mobile/*.cpp)

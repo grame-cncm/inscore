@@ -9,7 +9,8 @@ RCC_DIR		= tmp
 
 VERSION = 1.17
 
-QT += core gui qml quick quickwidgets widgets svg printsupport multimedia multimediawidgets websockets
+QT += core gui widgets svg printsupport multimedia multimediawidgets websockets
+QT += quick qml quickwidgets 
 
 ############################## 
 # locations
@@ -50,6 +51,7 @@ macx {
 # ios support
 ##############################
 ios {
+    QMAKE_IOS_DEPLOYMENT_TARGET = 7.0
 	QMAKE_LFLAGS += -L/ios/Release-iphoneos
 	LIBS += -lINScore $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a $$ROOT/lib/GuidoAR/ios/libguidoar.a
 	QMAKE_INFO_PLIST = $$PWD/Info.plist
