@@ -43,8 +43,7 @@ QArchiveError QArchiveHeader::readHeader(QIODevice *input)
 					d >> size >> name;
 					QSubIODevice *file = new QSubIODevice(input, 0, size);
 					files.push_back(file);
-					fArchive->addFile(QString::fromUtf8(name), file, true, size);
-					fArchive->fFiles.last().setCompressed(true);
+					fArchive->addFileFromSubIODevice(QString::fromUtf8(name), file, true);
 				}else if(fieldID == H_UPDIR){
 					fArchive->fTree.upDir();
 				}else{
@@ -80,13 +79,13 @@ QArchiveError QArchiveHeader::readHeader(QIODevice *input)
 	//Align all SubIODevices to their start position
 	for (int i = 0; i < files.size(); ++i) {
 		files.at(i)->setStartPos(headerSize);
-		headerSize += fArchive->fFiles.at(i).compressedSize();
+		headerSize += files.at(i)->subSize();
 	}
 
 	return NO_ERROR;
 }
 
-QByteArray QArchiveHeader::generateHeader()
+QByteArray QArchiveHeader::generateHeader() const
 {
 	QBuffer buffer;
 	buffer.open(QIODevice::ReadWrite);
@@ -107,21 +106,20 @@ QByteArray QArchiveHeader::generateHeader()
 	Movement m;
 	while( (m=it.next()) ){
 		switch(m){
-		case TreeEnd:
+		case TREE_END:
 			break;
-		case Branch:
+		case BRANCH:
 			out << (quint8) H_NEW_DIR;
 			out << it.name().toUtf8().data();
 			break;
-		case LeavingBranch:
+		case LEAVING_BRANCH:
 			out << (quint8) H_UPDIR;
 			break;
-		case Item:
+		case ITEM:
 			out << (quint8) H_NEW_FILE;
 			out << (quint32) fArchive->fFiles.at(it.itemValue()).compressedSize();
 			out << it.name().toUtf8().data();
 			break;
-
 		}
 	}
 	out << (quint8) H_HIER_END;

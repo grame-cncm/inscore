@@ -21,6 +21,7 @@ class QArchive;
 typedef libmapping::SMARTP<QArchive> SQArchive;
 
 class QArchiveData;
+class QSubIODevice;
 
 class QArchive: public libmapping::smartable
 {
@@ -72,6 +73,8 @@ public:
 	bool readFile(QString name, QByteArray &data);
 	bool readFileStd(const std::string& name, QByteArray &data){return readFile(QString::fromStdString(name), data);}
 
+	bool addFileFromSubIODevice(QString name, QSubIODevice* device, bool currentDir = false);
+
 	const Tree<int>& tree() const {return fTree;}
 
 	virtual ~QArchive();
@@ -79,7 +82,7 @@ public:
 protected:
 	QArchive():fHeader(this){}
 
-	bool addFile(QString name, QIODevice* device, bool currentDir, quint32 compressedSize=0);
+	bool addFile(QString name, QIODevice* device, bool currentDir);
 
 	bool readFile(int fileID, QByteArray &data);
 };

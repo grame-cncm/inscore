@@ -93,10 +93,10 @@ bool BundleExtractor::writeMappedArchive(SQArchive archive, ParsedData& script, 
 	Movement m;
 
 	while( (m=it.next()) ){
-		if(m == TreeEnd)
+		if(m == TREE_END)
 			return true;
 
-		if(m == Item){
+		if(m == ITEM){
 			//Find the name in the map
 			QString archiveFileName = it.currentPath()+"/"+it.name();
 			archiveFileName = archiveFileName.mid(1);

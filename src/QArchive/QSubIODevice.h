@@ -18,6 +18,8 @@ public:
 
 	void setStartPos(quint64 startpos){fStart = startpos;}
 
+	const quint64& subSize() const {return fSize;}
+
 	// QIODevice interface
 protected:
 	qint64 readData(char *data, qint64 maxlen);

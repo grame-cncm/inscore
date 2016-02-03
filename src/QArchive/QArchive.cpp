@@ -1,6 +1,7 @@
 #include <QBuffer>
 
 #include "QArchive.h"
+#include "QSubIODevice.h"
 
 namespace qarchive{
 
@@ -73,18 +74,18 @@ QArchiveError QArchive::extract(QString path, bool overwrite)
 	Movement m;
 	while( (m=it.next()) ){
 		switch(m){
-		case TreeEnd:
+		case TREE_END:
 			return NO_ERROR;
-		case Branch:
+		case BRANCH:
 			if(!dir.mkpath(it.name()))
 					return WRONG_PERMISSIONS;
 			dir.cd(it.name());
 			break;
-		case LeavingBranch:
+		case LEAVING_BRANCH:
 			if(!dir.cdUp())
 					return FILE_CORRUPTED;
 			break;
-		case Item:
+		case ITEM:
 			QFile f(dir.absolutePath()+QDir::separator()+it.name());
 			if(f.exists()){
 				if(overwrite)
@@ -133,14 +134,21 @@ QString QArchive::currentDir() const
 	return fTree.currentDir();
 }
 
-bool QArchive::addFile(QString name, QIODevice *device, bool currentDir, quint32 compressedSize)
+bool QArchive::addFile(QString name, QIODevice *device, bool currentDir)
 {
 	if(!fTree.addItem(name, fFiles.size(), currentDir))
 		return false;
 
 	fFiles.append(device);
-	if(compressedSize)
-		fFiles.last().setCompressedSize(compressedSize);
+	return true;
+}
+
+bool QArchive::addFileFromSubIODevice(QString name, QSubIODevice *device, bool currentDir)
+{
+	if(!addFile(name, device, currentDir))
+		return false;
+	fFiles.last().setCompressed(true);
+	fFiles.last().setCompressedSize(device->subSize());
 	return true;
 }
 
@@ -153,6 +161,7 @@ bool QArchive::addFile(QString name, const QString& path, bool currentDir)
 	}
 	return addFile(name, new QFile(path), currentDir);
 }
+
 
 bool QArchive::addBufferedFile(QString name, const QByteArray &data, bool currentDir)
 {
