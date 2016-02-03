@@ -5,6 +5,7 @@
         <file>images/close.png</file>
         <file>images/folderUp.png</file>
         <file>images/go.png</file>
+        <file>images/menuIco.png</file>
     </qresource>
     <qresource prefix="/qml">
         <file alias="about.qml">mobile/about.qml</file>

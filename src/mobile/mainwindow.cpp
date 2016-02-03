@@ -42,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 	l->addWidget(fHeader);
 	l->addWidget(fPanel);
 	l->setMargin(0);
+	l->setSpacing(0);
 	setLayout(l);
 
 	fMenu = new SlideMenu(this);

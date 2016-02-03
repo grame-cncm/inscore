@@ -52,6 +52,8 @@ Item {
                 id: exploreMenu
                 anchors.fill: parent;
 
+                property bool exploreRecent: false;
+
                 ExploreView{
                     id: exploreView;
                     anchors.top: parent.top
@@ -63,11 +65,13 @@ Item {
                         inscore.postMessage("/ITL", "rootPath", file.slice(0, file.lastIndexOf("/")));
                         inscore.postMessage("/ITL", "load", file.slice(file.lastIndexOf("/")+1));
                         inscore.postMessage("/ITL/scene", "foreground");
-                    }
 
-//                    fileDeletable: urlField.visible
+                        if(!exploreMenu.exploreRecent)
+                            contextObject.addDownloadedFile(file);
+                    }
+                    fileDeletable: exploreMenu.exploreRecent
                     onFileDeleted: {
-                        if(urlField.visible)
+                        if(exploreMenu.exploreRecent)
                             contextObject.deleteDownloadedFile(file);
                     }
                 }
@@ -175,24 +179,24 @@ Item {
                                 onClicked: {
                                     root.state = "exploreMenu";
                                     exploreView.setRootPath("Exemples", "qrc:///scripts");
-//                                    urlField.visible = false;
+                                    exploreMenu.exploreRecent = false;
                                 }
                             }
                             SlideMenuItem{
-                                text: "from File"
+                                text: "From files"
                                 onClicked: {
                                     root.state = "exploreMenu";
                                     exploreView.setRootPath("HOME", "file://"+initialRootPath);
-//                                    urlField.visible = false;
+                                    exploreMenu.exploreRecent = false;
                                 }
                             }
                             SlideMenuItem{
-                                text: "from URL"
+                                text: "Recent"
                                 onClicked: {
                                     root.state = "exploreMenu";
                                     exploreView.setRootPath("Recently downloaded", "file://"+downloadPath);
 //                                    urlField.clear();
-//                                    urlField.visible = true;
+                                    exploreMenu.exploreRecent = true;
                                 }
                             }
 

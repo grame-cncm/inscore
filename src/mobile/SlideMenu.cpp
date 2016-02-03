@@ -181,6 +181,22 @@ void SlideMenu::deleteDownloadedFile(QString fileName)
 	d.remove(fileName);
 }
 
+//_________________________________________________
+void SlideMenu::addDownloadedFile(QString fileName)
+{
+	QString path = QStandardPaths::standardLocations(QStandardPaths::DownloadLocation).last()+"/bundles/"+fileName.mid(fileName.lastIndexOf('/')+1);
+	QFile f(path);
+	if(!f.open(QIODevice::WriteOnly|QIODevice::Text|QIODevice::Truncate))
+		return;
+
+	QString data = "/ITL rootPath \"" + fileName.left(fileName.lastIndexOf('/'))+"\";\n";
+	data+= "/ITL load \""+fileName.mid(fileName.lastIndexOf('/')+1)+"\";";
+
+	f.write(data.toUtf8());
+	f.close();
+}
+
+//_________________________________________________
 bool SlideMenu::event(QEvent *e)
 {
 	if(e->type()==QEvent::TouchBegin){

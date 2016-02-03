@@ -6,7 +6,7 @@ import "global.js" as Size
 Item{
     id: root;
 
-    property string title: ""
+    property alias title: panelNameLabel.text
     property bool isLast: true
     property bool isFirst: true
 
@@ -16,25 +16,38 @@ Item{
     height: Size.toPixel(Size.headerPointHeight)
 
     Rectangle{
-        anchors.fill: parent
+        id: background
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.bottom: separator.top
         gradient: Gradient {
             GradientStop {
                 position: 0
-                color: "#ddc7c7"
+                color: "#f8f4f0"
             }
 
             GradientStop {
                 position: 1
-                color: "#ae9f9f"
+                color: "#cfcecc"
             }
         }
+    }
+
+    Rectangle{
+        id: separator
+        height: 2;
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        color: "#adadb2"
     }
 
     Text {
         id: panelNameLabel
         anchors.centerIn: parent;
-        color: "#520000"
-        text: root.title
+        color: "#424039"
+        text: ""
         font.family: "Courier"
         font.bold: true
         horizontalAlignment: Text.AlignHCenter
@@ -48,12 +61,18 @@ Item{
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.margins: 5
+        anchors.leftMargin: Size.toPixel(2)
         width: height
-        source: "qrc:///INScoreViewer.png"
+        source: "qrc:///images/menuIco.png"
+        smooth: true;
+        opacity: 0.6;
     }
 
     SimpleTouchArea{
         anchors.fill: parent
         onClicked: root.popupMenu()
+        onPressed: menu.opacity = 0.8;
+        onReleased: menu.opacity = 0.6;
+        onCanceled: menu.opacity = 0.6;
     }
 }
