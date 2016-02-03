@@ -50,7 +50,7 @@ void OSCListener::ProcessMessage( const osc::ReceivedMessage& m, const IpEndpoin
 			fCurrentMessageNumber = i->AsInt32();
 			int lost = fCurrentMessageNumber - fPreviousMessageNumber - 1;
 			if((fPreviousMessageNumber >= 0) && lost) {
-				cerr << lost << " lost message(s)" << endl;
+//				cerr << lost << " lost message(s)" << endl;
 				fErrorCounter += lost;
 			}
 			fPreviousMessageNumber = fCurrentMessageNumber;

@@ -51,13 +51,13 @@ class OscThread : public QThread
 	public:
 		OSCListener fListener;
 
-		OscThread(int port, ControllerWidget * controller) : fListener(port, controller) { setPriority(QThread::HighestPriority); }
+		OscThread(int port, ControllerWidget * controller) : fListener(port, controller) {}
 		virtual ~OscThread() { stop(); }
 
 		void stop() { fListener.stop(); quit() , wait(50);}
 
 		/// \brief starts the osc listener
-		void run()			 { fListener.run(); }
+		void run()			 { setPriority(QThread::HighestPriority); fListener.run(); }
 };
 
 
