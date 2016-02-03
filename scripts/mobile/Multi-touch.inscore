@@ -19,11 +19,12 @@
 /ITL/scene/rect2 set rect 0.5 0.5;
 /ITL/scene/rect3 set rect 0.5 0.5;
 
+alpha = 220;
 /ITL/scene/rect1 x -0.6;
 /ITL/scene/rect2 x 0.6;
-/ITL/scene/rect1 color 250 150 0;
-/ITL/scene/rect2 color 0 150 250;
-/ITL/scene/rect3 color 150 0 250;
+/ITL/scene/rect1 color 250 150 0 $alpha;
+/ITL/scene/rect2 color 0 150 250 $alpha;
+/ITL/scene/rect3 color 150 0 250 $alpha;
 
 /ITL/scene/rect* watch $event (
 	/ITL/scene/$self x "$sx" ,
