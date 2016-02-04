@@ -71,6 +71,26 @@ QString CustomScripts::osname()
 
 }
 
+int CustomScripts::osid()
+{
+#ifdef MACOS
+	return 4;
+#endif
+#ifdef WINDOWS
+	return 5;
+#endif
+#ifdef __LINUX__
+	return 3;
+#endif
+#ifdef ANDROID
+	return 1;
+#endif
+#ifdef IOS
+	return 2;
+#endif
+
+}
+
 QJSValue CustomScripts::readfile(const QString &filename)
 {
 	if (filename.isEmpty()) {

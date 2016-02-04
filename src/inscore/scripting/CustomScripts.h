@@ -48,6 +48,7 @@ class CustomScripts : public QObject
         // Their arguments must be of type const QMetaType
         QString version();
         QString osname();
+        int		osid();
 		QJSValue readfile(const QString &filename);
 		void print(const QVariantList &args);
 		void post(const QVariantList &args);
