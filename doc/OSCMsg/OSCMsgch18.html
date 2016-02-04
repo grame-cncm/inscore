@@ -1,196 +1,698 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
   "http://www.w3.org/TR/html4/loose.dtd">  
 <html > 
-<head><title>18 Appendices</title> 
+<head><title>18 Plugins</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
 <meta name="generator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2015-07-15 13:39:00"> 
+<meta name="date" content="2016-02-04 15:48:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 3556--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 3284--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch19.html" >next</a>] [<a 
 href="OSCMsgch17.html" >prev</a>] [<a 
 href="OSCMsgch17.html#tailOSCMsgch17.html" >prev-tail</a>] [<a 
-href="OSCMsgch17.html#tailOSCMsgch18.html">tail</a>] [<a 
-href="OSCMsg3.html# " >up</a>] </p></div>
+href="#tailOSCMsgch18.html">tail</a>] [<a 
+href="OSCMsg3.html#OSCMsgch18.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;18</span><br /><a 
- id="x25-11700018"></a>Appendices</h2>
+ id="x23-11200018"></a>Plugins</h2>
+<!--l. 3287--><p class="noindent" >A plugin is an external library that is dynamically loaded when an object that need it is created. The system looks
+for plugins in the following locations:
+     <ul class="itemize1">
+     <li class="itemize">in the current folder first
+     </li>
+     <li class="itemize">in the PlugIns folder, located in the application bundle on macos, in the application folder on other
+     systems
+     </li>
+     <li class="itemize">in the system default locations for shared libraries</li></ul>
+<!--l. 3294--><p class="noindent" >Additionaly, a user path can be set, where the system will look for plugins in first position. See section <a 
+href="OSCMsgch8.html#x12-530008.4.4">8.4.4<!--tex4ht:ref: ITLplugins --></a>
+p.<a 
+href="OSCMsgch8.html#x12-530008.4.4">75<!--tex4ht:ref: ITLplugins --></a>.
+<!--l. 3296--><p class="noindent" >The plugins are shared libraries which extension is platform dependent. The plugin name should not
+include the extension. The expected extensions are the following: .dylib on MacOS and Linux, .dll on
+Windows.
 <h3 class="sectionHead"><span class="titlemark">18.1    </span> <a 
- id="x25-11800018.1"></a>Grammar definition</h3>
+ id="x23-11300018.1"></a>FAUST plugins</h3>
+<!--l. 3305--><p class="noindent" >FAUST [Functional Audio Stream]<span class="footnote-mark"><a 
+href="OSCMsg24.html#fn1x255"><sup class="textsuperscript">1</sup></a></span><a 
+ id="x23-113001f1"></a> 
+is a functional programming language specifically designed for real-time signal processing and synthesis. A
+FAUST/INScore architecture allows to embed FAUST processors in INScore, for the purpose of signals
+computation. A FAUST plugin is viewed as a parallel signal and thus it is created in the <span 
+class="pcrr8tn-">signal </span>address space.
+Similarly to signals, it is associated to an OSC address in the form <span 
+class="pcrr8tn-">/ITL/</span><span 
+class="pcrro8t-">scene</span><span 
+class="pcrr8tn-">/signal/</span><span 
+class="pcrro8t-">name </span>where <span 
+class="pcrro8t-">name </span>is a
+user defined name.
+<h4 class="subsectionHead"><span class="titlemark">18.1.1    </span> <a 
+ id="x23-11400018.1.1"></a>Set Message</h4>
+<!--l. 3309--><p class="noindent" >There are two ways to create a FAUST Processor :
+     <ul class="itemize1">
+     <li class="itemize">- By charging a DSP as a plugin already compiled <br 
+class="newline" />
+<a 
+ id="dx23-114001"></a>
+     <dl class="list2"><dt class="list">
+     </dt><dd 
+class="list">
+     <!--l. 3315--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">faustprocessor</span> <img 
+src="OSCMsg124x.png" alt="PICT" >
+     </div> </dd></dl>
+<a 
+ id="dx23-114002"></a>
+     <!--l. 3318--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />
+     <div class="center" 
+>
                                                                                  
 
                                                                                  
-<div class="verbatim" id="verbatim-1">
-//_______________________________________________
-&#x00A0;<br />//&#x00A0;relaxed&#x00A0;simple&#x00A0;INScore&#x00A0;format&#x00A0;specification
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />start :&#x00A0;expr
-&#x00A0;<br />|&#x00A0;start&#x00A0;expr
-&#x00A0;<br />;
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />//&#x00A0;expression&#x00A0;of&#x00A0;the&#x00A0;script&#x00A0;language
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />expr :&#x00A0;message&#x00A0;&#x00A0;ENDEXPR
-&#x00A0;<br />|&#x00A0;variabledecl&#x00A0;ENDEXPR
-&#x00A0;<br />|&#x00A0;script
-&#x00A0;<br />|&#x00A0;ENDSCRIPT
-&#x00A0;<br />;
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />//&#x00A0;javascript&#x00A0;and&#x00A0;lua&#x00A0;support
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />script :&#x00A0;LUASCRIPT
-&#x00A0;<br />|&#x00A0;JSCRIPT
-&#x00A0;<br />;
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />//&#x00A0;messages&#x00A0;specification&#x00A0;(extends&#x00A0;osc&#x00A0;spec.)
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />message :&#x00A0;address
-&#x00A0;<br />|&#x00A0;address&#x00A0;params
-&#x00A0;<br />|&#x00A0;address&#x00A0;watchparams
-&#x00A0;<br />|&#x00A0;address&#x00A0;watchparams&#x00A0;LEFTPAR&#x00A0;messagelist&#x00A0;RIGHTPAR
-&#x00A0;<br />|&#x00A0;address&#x00A0;eval&#x00A0;LEFTPAR&#x00A0;messagelist&#x00A0;RIGHTPAR
-&#x00A0;<br />|&#x00A0;address&#x00A0;eval&#x00A0;variable
-&#x00A0;<br />|&#x00A0;address&#x00A0;watchparams&#x00A0;script
-&#x00A0;<br />;
-&#x00A0;<br />messagelist&#x00A0;:&#x00A0;message
-&#x00A0;<br />|&#x00A0;messagelist&#x00A0;COMMA&#x00A0;message
-&#x00A0;<br />;
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />//&#x00A0;address&#x00A0;specification&#x00A0;(extends&#x00A0;osc&#x00A0;spec.)
-&#x00A0;<br />address :&#x00A0;oscaddress
-&#x00A0;<br />|&#x00A0;relativeaddress
-&#x00A0;<br />|&#x00A0;urlprefix&#x00A0;oscaddress
-&#x00A0;<br />;
-&#x00A0;<br />oscaddress :&#x00A0;oscpath
-&#x00A0;<br />|&#x00A0;oscaddress&#x00A0;oscpath
-&#x00A0;<br />;
-&#x00A0;<br />relativeaddress :&#x00A0;POINT&#x00A0;oscaddress
-&#x00A0;<br />;
-&#x00A0;<br />oscpath :&#x00A0;PATHSEP&#x00A0;identifier
-&#x00A0;<br />|&#x00A0;PATHSEP&#x00A0;WATCH
-&#x00A0;<br />|&#x00A0;PATHSEP&#x00A0;VARSTART&#x00A0;varname
-                                                                                 
-
-                                                                                 
-&#x00A0;<br />;
-&#x00A0;<br />urlprefix :&#x00A0;hostname&#x00A0;COLON&#x00A0;UINT
-&#x00A0;<br />|&#x00A0;IPNUM&#x00A0;COLON&#x00A0;UINT
-&#x00A0;<br />;
-&#x00A0;<br />hostname :&#x00A0;HOSTNAME
-&#x00A0;<br />|&#x00A0;hostname&#x00A0;POINT&#x00A0;HOSTNAME
-&#x00A0;<br />;
-&#x00A0;<br />identifier :&#x00A0;IDENTIFIER
-&#x00A0;<br />|&#x00A0;HOSTNAME
-&#x00A0;<br />|&#x00A0;REGEXP
-&#x00A0;<br />;
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />//&#x00A0;parameters&#x00A0;definitions
-&#x00A0;<br />//&#x00A0;eval&#x00A0;and&#x00A0;watchparams&#x00A0;need&#x00A0;a&#x00A0;special&#x00A0;case&#x00A0;since&#x00A0;messages&#x00A0;are&#x00A0;expected&#x00A0;as&#x00A0;argument
-&#x00A0;<br />eval :&#x00A0;EVAL
-&#x00A0;<br />watchparams :&#x00A0;watchmethod
-&#x00A0;<br />|&#x00A0;watchmethod&#x00A0;params
-&#x00A0;<br />params :&#x00A0;param
-&#x00A0;<br />|&#x00A0;variable
-&#x00A0;<br />|&#x00A0;params&#x00A0;variable
-&#x00A0;<br />|&#x00A0;params&#x00A0;param
-&#x00A0;<br />;
-&#x00A0;<br />watchmethod :&#x00A0;WATCH
-&#x00A0;<br />;
-&#x00A0;<br />variable :&#x00A0;VARSTART&#x00A0;varname
-&#x00A0;<br />|&#x00A0;VARSTART&#x00A0;LEFTPAR&#x00A0;message&#x00A0;RIGHTPAR
-&#x00A0;<br />;
-&#x00A0;<br />param :&#x00A0;number
-&#x00A0;<br />|&#x00A0;FLOAT
-&#x00A0;<br />|&#x00A0;identifier
-&#x00A0;<br />|&#x00A0;QUOTEDSTRING
-&#x00A0;<br />;
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />//&#x00A0;variable&#x00A0;declaration
-&#x00A0;<br />variabledecl&#x00A0;:&#x00A0;varname&#x00A0;EQUAL&#x00A0;params
-&#x00A0;<br />|&#x00A0;varname&#x00A0;EQUAL&#x00A0;LEFTPAR&#x00A0;messagelist&#x00A0;RIGHTPAR
-&#x00A0;<br />;
-&#x00A0;<br />varname :&#x00A0;IDENTIFIER
-&#x00A0;<br />|&#x00A0;HOSTNAME
-&#x00A0;<br />;
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />//&#x00A0;misc
-&#x00A0;<br />number :&#x00A0;UINT
-&#x00A0;<br />|&#x00A0;INT
-&#x00A0;<br />;
+<!--l. 3319--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox120"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust set faust aFaustPlugin;</span>
+</div></div>
 </div>
-<!--l. 95--><p class="nopar" >
-<!--l. 3561--><p class="noindent" >
+     <!--l. 3321--><p class="noindent" ><span 
+class="ptmbc8t-">N<span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />The plugin name should not include the extension. The expected extensions are the following: .dylib on
+     MacOS and Linux, .dll on Windows. <br 
+class="newline" />
+     </li>
+     <li class="itemize">- By charging libfaust as a plugin to compile a DSP on-the-fly (as a string or a file). <br 
+class="newline" />
+<a 
+ id="dx23-114003"></a>
+     <dl class="list2"><dt class="list">
+     </dt><dd 
+class="list">
+     <!--l. 3327--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">faustdsp</span> <img 
+src="OSCMsg125x.png" alt="PICT" >
+     </div> </dd></dl>
+<a 
+ id="dx23-114004"></a>
+<a 
+ id="dx23-114005"></a>
+     <dl class="list2"><dt class="list">
+     </dt><dd 
+class="list">
+     <!--l. 3334--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">faustdspfile</span> <img 
+src="OSCMsg126x.png" alt="PICT" >
+     </div> </dd></dl>
+<a 
+ id="dx23-114006"></a>
+     <!--l. 3337--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />
+     <div class="center" 
+>
+<!--l. 3340--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox121"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/signal/plus set faustdsp "process=+;"; </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/signal/mydsp set faustdspf "mydsp.dsp";</span></div></div>
+</div>
+     </li></ul>
+<!--l. 3346--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">18.1.2    </span> <a 
+ id="x23-11500018.1.2"></a>Specific messages</h4>
+<!--l. 3348--><p class="noindent" >A FAUST processor is characterized by the numbers of input and output channels and by a set of parameters. Each
+parameter carries a name defined by the FAUST processor. The set of messages supported by a FAUST
+processor is the set of signals messages extended with the parameters names and with specific query
+messages.
+<a 
+ id="dx23-115001"></a>
+                                                                                 
+
+                                                                                 
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 3354--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">faustmessage</span> <img 
+src="OSCMsg127x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx23-115002"></a>
+<a 
+ id="dx23-115003"></a>
+<a 
+ id="dx23-115004"></a>
+<a 
+ id="dx23-115005"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrro8t-">msg </span>is any of the FAUST processor parameters, which are defined by the FAUST processor.
+     </li>
+     <li class="itemize">the <span 
+class="pcrr8tn-">get </span>message is extended to query the FAUST processor: <span 
+class="pcrr8tn-">in </span>and <span 
+class="pcrr8tn-">out </span>give the number of input and
+     output channels.</li></ul>
+<!--l. 3366--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Querying a FAUST processor input and output count:
+<div class="center" 
+>
+<!--l. 3368--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox122"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust get in out;</span>
+</div></div>
+</div>
+<!--l. 3369--><p class="noindent" >&#x00A0;       gives as output:
+<div class="center" 
+>
+<!--l. 3372--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox123"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust in 2; </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust out 4;</span></div></div>
+</div>
+<!--l. 3373--><p class="noindent" >Modifying the value of a FAUST processor parameter named <span 
+class="pcrr8tn-">volume</span>:
+<div class="center" 
+>
+<!--l. 3374--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox124"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust volume 0.8</span>
+</div></div>
+</div>
+                                                                                 
+
+                                                                                 
+<!--l. 3378--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">18.1.3    </span> <a 
+ id="x23-11600018.1.3"></a>Feeding and composing FAUST processors</h4>
+<!--l. 3381--><p class="noindent" >A FAUST processor accepts float values as input, which are taken as interleaved data and distributed to the input
+channels.
+<!--l. 3383--><p class="noindent" >From composition viewpoint, a FAUST processor is a parallel signal which dimension is the number of
+output channels. Thus, a FAUST processor can be used like any parallel signal. However, the signal
+identifier defined in <a 
+href="OSCMsgch14.html#x18-7500014.1.2">14.1.2<!--tex4ht:ref: parcomp --></a> is extended to support adressing single components of parallel signal as
+follows:
+<a 
+ id="dx23-116001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 3389--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">signal</span> <img 
+src="OSCMsg128x.png" alt="PICT" >
+</div></dd></dl>
+<!--l. 3390--><p class="noindent" >where <span 
+class="pcrr8tn-">n </span>selects the signal #n of a parallel signal. Note that indexes start at 0.
+<!--l. 3392--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Creating 3 parallel signals using the 3 output channels of a FAUST processor named <span 
+class="pcrr8tn-">myFaust</span>:
+<div class="center" 
+>
+<!--l. 3397--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox125"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/signal/y1 set &#8217;myFaust/0&#8217; 0.01 0. 1. 1. 1. ;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/signal/y2 set &#8217;myFaust/1&#8217; 0.01 0.5 1. 1. 1. ;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/signal/y3 set &#8217;myFaust/2&#8217; 0.01 -0.5 1. 1. 1. ;</span></div></div>
+</div>
+<!--l. 3402--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">18.2    </span> <a 
- id="x25-11900018.2"></a>Lexical tokens</h3>
+ id="x23-11700018.2"></a>Gesture Follower</h3>
+<!--l. 3405--><p class="noindent" >INScore supports gesture following using the technology developed by the IRCAM IMTR team. These features are
+available as a plugin that is included in the INScore distribution (version 1.03 or greater) or available from the
+IRCAM.
+<!--l. 3410--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">18.2.1    </span> <a 
+ id="x23-11800018.2.1"></a>Basic principle</h4>
+<!--l. 3411--><p class="noindent" >Gesture following is provided as a mean to interact with a score. From input viewpoint, the gesture follower is
+similar to signals (see section <a 
+href="OSCMsgch14.html#x18-7400014.1.1">14.1.1<!--tex4ht:ref: ssignal --></a> p.<a 
+href="OSCMsgch14.html#x18-7400014.1.1">107<!--tex4ht:ref: ssignal --></a>): it accepts data stream as input both in learning and following modes. It
+implements a specific set of events related to gesture following and can generate message streams parametrized
+with the gesture follower current state.
+<!--l. 3413--><p class="noindent" >A gesture follower is setup to handle a given count of gestures, which are actually denoted by streams of float
                                                                                  
 
                                                                                  
-<div class="verbatim" id="verbatim-2">
-//_______________________________________________
-&#x00A0;<br />//&#x00A0;numbers
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />INT&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;a&#x00A0;signed&#x00A0;integer
-&#x00A0;<br />UINT&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;an&#x00A0;unsigned&#x00A0;integer
-&#x00A0;<br />FLOAT&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;a&#x00A0;floating&#x00A0;point&#x00A0;number
-&#x00A0;<br />
-&#x00A0;<br />
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />//&#x00A0;hosts&#x00A0;addresses
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />//&#x00A0;allowed&#x00A0;character&#x00A0;set&#x00A0;for&#x00A0;host&#x00A0;names&#x00A0;(see&#x00A0;RFC952&#x00A0;and&#x00A0;RFC1123)
-&#x00A0;<br />HOSTNAME&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;[-a-zA-Z0-9]+
-&#x00A0;<br />IPNUM&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#x00A0;{DIGIT}+"."{DIGIT}+"."{DIGIT}+"."{DIGIT}+
-&#x00A0;<br />
-&#x00A0;<br />
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />//&#x00A0;OSC&#x00A0;addresses
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />//&#x00A0;allowed&#x00A0;characters&#x00A0;for&#x00A0;identifiers
-&#x00A0;<br />IDENTIFIER&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;[_a-zA-Z][_a-zA-Z0-9]*
-&#x00A0;<br />REGEXP&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;see&#x00A0;OSC&#x00A0;doc&#x00A0;for&#x00A0;regular&#x00A0;expressions
-&#x00A0;<br />
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />//&#x00A0;parameters
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />QUOTEDSTRING&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;quotes&#x00A0;could&#x00A0;be&#x00A0;single&#x00A0;(&#8217;)&#x00A0;or&#x00A0;double&#x00A0;quotes&#x00A0;(")
-&#x00A0;<br />WATCH&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;watch
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;watch+
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;require
-&#x00A0;<br />
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />//&#x00A0;languages&#x00A0;support
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />JSCRIPT&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#x003C;?javascript&#x00A0;any&#x00A0;javascript&#x00A0;code&#x00A0;?&#x003E;
-&#x00A0;<br />LUASCRIPT&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#x003C;?lua&#x00A0;any&#x00A0;lua&#x00A0;code&#x00A0;?&#x003E;
-&#x00A0;<br />
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />//&#x00A0;misc.
-&#x00A0;<br />//_______________________________________________
-&#x00A0;<br />PATHSEP&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#8217;/&#8217;
-&#x00A0;<br />POINT&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#8217;.&#8217;
-&#x00A0;<br />VARSTART&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#8217;$&#8217;
-&#x00A0;<br />COLON&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#8217;:&#8217;
-&#x00A0;<br />COMMA&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#8217;,&#8217;
-&#x00A0;<br />LEFTPAR&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#8217;(&#8217;
-&#x00A0;<br />RIGHTPAR&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#8217;)&#8217;
-&#x00A0;<br />EQUAL&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#8217;=&#8217;
+vectors. We&#8217;ll refer to the size of the float vector as the <span 
+class="ptmri8t-">gesture dimension</span>. For example, the dimension of a gesture
+captured from x, y and z accelerometers is 3.
+<!--l. 3415--><p class="noindent" >A gesture follower operates in two distinct phases: a <span 
+class="ptmri8t-">learning phase </span>where it actually stores the gestures data, and a
+<span 
+class="ptmri8t-">following phase </span>where it tries to match incoming data to the stored gestures data. When not learning nor following,
+we&#8217;ll talk of an idle phase.
+<!--l. 3417--><p class="noindent" >In the <span 
+class="ptmri8t-">following phase</span>, the system maintains a list of likelihood for the learned gestures, a list of positions in the
+gestures and a list of speeds representing how fast the gestures are made. Of course, the higher the
+likelihood, the more these data are meaningfull. It&#8217;s the user responsability to decide on the meaningfull
+likelihood threshold value. Interaction events are triggered only in the <span 
+class="ptmri8t-">following phase </span>and for meaningfull
+likelihoods.
+<!--l. 3421--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">18.2.2    </span> <a 
+ id="x23-11900018.2.2"></a>Messages</h4>
+<!--l. 3422--><p class="noindent" >A gesture follower is created in a scene using the <span 
+class="pcrr8tn-">imtrgf </span>type. It has a graphic appearance that may be used for
+debug purpose but it is hidden by default.
+<a 
+ id="dx23-119001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 3426--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">gesturefollower</span> <img 
+src="OSCMsg129x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx23-119002"></a>
+<!--l. 3429--><p class="noindent" >The parameters are:
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">gesturedimension</span>: the size of the gestures data vector.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">bufsize</span>: the size of the gesture data storage.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">name</span>: a list of names to be used to refer to the learned gestures.</li></ul>
+<!--l. 3436--><p class="noindent" ><span 
+class="ptmbc8t-">N<span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span>  </span><br 
+class="newline" />A gesture follower is created with a fixed count of gestures that can be learned and decoded. These gestures are
+named gestures and can be addressed at <span 
+class="pcrr8tn-">/ITL/</span><span 
+class="pcrro8t-">scene</span><span 
+class="pcrr8tn-">/</span><span 
+class="pcrro8t-">myfollower</span><span 
+class="pcrr8tn-">/</span><span 
+class="pcrro8t-">gesturename </span>where the part in italic are
+user defined names and where <span 
+class="pcrr8tn-">myfollower </span>is a gesture follower.
+<a 
+ id="dx23-119003"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
                                                                                  
 
                                                                                  
-&#x00A0;<br />ENDEXPR&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;:&#x00A0;&#8217;;&#8217;
+<!--l. 3449--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">gesturefollower</span> <img 
+src="OSCMsg130x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx23-119004"></a>
+<a 
+ id="dx23-119005"></a>
+<a 
+ id="dx23-119006"></a>
+<a 
+ id="dx23-119007"></a>
+<a 
+ id="dx23-119008"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="ptmb8t-">[1] </span>input data into the gesture follower. The data are interpreted according to the current operating
+     mode i.e. learning, following or idle.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">[2] </span>starts to learn the gesture designated by <span 
+class="ptmri8t-">name</span>. Actually records the next input data to the gesture.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">[3] </span>starts following i.e. trying to match the next input data to the recorded gestures.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">[4] </span>stops learning or following. Actually puts the system in idle phase.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">[5] </span>clear all the gestures data. This is equivalent to send the <span 
+class="pcrr8tn-">clear </span>message to all the gestures.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">[6] </span>sets the size of the window that contains the history of the likelihoods. May be viewed as how fast
+     the likelihoods will change.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">[7] </span>sets the follower tolerance.</li></ul>
+<!--l. 3466--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Creating a gesture follower for 3 dimensional data and a typical learning sequence:
+<div class="center" 
+>
+<!--l. 3472--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox126"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/gf set imtrgf 3 1000 gestureA gestureB gestureC gestureD ;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/gf learn gestureA ;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/gf 0.1 0.5 -0.2 ... 0.7; ! the data size must be a multiple of 3</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/gf stop;</span>
+                                                                                 
+
+                                                                                 
+</div></div>
 </div>
-<!--l. 51--><p class="nopar" >
+<!--l. 3476--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">18.2.3    </span> <a 
+ id="x23-12000018.2.3"></a>Gestures management</h4>
+<!--l. 3478--><p class="noindent" >Messages can also be sent to gestures i.e. to addresses in the form <span 
+class="pcrr8tn-">/ITL/</span><span 
+class="pcrro8t-">scene</span><span 
+class="pcrr8tn-">/</span><span 
+class="pcrro8t-">myfollower</span><span 
+class="pcrr8tn-">/</span><span 
+class="pcrro8t-">gesturename</span>
+where <span 
+class="pcrr8tn-">myfollower </span>is a gesture follower.
+<!--l. 3480--><p class="noindent" >A gesture could be in two states:
+     <ul class="itemize1">
+     <li class="itemize">an active state: when its likelihood is greater or equal to the likelihood threshold.
+     </li>
+     <li class="itemize">an idle state: when its likelihood is lower than the likelihood threshold.</li></ul>
+<a 
+ id="dx23-120001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 3491--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">gesture</span> <img 
+src="OSCMsg131x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx23-120002"></a>
+<a 
+ id="dx23-120003"></a>
+<a 
+ id="dx23-120004"></a>
+<a 
+ id="dx23-120005"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">set</span>: sets the gesture data. This is equivalent to learn the corresponding data. The <span 
+class="pcrr8tn-">set </span>message could
+     be used to restored previously saved gesture data.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">clear</span>: clears the gesture data.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">learn</span>: puts the gestures follower in learning mode and starts learning the corresponding gesture.
+     This is equivalent to send OSClearn <span 
+class="ptmri8t-">gesturename </span>to the parent gesture follower.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">likelihoodThreshold</span>: sets the gesture likelihood threshold. The parameter is a float value in the
+     range <span 
+class="pcrr8tn-">[0,1]</span>. Default value is <span 
+class="pcrr8tn-">0.5</span>.</li></ul>
                                                                                  
 
                                                                                  
-<!--l. 3568--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 3505--><p class="noindent" >Gestures supports also specific queries :
+<a 
+ id="dx23-120006"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 3508--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">gestureget</span> <img 
+src="OSCMsg132x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx23-120007"></a>
+<a 
+ id="dx23-120008"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">get</span>: without parameter, returns a set message when the gesture is not empty.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">size</span>: gives the current size of the gesture, actually the number of recorded frames.</li></ul>
+<!--l. 3520--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">18.2.4    </span> <a 
+ id="x23-12100018.2.4"></a>Events and interaction</h4>
+<!--l. 3522--><p class="noindent" >Events are defined at gesture level and events management messages should be addressed to gestures.
+<a 
+ id="dx23-121001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 3527--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">gestureevents</span> <img 
+src="OSCMsg133x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx23-121002"></a>
+<a 
+ id="dx23-121003"></a>
+<a 
+ id="dx23-121004"></a>
+<a 
+ id="dx23-121005"></a>
+<a 
+ id="dx23-121006"></a>
+                                                                                 
+
+                                                                                 
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">gfEnter </span>triggered when the gesture state changes from idle to active.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">gfLeave </span>triggered when the gesture state changes from active to idle.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">gfActive </span>triggered in active state each time the gesture likelihood is refreshed.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">gfIdle </span>triggered in idle state each time the gesture likelihood is refreshed.</li></ul>
+<!--l. 3541--><p class="noindent" >A message associated to a gesture supports the following specific variables:
+<a 
+ id="dx23-121007"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 3547--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">gesturevariable</span> <img 
+src="OSCMsg134x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx23-121008"></a>
+<a 
+ id="dx23-121009"></a>
+<a 
+ id="dx23-121010"></a>
+<!--l. 3551--><p class="noindent" >These variables support the scaling feature associated to position variables and described in section <a 
+href="OSCMsgch15.html#x19-8900015.2.1">15.2.1<!--tex4ht:ref: posvar --></a>
+p.<a 
+href="OSCMsgch15.html#x19-8900015.2.1">132<!--tex4ht:ref: posvar --></a>.
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">gflikelihood </span>indicates the current likelihood
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">gfpos </span>indicates the current position in the gesture
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">gfspeed </span>indicates the current gesture execution speed</li></ul>
+<!--l. 3558--><p class="noindent" ><span 
+class="ptmbc8t-">N<span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Variables described in section <a 
+href="OSCMsgch15.html#x19-8800015.2">15.2<!--tex4ht:ref: interactvar --></a> p.<a 
+href="OSCMsgch15.html#x19-8800015.2">132<!--tex4ht:ref: interactvar --></a> may also be used but they are meaningless and contains default
+values.
+<!--l. 3564--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">18.2.5    </span> <a 
+ id="x23-12200018.2.5"></a>Gesture Follower Appearance</h4>
+<!--l. 3566--><p class="noindent" >A gesture follower object has a graphic appearance and supports all the standard objects properties, including
+mapping and synchronization. This graphic appearance is provided mainly for debug purpose and
+by default, the object is hidden. Figure <a 
+href="#x23-1220011">18.1<!--tex4ht:ref: fig:gfgraph --></a> shows the gesture follower appearance in its different
+phases:
+     <ul class="itemize1">
+     <li class="itemize">when idle, the upper part of the graphic indicates the buffer state of the different gestures. It also
+     includes the gestures likelihood threshold.
+                                                                                 
+
+                                                                                 
+     </li>
+     <li class="itemize">when learning, a red frame and a grey background indicates that a learning a gesture is currently in
+     progress. The gesture buffer state is refreshed while learning.
+     </li>
+     <li class="itemize">when following, the upper part indicates each gesture current likelihood and the lower part indicates
+     the current estimated positions.</li></ul>
+<!--l. 3574--><p class="noindent" ><hr class="figure"><div class="figure" 
+>
+                                                                                 
+
+                                                                                 
+<a 
+ id="x23-1220011"></a>
+                                                                                 
+
+                                                                                 
+<!--l. 3575--><p class="noindent" ><img 
+src="OSCMsg135x.png" alt="PIC" class="graphics" width="405.45045pt" height="120.19774pt" ><!--tex4ht:graphics  
+name="OSCMsg135x.png" src="imgs/gesture-follower.ps"  
+-->
+<br /> <div class="caption" 
+><span class="id">Figure&#x00A0;18.1: </span><span  
+class="content">The gesture follower appearance in its different phases.</span></div><!--tex4ht:label?: x23-1220011 -->
+                                                                                 
+
+                                                                                 
+<!--l. 3578--><p class="noindent" ></div><hr class="endfigure">
+<h3 class="sectionHead"><span class="titlemark">18.3    </span> <a 
+ id="x23-12300018.3"></a>Httpd server plugin</h3>
+<!--l. 3587--><p class="noindent" >INScore can embed Http server to expose real time screenshot image of a scene to the web. This feature is based on
+libmicrohttpd <span class="footnote-mark"><a 
+href="OSCMsg25.html#fn2x255"><sup class="textsuperscript">2</sup></a></span><a 
+ id="x23-123001f2"></a> 
+and is available as a plugin that is included in the INScore distribution (version 1.11 or greater). The Url to get the
+image is the base url of the server.
+<h4 class="subsectionHead"><span class="titlemark">18.3.1    </span> <a 
+ id="x23-12400018.3.1"></a>Set Message</h4>
+<!--l. 3593--><p class="noindent" >The http server object is created in a scene like other objects and served image of his scene.
+<a 
+ id="dx23-124001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 3597--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">httpdserver</span> <img 
+src="OSCMsg136x.png" alt="PICT" >
+</div> </dd></dl>
+<a 
+ id="dx23-124002"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">port </span>http port used by the server.</li></ul>
+<!--l. 3604--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />
+<div class="center" 
+>
+<!--l. 3605--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox127"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/server set httpd 8000;</span>
+</div></div>
+</div>
+<!--l. 3607--><p class="noindent" ><span 
+class="ptmbc8t-">N<span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span>  </span><br 
+class="newline" />If the http port is already used, the server cannot start.
+<!--l. 3612--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">18.3.2    </span> <a 
+ id="x23-12500018.3.2"></a>Specific messages</h4>
+<!--l. 3614--><p class="noindent" >The http server status can be delivered with a specific message.
+<a 
+ id="dx23-125001"></a>
+                                                                                 
+
+                                                                                 
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 3618--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">httpdmessage</span> <img 
+src="OSCMsg137x.png" alt="PICT" >
+</div> </dd></dl>
+<a 
+ id="dx23-125002"></a>
+<!--l. 3622--><p class="noindent" >A string corresponding to the server status ("started" or "stopped") is return.
+<!--l. 3624--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />
+<div class="center" 
+>
+<!--l. 3625--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox128"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/server get status;</span>
+</div></div>
+</div>
+                                                                                 
+
+                                                                                 
+<!--l. 3629--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch19.html" >next</a>] [<a 
 href="OSCMsgch17.html" >prev</a>] [<a 
 href="OSCMsgch17.html#tailOSCMsgch17.html" >prev-tail</a>] [<a 
 href="OSCMsgch18.html" >front</a>] [<a 
-href="OSCMsg3.html# " >up</a>] </p></div>
-<!--l. 3568--><p class="noindent" ><a 
+href="OSCMsg3.html#OSCMsgch18.html" >up</a>] </p></div>
+<!--l. 3629--><p class="noindent" ><a 
  id="tailOSCMsgch18.html"></a>  
 </body></html> 

@@ -11,6 +11,8 @@
 \usepackage{color}
 \usepackage{hyperref}
 \usepackage{comment}
+\usepackage{multicol}
+\usepackage{textcomp}
 
 
 \definecolor{mycolor}{rgb}{0.384,0.0,0.145}
@@ -48,6 +50,7 @@
 \newcommand{\oscfloat}		{\osctype{float32}}
 \newcommand{\oscstring}		{\osctype{string}}
 \newcommand{\rational}		{\osctype{rational}}
+\newcommand{\lowTilde} 		{\texttildelow}
 
 \let\olditemize\itemize
 \let\oldenditemize\enditemize
@@ -798,7 +801,8 @@ setMsg : 'set' (
 	('gmnf' gmnFilePath) |
 	('gmnstream' gmnStream) |
 	('musicxml' xmlString) |
-	('musicxmlf' xmlFilePath)
+	('musicxmlf' xmlFilePath) |
+	('expr' scoreExpression)
 )
 \end{rail}
 \index{Common messages!set}
@@ -814,6 +818,7 @@ setMsg : 'set' (
 \item \OSC{gmnstream}: a Guido score defined by a GMN stream (a GMN string that can be written in several times).
 \item \OSC{musicxml}: a score defined by a MusicXML string.
 \item \OSC{musicxmlf}: a score defined by a MusicXML file.
+\item \OSC{expr}: a score defined by a \emph{score expression}.
 \end{itemize}
 
 \example \\
@@ -1735,7 +1740,7 @@ sceneMsg :  'new'
 			| 'del'
 			| 'reset'
 			| 'foreground'
-			| ('rootPath' path) 
+			| ('rootPath' ( path | )) 
 			| ('load' filePath)
 			| ('fullscreen' int32)
 			| ('frameless' int32)
@@ -1760,7 +1765,7 @@ sceneMsg :  'new'
 \item \OSC{del}: deletes a scene and closes the corresponding window.
 \item \OSC{reset}: clears the scene (i.e. delete all components) and resets the scene to its default state (position, size and color).
 \item \OSC{foreground}: display scene window in foreground of all other windows in the system windows manager.
-\item \OSC{rootPath}: \emph{rootPath} of a scene is the default path where the scene reads or writes a file when a relative path is used for this file. When no value has been specified, the application  \emph{rootPath} is used.
+\item \OSC{rootPath}: \emph{rootPath} of a scene is the default path where the scene reads or writes a file when a relative path is used for this file. When no value has been specified, the application  \emph{rootPath} is used. Calling \OSC{rootPath} without argument clears the scene \emph{rootPath}.
 \item \OSC{load}: loads an INScore file to the scene. Note that the OSC addresses are translated to the scene OSC address.
 %\item \OSC{foreground}: put the scene to foreground.
 \item \OSC{fullscreen}: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is \values{0}.
@@ -2683,7 +2688,7 @@ An extended address to send messages to \OSC{localhost} on port \OSC{12000}:
 
 
 %===============================
-%:       UI events
+%:       Mouse events
 \subsublevel{Mouse events}
 \label{uievents}
 
@@ -2719,6 +2724,8 @@ where \OSC{mouseEvent} is one of the events described above, \OSC{x} and \OSC{y}
 Simulating a mouse down at position 10, 10 :
 \sample{/ITL/scene/myObject event mouseDown 10 10;}
 
+%===============================
+%:       Touch events
 \subsublevel{Touch events}
 \label{touchevents}
 Depending on the display device, multi-touch events are supported by INScore :
@@ -2795,6 +2802,7 @@ Triggering an error message in case of failure :
 
 \begin{rail}
 what : 	  'export'
+		| 'newData'
 		| 'newElement'
 		| 'endPaint'
 		| 'del'
@@ -2806,6 +2814,7 @@ what : 	  'export'
 
 \begin{itemize}
 \item the \OSC{export} event is supported by all the components. It is triggered after an export message has been handled and could be used to simulate synchronous exports.
+\item the \OSC{newData} event is supported by all the components. It is triggered when the object specific data are modified (typically using the \OSC{set} message).
 \item the \OSC{newElement} event is supported at scene level only and triggered when a new element is added to the scene.
 \item the \OSC{endPaint} event is supported at scene level only and triggered after a scene has been painted.
 \item the \OSC{del} event is triggered when an object is being deleted.
@@ -3192,10 +3201,9 @@ Note that INScore variables are exported to the current language environment.
 \hspace*{1mm} ?>
 }
 
+A single persistent context is created at application level and shared to each scene.
 
-A single persistent context is created at application level and for each scene.
-It allows scripts to reuse previously defined functions and thus to design more structured scripts.
-
+\note Lua support is going to be deprecated and should be removed in a future release.
 
 %===============================
 %:    The Javascript objects
@@ -3217,16 +3225,41 @@ The Javascript engine is based on the Qt5 Javascrip engine, extended with additi
 \item \textbf{\OSC{print(val1 [, val2 [, ...]])}} : print the arguments to the OSC standard output. The arguments list is prefixed by 'javascript:'. The function is provided for debug purpose.
 \item \textbf{\OSC{readfile(file)}} : read a file and returns its content as a string. The file name could be specified as an absolute or relative path. When relative, the file is searched in the application current \OSC{rootPath} (see section \fullref{applmgmt}).
 \item \textbf{\OSC{post(address [,...])}} : build an OSC message and post it for delayed processing i.e. to be processed by the next time task. \OSC{address} is an OSC or an extended OSC address. Optional arguments are the message parameters.
+\item \textbf{\OSC{osname()}} : gives the current operating system name. Returned value is among \OSC{"MacOS"}, \OSC{"Windows"}, \OSC{"Linux"}, \OSC{"Android"} and \OSC{"iOS"}.
+\item \textbf{\OSC{osid()}} : gives the current operating system as a numéric identifiant. Returned value is (in alphabetic order): 
+\begin{itemize}
+\item 1 for Android
+\item 2 for iOS.
+\item 3 for Linux, 
+\item 4 for MacOS, 
+\item 5 for Windows, 
+\end{itemize}
 \end{itemize}
 
 
-\example
+\example{1}
 \sample{
 <?javascript \\
 \hspace*{3mm} post ("/ITL/scene/obj", "dalpha", -1);";\\ 
-\hspace*{3mm} The message /ITL/scene/obj dalpha -1 \\
-\hspace*{3mm} will be evaluated by the next time task. \\
+\hspace*{3mm} // The message /ITL/scene/obj dalpha -1 \\
+\hspace*{3mm} // will be evaluated by the next time task. \\
 ?>
+}
+
+\example{2}
+\sample{
+<?javascript \\
+\hspace*{3mm} // declare a function foo() \\
+\hspace*{3mm} function foo(arg) \{\\ 
+\hspace*{6mm}  return "/ITL/scene/obj set txt foo called with " + arg + ";"; \\
+\hspace*{3mm} \} \\
+?>\\
+\\
+// call the foo function \\
+<?javascript foo(1)?>\\
+\\
+// or call the foo function using the run message \\
+/ITL/scene/javascript run "foo(1)";
 }
 
 
@@ -3241,6 +3274,10 @@ The Javascript engine is based on the Qt5 Javascrip engine, extended with additi
 %/ITL load 'call-javascript.inscore';
 %}
 
+
+%===============================
+%:Score expressions
+\input{scorexpressions.tex}
 
 %===============================
 %:Plugins
@@ -3597,6 +3634,10 @@ A string corresponding to the server status ("started" or "stopped") is return.
 \sublevel{Lexical tokens}
 \label{lex}
 \input{tokens.tex}
+
+\sublevel{Score expressions grammar}
+\label{yaccexpr}
+\input{yaccexpr.tex}
 
 
 %===============================
