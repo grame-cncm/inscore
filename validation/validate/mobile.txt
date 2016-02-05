@@ -99,4 +99,6 @@
 ../scripts/Standalone/variables/DROP-ME.inscore
 ../scripts/Standalone/eval.inscore
 ../scripts/Standalone/line-arrows.inscore
-../scripts/Standalone/memImg.inscore
+
+# memImg can't be tested due to overriding of the endPaint event
+#../scripts/Standalone/memImg.inscore

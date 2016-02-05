@@ -28,6 +28,10 @@
 
 ../scripts/Standalone/eval.inscore
 ../scripts/Standalone/line-arrows.inscore
-../scripts/Standalone/memImg.inscore
+# memImg can't be tested due to overriding of the endPaint event
+#../scripts/Standalone/memImg.inscore
 
 ../scripts/MP-Turenas/turenas.inscore
+
+../scripts/Standalone/GuidoExpression/guidoEchoes.inscore
+../scripts/mobile/Multi-touch.inscore
