@@ -27,6 +27,7 @@ TOOL = ./INScoreNOView
 AWK = gawk		# gawk is required for strings manipulation
 
 files 			= $(shell grep -v '^\#' validate/samplescripts.txt)
+bundles 		= $(shell grep -v '^\#' validate/bundles.txt)
 graphicfiles 	= $(shell grep -v '^\#' validate/graphicscripts.txt)
 syncfiles 		= $(shell grep -v '^\#' validate/syncscripts.txt)
 javafiles 		= $(shell grep -v '^\#' validate/javascripts.txt)
@@ -37,6 +38,7 @@ filterfiles		= $(shell grep -v '^\#' validate/filters.txt)
 filterinscorefile	= $(shell grep -v '^\#' validate/filtersinscorefile.txt)
 mobilefiles		= $(shell grep -v '^\#' validate/mobile.txt)
 
+pdfbundles  	:= $(patsubst ../%.ibundle, $(version)/%.pdf, $(bundles)) 
 pdfout  		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(files))
 pdfgraphicout 	:= $(patsubst ../%.inscore, $(version)/%.pdf, $(graphicfiles))
 pdfsyncout 		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(syncfiles))
@@ -73,7 +75,7 @@ noplost	= "possibly lost: 0"
 
 
 #test:
-#	echo $(files)
+#	echo $(pdfout)
 
 all:
 	@echo "=========================================="
@@ -90,6 +92,7 @@ pdf:
 	make pdfjava
 	make basic
 	make pdfregression
+	make bundles
 
 log: 
 	@echo "----------- Generating log files"
@@ -135,7 +138,7 @@ clean:
 	make saveclean
 
 pdfclean: 
-	rm -f $(pdfout) $(pdfgraphicout) $(pdfsyncout) $(pdfjavaout) $(pdfregressionout)
+	rm -f $(pdfout) $(pdfbundles) $(pdfgraphicout) $(pdfsyncout) $(pdfjavaout) $(pdfregressionout)
 
 logclean: 
 	rm -f $(logout)
@@ -182,6 +185,9 @@ showleaks: $(leaksfiles)
 files: $(pdfout)
 	@./forcepdfdate 20100101120000 $(pdfout)
 
+bundles: $(pdfbundles)
+	@./forcepdfdate 20100101120000 $(pdfbundles)
+
 filesgraphic: $(pdfgraphicout)
 	@./forcepdfdate 20100101120000 $(pdfgraphicout)
 
@@ -212,6 +218,10 @@ $(version)/$(TOOL)/%.leak.txt: %.inscore
 	valgrind --leak-check=full --suppressions=valgrindignored.txt --log-file=$@ $(TOOL) $(pwd)/$<
 	
 $(version)/%.pdf: ../%.inscore
+	@[ -d $(@D) ] || mkdir -p $(@D)
+	@./inscore2pdf $< $@
+
+$(version)/%.pdf: ../%.ibundle
 	@[ -d $(@D) ] || mkdir -p $(@D)
 	@./inscore2pdf $< $@
 
