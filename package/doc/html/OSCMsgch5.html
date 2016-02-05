@@ -7,11 +7,11 @@
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2015-07-15 13:39:00"> 
+<meta name="date" content="2016-02-04 15:48:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 770--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 777--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch6.html" >next</a>] [<a 
 href="OSCMsgch4.html" >prev</a>] [<a 
 href="OSCMsgch4.html#tailOSCMsgch4.html" >prev-tail</a>] [<a 
@@ -19,7 +19,7 @@ href="#tailOSCMsgch5.html">tail</a>] [<a
 href="OSCMsg3.html#OSCMsgch5.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;5</span><br /><a 
  id="x9-240005"></a>The &#8217;set&#8217; message</h2>
-<!--l. 772--><p class="noindent" >The <span 
+<!--l. 779--><p class="noindent" >The <span 
 class="pcrr8tn-">set </span>messages can be sent to any address with the form <span 
 class="pcrr8tn-">/ITL/scene/</span><span 
 class="pcrro8t-">identifier</span>. The global form of the
@@ -29,20 +29,20 @@ message is:
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 776--><p class="noindent" ><div class="minipage"><span 
+<!--l. 783--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">setMsg</span> <img 
 src="OSCMsg28x.png" alt="PICT" >
 </div> </dd></dl>
-<!--l. 778--><p class="noindent" >It sets a <span 
+<!--l. 785--><p class="noindent" >It sets a <span 
 class="pcrr8tn-">scene </span>component data.
-<!--l. 780--><p class="noindent" >When there is no destination for the OSC address, the component is first created before being given the
+<!--l. 787--><p class="noindent" >When there is no destination for the OSC address, the component is first created before being given the
 message.
-<!--l. 782--><p class="noindent" >When the target destination type doesn&#8217;t correspond to the message <span 
+<!--l. 789--><p class="noindent" >When the target destination type doesn&#8217;t correspond to the message <span 
 class="pcrr8tn-">type</span>, the object is replaced by an adequate
 object.
 <h3 class="sectionHead"><span class="titlemark">5.1    </span> <a 
  id="x9-250005.1"></a>Symbolic music notation</h3>
-<!--l. 789--><p class="noindent" >Symbolic music notation support is based on the Guido Music Notation format [GMN] or on the MusicXML
+<!--l. 796--><p class="noindent" >Symbolic music notation support is based on the Guido Music Notation format [GMN] or on the MusicXML
 format. MusicXMl is supported via conversion to the GMN format when the MusicXML library is
 present.
 <a 
@@ -50,7 +50,7 @@ present.
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 799--><p class="noindent" ><div class="minipage"><span 
+<!--l. 807--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">setMsg</span> <img 
 src="OSCMsg29x.png" alt="PICT" >
 </div></dd></dl>
@@ -66,12 +66,12 @@ src="OSCMsg29x.png" alt="PICT" >
  id="dx9-25006"></a>
 <a 
  id="dx9-25007"></a>
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrr8tn-">gmn</span>: a Guido score defined by a GMN string.
                                                                                  
 
                                                                                  
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">gmn</span>: a Guido score defined by a GMN string.
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">gmnf</span>: a Guido score defined by a GMN file.
@@ -84,8 +84,12 @@ class="pcrr8tn-">gmnstream</span>: a Guido score defined by a GMN stream (a GMN 
 class="pcrr8tn-">musicxml</span>: a score defined by a MusicXML string.
      </li>
      <li class="itemize"><span 
-class="pcrr8tn-">musicxmlf</span>: a score defined by a MusicXML file.</li></ul>
-<!--l. 815--><p class="noindent" ><span 
+class="pcrr8tn-">musicxmlf</span>: a score defined by a MusicXML file.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">expr</span>: a score defined by a <span 
+class="ptmri8t-">score expression</span>.</li></ul>
+<!--l. 824--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -96,16 +100,16 @@ class="small-caps">E</span> </span><br
 class="newline" />Creating a music score using a Guido Music Notation language string.
 <div class="center" 
 >
-<!--l. 817--><p class="noindent" >
+<!--l. 826--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox18"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject set gmn "[ a b g ]";</span>
 </div></div>
 </div>
-<!--l. 818--><p class="noindent" >Creating the same music score as a stream.
+<!--l. 827--><p class="noindent" >Creating the same music score as a stream.
 <div class="center" 
 >
-<!--l. 822--><p class="noindent" >
+<!--l. 831--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox19"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject set gmnstream "[ a";</span><br 
@@ -114,7 +118,7 @@ class="pcrr8tn-x-x-90">/ITL/scene/myObject write "b";</span><br
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject write "g";</span></div></div>
 </div>
-<!--l. 824--><p class="noindent" ><span 
+<!--l. 833--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -123,7 +127,7 @@ class="pcrr8tn-">gmn </span>object or a MusicXML file to a <span
 class="pcrr8tn-">gmnf</span>
 object may succed since the system tries to parse the content as GMN content or as MusicXML content when the
 former fails.
-<!--l. 826--><p class="noindent" ><span 
+<!--l. 835--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -132,10 +136,10 @@ with the MusicXML library (see at <a
 href="https://github.com/dfober/libmusicxml" class="url" ><span 
 class="pcrr8tn-">https://github.com/dfober/libmusicxml</span></a>). It allows to improve the output
 GMN code afterhand.
-<!--l. 830--><p class="noindent" >
+<!--l. 839--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">5.2    </span> <a 
  id="x9-260005.2"></a>Piano roll music notation</h3>
-<!--l. 832--><p class="noindent" >Piano roll music notation is based on the Guido Music Notation format [GMN].
+<!--l. 841--><p class="noindent" >Piano roll music notation is based on the Guido Music Notation format [GMN].
 <a 
  id="dx9-26001"></a>
 <dl class="list1"><dt class="list">
@@ -144,7 +148,7 @@ class="list">
                                                                                  
 
                                                                                  
-<!--l. 840--><p class="noindent" ><div class="minipage"><span 
+<!--l. 849--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">setMsg</span> <img 
 src="OSCMsg30x.png" alt="PICT" >
 </div></dd></dl>
@@ -167,7 +171,7 @@ class="pcrr8tn-">pianorollstream</span>: a piano roll defined by a GMN stream (a
      <li class="itemize"><span 
 class="pcrr8tn-">pianorollf</span>: a piano roll defined by a guido file (with ".gmn" extension) or by a midi file (with
      ".mid" extension). Warning: url forms are not supported for midi files.</li></ul>
-<!--l. 852--><p class="noindent" ><span 
+<!--l. 861--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -178,16 +182,16 @@ class="small-caps">E</span> </span><br
 class="newline" />Creating a pianoroll using a Guido Music Notation language string.
 <div class="center" 
 >
-<!--l. 854--><p class="noindent" >
+<!--l. 863--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox20"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject set pianoroll "[ a b g ]";</span>
 </div></div>
 </div>
-<!--l. 855--><p class="noindent" >Creating the same piano roll as a stream.
+<!--l. 864--><p class="noindent" >Creating the same piano roll as a stream.
 <div class="center" 
 >
-<!--l. 859--><p class="noindent" >
+<!--l. 868--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox21"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject set pianorollstream "[ a";</span><br 
@@ -196,7 +200,7 @@ class="pcrr8tn-x-x-90">/ITL/scene/myObject write "b";</span><br
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject write "g";</span></div></div>
 </div>
-<!--l. 863--><p class="noindent" >
+<!--l. 872--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">5.3    </span> <a 
  id="x9-270005.3"></a>Textual components</h3>
 <a 
@@ -207,7 +211,7 @@ class="list">
                                                                                  
 
                                                                                  
-<!--l. 873--><p class="noindent" ><div class="minipage"><span 
+<!--l. 882--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">setMsg</span> <img 
 src="OSCMsg31x.png" alt="PICT" >
 </div></dd></dl>
@@ -231,18 +235,18 @@ class="pcrr8tn-">html</span>: an html component defined by an HTML string.
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">htmlf</span>: an html component defined by an HTML file.</li></ul>
-<!--l. 886--><p class="noindent" >Text may be specified by a single quoted string or using an arbitrary count of parameters that are converted to a
+<!--l. 895--><p class="noindent" >Text may be specified by a single quoted string or using an arbitrary count of parameters that are converted to a
 single string with a space used as separator.
 <a 
  id="dx9-27006"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 889--><p class="noindent" ><div class="minipage"><span 
+<!--l. 898--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">txtStream</span> <img 
 src="OSCMsg32x.png" alt="PICT" >
 </div></dd></dl>
-<!--l. 891--><p class="noindent" ><span 
+<!--l. 900--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -253,7 +257,7 @@ class="small-caps">E</span> </span><br
 class="newline" />Creating a text object.
 <div class="center" 
 >
-<!--l. 893--><p class="noindent" >
+<!--l. 902--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox22"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject set txt "Hello ... world!";</span>
@@ -262,16 +266,16 @@ class="pcrr8tn-x-x-90">/ITL/scene/myObject set txt "Hello ... world!";</span>
                                                                                  
 
                                                                                  
-<!--l. 894--><p class="noindent" >Setting the content of a text object using a values stream.
+<!--l. 903--><p class="noindent" >Setting the content of a text object using a values stream.
 <div class="center" 
 >
-<!--l. 895--><p class="noindent" >
+<!--l. 904--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox23"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject set txt Hello 1 world and 0.5;</span>
 </div></div>
 </div>
-<!--l. 900--><p class="noindent" >
+<!--l. 909--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">5.4    </span> <a 
  id="x9-280005.4"></a>Vectorial graphics</h3>
 <a 
@@ -279,7 +283,7 @@ class="pcrr8tn-x-x-90">/ITL/scene/myObject set txt Hello 1 world and 0.5;</span>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 912--><p class="noindent" ><div class="minipage"><span 
+<!--l. 921--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">setMsg</span> <img 
 src="OSCMsg33x.png" alt="PICT" >
 </div></dd></dl>
@@ -336,7 +340,7 @@ class="pcrr8tn-">line</span>: a simple line specified by a point (x,y) expressed
 class="pcrr8tn-">scene </span>coordinate space or by a width and
      angle. The point form is used to compute a line from (0,0) to (x,y), which is next drawn centered on
      the scene.</li></ul>
-<!--l. 931--><p class="noindent" ><span 
+<!--l. 940--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -347,36 +351,36 @@ class="small-caps">E</span> </span><br
 class="newline" />Creating a rectangle with a 0.5 width and a 1.5 height.
 <div class="center" 
 >
-<!--l. 933--><p class="noindent" >
+<!--l. 942--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox24"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject set rect 0.5 1.5;</span>
 </div></div>
 </div>
-<!--l. 934--><p class="noindent" >Creating a line specified using width and angle.
+<!--l. 943--><p class="noindent" >Creating a line specified using width and angle.
 <div class="center" 
 >
-<!--l. 935--><p class="noindent" >
+<!--l. 944--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox25"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject set line wa 1. 45.;</span>
 </div></div>
 </div>
-<!--l. 940--><p class="noindent" >
+<!--l. 949--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">5.5    </span> <a 
  id="x9-290005.5"></a>Signals and graphic signals</h3>
-<!--l. 943--><p class="noindent" >Signals are special objects that are stored in a special <span 
+<!--l. 952--><p class="noindent" >Signals are special objects that are stored in a special <span 
 class="pcrr8tn-">signal </span>node and that may be composed in parallel to produce
 graphic signals. Signals and graphic signals are decribed in section <a 
 href="OSCMsgch14.html#x18-7200014">14<!--tex4ht:ref: graphsig --></a> p.<a 
-href="OSCMsgch14.html#x18-7200014">102<!--tex4ht:ref: graphsig --></a>.
-<!--l. 945--><p class="noindent" >Signals and computation on signals may be based on FAUST objects that are actually signals processors. FAUST
+href="OSCMsgch14.html#x18-7200014">104<!--tex4ht:ref: graphsig --></a>.
+<!--l. 954--><p class="noindent" >Signals and computation on signals may be based on FAUST objects that are actually signals processors. FAUST
                                                                                  
 
                                                                                  
 objects are decribed in section <a 
-href="OSCMsgch17.html#x22-10400017.1">17.1<!--tex4ht:ref: faust --></a> p.<a 
-href="OSCMsgch17.html#x22-10400017.1">144<!--tex4ht:ref: faust --></a>. <br 
+href="OSCMsgch18.html#x23-11300018.1">18.1<!--tex4ht:ref: faust --></a> p.<a 
+href="OSCMsgch18.html#x23-11300018.1">159<!--tex4ht:ref: faust --></a>. <br 
 class="newline" />For more information about the FAUST language, see at <a 
 href="http://faust.grame.fr" class="url" ><span 
 class="pcrr8tn-">http://faust.grame.fr</span></a>.
@@ -385,7 +389,7 @@ class="pcrr8tn-">http://faust.grame.fr</span></a>.
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 956--><p class="noindent" ><div class="minipage"><span 
+<!--l. 965--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">setMsg</span> <img 
 src="OSCMsg34x.png" alt="PICT" >
 </div></dd></dl>
@@ -401,31 +405,31 @@ src="OSCMsg34x.png" alt="PICT" >
      <li class="itemize"><span 
 class="pcrr8tn-">graph</span>: graphic of a signal. See section <a 
 href="OSCMsgch14.html#x18-7200014">14<!--tex4ht:ref: graphsig --></a> p.<a 
-href="OSCMsgch14.html#x18-7200014">102<!--tex4ht:ref: graphsig --></a> for details about the <span 
+href="OSCMsgch14.html#x18-7200014">104<!--tex4ht:ref: graphsig --></a> for details about the <span 
 class="pcrr8tn-">graph </span>objects data.
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">fastgraph</span>: fast rendering graphic signal. See also section <a 
 href="OSCMsgch14.html#x18-7200014">14<!--tex4ht:ref: graphsig --></a> p.<a 
-href="OSCMsgch14.html#x18-7200014">102<!--tex4ht:ref: graphsig --></a>.
+href="OSCMsgch14.html#x18-7200014">104<!--tex4ht:ref: graphsig --></a>.
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">faust</span>: a FAUST object as a plugin (see section <a 
-href="OSCMsgch17.html#x22-10400017.1">17.1<!--tex4ht:ref: faust --></a>)
+href="OSCMsgch18.html#x23-11300018.1">18.1<!--tex4ht:ref: faust --></a>)
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">faustdsp</span>: a FAUST object defined by a string (see section <a 
-href="OSCMsgch17.html#x22-10400017.1">17.1<!--tex4ht:ref: faust --></a> p.<a 
-href="OSCMsgch17.html#x22-10400017.1">144<!--tex4ht:ref: faust --></a>)
+href="OSCMsgch18.html#x23-11300018.1">18.1<!--tex4ht:ref: faust --></a> p.<a 
+href="OSCMsgch18.html#x23-11300018.1">159<!--tex4ht:ref: faust --></a>)
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">faustdspf</span>: a FAUST object defined by a file (see section <a 
-href="OSCMsgch17.html#x22-10400017.1">17.1<!--tex4ht:ref: faust --></a> p.<a 
-href="OSCMsgch17.html#x22-10400017.1">144<!--tex4ht:ref: faust --></a>)</li></ul>
-<!--l. 973--><p class="noindent" >
+href="OSCMsgch18.html#x23-11300018.1">18.1<!--tex4ht:ref: faust --></a> p.<a 
+href="OSCMsgch18.html#x23-11300018.1">159<!--tex4ht:ref: faust --></a>)</li></ul>
+<!--l. 982--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">5.6    </span> <a 
  id="x9-300005.6"></a>Images and video</h3>
-<!--l. 976--><p class="noindent" >Images and video are supported using various formats. See section <a 
+<!--l. 985--><p class="noindent" >Images and video are supported using various formats. See section <a 
 href="#x9-330005.9">5.9<!--tex4ht:ref: fileset --></a> p.<a 
 href="#x9-330005.9">43<!--tex4ht:ref: fileset --></a> for more details on the supported
 formats.
@@ -437,7 +441,7 @@ class="list">
                                                                                  
 
                                                                                  
-<!--l. 983--><p class="noindent" ><div class="minipage"><span 
+<!--l. 992--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">setMsg</span> <img 
 src="OSCMsg35x.png" alt="PICT" >
 </div></dd></dl>
@@ -461,7 +465,7 @@ class="pcrr8tn-">objectPath </span>indicates the target object
 class="pcrr8tn-">video</span>: a video file. The video format is infered from the file extension. Note that navigation through
      the video is made using its <span 
 class="pcrr8tn-">date</span>.</li></ul>
-<!--l. 994--><p class="noindent" ><span 
+<!--l. 1003--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -472,22 +476,22 @@ class="small-caps">E</span> </span><br
 class="newline" />Creating an image.
 <div class="center" 
 >
-<!--l. 996--><p class="noindent" >
+<!--l. 1005--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox26"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject set img "myImage.png";</span>
 </div></div>
 </div>
-<!--l. 997--><p class="noindent" >Creating a memory image of a scene.
+<!--l. 1006--><p class="noindent" >Creating a memory image of a scene.
 <div class="center" 
 >
-<!--l. 998--><p class="noindent" >
+<!--l. 1007--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox27"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject set memimg "/ITL/scene";</span>
 </div></div>
 </div>
-<!--l. 1000--><p class="noindent" ><span 
+<!--l. 1009--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -496,7 +500,7 @@ class="newline" />It is necessary to have an object or scene graphically rendere
 graphic rendering is made asynchronously to the model update, a sequence of messages like the following:
 <div class="center" 
 >
-<!--l. 1004--><p class="noindent" >
+<!--l. 1013--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox28"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject set gmn "[a f g]";</span><br 
@@ -506,10 +510,10 @@ class="pcrr8tn-x-x-90">/ITL/scene/capture set memimg myObject;</span></div></div
                                                                                  
 
                                                                                  
-<!--l. 1005--><p class="noindent" >won&#8217;t work if the messages are handled by the same time task. A delay is necessary between the two messages. To
+<!--l. 1014--><p class="noindent" >won&#8217;t work if the messages are handled by the same time task. A delay is necessary between the two messages. To
 make sure all the objects have been rendered, you can use the scene <span 
 class="pcrr8tn-">endPaint </span>event.
-<!--l. 1010--><p class="noindent" >
+<!--l. 1019--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">5.7    </span> <a 
  id="x9-310005.7"></a>Miscellaneous</h3>
 <a 
@@ -517,7 +521,7 @@ class="pcrr8tn-">endPaint </span>event.
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1018--><p class="noindent" ><div class="minipage"><span 
+<!--l. 1027--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">setMsg</span> <img 
 src="OSCMsg36x.png" alt="PICT" >
 </div></dd></dl>
@@ -529,20 +533,20 @@ src="OSCMsg36x.png" alt="PICT" >
      <li class="itemize"><span 
 class="pcrr8tn-">layer</span>: a graphic layer, may be viewed as a container (see section <a 
 href="OSCMsgch11.html#x15-6000011">11<!--tex4ht:ref: layers --></a> p.<a 
-href="OSCMsgch11.html#x15-6000011">84<!--tex4ht:ref: layers --></a>).
+href="OSCMsgch11.html#x15-6000011">86<!--tex4ht:ref: layers --></a>).
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">grid</span>: a white transparent object that provides a predefined time to graphic mapping (see section <a 
 href="OSCMsgch7.html#x11-410007.5">7.5<!--tex4ht:ref: grid --></a>
      p.<a 
-href="OSCMsgch7.html#x11-410007.5">60<!--tex4ht:ref: grid --></a> for more details and section <a 
+href="OSCMsgch7.html#x11-410007.5">63<!--tex4ht:ref: grid --></a> for more details and section <a 
 href="OSCMsgch12.html#x16-6200012">12<!--tex4ht:ref: mapping --></a> p.<a 
-href="OSCMsgch12.html#x16-6200012">86<!--tex4ht:ref: mapping --></a> for time to graphic relations). The parameters are int32
+href="OSCMsgch12.html#x16-6200012">88<!--tex4ht:ref: mapping --></a> for time to graphic relations). The parameters are int32
      values representing the number of columns and rows.</li></ul>
-<!--l. 1030--><p class="noindent" >
+<!--l. 1039--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">5.8    </span> <a 
  id="x9-320005.8"></a>File based resources</h3>
-<!--l. 1033--><p class="noindent" >Most of the types can be either expressed with the corresponding data, or by a path to a file containing the data. For
+<!--l. 1042--><p class="noindent" >Most of the types can be either expressed with the corresponding data, or by a path to a file containing the data. For
 the latter form, the object type is generally suffixed with an &#8217;f&#8217; (e.g. <span 
 class="pcrr8tn-">txtf</span>, <span 
 class="pcrr8tn-">htmlf</span>, <span 
@@ -557,7 +561,7 @@ class="newline" />A file path can be expressed as a Unix path (absolute or relat
 class="pcrr8tn-">rootPath </span>message
 for relative paths handling), but also as an URL. Only the <span 
 class="pcrr8tn-">http: </span>protocol is currently supported.
-<!--l. 1037--><p class="noindent" >When the system encounters an URL, it creates an intermediate object that is in charge of retrieving the
+<!--l. 1046--><p class="noindent" >When the system encounters an URL, it creates an intermediate object that is in charge of retrieving the
 corresponding data. This object has a specific <span 
 class="pcrr8tn-">url </span>type that takes the target type and an url as arguments. It has a
 graphic appearance (actually a light gray box containing the object name and the target url) that can be controled
@@ -567,7 +571,7 @@ like for any regular object.
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1042--><p class="noindent" ><div class="minipage"><span 
+<!--l. 1051--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">urlType</span> <img 
 src="OSCMsg37x.png" alt="PICT" >
 </div> </dd></dl>
@@ -576,11 +580,11 @@ src="OSCMsg37x.png" alt="PICT" >
                                                                                  
 <a 
  id="dx9-32002"></a>
-<!--l. 1045--><p class="noindent" >The <span 
+<!--l. 1054--><p class="noindent" >The <span 
 class="pcrr8tn-">url </span>intermediate object acts as a proxy for the target object and will transfer all its properties once the data are
 ready. A client can thus interact transparently with the target adress, whatever the status of the download
 request.
-<!--l. 1047--><p class="noindent" ><span 
+<!--l. 1056--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -591,7 +595,7 @@ class="small-caps">E</span> </span><br
 class="newline" />Creating a score using an URL:
 <div class="center" 
 >
-<!--l. 1052--><p class="noindent" >
+<!--l. 1061--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox29"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/score set gmnf "http://anyhost.adomain.org/score.gmn"; </span><br 
@@ -600,7 +604,7 @@ class="pcrr8tn-x-x-90">&#x00A0;   is equivalent to </span><br
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/score set url gmnf "http://anyhost.adomain.org/score.gmn";</span></div></div>
 </div>
-<!--l. 1054--><p class="noindent" ><span 
+<!--l. 1063--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -609,9 +613,9 @@ class="pcrr8tn-">url </span>object handles specific events : <span
 class="pcrr8tn-">success</span>, <span 
 class="pcrr8tn-">error </span>and <span 
 class="pcrr8tn-">cancel </span>(see the section <a 
-href="OSCMsgch15.html#x19-8500015.1.3">15.1.3<!--tex4ht:ref: urlevents --></a> p.<a 
-href="OSCMsgch15.html#x19-8500015.1.3">127<!--tex4ht:ref: urlevents --></a>).
-<!--l. 1059--><p class="noindent" >
+href="OSCMsgch15.html#x19-8600015.1.4">15.1.4<!--tex4ht:ref: urlevents --></a> p.<a 
+href="OSCMsgch15.html#x19-8600015.1.4">130<!--tex4ht:ref: urlevents --></a>).
+<!--l. 1068--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">5.9    </span> <a 
  id="x9-330005.9"></a>The file type</h3>
 <a 
@@ -619,7 +623,7 @@ href="OSCMsgch15.html#x19-8500015.1.3">127<!--tex4ht:ref: urlevents --></a>).
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1066--><p class="noindent" ><div class="minipage"><span 
+<!--l. 1075--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">setFile</span> <img 
 src="OSCMsg38x.png" alt="PICT" >
 </div></dd></dl>
@@ -635,16 +639,16 @@ class="pcrr8tn-">gmnf</span>, <span
 class="pcrr8tn-">img </span>or <span 
 class="pcrr8tn-">video </span>types, according to the file extension (see table <a 
 href="#x9-330031">5.1<!--tex4ht:ref: fileTranslate --></a>).</li></ul>
-<!--l. 1073--><p class="noindent" ><span 
+<!--l. 1082--><p class="noindent" ><span 
 class="ptmb8t-">See also: </span>the application <span 
 class="pcrr8tn-">rootPath </span>message (section <a 
 href="OSCMsgch8.html#x12-450008">8<!--tex4ht:ref: ITL --></a> p.<a 
-href="OSCMsgch8.html#x12-450008">67<!--tex4ht:ref: ITL --></a>) for file based objects.
+href="OSCMsgch8.html#x12-450008">69<!--tex4ht:ref: ITL --></a>) for file based objects.
 <div class="table">
                                                                                  
 
                                                                                  
-<!--l. 1075--><p class="noindent" ><a 
+<!--l. 1084--><p class="noindent" ><a 
  id="x9-330031"></a><hr class="float"><div class="float" 
 >
                                                                                  
@@ -656,7 +660,7 @@ class="content">File extensions supported by the <span
 class="pcrr8tn-">file </span>translation scheme.</span></div><!--tex4ht:label?: x9-330031 -->
 <div class="center" 
 >
-<!--l. 1077--><p class="noindent" >
+<!--l. 1086--><p class="noindent" >
 <div class="tabular"> <table id="TBL-4" class="tabular" 
 cellspacing="0" cellpadding="0" rules="groups" 
 ><colgroup id="TBL-4-1g"><col 
@@ -723,7 +727,7 @@ class="td11">                                   </td></tr></table></div></div>
                                                                                  
 </div><hr class="endfloat" />
 </div>
-<!--l. 1096--><p class="noindent" ><span 
+<!--l. 1105--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -735,7 +739,7 @@ class="newline" />Creating an image using the <span
 class="pcrr8tn-">file </span>type.
 <div class="center" 
 >
-<!--l. 1101--><p class="noindent" >
+<!--l. 1110--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox30"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject set file "myImage.png"; </span><br 
@@ -746,13 +750,13 @@ class="pcrr8tn-x-x-90">/ITL/scene/myObject set img "myImage.png";</span></div></
 </div>
 <h3 class="sectionHead"><span class="titlemark">5.10    </span> <a 
  id="x9-340005.10"></a>Web objects</h3>
-<!--l. 1108--><p class="noindent" >A score can make its content available to the Internet using specific components that provide an image of the scene
+<!--l. 1117--><p class="noindent" >A score can make its content available to the Internet using specific components that provide an image of the scene
 over http or websocket protocols.
-<!--l. 1110--><p class="noindent" >The <span 
+<!--l. 1119--><p class="noindent" >The <span 
 class="pcrr8tn-">httpd </span>server depends on the Httpd server plugin and is described in section <a 
-href="OSCMsgch17.html#x22-11400017.3">17.3<!--tex4ht:ref: Httpd --></a> p.<a 
-href="OSCMsgch17.html#x22-11400017.3">156<!--tex4ht:ref: Httpd --></a>.
-<!--l. 1112--><p class="noindent" >The <span 
+href="OSCMsgch18.html#x23-12300018.3">18.3<!--tex4ht:ref: Httpd --></a> p.<a 
+href="OSCMsgch18.html#x23-12300018.3">171<!--tex4ht:ref: Httpd --></a>.
+<!--l. 1121--><p class="noindent" >The <span 
 class="pcrr8tn-">websocket </span>server provides a two-ways communication between INScore and distant clients. The server sends
 notifications to client using a <span 
 class="pcrr8tn-">Screen updated </span>text message when the scene is updated. Clients can request an
@@ -764,7 +768,7 @@ format, using a Blob type javascript object.
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1117--><p class="noindent" ><div class="minipage"><span 
+<!--l. 1126--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">webobject</span> <img 
 src="OSCMsg39x.png" alt="PICT" >
 </div></dd></dl>
@@ -779,14 +783,14 @@ class="pcrr8tn-">port</span>: a port number for the socket communication.
      <li class="itemize"><span 
 class="pcrr8tn-">frequency</span>: a minimum time in millisecond between two <span 
 class="pcrr8tn-">Screen updated </span>notifications.</li></ul>
-<!--l. 1126--><p class="noindent" ><span 
+<!--l. 1135--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
 class="small-caps">E</span>  </span><br 
 class="newline" />A busy port prevents the server to start. The server status can be checked with the <span 
 class="pcrr8tn-">get status </span>message.
-<!--l. 1129--><p class="noindent" ><span 
+<!--l. 1138--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -801,25 +805,25 @@ class="pcrr8tn-">1234 </span>and limiting the notifications rate to one per 500 
                                                                                  
 
                                                                                  
-<!--l. 1131--><p class="noindent" >
+<!--l. 1140--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox31"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject set websocket 1234 500;</span>
 </div></div>
 </div>
-<!--l. 1133--><p class="noindent" ><span 
+<!--l. 1142--><p class="noindent" ><span 
 class="ptmb8t-">See also: </span>the http web server plugin (section <a 
-href="OSCMsgch17.html#x22-11400017.3">17.3<!--tex4ht:ref: Httpd --></a> p.<a 
-href="OSCMsgch17.html#x22-11400017.3">156<!--tex4ht:ref: Httpd --></a>).
+href="OSCMsgch18.html#x23-12300018.3">18.3<!--tex4ht:ref: Httpd --></a> p.<a 
+href="OSCMsgch18.html#x23-12300018.3">171<!--tex4ht:ref: Httpd --></a>).
                                                                                  
 
                                                                                  
-<!--l. 1139--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 1148--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch6.html" >next</a>] [<a 
 href="OSCMsgch4.html" >prev</a>] [<a 
 href="OSCMsgch4.html#tailOSCMsgch4.html" >prev-tail</a>] [<a 
 href="OSCMsgch5.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch5.html" >up</a>] </p></div>
-<!--l. 1139--><p class="noindent" ><a 
+<!--l. 1148--><p class="noindent" ><a 
  id="tailOSCMsgch5.html"></a>  
 </body></html> 
