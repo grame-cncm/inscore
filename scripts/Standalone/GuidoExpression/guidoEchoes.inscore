@@ -151,3 +151,6 @@ rversion = 1.17; ! version required for javascript
 /ITL/scene/label_* color 4 22 69 230;
 /ITL/scene width 1.2;
 
+#### and finally trigger a first score generation
+/ITL/scene/randomize event mouseDown 0 0;
+
