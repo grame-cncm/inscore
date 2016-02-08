@@ -5,7 +5,6 @@ lib/GuidoEngine/macosx/GUIDOEngine.framework/
 lib/GuidoQt/linux/libGuidoQt.a
 lib/GuidoQt/macosx/libGuidoQt-cpp11.a
 lib/GuidoQt/macosx/libGuidoQt.a
-lib/libMusicXML/
 lib/lua/
 lib/oscpack/build/
 lib/oscpack/**/*.o
