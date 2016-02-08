@@ -1,0 +1,4 @@
+
+../scripts/mobile/Score.ibundle
+# can't test the next script because it opens in a different scene
+#../scripts/mobile/Welcome.ibundle
