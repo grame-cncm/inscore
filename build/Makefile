@@ -73,6 +73,7 @@ xcodeproj: library.pro viewer.pro
 
 INScoreMac : 
 	make -C ../lib/GuidoEngine/macosx
+	make -C ../lib/libMusicXML/macosx
 	xcodebuild -jobs 8 -project $(BUILDF)/INScore.xcodeproj -target INScore -configuration Release
 	xcodebuild -jobs 8 -project $(BUILDF)/INScoreViewer.xcodeproj -target INScoreViewer -configuration Release
 
@@ -81,6 +82,11 @@ $(BUILDF)/INScore.xcodeproj : library.pro
 
 $(BUILDF)/INScoreViewer.xcodeproj : viewer.pro
 	make xcodeproj
+
+# specific target to create a symbolic link to macos/Release
+# this link is required for macdeployqt
+link:
+	cd macos && ln -s Release lib
 
 #===============================================================
 # building INScore for iOS 
