@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# extract the language definition from the lexer and parser
+#
+
+ydef=yaccexpr.tex
+tmpl=_tokens.l
+
+# first isolate the grammar
+echo '\\begin{verbatim}' > $ydef
+awk -f doc.awk IExpr.y | sed -e 's/{..*//' >> $ydef
+echo '\end{verbatim}' >> $ydef
+
+
+# next get the tokens remaning in the grammar
+for a in $(sed -e 's/[^A-Z 	]*//g' $ydef | grep [A-Z] | sed -e 's/[ 	][ 	]*/ /g')
+do
+	echo $a 
+done  | sort -u > $tmpl
