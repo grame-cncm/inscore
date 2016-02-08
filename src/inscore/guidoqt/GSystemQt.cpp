@@ -17,8 +17,8 @@
 
 #include <assert.h>
 
-#define GSYSTEMQT_GUIDO_FONT	"Guido2"
-#define GSYSTEMQT_TEXT_FONT		"Arial"
+//#define GSYSTEMQT_GUIDO_FONT	"Guido2"
+//#define GSYSTEMQT_TEXT_FONT		"Arial"
 
 //------------------------------------------------------------------------
 GSystemQt::GSystemQt( QPainter* qPainter ) : mQPainter(qPainter) {}
