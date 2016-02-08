@@ -17,6 +17,7 @@ i2i100 := ../tools/inscore2inscore100
 ifeq ($(system), Darwin)
   i2i90tool  := $(i2i90)/cmake/Release/inscore2inscore90
   i2i100tool := $(i2i100)/cmake/Release/inscore2inscore100
+  BUILD    := ../build/macos/Release
 else
 ifdef win32 
   i2i90tool  := $(i2i90)/cmake/Release/inscore2inscore90.exe
@@ -32,6 +33,8 @@ ifdef win32
   WIN32QTPLATFORMS := qminimal.dll qoffscreen.dll qwindows.dll
   WIN32QTPLUGS     := $(patsubst %, $(WIN32QTPATH)/plugins/imageformats/%, $(WIN32QTPLUGS))
   WIN32QTPLATFORMS := $(patsubst %, $(WIN32QTPATH)/plugins/platforms/%, $(WIN32QTPLATFORMS))
+  bin    := ../build/win32/release
+  bin64   := ../build/win64/release
 else
   i2i90tool  := $(i2i90)/cmake/inscore2inscore90
   i2i100tool := $(i2i100)/cmake/inscore2inscore100
@@ -54,14 +57,7 @@ winplug := Plugins
 # scripts provided as samples are now stored in a file
 scripts := $(shell cat samples-list.txt)
 
-
 #########################
-# this is for win32 only
-bin    := ../build/win32/release
-bin64   := ../build/win64/release
-
-#########################
-
 .PHONY: doc rsrc
 
 help:
@@ -75,7 +71,7 @@ help:
 	@echo "  make rsrc     # makes rsrc for SF FRS"
 	@echo "  make doc      # makes doc"
 
-include makeBundle
+#include makeBundle
 
 dmg:
 	hdiutil create $(package).dmg -srcfolder $(package) -ov
@@ -85,17 +81,17 @@ cleanperms:
 
 macosx:
 	@[ -d $(package) ] || mkdir -p $(package)
-	@[ -h ../build/macos/lib ] || {cd ../build/macos; ln -s Release lib}
+	[ -h ../build/macos/lib ] || make -C ../build link
 	make common
-	make -f makeINScoreBundle
 	-[ -d $(package)/$(macapp) ] && rm -rf $(package)/$(macapp)
-	mv $(viewer).app $(package)/$(macapp)
+	cp -r $(BUILD)/$(viewer).app $(package)/$(macapp)
+	macdeployqt $(package)/$(macapp)
 	make cleanperms
 	cp -f ../src/guido2.ttf $(package)
 	cd $(package) && ln -sf /Applications .
 	@[ -d $(package)/$(macplug) ] || mkdir $(package)/$(macplug)
-	cp ../lib/GestureFollower/macosx/libGFLib.dylib $(package)/$(macplug)
-	cp ../lib/faust/macosx/libfaust.dylib $(package)/$(macplug)
+#	cp ../lib/GestureFollower/macosx/libGFLib.dylib $(package)/$(macplug)
+#	cp ../lib/faust/macosx/libfaust.dylib $(package)/$(macplug)
 	make dmg
 		
 common: 
