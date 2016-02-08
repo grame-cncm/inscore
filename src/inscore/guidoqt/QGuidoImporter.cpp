@@ -10,20 +10,26 @@
  *
  */
 
+#include <iostream>
+
 #include <QLibrary>
 
 #include "QGuidoImporter.h"
+#include "TPlugin.h"
 
 #if __APPLE__
-# define musicxmllib	"libmusicxml2.framework/libmusicxml2"
+# define musicxmllib	"musicxml2"
+//# define musicxmllib	"libmusicxml2.framework/libmusicxml2"
 #elif defined(WIN32)
 # define musicxmllib	"libmusicxml2"
 #else
 # define musicxmllib	"libmusicxml2"
 #endif
 
+static inscore::TPlugin glibmxml;
+
 //-------------------------------------------------------------------------
-bool QGuidoImporter::mMusicXMLSupported = QGuidoImporter::initialize();
+bool QGuidoImporter::mMusicXMLSupported = false;
 
 QGuidoImporter::musicxml2guido QGuidoImporter::mMusicXMLFileConverter = 0;
 QGuidoImporter::musicxml2guido QGuidoImporter::mMusicXMLStringConverter = 0;
@@ -34,14 +40,14 @@ QGuidoImporter::musicxmlversion QGuidoImporter::mMusicXML2GuidoVersion = 0;
 bool QGuidoImporter::initialize()
 {
 	mMusicXMLFileConverter = mMusicXMLStringConverter = 0;
-	QLibrary libmxml(musicxmllib);
-	if (libmxml.load()) {
-		mMusicXMLFileConverter	 = (musicxml2guido)libmxml.resolve("musicxmlfile2guido");
-		mMusicXMLStringConverter = (musicxml2guido)libmxml.resolve("musicxmlstring2guido");
-		mMusicXMLVersion		 = (musicxmlversion)libmxml.resolve("musicxmllibVersionStr");
-		mMusicXML2GuidoVersion	 = (musicxmlversion)libmxml.resolve("musicxml2guidoVersionStr");
+	if (glibmxml.load(musicxmllib)) {
+		mMusicXMLFileConverter	 = glibmxml.resolve<musicxml2guido>("musicxmlfile2guido");
+		mMusicXMLStringConverter = glibmxml.resolve<musicxml2guido>("musicxmlstring2guido");
+		mMusicXMLVersion		 = glibmxml.resolve<musicxmlversion>("musicxmllibVersionStr");
+		mMusicXML2GuidoVersion	 = glibmxml.resolve<musicxmlversion>("musicxml2guidoVersionStr");
+		glibmxml.setLoadHints(QLibrary::PreventUnloadHint);
 	}
-	return (mMusicXMLFileConverter && mMusicXMLStringConverter);
+	return mMusicXMLSupported = (mMusicXMLFileConverter && mMusicXMLStringConverter);
 }
 
 //-------------------------------------------------------------------------
