@@ -31,6 +31,11 @@
 #include <fstream>
 #include <sstream>
 
+#include <QDir>
+#include <QApplication>
+#include <QStandardPaths>
+#include <QNetworkInterface>
+
 #include "IAppl.h"
 #include "IApplVNodes.h"
 #include "Forwarder.h"
@@ -46,6 +51,7 @@
 #include "ITLError.h"
 #include "Tools.h"
 #include "QFileDownloader.h"
+#include "QGuidoImporter.h"
 
 #include "INScore.h"
 
@@ -54,11 +60,6 @@
 #else
 #include "IMenu.h"
 #endif
-
-#include <QDir>
-#include <QApplication>
-#include <QStandardPaths>
-#include <QNetworkInterface>
 
 using namespace std;
 
@@ -202,6 +203,9 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 	fMsgHandlerMap[kresetBench_SetMethod]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::resetBench);
 	fMsgHandlerMap[kwriteBench_SetMethod]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::writeBench);
 #endif
+
+	QGuidoImporter gi;
+	gi.initialize();
 }
 
 //--------------------------------------------------------------------------
