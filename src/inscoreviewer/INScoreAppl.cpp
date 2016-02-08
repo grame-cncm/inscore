@@ -322,10 +322,7 @@ int main( int argc, char **argv )
 	char **argv = __argv;
 #endif
 
-    int ret = 1;
 	int udpPort = intopt (kPortOption, kUPDPort, argc, argv);
-	INScoreAppl appl(argc, argv);
-	appl.init();
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
     // Initialize application delegate to manage external application event (close tablet, open new application...)
@@ -336,6 +333,10 @@ int main( int argc, char **argv )
     // We have to test on all plateform but it seems it's not necessary to call Q_INIT_RESOURCE.
     Q_INIT_RESOURCE( inscore );
 #endif
+
+	INScoreAppl appl(argc, argv);
+	appl.init();
+
     QPixmap pixmap(":/INScoreViewer.png");
     gAbout = new INScoreAbout(pixmap);
     gAbout->show();
@@ -350,7 +351,7 @@ int main( int argc, char **argv )
     disableAppNap();
 //#endif
     appl.showMobileMenu();
-    ret = appl.exec();
+    int ret = appl.exec();
 	INScore::stop (glue);
 #if !(TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
     delete gAbout;
