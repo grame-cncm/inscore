@@ -33,6 +33,7 @@
 #include <QAbstractTextDocumentLayout>
 #include <QTextLayout>
 #include <QGraphicsScene>
+#include <QDebug>
 
 #include "VTextView.h"
 #include "VApplView.h"
@@ -210,7 +211,8 @@ void VTextView::updateFont(const IText *text)
 		// Get font and set the parameters.
 		QFont font = fTextItem->font();
 		font.setFamily(text->getFontFamily().c_str());
-		font.setPointSize (text->getFontSize());
+		font.setPixelSize (text->getFontSize());			// strangely, using setPixelSize produces the same rendering on all devices
+//		font.setPointSize (text->getFontSize());
 		font.setStyle(sStyleString2Enum[text->getFontStyle()]);
 		font.setWeight(sWeightString2Enum[text->getFontWeight()]);
 		fTextItem->setFont(font);

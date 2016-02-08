@@ -58,11 +58,15 @@ IText::IText( const std::string& name, IObject * parent ) : IGraphicBasedObject(
 	setColor( IColor(0,0,0,255) );
 
 	// Default font parameters
-	fFontSize = 13;
+#if 0
+	fFontSize = 13;				// this was the previous setting, before a default font has been embedded in the appl ressources
 	fFontFamily = "Arial";
+#else
+	fFontSize = 14;
+	fFontFamily = IAppl::defaultFontName();
+#endif
 	fFontWeight = kWeightNormal;
 	fFontStyle = kStyleNormal;
-
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler<string>::create(fText);
 
 	// Method to manage font

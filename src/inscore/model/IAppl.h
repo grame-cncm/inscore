@@ -68,6 +68,7 @@ class IAppl : public IObject, public TILoader
 	typedef std::map<std::string, std::pair<std::string, std::string> >		TAliasesMap;
 	static TAliasesMap fAliases;
 
+	static std::string	fDefaultFontName;
 	static std::string	fRootPath;
 	static bool			fRunning;
 	static std::string	fVersion;					// the application version number
@@ -169,6 +170,7 @@ class IAppl : public IObject, public TILoader
 		void		ptask ();
 
 		static std::string checkRootPath (const std::string& path);
+		static std::string defaultFontName ();
 		static float version ()							{ return fVersionNum; }
 		static float compatibilityVersion ()			{ return fCompatibilityVersionNum; }
 				void setCompatibilityVersion (float v)	{ fCompatibilityVersionNum = v; }
