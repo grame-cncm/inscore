@@ -20,6 +20,7 @@
   Grame Research Laboratory, 11 cours de Verdun Gensoul 69002 Lyon - France
   research@grame.fr
 */
+#include <iostream>
 #include <istream>
 #include <fstream>
 #include <deelx.h>
@@ -68,13 +69,12 @@ bool ScriptsParser::readArchive(ParsedData &result, qarchive::SQArchive archive)
 //__________________________________________________________
 //----------------------------------------------------------
 using namespace inscore;
+using namespace std;
 
-bool ScriptsParser::readScript(std::string script)
+bool ScriptsParser::readScript(string script)
 {
 	//Check script validity
-
 	SIMessageList msgs;
-
 	if(!parseScript(script, msgs))
 		return false;
 
@@ -96,10 +96,8 @@ bool ScriptsParser::readScript(std::string script)
 			msg = msgs->list().erase(msg);
 	}
 
-
 	//Print log
-
-	if(fVerbose&&fLog){
+	if(fVerbose && fLog){
 		*fLog<<"Ressources:"<<(r.ressources.size()?"\n":" no\n");
 		for(auto it = r.ressources.begin(); it != r.ressources.end(); it++)
 			*fLog<<" - "<<*it<<"\n";
@@ -120,7 +118,6 @@ bool ScriptsParser::readScript(std::string script)
 				return false;
 		}
 	}
-
 	if(fVerbose&&fLog) fLog->exitSubSection();
 	return true;
 }
@@ -134,16 +131,16 @@ bool ScriptsParser::parseScript(std::string inputFile, SIMessageList &msgs)
 	if(fArchive){
 		QByteArray data;
 		if(!fArchive->readFileStd(inputFile,data)){
-			if(fLog)fLog->error("\""+inputFile+"\" is not reachable.");
+			if(fLog)fLog->error("cannot open file \""+inputFile+"\"");
 			return false;
 		}
 		std::stringstream* ss = new std::stringstream;
 		*ss<<data.toStdString();
 		ifs = ss;
 	}else{
-		std::ifstream* fileStream = new std::ifstream(inputFile);
+		std::ifstream* fileStream = new std::ifstream(inputFile.c_str());
 		if(!fileStream->is_open()){
-			if(fLog)fLog->error("\""+inputFile+"\" is not reachable.");
+			if (fLog)fLog->error("cannot open file \"" + inputFile + "\"");
 			return false;
 		}
 		ifs= fileStream;
@@ -294,6 +291,11 @@ std::string ScriptsParser::absolutePath(std::string path, std::string address)
 	//_________CHECK IF ABSOLUTE____________
 	if(*(path.begin())=='/')
 		return path;
+#ifdef WIN32
+	if ((path[1] == ':') && (path[2] == '\\'))
+		return path;
+#endif
+
 	//_________CHECK IF URL_________________
 	if(isurl(path))
 		return "";
@@ -321,11 +323,9 @@ std::string ScriptsParser::absolutePath(std::string path, std::string address)
 		return "";
 	}
 
-
 	//else generate absolute path
 	std::string currentFile;
 	std::string result = rootPath;
-
 	while(!path.empty()){
 		size_t idPathSep;
 		idPathSep = path.find('/');
@@ -353,7 +353,6 @@ std::string ScriptsParser::absolutePath(std::string path, std::string address)
 			result +=currentFile;
 		}
 	}
-
 	return result;
 }
 
