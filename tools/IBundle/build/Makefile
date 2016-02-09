@@ -71,3 +71,5 @@ $(BUILDF)/Makefile: IBundle.pro
 
 IBundle:
 	make -j 4 -C $(BUILDF)
+	cp linux/IBundle ..
+

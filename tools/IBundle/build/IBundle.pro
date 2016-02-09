@@ -17,7 +17,6 @@ DEFINES += IBUNDLE
 ##############################
 ROOT 		= $$PWD/..
 SRC 		= $$ROOT/src
-
 ITLROOT		= $$ROOT/../../
 ITLSRC		= $$ITLROOT/src/inscore/
 
@@ -27,11 +26,11 @@ win32 { DEFINES += NOHOSTNAME }
 # source and headers
 ##############################
 SOURCES  =	$$files($$SRC/*.cpp, true)
-SOURCES +=	$$files($$SRC/Parsing/*.cpp, true)
+#SOURCES +=	$$files($$SRC/Parsing/*.cpp, true)
 SOURCES +=	$$ITLROOT/src/inscore/expression/ExprInfo.cpp
 
 HEADERS  = $$files($$SRC/*.h, true)
-HEADERS += $$files($$SRC/Parsing/*.h, true)
+#HEADERS += $$files($$SRC/Parsing/*.h, true)
 HEADERS += $$ITLROOT/src/inscore/expression/ExprInfo.h
 
 INCLUDEPATH +=	$$SRC/ $$SRC/Parsing/
@@ -42,3 +41,4 @@ include($$ITLROOT/src/QArchive/qarchive.pri)
 # import inscore parser
 ##############################
 include ($$ITLROOT/src/inscore/ITLParser/ITLParser.pri)
+
