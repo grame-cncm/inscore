@@ -21,7 +21,12 @@
   research@grame.fr
 */
 #include <iostream>
+#ifndef WIN32
 #include <unistd.h>
+#else
+#include <windows.h>
+#define getcwd _getcwd
+#endif
 
 #include "doc.h"
 
@@ -43,10 +48,11 @@ int main(int argc, char* argv[])
 	}
 
 	//Setup input file
-	char* currentDir = getcwd(NULL, 0);
+	char buffer[2048];
+	char* currentDir = getcwd(buffer, 2048);
 	if(inputFile.at(0) != '/')
 		inputFile = std::string(currentDir)+"/"+inputFile;
-	delete[] currentDir;
+//	delete[] currentDir;
 
 	ibundle::BundleExtractor bExt;
 	ibundle::BundleCreator bCreator;
