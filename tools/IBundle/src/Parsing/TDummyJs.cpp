@@ -53,7 +53,7 @@ TDummyJs::~TDummyJs() {}
 //--------------------------------------------------------------------------------------------
 void TDummyJs::Initialize  () {fVars="";}
 
-bool TDummyJs::eval (int line, const char* script, std::string& outStr)
+bool TDummyJs::eval (int /*line*/, const char* script, std::string& outStr)
 {
 	std::string s = fVars + "\n";
 	s += script;
