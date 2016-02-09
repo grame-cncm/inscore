@@ -10,7 +10,7 @@
 
 namespace qarchive {
 
-enum HEADER_FIELDS{
+enum HEADER_IDENTIFIERS{
 	HEADER_END				= 0x00,		// 0000 0000
 	HEADER_HIERARCHY		= 0x40,		// 0100 0000
 		H_HIER_END			= 0xC0,		// 1100 0000
@@ -43,9 +43,9 @@ public:
 	QArchiveHeader(SQArchive archive):fArchive(archive){}
 
 	QArchiveError readHeader(QIODevice *input);
-	QByteArray generateHeader();
+	QByteArray generateHeader() const;
 
-	float bundleVersion=BUNDLE_VERSION, itlVersion=1.17;
+	qreal bundleVersion=BUNDLE_VERSION, itlVersion=1.17;
 };
 
 } // End namespace

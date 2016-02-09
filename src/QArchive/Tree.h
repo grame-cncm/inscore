@@ -66,26 +66,26 @@ public:
 	int			addItem(QString name, const Type& item);
 	QList<QPair<QString, Type>>& items() {return fItems;}
 
-	const TreeNode<Type>&	nodeAt(int i) const {return fChildren.at(i);}
-	int					nodeCount()		const {return fChildren.size();}
+	const TreeNode<Type>&	childAt(int i) const {return fChildren.at(i);}
+	int					childrenCount()		const {return fChildren.size();}
 	TreeNode<Type>*		searchChildren(QString name);
 	QStringList			childrenNames()	const;
 	int					childID(QString name) const;
 	int					addChildren(QString name);
-	TreeNode<Type>*		createPath(QString name);
 	QList< TreeNode<Type> >& childrenList() {return fChildren;}
 
 	bool contains(QString name);
+	TreeNode<Type>*		createPath(QString name);
 	QString path() const;
 
 	treeConstIterator<Type> iterator() const {return treeConstIterator<Type>(this);}
 };
 
 enum Movement{
-	TreeEnd = 0,
-	Branch = 2,
-	LeavingBranch = 3,
-	Item = 4
+	TREE_END = 0,
+	BRANCH = 2,
+	LEAVING_BRANCH = 3,
+	ITEM = 4
 };
 
 template <typename Type>
@@ -96,7 +96,6 @@ class treeConstIterator{
 	bool fReadingItem=true;
 
 public:
-
 	treeConstIterator(const TreeNode<Type>* node):fNode(node){}
 
 	Movement next();

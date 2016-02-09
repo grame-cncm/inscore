@@ -337,8 +337,8 @@ QString treeConstIterator<Type>::name() const
 		if(fPos < fNode->itemCount())
 			return fNode->nameAt(fPos);
 	}else{
-		if(fPos < fNode->nodeCount())
-			return fNode->nodeAt(fPos).getName();
+		if(fPos < fNode->childrenCount())
+			return fNode->childAt(fPos).getName();
 	}
 
 	return "";
@@ -357,33 +357,33 @@ QString treeConstIterator<Type>::currentPath() const
 template <typename Type>
 Movement treeConstIterator<Type>::next(){
 	if(!fNode)
-		return TreeEnd;
+		return TREE_END;
 	fPos++;
 	if(fReadingItem){
 		if(fPos < fNode->itemCount())
-			return Item;
+			return ITEM;
 		else{
 			fPos = 0;
 			fReadingItem = false;
 		}
 	}
 
-	if(fPos < fNode->nodeCount()){
-		fNode = &(fNode->nodeAt(fPos));
+	if(fPos < fNode->childrenCount()){
+		fNode = &(fNode->childAt(fPos));
 		fReadingItem = true;
 		fPos = -1;
-		return Branch;
+		return BRANCH;
 	}
 
 	if(fNode->parent()){
 		QString previousName = fNode->getName();
 		fNode = fNode->parent();
 		fPos = fNode->childID(previousName);
-		return LeavingBranch;
+		return LEAVING_BRANCH;
 	}
 
 	fNode = 0;
-	return TreeEnd;
+	return TREE_END;
 }
 
 } // End namespace

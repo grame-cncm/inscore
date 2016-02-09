@@ -91,6 +91,7 @@ public slots:
 	void panelListChanged(QStringList panelList, int sceneCount);
 
 	void deleteDownloadedFile(QString fileName);
+	void addDownloadedFile(QString fileName);
 
 protected:
 	bool event(QEvent *e);

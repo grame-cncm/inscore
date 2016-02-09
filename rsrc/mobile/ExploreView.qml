@@ -144,7 +144,7 @@ Item {
                     SlideMenuItem{
                         text: ".."
                         icon: "qrc:///images/folderUp.png"
-                        visible: folderModel.folder!==folderModel.rootFolder;
+                        visible: folderModel.folder!=folderModel.rootFolder;
                         onClicked: root.back();
                         first: true;
                         clickable: enabled;
@@ -154,7 +154,7 @@ Item {
                         //Folders
                         model: folderModel;
                         SlideMenuItem{
-                            text: fileName;
+                            text: fileIsDir?fileName:fileName.slice(0, fileName.lastIndexOf("."));
                             icon: fileIsDir?"qrc:///images/folder.png":"qrc:///INScoreViewer.png";
                             first: true;
                             anchors.left: folderView_Layout.left
