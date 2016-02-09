@@ -13,6 +13,8 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.17
+- Carlito Regular open source font is embedded in the application ressources and used as a default font.
+  see at https://fontlibrary.org/fr/font/carlito
 - symbolic notation support extended with score expressions.
 - new 'newData' event.
 - javascript engine is shared between the application and the different scenes.
