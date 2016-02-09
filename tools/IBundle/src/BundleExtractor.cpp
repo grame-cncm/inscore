@@ -41,7 +41,7 @@ bool BundleExtractor::extract(std::string bundleFile, std::string outputFolder)
 			std::cerr<<bundleFile<<" not found."<<std::endl;
 			break;
 		case qarchive::FILE_CORRUPTED:
-			std::cerr<<bundleFile<<" is corrupted."<<std::endl;
+			std::cerr<<bundleFile<<": incorrect format."<<std::endl;
 			break;
 		case qarchive::HIGHER_BUNDLE_VERSION:
 			std::cerr<<"The version of the archive "<<bundleFile<<" is higher than the extractor version, update to the latest version to read the bundle."<<std::endl;
