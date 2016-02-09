@@ -12,9 +12,6 @@ QT -= gui;
 VERSION = 1.0
 DEFINES += IBUNDLE
 
-
-
-
 ##############################
 # locations
 ##############################
@@ -24,43 +21,24 @@ SRC 		= $$ROOT/src
 ITLROOT		= $$ROOT/../../
 ITLSRC		= $$ITLROOT/src/inscore/
 
+win32 { DEFINES += NOHOSTNAME }
+
 ##############################
 # source and headers
 ##############################
-SOURCES +=	$$SRC/IBundle.cpp \
-		$$SRC/BundleCreator.cpp \
-		$$SRC/BundlePackager.cpp \
-		$$SRC/BundleLog.cpp \
-		$$SRC/BundleExtractor.cpp \
-		$$SRC/Parsing/ParsedData.cpp \
-		$$SRC/Parsing/ScriptsParser.cpp \
-		$$SRC/Parsing/TDummyJs.cpp \
-		$$ITLROOT/src/inscore/expression/ExprInfo.cpp
+SOURCES  =	$$files($$SRC/*.cpp, true)
+SOURCES +=	$$files($$SRC/Parsing/*.cpp, true)
+SOURCES +=	$$ITLROOT/src/inscore/expression/ExprInfo.cpp
 
+HEADERS  = $$files($$SRC/*.h, true)
+HEADERS += $$files($$SRC/Parsing/*.h, true)
+HEADERS += $$ITLROOT/src/inscore/expression/ExprInfo.h
 
-
-
-
-HEADERS +=	$$SRC/BundleCreator.h \
-		$$SRC/BundleExtractor.h \
-		$$SRC/doc.h \
-		$$SRC/BundlePackager.h \
-		$$SRC/BundleLog.h \
-		$$SRC/Parsing/ParsedData.h \
-		$$SRC/Parsing/ScriptsParser.h \
-		$$SRC/Parsing/TDummyJs.h \
-		$$ITLROOT/src/inscore/expression/ExprInfo.h
-
-
-INCLUDEPATH +=	$$SRC/\
-		$$SRC/Parsing/
+INCLUDEPATH +=	$$SRC/ $$SRC/Parsing/
 
 include($$ITLROOT/src/QArchive/qarchive.pri)
-
-
 
 ##############################
 # import inscore parser
 ##############################
-
 include ($$ITLROOT/src/inscore/ITLParser/ITLParser.pri)

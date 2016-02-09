@@ -21,8 +21,8 @@ endif
 endif
 
 ifeq ($(TARGET), windows)
- WINARCH ?= $(shell ../../build/qt-arch)
- MSVC ?= $(shell  ../../build/vs-path)
+ WINARCH ?= $(shell ../../../build/qt-arch)
+ MSVC ?= $(shell  ../../../build/vs-path)
  WINOPTS := /maxcpucount:4 /p:Configuration=Release /p:Platform=$(WINARCH)
  SPEC ?= -spec win32-msvc2013
 ifeq ($(WINARCH), x64)
@@ -31,6 +31,9 @@ ifeq ($(WINARCH), x64)
 	BUILDF ?= win32
  endif
 endif
+
+ibundle:
+	make $(TARGET)
 
 #===============================================================
 # building IBundle on Mac OS X
@@ -49,10 +52,9 @@ install :
 #===============================================================
 # building IBundle on Windows
 #===============================================================
-windows : $(BUILDF)/IBundle.vcxproj IBundleWin
-
-IBundleWin:
+windows : $(BUILDF)/IBundle.vcxproj
 	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(BUILDF)/IBundle.vcxproj $(WINOPTS)"
+	cp -f $(BUILDF)/Release/IBundle.exe ..
 
 $(BUILDF)/IBundle.vcxproj : IBundle.pro
 	[ -d $(BUILDF) ] || mkdir $(BUILDF)

@@ -40,8 +40,10 @@ struct Tools
 	static bool					isurl (const std::string& str);
 	static std::string			ensurefloat (float f, int precision=0);
 
+#ifndef NOHOSTNAME
 	static std::string		getHostName();							///< gives the local host name
 	static unsigned long	getIP( const std::string& hostname);	///< resolves hostname to ip number, uses local host name if \c hostname is empty
+#endif
 	static std::string		ip2string (unsigned long ip);
 
 	static libmapping::rational readRational(const IMessage *msg, bool twoPart, int startIndex = 0);

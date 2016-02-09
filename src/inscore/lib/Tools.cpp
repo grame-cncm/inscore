@@ -43,7 +43,8 @@ using namespace libmapping;
 namespace inscore
 {
 
-//--------------------------------------------------------------------------
+#ifndef NOHOSTNAME
+	//--------------------------------------------------------------------------
 string Tools::getHostName()
 {
 	char name[1024];
@@ -65,6 +66,7 @@ unsigned long Tools::getIP( const string& hostname)
 	return 0;
 #endif
 }
+#endif
 
 string	Tools::ip2string (unsigned long ip)
 {
