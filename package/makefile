@@ -43,6 +43,7 @@ macapp  := $(viewer)-$(version).app
 winapp  := $(viewer)-$(version).exe
 macplug := $(macapp)/Contents/Plugins
 winplug := Plugins
+ibundle := ../tools/IBundle
 
 #########################
 # scripts provided as samples are now stored in a file
@@ -80,7 +81,9 @@ macosx:
 	make cleanperms
 	cp -f ../src/guido2.ttf $(package)
 	cd $(package) && ln -sf /Applications .
-	@[ -d $(package)/$(macplug) ] || mkdir $(package)/$(macplug)
+	@[ -d $(package)/IBundle ] || mkdir $(package)/IBundle
+	cp $(ibundle)/IBundle $(package)/IBundle
+	cp $(ibundle)/readme.txt $(package)/IBundle
 	make dmg
 		
 common: 
@@ -145,6 +148,7 @@ samples:
 	@echo " copying sample scripts"
 	@echo ========================
 	$(foreach s,$(scripts), cp -R ../scripts/$(s) $(package)/samples/;)
+	cp ../scripts/mobile/*.ibundle $(package)/samples/;
 	
 src:
 	@[ -d $(package)-src ] || mkdir -p $(package)-src
