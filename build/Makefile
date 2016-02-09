@@ -188,7 +188,8 @@ mobileUI:
 #===============================================================
 # building the library on windows
 #===============================================================
-windows : $(BUILDF)/INScore.vcxproj $(BUILDF)/INScoreViewer.vcxproj INScoreWin $(BUILDF)/release/$(GUIDOLIB) $(BUILDF)/release/guidoar.dll
+WINXML := $(BUILDF)/release/Plugins/libmusicxml2.dll
+windows : $(BUILDF)/INScore.vcxproj $(BUILDF)/INScoreViewer.vcxproj INScoreWin $(BUILDF)/release/$(GUIDOLIB) $(BUILDF)/release/guidoar.dll $(WINXML)
 
 winprojects : 
 	[ -d $(BUILDF) ] || mkdir $(BUILDF)
@@ -206,10 +207,14 @@ $(BUILDF)/INScoreViewer.vcxproj : viewer.pro
 	make winprojects
 
 $(BUILDF)/release/$(GUIDOLIB): ../lib/GUIDOEngine/$(BUILDF)/$(GUIDOLIB)
-	cp ../lib/GUIDOEngine/$(BUILDF)/$(GUIDOLIB) $(BUILDF)/release
+	cp -f ../lib/GUIDOEngine/$(BUILDF)/$(GUIDOLIB) $(BUILDF)/release
+
+$(WINXML):  ../lib/libMusicXML/$(BUILDF)/libmusicxml2.dll
+	[ -d $(BUILDF)/release/Plugins ] || mkdir $(BUILDF)/release/Plugins
+	cp -f ../lib/libMusicXML/$(BUILDF)/libmusicxml2.dll $(WINXML)
 
 $(BUILDF)/release/guidoar.dll: ../lib/GuidoAR/$(BUILDF)/guidoar.dll
-	cp ../lib/GuidoAR/$(BUILDF)/guidoar.dll $(BUILDF)/release
+	cp -f ../lib/GuidoAR/$(BUILDF)/guidoar.dll $(BUILDF)/release
 
 winclean:
 	rm -f $(BUILDF)/tmp
