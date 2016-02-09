@@ -185,6 +185,8 @@ win32:
 	cp ../lib/GestureFollower/win32/GFLib.dll $(package)/$(winplug)
 	cp ../lib/faust/win32/faust.dll $(package)/$(winplug)
 	cp ../lib/faust/win32/llvm_math.ll $(package)/$(winplug)
+	cp $(ibundle)/build/win32/release/IBundle.exe $(package)
+	cp $(ibundle)/readme.txt $(package)/IBundle-ReadMe.txt
 
 win64:
 	make wincommon
@@ -193,6 +195,8 @@ win64:
 	cp ../lib/libMusicXML/win64/libmusicxml2.dll $(package)/$(winplug)
 	cp ../lib/GestureFollower/win64/GFLib64.dll $(package)/$(winplug)
 	cp $(QT5)/vcredist/vcredist_msvc2013_x86.exe $(package)
+	cp $(ibundle)/build/win64/release/IBundle.exe $(package)
+	cp $(ibundle)/readme.txt $(package)/IBundle-ReadMe.txt
 
 wincommon:
 	[ -d $(package) ] || mkdir -p $(package)
