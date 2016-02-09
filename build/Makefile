@@ -76,6 +76,7 @@ INScoreMac :
 	make -C ../lib/libMusicXML/macosx
 	xcodebuild -jobs 8 -project $(BUILDF)/INScore.xcodeproj -target INScore -configuration Release
 	xcodebuild -jobs 8 -project $(BUILDF)/INScoreViewer.xcodeproj -target INScoreViewer -configuration Release
+	make -C ../tools/IBundle/build
 
 $(BUILDF)/INScore.xcodeproj : library.pro
 	make xcodeproj
@@ -171,6 +172,7 @@ $(BUILDF)/Makefile.app: viewer.pro
 INScoreLinux:
 	make -j 4 -C $(BUILDF) -f Makefile.lib
 	make -j 4 -C $(BUILDF) -f Makefile.app
+	make -C ../tools/IBundle/build
 
 linuxclean:
 	make -C $(BUILDF) -f Makefile.lib clean
@@ -199,6 +201,7 @@ winprojects :
 INScoreWin:
 	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(BUILDF)/INScore.vcxproj $(WINOPTS)"
 	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(BUILDF)/INScoreViewer.vcxproj $(WINOPTS)"
+	make -C ../tools/IBundle/build
 
 $(BUILDF)/INScore.vcxproj : library.pro
 	make winprojects
