@@ -37,7 +37,7 @@ endif
 #===============================================================
 macos : $(BUILDF)/IBundle.xcodeproj
 	cd $(BUILDF) && xcodebuild -jobs 8 -project IBundle.xcodeproj -target IBundle -configuration Release
-	cp -f $(BUILDF)/Release/IBundle .
+	cp -f $(BUILDF)/Release/IBundle ..
 
 $(BUILDF)/IBundle.xcodeproj : IBundle.pro
 	[ -d $(BUILDF) ] || mkdir $(BUILDF)
