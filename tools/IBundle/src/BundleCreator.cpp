@@ -160,7 +160,7 @@ bool BundleCreator::writeArchive(qarchive::SQArchive &archive, const std::string
 
 	std::string r;
 	switch(e){
-	case qarchive::NO_ERROR:
+	case qarchive::ARCH_OK:
 		return true;
 	case qarchive::FILE_EXIST:
 		std::cout<<"File already exist, do you want to overwrite? [O/n]   ";

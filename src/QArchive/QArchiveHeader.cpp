@@ -82,7 +82,7 @@ QArchiveError QArchiveHeader::readHeader(QIODevice *input)
 		headerSize += files.at(i)->subSize();
 	}
 
-	return NO_ERROR;
+	return ARCH_OK;
 }
 
 QByteArray QArchiveHeader::generateHeader() const

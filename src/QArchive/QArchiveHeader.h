@@ -25,7 +25,7 @@ enum HEADER_IDENTIFIERS{
 };
 
 enum QArchiveError{
-	NO_ERROR	=	0,
+	ARCH_OK	=	0,
 	FILE_EXIST,
 	FILE_NOT_FOUND,
 	FILE_CORRUPTED,

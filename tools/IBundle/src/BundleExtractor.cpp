@@ -35,7 +35,7 @@ bool BundleExtractor::extract(std::string bundleFile, std::string outputFolder)
 	QArchiveError e;
 	qarchive::SQArchive archive = qarchive::QArchive::readArchiveFromFileStd(bundleFile, e);
 
-	if(!e==NO_ERROR){
+	if(e!=ARCH_OK){
 		switch (e) {
 		case qarchive::FILE_NOT_FOUND:
 			std::cerr<<bundleFile<<" not found."<<std::endl;
@@ -84,7 +84,7 @@ bool BundleExtractor::writeArchive(qarchive::SQArchive archive, std::string outp
 
 	std::string r;
 	switch(e){
-	case qarchive::NO_ERROR:
+	case qarchive::ARCH_OK:
 		return true;
 	case qarchive::FILE_EXIST:
 

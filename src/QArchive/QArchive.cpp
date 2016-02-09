@@ -62,7 +62,7 @@ QArchiveError QArchive::compress(QString outputArchive, bool overwrite)
 
 	output.close();
 
-	return NO_ERROR;
+	return ARCH_OK;
 }
 
 QArchiveError QArchive::extract(QString path, bool overwrite)
@@ -75,7 +75,7 @@ QArchiveError QArchive::extract(QString path, bool overwrite)
 	while( (m=it.next()) ){
 		switch(m){
 		case TREE_END:
-			return NO_ERROR;
+			return ARCH_OK;
 		case BRANCH:
 			if(!dir.mkpath(it.name()))
 					return WRONG_PERMISSIONS;
@@ -105,7 +105,7 @@ QArchiveError QArchive::extract(QString path, bool overwrite)
 		}
 	}
 
-	return NO_ERROR;
+	return ARCH_OK;
 }
 
 //______________________________________________________
