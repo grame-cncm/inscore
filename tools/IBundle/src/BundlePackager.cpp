@@ -63,7 +63,7 @@ void BundlePackager::mapNames()
 	id=0;
 	for(auto it=fInputData.ressources.begin(); it!=fInputData.ressources.end(); it++){
 		//Compute the new name with the extension
-		int idExtSuffix = it->first.rfind('.');
+		size_t idExtSuffix = it->first.rfind('.');
 		std::stringstream name;
 		name << "Ressources/" << id <<"."<<it->first.substr(idExtSuffix+1);
 		fNamesMap[it->first] = name.str();
