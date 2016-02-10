@@ -81,8 +81,13 @@ bool TDummyJs::bindEnv  (stringstream& s, const string& name, const inscore::IMe
 	if (val->isType<int>()) s << val->value<int>(0);
 	else if (val->isType<float>()) s << val->value<float>(0.);
 	else if (val->isType<string>()) s << '"' <<  val->value(string("")) << '"';
-	else if (val->isType<inscore::SIMessageList>())
-		return false;
+	else if (val->isType<inscore::SIMessageList>()) {
+		inscore::SIMessageList l = val->value<inscore::SIMessageList>(0);
+		s << "'(";
+		l->list().printMsgs(s);
+		s << ")'";
+		return true;
+	}
 	else {
 		cerr << name << ": unknown variable type" << endl;
 		return false;
