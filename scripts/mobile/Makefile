@@ -1,5 +1,6 @@
 
 BUNDLES = Score.ibundle Welcome.ibundle Clock.ibundle
+IBUNDLE = ../../tools/IBundle/IBundle
 
 all: $(BUNDLES)
 
@@ -7,4 +8,4 @@ clean:
 	rm -f $(BUNDLES)
 
 %.ibundle: %.inscore
-	IBundle $< -o $@ -js -f
+	$(IBUNDLE) $< -o $@ -js -f
