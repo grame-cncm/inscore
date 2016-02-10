@@ -52,14 +52,27 @@ class EventsAble;
 */
 class VSVGItem: public 	QAbstractGraphicsShapeItem 
 {
-	QSvgRenderer fRenderer;
+	class AnimatedSvgRenderer : public QSvgRenderer {
+		QGraphicsItem* fItem;
+		public:
+			AnimatedSvgRenderer (QGraphicsItem* container) : fItem(container) {};
+		protected:
+			void timerEvent(QTimerEvent *) {
+				fItem->update (viewBoxF());
+			}
+	} fRenderer;
+	int		fTimerID;
+	bool	fAnimate;
+	int		fFramesPerSecond;
 	
 	public :
-				 VSVGItem() {}
-		virtual ~VSVGItem() {}
-		
+				 VSVGItem() : fRenderer(this), fTimerID(0), fAnimate(false), fFramesPerSecond(0) {}
+		virtual ~VSVGItem();
+	
+		void	setAnimate( bool state )	{ fAnimate = state; }
 		bool	setFile( const char* file);
 		bool	setText( const char* text);
+		bool	getAnimated() const		{ return fRenderer.animated(); }
 		QRectF	boundingRect() const	{ return fRenderer.viewBoxF(); }
 		QSize	size() const			{ return fRenderer.defaultSize(); }
 		void	paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );

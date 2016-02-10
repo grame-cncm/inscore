@@ -40,6 +40,9 @@ namespace inscore
 {
 
 //----------------------------------------------------------------------
+VSVGItem::~VSVGItem() { if (fTimerID) fRenderer.killTimer(fTimerID); }
+
+//----------------------------------------------------------------------
 bool VSVGItem::setFile( const char* filename)
 {
 	QString file = QString::fromUtf8( filename );
@@ -47,6 +50,8 @@ bool VSVGItem::setFile( const char* filename)
 		ITLErr << "cannot load SVG file" << filename << ITLEndl;
 		return false;
 	}
+	if (!fFramesPerSecond) fFramesPerSecond = fRenderer.framesPerSecond();
+	fRenderer.setFramesPerSecond(0);
 	return true;
 }
 
@@ -57,6 +62,7 @@ bool VSVGItem::setText( const char* text)
 		ITLErr << "cannot load svg data" << text << ITLEndl;
 		return false;
 	}
+	fFramesPerSecond = fRenderer.framesPerSecond();
 	return true;
 }
 
@@ -64,9 +70,19 @@ void VSVGItem::paint ( QPainter * painter, const QStyleOptionGraphicsItem *, QWi
 {
 	if (fRenderer.isValid()) {
 		fRenderer.render (painter, boundingRect());
+		if (fAnimate) {
+			if (!fTimerID && fFramesPerSecond) {
+				fRenderer.setFramesPerSecond(fFramesPerSecond);
+				fTimerID = fRenderer.startTimer(1000 / fFramesPerSecond);
+			}
+		}
+		else if (fTimerID) {
+			fRenderer.killTimer(fTimerID);
+			fTimerID = 0;
+			fRenderer.setFramesPerSecond(0);
+		}
 	}
 }
-
 
 //----------------------------------------------------------------------
 VSVGView::VSVGView(QGraphicsScene * scene, const ISVGFile* svg) 
@@ -89,7 +105,9 @@ void VSVGView::updateView( ISVGFile * svg  )
 	}
 	float alpha = svg->getA() / 255.f;
 	item()->setOpacity (alpha);
-	VIntPointObjectView::updateView( svg );	
+	item()->setAnimate(svg->getAnimate());
+	svg->setAnimated(item()->getAnimated());
+	VIntPointObjectView::updateView( svg );
 }
 
 //----------------------------------------------------------------------
@@ -101,7 +119,8 @@ void VSVGView::updateView( ISVG * svg  )
 	}
 	float alpha = svg->getA() / 255.f;
 	item()->setOpacity (alpha);
-	VIntPointObjectView::updateView( svg );	
+	item()->setAnimate(svg->getAnimate());
+	VIntPointObjectView::updateView( svg );
 }
 
 //----------------------------------------------------------------------
