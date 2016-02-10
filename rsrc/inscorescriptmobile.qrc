@@ -5,5 +5,6 @@
 	<file alias="Multi-touch.inscore">../scripts/mobile/Multi-touch.inscore</file>
 	<file alias="Random-Score.inscore">../scripts/mobile/RandomScore.inscore</file>
 	<file alias="Score.ibundle">../scripts/mobile/Score.ibundle</file>
+	<file alias="Clock.ibundle">../scripts/mobile/Clock.ibundle</file>
     </qresource>
 </RCC>
