@@ -72,13 +72,22 @@ RootPath changes are correctly handled, unless they result from
 a javacript section.
 
 Note for javascript sections:
-Javascript sections are reported to the ouput script, prefixed with 
-the current environment (i.e. INScore variables). However, these sections
-are NOT evaluated and as a result, output messages that make reference 
-to files are not visible to the IBundle tool. Thus, the corresponding 
-ressources will be missing from the bundle.
-You can use the --parse-javascript option to try to detect file names
-inside javascript sections.
+ Javascript sections are reported to the ouput script, prefixed with 
+ the current environment (i.e. INScore variables). However, these sections
+ are NOT evaluated and as a result, output messages that make reference 
+ to files are not visible to the IBundle tool. Thus, the corresponding 
+ ressources will be missing from the bundle.
+ You can use the --parse-javascript option to try to detect file names
+ inside javascript sections.
+
+Note about variables:
+ Variables are expanded by the parser but undefined variables are left 
+ unchanged. However and while generating the output script, undefined 
+ variables (i.e. parameters that start with a '$') are quoted since in
+ a normal case, only interaction variables are supposed to be present
+ and need to be quoted. Therefore, a variable that is defined by a 
+ javascript section will be quoted on output and thus result in an 
+ incorrect interpretation.
 
 ======================================================
  Acknowledgments
