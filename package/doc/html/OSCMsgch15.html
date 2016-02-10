@@ -7,35 +7,35 @@
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2016-02-09 12:38:00"> 
+<meta name="date" content="2016-02-10 15:31:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 2640--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 2661--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch16.html" >next</a>] [<a 
 href="OSCMsgch14.html" >prev</a>] [<a 
 href="OSCMsgch14.html#tailOSCMsgch14.html" >prev-tail</a>] [<a 
 href="#tailOSCMsgch15.html">tail</a>] [<a 
 href="OSCMsg3.html#OSCMsgch15.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;15</span><br /><a 
- id="x19-8100015"></a>Events and Interaction</h2>
-<!--l. 2643--><p class="noindent" >Interaction messages are user defined messages associated to events and triggered when these events occur. These
+ id="x19-8200015"></a>Events and Interaction</h2>
+<!--l. 2664--><p class="noindent" >Interaction messages are user defined messages associated to events and triggered when these events occur. These
 messages accept variables as message arguments.
-<!--l. 2645--><p class="noindent" >The general form of the message is the following:
+<!--l. 2666--><p class="noindent" >The general form of the message is the following:
 <a 
- id="dx19-81001"></a>
+ id="dx19-82001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2651--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2672--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">interactMsg</span> <img 
-src="OSCMsg97x.png" alt="PICT" >
+src="OSCMsg98x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx19-81002"></a>
+ id="dx19-82002"></a>
 <a 
- id="dx19-81003"></a>
-<!--l. 2655--><p class="noindent" ><span 
+ id="dx19-82003"></a>
+<!--l. 2676--><p class="noindent" ><span 
 class="pcrr8tn-">what </span>represents the event to watch and <span 
 class="pcrr8tn-">message </span>is a list of associated messages, separated by a comma.
      <ul class="itemize1">
@@ -54,7 +54,7 @@ class="pcrr8tn-">watch+</span>, the messages are appended to the messages curren
      <li class="itemize">: associate or add a single message to the <span 
 class="pcrr8tn-">what </span>event. This form is provided for compatibility with
      previous versions.</li></ul>
-<!--l. 2664--><p class="noindent" ><span 
+<!--l. 2685--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -66,32 +66,32 @@ why &#8217;:&#8217; is also accepted as separator in OSC messages. <br
 class="newline" />The <span 
 class="pcrr8tn-">get watch </span>message gives all the watch messages of a node, but doesn&#8217;t take any argument.
 <a 
- id="dx19-81004"></a>
+ id="dx19-82004"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
                                                                                  
 
                                                                                  
-<!--l. 2671--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2692--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">message</span> <img 
-src="OSCMsg98x.png" alt="PICT" >
+src="OSCMsg99x.png" alt="PICT" >
 </div></dd></dl>
-<!--l. 2673--><p class="noindent" >The associated messages are any valid OSC message (not restricted to the INScore message set), with an
+<!--l. 2694--><p class="noindent" >The associated messages are any valid OSC message (not restricted to the INScore message set), with an
 extended address scheme, supporting IP addresses or host names and udp port number to be specified
 as OSC addresses prefix. The message parameters are any valid OSC type or variable (see section
 <a 
-href="#x19-8800015.2">15.2<!--tex4ht:ref: interactvar --></a>).
+href="#x19-8900015.2">15.2<!--tex4ht:ref: interactvar --></a>).
 <a 
- id="dx19-81005"></a>
+ id="dx19-82005"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2678--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2699--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">addressPrefix</span> <img 
-src="OSCMsg99x.png" alt="PICT" >
+src="OSCMsg100x.png" alt="PICT" >
 </div> </dd></dl>
-<!--l. 2680--><p class="noindent" ><span 
+<!--l. 2701--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -104,43 +104,43 @@ class="pcrr8tn-">localhost </span>on port <span
 class="pcrr8tn-">12000</span>:
 <div class="center" 
 >
-<!--l. 2682--><p class="noindent" >
+<!--l. 2703--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox89"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">localhost:12000/your/osc/address;</span>
 </div></div>
 </div>
 <h3 class="sectionHead"><span class="titlemark">15.1    </span> <a 
- id="x19-8200015.1"></a>Events</h3>
-<!--l. 2692--><p class="noindent" >
+ id="x19-8300015.1"></a>Events</h3>
+<!--l. 2713--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">15.1.1    </span> <a 
- id="x19-8300015.1.1"></a>Mouse events</h4>
-<!--l. 2695--><p class="noindent" >User interface events are typical mouse events:
+ id="x19-8400015.1.1"></a>Mouse events</h4>
+<!--l. 2716--><p class="noindent" >User interface events are typical mouse events:
 <a 
- id="dx19-83001"></a>
+ id="dx19-84001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
                                                                                  
 
                                                                                  
-<!--l. 2698--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2719--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">what</span> <img 
-src="OSCMsg100x.png" alt="PICT" >
+src="OSCMsg101x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx19-83002"></a>
+ id="dx19-84002"></a>
 <a 
- id="dx19-83003"></a>
+ id="dx19-84003"></a>
 <a 
- id="dx19-83004"></a>
+ id="dx19-84004"></a>
 <a 
- id="dx19-83005"></a>
+ id="dx19-84005"></a>
 <a 
- id="dx19-83006"></a>
+ id="dx19-84006"></a>
 <a 
- id="dx19-83007"></a>
-<!--l. 2706--><p class="noindent" ><span 
+ id="dx19-84007"></a>
+<!--l. 2727--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -151,50 +151,50 @@ class="small-caps">E</span> </span><br
 class="newline" />Triggering a message on mouse down:
 <div class="center" 
 >
-<!--l. 2708--><p class="noindent" >
+<!--l. 2729--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox90"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject watch mouseDown (/ITL/scene/myObject show 0);</span>
 </div></div>
 </div>
-<!--l. 2709--><p class="noindent" >&#x00A0;       the object hides itself on mouse click. <br 
+<!--l. 2730--><p class="noindent" >&#x00A0;       the object hides itself on mouse click. <br 
 class="newline" />Triggering a message on mouse down but addressed to another host on udp port 12100:
 <div class="center" 
 >
-<!--l. 2711--><p class="noindent" >
+<!--l. 2732--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox91"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject watch mouseDown (host.domain.org:12100/an/address start);</span>
 </div></div>
 </div>
-<!--l. 2713--><p class="noindent" ><span 
+<!--l. 2734--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
 class="small-caps">E</span>  </span><br 
 class="newline" />UI events are not supported by objects that are synchronized as slave.
-<!--l. 2716--><p class="noindent" >Mouse events can be simulated using a <span 
+<!--l. 2737--><p class="noindent" >Mouse events can be simulated using a <span 
 class="pcrr8tn-">event </span>message:
 <a 
- id="dx19-83008"></a>
+ id="dx19-84008"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2719--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2740--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">uievt</span> <img 
-src="OSCMsg101x.png" alt="PICT" >
+src="OSCMsg102x.png" alt="PICT" >
 </div> </dd></dl>
                                                                                  
 
                                                                                  
 <a 
- id="dx19-83009"></a>
-<!--l. 2721--><p class="noindent" >where <span 
+ id="dx19-84009"></a>
+<!--l. 2742--><p class="noindent" >where <span 
 class="pcrr8tn-">mouseEvent </span>is one of the events described above, <span 
 class="pcrr8tn-">x </span>and <span 
 class="pcrr8tn-">y </span>are integer values giving the click position,
 expressed in pixels and relative to the target object.
-<!--l. 2723--><p class="noindent" ><span 
+<!--l. 2744--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -205,50 +205,23 @@ class="small-caps">E</span> </span><br
 class="newline" />Simulating a mouse down at position 10, 10 :
 <div class="center" 
 >
-<!--l. 2725--><p class="noindent" >
+<!--l. 2746--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox92"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject event mouseDown 10 10;</span>
 </div></div>
 </div>
-<!--l. 2729--><p class="noindent" >
+<!--l. 2750--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">15.1.2    </span> <a 
- id="x19-8400015.1.2"></a>Touch events</h4>
-<!--l. 2731--><p class="noindent" >Depending on the display device, multi-touch events are supported by INScore :
-<a 
- id="dx19-84001"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 2734--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">touch</span> <img 
-src="OSCMsg102x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx19-84002"></a>
-<a 
- id="dx19-84003"></a>
-<a 
- id="dx19-84004"></a>
-<!--l. 2739--><p class="noindent" >A typical sequence of generated events consists in a <span 
-class="pcrr8tn-">touchBegin </span>event, followed by <span 
-class="pcrr8tn-">touchUpdate </span>events and
-closed by a <span 
-class="pcrr8tn-">touchEnd</span>.
-<!--l. 2743--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">15.1.3    </span> <a 
- id="x19-8500015.1.3"></a>Time events</h4>
-<!--l. 2746--><p class="noindent" >Events are also defined on the time domain:
+ id="x19-8500015.1.2"></a>Touch events</h4>
+<!--l. 2752--><p class="noindent" >Depending on the display device, multi-touch events are supported by INScore :
 <a 
  id="dx19-85001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-                                                                                 
-
-                                                                                 
-<!--l. 2750--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">what</span> <img 
+<!--l. 2755--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">touch</span> <img 
 src="OSCMsg103x.png" alt="PICT" >
 </div></dd></dl>
 <a 
@@ -257,9 +230,36 @@ src="OSCMsg103x.png" alt="PICT" >
  id="dx19-85003"></a>
 <a 
  id="dx19-85004"></a>
+<!--l. 2760--><p class="noindent" >A typical sequence of generated events consists in a <span 
+class="pcrr8tn-">touchBegin </span>event, followed by <span 
+class="pcrr8tn-">touchUpdate </span>events and
+closed by a <span 
+class="pcrr8tn-">touchEnd</span>.
+<!--l. 2764--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">15.1.3    </span> <a 
+ id="x19-8600015.1.3"></a>Time events</h4>
+<!--l. 2767--><p class="noindent" >Events are also defined on the time domain:
 <a 
- id="dx19-85005"></a>
-<!--l. 2756--><p class="noindent" >Each event takes a time interval as parameter, defined by two <span 
+ id="dx19-86001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+                                                                                 
+
+                                                                                 
+<!--l. 2771--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">what</span> <img 
+src="OSCMsg104x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx19-86002"></a>
+<a 
+ id="dx19-86003"></a>
+<a 
+ id="dx19-86004"></a>
+<a 
+ id="dx19-86005"></a>
+<!--l. 2777--><p class="noindent" >Each event takes a time interval as parameter, defined by two <span 
 class="pcrr8tn-">time </span>specifications (see section <a 
 href="OSCMsgch3.html#x7-220003">3<!--tex4ht:ref: time --></a> p.<a 
 href="OSCMsgch3.html#x7-220003">29<!--tex4ht:ref: time --></a> for the time
@@ -274,7 +274,7 @@ class="pcrr8tn-">timeLeave </span>are  triggered  when  an  object  date  is  mo
 class="pcrr8tn-">durEnter</span>, <span 
 class="pcrr8tn-">durLeave </span>are triggered when an object duration is moved to or out of a watched time
      interval.</li></ul>
-<!--l. 2763--><p class="noindent" ><span 
+<!--l. 2784--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -285,39 +285,39 @@ class="small-caps">E</span> </span><br
 class="newline" />An object that moves a score to a given page number when it enters its time zone.
 <div class="center" 
 >
-<!--l. 2765--><p class="noindent" >
+<!--l. 2786--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox93">
 <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject watch timeEnter 10/1 18/1 (/ITL/scene/score page 2);</span>
 </div></div>
 </div>
-<!--l. 2769--><p class="noindent" >
+<!--l. 2790--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">15.1.4    </span> <a 
- id="x19-8600015.1.4"></a>URL events</h4>
-<!--l. 2772--><p class="noindent" ><span 
+ id="x19-8700015.1.4"></a>URL events</h4>
+<!--l. 2793--><p class="noindent" ><span 
 class="pcrr8tn-">url </span>objects (i.e. intermediate objects for URL based objects (see section <a 
 href="OSCMsgch5.html#x9-320005.8">5.8<!--tex4ht:ref: filebasedrsrc --></a> p.<a 
 href="OSCMsgch5.html#x9-320005.8">42<!--tex4ht:ref: filebasedrsrc --></a>) support specific events, intended
 to reflect the transaction state:
 <a 
- id="dx19-86001"></a>
+ id="dx19-87001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
                                                                                  
 
                                                                                  
-<!--l. 2778--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2799--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">what</span> <img 
-src="OSCMsg104x.png" alt="PICT" >
+src="OSCMsg105x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx19-86002"></a>
+ id="dx19-87002"></a>
 <a 
- id="dx19-86003"></a>
+ id="dx19-87003"></a>
 <a 
- id="dx19-86004"></a>
+ id="dx19-87004"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">success </span>is triggered when the data have been downloaded,
@@ -327,7 +327,7 @@ class="pcrr8tn-">error </span>is triggered when an error has occurred during the
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">cancel </span>is triggered when the target url or the object type is changed while downloading.</li></ul>
-<!--l. 2789--><p class="noindent" ><span 
+<!--l. 2810--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -338,7 +338,7 @@ class="small-caps">E</span> </span><br
 class="newline" />Triggering an error message in case of failure :
 <div class="center" 
 >
-<!--l. 2795--><p class="noindent" >
+<!--l. 2816--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox94"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/score set gmnf "http://ahost.adomain.org/score.gmn";</span><br 
@@ -349,29 +349,29 @@ class="pcrr8tn-x-x-90">&#x00A0;   /ITL/scene/status set txt "Failed to download 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">);</span></div></div>
 </div>
-<!--l. 2800--><p class="noindent" >
+<!--l. 2821--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">15.1.5    </span> <a 
- id="x19-8700015.1.5"></a>Miscellaneous events</h4>
+ id="x19-8800015.1.5"></a>Miscellaneous events</h4>
 <a 
- id="dx19-87001"></a>
+ id="dx19-88001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2809--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2830--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">what</span> <img 
-src="OSCMsg105x.png" alt="PICT" >
+src="OSCMsg106x.png" alt="PICT" >
 </div></dd></dl>
                                                                                  
 
                                                                                  
 <a 
- id="dx19-87002"></a>
+ id="dx19-88002"></a>
 <a 
- id="dx19-87003"></a>
+ id="dx19-88003"></a>
 <a 
- id="dx19-87004"></a>
+ id="dx19-88004"></a>
 <a 
- id="dx19-87005"></a>
+ id="dx19-88005"></a>
      <ul class="itemize1">
      <li class="itemize">the <span 
 class="pcrr8tn-">export </span>event is supported by all the components. It is triggered after an export message has been
@@ -391,7 +391,7 @@ class="pcrr8tn-">endPaint </span>event is supported at scene level only and trig
      </li>
      <li class="itemize">the <span 
 class="pcrr8tn-">del </span>event is triggered when an object is being deleted.</li></ul>
-<!--l. 2823--><p class="noindent" ><span 
+<!--l. 2844--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -402,56 +402,56 @@ class="small-caps">E</span> </span><br
 class="newline" />Displaying a welcome message to new elements:
 <div class="center" 
 >
-<!--l. 2825--><p class="noindent" >
+<!--l. 2846--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox95"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene watch newElement (/ITL/scene/msg set txt "Welcome");</span>
 </div></div>
 </div>
-<!--l. 2829--><p class="noindent" >
+<!--l. 2850--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">15.2    </span> <a 
- id="x19-8800015.2"></a>Variables</h3>
-<!--l. 2832--><p class="noindent" >Variables are values computed when an event is triggered. These values are send in place of the variable. A variable
+ id="x19-8900015.2"></a>Variables</h3>
+<!--l. 2853--><p class="noindent" >Variables are values computed when an event is triggered. These values are send in place of the variable. A variable
 name starts with a &#8217;$&#8217; sign.
-<!--l. 2835--><p class="noindent" >
+<!--l. 2856--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">15.2.1    </span> <a 
- id="x19-8900015.2.1"></a>Position variables</h4>
-<!--l. 2838--><p class="noindent" >Position variables reflects the current mouse position for mouse events or the current touch position for touch
+ id="x19-9000015.2.1"></a>Position variables</h4>
+<!--l. 2859--><p class="noindent" >Position variables reflects the current mouse position for mouse events or the current touch position for touch
 events. They are set to <span 
 class="pcrr8tn-">0 </span>for the other events.
 <a 
- id="dx19-89001"></a>
+ id="dx19-90001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
                                                                                  
 
                                                                                  
-<!--l. 2842--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2863--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">posVar</span> <img 
-src="OSCMsg106x.png" alt="PICT" >
+src="OSCMsg107x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx19-89002"></a>
+ id="dx19-90002"></a>
 <a 
- id="dx19-89003"></a>
+ id="dx19-90003"></a>
 <a 
- id="dx19-89004"></a>
+ id="dx19-90004"></a>
 <a 
- id="dx19-89005"></a>
+ id="dx19-90005"></a>
 <a 
- id="dx19-89006"></a>
+ id="dx19-90006"></a>
 <a 
- id="dx19-89007"></a>
-<!--l. 2850--><p class="noindent" >where
+ id="dx19-90007"></a>
+<!--l. 2871--><p class="noindent" >where
 <a 
- id="dx19-89008"></a>
+ id="dx19-90008"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2853--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2874--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">xy</span> <img 
-src="OSCMsg107x.png" alt="PICT" >
+src="OSCMsg108x.png" alt="PICT" >
 </div></dd></dl>
      <ul class="itemize1">
      <li class="itemize"><span 
@@ -477,7 +477,7 @@ class="pcrr8tn-">$absx $absy</span>:  denotes  the  mouse  pointer  absolute  po
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">$sx$sy</span>: denotes the mouse pointer position in the scene coordinates space.</li></ul>
-<!--l. 2864--><p class="noindent" ><span 
+<!--l. 2885--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -489,7 +489,7 @@ class="newline" />An object that follows mouse move.<br
 class="newline" />
 <div class="center" 
 >
-<!--l. 2868--><p class="noindent" >
+<!--l. 2889--><p class="noindent" >
                                                                                  
 
                                                                                  
@@ -509,22 +509,22 @@ class="pcrr8tn-x-x-90">&#x00A0;</span><span
 class="pcrr8tn-x-x-90">&#x00A0;</span><span 
 class="pcrr8tn-x-x-90">&#x00A0;                   /ITL/scene/myObject y &#8217;$sy&#8217; );</span></div></div>
 </div>
-<!--l. 2872--><p class="noindent" >
+<!--l. 2893--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">15.2.2    </span> <a 
- id="x19-9000015.2.2"></a>Time variables</h4>
-<!--l. 2875--><p class="noindent" >Time variables reflects the date corresponding to the current mouse position for mouse events. They are set to <span 
+ id="x19-9100015.2.2"></a>Time variables</h4>
+<!--l. 2896--><p class="noindent" >Time variables reflects the date corresponding to the current mouse position for mouse events. They are set to <span 
 class="pcrr8tn-">0 </span>for
 the other events.
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2880--><p class="noindent" ><div class="minipage"><!--l. 2880--><p class="center" ><img 
-src="OSCMsg108x.png" alt="PICT" >
+<!--l. 2901--><p class="noindent" ><div class="minipage"><!--l. 2901--><p class="center" ><img 
+src="OSCMsg109x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx19-90001"></a>
+ id="dx19-91001"></a>
 <a 
- id="dx19-90002"></a>
+ id="dx19-91002"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">$date</span>: denotes the object date corresponding to the mouse pointer position at the time of the event.
@@ -540,7 +540,7 @@ class="pcrr8tn-">%f </span>may be used to get the date delivered as a float
 class="pcrr8tn-">$rdate</span>:  is  similar  to  <span 
 class="pcrr8tn-">$date </span>but  ignores  the  target  current  date:  the  date  is  relative  to  the  object
      mapping only.</li></ul>
-<!--l. 2889--><p class="noindent" ><span 
+<!--l. 2910--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -548,7 +548,7 @@ class="small-caps">E</span>  </span><br
 class="newline" />A variable can be used several times in a message, but several <span 
 class="pcrr8tn-">$date </span>variables must always refer to the same
 mapping.
-<!--l. 2892--><p class="noindent" ><span 
+<!--l. 2913--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -560,7 +560,7 @@ class="newline" />Sending the current date as a float value to an external appli
 class="newline" />
 <div class="center" 
 >
-<!--l. 2894--><p class="noindent" >
+<!--l. 2915--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox97"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject watch mouseDown ( targetHost:12000/date &#8217;$date%f&#8217; );</span>
@@ -569,24 +569,24 @@ class="pcrr8tn-x-x-90">/ITL/scene/myObject watch mouseDown ( targetHost:12000/da
                                                                                  
 
                                                                                  
-<!--l. 2897--><p class="noindent" >
+<!--l. 2918--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">15.2.3    </span> <a 
- id="x19-9100015.2.3"></a>Miscellaneous variables</h4>
+ id="x19-9200015.2.3"></a>Miscellaneous variables</h4>
 <a 
- id="dx19-91001"></a>
+ id="dx19-92001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2902--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2923--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">variable</span> <img 
-src="OSCMsg109x.png" alt="PICT" >
+src="OSCMsg110x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx19-91002"></a>
+ id="dx19-92002"></a>
 <a 
- id="dx19-91003"></a>
+ id="dx19-92003"></a>
 <a 
- id="dx19-91004"></a>
+ id="dx19-92004"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">$name </span>is replaced by the target object name.
@@ -596,14 +596,14 @@ class="pcrr8tn-">$scene </span>is replaced by the target object scene name.
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">$address </span>is replaced by the target object OSC address.</li></ul>
-<!--l. 2913--><p class="noindent" ><span 
+<!--l. 2934--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
 class="small-caps">E</span>  </span><br 
 class="newline" />For the <span 
 class="pcrr8tn-">newElement </span>event, the target object is the new element.
-<!--l. 2916--><p class="noindent" ><span 
+<!--l. 2937--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -614,34 +614,34 @@ class="small-caps">E</span> </span><br
 class="newline" />Using an object name:
 <div class="center" 
 >
-<!--l. 2918--><p class="noindent" >
+<!--l. 2939--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox98"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene watch newElement (/ITL/scene/welcome set txt "Welcome" &#8217;$name&#8217;);</span>
 </div></div>
 </div>
-<!--l. 2922--><p class="noindent" >
+<!--l. 2943--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">15.2.4    </span> <a 
- id="x19-9200015.2.4"></a>Message based variables</h4>
-<!--l. 2925--><p class="noindent" >A message based variable is a variable containing an OSC message which will be evaluated at the time of the event.
+ id="x19-9300015.2.4"></a>Message based variables</h4>
+<!--l. 2946--><p class="noindent" >A message based variable is a variable containing an OSC message which will be evaluated at the time of the event.
 They are supported by all kind of events. Like the variables above, a message based variable starts with a &#8217;$&#8217; sign
 followed by a valid &#8217;get&#8217; message enclosed in parenthesis:
 <a 
- id="dx19-92001"></a>
+ id="dx19-93001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
                                                                                  
 
                                                                                  
-<!--l. 2928--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2949--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">msgVar</span> <img 
-src="OSCMsg110x.png" alt="PICT" >
+src="OSCMsg111x.png" alt="PICT" >
 </div></dd></dl>
-<!--l. 2930--><p class="noindent" >The evaluation of a &#8217;get&#8217; message produces a message or a list of messages. The message based variable will be
+<!--l. 2951--><p class="noindent" >The evaluation of a &#8217;get&#8217; message produces a message or a list of messages. The message based variable will be
 replaced by the parameters of the messages resulting from the evaluation of the &#8217;get&#8217; message. Note that all the &#8217;get&#8217;
 messages attached to an event are evaluated at the same time.
-<!--l. 2933--><p class="noindent" ><span 
+<!--l. 2954--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -653,7 +653,7 @@ class="newline" />An object that takes the <span
 class="pcrr8tn-">x </span>position of another object on mouse down:
 <div class="center" 
 >
-<!--l. 2936--><p class="noindent" >
+<!--l. 2957--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox99"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject watch mouseDown </span><br 
@@ -664,17 +664,17 @@ class="pcrr8tn-x-x-90">&#x00A0;</span><span
 class="pcrr8tn-x-x-90">&#x00A0;</span><span 
 class="pcrr8tn-x-x-90">&#x00A0;                   (/ITL/scene/myObject x &#8217;$(/ITL/scene/obj get x)&#8217;);</span></div></div>
 </div>
-<!--l. 2941--><p class="noindent" >
+<!--l. 2962--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">15.2.5    </span> <a 
- id="x19-9300015.2.5"></a>OSC address variables</h4>
-<!--l. 2943--><p class="noindent" >The OSC address of a message associated to an event supports the following variables:
+ id="x19-9400015.2.5"></a>OSC address variables</h4>
+<!--l. 2964--><p class="noindent" >The OSC address of a message associated to an event supports the following variables:
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">$self</span>: replaced by the object name.
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">$scene</span>: replaced by the scene name.</li></ul>
-<!--l. 2949--><p class="noindent" ><span 
+<!--l. 2970--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -685,7 +685,7 @@ class="small-caps">E</span> </span><br
 class="newline" />Requesting a set of objects to send a message to themselves on a mouse event:
 <div class="center" 
 >
-<!--l. 2953--><p class="noindent" >
+<!--l. 2974--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox100"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/* watch mouseDown </span><span 
@@ -705,84 +705,84 @@ class="pcrr8tn-x-x-90">&#x00A0;                 (/ITL/scene/$self x &#8217;$sx&#
 <span 
 class="pcrr8tn-x-x-90">themselves</span></div></div>
 </div>
-<!--l. 2957--><p class="noindent" >
+<!--l. 2978--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">15.3    </span> <a 
- id="x19-9400015.3"></a>Interaction state management</h3>
-<!--l. 2960--><p class="noindent" >For a given object, its <span 
+ id="x19-9500015.3"></a>Interaction state management</h3>
+<!--l. 2981--><p class="noindent" >For a given object, its <span 
 class="ptmri8t-">interaction state </span>(i.e. the watched events and the associated messages) can be saved and
 restored.
 <a 
- id="dx19-94001"></a>
+ id="dx19-95001"></a>
                                                                                  
 
                                                                                  
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2963--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2984--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">stateMsg</span> <img 
-src="OSCMsg111x.png" alt="PICT" >
+src="OSCMsg112x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx19-94002"></a>
+ id="dx19-95002"></a>
 <a 
- id="dx19-94003"></a>
-<!--l. 2967--><p class="noindent" >Interaction states are managed using a stack where the states are pushed to or popped from.
+ id="dx19-95003"></a>
+<!--l. 2988--><p class="noindent" >Interaction states are managed using a stack where the states are pushed to or popped from.
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">push</span>: push the current interaction state on top of the stack.
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">pop</span>: replace the current interaction state with the one popped from the top of the stack.</li></ul>
-<!--l. 2973--><p class="noindent" >The different states stored in this stack can be obtain with the message :
+<!--l. 2994--><p class="noindent" >The different states stored in this stack can be obtain with the message :
 <a 
- id="dx19-94004"></a>
+ id="dx19-95004"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2977--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2998--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">stackMsg</span> <img 
-src="OSCMsg112x.png" alt="PICT" >
+src="OSCMsg113x.png" alt="PICT" >
 </div></dd></dl>
-<!--l. 2979--><p class="noindent" ><span 
+<!--l. 3000--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
 class="small-caps">E</span>  </span><br 
 class="newline" />The effect of a pop message addressed to an object with an empty stack is to clear the object current interaction
 state.
-<!--l. 2985--><p class="noindent" >
+<!--l. 3006--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">15.4    </span> <a 
- id="x19-9500015.4"></a>File watcher</h3>
-<!--l. 2988--><p class="noindent" >The <span 
+ id="x19-9600015.4"></a>File watcher</h3>
+<!--l. 3009--><p class="noindent" >The <span 
 class="pcrr8tn-">fileWatcher </span>is a static node of a scene that is intended to watch file modifications. <br 
 class="newline" />It receives messages at the address <span 
 class="pcrr8tn-">/ITL/scene/fileWatcher</span>.
-<!--l. 2991--><p class="noindent" >The <span 
+<!--l. 3012--><p class="noindent" >The <span 
 class="pcrr8tn-">fileWatcher </span>support the <span 
 class="pcrr8tn-">watch </span>and <span 
 class="pcrr8tn-">watch+ </span>messages as described in section <a 
-href="#x19-8100015">15<!--tex4ht:ref: interaction --></a> p.<a 
-href="#x19-8100015">126<!--tex4ht:ref: interaction --></a> with a file name used
+href="#x19-8200015">15<!--tex4ht:ref: interaction --></a> p.<a 
+href="#x19-8200015">126<!--tex4ht:ref: interaction --></a> with a file name used
 in place of the <span 
 class="pcrr8tn-">what </span>parameter.
 <a 
- id="dx19-95001"></a>
+ id="dx19-96001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
                                                                                  
 
                                                                                  
-<!--l. 2995--><p class="noindent" ><div class="minipage"><span 
+<!--l. 3016--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">fileWatcher</span> <img 
-src="OSCMsg113x.png" alt="PICT" >
+src="OSCMsg114x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx19-95002"></a>
+ id="dx19-96002"></a>
 <a 
- id="dx19-95003"></a>
-<!--l. 2999--><p class="noindent" ><span 
+ id="dx19-96003"></a>
+<!--l. 3020--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -793,7 +793,7 @@ class="small-caps">E</span> </span><br
 class="newline" />Reload aa INScore script on file modification:
 <div class="center" 
 >
-<!--l. 3004--><p class="noindent" >
+<!--l. 3025--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox101"> <div class="minipage">  <span 
 class="pcrr8tn-x-x-90">/ITL/scene/fileWatcher wach &#8217;myScript.inscore&#8217; </span><br 
@@ -807,12 +807,12 @@ class="pcrr8tn-x-x-90">&#x00A0;                   ( /ITL/scene load &#8217;myScr
                                                                                  
 
                                                                                  
-<!--l. 3026--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 3047--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch16.html" >next</a>] [<a 
 href="OSCMsgch14.html" >prev</a>] [<a 
 href="OSCMsgch14.html#tailOSCMsgch14.html" >prev-tail</a>] [<a 
 href="OSCMsgch15.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch15.html" >up</a>] </p></div>
-<!--l. 3026--><p class="noindent" ><a 
+<!--l. 3047--><p class="noindent" ><a 
  id="tailOSCMsgch15.html"></a>  
 </body></html> 

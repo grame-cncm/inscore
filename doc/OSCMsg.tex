@@ -1383,6 +1383,27 @@ Writing a pianoroll in 3 steps:
 /ITL/scene/myPianoroll write " f]";
 }
 
+%-------------------------------
+%:  svg
+\sublevel{SVG Objects}
+\label{svgobjects}
+
+The following message is accepted by the components types \OSC{svg | svgf}.
+
+\begin{rail}
+svgMsg :		'animate' int32
+		| get 'animated'
+\end{rail}
+\index{Specific messages! svg! animate}
+\index{Specific messages! svg! animated}
+
+\begin{itemize}
+\item \OSC{animate}: start or stop the svg animation (provided the SVG is animated). The parameter is a boolean value (default is 0).
+\item \OSC{animated}: a \OSC{get} parameter only: returns whether the svg is animated or not.
+\end{itemize}
+
+\note\\
+SVG objects are rendered using the Qt SVG Renderer and suffer the Qt limitations. For example and with Qt 5.5, xlinks are not supported.
 
 %-------------------------------
 \sublevel{The 'grid' object}

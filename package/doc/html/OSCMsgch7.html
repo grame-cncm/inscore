@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2016-02-09 12:38:00"> 
+<meta name="date" content="2016-02-10 15:31:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
@@ -410,21 +410,57 @@ class="pcrr8tn-x-x-90">/ITL/scene/myPianoroll write " f]";</span></div></div>
 </div>
 <!--l. 1388--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">7.5    </span> <a 
- id="x11-410007.5"></a>The &#8217;grid&#8217; object</h3>
-<!--l. 1391--><p class="noindent" >The <span 
+ id="x11-410007.5"></a>SVG Objects</h3>
+<!--l. 1391--><p class="noindent" >The following message is accepted by the components types <span 
+class="pcrr8tn-">svg | svgf</span>.
+<a 
+ id="dx11-41001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1396--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">svgMsg</span> <img 
+src="OSCMsg48x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx11-41002"></a>
+<a 
+ id="dx11-41003"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">animate</span>: start or stop the svg animation (provided the SVG is animated). The parameter is a boolean
+     value (default is 0).
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">animated</span>: a <span 
+class="pcrr8tn-">get </span>parameter only: returns whether the svg is animated or not.</li></ul>
+<!--l. 1405--><p class="noindent" ><span 
+class="ptmbc8t-">N<span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" /> SVG objects are rendered using the Qt SVG Renderer and suffer the Qt limitations. For example and with Qt 5.5,
+xlinks are not supported.
+<!--l. 1409--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">7.6    </span> <a 
+ id="x11-420007.6"></a>The &#8217;grid&#8217; object</h3>
+<!--l. 1412--><p class="noindent" >The <span 
 class="pcrr8tn-">grid </span>object provides a pre-defined time to graphic mapping organized in columns and row. By default, it is not
 visible (white, transparent) but supports all the attributes of rectangles (color, pen, effects, etc.). Each
 element of a grid has a duration that is computed as the grid duration divided by the total number
 of elements ( columns x rows) and is placed in the time space from the date 0 to the end of the grid
 duration.
 <a 
- id="dx11-41001"></a>
+ id="dx11-42001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1399--><p class="noindent" ><div class="minipage"><span 
+                                                                                 
+
+                                                                                 
+<!--l. 1420--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">gridMsg</span> <img 
-src="OSCMsg48x.png" alt="PICT" >
+src="OSCMsg49x.png" alt="PICT" >
 </div></dd></dl>
      <ul class="itemize1">
      <li class="itemize"><span 
@@ -445,7 +481,7 @@ class="pcrr8tn-">order </span>defines the time order of the elements. By default
 class="pcrr8tn-">leftright</span>). The <span 
 class="pcrr8tn-">topbottom </span>parameter changes this order from
      top to bottom first and from left to right next.</li></ul>
-<!--l. 1409--><p class="noindent" ><span 
+<!--l. 1430--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -456,10 +492,7 @@ class="small-caps">E</span> </span><br
 class="newline" />Creating a 10 x 10 grid organized from top to bottom with a border:
 <div class="center" 
 >
-<!--l. 1415--><p class="noindent" >
-                                                                                 
-
-                                                                                 
+<!--l. 1436--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox44"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/grid set grid 10 10 ;</span><br 
@@ -470,23 +503,26 @@ class="pcrr8tn-x-x-90">/ITL/scene/grid yborder 3. ;</span><br
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/grid order topbottom ;</span></div></div>
 </div>
-<!--l. 1420--><p class="noindent" >
-<h3 class="sectionHead"><span class="titlemark">7.6    </span> <a 
- id="x11-420007.6"></a>Arrows</h3>
-<!--l. 1423--><p class="noindent" >Specific arrows message is accepted by the component type <span 
+<!--l. 1441--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">7.7    </span> <a 
+ id="x11-430007.7"></a>Arrows</h3>
+<!--l. 1444--><p class="noindent" >Specific arrows message is accepted by the component type <span 
 class="pcrr8tn-">line</span>. It add capability to draw arrow heads to the
 begining and the end of a line object.
 <a 
- id="dx11-42001"></a>
+ id="dx11-43001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1426--><p class="noindent" ><div class="minipage"><span 
+                                                                                 
+
+                                                                                 
+<!--l. 1447--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">arrowsheadMsg</span> <img 
-src="OSCMsg49x.png" alt="PICT" >
+src="OSCMsg50x.png" alt="PICT" >
 </div> </dd></dl>
 <a 
- id="dx11-42002"></a>
+ id="dx11-43002"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">arrowStyleBegin </span>Set the arrow head of the begining of the line.
@@ -494,78 +530,75 @@ class="pcrr8tn-">arrowStyleBegin </span>Set the arrow head of the begining of th
      <li class="itemize"><span 
 class="pcrr8tn-">arrowStyleEnd </span>Set the arrow head of the end of the line.</li></ul>
 <a 
- id="dx11-42003"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 1435--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">arrowStyle</span> <img 
-src="OSCMsg50x.png" alt="PICT" >
-</div></dd></dl>
-<!--l. 1436--><p class="noindent" >The arrow style default value is <span 
-class="pcrr8tn-">none</span>.
-<!--l. 1440--><p class="noindent" >
-<h3 class="sectionHead"><span class="titlemark">7.7    </span> <a 
- id="x11-430007.7"></a>Font control</h3>
-<!--l. 1442--><p class="noindent" >Specific font messages are accepted by <span 
-class="pcrr8tn-">txt </span>components.
-<a 
- id="dx11-43001"></a>
-                                                                                 
-
-                                                                                 
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 1448--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">fontMsg</span> <img 
-src="OSCMsg51x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx11-43002"></a>
-<a 
  id="dx11-43003"></a>
-<a 
- id="dx11-43004"></a>
-<a 
- id="dx11-43005"></a>
-<a 
- id="dx11-43006"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
 <!--l. 1456--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">fontStyle</span> <img 
-src="OSCMsg52x.png" alt="PICT" >
+class="ptmri8t-">arrowStyle</span> <img 
+src="OSCMsg51x.png" alt="PICT" >
 </div></dd></dl>
+<!--l. 1457--><p class="noindent" >The arrow style default value is <span 
+class="pcrr8tn-">none</span>.
+<!--l. 1461--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">7.8    </span> <a 
+ id="x11-440007.8"></a>Font control</h3>
+<!--l. 1463--><p class="noindent" >Specific font messages are accepted by <span 
+class="pcrr8tn-">txt </span>components.
 <a 
- id="dx11-43007"></a>
-<a 
- id="dx11-43008"></a>
-<a 
- id="dx11-43009"></a>
-<a 
- id="dx11-43010"></a>
+ id="dx11-44001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1463--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">fontWeight</span> <img 
-src="OSCMsg53x.png" alt="PICT" >
+<!--l. 1469--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">fontMsg</span> <img 
+src="OSCMsg52x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx11-43011"></a>
+ id="dx11-44002"></a>
+<a 
+ id="dx11-44003"></a>
+<a 
+ id="dx11-44004"></a>
                                                                                  
 
                                                                                  
 <a 
- id="dx11-43012"></a>
+ id="dx11-44005"></a>
 <a 
- id="dx11-43013"></a>
+ id="dx11-44006"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1477--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">fontStyle</span> <img 
+src="OSCMsg53x.png" alt="PICT" >
+</div></dd></dl>
 <a 
- id="dx11-43014"></a>
+ id="dx11-44007"></a>
 <a 
- id="dx11-43015"></a>
+ id="dx11-44008"></a>
+<a 
+ id="dx11-44009"></a>
+<a 
+ id="dx11-44010"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1484--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">fontWeight</span> <img 
+src="OSCMsg54x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx11-44011"></a>
+<a 
+ id="dx11-44012"></a>
+<a 
+ id="dx11-44013"></a>
+<a 
+ id="dx11-44014"></a>
+<a 
+ id="dx11-44015"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">fontSize </span>controls the font size in pixel. The default value is 13px.
@@ -582,7 +615,10 @@ class="newline" />
      <li class="itemize"><span 
 class="pcrr8tn-">weightValue </span>controls the font weight. The font weight default value is <span 
 class="pcrr8tn-">normal</span>.</li></ul>
-<!--l. 1477--><p class="noindent" ><span 
+                                                                                 
+
+                                                                                 
+<!--l. 1498--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -593,7 +629,7 @@ class="small-caps">E</span> </span><br
 class="newline" />Setting a text object with a font family Times and bold weight:
 <div class="center" 
 >
-<!--l. 1482--><p class="noindent" >
+<!--l. 1503--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox45"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/text set txt "text sample";</span><br 
@@ -602,32 +638,29 @@ class="pcrr8tn-x-x-90">/ITL/scene/text fontFamily Times;</span><br
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/text fontWeight bold;</span></div></div>
 </div>
-<!--l. 1487--><p class="noindent" >
-<h3 class="sectionHead"><span class="titlemark">7.8    </span> <a 
- id="x11-440007.8"></a>The &#8217;debug&#8217; nodes</h3>
-<!--l. 1490--><p class="noindent" >Each component includes a static <span 
+<!--l. 1508--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">7.9    </span> <a 
+ id="x11-450007.9"></a>The &#8217;debug&#8217; nodes</h3>
+<!--l. 1511--><p class="noindent" >Each component includes a static <span 
 class="pcrr8tn-">debug </span>nodes provided to give information about components.
 <a 
- id="dx11-44001"></a>
+ id="dx11-45001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1494--><p class="noindent" ><div class="minipage"><span 
+<!--l. 1515--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">debugMsg</span> <img 
-src="OSCMsg54x.png" alt="PICT" >
+src="OSCMsg55x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx11-44002"></a>
+ id="dx11-45002"></a>
 <a 
- id="dx11-44003"></a>
+ id="dx11-45003"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">map </span>is used to display the time to graphic mapping. The parameter is a int value: 0 prevents mapping
      display, 1 displays only the bounding boxes and 2 displays also the dates along with the boxes. Default
      is 0 (no map).
-                                                                                 
-
-                                                                                 
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">name </span>is used to display both the object name and bounding box. The parameter is a boolean value.
@@ -635,12 +668,12 @@ class="pcrr8tn-">name </span>is used to display both the object name and boundin
                                                                                  
 
                                                                                  
-<!--l. 1506--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 1527--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch8.html" >next</a>] [<a 
 href="OSCMsgch6.html" >prev</a>] [<a 
 href="OSCMsgch6.html#tailOSCMsgch6.html" >prev-tail</a>] [<a 
 href="OSCMsgch7.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch7.html" >up</a>] </p></div>
-<!--l. 1506--><p class="noindent" ><a 
+<!--l. 1527--><p class="noindent" ><a 
  id="tailOSCMsgch7.html"></a>  
 </body></html> 
