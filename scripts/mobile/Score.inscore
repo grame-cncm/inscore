@@ -16,6 +16,11 @@
 		return msg;
 	}
 
+	// generates the messages to toggle a score attribute
+	// parameters are:
+	//  - target    : the target object that control the attribute
+	//  - attribute : the score related attribute
+	//  - imgon and imgoff: the images corresponding to the on/off states
 	function toggle (target, attribute, imgon, imgoff) {
 		var onstr = "1";
 		var offstr = "0";
@@ -34,8 +39,12 @@
 		return makemsg (template, target, attribute, imgon, imgoff);
 	}
 
-	// déclare the interaction event as an inscore variable
-	"down = " + down + ";"
+	function togglescore (switch2score, switch2proll, file) {
+		switch2score = switch2score.replace("FILE", file) ;
+		switch2proll = switch2proll.replace("FILE", file) ;
+		return "/ITL/scene/b6score watch " + down + " " + switch2score + ";"
+			+  "/ITL/scene/b5proll watch " + down + " " + switch2proll + ";";
+	}
 ?>
 
 /ITL/scene/title  set  txt "Different score representations.";
@@ -65,35 +74,25 @@ rshift = 0.28;
 /ITL/scene/b[5-6]* 	dx $rshift;
 /ITL/scene/b5proll 	show 0;
 
+<? javascript toggle("b1keyboard", "keyboard", "rsrc/pkon.png", "rsrc/pkoff.png") ?>
+<? javascript toggle("b2bars", "measureBars", "rsrc/pbon.png", "rsrc/pboff.png") ?>
+<? javascript toggle("b3autocolor", "autoVoicesColoration", "rsrc/pcon.png", "rsrc/pcoff.png") ?>
+<? javascript toggle("b4pitchlines", "pitchLines", "rsrc/ploff.png", "rsrc/plon.png") ?>
+
 switch2score = (
-	/ITL/scene/score set gmnf "rsrc/score.gmn",
+	/ITL/scene/score set gmnf FILE,
 	/ITL/scene/score scale 0.22,
 	/ITL/scene/b5proll show 1,
 	/ITL/scene/b[12346]* show 0
-!	/ITL/scene eval $save
 );
 
 switch2proll = (
-	/ITL/scene/score set pianorollf "rsrc/score.gmn",
+	/ITL/scene/score set pianorollf FILE,
 	/ITL/scene/score scale 1.0,
 	/ITL/scene/score width $pwidth,
 	/ITL/scene/score height $pheight,
 	/ITL/scene/b5proll show 0,
 	/ITL/scene/b[12346]* show 1
 );
+<? javascript togglescore(switch2score, switch2proll, "rsrc/score.gmn") ?>
 
-/ITL/scene/score watch mouseDown (
-	/ITL/scene/b6score watch $down $switch2score,
-	/ITL/scene/b5proll watch $down $switch2proll
-);
-###################################
-# this is intended to trigger the $down variable evaluation
-# in a valid context i.e. with a real javascript engine
-# when building a bundle, the javascript code is not evaluated
-/ITL/scene/score event mouseDown 0 0;
-/ITL/scene/score watch ;
-
-<? javascript toggle("b1keyboard", "keyboard", "rsrc/pkon.png", "rsrc/pkoff.png") ?>
-<? javascript toggle("b2bars", "measureBars", "rsrc/pbon.png", "rsrc/pboff.png") ?>
-<? javascript toggle("b3autocolor", "autoVoicesColoration", "rsrc/pcon.png", "rsrc/pcoff.png") ?>
-<? javascript toggle("b4pitchlines", "pitchLines", "rsrc/ploff.png", "rsrc/plon.png") ?>

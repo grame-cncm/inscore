@@ -1,5 +1,5 @@
 
-BUNDLES = Score.ibundle Welcome.ibundle
+BUNDLES = Score.ibundle Welcome.ibundle Clock.ibundle
 
 all: $(BUNDLES)
 
