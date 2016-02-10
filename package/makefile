@@ -142,13 +142,14 @@ rsrc:
 	tar czf $(rsrc).tgz $(rsrc)/*[^z]
 
 samples:
-	@[ -d $(package)/samples ] || mkdir -p $(package)/samples
 	rm -rf $(package)/samples/*
+	@[ -d $(package)/samples/Bundles ] || mkdir -p $(package)/samples/Bundles
 	@echo ========================
 	@echo " copying sample scripts"
 	@echo ========================
 	$(foreach s,$(scripts), cp -R ../scripts/$(s) $(package)/samples/;)
-	cp ../scripts/mobile/*.ibundle $(package)/samples/;
+	@[ -d $(package)/samples ] || mkdir -p $(package)/samples
+	cp ../scripts/mobile/*.ibundle $(package)/samples/Bundles;
 	
 src:
 	@[ -d $(package)-src ] || mkdir -p $(package)-src
