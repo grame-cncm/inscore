@@ -38,13 +38,6 @@
 				"/ITL/scene/TARGET pop));"
 		return makemsg (template, target, attribute, imgon, imgoff);
 	}
-
-	function togglescore (switch2score, switch2proll, file) {
-		switch2score = switch2score.replace("FILE", file) ;
-		switch2proll = switch2proll.replace("FILE", file) ;
-		return "/ITL/scene/b6score watch " + down + " " + switch2score + ";"
-			+  "/ITL/scene/b5proll watch " + down + " " + switch2proll + ";";
-	}
 ?>
 
 /ITL/scene/title  set  txt "Different score representations.";
@@ -80,19 +73,23 @@ rshift = 0.28;
 <? javascript toggle("b4pitchlines", "pitchLines", "rsrc/ploff.png", "rsrc/plon.png") ?>
 
 switch2score = (
-	/ITL/scene/score set gmnf FILE,
+	/ITL/scene/score set gmnf "rsrc/score.gmn",
 	/ITL/scene/score scale 0.22,
 	/ITL/scene/b5proll show 1,
 	/ITL/scene/b[12346]* show 0
 );
 
 switch2proll = (
-	/ITL/scene/score set pianorollf FILE,
+	/ITL/scene/score set pianorollf "rsrc/score.gmn",
 	/ITL/scene/score scale 1.0,
 	/ITL/scene/score width $pwidth,
 	/ITL/scene/score height $pheight,
 	/ITL/scene/b5proll show 0,
 	/ITL/scene/b[12346]* show 1
 );
-<? javascript togglescore(switch2score, switch2proll, "rsrc/score.gmn") ?>
+
+/ITL/scene/b6score watch mouseDown $switch2score;
+/ITL/scene/b5proll watch mouseDown $switch2proll;
+/ITL/scene/b6score watch touchBegin $switch2score;
+/ITL/scene/b5proll watch touchBegin $switch2proll;
 
