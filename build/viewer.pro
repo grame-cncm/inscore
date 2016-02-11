@@ -38,16 +38,16 @@ ICON = $$ROOT/rsrc/INScoreViewer.icns
 # macos x support
 ############################## 
 macx {
-	QMAKE_LFLAGS += -F$$PWD/macos/Release
+	QMAKE_LFLAGS += -FRelease
 	LIBS += -framework INScore
 	QMAKE_INFO_PLIST = $$PWD/Info.plist
-#	RSRC.files 	= $$ROOT/rsrc/INScoreViewer.icns $$ROOT/src/guido2.ttf
-#	RSRC.path 	= Contents/Resources
+	RSRC.files 	= $$ROOT/rsrc/INScoreViewer.icns
+	RSRC.path 	= Contents/Resources
 	PLUG.files 	= $$ROOT/lib/libMusicXML/macosx/libmusicxml2.dylib
 	PLUG.files += $$ROOT/lib/GestureFollower/macosx/libGFLib.dylib
 	PLUG.files += $$ROOT/lib/faust/macosx/libfaust.dylib
 	PLUG.path 	= Contents/PlugIns
-	QMAKE_BUNDLE_DATA += PLUG
+	QMAKE_BUNDLE_DATA += PLUG RSRC
 	ICON 		= $$ROOT/rsrc/INScoreViewer.icns
 }
 
