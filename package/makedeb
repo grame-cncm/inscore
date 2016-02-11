@@ -5,10 +5,13 @@ dist	:= ubuntu-14.04
 package := INScore-$(version)-$(dist)-$(arch).deb
 viewer	:= inscoreviewer
 lib	:= libINScore.so
+musicxml := /usr/local/lib/libmusicxml2.so.3.11
+guidoar  := /usr/lib/libguidoar.so.1.00
+guidolib := /usr/lib/libGUIDOEngine.so.1.62
+deplibs  := $(musicxml) $(guidoar) $(guidolib)
 sovers  := 1
 control := debian/DEBIAN/control
-tmp		:= __tmp__
-
+tmp	:= __tmp__
 
 files = $(shell cd debian && find usr -type f)
 
@@ -20,6 +23,7 @@ deb:
 	[ -d debian/usr/lib ] && rm -f debian/usr/lib/* || mkdir debian/usr/lib
 	cp ../build/linux/$(lib).$(version) debian/usr/lib
 	cd debian/usr/lib && ln -s $(lib).$(version) $(lib).$(sovers) && ln -s $(lib).$(sovers) $(lib)
+	make -f makedeb deplibs
 	[ -d debian/usr/share/inscore ] && rm -rf debian/usr/share/inscore/* || mkdir debian/usr/share/inscore
 	cp -r INScore-$(version)/* debian/usr/share/inscore
 	make -f makedeb md5sums
@@ -32,6 +36,15 @@ deb:
 md5sums:
 	@echo compute md5sums
 	@cd debian && md5sum $(files) > DEBIAN/md5sums
+
+deplibs:
+	cd debian/usr/lib && cp $(deplibs) .
+	cd debian/usr/lib && ln -s $(musicxml) libmusicxml2.so
+	cd debian/usr/lib && ln -s $(guidoar)  libguidoar.so.1 
+	cd debian/usr/lib && ln -s libguidoar.so.1  libguidoar.so 
+	cd debian/usr/lib && ln -s $(guidolib)  libGUIDOEngine.so.1 
+	cd debian/usr/lib && ln -s libGUIDOEngine.so.1  libGUIDOEngine.so 
+
 
 
 clean:

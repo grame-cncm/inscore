@@ -3,8 +3,10 @@ Version: 1.1.7
 Section: sound
 Priority: optional
 Architecture: amd64
-Depends: guidoengine-devel (>=  1.6.0), libqt5svg5 (>=  5.2.1-1), libqt5printsupport5 (>=  5.2.1+dfsg-1ubuntu14.3), libqt5multimediawidgets5 (>=  5.2.1-0ubuntu5), libqt5widgets5 (>=  5.2.1+dfsg-1ubuntu14.3), libqt5multimedia5 (>=  5.2.1-0ubuntu5), libqt5gui5 (>=  5.2.1+dfsg-1ubuntu14.3), libqt5qml5 (>=  5.2.1-3ubuntu15.1), libqt5network5 (>=  5.2.1+dfsg-1ubuntu14.3), libqt5core5a (>=  5.2.1+dfsg-1ubuntu14.3), libc6 (>=  2.19-0ubuntu6.6), libstdc++6 (>=  4.8.4-2ubuntu1~14.04), libgcc1 (>=  1:4.9.1-0ubuntu1), libmicrohttpd10 (>=  0.9.33-1)
-Installed-Size: 194848
+Depends: libqt5svg5 (>=  5.2.1-1), libqt5printsupport5 (>=  5.2.1+dfsg-1ubuntu14.3), libqt5multimediawidgets5 (>=  5.2.1-0ubuntu5), libqt5widgets5 (>=  5.2.1+dfsg-1ubuntu14.3), libqt5multimedia5 (>=  5.2.1-0ubuntu5), libqt5gui5 (>=  5.2.1+dfsg-1ubuntu14.3), libqt5qml5 (>=  5.2.1-3ubuntu15.1), libqt5network5 (>=  5.2.1+dfsg-1ubuntu14.3), libqt5core5a (>=  5.2.1+dfsg-1ubuntu14.3), libc6 (>=  2.19-0ubuntu6.6), libstdc++6 (>=  4.8.4-2ubuntu1~14.04), libgcc1 (>=  1:4.9.1-0ubuntu1), libmicrohttpd10 (>=  0.9.33-1)
+Installed-Size: 210988
+Conflicts: guidoengine-devel (<< 1.6.2)
+Replaces: guidoengine-devel
 Maintainer: D. Fober <fober@grame.fr>
 Description: INScore - Interactive, Augmented Music Scores.
 
