@@ -5,12 +5,12 @@
 
 namespace qarchive{
 
-SQArchive QArchive::emptyArchive()
+QArchive* QArchive::emptyArchive()
 {
 	return new QArchive();
 }
 
-SQArchive QArchive::readArchive(QIODevice *d, QArchiveError &error)
+QArchive* QArchive::readArchive(QIODevice *d, QArchiveError &error)
 {
 	QArchive* a = new QArchive();
 	a->fArchiveData = d;
@@ -18,7 +18,7 @@ SQArchive QArchive::readArchive(QIODevice *d, QArchiveError &error)
 	return a;
 }
 
-SQArchive QArchive::readArchiveFromData(const QByteArray &data, QArchiveError &error)
+QArchive* QArchive::readArchiveFromData(const QByteArray &data, QArchiveError &error)
 {
 	QBuffer *b = new QBuffer();
 	b->setData(data);
@@ -158,7 +158,7 @@ bool QArchive::addFile(QString name, const QString& path, bool currentDir)
 		delete file;
 		return false;
 	}
-	return addFile(name, new QFile(path), currentDir);
+	return addFile(name, file, currentDir);
 }
 
 
@@ -210,7 +210,7 @@ bool QArchive::readFile(int fileID, QByteArray &data)
 //------------------------------------------------------
 QArchive::~QArchive()
 {
-	delete fArchiveData;
+	fArchiveData->deleteLater();
 	for (int i = 0; i < fFiles.size(); ++i)
 		delete fFiles.at(i).data();
 }

@@ -33,7 +33,7 @@ namespace ibundle {
 bool BundleExtractor::extract(std::string bundleFile, std::string outputFolder)
 {
 	QArchiveError e;
-	qarchive::SQArchive archive = qarchive::QArchive::readArchiveFromFileStd(bundleFile, e);
+	qarchive::QArchive* archive = qarchive::QArchive::readArchiveFromFileStd(bundleFile, e);
 
 	if(e!=ARCH_OK){
 		switch (e) {
@@ -50,21 +50,26 @@ bool BundleExtractor::extract(std::string bundleFile, std::string outputFolder)
 			std::cerr<<"An error occurs during the reading of the bundle..."<<std::endl;
 			break;
 		}
+		delete archive;
 		return false;
 	}
 
-	if(!fKeepOriginalPath)
-		return writeArchive(archive, outputFolder, fForceOverwrite);
-
+	if(!fKeepOriginalPath){
+		bool r = writeArchive(archive, outputFolder, fForceOverwrite);
+		delete archive;
+		return r;
+	}
 	ParsedData parsedData;
 	if(!ScriptsParser::readArchive(parsedData, archive)){
 		std::cerr<<"Impossible to restore original path for the bundle \""<<bundleFile<<"\""<<std::endl;
+		delete archive;
 		return false;
 	}
 
 	std::map<std::string, std::string> nameMap;
 	if(!readMapName(archive, nameMap)){
 		std::cerr<<"Impossible to restore original path for the bundle \""<<bundleFile<<"\""<<std::endl;
+		delete archive;
 		return false;
 	}
 
@@ -72,13 +77,16 @@ bool BundleExtractor::extract(std::string bundleFile, std::string outputFolder)
 
 	if(!writeMappedArchive(archive, parsedData, nameMap, outputFolder)){
 		std::cerr<<"Impossible to restore original path for the bundle \""<<bundleFile<<"\""<<std::endl;
+		delete archive;
 		return false;
 	}
+
+	delete archive;
 
 	return true;
 }
 
-bool BundleExtractor::writeArchive(qarchive::SQArchive archive, std::string outputFolder, bool overwrite)
+bool BundleExtractor::writeArchive(qarchive::QArchive* archive, std::string outputFolder, bool overwrite)
 {
 	QArchiveError e = archive->extractStd(outputFolder, overwrite);
 
@@ -100,7 +108,7 @@ bool BundleExtractor::writeArchive(qarchive::SQArchive archive, std::string outp
 	return false;
 }
 
-bool BundleExtractor::writeMappedArchive(SQArchive archive, ParsedData& script, const std::map<std::string,std::string>& map, std::string outputPath)
+bool BundleExtractor::writeMappedArchive(QArchive* archive, ParsedData& script, const std::map<std::string,std::string>& map, std::string outputPath)
 {
 	bool overwrite = fForceOverwrite;
 	QString outputFolder = QString::fromStdString(outputPath);
@@ -177,7 +185,7 @@ bool BundleExtractor::writeMappedArchive(SQArchive archive, ParsedData& script, 
 	return true;
 }
 
-bool BundleExtractor::readMapName(qarchive::SQArchive archive, std::map<std::string, std::string>& map)
+bool BundleExtractor::readMapName(qarchive::QArchive* archive, std::map<std::string, std::string>& map)
 {
 	QByteArray data;
 	if(!archive->readFile("bundleMap.txt", data)){

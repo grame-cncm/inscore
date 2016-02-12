@@ -34,13 +34,12 @@ enum QArchiveError{
 };
 
 class QArchive;
-typedef libmapping::SMARTP<QArchive> SQArchive;
 
 class QArchiveHeader
 {
-	SQArchive fArchive;
+	QArchive* fArchive;
 public:
-	QArchiveHeader(SQArchive archive):fArchive(archive){}
+	QArchiveHeader(QArchive* archive):fArchive(archive){}
 
 	QArchiveError readHeader(QIODevice *input);
 	QByteArray generateHeader() const;

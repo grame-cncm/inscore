@@ -29,14 +29,14 @@ using namespace qarchive;
 
 namespace ibundle {
 
-SQArchive BundlePackager::bundle(ParsedData &scripts)
+QArchive* BundlePackager::bundle(ParsedData &scripts)
 {
 	BundlePackager b(scripts);
 
 	b.mapNames();
 	scripts.applyNameMap(b.fNamesMap);
 
-	SQArchive a = qarchive::QArchive::emptyArchive();
+	QArchive* a = qarchive::QArchive::emptyArchive();
 	if(!b.setupArchive(a))
 		return 0;
 
@@ -71,7 +71,7 @@ void BundlePackager::mapNames()
 	}
 }
 
-bool BundlePackager::setupArchive(qarchive::SQArchive &archive)
+bool BundlePackager::setupArchive(qarchive::QArchive* archive)
 {
 	//Create hierarchy
 	archive->changeDir("/");

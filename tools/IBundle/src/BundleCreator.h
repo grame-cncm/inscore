@@ -58,7 +58,7 @@ public:
 	void setParseJS(bool parseJS = true);
 
 protected:
-	bool writeArchive(qarchive::SQArchive& archive, const std::string& outputPath, bool overwrite);
+	bool writeArchive(qarchive::QArchive *archive, const std::string& outputPath, bool overwrite);
 };
 
 } //end namespace

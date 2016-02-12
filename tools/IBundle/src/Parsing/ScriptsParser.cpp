@@ -53,7 +53,7 @@ bool ScriptsParser::read(std::string inputFile, ParsedData &result, const std::s
 	return true;
 }
 
-bool ScriptsParser::readArchive(ParsedData &result, qarchive::SQArchive archive)
+bool ScriptsParser::readArchive(ParsedData &result, qarchive::QArchive* archive)
 {
 	ScriptsParser p(result, archive);
 
@@ -152,6 +152,8 @@ bool ScriptsParser::parseScript(std::string inputFile, SIMessageList &msgs)
 
 	inscore::ITLparser p(ifs, 0, &javascriptEngine,0);
 	msgs = p.parse();
+
+	delete ifs;
 
 	if(!p.fParseSucceed){
 		if(fLog) fLog->error("\""+inputFile+"\" is an incorrect INScore script.");

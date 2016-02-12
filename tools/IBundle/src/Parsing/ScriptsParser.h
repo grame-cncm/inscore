@@ -40,20 +40,20 @@ class ScriptsParser{
 	std::map<std::string, std::string> fRootPaths;
 	std::string fDefaultRootPath;
 	bool		fParseJS;
-	qarchive::SQArchive fArchive;
+	qarchive::QArchive* fArchive;
 	BundleLog *fLog = 0;
 
 	bool fVerbose = false;
 
 public:
 	static bool read(std::string inputFile, ParsedData &result, const std::string &defaultRootPath, bool parseJS, BundleLog* log = 0, const bool &verbose=false);
-	static bool readArchive(ParsedData &result, qarchive::SQArchive archive);
+	static bool readArchive(ParsedData &result, qarchive::QArchive *archive);
 
 	static bool ignoreCmd(std::string ITLCmd);
 
 protected:
 	ScriptsParser(ParsedData &data, std::string defaultRootPath):fData(data), fDefaultRootPath(defaultRootPath), fArchive(0){}
-	ScriptsParser(ParsedData &data, qarchive::SQArchive archive):fData(data), fDefaultRootPath(""), fArchive(archive){}
+	ScriptsParser(ParsedData &data, qarchive::QArchive* archive):fData(data), fDefaultRootPath(""), fArchive(archive){}
 
 	bool readScript(std::string script);
 

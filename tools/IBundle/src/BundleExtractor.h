@@ -43,11 +43,11 @@ public:
 
 	bool extract(std::string bundleFile, std::string outputFolder = "");
 
-	bool writeArchive(qarchive::SQArchive archive, std::string outputFolder, bool overwrite);
-	bool writeMappedArchive(qarchive::SQArchive archive, ParsedData& script, const std::map<std::string,std::string>& map, std::string outputFolder);
+	bool writeArchive(qarchive::QArchive *archive, std::string outputFolder, bool overwrite);
+	bool writeMappedArchive(qarchive::QArchive *archive, ParsedData& script, const std::map<std::string,std::string>& map, std::string outputFolder);
 
 protected:
-	static bool readMapName(qarchive::SQArchive archive, std::map<std::string, std::string>& map);
+	static bool readMapName(qarchive::QArchive *archive, std::map<std::string, std::string>& map);
 };
 
 } // End namespace
