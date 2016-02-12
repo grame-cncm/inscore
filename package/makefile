@@ -71,6 +71,7 @@ dmg:
 cleanperms:
 	@chmod -x  $(shell find $(package) -name "*.inscore")
 
+IFWK=Frameworks/INScore.framework/Versions/Current/INScore
 macosx:
 	@[ -d $(package) ] || mkdir -p $(package)
 	[ -h ../build/macos/lib ] || make -C ../build link
@@ -78,6 +79,9 @@ macosx:
 	-[ -d $(package)/$(macapp) ] && rm -rf $(package)/$(macapp)
 	cp -r $(BUILD)/$(viewer).app $(package)/$(macapp)
 	macdeployqt $(package)/$(macapp)
+	@cd  $(package)/$(macapp)/Contents && ../../../localise INScore MacOS/INScoreViewer @rpath
+	@cd  $(package)/$(macapp)/Contents && ../../../localise GUIDOEngine $(IFWK) @executable_path/../Frameworks
+	@cd  $(package)/$(macapp)/Contents && ../../../localise guidoar $(IFWK) @executable_path/../Frameworks
 	make cleanperms
 	cp -f ../src/guido2.ttf $(package)
 	cd $(package) && ln -sf /Applications .
