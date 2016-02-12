@@ -42,23 +42,22 @@ QArchiveError QArchive::compress(QString outputArchive, bool overwrite)
 	if(!output.open(QIODevice::WriteOnly))
 		return WRONG_PERMISSIONS;
 
-	QByteArray b;
-
-	qint64 bSize=0;
+	output.write(fHeader.generateHeader());
 
 	treeConstIterator<int> it = fTree.globalIterator();
 	while(it.next()){
 		int i;
 		if(it.item(i)){
+			QByteArray b;
 			if(!fFiles[i].compressedData(b))
 				return FILE_CORRUPTED;
-			fFiles[i].setCompressedSize(b.size()-bSize);
-			bSize=b.size();
+			output.write(b);
+			fFiles[i].setCompressedSize(b.size());
 		}
 	}
 
+	output.seek(0);
 	output.write(fHeader.generateHeader());
-	output.write(b);
 
 	output.close();
 
