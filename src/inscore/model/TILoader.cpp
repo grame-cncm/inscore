@@ -124,7 +124,7 @@ MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const
 				if(msgs) return MsgHandler::kProcessed;
 			}else{
 				// ---- Load a bundle ----
-				qarchive::SQArchive a;
+				qarchive::QArchive* a = 0;
 				QFileDownloader * downloader = new QFileDownloader();
 				qarchive::QArchiveError error;
 				if (Tools::isurl(srcfile)) {
@@ -166,7 +166,11 @@ MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const
 					}
 				}
 
-				a = (qarchive::QArchive*)0;
+				if(a){
+					delete a;
+					a=0;
+				}
+
 				delete downloader;
 				if(!error)
 					return MsgHandler::kProcessed;

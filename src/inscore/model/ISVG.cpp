@@ -38,10 +38,14 @@ const string ISVG::kSVGType("svg");
 
 //--------------------------------------------------------------------------
 ISVG::ISVG( const std::string& name, IObject * parent )
-	: IGraphicBasedObject(name, parent)
+	: IGraphicBasedObject(name, parent), IAnimated(this)
 { 
 	fTypeString = kSVGType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler<string>::create(fSvg);
+
+	fMsgHandlerMap[kanimate_GetSetMethod]		= TSetMethodMsgHandler<ISVG,bool>::create(this, &ISVG::setAnimate);
+	fGetMsgHandlerMap[kanimate_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fAnimate);
+	fGetMsgHandlerMap[kanimated_GetMethod]		= TGetParamMsgHandler<bool>::create(fAnimated);
 }
 
 //--------------------------------------------------------------------------

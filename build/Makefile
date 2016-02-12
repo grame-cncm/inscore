@@ -73,14 +73,21 @@ xcodeproj: library.pro viewer.pro
 
 INScoreMac : 
 	make -C ../lib/GuidoEngine/macosx
+	make -C ../lib/libMusicXML/macosx
 	xcodebuild -jobs 8 -project $(BUILDF)/INScore.xcodeproj -target INScore -configuration Release
 	xcodebuild -jobs 8 -project $(BUILDF)/INScoreViewer.xcodeproj -target INScoreViewer -configuration Release
+	make -C ../tools/IBundle/build
 
 $(BUILDF)/INScore.xcodeproj : library.pro
 	make xcodeproj
 
 $(BUILDF)/INScoreViewer.xcodeproj : viewer.pro
 	make xcodeproj
+
+# specific target to create a symbolic link to macos/Release
+# this link is required for macdeployqt
+link:
+	cd macos && ln -s Release lib
 
 #===============================================================
 # building INScore for iOS 
@@ -165,6 +172,7 @@ $(BUILDF)/Makefile.app: viewer.pro
 INScoreLinux:
 	make -j 4 -C $(BUILDF) -f Makefile.lib
 	make -j 4 -C $(BUILDF) -f Makefile.app
+	make -C ../tools/IBundle/build
 
 linuxclean:
 	make -C $(BUILDF) -f Makefile.lib clean
@@ -182,7 +190,8 @@ mobileUI:
 #===============================================================
 # building the library on windows
 #===============================================================
-windows : $(BUILDF)/INScore.vcxproj $(BUILDF)/INScoreViewer.vcxproj INScoreWin $(BUILDF)/release/$(GUIDOLIB) $(BUILDF)/release/guidoar.dll
+WINXML := $(BUILDF)/release/Plugins/libmusicxml2.dll
+windows : $(BUILDF)/INScore.vcxproj $(BUILDF)/INScoreViewer.vcxproj INScoreWin $(BUILDF)/release/$(GUIDOLIB) $(BUILDF)/release/guidoar.dll $(WINXML)
 
 winprojects : 
 	[ -d $(BUILDF) ] || mkdir $(BUILDF)
@@ -192,6 +201,7 @@ winprojects :
 INScoreWin:
 	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(BUILDF)/INScore.vcxproj $(WINOPTS)"
 	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(BUILDF)/INScoreViewer.vcxproj $(WINOPTS)"
+	make -C ../tools/IBundle/build
 
 $(BUILDF)/INScore.vcxproj : library.pro
 	make winprojects
@@ -200,10 +210,14 @@ $(BUILDF)/INScoreViewer.vcxproj : viewer.pro
 	make winprojects
 
 $(BUILDF)/release/$(GUIDOLIB): ../lib/GUIDOEngine/$(BUILDF)/$(GUIDOLIB)
-	cp ../lib/GUIDOEngine/$(BUILDF)/$(GUIDOLIB) $(BUILDF)/release
+	cp -f ../lib/GUIDOEngine/$(BUILDF)/$(GUIDOLIB) $(BUILDF)/release
+
+$(WINXML):  ../lib/libMusicXML/$(BUILDF)/libmusicxml2.dll
+	[ -d $(BUILDF)/release/Plugins ] || mkdir $(BUILDF)/release/Plugins
+	cp -f ../lib/libMusicXML/$(BUILDF)/libmusicxml2.dll $(WINXML)
 
 $(BUILDF)/release/guidoar.dll: ../lib/GuidoAR/$(BUILDF)/guidoar.dll
-	cp ../lib/GuidoAR/$(BUILDF)/guidoar.dll $(BUILDF)/release
+	cp -f ../lib/GuidoAR/$(BUILDF)/guidoar.dll $(BUILDF)/release
 
 winclean:
 	rm -f $(BUILDF)/tmp

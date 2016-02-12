@@ -1,73 +1,32 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
   "http://www.w3.org/TR/html4/loose.dtd">  
 <html > 
-<head><title>17 Plugins</title> 
+<head><title>17 Score expressions</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
 <meta name="generator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2015-07-15 13:39:00"> 
+<meta name="date" content="2016-02-10 15:31:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 3211--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 3--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch18.html" >next</a>] [<a 
 href="OSCMsgch16.html" >prev</a>] [<a 
 href="OSCMsgch16.html#tailOSCMsgch16.html" >prev-tail</a>] [<a 
 href="#tailOSCMsgch17.html">tail</a>] [<a 
-href="OSCMsg3.html#OSCMsgch18.html" >up</a>] </p></div>
+href="OSCMsg3.html#OSCMsgch17.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;17</span><br /><a 
- id="x22-10300017"></a>Plugins</h2>
-<!--l. 3214--><p class="noindent" >A plugin is an external library that is dynamically loaded when an object that need it is created. The system looks
-for plugins in the following locations:
-     <ul class="itemize1">
-     <li class="itemize">in the current folder first
-     </li>
-     <li class="itemize">in the PlugIns folder, located in the application bundle on macos, in the application folder on other
-     systems
-     </li>
-     <li class="itemize">in the system default locations for shared libraries</li></ul>
-<!--l. 3221--><p class="noindent" >Additionaly, a user path can be set, where the system will look for plugins in first position. See section <a 
-href="OSCMsgch8.html#x12-530008.4.4">8.4.4<!--tex4ht:ref: ITLplugins --></a>
-p.<a 
-href="OSCMsgch8.html#x12-530008.4.4">73<!--tex4ht:ref: ITLplugins --></a>.
-<!--l. 3223--><p class="noindent" >The plugins are shared libraries which extension is platform dependent. The plugin name should not
-include the extension. The expected extensions are the following: .dylib on MacOS and Linux, .dll on
-Windows.
-<h3 class="sectionHead"><span class="titlemark">17.1    </span> <a 
- id="x22-10400017.1"></a>FAUST plugins</h3>
-<!--l. 3232--><p class="noindent" >FAUST [Functional Audio Stream]<span class="footnote-mark"><a 
-href="OSCMsg23.html#fn1x242"><sup class="textsuperscript">1</sup></a></span><a 
- id="x22-104001f1"></a> 
-is a functional programming language specifically designed for real-time signal processing and synthesis. A
-FAUST/INScore architecture allows to embed FAUST processors in INScore, for the purpose of signals
-computation. A FAUST plugin is viewed as a parallel signal and thus it is created in the <span 
-class="pcrr8tn-">signal </span>address space.
-Similarly to signals, it is associated to an OSC address in the form <span 
-class="pcrr8tn-">/ITL/</span><span 
-class="pcrro8t-">scene</span><span 
-class="pcrr8tn-">/signal/</span><span 
-class="pcrro8t-">name </span>where <span 
-class="pcrro8t-">name </span>is a
-user defined name.
-<h4 class="subsectionHead"><span class="titlemark">17.1.1    </span> <a 
- id="x22-10500017.1.1"></a>Set Message</h4>
-<!--l. 3236--><p class="noindent" >There are two ways to create a FAUST Processor :
-     <ul class="itemize1">
-     <li class="itemize">- By charging a DSP as a plugin already compiled <br 
-class="newline" />
-<a 
- id="dx22-105001"></a>
-     <dl class="list2"><dt class="list">
-     </dt><dd 
-class="list">
-     <!--l. 3242--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">faustprocessor</span> <img 
-src="OSCMsg116x.png" alt="PICT" >
-     </div> </dd></dl>
-<a 
- id="dx22-105002"></a>
-     <!--l. 3245--><p class="noindent" ><span 
+ id="x22-10500017"></a>Score expressions</h2>
+<!--l. 6--><p class="noindent" ><span 
+class="ptmri8t-">Score expressions </span>allows to defines score objects (<span 
+class="pcrr8tn-">gmn </span>or <span 
+class="pcrr8tn-">pianoroll</span>) by dynamically combine various resources
+using a formal expression. To define such object one should use the basic <span 
+class="pcrr8tn-">set </span>messages using a score expressions as
+arguments:
+<!--l. 8--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -75,168 +34,51 @@ class="small-caps">M</span><span
 class="small-caps">P</span><span 
 class="small-caps">L</span><span 
 class="small-caps">E</span> </span><br 
-class="newline" />
-     <div class="center" 
->
-                                                                                 
-
-                                                                                 
-<!--l. 3246--><p class="noindent" >
-<div 
-class="colorbox" id="colorbox112"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust set faust aFaustPlugin;</span>
-</div></div>
-</div>
-     <!--l. 3248--><p class="noindent" ><span 
-class="ptmbc8t-">N<span 
-class="small-caps">O</span><span 
-class="small-caps">T</span><span 
-class="small-caps">E</span> </span><br 
-class="newline" />The plugin name should not include the extension. The expected extensions are the following: .dylib on
-     MacOS and Linux, .dll on Windows. <br 
-class="newline" />
-     </li>
-     <li class="itemize">- By charging libfaust as a plugin to compile a DSP on-the-fly (as a string or a file). <br 
-class="newline" />
-<a 
- id="dx22-105003"></a>
-     <dl class="list2"><dt class="list">
-     </dt><dd 
-class="list">
-     <!--l. 3254--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">faustdsp</span> <img 
-src="OSCMsg117x.png" alt="PICT" >
-     </div> </dd></dl>
-<a 
- id="dx22-105004"></a>
-<a 
- id="dx22-105005"></a>
-     <dl class="list2"><dt class="list">
-     </dt><dd 
-class="list">
-     <!--l. 3261--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">faustdspfile</span> <img 
-src="OSCMsg118x.png" alt="PICT" >
-     </div> </dd></dl>
-<a 
- id="dx22-105006"></a>
-     <!--l. 3264--><p class="noindent" ><span 
-class="ptmbc8t-">E<span 
-class="small-caps">X</span><span 
-class="small-caps">A</span><span 
-class="small-caps">M</span><span 
-class="small-caps">P</span><span 
-class="small-caps">L</span><span 
-class="small-caps">E</span> </span><br 
-class="newline" />
-     <div class="center" 
->
-<!--l. 3267--><p class="noindent" >
-<div 
-class="colorbox" id="colorbox113"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/signal/plus set faustdsp "process=+;"; </span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/signal/mydsp set faustdspf "mydsp.dsp";</span></div></div>
-</div>
-     </li></ul>
-<!--l. 3273--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">17.1.2    </span> <a 
- id="x22-10600017.1.2"></a>Specific messages</h4>
-<!--l. 3275--><p class="noindent" >A FAUST processor is characterized by the numbers of input and output channels and by a set of parameters. Each
-parameter carries a name defined by the FAUST processor. The set of messages supported by a FAUST
-processor is the set of signals messages extended with the parameters names and with specific query
-messages.
-<a 
- id="dx22-106001"></a>
-                                                                                 
-
-                                                                                 
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 3281--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">faustmessage</span> <img 
-src="OSCMsg119x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx22-106002"></a>
-<a 
- id="dx22-106003"></a>
-<a 
- id="dx22-106004"></a>
-<a 
- id="dx22-106005"></a>
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrro8t-">msg </span>is any of the FAUST processor parameters, which are defined by the FAUST processor.
-     </li>
-     <li class="itemize">the <span 
-class="pcrr8tn-">get </span>message is extended to query the FAUST processor: <span 
-class="pcrr8tn-">in </span>and <span 
-class="pcrr8tn-">out </span>give the number of input and
-     output channels.</li></ul>
-<!--l. 3293--><p class="noindent" ><span 
-class="ptmbc8t-">E<span 
-class="small-caps">X</span><span 
-class="small-caps">A</span><span 
-class="small-caps">M</span><span 
-class="small-caps">P</span><span 
-class="small-caps">L</span><span 
-class="small-caps">E</span> </span><br 
-class="newline" />Querying a FAUST processor input and output count:
+class="newline" />The following example defines a <span 
+class="pcrr8tn-">gmn </span>and a <span 
+class="pcrr8tn-">pianoroll </span>object using score expressions, the meaning of the
+expression is explained further.
 <div class="center" 
 >
-<!--l. 3295--><p class="noindent" >
+<!--l. 11--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox114"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust get in out;</span>
-</div></div>
-</div>
-<!--l. 3296--><p class="noindent" >&#x00A0;       gives as output:
-<div class="center" 
->
-<!--l. 3299--><p class="noindent" >
-<div 
-class="colorbox" id="colorbox115"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust in 2; </span><br 
+class="pcrr8tn-x-x-90">/ITL/scene/score set gmn expr(seq [a] [b]); </span><br 
 class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust out 4;</span></div></div>
+class="pcrr8tn-x-x-90">/ITL/scene/pianoroll set pianoroll expr(score);</span></div></div>
 </div>
-<!--l. 3300--><p class="noindent" >Modifying the value of a FAUST processor parameter named <span 
-class="pcrr8tn-">volume</span>:
-<div class="center" 
->
-<!--l. 3301--><p class="noindent" >
-<div 
-class="colorbox" id="colorbox116"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust volume 0.8</span>
-</div></div>
-</div>
-                                                                                 
-
-                                                                                 
-<!--l. 3305--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">17.1.3    </span> <a 
- id="x22-10700017.1.3"></a>Feeding and composing FAUST processors</h4>
-<!--l. 3308--><p class="noindent" >A FAUST processor accepts float values as input, which are taken as interleaved data and distributed to the input
-channels.
-<!--l. 3310--><p class="noindent" >From composition viewpoint, a FAUST processor is a parallel signal which dimension is the number of
-output channels. Thus, a FAUST processor can be used like any parallel signal. However, the signal
-identifier defined in <a 
-href="OSCMsgch14.html#x18-7500014.1.2">14.1.2<!--tex4ht:ref: parcomp --></a> is extended to support adressing single components of parallel signal as
-follows:
+<h3 class="sectionHead"><span class="titlemark">17.1    </span> <a 
+ id="x22-10600017.1"></a>General Syntax</h3>
+<!--l. 16--><p class="noindent" >A score expression always starts with <span 
+class="pcrr8tn-">expr( </span>and ends with <span 
+class="pcrr8tn-">)</span>, then 2 syntaxes are handled:
 <a 
- id="dx22-107001"></a>
+ id="dx22-106001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 3316--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">signal</span> <img 
+<!--l. 27--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">EvaluableExpression</span> <img 
 src="OSCMsg120x.png" alt="PICT" >
 </div></dd></dl>
-<!--l. 3317--><p class="noindent" >where <span 
-class="pcrr8tn-">n </span>selects the signal #n of a parallel signal. Note that indexes start at 0.
-<!--l. 3319--><p class="noindent" ><span 
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="ptmb8t-">1</span>: Define an expression as an operation combining two scores. <span 
+class="pcrr8tn-">operator </span>is the name of the operation
+     used to combine them (see Section&#x00A0;<a 
+href="#x22-10700017.2">17.2<!--tex4ht:ref: operators --></a> for operators list), and <span 
+class="pcrr8tn-">score </span>are the arguments passed to
+     the operator (see Section&#x00A0;<a 
+href="#x22-10800017.3">17.3<!--tex4ht:ref: arguments --></a> for arguments specification).
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">2</span>:  Define  on  expression  using  a  single  score.  This  syntax  is  useful  when  defining  an  object  as  a
+     dynamic copy of an other existing object or file.</li></ul>
+<!--l. 33--><p class="noindent" >Each of these tokens can, of course, be separated by spaces, tabulations or carriage returns (allowing multiline
+expression definition).
+<!--l. 35--><p class="noindent" >When defining an object using a score expressions, INScore will parse it, construct an internal representation and
+finally evaluate it, reducing the formal expressions to a valid GMN string.
+<!--l. 37--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -244,143 +86,304 @@ class="small-caps">M</span><span
 class="small-caps">P</span><span 
 class="small-caps">L</span><span 
 class="small-caps">E</span> </span><br 
-class="newline" />Creating 3 parallel signals using the 3 output channels of a FAUST processor named <span 
-class="pcrr8tn-">myFaust</span>:
+class="newline" />Creating a guido object by sequencing two guido string
 <div class="center" 
 >
-<!--l. 3324--><p class="noindent" >
-<div 
-class="colorbox" id="colorbox117"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/signal/y1 set &#8217;myFaust/0&#8217; 0.01 0. 1. 1. 1. ;</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/signal/y2 set &#8217;myFaust/1&#8217; 0.01 0.5 1. 1. 1. ;</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/signal/y3 set &#8217;myFaust/2&#8217; 0.01 -0.5 1. 1. 1. ;</span></div></div>
-</div>
-<!--l. 3329--><p class="noindent" >
-<h3 class="sectionHead"><span class="titlemark">17.2    </span> <a 
- id="x22-10800017.2"></a>Gesture Follower</h3>
-<!--l. 3332--><p class="noindent" >INScore supports gesture following using the technology developed by the IRCAM IMTR team. These features are
-available as a plugin that is included in the INScore distribution (version 1.03 or greater) or available from the
-IRCAM.
-<!--l. 3337--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">17.2.1    </span> <a 
- id="x22-10900017.2.1"></a>Basic principle</h4>
-<!--l. 3338--><p class="noindent" >Gesture following is provided as a mean to interact with a score. From input viewpoint, the gesture follower is
-similar to signals (see section <a 
-href="OSCMsgch14.html#x18-7400014.1.1">14.1.1<!--tex4ht:ref: ssignal --></a> p.<a 
-href="OSCMsgch14.html#x18-7400014.1.1">105<!--tex4ht:ref: ssignal --></a>): it accepts data stream as input both in learning and following modes. It
-implements a specific set of events related to gesture following and can generate message streams parametrized
-with the gesture follower current state.
-<!--l. 3340--><p class="noindent" >A gesture follower is setup to handle a given count of gestures, which are actually denoted by streams of float
+<!--l. 41--><p class="noindent" >
                                                                                  
 
                                                                                  
-vectors. We&#8217;ll refer to the size of the float vector as the <span 
-class="ptmri8t-">gesture dimension</span>. For example, the dimension of a gesture
-captured from x, y and z accelerometers is 3.
-<!--l. 3342--><p class="noindent" >A gesture follower operates in two distinct phases: a <span 
-class="ptmri8t-">learning phase </span>where it actually stores the gestures data, and a
-<span 
-class="ptmri8t-">following phase </span>where it tries to match incoming data to the stored gestures data. When not learning nor following,
-we&#8217;ll talk of an idle phase.
-<!--l. 3344--><p class="noindent" >In the <span 
-class="ptmri8t-">following phase</span>, the system maintains a list of likelihood for the learned gestures, a list of positions in the
-gestures and a list of speeds representing how fast the gestures are made. Of course, the higher the
-likelihood, the more these data are meaningfull. It&#8217;s the user responsability to decide on the meaningfull
-likelihood threshold value. Interaction events are triggered only in the <span 
-class="ptmri8t-">following phase </span>and for meaningfull
-likelihoods.
-<!--l. 3348--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">17.2.2    </span> <a 
- id="x22-11000017.2.2"></a>Messages</h4>
-<!--l. 3349--><p class="noindent" >A gesture follower is created in a scene using the <span 
-class="pcrr8tn-">imtrgf </span>type. It has a graphic appearance that may be used for
-debug purpose but it is hidden by default.
+<div 
+class="colorbox" id="colorbox115"> <div class="minipage">  <span 
+class="pcrr8tn-x-x-90">/ITL/scene/score set gmn expr( seq "[c d e]" "[f g h]");</span>
+</div></div>
+</div>
+<!--l. 42--><p class="noindent" >is equivalent to
+<div class="center" 
+>
+<!--l. 45--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox116"> <div class="minipage">  <span 
+class="pcrr8tn-x-x-90">/ITL/scene/score set gmn "[c d e f g h]";</span>
+</div></div>
+</div>
+<!--l. 47--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">17.2    </span> <a 
+ id="x22-10700017.2"></a>Score Operators</h3>
+<!--l. 49--><p class="noindent" >All the score operators of INScore make use of guido operators implemented in the GuidoAR library.
+                                                                                 
+
+                                                                                 
+<!--l. 50--><p class="noindent" ><hr class="float"><div class="float" 
+>
+                                                                                 
+
+                                                                                 
+<div class="center" 
+>
+<!--l. 51--><p class="noindent" >
+<div class="tabular"> <table id="TBL-8" class="tabular" 
+cellspacing="0" cellpadding="0"  
+><colgroup id="TBL-8-1g"><col 
+id="TBL-8-1"><col 
+id="TBL-8-2"><col 
+id="TBL-8-3"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-1-"><td  style="white-space:nowrap; text-align:right;" id="TBL-8-1-1"  
+class="td11">operation</td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-1-2"  
+class="td11">arguments</td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-1-3"  
+class="td11">description                                                                                                     </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-2-"><td  style="white-space:nowrap; text-align:right;" id="TBL-8-2-1"  
+class="td11">     seq</td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-2-2"  
+class="td11"><span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1</span><span 
+class="zptmcmrm-">&#x00A0;s</span><span 
+class="zptmcmr-">2      </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-2-3"  
+class="td11">puts the scores <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1 </span>and <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">2 </span>in sequence                                                            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-3-"><td  style="white-space:nowrap; text-align:right;" id="TBL-8-3-1"  
+class="td11">     par</td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-3-2"  
+class="td11"><span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1</span><span 
+class="zptmcmrm-">&#x00A0;s</span><span 
+class="zptmcmr-">2      </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-3-3"  
+class="td11">puts the scores <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1 </span>and <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">2 </span>in parallel                                                               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-4-"><td  style="white-space:nowrap; text-align:right;" id="TBL-8-4-1"  
+class="td11">     rpar</td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-4-2"  
+class="td11"><span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1</span><span 
+class="zptmcmrm-">&#x00A0;s</span><span 
+class="zptmcmr-">2      </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-4-3"  
+class="td11">puts the scores <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1 </span>and <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">2 </span>in parallel, right aligned                                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-5-"><td  style="white-space:nowrap; text-align:right;" id="TBL-8-5-1"  
+class="td11">     top</td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-5-2"  
+class="td11"><span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1</span><span 
+class="zptmcmrm-">&#x00A0;s</span><span 
+class="zptmcmr-">2      </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-5-3"  
+class="td11">takes the <span 
+class="zptmcmrm-">n </span>first voices of <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1 </span>where <span 
+class="zptmcmrm-">n </span>is <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">2 </span>voices count                                </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-6-"><td  style="white-space:nowrap; text-align:right;" id="TBL-8-6-1"  
+class="td11">  bottom</td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-6-2"  
+class="td11"><span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1</span><span 
+class="zptmcmrm-">&#x00A0;s</span><span 
+class="zptmcmr-">2      </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-6-3"  
+class="td11">cut the <span 
+class="zptmcmrm-">n </span>first voices of <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1 </span>where <span 
+class="zptmcmrm-">n </span>is <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">2 </span>voices count                                   </td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-7-"><td  style="white-space:nowrap; text-align:right;" id="TBL-8-7-1"  
+class="td11"> head</td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-7-2"  
+class="td11"><span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1</span><span 
+class="zptmcmrm-">&#x00A0;s</span><span 
+class="zptmcmr-">2 </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-7-3"  
+class="td11">takes the head of <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1 </span>up to <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">2 </span>duration</td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-8-"><td  style="white-space:nowrap; text-align:right;" id="TBL-8-8-1"  
+class="td11">  evhead</td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-8-2"  
+class="td11"><span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1</span><span 
+class="zptmcmrm-">&#x00A0;s</span><span 
+class="zptmcmr-">2      </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-8-3"  
+class="td11">takes the <span 
+class="zptmcmrm-">n </span>first events of <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1 </span>where <span 
+class="zptmcmrm-">n </span>is the event&#8217;s count of <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">2                </span></td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-9-"><td  style="white-space:nowrap; text-align:right;" id="TBL-8-9-1"  
+class="td11">     tail</td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-9-2"  
+class="td11"><span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1</span><span 
+class="zptmcmrm-">&#x00A0;s</span><span 
+class="zptmcmr-">2      </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-9-3"  
+class="td11">cut the beginning of <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1 </span>up to the duration of <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">2                                 </span></td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-10-"><td  style="white-space:nowrap; text-align:right;" id="TBL-8-10-1"  
+class="td11">    evtail</td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-10-2"  
+class="td11"><span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1</span><span 
+class="zptmcmrm-">&#x00A0;s</span><span 
+class="zptmcmr-">2      </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-10-3"  
+class="td11">cut the <span 
+class="zptmcmrm-">n </span>first events of <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1 </span>where <span 
+class="zptmcmrm-">n </span>is the event&#8217;s count of <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">2                  </span></td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-11-"><td  style="white-space:nowrap; text-align:right;" id="TBL-8-11-1"  
+class="td11"> transpose</td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-11-2"  
+class="td11"><span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1</span><span 
+class="zptmcmrm-">&#x00A0;s</span><span 
+class="zptmcmr-">2      </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-11-3"  
+class="td11">transposes <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1 </span>so its first note of its first voice match <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">2 </span>one                          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-12-"><td  style="white-space:nowrap; text-align:right;" id="TBL-8-12-1"  
+class="td11"> duration</td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-12-2"  
+class="td11"><span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1</span><span 
+class="zptmcmrm-">&#x00A0;s</span><span 
+class="zptmcmr-">2      </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-12-3"  
+class="td11">stretches <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1 </span>to the duration of <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">2                                                   </span></td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-13-"><td  style="white-space:nowrap; text-align:right;" id="TBL-8-13-1"  
+class="td11">        </td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-13-2"  
+class="td11">        </td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-13-3"  
+class="td11">if not used carefully, this operator can output impossible to display rhythm</td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-14-"><td  style="white-space:nowrap; text-align:right;" id="TBL-8-14-1"  
+class="td11">    pitch</td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-14-2"  
+class="td11"><span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1</span><span 
+class="zptmcmrm-">&#x00A0;s</span><span 
+class="zptmcmr-">2      </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-14-3"  
+class="td11">applies the pitches of <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1 </span>to <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">2 </span>in a loop                                                         </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-15-"><td  style="white-space:nowrap; text-align:right;" id="TBL-8-15-1"  
+class="td11">  rhythm</td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-15-2"  
+class="td11"><span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1</span><span 
+class="zptmcmrm-">&#x00A0;s</span><span 
+class="zptmcmr-">2      </span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-8-15-3"  
+class="td11">applies the rhythm of <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">1 </span>to <span 
+class="zptmcmrm-">s</span><span 
+class="zptmcmr-">2 </span>in a loop                                                         </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-16-"><td  style="white-space:nowrap; text-align:right;" id="TBL-8-16-1"  
+class="td11">        </td></tr></table></div></div>
+                                                                                 
+
+                                                                                 
+</div><hr class="endfloat" />
+<h3 class="sectionHead"><span class="titlemark">17.3    </span> <a 
+ id="x22-10800017.3"></a>Score Arguments</h3>
+<!--l. 79--><p class="noindent" >The syntax for arguments is quite permissive and various resources can be used as arguments for score expressions.
+In any case, when evaluating the expression, all the arguments will be reduce to GMN string so they can then be
+processed by the operators.
 <a 
- id="dx22-110001"></a>
+ id="dx22-108001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 3353--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">gesturefollower</span> <img 
+<!--l. 90--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">Argument</span> <img 
 src="OSCMsg121x.png" alt="PICT" >
 </div></dd></dl>
-<a 
- id="dx22-110002"></a>
-<!--l. 3356--><p class="noindent" >The parameters are:
+<!--l. 92--><p class="noindent" >
+<h5 class="subsubsectionHead"><a 
+ id="x22-10900017.3"></a>Arguments specification</h5>
      <ul class="itemize1">
      <li class="itemize"><span 
-class="pcrr8tn-">gesturedimension</span>: the size of the gestures data vector.
+class="pcrr8tn-">GmnCode </span>are not evaluated, passed as they are to operators. Both GMN and MusicXML string are
+     supported.
      </li>
      <li class="itemize"><span 
-class="pcrr8tn-">bufsize</span>: the size of the gesture data storage.
+class="pcrr8tn-">filepath</span>: on evaluation INScore read all the content of the file. Again, both GMN and MusicXML
+     are supported. <span 
+class="pcrr8tn-">filepath </span>handle absolute or relative path (from the scene rootPath) as well as url.
      </li>
      <li class="itemize"><span 
-class="pcrr8tn-">name</span>: a list of names to be used to refer to the learned gestures.</li></ul>
-<!--l. 3363--><p class="noindent" ><span 
-class="ptmbc8t-">N<span 
-class="small-caps">O</span><span 
-class="small-caps">T</span><span 
-class="small-caps">E</span>  </span><br 
-class="newline" />A gesture follower is created with a fixed count of gestures that can be learned and decoded. These gestures are
-named gestures and can be addressed at <span 
-class="pcrr8tn-">/ITL/</span><span 
-class="pcrro8t-">scene</span><span 
-class="pcrr8tn-">/</span><span 
-class="pcrro8t-">myfollower</span><span 
-class="pcrr8tn-">/</span><span 
-class="pcrro8t-">gesturename </span>where the part in italic are
-user defined names and where <span 
-class="pcrr8tn-">myfollower </span>is a gesture follower.
-<a 
- id="dx22-110003"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
+class="pcrr8tn-">ScoreObject</span>: Gmn code can be retreive from existing score objects (<span 
+class="pcrr8tn-">gmn </span>or <span 
+class="pcrr8tn-">pianoroll</span>) simply
+     refering to them using their identifier (using absolute or relative path).
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">EvaluableExpression</span>: an expression can also be used as an argument, thus simple operator can
+     be  combined  together  to  create  more  complex  ones.  In  that  case  the  <span 
+class="pcrr8tn-">expr </span>token  can  be  omitted:
+     parenthesis are sufficient.</li></ul>
+<!--l. 101--><p class="noindent" >
+<h5 class="subsubsectionHead"><a 
+ id="x22-11000017.3"></a>Arguments prefix</h5>
                                                                                  
 
                                                                                  
-<!--l. 3376--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">gesturefollower</span> <img 
-src="OSCMsg122x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx22-110004"></a>
-<a 
- id="dx22-110005"></a>
-<a 
- id="dx22-110006"></a>
-<a 
- id="dx22-110007"></a>
-<a 
- id="dx22-110008"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
-class="ptmb8t-">[1] </span>input data into the gesture follower. The data are interpreted according to the current operating
-     mode i.e. learning, following or idle.
+class="pcrr8tn-">&amp;</span>: When triggering the reevaluation of an expression (see Section&#x00A0;<a 
+href="#x22-11100017.4">17.4<!--tex4ht:ref: exprCmd --></a>) only the arguments prefixed
+     with <span 
+class="pcrr8tn-">&amp; </span>are updated.
      </li>
      <li class="itemize"><span 
-class="ptmb8t-">[2] </span>starts to learn the gesture designated by <span 
-class="ptmri8t-">name</span>. Actually records the next input data to the gesture.
-     </li>
-     <li class="itemize"><span 
-class="ptmb8t-">[3] </span>starts following i.e. trying to match the next input data to the recorded gestures.
-     </li>
-     <li class="itemize"><span 
-class="ptmb8t-">[4] </span>stops learning or following. Actually puts the system in idle phase.
-     </li>
-     <li class="itemize"><span 
-class="ptmb8t-">[5] </span>clear all the gestures data. This is equivalent to send the <span 
-class="pcrr8tn-">clear </span>message to all the gestures.
-     </li>
-     <li class="itemize"><span 
-class="ptmb8t-">[6] </span>sets the size of the window that contains the history of the likelihoods. May be viewed as how fast
-     the likelihoods will change.
-     </li>
-     <li class="itemize"><span 
-class="ptmb8t-">[7] </span>sets the follower tolerance.</li></ul>
-<!--l. 3393--><p class="noindent" ><span 
+class="pcrr8c-">~</span>: before the first evaluation of a score expression, any <span 
+class="pcrr8tn-">ScoreObjects </span>prefixed with a <span 
+class="pcrr8c-">~ </span>shall be
+     replaced by their own expression. In other words, score expressions containing <span 
+class="pcrr8c-">~ </span>arguments will be
+     expended with existing score expressions. This mechanism allows to compose not only scores and
+     score expressions together.
+     </li></ul>
+<!--l. 111--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -388,243 +391,208 @@ class="small-caps">M</span><span
 class="small-caps">P</span><span 
 class="small-caps">L</span><span 
 class="small-caps">E</span> </span><br 
-class="newline" />Creating a gesture follower for 3 dimensional data and a typical learning sequence:
+class="newline" />Defining <span 
+class="pcrr8tn-">/ITL/scene/score </span>as a copy of <span 
+class="pcrr8tn-">/ITL/scene/simpleScore </span>duplicated 4 times.
 <div class="center" 
 >
-<!--l. 3399--><p class="noindent" >
+<!--l. 118--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox117"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/simpleScore set gmn "[e {c,g} |]";</span><br 
+class="newline" /><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/score set gmn expr( &amp;simpleScore );</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/score set gmn expr( seq </span><span 
+class="pcrr8c-x-x-90">~</span><span 
+class="pcrr8tn-x-x-90">score </span><span 
+class="pcrr8c-x-x-90">~</span><span 
+class="pcrr8tn-x-x-90">score);</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/score set gmn expr( par </span><span 
+class="pcrr8c-x-x-90">~</span><span 
+class="pcrr8tn-x-x-90">score </span><span 
+class="pcrr8c-x-x-90">~</span><span 
+class="pcrr8tn-x-x-90">score);</span><br 
+class="newline" /></div></div>
+</div>
+<!--l. 119--><p class="noindent" ><span 
+class="pcrr8tn-">/ITL/scene/score </span>should look like:<br 
+class="newline" />
+<div class="center" 
+>
+<!--l. 120--><p class="noindent" >
+<!--l. 121--><p class="noindent" ><img 
+src="OSCMsg122x.png" alt="PIC" class="graphics" width="133.70766pt" height="68.5603pt" ><!--tex4ht:graphics  
+name="OSCMsg122x.png" src="imgs/seqparEnhanced.ps"  
+--></div>
+<!--l. 124--><p class="noindent" >Querying for the expanded expression of <span 
+class="pcrr8tn-">/ITL/scene/score </span>(see Section&#x00A0;<a 
+href="#x22-11100017.4">17.4<!--tex4ht:ref: exprCmd --></a>) should return:
+                                                                                 
+
+                                                                                 
+<div class="verbatim" id="verbatim-1">
+/ITL/scene/score&#x00A0;expr
+&#x00A0;<br />&#x00A0;&#x00A0;expr(&#x00A0;par
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;(&#x00A0;seq
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&amp;simpleScore
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&amp;simpleScore
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;)
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;(&#x00A0;seq
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&amp;simpleScore
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&amp;simpleScore
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;)
+&#x00A0;<br />&#x00A0;&#x00A0;)
+</div>
+<!--l. 137--><p class="nopar" >
+<!--l. 140--><p class="noindent" ><span 
+class="ptmbc8t-">N<span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span> <span 
+class="small-caps">O</span><span 
+class="small-caps">N</span> <span 
+class="small-caps">A</span><span 
+class="small-caps">R</span><span 
+class="small-caps">G</span><span 
+class="small-caps">U</span><span 
+class="small-caps">M</span><span 
+class="small-caps">E</span><span 
+class="small-caps">N</span><span 
+class="small-caps">T</span><span 
+class="small-caps">S</span> <span 
+class="small-caps">Q</span><span 
+class="small-caps">U</span><span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">I</span><span 
+class="small-caps">N</span><span 
+class="small-caps">G</span> </span><br 
+class="newline" />Arguments using special characters (space, tabulation, parenthesis, braces...), should be simple or double quoted,
+otherwise quotes can be omitted.
+<!--l. 147--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">17.4    </span> <a 
+ id="x22-11100017.4"></a><span 
+class="pcrr8tn-">expr </span>commands</h3>
+<!--l. 150--><p class="noindent" >ITLObject defined using an evaluable expression gain access to these specific commands:
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">get expr</span>: return the expression used to define the object (before the expansion of <span 
+class="pcrr8c-">~ </span>arguments).
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">get exprTree</span>: return the expanded expression
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">expr reeval</span>: re-evaluate the expression, updating only the value of arguments prefixed with <span 
+class="pcrr8tn-">&amp;</span>.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">expr reset</span>: re-evaluate the expression, updating the value of all arguments.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">expr renew</span>: reapply the definition of the object (similar to send its <span 
+class="pcrr8tn-">set </span>message again)</li></ul>
+<!--l. 161--><p class="noindent" >Applied to an object which wasn&#8217;t defined by an evaluable expression, all this commands will cause a bad argument
+error.
+<!--l. 164--><p class="noindent" >The <span 
+class="pcrr8tn-">renew </span>command reset the internal state of the evaluated variable, forcing the re-evaluation and update of every
+arguments in the expression. Be aware that the track of copy evaluated arguments is lost after the first
+evaluation, thus renewing an expression defined using copy evaluated arguments won&#8217;t update these
+arguments to their targeted ITLObject expression. Though, static arguments added by the copy shall be
+renewed.
+<!--l. 168--><p class="noindent" >
+                                                                                 
+
+                                                                                 
+<h3 class="sectionHead"><span class="titlemark">17.5    </span> <a 
+ id="x22-11200017.5"></a>newData event</h3>
+<!--l. 170--><p class="noindent" ><span 
+class="pcrr8tn-">newData </span>is triggered by any object when its value change (generally because of a <span 
+class="pcrr8tn-">set </span>message). Neither trying to
+set an object to its actual value without changing its type, nor re-evaluating an object to its actual value will trigger
+newData.
+<!--l. 172--><p class="noindent" >Of course, the <span 
+class="pcrr8tn-">newData </span>event can be used together with <span 
+class="pcrr8tn-">reeval </span>to automatically update an object when the value of
+an other changes.
+<!--l. 174--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Creating a copy of <span 
+class="pcrr8tn-">score</span>, and automatise its update when <span 
+class="pcrr8tn-">score </span>is changed
+<div class="center" 
+>
+<!--l. 179--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox118"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/gf set imtrgf 3 1000 gestureA gestureB gestureC gestureD ;</span><br 
+class="pcrr8tn-x-x-90">/ITL/scene/score set gmn "[c e]";</span><br 
 class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/gf learn gestureA ;</span><br 
+class="pcrr8tn-x-x-90">/ITL/scene/copy set gmn expr(&amp;score);</span><br 
 class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/gf 0.1 0.5 -0.2 ... 0.7; ! the data size must be a multiple of 3</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/gf stop;</span>
-                                                                                 
-
-                                                                                 
-</div></div>
+class="pcrr8tn-x-x-90">/ITL/scene/score watch newData (/ITL/scene/copy expr reeval);</span></div></div>
 </div>
-<!--l. 3403--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">17.2.3    </span> <a 
- id="x22-11100017.2.3"></a>Gestures management</h4>
-<!--l. 3405--><p class="noindent" >Messages can also be sent to gestures i.e. to addresses in the form <span 
-class="pcrr8tn-">/ITL/</span><span 
-class="pcrro8t-">scene</span><span 
-class="pcrr8tn-">/</span><span 
-class="pcrro8t-">myfollower</span><span 
-class="pcrr8tn-">/</span><span 
-class="pcrro8t-">gesturename</span>
-where <span 
-class="pcrr8tn-">myfollower </span>is a gesture follower.
-<!--l. 3407--><p class="noindent" >A gesture could be in two states:
-     <ul class="itemize1">
-     <li class="itemize">an active state: when its likelihood is greater or equal to the likelihood threshold.
-     </li>
-     <li class="itemize">an idle state: when its likelihood is lower than the likelihood threshold.</li></ul>
-<a 
- id="dx22-111001"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 3418--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">gesture</span> <img 
-src="OSCMsg123x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx22-111002"></a>
-<a 
- id="dx22-111003"></a>
-<a 
- id="dx22-111004"></a>
-<a 
- id="dx22-111005"></a>
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrr8tn-">set</span>: sets the gesture data. This is equivalent to learn the corresponding data. The <span 
-class="pcrr8tn-">set </span>message could
-     be used to restored previously saved gesture data.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">clear</span>: clears the gesture data.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">learn</span>: puts the gestures follower in learning mode and starts learning the corresponding gesture.
-     This is equivalent to send OSClearn <span 
-class="ptmri8t-">gesturename </span>to the parent gesture follower.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">likelihoodThreshold</span>: sets the gesture likelihood threshold. The parameter is a float value in the
-     range <span 
-class="pcrr8tn-">[0,1]</span>. Default value is <span 
-class="pcrr8tn-">0.5</span>.</li></ul>
-                                                                                 
-
-                                                                                 
-<!--l. 3432--><p class="noindent" >Gestures supports also specific queries :
-<a 
- id="dx22-111006"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 3435--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">gestureget</span> <img 
-src="OSCMsg124x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx22-111007"></a>
-<a 
- id="dx22-111008"></a>
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrr8tn-">get</span>: without parameter, returns a set message when the gesture is not empty.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">size</span>: gives the current size of the gesture, actually the number of recorded frames.</li></ul>
-<!--l. 3447--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">17.2.4    </span> <a 
- id="x22-11200017.2.4"></a>Events and interaction</h4>
-<!--l. 3449--><p class="noindent" >Events are defined at gesture level and events management messages should be addressed to gestures.
-<a 
- id="dx22-112001"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 3454--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">gestureevents</span> <img 
-src="OSCMsg125x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx22-112002"></a>
-<a 
- id="dx22-112003"></a>
-<a 
- id="dx22-112004"></a>
-<a 
- id="dx22-112005"></a>
-<a 
- id="dx22-112006"></a>
-                                                                                 
-
-                                                                                 
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrr8tn-">gfEnter </span>triggered when the gesture state changes from idle to active.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">gfLeave </span>triggered when the gesture state changes from active to idle.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">gfActive </span>triggered in active state each time the gesture likelihood is refreshed.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">gfIdle </span>triggered in idle state each time the gesture likelihood is refreshed.</li></ul>
-<!--l. 3468--><p class="noindent" >A message associated to a gesture supports the following specific variables:
-<a 
- id="dx22-112007"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 3474--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">gesturevariable</span> <img 
-src="OSCMsg126x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx22-112008"></a>
-<a 
- id="dx22-112009"></a>
-<a 
- id="dx22-112010"></a>
-<!--l. 3478--><p class="noindent" >These variables support the scaling feature associated to position variables and described in section <a 
-href="OSCMsgch15.html#x19-8800015.2.1">15.2.1<!--tex4ht:ref: posvar --></a>
-p.<a 
-href="OSCMsgch15.html#x19-8800015.2.1">129<!--tex4ht:ref: posvar --></a>.
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrr8tn-">gflikelihood </span>indicates the current likelihood
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">gfpos </span>indicates the current position in the gesture
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">gfspeed </span>indicates the current gesture execution speed</li></ul>
-<!--l. 3485--><p class="noindent" ><span 
+<!--l. 181--><p class="noindent" >To avoid infinite loop when using recursion, <span 
+class="pcrr8tn-">newData </span>event is delayed of one event loop, meaning that, in the
+previous example, during the event loop that follow <span 
+class="pcrr8tn-">score</span>&#8217;s modification, <span 
+class="pcrr8tn-">score </span>and <span 
+class="pcrr8tn-">copy </span>are different (<span 
+class="pcrr8tn-">copy </span>has
+not been updated yet...).
+<!--l. 183--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
 class="small-caps">E</span> </span><br 
-class="newline" />Variables described in section <a 
-href="OSCMsgch15.html#x19-8700015.2">15.2<!--tex4ht:ref: interactvar --></a> p.<a 
-href="OSCMsgch15.html#x19-8700015.2">128<!--tex4ht:ref: interactvar --></a> may also be used but they are meaningless and contains default
-values.
-<!--l. 3491--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">17.2.5    </span> <a 
- id="x22-11300017.2.5"></a>Gesture Follower Appearance</h4>
-<!--l. 3493--><p class="noindent" >A gesture follower object has a graphic appearance and supports all the standard objects properties, including
-mapping and synchronization. This graphic appearance is provided mainly for debug purpose and
-by default, the object is hidden. Figure <a 
-href="#x22-1130011">17.1<!--tex4ht:ref: fig:gfgraph --></a> shows the gesture follower appearance in its different
-phases:
-     <ul class="itemize1">
-     <li class="itemize">when idle, the upper part of the graphic indicates the buffer state of the different gestures. It also
-     includes the gestures likelihood threshold.
-                                                                                 
-
-                                                                                 
-     </li>
-     <li class="itemize">when learning, a red frame and a grey background indicates that a learning a gesture is currently in
-     progress. The gesture buffer state is refreshed while learning.
-     </li>
-     <li class="itemize">when following, the upper part indicates each gesture current likelihood and the lower part indicates
-     the current estimated positions.</li></ul>
-<!--l. 3501--><p class="noindent" ><hr class="figure"><div class="figure" 
->
-                                                                                 
-
-                                                                                 
-<a 
- id="x22-1130011"></a>
-                                                                                 
-
-                                                                                 
-<!--l. 3502--><p class="noindent" ><img 
-src="OSCMsg127x.png" alt="PIC" class="graphics" width="405.45045pt" height="120.19774pt" ><!--tex4ht:graphics  
-name="OSCMsg127x.png" src="imgs/gesture-follower.ps"  
--->
-<br /> <div class="caption" 
-><span class="id">Figure&#x00A0;17.1: </span><span  
-class="content">The gesture follower appearance in its different phases.</span></div><!--tex4ht:label?: x22-1130011 -->
-                                                                                 
-
-                                                                                 
-<!--l. 3505--><p class="noindent" ></div><hr class="endfigure">
-<h3 class="sectionHead"><span class="titlemark">17.3    </span> <a 
- id="x22-11400017.3"></a>Httpd server plugin</h3>
-<!--l. 3514--><p class="noindent" >INScore can embed Http server to expose real time screenshot image of a scene to the web. This feature is based on
-libmicrohttpd <span class="footnote-mark"><a 
-href="OSCMsg24.html#fn2x242"><sup class="textsuperscript">2</sup></a></span><a 
- id="x22-114001f2"></a> 
-and is available as a plugin that is included in the INScore distribution (version 1.11 or greater). The Url to get the
-image is the base url of the server.
-<h4 class="subsectionHead"><span class="titlemark">17.3.1    </span> <a 
- id="x22-11500017.3.1"></a>Set Message</h4>
-<!--l. 3520--><p class="noindent" >The http server object is created in a scene like other objects and served image of his scene.
-<a 
- id="dx22-115001"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 3524--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">httpdserver</span> <img 
-src="OSCMsg128x.png" alt="PICT" >
-</div> </dd></dl>
-<a 
- id="dx22-115002"></a>
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrr8tn-">port </span>http port used by the server.</li></ul>
-<!--l. 3531--><p class="noindent" ><span 
+class="newline" /> Because newData event is delayed, if <span 
+class="pcrr8tn-">score </span>experiences multiple modifications during the same event loop
+(because multiple <span 
+class="pcrr8tn-">set </span>messages have been sent together), only his final value will be accessible when
+newData will be actually triggered, however the event will be sent as many times as <span 
+class="pcrr8tn-">score </span>have been
+modified.
+<!--l. 186--><p class="noindent" ><span 
+class="ptmbc8t-">N<span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span> <span 
+class="small-caps">W</span><span 
+class="small-caps">H</span><span 
+class="small-caps">E</span><span 
+class="small-caps">N</span> <span 
+class="small-caps">A</span><span 
+class="small-caps">U</span><span 
+class="small-caps">T</span><span 
+class="small-caps">O</span><span 
+class="small-caps">M</span><span 
+class="small-caps">A</span><span 
+class="small-caps">T</span><span 
+class="small-caps">I</span><span 
+class="small-caps">S</span><span 
+class="small-caps">I</span><span 
+class="small-caps">N</span><span 
+class="small-caps">G</span> <span 
+class="small-caps">U</span><span 
+class="small-caps">P</span><span 
+class="small-caps">D</span><span 
+class="small-caps">A</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span></span><br 
+class="newline" />For the reasons raised in the previous note, one should be very careful to delayed update when automatise <span 
+class="pcrr8tn-">reeval</span>
+with <span 
+class="pcrr8tn-">newData</span>. Indeed, in some extreme case, executing a script one line after an other won&#8217;t have the same result as
+executing the all script at once!!
+<!--l. 191--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -632,65 +600,62 @@ class="small-caps">M</span><span
 class="small-caps">P</span><span 
 class="small-caps">L</span><span 
 class="small-caps">E</span> </span><br 
-class="newline" />
+class="newline" />Creating a "score buffer", storing every state adopted by <span 
+class="pcrr8tn-">score</span>
 <div class="center" 
 >
-<!--l. 3532--><p class="noindent" >
+<!--l. 202--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox119"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/server set httpd 8000;</span>
-</div></div>
+class="colorbox" id="colorbox119"><div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/score set gmn "[c]";</span><br 
+class="newline" /><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/buffer set gmn "[]";</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/buffer set gmn expr(seq &amp;buffer (seq "[|]" &amp;score));</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/score watch newData (/ITL/scene/buffer expr reeval);</span><br 
+class="newline" /><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/score set gmn "[e]";</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/score set gmn "[g]";</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/score set gmn "[{c,e,g}]";</span></div></div>
 </div>
-<!--l. 3534--><p class="noindent" ><span 
-class="ptmbc8t-">N<span 
-class="small-caps">O</span><span 
-class="small-caps">T</span><span 
-class="small-caps">E</span>  </span><br 
-class="newline" />If the http port is already used, the server cannot start.
-<!--l. 3539--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">17.3.2    </span> <a 
- id="x22-11600017.3.2"></a>Specific messages</h4>
-<!--l. 3541--><p class="noindent" >The http server status can be delivered with a specific message.
-<a 
- id="dx22-116001"></a>
+<!--l. 203--><p class="noindent" >Won&#8217;t have the same result if run line by line, or the all script as once:
+<!--l. 206--><p class="noindent" >Line by line:
+<div class="center" 
+>
                                                                                  
 
                                                                                  
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 3545--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">httpdmessage</span> <img 
-src="OSCMsg129x.png" alt="PICT" >
-</div> </dd></dl>
-<a 
- id="dx22-116002"></a>
-<!--l. 3549--><p class="noindent" >A string corresponding to the server status ("started" or "stopped") is return.
-<!--l. 3551--><p class="noindent" ><span 
-class="ptmbc8t-">E<span 
-class="small-caps">X</span><span 
-class="small-caps">A</span><span 
-class="small-caps">M</span><span 
-class="small-caps">P</span><span 
-class="small-caps">L</span><span 
-class="small-caps">E</span> </span><br 
-class="newline" />
+<!--l. 207--><p class="noindent" >
+<!--l. 208--><p class="noindent" ><img 
+src="OSCMsg123x.png" alt="PIC" class="graphics" width="217.41444pt" height="76.48653pt" ><!--tex4ht:graphics  
+name="OSCMsg123x.png" src="imgs/autoSingleLine.ps"  
+--></div>
+<!--l. 212--><p class="noindent" >All script at once:
 <div class="center" 
 >
-<!--l. 3552--><p class="noindent" >
-<div 
-class="colorbox" id="colorbox120"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/server get status;</span>
-</div></div>
-</div>
+<!--l. 213--><p class="noindent" >
+<!--l. 214--><p class="noindent" ><img 
+src="OSCMsg124x.png" alt="PIC" class="graphics" width="217.41444pt" height="76.48653pt" ><!--tex4ht:graphics  
+name="OSCMsg124x.png" src="imgs/autoAllScript.ps"  
+--></div>
+<!--l. 219--><p class="noindent" >To avoid such undeterministic behaviour, one should, in this case, manually trigger <span 
+class="pcrr8tn-">reeval </span>after each modification
+of <span 
+class="pcrr8tn-">score</span>.
                                                                                  
 
                                                                                  
-<!--l. 3556--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 3305--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch18.html" >next</a>] [<a 
 href="OSCMsgch16.html" >prev</a>] [<a 
 href="OSCMsgch16.html#tailOSCMsgch16.html" >prev-tail</a>] [<a 
 href="OSCMsgch17.html" >front</a>] [<a 
-href="OSCMsg3.html#OSCMsgch18.html" >up</a>] </p></div>
-<!--l. 3556--><p class="noindent" ><a 
+href="OSCMsg3.html#OSCMsgch17.html" >up</a>] </p></div>
+<!--l. 3305--><p class="noindent" ><a 
  id="tailOSCMsgch17.html"></a>  
 </body></html> 

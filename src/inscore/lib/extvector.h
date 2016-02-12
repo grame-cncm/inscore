@@ -47,6 +47,21 @@ template <typename T> class extvector : public std::vector<T>
 				out << fPrefix << (*this)[i] << fSuffix;
 			out << fPrefix << (*this)[this->size()-1];
 		}
+	
+		// specific method to print messages list
+		// could be called with different type provided it supports the print interface
+		void  printMsgs (std::ostream& out) const {
+			int n = this->size()-1;
+			if (n >= 0) {
+				for (int i=0; i < n; i++) {
+					out << fPrefix;
+					(*this)[i]->print(out, 1);
+					out << fSuffix;
+				}
+				out << fPrefix;
+				(*this)[n]->print(out, 1);
+			}
+		}
 
 		void push_back( const extvector<T>& l) {
 			for (unsigned int i=0; i < l.size(); i++)

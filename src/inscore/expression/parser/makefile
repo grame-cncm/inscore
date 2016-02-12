@@ -12,6 +12,9 @@ IExprParse.hpp : IExpr.y
 
 IExprlex.cpp : IExpr.l IExprParse.hpp
 	$(LEX)  -oIExprlex.cpp -I -P$(PREFIX) IExpr.l
+	
+doc :
+	./makedoc
 
 clean:
 	rm -f $(OUT)

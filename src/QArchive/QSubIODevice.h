@@ -18,7 +18,7 @@ public:
 
 	void setStartPos(quint64 startpos){fStart = startpos;}
 
-	const quint64& subSize() const {return fSize;}
+	quint64 subSize() const {return fSize;}
 
 	// QIODevice interface
 protected:

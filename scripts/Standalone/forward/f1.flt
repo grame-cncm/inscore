@@ -1,7 +1,0 @@
-accept:/ITL/scene/rect/circle/score
-reject:/ITL/scene/rect/circle
-reject:/ITL/scene/line*
-accept:/ITL/scene/line2
-accept:scale
-reject:load
-reject:rootPath

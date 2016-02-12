@@ -11,6 +11,7 @@
 #ifndef GUIDO_IMPORTER_H
 #define GUIDO_IMPORTER_H
 
+
 /**
 *	\brief An importer to support the MusicXML format.
 
@@ -22,6 +23,8 @@
 class QGuidoImporter
 {
 	public:
+		bool initialize();
+
 		typedef int (* musicxml2guido)(const char *file, bool generateBars, std::ostream& out);
 		typedef const char* (* musicxmlversion)();
 
@@ -58,7 +61,6 @@ class QGuidoImporter
 		static musicxml2guido mMusicXMLFileConverter;
 		static musicxml2guido mMusicXMLStringConverter;
 		static bool mMusicXMLSupported;
-		static bool initialize();
 };
 
 #endif //GUIDO_WIDGET_H

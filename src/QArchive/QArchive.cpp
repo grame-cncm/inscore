@@ -5,12 +5,12 @@
 
 namespace qarchive{
 
-SQArchive QArchive::emptyArchive()
+QArchive* QArchive::emptyArchive()
 {
 	return new QArchive();
 }
 
-SQArchive QArchive::readArchive(QIODevice *d, QArchiveError &error)
+QArchive* QArchive::readArchive(QIODevice *d, QArchiveError &error)
 {
 	QArchive* a = new QArchive();
 	a->fArchiveData = d;
@@ -18,7 +18,7 @@ SQArchive QArchive::readArchive(QIODevice *d, QArchiveError &error)
 	return a;
 }
 
-SQArchive QArchive::readArchiveFromData(const QByteArray &data, QArchiveError &error)
+QArchive* QArchive::readArchiveFromData(const QByteArray &data, QArchiveError &error)
 {
 	QBuffer *b = new QBuffer();
 	b->setData(data);
@@ -42,27 +42,26 @@ QArchiveError QArchive::compress(QString outputArchive, bool overwrite)
 	if(!output.open(QIODevice::WriteOnly))
 		return WRONG_PERMISSIONS;
 
-	QByteArray b;
-
-	qint64 bSize=0;
+	output.write(fHeader.generateHeader());
 
 	treeConstIterator<int> it = fTree.globalIterator();
 	while(it.next()){
 		int i;
 		if(it.item(i)){
+			QByteArray b;
 			if(!fFiles[i].compressedData(b))
 				return FILE_CORRUPTED;
-			fFiles[i].setCompressedSize(b.size()-bSize);
-			bSize=b.size();
+			output.write(b);
+			fFiles[i].setCompressedSize(b.size());
 		}
 	}
 
+	output.seek(0);
 	output.write(fHeader.generateHeader());
-	output.write(b);
 
 	output.close();
 
-	return NO_ERROR;
+	return ARCH_OK;
 }
 
 QArchiveError QArchive::extract(QString path, bool overwrite)
@@ -75,7 +74,7 @@ QArchiveError QArchive::extract(QString path, bool overwrite)
 	while( (m=it.next()) ){
 		switch(m){
 		case TREE_END:
-			return NO_ERROR;
+			return ARCH_OK;
 		case BRANCH:
 			if(!dir.mkpath(it.name()))
 					return WRONG_PERMISSIONS;
@@ -105,7 +104,7 @@ QArchiveError QArchive::extract(QString path, bool overwrite)
 		}
 	}
 
-	return NO_ERROR;
+	return ARCH_OK;
 }
 
 //______________________________________________________
@@ -159,7 +158,7 @@ bool QArchive::addFile(QString name, const QString& path, bool currentDir)
 		delete file;
 		return false;
 	}
-	return addFile(name, new QFile(path), currentDir);
+	return addFile(name, file, currentDir);
 }
 
 
@@ -211,7 +210,7 @@ bool QArchive::readFile(int fileID, QByteArray &data)
 //------------------------------------------------------
 QArchive::~QArchive()
 {
-	delete fArchiveData;
+	fArchiveData->deleteLater();
 	for (int i = 0; i < fFiles.size(); ++i)
 		delete fFiles.at(i).data();
 }

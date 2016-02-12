@@ -26,6 +26,7 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QDebug>
+
 #include "TPlugin.h"
 
 using namespace std;
@@ -52,14 +53,20 @@ void TPlugin::locations (const char* library, std::vector<std::string>& list)
 	QDir dir(QApplication::applicationDirPath());
 #if __APPLE__
 	dir.cdUp();
+//	if (dir.cd("PlugIns"))
+//		list.push_back (dir.absoluteFilePath(library).toStdString());
+#endif
+//#ifdef WIN32
+//	if (dir.cd("PlugIns"))
+//		list.push_back (dir.absoluteFilePath(library).toStdString());
+//#endif
 	if (dir.cd("PlugIns"))
 		list.push_back (dir.absoluteFilePath(library).toStdString());
-#endif
-#ifdef WIN32
-	if (dir.cd("PlugIns"))
-		list.push_back (dir.absoluteFilePath(library).toStdString());
-#endif
 	list.push_back (library);
+#if __APPLE__
+	QString localFramework = qgetenv("HOME") + "/Library/Frameworks/" + library;
+	list.push_back (localFramework.toStdString());
+#endif
 }
 
 // ------------------------------------------------------------------------------

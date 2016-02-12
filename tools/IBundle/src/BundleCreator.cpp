@@ -1,3 +1,25 @@
+/*
+  INScore Project
+
+  Copyright (C) 2009,2016  Grame
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Grame Research Laboratory, 11 cours de Verdun Gensoul 69002 Lyon - France
+  research@grame.fr
+*/
 #include "ScriptsParser.h"
 #include "ParsedData.h"
 #include "BundlePackager.h"
@@ -43,10 +65,13 @@ bool BundleCreator::bundle(std::string inputFile, std::string outputFile)
 		fLog<<"  "<<scriptNames.at(i)<<"\n";
 
 	fLog.section("Bundle Creation");
-	qarchive::SQArchive a = BundlePackager::bundle(parsedData);
+	qarchive::QArchive* a = BundlePackager::bundle(parsedData);
 	if(!a)
 		return false;
-	return writeArchive(a, outputFile, fForceOverwrite);
+	bool r = writeArchive(a, outputFile, fForceOverwrite);
+	delete a;
+
+	return r;
 }
 
 bool BundleCreator::failSafeBundle(std::string inputFile, std::string outputFile)
@@ -76,7 +101,7 @@ bool BundleCreator::failSafeBundle(std::string inputFile, std::string outputFile
 	parsedData.simplifyPaths();
 
 	inscore::extvector<std::string> names = parsedData.ressourceNames();
-	qarchive::SQArchive a = qarchive::QArchive::emptyArchive();
+	qarchive::QArchive* a = qarchive::QArchive::emptyArchive();
 
 	for(size_t i=0; i<names.size(); i++)
 		if( !a->addFileStd(names.at(i), parsedData.mainPath()+names.at(i)) ){
@@ -100,7 +125,10 @@ bool BundleCreator::failSafeBundle(std::string inputFile, std::string outputFile
 		return false;
 	}
 
-	return writeArchive(a, outputFile, fForceOverwrite);
+	bool r = writeArchive(a, outputFile, fForceOverwrite);
+	delete a;
+
+	return r;
 }
 
 
@@ -132,13 +160,13 @@ void BundleCreator::setParseJS(bool parseJS)
 	fParseJS = parseJS;
 }
 
-bool BundleCreator::writeArchive(qarchive::SQArchive &archive, const std::string &outputPath, bool overwrite)
+bool BundleCreator::writeArchive(qarchive::QArchive* archive, const std::string &outputPath, bool overwrite)
 {
 	qarchive::QArchiveError e = archive->compressStd(outputPath, overwrite);
 
 	std::string r;
 	switch(e){
-	case qarchive::NO_ERROR:
+	case qarchive::ARCH_OK:
 		return true;
 	case qarchive::FILE_EXIST:
 		std::cout<<"File already exist, do you want to overwrite? [O/n]   ";

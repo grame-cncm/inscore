@@ -42,7 +42,7 @@
 %token PATHSEP BACKPATH
 %token FILEPATH
 %token STRING
-%token WATCH EVAL
+%token EVAL
 %token ERR
 %token ENDEXPR ENDSCRIPT
 
@@ -171,7 +171,6 @@ relativeaddress	: POINT oscaddress		{ $$ = new string("." + *$2); delete $2; }
 			;
 
 oscpath		: PATHSEP identifier		{ $$ = new string("/" + *$2); delete $2; }
-			| PATHSEP WATCH				{ $$ = new string("/" + context->fText); }
 			| PATHSEP VARSTART varname	{ $$ = new string("/$" + *$3); delete $3; }
 			;
 

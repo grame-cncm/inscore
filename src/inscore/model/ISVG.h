@@ -29,6 +29,7 @@
 
 #include <string>
 #include "IGraphicBasedObject.h"
+#include "IAnimated.h"
 
 namespace inscore
 {
@@ -45,7 +46,7 @@ typedef class libmapping::SMARTP<ISVG>	SISVG;
 /*!
 	\brief a SVG element
 */
-class ISVG :  public IGraphicBasedObject
+class ISVG :  public IGraphicBasedObject, public IAnimated
 {
 	std::string	fSvg;
 
@@ -55,7 +56,7 @@ class ISVG :  public IGraphicBasedObject
 
 		virtual void		print(std::ostream& out) const;
 		virtual void		accept (Updater*);		
-		const std::string&	getText() const				{ return fSvg; }
+		const std::string&	getText() const			{ return fSvg; }
 
 	protected:
 				 ISVG( const std::string& name, IObject * parent );

@@ -41,9 +41,13 @@ macx {
 	QMAKE_LFLAGS += -F$$PWD/macos/Release
 	LIBS += -framework INScore
 	QMAKE_INFO_PLIST = $$PWD/Info.plist
-	RSRC.files 	= $$ROOT/rsrc/INScoreViewer.icns
-	RSRC.path 	= Contents/Resources
-	QMAKE_BUNDLE_DATA += RSRC
+#	RSRC.files 	= $$ROOT/rsrc/INScoreViewer.icns $$ROOT/src/guido2.ttf
+#	RSRC.path 	= Contents/Resources
+	PLUG.files 	= $$ROOT/lib/libMusicXML/macosx/libmusicxml2.dylib
+	PLUG.files += $$ROOT/lib/GestureFollower/macosx/libGFLib.dylib
+	PLUG.files += $$ROOT/lib/faust/macosx/libfaust.dylib
+	PLUG.path 	= Contents/PlugIns
+	QMAKE_BUNDLE_DATA += PLUG
 	ICON 		= $$ROOT/rsrc/INScoreViewer.icns
 }
 

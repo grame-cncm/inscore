@@ -30,6 +30,7 @@
 #include <string>
 #include "TFile.h"
 #include "IGraphicBasedObject.h"
+#include "IAnimated.h"
 
 namespace inscore
 {
@@ -46,7 +47,7 @@ typedef class libmapping::SMARTP<ISVGFile>	SISVGFile;
 /*!
 	\brief a SVG element based on a file
 */
-class ISVGFile :  public IGraphicBasedObject, public TFile
+class ISVGFile :  public IGraphicBasedObject, public TFile, public IAnimated
 {
 	public:		
 		static const std::string kSVGFileType;

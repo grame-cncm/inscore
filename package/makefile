@@ -12,15 +12,10 @@ endif
 endif
 endif
 
-i2i90  := ../tools/inscore2inscore90
-i2i100 := ../tools/inscore2inscore100
 ifeq ($(system), Darwin)
-  i2i90tool  := $(i2i90)/cmake/Release/inscore2inscore90
-  i2i100tool := $(i2i100)/cmake/Release/inscore2inscore100
+  BUILD    := ../build/macos/Release
 else
 ifdef win32 
-  i2i90tool  := $(i2i90)/cmake/Release/inscore2inscore90.exe
-  i2i100tool := $(i2i100)/cmake/Release/inscore2inscore100.exe
   WIN32QTPATH ?= $(shell qmake --version | grep Using | sed -e 's/..*\([A-Za-z]:[^ ]*\)lib/\1/')
   QT5         ?= $(shell echo $(WIN32QTPATH) | sed -e 's/\/[5-9]\.[0-9]\/..*//')
   WIN32QT	  := QT5PRINTSUPPORT.DLL QT5WIDGETS.DLL QT5OPENGL.DLL QT5GUI.DLL QT5CORE.DLL QT5SVG.DLL QT5QML.DLL QT5WebSockets.DLL QT5Multimedia.DLL QT5MultimediaWidgets.DLL Qt5Network.dll
@@ -32,9 +27,8 @@ ifdef win32
   WIN32QTPLATFORMS := qminimal.dll qoffscreen.dll qwindows.dll
   WIN32QTPLUGS     := $(patsubst %, $(WIN32QTPATH)/plugins/imageformats/%, $(WIN32QTPLUGS))
   WIN32QTPLATFORMS := $(patsubst %, $(WIN32QTPATH)/plugins/platforms/%, $(WIN32QTPLATFORMS))
-else
-  i2i90tool  := $(i2i90)/cmake/inscore2inscore90
-  i2i100tool := $(i2i100)/cmake/inscore2inscore100
+  bin    := ../build/win32/release
+  bin64   := ../build/win64/release
 endif
 endif
 
@@ -49,19 +43,13 @@ macapp  := $(viewer)-$(version).app
 winapp  := $(viewer)-$(version).exe
 macplug := $(macapp)/Contents/Plugins
 winplug := Plugins
+ibundle := ../tools/IBundle
 
 #########################
 # scripts provided as samples are now stored in a file
 scripts := $(shell cat samples-list.txt)
 
-
 #########################
-# this is for win32 only
-bin    := ../build/win32/release
-bin64   := ../build/win64/release
-
-#########################
-
 .PHONY: doc rsrc
 
 help:
@@ -75,7 +63,7 @@ help:
 	@echo "  make rsrc     # makes rsrc for SF FRS"
 	@echo "  make doc      # makes doc"
 
-include makeBundle
+#include makeBundle
 
 dmg:
 	hdiutil create $(package).dmg -srcfolder $(package) -ov
@@ -85,17 +73,17 @@ cleanperms:
 
 macosx:
 	@[ -d $(package) ] || mkdir -p $(package)
-	@[ -h ../build/macos/lib ] || {cd ../build/macos; ln -s Release lib}
+	[ -h ../build/macos/lib ] || make -C ../build link
 	make common
-	make -f makeINScoreBundle
 	-[ -d $(package)/$(macapp) ] && rm -rf $(package)/$(macapp)
-	mv $(viewer).app $(package)/$(macapp)
+	cp -r $(BUILD)/$(viewer).app $(package)/$(macapp)
+	macdeployqt $(package)/$(macapp)
 	make cleanperms
 	cp -f ../src/guido2.ttf $(package)
 	cd $(package) && ln -sf /Applications .
-	@[ -d $(package)/$(macplug) ] || mkdir $(package)/$(macplug)
-	cp ../lib/GestureFollower/macosx/libGFLib.dylib $(package)/$(macplug)
-	cp ../lib/faust/macosx/libfaust.dylib $(package)/$(macplug)
+	@[ -d $(package)/IBundle ] || mkdir $(package)/IBundle
+	cp $(ibundle)/IBundle $(package)/IBundle
+	cp $(ibundle)/readme.txt $(package)/IBundle
 	make dmg
 		
 common: 
@@ -105,7 +93,6 @@ common:
 	make samples
 		
 doc: 
-#	make -C $(docsrc)
 	make copydoc
 		
 copydoc: 
@@ -155,12 +142,14 @@ rsrc:
 	tar czf $(rsrc).tgz $(rsrc)/*[^z]
 
 samples:
-	@[ -d $(package)/samples ] || mkdir -p $(package)/samples
 	rm -rf $(package)/samples/*
+	@[ -d $(package)/samples/Bundles ] || mkdir -p $(package)/samples/Bundles
 	@echo ========================
 	@echo " copying sample scripts"
 	@echo ========================
 	$(foreach s,$(scripts), cp -R ../scripts/$(s) $(package)/samples/;)
+	@[ -d $(package)/samples ] || mkdir -p $(package)/samples
+	cp ../scripts/mobile/*.ibundle $(package)/samples/Bundles;
 	
 src:
 	@[ -d $(package)-src ] || mkdir -p $(package)-src
@@ -193,15 +182,22 @@ win32:
 	cp -f $(bin)/$(viewer).exe $(package)/$(viewer).exe
 	cp -f $(bin)/*.dll $(package)
 	cp $(QT5)/vcredist/vcredist_x86.exe $(package)
+	cp ../lib/libMusicXML/win32/libmusicxml2.dll $(package)/$(winplug)
 	cp ../lib/GestureFollower/win32/GFLib.dll $(package)/$(winplug)
 	cp ../lib/faust/win32/faust.dll $(package)/$(winplug)
 	cp ../lib/faust/win32/llvm_math.ll $(package)/$(winplug)
+	cp $(ibundle)/build/win32/release/IBundle.exe $(package)
+	cp $(ibundle)/readme.txt $(package)/IBundle-ReadMe.txt
 
 win64:
 	make wincommon
 	cp -f $(bin64)/$(viewer).exe $(package)/$(viewer).exe
 	cp -f $(bin64)/*.dll $(package)
+	cp ../lib/libMusicXML/win64/libmusicxml2.dll $(package)/$(winplug)
+	cp ../lib/GestureFollower/win64/GFLib64.dll $(package)/$(winplug)
 	cp $(QT5)/vcredist/vcredist_msvc2013_x86.exe $(package)
+	cp $(ibundle)/build/win64/release/IBundle.exe $(package)
+	cp $(ibundle)/readme.txt $(package)/IBundle-ReadMe.txt
 
 wincommon:
 	[ -d $(package) ] || mkdir -p $(package)

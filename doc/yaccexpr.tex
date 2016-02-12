@@ -1,0 +1,40 @@
+\begin{verbatim}
+//_______________________________________________
+// relaxed simple IExpression format specification
+//_______________________________________________
+start		: expression			
+			;
+//_______________________________________________
+//misc
+identifier	: IDENTIFIER			
+			;
+string		: identifier
+			| STRING				
+			| QUOTEDSTRING			
+			;
+variable	: VARSTART identifier	
+			;
+//_______________________________________________
+// expression declaration
+expression	: EXPR_START operator exprArg exprArg EXPR_END	
+			| EXPR_START exprArg EXPR_END					
+			| EXPR_START operator variable EXPR_END			
+			;
+operator	: identifier
+			| variable	
+			;
+exprArg		: arg
+			| AMPERSAND arg	
+			| TILDE arg	
+			| expression
+			;
+arg		: string	
+		| variable	
+		;
+
+//_______________________________________________
+// special expression chars
+//_______________________________________________
+AMPERSAND      : '&'
+TILDE          : '~'
+\end{verbatim}

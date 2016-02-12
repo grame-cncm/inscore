@@ -36,7 +36,7 @@ QArchiveError QArchiveHeader::readHeader(QIODevice *input)
 					d >> name;
 					fArchive->fTree.addDir(QString::fromUtf8(name));
 					fArchive->fTree.changeDir(QString::fromUtf8(name));
-
+					delete[] name;
 				}else if(fieldID == H_NEW_FILE){
 					char* name;
 					quint32 size;
@@ -44,6 +44,7 @@ QArchiveError QArchiveHeader::readHeader(QIODevice *input)
 					QSubIODevice *file = new QSubIODevice(input, 0, size);
 					files.push_back(file);
 					fArchive->addFileFromSubIODevice(QString::fromUtf8(name), file, true);
+					delete[] name;
 				}else if(fieldID == H_UPDIR){
 					fArchive->fTree.upDir();
 				}else{
@@ -82,7 +83,7 @@ QArchiveError QArchiveHeader::readHeader(QIODevice *input)
 		headerSize += files.at(i)->subSize();
 	}
 
-	return NO_ERROR;
+	return ARCH_OK;
 }
 
 QByteArray QArchiveHeader::generateHeader() const

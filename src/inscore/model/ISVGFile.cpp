@@ -40,10 +40,14 @@ const string ISVGFile::kSVGFileType("svgf");
 
 //--------------------------------------------------------------------------
 ISVGFile::ISVGFile( const std::string& name, IObject * parent )
-	: IGraphicBasedObject(name, parent), TFile (parent->getScene()) 
+	: IGraphicBasedObject(name, parent), TFile (parent->getScene()), IAnimated(this)
 { 
 	fTypeString = kSVGFileType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler<string>::create(getFile());
+
+	fMsgHandlerMap[kanimate_GetSetMethod]		= TSetMethodMsgHandler<ISVGFile,bool>::create(this, &ISVGFile::setAnimate);
+	fGetMsgHandlerMap[kanimate_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fAnimate);
+	fGetMsgHandlerMap[kanimated_GetMethod]		= TGetParamMsgHandler<bool>::create(fAnimated);
 }
 
 //--------------------------------------------------------------------------

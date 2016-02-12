@@ -25,7 +25,7 @@ enum HEADER_IDENTIFIERS{
 };
 
 enum QArchiveError{
-	NO_ERROR	=	0,
+	ARCH_OK	=	0,
 	FILE_EXIST,
 	FILE_NOT_FOUND,
 	FILE_CORRUPTED,
@@ -34,13 +34,12 @@ enum QArchiveError{
 };
 
 class QArchive;
-typedef libmapping::SMARTP<QArchive> SQArchive;
 
 class QArchiveHeader
 {
-	SQArchive fArchive;
+	QArchive* fArchive;
 public:
-	QArchiveHeader(SQArchive archive):fArchive(archive){}
+	QArchiveHeader(QArchive* archive):fArchive(archive){}
 
 	QArchiveError readHeader(QIODevice *input);
 	QByteArray generateHeader() const;

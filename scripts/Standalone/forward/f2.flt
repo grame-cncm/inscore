@@ -1,4 +1,0 @@
-accept:/ITL/scene/rect/circle/score
-reject:/ITL/scene/*/circle/*
-reject:load
-reject:rootPath

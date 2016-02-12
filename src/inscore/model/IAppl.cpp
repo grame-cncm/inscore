@@ -31,6 +31,12 @@
 #include <fstream>
 #include <sstream>
 
+#include <QDir>
+#include <QApplication>
+#include <QFontDatabase>
+#include <QStandardPaths>
+#include <QNetworkInterface>
+
 #include "IAppl.h"
 #include "IApplVNodes.h"
 #include "Forwarder.h"
@@ -46,6 +52,7 @@
 #include "ITLError.h"
 #include "Tools.h"
 #include "QFileDownloader.h"
+#include "QGuidoImporter.h"
 
 #include "INScore.h"
 
@@ -54,11 +61,6 @@
 #else
 #include "IMenu.h"
 #endif
-
-#include <QDir>
-#include <QApplication>
-#include <QStandardPaths>
-#include <QNetworkInterface>
 
 using namespace std;
 
@@ -149,6 +151,8 @@ float	IAppl::fVersionNum = 0.;				// the application version number as floating 
 float	IAppl::fCompatibilityVersionNum = 0.;	// the supported version number as floating point value
 unsigned long IAppl::kUPDPort = 7000;			//Default listening port
 udpinfo IAppl::fUDP(IAppl::kUPDPort);
+string	IAppl::fDefaultFontName("Carlito");		// the default font name
+
 
 //--------------------------------------------------------------------------
 IAppl::IAppl(QApplication* appl, bool offscreen)
@@ -202,11 +206,33 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 	fMsgHandlerMap[kresetBench_SetMethod]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::resetBench);
 	fMsgHandlerMap[kwriteBench_SetMethod]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::writeBench);
 #endif
+
+	QGuidoImporter gi;
+	gi.initialize();
+
+
+	const string applfont = ":/fonts/Carlito-Regular.ttf";
+	int result = QFontDatabase::addApplicationFont (applfont.c_str());
+	if (result < 0) {
+		cerr << "Cannot load application font " << applfont << endl;
+	}
+	else {
+		QFontDatabase dbf;
+		QFont f = dbf.font(fDefaultFontName.c_str(), "Regular", 12);
+		fAppl->setFont (f);
+	}
 }
 
 //--------------------------------------------------------------------------
 IAppl::~IAppl() {}
 bool IAppl::oscDebug() const								{ return fApplDebug->getOSCDebug(); }
+
+
+//--------------------------------------------------------------------------
+string IAppl::defaultFontName()
+{
+	return fDefaultFontName;
+}
 
 //--------------------------------------------------------------------------
 string IAppl::checkRootPath(const std::string& s)

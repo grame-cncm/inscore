@@ -57,3 +57,4 @@ dy = 0.060;
 /ITL/Welcome foreground 1;
 /ITL/Welcome/version event mouseDown 0 0;
 /ITL/Welcome/version watch;
+/ITL/Welcome foreground;

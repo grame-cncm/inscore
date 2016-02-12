@@ -1,3 +1,25 @@
+/*
+  INScore Project
+
+  Copyright (C) 2009,2016  Grame
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Grame Research Laboratory, 11 cours de Verdun Gensoul 69002 Lyon - France
+  research@grame.fr
+*/
 #include <sstream>
 #include <iostream>
 #include "BundlePackager.h"
@@ -7,14 +29,14 @@ using namespace qarchive;
 
 namespace ibundle {
 
-SQArchive BundlePackager::bundle(ParsedData &scripts)
+QArchive* BundlePackager::bundle(ParsedData &scripts)
 {
 	BundlePackager b(scripts);
 
 	b.mapNames();
 	scripts.applyNameMap(b.fNamesMap);
 
-	SQArchive a = qarchive::QArchive::emptyArchive();
+	QArchive* a = qarchive::QArchive::emptyArchive();
 	if(!b.setupArchive(a))
 		return 0;
 
@@ -41,7 +63,7 @@ void BundlePackager::mapNames()
 	id=0;
 	for(auto it=fInputData.ressources.begin(); it!=fInputData.ressources.end(); it++){
 		//Compute the new name with the extension
-		int idExtSuffix = it->first.rfind('.');
+		size_t idExtSuffix = it->first.rfind('.');
 		std::stringstream name;
 		name << "Ressources/" << id <<"."<<it->first.substr(idExtSuffix+1);
 		fNamesMap[it->first] = name.str();
@@ -49,7 +71,7 @@ void BundlePackager::mapNames()
 	}
 }
 
-bool BundlePackager::setupArchive(qarchive::SQArchive &archive)
+bool BundlePackager::setupArchive(qarchive::QArchive* archive)
 {
 	//Create hierarchy
 	archive->changeDir("/");
