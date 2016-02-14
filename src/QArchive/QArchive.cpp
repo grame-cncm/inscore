@@ -210,7 +210,8 @@ bool QArchive::readFile(int fileID, QByteArray &data)
 //------------------------------------------------------
 QArchive::~QArchive()
 {
-	fArchiveData->deleteLater();
+	if(fArchiveData)
+		fArchiveData->deleteLater();
 	for (int i = 0; i < fFiles.size(); ++i)
 		delete fFiles.at(i).data();
 }

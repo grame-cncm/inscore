@@ -23,6 +23,7 @@
 #include "ScriptsParser.h"
 #include "ParsedData.h"
 #include "BundlePackager.h"
+//#include "INScore.h"
 
 #include "BundleCreator.h"
 
@@ -162,6 +163,7 @@ void BundleCreator::setParseJS(bool parseJS)
 
 bool BundleCreator::writeArchive(qarchive::QArchive* archive, const std::string &outputPath, bool overwrite)
 {
+	archive->header().addNbrProperty(0,1.17f);
 	qarchive::QArchiveError e = archive->compressStd(outputPath, overwrite);
 
 	std::string r;

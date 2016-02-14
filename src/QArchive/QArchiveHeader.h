@@ -3,10 +3,11 @@
 
 #include <QIODevice>
 #include <QByteArray>
-#include <smartpointer.h>
+#include <map>
+#include <string>
 
 
-#define BUNDLE_VERSION 1.0
+#define ARCHIVE_VERSION 1.0
 
 namespace qarchive {
 
@@ -19,9 +20,10 @@ enum HEADER_IDENTIFIERS{
 		H_UPDIR				= 0xC4,		// 1100 0100
 	HEADER_PROPERTIES		= 0x20,		// 0010 0000
 		H_PROP_END			= 0xA0,		// 1010 0000
-		H_BUNDLE_VERSION	= 0xA1,		// 1010 0001
+		H_ARCHIVE_VERSION	= 0xA1,		// 1010 0001
 		H_ITL_VERSION		= 0xA2,		// 1010 0010
-
+	HEADER_CUSTOM_PROP		= 0xC8,		// 1100 1000
+		H_CUSTOM_END		= 0x80,		// 1000 0000
 };
 
 enum QArchiveError{
@@ -37,14 +39,31 @@ class QArchive;
 
 class QArchiveHeader
 {
+	friend class QArchive;
+
 	QArchive* fArchive;
+	std::map<int, float> fNbrProperties;
+	std::map<int, std::string> fStringProperties;
+
 public:
+	bool addNbrProperty (int id, float value);
+	bool readNbrProperty(int id, float &value);
+
+	bool addStringProperty (int id, std::string value);
+	bool readStringProperty(int id, std::string &value);
+
+
+protected:
 	QArchiveHeader(QArchive* archive):fArchive(archive){}
 
-	QArchiveError readHeader(QIODevice *input);
-	QByteArray generateHeader() const;
+	qreal archiveVersion=ARCHIVE_VERSION;
 
-	qreal bundleVersion=BUNDLE_VERSION, itlVersion=1.17;
+	QArchiveError	readHeader(QIODevice *input);
+	QByteArray		generateHeader() const;
+
+	QByteArray		generateCustomProp() const;
+	QArchiveError	readCustomProp(QDataStream &dataStream);
+
 };
 
 } // End namespace
