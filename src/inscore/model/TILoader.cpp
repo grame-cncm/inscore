@@ -150,6 +150,10 @@ MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const
 				}
 
 				if(!error){
+					float itlBundleVersion;
+					if(a->header().readNbrProperty(0,itlBundleVersion) && itlBundleVersion>INScore::version())
+						ITLErr<<srcfile<<" have been bundle for INScore "<<itlBundleVersion<<", error might happened with version "<<INScore::version()<<ITLEndl;
+
 					size_t id = srcfile.rfind("/");
 					if(id==string::npos)
 						id=0;

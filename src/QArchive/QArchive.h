@@ -76,6 +76,7 @@ public:
 	bool addFileFromSubIODevice(QString name, QSubIODevice* device, bool currentDir = false);
 
 	const Tree<int>& tree() const {return fTree;}
+	QArchiveHeader& header() {return fHeader;}
 
 	virtual ~QArchive();
 
