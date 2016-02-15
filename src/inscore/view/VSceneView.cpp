@@ -104,13 +104,13 @@ void ZoomingGraphicsView::resizeEvent ( QResizeEvent * )
 void ZoomingGraphicsView::changeEvent(QEvent *e)
 {
 	if(e->type() == QEvent::ActivationChange){
-		if(isActiveWindow()&&e->spontaneous()){
+		if(isActiveWindow() && e->spontaneous()){
 			INScore::postMessage(fScene->getOSCAddress().c_str(), "foreground");
 			e->accept();
 			return;
 		}
 	}
-	return QGraphicsView::changeEvent(e);
+	QGraphicsView::changeEvent(e);
 }
 
 #endif
