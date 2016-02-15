@@ -37,13 +37,13 @@ class BundlePackager
 	ParsedData& fInputData;
 
 public:
-	static qarchive::SQArchive bundle(ParsedData& scripts);
+	static qarchive::QArchive *bundle(ParsedData& scripts);
 protected:
 
 	BundlePackager(ParsedData& inputData):fInputData(inputData){}
 
 	void mapNames();
-	bool setupArchive(qarchive::SQArchive& archive);
+	bool setupArchive(qarchive::QArchive *archive);
 
 };
 

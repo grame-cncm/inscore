@@ -17,35 +17,32 @@
 
 namespace qarchive{
 
-class QArchive;
-typedef libmapping::SMARTP<QArchive> SQArchive;
-
 class QArchiveData;
 class QSubIODevice;
 
-class QArchive: public libmapping::smartable
+class QArchive
 {
 	friend class QArchiveHeader;
 
 	QList<QArchiveData> fFiles;
 	Tree<int> fTree;
 
-	QIODevice* fArchiveData;
+	QIODevice* fArchiveData=0;
 	QArchiveHeader fHeader;
 
 
 public:
-	static SQArchive emptyArchive();
+	static QArchive* emptyArchive();
 
-	static SQArchive readArchiveFromFile(QString path, QArchiveError& error)		{ return readArchive(new QFile(path), error);}
-	static SQArchive readArchiveFromFile(QString path)								{ QArchiveError e; return readArchiveFromFile(path, e);}
-	static SQArchive readArchiveFromFileStd(std::string path, QArchiveError& error)	{ return readArchiveFromFile(QString::fromStdString(path), error);}
-	static SQArchive readArchiveFromFileStd(std::string path)						{ QArchiveError e; return readArchiveFromFileStd(path, e);}
+	static QArchive* readArchiveFromFile(QString path, QArchiveError& error)		{ return readArchive(new QFile(path), error);}
+	static QArchive* readArchiveFromFile(QString path)								{ QArchiveError e; return readArchiveFromFile(path, e);}
+	static QArchive* readArchiveFromFileStd(std::string path, QArchiveError& error)	{ return readArchiveFromFile(QString::fromStdString(path), error);}
+	static QArchive* readArchiveFromFileStd(std::string path)						{ QArchiveError e; return readArchiveFromFileStd(path, e);}
 
-	static SQArchive readArchiveFromData(const QByteArray& data, QArchiveError& error);
-	static SQArchive readArchiveFromData(QByteArray* data, QArchiveError& error)	{ return readArchive(new QBuffer(data),error);}
+	static QArchive* readArchiveFromData(const QByteArray& data, QArchiveError& error);
+	static QArchive* readArchiveFromData(QByteArray* data, QArchiveError& error)	{ return readArchive(new QBuffer(data),error);}
 
-	static SQArchive readArchive(QIODevice* device, QArchiveError& error);
+	static QArchive* readArchive(QIODevice* device, QArchiveError& error);
 
 	QArchiveError compress(QString outputArchive, bool overwrite = true);
 	QArchiveError compressStd(std::string outputArchive, bool overwrite = true)		{ return compress(QString::fromStdString(outputArchive), overwrite);}
