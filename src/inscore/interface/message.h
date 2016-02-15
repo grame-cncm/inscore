@@ -72,8 +72,9 @@ class inscore_export Message
 	/*!
 		\brief print the message
 		\param out the output stream
+		\param suffix the suffix to be used as messages separator
 	*/
-	virtual void	print(std::ostream& out, int nested=0) const = 0;
+	virtual void	print(std::ostream& out, int nested=0, const char *suffix=0) const = 0;
 
 
 	/// \brief gives the message address

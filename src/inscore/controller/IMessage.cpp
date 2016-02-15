@@ -329,7 +329,7 @@ void IMessageList::sendWebMsg() const
 //--------------------------------------------------------------------------
 // print a single parameter
 //--------------------------------------------------------------------------
-void IMessage::print(std::ostream& out, int i, int nested) const
+void IMessage::print(std::ostream& out, int i, int nested, const char* sep) const
 {
     string str; int val; float fval;
 	SIMessageList msgs; TJavaScript js; TLuaScript lua; SIExpression expr;
@@ -347,16 +347,14 @@ void IMessage::print(std::ostream& out, int i, int nested) const
 		int n  = nested;
 		while (n--) { prefix += "	"; }
 		suffix = "";
-//		msgs->list().set(prefix.c_str(), ",\n");
-		out << "(\n" ;
+		out << (sep ? "( " : "(\n");
 		for (size_t j = 0 ; j < msgs->list().size(); j++) {
 			SIMessage msg = msgs->list()[j];
 			out << suffix;
 			out << prefix;
-			msg->print(out, nested);
-			suffix = ",\n";
+			msg->print(out, nested, sep);
+			suffix = sep ? sep : ",\n";
 		}
-//		out << "(\n" << msgs->list() << " )";
 		out << " )";
 	}
 	else if (param(i, js))
@@ -368,7 +366,7 @@ void IMessage::print(std::ostream& out, int i, int nested) const
 }
 
 //--------------------------------------------------------------------------
-void IMessage::print(std::ostream& out, int nested) const
+void IMessage::print(std::ostream& out, int nested, const char* sep) const
 {
 	nested++;
 	if (extendedAddress()) out << string(fUrl);
@@ -381,10 +379,10 @@ void IMessage::print(std::ostream& out, int nested) const
 	if (size()) {
 		out << " ";
 		for (int i=0; i< size()-1; i++) {
-			print (out, i, nested);
+			print (out, i, nested, sep);
 			out << " ";
 		}
-		print (out, size()-1, nested);
+		print (out, size()-1, nested, sep);
 	}
 	if (nested == 1) out << ";";
 	nested--;
