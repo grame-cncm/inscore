@@ -6,5 +6,6 @@
 	<file alias="Random-Score.inscore">../scripts/mobile/RandomScore.inscore</file>
 	<file alias="Score.ibundle">../scripts/mobile/Score.ibundle</file>
 	<file alias="Clock.ibundle">../scripts/mobile/Clock.ibundle</file>
+	<file alias="Mixed-Resources.ibundle">../scripts/mobile/Mixed-Resources.ibundle</file>
     </qresource>
 </RCC>
