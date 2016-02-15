@@ -19,7 +19,7 @@ QArchiveError QArchiveHeader::readHeader(QIODevice *input)
 	quint8 fieldID;
 	QList<QSubIODevice*> files;
 
-	while(!d.atEnd()){
+	while(true){
 		d >> fieldID;
 		if(fieldID==HEADER_END){
 			break;
@@ -52,26 +52,37 @@ QArchiveError QArchiveHeader::readHeader(QIODevice *input)
 				}
 			}
 
-		}else if(HEADER_PROPERTIES){
+		}else if(fieldID==HEADER_PROPERTIES){
 			//------  PROPERTIES ------
 			while(fieldID != H_PROP_END){
 				d >> fieldID;
 				if(fieldID == H_PROP_END)
 					break;
-				if(fieldID == H_BUNDLE_VERSION){
-					d >> bundleVersion;
-					if(bundleVersion > BUNDLE_VERSION)	//Bundle version is higher than the library version
+				if(fieldID == H_ARCHIVE_VERSION){
+					d >> archiveVersion;
+					if(archiveVersion > ARCHIVE_VERSION)	//Bundle version is higher than the library version
 						return HIGHER_BUNDLE_VERSION;
-				}else if(fieldID == H_ITL_VERSION)
-					d >> itlVersion;
-				else if(fieldID == HEADER_END)		//H_PROP_END has not been detected -> invalid file
+				}else if(fieldID == H_ITL_VERSION){		//Compatibility
+					qreal n;
+					d >> n;
+				}else if(fieldID == HEADER_END)		//H_PROP_END has not been detected -> invalid file
 					return FILE_CORRUPTED;
 				else
 					continue;
 			}
+		}else if(fieldID==HEADER_CUSTOM_PROP){
+			//------  CUSTOM PROPERTIES ------
+			QArchiveError e = readCustomProp(d);
+			if(e)
+				return e;
+			else
+				continue;
 		}else{
 			return FILE_CORRUPTED;
 		}
+
+		if(d.atEnd())
+			return FILE_CORRUPTED;
 	}
 
 	qint64 headerSize = d.device()->pos();
@@ -86,6 +97,7 @@ QArchiveError QArchiveHeader::readHeader(QIODevice *input)
 	return ARCH_OK;
 }
 
+//______________________________________________
 QByteArray QArchiveHeader::generateHeader() const
 {
 	QBuffer buffer;
@@ -95,11 +107,14 @@ QByteArray QArchiveHeader::generateHeader() const
 
 	//Writing PROPERTIES
 	out << (quint8) HEADER_PROPERTIES;
-	out << (quint8) H_BUNDLE_VERSION;
-	out << BUNDLE_VERSION;
-	out << (quint8) H_ITL_VERSION;
-	out << itlVersion;
+	out << (quint8) H_ARCHIVE_VERSION;
+	out << ARCHIVE_VERSION;
 	out << (quint8) H_PROP_END;
+
+	//Writing CUSTOM PROPERTIES
+	out << (quint8) HEADER_CUSTOM_PROP;
+	out << generateCustomProp();
+	out << (quint8) H_CUSTOM_END;
 
 	//Writing HIERARCHY
 	out << (quint8) HEADER_HIERARCHY;
@@ -133,6 +148,99 @@ QByteArray QArchiveHeader::generateHeader() const
 	return buffer.data();
 }
 
+//______________________________________________
+QByteArray QArchiveHeader::generateCustomProp() const
+{
+	QByteArray r;
+	QDataStream d(&r, QIODevice::WriteOnly);
+	d.setVersion(QDataStream::Qt_5_5);
+	for(auto it = fNbrProperties.begin(); it != fNbrProperties.end(); it++){
+		d << (quint8) (0x40 + it->first);
+		d << (float) it->second;
+	}
+	for(auto it = fStringProperties.begin(); it != fStringProperties.end(); it++){
+		d << (quint8) (0xC0 + it->first);
+		d << it->second.c_str();
+	}
+
+	return r;
+}
+
+//______________________________________________
+QArchiveError QArchiveHeader::readCustomProp(QDataStream &d)
+{
+	quint8 fieldID;
+	while(!d.atEnd()){
+		d >> fieldID;
+
+		if(fieldID == H_CUSTOM_END)
+					return ARCH_OK;
+		else if((fieldID & (quint8)0xC0) == (quint8)0xC0){	// string
+			quint8 t = fieldID & (quint8)0xC0 ;
+			quint8 t1 = (quint8) 0xC0;
+			char* c;
+			d >> c;
+			fStringProperties[fieldID & (quint8)0x3F] = std::string(c);
+			delete[] c;
+		}else if((fieldID & (quint8)0xC0) == (quint8)0x40){ // number
+			float f;
+			d >> f;
+			fNbrProperties[fieldID & (quint8)0x3F] = f;
+		}else
+			FILE_CORRUPTED;
+	}
+
+	return FILE_CORRUPTED;
+}
+
+//_________________________________________________________________
+//-----------------------------------------------------------------
+bool QArchiveHeader::addNbrProperty(int id, float value)
+{
+	if(id>64 || id<0)
+		return false;
+
+	if(fNbrProperties.count(id))
+		return false;
+
+	fNbrProperties[id] = value;
+	return true;
+}
+
+//______________________________________________
+bool QArchiveHeader::readNbrProperty(int id, float &value)
+{
+	auto it = fNbrProperties.find(id);
+	if(it==fNbrProperties.end())
+		return false;
+
+	value = it->second;
+	return true;
+}
+
+//______________________________________________
+bool QArchiveHeader::addStringProperty(int id, std::string value)
+{
+	if(id>64 || id<0)
+		return false;
+
+	if(fStringProperties.count(id))
+		return false;
+
+	fStringProperties[id] = value;
+	return true;
+}
+
+//______________________________________________
+bool QArchiveHeader::readStringProperty(int id, std::string &value)
+{
+	auto it = fStringProperties.find(id);
+	if(it==fStringProperties.end())
+		return false;
+
+	value = it->second;
+	return true;
+}
 
 
 } // End namespace
