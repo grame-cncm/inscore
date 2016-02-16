@@ -18,3 +18,4 @@ An environment for the design of interactive, augmented music scores.
 
 Complet
 INScore is an environment for the design of interactive augmented music scores that extend the music representation to arbitrary graphic objects. INScore features are entirely controlled using the Open Sound Control protocol [OSC] and using a scripting language based on a textual version of OSC. Using INScore, you can create and display dynamic and interactive music scores. Due to its network's extensions, INScore is controllable from a computer and can load scores, scripts or resources on the internet. INScore is an open source project developed by Grame - Centre national de création musicale - Lyon France.
+
