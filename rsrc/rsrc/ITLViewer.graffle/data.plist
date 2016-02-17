@@ -42,7 +42,7 @@
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2016-02-16 12:28:29 +0000</string>
+	<string>2016-02-17 08:07:24 +0000</string>
 	<key>Modifier</key>
 	<string>Dominique Fober</string>
 	<key>NotesVisible</key>
@@ -1077,11 +1077,11 @@
 							<key>Color</key>
 							<dict>
 								<key>b</key>
-								<string>0.946103</string>
+								<string>0.901961</string>
 								<key>g</key>
-								<string>0.934239</string>
+								<string>0.901961</string>
 								<key>r</key>
-								<string>1</string>
+								<string>0.901961</string>
 							</dict>
 						</dict>
 						<key>shadow</key>
@@ -1715,11 +1715,11 @@
 	<key>WindowInfo</key>
 	<dict>
 		<key>CurrentSheet</key>
-		<integer>3</integer>
+		<integer>1</integer>
 		<key>ExpandedCanvases</key>
 		<array/>
 		<key>Frame</key>
-		<string>{{439, 149}, {1351, 1026}}</string>
+		<string>{{569, 186}, {1351, 991}}</string>
 		<key>ListView</key>
 		<true/>
 		<key>OutlineWidth</key>
@@ -1733,7 +1733,7 @@
 		<key>SidebarWidth</key>
 		<integer>120</integer>
 		<key>VisibleRegion</key>
-		<string>{{-237, -44}, {1216, 872}}</string>
+		<string>{{-329, -27}, {1216, 837}}</string>
 		<key>Zoom</key>
 		<real>1</real>
 		<key>ZoomValues</key>
