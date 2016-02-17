@@ -6,8 +6,8 @@
 INScore web API documentation
 ==================================
 
-This documentation contains informations on how to use the INScore web API exposed by the httpd and websocket objects.  
-The API exposed with the two protocols http and websocket uses the same logic and has the same documentation.
+This documentation contains information on how to use the INScore web API exposed by the httpd and websocket objects.  
+The API exposed with the two protocols (http and websocket) uses the same logic and share the same documentation.
 
 .. toctree::
    :maxdepth: 2
