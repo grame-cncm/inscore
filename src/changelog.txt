@@ -12,7 +12,11 @@ It has been supported by the ANR
 ====================================================
 
 ----------------------------------------------------
-Version 1.17
+Version 1.18
+- web api documentation included in package
+
+----------------------------------------------------
+Version 1.17 - 2016-02-16
 - support animated svg using the new 'animate' message
 - messages list variables are exported to javascript as a string
 - Carlito Regular open source font is embedded in the application ressources and used as a default font.
