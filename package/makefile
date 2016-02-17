@@ -96,7 +96,8 @@ common:
 	cp ../src/changelog.txt $(package)
 	make samples
 		
-doc: 
+doc:
+	make -C $(docsrc)/webAPI html
 	make copydoc
 		
 copydoc: 
@@ -104,9 +105,12 @@ copydoc:
 	cp -f $(docsrc)/OSCMsg.pdf $(docdst)
 	make -C $(docsrc) htmlclean
 	rm -f $(docdst)/html/*
+	rm -rf $(docdst)/WebAPI/*
 	cp  $(docsrc)/OSCMsg/* $(docdst)/html
 	cp  $(docsrc)/refcards/INScore-refcard-1.12.pdf $(docdst)
+	cp  -r $(docsrc)/webAPI/build/html/ $(docdst)/WebAPI
 	cd  $(docdst) && tar czf html.tgz html
+	cd  $(docdst) && tar czf WebAPI.tgz WebAPI
 
 interfaces:
 	@[ -d $(rsrc)/$(interf) ] || mkdir -p $(rsrc)/$(interf)
