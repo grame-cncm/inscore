@@ -21,13 +21,6 @@ function toNum {
 
 echo "moving version number to $VERSION"
 
-CMAKE=$ROOT/build/CMakeLists.txt
-echo " updating $CMAKE"
-sed "s/\(INS[A-Z]*VERS[^0-9]*\)[0-9]*\.[0-9]*/\1$VERSION/" $CMAKE > TMP$$
-mv -f TMP$$ $CMAKE
-cmake  $ROOT/build/MacOS
-cmake  $ROOT/build/iOS
-
 LPRO=$ROOT/build/library.pro
 echo " updating $LPRO"
 sed "s/^VERSION = ..*/VERSION = $VERSION/" $LPRO > TMP$$
