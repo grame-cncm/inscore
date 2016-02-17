@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Get the score image &mdash; webAPI 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="webAPI 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Get data from the server" href="../get.html" />
+    <link rel="next" title="Get a file from INScore server" href="file.html" />
+    <link rel="prev" title="Getting the screen version" href="version.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="file.html" title="Get a file from INScore server"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="version.html" title="Getting the screen version"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">webAPI 1.0 documentation</a> &raquo;</li>
+          <li><a href="../get.html" accesskey="U">Get data from the server</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="get-the-score-image">
+<span id="index-0"></span><h1>Get the score image<a class="headerlink" href="#get-the-score-image" title="Permalink to this headline">¶</a></h1>
+<p>Get a image of the score in <em>png</em> format. The screen version is associated with the image.</p>
+<div class="section" id="request">
+<h2>Request<a class="headerlink" href="#request" title="Permalink to this headline">¶</a></h2>
+<p><strong>With http server</strong></p>
+<dl class="docutils">
+<dt>A http GET request at root of the server is used to get the image. The message-body should by empty :</dt>
+<dd>path : <em>serverUrl</em>/</dd>
+</dl>
+<p><strong>With websocket server</strong></p>
+<dl class="docutils">
+<dt>A JSON object with two fields is used to get the image :</dt>
+<dd><ul class="first last simple">
+<li><tt class="docutils literal"><span class="pre">id</span></tt> : an arbitrary id for the request</li>
+<li><tt class="docutils literal"><span class="pre">method</span></tt> : the method is <tt class="docutils literal"><span class="pre">image</span></tt>. This field is used to identified the request</li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python"><pre>var getJsonObject = { id : "145678", method : "image"};
+exampleSocket.send(JSON.stringify(getJsonObject));</pre>
+</div>
+</div>
+<div class="section" id="response">
+<h2>Response<a class="headerlink" href="#response" title="Permalink to this headline">¶</a></h2>
+<p><strong>With http server</strong></p>
+<p>The server send the image with the <tt class="docutils literal"><span class="pre">Cache-Control</span></tt> directive set to <tt class="docutils literal"><span class="pre">no-cache</span></tt>. A <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.25/">If-Modified-Since directive</a> with a date can be used to avoid unecessary data transfer. If the score has not been modified since the specified date, a 304 (Not modified) response is returned.</p>
+<p>In other case, a normal GET response is returned :</p>
+<blockquote>
+<div><p>The format of the image is defined by the Mime type in the Content-type header of the response. Only the &#8220;image/png&#8221; Mime type is currently supported.
+A custom field <tt class="docutils literal"><span class="pre">X-Inscore-Version</span></tt> is added to header, it contains the current version of the score (see <a class="reference internal" href="version.html"><em>Getting the screen version</em></a>).</p>
+<p><em>Response code :</em> 200(&#8220;success&#8221;)</p>
+<p><em>Response body :</em> the image of the score in the format defined in the Content-type header.</p>
+</div></blockquote>
+<p><strong>With websocket server</strong></p>
+<dl class="docutils">
+<dt>A JSON object with five keys :</dt>
+<dd><ul class="first last simple">
+<li><tt class="docutils literal"><span class="pre">id</span></tt> : the id of the request</li>
+<li><tt class="docutils literal"><span class="pre">status</span></tt> : OK in case of success or ERROR in case of error.</li>
+<li><tt class="docutils literal"><span class="pre">version</span></tt> : the score version.</li>
+<li><tt class="docutils literal"><span class="pre">mimeType</span></tt> : the mime-type of the image.</li>
+<li><tt class="docutils literal"><span class="pre">image</span></tt> : an <tt class="docutils literal"><span class="pre">ArrayBuffer</span></tt> which contains the image data encoded in base64.</li>
+</ul>
+</dd>
+</dl>
+<p>The only image format currently supported is &#8216;png&#8217; (mimeType &#8220;image/png&#8221;)</p>
+<blockquote>
+<div><div class="line-block">
+<div class="line">Example : <tt class="docutils literal"><span class="pre">{id</span> <span class="pre">:</span> <span class="pre">&quot;145678&quot;,</span> <span class="pre">status</span> <span class="pre">:</span> <span class="pre">&quot;OK&quot;,</span> <span class="pre">version</span> <span class="pre">:</span> <span class="pre">1542,</span> <span class="pre">mimeType</span> <span class="pre">:</span> <span class="pre">&quot;image/png&quot;,</span> <span class="pre">image</span> <span class="pre">:</span> <span class="pre">[xxx]}</span></tt></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Get the score image</a><ul>
+<li><a class="reference internal" href="#request">Request</a></li>
+<li><a class="reference internal" href="#response">Response</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="version.html"
+                        title="previous chapter">Getting the screen version</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="file.html"
+                        title="next chapter">Get a file from INScore server</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/get/image.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="file.html" title="Get a file from INScore server"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="version.html" title="Getting the screen version"
+             >previous</a> |</li>
+        <li><a href="../index.html">webAPI 1.0 documentation</a> &raquo;</li>
+          <li><a href="../get.html" >Get data from the server</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Grame.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.
+    </div>
+  </body>
+</html>

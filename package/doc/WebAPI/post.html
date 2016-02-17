@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Post data to the server &mdash; webAPI 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="webAPI 1.0 documentation" href="index.html" />
+    <link rel="next" title="Post INScore script" href="post/post.html" />
+    <link rel="prev" title="Get a file from INScore server" href="get/file.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="post/post.html" title="Post INScore script"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="get/file.html" title="Get a file from INScore server"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">webAPI 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="post-data-to-the-server">
+<h1>Post data to the server<a class="headerlink" href="#post-data-to-the-server" title="Permalink to this headline">¶</a></h1>
+<div class="line-block">
+<div class="line">The POST requests are used to send data to the server to modify the score or to interact with it.</div>
+</div>
+<p>First column is the path used with http server or the method field used with web socket server.
+The POST method has to be used with http server for these requests.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="18%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">HTTP path</th>
+<th class="head">WebSocket method</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>empty</em></td>
+<td>post</td>
+<td>Send an INScore script (see <a class="reference internal" href="post/post.html"><em>Post INScore script</em></a>).</td>
+</tr>
+<tr class="row-odd"><td>click</td>
+<td>click</td>
+<td>Send a mouse click event with mouse position (see <a class="reference internal" href="post/click.html"><em>Post mouse click</em></a>).</td>
+</tr>
+<tr class="row-even"><td>hover</td>
+<td>hover</td>
+<td>Send a mouse hover event with mouse position (see <a class="reference internal" href="post/hover.html"><em>Post mouse hover</em></a>).</td>
+</tr>
+</tbody>
+</table>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="post/post.html">Post INScore script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="post/click.html">Post mouse click</a></li>
+<li class="toctree-l1"><a class="reference internal" href="post/hover.html">Post mouse hover</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="get/file.html"
+                        title="previous chapter">Get a file from INScore server</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="post/post.html"
+                        title="next chapter">Post INScore script</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/post.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="post/post.html" title="Post INScore script"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="get/file.html" title="Get a file from INScore server"
+             >previous</a> |</li>
+        <li><a href="index.html">webAPI 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Grame.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.
+    </div>
+  </body>
+</html>
