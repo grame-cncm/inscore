@@ -2,11 +2,26 @@
 /ITL/Welcome  new;
 /ITL/Welcome/* del;
 
+<? javascript
+	// evaluate the best event for interaction
+	function down() {
+		var os = osname();
+		var down = "mouseDown";
+		if (os == "Android" || os == "iOS")
+			down = "touchBegin";
+		return "/ITL/Welcome/c4 watch " + down + "(/ITL browse 'http://inscore.sf.net');";
+	}
+	""
+?>
+
 shadow = shadow 5 5 0 0 0 75 20;
 color = 20 0 150;
 titlesize = 50;
 textsize = 20;
 aboutsize = 30;
+inscoresize = 34;
+inscoresizeo = 38;
+
 
 /ITL/Welcome/welcome set txt "Welcome to INScore";
 /ITL/Welcome/welcome color $color;
@@ -43,9 +58,9 @@ dy = 0.062;
 /ITL/Welcome/c[2-4] dy $dy;
 /ITL/Welcome/c[3-4] dy $dy;
 /ITL/Welcome/c4 dy $dy;
-/ITL/Welcome/c4 dy 0.01;
+/ITL/Welcome/c4 dy 0.015;
 /ITL/Welcome/c4 fontWeight bold;
-/ITL/Welcome/c4 fontSize $aboutsize;
+/ITL/Welcome/c4 fontSize $inscoresize;
 /ITL/Welcome/c4 color $color;
 /ITL/Welcome/c4 effect $shadow;
 
@@ -59,3 +74,7 @@ dy = 0.062;
 /ITL/Welcome/version event mouseDown 0 0;
 /ITL/Welcome/version watch;
 /ITL/Welcome foreground;
+
+/ITL/Welcome/c4 watch mouseEnter (/ITL/Welcome/c4 fontSize $inscoresizeo, /ITL/Welcome/c4 dred 140);
+/ITL/Welcome/c4 watch mouseLeave (/ITL/Welcome/c4 fontSize $inscoresize, /ITL/Welcome/c4 dred -140);
+<?javascript down() ?>
