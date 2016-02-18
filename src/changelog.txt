@@ -14,6 +14,7 @@ It has been supported by the ANR
 ----------------------------------------------------
 Version 1.18
 - web api documentation included in package
+- new 'browse' message at application level to open a document in a web browser
 
 ----------------------------------------------------
 Version 1.17 - 2016-02-16

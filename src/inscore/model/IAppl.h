@@ -200,6 +200,9 @@ class IAppl : public IObject, public TILoader
 
 		/// \brief application \c 'load' message handler.
 		virtual MsgHandler::msgStatus loadMsg (const IMessage* msg);
+
+		/// \brief application \c 'browse' message handler.
+		virtual MsgHandler::msgStatus browseMsg (const IMessage* msg);
 	
 		/// \brief load a buffer containing an inscore script
 		virtual MsgHandler::msgStatus loadBuffer (const IMessage* msg);

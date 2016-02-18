@@ -36,6 +36,7 @@
 #include <QFontDatabase>
 #include <QStandardPaths>
 #include <QNetworkInterface>
+#include <QDesktopServices>
 
 #include "IAppl.h"
 #include "IApplVNodes.h"
@@ -169,6 +170,7 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 //	fMsgHandlerMap["activate"]					= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::activate);
 	fMsgHandlerMap[kload_SetMethod]				= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadMsg);
 	fMsgHandlerMap[kread_SetMethod]				= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadBuffer);
+	fMsgHandlerMap[kbrowse_SetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::browseMsg);
 	fMsgHandlerMap[krequire_SetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::requireMsg);
 	fMsgHandlerMap[kquit_SetMethod]				= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::quit);
 	fMsgHandlerMap[kmouse_SetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::cursor);
@@ -566,6 +568,27 @@ MsgHandler::msgStatus IAppl::loadBuffer (const IMessage* msg)
 MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
 {
 	return load (msg, this, getRootPath());
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IAppl::browseMsg(const IMessage* msg)
+{
+	if (msg->size() != 1) return MsgHandler::kBadParameters;
+	string file;
+	if (!msg->param(0, file) || file.empty()) return MsgHandler::kBadParameters;
+	string url;
+	std::string begin;
+	begin.assign(file, 0, 7);
+	if ( (begin == "http://") || (begin == "https:/") || begin == "file://")
+		url = file;
+	else {
+		url ="file:/";
+		url += absolutePath(file);
+	}
+	QUrl qurl(url.c_str());
+	bool ret = QDesktopServices::openUrl(qurl);
+	if (!ret) return MsgHandler::kCreateFailure;
+	return MsgHandler::kProcessedNoChange;
 }
 
 //--------------------------------------------------------------------------
