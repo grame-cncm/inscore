@@ -176,8 +176,6 @@ QArchiveError QArchiveHeader::readCustomProp(QDataStream &d)
 		if(fieldID == H_CUSTOM_END)
 					return ARCH_OK;
 		else if((fieldID & (quint8)0xC0) == (quint8)0xC0){	// string
-			quint8 t = fieldID & (quint8)0xC0 ;
-			quint8 t1 = (quint8) 0xC0;
 			char* c;
 			d >> c;
 			fStringProperties[fieldID & (quint8)0x3F] = std::string(c);
@@ -187,7 +185,7 @@ QArchiveError QArchiveHeader::readCustomProp(QDataStream &d)
 			d >> f;
 			fNbrProperties[fieldID & (quint8)0x3F] = f;
 		}else
-			FILE_CORRUPTED;
+			return FILE_CORRUPTED;
 	}
 
 	return FILE_CORRUPTED;
@@ -198,9 +196,6 @@ QArchiveError QArchiveHeader::readCustomProp(QDataStream &d)
 bool QArchiveHeader::addNbrProperty(int id, float value)
 {
 	if(id>64 || id<0)
-		return false;
-
-	if(fNbrProperties.count(id))
 		return false;
 
 	fNbrProperties[id] = value;
@@ -222,9 +217,6 @@ bool QArchiveHeader::readNbrProperty(int id, float &value)
 bool QArchiveHeader::addStringProperty(int id, std::string value)
 {
 	if(id>64 || id<0)
-		return false;
-
-	if(fStringProperties.count(id))
 		return false;
 
 	fStringProperties[id] = value;
