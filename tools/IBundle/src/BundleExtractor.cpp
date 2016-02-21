@@ -103,7 +103,8 @@ bool BundleExtractor::writeArchive(qarchive::QArchive* archive, std::string outp
 	case qarchive::WRONG_PERMISSIONS:
 		std::cerr<<"Impossible to write in "<<outputFolder<<std::endl;
 		break;
-
+	default:
+		break;
 	}
 	return false;
 }
