@@ -204,7 +204,6 @@ Starget    =          "/ITL/scene/sco"
            OSCsend    1,"", giSendPort, Starget, "sf", "rotatey", gkRotateY
            OSCsend    1,"", giSendPort, Starget, "sf", "rotatez", gkRotateZ
            OSCsend    1,"", giSendPort, Starget, "sff", "shear", gkShearX, gkShearY
-           OSCsend    1, "", giSendPort, Starget, "sff", "shear", gkShearX, gkShearY
            turnoff
   endin
 
