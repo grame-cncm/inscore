@@ -1626,6 +1626,22 @@ The default \OSC{port}, \OSC{outport} and \OSC{errport} values are 7000, 7001 an
 Error messages are sent as a single string.
 
 %===============================
+%:  System support
+\sublevel{System support}
+\label{system}
+
+\begin{rail}
+ITLSystem : ('browse' file)
+\end{rail}
+\index{ITL messages!browse}
+
+\begin{itemize}
+\item \OSC{browse} open the file given as parameter using the system default browser. The message supports URLs that can be of type \OSC{http://} , \OSC{https://} or \OSC{file://} . It supports also direct reference to a local file (e.g. myfile.html) that is translated into \OSC{file://} url using the application rootPath.
+\end{itemize}
+
+
+
+%===============================
 %:  Application level queries
 \sublevel{Application level queries}
 \label{ITLQuery}
