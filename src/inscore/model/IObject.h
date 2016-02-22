@@ -65,6 +65,8 @@ class VObjectView;
 
 class IObject;
 typedef class libmapping::SMARTP<IObject>	SIObject;
+class IAppl;
+typedef class libmapping::SMARTP<IAppl>		SIAppl;
 class IScene;
 typedef class libmapping::SMARTP<IScene>	SIScene;
 class IObjectDebug;
@@ -382,6 +384,10 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		/// \brief gives the scene of the object
 		virtual SIScene			getScene();
 		virtual const IScene*	getScene() const;
+
+		/// \brief gives the application node
+		virtual SIAppl			getAppl();
+		virtual const IAppl*	getAppl() const;
 
 		/// \brief gives the tree root object
 		virtual const IObject*	getRoot() const;

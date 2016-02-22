@@ -458,8 +458,11 @@ void IObject::ptask ()
 void IObject::accept (Updater* u)		{ u->updateTo(this); }
 
 //--------------------------------------------------------------------------
-SIScene	IObject::getScene()					{ return fParent ? fParent->getScene() : 0; }
+SIScene			IObject::getScene()			{ return fParent ? fParent->getScene() : 0; }
 const IScene*	IObject::getScene() const	{ return fParent ? fParent->getScene() : 0; }
+//--------------------------------------------------------------------------
+SIAppl			IObject::getAppl()			{ return fParent ? fParent->getAppl() : 0; }
+const IAppl*	IObject::getAppl() const	{ return fParent ? fParent->getAppl() : 0; }
 
 //--------------------------------------------------------------------------
 const IObject * IObject::getRoot()	const	{ return fParent ? fParent->getRoot() : this; }
