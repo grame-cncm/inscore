@@ -33,6 +33,7 @@
 namespace inscore 
 {
 
+class TParseEnv;
 /* \brief a class for reading ITL streams
 */
 class ITLparser {	
@@ -60,7 +61,7 @@ class ITLparser {
 		int				fExprStartLine;
 		bool			fParseSucceed;
 
-				 ITLparser(std::istream* stream, int line, TJSEngine* js, TLua* lua);
+				 ITLparser(std::istream* stream, int line, TParseEnv* penv);
 		virtual ~ITLparser();
 		
 		SIMessageList parse();

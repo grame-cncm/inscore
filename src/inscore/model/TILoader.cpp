@@ -29,6 +29,7 @@
 #include <QStandardPaths>
 
 #include "TILoader.h"
+#include "IAppl.h"
 #include "INScore.h"
 #include "ITLparser.h"
 #include "IGlue.h"
@@ -114,7 +115,7 @@ MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const
 				istream * stream;
 				if (file.is_open()) stream = &file;
 				else stream = &buff;
-				ITLparser p (stream, 0, getJSEngine(), getLUAEngine());
+				ITLparser p (stream, 0, client->getAppl());
 				SIMessageList msgs = p.parse();
 				bool error = false;
 				if (msgs)

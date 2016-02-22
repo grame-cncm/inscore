@@ -152,7 +152,7 @@ void INScoreScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 
 	else if (event->mimeData()->hasText()) {
 		stringstream sstr (event->mimeData()->text().toStdString());
-		ITLparser p (&sstr, 0, fScene->getJSEngine(), fScene->getLUAEngine());
+		ITLparser p (&sstr, 0, fScene->getAppl());
 		SIMessageList msgs = p.parse();
 		if (msgs) {
 			for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {

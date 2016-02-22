@@ -25,6 +25,7 @@
 
 #include "IWebSocket.h"
 #include "WebSocketController.h"
+#include "IAppl.h"
 #include "IScene.h"
 
 using namespace std;
@@ -136,14 +137,6 @@ SIMessageList IWebSocket::getMsgs(const IMessage* msg) const
 	return outMsgs;
 }
 
-TJSEngine* IWebSocket::getJSEngine()
-{
-	return getScene()->getJSEngine();
-}
-
-TLua* IWebSocket::getLUAEngine()
-{
-	return getScene()->getLUAEngine();
-}
+TParseEnv* IWebSocket::getParseEnv()	{ return getAppl(); }
 
 }

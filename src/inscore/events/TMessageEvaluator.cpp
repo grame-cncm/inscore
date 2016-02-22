@@ -37,6 +37,7 @@
 #include "IScene.h"
 #include "ITLparser.h"
 #include "IGlue.h"
+#include "IAppl.h"
 
 #include "deelx.h"
 
@@ -290,14 +291,10 @@ IMessage::argslist TMessageEvaluator::evalMessage (const string& var, const Even
 	}
 
 	stringstream stream (var);
-	IScene* scene = o->getScene();							// here a const IScene could be used but the getJS and getLua methods are not const
-	TJSEngine* js = scene ? (TJSEngine*)scene->getJSEngine () : 0;		// get a javascript engine
-	TLua* lua = scene ? scene->getLUAEngine() : 0;						// get a lua engine
-	ITLparser p(&stream, 0, js, lua);						// create a parser
+	ITLparser p(&stream, 0, o->getAppl());					// create a parser with the app as parser environment
 	SIMessageList outmsgs = p.parse ();						// parses the string
 	if (!outmsgs) return outval;							// parsing failed : return an empty list
 	
-//	outmsgs = eval (outmsgs, env);			// first evaluate variable parts of the parsed messages
 	for (unsigned int i=0; i < outmsgs->list().size(); i++) {
 		const IMessage* msg = outmsgs->list()[i];			// and for each parsed message
 		outval.push_back( evalMessage (msg, env) );			// evaluate the message and push the result in outval
