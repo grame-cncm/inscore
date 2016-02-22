@@ -55,15 +55,14 @@ scripts := $(shell cat samples-list.txt)
 help:
 	@echo This makefile builds the INScore package.
 	@echo usage:
-	@echo "  make macosx   # on Mac OS X"
-	@echo "  make win32    # on Windows"
-	@echo "  make win64    # on Windows 64 bits"
-	@echo "  make linux    # on Linux (only build the rsrc)"
-	@echo "  make src      # makes src package"
-	@echo "  make rsrc     # makes rsrc for SF FRS"
-	@echo "  make doc      # makes doc"
-
-#include makeBundle
+	@echo "  make macosx      # for Mac OS X"
+	@echo "  make win32       # for Windows 32 bits"
+	@echo "  make win64       # for Windows 64 bits"
+	@echo "  make linux       # for Linux (only build the rsrc)"
+	@echo "  make src         # makes src package"
+	@echo "  make rsrc        # makes rsrc for SF FRS"
+	@echo "  make doc         # makes doc"
+	@echo "  make interfaces  # makes the list, csound and python packages"
 
 dmg:
 	hdiutil create $(package).dmg -srcfolder $(package) -ov
