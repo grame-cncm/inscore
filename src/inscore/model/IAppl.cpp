@@ -383,7 +383,7 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 void IAppl::error () const
 {
 	const IMessageList*	msgs = getMessages (EventsAble::kError);	// look for watch error messages
-	if (msgs || msgs->list().size()) {
+	if (msgs && msgs->list().size()) {
 		MouseLocation mouse (0, 0, 0, 0, 0, 0);
 		EventContext env(mouse, libmapping::rational(0,1), 0);
 		TMessageEvaluator me;
@@ -592,7 +592,7 @@ MsgHandler::msgStatus IAppl::loadBuffer (const IMessage* msg)
 	}
 	if (!s.str().size()) return MsgHandler::kBadParameters;
 
-	ITLparser p (&s, 0, &fJavascript, &fLua);
+	ITLparser p (&s, 0, this);
 	SIMessageList msgs = p.parse();
 	if (msgs) {
 		for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {

@@ -37,6 +37,7 @@
 #include "udpinfo.h"
 #include "benchtools.h"
 #include "Forwarder.h"
+#include "TParseEnv.h"
 
 class QApplication;
 namespace inscore
@@ -63,7 +64,7 @@ typedef class libmapping::SMARTP<IFilterForward> SIFilterForward;
 /*!
 	\brief the application object of the model
 */
-class IAppl : public IObject, public TILoader
+class IAppl : public IObject, public TILoader, public TParseEnv
 {
 	typedef std::map<std::string, std::pair<std::string, std::string> >		TAliasesMap;
 	static TAliasesMap fAliases;
@@ -172,6 +173,10 @@ class IAppl : public IObject, public TILoader
 
 		TJSEngine*	getJSEngine()					{ return &fJavascript; }
 		TLua*		getLUAEngine()					{ return &fLua; }
+
+		/// \brief gives the application node
+		virtual SIAppl			getAppl()			{ return this; }
+		virtual const IAppl*	getAppl() const		{ return this; }
 
 		static std::string checkRootPath (const std::string& path);
 		static std::string defaultFontName ();
