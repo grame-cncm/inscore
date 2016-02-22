@@ -120,9 +120,6 @@ class IScene : public IRectShape, public TILoader
 		std::string			absolutePath( const std::string& path ) const;
 		QGraphicsScene *	getGraphicScene () const;
 
-		TJSEngine*		getJSEngine()		{ return fJavascript; }
-		TLua*			getLUAEngine()		{ return &fLua; }
-
 		virtual VSceneView*	getSceneView() const;
 
 		/*!
