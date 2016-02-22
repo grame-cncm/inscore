@@ -162,12 +162,16 @@ class IAppl : public IObject, public TILoader
 		void		setUDPInPortHandler(int p)		{ IAppl::setUDPInPort(p); }
 		void		setUDPOutPortHandler(int p)		{ IAppl::setUDPOutPort(p); }
 		void		setUDPErrPortHandler(int p)		{ IAppl::setUDPErrPort(p); }
-		void		setRate(int rate)			{ fRate = rate; }
+		void		setRate(int rate)				{ fRate = rate; }
 		void		setReceivedOSC(int n);
 
 		void		resetBench();
-		bool		offscreen()	const			{ return fOffscreen; }
+		bool		offscreen()	const				{ return fOffscreen; }
 		void		ptask ();
+		void		error () const;					//< trigger the error event, error must be checked before
+
+		TJSEngine*	getJSEngine()					{ return &fJavascript; }
+		TLua*		getLUAEngine()					{ return &fLua; }
 
 		static std::string checkRootPath (const std::string& path);
 		static std::string defaultFontName ();
@@ -183,9 +187,6 @@ class IAppl : public IObject, public TILoader
 		static void		setUDPOutAddress(const std::string& a)	{ fUDP.fOutDstAddress = a; }
 		static void		setUDPErrAddress(const std::string& a)	{ fUDP.fErrDstAddress = a; }
 		void		setDefaultShow(bool state)				{ fDefaultShow = state; }
-
-		TJSEngine*		getJSEngine()		{ return &fJavascript; }
-		TLua*			getLUAEngine()		{ return &fLua; }
 
 		virtual		SIMessageList getAll () const;
 
@@ -221,6 +222,9 @@ class IAppl : public IObject, public TILoader
 
 		/// \brief application \c 'clear' message handler.
 		virtual MsgHandler::msgStatus urlCache (const IMessage* msg);
+
+		/// \brief the \c 'watch' message handler
+		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
 
 #ifdef RUNBENCH
 		void	startBench()			{ bench::start(); }

@@ -350,6 +350,7 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 		fForwarder.forward(imsg);
 	}
 
+	int status = MsgHandler::kBadAddress;
 	string head = address;
 	string tail = addressTail;
 	SIMessage msg = IMessage::create (*imsg);
@@ -363,15 +364,33 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 	}
 
 	if (tail.size()) 		// application is not the final destination of the message
-		return IObject::processMsg(head, tail, msg);
+		status = IObject::processMsg(head, tail, msg);
 	
-	if (match(head)) {			// the message is for the application itself
-		int status = execute(msg);
+	else if (match(head)) {			// the message is for the application itself
+		status = execute(msg);
 		if (status & MsgHandler::kProcessed)
 			setState(IObject::kModified);
-		return status;
 	}
-	return MsgHandler::kBadAddress;
+	if ((status == MsgHandler::kProcessed) || (status == MsgHandler::kProcessedNoChange))
+		return status;
+
+	// at this point there is an error: trigger the error associated messages
+	error();
+	return status;
+}
+
+//--------------------------------------------------------------------------
+void IAppl::error () const
+{
+	const IMessageList*	msgs = getMessages (EventsAble::kError);	// look for watch error messages
+	if (msgs || msgs->list().size()) {
+		MouseLocation mouse (0, 0, 0, 0, 0, 0);
+		EventContext env(mouse, libmapping::rational(0,1), 0);
+		TMessageEvaluator me;
+		SIMessageList outmsgs = me.eval (msgs, env);
+		if (outmsgs && outmsgs->list().size())
+			outmsgs->send();
+	}
 }
 
 //--------------------------------------------------------------------------
@@ -535,6 +554,29 @@ MsgHandler::msgStatus IAppl::cursor(const IMessage* msg)
 		}
 	}
 	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IAppl::_watchMsg(const IMessage* msg, bool add)
+{ 
+	if (msg->size()) {
+		string what;
+		if (msg->param (0, what)) {
+			EventsAble::eventype t = EventsAble::string2type (what);
+			switch (t) {
+				case EventsAble::kError:
+					if (msg->size() > 1)
+						if (add) eventsHandler()->addMsg (t, msg->watchMsg2Msgs(1));
+						else eventsHandler()->setMsg (t, msg->watchMsg2Msgs(1));
+					else if (!add) eventsHandler()->setMsg (t, 0);
+					return MsgHandler::kProcessed;
+
+				default:
+					break;
+			}
+		}
+	}
+	return IObject::_watchMsg(msg, add);
 }
 
 //--------------------------------------------------------------------------
