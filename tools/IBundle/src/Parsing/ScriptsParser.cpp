@@ -31,8 +31,21 @@
 #include "BundleLog.h"
 
 #include "ScriptsParser.h"
+#include "TParseEnv.h"
 
 namespace ibundle{
+
+
+class BParseEnv : public inscore::TParseEnv {
+	inscore::TJSEngine fJavascriptEngine;
+	public:
+				 BParseEnv () { fJavascriptEngine.Initialize(); }
+		virtual ~BParseEnv() {}
+		inscore::TJSEngine*	getJSEngine()	{ return &fJavascriptEngine; }
+		inscore::TLua*		getLUAEngine()	{ return 0; }
+
+};
+
 
 bool ScriptsParser::read(std::string inputFile, ParsedData &result, const std::string& defaultRootPath, bool parseJS, BundleLog* log, const bool& verbose)
 {
@@ -146,11 +159,8 @@ bool ScriptsParser::parseScript(std::string inputFile, SIMessageList &msgs)
 		ifs= fileStream;
 	}
 
-
-	inscore::TJSEngine javascriptEngine;
-	javascriptEngine.Initialize();
-
-	inscore::ITLparser p(ifs, 0, &javascriptEngine,0);
+	BParseEnv penv;
+	inscore::ITLparser p(ifs, 0, &penv);
 	msgs = p.parse();
 
 	delete ifs;

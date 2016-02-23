@@ -34,7 +34,8 @@ namespace ibundle {
 class AnalyseResult;
 class BundleLog;
 
-class ScriptsParser{
+
+class ScriptsParser {
 
 	ParsedData &fData;
 	std::map<std::string, std::string> fRootPaths;
@@ -71,8 +72,6 @@ protected:
 
 	inline bool isFileObject(std::string ITLCmd);
 	bool isurl(std::string path);
-
-
 };
 
 class AnalyseResult{
