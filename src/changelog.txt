@@ -13,8 +13,9 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.18
-- web api documentation included in package
+- new 'error' event supported at application level
 - new 'browse' message at application level to open a document in a web browser
+- web api documentation included in package
 
 ----------------------------------------------------
 Version 1.17 - 2016-02-16

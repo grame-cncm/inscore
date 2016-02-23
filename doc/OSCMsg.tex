@@ -2843,11 +2843,13 @@ what : 	  'export'
 		| 'newElement'
 		| 'endPaint'
 		| 'del'
+		| 'error'
 \end{rail}
 \index{Interaction!Events!export}
 \index{Interaction!Events!newElement}
 \index{Interaction!Events!endPaint}
 \index{Interaction!Events!del}
+\index{Interaction!Events!error}
 
 \begin{itemize}
 \item the \OSC{export} event is supported by all the components. It is triggered after an export message has been handled and could be used to simulate synchronous exports.
@@ -2855,6 +2857,7 @@ what : 	  'export'
 \item the \OSC{newElement} event is supported at scene level only and triggered when a new element is added to the scene.
 \item the \OSC{endPaint} event is supported at scene level only and triggered after a scene has been painted.
 \item the \OSC{del} event is triggered when an object is being deleted.
+\item the \OSC{error} event is supported at application level and triggered when an error occurs while receiving messages. Note that syntax errors are also triggering the event but the event handler must be set at the time of the script reading i.e. that the sequence \OSC{/ITL watch error (a message lists); /ITL/scene incorrect syntax} won't trigger the error the first time it is loaded. Typically you can use of this event to open the log window (\OSC{/ITL/log show 1}) 
 \end{itemize}
 
 \example \\

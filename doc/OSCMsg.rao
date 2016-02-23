@@ -1880,10 +1880,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {103}{ what : 'export' | 'newData' | 'newElement' | 'endPaint' | 'del' }
+\rail@i {103}{ what : 'export' | 'newData' | 'newElement' | 'endPaint' | 'del' | 'error' }
 \rail@o {103}{
 \rail@index{what}
-\rail@begin{5}{what}
+\rail@begin{6}{what}
 \rail@bar
 \rail@term{export}[]
 \rail@nextbar{1}
@@ -1894,6 +1894,8 @@
 \rail@term{endPaint}[]
 \rail@nextbar{4}
 \rail@term{del}[]
+\rail@nextbar{5}
+\rail@term{error}[]
 \rail@endbar
 \rail@end
 }
