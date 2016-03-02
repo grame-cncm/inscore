@@ -171,7 +171,10 @@ bool VGuidoItemView::gmnUpdate (IGuidoCode* guidoCode)
     
     if(guidoStream)
     {
-        if(fGuidoItem->setGMNStream(guidoStream->getGuidoStream())) return true;
+        if(fGuidoItem->setGMNStream(guidoStream->getGuidoStream())) {
+			guidoCode->setGRHandler (fGuidoItem->getGRHandler());
+			return true;
+		}
 		ITLErr << guidoCode->getOSCAddress() << "invalid gmn code:" << fGuidoItem->getLastErrorMessage().toUtf8().data() << ITLEndl;
         return false;
     }
