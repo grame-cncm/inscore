@@ -99,8 +99,7 @@ class IGuidoCode : public IObject
 		TFloatSize	getPageFormat() const			{ return fPageFormat; }
 		int			getNbOfPageColumns() const		{ return fNbOfPageColumns; }
 		int			getNbOfPageRows() const			{ return fNbOfPageRows; }
-		int			getPageCount() const; //			{ return fPageCount; }
-//		void		setPagesCount(int pageCount)	{ fPageCount = pageCount; }
+		int			getPageCount() const;
 		void		setGRHandler(CGRHandler gr)		{ fGRHandler = gr; }
 		libmapping::rational	getPageDate(int pagenum) const;
 
