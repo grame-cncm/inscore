@@ -65,6 +65,7 @@ class IGuidoCode : public IObject
 		typedef libmapping::SMARTP<TLocalMapping<libmapping::rational,1> >	SLocalMapping;
 		SLocalMapping	fLocalMappings;
 		CGRHandler		fGRHandler;
+		int				fCurrentPagesCount;		// the current page count, used to fire the 'pageCount' event
 
 	public:
 	int fPage;					/// < Guido Page Index. When several pages are displayed: index of the first displayed page. Default 1.
@@ -115,6 +116,9 @@ class IGuidoCode : public IObject
 		/// \brief gives the systems count as a list of count ordered by page number
 		virtual std::vector<int> getSystemsCount() const;
 
+		void	setPageCount(int count);
+
+
 	protected:
 				 IGuidoCode( const std::string& name, IObject * parent );
 		virtual ~IGuidoCode() {}
@@ -125,6 +129,9 @@ class IGuidoCode : public IObject
 		void setPageFormat( const TFloatSize& pageFormat )	{ fPageFormat = pageFormat; localMapModified(true); }
 		void setNbOfPageColumns(int columns)				{ fNbOfPageColumns = columns; localMapModified(true); }
 		void setNbOfPageRows(int rows)						{ fNbOfPageRows = rows; localMapModified(true); }
+
+		/// \brief overrides IObject method to accept score specific events
+		virtual bool acceptSimpleEvent(EventsAble::eventype t) const;
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);		

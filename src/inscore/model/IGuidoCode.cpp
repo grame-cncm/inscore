@@ -30,6 +30,7 @@
 #include "GUIDOEngine.h"
 #include "GmnEvaluator.h"
 #include "IExpressionHandler.h"
+#include "TMessageEvaluator.h"
 
 using namespace std;
 using namespace libmapping;
@@ -42,7 +43,7 @@ const string IGuidoCode::kGuidoCodeType("gmn");
 
 //--------------------------------------------------------------------------
 IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
-	IObject (name, parent) , fGRHandler(0), fPage(1), fPageFormat( 21.0f, 29.7f ),
+	IObject (name, parent) , fGRHandler(0), fCurrentPagesCount(1), fPage(1), fPageFormat( 21.0f, 29.7f ),
 	fNbOfPageColumns(2), fNbOfPageRows(1), fExprHandler(this)
 {
 
@@ -68,6 +69,31 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 	fGetMsgHandlerMap[""]						= TGetParamMsgHandler<std::string>::create(fGMN);
 
 	requestMapping("");
+}
+
+
+//--------------------------------------------------------------------------
+bool IGuidoCode::acceptSimpleEvent(EventsAble::eventype t) const
+{
+	if (t == EventsAble::kPageCount) return true;
+	return IObject::acceptSimpleEvent(t);
+}
+
+//--------------------------------------------------------------------------
+void IGuidoCode::setPageCount(int count)
+{
+	if (count != fCurrentPagesCount) {
+		const IMessageList*	msgs = getMessages (EventsAble::kPageCount);	// look for watch error messages
+		if (msgs && msgs->list().size()) {
+			MouseLocation mouse (0, 0, 0, 0, 0, 0);
+			EventContext env(mouse, libmapping::rational(0,1), 0);
+			TMessageEvaluator me;
+			SIMessageList outmsgs = me.eval (msgs, env);
+			if (outmsgs && outmsgs->list().size())
+				outmsgs->send();
+		}
+	}
+	fCurrentPagesCount = count;
 }
 
 //--------------------------------------------------------------------------

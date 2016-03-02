@@ -167,34 +167,35 @@ void VGuidoItemView::updateView( IGuidoCode * guidoCode  )
 //----------------------------------------------------------------------
 bool VGuidoItemView::gmnUpdate (IGuidoCode* guidoCode)
 {
-    IGuidoStream * guidoStream = dynamic_cast<IGuidoStream *>(guidoCode);    
+	bool ret = false;
+	IGuidoStream * guidoStream = dynamic_cast<IGuidoStream *>(guidoCode);
     
     if(guidoStream)
     {
         if(fGuidoItem->setGMNStream(guidoStream->getGuidoStream())) {
 			guidoCode->setGRHandler (fGuidoItem->getGRHandler());
-			return true;
+			ret = true;
 		}
-		ITLErr << guidoCode->getOSCAddress() << "invalid gmn code:" << fGuidoItem->getLastErrorMessage().toUtf8().data() << ITLEndl;
-        return false;
+		else ITLErr << guidoCode->getOSCAddress() << "invalid gmn code:" << fGuidoItem->getLastErrorMessage().toUtf8().data() << ITLEndl;
     }
     else
     {
         QString gmnCode = VApplView::toQString( guidoCode->getGMN().c_str() );
-        if ( fGuidoItem->gmnCode() == gmnCode ) return true;		// no gmn code change, nothing to do
+        if ( fGuidoItem->gmnCode() == gmnCode )			ret = true;		// no gmn code change, nothing to do
 	
-        if (fGuidoItem->setGMNCode( gmnCode ) ) 	return true;	// gmn code update done
-        if (QGuidoImporter::musicxmlSupported()) {					// try to import file as MusicXML file
+        else if (fGuidoItem->setGMNCode( gmnCode ) ) 	ret = true;		// gmn code update done
+        else if (QGuidoImporter::musicxmlSupported()) {					// try to import file as MusicXML file
             std::stringstream converted;
 																// first convert musicxml to guido
             if ( QGuidoImporter::musicxmlString2Guido ( guidoCode->getGMN().c_str(), true, converted) )
 																// and next try to set the converted gmn code
                 if ( fGuidoItem->setGMNCode( VApplView::toQString( converted.str().c_str() ) ) )
-                    return true;
+                    ret = true;
         }
-        ITLErr << guidoCode->getOSCAddress() << "invalid gmn code:" << fGuidoItem->getLastErrorMessage().toUtf8().data() << ITLEndl;
-        return false;
+        else ITLErr << guidoCode->getOSCAddress() << "invalid gmn code:" << fGuidoItem->getLastErrorMessage().toUtf8().data() << ITLEndl;
     }
+	if (ret) guidoCode->setPageCount(GuidoGetPageCount (fGuidoItem->getGRHandler()));
+	return ret;
 }
 
 //----------------------------------------------------------------------
