@@ -1,0 +1,67 @@
+/ITL watch error (/ITL/log show 1);
+
+<? javascript
+	function randomdur () 		{ return Math.pow(2, Math.floor( Math.random() * 5) ); }
+	function randomnote (dur) 	{ return String.fromCharCode("a".charCodeAt(0) + Math.floor((Math.random() * 8))) + "/" + dur; }
+	function adjust (dur) 		{ return (dur > 0.5 ? 2 : (dur > 0.25 ? 4 : (dur > 0.125 ? 8 : 16))) ; }
+
+	var scorelength = 0;
+	function randomscore (dur) {
+		var score = '/ITL/scene/rscore write "';
+		do {
+			var d = randomdur();
+			var md = 1.0/d;
+			if (md > dur) {
+				d = adjust(dur);
+				md = 1./d;
+			}
+			dur -= md;			
+			score =  score + " " + randomnote(d);
+		} while  (dur > 0);
+		return score + '";';
+	}
+	function pageturn(n) {
+		
+	}
+?>
+
+/ITL/scene/* del;
+
+/ITL/scene/rcomment set txt "This is the whole stream";
+/ITL/scene/rcomment x -0.95;
+/ITL/scene/rcomment y -0.99;
+/ITL/scene/rcomment fontSize 16;
+/ITL/scene/rscore set gmnstream '[ \clef<"g"> \meter<"4/4">  \pageFormat<18cm, 18cm, 5,5,5,5>';
+/ITL/scene/rscore scale 0.18;
+/ITL/scene/r* xorigin -1;
+/ITL/scene/r* yorigin -1;
+/ITL/scene/rscore x -0.99;
+/ITL/scene/rscore y -0.94;
+/ITL/scene/rscore columns 3;
+/ITL/scene/rscore watch newData (/ITL/scene/[pc]score expr reeval);
+/ITL/log write $(/ITL/scene/rscore get pageCount);
+
+color = 154 23 23;
+/ITL/scene/write set txt "Write";
+/ITL/scene/write y -0.15;
+/ITL/scene/write scale 3;
+/ITL/scene/write color $color;
+/ITL/scene/write effect shadow 5 5 154 23 23 100 20;
+/ITL/scene/write watch mouseEnter (/ITL/scene/write color 245 11 11 );
+/ITL/scene/write watch mouseLeave (/ITL/scene/write color $color);
+/ITL/scene/write watch mouseDown  (/ITL/scene/javascript run "randomscore(2)");
+
+/ITL/scene/pscore set gmn expr(tail &rscore (tail &rscore "[a*2/1]"));
+/ITL/scene/pscore scale 0.3;
+/ITL/scene/pscore show 0;
+
+/ITL/scene/cscore set gmn expr(par 
+	&pscore 
+	(transpose '[\meter<"4/4"> g e f a f d c/2]' &pscore)) ;
+/ITL/scene/cscore scale 0.4;
+/ITL/scene/cscore y 0.1;
+/ITL/scene/ccomment1 set txt "The tail of the stream is in parallel with a static score.";
+/ITL/scene/ccomment2 set txt "The static part is transposed to first note of the tail.";
+/ITL/scene/ccomment1 y 0.4;
+/ITL/scene/ccomment2 y 0.45;
+/ITL/scene/ccomment* fontSize 18;
