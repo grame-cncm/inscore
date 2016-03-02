@@ -573,6 +573,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		/// \brief the \c 'watch' message handler
 		virtual MsgHandler::msgStatus evalMsg(const IMessage* msg);
 
+		/// \brief utility to delegate events acceptability
+		virtual bool acceptSimpleEvent(EventsAble::eventype t) const;
+
 		/// \brief the \c 'watch' message handler
 		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
 

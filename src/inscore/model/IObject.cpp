@@ -1298,19 +1298,10 @@ MsgHandler::msgStatus IObject::exportAllMsg(const IMessage* msg)
 	return genericExport(msg, true);
 }
 
-//--------------------------------------------------------------------------
-MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
-{ 
-	if (!msg->size()) {					// no param to watch message
-		EventsAble::reset();			// clear every watched events
-		return MsgHandler::kProcessed;	// and exit
-	}
 
-	string what;
-	if (!msg->param (0, what))				// can't decode event to watch when not a string
-		return MsgHandler::kBadParameters;	// exit with bad parameter
-		
-	EventsAble::eventype t = EventsAble::string2type (what);
+//--------------------------------------------------------------------------
+bool IObject::acceptSimpleEvent(EventsAble::eventype t) const
+{
 	switch (t) {
 		case EventsAble::kMouseMove:
 		case EventsAble::kMouseDown:
@@ -1324,18 +1315,37 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 		case EventsAble::kExport:
 		case EventsAble::kNewData:
         case EventsAble::kDelete:
-			if (msg->size() > 1) {
-				SIMessageList watchMsg = msg->watchMsg2Msgs (1);
-				if (!watchMsg) return MsgHandler::kBadParameters;
+			return true;
+	}
+	return false;
+}
 
-				if (add)
-                    eventsHandler()->addMsg (t, watchMsg);
-				else
-                    eventsHandler()->setMsg (t, watchMsg);
-			}
-			else if (!add) eventsHandler()->setMsg (t, 0);
-			break;
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
+{ 
+	if (!msg->size()) {					// no param to watch message
+		EventsAble::reset();			// clear every watched events
+		return MsgHandler::kProcessed;	// and exit
+	}
 
+	string what;
+	if (!msg->param (0, what))				// can't decode event to watch when not a string
+		return MsgHandler::kBadParameters;	// exit with bad parameter
+		
+	EventsAble::eventype t = EventsAble::string2type (what);
+	if (acceptSimpleEvent (t)) {
+		if (msg->size() > 1) {
+			SIMessageList watchMsg = msg->watchMsg2Msgs (1);
+			if (!watchMsg) return MsgHandler::kBadParameters;
+
+			if (add)
+				eventsHandler()->addMsg (t, watchMsg);
+			else
+				eventsHandler()->setMsg (t, watchMsg);
+		}
+		else if (!add) eventsHandler()->setMsg (t, 0);
+	}
+	else switch (t) {
 		case EventsAble::kTimeEnter:
 		case EventsAble::kTimeLeave:
 		case EventsAble::kDurEnter:
