@@ -20,8 +20,12 @@
 		} while  (dur > 0);
 		return score + '";';
 	}
-	function pageturn(n) {
-		
+
+	var pageCountEvents = 0;	
+	function pageturn (score) {
+		pageCountEvents++;
+		if (pageCountEvents > 2)
+			return score + " dpage 1;";
 	}
 ?>
 
@@ -38,8 +42,8 @@
 /ITL/scene/rscore x -0.99;
 /ITL/scene/rscore y -0.94;
 /ITL/scene/rscore columns 3;
-/ITL/scene/rscore watch newData (/ITL/scene/[pc]score expr reeval);
-/ITL/log write $(/ITL/scene/rscore get pageCount);
+/ITL/scene/rscore watch newData 	(/ITL/scene/[pc]score expr reeval);
+/ITL/scene/rscore watch pageCount	(/ITL/scene/javascript run "pageturn('/ITL/scene/rscore')");
 
 color = 154 23 23;
 /ITL/scene/write set txt "Write";
