@@ -13,6 +13,7 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.18
+- new 'pageCount' event supported by symbolic score objects
 - new 'error' event supported at application level
 - new 'browse' message at application level to open a document in a web browser
 - web api documentation included in package
