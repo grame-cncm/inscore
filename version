@@ -21,13 +21,6 @@ function toNum {
 
 echo "moving version number to $VERSION"
 
-CMAKE=$ROOT/build/CMakeLists.txt
-echo " updating $CMAKE"
-sed "s/\(INS[A-Z]*VERS[^0-9]*\)[0-9]*\.[0-9]*/\1$VERSION/" $CMAKE > TMP$$
-mv -f TMP$$ $CMAKE
-cmake  $ROOT/build/MacOS
-cmake  $ROOT/build/iOS
-
 LPRO=$ROOT/build/library.pro
 echo " updating $LPRO"
 sed "s/^VERSION = ..*/VERSION = $VERSION/" $LPRO > TMP$$
@@ -43,12 +36,10 @@ echo " updating $OSC"
 sed "s/\(title..*v\.*\)[0-9]*\.[0-9]*/\1$VERSION/" $OSC  > TMP$$
 mv -f TMP$$ $OSC
 
-ITL=$ROOT/src/inscore/interface/INScore.cpp
-# echo " updating $ITL  (recompile)"
-# N=$(toNum $VERSION)
-# sed "s/\(version[^0-9]*\)\.[1-9][0-9]*/\1$N/" $ITL \
-# 	| sed "s/\(version[^0-9]*\)[0-9]*\.[0-9]*/\1$VERSION/"  > TMP$$
-# mv -f TMP$$ $ITL
+ITL=$ROOT/src/inscore/interface/INScore.h
+echo " updating $ITL  (recompile)"
+sed "s/[1-9]\.[0-9][0-9]/$VERSION/" $ITL > TMP$$
+mv -f TMP$$ $ITL
 
 DOXY=$ROOT/doc/doxygen/Doxyall
 echo " updating $DOXY  (regenerate doc)"
@@ -73,6 +64,6 @@ mv -f TMP$$ $PKG
 open $ROOT/build/macos/INScore.xcodeproj
 
 echo "==> change manually inf.plist and rc files in win32 folder"
-open -t build/Info.plist win32/INScore.rc win32/Viewer/INScoreViewer.rc $ITL
+open -t build/Info.plist win32/INScore.rc win32/Viewer/INScoreViewer.rc
 
 exit 0

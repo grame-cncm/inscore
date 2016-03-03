@@ -39,6 +39,7 @@ const char* karrows_GetSetMethod	= "arrows";			// Get Set
 const char* kautoVoicesColoration_GetSetMethod = "autoVoicesColoration"; // Get Set
 const char* kblue_GetSetMethod		= "blue";			// Get Set
 const char* kbrightness_GetSetMethod= "brightness";		// Get Set
+const char* kbrowse_SetMethod		= "browse";			// Set
 const char* kcancel_SetMethod		= "cancel";			// Set
 const char* kcliptime_GetSetMethod	= "clipTime";		// Get Set
 const char* kclippitch_GetSetMethod	= "clipPitch";		// Get Set

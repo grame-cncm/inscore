@@ -212,11 +212,11 @@ void VTextView::updateFont(const IText *text)
 		QFont font = fTextItem->font();
 		font.setFamily(text->getFontFamily().c_str());
 		font.setPixelSize (text->getFontSize());			// strangely, using setPixelSize produces the same rendering on all devices
-//		font.setPointSize (text->getFontSize());
 		font.setStyle(sStyleString2Enum[text->getFontStyle()]);
 		font.setWeight(sWeightString2Enum[text->getFontWeight()]);
+		font.setWeight(sWeightString2Enum[text->getFontWeight()]);
 		fTextItem->setFont(font);
-//		if(font != fTextItem->font())
+		if(font != fTextItem->font())
 			itemChanged();
 	}
 }

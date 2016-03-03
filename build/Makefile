@@ -73,6 +73,7 @@ xcodeproj: library.pro viewer.pro
 
 INScoreMac : 
 	make -C ../lib/GuidoEngine/macosx
+	make -C ../lib/GuidoAR/macosx
 	make -C ../lib/libMusicXML/macosx
 	xcodebuild -jobs 8 -project $(BUILDF)/INScore.xcodeproj -target INScore -configuration Release
 	xcodebuild -jobs 8 -project $(BUILDF)/INScoreViewer.xcodeproj -target INScoreViewer -configuration Release

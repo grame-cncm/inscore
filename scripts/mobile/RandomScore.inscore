@@ -38,15 +38,17 @@
 
 
 gray = 100;
+shadow = shadow 5 5 0 0 0 75 20;
+color = 20 0 150;
 
-/ITL/scene/comment1 set txt "Use of the /ITL/scene/javascript 
-static object to generate random 
-scores using Guido streams.";
+/ITL/scene/comment1 set txt "Random score";
 /ITL/scene/comment1 y -0.85;
-/ITL/scene/comment1 color $gray $gray $gray ;
+/ITL/scene/comment1 color $color ;
+/ITL/scene/comment1 effect $shadow;
+/ITL/scene/comment1 fontSize 40;
+
 /ITL/scene/clickme set txt "TOUCH ME";
 /ITL/scene/clickme y 0.88;
-/ITL/scene/comment1 fontSize 18;
 /ITL/scene/clickme fontSize 24;
 /ITL/scene/clickme z 2.;
 
@@ -60,3 +62,5 @@ scores using Guido streams.";
 /ITL/scene/clickme watch $eventdown  ( /ITL/scene/clickme color 255 0 0, /ITL/scene/javascript run "randomscore()" );
 /ITL/scene/clickme watch $eventup  ( /ITL/scene/clickme color 0 0 0 );
 
+/ITL/scene/clickme event $eventdown 0 0;
+/ITL/scene foreground;

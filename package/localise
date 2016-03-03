@@ -1,0 +1,24 @@
+#!/bin/sh
+# 
+# a tool to change a library path using install_name_tool
+#
+
+if [ $# -ne 3 ] 
+then
+	echo "usage: localise libname path new"
+	exit 1 	
+fi
+
+function depend () {
+	otool -L $1 | grep $2.framework | grep compatibility | cut -d ' ' -f 1  | sed 's/^[ 	]*//'
+}
+
+NAME=$1			# this is the library name
+TARGET=$2		# this is the target path
+LPATH=$3		# this is the new path (e.g. @rpath)
+
+CURR=$(depend $TARGET $NAME)
+NEW=$LPATH/$(echo $CURR | sed -e "s/^..*$NAME\.framework/$NAME.framework/")
+install_name_tool -id $NEW $TARGET
+install_name_tool -change $CURR $NEW $TARGET
+echo $TARGET dep: $(depend $TARGET $NAME)

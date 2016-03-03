@@ -47,7 +47,7 @@ class EventsAble
 			kMouseDown, kMouseUp, kMouseDoubleClick, kMouseEnter, kMouseLeave, kMouseMove,
 			kTouchBegin, kTouchEnd, kTouchUpdate,
 			kTimeEnter, kTimeLeave, kDurEnter, kDurLeave, kNewElement, kExport, kEndPaint,
-			kGFEnter, kGFLeave, kGFActive, kGFIdle, kDelete, kNewData, kSuccess, kError, kCancel };
+			kGFEnter, kGFLeave, kGFActive, kGFIdle, kDelete, kNewData, kSuccess, kError, kCancel, kPageCount };
 			
 				 EventsAble();
 		virtual ~EventsAble();

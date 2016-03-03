@@ -21,26 +21,30 @@ stop  = "Stop";
 /ITL/clock/control fontSize 32;
 /ITL/clock/control color 100 100 100;
 
-/ITL/clock/control watch mouseDown (
-	/ITL/clock/control push,
+<? javascript
+	// evaluate first the best event for interaction
+	var os = osname();
+	var down = "mouseDown";
+	if (os == "Android" || os == "iOS")
+		down = "touchBegin";
+
+	function control (msglist) {
+		msglist = msglist.replace("DOWN", down) ;
+		return "/ITL/clock/control watch " + down + " " + msglist + ";";
+	}
+	"";
+?>
+
+switchmsgs = (/ITL/clock/control push,
 	/ITL/clock/clock animate 0,
 	/ITL/clock/control set txt $start,
-	/ITL/clock/control watch mouseDown (
+	/ITL/clock/control watch DOWN (
 		/ITL/clock/control set txt $stop,
 		/ITL/clock/clock animate 1,
 		/ITL/clock/control pop
 	)
 );
 
-/ITL/clock/control watch touchBegin (
-	/ITL/clock/control push,
-	/ITL/clock/clock animate 0,
-	/ITL/clock/control set txt $start,
-	/ITL/clock/control watch touchBegin (
-		/ITL/clock/control set txt $stop,
-		/ITL/clock/clock animate 1,
-		/ITL/clock/control pop
-	)
-);
+<? javascript control (switchmsgs) ?>
 
 /ITL/clock foreground;

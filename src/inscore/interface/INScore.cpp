@@ -155,10 +155,6 @@ void INScore::stopNetwork()
 //--------------------------------------------------------------------------
 // versions 
 //--------------------------------------------------------------------------
-float INScore::version	()				{ return 1.17f; }
-const char* INScore::versionStr ()		{ return "1.17"; }
-
-//--------------------------------------------------------------------------
 const char* INScore::guidoversion()
 {
 	int major, minor, sub;

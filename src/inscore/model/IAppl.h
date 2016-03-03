@@ -37,6 +37,7 @@
 #include "udpinfo.h"
 #include "benchtools.h"
 #include "Forwarder.h"
+#include "TParseEnv.h"
 
 class QApplication;
 namespace inscore
@@ -63,7 +64,7 @@ typedef class libmapping::SMARTP<IFilterForward> SIFilterForward;
 /*!
 	\brief the application object of the model
 */
-class IAppl : public IObject, public TILoader
+class IAppl : public IObject, public TILoader, public TParseEnv
 {
 	typedef std::map<std::string, std::pair<std::string, std::string> >		TAliasesMap;
 	static TAliasesMap fAliases;
@@ -162,12 +163,20 @@ class IAppl : public IObject, public TILoader
 		void		setUDPInPortHandler(int p)		{ IAppl::setUDPInPort(p); }
 		void		setUDPOutPortHandler(int p)		{ IAppl::setUDPOutPort(p); }
 		void		setUDPErrPortHandler(int p)		{ IAppl::setUDPErrPort(p); }
-		void		setRate(int rate)			{ fRate = rate; }
+		void		setRate(int rate)				{ fRate = rate; }
 		void		setReceivedOSC(int n);
 
 		void		resetBench();
-		bool		offscreen()	const			{ return fOffscreen; }
+		bool		offscreen()	const				{ return fOffscreen; }
 		void		ptask ();
+		void		error () const;					//< trigger the error event, error must be checked before
+
+		TJSEngine*	getJSEngine()					{ return &fJavascript; }
+		TLua*		getLUAEngine()					{ return &fLua; }
+
+		/// \brief gives the application node
+		virtual SIAppl			getAppl()			{ return this; }
+		virtual const IAppl*	getAppl() const		{ return this; }
 
 		static std::string checkRootPath (const std::string& path);
 		static std::string defaultFontName ();
@@ -184,9 +193,6 @@ class IAppl : public IObject, public TILoader
 		static void		setUDPErrAddress(const std::string& a)	{ fUDP.fErrDstAddress = a; }
 		void		setDefaultShow(bool state)				{ fDefaultShow = state; }
 
-		TJSEngine*		getJSEngine()		{ return &fJavascript; }
-		TLua*			getLUAEngine()		{ return &fLua; }
-
 		virtual		SIMessageList getAll () const;
 
 		SIMessage	hello() const;
@@ -200,6 +206,9 @@ class IAppl : public IObject, public TILoader
 
 		/// \brief application \c 'load' message handler.
 		virtual MsgHandler::msgStatus loadMsg (const IMessage* msg);
+
+		/// \brief application \c 'browse' message handler.
+		virtual MsgHandler::msgStatus browseMsg (const IMessage* msg);
 	
 		/// \brief load a buffer containing an inscore script
 		virtual MsgHandler::msgStatus loadBuffer (const IMessage* msg);
@@ -218,6 +227,9 @@ class IAppl : public IObject, public TILoader
 
 		/// \brief application \c 'clear' message handler.
 		virtual MsgHandler::msgStatus urlCache (const IMessage* msg);
+
+		/// \brief the \c 'watch' message handler
+		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
 
 #ifdef RUNBENCH
 		void	startBench()			{ bench::start(); }

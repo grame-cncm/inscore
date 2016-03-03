@@ -122,8 +122,6 @@ protected:
 
 	inline bool isFileObject(std::string ITLCmd);
 	bool isurl(std::string path);
-
-
 };
 
 class AnalyseResult{

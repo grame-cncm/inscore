@@ -30,6 +30,7 @@
 #include "GUIDOEngine.h"
 #include "GmnEvaluator.h"
 #include "IExpressionHandler.h"
+#include "TMessageEvaluator.h"
 
 using namespace std;
 using namespace libmapping;
@@ -42,7 +43,7 @@ const string IGuidoCode::kGuidoCodeType("gmn");
 
 //--------------------------------------------------------------------------
 IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
-	IObject (name, parent) , fGRHandler(0), fPage(1), fPageFormat( 21.0f, 29.7f ),
+	IObject (name, parent) , fGRHandler(0), fCurrentPagesCount(1), fPage(1), fPageFormat( 21.0f, 29.7f ),
 	fNbOfPageColumns(2), fNbOfPageRows(1), fExprHandler(this)
 {
 
@@ -60,7 +61,6 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 	fMsgHandlerMap[kmap_GetSetMethod]			= TMethodMsgHandler<IGuidoCode>::create(this, &IGuidoCode::mapMsg);
 
 	fGetMsgHandlerMap[kpage_GetSetMethod]		= TGetParamMsgHandler<int>::create(fPage);
-//	fGetMsgHandlerMap[kpageCount_GetMethod]		= TGetParamMsgHandler<int>::create(fPageCount);
 	fGetMsgHandlerMap[kpageCount_GetMethod]		= TGetParamMethodHandler<IGuidoCode, int (IGuidoCode::*)() const>::create(this, &IGuidoCode::getPageCount);
 	fGetMsgHandlerMap[ksystemCount_GetMethod]	= TGetParamMethodHandler<IGuidoCode, vector<int> (IGuidoCode::*)() const>::create(this, &IGuidoCode::getSystemsCount);
 	fGetMsgHandlerMap[kpageFormat_GetSetMethod]	= TGetParamMsgHandler<TFloatSize>::create(fPageFormat);
@@ -69,6 +69,31 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 	fGetMsgHandlerMap[""]						= TGetParamMsgHandler<std::string>::create(fGMN);
 
 	requestMapping("");
+}
+
+
+//--------------------------------------------------------------------------
+bool IGuidoCode::acceptSimpleEvent(EventsAble::eventype t) const
+{
+	if (t == EventsAble::kPageCount) return true;
+	return IObject::acceptSimpleEvent(t);
+}
+
+//--------------------------------------------------------------------------
+void IGuidoCode::setPageCount(int count)
+{
+	if (count != fCurrentPagesCount) {
+		const IMessageList*	msgs = getMessages (EventsAble::kPageCount);	// look for watch error messages
+		if (msgs && msgs->list().size()) {
+			MouseLocation mouse (0, 0, 0, 0, 0, 0);
+			EventContext env(mouse, libmapping::rational(0,1), 0);
+			TMessageEvaluator me;
+			SIMessageList outmsgs = me.eval (msgs, env);
+			if (outmsgs && outmsgs->list().size())
+				outmsgs->send();
+		}
+	}
+	fCurrentPagesCount = count;
 }
 
 //--------------------------------------------------------------------------

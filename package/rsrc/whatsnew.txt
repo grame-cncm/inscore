@@ -10,6 +10,12 @@ INScore resources are released under the Creative Common license.
 ------------------------------------------------------------------
 
 -------------------------------
+** February 16 2016
+-------------------------------
+Sample scripts include .ibundle files (see scripts/bundles)
+New sample scripts for Guido Expressions (see scripts/GuidoExpression)
+
+-------------------------------
 ** April 8 2015
 -------------------------------
 Samples scripts have been reorganized: standalone scripts are now in a 'Standalone' folder.

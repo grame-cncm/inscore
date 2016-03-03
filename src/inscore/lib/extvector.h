@@ -55,11 +55,11 @@ template <typename T> class extvector : public std::vector<T>
 			if (n >= 0) {
 				for (int i=0; i < n; i++) {
 					out << fPrefix;
-					(*this)[i]->print(out, 1);
+					(*this)[i]->print(out, 1, ",");
 					out << fSuffix;
 				}
 				out << fPrefix;
-				(*this)[n]->print(out, 1);
+				(*this)[n]->print(out, 1, ",");
 			}
 		}
 

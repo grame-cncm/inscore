@@ -79,14 +79,9 @@
 #include "ITLError.h"
 #endif
 
-#define VARERROR(str, var)	{ VARerror(&yyloc, context, str, var); YYABORT; }
-
-//#define ERROR_CB() [&yyloc, &context](const char *s) -> void {yyerror(&yyloc, context, s);}
-//#define HANDLE_READER_ERROR() if(context->fReader.hasFailed()){ yyerror(&yyloc, context, context->fReader.errorlog().c_str()); YYABORT; }
-
 typedef void * yyscan_t;
 
-int VARerror(YYLTYPE* locp, inscore::ITLparser* context, const char*s, const char* var);
+//int VARerror(YYLTYPE* locp, inscore::ITLparser* context, const char*s, const char* var);
 int yyerror (const YYLTYPE* locp, inscore::ITLparser* context, const char*s);
 int yylex(YYSTYPE* lvalp, YYLTYPE* llocp, void* scanner);
 int lineno(inscore::ITLparser* context);
@@ -94,9 +89,6 @@ int lineno(inscore::ITLparser* context);
 #define scanner context->fScanner
 
 using namespace std;
-
-//namespace inscore
-//{
 
 %}
 
@@ -182,9 +174,9 @@ hostname	: HOSTNAME					{ $$ = new string(context->fText); }
 			| hostname POINT HOSTNAME	{ *$1 += '.' + context->fText; $$=$1; }
 			;
 
-identifier		: IDENTIFIER		{ $$ = new string(context->fText); }
-			| HOSTNAME		{ $$ = new string(context->fText); }
-			| REGEXP		{ $$ = new string(context->fText); }
+identifier	: IDENTIFIER				{ $$ = new string(context->fText); }
+			| HOSTNAME					{ $$ = new string(context->fText); }
+			| REGEXP					{ $$ = new string(context->fText); }
 			;
 
 //_______________________________________________
@@ -194,10 +186,10 @@ eval		: EVAL				{ $$ = new inscore::IMessage::argslist;
 								  inscore::Sbaseparam * p = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText));
 								  $$->push_back(*p); delete p; }
 
-params		: param							{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
+params		: param					{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
 			| variable				{ $$ = $1; }
-			| params variable				{ $1->push_back($2);  $$ = $1; delete $2; }
-			| params param					{ $1->push_back(*$2); $$ = $1; delete $2; }
+			| params variable		{ $1->push_back($2);  $$ = $1; delete $2; }
+			| params param			{ $1->push_back(*$2); $$ = $1; delete $2; }
 			;
 
 variable	: VARSTART varname	{ $$ = new inscore::IMessage::argslist;
@@ -244,8 +236,6 @@ expression		: EXPRESSION	{ $$ = context->fReader.parseExpr(context->fText, conte
 
 %%
 
-//} // end namespace
-
 namespace inscore 
 {
 
@@ -266,18 +256,9 @@ int lineno (ITLparser* context)
 
 int yyerror(const YYLTYPE* loc, ITLparser* context, const char*s) {
 #ifdef NO_OSCSTREAM
-	cerr << "error line: " << loc->last_line + context->fLine << " col: " << loc->first_column << ": " << s << endl;
+	cerr << "error line" << loc->last_line + context->fLine << "col" << loc->first_column << ":" << s << endl;
 #else
-	ITLErr << "error line: " << loc->last_line + context->fLine << " col: " << loc->first_column << ": " << s << ITLEndl;
-#endif
-	return 0;
-}
-
-int VARerror(YYLTYPE* loc, ITLparser* context, const char*s, const char* var) {
-#ifdef NO_OSCSTREAM
-	cerr << "error line " << loc->last_line + context->fLine << ": " << s << var << endl;
-#else
-	ITLErr << "error line " << loc->last_line + context->fLine << ": " << s << var << ITLEndl;
+	context->fReader.error (loc->last_line + context->fLine, loc->first_column, s);
 #endif
 	return 0;
 }

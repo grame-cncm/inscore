@@ -31,6 +31,7 @@
 #include "IExprParser.h"
 
 #include "TEnv.h"
+#include "TParseEnv.h"
 #include "ITLparser.h"
 #include "ITLError.h"
 
@@ -46,9 +47,11 @@ class IMessage;
 class TEnv;
 
 //--------------------------------------------------------------------------------------------
-TScripting::TScripting(TJSEngine* js, TLua* lua)
-	: 	fJavascript(js), fLua(lua)
+TScripting::TScripting(TParseEnv* penv)
+	: 	fParseEnv(penv)
 {
+	fJavascript = fParseEnv ? fParseEnv->getJSEngine() : 0;
+	fLua		= fParseEnv ? fParseEnv->getLUAEngine() : 0;
 	fMessages = IMessageList::create();
 	fEnv = TEnv::create();
 }
@@ -89,6 +92,14 @@ void TScripting::addEnv (const TScripting& sc)
 	for (TEnv::TEnvList::const_iterator i = sc.fEnv->begin(); i != sc.fEnv->end(); i++) {
 		variable ( i->first.c_str(), &(i->second));
 	}
+}
+
+//--------------------------------------------------------------------------------------------
+// called in case of parsing error
+void TScripting::error(int line, int col, const char* s) const
+{
+	ITLErr << "line" << line << "col" << col << ":" << s << ITLEndl;
+	if (fParseEnv) fParseEnv->error();
 }
 
 
@@ -153,7 +164,7 @@ SIMessageList TScripting::jsEval (const char* script, int lineno)
 		if (fJavascript->eval(lineno - countlines(script), script, jsout)) {
 			if (jsout.size()) {
 				istringstream stream(jsout);
-				ITLparser p (&stream, 0, fJavascript, fLua);
+				ITLparser p (&stream, 0, fParseEnv);
 				SIMessageList msgs = p.parse();
 				addEnv( p.fReader );
 				return msgs;

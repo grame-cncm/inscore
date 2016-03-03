@@ -208,12 +208,12 @@ class inscore_export INScore
 	static void add (MessagePtr msg, int n);
 	
 	
-	static float version();					///< gives the library version number
-	static const char* versionStr();		///< gives the library version number as a string
+	static float version()				{ return 1.18f; }	///< gives the library version number
+	static const char* versionStr()		{ return "1.18"; }	///< gives the library version number as a string
 
-	static const char* guidoversion();		///< gives the guido library version number as a string
-	static const char* musicxmlversion();	///< gives the musicxml library version number as a string
-	static const char* qtversion();			///< gives the Qt library version number as a string
+	static const char* guidoversion();						///< gives the guido library version number as a string
+	static const char* musicxmlversion();					///< gives the musicxml library version number as a string
+	static const char* qtversion();							///< gives the Qt library version number as a string
 };
 
 /*! @} */

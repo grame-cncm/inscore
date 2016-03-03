@@ -44,7 +44,7 @@ macos : $(BUILDF)/IBundle.xcodeproj
 
 $(BUILDF)/IBundle.xcodeproj : IBundle.pro
 	[ -d $(BUILDF) ] || mkdir $(BUILDF)
-	cd $(BUILDF) && qmake ../IBundle.pro
+	cd $(BUILDF) && qmake -spec macx-xcode ../IBundle.pro
 	
 install :
 	cp -f IBundle $(HOME)/bin/IBundle

@@ -33,6 +33,7 @@
 namespace inscore
 {	
 
+class TParseEnv;
 class IWebSocket;
 typedef class libmapping::SMARTP<IWebSocket>	SIWebSocket;
 
@@ -66,8 +67,7 @@ class IWebSocket : public IObject, public WebSocketInformer
 		VObjectView*	getView() const;
 		int				getPort () const			{ return fPort; }
 		int				getFrequency () const		{ return fFrequency; }
-		TJSEngine*		getJSEngine();
-		TLua*			getLUAEngine();
+		TParseEnv*		getParseEnv();
 
 	protected:
 		int fPort;			///< the web socket communnication port

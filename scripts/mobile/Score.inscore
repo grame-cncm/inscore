@@ -38,11 +38,22 @@
 				"/ITL/scene/TARGET pop));"
 		return makemsg (template, target, attribute, imgon, imgoff);
 	}
+
+	function toggleScore (address, msglist, file) {
+		msglist = msglist.replace("FILE", file) ;
+		return address + " watch " + down + " " + msglist + ";";
+	}
 ?>
 
-/ITL/scene/title  set  txt "Different score representations.";
-/ITL/scene/title  y -0.92;
+shadow = shadow 5 5 0 0 0 75 20;
+color = 20 0 150;
+
+/ITL/scene/title  set  txt "Symbolic score representations";
+/ITL/scene/title  y -0.90;
 /ITL/scene/title scale 1.7;
+/ITL/scene/title fontSize 32;
+/ITL/scene/title effect $shadow;
+/ITL/scene/title color $color;
 
 pwidth	= 1.2;
 pheight	= 1.;
@@ -73,14 +84,14 @@ rshift = 0.28;
 <? javascript toggle("b4pitchlines", "pitchLines", "rsrc/ploff.png", "rsrc/plon.png") ?>
 
 switch2score = (
-	/ITL/scene/score set gmnf "rsrc/score.gmn",
+	/ITL/scene/score set gmnf "FILE",
 	/ITL/scene/score scale 0.22,
 	/ITL/scene/b5proll show 1,
 	/ITL/scene/b[12346]* show 0
 );
 
 switch2proll = (
-	/ITL/scene/score set pianorollf "rsrc/score.gmn",
+	/ITL/scene/score set pianorollf "FILE",
 	/ITL/scene/score scale 1.0,
 	/ITL/scene/score width $pwidth,
 	/ITL/scene/score height $pheight,
@@ -88,6 +99,10 @@ switch2proll = (
 	/ITL/scene/b[12346]* show 1
 );
 
+<? javascript toggleScore( "/ITL/scene/b6score", switch2score, "rsrc/score.gmn" ) ?>
+<? javascript toggleScore( "/ITL/scene/b5proll", switch2proll, "rsrc/score.gmn" ) ?>
+
+__END__
 /ITL/scene/b6score watch mouseDown $switch2score;
 /ITL/scene/b5proll watch mouseDown $switch2proll;
 /ITL/scene/b6score watch touchBegin $switch2score;

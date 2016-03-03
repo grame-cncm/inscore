@@ -322,15 +322,17 @@ class IMessage : public Message, public libmapping::smartable
 	/*!
 		\brief print the message
 		\param out the output stream
+		\param suffix the suffix to be used as messages separator
 	*/
-	void				print(std::ostream& out, int nested=0) const;
+	void				print(std::ostream& out, int nested=0, const char* suffix=0) const;
 	/*!
 		\brief print a message parameter
 		\param out the output stream
 		\param param the param index
 		\param nested a flag used for indentation
+		\param suffix the suffix to be used as messages separator
 	*/
-	void		print(std::ostream& out, int param, int nested) const;
+	void		print(std::ostream& out, int param, int nested, const char* suffix=0) const;
 
 #ifndef NO_OSCSTREAM
 	/*!

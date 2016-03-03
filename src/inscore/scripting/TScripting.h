@@ -47,6 +47,7 @@ typedef void* yyscan_t;
 namespace inscore 
 {
 
+class TParseEnv;
 class IMessageList;
 class IMessage;
 class baseparam;
@@ -67,6 +68,7 @@ typedef void*		TJSEngine;
 //--------------------------------------------------------------------------------------------
 class TScripting 
 {
+	TParseEnv*			fParseEnv;
 	TJSEngine*			fJavascript;
 	TLua*				fLua;
 	SIMessageList		fMessages;
@@ -79,7 +81,7 @@ class TScripting
 	public:
 		yyscan_t fScanner;
 
-				 TScripting(TJSEngine* js, TLua* lua = 0);
+				 TScripting(TParseEnv* penv);
 		virtual ~TScripting();
 
 		void	add			(SIMessage& msg);
@@ -91,6 +93,7 @@ class TScripting
 		SIMessageList	jsEval		(const char* script, int lineno);
 		bool			checkLua () const;
 		bool			checkJavascript () const;
+		void			error(int line, int col, const char* s) const;
 
 		IMessage::argslist		resolve	(const char* var, const char * defaultVal=0) const;
 		IMessage::argslist		resolve	(const IMessage* var) const;

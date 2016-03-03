@@ -66,6 +66,9 @@ static const char* kCancelStr		= "cancel";
 static const char* kEndPaintStr		= "endPaint";
 static const char* kNewElementStr	= "newElement";
 
+// score specific events
+static const char* kPageCountStr	= "pageCount";
+
 namespace inscore
 {
 
@@ -295,6 +298,8 @@ void EventsAble::init ()
 		fTypeStr[kSuccessStr]	= kSuccess;
 		fTypeStr[kErrorStr]     = kError;
 		fTypeStr[kCancelStr]	= kCancel;
+
+		fTypeStr[kPageCountStr]	= kPageCount;
 	}
 	
 	if (!fTypeNum.size()) {
@@ -329,6 +334,8 @@ void EventsAble::init ()
 		fTypeNum[kSuccess]		= kSuccessStr;
 		fTypeNum[kError]		= kErrorStr;
 		fTypeNum[kCancel]		= kCancelStr;
+
+		fTypeNum[kPageCount]	= kPageCountStr;
 	}
 }
 

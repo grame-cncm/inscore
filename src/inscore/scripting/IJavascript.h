@@ -52,7 +52,7 @@ class IJavascript: public IVNode
 	protected:
 		TScripting	fScripter;
 		
-				 IJavascript(IObject * parent, TJSEngine* js);
+				 IJavascript(IObject * parent);
 		virtual ~IJavascript() {}
 
 		/// \brief javascript engine \c 'get' message handler
@@ -71,7 +71,7 @@ class IJavascript: public IVNode
 
 
 	public:
-		static SIJavascript create(IObject * parent, TJSEngine* js) { return new IJavascript(parent, js); }
+		static SIJavascript create(IObject * parent) { return new IJavascript(parent); }
 		static const char* kName;
 };
 
