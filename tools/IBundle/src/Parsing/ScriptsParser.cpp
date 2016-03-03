@@ -58,7 +58,7 @@ bool ScriptsParser::read(std::string inputFile, ParsedData &result, const std::s
 	if(!absoluteFile.empty())
 		inputFile = absoluteFile;
 
-	result.setMainScript(inputFile);
+	result.mainScript = inputFile;
 
 	if(!p.readScript(inputFile))
 		return false;
@@ -66,11 +66,11 @@ bool ScriptsParser::read(std::string inputFile, ParsedData &result, const std::s
 	return true;
 }
 
-bool ScriptsParser::readArchive(ParsedData &result, qarchive::QArchive* archive)
+bool ScriptsParser::readArchive( qarchive::QArchive* archive, ParsedData &result)
 {
 	ScriptsParser p(result, archive);
 
-	result.setMainScript("main.inscore");
+	result.mainScript = "main.inscore";
 
 	if(!p.readScript("main.inscore"))
 		return false;
@@ -92,7 +92,7 @@ bool ScriptsParser::readScript(string script)
 		return false;
 
 	if(fVerbose&&fLog) fLog->subSection(script);
-	fData.scripts[script] = msgs;
+	fData.addScript(script, msgs);
 
 	if(!msgs || !msgs->list().size()){
 		if(fVerbose&&fLog) fLog->exitSubSection();
@@ -124,7 +124,7 @@ bool ScriptsParser::readScript(string script)
 		std::string loadedScript = *it;
 
 		//Recursively read loaded scripts
-		if(!fData.scripts.count(loadedScript)){
+		if(!fData.containsScript(loadedScript)){
 			bool scriptValid = readScript(loadedScript);
 
 			if(!scriptValid)
@@ -154,6 +154,7 @@ bool ScriptsParser::parseScript(std::string inputFile, SIMessageList &msgs)
 		std::ifstream* fileStream = new std::ifstream(inputFile.c_str());
 		if(!fileStream->is_open()){
 			if (fLog)fLog->error("cannot open file \"" + inputFile + "\"");
+			delete fileStream;
 			return false;
 		}
 		ifs= fileStream;
@@ -191,9 +192,15 @@ bool ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool
 				std::string script;
 				if(msg->param(0,script) ){
 					script = absolutePath(script, address);
-					if(!script.empty()){
-						result.scripts.insert(script);
-						fData.scriptsRessources.insert(script, new MsgParam(msg, 0));
+					if(script.size()>8){
+						if(script.substr(script.size()-8)==".inscore"){			// Script
+							result.scripts.insert(script);
+							fData.addScriptMsg(script, new MsgParam(msg, 0));
+						}else if(script.substr(script.size()-8)==".ibundle"){	// IBundle
+							result.ressources.insert(script);
+							fData.addRessourceMsg(script, new MsgParam(msg, 0));
+						}else
+							fLog->warn(script+" is not a valid inscore script or bundle.");
 					}
 				}
 				return true;
@@ -234,7 +241,7 @@ bool ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool
 						if(ParsedData::isFilePath(path)){
 							path = absolutePath(path, address);
 							if(!path.empty()){
-								fData.ressources.insert(path, new MsgParam(msg, 1));
+								fData.addRessourceMsg(path, new MsgParam(msg, 1));
 								result.ressources.insert(path);
 							}
 						}
@@ -253,7 +260,7 @@ bool ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool
 				while(id!=std::string::npos){
 					std::string path = absolutePath(jsPath, "/ITL");
 					if(!path.empty()){
-						fData.ressources.insert(path, new JsParam(msg, jsPath));
+						fData.addRessourceMsg(path, new JsParam(msg, jsPath));
 						result.ressources.insert(path);
 					}
 					id = ParsedData::findFileInJS(js, jsPath, id+jsPath.size()+1);
@@ -283,7 +290,7 @@ bool ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool
 			for(auto it = exprDependencies.begin(); it != exprDependencies.end(); it++){
 				std::string path = absolutePath(*it,address);
 				if(!path.empty()){
-					fData.ressources.insert(path, new ExprParam(msg, i, *it));
+					fData.addRessourceMsg(path, new ExprParam(msg, i, *it));
 					result.ressources.insert(path);
 				}
 			}
@@ -378,12 +385,6 @@ bool ScriptsParser::isFileObject(std::string ITLCmd)
 			|| ITLCmd == "svgf" || ITLCmd == "file" || ITLCmd == "faustdspf"
 			|| ITLCmd == "gmn" //to support score expression
 			;
-}
-
-//______________________________________________
-bool ScriptsParser::ignoreCmd(std::string ITLCmd)
-{
-	return ITLCmd=="rootPath";
 }
 
 //______________________________________________

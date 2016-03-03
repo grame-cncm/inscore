@@ -35,6 +35,19 @@ typedef libmapping::SMARTP<TEnv> STEnv;
 
 namespace ibundle {
 
+/*!
+ * \brief The TDummyJs class provides a dummy Javascript engine to capture
+ * variable and javascript method declaration while preparing a bundle.
+ * To do so, the message evaluated by TDummyJS are always:
+ * /ITL/bundle js "JS_CODE";
+ * where JS_CODE is the code contains in the javascript section where double quote have been escaped
+ * ( \\ are inserted in front of them).
+ *
+ *	Once captured, the collected javascript code will be parsed by ScriptParser
+ * to find any reference to a ressources or a script. At the end of the bundle
+ * creation when regenerating inscore scripts, the collected javascript will be restored
+ * with the correct modification to filepaths.
+ */
 class TDummyJs
 {
 	std::string fRootPath;

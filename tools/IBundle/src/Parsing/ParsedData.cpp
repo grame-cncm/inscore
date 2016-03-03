@@ -25,15 +25,45 @@
 #include <deelx.h>
 
 #include "ExprInfo.h"
-#include "ScriptsParser.h"
+
 
 
 namespace ibundle {
 
+void ParsedData::addScript(std::string name, inscore::SIMessageList msgs)
+{
+	fScripts[name] = msgs;
+	auto it = fFilesMap.find(name);
+	if(it==fFilesMap.end())
+		fFilesMap[name] = name;
+}
+
+void ParsedData::addRessource(std::string name)
+{
+	if(fRessources.insert(name))
+		fFilesMap[name] = name;
+}
+
+void ParsedData::addScriptMsg(std::string script, SRessourceRef msg)
+{
+	fScriptsRessources.insert(script, msg);
+}
+
+void ParsedData::addRessourceMsg(std::string ressource, SRessourceRef msg)
+{
+	if( fRessources.insert(ressource, msg) )
+		fFilesMap[ressource] = ressource;
+}
+
+bool ParsedData::containsScript(std::string name) const
+{
+	return fScripts.count(name);
+}
+
 inscore::extvector<std::string> ParsedData::scriptNames() const
 {
 	inscore::extvector<std::string> vector;
-	for(auto it=scripts.begin(); it!=scripts.end(); it++)
+	for(auto it=fScripts.begin(); it!=fScripts.end(); it++)
 		vector.push_back(it->first);
 	return vector;
 }
@@ -41,7 +71,7 @@ inscore::extvector<std::string> ParsedData::scriptNames() const
 inscore::extvector<std::string> ParsedData::ressourceNames() const
 {
 	inscore::extvector<std::string> vector;
-	for(auto it=ressources.begin(); it!=ressources.end(); it++)
+	for(auto it=fRessources.begin(); it!=fRessources.end(); it++)
 		vector.push_back(it->first);
 	return vector;
 }
@@ -116,18 +146,34 @@ bool ParsedData::isFilePath(std::string string)
 
 //__________________________________________________________
 //----------------------------------------------------------
-void ParsedData::applyNameMap(std::map<std::string, std::string> nameMap)
+void ParsedData::applyFileMap(TStringMap fileMap)
 {
-	for(auto it=nameMap.begin(); it!=nameMap.end(); it++){
-		scriptsRessources.renameRsc(it->first, it->second);
-		ressources.renameRsc(it->first, it->second);
+	if(fileMap.empty() || fFilesMap.empty())
+		return;
+
+	auto itLocal = fFilesMap.begin();
+	for(auto itNewMap=fileMap.begin(); itNewMap!=fileMap.end(); itNewMap++){
+		auto itTemp = itLocal;
+		while(itLocal->first!=itNewMap->first && itLocal != fFilesMap.end())
+			itLocal++;
+
+		if(itLocal==fFilesMap.end()){
+			itLocal = itTemp;
+		}else{
+			itLocal->second = itNewMap->second;
+			fScriptsRessources.renameRsc(itLocal->first, itLocal->second);
+			fRessources.renameRsc(itLocal->first, itLocal->second);
+		}
 	}
 }
 
-std::string ParsedData::generateScript(std::string name)
+std::string ParsedData::generateScript(std::string name) const
 {
 	std::stringstream script;
-	inscore::SIMessageList msgs = scripts.at(name);
+	auto scriptIt = fScripts.find(name);
+	if(scriptIt == fScripts.end())
+		return "";
+	inscore::SIMessageList msgs = scriptIt->second;
 
 	for(size_t i=0; i<msgs->list().size(); i++){
 		inscore::SIMessage msg = msgs->list().at(i);
@@ -142,7 +188,7 @@ std::string ParsedData::generateScript(std::string name)
 						script<<"<?javascript"<<js<<"?>";
 				}
 			}
-		} else if(!ScriptsParser::ignoreCmd(msg->message())){
+		} else {
 			msg->print(script);
 			script<<std::endl;
 		}
@@ -154,41 +200,57 @@ std::string ParsedData::generateScript(std::string name)
 
 void ParsedData::simplifyPaths(int charToDelete)
 {
+	if(mainScript.empty() && fScripts.empty() && fRessources.empty())
+		return;
+
 	TScripts simplifiedScripts;
 	RessourceMap simplifiedRessources;
 	RessourceMap simplifiedRscScripts;
+	std::map<std::string, std::string> simplifiedFilesMap;
 
-	for(auto it = scripts.begin(); it != scripts.end(); it++)
+	for(auto it = fScripts.begin(); it != fScripts.end(); it++)
 		simplifiedScripts[it->first.substr(charToDelete)] = it->second;
 
-	for(auto it = ressources.begin(); it != ressources.end(); it++)
+	for(auto it = fRessources.begin(); it != fRessources.end(); it++)
 		simplifiedRessources[it->first.substr(charToDelete)] = it->second;
 
-	for(auto it = scriptsRessources.begin(); it != scriptsRessources.end(); it++)
+	for(auto it = fScriptsRessources.begin(); it != fScriptsRessources.end(); it++)
 		simplifiedRscScripts[it->first.substr(charToDelete)] = it->second;
 
+	for(auto it = fFilesMap.begin(); it != fFilesMap.end(); it++){
+		std::string  simplifiedFile = it->first.substr(charToDelete);
+		if(it->first == it->second)
+			simplifiedFilesMap[simplifiedFile] = simplifiedFile;
+		else
+			simplifiedFilesMap[simplifiedFile] = it->second;
+	}
 
-	scripts = simplifiedScripts;
-	ressources = simplifiedRessources;
-	scriptsRessources = simplifiedRscScripts;
 
-	if(fMainScript.empty())
-		fMainScript = scripts.begin()->first;
+	fScripts.swap(simplifiedScripts);
+	fRessources.swap(simplifiedRessources);
+	fScriptsRessources.swap(simplifiedRscScripts);
+	fFilesMap.swap(simplifiedFilesMap);
 
-	fMainPath += fMainScript.substr(0,charToDelete);
-	fMainScript = fMainScript.substr(charToDelete);
+	if(mainScript.empty() && !fScripts.empty())
+			mainScript = fScripts.begin()->first;
+
+	if(!mainScript.empty()){
+		fMainPath += mainScript.substr(0,charToDelete);
+		mainScript = mainScript.substr(charToDelete);
+	}else
+		fMainPath += fRessources.begin()->first.substr(0,charToDelete);
 }
 
 void ParsedData::simplifyPaths()
 {
-	if(ressources.empty()&&scripts.empty())
+	if(fRessources.empty()&&fScripts.empty())
 		return;
 
 	//  -- search for common path trunk --
-	std::vector<std::string> trunk = splitPath(ressources.size()? ressources.begin()->first: scripts.begin()->first);
+	std::vector<std::string> trunk = splitPath(fRessources.size()? fRessources.begin()->first: fScripts.begin()->first);
 	int commonPath = trunk.size()-1;
 
-	for(auto it = ressources.cbegin(); it != ressources.cend(); it++){
+	for(auto it = fRessources.cbegin(); it != fRessources.cend(); it++){
 		std::vector<std::string> path = splitPath(it->first);
 
 		int i=0;
@@ -201,7 +263,7 @@ void ParsedData::simplifyPaths()
 		commonPath = i;
 	}
 
-	for(auto it = scripts.cbegin(); it != scripts.cend(); it++){
+	for(auto it = fScripts.cbegin(); it != fScripts.cend(); it++){
 		std::vector<std::string> path = splitPath(it->first);
 
 		int i=0;
@@ -229,37 +291,48 @@ void ParsedData::simplifyPaths()
 
 //__________________________________________________________
 //----------------------------------------------------------
-std::list<SMsgParam>& RessourceMap::insert(std::string name)
+std::list<SRessourceRef> &RessourceMap::insert(std::__cxx11::string name, bool &newList)
 {
 	auto it = find(name);
 	if(it==end()){
-		std::list<SMsgParam> l;
+		std::list<SRessourceRef> l;
 		(*this)[name] = l;
+		newList = true;
 		return (*this)[name];
 	}
-
+	newList = false;
 	return it->second;
 }
 
-void RessourceMap::insert(std::string name, SMsgParam param)
+bool RessourceMap::insert(std::string name)
 {
-	insert(name).push_back(param);
+	bool newList;
+	insert(name, newList);
+	return newList;
 }
 
-void RessourceMap::insert(std::string name, std::list<SMsgParam> params)
+bool RessourceMap::insert(std::string name, SRessourceRef param)
+{
+	bool newList;
+	insert(name, newList).push_back(param);
+	return newList;
+}
+
+bool RessourceMap::insert(std::string name, std::list<SRessourceRef> params)
 {
 	if(!params.size())
-		return;
+		return false;
 
 	auto it = find(name);
 	if(it==end()){
 		(*this)[name] = params;
-		return;
+		return true;
 	}
 
 	for(auto itParams = params.begin(); itParams!=params.end(); itParams++)
 		it->second.push_back(*itParams);
 
+	return false;
 }
 
 void RessourceMap::insert(const RessourceMap &ressources)
@@ -268,22 +341,24 @@ void RessourceMap::insert(const RessourceMap &ressources)
 		insert(it->first, it->second);
 }
 
-void RessourceMap::renameRsc(std::string search, std::string replace)
+bool RessourceMap::renameRsc(std::string search, std::string replace)
 {
 	auto itSearch = find(search);
 	if(itSearch==end())
-		return;
+		return false;
 
-	std::list<SMsgParam> list = itSearch->second;
+	std::list<SRessourceRef> list = itSearch->second;
 
 	for(auto it = list.begin(); it!=list.end(); it++)
 		(*it)->setValue(replace);
+
+	return true;
 }
 
 //__________________________________________________________
 //----------------------------------------------------------
 MsgParam::MsgParam(inscore::SIMessage msg, int paramID)
-	:fMsg(msg), fParamID(paramID)
+	:RessourceRef(msg), fParamID(paramID)
 {}
 
 void MsgParam::setValue(const std::string& value)
@@ -302,15 +377,15 @@ std::string MsgParam::getValue() const
 
 //__________________________________________________________
 //----------------------------------------------------------
-ExprParam::ExprParam(inscore::SIMessage msg, int paramID, std::string initialValue)
-	: MsgParam(msg,paramID), fInitialValue(initialValue)
+ExprParam::ExprParam(inscore::SIMessage msg, int paramID, std::string initialPath)
+	: MsgParam(msg, paramID), fInitialValue(initialPath)
 {}
 
 void ExprParam::setValue(const std::string& value){
 	inscore::SIExpression expr;
 	if(!fMsg->param(fParamID,expr))
 		return;
-	inscore::ExprInfo::fileReplace(expr, fInitialValue, value);
+	inscore::ExprInfo::searchAndReplace<inscore::filepath>(expr, fInitialValue, value);
 	fInitialValue = value;
 }
 
@@ -321,8 +396,8 @@ std::string ExprParam::getValue() const
 
 //__________________________________________________________
 //----------------------------------------------------------
-JsParam::JsParam(inscore::SIMessage msg, std::string path)
-	: MsgParam(msg, 0), fPath(path)
+JsParam::JsParam(inscore::SIMessage msg, std::string initialPath)
+	: RessourceRef(msg), fPath(initialPath)
 {}
 
 void JsParam::setValue(const std::string& value)
