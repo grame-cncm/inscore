@@ -88,7 +88,7 @@ protected:
 	QArchiveError	readHeader(QIODevice *input);
 	QByteArray		generateHeader() const;
 
-	QByteArray		generateCustomProp() const;
+	void generateCustomProp(QDataStream &dataStream) const;
 	QArchiveError	readCustomProp(QDataStream &dataStream);
 
 };

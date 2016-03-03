@@ -22,7 +22,7 @@
 */
 #include "ScriptsParser.h"
 #include "ParsedData.h"
-#include "BundlePackager.h"
+//#include "BundlePackager.h"
 //#include "INScore.h"
 
 #include "BundleCreator.h"
@@ -66,17 +66,29 @@ bool BundleCreator::bundle(std::string inputFile, std::string outputFile)
 		fLog<<"  "<<scriptNames.at(i)<<"\n";
 
 	fLog.section("Bundle Creation");
-	qarchive::QArchive* a = BundlePackager::bundle(parsedData);
-	if(!a)
-		return false;
-	bool r = writeArchive(a, outputFile, fForceOverwrite);
-	delete a;
+
+	mapNames(parsedData);
+
+	// Setup Archive
+	qarchive::QArchive* archive = qarchive::QArchive::emptyArchive();
+	std::string fileNames = "";
+
+	//Create hierarchy
+	archive->changeDir("/");
+	archive->addDir("Export");
+	archive->addDir("Ressources");
+
+	setupArchive(parsedData, archive);
+
+	bool r = writeArchive(archive, outputFile, fForceOverwrite);
+	delete archive;
 
 	return r;
 }
 
 bool BundleCreator::failSafeBundle(std::string inputFile, std::string outputFile)
 {
+	// Open files list
 	ParsedData parsedData;
 	QFile f(inputFile.c_str());
 	if(!f.open(QIODevice::ReadOnly | QIODevice::Text)){
@@ -84,33 +96,32 @@ bool BundleCreator::failSafeBundle(std::string inputFile, std::string outputFile
 		return false;
 	}
 
+	// Parse files list
 	QStringList files = QString::fromUtf8(f.readAll()).split("\n", QString::SkipEmptyParts);
 	if(files.empty()){
 		fLog.error(inputFile+ " is empty, check if the text codec is utf8.");
 		return false;
 	}
 
+	// Add files list to parsedData
 	QFileInfo fInfo(f);
 	fInfo.setFile(files.first());
-	parsedData.setMainScript(fInfo.canonicalFilePath().toStdString());
+	parsedData.mainScript = fInfo.canonicalFilePath().toStdString();
 	foreach (QString file, files){
 		fInfo = QFileInfo(f);
 		fInfo.setFile(file);
-		parsedData.ressources.insert(fInfo.canonicalFilePath().toStdString());
+		parsedData.addRessource(fInfo.canonicalFilePath().toStdString());
 	}
 
+	// Simplify files path
 	parsedData.simplifyPaths();
 
-	inscore::extvector<std::string> names = parsedData.ressourceNames();
 	qarchive::QArchive* a = qarchive::QArchive::emptyArchive();
 
-	for(size_t i=0; i<names.size(); i++)
-		if( !a->addFileStd(names.at(i), parsedData.mainPath()+names.at(i)) ){
-			fLog.error(parsedData.mainPath()+names.at(i)+" not found.");
-			return false;
-		}
+	setupArchive(parsedData, a);
 
-	std::string mainScriptPath = parsedData.mainScript();
+	// Create main.inscore
+	std::string mainScriptPath = parsedData.mainScript;
 	std::string rootPath = "";
 	size_t idPath = mainScriptPath.rfind('/');
 	if(idPath != std::string::npos){
@@ -126,6 +137,7 @@ bool BundleCreator::failSafeBundle(std::string inputFile, std::string outputFile
 		return false;
 	}
 
+	// Write archive
 	bool r = writeArchive(a, outputFile, fForceOverwrite);
 	delete a;
 
@@ -136,29 +148,37 @@ bool BundleCreator::failSafeBundle(std::string inputFile, std::string outputFile
 
 //__________________________________________________________
 //----------------------------------------------------------
-void BundleCreator::setVerbose(bool verbose)
-{
-	fLog.setActive(verbose);
-}
+bool BundleCreator::setupArchive(const ParsedData& data, qarchive::QArchive* archive){
+	std::string mapTrace = "";
 
-void BundleCreator::setDefaultRootPath(std::string rootPath)
-{
-	fDefaultRootPath = rootPath;
-}
+	for(auto it=data.filesMap().begin(); it!=data.filesMap().end(); it++){
+		std::string archiveName = it->second, fileName = it->first;
+		if(archiveName != fileName)
+			mapTrace +=  archiveName + "\t" + fileName +"\n";
 
-void BundleCreator::setShowHierarchy(bool showHierarchy)
-{
-	fShowHierarchy = showHierarchy;
-}
+		// -- SCRIPTS --
+		if(fileName.size()>8 && fileName.substr(fileName.size()-8)==".inscore"){
+			//Generate Script
+			std::string script = data.generateScript(fileName);
+			if(!script.empty()){
+				//add script to archive
+				archive->addTextFileStd(archiveName, script);
+				continue;
+			}
+		}
 
-void BundleCreator::setForceOverwrite(bool forceOverwrite)
-{
-	fForceOverwrite= forceOverwrite;
-}
+		// -- RESSOURCES --
+		if(!archive->addFileStd(archiveName, data.mainPath()+fileName)){
+			std::cerr<<"Ressource: \""<<data.mainPath()+it->first<<"\" does not exist!"<<std::endl;
+			return false;
+		}
 
-void BundleCreator::setParseJS(bool parseJS)
-{
-	fParseJS = parseJS;
+	}
+
+	if(!mapTrace.empty())
+		archive->addTextFileStd("bundleMap.txt", mapTrace);
+
+	return true;
 }
 
 bool BundleCreator::writeArchive(qarchive::QArchive* archive, const std::string &outputPath, bool overwrite)
@@ -186,6 +206,64 @@ bool BundleCreator::writeArchive(qarchive::QArchive* archive, const std::string 
 		break;
 	}
 	return false;
+}
+
+void BundleCreator::mapNames(ParsedData& inputData)
+{
+	int idRsc=0, idScript=1;
+	TStringMap map = inputData.filesMap();
+
+	for(auto it = map.begin(); it!=map.end(); it++){
+		std::string fileName = it->first;
+		std::string& mapped = it->second;
+
+		if(fileName.substr(fileName.size()-8)==".inscore"){
+			if(inputData.isMainScript(fileName))
+				mapped = "main.inscore";
+			else{
+				std::stringstream name;
+				name << idScript <<".inscore";
+				mapped = name.str();
+				idScript++;
+			}
+		}else{
+			size_t idExtSuffix = fileName.rfind('.');
+			std::stringstream name;
+			name << "Ressources/" << idRsc <<"."<<fileName.substr(idExtSuffix+1);
+			mapped = name.str();
+			idRsc++;
+		}
+	}
+
+	inputData.applyFileMap(map);
+}
+
+
+//__________________________________________________________
+//----------------------------------------------------------
+void BundleCreator::setVerbose(bool verbose)
+{
+	fLog.setActive(verbose);
+}
+
+void BundleCreator::setDefaultRootPath(std::string rootPath)
+{
+	fDefaultRootPath = rootPath;
+}
+
+void BundleCreator::setShowHierarchy(bool showHierarchy)
+{
+	fShowHierarchy = showHierarchy;
+}
+
+void BundleCreator::setForceOverwrite(bool forceOverwrite)
+{
+	fForceOverwrite= forceOverwrite;
+}
+
+void BundleCreator::setParseJS(bool parseJS)
+{
+	fParseJS = parseJS;
 }
 
 } // end namespace

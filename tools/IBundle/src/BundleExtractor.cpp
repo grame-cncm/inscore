@@ -59,8 +59,11 @@ bool BundleExtractor::extract(std::string bundleFile, std::string outputFolder)
 		delete archive;
 		return r;
 	}
+
+
+	// --- Keep original Path ---
 	ParsedData parsedData;
-	if(!ScriptsParser::readArchive(parsedData, archive)){
+	if(!ScriptsParser::readArchive(archive, parsedData)){
 		std::cerr<<"Impossible to restore original path for the bundle \""<<bundleFile<<"\""<<std::endl;
 		delete archive;
 		return false;
@@ -73,7 +76,7 @@ bool BundleExtractor::extract(std::string bundleFile, std::string outputFolder)
 		return false;
 	}
 
-	parsedData.applyNameMap(nameMap);
+	parsedData.applyFileMap(nameMap);
 
 	if(!writeMappedArchive(archive, parsedData, nameMap, outputFolder)){
 		std::cerr<<"Impossible to restore original path for the bundle \""<<bundleFile<<"\""<<std::endl;

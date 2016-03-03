@@ -113,7 +113,7 @@ QByteArray QArchiveHeader::generateHeader() const
 
 	//Writing CUSTOM PROPERTIES
 	out << (quint8) HEADER_CUSTOM_PROP;
-	out << generateCustomProp();
+	generateCustomProp(out);
 	out << (quint8) H_CUSTOM_END;
 
 	//Writing HIERARCHY
@@ -149,11 +149,8 @@ QByteArray QArchiveHeader::generateHeader() const
 }
 
 //______________________________________________
-QByteArray QArchiveHeader::generateCustomProp() const
+void QArchiveHeader::generateCustomProp(QDataStream &d) const
 {
-	QByteArray r;
-	QDataStream d(&r, QIODevice::WriteOnly);
-	d.setVersion(QDataStream::Qt_5_5);
 	for(auto it = fNbrProperties.begin(); it != fNbrProperties.end(); it++){
 		d << (quint8) (0x40 + it->first);
 		d << (float) it->second;
@@ -162,8 +159,6 @@ QByteArray QArchiveHeader::generateCustomProp() const
 		d << (quint8) (0xC0 + it->first);
 		d << it->second.c_str();
 	}
-
-	return r;
 }
 
 //______________________________________________
