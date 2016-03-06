@@ -304,10 +304,13 @@ bool SwipePanel::switchToPanel(QString name)
 
 bool SwipePanel::switchToPanel(int panelID)
 {
-	if(fNextPanelID!=-1)
-		return false;
 	if(panelID<0 || panelID >= panelList().size())
-		return false;
+			return false;
+	else if(fNextPanelID!=-1){
+		setPanel(panelID);
+		return true;
+	}
+
 	if(fCurrentPanelID==panelID)
 		return false;
 

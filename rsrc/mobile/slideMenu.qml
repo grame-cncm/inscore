@@ -63,8 +63,8 @@ Item {
                     anchors.topMargin: Size.toPixel(1)
                     onFileClicked: {
                         inscore.postMessage("/ITL", "rootPath", file.slice(0, file.lastIndexOf("/")));
-                        inscore.postMessage("/ITL", "load", file.slice(file.lastIndexOf("/")+1));
                         inscore.postMessage("/ITL/scene", "foreground");
+                        inscore.postMessage("/ITL", "load", file.slice(file.lastIndexOf("/")+1));
 
                         if(!exploreMenu.exploreRecent)
                             contextObject.addDownloadedFile(file);
