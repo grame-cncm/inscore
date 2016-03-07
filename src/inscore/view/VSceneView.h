@@ -171,7 +171,7 @@ class ZoomingGraphicsView : public QGraphicsView
 		/*!
          * \brief doZoom zoom on the scene and translate the scene in the view. It use scene scale as zoom factor and xorigin / yorigin to translate the scene.
 		 */
-        void doZoomTranslate();
+		virtual void doZoomTranslate();
 
 		/*!
 		 * \brief getScaleFactor Get the scale factor of the scene. This value is updated after a zoom with touch gesture.
