@@ -23,7 +23,7 @@
 #ifndef EXPRINFO_H
 #define EXPRINFO_H
 
-#include <selinux/context.h>
+//#include <selinux/context.h>
 #include <set>
 
 #include "IExpression.h"
