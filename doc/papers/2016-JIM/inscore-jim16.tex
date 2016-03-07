@@ -134,7 +134,7 @@ rhythm 	&	$s1\ s2$	& applique le rythme de $s2$ à $s1$ en boucle \\
 \end{tabular}
 \end{center}
 
-\caption{Opérateurs INScore}
+\caption{Liste des opérateurs}
 \label{operations}
 \end{table*}
 
@@ -324,7 +324,7 @@ La figure \ref{fig:expandingTree} illustre l'expansion de l'arbre d'expression p
 \begin{figure}[th]
 \centering
 \includegraphics[width=0.9\columnwidth]{imgs/expandingTree}
-\caption{Composing \sExpr
+\caption{Composition d'expressions
 \label{fig:expandingTree}}
 \end{figure}
 
@@ -389,7 +389,7 @@ Les \sExprs\ permettent de dupliquer et de transformer dynamiquement des partiti
 /ITL/scene/stream watch newData\\
 \tab(/ITL/*/score expr reeval);
 }
-L'exemple ci-dessus crée 2 copies d'un objet GMN stream. La première est transposée pour le saxophone et la seconde est affichée sous forme de piano roll, en tant que support visuel pour le public. Chaque partition est crée dans des scènes distinctes. La dernière ligne assure la mise à jour des copies lorsque l'objet \OSC{stream} est modifié. Le résultat est présenté par la figure \ref{fig:mutliscoreFig}.
+L'exemple ci-dessus crée 2 copies d'un objet GMN stream. La première est transposée pour le saxophone et la seconde est affichée sous forme de piano roll, en tant que support visuel pour le public. Chaque partition est créée dans des scènes distinctes. La dernière ligne assure la mise à jour des copies lorsque l'objet \OSC{stream} est modifié. Le résultat est présenté par la figure \ref{fig:mutliscoreFig}.
 
 \begin{figure}[th]
 \centering
@@ -402,19 +402,19 @@ L'exemple ci-dessus crée 2 copies d'un objet GMN stream. La première est trans
 %------------------------------------------
 \subsection{Composer des éléments dynamiques et statiques}\label{sample3}
 Cet exemple illustre la composition et la transformation de partitions dynamiques et statiques en temps-réel.
-Dans un premier temps, nous créons une partition sous forme de flux (nommée \OSC{stream}), destinée à être écrite en temps réel, et un partition statique (nommée \OSC{static}).
+Dans un premier temps, nous créons une partition sous forme de flux (nommée \OSC{stream}), destinée à être écrite en temps réel, et une partition statique (nommée \OSC{static}).
 \sample{/ITL/scene/stream set gmnstream \\
 \tab \tab '[$\backslash$meter<"4/4">]';\\
 /ITL/scene/static set gmn \\
 \tab \tab '[$\backslash$meter<"4/4"> g e f a f d c/2]';
 }
-Dans un ddeuxième temps, les deux dernières mesures de \OSC{stream} sont extraites et affectées à un nouvel objet nommé\OSC{tail}. Du fait que l'opération 'tail' coupe le début de la partition sur la durée de la partition donnée en second argument, la durée de cet argument est exprimée comme la fin de \OSC{stream} après la durée désirée (2 rondes)
-L'expression de \OSC{tail} fait usage de référence à \OSC{stream} de manière à être mis à jour de ses nouvelles valeurs. 
+Dans un deuxième temps, les deux dernières mesures de \OSC{stream} sont extraites et affectées à un nouvel objet nom-mé\OSC{tail}. Du fait que l'opération 'tail' coupe le début de la partition sur la durée de la partition donnée en second argument, la durée de cet argument est exprimée comme la fin de \OSC{stream} après la durée désirée (2 rondes)
+L'expression de \OSC{tail} fait usage d'une référence à \OSC{stream} de manière à être mis à jour de ses nouvelles valeurs. 
 \sample{/ITL/scene/tail set gmn \\
 \tab \tab expr(tail \&stream \\
 \tab \tab \tab \tab (tail \&stream '[a*2]')));
 }
-Le résultat final est obtenu avec les opérations 'par' et 'transpose'. Il inclut une référence à \OSC{tail} mais l'objet \OSC{static} est embarqué statiquement. \OSC{tail} est utilisé comme un objet intérmédiaire pour des raisons d'optimisation et facilite la lecture de l'expression. Il peut être caché du rendu final sans affecter le résultat.
+Le résultat final est obtenu avec les opérations 'par' et 'transpose'. Il inclut une référence à \OSC{tail} mais l'objet \OSC{static} est embarqué statiquement. \OSC{tail} est utilisé comme un objet intermédiaire pour des raisons d'optimisation et facilite par ailleurs la lecture de l'expression. Il peut être caché du rendu final sans affecter le résultat.
 \sample{/ITL/scene/score set gmn \\
 \tab \tab expr(par \&tail \\
 \tab \tab \tab \tab (transpose static \&tail));
@@ -430,7 +430,7 @@ L'activation du calcul dynamique de la partition fait usage de l'événement \OS
 %==============================================================
 \section{Conclusions}
 
-En combinant les opérateurs Guido avec les fonctionnalités d'INScore (API OSC, dimension Web, interactivité...), les \sExprs\ intègrent pleinement la composition de partitions symboliques dans l'environnement interactif des partitions augmentées. Elles étendent le processus d'écriture à la structure musicale et à l'agrégation de partitions par la combinaison de différents matériaux symbolique, incluant d'autres objets de la partition. Elles constituent un jeu d'outils simples pour manipuler des partitions quelle que soit leur origine (fichiers, URLs, streams...) ou quelle que soit leur représentation (symbolique, piano roll), et pour concevoir des partitions dynamiques basées sur des compositions arbitraires.
+En combinant les opérateurs Guido avec les fonctionnalités d'INScore (API OSC, dimension Web, interactivité...), les \sExprs\ intègrent pleinement la composition de partitions symboliques dans l'environnement interactif des partitions augmentées. Elles étendent le processus d'écriture à la structure musicale et à l'agrégation de partitions par la combinaison de différents matériaux symbolique, incluant d'autres objets de la partition. Elles constituent un jeu d'outils simples pour manipuler des partitions quelle que soit leur origine (fichiers, URLs, streams) ou quelle que soit leur représentation (symbolique, piano roll), et pour concevoir des partitions dynamiques basées sur des compositions arbitraires.
 
 Dans le futur, nous allons étudier l'extension des \sExprs\ à tous les objets d'INScore. Une telle approche - la composition de ressources graphiques arbitraires avec une sémantique musicale - pose des problèmes non triviaux à résoudre. En effet, si les opérations dans le domaine temporel peuvent s'appliquer à n'importe quel objet en raison de leur dimension temporelle commune, les transformations dans le domaine des hauteurs ou dans le domaine du temps structuré (tel que le rythme) impliquent l'extension de la sémantique de l'espace graphique.
 
