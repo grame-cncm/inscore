@@ -291,7 +291,7 @@ void ParsedData::simplifyPaths()
 
 //__________________________________________________________
 //----------------------------------------------------------
-std::list<SRessourceRef> &RessourceMap::insert(std::__cxx11::string name, bool &newList)
+std::list<SRessourceRef> &RessourceMap::insert(std::string name, bool &newList)
 {
 	auto it = find(name);
 	if(it==end()){
