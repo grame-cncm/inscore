@@ -75,7 +75,7 @@ bool MobileZoomingGraphicsView::viewportEvent(QEvent *event)
 			resetViewZoomTranslate();
 		}else{
 			fDoubleTap = true;
-			QTimer::singleShot(750, [this]{fDoubleTap = false;});
+			QTimer::singleShot(400, [this]{fDoubleTap = false;});
 		}
 
 		fFocus = false;
@@ -104,8 +104,9 @@ bool MobileZoomingGraphicsView::gestureEvent(QGestureEvent *event)
 void MobileZoomingGraphicsView::pinchTriggered(QPinchGesture *event)
 {
 
-	if(event->state() == Qt::GestureFinished){
+	if(event->state() == Qt::GestureFinished || event->state() == Qt::GestureCanceled){
 		//Cleanup
+		fViewTranslate = QPointF( transform().dx(), transform().dy());
 		return;
 	}else if(event->state() == Qt::GestureStarted){
 		//Init
@@ -119,40 +120,19 @@ void MobileZoomingGraphicsView::pinchTriggered(QPinchGesture *event)
 	}else{
 		//Update
 
-		qreal scale = event->totalScaleFactor() * fIniViewScale;
-		QPointF translate = event->centerPoint() -  event->startCenterPoint();
-		qDebug()<<"T:"<<translate;
+		qreal newScale = qMax(event->totalScaleFactor() * fIniViewScale, 1.);
+		//QPointF deltaCenter = event->centerPoint() -  event->lastCenterPoint();
 
-		fViewScale = scale;
-		fViewTranslate = (fIniViewTranslate + translate)/scale;
+		qDebug()<<fViewScale<<fViewTranslate;
+		QTransform t = transform();
+		t.translate(-event->lastCenterPoint().x()/fViewScale, -event->lastCenterPoint().y()/fViewScale);
+		t.scale(newScale/fViewScale, newScale/fViewScale);
+		t.translate(event->centerPoint().x()/newScale, event->centerPoint().y()/newScale);
 
-		// New Zoom factor
-//		fScaleFactor = event->totalScaleFactor() * fTotalScaleFactor;
+		setTransform(t);
 
-//		QPointF p0 = event->lastCenterPoint();
-//		QPointF p1 = event->centerPoint();
-//		// Verify horizontal limits to avoid scrolling when no scale factor.
-//		qreal h = fHorizontalOffset - (p1.x() - p0.x());
-
-//		// limit translation gesture if the zoom is too small
-//		qreal max = fScaleFactor * 400 - 400;
-//		if(max > abs(h))
-//			fHorizontalOffset = h;
-//		else {
-//			if(h > 0)
-//				fHorizontalOffset = max;
-//			else fHorizontalOffset = -max;
-//		}
-
-//		// Verify vertical limits to avoid scrolling when no scale factor.
-//		qreal v = fVerticalOffset - (p1.y() - p0.y());
-//		if(max > abs(v))
-//			fVerticalOffset = v;
-//		else {
-//			if(v > 0)
-//				fVerticalOffset = max;
-//			else fVerticalOffset = -max;
-//		}
+		fViewScale = newScale;
+		return;
 	}
 
 	// Zoom and translate
@@ -161,6 +141,7 @@ void MobileZoomingGraphicsView::pinchTriggered(QPinchGesture *event)
 
 	//fSceneRect = QRect(QPoint((-400 + fHorizontalOffset) / fScaleFactor, (-400 + fVerticalOffset) / fScaleFactor), QPoint((400 + fHorizontalOffset) / fScaleFactor, (400 + fVerticalOffset) / fScaleFactor));
 	fitInView( viewRect , Qt::KeepAspectRatio );
+
 }
 
 
