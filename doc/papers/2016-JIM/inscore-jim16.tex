@@ -28,11 +28,11 @@
 \definecolor{red}{RGB}{250,0,0}
 \definecolor{figBlue}{RGB}{0,136,170}
 
-\newenvironment{ExprCode}		{\vspace{-2mm} \small\verbatim}{\endverbatim\vspace{-2mm}}
-\newcommand{\OSC}[1]{\texttt{#1}}
-\newcommand{\oper}[1]{\textcolor{figRed}{#1}}
-\newcommand{\param}[1]{\textcolor{figOrange}{#1}}
-\newcommand{\prefix}[1]{\textcolor{figBlue}{#1}}
+\newenvironment{ExprCode}	{\vspace{-2mm} \small\verbatim}{\endverbatim\vspace{-2mm}}
+\newcommand{\OSC}[1]	{{\fontsize{10pt}{10pt} \selectfont\texttt{#1}}}
+\newcommand{\oper}[1]	{\textcolor{figRed}{#1}}
+\newcommand{\param}[1]	{\textcolor{figOrange}{#1}}
+\newcommand{\prefix}[1]	{\textcolor{figBlue}{#1}}
 
 \newcommand{\note}[1]{\textcolor{red}{(#1)}}
 
@@ -97,7 +97,7 @@ Afin de répondre aux besoins évoqués ci-dessus, INScore \cite{Fober:12a,fober
 
 INScore a été étendu avec des \sExprs\ qui fournissent des opérations de composition de partitions (e.g. composer des partitions en séquence ou en parallèle). La création de partitions par composition de partitions existantes en notation symbolique n'est pas à proprement parler une innovation. La module Haskore de Haskell permet ce genre d'opérations  \cite{haskore}. Freeman et Lee ont également proposé des opérations de composition de partition en temps-réel dans un contexte de notation interactive \cite{Lee:2013}. En ce qui concerne les opérateurs de composition de partitions d'INScore, elles proviennent d'un travail de recherche précédent \cite{fober12b} qui portait sur la consistence de la notation musicale à travers des opérations de composition arbitraires.
 
-La nouveauté de l'approche proposée repose sur les aspects dynamiques des opérations de composition ainsi que sur la persistence des expressions de composition. Une partition peut être composée comme un graphe arbitraire d'expressions et équipée d'un contrôle fin sur la propagation des changements qui affectent les composants de ces expressions.
+La nouveauté de l'approche proposée repose sur les aspects dynamiques des opérations de composition ainsi que sur la persistence des expressions de composition. Une partition peut être composée comme un graphe arbitraire d'expressions et équipée d'un contrôle fin sur la propagation des changements qui affectent les composants de ces expressions. Dans une certaine mesure, l'évaluation de ces expressions se rapproche des aspect réactifs qui constituent une extension récente d'Open Music \cite{bresson:hal-00965747}, sans en avoir toute la généralité. Sa spécificité repose notamment sur l'homogénéité des entrées et des sorties de ces expressions, d'où résulte un langage de composition de partitions simple, exempt d'erreur de \emph{connexion}. 
 
 Cet article présente tout d'abord les expressions de composition de partitions. Les différentes stratégies d'évaluation sont ensuite exposées et illustrées d'exemples. Puis, l'articulation avec l'environnement d'INScore est décrite en détail et suivie de cas d'usages concrets. L'article introduit ensuite l'extension du design initial de composition de partitions à la composition d'expressions. La généralisation de cette approche à l'ensemble des objets graphiques d'INScore est finalement abordée en conclusion.
 
@@ -138,8 +138,10 @@ rhythm 	&	$s1\ s2$	& applique le rythme de $s2$ à $s1$ en boucle \\
 \label{operations}
 \end{table*}
 
-Tous les opérateurs du langage ont une interface commune : ils prennent deux partitions en entrée pour produire une partition en sortie. L'uniformité de cette interface permet de combiner ces opérateurs pour créer des opérateurs de plus haut niveau, ce qui permet d'étendre le jeu d'opérations initiales. La table \ref{operations} donne la liste des opérateurs.
-Les partitions sont exprimées au format Guido Music Notation (GMN)\cite{hoos98}. 
+Tous les opérateurs du langage ont une interface commune : ils prennent deux partitions en entrée pour produire une partition en sortie. L'uniformité de cette interface permet de combiner ces opérateurs pour créer des opérateurs de plus haut niveau, ce qui permet d'étendre le jeu d'opérations initiales. 
+ 
+La table \ref{operations} donne la liste des opérateurs.
+Les partitions sont exprimées au format Guido Music Notation (GMN) \cite{hoos98}. Il n'y a aucune contrainte sur les partitions en entrée. Pour les opérations \OSC{par} et \OSC{rpar} et le cas échéant, la partition la plus courte est suffixée ou préfixée avec la durée nécessaire pour les rendre \emph{égales}. Ces extensions apparaissent comme des des portées vides, ce qui s'exprime aisément en GMN.
 
 
 %==============================================================
@@ -150,6 +152,8 @@ L'uniformité des entrées et des sorties des opérateurs permet de composer par
 
 L'adaptation de cette approche à la notation symbolique la situe dans une même métaphore, plaçant la structure musicale au centre du processus de création où la qualité artistique émerge des processus qui transforment et lient des fragments musicaux ensemble.
 C'est dans cette perspective que la syntaxe des expressions du langage a été définie. En particulier ces expressions peuvent utiliser divers matériaux hétérogènes, y compris d'autres expressions ou des objets existants de la partition.
+
+Bien que cette approche se situe conceptuellement dans la lignée des outils de CAO, les opérateurs de base proposés ne sont pas destinés à couvrir le processus de composition à la manière d'Open Music \cite{bresson:hal-01182394} ou de Bach  \cite{agostini12b}, mais fournir des outils de calcul de partition dynamique, en particulier pour le contexte de la performance musicale.
 
 
 %==============================================================
@@ -389,10 +393,39 @@ L'exemple ci-dessus crée 2 copies d'un objet GMN stream. La première est trans
 
 \begin{figure}[th]
 \centering
-\includegraphics[width=0.9\columnwidth]{imgs/example1}
+\includegraphics[width=0.95\columnwidth]{imgs/example1}
 \caption{Des partitions multi-formes
 \label{fig:mutliscoreFig}}
 \end{figure}
+
+
+%------------------------------------------
+\subsection{Composer des éléments dynamiques et statiques}\label{sample3}
+Cet exemple illustre la composition et la transformation de partitions dynamiques et statiques en temps-réel.
+Dans un premier temps, nous créons une partition sous forme de flux (nommée \OSC{stream}), destinée à être écrite en temps réel, et un partition statique (nommée \OSC{static}).
+\sample{/ITL/scene/stream set gmnstream \\
+\tab \tab '[$\backslash$meter<"4/4">]';\\
+/ITL/scene/static set gmn \\
+\tab \tab '[$\backslash$meter<"4/4"> g e f a f d c/2]';
+}
+Dans un ddeuxième temps, les deux dernières mesures de \OSC{stream} sont extraites et affectées à un nouvel objet nommé\OSC{tail}. Du fait que l'opération 'tail' coupe le début de la partition sur la durée de la partition donnée en second argument, la durée de cet argument est exprimée comme la fin de \OSC{stream} après la durée désirée (2 rondes)
+L'expression de \OSC{tail} fait usage de référence à \OSC{stream} de manière à être mis à jour de ses nouvelles valeurs. 
+\sample{/ITL/scene/tail set gmn \\
+\tab \tab expr(tail \&stream \\
+\tab \tab \tab \tab (tail \&stream '[a*2]')));
+}
+Le résultat final est obtenu avec les opérations 'par' et 'transpose'. Il inclut une référence à \OSC{tail} mais l'objet \OSC{static} est embarqué statiquement. \OSC{tail} est utilisé comme un objet intérmédiaire pour des raisons d'optimisation et facilite la lecture de l'expression. Il peut être caché du rendu final sans affecter le résultat.
+\sample{/ITL/scene/score set gmn \\
+\tab \tab expr(par \&tail \\
+\tab \tab \tab \tab (transpose static \&tail));
+}
+L'activation du calcul dynamique de la partition fait usage de l'événement \OSC{newData}, surveillé par l'objet \OSC{stream}, qui informe \OSC{tail} et \OSC{score} que leurs expressions doivent être re-évaluées.
+\sample{/ITL/scene/stream watch newData \\
+\tab \tab (/ITL/scene/part \ expr reeval, \\
+\tab \tab \ /ITL/scene/score expr reeval \\
+\tab \tab );
+}
+
 
 %==============================================================
 \section{Conclusions}
