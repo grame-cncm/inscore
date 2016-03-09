@@ -74,8 +74,9 @@ class IAppl : public IObject, public TILoader, public TParseEnv
 	static bool			fRunning;
 	static std::string	fVersion;					// the application version number
 	static float		fVersionNum;				// the application version number as floating point value
-	static float		fCompatibilityVersionNum;		// the supported version number as floating point value
+	static float		fCompatibilityVersionNum;	// the supported version number as floating point value
 	static udpinfo		fUDP;						// udp port settings
+	static int			fRate;						// the time task rate
 
 		int			fStartTime;					// the application start time
 		int			fCurrentTime;				// the application current time
@@ -86,7 +87,6 @@ class IAppl : public IObject, public TILoader, public TParseEnv
 		SIFilterForward fFilterForward;			// A virtual node to manage filter for message forwarding
 		Forwarder	fForwarder;					// A forwarder class to manage message forwarding
 		bool		fOffscreen;
-		int			fRate;						// the time task rate
 		QApplication*	fAppl;					// the Qt application
 		QMutex		fTimeMutex;
 
@@ -106,7 +106,7 @@ class IAppl : public IObject, public TILoader, public TParseEnv
 				return new IAppl(appl, offscreen);
 			}
 		static std::string		getRootPath()				{ return fRootPath; }	//< returns the application root path
-		static std::string		absolutePath( const std::string& path );		//< returns the absolute path corresponding to 'path',
+		static std::string		absolutePath( const std::string& path );			//< returns the absolute path corresponding to 'path',
 
 		static void				addAlias( const std::string& alias, const std::string& address, const std::string& msg);
 		static void				delAliases( const std::string& address);
@@ -128,7 +128,6 @@ class IAppl : public IObject, public TILoader, public TParseEnv
 		static const std::string&	getUDPErrAddress()		{ return fUDP.fErrDstAddress; }
 		IApplLog*			getLogWindow()	{ return fApplLog; }
 		
-		int		getRate() const				{ return fRate; }
 		/*!
 		 * \brief getForwardList Get the list of host to which forward message.
 		 * \return
@@ -157,6 +156,7 @@ class IAppl : public IObject, public TILoader, public TParseEnv
 		*/
 		virtual int processMsg (const std::string& address, const std::string& addressTail, const IMessage* msg);
 		
+		static int		getRate()					{ return fRate; }
 		static void		setUDPInPort(int p)			{ fUDP.fInPort = p; }
 		static void		setUDPOutPort(int p)		{ fUDP.fOutPort = p; }
 		static void		setUDPErrPort(int p)		{ fUDP.fErrPort = p; }
