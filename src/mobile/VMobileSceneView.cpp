@@ -46,29 +46,30 @@ MobileZoomingGraphicsView::MobileZoomingGraphicsView(QGraphicsScene *s)
 bool MobileZoomingGraphicsView::viewportEvent(QEvent *event)
 {
 
-	// Intercept gesture if no graphics item own the focus
+	// Intercept gestures
 	if(event->type() == QEvent::Gesture ){
-		if(!fFocus)
+		if(fFocus)
 			return gestureEvent(static_cast<QGestureEvent*>(event));
 		return true;
 	}
 
-	// Dispatch event to the graphics scene, if the event is consumed then a graphics item is owning the focus
-	if(QGraphicsView::viewportEvent(event)&&event->isAccepted()){
-		if(event->type() == QEvent::TouchBegin)
-			fFocus = true;
-		return true;
+	if(! (fFocus && (event->type() == QEvent::TouchBegin || event->type() == QEvent::TouchEnd || event->type() == QEvent::TouchUpdate) )){
+		// Dispatch event to the graphics scene, if the event is consumed then a graphics item is owning the focus
+		if(QGraphicsView::viewportEvent(event) && event->isAccepted()){
+			return true;
 	}
-	// If the event is not consumed by the graphics scene, the view own the focus
+	// If the event is not consumed by the graphics scene on a touch begin, the view own the focus
+	if(event->type() == QEvent::TouchBegin)
+		fFocus = true;
+	else if(event->type() == QEvent::TouchEnd)		//release the focus on touch end
+		fFocus = false;
 
 	// Detect if a swipe movement has been executed
-	if(VMobileQtInit::getMainPanel()->swipeEventFilter()->eventFilter(viewport(), event)){
-		fFocus = false;
+	if(VMobileQtInit::getMainPanel()->swipeEventFilter()->eventFilter(viewport(), event))
 		return true;
-	}
 
 	// If the event is still not consumed, accept any touchBegin event (to enable gesture events) and detect double tap
-	if( event->type() == QEvent::TouchBegin ){
+	if( event->type() == QEvent::TouchBegin){
 		if(fDoubleTap){
 			fDoubleTap = false;
 			//If double tap undo zoom and translate
@@ -78,7 +79,6 @@ bool MobileZoomingGraphicsView::viewportEvent(QEvent *event)
 			QTimer::singleShot(400, [this]{fDoubleTap = false;});
 		}
 
-		fFocus = false;
 		// TouchBegin events should always be accepted, otherwise no touch events will be sended to this object
 		return true;
 	}
