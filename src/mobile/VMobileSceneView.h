@@ -63,45 +63,45 @@ class VMobileSceneView : public VSceneView
 
 /*! @} */
 
-class MobileZoomingGraphicsView: public ZoomingGraphicsView
-{
-//	Q_OBJECT
+//class MobileZoomingGraphicsView: public ZoomingGraphicsView
+//{
+////	Q_OBJECT
 
-	private:
-		bool fFocus = false;
-		bool fDoubleTap = false;
+//	private:
+//		bool fFocus = false;
+//		bool fDoubleTap = false;
 
-		qreal fViewScale = 1;
-		qreal fIniViewScale = 1;
-		QPointF fViewTranslate = QPointF(0,0);
-		QPointF fIniViewTranslate = QPointF(0,0);
+//		qreal fViewScale = 1;
+//		qreal fIniViewScale = 1;
+//		QPointF fViewTranslate = QPointF(0,0);
+//		QPointF fIniViewTranslate = QPointF(0,0);
 
-	public:
-		MobileZoomingGraphicsView(QGraphicsScene * s);
-		virtual ~MobileZoomingGraphicsView(){}
+//	public:
+//		MobileZoomingGraphicsView(QGraphicsScene * s);
+//		virtual ~MobileZoomingGraphicsView(){}
 
-		void resetViewZoomTranslate();
-		virtual void doZoomTranslate();
+//		void resetViewZoomTranslate();
+//		virtual void doZoomTranslate();
 
-	protected:
-		/*!
-		 * \brief viewportEvent Gesture event are fired on viewport.
-		 * \param event the event
-		 * \return
-		 */
-		virtual bool viewportEvent(QEvent *event);
-		/*!
-		 * \brief gestureEvent process gesture event
-		 * \param event
-		 * \return
-		 */
-		virtual bool gestureEvent(QGestureEvent *event);
-		/*!
-		 * \brief pinchTriggered process pinch gesture (with two fingers) to zoom and move in the scene.
-		 * \param event
-		 */
-		void pinchTriggered(QPinchGesture *event);
-};
+//	protected:
+//		/*!
+//		 * \brief viewportEvent Gesture event are fired on viewport.
+//		 * \param event the event
+//		 * \return
+//		 */
+//		virtual bool viewportEvent(QEvent *event);
+//		/*!
+//		 * \brief gestureEvent process gesture event
+//		 * \param event
+//		 * \return
+//		 */
+//		virtual bool gestureEvent(QGestureEvent *event);
+//		/*!
+//		 * \brief pinchTriggered process pinch gesture (with two fingers) to zoom and move in the scene.
+//		 * \param event
+//		 */
+//		void pinchTriggered(QPinchGesture *event);
+//};
 
 } // end namespoace
 #endif // VMOBILESCENEVIEW_H

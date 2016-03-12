@@ -33,140 +33,127 @@
 
 namespace inscore {
 
-//bool MobileZoomingGraphicsView::sAnimationActive = false;
+////------------------------------------------------------------------------------------------------------------------------
+//MobileZoomingGraphicsView::MobileZoomingGraphicsView(QGraphicsScene *s)
+//	: ZoomingGraphicsView(s)
+//{
+//	viewport()->setAttribute(Qt::WA_AcceptTouchEvents);
+//	setAttribute(Qt::WA_AcceptTouchEvents);
+//}
 
-//------------------------------------------------------------------------------------------------------------------------
-MobileZoomingGraphicsView::MobileZoomingGraphicsView(QGraphicsScene *s)
-	: ZoomingGraphicsView(s)
-{
-	viewport()->setAttribute(Qt::WA_AcceptTouchEvents);
-	setAttribute(Qt::WA_AcceptTouchEvents);
-}
+//bool MobileZoomingGraphicsView::viewportEvent(QEvent *event)
+//{
 
-bool MobileZoomingGraphicsView::viewportEvent(QEvent *event)
-{
+//	// Intercept gestures
+//	if(event->type() == QEvent::Gesture ){
+//		if(fFocus)
+//			return gestureEvent(static_cast<QGestureEvent*>(event));
+//		return true;
+//	}
 
-	// Intercept gestures
-	if(event->type() == QEvent::Gesture ){
-		if(fFocus)
-			return gestureEvent(static_cast<QGestureEvent*>(event));
-		return true;
-	}
+//	if(! (fFocus && (event->type() == QEvent::TouchBegin || event->type() == QEvent::TouchEnd || event->type() == QEvent::TouchUpdate) )){
+//		// Dispatch event to the graphics scene, if the event is consumed then a graphics item is owning the focus
+//		if(QGraphicsView::viewportEvent(event) && event->isAccepted())
+//			return true;
+//	}
+//	// If the event is not consumed by the graphics scene on a touch begin, the view own the focus
+//	if(event->type() == QEvent::TouchBegin)
+//		fFocus = true;
+//	else if(event->type() == QEvent::TouchEnd)		//release the focus on touch end
+//		fFocus = false;
 
-	if(! (fFocus && (event->type() == QEvent::TouchBegin || event->type() == QEvent::TouchEnd || event->type() == QEvent::TouchUpdate) )){
-		// Dispatch event to the graphics scene, if the event is consumed then a graphics item is owning the focus
-		if(QGraphicsView::viewportEvent(event) && event->isAccepted()){
-			return true;
-	}
-	// If the event is not consumed by the graphics scene on a touch begin, the view own the focus
-	if(event->type() == QEvent::TouchBegin)
-		fFocus = true;
-	else if(event->type() == QEvent::TouchEnd)		//release the focus on touch end
-		fFocus = false;
+//	// Detect if a swipe movement has been executed
+//	if(VMobileQtInit::getMainPanel()->swipeEventFilter()->eventFilter(viewport(), event))
+//		return true;
 
-	// Detect if a swipe movement has been executed
-	if(VMobileQtInit::getMainPanel()->swipeEventFilter()->eventFilter(viewport(), event))
-		return true;
+//	// TouchBegin events should always be accepted, otherwise no touch events will be sended to this object
+//	if( event->type() == QEvent::TouchBegin)
+//		return true;
 
-	// If the event is still not consumed, accept any touchBegin event (to enable gesture events) and detect double tap
-	if( event->type() == QEvent::TouchBegin){
-		if(fDoubleTap){
-			fDoubleTap = false;
-			//If double tap undo zoom and translate
-			resetViewZoomTranslate();
-		}else{
-			fDoubleTap = true;
-			QTimer::singleShot(400, [this]{fDoubleTap = false;});
-		}
+//	return false;
+//}
 
-		// TouchBegin events should always be accepted, otherwise no touch events will be sended to this object
-		return true;
-	}
+////------------------------------------------------------------------------------------------------------------------------
+//bool MobileZoomingGraphicsView::gestureEvent(QGestureEvent *event)
+//{
+//	if (QGesture *pinch = event->gesture(Qt::PinchGesture))
+//		pinchTriggered(static_cast<QPinchGesture *>(pinch));
+//	else{
+//		event->ignore();
+//		return false;
+//	}
 
-	return false;
-}
+//	event->accept();
+//	return true;
+//}
 
-//------------------------------------------------------------------------------------------------------------------------
-bool MobileZoomingGraphicsView::gestureEvent(QGestureEvent *event)
-{
-	if (QGesture *pinch = event->gesture(Qt::PinchGesture))
-		pinchTriggered(static_cast<QPinchGesture *>(pinch));
-	else{
-		event->ignore();
-		return false;
-	}
+////------------------------------------------------------------------------------------------------------------------------
+//void MobileZoomingGraphicsView::pinchTriggered(QPinchGesture *event)
+//{
 
-	event->accept();
-	return true;
-}
+//	if(event->state() == Qt::GestureFinished || event->state() == Qt::GestureCanceled){
+//		//Cleanup
+//		fViewTranslate = QPointF( transform().dx(), transform().dy());
+//		return;
+//	}else if(event->state() == Qt::GestureStarted){
+//		//Init
+//		fIniViewScale = fViewScale;
+//		fIniViewTranslate = fViewTranslate;
+//		return;
+//	}else if(event->state() == Qt::GestureCanceled){
+//		//Undo
+//		fViewScale = fIniViewScale;
+//		fViewTranslate = fIniViewTranslate;
+//	}else{
+//		//Update
 
-//------------------------------------------------------------------------------------------------------------------------
-void MobileZoomingGraphicsView::pinchTriggered(QPinchGesture *event)
-{
+//		qreal newScale = qMax(event->totalScaleFactor() * fIniViewScale, 1.);
+//		//QPointF deltaCenter = event->centerPoint() -  event->lastCenterPoint();
 
-	if(event->state() == Qt::GestureFinished || event->state() == Qt::GestureCanceled){
-		//Cleanup
-		fViewTranslate = QPointF( transform().dx(), transform().dy());
-		return;
-	}else if(event->state() == Qt::GestureStarted){
-		//Init
-		fIniViewScale = fViewScale;
-		fIniViewTranslate = fViewTranslate;
-		return;
-	}else if(event->state() == Qt::GestureCanceled){
-		//Undo
-		fViewScale = fIniViewScale;
-		fViewTranslate = fIniViewTranslate;
-	}else{
-		//Update
+//		qDebug()<<fViewScale<<fViewTranslate;
+//		QTransform t = transform();
+//		t.translate(-event->lastCenterPoint().x()/fViewScale, -event->lastCenterPoint().y()/fViewScale);
+//		t.scale(newScale/fViewScale, newScale/fViewScale);
+//		t.translate(event->centerPoint().x()/newScale, event->centerPoint().y()/newScale);
 
-		qreal newScale = qMax(event->totalScaleFactor() * fIniViewScale, 1.);
-		//QPointF deltaCenter = event->centerPoint() -  event->lastCenterPoint();
+//		setTransform(t);
 
-		qDebug()<<fViewScale<<fViewTranslate;
-		QTransform t = transform();
-		t.translate(-event->lastCenterPoint().x()/fViewScale, -event->lastCenterPoint().y()/fViewScale);
-		t.scale(newScale/fViewScale, newScale/fViewScale);
-		t.translate(event->centerPoint().x()/newScale, event->centerPoint().y()/newScale);
+//		fViewScale = newScale;
+//		return;
+//	}
 
-		setTransform(t);
+//	// Zoom and translate
+//	int l = 400/fViewScale;
+//	QRect viewRect(-l+fViewTranslate.x(),-l+fViewTranslate.y(), 2*l, 2*l);
 
-		fViewScale = newScale;
-		return;
-	}
+//	//fSceneRect = QRect(QPoint((-400 + fHorizontalOffset) / fScaleFactor, (-400 + fVerticalOffset) / fScaleFactor), QPoint((400 + fHorizontalOffset) / fScaleFactor, (400 + fVerticalOffset) / fScaleFactor));
+//	fitInView( viewRect , Qt::KeepAspectRatio );
 
-	// Zoom and translate
-	int l = 400/fViewScale;
-	QRect viewRect(-l+fViewTranslate.x(),-l+fViewTranslate.y(), 2*l, 2*l);
-
-	//fSceneRect = QRect(QPoint((-400 + fHorizontalOffset) / fScaleFactor, (-400 + fVerticalOffset) / fScaleFactor), QPoint((400 + fHorizontalOffset) / fScaleFactor, (400 + fVerticalOffset) / fScaleFactor));
-	fitInView( viewRect , Qt::KeepAspectRatio );
-
-}
+//}
 
 
-//------------------------------------------------------------------------------------------------------------------------
-void MobileZoomingGraphicsView::resetViewZoomTranslate()
-{
-	fTotalScaleFactor = fViewScale;
-	doZoomTranslate();
-	fViewScale = 1;
-	fViewTranslate = QPointF(0,0);
-}
+////------------------------------------------------------------------------------------------------------------------------
+//void MobileZoomingGraphicsView::resetViewZoomTranslate()
+//{
+//	fTotalScaleFactor = fViewScale;
+//	doZoomTranslate();
+//	fViewScale = 1;
+//	fViewTranslate = QPointF(0,0);
+//}
 
-//------------------------------------------------------------------------------------------------------------------------
-void MobileZoomingGraphicsView::doZoomTranslate()
-{
-	QRect r = fSceneRect;
-	//Execute doZoomTranslate()
-	ZoomingGraphicsView::doZoomTranslate();
+////------------------------------------------------------------------------------------------------------------------------
+//void MobileZoomingGraphicsView::doZoomTranslate()
+//{
+//	QRect r = fSceneRect;
+//	//Execute doZoomTranslate()
+//	ZoomingGraphicsView::doZoomTranslate();
 
-	if(r!=fSceneRect){
-		// Reset view scale and translate
-		fViewScale = 1;
-		fViewTranslate = QPointF(0,0);
-	}
-}
+//	if(r!=fSceneRect){
+//		// Reset view scale and translate
+//		fViewScale = 1;
+//		fViewTranslate = QPointF(0,0);
+//	}
+//}
 
 //------------------------------------------------------------------------------------------------------------------------
 //void MobileZoomingGraphicsView::animationDoneSlot(void) {
@@ -201,8 +188,8 @@ void VMobileSceneView::foreground()
 //------------------------------------------------------------------------------------------------------------------------
 ZoomingGraphicsView * VMobileSceneView::createGraphicsView(QGraphicsScene * scene, const char * address)
 {
-	MobileZoomingGraphicsView *view =  new MobileZoomingGraphicsView(scene);
-//	ZoomingGraphicsView *view =  VSceneView::createGraphicsView(scene, address);
+//	MobileZoomingGraphicsView *view =  new MobileZoomingGraphicsView(scene);
+	ZoomingGraphicsView *view =  VSceneView::createGraphicsView(scene, address);
 
 	// Add scene to tabwidget
 	VMobileQtInit::getMainPanel()->addScene(QString(address), view);
