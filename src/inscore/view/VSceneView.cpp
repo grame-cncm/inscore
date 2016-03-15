@@ -60,7 +60,7 @@ namespace inscore
 
 //------------------------------------------------------------------------------------------------------------------------
 ZoomingGraphicsView::ZoomingGraphicsView(QGraphicsScene * s) : QGraphicsView(s), fScene(0), fScaleFactor(1),
-		fTotalScaleFactor(1), fHorizontalOffset(0), fVerticalOffset(0), fSceneRect(defaultRect)
+		fTotalScaleFactor(1), fDefaultScaleFactor(1), fHorizontalOffset(0), fVerticalOffset(0), fDefaultOffset(0,0), fSceneRect(defaultRect), fFocus(false)
 {
 }
 
@@ -70,15 +70,37 @@ void ZoomingGraphicsView::doZoomTranslate()
 	if(fScene) {
         qreal h = fScene->getXOrigin() * -400;
         qreal v = fScene->getYOrigin() * -400;
-		if (fTotalScaleFactor != fScene->getScale() || h != fHorizontalOffset || v != fVerticalOffset) {
+		// Due to unknown tiny error while processing offset and scale through INScore message, the offset sould be updated only if the difference is bigger than 10e-2 (2.5e-5 in INScore mesure)
+		if (round(10e5*fTotalScaleFactor) != round(10e5*fScene->getScale()) || round(h*10e2) != round(10e2*fHorizontalOffset) || round(10e2*v) != round(10e2*fVerticalOffset)) {
+
+//			if(round(10e5*fTotalScaleFactor) != round(10e5*fScene->getScale()))
+//				qDebug()<<"Scale: "<<(int)round(10e5*fTotalScaleFactor)<<" != "<<(int)round(10e5*fScene->getScale());
+//			if(round(10e2*fHorizontalOffset) != round(10e2*h))
+//				qDebug()<<"x: "<<(int)round(10e2*fHorizontalOffset)<<" != "<<(int)round(10e2*h);
+//			if(round(10e2*fVerticalOffset) != round(10e2*v))
+//				qDebug()<<"y: "<<(int)round(10e2*fVerticalOffset)<<" != "<<(int)round(10e2*v);
+
 			fHorizontalOffset = h;
 			fVerticalOffset = v;
+			fDefaultOffset = QPointF(h,v);
             fTotalScaleFactor = fScene->getScale();
             fScaleFactor = fTotalScaleFactor;
+			fDefaultScaleFactor = fTotalScaleFactor;
 			fSceneRect = QRect(QPoint((-400 + fHorizontalOffset) / fTotalScaleFactor, (-400 + fVerticalOffset) / fTotalScaleFactor), QPoint((400+ fHorizontalOffset) / fTotalScaleFactor, (400 + fVerticalOffset) / fTotalScaleFactor));
 			fitInView( fSceneRect , Qt::KeepAspectRatio );
         }
-    }
+	}
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+void ZoomingGraphicsView::resetViewZoomTranslate()
+{
+	fHorizontalOffset = fDefaultOffset.x();
+	fVerticalOffset   = fDefaultOffset.y();
+	fTotalScaleFactor = fDefaultScaleFactor;
+	fScaleFactor      = fTotalScaleFactor;
+	fSceneRect = QRect(QPoint((-400 + fHorizontalOffset) / fTotalScaleFactor, (-400 + fVerticalOffset) / fTotalScaleFactor), QPoint((400+ fHorizontalOffset) / fTotalScaleFactor, (400 + fVerticalOffset) / fTotalScaleFactor));
+	fitInView( fSceneRect , Qt::KeepAspectRatio );
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -152,6 +174,87 @@ void ZoomingGraphicsView::closeEvent (QCloseEvent * event)
 	INScore::postMessage (fSceneAddress.c_str(), kdel_SetMethod);
 	event->accept();
 }
+
+//------------------------------------------------------------------------------------------------------------------------
+bool ZoomingGraphicsView::viewportEvent(QEvent *event)
+{
+	// Intercept gestures
+	if(event->type() == QEvent::Gesture ){
+		if(fFocus)
+			return gestureEvent(static_cast<QGestureEvent*>(event));
+		return true;
+	}
+
+	if(! (fFocus && (event->type() == QEvent::TouchBegin || event->type() == QEvent::TouchEnd || event->type() == QEvent::TouchUpdate) )){
+		// Dispatch event to the graphics scene, if the event is consumed then a graphics item is owning the focus
+		if(QGraphicsView::viewportEvent(event) && event->isAccepted())
+			return true;
+	}
+	// If the event is not consumed by the graphics scene on a touch begin, the view own the focus
+	if(event->type() == QEvent::TouchBegin)
+		fFocus = true;
+	else if(event->type() == QEvent::TouchEnd)		//release the focus on touch end
+		fFocus = false;
+
+#ifdef __MOBILE__
+	// Detect if a swipe movement has been executed
+	if(VMobileQtInit::getMainPanel()->swipeEventFilter()->eventFilter(viewport(), event))
+		return true;
+#endif
+
+	// TouchBegin events should always be accepted, otherwise no touch events will be sended to this object
+	if( event->type() == QEvent::TouchBegin)
+		return true;
+
+
+	return false;
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+bool ZoomingGraphicsView::gestureEvent(QGestureEvent *event)
+{
+	if (QGesture *pinch = event->gesture(Qt::PinchGesture))
+		pinchTriggered(static_cast<QPinchGesture *>(pinch));
+	else{
+		event->ignore();
+		return false;
+	}
+	event->accept();
+	return true;
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+void ZoomingGraphicsView::pinchTriggered(QPinchGesture *event)
+{
+	if(event->state() == Qt::GestureFinished || event->state() == Qt::GestureCanceled){
+		//Clean up
+		fTotalScaleFactor = fScaleFactor;
+		fSceneRect = QRect(QPoint((-400 + fHorizontalOffset) / fTotalScaleFactor, (-400 + fVerticalOffset) / fTotalScaleFactor), QPoint((400+ fHorizontalOffset) / fTotalScaleFactor, (400 + fVerticalOffset) / fTotalScaleFactor));
+		return;
+	}else if(event->state() == Qt::GestureStarted){
+		//Init
+		return;
+	}
+
+	//Update
+	qreal newScale = qMax(event->totalScaleFactor() * fTotalScaleFactor, 1.);
+
+	QTransform t = transform();
+	t.translate(-event->lastCenterPoint().x()/fScaleFactor, -event->lastCenterPoint().y()/fScaleFactor);
+	t.scale(newScale/fScaleFactor, newScale/fScaleFactor);
+
+	fHorizontalOffset = event->centerPoint().x()/newScale;
+	fVerticalOffset   = event->centerPoint().y()/newScale;
+	t.translate(fHorizontalOffset, fVerticalOffset);
+
+	setTransform(t);
+
+	fScaleFactor = newScale;
+	return;
+}
+
+
+
 
 //------------------------------------------------------------------------------------------------------------------------
 VSceneView::VSceneView()

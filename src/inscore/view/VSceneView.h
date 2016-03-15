@@ -174,6 +174,11 @@ class ZoomingGraphicsView : public QGraphicsView
 		virtual void doZoomTranslate();
 
 		/*!
+		 * \brief resetViewZoomTranslate Reset the zoom and translation of the view to their default value.
+		 */
+		void resetViewZoomTranslate();
+
+		/*!
 		 * \brief getScaleFactor Get the scale factor of the scene. This value is updated after a zoom with touch gesture.
 		 * \return
 		 */
@@ -202,15 +207,43 @@ class ZoomingGraphicsView : public QGraphicsView
 		qreal fScaleFactor;
 		// Scale factor used as reference during a zoom. It's the model scale factor.
 		qreal fTotalScaleFactor;
+		// Scale factor used to reset zoom on double tap
+		qreal fDefaultScaleFactor;
 
 		// Offset to translate the scene in the view.
 		qreal fHorizontalOffset;
 		qreal fVerticalOffset;
 
+		// Default Offset used to reset translation on double tap
+		QPointF fDefaultOffset;
+
 		QRect fSceneRect;
+
+		// Touch Event flags
+		bool fFocus;
+
 
 		virtual void	closeEvent	(QCloseEvent *);
 		virtual void	paintEvent  (QPaintEvent * );
+
+		/*!
+		 * \brief viewportEvent Gesture event are fired on viewport.
+		 * \param event the event
+		 * \return
+		 */
+		virtual bool viewportEvent(QEvent *event);
+		/*!
+		 * \brief gestureEvent process gesture event
+		 * \param event
+		 * \return
+		 */
+		virtual bool gestureEvent(QGestureEvent *event);
+		/*!
+		 * \brief pinchTriggered process pinch gesture (with two fingers) to zoom and move in the scene.
+		 * \param event
+		 */
+		void pinchTriggered(QPinchGesture *event);
+
 
 		void resizeEvent ( QResizeEvent * );
 
