@@ -43,16 +43,23 @@ class EventsAble;
 */
 class IDate : public TimeEventAble
 {
+		/// \brief moves the date according to the tempo
+		void			move () const;
+		/// \brief an abstract method to get the object osc address
+		virtual std::string getOSCAddress() const = 0;
+
 	protected:
 		libmapping::rational fDate;					///< the object date
 		libmapping::rational fDuration;				///< the object duration
+		int					 fTempo;				///< the object tempo
 	protected:
+		bool	fPendingMove;
 		bool	fDateChanged;
 		bool	fDurationChanged;
 
 	protected:
 				 IDate(const EventsAble*);
-		virtual ~IDate() {}
+		virtual ~IDate();
 	
 	public:	
 		/// \brief returns the object date
@@ -78,10 +85,14 @@ class IDate : public TimeEventAble
 		virtual void	setDate (const libmapping::rational& date);
 		/// \brief sets the object duration \param dur a duration expressed as a rational
 		virtual void	setDuration (const libmapping::rational& dur);
+		/// \brief sets the object date \param date a date expressed as a rational
+		virtual void	setTempo (int tempo);
 		/// \brief moves the date
 		virtual void	addDate (const libmapping::rational& date)		{ setDate(fDate + date); }
 		/// \brief moves the duration
 		virtual void	addDuration (const libmapping::rational& dur)	{ fDuration += dur; fDurationChanged = true; }
+		/// \brief moves the tempo
+		virtual void	addTempo (int dt)								{ fTempo += dt; }
 };
 
 
