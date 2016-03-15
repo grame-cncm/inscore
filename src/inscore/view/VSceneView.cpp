@@ -34,6 +34,8 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QResizeEvent>
+#include <QGestureEvent>
+#include <QPinchGesture>
 
 #ifdef WIN32
 #include <windows.h>
