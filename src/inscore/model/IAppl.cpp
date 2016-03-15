@@ -115,7 +115,7 @@ inscore::SIMenu getMenuNode(inscore::IObject * parent) {
 #endif
 }
 
-#ifdef RUNBENCH
+#if defined(RUNBENCH) || defined(TIMEBENCH)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IAppl::writeBench(const IMessage* msg)
 {
@@ -154,6 +154,7 @@ unsigned long IAppl::kUPDPort = 7000;			//Default listening port
 udpinfo IAppl::fUDP(IAppl::kUPDPort);
 string	IAppl::fDefaultFontName("Carlito");		// the default font name
 int		IAppl::fRate = 10;
+float	IAppl::fRealRate = fRate;
 
 //--------------------------------------------------------------------------
 IAppl::IAppl(QApplication* appl, bool offscreen)
@@ -203,7 +204,7 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 	fGetMsgHandlerMap["guido-version"]			= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::guidoversion);
 	fGetMsgHandlerMap["musicxml-version"]		= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::musicxmlversion);
 
-#ifdef RUNBENCH
+#if defined(RUNBENCH) || defined(TIMEBENCH)
 	fMsgHandlerMap[kstartBench_SetMethod]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::startBench);
 	fMsgHandlerMap[kstopBench_SetMethod]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::stopBench);
 	fMsgHandlerMap[kresetBench_SetMethod]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::resetBench);

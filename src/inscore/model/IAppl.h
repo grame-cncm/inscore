@@ -77,6 +77,7 @@ class IAppl : public IObject, public TILoader, public TParseEnv
 	static float		fCompatibilityVersionNum;	// the supported version number as floating point value
 	static udpinfo		fUDP;						// udp port settings
 	static int			fRate;						// the time task rate
+	static float		fRealRate;				// the time task real rate in mls (maintained for every tick)
 
 		int			fStartTime;					// the application start time
 		int			fCurrentTime;				// the application current time
@@ -157,6 +158,7 @@ class IAppl : public IObject, public TILoader, public TParseEnv
 		virtual int processMsg (const std::string& address, const std::string& addressTail, const IMessage* msg);
 		
 		static int		getRate()					{ return fRate; }
+		static float	getRealRate()				{ return fRealRate; }
 		static void		setUDPInPort(int p)			{ fUDP.fInPort = p; }
 		static void		setUDPOutPort(int p)		{ fUDP.fOutPort = p; }
 		static void		setUDPErrPort(int p)		{ fUDP.fErrPort = p; }
@@ -164,6 +166,7 @@ class IAppl : public IObject, public TILoader, public TParseEnv
 		void		setUDPOutPortHandler(int p)		{ IAppl::setUDPOutPort(p); }
 		void		setUDPErrPortHandler(int p)		{ IAppl::setUDPErrPort(p); }
 		void		setRate(int rate)				{ fRate = rate; }
+		void		setRealRate(unsigned long rate)	{ fRealRate = rate / 1000.f; }
 		void		setReceivedOSC(int n);
 
 		void		resetBench();
@@ -231,7 +234,7 @@ class IAppl : public IObject, public TILoader, public TParseEnv
 		/// \brief the \c 'watch' message handler
 		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
 
-#ifdef RUNBENCH
+#if defined(RUNBENCH) || defined(TIMEBENCH)
 		void	startBench()			{ bench::start(); }
 		void	stopBench()				{ bench::stop(); }
 		MsgHandler::msgStatus	writeBench(const IMessage* msg);
