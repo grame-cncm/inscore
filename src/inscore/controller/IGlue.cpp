@@ -61,7 +61,11 @@ extern QWaitCondition gModelUpdateWaitCondition;
 
 //--------------------------------------------------------------------------
 IGlue::IGlue(int udpport, int outport, int errport) 
-	: fOscThread(0), fViewListener(0), fUDP(udpport, outport, errport) {}
+	: fOscThread(0), fViewListener(0), fUDP(udpport, outport, errport)
+{
+	fLastTimeTask = 0;
+}
+
 IGlue::~IGlue()	{ clean(); }
 
 //--------------------------------------------------------------------------
@@ -213,7 +217,7 @@ void IGlue::initialize (bool offscreen, QApplication* appl)
 	// set before the osc streams are ready
 	setSlaveMapUpdater(new IMappingUpdater);
 
-#ifdef RUNBENCH
+#if defined(RUNBENCH) || defined(TIMEBENCH)
 	fModel->resetBench();
 #endif
 }
@@ -315,9 +319,43 @@ void IGlue::localMapUpdate()	{ if (fLocalMapUpdater) fLocalMapUpdater->update (f
 void IGlue::slaveMapUpdate()	{ if (fSlaveMapUpdater) fSlaveMapUpdater->update (fModel); }
 void IGlue::viewUpdate()		{ if (fViewUpdater) fViewUpdater->update (fModel); }
 
+#ifdef TIMEBENCH
+//--------------------------------------------------------------------------
+static void sendTimeSig ()
+{
+	static const char * timesig = "/ITL/scene/signal/ttask";
+	static bool first = true;
+	if (!first) {
+		float elapsed = IAppl::getRealRate();
+		bench::put("time", elapsed);
+		float rate = elapsed / IAppl::getRate();
+		SIMessage msg = IMessage::create(timesig);
+		msg->add(rate - 1.f);
+		msg->send();
+	}
+	else {
+		SIMessage msg = IMessage::create(timesig, "size");
+		msg->add(400);
+		msg->send();
+		first = false;
+//cout << "IGlue::timerEvent create sig: " << msg << endl;
+	}
+}
+#endif
+
 //--------------------------------------------------------------------------
 void IGlue::timerEvent ( QTimerEvent *)
 {
+	unsigned long long current = getTime();
+	if (fLastTimeTask)
+		fModel->setRealRate(current - fLastTimeTask);
+	else fModel->setRealRate(fCurrentRate);
+	fLastTimeTask = current;
+
+#ifdef TIMEBENCH
+	sendTimeSig ();
+#endif
+
 #ifdef RUNBENCH
 	static __is_uint64 prevtime = 0;
 	__is_uint64 time = getTime();

@@ -63,7 +63,7 @@ mv -f TMP$$ $PKG
 
 open $ROOT/build/macos/INScore.xcodeproj
 
-echo "==> change manually inf.plist and rc files in win32 folder"
-open -t build/Info.plist win32/INScore.rc win32/Viewer/INScoreViewer.rc
+echo "==> change manually inf.plist, rc files in win32 folder ans AndroiManifest"
+open -t build/Info.plist win32/INScore.rc win32/Viewer/INScoreViewer.rc rsrc/android/AndroidManifest.xml
 
 exit 0

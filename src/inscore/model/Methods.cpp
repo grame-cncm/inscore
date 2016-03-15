@@ -74,6 +74,7 @@ const char* kdrotatez_SetMethod		= "drotatez";		// Set
 
 const char* kdsaturation_SetMethod	= "dsaturation";	// Set
 const char* kdscale_SetMethod		= "dscale";			// Set
+const char* kdtempo_SetMethod		= "dtempo";			// Set
 const char* kdurClock_SetMethod		= "durClock";		// Set
 const char* kduration_GetSetMethod	= "duration";		// Get Set
 const char* kdx_SetMethod			= "dx";				// Set
@@ -163,6 +164,7 @@ const char* kstatus_GetMethod		= "status";			// Get
 const char* kstartBench_SetMethod	= "startBench";		// Set
 const char* kstopBench_SetMethod	= "stopBench";		// Set
 const char* ksuccess_SetMethod      = "success";		// Set
+const char* ktempo_GetSetMethod		= "tempo";			// Get Set
 const char* ktime_GetSetMethod		= "time";			// Get Set
 const char* kticks_GetSetMethod		= "ticks";			// Get Set
 const char* kversion_GetMethod		= "version";		// Get
