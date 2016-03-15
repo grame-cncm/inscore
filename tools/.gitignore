@@ -1,13 +1,9 @@
-moc_MainWindow.cpp
-*.xcodeproj
 Info.plist
 QtOSCController.app
 ui_controllerWidget.h
 tmpSrc
-*.build
 build-QtOSC*
-android
-ios
 inscore2inscore100/inscore2inscore100/
 inscore2inscore90/inscore2inscore90/
 IBundle/IBundle
+QtOSCReceiver/Makefile
