@@ -58,10 +58,9 @@ class _MouseEventAble
 //----------------------------------------------------------------------
 template <typename T> class MouseEventAble : public T
 {
-	bool fClicked;
 	int fTouchID;
 	public:
-					 MouseEventAble(const IObject* h) : fClicked(false), fTouchID(-1), fEventsHandler(h)
+					 MouseEventAble(const IObject* h) :  fTouchID(-1), fEventsHandler(h)
 										{ T::setAcceptHoverEvents(true); T::setAcceptTouchEvents(true);}
 			virtual ~MouseEventAble()	{}
 
@@ -73,8 +72,6 @@ template <typename T> class MouseEventAble : public T
 		bool sceneEvent			(QEvent * event){
 			if(event->type()==QEvent::TouchBegin || event->type() == QEvent::TouchUpdate || event->type() == QEvent::TouchEnd || event->type() == QEvent::TouchCancel){
 				QTouchEvent* e = static_cast<QTouchEvent*>(event);
-				event->accept();
-
 				if(e->type() == QEvent::TouchBegin){
 					if(!e->touchPoints().size() || e->touchPoints().size()>1)
 						return false;
@@ -97,11 +94,11 @@ template <typename T> class MouseEventAble : public T
 						}
 					}
 				}
+				event->accept();
 				return true;
 			}
 
-			event->ignore();
-			return false;
+			return T::sceneEvent(event);
 		}
 
 		void touchBegin		( QTouchEvent * event )		{ handleEvent (_MouseEventAble::touchPos(event), EventsAble::kTouchBegin); }
