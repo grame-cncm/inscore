@@ -81,8 +81,6 @@ msg = (
 /ITL/metro/control fontWeight bold ;
 /ITL/metro/control fontSize 32 ;
 /ITL/metro/control y 0.8;
-/ITL/metro/control watch  mouseEnter ( /ITL/metro/control color 250 0 0 );
-/ITL/metro/control watch  mouseLeave ( /ITL/metro/control color 0 0 0 );
 
-/ITL/metro/control watch  mouseDown  ( /ITL/metro/metro tempo 0 );
+/ITL/metro/control watch  touchBegin  ( /ITL/metro/metro tempo 0 );
 /ITL/metro foreground;
