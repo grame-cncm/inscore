@@ -594,6 +594,7 @@ int IObject::execute (const IMessage* msg)
 	SMsgHandler handler = messageHandler(msg->message());
 	if ( handler ) return (*handler)(msg);
 
+#warning qui utilise le match true dans IObject::execute ?
 	// no basic handler , try to find if there is a match
 	handler = messageHandler(msg->message(), true);
 	if ( handler ) return (*handler)(msg);
