@@ -207,15 +207,10 @@ class ZoomingGraphicsView : public QGraphicsView
 		qreal fScaleFactor;
 		// Scale factor used as reference during a zoom. It's the model scale factor.
 		qreal fTotalScaleFactor;
-		// Scale factor used to reset zoom on double tap
-		qreal fDefaultScaleFactor;
 
 		// Offset to translate the scene in the view.
 		qreal fHorizontalOffset;
 		qreal fVerticalOffset;
-
-		// Default Offset used to reset translation on double tap
-		QPointF fDefaultOffset;
 
 		QRect fSceneRect;
 

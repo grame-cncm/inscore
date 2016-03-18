@@ -62,7 +62,7 @@ namespace inscore
 
 //------------------------------------------------------------------------------------------------------------------------
 ZoomingGraphicsView::ZoomingGraphicsView(QGraphicsScene * s) : QGraphicsView(s), fScene(0), fScaleFactor(1),
-		fTotalScaleFactor(1), fDefaultScaleFactor(1), fHorizontalOffset(0), fVerticalOffset(0), fDefaultOffset(0,0), fSceneRect(defaultRect), fFocus(false)
+		fTotalScaleFactor(1), fHorizontalOffset(0), fVerticalOffset(0), fSceneRect(defaultRect), fFocus(false)
 {
 }
 
@@ -84,10 +84,8 @@ void ZoomingGraphicsView::doZoomTranslate()
 
 			fHorizontalOffset = h;
 			fVerticalOffset = v;
-			fDefaultOffset = QPointF(h,v);
             fTotalScaleFactor = fScene->getScale();
             fScaleFactor = fTotalScaleFactor;
-			fDefaultScaleFactor = fTotalScaleFactor;
 			fSceneRect = QRect(QPoint((-400 + fHorizontalOffset) / fTotalScaleFactor, (-400 + fVerticalOffset) / fTotalScaleFactor), QPoint((400+ fHorizontalOffset) / fTotalScaleFactor, (400 + fVerticalOffset) / fTotalScaleFactor));
 			fitInView( fSceneRect , Qt::KeepAspectRatio );
         }
@@ -97,9 +95,9 @@ void ZoomingGraphicsView::doZoomTranslate()
 //------------------------------------------------------------------------------------------------------------------------
 void ZoomingGraphicsView::resetViewZoomTranslate()
 {
-	fHorizontalOffset = fDefaultOffset.x();
-	fVerticalOffset   = fDefaultOffset.y();
-	fTotalScaleFactor = fDefaultScaleFactor;
+	fHorizontalOffset = 0;
+	fVerticalOffset   = 0;
+	fTotalScaleFactor = 1;
 	fScaleFactor      = fTotalScaleFactor;
 	fSceneRect = QRect(QPoint((-400 + fHorizontalOffset) / fTotalScaleFactor, (-400 + fVerticalOffset) / fTotalScaleFactor), QPoint((400+ fHorizontalOffset) / fTotalScaleFactor, (400 + fVerticalOffset) / fTotalScaleFactor));
 	fitInView( fSceneRect , Qt::KeepAspectRatio );
