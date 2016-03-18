@@ -242,8 +242,9 @@ void ZoomingGraphicsView::pinchTriggered(QPinchGesture *event)
 	qreal newScale = event->totalScaleFactor() * fTotalScaleFactor;
 	if(newScale<1)
 		newScale = 1;
-	else if(newScale<fScaleFactor?(newScale/fScaleFactor):(fScaleFactor/newScale) > 0.85)
+	else if(event->totalScaleFactor()>.9 && event->totalScaleFactor()<1.1)
 		newScale = fScaleFactor;
+
 
 	QTransform t = transform();
 	t.translate(-event->lastCenterPoint().x()/fScaleFactor, -event->lastCenterPoint().y()/fScaleFactor);
