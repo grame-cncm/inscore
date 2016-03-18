@@ -484,6 +484,8 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual void shapeAble ();				///< \brief set the shape message handlers
 		virtual void timeAble ();				///< \brief set the time message handlers
 
+		virtual void setMouseEventSensibility(bool mouseSensible);
+
 
 		/// \brief get an object maps
 		virtual SIMessageList getMaps () const;

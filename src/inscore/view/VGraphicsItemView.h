@@ -109,6 +109,8 @@ class VGraphicsItemView : public VObjectView
 		float scene2RelativeY(float y, QGraphicsItem * item = 0 ) const;
 
 		void	getFrame (const IObject* , std::vector<float>&);
+
+		virtual void setMouseEventSensibility(bool mouseSensible);
 	
 		static void buildDefaultMapping (IObject* object);
     

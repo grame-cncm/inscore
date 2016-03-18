@@ -61,7 +61,7 @@ template <typename T> class MouseEventAble : public T
 	int fTouchID;
 	public:
 					 MouseEventAble(const IObject* h) :  fTouchID(-1), fEventsHandler(h)
-										{ T::setAcceptHoverEvents(true); T::setAcceptTouchEvents(true);}
+										{}
 			virtual ~MouseEventAble()	{}
 
 	protected:

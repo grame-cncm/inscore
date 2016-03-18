@@ -117,6 +117,10 @@ class VObjectView
 
 		/// \brief simulate UI mouse events
 		virtual void handleEvent (const IObject* obj, float x, float y, EventsAble::eventype type);
+
+		/// \brief Enable or disable mouse and touch event on this object
+		virtual void setMouseEventSensibility(bool mouseSensible){}
+
         virtual void refreshSyncCache(){}
 };
 

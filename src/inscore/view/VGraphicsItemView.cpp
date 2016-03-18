@@ -58,6 +58,7 @@ QColor brushColors[NB_OF_COLORS] = {	Qt::darkBlue , Qt::darkRed , Qt::darkYellow
 VGraphicsItemView::VGraphicsItemView( QGraphicsScene * scene , QGraphicsItem * item )
 {
 	fItem = item;
+	setMouseEventSensibility(false);
 	scene->addItem( item );
     fScene = scene;
     fParent = 0;
@@ -378,6 +379,23 @@ void VGraphicsItemView::getFrame (const IObject* o, std::vector<float>& out)
 		QPoint p = po[i];
 		out.push_back(scene2RelativeX(p.x()) + o->getXPos());
 		out.push_back(scene2RelativeY(p.y()) + o->getYPos());
+	}
+}
+
+//------------------------------------------------------------------------------------------------------------
+void VGraphicsItemView::setMouseEventSensibility(bool mouseSensible)
+{
+	if(!fItem)
+		return;
+
+	if(mouseSensible){
+		fItem->setAcceptedMouseButtons(Qt::AllButtons);
+		fItem->setAcceptHoverEvents(true);
+		fItem->setAcceptTouchEvents(true);
+	}else{
+		fItem->setAcceptedMouseButtons(Qt::NoButton);
+		fItem->setAcceptHoverEvents(false);
+		fItem->setAcceptTouchEvents(false);
 	}
 }
 

@@ -53,9 +53,9 @@ class EventsAble
 		virtual ~EventsAble();
 		
 		/// \brief replaces the message list associated to the event t
-		void			setMsg (eventype t, SIMessageList msgs)		{ fMsgMap.set(t, msgs); }
+		void			setMsg (eventype t, SIMessageList msgs);
 		/// \brief adds a message list to the messages associated to the event t
-		void			addMsg (eventype t, SIMessageList msgs)		{ fMsgMap.add(t, msgs); }
+		void			addMsg (eventype t, SIMessageList msgs);
 
 		/// \brief replaces the message list associated to the time event \c t and the interval \c time
 		void			setTimeMsg (eventype t, const RationalInterval& time, SIMessageList msg);
@@ -80,6 +80,7 @@ class EventsAble
 		static void	init ();
 		static eventype	string2type (const std::string& str)		{ return fTypeStr[str]; }
 		static const char* type2string (eventype type);
+		static bool		isMouseEventType(eventype type);
 
 	private:
 		typedef TWatcher<eventype>			_TMsgMap;
@@ -102,8 +103,15 @@ class EventsAble
 		SIMessage	buildGetMsg (const char * address, const std::string& type, const SIMessageList&) const;
 		SIMessage	buildGetMsg (const char * address, const std::string& type, const RationalInterval&, const IMessageList*) const;
 
+		bool checkMouseSensibility() const;
+
 	static std::map<std::string, eventype>	fTypeStr;
 	static std::map<eventype, const char*>	fTypeNum;
+
+	protected:
+		 virtual void setMouseEventSensibility(bool mouseSensible) {}
+	private:
+		bool fMouseSensible;
 };
 
 } // end namespoace
