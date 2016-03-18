@@ -71,8 +71,8 @@ msg = (
 	/ITL/metro/slider/val set txt "$x[20,220]",
 	/ITL/metro/slider/val x "$x[-11.5,11.1]"
  );
-/ITL/metro/slider watch  mouseDown $msg;
-/ITL/metro/slider watch  mouseMove $msg;
+/ITL/metro/slider watch  touchBegin $msg;
+/ITL/metro/slider watch  touchBegin $msg;
 
 ###########################################
 # install the start/stop
@@ -84,3 +84,4 @@ msg = (
 
 /ITL/metro/control watch  touchBegin  ( /ITL/metro/metro tempo 0 );
 /ITL/metro foreground;
+/ITL/metro/slider event  touchBegin  200 0;
