@@ -1,0 +1,15 @@
+
+-------------------------------------------------
+ INScore graphic architecture for mobile devices
+-------------------------------------------------
+
+
+At Qt initialisation:
+
+- create a MainWindow i.e. a QWidget
+  the MainWindow contains a Header (QQuickWidget), a SwipePanel (QWidget) and a SlideMenu (QFrame)
+  the Header is based on a qml resource: qrc:///qml/header.qml
+  the SwipePanel maintains a list of panels, actually QGraphicsView(s) from VMobileSceneView
+  Both the MainWindow and the SwipePanel handle signal connexions.
+  
+

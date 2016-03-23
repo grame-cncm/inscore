@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2016-02-10 15:31:00"> 
+<meta name="date" content="2016-03-23 09:40:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
@@ -19,7 +19,9 @@ href="#tailOSCMsgch3.html">tail</a>] [<a
 href="OSCMsg3.html#OSCMsgch3.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;3</span><br /><a 
  id="x7-220003"></a>Time management messages</h2>
-<!--l. 696--><p class="noindent" >Time messages control the time dimension of the score components. They could be sent to any address with the
+<h3 class="sectionHead"><span class="titlemark">3.1    </span> <a 
+ id="x7-230003.1"></a>Date and duration</h3>
+<!--l. 699--><p class="noindent" >Time messages control the time dimension of the score components. They could be sent to any address with the
 form <span 
 class="pcrr8tn-">/ITL/</span><span 
 class="pcrro8t-">scene</span><span 
@@ -28,32 +30,32 @@ class="pcrro8t-">identifier </span>where <span
 class="pcrro8t-">identifier </span>is the unique identifier string of a scene
 component.
 <a 
- id="dx7-22001"></a>
+ id="dx7-23001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 704--><p class="noindent" ><div class="minipage"><span 
+<!--l. 707--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">timeMsg</span> <img 
 src="OSCMsg25x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx7-22002"></a>
+ id="dx7-23002"></a>
 <a 
- id="dx7-22003"></a>
+ id="dx7-23003"></a>
 <a 
- id="dx7-22004"></a>
+ id="dx7-23004"></a>
 <a 
- id="dx7-22005"></a>
+ id="dx7-23005"></a>
 <a 
- id="dx7-22006"></a>
+ id="dx7-23006"></a>
 <a 
- id="dx7-22007"></a>
+ id="dx7-23007"></a>
 <a 
- id="dx7-22008"></a>
+ id="dx7-23008"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 714--><p class="noindent" ><div class="minipage"><span 
+<!--l. 717--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">time</span> <img 
 src="OSCMsg26x.png" alt="PICT" >
 </div></dd></dl>
@@ -61,6 +63,9 @@ src="OSCMsg26x.png" alt="PICT" >
      <li class="itemize">1) Time is specified as a rational value <span 
 class="pcrr8tn-">d/n </span>where <span 
 class="pcrr8tn-">1/1 </span>represents a whole note.
+                                                                                 
+
+                                                                                 
      </li>
      <li class="itemize">2) Time may be specified with a single integer, then 1 is used as implicit denominator value.
      </li>
@@ -68,9 +73,6 @@ class="pcrr8tn-">1/1 </span>represents a whole note.
      let <span 
 class="pcrr8tn-">f </span>be the floating point date, the corresponding rational date is computed as <span 
 class="pcrr8tn-">f x 10000 / 10000</span>.
-                                                                                 
-
-                                                                                 
      </li>
      <li class="itemize">4) Time may also be specified as a string in the form <span 
 class="pcrr8tn-">&#8217;n/d&#8217;</span>.</li></ul>
@@ -94,7 +96,7 @@ class="pcrr8tn-">ddate</span>: relative time positioning message: adds the speci
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">dduration</span>: relative duration message: adds the specified value to the object duration.</li></ul>
-<!--l. 733--><p class="noindent" ><span 
+<!--l. 736--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -105,7 +107,7 @@ class="small-caps">E</span> </span><br
 class="newline" />Various ways to set an object date.
 <div class="center" 
 >
-<!--l. 739--><p class="noindent" >
+<!--l. 742--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox16"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject date 2 1 ;</span><br 
@@ -113,34 +115,98 @@ class="newline" /><span
 class="pcrr8tn-x-x-90">/ITL/scene/myObject date 2; </span><span 
 class="pcrr8tn-x-x-90">&#x00A0;</span><span 
 class="pcrr8tn-x-x-90">&#x00A0;</span><span 
-class="pcrr8tn-x-x-90">&#x00A0;       // the denominator is 1 (implied) </span><br 
+class="pcrr8tn-x-x-90">&#x00A0;       ! the denominator is 1 (implied) </span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject date 0.5; </span><span 
 class="pcrr8tn-x-x-90">&#x00A0;</span><span 
-class="pcrr8tn-x-x-90">&#x00A0;     // equivalent to 1/2 </span><br 
+class="pcrr8tn-x-x-90">&#x00A0;     ! equivalent to 1/2 </span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject date &#8217;1/2&#8217;; </span><span 
-class="pcrr8tn-x-x-90">&#x00A0;   // the string form</span></div></div>
+class="pcrr8tn-x-x-90">&#x00A0;   ! the string form</span></div></div>
 </div>
-<!--l. 740--><p class="noindent" >Similar ways to move an object date.
+<!--l. 743--><p class="noindent" >Similar ways to move an object date.
 <div class="center" 
 >
-<!--l. 743--><p class="noindent" >
+<!--l. 746--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox17"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject clock; </span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myObject ddate &#8217;1/96&#8217;;</span></div></div>
 </div>
+<!--l. 750--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">3.2    </span> <a 
+ id="x7-240003.2"></a>Tempo</h3>
+<!--l. 751--><p class="noindent" >The <span 
+class="pcrr8tn-">tempo </span>message is supported by all the score components. It&#8217;s default value is 0. When non null, the date of an
+object is moved at the corresponding tempo (e.g. with a temo = 60, the date move will be 1/4 - a quarter note - every
+second). Note that the date is refreshed at INScore time task rate.
+<a 
+ id="dx7-24001"></a>
                                                                                  
 
                                                                                  
-<!--l. 747--><div class="crosslinks"><p class="noindent">[<a 
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 755--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">tempoMsg</span> <img 
+src="OSCMsg27x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx7-24002"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">tempo</span>: set an object tempo. Default value is 0.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">dtempo</span>: relative tempo message: adds the specified value to the object tempo.</li></ul>
+<!--l. 763--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />A cursor moving over a score using the <span 
+class="pcrr8tn-">tempo </span>message.
+<div class="center" 
+>
+<!--l. 769--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox18"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/score set gmn "[a a a a a a]";    ! a short score </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/cursor set ellipse 0.5 0.5; </span><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;      ! a cursor </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/sync cursor score; </span><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;               ! synchonizes the cursor to the</span>
+<span 
+class="pcrr8tn-x-x-90">score </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/cursor tempo 80; </span><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;</span><span 
+class="pcrr8tn-x-x-90">&#x00A0;                 ! an set the tempo</span></div></div>
+</div>
+                                                                                 
+
+                                                                                 
+<!--l. 774--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch4.html" >next</a>] [<a 
 href="OSCMsgch2.html" >prev</a>] [<a 
 href="OSCMsgch2.html#tailOSCMsgch2.html" >prev-tail</a>] [<a 
 href="OSCMsgch3.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch3.html" >up</a>] </p></div>
-<!--l. 747--><p class="noindent" ><a 
+<!--l. 774--><p class="noindent" ><a 
  id="tailOSCMsgch3.html"></a>  
 </body></html> 

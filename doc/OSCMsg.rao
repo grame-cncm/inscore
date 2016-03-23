@@ -559,7 +559,7 @@
 \rail@nont{data}[]
 \rail@end
 }
-\rail@i {30}{ setMsg : 'set' ( ('gmn' gmnString) | ('gmnf' gmnFilePath) | ('gmnstream' gmnStream) | ('musicxml' xmlString) | ('musicxmlf' xmlFilePath) | ('expr' scoreExpression) ) }
+\rail@i {30}{ setMsg : 'set' ( ('gmn' gmnString) | ('gmnf' gmnFilePath) | ('gmnstream' gmnStream) | ('musicxml' xmlString) | ('musicxmlf' xmlFilePath) | ('gmn' 'expr' scoreExpression) ) }
 \rail@o {30}{
 \rail@index{setMsg}
 \rail@begin{6}{setMsg}
@@ -580,15 +580,16 @@
 \rail@term{musicxmlf}[]
 \rail@nont{xmlFilePath}[]
 \rail@nextbar{5}
+\rail@term{gmn}[]
 \rail@term{expr}[]
 \rail@nont{scoreExpression}[]
 \rail@endbar
 \rail@end
 }
-\rail@i {31}{ setMsg : 'set' ( ('pianoroll' gmnString) | ('pianorollstream' gmnStream) | ('pianorollf' filePath) ) }
+\rail@i {31}{ setMsg : 'set' ( ('pianoroll' gmnString) | ('pianorollstream' gmnStream) | ('pianorollf' filePath) | ('pianoroll' 'expr' scoreExpression) ) }
 \rail@o {31}{
 \rail@index{setMsg}
-\rail@begin{3}{setMsg}
+\rail@begin{4}{setMsg}
 \rail@term{set}[]
 \rail@bar
 \rail@term{pianoroll}[]
@@ -599,6 +600,10 @@
 \rail@nextbar{2}
 \rail@term{pianorollf}[]
 \rail@nont{filePath}[]
+\rail@nextbar{3}
+\rail@term{pianoroll}[]
+\rail@term{expr}[]
+\rail@nont{scoreExpression}[]
 \rail@endbar
 \rail@end
 }
