@@ -5,10 +5,28 @@
 ///<reference path="OSCAddress.ts"/>
 ///<reference path="Tools.ts"/>
 ///<reference path="IProxy.ts"/>
+///<reference path="IRectShape.ts"/>
+///<reference path="IRect.ts"/>
+///<reference path="IObjectFactory.ts"/>
+///<reference path="IRect.ts"/>
 
+enum MsgHandler { 
+    kBadAddress,
+    kProcessed = 1,
+    kProcessedNoChange = 2,
+    kBadParameters = 4,
+    kCreateFailure = 8,
+}
 
+enum state {
+    kClean,
+    kNewObject = 1,
+    kModified = 2,
+    kSubModified = 4,
+    kMasterModified = 8, 
+}
 
-class IObject {
+abstract class IObject {
     
 // ATTRIBUTES
 //-------------------------------------------------------------- 
@@ -25,12 +43,18 @@ class IObject {
     protected fLock: boolean;
     protected fView: number;
     
-    protected fParent: IObject;
-    protected fSubNodes: Array<IObject>;
+    protected fTypeString: string;
     
-    //enum state { kClean, kNewObject=1, kModified=2, kSubModified=4, kMasterModified=8 };
+    protected fParent: IObject;
+    protected fSubNodes: Array<IObject> = new Array;
+    
+    protected fMsgHandlerMap: Array<MsgHandler> = new Array;
+    
+    protected kDocument: HTMLElement; 
+    protected fObjectView: VObjectView;
+    protected fMotherScene: boolean;
 
-
+    
 // CONSTRUCTOR
 //--------------------------------------------------------------       
     constructor(name: string, parent?: IObject, position?: IPosition, date?: IDate, color?: IColor) {
@@ -44,9 +68,14 @@ class IObject {
         this.fNewData = true;
         this.fView = 0;
         
-        this.fSubNodes = new Array;
+        this.fTypeString = 'obj'; 
         
-        if (parent) { this.fParent = parent; parent.addChild(this); }
+        this.kDocument = document.getElementById('document');
+        
+        this.fMotherScene = false; 
+
+        if (parent) { 
+            this.fParent = parent; parent.addChild(this); }
 
         if (position) { this.fPosition = position; }
         else { this.fPosition = new IPosition; }
@@ -56,14 +85,24 @@ class IObject {
         
         if (color) { this.fColor = color; }
         else { this.fColor = new IColor(0,0,0); }   
-    }
-
-// ADD CHILD
-//--------------------------------------------------------------    
-    addChild(newObject: IObject): void { this.fSubNodes.push(newObject); } 
+    } 
     
 // METHODS
-//--------------------------------------------------------------    
+//--------------------------------------------------------------  
+
+    addChild(newObject: IObject): void { this.fSubNodes.push(newObject); } 
+    
+    setParent(parent: IObject):void { this.fParent = parent; }
+    
+    getSubNodes(): Array<IObject> { return this.fSubNodes }
+    
+
+    
+    //-----------------------------    
+    getTypeString(): string {
+        return this.fTypeString;
+    }        
+    
     find(expr: string, outlist: Array<IObject>): boolean {
         if (!Tools.regexp(expr)) {
             return this.exactfind(expr, outlist);
@@ -80,7 +119,9 @@ class IObject {
             return outlist.length > size;
         }
     }
-
+    
+    //-----------------------------
+    
     exactfind(name:string, outlist: Array<IObject>): boolean
     {
         var n: number = this.fSubNodes.length;
@@ -94,19 +135,61 @@ class IObject {
         }
         return ret;
     }
+    
+    //-----------------------------    
 
     getDeleted(): boolean { return this.fDelete; }
+    
+    //-----------------------------    
 
     setState (s: state): void
     {
         this.fState |= s;
     }
     
+    //-----------------------------
+    
     accept(address: string/*, const IMessage*/): boolean
     {
         return (this.fName == address);
         //return match(address);
     }
+  
+    // Récupération de la scene mère
+    //----------------------------- 
+    checkScene(): void {
+        if (this.fParent.fName != 'ITL') {
+            this.fParent.checkScene();
+        }
+        else { this.fMotherScene = true }   
+    }
+   
+    getScene(appl): HTMLDivElement {
+        var scenes = appl.getSubNodes();
+        var n = scenes.length;
+        
+        for (var i: number=0; i < n; i++) {
+            if (scenes[i].fMotherScene == true) {
+                scenes[i].fMotherScene = false;
+                return scenes[i].kDivElement;    
+            }
+        }     
+    } 
+    //-----------------------------    
+    
+    setView(view: VObjectView): void { this.fObjectView = view }
+    
+    getView(): VObjectView { return this.fObjectView }
+    
+    updateView(): void {
+        var parent = this.fParent.kDocument;
+        var cible = this.fObjectView.getScene();
+        parent.appendChild(cible);
+    }
+    
+    
+    
+    //-----------------------------
     
     /*match(adress: string): boolean
     {
@@ -114,37 +197,55 @@ class IObject {
         return r.match(name().c_str());
     }*/
     
-    execute (msg: IMessage): number
+    //-----------------------------
+    
+    /*execute (msg: IMessage): number
     {
-        SMsgHandler handler = messageHandler(msg->message());
-        if ( handler ) return (*handler)(msg);
+        var handler: MsgHandler = this.messageHandler(msg.message());
+        if ( handler ) return (handler)(msg);
 
-        // no basic handler , try to find if there is a match
-        handler = messageHandler(msg->message(), true);
-        if ( handler ) return (*handler)(msg);
+        handler = this.messageHandler(msg.message(), true);
+        if ( handler ) return (handler)(msg);
 
-        // try to find a default handler
-        handler = messageHandler("*");
-        if ( handler ) return (*handler)(msg);
-        return MsgHandler::kBadParameters;
+        handler = this.messageHandler("*");
+        if ( handler ) return (handler)(msg);
+        return MsgHandler.kBadParameters;
     }
+    
+    //-----------------------------
+    
+    messageHandler(msg: string, match?: booleanh): MsgHandler
+    {
+        var handler: MsgHandler;
+        if (!match) {
+            map<string, SMsgHandler>::const_iterator h = this.fMsgHandlerMap.find(msg); 
+            if (h != this.fMsgHandlerMap.end()) { handler = h.second };
+        }
+        
+        else {
+            msgMatchPredicat p(msg);
+            map<string, SMsgHandler>::const_iterator h = find_if(this.fMsgHandlerMap.begin(), this.fMsgHandlerMap.end(), p);
+            if (h != this.fMsgHandlerMap.end()) handler = h.second;
+        }
+        
+        return handler;
+    }*/ 
     
 // MESSAGES PROCESSING
 //--------------------------------------------------------------     
-    processMsg (address: string, addressTail: string, msg: IMessage): number {
+    processMsg (address: string, addressTail: string /*, msg: IMessage*/): number {
     
         var result: number = MsgHandler.kBadAddress;
         if (this.accept(address/*, msg*/)) {
             var beg: string = OSCAddress.addressFirst(addressTail);	
             var tail: string = OSCAddress.addressTail(addressTail);
                 
-            if (tail.length) {			
+            if (tail.length) {
                 var n: number = this.fSubNodes.length;
-                for (var i: number = 0; i < n; i++) {
-                    result |= this.fSubNodes[i].processMsg (beg, tail, msg);
-                }
+                for (var i: number = 0; i < n; i++) { result |= this.fSubNodes[i].processMsg (beg, tail/* msg*/); }
             }
-            
+
+
             else {										
                 var targets: Array<IObject> = new Array;
                 if (this.find (beg, targets)) {				
@@ -152,22 +253,18 @@ class IObject {
                     for (var i: number = 0; i < n; i++) {
                         var target: IObject = targets[i];
                         console.log(targets);
-                        result |= target.execute(msg);	
-                        if (result & MsgHandler.kProcessed) {
-                            target.setState(state.kModified);		
-                        }
+                        //result |= target.execute(msg);	
+                        //if (result & MsgHandler.kProcessed) { target.setState(state.kModified); }
                     }
                 }
                     
-                else if (Tools.regexp(beg)) { result = MsgHandler.kProcessedNoChange; }
+                //else if (Tools.regexp(beg)) { result = MsgHandler.kProcessedNoChange; }
                     
-                else { result = IProxy.execute (msg, beg, this); } 
+                //else { result = IProxy.execute (msg, beg, this); } 
             }
         }  
             
-        /*if (result & MsgHandler.kProcessed) {
-        setState(IObject.kSubModified);
-        }*/
+        //if (result & MsgHandler.kProcessed) { this.setState(state.kSubModified); }
             
     return result;     
     }
