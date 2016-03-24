@@ -72,7 +72,7 @@ msg = (
 	/ITL/metro/slider/val x "$x[-11.5,11.1]"
  );
 /ITL/metro/slider watch  touchBegin $msg;
-/ITL/metro/slider watch  touchBegin $msg;
+/ITL/metro/slider watch  touchUpdate $msg;
 
 ###########################################
 # install the start/stop
