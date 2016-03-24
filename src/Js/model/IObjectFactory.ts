@@ -1,4 +1,3 @@
-///<reference path="IObject.ts"/>
 ///<reference path="IRect.ts"/>
 ///<reference path="IEllipse.ts"/>
 ///<reference path="IScene.ts"/>
