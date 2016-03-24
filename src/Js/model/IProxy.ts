@@ -1,5 +1,3 @@
-///<reference path="IObject.ts"/>
-
 class IProxy {	
 
 //    static signal (msg: IMessage, objName: string, parent: IObject): number {}
