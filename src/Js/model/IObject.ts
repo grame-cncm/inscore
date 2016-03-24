@@ -1,4 +1,4 @@
-///<reference path="/Users/margaillan/src/inscore/src/Js/libraries/fraction/fraction.ts"/>
+///<reference path="../libraries/fraction/fraction.ts"/>
 ///<reference path="Icolor.ts"/>
 ///<reference path="IDate.ts"/>
 ///<reference path="IPosition.ts"/>
