@@ -3,9 +3,9 @@
 
 class VEllipseView extends VObjectView {
     
-    constructor(motherScene: HTMLDivElement, object: IObject) {
+    constructor(object: IObject, motherScene: HTMLDivElement) {
         var scene = SvgFactory.createEllipse(); 
 
-        super(motherScene, object, scene);  
+        super(object, scene, motherScene);  
     }    
 }

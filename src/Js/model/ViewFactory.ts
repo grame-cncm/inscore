@@ -11,21 +11,22 @@
 
 class ViewFactory {
     
-    static create (object: IObject, motherScene: HTMLDivElement): void{   
+    static create (object: IObject, motherScene?: HTMLDivElement): void{   
         var type = object.getTypeString();
         switch (type) {
             case "ellipse":
-                var view = new VEllipseView (motherScene, object);
+                var view = new VEllipseView (object, motherScene);
+                // la vue est mainteant attribut de l'objet
                 object.setView(view);
                 break;
                 
             case "scene":
-                var view = new VSceneView (motherScene, object);
+                var view = new VSceneView (object);
                 object.setView(view);
                 break;
                          
             case "rect":
-                var view = new VRectView (motherScene, object);
+                var view = new VRectView (object, motherScene);
                 object.setView(view);         
                 break;
                 

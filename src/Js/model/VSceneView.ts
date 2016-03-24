@@ -2,7 +2,7 @@
 
 class VSceneView extends VObjectView {
         
-    constructor(motherScene: HTMLDivElement, object: IObject) {
+    constructor(object: IObject) {
         var scene: HTMLDivElement = document.createElement('div'); 
         
         scene.style.border = '1px black solid';
@@ -11,7 +11,7 @@ class VSceneView extends VObjectView {
         scene.style.width = '300px';
         scene.style.height = "500px";
         
-        super(motherScene, object, scene); 
+        super(object, scene); 
     }   
 }
 
