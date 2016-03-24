@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es3",
+        "noImplicitAny": false,
+        "outDir": "build",
+        "out": "inscore.js",
+        "sourceMap": false
+    }
+}
