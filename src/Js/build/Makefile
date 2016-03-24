@@ -3,12 +3,13 @@
 #
 
 MODEL := $(wildcard ../model/*.ts)
+LIB   := $(wildcard ../libraries/*/*.ts)
 VIEW  := $(wildcard ../view/*.ts)
 
-JS := $(patsubst ../%.ts, js/%.js, $(MODEL) $(VIEW)) 
+JS := $(patsubst ../%.ts, js/%.js, $(MODEL) $(VIEW) $(LIB)) 
 TARGET := inscore.js
 
-$(TARGET): $(MODEL)
+$(TARGET): $(MODEL) $(LIB)
 	tsc --out inscore.js $(MODEL) 
 	
 all : $(JS)
