@@ -52,7 +52,7 @@ abstract class IObject {
     
     protected kDocument: HTMLElement; 
     protected fObjectView: VObjectView;
-    protected fMotherScene: boolean;
+    protected fMotherSceneFocus: boolean;
 
     
 // CONSTRUCTOR
@@ -72,7 +72,7 @@ abstract class IObject {
         
         this.kDocument = document.getElementById('document');
         
-        this.fMotherScene = false; 
+        this.fMotherSceneFocus = false; 
 
         if (parent) { 
             this.fParent = parent; parent.addChild(this); }
@@ -161,7 +161,7 @@ abstract class IObject {
         if (this.fParent.fName != 'ITL') {
             this.fParent.checkScene();
         }
-        else { this.fMotherScene = true }   
+        else { this.fMotherSceneFocus = true }   
     }
    
     getScene(appl): HTMLDivElement {
@@ -181,10 +181,14 @@ abstract class IObject {
     
     getView(): VObjectView { return this.fObjectView }
     
-    updateView(): void {
-        var parent = this.fParent.kDocument;
+    afficheView(): void {
         var cible = this.fObjectView.getScene();
+        if (this.fTypeString == 'scene') { this.kDocument.appendChild(cible) }
+        
+        else { 
+        var parent = this.fParent.fObjectView.getMotherScene();
         parent.appendChild(cible);
+        }
     }
     
     

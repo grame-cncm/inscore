@@ -9,6 +9,4 @@ class IRect extends IRectShape {
         this.kRectType = 'rect';
         this.fTypeString = this.kRectType;      
     }
-
-    static create(name: string, parent: IObject): IRect { return new IRect(name, parent); }
 }

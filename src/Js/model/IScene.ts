@@ -10,11 +10,5 @@ class IScene extends IRectShape {
         this.kSceneType = 'scene';
         this.fTypeString = this.kSceneType;
         this.fDivElement = document.createElement('div');
-
     }
-
-    static create(name: string, parent: IObject): IScene { return new IScene(name, parent); }
-    
-    getDivElement(): HTMLDivElement { return this.fDivElement }
-
 }

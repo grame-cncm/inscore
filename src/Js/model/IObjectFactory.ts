@@ -10,29 +10,30 @@ class IObjectFactory {
 	static createView(obj: IObject, appl?: IAppl): void {
         // met le flag
         obj.checkScene();
+        
+        // si ce n'est pas une scene, on récupère la scene mere
         if (appl) { var motherScene: HTMLDivElement = obj.getScene(appl); }
-        else { var motherScene: HTMLDivElement = obj.getView().getMotherScene() }
         
         ViewFactory.create(obj, motherScene);
-        obj.updateView();        
+        obj.afficheView();        
     }
     
     
     static createObj(name: string , type: string, parent: IObject, appl?: IAppl) {
-        var obj: IObject; 
+        var obj: IObject;
         switch (type) {
             case "IEllipse.kEllipseType":
-                obj = IEllipse.create(name, parent);
+                obj = new IEllipse(name, parent);
                 this.createView(obj, appl);  
                 break;
             
             case "IRect.kRectType":
-                obj = IRect.create(name, parent);                
+                obj = new IRect(name, parent);                
                 this.createView(obj, appl);    
                 break;
                 
             case "IScene.kSceneType":
-                obj = IScene.create(name, parent);
+                obj = new IScene(name, parent);
                 this.createView(obj, appl);  
                 break;
                 

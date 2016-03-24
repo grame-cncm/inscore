@@ -9,6 +9,4 @@ class IEllipse extends IRectShape {
         this.kEllipseType = 'ellipse';
         this.fTypeString = this.kEllipseType;
     }
-
-    static create(name: string, parent: IObject): IEllipse { return new IEllipse(name, parent); }
 }

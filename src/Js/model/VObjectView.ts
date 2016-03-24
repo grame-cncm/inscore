@@ -7,11 +7,18 @@ abstract class VObjectView {
     protected fScene: HTMLDivElement;
 
     
-    constructor(motherScene: HTMLDivElement, obj: IObject, scene: HTMLDivElement) {
-        this.fMotherScene = motherScene;
+    constructor(obj: IObject, scene: HTMLDivElement, motherScene?: HTMLDivElement) {
         this.fObject = obj;
-        this.fScene = scene;        
+        this.fScene = scene; 
+        this.fMotherScene = scene;
+        
+        // Si ce n'est pas une scene, on renseigne la scene mère
+        if (motherScene) { this.fMotherScene = motherScene; }       
     }
+    
+    getScene(): HTMLDivElement { return this.fScene }   
+    getMotherScene(): HTMLDivElement { return this.fMotherScene }
+    
     
     
     updateView(object: IObject): void {};
@@ -19,8 +26,7 @@ abstract class VObjectView {
 		
     setParentItem(parent: VObjectView) {};
     
-    getScene(): HTMLDivElement { return this.fScene }   
-    getMotherScene(): HTMLDivElement { return this.fMotherScene }
+   
 
 
     /*relative2SceneY(y: number, item:QGraphicsItem  = 0): number {return 0};	
