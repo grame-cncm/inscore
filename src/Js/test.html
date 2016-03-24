@@ -37,6 +37,8 @@
 <script type="text/javascript" src="model/VSceneView.js"></script>
 <script type="text/javascript" src="model/VRectView.js"></script>
 <script type="text/javascript" src="model/SvgFactory.js"></script>
+<script type="text/javascript" src="model/IGlue.js"></script>
+<script type="text/javascript" src="model/Initialisation.js"></script>
 
 <script type="text/javascript">
 	
@@ -87,13 +89,11 @@
 
 	ViewFactory.create(test);*/
 
-	var appl = new IAppl();
-
 	IObjectFactory.createObj('scene1', "IScene.kSceneType", appl);
 	IObjectFactory.createObj('scene2', "IScene.kSceneType", appl);
-	IObjectFactory.createObj('obj1', "IRect.kRectType", appl.fSubNodes[0], appl);
-	IObjectFactory.createObj('obj2', "IEllipse.kEllipseType", appl.fSubNodes[0], appl);
-	IObjectFactory.createObj('obj3', "IEllipse.kEllipseType", appl.fSubNodes[1], appl);
+	IObjectFactory.createObj('obj1', "IRect.kRectType", appl.fSubNodes[0]);
+	IObjectFactory.createObj('obj2', "IEllipse.kEllipseType", appl.fSubNodes[0]);
+	IObjectFactory.createObj('obj3', "IEllipse.kEllipseType", appl.fSubNodes[1]);
 
 
 

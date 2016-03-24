@@ -9,6 +9,8 @@
 ///<reference path="IRect.ts"/>
 ///<reference path="IObjectFactory.ts"/>
 ///<reference path="IRect.ts"/>
+///<reference path="Initialisation.ts"/>
+
 
 enum MsgHandler { 
     kBadAddress,
@@ -164,14 +166,14 @@ abstract class IObject {
         else { this.fMotherSceneFocus = true }   
     }
    
-    getScene(appl): HTMLDivElement {
+    getScene(): HTMLDivElement {
         var scenes = appl.getSubNodes();
         var n = scenes.length;
         
         for (var i: number=0; i < n; i++) {
-            if (scenes[i].fMotherScene == true) {
-                scenes[i].fMotherScene = false;
-                return scenes[i].kDivElement;    
+            if (scenes[i].fMotherSceneFocus == true) {
+                scenes[i].fMotherSceneFocus = false;
+                return scenes[i].fObjectView.getMotherScene();    
             }
         }     
     } 
