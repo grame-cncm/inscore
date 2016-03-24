@@ -7,7 +7,8 @@
 ///<reference path="VEllipseView.ts"/>
 ///<reference path="VSceneView.ts"/>
 ///<reference path="VRectView.ts"/>
-
+///<reference path="VCurveView.ts"/>
+///<reference path="VLineView.ts"/>
 
 class ViewFactory {
     
@@ -19,15 +20,25 @@ class ViewFactory {
                 // la vue est mainteant attribut de l'objet
                 object.setView(view);
                 break;
-                
-            case "scene":
-                var view = new VSceneView (object);
-                object.setView(view);
-                break;
-                         
+                            
             case "rect":
                 var view = new VRectView (object, motherScene);
                 object.setView(view);         
+                break;
+                
+            case "curve":
+                var view = new VCurveView (object, motherScene);
+                object.setView(view);
+                break;
+                
+            case "line":
+                var view = new VLineView (object, motherScene);
+                object.setView(view);
+                break;    
+            
+            case "scene":
+                var view = new VSceneView (object);
+                object.setView(view);
                 break;
                 
             default:

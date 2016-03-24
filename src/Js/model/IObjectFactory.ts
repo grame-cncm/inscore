@@ -4,13 +4,14 @@
 ///<reference path="IScene.ts"/>
 ///<reference path="ViewFactory.ts"/>
 ///<reference path="IAppl.ts"/>
+///<reference path="ICurve.ts"/>
+///<reference path="ILine.ts"/>
 
 class IObjectFactory {	
     
 	static createView(obj: IObject): void {
         // met le flag
         obj.checkScene();
-        
         // si ce n'est pas une scene, on récupère la scene mere
         if (obj.getTypeString() !== 'scene') { var motherScene: HTMLDivElement = obj.getScene(); }
         
@@ -32,6 +33,16 @@ class IObjectFactory {
                 this.createView(obj);    
                 break;
                 
+            case "ICurve.kCurveType":
+                obj = new ICurve(name, parent);                
+                this.createView(obj);    
+                break;
+                
+            case "ILine.kLineType":
+                obj = new ILine(name, parent);                
+                this.createView(obj);    
+                break;
+                   
             case "IScene.kSceneType":
                 obj = new IScene(name, parent);
                 this.createView(obj);  

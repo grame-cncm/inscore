@@ -3,7 +3,7 @@
 class VRectView extends VObjectView {
     
     constructor(object: IObject, motherScene: HTMLDivElement) {
-        var scene = SvgFactory.createRect(); 
+        var scene = SvgFactory.createSvg('rect'); 
        
         super(object, scene, motherScene);      
     }    
