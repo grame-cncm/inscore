@@ -1,8 +1,7 @@
-///<reference path="IObject.ts"/>
 ///<reference path="IRect.ts"/>
 ///<reference path="IEllipse.ts"/>
 ///<reference path="IScene.ts"/>
-///<reference path="ViewFactory.ts"/>
+///<reference path="../view/ViewFactory.ts"/>
 ///<reference path="IAppl.ts"/>
 ///<reference path="ICurve.ts"/>
 ///<reference path="ILine.ts"/>

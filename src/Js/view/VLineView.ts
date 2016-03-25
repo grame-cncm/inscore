@@ -1,5 +1,5 @@
 ///<reference path="VObjectView.ts"/>
-///<reference path="SvgFactory.ts"/>
+///<reference path="../model/SvgFactory.ts"/>
 
 class VLineView extends VObjectView {
     

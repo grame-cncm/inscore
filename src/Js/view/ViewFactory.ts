@@ -1,8 +1,8 @@
 
-///<reference path="IObject.ts"/>
-///<reference path="IRect.ts"/>
-///<reference path="IEllipse.ts"/>
-///<reference path="IObject.ts"/>
+///<reference path="../model/IObject.ts"/>
+///<reference path="../model/IRect.ts"/>
+///<reference path="../model/IEllipse.ts"/>
+///<reference path="../model/IObject.ts"/>
 ///<reference path="VObjectView.ts"/>
 ///<reference path="VEllipseView.ts"/>
 ///<reference path="VSceneView.ts"/>

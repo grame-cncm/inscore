@@ -5,10 +5,7 @@
 ///<reference path="OSCAddress.ts"/>
 ///<reference path="Tools.ts"/>
 ///<reference path="IProxy.ts"/>
-///<reference path="IRectShape.ts"/>
-///<reference path="IRect.ts"/>
 ///<reference path="IObjectFactory.ts"/>
-///<reference path="IRect.ts"/>
 ///<reference path="Initialisation.ts"/>
 
 

@@ -1,4 +1,4 @@
-///<reference path="IObject.ts"/>
+///<reference path="../model/IObject.ts"/>
 
 abstract class VObjectView {
     

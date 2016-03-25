@@ -1,10 +1,10 @@
 ///<reference path="VObjectView.ts"/>
-///<reference path="SvgFactory.ts"/>
+///<reference path="../model/SvgFactory.ts"/>
 
-class VCurveView extends VObjectView {
+class VEllipseView extends VObjectView {
     
     constructor(object: IObject, motherScene: HTMLDivElement) {
-        var scene = SvgFactory.createSvg('curve'); 
+        var scene = SvgFactory.createSvg('ellipse'); 
 
         super(object, scene, motherScene);  
     }    
