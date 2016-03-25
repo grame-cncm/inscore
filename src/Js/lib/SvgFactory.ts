@@ -53,7 +53,6 @@ class SvgFactory {
         }
     
         scene.appendChild(svg);
-        console.log(scene);
         return scene
     }    
 }
