@@ -5,9 +5,6 @@
 ///<reference path="OSCAddress.ts"/>
 ///<reference path="Tools.ts"/>
 ///<reference path="IProxy.ts"/>
-///<reference path="IObjectFactory.ts"/>
-///<reference path="Initialisation.ts"/>
-
 
 enum MsgHandler { 
     kBadAddress,
