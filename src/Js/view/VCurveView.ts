@@ -1,5 +1,5 @@
 ///<reference path="VObjectView.ts"/>
-///<reference path="../model/SvgFactory.ts"/>
+///<reference path="../lib/SvgFactory.ts"/>
 
 class VCurveView extends VObjectView {
     

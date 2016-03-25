@@ -1,4 +1,4 @@
-///<reference path="../libraries/fraction/fraction.ts"/>
+///<reference path="../externals/fraction/fraction.ts"/>
 
 class IDate {
     

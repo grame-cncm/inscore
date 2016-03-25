@@ -1,4 +1,4 @@
-///<reference path="IObject.ts"/>
+///<reference path="../model/IAppl.ts"/>
 
 class IGlue {
     static initialize(): IAppl {

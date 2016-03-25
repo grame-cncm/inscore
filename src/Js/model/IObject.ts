@@ -1,9 +1,9 @@
-///<reference path="../libraries/fraction/fraction.ts"/>
+///<reference path="../externals/fraction/fraction.ts"/>
 ///<reference path="Icolor.ts"/>
 ///<reference path="IDate.ts"/>
 ///<reference path="IPosition.ts"/>
-///<reference path="OSCAddress.ts"/>
-///<reference path="Tools.ts"/>
+///<reference path="../lib/OSCAddress.ts"/>
+///<reference path="../lib/Tools.ts"/>
 ///<reference path="IProxy.ts"/>
 
 enum MsgHandler { 
