@@ -1,0 +1,69 @@
+/ITL watch error (/ITL/log show 1);
+
+<? javascript
+	function randomdur () 		{ return Math.pow(2, Math.floor( Math.random() * 5) ); }
+	function randomnote (dur) 	{ return String.fromCharCode("a".charCodeAt(0) + Math.floor((Math.random() * 8))) + "/" + dur; }
+	function adjust (dur) 		{ return (dur > 0.5 ? 2 : (dur > 0.25 ? 4 : (dur > 0.125 ? 8 : 16))) ; }
+
+	var scorelength = 0;
+	function randomscore (dur) {
+		var score = '/ITL/scene/rscore write "';
+		do {
+			var d = randomdur();
+			var md = 1.0/d;
+			if (md > dur) {
+				d = adjust(dur);
+				md = 1./d;
+			}
+			dur -= md;			
+			score =  score + " " + randomnote(d);
+		} while  (dur > 0);
+		return score + '";';
+	}
+
+	var pageCountEvents = 0;	
+	function pageturn (score) {
+		pageCountEvents++;
+		if (pageCountEvents > 2)
+			return score + " dpage 1;";
+	}
+?>
+
+/ITL/scene/* del;
+
+
+##########################################
+# create a score as a gmn stream
+/ITL/scene/rscore set gmnstream '[ \clef<"g"> \meter<"4/4"> \barFormat<style="system"> \pageFormat<18cm, 18cm, 5,5,5,5>';
+/ITL/scene/rscore show 0;
+
+##########################################
+# watch new data and the page count 
+/ITL/scene/rscore watch newData 	(/ITL/scene/[pc]score expr reeval);
+
+##########################################
+# that's where the score computation takes place
+# it makes use of an intermediate hidden object
+/ITL/scene/pscore set gmn expr(tail &rscore (tail &rscore "[a*2/1]"));
+/ITL/scene/pscore show 0;
+
+# the final score expression is here
+/ITL/scene/cscore set gmn expr(par 
+	&pscore 
+	(transpose '[\meter<"4/4"> g e f a f d c/2]' &pscore)) ;
+/ITL/scene/cscore scale 0.6;
+/ITL/scene/cscore y 0.1;
+
+##########################################
+# start a first computation
+/ITL/scene/javascript run "randomscore(2)";
+
+##########################################
+# watch new data and the page count 
+/ITL/scene/trigger set rect 1 1;
+/ITL/scene/trigger show 0;
+/ITL/scene/trigger watch timeLeave 0 1 (
+	/ITL/scene/javascript run "randomscore(2)",
+	/ITL/scene/trigger date 0
+) ;
+/ITL/scene/trigger tempo 100;
