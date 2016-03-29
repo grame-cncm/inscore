@@ -11,5 +11,5 @@ At Qt initialisation:
   the Header is based on a qml resource: qrc:///qml/header.qml
   the SwipePanel maintains a list of panels, actually QGraphicsView(s) from VMobileSceneView
   Both the MainWindow and the SwipePanel handle signal connexions.
-  
+
 
