@@ -7,7 +7,7 @@
 
 
 img = "http://upload.wikimedia.org/wikipedia/commons/5/56/Rain_over_toronto_street_lights_bokeh.jpg";
-gmn = "http://guido.grame.fr/gmn/moz581.gmn";
+gmn = "http://guidolib.sf.net/gmn/moz581.gmn";
 
 /ITL/scene/urlimg set img $img;
 /ITL/scene/urlimg scale 0.7;
