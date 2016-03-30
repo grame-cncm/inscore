@@ -6,14 +6,6 @@
 ///<reference path="../lib/Tools.ts"/>
 ///<reference path="IProxy.ts"/>
 
-enum MsgHandler { 
-    kBadAddress,
-    kProcessed = 1,
-    kProcessedNoChange = 2,
-    kBadParameters = 4,
-    kCreateFailure = 8,
-}
-
 enum state {
     kClean,
     kNewObject = 1,
@@ -45,6 +37,7 @@ abstract class IObject {
     protected fSubNodes: Array<IObject> = new Array;
     
     protected fMsgHandlerMap: Array<MsgHandler> = new Array;
+    protected fGetMsgHandlerMap: Array<MsgHandler> = new Array;
     
     protected kDocument: HTMLElement; 
     protected fObjectView: VObjectView;
@@ -80,19 +73,39 @@ abstract class IObject {
         else { this.fDate = new IDate; }
         
         if (color) { this.fColor = color; }
-        else { this.fColor = new IColor(0,0,0); }   
+        else { this.fColor = new IColor(0,0,0); }  
+        
+        this.setHandlers(); 
     } 
+    
+// HANDLERS
+//--------------------------------------------------------------  
+    setHandlers() {
+	    this.colorAble();
+	    //positionAble();
+	    //shapeAble();
+	    //timeAble();
+    }
+    
+    colorAble(): void {
+        this.fMsgHandlerMap[kred_GetSetMethod] = this.fColor.fSetColorMsgHandler.create(this.fColor, this.fColor.setR);
+	    this.fMsgHandlerMap[kgreen_GetSetMethod] = this.fColor.fSetColorMsgHandler.create(this.fColor, this.fColor.setG);
+	    this.fMsgHandlerMap[kblue_GetSetMethod]	= this.fColor.fSetColorMsgHandler.create(this.fColor, this.fColor.setB);
+        
+        this.fGetMsgHandlerMap[kred_GetSetMethod] = new TGetParamMethodHandler<IColor, any> (this.fColor, this.fColor.getR);
+        this.fGetMsgHandlerMap[kgreen_GetSetMethod] = new TGetParamMethodHandler<IColor, any> (this.fColor, this.fColor.getG);
+	    this.fGetMsgHandlerMap[kblue_GetSetMethod] = new TGetParamMethodHandler<IColor, any> (this.fColor, this.fColor.getB);
+    }
+    
     
 // METHODS
 //--------------------------------------------------------------  
-
+ 
     addChild(newObject: IObject): void { this.fSubNodes.push(newObject); } 
     
     setParent(parent: IObject):void { this.fParent = parent; }
     
     getSubNodes(): Array<IObject> { return this.fSubNodes }
-    
-
     
     //-----------------------------    
     getTypeString(): string {
@@ -118,8 +131,7 @@ abstract class IObject {
     
     //-----------------------------
     
-    exactfind(name:string, outlist: Array<IObject>): boolean
-    {
+    exactfind(name:string, outlist: Array<IObject>): boolean {
         var n: number = this.fSubNodes.length;
         var ret: boolean = false;
         for (var i: number = 0; i < n; i++) {
@@ -138,15 +150,13 @@ abstract class IObject {
     
     //-----------------------------    
 
-    setState (s: state): void
-    {
+    setState (s: state): void {
         this.fState |= s;
     }
     
     //-----------------------------
     
-    accept(address: string/*, const IMessage*/): boolean
-    {
+    accept(address: string/*, const IMessage*/): boolean {
         return (this.fName == address);
         //return match(address);
     }
@@ -171,6 +181,8 @@ abstract class IObject {
             }
         }     
     } 
+    
+    // View
     //-----------------------------    
     
     setView(view: VObjectView): void { this.fObjectView = view }
@@ -187,8 +199,6 @@ abstract class IObject {
         }
     }
     
-    
-    
     //-----------------------------
     
     /*match(adress: string): boolean
@@ -199,52 +209,50 @@ abstract class IObject {
     
     //-----------------------------
     
-    /*execute (msg: IMessage): number
-    {
+    execute (msg: IMessage): number {
         var handler: MsgHandler = this.messageHandler(msg.message());
-        if ( handler ) return (handler)(msg);
+        //console.log(msg);
+        if (handler) return ;
 
-        handler = this.messageHandler(msg.message(), true);
-        if ( handler ) return (handler)(msg);
+        //handler = this.messageHandler(msg.message(), true);
+        //if (handler) return ;
 
-        handler = this.messageHandler("*");
-        if ( handler ) return (handler)(msg);
-        return MsgHandler.kBadParameters;
+        //handler = this.messageHandler("*");
+        //if (handler) return ;
+        //return MsgHandler.fMsgStatus.kBadParameters;
     }
     
     //-----------------------------
     
-    messageHandler(msg: string, match?: booleanh): MsgHandler
-    {
+    messageHandler(msg: string, match?: boolean): MsgHandler {
         var handler: MsgHandler;
         if (!match) {
-            map<string, SMsgHandler>::const_iterator h = this.fMsgHandlerMap.find(msg); 
-            if (h != this.fMsgHandlerMap.end()) { handler = h.second };
+            handler = this.fMsgHandlerMap[msg];
+            console.log(handler);
         }
         
-        else {
+        /*else {
             msgMatchPredicat p(msg);
             map<string, SMsgHandler>::const_iterator h = find_if(this.fMsgHandlerMap.begin(), this.fMsgHandlerMap.end(), p);
             if (h != this.fMsgHandlerMap.end()) handler = h.second;
-        }
+        }*/
         
         return handler;
-    }*/ 
+    }
     
 // MESSAGES PROCESSING
 //--------------------------------------------------------------     
-    processMsg (address: string, addressTail: string /*, msg: IMessage*/): number {
+    processMsg (address: string, addressTail: string , msg: IMessage): number {
     
-        var result: number = MsgHandler.kBadAddress;
+        var result: number = MsgHandler.fMsgStatus.kBadAddress;
         if (this.accept(address/*, msg*/)) {
             var beg: string = OSCAddress.addressFirst(addressTail);	
             var tail: string = OSCAddress.addressTail(addressTail);
                 
             if (tail.length) {
                 var n: number = this.fSubNodes.length;
-                for (var i: number = 0; i < n; i++) { result |= this.fSubNodes[i].processMsg (beg, tail/* msg*/); }
+                for (var i: number = 0; i < n; i++) { result |= this.fSubNodes[i].processMsg (beg, tail, msg); }
             }
-
 
             else {										
                 var targets: Array<IObject> = new Array;
@@ -252,9 +260,8 @@ abstract class IObject {
                     var n: number = targets.length;
                     for (var i: number = 0; i < n; i++) {
                         var target: IObject = targets[i];
-                        console.log(targets);
-                        //result |= target.execute(msg);	
-                        //if (result & MsgHandler.kProcessed) { target.setState(state.kModified); }
+                        result |= target.execute(msg);	
+                        if (result & MsgHandler.fMsgStatus.kProcessed) { target.setState(state.kModified); }
                     }
                 }
                     

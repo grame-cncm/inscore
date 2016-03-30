@@ -1,3 +1,5 @@
+///<reference path="../controller/IMessageHandlers.ts"/>
+
 class IColor {
 
 // ATTRIBUTES
@@ -9,7 +11,9 @@ class IColor {
     protected fS : number;
     protected fV : number;
     protected fA : number = 255; 
-    protected fModified : boolean;  
+    protected fModified : boolean; 
+    
+    public fSetColorMsgHandler: SetColorMsgHandler; 
     
 // CONSTRUTOR
 //--------------------------------------------------------------    
@@ -28,9 +32,11 @@ class IColor {
         }
 
         this.fModified = true;
-        this.updateHSV();     
+        this.updateHSV(); 
+        
+        this.fSetColorMsgHandler = new SetColorMsgHandler();    
     }
-    
+  
 // MODIFIED STATUS
 //--------------------------------------------------------------      
    cleanup(): void { this.fModified = false; }   
@@ -52,8 +58,8 @@ class IColor {
 //--------------------------------------------------------------         
     
     setParam( param: string , value:number , min:number , max:number , isHSV:boolean ) {
-        if ( min <= value && value <= max ) {
-            
+        
+        if ( min <= value && value <= max ) {  
             switch(param) {
                 case "fH" : this.fH = value; break;
                 case "fS" : this.fS = value; break;
@@ -177,5 +183,24 @@ class IColor {
         this.fH = Math.floor(H);
         this.fS = Math.floor(S * 100);
         this.fV = Math.floor(V * 100);   
-    }
+    }   
 }
+
+ // MSG HANDLERS
+//--------------------------------------------------------------  
+class SetColorMsgHandler extends MsgHandler {
+    protected fColor: IColor;
+    protected fMethod;
+      
+    constructor(color?: IColor, method?) {
+        if (color) {
+        super();
+        this.fColor = color;
+        this.fMethod = method;            
+       	//MsgHandler::msgStatus operator ()(const IMessage* msg);
+        }            
+    } 
+    
+    create(color: IColor, method) { return new SetColorMsgHandler(color, method); }
+        
+}  
