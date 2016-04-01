@@ -92,9 +92,9 @@ abstract class IObject {
 	    this.fMsgHandlerMap[kgreen_GetSetMethod] = this.fColor.fSetColorMsgHandler.create(this.fColor, this.fColor.setG);
 	    this.fMsgHandlerMap[kblue_GetSetMethod]	= this.fColor.fSetColorMsgHandler.create(this.fColor, this.fColor.setB);
         
-        this.fGetMsgHandlerMap[kred_GetSetMethod] = new TGetParamMethodHandler<IColor, any> (this.fColor, this.fColor.getR);
-        this.fGetMsgHandlerMap[kgreen_GetSetMethod] = new TGetParamMethodHandler<IColor, any> (this.fColor, this.fColor.getG);
-	    this.fGetMsgHandlerMap[kblue_GetSetMethod] = new TGetParamMethodHandler<IColor, any> (this.fColor, this.fColor.getB);
+        //this.fGetMsgHandlerMap[kred_GetSetMethod] = new TGetParamMethodHandler<IColor, any> (this.fColor, this.fColor.getR);
+        //this.fGetMsgHandlerMap[kgreen_GetSetMethod] = new TGetParamMethodHandler<IColor, any> (this.fColor, this.fColor.getG);
+	    //this.fGetMsgHandlerMap[kblue_GetSetMethod] = new TGetParamMethodHandler<IColor, any> (this.fColor, this.fColor.getB);
     }
     
     
@@ -211,8 +211,7 @@ abstract class IObject {
     
     execute (msg: IMessage): number {
         var handler: MsgHandler = this.messageHandler(msg.message());
-        //console.log(msg);
-        if (handler) return ;
+        if (handler) {return /*handler.executeHandler()*/ };
 
         //handler = this.messageHandler(msg.message(), true);
         //if (handler) return ;

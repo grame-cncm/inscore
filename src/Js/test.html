@@ -82,8 +82,9 @@
 
 	var message = new IMessage('ITL/scene1/obj2');
 	
-	console.log(message);
-	message.add('red');
+	message.add('green');
+	console.log(message.message());
+
 
 	appl.processMsg('ITL', '/scene1/obj2', message);
 
