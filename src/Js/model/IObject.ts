@@ -36,8 +36,8 @@ abstract class IObject {
     protected fParent: IObject;
     protected fSubNodes: Array<IObject> = new Array;
     
-    protected fMsgHandlerMap: Array<MsgHandler> = new Array;
-    protected fGetMsgHandlerMap: Array<MsgHandler> = new Array;
+    protected fMsgHandlerMap: Array<MsgHandler<any,any>> = new Array;
+    protected fGetMsgHandlerMap: Array<MsgHandler<any,any>> = new Array;
     
     protected kDocument: HTMLElement; 
     protected fObjectView: VObjectView;
@@ -88,11 +88,11 @@ abstract class IObject {
     }
     
     colorAble(): void {
-        this.fMsgHandlerMap[kred_GetSetMethod] = this.fColor.fSetColorMsgHandler.create(this.fColor, this.fColor.setR);
-	    this.fMsgHandlerMap[kgreen_GetSetMethod] = this.fColor.fSetColorMsgHandler.create(this.fColor, this.fColor.setG);
-	    this.fMsgHandlerMap[kblue_GetSetMethod]	= this.fColor.fSetColorMsgHandler.create(this.fColor, this.fColor.setB);
+        this.fMsgHandlerMap[kred_GetSetMethod] = this.fColor.fSetColorMsgHandler.create(this.fColor, 'setR');
+	    this.fMsgHandlerMap[kgreen_GetSetMethod] = this.fColor.fSetColorMsgHandler.create(this.fColor, 'setG');
+	    this.fMsgHandlerMap[kblue_GetSetMethod]	= this.fColor.fSetColorMsgHandler.create(this.fColor, 'setB');
         
-        //this.fGetMsgHandlerMap[kred_GetSetMethod] = new TGetParamMethodHandler<IColor, any> (this.fColor, this.fColor.getR);
+        this.fGetMsgHandlerMap[kred_GetSetMethod] = new TGetParamMethodHandler<IColor, any> (this.fColor, this.fColor.getR);
         //this.fGetMsgHandlerMap[kgreen_GetSetMethod] = new TGetParamMethodHandler<IColor, any> (this.fColor, this.fColor.getG);
 	    //this.fGetMsgHandlerMap[kblue_GetSetMethod] = new TGetParamMethodHandler<IColor, any> (this.fColor, this.fColor.getB);
     }
@@ -210,8 +210,8 @@ abstract class IObject {
     //-----------------------------
     
     execute (msg: IMessage): number {
-        var handler: MsgHandler = this.messageHandler(msg.message());
-        if (handler) {return /*handler.executeHandler()*/ };
+        var handler: MsgHandler<any,any> = this.messageHandler(msg.message());
+        if (handler) {return handler.executeHandler(msg) };
 
         //handler = this.messageHandler(msg.message(), true);
         //if (handler) return ;
@@ -223,11 +223,10 @@ abstract class IObject {
     
     //-----------------------------
     
-    messageHandler(msg: string, match?: boolean): MsgHandler {
-        var handler: MsgHandler;
+    messageHandler(msg: string, match?: boolean): MsgHandler<any,any> {
+        var handler: MsgHandler<any,any>;
         if (!match) {
             handler = this.fMsgHandlerMap[msg];
-            console.log(handler);
         }
         
         /*else {
@@ -259,6 +258,7 @@ abstract class IObject {
                     var n: number = targets.length;
                     for (var i: number = 0; i < n; i++) {
                         var target: IObject = targets[i];
+                        console.log(target);
                         result |= target.execute(msg);	
                         if (result & MsgHandler.fMsgStatus.kProcessed) { target.setState(state.kModified); }
                     }

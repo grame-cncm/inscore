@@ -6,7 +6,7 @@ class Param<T> {
     this.fParam = val;    
     }
     
-    getValue(): T { return this.fParam }
+    getValue(): T { return this.fParam }  
 }
 
 class IMessage {
@@ -31,8 +31,8 @@ class IMessage {
 
     param(i: number): Param<any> { return this.fArguments[i] } 
     
-    isParam(i: number, type: string): boolean {  
-        if (typeof this.fArguments[i] === type) { return true }
+    isParam(i: number, type: string): boolean { 
+        if (typeof this.fArguments[i].getValue() === type) { return true }
         else { return false }
     }   
     
@@ -40,28 +40,21 @@ class IMessage {
         var n: number = this.fArguments.length; 
         return this.fHasMessage ? n -1 : n; 
     }
-    /*
-    cast_param(i: number, val: number): boolean {
-        if (param(i)->isType<float>()) {
-            val = param(i)->value<float>(0);
-            return true;
-        }
-        if (param(i)->isType<int>()) {
-            int nval = param(i)->value<int>(0);
-            val = float(nval);
-            return true;
-        }
-        return false;
-    }
     
-    param(int i, rational& val): boolean
-    { 
-        if (size() < (i+2)) return false;
-        int num, denum;
-        if (!param(i, num))		return false;
-        if (!param(i+1, denum)) return false;
-        val = rational(num, denum);
-        return true;
-    }
-*/
+    cast_param(i: number, val: number): Array<any> {
+        var result = new Array;
+        if ( this.fHasMessage ) { i ++; }
+        if ( this.isParam(i, 'number')) {
+            val = this.param(i).getValue();
+            result['val'] = val;
+            result['status'] = true;
+            return result;
+        }
+        
+        else {
+            result['val'] = 0;
+            result['bool'] = false;
+            return result;
+        }     
+    }            
 }

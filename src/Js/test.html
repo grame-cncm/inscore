@@ -82,18 +82,17 @@
 
 	var message = new IMessage('ITL/scene1/obj2');
 	
-	message.add('green');
-	console.log(message.message());
+	message.add('blue');
+	message.add(60);
 
-
-	appl.processMsg('ITL', '/scene1/obj2', message);
+	appl.processMsg('ITL', '/scene2/obj3', message);
 
 	//IObjectFactory.createObj('obj1', "IEllipse.kEllipseType", appl.fSubNodes[0], appl);
 	//IObjectFactory.createObj('obj2', "IEllipse.kEllipseType", appl.fSubNodes[0], appl);
 	//IObjectFactory.createObj('obj3', "IEllipse.kEllipseType", appl.fSubNodes[1], appl);
 
+	console.log(document);
 
-	//console.log(document);	
 </script>
 
 </body>

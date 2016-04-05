@@ -6,37 +6,59 @@ enum msgStatus {
     kCreateFailure = 8,
 }
 
-class MsgHandler {
-    static fMsgStatus = msgStatus; 
-    constructor() {};
+class MsgHandler<C,T> {
+    protected fObject: C;
+    protected fMethod: T;    
+    static fMsgStatus = msgStatus;
+     
+    constructor(obj:C, method:T) {
+        this.fObject = obj;
+        this.fMethod = method;    
+    }
     
-    executeHandler(msg: IMessage): msgStatus {
-        if ( msg.size() != 1 ) return msgStatus.kBadParameters;
-	    var val: number;
-	    //if ( !msg.cast_param(0, val) ) return msgStatus.kBadParameters;
+    executeHandler(msg: IMessage): msgStatus { 
+        if ( msg.size() != 1 ) { return msgStatus.kBadParameters; } 
+         
+        var val: number;
+        var castParam: Array<any> = msg.cast_param(0, val); 
+	    if ( !castParam['status'] ) { return msgStatus.kBadParameters;}
+        val = castParam['val'];
+	    
+        //console.log(this.fObject.)
+        console.log(this.fObject);       
+        
+        var method = this.fMethod + ''; 
+        this.fObject[method](val);
 
-	    //(fObject->*fMethod)( val );
-	    // fSlave->modify();
+        console.log(this.fObject);
+        	    
+        // fSlave->modify();
 	    return msgStatus.kProcessed;   
     }    
 }
 
-class TGetParamMethodHandler<C,T> extends MsgHandler {
+
+//********************************************
+class TGetParamMethodHandler<C,T> {
     protected fObject: C;
     protected fMethod: T;
     
-    super(obj: C, method: T) {
+    constructor(obj: C, method: T) {
         this.fObject = obj;
         this.fMethod = method;    
     }
 }    
     
-class TMethodMsgHandler<C,T> extends MsgHandler {
-    protected fObject: C;
-    protected fMethod: T;
+class TMethodMsgHandler<C,T> extends MsgHandler<C,T> {
     
-    super(obj: C, method: T) {
-        this.fObject = obj;
-        this.fMethod = method;    
+    constructor(obj: C, method: T) {
+        super(obj, method);    
     }
+}
+
+class TSetMethodMsgHandler<C,T> extends MsgHandler<C,T> {
+ 
+    constructor(obj: C, method: T) {
+        super(obj, method);    
+    }   
 }

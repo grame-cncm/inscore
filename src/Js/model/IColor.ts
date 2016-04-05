@@ -186,21 +186,14 @@ class IColor {
     }   
 }
 
- // MSG HANDLERS
+// MSG HANDLERS
 //--------------------------------------------------------------  
-class SetColorMsgHandler extends MsgHandler {
-    protected fColor: IColor;
-    protected fMethod;
-      
+class SetColorMsgHandler extends MsgHandler<IColor,any> {
+          
     constructor(color?: IColor, method?) {
-        if (color) {
-        super();
-        this.fColor = color;
-        this.fMethod = method;            
-       	//MsgHandler::msgStatus operator ()(const IMessage* msg);
-        }            
+        if (color) { super(color, method ); }              
     } 
     
     create(color: IColor, method) { return new SetColorMsgHandler(color, method); }
-        
+   
 }  
