@@ -6,12 +6,12 @@ enum msgStatus {
     kCreateFailure = 8,
 }
 
-class MsgHandler<C,T> {
+class MsgHandler<C> {
     protected fObject: C;
-    protected fMethod: T;    
+    protected fMethod: string;    
     static fMsgStatus = msgStatus;
      
-    constructor(obj:C, method:T) {
+    constructor(obj:C, method:string) {
         this.fObject = obj;
         this.fMethod = method;    
     }
@@ -24,9 +24,7 @@ class MsgHandler<C,T> {
 	    if ( !castParam['status'] ) { return msgStatus.kBadParameters;}
         val = castParam['val'];
 	    
-        //console.log(this.fObject.)
-        console.log(this.fObject);       
-        
+        console.log(this.fObject);
         var method = this.fMethod + ''; 
         this.fObject[method](val);
 
@@ -37,28 +35,50 @@ class MsgHandler<C,T> {
     }    
 }
 
-
-//********************************************
-class TGetParamMethodHandler<C,T> {
+class GetParamMsgHandler<C> {
     protected fObject: C;
-    protected fMethod: T;
-    
-    constructor(obj: C, method: T) {
+    protected fMethod: string;    
+     
+    constructor(obj:C, method:string) {
         this.fObject = obj;
         this.fMethod = method;    
     }
+    
+    executeHandler(msg: IMessage): msgStatus { 
+        if ( msg.size() != 1 ) { return msgStatus.kBadParameters; } 
+         
+        var val: number;
+        var castParam: Array<any> = msg.cast_param(0, val); 
+	    if ( !castParam['status'] ) { return msgStatus.kBadParameters;}
+        val = castParam['val'];     
+        
+        var method = this.fMethod + ''; 
+        this.fObject[method](val);
+
+	    return msgStatus.kProcessed;   
+    }    
+}
+
+//********************************************
+class TGetParamMethodHandler<C> extends GetParamMsgHandler<C>  {
+    protected fObject: C;
+    protected fMethod: string;
+    
+    constructor(obj: C, method: string) {
+        super(obj, method);    
+    }
 }    
     
-class TMethodMsgHandler<C,T> extends MsgHandler<C,T> {
+class TMethodMsgHandler<C> extends MsgHandler<C> {
     
-    constructor(obj: C, method: T) {
+    constructor(obj: C, method: string) {
         super(obj, method);    
     }
 }
 
-class TSetMethodMsgHandler<C,T> extends MsgHandler<C,T> {
+class TSetMethodMsgHandler<C> extends MsgHandler<C> {
  
-    constructor(obj: C, method: T) {
+    constructor(obj: C, method: string) {
         super(obj, method);    
     }   
 }

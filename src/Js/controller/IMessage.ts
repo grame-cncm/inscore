@@ -44,7 +44,7 @@ class IMessage {
     cast_param(i: number, val: number): Array<any> {
         var result = new Array;
         if ( this.fHasMessage ) { i ++; }
-        if ( this.isParam(i, 'number')) {
+        if ( this.isParam(i, 'number') || this.isParam(i, 'object')) {
             val = this.param(i).getValue();
             result['val'] = val;
             result['status'] = true;

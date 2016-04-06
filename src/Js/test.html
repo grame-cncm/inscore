@@ -80,12 +80,16 @@
 	IObjectFactory.createObj('obj3', "ILine.kLineType", appl.fSubNodes[1]);
 	IObjectFactory.createObj('obj4', "ICurve.kCurveType", appl.fSubNodes[2]);
 
-	var message = new IMessage('ITL/scene1/obj2');
 	
-	message.add('blue');
-	message.add(60);
+	var frac = new Fraction(5/24);
+	
+	var message = new IMessage('ITL/scene1/obj2');
+	message.add('date');
+	message.add(frac);
 
-	appl.processMsg('ITL', '/scene2/obj3', message);
+	appl.processMsg('ITL', '/scene1/obj2', message);
+
+
 
 	//IObjectFactory.createObj('obj1', "IEllipse.kEllipseType", appl.fSubNodes[0], appl);
 	//IObjectFactory.createObj('obj2', "IEllipse.kEllipseType", appl.fSubNodes[0], appl);

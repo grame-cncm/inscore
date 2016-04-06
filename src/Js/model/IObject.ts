@@ -5,6 +5,7 @@
 ///<reference path="../lib/OSCAddress.ts"/>
 ///<reference path="../lib/Tools.ts"/>
 ///<reference path="IProxy.ts"/>
+///<reference path="../externals/fraction/fraction.ts"/>
 
 enum state {
     kClean,
@@ -36,8 +37,8 @@ abstract class IObject {
     protected fParent: IObject;
     protected fSubNodes: Array<IObject> = new Array;
     
-    protected fMsgHandlerMap: Array<MsgHandler<any,any>> = new Array;
-    protected fGetMsgHandlerMap: Array<MsgHandler<any,any>> = new Array;
+    protected fMsgHandlerMap: Array<MsgHandler<any>> = new Array;
+    protected fGetMsgHandlerMap: Array<GetParamMsgHandler<any>> = new Array;
     
     protected kDocument: HTMLElement; 
     protected fObjectView: VObjectView;
@@ -82,19 +83,84 @@ abstract class IObject {
 //--------------------------------------------------------------  
     setHandlers() {
 	    this.colorAble();
-	    //positionAble();
-	    //shapeAble();
-	    //timeAble();
+	    this.positionAble();
+	    this.timeAble();
     }
     
     colorAble(): void {
         this.fMsgHandlerMap[kred_GetSetMethod] = this.fColor.fSetColorMsgHandler.create(this.fColor, 'setR');
 	    this.fMsgHandlerMap[kgreen_GetSetMethod] = this.fColor.fSetColorMsgHandler.create(this.fColor, 'setG');
 	    this.fMsgHandlerMap[kblue_GetSetMethod]	= this.fColor.fSetColorMsgHandler.create(this.fColor, 'setB');
+        this.fMsgHandlerMap[kalpha_GetSetMethod] = this.fColor.fSetColorMsgHandler.create(this.fColor, 'setA');
+	    this.fMsgHandlerMap[khue_GetSetMethod] = this.fColor.fSetColorMsgHandler.create(this.fColor, 'setH');
+	    this.fMsgHandlerMap[ksaturation_GetSetMethod]	= this.fColor.fSetColorMsgHandler.create(this.fColor, 'setS');
+        this.fMsgHandlerMap[kbrightness_GetSetMethod]	= this.fColor.fSetColorMsgHandler.create(this.fColor, 'setV');
+
+        this.fMsgHandlerMap[kdred_SetMethod] = this.fColor.fSetColorMsgHandler.create(this.fColor, 'dR');
+	    this.fMsgHandlerMap[kdgreen_SetMethod] = this.fColor.fSetColorMsgHandler.create(this.fColor, 'dG');
+	    this.fMsgHandlerMap[kdblue_SetMethod]	= this.fColor.fSetColorMsgHandler.create(this.fColor, 'dB');
+        this.fMsgHandlerMap[kdalpha_SetMethod] = this.fColor.fSetColorMsgHandler.create(this.fColor, 'dA');
+	    this.fMsgHandlerMap[kdhue_SetMethod] = this.fColor.fSetColorMsgHandler.create(this.fColor, 'dH');
+	    this.fMsgHandlerMap[kdsaturation_SetMethod]	= this.fColor.fSetColorMsgHandler.create(this.fColor, 'dS');
+        this.fMsgHandlerMap[kdbrightness_SetMethod]	= this.fColor.fSetColorMsgHandler.create(this.fColor, 'dV');
         
-        this.fGetMsgHandlerMap[kred_GetSetMethod] = new TGetParamMethodHandler<IColor, any> (this.fColor, this.fColor.getR);
-        //this.fGetMsgHandlerMap[kgreen_GetSetMethod] = new TGetParamMethodHandler<IColor, any> (this.fColor, this.fColor.getG);
-	    //this.fGetMsgHandlerMap[kblue_GetSetMethod] = new TGetParamMethodHandler<IColor, any> (this.fColor, this.fColor.getB);
+        this.fGetMsgHandlerMap[kred_GetSetMethod] = new TGetParamMethodHandler<IColor> (this.fColor, 'getR');
+        this.fGetMsgHandlerMap[kgreen_GetSetMethod] = new TGetParamMethodHandler<IColor> (this.fColor, 'getG');
+	    this.fGetMsgHandlerMap[kblue_GetSetMethod] = new TGetParamMethodHandler<IColor> (this.fColor, 'getB');
+        this.fGetMsgHandlerMap[kalpha_GetSetMethod] = new TGetParamMethodHandler<IColor> (this.fColor, 'getA');
+        this.fGetMsgHandlerMap[khue_GetSetMethod] = new TGetParamMethodHandler<IColor> (this.fColor, 'getH');
+	    this.fGetMsgHandlerMap[ksaturation_GetSetMethod] = new TGetParamMethodHandler<IColor> (this.fColor, 'getS');
+	    this.fGetMsgHandlerMap[kbrightness_GetSetMethod] = new TGetParamMethodHandler<IColor> (this.fColor, 'getV');    
+    }
+    
+    positionAble() {
+        this.fMsgHandlerMap[kx_GetSetMethod] = new TSetMethodMsgHandler<IPosition>(this.fPosition, 'setXPos');
+        this.fMsgHandlerMap[ky_GetSetMethod] = new TSetMethodMsgHandler<IPosition>(this.fPosition, 'setYPos');
+        this.fMsgHandlerMap[kxorigin_GetSetMethod] = new TSetMethodMsgHandler<IPosition>(this.fPosition, 'setXOrigin');
+        this.fMsgHandlerMap[kyorigin_GetSetMethod] = new TSetMethodMsgHandler<IPosition>(this.fPosition, 'setYOrigin');
+        this.fMsgHandlerMap[kz_GetSetMethod] = new TSetMethodMsgHandler<IPosition>(this.fPosition, 'setZOrder');
+        this.fMsgHandlerMap[kangle_GetSetMethod] = new TSetMethodMsgHandler<IPosition>(this.fPosition, 'setRotateZ');
+        this.fMsgHandlerMap[kscale_GetSetMethod] = new TSetMethodMsgHandler<IPosition>(this.fPosition, 'setScale');
+        this.fMsgHandlerMap[kshear_GetSetMethod] = new TSetMethodMsgHandler<IPosition>(this.fPosition, 'setShear');
+        this.fMsgHandlerMap[krotatex_GetSetMethod] = new TSetMethodMsgHandler<IPosition>(this.fPosition, 'setRotateX'); 
+        this.fMsgHandlerMap[krotatey_GetSetMethod] = new TSetMethodMsgHandler<IPosition>(this.fPosition, 'setRotateY'); 
+        this.fMsgHandlerMap[krotatez_GetSetMethod] = new TSetMethodMsgHandler<IPosition>(this.fPosition, 'setRotateZ'); 
+        
+        this.fMsgHandlerMap[kdx_SetMethod] = new TSetMethodMsgHandler<IPosition>(this.fPosition, 'addXPos');
+        this.fMsgHandlerMap[kdy_SetMethod] = new TSetMethodMsgHandler<IPosition>(this.fPosition, 'addYPos');
+        this.fMsgHandlerMap[kdxorigin_SetMethod] = new TSetMethodMsgHandler<IPosition>(this.fPosition, 'addXOrigin');
+        this.fMsgHandlerMap[kdyorigin_SetMethod] = new TSetMethodMsgHandler<IPosition>(this.fPosition, 'addYOrigin');
+        this.fMsgHandlerMap[kdz_SetMethod] = new TSetMethodMsgHandler<IPosition>(this.fPosition, 'addZOrder');
+        this.fMsgHandlerMap[kdangle_SetMethod] = new TSetMethodMsgHandler<IPosition>(this.fPosition, 'addAngle');
+        this.fMsgHandlerMap[kdscale_SetMethod] = new TSetMethodMsgHandler<IPosition>(this.fPosition, 'multScale');
+        
+        this.fGetMsgHandlerMap[kx_GetSetMethod]		= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getXPos');
+        this.fGetMsgHandlerMap[ky_GetSetMethod]		= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getYPos');
+        this.fGetMsgHandlerMap[kxorigin_GetSetMethod]= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getXOrigin');
+        this.fGetMsgHandlerMap[kyorigin_GetSetMethod]= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getYOrigin');
+        this.fGetMsgHandlerMap[kz_GetSetMethod]		= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getZOrder');
+        this.fGetMsgHandlerMap[kangle_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getZAngle');
+        this.fGetMsgHandlerMap[kscale_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getScale');
+        this.fGetMsgHandlerMap[kshow_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getVisible');
+        this.fGetMsgHandlerMap[kwidth_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getWidth');
+        this.fGetMsgHandlerMap[kheight_GetSetMethod] = new TGetParamMethodHandler<IPosition>(this.fPosition, 'getHeight');
+        this.fGetMsgHandlerMap[kshear_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getShear');
+        this.fGetMsgHandlerMap[krotatex_GetSetMethod]= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getXAngle');
+        this.fGetMsgHandlerMap[krotatey_GetSetMethod]= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getYAngle');
+        this.fGetMsgHandlerMap[krotatez_GetSetMethod]= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getZAngle');
+    }
+    
+    timeAble() {
+        this.fMsgHandlerMap[kdate_GetSetMethod] = new TSetMethodMsgHandler<IDate>(this.fDate, 'setDate');
+        this.fMsgHandlerMap[kduration_GetSetMethod]	= new TSetMethodMsgHandler<IDate>(this.fDate, 'setDuration');
+        this.fMsgHandlerMap[kddate_SetMethod] = new TSetMethodMsgHandler<IDate>(this.fDate, 'addDate');
+        this.fMsgHandlerMap[kdduration_SetMethod] = new TSetMethodMsgHandler<IDate>(this.fDate, 'addDuration');
+        
+        this.fMsgHandlerMap[kclock_SetMethod] = new TMethodMsgHandler<IDate>(this.fDate, 'clock');
+        this.fMsgHandlerMap[kdurClock_SetMethod] = new TMethodMsgHandler<IDate>(this.fDate, 'durclock');
+        
+        this.fGetMsgHandlerMap[kdate_GetSetMethod] = new TGetParamMethodHandler<IDate>(this.fDate, 'getDate');
+        this.fGetMsgHandlerMap[kduration_GetSetMethod] = new TGetParamMethodHandler<IDate>(this.fDate, 'getDuration');
     }
     
     
@@ -210,7 +276,7 @@ abstract class IObject {
     //-----------------------------
     
     execute (msg: IMessage): number {
-        var handler: MsgHandler<any,any> = this.messageHandler(msg.message());
+        var handler: MsgHandler<any> = this.messageHandler(msg.message());
         if (handler) {return handler.executeHandler(msg) };
 
         //handler = this.messageHandler(msg.message(), true);
@@ -223,8 +289,8 @@ abstract class IObject {
     
     //-----------------------------
     
-    messageHandler(msg: string, match?: boolean): MsgHandler<any,any> {
-        var handler: MsgHandler<any,any>;
+    messageHandler(msg: string, match?: boolean): MsgHandler<any> {
+        var handler: MsgHandler<any>;
         if (!match) {
             handler = this.fMsgHandlerMap[msg];
         }

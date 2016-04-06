@@ -188,12 +188,12 @@ class IColor {
 
 // MSG HANDLERS
 //--------------------------------------------------------------  
-class SetColorMsgHandler extends MsgHandler<IColor,any> {
+class SetColorMsgHandler extends MsgHandler<IColor> {
           
-    constructor(color?: IColor, method?) {
+    constructor(color?: IColor, method?: string) {
         if (color) { super(color, method ); }              
     } 
     
-    create(color: IColor, method) { return new SetColorMsgHandler(color, method); }
+    create(color: IColor, method: string) { return new SetColorMsgHandler(color, method); }
    
 }  
