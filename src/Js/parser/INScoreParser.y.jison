@@ -102,8 +102,8 @@ parser.msgs = new Array;
 parser.vars = new Array;
 
 function Message (addr, params) {
-	this.address = addr;
-	this.params = params;
+	this.address = addr;		// a prototyped array (see below)
+	this.params = params;		// an array
 }
 
 function Address (ip, port, osc) {
