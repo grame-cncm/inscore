@@ -1,4 +1,4 @@
-/ITL watch error (/ITL/log show 1);
+!/ITL watch error (/ITL/log show 1);
 
 <? javascript
 	function randomdur () 		{ return Math.pow(2, Math.floor( Math.random() * 5) ); }
@@ -83,7 +83,7 @@ color = 154 23 23;
 ##########################################
 # here are some comments
 /ITL/scene/ccomment1 set txt "The tail of the stream is in parallel with a static score.";
-/ITL/scene/ccomment2 set txt "The static part is transposed to first note of the tail.";
+/ITL/scene/ccomment2 set txt "The static part is transposed to the first note of the tail.";
 /ITL/scene/ccomment1 y 0.4;
 /ITL/scene/ccomment2 y 0.45;
 /ITL/scene/ccomment* fontSize 18;
