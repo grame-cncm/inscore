@@ -31,6 +31,8 @@ namespace inscore
 
 #ifdef IBUNDLE
 typedef ibundle::TDummyJs	TJSEngine;
+#elif defined (PARSERTEST)
+typedef void*				TJSEngine;
 #else
 typedef TQtJs				TJSEngine;
 #endif
