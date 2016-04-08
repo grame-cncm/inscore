@@ -72,25 +72,22 @@
   }
 */
 var INScoreParser = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,6],$V1=[1,9],$V2=[1,10],$V3=[1,14],$V4=[1,16],$V5=[1,17],$V6=[1,13],$V7=[1,9,10,13,16,20,21,24],$V8=[1,25],$V9=[1,32],$Va=[1,33],$Vb=[1,31],$Vc=[1,24],$Vd=[1,26],$Ve=[1,28],$Vf=[1,29],$Vg=[6,10,19,24,25,28,29,30,31,32],$Vh=[6,10,19,24,25,29,30,31,32];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,6],$V1=[1,9],$V2=[1,10],$V3=[1,14],$V4=[1,16],$V5=[1,17],$V6=[1,13],$V7=[1,9,10,13,16,20,21,24],$V8=[1,25],$V9=[1,32],$Va=[1,33],$Vb=[1,31],$Vc=[1,24],$Vd=[1,26],$Ve=[1,28],$Vf=[1,29],$Vg=[6,10,19,24,25,28,29,30,31,32];
 var parser = {trace: function trace() { },
 yy: {},
 symbols_: {"error":2,"inscore":3,"expr":4,"message":5,"ENDEXPR":6,"variabledecl":7,"script":8,"ENDSCRIPT":9,"JSCRIPT":10,"address":11,"params":12,"OSCADDRESS":13,"relativeaddress":14,"urlprefix":15,"POINT":16,"hostname":17,"COLON":18,"UINT":19,"IPNUM":20,"HOSTNAME":21,"varname":22,"identifier":23,"IDENTIFIER":24,"REGEXP":25,"param":26,"variable":27,"VARSTART":28,"INT":29,"FLOAT":30,"STRING":31,"expression":32,"EQUAL":33,"$accept":0,"$end":1},
 terminals_: {2:"error",6:"ENDEXPR",9:"ENDSCRIPT",10:"JSCRIPT",13:"OSCADDRESS",16:"POINT",18:"COLON",19:"UINT",20:"IPNUM",21:"HOSTNAME",24:"IDENTIFIER",25:"REGEXP",28:"VARSTART",29:"INT",30:"FLOAT",31:"STRING",32:"expression",33:"EQUAL"},
-productions_: [0,[3,1],[3,2],[4,2],[4,2],[4,1],[4,1],[8,1],[5,1],[5,2],[11,1],[11,1],[11,2],[14,2],[15,3],[15,3],[17,1],[17,1],[23,1],[23,1],[12,1],[12,1],[12,2],[27,2],[26,1],[26,1],[26,1],[26,1],[26,1],[26,1],[26,1],[7,3],[22,1]],
+productions_: [0,[3,1],[3,2],[4,2],[4,2],[4,1],[4,1],[8,1],[5,1],[5,2],[11,1],[11,1],[11,2],[14,2],[15,3],[15,3],[17,1],[17,1],[23,1],[23,1],[12,1],[12,1],[12,2],[12,2],[27,2],[26,1],[26,1],[26,1],[26,1],[26,1],[26,1],[26,1],[7,3],[22,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
 var $0 = $$.length - 1;
 switch (yystate) {
 case 3:
- debugmsg("expr message: "); parser.msgs.push($$[$0-1]); 
+ parser.msgs.push($$[$0-1]); 
 break;
-case 4:
- debugmsg("expr variabledecl: "); 
-break;
-case 5:
- debugmsg("expr script: "); 
+case 4: case 5:
+ 
 break;
 case 6:
  debugmsg("expr ENDSCRIPT "); this.done = true; 
@@ -102,7 +99,7 @@ case 8:
  this.$ = new Message($$[$0], new Array()); 
 break;
 case 9:
- debugmsg("message: address + params : " + $$[$0-1] + " params " + $$[$0].toString());
+ debugmsg("message: " + $$[$0-1].toString() + " " + $$[$0].toString());
 								  this.$ = new Message($$[$0-1], $$[$0]); 
 break;
 case 10: case 11:
@@ -117,31 +114,34 @@ break;
 case 14: case 15:
  this.$ = new Address($$[$0-2], parseInt($$[$0]), ""); 
 break;
-case 16: case 17: case 18: case 19: case 21: case 27: case 28: case 29: case 30: case 32:
+case 16: case 17: case 18: case 19: case 21: case 28: case 29: case 30: case 31: case 33:
  this.$ = $$[$0]; 
 break;
 case 20:
  this.$ = new Array(); this.$.push($$[$0]); 
 break;
 case 22:
- $$[$0-1].push($$[$0]); this.$ = $$[$0-1]; 
+ this.$ = $$[$0-1].concat($$[$0]); 
 break;
 case 23:
- this.$ = parser.vars[$$[$0]]; 
+ $$[$0-1].push($$[$0]); this.$ = $$[$0-1]; 
 break;
-case 24: case 25:
+case 24:
+ this.$ = new Array(parser.vars[$$[$0]]); 
+break;
+case 25: case 26:
  this.$ = parseInt($$[$0]); 
 break;
-case 26:
+case 27:
  this.$ = parseFloat($$[$0]); 
 break;
-case 31:
+case 32:
  debugmsg("variabledecl: " + $$[$0-2] + " = " + $$[$0]); parser.vars[$$[$0-2]] = $$[$0]; 
 break;
 }
 },
-table: [{3:1,4:2,5:3,7:4,8:5,9:$V0,10:$V1,11:7,13:$V2,14:11,15:12,16:$V3,17:15,20:$V4,21:$V5,22:8,24:$V6},{1:[3],4:18,5:3,7:4,8:5,9:$V0,10:$V1,11:7,13:$V2,14:11,15:12,16:$V3,17:15,20:$V4,21:$V5,22:8,24:$V6},o($V7,[2,1]),{6:[1,19]},{6:[1,20]},o($V7,[2,5]),o($V7,[2,6]),{6:[2,8],8:30,10:$V1,12:21,19:$V8,23:27,24:$V9,25:$Va,26:22,27:23,28:$Vb,29:$Vc,30:$Vd,31:$Ve,32:$Vf},{18:[2,17],33:[1,34]},o([1,6,9,10,13,16,19,20,21,24,25,29,30,31,32],[2,7]),o($Vg,[2,10]),o($Vg,[2,11]),{13:[1,35]},o([6,10,18,19,24,25,29,30,31,32,33],[2,32]),{13:[1,36]},{18:[1,37]},{18:[1,38]},{18:[2,16]},o($V7,[2,2]),o($V7,[2,3]),o($V7,[2,4]),{6:[2,9],8:30,10:$V1,19:$V8,23:27,24:$V9,25:$Va,26:39,29:$Vc,30:$Vd,31:$Ve,32:$Vf},o($Vh,[2,20]),o($Vh,[2,21]),o($Vh,[2,24]),o($Vh,[2,25]),o($Vh,[2,26]),o($Vh,[2,27]),o($Vh,[2,28]),o($Vh,[2,29]),o($Vh,[2,30]),{22:40,24:$V6},o($Vh,[2,18]),o($Vh,[2,19]),{8:30,10:$V1,12:41,19:$V8,23:27,24:$V9,25:$Va,26:22,27:23,28:$Vb,29:$Vc,30:$Vd,31:$Ve,32:$Vf},o($Vg,[2,12]),o($Vg,[2,13]),{19:[1,42]},{19:[1,43]},o($Vh,[2,22]),o($Vh,[2,23]),{6:[2,31],8:30,10:$V1,19:$V8,23:27,24:$V9,25:$Va,26:39,29:$Vc,30:$Vd,31:$Ve,32:$Vf},{13:[2,14]},{13:[2,15]}],
-defaultActions: {17:[2,16],42:[2,14],43:[2,15]},
+table: [{3:1,4:2,5:3,7:4,8:5,9:$V0,10:$V1,11:7,13:$V2,14:11,15:12,16:$V3,17:15,20:$V4,21:$V5,22:8,24:$V6},{1:[3],4:18,5:3,7:4,8:5,9:$V0,10:$V1,11:7,13:$V2,14:11,15:12,16:$V3,17:15,20:$V4,21:$V5,22:8,24:$V6},o($V7,[2,1]),{6:[1,19]},{6:[1,20]},o($V7,[2,5]),o($V7,[2,6]),{6:[2,8],8:30,10:$V1,12:21,19:$V8,23:27,24:$V9,25:$Va,26:22,27:23,28:$Vb,29:$Vc,30:$Vd,31:$Ve,32:$Vf},{18:[2,17],33:[1,34]},o([1,6,9,10,13,16,19,20,21,24,25,28,29,30,31,32],[2,7]),o($Vg,[2,10]),o($Vg,[2,11]),{13:[1,35]},o([6,10,18,19,24,25,28,29,30,31,32,33],[2,33]),{13:[1,36]},{18:[1,37]},{18:[1,38]},{18:[2,16]},o($V7,[2,2]),o($V7,[2,3]),o($V7,[2,4]),{6:[2,9],8:30,10:$V1,19:$V8,23:27,24:$V9,25:$Va,26:40,27:39,28:$Vb,29:$Vc,30:$Vd,31:$Ve,32:$Vf},o($Vg,[2,20]),o($Vg,[2,21]),o($Vg,[2,25]),o($Vg,[2,26]),o($Vg,[2,27]),o($Vg,[2,28]),o($Vg,[2,29]),o($Vg,[2,30]),o($Vg,[2,31]),{22:41,24:$V6},o($Vg,[2,18]),o($Vg,[2,19]),{8:30,10:$V1,12:42,19:$V8,23:27,24:$V9,25:$Va,26:22,27:23,28:$Vb,29:$Vc,30:$Vd,31:$Ve,32:$Vf},o($Vg,[2,12]),o($Vg,[2,13]),{19:[1,43]},{19:[1,44]},o($Vg,[2,22]),o($Vg,[2,23]),o($Vg,[2,24]),{6:[2,32],8:30,10:$V1,19:$V8,23:27,24:$V9,25:$Va,26:40,27:39,28:$Vb,29:$Vc,30:$Vd,31:$Ve,32:$Vf},{13:[2,14]},{13:[2,15]}],
+defaultActions: {17:[2,16],43:[2,14],44:[2,15]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -301,14 +301,15 @@ parser.msgs = new Array;
 parser.vars = new Array;
 
 function Message (addr, params) {
-	this.address = addr;
-	this.params = params;
+	this.address = addr;		// a prototyped array (see below)
+	this.params = params;		// an array
 }
 
 function Address (ip, port, osc) {
 	this.ip = ip;				// a string
 	this.port = port;			// an integer
 	this.osc = osc;				// a string
+	this.toString = function() { return this.ip + (this.port ? (":" + this.port) : "") + this.osc; }
 }
 
 parser.parseError = function(str, hash) {

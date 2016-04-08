@@ -8,8 +8,6 @@
 %}
 
 
-%left 'COLON' 
-
 %start inscore
 
 %% 
@@ -23,9 +21,9 @@ inscore		: expr
 //_______________________________________________
 // expression of the script language
 //_______________________________________________
-expr		: message  ENDEXPR		{ debugmsg("expr message: "); parser.msgs.push($1); }
-			| variabledecl ENDEXPR	{ debugmsg("expr variabledecl: "); }
-			| script				{ debugmsg("expr script: "); }
+expr		: message  ENDEXPR		{ parser.msgs.push($1); }
+			| variabledecl ENDEXPR	{ }
+			| script				{ }
 			| ENDSCRIPT				{ debugmsg("expr ENDSCRIPT "); this.done = true; }
 			;
 
@@ -39,7 +37,7 @@ script		: JSCRIPT			{ if ($1.length) debugmsg("expr script: " + $1);}
 // messages specification (extends osc spec.)
 //_______________________________________________
 message		: address			{ $$ = new Message($1, new Array()); }
-			| address params	{ debugmsg("message: address + params : " + $1 + " params " + $2.toString());
+			| address params	{ debugmsg("message: " + $1.toString() + " " + $2.toString());
 								  $$ = new Message($1, $2); }
 			;
 
@@ -72,10 +70,11 @@ identifier	: IDENTIFIER			{ $$ = $1; }
 //_______________________________________________
 params		: param					{ $$ = new Array(); $$.push($1); }
 			| variable				{ $$ = $1; }
+			| params variable		{ $$ = $1.concat($2); }
 			| params param			{ $1.push($2); $$ = $1; }
 			;
 
-variable	: VARSTART varname		{ $$ = parser.vars[$2]; }
+variable	: VARSTART varname		{ $$ = new Array(parser.vars[$2]); }
 			;
 
 param	: INT				{ $$ = parseInt($1); }
@@ -110,6 +109,7 @@ function Address (ip, port, osc) {
 	this.ip = ip;				// a string
 	this.port = port;			// an integer
 	this.osc = osc;				// a string
+	this.toString = function() { return this.ip + (this.port ? (":" + this.port) : "") + this.osc; }
 }
 
 parser.parseError = function(str, hash) {
