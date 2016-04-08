@@ -8,10 +8,9 @@ class SvgFactory {
         svg.setAttribute('xmlns:xlink', "http://www.w3.org/1999/xlink");
         svg.setAttribute('version', "1.1");
         svg.setAttribute('width', '200px');
-        svg.setAttribute('height', '200px'); 
-        
-        
-        
+        svg.setAttribute('height', '200px');
+        scene.setAttribute('draggable', 'true'); 
+         
         switch (type) {
             case 'ellipse':
                 var ellipse = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
