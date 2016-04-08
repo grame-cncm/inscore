@@ -130,7 +130,7 @@ EOL		[\x0a\x0d]
 // ----------------------------------------- 
 '/'										{ this.more(); this.begin('OSCSECTION'); }
 <OSCSECTION>"/"							{ this.more(); }
-<OSCSECTION>{STARTID}{IDCHAR}*			{ this.more(); }
+<OSCSECTION>"$"?{STARTID}{IDCHAR}*			{ this.more(); }
 <OSCSECTION>{RECHAR}+								{ this.more(); }
 <OSCSECTION>{RECHAR}*"["{RECLASS}+"]"{RECHAR}*		{ this.more(); }
 <OSCSECTION>{RECHAR}*"{"[_a-zA-Z0-9,]+"}"{RECHAR}*	{ this.more(); }
