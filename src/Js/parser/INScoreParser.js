@@ -72,12 +72,12 @@
   }
 */
 var INScoreParser = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,6],$V1=[1,9],$V2=[1,10],$V3=[1,14],$V4=[1,16],$V5=[1,17],$V6=[1,13],$V7=[1,9,10,13,16,20,21,24],$V8=[1,25],$V9=[1,32],$Va=[1,33],$Vb=[1,31],$Vc=[1,24],$Vd=[1,26],$Ve=[1,28],$Vf=[1,29],$Vg=[6,10,19,24,25,28,29,30,31,32];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,6],$V1=[1,9],$V2=[1,10],$V3=[1,14],$V4=[1,16],$V5=[1,17],$V6=[1,13],$V7=[1,9,10,21,24,27,28,31],$V8=[6,16,19,20],$V9=[1,31],$Va=[1,26],$Vb=[1,34],$Vc=[1,35],$Vd=[1,33],$Ve=[1,25],$Vf=[1,27],$Vg=[1,29],$Vh=[1,30],$Vi=[2,23],$Vj=[6,10,13,14,16,19,20,26,31,32,34,35,36,37,38],$Vk=[6,10,14,16,19,20,26,31,32,34,35,36,37,38],$Vl=[1,56],$Vm=[1,57],$Vn=[16,19,20],$Vo=[21,24,27,28,31];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"inscore":3,"expr":4,"message":5,"ENDEXPR":6,"variabledecl":7,"script":8,"ENDSCRIPT":9,"JSCRIPT":10,"address":11,"params":12,"OSCADDRESS":13,"relativeaddress":14,"urlprefix":15,"POINT":16,"hostname":17,"COLON":18,"UINT":19,"IPNUM":20,"HOSTNAME":21,"varname":22,"identifier":23,"IDENTIFIER":24,"REGEXP":25,"param":26,"variable":27,"VARSTART":28,"INT":29,"FLOAT":30,"STRING":31,"expression":32,"EQUAL":33,"$accept":0,"$end":1},
-terminals_: {2:"error",6:"ENDEXPR",9:"ENDSCRIPT",10:"JSCRIPT",13:"OSCADDRESS",16:"POINT",18:"COLON",19:"UINT",20:"IPNUM",21:"HOSTNAME",24:"IDENTIFIER",25:"REGEXP",28:"VARSTART",29:"INT",30:"FLOAT",31:"STRING",32:"expression",33:"EQUAL"},
-productions_: [0,[3,1],[3,2],[4,2],[4,2],[4,1],[4,1],[8,1],[5,1],[5,2],[11,1],[11,1],[11,2],[14,2],[15,3],[15,3],[17,1],[17,1],[23,1],[23,1],[12,1],[12,1],[12,2],[12,2],[27,2],[26,1],[26,1],[26,1],[26,1],[26,1],[26,1],[26,1],[7,3],[22,1]],
+symbols_: {"error":2,"inscore":3,"expr":4,"message":5,"ENDEXPR":6,"variabledecl":7,"script":8,"ENDSCRIPT":9,"JSCRIPT":10,"address":11,"params":12,"eval":13,"LEFTPAR":14,"messagelist":15,"RIGHTPAR":16,"variable":17,"messagelistseparator":18,"COMMA":19,"COLON":20,"OSCADDRESS":21,"relativeaddress":22,"urlprefix":23,"POINT":24,"hostname":25,"UINT":26,"IPNUM":27,"HOSTNAME":28,"varname":29,"identifier":30,"IDENTIFIER":31,"REGEXP":32,"param":33,"VARSTART":34,"INT":35,"FLOAT":36,"STRING":37,"EXPRESSION":38,"EQUAL":39,"$accept":0,"$end":1},
+terminals_: {2:"error",6:"ENDEXPR",9:"ENDSCRIPT",10:"JSCRIPT",13:"eval",14:"LEFTPAR",16:"RIGHTPAR",19:"COMMA",20:"COLON",21:"OSCADDRESS",24:"POINT",26:"UINT",27:"IPNUM",28:"HOSTNAME",31:"IDENTIFIER",32:"REGEXP",34:"VARSTART",35:"INT",36:"FLOAT",37:"STRING",38:"EXPRESSION",39:"EQUAL"},
+productions_: [0,[3,1],[3,2],[4,2],[4,2],[4,1],[4,1],[8,1],[5,1],[5,2],[5,5],[5,3],[15,1],[15,3],[18,1],[18,1],[11,1],[11,1],[11,2],[22,2],[23,3],[23,3],[25,1],[25,1],[30,1],[30,1],[12,1],[12,1],[12,2],[12,2],[17,2],[17,4],[33,1],[33,1],[33,1],[33,1],[33,1],[33,1],[33,3],[33,1],[7,3],[29,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -99,49 +99,63 @@ case 8:
  this.$ = new Message($$[$0], new Array()); 
 break;
 case 9:
- debugmsg("message: " + $$[$0-1].toString() + " " + $$[$0].toString());
-								  this.$ = new Message($$[$0-1], $$[$0]); 
+ this.$ = new Message($$[$0-1], $$[$0]); debugmsg(this.$.toString()); 
 break;
-case 10: case 11:
- this.$ = new Address("", 0, $$[$0]);
+case 10:
+ $$[$0-1].unshift($$[$0-3]); this.$ = new Message($$[$0-4], $$[$0-1]); 
 break;
-case 12:
- $$[$0-1].osc = $$[$0]; this.$ = $$[$0-1]; 
+case 11:
+ $$[$0].unshift($$[$0-1]); this.$ = new Message($$[$0-2], $$[$0]); 
 break;
-case 13:
- this.$ = $$[$0-1] + $$[$0]; 
-break;
-case 14: case 15:
- this.$ = new Address($$[$0-2], parseInt($$[$0]), ""); 
-break;
-case 16: case 17: case 18: case 19: case 21: case 28: case 29: case 30: case 31: case 33:
- this.$ = $$[$0]; 
-break;
-case 20:
+case 12: case 26:
  this.$ = new Array(); this.$.push($$[$0]); 
 break;
-case 22:
+case 13:
+ $$[$0-2].push($$[$0]); this.$ = $$[$0-2]; 
+break;
+case 16: case 17:
+ this.$ = new Address("", 0, $$[$0]);
+break;
+case 18:
+ $$[$0-1].osc = $$[$0]; this.$ = $$[$0-1]; 
+break;
+case 19:
+ this.$ = $$[$0-1] + $$[$0]; 
+break;
+case 20: case 21:
+ this.$ = new Address($$[$0-2], parseInt($$[$0]), ""); 
+break;
+case 22: case 23: case 24: case 25: case 27: case 35: case 36: case 37: case 39: case 41:
+ this.$ = $$[$0]; 
+break;
+case 28:
  this.$ = $$[$0-1].concat($$[$0]); 
 break;
-case 23:
+case 29:
  $$[$0-1].push($$[$0]); this.$ = $$[$0-1]; 
 break;
-case 24:
+case 30:
  this.$ = new Array(parser.vars[$$[$0]]); 
 break;
-case 25: case 26:
+case 31:
+ this.$ = new Array($$[$0-1]); 
+break;
+case 32: case 33:
  this.$ = parseInt($$[$0]); 
 break;
-case 27:
+case 34:
  this.$ = parseFloat($$[$0]); 
 break;
-case 32:
+case 38:
+ this.$ = $$[$0-1]; 
+break;
+case 40:
  debugmsg("variabledecl: " + $$[$0-2] + " = " + $$[$0]); parser.vars[$$[$0-2]] = $$[$0]; 
 break;
 }
 },
-table: [{3:1,4:2,5:3,7:4,8:5,9:$V0,10:$V1,11:7,13:$V2,14:11,15:12,16:$V3,17:15,20:$V4,21:$V5,22:8,24:$V6},{1:[3],4:18,5:3,7:4,8:5,9:$V0,10:$V1,11:7,13:$V2,14:11,15:12,16:$V3,17:15,20:$V4,21:$V5,22:8,24:$V6},o($V7,[2,1]),{6:[1,19]},{6:[1,20]},o($V7,[2,5]),o($V7,[2,6]),{6:[2,8],8:30,10:$V1,12:21,19:$V8,23:27,24:$V9,25:$Va,26:22,27:23,28:$Vb,29:$Vc,30:$Vd,31:$Ve,32:$Vf},{18:[2,17],33:[1,34]},o([1,6,9,10,13,16,19,20,21,24,25,28,29,30,31,32],[2,7]),o($Vg,[2,10]),o($Vg,[2,11]),{13:[1,35]},o([6,10,18,19,24,25,28,29,30,31,32,33],[2,33]),{13:[1,36]},{18:[1,37]},{18:[1,38]},{18:[2,16]},o($V7,[2,2]),o($V7,[2,3]),o($V7,[2,4]),{6:[2,9],8:30,10:$V1,19:$V8,23:27,24:$V9,25:$Va,26:40,27:39,28:$Vb,29:$Vc,30:$Vd,31:$Ve,32:$Vf},o($Vg,[2,20]),o($Vg,[2,21]),o($Vg,[2,25]),o($Vg,[2,26]),o($Vg,[2,27]),o($Vg,[2,28]),o($Vg,[2,29]),o($Vg,[2,30]),o($Vg,[2,31]),{22:41,24:$V6},o($Vg,[2,18]),o($Vg,[2,19]),{8:30,10:$V1,12:42,19:$V8,23:27,24:$V9,25:$Va,26:22,27:23,28:$Vb,29:$Vc,30:$Vd,31:$Ve,32:$Vf},o($Vg,[2,12]),o($Vg,[2,13]),{19:[1,43]},{19:[1,44]},o($Vg,[2,22]),o($Vg,[2,23]),o($Vg,[2,24]),{6:[2,32],8:30,10:$V1,19:$V8,23:27,24:$V9,25:$Va,26:40,27:39,28:$Vb,29:$Vc,30:$Vd,31:$Ve,32:$Vf},{13:[2,14]},{13:[2,15]}],
-defaultActions: {17:[2,16],43:[2,14],44:[2,15]},
+table: [{3:1,4:2,5:3,7:4,8:5,9:$V0,10:$V1,11:7,21:$V2,22:11,23:12,24:$V3,25:15,27:$V4,28:$V5,29:8,31:$V6},{1:[3],4:18,5:3,7:4,8:5,9:$V0,10:$V1,11:7,21:$V2,22:11,23:12,24:$V3,25:15,27:$V4,28:$V5,29:8,31:$V6},o($V7,[2,1]),{6:[1,19]},{6:[1,20]},o($V7,[2,5]),o($V7,[2,6]),o($V8,[2,8],{12:21,33:23,17:24,30:28,8:32,10:$V1,13:[1,22],14:$V9,26:$Va,31:$Vb,32:$Vc,34:$Vd,35:$Ve,36:$Vf,37:$Vg,38:$Vh}),{20:$Vi,39:[1,36]},o([1,6,9,10,14,16,19,20,21,24,26,27,28,31,32,34,35,36,37,38],[2,7]),o($Vj,[2,16]),o($Vj,[2,17]),{21:[1,37]},o([6,10,14,16,19,20,26,31,32,34,35,36,37,38,39],[2,41]),{21:[1,38]},{20:[1,39]},{20:[1,40]},{20:[2,22]},o($V7,[2,2]),o($V7,[2,3]),o($V7,[2,4]),o($V8,[2,9],{30:28,8:32,17:41,33:42,10:$V1,14:$V9,26:$Va,31:$Vb,32:$Vc,34:$Vd,35:$Ve,36:$Vf,37:$Vg,38:$Vh}),{14:[1,43],17:44,34:$Vd},o($Vk,[2,26]),o($Vk,[2,27]),o($Vk,[2,32]),o($Vk,[2,33]),o($Vk,[2,34]),o($Vk,[2,35]),o($Vk,[2,36]),o($Vk,[2,37]),{5:46,11:7,15:45,21:$V2,22:11,23:12,24:$V3,25:15,27:$V4,28:$V5,29:47,31:$V6},o($Vk,[2,39]),{14:[1,49],29:48,31:$V6},o($Vk,[2,24]),o($Vk,[2,25]),{8:32,10:$V1,12:50,14:$V9,17:24,26:$Va,30:28,31:$Vb,32:$Vc,33:23,34:$Vd,35:$Ve,36:$Vf,37:$Vg,38:$Vh},o($Vj,[2,18]),o($Vj,[2,19]),{26:[1,51]},{26:[1,52]},o($Vk,[2,28]),o($Vk,[2,29]),{5:46,11:7,15:53,21:$V2,22:11,23:12,24:$V3,25:15,27:$V4,28:$V5,29:47,31:$V6},o($V8,[2,11]),{16:[1,54],18:55,19:$Vl,20:$Vm},o($Vn,[2,12]),{20:$Vi},o($Vk,[2,30]),{5:58,11:7,21:$V2,22:11,23:12,24:$V3,25:15,27:$V4,28:$V5,29:47,31:$V6},{6:[2,40],8:32,10:$V1,14:$V9,17:41,26:$Va,30:28,31:$Vb,32:$Vc,33:42,34:$Vd,35:$Ve,36:$Vf,37:$Vg,38:$Vh},{21:[2,20]},{21:[2,21]},{16:[1,59],18:55,19:$Vl,20:$Vm},o($Vk,[2,38]),{5:60,11:7,21:$V2,22:11,23:12,24:$V3,25:15,27:$V4,28:$V5,29:47,31:$V6},o($Vo,[2,14]),o($Vo,[2,15]),{16:[1,61]},o($V8,[2,10]),o($Vn,[2,13]),o($Vk,[2,31])],
+defaultActions: {17:[2,22],47:[2,23],51:[2,20],52:[2,21]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -300,16 +314,17 @@ parse: function parse(input) {
 parser.msgs = new Array;
 parser.vars = new Array;
 
-function Message (addr, params) {
-	this.address = addr;		// a prototyped array (see below)
-	this.params = params;		// an array
-}
-
 function Address (ip, port, osc) {
 	this.ip = ip;				// a string
 	this.port = port;			// an integer
 	this.osc = osc;				// a string
 	this.toString = function() { return this.ip + (this.port ? (":" + this.port) : "") + this.osc; }
+}
+
+function Message (addr, params) {
+	this.address = addr;		// a prototyped array (see below)
+	this.params = params;		// an array
+	this.toString = function() { return this.address.toString() + " " + this.params.toString(); }
 }
 
 parser.parseError = function(str, hash) {
@@ -666,41 +681,41 @@ function unescape (str) {
 
 var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
-case 0:return 19;
+case 0:return 26;
 break;
-case 1:return 19;
+case 1:return 26;
 break;
-case 2:return 29;
+case 2:return 35;
 break;
-case 3:return 30;
+case 3:return 36;
 break;
-case 4:return 30;
+case 4:return 36;
 break;
-case 5:return 30;
+case 5:return 36;
 break;
 case 6:debugmsg("ENDSCRIPT : " + yy_.yytext); return 9;
 break;
-case 7:debugmsg("IDENTIFIER: " + yy_.yytext); return 24;
+case 7:debugmsg("IDENTIFIER: " + yy_.yytext); return 31;
 break;
-case 8:debugmsg("HOSTNAME: " + yy_.yytext); return 21;
+case 8:debugmsg("HOSTNAME: " + yy_.yytext); return 28;
 break;
-case 9:debugmsg("IPNUM: " + yy_.yytext); return 20;
+case 9:debugmsg("IPNUM: " + yy_.yytext); return 27;
 break;
 case 10:return 'EVAL';
 break;
 case 11:this.begin('DQSTR');
 break;
-case 12: debugmsg ("STRING: " + unescape(yy_.yytext)); return 31; 
+case 12: debugmsg ("STRING: " + unescape(yy_.yytext)); return 37; 
 break;
 case 13:this.popState();
 break;
 case 14:this.begin('QSTR');
 break;
-case 15: debugmsg ("STRING: " + unescape(yy_.yytext)); return 31; 
+case 15: debugmsg ("STRING: " + unescape(yy_.yytext)); return 37; 
 break;
 case 16:this.popState();
 break;
-case 17: debugmsg ("FILE STRING: " + yy_.yytext);	return 31; 
+case 17: debugmsg ("FILE STRING: " + yy_.yytext);	return 37; 
 break;
 case 18:this.begin('JSECTION');
 break;
@@ -708,18 +723,18 @@ case 19:this.popState();
 break;
 case 20: debugmsg ("JAVASCRIPT: " + yy_.yytext); return 10; 
 break;
-case 21: debugmsg ("REGEXP: " + yy_.yytext); return 25; 
+case 21: debugmsg ("REGEXP: " + yy_.yytext); return 32; 
 break;
-case 22: debugmsg ("REGEXP: " + yy_.yytext); return 25; 
+case 22: debugmsg ("REGEXP: " + yy_.yytext); return 32; 
 break;
-case 23: debugmsg ("REGEXP: " + yy_.yytext); return 25; 
+case 23: debugmsg ("REGEXP: " + yy_.yytext); return 32; 
 break;
 case 24: this.more(); this.begin('EXPRSECTION'); 
 break;
 case 25: this.more(); this.popState(); 
 							if (this.topState() == 'INITIAL') {
 							debugmsg("EXPRESSION " + yy_.yytext);
-							return 'EXPRESSION'; 
+							return 38; 
 							}
 						
 break;
@@ -739,7 +754,7 @@ case 32: this.more();
 break;
 case 33: this.more(); 
 break;
-case 34: debugmsg("OSCADDRESS " + yy_.yytext); this.popState(); return 13; 
+case 34: debugmsg("OSCADDRESS " + yy_.yytext); this.popState(); return 21; 
 break;
 case 35:debugmsg ("COMMENTLINE: " + yy_.yytext); 
 break;
@@ -753,7 +768,7 @@ case 39: debugmsg ("END COMMENT"); this.popState();
 break;
 case 40: debugmsg ("BEGIN COMMENT"); this.begin('COMMENT'); 
 break;
-case 41:return 33;
+case 41:return 39;
 break;
 case 42:return 'BACKPATH';
 break;
@@ -761,17 +776,17 @@ case 43:return 'PATHSEP';			/* OSC address and path separator */
 break;
 case 44:return 6;			/* end of expression */
 break;
-case 45:return 28;
+case 45:return 34;
 break;
-case 46:return 18;
+case 46:return 20;
 break;
-case 47:return 'COMMA';
+case 47:return 19;
 break;
-case 48:return 16;
+case 48:return 24;
 break;
-case 49:return 'LEFTPAR';
+case 49:return 14;
 break;
-case 50:return 'RIGHTPAR';
+case 50:return 16;
 break;
 case 51:;   /* eat up space */
 break;
@@ -787,7 +802,7 @@ case 56:console.log(yy_.yytext);
 break;
 }
 },
-rules: [/^(?:([0-9])+)/,/^(?:\+([0-9])+)/,/^(?:-([0-9])+)/,/^(?:[+-]*([0-9])+\.([0-9])*)/,/^(?:[+-]*([0-9])+\.([0-9])+e[-+]?([0-9])+)/,/^(?:[+-]*([0-9])+e[-+]?([0-9])+)/,/^(?:__END__)/,/^(?:([_a-zA-Z])([_a-zA-Z0-9])*)/,/^(?:(([-a-zA-Z0-9])(([-a-zA-Z0-9])*|\.))+)/,/^(?:([0-9])+\.([0-9])+\.([0-9])+\.([0-9])+)/,/^(?:eval)/,/^(?:")/,/^(?:(\\"|[^"])*)/,/^(?:")/,/^(?:')/,/^(?:(\\'|[^'])*)/,/^(?:')/,/^(?:(\/|(\.\.?\/)*)(([^ \t\\/?:*><|"';=])+\/?)+\.[a-zA-Z]+)/,/^(?:<\?([ \t])*javascript)/,/^(?:\?>)/,/^(?:(([\x0a\x0d])|\?[^>]|[^?])*)/,/^(?:([-_a-zA-Z0-9?+*])+)/,/^(?:([-_a-zA-Z0-9?+*])*\[([-_a-zA-Z0-9^])+\]([-_a-zA-Z0-9?+*])*)/,/^(?:([-_a-zA-Z0-9?+*])*\{[_a-zA-Z0-9,]+\}([-_a-zA-Z0-9?+*])*)/,/^(?:\()/,/^(?:\))/,/^(?:[^()"']*)/,/^(?:expr([ \t])*\()/,/^(?:\/)/,/^(?:\/)/,/^(?:([_a-zA-Z])([_a-zA-Z0-9])*)/,/^(?:([-_a-zA-Z0-9?+*])+)/,/^(?:([-_a-zA-Z0-9?+*])*\[([-_a-zA-Z0-9^])+\]([-_a-zA-Z0-9?+*])*)/,/^(?:([-_a-zA-Z0-9?+*])*\{[_a-zA-Z0-9,]+\}([-_a-zA-Z0-9?+*])*)/,/^(?:([ \t])|([\x0a\x0d]))/,/^(?:([ \t])*#.*)/,/^(?:([ \t])*!.*)/,/^(?:.|([\x0a\x0d])*)/,/^(?:\(\*)/,/^(?:\*\))/,/^(?:\(\*)/,/^(?:=)/,/^(?:\.\.\/)/,/^(?:\/)/,/^(?:;)/,/^(?:\$)/,/^(?::)/,/^(?:,)/,/^(?:\.)/,/^(?:\()/,/^(?:\))/,/^(?:([ \t])+)/,/^(?:([\x0a\x0d]))/,/^(?:__END__)/,/^(?:$)/,/^(?:.)/,/^(?:.)/],
+rules: [/^(?:([0-9])+)/,/^(?:\+([0-9])+)/,/^(?:-([0-9])+)/,/^(?:[+-]*([0-9])+\.([0-9])*)/,/^(?:[+-]*([0-9])+\.([0-9])+e[-+]?([0-9])+)/,/^(?:[+-]*([0-9])+e[-+]?([0-9])+)/,/^(?:__END__)/,/^(?:([_a-zA-Z])([_a-zA-Z0-9])*)/,/^(?:(([-a-zA-Z0-9])(([-a-zA-Z0-9])*|\.))+)/,/^(?:([0-9])+\.([0-9])+\.([0-9])+\.([0-9])+)/,/^(?:eval)/,/^(?:")/,/^(?:(\\"|[^"])*)/,/^(?:")/,/^(?:')/,/^(?:(\\'|[^'])*)/,/^(?:')/,/^(?:(\/|(\.\.?\/)*)(([^ \t\\/?:*><|"';=])+\/?)+\.[a-zA-Z]+)/,/^(?:<\?([ \t])*javascript)/,/^(?:\?>)/,/^(?:(([\x0a\x0d])|\?[^>]|[^?])*)/,/^(?:([-_a-zA-Z0-9?+*])+)/,/^(?:([-_a-zA-Z0-9?+*])*\[([-_a-zA-Z0-9^])+\]([-_a-zA-Z0-9?+*])*)/,/^(?:([-_a-zA-Z0-9?+*])*\{[_a-zA-Z0-9,]+\}([-_a-zA-Z0-9?+*])*)/,/^(?:\()/,/^(?:\))/,/^(?:[^()"']*)/,/^(?:expr([ \t])*\()/,/^(?:\/)/,/^(?:\/)/,/^(?:\$?([_a-zA-Z])([_a-zA-Z0-9])*)/,/^(?:([-_a-zA-Z0-9?+*])+)/,/^(?:([-_a-zA-Z0-9?+*])*\[([-_a-zA-Z0-9^])+\]([-_a-zA-Z0-9?+*])*)/,/^(?:([-_a-zA-Z0-9?+*])*\{[_a-zA-Z0-9,]+\}([-_a-zA-Z0-9?+*])*)/,/^(?:([ \t])|([\x0a\x0d]))/,/^(?:([ \t])*#.*)/,/^(?:([ \t])*!.*)/,/^(?:.|([\x0a\x0d])*)/,/^(?:\(\*)/,/^(?:\*\))/,/^(?:\(\*)/,/^(?:=)/,/^(?:\.\.\/)/,/^(?:\/)/,/^(?:;)/,/^(?:\$)/,/^(?::)/,/^(?:,)/,/^(?:\.)/,/^(?:\()/,/^(?:\))/,/^(?:([ \t])+)/,/^(?:([\x0a\x0d]))/,/^(?:__END__)/,/^(?:$)/,/^(?:.)/,/^(?:.)/],
 conditions: {"OSCSECTION":{"rules":[29,30,31,32,33,34],"inclusive":false},"EXPRSECTION":{"rules":[24,25,26],"inclusive":false},"JSECTION":{"rules":[19,20],"inclusive":false},"COMMENT":{"rules":[37,38,39],"inclusive":false},"QSTR":{"rules":[15,16],"inclusive":false},"DQSTR":{"rules":[12,13],"inclusive":false},"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,14,17,18,21,22,23,27,28,35,36,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56],"inclusive":true}}
 });
 return lexer;
