@@ -9,7 +9,7 @@ out    := $(patsubst ../../../scripts/%.inscore, checkout/%.txt, $(files))
 code : $(OUT)
 
 $(OUT) : $(NAME).l.jison $(NAME).y.jison
-	jison $(NAME).y.jison $(NAME).l.jison
+	jison $(NAME).y.jison $(NAME).l.jison -m commonjs
 
 clean:
 	rm -f $(OUT)
