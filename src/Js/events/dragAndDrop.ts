@@ -1,3 +1,20 @@
+
+///<reference path="../parser/INScoreParser.ts"/>
+
+
+
+var input:string = 'aaaaaaaaaaa';
+import parser = require("../parser/./INScoreParser");
+parser.parser;
+var test = parser.parse(input); 
+console.log(test);
+
+
+
+
+
+
+
 function createMessage(msg:string) {
     
 }
