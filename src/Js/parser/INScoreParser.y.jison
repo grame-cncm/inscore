@@ -92,6 +92,7 @@ param	: INT				{ $$ = parseInt($1); }
 		| identifier		{ $$ = $1; }
 		| STRING			{ $$ = $1; }
 		| EXPRESSION		{ $$ = $1; }
+		| HOSTNAME			{ $$ = $1; }
 		| LEFTPAR messagelist RIGHTPAR	{ $$ = $2; }
 		| script			{ $$ = $1; }
 		;

@@ -43,7 +43,7 @@ STARTID [_a-zA-Z]		/* allowed char for identifier first char */
 IDCHAR  [_a-zA-Z0-9]	/* allowed char for identifier next chars */
 
 HOSTCHAR [-a-zA-Z0-9]	/* allowed character set for host names see RFC952 and RFC1123 */
-FILECHAR [^ \t\\/?:*><|"';=] 	/* allowed character for filename and path as defined for windows 7 with some specification for INScore compatibility: no = ; */
+FILECHAR [^ \t\\/?:*><|"'!#;=] 	/* allowed character for filename and path as defined for windows 7 with some specification for INScore compatibility: no = ; */
 
 RECHAR  [-_a-zA-Z0-9?+*]  	/* regular expression characters as defined by the OSC specification */
 RECLASS [-_a-zA-Z0-9^]		/* regular expression characters for class def */
@@ -59,9 +59,9 @@ EOL		[\x0a\x0d]
 "+"{DIGIT}+					return 'UINT';
 "-"{DIGIT}+					return 'INT';
 
-[+-]*{DIGIT}+"."{DIGIT}* 				return 'FLOAT';
-[+-]*{DIGIT}+"."{DIGIT}+e[-+]?{DIGIT}+ 	return 'FLOAT';
-[+-]*{DIGIT}+e[-+]?{DIGIT}+ 			return 'FLOAT';
+[+-]?{DIGIT}+"."{DIGIT}* 				return 'FLOAT';
+[+-]?{DIGIT}+"."{DIGIT}+e[-+]?{DIGIT}+ 	return 'FLOAT';
+[+-]?{DIGIT}+e[-+]?{DIGIT}+ 			return 'FLOAT';
 
 
 "__END__"			debugmsg("ENDSCRIPT : " + yytext); return 'ENDSCRIPT';
@@ -122,7 +122,7 @@ EOL		[\x0a\x0d]
 							return 'EXPRESSION'; 
 							}
 						}
-<EXPRSECTION>[^()"']*	{ this.more(); }
+<EXPRSECTION>[^()]*		{ this.more(); }
 "expr"{SPACE}*"("		{ this.begin('EXPRSECTION'); this.more(); }
 
 // ----------------------------------------- 
@@ -137,22 +137,9 @@ EOL		[\x0a\x0d]
 <OSCSECTION>{SPACE}|{EOL}				{ debugmsg("OSCADDRESS " + yytext); this.popState(); return 'OSCADDRESS'; }
 
 // ----------------------------------------- 
-//	comments 
-// ----------------------------------------- 
-{SPACE}*"#".*		debugmsg ("COMMENTLINE: " + yytext); 
-{SPACE}*"!".*		debugmsg ("COMMENTLINE: " + yytext); 
-
-<COMMENT>.|{EOL}* 	;
-<COMMENT>"(*"		{ debugmsg ("BEGIN NESTED COMMENT"); this.begin('COMMENT'); } 
-<COMMENT>"*)"       { debugmsg ("END COMMENT"); this.popState(); }
-"(*"                { debugmsg ("BEGIN COMMENT"); this.begin('COMMENT'); }
-
-// ----------------------------------------- 
 //	basic delimiters and markers 
 // ----------------------------------------- 
 "="					return 'EQUAL';
-"../"				return 'BACKPATH';
-"/"					return 'PATHSEP';			/* OSC address and path separator */
 ";"					return 'ENDEXPR';			/* end of expression */
 "$"					return 'VARSTART';
 ":"					return 'COLON';
@@ -161,11 +148,20 @@ EOL		[\x0a\x0d]
 "("					return 'LEFTPAR';
 ")"					return 'RIGHTPAR';
 
-{SPACE}+			;   /* eat up space */
+// ----------------------------------------- 
+//	comments 
+// ----------------------------------------- 
+'#'.*		debugmsg ("COMMENTLINE: " + yytext); 
+'!'.*		debugmsg ("COMMENTLINE: " + yytext); 
 
+<COMMENT>.|{EOL}* 	;
+<COMMENT>"(*"		{ debugmsg ("BEGIN NESTED COMMENT"); this.begin('COMMENT'); } 
+<COMMENT>"*)"       { debugmsg ("END COMMENT"); this.popState(); }
+"(*"                { debugmsg ("BEGIN COMMENT"); this.begin('COMMENT'); }
+
+{SPACE}+			;   /* eat up space */
 {EOL}				;	/* yylloc->first_column=0; ignore */
 
-"__END__"			return 'ENDSCRIPT';
 <<EOF>>				return 'ENDSCRIPT';
 
 .					{ debugmsg("ERR: " + yytext); return 'ERR'; }
