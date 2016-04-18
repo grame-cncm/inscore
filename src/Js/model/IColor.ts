@@ -89,9 +89,9 @@ class IColor {
 	setA(a:number): void { this.setParam("fA", Math.floor(a), 0, 255, false); }	
 		
 	dA(a:number): void { this.setA( this.getA() + Math.floor(a) ); }	
-	dR(r:number): void { this.setR( this.getA() + Math.floor(r) ); }
-    dG(g:number): void { this.setG( this.getA() + Math.floor(g) ); }
-    dB(b:number): void { this.setB( this.getA() + Math.floor(b) ); }
+	dR(r:number): void { this.setR( this.getR() + Math.floor(r) ); }
+    dG(g:number): void { this.setG( this.getG() + Math.floor(g) ); }
+    dB(b:number): void { this.setB( this.getB() + Math.floor(b) ); }
     dH(h:number): void { this.setH( this.getH() + Math.floor(h) ); }
     dS(s:number): void { this.setS( this.getS() + Math.floor(s) ); }
     dV(v:number): void { this.setV( this.getV() + Math.floor(v) ); }

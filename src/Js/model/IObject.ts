@@ -139,15 +139,15 @@ abstract class IObject {
         this.fGetMsgHandlerMap[kxorigin_GetSetMethod]= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getXOrigin');
         this.fGetMsgHandlerMap[kyorigin_GetSetMethod]= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getYOrigin');
         this.fGetMsgHandlerMap[kz_GetSetMethod]		= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getZOrder');
-        this.fGetMsgHandlerMap[kangle_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getZAngle');
+        this.fGetMsgHandlerMap[kangle_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getRotateZ');
         this.fGetMsgHandlerMap[kscale_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getScale');
         this.fGetMsgHandlerMap[kshow_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getVisible');
         this.fGetMsgHandlerMap[kwidth_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getWidth');
         this.fGetMsgHandlerMap[kheight_GetSetMethod] = new TGetParamMethodHandler<IPosition>(this.fPosition, 'getHeight');
         this.fGetMsgHandlerMap[kshear_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getShear');
-        this.fGetMsgHandlerMap[krotatex_GetSetMethod]= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getXAngle');
-        this.fGetMsgHandlerMap[krotatey_GetSetMethod]= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getYAngle');
-        this.fGetMsgHandlerMap[krotatez_GetSetMethod]= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getZAngle');
+        this.fGetMsgHandlerMap[krotatex_GetSetMethod]= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getRotateX');
+        this.fGetMsgHandlerMap[krotatey_GetSetMethod]= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getRotateY');
+        this.fGetMsgHandlerMap[krotatez_GetSetMethod]= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getRotateZ');
     }
     
     timeAble() {
@@ -292,7 +292,8 @@ abstract class IObject {
     messageHandler(msg: string, match?: boolean): MsgHandler<any> {
         var handler: MsgHandler<any>;
         if (!match) {
-            handler = this.fMsgHandlerMap[msg];
+            handler = this.fMsgHandlerMap[msg]; 
+            //|| this.fGetMsgHandlerMap[msg];
         }
         
         /*else {

@@ -57,6 +57,8 @@ class IPosition {
         var pos: Array<number> = new Array (this.fXPos , this.fYPos) 
         return pos 
         }
+    getShear(): Array<number> { return this.fShear; }
+
         
     getRotateX(): number { return this.fXAngle; }
     getRotateY(): number { return this.fYAngle; }
@@ -91,19 +93,19 @@ class IPosition {
     setHeight(height:number): void { this.fHeight = height; }
     
     setXPos(x:number): void { this.fXPos = x; this.fModified = true; }
-    addXpos(x:number): void { this.setXPos(this.fXPos + x); }
+    addXPos(x:number): void { this.setXPos(this.fXPos + x); }
     
     setXOrigin(x:number): void { this.fXOrigin = x; this.fModified = true; }
     addXOrigin(x:number): void { this.setXOrigin (this.fXOrigin + x); }
     
     setYPos(y:number): void { this.fYPos = y; this.fModified = true; }
-    addYpos(y:number): void { this.setYPos(this.fYPos + y); }
+    addYPos(y:number): void { this.setYPos(this.fYPos + y); }
     
     setYOrigin(y:number): void { this.fYOrigin = y; this.fModified = true; }
-    addXYrigin(y:number): void { this.setYOrigin (this.fYOrigin + y); }   
+    addYOrigin(y:number): void { this.setYOrigin (this.fYOrigin + y); }   
  
     setScale (scale:number): void { this.fScale = scale; this.fModified = true; }
-    mulScale (scale:number): void { this.setScale(this.fScale * scale); }
+    multScale (scale:number): void { this.setScale(this.fScale * scale); }
         
     setVisible (vis:boolean): void { this.fVisible = vis; this.fModified = true; }
 

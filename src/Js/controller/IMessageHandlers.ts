@@ -47,13 +47,15 @@ class GetParamMsgHandler<C> {
     executeHandler(msg: IMessage): msgStatus { 
         if ( msg.size() != 1 ) { return msgStatus.kBadParameters; } 
          
-        var val: number;
-        var castParam: Array<any> = msg.cast_param(0, val); 
-	    if ( !castParam['status'] ) { return msgStatus.kBadParameters;}
-        val = castParam['val'];     
+        // A REVOIR (méthode get != set)
+        //var val: number;
+        //var castParam: Array<any> = msg.cast_param(0, val); 
+	    //if ( !castParam['status'] ) { return msgStatus.kBadParameters;}
+        //val = castParam['val'];     
         
         var method = this.fMethod + ''; 
-        this.fObject[method](val);
+        this.fObject[method](/*val*/);
+        //console.log(this.fObject[method](/*val*/));
 
 	    return msgStatus.kProcessed;   
     }    

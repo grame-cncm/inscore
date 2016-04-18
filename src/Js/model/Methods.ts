@@ -34,7 +34,6 @@ const kshow_GetSetMethod: string = "show";
 const kwidth_GetSetMethod: string = "width";
 const kheight_GetSetMethod: string = "height";
 
-
 const kdx_SetMethod: string = "dx";
 const kdy_SetMethod: string = "dy";
 const kdxorigin_SetMethod: string = "dxorigin";
