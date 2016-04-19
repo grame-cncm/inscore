@@ -1,0 +1,10 @@
+
+<script src="../inscore.js"></script>
+
+<script>
+  var toto = parse("/toto 1 world; /ITL hello;");
+  console.log ("toto size: " + toto.length);
+  for (i=0; i<toto.length; i++)  {
+	  console.log (i + " address: " + toto[i].address.toString());
+  }
+</script>
