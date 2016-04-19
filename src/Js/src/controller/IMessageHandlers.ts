@@ -17,20 +17,15 @@ class MsgHandler<C> {
     }
     
     executeHandler(msg: IMessage): msgStatus { 
-        if ( msg.size() != 1 ) { return msgStatus.kBadParameters; } 
+        if ( msg.size() != 2 ) { return msgStatus.kBadParameters; } 
          
         var val: number;
-        var castParam: Array<any> = msg.cast_param(0, val); 
-	    if ( !castParam['status'] ) { return msgStatus.kBadParameters;}
-        val = castParam['val'];
-	    
+        if (!msg.paramNum(1, val)) return msgStatus.kBadParameters;
+
         console.log(this.fObject);
         var method = this.fMethod + ''; 
         this.fObject[method](val);
-
         console.log(this.fObject);
-        	    
-        // fSlave->modify();
 	    return msgStatus.kProcessed;   
     }    
 }
