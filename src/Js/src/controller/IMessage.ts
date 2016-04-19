@@ -1,60 +1,49 @@
 
-class Param<T> {
-	protected fParam: T;    
-    
-    constructor(val:T) {
-    this.fParam = val;    
-    }
-    
-    getValue(): T { return this.fParam }  
-}
-
 class IMessage {
  
     protected fAddress: string;
-    protected fArguments: Array<Param<any>>;
-    protected fHasMessage: boolean = true;		
+    protected fArguments: Array<any>;
     
-    constructor(address: string) {
+    constructor(address: string, params? : Array<any>) {
         this.fAddress = address; 
-        this.fArguments = new Array;      
+        this.fArguments = params ? params : new Array<any>();      
     }   
    
-    add<T>(val: T): void { this.fArguments.push(new Param<T>(val)) };
+    add(val: any): void { this.fArguments.push(val); };
     
-    address(): string { return this.fAddress }
+    address(): string { return this.fAddress; }
     
     message(): string { 
-        if (!this.fHasMessage) { return "" };
-	    return this.fArguments[0].getValue(); 
+        var out="";
+        this.paramStr(0, out);
+        return out;
     }
 
-    param(i: number): Param<any> { return this.fArguments[i] } 
+    paramStr(i: number, out: string): boolean { 
+    	if (this.isString(i)) {
+    		out = this.fArguments[i];
+    		return true;
+    	}
+    	return false;
+    } 
+    paramNum(i: number, out: number): boolean { 
+    	if (this.isNumber(i)) {
+    		out = this.fArguments[i];
+    		return true;
+    	}
+    	return false;
+    } 
+    paramArray(i: number, out: Array<any>): boolean { 
+    	if (this.isArray(i)) {
+    		out = this.fArguments[i];
+    		return true;
+    	}
+    	return false;
+    } 
     
-    isParam(i: number, type: string): boolean { 
-        if (typeof this.fArguments[i].getValue() === type) { return true }
-        else { return false }
-    }   
-    
-    size(): number {
-        var n: number = this.fArguments.length; 
-        return this.fHasMessage ? n -1 : n; 
-    }
-    
-    cast_param(i: number, val: number): Array<any> {
-        var result = new Array;
-        if ( this.fHasMessage ) { i ++; }
-        if ( this.isParam(i, 'number') || this.isParam(i, 'object')) {
-            val = this.param(i).getValue();
-            result['val'] = val;
-            result['status'] = true;
-            return result;
-        }
-        
-        else {
-            result['val'] = 0;
-            result['bool'] = false;
-            return result;
-        }     
-    }            
+    isString(i: number): boolean 	{ return (typeof this.fArguments[i] === "string") ? true : false; }   
+    isNumber(i: number): boolean 	{ return (typeof this.fArguments[i] === "number") ? true : false; }   
+    isArray(i: number): boolean 	{ return (typeof this.fArguments[i] === "object") ? true : false; }   
+
+   	size(): number 					{ return this.fArguments.length; }    
 }
