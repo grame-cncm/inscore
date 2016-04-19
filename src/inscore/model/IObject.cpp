@@ -1296,6 +1296,8 @@ bool IObject::acceptSimpleEvent(EventsAble::eventype t) const
 		case EventsAble::kNewData:
         case EventsAble::kDelete:
 			return true;
+		default:
+			return false;
 	}
 	return false;
 }
