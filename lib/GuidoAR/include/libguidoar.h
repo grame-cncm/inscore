@@ -50,9 +50,9 @@ extern "C" {
 #endif
 
 /// \brief gives the library version number as a float number
-export float			guidoarVersion();
+gar_export float			guidoarVersion();
 /// \brief gives the library version string
-export const char*		guidoarVersionStr();
+gar_export const char*		guidoarVersionStr();
 
 //--------------------------------------------------------------------------------
 // operations on scores
@@ -65,7 +65,7 @@ export const char*		guidoarVersionStr();
 	\param out a stream to output the unrolled version
 	\return an error code
 */
-export garErr			guido2unrolled	(const char* gmn, std::ostream& out);
+gar_export garErr			guido2unrolled(const char* gmn, std::ostream& out);
 
 /*! \brief transpose a score
 
@@ -76,7 +76,7 @@ export garErr			guido2unrolled	(const char* gmn, std::ostream& out);
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoVTranpose	(const char* gmn, int interval, std::ostream& out);
+gar_export garErr			guidoVTranpose(const char* gmn, int interval, std::ostream& out);
 
 /*! \brief transpose a score using another score
 
@@ -89,7 +89,7 @@ export garErr			guidoVTranpose	(const char* gmn, int interval, std::ostream& out
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoGTranpose	(const char* gmn, const char* gmnSpec, std::ostream& out);
+gar_export garErr			guidoGTranpose(const char* gmn, const char* gmnSpec, std::ostream& out);
 
 /*! \brief cut voices of a score
 
@@ -100,7 +100,7 @@ export garErr			guidoGTranpose	(const char* gmn, const char* gmnSpec, std::ostre
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoVTop		(const char* gmn, int nvoices, std::ostream& out);
+gar_export garErr			guidoVTop(const char* gmn, int nvoices, std::ostream& out);
 
 /*! \brief cut voices of a score using another score
 
@@ -110,7 +110,7 @@ export garErr			guidoVTop		(const char* gmn, int nvoices, std::ostream& out);
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoGTop		(const char* gmn, const char* gmnSpec, std::ostream& out);
+gar_export garErr			guidoGTop(const char* gmn, const char* gmnSpec, std::ostream& out);
 
 
 /*! \brief cut voices of a score
@@ -122,7 +122,7 @@ export garErr			guidoGTop		(const char* gmn, const char* gmnSpec, std::ostream& 
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoVBottom	(const char* gmn, int nvoices, std::ostream& out);
+gar_export garErr			guidoVBottom(const char* gmn, int nvoices, std::ostream& out);
 
 /*! \brief cut voices of a score using another score
 
@@ -132,7 +132,7 @@ export garErr			guidoVBottom	(const char* gmn, int nvoices, std::ostream& out);
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoGBottom	(const char* gmn, const char* gmnSpec, std::ostream& out);
+gar_export garErr			guidoGBottom(const char* gmn, const char* gmnSpec, std::ostream& out);
 
 
 /*! \brief takes the head of a score
@@ -144,7 +144,7 @@ export garErr			guidoGBottom	(const char* gmn, const char* gmnSpec, std::ostream
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoVHead		(const char* gmn, rational duration, std::ostream& out);
+gar_export garErr			guidoVHead(const char* gmn, rational duration, std::ostream& out);
 
 /*! \brief takes the head of a score using another score
 
@@ -154,7 +154,7 @@ export garErr			guidoVHead		(const char* gmn, rational duration, std::ostream& o
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoGHead		(const char* gmn, const char* gmnSpec, std::ostream& out);
+gar_export garErr			guidoGHead(const char* gmn, const char* gmnSpec, std::ostream& out);
 
 /*! \brief takes the head of a score on an event basis
 
@@ -165,7 +165,7 @@ export garErr			guidoGHead		(const char* gmn, const char* gmnSpec, std::ostream&
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoVEHead		(const char* gmn, int n, std::ostream& out);
+gar_export garErr			guidoVEHead(const char* gmn, int n, std::ostream& out);
 
 /*! \brief takes the head of a score on an event basis using another score
 
@@ -175,7 +175,7 @@ export garErr			guidoVEHead		(const char* gmn, int n, std::ostream& out);
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoGEHead		(const char* gmn, const char* gmnSpec, std::ostream& out);
+gar_export garErr			guidoGEHead(const char* gmn, const char* gmnSpec, std::ostream& out);
 
 
 /*! \brief takes the tail of a score
@@ -187,7 +187,7 @@ export garErr			guidoGEHead		(const char* gmn, const char* gmnSpec, std::ostream
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoVTail		(const char* gmn, rational duration, std::ostream& out);
+gar_export garErr			guidoVTail(const char* gmn, rational duration, std::ostream& out);
 
 /*! \brief takes the tail of a score using another score
 
@@ -197,7 +197,7 @@ export garErr			guidoVTail		(const char* gmn, rational duration, std::ostream& o
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoGTail		(const char* gmn, const char* gmnSpec, std::ostream& out);
+gar_export garErr			guidoGTail(const char* gmn, const char* gmnSpec, std::ostream& out);
 
 /*! \brief takes the tail of a score on an event basis
 
@@ -208,7 +208,7 @@ export garErr			guidoGTail		(const char* gmn, const char* gmnSpec, std::ostream&
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoVETail		(const char* gmn, int n, std::ostream& out);
+gar_export garErr			guidoVETail(const char* gmn, int n, std::ostream& out);
 
 /*! \brief takes the tail of a score on an event basis using another score
 
@@ -218,7 +218,7 @@ export garErr			guidoVETail		(const char* gmn, int n, std::ostream& out);
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoGETail		(const char* gmn, const char* gmnSpec, std::ostream& out);
+gar_export garErr			guidoGETail(const char* gmn, const char* gmnSpec, std::ostream& out);
 
 /*! \brief takes the tail of a score on an event basis
 
@@ -229,7 +229,7 @@ export garErr			guidoGETail		(const char* gmn, const char* gmnSpec, std::ostream
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoVETail		(const char* gmn, int n, std::ostream& out);
+gar_export garErr			guidoVETail(const char* gmn, int n, std::ostream& out);
 
 /*! \brief takes the tail of a score on an event basis using another score
 
@@ -239,7 +239,7 @@ export garErr			guidoVETail		(const char* gmn, int n, std::ostream& out);
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoGETail		(const char* gmn, const char* gmnSpec, std::ostream& out);
+gar_export garErr			guidoGETail(const char* gmn, const char* gmnSpec, std::ostream& out);
 
 
 /*! \brief put 2 scores in sequence
@@ -250,7 +250,7 @@ export garErr			guidoGETail		(const char* gmn, const char* gmnSpec, std::ostream
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoGSeq		(const char* gmn1, const char* gmn2, std::ostream& out);
+gar_export garErr			guidoGSeq(const char* gmn1, const char* gmn2, std::ostream& out);
 
 /*! \brief put 2 scores in parallel
 
@@ -260,7 +260,7 @@ export garErr			guidoGSeq		(const char* gmn1, const char* gmn2, std::ostream& ou
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoGPar		(const char* gmn1, const char* gmn2, std::ostream& out);
+gar_export garErr			guidoGPar		(const char* gmn1, const char* gmn2, std::ostream& out);
 
 /*! \brief put 2 scores in parallel with right justification
 
@@ -271,7 +271,7 @@ export garErr			guidoGPar		(const char* gmn1, const char* gmn2, std::ostream& ou
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoGRPar		(const char* gmn1, const char* gmn2, std::ostream& out);
+gar_export garErr			guidoGRPar(const char* gmn1, const char* gmn2, std::ostream& out);
 
 /*! \brief mirror a score using a second score as fixed pitch point
 
@@ -280,7 +280,7 @@ export garErr			guidoGRPar		(const char* gmn1, const char* gmn2, std::ostream& o
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoGMirror		(const char* gmn1, const char* gmn2, std::ostream& out);
+gar_export garErr			guidoGMirror(const char* gmn1, const char* gmn2, std::ostream& out);
 
 
 /*! \brief set the duration of one score to the duration of the second one
@@ -289,7 +289,7 @@ export garErr			guidoGMirror		(const char* gmn1, const char* gmn2, std::ostream&
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoGSetDuration(const char* gmn, const char* gmnSpec, std::ostream& out);
+gar_export garErr			guidoGSetDuration(const char* gmn, const char* gmnSpec, std::ostream& out);
 
 enum TApplyMode { kApplyOnce, kApplyForwardLoop, kApplyForwardBackwardLoop};
 enum chordPitchMode { kUseLowest, kUseHighest };
@@ -303,7 +303,7 @@ enum chordPitchMode { kUseLowest, kUseHighest };
 	The rythmic structure is extracted from the first voice of the second score. It is applied to the first
 	score without realignment at the beginning of each voice.
 */
-export garErr			guidoApplyRythm(const char* gmn, const char* gmnSpec, TApplyMode mode, std::ostream& out);
+gar_export garErr			guidoApplyRythm(const char* gmn, const char* gmnSpec, TApplyMode mode, std::ostream& out);
 
 /*! \brief applies the pitch structure of a score to another score
 	\param gmn a string containing gmn code
@@ -315,7 +315,7 @@ export garErr			guidoApplyRythm(const char* gmn, const char* gmnSpec, TApplyMode
 	The pitch structure is extracted from the first voice of the second score. It is applied to the first
 	score without realignment at the beginning of each voice.
 */
-export garErr			guidoApplyPitch(const char* gmn, const char* gmnSpec, TApplyMode mode, chordPitchMode pmode, std::ostream& out);
+gar_export garErr			guidoApplyPitch(const char* gmn, const char* gmnSpec, TApplyMode mode, chordPitchMode pmode, std::ostream& out);
 
 /*! \brief set the duration of a score to a given duration
 	\param gmn a string containing gmn code
@@ -323,7 +323,7 @@ export garErr			guidoApplyPitch(const char* gmn, const char* gmnSpec, TApplyMode
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoVSetDuration(const char* gmn, rational duration, std::ostream& out);
+gar_export garErr			guidoVSetDuration(const char* gmn, rational duration, std::ostream& out);
 
 /*! \brief multiply the duration of a score
 	\param gmn a string containing gmn code
@@ -331,21 +331,7 @@ export garErr			guidoVSetDuration(const char* gmn, rational duration, std::ostre
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoVMultDuration(const char* gmn, float mult, std::ostream& out);
-
-/*! \brief gives a score duration
-	\param gmn a string containing gmn code
-	\return a rational value (1 is a whole note), negative in case of error
-*/
-export rational			guidoDuration(const char* gmn);
-
-/*! \brief gives an event date
-	\param gmn a string containing gmn code
-	\param index the target event index
-	\param voice the target voice index
-	\return a date in musical time expressed as a rational
-*/
-export rational			guidoEv2Time(const char* gmn, unsigned int index, unsigned int voice);
+gar_export garErr			guidoVMultDuration(const char* gmn, float mult, std::ostream& out);
 
 /*! \brief gives an event index at a given date
 	\param gmn a string containing gmn code
@@ -353,24 +339,40 @@ export rational			guidoEv2Time(const char* gmn, unsigned int index, unsigned int
 	\param voice the target voice index
 	\return an event index
 */
-export int				guidoTime2Ev(const char* gmn, const rational& date, unsigned int voice);
+gar_export int				guidoTime2Ev(const char* gmn, const rational& date, unsigned int voice);
 
 /*! \brief export to midifile
 	\param gmn a string containing gmn code
 	\param file the midi file name
 	\return an error code
 */
-export garErr			guido2midifile(const char* gmn, const char* file);
+gar_export garErr			guido2midifile(const char* gmn, const char* file);
 
 /*! \brief check gmn code correctness
 	\return a boolean value
 */
-export bool				guidocheck(const char* gmn);
+gar_export bool				guidocheck(const char* gmn);
 
 
 #ifdef __cplusplus
 }
 #endif
+
+
+/*! \brief gives a score duration
+	\param gmn a string containing gmn code
+	\return a rational value (1 is a whole note), negative in case of error
+*/
+gar_export rational			guidoDuration(const char* gmn);
+
+/*! \brief gives an event date
+	\param gmn a string containing gmn code
+	\param index the target event index
+	\param voice the target voice index
+	\return a date in musical time expressed as a rational
+*/
+gar_export rational			guidoEv2Time(const char* gmn, unsigned int index, unsigned int voice);
+
 
 /*! @} */
 
