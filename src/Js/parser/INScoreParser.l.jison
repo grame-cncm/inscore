@@ -134,7 +134,7 @@ EOL		[\x0a\x0d]
 <OSCSECTION>{RECHAR}+								{ this.more(); }
 <OSCSECTION>{RECHAR}*"["{RECLASS}+"]"{RECHAR}*		{ this.more(); }
 <OSCSECTION>{RECHAR}*"{"[_a-zA-Z0-9,]+"}"{RECHAR}*	{ this.more(); }
-<OSCSECTION>{SPACE}|{EOL}				{ debugmsg("OSCADDRESS " + yytext); this.popState(); return 'OSCADDRESS'; }
+<OSCSECTION>{SPACE}|{EOL}				{ debugmsg("OSCADDRESS " + yytext); this.popState(); yytext = yytext.substring(0, yytext.length-1); return 'OSCADDRESS'; }
 
 // ----------------------------------------- 
 //	basic delimiters and markers 

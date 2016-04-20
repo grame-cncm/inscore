@@ -3,7 +3,7 @@
 
 %{
 	function debugmsg(str){
-		typeof console !== 'undefined' ? console.log(str) : print(str);
+//		typeof console !== 'undefined' ? console.log(str) : print(str);
 	}
 %}
 
@@ -52,7 +52,7 @@ messagelistseparator	: COMMA
 //_______________________________________________
 // address specification (extends osc spec.)
 //_______________________________________________
-address		: OSCADDRESS			{ $$ = new Address("", 0, $1);}
+address		: OSCADDRESS			{ $$ = new Address("", 0, $1); debugmsg("OSCADDRESS: -"+$1+"-"); }
 			| relativeaddress		{ $$ = new Address("", 0, $1);}
 			| urlprefix OSCADDRESS	{ $1.osc = $2; $$ = $1; }
 			;

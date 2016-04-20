@@ -113,7 +113,10 @@ break;
 case 13:
  $$[$0-2].push($$[$0]); this.$ = $$[$0-2]; 
 break;
-case 16: case 17:
+case 16:
+ this.$ = new Address("", 0, $$[$0]); debugmsg("OSCADDRESS: -"+$$[$0]+"-"); 
+break;
+case 17:
  this.$ = new Address("", 0, $$[$0]);
 break;
 case 18:
@@ -308,7 +311,7 @@ parse: function parse(input) {
 }};
 
 	function debugmsg(str){
-		typeof console !== 'undefined' ? console.log(str) : print(str);
+//		typeof console !== 'undefined' ? console.log(str) : print(str);
 	}
 
 parser.msgs = new Array;
@@ -754,7 +757,7 @@ case 32: this.more();
 break;
 case 33: this.more(); 
 break;
-case 34: debugmsg("OSCADDRESS " + yy_.yytext); this.popState(); return 21; 
+case 34: debugmsg("OSCADDRESS " + yy_.yytext); this.popState(); yy_.yytext = yy_.yytext.substring(0, yy_.yytext.length-1); return 21; 
 break;
 case 35:return 39;
 break;
