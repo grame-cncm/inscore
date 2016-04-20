@@ -2,21 +2,14 @@
 # 
 #
 
-MODEL := $(wildcard ../model/*.ts)
-LIB   := $(wildcard ../libraries/*/*.ts)
-VIEW  := $(wildcard ../view/*.ts)
-
-JS := $(patsubst ../%.ts, js/%.js, $(MODEL) $(VIEW) $(LIB)) 
-TARGET := inscore.js
-
-$(TARGET): $(MODEL) $(LIB)
-	tsc --out inscore.js $(MODEL) 
+DEPS := ../src/model/Methods.ts
 	
-all : $(JS)
-
-#===============================================================
-clean :
-	rm -rf $(TARGET)
+all : $(DEPS)
+	make -C ../src/parser
+	cd ../src && tsc
+	
+../src/model/Methods.ts: ../../inscore/model/Methods.cpp
+	./methods2ts ../../inscore/model/Methods.cpp > ../src/model/Methods.ts
 
 #===============================================================
 # rules to compile a .ts 
