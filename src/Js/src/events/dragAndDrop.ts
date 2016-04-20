@@ -1,19 +1,3 @@
-
-/// <reference path="../parser/INScoreParser.d.ts" />
-
-
-
-var input:string = 'aaaaaaaaaaa';
-import parser = require("../parser/INScoreParser");
-parser.parser;
-var test = parser.parse(input); 
-console.log(test);
-
-
-function createMessage(msg:string) {
-    
-}
-
 function dropEvent(e) {
     dragOverEvent(e);
 
@@ -23,14 +7,8 @@ function dropEvent(e) {
     var filecount = filelist.length;
     if (filecount > 0) {                
         for (var i=0; i < filecount; i++) {
-            var reader: FileReader = new FileReader();
-            var file = filelist[i]; 
-            reader.readAsText(file);  
-                      
-            reader.onloadend = function (e) {
-                var data: string = reader.result;
-                console.log(data);    
-            };        
+            var loader = new TILoader;
+            loader.load(filelist[i], loader);      
         } 
     } 
 }

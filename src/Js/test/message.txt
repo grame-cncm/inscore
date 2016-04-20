@@ -1,1 +1,1 @@
-ITL/scene1/obj1 red 36
+/ITL/scene1/obj2 red 38;

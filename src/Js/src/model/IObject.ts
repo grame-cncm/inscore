@@ -277,7 +277,7 @@ abstract class IObject {
     
     execute (msg: IMessage): number {
         var handler: MsgHandler<any> = this.messageHandler(msg.message());
-        if (handler) {return handler.executeHandler(msg) };
+        if (handler) { return handler.executeHandler(msg) };
 
         //handler = this.messageHandler(msg.message(), true);
         //if (handler) return ;
@@ -308,7 +308,6 @@ abstract class IObject {
 // MESSAGES PROCESSING
 //--------------------------------------------------------------     
     processMsg (address: string, addressTail: string , msg: IMessage): number {
-    
         var result: number = MsgHandler.fMsgStatus.kBadAddress;
         if (this.accept(address/*, msg*/)) {
             var beg: string = OSCAddress.addressFirst(addressTail);	

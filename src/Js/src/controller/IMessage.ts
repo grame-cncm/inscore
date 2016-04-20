@@ -14,31 +14,30 @@ class IMessage {
     address(): string { return this.fAddress; }
     
     message(): string { 
-        var out="";
-        this.paramStr(0, out);
-        return out;
+        var out = this.paramStr(0);
+        if (out.verif) { return out.param ; }
     }
 
-    paramStr(i: number, out: string): boolean { 
+    paramStr(i: number): { verif: boolean, param: string } { 
     	if (this.isString(i)) {
-    		out = this.fArguments[i];
-    		return true;
+    		var param = this.fArguments[i];
+    		return { verif: true, param: param };
     	}
-    	return false;
+    	return { verif: false, param: param };
     } 
-    paramNum(i: number, out: number): boolean { 
+    paramNum(i: number): { verif: boolean, param: number } { 
     	if (this.isNumber(i)) {
-    		out = this.fArguments[i];
-    		return true;
+    		var param = this.fArguments[i];
+    		return { verif: true, param: param };
     	}
-    	return false;
+    	return { verif: false, param: param };
     } 
-    paramArray(i: number, out: Array<any>): boolean { 
+    paramArray(i: number): { verif: boolean, param: Array<any> } { 
     	if (this.isArray(i)) {
-    		out = this.fArguments[i];
-    		return true;
+    		var param = this.fArguments[i];
+    		return { verif: true, param: param };
     	}
-    	return false;
+    	return { verif: false, param: param };
     } 
     
     isString(i: number): boolean 	{ return (typeof this.fArguments[i] === "string") ? true : false; }   
