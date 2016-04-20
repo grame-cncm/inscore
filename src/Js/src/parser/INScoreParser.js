@@ -90,7 +90,7 @@ case 4: case 5:
  
 break;
 case 6:
- debugmsg("expr ENDSCRIPT "); this.done = true; 
+ debugmsg("expr ENDSCRIPT "); return true; 
 break;
 case 7:
  if ($$[$0].length) debugmsg("expr script: " + $$[$0]);
@@ -311,7 +311,7 @@ parse: function parse(input) {
 }};
 
 	function debugmsg(str){
-//		typeof console !== 'undefined' ? console.log(str) : print(str);
+		typeof console !== 'undefined' ? console.log(str) : print(str);
 	}
 
 parser.msgs = new Array;
