@@ -24,10 +24,10 @@ class MsgHandler<C> {
         if (isNum.verif) { val = isNum.param; }
         else { return msgStatus.kBadParameters; }
         
-        console.log(this.fObject);
+        //console.log(this.fObject);
         var method = this.fMethod + ''; 
         this.fObject[method](val);
-        console.log(this.fObject);
+        //console.log(this.fObject);
 	    return msgStatus.kProcessed;   
     }    
 }

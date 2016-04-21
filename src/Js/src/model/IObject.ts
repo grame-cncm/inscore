@@ -216,9 +216,13 @@ abstract class IObject {
     
     //-----------------------------    
 
-    setState (s: state): void {
-        this.fState |= s;
-    }
+    setState (s: state): void { this.fState = s; }
+    getState(): state { return this.fState; }
+    
+    getPos(): IPosition { return this.fPosition; }
+    getColor(): IColor { return this.fColor; }
+
+    
     
     //-----------------------------
     
@@ -260,8 +264,8 @@ abstract class IObject {
         if (this.fTypeString == 'scene') { this.kDocument.appendChild(cible) }
         
         else { 
-        var parent = this.fParent.fObjectView.getMotherScene();
-        parent.appendChild(cible);
+            var parent = this.fParent.fObjectView.getMotherScene();
+            parent.appendChild(cible);
         }
     }
     

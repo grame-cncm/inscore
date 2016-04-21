@@ -21,10 +21,53 @@ abstract class VObjectView {
     
     
     
-    updateView(object: IObject): void {};
-    updateObjectSize(object: IObject): void {};
+    updateView(): void {
+        var svg = this.fScene.firstElementChild.firstElementChild;
+        var obj = this.fObject;
+        
+        switch (svg.nodeName) {
+            case 'ellipse':
+                //svg.setAttribute('cx', obj.getPos().getXPos()+'');
+                //svg.setAttribute('cy', obj.getPos().getYPos()+'');
+                //svg.setAttribute('rx', obj.getPos().getWidth()+'');
+                //svg.setAttribute('ry', obj.getPos().getHeight()+'');     
+                break;
+                
+            case 'rect':
+                //svg.setAttribute('x', obj.getPos().getXPos()+'');
+                //svg.setAttribute('y', obj.getPos().getYPos()+'');
+                //svg.setAttribute('height', obj.getPos().getWidth()+'');
+                //svg.setAttribute('width', obj.getPos().getHeight()+'');
+                break;
+                
+            case 'curve':
+                //svg.setAttribute('d', 'M50,10 q50,10 50,200 t50,100');
+                //svg.setAttribute('stroke', '#1F56D2');
+                break;
+                
+            case 'line':
+                //svg.setAttribute('x1', '10');
+                //svg.setAttribute('y1', '10');
+                //svg.setAttribute('x2', '100');
+                //svg.setAttribute('y2', '100');
+                //svg.setAttribute('stroke', '#1F56D2')   
+                break;            
+        
+            default:
+                break;
+        }
+        
+        svg.setAttribute('style', "fill:rgba(" + obj.getColor().getR() + ', ' 
+                                                        + obj.getColor().getG() + ', ' 
+                                                        + obj.getColor().getB() + ', '
+                                                        + obj.getColor().getA() + ")");
+
+        this.fObject.setState(state.kClean);      
+    }
+    
+    updateObjectSize(object: IObject): void {}
 		
-    setParentItem(parent: VObjectView) {};
+    setParentItem(parent: VObjectView) {}
     
    
 

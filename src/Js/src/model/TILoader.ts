@@ -1,9 +1,7 @@
 declare var INScoreParser;
 
 class TILoader {
-    
-    constructor() {}
-    
+        
     process(buffer: string) {
         var parser = this.parse(buffer);
         for (var i = 0; i < parser.length; i++) {
@@ -13,19 +11,18 @@ class TILoader {
             
             var beg: string = OSCAddress.addressFirst(msg.address());
             var tail: string = OSCAddress.addressTail(msg.address());
-            appl.processMsg(beg, "/scene1/obj2", msg);
+            appl.processMsg(beg, tail, msg);
         }    
     }
     
-    load(file, loader: TILoader) {
+    load(file, loader: TILoader): void {
         var reader: FileReader = new FileReader();
         reader.readAsText(file);
         
         reader.onloadend = function (e) {
             var data: string = reader.result;
             loader.process(data);
-        };
-        
+        };      
     }
     
     parse(msg: string): Array<any> {
