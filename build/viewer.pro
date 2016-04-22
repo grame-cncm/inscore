@@ -61,8 +61,6 @@ ios {
 	QMAKE_INFO_PLIST = $$PWD/Info-ios.plist
 	ios_icon.files = $$files($$ROOT/rsrc/ios-icons/*.png)
 	QMAKE_BUNDLE_DATA += ios_icon
-	storyboard.files = $$ROOT/rsrc/ios-icons/LaunchScreen.xib
-	QMAKE_BUNDLE_DATA += storyboard
 	OBJECTIVE_SOURCES += $$SRC/mobile/ios/QtAppDelegate.mm
 	INCLUDEPATH += $$SRC/mobile/ios
 	HEADERS += $$files($$SRC/mobile/ios/*.h)
