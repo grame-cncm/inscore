@@ -33,7 +33,6 @@ SOURCES +=	$$ITLROOT/src/inscore/expression/ExprInfo.cpp
 HEADERS  = $$files($$SRC/*.h, true)
 #HEADERS += $$files($$SRC/Parsing/*.h, true)
 HEADERS +=  $$ITLROOT/src/inscore/expression/ExprInfo.h
-HEADERS +=  $$ITLROOT/src/inscore/interface/INScore.h
 
 INCLUDEPATH +=	$$SRC/ $$SRC/Parsing/
 

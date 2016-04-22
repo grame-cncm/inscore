@@ -36,6 +36,7 @@
 #include <QFontDatabase>
 #include <QStandardPaths>
 #include <QNetworkInterface>
+#include <QDesktopServices>
 
 #include "IAppl.h"
 #include "IApplVNodes.h"
@@ -114,7 +115,7 @@ inscore::SIMenu getMenuNode(inscore::IObject * parent) {
 #endif
 }
 
-#ifdef RUNBENCH
+#if defined(RUNBENCH) || defined(TIMEBENCH)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IAppl::writeBench(const IMessage* msg)
 {
@@ -152,12 +153,13 @@ float	IAppl::fCompatibilityVersionNum = 0.;	// the supported version number as f
 unsigned long IAppl::kUPDPort = 7000;			//Default listening port
 udpinfo IAppl::fUDP(IAppl::kUPDPort);
 string	IAppl::fDefaultFontName("Carlito");		// the default font name
-
+int		IAppl::fRate = 10;
+float	IAppl::fRealRate = fRate;
 
 //--------------------------------------------------------------------------
 IAppl::IAppl(QApplication* appl, bool offscreen)
 	: IObject(kName, 0), fCurrentTime(0), fCurrentTicks(0), 
-	fOffscreen(offscreen), fRate(10), fAppl(appl)
+	fOffscreen(offscreen), fAppl(appl)
 {
 	fTypeString = kApplType;
 	fVersion	= INScore::versionStr();
@@ -169,6 +171,7 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 //	fMsgHandlerMap["activate"]					= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::activate);
 	fMsgHandlerMap[kload_SetMethod]				= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadMsg);
 	fMsgHandlerMap[kread_SetMethod]				= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadBuffer);
+	fMsgHandlerMap[kbrowse_SetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::browseMsg);
 	fMsgHandlerMap[krequire_SetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::requireMsg);
 	fMsgHandlerMap[kquit_SetMethod]				= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::quit);
 	fMsgHandlerMap[kmouse_SetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::cursor);
@@ -191,7 +194,8 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 	fGetMsgHandlerMap[kerrport_GetSetMethod]	= TGetParamMsgHandler<int>::create(fUDP.fErrPort);
 	fGetMsgHandlerMap[kdefaultShow_GetSetMethod]= TGetParamMethodHandler<IAppl, bool (IAppl::*)() const>::create(this, &IAppl::defaultShow);
 	fGetMsgHandlerMap[kcompatibility_GetSetMethod]	= TGetParamMsgHandler<float>::create(fCompatibilityVersionNum);
-	fGetMsgHandlerMap[krate_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getRate);
+	fGetMsgHandlerMap[krate_GetSetMethod]		= TGetParamMsgHandler<int>::create(fRate);
+//	fGetMsgHandlerMap[krate_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getRate);
 	fGetMsgHandlerMap[kforward_GetSetMethod]	= TGetParamMethodHandler<IAppl, const vector<IMessage::TUrl> (IAppl::*)() const>::create(this, &IAppl::getForwardList);
 	fGetMsgHandlerMap[ktime_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::time);
 	fGetMsgHandlerMap[kticks_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::ticks);
@@ -200,7 +204,7 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 	fGetMsgHandlerMap["guido-version"]			= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::guidoversion);
 	fGetMsgHandlerMap["musicxml-version"]		= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::musicxmlversion);
 
-#ifdef RUNBENCH
+#if defined(RUNBENCH) || defined(TIMEBENCH)
 	fMsgHandlerMap[kstartBench_SetMethod]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::startBench);
 	fMsgHandlerMap[kstopBench_SetMethod]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::stopBench);
 	fMsgHandlerMap[kresetBench_SetMethod]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::resetBench);
@@ -348,6 +352,7 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 		fForwarder.forward(imsg);
 	}
 
+	int status = MsgHandler::kBadAddress;
 	string head = address;
 	string tail = addressTail;
 	SIMessage msg = IMessage::create (*imsg);
@@ -361,15 +366,33 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 	}
 
 	if (tail.size()) 		// application is not the final destination of the message
-		return IObject::processMsg(head, tail, msg);
+		status = IObject::processMsg(head, tail, msg);
 	
-	if (match(head)) {			// the message is for the application itself
-		int status = execute(msg);
+	else if (match(head)) {			// the message is for the application itself
+		status = execute(msg);
 		if (status & MsgHandler::kProcessed)
 			setState(IObject::kModified);
-		return status;
 	}
-	return MsgHandler::kBadAddress;
+	if ((status == MsgHandler::kProcessed) || (status == MsgHandler::kProcessedNoChange))
+		return status;
+
+	// at this point there is an error: trigger the error associated messages
+	error();
+	return status;
+}
+
+//--------------------------------------------------------------------------
+void IAppl::error () const
+{
+	const IMessageList*	msgs = getMessages (EventsAble::kError);	// look for watch error messages
+	if (msgs && msgs->list().size()) {
+		MouseLocation mouse (0, 0, 0, 0, 0, 0);
+		EventContext env(mouse, libmapping::rational(0,1), 0);
+		TMessageEvaluator me;
+		SIMessageList outmsgs = me.eval (msgs, env);
+		if (outmsgs && outmsgs->list().size())
+			outmsgs->send();
+	}
 }
 
 //--------------------------------------------------------------------------
@@ -536,6 +559,29 @@ MsgHandler::msgStatus IAppl::cursor(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
+MsgHandler::msgStatus IAppl::_watchMsg(const IMessage* msg, bool add)
+{ 
+	if (msg->size()) {
+		string what;
+		if (msg->param (0, what)) {
+			EventsAble::eventype t = EventsAble::string2type (what);
+			switch (t) {
+				case EventsAble::kError:
+					if (msg->size() > 1)
+						if (add) eventsHandler()->addMsg (t, msg->watchMsg2Msgs(1));
+						else eventsHandler()->setMsg (t, msg->watchMsg2Msgs(1));
+					else if (!add) eventsHandler()->setMsg (t, 0);
+					return MsgHandler::kProcessed;
+
+				default:
+					break;
+			}
+		}
+	}
+	return IObject::_watchMsg(msg, add);
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus IAppl::loadBuffer (const IMessage* msg)
 //bool IAppl::loadBuffer (const char* buffer)
 {
@@ -548,7 +594,7 @@ MsgHandler::msgStatus IAppl::loadBuffer (const IMessage* msg)
 	}
 	if (!s.str().size()) return MsgHandler::kBadParameters;
 
-	ITLparser p (&s, 0, &fJavascript, &fLua);
+	ITLparser p (&s, 0, this);
 	SIMessageList msgs = p.parse();
 	if (msgs) {
 		for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
@@ -566,6 +612,27 @@ MsgHandler::msgStatus IAppl::loadBuffer (const IMessage* msg)
 MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
 {
 	return load (msg, this, getRootPath());
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IAppl::browseMsg(const IMessage* msg)
+{
+	if (msg->size() != 1) return MsgHandler::kBadParameters;
+	string file;
+	if (!msg->param(0, file) || file.empty()) return MsgHandler::kBadParameters;
+	string url;
+	std::string begin;
+	begin.assign(file, 0, 7);
+	if ( (begin == "http://") || (begin == "https:/") || begin == "file://")
+		url = file;
+	else {
+		url ="file:/";
+		url += absolutePath(file);
+	}
+	QUrl qurl(url.c_str());
+	bool ret = QDesktopServices::openUrl(qurl);
+	if (!ret) return MsgHandler::kCreateFailure;
+	return MsgHandler::kProcessedNoChange;
 }
 
 //--------------------------------------------------------------------------

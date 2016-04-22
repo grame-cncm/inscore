@@ -113,7 +113,7 @@ QByteArray QArchiveHeader::generateHeader() const
 
 	//Writing CUSTOM PROPERTIES
 	out << (quint8) HEADER_CUSTOM_PROP;
-	out << generateCustomProp();
+	generateCustomProp(out);
 	out << (quint8) H_CUSTOM_END;
 
 	//Writing HIERARCHY
@@ -149,11 +149,8 @@ QByteArray QArchiveHeader::generateHeader() const
 }
 
 //______________________________________________
-QByteArray QArchiveHeader::generateCustomProp() const
+void QArchiveHeader::generateCustomProp(QDataStream &d) const
 {
-	QByteArray r;
-	QDataStream d(&r, QIODevice::WriteOnly);
-	d.setVersion(QDataStream::Qt_5_5);
 	for(auto it = fNbrProperties.begin(); it != fNbrProperties.end(); it++){
 		d << (quint8) (0x40 + it->first);
 		d << (float) it->second;
@@ -162,8 +159,6 @@ QByteArray QArchiveHeader::generateCustomProp() const
 		d << (quint8) (0xC0 + it->first);
 		d << it->second.c_str();
 	}
-
-	return r;
 }
 
 //______________________________________________
@@ -176,8 +171,6 @@ QArchiveError QArchiveHeader::readCustomProp(QDataStream &d)
 		if(fieldID == H_CUSTOM_END)
 					return ARCH_OK;
 		else if((fieldID & (quint8)0xC0) == (quint8)0xC0){	// string
-			quint8 t = fieldID & (quint8)0xC0 ;
-			quint8 t1 = (quint8) 0xC0;
 			char* c;
 			d >> c;
 			fStringProperties[fieldID & (quint8)0x3F] = std::string(c);
@@ -187,7 +180,7 @@ QArchiveError QArchiveHeader::readCustomProp(QDataStream &d)
 			d >> f;
 			fNbrProperties[fieldID & (quint8)0x3F] = f;
 		}else
-			FILE_CORRUPTED;
+			return FILE_CORRUPTED;
 	}
 
 	return FILE_CORRUPTED;
@@ -198,9 +191,6 @@ QArchiveError QArchiveHeader::readCustomProp(QDataStream &d)
 bool QArchiveHeader::addNbrProperty(int id, float value)
 {
 	if(id>64 || id<0)
-		return false;
-
-	if(fNbrProperties.count(id))
 		return false;
 
 	fNbrProperties[id] = value;
@@ -222,9 +212,6 @@ bool QArchiveHeader::readNbrProperty(int id, float &value)
 bool QArchiveHeader::addStringProperty(int id, std::string value)
 {
 	if(id>64 || id<0)
-		return false;
-
-	if(fStringProperties.count(id))
 		return false;
 
 	fStringProperties[id] = value;

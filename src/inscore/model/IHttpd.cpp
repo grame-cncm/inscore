@@ -25,6 +25,7 @@
 
 #include "IHttpd.h"
 #include "WebApi.h"
+#include "IAppl.h"
 #include "HTTPServer.h"
 #include "IScene.h"
 #include "ITLError.h"
@@ -115,7 +116,7 @@ bool IHttpd::init (int port)
 {
 	if(!fHttpdServer) {
 		// Create a new server
-		fApi = new WebApi(getScene()->getView(), getScene()->getJSEngine(), getScene()->getLUAEngine());
+		fApi = new WebApi(getScene()->getView(), getAppl());
 		fHttpdServer = new HTTPDServer(fApi, 0, 0);
 	} else {
 		// It's the same port, do nothing

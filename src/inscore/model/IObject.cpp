@@ -59,8 +59,6 @@
 #include "VObjectView.h"
 
 
-#define useiterator 0
-
 using namespace std;
 using namespace libmapping;
 
@@ -287,12 +285,16 @@ void IObject::timeAble()
 {
 	fGetMsgHandlerMap[kdate_GetSetMethod]		= TGetParamMsgHandler<rational>::create(fDate);
 	fGetMsgHandlerMap[kduration_GetSetMethod]	= TGetParamMsgHandler<rational>::create(fDuration);
+	fGetMsgHandlerMap[kdate_GetSetMethod]		= TGetParamMsgHandler<rational>::create(fDate);
+	fGetMsgHandlerMap[ktempo_GetSetMethod]		= TGetParamMsgHandler<int>::create(fTempo);
 
 	fMsgHandlerMap[kdate_GetSetMethod]		= TSetMethodMsgHandler<IObject,rational>::create(this, &IObject::setDate);
 	fMsgHandlerMap[kduration_GetSetMethod]	= TSetMethodMsgHandler<IObject,rational>::create(this, &IObject::setDuration);
+	fMsgHandlerMap[ktempo_GetSetMethod]		= TSetMethodMsgHandler<IObject,int>::create(this, &IObject::setTempo);
 	fMsgHandlerMap[kddate_SetMethod]		= TSetMethodMsgHandler<IObject,rational>::create(this, &IObject::addDate);
 	fMsgHandlerMap[kdduration_SetMethod]	= TSetMethodMsgHandler<IObject,rational>::create(this, &IObject::addDuration);
-    
+	fMsgHandlerMap[kdtempo_SetMethod]		= TSetMethodMsgHandler<IObject,int>::create(this, &IObject::addTempo);
+	
 	fMsgHandlerMap[kclock_SetMethod]		= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::clock);
 	fMsgHandlerMap[kdurClock_SetMethod]	= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::durclock);
 
@@ -306,17 +308,10 @@ void IObject::timeAble()
 void IObject::delsubnodes()
 {
 	setState(kSubModified);
-#if useiterator
-	for (subnodes::iterator i = elements().begin(); i != elements().end(); i++) {
-		(*i)->del();
-		(*i)->setState(kModified);
-	}
-#else
 	for (unsigned int i=0; i < elements().size(); i++) {
 		elements()[i]->del();
 		elements()[i]->setState(kModified);
 	}
-#endif
 }
 
 //--------------------------------------------------------------------------
@@ -380,20 +375,13 @@ void IObject::createVirtualNodes()
 //--------------------------------------------------------------------------
 SISignalNode IObject::signalsNode () const			{ return fSignals; }
 
-#define useiterator 0
 //--------------------------------------------------------------------------
 void IObject::propagateSignalsState ()
 {
 	SigModified visitor;
-#if useiterator
-	for (subnodes::iterator i = elements().begin(); i != elements().end(); i++) {
-		(*i)->accept(&visitor);
-	}
-#else
 	for (unsigned int i = 0; i < elements().size(); i++) {
 		elements()[i]->accept(&visitor);
 	}
-#endif
 }
 
 //--------------------------------------------------------------------------
@@ -458,8 +446,11 @@ void IObject::ptask ()
 void IObject::accept (Updater* u)		{ u->updateTo(this); }
 
 //--------------------------------------------------------------------------
-SIScene	IObject::getScene()					{ return fParent ? fParent->getScene() : 0; }
+SIScene			IObject::getScene()			{ return fParent ? fParent->getScene() : 0; }
 const IScene*	IObject::getScene() const	{ return fParent ? fParent->getScene() : 0; }
+//--------------------------------------------------------------------------
+SIAppl			IObject::getAppl()			{ return fParent ? fParent->getAppl() : 0; }
+const IAppl*	IObject::getAppl() const	{ return fParent ? fParent->getAppl() : 0; }
 
 //--------------------------------------------------------------------------
 const IObject * IObject::getRoot()	const	{ return fParent ? fParent->getRoot() : this; }
@@ -503,9 +494,9 @@ bool IObject::match(const std::string& regexp) const
 }
 
 //--------------------------------------------------------------------------
-bool IObject::accept(const std::string& regexp, const IMessage *)
+bool IObject::accept(const std::string& addr, const IMessage *)
 {
-	return match(regexp);
+	return match(addr);
 }
 
 //--------------------------------------------------------------------------
@@ -565,21 +556,12 @@ bool IObject::find(const std::string& expr, subnodes& outlist) const
 	else {
 		size_t size = outlist.size();
 
-	#if useiterator
-		subnodes::const_iterator i = elements().begin();
-		while (i!=elements().end()) {
-			if ((*i)->match(expr) && !(*i)->getDeleted())
-				outlist.push_back(*i);
-			i++;
-		}
-	#else
 		size_t n = elements().size();
 		for (size_t i = 0; i < n; i++) {
 			IObject * elt = elements()[i];
 			if (elt->match(expr) && !elt->getDeleted())
 				outlist.push_back(elt);
 		}
-	#endif
 		return outlist.size() > size;
 	}
 }
@@ -605,6 +587,7 @@ int IObject::execute (const IMessage* msg)
 	SMsgHandler handler = messageHandler(msg->message());
 	if ( handler ) return (*handler)(msg);
 
+#warning qui utilise le match true dans IObject::execute ?
 	// no basic handler , try to find if there is a match
 	handler = messageHandler(msg->message(), true);
 	if ( handler ) return (*handler)(msg);
@@ -674,7 +657,6 @@ void IObject::getObjects(const string& address, vector<const IObject*>& outv) co
 //--------------------------------------------------------------------------
 int IObject::processMsg (const string& address, const string& addressTail, const IMessage* msg)
 {
-//	bool result = false;
 	int result = MsgHandler::kBadAddress;
 	if (accept(address, msg)) {				// first make sure that the object is part of the address
 		string beg  = OSCAddress::addressFirst(addressTail);	// next takes the next destination object
@@ -708,6 +690,7 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 	}
 	if (result & MsgHandler::kProcessed)
     {
+#warning verifier pourquoi on force l'etat des enfants
 		size_t n = elements().size();
 		for (size_t i = 0; i < n; i++)
         {
@@ -1295,19 +1278,10 @@ MsgHandler::msgStatus IObject::exportAllMsg(const IMessage* msg)
 	return genericExport(msg, true);
 }
 
-//--------------------------------------------------------------------------
-MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
-{ 
-	if (!msg->size()) {					// no param to watch message
-		EventsAble::reset();			// clear every watched events
-		return MsgHandler::kProcessed;	// and exit
-	}
 
-	string what;
-	if (!msg->param (0, what))				// can't decode event to watch when not a string
-		return MsgHandler::kBadParameters;	// exit with bad parameter
-		
-	EventsAble::eventype t = EventsAble::string2type (what);
+//--------------------------------------------------------------------------
+bool IObject::acceptSimpleEvent(EventsAble::eventype t) const
+{
 	switch (t) {
 		case EventsAble::kMouseMove:
 		case EventsAble::kMouseDown:
@@ -1321,18 +1295,39 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 		case EventsAble::kExport:
 		case EventsAble::kNewData:
         case EventsAble::kDelete:
-			if (msg->size() > 1) {
-				SIMessageList watchMsg = msg->watchMsg2Msgs (1);
-				if (!watchMsg) return MsgHandler::kBadParameters;
+			return true;
+		default:
+			return false;
+	}
+	return false;
+}
 
-				if (add)
-                    eventsHandler()->addMsg (t, watchMsg);
-				else
-                    eventsHandler()->setMsg (t, watchMsg);
-			}
-			else if (!add) eventsHandler()->setMsg (t, 0);
-			break;
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
+{ 
+	if (!msg->size()) {					// no param to watch message
+		EventsAble::reset();			// clear every watched events
+		return MsgHandler::kProcessed;	// and exit
+	}
 
+	string what;
+	if (!msg->param (0, what))				// can't decode event to watch when not a string
+		return MsgHandler::kBadParameters;	// exit with bad parameter
+		
+	EventsAble::eventype t = EventsAble::string2type (what);
+	if (acceptSimpleEvent (t)) {
+		if (msg->size() > 1) {
+			SIMessageList watchMsg = msg->watchMsg2Msgs (1);
+			if (!watchMsg) return MsgHandler::kBadParameters;
+
+			if (add)
+				eventsHandler()->addMsg (t, watchMsg);
+			else
+				eventsHandler()->setMsg (t, watchMsg);
+		}
+		else if (!add) eventsHandler()->setMsg (t, 0);
+	}
+	else switch (t) {
 		case EventsAble::kTimeEnter:
 		case EventsAble::kTimeLeave:
 		case EventsAble::kDurEnter:

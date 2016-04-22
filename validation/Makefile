@@ -84,7 +84,7 @@ all:
 	make log
 	make save
 	make pdf
-	make filter
+#	make filter
 
 pdf:
 	make pdfgraphic

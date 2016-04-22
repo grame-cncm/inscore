@@ -7,25 +7,25 @@
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2016-02-10 15:31:00"> 
+<meta name="date" content="2016-03-29 10:00:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 2012--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 2057--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch13.html" >next</a>] [<a 
 href="OSCMsgch11.html" >prev</a>] [<a 
 href="OSCMsgch11.html#tailOSCMsgch11.html" >prev-tail</a>] [<a 
 href="#tailOSCMsgch12.html">tail</a>] [<a 
 href="OSCMsg3.html#OSCMsgch12.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;12</span><br /><a 
- id="x16-6300012"></a>Mapping graphic space to time space</h2>
-<!--l. 2015--><p class="noindent" >Time to space mapping refers to the description of relationship between an object local graphic space and its time
+ id="x16-6600012"></a>Mapping graphic space to time space</h2>
+<!--l. 2060--><p class="noindent" >Time to space mapping refers to the description of relationship between an object local graphic space and its time
 space. A mapping consists in a set of relations between the two spaces. INScore provides specific messages to
 describes mappings and to synchronize arbitrary objects i.e. to display their time relationships in the graphic
 space.
 <h3 class="sectionHead"><span class="titlemark">12.1    </span> <a 
- id="x16-6400012.1"></a>The &#8217;map&#8217; message</h3>
-<!--l. 2022--><p class="noindent" >The <span 
+ id="x16-6700012.1"></a>The &#8217;map&#8217; message</h3>
+<!--l. 2067--><p class="noindent" >The <span 
 class="pcrr8tn-">map </span>messages can be sent to any address with the form <span 
 class="pcrr8tn-">/ITL/</span><span 
 class="pcrro8t-">scene</span><span 
@@ -34,29 +34,29 @@ class="pcrro8t-">identifier</span>. It is intended to describe
 the target object relation to time and sets a relation between an object segmentation and a time segmentation. The
 global form of the message is:
 <a 
- id="dx16-64001"></a>
+ id="dx16-67001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2027--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2072--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">mapMsg</span> <img 
-src="OSCMsg67x.png" alt="PICT" >
+src="OSCMsg69x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx16-64002"></a>
-<!--l. 2030--><p class="noindent" >The <span 
+ id="dx16-67002"></a>
+<!--l. 2075--><p class="noindent" >The <span 
 class="pcrr8tn-">relation </span>parameter must be sent as a single string which format is described below. It consists in a list of
 associations between the object local space and its time space expressed as segments.
 <a 
- id="dx16-64003"></a>
+ id="dx16-67003"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2037--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2082--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">relation</span> <img 
-src="OSCMsg68x.png" alt="PICT" >
+src="OSCMsg70x.png" alt="PICT" >
 </div></dd></dl>
-<!--l. 2039--><p class="noindent" >Segments are expressed as a list of intervals. For a 1 dimension resource, a segment is a made of a single interval.
+<!--l. 2084--><p class="noindent" >Segments are expressed as a list of intervals. For a 1 dimension resource, a segment is a made of a single interval.
 For a 2 dimensions resource, a segment is a made of 2 intervals: an interval on the <span 
 class="pcrr8tn-">x</span>-axis and one on the <span 
 class="pcrr8tn-">y</span>-axis for
@@ -65,7 +65,7 @@ right-opened.
                                                                                  
 
                                                                                  
-<!--l. 2041--><p class="noindent" >The different kind of relations corresponds to:
+<!--l. 2086--><p class="noindent" >The different kind of relations corresponds to:
      <ul class="itemize1">
      <li class="itemize"><span 
 class="ptmb8t-">[1]  </span>a  relation  between  a  2  dimensions  segmentation  expressed  in  float  values  and  a  relative
@@ -83,9 +83,9 @@ class="ptmb8t-">[3] </span>a relation between a 1 dimension segmentation express
      segmentation. These segmentations are used by the <span 
 class="pcrr8tn-">graph </span>component and express a relation between
      a signal space and time.</li></ul>
-<!--l. 2047--><p class="noindent" >Table <a 
-href="#x16-640041">12.1<!--tex4ht:ref: maptable --></a> summarizes the specific local segmentation used by each component type.
-<!--l. 2049--><p class="noindent" >The specified <span 
+<!--l. 2092--><p class="noindent" >Table <a 
+href="#x16-670041">12.1<!--tex4ht:ref: maptable --></a> summarizes the specific local segmentation used by each component type.
+<!--l. 2094--><p class="noindent" >The specified <span 
 class="pcrr8tn-">map </span>can be named with an optional <span 
 class="pcrr8tn-">mapName </span>string; this name can be further reused, during object
 synchronization, to specify the mapping to use. When <span 
@@ -93,7 +93,7 @@ class="pcrr8tn-">mapName </span>is not specified, the mapping has a default <spa
 class="ptmri8t-">empty</span>
 <span 
 class="ptmri8t-">name</span>.
-<!--l. 2051--><p class="noindent" >The <span 
+<!--l. 2096--><p class="noindent" >The <span 
 class="pcrr8tn-">del </span>command deletes the mapping specified with <span 
 class="pcrr8tn-">mapName</span>, or the <span 
 class="ptmri8t-">&#8217;empty name&#8217; </span>mapping if no map name is
@@ -102,18 +102,18 @@ specified.
                                                                                  
 
                                                                                  
-<!--l. 2054--><p class="noindent" ><a 
- id="x16-640041"></a><hr class="float"><div class="float" 
+<!--l. 2099--><p class="noindent" ><a 
+ id="x16-670041"></a><hr class="float"><div class="float" 
 >
                                                                                  
 
                                                                                  
  <div class="caption" 
 ><span class="id">Table&#x00A0;12.1: </span><span  
-class="content">Local segmentation type for each component</span></div><!--tex4ht:label?: x16-640041 -->
+class="content">Local segmentation type for each component</span></div><!--tex4ht:label?: x16-670041 -->
 <div class="center" 
 >
-<!--l. 2056--><p class="noindent" >
+<!--l. 2101--><p class="noindent" >
 <div class="tabular"> <table id="TBL-5" class="tabular" 
 cellspacing="0" cellpadding="0" rules="groups" 
 ><colgroup id="TBL-5-1g"><col 
@@ -154,84 +154,84 @@ class="td11">                             </td></tr></table></div></div>
 </div><hr class="endfloat" />
 </div>
 <a 
- id="dx16-64005"></a>
+ id="dx16-67005"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2074--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2119--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">relativeTimeSegment</span> <img 
-src="OSCMsg69x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx16-64006"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 2077--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">float2DSegment</span> <img 
-src="OSCMsg70x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx16-64007"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 2080--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">int2DSegment</span> <img 
 src="OSCMsg71x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx16-64008"></a>
+ id="dx16-67006"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2083--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">int1DSegment</span> <img 
+<!--l. 2122--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">float2DSegment</span> <img 
 src="OSCMsg72x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx16-64009"></a>
+ id="dx16-67007"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2088--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">relativeTimeInterval</span> <img 
+<!--l. 2125--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">int2DSegment</span> <img 
 src="OSCMsg73x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx16-64010"></a>
+ id="dx16-67008"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2091--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">floatInterval</span> <img 
+<!--l. 2128--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">int1DSegment</span> <img 
 src="OSCMsg74x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx16-67009"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 2133--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">relativeTimeInterval</span> <img 
+src="OSCMsg75x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx16-67010"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 2136--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">floatInterval</span> <img 
+src="OSCMsg76x.png" alt="PICT" >
 </div></dd></dl>
                                                                                  
 
                                                                                  
 <a 
- id="dx16-64011"></a>
+ id="dx16-67011"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2094--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2139--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">intInterval</span> <img 
-src="OSCMsg75x.png" alt="PICT" >
+src="OSCMsg77x.png" alt="PICT" >
 </div></dd></dl>
-<!--l. 2096--><p class="noindent" >Relative time is expressed as <span 
+<!--l. 2141--><p class="noindent" >Relative time is expressed as <span 
 class="pcrr8tn-">rational </span>values where <span 
 class="pcrr8tn-">1 </span>represents a whole note.
 <a 
- id="dx16-64012"></a>
+ id="dx16-67012"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2100--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2145--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">rational</span> <img 
-src="OSCMsg76x.png" alt="PICT" >
+src="OSCMsg78x.png" alt="PICT" >
 </div></dd></dl>
-<!--l. 2102--><p class="noindent" ><span 
+<!--l. 2147--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -242,9 +242,9 @@ class="small-caps">E</span> </span><br
 class="newline" />Mapping an image graphic space to time:
 <div class="center" 
 >
-<!--l. 2110--><p class="noindent" >
+<!--l. 2155--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox64"> <div class="minipage"><span 
+class="colorbox" id="colorbox65"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myImage map </span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">&#x00A0;</span><span 
@@ -267,11 +267,11 @@ class="pcrr8tn-x-x-90">&#x00A0;</span><span
 class="pcrr8tn-x-x-90">&#x00A0;</span><span 
 class="pcrr8tn-x-x-90">&#x00A0;       ( [190, 235[ [0, 86[ ) ( [2/1, 5/2[ )" ;</span></div></div>
 </div>
-<!--l. 2111--><p class="noindent" >the image is horizontally segmented into 5 different graphic segments that express pixel positions. The vertical
+<!--l. 2156--><p class="noindent" >the image is horizontally segmented into 5 different graphic segments that express pixel positions. The vertical
 dimension of the segments remains the same and corresponds to the interval <span 
 class="pcrr8tn-">[0, 86[</span>. Each graphic segment is
 associated to a time interval which duration is 1/2 (a half note).
-<!--l. 2113--><p class="noindent" ><span 
+<!--l. 2158--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -310,44 +310,44 @@ class="pcrr8tn-">img</span>) express their local graphic space in pixels.</li></
 
                                                                                  
 <h3 class="sectionHead"><span class="titlemark">12.2    </span> <a 
- id="x16-6500012.2"></a>The &#8217;map+&#8217; message</h3>
-<!--l. 2126--><p class="noindent" >The <span 
+ id="x16-6800012.2"></a>The &#8217;map+&#8217; message</h3>
+<!--l. 2171--><p class="noindent" >The <span 
 class="pcrr8tn-">map+ </span>messages is similar to the <span 
 class="pcrr8tn-">map </span>message but doesn&#8217;t replace the existing mapping data: the specified
 relations are added to the existing one.
 <a 
- id="dx16-65001"></a>
+ id="dx16-68001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2130--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2175--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">mapAddMsg</span> <img 
-src="OSCMsg77x.png" alt="PICT" >
+src="OSCMsg79x.png" alt="PICT" >
 </div> </dd></dl>
 <a 
- id="dx16-65002"></a>
-<!--l. 2136--><p class="noindent" >
+ id="dx16-68002"></a>
+<!--l. 2181--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">12.3    </span> <a 
- id="x16-6600012.3"></a>Mapping files</h3>
-<!--l. 2138--><p class="noindent" >The <span 
+ id="x16-6900012.3"></a>Mapping files</h3>
+<!--l. 2183--><p class="noindent" >The <span 
 class="pcrr8tn-">mapf </span>messages is similar to the <span 
 class="pcrr8tn-">map </span>message but gives the path name of a file containing the mapping data,
 along with the optional map name.
 <a 
- id="dx16-66001"></a>
+ id="dx16-69001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2141--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2186--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">mapfMsg</span> <img 
-src="OSCMsg78x.png" alt="PICT" >
+src="OSCMsg80x.png" alt="PICT" >
 </div> </dd></dl>
 <a 
- id="dx16-66002"></a>
-<!--l. 2148--><p class="noindent" >
+ id="dx16-69002"></a>
+<!--l. 2193--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">12.4    </span> <a 
- id="x16-6700012.4"></a>Symbolic score mappings</h3>
-<!--l. 2151--><p class="noindent" >Mapping between the graphic and time space is automatically computed for symbolic score <span 
+ id="x16-7000012.4"></a>Symbolic score mappings</h3>
+<!--l. 2196--><p class="noindent" >Mapping between the graphic and time space is automatically computed for symbolic score <span 
 class="pcrr8tn-">gmn, gmnstream,</span>
 <span 
 class="pcrr8tn-">gmnf</span>. However and depending on the application, the graphic space may be segmented in different ways, for
@@ -356,29 +356,29 @@ for a symbolic score, the <span
 class="pcrr8tn-">map </span>message different and is only intended to select one king mapping supported by the
 system.
 <a 
- id="dx16-67001"></a>
+ id="dx16-70001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
                                                                                  
 
                                                                                  
-<!--l. 2155--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2200--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">scoreMap</span> <img 
-src="OSCMsg79x.png" alt="PICT" >
+src="OSCMsg81x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx16-67002"></a>
+ id="dx16-70002"></a>
 <a 
- id="dx16-67003"></a>
+ id="dx16-70003"></a>
 <a 
- id="dx16-67004"></a>
+ id="dx16-70004"></a>
 <a 
- id="dx16-67005"></a>
+ id="dx16-70005"></a>
 <a 
- id="dx16-67006"></a>
+ id="dx16-70006"></a>
 <a 
- id="dx16-67007"></a>
+ id="dx16-70007"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">page</span>: a page level mapping
@@ -400,9 +400,9 @@ class="pcrr8tn-">voice</span><span
 class="pcrro8t-">n</span>: a voice level mapping: the voice number is indicated by <span 
 class="pcrr8tn-">n</span>, a number between 1 and the score
      voices count.</li></ul>
-<!--l. 2171--><p class="noindent" >The default mapping for a symbolic score is unnamed but equivalent to <span 
+<!--l. 2216--><p class="noindent" >The default mapping for a symbolic score is unnamed but equivalent to <span 
 class="pcrr8tn-">staff1</span>.
-<!--l. 2173--><p class="noindent" ><span 
+<!--l. 2218--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -413,25 +413,25 @@ class="small-caps">E</span> </span><br
 class="newline" />Requesting the mapping of the third staff of a score:
 <div class="center" 
 >
-<!--l. 2175--><p class="noindent" >
+<!--l. 2220--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox65"> <div class="minipage"><span 
+class="colorbox" id="colorbox66"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myScore map staff3;</span>
 </div></div>
 </div>
-<!--l. 2176--><p class="noindent" >Requesting the system mapping :
+<!--l. 2221--><p class="noindent" >Requesting the system mapping :
 <div class="center" 
 >
-<!--l. 2177--><p class="noindent" >
+<!--l. 2222--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox66"> <div class="minipage"><span 
+class="colorbox" id="colorbox67"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myScore map system;</span>
 </div></div>
 </div>
                                                                                  
 
                                                                                  
-<!--l. 2179--><p class="noindent" ><span 
+<!--l. 2224--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -440,12 +440,12 @@ class="newline" />A voice may be distributed on several staves and thus a staff 
                                                                                  
 
                                                                                  
-<!--l. 2185--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 2230--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch13.html" >next</a>] [<a 
 href="OSCMsgch11.html" >prev</a>] [<a 
 href="OSCMsgch11.html#tailOSCMsgch11.html" >prev-tail</a>] [<a 
 href="OSCMsgch12.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch12.html" >up</a>] </p></div>
-<!--l. 2185--><p class="noindent" ><a 
+<!--l. 2230--><p class="noindent" ><a 
  id="tailOSCMsgch12.html"></a>  
 </body></html> 

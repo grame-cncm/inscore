@@ -25,6 +25,8 @@
 
 #include "IDate.h"
 #include "EventsAble.h"
+#include "IAppl.h"
+#include "IMessage.h"
 
 #include <iostream>
 
@@ -37,13 +39,15 @@ namespace inscore
 //--------------------------------------------------------------------------
 // IDate implementation
 //--------------------------------------------------------------------------
-IDate::IDate(const EventsAble* h) : TimeEventAble(h), fDate(0,1), fDuration(1,1), fDateChanged(true), fDurationChanged(true) {}
+IDate::IDate(const EventsAble* h)
+	: TimeEventAble(h), fDate(0,1), fDuration(1,1), fTempo(0), fPendingMove(false), fDateChanged(true), fDurationChanged(true) {}
+//--------------------------------------------------------------------------
+IDate::~IDate()		{}
 
 //--------------------------------------------------------------------------
 void IDate::cleanup ()
 { 
-//	fModified = false;
-	fDateChanged = fDurationChanged = false; 
+	fDateChanged = fDurationChanged = fPendingMove = false;
 }
 
 //--------------------------------------------------------------------------
@@ -54,6 +58,31 @@ void IDate::setDate (const rational& date)
 		handleTimeChange(fDate, date);
 		fDate = date;
 		fDateChanged = true;
+	}
+	if (fTempo && !fPendingMove) {
+		fPendingMove = true;
+		move();
+	}
+}
+
+//--------------------------------------------------------------------------
+void IDate::move () const
+{ 
+	rational dd ( int(IAppl::getRealRate() * fTempo), 60000 * 4);
+	dd.rationalize();
+	SIMessage msg = IMessage::create(getOSCAddress(), kddate_SetMethod);
+	msg->add(int(dd.getNumerator()));
+	msg->add(int(dd.getDenominator()));
+	msg->send(true);
+}
+
+//--------------------------------------------------------------------------
+void IDate::setTempo (int tempo)
+{ 
+	fTempo = tempo;
+	if (fTempo) {
+		fPendingMove = true;
+		move();
 	}
 }
 

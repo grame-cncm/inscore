@@ -6,7 +6,7 @@ TARGET = INScore
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
 
-VERSION = 1.17
+VERSION = 1.18
 CONFIG += c++11
 
 ############################## 
@@ -114,9 +114,8 @@ win32 {
 # macos x support
 ############################## 
 macx {
-    QMAKE_CXXFLAGS += -mmacosx-version-min=10.7
+    QMAKE_CXXFLAGS += -mmacosx-version-min=10.7 -Wno-deprecated-register
     QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7 
-    QMAKE_MAC_SDK = macosx10.8		# drag & drop doesn't work with macosx10.10 sdk on yosemite
 	CONFIG += lib_bundle explicitlib
 	QMAKE_INFO_PLIST = $$PWD/libInfo.plist
 	QMAKE_LFLAGS += -F$$ROOT/lib/GuidoEngine/macosx/

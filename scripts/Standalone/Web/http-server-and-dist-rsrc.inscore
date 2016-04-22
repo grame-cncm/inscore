@@ -1,0 +1,65 @@
+/ITL/scene/* del;
+
+/ITL/scene/gmnscore set gmnf "http://inscore.sf.net/scripts/rsrc/score1.gmn";
+/ITL/scene/gmnscore scale 0.32;
+/ITL/scene/gmnscore y -0.45;
+
+/ITL/scene/graphscore set img "https://upload.wikimedia.org/wikipedia/commons/5/52/Solitude.png";
+/ITL/scene/graphscore scale 0.17;
+/ITL/scene/graphscore y 0.16;
+
+/ITL/scene/mozart set img "https://upload.wikimedia.org/wikipedia/commons/d/df/MozartVeronadallaRosa.jpg";
+/ITL/scene/mozart scale 0.4;
+/ITL/scene/mozart x -0.4;
+/ITL/scene/mozart y 0.65;
+/ITL/scene/mozart penColor 200 0 100;
+/ITL/scene/mozart watch mouseEnter (/ITL/scene/mozart penWidth 5);
+/ITL/scene/mozart watch mouseLeave (/ITL/scene/mozart penWidth 0);
+/ITL/scene/mozart watch mouseDown  (/ITL browse 'https://en.wikipedia.org/wiki/Wolfgang_Amadeus_Mozart');
+
+/ITL/scene/comment set txtf "rsc/dist-rsrc.txt";
+/ITL/scene/comment scale 1.4;
+/ITL/scene/comment x 0.4;
+/ITL/scene/comment y 0.65;
+
+/ITL/scene/server set httpd 8000;
+/ITL/scene/server x 0.85;
+/ITL/scene/server y 0.85;
+/ITL/scene/server width 0.25;
+/ITL/scene/server height 0.25;
+/ITL/scene/server show 0;
+
+/ITL/scene/publish set txt "Publish";
+/ITL/scene/publish x 0.1;
+/ITL/scene/publish y 0.92;
+/ITL/scene/publish fontSize 32;
+/ITL/scene/publish watch mouseEnter (/ITL/scene/publish red 200);
+/ITL/scene/publish watch mouseLeave (/ITL/scene/publish red 0);
+
+publish = (
+	/ITL/client new,
+	/ITL/client/* del,
+
+	/ITL/client/httpscore set img "http://localhost:8000",
+	/ITL/client/httpscore scale 0.7,
+	/ITL/client/httpscore x -0.3,
+	/ITL/client/httpscore y -0.35,
+	/ITL/client/httpscore penWidth 2,
+	/ITL/client/httpscore penColor 180 180 180,
+
+	/ITL/client/s1 set txt "The score above is published at http://localhost:8000",
+	/ITL/client/s1  y 0.22,
+	/ITL/client/s1  x -0.3,
+
+	/ITL/client/proll set pianoroll "[g f e d f a g e a b g f e f c d]",
+	/ITL/client/proll y -0.32,
+	/ITL/client/proll x 0.6,
+	/ITL/client/proll angle 90,
+	/ITL/client/proll width 1.1,
+
+	/ITL/client/art set img 'rsc/sc11.png',
+	/ITL/client/art scale 0.4,
+	/ITL/client/art  y 0.6,
+	/ITL/client/art  x 0
+);
+/ITL/scene/publish watch mouseDown $publish;

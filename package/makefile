@@ -1,4 +1,4 @@
-version := 1.17
+version := 1.18
 system	:= $(shell uname -s)
 ifeq ($(system), MINGW32_NT-6.1) 
 	win32 = yes
@@ -55,15 +55,14 @@ scripts := $(shell cat samples-list.txt)
 help:
 	@echo This makefile builds the INScore package.
 	@echo usage:
-	@echo "  make macosx   # on Mac OS X"
-	@echo "  make win32    # on Windows"
-	@echo "  make win64    # on Windows 64 bits"
-	@echo "  make linux    # on Linux (only build the rsrc)"
-	@echo "  make src      # makes src package"
-	@echo "  make rsrc     # makes rsrc for SF FRS"
-	@echo "  make doc      # makes doc"
-
-#include makeBundle
+	@echo "  make macosx      # for Mac OS X"
+	@echo "  make win32       # for Windows 32 bits"
+	@echo "  make win64       # for Windows 64 bits"
+	@echo "  make linux       # for Linux (only build the rsrc)"
+	@echo "  make src         # makes src package"
+	@echo "  make rsrc        # makes rsrc for SF FRS"
+	@echo "  make doc         # makes doc"
+	@echo "  make interfaces  # makes the list, csound and python packages"
 
 dmg:
 	hdiutil create $(package).dmg -srcfolder $(package) -ov
@@ -96,7 +95,8 @@ common:
 	cp ../src/changelog.txt $(package)
 	make samples
 		
-doc: 
+doc:
+	make -C $(docsrc)/webAPI html
 	make copydoc
 		
 copydoc: 
@@ -104,9 +104,12 @@ copydoc:
 	cp -f $(docsrc)/OSCMsg.pdf $(docdst)
 	make -C $(docsrc) htmlclean
 	rm -f $(docdst)/html/*
+	rm -rf $(docdst)/WebAPI/*
 	cp  $(docsrc)/OSCMsg/* $(docdst)/html
 	cp  $(docsrc)/refcards/INScore-refcard-1.12.pdf $(docdst)
+	cp  -r $(docsrc)/webAPI/build/html/ $(docdst)/WebAPI
 	cd  $(docdst) && tar czf html.tgz html
+	cd  $(docdst) && tar czf WebAPI.tgz WebAPI
 
 interfaces:
 	@[ -d $(rsrc)/$(interf) ] || mkdir -p $(rsrc)/$(interf)
@@ -115,8 +118,9 @@ interfaces:
 	tar czf $(rsrc)/$(interf)/csound.tgz ../$(interf)/csound	
 
 scripts:
-	@[ -d $(rsrc)/scripts ] || mkdir -p $(rsrc)/scripts
+	@[ -d $(rsrc)/scripts/bundles ] || mkdir -p $(rsrc)/scripts/bundles
 	cp -R ../scripts/Standalone/* $(rsrc)/scripts
+	cp -R ../scripts/mobile/*.ibundle $(rsrc)/scripts/bundles
 	rm -f $(shell find $(rsrc)/scripts -name "*DS_Store")
 	cd $(rsrc) && tar czf scripts.tgz scripts
 
@@ -157,8 +161,9 @@ samples:
 	
 src:
 	@[ -d $(package)-src ] || mkdir -p $(package)-src
-	@[ -d $(package)-src/build || mkdir -p $(package)-src/build
-	@[ -d $(package)-src/rsrc/images || mkdir -p $(package)-src/rsrc/images ]
+	@[ -d $(package)-src/build ] || mkdir -p $(package)-src/build
+	@[ -d $(package)-src/rsrc/images ] || mkdir -p $(package)-src/rsrc/images
+	@[ -d $(package)-src/scripts ] || mkdir -p $(package)-src/scripts
 	cp -rf ../src $(package)-src/
 	cp -rf ../build/*.pro $(package)-src/build
 	cp -rf ../build/Makefile $(package)-src/build
@@ -168,18 +173,38 @@ src:
 	cp -rf ../rsrc/*.qrc $(package)-src/rsrc
 	cp -rf ../rsrc/INScoreViewer.* $(package)-src/rsrc
 	cp -rf ../rsrc/images/*.png $(package)-src/rsrc/images
+	cp -rf ../rsrc/grame.png $(package)-src/rsrc/
+	cp -rf ../rsrc/mobile $(package)-src/rsrc/
+	cp -rf ../rsrc/fonts $(package)-src/rsrc/
+	cp -rf ../rsrc/android $(package)-src/rsrc/
 	cp -rf ../lib $(package)-src/
 	cp -rf ../win32 $(package)-src/
-	rm -rf $(package)-src/lib/poppler
-	rm -rf $(package)-src/lib/lua
-	rm -rf $(package)-src/lib/javascript
+	cp -rf ../tools $(package)-src/
+	cp -rf ../scripts/mobile $(package)-src/scripts/
 	cp readme.txt $(package)-src
 	cp ../readme.txt $(package)-src/install
 	cp -r doc $(package)-src
+	make srcclean
 	@echo ===================================	
 	@echo manually cleanup src folder from hidden, unused and unwanted files
 	@echo ===================================	
 	tar czf $(package)-src.tgz $(package)-src
+
+FMWK := $(shell find $(package)-src/lib -name "*.framework")
+srcclean:
+	rm -rf $(package)-src/lib/poppler
+	rm -rf $(package)-src/lib/lua
+	rm -rf $(package)-src/lib/javascript
+	rm -rf $(package)-src/lib/Guido*/lib
+	rm -rf $(package)-src/tools/QtOSC*
+	rm -rf $(package)-src/tools/benchs
+	cd $(package)-src/tools && rm -f E* *.awk getMethods Makefile IBundle/IBundle*
+	cd $(package)-src/tools/inscore2inscore100 && rm -rf inscore2inscore100 cmake/Debug cmake/Release
+	cd $(package)-src/tools/inscore2inscore90 && rm -rf inscore2inscore90 cmake/Debug cmake/Release
+	cd $(package)-src/tools/INScoreListener/build && rm -rf Debug Release *.build *.xcodeproj
+	cd $(package)-src/scripts/mobile && rm -rf *.ibundle *.graffle
+	rm -rf $(package)-src/tools/IBundle/build/macos
+	rm -rf $(FMWK)
 
 win32:
 	make wincommon

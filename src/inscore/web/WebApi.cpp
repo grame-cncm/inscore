@@ -77,7 +77,7 @@ std::string WebApi::postScript(const std::string &inscoreScript)
 {
     stringstream stream;
     stream.str(inscoreScript);
-    ITLparser p (&stream, 0, fJsEngine, fLua);
+    ITLparser p (&stream, 0, fParseEnv);
 
     // wait for other network users
 	fPostCommandMutex.lock();
