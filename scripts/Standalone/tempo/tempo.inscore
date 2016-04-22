@@ -1,0 +1,69 @@
+
+/ITL/scene/* del;
+
+shadow 		= shadow 5 5 0 0 0 75 20;
+titlecolor  = 20 0 150;
+gray 		= 150 150 150;
+titlesize 	= 50;
+textsize  	= 20;
+starttempo	= 60;
+
+###########################################
+# start to install the title
+###########################################
+/ITL/scene/title set txt "Moving cursor";
+/ITL/scene/title color $titlecolor;
+/ITL/scene/title fontSize $titlesize;
+/ITL/scene/title fontWeight bold;
+/ITL/scene/title effect $shadow;
+/ITL/scene/title y -0.55;
+/ITL/scene/subtitle set txt "Using the 'tempo' message";
+/ITL/scene/subtitle fontSize $textsize;
+/ITL/scene/subtitle color $gray;
+/ITL/scene/subtitle y -0.42;
+/ITL/scene/tempo set txt Tempo $starttempo;
+/ITL/scene/tempo color $gray;
+/ITL/scene/tempo fontSize 32;
+/ITL/scene/tempo y 0.42;
+
+###########################################
+# setup a simple score
+###########################################
+/ITL/scene/score set gmn '[\meter<"4/4"> g g g g g g g g g g g g \repeatEnd]';
+/ITL/scene/score scale 0.5;
+
+###########################################
+# and a cursor synchronized to the score
+###########################################
+c1 = 0 0 250;
+c2 = 0 250 0;
+c3 = 250 0 0;
+/ITL/scene/cursor set ellipse 0.1 0.1;
+/ITL/scene/cursor color $c1;
+/ITL/scene/sync cursor score syncTop;
+/ITL/scene/cursor dy -0.1;
+
+###########################################
+# watch different time zones to change the tempo
+###########################################
+/ITL/scene/cursor watch timeLeave 2 3 (
+	/ITL/scene/cursor date 0, 
+	/ITL/scene/cursor tempo $starttempo,
+	/ITL/scene/tempo set txt Tempo $starttempo,
+	/ITL/scene/cursor color $c1
+	);
+/ITL/scene/cursor watch timeLeave 0 1 (
+	/ITL/scene/cursor tempo 120,
+	/ITL/scene/tempo set txt Tempo 120,
+	/ITL/scene/cursor color $c2
+);
+/ITL/scene/cursor watch timeLeave 1 2 (
+	/ITL/scene/cursor tempo 240,
+	/ITL/scene/tempo set txt Tempo 240,
+	/ITL/scene/cursor color $c3
+);
+
+###########################################
+# and finally start 
+/ITL/scene/cursor tempo $starttempo;
+

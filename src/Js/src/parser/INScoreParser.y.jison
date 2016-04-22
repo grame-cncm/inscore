@@ -24,7 +24,7 @@ inscore		: expr
 expr		: message  ENDEXPR		{ parser.msgs.push($1); }
 			| variabledecl ENDEXPR	{ }
 			| script				{ }
-			| ENDSCRIPT				{ debugmsg("expr ENDSCRIPT "); this.done = true; }
+			| ENDSCRIPT				{ debugmsg("expr ENDSCRIPT "); return true; }
 			;
 
 //_______________________________________________

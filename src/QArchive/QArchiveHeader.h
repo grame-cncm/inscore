@@ -37,6 +37,9 @@ enum QArchiveError{
 
 class QArchive;
 
+/*!
+ * \brief The QArchiveHeader class handle the header of the QArchive. It store the meta data (archive version, custom properties...), it can generate or read a QArchive header.
+ */
 class QArchiveHeader
 {
 	friend class QArchive;
@@ -46,10 +49,34 @@ class QArchiveHeader
 	std::map<int, std::string> fStringProperties;
 
 public:
+	/*!
+	 * \brief Add or replace a custom number property
+	 * \param id The index of the property (0 <= id < 64). Number and string index are indepedant
+	 * \param value The value stored at this index
+	 * \return True if id is a valid index, false otherwise.
+	 */
 	bool addNbrProperty (int id, float value);
+	/*!
+	 * \brief Read a number property.
+	 * \param id The index of the property to read.
+	 * \param value Store the value of the property.
+	 * \return True if the property exists, false otherwise.
+	 */
 	bool readNbrProperty(int id, float &value);
 
+	/*!
+	 * \brief Add or replace a custom string property
+	 * \param id The index of the property (0 <= id < 64). Number and string index are indepedant
+	 * \param value The value stored at this index
+	 * \return True if id is a valid index, false otherwise.
+	 */
 	bool addStringProperty (int id, std::string value);
+	/*!
+	 * \brief Read a string property.
+	 * \param id The index of the property to read.
+	 * \param value Store the value of the property.
+	 * \return True if the property exists, false otherwise.
+	 */
 	bool readStringProperty(int id, std::string &value);
 
 
@@ -61,7 +88,7 @@ protected:
 	QArchiveError	readHeader(QIODevice *input);
 	QByteArray		generateHeader() const;
 
-	QByteArray		generateCustomProp() const;
+	void generateCustomProp(QDataStream &dataStream) const;
 	QArchiveError	readCustomProp(QDataStream &dataStream);
 
 };

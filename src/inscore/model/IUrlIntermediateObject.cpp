@@ -34,8 +34,6 @@
 
 #include "QFileDownloader.h"
 
-#define useiterator 0
-
 using namespace libmapping;
 
 namespace inscore

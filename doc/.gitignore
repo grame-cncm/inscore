@@ -20,5 +20,8 @@
 OSCMsg/WARNINGS
 doxygen/IASL-*.pdf
 doxygen/IASL-*/
+doxygen/ALL-*/
+doxygen/*latex
 doxygen/html/
 doxygen/latex/
+doxygen/INScore-*

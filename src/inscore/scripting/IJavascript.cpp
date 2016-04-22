@@ -29,6 +29,7 @@
 #include "IJavascript.h"
 #include "IGlue.h"
 #include "OSCAddress.h"
+#include "IAppl.h"
 
 using namespace std;
 
@@ -37,9 +38,9 @@ namespace inscore
 
 const char* IJavascript::kName = "javascript";
 //--------------------------------------------------------------------------
-IJavascript::IJavascript(IObject * parent, TJSEngine* js) 
+IJavascript::IJavascript(IObject * parent) 
 :	IVNode (kName, parent),
-	fScripter (js) 
+	fScripter (parent->getAppl())
 {
 	fMsgHandlerMap[krun_SetMethod]	= TMethodMsgHandler<IJavascript>::create(this, &IJavascript::runMsg);
 }

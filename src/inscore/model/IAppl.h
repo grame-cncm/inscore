@@ -37,6 +37,7 @@
 #include "udpinfo.h"
 #include "benchtools.h"
 #include "Forwarder.h"
+#include "TParseEnv.h"
 
 class QApplication;
 namespace inscore
@@ -63,7 +64,7 @@ typedef class libmapping::SMARTP<IFilterForward> SIFilterForward;
 /*!
 	\brief the application object of the model
 */
-class IAppl : public IObject, public TILoader
+class IAppl : public IObject, public TILoader, public TParseEnv
 {
 	typedef std::map<std::string, std::pair<std::string, std::string> >		TAliasesMap;
 	static TAliasesMap fAliases;
@@ -73,8 +74,10 @@ class IAppl : public IObject, public TILoader
 	static bool			fRunning;
 	static std::string	fVersion;					// the application version number
 	static float		fVersionNum;				// the application version number as floating point value
-	static float		fCompatibilityVersionNum;		// the supported version number as floating point value
+	static float		fCompatibilityVersionNum;	// the supported version number as floating point value
 	static udpinfo		fUDP;						// udp port settings
+	static int			fRate;						// the time task rate
+	static float		fRealRate;				// the time task real rate in mls (maintained for every tick)
 
 		int			fStartTime;					// the application start time
 		int			fCurrentTime;				// the application current time
@@ -85,7 +88,6 @@ class IAppl : public IObject, public TILoader
 		SIFilterForward fFilterForward;			// A virtual node to manage filter for message forwarding
 		Forwarder	fForwarder;					// A forwarder class to manage message forwarding
 		bool		fOffscreen;
-		int			fRate;						// the time task rate
 		QApplication*	fAppl;					// the Qt application
 		QMutex		fTimeMutex;
 
@@ -105,7 +107,7 @@ class IAppl : public IObject, public TILoader
 				return new IAppl(appl, offscreen);
 			}
 		static std::string		getRootPath()				{ return fRootPath; }	//< returns the application root path
-		static std::string		absolutePath( const std::string& path );		//< returns the absolute path corresponding to 'path',
+		static std::string		absolutePath( const std::string& path );			//< returns the absolute path corresponding to 'path',
 
 		static void				addAlias( const std::string& alias, const std::string& address, const std::string& msg);
 		static void				delAliases( const std::string& address);
@@ -127,7 +129,6 @@ class IAppl : public IObject, public TILoader
 		static const std::string&	getUDPErrAddress()		{ return fUDP.fErrDstAddress; }
 		IApplLog*			getLogWindow()	{ return fApplLog; }
 		
-		int		getRate() const				{ return fRate; }
 		/*!
 		 * \brief getForwardList Get the list of host to which forward message.
 		 * \return
@@ -156,18 +157,29 @@ class IAppl : public IObject, public TILoader
 		*/
 		virtual int processMsg (const std::string& address, const std::string& addressTail, const IMessage* msg);
 		
+		static int		getRate()					{ return fRate; }
+		static float	getRealRate()				{ return fRealRate; }
 		static void		setUDPInPort(int p)			{ fUDP.fInPort = p; }
 		static void		setUDPOutPort(int p)		{ fUDP.fOutPort = p; }
 		static void		setUDPErrPort(int p)		{ fUDP.fErrPort = p; }
 		void		setUDPInPortHandler(int p)		{ IAppl::setUDPInPort(p); }
 		void		setUDPOutPortHandler(int p)		{ IAppl::setUDPOutPort(p); }
 		void		setUDPErrPortHandler(int p)		{ IAppl::setUDPErrPort(p); }
-		void		setRate(int rate)			{ fRate = rate; }
+		void		setRate(int rate)				{ fRate = rate; }
+		void		setRealRate(unsigned long rate)	{ fRealRate = rate / 1000.f; }
 		void		setReceivedOSC(int n);
 
 		void		resetBench();
-		bool		offscreen()	const			{ return fOffscreen; }
+		bool		offscreen()	const				{ return fOffscreen; }
 		void		ptask ();
+		void		error () const;					//< trigger the error event, error must be checked before
+
+		TJSEngine*	getJSEngine()					{ return &fJavascript; }
+		TLua*		getLUAEngine()					{ return &fLua; }
+
+		/// \brief gives the application node
+		virtual SIAppl			getAppl()			{ return this; }
+		virtual const IAppl*	getAppl() const		{ return this; }
 
 		static std::string checkRootPath (const std::string& path);
 		static std::string defaultFontName ();
@@ -184,9 +196,6 @@ class IAppl : public IObject, public TILoader
 		static void		setUDPErrAddress(const std::string& a)	{ fUDP.fErrDstAddress = a; }
 		void		setDefaultShow(bool state)				{ fDefaultShow = state; }
 
-		TJSEngine*		getJSEngine()		{ return &fJavascript; }
-		TLua*			getLUAEngine()		{ return &fLua; }
-
 		virtual		SIMessageList getAll () const;
 
 		SIMessage	hello() const;
@@ -200,6 +209,9 @@ class IAppl : public IObject, public TILoader
 
 		/// \brief application \c 'load' message handler.
 		virtual MsgHandler::msgStatus loadMsg (const IMessage* msg);
+
+		/// \brief application \c 'browse' message handler.
+		virtual MsgHandler::msgStatus browseMsg (const IMessage* msg);
 	
 		/// \brief load a buffer containing an inscore script
 		virtual MsgHandler::msgStatus loadBuffer (const IMessage* msg);
@@ -219,7 +231,10 @@ class IAppl : public IObject, public TILoader
 		/// \brief application \c 'clear' message handler.
 		virtual MsgHandler::msgStatus urlCache (const IMessage* msg);
 
-#ifdef RUNBENCH
+		/// \brief the \c 'watch' message handler
+		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
+
+#if defined(RUNBENCH) || defined(TIMEBENCH)
 		void	startBench()			{ bench::start(); }
 		void	stopBench()				{ bench::stop(); }
 		MsgHandler::msgStatus	writeBench(const IMessage* msg);

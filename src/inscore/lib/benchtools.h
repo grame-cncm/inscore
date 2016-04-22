@@ -62,6 +62,7 @@ class bench
 
 
 //#define RUNBENCH
+//#define TIMEBENCH
 
 #ifdef RUNBENCH
 #define  timebench(name,f)				\

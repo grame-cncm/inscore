@@ -56,10 +56,6 @@ class TILoader
 
 		virtual MsgHandler::msgStatus	load(const IMessage* msg, IObject* client, const std::string& rootpath);
 
-
-		virtual TJSEngine*		getJSEngine()	= 0;
-		virtual TLua*			getLUAEngine()	= 0;
-
 	public:
 		static std::string		makeAbsolutePath( const std::string& path, const std::string& file );
 };

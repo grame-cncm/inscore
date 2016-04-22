@@ -29,16 +29,6 @@
 
 namespace inscore {
 
-class ExprInfo
-{
-public:
-    static std::set<std::string> fileDependency(const SIExpression& expr);
-	static void fileReplace(SIExpression &expr, const filepath& search, const filepath& replace);
-
-};
-
-//____________________________________________________________________
-// ------------------------------------------------------------------
 /*!
  * \brief Evaluate an IExpression and return a list of the ressources used in it
  */
@@ -93,6 +83,24 @@ protected:
 	ExprSearchReplace(T search, T replace): ExprSearchReplacebase(), fSearch(search), fReplace(replace){}
 
 };
+
+//____________________________________________________________________
+// ------------------------------------------------------------------
+
+/*!
+ * \brief The ExprInfo class defines static method to retreive information from an expression tree
+ */
+class ExprInfo
+{
+public:
+	static std::set<std::string> fileDependency(const SIExpression& expr);
+	static void fileReplace(SIExpression &expr, const filepath& search, const filepath& replace);
+
+	template <typename T>
+	static void searchAndReplace(SIExpression &expr, const T& search, const T& replace)	{ExprSearchReplace<T>::searchReplace(expr, search, replace);}
+
+};
+
 
 } // End namespace
 

@@ -25,6 +25,7 @@
 
 #include <iostream>
 #include <QFile>
+#include <QDebug>
 #ifndef USEPHONON
 #include <QGraphicsVideoItem>
 #endif
@@ -108,6 +109,7 @@ void VVideoView::initFile( IVideo * video, const QString&  videoFile )
 
 	fVideoItem->setAspectRatioMode(Qt::IgnoreAspectRatio);
 
+qDebug() << "VVideoView::initFile isSeekable" << fMediaPlayer.isSeekable() ;
 	video->setWidth(0.01f);			// default width
 	video->setHeight(0.01f);		// and height
 //	video->setVisible (false);

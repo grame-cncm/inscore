@@ -10,6 +10,11 @@ lib/oscpack/*/*.o
 lib/oscpack/bin
 lib/oscpack/cmake/Makefile
 lib/oscpack/oscpack
+lib/GuidoAR/macosx/guidoar.framework/
+lib/libMusicXML/macosx/libmusicxml2.dylib
+
+package/doc/WebAPI.tgz
+
 src/libmapping/doc/html/
 src/libmapping/doc/latex/
 tmp/
@@ -25,6 +30,10 @@ scripts/mobile/*.ibundle
 *.app
 *.apk
 *.user
+*.xcodeproj
+*.build
+*.o
+moc_*.cpp
 android
 ios
 macos

@@ -84,7 +84,7 @@
 
 \begin{document}
 
-\title{INScore \\ OSC Messages Reference \\v.1.17}
+\title{INScore \\ OSC Messages Reference \\v.1.18}
 
 \author{D. Fober\\ GRAME\\ Centre national de cr\'eation musicale\\
 {\small <fober@grame.fr>} \\
@@ -618,7 +618,7 @@ Setting a rectangle border width and color:
 }
 
 %-------------------------------
-%:'effect' messages
+%:  'effect' messages
 \sublevel{The 'effect' messages}
 \label{effectmsg}
 
@@ -693,6 +693,9 @@ The shadow offset is (10,10) pixels, the color is a transparent grey (100,100,10
 %:Time management messages
 \toplevel{Time management messages}
 \label{time}
+%===============================
+%:  Date and duration
+\sublevel{Date and duration}
 Time messages control the time dimension of the score components. They could be sent to any address with the form \OSC{/ITL/\textit{scene}/\textit{identifier}} where \OSC{\textit{identifier}} is the unique identifier string of a scene component.
 \begin{rail}
 timeMsg : 'clock'
@@ -733,14 +736,38 @@ time : (([1] int32 int32) | [2] int32 | [3] float32 | [4] 'n/d')
 \example \\
 Various ways to set an object date.
 \sample{/ITL/scene/myObject date 2 1 ;\\
-/ITL/scene/myObject date 2;     \hspace{1.2cm}// the denominator is 1 (implied) \\
-/ITL/scene/myObject date 0.5;   \hspace{7mm} // equivalent to 1/2 \\
-/ITL/scene/myObject date '1/2'; \hspace{4mm} // the string form
+/ITL/scene/myObject date 2;     \hspace{1.2cm}! the denominator is 1 (implied) \\
+/ITL/scene/myObject date 0.5;   \hspace{7mm} ! equivalent to 1/2 \\
+/ITL/scene/myObject date '1/2'; \hspace{4mm} ! the string form
 }
 Similar ways to move an object date.
 \sample{/ITL/scene/myObject clock;   \\
 /ITL/scene/myObject ddate '1/96';
 }
+
+%===============================
+%:  Tempo
+\sublevel{Tempo}\label{tempo}
+The \OSC{tempo} message is supported by all the score components. It's default value is 0. When non null, the date of an object is moved at the corresponding tempo (e.g. with a temo = 60, the date move will be 1/4 - a quarter note - every second). Note that the date is refreshed at INScore time task rate.
+\begin{rail}
+tempoMsg : 'tempo' val
+		| 'dtempo' val
+\end{rail}
+\index{Time messages!tempo}
+
+\begin{itemize}
+\item \OSC{tempo}: set an object tempo. Default value is 0.
+\item \OSC{dtempo}: relative tempo message: adds the specified value to the object tempo.
+\end{itemize}
+
+\example \\
+A cursor moving over a score using the \OSC{tempo} message.
+\sample{/ITL/scene/score set gmn "[a a a a a a]"; 	\hspace{3mm} ! a short score \\
+/ITL/scene/cursor set ellipse 0.5 0.5;   			\hspace{7.5mm} ! a cursor \\
+/ITL/scene/sync cursor score;   					\hspace{22mm} ! synchonizes the cursor to the score \\
+/ITL/scene/cursor tempo 80; 						\hspace{25.5mm} ! an set the tempo
+}
+
 
 %===============================
 %:Miscellaneous messages
@@ -802,7 +829,7 @@ setMsg : 'set' (
 	('gmnstream' gmnStream) |
 	('musicxml' xmlString) |
 	('musicxmlf' xmlFilePath) |
-	('expr' scoreExpression)
+	('gmn' 'expr' scoreExpression)
 )
 \end{rail}
 \index{Common messages!set}
@@ -818,7 +845,7 @@ setMsg : 'set' (
 \item \OSC{gmnstream}: a Guido score defined by a GMN stream (a GMN string that can be written in several times).
 \item \OSC{musicxml}: a score defined by a MusicXML string.
 \item \OSC{musicxmlf}: a score defined by a MusicXML file.
-\item \OSC{expr}: a score defined by a \emph{score expression}.
+\item \OSC{gmn expr}: a score defined by a \emph{score expression}. See section \fullref{scoreExpr} for the score expressions reference.
 \end{itemize}
 
 \example \\
@@ -844,7 +871,8 @@ Piano roll music notation is based on the Guido Music Notation format [GMN].
 setMsg : 'set' (
 	('pianoroll' gmnString) |
 	('pianorollstream' gmnStream) |
-	('pianorollf' filePath)
+	('pianorollf' filePath) |
+	('pianoroll' 'expr' scoreExpression)
 )
 \end{rail}
 \index{Common messages!set}
@@ -856,6 +884,7 @@ setMsg : 'set' (
 \item \OSC{pianoroll}: a piano roll defined by a GMN string.
 \item \OSC{pianorollstream}: a piano roll defined by a GMN stream (a GMN string that can be written in several times).
 \item \OSC{pianorollf}: a piano roll defined by a guido file (with ".gmn" extension) or by a midi file (with ".mid" extension). Warning: url forms are not supported for midi files.
+\item \OSC{pianoroll expr}: a piano roll defined by a \emph{score expression}. See section \fullref{scoreExpr} for the score expressions reference.
 \end{itemize}
 
 \example \\
@@ -1624,6 +1653,22 @@ The default \OSC{port}, \OSC{outport} and \OSC{errport} values are 7000, 7001 an
 
 \note{} \\
 Error messages are sent as a single string.
+
+%===============================
+%:  System support
+\sublevel{System support}
+\label{system}
+
+\begin{rail}
+ITLSystem : ('browse' file)
+\end{rail}
+\index{ITL messages!browse}
+
+\begin{itemize}
+\item \OSC{browse} open the file given as parameter using the system default browser. The message supports URLs that can be of type \OSC{http://} , \OSC{https://} or \OSC{file://} . It supports also direct reference to a local file (e.g. myfile.html) that is translated into \OSC{file://} url using the application rootPath.
+\end{itemize}
+
+
 
 %===============================
 %:  Application level queries
@@ -2673,7 +2718,7 @@ interactMsg : (('watch' | 'watch+')  ([1] |
 \index{Interaction!watch}
 \index{Interaction!watch+}
 
-\OSC{what} represents the event to watch and \OSC{message} is a list of associated messages, separated by a comma. 
+\OSC{what} represents the event to watch and \OSC{message} is a list of associated messages, separated by a comma. Colon is also supported as separator (to avoid issues with comma in Max).
 
 \begin{itemize}
 \item [1]: clear all the messages for all the events.
@@ -2824,26 +2869,50 @@ Triggering an error message in case of failure :
 \begin{rail}
 what : 	  'export'
 		| 'newData'
-		| 'newElement'
-		| 'endPaint'
 		| 'del'
 \end{rail}
 \index{Interaction!Events!export}
-\index{Interaction!Events!newElement}
-\index{Interaction!Events!endPaint}
+\index{Interaction!Events!newData}
 \index{Interaction!Events!del}
 
 \begin{itemize}
 \item the \OSC{export} event is supported by all the components. It is triggered after an export message has been handled and could be used to simulate synchronous exports.
 \item the \OSC{newData} event is supported by all the components. It is triggered when the object specific data are modified (typically using the \OSC{set} message).
+\item the \OSC{del} event is triggered when an object is being deleted.
+\end{itemize}
+
+
+%===============================
+%:       Type specific events
+\subsublevel{Type specific events}
+\label{typespecevents}
+
+\begin{rail}
+what : 	  'pageCount'
+		| 'newElement'
+		| 'endPaint'
+		| 'error'
+\end{rail}
+\index{Interaction!Events!pageCount}
+\index{Interaction!Events!newElement}
+\index{Interaction!Events!endPaint}
+\index{Interaction!Events!error}
+
+\begin{itemize}
+\item the \OSC{pageCount} event is supported by all the symbolic score components (\OSC{gmn(f)}, \OSC{gmnstream}, \OSC{musicxml(f)}). It is triggered when the page count of the score changes. It is mainly intended to manage variable scores like \OSC{gmnstream}.
 \item the \OSC{newElement} event is supported at scene level only and triggered when a new element is added to the scene.
 \item the \OSC{endPaint} event is supported at scene level only and triggered after a scene has been painted.
-\item the \OSC{del} event is triggered when an object is being deleted.
+\item the \OSC{error} event is supported at application level and triggered when an error occurs while receiving messages. Note that syntax errors are also triggering the event but the event handler must be set at the time of the script reading i.e. that the sequence \\
+\OSC{ /ITL watch error (a message lists);}\\
+\OSC{ /ITL/scene incorrect syntax}\\
+won't trigger the error the first time it is loaded. \\
+Typically you can use of this event to open the log window (\OSC{/ITL/log show 1}) 
 \end{itemize}
 
 \example \\
 Displaying a welcome message to new elements:
 \sample{/ITL/scene watch newElement (/ITL/scene/msg set txt "Welcome");}
+
 
 %===============================
 %:    Variables
@@ -3262,24 +3331,24 @@ The Javascript engine is based on the Qt5 Javascrip engine, extended with additi
 \sample{
 <?javascript \\
 \hspace*{3mm} post ("/ITL/scene/obj", "dalpha", -1);";\\ 
-\hspace*{3mm} // The message /ITL/scene/obj dalpha -1 \\
-\hspace*{3mm} // will be evaluated by the next time task. \\
+\hspace*{3mm} \# The message /ITL/scene/obj dalpha -1 \\
+\hspace*{3mm} \# will be evaluated by the next time task. \\
 ?>
 }
 
 \example{2}
 \sample{
 <?javascript \\
-\hspace*{3mm} // declare a function foo() \\
+\hspace*{3mm} \# declare a function foo() \\
 \hspace*{3mm} function foo(arg) \{\\ 
 \hspace*{6mm}  return "/ITL/scene/obj set txt foo called with " + arg + ";"; \\
 \hspace*{3mm} \} \\
 ?>\\
 \\
-// call the foo function \\
+\# call the foo function \\
 <?javascript foo(1)?>\\
 \\
-// or call the foo function using the run message \\
+\# or call the foo function using the run message \\
 /ITL/scene/javascript run "foo(1)";
 }
 

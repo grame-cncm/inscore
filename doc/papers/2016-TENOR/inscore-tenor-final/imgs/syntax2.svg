@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="131.35233mm"
+   height="61.396736mm"
+   viewBox="0 0 465.42153 217.54752"
+   id="svg8667"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="syntax2.svg">
+  <defs
+     id="defs8669" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2"
+     inkscape:cx="337.40586"
+     inkscape:cy="137.50613"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1043"
+     inkscape:window-x="0"
+     inkscape:window-y="1200"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata8672">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-164.78799,-314.1185)">
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 164.7879,360.39357 465.42167,0"
+       id="path9603"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 194.28571,360.46935 c 7.52296,-0.47478 14.02291,0.75547 13.57143,13.57143 l 0,24.89285 c -0.91382,15.7614 8.1297,13.6136 14.64286,13.92857 l 116.78572,0 237.14287,0 c 8.89371,0.67943 12.85534,-3.57323 12.32142,-12.32143 l 0,-26.89328 c 0.20528,-10.20167 5.72452,-13.11798 13.30357,-13.26451"
+       id="path9347"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccc" />
+    <g
+       transform="translate(33.38439,48.75018)"
+       id="g9331">
+      <rect
+         y="345.88892"
+         x="247.86499"
+         height="34.017948"
+         width="161.27977"
+         id="rect9333"
+         style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text9335"
+         y="369.71936"
+         x="253.146"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:FreeMono;-inkscape-font-specification:FreeMono"
+           y="369.71936"
+           x="253.146"
+           id="tspan9337"
+           sodipodi:role="line">score file</tspan></text>
+    </g>
+    <text
+       sodipodi:linespacing="125%"
+       id="text9272-2"
+       y="328.11996"
+       x="166.99826"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono';fill:#636363;fill-opacity:1"
+         y="328.11996"
+         x="166.99826"
+         id="tspan9274-7"
+         sodipodi:role="line">score:</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text9272-2-1"
+       y="355.67993"
+       x="234.88145"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"
+       inkscape:transform-center-x="4.2857143"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:25px;font-family:FreeMono;-inkscape-font-specification:'FreeMono Bold';fill:#000000;fill-opacity:1"
+         y="355.67993"
+         x="234.88145"
+         id="tspan9274-7-4"
+         sodipodi:role="line">1</tspan></text>
+    <text
+       inkscape:transform-center-x="4.2857143"
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="234.88145"
+       y="409.80432"
+       id="text9521"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan9523"
+         x="234.88145"
+         y="409.80432"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:25px;font-family:FreeMono;-inkscape-font-specification:'FreeMono Bold';fill:#000000;fill-opacity:1">2</tspan></text>
+    <g
+       id="g9544"
+       transform="translate(33.120722,-2.384354)">
+      <rect
+         style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect9546"
+         width="188.56525"
+         height="33.947742"
+         x="247.9001"
+         y="345.92398" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="253.03508"
+         y="369.71936"
+         id="text9548"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan9550"
+           x="253.03508"
+           y="369.71936"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:FreeMono;-inkscape-font-specification:FreeMono">score string</tspan></text>
+    </g>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 207.82633,396.32755 0,48.6414 c 0.56824,17.3692 9.90665,19.315 19.97576,19.97577 l 339.00424,0.0442 c 11.8028,0.3718 22.00305,-2.49151 22.0087,-22.0087 l 0,-49.43689"
+       id="path9573"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccc" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text9575"
+       y="459.8287"
+       x="234.88145"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"
+       inkscape:transform-center-x="4.2857143"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:25px;font-family:FreeMono;-inkscape-font-specification:'FreeMono Bold';fill:#000000;fill-opacity:1"
+         y="459.8287"
+         x="234.88145"
+         id="tspan9577"
+         sodipodi:role="line">3</tspan></text>
+    <g
+       id="g9579"
+       transform="translate(44.44505,100.42101)">
+      <rect
+         style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.07700002;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect9581"
+         width="187.3557"
+         height="33.941341"
+         x="236.94313"
+         y="345.92722" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="242.68152"
+         y="369.71936"
+         id="text9583"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan9585"
+           x="242.68152"
+           y="369.71936"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:FreeMono;-inkscape-font-specification:FreeMono">score object</tspan></text>
+    </g>
+    <path
+       sodipodi:nodetypes="cccccc"
+       inkscape:connector-curvature="0"
+       id="path9587"
+       d="m 207.82633,397.32755 0,98.6414 c 0.56824,17.3692 9.90665,19.315 19.97576,19.97577 l 339.00424,0.0442 c 11.8028,0.3718 22.00305,-2.49151 22.0087,-22.0087 l 0,-99.43689"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <text
+       inkscape:transform-center-x="4.2857143"
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="234.88145"
+       y="510.82874"
+       id="text9589"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan9591"
+         x="234.88145"
+         y="510.82874"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:25px;font-family:FreeMono;-inkscape-font-specification:'FreeMono Bold';fill:#000000;fill-opacity:1">4</tspan></text>
+    <g
+       transform="translate(42.677283,151.42101)"
+       id="g9593">
+      <rect
+         y="346.03525"
+         x="238.46539"
+         height="33.725262"
+         width="267.63962"
+         id="rect9595"
+         style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.9690001;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text9597"
+         y="369.71936"
+         x="243.23546"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:FreeMono;-inkscape-font-specification:FreeMono"
+           y="369.71936"
+           x="243.23546"
+           id="tspan9599"
+           sodipodi:role="line">score expression</tspan></text>
+    </g>
+  </g>
+</svg>
