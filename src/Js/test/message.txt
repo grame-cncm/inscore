@@ -1,1 +1,17 @@
-ITL/scene1/obj1 red 36
+/ITL/scene1/obj1 red 70;
+/ITL/scene1/obj1 blue 70;
+/ITL/scene1/obj1 red 70;
+
+/ITL/scene1/obj2 red 10;
+/ITL/scene1/obj2 blue 10;
+/ITL/scene1/obj2 red 10;
+
+
+/ITL/scene2/obj3 red 70;
+/ITL/scene2/obj3 blue 30;
+/ITL/scene32obj3 red 40;
+
+/ITL/scene3/obj4 red 120;
+/ITL/scene3/obj4 blue 180;
+/ITL/scene3/obj4 red 255;
+

@@ -4,5 +4,5 @@ class IAppl extends IObject {
     
     constructor() {
         super('ITL');
-    }   
+    } 
 }
