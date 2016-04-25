@@ -21,13 +21,14 @@ class IMessage {
     
     address(): string { return this.fAddress; }
     
+    arguments(): Array<any> { return this.fArguments; }
+    
     message(): string { 
         var out = this.paramStr(0);
         if (out.verif) { return out.param ; }
     }
 
     param(i: number): string { return this.fArguments[i] }
-    
     
     paramStr(i: number): { verif: boolean, param: string } { 
     	if (this.isString(i)) {
