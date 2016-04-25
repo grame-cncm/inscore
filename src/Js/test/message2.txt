@@ -1,6 +1,6 @@
 /ITL/scene new;
 
-/ITL/scene/rect1 set rect;
+/ITL/scene/rect1 set rect 10 10;
 /ITL/scene/rect1 red 120;
 
 /ITL/scene/ellipse set ellipse;

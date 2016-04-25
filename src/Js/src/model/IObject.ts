@@ -76,7 +76,7 @@ abstract class IObject {
         if (color) { this.fColor = color; }
         else { this.fColor = new IColor(0,0,0); }  
         
-        this.fMsgHandlerMap[kset_SetMethod] = //TMethodMsgHandler<IObject>::create(this, &IObject::set);
+        this.fMsgHandlerMap[kset_SetMethod] = new TMethodMsgHandler<IObject>(this, 'set');
 
         this.setHandlers(); 
     } 
@@ -347,7 +347,29 @@ abstract class IObject {
             }
         }  
             
-        //if (result & MsgHandler.kProcessed) { this.setState(state.kSubModified); }
+        if (result & MsgHandler.fMsgStatus.kProcessed) { this.setState(state.kSubModified); }
     return result;     
     }
+    
+    set(msg: IMessage): msgStatus	{
+        var type: string = typeof msg.param(1);
+        if (typeof type != "string") { return MsgHandler.fMsgStatus.kBadParameters; }
+        
+        if (typeof type != this.getTypeString()) {
+            var newobj: IObject;
+            var status:number = IProxy.execute (msg, this.fName, this.fParent, newobj, this);
+            if (status & MsgHandler.fMsgStatus.kProcessed) {
+                SIObject obj = newobj;
+                newobj = obj;
+                del();								
+                fParent->cleanupSync();
+                return MsgHandler.fMsgStatus.kProcessed;		
+            }
+            
+            return MsgHandler.fMsgStatus.kProcessedNoChange;
+        }
+        return MsgHandler.fMsgStatus.kBadParameters;
+    }
+    
+    msgSet(params: Array<any>): boolean { return };
 }

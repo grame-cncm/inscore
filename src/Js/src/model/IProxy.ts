@@ -2,7 +2,7 @@
 
 class IProxy {	
 
-	static execute (msg: IMessage, objName: string, parent: IObject): number {
+	static execute (msg: IMessage, objName: string, parent: IObject, newobj?: IObject, previousobj?: IObject): number {
         
         if (Tools.regexp(objName)) { return MsgHandler.fMsgStatus.kBadAddress; }
 
@@ -29,9 +29,9 @@ class IProxy {
         }
 
         var newmsg: IMessage = new IMessage(msg);
-        
+        console.log(newmsg)
         var obj: IObject = IObjectFactory.createObj(objName, objType, parent)
-        if (obj) {
+        if (obj && obj.msgSet(msg.arguments())) {
 		    var status: number = obj.execute(newmsg);
 		    if (status & (MsgHandler.fMsgStatus.kProcessed + MsgHandler.fMsgStatus.kProcessedNoChange)) {
 			    parent.addChild(obj);
