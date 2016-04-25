@@ -22,27 +22,27 @@ class IObjectFactory {
     static createObj(name: string , type: string, parent: IObject) {
         var obj: IObject;
         switch (type) {
-            case "IEllipse.kEllipseType":
+            case "ellipse":
                 obj = new IEllipse(name, parent);
                 this.createView(obj);  
                 break;
             
-            case "IRect.kRectType":
+            case "rect":
                 obj = new IRect(name, parent);                
                 this.createView(obj);    
                 break;
                 
-            case "ICurve.kCurveType":
+            case "curve":
                 obj = new ICurve(name, parent);                
                 this.createView(obj);    
                 break;
                 
-            case "ILine.kLineType":
+            case "line":
                 obj = new ILine(name, parent);                
                 this.createView(obj);    
                 break;
                    
-            case "IScene.kSceneType":
+            case "scene":
                 obj = new IScene(name, parent);
                 this.createView(obj);  
                 break;
@@ -59,8 +59,9 @@ class IObjectFactory {
             obj.setHandlers();
             obj.createVirtualNodes();
             obj.setVisible(IAppl.fDefaultShow);
-        }
-        return obj; */
+        } */
+        
+        return obj; 
         
     }
 }

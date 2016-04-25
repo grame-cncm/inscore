@@ -4,9 +4,17 @@ class IMessage {
     protected fAddress: string;
     protected fArguments: Array<any>;
     
-    constructor(address: string, params? : Array<any>) {
-        this.fAddress = address; 
-        this.fArguments = params ? params : new Array<any>();      
+    constructor(input: string|IMessage, params? : Array<any>) {
+        //if input is an adress
+        if (typeof input === 'string') {
+            this.fAddress = input; 
+            this.fArguments = params ? params : new Array<any>();
+        } 
+        
+        if (typeof input === 'object') {
+            this.fAddress = input.fAddress; 
+            this.fArguments = input.fArguments;
+        }   
     }   
    
     add(val: any): void { this.fArguments.push(val); };
@@ -18,6 +26,9 @@ class IMessage {
         if (out.verif) { return out.param ; }
     }
 
+    param(i: number): string { return this.fArguments[i] }
+    
+    
     paramStr(i: number): { verif: boolean, param: string } { 
     	if (this.isString(i)) {
     		var param = this.fArguments[i];

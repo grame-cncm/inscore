@@ -76,6 +76,8 @@ abstract class IObject {
         if (color) { this.fColor = color; }
         else { this.fColor = new IColor(0,0,0); }  
         
+        this.fMsgHandlerMap[kset_SetMethod] = //TMethodMsgHandler<IObject>::create(this, &IObject::set);
+
         this.setHandlers(); 
     } 
     
@@ -167,7 +169,10 @@ abstract class IObject {
 // METHODS
 //--------------------------------------------------------------  
  
-    addChild(newObject: IObject): void { this.fSubNodes.push(newObject); } 
+    addChild(newObject: IObject): void { 
+        this.fSubNodes.push(newObject);
+        this.setState(state.kSubModified);
+    } 
     
     setParent(parent: IObject):void { this.fParent = parent; }
     
@@ -324,7 +329,7 @@ abstract class IObject {
 
             else {										
                 var targets: Array<IObject> = new Array;
-                if (this.find (beg, targets)) {				
+                if (this.find (beg, targets)) {	
                     var n: number = targets.length;
                     for (var i: number = 0; i < n; i++) {
                         var target: IObject = targets[i];
@@ -334,14 +339,15 @@ abstract class IObject {
                     }
                 }
                     
-                //else if (Tools.regexp(beg)) { result = MsgHandler.kProcessedNoChange; }
+                else if (Tools.regexp(beg)) { 
+                    result = MsgHandler.fMsgStatus.kProcessedNoChange; }
                     
-                //else { result = IProxy.execute (msg, beg, this); } 
+                else { 
+                    result = IProxy.execute (msg, beg, this); } 
             }
         }  
             
         //if (result & MsgHandler.kProcessed) { this.setState(state.kSubModified); }
-            
     return result;     
     }
 }
