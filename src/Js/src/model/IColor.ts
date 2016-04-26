@@ -1,4 +1,5 @@
-///<reference path="../controller/IMessageHandlers.ts"/>
+
+///<reference path="../controller/TSetMessageHandlers.ts"/>
 
 class IColor {
 
@@ -185,15 +186,3 @@ class IColor {
         this.fV = Math.floor(V * 100);   
     }   
 }
-
-// MSG HANDLERS
-//--------------------------------------------------------------  
-class SetColorMsgHandler extends MsgHandler<IColor> {
-          
-    constructor(color?: IColor, method?: string) {
-        if (color) { super(color, method ); }              
-    } 
-    
-    create(color: IColor, method: string) { return new SetColorMsgHandler(color, method); }
-   
-}  
