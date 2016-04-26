@@ -21,8 +21,10 @@ class Fraction {
         }
         else if (typeof a === "string" && b === undefined) {
             var myRegex = /^([0-9]+)\/([0-9]+)$/.test(a);
-            this.numerator = parseInt(RegExp.$1);
-            this.denominator = parseInt(RegExp.$2);
+            if (myRegex) {
+	            this.numerator = parseInt(RegExp.$1);
+    	        this.denominator = parseInt(RegExp.$2);
+    	    }
         }
     
         if (this.denominator == 0) { this.numerator = undefined; this.denominator = undefined}     // undefined if denominator = 0
@@ -96,8 +98,9 @@ class Fraction {
         var denominator = this.denominator;
         var a = Math.max (numerator, denominator);
         var b = Math.min (numerator, denominator);
-        var rest = a%b;
+        if (b == 0) return this;
         
+        var rest = a%b;        
         while (rest != 0) {
             a = b;
             b = rest;                               // var b is the PGCD if the rest is equal to 0
