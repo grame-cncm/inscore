@@ -1,0 +1,5 @@
+/ITL/scene/sync  cursor
+/ITL/scene/cursor  width,1.1
+/ITL/scene/cursor  height,0.9
+/ITL/scene/cursor  x,0
+expr ENDSCRIPT 

@@ -1,0 +1,53 @@
+/ITL/scene/*  del
+expr script:  
+    function makemsg (str, index, x, w) {
+        return str.replace(/\?/g, index).replace("XPOS", x).replace("W", w);
+    }
+	function bars(n) {
+		var w = 2. / (n + n + 1);
+		var x = w - 1;
+		var msg = "/ITL/scene/rect? set rect W 0.5; /ITL/scene/rect? x XPOS;"
+		var out = "";
+		for (i=1; i<=n; i++) {
+			out += makemsg (msg, i, x, w);
+			x += (w*2);
+		}
+		return out;
+	}
+
+expr script:  bars(28) 
+/ITL/scene/rect*  xorigin,-1
+variabledecl: width = 0.14
+variabledecl: height = 0.05
+/ITL/scene/mov1  set,rect,0.14,0.05
+/ITL/scene/mov1  color,255,230,0
+/ITL/scene/mov2  set,rect,0.14,0.05
+/ITL/scene/mov2  color,90,0,255
+/ITL/scene/box  set,rect,1.9,0.18
+/ITL/scene/box  brushStyle,none
+/ITL/scene/sync  mov1,box,syncTop
+/ITL/scene/sync  mov2,box,syncBottom
+/ITL/scene/$self  date,0.0001
+/ITL/scene/mov*  watch,timeLeave,0,1,/ITL/scene/$self  date,0.0001
+/ITL/scene  color,255,255,255
+/ITL/scene/title  set,txt,Moving phenomena
+/ITL/scene/title  scale,2.7
+/ITL/scene/title  y,-0.84
+variabledecl: hide = Hide bars
+variabledecl: show = Show bars
+/ITL/scene/control  set,txt,Hide bars
+/ITL/scene/control  scale,2
+/ITL/scene/control  y,0.78
+/ITL/scene/$self  red,240
+/ITL/scene/control*  watch,mouseEnter,/ITL/scene/$self  red,240
+/ITL/scene/$self  red,0
+/ITL/scene/control*  watch,mouseLeave,/ITL/scene/$self  red,0
+/ITL/scene/control  push
+/ITL/scene/rect*  show,0
+/ITL/scene/control  set,txt,Show bars
+/ITL/scene/rect*  show,1
+/ITL/scene/control  set,txt,Hide bars
+/ITL/scene/control  pop
+/ITL/scene/control  watch,mouseDown,/ITL/scene/rect*  show,1,/ITL/scene/control  set,txt,Hide bars,/ITL/scene/control  pop
+/ITL/scene/control  watch,mouseDown,/ITL/scene/control  push,/ITL/scene/rect*  show,0,/ITL/scene/control  set,txt,Show bars,/ITL/scene/control  watch,mouseDown,/ITL/scene/rect*  show,1,/ITL/scene/control  set,txt,Hide bars,/ITL/scene/control  pop
+expr ENDSCRIPT 

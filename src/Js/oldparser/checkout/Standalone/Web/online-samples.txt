@@ -1,0 +1,3 @@
+/ITL/scene/*  del
+/ITL  load,http://inscore.sf.net/scripts/online-samples.inscore
+expr ENDSCRIPT 

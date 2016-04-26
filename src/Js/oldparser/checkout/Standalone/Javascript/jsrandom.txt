@@ -1,0 +1,39 @@
+variabledecl: rversion = 0.96
+variabledecl: gray = 100
+/ITL/scene/*  del
+expr script: 
+	function inscoreval () { return (Math.random() * 2) - 1; }
+	function random (size, huespan, hue) {
+		var n = Math.round( Math.random() * 20) + 3;
+		var out = new Array;
+		out[0] = "/ITL/scene/rect* del;";
+		var j = 1;	
+		for (i=1; i <= n; i++) {
+			var target = "/ITL/scene/rect" + i;
+			out[j++] = target + " set rect 0.1 0.1;";
+			out[j++] = target + " x " + inscoreval()*0.9 + ";";
+			out[j++] = target + " y " + inscoreval()*0.9 + ";";
+			out[j++] = target + " color " + inscoreval() + " " + inscoreval() + " " + inscoreval() + " 0. ;";
+		}
+		return out;
+	}
+
+/ITL/scene/comment1  set,txt,This script shows the use of the /ITL/scene/javascript static object.
+/ITL/scene/comment1  y,-0.8
+/ITL/scene/clickme  set,txt,CLICK ME
+/ITL/scene/clickme  y,0.87
+/ITL/scene/comment1  scale,1.7
+/ITL/scene/clickme  scale,1.2
+/ITL/scene/clickme  z,2
+/ITL/scene/clickme  color,255,0,0
+/ITL/scene/clickme  watch,mouseEnter,/ITL/scene/clickme  color,255,0,0
+/ITL/scene/clickme  color,0,0,0
+/ITL/scene/clickme  watch,mouseLeave,/ITL/scene/clickme  color,0,0,0
+/ITL/scene/javascript  run,random()
+/ITL/scene/clickme  watch,mouseDown,/ITL/scene/javascript  run,random()
+/ITL/scene/warning  set,txt,WARNING: javascript requires version,0.96,or greater
+/ITL/scene/warning  color,100,100,100
+/ITL/scene/warning  y,0.9
+/ITL/scene/warning  scale,1.5
+/ITL  require,0.96,/ITL/scene/warning  set,txt,WARNING: javascript requires version,0.96,or greater,/ITL/scene/warning  color,100,100,100,/ITL/scene/warning  y,0.9,/ITL/scene/warning  scale,1.5
+expr ENDSCRIPT 

@@ -32,6 +32,7 @@ class IMessage {
    
     // add a value to the parameters
     add(val: any): void 	{ this.fArguments.push(val); };    
+
     // add values to the parameters; arrays are checked and pushed as values
     push(val: any): void 	{
     	if (Array.isArray(val)) {
@@ -39,6 +40,7 @@ class IMessage {
     	}
     	else this.fArguments.push(val); 
     };
+
     address(): string 		{ return this.fAddress; }
     param(i: number): any 	{ return this.fArguments[i]; }
     params(): Array<any> 	{ return this.fArguments; }

@@ -1,0 +1,8 @@
+variabledecl: version = 1
+variabledecl: gray = 100
+/ITL/scene/warning  set,txt,Warning: this script requires INScore version,1
+/ITL/scene/warning  scale,3
+/ITL/scene/warning  color,100,100,100
+/ITL/scene/warning  z,1
+/ITL  require,1,/ITL/scene/warning  set,txt,Warning: this script requires INScore version,1,/ITL/scene/warning  scale,3,/ITL/scene/warning  color,100,100,100,/ITL/scene/warning  z,1
+expr ENDSCRIPT 

@@ -1,5 +1,4 @@
 
-///<reference path="../controller/TSetMessageHandlers.ts"/>
 
 class IColor {
 
@@ -13,9 +12,7 @@ class IColor {
     protected fV : number;
     protected fA : number = 255; 
     protected fModified : boolean; 
-    
-    public fSetColorMsgHandler: SetColorMsgHandler; 
-    
+
 // CONSTRUTOR
 //--------------------------------------------------------------    
     constructor(r:number|IColor , g:number, b:number) {
@@ -33,9 +30,7 @@ class IColor {
         }
 
         this.fModified = true;
-        this.updateHSV(); 
-        
-        this.fSetColorMsgHandler = new SetColorMsgHandler();    
+        this.updateHSV();         
     }
   
 // MODIFIED STATUS

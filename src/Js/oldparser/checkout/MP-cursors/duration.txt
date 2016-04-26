@@ -1,0 +1,17 @@
+variabledecl: w = 0.05
+/ITL/scene/slider  set,rect,0.05,1
+/ITL/scene/slider  penWidth,1
+/ITL/scene/slider  penColor,0,0,0
+/ITL/scene/slider  z,1
+/ITL/scene/slider  color,255,255,255,0
+/ITL/scene/slider  yorigin,1
+/ITL/scene/sliderdur  set,rect,0.05,0.5
+/ITL/scene/sliderdur  color,200,200,200,255
+/ITL/scene/sliderdur  yorigin,1
+/ITL/scene/slider*  x,-0.75
+/ITL/scene/slider*  y,0.5
+/ITL/scene/slider  watch,mouseDown,/ITL/scene/cursor,duration,$y[-2.,2.]
+/ITL/scene/slider  watch,mouseMove,/ITL/scene/cursor,duration,$y[-2.,2.]
+/ITL/scene/slider  watch+,mouseDown,/ITL/scene/sliderdur,height,$y
+/ITL/scene/slider  watch+,mouseMove,/ITL/scene/sliderdur,height,$y
+expr ENDSCRIPT 
