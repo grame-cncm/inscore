@@ -1,3 +1,8 @@
+
+///<reference path="../controller/IGlue.ts"/>
+
+declare var gGlue : IGlue;
+
 function dropEvent(e) {
     dragOverEvent(e);
 
@@ -8,7 +13,7 @@ function dropEvent(e) {
     if (filecount > 0) {                
         for (var i=0; i < filecount; i++) {
             var loader = new TILoader;
-            loader.load(filelist[i], loader);      
+            loader.load(filelist[i], gGlue.getRoot());      
         } 
     } 
 }
