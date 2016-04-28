@@ -76,7 +76,7 @@ abstract class IObject {
         if (color) { this.fColor = color; }
         else { this.fColor = new IColor(0,0,0); }  
         
-//        this.fMsgHandlerMap[kset_SetMethod] = new TMethodMsgHandler<IObject>(this, 'set');
+        this.fMsgHandlerMap[kset_SetMethod] = new TMethodHandler<IObject>(this, 'set');
 
         this.setHandlers(); 
     } 
@@ -179,10 +179,18 @@ abstract class IObject {
     } 
     
     setParent(parent: IObject):void { this.fParent = parent; }
+    getParent(): IObject { return this.fParent; }
     
     getSubNodes(): Array<IObject> { return this.fSubNodes }
     
+    getOSCAddress(): string {
+	    return this.fParent ? this.fParent.getOSCAddress() + '/' + this.fName : '/' + this.fName 
+    }
+    
     //-----------------------------    
+    
+    getName(): string { return this.fName; }
+    
     getTypeString(): string {
         return this.fTypeString;
     }        
@@ -225,13 +233,42 @@ abstract class IObject {
     
     //-----------------------------    
 
+    newData(state: boolean): void { this.fNewData = state; /*triggerEvent(kNewData, true)*/; }
+    
     setState (s: state): void { this.fState = s; }
     getState(): state { return this.fState; }
     
     getPos(): IPosition { return this.fPosition; }
     getColor(): IColor { return this.fColor; }
 
-    
+     transferAttributes(dest: IObject): IObject {
+        dest.fPosition.setXPos (this.fPosition.getXPos());
+        dest.fPosition.setYPos (this.fPosition.getYPos());
+        dest.fPosition.setXOrigin (this.fPosition.getXOrigin());
+        dest.fPosition.setYOrigin (this.fPosition.getYOrigin());
+        dest.fPosition.setScale (this.fPosition.getScale());
+        dest.fPosition.setVisible (this.fPosition.getVisible());
+        dest.fPosition.setZOrder (this.fPosition.getZOrder());
+        dest.fPosition.setShear (this.fPosition.getShear());
+
+        dest.fPosition.setRotateX (this.fPosition.getRotateX());
+        dest.fPosition.setRotateY (this.fPosition.getRotateY());
+        dest.fPosition.setRotateZ (this.fPosition.getRotateZ());
+
+        dest.fColor.setR(this.fColor.getR());
+        dest.fColor.setG(this.fColor.getG());
+        dest.fColor.setB(this.fColor.getB());
+        dest.fColor.setA(this.fColor.getA());
+
+        //dest.fPosition.setPenWidth(getPenWidth());
+        //dest.fPosition.setPenColor(getPenColor());
+        //dest.fPosition.setPenStyle(getPenStyle());
+        
+        dest.fDate.setDate (this.fDate.getDate());
+        dest.fDate.setDuration (this.fDate.getDuration());
+             
+        return dest;
+    }   
     
     //-----------------------------
     
@@ -293,7 +330,13 @@ abstract class IObject {
     	let method = msg.message();
     	if (method.correct) {
        		let handler = this.messageHandler(method.value);
-        	if (handler) { return handler.handle(msg) };
+            console.log("Le message '" + method.value + "' est donné à : // from IObject.execute()");
+            console.log(this);   
+        	if (handler) { 
+                console.log("Le handler correspondant est appelé : // from IObject.execute()");
+                console.log(handler);
+                return handler.handle(msg) 
+            }
 
 	        //handler = this.messageHandler(msg.message(), true);
 	        //if (handler) return ;
@@ -342,7 +385,7 @@ abstract class IObject {
                     var n: number = targets.length;
                     for (var i: number = 0; i < n; i++) {
                         var target: IObject = targets[i];
-                        console.log(target);
+                        console.log('bonjour')
                         result |= target.execute(msg);	
                         if (result & msgStatus.kProcessed) { target.setState(state.kModified); }
                     }
@@ -351,37 +394,64 @@ abstract class IObject {
                 else if (Tools.regexp(beg)) { 
                     result = msgStatus.kProcessedNoChange; }
                     
-                else { 
-                    result = IProxy.execute (msg, beg, this); } 
+                else {
+                    console.log("On utilise le proxy car " + beg + " n'existe pas // from IObject.processMsg()"); 
+                    result = IProxy.execute (msg, beg, this).status; } 
             }
         }  
             
         if (result & msgStatus.kProcessed) { this.setState(state.kSubModified); }
+    
+    console.log(appl)
+    console.log("Résultat de l'attribution du message : " + result + '\n' + '\n');
     return result;     
     }
     
-/*
     set(msg: IMessage): msgStatus	{
-        var type: string = typeof msg.param(1);
-        if (typeof type != "string") { return MsgHandler.fMsgStatus.kBadParameters; }
+        let objType = msg.paramStr(1);
+        console.log("Le paramêtre du message : " + objType.value + " // from IObject.set()")
+        console.log("Le type de l'objet courant : " + this.getTypeString());
         
-        if (typeof type != this.getTypeString()) {
-            var newobj: IObject;
-            var status:number = IProxy.execute (msg, this.fName, this.fParent, newobj, this);
-            if (status & MsgHandler.fMsgStatus.kProcessed) {
-                IObject obj = newobj;
-                newobj = obj;
-                del();								
-                fParent->cleanupSync();
-                return MsgHandler.fMsgStatus.kProcessed;		
-            }
+        if (!objType.correct) { return msgStatus.kBadParameters; }
+        
+        if (objType.value != this.getTypeString()) {
+            let newobj: IObject;
+            let proxy = IProxy.execute(msg, this.fName, this.fParent, newobj, this);
+            let status = proxy.status;
+            console.log('type diff');
+
             
-            return MsgHandler.fMsgStatus.kProcessedNoChange;
+            if (status & msgStatus.kProcessed) {
+                console.log(proxy.newobj);
+                let obj: IObject = proxy.newobj;
+                this.fDelete = true;
+                this.del();								
+                //fParent.fPosition.cleanupSync();
+                return msgStatus.kProcessed;		
+            } 
+            return msgStatus.kProcessedNoChange;
         }
-        return MsgHandler.fMsgStatus.kBadParameters;
+        return msgStatus.kBadParameters;
     }
-*/
-    
-    msgSet(params: Array<any>): boolean { return };
+            
+    del(): void {
+        if(this.fLock){
+            console.log("ITLErr : Impossible to delete " + this.getOSCAddress() + ", the object is locked.");
+            this.fDelete = false;
+            return;
+	    }
+        if(this.fDelete) {
+            console.log("supression de l'ancien objet");
+            console.log(this)
+            let scene = this.fObjectView.getMotherScene();
+            let obj = this.fObjectView.getScene();
+            scene.removeChild(obj);
+            
+            let array = this.fParent.getSubNodes();
+            array.splice(array.indexOf(this),1);
+            delete this;    
+            
+        }
+    }
 }
 
