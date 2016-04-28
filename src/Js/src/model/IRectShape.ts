@@ -29,8 +29,6 @@ class IRectShape extends IObject {
                 this.fPosition.setWidth(width.value);
                 this.fPosition.setHeight(height.value);
                 this.newData(true);
-                console.log("L'objet a bien été modifié selon le message set : // IRectShape");
-                console.log(this);
                 status = msgStatus.kProcessed;
             }
             else status = msgStatus.kProcessedNoChange;

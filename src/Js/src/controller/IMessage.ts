@@ -36,7 +36,7 @@ class IMessage {
     // add values to the parameters; arrays are checked and pushed as values
     push(val: any): void 	{
     	if (Array.isArray(val)) {
-    		for (let i=0; i<val.length; i++) this.add (val[i]);
+    		for (let i=0; i < val.length; i++) this.add (val[i]);
     	}
     	else this.fArguments.push(val); 
     };

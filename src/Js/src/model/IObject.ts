@@ -300,13 +300,7 @@ abstract class IObject {
     	let method = msg.message();
     	if (method.correct) {
        		let handler = this.messageHandler(method.value);
-            console.log("Le message '" + method.value + "' est donné à : // from IObject.execute()");
-            console.log(this);   
-        	if (handler) { 
-                console.log("Le handler correspondant est appelé : // from IObject.execute()");
-                console.log(handler);
-                return handler.handle(msg) 
-            }
+        	if (handler) { return handler.handle(msg) }
 
 	        //handler = this.messageHandler(msg.message(), true);
 	        //if (handler) return ;
@@ -400,8 +394,6 @@ abstract class IObject {
             return;
 	    }
         if(this.fDelete) {
-            console.log("supression de l'ancien objet");
-            console.log(this)
 //            let scene = this.fObjectView.getMotherScene();
 //            let obj = this.fObjectView.getScene();
 //            scene.removeChild(obj);
