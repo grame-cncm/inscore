@@ -2,6 +2,7 @@
 ///<reference path="../lib/OSCAddress.ts"/>
 ///<reference path="../lib/Tools.ts"/>
 ///<reference path="../controller/TSetMessageHandlers.ts"/>
+///<reference path="../view/VObjectView.ts"/>
 ///<reference path="Icolor.ts"/>
 ///<reference path="IDate.ts"/>
 ///<reference path="IPosition.ts"/>
@@ -19,62 +20,52 @@ abstract class IObject {
     
 // ATTRIBUTES
 //-------------------------------------------------------------- 
-    protected fPosition: IPosition;
-    protected fDate: IDate;
-    protected fColor: IColor;
+    protected fPosition: 	IPosition;
+    protected fDate: 		IDate;
+    protected fColor: 		IColor;
     
-    protected fName: string;
-    protected fDispStart: number;
-    protected fDispEnd: number; 
-    protected fState: state;
-    protected fNewData: boolean;
-    protected fDelete: boolean;
-    protected fLock: boolean;
-    protected fView: number;
+    protected fTypeString:	string;
+    protected fName: 		string;
+    protected fState: 		state;
+    protected fNewData: 	boolean;
+    protected fDelete: 		boolean;
+    protected fLock: 		boolean;
+    protected fView: 		VObjectView;
+    protected fParent: 		IObject;
     
-    protected fTypeString: string;
-    
-    protected fParent: IObject;
     protected fSubNodes: Array<IObject> = new Array;
     
     protected fMsgHandlerMap = new Array<SetMsgHandler>(); 
 //    protected fGetMsgHandlerMap: Array<GetParamMsgHandler<any>> = new Array;
     
-    protected kDocument: HTMLElement; 
+//    protected kDocument: HTMLElement; 
     protected fObjectView: VObjectView;
     protected fMotherSceneFocus: boolean;
 
     
 // CONSTRUCTOR
 //--------------------------------------------------------------       
-    constructor(name: string, parent?: IObject, position?: IPosition, date?: IDate, color?: IColor) {
+    constructor(name: string, parent?: IObject) {
         this.fName = name;
+        this.fTypeString = 'obj'; 
         
-        this.fDispStart = 0;
-        this.fDispEnd = 1;
         this.fDelete = false;
         this.fLock = false;
         this.fState = state.kNewObject;
         this.fNewData = true;
-        this.fView = 0;
         
-        this.fTypeString = 'obj'; 
-        
-        this.kDocument = document.getElementById('document');
+//        this.kDocument = document.getElementById('document');
         
         this.fMotherSceneFocus = false; 
 
         if (parent) { 
-            this.fParent = parent; parent.addChild(this); }
+            this.fParent = parent; 
+            parent.addChild(this); 
+        }
 
-        if (position) { this.fPosition = position; }
-        else { this.fPosition = new IPosition; }
-        
-        if (date) { this.fDate = date; }
-        else { this.fDate = new IDate; }
-        
-        if (color) { this.fColor = color; }
-        else { this.fColor = new IColor(0,0,0); }  
+        this.fPosition = new IPosition;
+        this.fDate = new IDate;
+		this.fColor = new IColor(0,0,0);
         
         this.fMsgHandlerMap[kset_SetMethod] = new TMethodHandler<IObject>(this, 'set');
 
@@ -137,20 +128,20 @@ abstract class IObject {
         this.fMsgHandlerMap[kdangle_SetMethod] 		= new TMsgHandlerNum<IPosition>(this.fPosition, 'addAngle');
         this.fMsgHandlerMap[kdscale_SetMethod] 		= new TMsgHandlerNum<IPosition>(this.fPosition, 'multScale');
 /*        
-        this.fGetMsgHandlerMap[kx_GetSetMethod]		= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getXPos');
-        this.fGetMsgHandlerMap[ky_GetSetMethod]		= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getYPos');
-        this.fGetMsgHandlerMap[kxorigin_GetSetMethod]= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getXOrigin');
-        this.fGetMsgHandlerMap[kyorigin_GetSetMethod]= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getYOrigin');
-        this.fGetMsgHandlerMap[kz_GetSetMethod]		= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getZOrder');
-        this.fGetMsgHandlerMap[kangle_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getRotateZ');
-        this.fGetMsgHandlerMap[kscale_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getScale');
-        this.fGetMsgHandlerMap[kshow_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getVisible');
-        this.fGetMsgHandlerMap[kwidth_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getWidth');
-        this.fGetMsgHandlerMap[kheight_GetSetMethod] = new TGetParamMethodHandler<IPosition>(this.fPosition, 'getHeight');
-        this.fGetMsgHandlerMap[kshear_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getShear');
-        this.fGetMsgHandlerMap[krotatex_GetSetMethod]= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getRotateX');
-        this.fGetMsgHandlerMap[krotatey_GetSetMethod]= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getRotateY');
-        this.fGetMsgHandlerMap[krotatez_GetSetMethod]= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getRotateZ');
+        this.fGetMsgHandlerMap[kx_GetSetMethod]			= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getXPos');
+        this.fGetMsgHandlerMap[ky_GetSetMethod]			= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getYPos');
+        this.fGetMsgHandlerMap[kxorigin_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getXOrigin');
+        this.fGetMsgHandlerMap[kyorigin_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getYOrigin');
+        this.fGetMsgHandlerMap[kz_GetSetMethod]			= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getZOrder');
+        this.fGetMsgHandlerMap[kangle_GetSetMethod]		= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getRotateZ');
+        this.fGetMsgHandlerMap[kscale_GetSetMethod]		= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getScale');
+        this.fGetMsgHandlerMap[kshow_GetSetMethod]		= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getVisible');
+        this.fGetMsgHandlerMap[kwidth_GetSetMethod]		= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getWidth');
+        this.fGetMsgHandlerMap[kheight_GetSetMethod] 	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getHeight');
+        this.fGetMsgHandlerMap[kshear_GetSetMethod]	 	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getShear');
+        this.fGetMsgHandlerMap[krotatex_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getRotateX');
+        this.fGetMsgHandlerMap[krotatey_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getRotateY');
+        this.fGetMsgHandlerMap[krotatez_GetSetMethod]	= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getRotateZ');
 */
     }
     
@@ -158,11 +149,10 @@ abstract class IObject {
         this.fMsgHandlerMap[kdate_GetSetMethod] 	= new TMsgHandlerTime<IDate>(this.fDate, 'setDate');
         this.fMsgHandlerMap[kduration_GetSetMethod]	= new TMsgHandlerTime<IDate>(this.fDate, 'setDuration');
         this.fMsgHandlerMap[kddate_SetMethod] 		= new TMsgHandlerTime<IDate>(this.fDate, 'addDate');
-        this.fMsgHandlerMap[kdduration_SetMethod] 	= new TMsgHandlerTime<IDate>(this.fDate, 'addDuration');
-/*        
-        this.fMsgHandlerMap[kclock_SetMethod] 		= new TMethodMsgHandler<IDate>(this.fDate, 'clock');
-        this.fMsgHandlerMap[kdurClock_SetMethod] 	= new TMethodMsgHandler<IDate>(this.fDate, 'durclock');
-*/
+        this.fMsgHandlerMap[kdduration_SetMethod] 	= new TMsgHandlerTime<IDate>(this.fDate, 'addDuration');        
+        this.fMsgHandlerMap[kclock_SetMethod] 		= new TMsgHandlerVoid<IDate>(this.fDate, 'clock');
+        this.fMsgHandlerMap[kdurClock_SetMethod] 	= new TMsgHandlerVoid<IDate>(this.fDate, 'durclock');
+
 /*        
         this.fGetMsgHandlerMap[kdate_GetSetMethod] = new TGetParamMethodHandler<IDate>(this.fDate, 'getDate');
         this.fGetMsgHandlerMap[kduration_GetSetMethod] = new TGetParamMethodHandler<IDate>(this.fDate, 'getDuration');
@@ -172,12 +162,12 @@ abstract class IObject {
     
 // METHODS
 //--------------------------------------------------------------  
- 
     addChild(newObject: IObject): void { 
         this.fSubNodes.push(newObject);
         this.setState(state.kSubModified);
     } 
     
+<<<<<<< HEAD
     setParent(parent: IObject):void { this.fParent = parent; }
     getParent(): IObject { return this.fParent; }
     
@@ -187,6 +177,13 @@ abstract class IObject {
 	    return this.fParent ? this.fParent.getOSCAddress() + '/' + this.fName : '/' + this.fName 
     }
     
+=======
+    setParent(parent: IObject):void { this.fParent = parent; }    
+    getSubNodes(): Array<IObject> 	{ return this.fSubNodes }
+    getAppl() : IObject				{ return this.fParent.getAppl(); }
+    getScene(): IObject 			{ return this.fParent.getScene(); }
+   
+>>>>>>> origin/arnaud
     //-----------------------------    
     
     getName(): string { return this.fName; }
@@ -228,18 +225,21 @@ abstract class IObject {
     }
     
     //-----------------------------    
-
     getDeleted(): boolean { return this.fDelete; }
     
     //-----------------------------    
+<<<<<<< HEAD
 
     newData(state: boolean): void { this.fNewData = state; /*triggerEvent(kNewData, true)*/; }
     
+=======
+>>>>>>> origin/arnaud
     setState (s: state): void { this.fState = s; }
     getState(): state { return this.fState; }
     
     getPos(): IPosition { return this.fPosition; }
     getColor(): IColor { return this.fColor; }
+<<<<<<< HEAD
 
      transferAttributes(dest: IObject): IObject {
         dest.fPosition.setXPos (this.fPosition.getXPos());
@@ -269,9 +269,10 @@ abstract class IObject {
              
         return dest;
     }   
+=======
+>>>>>>> origin/arnaud
     
     //-----------------------------
-    
     accept(address: string/*, const IMessage*/): boolean {
         return (this.fName == address);
         //return match(address);
@@ -286,25 +287,13 @@ abstract class IObject {
         else { this.fMotherSceneFocus = true }   
     }
    
-    getScene(): HTMLDivElement {
-        var scenes = appl.getSubNodes();
-        var n = scenes.length;
-        
-        for (var i: number=0; i < n; i++) {
-            if (scenes[i].fMotherSceneFocus == true) {
-                scenes[i].fMotherSceneFocus = false;
-                return scenes[i].fObjectView.getMotherScene();    
-            }
-        }     
-    } 
-    
+
     // View
     //-----------------------------    
+    setView(view: VObjectView): void 	{ this.fObjectView = view }
+    getView(): VObjectView 				{ return this.fObjectView }
     
-    setView(view: VObjectView): void { this.fObjectView = view }
-    
-    getView(): VObjectView { return this.fObjectView }
-    
+/*
     afficheView(): void {
         var cible = this.fObjectView.getScene();
         if (this.fTypeString == 'scene') { this.kDocument.appendChild(cible) }
@@ -314,6 +303,7 @@ abstract class IObject {
             parent.appendChild(cible);
         }
     }
+*/
     
     //-----------------------------
     

@@ -27,6 +27,18 @@ class TMethodHandler<C> implements SetMsgHandler {
 }
 
 // ------------------------------------------------------------------------------
+// a no param message handler
+// ------------------------------------------------------------------------------
+class TMsgHandlerVoid<C> extends TMethodHandler<C> {
+    constructor(o: C, method: string) { super(o, method); }      
+    handle(msg: IMessage): msgStatus { 
+        if ( msg.size() != 1 ) { return msgStatus.kBadParameters; } 
+    	this.fObject[this.fMethod](); 
+    	return msgStatus.kProcessed;
+    }
+}
+
+// ------------------------------------------------------------------------------
 // a single number message handler: passes a number to the client object
 // ------------------------------------------------------------------------------
 class TMsgHandlerNum<C> extends TMethodHandler<C> {

@@ -1,0 +1,14 @@
+{
+    "__comment": "the 'allowxxx' compiler options are intended to the INScore parser (js)",
+    "compilerOptions": {
+        "module": "system",
+        "target": "es3",
+        "noImplicitAny": false,
+        "outDir": "build",
+        "out": "../main.js",
+        "sourceMap": false,
+        "allowUnreachableCode": true,
+        "allowUnusedLabels": true,
+        "allowJs": true
+    }
+}

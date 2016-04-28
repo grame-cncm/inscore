@@ -8,6 +8,7 @@ class IAppl extends IObject {
         super('ITL');
         this.kApplType = 'IAppl';
         this.fTypeString = 'IAppl'; 
-
     } 
+
+    getAppl() : IObject		{ return this; }
 }
