@@ -1,11 +1,22 @@
 
 ///<reference path="IObject.ts"/>
+///<reference path="../parser/INScoreParser.js"/>
 
 declare var INScoreParser;
 
 class TILoader {
         
-    protected process(buffer: string, root: IObject) {
+    protected parse(msg: string): Array<any> {
+        try {
+	        INScoreParser.parse(msg);
+	    }
+	    catch (e) {
+	    	
+	    }
+        return INScoreParser.msgs;  
+    }
+
+   process(buffer: string, root: IObject) {
         let parser = this.parse(buffer);
         for (var i = 0; i < parser.length; i++) {
             var address = parser[i].address.osc;
@@ -16,11 +27,6 @@ class TILoader {
             var tail: string = OSCAddress.addressTail(msg.address());
             root.processMsg(beg, tail, msg);
         }    
-    }
-    
-    protected parse(msg: string): Array<any> {
-        INScoreParser.parse(msg);
-        return INScoreParser.msgs;  
     }
 
     load (file, client: IObject): void {

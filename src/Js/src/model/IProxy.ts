@@ -1,42 +1,45 @@
-///<reference path="IObject.ts"/>
+
+///<reference path="../controller/TSetMessageHandlers.ts"/>
+///<reference path="IObjectFactory.ts"/>
 
 class IProxy {	
 
-	static execute (msg: IMessage, objName: string, parent: IObject, newobj?: IObject, previousobj?: IObject): number {
+	static execute (msg: IMessage, objName: string, parent: IObject): { status: msgStatus, obj?: IObject } {
         
-        if (Tools.regexp(objName)) { return msgStatus.kBadAddress; }
+        if (Tools.regexp(objName)) { return { status: msgStatus.kBadAddress }; }
 
-	    var objType: string;
+	    let objType: string;
         
 		let method = msg.message();
-		if (!method.correct) return msgStatus.kBadParameters;
+		if (!method.correct) return { status: msgStatus.kBadParameters };
 
+	    // check if we try to create a scene
 	    if (parent && (parent.getTypeString() == 'IAppl')) {
-		    if (method.value != 'new') 	return msgStatus.kBadAddress;
-		    if (msg.size() != 1) 		return msgStatus.kBadParameters;
+		    if (method.value != 'new') 	return { status: msgStatus.kBadAddress };
+		    if (msg.size() != 1) 		return { status: msgStatus.kBadParameters };
 		    objType = 'scene';
 	    }
 	
+	    // for regular objects, fetch the object type from the 1st argument
         else {
-            if (method.value != 'set') 	return msgStatus.kBadAddress;
-            if (msg.size() < 2)  		return msgStatus.kBadParameters;
+            if (method.value != 'set') 	return { status: msgStatus.kBadAddress };
+            if (msg.size() < 2)  		return { status: msgStatus.kBadParameters };
 			let type = msg.paramStr(1);
-			if (!type.correct) 			return msgStatus.kBadParameters;
+			if (!type.correct) 			return { status: msgStatus.kBadParameters };
             objType = type.value;
         }
 
-        let newmsg = new IMessage(msg);
-        console.log(newmsg)
-        var obj: IObject = IObjectFactory.createObj(objName, objType, parent)
+		// eventually create the new object
+		let obj = IObjectFactory.createObj(objName, objType, parent)
         if (obj && obj.msgSet(msg.params())) {
-		    var status: number = obj.execute(newmsg);
-		    if (status & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) {
+		    let ret = obj.execute(msg);
+		    if (ret & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) {
 			    parent.addChild(obj);
 			    obj.setState(state.kModified);
-			    return msgStatus.kProcessed;
+			    return { status: msgStatus.kProcessed, obj: obj};
 		    }
-		    return status;
+		    return { status: ret };
 	    }
-	return msgStatus.kCreateFailure;
+		return { status: msgStatus.kCreateFailure };
     }
 }

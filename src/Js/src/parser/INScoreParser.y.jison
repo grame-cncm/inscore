@@ -2,7 +2,7 @@
 /* INScore lexical grammar */
 
 %{
-	function debugmsg(str){
+	function debugyacc(str){
 //		typeof console !== 'undefined' ? console.log(str) : print(str);
 	}
 %}
@@ -24,20 +24,20 @@ inscore		: expr
 expr		: message  ENDEXPR		{ parser.msgs.push($1); }
 			| variabledecl ENDEXPR	{ }
 			| script				{ }
-			| ENDSCRIPT				{ debugmsg("expr ENDSCRIPT "); return true; }
+			| ENDSCRIPT				{ debugyacc("expr ENDSCRIPT "); return true; }
 			;
 
 //_______________________________________________
 // javascript support
 //_______________________________________________
-script		: JSCRIPT			{ if ($1.length) debugmsg("expr script: " + $1);}
+script		: JSCRIPT			{ if ($1.length) debugyacc("expr script: " + $1);}
 			;
 
 //_______________________________________________
 // messages specification (extends osc spec.)
 //_______________________________________________
 message		: address			{ $$ = new Message($1, new Array()); }
-			| address params	{ $$ = new Message($1, $2); debugmsg($$.toString()); }
+			| address params	{ $$ = new Message($1, $2); debugyacc($$.toString()); }
 			| address eval LEFTPAR messagelist RIGHTPAR	{ $4.unshift($2); $$ = new Message($1, $4); }
 			| address eval variable						{ $3.unshift($2); $$ = new Message($1, $3); }
 			;
@@ -52,7 +52,7 @@ messagelistseparator	: COMMA
 //_______________________________________________
 // address specification (extends osc spec.)
 //_______________________________________________
-address		: OSCADDRESS			{ $$ = new Address("", 0, $1); debugmsg("OSCADDRESS: -"+$1+"-"); }
+address		: OSCADDRESS			{ $$ = new Address("", 0, $1); debugyacc("OSCADDRESS: -"+$1+"-"); }
 			| relativeaddress		{ $$ = new Address("", 0, $1);}
 			| urlprefix OSCADDRESS	{ $1.osc = $2; $$ = $1; }
 			;
@@ -100,7 +100,7 @@ param	: INT				{ $$ = parseInt($1); }
 //_______________________________________________
 // variable declaration
 //_______________________________________________
-variabledecl : varname EQUAL params	{ debugmsg("variabledecl: " + $1 + " = " + $3); parser.vars[$1] = $3; }
+variabledecl : varname EQUAL params	{ debugyacc("variabledecl: " + $1 + " = " + $3); parser.vars[$1] = $3; }
 			;
 
 varname		: IDENTIFIER			{ $$ = $1; }

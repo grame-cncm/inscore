@@ -90,16 +90,16 @@ case 4: case 5:
  
 break;
 case 6:
- debugmsg("expr ENDSCRIPT "); return true; 
+ debugyacc("expr ENDSCRIPT "); return true; 
 break;
 case 7:
- if ($$[$0].length) debugmsg("expr script: " + $$[$0]);
+ if ($$[$0].length) debugyacc("expr script: " + $$[$0]);
 break;
 case 8:
  this.$ = new Message($$[$0], new Array()); 
 break;
 case 9:
- this.$ = new Message($$[$0-1], $$[$0]); debugmsg(this.$.toString()); 
+ this.$ = new Message($$[$0-1], $$[$0]); debugyacc(this.$.toString()); 
 break;
 case 10:
  $$[$0-1].unshift($$[$0-3]); this.$ = new Message($$[$0-4], $$[$0-1]); 
@@ -114,7 +114,7 @@ case 13:
  $$[$0-2].push($$[$0]); this.$ = $$[$0-2]; 
 break;
 case 16:
- this.$ = new Address("", 0, $$[$0]); debugmsg("OSCADDRESS: -"+$$[$0]+"-"); 
+ this.$ = new Address("", 0, $$[$0]); debugyacc("OSCADDRESS: -"+$$[$0]+"-"); 
 break;
 case 17:
  this.$ = new Address("", 0, $$[$0]);
@@ -153,7 +153,7 @@ case 39:
  this.$ = $$[$0-1]; 
 break;
 case 41:
- debugmsg("variabledecl: " + $$[$0-2] + " = " + $$[$0]); parser.vars[$$[$0-2]] = $$[$0]; 
+ debugyacc("variabledecl: " + $$[$0-2] + " = " + $$[$0]); parser.vars[$$[$0-2]] = $$[$0]; 
 break;
 }
 },
@@ -310,8 +310,8 @@ parse: function parse(input) {
     return true;
 }};
 
-	function debugmsg(str){
-		typeof console !== 'undefined' ? console.log(str) : print(str);
+	function debugyacc(str){
+//		typeof console !== 'undefined' ? console.log(str) : print(str);
 	}
 
 parser.msgs = new Array;
@@ -659,7 +659,7 @@ stateStackSize:function stateStackSize() {
     },
 options: {"flex":true},
 performAction: function anonymous(yy,yy_,$avoiding_name_collisions,YY_START) {
-function debugmsg(str){
+function debuglex(str){
 //	typeof console !== 'undefined' ? console.log("  lex: " + str) : print("  lex: " + str);
 }
 
@@ -696,47 +696,47 @@ case 4:return 36;
 break;
 case 5:return 36;
 break;
-case 6:debugmsg("ENDSCRIPT : " + yy_.yytext); return 9;
+case 6:debuglex("ENDSCRIPT : " + yy_.yytext); return 9;
 break;
-case 7:debugmsg("IDENTIFIER: " + yy_.yytext); return 31;
+case 7:debuglex("IDENTIFIER: " + yy_.yytext); return 31;
 break;
-case 8:debugmsg("HOSTNAME: " + yy_.yytext); return 28;
+case 8:debuglex("HOSTNAME: " + yy_.yytext); return 28;
 break;
-case 9:debugmsg("IPNUM: " + yy_.yytext); return 27;
+case 9:debuglex("IPNUM: " + yy_.yytext); return 27;
 break;
 case 10:return 'EVAL';
 break;
 case 11:this.begin('DQSTR');
 break;
-case 12: debugmsg ("STRING: " + unescape(yy_.yytext)); return 37; 
+case 12: debuglex ("STRING: " + unescape(yy_.yytext)); return 37; 
 break;
 case 13:this.popState();
 break;
 case 14:this.begin('QSTR');
 break;
-case 15: debugmsg ("STRING: " + unescape(yy_.yytext)); return 37; 
+case 15: debuglex ("STRING: " + unescape(yy_.yytext)); return 37; 
 break;
 case 16:this.popState();
 break;
-case 17: debugmsg ("FILE STRING: " + yy_.yytext);	return 37; 
+case 17: debuglex ("FILE STRING: " + yy_.yytext);	return 37; 
 break;
 case 18:this.begin('JSECTION');
 break;
 case 19:this.popState();
 break;
-case 20: debugmsg ("JAVASCRIPT: " + yy_.yytext); return 10; 
+case 20: debuglex ("JAVASCRIPT: " + yy_.yytext); return 10; 
 break;
-case 21: debugmsg ("REGEXP: " + yy_.yytext); return 32; 
+case 21: debuglex ("REGEXP: " + yy_.yytext); return 32; 
 break;
-case 22: debugmsg ("REGEXP: " + yy_.yytext); return 32; 
+case 22: debuglex ("REGEXP: " + yy_.yytext); return 32; 
 break;
-case 23: debugmsg ("REGEXP: " + yy_.yytext); return 32; 
+case 23: debuglex ("REGEXP: " + yy_.yytext); return 32; 
 break;
 case 24: this.more(); this.begin('EXPRSECTION'); 
 break;
 case 25: this.more(); this.popState(); 
 							if (this.topState() == 'INITIAL') {
-							debugmsg("EXPRESSION " + yy_.yytext);
+							debuglex("EXPRESSION " + yy_.yytext);
 							return 38; 
 							}
 						
@@ -757,7 +757,7 @@ case 32: this.more();
 break;
 case 33: this.more(); 
 break;
-case 34: debugmsg("OSCADDRESS " + yy_.yytext); this.popState(); yy_.yytext = yy_.yytext.substring(0, yy_.yytext.length-1); return 21; 
+case 34: debuglex("OSCADDRESS " + yy_.yytext); this.popState(); yy_.yytext = yy_.yytext.substring(0, yy_.yytext.length-1); return 21; 
 break;
 case 35:return 39;
 break;
@@ -775,17 +775,17 @@ case 41:return 14;
 break;
 case 42:return 16;
 break;
-case 43:debugmsg ("COMMENTLINE: " + yy_.yytext); 
+case 43:debuglex ("COMMENTLINE: " + yy_.yytext); 
 break;
-case 44:debugmsg ("COMMENTLINE: " + yy_.yytext); 
+case 44:debuglex ("COMMENTLINE: " + yy_.yytext); 
 break;
 case 45:;
 break;
-case 46: debugmsg ("BEGIN NESTED COMMENT"); this.begin('COMMENT'); 
+case 46: debuglex ("BEGIN NESTED COMMENT"); this.begin('COMMENT'); 
 break;
-case 47: debugmsg ("END COMMENT"); this.popState(); 
+case 47: debuglex ("END COMMENT"); this.popState(); 
 break;
-case 48: debugmsg ("BEGIN COMMENT"); this.begin('COMMENT'); 
+case 48: debuglex ("BEGIN COMMENT"); this.begin('COMMENT'); 
 break;
 case 49:;   /* eat up space */
 break;
@@ -793,7 +793,7 @@ case 50:;	/* yy_.yylloc->first_column=0; ignore */
 break;
 case 51:return 9;
 break;
-case 52: debugmsg("ERR: " + yy_.yytext); return 'ERR'; 
+case 52: debuglex("ERR: " + yy_.yytext); return 'ERR'; 
 break;
 case 53:console.log(yy_.yytext);
 break;

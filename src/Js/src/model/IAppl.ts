@@ -1,4 +1,5 @@
 ///<reference path="IObject.ts"/>
+///<reference path="IProxy.ts"/>
 
 class IAppl extends IObject {
  
@@ -11,4 +12,8 @@ class IAppl extends IObject {
     } 
 
     getAppl() : IObject		{ return this; }
+
+    protected create (msg: IMessage, name: string, parent: IObject): { status: msgStatus, obj?: IObject }	{
+        return IProxy.execute (msg, name, parent);
+    }
 }

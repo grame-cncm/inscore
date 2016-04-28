@@ -2,7 +2,7 @@
 /* INScore lexical grammar */
 
 %{
-function debugmsg(str){
+function debuglex(str){
 //	typeof console !== 'undefined' ? console.log("  lex: " + str) : print("  lex: " + str);
 }
 
@@ -64,18 +64,18 @@ EOL		[\x0a\x0d]
 [+-]?{DIGIT}+e[-+]?{DIGIT}+ 			return 'FLOAT';
 
 
-"__END__"			debugmsg("ENDSCRIPT : " + yytext); return 'ENDSCRIPT';
+"__END__"			debuglex("ENDSCRIPT : " + yytext); return 'ENDSCRIPT';
 
 // ----------------------------------------- 
 //	identifiers 
 // ----------------------------------------- 
-{STARTID}{IDCHAR}*							debugmsg("IDENTIFIER: " + yytext); return 'IDENTIFIER';
+{STARTID}{IDCHAR}*							debuglex("IDENTIFIER: " + yytext); return 'IDENTIFIER';
 
 // ----------------------------------------- 
 //	hostname and IP 
 // ----------------------------------------- 
-({HOSTCHAR}({HOSTCHAR}*|'.'))+					debugmsg("HOSTNAME: " + yytext); return 'HOSTNAME';
-{DIGIT}+"."{DIGIT}+"."{DIGIT}+"."{DIGIT}+		debugmsg("IPNUM: " + yytext); return 'IPNUM';
+({HOSTCHAR}({HOSTCHAR}*|'.'))+					debuglex("HOSTNAME: " + yytext); return 'HOSTNAME';
+{DIGIT}+"."{DIGIT}+"."{DIGIT}+"."{DIGIT}+		debuglex("IPNUM: " + yytext); return 'IPNUM';
 
 // ----------------------------------------- 
 //	method requiring messages as argument 
@@ -86,31 +86,31 @@ EOL		[\x0a\x0d]
 //	quoted strings 
 // ----------------------------------------- 
 "\""               	this.begin('DQSTR');
-<DQSTR>(\\\"|[^"])* { debugmsg ("STRING: " + unescape(yytext)); return 'STRING'; }
+<DQSTR>(\\\"|[^"])* { debuglex ("STRING: " + unescape(yytext)); return 'STRING'; }
 <DQSTR>"\""         this.popState();
 
 "'"                 this.begin('QSTR');
-<QSTR>(\\\'|[^'])*  { debugmsg ("STRING: " + unescape(yytext)); return 'STRING'; }
+<QSTR>(\\\'|[^'])*  { debuglex ("STRING: " + unescape(yytext)); return 'STRING'; }
 <QSTR>"'"           this.popState();
 
 // ----------------------------------------- 
 //	non quoted file path (without space)
 // ----------------------------------------- 
-("/"|(".""."?"/")*)({FILECHAR}+"/"?)+"."[a-zA-Z]+	 { debugmsg ("FILE STRING: " + yytext);	return 'STRING'; }
+("/"|(".""."?"/")*)({FILECHAR}+"/"?)+"."[a-zA-Z]+	 { debuglex ("FILE STRING: " + yytext);	return 'STRING'; }
 
 // ----------------------------------------- 
 //	lang sections 
 // ----------------------------------------- 
 "<?"{SPACE}*"javascript"	this.begin('JSECTION');
 <JSECTION>"?>"				this.popState();
-<JSECTION>({EOL}|"?"[^>]|[^?])*	{ debugmsg ("JAVASCRIPT: " + yytext); return 'JSCRIPT'; }
+<JSECTION>({EOL}|"?"[^>]|[^?])*	{ debuglex ("JAVASCRIPT: " + yytext); return 'JSCRIPT'; }
 
 // ----------------------------------------- 
 //	regular expressions 
 // ----------------------------------------- 
-{RECHAR}+								{ debugmsg ("REGEXP: " + yytext); return 'REGEXP'; }
-{RECHAR}*"["{RECLASS}+"]"{RECHAR}*		{ debugmsg ("REGEXP: " + yytext); return 'REGEXP'; }
-{RECHAR}*"{"[_a-zA-Z0-9,]+"}"{RECHAR}*	{ debugmsg ("REGEXP: " + yytext); return 'REGEXP'; }
+{RECHAR}+								{ debuglex ("REGEXP: " + yytext); return 'REGEXP'; }
+{RECHAR}*"["{RECLASS}+"]"{RECHAR}*		{ debuglex ("REGEXP: " + yytext); return 'REGEXP'; }
+{RECHAR}*"{"[_a-zA-Z0-9,]+"}"{RECHAR}*	{ debuglex ("REGEXP: " + yytext); return 'REGEXP'; }
 
 // ----------------------------------------- 
 //	evaluable expression section 
@@ -118,7 +118,7 @@ EOL		[\x0a\x0d]
 <EXPRSECTION>"("		{ this.more(); this.begin('EXPRSECTION'); }
 <EXPRSECTION>")"		{ this.more(); this.popState(); 
 							if (this.topState() == 'INITIAL') {
-							debugmsg("EXPRESSION " + yytext);
+							debuglex("EXPRESSION " + yytext);
 							return 'EXPRESSION'; 
 							}
 						}
@@ -134,7 +134,7 @@ EOL		[\x0a\x0d]
 <OSCSECTION>{RECHAR}+								{ this.more(); }
 <OSCSECTION>{RECHAR}*"["{RECLASS}+"]"{RECHAR}*		{ this.more(); }
 <OSCSECTION>{RECHAR}*"{"[_a-zA-Z0-9,]+"}"{RECHAR}*	{ this.more(); }
-<OSCSECTION>{SPACE}|{EOL}				{ debugmsg("OSCADDRESS " + yytext); this.popState(); yytext = yytext.substring(0, yytext.length-1); return 'OSCADDRESS'; }
+<OSCSECTION>{SPACE}|{EOL}				{ debuglex("OSCADDRESS " + yytext); this.popState(); yytext = yytext.substring(0, yytext.length-1); return 'OSCADDRESS'; }
 
 // ----------------------------------------- 
 //	basic delimiters and markers 
@@ -151,18 +151,18 @@ EOL		[\x0a\x0d]
 // ----------------------------------------- 
 //	comments 
 // ----------------------------------------- 
-'#'.*		debugmsg ("COMMENTLINE: " + yytext); 
-'!'.*		debugmsg ("COMMENTLINE: " + yytext); 
+'#'.*		debuglex ("COMMENTLINE: " + yytext); 
+'!'.*		debuglex ("COMMENTLINE: " + yytext); 
 
 <COMMENT>.|{EOL}* 	;
-<COMMENT>"(*"		{ debugmsg ("BEGIN NESTED COMMENT"); this.begin('COMMENT'); } 
-<COMMENT>"*)"       { debugmsg ("END COMMENT"); this.popState(); }
-"(*"                { debugmsg ("BEGIN COMMENT"); this.begin('COMMENT'); }
+<COMMENT>"(*"		{ debuglex ("BEGIN NESTED COMMENT"); this.begin('COMMENT'); } 
+<COMMENT>"*)"       { debuglex ("END COMMENT"); this.popState(); }
+"(*"                { debuglex ("BEGIN COMMENT"); this.begin('COMMENT'); }
 
 {SPACE}+			;   /* eat up space */
 {EOL}				;	/* yylloc->first_column=0; ignore */
 
 <<EOF>>				return 'ENDSCRIPT';
 
-.					{ debugmsg("ERR: " + yytext); return 'ERR'; }
+.					{ debuglex("ERR: " + yytext); return 'ERR'; }
 

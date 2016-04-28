@@ -1,12 +1,14 @@
+
 ///<reference path="../externals/fraction/fraction.ts"/>
 ///<reference path="../lib/OSCAddress.ts"/>
 ///<reference path="../lib/Tools.ts"/>
 ///<reference path="../controller/TSetMessageHandlers.ts"/>
 ///<reference path="../view/VObjectView.ts"/>
+
+///<reference path="Methods.ts"/>
 ///<reference path="Icolor.ts"/>
 ///<reference path="IDate.ts"/>
 ///<reference path="IPosition.ts"/>
-///<reference path="IProxy.ts"/>
 
 enum state {
     kClean,
@@ -15,6 +17,7 @@ enum state {
     kSubModified = 4,
     kMasterModified = 8, 
 }
+
 
 abstract class IObject {
     
@@ -60,7 +63,7 @@ abstract class IObject {
 
         if (parent) { 
             this.fParent = parent; 
-            parent.addChild(this); 
+            this.fParent.addChild(this); 
         }
 
         this.fPosition = new IPosition;
@@ -210,7 +213,8 @@ abstract class IObject {
     }
     
     //-----------------------------    
-    getDeleted(): boolean { return this.fDelete; }
+    getDeleted(): boolean 	{ return this.fDelete; }
+    del(): void 			{ this.fDelete = true; }
     
     //-----------------------------    
     setState (s: state): void { this.fState = s; }
@@ -274,7 +278,7 @@ abstract class IObject {
 
 	        //handler = this.messageHandler("*");
 	        //if (handler) return ;
-	        //return MsgHandler.fMsgStatus.kBadParameters;		
+	        //return msgStatus.kBadParameters;		
     	}
     	else {			// sig handler 
     	}
@@ -322,40 +326,35 @@ abstract class IObject {
                     }
                 }
                     
-                else if (Tools.regexp(beg)) { 
-                    result = msgStatus.kProcessedNoChange; }
-                    
-                else { 
-                    result = IProxy.execute (msg, beg, this); } 
+                else if (Tools.regexp(beg)) { result = msgStatus.kProcessedNoChange; }                    
+                else { result = this.create (msg, this.fName, this.fParent).status; }
             }
         }  
             
         if (result & msgStatus.kProcessed) { this.setState(state.kSubModified); }
-    return result;     
+    	return result;     
     }
     
-/*
     set(msg: IMessage): msgStatus	{
         var type: string = typeof msg.param(1);
-        if (typeof type != "string") { return MsgHandler.fMsgStatus.kBadParameters; }
+        if (typeof type != "string") { return msgStatus.kBadParameters; }
         
         if (typeof type != this.getTypeString()) {
-            var newobj: IObject;
-            var status:number = IProxy.execute (msg, this.fName, this.fParent, newobj, this);
-            if (status & MsgHandler.fMsgStatus.kProcessed) {
-                IObject obj = newobj;
-                newobj = obj;
-                del();								
-                fParent->cleanupSync();
-                return MsgHandler.fMsgStatus.kProcessed;		
+			let out = this.create (msg, this.fName, this.fParent);
+            if (out.status & msgStatus.kProcessed) {
+	            // todo: transfer this attributes to new object
+            	this.del();
+//				this.fParent.cleanupSync();
+                return out.status;		
             }
             
-            return MsgHandler.fMsgStatus.kProcessedNoChange;
+            return msgStatus.kProcessedNoChange;
         }
-        return MsgHandler.fMsgStatus.kBadParameters;
+        return msgStatus.kBadParameters;
     }
-*/
     
+    protected create (msg: IMessage, name: string, parent: IObject): { status: msgStatus, obj?: IObject } 
+    				{ return this.getAppl().create(msg, this.fName, this.fParent); }    
+
     msgSet(params: Array<any>): boolean { return };
 }
-

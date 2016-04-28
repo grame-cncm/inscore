@@ -1,3 +1,4 @@
+///<reference path="../model/IObject.ts"/>
 ///<reference path="../view/VObjectView.ts"/>
 
 class VHtmlView extends VObjectView {

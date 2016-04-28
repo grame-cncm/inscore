@@ -1,5 +1,6 @@
 
 ///<reference path="../controller/IGlue.ts"/>
+///<reference path="../model/TILoader.ts"/>
 
 declare var gGlue : IGlue;
 
