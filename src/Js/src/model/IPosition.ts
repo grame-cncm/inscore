@@ -54,7 +54,7 @@ class IPosition {
     getZOrder(): number { return this.fZOrder; }
     getScale(): number { return this.fScale; }
     getPos(): Array<number> { 
-        var pos: Array<number> = new Array (this.fXPos , this.fYPos) 
+        let pos: Array<number> = new Array (this.fXPos , this.fYPos) 
         return pos 
         }
     getShear(): Array<number> { return this.fShear; }
@@ -67,7 +67,7 @@ class IPosition {
     getWidth(): number { return this.fWidth; }
     getHeight(): number { return this.fHeight; }
     getDimension(): Array<number> { 
-        var dimension: Array<number> = new Array (this.fWidth , this.fHeight) 
+        let dimension: Array<number> = new Array (this.fWidth , this.fHeight) 
         return dimension 
         }
    

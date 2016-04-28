@@ -18,23 +18,23 @@ class TILoader {
 
    process(buffer: string, root: IObject) {
         let parser = this.parse(buffer);
-        for (var i = 0; i < parser.length; i++) {
-            var address = parser[i].address.osc;
-            var params = parser[i].params;
+        for (let i = 0; i < parser.length; i++) {
+            let address = parser[i].address.osc;
+            let params = parser[i].params;
             let msg = new IMessage(parser[i].address.osc, parser[i].params);
             
-            var beg: string = OSCAddress.addressFirst(msg.address());
-            var tail: string = OSCAddress.addressTail(msg.address());
+            let beg: string = OSCAddress.addressFirst(msg.address());
+            let tail: string = OSCAddress.addressTail(msg.address());
             root.processMsg(beg, tail, msg);
         }    
     }
 
     load (file, client: IObject): void {
-        var reader: FileReader = new FileReader();
+        let reader: FileReader = new FileReader();
         reader.readAsText(file);
         
         reader.onloadend = function (e) {
-            var data: string = reader.result;
+            let data: string = reader.result;
             this.process(data, client.getAppl());
         };      
     }    

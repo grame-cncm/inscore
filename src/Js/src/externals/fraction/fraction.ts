@@ -20,7 +20,7 @@ class Fraction {
             this.denominator = b;
         }
         else if (typeof a === "string" && b === undefined) {
-            var myRegex = /^([0-9]+)\/([0-9]+)$/.test(a);
+            let myRegex = /^([0-9]+)\/([0-9]+)$/.test(a);
             if (myRegex) {
 	            this.numerator = parseInt(RegExp.$1);
     	        this.denominator = parseInt(RegExp.$2);
@@ -33,8 +33,8 @@ class Fraction {
 // CONVERTION RATIONAL TO A FRACTION
 //-------------------------------------------------------------- 
     rational2fraction(value: number): void {
-        var cpt:number = 1;
-        var test:number = 0;
+        let cpt:number = 1;
+        let test:number = 0;
         while (value*cpt != test) {
             cpt++;
             test = Math.floor(value*cpt);
@@ -52,28 +52,28 @@ class Fraction {
 //-------------------------------------------------------------- 
     // fraction1 + fraction2 => var sum = fraction1.add(fraction2)
     add(value: Fraction|number) {
-        var that:Fraction = new Fraction (value);
+        let that:Fraction = new Fraction (value);
         
-        var denominator = this.denominator * that.denominator;
+        let denominator = this.denominator * that.denominator;
         this.numerator = this.numerator * that.denominator + that.numerator * this.denominator;
         this.denominator = denominator;
-        var reduceFraction: Fraction = this.reduce();
+        let reduceFraction: Fraction = this.reduce();
         return reduceFraction; 
     }
 
     // fraction1 * fraction2 => var result = fraction1.sum(fraction2)
     mul(value: Fraction|number) {
-        var that:Fraction = new Fraction (value);    
+        let that:Fraction = new Fraction (value);    
 
         this.numerator = this.numerator * that.numerator;
         this.denominator = this.denominator * that.denominator;
-        var reduceFraction: Fraction = this.reduce();
+        let reduceFraction: Fraction = this.reduce();
         return reduceFraction;
     }
 
     // fraction1 / fraction2 => var result = fraction1.div(fraction2)
     div(value: Fraction|number) {
-        var that:Fraction = new Fraction (value);
+        let that:Fraction = new Fraction (value);
 
         [that.numerator, that.denominator] = [that.denominator, that.numerator];
         return this.mul(that);
@@ -81,7 +81,7 @@ class Fraction {
 
     // fraction1 - fraction2 => var result = fraction1.sub(fraction2)
     sub(value: Fraction|number) {   
-        var that:Fraction = new Fraction (value);
+        let that:Fraction = new Fraction (value);
         that.numerator = -that.numerator;
         return this.add(that);
     }
@@ -94,13 +94,13 @@ class Fraction {
     
     // reduce a fraction : Euclide algorithme
     reduce(): Fraction {
-        var numerator = this.numerator;
-        var denominator = this.denominator;
-        var a = Math.max (numerator, denominator);
-        var b = Math.min (numerator, denominator);
+        let numerator = this.numerator;
+        let denominator = this.denominator;
+        let a = Math.max (numerator, denominator);
+        let b = Math.min (numerator, denominator);
         if (b == 0) return this;
         
-        var rest = a%b;        
+        let rest = a%b;        
         while (rest != 0) {
             a = b;
             b = rest;                               // var b is the PGCD if the rest is equal to 0

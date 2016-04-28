@@ -7,13 +7,13 @@ declare var gGlue : IGlue;
 function dropEvent(e) {
     dragOverEvent(e);
 
-    var filelist =  e.dataTransfer.files;
+    let filelist =  e.dataTransfer.files;
     if (!filelist) { return; }  
   
-    var filecount = filelist.length;
+    let filecount = filelist.length;
     if (filecount > 0) {                
-        for (var i=0; i < filecount; i++) {
-            var loader = new TILoader;
+        for (let i=0; i < filecount; i++) {
+            let loader = new TILoader;
             loader.load(filelist[i], gGlue.getRoot());      
         } 
     } 

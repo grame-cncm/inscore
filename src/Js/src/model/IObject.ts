@@ -18,6 +18,8 @@ enum state {
     kMasterModified = 8, 
 }
 
+class IHandlersMap<T> { [index: string]: T; }
+
 
 abstract class IObject {
     
@@ -38,7 +40,7 @@ abstract class IObject {
     
     protected fSubNodes: Array<IObject> = new Array;
     
-    protected fMsgHandlerMap = new Array<SetMsgHandler>(); 
+    protected fMsgHandlerMap = new IHandlersMap<SetMsgHandler>(); 
 //    protected fGetMsgHandlerMap: Array<GetParamMsgHandler<any>> = new Array;
     
 //    protected kDocument: HTMLElement; 
@@ -185,11 +187,11 @@ abstract class IObject {
             return this.exactfind(expr, outlist);
         }
         else {
-            var size: number = outlist.length;
-            var n: number = this.fSubNodes.length;
+            let size: number = outlist.length;
+            let n: number = this.fSubNodes.length;
             
-            for (var i: number = 0; i < n; i++) {
-                var elt: IObject = this.fSubNodes[i];
+            for (let i: number = 0; i < n; i++) {
+                let elt: IObject = this.fSubNodes[i];
                 if (!elt.getDeleted()) { outlist.push(elt); }       
             }
             
@@ -200,10 +202,10 @@ abstract class IObject {
     //-----------------------------
     
     exactfind(name:string, outlist: Array<IObject>): boolean {
-        var n: number = this.fSubNodes.length;
-        var ret: boolean = false;
-        for (var i: number = 0; i < n; i++) {
-            var elt: IObject = this.fSubNodes[i];
+        let n: number = this.fSubNodes.length;
+        let ret: boolean = false;
+        for (let i: number = 0; i < n; i++) {
+            let elt: IObject = this.fSubNodes[i];
             if ((!elt.getDeleted()) && (elt.fName == name)) {
                 outlist.push(this.fSubNodes[i]);
                 ret = true;
@@ -246,11 +248,11 @@ abstract class IObject {
     
 /*
     afficheView(): void {
-        var cible = this.fObjectView.getScene();
+        let cible = this.fObjectView.getScene();
         if (this.fTypeString == 'scene') { this.kDocument.appendChild(cible) }
         
         else { 
-            var parent = this.fParent.fObjectView.getMotherScene();
+            let parent = this.fParent.fObjectView.getMotherScene();
             parent.appendChild(cible);
         }
     }
@@ -288,7 +290,7 @@ abstract class IObject {
     //-----------------------------
     
     messageHandler(msg: string, match?: boolean): SetMsgHandler {
-        var handler: SetMsgHandler;
+        let handler: SetMsgHandler;
         if (!match) {
             return this.fMsgHandlerMap[msg]; 
         }
@@ -304,22 +306,22 @@ abstract class IObject {
 // MESSAGES PROCESSING
 //--------------------------------------------------------------     
     processMsg (address: string, addressTail: string , msg: IMessage): number {
-        var result: number = msgStatus.kBadAddress;
+        let result: number = msgStatus.kBadAddress;
         if (this.accept(address/*, msg*/)) {
-            var beg: string = OSCAddress.addressFirst(addressTail);	
-            var tail: string = OSCAddress.addressTail(addressTail);
+            let beg: string = OSCAddress.addressFirst(addressTail);	
+            let tail: string = OSCAddress.addressTail(addressTail);
                 
             if (tail.length) {
-                var n: number = this.fSubNodes.length;
-                for (var i: number = 0; i < n; i++) { result |= this.fSubNodes[i].processMsg (beg, tail, msg); }
+                let n: number = this.fSubNodes.length;
+                for (let i: number = 0; i < n; i++) { result |= this.fSubNodes[i].processMsg (beg, tail, msg); }
             }
 
             else {										
-                var targets: Array<IObject> = new Array;
+                let targets: Array<IObject> = new Array;
                 if (this.find (beg, targets)) {	
-                    var n: number = targets.length;
-                    for (var i: number = 0; i < n; i++) {
-                        var target: IObject = targets[i];
+                    let n: number = targets.length;
+                    for (let i: number = 0; i < n; i++) {
+                        let target: IObject = targets[i];
                         console.log(target);
                         result |= target.execute(msg);	
                         if (result & msgStatus.kProcessed) { target.setState(state.kModified); }
@@ -336,7 +338,7 @@ abstract class IObject {
     }
     
     set(msg: IMessage): msgStatus	{
-        var type: string = typeof msg.param(1);
+        let type: string = typeof msg.param(1);
         if (typeof type != "string") { return msgStatus.kBadParameters; }
         
         if (typeof type != this.getTypeString()) {
@@ -356,5 +358,5 @@ abstract class IObject {
     protected create (msg: IMessage, name: string, parent: IObject): { status: msgStatus, obj?: IObject } 
     				{ return this.getAppl().create(msg, this.fName, this.fParent); }    
 
-    msgSet(params: Array<any>): boolean { return };
+    msgSet(params: Array<any>): boolean { return true; };
 }

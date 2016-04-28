@@ -27,7 +27,7 @@ class HtmlViewFactory implements ViewFactory {
                 return new VHtmlSceneView ();
                 
             default:
-                break;
+                return null;
         }
     }  
 }	

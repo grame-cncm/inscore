@@ -102,11 +102,11 @@ class IColor {
 // CONVERSIONS COLORS
 //--------------------------------------------------------------    
    hsv2rgb():void {
-        var H:number = this.fH/360;
-        var S:number = this.fS/100;  
-        var V:number = this.fV/100; 
+        let H:number = this.fH/360;
+        let S:number = this.fS/100;  
+        let V:number = this.fV/100; 
         
-        var F:number; var M:number;  var N:number;  var K:number; var I:number; 
+        let F:number; let M:number;  let N:number;  let K:number; let I:number; 
     
         if ( S == 0.0 ) {
             this.fR = V;
@@ -142,27 +142,27 @@ class IColor {
     }
    //-----------------------------  
    rgb2hsv():void {
-        var r:number = this.fR/255;
-        var g:number = this.fG/255;
-        var b:number = this.fB/255;
+        let r:number = this.fR/255;
+        let g:number = this.fG/255;
+        let b:number = this.fB/255;
 
         // Calculation of maxC and minC
-        var maxC:number = Math.max(r, g, b);
-        var minC:number = Math.min(r, g, b);
+        let maxC:number = Math.max(r, g, b);
+        let minC:number = Math.min(r, g, b);
 
         // Calculation of delta
-        var delta:number = maxC - minC;
+        let delta:number = maxC - minC;
 
-        var H:number = 0; var S:number = 0; var V:number = maxC;
+        let H:number = 0; let S:number = 0; let V:number = maxC;
 
 
         if (delta == 0) { H=0; S=0;}
         
         else {
             S = delta / maxC;
-            var dR:number = 60*(maxC - r)/delta + 180;
-            var dG:number = 60*(maxC - g)/delta + 180;
-            var dB:number = 60*(maxC - b)/delta + 180;
+            let dR:number = 60*(maxC - r)/delta + 180;
+            let dG:number = 60*(maxC - g)/delta + 180;
+            let dB:number = 60*(maxC - b)/delta + 180;
             
             if (r == maxC) { H = dB - dG; }
                 

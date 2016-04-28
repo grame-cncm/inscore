@@ -36,7 +36,7 @@ class IMessage {
     // add values to the parameters; arrays are checked and pushed as values
     push(val: any): void 	{
     	if (Array.isArray(val)) {
-    		for (var i=0; i<val.length; i++) this.add (val[i]);
+    		for (let i=0; i<val.length; i++) this.add (val[i]);
     	}
     	else this.fArguments.push(val); 
     };
@@ -64,8 +64,8 @@ class IMessage {
 
    	size(): number 					{ return this.fArguments.length; }
    	toString(): string	{
-   		var out: string = this.fAddress;
-   		for (var i: number=0; i < this.fArguments.length; i++) {
+   		let out: string = this.fAddress;
+   		for (let i: number=0; i < this.fArguments.length; i++) {
    			if (this.isType(i, "object"))
 	   			out += " ( " + this.fArguments[i].toString() + " )";
    			else out += " " + this.fArguments[i].toString();

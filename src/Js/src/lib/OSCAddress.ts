@@ -9,7 +9,7 @@ class OSCAddress {
 //--------------------------------------------------------------  
     static addressFirst (a: string): string {
         if (a[0] == this.kAddressSep) {
-            var n: number = a.indexOf(this.kAddressSep, 1);
+            let n: number = a.indexOf(this.kAddressSep, 1);
             if (n == this.npos) n = a.length;
             return a.substr(1, n-1);
         }
@@ -18,7 +18,7 @@ class OSCAddress {
 
     static addressTail (a: string) : string {
         if (a[0] == this.kAddressSep) {
-            var n: number = a.indexOf(this.kAddressSep, 1);
+            let n: number = a.indexOf(this.kAddressSep, 1);
             if (n != this.npos) {
                 return a.substr(n, a.length - n);
             }
