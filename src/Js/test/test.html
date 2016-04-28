@@ -19,86 +19,35 @@
 </svg>
 </div> -->
 
-<script src="system.js"></script>
 <script src="../src/parser/INScoreParser.js"></script>
 <script type="text/javascript" src="../inscore.js"></script>
 
 
 <script type="text/javascript">
 	
-
-	//var color2 = new IColor(10,10,10);
-	//var color = new IColor(color2);
 	
-	
-	//zoneTest.textContent = 'RGB : ' + color.getR() + ' ' + color.getG() + ' ' + color.getB() + '    ';
+	var message = new IMessage('ITL/scene');
+	message.add('new');
 
-	//zoneTest.textContent += 'HSV : ' + color.getH() + ' ' + color.getS() + ' ' + color.getV() + '    ///';
-	
-	//color.setS(2);
+	var message2 = new IMessage('ITL/scene/obj1');
+	message2.add('set');
+	message2.add('rect');
+	message2.add('10');
+	message2.add('10');
 
-	//zoneTest.textContent += 'nouveau HSV : ' + color.getH() + ' ' + color.getS() + ' ' + color.getV() + '    ';
+	var message3 = new IMessage('ITL/scene/obj1');
+	message3.add('set');
+	message3.add('ellipse');
+	message3.add('20');
+	message3.add('20');
 
-	//zoneTest.textContent += 'nouveau RGB : ' + color.getR() + ' ' + color.getG() + ' ' + color.getB() + '    ';
+	//appl.processMsg('ITL', '/scene', message);
+	//appl.processMsg('ITL', '/scene/obj1', message2);
+	//appl.processMsg('ITL', '/scene/obj1', message3);
 
-	
-	//var fraction = new Fraction (30.74);
-	//var fraction2 = new Fraction("5/2");
-	//var iinvFraction = fraction.inverse();
-	//var somme = fraction.add(fraction2);
-	
-	/*var position = new IPosition()
-	position.setWidth(60);
-
-	var object = new IObject('PremierObjet', position);
-
-	console.log(object);*/
-
-	/*var objectITL = new IObject('ITL');
-	var scene1 = new IObject('scene1', objectITL);
-	var scene2 = new IObject('scene2', objectITL);
-	var object1 = new IObject('object1', scene1);
-	var object2 = new IObject('object2', scene1);
-	var object3 = new IObject('object3', scene1);
-	var object4 = new IObject('object4', scene2);
-	var object5 = new IObject('object5', scene2);
-	var object6 = new IObject('object6', scene2);
-
-	console.log(objectITL);
-
-	objectITL.processMsg('ITL', '/scene1/object3');*/
-
-	/*var teeest = new IRect('RectangleParent');
-	var test = new IEllipse('Rectangle1', teeest);
-
-	ViewFactory.create(test);*/
-
-	//IObjectFactory.createObj('scene1', "scene", appl);
-	//IObjectFactory.createObj('scene2', "scene", appl);
-	//IObjectFactory.createObj('scene3', "scene", appl);
-
-	//IObjectFactory.createObj('obj1', "rect", appl.fSubNodes[0]);
-	//IObjectFactory.createObj('obj2', "ellipse", appl.fSubNodes[0]);
-	//IObjectFactory.createObj('obj3', "line", appl.fSubNodes[1]);
-	//IObjectFactory.createObj('obj4', "curve", appl.fSubNodes[2]);
-
-	
-	//var frac = new Fraction(5/24);
-	
-	//var message = new IMessage('ITL/scene2/obj3');
-	//message.add('red');
-	//message.add(70);
-	//console.log(message)
-
-	//appl.processMsg('ITL', '/scene2/obj3', message);
+	//console.log(appl)
 
 
-
-	//IObjectFactory.createObj('obj1', "IEllipse.kEllipseType", appl.fSubNodes[0], appl);
-	//IObjectFactory.createObj('obj2', "IEllipse.kEllipseType", appl.fSubNodes[0], appl);
-	//IObjectFactory.createObj('obj3', "IEllipse.kEllipseType", appl.fSubNodes[1], appl);
-
-	//console.log(document);
 
 </script>
 

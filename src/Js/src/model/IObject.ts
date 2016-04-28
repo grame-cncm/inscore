@@ -172,15 +172,15 @@ abstract class IObject {
         this.setState(state.kSubModified);
     } 
     
-    setParent(parent: IObject):void { this.fParent = parent; }    
+    setParent(parent: IObject): void { this.fParent = parent; }    
+    getParent(): IObject 			{ return this.fParent; }    
     getSubNodes(): Array<IObject> 	{ return this.fSubNodes }
     getAppl() : IObject				{ return this.fParent.getAppl(); }
     getScene(): IObject 			{ return this.fParent.getScene(); }
    
     //-----------------------------    
-    getTypeString(): string {
-        return this.fTypeString;
-    }        
+    getName(): string 				{ return this.fName; }
+    getTypeString(): string 		{ return this.fTypeString; }        
     
     find(expr: string, outlist: Array<IObject>): boolean {
         if (!Tools.regexp(expr)) {
@@ -215,15 +215,42 @@ abstract class IObject {
     }
     
     //-----------------------------    
-    getDeleted(): boolean 	{ return this.fDelete; }
-    del(): void 			{ this.fDelete = true; }
+    newData(state: boolean): void { this.fNewData = state; /*triggerEvent(kNewData, true)*/; }
     
-    //-----------------------------    
     setState (s: state): void { this.fState = s; }
     getState(): state { return this.fState; }
     
     getPos(): IPosition { return this.fPosition; }
     getColor(): IColor { return this.fColor; }
+
+     transferAttributes(dest: IObject): IObject {
+        dest.fPosition.setXPos (this.fPosition.getXPos());
+        dest.fPosition.setYPos (this.fPosition.getYPos());
+        dest.fPosition.setXOrigin (this.fPosition.getXOrigin());
+        dest.fPosition.setYOrigin (this.fPosition.getYOrigin());
+        dest.fPosition.setScale (this.fPosition.getScale());
+        dest.fPosition.setVisible (this.fPosition.getVisible());
+        dest.fPosition.setZOrder (this.fPosition.getZOrder());
+        dest.fPosition.setShear (this.fPosition.getShear());
+
+        dest.fPosition.setRotateX (this.fPosition.getRotateX());
+        dest.fPosition.setRotateY (this.fPosition.getRotateY());
+        dest.fPosition.setRotateZ (this.fPosition.getRotateZ());
+
+        dest.fColor.setR(this.fColor.getR());
+        dest.fColor.setG(this.fColor.getG());
+        dest.fColor.setB(this.fColor.getB());
+        dest.fColor.setA(this.fColor.getA());
+
+        //dest.fPosition.setPenWidth(getPenWidth());
+        //dest.fPosition.setPenColor(getPenColor());
+        //dest.fPosition.setPenStyle(getPenStyle());
+        
+        dest.fDate.setDate (this.fDate.getDate());
+        dest.fDate.setDuration (this.fDate.getDuration());
+             
+        return dest;
+    }   
     
     //-----------------------------
     accept(address: string/*, const IMessage*/): boolean {
@@ -273,7 +300,13 @@ abstract class IObject {
     	let method = msg.message();
     	if (method.correct) {
        		let handler = this.messageHandler(method.value);
-        	if (handler) { return handler.handle(msg) };
+            console.log("Le message '" + method.value + "' est donné à : // from IObject.execute()");
+            console.log(this);   
+        	if (handler) { 
+                console.log("Le handler correspondant est appelé : // from IObject.execute()");
+                console.log(handler);
+                return handler.handle(msg) 
+            }
 
 	        //handler = this.messageHandler(msg.message(), true);
 	        //if (handler) return ;
@@ -326,10 +359,9 @@ abstract class IObject {
                         result |= target.execute(msg);	
                         if (result & msgStatus.kProcessed) { target.setState(state.kModified); }
                     }
-                }
-                    
+                }               
                 else if (Tools.regexp(beg)) { result = msgStatus.kProcessedNoChange; }                    
-                else { result = this.create (msg, this.fName, this.fParent).status; }
+                else { result = this.proxy_create (msg, this.fName, this.fParent).status; }
             }
         }  
             
@@ -342,7 +374,7 @@ abstract class IObject {
         if (typeof type != "string") { return msgStatus.kBadParameters; }
         
         if (typeof type != this.getTypeString()) {
-			let out = this.create (msg, this.fName, this.fParent);
+			let out = this.proxy_create (msg, this.fName, this.fParent);
             if (out.status & msgStatus.kProcessed) {
 	            // todo: transfer this attributes to new object
             	this.del();
@@ -355,8 +387,28 @@ abstract class IObject {
         return msgStatus.kBadParameters;
     }
     
-    protected create (msg: IMessage, name: string, parent: IObject): { status: msgStatus, obj?: IObject } 
-    				{ return this.getAppl().create(msg, this.fName, this.fParent); }    
-
-    msgSet(params: Array<any>): boolean { return true; };
+    protected proxy_create (msg: IMessage, name: string, parent: IObject): { status: msgStatus, obj?: IObject } 
+    				{ return this.getAppl().proxy_create(msg, this.fName, this.fParent); }                
+    
+    //-----------------------------    
+    getDeleted(): boolean 	{ return this.fDelete; }
+    del(): void {
+        if(this.fLock){
+//            console.log("ITLErr : Impossible to delete " + this.getOSCAddress() + ", the object is locked.");
+            this.fDelete = false;
+            return;
+	    }
+        if(this.fDelete) {
+            console.log("supression de l'ancien objet");
+            console.log(this)
+//            let scene = this.fObjectView.getMotherScene();
+//            let obj = this.fObjectView.getScene();
+//            scene.removeChild(obj);
+            
+            let array = this.fParent.getSubNodes();
+            array.splice(array.indexOf(this),1);
+            delete this;    
+            
+        }
+    }
 }

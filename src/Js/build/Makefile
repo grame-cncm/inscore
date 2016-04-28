@@ -22,19 +22,24 @@ clean:
 
 #===============================================================
 # rules to compile a .ts 
-JSOPTS := --allowJs  --allowUnreachableCode  --allowUnusedLabels
-js/model/TILoader.js: ../src/model/TILoader.ts
+TSOPT  :=   # --noImplicitAny  --noImplicitReturns
+JSOPTS := --allowJs  --allowUnreachableCode  --allowUnusedLabels 
+$(BUILDIR)/model/TILoader.js: ../src/model/TILoader.ts
 	@[ -d $(@D) ] || mkdir -p $(@D)
 	tsc $(JSOPTS) -out $@ $< 
 
-js/controller/IGlue.js: ../src/controller/IGlue.ts
+$(BUILDIR)/controller/IGlue.js: ../src/controller/IGlue.ts
 	@[ -d $(@D) ] || mkdir -p $(@D)
 	tsc $(JSOPTS) -out $@ $< 
 
-js/events/dragAndDrop.js: ../src/events/dragAndDrop.ts
+$(BUILDIR)/events/dragAndDrop.js: ../src/events/dragAndDrop.ts
 	@[ -d $(@D) ] || mkdir -p $(@D)
-	tsc $(JSOPTS) -out $@ $< 
+	tsc $(JSOPTS)  --noImplicitReturns -out $@ $< 
+
+$(BUILDIR)/controller/TSetMessageHandlers.js: ../src/controller/TSetMessageHandlers.ts
+	@[ -d $(@D) ] || mkdir -p $(@D)
+	tsc -out $@ $< 
 
 $(BUILDIR)/%.js: ../src/%.ts
 	@[ -d $(@D) ] || mkdir -p $(@D)
-	tsc -out $@ $< 
+	tsc $(TSOPT) -out $@ $< 

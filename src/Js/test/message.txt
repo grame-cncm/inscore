@@ -1,21 +1,5 @@
-/ITL/scene1/obj1 red 0;
-/ITL/scene1/obj1 blue 76;
-/ITL/scene1/obj1 green 153;
-
-/ITL/scene1/obj2 red 10;
-/ITL/scene1/obj2 blue 10;
-/ITL/scene1/obj2 green 10;
+/ITL/scene/obj1 set ellipse 20 20;
 
 
-/ITL/scene2/obj3 red 70;
-/ITL/scene2/obj3 blue 30;
-/ITL/scene32obj3 green 40;
 
-/ITL/scene3/obj4 red 200;
-/ITL/scene3/obj4 blue 0;
-/ITL/scene3/obj4 green 0;
-
-/ITL/scene4/obj4 red 200;
-/ITL/scene4/obj4 blue 0;
-/ITL/scene4/obj4 green 0;
 

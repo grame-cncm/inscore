@@ -31,7 +31,7 @@ class IProxy {
 
 		// eventually create the new object
 		let obj = IObjectFactory.createObj(objName, objType, parent)
-        if (obj && obj.msgSet(msg.params())) {
+        if ( obj ) {
 		    let ret = obj.execute(msg);
 		    if (ret & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) {
 			    parent.addChild(obj);

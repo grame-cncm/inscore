@@ -1,9 +1,21 @@
-/ITL/scene new;
+/ITL/scene1 new;
+/ITL/scene2 new;
+/ITL/scene3 new;
 
-/ITL/scene/rect1 set rect 10 10;
-/ITL/scene/rect1 red 120;
+/ITL/scene1/obj1 set rect 10 10;
+/ITL/scene1/obj1 red 200;
+/ITL/scene1/obj1 blue 80;
+/ITL/scene1/obj2 set ellipse 15 15;
 
-/ITL/scene/ellipse set ellipse;
-/ITL/scene/curve set curve;
+/ITL/scene2/obj3 set rect 2 13;
+/ITL/scene2/obj3 red 35;
+
+/ITL/scene3/obj4 set ellipse 40 10;
+/ITL/scene3/obj4 green 72;
+
+
+
+
+
 
 
