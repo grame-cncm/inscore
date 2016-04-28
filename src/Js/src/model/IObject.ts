@@ -67,7 +67,7 @@ abstract class IObject {
         this.fDate = new IDate;
 		this.fColor = new IColor(0,0,0);
         
-        this.fMsgHandlerMap[kset_SetMethod] = new TMethodHandler<IObject>(this, 'set');
+//        this.fMsgHandlerMap[kset_SetMethod] = new TMethodMsgHandler<IObject>(this, 'set');
 
         this.setHandlers(); 
     } 
@@ -167,23 +167,11 @@ abstract class IObject {
         this.setState(state.kSubModified);
     } 
     
-<<<<<<< HEAD
-    setParent(parent: IObject):void { this.fParent = parent; }
-    getParent(): IObject { return this.fParent; }
-    
-    getSubNodes(): Array<IObject> { return this.fSubNodes }
-    
-    getOSCAddress(): string {
-	    return this.fParent ? this.fParent.getOSCAddress() + '/' + this.fName : '/' + this.fName 
-    }
-    
-=======
     setParent(parent: IObject):void { this.fParent = parent; }    
     getSubNodes(): Array<IObject> 	{ return this.fSubNodes }
     getAppl() : IObject				{ return this.fParent.getAppl(); }
     getScene(): IObject 			{ return this.fParent.getScene(); }
    
->>>>>>> origin/arnaud
     //-----------------------------    
     
     getName(): string { return this.fName; }
@@ -228,18 +216,13 @@ abstract class IObject {
     getDeleted(): boolean { return this.fDelete; }
     
     //-----------------------------    
-<<<<<<< HEAD
-
     newData(state: boolean): void { this.fNewData = state; /*triggerEvent(kNewData, true)*/; }
     
-=======
->>>>>>> origin/arnaud
     setState (s: state): void { this.fState = s; }
     getState(): state { return this.fState; }
     
     getPos(): IPosition { return this.fPosition; }
     getColor(): IColor { return this.fColor; }
-<<<<<<< HEAD
 
      transferAttributes(dest: IObject): IObject {
         dest.fPosition.setXPos (this.fPosition.getXPos());
@@ -269,8 +252,6 @@ abstract class IObject {
              
         return dest;
     }   
-=======
->>>>>>> origin/arnaud
     
     //-----------------------------
     accept(address: string/*, const IMessage*/): boolean {
