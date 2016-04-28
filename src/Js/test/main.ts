@@ -4,28 +4,40 @@
 
 "use strict";
 declare function print(arg: string);
-declare var process;
-
-var gGlue = new IGlue();
+declare var INScoreParser;
 
 function debugmsg(str: string){
 	typeof console !== 'undefined' ? console.log(str) : print(str);
 }
 
-function processfile ( file: string) {
-	let loader = new TILoader;
-	loader.load(file, gGlue.getRoot());
+var gGlue = new IGlue();
+
+function readfile (file: string) : string {
+    let fs = require('fs');
+	return fs.readFileSync(file);
 }
 
-var n = process.argv.length;
-if (n < 3) {
-	debugmsg ("Usage: node main.ts <files>");
-}
-else for (var i=2; i<n; i++) {
-	let file = process.argv[i];
-	debugmsg ("Processing file " + file);
-	debugmsg ("------------------------------------");
-	processfile (file);
+function processfile ( file: string) : void {
+	let content = readfile(file);
+	if (content.length) {
+		debugmsg ("processfile content: \n" +content);
+		let loader = new TILoader;
+		loader.process (content, gGlue.getRoot());
+	}
 }
 
-process.exit();
+function main (args: Array<string>) {
+ 	var n = args.length;
+	if (n < 3) {
+		debugmsg ("Usage: node main.ts <files>");
+	}
+	else for (var i=2; i<n; i++) {
+		let file = args[i];
+		debugmsg ("Processing file " + file);
+		debugmsg ("------------------------------------");
+		processfile (file);
+	}
+	process.exit();
+}
+
+main( process.argv );
