@@ -22,6 +22,7 @@ abstract class VObjectView {
     
     
     updateView(): void {
+        if (!this.fScene.firstChild) return;
         var svg = this.fScene.firstElementChild.firstElementChild;
         var obj = this.fObject;
         
