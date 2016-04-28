@@ -377,6 +377,7 @@ abstract class IObject {
 			let out = this.proxy_create (msg, this.fName, this.fParent);
             if (out.status & msgStatus.kProcessed) {
 	            // todo: transfer this attributes to new object
+	            this.transferAttributes (out.obj);
             	this.del();
 //				this.fParent.cleanupSync();
                 return out.status;		
