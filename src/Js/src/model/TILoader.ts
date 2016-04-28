@@ -12,6 +12,7 @@ class TILoader {
             var beg: string = OSCAddress.addressFirst(msg.address());
             var tail: string = OSCAddress.addressTail(msg.address());
             appl.processMsg(beg, tail, msg);
+            debug();
         }    
     }
     
