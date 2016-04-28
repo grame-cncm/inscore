@@ -70,7 +70,7 @@ abstract class IObject {
 
         this.fPosition = new IPosition;
         this.fDate = new IDate;
-		this.fColor = new IColor(0,0,0);
+		this.fColor = new IColor([0,0,0]);
         
 //        this.fMsgHandlerMap[kset_SetMethod] = new TMethodMsgHandler<IObject>(this, 'set');
 

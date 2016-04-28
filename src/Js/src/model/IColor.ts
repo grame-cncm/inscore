@@ -4,33 +4,24 @@ class IColor {
 
 // ATTRIBUTES
 //-------------------------------------------------------------- 
-    protected fR : number = 0;
-    protected fG : number = 0;
-    protected fB : number = 0;
-    protected fH : number;
-    protected fS : number;
-    protected fV : number;
+    protected fRGB : Array<number>;
+    protected fHSB : Array<number>;
+    
     protected fA : number = 255; 
     protected fModified : boolean; 
 
 // CONSTRUTOR
 //--------------------------------------------------------------    
-    constructor(r:number|IColor , g:number, b:number) {
-        if (typeof r === "number") {
-            this.fR = r;
-            this.fG = g;
-            this.fB = b;
-        }
+    constructor(input : Array<number>|IColor) {
+        if (input instanceof Array) { this.fRGB = input; }
         
-        else if (r instanceof IColor) {
-            this.fR = r.fR;
-            this.fG = r.fG;
-            this.fB = r.fB;
-            this.fA = r.fA;
+        else if (input instanceof IColor) {
+            this.fRGB = input.fRGB;
+            this.fA = input.fA;
         }
 
         this.fModified = true;
-        this.updateHSV();         
+        this.updateHSB();         
     }
   
 // MODIFIED STATUS
@@ -40,13 +31,16 @@ class IColor {
 
 // GETS VALUES
 //-------------------------------------------------------------- 
-    getR(): number { return this.fR; }
-    getG(): number { return this.fG; } 
-    getB(): number { return this.fB; } 
+    getRGB(): Array<number> { return this.fRGB; }
+    getHSB(): Array<number> { return this.fHSB; }
+    
+    getR(): number { return this.fRGB[0]; }
+    getG(): number { return this.fRGB[1]; } 
+    getB(): number { return this.fRGB[2]; } 
        
-    getH(): number { return this.fH; } 
-    getS(): number { return this.fS; } 
-    getV(): number { return this.fV; }      
+    getH(): number { return this.fHSB[0]; } 
+    getS(): number { return this.fHSB[1]; } 
+    getV(): number { return this.fHSB[2]; }      
         
     getA(): number { return this.fA; }
         
@@ -57,12 +51,12 @@ class IColor {
         
         if ( min <= value && value <= max ) {  
             switch(param) {
-                case "fH" : this.fH = value; break;
-                case "fS" : this.fS = value; break;
-                case "fV" : this.fV = value; break;
-                case "fR" : this.fR = value; break;
-                case "fG" : this.fG = value; break;
-                case "fB" : this.fB = value; break;
+                case "fH" : this.fHSB[0] = value; break;
+                case "fS" : this.fHSB[1] = value; break;
+                case "fB" : this.fHSB[2] = value; break;
+                case "fR" : this.fRGB[0] = value; break;
+                case "fG" : this.fRGB[1] = value; break;
+                case "fB" : this.fRGB[2] = value; break;
                 case "fA" : this.fA = value; break;
             }
            
@@ -70,13 +64,16 @@ class IColor {
             if ( isHSV )
                 this.updateRGB();
             else
-                this.updateHSV();
+                this.updateHSB();
         }
     }
     
+    setRGB(val: Array<number>):void { this.fRGB = val; }
+    setHSB(val: Array<number>):void { this.fHSB = val; }
+    
     setH(h:number): void { this.setParam("fH" , Math.floor(h), 0, 360, true); }  
     setS(s:number): void { this.setParam("fS", Math.floor(s), 0, 100, true); }
-    setV(v:number): void { this.setParam("fV", Math.floor(v), 0, 100, true); }
+    setV(b:number): void { this.setParam("fB", Math.floor(b), 0, 100, true); }
 
     setR(r:number): void { this.setParam("fR", Math.floor(r), 0, 255, false); }
     setG(g:number): void { this.setParam("fG", Math.floor(g), 0, 255, false); }
@@ -90,28 +87,28 @@ class IColor {
     dB(b:number): void { this.setB( this.getB() + Math.floor(b) ); }
     dH(h:number): void { this.setH( this.getH() + Math.floor(h) ); }
     dS(s:number): void { this.setS( this.getS() + Math.floor(s) ); }
-    dV(v:number): void { this.setV( this.getV() + Math.floor(v) ); }
+    dV(b:number): void { this.setB( this.getB() + Math.floor(b) ); }
   
     		
 // UPDATE COLORS
 //--------------------------------------------------------------
-    updateRGB(): void { this.hsv2rgb(); }
-	updateHSV(): void { this.rgb2hsv(); }
+    updateRGB(): void { this.hsb2rgb(); }
+	updateHSB(): void { this.rgb2hsb(); }
 
   
 // CONVERSIONS COLORS
 //--------------------------------------------------------------    
-   hsv2rgb():void {
-        let H:number = this.fH/360;
-        let S:number = this.fS/100;  
-        let V:number = this.fV/100; 
+   hsb2rgb():void {
+        let H:number = this.fHSB[0]/360;
+        let S:number = this.fHSB[1]/100;  
+        let B:number = this.fHSB[2]/100; 
         
         let F:number; let M:number;  let N:number;  let K:number; let I:number; 
     
         if ( S == 0.0 ) {
-            this.fR = V;
-            this.fG = V;
-            this.fB = V;
+            this.fRGB[0] = B;
+            this.fRGB[1] = B;
+            this.fRGB[2] = B;
         } 
         
         else {
@@ -122,29 +119,29 @@ class IColor {
             I = Math.floor(H);   
             F = H - I;     
 
-            M = V * (1 - S);
-            N = V * (1 - S * F);
-            K = V * (1 - S * (1 - F));
+            M = B * (1 - S);
+            N = B * (1 - S * F);
+            K = B * (1 - S * (1 - F));
            
             switch(I) {
-                case 0: this.fR = V; this.fG = K; this.fB = M; break;  
-                case 1: this.fG = V; this.fR = N; this.fB = M; break;
-                case 2: this.fR = M; this.fG = V; this.fB = K; break;
-                case 3: this.fR = M; this.fG = N; this.fB = V; break;
-                case 4: this.fR = K; this.fG = M; this.fB = V; break;
-                case 5: this.fR = V; this.fG = M; this.fB = N; break;
+                case 0: this.fRGB[0] = B; this.fRGB[1] = K; this.fRGB[2] = M; break;  
+                case 1: this.fRGB[1] = B; this.fRGB[0] = N; this.fRGB[2] = M; break;
+                case 2: this.fRGB[0] = M; this.fRGB[1] = B; this.fRGB[2] = K; break;
+                case 3: this.fRGB[0] = M; this.fRGB[1] = N; this.fRGB[2] = B; break;
+                case 4: this.fRGB[0] = K; this.fRGB[1] = M; this.fRGB[2] = B; break;
+                case 5: this.fRGB[0] = B; this.fRGB[1] = M; this.fRGB[2] = N; break;
             }
             
-            this.fR = Math.floor(this.fR * 255); 
-            this.fG = Math.floor(this.fG * 255); 
-            this.fB = Math.floor(this.fB * 255);        
+            this.fRGB[0] = Math.floor(this.fRGB[0] * 255); 
+            this.fRGB[1] = Math.floor(this.fRGB[1] * 255); 
+            this.fRGB[2] = Math.floor(this.fRGB[2] * 255);        
         } 
     }
    //-----------------------------  
-   rgb2hsv():void {
-        let r:number = this.fR/255;
-        let g:number = this.fG/255;
-        let b:number = this.fB/255;
+   rgb2hsb():void {
+        let r:number = this.fRGB[0]/255;
+        let g:number = this.fRGB[1]/255;
+        let b:number = this.fRGB[2]/255;
 
         // Calculation of maxC and minC
         let maxC:number = Math.max(r, g, b);
@@ -153,7 +150,7 @@ class IColor {
         // Calculation of delta
         let delta:number = maxC - minC;
 
-        let H:number = 0; let S:number = 0; let V:number = maxC;
+        let H:number = 0; let S:number = 0; let B:number = maxC;
 
 
         if (delta == 0) { H=0; S=0;}
@@ -176,8 +173,8 @@ class IColor {
         if (H>=360)
             H-=360;
             
-        this.fH = Math.floor(H);
-        this.fS = Math.floor(S * 100);
-        this.fV = Math.floor(V * 100);   
+        this.fHSB[0] = Math.floor(H);
+        this.fHSB[1] = Math.floor(S * 100);
+        this.fHSB[2] = Math.floor(B * 100);   
     }   
 }
