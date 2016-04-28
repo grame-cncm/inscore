@@ -10,5 +10,9 @@ class IScene extends IRectShape {
         this.kSceneType = 'scene';
         this.fTypeString = this.kSceneType;
         this.fDivElement = document.createElement('div');
+        
+        this.fMsgHandlerMap[knew_SetMethod] = new TMethodHandler<IScene>(this, 'newScene');
     }
+    
+    newScene():msgStatus { return msgStatus.kProcessed }
 }
