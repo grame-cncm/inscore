@@ -1,6 +1,7 @@
 
 ///<reference path="src/controller/IGlue.ts"/>
 ///<reference path="src/model/TILoader.ts"/>
+///<reference path="node.d.ts"/>
 
 "use strict";
 declare function print(arg: string);
