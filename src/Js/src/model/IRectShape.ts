@@ -2,20 +2,17 @@
 ///<reference path="IObject.ts"/>
 
 class IRectShape extends IObject {
-    protected kRectShapeType: string;
-    
+
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        
-        this.kRectShapeType = '';
     }
 
     create(name: string, parent: IObject): IRectShape { return new IRectShape(name, parent); }
-
+    setHandlers() {  super.setHandlers(); }
    
     set(msg: IMessage): msgStatus {
-        let status: msgStatus = super.set(msg);
-        
+        let status = super.set(msg);
+       
         // Cas ou le type est différent, le proxy est utilisé dans super.set()
         if (status & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) return status; 
 
@@ -36,6 +33,10 @@ class IRectShape extends IObject {
         else status = msgStatus.kBadParameters;
         return status;
     }  
+
+    getSet(address: string): IMessage	{ 
+    	return new IMessage(address, [kset_SetMethod, this.fTypeString, this.fPosition.getWidth(), this.fPosition.getHeight()]); 
+    }
    
     //accept (Updater*): void
     // virtual MsgHandler::msgStatus set (const IMessage* msg);		

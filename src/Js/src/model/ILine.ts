@@ -9,4 +9,8 @@ class ILine extends IObject {
         this.kLineType = 'line';
         this.fTypeString = this.kLineType;
     }
+
+    getSet(address: string): IMessage	{
+    	return new IMessage(address, [kset_SetMethod, this.kLineType]); 
+    }
 }
