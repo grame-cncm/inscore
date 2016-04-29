@@ -8,5 +8,5 @@
 /ITL/scene/rect3 set ellipse 2 2 ;
 /ITL/scene/rect3 get ;
 
-/ITL/scene/rect* get color ;
-
+/ITL/scene/rect* get color x y;
+/ITL/scene save;
