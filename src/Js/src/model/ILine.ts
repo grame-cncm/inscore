@@ -11,6 +11,6 @@ class ILine extends IObject {
     }
 
     getSet(address: string): IMessage	{
-    	return new IMessage(address, [kset_SetMethod, this.kLineType]); 
+    	return new IMessage(address, [kset_SetMethod, this.kLineType, "todo"]); 
     }
 }

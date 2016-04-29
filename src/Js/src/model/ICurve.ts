@@ -11,6 +11,6 @@ class ICurve extends IObject {
     }
  
     getSet(address: string): IMessage	{ 
-    	return new IMessage(address, [kset_SetMethod, this.kCurveType, this.fPosition.getWidth(), this.fPosition.getHeight()]); 
+    	return new IMessage(address, [kset_SetMethod, this.kCurveType, "todo"]); 
     }
 }
