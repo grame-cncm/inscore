@@ -35,7 +35,7 @@ class IProxy {
 		    let ret = obj.execute(msg);
 		    if (ret & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) {
 			    parent.addChild(obj);
-			    obj.setState(state.kModified);
+			    obj.setState(objState.kModified);
 			    return { status: msgStatus.kProcessed, obj: obj};
 		    }
 		    return { status: ret };
