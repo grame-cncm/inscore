@@ -1,7 +1,6 @@
 
 ///<reference path="IObject.ts"/>
 ///<reference path="../parser/INScoreParser.js"/>
-///<reference path="../../testHtml/Debug.ts"/>
 
 declare var INScoreParser;
 
@@ -27,7 +26,6 @@ class TILoader {
             let beg: string = OSCAddress.addressFirst(msg.address());
             let tail: string = OSCAddress.addressTail(msg.address());
             root.processMsg(beg, tail, msg);
-            debug();
         }    
     }
 
