@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 class TGetMsgHandlerNum extends GetMsgHandler<GetNumMethod> {
     constructor(method: GetNumMethod) { super (method); }    
-    put(msg: IMessage): IMessage { 
+    fill(msg: IMessage): IMessage { 
     	msg.add (this.fMethod ());
     	return msg;
     }
@@ -21,7 +21,7 @@ class TGetMsgHandlerNum extends GetMsgHandler<GetNumMethod> {
 // ------------------------------------------------------------------------------
 class TGetMsgHandlerText extends GetMsgHandler<GetStringMethod> {
     constructor(method: GetStringMethod) { super (method); }    
-    put(msg: IMessage): IMessage { 
+    fill(msg: IMessage): IMessage { 
     	msg.add (this.fMethod ());
     	return msg;
     }
@@ -32,7 +32,7 @@ class TGetMsgHandlerText extends GetMsgHandler<GetStringMethod> {
 // ------------------------------------------------------------------------------
 class TGetMsgHandlerTime extends GetMsgHandler<GetTimeMethod> {
     constructor(method: GetTimeMethod) { super(method); }     
-    put(msg: IMessage): IMessage { 
+    fill(msg: IMessage): IMessage { 
     	let d = this.fMethod ();
     	msg.add (d.getNumerator());
     	msg.add (d.getDenominator());
@@ -45,7 +45,7 @@ class TGetMsgHandlerTime extends GetMsgHandler<GetTimeMethod> {
 // ------------------------------------------------------------------------------
 class TGetMsgHandlerArray extends GetMsgHandler<GetArrayMethod> {
     constructor(method: GetArrayMethod) { super(method); }     
-    put(msg: IMessage): IMessage { 
+    fill(msg: IMessage): IMessage { 
     	msg.push (this.fMethod ());
     	return msg;
     }

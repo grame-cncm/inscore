@@ -11,6 +11,15 @@ enum msgStatus {
     kCreateFailure = 8,
 }
 
+enum objState {
+    kClean,
+    kNewObject = 1,
+    kModified = 2,
+    kSubModified = 4,
+    kMasterModified = 8, 
+}
+
+
 // ------------------------------------------------------------------------------
 // the set message handler types
 // ------------------------------------------------------------------------------
@@ -32,13 +41,13 @@ interface SetColorMethod 	{ (val: Array<number>): void; }
 // ------------------------------------------------------------------------------
 // the get message handler types
 // ------------------------------------------------------------------------------
-interface TGetHandler 		{ put(msg: IMessage): IMessage; }
-interface TGetMultiHandler 	{ putm(msg: IMessageList): IMessageList; }
+interface TGetHandler 		{ fill(msg: IMessage): IMessage; }
+interface TGetMultiHandler 	{ fill(msg: IMessageList): IMessageList; }
 
 abstract class GetMsgHandler<T> implements TGetHandler { 
     protected fMethod: T;
     constructor(method: T) { this.fMethod = method; }    
-	abstract put(msg: IMessage): IMessage;
+	abstract fill(msg: IMessage): IMessage;
 }
 
 interface GetNumMethod 			{ (): number; }
