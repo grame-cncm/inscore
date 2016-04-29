@@ -1,3 +1,9 @@
 /ITL/scene new;
 /ITL/scene/rect set rect 1 1 ;
+/ITL/scene/rect get ;
+/ITL/scene/rect get width ;
+/ITL/scene/rect2 set rect 0.3 0.5 ;
+/ITL/scene/rect2 get height ;
+/ITL/scene/rect2 color 255 100 100 ;
+/ITL/scene/rect2 get color ;
 

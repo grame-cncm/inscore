@@ -24,6 +24,7 @@ function processfile ( file: string) : void {
 		debugmsg ("processfile content: \n" +content);
 		let loader = new TILoader;
 		loader.process (content, gGlue.getRoot());
+		debugmsg (gGlue.getRoot().toString());
 	}
 }
 
@@ -38,7 +39,7 @@ function main (args: Array<string>) {
 		debugmsg ("------------------------------------");
 		processfile (file);
 	}
-	debug();
+//	debug();
 	process.exit();
 }
 
