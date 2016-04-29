@@ -6,13 +6,15 @@ function debug(): void {
                 "**********************************" + "\n" );
     
     console.log("---MODEL---")
-//    afficheModel(appl);
+    afficheModel(gGlue.getRoot());
     console.log("Fin de l'exécution" + "\n" + 
                 "----------------------------------" );
 }
 
 function afficheModel(obj: IObject): void {
     let child = obj.getSubNodes(); 
+        console.log(obj)
+
     if (child.length != 0) {
         for (var i=0; i < child.length; i++) {
             let c = child[i]

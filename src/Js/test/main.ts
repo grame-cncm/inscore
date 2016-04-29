@@ -38,6 +38,7 @@ function main (args: Array<string>) {
 		debugmsg ("------------------------------------");
 		processfile (file);
 	}
+	debug();
 	process.exit();
 }
 
