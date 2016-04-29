@@ -52,29 +52,24 @@ class Fraction {
 //-------------------------------------------------------------- 
     // fraction1 + fraction2 => var sum = fraction1.add(fraction2)
     add(value: Fraction|number) {
-        let that:Fraction = new Fraction (value);
-        
+        let that:Fraction = new Fraction (value); 
         let denominator = this.denominator * that.denominator;
-        this.numerator = this.numerator * that.denominator + that.numerator * this.denominator;
-        this.denominator = denominator;
-        let reduceFraction: Fraction = this.reduce();
-        return reduceFraction; 
+        that.numerator = this.numerator * that.denominator + that.numerator * this.denominator; 
+        that.denominator = denominator;     
+        return that.reduce(); 
     }
 
     // fraction1 * fraction2 => var result = fraction1.sum(fraction2)
     mul(value: Fraction|number) {
         let that:Fraction = new Fraction (value);    
-
-        this.numerator = this.numerator * that.numerator;
-        this.denominator = this.denominator * that.denominator;
-        let reduceFraction: Fraction = this.reduce();
-        return reduceFraction;
+        that.numerator = this.numerator * that.numerator;
+        that.denominator = this.denominator * that.denominator;
+        return that.reduce();
     }
 
     // fraction1 / fraction2 => var result = fraction1.div(fraction2)
     div(value: Fraction|number) {
         let that:Fraction = new Fraction (value);
-
         [that.numerator, that.denominator] = [that.denominator, that.numerator];
         return this.mul(that);
     }
@@ -88,17 +83,18 @@ class Fraction {
     
      // inverse a fraction
     inverse(): Fraction {
-        [this.numerator, this.denominator] = [this.denominator, this.numerator];
-        return this;
+        return new Fraction(this.denominator, this.numerator).reduce();
     }
     
     // reduce a fraction : Euclide algorithme
     reduce(): Fraction {
-        let numerator = this.numerator;
-        let denominator = this.denominator;
-        let a = Math.max (numerator, denominator);
-        let b = Math.min (numerator, denominator);
-        if (b == 0) return this;
+        let n = this.numerator;
+        let d = this.denominator;
+        let that: Fraction = new Fraction(n, d);
+        
+        let a = Math.max (n, d);
+        let b = Math.min (n, d);
+        if (b == 0) return that;
         
         let rest = a%b;        
         while (rest != 0) {
@@ -107,9 +103,9 @@ class Fraction {
             rest = a%b;
         }
         
-        this.numerator = this.numerator/b;
-        this.denominator = this.denominator/b;
-        return this;      
+        that.numerator = this.numerator/b;
+        that.denominator = this.denominator/b;
+        return that;      
     }
     
 // GETS AND SETS VALUES
