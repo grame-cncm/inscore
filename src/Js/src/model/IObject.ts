@@ -83,6 +83,9 @@ abstract class IObject {
     }
     
     colorAble(): void {
+        this.fMsgHandlerMap[kcolor_GetSetMethod] 		= new TMsgHandlerColor(this.fColor._setRGB());
+        this.fMsgHandlerMap[khsb_SetMethod] 			= new TMsgHandlerColor(this.fColor._setHSB());
+
         this.fMsgHandlerMap[kred_GetSetMethod] 			= new TMsgHandlerNum(this.fColor._setR());
 	    this.fMsgHandlerMap[kgreen_GetSetMethod] 		= new TMsgHandlerNum(this.fColor._setG());
 	    this.fMsgHandlerMap[kblue_GetSetMethod]			= new TMsgHandlerNum(this.fColor._setB());
