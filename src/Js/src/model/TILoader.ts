@@ -4,6 +4,9 @@
 
 declare var INScoreParser;
 
+interface TLoadEndHandler 		{ (): void; }
+
+
 class TILoader {
         
     protected parse(msg: string): Array<any> {
@@ -28,14 +31,16 @@ class TILoader {
             root.processMsg(beg, tail, msg);
         }    
     }
+   protected _process(reader : FileReader, client: IObject) : TLoadEndHandler { 
+   		return () => {
+       		let data: string = reader.result;
+   			this.process(data, client); 
+   		}
+   	}
 
     load (file, client: IObject): void {
         let reader: FileReader = new FileReader();
         reader.readAsText(file);
-        
-        reader.onloadend = function (e) {
-            let data: string = reader.result;
-            this.process(data, client.getAppl());
-        };      
+        reader.onloadend = this._process(reader, client);
     }    
 }
