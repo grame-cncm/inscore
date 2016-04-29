@@ -71,6 +71,7 @@ abstract class IObject {
     setHandlers() {
         this.fMsgHandlerMap[kset_SetMethod] = new TMethodHandler(this._set());
         this.fMsgHandlerMap[kget_SetMethod] = new TMethodHandler(this._get());
+        this.fMsgHandlerMap[ksave_SetMethod]= new TMethodHandler(this._save());
 
  	    this.colorAble();
 	    this.positionAble();
@@ -168,6 +169,7 @@ abstract class IObject {
     setParent(parent: IObject): void { this.fParent = parent; }    
     getParent(): IObject 			{ return this.fParent; }    
     getSubNodes(): Array<IObject> 	{ return this.fSubNodes }
+    getSubNodesCount(): number 		{ return this.fSubNodes.length; }
     getAppl() : IObject				{ return this.fParent.getAppl(); }
     getScene(): IObject 			{ return this.fParent.getScene(); }
 
@@ -182,10 +184,10 @@ abstract class IObject {
             return this.exactfind(expr, outlist);
         }
         else {
-            let size: number = outlist.length;
-            let n: number = this.fSubNodes.length;
+            let size = outlist.length;
+            let n 	 = this.getSubNodesCount();
             
-            for (let i: number = 0; i < n; i++) {
+            for (let i = 0; i < n; i++) {
                 let elt: IObject = this.fSubNodes[i];
                 if (!elt.getDeleted()) { outlist.push(elt); }       
             }
@@ -195,7 +197,6 @@ abstract class IObject {
     }
     
     //-----------------------------
-    
     exactfind(name:string, outlist: Array<IObject>): boolean {
         let n: number = this.fSubNodes.length;
         let ret: boolean = false;
@@ -346,16 +347,17 @@ abstract class IObject {
     get(msg: IMessage): msgStatus {
         let n = msg.size();
         if ( n == 1 ) {				// get without param should give a 'set' msg
-			let outmsg = this.getSet(msg.address());
+			let outmsg = this.getSet();
 			ITLOut.write (outmsg.toString());
         }
         else for (let i=1; i< n; i++) {
         	let attribute = msg.paramStr(i);
         	if (attribute.correct) {
-        		let h = this.fGetMsgHandlerMap[attribute.value];
-        		if (h) { 
-        			let outmsg = new IMessage (this.getOSCAddress(), attribute.value);
-        			h.fill (outmsg);
+        		let outmsg = this.get1AttributeMsg (attribute.value);
+//        		let h = this.fGetMsgHandlerMap[attribute.value];
+        		if (outmsg) { 
+//        			let outmsg = new IMessage (this.getOSCAddress(), attribute.value);
+//        			h.fill (outmsg);
         			ITLOut.write (outmsg.toString());
         		}
         	}
@@ -367,11 +369,63 @@ abstract class IObject {
         return msgStatus.kProcessedNoChange;
     }
     _get(): SetMsgMethod	{ return (m) => this.get(m); }
-
+    
      //-------------------------------------------------------------
+    // the 'save' handler
+    //-------------------------------------------------------------
+    save(msg: IMessage): msgStatus {
+    	let out = this.getSetRecurse();
+	    for (let i=0; i < out.length; i++)
+        	ITLOut.write (out[i].toString() + ";");
+    	return msgStatus.kProcessedNoChange;
+    }
+    _save(): SetMsgMethod	{ return (m) => this.save(m); }
+
+    //-------------------------------------------------------------
     // the specific 'get' methods
     //-------------------------------------------------------------
-    abstract getSet(address: string): IMessage;
+    abstract getSet(): IMessage;
+      
+    //-------------------------------------------------------------
+    // get 1 message for 1 attribute
+    get1AttributeMsg(attribute: string): IMessage {
+        let outmsg : IMessage
+        let h = this.fGetMsgHandlerMap[attribute];
+        if (h) { 
+        	outmsg = new IMessage (this.getOSCAddress(), attribute);
+        	h.fill (outmsg);
+        }
+        return outmsg;
+    }
+
+    //-------------------------------------------------------------
+    // get a message for all attributes
+    getAttributesMsg(): Array<IMessage> {
+    	let out = new Array<IMessage>();
+		for (let key in this.fMsgHandlerMap) {
+			let msg = this.get1AttributeMsg(key);
+	    	if (msg) out.push (msg);
+		}
+		return out;
+    }
+
+    //-------------------------------------------------------------
+    // get objects state messages recursively
+    getSetRecurse(): Array<IMessage> {
+    	let out = new Array<IMessage>();
+    	out.push (this.getSet ());
+    	let p = this.getAttributesMsg();
+	    for (let i=0; i < p.length; i++)
+		    out.push (p[i]);
+    	
+        let n 	 = this.getSubNodesCount();
+		for (let i = 0; i < n; i++) {
+	    	let subout = this.fSubNodes[i].getSetRecurse ();
+	    	for (let i=0; i < subout.length; i++)
+		    	out.push (subout[i]);
+		}
+		return out;
+    }
  
     //-----------------------------    
     protected proxy_create (msg: IMessage, name: string, parent: IObject): { status: msgStatus, obj?: IObject } 
