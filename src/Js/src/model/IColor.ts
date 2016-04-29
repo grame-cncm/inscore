@@ -45,6 +45,21 @@ class IColor {
     getV(): number { return this.fHSB[2]; }      
         
     getA(): number { return this.fA; }
+
+// GETS VALUES CLOSURES
+//-------------------------------------------------------------- 
+    _getRGB(): GetArrayMethod { return () => this.fRGB; }
+    _getHSB(): GetArrayMethod { return () => this.fHSB; }
+    
+    _getR(): GetNumMethod { return () => this.fRGB[0]; }
+    _getG(): GetNumMethod { return () => this.fRGB[1]; } 
+    _getB(): GetNumMethod { return () => this.fRGB[2]; } 
+       
+    _getH(): GetNumMethod { return () => this.fHSB[0]; } 
+    _getS(): GetNumMethod { return () => this.fHSB[1]; } 
+    _getV(): GetNumMethod { return () => this.fHSB[2]; }      
+        
+    _getA(): GetNumMethod { return () => this.fA; }
         
 // SETS VALUES
 //--------------------------------------------------------------         

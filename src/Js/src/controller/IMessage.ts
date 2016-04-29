@@ -73,3 +73,6 @@ class IMessage {
    		return out;
    	}  
 }
+
+// declare a type for message lists
+interface IMessageList { [index: number]: IMessage; }

@@ -12,7 +12,7 @@ enum msgStatus {
 }
 
 // ------------------------------------------------------------------------------
-// the set message handler type
+// the set message handler types
 // ------------------------------------------------------------------------------
 interface TSetHandler { handle(msg: IMessage): msgStatus; }
 
@@ -28,3 +28,20 @@ interface SetNumMethod 		{ (val: number): void; }
 interface SetStringMethod 	{ (val: string): void; }
 interface SetTimeMethod 	{ (val: Fraction): void; }
 interface SetColorMethod 	{ (val: Array<number>): void; }
+
+// ------------------------------------------------------------------------------
+// the get message handler types
+// ------------------------------------------------------------------------------
+interface TGetHandler 		{ put(msg: IMessage): IMessage; }
+interface TGetMultiHandler 	{ putm(msg: IMessageList): IMessageList; }
+
+abstract class GetMsgHandler<T> implements TGetHandler { 
+    protected fMethod: T;
+    constructor(method: T) { this.fMethod = method; }    
+	abstract put(msg: IMessage): IMessage;
+}
+
+interface GetNumMethod 			{ (): number; }
+interface GetStringMethod 		{ (): string; }
+interface GetArrayMethod 		{ (): Array<any>; }
+interface GetTimeMethod 		{ (): Fraction; }

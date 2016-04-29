@@ -23,8 +23,10 @@ class IDate {
  
 // GETS VALUES
 //--------------------------------------------------------------   
-    getDate(): Fraction { return this.fDate; } 
-    getDuration(): Fraction { return this.fDuration; } 
+    getDate(): 		Fraction 		{ return this.fDate; } 
+    getDuration(): 	Fraction 		{ return this.fDuration; } 
+    _getDate(): 	GetTimeMethod 	{ return () => this.fDate; } 
+    _getDuration(): GetTimeMethod 	{ return () => this.fDuration; } 
 
 // SETS VALUES
 //--------------------------------------------------------------  

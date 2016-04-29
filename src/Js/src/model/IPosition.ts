@@ -50,32 +50,43 @@ class IPosition {
     
 // GETS
 //--------------------------------------------------------------
-    getXPos(): number { return this.fXPos; }
-    getYPos(): number { return this.fYPos; }
-    getXOrigin(): number { return this.fXOrigin; }
-    getYOrigin(): number { return this.fYOrigin; }
-    getZOrder(): number { return this.fZOrder; }
-    getScale(): number { return this.fScale; }
-    getPos(): Array<number> { 
-        let pos: Array<number> = new Array (this.fXPos , this.fYPos) 
-        return pos 
-        }
+    getXPos(): 		number { return this.fXPos; }
+    getYPos(): 		number { return this.fYPos; }
+    getXOrigin(): 	number { return this.fXOrigin; }
+    getYOrigin(): 	number { return this.fYOrigin; }
+    getZOrder(): 	number { return this.fZOrder; }
+    getScale(): 	number { return this.fScale; }
+    getPos(): 	Array<number> { return [this.fXPos , this.fYPos]; }
     getShear(): Array<number> { return this.fShear; }
 
-        
     getRotateX(): number { return this.fXAngle; }
     getRotateY(): number { return this.fYAngle; }
     getRotateZ(): number { return this.fZAngle; } 
        
-    getWidth(): number { return this.fWidth; }
-    getHeight(): number { return this.fHeight; }
-    getDimension(): Array<number> { 
-        let dimension: Array<number> = new Array (this.fWidth , this.fHeight) 
-        return dimension 
-        }
-   
-    getVisible(): number { return this.fVisible; }
-    
+    getWidth(): 	number { return this.fWidth; }
+    getHeight(): 	number { return this.fHeight; }
+    getDimension(): Array<number> { return [this.fWidth, this.fHeight]; }
+    getVisible(): 	number { return this.fVisible; }
+
+// GETS closures
+//--------------------------------------------------------------
+    _getXPos(): 	GetNumMethod { return () => this.fXPos; }
+    _getYPos(): 	GetNumMethod { return () => this.fYPos; }
+    _getXOrigin(): 	GetNumMethod { return () => this.fXOrigin; }
+    _getYOrigin(): 	GetNumMethod { return () => this.fYOrigin; }
+    _getZOrder(): 	GetNumMethod { return () => this.fZOrder; }
+    _getScale(): 	GetNumMethod { return () => this.fScale; }
+    _getShear(): 	GetArrayMethod { return () => this.fShear; }
+
+    _getRotateX(): GetNumMethod { return () => this.fXAngle; }
+    _getRotateY(): GetNumMethod { return () => this.fYAngle; }
+    _getRotateZ(): GetNumMethod { return () => this.fZAngle; } 
+       
+    _getWidth(): 	GetNumMethod { return () => this.fWidth; }
+    _getHeight(): 	GetNumMethod { return () => this.fHeight; }
+    _getDimension(): GetArrayMethod { return () => [this.fWidth , this.fHeight]; }
+    _getVisible(): 	GetNumMethod { return () => this.fVisible; }
+  
     
 // SETS 
 //--------------------------------------------------------------    
