@@ -20,7 +20,7 @@ enum state {
 }
 
 
-interface TMsgHandler<T> { [index: string]: T; }
+class TMsgHandler<T> { [index: string]: T; }
 
 
 abstract class IObject {
@@ -43,7 +43,6 @@ abstract class IObject {
     protected fSubNodes: Array<IObject> = new Array;
     
     protected fMsgHandlerMap : TMsgHandler<TSetHandler>; 
-//    protected fMsgHandlerMap = new Array<TSetHandler>(); 
 //    protected fGetMsgHandlerMap: Array<GetParamMsgHandler<any>> = new Array;
     
     protected fObjectView: VObjectView;
@@ -68,7 +67,7 @@ abstract class IObject {
         this.fPosition = new IPosition;
         this.fDate = new IDate;
 		this.fColor = new IColor([0,0,0]);
-        
+        this.fMsgHandlerMap = new TMsgHandler<TSetHandler>();
 //        this.fMsgHandlerMap[kset_SetMethod] = new TMethodMsgHandler<IObject>(this, 'set');
 
         this.setHandlers(); 
