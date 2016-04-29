@@ -17,7 +17,7 @@ all : $(DEPS)
 
 check :
 	rm -rf $(BUILDIR)
-	make _check
+	make -j 4 _check
 
 _check : $(DEPS) $(OUT)
 
