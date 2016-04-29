@@ -215,8 +215,9 @@ abstract class IObject {
     setState (s: objState): void 	{ this.fState = s; }
     getState(): objState 			{ return this.fState; }
     
-    getPos(): IPosition { return this.fPosition; }
-    getColor(): IColor { return this.fColor; }
+    getPos(): IPosition 		{ return this.fPosition; }
+    getColor(): IColor 			{ return this.fColor; }
+    getOSCAddress(): string 	{ return this.fParent.getOSCAddress() + "/" + this.fName; }
 
     transferAttributes(dest: IObject): IObject {
         dest.fPosition 	= this.fPosition;
@@ -353,7 +354,7 @@ abstract class IObject {
         	if (attribute.correct) {
         		let h = this.fGetMsgHandlerMap[attribute.value];
         		if (h) { 
-        			let outmsg = new IMessage (msg.address(), attribute.value);
+        			let outmsg = new IMessage (this.getOSCAddress(), attribute.value);
         			h.fill (outmsg);
         			ITLOut.write (outmsg.toString());
         		}

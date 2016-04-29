@@ -17,6 +17,7 @@ class IAppl extends IObject {
 
     getAppl() : IObject					{ return this; }
     getSet(address: string): IMessage	{ return new IMessage(address); }
+    getOSCAddress(): string 			{ return "/ITL"; }
 
     processMsg (address: string, addressTail: string , msg: IMessage): number {
     	this.fReceivedMsgs++;
