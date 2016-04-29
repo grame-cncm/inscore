@@ -68,8 +68,7 @@ abstract class IObject {
         this.fDate = new IDate;
 		this.fColor = new IColor([0,0,0]);
         this.fMsgHandlerMap = new TMsgHandler<TSetHandler>();
-//        this.fMsgHandlerMap[kset_SetMethod] = new TMethodMsgHandler<IObject>(this, 'set');
-
+        this.fMsgHandlerMap[kset_SetMethod] = new TMethodHandler(this._set());
         this.setHandlers(); 
     } 
     
@@ -371,6 +370,7 @@ abstract class IObject {
         }
         return msgStatus.kBadParameters;
     }
+    _set(): SetMsgMethod	{ return (m) => this.set(m); }
     
     protected proxy_create (msg: IMessage, name: string, parent: IObject): { status: msgStatus, obj?: IObject } 
     				{ return this.getAppl().proxy_create(msg, this.fName, this.fParent); }                
