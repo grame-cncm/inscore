@@ -1,4 +1,4 @@
-///<reference path="model/IObject.ts"/>
+///<reference path="src/model/IObject.ts"/>
 
 function debug(): void {
     console.log("**********************************" + "\n" +
