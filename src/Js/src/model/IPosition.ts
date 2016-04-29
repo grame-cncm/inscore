@@ -1,20 +1,23 @@
+
+///<reference path="../controller/THandlersPrototypes.ts"/>
+
 class IPosition {
     
 // ATTRIBUTES
 //-------------------------------------------------------------- 
-    protected fXPos : number;
-    protected fYPos : number;
-    protected fXOrigin : number;
-    protected fYOrigin : number;
-    protected fWidth : number;
-    protected fHeight : number;
-    protected fZOrder : number;
-    protected fVisible: boolean;
-    protected fScale : number;
+    protected fXPos 	: number;
+    protected fYPos 	: number;
+    protected fXOrigin 	: number;
+    protected fYOrigin 	: number;
+    protected fWidth 	: number;
+    protected fHeight 	: number;
+    protected fZOrder 	: number;
+    protected fVisible	: number;
+    protected fScale 	: number;
     protected fModified : boolean;
-    protected fXAngle : number;
-    protected fYAngle : number;
-    protected fZAngle : number; 
+    protected fXAngle 	: number;
+    protected fYAngle 	: number;
+    protected fZAngle 	: number; 
     protected fShear : Array<number>;
     
     public kDefaultX : number = 0;
@@ -30,13 +33,13 @@ class IPosition {
         this.fWidth = 0; 
         this.fHeight = 0;
         this.fZOrder = 0;
-        this.fVisible = true; 
+        this.fVisible = 1; 
         this.fScale = 1.0;  
-        this.fModified = true;
         this.fXAngle = 0;
         this.fYAngle = 0; 
         this.fZAngle = 0;
         this.fShear =  [0,0];
+        this.fModified = true;
     } 
     
 // MODIFIED STATUS
@@ -71,54 +74,75 @@ class IPosition {
         return dimension 
         }
    
-    getVisible(): boolean { return this.fVisible; }
+    getVisible(): number { return this.fVisible; }
     
     
 // SETS 
 //--------------------------------------------------------------    
     setPos(p:IPosition): void {
-        this.setXPos( p.getXPos() );
-        this.setYPos( p.getYPos() );
-        this.setZOrder( p.getZOrder() );
-        this.setScale( p.getScale() );
-        this.setRotateX(p.getRotateX() );
-        this.setRotateY( p.getRotateY() );
-        this.setRotateZ( p.getRotateZ() );
-        this.setWidth( p.getWidth() );
-        this.setHeight( p.getHeight() );
-        this.setVisible( p.getVisible() );
+        this.setXPos	( p.getXPos() );
+        this.setYPos	( p.getYPos() );
+        this.setZOrder	( p.getZOrder() );
+        this.setScale	( p.getScale() );
+        this.setRotateX	( p.getRotateX() );
+        this.setRotateY	( p.getRotateY() );
+        this.setRotateZ	( p.getRotateZ() );
+        this.setWidth	( p.getWidth() );
+        this.setHeight	( p.getHeight() );
+        this.setVisible	( p.getVisible() );
     }
     
-    setWidth(width:number): void { this.fWidth = width; }
-    setHeight(height:number): void { this.fHeight = height; }
+    setWidth(width:number): void 	{ this.fWidth = width; }
+    setHeight(height:number): void 	{ this.fHeight = height; }
+    _setWidth()	: SetNumMethod 		{ return (n) => this.setWidth(n); };
+    _setHeight(): SetNumMethod 		{ return (n) => this.setHeight(n); };
     
-    setXPos(x:number): void { this.fXPos = x; this.fModified = true; }
-    addXPos(x:number): void { this.setXPos(this.fXPos + x); }
+    setXPos(x:number): void 		{ this.fXPos = x; this.fModified = true; }
+    addXPos(x:number): void 		{ this.setXPos(this.fXPos + x); }
+    _setXPos(): SetNumMethod 		{ return (n) => this.setXPos(n); };
+    _addXPos(): SetNumMethod 		{ return (n) => this.addXPos(n); };
     
-    setXOrigin(x:number): void { this.fXOrigin = x; this.fModified = true; }
-    addXOrigin(x:number): void { this.setXOrigin (this.fXOrigin + x); }
+    setXOrigin(x:number): void 		{ this.fXOrigin = x; this.fModified = true; }
+    addXOrigin(x:number): void 		{ this.setXOrigin (this.fXOrigin + x); }
+    _setXOrigin(): SetNumMethod 	{ return (n) => this.setXOrigin(n); };
+    _addXOrigin(): SetNumMethod 	{ return (n) => this.addXOrigin(n); };
     
-    setYPos(y:number): void { this.fYPos = y; this.fModified = true; }
-    addYPos(y:number): void { this.setYPos(this.fYPos + y); }
+    setYPos(y:number): void 		{ this.fYPos = y; this.fModified = true; }
+    addYPos(y:number): void 		{ this.setYPos(this.fYPos + y); }
+    _setYPos(): SetNumMethod 		{ return (n) => this.setYPos(n); };
+    _addYPos(): SetNumMethod 		{ return (n) => this.addYPos(n); };
     
-    setYOrigin(y:number): void { this.fYOrigin = y; this.fModified = true; }
-    addYOrigin(y:number): void { this.setYOrigin (this.fYOrigin + y); }   
+    setYOrigin(y:number): void 		{ this.fYOrigin = y; this.fModified = true; }
+    addYOrigin(y:number): void 		{ this.setYOrigin (this.fYOrigin + y); }   
+    _setYOrigin(): SetNumMethod 	{ return (n) => this.setYOrigin(n); };
+    _addYOrigin(): SetNumMethod 	{ return (n) => this.addYOrigin(n); };
  
-    setScale (scale:number): void { this.fScale = scale; this.fModified = true; }
-    multScale (scale:number): void { this.setScale(this.fScale * scale); }
+    setScale (scale:number): void 	{ this.fScale = scale; this.fModified = true; }
+    multScale (scale:number): void 	{ this.setScale(this.fScale * scale); }
+    _setScale(): SetNumMethod 		{ return (n) => this.setScale(n); };
+    _multScale(): SetNumMethod 		{ return (n) => this.multScale(n); };
         
-    setVisible (vis:boolean): void { this.fVisible = vis; this.fModified = true; }
+    setVisible (vis:number): void 	{ this.fVisible = vis; this.fModified = true; }
+    _setVisible(): SetNumMethod 	{ return (n) => this.setVisible(n); };
 
-    setZOrder(z:number): void { this.fZOrder = z; this.fModified = true; }
-    addZOrder(z:number): void { this.setZOrder(this.fZOrder + z); }
+    setZOrder(z:number): void 		{ this.fZOrder = z; this.fModified = true; }
+    addZOrder(z:number): void 		{ this.setZOrder(this.fZOrder + z); }
+    _setZOrder(): SetNumMethod 		{ return (n) => this.setZOrder(n); };
+    _addZOrder(): SetNumMethod 		{ return (n) => this.addZOrder(n); };
     
-    addAngle(angle:number): void { this.setRotateZ(this.fZAngle + angle); }
-    addXAngle(angle:number): void { this.setRotateX(this.fXAngle + angle); }
-    addYAngle(angle:number): void { this.setRotateY(this.fYAngle + angle); }
+    addAngle(angle:number): void 	{ this.setRotateZ(this.fZAngle + angle); }
+    addXAngle(angle:number): void 	{ this.setRotateX(this.fXAngle + angle); }
+    addYAngle(angle:number): void 	{ this.setRotateY(this.fYAngle + angle); }
+    _addAngle(): SetNumMethod 		{ return (n) => this.addAngle(n); };
+    _addXAngle(): SetNumMethod 		{ return (n) => this.addXAngle(n); };
+    _addYAngle(): SetNumMethod 		{ return (n) => this.addYAngle(n); };
         
-    setRotateX(a:number): void { this.fXAngle = a; }
-    setRotateY(a:number): void { this.fYAngle = a; }
-    setRotateZ(a:number): void { this.fZAngle = a; }   
+    setRotateX(a:number): void 		{ this.fXAngle = a; }
+    setRotateY(a:number): void 		{ this.fYAngle = a; }
+    setRotateZ(a:number): void 		{ this.fZAngle = a; }   
+    _setRotateX(): SetNumMethod 	{ return (n) => this.setRotateX(n); };
+    _setRotateY(): SetNumMethod 	{ return (n) => this.setRotateY(n); };
+    _setRotateZ(): SetNumMethod 	{ return (n) => this.setRotateZ(n); };
     
     setShear(s:Array<number>): void { this.fShear = s; }           
        

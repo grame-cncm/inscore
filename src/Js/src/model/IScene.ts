@@ -9,10 +9,11 @@ class IScene extends IRectShape {
         this.kSceneType = 'scene';
         this.fTypeString = this.kSceneType;
         
-        this.fMsgHandlerMap[knew_SetMethod] = new TMethodHandler<IScene>(this, 'newScene');
+        this.fMsgHandlerMap[knew_SetMethod] = new TMsgHandlerVoid(this._newScene());
     }
     
-    newScene():msgStatus { return msgStatus.kProcessed }
+    newScene(): void 			{ }
+    _newScene(): SetVoidMethod 	{ return () => this.newScene(); };
     
     getScene(): IObject 			{ return this; }
 }

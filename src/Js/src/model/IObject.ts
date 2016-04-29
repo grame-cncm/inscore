@@ -3,6 +3,7 @@
 ///<reference path="../lib/OSCAddress.ts"/>
 ///<reference path="../lib/Tools.ts"/>
 ///<reference path="../controller/TSetMessageHandlers.ts"/>
+///<reference path="../controller/THandlersPrototypes.ts"/>
 ///<reference path="../view/VObjectView.ts"/>
 
 ///<reference path="Methods.ts"/>
@@ -18,7 +19,8 @@ enum state {
     kMasterModified = 8, 
 }
 
-class IHandlersMap<T> { [index: string]: T; }
+
+interface TMsgHandler<T> { [index: string]: T; }
 
 
 abstract class IObject {
@@ -40,12 +42,11 @@ abstract class IObject {
     
     protected fSubNodes: Array<IObject> = new Array;
     
-    protected fMsgHandlerMap = new IHandlersMap<SetMsgHandler>(); 
+    protected fMsgHandlerMap : TMsgHandler<TSetHandler>; 
+//    protected fMsgHandlerMap = new Array<TSetHandler>(); 
 //    protected fGetMsgHandlerMap: Array<GetParamMsgHandler<any>> = new Array;
     
-//    protected kDocument: HTMLElement; 
     protected fObjectView: VObjectView;
-    protected fMotherSceneFocus: boolean;
 
     
 // CONSTRUCTOR
@@ -59,10 +60,6 @@ abstract class IObject {
         this.fState = state.kNewObject;
         this.fNewData = true;
         
-//        this.kDocument = document.getElementById('document');
-        
-        this.fMotherSceneFocus = false; 
-
         if (parent) { 
             this.fParent = parent; 
             this.fParent.addChild(this); 
@@ -86,21 +83,21 @@ abstract class IObject {
     }
     
     colorAble(): void {
-        this.fMsgHandlerMap[kred_GetSetMethod] 			= new TMsgHandlerNum<IColor>(this.fColor, 'setR');
-	    this.fMsgHandlerMap[kgreen_GetSetMethod] 		= new TMsgHandlerNum<IColor>(this.fColor, 'setG');
-	    this.fMsgHandlerMap[kblue_GetSetMethod]			= new TMsgHandlerNum<IColor>(this.fColor, 'setB');
-        this.fMsgHandlerMap[kalpha_GetSetMethod] 		= new TMsgHandlerNum<IColor>(this.fColor, 'setA');
-	    this.fMsgHandlerMap[khue_GetSetMethod] 			= new TMsgHandlerNum<IColor>(this.fColor, 'setH');
-	    this.fMsgHandlerMap[ksaturation_GetSetMethod]	= new TMsgHandlerNum<IColor>(this.fColor, 'setS');
-        this.fMsgHandlerMap[kbrightness_GetSetMethod]	= new TMsgHandlerNum<IColor>(this.fColor, 'setV');
+        this.fMsgHandlerMap[kred_GetSetMethod] 			= new TMsgHandlerNum(this.fColor._setR());
+	    this.fMsgHandlerMap[kgreen_GetSetMethod] 		= new TMsgHandlerNum(this.fColor._setG());
+	    this.fMsgHandlerMap[kblue_GetSetMethod]			= new TMsgHandlerNum(this.fColor._setB());
+        this.fMsgHandlerMap[kalpha_GetSetMethod] 		= new TMsgHandlerNum(this.fColor._setA());
+	    this.fMsgHandlerMap[khue_GetSetMethod] 			= new TMsgHandlerNum(this.fColor._setH());
+	    this.fMsgHandlerMap[ksaturation_GetSetMethod]	= new TMsgHandlerNum(this.fColor._setS());
+        this.fMsgHandlerMap[kbrightness_GetSetMethod]	= new TMsgHandlerNum(this.fColor._setV());
 
-        this.fMsgHandlerMap[kdred_SetMethod] 		= new TMsgHandlerNum<IColor>(this.fColor, 'dR');
-	    this.fMsgHandlerMap[kdgreen_SetMethod] 		= new TMsgHandlerNum<IColor>(this.fColor, 'dG');
-	    this.fMsgHandlerMap[kdblue_SetMethod]		= new TMsgHandlerNum<IColor>(this.fColor, 'dB');
-        this.fMsgHandlerMap[kdalpha_SetMethod] 		= new TMsgHandlerNum<IColor>(this.fColor, 'dA');
-	    this.fMsgHandlerMap[kdhue_SetMethod] 		= new TMsgHandlerNum<IColor>(this.fColor, 'dH');
-	    this.fMsgHandlerMap[kdsaturation_SetMethod]	= new TMsgHandlerNum<IColor>(this.fColor, 'dS');
-        this.fMsgHandlerMap[kdbrightness_SetMethod]	= new TMsgHandlerNum<IColor>(this.fColor, 'dV');
+        this.fMsgHandlerMap[kdred_SetMethod] 			= new TMsgHandlerNum(this.fColor._dR());
+	    this.fMsgHandlerMap[kdgreen_SetMethod] 			= new TMsgHandlerNum(this.fColor._dG());
+	    this.fMsgHandlerMap[kdblue_SetMethod]			= new TMsgHandlerNum(this.fColor._dB());
+        this.fMsgHandlerMap[kdalpha_SetMethod] 			= new TMsgHandlerNum(this.fColor._dA());
+	    this.fMsgHandlerMap[kdhue_SetMethod] 			= new TMsgHandlerNum(this.fColor._dH());
+	    this.fMsgHandlerMap[kdsaturation_SetMethod]		= new TMsgHandlerNum(this.fColor._dS());
+        this.fMsgHandlerMap[kdbrightness_SetMethod]		= new TMsgHandlerNum(this.fColor._dV());
 /*        
         this.fGetMsgHandlerMap[kred_GetSetMethod] = new TGetParamMethodHandler<IColor> (this.fColor, 'getR');
         this.fGetMsgHandlerMap[kgreen_GetSetMethod] = new TGetParamMethodHandler<IColor> (this.fColor, 'getG');
@@ -113,25 +110,26 @@ abstract class IObject {
     }
     
     positionAble() {
-        this.fMsgHandlerMap[kx_GetSetMethod] 		= new TMsgHandlerNum<IPosition>(this.fPosition, 'setXPos');
-        this.fMsgHandlerMap[ky_GetSetMethod] 		= new TMsgHandlerNum<IPosition>(this.fPosition, 'setYPos');
-        this.fMsgHandlerMap[kxorigin_GetSetMethod] 	= new TMsgHandlerNum<IPosition>(this.fPosition, 'setXOrigin');
-        this.fMsgHandlerMap[kyorigin_GetSetMethod] 	= new TMsgHandlerNum<IPosition>(this.fPosition, 'setYOrigin');
-        this.fMsgHandlerMap[kz_GetSetMethod] 		= new TMsgHandlerNum<IPosition>(this.fPosition, 'setZOrder');
-        this.fMsgHandlerMap[kangle_GetSetMethod] 	= new TMsgHandlerNum<IPosition>(this.fPosition, 'setRotateZ');
-        this.fMsgHandlerMap[kscale_GetSetMethod] 	= new TMsgHandlerNum<IPosition>(this.fPosition, 'setScale');
-//        this.fMsgHandlerMap[kshear_GetSetMethod] 	= new TSetMethodMsgHandler<IPosition>(this.fPosition, 'setShear');
-        this.fMsgHandlerMap[krotatex_GetSetMethod] 	= new TMsgHandlerNum<IPosition>(this.fPosition, 'setRotateX'); 
-        this.fMsgHandlerMap[krotatey_GetSetMethod] 	= new TMsgHandlerNum<IPosition>(this.fPosition, 'setRotateY'); 
-        this.fMsgHandlerMap[krotatez_GetSetMethod] 	= new TMsgHandlerNum<IPosition>(this.fPosition, 'setRotateZ'); 
+        this.fMsgHandlerMap[kx_GetSetMethod] 		= new TMsgHandlerNum(this.fPosition._setXPos());
+        this.fMsgHandlerMap[ky_GetSetMethod] 		= new TMsgHandlerNum(this.fPosition._setYPos());
+        this.fMsgHandlerMap[kxorigin_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setXOrigin());
+        this.fMsgHandlerMap[kyorigin_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setYOrigin());
+        this.fMsgHandlerMap[kz_GetSetMethod] 		= new TMsgHandlerNum(this.fPosition._setZOrder());
+        this.fMsgHandlerMap[kangle_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateZ());
+        this.fMsgHandlerMap[kscale_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setScale());
+//        this.fMsgHandlerMap[kshear_GetSetMethod] 	= new TSetMethodMsgHandler(this.fPosition._setShear());
+        this.fMsgHandlerMap[krotatex_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateX()); 
+        this.fMsgHandlerMap[krotatey_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateY()); 
+        this.fMsgHandlerMap[krotatez_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateZ()); 
         
-        this.fMsgHandlerMap[kdx_SetMethod] 			= new TMsgHandlerNum<IPosition>(this.fPosition, 'addXPos');
-        this.fMsgHandlerMap[kdy_SetMethod] 			= new TMsgHandlerNum<IPosition>(this.fPosition, 'addYPos');
-        this.fMsgHandlerMap[kdxorigin_SetMethod] 	= new TMsgHandlerNum<IPosition>(this.fPosition, 'addXOrigin');
-        this.fMsgHandlerMap[kdyorigin_SetMethod] 	= new TMsgHandlerNum<IPosition>(this.fPosition, 'addYOrigin');
-        this.fMsgHandlerMap[kdz_SetMethod] 			= new TMsgHandlerNum<IPosition>(this.fPosition, 'addZOrder');
-        this.fMsgHandlerMap[kdangle_SetMethod] 		= new TMsgHandlerNum<IPosition>(this.fPosition, 'addAngle');
-        this.fMsgHandlerMap[kdscale_SetMethod] 		= new TMsgHandlerNum<IPosition>(this.fPosition, 'multScale');
+        this.fMsgHandlerMap[kdx_SetMethod] 			= new TMsgHandlerNum(this.fPosition._addXPos());
+        this.fMsgHandlerMap[kdy_SetMethod] 			= new TMsgHandlerNum(this.fPosition._addYPos());
+        this.fMsgHandlerMap[kdxorigin_SetMethod] 	= new TMsgHandlerNum(this.fPosition._addXOrigin());
+        this.fMsgHandlerMap[kdyorigin_SetMethod] 	= new TMsgHandlerNum(this.fPosition._addYOrigin());
+        this.fMsgHandlerMap[kdz_SetMethod] 			= new TMsgHandlerNum(this.fPosition._addZOrder());
+        this.fMsgHandlerMap[kdangle_SetMethod] 		= new TMsgHandlerNum(this.fPosition._addAngle());
+        this.fMsgHandlerMap[kdscale_SetMethod] 		= new TMsgHandlerNum(this.fPosition._multScale());
+
 /*        
         this.fGetMsgHandlerMap[kx_GetSetMethod]			= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getXPos');
         this.fGetMsgHandlerMap[ky_GetSetMethod]			= new TGetParamMethodHandler<IPosition>(this.fPosition, 'getYPos');
@@ -151,12 +149,12 @@ abstract class IObject {
     }
     
     timeAble() {
-        this.fMsgHandlerMap[kdate_GetSetMethod] 	= new TMsgHandlerTime<IDate>(this.fDate, 'setDate');
-        this.fMsgHandlerMap[kduration_GetSetMethod]	= new TMsgHandlerTime<IDate>(this.fDate, 'setDuration');
-        this.fMsgHandlerMap[kddate_SetMethod] 		= new TMsgHandlerTime<IDate>(this.fDate, 'addDate');
-        this.fMsgHandlerMap[kdduration_SetMethod] 	= new TMsgHandlerTime<IDate>(this.fDate, 'addDuration');        
-        this.fMsgHandlerMap[kclock_SetMethod] 		= new TMsgHandlerVoid<IDate>(this.fDate, 'clock');
-        this.fMsgHandlerMap[kdurClock_SetMethod] 	= new TMsgHandlerVoid<IDate>(this.fDate, 'durclock');
+        this.fMsgHandlerMap[kdate_GetSetMethod] 	= new TMsgHandlerTime(this.fDate._setDate());
+        this.fMsgHandlerMap[kduration_GetSetMethod]	= new TMsgHandlerTime(this.fDate._setDuration);
+        this.fMsgHandlerMap[kddate_SetMethod] 		= new TMsgHandlerTime(this.fDate._addDate());
+        this.fMsgHandlerMap[kdduration_SetMethod] 	= new TMsgHandlerTime(this.fDate._addDuration());        
+        this.fMsgHandlerMap[kclock_SetMethod] 		= new TMsgHandlerVoid(this.fDate._clock());
+        this.fMsgHandlerMap[kdurClock_SetMethod] 	= new TMsgHandlerVoid(this.fDate._durclock());
 
 /*        
         this.fGetMsgHandlerMap[kdate_GetSetMethod] = new TGetParamMethodHandler<IDate>(this.fDate, 'getDate');
@@ -257,16 +255,6 @@ abstract class IObject {
         return (this.fName == address);
         //return match(address);
     }
-  
-    // Récupération de la scene mère
-    //----------------------------- 
-    checkScene(): void {
-        if (this.fParent.fName != 'ITL') {
-            this.fParent.checkScene();
-        }
-        else { this.fMotherSceneFocus = true }   
-    }
-   
 
     // View
     //-----------------------------    
@@ -316,8 +304,8 @@ abstract class IObject {
     
     //-----------------------------
     
-    messageHandler(msg: string, match?: boolean): SetMsgHandler {
-        let handler: SetMsgHandler;
+    messageHandler(msg: string, match?: boolean): TSetHandler {
+        let handler: TSetHandler;
         if (!match) {
             return this.fMsgHandlerMap[msg]; 
         }

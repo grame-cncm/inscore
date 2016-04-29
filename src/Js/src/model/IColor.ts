@@ -1,4 +1,5 @@
 
+///<reference path="../controller/THandlersPrototypes.ts"/>
 
 class IColor {
 
@@ -68,26 +69,42 @@ class IColor {
         }
     }
     
-    setRGB(val: Array<number>):void { this.fRGB = val; }
-    setHSB(val: Array<number>):void { this.fHSB = val; }
+    setRGB(val: Array<number>): void 	{ this.fRGB = val; }
+    setHSB(val: Array<number>): void 	{ this.fHSB = val; }
+    _setRGB()	: SetColorMethod 		{ return (n) => this.setRGB(n); };
+    _setHSB()	: SetColorMethod 		{ return (n) => this.setHSB(n); };
     
-    setH(h:number): void { this.setParam("fH" , Math.floor(h), 0, 360, true); }  
-    setS(s:number): void { this.setParam("fS", Math.floor(s), 0, 100, true); }
-    setV(b:number): void { this.setParam("fB", Math.floor(b), 0, 100, true); }
+    setH(h:number): void 		{ this.setParam("fH" , Math.floor(h), 0, 360, true); }  
+    setS(s:number): void 		{ this.setParam("fS", Math.floor(s), 0, 100, true); }
+    setV(b:number): void 		{ this.setParam("fB", Math.floor(b), 0, 100, true); }
+    _setH()	: SetNumMethod 		{ return (n) => this.setH(n); };
+    _setS()	: SetNumMethod 		{ return (n) => this.setS(n); };
+    _setV()	: SetNumMethod 		{ return (n) => this.setV(n); };
 
-    setR(r:number): void { this.setParam("fR", Math.floor(r), 0, 255, false); }
-    setG(g:number): void { this.setParam("fG", Math.floor(g), 0, 255, false); }
-	setB(b:number): void { this.setParam("fB", Math.floor(b), 0, 255, false); }
+    setR(r:number): void 		{ this.setParam("fR", Math.floor(r), 0, 255, false); }
+    setG(g:number): void 		{ this.setParam("fG", Math.floor(g), 0, 255, false); }
+	setB(b:number): void 		{ this.setParam("fB", Math.floor(b), 0, 255, false); }
+    _setR()	: SetNumMethod 		{ return (n) => this.setR(n); };
+    _setG()	: SetNumMethod 		{ return (n) => this.setG(n); };
+    _setB()	: SetNumMethod 		{ return (n) => this.setB(n); };
 				
-	setA(a:number): void { this.setParam("fA", Math.floor(a), 0, 255, false); }	
+	setA(a:number): void 		{ this.setParam("fA", Math.floor(a), 0, 255, false); }	
+    _setA()	: SetNumMethod 		{ return (n) => this.setA(n); };
 		
-	dA(a:number): void { this.setA( this.getA() + Math.floor(a) ); }	
-	dR(r:number): void { this.setR( this.getR() + Math.floor(r) ); }
-    dG(g:number): void { this.setG( this.getG() + Math.floor(g) ); }
-    dB(b:number): void { this.setB( this.getB() + Math.floor(b) ); }
-    dH(h:number): void { this.setH( this.getH() + Math.floor(h) ); }
-    dS(s:number): void { this.setS( this.getS() + Math.floor(s) ); }
-    dV(b:number): void { this.setB( this.getB() + Math.floor(b) ); }
+	dA(a:number): void 			{ this.setA( this.getA() + Math.floor(a) ); }	
+	dR(r:number): void 			{ this.setR( this.getR() + Math.floor(r) ); }
+    dG(g:number): void 			{ this.setG( this.getG() + Math.floor(g) ); }
+    dB(b:number): void 			{ this.setB( this.getB() + Math.floor(b) ); }
+    dH(h:number): void 			{ this.setH( this.getH() + Math.floor(h) ); }
+    dS(s:number): void 			{ this.setS( this.getS() + Math.floor(s) ); }
+    dV(b:number): void 			{ this.setB( this.getB() + Math.floor(b) ); }
+    _dA()	: SetNumMethod 		{ return (n) => this.dA(n); };
+    _dR()	: SetNumMethod 		{ return (n) => this.dR(n); };
+    _dG()	: SetNumMethod 		{ return (n) => this.dG(n); };
+    _dB()	: SetNumMethod 		{ return (n) => this.dB(n); };
+    _dH()	: SetNumMethod 		{ return (n) => this.dH(n); };
+    _dS()	: SetNumMethod 		{ return (n) => this.dS(n); };
+    _dV()	: SetNumMethod 		{ return (n) => this.dV(n); };
   
     		
 // UPDATE COLORS

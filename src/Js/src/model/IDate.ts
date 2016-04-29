@@ -1,3 +1,4 @@
+///<reference path="../controller/THandlersPrototypes.ts"/>
 ///<reference path="../externals/fraction/fraction.ts"/>
 
 class IDate {
@@ -35,6 +36,7 @@ class IDate {
             this.fDateChanged = true;
         }    
     }
+    _setDate (): SetTimeMethod  	{ return (d) => this.setDate(d); };
 
     setDuration (dur:Fraction): void {
         if (dur.getDenominator() == 0) return;
@@ -44,16 +46,19 @@ class IDate {
             this.fDurationChanged = true;
         }    
     }
+    _setDuration (): SetTimeMethod  { return (d) => this.setDuration(d); };
     
     addDate (date:Fraction): void { 
         this.setDate(this.fDate.add(date));
         this.fDateChanged = true;
         }
+    _addDate (): SetTimeMethod  { return (d) => this.addDate(d); };
         
     addDuration (dur:Fraction): void { 
         this.setDuration(this.fDuration.add(dur)); 
         this.fDurationChanged = true;
         }
+    _addDuration (): SetTimeMethod  { return (d) => this.addDuration(d); };
 
 // MODIFIED STATUS
 //--------------------------------------------------------------
@@ -66,6 +71,8 @@ class IDate {
 // CLOCK
 //--------------------------------------------------------------
     clock():void { this.addDate ( new Fraction(1, 96) ); }
+    _clock ()	: SetVoidMethod  { return () => this.clock(); };
     durclock(): void { this.addDuration ( new Fraction(1, 96) ); }
+    _durclock (): SetVoidMethod  { return () => this.durclock(); };
 
 }
