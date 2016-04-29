@@ -10,7 +10,7 @@ class ICurve extends IObject {
         this.fTypeString = this.kCurveType;
     }
  
-    getSet(address: string): IMessage	{ 
-    	return new IMessage(address, [kset_SetMethod, this.kCurveType, "todo"]); 
+    getSet(): IMessage	{ 
+    	return new IMessage(this.getOSCAddress(), [kset_SetMethod, this.kCurveType, "todo"]); 
     }
 }

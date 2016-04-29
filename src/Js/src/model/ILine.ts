@@ -10,7 +10,7 @@ class ILine extends IObject {
         this.fTypeString = this.kLineType;
     }
 
-    getSet(address: string): IMessage	{
-    	return new IMessage(address, [kset_SetMethod, this.kLineType, "todo"]); 
+    getSet(): IMessage	{
+    	return new IMessage(this.getOSCAddress(), [kset_SetMethod, this.kLineType, "todo"]); 
     }
 }

@@ -16,6 +16,6 @@ class IScene extends IRectShape {
     newScene(): void 			{ }
     _newScene(): SetVoidMethod 	{ return () => this.newScene(); };
     
-    getScene(): IObject 				{ return this; }
-    getSet(address: string): IMessage	{ return new IMessage(address, knew_SetMethod); }
+    getScene(): IObject 		{ return this; }
+    getSet(): IMessage			{ return new IMessage(this.getOSCAddress(), knew_SetMethod); }
 }

@@ -34,8 +34,8 @@ class IRectShape extends IObject {
         return status;
     }  
 
-    getSet(address: string): IMessage	{ 
-    	return new IMessage(address, [kset_SetMethod, this.fTypeString, this.fPosition.getWidth(), this.fPosition.getHeight()]); 
+    getSet(): IMessage	{ 
+    	return new IMessage(this.getOSCAddress(), [kset_SetMethod, this.fTypeString, this.fPosition.getWidth(), this.fPosition.getHeight()]); 
     }
    
     //accept (Updater*): void
