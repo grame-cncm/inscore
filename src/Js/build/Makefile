@@ -15,14 +15,18 @@ all : $(DEPS)
 ../src/model/Methods.ts: ../../inscore/model/Methods.cpp
 	./methods2ts ../../inscore/model/Methods.cpp > ../src/model/Methods.ts
 
-check : $(DEPS) $(OUT)
+check :
+	rm -rf $(BUILDIR)
+	make _check
+
+_check : $(DEPS) $(OUT)
 
 clean:
 	rm -rf $(BUILDIR)
 
 #===============================================================
 # rules to compile a .ts 
-TSOPT  :=   # --noImplicitAny  --noImplicitReturns
+TSOPT  := --noImplicitAny  --noImplicitReturns
 JSOPTS := --allowJs  --allowUnreachableCode  --allowUnusedLabels 
 $(BUILDIR)/model/TILoader.js: ../src/model/TILoader.ts
 	@[ -d $(@D) ] || mkdir -p $(@D)
