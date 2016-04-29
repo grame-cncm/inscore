@@ -5,5 +5,8 @@
 /ITL/scene/rect2 set rect 0.3 0.5 ;
 /ITL/scene/rect2 get height ;
 /ITL/scene/rect2 color 255 100 100 ;
-/ITL/scene/rect2 get color ;
+/ITL/scene/rect3 set ellipse 2 2 ;
+/ITL/scene/rect3 get ;
+
+/ITL/scene/rect* get color ;
 
