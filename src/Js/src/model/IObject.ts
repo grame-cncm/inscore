@@ -2,6 +2,8 @@
 ///<reference path="../externals/fraction/fraction.ts"/>
 ///<reference path="../lib/OSCAddress.ts"/>
 ///<reference path="../lib/Tools.ts"/>
+///<reference path="../lib/ITLError.ts"/>
+///<reference path="../lib/ITLOut.ts"/>
 ///<reference path="../controller/TSetMessageHandlers.ts"/>
 ///<reference path="../controller/TGetMessageHandlers.ts"/>
 ///<reference path="../controller/THandlersPrototypes.ts"/>
@@ -11,14 +13,6 @@
 ///<reference path="Icolor.ts"/>
 ///<reference path="IDate.ts"/>
 ///<reference path="IPosition.ts"/>
-
-enum state {
-    kClean,
-    kNewObject = 1,
-    kModified = 2,
-    kSubModified = 4,
-    kMasterModified = 8, 
-}
 
 
 class TMsgHandler<T> 	{ [index: string]: T; }
@@ -35,7 +29,7 @@ abstract class IObject {
     
     protected fTypeString:	string;
     protected fName: 		string;
-    protected fState: 		state;
+    protected fState: 		objState;
     protected fNewData: 	boolean;
     protected fDelete: 		boolean;
     protected fLock: 		boolean;
@@ -59,29 +53,26 @@ abstract class IObject {
         
         this.fDelete = false;
         this.fLock = false;
-        this.fState = state.kNewObject;
-        this.fNewData = true;
-        
-        if (parent) { 
-            this.fParent = parent; 
-            this.fParent.addChild(this); 
-        }
+        this.fState = objState.kNewObject;
+        this.fNewData = true;        
+        this.fParent = parent; 
 
         this.fPosition = new IPosition;
         this.fDate = new IDate;
 		this.fColor = new IColor([0,0,0]);
+
         this.fMsgHandlerMap 	= new TMsgHandler<TSetHandler>();
 		this.fGetMsgHandlerMap	= new TGetMsgHandler<TGetHandler>();
-
-        this.fMsgHandlerMap[kset_SetMethod] = new TMethodHandler(this._set());
-        this.fMsgHandlerMap[kget_SetMethod] = new TMethodHandler(this._get());
         this.setHandlers(); 
     } 
     
 // HANDLERS
 //--------------------------------------------------------------  
     setHandlers() {
-	    this.colorAble();
+        this.fMsgHandlerMap[kset_SetMethod] = new TMethodHandler(this._set());
+        this.fMsgHandlerMap[kget_SetMethod] = new TMethodHandler(this._get());
+
+ 	    this.colorAble();
 	    this.positionAble();
 	    this.timeAble();
     }
@@ -171,7 +162,7 @@ abstract class IObject {
 //--------------------------------------------------------------  
     addChild(newObject: IObject): void { 
         this.fSubNodes.push(newObject);
-        this.setState(state.kSubModified);
+        this.setState(objState.kSubModified);
     } 
     
     setParent(parent: IObject): void { this.fParent = parent; }    
@@ -179,6 +170,8 @@ abstract class IObject {
     getSubNodes(): Array<IObject> 	{ return this.fSubNodes }
     getAppl() : IObject				{ return this.fParent.getAppl(); }
     getScene(): IObject 			{ return this.fParent.getScene(); }
+
+    toString(): string 				{ return this.fName + ": " + this.fSubNodes; }
    
     //-----------------------------    
     getName(): string 				{ return this.fName; }
@@ -219,8 +212,8 @@ abstract class IObject {
     //-----------------------------    
     newData(state: boolean): void { this.fNewData = state; /*triggerEvent(kNewData, true)*/; }
     
-    setState (s: state): void { this.fState = s; }
-    getState(): state { return this.fState; }
+    setState (s: objState): void 	{ this.fState = s; }
+    getState(): objState 			{ return this.fState; }
     
     getPos(): IPosition { return this.fPosition; }
     getColor(): IColor { return this.fColor; }
@@ -309,17 +302,17 @@ abstract class IObject {
                     let n: number = targets.length;
                     for (let i: number = 0; i < n; i++) {
                         let target: IObject = targets[i];
-                        console.log(target);
+//                        console.log(target);
                         result |= target.execute(msg);	
-                        if (result & msgStatus.kProcessed) { target.setState(state.kModified); }
+                        if (result & msgStatus.kProcessed) { target.setState(objState.kModified); }
                     }
                 }               
                 else if (Tools.regexp(beg)) { result = msgStatus.kProcessedNoChange; }                    
-                else { result = this.newObj (msg, this.fName).status; }
+                else { result = this.newObj (msg, beg).status; }
             }
         }  
             
-        if (result & msgStatus.kProcessed) { this.setState(state.kSubModified); }
+        if (result & msgStatus.kProcessed) { this.setState(objState.kSubModified); }
     	return result;     
     }
     
@@ -327,10 +320,10 @@ abstract class IObject {
     // the basic 'set' handler
     //-------------------------------------------------------------
     set(msg: IMessage): msgStatus	{
-        let type: string = typeof msg.param(1);
-        if (typeof type != "string") { return msgStatus.kBadParameters; }
+        let type = msg.paramStr(1);
+        if (!type.correct) { return msgStatus.kBadParameters; }
         
-        if (typeof type != this.getTypeString()) {
+        if (type.value != this.getTypeString()) {
 			let out = this.newObj (msg, this.fName);
             if (out.status & msgStatus.kProcessed) {
 	            // todo: transfer this attributes to new object
@@ -350,22 +343,40 @@ abstract class IObject {
     // the basic 'get' handler
     //-------------------------------------------------------------
     get(msg: IMessage): msgStatus {
-        if ( msg.size() == 1 ) {
-//			let msg = getSet();
+        let n = msg.size();
+        if ( n == 1 ) {				// get without param should give a 'set' msg
+			let outmsg = this.getSet(msg.address());
+			ITLOut.write (outmsg.toString());
         }
-        else {
-        	
+        else for (let i=1; i< n; i++) {
+        	let attribute = msg.paramStr(i);
+        	if (attribute.correct) {
+        		let h = this.fGetMsgHandlerMap[attribute.value];
+        		if (h) { 
+        			let outmsg = new IMessage (msg.address(), attribute.value);
+        			h.fill (outmsg);
+        			ITLOut.write (outmsg.toString());
+        		}
+        	}
+        	else {
+        		ITLError.badParameter (msg.toString(), msg.param(i));
+         		return msgStatus.kBadParameters;
+       		}        	
         }
         return msgStatus.kProcessedNoChange;
     }
     _get(): SetMsgMethod	{ return (m) => this.get(m); }
 
+     //-------------------------------------------------------------
+    // the specific 'get' methods
+    //-------------------------------------------------------------
+    abstract getSet(address: string): IMessage;
  
     //-----------------------------    
     protected proxy_create (msg: IMessage, name: string, parent: IObject): { status: msgStatus, obj?: IObject } 
     				{ return this.getAppl().proxy_create(msg, name, parent); }                
     protected newObj (msg: IMessage, name: string): { status: msgStatus, obj?: IObject } 
-    				{ return this.proxy_create(msg, name, this.fParent); }                
+    				{ return this.proxy_create(msg, name, this); }                
     
     //-----------------------------    
     getDeleted(): boolean 	{ return this.fDelete; }
