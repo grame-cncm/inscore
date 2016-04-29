@@ -315,7 +315,7 @@ abstract class IObject {
                     }
                 }               
                 else if (Tools.regexp(beg)) { result = msgStatus.kProcessedNoChange; }                    
-                else { result = this.proxy_create (msg, this.fName, this.fParent).status; }
+                else { result = this.newObj (msg).status; }
             }
         }  
             
@@ -331,7 +331,7 @@ abstract class IObject {
         if (typeof type != "string") { return msgStatus.kBadParameters; }
         
         if (typeof type != this.getTypeString()) {
-			let out = this.proxy_create (msg, this.fName, this.fParent);
+			let out = this.newObj (msg);
             if (out.status & msgStatus.kProcessed) {
 	            // todo: transfer this attributes to new object
 	            this.transferAttributes (out.obj);
@@ -361,8 +361,11 @@ abstract class IObject {
     _get(): SetMsgMethod	{ return (m) => this.get(m); }
 
  
+    //-----------------------------    
     protected proxy_create (msg: IMessage, name: string, parent: IObject): { status: msgStatus, obj?: IObject } 
-    				{ return this.getAppl().proxy_create(msg, this.fName, this.fParent); }                
+    				{ return this.getAppl().proxy_create(msg, name, parent); }                
+    protected newObj (msg: IMessage): { status: msgStatus, obj?: IObject } 
+    				{ return this.proxy_create(msg, this.fName, this.fParent); }                
     
     //-----------------------------    
     getDeleted(): boolean 	{ return this.fDelete; }

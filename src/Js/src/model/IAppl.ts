@@ -13,7 +13,8 @@ class IAppl extends IObject {
 
     getAppl() : IObject		{ return this; }
 
-    protected proxy_create (msg: IMessage, name: string, parent: IObject): { status: msgStatus, obj?: IObject }	{
-        return IProxy.execute (msg, name, parent);
-    }
+	protected newObj (msg: IMessage): { status: msgStatus, obj?: IObject } 
+    				{ return this.proxy_create(msg, this.fName, this); }                
+    protected proxy_create (msg: IMessage, name: string, parent: IObject): { status: msgStatus, obj?: IObject }	
+    				{ return IProxy.execute (msg, name, parent); }
 }
