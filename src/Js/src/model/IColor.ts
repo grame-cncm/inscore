@@ -14,13 +14,14 @@ class IColor {
 // CONSTRUTOR
 //--------------------------------------------------------------    
     constructor(input : Array<number>|IColor) {
-        if (input instanceof Array) { this.fRGB = input; }
-        
+        if (input instanceof Array) { 
+        	this.fRGB = input; 
+        }
         else if (input instanceof IColor) {
             this.fRGB = input.fRGB;
             this.fA = input.fA;
         }
-
+        this.fHSB = new Array<number>();
         this.fModified = true;
         this.updateHSB();         
     }
