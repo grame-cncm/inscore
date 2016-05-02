@@ -1,4 +1,4 @@
-///<reference path="../main.ts"/>
+///<reference path="../globals.ts"/>
 ///<reference path="../vhtmlview/HtmlViewFactory.ts"/>
 ///<reference path="Methods.ts"/>
 ///<reference path="IScene.ts"/>
