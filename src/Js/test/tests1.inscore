@@ -9,4 +9,4 @@
 /ITL/scene/rect3 get ;
 
 /ITL/scene/rect* get color x y;
-/ITL/scene save;
+/ITL/scene/rect save;
