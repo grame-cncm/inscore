@@ -1,15 +1,5 @@
 ///<reference path="IObject.ts"/>
 
-class TPoint {
-    protected fX: number;
-    protected fY: number;
-    
-    constructor(x: number, y: number) {
-        this.fX = x;
-        this.fY = y;
-    }
-}
-
 class ILine extends IObject {
     
     protected kLineType: string;
@@ -39,8 +29,7 @@ class ILine extends IObject {
             if (!a.correct || !b.correct) {
                 return msgStatus.kBadParameters;
             }
-            
-            
+               
             if (mode.value == "xy") {
                 this.setPoint( new TPoint(a.value, b.value) );
             }
