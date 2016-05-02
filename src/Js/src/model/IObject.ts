@@ -18,6 +18,19 @@
 class TMsgHandler<T> 	{ [index: string]: T; }
 class TGetMsgHandler<T> { [index: string]: T; }
 
+class TPoint {
+    protected fX: number;
+    protected fY: number;
+    
+    constructor(x: number, y: number) {
+        this.fX = x;
+        this.fY = y;
+    }
+    
+    toArray(): Array<number> { return [this.fX, this.fY]}
+    
+    // Methodes de calcul sur les points à faire...
+}
 
 abstract class IObject {
     
