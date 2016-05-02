@@ -16,8 +16,11 @@ class IAppl extends IObject {
     } 
 
     getAppl() : IObject					{ return this; }
-    getSet(): IMessage					{ return new IMessage( this.getOSCAddress() ); }
+    getSet(): IMessage					{ let msg : IMessage; return msg; }
     getOSCAddress(): string 			{ return "/ITL"; }
+	colorAble(): void		{}
+	positionAble(): void	{}
+	timeAble() : void		{}
 
     processMsg (address: string, addressTail: string , msg: IMessage): number {
     	this.fReceivedMsgs++;
