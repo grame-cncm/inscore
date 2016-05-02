@@ -25,12 +25,17 @@ class ICurve extends IObject {
         this.kCurveType = 'curve';
         this.fTypeString = this.kCurveType;
         this.fPoints = new Array<BezierCurve>();
+        
+        super.setHandlers();
+        this.fGetMsgHandlerMap[""] = new TGetMsgHandlerArray(this._getPoints());
     }
 
     setHandlers()                   		 { super.setHandlers(); }
     setPoints(points: Array<BezierCurve>)    { this.fPoints = points; }
     getPoints(): Array<BezierCurve>          { return this.fPoints; }
     
+    _getPoints(): GetArrayMethod        { return () => this.fPoints; }
+
     set(msg: IMessage): msgStatus	{
         let status = super.set(msg);
         

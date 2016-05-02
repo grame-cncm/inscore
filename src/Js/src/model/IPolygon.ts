@@ -9,11 +9,15 @@ class IPolygon extends IObject {
         this.kPolygonType = 'polygon';
         this.fTypeString = this.kPolygonType;
         this.fPoints = new Array<TPoint>();
+        
+        super.setHandlers();
+        this.fGetMsgHandlerMap[""] = new TGetMsgHandlerArray(this._getPoints());
     }   
     
     setPoints(points: Array<TPoint>)    { this.fPoints = points; }
     getPoints(): Array<TPoint>          { return this.fPoints; }
-
+    
+    _getPoints(): GetArrayMethod        { return () => this.fPoints; }
     
     set(msg: IMessage): msgStatus {
         let status = super.set(msg);

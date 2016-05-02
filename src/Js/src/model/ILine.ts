@@ -11,9 +11,15 @@ class ILine extends IObject {
         super(name, parent);
         this.kLineType = 'line';
         this.fTypeString = this.kLineType;
+        
+        super.setHandlers();
+        this.fGetMsgHandlerMap[""] = new TGetMsgHandlerArray(this._getPoint());
     }
     
     setPoint(p: TPoint)		{ this.fPoint = p; }
+    getPoint()		        { return this.fPoint; }
+
+    _getPoint(): GetArrayMethod        { return () => this.fPoint.toArray(); }
 
 
     set(msg:IMessage): msgStatus {
