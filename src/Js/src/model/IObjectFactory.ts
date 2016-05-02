@@ -1,3 +1,4 @@
+///<reference path="../main.ts"/>
 ///<reference path="../vhtmlview/HtmlViewFactory.ts"/>
 ///<reference path="Methods.ts"/>
 ///<reference path="IScene.ts"/>
@@ -10,8 +11,10 @@ class IObjectFactory {
 	static fViewFactory = new HtmlViewFactory();
     
 	static createView(obj: IObject, parent?: VObjectView): void {
-//        let view = this.fViewFactory.create (obj.getTypeString(), <VHtmlView>parent);
-//        obj.setView (view);
+		if (gCreateView) {
+			let view = this.fViewFactory.create (obj.getTypeString(), <VHtmlView>parent);
+			obj.setView (view);
+		}
     }
         
     static createObj (name: string , type: string, parent: IObject): IObject {
