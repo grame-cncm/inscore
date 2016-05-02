@@ -6,7 +6,7 @@
 /ITL/scene/rect2 get height ;
 /ITL/scene/rect2 color 255 100 100 ;
 /ITL/scene/rect3 set ellipse 2 2 ;
-/ITL/scene/rect3 get ;
+/ITL/scene/curve set curve 1 1 2 2 3 3 4 4 ;
 
-/ITL/scene/rect* get color x y;
-/ITL/scene/rect save;
+/ITL/scene/curve get;
+#/ITL save;

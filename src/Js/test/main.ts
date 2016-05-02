@@ -1,6 +1,7 @@
 
 ///<reference path="src/controller/IGlue.ts"/>
 ///<reference path="src/model/TILoader.ts"/>
+///<reference path="bezier.ts"/>
 ///<reference path="node.d.ts"/>
 
 "use strict";
@@ -40,6 +41,9 @@ function main (args: Array<string>) {
 		processfile (file);
 	}
 //	debug();
+//	debugmsg ("check bezier diff");
+	checkbezier();
+
 	process.exit();
 }
 
