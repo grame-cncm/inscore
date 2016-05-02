@@ -40,7 +40,6 @@ abstract class IObject {
     
     protected fMsgHandlerMap : 		TMsgHandler<TSetHandler>; 
     protected fGetMsgHandlerMap : 	TGetMsgHandler<TGetHandler>; 
-//    protected fGetMsgHandlerMap: Array<GetParamMsgHandler<any>> = new Array;
     
     protected fObjectView: VObjectView;
 
@@ -172,8 +171,14 @@ abstract class IObject {
     getSubNodesCount(): number 		{ return this.fSubNodes.length; }
     getAppl() : IObject				{ return this.fParent.getAppl(); }
     getScene(): IObject 			{ return this.fParent.getScene(); }
+    getPosition(): {x: number, y: number } 		{ return { x: this.fPosition.getXPos(), y: this.fPosition.getYPos() }; }
 
-    toString(): string 				{ return this.fName + ": " + this.fSubNodes; }
+    toString(): string 				{ 
+    	let n=this.fSubNodes.length; 
+    	let substr = ""; 
+    	if (n) substr= " [" + this.fSubNodes + "] "; 
+    	return this.fName + substr; 
+    }
    
     //-----------------------------    
     getName(): string 				{ return this.fName; }
@@ -382,7 +387,7 @@ abstract class IObject {
     _save(): SetMsgMethod	{ return (m) => this.save(m); }
 
     //-------------------------------------------------------------
-    // the specific 'get' methods
+    // the specific 'get' methods - must be implemented by inherited objects
     //-------------------------------------------------------------
     abstract getSet(): IMessage;
       
@@ -413,13 +418,13 @@ abstract class IObject {
     // get objects state messages recursively
     getSetRecurse(): Array<IMessage> {
     	let out = new Array<IMessage>();
-    	out.push (this.getSet ());
-    	let p = this.getAttributesMsg();
+    	out.push (this.getSet ());			// get the 'set' msg first
+    	let p = this.getAttributesMsg();	// next all the messages for the object attributes
 	    for (let i=0; i < p.length; i++)
 		    out.push (p[i]);
     	
-        let n 	 = this.getSubNodesCount();
-		for (let i = 0; i < n; i++) {
+        let n 	 = this.getSubNodesCount();	
+		for (let i = 0; i < n; i++) {		// and propagate to the subnodes
 	    	let subout = this.fSubNodes[i].getSetRecurse ();
 	    	for (let i=0; i < subout.length; i++)
 		    	out.push (subout[i]);
