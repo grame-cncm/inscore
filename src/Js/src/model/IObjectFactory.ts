@@ -6,6 +6,7 @@
 ///<reference path="IEllipse.ts"/>
 ///<reference path="ICurve.ts"/>
 ///<reference path="ILine.ts"/>
+///<reference path="IPolygon.ts"/>
 
 class IObjectFactory {	
 	static fViewFactory = new HtmlViewFactory();
@@ -43,6 +44,11 @@ class IObjectFactory {
             case "scene":
                 obj = new IScene(name, parent);
                 this.createView(obj);  
+                break;
+                
+            case "polygon":
+                obj = new IPolygon(name, parent);
+                this.createView(obj, parent.getView());  
                 break;
                 
             default:
