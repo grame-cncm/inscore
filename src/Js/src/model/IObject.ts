@@ -366,7 +366,7 @@ abstract class IObject {
         let n = msg.size();
         if ( n == 1 ) {				// get without param should give a 'set' msg
 			let outmsg = this.getSet();
-			ITLOut.write (outmsg.toString());
+			if (outmsg) ITLOut.write (outmsg.toString() + ";");
         }
         else for (let i=1; i< n; i++) {
         	let attribute = msg.paramStr(i);
@@ -431,7 +431,8 @@ abstract class IObject {
     // get objects state messages recursively
     getSetRecurse(): Array<IMessage> {
     	let out = new Array<IMessage>();
-    	out.push (this.getSet ());			// get the 'set' msg first
+    	let msg =  this.getSet ();			// get the 'set' msg first
+    	if (msg) out.push (msg);			// and push to the output list
     	let p = this.getAttributesMsg();	// next all the messages for the object attributes
 	    for (let i=0; i < p.length; i++)
 		    out.push (p[i]);
