@@ -16,7 +16,7 @@ class IRectShape extends IObject {
         // Cas ou le type est différent, le proxy est utilisé dans super.set()
         if (status & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) return status; 
 
-        // Vérification des paramêtres du "set"
+        // Vérification des paramêtres du message "set"
         if (msg.size() == 4) {
             let width = msg.paramNum(2), height = msg.paramNum(3);
             if (!width.correct || !height.correct) { return msgStatus.kBadParameters; }
