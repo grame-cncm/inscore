@@ -7,26 +7,34 @@ class IAppl extends IObject {
  
     protected kApplType: string;
     protected fReceivedMsgs: number;
+    protected fRate: number;
     
     constructor() {
         super('ITL');
         this.kApplType = 'IAppl';
         this.fTypeString = 'IAppl';
         this.fReceivedMsgs = 0;
+        this.fRate = 1000;
     } 
 
     getAppl() : IObject					{ return this; }
     getSet(): IMessage					{ let msg : IMessage; return msg; }
     getOSCAddress(): string 			{ return "/ITL"; }
-	colorAble(): void		{}
+    getRate(): number 					{ return this.fRate; }
+    setRate(rate: number): void 		{ this.fRate = rate; }
+
+	// prevent the output of color, position and time data at application level
+	colorAble(): void		{}	
 	positionAble(): void	{}
 	timeAble() : void		{}
 
-    processMsg (address: string, addressTail: string , msg: IMessage): number {
+    processMsg (address: string, addressTail: string , msg: IMessage): msgStatus {
     	this.fReceivedMsgs++;
+
 		let status = msgStatus.kBadAddress;
 		let head = address;
 		let tail = addressTail;
+
 /*
 		SIMessage msg = IMessage::create (*imsg);
 		TAliasesMap::const_iterator i = fAliases.find(imsg->address());
