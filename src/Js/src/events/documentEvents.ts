@@ -1,10 +1,9 @@
 
-///<reference path="../controller/IGlue.ts"/>
+///<reference path="../inscore.ts"/>
 ///<reference path="../model/TILoader.ts"/>
+///<reference path="../vhtmlview/VHtmlTools.ts"/>
 
-declare var gGlue : IGlue;
-
-function dropEvent(e) {
+function dropEvent(e: any) {
     dragOverEvent(e);
 
     let filelist =  e.dataTransfer.files;
@@ -14,13 +13,18 @@ function dropEvent(e) {
     if (filecount > 0) {                
         for (let i=0; i < filecount; i++) {
             let loader = new TILoader;
-            loader.load(filelist[i], gGlue.getRoot());      
+            loader.load(filelist[i], INScore.getRoot());      
         } 
     } 
 }
 
-function dragOverEvent(e) {
+function dragOverEvent(e: any) {
     e.stopPropagation();
     e.preventDefault();
+}
+
+function resizeDocument() {
+	let size = TWindow.getSize();
+	console.log("resizeDocument " + size.w + " " + size.h);
 }
 
