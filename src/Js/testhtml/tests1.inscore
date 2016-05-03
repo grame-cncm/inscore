@@ -1,0 +1,32 @@
+
+gray = 200;
+/ITL/toto new ;
+/ITL/scene x 0.5 ;
+/ITL/scene width 1.5 ;
+/ITL/scene height 1.5 ;
+/ITL/scene scale 1 ;
+/ITL/scene color 230 220 220;
+
+/ITL/scene/rect set rect 1 1 ;
+/ITL/scene/rect scale 0.5 ;
+/ITL/scene/rect/rect2 set rect 0.5 0.5 ;
+/ITL/scene/rect/rect2 color 100 100 240 ;
+/ITL/scene/rect/rect2 x 0.5;
+
+/ITL/scene/rect x -1 ;
+/ITL/scene/rect xorigin -1 ;
+/ITL/scene/rect y -1 ;
+/ITL/scene/rect yorigin -1 ;
+
+__END__
+
+/ITL/scene/rect xorigin 0
+
+/ITL/scene/rect get ;
+/ITL/scene/rect get width ;
+
+/ITL/scene/rect3 set ellipse 2 2 ;
+/ITL/scene/curve set curve 1 1 2 2 3 3 4 4 ;
+
+/ITL/scene/curve get;
+#/ITL save;
