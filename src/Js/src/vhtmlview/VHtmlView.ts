@@ -4,21 +4,22 @@
 class VHtmlView extends VObjectView {
     
     protected fDiv 	  : HTMLDivElement;
-    protected fParent : VObjectView;
+    protected fParent : VHtmlView;
 	protected getDiv() : HTMLDivElement 					{ return this.fDiv }
 
-    constructor(div: HTMLDivElement, parent?: VObjectView)  { super(); this.fParent = parent; this.fDiv = div; }
-
-    setBasicAttributes (div: HTMLDivElement)  { 
-    	div.setAttribute ("position", "absolute");
+    constructor(div: HTMLDivElement, parent?: VHtmlView)  { 
+    	super(); 
+    	this.fParent = parent; 
+    	this.fDiv = div; 
+//    	div.style.position = "absolute";
     }
 
 	getParent() : VObjectView 								{ return this.fParent }
 
-	updateView			( obj: IObject) : void {
+	updateView	( obj: IObject) : void {
 		let pos = obj.getPosition();
-    	this.fDiv.setAttribute ("x", pos.x.toString());
-    	this.fDiv.setAttribute ("y", pos.y.toString());		
+    	this.fDiv.setAttribute ("x", pos.x.toString() + "px");
+    	this.fDiv.setAttribute ("y", pos.y.toString() + "px");		
 	}
 
 	// basically do nothing, should be implemented in subclasses when necessary
