@@ -7,6 +7,8 @@
 ///<reference path="ICurve.ts"/>
 ///<reference path="ILine.ts"/>
 ///<reference path="IPolygon.ts"/>
+///<reference path="IText.ts"/>
+
 
 class IObjectFactory {	
 	static fViewFactory = new HtmlViewFactory();
@@ -50,6 +52,11 @@ class IObjectFactory {
                 obj = new IPolygon(name, parent);
                 this.createView(obj, parent.getView());  
                 break;
+                
+            case "txt":
+                obj = new IText(name, parent);
+                this.createView(obj, parent.getView());  
+                break;    
                 
             default:
                 break;
