@@ -8,7 +8,11 @@ class IRectShape extends IObject {
     }
 
     create(name: string, parent: IObject): IRectShape { return new IRectShape(name, parent); }
-    setHandlers() {  super.setHandlers(); }
+    setHandlers() {  
+    	super.setHandlers(); 
+        this.fMsgHandlerMap[kwidth_GetSetMethod]		= new TMsgHandlerNum(this.fPosition._setWidth());
+        this.fMsgHandlerMap[kheight_GetSetMethod]		= new TMsgHandlerNum(this.fPosition._setHeight());
+    }
    
     set(msg: IMessage): msgStatus {
         let status = super.set(msg);

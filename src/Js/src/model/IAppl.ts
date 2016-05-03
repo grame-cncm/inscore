@@ -14,7 +14,7 @@ class IAppl extends IObject {
         this.kApplType = 'IAppl';
         this.fTypeString = 'IAppl';
         this.fReceivedMsgs = 0;
-        this.fRate = 1000;
+        this.fRate = 100;
     } 
 
     getAppl() : IObject					{ return this; }

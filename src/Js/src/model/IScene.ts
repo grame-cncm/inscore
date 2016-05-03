@@ -8,11 +8,15 @@ class IScene extends IRectShape {
     constructor(name: string, parent: IObject) {
         super(name, parent);
         this.kSceneType = 'scene';
-        this.fTypeString = this.kSceneType;
-        
+        this.fTypeString = this.kSceneType;        
+
+        this.fPosition.setWidth (2);
+        this.fPosition.setHeight (2);
         this.fMsgHandlerMap[knew_SetMethod] = new TMsgHandlerVoid(this._newScene());
     }
     
+    timeAble(): void 			{ }
+
     newScene(): void 			{ }
     _newScene(): SetVoidMethod 	{ return () => this.newScene(); };
     

@@ -15,8 +15,9 @@
 ///<reference path="IPosition.ts"/>
 
 
-class TMsgHandler<T> 	{ [index: string]: T; }
-class TGetMsgHandler<T> { [index: string]: T; }
+class TMsgHandler<T> 			{ [index: string]: T; }
+class TGetMsgHandler<T> 		{ [index: string]: T; }
+interface TDeepApplyFunction 	{ (): void; }
 
 class TPoint {
     protected fX: number;
@@ -36,10 +37,6 @@ abstract class IObject {
     
 // ATTRIBUTES
 //-------------------------------------------------------------- 
-    protected fPosition: 	IPosition;
-    protected fDate: 		IDate;
-    protected fColor: 		IColor;
-    
     protected fTypeString:	string;
     protected fName: 		string;
     protected fState: 		objState;
@@ -55,6 +52,10 @@ abstract class IObject {
     protected fGetMsgHandlerMap : 	TGetMsgHandler<TGetHandler>; 
     
     protected fObjectView: VObjectView;
+    
+    fPosition: 	IPosition;
+    fDate: 		IDate;
+    fColor: 	IColor;
 
     
 // CONSTRUCTOR
@@ -185,6 +186,7 @@ abstract class IObject {
     getAppl() : IObject				{ return this.fParent.getAppl(); }
     getScene(): IObject 			{ return this.fParent.getScene(); }
     getPosition(): {x: number, y: number } 		{ return { x: this.fPosition.getXPos(), y: this.fPosition.getYPos() }; }
+    getSize():     {w: number, h: number } 		{ return { w: this.fPosition.getWidth(), h: this.fPosition.getHeight() }; }
 
     toString(): string 				{ 
     	let n=this.fSubNodes.length; 
@@ -231,7 +233,9 @@ abstract class IObject {
     //-----------------------------    
     newData(state: boolean): void { this.fNewData = state; /*triggerEvent(kNewData, true)*/; }
     
-    setState (s: objState): void 	{ this.fState = s; }
+    setState (s: objState): void 				{ this.fState = s; }
+    _setState (s: objState): TDeepApplyFunction { return () => this.fState = s; }
+
     getState(): objState 			{ return this.fState; }
     
     getPos(): IPosition 		{ return this.fPosition; }
@@ -478,4 +482,21 @@ abstract class IObject {
             
         }
     }
+
+	//-----------------------------    
+	deepApply(f: TDeepApplyFunction) : void {
+		f ();
+		let subnodes = this.getSubNodes();
+		for (let i=0; i<subnodes.length; i++)
+			subnodes[i].cleanup();
+	}
+	
+	//-----------------------------    
+	cleanup() : void 				{ 
+		this.fPosition.cleanup(); 
+		this.fDate.cleanup(); 
+		this.fColor.cleanup(); 
+		this.deepApply (this._setState(objState.kClean)); 
+	}
+	_cleanup() : TDeepApplyFunction { return () => this.cleanup(); }
 }

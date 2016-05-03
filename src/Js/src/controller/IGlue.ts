@@ -3,6 +3,7 @@
 ///<reference path="../inscore.ts"/>
 ///<reference path="../model/IAppl.ts"/>
 ///<reference path="../events/documentEvents.ts"/>
+///<reference path="../view/ViewUpdater.ts"/>
 
 interface TTimerTask  { (): void; }
 
@@ -33,7 +34,8 @@ class IGlue {
     }
 
 	timetask() : void {
-		console.log ("timetask called ");
+		ViewUpdater.update (this.fAppl);
+		this.fAppl.cleanup();
     	this.fTimer = setTimeout (this._timetask(), this.fAppl.getRate()) ;		
 	}
     _timetask()	: TTimerTask 		{ return () => this.timetask(); };

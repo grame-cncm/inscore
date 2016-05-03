@@ -1,5 +1,6 @@
 
 ///<reference path="IObject.ts"/>
+///<reference path="../inscore.ts"/>
 ///<reference path="../parser/INScoreParser.js"/>
 
 declare var INScoreParser: any;
@@ -20,14 +21,16 @@ class TILoader {
     }
 
    process(buffer: string, root: IObject) {
-        let parser = this.parse(buffer);
-        for (let i = 0; i < parser.length; i++) {
-            let address = parser[i].address.osc;
-            let params = parser[i].params;
-            let msg = new IMessage(parser[i].address.osc, parser[i].params);         
-            root.process( msg);
+        let msgs = this.parse(buffer);
+        if (!msgs) return;
+        for (let i = 0; i < msgs.length; i++) {
+            let address = msgs[i].address.osc;
+            let params = msgs[i].params;
+            let msg = new IMessage(msgs[i].address.osc, msgs[i].params);         
+            INScore.checkStatus (root.process( msg), msg);
         }    
     }
+
    protected _process(reader : FileReader, client: IObject) : TLoadEndHandler { 
    		return () => {
        		let data: string = reader.result;

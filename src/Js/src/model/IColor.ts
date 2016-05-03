@@ -22,19 +22,24 @@ class IColor {
             this.fA = input.fA;
         }
         this.fHSB = new Array<number>();
-        this.fModified = true;
+        this.fModified = false;
         this.updateHSB();         
     }
   
 // MODIFIED STATUS
 //--------------------------------------------------------------      
    cleanup(): void { this.fModified = false; }   
+   modified(): boolean { return this.fModified; }   
    
 
 // GETS VALUES
 //-------------------------------------------------------------- 
     getRGB(): Array<number> { return this.fRGB; }
     getHSB(): Array<number> { return this.fHSB; }
+  
+	getRGBAString(): string { return `rgba(${this.fRGB[0]}, ${this.fRGB[1]}, ${this.fRGB[2]}, ${this.fRGB[3]})`; }
+	getRGBString(): string { return `rgb(${this.fRGB[0]}, ${this.fRGB[1]}, ${this.fRGB[2]})`; }
+
     
     getR(): number { return this.fRGB[0]; }
     getG(): number { return this.fRGB[1]; } 
@@ -85,8 +90,8 @@ class IColor {
         }
     }
     
-    setRGB(val: Array<number>): void 	{ this.fRGB = val; }
-    setHSB(val: Array<number>): void 	{ this.fHSB = val; }
+    setRGB(val: Array<number>): void 	{ this.fRGB = val; this.fModified = true; }
+    setHSB(val: Array<number>): void 	{ this.fHSB = val; this.fModified = true; }
     _setRGB()	: SetColorMethod 		{ return (n) => this.setRGB(n); };
     _setHSB()	: SetColorMethod 		{ return (n) => this.setHSB(n); };
     

@@ -2,6 +2,7 @@
 ///<reference path="controller/IMessage.ts"/>
 ///<reference path="controller/THandlersPrototypes.ts"/>
 ///<reference path="model/IAppl.ts"/>
+///<reference path="lib/TEnums.ts"/>
 ///<reference path="lib/ITLError.ts"/>
 
 
@@ -29,10 +30,13 @@ class INScore {
 	// ------------------------------------------------------------
 	static getRoot() : IAppl		{ return this.fAppl; }
 
-	static postMessage (address: string, params: Array<any>) : void {
-    	let msg = new IMessage (address, params);
-    	let status = this.fAppl.process (msg);
+	static checkStatus (status: msgStatus, msg: IMessage) : void {
     	if ((status != msgStatus.kProcessed) && (status != msgStatus.kProcessedNoChange))
     		ITLError.write (msg.toString() + ": " + this.status2string(status));
+	}
+
+	static postMessage (address: string, params: Array<any>) : void {
+    	let msg = new IMessage (address, params);
+    	INScore.checkStatus (this.fAppl.process (msg), msg);
 	}
 }

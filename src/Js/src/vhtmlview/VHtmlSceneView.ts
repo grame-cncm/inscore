@@ -1,27 +1,44 @@
 
 ///<reference path="VHtmlView.ts"/>
-///<reference path="VHtmlView.ts"/>
+///<reference path="VHtmlTools.ts"/>
 ///<reference path="../model/IObject.ts"/>
 
-class VHtmlSceneView extends VHtmlView {
-        
+//--------------------------------------------------
+// a fake html view to serve as scene view parent
+//--------------------------------------------------
+class VHtmlDocument extends VHtmlView {  
     constructor() {
-    	super (document.createElement('div'));
+    	let foo: HTMLDivElement;
+    	super (foo);
+	}
+   
+   updatePos() : void {
+    	let size = TWindow.getSize();
+        let w = Math.min(size.w, size.h);
+        this.setPos ((size.h - w) / 2.0, (size.w - w) / 2.0, w, w);
+        console.log ("VHtmlDocument pos: " + this.positionString());
+    }
+}
+
+class VHtmlSceneView extends VHtmlView {
+    protected fDoc: VHtmlDocument;
+    constructor() {
+    	let doc = new VHtmlDocument();
+    	super (document.createElement('div'), doc);
+    	this.fDoc = doc;
     	let div = this.getDiv();
-        div.className = "scene";
+        this.getDiv().className = "scene";
         document.getElementsByTagName('body')[0].appendChild (div);
     }
 
+	relative2SceneX(x: number) : number 			{ return this.fParent.fLeft + super.relative2SceneX(x); }
+	relative2SceneY(y: number) : number 			{ return this.fParent.fTop + super.relative2SceneY(y); }
+
 	updateView	( obj: IObject) : void {
-		let pos = obj.getPosition();
-        let wsize = TWindow.getSize();
-        let w = Math.min(wsize.w, wsize.h);
-    	let div = this.getDiv();
-        div.style.width  = w.toString()+"px";
-        div.style.height = div.style.width;
-        div.style.left =  ((wsize.w - w) /2).toString() + "px"  ;
-        div.style.top =   ((wsize.h - w) /2).toString() + "px"  ;
+		this.fDoc.updatePos();
+		this.updatePos (obj);
+		this.updateColor (obj);
+		return;
 	}
 }
 
-        
