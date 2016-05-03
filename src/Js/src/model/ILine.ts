@@ -1,15 +1,5 @@
 ///<reference path="IObject.ts"/>
 
-class TPoint {
-    protected fX: number;
-    protected fY: number;
-    
-    constructor(x: number, y: number) {
-        this.fX = x;
-        this.fY = y;
-    }
-}
-
 class ILine extends IObject {
     
     protected kLineType: string;
@@ -21,9 +11,15 @@ class ILine extends IObject {
         super(name, parent);
         this.kLineType = 'line';
         this.fTypeString = this.kLineType;
+        
+        super.setHandlers();
+        this.fGetMsgHandlerMap[""] = new TGetMsgHandlerArray(this._getPoint());
     }
     
     setPoint(p: TPoint)		{ this.fPoint = p; }
+    getPoint()		        { return this.fPoint; }
+
+    _getPoint(): GetArrayMethod        { return () => this.fPoint.toArray(); }
 
 
     set(msg:IMessage): msgStatus {
@@ -39,8 +35,7 @@ class ILine extends IObject {
             if (!a.correct || !b.correct) {
                 return msgStatus.kBadParameters;
             }
-            
-            
+               
             if (mode.value == "xy") {
                 this.setPoint( new TPoint(a.value, b.value) );
             }
