@@ -292,7 +292,14 @@ abstract class IObject {
     
 // MESSAGES PROCESSING
 //--------------------------------------------------------------     
-    processMsg (address: string, addressTail: string , msg: IMessage): number {
+    process (msg: IMessage): number {
+		let beg: string = OSCAddress.addressFirst(msg.address());
+		let tail: string = OSCAddress.addressTail(msg.address());
+		return this.processMsg(beg, tail, msg);
+    }
+
+    processMsg (address: string, addressTail: string , msg: IMessage): msgStatus {
+
         let result: number = msgStatus.kBadAddress;
         if (this.accept(address/*, msg*/)) {
             let beg: string = OSCAddress.addressFirst(addressTail);	

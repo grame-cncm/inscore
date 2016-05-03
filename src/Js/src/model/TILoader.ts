@@ -2,7 +2,7 @@
 ///<reference path="IObject.ts"/>
 ///<reference path="../parser/INScoreParser.js"/>
 
-declare var INScoreParser;
+declare var INScoreParser: any;
 
 interface TLoadEndHandler 		{ (): void; }
 
@@ -24,11 +24,8 @@ class TILoader {
         for (let i = 0; i < parser.length; i++) {
             let address = parser[i].address.osc;
             let params = parser[i].params;
-            let msg = new IMessage(parser[i].address.osc, parser[i].params);
-            
-            let beg: string = OSCAddress.addressFirst(msg.address());
-            let tail: string = OSCAddress.addressTail(msg.address());
-            root.processMsg(beg, tail, msg);
+            let msg = new IMessage(parser[i].address.osc, parser[i].params);         
+            root.process( msg);
         }    
     }
    protected _process(reader : FileReader, client: IObject) : TLoadEndHandler { 
