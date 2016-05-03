@@ -36,13 +36,9 @@ $(BUILDIR)/controller/IGlue.js: ../src/controller/IGlue.ts
 	@[ -d $(@D) ] || mkdir -p $(@D)
 	tsc $(JSOPTS) -out $@ $< 
 
-$(BUILDIR)/events/dragAndDrop.js: ../src/events/dragAndDrop.ts
+$(BUILDIR)/events/documentEvents.js: ../src/events/documentEvents.ts
 	@[ -d $(@D) ] || mkdir -p $(@D)
 	tsc $(JSOPTS)  --noImplicitReturns -out $@ $< 
-
-$(BUILDIR)/controller/TSetMessageHandlers.js: ../src/controller/TSetMessageHandlers.ts
-	@[ -d $(@D) ] || mkdir -p $(@D)
-	tsc -out $@ $< 
 
 $(BUILDIR)/%.js: ../src/%.ts
 	@[ -d $(@D) ] || mkdir -p $(@D)
