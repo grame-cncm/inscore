@@ -6,6 +6,7 @@
 ///<reference path="VHtmlRectView.ts"/>
 ///<reference path="VHtmlCurveView.ts"/>
 ///<reference path="VHtmlLineView.ts"/>
+///<reference path="VHtmlTextView.ts"/>
 
 class HtmlViewFactory implements ViewFactory {
     
@@ -22,6 +23,9 @@ class HtmlViewFactory implements ViewFactory {
                 
             case "line":
                 return new VHtmlLineView (parent);
+
+            case "txt":
+                return new VHtmlTextView (parent);
             
             case "scene":
                 return new VHtmlSceneView ();
