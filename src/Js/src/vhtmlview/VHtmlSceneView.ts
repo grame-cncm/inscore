@@ -16,7 +16,6 @@ class VHtmlDocument extends VHtmlView {
     	let size = TWindow.getSize();
         let w = Math.min(size.w, size.h);
         this.setPos ((size.h - w) / 2.0, (size.w - w) / 2.0, w, w);
-        console.log ("VHtmlDocument pos: " + this.positionString());
     }
 }
 
