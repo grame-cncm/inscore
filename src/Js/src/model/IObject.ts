@@ -189,8 +189,9 @@ abstract class IObject implements Tree<IObject> {
     getSubNodesCount(): number 		{ return this.fSubNodes.length; }
     getAppl() : IObject				{ return this.fParent.getAppl(); }
     getScene(): IObject 			{ return this.fParent.getScene(); }
-    getPosition(): {x: number, y: number } 		{ return { x: this.fPosition.getXPos(), y: this.fPosition.getYPos() }; }
-    getSize():     {w: number, h: number } 		{ return { w: this.fPosition.getWidth(), h: this.fPosition.getHeight() }; }
+    getPosition(): {x: number, y: number } 			{ return { x: this.fPosition.getXPos(), y: this.fPosition.getYPos() }; }
+    getSize():     {w: number, h: number } 			{ return { w: this.fPosition.getWidth(), h: this.fPosition.getHeight() }; }
+    getRotate():   {x: number, y: number, z: number} { return { x: this.fPosition.getRotateX(), y: this.fPosition.getRotateY(), z: this.fPosition.getRotateZ() }; }
 
     toString(): string 				{ 
     	let n=this.fSubNodes.length; 
