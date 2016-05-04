@@ -1,4 +1,5 @@
 ///<reference path="IObject.ts"/>
+///<reference path="../lib/TPoint.ts"/>
 
 class ILine extends IObject {
     
