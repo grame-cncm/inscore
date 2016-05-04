@@ -111,22 +111,18 @@ class IText extends IObject {
 //--------------------------------------------------------------    
    set(msg: IMessage): msgStatus { 
         let status = super.set(msg);
-        
         if (status & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) return status; 
 
         let n = msg.size();
         if (n > 2) {
-            let data = '"';
+            let str = "";
+            let sep = "";
             for (let i = 2 ; i < n ; i++) {
-                if (msg.isNumber(i) || msg.isString(i)) {
-                    data += msg.param(i);
-                    data += ' ';
-                }
+                str += sep;
+            	str += msg.param(i);
+            	sep = " ";
             }
-            console.log('taille de la chaine : ' + n )
-            data = data.substr(0, data.lastIndexOf(" "));
-            data += '"'; 
-            this.setText(data);
+            this.setText(str);
             this.newData(true);
             status = msgStatus.kProcessed;
         }
