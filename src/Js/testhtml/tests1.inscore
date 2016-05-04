@@ -1,17 +1,30 @@
 
 gray = 200;
 /ITL/toto new ;
+/ITL/toto scale 0.8 ;
+/ITL/toto x -0.3 ;
+
 /ITL/scene x 0.5 ;
+/ITL/scene z 1 ;
 /ITL/scene width 1.5 ;
 /ITL/scene height 1.5 ;
-/ITL/scene scale 1 ;
+/ITL/scene scale 0.8 ;
 /ITL/scene color 230 220 220;
+/ITL/scene scale 0.5 ;
 
 /ITL/scene/rect set rect 1 1 ;
+/ITL/scene/rect scale 1 ;
 /ITL/scene/rect scale 0.5 ;
 /ITL/scene/rect/rect2 set rect 0.5 0.5 ;
 /ITL/scene/rect/rect2 color 100 100 240 ;
 /ITL/scene/rect/rect2 x 0.5;
+
+/ITL/scene/text set txt hello world ;
+/ITL/scene/text get;
+
+/ITL/scene/e set ellipse 1 1 ;
+/ITL/scene/e set ellipse 1 1.5 ;
+
 
 /ITL/scene/rect x -1 ;
 /ITL/scene/rect xorigin -1 ;
