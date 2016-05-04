@@ -5,7 +5,6 @@
 class VHtmlRectView extends VHtmlView {
     
     constructor(parent: VHtmlView) {
-//      super( SvgFactory.createSvg('rect'), parent); 
         super( document.createElement('div'), parent); 
     	let div = this.getDiv();
         div.className = "rect";

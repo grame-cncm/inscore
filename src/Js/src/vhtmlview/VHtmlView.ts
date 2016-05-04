@@ -13,7 +13,7 @@ class VHtmlView extends VObjectView {
     	this.fParent = parent;
     	this.setPos(0, 0, 100, 100);
     	this.fDiv = div; 
-//    	div.style.position = "absolute";
+    	if (div) div.style.position = "absolute";
     }
 
 	getParent() : VObjectView 					{ return this.fParent }
@@ -30,13 +30,14 @@ class VHtmlView extends VObjectView {
 	        this.fDiv.style.background = obj.fColor.getRGBString();
 	}
 
+	getScale (obj: IObject): number { return obj.fPosition.getScale();  }
 	updatePos (obj: IObject): void {
 		let pos 	= obj.getPosition();
 		let size 	= obj.getSize();
-		let scale 	= obj.fPosition.getScale();
+		let scale 	= this.getScale(obj);
 		let z		= obj.fPosition.getZOrder();
-        let w  		= this.scene2RelativeWidth (size.w) * scale;
-        let h 		= this.scene2RelativeHeight (size.h) * scale;
+        let w  		= this.relative2SceneWidth (size.w)  * scale;
+        let h 		= this.relative2SceneHeight (size.h) * scale;
         let left  	= this.relative2SceneX (pos.x) - w/2.0 - (w * obj.fPosition.getXOrigin() / 2.0);
         let top 	= this.relative2SceneY (pos.y) - h/2.0 - (h * obj.fPosition.getYOrigin() / 2.0);
 
@@ -46,7 +47,13 @@ class VHtmlView extends VObjectView {
         div.style.left 	=  left.toString() + "px";
         div.style.top 	=  top.toString() + "px";
         div.style.zIndex = z.toString();
+		div.style.transform  = this.getTransform(obj);
         this.setPos( top, left, w, h);
+	}
+
+	getTransform (obj: IObject): string {
+		let rotate = obj.getRotate();
+        return `rotate(${rotate.z}deg)`;
 	}
 
 	setPos (top: number,	left: number, width: number, height: number): void {
@@ -74,10 +81,10 @@ class VHtmlView extends VObjectView {
 	relative2SceneHeight(height: number) : number	{ return this.fParent.fHeight * height / 2.0; }
 
 	// Maps the referenceRect() width value to the corresponding [0,2] value.
-	scene2RelativeWidth(width: number) : number		{ return this.fParent.fWidth * width / 2.0; }
+	scene2RelativeWidth(width: number) : number		{ return (width * 2.0) / this.fParent.fWidth; }
 
 	// Maps the referenceRect() height value to the corresponding [0,2] value.
-	scene2RelativeHeight(height: number) : number	{ return this.fParent.fHeight * height / 2.0 }
+	scene2RelativeHeight(height: number) : number	{ return (height * 2.0) / this.fParent.fHeight; }
 
 	// Maps the referenceRect() x value to the corresponding [-1,1] value.
 	scene2RelativeX(x: number) : number				{ return x / (this.fParent.fWidth / 2.0) - 1; }
