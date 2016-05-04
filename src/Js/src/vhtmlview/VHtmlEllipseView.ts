@@ -6,5 +6,14 @@ class VHtmlEllipseView extends VHtmlView {
     
     constructor(parent: VHtmlView) {
         super( SvgFactory.createSvg('ellipse'), parent); 
+//        super( document.createElement('div'), parent); 
+    	let div = this.getDiv();
+        div.className = "ellipse";
+        parent.getDiv().appendChild (div);
     }    
+
+	updateView	( obj: IObject) : void {
+		this.updatePos (obj);
+		this.updateColor (obj);
+	}
 }
