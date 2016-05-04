@@ -33,16 +33,19 @@ class VHtmlView extends VObjectView {
 	updatePos (obj: IObject): void {
 		let pos 	= obj.getPosition();
 		let size 	= obj.getSize();
-        let w  		= this.scene2RelativeWidth (size.w);
-        let h 		= this.scene2RelativeHeight (size.h);
+		let scale 	= obj.fPosition.getScale();
+		let z		= obj.fPosition.getZOrder();
+        let w  		= this.scene2RelativeWidth (size.w) * scale;
+        let h 		= this.scene2RelativeHeight (size.h) * scale;
         let left  	= this.relative2SceneX (pos.x) - w/2.0 - (w * obj.fPosition.getXOrigin() / 2.0);
         let top 	= this.relative2SceneY (pos.y) - h/2.0 - (h * obj.fPosition.getYOrigin() / 2.0);
 
     	let div = this.getDiv();
         div.style.width  = w.toString()+"px";
         div.style.height = h.toString()+"px";
-        div.style.left 	=  left.toString() + "px"  ;
-        div.style.top 	=  top.toString() + "px"  ;
+        div.style.left 	=  left.toString() + "px";
+        div.style.top 	=  top.toString() + "px";
+        div.style.zIndex = z.toString();
         this.setPos( top, left, w, h);
 	}
 
