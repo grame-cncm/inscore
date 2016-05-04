@@ -17,23 +17,13 @@
 
 class TMsgHandler<T> 			{ [index: string]: T; }
 class TGetMsgHandler<T> 		{ [index: string]: T; }
-interface TDeepApplyFunction 	{ (): void; }
+interface Tree<T>				{ getSubNodes() : Array<Tree<T> >; } 
+interface TApplyFunction<T> 	{ (arg: T) : void; }
+interface TreeApply<T>			{ apply (f: TApplyFunction<T>, t: Tree<T>) : void; } 
+interface IObjectTreeApply extends TreeApply<IObject> {}
 
-class TPoint {
-    protected fX: number;
-    protected fY: number;
-    
-    constructor(x: number, y: number) {
-        this.fX = x;
-        this.fY = y;
-    }
-    
-    toArray(): Array<number> { return [this.fX, this.fY]}
-    
-    // Methodes de calcul sur les points à faire...
-}
 
-abstract class IObject {
+abstract class IObject implements Tree<IObject> {
     
 // ATTRIBUTES
 //-------------------------------------------------------------- 
@@ -129,7 +119,7 @@ abstract class IObject {
         this.fMsgHandlerMap[kyorigin_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setYOrigin());
         this.fMsgHandlerMap[kz_GetSetMethod] 		= new TMsgHandlerNum(this.fPosition._setZOrder());
         this.fMsgHandlerMap[kangle_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateZ());
-        this.fMsgHandlerMap[kscale_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setScale());
+        this.fMsgHandlerMap[kscale_GetSetMethod] 	= new TMsgHandlerNum(this._setScale());
 //        this.fMsgHandlerMap[kshear_GetSetMethod] 	= new TSetMethodMsgHandler(this.fPosition._setShear());
         this.fMsgHandlerMap[krotatex_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateX()); 
         this.fMsgHandlerMap[krotatey_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateY()); 
@@ -171,6 +161,20 @@ abstract class IObject {
         this.fGetMsgHandlerMap[kduration_GetSetMethod] 	= new TGetMsgHandlerTime(this.fDate._getDuration());
     }
     
+//--------------------------------------------------------------  
+// Special position handlers
+// size change requires the modification state to be 
+// recursively propagated to all subnodes
+//--------------------------------------------------------------  
+	setWidth (width: number) : void { this.fPosition.setWidth( width ); this.posPropagate(); }
+	setHeight(height:number): void 	{ this.fPosition.setHeight( height); this.posPropagate(); }
+    setScale (scale:number): void 	{ this.fPosition.setScale( scale); this.posPropagate(); }
+    _setWidth()	: SetNumMethod 		{ return (n) => this.setWidth(n); };
+    _setHeight(): SetNumMethod 		{ return (n) => this.setHeight(n); };
+    _setScale(): SetNumMethod 		{ return (n) => this.setScale(n); };
+	posPropagate() : void 			{ let a = new IObjectTreeApply(); a.applyPosModified(this); }
+	posModified() : void 			{ this.fPosition.modify(); this.addState (objState.kModified + objState.kSubModified); }
+   
     
 // METHODS
 //--------------------------------------------------------------  
@@ -233,9 +237,8 @@ abstract class IObject {
     //-----------------------------    
     newData(state: boolean): void { this.fNewData = state; /*triggerEvent(kNewData, true)*/; }
     
-    setState (s: objState): void 				{ this.fState = s; }
-    _setState (s: objState): TDeepApplyFunction { return () => this.fState = s; }
-
+    setState (s: objState): void 	{ this.fState = s; }
+    addState (s: objState): void 	{ this.fState |= s; }
     getState(): objState 			{ return this.fState; }
     
     getPos(): IPosition 		{ return this.fPosition; }
@@ -335,15 +338,15 @@ abstract class IObject {
                         let target: IObject = targets[i];
 //                        console.log(target);
                         result |= target.execute(msg);	
-                        if (result & msgStatus.kProcessed) { target.setState(objState.kModified); }
+                        if (result & msgStatus.kProcessed) { target.addState(objState.kModified); }
                     }
                 }               
                 else if (Tools.regexp(beg)) { result = msgStatus.kProcessedNoChange; }                    
                 else { result = this.newObj (msg, beg).status; }
             }
-        }  
+        }
             
-        if (result & msgStatus.kProcessed) { this.setState(objState.kSubModified); }
+        if (result & msgStatus.kProcessed) { this.addState(objState.kSubModified); }
     	return result;     
     }
     
@@ -484,19 +487,24 @@ abstract class IObject {
     }
 
 	//-----------------------------    
-	deepApply(f: TDeepApplyFunction) : void {
-		f ();
-		let subnodes = this.getSubNodes();
-		for (let i=0; i<subnodes.length; i++)
-			subnodes[i].cleanup();
-	}
-	
-	//-----------------------------    
-	cleanup() : void 				{ 
+	cleanup() : void { 
 		this.fPosition.cleanup(); 
 		this.fDate.cleanup(); 
-		this.fColor.cleanup(); 
-		this.deepApply (this._setState(objState.kClean)); 
+		this.fColor.cleanup();
+		this.setState(objState.kClean);
 	}
-	_cleanup() : TDeepApplyFunction { return () => this.cleanup(); }
+}
+
+
+class IObjectTreeApply implements TreeApply<IObject> {
+	apply (f: TApplyFunction<IObject>, t: IObject) {
+		f (t);
+		let sub = t.getSubNodes();
+		for (let i=0; i<sub.length; i++)
+			this.apply (f, sub[i]);
+	}
+	cleanup (t: IObject) : void 			{ t.cleanup(); }
+	applyCleanup (t: IObject): void 		{ this.apply ((o) => this.cleanup (o), t); }
+	posModified (t: IObject) : void 		{ t.posModified(); }
+	applyPosModified (t: IObject): void 	{ this.apply ((o) => this.posModified (o), t); }
 }
