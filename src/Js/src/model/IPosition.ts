@@ -14,11 +14,11 @@ class IPosition {
     protected fZOrder 	: number;
     protected fVisible	: number;
     protected fScale 	: number;
-    protected fModified : boolean;
     protected fXAngle 	: number;
     protected fYAngle 	: number;
     protected fZAngle 	: number; 
     protected fShear : Array<number>;
+    protected fModified : boolean;
     
     public kDefaultX : number = 0;
     public kDefaultY : number = 0;
@@ -105,8 +105,6 @@ class IPosition {
     
     setWidth(width:number): void 	{ this.fWidth = width; }
     setHeight(height:number): void 	{ this.fHeight = height; }
-    _setWidth()	: SetNumMethod 		{ return (n) => this.setWidth(n); };
-    _setHeight(): SetNumMethod 		{ return (n) => this.setHeight(n); };
     
     setXPos(x:number): void 		{ this.fXPos = x; this.fModified = true; }
     addXPos(x:number): void 		{ this.setXPos(this.fXPos + x); }
@@ -130,7 +128,6 @@ class IPosition {
  
     setScale (scale:number): void 	{ this.fScale = scale; this.fModified = true; }
     multScale (scale:number): void 	{ this.setScale(this.fScale * scale); }
-    _setScale(): SetNumMethod 		{ return (n) => this.setScale(n); };
     _multScale(): SetNumMethod 		{ return (n) => this.multScale(n); };
         
     setVisible (vis:number): void 	{ this.fVisible = vis; this.fModified = true; }
