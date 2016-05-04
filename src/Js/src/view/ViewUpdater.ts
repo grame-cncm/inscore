@@ -4,11 +4,12 @@
 class ViewUpdater {
     
 	static update ( obj: IObject) : void {
-		if (obj.getState() & (objState.kNewObject + objState.kModified)) {
+		let state = obj.getState();
+		if (state & (objState.kNewObject + objState.kModified)) {
 			obj.getView().updateView(obj);
-//console.log("ViewUpdater update " + obj.getName());
+//console.log("ViewUpdater update " + obj.getName() + " state: " + state);
 		}
-		if (obj.getState() & objState.kSubModified) {
+		if (state & objState.kSubModified) {
 			let subnodes = obj.getSubNodes();
 			for (let i=0; i < subnodes.length; i++)
 				this.update (subnodes[i]);
