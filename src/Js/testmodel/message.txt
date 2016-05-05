@@ -1,5 +1,0 @@
-/ITL/scene/obj1 set ellipse 20 20;
-
-
-
-
