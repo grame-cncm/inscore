@@ -16,7 +16,7 @@ gray = 200;
 /ITL/scene/rect angle 0 ;
 /ITL/scene/rect scale 1 ;
 /ITL/scene/rect scale 0.5 ;
-/ITL/scene/rect/rect2 set rect 0.5 0.5 ;
+/ITL/scene/rect/rect2 set rect 1 1 ;
 /ITL/scene/rect/rect2 color 100 100 240 ;
 /ITL/scene/rect/rect2 x 0.5;
 /ITL/scene/rect/text set txt "another text" ;
@@ -25,12 +25,15 @@ gray = 200;
 
 /ITL/scene/text set txt "hello world! how are you?
 this is a multi lines text a bit longer..." ;
-/ITL/scene/text set txt "hello \" world !" ;
+/ITL/scene/text set html "<h4>hello  world !</h4>" ;
 /ITL/scene/text red 200;
 /ITL/scene/text y -0.7;
 /ITL/scene/text z 1;
 /ITL/scene/text scale 1.3;
 /ITL/scene/text get width;
+
+/ITL/scene/html set html "<h4>hello  world !</h4>" ;
+/ITL/scene/style set html "<style>h4 { color: red }</style>" ;
 
 /ITL/scene/e set ellipse 1 1 ;
 /ITL/scene/e set ellipse 1 1.5 ;
