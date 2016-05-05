@@ -1,3 +1,4 @@
+///<reference path="src/inscore.ts"/>
 ///<reference path="src/model/IObject.ts"/>
 
 function debug(): void {
@@ -6,7 +7,7 @@ function debug(): void {
                 "**********************************" + "\n" );
     
     console.log("---MODEL---")
-    afficheModel(gGlue.getRoot());
+    afficheModel(INScore.getRoot());
     console.log("Fin de l'exécution" + "\n" + 
                 "----------------------------------" );
 }

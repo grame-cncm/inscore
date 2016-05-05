@@ -1,4 +1,5 @@
 
+///<reference path="src/inscore.ts"/>
 ///<reference path="src/controller/IGlue.ts"/>
 ///<reference path="src/model/TILoader.ts"/>
 ///<reference path="bezier.ts"/>
@@ -13,6 +14,7 @@ function debugmsg(str: string){
 }
 
 var gGlue = new IGlue();
+gGlue.start();
 
 function readfile (file: string) : string {
     let fs = require('fs');
@@ -24,8 +26,8 @@ function processfile ( file: string) : void {
 	if (content.length) {
 		debugmsg ("processfile content: \n" +content);
 		let loader = new TILoader;
-		loader.process (content, gGlue.getRoot());
-		debugmsg (gGlue.getRoot().toString());
+		loader.process (content, INScore.getRoot());
+		debugmsg (INScore.getRoot().toString());
 	}
 }
 
