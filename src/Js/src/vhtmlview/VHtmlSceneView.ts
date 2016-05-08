@@ -6,10 +6,14 @@
 //--------------------------------------------------
 // a fake html view to serve as scene view parent
 //--------------------------------------------------
-class VHtmlDocument extends VHtmlView {  
+class VHtmlSceneContainer extends VHtmlView {  
+	static getDiv() : HTMLDivElement {
+		let scripts = document.getElementsByTagName('script');
+    	return <HTMLDivElement>(scripts[scripts.length - 1].parentNode);
+	}
+
     constructor() {
-    	let foo: HTMLDivElement;
-    	super (foo);
+    	super (VHtmlSceneContainer.getDiv());
 	}
    
    updatePos() : void {
@@ -20,14 +24,13 @@ class VHtmlDocument extends VHtmlView {
 }
 
 class VHtmlSceneView extends VHtmlView {
-    protected fDoc: VHtmlDocument;
+    protected fDoc: VHtmlSceneContainer;
     constructor() {
-    	let doc = new VHtmlDocument();
-    	super (document.createElement('div'), doc);
-    	this.fDoc = doc;
+    	let parent = new VHtmlSceneContainer();
+    	super (document.createElement('div'), parent);
+    	this.fDoc = parent;
     	let div = this.getDiv();
-        this.getDiv().className = "scene";
-        document.getElementsByTagName('body')[0].appendChild (div);
+        div.className = "inscore-scene";
     }
 
 	relative2SceneX(x: number) : number 			{ return this.fParent.fLeft + super.relative2SceneX(x); }
@@ -35,9 +38,7 @@ class VHtmlSceneView extends VHtmlView {
 
 	updateView	( obj: IObject) : void {
 		this.fDoc.updatePos();
-		this.updatePos (obj);
-		this.updateColor (obj);
-		return;
+		super.updateView(obj);
 	}
 }
 
