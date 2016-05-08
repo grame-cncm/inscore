@@ -38,7 +38,7 @@ class TILoader {
    		}
    	}
 
-    load (file, client: IObject): void {
+    load (file: Blob, client: IObject): void {
         let reader: FileReader = new FileReader();
         reader.readAsText(file);
         reader.onloadend = this._process(reader, client);
