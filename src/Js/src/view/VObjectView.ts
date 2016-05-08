@@ -6,6 +6,9 @@ abstract class VObjectView {
 	abstract updateView			( obj: IObject) 		: void;
 	abstract updateObjectSize	( obj: IObject ) 		: void;
 
+	// Removes an element
+	abstract remove() : void;
+
 	// Maps the IObject [-1,1] y coordinate to the referenceRect().
 	abstract relative2SceneY(y: number) : number;
 
