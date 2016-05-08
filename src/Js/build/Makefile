@@ -6,7 +6,7 @@ SRC  := $(shell find ../src -name "*.ts")
 DEPS := ../src/model/Methods.ts
 BUILDIR := js
 OUT	 := $(patsubst ../src/%.ts, $(BUILDIR)/%.js, $(SRC))
-
+TASKS ?= 4
 	
 all : $(DEPS)
 	make -C ../src/parser
@@ -17,7 +17,7 @@ all : $(DEPS)
 
 check :
 	rm -rf $(BUILDIR)
-	make -j 4 _check
+	make -j $(TASKS) _check
 
 _check : $(DEPS) $(OUT)
 
@@ -29,6 +29,10 @@ clean:
 TSOPT  := --noImplicitAny  --noImplicitReturns
 JSOPTS := --allowJs  --allowUnreachableCode  --allowUnusedLabels 
 $(BUILDIR)/model/TILoader.js: ../src/model/TILoader.ts
+	@[ -d $(@D) ] || mkdir -p $(@D)
+	tsc $(JSOPTS) -out $@ $< 
+
+$(BUILDIR)/inscore.js: ../src/inscore.ts
 	@[ -d $(@D) ] || mkdir -p $(@D)
 	tsc $(JSOPTS) -out $@ $< 
 
