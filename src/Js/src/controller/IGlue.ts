@@ -1,6 +1,7 @@
 
 ///<reference path="IMessage.ts"/>
 ///<reference path="../inscore.ts"/>
+///<reference path="../globals.ts"/>
 ///<reference path="../model/IAppl.ts"/>
 ///<reference path="../events/documentEvents.ts"/>
 ///<reference path="../view/ViewUpdater.ts"/>
@@ -9,13 +10,13 @@ interface TTimerTask  { (): void; }
 
 class IGlue { 
 	protected fAppl: IAppl;
-	protected fTimer: number
+//	protected fTimer: number;
+	protected fTimer: any;
 	
     constructor() 			{ 
     	this.fAppl = new IAppl(); 
     	let inscore = new INScore(this.fAppl);
     }
-//	getRoot() : IAppl		{ return this.fAppl; }
 
     initEventHandlers(): void {
 		document.addEventListener("drop", dropEvent, false);
@@ -23,9 +24,13 @@ class IGlue {
 		window.addEventListener("resize", resizeDocument);
     }
     
-    start(): void {
-    	INScore.postMessage ("/ITL/scene", ["new"]);
-    	this.fTimer = setTimeout (this._timetask(), this.fAppl.getRate()) ;		
+    start(scene?: string): void {
+		let target = "/ITL/scene";
+    	if (scene) 
+    		target = "/ITL/" + scene;
+    	INScore.postMessage (target, ["new"]);
+		if (gCreateView)
+	    	this.fTimer = setTimeout (this._timetask(), this.fAppl.getRate()) ;		
     }
 
     stop(): void {
