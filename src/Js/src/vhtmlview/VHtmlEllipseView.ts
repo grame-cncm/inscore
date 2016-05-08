@@ -8,8 +8,7 @@ class VHtmlEllipseView extends VHtmlView {
         super( SvgFactory.createSvg('ellipse'), parent); 
 //        super( document.createElement('div'), parent); 
     	let div = this.getDiv();
-        div.className = "ellipse";
-        parent.getDiv().appendChild (div);
+        div.className = "inscore-ellipse";
     }    
 
 	updateView	( obj: IObject) : void {
