@@ -1,12 +1,13 @@
 
 ///<reference path="../view/ViewFactory.ts"/>
-///<reference path="VHtmlView.ts"/>
-///<reference path="VHtmlEllipseView.ts"/>
-///<reference path="VHtmlSceneView.ts"/>
-///<reference path="VHtmlRectView.ts"/>
 ///<reference path="VHtmlCurveView.ts"/>
+///<reference path="VHtmlEllipseView.ts"/>
+///<reference path="VHtmlHtmlView.ts"/>
 ///<reference path="VHtmlLineView.ts"/>
+///<reference path="VHtmlRectView.ts"/>
+///<reference path="VHtmlSceneView.ts"/>
 ///<reference path="VHtmlTextView.ts"/>
+///<reference path="VHtmlView.ts"/>
 
 class HtmlViewFactory implements ViewFactory {
     
@@ -26,6 +27,9 @@ class HtmlViewFactory implements ViewFactory {
 
             case "txt":
                 return new VHtmlTextView (parent);
+
+            case "html":
+                return new VHtmlHtmlView (parent);
             
             case "scene":
                 return new VHtmlSceneView ();
