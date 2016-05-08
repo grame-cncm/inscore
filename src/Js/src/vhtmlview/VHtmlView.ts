@@ -13,16 +13,17 @@ class VHtmlView extends VObjectView {
     	this.fParent = parent;
     	this.setPos(0, 0, 100, 100);
     	this.fDiv = div; 
-    	if (div) div.style.position = "absolute";
-    }
+    	if (parent) parent.getDiv().appendChild (div);
+   }
 
-	getParent() : VObjectView 					{ return this.fParent }
-	getDiv() : HTMLDivElement 					{ return this.fDiv }
+	getParent() : VObjectView 					{ return this.fParent; }
+	getDiv() : HTMLDivElement 					{ return this.fDiv; }
+
+	remove() : void 					{ this.fDiv.parentNode.removeChild(this.fDiv); }
 
 	updateView	( obj: IObject) : void {
-		let pos = obj.getPosition();
-    	this.fDiv.setAttribute ("x", pos.x.toString() + "px");
-    	this.fDiv.setAttribute ("y", pos.y.toString() + "px");		
+		this.updatePos (obj);
+		this.updateColor (obj);
 	}
 
 	updateColor (obj: IObject): void {
@@ -51,6 +52,15 @@ class VHtmlView extends VObjectView {
         this.setPos( top, left, w, h);
 	}
 
+	// to be used for divs with auto width and height
+	updateObjectSize ( obj: IObject) : void {
+        let w = this.scene2RelativeWidth(this.fDiv.clientWidth);
+        let h = this.scene2RelativeHeight(this.fDiv.clientHeight);
+
+		obj.fPosition.setWidth (w);
+		obj.fPosition.setHeight (h);
+	}
+
 	getTransform (obj: IObject): string {
 		let rotate = obj.getRotate();
         return `rotate(${rotate.z}deg)`;
@@ -64,9 +74,6 @@ class VHtmlView extends VObjectView {
 	}
 	
 	positionString() : string { return `top: ${this.fTop} left: ${this.fLeft} w: ${this.fWidth} h: ${this.fHeight}`; }
-
-	// basically do nothing, should be implemented in subclasses when necessary
-	updateObjectSize	( obj: IObject ) : void		{} 
 
 	// Maps the IObject [-1,1] y coordinate to the referenceRect().
 	relative2SceneY(y: number) : number 			{ return this.fParent.fHeight * (y+1.0) / 2.0; }
