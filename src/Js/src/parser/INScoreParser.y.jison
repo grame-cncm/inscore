@@ -82,7 +82,7 @@ params		: param					{ $$ = new Array(); $$.push($1); }
 			| params param			{ $1.push($2); $$ = $1; }
 			;
 
-variable	: VARSTART varname					{ $$ = new Array(parser.vars[$2]); }
+variable	: VARSTART varname					{ $$ = parser.vars[$2]; }
 			| VARSTART LEFTPAR message RIGHTPAR { $$ = new Array($3); }
 			;
 

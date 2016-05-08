@@ -138,7 +138,7 @@ case 29:
  $$[$0-1].push($$[$0]); this.$ = $$[$0-1]; 
 break;
 case 30:
- this.$ = new Array(parser.vars[$$[$0]]); 
+ this.$ = parser.vars[$$[$0]]; 
 break;
 case 31:
  this.$ = new Array($$[$0-1]); 
