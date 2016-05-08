@@ -75,6 +75,7 @@ abstract class IObject implements Tree<IObject> {
         this.fMsgHandlerMap[kset_SetMethod] = new TMethodHandler(this._set());
         this.fMsgHandlerMap[kget_SetMethod] = new TMethodHandler(this._get());
         this.fMsgHandlerMap[ksave_SetMethod]= new TMethodHandler(this._save());
+        this.fMsgHandlerMap[kdel_SetMethod] = new TMsgHandlerVoid(this._del());
 
  	    this.colorAble();
 	    this.positionAble();
@@ -178,8 +179,8 @@ abstract class IObject implements Tree<IObject> {
     
 // METHODS
 //--------------------------------------------------------------  
-    addChild(newObject: IObject): void { 
-        this.fSubNodes.push(newObject);
+    addChild(obj: IObject): void { 
+        this.fSubNodes.push(obj);
         this.setState(objState.kSubModified);
     } 
     
@@ -337,13 +338,12 @@ abstract class IObject implements Tree<IObject> {
                     let n: number = targets.length;
                     for (let i: number = 0; i < n; i++) {
                         let target: IObject = targets[i];
-//                        console.log(target);
                         result |= target.execute(msg);	
                         if (result & msgStatus.kProcessed) { target.addState(objState.kModified); }
                     }
                 }               
                 else if (Tools.regexp(beg)) { result = msgStatus.kProcessedNoChange; }                    
-                else { result = this.newObj (msg, beg).status; }
+                else { result = this.proxy_create (msg, beg, this).status; }
             }
         }
             
@@ -357,13 +357,14 @@ abstract class IObject implements Tree<IObject> {
     set(msg: IMessage): msgStatus	{
         let type = msg.paramStr(1);
         if (!type.correct) { return msgStatus.kBadParameters; }
-        
+
         if (type.value != this.getTypeString()) {
-			let out = this.newObj (msg, this.fName);
+			let out = this.proxy_create (msg, this.fName, this.getParent());
             if (out.status & msgStatus.kProcessed) {
 	            // todo: transfer this attributes to new object
 	            this.transferAttributes (out.obj);
             	this.del();
+            	this.fParent.addChild (out.obj);
 //				this.fParent.cleanupSync();
                 return out.status;		
             }
@@ -464,28 +465,17 @@ abstract class IObject implements Tree<IObject> {
     //-----------------------------    
     protected proxy_create (msg: IMessage, name: string, parent: IObject): { status: msgStatus, obj?: IObject } 
     				{ return this.getAppl().proxy_create(msg, name, parent); }                
-    protected newObj (msg: IMessage, name: string): { status: msgStatus, obj?: IObject } 
-    				{ return this.proxy_create(msg, name, this); }                
     
     //-----------------------------    
     getDeleted(): boolean 	{ return this.fDelete; }
     del(): void {
-        if(this.fLock){
-//            console.log("ITLErr : Impossible to delete " + this.getOSCAddress() + ", the object is locked.");
-            this.fDelete = false;
-            return;
-	    }
-        if(this.fDelete) {
-//            let scene = this.fObjectView.getMotherScene();
-//            let obj = this.fObjectView.getScene();
-//            scene.removeChild(obj);
-            
-            let array = this.fParent.getSubNodes();
-            array.splice(array.indexOf(this),1);
-            delete this;    
-            
-        }
+    	this.fDelete = true;
+        let array = this.fParent.getSubNodes();
+        array.splice(array.indexOf(this), 1);
+        if (this.getView()) this.getView().remove();
+        delete this;    
     }
+    _del() : SetVoidMethod { return () => this.del(); }
 
 	//-----------------------------    
 	cleanup() : void { 
