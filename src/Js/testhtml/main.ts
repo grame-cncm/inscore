@@ -5,12 +5,4 @@
 "use strict";
 declare function print(arg: string);
 
-function debugmsg(str: string){
-	typeof console !== 'undefined' ? console.log(str) : print(str);
-}
-
 gCreateView = true;
-var gGlue = new IGlue();
-gGlue.initEventHandlers();
-gGlue.start();
-
