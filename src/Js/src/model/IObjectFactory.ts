@@ -1,13 +1,14 @@
 ///<reference path="../globals.ts"/>
 ///<reference path="../vhtmlview/HtmlViewFactory.ts"/>
-///<reference path="Methods.ts"/>
-///<reference path="IScene.ts"/>
-///<reference path="IRect.ts"/>
-///<reference path="IEllipse.ts"/>
 ///<reference path="ICurve.ts"/>
+///<reference path="IEllipse.ts"/>
+///<reference path="IHtml.ts"/>
 ///<reference path="ILine.ts"/>
 ///<reference path="IPolygon.ts"/>
+///<reference path="IRect.ts"/>
+///<reference path="IScene.ts"/>
 ///<reference path="IText.ts"/>
+///<reference path="Methods.ts"/>
 
 
 class IObjectFactory {	
@@ -55,6 +56,11 @@ class IObjectFactory {
                 
             case "txt":
                 obj = new IText(name, parent);
+                this.createView(obj, parent.getView());  
+                break;    
+                
+            case "html":
+                obj = new IHtml(name, parent);
                 this.createView(obj, parent.getView());  
                 break;    
                 
