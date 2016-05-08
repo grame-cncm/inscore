@@ -7,7 +7,13 @@
     background-color: rgb(250,250,250);
 }
 
+.toto  .inscore-scene {
+	margin: auto;
+	border: 2px blue solid;
+}
+
 .inscore-rect {
+	position: absolute;
 	margin: 0px;
 	border: 2px red solid;
     border-radius: 4px;
@@ -15,15 +21,18 @@
 }
 
 .inscore-ellipse {
+	position: absolute;
 	margin: 0px;
 	border: 2px blue solid;
     background-color: rgb(220,250,200);
 }
 
 .inscore-txt {
+	position: absolute;
 	border: 1px lightgray solid;
 }
 
 .inscore-html {
+	position: absolute;
 	border: 1px lightgray solid;
 }
