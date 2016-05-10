@@ -3,6 +3,7 @@
 ///<reference path="ICurve.ts"/>
 ///<reference path="IEllipse.ts"/>
 ///<reference path="IHtml.ts"/>
+///<reference path="IImage.ts"/>
 ///<reference path="ILine.ts"/>
 ///<reference path="IPolygon.ts"/>
 ///<reference path="IRect.ts"/>
@@ -61,6 +62,11 @@ class IObjectFactory {
                 
             case "html":
                 obj = new IHtml(name, parent);
+                this.createView(obj, parent.getView());  
+                break;    
+                
+            case "img":
+                obj = new IImage(name, parent);
                 this.createView(obj, parent.getView());  
                 break;    
                 

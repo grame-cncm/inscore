@@ -3,6 +3,7 @@
 ///<reference path="VHtmlCurveView.ts"/>
 ///<reference path="VHtmlEllipseView.ts"/>
 ///<reference path="VHtmlHtmlView.ts"/>
+///<reference path="VHtmlImageView.ts"/>
 ///<reference path="VHtmlLineView.ts"/>
 ///<reference path="VHtmlRectView.ts"/>
 ///<reference path="VHtmlSceneView.ts"/>
@@ -33,6 +34,9 @@ class HtmlViewFactory implements ViewFactory {
             
             case "scene":
                 return new VHtmlSceneView ();
+            
+            case "img":
+                return new VHtmlImageView (parent);
                 
             default:
                 return null;
