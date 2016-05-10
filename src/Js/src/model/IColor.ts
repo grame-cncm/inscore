@@ -90,8 +90,8 @@ class IColor {
         }
     }
     
-    setRGB(val: Array<number>): void 	{ this.fRGB = val; this.fModified = true; }
-    setHSB(val: Array<number>): void 	{ this.fHSB = val; this.fModified = true; }
+    setRGB(val: Array<number>): void 	{ this.fRGB = val; this.updateHSB(); this.fModified = true; }
+    setHSB(val: Array<number>): void 	{ this.fHSB = val; this.updateRGB(); this.fModified = true; }
     _setRGB()	: SetColorMethod 		{ return (n) => this.setRGB(n); };
     _setHSB()	: SetColorMethod 		{ return (n) => this.setHSB(n); };
     
@@ -137,20 +137,17 @@ class IColor {
 // CONVERSIONS COLORS
 //--------------------------------------------------------------    
    hsb2rgb():void {
-        let H:number = this.fHSB[0]/360;
-        let S:number = this.fHSB[1]/100;  
-        let B:number = this.fHSB[2]/100; 
+        let H = this.fHSB[0]/360;
+        let S = this.fHSB[1]/100;  
+        let B = this.fHSB[2]/100; 
         
         let F:number; let M:number;  let N:number;  let K:number; let I:number; 
-    
-        if ( S == 0.0 ) {
+        if ( S == 0 ) {
             this.fRGB[0] = B;
             this.fRGB[1] = B;
             this.fRGB[2] = B;
-        } 
-        
+        }       
         else {
- 
             if (H >= 1) { H = 0.0; } 
             else { H *= 6; } 
             
@@ -168,49 +165,42 @@ class IColor {
                 case 3: this.fRGB[0] = M; this.fRGB[1] = N; this.fRGB[2] = B; break;
                 case 4: this.fRGB[0] = K; this.fRGB[1] = M; this.fRGB[2] = B; break;
                 case 5: this.fRGB[0] = B; this.fRGB[1] = M; this.fRGB[2] = N; break;
-            }
-            
+            }            
             this.fRGB[0] = Math.floor(this.fRGB[0] * 255); 
             this.fRGB[1] = Math.floor(this.fRGB[1] * 255); 
             this.fRGB[2] = Math.floor(this.fRGB[2] * 255);        
-        } 
+        }
     }
+
    //-----------------------------  
    rgb2hsb():void {
-        let r:number = this.fRGB[0]/255;
-        let g:number = this.fRGB[1]/255;
-        let b:number = this.fRGB[2]/255;
+        let r = this.fRGB[0]/255;
+        let g = this.fRGB[1]/255;
+        let b = this.fRGB[2]/255;
 
         // Calculation of maxC and minC
-        let maxC:number = Math.max(r, g, b);
-        let minC:number = Math.min(r, g, b);
+        let maxC = Math.max(r, g, b);
+        let minC = Math.min(r, g, b);
 
         // Calculation of delta
-        let delta:number = maxC - minC;
-
-        let H:number = 0; let S:number = 0; let B:number = maxC;
-
+        let delta = maxC - minC;
+        let H = 0; let S = 0; let B = maxC;
 
         if (delta == 0) { H=0; S=0;}
-        
         else {
             S = delta / maxC;
-            let dR:number = 60*(maxC - r)/delta + 180;
-            let dG:number = 60*(maxC - g)/delta + 180;
-            let dB:number = 60*(maxC - b)/delta + 180;
+            let dR = 60*(maxC - r)/delta + 180;
+            let dG = 60*(maxC - g)/delta + 180;
+            let dB = 60*(maxC - b)/delta + 180;
             
             if (r == maxC) { H = dB - dG; }
-                
             else if (g == maxC) { H = 120 + dR - dB; }
-                
             else { H = 240 + dG - dR; }            
         }
 
-        if (H<0)
-            H+=360;
-        if (H>=360)
-            H-=360;
-            
+        if (H<0)	H+=360;
+        if (H>=360) H-=360;
+
         this.fHSB[0] = Math.floor(H);
         this.fHSB[1] = Math.floor(S * 100);
         this.fHSB[2] = Math.floor(B * 100);   
