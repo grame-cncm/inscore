@@ -124,6 +124,12 @@ function Message (addr, params) {
 	this.toString = function() { return this.address.toString() + " " + this.params.toString(); }
 }
 
+parser.get = (function () {
+	var msgs = parser.msgs;
+	parser.msgs = [];
+	return msgs;
+})
+
 parser.parseError = function(str, hash) {
 	typeof console !== 'undefined' ? console.log(str) : print(str);
 }
