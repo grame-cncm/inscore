@@ -14,7 +14,8 @@ class IScene extends IRectShape {
         this.fPosition.setHeight (2);
         this.fMsgHandlerMap[knew_SetMethod] = new TMsgHandlerVoid(this._newScene());
     }
-    
+
+    getRScale(): number 		{ return this.fPosition.getScale(); }    
     timeAble(): void 			{ }
 
     newScene(): void 			{ }
