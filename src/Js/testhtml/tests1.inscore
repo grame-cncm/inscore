@@ -1,13 +1,15 @@
 
-gray = 200;
 /ITL/toto new ;
 /ITL/toto scale 0.8 ;
 /ITL/toto x -0.3 ;
+gray = 200;
+/ITL/toto color $gray $gray $gray ;
+
 
 /ITL/scene x 0.5 ;
 /ITL/scene z 1 ;
-/ITL/scene width 1.5 ;
-/ITL/scene height 1.5 ;
+/ITL/scene width 2.5 ;
+/ITL/scene height 2.5 ;
 /ITL/scene x 0.4 ;
 /ITL/scene color 230 220 220;
 /ITL/* scale 0.5 ;
