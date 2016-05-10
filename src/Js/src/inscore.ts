@@ -41,7 +41,7 @@ class INScore {
 	static getRoot() : IAppl		{ return this.fAppl; }
 
 	static checkStatus (status: msgStatus, msg: IMessage) : void {
-    	if ((status != msgStatus.kProcessed) && (status != msgStatus.kProcessedNoChange))
+    	if (!(status & msgStatus.kProcessed + msgStatus.kProcessedNoChange))
     		ITLError.write (msg.toString() + ": " + this.status2string(status));
 	}
 
