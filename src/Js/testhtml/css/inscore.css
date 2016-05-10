@@ -14,8 +14,6 @@
 
 .inscore-rect {
 	position: absolute;
-	margin: 0px;
-	border: 2px red solid;
     border-radius: 4px;
     background-color: rgba(220,220,250,200);
 }
