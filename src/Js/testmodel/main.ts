@@ -25,7 +25,7 @@ function readfile (file: string) : string {
 function processfile ( file: string) : void {
 	let content = readfile(file);
 	if (content.length) {
-		debugmsg ("processfile content: \n" +content);
+//		debugmsg ("processfile content: \n" +content);
 		let loader = new TILoader;
 		loader.process (content, INScore.getRoot());
 		debugmsg (INScore.getRoot().toString());
